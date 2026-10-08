@@ -8,13 +8,14 @@ constant `K_G^ℂ`.
 | | lower | upper |
 |---|---|---|
 | literature (Heilman–Jones–Malavolta, [arXiv:2609.25462](https://arxiv.org/abs/2609.25462), Sept 2026) | 1.4 | 1.404898554746 |
-| this repository (`master`, machine-checked) | **1.4009320536** | **1.404898359045958** |
-| branch `upper-480` (slower check, merged last) | — | 1.404898357808 |
+| this repository (`master`, machine-checked) | **1.4009320536** | **1.404896257347** |
 
-Both bounds use the Heilman–Jones–Malavolta framework: the upper bound from a mixture of six
-Gaussian rounding kernels with 240 retained radial modes and a common polynomial preprocessor
-(480 modes on the `upper-480` branch, whose check takes four times longer), the lower bound
-from the Gaussian witness `T = P₁,₀ − ε·P₂,₁`, `ε = 7400323787/10¹⁰`, with an operator-norm cap
+Both bounds use the Heilman–Jones–Malavolta framework. The upper bound comes from a
+49-branch mixture of Gaussian rounding kernels: 30 scalar branches (Haagerup's phase kernel
+composed with rational preprocessors), 18 preprocessed copies of the origin kernel and one
+preprocessed copy of a second origin kernel with a modified phase polynomial, with 2048 retained
+mixed coefficients and polarized energy tail bounds. The lower bound comes from the Gaussian
+witness `T = P₁,₀ − ε·P₂,₁`, `ε = 7400323787/10¹⁰`, with an operator-norm cap
 `B = 7138104931/10¹⁰` certified by 47 retained-square support rows (coupled, pointwise and
 shifted profiles with global polynomial majorants) and a 116-interval scalar envelope.
 
@@ -27,19 +28,18 @@ For context, the real constant currently satisfies 1.773 ≤ K_G ≤ 1.7799
 complex matrix `A`, where `C(A)` is the optimum over unimodular scalars and `V(A)` the optimum
 over unit vectors in finite-dimensional complex Hilbert spaces; i.e. `K_G^ℂ ≤ K`.
 
-* **Upper bound** — `Grothe.complex_grothendieck_upper : … → IsGrothendieckBound (1404898359045958/10¹⁵)`.
+* **Upper bound** — `Grothe.complex_grothendieck_upper : … → IsGrothendieckBound (1404896257347/10¹²)`.
   Proved: the transfer inequality (tensor powers), validity and mixing of rounding kernels,
-  admissibility of the polynomial preprocessor and composition on the disc, Haagerup's
-  coefficients with the Wallis-type estimate `hₙ < 1/(4(n+¼)(n+1))`, the weighted
-  Cauchy–Schwarz energy tail, all tail reserves, and the finite certificate: a sound fixed-point
-  interval checker (`GrotheKernel/`, 2⁻¹²⁸ outward rounding, soundness proved in
-  `Grothe/Upper/IntervalSound.lean`) evaluating the 240 boxed mixture coefficients composed with
-  the preprocessor through radial degree 57240.
-  Hypotheses (not formalized): domination of the six kernels (Haagerup's Gaussian phase
-  identity), containment of the truncated radial coefficient integrals in the data boxes (Arb
-  quadrature), the scalar coefficient identification, the sixth kernel's first-order energy
-  decomposition with its three energy caps, the Cauchy tails of kernels 1–4, and the finite
-  part of the fifth tail.
+  admissibility of every polynomial preprocessor and composition on the disc, Haagerup's
+  coefficients with the Wallis-type estimate `hₙ < 1/(4(n+¼)(n+1))`, the positive-majorant tails
+  of the scalar branches, the polarized Cauchy–Schwarz energy tail of the origin kernels, the
+  remainder transport, and the finite certificate: a sound fixed-point interval checker
+  (`GrotheKernel/`, 2⁻¹²⁸ outward rounding, soundness proved in `Grothe/Upper/IntervalSound.lean`)
+  evaluating all 49 branch compositions through index 2047 and the weighted margin.
+  Hypotheses (not formalized): domination of Haagerup's phase kernel and of the two origin
+  kernels, containment of the truncated radial coefficient integrals in the data boxes (Arb
+  quadrature), the first-order coefficient structure of the origin kernels with their
+  polarized energy caps, and the Cauchy tails of nine scalar branches.
 * **Lower bound** — `Grothe.Lower.envelope_bound_data` (`V ≤ B` for every admissible scalar
   profile value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 14009320536/10¹⁰ < K`.
   Proved: Bernstein bounds, PSD gates by exact `LᵀDL` factorizations, rectangle covers, all
@@ -62,6 +62,6 @@ lake build
 ```
 
 `Grothe/Upper/Value.lean` evaluates the interval checker once by `native_decide` (about
-20 minutes; about 80 on the `upper-480` branch); CI (`.github/workflows/lean.yml`) builds everything on every push to `master`,
+13 minutes on 8 cores, 40 minutes sequentially); CI (`.github/workflows/lean.yml`) builds everything on every push to `master`,
 forbids `sorry`, and checks the axiom report. The generated data modules come from research
 archives that are not part of the repository; the generators are in `tools/`.

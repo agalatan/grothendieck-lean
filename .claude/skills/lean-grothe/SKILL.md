@@ -21,11 +21,12 @@ description: Working conventions for the Lean 4 / Mathlib formalization of the c
 ## Layout
 - `Grothe/Transfer.lean`: `scalarOpt`, `vectorOpt`, `IsGrothendieckBound`, `DominatedKernel`,
   `ValidKernel`, `tpow` (tensor powers), `transfer` (the transfer inequality).
-- `Grothe/Haagerup.lean`, `WallisTail.lean`, `ListPoly.lean`, `FifthTail.lean`: Haagerup
-  coefficients, Wallis-type tails, the Wiener norm `l1` and integer-list polynomial arithmetic.
-- `Grothe/Upper/`: the 480-mode upper certificate (generated `Data.lean`, `Interface.lean`,
+- `Grothe/Haagerup.lean`, `WallisTail.lean`, `ListPoly.lean`: Haagerup coefficients, Wallis-type
+  tails, the Wiener norm `l1`.
+- `Grothe/Upper/`: the 49-branch upper certificate (generated `Data.lean`, `Interface.lean`,
   checker modules over the Mathlib-free precompiled `GrotheKernel/`, analytic assembly,
-  `Final.lean` with `complex_grothendieck_upper`). `Value.lean` holds the long `native_decide`.
+  `Final.lean` with `complex_grothendieck_upper`). `Value.lean` holds the long `native_decide`
+  (parallel `Task.spawn` columns, ~13 min on 8 cores).
 - `Grothe/Lower/`, `Grothe/LowerAnalytic/`: the lower certificate's finite checkers + data and
   its analytic lemmas.
 - `handoff/` (git-ignored) holds the research archives the generators in `tools/` read; the
