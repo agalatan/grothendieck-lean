@@ -25,14 +25,14 @@ correlations in two-party Bell experiments.
 
 ## How the bounds evolved
 
-| year | who | complex constant $K_G^{\mathbb C}$ |
-|---|---|---|
-| 1953 | Grothendieck | finite (the inequality itself) |
-| 1984 | Davie | $> 1.33807$ |
-| 1987 | Haagerup | $< 8/(\pi(1+x_0)) = 1.40490913\ldots$ (Gaussian phase rounding) |
-| Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | $> 1.35584631827168$ |
-| Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | $1.4 < K_G^{\mathbb C} < 1.404898554746$ |
-| Oct 2026 | **this repository** | $\mathbf{1.4010028168 < K_G^{\mathbb C} < 1.404896257347}$ |
+| year | who | lower bound | upper bound |
+|---|---|---|---|
+| 1953 | Grothendieck | | $K_G^{\mathbb C} < \infty$ (the inequality itself) |
+| 1984 | Davie | $1.33807 < K_G^{\mathbb C}$ | |
+| 1987 | Haagerup | | $K_G^{\mathbb C} < 1.40490913\ldots$ (Gaussian phase rounding) |
+| Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | $1.35584631827168 < K_G^{\mathbb C}$ | |
+| Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | $1.4 < K_G^{\mathbb C}$ | $K_G^{\mathbb C} < 1.404898554746$ |
+| Oct 2026 | **this repository** | $\mathbf{1.4010028168 < K_G^{\mathbb C}}$ | $\mathbf{K_G^{\mathbb C} < 1.404896257347}$ |
 
 For orientation, the real constant has a longer numerical history: Krivine's upper bound
 $\pi/(2\log(1+\sqrt2)) = 1.78221\ldots$ (1979) was shown to be non-optimal by Braverman,
