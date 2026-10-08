@@ -1,0 +1,31 @@
+name: Lean proof check
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the Lean development (Mathlib from cache)
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: true
+          build-args: "--log-level=warning"
+
+      - name: No sorry anywhere
+        run: |
+          ! grep -rn --include='*.lean' -E '\bsorry\b' Grothe GrotheKernel Grothe.lean
+
+      - name: Axiom report
+        run: |
+          lake env lean scratch/Axioms.lean | tee axioms.txt
+          # Only the standard axioms and documented native_decide facts are allowed.
+          ! grep -E 'sorryAx|Lean\.ofReduceBool|Classical\.choice\b.*ofReduceBool' axioms.txt >/dev/null
+          ! grep -vE "^'.*' depends on axioms: \[(propext|Classical\.choice|Quot\.sound|[A-Za-z0-9_.']+\._native\.native_decide\.ax_1_1|, |\n)*\]$" axioms.txt | grep -q "depends on axioms"
