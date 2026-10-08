@@ -3,9 +3,9 @@ import Grothe.Lower.PSD
 import Grothe.Lower.Cover
 
 /-!
-# Coupled (virtual) profiles: data types, the exact checker, and its soundness
+# Coupled profiles: data types, the exact checker, and its soundness
 
-A *virtual profile* averages two source profiles `i, j` with weight `w`.  Its residual-moment
+A *coupled profile* averages two source profiles `i, j` with weight `w`.  Its residual-moment
 bound on the rectangle `[0, ρ] × [0, 31/4]` is certified leaf by leaf: each leaf selects two
 (lifted) global physical polynomials `p₁, p₂` and an argument allocation `(λ₁, λ₂)` with
 `w λ₁ + (1-w) λ₂ = d`, and the polynomial
@@ -15,7 +15,8 @@ bound on the rectangle `[0, ρ] × [0, 31/4]` is certified leaf by leaf: each le
 
 is bounded by the cap on the leaf box via Bernstein coefficients at both `x`-endpoints.
 `recordSound_of_check` turns a successful run of the Boolean checker into the Prop
-`RecordSound`, whose last field is the pointwise bound for every point of the root box.
+`RecordSound`, whose last field is the pointwise bound for every point of the root box.  All
+coupled profiles live at the source witness parameter `ε₀`.
 -/
 
 namespace Grothe.Lower
@@ -24,8 +25,10 @@ namespace Grothe.Lower
 def ρ : ℚ := 977459 / 1000000
 /-- `C₆ = 4942288923/100000000`, the sixth-moment coefficient. -/
 def C6 : ℚ := 4942288923 / 100000000
-/-- `ε = 37/50`. -/
-def ε : ℚ := 37 / 50
+/-- The source witness parameter `ε₀ = 37/50` (the parameter at which all profiles are built). -/
+def ε₀ : ℚ := 37 / 50
+/-- The common witness parameter `ε = 7400323787/10¹⁰` of the final support rows. -/
+def ε : ℚ := 7400323787 / 10000000000
 /-- Conservative lift of every physical-polynomial constant term. -/
 def lift : ℚ := 1 / 100000000
 /-- The root rectangle `[0, ρ] × [0, 31/4]`. -/
@@ -94,22 +97,23 @@ def parseLeaves (s : String) : List Leaf := (s.splitOn ";").map parseLeaf
 
 /-! ### The gates -/
 
-/-- The matrix gates of a profile with parameters `(E, R, δ)`, as real-valued PSD/PD facts. -/
-structure GateProp (E : Sym3) (R : Sym2) (delta : ℚ) : Prop where
+/-- The matrix gates of a profile with parameters `(E, R, δ)` at the witness parameter `eps`, as
+real-valued PSD/PD facts. -/
+structure GateProp (eps : ℚ) (E : Sym3) (R : Sym2) (delta : ℚ) : Prop where
   ePD : PD3 E
-  eDom1 : PSD3 (E.subDiag (-1) ε ε)
-  eDom2 : PSD3 (E.subDiag (ε - delta) 0 0)
+  eDom1 : PSD3 (E.subDiag (-1) eps eps)
+  eDom2 : PSD3 (E.subDiag (eps - delta) 0 0)
   rPD : PD2 R
-  rDom1 : PSD2 (R.subDiag (-1) ε)
-  rDom2 : PSD2 (R.subDiag ε 0)
+  rDom1 : PSD2 (R.subDiag (-1) eps)
+  rDom2 : PSD2 (R.subDiag eps 0)
 
-def checkGates (E : Sym3) (R : Sym2) (delta : ℚ) (c : GateCert) : Bool :=
-  checkPD3 E c.ePD && checkPSD3 (E.subDiag (-1) ε ε) c.eDom1 &&
-  checkPSD3 (E.subDiag (ε - delta) 0 0) c.eDom2 && checkPD2 R c.rPD &&
-  checkPSD2 (R.subDiag (-1) ε) c.rDom1 && checkPSD2 (R.subDiag ε 0) c.rDom2
+def checkGates (eps : ℚ) (E : Sym3) (R : Sym2) (delta : ℚ) (c : GateCert) : Bool :=
+  checkPD3 E c.ePD && checkPSD3 (E.subDiag (-1) eps eps) c.eDom1 &&
+  checkPSD3 (E.subDiag (eps - delta) 0 0) c.eDom2 && checkPD2 R c.rPD &&
+  checkPSD2 (R.subDiag (-1) eps) c.rDom1 && checkPSD2 (R.subDiag eps 0) c.rDom2
 
-theorem gateProp_of_check (E : Sym3) (R : Sym2) (delta : ℚ) (c : GateCert)
-    (h : checkGates E R delta c = true) : GateProp E R delta := by
+theorem gateProp_of_check (eps : ℚ) (E : Sym3) (R : Sym2) (delta : ℚ) (c : GateCert)
+    (h : checkGates eps E R delta c = true) : GateProp eps E R delta := by
   simp only [checkGates, Bool.and_eq_true] at h
   obtain ⟨⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩, h6⟩ := h
   exact ⟨pd3_of_check _ _ h1, psd3_of_check _ _ h2, psd3_of_check _ _ h3, pd2_of_check _ _ h4,
@@ -193,10 +197,10 @@ def checkRecord (C : Ctx) (r : VRecord) : Bool :=
   (r.ell == r.w * pi.ell + (1 - r.w) * pj.ell) &&
   (r.beta == r.w * pi.beta + (1 - r.w) * pj.beta) &&
   (r.d == r.w * pi.delta + (1 - r.w) * pj.delta) &&
-  (r.gain == 2 * r.w * (1 - r.w) * (pi.beta - pj.beta) ^ 2 / ε) &&
-  decide (0 < r.dprime) && decide (r.dprime ≤ r.d) && decide (r.dprime < ε) &&
+  (r.gain == 2 * r.w * (1 - r.w) * (pi.beta - pj.beta) ^ 2 / ε₀) &&
+  decide (0 < r.dprime) && decide (r.dprime ≤ r.d) && decide (r.dprime < ε₀) &&
   decide (0 ≤ r.beta) && decide (2 * r.beta ≤ r.ell) &&
-  checkGates E R r.dprime r.gates &&
+  checkGates ε₀ E R r.dprime r.gates &&
   leaves.all (checkLeaf C r) &&
   coversBox rootBox (leaves.map fun leaf => decodePath leaf.path) 0 64
 
@@ -219,13 +223,13 @@ structure RecordSound (C : Ctx) (r : VRecord) : Prop where
   ell_eq : r.ell = r.w * (C.srcP r.i).ell + (1 - r.w) * (C.srcP r.j).ell
   beta_eq : r.beta = r.w * (C.srcP r.i).beta + (1 - r.w) * (C.srcP r.j).beta
   d_eq : r.d = r.w * (C.srcP r.i).delta + (1 - r.w) * (C.srcP r.j).delta
-  gain_eq : r.gain = 2 * r.w * (1 - r.w) * ((C.srcP r.i).beta - (C.srcP r.j).beta) ^ 2 / ε
+  gain_eq : r.gain = 2 * r.w * (1 - r.w) * ((C.srcP r.i).beta - (C.srcP r.j).beta) ^ 2 / ε₀
   dprime_pos : 0 < r.dprime
   dprime_le : r.dprime ≤ r.d
-  dprime_lt : r.dprime < ε
+  dprime_lt : r.dprime < ε₀
   beta_nonneg : 0 ≤ r.beta
   ell_ge : 2 * r.beta ≤ r.ell
-  gates : GateProp (Sym3.avg r.w (C.srcP r.i).E (C.srcP r.j).E)
+  gates : GateProp ε₀ (Sym3.avg r.w (C.srcP r.i).E (C.srcP r.j).E)
     (Sym2.avg r.w (C.srcP r.i).R (C.srcP r.j).R) r.dprime
   /-- Every point of the root rectangle lies in a certified leaf whose polynomial is at most
   the cap there. -/
@@ -292,7 +296,7 @@ theorem recordSound_of_check (C : Ctx) (r : VRecord) (h : checkRecord C r = true
   obtain ⟨hi, hj, hij, hw0, hw1, hell, hbeta, hd, hgain, hdp0, hdp1, hdp2, hb0, hb1, hg,
     hleaves, hcover⟩ := h
   refine ⟨⟨hi, hj, hij⟩, hw0, hw1, hell, hbeta, hd, hgain, hdp0, hdp1, hdp2, hb0, hb1,
-    gateProp_of_check _ _ _ _ hg, ?_⟩
+    gateProp_of_check _ _ _ _ _ hg, ?_⟩
   intro u x hu0 hu1 hx0 hx1
   have hmem : rootBox.mem u x := by
     refine ⟨?_, ?_, ?_, ?_⟩
