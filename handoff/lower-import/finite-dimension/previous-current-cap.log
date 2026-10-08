@@ -1,0 +1,9 @@
+CONDITIONAL ON INPUT NORM CAP: 3569353321/5000000000
+Epsilon: 37/50 ; pi enclosure: exact Machin alternating series
+This is rational arithmetic verification, not Lean verification.
+K_G^C(10) > 1.343264234842
+K_G^C(100) > 1.394756883874
+K_G^C(1000) > 1.400204984457
+K_G^C(2000) > 1.400509385991
+K_G^C(10000) > 1.400753039411
+PASS: exact terminal inequalities; supplied operator-norm hypothesis remains explicit.
