@@ -3,9 +3,9 @@ import Mathlib
 /-!
 # Dyadic bisection covers
 
-Leaves of the lower-bound certificates are binary paths in a bisection tree of the root
+Leaves of the coupled-profile certificate are binary paths in a bisection tree of the root
 rectangle `[0, ρ] × [0, 31/4]` (even depth bisects `u`, odd depth bisects `x`; digit `0` is the
-lower half) or of the root interval `[0, 9/10]`.  Rather than a Kraft-equality argument we use a
+lower half).  Rather than a Kraft-equality argument we use a
 recursive *cover checker* whose soundness is a direct induction: if `coversBox root paths depth
 fuel = true` then every point of `root` lies in the box of some listed path.
 -/
@@ -100,59 +100,6 @@ theorem coversBox_sound (fuel : ℕ) : ∀ (root : Box) (paths : List (List Bool
       · obtain ⟨r, hr', hmemr⟩ := ih _ _ _ hR u x hr
         refine ⟨true :: r, mem_stripDigit hr', ?_⟩
         simpa [boxOfPath] using hmemr
-
-/-! ### One-dimensional version -/
-
-/-- A closed interval with rational endpoints. -/
-structure Iv where
-  lo : ℚ
-  hi : ℚ
-  deriving DecidableEq, Repr
-
-def Iv.mem (b : Iv) (t : ℝ) : Prop := (b.lo : ℝ) ≤ t ∧ t ≤ b.hi
-
-def Iv.split (b : Iv) : Iv × Iv :=
-  let m := (b.lo + b.hi) / 2
-  (⟨b.lo, m⟩, ⟨m, b.hi⟩)
-
-lemma Iv.mem_split (b : Iv) (t : ℝ) (h : b.mem t) : b.split.1.mem t ∨ b.split.2.mem t := by
-  obtain ⟨h1, h2⟩ := h
-  simp only [Iv.split]
-  by_cases hm : t ≤ (((b.lo + b.hi) / 2 : ℚ) : ℝ)
-  · left; exact ⟨h1, hm⟩
-  · right; exact ⟨le_of_lt (not_le.1 hm), h2⟩
-
-def ivOfPath (root : Iv) : List Bool → Iv
-  | [] => root
-  | d :: rest => ivOfPath (if d then root.split.2 else root.split.1) rest
-
-def coversIv (root : Iv) (paths : List (List Bool)) : ℕ → Bool
-  | 0 => paths.any (· = [])
-  | fuel + 1 =>
-    paths.any (· = []) ||
-      (coversIv root.split.1 (stripDigit false paths) fuel &&
-       coversIv root.split.2 (stripDigit true paths) fuel)
-
-theorem coversIv_sound (fuel : ℕ) : ∀ (root : Iv) (paths : List (List Bool)),
-    coversIv root paths fuel = true →
-    ∀ t : ℝ, root.mem t → ∃ p ∈ paths, (ivOfPath root p).mem t := by
-  induction fuel with
-  | zero =>
-    intro root paths h t hmem
-    simp only [coversIv, List.any_eq_true, decide_eq_true_eq] at h
-    obtain ⟨p, hp, rfl⟩ := h
-    exact ⟨[], hp, hmem⟩
-  | succ fuel ih =>
-    intro root paths h t hmem
-    simp only [coversIv, Bool.or_eq_true, List.any_eq_true, decide_eq_true_eq,
-      Bool.and_eq_true] at h
-    rcases h with ⟨p, hp, rfl⟩ | ⟨hL, hR⟩
-    · exact ⟨[], hp, hmem⟩
-    · rcases root.mem_split t hmem with hl | hr
-      · obtain ⟨r, hr, hmemr⟩ := ih _ _ hL t hl
-        exact ⟨false :: r, mem_stripDigit hr, by simpa [ivOfPath] using hmemr⟩
-      · obtain ⟨r, hr', hmemr⟩ := ih _ _ hR t hr
-        exact ⟨true :: r, mem_stripDigit hr', by simpa [ivOfPath] using hmemr⟩
 
 /-- Decode a path string of `'0'`/`'1'` characters. -/
 def decodePath (s : String) : List Bool := s.toList.map (· = '1')
