@@ -106,20 +106,71 @@ lemma exp_neg_18_le : Real.exp (-18) ≤ (dHi : ℝ) := by
   rw [one_div, inv_le_inv₀ (by positivity) (by positivity)]
   exact pow_le_pow_left₀ (by norm_num) h.le 18
 
-/-- The weighted coefficient-error budget `ε = w₆ (2d + d²)`. -/
-def epsW : ℚ := 1.2115113365e-11
+/-- Box-derived bound on the `ℓ²` norms of the truncated coefficient vectors: `‖A‖₂, ‖B‖₂ ≤ nBox`. -/
+def nBox : ℚ := 0.99948
 
-lemma epsW_bound : wNew 5 * (2 * (dHi : ℝ) + (dHi : ℝ) ^ 2) ≤ (epsW : ℝ) := by
-  simp only [wNew, dHi, epsW]
+/-- The weighted coefficient-error budget `ε = w₆ (d(‖A‖₂ + ‖B‖₂) + d²)` with `‖A‖₂, ‖B‖₂ ≤ nBox`. -/
+def epsW : ℚ := 1.2108988e-11
+
+lemma epsW_bound :
+    wNew 5 * ((dHi : ℝ) * nBox + (dHi : ℝ) ^ 2 + nBox * dHi) ≤ (epsW : ℝ) := by
+  simp only [wNew, dHi, epsW, nBox]
   norm_num
 
+lemma sq_le_boxSq {lo hi x : ℝ} (h1 : lo ≤ x) (h2 : x ≤ hi) : x ^ 2 ≤ (max |lo| |hi|) ^ 2 := by
+  have hx : |x| ≤ max |lo| |hi| := by
+    rcases le_total 0 x with hx | hx
+    · rw [abs_of_nonneg hx]; exact (h2.trans (le_abs_self hi)).trans (le_max_right _ _)
+    · rw [abs_of_nonpos hx]
+      exact (by linarith [neg_abs_le lo] : -x ≤ |lo|).trans (le_max_left _ _)
+  calc x ^ 2 = |x| ^ 2 := (sq_abs x).symm
+    _ ≤ _ := pow_le_pow_left₀ (abs_nonneg _) hx 2
+
+/-- Sum of the squared box maxima over the first `240` indices. -/
+def boxSqSum (lo hi : List ℚ) : ℚ :=
+  ∑ n ∈ range 240, (max |coeffQ lo n| |coeffQ hi n|) ^ 2
+
+theorem aBoxSq_le : boxSqSum aReLo aReHi + boxSqSum aImLo aImHi ≤ nBox ^ 2 := by native_decide
+theorem bBoxSq_le : boxSqSum bReLo bReHi + boxSqSum bImLo bImHi ≤ nBox ^ 2 := by native_decide
+
+lemma normSq_sum_le_of_box (lo₁ hi₁ lo₂ hi₂ : List ℚ) (A : ℕ → ℂ)
+    (hA : ∀ n < 240, ((coeffQ lo₁ n : ℝ) ≤ (A n).re ∧ (A n).re ≤ coeffQ hi₁ n) ∧
+      ((coeffQ lo₂ n : ℝ) ≤ (A n).im ∧ (A n).im ≤ coeffQ hi₂ n))
+    (hbox : boxSqSum lo₁ hi₁ + boxSqSum lo₂ hi₂ ≤ nBox ^ 2) :
+    ∑ n ∈ range 240, ‖A n‖ ^ 2 ≤ (nBox : ℝ) ^ 2 := by
+  have key : ((∑ n ∈ range 240, ((max |coeffQ lo₁ n| |coeffQ hi₁ n|) ^ 2
+      + (max |coeffQ lo₂ n| |coeffQ hi₂ n|) ^ 2) : ℚ) : ℝ) ≤ (nBox : ℝ) ^ 2 := by
+    unfold boxSqSum at hbox
+    rw [← Finset.sum_add_distrib] at hbox
+    exact_mod_cast hbox
+  refine le_trans ?_ key
+  rw [Rat.cast_sum]
+  refine sum_le_sum fun n hn => ?_
+  have hn' : n < 240 := by simpa using hn
+  obtain ⟨⟨h1, h2⟩, ⟨h3, h4⟩⟩ := hA n hn'
+  have e1 := sq_le_boxSq h1 h2
+  have e2 := sq_le_boxSq h3 h4
+  rw [Complex.sq_norm, Complex.normSq_apply]
+  push_cast
+  nlinarith [e1, e2]
+
+lemma normSq_sum_le_of_boxA (A : ℕ → ℂ) (hA : InBoxA A) :
+    ∑ n ∈ range 240, ‖A n‖ ^ 2 ≤ (nBox : ℝ) ^ 2 :=
+  normSq_sum_le_of_box _ _ _ _ A hA aBoxSq_le
+
+lemma normSq_sum_le_of_boxB (B : ℕ → ℂ) (hB : InBoxB B) :
+    ∑ n ∈ range 240, ‖B n‖ ^ 2 ≤ (nBox : ℝ) ^ 2 :=
+  normSq_sum_le_of_box _ _ _ _ B hB bBoxSq_le
+
 /-- `∑_{n<240} |Re(aₙ b̄ₙ) − Re(Aₙ B̄ₙ)| ≤ 2d + d²` when `‖a−A‖₂, ‖b−B‖₂ ≤ d` and
-`‖A‖₂, ‖B‖₂ ≤ 1` (handoff, section 8). -/
+`‖A‖₂ ≤ nA`, `‖B‖₂ ≤ nB` (handoff, section 8). -/
 theorem coeff_error_le (a b A B : ℕ → ℂ) (d : ℝ) (hd : 0 ≤ d)
     (herrA : ∑ n ∈ range 240, ‖a n - A n‖ ^ 2 ≤ d ^ 2)
     (herrB : ∑ n ∈ range 240, ‖b n - B n‖ ^ 2 ≤ d ^ 2)
-    (hA2 : ∑ n ∈ range 240, ‖A n‖ ^ 2 ≤ 1) (hB2 : ∑ n ∈ range 240, ‖B n‖ ^ 2 ≤ 1) :
-    ∑ n ∈ range 240, |(a n * conj (b n)).re - (A n * conj (B n)).re| ≤ 2 * d + d ^ 2 := by
+    (nA nB : ℝ) (hnA : 0 ≤ nA) (hnB : 0 ≤ nB)
+    (hA2 : ∑ n ∈ range 240, ‖A n‖ ^ 2 ≤ nA ^ 2) (hB2 : ∑ n ∈ range 240, ‖B n‖ ^ 2 ≤ nB ^ 2) :
+    ∑ n ∈ range 240, |(a n * conj (b n)).re - (A n * conj (B n)).re|
+      ≤ d * nB + d ^ 2 + nA * d := by
   have hterm : ∀ n, |(a n * conj (b n)).re - (A n * conj (B n)).re|
       ≤ ‖a n - A n‖ * ‖B n‖ + ‖a n - A n‖ * ‖b n - B n‖ + ‖A n‖ * ‖b n - B n‖ := by
     intro n
@@ -141,8 +192,8 @@ theorem coeff_error_le (a b A B : ℕ → ℂ) (d : ℝ) (hd : 0 ≤ d)
           + ‖A n‖ * ‖b n - B n‖) := sum_le_sum fun n _ => hterm n
     _ = ∑ n ∈ range 240, ‖a n - A n‖ * ‖B n‖ + ∑ n ∈ range 240, ‖a n - A n‖ * ‖b n - B n‖
           + ∑ n ∈ range 240, ‖A n‖ * ‖b n - B n‖ := by rw [sum_add_distrib, sum_add_distrib]
-    _ ≤ Real.sqrt (d ^ 2) * Real.sqrt 1 + Real.sqrt (d ^ 2) * Real.sqrt (d ^ 2)
-          + Real.sqrt 1 * Real.sqrt (d ^ 2) := by
+    _ ≤ Real.sqrt (d ^ 2) * Real.sqrt (nB ^ 2) + Real.sqrt (d ^ 2) * Real.sqrt (d ^ 2)
+          + Real.sqrt (nA ^ 2) * Real.sqrt (d ^ 2) := by
         refine add_le_add (add_le_add ?_ ?_) ?_
         · exact sum_mul_le_of_partial 240 _ _ (fun n => norm_nonneg _) (fun n => norm_nonneg _)
             _ _ herrA hB2
@@ -150,7 +201,7 @@ theorem coeff_error_le (a b A B : ℕ → ℂ) (d : ℝ) (hd : 0 ≤ d)
             _ _ herrA herrB
         · exact sum_mul_le_of_partial 240 _ _ (fun n => norm_nonneg _) (fun n => norm_nonneg _)
             _ _ hA2 herrB
-    _ = 2 * d + d ^ 2 := by rw [hd', Real.sqrt_one]; ring
+    _ = d * nB + d ^ 2 + nA * d := by rw [hd', Real.sqrt_sq hnA, Real.sqrt_sq hnB]; ring
 
 /-! ### Tail constants -/
 
@@ -230,7 +281,6 @@ theorem bound_of_certificate240 (Dlo : ℚ) (hfin : FiniteCertificate240 Dlo)
     (a b : ℕ → ℂ) (hk5 : ∀ n < 240, k 5 n = (a n * conj (b n)).re)
     (herrA : ∑ n ∈ range 240, ‖a n - A n‖ ^ 2 ≤ Real.exp (-18) ^ 2)
     (herrB : ∑ n ∈ range 240, ‖b n - B n‖ ^ 2 ≤ Real.exp (-18) ^ 2)
-    (hA2 : ∑ n ∈ range 240, ‖A n‖ ^ 2 ≤ 1) (hB2 : ∑ n ∈ range 240, ‖B n‖ ^ 2 ≤ 1)
     (htail : ∀ i, ∑' n, |k i (n + 240)| ≤ t240 i)
     (hpos : 0 < (Dlo : ℝ) - epsW - tailsT) :
     IsGrothendieckBound ((∑ i, wNew i) / ((Dlo : ℝ) - epsW - tailsT)) := by
@@ -261,7 +311,10 @@ theorem bound_of_certificate240 (Dlo : ℚ) (hfin : FiniteCertificate240 Dlo)
   -- the coefficient error for n < 240
   have hRr_low : ∑ n ∈ range 240, |Rr n| ≤ (epsW : ℝ) := by
     have hd0 : 0 ≤ Real.exp (-18) := (Real.exp_pos _).le
-    have hce := coeff_error_le a b A B _ hd0 herrA herrB hA2 hB2
+    have hA2 := normSq_sum_le_of_boxA A hA
+    have hB2 := normSq_sum_le_of_boxB B hB
+    have hnB0 : (0 : ℝ) ≤ nBox := by simp only [nBox]; norm_num
+    have hce := coeff_error_le a b A B _ hd0 herrA herrB nBox nBox hnB0 hnB0 hA2 hB2
     have hRr_eq : ∀ n ∈ range 240, |Rr n|
         = wNew 5 * |(a n * conj (b n)).re - (A n * conj (B n)).re| := by
       intro n hn
@@ -281,12 +334,14 @@ theorem bound_of_certificate240 (Dlo : ℚ) (hfin : FiniteCertificate240 Dlo)
       rw [abs_mul, abs_of_pos (wNew_pos 5)]
     rw [sum_congr rfl hRr_eq, ← Finset.mul_sum]
     calc wNew 5 * ∑ n ∈ range 240, |(a n * conj (b n)).re - (A n * conj (B n)).re|
-        ≤ wNew 5 * (2 * Real.exp (-18) + Real.exp (-18) ^ 2) :=
+        ≤ wNew 5 * (Real.exp (-18) * nBox + Real.exp (-18) ^ 2 + nBox * Real.exp (-18)) :=
           mul_le_mul_of_nonneg_left hce (wNew_pos 5).le
-      _ ≤ wNew 5 * (2 * (dHi : ℝ) + (dHi : ℝ) ^ 2) := by
+      _ ≤ wNew 5 * ((dHi : ℝ) * nBox + (dHi : ℝ) ^ 2 + nBox * dHi) := by
           have := exp_neg_18_le
-          exact mul_le_mul_of_nonneg_left
-            (add_le_add (by linarith) (pow_le_pow_left₀ hd0 this 2)) (wNew_pos 5).le
+          have h2 := pow_le_pow_left₀ hd0 this 2
+          refine mul_le_mul_of_nonneg_left ?_ (wNew_pos 5).le
+          exact add_le_add (add_le_add (mul_le_mul_of_nonneg_right this hnB0) h2)
+            (mul_le_mul_of_nonneg_left this hnB0)
       _ ≤ (epsW : ℝ) := epsW_bound
   -- the tails for n ≥ 240
   have hRr_high : ∑' n, |Rr (n + 240)| ≤ (tailsT : ℝ) := by
@@ -380,9 +435,9 @@ theorem bound_of_certificate240 (Dlo : ℚ) (hfin : FiniteCertificate240 Dlo)
 
 /-! ### The numeric theorem -/
 
-/-- Threshold for the certified finite slope: `Dlo ≥ 0.7117952904796642` gives the handoff
+/-- Threshold for the certified finite slope: `Dlo ≥ 0.7117952904796581` gives the handoff
 endpoint `1.404898359045958`. -/
-def DloNeeded : ℚ := 7117952904796642 / 10 ^ 16
+def DloNeeded : ℚ := 7117952904796581 / 10 ^ 16
 
 theorem final_numeric :
     (1.000000000000000012 : ℝ) / ((DloNeeded : ℝ) - epsW - tailsT) ≤ 1404898359045958 / 10 ^ 15 := by
@@ -402,7 +457,6 @@ theorem complex_grothendieck_combined (Dlo : ℚ) (hDlo : DloNeeded ≤ Dlo)
     (a b : ℕ → ℂ) (hk5 : ∀ n < 240, k 5 n = (a n * conj (b n)).re)
     (herrA : ∑ n ∈ range 240, ‖a n - A n‖ ^ 2 ≤ Real.exp (-18) ^ 2)
     (herrB : ∑ n ∈ range 240, ‖b n - B n‖ ^ 2 ≤ Real.exp (-18) ^ 2)
-    (hA2 : ∑ n ∈ range 240, ‖A n‖ ^ 2 ≤ 1) (hB2 : ∑ n ∈ range 240, ‖B n‖ ^ 2 ≤ 1)
     (hcauchy0 : ∑' n, |k 0 (n + 240)| ≤ cauchyTail240 1.2)
     (hcauchy1 : ∑' n, |k 1 (n + 240)| ≤ cauchyTail240 1.11)
     (hcauchy2 : ∑' n, |k 2 (n + 240)| ≤ cauchyTail240 1.11)
@@ -444,7 +498,7 @@ theorem complex_grothendieck_combined (Dlo : ℚ) (hDlo : DloNeeded ≤ Dlo)
     have := DloNeeded_pos
     have h2 : (DloNeeded : ℝ) ≤ Dlo := by exact_mod_cast hDlo
     linarith
-  have hB := bound_of_certificate240 Dlo hfin k hk hdom A B hA hB hscalar a b hk5 herrA herrB hA2 hB2
+  have hB := bound_of_certificate240 Dlo hfin k hk hdom A B hA hB hscalar a b hk5 herrA herrB
     htail hpos
   refine hB.mono ?_
   rw [mass_new]
