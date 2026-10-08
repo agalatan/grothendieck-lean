@@ -8,4 +8,8 @@ git = "https://github.com/leanprover-community/mathlib4"
 rev = "v4.34.1"
 
 [[lean_lib]]
+name = "GrotheKernel"
+precompileModules = true
+
+[[lean_lib]]
 name = "Grothe"
