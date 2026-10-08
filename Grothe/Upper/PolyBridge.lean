@@ -98,7 +98,7 @@ lemma coeff_polySum (cs : List ℝ) (E : ℝ[X]) (n : ℕ) :
       = ∑ j ∈ Finset.range cs.length,
           cs.getD j 0 * (if j ≤ n then (E ^ (2 * j + 1)).coeff (n - j) else 0) := by
   unfold polySum
-  rw [finset_sum_coeff]
+  rw [finsetSum_coeff]
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [coeff_C_mul, coeff_X_pow_mul']
 

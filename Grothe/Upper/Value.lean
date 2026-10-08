@@ -3,10 +3,10 @@ import Grothe.Upper.Checker
 /-!
 # The certified value
 
-`dloIntFinal` is the scaled integer `P₀ − Σ_{n≥1}|Pₙ|` computed by the interval kernel; the one
-`native_decide` below evaluates it (compiled kernel code, roughly 20 minutes) and compares it with
-the threshold `DloNeeded = 0.7117952904796581` required by the assembly.  Its exact value is
-`Dlo = dloIntFinal / 2¹²⁸ = 242211386207595090474349798194917751060 / 2¹²⁸ ≈ 0.71179529047965838`.
+`dloIntFinal` is the scaled integer `mix₀ − Σ_{n≥1}|mixₙ| − Σᵢ wtᵢ (majTailᵢ + highTailᵢ)`
+computed by the interval kernel (the `49` branch columns in parallel tasks); the one
+`native_decide` below evaluates it and compares it with the threshold
+`DloNeeded = 0.7117963574001465` required by the assembly.
 -/
 
 namespace Grothe.Upper
@@ -14,7 +14,7 @@ namespace Grothe.Upper
 open GrotheKernel
 
 /-- `DloNeeded` scaled by `2¹²⁸` (rounded up). -/
-def DloNeededInt : ℤ := 242211386207594994253867326677293293076
+def DloNeededInt : ℤ := 242211749261824103449536951366484966336
 
 lemma DloNeededInt_ge : (DloNeeded : ℚ) * ((D : ℤ) : ℚ) ≤ (DloNeededInt : ℚ) := by
   unfold DloNeeded DloNeededInt D K; norm_num

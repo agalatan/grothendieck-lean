@@ -4,7 +4,7 @@ import Grothe.Transfer
 # Radial kernels and their mixtures
 
 `radialKernel c z = ∑ₙ cₙ z |z|^{2n}` is the kernel with radial coefficient sequence `c`.  A
-positive mixture of six dominated radial kernels, normalised by its mass, is dominated
+positive mixture of dominated radial kernels, normalised by its mass, is dominated
 (`mixture_dominated`), and its coefficients are the weighted sums `mixCoeff`.
 -/
 
@@ -30,9 +30,9 @@ lemma radialKernel_summable {c : ℕ → ℝ} (hc : Summable fun n => |c n|) {z 
     _ = |c n| := mul_one _
 
 /-- Coefficients of the weighted mixture `∑ᵢ wᵢ Kᵢ`. -/
-def mixCoeff (w : Fin 6 → ℝ) (k : Fin 6 → ℕ → ℝ) (n : ℕ) : ℝ := ∑ i, w i * k i n
+def mixCoeff {m : ℕ} (w : Fin m → ℝ) (k : Fin m → ℕ → ℝ) (n : ℕ) : ℝ := ∑ i, w i * k i n
 
-lemma mixCoeff_summable (w : Fin 6 → ℝ) (k : Fin 6 → ℕ → ℝ)
+lemma mixCoeff_summable {m : ℕ} (w : Fin m → ℝ) (k : Fin m → ℕ → ℝ)
     (hk : ∀ i, Summable fun n => |k i n|) : Summable fun n => |mixCoeff w k n| := by
   have hg : Summable fun n => ∑ i, |w i| * |k i n| :=
     summable_sum (s := Finset.univ) fun i _ => (hk i).mul_left |w i|
@@ -42,7 +42,7 @@ lemma mixCoeff_summable (w : Fin 6 → ℝ) (k : Fin 6 → ℕ → ℝ)
   simp [abs_mul]
 
 /-- On the closed unit disc the mixture kernel is the weighted sum of the kernels. -/
-lemma radialKernel_mix (w : Fin 6 → ℝ) (k : Fin 6 → ℕ → ℝ)
+lemma radialKernel_mix {m : ℕ} (w : Fin m → ℝ) (k : Fin m → ℕ → ℝ)
     (hk : ∀ i, Summable fun n => |k i n|) {z : ℂ} (hz : ‖z‖ ≤ 1) :
     radialKernel (mixCoeff w k) z = ∑ i, (w i : ℂ) * radialKernel (k i) z := by
   unfold radialKernel mixCoeff
@@ -59,10 +59,10 @@ lemma radialKernel_mix (w : Fin 6 → ℝ) (k : Fin 6 → ℕ → ℝ)
   rw [tsum_mul_left]
 
 /-- The normalised mixture of dominated radial kernels is dominated. -/
-lemma mixture_dominated (w : Fin 6 → ℝ) (hw : ∀ i, 0 < w i) (k : Fin 6 → ℕ → ℝ)
+lemma mixture_dominated {m : ℕ} (hm : 0 < m) (w : Fin m → ℝ) (hw : ∀ i, 0 < w i) (k : Fin m → ℕ → ℝ)
     (hk : ∀ i, Summable fun n => |k i n|) (hdom : ∀ i, DominatedKernel (radialKernel (k i))) :
     DominatedKernel fun z => (((∑ i, w i)⁻¹ : ℝ) : ℂ) * radialKernel (mixCoeff w k) z := by
-  have hpos : 0 < ∑ i, w i := Finset.sum_pos (fun i _ => hw i) ⟨0, Finset.mem_univ _⟩
+  have hpos : 0 < ∑ i, w i := Finset.sum_pos (fun i _ => hw i) ⟨⟨0, hm⟩, Finset.mem_univ _⟩
   have hmix := DominatedKernel.mixture w (fun i => (hw i).le) hpos (fun i => radialKernel (k i)) hdom
   intro m n A ι _ x y hx hy
   have hz1 : ∀ i j, ‖inner ℂ (x i) (y j)‖ ≤ 1 := fun i j => by
@@ -74,8 +74,6 @@ lemma mixture_dominated (w : Fin 6 → ℝ) (hw : ∀ i, 0 < w i) (k : Fin 6 →
     intro i j
     rw [radialKernel_mix w k hk (hz1 i j), Complex.ofReal_inv]
   simpa only [e] using this
-
-set_option maxHeartbeats 2000000 in
 
 end
 

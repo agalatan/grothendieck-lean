@@ -1,7 +1,6 @@
 import Grothe.ListPoly
 import Grothe.Haagerup
 import Grothe.WallisTail
-import Grothe.Upper.FifthTail
 import Grothe.Transfer
 import Grothe.Upper.Data
 import Grothe.Upper.Interface

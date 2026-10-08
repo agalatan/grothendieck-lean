@@ -36,7 +36,7 @@ lemma ssq_mul_sqrt (a : ℝ) : ssq a * Real.sqrt |a| = a := by
   rcases eq_or_ne a 0 with h | h
   · simp [h]
   · have : Real.sqrt |a| ≠ 0 := by
-      rw [Ne, Real.sqrt_eq_zero']; push_neg; exact abs_pos.2 h
+      rw [Ne, Real.sqrt_eq_zero']; push Not; exact abs_pos.2 h
     field_simp
 
 lemma ssq_sq (a : ℝ) : ssq a ^ 2 = |a| := by
@@ -106,10 +106,9 @@ lemma norm_featL (e : ℕ → ℝ) (N : ℕ) (he : ∑ j ∈ range N, |e j| ≤ 
     have hbool : ∑ b : Bool, conj (featL e N x (Sum.inr b)) * featL e N x (Sum.inr b)
         = ((1 - ∑ j ∈ range N, |e j| : ℝ) : ℂ) := by
       rw [Fintype.sum_bool, featL_inr, featL_inr]
-      first
-        | (simp only [↓reduceIte, Bool.false_eq_true, Complex.conj_ofReal, map_zero, mul_zero,
-            add_zero, zero_add]; exact hsq)
-        | simp [hsq]
+      simp only [↓reduceIte, Bool.false_eq_true, Complex.conj_ofReal, map_zero, mul_zero,
+        add_zero]
+      exact hsq
     rw [hbool]
     simp only [featL_inl]
     have : ∀ (j : Fin N) q, conj (((Real.sqrt |e j| : ℝ) : ℂ) * tpow j x q)
@@ -148,10 +147,9 @@ lemma norm_featR (e : ℕ → ℝ) (N : ℕ) (he : ∑ j ∈ range N, |e j| ≤ 
     have hbool : ∑ b : Bool, conj (featR e N y (Sum.inr b)) * featR e N y (Sum.inr b)
         = ((1 - ∑ j ∈ range N, |e j| : ℝ) : ℂ) := by
       rw [Fintype.sum_bool, featR_inr, featR_inr]
-      first
-        | (simp only [↓reduceIte, Bool.false_eq_true, Complex.conj_ofReal, map_zero, mul_zero,
-            add_zero, zero_add]; exact hsq)
-        | simp [hsq]
+      simp only [↓reduceIte, Bool.false_eq_true, Complex.conj_ofReal, map_zero, mul_zero,
+        zero_add]
+      exact hsq
     rw [hbool]
     simp only [featR_inl]
     have : ∀ (j : Fin N) q, conj (((ssq (e j) : ℝ) : ℂ) * tpow j y q)
