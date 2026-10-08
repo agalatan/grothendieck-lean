@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.4010028168 < K_G^ℂ < 1.404896257347**
+> **1.40104026363 < K_G^ℂ < 1.404896257347**
 
 ## The constant
 
@@ -31,7 +31,7 @@ classical and quantum correlations in two-party Bell experiments.
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.4010028168 < K** | **K < 1.404896257347** |
+| Oct 2026 | **this repository** | **1.40104026363 < K** | **K < 1.404896257347** |
 
 For orientation, the real constant has a longer numerical history: Krivine's upper bound
 π / (2 log(1+√2)) = 1.78221… (1979) was shown to be non-optimal by Braverman, Makarychev,
@@ -49,11 +49,12 @@ certificates) and this Lean development (the machine-checked verification):
   kernel, and one preprocessed copy of a second origin kernel with a modified phase polynomial;
   2048 retained mixed coefficients and polarized energy estimates for the tails.
 * **Lower bound.** The Gaussian witness T = P₁,₀ − ε·P₂,₁ with ε = 7400323787/10¹⁰, whose
-  L^∞ → L¹ norm is capped by B = 2855097757/(4·10⁹) through 67 profiles (sources, averaged
-  shifted sources, pointwise joins and shared-moment joins, each with global polynomial
-  majorants and a moment-rectangle cover), 68 retained-square support rows and a 118-cell scalar
-  envelope, using the sixth-moment inequality E|q|⁶ ≤ 9m − 12 + 40.8205·(m−2)^{3/2} and the
-  first-moment bound E|q| ≤ 0.97382085 for normalised cubic chaos. Then K_G^ℂ ≥ 1/B.
+  L^∞ → L¹ norm is capped by B = 71375536161/10¹¹ through 31 profiles (17 sources, 10 averaged
+  shifted sources and 4 shared-moment joins, each with global polynomial majorants and a
+  moment-rectangle cover), 32 retained-square support rows and a 121-cell scalar envelope, using
+  the sixth-moment inequality E|q|⁶ ≤ 9m − 12 + 40.45313·(m−2)^{3/2} (charge-separated tensor
+  estimates) and the first-moment bound E|q| ≤ 0.973612157 for normalised cubic chaos. Then
+  K_G^ℂ ≥ 1/B.
 
 ## What exactly is proved in Lean
 
@@ -75,7 +76,7 @@ complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
   origin kernels with their energy caps, and the Cauchy tails of nine scalar branches.
 
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
-value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 7005014084/(5·10^9) < K`.
+value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 140104026363/10^11 < K`.
 
 * Proved: Bernstein bounds (univariate and bivariate), PSD gates by exact LᵀDL factorisations,
   rectangle covers, all profile caps, chord domination of all physical polynomials, the
