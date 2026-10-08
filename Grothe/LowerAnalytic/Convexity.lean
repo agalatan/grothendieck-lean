@@ -3,7 +3,6 @@ import Mathlib
 /-!
 # Joint convexity and argument allocation
 
-Reference: `handoff/lower/research-note.md` §2, `LOWER_FORMALIZATION.md` §7.
 The physical potential minus `2β²/ε` is a supremum of functions jointly affine in the
 parameters `(M, ℓ, β, ω)`, hence jointly convex.  Convexity then allows averaging two
 profiles while splitting the scalar argument with arbitrary nonnegative scales

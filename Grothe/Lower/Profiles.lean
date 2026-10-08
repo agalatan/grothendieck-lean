@@ -22,8 +22,7 @@ namespace Grothe.Lower
 
 /-- `ρ = 977459/1000000`. -/
 def ρ : ℚ := 977459 / 1000000
-/-- `C₆ = 4942288923/100000000` (the sharper version-2 sixth-moment coefficient; the version-1
-certificates remain valid with it because the `C₆` term is nonnegative). -/
+/-- `C₆ = 4942288923/100000000`, the sixth-moment coefficient. -/
 def C6 : ℚ := 4942288923 / 100000000
 /-- `ε = 37/50`. -/
 def ε : ℚ := 37 / 50

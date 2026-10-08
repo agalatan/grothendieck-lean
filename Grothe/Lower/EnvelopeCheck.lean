@@ -3,23 +3,20 @@ import Grothe.Lower.ProfileCheck
 import Grothe.Lower.Endpoint
 
 /-!
-# Instantiation of the envelope checker
+# The scalar envelope certificate
 
-`envelope_check` runs the exact scalar checker on the 31 rows and 20 leaves against the cap
-`B = 3569353321/5000000000`.  `envelope_bound_data` is the resulting conditional theorem.
-`envRows_virtual` links the 21 virtual rows to the certified records, `envRows_crude` checks
-the crude row; the nine old rows (`H0.*`) carry caps from the base moment cover, which is
-**not re-verified here** (documented data).
+`envelope_check` runs the exact scalar checker on the 28 rows and 31 leaves covering
+`[0, 9/10]` against the cap `B = 7138283181/10000000000`; `envelope_bound_data` is the resulting
+conditional theorem `V ≤ B`.  `envRows_virtual` links the 18 virtual rows to the certified
+coupled profiles and `envRows_crude` checks the crude row `(0, 0, ερ²)`; the nine source rows
+(`H0.*`) carry the caps of the source moment covers, which are data (not re-verified here).
 -/
 
 namespace Grothe.Lower
 
-/-- Default record for `getD`. -/
-def dfltRecord : VRecord := ⟨0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, dfltGate, ""⟩
-
 theorem envelope_check : checkEnvelope envRows envLeaves Bcap = true := by native_decide
 
-theorem envRows_length : envRows.length = 31 := by decide
+theorem envRows_length : envRows.length = 28 := by decide
 
 /-- **The scalar envelope bound** for the certificate rows. -/
 theorem envelope_bound_data (t V : ℝ) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
@@ -34,20 +31,20 @@ theorem envelope_bound_data (t V : ℝ) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
 theorem envRows_crude : envRows.getD 0 ⟨0, 0, 0⟩ = ⟨0, 0, ε * ρ ^ 2⟩ ∧
     envRowNames.getD 0 "" = "crude" := by native_decide
 
-/-- Each virtual row `virtual_k` is `(ℓ, β, cap)` of the `k`-th certified record. -/
+/-- Each virtual row `virtual_k` is `(ℓ, β, cap)` of the `k`-th certified coupled profile. -/
 theorem envRows_virtual :
-    (List.range 21).all (fun k =>
-      (List.range 31).any (fun idx =>
+    (List.range 18).all (fun k =>
+      (List.range 28).any (fun idx =>
         envRowNames.getD idx "" == s!"virtual_{k}" &&
         envRows.getD idx ⟨0, 0, 0⟩ ==
           ⟨(vrecords.getD k dfltRecord).ell, (vrecords.getD k dfltRecord).beta,
             (vrecords.getD k dfltRecord).cap⟩)) = true := by native_decide
 
-/-- Each old row `H0.*` has the `(ℓ, β)` of the corresponding source profile; its cap is data
-from the base moment cover. -/
-theorem envRows_old :
+/-- Each source row `H0.*` has the `(ℓ, β)` of the corresponding source profile; its cap is
+data from the source moment cover. -/
+theorem envRows_source :
     srcProfiles.all (fun p =>
-      (List.range 31).any (fun idx =>
+      (List.range 28).any (fun idx =>
         envRowNames.getD idx "" == p.id &&
         (envRows.getD idx ⟨0, 0, 0⟩).ell == p.ell &&
         (envRows.getD idx ⟨0, 0, 0⟩).beta == p.beta)) = true := by native_decide
