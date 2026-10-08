@@ -8,6 +8,7 @@ complex Grothendieck constant `K_G^ℂ`:
 | `K_G^ℂ < 1.404898554745441` | Heilman–Jones–Malavolta, arXiv:2609.25462v1 (120 modes) | `Grothe.complex_grothendieck_source` |
 | `K_G^ℂ < 1.404898426735` | [`refinement/research-note.md`](refinement/research-note.md) (120 modes, sharper tails) | `Grothe.complex_grothendieck_refined` |
 | `K_G^ℂ < 1.404898359045958` | [`handoff/upper/proof.md`](handoff/upper/proof.md) (240 modes, common preprocessor, first-order energy) | `Grothe.complex_grothendieck_240` |
+| `K_G^ℂ < 1.404898357808` | [`handoff/upper-480/NOTE.md`](handoff/upper-480/NOTE.md) (480 modes; computed here, certified by the Python/Arb verifier, **not yet in Lean**) | — |
 | `K_G^ℂ > 1.400813971` | [`handoff/lower/research-note.md`](handoff/lower/research-note.md) (Gaussian witness, 21 coupled profiles) | finite layer: `Grothe.Lower.envelope_bound_data`, `Grothe.Lower.lower_endpoint` |
 | `K_G^ℂ > 1.4008970709` | [`handoff/lower-import/research-note.md`](handoff/lower-import/research-note.md) (v2: 18 coupled profiles, 145 imported majorants, sharper `C₆`) | finite layer: `Grothe.Lower.envelope_bound_dataV2`, `Grothe.Lower.lower_endpointV2`, `Grothe.Lower.chords_sound` |
 
