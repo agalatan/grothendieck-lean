@@ -207,6 +207,146 @@ theorem Wp_240_le : Wp 240 ≤ (WpHi : ℝ) := by
         add_le_add (mul_le_mul hpi.le hq hq0 (by norm_num)) (hW.trans hG)
     _ ≤ (WpHi : ℝ) := by unfold qS WpHi; norm_num
 
+/-! ### The joint tail inequality -/
+
+/-- **Weighted Cauchy–Schwarz tail bound** (handoff, `joint_first_order_tail`).  With
+`λₙ = 2n+1`, `ξₙ² = hₙ` and the first-order energies of `c, r, s` on `n ≥ N` bounded by
+`E_C, E_L, E_R`,  `∑_{n≥N} |ξₙcₙ + Re(rₙ s̄ₙ)| ≤ √E_C √W'_N + √E_L √E_R/(2N+1)`. -/
+theorem joint_tail_bound (N : ℕ) (hN : 1 ≤ N) (ξ c : ℕ → ℝ) (r s : ℕ → ℂ) (EC EL ER : ℝ)
+    (hξ : ∀ n, ξ n ^ 2 = h n)
+    (hcs : Summable fun n => (2 * ((N + n : ℕ) : ℝ) + 1) * c (N + n) ^ 2)
+    (hEC : ∑' n, (2 * ((N + n : ℕ) : ℝ) + 1) * c (N + n) ^ 2 ≤ EC)
+    (hrs : Summable fun n => (2 * ((N + n : ℕ) : ℝ) + 1) * ‖r (N + n)‖ ^ 2)
+    (hEL : ∑' n, (2 * ((N + n : ℕ) : ℝ) + 1) * ‖r (N + n)‖ ^ 2 ≤ EL)
+    (hss : Summable fun n => (2 * ((N + n : ℕ) : ℝ) + 1) * ‖s (N + n)‖ ^ 2)
+    (hER : ∑' n, (2 * ((N + n : ℕ) : ℝ) + 1) * ‖s (N + n)‖ ^ 2 ≤ ER) :
+    ∑' n, |ξ (N + n) * c (N + n) + (r (N + n) * conj (s (N + n))).re|
+      ≤ Real.sqrt EC * Real.sqrt (Wp N) + Real.sqrt EL * Real.sqrt ER / (2 * N + 1) := by
+  have hlam1 : ∀ n : ℕ, (2 * (N : ℝ) + 1) ≤ 2 * ((N + n : ℕ) : ℝ) + 1 := by
+    intro n; push_cast; linarith [(Nat.cast_nonneg n : (0 : ℝ) ≤ n)]
+  have hlam0 : ∀ n : ℕ, 0 < 2 * ((N + n : ℕ) : ℝ) + 1 := fun n => by positivity
+  have hN0 : (0 : ℝ) < 2 * (N : ℝ) + 1 := by positivity
+  -- the four auxiliary nonnegative sequences
+  set a : ℕ → ℝ := fun n => Real.sqrt (h (N + n) / (2 * ((N + n : ℕ) : ℝ) + 1)) with ha
+  set b : ℕ → ℝ := fun n => Real.sqrt (2 * ((N + n : ℕ) : ℝ) + 1) * |c (N + n)| with hb
+  set a' : ℕ → ℝ := fun n => Real.sqrt (2 * ((N + n : ℕ) : ℝ) + 1) * ‖r (N + n)‖ with ha'
+  set b' : ℕ → ℝ := fun n => Real.sqrt (2 * ((N + n : ℕ) : ℝ) + 1) * ‖s (N + n)‖ with hb'
+  have hterm : ∀ n, |ξ (N + n) * c (N + n) + (r (N + n) * conj (s (N + n))).re|
+      ≤ a n * b n + a' n * b' n / (2 * N + 1) := by
+    intro n
+    have e1 : a n * b n = |ξ (N + n)| * |c (N + n)| := by
+      simp only [ha, hb]
+      rw [← mul_assoc, ← Real.sqrt_mul (div_nonneg (h_nonneg _) (hlam0 n).le),
+        div_mul_cancel₀ _ (hlam0 n).ne', ← hξ, Real.sqrt_sq_eq_abs]
+    have e2 : a' n * b' n = (2 * ((N + n : ℕ) : ℝ) + 1) * (‖r (N + n)‖ * ‖s (N + n)‖) := by
+      simp only [ha', hb']
+      have := Real.mul_self_sqrt (hlam0 n).le
+      calc Real.sqrt (2 * ((N + n : ℕ) : ℝ) + 1) * ‖r (N + n)‖
+            * (Real.sqrt (2 * ((N + n : ℕ) : ℝ) + 1) * ‖s (N + n)‖)
+          = (Real.sqrt (2 * ((N + n : ℕ) : ℝ) + 1) * Real.sqrt (2 * ((N + n : ℕ) : ℝ) + 1))
+            * (‖r (N + n)‖ * ‖s (N + n)‖) := by ring
+        _ = _ := by rw [this]
+    rw [e1, e2]
+    have h3 : |(r (N + n) * conj (s (N + n))).re| ≤ ‖r (N + n)‖ * ‖s (N + n)‖ := by
+      calc |(r (N + n) * conj (s (N + n))).re| ≤ ‖r (N + n) * conj (s (N + n))‖ :=
+            Complex.abs_re_le_norm _
+        _ = ‖r (N + n)‖ * ‖s (N + n)‖ := by rw [norm_mul, Complex.norm_conj]
+    have h4 : ‖r (N + n)‖ * ‖s (N + n)‖
+        ≤ (2 * ((N + n : ℕ) : ℝ) + 1) * (‖r (N + n)‖ * ‖s (N + n)‖) / (2 * N + 1) := by
+      rw [le_div_iff₀ hN0]
+      have := hlam1 n
+      have hp : 0 ≤ ‖r (N + n)‖ * ‖s (N + n)‖ := by positivity
+      nlinarith
+    calc |ξ (N + n) * c (N + n) + (r (N + n) * conj (s (N + n))).re|
+        ≤ |ξ (N + n) * c (N + n)| + |(r (N + n) * conj (s (N + n))).re| := abs_add_le _ _
+      _ = |ξ (N + n)| * |c (N + n)| + |(r (N + n) * conj (s (N + n))).re| := by rw [abs_mul]
+      _ ≤ _ := add_le_add le_rfl (h3.trans h4)
+  have ha0 : ∀ n, 0 ≤ a n := fun n => Real.sqrt_nonneg _
+  have hb0 : ∀ n, 0 ≤ b n := fun n => mul_nonneg (Real.sqrt_nonneg _) (abs_nonneg _)
+  have ha'0 : ∀ n, 0 ≤ a' n := fun n => mul_nonneg (Real.sqrt_nonneg _) (norm_nonneg _)
+  have hb'0 : ∀ n, 0 ≤ b' n := fun n => mul_nonneg (Real.sqrt_nonneg _) (norm_nonneg _)
+  have hsW := Wp_summable N hN
+  -- partial-sum energy bounds
+  have hA : ∀ K, ∑ n ∈ range K, a n ^ 2 ≤ Wp N := by
+    intro K
+    calc ∑ n ∈ range K, a n ^ 2 = ∑ n ∈ range K, h (N + n) / (2 * ((N + n : ℕ) : ℝ) + 1) := by
+          refine sum_congr rfl fun n _ => ?_
+          simp only [ha]
+          exact Real.sq_sqrt (Wp_term_nonneg N n)
+      _ ≤ Wp N := hsW.sum_le_tsum _ fun n _ => Wp_term_nonneg N n
+  have hB : ∀ K, ∑ n ∈ range K, b n ^ 2 ≤ EC := by
+    intro K
+    calc ∑ n ∈ range K, b n ^ 2 = ∑ n ∈ range K, (2 * ((N + n : ℕ) : ℝ) + 1) * c (N + n) ^ 2 := by
+          refine sum_congr rfl fun n _ => ?_
+          simp only [hb]
+          rw [mul_pow, Real.sq_sqrt (hlam0 n).le, sq_abs]
+      _ ≤ ∑' n, (2 * ((N + n : ℕ) : ℝ) + 1) * c (N + n) ^ 2 :=
+          hcs.sum_le_tsum _ fun n _ => by positivity
+      _ ≤ EC := hEC
+  have hA' : ∀ K, ∑ n ∈ range K, a' n ^ 2 ≤ EL := by
+    intro K
+    calc ∑ n ∈ range K, a' n ^ 2 = ∑ n ∈ range K, (2 * ((N + n : ℕ) : ℝ) + 1) * ‖r (N + n)‖ ^ 2 := by
+          refine sum_congr rfl fun n _ => ?_
+          simp only [ha']
+          rw [mul_pow, Real.sq_sqrt (hlam0 n).le]
+      _ ≤ ∑' n, (2 * ((N + n : ℕ) : ℝ) + 1) * ‖r (N + n)‖ ^ 2 :=
+          hrs.sum_le_tsum _ fun n _ => by positivity
+      _ ≤ EL := hEL
+  have hB' : ∀ K, ∑ n ∈ range K, b' n ^ 2 ≤ ER := by
+    intro K
+    calc ∑ n ∈ range K, b' n ^ 2 = ∑ n ∈ range K, (2 * ((N + n : ℕ) : ℝ) + 1) * ‖s (N + n)‖ ^ 2 := by
+          refine sum_congr rfl fun n _ => ?_
+          simp only [hb']
+          rw [mul_pow, Real.sq_sqrt (hlam0 n).le]
+      _ ≤ ∑' n, (2 * ((N + n : ℕ) : ℝ) + 1) * ‖s (N + n)‖ ^ 2 :=
+          hss.sum_le_tsum _ fun n _ => by positivity
+      _ ≤ ER := hER
+  apply Real.tsum_le_of_sum_le (fun n => abs_nonneg _)
+  intro S
+  calc ∑ n ∈ S, |ξ (N + n) * c (N + n) + (r (N + n) * conj (s (N + n))).re|
+      ≤ ∑ n ∈ range (S.sup id + 1), |ξ (N + n) * c (N + n) + (r (N + n) * conj (s (N + n))).re| := by
+        apply sum_le_sum_of_subset_of_nonneg
+        · intro n hn; exact mem_range.2 (Nat.lt_succ_of_le (le_sup (f := id) hn))
+        · intro n _ _; exact abs_nonneg _
+    _ ≤ ∑ n ∈ range (S.sup id + 1), (a n * b n + a' n * b' n / (2 * N + 1)) :=
+        sum_le_sum fun n _ => hterm n
+    _ = ∑ n ∈ range (S.sup id + 1), a n * b n
+          + (∑ n ∈ range (S.sup id + 1), a' n * b' n) / (2 * N + 1) := by
+        rw [sum_add_distrib, sum_div]
+    _ ≤ Real.sqrt (Wp N) * Real.sqrt EC + Real.sqrt EL * Real.sqrt ER / (2 * N + 1) := by
+        refine add_le_add (sum_mul_le_of_partial _ a b ha0 hb0 _ _ (hA _) (hB _)) ?_
+        exact div_le_div_of_nonneg_right (sum_mul_le_of_partial _ a' b' ha'0 hb'0 _ _ (hA' _) (hB' _))
+          hN0.le
+    _ = Real.sqrt EC * Real.sqrt (Wp N) + Real.sqrt EL * Real.sqrt ER / (2 * N + 1) := by ring
+
+/-! ### Numerical value of the sixth tail -/
+
+/-- Certified bound for the unweighted sixth-kernel tail from mode `240`:
+`√(E_C W'_240) + √(E_L E_R)/481 ≤ 6.3628476045386317895142196·10⁻⁵`
+(the handoff's directed value is `6.3628476111533542·10⁻⁵`). -/
+def sixthT240 : ℚ := 63628476045386317895142196 / 10 ^ 30
+
+theorem sixth_tail_numeric (EC EL ER : ℝ) (hEC0 : 0 ≤ EC) (hEL0 : 0 ≤ EL) (hER0 : 0 ≤ ER)
+    (hEC : EC ≤ 0.003521036759326558) (hEL : EL ≤ 0.000884260662142687)
+    (hER : ER ≤ 0.000885126188452271) :
+    Real.sqrt EC * Real.sqrt (Wp 240) + Real.sqrt EL * Real.sqrt ER / (2 * 240 + 1)
+      ≤ (sixthT240 : ℝ) := by
+  have hW := Wp_240_le
+  have hW0 : 0 ≤ Wp 240 := tsum_nonneg (Wp_term_nonneg 240)
+  have u1 : Real.sqrt EC * Real.sqrt (Wp 240) ≤ 61789196794969133157102803 / 10 ^ 30 := by
+    rw [← Real.sqrt_mul hEC0, Real.sqrt_le_left (by norm_num)]
+    calc EC * Wp 240 ≤ 0.003521036759326558 * (WpHi : ℝ) := by gcongr
+      _ ≤ _ := by unfold WpHi; norm_num
+  have u2 : Real.sqrt EL * Real.sqrt ER ≤ 35387732778026634359877911 / 40000000000000000000000000000 := by
+    rw [← Real.sqrt_mul hEL0, Real.sqrt_le_left (by norm_num)]
+    calc EL * ER ≤ 0.000884260662142687 * 0.000885126188452271 := by gcongr
+      _ ≤ _ := by norm_num
+  calc Real.sqrt EC * Real.sqrt (Wp 240) + Real.sqrt EL * Real.sqrt ER / (2 * 240 + 1)
+      ≤ 61789196794969133157102803 / 10 ^ 30
+          + 35387732778026634359877911 / 40000000000000000000000000000 / (2 * 240 + 1) :=
+        add_le_add u1 (div_le_div_of_nonneg_right u2 (by norm_num))
+    _ ≤ (sixthT240 : ℝ) := by unfold sixthT240; norm_num
+
 end
 
 end Grothe
