@@ -14,7 +14,7 @@ import Grothe.Upper.FifthTail
 truncated integrals (from the joint `ℓ²` truncation bound `e⁻¹⁸` and the box-derived norms
 `‖A‖₂, ‖B‖₂ ≤ nBox`) and `T` the weighted tails beyond the retained modes.
 `grothendieck_of_slope` adds the numerics: if `Dlo ≥ DloNeeded` then
-`K_G^ℂ ≤ 1.404898357808`.
+`K_G^ℂ ≤ 1.404898359045958`.
 -/
 
 namespace Grothe
@@ -84,7 +84,7 @@ lemma compose_boxed_eq_zero (A B : ℕ → ℂ) {n : ℕ} (hn : maxIndex < n) :
   intro j _
   simp only [maxIndex] at hn
   by_cases hj : j < modes
-  · have hj' : j < 480 := hj
+  · have hj' : j < 240 := hj
     have hdeg : (etaPoly ^ (2 * j + 1)).natDegree < n - j := by
       calc (etaPoly ^ (2 * j + 1)).natDegree ≤ (2 * j + 1) * etaPoly.natDegree :=
             natDegree_pow_le
@@ -110,10 +110,10 @@ lemma exp_neg_18_le : Real.exp (-18) ≤ (dHi : ℝ) := by
   exact pow_le_pow_left₀ (by norm_num) h.le 18
 
 /-- Box-derived bound on the `ℓ²` norms of the truncated coefficient vectors: `‖A‖₂, ‖B‖₂ ≤ nBox`. -/
-def nBox : ℚ := 49987/50000
+def nBox : ℚ := 0.99948
 
 /-- The weighted coefficient-error budget `ε = w₆ (d(‖A‖₂ + ‖B‖₂) + d²)` with `‖A‖₂, ‖B‖₂ ≤ nBox`. -/
-def epsW : ℚ := 3027990859/250000000000000000000
+def epsW : ℚ := 1.2108988e-11
 
 lemma epsW_bound :
     wt 5 * ((dHi : ℝ) * nBox + (dHi : ℝ) ^ 2 + nBox * dHi) ≤ (epsW : ℝ) := by
@@ -217,34 +217,34 @@ def tBound : Fin 6 → ℝ :=
     (fifthT : ℝ), (sixthT : ℝ)]
 
 /-- Upper bound for the weighted tail total `T`. -/
-def tailsT : ℚ := 1271349759587/200000000000000000000
+def tailsT : ℚ := 2.53075252656e-8
 
-lemma cauchyTail_12_le : cauchyTail 1.2 ≤ 1 / 10 ^ 70 := by
-  have h1 : (284 : ℝ) ≤ 1.2 ^ 31 := by norm_num
-  have h2 : (284 : ℝ) ^ 31 ≤ 1.2 ^ (2 * modes + 1) := by
-    calc (284 : ℝ) ^ 31 ≤ (1.2 ^ 31) ^ 31 := pow_le_pow_left₀ (by norm_num) h1 31
+lemma cauchyTail_12_le : cauchyTail 1.2 ≤ 1 / 10 ^ 36 := by
+  have h1 : (850 : ℝ) ≤ 1.2 ^ 37 := by norm_num
+  have h2 : (850 : ℝ) ^ 13 ≤ 1.2 ^ (2 * modes + 1) := by
+    calc (850 : ℝ) ^ 13 ≤ (1.2 ^ 37) ^ 13 := pow_le_pow_left₀ (by norm_num) h1 13
       _ = 1.2 ^ (2 * modes + 1) := by rw [← pow_mul]; norm_num [modes]
   unfold cauchyTail
   rw [div_div, div_le_div_iff₀ (by positivity) (by norm_num)]
   generalize hx : (1.2 : ℝ) ^ (2 * modes + 1) = x at h2 ⊢
-  have hx0 : (0 : ℝ) ≤ x := (by positivity : (0 : ℝ) ≤ 284 ^ 31).trans h2
+  have hx0 : (0 : ℝ) ≤ x := (by positivity : (0 : ℝ) ≤ 850 ^ 13).trans h2
   have h4 : (0.3 : ℝ) ≤ 1 - 1 / 1.2 ^ 2 := by norm_num
   have h5 := mul_le_mul h2 h4 (by norm_num) hx0
-  have h6 : (10 : ℝ) * 10 ^ 70 ≤ (284 : ℝ) ^ 31 * 0.3 := by norm_num
+  have h6 : (10 : ℝ) * 10 ^ 36 ≤ (850 : ℝ) ^ 13 * 0.3 := by norm_num
   linarith
 
-lemma cauchyTail_111_le : cauchyTail 1.11 ≤ 1 / 10 ^ 40 := by
-  have h1 : (25 : ℝ) ≤ 1.11 ^ 31 := by norm_num
-  have h2 : (25 : ℝ) ^ 31 ≤ 1.11 ^ (2 * modes + 1) := by
-    calc (25 : ℝ) ^ 31 ≤ (1.11 ^ 31) ^ 31 := pow_le_pow_left₀ (by norm_num) h1 31
+lemma cauchyTail_111_le : cauchyTail 1.11 ≤ 1 / 10 ^ 20 := by
+  have h1 : (47 : ℝ) ≤ 1.11 ^ 37 := by norm_num
+  have h2 : (47 : ℝ) ^ 13 ≤ 1.11 ^ (2 * modes + 1) := by
+    calc (47 : ℝ) ^ 13 ≤ (1.11 ^ 37) ^ 13 := pow_le_pow_left₀ (by norm_num) h1 13
       _ = 1.11 ^ (2 * modes + 1) := by rw [← pow_mul]; norm_num [modes]
   unfold cauchyTail
   rw [div_div, div_le_div_iff₀ (by positivity) (by norm_num)]
   generalize hx : (1.11 : ℝ) ^ (2 * modes + 1) = x at h2 ⊢
-  have hx0 : (0 : ℝ) ≤ x := (by positivity : (0 : ℝ) ≤ 25 ^ 31).trans h2
+  have hx0 : (0 : ℝ) ≤ x := (by positivity : (0 : ℝ) ≤ 47 ^ 13).trans h2
   have h4 : (0.188 : ℝ) ≤ 1 - 1 / 1.11 ^ 2 := by norm_num
   have h5 := mul_le_mul h2 h4 (by norm_num) hx0
-  have h6 : (10 : ℝ) * 10 ^ 40 ≤ (25 : ℝ) ^ 31 * 0.188 := by norm_num
+  have h6 : (10 : ℝ) * 10 ^ 20 ≤ (47 : ℝ) ^ 13 * 0.188 := by norm_num
   linarith
 
 theorem tails_le : ∑ i, wt i * tBound i ≤ (tailsT : ℝ) := by
@@ -263,8 +263,8 @@ theorem tails_le : ∑ i, wt i * tBound i ≤ (tailsT : ℝ) := by
   calc ∑ i, wt i * tBound i
       = wt 0 * tBound 0 + wt 1 * tBound 1 + wt 2 * tBound 2 + wt 3 * tBound 3
           + wt 4 * tBound 4 + wt 5 * tBound 5 := by rw [Fin.sum_univ_six]
-    _ ≤ wt 0 * (1 / 10 ^ 70) + wt 1 * (1 / 10 ^ 40) + wt 2 * (1 / 10 ^ 40)
-          + wt 3 * (1 / 10 ^ 40) + wt 4 * (fifthT : ℝ) + wt 5 * (sixthT : ℝ) := by
+    _ ≤ wt 0 * (1 / 10 ^ 36) + wt 1 * (1 / 10 ^ 20) + wt 2 * (1 / 10 ^ 20)
+          + wt 3 * (1 / 10 ^ 20) + wt 4 * (fifthT : ℝ) + wt 5 * (sixthT : ℝ) := by
         rw [e0, e1, e2, e3, e4, e5]
         gcongr
     _ ≤ (tailsT : ℝ) := by
@@ -439,14 +439,14 @@ theorem bound_of_certificate (Dlo : ℚ) (hfin : FiniteCertificate Dlo)
 /-! ### The numeric theorem -/
 
 theorem final_numeric :
-    (1.000000000000000012 : ℝ) / ((DloNeeded : ℝ) - epsW - tailsT) ≤ 1404898357808 / 10 ^ 12 := by
+    (1.000000000000000012 : ℝ) / ((DloNeeded : ℝ) - epsW - tailsT) ≤ 1404898359045958 / 10 ^ 15 := by
   simp only [DloNeeded, epsW, tailsT]; norm_num
 
 theorem DloNeeded_pos : 0 < (DloNeeded : ℝ) - epsW - tailsT := by
   simp only [DloNeeded, epsW, tailsT]; norm_num
 
 /-- **The bound from the certified slope**, conditional on the interval checker and the analytic
-inputs listed in the hypotheses: if `Dlo ≥ DloNeeded` then `K_G^ℂ ≤ 1.404898357808`. -/
+inputs listed in the hypotheses: if `Dlo ≥ DloNeeded` then `K_G^ℂ ≤ 1.404898359045958`. -/
 theorem grothendieck_of_slope (Dlo : ℚ) (hDlo : DloNeeded ≤ Dlo)
     (hfin : FiniteCertificate Dlo)
     (k : Fin 6 → ℕ → ℝ) (hk : ∀ i, Summable fun n => |k i n|)
@@ -465,12 +465,12 @@ theorem grothendieck_of_slope (Dlo : ℚ) (hDlo : DloNeeded ≤ Dlo)
     (ξ c : ℕ → ℝ) (r s : ℕ → ℂ) (hξ : ∀ n, ξ n ^ 2 = h n)
     (hk5tail : ∀ n, modes ≤ n → k 5 n = ξ n * c n + (r n * conj (s n)).re)
     (hcs : Summable fun n => (2 * ((modes + n : ℕ) : ℝ) + 1) * c (modes + n) ^ 2)
-    (hEC : ∑' n, (2 * ((modes + n : ℕ) : ℝ) + 1) * c (modes + n) ^ 2 ≤ 0.000914101356581664)
+    (hEC : ∑' n, (2 * ((modes + n : ℕ) : ℝ) + 1) * c (modes + n) ^ 2 ≤ 0.003521036759326558)
     (hrs : Summable fun n => (2 * ((modes + n : ℕ) : ℝ) + 1) * ‖r (modes + n)‖ ^ 2)
-    (hEL : ∑' n, (2 * ((modes + n : ℕ) : ℝ) + 1) * ‖r (modes + n)‖ ^ 2 ≤ 0.000228630701840557)
+    (hEL : ∑' n, (2 * ((modes + n : ℕ) : ℝ) + 1) * ‖r (modes + n)‖ ^ 2 ≤ 0.000884260662142687)
     (hss : Summable fun n => (2 * ((modes + n : ℕ) : ℝ) + 1) * ‖s (modes + n)‖ ^ 2)
-    (hER : ∑' n, (2 * ((modes + n : ℕ) : ℝ) + 1) * ‖s (modes + n)‖ ^ 2 ≤ 0.000228844330747684) :
-    IsGrothendieckBound (1404898357808 / 10 ^ 12) := by
+    (hER : ∑' n, (2 * ((modes + n : ℕ) : ℝ) + 1) * ‖s (modes + n)‖ ^ 2 ≤ 0.000885126188452271) :
+    IsGrothendieckBound (1404898359045958 / 10 ^ 15) := by
   have htail : ∀ i, ∑' n, |k i (n + modes)| ≤ tBound i := by
     intro i
     fin_cases i

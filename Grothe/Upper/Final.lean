@@ -2,7 +2,7 @@ import Grothe.Upper.Assembly
 import Grothe.Upper.Value
 
 /-!
-# `K_G^ℂ < 1.404898357808`
+# `K_G^ℂ < 1.404898359045958`
 
 The interval checker certifies `FiniteCertificate Dlo` with `Dlo ≥ DloNeeded`
 (`Grothe/Upper/Value.lean`), and the analytic assembly turns that into the bound.  The only
@@ -36,12 +36,12 @@ theorem complex_grothendieck_upper
     (ξ c : ℕ → ℝ) (r s : ℕ → ℂ) (hξ : ∀ n, ξ n ^ 2 = h n)
     (hk5tail : ∀ n, modes ≤ n → k 5 n = ξ n * c n + (r n * conj (s n)).re)
     (hcs : Summable fun n => (2 * ((modes + n : ℕ) : ℝ) + 1) * c (modes + n) ^ 2)
-    (hEC : ∑' n, (2 * ((modes + n : ℕ) : ℝ) + 1) * c (modes + n) ^ 2 ≤ 0.000914101356581664)
+    (hEC : ∑' n, (2 * ((modes + n : ℕ) : ℝ) + 1) * c (modes + n) ^ 2 ≤ 0.003521036759326558)
     (hrs : Summable fun n => (2 * ((modes + n : ℕ) : ℝ) + 1) * ‖r (modes + n)‖ ^ 2)
-    (hEL : ∑' n, (2 * ((modes + n : ℕ) : ℝ) + 1) * ‖r (modes + n)‖ ^ 2 ≤ 0.000228630701840557)
+    (hEL : ∑' n, (2 * ((modes + n : ℕ) : ℝ) + 1) * ‖r (modes + n)‖ ^ 2 ≤ 0.000884260662142687)
     (hss : Summable fun n => (2 * ((modes + n : ℕ) : ℝ) + 1) * ‖s (modes + n)‖ ^ 2)
-    (hER : ∑' n, (2 * ((modes + n : ℕ) : ℝ) + 1) * ‖s (modes + n)‖ ^ 2 ≤ 0.000228844330747684) :
-    IsGrothendieckBound (1404898357808 / 10 ^ 12) :=
+    (hER : ∑' n, (2 * ((modes + n : ℕ) : ℝ) + 1) * ‖s (modes + n)‖ ^ 2 ≤ 0.000885126188452271) :
+    IsGrothendieckBound (1404898359045958 / 10 ^ 15) :=
   grothendieck_of_slope Dlo dlo_ge_needed finite_certificate k hk hdom A B hA hB
     hscalar a b hk5 herrA herrB hcauchy0 hcauchy1 hcauchy2 hcauchy3 hfifth ξ c r s hξ hk5tail
     hcs hEC hrs hEL hss hER

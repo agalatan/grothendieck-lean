@@ -5,7 +5,7 @@ import Grothe.Upper.Data
 /-!
 # Interface of the upper certificate
 
-The upper bound `K_G^ℂ < 1.404898357808` is obtained from six Gaussian rounding kernels
+The upper bound `K_G^ℂ < 1.404898359045958` is obtained from six Gaussian rounding kernels
 `K₁, …, K₆` (five scalar preprocessors `ρᵢ(t) = t·Pᵢ(t²)` composed with Haagerup's phase kernel,
 and the origin-layer kernel `K₆`), mixed with the positive weights `wt`, and composed with the
 common preprocessor `η(t) = t·E(t²)`.  This file fixes the shared definitions between
@@ -20,7 +20,7 @@ Conventions:
 
 * radial index `n` ↔ odd degree `2n+1`; a preprocessor `ρ(t) = t·P(t²)` is stored as the
   coefficient list of `P`;
-* `modes = 480` radial coefficients of the mixture are retained.  For `n < modes` the retained
+* `modes = 240` radial coefficients of the mixture are retained.  For `n < modes` the retained
   coefficient is `c_n = π · Σ_{i<5} wtᵢ · sProf (row i) n + wt₅ · Re(A_n conj(B_n))`, where
   `A_n, B_n` are the truncated radial coefficient integrals of the two origin phases (enclosed
   by the data boxes);
@@ -35,11 +35,11 @@ open Polynomial
 namespace Upper
 
 /-- Number of retained radial modes. -/
-abbrev modes : ℕ := 480
+abbrev modes : ℕ := 240
 
 /-- Largest radial index of the composition `Σ_{j<modes} c_j η^{2j+1}` with `deg E = 119`:
-`(modes − 1) + (2·modes − 1)·119 = 114600`. -/
-abbrev maxIndex : ℕ := 114600
+`(modes − 1) + (2·modes − 1)·119 = 57240`. -/
+abbrev maxIndex : ℕ := 57240
 
 lemma maxIndex_eq : maxIndex = (modes - 1) + (2 * modes - 1) * 119 := by decide
 
@@ -132,7 +132,7 @@ def FiniteCertificate (Dlo : ℚ) : Prop :=
       - ∑ n ∈ Finset.Icc 1 maxIndex, |compose (boxedCoeff A B) etaPoly n|
 
 /-- Threshold for the certified finite value required by the assembly (`Assembly.lean`). -/
-def DloNeeded : ℚ := 71179527215609909 / 10 ^ 17
+def DloNeeded : ℚ := 7117952904796581 / 10 ^ 16
 
 end
 

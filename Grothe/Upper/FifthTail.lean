@@ -120,9 +120,9 @@ theorem fifth_reserve :
     _ ≤ (1 / (4 * (320 : ℕ))) * (1 / 2 : ℝ) ^ 32 := by gcongr
     _ = 1 / (4 * 320 * 2 ^ 32) := by norm_num
 
-/-- Certified contribution of the retained blocks `j < 320` to the modes `≥ 480` (a hypothesis
-of the final theorem; the directed computation gives less than `10⁻¹⁸`). -/
-def fifthFinite : ℚ := 1 / 10 ^ 18
+/-- Certified contribution of the retained blocks `j < 320` to the modes `≥ 240` (a hypothesis
+of the final theorem; the directed computation gives less than `8.6·10⁻¹³`). -/
+def fifthFinite : ℚ := 8.6e-13
 
 /-- Total fifth tail bound: retained blocks plus the reserve for `j ≥ 320`. -/
 def fifthT : ℚ := fifthFinite + 1 / (4 * 320 * 2 ^ 32)
