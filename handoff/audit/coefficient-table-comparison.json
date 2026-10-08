@@ -1,0 +1,34 @@
+{
+  "left_real": {
+    "overlaps": 120,
+    "supplied_contains_ours": 113,
+    "ours_contains_supplied": 116,
+    "identical": 109,
+    "maximum_width_supplied": 1.214306433183765e-17,
+    "maximum_width_ours": 1.214306433183765e-17
+  },
+  "left_imag": {
+    "overlaps": 120,
+    "supplied_contains_ours": 116,
+    "ours_contains_supplied": 118,
+    "identical": 114,
+    "maximum_width_supplied": 1.2576745200831851e-17,
+    "maximum_width_ours": 1.2576745200831851e-17
+  },
+  "right_real": {
+    "overlaps": 120,
+    "supplied_contains_ours": 119,
+    "ours_contains_supplied": 120,
+    "identical": 119,
+    "maximum_width_supplied": 1.1709383462843448e-17,
+    "maximum_width_ours": 1.1709383462843448e-17
+  },
+  "right_imag": {
+    "overlaps": 120,
+    "supplied_contains_ours": 116,
+    "ours_contains_supplied": 119,
+    "identical": 115,
+    "maximum_width_supplied": 1.1275702593849246e-17,
+    "maximum_width_ours": 1.1275702593849246e-17
+  }
+}

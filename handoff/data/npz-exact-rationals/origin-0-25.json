@@ -1,0 +1,4914 @@
+{
+  "schema": "exact-npz-rationals-v1",
+  "source": "work/source_complex/support_compression_certificate/complex_upper_origin_layer_coefficients_n120_analytic.npz",
+  "source_sha256": "fc29fa555fb66c5cd6a2ac53dbd2508207b6058cfe0b339163faadeb85ad54da",
+  "meaning": "Exact stored numbers only; integral containment remains a proof obligation.",
+  "arrays": {
+    "left_real_lower": {
+      "dtype": "float64",
+      "shape": [
+        120
+      ],
+      "order": "C",
+      "values": [
+        {
+          "numerator": "-7083377109364677",
+          "denominator": "9007199254740992",
+          "binary64_hex": "-0x1.92a4b4069efc5p-1"
+        },
+        {
+          "numerator": "3972009998895089",
+          "denominator": "18014398509481984",
+          "binary64_hex": "0x1.c390b4a0e8fe2p-3"
+        },
+        {
+          "numerator": "-6896566502810427",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.880640491e33bp-4"
+        },
+        {
+          "numerator": "2644088254821191",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.2c9918a5de68ep-5"
+        },
+        {
+          "numerator": "-4505548861251341",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.001c5d7649f0dp-8"
+        },
+        {
+          "numerator": "-1782394376659887",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.954501eae8ebcp-7"
+        },
+        {
+          "numerator": "5377566885017807",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.31ade5beff8cfp-6"
+        },
+        {
+          "numerator": "-1396072449920415",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.3d6e1c9d5367cp-6"
+        },
+        {
+          "numerator": "2516214495100485",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.1e0f7ae517c8ap-6"
+        },
+        {
+          "numerator": "-8517314259795679",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.e4273c2e53edfp-7"
+        },
+        {
+          "numerator": "7081626144233073",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.928b392c25671p-7"
+        },
+        {
+          "numerator": "-2957977984026995",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.50487d5fb92e6p-7"
+        },
+        {
+          "numerator": "4960012122583995",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.19f1ad0a5f3bbp-7"
+        },
+        {
+          "numerator": "-2051740010122769",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.d282fc9e63844p-8"
+        },
+        {
+          "numerator": "6549828870839749",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.74508df2f9dc5p-8"
+        },
+        {
+          "numerator": "-612563239037525",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.168fbf21f52a8p-8"
+        },
+        {
+          "numerator": "6505508484208119",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.71cb9ba48d5f7p-9"
+        },
+        {
+          "numerator": "-3205827310977703",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.6c75dac2a054ep-10"
+        },
+        {
+          "numerator": "-6402880391183663",
+          "denominator": "147573952589676412928",
+          "binary64_hex": "-0x1.6bf62c3417d2fp-15"
+        },
+        {
+          "numerator": "6739085513113761",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "0x1.7f1299e1ec0a1p-10"
+        },
+        {
+          "numerator": "-6495384099905443",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.7138475f45fa3p-9"
+        },
+        {
+          "numerator": "291558293038305",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.092bb47ce4e10p-8"
+        },
+        {
+          "numerator": "-2934567618808185",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.4d9f288fa12f2p-8"
+        },
+        {
+          "numerator": "6823776073991091",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.83e302ceac3b3p-8"
+        },
+        {
+          "numerator": "-1883055894347023",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.ac28476b2f43cp-8"
+        },
+        {
+          "numerator": "8029387665701853",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.c86af7f93fbddp-8"
+        },
+        {
+          "numerator": "-2090812576396231",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.db654f3a1cf1cp-8"
+        },
+        {
+          "numerator": "4288417627900623",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.e789612b8159ep-8"
+        },
+        {
+          "numerator": "-4349154474675771",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.ee710df129c76p-8"
+        },
+        {
+          "numerator": "4370538485728125",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.f0df693d686fap-8"
+        },
+        {
+          "numerator": "-136103775574347",
+          "denominator": "18014398509481984",
+          "binary64_hex": "-0x1.ef2484c8652c0p-8"
+        },
+        {
+          "numerator": "4306415092182907",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.e9952cba65ef6p-8"
+        },
+        {
+          "numerator": "-8458936727163057",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.e0d5baeccd0b1p-8"
+        },
+        {
+          "numerator": "8266015676508297",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.d5de5c01b2889p-8"
+        },
+        {
+          "numerator": "-4026648331948487",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.c9c6e3eec238ep-8"
+        },
+        {
+          "numerator": "3918621227819565",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.bd7ee3496445ap-8"
+        },
+        {
+          "numerator": "-7627803836828307",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.b19727a1c4a93p-8"
+        },
+        {
+          "numerator": "1856837366281071",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.a63228e7dcdbcp-8"
+        },
+        {
+          "numerator": "-7232316886407869",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.9b1c0feeadabdp-8"
+        },
+        {
+          "numerator": "3518261223612325",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.8ffae0cebbf4ap-8"
+        },
+        {
+          "numerator": "-6834638111563527",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.8481130cedf07p-8"
+        },
+        {
+          "numerator": "3312291392351619",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.78905dfaadb06p-8"
+        },
+        {
+          "numerator": "-6408223900313785",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.6c43ee53828b9p-8"
+        },
+        {
+          "numerator": "3095250941216105",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.5fe3a89af0ad2p-8"
+        },
+        {
+          "numerator": "-1494400944445317",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.53c9955c85e14p-8"
+        },
+        {
+          "numerator": "2887497796091503",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.48453f0d9fcdep-8"
+        },
+        {
+          "numerator": "-5585995288704175",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.3d86ee0e674afp-8"
+        },
+        {
+          "numerator": "2705623983359345",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.3398058d90ae2p-8"
+        },
+        {
+          "numerator": "-5249101253117311",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.2a6079f95057fp-8"
+        },
+        {
+          "numerator": "1274149284113229",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.21b53fde1ad34p-8"
+        },
+        {
+          "numerator": "-4950663957246059",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.1969a4692f06bp-8"
+        },
+        {
+          "numerator": "4809114269159501",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.115dd2bb2904dp-8"
+        },
+        {
+          "numerator": "-2335594406413279",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.0986be5de07bep-8"
+        },
+        {
+          "numerator": "567196159161545",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.01ee52cada648p-8"
+        },
+        {
+          "numerator": "-4409949924631031",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.f55a6f57843eep-9"
+        },
+        {
+          "numerator": "2145183360422809",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.e7c21b0b44e64p-9"
+        },
+        {
+          "numerator": "-8361028550134827",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.db44fa8b00c2bp-9"
+        },
+        {
+          "numerator": "8162487339179959",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.cffbd2e55dfb7p-9"
+        },
+        {
+          "numerator": "-7984702772349119",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.c5e0b7c6208bfp-9"
+        },
+        {
+          "numerator": "3912672823406767",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.bcd1c4385e15ep-9"
+        },
+        {
+          "numerator": "-3840411068330179",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.b49aac309e186p-9"
+        },
+        {
+          "numerator": "7547163204517181",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.ad01addddfd3dp-9"
+        },
+        {
+          "numerator": "-3710443084581645",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.a5d41b408161ap-9"
+        },
+        {
+          "numerator": "7299617276944025",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.9eef696c9de99p-9"
+        },
+        {
+          "numerator": "-897794678427335",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.98450e71c7638p-9"
+        },
+        {
+          "numerator": "1767345002550449",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.91d904c4a52c4p-9"
+        },
+        {
+          "numerator": "-6961841428699895",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.8bbc205571af7p-9"
+        },
+        {
+          "numerator": "1715310409838859",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.860434ea1c42cp-9"
+        },
+        {
+          "numerator": "-423055392280679",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.80c4426090670p-9"
+        },
+        {
+          "numerator": "26115146877763",
+          "denominator": "9007199254740992",
+          "binary64_hex": "0x1.7c0680d8b4300p-9"
+        },
+        {
+          "numerator": "-6610911020942941",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.77c96ab0b865dp-9"
+        },
+        {
+          "numerator": "3272146842066165",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.740001c5939eap-9"
+        },
+        {
+          "numerator": "-405259211274375",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.7094c35478870p-9"
+        },
+        {
+          "numerator": "3214360685694787",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.6d6e355b39e86p-9"
+        },
+        {
+          "numerator": "-6376327199645803",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.6a73c5db4e06bp-9"
+        },
+        {
+          "numerator": "6325616290076195",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.6791d4ff49623p-9"
+        },
+        {
+          "numerator": "-6275746466926931",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.64bc216dc9153p-9"
+        },
+        {
+          "numerator": "1556604218007835",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.61ee4a5e1846cp-9"
+        },
+        {
+          "numerator": "-6177783337195913",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.5f2a945501989p-9"
+        },
+        {
+          "numerator": "3065145447103505",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.5c777931e7822p-9"
+        },
+        {
+          "numerator": "-6084472659636349",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.59dcbaf85f07dp-9"
+        },
+        {
+          "numerator": "6040764048400215",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.5760afb46df57p-9"
+        },
+        {
+          "numerator": "-2999685170595841",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.5506542101002p-9"
+        },
+        {
+          "numerator": "5960208191100647",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.52cc71c0496e7p-9"
+        },
+        {
+          "numerator": "-5922922546474599",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.50addde6a2e67p-9"
+        },
+        {
+          "numerator": "1471741015229733",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.4ea29a1a81494p-9"
+        },
+        {
+          "numerator": "-365731338543265",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.4ca1768460a10p-9"
+        },
+        {
+          "numerator": "727067426954871",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.4aa1c9db0f3b8p-9"
+        },
+        {
+          "numerator": "-5781016804267979",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.489cddd0f17cbp-9"
+        },
+        {
+          "numerator": "2872432934273463",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.468ecd160836ep-9"
+        },
+        {
+          "numerator": "-2854013200986437",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.4476b760ee28ap-9"
+        },
+        {
+          "numerator": "2835308572691567",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.42565709b98dep-9"
+        },
+        {
+          "numerator": "-5632876097182887",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.403122ad61ca7p-9"
+        },
+        {
+          "numerator": "5595085854761759",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.3e0b370dc631fp-9"
+        },
+        {
+          "numerator": "-84800735047",
+          "denominator": "35184372088832",
+          "binary64_hex": "-0x1.3be8487470000p-9"
+        },
+        {
+          "numerator": "5520291630733461",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.39cad0db4d895p-9"
+        },
+        {
+          "numerator": "-5483512797291673",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.37b39d0676499p-9"
+        },
+        {
+          "numerator": "5447101815966617",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.35a1c38cbcb99p-9"
+        },
+        {
+          "numerator": "-5410901461740509",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.3392fab8aabddp-9"
+        },
+        {
+          "numerator": "671837611376853",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.31843116206a8p-9"
+        },
+        {
+          "numerator": "-667285552635245",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.2f72432a0eb68p-9"
+        },
+        {
+          "numerator": "662684714744651",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.2d5aa7829da58p-9"
+        },
+        {
+          "numerator": "-2632091348560253",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.2b3bf0bb1d2fap-9"
+        },
+        {
+          "numerator": "5226395401508399",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.29161015cd62fp-9"
+        },
+        {
+          "numerator": "-324262812834687",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.26ea51c5db7f0p-9"
+        },
+        {
+          "numerator": "5149775480633235",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.24bb18a323793p-9"
+        },
+        {
+          "numerator": "-2555657394289735",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.228b6b64ef88ep-9"
+        },
+        {
+          "numerator": "5073037635609923",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.205e69e33e543p-9"
+        },
+        {
+          "numerator": "-5035129334242879",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.1e36c675d9e3fp-9"
+        },
+        {
+          "numerator": "1249429005958611",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.1c1657049f74cp-9"
+        },
+        {
+          "numerator": "-2480423659109799",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.19fdd462ffb4ep-9"
+        },
+        {
+          "numerator": "2462245619269969",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.17ecc76f902a2p-9"
+        },
+        {
+          "numerator": "-4888545176481913",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.15e1b1eb67079p-9"
+        },
+        {
+          "numerator": "1213213589438497",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.13da534240084p-9"
+        },
+        {
+          "numerator": "-4817243864180691",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.11d41fd5227d3p-9"
+        },
+        {
+          "numerator": "597692934374291",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.0fcc9d84e1c98p-9"
+        },
+        {
+          "numerator": "-2372812820373531",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.0dc1f128dc036p-9"
+        },
+        {
+          "numerator": "2354706358235565",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.0bb2f9810e35ap-9"
+        },
+        {
+          "numerator": "-292057028263819",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.099fd36c7f8b0p-9"
+        },
+        {
+          "numerator": "4636183617472715",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.078959da208cbp-9"
+        }
+      ]
+    },
+    "left_real_upper": {
+      "dtype": "float64",
+      "shape": [
+        120
+      ],
+      "order": "C",
+      "values": [
+        {
+          "numerator": "-3541688554682159",
+          "denominator": "4503599627370496",
+          "binary64_hex": "-0x1.92a4b4069ee5ep-1"
+        },
+        {
+          "numerator": "3972009998895281",
+          "denominator": "18014398509481984",
+          "binary64_hex": "0x1.c390b4a0e9162p-3"
+        },
+        {
+          "numerator": "-1724141625702421",
+          "denominator": "18014398509481984",
+          "binary64_hex": "-0x1.880640491e054p-4"
+        },
+        {
+          "numerator": "2644088254821949",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.2c9918a5dec7ap-5"
+        },
+        {
+          "numerator": "-2252774430619221",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.001c5d7646caap-8"
+        },
+        {
+          "numerator": "-1782394376658807",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.954501eae7ddcp-7"
+        },
+        {
+          "numerator": "2688783442509793",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.31ade5befffc2p-6"
+        },
+        {
+          "numerator": "-349018112479939",
+          "denominator": "18014398509481984",
+          "binary64_hex": "-0x1.3d6e1c9d52c30p-6"
+        },
+        {
+          "numerator": "2516214495101645",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.1e0f7ae51859ap-6"
+        },
+        {
+          "numerator": "-4258657129894391",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.e4273c2e523eep-7"
+        },
+        {
+          "numerator": "7081626144242213",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.928b392c27a25p-7"
+        },
+        {
+          "numerator": "-5915955968040807",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.50487d5fb5f67p-7"
+        },
+        {
+          "numerator": "2480006061305953",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.19f1ad0a660c2p-7"
+        },
+        {
+          "numerator": "-1025870005059215",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.d282fc9e5f478p-8"
+        },
+        {
+          "numerator": "1637457217711389",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.74508df2fb474p-8"
+        },
+        {
+          "numerator": "-2450252956146213",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.168fbf21f344ap-8"
+        },
+        {
+          "numerator": "6505508484227663",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.71cb9ba49224fp-9"
+        },
+        {
+          "numerator": "-1602913655477003",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.6c75dac294c2cp-10"
+        },
+        {
+          "numerator": "-6402880389249549",
+          "denominator": "147573952589676412928",
+          "binary64_hex": "-0x1.6bf62c323fa0dp-15"
+        },
+        {
+          "numerator": "6739085513191393",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "0x1.7f1299e1fefe1p-10"
+        },
+        {
+          "numerator": "-6495384099864043",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.7138475f3bdebp-9"
+        },
+        {
+          "numerator": "2332466344318017",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.092bb47cea882p-8"
+        },
+        {
+          "numerator": "-5869135237587189",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.4d9f288f9a0f5p-8"
+        },
+        {
+          "numerator": "6823776074026707",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.83e302ceb4ed3p-8"
+        },
+        {
+          "numerator": "-1883055894336519",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.ac28476b2501cp-8"
+        },
+        {
+          "numerator": "4014693832851519",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.c86af7f94007ep-8"
+        },
+        {
+          "numerator": "-8363250305584705",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.db654f3a1ce41p-8"
+        },
+        {
+          "numerator": "8576835255801453",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.e789612b8166dp-8"
+        },
+        {
+          "numerator": "-1087288618668917",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.ee710df129ba8p-8"
+        },
+        {
+          "numerator": "4370538485728259",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.f0df693d68806p-8"
+        },
+        {
+          "numerator": "-4355320818378943",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.ef2484c86517ep-8"
+        },
+        {
+          "numerator": "4306415092183149",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.e9952cba660dap-8"
+        },
+        {
+          "numerator": "-264341772723823",
+          "denominator": "36028797018963968",
+          "binary64_hex": "-0x1.e0d5baecccde0p-8"
+        },
+        {
+          "numerator": "8266015676509287",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.d5de5c01b2c67p-8"
+        },
+        {
+          "numerator": "-4026648331947687",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.c9c6e3eec1d4ep-8"
+        },
+        {
+          "numerator": "489827653477621",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.bd7ee34964f50p-8"
+        },
+        {
+          "numerator": "-7627803836823971",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.b19727a1c39a3p-8"
+        },
+        {
+          "numerator": "7427349465131075",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.a63228e7de843p-8"
+        },
+        {
+          "numerator": "-452019805399867",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.9b1c0feeab3b0p-8"
+        },
+        {
+          "numerator": "3518261223619485",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.8ffae0cebf73ap-8"
+        },
+        {
+          "numerator": "-3417319055772175",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.8481130ce941ep-8"
+        },
+        {
+          "numerator": "6624582784724301",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.78905dfab2d4dp-8"
+        },
+        {
+          "numerator": "-3204111950145049",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.6c43ee537cc32p-8"
+        },
+        {
+          "numerator": "6190501882457973",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.5fe3a89af6f75p-8"
+        },
+        {
+          "numerator": "-5977603777750407",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.53c9955c7e587p-8"
+        },
+        {
+          "numerator": "721874449027271",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.48453f0da8638p-8"
+        },
+        {
+          "numerator": "-5585995288657555",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.3d86ee0e5be93p-8"
+        },
+        {
+          "numerator": "1352811991692211",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.3398058d9ceccp-8"
+        },
+        {
+          "numerator": "-5249101253091017",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.2a6079f949ec9p-8"
+        },
+        {
+          "numerator": "2548298568227545",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.21b53fde1b5b2p-8"
+        },
+        {
+          "numerator": "-2475331978621989",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.1969a4692e84ap-8"
+        },
+        {
+          "numerator": "4809114269161355",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.115dd2bb2978bp-8"
+        },
+        {
+          "numerator": "-583898601603117",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.0986be5de0168p-8"
+        },
+        {
+          "numerator": "2268784636646763",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.01ee52cadaad6p-8"
+        },
+        {
+          "numerator": "-551243740578767",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.f55a6f5783cf0p-9"
+        },
+        {
+          "numerator": "2145183360423269",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.e7c21b0b45594p-9"
+        },
+        {
+          "numerator": "-8361028550132947",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.db44fa8b004d3p-9"
+        },
+        {
+          "numerator": "4081243669590841",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.cffbd2e55e672p-9"
+        },
+        {
+          "numerator": "-7984702772347381",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.c5e0b7c6201f5p-9"
+        },
+        {
+          "numerator": "3912672823407591",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.bcd1c4385e7cep-9"
+        },
+        {
+          "numerator": "-240025691770585",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.b49aac309db20p-9"
+        },
+        {
+          "numerator": "3773581602259397",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.ad01addde038ap-9"
+        },
+        {
+          "numerator": "-1855221542290407",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.a5d41b4080f9cp-9"
+        },
+        {
+          "numerator": "3649808638472757",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.9eef696c9e46ap-9"
+        },
+        {
+          "numerator": "-7182357427417395",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.98450e71c7133p-9"
+        },
+        {
+          "numerator": "7069380010202939",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.91d904c4a573bp-9"
+        },
+        {
+          "numerator": "-6961841428698837",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.8bbc2055716d5p-9"
+        },
+        {
+          "numerator": "1715310409839069",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.860434ea1c774p-9"
+        },
+        {
+          "numerator": "-6768886276490087",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.80c4426090367p-9"
+        },
+        {
+          "numerator": "835684700088517",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.7c0680d8b4628p-9"
+        },
+        {
+          "numerator": "-1652727755235523",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.77c96ab0b830cp-9"
+        },
+        {
+          "numerator": "6544293684133143",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.740001c593d17p-9"
+        },
+        {
+          "numerator": "-3242073690194605",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.7094c3547855ap-9"
+        },
+        {
+          "numerator": "6428721371390553",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.6d6e355b3a259p-9"
+        },
+        {
+          "numerator": "-1594081799911167",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.6a73c5db4dbfcp-9"
+        },
+        {
+          "numerator": "6325616290077589",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.6791d4ff49b95p-9"
+        },
+        {
+          "numerator": "-6275746466925313",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.64bc216dc8b01p-9"
+        },
+        {
+          "numerator": "3113208436016789",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.61ee4a5e18d2ap-9"
+        },
+        {
+          "numerator": "-6177783337192915",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.5f2a945500dd3p-9"
+        },
+        {
+          "numerator": "766286361776423",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.5c777931e8938p-9"
+        },
+        {
+          "numerator": "-6084472659629663",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.59dcbaf85d65fp-9"
+        },
+        {
+          "numerator": "3020382024205109",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.5760afb47066ap-9"
+        },
+        {
+          "numerator": "-2999685170588267",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.55065420fd4d6p-9"
+        },
+        {
+          "numerator": "186256505972457",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.52cc71c04dd20p-9"
+        },
+        {
+          "numerator": "-2961461273234979",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.50addde6a1c46p-9"
+        },
+        {
+          "numerator": "5886964060925453",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.4ea29a1a82e0dp-9"
+        },
+        {
+          "numerator": "-5851701416683053",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.4ca176845e62dp-9"
+        },
+        {
+          "numerator": "2908269707825871",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.4aa1c9db1259ep-9"
+        },
+        {
+          "numerator": "-5781016804250581",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.489cddd0ed3d5p-9"
+        },
+        {
+          "numerator": "718108233571131",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.468ecd160d9d8p-9"
+        },
+        {
+          "numerator": "-1427006600488883",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.4476b760e9eccp-9"
+        },
+        {
+          "numerator": "5670617145408239",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.42565709bfaefp-9"
+        },
+        {
+          "numerator": "-2816438048573105",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.403122ad58d62p-9"
+        },
+        {
+          "numerator": "2797542927407739",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.3e0b370dd34f6p-9"
+        },
+        {
+          "numerator": "-5557500971962153",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.3be848745cf29p-9"
+        },
+        {
+          "numerator": "5520291630842257",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.39cad0db68191p-9"
+        },
+        {
+          "numerator": "-2741756398565075",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.37b39d064eda6p-9"
+        },
+        {
+          "numerator": "85110965878479",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.35a1c38cfb3c0p-9"
+        },
+        {
+          "numerator": "-5410901461334189",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.3392fab8478adp-9"
+        },
+        {
+          "numerator": "2687350445829691",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.31843116bdc76p-9"
+        },
+        {
+          "numerator": "-5338284420054293",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.2f72432913d15p-9"
+        },
+        {
+          "numerator": "662684714946299",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.2d5aa784277d8p-9"
+        },
+        {
+          "numerator": "-5264182694616065",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.2b3bf0b8b9c01p-9"
+        },
+        {
+          "numerator": "5226395405468259",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.2916101994263p-9"
+        },
+        {
+          "numerator": "-5188204999073603",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.26ea51bfddf43p-9"
+        },
+        {
+          "numerator": "643721936324253",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.24bb18aca34e8p-9"
+        },
+        {
+          "numerator": "-5111314772797073",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.228b6b55e2691p-9"
+        },
+        {
+          "numerator": "2536518830300849",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.205e69fb13d62p-9"
+        },
+        {
+          "numerator": "-2517564647354379",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.1e36c65026016p-9"
+        },
+        {
+          "numerator": "4997716086298133",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.1c16574031615p-9"
+        },
+        {
+          "numerator": "-1240211804221011",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.19fdd4025b94cp-9"
+        },
+        {
+          "numerator": "1231122850643395",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.17ecc80bff70cp-9"
+        },
+        {
+          "numerator": "-611068114239055",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.15e1b0f0ff278p-9"
+        },
+        {
+          "numerator": "4852854773451121",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.13da54ceb0971p-9"
+        },
+        {
+          "numerator": "-4817243211031357",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.11d41d663e33dp-9"
+        },
+        {
+          "numerator": "4781544497236029",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.0fcca153c483dp-9"
+        },
+        {
+          "numerator": "-2372812023534081",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.0dc1eb3902402p-9"
+        },
+        {
+          "numerator": "1177353798780397",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.0bb302bce17b4p-9"
+        },
+        {
+          "numerator": "-2336454302436887",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.099fc51761c2ep-9"
+        },
+        {
+          "numerator": "4636189579916269",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.078970105b3edp-9"
+        }
+      ]
+    },
+    "left_imag_lower": {
+      "dtype": "float64",
+      "shape": [
+        120
+      ],
+      "order": "C",
+      "values": [
+        {
+          "numerator": "-2822476131485665",
+          "denominator": "9007199254740992",
+          "binary64_hex": "-0x1.40e0dde688fc2p-2"
+        },
+        {
+          "numerator": "6753178701343593",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.7fdfaf1992b69p-3"
+        },
+        {
+          "numerator": "-5616536801977895",
+          "denominator": "36028797018963968",
+          "binary64_hex": "-0x1.3f435e0f32627p-3"
+        },
+        {
+          "numerator": "6133111910708097",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.5ca0864ce3381p-3"
+        },
+        {
+          "numerator": "-1600566413579377",
+          "denominator": "9007199254740992",
+          "binary64_hex": "-0x1.6bed3a21551c4p-3"
+        },
+        {
+          "numerator": "5999260982556187",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.5504bcbc7b61bp-3"
+        },
+        {
+          "numerator": "-1303213948014167",
+          "denominator": "9007199254740992",
+          "binary64_hex": "-0x1.2851091c0395cp-3"
+        },
+        {
+          "numerator": "8657732247526263",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.ec2295f2c9b77p-4"
+        },
+        {
+          "numerator": "-1742763246293509",
+          "denominator": "18014398509481984",
+          "binary64_hex": "-0x1.8c422c0e44814p-4"
+        },
+        {
+          "numerator": "5515764068886627",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.3988ee5fda863p-4"
+        },
+        {
+          "numerator": "-4380047314848235",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.f1f42789a13d6p-5"
+        },
+        {
+          "numerator": "7131701206228065",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.9563e950a9c61p-5"
+        },
+        {
+          "numerator": "-6002160614947595",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.552eeeb56bb0bp-5"
+        },
+        {
+          "numerator": "2593875515754457",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.26e3b696a8fb2p-5"
+        },
+        {
+          "numerator": "-4554173577252653",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.02dff2a514f2dp-5"
+        },
+        {
+          "numerator": "4035943409583103",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.cad569a8607fep-6"
+        },
+        {
+          "numerator": "-7219172306824719",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.9a5cc88ebae0fp-6"
+        },
+        {
+          "numerator": "6525426432244827",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.72ed73c807c5bp-6"
+        },
+        {
+          "numerator": "-5960829477773601",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.52d57c396e121p-6"
+        },
+        {
+          "numerator": "1373407595836267",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.3846d7f86cdacp-6"
+        },
+        {
+          "numerator": "-5101327136760805",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.21fa147dea3e5p-6"
+        },
+        {
+          "numerator": "1193620086009203",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.0f65d54e4b5ccp-6"
+        },
+        {
+          "numerator": "-2255668671310463",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.0070993c4d4fep-6"
+        },
+        {
+          "numerator": "538683432619479",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.e9ee02a5cdd70p-7"
+        },
+        {
+          "numerator": "-8321408584367035",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.d9046eab3bbbbp-7"
+        },
+        {
+          "numerator": "8103076438085983",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.cc9b480ae115fp-7"
+        },
+        {
+          "numerator": "-1983568378372145",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.c302e025280c4p-7"
+        },
+        {
+          "numerator": "7791365126698385",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.bae348eb13591p-7"
+        },
+        {
+          "numerator": "-1915298565735671",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.b37d0ca9913dcp-7"
+        },
+        {
+          "numerator": "3770094806418797",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.ac9c333698adap-7"
+        },
+        {
+          "numerator": "-7430065929063531",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.a659b085c0c6bp-7"
+        },
+        {
+          "numerator": "7333088183315229",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.a0d67a445eb1dp-7"
+        },
+        {
+          "numerator": "-7249111958074951",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.9c1076732b647p-7"
+        },
+        {
+          "numerator": "896882888758055",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.97dae8fea9938p-7"
+        },
+        {
+          "numerator": "-7106194450203241",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.93f0bd3e8c269p-7"
+        },
+        {
+          "numerator": "7037893069749217",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.900ed2c63bbe1p-7"
+        },
+        {
+          "numerator": "-3483499059846339",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.8c072a8133986p-7"
+        },
+        {
+          "numerator": "1723043973274445",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.87c65bfd66d34p-7"
+        },
+        {
+          "numerator": "-1703370639739221",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.834d3879c2554p-7"
+        },
+        {
+          "numerator": "3365783362096437",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.7ea5303609a6ap-7"
+        },
+        {
+          "numerator": "-1661743366133235",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.79d631c2f57ccp-7"
+        },
+        {
+          "numerator": "819976596688633",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.74e1d6e2877c8p-7"
+        },
+        {
+          "numerator": "-6469807062482979",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.6fc4157b98023p-7"
+        },
+        {
+          "numerator": "797069967625969",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.6a77282407788p-7"
+        },
+        {
+          "numerator": "-6279840135281391",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.64f7b38827aefp-7"
+        },
+        {
+          "numerator": "6179738509947255",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.5f4707eb0b177p-7"
+        },
+        {
+          "numerator": "-6076650039156185",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.596ae57021dd9p-7"
+        },
+        {
+          "numerator": "2985569246991225",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.536b804d6a6f2p-7"
+        },
+        {
+          "numerator": "-5863773490836457",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.4d51227f6f3e9p-7"
+        },
+        {
+          "numerator": "2877512380065139",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.4722a1e804ae6p-7"
+        },
+        {
+          "numerator": "-705656482748999",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.40e539fe6d238p-7"
+        },
+        {
+          "numerator": "2767387915750613",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.3a9d96b5919aap-7"
+        },
+        {
+          "numerator": "-5423983581097945",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.34515969e6fd9p-7"
+        },
+        {
+          "numerator": "5313407455394167",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.2e08413ecf977p-7"
+        },
+        {
+          "numerator": "-5203738951738329",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.27cc5e3b8e3d9p-7"
+        },
+        {
+          "numerator": "5095766186332385",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.21a92856510e1p-7"
+        },
+        {
+          "numerator": "-1247563849913171",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.1ba9c606f4d4cp-7"
+        },
+        {
+          "numerator": "610977079753345",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.15d717e6fd408p-7"
+        },
+        {
+          "numerator": "-1197199395845501",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.10362d2dbd5f4p-7"
+        },
+        {
+          "numerator": "4693238437835883",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.0ac79b9eef46bp-7"
+        },
+        {
+          "numerator": "-4600900438059277",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.0587e9c41e90dp-7"
+        },
+        {
+          "numerator": "4511358443078117",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.0070e7d7441e5p-7"
+        },
+        {
+          "numerator": "-4424130817913545",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.f6f7273aee592p-8"
+        },
+        {
+          "numerator": "8677623427025755",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.ed440a5dccb5bp-8"
+        },
+        {
+          "numerator": "-4255172834727779",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.e3c1d428b2ec6p-8"
+        },
+        {
+          "numerator": "8346424143718571",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.da7074e3b28abp-8"
+        },
+        {
+          "numerator": "-8186282580251237",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.d1561713a1265p-8"
+        },
+        {
+          "numerator": "8030641742947891",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.c87d37c682633p-8"
+        },
+        {
+          "numerator": "-7880321124579943",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.bff1c3d58ba67p-8"
+        },
+        {
+          "numerator": "241750774191431",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.b7bdfa0a2a8e0p-8"
+        },
+        {
+          "numerator": "-7598162154845185",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.afe7cfc2f7401p-8"
+        },
+        {
+          "numerator": "7466742870592203",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.a86f68c6e4acbp-8"
+        },
+        {
+          "numerator": "-917670563542667",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.a14ee9fafb458p-8"
+        },
+        {
+          "numerator": "902661349510289",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.9a7b9c8b86488p-8"
+        },
+        {
+          "numerator": "-7105597773284015",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.93e80e73182afp-8"
+        },
+        {
+          "numerator": "3496676312713885",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.8d86acb07153ap-8"
+        },
+        {
+          "numerator": "-3441892692105739",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.874c42e893416p-8"
+        },
+        {
+          "numerator": "3388208987549099",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.8131dc2415b56p-8"
+        },
+        {
+          "numerator": "-1667781606717225",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.7b35aa8ecdca4p-8"
+        },
+        {
+          "numerator": "3284063743146111",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.755ad59a8f0fep-8"
+        },
+        {
+          "numerator": "-1616974224219005",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.6fa8498fb6df4p-8"
+        },
+        {
+          "numerator": "1592759976195821",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.6a26d525fdbb4p-8"
+        },
+        {
+          "numerator": "-3139071350025825",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.64df0017c5cc2p-8"
+        },
+        {
+          "numerator": "6189635295389419",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.5fd70c51226ebp-8"
+        },
+        {
+          "numerator": "-6105691971294977",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.5b118310e9701p-8"
+        },
+        {
+          "numerator": "3013093129615719",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.568c8d354f2cep-8"
+        },
+        {
+          "numerator": "-2975352848461201",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.52422a33a5b22p-8"
+        },
+        {
+          "numerator": "2939309885641811",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.4e292d33ca8a6p-8"
+        },
+        {
+          "numerator": "-5809184854058413",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.4a36c3fa925adp-8"
+        },
+        {
+          "numerator": "5741664176221943",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.466035da4aef7p-8"
+        },
+        {
+          "numerator": "-2837719867041697",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.429c8494b4f42p-8"
+        },
+        {
+          "numerator": "5610096273152895",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.3ee5a53845b7fp-8"
+        },
+        {
+          "numerator": "-5545464149073817",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.3b391fcb85f99p-8"
+        },
+        {
+          "numerator": "5481616365792763",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.3798044472dfbp-8"
+        },
+        {
+          "numerator": "-677352963598977",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.3406436435408p-8"
+        },
+        {
+          "numerator": "5357479035483605",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.308994acd35d5p-8"
+        },
+        {
+          "numerator": "-1324501579133401",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.2d2823883c764p-8"
+        },
+        {
+          "numerator": "2620385684558015",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.29e742bce217ep-8"
+        },
+        {
+          "numerator": "-1296502371381225",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.26ca5ed2fbfa4p-8"
+        },
+        {
+          "numerator": "2566890460077545",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.23d258419bbd2p-8"
+        },
+        {
+          "numerator": "-5083959503851725",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.20fd5904790cdp-8"
+        },
+        {
+          "numerator": "5036253558250879",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.1e47228569d7fp-8"
+        },
+        {
+          "numerator": "-623781625517821",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.1ba9bd1a6b7e8p-8"
+        },
+        {
+          "numerator": "4945492694313777",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.191e63f48ab31p-8"
+        },
+        {
+          "numerator": "-2450760193903137",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.169e825931442p-8"
+        },
+        {
+          "numerator": "4857957906990561",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.14249776145e1p-8"
+        },
+        {
+          "numerator": "-4814546519461297",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.11acdf70c0db1p-8"
+        },
+        {
+          "numerator": "4771170441509209",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.0f35aaf543959p-8"
+        },
+        {
+          "numerator": "-2363928604506859",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.0cbf6097df5d6p-8"
+        },
+        {
+          "numerator": "2342378050483647",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.0a4c2c741eb7ep-8"
+        },
+        {
+          "numerator": "-1160525279980743",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.07df76443b31cp-8"
+        },
+        {
+          "numerator": "4600163490433983",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.057d306c18bbfp-8"
+        },
+        {
+          "numerator": "-4559204927365951",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.032929e27633fp-8"
+        },
+        {
+          "numerator": "2259716660980277",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.00e6691bdd46ap-8"
+        },
+        {
+          "numerator": "-4480975397060897",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.fd6d8c5940242p-9"
+        },
+        {
+          "numerator": "8887710858592705",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.f93537097c1c1p-9"
+        },
+        {
+          "numerator": "-8816007015910267",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.f521c96854b7bp-9"
+        },
+        {
+          "numerator": "4373256322778701",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.f12e82b430c9ap-9"
+        },
+        {
+          "numerator": "-8678805602050859",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.ed553e4fc232bp-9"
+        },
+        {
+          "numerator": "8612366580231327",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.e98e6dab0ac9fp-9"
+        }
+      ]
+    },
+    "left_imag_upper": {
+      "dtype": "float64",
+      "shape": [
+        120
+      ],
+      "order": "C",
+      "values": [
+        {
+          "numerator": "-5644952262970613",
+          "denominator": "18014398509481984",
+          "binary64_hex": "-0x1.40e0dde688cf5p-2"
+        },
+        {
+          "numerator": "6753178701343977",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.7fdfaf1992ce9p-3"
+        },
+        {
+          "numerator": "-5616536801977523",
+          "denominator": "36028797018963968",
+          "binary64_hex": "-0x1.3f435e0f324b3p-3"
+        },
+        {
+          "numerator": "3066555955354239",
+          "denominator": "18014398509481984",
+          "binary64_hex": "0x1.5ca0864ce34fep-3"
+        },
+        {
+          "numerator": "-6402265654317103",
+          "denominator": "36028797018963968",
+          "binary64_hex": "-0x1.6bed3a215502fp-3"
+        },
+        {
+          "numerator": "5999260982556459",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.5504bcbc7b72bp-3"
+        },
+        {
+          "numerator": "-1303213948014111",
+          "denominator": "9007199254740992",
+          "binary64_hex": "-0x1.2851091c0387cp-3"
+        },
+        {
+          "numerator": "8657732247526923",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.ec2295f2c9e0bp-4"
+        },
+        {
+          "numerator": "-6971052985173455",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.8c422c0e445cfp-4"
+        },
+        {
+          "numerator": "5515764068887491",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.3988ee5fdabc3p-4"
+        },
+        {
+          "numerator": "-8760094629694183",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.f1f42789a0ae7p-5"
+        },
+        {
+          "numerator": "3565850603115681",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.9563e950aa942p-5"
+        },
+        {
+          "numerator": "-750270076867577",
+          "denominator": "18014398509481984",
+          "binary64_hex": "-0x1.552eeeb569fc8p-5"
+        },
+        {
+          "numerator": "2593875515755543",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.26e3b696a982ep-5"
+        },
+        {
+          "numerator": "-2277086788625963",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.02dff2a514c56p-5"
+        },
+        {
+          "numerator": "8071886819168151",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.cad569a860f97p-6"
+        },
+        {
+          "numerator": "-7219172306822275",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.9a5cc88eba483p-6"
+        },
+        {
+          "numerator": "6525426432247791",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.72ed73c8087efp-6"
+        },
+        {
+          "numerator": "-5960829477769821",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.52d57c396d25dp-6"
+        },
+        {
+          "numerator": "2746815191674961",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.3846d7f86e0a2p-6"
+        },
+        {
+          "numerator": "-1275331784188907",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.21fa147de8facp-6"
+        },
+        {
+          "numerator": "2387240172021301",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.0f65d54e4cc6ap-6"
+        },
+        {
+          "numerator": "-2255668671306815",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.0070993c4b87ep-6"
+        },
+        {
+          "numerator": "8618934921929473",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.e9ee02a5d2301p-7"
+        },
+        {
+          "numerator": "-4160704292173013",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.d9046eab369aap-7"
+        },
+        {
+          "numerator": "8103076438086577",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.cc9b480ae13b1p-7"
+        },
+        {
+          "numerator": "-7934273513488469",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.c302e02528055p-7"
+        },
+        {
+          "numerator": "3895682563349245",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.bae348eb135fap-7"
+        },
+        {
+          "numerator": "-1915298565735645",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.b37d0ca991374p-7"
+        },
+        {
+          "numerator": "7540189612837729",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.ac9c333698b61p-7"
+        },
+        {
+          "numerator": "-7430065929063369",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.a659b085c0bc9p-7"
+        },
+        {
+          "numerator": "458318011457217",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.a0d67a445ec10p-7"
+        },
+        {
+          "numerator": "-3624555979037295",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.9c1076732b4dep-7"
+        },
+        {
+          "numerator": "7175063110064937",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.97dae8fea9b29p-7"
+        },
+        {
+          "numerator": "-7106194450202439",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.93f0bd3e8bf47p-7"
+        },
+        {
+          "numerator": "7037893069750621",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.900ed2c63c15dp-7"
+        },
+        {
+          "numerator": "-6966998119690509",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.8c072a813310dp-7"
+        },
+        {
+          "numerator": "6892175893101177",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.87c65bfd67a79p-7"
+        },
+        {
+          "numerator": "-1703370639737971",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.834d3879c11ccp-7"
+        },
+        {
+          "numerator": "6731566724200035",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.7ea530360b663p-7"
+        },
+        {
+          "numerator": "-3323486732261675",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.79d631c2f3256p-7"
+        },
+        {
+          "numerator": "1639953193379899",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.74e1d6e28a0ecp-7"
+        },
+        {
+          "numerator": "-6469807062471135",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.6fc4157b951dfp-7"
+        },
+        {
+          "numerator": "3188279870510317",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.6a7728240a9dap-7"
+        },
+        {
+          "numerator": "-6279840135265959",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.64f7b38823ea7p-7"
+        },
+        {
+          "numerator": "1544934627491209",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.5f4707eb0f624p-7"
+        },
+        {
+          "numerator": "-3038325019566437",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.596ae5701c2cap-7"
+        },
+        {
+          "numerator": "746392311750941",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.536b804d708e8p-7"
+        },
+        {
+          "numerator": "-5863773490823309",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.4d51227f6c08dp-7"
+        },
+        {
+          "numerator": "2877512380065683",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.4722a1e804f26p-7"
+        },
+        {
+          "numerator": "-5645251861990951",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.40e539fe6ce27p-7"
+        },
+        {
+          "numerator": "5534775831502153",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.3a9d96b591d49p-7"
+        },
+        {
+          "numerator": "-5423983581097133",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.34515969e6cadp-7"
+        },
+        {
+          "numerator": "5313407455394751",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.2e08413ecfbbfp-7"
+        },
+        {
+          "numerator": "-650467368967235",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.27cc5e3b8e218p-7"
+        },
+        {
+          "numerator": "5095766186332847",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.21a92856512afp-7"
+        },
+        {
+          "numerator": "-4990255399652213",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.1ba9c606f4b75p-7"
+        },
+        {
+          "numerator": "610977079753399",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.15d717e6fd5b8p-7"
+        },
+        {
+          "numerator": "-74824962240337",
+          "denominator": "9007199254740992",
+          "binary64_hex": "-0x1.10362d2dbd440p-7"
+        },
+        {
+          "numerator": "586654804729537",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.0ac79b9eef608p-7"
+        },
+        {
+          "numerator": "-2300450219029433",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.0587e9c41e772p-7"
+        },
+        {
+          "numerator": "2255679221539261",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.0070e7d74437ap-7"
+        },
+        {
+          "numerator": "-4424130817913129",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.f6f7273aee252p-8"
+        },
+        {
+          "numerator": "8677623427026501",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.ed440a5dcce45p-8"
+        },
+        {
+          "numerator": "-8510345669454915",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.e3c1d428b2c43p-8"
+        },
+        {
+          "numerator": "8346424143719143",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.da7074e3b2ae7p-8"
+        },
+        {
+          "numerator": "-8186282580250707",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.d1561713a1053p-8"
+        },
+        {
+          "numerator": "1003830217868539",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.c87d37c6827d8p-8"
+        },
+        {
+          "numerator": "-7880321124579553",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.bff1c3d58b8e1p-8"
+        },
+        {
+          "numerator": "7736024774126197",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.b7bdfa0a2aa75p-8"
+        },
+        {
+          "numerator": "-7598162154844759",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.afe7cfc2f7257p-8"
+        },
+        {
+          "numerator": "7466742870592611",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.a86f68c6e4c63p-8"
+        },
+        {
+          "numerator": "-7341364508340939",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.a14ee9fafb2cbp-8"
+        },
+        {
+          "numerator": "7221290796082803",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.9a7b9c8b86673p-8"
+        },
+        {
+          "numerator": "-7105597773283445",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.93e80e7318075p-8"
+        },
+        {
+          "numerator": "6993352625428469",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.8d86acb0717f5p-8"
+        },
+        {
+          "numerator": "-3441892692105333",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.874c42e8930eap-8"
+        },
+        {
+          "numerator": "3388208987549661",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.8131dc2415fbap-8"
+        },
+        {
+          "numerator": "-6671126426867395",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.7b35aa8ecd6c3p-8"
+        },
+        {
+          "numerator": "3284063743147209",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.755ad59a8f992p-8"
+        },
+        {
+          "numerator": "-1616974224218165",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.6fa8498fb60d4p-8"
+        },
+        {
+          "numerator": "6371039904788315",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.6a26d525fef5bp-8"
+        },
+        {
+          "numerator": "-3139071350022013",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.64df0017c3efap-8"
+        },
+        {
+          "numerator": "3094817647699245",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.5fd70c5124a5ap-8"
+        },
+        {
+          "numerator": "-6105691971292519",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.5b118310e8d67p-8"
+        },
+        {
+          "numerator": "6026186259234929",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.568c8d3550071p-8"
+        },
+        {
+          "numerator": "-2975352848458713",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.52422a33a47b2p-8"
+        },
+        {
+          "numerator": "5878619771290645",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.4e292d33cc415p-8"
+        },
+        {
+          "numerator": "-1452296213512165",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.4a36c3fa8ff94p-8"
+        },
+        {
+          "numerator": "2870832088117371",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.466035da4e0f6p-8"
+        },
+        {
+          "numerator": "-2837719867035931",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.429c8494b2236p-8"
+        },
+        {
+          "numerator": "5610096273170141",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.3ee5a53849eddp-8"
+        },
+        {
+          "numerator": "-2772732074523899",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.3b391fcb7f9f6p-8"
+        },
+        {
+          "numerator": "5481616365832159",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.379804447c7dfp-8"
+        },
+        {
+          "numerator": "-5418823708732381",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.3406436426bddp-8"
+        },
+        {
+          "numerator": "5357479035571177",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.308994ace8be9p-8"
+        },
+        {
+          "numerator": "-2649003158199527",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.2d2823881b9cep-8"
+        },
+        {
+          "numerator": "5240771369331151",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.29e742bd169cfp-8"
+        },
+        {
+          "numerator": "-5186009485181053",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.26ca5ed2a807dp-8"
+        },
+        {
+          "numerator": "5133780920703871",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.23d2584221b7fp-8"
+        },
+        {
+          "numerator": "-5083959502972529",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.20fd5903a2671p-8"
+        },
+        {
+          "numerator": "5036253559645385",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.1e472286be4c9p-8"
+        },
+        {
+          "numerator": "-4990253001948269",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.1ba9bd1853c6dp-8"
+        },
+        {
+          "numerator": "309093293612489",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.191e63f7ddc90p-8"
+        },
+        {
+          "numerator": "-2450760191128827",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.169e8253e69f6p-8"
+        },
+        {
+          "numerator": "2428978957905621",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.1424977e7ddaap-8"
+        },
+        {
+          "numerator": "-4814546505455031",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.11acdf63655b7p-8"
+        },
+        {
+          "numerator": "1192792615931447",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.0f35ab0a738dcp-8"
+        },
+        {
+          "numerator": "-1181964293454667",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.0cbf60764ed2cp-8"
+        },
+        {
+          "numerator": "2342378078323197",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.0a4c2ca9383fap-8"
+        },
+        {
+          "numerator": "-4642101029428937",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.07df75ededec9p-8"
+        },
+        {
+          "numerator": "2300081818577101",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.057d30f80519ap-8"
+        },
+        {
+          "numerator": "-4559204692247725",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.032929023c4adp-8"
+        },
+        {
+          "numerator": "4519433694483573",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.00e66a7f21475p-8"
+        },
+        {
+          "numerator": "-1120243702855031",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.fd6d87fc3abb8p-9"
+        },
+        {
+          "numerator": "8887712692563639",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.f9353dde7eeb7p-9"
+        },
+        {
+          "numerator": "-8816004155447637",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.f521bec061955p-9"
+        },
+        {
+          "numerator": "2186629274121215",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.f12e9348ecffcp-9"
+        },
+        {
+          "numerator": "-8678798690032185",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.ed55248ff1a39p-9"
+        },
+        {
+          "numerator": "8612377297106785",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.e98e959773761p-9"
+        }
+      ]
+    },
+    "right_real_lower": {
+      "dtype": "float64",
+      "shape": [
+        120
+      ],
+      "order": "C",
+      "values": [
+        {
+          "numerator": "-1818282358155115",
+          "denominator": "2251799813685248",
+          "binary64_hex": "-0x1.9d6df683c9dacp-1"
+        },
+        {
+          "numerator": "5212207947167969",
+          "denominator": "18014398509481984",
+          "binary64_hex": "0x1.28479bb2fb8e1p-2"
+        },
+        {
+          "numerator": "-388880141741513",
+          "denominator": "2251799813685248",
+          "binary64_hex": "-0x1.61af36b56dc90p-3"
+        },
+        {
+          "numerator": "612606929589591",
+          "denominator": "4503599627370496",
+          "binary64_hex": "0x1.1694d5366aab8p-3"
+        },
+        {
+          "numerator": "-8311138916612705",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.d86efd2cdba61p-4"
+        },
+        {
+          "numerator": "6892874071360051",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.87d084e814233p-4"
+        },
+        {
+          "numerator": "-5547620336471001",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.3b58803810bd9p-4"
+        },
+        {
+          "numerator": "2195082263406509",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.f31a9aa409eb4p-5"
+        },
+        {
+          "numerator": "-6862112407706767",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.8610e0c785c8fp-5"
+        },
+        {
+          "numerator": "5322366870125479",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.2e8aa1aa87ba7p-5"
+        },
+        {
+          "numerator": "-4164904204806007",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.d97eaa74d4eeep-6"
+        },
+        {
+          "numerator": "6723090780227145",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.7e29d8dbf8649p-6"
+        },
+        {
+          "numerator": "-2832841713025061",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.420e8b805004ap-6"
+        },
+        {
+          "numerator": "4968097570823681",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.1a6755aeb1e01p-6"
+        },
+        {
+          "numerator": "-561032044900301",
+          "denominator": "36028797018963968",
+          "binary64_hex": "-0x1.fe4173be6fcd0p-7"
+        },
+        {
+          "numerator": "4152707484628787",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.d81bb1cf46e66p-7"
+        },
+        {
+          "numerator": "-983246651773247",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.bf20f9b3e89f8p-7"
+        },
+        {
+          "numerator": "7628286222726511",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.b19e2ca8cf56fp-7"
+        },
+        {
+          "numerator": "-1888762632310393",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.ad747470e39e4p-7"
+        },
+        {
+          "numerator": "7597884712728199",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.afe3c6358b687p-7"
+        },
+        {
+          "numerator": "-7707560656160573",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.b61fc4efec73dp-7"
+        },
+        {
+          "numerator": "3921765400252367",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.bdda653261f9ep-7"
+        },
+        {
+          "numerator": "-3988740071758987",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.c5779d6283916p-7"
+        },
+        {
+          "numerator": "8092184184116381",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.cbfcc73c0549dp-7"
+        },
+        {
+          "numerator": "-4089312644077517",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.d0e6a970d2f9ap-7"
+        },
+        {
+          "numerator": "1029156658986289",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.d4019a89de988p-7"
+        },
+        {
+          "numerator": "-4127955430724869",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.d54b50a31aa0ap-7"
+        },
+        {
+          "numerator": "8248330891041995",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.d4dd030c01ccbp-7"
+        },
+        {
+          "numerator": "-128329867280835",
+          "denominator": "9007199254740992",
+          "binary64_hex": "-0x1.d2dc809d070c0p-7"
+        },
+        {
+          "numerator": "2038297451054689",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.cf7486e111984p-7"
+        },
+        {
+          "numerator": "-8071781493027827",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.cad3e1498b3f3p-7"
+        },
+        {
+          "numerator": "7972575935353131",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.c5303fc92512bp-7"
+        },
+        {
+          "numerator": "-7859857978689863",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.bec7fcace0947p-7"
+        },
+        {
+          "numerator": "7738292784179737",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.b7defb091aa19p-7"
+        },
+        {
+          "numerator": "-1903082738280567",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.b0b5fea5fa1dcp-7"
+        },
+        {
+          "numerator": "1871358967491557",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.a97f6da04af94p-7"
+        },
+        {
+          "numerator": "-3679732717329305",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.a256512f83732p-7"
+        },
+        {
+          "numerator": "7234494469538171",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.9b3bc00fc817bp-7"
+        },
+        {
+          "numerator": "-7109178082401125",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.941c2823f1b65p-7"
+        },
+        {
+          "numerator": "3490765086014515",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.8cdaa29e47866p-7"
+        },
+        {
+          "numerator": "-3424915367778705",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.855e27fc3b322p-7"
+        },
+        {
+          "numerator": "1678335724104419",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.7d9bff298ab8cp-7"
+        },
+        {
+          "numerator": "-6572614772156567",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.759c220bd6897p-7"
+        },
+        {
+          "numerator": "3214654987546235",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.6d76c61375cf6p-7"
+        },
+        {
+          "numerator": "-3142840008476893",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.654caec9511bap-7"
+        },
+        {
+          "numerator": "6143899867296677",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.5d3d8292033a5p-7"
+        },
+        {
+          "numerator": "-1501376224025229",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.555f992076a34p-7"
+        },
+        {
+          "numerator": "2935550683133113",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.4dbbc4f606972p-7"
+        },
+        {
+          "numerator": "-5740409024827107",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.464df20ca4ee3p-7"
+        },
+        {
+          "numerator": "5612578588472985",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.3f09c490a3699p-7"
+        },
+        {
+          "numerator": "-5486647108897987",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.37e1393ef0cc3p-7"
+        },
+        {
+          "numerator": "5361969899869647",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.30caee72d95cfp-7"
+        },
+        {
+          "numerator": "-5238497297791613",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.29c62b2977a7dp-7"
+        },
+        {
+          "numerator": "5116829885362551",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.22dbacbb17177p-7"
+        },
+        {
+          "numerator": "-2499030593257199",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.1c1b5cd967ddep-7"
+        },
+        {
+          "numerator": "4883478183382843",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.1597f5e638f3bp-7"
+        },
+        {
+          "numerator": "-2387110885896039",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.0f62120c95ecep-7"
+        },
+        {
+          "numerator": "4671007283000331",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.09841a1d8b40bp-7"
+        },
+        {
+          "numerator": "-4573975597393499",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.04001aeb1a65bp-7"
+        },
+        {
+          "numerator": "8965401731971037",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.fd9fc4180b7ddp-8"
+        },
+        {
+          "numerator": "-8792671845404589",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.f3ce371f8cfadp-8"
+        },
+        {
+          "numerator": "8627686228320761",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.ea6d5bcdf61f9p-8"
+        },
+        {
+          "numerator": "-8468486613791141",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.e160b306671a5p-8"
+        },
+        {
+          "numerator": "8313640213356587",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.d893633b5202bp-8"
+        },
+        {
+          "numerator": "-8162471318492007",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.cffb9736d9367p-8"
+        },
+        {
+          "numerator": "8015083187613089",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.c79acfa3e2da1p-8"
+        },
+        {
+          "numerator": "-7872191699285263",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.bf7b775d6f50fp-8"
+        },
+        {
+          "numerator": "7734833582697085",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.b7aca4817ea7dp-8"
+        },
+        {
+          "numerator": "-1901008167879899",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.b03d3d23f136cp-8"
+        },
+        {
+          "numerator": "7480506044579313",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.a937b0986fdf1p-8"
+        },
+        {
+          "numerator": "-3682235980656777",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.a29f2bf366112p-8"
+        },
+        {
+          "numerator": "7255590529244163",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.9c6ebd0219c03p-8"
+        },
+        {
+          "numerator": "-3576517320340659",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.969a5a8d2e966p-8"
+        },
+        {
+          "numerator": "3527830291678201",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.91115feba07f2p-8"
+        },
+        {
+          "numerator": "-6962230153679411",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.8bc1c87279233p-8"
+        },
+        {
+          "numerator": "1717907811992611",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.869b65390108cp-8"
+        },
+        {
+          "numerator": "-105985170346443",
+          "denominator": "18014398509481984",
+          "binary64_hex": "-0x1.819261b8472c0p-8"
+        },
+        {
+          "numerator": "1674017595740267",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.7ca0a609141acp-8"
+        },
+        {
+          "numerator": "-6610671714652249",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.77c5ef3475059p-8"
+        },
+        {
+          "numerator": "6527164321281967",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.7306bdec2b7afp-8"
+        },
+        {
+          "numerator": "-3223027724901073",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.6e6a73d49b5a2p-8"
+        },
+        {
+          "numerator": "6367896339214543",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.69f916743f0cfp-8"
+        },
+        {
+          "numerator": "-6293137013561771",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.65b93243759abp-8"
+        },
+        {
+          "numerator": "3111008476672753",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.61ae4364a65e2p-8"
+        },
+        {
+          "numerator": "-3077254365771339",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.5dd7e3ab5ec96p-8"
+        },
+        {
+          "numerator": "761289944538601",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.5a31d05b8ef48p-8"
+        },
+        {
+          "numerator": "-1507236029766601",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.56b4af0966f24p-8"
+        },
+        {
+          "numerator": "186554790416371",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.535758071fe60p-8"
+        },
+        {
+          "numerator": "-2956049180604169",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.50105aab26e12p-8"
+        },
+        {
+          "numerator": "5855409931709351",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.4cd76dcfe6ba7p-8"
+        },
+        {
+          "numerator": "-724909260031637",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.49a68b78234a8p-8"
+        },
+        {
+          "numerator": "358967147643103",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.467a8d5240df0p-8"
+        },
+        {
+          "numerator": "-5687995774096697",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.43533b7995539p-8"
+        },
+        {
+          "numerator": "5632993952682353",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.4032d9b925171p-8"
+        },
+        {
+          "numerator": "-2789369335794189",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.3d1d550d0941ap-8"
+        },
+        {
+          "numerator": "5525544165025219",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.3a1740125a5c3p-8"
+        },
+        {
+          "numerator": "-5473699688253639",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.3724d058688c7p-8"
+        },
+        {
+          "numerator": "2711706083604105",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.344908bb26d12p-8"
+        },
+        {
+          "numerator": "-2687384694417061",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.31853042bcd4ap-8"
+        },
+        {
+          "numerator": "2663863868847035",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.2ed8a4743e776p-8"
+        },
+        {
+          "numerator": "-5282123896581593",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.2c4104e83edd9p-8"
+        },
+        {
+          "numerator": "5237705968232611",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.29baa73aca8a3p-8"
+        },
+        {
+          "numerator": "-2597088380606819",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.2741384c0b2c6p-8"
+        },
+        {
+          "numerator": "2575620381239775",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.24d06b3ccd3bep-8"
+        },
+        {
+          "numerator": "-5108646685156623",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.226497ef3a50fp-8"
+        },
+        {
+          "numerator": "5066219061295433",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.1ffb30b80b949p-8"
+        },
+        {
+          "numerator": "-5023874917333577",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.1d93007d7fa49p-8"
+        },
+        {
+          "numerator": "2490812154058377",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.1b2c2cb4a2d12p-8"
+        },
+        {
+          "numerator": "-2469778186604575",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.18c8016f9203ep-8"
+        },
+        {
+          "numerator": "4897814438933455",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.1668949cef3cfp-8"
+        },
+        {
+          "numerator": "-1214141364241947",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.1410542e4186cp-8"
+        },
+        {
+          "numerator": "4815968722387961",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.11c1918f283f9p-8"
+        },
+        {
+          "numerator": "-2388074727202491",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.0f7e1f39fbd76p-8"
+        },
+        {
+          "numerator": "1184294941103955",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.0d4709d185d4cp-8"
+        },
+        {
+          "numerator": "-4699070868205969",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.0b1c7b1dfb191p-8"
+        },
+        {
+          "numerator": "4661773882005635",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.08fdbd0429883p-8"
+        },
+        {
+          "numerator": "-2312596242700691",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.06e968b1c3326p-8"
+        },
+        {
+          "numerator": "2294598804284695",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.04dd9d5434a2ep-8"
+        },
+        {
+          "numerator": "-284603266286683",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.02d85c96c45b0p-8"
+        },
+        {
+          "numerator": "4518425340715761",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.00d7be160a2f1p-8"
+        }
+      ]
+    },
+    "right_real_upper": {
+      "dtype": "float64",
+      "shape": [
+        120
+      ],
+      "order": "C",
+      "values": [
+        {
+          "numerator": "-3636564716310155",
+          "denominator": "4503599627370496",
+          "binary64_hex": "-0x1.9d6df683c9d16p-1"
+        },
+        {
+          "numerator": "5212207947168247",
+          "denominator": "18014398509481984",
+          "binary64_hex": "0x1.28479bb2fb9f7p-2"
+        },
+        {
+          "numerator": "-777760283482995",
+          "denominator": "4503599627370496",
+          "binary64_hex": "-0x1.61af36b56db98p-3"
+        },
+        {
+          "numerator": "2450427718358557",
+          "denominator": "18014398509481984",
+          "binary64_hex": "0x1.1694d5366ac3ap-3"
+        },
+        {
+          "numerator": "-4155569458306173",
+          "denominator": "36028797018963968",
+          "binary64_hex": "-0x1.d86efd2cdb8fap-4"
+        },
+        {
+          "numerator": "861609258920093",
+          "denominator": "9007199254740992",
+          "binary64_hex": "0x1.87d084e8144e8p-4"
+        },
+        {
+          "numerator": "-5547620336470579",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.3b58803810a33p-4"
+        },
+        {
+          "numerator": "8780329053627573",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.f31a9aa40a4b5p-5"
+        },
+        {
+          "numerator": "-6862112407705357",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.8610e0c78570dp-5"
+        },
+        {
+          "numerator": "2661183435064359",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.2e8aa1aa8884ep-5"
+        },
+        {
+          "numerator": "-8329808409603589",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.d97eaa74d2e05p-6"
+        },
+        {
+          "numerator": "6723090780230643",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.7e29d8dbf93f3p-6"
+        },
+        {
+          "numerator": "-5665683426044395",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.420e8b804e9ebp-6"
+        },
+        {
+          "numerator": "1242024392707501",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.1a6755aeb36b4p-6"
+        },
+        {
+          "numerator": "-8976512718401761",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.fe4173be6f0e1p-7"
+        },
+        {
+          "numerator": "8305414969261455",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.d81bb1cf47d8fp-7"
+        },
+        {
+          "numerator": "-7865973214181221",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.bf20f9b3e7765p-7"
+        },
+        {
+          "numerator": "7628286222732557",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.b19e2ca8d0d0dp-7"
+        },
+        {
+          "numerator": "-3777525264616911",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.ad747470e1b9ep-7"
+        },
+        {
+          "numerator": "7597884712741047",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.afe3c6358e8b7p-7"
+        },
+        {
+          "numerator": "-7707560656147249",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.b61fc4efe9331p-7"
+        },
+        {
+          "numerator": "1960882700130747",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.bdda6532666ecp-7"
+        },
+        {
+          "numerator": "-3988740071751437",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.c5779d627fe1ap-7"
+        },
+        {
+          "numerator": "1011523023015479",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.cbfcc73c071b8p-7"
+        },
+        {
+          "numerator": "-8178625288147067",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.d0e6a970d107bp-7"
+        },
+        {
+          "numerator": "128644582373295",
+          "denominator": "9007199254740992",
+          "binary64_hex": "0x1.d4019a89debc0p-7"
+        },
+        {
+          "numerator": "-8255910861449717",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.d54b50a31a9f5p-7"
+        },
+        {
+          "numerator": "4124165445521013",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.d4dd030c01ceap-7"
+        },
+        {
+          "numerator": "-4106555752986695",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.d2dc809d0708ep-7"
+        },
+        {
+          "numerator": "127393590690919",
+          "denominator": "9007199254740992",
+          "binary64_hex": "0x1.cf7486e1119c0p-7"
+        },
+        {
+          "numerator": "-8071781493027751",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.cad3e1498b3a7p-7"
+        },
+        {
+          "numerator": "1993143983838317",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.c5303fc9251b4p-7"
+        },
+        {
+          "numerator": "-7859857978689615",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.bec7fcace084fp-7"
+        },
+        {
+          "numerator": "3869146392090047",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.b7defb091ab7ep-7"
+        },
+        {
+          "numerator": "-7612330953121669",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.b0b5fea5f9f85p-7"
+        },
+        {
+          "numerator": "3742717934983693",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.a97f6da04b41ap-7"
+        },
+        {
+          "numerator": "-919933179332091",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.a256512f82fd8p-7"
+        },
+        {
+          "numerator": "3617247234770617",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.9b3bc00fc8d72p-7"
+        },
+        {
+          "numerator": "-3554589041198085",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.941c2823f080ap-7"
+        },
+        {
+          "numerator": "218172817876147",
+          "denominator": "18014398509481984",
+          "binary64_hex": "0x1.8cdaa29e49660p-7"
+        },
+        {
+          "numerator": "-214057210485809",
+          "denominator": "18014398509481984",
+          "binary64_hex": "-0x1.855e27fc38620p-7"
+        },
+        {
+          "numerator": "1678335724107441",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.7d9bff298dac4p-7"
+        },
+        {
+          "numerator": "-3286307386071863",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.759c220bd366ep-7"
+        },
+        {
+          "numerator": "3214654987553317",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.6d76c6137944ap-7"
+        },
+        {
+          "numerator": "-6285680016937297",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.654caec94d151p-7"
+        },
+        {
+          "numerator": "6143899867315775",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.5d3d829207e3fp-7"
+        },
+        {
+          "numerator": "-6005504896077557",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.555f992070ef5p-7"
+        },
+        {
+          "numerator": "366943835392647",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.4dbbc4f60a870p-7"
+        },
+        {
+          "numerator": "-5740409024822611",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.464df20ca3d53p-7"
+        },
+        {
+          "numerator": "5612578588474729",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.3f09c490a3d69p-7"
+        },
+        {
+          "numerator": "-342915444306055",
+          "denominator": "36028797018963968",
+          "binary64_hex": "-0x1.37e1393ef0870p-7"
+        },
+        {
+          "numerator": "5361969899870531",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.30caee72d9943p-7"
+        },
+        {
+          "numerator": "-327406081111925",
+          "denominator": "36028797018963968",
+          "binary64_hex": "-0x1.29c62b2977750p-7"
+        },
+        {
+          "numerator": "5116829885363259",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.22dbacbb1743bp-7"
+        },
+        {
+          "numerator": "-1249515296628465",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.1c1b5cd967bc4p-7"
+        },
+        {
+          "numerator": "4883478183383225",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.1597f5e6390b9p-7"
+        },
+        {
+          "numerator": "-4774221771791717",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.0f62120c95d65p-7"
+        },
+        {
+          "numerator": "4671007283000685",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.09841a1d8b56dp-7"
+        },
+        {
+          "numerator": "-1143493899348289",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.04001aeb1a504p-7"
+        },
+        {
+          "numerator": "8965401731971641",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.fd9fc4180ba39p-8"
+        },
+        {
+          "numerator": "-8792671845404089",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.f3ce371f8cdb9p-8"
+        },
+        {
+          "numerator": "1078460778540147",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.ea6d5bcdf6398p-8"
+        },
+        {
+          "numerator": "-4234243306895369",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.e160b30667012p-8"
+        },
+        {
+          "numerator": "8313640213356927",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.d893633b5217fp-8"
+        },
+        {
+          "numerator": "-8162471318491647",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.cffb9736d91ffp-8"
+        },
+        {
+          "numerator": "500942699225839",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.c79acfa3e2ef0p-8"
+        },
+        {
+          "numerator": "-984023962410619",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.bf7b775d6f3d8p-8"
+        },
+        {
+          "numerator": "1933708395674353",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.b7aca4817ebc4p-8"
+        },
+        {
+          "numerator": "-7604032671519251",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.b03d3d23f1213p-8"
+        },
+        {
+          "numerator": "7480506044579633",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.a937b0986ff31p-8"
+        },
+        {
+          "numerator": "-7364471961313219",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.a29f2bf365fc3p-8"
+        },
+        {
+          "numerator": "906948816155565",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.9c6ebd0219d68p-8"
+        },
+        {
+          "numerator": "-3576517320340489",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.969a5a8d2e812p-8"
+        },
+        {
+          "numerator": "1763915145839195",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.91115feba096cp-8"
+        },
+        {
+          "numerator": "-3481115076839485",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.8bc1c8727907ap-8"
+        },
+        {
+          "numerator": "6871631247970943",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.869b65390127fp-8"
+        },
+        {
+          "numerator": "-3391525451085839",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.819261b84701ep-8"
+        },
+        {
+          "numerator": "6696070382961949",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.7ca0a6091451dp-8"
+        },
+        {
+          "numerator": "-413166982165691",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.77c5ef3474bb0p-8"
+        },
+        {
+          "numerator": "6527164321283705",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.7306bdec2be79p-8"
+        },
+        {
+          "numerator": "-6446055449799239",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.6e6a73d49aa47p-8"
+        },
+        {
+          "numerator": "3183948169609431",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.69f91674401aep-8"
+        },
+        {
+          "numerator": "-1573284253388773",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.65b9324373f94p-8"
+        },
+        {
+          "numerator": "6222016953354681",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.61ae4364a89b9p-8"
+        },
+        {
+          "numerator": "-192328397860647",
+          "denominator": "36028797018963968",
+          "binary64_hex": "-0x1.5dd7e3ab5e4e0p-8"
+        },
+        {
+          "numerator": "6090319556311551",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.5a31d05b8f9ffp-8"
+        },
+        {
+          "numerator": "-3014472059531217",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.56b4af0965fa2p-8"
+        },
+        {
+          "numerator": "2984876646664741",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.535758072144ap-8"
+        },
+        {
+          "numerator": "-5912098361200593",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.50105aab24fd1p-8"
+        },
+        {
+          "numerator": "2927704965859833",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.4cd76dcfe93f2p-8"
+        },
+        {
+          "numerator": "-2899637040121209",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.49a68b7820af2p-8"
+        },
+        {
+          "numerator": "1435868590575157",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.467a8d52438d4p-8"
+        },
+        {
+          "numerator": "-5687995774080619",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.43533b799166bp-8"
+        },
+        {
+          "numerator": "1408248488175045",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.4032d9b929714p-8"
+        },
+        {
+          "numerator": "-5578738671565439",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.3d1d550d03a7fp-8"
+        },
+        {
+          "numerator": "1381386041263811",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.3a17401261b0cp-8"
+        },
+        {
+          "numerator": "-5473699688215819",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.3724d0585f50bp-8"
+        },
+        {
+          "numerator": "5423412167265315",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.344908bb34c23p-8"
+        },
+        {
+          "numerator": "-5374769388746735",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.31853042a77efp-8"
+        },
+        {
+          "numerator": "5327727737828945",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.2ed8a4745f651p-8"
+        },
+        {
+          "numerator": "-5282123896384433",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.2c4104e80ebb1p-8"
+        },
+        {
+          "numerator": "5237705968525919",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.29baa73b1225fp-8"
+        },
+        {
+          "numerator": "-5194176760754537",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.2741384b9b169p-8"
+        },
+        {
+          "numerator": "5151240763202549",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.24d06b3d7dbf5p-8"
+        },
+        {
+          "numerator": "-5108646684012955",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.226497ee2319bp-8"
+        },
+        {
+          "numerator": "5066219063109405",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.1ffb30b9c671dp-8"
+        },
+        {
+          "numerator": "-1255968728613931",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.1d93007ac10acp-8"
+        },
+        {
+          "numerator": "2490812156338209",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.1b2c2cb8fc042p-8"
+        },
+        {
+          "numerator": "-2469778182998575",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.18c80168b145ep-8"
+        },
+        {
+          "numerator": "4897814450336195",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.166894a7cf1c3p-8"
+        },
+        {
+          "numerator": "-4856565438430501",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.1410541c93d25p-8"
+        },
+        {
+          "numerator": "4815968752451887",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.11c191abd412fp-8"
+        },
+        {
+          "numerator": "-1194037351557791",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.0f7e1f0c0aa7cp-8"
+        },
+        {
+          "numerator": "2368589920355645",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.0d470a1a48a7ap-8"
+        },
+        {
+          "numerator": "-587383843539861",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.0b1c7aaba5ca8p-8"
+        },
+        {
+          "numerator": "4661774069627039",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.08fdbdb71789fp-8"
+        },
+        {
+          "numerator": "-1156298048217285",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.06e9679ac8314p-8"
+        },
+        {
+          "numerator": "2294599031821449",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.04dd9f0632912p-8"
+        },
+        {
+          "numerator": "-2276825776986183",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.02d859f4e308ep-8"
+        },
+        {
+          "numerator": "4518426436206001",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.00d7c22ac7db1p-8"
+        }
+      ]
+    },
+    "right_imag_lower": {
+      "dtype": "float64",
+      "shape": [
+        120
+      ],
+      "order": "C",
+      "values": [
+        {
+          "numerator": "-4579257174497521",
+          "denominator": "18014398509481984",
+          "binary64_hex": "-0x1.044cf653898f1p-2"
+        },
+        {
+          "numerator": "-3398545374991973",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.825eb03a8accap-8"
+        },
+        {
+          "numerator": "1086495507846885",
+          "denominator": "18014398509481984",
+          "binary64_hex": "0x1.ee14b965cb728p-5"
+        },
+        {
+          "numerator": "-1958575594020015",
+          "denominator": "18014398509481984",
+          "binary64_hex": "-0x1.bd541aa3072bcp-4"
+        },
+        {
+          "numerator": "4872313523217065",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.14f57e4c922a9p-3"
+        },
+        {
+          "numerator": "-2465314283491123",
+          "denominator": "18014398509481984",
+          "binary64_hex": "-0x1.184616c411e66p-3"
+        },
+        {
+          "numerator": "2232212729424645",
+          "denominator": "18014398509481984",
+          "binary64_hex": "0x1.fb8be1b33ac14p-4"
+        },
+        {
+          "numerator": "-3795715798095799",
+          "denominator": "36028797018963968",
+          "binary64_hex": "-0x1.af85de7a0af6ep-4"
+        },
+        {
+          "numerator": "6197154010676769",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.604475b6cbe21p-4"
+        },
+        {
+          "numerator": "-4947127917957343",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.19362fa3550dfp-4"
+        },
+        {
+          "numerator": "988397483549387",
+          "denominator": "18014398509481984",
+          "binary64_hex": "0x1.c1789c73b1658p-5"
+        },
+        {
+          "numerator": "-6461089839204697",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.6f453b4ba4959p-5"
+        },
+        {
+          "numerator": "5434721737342499",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.34ed9c29b7e23p-5"
+        },
+        {
+          "numerator": "-4668270372553489",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.095c465458311p-5"
+        },
+        {
+          "numerator": "1011593097394619",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.cc04ef9d1cdd8p-6"
+        },
+        {
+          "numerator": "-3514478533428645",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.8f8cc991c8b4ap-6"
+        },
+        {
+          "numerator": "6107809515325293",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.5b3053884476dp-6"
+        },
+        {
+          "numerator": "-5309522962346887",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.2dcfba618f387p-6"
+        },
+        {
+          "numerator": "2305414896632765",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.0618677f2877ap-6"
+        },
+        {
+          "numerator": "-997621889381363",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.c5aa792b19f98p-7"
+        },
+        {
+          "numerator": "6879068182086209",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.87079df610241p-7"
+        },
+        {
+          "numerator": "-2962323514416929",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.50c6f6192be42p-7"
+        },
+        {
+          "numerator": "5136281392993961",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.23f6bb3e556a9p-7"
+        },
+        {
+          "numerator": "-4521746080329167",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.010810ce1edcfp-7"
+        },
+        {
+          "numerator": "4067319710538039",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.ce6695511b26ep-8"
+        },
+        {
+          "numerator": "-7482063885102531",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.a94e5c00eedc3p-8"
+        },
+        {
+          "numerator": "876182794734769",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.8e711a1e86588p-8"
+        },
+        {
+          "numerator": "-1663252909664489",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.7a2e0fb68a3a4p-8"
+        },
+        {
+          "numerator": "3187258998199037",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.6a59720ca25fap-8"
+        },
+        {
+          "numerator": "-6159973746371665",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.5e276a6fa6c51p-8"
+        },
+        {
+          "numerator": "6008559094196519",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.558c0ae6be927p-8"
+        },
+        {
+          "numerator": "-5920101650775847",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.5084d13edbf27p-8"
+        },
+        {
+          "numerator": "5887239510262501",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.4ea69c3b782e5p-8"
+        },
+        {
+          "numerator": "-368401833318435",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.4f0f3c68d8230p-8"
+        },
+        {
+          "numerator": "5922159929499467",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.50a2c4ee69f4bp-8"
+        },
+        {
+          "numerator": "-2976438474442171",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.5261c2bee0b76p-8"
+        },
+        {
+          "numerator": "746924038500155",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.53a966fe979d8p-8"
+        },
+        {
+          "numerator": "-5986141889425809",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.5445d44e4f191p-8"
+        },
+        {
+          "numerator": "5987464342646231",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.545912d3fadd7p-8"
+        },
+        {
+          "numerator": "-748034149091367",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.542aa2de44138p-8"
+        },
+        {
+          "numerator": "2990390363674405",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.53f7d06bbae4ap-8"
+        },
+        {
+          "numerator": "-2989236376334801",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.53d63a8b8e3a2p-8"
+        },
+        {
+          "numerator": "2987869396731395",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.53ae71c0e0c06p-8"
+        },
+        {
+          "numerator": "-5968841727112703",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.534a142dd75ffp-8"
+        },
+        {
+          "numerator": "2976756843289889",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.526b06c743a42p-8"
+        },
+        {
+          "numerator": "-370402496267891",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.50e10d36c6730p-8"
+        },
+        {
+          "numerator": "735766993561221",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.4e968d24f3428p-8"
+        },
+        {
+          "numerator": "-1458266948320855",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.4b924edc4f95cp-8"
+        },
+        {
+          "numerator": "5769162673507773",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.47f05dbce4dbdp-8"
+        },
+        {
+          "numerator": "-1424254542387707",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.43d68684667ecp-8"
+        },
+        {
+          "numerator": "1404783234153429",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.3f69256a1ef54p-8"
+        },
+        {
+          "numerator": "-5537387075256513",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.3ac39659ac0c1p-8"
+        },
+        {
+          "numerator": "2726430069856019",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.35f58efa32e26p-8"
+        },
+        {
+          "numerator": "-5365946376776485",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.3104cbfabeb25p-8"
+        },
+        {
+          "numerator": "5276646722336121",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.2bf150d7d7579p-8"
+        },
+        {
+          "numerator": "-2592447955622133",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.26ba2a6fcb1eap-8"
+        },
+        {
+          "numerator": "2545405254353687",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.21610affd862ep-8"
+        },
+        {
+          "numerator": "-4994798126885371",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.1bebe1013e9fbp-8"
+        },
+        {
+          "numerator": "4897526273126607",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.1664631c9b0cfp-8"
+        },
+        {
+          "numerator": "-4799793320518663",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.10d62f7dd6407p-8"
+        },
+        {
+          "numerator": "587795613818749",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.0b4c6a618fbe8p-8"
+        },
+        {
+          "numerator": "-2302918194901877",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.05cfbd9e866eap-8"
+        },
+        {
+          "numerator": "4510561850381241",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.0065504d453b9p-8"
+        },
+        {
+          "numerator": "-8833324820100491",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.f61dcb416758bp-9"
+        },
+        {
+          "numerator": "540512496198539",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.eb97df55238b0p-9"
+        },
+        {
+          "numerator": "-8465569742951617",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.e13640d5994c1p-9"
+        },
+        {
+          "numerator": "8285360108103633",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.d6f7dba1467d1p-9"
+        },
+        {
+          "numerator": "-8107740148445681",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.ccdf25b7ab1f1p-9"
+        },
+        {
+          "numerator": "1983288703350341",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.c2f298a99d914p-9"
+        },
+        {
+          "numerator": "-7762251472985277",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.b93ba01b45cbdp-9"
+        },
+        {
+          "numerator": "1898932717314229",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.afc46e84582d4p-9"
+        },
+        {
+          "numerator": "-7434172203843367",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.a69571968bf27p-9"
+        },
+        {
+          "numerator": "3638943027044811",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.9db32e4f84396p-9"
+        },
+        {
+          "numerator": "-7126837794625913",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.951d23b1ed979p-9"
+        },
+        {
+          "numerator": "6980662538923725",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.8cce026edeecdp-9"
+        },
+        {
+          "numerator": "-6838766863492995",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.84bd27d99a783p-9"
+        },
+        {
+          "numerator": "3350244841381245",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.7ce0f535cbafap-9"
+        },
+        {
+          "numerator": "-6565280190325605",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.7531669986365p-9"
+        },
+        {
+          "numerator": "6432847764027229",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.6daa415de775dp-9"
+        },
+        {
+          "numerator": "-3151623538928281",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.664c51301d532p-9"
+        },
+        {
+          "numerator": "6176878552071873",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.5f1d69beabec1p-9"
+        },
+        {
+          "numerator": "-6054405072310139",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.5827307a94f7bp-9"
+        },
+        {
+          "numerator": "2968302719638157",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.5174faa61351ap-9"
+        },
+        {
+          "numerator": "-5824198814380783",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.4b113f56eb2efp-9"
+        },
+        {
+          "numerator": "5717679724062007",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.450330ce46537p-9"
+        },
+        {
+          "numerator": "-5617199363578223",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.3f4d024b2d96fp-9"
+        },
+        {
+          "numerator": "5522517474884153",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.39eb34c5b3a39p-9"
+        },
+        {
+          "numerator": "-5433033015014237",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.34d5092e9b35dp-9"
+        },
+        {
+          "numerator": "5347884967521205",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.2ffdf7fc9ebb5p-9"
+        },
+        {
+          "numerator": "-2633050312671823",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.2b57d9920049ep-9"
+        },
+        {
+          "numerator": "5186760205247689",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.26d54b791a4c9p-9"
+        },
+        {
+          "numerator": "-2554572532691547",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.226bd88ba64b6p-9"
+        },
+        {
+          "numerator": "5032841860089077",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.1e157cf4804f5p-9"
+        },
+        {
+          "numerator": "-4957785136238489",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.19d144deb0f99p-9"
+        },
+        {
+          "numerator": "4884233704983557",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.15a2f46fc4c05p-9"
+        },
+        {
+          "numerator": "-4812688902525921",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.1191d747313e1p-9"
+        },
+        {
+          "numerator": "2371886552252967",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.0da6fbeca044ep-9"
+        },
+        {
+          "numerator": "-4678092896920713",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.09eb36158e489p-9"
+        },
+        {
+          "numerator": "2308056165904769",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.0665467c7e302p-9"
+        },
+        {
+          "numerator": "-35609828628525",
+          "denominator": "18014398509481984",
+          "binary64_hex": "-0x1.0318797cc1680p-9"
+        },
+        {
+          "numerator": "4503870861677657",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.0003f26d31459p-9"
+        },
+        {
+          "numerator": "-8906417698947017",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "-0x1.fa456f72abfc9p-10"
+        },
+        {
+          "numerator": "550687303659999",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.f4d8e11df1df0p-10"
+        },
+        {
+          "numerator": "-8720042399133849",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "-0x1.efad515a07099p-10"
+        },
+        {
+          "numerator": "8632039681359761",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "0x1.eaacb5ae4ff91p-10"
+        },
+        {
+          "numerator": "-4272804645137849",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.e5c2fb622db72p-10"
+        },
+        {
+          "numerator": "4229843078382115",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.e0e0a2c490446p-10"
+        },
+        {
+          "numerator": "-8373640281719987",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "-0x1.dbfc80e7804b3p-10"
+        },
+        {
+          "numerator": "8287322312109693",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "0x1.d7146968d6e7dp-10"
+        },
+        {
+          "numerator": "-8201036292524913",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "-0x1.d22cc8f018b71p-10"
+        },
+        {
+          "numerator": "2028860920661485",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.cd4f3f9e617b4p-10"
+        },
+        {
+          "numerator": "-8031427574454285",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "-0x1.c888a739d580dp-10"
+        },
+        {
+          "numerator": "7949925834088137",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "0x1.c3e6a5954dec9p-10"
+        },
+        {
+          "numerator": "-3935891756700525",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.bf7586c10a6dap-10"
+        },
+        {
+          "numerator": "7797606622866781",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "0x1.bb3e1c4daad5dp-10"
+        },
+        {
+          "numerator": "-7727698063166533",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "-0x1.b744ce9fc8c45p-10"
+        },
+        {
+          "numerator": "1915495702341719",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.b388863a0a15cp-10"
+        },
+        {
+          "numerator": "-29687825439281",
+          "denominator": "18014398509481984",
+          "binary64_hex": "-0x1.b003c4a1a3100p-10"
+        },
+        {
+          "numerator": "1885321992730863",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.acac2eea7e3bcp-10"
+        },
+        {
+          "numerator": "-3742395739526167",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.a9760d153a82ep-10"
+        }
+      ]
+    },
+    "right_imag_upper": {
+      "dtype": "float64",
+      "shape": [
+        120
+      ],
+      "order": "C",
+      "values": [
+        {
+          "numerator": "-2289628587248611",
+          "denominator": "9007199254740992",
+          "binary64_hex": "-0x1.044cf653897c6p-2"
+        },
+        {
+          "numerator": "-6797090749966315",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.825eb03a867ebp-8"
+        },
+        {
+          "numerator": "4345982031388033",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.ee14b965cbb02p-5"
+        },
+        {
+          "numerator": "-3917151188039645",
+          "denominator": "36028797018963968",
+          "binary64_hex": "-0x1.bd541aa306fbap-4"
+        },
+        {
+          "numerator": "4872313523217245",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.14f57e4c9235dp-3"
+        },
+        {
+          "numerator": "-4930628566981899",
+          "denominator": "36028797018963968",
+          "binary64_hex": "-0x1.184616c411d0bp-3"
+        },
+        {
+          "numerator": "4464425458849501",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.fb8be1b33adbap-4"
+        },
+        {
+          "numerator": "-7591431596190829",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.af85de7a0ac6dp-4"
+        },
+        {
+          "numerator": "1549288502669369",
+          "denominator": "18014398509481984",
+          "binary64_hex": "0x1.604475b6cc0e4p-4"
+        },
+        {
+          "numerator": "-4947127917955723",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.19362fa354a8bp-4"
+        },
+        {
+          "numerator": "7907179868399309",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.c1789c73b26cdp-5"
+        },
+        {
+          "numerator": "-1615272459800737",
+          "denominator": "36028797018963968",
+          "binary64_hex": "-0x1.6f453b4ba4284p-5"
+        },
+        {
+          "numerator": "5434721737345363",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.34ed9c29b8953p-5"
+        },
+        {
+          "numerator": "-2334135186275163",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.095c4654576b6p-5"
+        },
+        {
+          "numerator": "505796548697405",
+          "denominator": "18014398509481984",
+          "binary64_hex": "0x1.cc04ef9d1d3d0p-6"
+        },
+        {
+          "numerator": "-7028957066855349",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.8f8cc991c83b5p-6"
+        },
+        {
+          "numerator": "6107809515327671",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.5b305388450b7p-6"
+        },
+        {
+          "numerator": "-5309522962343863",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.2dcfba618e7b7p-6"
+        },
+        {
+          "numerator": "2305414896634703",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.0618677f2969ep-6"
+        },
+        {
+          "numerator": "-7980975115038055",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.c5aa792b16d67p-7"
+        },
+        {
+          "numerator": "6879068182099533",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.87079df61364dp-7"
+        },
+        {
+          "numerator": "-1481161757203901",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.50c6f619276f4p-7"
+        },
+        {
+          "numerator": "5136281393009061",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.23f6bb3e591a5p-7"
+        },
+        {
+          "numerator": "-4521746080321715",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.010810ce1d0b3p-7"
+        },
+        {
+          "numerator": "8134639421092009",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.ce6695511f0a9p-8"
+        },
+        {
+          "numerator": "-3741031942550699",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.a94e5c00ee956p-8"
+        },
+        {
+          "numerator": "438091397367387",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.8e711a1e865b0p-8"
+        },
+        {
+          "numerator": "-3326505819328947",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.7a2e0fb68a366p-8"
+        },
+        {
+          "numerator": "6374517996398173",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.6a59720ca265dp-8"
+        },
+        {
+          "numerator": "-6159973746371547",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.5e276a6fa6bdbp-8"
+        },
+        {
+          "numerator": "3004279547098335",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.558c0ae6be9bep-8"
+        },
+        {
+          "numerator": "-740012706346947",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.5084d13edbe18p-8"
+        },
+        {
+          "numerator": "2943619755131497",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.4ea69c3b784d2p-8"
+        },
+        {
+          "numerator": "-736803666636781",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.4f0f3c68d7f68p-8"
+        },
+        {
+          "numerator": "740269991187583",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.50a2c4ee6a3f8p-8"
+        },
+        {
+          "numerator": "-1488219237220507",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.5261c2bee026cp-8"
+        },
+        {
+          "numerator": "2987696154002501",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.53a966fe9888ap-8"
+        },
+        {
+          "numerator": "-1496535472354921",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.5445d44e4d9a4p-8"
+        },
+        {
+          "numerator": "5987464342656139",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.545912d3fd48bp-8"
+        },
+        {
+          "numerator": "-5984273192715591",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.542aa2de40547p-8"
+        },
+        {
+          "numerator": "5980780727371851",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.53f7d06bc084bp-8"
+        },
+        {
+          "numerator": "-1494618188161357",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.53d63a8b88534p-8"
+        },
+        {
+          "numerator": "5975738793488471",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.53ae71c0e7057p-8"
+        },
+        {
+          "numerator": "-5968841727084379",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.534a142dd075bp-8"
+        },
+        {
+          "numerator": "5953513686612755",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.526b06c74bb13p-8"
+        },
+        {
+          "numerator": "-5926439940248061",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.50e10d36bd1fdp-8"
+        },
+        {
+          "numerator": "1471533987134121",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.4e968d24feaa4p-8"
+        },
+        {
+          "numerator": "-5833067793251169",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.4b924edc47b61p-8"
+        },
+        {
+          "numerator": "2884581336758381",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.47f05dbce70dap-8"
+        },
+        {
+          "numerator": "-5697018169547341",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.43d6868465a4dp-8"
+        },
+        {
+          "numerator": "702391617076991",
+          "denominator": "144115188075855872",
+          "binary64_hex": "0x1.3f69256a1f7f8p-8"
+        },
+        {
+          "numerator": "-2768693537627373",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.3ac39659ab9dap-8"
+        },
+        {
+          "numerator": "2726430069856831",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.35f58efa3347ep-8"
+        },
+        {
+          "numerator": "-5365946376775071",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.3104cbfabe59fp-8"
+        },
+        {
+          "numerator": "2638323361168597",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.2bf150d7d79aap-8"
+        },
+        {
+          "numerator": "-324055994452719",
+          "denominator": "72057594037927936",
+          "binary64_hex": "-0x1.26ba2a6fcaef0p-8"
+        },
+        {
+          "numerator": "5090810508708093",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.21610affd88fdp-8"
+        },
+        {
+          "numerator": "-624349765860583",
+          "denominator": "144115188075855872",
+          "binary64_hex": "-0x1.1bebe1013e738p-8"
+        },
+        {
+          "numerator": "4897526273127293",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.1664631c9b37dp-8"
+        },
+        {
+          "numerator": "-1199948330129515",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.10d62f7dd61acp-8"
+        },
+        {
+          "numerator": "1175591227637623",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.0b4c6a618fddcp-8"
+        },
+        {
+          "numerator": "-1151459097450835",
+          "denominator": "288230376151711744",
+          "binary64_hex": "-0x1.05cfbd9e8654cp-8"
+        },
+        {
+          "numerator": "1127640462595411",
+          "denominator": "288230376151711744",
+          "binary64_hex": "0x1.0065504d4554cp-8"
+        },
+        {
+          "numerator": "-4416662410049907",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.f61dcb41672e6p-9"
+        },
+        {
+          "numerator": "8648199939177341",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.eb97df5523b7dp-9"
+        },
+        {
+          "numerator": "-8465569742950949",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.e13640d599225p-9"
+        },
+        {
+          "numerator": "4142680054052127",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.d6f7dba146a3ep-9"
+        },
+        {
+          "numerator": "-2026935037111257",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.ccdf25b7aaf64p-9"
+        },
+        {
+          "numerator": "7933154813402053",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.c2f298a99dbc5p-9"
+        },
+        {
+          "numerator": "-121285179265385",
+          "denominator": "36028797018963968",
+          "binary64_hex": "-0x1.b93ba01b45a40p-9"
+        },
+        {
+          "numerator": "7595730869257585",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.afc46e8458571p-9"
+        },
+        {
+          "numerator": "-7434172203842655",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.a69571968bc5fp-9"
+        },
+        {
+          "numerator": "7277886054090301",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.9db32e4f8463dp-9"
+        },
+        {
+          "numerator": "-3563418897312579",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.951d23b1ed686p-9"
+        },
+        {
+          "numerator": "6980662538924607",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.8cce026edf23fp-9"
+        },
+        {
+          "numerator": "-6838766863491995",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.84bd27d99a39bp-9"
+        },
+        {
+          "numerator": "6700489682763845",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.7ce0f535cc045p-9"
+        },
+        {
+          "numerator": "-3282640095161915",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.7531669985c76p-9"
+        },
+        {
+          "numerator": "1608211941007409",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.6daa415de80c4p-9"
+        },
+        {
+          "numerator": "-6303247077853049",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.664c51301c779p-9"
+        },
+        {
+          "numerator": "96513727376215",
+          "denominator": "36028797018963968",
+          "binary64_hex": "0x1.5f1d69bead5c0p-9"
+        },
+        {
+          "numerator": "-3027202536150687",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.5827307a92d3ep-9"
+        },
+        {
+          "numerator": "185518919977809",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.5174faa616a20p-9"
+        },
+        {
+          "numerator": "-5824198814362069",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.4b113f56e69d5p-9"
+        },
+        {
+          "numerator": "5717679724066565",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.450330ce47705p-9"
+        },
+        {
+          "numerator": "-5617199363571719",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.3f4d024b2c007p-9"
+        },
+        {
+          "numerator": "2761258737446893",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.39eb34c5b5fdap-9"
+        },
+        {
+          "numerator": "-1358258253750053",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.34d5092e97c94p-9"
+        },
+        {
+          "numerator": "2673942483770665",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.2ffdf7fca3a52p-9"
+        },
+        {
+          "numerator": "-2633050312657693",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.2b57d991f963ap-9"
+        },
+        {
+          "numerator": "162086256415049",
+          "denominator": "72057594037927936",
+          "binary64_hex": "0x1.26d54b7922920p-9"
+        },
+        {
+          "numerator": "-5109145065340635",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.226bd88b9bedbp-9"
+        },
+        {
+          "numerator": "5032841860154699",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.1e157cf49054bp-9"
+        },
+        {
+          "numerator": "-4957785136148339",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.19d144de9af73p-9"
+        },
+        {
+          "numerator": "4884233705117961",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.15a2f46fe5909p-9"
+        },
+        {
+          "numerator": "-75198264098787",
+          "denominator": "36028797018963968",
+          "binary64_hex": "-0x1.1191d746ff8c0p-9"
+        },
+        {
+          "numerator": "4743773104813687",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.0da6fbeceb677p-9"
+        },
+        {
+          "numerator": "-4678092896431571",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.09eb361516dd3p-9"
+        },
+        {
+          "numerator": "4616112332588611",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.0665467d3c643p-9"
+        },
+        {
+          "numerator": "-1139514515802659",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.0318797b9288cp-9"
+        },
+        {
+          "numerator": "4503870863635631",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.0003f26f0f4afp-9"
+        },
+        {
+          "numerator": "-1113302211595221",
+          "denominator": "576460752303423488",
+          "binary64_hex": "-0x1.fa456f6cc5ea8p-10"
+        },
+        {
+          "numerator": "1101374608551659",
+          "denominator": "576460752303423488",
+          "binary64_hex": "0x1.f4d8e12757758p-10"
+        },
+        {
+          "numerator": "-8720042383431253",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "-0x1.efad514b0d655p-10"
+        },
+        {
+          "numerator": "8632039706364893",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "0x1.eaacb5c628bddp-10"
+        },
+        {
+          "numerator": "-4272804625247835",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.e5c2fb3c3dcb6p-10"
+        },
+        {
+          "numerator": "4229843109979159",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.e0e0a300d482ep-10"
+        },
+        {
+          "numerator": "-8373640181457653",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "-0x1.dbfc8087e22f5p-10"
+        },
+        {
+          "numerator": "8287322470927509",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "0x1.d7146a004cc95p-10"
+        },
+        {
+          "numerator": "-8201036041293441",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "-0x1.d22cc80080e81p-10"
+        },
+        {
+          "numerator": "4057722045397577",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.cd4f41239f492p-10"
+        },
+        {
+          "numerator": "-2007856728245033",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.c888a4c300ca4p-10"
+        },
+        {
+          "numerator": "1987481723460097",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "0x1.c3e6a987f6804p-10"
+        },
+        {
+          "numerator": "-3935890917286791",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.bf75807ffc70ep-10"
+        },
+        {
+          "numerator": "7797609261743355",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "0x1.bb3e26224bcfbp-10"
+        },
+        {
+          "numerator": "-7727693931586131",
+          "denominator": "4611686018427387904",
+          "binary64_hex": "-0x1.b744bf3b9a253p-10"
+        },
+        {
+          "numerator": "3830994626439383",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.b3889e3b0d1aep-10"
+        },
+        {
+          "numerator": "-3800036643590775",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "-0x1.b0039f48ca4eep-10"
+        },
+        {
+          "numerator": "3770651768960631",
+          "denominator": "2305843009213693952",
+          "binary64_hex": "0x1.acac68e856ceep-10"
+        },
+        {
+          "numerator": "-1871191836354347",
+          "denominator": "1152921504606846976",
+          "binary64_hex": "-0x1.a975b32d99cacp-10"
+        }
+      ]
+    },
+    "count": {
+      "dtype": "int64",
+      "shape": [],
+      "order": "C",
+      "values": [
+        {
+          "numerator": "120",
+          "denominator": "1"
+        }
+      ]
+    },
+    "cutoff": {
+      "dtype": "int64",
+      "shape": [],
+      "order": "C",
+      "values": [
+        {
+          "numerator": "25",
+          "denominator": "1"
+        }
+      ]
+    },
+    "joint_l2_tail_bound": {
+      "dtype": "float64",
+      "shape": [],
+      "order": "C",
+      "values": [
+        {
+          "numerator": "8799311016552081",
+          "denominator": "2361183241434822606848",
+          "binary64_hex": "0x1.f42ed3f68e691p-19"
+        }
+      ]
+    }
+  }
+}

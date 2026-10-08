@@ -1,0 +1,30 @@
+{
+  "source_commit": "7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f",
+  "source_files": {
+    "audit_sparse6_altgroups.py": "d554af0d26e218a4fc2f2795e99a9ef39eb5077ceecf55a0daac46909e14dca1",
+    "tight_origin_extension.py": "79f73fb1a59d775a3d00b0a95a9442dc73e2fea0d5f6a70dbf2218537f491c3c",
+    "support_compression_certificate/complex_radial_phase_polynomial_certificate.py": "a4b54442133d24da979a602f428364adb96952b26e62b5cbab60c1f484def625",
+    "support_compression_certificate/complex_upper_convex_2e6_low_certificate.py": "cd7da49361a650b3d9b1d7bdc7e9b1091866ad8374f114d49836f138db8b9361",
+    "support_compression_certificate/complex_upper_convex_2e6_polynomial_certificate.py": "17ec189886b44c3998f5caa3241ad88c517619570930a8fa31bbf4988c790b55",
+    "support_compression_certificate/complex_upper_convex_2e6_radial_coefficients.py": "68df32deb731f0efb126e784cb3f48a3531e585cd5b14e408585341cc6e185ca",
+    "support_compression_certificate/complex_upper_convex_2e6_scalar_tail_certificate.py": "acaed3e39038d0cd7368f83321a7e0dc86fd013c6f845fd242cded9bafa0644d",
+    "support_compression_certificate/complex_upper_origin_layer_coefficients.py": "791d4396bcc53faf58f74c89ba35913794ae48a2c6e5ce7de5a7aefa8d2044c8",
+    "support_compression_certificate/complex_upper_origin_layer_definitions.py": "bf03cd782d8f6671c60533febac4779d311f640e059aae7de1d39224a961a26c",
+    "support_compression_certificate/complex_upper_origin_layer_energy_certificate.py": "b1a795d071f611d7d943d7984c018967990d4c11063e93740b55c9ebbb0000bf",
+    "support_compression_certificate/complex_upper_saha_cubic_exacttail_457e8_certificate.py": "96ceba930d2ca675a2f082ac11fb05163c828cb2341f36db0f9cc02a7cfda6ca",
+    "support_compression_certificate/complex_upper_saha_visible_energy_refinement.py": "2c98c5a044890fbeafbeecae2dd6c916df8bd2bde829f34f0a4ef921e0e4a3fa"
+  },
+  "added_table_sha256": "8996603d5ad031d58e073105956d4189d4a1df3a6862f84a9dce1ec3dbce8dec",
+  "inverse_eta_sha256": "d058a4b2bec57a15bb889fcfc7462eeaabce5fd526eee0e4cace217b4af5825c",
+  "added_table_generation": "Arb analytic integration, modes120..239, bothsides, radialvariable s in[0,36], dps60+index//4; generator log supplied separately.",
+  "input_files": {
+    "added_origin_120_240.npz": "8996603d5ad031d58e073105956d4189d4a1df3a6862f84a9dce1ec3dbce8dec",
+    "inverse_eta.json": "d058a4b2bec57a15bb889fcfc7462eeaabce5fd526eee0e4cace217b4af5825c",
+    "energies.json": "10908fc4843be35a4b0a5c5f949282d58f6e85435c5d2f8db4bdb53b7c922a5a"
+  },
+  "received_functions_provenance": {
+    "file": "grothendieck-verification/further-refinement/fixed_kernel_certificate.py",
+    "sha256": "731c03b3e44fca3aefd48e8af9f84b92c2fcab64ea2ea4140894d7a4c7955f9a",
+    "functions": "scalar_column, fifth_tail, weighted_h; reviewed and adapted into verify_combined.py"
+  }
+}

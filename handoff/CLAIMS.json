@@ -1,0 +1,48 @@
+{
+  "status": "Locally reproduced computational research; no Lean proof yet",
+  "constant": "ordinary complex bipartite Grothendieck constant",
+  "lower_strict": {
+    "numerator": "1400813971",
+    "denominator": "1000000000"
+  },
+  "upper_strict": {
+    "numerator": "702449179522979",
+    "denominator": "500000000000000"
+  },
+  "operator_norm_cap": {
+    "numerator": "3569353321",
+    "denominator": "5000000000"
+  },
+  "lower_reciprocal": {
+    "numerator": "5000000000",
+    "denominator": "3569353321"
+  },
+  "mixture_mass": {
+    "numerator": "250000000000000003",
+    "denominator": "250000000000000000"
+  },
+  "proposed_normalized_slope_target": {
+    "numerator": "7117952651600243",
+    "denominator": "10000000000000000"
+  },
+  "lower_certificate": "packages/grothendieck-further-squeeze/lower/envelope.json",
+  "upper_verifier": "packages/grothendieck-cross-instance-review/combined/verify_combined.py",
+  "source_commit": "7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f",
+  "method_only_floor": {
+    "value": {
+      "numerator": "702449154606347",
+      "denominator": "500000000000000"
+    },
+    "not_a_lower_bound_on_KG": true,
+    "scope": "direct full coefficient-norm criterion, real signed mixtures of six fixed kernels"
+  },
+  "required_analytic_dependencies": [
+    "valid Gaussian rounding kernels",
+    "Gaussian operator lower transfer",
+    "cubic moment inequalities",
+    "global physical polynomial majorants",
+    "Dirichlet and coefficient identities",
+    "quadrature enclosures",
+    "tail and preprocessing transfer lemmas"
+  ]
+}
