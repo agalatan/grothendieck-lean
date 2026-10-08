@@ -3,7 +3,6 @@ import Mathlib
 /-!
 # Hilbert-space identities for the lower bound: variance, retained square, two-row mixing
 
-Reference: `handoff/lower/research-note.md` §§1, 5; `LOWER_FORMALIZATION.md` §9.
 Stated for real inner product spaces (a complex Hilbert space is one via `Re⟪·,·⟫`).
 -/
 

@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # The delta-tightening gate as a Schur complement
 
-Reference: `handoff/lower/research-note.md` §3.  For the symmetric block matrix
+For the symmetric block matrix
 `E = [[a, bᵀ], [b, C]]` with `C ≻ 0` (2×2), the gate `E − diag(ε−δ, 0, 0) ⪰ 0` is equivalent to
 `δ ≥ ε − a + bᵀC⁻¹b`.  We state it with explicit real entries and the quadratic form.
 -/

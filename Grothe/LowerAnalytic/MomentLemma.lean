@@ -3,7 +3,7 @@ import Mathlib
 /-!
 # The scalar three-moment lemma
 
-Reference: `handoff/lower/base/quadrature_moment_lemma.md`.  If `Z ≥ 0` has `E Z = 1`,
+If `Z ≥ 0` has `E Z = 1`,
 `E Z² = m > 1` and `E Z³ ≤ N` with `N > m²`, then with `α = (N−m)/(m−1)`, `β = (N−m²)/(m−1)`,
 
   `E √Z ≤ (1 + √β) / √(α + 2√β)`.
