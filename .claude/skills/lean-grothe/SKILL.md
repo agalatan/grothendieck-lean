@@ -34,8 +34,10 @@ description: Working conventions for the Lean 4 / Mathlib formalization of the c
   generated data (`SourceData`, `AveragedData1/2`, `JoinData`, `RowData` from
   `tools/gen_lower_data.py`; bulk data are strings parsed at check time), `Data` (`ctx`),
   `ProfileCheck`/`RowCheck` (the `native_decide` modules).
-- `Grothe/LowerAnalytic/`: the lower certificate's analytic lemmas (moment lemma, `C₆`/`ρ`
-  certificates, variance identities, convexity/allocation, Schur gate, rows, endpoint).
+- `Grothe/LowerAnalytic/`: the lower certificate's analytic lemmas (moment lemma, bivariate
+  Bernstein bounds, the `C₆`/`ρ` certificates `Moments`/`SixthMomentData`/`SixthMoment` generated
+  by `tools/gen_moment_certs.py`, variance identities, convexity/allocation, Schur gate, rows,
+  endpoint). `ProfileCheck` ≈ 4 min on 8 cores, `RowCheck` < 1 min.
 - `handoff/` (git-ignored) holds the research archives the generators in `tools/` read; the
   generated Lean data files are committed, the archives are not.
 - Only the best bounds are kept in the repo and its docs; superseded certificates are deleted,

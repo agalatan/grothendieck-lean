@@ -34,7 +34,10 @@ import Grothe.Lower.Data
 import Grothe.Lower.ProfileCheck
 import Grothe.Lower.RowCheck
 import Grothe.LowerAnalytic.MomentLemma
-import Grothe.LowerAnalytic.Cubic
+import Grothe.LowerAnalytic.Bernstein2
+import Grothe.LowerAnalytic.Moments
+import Grothe.LowerAnalytic.SixthMomentData
+import Grothe.LowerAnalytic.SixthMoment
 import Grothe.LowerAnalytic.Variance
 import Grothe.LowerAnalytic.Convexity
 import Grothe.LowerAnalytic.Schur

@@ -24,4 +24,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.schur_gate
 #print axioms Grothe.LowerAnalytic.moment_lemma
 #print axioms Grothe.LowerAnalytic.first_moment_lt_rho
+#print axioms Grothe.LowerAnalytic.scalar_sixth
+#print axioms Grothe.LowerAnalytic.cumulant_bound
+#print axioms Grothe.LowerAnalytic.sixth_moment_complex
+#print axioms Grothe.LowerAnalytic.coverOK_sound
 #print axioms Grothe.LowerAnalytic.lower_bound_of_tests

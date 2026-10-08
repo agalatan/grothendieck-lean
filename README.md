@@ -70,6 +70,6 @@ lake build
 
 `Grothe/Upper/Value.lean` evaluates the interval checker once by `native_decide` (about
 13 minutes on 8 cores, 40 minutes sequentially), and `Grothe/Lower/ProfileCheck.lean` runs the
-profile checker in parallel; CI (`.github/workflows/lean.yml`) builds everything on every push to `master`,
+profile checker in parallel (about 4 minutes on 8 cores); CI (`.github/workflows/lean.yml`) builds everything on every push to `master`,
 forbids `sorry`, and checks the axiom report. The generated data modules come from research
 archives that are not part of the repository; the generators are in `tools/`.
