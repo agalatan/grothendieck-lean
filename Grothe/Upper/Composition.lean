@@ -5,8 +5,8 @@ import Grothe.Upper.Mixture
 /-!
 # Radial composition with a preprocessor
 
-For a polynomial `E` (with `η(t) = t·E(t²)`) and a coefficient sequence `c` with `∑|cₙ| < ∞`,
-the radial kernel of `c` evaluated at `η^phys z = z·E(|z|²)` equals the radial kernel of the
+For a polynomial `E` (with `ρ(t) = t·E(t²)`) and a coefficient sequence `c` with `∑|cₙ| < ∞`,
+the radial kernel of `c` evaluated at `ρ^phys z = z·E(|z|²)` equals the radial kernel of the
 composed coefficients `compose c E` (`radialKernel_comp`), for `‖z‖ ≤ 1` and `‖E‖_𝒜 ≤ 1`.
 Moreover composition contracts the coefficient `ℓ¹` norm (`tsum_abs_compose_le`).
 -/

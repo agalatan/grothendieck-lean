@@ -4,7 +4,8 @@ import Grothe
 #print axioms Grothe.transfer
 #print axioms Grothe.DominatedKernel.comp_physPoly
 #print axioms Grothe.radialKernel_comp
-#print axioms Grothe.joint_tail_bound
+#print axioms Grothe.polarized_tail_bound
+#print axioms Grothe.bound_of_branches
 #print axioms Grothe.h_lt
 #print axioms Grothe.Lower.vrecords_sound
 #print axioms Grothe.Lower.pwRecords_sound

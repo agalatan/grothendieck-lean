@@ -3,16 +3,20 @@ import Grothe.WallisTail
 import Grothe.Upper.Interface
 
 /-!
-# The joint first-order tail of the origin kernel
+# The joint first-order tails of the origin kernels
 
-Let `λₙ = 2n+1`.  If the sixth-kernel coefficients satisfy `kₙ = ξₙ cₙ + Re(rₙ conj sₙ)` with
-`ξₙ² = hₙ` and the first-order energies `∑_{n≥N} λₙ cₙ² ≤ E_C`, `∑ λₙ|rₙ|² ≤ E_L`,
+Let `λₙ = 2n+1`.  If the coefficients of an origin kernel satisfy `Hₙ = ξₙ cₙ + Re(rₙ conj sₙ)`
+with `ξₙ² = hₙ` and the first-order energies `∑_{n≥N} λₙ cₙ² ≤ E_C`, `∑ λₙ|rₙ|² ≤ E_L`,
 `∑ λₙ|sₙ|² ≤ E_R`, then (weighted Cauchy–Schwarz)
 
-  `∑_{n≥N} |kₙ| ≤ √(E_C W'_N) + √(E_L E_R)/(2N+1)`,  `W'_N = ∑_{n≥N} hₙ/(2n+1)`.
+  `∑_{n≥N} |Hₙ| ≤ √(E_C W'_N) + √(E_L E_R)/(2N+1)`,  `W'_N = ∑_{n≥N} hₙ/(2n+1)`.
 
-We also bound `W'_240` sharply: an exact rational partial sum (indices `240 ≤ n < 4000`) times
-`π`, plus the telescoping remainder `hₙ/(2n+1) < (1/16)(1/(n+1/12)² − 1/(n+13/12)²)`.
+Polarization (`u = r + iκs`, `v = r − iκs`, `Im(u v̄) = 2κ Re(r s̄)`) replaces the product
+term by `√(E₊E₋)/(2κ(2N+1))` with the tail energies `E₊, E₋` of `u, v`
+(`polarized_tail_bound`).  We also bound `W'_240` sharply: an exact rational partial sum
+(indices `240 ≤ n < 4000`) times `π`, plus the telescoping remainder
+`hₙ/(2n+1) < (1/16)(1/(n+1/12)² − 1/(n+13/12)²)`, and evaluate the tail bounds of the two
+origin kernels (`tailH`, `tailHs`).
 -/
 
 namespace Grothe
@@ -135,13 +139,6 @@ theorem h_eq_pi_mul_hRat (n : ℕ) : h n = Real.pi * (Upper.hRat n : ℝ) := by
     push_cast
     ring
 
-lemma hRat_nonneg (n : ℕ) : 0 ≤ Upper.hRat n := by
-  induction n with
-  | zero => simp [Upper.hRat]
-  | succ n ih =>
-    rw [Upper.hRat]
-    exact div_nonneg (mul_nonneg ih (sq_nonneg _)) (by positivity)
-
 /-- Efficient evaluation of `∑_{k<K} hRat (n+k) / (2(n+k)+1)` given `cur = hRat n`. -/
 def wSum : ℕ → ℕ → ℚ → ℚ
   | _, 0, _ => 0
@@ -198,7 +195,7 @@ theorem Wp_le : Wp 240 ≤ (WpHi : ℝ) := by
   have hq0 : (0 : ℝ) ≤ (wSum 240 3760 (Upper.hRat 240) : ℝ) := by
     have : (0 : ℚ) ≤ wSum 240 3760 (Upper.hRat 240) := by
       rw [wSum_eq]
-      exact sum_nonneg fun k _ => div_nonneg (hRat_nonneg _) (by positivity)
+      exact sum_nonneg fun k _ => div_nonneg (Upper.hRat_nonneg _) (by positivity)
     exact_mod_cast this
   calc Real.pi * (wSum 240 3760 (Upper.hRat 240) : ℝ) + Wp 4000
       ≤ 3.14159265358979323847 * (qS : ℝ) + (1 / 16) / (4000 + 1 / 12) ^ 2 :=
@@ -317,32 +314,122 @@ theorem joint_tail_bound (N : ℕ) (hN : 1 ≤ N) (ξ c : ℕ → ℝ) (r s : �
           hN0.le
     _ = Real.sqrt EC * Real.sqrt (Wp N) + Real.sqrt EL * Real.sqrt ER / (2 * N + 1) := by ring
 
-/-! ### Numerical value of the sixth tail -/
+/-! ### Polarization -/
 
-/-- Certified bound for the unweighted sixth-kernel tail from mode `240`:
-`√(E_C W'_240) + √(E_L E_R)/481 ≤ sixthT ≈ 6.36284760454·10⁻⁵`. -/
-def sixthT : ℚ := 63628476045386317895142196 / 10 ^ 30
+/-- **Polarized tail bound.**  With `u = r + iκs`, `v = r − iκs` (`κ > 0`),
+`Im(u v̄) = 2κ Re(r s̄)`, so the tail energies `E₊, E₋` of `u, v` bound the product term:
+`∑_{n≥N} |ξₙcₙ + Re(rₙ s̄ₙ)| ≤ √E_C √W'_N + √E₊ √E₋ / (2κ(2N+1))`. -/
+theorem polarized_tail_bound (N : ℕ) (hN : 1 ≤ N) (ξ c : ℕ → ℝ) (r s : ℕ → ℂ) (κ : ℝ)
+    (hκ : 0 < κ) (EC Ep Em : ℝ) (hξ : ∀ n, ξ n ^ 2 = h n)
+    (hcs : Summable fun n => (2 * ((N + n : ℕ) : ℝ) + 1) * c (N + n) ^ 2)
+    (hEC : ∑' n, (2 * ((N + n : ℕ) : ℝ) + 1) * c (N + n) ^ 2 ≤ EC)
+    (hus : Summable fun n =>
+      (2 * ((N + n : ℕ) : ℝ) + 1) * ‖r (N + n) + Complex.I * κ * s (N + n)‖ ^ 2)
+    (hEp : ∑' n, (2 * ((N + n : ℕ) : ℝ) + 1) * ‖r (N + n) + Complex.I * κ * s (N + n)‖ ^ 2 ≤ Ep)
+    (hvs : Summable fun n =>
+      (2 * ((N + n : ℕ) : ℝ) + 1) * ‖r (N + n) - Complex.I * κ * s (N + n)‖ ^ 2)
+    (hEm : ∑' n, (2 * ((N + n : ℕ) : ℝ) + 1) * ‖r (N + n) - Complex.I * κ * s (N + n)‖ ^ 2 ≤ Em) :
+    ∑' n, |ξ (N + n) * c (N + n) + (r (N + n) * conj (s (N + n))).re|
+      ≤ Real.sqrt EC * Real.sqrt (Wp N) + Real.sqrt Ep * Real.sqrt Em / (2 * κ * (2 * N + 1)) := by
+  -- the rotated left sequence `r' = (−i/(2κ)) u` and the right sequence `v`
+  obtain ⟨r', hr'⟩ : ∃ r' : ℕ → ℂ, ∀ n, r' n
+      = ((1 / (2 * κ) : ℝ) : ℂ) * (-Complex.I) * (r n + Complex.I * κ * s n) := ⟨_, fun _ => rfl⟩
+  obtain ⟨v, hv⟩ : ∃ v : ℕ → ℂ, ∀ n, v n = r n - Complex.I * κ * s n := ⟨_, fun _ => rfl⟩
+  have hκ0 : κ ≠ 0 := hκ.ne'
+  have key : ∀ n, (r' n * conj (v n)).re = (r n * conj (s n)).re := by
+    intro n
+    rw [hr', hv]
+    simp only [Complex.mul_re, Complex.mul_im, Complex.add_re, Complex.add_im, Complex.sub_re,
+      Complex.sub_im, Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im,
+      Complex.neg_re, Complex.neg_im, Complex.I_re, Complex.I_im]
+    field_simp
+    ring
+  have hnorm : ∀ n, ‖r' n‖ ^ 2 = (1 / (2 * κ)) ^ 2 * ‖r n + Complex.I * κ * s n‖ ^ 2 := by
+    intro n
+    rw [hr', norm_mul, norm_mul, Complex.norm_real, norm_neg, Complex.norm_I, mul_one,
+      Real.norm_eq_abs, abs_of_pos (by positivity), mul_pow]
+  have hus' : Summable fun n => (2 * ((N + n : ℕ) : ℝ) + 1) * ‖r' (N + n)‖ ^ 2 := by
+    simp_rw [hnorm]
+    have := hus.mul_left ((1 / (2 * κ)) ^ 2)
+    refine this.congr fun n => ?_
+    ring
+  have hEp' : ∑' n, (2 * ((N + n : ℕ) : ℝ) + 1) * ‖r' (N + n)‖ ^ 2 ≤ (1 / (2 * κ)) ^ 2 * Ep := by
+    simp_rw [hnorm]
+    have e : ∀ n, (2 * ((N + n : ℕ) : ℝ) + 1) * ((1 / (2 * κ)) ^ 2 * ‖r (N + n) + Complex.I * κ * s (N + n)‖ ^ 2)
+        = (1 / (2 * κ)) ^ 2 * ((2 * ((N + n : ℕ) : ℝ) + 1) * ‖r (N + n) + Complex.I * κ * s (N + n)‖ ^ 2) :=
+      fun n => by ring
+    simp_rw [e]
+    rw [tsum_mul_left]
+    exact mul_le_mul_of_nonneg_left hEp (by positivity)
+  have hvs' : Summable fun n => (2 * ((N + n : ℕ) : ℝ) + 1) * ‖v (N + n)‖ ^ 2 := by
+    simp_rw [hv]; exact hvs
+  have hEm' : ∑' n, (2 * ((N + n : ℕ) : ℝ) + 1) * ‖v (N + n)‖ ^ 2 ≤ Em := by
+    simp_rw [hv]; exact hEm
+  have hjt := joint_tail_bound N hN ξ c r' v EC ((1 / (2 * κ)) ^ 2 * Ep) Em hξ hcs hEC hus' hEp'
+    hvs' hEm'
+  simp_rw [key] at hjt
+  refine hjt.trans (le_of_eq ?_)
+  have hEp0 : 0 ≤ Ep := le_trans (tsum_nonneg fun n => by positivity) hEp
+  rw [Real.sqrt_mul (by positivity), Real.sqrt_sq (by positivity)]
+  congr 1
+  rw [one_div, inv_mul_eq_div, div_mul_eq_mul_div, div_div]
 
-theorem sixth_tail_numeric (EC EL ER : ℝ) (hEC0 : 0 ≤ EC) (hEL0 : 0 ≤ EL) (hER0 : 0 ≤ ER)
-    (hEC : EC ≤ 0.003521036759326558) (hEL : EL ≤ 0.000884260662142687)
-    (hER : ER ≤ 0.000885126188452271) :
-    Real.sqrt EC * Real.sqrt (Wp 240) + Real.sqrt EL * Real.sqrt ER / (2 * 240 + 1)
-      ≤ (sixthT : ℝ) := by
+/-! ### Numerical tail bounds of the two origin kernels -/
+
+/-- Certified tail bound of the origin kernel `H` beyond mode `240`:
+`√(E_C W'_240) + √(E₊E₋)/(2κ·481) ≤ tailH ≈ 6.2047300734506·10⁻⁵` with `κ = 999511/10⁶`. -/
+def tailH : ℚ := 6204730073450556719421453 / 10 ^ 29
+
+theorem tailH_numeric (EC Ep Em : ℝ) (hEC0 : 0 ≤ EC) (hEp0 : 0 ≤ Ep) (hEm0 : 0 ≤ Em)
+    (hEC : EC ≤ 0.0035203939734987528839) (hEp : Ep ≤ 0.0000182773096480245802715)
+    (hEm : Em ≤ 0.0035186722940462150571) :
+    Real.sqrt EC * Real.sqrt (Wp Upper.modes)
+      + Real.sqrt Ep * Real.sqrt Em / (2 * (999511 / 10 ^ 6) * (2 * (Upper.modes : ℝ) + 1))
+      ≤ (tailH : ℝ) := by
   have hW := Wp_le
   have hW0 : 0 ≤ Wp 240 := tsum_nonneg (Wp_term_nonneg 240)
-  have u1 : Real.sqrt EC * Real.sqrt (Wp 240) ≤ 61789196794969133157102803 / 10 ^ 30 := by
+  have u1 : Real.sqrt EC * Real.sqrt (Wp Upper.modes) ≤ 61783556548140672545206539 / 10 ^ 30 := by
     rw [← Real.sqrt_mul hEC0, Real.sqrt_le_left (by norm_num)]
-    calc EC * Wp 240 ≤ 0.003521036759326558 * (WpHi : ℝ) := by gcongr
+    calc EC * Wp Upper.modes ≤ 0.0035203939734987528839 * (WpHi : ℝ) := by gcongr
       _ ≤ _ := by unfold WpHi; norm_num
-  have u2 : Real.sqrt EL * Real.sqrt ER ≤ 35387732778026634359877911 / 40000000000000000000000000000 := by
-    rw [← Real.sqrt_mul hEL0, Real.sqrt_le_left (by norm_num)]
-    calc EL * ER ≤ 0.000884260662142687 * 0.000885126188452271 := by gcongr
+  have u2 : Real.sqrt Ep * Real.sqrt Em ≤ 126798918635183625667344941 / (5 * 10 ^ 29) := by
+    rw [← Real.sqrt_mul hEp0, Real.sqrt_le_left (by norm_num)]
+    calc Ep * Em ≤ 0.0000182773096480245802715 * 0.0035186722940462150571 := by gcongr
       _ ≤ _ := by norm_num
-  calc Real.sqrt EC * Real.sqrt (Wp 240) + Real.sqrt EL * Real.sqrt ER / (2 * 240 + 1)
-      ≤ 61789196794969133157102803 / 10 ^ 30
-          + 35387732778026634359877911 / 40000000000000000000000000000 / (2 * 240 + 1) :=
-        add_le_add u1 (div_le_div_of_nonneg_right u2 (by norm_num))
-    _ ≤ (sixthT : ℝ) := by unfold sixthT; norm_num
+  calc Real.sqrt EC * Real.sqrt (Wp Upper.modes)
+        + Real.sqrt Ep * Real.sqrt Em / (2 * (999511 / 10 ^ 6) * (2 * (Upper.modes : ℝ) + 1))
+      ≤ 61783556548140672545206539 / 10 ^ 30
+          + 126798918635183625667344941 / (5 * 10 ^ 29)
+            / (2 * (999511 / 10 ^ 6) * (2 * (Upper.modes : ℝ) + 1)) :=
+        add_le_add u1 (div_le_div_of_nonneg_right u2 (by norm_num [Upper.modes]))
+    _ ≤ (tailH : ℝ) := by unfold tailH; norm_num [Upper.modes]
+
+/-- Certified tail bound of the modified origin kernel `H*` beyond mode `240`:
+`√(E_C W'_240) + √(E₊E₋)/(2·481) ≤ tailHs ≈ 7.3094019757564·10⁻⁵` with `κ = 1`. -/
+def tailHs : ℚ := 73094019757564146051671493 / 10 ^ 30
+
+theorem tailHs_numeric (EC Ep Em : ℝ) (hEC0 : 0 ≤ EC) (hEp0 : 0 ≤ Ep) (hEm0 : 0 ≤ Em)
+    (hEC : EC ≤ 0.0048623361335078433465) (hEp : Ep ≤ 0.0000444870768551502459631)
+    (hEm : Em ≤ 0.0048623361335204498121) :
+    Real.sqrt EC * Real.sqrt (Wp Upper.modes)
+      + Real.sqrt Ep * Real.sqrt Em / (2 * 1 * (2 * (Upper.modes : ℝ) + 1))
+      ≤ (tailHs : ℝ) := by
+  have hW := Wp_le
+  have hW0 : 0 ≤ Wp 240 := tsum_nonneg (Wp_term_nonneg 240)
+  have u1 : Real.sqrt EC * Real.sqrt (Wp Upper.modes) ≤ 9076319440291359835543097 / (125 * 10 ^ 27) := by
+    rw [← Real.sqrt_mul hEC0, Real.sqrt_le_left (by norm_num)]
+    calc EC * Wp Upper.modes ≤ 0.0048623361335078433465 * (WpHi : ℝ) := by gcongr
+      _ ≤ _ := by unfold WpHi; norm_num
+  have u2 : Real.sqrt Ep * Real.sqrt Em ≤ 116273148573600801842075363 / (25 * 10 ^ 28) := by
+    rw [← Real.sqrt_mul hEp0, Real.sqrt_le_left (by norm_num)]
+    calc Ep * Em ≤ 0.0000444870768551502459631 * 0.0048623361335204498121 := by gcongr
+      _ ≤ _ := by norm_num
+  calc Real.sqrt EC * Real.sqrt (Wp Upper.modes)
+        + Real.sqrt Ep * Real.sqrt Em / (2 * 1 * (2 * (Upper.modes : ℝ) + 1))
+      ≤ 9076319440291359835543097 / (125 * 10 ^ 27)
+          + 116273148573600801842075363 / (25 * 10 ^ 28) / (2 * 1 * (2 * (Upper.modes : ℝ) + 1)) :=
+        add_le_add u1 (div_le_div_of_nonneg_right u2 (by norm_num [Upper.modes]))
+    _ ≤ (tailHs : ℝ) := by unfold tailHs; norm_num [Upper.modes]
 
 end
 

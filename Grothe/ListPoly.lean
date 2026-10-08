@@ -1,16 +1,12 @@
 import Mathlib
 
 /-!
-# Coefficient `ℓ¹` norm of polynomials, and exact integer-list arithmetic
+# Coefficient `ℓ¹` norm of polynomials
 
 The *Wiener-algebra norm* of a polynomial is the sum of the absolute values of its
 coefficients, `‖f‖_𝒜 = ∑ₖ |[tᵏ] f|`.  It is submultiplicative,
-`‖fg‖_𝒜 ≤ ‖f‖_𝒜 ‖g‖_𝒜`, which is the only structural property the tail estimates need.
-
-To evaluate `‖ρ⁽ⁿ⁾‖_𝒜` for concrete integer polynomials and large `n` we also provide an
-executable integer-list implementation (`conv`, `listPow`, `absSum`) together with the bridge
-lemma `l1_ofList_listPow_le` connecting it to `Polynomial ℝ`.  The concrete numerical facts are
-then discharged by `native_decide` (see `Grothe/Upper/FifthTail.lean`).
+`‖fg‖_𝒜 ≤ ‖f‖_𝒜 ‖g‖_𝒜`, which is the only structural property the composition and tail
+estimates need.
 -/
 
 namespace Grothe
@@ -92,94 +88,6 @@ lemma l1_pow_le (p : ℝ[X]) (n : ℕ) : l1 (p ^ n) ≤ l1 p ^ n := by
 
 lemma l1_C_mul_le (c : ℝ) (p : ℝ[X]) : l1 (C c * p) ≤ |c| * l1 p := by
   simpa using l1_mul_le (C c) p
-
-end
-
-/-! ### Executable integer-list polynomial arithmetic -/
-
-/-- Pointwise addition of coefficient lists (the shorter list is zero-padded). -/
-def addL : List ℤ → List ℤ → List ℤ
-  | [], m => m
-  | l, [] => l
-  | a :: l, b :: m => (a + b) :: addL l m
-
-/-- Convolution of coefficient lists, i.e. polynomial multiplication. -/
-def conv : List ℤ → List ℤ → List ℤ
-  | [], _ => []
-  | a :: l, m => addL (m.map (a * ·)) (0 :: conv l m)
-
-/-- `listPow l n` is the coefficient list of the `n`-th power. -/
-def listPow (l : List ℤ) : ℕ → List ℤ
-  | 0 => [1]
-  | n + 1 => conv l (listPow l n)
-
-/-- Sum of absolute values of an integer coefficient list. -/
-def absSum (l : List ℤ) : ℕ := (l.map Int.natAbs).sum
-
-noncomputable section
-
-/-- The real polynomial with the given integer coefficient list (Horner form). -/
-def ofList : List ℤ → ℝ[X]
-  | [] => 0
-  | a :: l => C (a : ℝ) + X * ofList l
-
-@[simp] lemma ofList_nil : ofList [] = 0 := rfl
-@[simp] lemma ofList_cons (a : ℤ) (l : List ℤ) : ofList (a :: l) = C (a : ℝ) + X * ofList l := rfl
-
-lemma ofList_addL (l m : List ℤ) : ofList (addL l m) = ofList l + ofList m := by
-  induction l generalizing m with
-  | nil => simp [addL]
-  | cons a l ih =>
-    cases m with
-    | nil => simp [addL]
-    | cons b m =>
-      simp only [addL, ofList_cons, ih]
-      push_cast
-      simp only [C_add]
-      ring
-
-lemma ofList_map_mul (a : ℤ) (m : List ℤ) :
-    ofList (m.map (a * ·)) = C (a : ℝ) * ofList m := by
-  induction m with
-  | nil => simp
-  | cons b m ih =>
-    simp only [List.map_cons, ofList_cons, ih]
-    push_cast
-    simp only [C_mul]
-    ring
-
-lemma ofList_conv (l m : List ℤ) : ofList (conv l m) = ofList l * ofList m := by
-  induction l with
-  | nil => simp [conv]
-  | cons a l ih =>
-    simp only [conv, ofList_addL, ofList_map_mul, ofList_cons, ih, Int.cast_zero, C_0, zero_add]
-    ring
-
-lemma ofList_listPow (l : List ℤ) (n : ℕ) : ofList (listPow l n) = ofList l ^ n := by
-  induction n with
-  | zero => simp [listPow]
-  | succ n ih => rw [listPow, ofList_conv, ih, pow_succ, mul_comm]
-
-lemma l1_ofList_le (l : List ℤ) : l1 (ofList l) ≤ (absSum l : ℝ) := by
-  induction l with
-  | nil => simp [absSum]
-  | cons a l ih =>
-    simp only [ofList_cons, absSum, List.map_cons, List.sum_cons]
-    calc l1 (C (a : ℝ) + X * ofList l)
-        ≤ l1 (C (a : ℝ)) + l1 (X * ofList l) := l1_add_le _ _
-      _ ≤ |(a : ℝ)| + l1 X * l1 (ofList l) := by
-          gcongr
-          · exact (l1_C _).le
-          · exact l1_mul_le _ _
-      _ ≤ (a.natAbs : ℝ) + (absSum l : ℝ) := by
-          rw [l1_X, one_mul]
-          gcongr
-          · rw [Nat.cast_natAbs, Int.cast_abs]
-      _ = ((a.natAbs + absSum l : ℕ) : ℝ) := by push_cast; rfl
-
-lemma l1_ofList_listPow_le (l : List ℤ) (n : ℕ) :
-    l1 (ofList l ^ n) ≤ (absSum (listPow l n) : ℝ) := by
-  rw [← ofList_listPow]; exact l1_ofList_le _
 
 end
 

@@ -5,6 +5,10 @@ Intervals are pairs of integers `⟨lo, hi⟩` representing `[lo / D, hi / D]` w
 All operations round outward.  This module imports only `Init` so that it can be compiled to
 native code and used by `native_decide` at native speed; the soundness proofs live in
 `Grothe/Upper/IntervalSound.lean`.
+
+Besides the outward-rounded interval arithmetic there is a *lower-only* variant on
+nonnegative scaled integers (`mulLo`, `convLo`, `hornerLo`), used for the positive-coefficient
+majorants where only lower bounds are needed.
 -/
 
 namespace GrotheKernel
@@ -59,6 +63,8 @@ def ofRatI (q : Rat) : Ival := ⟨ofRatLo q, ofRatHi q⟩
 /-- The interval enclosing `[lo, hi]` for rationals `lo ≤ hi`. -/
 def boxI (lo hi : Rat) : Ival := ⟨ofRatLo lo, ofRatHi hi⟩
 
+/-! ### Interval coefficient lists -/
+
 /-- Pointwise addition of interval coefficient lists (zero padded). -/
 def addL : List Ival → List Ival → List Ival
   | [], m => m
@@ -66,26 +72,63 @@ def addL : List Ival → List Ival → List Ival
   | a :: l, b :: m => addI a b :: addL l m
 
 /-- Convolution (polynomial product) of interval coefficient lists.  Recursion is on the first
-argument, which should be the *short* list. -/
+argument, which should be the *sparse* list: its zero entries cost nothing. -/
 def convI : List Ival → List Ival → List Ival
   | [], _ => []
-  | a :: l, m => addL (m.map (mulI a)) (zeroI :: convI l m)
+  | a :: l, m =>
+    if a.lo == 0 && a.hi == 0 then zeroI :: convI l m
+    else addL (m.map (mulI a)) (zeroI :: convI l m)
 
-/-- Truncated Horner evaluation: `hornerT N G [c₀, …, c_{k}] = c₀ + G·(c₁ + G·(…))`, keeping only
-coefficients of index `< N`. -/
-def hornerT (N : Nat) (G : List Ival) : List Ival → List Ival
-  | [] => []
-  | a :: rest => addL [a] ((convI G (hornerT N G rest)).take N)
+/-- `hornerX G N [c₀, c₁, …]` is the list of the first `N` coefficients of
+`c₀ + X·G·(c₁ + X·G·(c₂ + …))`; the truncation length decreases with the depth. -/
+def hornerX (G : List Ival) : Nat → List Ival → List Ival
+  | 0, _ => []
+  | _, [] => []
+  | N + 1, c :: cs => c :: (convI G (hornerX G N cs)).take N
+
+/-- The first `N` radial coefficients of the composition `Σ_j c_j · X^j · P^{2j+1}`
+(`= P · hornerX (P²) N cs`). -/
+def composeI (N : Nat) (P : List Ival) (cs : List Ival) : List Ival :=
+  (convI P (hornerX (convI P P) N cs)).take N
 
 /-- Scaled lower endpoint of the constant coefficient. -/
 def headLo (L : List Ival) : Int := (L.getD 0 zeroI).lo
 
-/-- Scaled sum of `absUpper` over all coefficients of index `≥ 1`. -/
-def tailAbsSum (L : List Ival) : Int := (L.drop 1).foldl (fun s a => s + absUpper a) 0
+/-- Scaled sum of `absUpper` over all coefficients of index `≥ k`. -/
+def absSumFrom (k : Nat) (L : List Ival) : Int := (L.drop k).foldl (fun s a => s + absUpper a) 0
 
-/-- The certified scaled lower bound `P₀ − Σ_{n≥1} |Pₙ|` for `P = E · hornerT N G cs`. -/
-def dloInt (N : Nat) (E G cs : List Ival) : Int :=
-  let P := convI E (hornerT N G cs)
-  headLo P - tailAbsSum P
+/-- The weighted sum `Σ_i wᵢ · colᵢ` of interval coefficient lists. -/
+def mixL : List Ival → List (List Ival) → List Ival
+  | w :: ws, c :: cs => addL (c.map (mulI w)) (mixL ws cs)
+  | _, _ => []
+
+/-- Scaled upper bound for `w · t` where `w ∈ wI` and `0 ≤ t` is a scaled upper bound. -/
+def wTailUp (wI : Ival) (t : Int) : Int := shUp (wI.hi * t)
+
+/-! ### Lower-only arithmetic on nonnegative scaled integers -/
+
+/-- Lower bound of a product of nonnegative scaled numbers. -/
+def mulLo (a b : Int) : Int := shDown (a * b)
+
+/-- Pointwise addition (zero padded). -/
+def addLo : List Int → List Int → List Int
+  | [], m => m
+  | l, [] => l
+  | a :: l, b :: m => (a + b) :: addLo l m
+
+/-- Convolution of lower-bound lists (zero entries of the first list are skipped). -/
+def convLo : List Int → List Int → List Int
+  | [], _ => []
+  | a :: l, m => if a == 0 then 0 :: convLo l m else addLo (m.map (mulLo a)) (0 :: convLo l m)
+
+/-- Truncated Horner evaluation of lower bounds, as `hornerX`. -/
+def hornerLo (G : List Int) : Nat → List Int → List Int
+  | 0, _ => []
+  | _, [] => []
+  | N + 1, c :: cs => c :: (convLo G (hornerLo G N cs)).take N
+
+/-- Lower bounds of the first `N` radial coefficients of `Σ_j c_j · X^j · P^{2j+1}`. -/
+def composeLo (N : Nat) (P : List Int) (cs : List Int) : List Int :=
+  (convLo P (hornerLo (convLo P P) N cs)).take N
 
 end GrotheKernel
