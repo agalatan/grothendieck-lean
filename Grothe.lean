@@ -36,3 +36,12 @@ import Grothe.LowerAnalytic.Variance
 import Grothe.LowerAnalytic.Convexity
 import Grothe.LowerAnalytic.Schur
 import Grothe.LowerAnalytic.Endpoint
+import Grothe.LowerAnalytic.CubicV2
+import Grothe.Lower.ProfileDataV2
+import Grothe.Lower.ProfileCheckV2
+import Grothe.Lower.EnvelopeDataV2
+import Grothe.Lower.EnvelopeCheckV2
+import Grothe.Lower.EndpointV2
+import Grothe.Lower.Chords
+import Grothe.Lower.ChordData
+import Grothe.Lower.ChordCheck

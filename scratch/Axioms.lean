@@ -20,3 +20,10 @@ open Grothe
 #print axioms Grothe.LowerAnalytic.allocation_with_beta
 #print axioms Grothe.LowerAnalytic.schur_gate
 #print axioms Grothe.LowerAnalytic.operator_bound_limit
+#print axioms Grothe.Lower.vrecordsV2_sound
+#print axioms Grothe.Lower.envelope_bound_dataV2
+#print axioms Grothe.Lower.lower_endpointV2
+#print axioms Grothe.Lower.chords_sound
+#print axioms Grothe.Lower.dominates_of_check
+#print axioms Grothe.LowerAnalytic.sixthGap'_pos
+#print axioms Grothe.LowerAnalytic.first_moment_lt_rho'
