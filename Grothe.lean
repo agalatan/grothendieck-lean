@@ -30,3 +30,9 @@ import Grothe.Lower.Envelope
 import Grothe.Lower.EnvelopeData
 import Grothe.Lower.EnvelopeCheck
 import Grothe.Lower.Endpoint
+import Grothe.LowerAnalytic.MomentLemma
+import Grothe.LowerAnalytic.Cubic
+import Grothe.LowerAnalytic.Variance
+import Grothe.LowerAnalytic.Convexity
+import Grothe.LowerAnalytic.Schur
+import Grothe.LowerAnalytic.Endpoint

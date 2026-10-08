@@ -1,101 +1,147 @@
-# Lean formalization of the complex Grothendieck constant certificate
+# Lean formalization of the complex Grothendieck constant certificates
 
-This repository formalizes, in Lean 4 / Mathlib, the computations behind the upper bound
-for the complex Grothendieck constant in
+Lean 4 / Mathlib formalization of the computations behind the numerical bounds for the
+complex Grothendieck constant `K_G^ℂ`:
 
-* Heilman, Jones, Malavolta, *Sharper bounds for the complex Grothendieck constant*,
-  arXiv:2609.25462v1 — `K_G^ℂ < 1.404898554746`, and
-* the refinement in [`refinement/research-note.md`](refinement/research-note.md) —
-  `K_G^ℂ < 1.404898426735`.
-
-**Status of prior work.** As of 8 October 2026 no formalization of Grothendieck's
-inequality or of any numerical Grothendieck-constant certificate exists in Mathlib, the
-Isabelle AFP, or Coq; the only Lean work in the area is a formalization of a different
-"Grothendieck-type" theorem for Bessel sequences (Liehr, arXiv:2608.12280). Everything here
-was written from scratch.
-
-## What is proved
-
-Build with `lake build` (Lean `v4.34.1`, Mathlib `v4.34.1`; `lake exe cache get` first). No
-`sorry`. The two headline theorems are in `Grothe/Main.lean`:
-
-| theorem | conclusion |
-|---|---|
-| `complex_grothendieck_refined` | `IsGrothendieckBound 1.404898426735` |
-| `complex_grothendieck_source`  | `IsGrothendieckBound 1.404898554745441` |
-
-`IsGrothendieckBound K` means `V(A) ≤ K · C(A)` for every finite complex matrix `A`, where
-`C(A)` is the scalar phase optimum and `V(A)` the vector (Hilbert-space) optimum, both
-defined in `Grothe/Transfer.lean`. In other words `K_G^ℂ ≤ K`.
-
-Both theorems take, as explicit **hypotheses**, exactly the inputs of the certificate that
-are *not* formalized (see below). Everything else is proved:
-
-| file | content | status |
+| target | source | Lean theorem |
 |---|---|---|
-| `Transfer.lean` | `C(A)`, `V(A)`, `IsGrothendieckBound`; dominated and valid rounding kernels; valid ⇒ dominated (probabilistic argument); convex mixtures; the tensor-power identity `⟪x^{⊗(n+1)}⊗x̄^{⊗n}, …⟫ = z\|z\|^{2n}`; **inequality (1)** of the note: `K_G^ℂ ≤ M/(\|c₀\| − Σ_{n≥1}\|cₙ\|)` | fully proved |
-| `Haagerup.lean` | Haagerup's coefficients `hₙ = π/(4(n+1)) · binom(2n,n)²/16ⁿ`; the corrected Wallis estimate `hₙ < 1/(4(n+¼)(n+1))` via the monotone sequence `bₙ = π(n+¼)pₙ² ↑ 1` (limit from Mathlib's Wallis product) | fully proved |
-| `WallisTail.lean` | telescoping comparison (6); **equation (5)**: `W_N = Σ_{n≥N} hₙ/(2n+1)² ≤ 1/(48(N+1/16)³)`; the source's Lemma 6.1 (`Σ_{k≥N} h_k ≤ 1/(4N)`, `W_N ≤ 1/(48(N−1)³)`) | fully proved |
-| `ListPoly.lean` | coefficient `ℓ¹` norm `‖·‖_𝒜` on `ℝ[X]`, submultiplicativity; executable integer-list polynomial arithmetic and its bridge to `Polynomial ℝ` | fully proved |
-| `FifthTail.lean` | `‖P₅‖_𝒜 = 1−7·10⁻¹²`, `‖P₅²⁰‖_𝒜 < 1/2`, `‖P₅¹³⁵‖_𝒜 < 1/300` (equation (2)); the block argument giving **equation (3)**: `Σ_{j≥67} h_j ‖P₅^{2j+1}‖_𝒜 ≤ 1/273360`; the source's weaker reserve `1/268` | proved; the three integer facts use `native_decide` |
-| `SixthTail.lean` | **equation (7)**: `√(1.174 W₁₂₀)+√(1.176 W₁₂₀)+√(1.174·1.176)/241² ≤ 258088051054978/10¹⁸`; the source's `≤ 523/2000000` | fully proved |
-| `Assembly.lean` | exact rational arithmetic: masses, Cauchy tails `10R⁻²⁴¹/(1−R⁻²)`, weighted tail totals, the source's final constant, the unchanged-weight bound `< 1.404898427462`, the refined bound `< 1.404898426735` | fully proved (`norm_num`) |
-| `Main.lean` | generic assembly `bound_of_certificate` and the two headline theorems | fully proved |
-| `Contact.lean` | the source's final-audit arithmetic: positivity of the degree-63 partial sum of `Φ(x₊)`, `γ_H < 0.71178980668499814812` from Mathlib's `π < 3.14159265358979323847`, the gain over Haagerup, `1/Γ₀ < 1.404898554745441` | proved (one `native_decide`) |
+| `K_G^ℂ < 1.404898554745441` | Heilman–Jones–Malavolta, arXiv:2609.25462v1 (120 modes) | `Grothe.complex_grothendieck_source` |
+| `K_G^ℂ < 1.404898426735` | [`refinement/research-note.md`](refinement/research-note.md) (120 modes, sharper tails) | `Grothe.complex_grothendieck_refined` |
+| `K_G^ℂ < 1.404898359045958` | [`handoff/upper/proof.md`](handoff/upper/proof.md) (240 modes, common preprocessor, first-order energy) | `Grothe.complex_grothendieck_240` |
+| `K_G^ℂ > 1.400813971` | [`handoff/lower/research-note.md`](handoff/lower/research-note.md) (Gaussian witness, 21 coupled profiles) | finite layer: `Grothe.Lower.envelope_bound_data`, `Grothe.Lower.lower_endpoint` |
+
+**Prior work.** As of 8 October 2026 no formalization of Grothendieck's inequality or of any
+numerical Grothendieck-constant certificate exists in Mathlib, the Isabelle AFP, or Coq; the
+only Lean work nearby is a formalization of a Grothendieck-type theorem for Bessel sequences
+(Liehr, arXiv:2608.12280). Everything here was written from scratch.
+
+## Building
+
+```sh
+lake exe cache get      # Mathlib v4.34.1 (toolchain leanprover/lean4:v4.34.1)
+lake build              # whole library; see note on Value.lean below
+lake env lean scratch/Axioms.lean   # axiom report
+```
+
+No `sorry`, no `axiom`. `Grothe/Cert240/Value.lean` evaluates the 240-mode interval checker by
+`native_decide` (about 20 minutes with the precompiled `GrotheKernel` library); keep its
+`.olean` cached.
+
+## What `IsGrothendieckBound K` means
+
+`Grothe/Transfer.lean` defines, for a complex matrix `A : Fin m → Fin n → ℂ`, the scalar phase
+optimum `C(A) = sup |∑ aᵢⱼ conj(εᵢ) δⱼ|` and the vector optimum
+`V(A) = sup |∑ aᵢⱼ ⟪xᵢ, yⱼ⟫|` over unit vectors in finite-dimensional complex Hilbert spaces
+`EuclideanSpace ℂ ι`, and `IsGrothendieckBound K := ∀ A, V(A) ≤ K · C(A)`, i.e. `K_G^ℂ ≤ K`.
+Conventions follow Mathlib (inner product conjugate-linear in the first slot); conjugating `ε`
+shows this is the usual definition.
+
+## The upper bounds
+
+### Fully proved analytic core (standard axioms only)
+
+* `Transfer.lean`: dominated and valid rounding kernels; valid ⇒ dominated (the probabilistic
+  argument); convex mixtures; the tensor-power identity
+  `⟪x^{⊗(n+1)}⊗x̄^{⊗n}, y^{⊗(n+1)}⊗ȳ^{⊗n}⟫ = z|z|^{2n}`; **the transfer inequality**
+  `K_G^ℂ ≤ M/(|c₀| − Σ_{n≥1}|cₙ|)` for a dominated kernel `(1/M)Σ cₙ z|z|^{2n}` (`transfer`).
+* `Cert240/Preprocessor.lean`: a real odd polynomial with coefficient norm `≤ 1` is an
+  allowable preprocessor (explicit unit feature vectors), so `DominatedKernel Q` implies
+  `DominatedKernel (Q ∘ η^phys)` (`DominatedKernel.comp_physPoly`).
+* `Cert240/Composition.lean`: `radialKernel c (η^phys z) = radialKernel (c ∘ E) z` on the disc
+  (`radialKernel_comp`) and the contraction `Σ|(r∘E)ₙ| ≤ Σ|rₙ|` for `‖E‖_𝒜 ≤ 1`.
+* `Haagerup.lean`: Haagerup's coefficients `hₙ = π/(4(n+1))·binom(2n,n)²/16ⁿ` and the
+  corrected Wallis estimate `hₙ < 1/(4(n+¼)(n+1))` via the monotone sequence
+  `bₙ = π(n+¼)pₙ² ↑ 1` (limit from Mathlib's Wallis product).
+* `WallisTail.lean`, `Cert240/JointTail.lean`: telescoping tail bounds
+  `W_N = Σ_{n≥N} hₙ/(2n+1)² ≤ 1/(48(N+1/16)³)`, `Σ_{n≥N} hₙ ≤ 1/(4N)`,
+  `W'_N = Σ_{n≥N} hₙ/(2n+1) ≤ …`; the weighted Cauchy–Schwarz joint tail
+  `Σ_{n≥N}|ξₙcₙ + Re(rₙs̄ₙ)| ≤ √(E_C W'_N) + √(E_L E_R)/(2N+1)` (`joint_tail_bound`).
+* `ListPoly.lean`, `FifthTail.lean`, `Cert240/FifthTail240.lean`: the Wiener norm `‖·‖_𝒜` on
+  `ℝ[X]`, submultiplicativity, the exact facts `‖P₅²⁰‖ < 1/2`, `‖P₅¹³⁵‖ < 1/300`, and the
+  block arguments giving the reserves `1/273360` (120 modes) and `1/(4·320·2³²)` (240 modes).
+* `SixthTail.lean`, `Assembly.lean`, `Cert240/Assembly240.lean`, `Main.lean`,
+  `Cert240/Final.lean`: radical bounds, box-derived `‖A‖₂,‖B‖₂ ≤ 0.99948`, the coefficient
+  error budget `ε`, the weighted tails `T`, and all final rational arithmetic.
+* `Contact.lean`: the source's Haagerup contact-point audit (`γ_H < 0.71178980668499814812`
+  from Mathlib's 20-digit `π`, partial-sum positivity, gain, reciprocal).
+
+### The finite interval checker (`Cert240/`)
+
+`GrotheKernel/Basic.lean` is a Mathlib-free, precompiled kernel of fixed-point intervals
+`[lo/2¹²⁸, hi/2¹²⁸]` with outward-rounded `addI`, `mulI`, list convolution and a truncated Horner
+scheme. `Cert240/IntervalSound.lean` proves every operation sound (`mem`, `memB_conv`,
+`memB_hornerT`, `dloInt_sound`). `Cert240/CheckerDefs.lean` and `Checker.lean` build the
+concrete pipeline — `π` from `Real.pi_gt_d20/pi_lt_d20`, the five exact rational scalar
+profiles `sProf` (truncated at 240), the boxed origin coefficients `Re(A conj B)`, the 240
+mixture intervals, and the composition with the frozen preprocessor `η` through radial degree
+57240 — and prove, **without native evaluation**,
+`finite_certificate_240_exact : FiniteCertificate240 (dloIntFinal / 2¹²⁸)`.
+`Value.lean` evaluates `dloIntFinal` once by `native_decide`, giving
+`Dlo240 = 242211386207595090474349798194917751060 / 2¹²⁸ ≈ 0.71179529047965838`,
+which reproduces the handoff's Arb endpoint to 18 digits and exceeds the threshold
+`DloNeeded = 0.7117952904796581` by `2.8·10⁻¹⁶`.
 
 ### Hypotheses that remain (not formalized)
 
-These are the analytic/numerical inputs of the source paper that this project consumes but
-does not re-derive. They appear verbatim as hypotheses of the main theorems, so the Lean
-statements make the dependency structure explicit:
+The main theorems take these as explicit hypotheses, so the dependency structure is visible:
 
-1. `hdom` — each of the six source kernels `Kᵢ(z) = Σₙ kᵢₙ z\|z\|^{2n}` is a dominated rounding
-   kernel. In the paper this follows from Haagerup's Gaussian phase identity
-   `E[phase(X) conj(phase(Y))] = 𝔥(E[X Ȳ])` and the validity of the preprocessed kernels
-   (Sections 3–5). The lemma `ValidKernel.dominated` shows that the paper's notion of a valid
-   kernel (jointly distributed unimodular random variables) implies domination.
-2. `hq0`, `hprefix` — the directed Arb enclosures of the first 120 mixture coefficients
-   (`q₀ > 0.7117964083067696`, prefix `< 1.0747148914·10⁻⁶`; for the source weights
-   `0.71179640805640433452` and `1.074829404498064·10⁻⁶`). These come from certified
-   quadrature tables pinned by SHA-256 upstream.
-3. `hcauchy0..3` — the Cauchy-estimate tails of the first four kernels (source Section 6.4).
-4. `hfifth` — the retained-block contribution of the fifth kernel through mode 5000
-   (source (6.19), `< 2.699176355797438·10⁻¹²` including the old weight), plus the structural
-   fact that the omitted blocks contribute at most `Σ_{j≥67} h_j ‖P₅^{2j+1}‖_𝒜` — the quantity
-   this project bounds by `1/273360` (note) and `1/268` (source).
-5. `hsixth` — the Laguerre energy majorant for the sixth kernel tail (source Section 6.2),
-   expressed through `W₁₂₀`, which this project bounds.
-
-Haagerup's identity itself (a Gaussian integral evaluating to a hypergeometric function)
-and the Arb quadrature are well outside what is reasonable to formalize here.
+1. domination of the six source kernels (Haagerup's Gaussian phase identity and the validity
+   of the preprocessed kernels, source Sections 3–5; `ValidKernel.dominated` shows the paper's
+   probabilistic notion implies domination);
+2. the Arb enclosures: for 120 modes the directed `q₀`/prefix bounds, for 240 modes the
+   containment of the truncated radial coefficient integrals `A_n(0,36)`, `B_n(0,36)` in the
+   exact data boxes (`Cert240/Data.lean`, exported from the pinned NPZ tables);
+3. the scalar coefficient identification `kᵢₙ = π·sProf(rowᵢ) n` (phase-kernel expansion);
+4. the sixth-kernel structure `k₅ₙ = Re(aₙ b̄ₙ)` with truncation error `‖a−A‖₂ ≤ e⁻¹⁸`, and for
+   `n ≥ 240` the first-order decomposition `k₅ₙ = ξₙcₙ + Re(rₙs̄ₙ)` with the three energy caps
+   (Laguerre/Dirichlet energy quadrature);
+5. the Cauchy tails of kernels 1–4 and the finite part of the fifth tail.
 
 ### Axioms
 
-All theorems depend only on the standard axioms `propext`, `Classical.choice`,
-`Quot.sound`, plus — for the theorems that transitively use the fifth-tail bound — the two
-`native_decide` facts `absSum_P5int_pow20` and `absSum_P5int_pow135` in `FifthTail.lean`
-(the sums of absolute coefficients of `(10¹²P₅)²⁰` and `(10¹²P₅)¹³⁵`, integers with 240 and
-1620 digits; Lean records these as axioms named `…_native.native_decide.ax_1_1`).
-`native_decide` trusts the Lean compiler's evaluation of `listPow`; the same numbers are
-independently reproduced by `refinement/verify_exact.py`. `Contact.lean` uses one more
-`native_decide` for a 63-term rational sum. Run `lake env lean scratch/Axioms.lean` to print
-the axiom report.
+All theorems use only `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide`
+facts listed by `scratch/Axioms.lean`: the two integer coefficient sums of `(10¹²P₅)^{20,135}`,
+`Σ|η_j| = 1`, the exact rational partial sum `wSum_240_le`, the two box-norm sums, and
+`dloIntFinal_ge` (the compiled interval evaluation). Each of these is a finite exact
+computation reproduced independently by the Python verifiers in `refinement/` and `handoff/`.
+
+## The lower bound
+
+`handoff/lower/` certifies `sup_n ‖T_n‖_{∞→1} ≤ B = 3569353321/5000000000`, hence
+`K_G^ℂ ≥ 1/B > 1.400813971`, through 21 coupled profiles (4,197 rectangle leaves), 9 source
+profiles, and a 20-leaf scalar envelope.
+
+* `Grothe/Lower/` (finite layer, sound checkers + data generated by `tools/gen_lower_data.py`):
+  Bernstein upper bounds on intervals (`evalL_le_of_bern`), the endpoint lemma for
+  `ax²+bx³`, PSD/PD certificates by exact `LᵀDL` factorizations (`psd3_of_check`), dyadic
+  bisection covers (`coversBox_sound`), profile gates and allocations, and the piecewise-quadratic
+  envelope. Results: `vrecords_sound` (all 21 virtual caps verified on
+  `[0,ρ]×[0,31/4]`), `srcProfiles_gates'`, `envelope_bound` (generic) and
+  `envelope_bound_data : … → V ≤ B` (data), `lower_endpoint : 1/B ≤ K → 1.400813971 < K`.
+  The nine old source caps are taken as data (their base moment cover is not re-verified).
+* `Grothe/LowerAnalytic/` (analytic lemmas, standard axioms only): the scalar three-moment
+  lemma `∫√Z ≤ (1+√β)/√(α+2√β)` (`moment_lemma`), the polynomial positivity certificates for
+  `C₆` and `ρ` and the consequence `E|q| < ρ` (`moment_bound_lt_rho`), the weighted variance and
+  retained-square identities and the two-row mixing bound (`mix_retained`, `mixing_bound`),
+  joint convexity and argument allocation (`allocation_with_beta`), the Schur-complement gate
+  (`schur_gate`), and the endpoint/limit arguments (`operator_bound_limit`).
+
+Not formalized (hypotheses of the finite layer): the Gaussian profile reduction
+`V ≤ Fᵢ(t) − ε‖Qh + βᵢv/ε‖²`, the claim that the leaf polynomials are global majorants of the
+potentials `Ψᵢ` (Gaussian moment enclosures), the Wick sixth-moment identity, and the transfer
+from the Gaussian operator to finite matrices.
 
 ## Layout
 
 ```
-Grothe/            the Lean library (import order: ListPoly, Haagerup, WallisTail,
-                   FifthTail, SixthTail, Assembly, Transfer, Main, Contact)
-refinement/        the research note, Python verifiers and logs (unchanged)
-scratch/           helper files not part of the library (axiom report)
+Grothe/              main library (see Grothe.lean for the module list)
+Grothe/Cert240/      240-mode upper certificate (interface, analytic layer, checker, final)
+Grothe/Lower/        lower-bound finite checkers and data
+Grothe/LowerAnalytic/ lower-bound analytic lemmas
+GrotheKernel/        Mathlib-free precompiled interval kernel
+handoff/             curated research handoff (notes, exact data, reference verifiers)
+refinement/          the 120-mode research note, Python verifiers and logs
+tools/               data generators (JSON → Lean, exact rationals)
+scratch/             axiom reports and evaluation drivers (not part of the library)
+.claude/skills/      the `lean-grothe` skill: build workflow, conventions, Mathlib quirks
 ```
-
-## Conventions
-
-* Matrices are functions `Fin m → Fin n → ℂ`; the inner product is Mathlib's, conjugate-linear
-  in the first slot, so the one-dimensional case reads `conj(εᵢ) δⱼ`. Replacing `ε` by its
-  conjugate shows this is the usual `C(A)`.
-* `V(A)` is the supremum over all finite-dimensional `EuclideanSpace ℂ ι`; a finite family in
-  any Hilbert space spans such a subspace, so this is the usual vector optimum.
-* The fifth preprocessor is `ρ₅(t) = t·P₅(t²)`; since `‖ρ₅ᵏ‖_𝒜 = ‖P₅ᵏ‖_𝒜` all statements are
-  about `P₅` (degree 37, `Grothe.P5int`).
