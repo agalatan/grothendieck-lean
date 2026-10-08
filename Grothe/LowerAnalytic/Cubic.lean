@@ -48,7 +48,7 @@ lemma sixthGap_leaf0 (y : ℝ) (hl : (0 : ℝ) ≤ y) (hh : y ≤ (1 : ℝ) / 2)
   have hw : (0 : ℝ) < (1 : ℝ) / 2 - (0 : ℝ) := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ y = (0 : ℝ) + ((1 : ℝ) / 2 - (0 : ℝ)) * s :=
     ⟨(y - (0 : ℝ)) / ((1 : ℝ) / 2 - (0 : ℝ)), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 6 := by positivity
   have T1 : (0 : ℝ) ≤ 6 * s * (1 - s) ^ 5 := by positivity
@@ -66,7 +66,7 @@ lemma sixthGap_leaf1 (y : ℝ) (hl : (1 : ℝ) / 2 ≤ y) (hh : y ≤ (129 : ℝ
   have hw : (0 : ℝ) < (129 : ℝ) / 256 - (1 : ℝ) / 2 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ y = (1 : ℝ) / 2 + ((129 : ℝ) / 256 - (1 : ℝ) / 2) * s :=
     ⟨(y - (1 : ℝ) / 2) / ((129 : ℝ) / 256 - (1 : ℝ) / 2), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 6 := by positivity
   have T1 : (0 : ℝ) ≤ 6 * s * (1 - s) ^ 5 := by positivity
@@ -84,7 +84,7 @@ lemma sixthGap_leaf2 (y : ℝ) (hl : (129 : ℝ) / 256 ≤ y) (hh : y ≤ (2065 
   have hw : (0 : ℝ) < (2065 : ℝ) / 4096 - (129 : ℝ) / 256 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ y = (129 : ℝ) / 256 + ((2065 : ℝ) / 4096 - (129 : ℝ) / 256) * s :=
     ⟨(y - (129 : ℝ) / 256) / ((2065 : ℝ) / 4096 - (129 : ℝ) / 256), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 6 := by positivity
   have T1 : (0 : ℝ) ≤ 6 * s * (1 - s) ^ 5 := by positivity
@@ -102,7 +102,7 @@ lemma sixthGap_leaf3 (y : ℝ) (hl : (2065 : ℝ) / 4096 ≤ y) (hh : y ≤ (826
   have hw : (0 : ℝ) < (8261 : ℝ) / 16384 - (2065 : ℝ) / 4096 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ y = (2065 : ℝ) / 4096 + ((8261 : ℝ) / 16384 - (2065 : ℝ) / 4096) * s :=
     ⟨(y - (2065 : ℝ) / 4096) / ((8261 : ℝ) / 16384 - (2065 : ℝ) / 4096), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 6 := by positivity
   have T1 : (0 : ℝ) ≤ 6 * s * (1 - s) ^ 5 := by positivity
@@ -120,7 +120,7 @@ lemma sixthGap_leaf4 (y : ℝ) (hl : (8261 : ℝ) / 16384 ≤ y) (hh : y ≤ (41
   have hw : (0 : ℝ) < (4131 : ℝ) / 8192 - (8261 : ℝ) / 16384 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ y = (8261 : ℝ) / 16384 + ((4131 : ℝ) / 8192 - (8261 : ℝ) / 16384) * s :=
     ⟨(y - (8261 : ℝ) / 16384) / ((4131 : ℝ) / 8192 - (8261 : ℝ) / 16384), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 6 := by positivity
   have T1 : (0 : ℝ) ≤ 6 * s * (1 - s) ^ 5 := by positivity
@@ -138,7 +138,7 @@ lemma sixthGap_leaf5 (y : ℝ) (hl : (4131 : ℝ) / 8192 ≤ y) (hh : y ≤ (103
   have hw : (0 : ℝ) < (1033 : ℝ) / 2048 - (4131 : ℝ) / 8192 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ y = (4131 : ℝ) / 8192 + ((1033 : ℝ) / 2048 - (4131 : ℝ) / 8192) * s :=
     ⟨(y - (4131 : ℝ) / 8192) / ((1033 : ℝ) / 2048 - (4131 : ℝ) / 8192), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 6 := by positivity
   have T1 : (0 : ℝ) ≤ 6 * s * (1 - s) ^ 5 := by positivity
@@ -156,7 +156,7 @@ lemma sixthGap_leaf6 (y : ℝ) (hl : (1033 : ℝ) / 2048 ≤ y) (hh : y ≤ (517
   have hw : (0 : ℝ) < (517 : ℝ) / 1024 - (1033 : ℝ) / 2048 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ y = (1033 : ℝ) / 2048 + ((517 : ℝ) / 1024 - (1033 : ℝ) / 2048) * s :=
     ⟨(y - (1033 : ℝ) / 2048) / ((517 : ℝ) / 1024 - (1033 : ℝ) / 2048), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 6 := by positivity
   have T1 : (0 : ℝ) ≤ 6 * s * (1 - s) ^ 5 := by positivity
@@ -174,7 +174,7 @@ lemma sixthGap_leaf7 (y : ℝ) (hl : (517 : ℝ) / 1024 ≤ y) (hh : y ≤ (259 
   have hw : (0 : ℝ) < (259 : ℝ) / 512 - (517 : ℝ) / 1024 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ y = (517 : ℝ) / 1024 + ((259 : ℝ) / 512 - (517 : ℝ) / 1024) * s :=
     ⟨(y - (517 : ℝ) / 1024) / ((259 : ℝ) / 512 - (517 : ℝ) / 1024), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 6 := by positivity
   have T1 : (0 : ℝ) ≤ 6 * s * (1 - s) ^ 5 := by positivity
@@ -192,7 +192,7 @@ lemma sixthGap_leaf8 (y : ℝ) (hl : (259 : ℝ) / 512 ≤ y) (hh : y ≤ (65 : 
   have hw : (0 : ℝ) < (65 : ℝ) / 128 - (259 : ℝ) / 512 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ y = (259 : ℝ) / 512 + ((65 : ℝ) / 128 - (259 : ℝ) / 512) * s :=
     ⟨(y - (259 : ℝ) / 512) / ((65 : ℝ) / 128 - (259 : ℝ) / 512), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 6 := by positivity
   have T1 : (0 : ℝ) ≤ 6 * s * (1 - s) ^ 5 := by positivity
@@ -210,7 +210,7 @@ lemma sixthGap_leaf9 (y : ℝ) (hl : (65 : ℝ) / 128 ≤ y) (hh : y ≤ (33 : �
   have hw : (0 : ℝ) < (33 : ℝ) / 64 - (65 : ℝ) / 128 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ y = (65 : ℝ) / 128 + ((33 : ℝ) / 64 - (65 : ℝ) / 128) * s :=
     ⟨(y - (65 : ℝ) / 128) / ((33 : ℝ) / 64 - (65 : ℝ) / 128), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 6 := by positivity
   have T1 : (0 : ℝ) ≤ 6 * s * (1 - s) ^ 5 := by positivity
@@ -228,7 +228,7 @@ lemma sixthGap_leaf10 (y : ℝ) (hl : (33 : ℝ) / 64 ≤ y) (hh : y ≤ (17 : �
   have hw : (0 : ℝ) < (17 : ℝ) / 32 - (33 : ℝ) / 64 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ y = (33 : ℝ) / 64 + ((17 : ℝ) / 32 - (33 : ℝ) / 64) * s :=
     ⟨(y - (33 : ℝ) / 64) / ((17 : ℝ) / 32 - (33 : ℝ) / 64), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 6 := by positivity
   have T1 : (0 : ℝ) ≤ 6 * s * (1 - s) ^ 5 := by positivity
@@ -246,7 +246,7 @@ lemma sixthGap_leaf11 (y : ℝ) (hl : (17 : ℝ) / 32 ≤ y) (hh : y ≤ (9 : �
   have hw : (0 : ℝ) < (9 : ℝ) / 16 - (17 : ℝ) / 32 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ y = (17 : ℝ) / 32 + ((9 : ℝ) / 16 - (17 : ℝ) / 32) * s :=
     ⟨(y - (17 : ℝ) / 32) / ((9 : ℝ) / 16 - (17 : ℝ) / 32), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 6 := by positivity
   have T1 : (0 : ℝ) ≤ 6 * s * (1 - s) ^ 5 := by positivity
@@ -264,7 +264,7 @@ lemma sixthGap_leaf12 (y : ℝ) (hl : (9 : ℝ) / 16 ≤ y) (hh : y ≤ (5 : ℝ
   have hw : (0 : ℝ) < (5 : ℝ) / 8 - (9 : ℝ) / 16 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ y = (9 : ℝ) / 16 + ((5 : ℝ) / 8 - (9 : ℝ) / 16) * s :=
     ⟨(y - (9 : ℝ) / 16) / ((5 : ℝ) / 8 - (9 : ℝ) / 16), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 6 := by positivity
   have T1 : (0 : ℝ) ≤ 6 * s * (1 - s) ^ 5 := by positivity
@@ -282,7 +282,7 @@ lemma sixthGap_leaf13 (y : ℝ) (hl : (5 : ℝ) / 8 ≤ y) (hh : y ≤ (3 : ℝ)
   have hw : (0 : ℝ) < (3 : ℝ) / 4 - (5 : ℝ) / 8 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ y = (5 : ℝ) / 8 + ((3 : ℝ) / 4 - (5 : ℝ) / 8) * s :=
     ⟨(y - (5 : ℝ) / 8) / ((3 : ℝ) / 4 - (5 : ℝ) / 8), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 6 := by positivity
   have T1 : (0 : ℝ) ≤ 6 * s * (1 - s) ^ 5 := by positivity
@@ -300,7 +300,7 @@ lemma sixthGap_leaf14 (y : ℝ) (hl : (3 : ℝ) / 4 ≤ y) (hh : y ≤ (1 : ℝ)
   have hw : (0 : ℝ) < (1 : ℝ) - (3 : ℝ) / 4 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ y = (3 : ℝ) / 4 + ((1 : ℝ) - (3 : ℝ) / 4) * s :=
     ⟨(y - (3 : ℝ) / 4) / ((1 : ℝ) - (3 : ℝ) / 4), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 6 := by positivity
   have T1 : (0 : ℝ) ≤ 6 * s * (1 - s) ^ 5 := by positivity
@@ -349,7 +349,7 @@ lemma q1poly_leaf0 (x : ℝ) (hl : (0 : ℝ) ≤ x) (hh : x ≤ (31 : ℝ) / 4) 
   have hw : (0 : ℝ) < (31 : ℝ) / 4 - (0 : ℝ) := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ x = (0 : ℝ) + ((31 : ℝ) / 4 - (0 : ℝ)) * s :=
     ⟨(x - (0 : ℝ)) / ((31 : ℝ) / 4 - (0 : ℝ)), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 4 := by positivity
   have T1 : (0 : ℝ) ≤ 4 * s * (1 - s) ^ 3 := by positivity
@@ -368,7 +368,7 @@ lemma Upoly_leaf0 (x : ℝ) (hl : (0 : ℝ) ≤ x) (hh : x ≤ (31 : ℝ) / 32) 
   have hw : (0 : ℝ) < (31 : ℝ) / 32 - (0 : ℝ) := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ x = (0 : ℝ) + ((31 : ℝ) / 32 - (0 : ℝ)) * s :=
     ⟨(x - (0 : ℝ)) / ((31 : ℝ) / 32 - (0 : ℝ)), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 4 := by positivity
   have T1 : (0 : ℝ) ≤ 4 * s * (1 - s) ^ 3 := by positivity
@@ -384,7 +384,7 @@ lemma Upoly_leaf1 (x : ℝ) (hl : (31 : ℝ) / 32 ≤ x) (hh : x ≤ (31 : ℝ) 
   have hw : (0 : ℝ) < (31 : ℝ) / 16 - (31 : ℝ) / 32 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ x = (31 : ℝ) / 32 + ((31 : ℝ) / 16 - (31 : ℝ) / 32) * s :=
     ⟨(x - (31 : ℝ) / 32) / ((31 : ℝ) / 16 - (31 : ℝ) / 32), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 4 := by positivity
   have T1 : (0 : ℝ) ≤ 4 * s * (1 - s) ^ 3 := by positivity
@@ -400,7 +400,7 @@ lemma Upoly_leaf2 (x : ℝ) (hl : (31 : ℝ) / 16 ≤ x) (hh : x ≤ (31 : ℝ) 
   have hw : (0 : ℝ) < (31 : ℝ) / 8 - (31 : ℝ) / 16 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ x = (31 : ℝ) / 16 + ((31 : ℝ) / 8 - (31 : ℝ) / 16) * s :=
     ⟨(x - (31 : ℝ) / 16) / ((31 : ℝ) / 8 - (31 : ℝ) / 16), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 4 := by positivity
   have T1 : (0 : ℝ) ≤ 4 * s * (1 - s) ^ 3 := by positivity
@@ -416,7 +416,7 @@ lemma Upoly_leaf3 (x : ℝ) (hl : (31 : ℝ) / 8 ≤ x) (hh : x ≤ (31 : ℝ) /
   have hw : (0 : ℝ) < (31 : ℝ) / 4 - (31 : ℝ) / 8 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ x = (31 : ℝ) / 8 + ((31 : ℝ) / 4 - (31 : ℝ) / 8) * s :=
     ⟨(x - (31 : ℝ) / 8) / ((31 : ℝ) / 4 - (31 : ℝ) / 8), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 4 := by positivity
   have T1 : (0 : ℝ) ≤ 4 * s * (1 - s) ^ 3 := by positivity
@@ -441,7 +441,7 @@ lemma gap8_leaf0 (x : ℝ) (hl : (0 : ℝ) ≤ x) (hh : x ≤ (31 : ℝ) / 32) :
   have hw : (0 : ℝ) < (31 : ℝ) / 32 - (0 : ℝ) := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ x = (0 : ℝ) + ((31 : ℝ) / 32 - (0 : ℝ)) * s :=
     ⟨(x - (0 : ℝ)) / ((31 : ℝ) / 32 - (0 : ℝ)), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 8 := by positivity
   have T1 : (0 : ℝ) ≤ 8 * s * (1 - s) ^ 7 := by positivity
@@ -461,7 +461,7 @@ lemma gap8_leaf1 (x : ℝ) (hl : (31 : ℝ) / 32 ≤ x) (hh : x ≤ (155 : ℝ) 
   have hw : (0 : ℝ) < (155 : ℝ) / 128 - (31 : ℝ) / 32 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ x = (31 : ℝ) / 32 + ((155 : ℝ) / 128 - (31 : ℝ) / 32) * s :=
     ⟨(x - (31 : ℝ) / 32) / ((155 : ℝ) / 128 - (31 : ℝ) / 32), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 8 := by positivity
   have T1 : (0 : ℝ) ≤ 8 * s * (1 - s) ^ 7 := by positivity
@@ -481,7 +481,7 @@ lemma gap8_leaf2 (x : ℝ) (hl : (155 : ℝ) / 128 ≤ x) (hh : x ≤ (341 : ℝ
   have hw : (0 : ℝ) < (341 : ℝ) / 256 - (155 : ℝ) / 128 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ x = (155 : ℝ) / 128 + ((341 : ℝ) / 256 - (155 : ℝ) / 128) * s :=
     ⟨(x - (155 : ℝ) / 128) / ((341 : ℝ) / 256 - (155 : ℝ) / 128), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 8 := by positivity
   have T1 : (0 : ℝ) ≤ 8 * s * (1 - s) ^ 7 := by positivity
@@ -501,7 +501,7 @@ lemma gap8_leaf3 (x : ℝ) (hl : (341 : ℝ) / 256 ≤ x) (hh : x ≤ (713 : ℝ
   have hw : (0 : ℝ) < (713 : ℝ) / 512 - (341 : ℝ) / 256 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ x = (341 : ℝ) / 256 + ((713 : ℝ) / 512 - (341 : ℝ) / 256) * s :=
     ⟨(x - (341 : ℝ) / 256) / ((713 : ℝ) / 512 - (341 : ℝ) / 256), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 8 := by positivity
   have T1 : (0 : ℝ) ≤ 8 * s * (1 - s) ^ 7 := by positivity
@@ -521,7 +521,7 @@ lemma gap8_leaf4 (x : ℝ) (hl : (713 : ℝ) / 512 ≤ x) (hh : x ≤ (1457 : �
   have hw : (0 : ℝ) < (1457 : ℝ) / 1024 - (713 : ℝ) / 512 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ x = (713 : ℝ) / 512 + ((1457 : ℝ) / 1024 - (713 : ℝ) / 512) * s :=
     ⟨(x - (713 : ℝ) / 512) / ((1457 : ℝ) / 1024 - (713 : ℝ) / 512), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 8 := by positivity
   have T1 : (0 : ℝ) ≤ 8 * s * (1 - s) ^ 7 := by positivity
@@ -541,7 +541,7 @@ lemma gap8_leaf5 (x : ℝ) (hl : (1457 : ℝ) / 1024 ≤ x) (hh : x ≤ (93 : �
   have hw : (0 : ℝ) < (93 : ℝ) / 64 - (1457 : ℝ) / 1024 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ x = (1457 : ℝ) / 1024 + ((93 : ℝ) / 64 - (1457 : ℝ) / 1024) * s :=
     ⟨(x - (1457 : ℝ) / 1024) / ((93 : ℝ) / 64 - (1457 : ℝ) / 1024), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 8 := by positivity
   have T1 : (0 : ℝ) ≤ 8 * s * (1 - s) ^ 7 := by positivity
@@ -561,7 +561,7 @@ lemma gap8_leaf6 (x : ℝ) (hl : (93 : ℝ) / 64 ≤ x) (hh : x ≤ (31 : ℝ) /
   have hw : (0 : ℝ) < (31 : ℝ) / 16 - (93 : ℝ) / 64 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ x = (93 : ℝ) / 64 + ((31 : ℝ) / 16 - (93 : ℝ) / 64) * s :=
     ⟨(x - (93 : ℝ) / 64) / ((31 : ℝ) / 16 - (93 : ℝ) / 64), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 8 := by positivity
   have T1 : (0 : ℝ) ≤ 8 * s * (1 - s) ^ 7 := by positivity
@@ -581,7 +581,7 @@ lemma gap8_leaf7 (x : ℝ) (hl : (31 : ℝ) / 16 ≤ x) (hh : x ≤ (31 : ℝ) /
   have hw : (0 : ℝ) < (31 : ℝ) / 8 - (31 : ℝ) / 16 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ x = (31 : ℝ) / 16 + ((31 : ℝ) / 8 - (31 : ℝ) / 16) * s :=
     ⟨(x - (31 : ℝ) / 16) / ((31 : ℝ) / 8 - (31 : ℝ) / 16), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 8 := by positivity
   have T1 : (0 : ℝ) ≤ 8 * s * (1 - s) ^ 7 := by positivity
@@ -601,7 +601,7 @@ lemma gap8_leaf8 (x : ℝ) (hl : (31 : ℝ) / 8 ≤ x) (hh : x ≤ (31 : ℝ) / 
   have hw : (0 : ℝ) < (31 : ℝ) / 4 - (31 : ℝ) / 8 := by norm_num
   obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ x = (31 : ℝ) / 8 + ((31 : ℝ) / 4 - (31 : ℝ) / 8) * s :=
     ⟨(x - (31 : ℝ) / 8) / ((31 : ℝ) / 4 - (31 : ℝ) / 8), div_nonneg (by linarith) hw.le,
-      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩
+      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩
   have h1s : (0 : ℝ) ≤ 1 - s := by linarith
   have T0 : (0 : ℝ) ≤ (1 - s) ^ 8 := by positivity
   have T1 : (0 : ℝ) ≤ 8 * s * (1 - s) ^ 7 := by positivity

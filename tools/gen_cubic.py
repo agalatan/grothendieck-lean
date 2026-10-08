@@ -75,7 +75,7 @@ def leaf_lemma(name, unfold, var, deg, idx, l, h, cs):
            f"  have hw : (0 : ℝ) < {q(h)} - {q(l)} := by norm_num",
            f"  obtain ⟨s, hs0, hs1, hv⟩ : ∃ s : ℝ, 0 ≤ s ∧ s ≤ 1 ∧ {var} = {q(l)} + ({q(h)} - {q(l)}) * s :=",
            f"    ⟨({var} - {q(l)}) / ({q(h)} - {q(l)}), div_nonneg (by linarith) hw.le,",
-           f"      by rw [div_le_one hw]; linarith, by first | (field_simp; ring) | field_simp⟩",
+           f"      by rw [div_le_one hw]; linarith, by rw [mul_div_assoc', mul_div_cancel_left₀ _ hw.ne']; ring⟩",
            f"  have h1s : (0 : ℝ) ≤ 1 - s := by linarith"]
     for k,t in enumerate(T):
         lines.append(f"  have T{k} : (0 : ℝ) ≤ {t} := by positivity")

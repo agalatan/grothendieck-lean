@@ -162,7 +162,6 @@ lemma wSum_eq (K : ℕ) : ∀ n, wSum n K (Upper.hRat n)
     congr 1
     refine sum_congr rfl fun k _ => ?_
     rw [show n + 1 + k = n + (k + 1) by omega]
-    push_cast
     ring_nf
 
 /-- The exact rational partial sum `∑_{240 ≤ n < 4000} hRat n/(2n+1)` is at most `qS`. -/
@@ -183,7 +182,6 @@ theorem Wp_le : Wp 240 ≤ (WpHi : ℝ) := by
     rw [Finset.mul_sum]
     refine sum_congr rfl fun k _ => ?_
     rw [h_eq_pi_mul_hRat]
-    push_cast
     ring
   have e2 : ∑' k, h (240 + (k + 3760)) / (2 * ((240 + (k + 3760) : ℕ) : ℝ) + 1) = Wp 4000 := by
     unfold Wp

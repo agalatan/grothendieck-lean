@@ -92,7 +92,7 @@ lemma compose_boxed_eq_zero (A B : ℕ → ℂ) {n : ℕ} (hn : maxIndex < n) :
         _ < n - j := by omega
     rw [coeff_eq_zero_of_natDegree_lt hdeg, mul_zero]
   · unfold boxedCoeff
-    rw [if_neg hj, zero_mul]
+    rw [ite_eq_right hj, zero_mul]
 
 /-! ### Error of the truncated sixth-kernel coefficients -/
 
@@ -303,7 +303,7 @@ theorem bound_of_certificate (Dlo : ℚ) (hfin : FiniteCertificate Dlo)
   set cb : ℕ → ℝ := boxedCoeff A B with hcb
   set Rr : ℕ → ℝ := fun n => mixCoeff wt k n - cb n with hRr
   have hcb_zero : ∀ n, modes ≤ n → cb n = 0 := fun n hn => by
-    simp only [hcb, boxedCoeff]; rw [if_neg (by omega)]
+    simp only [hcb, boxedCoeff]; rw [ite_eq_right (by omega)]
   have hcb_sum : Summable fun n => |cb n| :=
     summable_of_ne_finset_zero (s := range modes) fun n hn => by
       rw [hcb_zero n (by simpa using hn), abs_zero]
@@ -323,7 +323,7 @@ theorem bound_of_certificate (Dlo : ℚ) (hfin : FiniteCertificate Dlo)
       intro n hn
       have hn' : n < modes := by simpa using hn
       simp only [hRr, hcb, boxedCoeff, mixCoeff]
-      rw [if_pos hn', Fin.sum_univ_castSucc]
+      rw [ite_eq_left hn', Fin.sum_univ_castSucc]
       have hlast : (Fin.last 5 : Fin 6) = 5 := rfl
       rw [hlast, hk5 n hn']
       have : ∑ i : Fin 5, wt i.castSucc * k i.castSucc n

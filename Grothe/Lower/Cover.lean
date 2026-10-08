@@ -73,7 +73,7 @@ lemma mem_stripDigit {d : Bool} {paths : List (List Bool)} {r : List Bool}
   rcases p with _ | ⟨d', r'⟩
   · simp at hpr
   · by_cases hd : d' = d
-    · simp only [hd, if_true, Option.some.injEq] at hpr
+    · simp only [hd, ite_true, Option.some.injEq] at hpr
       subst hpr; subst hd; exact hp
     · simp [hd] at hpr
 

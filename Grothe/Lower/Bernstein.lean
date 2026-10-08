@@ -226,14 +226,14 @@ theorem cubic_endpoint_le (a b x p q : ℝ) (hb : 0 ≤ b) (hp : 0 ≤ p) (hpx :
     rcases hx.lt_or_eq with hx' | hx'
     · have hE'' : a * (x + p) + b * (x ^ 2 + x * p + p ^ 2) ≤ 0 := by
         by_contra hcon
-        push_neg at hcon
+        push Not at hcon
         nlinarith [mul_pos hx' hcon]
       nlinarith [mul_nonneg (sub_nonneg.2 hpx) (neg_nonneg.2 hE'')]
     · have hp0 : p = 0 := by linarith
       exact le_of_eq (by rw [hp0, ← hx'])
   · -- right of the critical point: increasing, so the value at `q` dominates
     refine le_max_of_le_right ?_
-    push_neg at hc
+    push Not at hc
     have hF : 0 ≤ a * (q + x) + b * (q ^ 2 + q * x + x ^ 2) := by
       nlinarith [mul_nonneg hb (sub_nonneg.2 hxq), mul_nonneg (mul_nonneg hb hx) (sub_nonneg.2 hxq)]
     nlinarith [mul_nonneg (sub_nonneg.2 hxq) hF]
@@ -280,13 +280,13 @@ theorem quadVal_le_quadMax (c0 c1 c2 α β : ℚ) (t : ℝ) (hα : (α : ℝ) �
     rcases hαβ.lt_or_eq with hlt | heq
     · have h2 : 0 ≤ max qα qβ - ((c0 : ℝ) + c1 * t + c2 * t ^ 2) := by
         by_contra hcon
-        push_neg at hcon
+        push Not at hcon
         nlinarith [mul_pos (sub_pos.2 hlt) (neg_pos.2 hcon)]
       linarith
     · have ht : t = α := by linarith
       rw [ht, ← eα]
       exact (le_max_left _ _).trans hend
-  · push_neg at hc2
+  · push Not at hc2
     have hc2' : (c2 : ℚ) < 0 := by exact_mod_cast hc2
     have hc2ne : (c2 : ℝ) ≠ 0 := hc2.ne
     obtain ⟨v, hv⟩ : ∃ v : ℚ, v = -c1 / (2 * c2) := ⟨_, rfl⟩
@@ -296,8 +296,8 @@ theorem quadVal_le_quadMax (c0 c1 c2 α β : ℚ) (t : ℝ) (hα : (α : ℝ) �
     by_cases hin : α ≤ v ∧ v ≤ β
     · -- vertex inside: the vertex value is a candidate
       have hvmax : (quadVal c0 c1 c2 v : ℚ) ≤ (quadMax c0 c1 c2 α β : ℚ) := by
-        simp only [quadMax, hc2', if_true]
-        rw [← hv, if_pos hin]
+        simp only [quadMax, hc2', ite_true]
+        rw [← hv, ite_eq_left hin]
         exact le_max_right _ _
       have hvval : ((quadVal c0 c1 c2 v : ℚ) : ℝ) = c0 - c1 ^ 2 / (4 * c2) := by
         simp only [quadVal]; push_cast; rw [hvr]; field_simp; ring

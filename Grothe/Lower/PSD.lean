@@ -114,7 +114,7 @@ theorem pd3_of_check (M : Sym3) (c : LDL3) (h : checkPD3 M c = true) : PD3 M := 
   have h2' : (0 : ℝ) < c.d2 := by exact_mod_cast h2
   have h3' : (0 : ℝ) < c.d3 := by exact_mod_cast h3
   by_contra hcon
-  push_neg at hcon
+  push Not at hcon
   have s1 := mul_nonneg h1'.le (sq_nonneg (v1 + c.l21 * v2 + c.l31 * v3))
   have s2 := mul_nonneg h2'.le (sq_nonneg (v2 + c.l32 * v3))
   have s3 := mul_nonneg h3'.le (sq_nonneg v3)
@@ -154,7 +154,7 @@ theorem pd2_of_check (M : Sym2) (c : LDL2) (h : checkPD2 M c = true) : PD2 M := 
   have h1' : (0 : ℝ) < c.d1 := by exact_mod_cast h1
   have h2' : (0 : ℝ) < c.d2 := by exact_mod_cast h2
   by_contra hcon
-  push_neg at hcon
+  push Not at hcon
   have s1 := mul_nonneg h1'.le (sq_nonneg (v1 + c.l21 * v2))
   have s2 := mul_nonneg h2'.le (sq_nonneg v2)
   have e2 : v2 = 0 := by

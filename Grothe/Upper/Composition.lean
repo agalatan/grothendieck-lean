@@ -120,7 +120,7 @@ def compTerm (c : ℕ → ℝ) (E : ℝ[X]) (z : ℂ) (j m : ℕ) : ℂ :=
     * (z * ((‖z‖ ^ 2 : ℝ) : ℂ) ^ m) else 0
 
 lemma compTerm_eq_zero_of_lt {c E z j m} (h : m < j) : compTerm c E z j m = 0 := by
-  unfold compTerm; rw [if_neg (by omega)]
+  unfold compTerm; rw [ite_eq_right (by omega)]
 
 lemma compTerm_eq_zero_of_degree {c : ℕ → ℝ} {E : ℝ[X]} {z : ℂ} {j m : ℕ}
     (h : j + (E ^ (2 * j + 1)).natDegree < m) : compTerm c E z j m = 0 := by
@@ -158,7 +158,7 @@ lemma tsum_compTerm_eq (c : ℕ → ℝ) (E : ℝ[X]) (z : ℂ) (j : ℕ) :
     · exact compTerm_eq_zero_of_lt hj
     · apply compTerm_eq_zero_of_degree
       by_contra hcon
-      push_neg at hcon
+      push Not at hcon
       exact hm (m - j) (by omega) (by omega)
   rw [tsum_eq_sum hsupp, Finset.sum_map]
   simp only [addLeftEmbedding_apply]
@@ -167,7 +167,7 @@ lemma tsum_compTerm_eq (c : ℕ → ℝ) (E : ℝ[X]) (z : ℂ) (j : ℕ) :
           * ((‖z‖ ^ 2 : ℝ) : ℂ) ^ k := by
     intro k
     unfold compTerm
-    rw [if_pos (by omega), Nat.add_sub_cancel_left, pow_add]
+    rw [ite_eq_left (by omega), Nat.add_sub_cancel_left, pow_add]
     ring
   simp_rw [this]
   have hev : ((E.eval (‖z‖ ^ 2) : ℝ) : ℂ) ^ (2 * j + 1)
@@ -175,7 +175,7 @@ lemma tsum_compTerm_eq (c : ℕ → ℝ) (E : ℝ[X]) (z : ℂ) (j : ℕ) :
     rw [← Complex.ofReal_pow, ← eval_pow,
       eval_eq_sum_range' (p := E ^ (2 * j + 1)) (n := D + 1) (by omega)]
     push_cast
-    exact sum_congr rfl fun k _ => by push_cast; ring
+    exact sum_congr rfl fun k _ => by ring
   rw [hev, Finset.mul_sum, Finset.mul_sum]
   exact sum_congr rfl fun k _ => by ring
 
@@ -200,7 +200,7 @@ lemma summable_compTerm_uncurry (c : ℕ → ℝ) (hc : Summable fun n => |c n|)
       · rw [coeff_eq_zero_of_natDegree_lt]
         · simp
         · by_contra hcon
-          push_neg at hcon
+          push Not at hcon
           exact hm (m - j) (by omega) (by omega)
       · rfl
     · refine Summable.of_nonneg_of_le (fun j => tsum_nonneg fun m => hg0 (j, m)) (fun j => ?_) hc
@@ -214,7 +214,7 @@ lemma summable_compTerm_uncurry (c : ℕ → ℝ) (hc : Summable fun n => |c n|)
         · rw [coeff_eq_zero_of_natDegree_lt]
           · simp
           · by_contra hcon
-            push_neg at hcon
+            push Not at hcon
             exact hm (m - j) (by omega) (by omega)
         · rfl
       rw [tsum_eq_sum hsupp, Finset.sum_map]
@@ -223,7 +223,7 @@ lemma summable_compTerm_uncurry (c : ℕ → ℝ) (hc : Summable fun n => |c n|)
           (if j ≤ j + k then |c j| * |(E ^ (2 * j + 1)).coeff (j + k - j)| else 0)
             = |c j| * |(E ^ (2 * j + 1)).coeff k| := by
         intro k _
-        rw [if_pos (by omega), Nat.add_sub_cancel_left]
+        rw [ite_eq_left (by omega), Nat.add_sub_cancel_left]
       rw [sum_congr rfl this, ← Finset.mul_sum]
       calc |c j| * ∑ k ∈ range (D + 1), |(E ^ (2 * j + 1)).coeff k|
           ≤ |c j| * 1 := by
@@ -271,7 +271,7 @@ theorem radialKernel_comp (c : ℕ → ℝ) (hc : Summable fun n => |c n|) (E : 
     rw [Finset.sum_mul]
     refine sum_congr rfl fun j hj => ?_
     unfold compTerm
-    rw [if_pos (by simpa using Nat.lt_succ_iff.mp (mem_range.1 hj))]
+    rw [ite_eq_left (by simpa using Nat.lt_succ_iff.mp (mem_range.1 hj))]
     push_cast
     rw [pow_mul, ← Complex.ofReal_pow]
     try ring

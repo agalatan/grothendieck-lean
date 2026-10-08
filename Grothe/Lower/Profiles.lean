@@ -251,8 +251,8 @@ lemma Acoef6_nonneg (C : Ctx) (r : VRecord) (leaf : Leaf) (hw0 : 0 ≤ r.w) (hw1
 
 lemma leafSound (C : Ctx) (r : VRecord) (leaf : Leaf) (h : checkLeaf C r leaf = true)
     (hw0 : 0 ≤ r.w) (hw1 : r.w ≤ 1)
-    (u x : ℝ) (hmem : (boxOfPath rootBox (decodePath leaf.path) 0).mem u x) (hu0 : 0 ≤ u)
-    (hx0 : 0 ≤ x) : LeafValid C r leaf ∧ Jval C r leaf u x ≤ r.cap := by
+    (u x : ℝ) (hmem : (boxOfPath rootBox (decodePath leaf.path) 0).mem u x) (_hu0 : 0 ≤ u)
+    (_hx0 : 0 ≤ x) : LeafValid C r leaf ∧ Jval C r leaf u x ≤ r.cap := by
   simp only [checkLeaf, Bool.and_eq_true, decide_eq_true_eq, beq_iff_eq, List.all_eq_true,
     and_assoc] at h
   obtain ⟨hl1, hl2, hleq, hki, hkj, hp1, hp2, hlh, hxlo, hblo, hbhi⟩ := h

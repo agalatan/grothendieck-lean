@@ -14,7 +14,7 @@ namespace Grothe.Upper
 open GrotheKernel Polynomial
 
 lemma wtQ_cast (i : Fin 6) : ((wtQ i : ℚ) : ℝ) = wt i := by
-  fin_cases i <;> simp [wtQ, wt] <;> norm_num
+  fin_cases i <;> simp [wtQ, wt]
 
 lemma mem_wt (i : Fin 6) : mem (wt i) (ofRatI (wtQ i)) := by
   rw [← wtQ_cast]; exact mem_ofRatI _
@@ -82,7 +82,7 @@ lemma boxedCoeff_eq (A B : ℕ → ℂ) (n : ℕ) (hn : n < modes) :
           + wt 4 * (sProf (rowQ 4) n : ℝ))
         + wt 5 * ((A n).re * (B n).re + (A n).im * (B n).im) := by
   unfold boxedCoeff
-  rw [if_pos hn, Fin.sum_univ_five]
+  rw [ite_eq_left hn, Fin.sum_univ_five]
   simp only [Complex.mul_re, Complex.conj_re, Complex.conj_im]
   have h0 : Fin.castLE (by norm_num : 5 ≤ 6) (0 : Fin 5) = 0 := rfl
   have h1 : Fin.castLE (by norm_num : 5 ≤ 6) (1 : Fin 5) = 1 := rfl
@@ -114,7 +114,7 @@ lemma csOf_getD (A B : ℕ → ℂ) : (fun j => (csOf A B).getD j 0) = boxedCoef
   · unfold csOf
     rw [getD_ofFn_ge _ _ j (by omega)]
     unfold boxedCoeff
-    rw [if_neg hj]
+    rw [ite_eq_right hj]
 
 /-- **Soundness of the finite certificate** for the exactly computed scaled integer. -/
 theorem finite_certificate_exact :
