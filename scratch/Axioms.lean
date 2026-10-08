@@ -1,4 +1,4 @@
-import Grothe.Upper.Final
+import Grothe
 #print axioms Grothe.complex_grothendieck_upper
 #print axioms Grothe.Upper.finite_certificate_exact
 #print axioms Grothe.transfer
@@ -6,3 +6,17 @@ import Grothe.Upper.Final
 #print axioms Grothe.radialKernel_comp
 #print axioms Grothe.joint_tail_bound
 #print axioms Grothe.h_lt
+#print axioms Grothe.Lower.vrecords_sound
+#print axioms Grothe.Lower.srcProfiles_gates
+#print axioms Grothe.Lower.envelope_bound_data
+#print axioms Grothe.Lower.envelope_bound
+#print axioms Grothe.Lower.chords_sound
+#print axioms Grothe.Lower.dominates_of_check
+#print axioms Grothe.Lower.lower_endpoint
+#print axioms Grothe.LowerAnalytic.lower_bound_of_tests
+#print axioms Grothe.LowerAnalytic.moment_lemma
+#print axioms Grothe.LowerAnalytic.first_moment_lt_rho
+#print axioms Grothe.LowerAnalytic.sixthGap_pos
+#print axioms Grothe.LowerAnalytic.mix_retained
+#print axioms Grothe.LowerAnalytic.allocation_with_beta
+#print axioms Grothe.LowerAnalytic.schur_gate
