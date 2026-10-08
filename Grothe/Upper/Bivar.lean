@@ -286,8 +286,19 @@ lemma summable_unknown_term (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (
 /-- **The infinite unknown part has coefficient norm at most `T · max(…)`.** -/
 theorem tsum_abs_unknown_le (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ : ℕ × ℕ → ℝ)
     (hμ : Summable fun p => |μ p|) (Kn : Finset (ℕ × ℕ)) {NZ MW : ℕ}
-    (hout : ∀ p ∉ Kn, NZ < p.1 ∨ MW < p.2) (T : ℝ) (hT : ∑' p : {p // p ∉ Kn}, |μ p| ≤ T) :
+    (hout : ∀ p ∉ Kn, NZ < p.1 ∨ MW < p.2 ∨ μ p = 0) (T : ℝ)
+    (hT : ∑' p : {p // p ∉ Kn}, |μ p| ≤ T) :
     ∑' j, |unknownCoeff P Q μ Kn j| ≤ T * max (l1 P ^ (NZ + 1)) (l1 Q ^ (MW + 1)) := by
+  -- the per-index bound, trivial where `μ` vanishes
+  have hbound : ∀ (p : {p // p ∉ Kn}) (J : ℕ), |μ p| * ∑ j ∈ range J, |(termOf P Q p).coeff j|
+      ≤ |μ p| * max (l1 P ^ (NZ + 1)) (l1 Q ^ (MW + 1)) := by
+    intro p J
+    rcases hout p p.2 with h | h | h
+    · exact mul_le_mul_of_nonneg_left ((sum_abs_coeff_le_l1 _ _).trans ((l1_termOf_le P Q p).trans
+        (pow_mul_pow_le_max (l1_nonneg P) hP (l1_nonneg Q) hQ (Or.inl h)))) (abs_nonneg _)
+    · exact mul_le_mul_of_nonneg_left ((sum_abs_coeff_le_l1 _ _).trans ((l1_termOf_le P Q p).trans
+        (pow_mul_pow_le_max (l1_nonneg P) hP (l1_nonneg Q) hQ (Or.inr h)))) (abs_nonneg _)
+    · simp [h]
   have hM0 : 0 ≤ max (l1 P ^ (NZ + 1)) (l1 Q ^ (MW + 1)) :=
     le_max_of_le_left (pow_nonneg (l1_nonneg _) _)
   have hsub : Summable fun p : {p // p ∉ Kn} => |μ p| := hμ.subtype _
@@ -312,15 +323,9 @@ theorem tsum_abs_unknown_le (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (
         simpa [abs_mul] using summable_unknown_term P Q hP hQ μ hμ Kn j
     have h3 : ∑' p : {p // p ∉ Kn}, |μ p| * ∑ j ∈ range J, |(termOf P Q p).coeff j|
         ≤ ∑' p : {p // p ∉ Kn}, |μ p| * max (l1 P ^ (NZ + 1)) (l1 Q ^ (MW + 1)) := by
-      refine Summable.tsum_le_tsum (fun p => ?_) ?_ (hsub.mul_right _)
-      · refine mul_le_mul_of_nonneg_left ?_ (abs_nonneg _)
-        exact (sum_abs_coeff_le_l1 _ _).trans ((l1_termOf_le P Q p).trans
-          (pow_mul_pow_le_max (l1_nonneg P) hP (l1_nonneg Q) hQ (hout p p.2)))
-      · refine Summable.of_nonneg_of_le (fun p => by positivity) (fun p => ?_) (hsub.mul_right
-          (max (l1 P ^ (NZ + 1)) (l1 Q ^ (MW + 1))))
-        refine mul_le_mul_of_nonneg_left ?_ (abs_nonneg _)
-        exact (sum_abs_coeff_le_l1 _ _).trans ((l1_termOf_le P Q p).trans
-          (pow_mul_pow_le_max (l1_nonneg P) hP (l1_nonneg Q) hQ (hout p p.2)))
+      refine Summable.tsum_le_tsum (fun p => hbound p J) ?_ (hsub.mul_right _)
+      exact Summable.of_nonneg_of_le (fun p => by positivity) (fun p => hbound p J)
+        (hsub.mul_right (max (l1 P ^ (NZ + 1)) (l1 Q ^ (MW + 1))))
     calc ∑ j ∈ range J, |unknownCoeff P Q μ Kn j|
         ≤ ∑ j ∈ range J, ∑' p : {p // p ∉ Kn}, |μ p| * |(termOf P Q p).coeff j| :=
           sum_le_sum fun j _ => h1 j
@@ -386,8 +391,8 @@ theorem summable_abs_bivarKernel (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤
 its known part: at most the discarded known coefficients plus `T · max(‖P‖^{NZ+1}, ‖Q‖^{MW+1})`. -/
 theorem bivar_remainder_le (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ : ℕ × ℕ → ℝ)
     (hμ : Summable fun p => |μ p|) (Kn : Finset (ℕ × ℕ)) {NZ MW : ℕ}
-    (hout : ∀ p ∉ Kn, NZ < p.1 ∨ MW < p.2) (T : ℝ) (hT : ∑' p : {p // p ∉ Kn}, |μ p| ≤ T)
-    (K : ℕ) (hi : ℝ) (hhi : ∑' j, |knownCoeff P Q μ Kn (j + K)| ≤ hi) :
+    (hout : ∀ p ∉ Kn, NZ < p.1 ∨ MW < p.2 ∨ μ p = 0) (T : ℝ)
+    (hT : ∑' p : {p // p ∉ Kn}, |μ p| ≤ T) (K : ℕ) (hi : ℝ) (hhi : ∑' j, |knownCoeff P Q μ Kn (j + K)| ≤ hi) :
     ∑' j, |bivarKernel P Q μ j - (if j < K then knownCoeff P Q μ Kn j else 0)|
       ≤ hi + T * max (l1 P ^ (NZ + 1)) (l1 Q ^ (MW + 1)) := by
   -- known part is a finite sum of polynomials, hence finitely supported
