@@ -2,3 +2,6 @@
 __pycache__/
 .venv/
 *.pyc
+handoff/
+scratch/*.log
+logs/

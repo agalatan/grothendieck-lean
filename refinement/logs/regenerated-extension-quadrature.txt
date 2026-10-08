@@ -1,2 +1,0 @@
-saved work/regenerated_origin_25_36.npz
-maximum box width 3.460301643101228e-16
