@@ -1,5 +1,4 @@
-import Grothe.Lower.Bernstein
-import Grothe.Lower.Profiles
+import Grothe.Lower.Moment
 import Grothe.Lower.Chords
 
 /-!

@@ -27,8 +27,15 @@ description: Working conventions for the Lean 4 / Mathlib formalization of the c
   checker modules over the Mathlib-free precompiled `GrotheKernel/`, analytic assembly,
   `Final.lean` with `complex_grothendieck_upper`). `Value.lean` holds the long `native_decide`
   (parallel `Task.spawn` columns, ~13 min on 8 cores).
-- `Grothe/Lower/`, `Grothe/LowerAnalytic/`: the lower certificate's finite checkers + data and
-  its analytic lemmas.
+- `Grothe/Lower/`: the lower certificate's finite layer: `Bernstein`, `PSD`, `Gates`, `Cover`
+  (sweep covers), `Moment` (constants `ρ`, `C6`, `ε₀`, `ε`; `Jpw`), `Chords`, `Profiles` (one
+  `Profile` structure for sources / averaged profiles / pointwise joins / shared-moment joins,
+  `checkProfile`, `ProfileSound`), `Envelope`, `Endpoint`, `Support` (rows, `lower_bound_main`),
+  generated data (`SourceData`, `AveragedData1/2`, `JoinData`, `RowData` from
+  `tools/gen_lower_data.py`; bulk data are strings parsed at check time), `Data` (`ctx`),
+  `ProfileCheck`/`RowCheck` (the `native_decide` modules).
+- `Grothe/LowerAnalytic/`: the lower certificate's analytic lemmas (moment lemma, `C₆`/`ρ`
+  certificates, variance identities, convexity/allocation, Schur gate, rows, endpoint).
 - `handoff/` (git-ignored) holds the research archives the generators in `tools/` read; the
   generated Lean data files are committed, the archives are not.
 - Only the best bounds are kept in the repo and its docs; superseded certificates are deleted,

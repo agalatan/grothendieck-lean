@@ -1,4 +1,4 @@
-import Grothe.Lower.Profiles
+import Grothe.Lower.Cover
 
 /-!
 # Global physical majorants: chord domination

@@ -1,107 +1,175 @@
-import Mathlib
+import Grothe.Lower.Bernstein
 
 /-!
-# Dyadic bisection covers
+# Rectangle covers by a column sweep
 
-Leaves of the coupled-profile certificate are binary paths in a bisection tree of the root
-rectangle `[0, ρ] × [0, 31/4]` (even depth bisects `u`, odd depth bisects `x`; digit `0` is the
-lower half).  Rather than a Kraft-equality argument we use a
-recursive *cover checker* whose soundness is a direct induction: if `coversBox root paths depth
-fuel = true` then every point of `root` lies in the box of some listed path.
+A moment cover is a list of rectangles `[slo, shi] × [xlo, xhi]`, each carrying the index `k` of
+a polynomial.  `coversRect boxes edges ulo uhi xlo xhi` certifies that the rectangles cover
+`[ulo, uhi] × [xlo, xhi]`: on every column between consecutive `edges` (which must run from
+`ulo` to `uhi`), the active rectangles chain from `xlo` to `xhi`.  `coversRect_sound` is the
+real statement: every point of the domain lies in one of the rectangles.
 -/
 
 namespace Grothe.Lower
 
-/-- A rectangle with rational endpoints. -/
-structure Box where
-  ulo : ℚ
-  uhi : ℚ
+/-- A rectangle `[slo, shi] × [xlo, xhi]` with the index `k` of its polynomial. -/
+structure RBox where
+  slo : ℚ
+  shi : ℚ
   xlo : ℚ
   xhi : ℚ
-  deriving DecidableEq, Repr
+  k : ℕ
+  deriving Repr, DecidableEq
 
-/-- Membership of a real point. -/
-def Box.mem (b : Box) (u x : ℝ) : Prop :=
-  (b.ulo : ℝ) ≤ u ∧ u ≤ b.uhi ∧ (b.xlo : ℝ) ≤ x ∧ x ≤ b.xhi
+def RBox.mem (b : RBox) (σ x : ℝ) : Prop :=
+  (b.slo : ℝ) ≤ σ ∧ σ ≤ b.shi ∧ (b.xlo : ℝ) ≤ x ∧ x ≤ b.xhi
 
-/-- Bisect in `u` at even depth, in `x` at odd depth. -/
-def Box.split (b : Box) (depth : ℕ) : Box × Box :=
-  if depth % 2 = 0 then
-    let m := (b.ulo + b.uhi) / 2
-    ({ b with uhi := m }, { b with ulo := m })
-  else
-    let m := (b.xlo + b.xhi) / 2
-    ({ b with xhi := m }, { b with xlo := m })
+def parseQ (s : String) : ℚ :=
+  match s.splitOn "/" with
+  | [n] => (n.toInt! : ℚ)
+  | [n, d] => (n.toInt! : ℚ) / (d.toNat! : ℚ)
+  | _ => 0
 
-lemma Box.mem_split (b : Box) (depth : ℕ) (u x : ℝ) (h : b.mem u x) :
-    (b.split depth).1.mem u x ∨ (b.split depth).2.mem u x := by
-  obtain ⟨h1, h2, h3, h4⟩ := h
-  simp only [Box.split]
-  split_ifs
-  · by_cases hm : u ≤ (((b.ulo + b.uhi) / 2 : ℚ) : ℝ)
-    · left; exact ⟨h1, hm, h3, h4⟩
-    · right; exact ⟨le_of_lt (not_le.1 hm), h2, h3, h4⟩
-  · by_cases hm : x ≤ (((b.xlo + b.xhi) / 2 : ℚ) : ℝ)
-    · left; exact ⟨h1, h2, h3, hm⟩
-    · right; exact ⟨h1, h2, le_of_lt (not_le.1 hm), h4⟩
+def parseBox (s : String) : RBox :=
+  match s.splitOn ":" with
+  | [a, b, c, d, k] => ⟨parseQ a, parseQ b, parseQ c, parseQ d, k.toNat!⟩
+  | _ => ⟨0, 0, 0, 0, 0⟩
 
-/-- The box of a path (`true` = digit `1` = upper half), starting at the given depth. -/
-def boxOfPath (root : Box) : List Bool → ℕ → Box
-  | [], _ => root
-  | d :: rest, depth =>
-    let s := root.split depth
-    boxOfPath (if d then s.2 else s.1) rest (depth + 1)
+def parseBoxes (s : String) : List RBox := if s = "" then [] else (s.splitOn ";").map parseBox
 
-/-- Paths starting with digit `d`, with that digit removed. -/
-def stripDigit (d : Bool) (paths : List (List Bool)) : List (List Bool) :=
-  paths.filterMap fun p => match p with
-    | d' :: r => if d' = d then some r else none
-    | [] => none
+def parseEdges (s : String) : List ℚ := if s = "" then [] else (s.splitOn ";").map parseQ
 
-/-- Recursive cover check. -/
-def coversBox (root : Box) (paths : List (List Bool)) (depth : ℕ) : ℕ → Bool
-  | 0 => paths.any (· = [])
-  | fuel + 1 =>
-    paths.any (· = []) ||
-      (coversBox (root.split depth).1 (stripDigit false paths) (depth + 1) fuel &&
-       coversBox (root.split depth).2 (stripDigit true paths) (depth + 1) fuel)
+/-- Extend the reach `r` by one active box containing `r` in its half-open `x`-range. -/
+def stepReach (act : List RBox) (r : ℚ) : Option ℚ :=
+  (act.find? fun bx => decide (bx.xlo ≤ r) && decide (r < bx.xhi)).map (·.xhi)
 
-lemma mem_stripDigit {d : Bool} {paths : List (List Bool)} {r : List Bool}
-    (h : r ∈ stripDigit d paths) : d :: r ∈ paths := by
-  simp only [stripDigit, List.mem_filterMap] at h
-  obtain ⟨p, hp, hpr⟩ := h
-  rcases p with _ | ⟨d', r'⟩
-  · simp at hpr
-  · by_cases hd : d' = d
-    · simp only [hd, ite_true, Option.some.injEq] at hpr
-      subst hpr; subst hd; exact hp
-    · simp [hd] at hpr
+def chainCovers (act : List RBox) (xhi : ℚ) : ℕ → ℚ → Bool
+  | 0, r => decide (xhi ≤ r)
+  | n + 1, r => decide (xhi ≤ r) ||
+      (match stepReach act r with
+       | some r' => chainCovers act xhi n r'
+       | none => false)
 
-/-- **Soundness of the cover checker.** -/
-theorem coversBox_sound (fuel : ℕ) : ∀ (root : Box) (paths : List (List Bool)) (depth : ℕ),
-    coversBox root paths depth fuel = true →
-    ∀ u x : ℝ, root.mem u x → ∃ p ∈ paths, (boxOfPath root p depth).mem u x := by
-  induction fuel with
-  | zero =>
-    intro root paths depth h u x hmem
-    simp only [coversBox, List.any_eq_true, decide_eq_true_eq] at h
-    obtain ⟨p, hp, rfl⟩ := h
-    exact ⟨[], hp, hmem⟩
-  | succ fuel ih =>
-    intro root paths depth h u x hmem
-    simp only [coversBox, Bool.or_eq_true, List.any_eq_true, decide_eq_true_eq,
-      Bool.and_eq_true] at h
-    rcases h with ⟨p, hp, rfl⟩ | ⟨hL, hR⟩
-    · exact ⟨[], hp, hmem⟩
-    · rcases root.mem_split depth u x hmem with hl | hr
-      · obtain ⟨r, hr, hmemr⟩ := ih _ _ _ hL u x hl
-        refine ⟨false :: r, mem_stripDigit hr, ?_⟩
-        simpa [boxOfPath] using hmemr
-      · obtain ⟨r, hr', hmemr⟩ := ih _ _ _ hR u x hr
-        refine ⟨true :: r, mem_stripDigit hr', ?_⟩
-        simpa [boxOfPath] using hmemr
+/-- The boxes active on the column `[a, b]` cover `[xlo, xhi]`. -/
+def columnCovered (boxes : List RBox) (a b xlo xhi : ℚ) : Bool :=
+  let act := boxes.filter fun bx => decide (bx.slo ≤ a) && decide (b ≤ bx.shi)
+  chainCovers act xhi (act.length + 1) xlo
 
-/-- Decode a path string of `'0'`/`'1'` characters. -/
-def decodePath (s : String) : List Bool := s.toList.map (· = '1')
+def chainEdges (boxes : List RBox) (xlo xhi : ℚ) : List ℚ → Bool
+  | a :: b :: rest => decide (a < b) && columnCovered boxes a b xlo xhi &&
+      chainEdges boxes xlo xhi (b :: rest)
+  | _ => true
+
+/-- The boxes cover `[ulo, uhi] × [xlo, xhi]`, checked on the columns between consecutive
+`edges` (which must start at `ulo` and end at `uhi`). -/
+def coversRect (boxes : List RBox) (edges : List ℚ) (ulo uhi xlo xhi : ℚ) : Bool :=
+  (edges.head? == some ulo) && (edges.getLast? == some uhi) && decide (ulo < uhi) &&
+  decide (xlo < xhi) && chainEdges boxes xlo xhi edges
+
+def Covered (boxes : List RBox) (σ x : ℝ) : Prop := ∃ bx ∈ boxes, bx.mem σ x
+
+lemma chainCovers_sound (act : List RBox) (xlo xhi : ℚ) (σ : ℝ)
+    (hact : ∀ bx ∈ act, (bx.slo : ℝ) ≤ σ ∧ σ ≤ bx.shi) :
+    ∀ (n : ℕ) (r : ℚ), chainCovers act xhi n r = true →
+      (∀ x : ℝ, (xlo : ℝ) ≤ x → x < r → Covered act σ x) → (r = xlo ∨ Covered act σ r) →
+      ∀ x : ℝ, (xlo : ℝ) ≤ x → x ≤ xhi → (xlo : ℝ) < xhi → Covered act σ x
+  | 0, r, h, hinv, hr, x, hx0, hx1, hlt => by
+    simp only [chainCovers, decide_eq_true_eq] at h
+    have : (xhi : ℝ) ≤ r := by exact_mod_cast h
+    rcases lt_or_eq_of_le (hx1.trans this) with hlt' | heq
+    · exact hinv x hx0 hlt'
+    · rcases hr with hr | hr
+      · exfalso; rw [hr] at this; linarith
+      · rw [heq]; exact hr
+  | n + 1, r, h, hinv, hr, x, hx0, hx1, hlt => by
+    simp only [chainCovers, Bool.or_eq_true, decide_eq_true_eq] at h
+    rcases h with h | h
+    · have : (xhi : ℝ) ≤ r := by exact_mod_cast h
+      rcases lt_or_eq_of_le (hx1.trans this) with hlt' | heq
+      · exact hinv x hx0 hlt'
+      · rcases hr with hr | hr
+        · exfalso; rw [hr] at this; linarith
+        · rw [heq]; exact hr
+    · revert h
+      simp only [stepReach]
+      cases hf : act.find? (fun bx => decide (bx.xlo ≤ r) && decide (r < bx.xhi)) with
+      | none => intro h; simp at h
+      | some bx =>
+        intro h
+        simp only [Option.map_some] at h
+        have hmem := List.mem_of_find?_eq_some hf
+        have hp := List.find?_some hf
+        simp only [Bool.and_eq_true, decide_eq_true_eq] at hp
+        obtain ⟨hp1, hp2⟩ := hp
+        have hsig := hact bx hmem
+        refine chainCovers_sound act xlo xhi σ hact n bx.xhi h ?_ ?_ x hx0 hx1 hlt
+        · intro y hy0 hy1
+          by_cases hyr : y < (r : ℝ)
+          · exact hinv y hy0 hyr
+          · refine ⟨bx, hmem, hsig.1, hsig.2, ?_, hy1.le⟩
+            have : (bx.xlo : ℝ) ≤ r := by exact_mod_cast hp1
+            exact this.trans (not_lt.1 hyr)
+        · right
+          refine ⟨bx, hmem, hsig.1, hsig.2, ?_, le_rfl⟩
+          have h1 : (bx.xlo : ℝ) ≤ r := by exact_mod_cast hp1
+          have h2 : (r : ℝ) ≤ bx.xhi := by exact_mod_cast hp2.le
+          exact h1.trans h2
+
+lemma columnCovered_sound (boxes : List RBox) (a b xlo xhi : ℚ)
+    (h : columnCovered boxes a b xlo xhi = true) (hx : (xlo : ℝ) < xhi) (σ x : ℝ)
+    (hσ0 : (a : ℝ) ≤ σ) (hσ1 : σ ≤ b) (hx0 : (xlo : ℝ) ≤ x) (hx1 : x ≤ xhi) :
+    Covered boxes σ x := by
+  simp only [columnCovered] at h
+  set act := boxes.filter fun bx => decide (bx.slo ≤ a) && decide (b ≤ bx.shi) with hact
+  have hact' : ∀ bx ∈ act, (bx.slo : ℝ) ≤ σ ∧ σ ≤ bx.shi := by
+    intro bx hbx
+    rw [hact, List.mem_filter] at hbx
+    simp only [Bool.and_eq_true, decide_eq_true_eq] at hbx
+    exact ⟨(by exact_mod_cast hbx.2.1 : (bx.slo : ℝ) ≤ a).trans hσ0,
+      hσ1.trans (by exact_mod_cast hbx.2.2)⟩
+  have hbase : ∀ y : ℝ, (xlo : ℝ) ≤ y → y < xlo → Covered act σ y :=
+    fun y hy0 hy1 => absurd (lt_of_le_of_lt hy0 hy1) (lt_irrefl _)
+  obtain ⟨bx, hbx, hm⟩ :=
+    chainCovers_sound act xlo xhi σ hact' _ _ h hbase (Or.inl rfl) x hx0 hx1 hx
+  exact ⟨bx, List.mem_of_mem_filter hbx, hm⟩
+
+lemma chainEdges_sound (boxes : List RBox) (xlo xhi : ℚ) (hx : (xlo : ℝ) < xhi) :
+    ∀ (rest : List ℚ) (a : ℚ), chainEdges boxes xlo xhi (a :: rest) = true →
+    ∀ (z : ℚ), (a :: rest).getLast? = some z → a < z →
+    ∀ σ x : ℝ, (a : ℝ) ≤ σ → σ ≤ z → (xlo : ℝ) ≤ x → x ≤ xhi → Covered boxes σ x := by
+  intro rest
+  induction rest with
+  | nil =>
+    intro a _h z hz haz
+    simp only [List.getLast?_singleton, Option.some.injEq] at hz
+    rw [← hz] at haz
+    exact absurd haz (lt_irrefl _)
+  | cons b rest' ih =>
+    intro a h z hz haz σ x hσ0 hσ1 hx0 hx1
+    rw [chainEdges] at h
+    simp only [Bool.and_eq_true, decide_eq_true_eq] at h
+    obtain ⟨⟨hab, hcol⟩, hrest⟩ := h
+    by_cases hσb : σ ≤ (b : ℝ)
+    · exact columnCovered_sound boxes a b xlo xhi hcol hx σ x hσ0 hσb hx0 hx1
+    · have hz' : (b :: rest').getLast? = some z := by
+        rw [List.getLast?_cons_cons] at hz; exact hz
+      have hbz : b < z := by
+        have h1 : (b : ℝ) < σ := not_le.1 hσb
+        have : (b : ℝ) < z := lt_of_lt_of_le h1 hσ1
+        exact_mod_cast this
+      exact ih b hrest z hz' hbz σ x (le_of_lt (not_le.1 hσb)) hσ1 hx0 hx1
+
+/-- **Soundness of the sweep cover.** -/
+theorem coversRect_sound (boxes : List RBox) (edges : List ℚ) (ulo uhi xlo xhi : ℚ)
+    (h : coversRect boxes edges ulo uhi xlo xhi = true) (σ x : ℝ)
+    (hσ0 : (ulo : ℝ) ≤ σ) (hσ1 : σ ≤ uhi) (hx0 : (xlo : ℝ) ≤ x) (hx1 : x ≤ xhi) :
+    Covered boxes σ x := by
+  simp only [coversRect, Bool.and_eq_true, beq_iff_eq, decide_eq_true_eq] at h
+  obtain ⟨⟨⟨⟨hhead, hlast⟩, huu⟩, hxx⟩, hchain⟩ := h
+  have hcons : edges = ulo :: edges.tail :=
+    List.eq_cons_of_mem_head? (by rw [hhead]; exact Option.mem_def.2 rfl)
+  rw [hcons] at hchain hlast
+  exact chainEdges_sound boxes xlo xhi (by exact_mod_cast hxx) edges.tail ulo hchain uhi hlast
+    huu σ x hσ0 hσ1 hx0 hx1
 
 end Grothe.Lower

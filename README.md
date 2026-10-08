@@ -8,7 +8,7 @@ constant `K_G^ℂ`.
 | | lower | upper |
 |---|---|---|
 | literature (Heilman–Jones–Malavolta, [arXiv:2609.25462](https://arxiv.org/abs/2609.25462), Sept 2026) | 1.4 | 1.404898554746 |
-| this repository (`master`, machine-checked) | **1.4009320536** | **1.404896257347** |
+| this repository (`master`, machine-checked) | **1.4010028168** | **1.404896257347** |
 
 Both bounds use the Heilman–Jones–Malavolta framework. The upper bound comes from a
 49-branch mixture of Gaussian rounding kernels: 30 scalar branches (Haagerup's phase kernel
@@ -16,8 +16,11 @@ composed with rational preprocessors), 18 preprocessed copies of the origin kern
 preprocessed copy of a second origin kernel with a modified phase polynomial, with 2048 retained
 mixed coefficients and polarized energy tail bounds. The lower bound comes from the Gaussian
 witness `T = P₁,₀ − ε·P₂,₁`, `ε = 7400323787/10¹⁰`, with an operator-norm cap
-`B = 7138104931/10¹⁰` certified by 47 retained-square support rows (coupled, pointwise and
-shifted profiles with global polynomial majorants) and a 116-interval scalar envelope.
+`B = 2855097757/(4·10⁹)` certified by 68 retained-square support rows (67 dilated profiles: 9
+sources, 39 averages of shifted sources, 3 pointwise joins and 16 shared-moment joins, each
+with global polynomial majorants and a moment cover) and a 118-cell scalar envelope; the
+moment covers use the sixth-moment coefficient `C₆ = 40.8205` and the first-moment bound
+`ρ = 0.97382085` of normalized cubic chaos.
 
 For context, the real constant currently satisfies 1.773 ≤ K_G ≤ 1.7799
 ([arXiv:2610.10477](https://arxiv.org/html/2610.10477)).
@@ -40,16 +43,20 @@ over unit vectors in finite-dimensional complex Hilbert spaces; i.e. `K_G^ℂ �
   kernels, containment of the truncated radial coefficient integrals in the data boxes (Arb
   quadrature), the first-order coefficient structure of the origin kernels with their
   polarized energy caps, and the Cauchy tails of nine scalar branches.
-* **Lower bound** — `Grothe.Lower.envelope_bound_data` (`V ≤ B` for every admissible scalar
-  profile value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 14009320536/10¹⁰ < K`.
-  Proved: Bernstein bounds, PSD gates by exact `LᵀDL` factorizations, rectangle covers, all
-  profile caps, chord domination of the physical polynomials, the ε-transfer and dilation of
-  support rows, the fixed-mixture scalar envelope, the
-  three-moment lemma, the `C₆` and `ρ` positivity certificates, the variance/retained-square
-  identities, joint convexity and argument allocation, the Schur-complement gate.
-  Hypotheses (not formalized): the Gaussian profile reduction `V ≤ Fᵢ(t) − ε‖Qh + βᵢv/ε‖²`, the
-  lifted node caps of the potentials (Gaussian price enclosures), the Wick sixth-moment identity,
-  and the transfer from the Gaussian operator to finite matrices.
+* **Lower bound** — `Grothe.Lower.lower_bound_data` (`V ≤ B` for every admissible scalar
+  profile value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 7005014084/(5·10⁹) < K`.
+  Proved: Bernstein bounds, PSD gates by exact `LᵀDL` factorizations, sweep rectangle covers,
+  the moment bound of every profile (`profiles_sound`: node provenance of averaged profiles and
+  pointwise joins, pair polynomials of shared-moment joins, chord domination of all physical
+  polynomials, caps on `[0, δρ] × [0, 31/4]`), the dilation and ε-transfer of the support rows
+  (`rows_sound`), the fixed-mixture scalar envelope, the three-moment lemma, the `C₆` and `ρ`
+  certificates (the sixth-moment scalar inequality from the tensor and cumulant identities, and
+  the first-moment positivity certificate), the variance/retained-square identities, joint
+  convexity and argument allocation, the Schur-complement gate.
+  Hypotheses (not formalized): the Gaussian profile reduction (the row inequality of every
+  dilated profile at its witness parameter), the node caps of the source profiles and the side
+  caps of shifted sources (Gaussian price enclosures), the Wick and Hilbert-space identities
+  behind the sixth-moment bound, and the transfer from the Gaussian operator to finite matrices.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus `native_decide` facts for the finite
 exact computations (listed by `lake env lean scratch/Axioms.lean`; checked in CI).
@@ -62,6 +69,7 @@ lake build
 ```
 
 `Grothe/Upper/Value.lean` evaluates the interval checker once by `native_decide` (about
-13 minutes on 8 cores, 40 minutes sequentially); CI (`.github/workflows/lean.yml`) builds everything on every push to `master`,
+13 minutes on 8 cores, 40 minutes sequentially), and `Grothe/Lower/ProfileCheck.lean` runs the
+profile checker in parallel; CI (`.github/workflows/lean.yml`) builds everything on every push to `master`,
 forbids `sorry`, and checks the axiom report. The generated data modules come from research
 archives that are not part of the repository; the generators are in `tools/`.

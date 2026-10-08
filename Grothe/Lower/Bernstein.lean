@@ -67,9 +67,23 @@ def bernB {R : Type*} [Field R] (p : List R) (l h : R) (m : ℕ) : R :=
   ∑ k ∈ range (m + 1),
     bernA p l h k * ((m.choose k : R) / ((p.length - 1).choose k : R))
 
-/-- The list of all Bernstein coefficients. -/
+/-- The list of all Bernstein coefficients (the power-basis coefficients are computed once). -/
 def bernList {R : Type*} [Field R] (p : List R) (l h : R) : List R :=
-  (List.range p.length).map (bernB p l h)
+  let a := (List.range p.length).map (bernA p l h)
+  (List.range p.length).map fun m =>
+    ∑ k ∈ range (m + 1), a.getD k 0 * ((m.choose k : R) / ((p.length - 1).choose k : R))
+
+lemma bernList_eq_map {R : Type*} [Field R] (p : List R) (l h : R) :
+    bernList p l h = (List.range p.length).map (bernB p l h) := by
+  simp only [bernList]
+  refine List.map_congr_left fun m hm => ?_
+  rw [List.mem_range] at hm
+  unfold bernB
+  refine Finset.sum_congr rfl fun k hk => ?_
+  rw [Finset.mem_range] at hk
+  congr 1
+  rw [List.getD_eq_getElem?_getD, List.getElem?_map, List.getElem?_range (by omega)]
+  rfl
 
 lemma bernA_cast (p : List ℚ) (l h : ℚ) (k : ℕ) :
     bernA (p.map ((↑) : ℚ → ℝ)) (l : ℝ) (h : ℝ) k = ((bernA p l h k : ℚ) : ℝ) := by
@@ -88,7 +102,7 @@ lemma bernB_cast (p : List ℚ) (l h : ℚ) (m : ℕ) :
 
 lemma bernList_cast (p : List ℚ) (l h : ℚ) :
     bernList (p.map ((↑) : ℚ → ℝ)) (l : ℝ) (h : ℝ) = (bernList p l h).map ((↑) : ℚ → ℝ) := by
-  simp only [bernList, List.length_map, List.map_map]
+  simp only [bernList_eq_map, List.length_map, List.map_map]
   exact List.map_congr_left fun m _ => by rw [Function.comp_apply]; exact bernB_cast p l h m
 
 lemma filter_le_range {n j : ℕ} (hj : j ≤ n) :
@@ -191,7 +205,7 @@ theorem evalL_le_of_bern (p : List ℝ) (hp : p ≠ []) (l h u M : ℝ) (hlu : l
   have hb : ∀ m ∈ range (n + 1), bernB p l h m ≤ M := by
     intro m hm
     apply hM
-    simp only [bernList, hn, List.mem_map, List.mem_range]
+    simp only [bernList_eq_map, hn, List.mem_map, List.mem_range]
     exact ⟨m, by simpa using hm, rfl⟩
   calc evalL p u = ∑ m ∈ range (n + 1), bernB p l h m * B m := hD
     _ ≤ ∑ m ∈ range (n + 1), M * B m :=
