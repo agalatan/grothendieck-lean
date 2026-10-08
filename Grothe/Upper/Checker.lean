@@ -1,23 +1,23 @@
-import Grothe.Cert240.CheckerDefs
-import Grothe.Cert240.PolyBridge
+import Grothe.Upper.CheckerDefs
+import Grothe.Upper.PolyBridge
 
 /-!
 # The finite certificate: soundness of the concrete computation
 
-`finite_certificate_240_exact` proves `FiniteCertificate240 (dloIntFinal / D)` *without* any
+`finite_certificate_exact` proves `FiniteCertificate (dloIntFinal / D)` *without* any
 evaluation: it is the composition of the soundness lemmas.  Evaluating `dloIntFinal` (by
-`native_decide`, see `Grothe/Cert240/Value.lean`) then yields an explicit rational `Dlo`.
+`native_decide`, see `Grothe/CertBound/Value.lean`) then yields an explicit rational `Dlo`.
 -/
 
-namespace Grothe.Cert240
+namespace Grothe.Upper
 
 open GrotheKernel Polynomial
 
-lemma wNewQ_cast (i : Fin 6) : ((wNewQ i : ℚ) : ℝ) = wNew i := by
-  fin_cases i <;> simp [wNewQ, wNew] <;> norm_num
+lemma wtQ_cast (i : Fin 6) : ((wtQ i : ℚ) : ℝ) = wt i := by
+  fin_cases i <;> simp [wtQ, wt] <;> norm_num
 
-lemma mem_wNew (i : Fin 6) : mem (wNew i) (ofRatI (wNewQ i)) := by
-  rw [← wNewQ_cast]; exact mem_ofRatI _
+lemma mem_wt (i : Fin 6) : mem (wt i) (ofRatI (wtQ i)) := by
+  rw [← wtQ_cast]; exact mem_ofRatI _
 
 lemma mem_pi : mem Real.pi piI := by
   unfold piI
@@ -50,17 +50,17 @@ lemma memB_gOf {N : ℕ} {P : ℝ[X]} {PI : List Ival} (h : memB (N + 1) P PI) :
   rw [pow_two]
   exact this
 
-/-- The real coefficient list `h_j/π`, `j < 240`. -/
-noncomputable def hRats : List ℝ := List.ofFn fun j : Fin 240 => (hRat j : ℝ)
+/-- The real coefficient list `h_j/π`, `j < modes`. -/
+noncomputable def hRats : List ℝ := List.ofFn fun j : Fin modes => (hRat j : ℝ)
 
 lemma forall₂_hRats : List.Forall₂ mem hRats hRatL :=
   forall₂_ofFn _ _ fun _ => mem_ofRatI _
 
 /-- Enclosure of the exact scalar profiles. -/
-lemma mem_sProf (i : Fin 5) (n : ℕ) (hn : n < 240) :
+lemma mem_sProf (i : Fin 5) (n : ℕ) (hn : n < modes) :
     mem ((sProf (rowQ i) n : ℚ) : ℝ) ((sProfL i).getD n zeroI) := by
-  have hP : memB 240 (ofListQ (rowQ i)) (rowI i) := memB_ofListQ _ _
-  have hG : memB 240 (X * ofListQ (rowQ i) ^ 2) (gOf (rowI i)) := memB_gOf hP
+  have hP : memB modes (ofListQ (rowQ i)) (rowI i) := memB_ofListQ _ _
+  have hG : memB modes (X * ofListQ (rowQ i) ^ 2) (gOf (rowI i)) := memB_gOf hP
   have hS := memB_hornerT hG forall₂_hRats
   have hPS := memB_take (memB_conv hP hS)
   have key := hPS n hn
@@ -75,12 +75,12 @@ lemma mem_sProf (i : Fin 5) (n : ℕ) (hn : n < 240) :
   rw [e]
   exact key
 
-lemma boxedCoeff_eq (A B : ℕ → ℂ) (n : ℕ) (hn : n < 240) :
+lemma boxedCoeff_eq (A B : ℕ → ℂ) (n : ℕ) (hn : n < modes) :
     boxedCoeff A B n
-      = Real.pi * (wNew 0 * (sProf (rowQ 0) n : ℝ) + wNew 1 * (sProf (rowQ 1) n : ℝ)
-          + wNew 2 * (sProf (rowQ 2) n : ℝ) + wNew 3 * (sProf (rowQ 3) n : ℝ)
-          + wNew 4 * (sProf (rowQ 4) n : ℝ))
-        + wNew 5 * ((A n).re * (B n).re + (A n).im * (B n).im) := by
+      = Real.pi * (wt 0 * (sProf (rowQ 0) n : ℝ) + wt 1 * (sProf (rowQ 1) n : ℝ)
+          + wt 2 * (sProf (rowQ 2) n : ℝ) + wt 3 * (sProf (rowQ 3) n : ℝ)
+          + wt 4 * (sProf (rowQ 4) n : ℝ))
+        + wt 5 * ((A n).re * (B n).re + (A n).im * (B n).im) := by
   unfold boxedCoeff
   rw [if_pos hn, Fin.sum_univ_five]
   simp only [Complex.mul_re, Complex.conj_re, Complex.conj_im]
@@ -92,24 +92,24 @@ lemma boxedCoeff_eq (A B : ℕ → ℂ) (n : ℕ) (hn : n < 240) :
   rw [h0, h1, h2, h3, h4]
   ring
 
-lemma mem_boxedCoeff (A B : ℕ → ℂ) (hA : InBoxA A) (hB : InBoxB B) (n : ℕ) (hn : n < 240) :
+lemma mem_boxedCoeff (A B : ℕ → ℂ) (hA : InBoxA A) (hB : InBoxB B) (n : ℕ) (hn : n < modes) :
     mem (boxedCoeff A B n) (cI n) := by
   rw [boxedCoeff_eq A B n hn]
   unfold cI scalarI originI
   obtain ⟨⟨a1, a2⟩, ⟨a3, a4⟩⟩ := hA n hn
   obtain ⟨⟨b1, b2⟩, ⟨b3, b4⟩⟩ := hB n hn
-  refine mem_add (mem_mul mem_pi ?_) (mem_mul (mem_wNew 5) ?_)
+  refine mem_add (mem_mul mem_pi ?_) (mem_mul (mem_wt 5) ?_)
   · refine mem_add (mem_add (mem_add (mem_add ?_ ?_) ?_) ?_) ?_ <;>
-      exact mem_mul (mem_wNew _) (mem_sProf _ n hn)
+      exact mem_mul (mem_wt _) (mem_sProf _ n hn)
   · exact mem_add (mem_mul (mem_boxI a1 a2) (mem_boxI b1 b2))
       (mem_mul (mem_boxI a3 a4) (mem_boxI b3 b4))
 
 /-- The real coefficient list of the retained mixture. -/
-noncomputable def csOf (A B : ℕ → ℂ) : List ℝ := List.ofFn fun n : Fin 240 => boxedCoeff A B n
+noncomputable def csOf (A B : ℕ → ℂ) : List ℝ := List.ofFn fun n : Fin modes => boxedCoeff A B n
 
 lemma csOf_getD (A B : ℕ → ℂ) : (fun j => (csOf A B).getD j 0) = boxedCoeff A B := by
   funext j
-  by_cases hj : j < 240
+  by_cases hj : j < modes
   · unfold csOf; rw [getD_ofFn_lt _ _ j hj]
   · unfold csOf
     rw [getD_ofFn_ge _ _ j (by omega)]
@@ -117,14 +117,14 @@ lemma csOf_getD (A B : ℕ → ℂ) : (fun j => (csOf A B).getD j 0) = boxedCoef
     rw [if_neg hj]
 
 /-- **Soundness of the finite certificate** for the exactly computed scaled integer. -/
-theorem finite_certificate_240_exact :
-    FiniteCertificate240 ((dloIntFinal : ℚ) / ((D : ℤ) : ℚ)) := by
+theorem finite_certificate_exact :
+    FiniteCertificate ((dloIntFinal : ℚ) / ((D : ℤ) : ℚ)) := by
   intro A B hA hB
-  have hE : memB 57241 etaPoly etaI := memB_ofListQ _ _
-  have hG : memB 57241 (X * etaPoly ^ 2) (gOf etaI) := memB_gOf hE
+  have hE : memB (maxIndex + 1) etaPoly etaI := memB_ofListQ _ _
+  have hG : memB (maxIndex + 1) (X * etaPoly ^ 2) (gOf etaI) := memB_gOf hE
   have hcs : List.Forall₂ mem (csOf A B) cList :=
     forall₂_ofFn _ _ fun i => mem_boxedCoeff A B hA hB i i.2
-  have key := dloInt_sound (M := 57240) (by norm_num) hE hG hcs
+  have key := dloInt_sound (M := maxIndex) (by norm_num) hE hG hcs
   have hc : ∀ n, compose (boxedCoeff A B) etaPoly n
       = (etaPoly * hornerPoly (csOf A B) (X * etaPoly ^ 2)).coeff n := by
     intro n
@@ -134,12 +134,12 @@ theorem finite_certificate_240_exact :
   push_cast
   exact key
 
-/-- `FiniteCertificate240` is monotone: any smaller `Dlo` also works. -/
-lemma FiniteCertificate240.mono {Dlo Dlo' : ℚ} (h : FiniteCertificate240 Dlo) (hle : Dlo' ≤ Dlo) :
-    FiniteCertificate240 Dlo' := by
+/-- `FiniteCertificate` is monotone: any smaller `Dlo` also works. -/
+lemma FiniteCertificate.mono {Dlo Dlo' : ℚ} (h : FiniteCertificate Dlo) (hle : Dlo' ≤ Dlo) :
+    FiniteCertificate Dlo' := by
   intro A B hA hB
   have := h A B hA hB
   have hle' : (Dlo' : ℝ) ≤ Dlo := by exact_mod_cast hle
   linarith
 
-end Grothe.Cert240
+end Grothe.Upper

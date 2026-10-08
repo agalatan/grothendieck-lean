@@ -1,6 +1,6 @@
-import Grothe.Main
-import Grothe.Cert240.Interface
-import Grothe.Cert240.Preprocessor
+import Grothe.Upper.Interface
+import Grothe.Upper.Preprocessor
+import Grothe.Upper.Mixture
 
 /-!
 # Radial composition with a preprocessor
@@ -13,7 +13,7 @@ Moreover composition contracts the coefficient `ℓ¹` norm (`tsum_abs_compose_l
 
 namespace Grothe
 
-open Finset Polynomial Cert240
+open Finset Polynomial Upper
 
 noncomputable section
 

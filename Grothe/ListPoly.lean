@@ -4,13 +4,13 @@ import Mathlib
 # Coefficient `ℓ¹` norm of polynomials, and exact integer-list arithmetic
 
 The *Wiener-algebra norm* of a polynomial is the sum of the absolute values of its
-coefficients, written `‖f‖_𝒜 = ∑ₖ |[tᵏ] f|` in the research note.  It is submultiplicative,
+coefficients, `‖f‖_𝒜 = ∑ₖ |[tᵏ] f|`.  It is submultiplicative,
 `‖fg‖_𝒜 ≤ ‖f‖_𝒜 ‖g‖_𝒜`, which is the only structural property the tail estimates need.
 
 To evaluate `‖ρ⁽ⁿ⁾‖_𝒜` for concrete integer polynomials and large `n` we also provide an
 executable integer-list implementation (`conv`, `listPow`, `absSum`) together with the bridge
 lemma `l1_ofList_listPow_le` connecting it to `Polynomial ℝ`.  The concrete numerical facts are
-then discharged by `native_decide` (see `FifthTail.lean`).
+then discharged by `native_decide` (see `Grothe/Upper/FifthTail.lean`).
 -/
 
 namespace Grothe
