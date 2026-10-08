@@ -6,7 +6,8 @@ import Grothe.Upper.Checker
 `dloIntFinal` is the scaled integer `mix₀ − Σ_{n≥1}|mixₙ| − Σᵢ wtᵢ (majTailᵢ + highTailᵢ)`
 computed by the interval kernel (the `49` branch columns in parallel tasks); the one
 `native_decide` below evaluates it and compares it with the threshold
-`DloNeeded = 0.7117963574001465` required by the assembly.
+`DloNeeded = 0.7117963574001465` required by the assembly.  Its exact value is
+`Dlo = dloIntFinal / 2¹²⁸ = 242211749261977464268894054327787713931 / 2¹²⁸ ≈ 0.71179635740059`.
 -/
 
 namespace Grothe.Upper
