@@ -9,7 +9,7 @@ shown to preserve membership; interval lists represent real polynomials coeffici
 (`memB N p L`: coefficients of index `< N`).
 -/
 
-namespace Grothe.Cert240
+namespace Grothe.Upper
 
 open GrotheKernel Polynomial
 
@@ -363,4 +363,4 @@ theorem dloInt_sound {N M : ℕ} (hMN : M < N) {E G : ℝ[X]} {EI GI : List Ival
   push_cast
   linarith
 
-end Grothe.Cert240
+end Grothe.Upper

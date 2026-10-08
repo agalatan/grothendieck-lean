@@ -4,7 +4,7 @@
 Intervals are pairs of integers `⟨lo, hi⟩` representing `[lo / D, hi / D]` with `D = 2^K`.
 All operations round outward.  This module imports only `Init` so that it can be compiled to
 native code and used by `native_decide` at native speed; the soundness proofs live in
-`Grothe/Cert240/IntervalSound.lean`.
+`Grothe/Upper/IntervalSound.lean`.
 -/
 
 namespace GrotheKernel

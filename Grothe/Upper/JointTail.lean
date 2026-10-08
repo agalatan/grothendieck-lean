@@ -1,6 +1,6 @@
 import Grothe.Haagerup
 import Grothe.WallisTail
-import Grothe.Cert240.Interface
+import Grothe.Upper.Interface
 
 /-!
 # The joint first-order tail of the origin kernel
@@ -11,7 +11,7 @@ Let `λₙ = 2n+1`.  If the sixth-kernel coefficients satisfy `kₙ = ξₙ cₙ
 
   `∑_{n≥N} |kₙ| ≤ √(E_C W'_N) + √(E_L E_R)/(2N+1)`,  `W'_N = ∑_{n≥N} hₙ/(2n+1)`.
 
-We also bound `W'_240` sharply: an exact rational partial sum (indices `240 ≤ n < 4000`) times
+We also bound `W'_480` sharply: an exact rational partial sum (indices `480 ≤ n < 4000`) times
 `π`, plus the telescoping remainder `hₙ/(2n+1) < (1/16)(1/(n+1/12)² − 1/(n+13/12)²)`.
 -/
 
@@ -124,22 +124,22 @@ lemma h_succ (n : ℕ) :
   field_simp
   ring
 
-theorem h_eq_pi_mul_hRat (n : ℕ) : h n = Real.pi * (Cert240.hRat n : ℝ) := by
+theorem h_eq_pi_mul_hRat (n : ℕ) : h n = Real.pi * (Upper.hRat n : ℝ) := by
   induction n with
   | zero =>
-    rw [h, Cert240.hRat]
+    rw [h, Upper.hRat]
     simp
     ring
   | succ n ih =>
-    rw [h_succ, ih, Cert240.hRat]
+    rw [h_succ, ih, Upper.hRat]
     push_cast
     ring
 
-lemma hRat_nonneg (n : ℕ) : 0 ≤ Cert240.hRat n := by
+lemma hRat_nonneg (n : ℕ) : 0 ≤ Upper.hRat n := by
   induction n with
-  | zero => simp [Cert240.hRat]
+  | zero => simp [Upper.hRat]
   | succ n ih =>
-    rw [Cert240.hRat]
+    rw [Upper.hRat]
     exact div_nonneg (mul_nonneg ih (sq_nonneg _)) (by positivity)
 
 /-- Efficient evaluation of `∑_{k<K} hRat (n+k) / (2(n+k)+1)` given `cur = hRat n`. -/
@@ -149,13 +149,13 @@ def wSum : ℕ → ℕ → ℚ → ℚ
     cur / (2 * (n : ℚ) + 1)
       + wSum (n + 1) K (cur * ((2 * (n : ℚ) + 1) ^ 2) / (4 * ((n : ℚ) + 1) * ((n : ℚ) + 2)))
 
-lemma wSum_eq (K : ℕ) : ∀ n, wSum n K (Cert240.hRat n)
-    = ∑ k ∈ range K, Cert240.hRat (n + k) / (2 * ((n + k : ℕ) : ℚ) + 1) := by
+lemma wSum_eq (K : ℕ) : ∀ n, wSum n K (Upper.hRat n)
+    = ∑ k ∈ range K, Upper.hRat (n + k) / (2 * ((n + k : ℕ) : ℚ) + 1) := by
   induction K with
   | zero => intro n; simp [wSum]
   | succ K ih =>
     intro n
-    rw [wSum, Finset.sum_range_succ', ← Cert240.hRat]
+    rw [wSum, Finset.sum_range_succ', ← Upper.hRat]
     rw [ih (n + 1)]
     simp only [Nat.add_zero, Nat.cast_add, Nat.cast_one]
     rw [add_comm]
@@ -165,19 +165,19 @@ lemma wSum_eq (K : ℕ) : ∀ n, wSum n K (Cert240.hRat n)
     push_cast
     ring_nf
 
-/-- The exact rational partial sum `∑_{240 ≤ n < 4000} hRat n/(2n+1)` is at most `qS`. -/
-def qS : ℚ := 171952051399020033726251155599 / 500000000000000000000000000000000000
+/-- The exact rational partial sum `∑_{480 ≤ n < 4000} hRat n/(2n+1)` is at most `qS`. -/
+def qS : ℚ := 10634211333512209905911388881632224313/125000000000000000000000000000000000000000000
 
-theorem wSum_240_le : wSum 240 3760 (Cert240.hRat 240) ≤ qS := by native_decide
+theorem wSum_le : wSum 480 3520 (Upper.hRat 480) ≤ qS := by native_decide
 
-/-- Upper bound for `W'_240`. -/
-def WpHi : ℚ := 1084312690134381188293543488787 / 10 ^ 36
+/-- Upper bound for `W'_480`. -/
+def WpHi : ℚ := 135586484430667836605067317251821325481/500000000000000000000000000000000000000000000
 
-theorem Wp_240_le : Wp 240 ≤ (WpHi : ℝ) := by
-  have hs := Wp_summable 240 (by norm_num)
-  have hsplit := hs.sum_add_tsum_nat_add 3760
-  have e1 : ∑ k ∈ range 3760, h (240 + k) / (2 * ((240 + k : ℕ) : ℝ) + 1)
-      = Real.pi * (wSum 240 3760 (Cert240.hRat 240) : ℝ) := by
+theorem Wp_le : Wp 480 ≤ (WpHi : ℝ) := by
+  have hs := Wp_summable 480 (by norm_num)
+  have hsplit := hs.sum_add_tsum_nat_add 3520
+  have e1 : ∑ k ∈ range 3520, h (480 + k) / (2 * ((480 + k : ℕ) : ℝ) + 1)
+      = Real.pi * (wSum 480 3520 (Upper.hRat 480) : ℝ) := by
     rw [wSum_eq]
     push_cast
     rw [Finset.mul_sum]
@@ -185,31 +185,31 @@ theorem Wp_240_le : Wp 240 ≤ (WpHi : ℝ) := by
     rw [h_eq_pi_mul_hRat]
     push_cast
     ring
-  have e2 : ∑' k, h (240 + (k + 3760)) / (2 * ((240 + (k + 3760) : ℕ) : ℝ) + 1) = Wp 4000 := by
+  have e2 : ∑' k, h (480 + (k + 3520)) / (2 * ((480 + (k + 3520) : ℕ) : ℝ) + 1) = Wp 4000 := by
     unfold Wp
     refine tsum_congr fun k => ?_
-    rw [show 240 + (k + 3760) = 4000 + k by omega]
+    rw [show 480 + (k + 3520) = 4000 + k by omega]
   unfold Wp
   rw [← hsplit, e1, e2]
   have hW := (Wp_le_G 4000)
-  have hq : (wSum 240 3760 (Cert240.hRat 240) : ℝ) ≤ (qS : ℝ) := by exact_mod_cast wSum_240_le
+  have hq : (wSum 480 3520 (Upper.hRat 480) : ℝ) ≤ (qS : ℝ) := by exact_mod_cast wSum_le
   have hpi := Real.pi_lt_d20
   have hpi0 := Real.pi_pos
   have hG : G 4000 ≤ (1 / 16) / (4000 + 1 / 12) ^ 2 := by
     unfold G; norm_num
-  have hq0 : (0 : ℝ) ≤ (wSum 240 3760 (Cert240.hRat 240) : ℝ) := by
-    have : (0 : ℚ) ≤ wSum 240 3760 (Cert240.hRat 240) := by
+  have hq0 : (0 : ℝ) ≤ (wSum 480 3520 (Upper.hRat 480) : ℝ) := by
+    have : (0 : ℚ) ≤ wSum 480 3520 (Upper.hRat 480) := by
       rw [wSum_eq]
       exact sum_nonneg fun k _ => div_nonneg (hRat_nonneg _) (by positivity)
     exact_mod_cast this
-  calc Real.pi * (wSum 240 3760 (Cert240.hRat 240) : ℝ) + Wp 4000
+  calc Real.pi * (wSum 480 3520 (Upper.hRat 480) : ℝ) + Wp 4000
       ≤ 3.14159265358979323847 * (qS : ℝ) + (1 / 16) / (4000 + 1 / 12) ^ 2 :=
         add_le_add (mul_le_mul hpi.le hq hq0 (by norm_num)) (hW.trans hG)
     _ ≤ (WpHi : ℝ) := by unfold qS WpHi; norm_num
 
 /-! ### The joint tail inequality -/
 
-/-- **Weighted Cauchy–Schwarz tail bound** (handoff, `joint_first_order_tail`).  With
+/-- **Weighted Cauchy–Schwarz tail bound**.  With
 `λₙ = 2n+1`, `ξₙ² = hₙ` and the first-order energies of `c, r, s` on `n ≥ N` bounded by
 `E_C, E_L, E_R`,  `∑_{n≥N} |ξₙcₙ + Re(rₙ s̄ₙ)| ≤ √E_C √W'_N + √E_L √E_R/(2N+1)`. -/
 theorem joint_tail_bound (N : ℕ) (hN : 1 ≤ N) (ξ c : ℕ → ℝ) (r s : ℕ → ℂ) (EC EL ER : ℝ)
@@ -321,31 +321,30 @@ theorem joint_tail_bound (N : ℕ) (hN : 1 ≤ N) (ξ c : ℕ → ℝ) (r s : �
 
 /-! ### Numerical value of the sixth tail -/
 
-/-- Certified bound for the unweighted sixth-kernel tail from mode `240`:
-`√(E_C W'_240) + √(E_L E_R)/481 ≤ 6.3628476045386317895142196·10⁻⁵`
-(the handoff's directed value is `6.3628476111533542·10⁻⁵`). -/
-def sixthT240 : ℚ := 63628476045386317895142196 / 10 ^ 30
+/-- Certified bound for the unweighted sixth-kernel tail from mode `480`:
+`√(E_C W'_480) + √(E_L E_R)/961 ≤ sixthT ≈ 1.598221218619·10⁻⁵`. -/
+def sixthT : ℚ := 1598221218619022581044821/100000000000000000000000000000
 
 theorem sixth_tail_numeric (EC EL ER : ℝ) (hEC0 : 0 ≤ EC) (hEL0 : 0 ≤ EL) (hER0 : 0 ≤ ER)
-    (hEC : EC ≤ 0.003521036759326558) (hEL : EL ≤ 0.000884260662142687)
-    (hER : ER ≤ 0.000885126188452271) :
-    Real.sqrt EC * Real.sqrt (Wp 240) + Real.sqrt EL * Real.sqrt ER / (2 * 240 + 1)
-      ≤ (sixthT240 : ℝ) := by
-  have hW := Wp_240_le
-  have hW0 : 0 ≤ Wp 240 := tsum_nonneg (Wp_term_nonneg 240)
-  have u1 : Real.sqrt EC * Real.sqrt (Wp 240) ≤ 61789196794969133157102803 / 10 ^ 30 := by
+    (hEC : EC ≤ 0.000914101356581664) (hEL : EL ≤ 0.000228630701840557)
+    (hER : ER ≤ 0.000228844330747684) :
+    Real.sqrt EC * Real.sqrt (Wp 480) + Real.sqrt EL * Real.sqrt ER / (2 * 480 + 1)
+      ≤ (sixthT : ℝ) := by
+  have hW := Wp_le
+  have hW0 : 0 ≤ Wp 480 := tsum_nonneg (Wp_term_nonneg 480)
+  have u1 : Real.sqrt EC * Real.sqrt (Wp 480) ≤ 15744191903823589656503649/1000000000000000000000000000000 := by
     rw [← Real.sqrt_mul hEC0, Real.sqrt_le_left (by norm_num)]
-    calc EC * Wp 240 ≤ 0.003521036759326558 * (WpHi : ℝ) := by gcongr
+    calc EC * Wp 480 ≤ 0.000914101356581664 * (WpHi : ℝ) := by gcongr
       _ ≤ _ := by unfold WpHi; norm_num
-  have u2 : Real.sqrt EL * Real.sqrt ER ≤ 35387732778026634359877911 / 40000000000000000000000000000 := by
+  have u2 : Real.sqrt EL * Real.sqrt ER ≤ 228737491354337343940723007/1000000000000000000000000000000 := by
     rw [← Real.sqrt_mul hEL0, Real.sqrt_le_left (by norm_num)]
-    calc EL * ER ≤ 0.000884260662142687 * 0.000885126188452271 := by gcongr
+    calc EL * ER ≤ 0.000228630701840557 * 0.000228844330747684 := by gcongr
       _ ≤ _ := by norm_num
-  calc Real.sqrt EC * Real.sqrt (Wp 240) + Real.sqrt EL * Real.sqrt ER / (2 * 240 + 1)
-      ≤ 61789196794969133157102803 / 10 ^ 30
-          + 35387732778026634359877911 / 40000000000000000000000000000 / (2 * 240 + 1) :=
+  calc Real.sqrt EC * Real.sqrt (Wp 480) + Real.sqrt EL * Real.sqrt ER / (2 * 480 + 1)
+      ≤ 15744191903823589656503649/1000000000000000000000000000000
+          + 228737491354337343940723007/1000000000000000000000000000000 / (2 * 480 + 1) :=
         add_le_add u1 (div_le_div_of_nonneg_right u2 (by norm_num))
-    _ ≤ (sixthT240 : ℝ) := by unfold sixthT240; norm_num
+    _ ≤ (sixthT : ℝ) := by unfold sixthT; norm_num
 
 end
 

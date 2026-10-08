@@ -7,7 +7,7 @@ Haagerup's phase-correlation function has the expansion
 `𝔥(z) = ∑ₙ hₙ z |z|^{2n}` with
 `hₙ = π/(4(n+1)) · binom(2n,n)² / 16ⁿ`.
 
-This file proves the elementary bound used in the research note,
+This file proves the elementary bound
 
   `hₙ < 1 / (4 (n + 1/4) (n + 1))`,
 
@@ -54,7 +54,7 @@ lemma pc_succ (n : ℕ) : pc (n + 1) = pc n * ((2 * n + 1) / (2 * n + 2)) := by
   push_cast at hcast
   nlinarith [hcast]
 
-/-- `b n = π (n + 1/4) pc n ^ 2`; the note shows `b n < 1`. -/
+/-- `b n = π (n + 1/4) pc n ^ 2`; it is strictly increasing with limit `1`, hence `b n < 1`. -/
 def b (n : ℕ) : ℝ := Real.pi * (n + 1 / 4) * pc n ^ 2
 
 lemma b_succ_gt (n : ℕ) : b n < b (n + 1) := by
@@ -114,7 +114,7 @@ lemma b_le_one (n : ℕ) : b n ≤ 1 := b_strictMono.monotone.ge_of_tendsto tend
 
 lemma b_lt_one (n : ℕ) : b n < 1 := lt_of_lt_of_le (b_succ_gt n) (b_le_one (n + 1))
 
-/-- The corrected Wallis estimate of the research note:
+/-- The corrected Wallis estimate:
 `h n < 1 / (4 (n + 1/4) (n + 1))`. -/
 theorem h_lt (n : ℕ) : h n < 1 / (4 * (n + 1 / 4) * (n + 1)) := by
   have hb := b_lt_one n
@@ -125,21 +125,13 @@ theorem h_lt (n : ℕ) : h n < 1 / (4 * (n + 1 / 4) * (n + 1)) := by
   rw [div_mul_eq_mul_div, div_lt_div_iff₀ (by positivity) (by positivity)]
   nlinarith
 
-/-- Consequence: `h n ≤ 1 / (4 n (n+1))` for `n ≥ 1` (the classical Wallis estimate). -/
+/-- Consequence: `h n ≤ 1 / (4 n (n+1))` for `n ≥ 1`. -/
 theorem h_le_classical (n : ℕ) (hn : 1 ≤ n) : h n ≤ 1 / (4 * n * (n + 1)) := by
   refine (h_lt n).le.trans ?_
   have hn' : (1 : ℝ) ≤ n := by exact_mod_cast hn
   apply one_div_le_one_div_of_le
   · positivity
   · nlinarith
-
-/-- Uniform bound used for the omitted fifth-kernel blocks: `h (m + 67) ≤ 1/(4·67·68)`. -/
-theorem h_add_67_le (m : ℕ) : h (m + 67) ≤ 1 / (4 * 67 * 68) := by
-  refine (h_le_classical (m + 67) (by omega)).trans ?_
-  apply one_div_le_one_div_of_le
-  · positivity
-  · push_cast
-    nlinarith [(Nat.cast_nonneg m : (0:ℝ) ≤ m)]
 
 end
 

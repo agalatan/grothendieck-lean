@@ -17,10 +17,10 @@ the supremum, so this agrees with the usual definition.
 
 A *rounding kernel* `Q : ℂ → ℂ` is **dominated** if `|∑ aᵢⱼ Q(⟪xᵢ, yⱼ⟫)| ≤ C(A)` for all unit
 families.  A kernel realised by jointly distributed unimodular random variables with
-`E[conj(εᵢ) δⱼ] = Q(⟪xᵢ, yⱼ⟫)` (a *valid* kernel in the sense of the source) is dominated
+`E[conj(εᵢ) δⱼ] = Q(⟪xᵢ, yⱼ⟫)` (a *valid* kernel) is dominated
 (`ValidKernel.dominated`), and convex combinations of dominated kernels are dominated.
 
-The main result is the transfer inequality **(1)** of the research note: if
+The main result is the transfer inequality: if
 `q(z) = ∑ₙ cₙ z|z|^{2n}` with `∑ |cₙ| < ∞`, `q/M` is dominated, and `|c₀| > S := ∑_{n≥1} |cₙ|`,
 then `K_G^ℂ ≤ M / (|c₀| - S)`.  The proof realises each monomial `z|z|^{2n}` as an inner product
 of unit tensor vectors (`tpow`).
@@ -131,7 +131,7 @@ def DominatedKernel (Q : ℂ → ℂ) : Prop :=
     (∀ i, ‖x i‖ = 1) → (∀ j, ‖y j‖ = 1) →
     ‖∑ i, ∑ j, A i j * Q (inner ℂ (x i) (y j))‖ ≤ scalarOpt A
 
-/-- A *valid rounding kernel* (source, Definition 3.1): for every finite pair of unit families
+/-- A *valid rounding kernel*: for every finite pair of unit families
 there are jointly distributed unimodular random variables `ε, δ` on a probability space with
 `E[conj(εᵢ) δⱼ] = Q(⟪xᵢ, yⱼ⟫)`. -/
 def ValidKernel (Q : ℂ → ℂ) : Prop :=
@@ -282,7 +282,7 @@ theorem norm_tensor_value_le {m n : ℕ} (A : Fin m → Fin n → ℂ) {ι : Typ
 
 /-! ### The transfer inequality (1) -/
 
-/-- **Research note, inequality (1).**  Let `q(z) = ∑ₙ cₙ z|z|^{2n}` with `∑|cₙ| < ∞`.  If `q/M`
+/-- **Transfer inequality.**  Let `q(z) = ∑ₙ cₙ z|z|^{2n}` with `∑|cₙ| < ∞`.  If `q/M`
 is a dominated (e.g. valid) rounding kernel and `S = ∑_{n ≥ 1} |cₙ| < |c₀|`, then
 `K_G^ℂ ≤ M / (|c₀| - S)`. -/
 theorem transfer (c : ℕ → ℝ) (hc : Summable fun k => |c k|) (M : ℝ) (hM : 0 < M)

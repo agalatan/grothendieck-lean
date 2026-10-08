@@ -1,5 +1,5 @@
-import Grothe.Cert240.Interface
-import Grothe.Cert240.IntervalSound
+import Grothe.Upper.Interface
+import Grothe.Upper.IntervalSound
 
 /-!
 # Bridge between `compose`, `sProf` and the Horner form
@@ -9,7 +9,7 @@ import Grothe.Cert240.IntervalSound
 * `compose c E n = (E * hornerPoly cs (X * E^2)).coeff n` when `c j = cs.getD j 0`.
 -/
 
-namespace Grothe.Cert240
+namespace Grothe.Upper
 
 open Polynomial GrotheKernel
 
@@ -153,4 +153,4 @@ lemma forall₂_ofFn {N : ℕ} (f : Fin N → ℝ) (g : Fin N → Ival) (h : ∀
 
 end
 
-end Grothe.Cert240
+end Grothe.Upper
