@@ -19,10 +19,10 @@ rectangles and the sweep cover (`moment_sound`).
 
 namespace Grothe.Lower
 
-/-- `ρ = 0.97382085`, the first absolute moment bound of a normalized cubic. -/
-def ρ : ℚ := 19476417 / 20000000
-/-- `C₆ = 40.8205`, the sixth-moment coefficient. -/
-def C6 : ℚ := 81641 / 2000
+/-- `ρ = 0.973612157`, the first absolute moment bound of a normalized cubic. -/
+def ρ : ℚ := 973612157 / 1000000000
+/-- `C₆ = 40.45313`, the sixth-moment coefficient. -/
+def C6 : ℚ := 4045313 / 100000
 /-- The source witness parameter `ε₀ = 37/50` (the parameter at which all profiles are built). -/
 def ε₀ : ℚ := 37 / 50
 /-- The common witness parameter `ε = 7400323787/10¹⁰` of the support rows. -/

@@ -147,7 +147,7 @@ theorem lower_envelope (rows : List Row) (models : List EnvModel) (cells : List 
 /-- **Main lower-bound theorem (finite layer).**  Under the row inequalities of the crude row
 at `ε₀` and of the dilated certified profiles at their witness parameters, every admissible
 `(V, t)` satisfies `V ≤ B`; with the Gaussian transfer `K_G^ℂ ≥ 1/B` this is
-`K_G^ℂ > 1.4010028168` (`lower_endpoint`). -/
+`K_G^ℂ > 1.40104026363` (`lower_endpoint`). -/
 theorem lower_bound_main (C : Ctx) (rows : List Row) (models : List EnvModel)
     (cells : List EnvCell) (hrows : rows.all (checkRow C) = true)
     (henv : checkEnvelope (rows.map Row.env) models cells Bcap = true)

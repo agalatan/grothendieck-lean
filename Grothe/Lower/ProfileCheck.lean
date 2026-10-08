@@ -11,7 +11,7 @@ and the moment bound `Jpw ≤ cap` on `[0, δρ] × [0, 31/4]`.
 
 namespace Grothe.Lower
 
-theorem profiles_length : ctx.profiles.length = 67 := by native_decide
+theorem profiles_length : ctx.profiles.length = 31 := by native_decide
 
 theorem profiles_check : checkProfiles ctx = true := by native_decide
 

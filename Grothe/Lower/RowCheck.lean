@@ -11,7 +11,7 @@ against `B`, both by `native_decide`; `lower_bound_data` is the resulting finite
 
 namespace Grothe.Lower
 
-theorem rowData_length : rowData.length = 68 := by native_decide
+theorem rowData_length : rowData.length = 32 := by native_decide
 
 theorem rows_check : rowData.all (checkRow ctx) = true := by native_decide
 
@@ -25,7 +25,7 @@ theorem rows_sound : ∀ r ∈ rowData, RowSound ctx r := fun r hr =>
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
 /-- **The finite-layer lower bound for the certificate data**: `V ≤ B` from the row
-inequalities of the crude row and of the 67 dilated profiles. -/
+inequalities of the crude row and of the 31 dilated profiles. -/
 theorem lower_bound_data (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (hQ : ‖Qh‖ ^ 2 ≤ (ρ : ℝ) ^ 2)
     (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
     (hcrude : LowerAnalytic.RowHolds (ε₀ : ℝ) 0 0 ((ε₀ * ρ ^ 2 : ℚ) : ℝ) V t Qh v)

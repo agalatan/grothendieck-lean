@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Generate the lower-bound certificate data modules (exact rationals only):
 
-  Grothe/Lower/SourceData.lean     the nine source profiles (nodes, global polynomials with chord
-                                   certificates, moment covers) and the dense node tables
+  Grothe/Lower/SourceData.lean     the source profiles (node caps from the price integrations, global
+                                   polynomials with chord certificates, moment covers) and the dense
+                                   node tables
   Grothe/Lower/AveragedData{1,2}.lean  the averaged profiles (two shifted sources, node provenance,
                                    global polynomials, moment covers)
   Grothe/Lower/JoinData.lean       the pointwise joins and the shared-moment joins
@@ -24,7 +25,11 @@ ROOT = Path(__file__).resolve().parent.parent
 H = ROOT / "handoff"
 V4 = H / "lower-v4"
 EXT = V4 / "extension-1401"
+V5 = H / "lower-v5"
 INPUTS = {
+    "v5_claims": V5 / "CLAIMS.json",
+    "v5_env": V5 / "combined-data" / "envelope.json",
+    "v5_profiles": V5 / "combined-data",
     "sources": H / "data" / "lower-source-profiles.json",
     "source_extra": H / "lower-import" / "combined-polynomials.json",
     "source_cover": H / "lower" / "base" / "certificates" / "moment-cover.json",
@@ -43,8 +48,8 @@ def profile_path(name):
     raise FileNotFoundError(name)
 EPS0 = Q(37, 50)
 EPS = Q(7400323787, 10**10)
-RHO = Q(19476417, 20000000)
-C6 = Q(81641, 2000)
+RHO = Q(973612157, 10**9)
+C6 = Q(4045313, 100000)
 LIFT = Q(1, 10**8)
 XMAX = Q(31, 4)
 SCALE_EPS = EPS / EPS0
@@ -331,7 +336,8 @@ assert Q(g["lift"]) == LIFT and g["extended_source_points"] == [rec["points"] fo
 add(averaged("dense-13_16", g, c, 1))
 
 claims = json.load(open(INPUTS["claims"]))
-assert Q(claims["C6"]) == C6 and Q(claims["rho"]) == RHO and Q(claims["epsilon"]) == EPS
+# archive covers built with larger moment constants stay valid for ours (the moment bound is monotone)
+assert Q(claims["C6"]) >= C6 and Q(claims["rho"]) >= RHO and Q(claims["epsilon"]) == EPS
 sha_to_name = {}
 for n in claims["profiles"]:
     sha_to_name[hashlib.sha256(profile_path(n).read_bytes()).hexdigest()] = n[:-5]
@@ -339,7 +345,7 @@ for n in claims["profiles"]:
 for fname in claims["profiles"]:
     if fname in claims["pointwise_profiles"]: continue
     g, c = load_pair(profile_path(fname))
-    assert Q(c["C6"]) == C6 and Q(c["rho"]) == RHO
+    assert Q(c["C6"]) >= C6 and Q(c["rho"]) >= RHO
     if isinstance(g["points"][0]["source_nodes"][0], int):
         assert Q(g["lift"]) == LIFT and g["extended_source_points"] == [rec["points"] for rec in dense]
         add(averaged(fname[:-5], g, c, 1))
@@ -350,7 +356,7 @@ for fname in claims["profiles"]:
 # --- pointwise joins
 for fname in claims["pointwise_profiles"]:
     g, c = load_pair(profile_path(fname))
-    assert g["schema"] == "pointwise_joint_physical/v1" and Q(c["C6"]) == C6 and Q(c["rho"]) == RHO
+    assert g["schema"] == "pointwise_joint_physical/v1" and Q(c["C6"]) >= C6 and Q(c["rho"]) >= RHO
     i, j = (by_name[sha_to_name[r["sha256"]]] for r in g["parents"]); pi, pj = profiles[i], profiles[j]
     assert pi.kind == 1 and pj.kind == 1 and i != j
     w = Q(g["weight"]); assert 0 < w < 1
@@ -415,7 +421,7 @@ def add_joint(name, i, j, w, delta, gain, cap, ell, beta, E, R, raw_boxes):
                 delta=delta, E=E, R=R, gain=gain, cap=cap, nodeKind=0, nodes=[], nodeSrc=[], cellsets=[],
                 polys=[], certs=[], pairs=pairs, boxes=boxes, edges=edges, gates=gates(E, R, delta, EPS0)))
 
-env = json.load(open(INPUTS["envelope"]))
+env = json.load(open(INPUTS["v5_env"]))
 assert Q(env["epsilon"]) == EPS and Q(env["C6"]) == C6 and Q(env["rho"]) == RHO
 received = {(Q(r["ell"]), Q(r["beta"])): r["id"] for r in env["profiles"] if r.get("origin") == "received"}
 coupled = json.load(open(INPUTS["coupled"]))
@@ -440,7 +446,7 @@ for r in coupled:
 for fname in claims["joint_profiles"]:
     g = json.load(open(V4 / "data" / "joint" / fname))
     assert g["schema"] == "grothendieck_joint_physical_polynomial_pairs/v1"
-    assert Q(g["C6"]) == C6 and Q(g["rho"]) == RHO and not g.get("polynomial_pairs")
+    assert Q(g["C6"]) >= C6 and Q(g["rho"]) >= RHO and not g.get("polynomial_pairs")
     i, j = (by_name[sha_to_name[r["sha256"]]] for r in g["parents"])
     w = Q(g["weight"]); a, b = map(Q, g["argument_scales"])
     p = g["profile"]; assert Q(p["epsilon"]) == EPS0 and p["M_R"] == p["M_I"]
@@ -451,6 +457,33 @@ for fname in claims["joint_profiles"]:
         raw.append((lo, hi, xlo, xhi, ki, kj, a, b))
     add_joint(fname[:-5], i, j, w, Q(p["delta"]), Q(g["variance_gain"]), Q(g["C_cap"]), Q(p["ell"]), Q(p["beta"]),
               sym3(p["M_E"]), sym2(p["M_R"]), raw)
+
+# --- the physical profiles with regenerated price rows (kind 0: node caps are the data)
+for row in env["profiles"]:
+    if row.get("kind") != "fresh_physical": continue
+    fname = row["reference"]
+    g, c = load_pair(INPUTS["v5_profiles"] / fname)
+    assert Q(c["C6"]) == C6 and Q(c["rho"]) == RHO
+    p = g["profile"]; assert Q(p["epsilon"]) == EPS0 and p["M_R"] == p["M_I"]
+    ell, beta, delta = Q(p["ell"]), Q(p["beta"]), Q(p["delta"])
+    E, R = sym3(p["M_E"]), sym2(p["M_R"])
+    nodes = [(Q(n["r"]), Q(n["cap"])) for n in g["points"]]
+    assert nodes[0][0] == 0 and all(a[0] < b[0] for a, b in zip(nodes, nodes[1:]))
+    tail = Q(g["tail_start"]); assert tail == nodes[-1][0]
+    cells = []; prev = Q(0)
+    for lo, hi, idx in g["physical_cells"]:
+        assert Q(lo) == prev; prev = Q(hi); cells.append((Q(hi), idx))
+    polys = [[Q(x) for x in pl["coefficients"]] for pl in g["polynomials"]]
+    for pl in polys:
+        poly_valid(pl); check_chords(nodes, pl, cells, tail)
+    cap = Q(c["C_cap"]); assert c["id"] == p["id"] and Q(c["ell"]) == ell and Q(c["delta"]) == delta
+    for bx in c["boxes"]: assert bx.get("contacts") is None
+    boxes, edges = finish_cover(fname, polys, delta, cap, [(*map(Q, bx["box"]), bx["polynomial"]) for bx in c["boxes"]])
+    assert 0 <= beta and 2 * beta <= ell
+    add(Profile(name=fname[:-5], kind=0, i=0, j=0, w=Q(0), dei=Q(0), dbi=Q(0), dej=Q(0), dbj=Q(0),
+                ell=ell, beta=beta, delta=delta, E=E, R=R, gain=Q(0), cap=cap, nodeKind=0,
+                nodes=nodes, nodeSrc=[], cellsets=[";".join(f"{qs(h)}:{k}" for h, k in cells)], polys=polys,
+                certs=[0] * len(polys), pairs=[], boxes=boxes, edges=edges, gates=gates(E, R, delta, EPS0)))
 
 # ----------------------------------------------------------------- rows
 def transfer(cap, beta, ea, eb): return cap + (eb - ea) * RHO ** 2 + 2 * beta ** 2 * (1 / eb - 1 / ea)
@@ -472,19 +505,39 @@ for row in env["profiles"]:
         assert len(cands) == 1, (row["id"], cands)
         k = cands[0]
     else:
-        scale = Q(row["scale"]); k = by_name[row["reference"][:-5]]
+        scale = Q(row["scale"]); ref = row["reference"][:-5]
+        if ref in by_name: k = by_name[ref]
+        else:
+            cands = by_lb.get((ell / scale, beta / scale), []); assert len(cands) == 1, (row["id"], cands); k = cands[0]
     p = profiles[k]
     assert 1 <= scale and scale * EPS0 <= EPS
     assert ell == scale * p.ell and beta == scale * p.beta
     exact = transfer(scale * p.cap, beta, scale * EPS0, EPS)
-    assert 0 <= C - exact < Q(1, 10**6), (row["id"], C - exact)
+    assert 0 <= C - exact, (row["id"], C - exact)   # the row only needs `C ≥ transfer(cap)`
     rows.append(dict(crude=False, prof=k, scale=scale, ell=ell, beta=beta, C=C,
                      gates=gates(scl(p.E, scale), scl(p.R, scale), scale * p.delta, scale * EPS0)))
 NROWS = len(rows)
 assert sum(r["crude"] for r in rows) == 1
+# keep only the profiles the rows need (and their parents), in the original order
+needed = {r["prof"] for r in rows if not r["crude"]}
+while True:
+    more = {q_ for k in needed for q_ in (profiles[k].i, profiles[k].j) if profiles[k].kind != 0} - needed
+    if not more: break
+    needed |= more
+kept = [p for p in profiles if p.index in needed]
+kept = [p for p in kept if p.kind == 0] + [p for p in kept if p.kind == 1] + [p for p in kept if p.kind in (2, 3)]
+newidx = {p.index: n for n, p in enumerate(kept)}
+for p in kept:
+    if p.kind != 0: p.i, p.j = newidx[p.i], newidx[p.j]
+dense_tab = {newidx[k]: v for k, v in dense_tab.items() if k in newidx}
+for r in rows:
+    if not r["crude"]: r["prof"] = newidx[r["prof"]]
+for p in kept: p.index = newidx[p.index]
+profiles = kept
+by_name = {p.name: p.index for p in profiles}
 used = {r["prof"] for r in rows if not r["crude"]}
 for p in profiles:
-    assert p.index in used or any(x.i == p.index or x.j == p.index for x in profiles), p.name
+    assert p.index in used or any(x.i == p.index or x.j == p.index for x in profiles if x.kind != 0), p.name
 
 def quad_max(c0, c1, c2, lo, hi):
     f = lambda t: c0 + c1 * t + c2 * t * t
@@ -494,9 +547,11 @@ def quad_max(c0, c1, c2, lo, hi):
         if lo <= v <= hi: e = max(e, f(v))
     return e
 
-B = Q(claims["norm_cap"]); L = Q(claims["lower_strict"])
-assert B == Q(2855097757, 4000000000) and L == Q(7005014084, 5000000000)
-assert 1 - L * B == Q(claims["strict_slack"]) > 0
+claims5 = json.load(open(INPUTS["v5_claims"]))
+assert Q(claims5["C6"]) == C6 and Q(claims5["rho"]) == RHO and Q(claims5["epsilon"]) == EPS
+B = Q(claims5["norm_cap"]); L = Q(claims5["lower_strict"]); assert Q(env["norm"]) == B
+assert B == Q(71375536161, 10**11) and L == Q(140104026363, 10**11)
+assert 1 - L * B == Q(claims5["strict_product_margin"]) > 0
 models = []
 for m in env["models"]:
     i, j = m["parents"]; th = Q(m["second_weight"]); assert 0 <= th <= 1 and i < NROWS and j < NROWS
@@ -544,13 +599,14 @@ dense_defs = "".join(
     f"def denseNodes{k} : List (ℚ × ℚ) :=\n[" + ",\n".join(f"  ({q(r)}, {q(c)})" for r, c in dense_tab[k]) + "]\n\n"
     for k in sorted(dense_tab))
 write("SourceData.lean", ["Grothe.Lower.Profiles"], "Source profiles",
-      "The nine source profiles `(ℓ, β, δ, M_E, M_R)` of the Gaussian witness at the source parameter\n"
-      "`ε₀ = 37/50`: their node caps `(r, cap)` (Gaussian enclosure hypothesis), the global physical\n"
-      "polynomials with their chord certificates, and the moment covers with the caps; and the finer\n"
-      "node tables of the two sources used by the dense averaged profiles.",
+      f"The {len(srcs)} source profiles `(ℓ, β, δ, M_E, M_R)` of the Gaussian witness at the source\n"
+      "parameter `ε₀ = 37/50`: their node caps `(r, cap)` (Gaussian enclosure hypothesis: the price\n"
+      "integrations), the global physical polynomials with their chord certificates, and the moment\n"
+      "covers with the caps; and the finer node tables of the sources used by the dense averaged\n"
+      "profiles.",
       "/-- The source profiles (kind `0`). -/\ndef sourceProfiles : List Profile :=\n[" + ",\n".join(fmt_profile(p) for p in srcs)
       + "]\n\n" + dense_defs + "/-- Dense node tables by source index. -/\ndef denseNodes : List (List (ℚ × ℚ)) :=\n  ["
-      + ", ".join(f"denseNodes{k}" if k in dense_tab else "[]" for k in range(9)) + "]\n\n")
+      + ", ".join(f"denseNodes{k}" if k in dense_tab else "[]" for k in range(len(srcs))) + "]\n\n")
 half = (len(avgs) + 1) // 2
 for part, chunk in enumerate((avgs[:half], avgs[half:]), 1):
     write(f"AveragedData{part}.lean", ["Grothe.Lower.Profiles"], f"Averaged profiles, part {part}",
