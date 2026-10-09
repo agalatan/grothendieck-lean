@@ -23,10 +23,15 @@ description: Working conventions for the Lean 4 / Mathlib formalization of the c
   `ValidKernel`, `tpow` (tensor powers), `transfer` (the transfer inequality).
 - `Grothe/Haagerup.lean`, `WallisTail.lean`, `ListPoly.lean`: Haagerup coefficients, Wallis-type
   tails, the Wiener norm `l1`.
-- `Grothe/Upper/`: the 49-branch upper certificate (generated `Data.lean`, `Interface.lean`,
-  checker modules over the Mathlib-free precompiled `GrotheKernel/`, analytic assembly,
-  `Final.lean` with `complex_grothendieck_upper`). `Value.lean` holds the long `native_decide`
-  (parallel `Task.spawn` columns, ~13 min on 8 cores).
+- `Grothe/Upper/`: the upper certificate, a mixture of Haagerup phase roundings with polynomial
+  preprocessors and two-coordinate roundings `phase(Z·p(|Z|²) + W·q(|Z|²))`. `Interface`,
+  `Mixture`, `Preprocessor`, `Composition`, `Assembly` (generic transfer `bound_of_branches`),
+  `IntervalSound`/`PolyBridge`/`Checker` (soundness of the Mathlib-free precompiled
+  `GrotheKernel/`), `TwoCoordinate` (bivariate composition, table tails), `Spec` (`Cert`,
+  `BranchSpec`, `TwoCoordData`), `CertDefs`/`Cert` (`dloIntC`, `finite_certC_exact`,
+  `bound_of_certC`, `CertHyps`), generated `Data.lean` (`tools/gen_upper_data.py` from
+  `handoff/upper-mixture/cert.json`), `Final.lean` with `complex_grothendieck_upper` (the long
+  `native_decide`s `certData_ok`, `dloIntC_ge`; parallel `Task.spawn` columns).
 - `Grothe/Lower/`: the lower certificate's finite layer: `Bernstein`, `PSD`, `Gates`, `Cover`
   (sweep covers), `Moment` (constants `ρ`, `C6`, `ε₀`, `ε`; `Jpw`), `Chords`, `Profiles` (one
   `Profile` structure for sources / averaged profiles / pointwise joins / shared-moment joins,
