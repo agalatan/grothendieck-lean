@@ -1,38 +1,67 @@
-import Grothe.Upper.Assembly
-import Grothe.Upper.Value
+import Grothe.Upper.Cert
+import Grothe.Upper.Data
 
 /-!
-# `K_G^ℂ < 1.404896257347`
+# `K_G^ℂ ≤ 1.404875854410`
 
-The interval checker certifies `FiniteCertificate Dlo` with `Dlo ≥ DloNeeded`
-(`Grothe/Upper/Value.lean`), and the analytic assembly turns that into the bound.  The only
-remaining hypotheses are the analytic and quadrature inputs of the construction, listed in the
-theorem statement.
+The interval checker certifies `FiniteCertC certData dloNeededQ` (by `native_decide` on the
+scaled integer `dloIntC certData`), and the assembly turns it into
+`IsGrothendieckBound targetQ`.  The remaining hypotheses are the analytic and quadrature inputs
+of the construction (`CertHyps`), listed at the main theorem.
 -/
 
 namespace Grothe
 
-open Finset Upper
-open scoped ComplexConjugate
+open Upper GrotheKernel
 
-/-- **Main theorem.**  Conditional on: domination of Haagerup's kernel, the analytic
-description of the two origin kernels (domination, truncated coefficient integrals within
-`e⁻¹⁸` of the boxed ones, polarized first-order tail energies), box containment of the
-truncated coefficient integrals, and the Cauchy tails of the nine analytically continued scalar
-branches. -/
-theorem complex_grothendieck_upper
-    (hh : DominatedKernel (radialKernel h))
-    {H : ℕ → ℝ} {A B : ℕ → ℂ}
-    (hH : OriginKernel H A B (999511 / 10 ^ 6) 0.0035203939734987528839
-      0.0000182773096480245802715 0.0035186722940462150571)
-    (hA : InBox aReLo aReHi aImLo aImHi A) (hB : InBox bReLo bReHi bImLo bImHi B)
-    {Hs : ℕ → ℝ} {A' B' : ℕ → ℂ}
-    (hHs : OriginKernel Hs A' B' 1 0.0048623361335078433465 0.0000444870768551502459631
-      0.0048623361335204498121)
-    (hA' : InBox asReLo asReHi asImLo asImHi A') (hB' : InBox bsReLo bsReHi bsImLo bsImHi B')
-    (hcauchy : ∀ i r, tag i = .cauchy r →
-      ∑' n, |compose h (polyOf i) (n + cutoff)| ≤ cauchyTail r) :
-    IsGrothendieckBound (1404896257347 / 10 ^ 12) :=
-  grothendieck_of_slope Dlo dlo_ge_needed finite_certificate hh hH hA hB hHs hA' hB' hcauchy
+/-- The data side conditions hold. -/
+theorem certData_ok : certOK certData = true := by native_decide
+
+/-- The required value, scaled (rounded up). -/
+def dloNeededInt : Int := ofRatHi dloNeededQ
+
+/-- **The finite computation.** -/
+theorem dloIntC_ge : dloNeededInt ≤ dloIntC certData := by native_decide
+
+lemma dloNeeded_le : dloNeededQ ≤ (dloIntC certData : ℚ) / ((D : ℤ) : ℚ) := by
+  have h1 : (dloNeededQ : ℝ) * D ≤ (dloNeededInt : ℝ) := le_ofRatHi _
+  have h2 : (dloNeededInt : ℝ) ≤ (dloIntC certData : ℝ) := by exact_mod_cast dloIntC_ge
+  have hD := D_pos
+  have : (dloNeededQ : ℝ) ≤ (dloIntC certData : ℝ) / D := by
+    rw [le_div_iff₀ hD]; linarith
+  have e : ((((dloIntC certData : ℚ) / ((D : ℤ) : ℚ) : ℚ)) : ℝ) = (dloIntC certData : ℝ) / D := by
+    push_cast; rfl
+  exact_mod_cast (e ▸ this)
+
+theorem finite_certC : FiniteCertC certData dloNeededQ :=
+  (finite_certC_exact certData_ok).mono dloNeeded_le
+
+theorem rest_lt_needed : 0 < dloNeededQ - restQ certData := by native_decide
+
+theorem target_numeric : massQ certData ≤ targetQ * (dloNeededQ - restQ certData) := by
+  native_decide
+
+/-- **Main theorem.**  The mixture consists of Haagerup phase roundings with polynomial
+preprocessors and of two-coordinate roundings `phase(Z·p(|Z|²) + W·q(|Z|²))`.  Hypotheses:
+
+* `hh`: Haagerup's identity, i.e. domination (validity) of the phase kernel `𝔥`;
+* `hb : CertHyps certData μ`, where `μ i` is the true chaos-mass table of the `i`-th branch when
+  it is a two-coordinate branch with data `d`:
+  - `valid`: the radial kernel with coefficients `bivarKernel P Q (μ i)` is dominated (validity
+    of the two-coordinate rounding with preprocessors `ρ(t) = t·P(t²)`, `σ(t) = t·Q(t²)`);
+  - `summable`, `parity`: `Σ |μ i| < ∞` and `μ i (n, m) = 0` for `n + m` even;
+  - `enclosed`: the table enclosures `lo ≤ μ i (n, m) ≤ hi` of the data (rigorous quadrature);
+  - `restW`, `restZ`: the unknown masses, `Σ_{m > MW} |μ i| ≤ d.UW` (the `W`-tail bound) and
+    `Σ_{n > NZ, m ≤ MW} |μ i| ≤ d.UZ` (Parseval);
+  - `cauchy`: for every analytically continued Haagerup branch `(row, r)`, the Cauchy estimate
+    `Σ_{n ≥ K} |(𝔥 ∘ ρ)ₙ| ≤ cauchyTailK K r` of its tail. -/
+theorem complex_grothendieck_upper (hh : DominatedKernel (radialKernel h))
+    (μ : ℕ → ℕ × ℕ → ℝ) (hb : CertHyps certData μ) :
+    IsGrothendieckBound (targetQ : ℝ) := by
+  have hpos : 0 < (dloNeededQ : ℝ) - restQ certData := by exact_mod_cast rest_lt_needed
+  have hB := bound_of_certC certData_ok hh μ hb dloNeededQ finite_certC hpos
+  refine hB.mono ?_
+  rw [div_le_iff₀ hpos]
+  exact_mod_cast target_numeric
 
 end Grothe

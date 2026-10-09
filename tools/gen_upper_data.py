@@ -1,129 +1,132 @@
 #!/usr/bin/env python3
-"""Generate Grothe/Upper/Data.lean: the exact data of the upper certificate.
+"""Write `Grothe/Upper/Data.lean` (a `Cert` with Haagerup and two-coordinate branches) from a JSON file.
 
-Inputs (all under handoff/, git-ignored):
-  upper-49/candidate.json                 the 49 branches: preprocessors, kernel tags, weights
-  data/npz-exact-rationals/*.json         boxes of the 240 truncated coefficient integrals of
-                                          the inherited origin phases (cutoffs 25 + 25..36,
-                                          modes 0..119; modes 120..239 from the second table)
-  upper-49/phase2/origin_0_240.npz        boxes of the modified origin phases (binary64
-                                          endpoints, decoded exactly)
-The Cauchy radii of the nine analytically continued scalar branches are the radii of the
-analytic-continuation hypotheses of the final theorem (`RADIUS` below).
-"""
-import json
-import sys
+JSON layout (all numbers are exact: integers, decimal strings like "0.906231648312", or
+fractions "a/b"; floats are rejected because they are not exact):
+
+    {
+      "K": 800,                      # retained radial coefficients (common to all branches)
+      "target": "140481/100000",     # the bound K_G^C < target to certify (rational string)
+      "dlo_needed": "0.7118...",     # rational: the finite value the checker must reach
+      "branches": [
+        {"kind": "scalar", "w": "0.559", "row": ["0.906231648312", "-0.093651693922", ...]},
+        {"kind": "cauchy", "w": "0.8", "row": [...], "r": "53/50"},   # Haagerup branch with a Cauchy-tail hypothesis
+        {"kind": "bivar",  "w": "0.076",
+         "table": [[n, m, lo, hi], ...],   # known chaos masses mu[n,m] in [lo, hi], n+m odd
+         "P": [...], "Q": [...],           # rho(t) = t P(t^2), sigma(t) = t Q(t^2), coefficient lists
+         "UZ": "0.0012", "UW": "0.0011", "NZ": 200, "MW": 40}   # unknown mass beyond NZ (m <= MW) and beyond MW
+      ]
+    }
+
+A file with top-level "table"/"P"/"Q"/"UZ"/"UW"/"NZ"/"MW" (and optional "w") is treated as a single
+two-coordinate branch with weight 1.  `MxZ`, `MxW` may be omitted: they are then computed as
+(sum|P|)^(NZ+1) and (sum|Q|)^(MW+1) rounded up to 1e-30.  Every branch's data must satisfy
+`certOK` (checked here with the same rules the Lean side decides by `native_decide`)."""
+import json, sys
 from fractions import Fraction as Q
-from pathlib import Path
+from math import ceil
 
-import numpy as np
+def rat(x):
+    if isinstance(x, bool) or isinstance(x, float): raise SystemExit(f"inexact number {x!r}")
+    if isinstance(x, int): return Q(x)
+    return Q(str(x))
 
-ROOT = Path(__file__).resolve().parent.parent
-HAND = ROOT / "handoff"
-EXACT = HAND / "data" / "npz-exact-rationals"
-CAND = json.load(open(HAND / "upper-49" / "candidate.json"))
-MODES = 240
+def lean_rat(q):
+    q = Q(q)
+    if q.denominator == 1: return f"({q.numerator} : ℚ)"
+    return f"({q.numerator} : ℚ) / {q.denominator}"
 
-RADIUS = {14: "111/100", 15: "111/100", 19: "111/100", 20: "107/100", 22: "111/100",
-          23: "111/100", 25: "111/100", 42: "53/50", 46: "53/50"}
+def lean_list(qs): return "[" + ", ".join(lean_rat(q) for q in qs) + "]"
 
-
-def arr(j, k):
-    return [Q(int(v["numerator"]), int(v["denominator"])) for v in j["arrays"][k]["values"]]
-
-
-t1 = json.load(open(EXACT / "origin-0-25.json"))
-t2 = json.load(open(EXACT / "origin-25-36.json"))
-t3 = json.load(open(EXACT / "origin-modes-120-239.json"))
-assert t3["arrays"]["start"]["values"][0]["numerator"] == "120"
-
-
-def box_inherited(side, part, which):
-    k = f"{side}_{part}_{which}"
-    out = [x + y for x, y in zip(arr(t1, k), arr(t2, k))] + arr(t3, k)
-    assert len(out) == MODES
-    return out
-
-
-npz = np.load(HAND / "upper-49" / "phase2" / "origin_0_240.npz", allow_pickle=False)
-assert int(npz["start"]) == 0 and int(npz["count"]) == MODES and int(npz["cutoff"]) == 36
-
-
-def box_star(side, part, which):
-    vals = npz[f"{side}_{part}_{which}"]
-    assert vals.shape == (MODES,) and np.all(np.isfinite(vals))
-    return [Q(*float(v).as_integer_ratio()) for v in vals]
-
-
-def q(x: Q) -> str:
-    return f"({x.numerator} : ℚ) / {x.denominator}" if x.denominator != 1 else f"({x.numerator} : ℚ)"
-
-
-def lst(name, doc, xs, ty="List ℚ", fmt=q):
-    body = ",\n   ".join(fmt(x) for x in xs)
-    return f"/-- {doc} -/\ndef {name} : {ty} :=\n  [{body}]\n\n"
-
-
-rows, wts, tags = [], [], []
-for i in range(len(CAND["weights"])):
-    w = Q(CAND["weights"][i])
-    assert w > 0
-    wts.append(w)
-    if CAND["rows"][i] is not None:
-        row = [Q(x) for x in CAND["rows"][i]]
-        tags.append(f"Tag.cauchy ({q(Q(RADIUS[i]))})" if i in RADIUS else "Tag.scalar")
-    else:
-        row = [Q(x) for x in CAND["origin_preprocessors"][i]]
-        tags.append({"base": "Tag.origin", "phase2": "Tag.originStar"}[CAND["origin_kernels"][i]])
-    assert sum(abs(x) for x in row) <= 1
-    rows.append(row)
-assert len(rows) == 49
-
-out = ["""import Mathlib
+def main():
+    src = sys.argv[1] if len(sys.argv) > 1 else "handoff/upper-mixture/cert.json"
+    out = sys.argv[2] if len(sys.argv) > 2 else "Grothe/Upper/Data.lean"
+    J = json.load(open(src))
+    if "branches" not in J:
+        J = {"K": J.get("K", 800), "target": J.get("target", "2"), "dlo_needed": J.get("dlo_needed", "1/2"),
+             "branches": [dict(J, kind="bivar", w=J.get("w", "1"))]}
+    K = int(J["K"]); target = rat(J["target"]); dlo = rat(J["dlo_needed"])
+    assert K >= 2048, "the retained length must be at least cutoff = 2048"
+    specs, wts, rowdefs = [], [], []
+    for b in J["branches"]:
+        w = rat(b["w"]); assert w > 0, "weights must be positive"
+        wts.append(w)
+        if b["kind"] == "scalar":
+            row = [rat(x) for x in b["row"]]
+            assert sum(abs(x) for x in row) <= 1, "scalar row must have coefficient norm <= 1"
+            specs.append(f".scalar {lean_list(row)}")
+        elif b["kind"] == "bivar":
+            P = [rat(x) for x in b["P"]]; Qc = [rat(x) for x in b["Q"]]
+            NZ, MW = int(b["NZ"]), int(b["MW"]); UZ = rat(b["UZ"]); UW = rat(b["UW"]); assert UZ >= 0 and UW >= 0
+            sP, sQ = sum(abs(x) for x in P), sum(abs(x) for x in Qc)
+            assert sP <= 1 and sQ <= 1, "P, Q must have coefficient norm <= 1"
+            MxZ = rat(b["MxZ"]) if "MxZ" in b else Q(ceil(sP ** (NZ + 1) * 10 ** 30), 10 ** 30)
+            MxW = rat(b["MxW"]) if "MxW" in b else Q(ceil(sQ ** (MW + 1) * 10 ** 30), 10 ** 30)
+            assert sP ** (NZ + 1) <= MxZ and sQ ** (MW + 1) <= MxW, "MxZ/MxW too small"
+            rows = {}
+            seen = set()
+            for n, m, lo, hi in b["table"]:
+                n, m = int(n), int(m); lo, hi = rat(lo), rat(hi)
+                assert (n + m) % 2 == 1, f"even-parity index ({n},{m})"
+                assert n <= NZ and m <= MW, f"index ({n},{m}) outside the box"
+                assert lo <= hi and (n, m) not in seen, f"bad entry ({n},{m})"
+                seen.add((n, m)); rows.setdefault(m, []).append((n, lo, hi))
+            for n in range(NZ + 1):
+                for m in range(MW + 1):
+                    if (n + m) % 2 == 1: assert (n, m) in seen, f"missing odd index ({n},{m}) in the box"
+            bidx = len(specs)
+            for m in sorted(rows):
+                entries = ", ".join(f"({n}, {lean_rat(lo)}, {lean_rat(hi)})" for n, lo, hi in sorted(rows[m]))
+                rowdefs.append(f"/-- Row `m = {m}` of the table of branch {bidx}. -/\ndef tab_{bidx}_{m} : ℕ × List (ℕ × ℚ × ℚ) :=\n  ({m}, [{entries}])\n")
+            rowtxt = ", ".join(f"tab_{bidx}_{m}" for m in sorted(rows))
+            specs.append(f".bivar {{\n        tab := [{rowtxt}],\n        P := {lean_list(P)},\n        Q := {lean_list(Qc)},\n"
+                         f"        NZ := {NZ}, MW := {MW}, UZ := {lean_rat(UZ)}, UW := {lean_rat(UW)}, MxZ := {lean_rat(MxZ)}, MxW := {lean_rat(MxW)} }}")
+        elif b["kind"] == "cauchy":
+            row = [rat(x) for x in b["row"]]; r = rat(b["r"])
+            assert sum(abs(x) for x in row) <= 1, "cauchy row must have coefficient norm <= 1"
+            assert r >= Q(53, 50), "Cauchy radius must be at least 53/50"
+            specs.append(f".cauchy {lean_list(row)} ({lean_rat(r)})")
+        else: raise SystemExit(f"unknown kind {b['kind']}")
+    text = f"""import Grothe.Upper.Spec
 
 /-!
 # Exact data of the upper certificate
 
-Generated by `tools/gen_upper_data.py` (exact rationals; no floats).
+Generated by `tools/gen_upper_data.py` from `{src}` (exact rationals; no floats).
 
-* `rowList`: the 49 preprocessors `ρ(t) = t·P(t²)`, stored as the coefficient list of `P`;
-* `wtList`: the 49 positive mixture weights;
-* `tagList`: the kernel of each branch — Haagerup's scalar kernel (`scalar`, with a Cauchy
-  radius for the analytically continued branches), the origin kernel `H` (`origin`) or the
-  modified origin kernel `H*` (`originStar`);
-* `aReLo n ≤ Re A_n ≤ aReHi n` etc.: the enclosures of the truncated radial coefficient
-  integrals of the left (`a`) and right (`b`) phases of `H`, and `asReLo …`, `bsReLo …` those of
-  `H*`, for the `240` input modes.  Containment is a hypothesis of the final theorem.
+* `certData.specs`: the branches.  `cauchy row r` and `scalar row` are Haagerup's phase kernel
+  composed with the preprocessor `ρ(t) = t·P(t²)` (`row` = coefficients of `P`), with the tail
+  beyond the retained length bounded by the Cauchy estimate of radius `r` (an analytic
+  hypothesis) resp. by the positive coefficient majorant.  `bivar d` is a two-coordinate rounding
+  `phase(Z·p(|Z|²) + W·q(|Z|²))` (see `TwoCoordData`): enclosures `d.tab` of its chaos masses
+  `μ[n,m]` as rows `(m, [(n, lo, hi), …])` (the rows are the definitions `tab_i_m`),
+  preprocessors `d.P`, `d.Q` of the two coordinates, box `[0, d.NZ] × [0, d.MW]`, unknown masses
+  `d.UZ` (beyond `NZ`), `d.UW` (beyond `MW`), and `d.MxZ ≥ (Σ|P|)^{{NZ+1}}`, `d.MxW ≥ (Σ|Q|)^{{MW+1}}`;
+* `certData.wts`: the positive weights (same order);
+* `certData.K`: the number of retained radial coefficients;
+* `targetQ`: the certified bound `K_G^ℂ ≤ targetQ` (`complex_grothendieck_upper`);
+* `dloNeededQ`: the finite value the kernel must reach (`dloIntC certData ≥ dloNeededQ · 2^128`).
 -/
 
 namespace Grothe.Upper
 
-/-- The kernel composed with a branch's preprocessor. -/
-inductive Tag
-  /-- Haagerup's scalar kernel; the tail beyond the retained modes is bounded by the positive
-  coefficient majorant. -/
-  | scalar
-  /-- Haagerup's scalar kernel; the tail is bounded by the Cauchy estimate of radius `r`. -/
-  | cauchy (r : ℚ)
-  /-- The origin kernel `H`. -/
-  | origin
-  /-- The modified origin kernel `H*`. -/
-  | originStar
-  deriving DecidableEq, Repr
+{"".join(rowdefs)}
+/-- The certificate data. -/
+def certData : Cert :=
+  {{ specs := [
+      {(",\n      ".join(specs))}],
+    wts := {lean_list(wts)},
+    K := {K} }}
 
-"""]
-out.append(lst("rowList", "The 49 preprocessors (coefficients of `P` in `ρ(t) = t·P(t²)`).", rows,
-               "List (List ℚ)", lambda r: "[" + ", ".join(q(x) for x in r) + "]"))
-out.append(lst("wtList", "The 49 mixture weights.", wts))
-out.append(lst("tagList", "The kernel of each branch.", tags, "List Tag", str))
-for nm, side, fn in (("a", "left", box_inherited), ("b", "right", box_inherited),
-                     ("as", "left", box_star), ("bs", "right", box_star)):
-    kern = "H" if fn is box_inherited else "H*"
-    for part, pn in (("real", "Re"), ("imag", "Im")):
-        for which, wn in (("lower", "Lo"), ("upper", "Hi")):
-            out.append(lst(f"{nm}{pn}{wn}",
-                           f"{which} endpoints of the {part} part of the {side} coefficient boxes of `{kern}`, indices 0..{MODES - 1}.",
-                           fn(side, part, which)))
-out.append("end Grothe.Upper\n")
-(ROOT / "Grothe" / "Upper" / "Data.lean").write_text("".join(out))
-print("wrote Data.lean", sum(len(s) for s in out), "chars")
+/-- The certified bound. -/
+def targetQ : ℚ := {lean_rat(target)}
+
+/-- The required finite value. -/
+def dloNeededQ : ℚ := {lean_rat(dlo)}
+
+end Grothe.Upper
+"""
+    open(out, "w").write(text)
+    print(f"wrote {out}: {len(specs)} branches, K = {K}, target {target} ≈ {float(target):.12f}")
+
+if __name__ == "__main__": main()

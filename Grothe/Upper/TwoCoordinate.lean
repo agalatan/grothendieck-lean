@@ -3,7 +3,7 @@ import Grothe.Upper.Composition
 import GrotheKernel.Bivar
 
 /-!
-# Two-coordinate branches: soundness of the bivariate composition and the table tail
+# Two-coordinate roundings: soundness of the bivariate composition and the table tail
 
 A two-coordinate rounding has the radial kernel `K(t) = Σ_{n,m} μ[n,m] ρ(t)^n σ(t)^m` with
 `ρ(t) = t·P(t²)`, `σ(t) = t·Q(t²)` and a table `μ` supported on `n + m` odd.  Its radial
@@ -12,15 +12,19 @@ coefficient sequence is the coefficient sequence of (writing `X = t²`)
   `B(X) = Σ_{(n,m)} μ[n,m] · X^{⌊n/2⌋ + ⌊m/2⌋} · P^n · Q^m`,
 
 an infinite sum of polynomials.  The certificate knows a finite part of the table (`tabPoly`,
-enclosed by `GrotheKernel.bivarFull`) and only the total mass `T` of the rest.
+enclosed by `GrotheKernel.bivarFull`) and only the mass of the rest.
 
 * `memB_bivarFull`: the kernel routine encloses every coefficient of the known part;
 * `memS_bivarCol`, `bivarCol_tail`: the retained column and the discarded coefficients;
-* `l1_unknown_le`: a finite unknown part of mass `S` on indices with `n > NZ` or `m > MW`
-  has coefficient norm at most `S · max(‖P‖_𝒜^{NZ+1}, ‖Q‖_𝒜^{MW+1})` when `‖P‖_𝒜, ‖Q‖_𝒜 ≤ 1`;
-* `tsum_abs_unknown_le`: the same for the infinite unknown part of a summable table, so that
-  the true kernel is the known part plus a remainder of norm at most `T · max(…)`
-  (`bivar_remainder_le`), which is exactly what `bound_of_branches` consumes.
+* `tsum_abs_unknown_le_split`: when `‖P‖_𝒜, ‖Q‖_𝒜 ≤ 1`, the unknown part of a summable table,
+  of mass at most `UW` on the indices with `m > MW` and at most `UZ` on the others (`n > NZ`), has
+  coefficient norm at most `UZ · ‖P‖_𝒜^{NZ+1} + UW · ‖Q‖_𝒜^{MW+1}`;
+* `bivar_remainder_le_split`: hence the true kernel is the retained known part plus a remainder
+  bounded by the discarded known coefficients plus that quantity, which is exactly what
+  `bound_of_branches` consumes.
+
+(`l1_unknown_le`, `tsum_abs_unknown_le`, `bivar_remainder_le` are the versions with a single
+mass bound `T` and the factor `max(‖P‖_𝒜^{NZ+1}, ‖Q‖_𝒜^{MW+1})`.)
 -/
 
 namespace Grothe.Upper
@@ -429,6 +433,144 @@ theorem bivar_remainder_le (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (�
         hk2.tsum_add hU
     _ ≤ hi + T * max (l1 P ^ (NZ + 1)) (l1 Q ^ (MW + 1)) := by
         refine add_le_add ?_ (tsum_abs_unknown_le P Q hP hQ μ hμ Kn hout T hT)
+        rw [← hk2.sum_add_tsum_nat_add K]
+        have h0 : ∑ j ∈ range K, (if j < K then 0 else |knownCoeff P Q μ Kn j|) = 0 :=
+          sum_eq_zero fun j hj => by simp [mem_range.1 hj]
+        rw [h0, zero_add]
+        refine le_trans (le_of_eq (tsum_congr fun j => ?_)) hhi
+        simp
+
+/-! ### The unknown part, split by the `W`-degree -/
+
+lemma pow_mul_pow_le_W {a b : ℝ} (ha0 : 0 ≤ a) (ha1 : a ≤ 1) (hb0 : 0 ≤ b) (hb1 : b ≤ 1)
+    {n m MW : ℕ} (h : MW < m) : a ^ n * b ^ m ≤ b ^ (MW + 1) :=
+  calc a ^ n * b ^ m ≤ 1 * b ^ m := by gcongr; exact pow_le_one₀ ha0 ha1
+    _ = b ^ m := one_mul _
+    _ ≤ b ^ (MW + 1) := pow_le_pow_of_le_one hb0 hb1 (by omega)
+
+lemma pow_mul_pow_le_Z {a b : ℝ} (ha0 : 0 ≤ a) (ha1 : a ≤ 1) (hb0 : 0 ≤ b) (hb1 : b ≤ 1)
+    {n m NZ : ℕ} (h : NZ < n) : a ^ n * b ^ m ≤ a ^ (NZ + 1) :=
+  calc a ^ n * b ^ m ≤ a ^ n * 1 := by gcongr; exact pow_le_one₀ hb0 hb1
+    _ = a ^ n := mul_one _
+    _ ≤ a ^ (NZ + 1) := pow_le_pow_of_le_one ha0 ha1 (by omega)
+
+/-- **The infinite unknown part, split by the `W`-degree**: the indices with `MW < m` carry mass at
+most `UW` and are bounded by `‖Q‖^{MW+1}`, the others (with `NZ < n` or vanishing weight) carry mass
+at most `UZ` and are bounded by `‖P‖^{NZ+1}`. -/
+theorem tsum_abs_unknown_le_split (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ : ℕ × ℕ → ℝ)
+    (hμ : Summable fun p => |μ p|) (Kn : Finset (ℕ × ℕ)) {NZ MW : ℕ}
+    (hout : ∀ p ∉ Kn, NZ < p.1 ∨ MW < p.2 ∨ μ p = 0) (UZ UW : ℝ)
+    (hW : ∑' p : {p // p ∉ Kn}, (if MW < p.1.2 then |μ p| else 0) ≤ UW)
+    (hZ : ∑' p : {p // p ∉ Kn}, (if MW < p.1.2 then 0 else |μ p|) ≤ UZ) :
+    ∑' j, |unknownCoeff P Q μ Kn j| ≤ UZ * l1 P ^ (NZ + 1) + UW * l1 Q ^ (MW + 1) := by
+  set A := l1 Q ^ (MW + 1) with hA
+  set B := l1 P ^ (NZ + 1) with hB
+  have hA0 : 0 ≤ A := pow_nonneg (l1_nonneg _) _
+  have hB0 : 0 ≤ B := pow_nonneg (l1_nonneg _) _
+  -- the per-index weight
+  let g : {p // p ∉ Kn} → ℝ := fun p =>
+    (if MW < p.1.2 then |μ p| else 0) * A + (if MW < p.1.2 then 0 else |μ p|) * B
+  have hbound : ∀ (p : {p // p ∉ Kn}) (J : ℕ),
+      |μ p| * ∑ j ∈ range J, |(termOf P Q p).coeff j| ≤ g p := by
+    intro p J
+    have hterm : ∑ j ∈ range J, |(termOf P Q p).coeff j| ≤ l1 P ^ p.1.1 * l1 Q ^ p.1.2 :=
+      (sum_abs_coeff_le_l1 _ _).trans (l1_termOf_le P Q p)
+    simp only [g]
+    by_cases hm : MW < p.1.2
+    · rw [ite_eq_left hm, ite_eq_left hm, zero_mul, add_zero]
+      exact mul_le_mul_of_nonneg_left (hterm.trans
+        (pow_mul_pow_le_W (l1_nonneg P) hP (l1_nonneg Q) hQ hm)) (abs_nonneg _)
+    · rw [ite_eq_right hm, ite_eq_right hm, zero_mul, zero_add]
+      rcases hout p p.2 with h | h | h
+      · exact mul_le_mul_of_nonneg_left (hterm.trans
+          (pow_mul_pow_le_Z (l1_nonneg P) hP (l1_nonneg Q) hQ h)) (abs_nonneg _)
+      · exact absurd h hm
+      · simp [h]
+  have hsub : Summable fun p : {p // p ∉ Kn} => |μ p| := hμ.subtype _
+  have hgW : Summable fun p : {p // p ∉ Kn} => (if MW < p.1.2 then |μ p| else 0) :=
+    Summable.of_nonneg_of_le (fun p => by split_ifs <;> positivity)
+      (fun p => by split_ifs <;> simp) hsub
+  have hgZ : Summable fun p : {p // p ∉ Kn} => (if MW < p.1.2 then 0 else |μ p|) :=
+    Summable.of_nonneg_of_le (fun p => by split_ifs <;> positivity)
+      (fun p => by split_ifs <;> simp) hsub
+  have hg : Summable g := (hgW.mul_right A).add (hgZ.mul_right B)
+  have hg_tsum : ∑' p, g p ≤ UZ * B + UW * A := by
+    simp only [g]
+    rw [(hgW.mul_right A).tsum_add (hgZ.mul_right B), tsum_mul_right, tsum_mul_right]
+    nlinarith [mul_le_mul_of_nonneg_right hW hA0, mul_le_mul_of_nonneg_right hZ hB0]
+  have key : ∀ J : ℕ, ∑ j ∈ range J, |unknownCoeff P Q μ Kn j| ≤ UZ * B + UW * A := by
+    intro J
+    have h1 : ∀ j, |unknownCoeff P Q μ Kn j|
+        ≤ ∑' p : {p // p ∉ Kn}, |μ p| * |(termOf P Q p).coeff j| := by
+      intro j
+      unfold unknownCoeff
+      have := norm_tsum_le_tsum_norm
+        (f := fun p : {p // p ∉ Kn} => μ p * (termOf P Q p).coeff j)
+        (by simpa [Real.norm_eq_abs] using summable_unknown_term P Q hP hQ μ hμ Kn j)
+      simpa only [Real.norm_eq_abs, abs_mul] using this
+    have h2 : ∑ j ∈ range J, ∑' p : {p // p ∉ Kn}, |μ p| * |(termOf P Q p).coeff j|
+        = ∑' p : {p // p ∉ Kn}, |μ p| * ∑ j ∈ range J, |(termOf P Q p).coeff j| := by
+      rw [← Summable.tsum_finsetSum]
+      · refine tsum_congr fun p => ?_
+        rw [mul_sum]
+      · intro j _
+        simpa [abs_mul] using summable_unknown_term P Q hP hQ μ hμ Kn j
+    have h3 : ∑' p : {p // p ∉ Kn}, |μ p| * ∑ j ∈ range J, |(termOf P Q p).coeff j|
+        ≤ ∑' p, g p := by
+      refine Summable.tsum_le_tsum (fun p => hbound p J) ?_ hg
+      exact Summable.of_nonneg_of_le (fun p => by positivity) (fun p => hbound p J) hg
+    calc ∑ j ∈ range J, |unknownCoeff P Q μ Kn j|
+        ≤ ∑ j ∈ range J, ∑' p : {p // p ∉ Kn}, |μ p| * |(termOf P Q p).coeff j| :=
+          sum_le_sum fun j _ => h1 j
+      _ ≤ ∑' p, g p := h2 ▸ h3
+      _ ≤ UZ * B + UW * A := hg_tsum
+  exact Real.tsum_le_of_sum_le (fun j => abs_nonneg _) fun s =>
+    (sum_le_sum_of_subset_of_nonneg (fun j hj => mem_range.2 (Nat.lt_succ_of_le
+      (le_sup (f := id) hj))) (fun j _ _ => abs_nonneg _)).trans (key _)
+
+/-- **The remainder of a two-coordinate branch** (split form): at most the discarded known
+coefficients plus `UZ ‖P‖^{NZ+1} + UW ‖Q‖^{MW+1}`. -/
+theorem bivar_remainder_le_split (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ : ℕ × ℕ → ℝ)
+    (hμ : Summable fun p => |μ p|) (Kn : Finset (ℕ × ℕ)) {NZ MW : ℕ}
+    (hout : ∀ p ∉ Kn, NZ < p.1 ∨ MW < p.2 ∨ μ p = 0) (UZ UW : ℝ)
+    (hW : ∑' p : {p // p ∉ Kn}, (if MW < p.1.2 then |μ p| else 0) ≤ UW)
+    (hZ : ∑' p : {p // p ∉ Kn}, (if MW < p.1.2 then 0 else |μ p|) ≤ UZ)
+    (K : ℕ) (hi : ℝ) (hhi : ∑' j, |knownCoeff P Q μ Kn (j + K)| ≤ hi) :
+    ∑' j, |bivarKernel P Q μ j - (if j < K then knownCoeff P Q μ Kn j else 0)|
+      ≤ hi + (UZ * l1 P ^ (NZ + 1) + UW * l1 Q ^ (MW + 1)) := by
+  have hkfin : Summable fun j => |knownCoeff P Q μ Kn j| := by
+    have hpoly : knownCoeff P Q μ Kn = (∑ p ∈ Kn, C (μ p) * termOf P Q p).coeff := by
+      funext j; unfold knownCoeff; rw [finsetSum_coeff]
+      exact sum_congr rfl fun p _ => by rw [coeff_C_mul]
+    rw [hpoly]
+    exact summable_of_ne_finset_zero (s := range ((∑ p ∈ Kn, C (μ p) * termOf P Q p).natDegree + 1))
+      fun j hj => by
+        rw [coeff_eq_zero_of_natDegree_lt (by simpa using hj), abs_zero]
+  have hU : Summable fun j => |unknownCoeff P Q μ Kn j| := by
+    have hb := summable_abs_bivarKernel P Q hP hQ μ hμ
+    refine Summable.of_nonneg_of_le (fun j => abs_nonneg _) (fun j => ?_) (hb.add hkfin)
+    have e : unknownCoeff P Q μ Kn j = bivarKernel P Q μ j - knownCoeff P Q μ Kn j := by
+      rw [bivarKernel_split P Q hP hQ μ hμ Kn j]; ring
+    rw [e]; exact abs_sub _ _
+  have hdiff : ∀ j, |bivarKernel P Q μ j - (if j < K then knownCoeff P Q μ Kn j else 0)|
+      ≤ (if j < K then 0 else |knownCoeff P Q μ Kn j|) + |unknownCoeff P Q μ Kn j| := by
+    intro j
+    rw [bivarKernel_split P Q hP hQ μ hμ Kn j]
+    split_ifs
+    · simp
+    · simpa [sub_zero] using abs_add_le (knownCoeff P Q μ Kn j) (unknownCoeff P Q μ Kn j)
+  have hk2 : Summable fun j => (if j < K then 0 else |knownCoeff P Q μ Kn j|) :=
+    Summable.of_nonneg_of_le (fun j => by split_ifs <;> positivity)
+      (fun j => by split_ifs <;> simp) hkfin
+  have hsum : Summable fun j => |bivarKernel P Q μ j - (if j < K then knownCoeff P Q μ Kn j else 0)| :=
+    Summable.of_nonneg_of_le (fun j => abs_nonneg _) hdiff (hk2.add hU)
+  calc ∑' j, |bivarKernel P Q μ j - (if j < K then knownCoeff P Q μ Kn j else 0)|
+      ≤ ∑' j, ((if j < K then 0 else |knownCoeff P Q μ Kn j|) + |unknownCoeff P Q μ Kn j|) :=
+        Summable.tsum_le_tsum hdiff hsum (hk2.add hU)
+    _ = ∑' j, (if j < K then 0 else |knownCoeff P Q μ Kn j|) + ∑' j, |unknownCoeff P Q μ Kn j| :=
+        hk2.tsum_add hU
+    _ ≤ hi + (UZ * l1 P ^ (NZ + 1) + UW * l1 Q ^ (MW + 1)) := by
+        refine add_le_add ?_ (tsum_abs_unknown_le_split P Q hP hQ μ hμ Kn hout UZ UW hW hZ)
         rw [← hk2.sum_add_tsum_nat_add K]
         have h0 : ∑ j ∈ range K, (if j < K then 0 else |knownCoeff P Q μ Kn j|) = 0 :=
           sum_eq_zero fun j hj => by simp [mem_range.1 hj]

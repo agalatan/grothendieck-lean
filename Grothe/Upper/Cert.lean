@@ -1,21 +1,25 @@
-import Grothe.Upper.BivarCertDefs
+import Grothe.Upper.CertDefs
 import Grothe.Upper.Checker
 
 /-!
-# Certificates with two-coordinate branches: soundness and assembly
+# Certificates: soundness and assembly
 
 For a certificate `C` with `certOK C = true`:
 
 * `finite_certC_exact`: the kernel's scaled value `dloIntC C / D` is a `FiniteCertC C`, i.e.
   for every assignment of true tables `μ` enclosed by the data,
   `mix₀ − Σ_{n=1}^{K−1} |mixₙ| − Σᵢ wtᵢ (majTailᵢ + highTailᵢ) ≥ dloIntC C / D`;
-* `bound_of_certC`: `FiniteCertC C Dlo` plus the analytic hypotheses of every branch gives
+* `bound_of_certC`: `FiniteCertC C Dlo` plus the analytic hypotheses (`CertHyps`) gives
   `IsGrothendieckBound (massQ C / (Dlo − restQ C))`.
 
-The analytic hypotheses of a two-coordinate branch `d` with true table `μ` are: domination of
-the radial kernel with coefficients `bivarKernel P Q μ` (the validity of the rounding),
-summability of `|μ|`, `Σ_{p ∉ tabIdx d} |μ p| ≤ T`, `μ p = 0` for `n + m` even, and the box
-enclosures `TabIn μ d`.
+The analytic hypotheses are, besides domination of Haagerup's kernel:
+
+* for a two-coordinate branch `d` with true table `μ`: domination of the radial kernel with
+  coefficients `bivarKernel P Q μ` (validity of the rounding), summability of `|μ|`, `μ p = 0`
+  for `n + m` even, the box enclosures `TabIn μ d`, and the unknown masses
+  `Σ_{m > MW} |μ| ≤ UW`, `Σ_{n > NZ, m ≤ MW} |μ| ≤ UZ`;
+* for an analytically continued Haagerup branch of radius `r`: the Cauchy estimate
+  `Σ_{n ≥ K} |(𝔥 ∘ ρ)ₙ| ≤ cauchyTailK K r` (then `≤ 10⁻⁴⁰` since `r ≥ 53/50`, `K ≥ 2048`).
 -/
 
 namespace Grothe.Upper
@@ -26,21 +30,28 @@ open GrotheKernel Polynomial Finset
 
 lemma certOK_iff {C : Cert} (h : certOK C = true) :
     C.wts.length = C.specs.length ∧ C.specs.length ≠ 0 ∧ 0 < C.K ∧
-      (∀ w ∈ C.wts, 0 < w) ∧ ∀ s ∈ C.specs, specOK s = true := by
+      (∀ w ∈ C.wts, 0 < w) ∧ (∀ s ∈ C.specs, specOK s = true) ∧ cutoff ≤ C.K := by
   unfold certOK at h
   simp only [Bool.and_eq_true, beq_iff_eq, bne_iff_ne, ne_eq, decide_eq_true_eq,
     List.all_eq_true] at h
-  exact ⟨h.1.1.1.1, h.1.1.1.2, h.1.1.2, h.1.2, h.2⟩
+  exact ⟨h.1.1.1.1.1, h.1.1.1.1.2, h.1.1.1.2, h.1.1.2, h.1.2, h.2⟩
 
 lemma specOK_scalar {row : List ℚ} (h : specOK (.scalar row) = true) : (absL row).sum ≤ 1 := by
   simpa [specOK] using h
 
-lemma specOK_bivar {d : BivarData} (h : specOK (.bivar d) = true) :
+lemma specOK_bivar {d : TwoCoordData} (h : specOK (.bivar d) = true) :
     tabOK d = true ∧ coversBox d = true ∧ (absL d.P).sum ≤ 1 ∧ (absL d.Q).sum ≤ 1 ∧
-      (absL d.P).sum ^ (d.NZ + 1) ≤ d.Mx ∧ (absL d.Q).sum ^ (d.MW + 1) ≤ d.Mx ∧ 0 ≤ d.T := by
+      (absL d.P).sum ^ (d.NZ + 1) ≤ d.MxZ ∧ (absL d.Q).sum ^ (d.MW + 1) ≤ d.MxW ∧
+      0 ≤ d.UZ ∧ 0 ≤ d.UW := by
   unfold specOK at h
   simp only [Bool.and_eq_true, decide_eq_true_eq] at h
-  exact ⟨h.1.1.1.1.1.1, h.1.1.1.1.1.2, h.1.1.1.1.2, h.1.1.1.2, h.1.1.2, h.1.2, h.2⟩
+  exact ⟨h.1.1.1.1.1.1.1, h.1.1.1.1.1.1.2, h.1.1.1.1.1.2, h.1.1.1.1.2, h.1.1.1.2, h.1.1.2, h.1.2,
+    h.2⟩
+
+lemma specOK_cauchy {row : List ℚ} {r : ℚ} (h : specOK (.cauchy row r) = true) :
+    (absL row).sum ≤ 1 ∧ (53 / 50 : ℚ) ≤ r := by
+  unfold specOK at h
+  simpa only [Bool.and_eq_true, decide_eq_true_eq] using h
 
 lemma specAt_mem (C : Cert) (i : Fin C.specs.length) : specAt C i ∈ C.specs := by
   unfold specAt
@@ -48,7 +59,7 @@ lemma specAt_mem (C : Cert) (i : Fin C.specs.length) : specAt C i ∈ C.specs :=
   exact List.getElem_mem _
 
 lemma specOK_at {C : Cert} (h : certOK C = true) (i : Fin C.specs.length) :
-    specOK (specAt C i) = true := (certOK_iff h).2.2.2.2 _ (specAt_mem C i)
+    specOK (specAt C i) = true := (certOK_iff h).2.2.2.2.1 _ (specAt_mem C i)
 
 lemma wtQC_pos {C : Cert} (h : certOK C = true) (i : Fin C.specs.length) : 0 < wtQC C i := by
   have hc := certOK_iff h
@@ -78,12 +89,14 @@ def kernelC (C : Cert) (μ : ℕ → ℕ × ℕ → ℝ) (i : ℕ) : ℕ → ℝ
   match specAt C i with
   | .scalar row => compose h (ofListQ row)
   | .bivar d => bivarKernel (ofListQ d.P) (ofListQ d.Q) (μ i)
+  | .cauchy row _ => compose h (ofListQ row)
 
 /-- The exact retained column of branch `i`. -/
 def colR (C : Cert) (μ : ℕ → ℕ × ℕ → ℝ) (i : ℕ) (n : ℕ) : ℝ :=
   match specAt C i with
   | .scalar row => Real.pi * (sProf row n : ℝ)
   | .bivar d => (tabPoly (ofListQ d.P) (ofListQ d.Q) (tabR (μ i) d)).coeff n
+  | .cauchy row _ => Real.pi * (sProf row n : ℝ)
 
 /-- The retained part of branch `i`. -/
 def retainedC (C : Cert) (μ : ℕ → ℕ × ℕ → ℝ) (i : ℕ) (n : ℕ) : ℝ :=
@@ -98,19 +111,21 @@ def majTailC (C : Cert) (i : ℕ) : ℝ :=
   match specAt C i with
   | .scalar row => 1 - ∑ n ∈ range C.K, Real.pi * (sProf (absL row) n : ℝ)
   | .bivar _ => 0
+  | .cauchy _ _ => 0
 
 /-- The discarded known coefficients of a two-coordinate branch. -/
 def highTailC (C : Cert) (μ : ℕ → ℕ × ℕ → ℝ) (i : ℕ) : ℝ :=
   match specAt C i with
   | .scalar _ => 0
   | .bivar d => ∑ n ∈ Ico C.K (fullLenB d), |(tabPoly (ofListQ d.P) (ofListQ d.Q) (tabR (μ i) d)).coeff n|
+  | .cauchy _ _ => 0
 
 /-- The analytic tail budget of branch `i`. -/
 def extraC (C : Cert) (i : ℕ) : ℝ := (extraQ (specAt C i) : ℝ)
 
 /-- The true tables are enclosed by the data. -/
 def TabInAll (C : Cert) (μ : ℕ → ℕ × ℕ → ℝ) : Prop :=
-  ∀ (i : Fin C.specs.length) (d : BivarData), specAt C i = .bivar d → TabIn (μ i) d
+  ∀ (i : Fin C.specs.length) (d : TwoCoordData), specAt C i = .bivar d → TabIn (μ i) d
 
 /-- **The finite certificate statement.** -/
 def FiniteCertC (C : Cert) (Dlo : ℚ) : Prop :=
@@ -204,7 +219,7 @@ lemma memS_colC {C : Cert} (hok : certOK C = true) {μ : ℕ → ℕ × ℕ → 
   rw [colC_eq]
   unfold colR
   have hs := specOK_at hok i
-  rcases h : specAt C i with row | d
+  rcases h : specAt C i with row | d | ⟨row, r⟩
   · simp only [colOfSpec]
     exact memS_scalarColI C.K row
   · simp only [colOfSpec, bivarColI]
@@ -212,6 +227,8 @@ lemma memS_colC {C : Cert} (hok : certOK C = true) {μ : ℕ → ℕ × ℕ → 
     have hd := specOK_bivar hs
     exact memS_bivarCol (fun N => memB_ofListQ _ _) (fun N => memB_ofListQ _ _)
       (tabMem_of_tabIn (hμ i d h)) (tabBounds_of_ok hd.1) C.K
+  · simp only [colOfSpec]
+    exact memS_scalarColI C.K row
 
 lemma tail_colC {C : Cert} (hok : certOK C = true) {μ : ℕ → ℕ × ℕ → ℝ} (hμ : TabInAll C μ)
     (i : Fin C.specs.length) :
@@ -220,7 +237,7 @@ lemma tail_colC {C : Cert} (hok : certOK C = true) {μ : ℕ → ℕ × ℕ → 
   unfold majTailC highTailC
   have hs := specOK_at hok i
   have hD := D_pos
-  rcases h : specAt C i with row | d
+  rcases h : specAt C i with row | d | ⟨row, r⟩
   · simp only [colOfSpec, scalarColI]
     refine ⟨le_max_left _ _, ?_⟩
     have := majSumLoN_le C.K row
@@ -236,6 +253,8 @@ lemma tail_colC {C : Cert} (hok : certOK C = true) {μ : ℕ → ℕ × ℕ → 
       (tabMem_of_tabIn (hμ i d h)) (tabBounds_of_ok hd.1) C.K (fullLenB d)
     rw [zero_add]
     exact this
+  · simp only [colOfSpec]
+    simp
 
 lemma mem_wtC (C : Cert) (i : ℕ) : mem (wtC C i) (wtIC C i) := mem_ofRatI _
 
@@ -367,21 +386,20 @@ lemma remainder_eq_tail (K : ℕ) (f : ℕ → ℝ) (hf : Summable fun n => |f n
   refine tsum_congr fun n => ?_
   rw [hP, ite_eq_right (by omega), sub_zero]
 
-lemma max_le_Mx {d : BivarData} (hd : (absL d.P).sum ^ (d.NZ + 1) ≤ d.Mx)
-    (hd' : (absL d.Q).sum ^ (d.MW + 1) ≤ d.Mx) :
-    max (l1 (ofListQ d.P) ^ (d.NZ + 1)) (l1 (ofListQ d.Q) ^ (d.MW + 1)) ≤ (d.Mx : ℝ) := by
-  have h1 : l1 (ofListQ d.P) ^ (d.NZ + 1) ≤ (d.Mx : ℝ) := by
-    calc l1 (ofListQ d.P) ^ (d.NZ + 1) ≤ (((absL d.P).sum : ℚ) : ℝ) ^ (d.NZ + 1) :=
-          pow_le_pow_left₀ (l1_nonneg _) (l1_le_absL _) _
-      _ ≤ (d.Mx : ℝ) := by exact_mod_cast hd
-  have h2 : l1 (ofListQ d.Q) ^ (d.MW + 1) ≤ (d.Mx : ℝ) := by
-    calc l1 (ofListQ d.Q) ^ (d.MW + 1) ≤ (((absL d.Q).sum : ℚ) : ℝ) ^ (d.MW + 1) :=
-          pow_le_pow_left₀ (l1_nonneg _) (l1_le_absL _) _
-      _ ≤ (d.Mx : ℝ) := by exact_mod_cast hd'
-  exact max_le h1 h2
+lemma pow_l1P_le_MxZ {d : TwoCoordData} (hd : (absL d.P).sum ^ (d.NZ + 1) ≤ d.MxZ) :
+    l1 (ofListQ d.P) ^ (d.NZ + 1) ≤ (d.MxZ : ℝ) :=
+  calc l1 (ofListQ d.P) ^ (d.NZ + 1) ≤ (((absL d.P).sum : ℚ) : ℝ) ^ (d.NZ + 1) :=
+        pow_le_pow_left₀ (l1_nonneg _) (l1_le_absL _) _
+    _ ≤ (d.MxZ : ℝ) := by exact_mod_cast hd
+
+lemma pow_l1Q_le_MxW {d : TwoCoordData} (hd : (absL d.Q).sum ^ (d.MW + 1) ≤ d.MxW) :
+    l1 (ofListQ d.Q) ^ (d.MW + 1) ≤ (d.MxW : ℝ) :=
+  calc l1 (ofListQ d.Q) ^ (d.MW + 1) ≤ (((absL d.Q).sum : ℚ) : ℝ) ^ (d.MW + 1) :=
+        pow_le_pow_left₀ (l1_nonneg _) (l1_le_absL _) _
+    _ ≤ (d.MxW : ℝ) := by exact_mod_cast hd
 
 /-- Every unknown index is outside the box or has even parity (where `μ` vanishes). -/
-lemma out_of_covers {d : BivarData} (hc : coversBox d = true) (μ : ℕ × ℕ → ℝ)
+lemma out_of_covers {d : TwoCoordData} (hc : coversBox d = true) (μ : ℕ × ℕ → ℝ)
     (hpar : ∀ p : ℕ × ℕ, (p.1 + p.2) % 2 = 0 → μ p = 0) :
     ∀ p ∉ tabIdx d, d.NZ < p.1 ∨ d.MW < p.2 ∨ μ p = 0 := by
   intro p hp
@@ -396,13 +414,14 @@ lemma out_of_covers {d : BivarData} (hc : coversBox d = true) (μ : ℕ × ℕ �
   · exact hp (List.mem_toFinset.2 h)
 
 /-- The remainder of a two-coordinate branch. -/
-theorem bivar_tail_leC {d : BivarData} (hs : specOK (.bivar d) = true) (μ : ℕ × ℕ → ℝ)
+theorem bivar_tail_leC {d : TwoCoordData} (hs : specOK (.bivar d) = true) (μ : ℕ × ℕ → ℝ)
     (hμ : Summable fun p => |μ p|) (hpar : ∀ p : ℕ × ℕ, (p.1 + p.2) % 2 = 0 → μ p = 0)
-    (hT : ∑' p : {p // p ∉ tabIdx d}, |μ p| ≤ (d.T : ℝ)) (K : ℕ) :
+    (hW : ∑' p : {p // p ∉ tabIdx d}, (if d.MW < p.1.2 then |μ p| else 0) ≤ (d.UW : ℝ))
+    (hZ : ∑' p : {p // p ∉ tabIdx d}, (if d.MW < p.1.2 then 0 else |μ p|) ≤ (d.UZ : ℝ)) (K : ℕ) :
     ∑' j, |bivarKernel (ofListQ d.P) (ofListQ d.Q) μ j
         - (if j < K then (tabPoly (ofListQ d.P) (ofListQ d.Q) (tabR μ d)).coeff j else 0)|
       ≤ ∑ n ∈ Ico K (fullLenB d), |(tabPoly (ofListQ d.P) (ofListQ d.Q) (tabR μ d)).coeff n|
-        + (d.T : ℝ) * d.Mx := by
+        + ((d.UZ : ℝ) * d.MxZ + (d.UW : ℝ) * d.MxW) := by
   have hd := specOK_bivar hs
   have hnd := idxNodup_of_ok hd.1
   have hP : l1 (ofListQ d.P) ≤ 1 := l1_le_one_of hd.2.2.1
@@ -410,8 +429,8 @@ theorem bivar_tail_leC {d : BivarData} (hs : specOK (.bivar d) = true) (μ : ℕ
   have hdegP : (ofListQ d.P).natDegree ≤ d.P.length := natDegree_ofListQ_le _
   have hdegQ : (ofListQ d.Q).natDegree ≤ d.Q.length := natDegree_ofListQ_le _
   have hhi := tsum_known_tail_eq (ofListQ d.P) (ofListQ d.Q) μ hd.1 hdegP hdegQ K
-  have key := bivar_remainder_le (ofListQ d.P) (ofListQ d.Q) hP hQ μ hμ (tabIdx d)
-    (out_of_covers hd.2.1 μ hpar) (d.T : ℝ) hT K _ hhi.le
+  have key := bivar_remainder_le_split (ofListQ d.P) (ofListQ d.Q) hP hQ μ hμ (tabIdx d)
+    (out_of_covers hd.2.1 μ hpar) (d.UZ : ℝ) (d.UW : ℝ) hW hZ K _ hhi.le
   have e : ∀ j, (if j < K then knownCoeff (ofListQ d.P) (ofListQ d.Q) μ (tabIdx d) j else 0)
       = (if j < K then (tabPoly (ofListQ d.P) (ofListQ d.Q) (tabR μ d)).coeff j else 0) := by
     intro j; split_ifs
@@ -419,16 +438,48 @@ theorem bivar_tail_leC {d : BivarData} (hs : specOK (.bivar d) = true) (μ : ℕ
     · rfl
   simp_rw [e] at key
   refine key.trans (add_le_add le_rfl ?_)
-  exact mul_le_mul_of_nonneg_left (max_le_Mx hd.2.2.2.2.1 hd.2.2.2.2.2.1)
-    (by exact_mod_cast hd.2.2.2.2.2.2)
+  have hUZ : (0 : ℝ) ≤ d.UZ := by exact_mod_cast hd.2.2.2.2.2.2.1
+  have hUW : (0 : ℝ) ≤ d.UW := by exact_mod_cast hd.2.2.2.2.2.2.2
+  exact add_le_add (mul_le_mul_of_nonneg_left (pow_l1P_le_MxZ hd.2.2.2.2.1) hUZ)
+    (mul_le_mul_of_nonneg_left (pow_l1Q_le_MxW hd.2.2.2.2.2.1) hUW)
 
-lemma extraC_eq (C : Cert) (i : ℕ) {d : BivarData} (h : specAt C i = .bivar d) :
-    extraC C i = (d.T : ℝ) * d.Mx := by
+lemma extraC_eq (C : Cert) (i : ℕ) {d : TwoCoordData} (h : specAt C i = .bivar d) :
+    extraC C i = (d.UZ : ℝ) * d.MxZ + (d.UW : ℝ) * d.MxW := by
   unfold extraC extraQ; rw [h]; push_cast; rfl
 
 lemma extraC_scalar (C : Cert) (i : ℕ) {row : List ℚ} (h : specAt C i = .scalar row) :
     extraC C i = 0 := by
   unfold extraC extraQ; rw [h]; simp
+
+lemma extraC_cauchy (C : Cert) (i : ℕ) {row : List ℚ} {r : ℚ} (h : specAt C i = .cauchy row r) :
+    extraC C i = 1 / 10 ^ 40 := by
+  unfold extraC extraQ; rw [h]; norm_num
+
+/-- Cauchy-estimate tail beyond `K` retained modes of a branch analytically continued to the
+radius `r`: `10 r⁻⁽²ᴷ⁺¹⁾/(1 − r⁻²)`. -/
+def cauchyTailK (K : ℕ) (r : ℝ) : ℝ := 10 / r ^ (2 * K + 1) / (1 - 1 / r ^ 2)
+
+lemma cauchyTailK_le {K : ℕ} {r : ℝ} (hr : 53 / 50 ≤ r) (hK : cutoff ≤ K) :
+    cauchyTailK K r ≤ 1 / 10 ^ 40 := by
+  have hK' : 2048 ≤ K := hK
+  have h1 : (8.6 : ℝ) ≤ (53 / 50) ^ 37 := by norm_num
+  have h2 : (8.6 : ℝ) ^ 110 ≤ r ^ (2 * K + 1) := by
+    calc (8.6 : ℝ) ^ 110 ≤ ((53 / 50) ^ 37) ^ 110 := pow_le_pow_left₀ (by norm_num) h1 110
+      _ = (53 / 50) ^ 4070 := by rw [← pow_mul]
+      _ ≤ (53 / 50) ^ (2 * K + 1) := pow_le_pow_right₀ (by norm_num) (by omega)
+      _ ≤ r ^ (2 * K + 1) := pow_le_pow_left₀ (by norm_num) hr _
+  have h4 : (0.11 : ℝ) ≤ 1 - 1 / r ^ 2 := by
+    have : (53 / 50 : ℝ) ^ 2 ≤ r ^ 2 := pow_le_pow_left₀ (by norm_num) hr 2
+    have h5 : 1 / r ^ 2 ≤ 1 / (53 / 50 : ℝ) ^ 2 := one_div_le_one_div_of_le (by norm_num) this
+    norm_num at h5 ⊢
+    linarith
+  unfold cauchyTailK
+  rw [div_div, div_le_div_iff₀ (by positivity) (by norm_num)]
+  generalize hx : r ^ (2 * K + 1) = x at h2 ⊢
+  have hx0 : (0 : ℝ) ≤ x := (by positivity : (0 : ℝ) ≤ 8.6 ^ 110).trans h2
+  have h5 := mul_le_mul h2 h4 (by norm_num) hx0
+  have h6 : (10 : ℝ) * 10 ^ 40 ≤ (8.6 : ℝ) ^ 110 * 0.11 := by norm_num
+  linarith
 
 lemma restQ_eq (C : Cert) : ((restQ C : ℚ) : ℝ) = ∑ i : Fin C.specs.length, wtC C i * extraC C i := by
   unfold restQ wtC extraC
@@ -443,21 +494,25 @@ lemma massQ_eq (C : Cert) : ((massQ C : ℚ) : ℝ) = ∑ i : Fin C.specs.length
   rfl
 
 /-- The analytic hypotheses of the two-coordinate branches. -/
-structure BivarHyps (C : Cert) (μ : ℕ → ℕ × ℕ → ℝ) : Prop where
-  valid : ∀ (i : Fin C.specs.length) (d : BivarData), specAt C i = .bivar d →
+structure CertHyps (C : Cert) (μ : ℕ → ℕ × ℕ → ℝ) : Prop where
+  valid : ∀ (i : Fin C.specs.length) (d : TwoCoordData), specAt C i = .bivar d →
     DominatedKernel (radialKernel (bivarKernel (ofListQ d.P) (ofListQ d.Q) (μ i)))
-  summable : ∀ (i : Fin C.specs.length) (d : BivarData), specAt C i = .bivar d →
+  summable : ∀ (i : Fin C.specs.length) (d : TwoCoordData), specAt C i = .bivar d →
     Summable fun p => |μ i p|
-  parity : ∀ (i : Fin C.specs.length) (d : BivarData), specAt C i = .bivar d →
+  parity : ∀ (i : Fin C.specs.length) (d : TwoCoordData), specAt C i = .bivar d →
     ∀ p : ℕ × ℕ, (p.1 + p.2) % 2 = 0 → μ i p = 0
-  rest : ∀ (i : Fin C.specs.length) (d : BivarData), specAt C i = .bivar d →
-    ∑' p : {p // p ∉ tabIdx d}, |μ i p| ≤ (d.T : ℝ)
+  restW : ∀ (i : Fin C.specs.length) (d : TwoCoordData), specAt C i = .bivar d →
+    ∑' p : {p // p ∉ tabIdx d}, (if d.MW < p.1.2 then |μ i p| else 0) ≤ (d.UW : ℝ)
+  restZ : ∀ (i : Fin C.specs.length) (d : TwoCoordData), specAt C i = .bivar d →
+    ∑' p : {p // p ∉ tabIdx d}, (if d.MW < p.1.2 then 0 else |μ i p|) ≤ (d.UZ : ℝ)
   enclosed : TabInAll C μ
+  cauchy : ∀ (i : Fin C.specs.length) (row : List ℚ) (r : ℚ), specAt C i = .cauchy row r →
+    ∑' n, |compose h (ofListQ row) (n + C.K)| ≤ cauchyTailK C.K r
 
 set_option maxHeartbeats 4000000 in
 /-- **Assembly.** -/
 theorem bound_of_certC {C : Cert} (hok : certOK C = true) (hh : DominatedKernel (radialKernel h))
-    (μ : ℕ → ℕ × ℕ → ℝ) (hb : BivarHyps C μ) (Dlo : ℚ) (hfin : FiniteCertC C Dlo)
+    (μ : ℕ → ℕ × ℕ → ℝ) (hb : CertHyps C μ) (Dlo : ℚ) (hfin : FiniteCertC C Dlo)
     (hpos : 0 < (Dlo : ℝ) - restQ C) :
     IsGrothendieckBound ((massQ C : ℝ) / ((Dlo : ℝ) - restQ C)) := by
   have hc := certOK_iff hok
@@ -468,7 +523,7 @@ theorem bound_of_certC {C : Cert} (hok : certOK C = true) (hh : DominatedKernel 
     intro i
     have hs := specOK_at hok i
     unfold kernelC
-    rcases h : specAt C i with row | d
+    rcases h : specAt C i with row | d | ⟨row, r⟩
     · simp only
       rw [h] at hs
       exact summable_abs_compose _ h_summable _ (l1_le_one_of (specOK_scalar hs))
@@ -477,17 +532,23 @@ theorem bound_of_certC {C : Cert} (hok : certOK C = true) (hh : DominatedKernel 
       have hd := specOK_bivar hs
       exact summable_abs_bivarKernel _ _ (l1_le_one_of hd.2.2.1) (l1_le_one_of hd.2.2.2.1) _
         (hb.summable i d h)
+    · simp only
+      rw [h] at hs
+      exact summable_abs_compose _ h_summable _ (l1_le_one_of (specOK_cauchy hs).1)
   -- domination
   have hdom : ∀ i : Fin C.specs.length, DominatedKernel (radialKernel (kernelC C μ i)) := by
     intro i
     have hs := specOK_at hok i
     unfold kernelC
-    rcases h : specAt C i with row | d
+    rcases h : specAt C i with row | d | ⟨row, r⟩
     · simp only
       rw [h] at hs
       exact dominated_compose_row h_summable hh row (l1_le_one_of (specOK_scalar hs))
     · simp only
       exact hb.valid i d h
+    · simp only
+      rw [h] at hs
+      exact dominated_compose_row h_summable hh row (l1_le_one_of (specOK_cauchy hs).1)
   -- retained parts
   have hP : ∀ (i : Fin C.specs.length) n, C.K ≤ n → retainedC C μ i n = 0 := fun i n hn => by
     unfold retainedC; rw [ite_eq_right (by omega)]
@@ -497,7 +558,7 @@ theorem bound_of_certC {C : Cert} (hok : certOK C = true) (hh : DominatedKernel 
     intro i
     have hs := specOK_at hok i
     unfold kernelC retainedC colR majTailC highTailC
-    rcases h : specAt C i with row | d
+    rcases h : specAt C i with row | d | ⟨row, r⟩
     · simp only
       rw [h] at hs
       rw [extraC_scalar C i h, add_zero, add_zero]
@@ -508,7 +569,18 @@ theorem bound_of_certC {C : Cert} (hok : certOK C = true) (hh : DominatedKernel 
     · simp only
       rw [h] at hs
       rw [extraC_eq C i h, zero_add]
-      exact bivar_tail_leC hs (μ i) (hb.summable i d h) (hb.parity i d h) (hb.rest i d h) C.K
+      exact bivar_tail_leC hs (μ i) (hb.summable i d h) (hb.parity i d h) (hb.restW i d h)
+        (hb.restZ i d h) C.K
+    · simp only
+      rw [h] at hs
+      rw [extraC_cauchy C i h, zero_add, zero_add]
+      rw [remainder_eq_tail C.K _ (summable_abs_compose _ h_summable _
+        (l1_le_one_of (specOK_cauchy hs).1)) _ (fun n => by
+          split_ifs <;> simp [compose_h_eq_pi_sProf])]
+      refine (hb.cauchy i row r h).trans (cauchyTailK_le ?_ hc.2.2.2.2.2)
+      have h53 : ((53 / 50 : ℚ) : ℝ) ≤ (r : ℝ) := Rat.cast_le.mpr (specOK_cauchy hs).2
+      push_cast at h53
+      exact h53
   have hfin' := hfin μ hb.enclosed
   have hmix : ∀ n, n < C.K → mixC C μ n = ∑ i : Fin C.specs.length, wtC C i * retainedC C μ i n := by
     intro n hn

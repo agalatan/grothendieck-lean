@@ -1,16 +1,19 @@
-import Grothe.Upper.Bivar
+import Grothe.Upper.TwoCoordinate
 import Grothe.Upper.Assembly
 
 /-!
-# Certificates with two-coordinate branches: data format and the table bridge
+# Certificates: data format and the table bridge
 
 A certificate (`Cert`) is a list of branches with positive weights and a common retained
-length `K`.  A branch is either a Haagerup branch `𝔥 ∘ ρ` (`BranchSpec.scalar`, the
-preprocessor `ρ(t) = t·P(t²)` given by the coefficient list of `P`) or a two-coordinate branch
-(`BranchSpec.bivar`, `BivarData`): the kernel `Σ_{n,m} μ[n,m] ρ(t)^n σ(t)^m` with
-`ρ(t) = t·P(t²)`, `σ(t) = t·Q(t²)`, a finite known part of the table (rows `(m, [(n, lo, hi), …])`
-enclosing `μ[n,m]`), the mass `T` of the unknown part, and a rational `Mx ≥ max(‖P‖_𝒜^{NZ+1},
-‖Q‖_𝒜^{MW+1})`.
+length `K`.  A branch (`BranchSpec`) is
+
+* a Haagerup branch `𝔥 ∘ ρ` with `ρ(t) = t·P(t²)` given by the coefficient list of `P`, whose
+  tail beyond `K` is bounded either by the positive coefficient majorant (`scalar`) or by the
+  Cauchy estimate of radius `r` of its analytic continuation (`cauchy`, an analytic hypothesis);
+* a two-coordinate branch (`bivar`, `TwoCoordData`): the kernel `Σ_{n,m} μ[n,m] ρ(t)^n σ(t)^m`
+  with `ρ(t) = t·P(t²)`, `σ(t) = t·Q(t²)`, a finite known part of the table (rows
+  `(m, [(n, lo, hi), …])` enclosing `μ[n,m]`), the masses `UZ`, `UW` of the unknown part and
+  rationals `MxZ ≥ ‖P‖_𝒜^{NZ+1}`, `MxW ≥ ‖Q‖_𝒜^{MW+1}`.
 
 The *true* table of a two-coordinate branch is a function `μ : ℕ × ℕ → ℝ` (zero unless `n+m` is
 odd); `TabIn μ d` says the known entries are enclosed.  The bridge `tabPoly_eq_knownSum`
@@ -31,18 +34,21 @@ open GrotheKernel Polynomial Finset
 * `P`, `Q`: the preprocessors `ρ(t) = t·P(t²)`, `σ(t) = t·Q(t²)` (coefficient lists of `P`, `Q`),
   of coefficient norm at most one;
 * `NZ`, `MW`: the index bounds of the known part (every unknown index has `n > NZ` or `m > MW`);
-* `T`: an upper bound for the total absolute mass of the unknown part of the table
-  (`1 − Σ_{known} μ` in the symmetric case, by Parseval);
-* `Mx`: an upper bound for `max((Σ|Pⱼ|)^{NZ+1}, (Σ|Qⱼ|)^{MW+1})`, so that the unknown part
-  contributes at most `T · Mx` to the coefficient norm of the kernel. -/
-structure BivarData where
+* `UW`: an upper bound for the absolute mass of the unknown entries with `m > MW` (all `n`);
+* `UZ`: an upper bound for the absolute mass of the remaining unknown entries (`n > NZ`, `m ≤ MW`);
+  in the symmetric case `UZ + UW ≥ 1 − Σ_{known} μ` by Parseval;
+* `MxZ ≥ (Σ|Pⱼ|)^{NZ+1}` and `MxW ≥ (Σ|Qⱼ|)^{MW+1}`, so that the unknown part contributes at most
+  `UZ · MxZ + UW · MxW` to the coefficient norm of the kernel. -/
+structure TwoCoordData where
   tab : List (ℕ × List (ℕ × ℚ × ℚ))
   P : List ℚ
   Q : List ℚ
   NZ : ℕ
   MW : ℕ
-  T : ℚ
-  Mx : ℚ
+  UZ : ℚ
+  UW : ℚ
+  MxZ : ℚ
+  MxW : ℚ
   deriving Repr
 
 /-- A branch of the mixture. -/
@@ -51,7 +57,11 @@ inductive BranchSpec
   the tail beyond the retained length is bounded by the positive coefficient majorant. -/
   | scalar (row : List ℚ)
   /-- A two-coordinate branch. -/
-  | bivar (d : BivarData)
+  | bivar (d : TwoCoordData)
+  /-- Haagerup's kernel composed with the preprocessor `ρ(t) = t·P(t²)`, whose tail beyond the
+  retained length is bounded by the Cauchy estimate of radius `r` of its analytic continuation
+  (an analytic hypothesis of the final theorem). -/
+  | cauchy (row : List ℚ) (r : ℚ)
   deriving Repr
 
 /-- A certificate: branches, positive weights, retained length. -/
@@ -64,31 +74,31 @@ structure Cert where
 /-! ### Interval and real forms of a table -/
 
 /-- The interval table. -/
-def tabI (d : BivarData) : List RowI :=
+def tabI (d : TwoCoordData) : List RowI :=
   d.tab.map fun r => (r.1, r.2.map fun e => (e.1, boxI e.2.1 e.2.2))
 
 /-- The listed indices `(n, m)`. -/
-def idxList (d : BivarData) : List (ℕ × ℕ) :=
+def idxList (d : TwoCoordData) : List (ℕ × ℕ) :=
   d.tab.flatMap fun r => r.2.map fun e => (e.1, r.1)
 
 /-- The known index set. -/
-def tabIdx (d : BivarData) : Finset (ℕ × ℕ) := (idxList d).toFinset
+def tabIdx (d : TwoCoordData) : Finset (ℕ × ℕ) := (idxList d).toFinset
 
 /-- Data side condition: all `n ≤ NZ`, `m ≤ MW`, indices listed once. -/
-def tabOK (d : BivarData) : Bool :=
+def tabOK (d : TwoCoordData) : Bool :=
   (d.tab.all fun r => r.1 ≤ d.MW && r.2.all fun e => e.1 ≤ d.NZ) && (idxList d).Nodup
 
 noncomputable section
 
 /-- The real table with the true values `μ`. -/
-def tabR (μ : ℕ × ℕ → ℝ) (d : BivarData) : List RowR :=
+def tabR (μ : ℕ × ℕ → ℝ) (d : TwoCoordData) : List RowR :=
   d.tab.map fun r => (r.1, r.2.map fun e => (e.1, μ (e.1, r.1)))
 
 /-- The true values are enclosed by the listed boxes. -/
-def TabIn (μ : ℕ × ℕ → ℝ) (d : BivarData) : Prop :=
+def TabIn (μ : ℕ × ℕ → ℝ) (d : TwoCoordData) : Prop :=
   ∀ r ∈ d.tab, ∀ e ∈ r.2, ((e.2.1 : ℚ) : ℝ) ≤ μ (e.1, r.1) ∧ μ (e.1, r.1) ≤ ((e.2.2 : ℚ) : ℝ)
 
-lemma tabMem_of_tabIn {μ : ℕ × ℕ → ℝ} {d : BivarData} (h : TabIn μ d) :
+lemma tabMem_of_tabIn {μ : ℕ × ℕ → ℝ} {d : TwoCoordData} (h : TabIn μ d) :
     TabMem (tabR μ d) (tabI d) := by
   unfold TabMem tabR tabI
   rw [List.forall₂_map_left_iff, List.forall₂_map_right_iff]
@@ -98,7 +108,7 @@ lemma tabMem_of_tabIn {μ : ℕ × ℕ → ℝ} {d : BivarData} (h : TabIn μ d)
   refine List.forall₂_same.2 fun e he => ⟨rfl, ?_⟩
   exact mem_boxI (h r hr e he).1 (h r hr e he).2
 
-lemma tabBounds_of_ok {d : BivarData} (h : tabOK d = true) : TabBounds (tabI d) d.NZ d.MW := by
+lemma tabBounds_of_ok {d : TwoCoordData} (h : tabOK d = true) : TabBounds (tabI d) d.NZ d.MW := by
   unfold tabOK at h
   simp only [Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq] at h
   intro rI hrI
@@ -108,7 +118,7 @@ lemma tabBounds_of_ok {d : BivarData} (h : tabOK d = true) : TabBounds (tabI d) 
   obtain ⟨e', he', rfl⟩ := List.mem_map.1 he
   exact (h.1 r hr).2 e' he'
 
-lemma idxNodup_of_ok {d : BivarData} (h : tabOK d = true) : (idxList d).Nodup := by
+lemma idxNodup_of_ok {d : TwoCoordData} (h : tabOK d = true) : (idxList d).Nodup := by
   unfold tabOK at h
   simp only [Bool.and_eq_true, decide_eq_true_eq] at h
   exact h.2
@@ -129,7 +139,7 @@ lemma rowPoly_eq_sum (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) (m : ℕ) (row : L
     rw [pow_add]
     ring
 
-lemma tabPoly_eq_idxSum (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) (d : BivarData) :
+lemma tabPoly_eq_idxSum (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) (d : TwoCoordData) :
     tabPoly P Q (tabR μ d) = ((idxList d).map fun p => C (μ p) * termOf P Q p).sum := by
   unfold tabR idxList
   induction d.tab with
@@ -141,7 +151,7 @@ lemma tabPoly_eq_idxSum (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) (d : BivarData)
 
 /-- **The bridge**: with the indices listed once, the known polynomial is the finite sum over
 the index set. -/
-theorem tabPoly_eq_knownSum (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) {d : BivarData}
+theorem tabPoly_eq_knownSum (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) {d : TwoCoordData}
     (hnd : (idxList d).Nodup) :
     tabPoly P Q (tabR μ d) = ∑ p ∈ tabIdx d, C (μ p) * termOf P Q p := by
   rw [tabPoly_eq_idxSum]
@@ -149,7 +159,7 @@ theorem tabPoly_eq_knownSum (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) {d : BivarD
   rw [List.sum_toFinset _ hnd]
 
 /-- The known coefficients are the coefficients of the known polynomial. -/
-theorem knownCoeff_eq_coeff (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) {d : BivarData}
+theorem knownCoeff_eq_coeff (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) {d : TwoCoordData}
     (hnd : (idxList d).Nodup) (j : ℕ) :
     knownCoeff P Q μ (tabIdx d) j = (tabPoly P Q (tabR μ d)).coeff j := by
   rw [tabPoly_eq_knownSum P Q μ hnd]
@@ -160,12 +170,12 @@ theorem knownCoeff_eq_coeff (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) {d : BivarD
 /-- The unknown indices lie outside the box `[0, NZ] × [0, MW]`… provided the known part is
 *complete* on the box; this is the hypothesis `hout` of the final theorem, recorded as a
 definition for readability. -/
-def Complete (d : BivarData) : Prop := ∀ p ∉ tabIdx d, d.NZ < p.1 ∨ d.MW < p.2
+def Complete (d : TwoCoordData) : Prop := ∀ p ∉ tabIdx d, d.NZ < p.1 ∨ d.MW < p.2
 
 /-! ### Degree bound and the tail as a finite sum -/
 
 /-- A safe length for the known polynomial: `natDegree < fullLenB`. -/
-def fullLenB (d : BivarData) : ℕ :=
+def fullLenB (d : TwoCoordData) : ℕ :=
   (d.NZ + d.MW) / 2 + 1 + d.NZ * d.P.length + d.MW * d.Q.length
 
 lemma natDegree_rowPoly_le (P : ℝ[X]) {NZ : ℕ} (row : List (ℕ × ℝ)) (hb : ∀ e ∈ row, e.1 ≤ NZ)
@@ -183,7 +193,7 @@ lemma natDegree_rowPoly_le (P : ℝ[X]) {NZ : ℕ} (row : List (ℕ × ℝ)) (hb
       natDegree_pow_le.trans (Nat.mul_le_mul hn hP)
     omega
 
-lemma natDegree_tabPoly_lt (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) {d : BivarData} (hok : tabOK d = true)
+lemma natDegree_tabPoly_lt (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) {d : TwoCoordData} (hok : tabOK d = true)
     (hP : P.natDegree ≤ d.P.length) (hQ : Q.natDegree ≤ d.Q.length) :
     (tabPoly P Q (tabR μ d)).natDegree < fullLenB d := by
   have hb := tabBounds_of_ok hok
@@ -220,7 +230,7 @@ lemma natDegree_tabPoly_lt (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) {d : BivarDa
   exact this.2 (e.1, boxI e.2.1 e.2.2) (List.mem_map.2 ⟨e, he, rfl⟩)
 
 /-- The tail of the known coefficients beyond `K` is the finite sum up to `fullLenB`. -/
-theorem tsum_known_tail_eq (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) {d : BivarData} (hok : tabOK d = true)
+theorem tsum_known_tail_eq (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) {d : TwoCoordData} (hok : tabOK d = true)
     (hP : P.natDegree ≤ d.P.length) (hQ : Q.natDegree ≤ d.Q.length) (K : ℕ) :
     ∑' j, |knownCoeff P Q μ (tabIdx d) (j + K)|
       = ∑ n ∈ Ico K (fullLenB d), |(tabPoly P Q (tabR μ d)).coeff n| := by

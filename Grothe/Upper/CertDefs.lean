@@ -1,14 +1,14 @@
-import Grothe.Upper.BivarSpec
+import Grothe.Upper.Spec
 import Grothe.Upper.CheckerDefs
 
 /-!
-# Concrete interval data of a certificate with two-coordinate branches (definitions only)
+# Concrete interval data of a certificate (definitions only)
 
 Everything here is computable.  For a certificate `C` (`Cert`), `dloIntC C` is the scaled
-integer `mix₀ − Σ_{n≥1} |mixₙ| − Σᵢ wtᵢ · tailᵢ` certified by the kernel (`BivarCert.lean` proves
+integer `mix₀ − Σ_{n≥1} |mixₙ| − Σᵢ wtᵢ · tailᵢ` certified by the kernel (`Cert.lean` proves
 its soundness), with the retained length `C.K`; the branch columns are computed in parallel.
-`restQ C = Σᵢ wtᵢ · Tᵢ · Mxᵢ` is the analytic part of the tail budget (the unknown parts of the
-tables), and `massQ C = Σᵢ wtᵢ`.
+`restQ C = Σᵢ wtᵢ · extraQ` is the analytic part of the tail budget (the unknown parts of the
+tables and the Cauchy estimates), and `massQ C = Σᵢ wtᵢ`.
 -/
 
 namespace Grothe.Upper
@@ -37,25 +37,28 @@ def scalarColI (K : ℕ) (row : List ℚ) : List Ival × Int :=
   ((composeI K (row.map ofRatI) (hRatLN K)).map (mulI piI), max 0 (D - majSumLoN K row))
 
 /-- Interval coefficients of `P`. -/
-def PI (d : BivarData) : List Ival := d.P.map ofRatI
+def PI (d : TwoCoordData) : List Ival := d.P.map ofRatI
 
 /-- Interval coefficients of `Q`. -/
-def QI (d : BivarData) : List Ival := d.Q.map ofRatI
+def QI (d : TwoCoordData) : List Ival := d.Q.map ofRatI
 
 /-- The retained column of a two-coordinate branch and the scaled sum of its discarded
 known coefficients. -/
-def bivarColI (K : ℕ) (d : BivarData) : List Ival × Int :=
+def bivarColI (K : ℕ) (d : TwoCoordData) : List Ival × Int :=
   bivarCol (tabI d) (PI d) (QI d) d.NZ d.MW K
 
 /-- The column of a branch. -/
 def colOfSpec (K : ℕ) : BranchSpec → List Ival × Int
   | .scalar row => scalarColI K row
   | .bivar d => bivarColI K d
+  | .cauchy row _ => ((composeI K (row.map ofRatI) (hRatLN K)).map (mulI piI), 0)
 
-/-- The analytic tail budget of a branch: `T · Mx` for a two-coordinate branch. -/
+/-- The analytic tail budget of a branch: `UZ · MxZ + UW · MxW` for a two-coordinate branch,
+`10⁻⁴⁰` for an analytically continued Haagerup branch (the Cauchy estimate, `cauchyTailK_le`). -/
 def extraQ : BranchSpec → ℚ
   | .scalar _ => 0
-  | .bivar d => d.T * d.Mx
+  | .bivar d => d.UZ * d.MxZ + d.UW * d.MxW
+  | .cauchy _ _ => 1 / 10 ^ 40
 
 /-- All columns, computed in parallel. -/
 def allColsC (C : Cert) : List (List Ival × Int) :=
@@ -85,7 +88,7 @@ def tailsIntC (C : Cert) : Int :=
 /-- The certified scaled value. -/
 def dloIntC (C : Cert) : Int := headLo (mixColC C) - absSumFrom 1 (mixColC C) - tailsIntC C
 
-/-- The weighted analytic tail budget `Σᵢ wtᵢ · Tᵢ · Mxᵢ`. -/
+/-- The weighted analytic tail budget `Σᵢ wtᵢ · extraQ`. -/
 def restQ (C : Cert) : ℚ :=
   (List.ofFn fun i : Fin C.specs.length => wtQC C i * extraQ (specAt C i)).sum
 
@@ -93,7 +96,7 @@ def restQ (C : Cert) : ℚ :=
 def massQ (C : Cert) : ℚ := (List.ofFn fun i : Fin C.specs.length => wtQC C i).sum
 
 /-- Every odd-parity index of the box `[0,NZ] × [0,MW]` is listed. -/
-def coversBox (d : BivarData) : Bool :=
+def coversBox (d : TwoCoordData) : Bool :=
   (List.range (d.NZ + 1)).all fun n => (List.range (d.MW + 1)).all fun m =>
     (n + m) % 2 == 0 || (idxList d).contains (n, m)
 
@@ -102,12 +105,14 @@ def specOK : BranchSpec → Bool
   | .scalar row => decide ((absL row).sum ≤ 1)
   | .bivar d =>
     tabOK d && coversBox d && decide ((absL d.P).sum ≤ 1) && decide ((absL d.Q).sum ≤ 1)
-      && decide ((absL d.P).sum ^ (d.NZ + 1) ≤ d.Mx) && decide ((absL d.Q).sum ^ (d.MW + 1) ≤ d.Mx)
-      && decide (0 ≤ d.T)
+      && decide ((absL d.P).sum ^ (d.NZ + 1) ≤ d.MxZ) && decide ((absL d.Q).sum ^ (d.MW + 1) ≤ d.MxW)
+      && decide (0 ≤ d.UZ) && decide (0 ≤ d.UW)
+  | .cauchy row r => decide ((absL row).sum ≤ 1) && decide ((53 / 50 : ℚ) ≤ r)
 
-/-- Data side conditions of a certificate. -/
+/-- Data side conditions of a certificate (the retained length is at least `cutoff`, so that
+the Cauchy estimates of the analytically continued branches are below `10⁻⁴⁰`). -/
 def certOK (C : Cert) : Bool :=
   C.wts.length == C.specs.length && C.specs.length != 0 && decide (0 < C.K)
-    && C.wts.all (fun w => decide (0 < w)) && C.specs.all specOK
+    && C.wts.all (fun w => decide (0 < w)) && C.specs.all specOK && decide (cutoff ≤ C.K)
 
 end Grothe.Upper
