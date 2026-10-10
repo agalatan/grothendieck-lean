@@ -3,18 +3,18 @@ import Grothe.Upper.Head
 import Grothe.Upper.Data
 
 /-!
-# `K_G^ℂ ≤ 280923000000000/199999855886501 < 1.404616013`
+# `K_G^ℂ ≤ 351153325000000000/249999839494838209 < 1.404614202`
 
 One rounding kernel `H(t) = Σ_{n,m} E[n,m] p(t)^n (−τ(t))^m` (see `Data.lean`), compared with the
-linear kernel `c·t`, `c = 200000/280923`:
+linear kernel `c·t`, `c = 10000000/14046133`:
 
-* the residual up to degree `501` is at most `9/200000000`: the interval checker certifies
+* the residual up to degree `501` is at most `8/10¹¹`: the interval checker certifies
   (`head_check`, by `native_decide`) that the head of the kernel of the stored energies `Ê` is
-  within `headCapQ = 6.7·10⁻¹⁰` of `c·t`, and the energies `E` are within `energyErrQ` of `Ê` in
+  within `headCapQ = 6.6·10⁻¹¹` of `c·t`, and the energies `E` are within `energyErrQ` of `Ê` in
   `ℓ¹` (hypothesis `energy_close`);
-* the residual beyond degree `501` is at most `117/250000000`, by Cauchy–Schwarz from the
-  weighted square-sum bound of the hypothesis `hardy`;
-* hence `‖H − c·t‖_𝒜 ≤ 513/10⁹` and `K_G^ℂ ≤ 1/(c − 513/10⁹)` (`residual_transfer`).
+* the residual beyond degree `501` is at most `457/10⁹`, by Cauchy–Schwarz from the weighted
+  square-sum bound of the hypothesis `hardy`;
+* hence `‖H − c·t‖_𝒜 ≤ 45708/10¹¹` and `K_G^ℂ ≤ 1/(c − 45708/10¹¹)` (`residual_transfer`).
 -/
 
 namespace Grothe
@@ -46,8 +46,8 @@ structure KernelHyps (E : ℕ × ℕ → ℝ) : Prop where
   summable : Summable fun p => |E p|
   /-- Only odd total degrees occur. -/
   parity : ∀ p : ℕ × ℕ, (p.1 + p.2) % 2 = 0 → E p = 0
-  /-- The weighted square sum of the kernel coefficients at radius `83/80` is at most `363`. -/
-  hardy : ∀ J, ∑ n ∈ range J, kernelCoeff E n ^ 2 * (83 / 80 : ℝ) ^ (2 * (2 * n + 1)) ≤ 363
+  /-- The weighted square sum of the kernel coefficients at radius `5187/5000` is at most `314`. -/
+  hardy : ∀ J, ∑ n ∈ range J, kernelCoeff E n ^ 2 * (5187 / 5000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 314
   /-- The energies with `n + 3m ≤ 501` are within `energyErrQ` of the stored ones, in `ℓ¹`. -/
   energy_close : ∑ p ∈ headIdx 501, |E p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ)
 
@@ -70,7 +70,7 @@ theorem pList_norm : (pList.map fun q => |q|).sum ≤ 1 := by native_decide
 
 theorem qList_norm : (qList.map fun q => |q|).sum ≤ 1 := by native_decide
 
-theorem head_budget : headCapQ + energyErrQ ≤ 9 / 200000000 := by
+theorem head_budget : headCapQ + energyErrQ ≤ 8 / 100000000000 := by
   norm_num [headCapQ, energyErrQ]
 
 /-! ### Assembly -/
@@ -100,10 +100,10 @@ theorem head_stored_le :
 
 /-- The residual up to degree `501`. -/
 theorem head_le {E : ℕ × ℕ → ℝ} (hE : KernelHyps E) :
-    ∑ j ∈ range 251, |kernelCoeff E j - if j = 0 then (slopeQ : ℝ) else 0| ≤ 9 / 200000000 := by
+    ∑ j ∈ range 251, |kernelCoeff E j - if j = 0 then (slopeQ : ℝ) else 0| ≤ 8 / 100000000000 := by
   have h1 := head_residual_le primaryPoly auxPoly l1_primaryPoly l1_auxPoly auxPoly_coeff_zero E
     (fun p => (energyTable p : ℝ)) hE.parity (N := 501) (K := 251) (by norm_num) (slopeQ : ℝ)
-  have h5 : (headCapQ : ℝ) + energyErrQ ≤ 9 / 200000000 := by
+  have h5 : (headCapQ : ℝ) + energyErrQ ≤ 8 / 100000000000 := by
     have := (Rat.cast_le (K := ℝ)).2 head_budget
     push_cast at this
     exact this
@@ -112,13 +112,15 @@ theorem head_le {E : ℕ × ℕ → ℝ} (hE : KernelHyps E) :
   unfold kernelCoeff
   linarith
 
-/-- The exact comparison `363 · (80/83)^{1006} ≤ (117/250000000)² (1 − (80/83)⁴)` of the tail. -/
+/-- The exact comparison `314 · (5000/5187)^{1006} ≤ (457/10⁹)² (1 − (5000/5187)⁴)` of the tail. -/
 theorem tail_numeric :
-    (363 : ℝ) * (83 / 80 : ℝ)⁻¹ ^ (2 * (2 * 251 + 1))
-      ≤ (117 / 250000000 : ℝ) ^ 2 * (1 - (83 / 80 : ℝ)⁻¹ ^ 4) := by
-  have hN : (363 * 80 ^ 1006 * 2966145062500000000000000 : ℕ) ≤ 88955516169 * 83 ^ 1006 := by
+    (314 : ℝ) * (5187 / 5000 : ℝ)⁻¹ ^ (2 * (2 * 251 + 1))
+      ≤ (457 / 1000000000 : ℝ) ^ 2 * (1 - (5187 / 5000 : ℝ)⁻¹ ^ 4) := by
+  have hN : (314 * 5000 ^ 1006 * 723877356890961000000000000000000 : ℕ)
+      ≤ 20650437109320313889 * 5187 ^ 1006 := by
     decide +kernel
-  have hR : (363 * 80 ^ 1006 * 2966145062500000000000000 : ℝ) ≤ 88955516169 * 83 ^ 1006 := by
+  have hR : (314 * 5000 ^ 1006 * 723877356890961000000000000000000 : ℝ)
+      ≤ 20650437109320313889 * 5187 ^ 1006 := by
     have := (Nat.cast_le (α := ℝ)).2 hN
     rw [Nat.cast_mul, Nat.cast_mul, Nat.cast_mul, Nat.cast_pow, Nat.cast_pow] at this
     simpa only [Nat.cast_ofNat] using this
@@ -128,11 +130,11 @@ theorem tail_numeric :
 
 /-- The residual beyond degree `501`. -/
 theorem tail_le {E : ℕ × ℕ → ℝ} (hE : KernelHyps E) :
-    ∑' n, |kernelCoeff E (n + 251)| ≤ 117 / 250000000 :=
-  hardy_tail (kernelCoeff E) (83 / 80) (by norm_num) 363 hE.hardy 251 _ (by norm_num)
+    ∑' n, |kernelCoeff E (n + 251)| ≤ 457 / 1000000000 :=
+  hardy_tail (kernelCoeff E) (5187 / 5000) (by norm_num) 314 hE.hardy 251 _ (by norm_num)
     tail_numeric
 
-/-- **Main theorem.**  `K_G^ℂ ≤ 280923000000000/199999855886501 < 1.404616013`.
+/-- **Main theorem.**  `K_G^ℂ ≤ 351153325000000000/249999839494838209 < 1.404614202`.
 
 The rounding is the smoothed two-coordinate Gaussian rounding described in `Data.lean`; `E (n, m)`
 is its chaos energy of primary degree `n` and auxiliary degree `m`, and its correlation kernel is
@@ -144,39 +146,42 @@ is its chaos energy of primary degree `n` and auxiliary degree `m`, and its corr
   tensor powers;
 * `summable`, `parity` (mathematical lemmas): `Σ |E| < ∞` (Parseval gives `E ≥ 0`, `Σ E ≤ 1`) and
   `E (n, m) = 0` for `n + m` even;
-* `hardy`: `Σ_j (kernelCoeff E j)² (83/80)^{2(2j+1)} ≤ 363`.  This is the Parseval form of a
-  mean-square bound for `H` on the circle `|t| = 83/80`.  It combines a mathematical lemma (the
-  analytic continuation of the Gaussian correlation, with its total-variation density) and a
-  *numerical enclosure*: the contour certificate of the source computation (16 384 arcs, Arb ball
-  arithmetic), which gives the bound `362.772 < 363`;
-* `energy_close`: `Σ_{n+3m ≤ 501} |E (n, m) − Ê (n, m)| ≤ energyErrQ ≈ 4.43036·10⁻⁸`, where `Ê` is
-  the stored table (`energyTable`, binary64 numbers read as exact rationals).  This is a
+* `hardy`: `Σ_j (kernelCoeff E j)² (5187/5000)^{2(2j+1)} ≤ 314`.  This is the Parseval form of a
+  mean-square bound for `H` on the circle `|t| = 5187/5000`.  It combines a mathematical lemma
+  (the analytic continuation of the Gaussian correlation, with its total-variation density) and
+  a *numerical enclosure*: the contour certificate of the source computation (65 536 arcs, Arb
+  ball arithmetic), which gives the bound `312.094 < 314`;
+* `energy_close`: `Σ_{n+3m ≤ 501} |E (n, m) − Ê (n, m)| ≤ energyErrQ ≈ 1.35936·10⁻¹¹`, where `Ê`
+  is the stored table (`energyTable`, binary64 numbers read as exact rationals).  This is a
   *numerical enclosure*: it is the error budget of the source computation of the energies
-  (directed Arb quadrature at 21 577 nodes, binary64 contraction, reflection and rotation of
-  5 334 252 coefficients) under its Arb / IEEE binary64 execution model.
+  (directed Arb quadrature at 21 577 nodes, binary64 contraction in 675 blocks of at most 32
+  nodes, reflection and rotation of 5 334 252 coefficients) under its Arb / IEEE binary64
+  execution model, the contraction error being bounded in aggregate by Bessel's inequality for
+  the conditional Hermite coefficients.
 
-What is proved here: the kernel of the stored table is within `6.694·10⁻¹⁰ ≤ headCapQ` of `c·t`
+What is proved here: the kernel of the stored table is within `6.5755·10⁻¹¹ ≤ headCapQ` of `c·t`
 up to degree `501` (`head_check`, the interval computation); with the assumed table error budget
-`4.43036·10⁻⁸` this gives the head bound `≤ 4.5·10⁻⁸ = 9/200000000` (`head_le`), so the assumed
-budget is 98.5 % of the head bound.  The tail bound `117/250000000` follows from `hardy`
-(`tail_le`), and the transfer inequality gives the constant. -/
+`1.35936·10⁻¹¹` this gives the head bound `≤ 8·10⁻¹¹` (`head_le`), so the assumed budget is 17 %
+of the head bound.  The tail bound `457/10⁹` follows from `hardy` (`tail_le`); it is 99.98 % of
+the total residual `45708/10¹¹`.  The transfer inequality gives the constant. -/
 theorem complex_grothendieck_upper (E : ℕ × ℕ → ℝ) (hE : KernelHyps E) :
-    IsGrothendieckBound (280923000000000 / 199999855886501) := by
+    IsGrothendieckBound (351153325000000000 / 249999839494838209) := by
   have hs : Summable fun n => |kernelCoeff E n| :=
     summable_abs_bivarKernel primaryPoly auxPoly l1_primaryPoly l1_auxPoly E hE.summable
   have hres : |kernelCoeff E 0 - (slopeQ : ℝ)| + ∑' n, |kernelCoeff E (n + 1)|
-      ≤ 513 / 1000000000 := by
+      ≤ 45708 / 100000000000 := by
     rw [residual_split (kernelCoeff E) hs (slopeQ : ℝ) 250]
     have h1 := head_le hE
     have h2 := tail_le hE
     norm_num at h1 h2 ⊢
     linarith
-  have hc : (513 / 1000000000 : ℝ) < (slopeQ : ℝ) := by norm_num [slopeQ]
+  have hc : (45708 / 100000000000 : ℝ) < (slopeQ : ℝ) := by norm_num [slopeQ]
   refine (residual_transfer (kernelCoeff E) hs hE.valid (slopeQ : ℝ) _ hc hres).mono
     (le_of_eq ?_)
   norm_num [slopeQ]
 
-/-- The certified bound is below `1.404616013`. -/
-theorem upper_value_lt : (280923000000000 / 199999855886501 : ℝ) < 1.404616013 := by norm_num
+/-- The certified bound is below `1.404614202`. -/
+theorem upper_value_lt :
+    (351153325000000000 / 249999839494838209 : ℝ) < 1.404614202 := by norm_num
 
 end Grothe

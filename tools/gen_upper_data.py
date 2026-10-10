@@ -3,12 +3,12 @@
 
 Inputs (folder `handoff/upper-residual`, or the folder given as first argument):
 
-* `smoothing-audit/common_contour_input.json`: the profile `x`, `a`, `b`, `eta`, the odd polynomial
-  `p` and the working slope `c` (decimal strings / fractions).  No other field of that file is used.
+* `refinement/new_contour_input.json`: the profile `x`, `a`, `b`, `eta`, the odd polynomial `p` and
+  the working slope `c` (decimal strings / fractions).  No other field of that file is used.
 * `common-head/finite_base_energy_N501.npy`: the binary64 energy table `E[n, m]`; every entry is read
   as the exact dyadic rational it represents.  Only the entries with `n + 3 m <= 501` are kept.
-* `common-head/finite_head_N501_result.json`: the rational l1 error bounds of the table
-  (`energy_error_upper_rational`, `grouping_error_upper_rational`).
+* `refinement/new_finite_head_result.json`: the rational l1 error bounds of the table
+  (`energy_error`, `group_error`).
 
 All numbers written are exact rationals.  Usage:
     python3 tools/gen_upper_data.py [handoff/upper-residual] [Grothe/Upper/Data.lean]"""
@@ -16,9 +16,9 @@ import json, struct, sys, ast
 from fractions import Fraction as Q
 
 N = 501            # head degree in t
-HEAD_CAP = Q(67, 10 ** 11)          # certified bound for the computed head (value 6.694e-10)
-HEAD_TOTAL = Q(9, 200000000)        # head bound including the table error
-TAIL = Q(117, 250000000)            # Hardy tail bound beyond degree N
+HEAD_CAP = Q(66, 10 ** 12)          # certified bound for the computed head (value 6.5755e-11)
+HEAD_TOTAL = Q(8, 10 ** 11)         # head bound including the table error
+TAIL = Q(457, 10 ** 9)              # Hardy tail bound beyond degree N
 
 def rat(x):
     if isinstance(x, (bool, float)): raise SystemExit(f"inexact number {x!r}")
@@ -49,8 +49,8 @@ def load_npy(path):
 def main():
     src = sys.argv[1] if len(sys.argv) > 1 else "handoff/upper-residual"
     out = sys.argv[2] if len(sys.argv) > 2 else "Grothe/Upper/Data.lean"
-    inp = json.load(open(f"{src}/smoothing-audit/common_contour_input.json"))
-    res = json.load(open(f"{src}/common-head/finite_head_N501_result.json"))
+    inp = json.load(open(f"{src}/refinement/new_contour_input.json"))
+    res = json.load(open(f"{src}/refinement/new_finite_head_result.json"))
     prof = [rat(s) for s in inp["profile"]]
     a, b, eta, c = rat(inp["a"]), rat(inp["b"]), rat(inp["eta"]), rat(inp["working_slope"])
     p = [rat(s) for s in inp["p"]]
@@ -59,7 +59,7 @@ def main():
     while P and P[-1] == 0: P.pop()
     if 2 * len(P) - 1 > N: raise SystemExit("degree of p too large")
     if sum(abs(x) for x in P) > 1: raise SystemExit("||p||_A > 1")
-    err_e, err_g = rat(res["energy_error_upper_rational"]), rat(res["grouping_error_upper_rational"])
+    err_e, err_g = rat(res["energy_error"]), rat(res["group_error"])
     if HEAD_CAP + err_e + err_g > HEAD_TOTAL: raise SystemExit("head budget does not close")
     delta = HEAD_TOTAL + TAIL
     if not delta < c: raise SystemExit("residual not below the slope")
