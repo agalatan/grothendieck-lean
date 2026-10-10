@@ -1,15 +1,18 @@
 import Grothe
 #print axioms Grothe.complex_grothendieck_upper
-#print axioms Grothe.Upper.finite_certC_exact
-#print axioms Grothe.Upper.bound_of_certC
-#print axioms Grothe.Upper.memS_bivarCol
-#print axioms Grothe.Upper.bivar_remainder_le_split
-#print axioms Grothe.Upper.tabPoly_eq_knownSum
+#print axioms Grothe.head_check
+#print axioms Grothe.head_stored_le
+#print axioms Grothe.head_le
+#print axioms Grothe.tail_le
+#print axioms Grothe.tail_numeric
+#print axioms Grothe.Upper.head_sound
+#print axioms Grothe.Upper.memB_bivarT
+#print axioms Grothe.Upper.tabPoly_coeff
+#print axioms Grothe.Upper.head_residual_le
+#print axioms Grothe.Upper.summable_abs_bivarKernel
+#print axioms Grothe.residual_transfer
+#print axioms Grothe.hardy_tail
 #print axioms Grothe.transfer
-#print axioms Grothe.DominatedKernel.comp_physPoly
-#print axioms Grothe.radialKernel_comp
-#print axioms Grothe.bound_of_branches
-#print axioms Grothe.h_lt
 #print axioms Grothe.Lower.profiles_sound
 #print axioms Grothe.Lower.rows_sound
 #print axioms Grothe.Lower.lower_bound_data

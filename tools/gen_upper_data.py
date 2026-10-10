@@ -1,132 +1,145 @@
 #!/usr/bin/env python3
-"""Write `Grothe/Upper/Data.lean` (a `Cert` with Haagerup and two-coordinate branches) from a JSON file.
+"""Write `Grothe/Upper/Data.lean`: the exact data of the upper certificate.
 
-JSON layout (all numbers are exact: integers, decimal strings like "0.906231648312", or
-fractions "a/b"; floats are rejected because they are not exact):
+Inputs (folder `handoff/upper-residual`, or the folder given as first argument):
 
-    {
-      "K": 800,                      # retained radial coefficients (common to all branches)
-      "target": "140481/100000",     # the bound K_G^C < target to certify (rational string)
-      "dlo_needed": "0.7118...",     # rational: the finite value the checker must reach
-      "branches": [
-        {"kind": "scalar", "w": "0.559", "row": ["0.906231648312", "-0.093651693922", ...]},
-        {"kind": "cauchy", "w": "0.8", "row": [...], "r": "53/50"},   # Haagerup branch with a Cauchy-tail hypothesis
-        {"kind": "bivar",  "w": "0.076",
-         "table": [[n, m, lo, hi], ...],   # known chaos masses mu[n,m] in [lo, hi], n+m odd
-         "P": [...], "Q": [...],           # rho(t) = t P(t^2), sigma(t) = t Q(t^2), coefficient lists
-         "UZ": "0.0012", "UW": "0.0011", "NZ": 200, "MW": 40}   # unknown mass beyond NZ (m <= MW) and beyond MW
-      ]
-    }
+* `smoothing-audit/common_contour_input.json`: the profile `x`, `a`, `b`, `eta`, the odd polynomial
+  `p` and the working slope `c` (decimal strings / fractions).  No other field of that file is used.
+* `common-head/finite_base_energy_N501.npy`: the binary64 energy table `E[n, m]`; every entry is read
+  as the exact dyadic rational it represents.  Only the entries with `n + 3 m <= 501` are kept.
+* `common-head/finite_head_N501_result.json`: the rational l1 error bounds of the table
+  (`energy_error_upper_rational`, `grouping_error_upper_rational`).
 
-A file with top-level "table"/"P"/"Q"/"UZ"/"UW"/"NZ"/"MW" (and optional "w") is treated as a single
-two-coordinate branch with weight 1.  `MxZ`, `MxW` may be omitted: they are then computed as
-(sum|P|)^(NZ+1) and (sum|Q|)^(MW+1) rounded up to 1e-30.  Every branch's data must satisfy
-`certOK` (checked here with the same rules the Lean side decides by `native_decide`)."""
-import json, sys
+All numbers written are exact rationals.  Usage:
+    python3 tools/gen_upper_data.py [handoff/upper-residual] [Grothe/Upper/Data.lean]"""
+import json, struct, sys, ast
 from fractions import Fraction as Q
-from math import ceil
+
+N = 501            # head degree in t
+HEAD_CAP = Q(67, 10 ** 11)          # certified bound for the computed head (value 6.694e-10)
+HEAD_TOTAL = Q(9, 200000000)        # head bound including the table error
+TAIL = Q(117, 250000000)            # Hardy tail bound beyond degree N
 
 def rat(x):
-    if isinstance(x, bool) or isinstance(x, float): raise SystemExit(f"inexact number {x!r}")
-    if isinstance(x, int): return Q(x)
-    return Q(str(x))
+    if isinstance(x, (bool, float)): raise SystemExit(f"inexact number {x!r}")
+    return Q(x) if isinstance(x, int) else Q(str(x))
 
 def lean_rat(q):
     q = Q(q)
-    if q.denominator == 1: return f"({q.numerator} : ℚ)"
-    return f"({q.numerator} : ℚ) / {q.denominator}"
+    return f"({q.numerator} : ℚ)" if q.denominator == 1 else f"({q.numerator} : ℚ) / {q.denominator}"
 
-def lean_list(qs): return "[" + ", ".join(lean_rat(q) for q in qs) + "]"
+def lean_list(qs, per=4):
+    items = [lean_rat(q) for q in qs]
+    lines = [", ".join(items[i:i + per]) for i in range(0, len(items), per)]
+    return "[" + ",\n   ".join(lines) + "]"
+
+def load_npy(path):
+    """Read a 2-d little-endian float64 C-ordered .npy file exactly (no numpy needed)."""
+    with open(path, "rb") as f:
+        raw = f.read()
+    if raw[:6] != b"\x93NUMPY": raise SystemExit("not an npy file")
+    major = raw[6]
+    hlen, off = (struct.unpack("<H", raw[8:10])[0], 10) if major == 1 else (struct.unpack("<I", raw[8:12])[0], 12)
+    header = ast.literal_eval(raw[off:off + hlen].decode("latin1"))
+    if header["descr"] != "<f8" or header["fortran_order"]: raise SystemExit("unexpected npy layout")
+    rows, cols = header["shape"]
+    vals = struct.unpack(f"<{rows * cols}d", raw[off + hlen:off + hlen + 8 * rows * cols])
+    return rows, cols, vals
 
 def main():
-    src = sys.argv[1] if len(sys.argv) > 1 else "handoff/upper-mixture/cert.json"
+    src = sys.argv[1] if len(sys.argv) > 1 else "handoff/upper-residual"
     out = sys.argv[2] if len(sys.argv) > 2 else "Grothe/Upper/Data.lean"
-    J = json.load(open(src))
-    if "branches" not in J:
-        J = {"K": J.get("K", 800), "target": J.get("target", "2"), "dlo_needed": J.get("dlo_needed", "1/2"),
-             "branches": [dict(J, kind="bivar", w=J.get("w", "1"))]}
-    K = int(J["K"]); target = rat(J["target"]); dlo = rat(J["dlo_needed"])
-    assert K >= 2048, "the retained length must be at least cutoff = 2048"
-    specs, wts, rowdefs = [], [], []
-    for b in J["branches"]:
-        w = rat(b["w"]); assert w > 0, "weights must be positive"
-        wts.append(w)
-        if b["kind"] == "scalar":
-            row = [rat(x) for x in b["row"]]
-            assert sum(abs(x) for x in row) <= 1, "scalar row must have coefficient norm <= 1"
-            specs.append(f".scalar {lean_list(row)}")
-        elif b["kind"] == "bivar":
-            P = [rat(x) for x in b["P"]]; Qc = [rat(x) for x in b["Q"]]
-            NZ, MW = int(b["NZ"]), int(b["MW"]); UZ = rat(b["UZ"]); UW = rat(b["UW"]); assert UZ >= 0 and UW >= 0
-            sP, sQ = sum(abs(x) for x in P), sum(abs(x) for x in Qc)
-            assert sP <= 1 and sQ <= 1, "P, Q must have coefficient norm <= 1"
-            MxZ = rat(b["MxZ"]) if "MxZ" in b else Q(ceil(sP ** (NZ + 1) * 10 ** 30), 10 ** 30)
-            MxW = rat(b["MxW"]) if "MxW" in b else Q(ceil(sQ ** (MW + 1) * 10 ** 30), 10 ** 30)
-            assert sP ** (NZ + 1) <= MxZ and sQ ** (MW + 1) <= MxW, "MxZ/MxW too small"
-            rows = {}
-            seen = set()
-            for n, m, lo, hi in b["table"]:
-                n, m = int(n), int(m); lo, hi = rat(lo), rat(hi)
-                assert (n + m) % 2 == 1, f"even-parity index ({n},{m})"
-                assert n <= NZ and m <= MW, f"index ({n},{m}) outside the box"
-                assert lo <= hi and (n, m) not in seen, f"bad entry ({n},{m})"
-                seen.add((n, m)); rows.setdefault(m, []).append((n, lo, hi))
-            for n in range(NZ + 1):
-                for m in range(MW + 1):
-                    if (n + m) % 2 == 1: assert (n, m) in seen, f"missing odd index ({n},{m}) in the box"
-            bidx = len(specs)
-            for m in sorted(rows):
-                entries = ", ".join(f"({n}, {lean_rat(lo)}, {lean_rat(hi)})" for n, lo, hi in sorted(rows[m]))
-                rowdefs.append(f"/-- Row `m = {m}` of the table of branch {bidx}. -/\ndef tab_{bidx}_{m} : ℕ × List (ℕ × ℚ × ℚ) :=\n  ({m}, [{entries}])\n")
-            rowtxt = ", ".join(f"tab_{bidx}_{m}" for m in sorted(rows))
-            specs.append(f".bivar {{\n        tab := [{rowtxt}],\n        P := {lean_list(P)},\n        Q := {lean_list(Qc)},\n"
-                         f"        NZ := {NZ}, MW := {MW}, UZ := {lean_rat(UZ)}, UW := {lean_rat(UW)}, MxZ := {lean_rat(MxZ)}, MxW := {lean_rat(MxW)} }}")
-        elif b["kind"] == "cauchy":
-            row = [rat(x) for x in b["row"]]; r = rat(b["r"])
-            assert sum(abs(x) for x in row) <= 1, "cauchy row must have coefficient norm <= 1"
-            assert r >= Q(53, 50), "Cauchy radius must be at least 53/50"
-            specs.append(f".cauchy {lean_list(row)} ({lean_rat(r)})")
-        else: raise SystemExit(f"unknown kind {b['kind']}")
-    text = f"""import Grothe.Upper.Spec
+    inp = json.load(open(f"{src}/smoothing-audit/common_contour_input.json"))
+    res = json.load(open(f"{src}/common-head/finite_head_N501_result.json"))
+    prof = [rat(s) for s in inp["profile"]]
+    a, b, eta, c = rat(inp["a"]), rat(inp["b"]), rat(inp["eta"]), rat(inp["working_slope"])
+    p = [rat(s) for s in inp["p"]]
+    if any(x != 0 for x in p[0::2]): raise SystemExit("p is not odd")
+    P = p[1::2]
+    while P and P[-1] == 0: P.pop()
+    if 2 * len(P) - 1 > N: raise SystemExit("degree of p too large")
+    if sum(abs(x) for x in P) > 1: raise SystemExit("||p||_A > 1")
+    err_e, err_g = rat(res["energy_error_upper_rational"]), rat(res["grouping_error_upper_rational"])
+    if HEAD_CAP + err_e + err_g > HEAD_TOTAL: raise SystemExit("head budget does not close")
+    delta = HEAD_TOTAL + TAIL
+    if not delta < c: raise SystemExit("residual not below the slope")
+    bound = 1 / (c - delta)
 
-/-!
+    rows, cols, vals = load_npy(f"{src}/common-head/finite_base_energy_N501.npy")
+    table = {}
+    for n in range(rows):
+        for m in range(cols):
+            v = vals[n * cols + m]
+            if v == 0.0 or n + 3 * m > N: continue
+            if (n + m) % 2 == 0 or not v > 0: raise SystemExit(f"unexpected entry {(n, m, v)}")
+            num, den = v.as_integer_ratio()          # exact
+            k = den.bit_length() - 1
+            assert den == 1 << k and Q(num, den) == Q(v)
+            table.setdefault(m, []).append((n, num, k))
+    count = sum(len(r) for r in table.values())
+    strs = ['  "' + f"{m}:" + ";".join(f"{n},{num},{k}" for n, num, k in table[m]) + '"' for m in sorted(table)]
+
+    L = []
+    L.append("import GrotheKernel.Table\nimport Mathlib.Data.Rat.Init\n")
+    L.append(f"""/-!
 # Exact data of the upper certificate
 
-Generated by `tools/gen_upper_data.py` from `{src}` (exact rationals; no floats).
+Generated by `tools/gen_upper_data.py` from the files in `handoff/upper-residual` (exact rationals
+and exact dyadic rationals; no rounding).
 
-* `certData.specs`: the branches.  `cauchy row r` and `scalar row` are Haagerup's phase kernel
-  composed with the preprocessor `ρ(t) = t·P(t²)` (`row` = coefficients of `P`), with the tail
-  beyond the retained length bounded by the Cauchy estimate of radius `r` (an analytic
-  hypothesis) resp. by the positive coefficient majorant.  `bivar d` is a two-coordinate rounding
-  `phase(Z·p(|Z|²) + W·q(|Z|²))` (see `TwoCoordData`): enclosures `d.tab` of its chaos masses
-  `μ[n,m]` as rows `(m, [(n, lo, hi), …])` (the rows are the definitions `tab_i_m`),
-  preprocessors `d.P`, `d.Q` of the two coordinates, box `[0, d.NZ] × [0, d.MW]`, unknown masses
-  `d.UZ` (beyond `NZ`), `d.UW` (beyond `MW`), and `d.MxZ ≥ (Σ|P|)^{{NZ+1}}`, `d.MxW ≥ (Σ|Q|)^{{MW+1}}`;
-* `certData.wts`: the positive weights (same order);
-* `certData.K`: the number of retained radial coefficients;
-* `targetQ`: the certified bound `K_G^ℂ ≤ targetQ` (`complex_grothendieck_upper`);
-* `dloNeededQ`: the finite value the kernel must reach (`dloIntC certData ≥ dloNeededQ · 2^128`).
+The rounding kernel is that of the smoothed two-coordinate Gaussian rounding
+`G(x) = 𝔼 F(M x + √(I − M²) Z)`, `F(z, w) = phase(z + √(1 + a²) · v(|z|²) · w)`, where
+`v(s) = Σ_j x_j L_j^{{(−1/2)}}(s) / √(Γ(j + ½)/j!)` (`profileQ`), `M = P_u + √η (I − P_u)` with `P_u`
+the orthogonal projection on `u = (1, b)`, the primary coordinate has correlation `p(t)` and the
+auxiliary one `−τ(t)`, `τ(t) = (t³ + a² t⁷)/(1 + a²)`.  Its correlation kernel is
+
+  `H(t) = Σ_{{n,m}} E[n,m] · p(t)^n · (−τ(t))^m`,
+
+with `E[n,m] ≥ 0` the chaos energies (primary degree `n`, auxiliary degree `m`, `n + m` odd).
+
+* `profileQ`, `aQ`, `bQ`, `etaQ`: the parameters of the rounding;
+* `pList`: the coefficients of `P`, where `p(t) = t·P(t²)` (degree {2 * len(P) - 1}, `Σ|p_k| ≤ 1`);
+* `qList`: the coefficients of `Q`, where `−τ(t) = t·Q(t²)`;
+* `slopeQ`: the working slope `c`;
+* `energyStrs`, `energyRows`: the computed energies `Ê[n,m]` with `n + 3m ≤ {N}` ({count} entries,
+  rows `m:n,a,k;…` meaning `Ê[n,m] = a/2^k`), the binary64 values of the source table read as
+  exact dyadic rationals;
+* `energyErrQ`: the bound for `Σ_{{n+3m ≤ {N}}} |E[n,m] − Ê[n,m]|` established by the source
+  computation (energy error plus grouping error);
+* `headCapQ`: the bound certified in `Final.lean` for `Σ_{{k ≤ {N}}} |[t^k](Ĥ(t) − c·t)|`, where `Ĥ`
+  is the kernel of `Ê`.
+
+The certified bound is `1/(c − {HEAD_TOTAL} − {TAIL}) = {bound}`.
 -/
 
 namespace Grothe.Upper
 
-{"".join(rowdefs)}
-/-- The certificate data. -/
-def certData : Cert :=
-  {{ specs := [
-      {(",\n      ".join(specs))}],
-    wts := {lean_list(wts)},
-    K := {K} }}
+open GrotheKernel
+""")
+    L.append("/-- The profile coefficients `x_j` of `v`. -/")
+    L.append(f"def profileQ : List ℚ :=\n  {lean_list(prof)}\n")
+    L.append("/-- The auxiliary amplitude `a`. -/")
+    L.append(f"def aQ : ℚ := {lean_rat(a)}\n")
+    L.append("/-- The smoothing direction `u = (1, b)`. -/")
+    L.append(f"def bQ : ℚ := {lean_rat(b)}\n")
+    L.append("/-- The smoothing parameter `η`. -/")
+    L.append(f"def etaQ : ℚ := {lean_rat(eta)}\n")
+    L.append("/-- The working slope `c`. -/")
+    L.append(f"def slopeQ : ℚ := {lean_rat(c)}\n")
+    L.append("/-- Coefficients of `P`: `p(t) = t·P(t²)`. -/")
+    L.append(f"def pList : List ℚ :=\n  {lean_list(P)}\n")
+    L.append("/-- Coefficients of `Q`: `−τ(t) = t·Q(t²)`, `Q(X) = −X(1 + a²X²)/(1 + a²)`. -/")
+    L.append("def qList : List ℚ := [0, -1 / (1 + aQ * aQ), 0, -(aQ * aQ) / (1 + aQ * aQ)]\n")
+    L.append("/-- The `ℓ¹` error bound of the stored energies (energy error plus grouping error). -/")
+    L.append(f"def energyErrQ : ℚ :=\n  {lean_rat(err_e)}\n  + {lean_rat(err_g)}\n")
+    L.append("/-- Certified bound for the head of the stored table. -/")
+    L.append(f"def headCapQ : ℚ := {lean_rat(HEAD_CAP)}\n")
+    L.append("/-- The stored energies, one string per auxiliary degree `m`. -/")
+    L.append("def energyStrs : List String := [\n" + ",\n".join(strs) + "]\n")
+    L.append("/-- The stored energies as exact rows `(m, [(n, Ê[n,m]), …])`. -/")
+    L.append("def energyRows : List RowQ := energyStrs.map parseRow\n")
+    L.append("end Grothe.Upper")
+    open(out, "w").write("\n".join(L) + "\n")
+    print(f"wrote {out}: {count} entries, {len(table)} rows, bound = {bound} ~ {float(bound):.15f}")
 
-/-- The certified bound. -/
-def targetQ : ℚ := {lean_rat(target)}
-
-/-- The required finite value. -/
-def dloNeededQ : ℚ := {lean_rat(dlo)}
-
-end Grothe.Upper
-"""
-    open(out, "w").write(text)
-    print(f"wrote {out}: {len(specs)} branches, K = {K}, target {target} ≈ {float(target):.12f}")
-
-if __name__ == "__main__": main()
+main()

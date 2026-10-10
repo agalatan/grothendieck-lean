@@ -21,17 +21,16 @@ description: Working conventions for the Lean 4 / Mathlib formalization of the c
 ## Layout
 - `Grothe/Transfer.lean`: `scalarOpt`, `vectorOpt`, `IsGrothendieckBound`, `DominatedKernel`,
   `ValidKernel`, `tpow` (tensor powers), `transfer` (the transfer inequality).
-- `Grothe/Haagerup.lean`, `WallisTail.lean`, `ListPoly.lean`: Haagerup coefficients, Wallis-type
-  tails, the Wiener norm `l1`.
-- `Grothe/Upper/`: the upper certificate, a mixture of Haagerup phase roundings with polynomial
-  preprocessors and two-coordinate roundings `phase(Z·p(|Z|²) + W·q(|Z|²))`. `Interface`,
-  `Mixture`, `Preprocessor`, `Composition`, `Assembly` (generic transfer `bound_of_branches`),
-  `IntervalSound`/`PolyBridge`/`Checker` (soundness of the Mathlib-free precompiled
-  `GrotheKernel/`), `TwoCoordinate` (bivariate composition, table tails), `Spec` (`Cert`,
-  `BranchSpec`, `TwoCoordData`), `CertDefs`/`Cert` (`dloIntC`, `finite_certC_exact`,
-  `bound_of_certC`, `CertHyps`), generated `Data.lean` (`tools/gen_upper_data.py` from
-  `handoff/upper-mixture/cert.json`), `Final.lean` with `complex_grothendieck_upper` (the long
-  `native_decide`s `certData_ok`, `dloIntC_ge`; parallel `Task.spawn` columns).
+- `Grothe/ListPoly.lean`: the Wiener norm `l1` of real polynomials.
+- `Grothe/Upper/`: the upper certificate, one two-coordinate rounding kernel
+  `H(t) = Σ E[n,m] p(t)^n (−τ(t))^m` compared with `c·t`. `Residual` (`radialKernel`,
+  `residual_transfer`, `hardy_tail`), `Bivariate` (`termOf`, `bivarKernel`, locality
+  `bivarKernel_eq_head`, `head_residual_le`), `IntervalSound` and `Head` (soundness of the
+  Mathlib-free precompiled `GrotheKernel/`: `Basic` fixed-point intervals, `Table` truncated
+  bivariate composition `bivarT` and the dyadic table parser), generated `Data.lean`
+  (`tools/gen_upper_data.py` from `handoff/upper-residual`: `pList`, `qList`, the stored energies
+  as strings), `Final.lean` with `KernelHyps` and `complex_grothendieck_upper` (the `native_decide`
+  `head_check`, about 15 s).
 - `Grothe/Lower/`: the lower certificate's finite layer: `Bernstein`, `PSD`, `Gates`, `Cover`
   (sweep covers), `Moment` (constants `ρ`, `C6`, `ε₀`, `ε`; `Jpw`), `Chords`, `Profiles` (one
   `Profile` structure for sources / averaged profiles / pointwise joins / shared-moment joins,
