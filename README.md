@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.40104026363 < K_G^ℂ < 1.404875854410**
+> **1.40104026363 < K_G^ℂ < 1.404616013**
 
 ## The constant
 
@@ -31,7 +31,7 @@ classical and quantum correlations in two-party Bell experiments.
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.40104026363 < K** | **K < 1.404875854410** |
+| Oct 2026 | **this repository** | **1.40104026363 < K** | **K < 1.404616013** |
 
 For orientation, the real constant has a longer numerical history: Krivine's upper bound
 π / (2 log(1+√2)) = 1.78221… (1979) was shown to be non-optimal by Braverman, Makarychev,
@@ -44,13 +44,12 @@ Our bounds stay inside the Heilman–Jones–Malavolta framework and are the pro
 collaboration between several AI research systems (the numerical constructions and
 certificates) and this Lean development (the machine-checked verification):
 
-* **Upper bound.** A mixture of 13 Gaussian rounding kernels: ten Haagerup phase roundings
-  composed with polynomial preprocessors, and three two-coordinate roundings
-  phase(Z·p(|Z|²) + W·q(|Z|²)), where Z is a Gaussian coordinate with correlation ρ(t) and W an
-  independent coordinate carried by higher chaos (correlation σ(t) ≈ −0.34t³ − 0.66t⁷). Their
-  kernels are Σ μ[n,m] ρ(t)ⁿσ(t)ᵐ with μ the chaos-mass table of the rounding, enclosed by
-  rigorous quadrature on a 200×40 box; the mass outside the box is charged through ‖ρ‖²⁰¹ and
-  ‖σ‖⁴¹. 2048 radial coefficients are retained.
+* **Upper bound.** A single smoothed two-coordinate Gaussian rounding,
+  phase(z + √(1+a²)·v(|z|²)·w) with a twelve-term Laguerre profile v, smoothed along a fixed
+  direction. Its correlation kernel is H(t) = Σ E[n,m]·p(t)ⁿ·(−τ(t))ᵐ, with p odd of degree 101
+  and τ(t) = (t³ + a²t⁷)/(1 + a²), and it is compared directly with c·t, c = 200000/280923: no
+  mixture and no inverse series. The bound is 1/(c − ‖H − c·t‖), with the residual split into a
+  head through degree 501 and a tail.
 * **Lower bound.** The Gaussian witness T = P₁,₀ − ε·P₂,₁ with ε = 7400323787/10¹⁰, whose
   L^∞ → L¹ norm is capped by B = 71375536161/10¹¹ through 31 profiles (17 sources, 10 averaged
   shifted sources and 4 shared-moment joins, each with global polynomial majorants and a
@@ -64,23 +63,24 @@ certificates) and this Lean development (the machine-checked verification):
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
-**Upper bound.** `Grothe.complex_grothendieck_upper : … → IsGrothendieckBound (140487585441/10^11)`.
+**Upper bound.** `Grothe.complex_grothendieck_upper : KernelHyps E → IsGrothendieckBound (280923000000000/199999855886501)`,
+and `Grothe.upper_value_lt` shows this is below 1.404616013.
 
-* Proved from scratch: the transfer inequality via tensor powers, validity and mixing of
-  rounding kernels, admissibility of polynomial preprocessors and composition on the disc,
-  Haagerup's coefficients with the Wallis-type estimate h_n < 1 / (4(n+¼)(n+1)), the
-  positive-majorant tails, the two-coordinate composition Σ μ[n,m] ρⁿσᵐ with its coefficient
-  enclosures and the tail bound for the part of the table outside the box, and the finite
-  certificate itself, evaluated by a sound fixed-point interval checker (`GrotheKernel/`,
-  outward rounding at 2⁻¹²⁸, soundness proved in `Grothe/Upper/IntervalSound.lean` and
-  `Grothe/Upper/TwoCoordinate.lean`).
-* Explicit hypotheses (not formalized): domination of Haagerup's phase kernel (Haagerup's
-  Gaussian identity); validity of each two-coordinate rounding kernel (a Gaussian process with
-  the stated correlations ρ, σ); the enclosures of the chaos-mass tables and the Parseval
-  bounds on the mass outside the box (rigorous Arb quadrature); and the Cauchy tail estimate
-  beyond 2048 coefficients for the five main Haagerup branches, which carry 99% of the
-  mixture weight (numerically sup|𝔥∘ρ| ≈ 0.76 on the circle of radius 1.06 against the assumed
-  bound 10).
+* Proved from scratch: the transfer inequality via tensor powers and its residual form
+  K ≤ 1/(c − ‖H − c·t‖); that the head through degree 501 depends only on energies with
+  n + 3m ≤ 501; the evaluation of that head on the stored energy table (21,168 exact dyadic
+  entries) by a sound fixed-point interval checker (`GrotheKernel/`, outward rounding at 2⁻¹²⁸,
+  soundness in `Grothe/Upper/IntervalSound.lean`); the ℓ¹ perturbation bound for the table; the
+  tail bound by Cauchy–Schwarz from a weighted square-sum bound; and the endpoint arithmetic.
+* Explicit hypotheses (not formalized): validity of the rounding kernel; summability and parity
+  of the energies; the weighted square-sum bound 363 at radius 83/80 (analytic continuation plus
+  a 16,384-arc contour certificate); and the ℓ¹ enclosure of the true energies by the stored
+  table within 4.43036·10⁻⁸, which is the error budget of the source computation (directed
+  quadrature at 21,577 nodes and a binary64 contraction of 5,334,252 coefficients).
+* **How much rests on the last hypothesis.** The head bound is 4.5·10⁻⁸. The computation
+  verified in Lean contributes 6.694·10⁻¹⁰ of it; the assumed table error budget contributes
+  4.43036·10⁻⁸, about 98.5%, leaving a margin of 2.6·10⁻¹¹. The bound therefore depends almost
+  entirely on the correctness of that external error analysis.
 
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
 value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 140104026363/10^11 < K`.
