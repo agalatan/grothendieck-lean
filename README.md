@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.40104026363 < K_G^ℂ < 1.404616013**
+> **1.40104026363 < K_G^ℂ < 1.404614202**
 
 ## The constant
 
@@ -31,7 +31,7 @@ classical and quantum correlations in two-party Bell experiments.
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.40104026363 < K** | **K < 1.404616013** |
+| Oct 2026 | **this repository** | **1.40104026363 < K** | **K < 1.404614202** |
 
 For orientation, the real constant has a longer numerical history: Krivine's upper bound
 π / (2 log(1+√2)) = 1.78221… (1979) was shown to be non-optimal by Braverman, Makarychev,
@@ -47,7 +47,7 @@ certificates) and this Lean development (the machine-checked verification):
 * **Upper bound.** A single smoothed two-coordinate Gaussian rounding,
   phase(z + √(1+a²)·v(|z|²)·w) with a twelve-term Laguerre profile v, smoothed along a fixed
   direction. Its correlation kernel is H(t) = Σ E[n,m]·p(t)ⁿ·(−τ(t))ᵐ, with p odd of degree 101
-  and τ(t) = (t³ + a²t⁷)/(1 + a²), and it is compared directly with c·t, c = 200000/280923: no
+  and τ(t) = (t³ + a²t⁷)/(1 + a²), and it is compared directly with c·t, c = 10000000/14046133: no
   mixture and no inverse series. The bound is 1/(c − ‖H − c·t‖), with the residual split into a
   head through degree 501 and a tail.
 * **Lower bound.** The Gaussian witness T = P₁,₀ − ε·P₂,₁ with ε = 7400323787/10¹⁰, whose
@@ -63,8 +63,8 @@ certificates) and this Lean development (the machine-checked verification):
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
-**Upper bound.** `Grothe.complex_grothendieck_upper : KernelHyps E → IsGrothendieckBound (280923000000000/199999855886501)`,
-and `Grothe.upper_value_lt` shows this is below 1.404616013.
+**Upper bound.** `Grothe.complex_grothendieck_upper : KernelHyps E → IsGrothendieckBound (351153325000000000/249999839494838209)`,
+and `Grothe.upper_value_lt` shows this is below 1.404614202.
 
 * Proved from scratch: the transfer inequality via tensor powers and its residual form
   K ≤ 1/(c − ‖H − c·t‖); that the head through degree 501 depends only on energies with
@@ -73,14 +73,18 @@ and `Grothe.upper_value_lt` shows this is below 1.404616013.
   soundness in `Grothe/Upper/IntervalSound.lean`); the ℓ¹ perturbation bound for the table; the
   tail bound by Cauchy–Schwarz from a weighted square-sum bound; and the endpoint arithmetic.
 * Explicit hypotheses (not formalized): validity of the rounding kernel; summability and parity
-  of the energies; the weighted square-sum bound 363 at radius 83/80 (analytic continuation plus
-  a 16,384-arc contour certificate); and the ℓ¹ enclosure of the true energies by the stored
-  table within 4.43036·10⁻⁸, which is the error budget of the source computation (directed
+  of the energies; the weighted square-sum bound 314 at radius 5187/5000 (analytic continuation
+  plus a 65,536-arc contour certificate); and the ℓ¹ enclosure of the true energies by the stored
+  table within 1.35936·10⁻¹¹, which is the error budget of the source computation (directed
   quadrature at 21,577 nodes and a binary64 contraction of 5,334,252 coefficients).
-* **How much rests on the last hypothesis.** The head bound is 4.5·10⁻⁸. The computation
-  verified in Lean contributes 6.694·10⁻¹⁰ of it; the assumed table error budget contributes
-  4.43036·10⁻⁸, about 98.5%, leaving a margin of 2.6·10⁻¹¹. The bound therefore depends almost
-  entirely on the correctness of that external error analysis.
+* **How much rests on these hypotheses.** The head bound is 8·10⁻¹¹. The computation verified in
+  Lean contributes 6.5755·10⁻¹¹ of it; the assumed table error budget contributes 1.35936·10⁻¹¹,
+  about 17%, leaving a margin of 4·10⁻¹³. The total residual is 45708/10¹¹, of which the tail
+  bound from the contour hypothesis is 99.98%, so the bound rests mainly on that hypothesis.
+* **Independent replay.** The source computation of the energy table was replayed in full on a
+  different machine: the 3.37 GB nodal table was regenerated bit for bit, and the contraction
+  under a different linear-algebra library reproduced the energy table to 2.3·10⁻¹⁶ in ℓ¹. This
+  is reproduction, not formal verification; the enclosure remains a hypothesis.
 
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
 value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 140104026363/10^11 < K`.
