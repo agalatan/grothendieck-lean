@@ -31,17 +31,19 @@ description: Working conventions for the Lean 4 / Mathlib formalization of the c
   (`tools/gen_upper_data.py` from `handoff/upper-residual`: `pList`, `qList`, the stored energies
   as strings), `Final.lean` with `KernelHyps` and `complex_grothendieck_upper` (the `native_decide`
   `head_check`, about 15 s).
-- `Grothe/Lower/`: the lower certificate's finite layer: `Bernstein`, `PSD`, `Gates`, `Cover`
-  (sweep covers), `Moment` (constants `ρ`, `C6`, `ε₀`, `ε`; `Jpw`), `Chords`, `Profiles` (one
-  `Profile` structure for sources / averaged profiles / pointwise joins / shared-moment joins,
-  `checkProfile`, `ProfileSound`), `Envelope`, `Endpoint`, `Support` (rows, `lower_bound_main`),
-  generated data (`SourceData`, `AveragedData1/2`, `JoinData`, `RowData` from
-  `tools/gen_lower_data.py`; bulk data are strings parsed at check time), `Data` (`ctx`),
-  `ProfileCheck`/`RowCheck` (the `native_decide` modules).
+- `Grothe/Lower/`: the lower certificate (witness `P₁,₀ − εP₂,₁`, `ε = 149/200`). `Basic`
+  (`evalL`, endpoint lemma, `quadMax`), `Poly` (list polynomials, the integer positivity
+  certificate `posCert`/`posOn`, Taylor tails), `PSD`, `Gates`, `Moment` (constants `ρ`, `C6`, `ε`;
+  `MPoly`, `J`, `checkJ`), `Sweep` (`CapsHold`, the majorant sweep `sweepTop`, `major_sound`),
+  `Cuts` (Stein-cut test functions `cutG` and their polynomial pieces), `Law` (`Moments`,
+  `SteinCut`, integration lemmas), `Rows` (`Row`, parsers, `checkRow`, `rowBound_of_check`),
+  `Envelope`, `Endpoint`, `Support` (`RowReduction`, `lower_bound_main`), generated data
+  (`RowData01`–`RowData19`, `RowData` from `tools/gen_lower_data.py`; bulk data are strings parsed
+  at check time), `RowCheck` (the `native_decide` module, `lower_bound_data`).
 - `Grothe/LowerAnalytic/`: the lower certificate's analytic lemmas (moment lemma, bivariate
   Bernstein bounds, the `C₆`/`ρ` certificates `Moments`/`SixthMomentData`/`SixthMoment` generated
-  by `tools/gen_moment_certs.py`, variance identities, convexity/allocation, Schur gate, rows,
-  endpoint). `ProfileCheck` ≈ 4 min on 8 cores, `RowCheck` < 1 min.
+  by `tools/gen_moment_certs.py`, variance identities, the coupling square completion, Schur
+  gate, row mixing, endpoint).
 - `handoff/` (git-ignored) holds the research archives the generators in `tools/` read; the
   generated Lean data files are committed, the archives are not.
 - Only the best bounds are kept in the repo and its docs; superseded certificates are deleted,

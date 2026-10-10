@@ -5,7 +5,7 @@ import Mathlib
 
 A symmetric matrix is certified PSD by an exact `L D Lᵀ` factorization with `D ≥ 0`
 (`L` unit lower triangular); then `vᵀ M v = Σ dₖ (Lᵀv)ₖ² ≥ 0`.  With `D > 0` it is PD.
-These are the "matrix gates" of the lower-bound profiles.
+These are the "matrix gates" of the lower-bound rows.
 -/
 
 namespace Grothe.Lower
@@ -178,20 +178,5 @@ def Sym3.subDiag (M : Sym3) (a b c : ℚ) : Sym3 :=
 
 def Sym2.subDiag (M : Sym2) (a b : ℚ) : Sym2 :=
   { M with m11 := M.m11 - a, m22 := M.m22 - b }
-
-/-- Convex combination `w A + (1-w) B`. -/
-def Sym3.avg (w : ℚ) (A B : Sym3) : Sym3 :=
-  ⟨w * A.m11 + (1 - w) * B.m11, w * A.m12 + (1 - w) * B.m12, w * A.m13 + (1 - w) * B.m13,
-   w * A.m22 + (1 - w) * B.m22, w * A.m23 + (1 - w) * B.m23, w * A.m33 + (1 - w) * B.m33⟩
-
-def Sym2.avg (w : ℚ) (A B : Sym2) : Sym2 :=
-  ⟨w * A.m11 + (1 - w) * B.m11, w * A.m12 + (1 - w) * B.m12, w * A.m22 + (1 - w) * B.m22⟩
-
-/-- Scale every entry by `r`. -/
-def Sym3.scale (r : ℚ) (M : Sym3) : Sym3 :=
-  ⟨r * M.m11, r * M.m12, r * M.m13, r * M.m22, r * M.m23, r * M.m33⟩
-
-/-- Scale every entry by `r`. -/
-def Sym2.scale (r : ℚ) (M : Sym2) : Sym2 := ⟨r * M.m11, r * M.m12, r * M.m22⟩
 
 end Grothe.Lower

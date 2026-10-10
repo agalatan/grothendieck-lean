@@ -1,4 +1,4 @@
-import Grothe.Lower.Bernstein
+import Grothe.Lower.Basic
 
 /-!
 # Tensor Bernstein bounds for polynomials in two variables

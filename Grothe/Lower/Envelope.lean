@@ -1,10 +1,9 @@
 import Grothe.Lower.Moment
-import Grothe.Lower.Chords
 
 /-!
 # The scalar envelope with fixed rational mixtures
 
-Support rows `(ℓᵢ, βᵢ, Cᵢ)` at the common witness parameter `ε` give quadratics
+Rows `(ℓᵢ, βᵢ, Cᵢ)` at the witness parameter `ε` give quadratics
 `Fᵢ(t) = t² − 2ℓᵢt + Cᵢ`, and the retained-square mixing of two rows with a fixed weight
 `θ ∈ [0,1]` gives the quadratic
 

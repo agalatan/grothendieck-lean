@@ -1,9 +1,9 @@
 import Grothe.Lower.PSD
 
 /-!
-# The matrix gates of a profile
+# The matrix gates of a row
 
-A profile with even block `M_E` (3×3), odd block `M_R` (2×2) and penalty parameter `δ` is
+A row with even block `M_E` (3×3), odd block `M_R` (2×2) and penalty parameter `δ` is
 admissible at the witness parameter `ε` when `M_E ≻ 0`, `M_R ≻ 0`,
 `M_E − diag(−1, ε, ε) ⪰ 0`, `M_E − diag(ε − δ, 0, 0) ⪰ 0`, `M_R − diag(−1, ε) ⪰ 0` and
 `M_R − diag(ε, 0) ⪰ 0`.  Each gate is certified by an exact `LᵀDL` factorization
@@ -12,7 +12,7 @@ admissible at the witness parameter `ε` when `M_E ≻ 0`, `M_R ≻ 0`,
 
 namespace Grothe.Lower
 
-/-- LDL certificates for the six matrix gates of a profile. -/
+/-- LDL certificates for the six matrix gates of a row. -/
 structure GateCert where
   ePD : LDL3
   eDom1 : LDL3
@@ -22,10 +22,7 @@ structure GateCert where
   rDom2 : LDL2
   deriving Repr
 
-def dfltGate : GateCert := ⟨⟨0, 0, 0, 0, 0, 0⟩, ⟨0, 0, 0, 0, 0, 0⟩, ⟨0, 0, 0, 0, 0, 0⟩, ⟨0, 0, 0⟩,
-  ⟨0, 0, 0⟩, ⟨0, 0, 0⟩⟩
-
-/-- The matrix gates of a profile with parameters `(E, R, δ)` at the witness parameter `eps`, as
+/-- The matrix gates of a row with parameters `(E, R, δ)` at the witness parameter `eps`, as
 real-valued PSD/PD facts. -/
 structure GateProp (eps : ℚ) (E : Sym3) (R : Sym2) (delta : ℚ) : Prop where
   ePD : PD3 E
