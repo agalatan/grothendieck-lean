@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.40104026363 < K_G^ℂ < 1.404614202**
+> **1.40148809 < K_G^ℂ < 1.404614202**
 
 ## The constant
 
@@ -31,7 +31,7 @@ classical and quantum correlations in two-party Bell experiments.
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.40104026363 < K** | **K < 1.404614202** |
+| Oct 2026 | **this repository** | **1.40148809 < K** | **K < 1.404614202** |
 
 For orientation, the real constant has a longer numerical history: Krivine's upper bound
 π / (2 log(1+√2)) = 1.78221… (1979) was shown to be non-optimal by Braverman, Makarychev,
@@ -50,13 +50,15 @@ certificates) and this Lean development (the machine-checked verification):
   and τ(t) = (t³ + a²t⁷)/(1 + a²), and it is compared directly with c·t, c = 10000000/14046133: no
   mixture and no inverse series. The bound is 1/(c − ‖H − c·t‖), with the residual split into a
   head through degree 501 and a tail.
-* **Lower bound.** The Gaussian witness T = P₁,₀ − ε·P₂,₁ with ε = 7400323787/10¹⁰, whose
-  L^∞ → L¹ norm is capped by B = 71375536161/10¹¹ through 31 profiles (17 sources, 10 averaged
-  shifted sources and 4 shared-moment joins, each with global polynomial majorants and a
-  moment-rectangle cover), 32 retained-square support rows and a 121-cell scalar envelope, using
-  the sixth-moment inequality E|q|⁶ ≤ 9m − 12 + 40.45313·(m−2)^{3/2} (charge-separated tensor
-  estimates) and the first-moment bound E|q| ≤ 0.973612157 for normalised cubic chaos. Then
-  K_G^ℂ ≥ 1/B.
+* **Lower bound.** The Gaussian witness T = P₁,₀ − ε·P₂,₁ with ε = 149/200, whose L^∞ → L¹
+  norm is capped by B = 71352729/10⁸ through 19 rows with coupling vectors and a scalar
+  envelope. Each row bounds E Ψ(|q|) − κσ² over all residuals q, a normalised cubic chaos of
+  bidegree (2,1): for small σ by moment rectangles, and beyond by nodes at which a polynomial
+  majorizes the potential plus a nonnegative combination of Stein cuts, joined by convexity in
+  σ. The inputs on the law of |q|² are the sixth-moment inequality
+  E|q|⁶ ≤ 9m − 12 + 40.45313·(m−2)^{3/2}, the first-moment bound E|q| ≤ 0.973612157, and the
+  Stein-cut inequalities, which follow from Var(w) + ½E|c|² ≤ (m−2)/3 and Gaussian integration
+  by parts. Then K_G^ℂ ≥ 1/B.
 
 ## What exactly is proved in Lean
 
@@ -87,17 +89,20 @@ and `Grothe.upper_value_lt` shows this is below 1.404614202.
   is reproduction, not formal verification; the enclosure remains a hypothesis.
 
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
-value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 140104026363/10^11 < K`.
+value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 140148809/10^8 < K`.
 
-* Proved: Bernstein bounds (univariate and bivariate), PSD gates by exact LᵀDL factorisations,
-  rectangle covers, all profile caps, chord domination of all physical polynomials, the
-  ε-transfer and dilation of support rows, the fixed-mixture envelope, the three-moment lemma,
-  the scalar sixth-moment and first-moment certificates, the variance and retained-square
-  identities, joint convexity and argument allocation, and the Schur-complement gate.
-* Explicit hypotheses (not formalized): the Gaussian profile reduction
-  V ≤ F_i(t) − ε‖Qh + β_i v/ε‖², the node caps of the potentials (Gaussian price enclosures),
-  the tensor and Wick identities behind the sixth-moment bound, and the transfer from the
-  Gaussian operator to finite matrices.
+* Proved: positivity certificates in integer arithmetic, PSD gates by exact LᵀDL
+  factorisations, the polynomial pieces of the Stein cuts, the majorant sweeps over 19,943
+  nodes, the moment-rectangle covers, the integration against the law of |q|², the chords in σ,
+  the bound of every row from its Gaussian reduction, the mixture envelope, and the endpoint.
+  Also proved, as standalone lemmas: the three-moment lemma, the scalar sixth-moment and
+  first-moment certificates, the variance and retained-square identities, the Schur-complement
+  gate and the square completion for the coupling vector.
+* Explicit hypotheses (not formalized): the Gaussian reduction of each row to an integrated
+  potential, V ≤ t² − 2ℓt + 2β²/ε + E Ψ(σ√U) − κσ² − ε‖Qh + βv/ε‖², including its coupling
+  vector; the node caps, convexity and Lipschitz bound of each potential (interval integration
+  outside Lean, slack 10⁻¹¹); the moment bounds on the law of |q|²; the Stein-cut inequalities
+  for that law; and the transfer from the Gaussian operator to finite matrices.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus `native_decide` facts for the finite
 exact computations (listed by `lake env lean scratch/Axioms.lean`; checked in CI). No `sorry`,
@@ -110,7 +115,7 @@ lake exe cache get   # Mathlib v4.34.1 (toolchain leanprover/lean4:v4.34.1)
 lake build
 ```
 
-The two long native checks (`Grothe/Upper/Final.lean`, `Grothe/Lower/ProfileCheck.lean`) run
+The two long native checks (`Grothe/Upper/Final.lean`, `Grothe/Lower/RowCheck.lean`) run
 their branches in parallel and take a few minutes each on 8 cores. CI
 (`.github/workflows/lean.yml`) builds everything on every push to `master`, forbids `sorry`,
 and verifies the axiom report. The generated data modules come from the research archives (not
