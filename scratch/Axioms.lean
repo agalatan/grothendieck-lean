@@ -38,3 +38,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.sixth_moment_complex
 #print axioms Grothe.LowerAnalytic.coverOK_sound
 #print axioms Grothe.LowerAnalytic.lower_bound_of_tests
+#print axioms Grothe.LowerAnalytic.fluctuation_identity
+#print axioms Grothe.LowerAnalytic.fluctuation_bound
+#print axioms Grothe.LowerAnalytic.gM_isGaussianExpectation
+#print axioms Grothe.LowerAnalytic.chaos3_hermite_sum
