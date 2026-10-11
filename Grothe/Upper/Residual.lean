@@ -9,6 +9,8 @@ index `n` ↔ odd degree `2n+1`).
 * `residual_transfer`: if the kernel is dominated and its residual against the linear kernel
   `c·z` has coefficient norm `|h₀ − c| + Σ_{n ≥ 1} |hₙ| ≤ δ < c`, then `K_G^ℂ ≤ 1/(c − δ)`;
 * `residual_split`: the residual is a finite head plus a tail;
+* `residual_perturb`: the residual of `h` is at most that of `g` plus `Σ |hₙ − gₙ|`;
+* `tail_add_le`: the tail of `h = g + d` is at most the tails of `g` and `d`;
 * `hardy_tail`: a weighted square-sum bound `Σ_n hₙ² r^{2(2n+1)} ≤ B` with `r > 1` (the Parseval
   form of a mean-square bound for the analytic continuation of the kernel to the circle of
   radius `r`) bounds the tail `Σ_{n ≥ K} |hₙ|` by Cauchy–Schwarz.
@@ -56,6 +58,41 @@ theorem residual_split (h : ℕ → ℝ) (hs : Summable fun n => |h n|) (c : ℝ
   rw [e1, e2]
   simp only [ite_true]
   ring
+
+/-- The residual of `h` is at most the residual of `g` plus the `ℓ¹` distance of `h` and `g`. -/
+theorem residual_perturb (h g : ℕ → ℝ) (hg : Summable fun n => |g n|)
+    (hd : Summable fun n => |h n - g n|) (c : ℝ) :
+    |h 0 - c| + ∑' n, |h (n + 1)| ≤ |g 0 - c| + ∑' n, |g (n + 1)| + ∑' n, |h n - g n| := by
+  have hg1 : Summable fun n => |g (n + 1)| := (summable_nat_add_iff 1).mpr hg
+  have hd1 : Summable fun n => |h (n + 1) - g (n + 1)| :=
+    (summable_nat_add_iff 1).mpr hd
+  have hle : ∀ n, |h (n + 1)| ≤ |g (n + 1)| + |h (n + 1) - g (n + 1)| := fun n => by
+    have := abs_add_le (g (n + 1)) (h (n + 1) - g (n + 1))
+    rwa [add_sub_cancel] at this
+  have h1 : ∑' n, |h (n + 1)| ≤ ∑' n, |g (n + 1)| + ∑' n, |h (n + 1) - g (n + 1)| := by
+    rw [← Summable.tsum_add hg1 hd1]
+    exact Summable.tsum_le_tsum hle
+      (Summable.of_nonneg_of_le (fun _ => abs_nonneg _) hle (hg1.add hd1)) (hg1.add hd1)
+  have h0 : |h 0 - c| ≤ |g 0 - c| + |h 0 - g 0| := by
+    have := abs_sub_le (h 0) (g 0) c
+    linarith
+  rw [hd.tsum_eq_zero_add]
+  linarith
+
+/-- The tail of a sum of two sequences. -/
+theorem tail_add_le (h g d : ℕ → ℝ) (hh : Summable fun n => |h n|) (hg : Summable fun n => |g n|)
+    (hd : Summable fun n => |d n|) (e : ∀ n, d n = h n - g n) (K : ℕ) (A B : ℝ)
+    (hA : ∑' n, |g (n + K)| ≤ A) (hB : ∑' n, |d (n + K)| ≤ B) : ∑' n, |h (n + K)| ≤ A + B := by
+  have hh' : Summable fun n => |h (n + K)| := (summable_nat_add_iff K).mpr hh
+  have hg' : Summable fun n => |g (n + K)| := (summable_nat_add_iff K).mpr hg
+  have hd' : Summable fun n => |d (n + K)| := (summable_nat_add_iff K).mpr hd
+  have hle : ∀ n, |h (n + K)| ≤ |g (n + K)| + |d (n + K)| := fun n => by
+    rw [e]
+    have := abs_add_le (g (n + K)) (h (n + K) - g (n + K))
+    rwa [add_sub_cancel] at this
+  have h1 := Summable.tsum_le_tsum hle hh' (hg'.add hd')
+  rw [Summable.tsum_add hg' hd'] at h1
+  linarith
 
 /-- **Hardy tail.**  If `Σ_{n < J} hₙ² r^{2(2n+1)} ≤ B` for all `J`, with `r > 1`, then
 `Σ_{n ≥ K} |hₙ| ≤ T` whenever `B · r^{−2(2K+1)} ≤ T² (1 − r^{−4})`. -/

@@ -4,13 +4,17 @@ import Grothe
 #print axioms Grothe.head_stored_le
 #print axioms Grothe.head_le
 #print axioms Grothe.tail_le
+#print axioms Grothe.residualX_le
 #print axioms Grothe.tail_numeric
 #print axioms Grothe.Upper.head_sound
 #print axioms Grothe.Upper.memB_bivarT
 #print axioms Grothe.Upper.tabPoly_coeff
 #print axioms Grothe.Upper.head_residual_le
 #print axioms Grothe.Upper.summable_abs_bivarKernel
+#print axioms Grothe.Upper.tsum_abs_bivarKernel_le
+#print axioms Grothe.Upper.bivarKernel_sub
 #print axioms Grothe.residual_transfer
+#print axioms Grothe.residual_perturb
 #print axioms Grothe.hardy_tail
 #print axioms Grothe.transfer
 #print axioms Grothe.Lower.rows_check

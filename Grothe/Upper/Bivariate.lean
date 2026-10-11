@@ -11,8 +11,9 @@ its radial coefficient sequence is the coefficient sequence of
 
 an infinite sum of polynomials (`bivarKernel`).
 
-* `summable_abs_bivarKernel`: when `‖P‖_𝒜, ‖Q‖_𝒜 ≤ 1` and `Σ|μ| < ∞`, the kernel has summable
-  coefficients;
+* `summable_abs_bivarKernel`, `tsum_abs_bivarKernel_le`: when `‖P‖_𝒜, ‖Q‖_𝒜 ≤ 1` and `Σ|μ| < ∞`,
+  the kernel has summable coefficients, of total at most `Σ|μ|`; with `bivarKernel_sub` the
+  kernels of two tables differ by at most their `ℓ¹` distance;
 * `bivarKernel_eq_head`: when `Q` is divisible by `X` (so `σ` vanishes to third order), the radial
   coefficient `j` with `2j + 1 ≤ N` only involves the indices `headIdx N = {n + 3m ≤ N}`;
 * `head_residual_le`: hence the head of the residual of the kernel of `μ` is the head computed
@@ -97,16 +98,16 @@ lemma summable_kernel_term (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (�
   rw [Real.norm_eq_abs, abs_mul]
   exact mul_le_of_le_one_right (abs_nonneg _) (abs_coeff_termOf_le P Q hP hQ p j)
 
-/-- The kernel is absolutely summable. -/
-theorem summable_abs_bivarKernel (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ : ℕ × ℕ → ℝ)
-    (hμ : Summable fun p => |μ p|) : Summable fun j => |bivarKernel P Q μ j| := by
+/-- The partial sums of the kernel are at most `Σ|μ|`. -/
+lemma sum_abs_bivarKernel_le (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ : ℕ × ℕ → ℝ)
+    (hμ : Summable fun p => |μ p|) (J : ℕ) :
+    ∑ j ∈ range J, |bivarKernel P Q μ j| ≤ ∑' p, |μ p| := by
   have hk : ∀ j, |bivarKernel P Q μ j| ≤ ∑' p, |μ p| * |(termOf P Q p).coeff j| := by
     intro j
     unfold bivarKernel
     have := norm_tsum_le_tsum_norm (f := fun p => μ p * (termOf P Q p).coeff j)
       (by simpa [Real.norm_eq_abs, abs_mul] using (summable_kernel_term P Q hP hQ μ hμ j).norm)
     simpa only [Real.norm_eq_abs, abs_mul] using this
-  refine summable_of_sum_range_le (c := ∑' p, |μ p|) (fun _ => abs_nonneg _) fun J => ?_
   have hterm : ∀ j, Summable fun p => |μ p| * |(termOf P Q p).coeff j| := fun j => by
     simpa [abs_mul] using (summable_kernel_term P Q hP hQ μ hμ j).norm
   calc ∑ j ∈ range J, |bivarKernel P Q μ j|
@@ -120,6 +121,26 @@ theorem summable_abs_bivarKernel (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤
             (l1_termOf_le_one hP hQ p))
         exact Summable.tsum_le_tsum hle
           (Summable.of_nonneg_of_le (fun p => by positivity) hle hμ) hμ
+
+/-- The kernel is absolutely summable. -/
+theorem summable_abs_bivarKernel (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ : ℕ × ℕ → ℝ)
+    (hμ : Summable fun p => |μ p|) : Summable fun j => |bivarKernel P Q μ j| :=
+  summable_of_sum_range_le (c := ∑' p, |μ p|) (fun _ => abs_nonneg _)
+    (sum_abs_bivarKernel_le P Q hP hQ μ hμ)
+
+/-- **`ℓ¹` contraction**: `Σ_j |kernel_j| ≤ Σ|μ|`. -/
+theorem tsum_abs_bivarKernel_le (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ : ℕ × ℕ → ℝ)
+    (hμ : Summable fun p => |μ p|) : ∑' j, |bivarKernel P Q μ j| ≤ ∑' p, |μ p| :=
+  Real.tsum_le_of_sum_range_le (fun _ => abs_nonneg _) (sum_abs_bivarKernel_le P Q hP hQ μ hμ)
+
+/-- The kernel is linear in the table. -/
+theorem bivarKernel_sub (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ ν : ℕ × ℕ → ℝ)
+    (hμ : Summable fun p => |μ p|) (hν : Summable fun p => |ν p|) (j : ℕ) :
+    bivarKernel P Q (fun p => μ p - ν p) j = bivarKernel P Q μ j - bivarKernel P Q ν j := by
+  unfold bivarKernel
+  rw [← Summable.tsum_sub (summable_kernel_term P Q hP hQ μ hμ j)
+    (summable_kernel_term P Q hP hQ ν hν j)]
+  exact tsum_congr fun p => by ring
 
 /-! ### The head -/
 

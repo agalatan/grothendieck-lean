@@ -23,12 +23,14 @@ description: Working conventions for the Lean 4 / Mathlib formalization of the c
   `ValidKernel`, `tpow` (tensor powers), `transfer` (the transfer inequality).
 - `Grothe/ListPoly.lean`: the Wiener norm `l1` of real polynomials.
 - `Grothe/Upper/`: the upper certificate, one two-coordinate rounding kernel
-  `H(t) = Σ E[n,m] p(t)^n (−τ(t))^m` compared with `c·t`. `Residual` (`radialKernel`,
-  `residual_transfer`, `hardy_tail`), `Bivariate` (`termOf`, `bivarKernel`, locality
-  `bivarKernel_eq_head`, `head_residual_le`), `IntervalSound` and `Head` (soundness of the
+  `H(t) = Σ E[n,m] p(t)^n (−τ(t))^m` compared with `c·t` through the kernel of a truncation
+  (tables `E`, `EX`, `E0`). `Residual` (`radialKernel`, `residual_transfer`, `residual_perturb`,
+  `tail_add_le`, `hardy_tail`), `Bivariate` (`termOf`, `bivarKernel`, `ℓ¹` contraction
+  `tsum_abs_bivarKernel_le`, linearity `bivarKernel_sub`, locality `bivarKernel_eq_head`,
+  `head_residual_le`), `IntervalSound` and `Head` (soundness of the
   Mathlib-free precompiled `GrotheKernel/`: `Basic` fixed-point intervals, `Table` truncated
   bivariate composition `bivarT` and the dyadic table parser), generated `Data.lean`
-  (`tools/gen_upper_data.py` from `handoff/upper-residual`: `pList`, `qList`, the stored energies
+  (`tools/gen_upper_data.py` from `handoff/upper-residual/taylor`: `pList`, `qList`, the stored energies
   as strings), `Final.lean` with `KernelHyps` and `complex_grothendieck_upper` (the `native_decide`
   `head_check`, about 15 s).
 - `Grothe/Lower/`: the lower certificate (witness `P₁,₀ − εP₂,₁`, `ε = 149/200`). `Basic`
