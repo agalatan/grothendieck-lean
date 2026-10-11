@@ -111,10 +111,11 @@ value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 140148809/10^8 < K`.
 * The two analytic inputs of the Stein cuts are, with w = Γ(q, q̄)/3 and c = Γ(q, q)/3, the
   fluctuation bound E w = 1, Var(w) + ½E|c|² ≤ (E|q|⁴ − 2)/3, and the integration by parts
   E[Φ(U) − φ(U)] = E[(w−1)φ(U) + Re(c q̄²/U)·(φ(U) − Φ(U)/U)] for piecewise-linear tests φ with
-  primitive Φ. Both are proved in Lean for polynomials in the third Gaussian chaos under the
-  standard Gaussian measure (`Grothe/LowerAnalytic/Fluctuation.lean`, `RadialParts.lean`,
-  `RadialCut.lean`). They remain hypotheses of the main theorem because that theorem is
-  stated for an abstract law of U, the Gaussian reduction being itself a hypothesis.
+  primitive Φ. Both are proved in Lean: for real polynomials a, b in the third Gaussian chaos
+  with E a² = E b² = ½ and E ab = 0, the law of a² + b² under the standard Gaussian measure
+  satisfies them with no further hypothesis (`Grothe.LowerAnalytic.gaussian_steinInputs`).
+  They remain hypotheses of the main theorem only because that theorem is stated for an
+  abstract law of U, the Gaussian reduction being itself assumed.
 * Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma, the
   scalar sixth-moment and first-moment certificates from their tensor hypotheses, the
   Schur-complement gate, and the square completion for the coupling vector.
