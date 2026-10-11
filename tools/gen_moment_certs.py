@@ -298,7 +298,8 @@ def pos_theorem(name, var, hi, leaves):
             out.append(f"  exact lt_of_lt_of_le (by norm_num) ({name}_leaf{i} {var} {prev} h1)")
     return "\n".join(out) + "\n\n"
 
-MOMENTS_HEADER = '''import Grothe.LowerAnalytic.MomentLemma
+MOMENTS_HEADER = '''import Grothe.Lower.Moment
+import Grothe.LowerAnalytic.MomentLemma
 import Grothe.LowerAnalytic.Bernstein2
 
 /-!
@@ -328,10 +329,14 @@ namespace Grothe.LowerAnalytic
 
 noncomputable section
 
-/-- `C₆ = 4045313/100000 = 40.45313`. -/
-def C6 : ℝ := 4045313 / 100000
-/-- `ρ = 973612157/10⁹ = 0.973612157`. -/
-def rhoC : ℝ := 973612157 / 1000000000
+/-- The sixth-moment coefficient `C₆` of the certificate, as a real number. -/
+def C6 : ℝ := (Lower.C6 : ℚ)
+/-- The first-moment bound `ρ` of the certificate, as a real number. -/
+def rhoC : ℝ := (Lower.ρ : ℚ)
+
+lemma C6_eq : C6 = 4045313 / 100000 := by norm_num [C6, Lower.C6]
+
+lemma rhoC_eq : rhoC = 973612157 / 1000000000 := by norm_num [rhoC, Lower.ρ]
 /-- `m = 2 + x²`. -/
 def mX (x : ℝ) : ℝ := 2 + x ^ 2
 /-- `N = 6 + 9x² + C₆ x³`. -/
@@ -354,7 +359,7 @@ theorem contact_ineq (x : ℝ) (h0 : 0 ≤ x) (h1 : x ≤ 31 / 4) :
   have hU : 0 < Upoly x := Upoly_pos x h0 h1
   have hg := gap8_pos x h0 h1
   have hm1 : 0 < mX x - 1 := by unfold mX; nlinarith [sq_nonneg x]
-  have hr : 0 < 1 - rhoC ^ 2 := by unfold rhoC; norm_num
+  have hr : 0 < 1 - rhoC ^ 2 := by rw [rhoC_eq]; norm_num
   obtain ⟨g, hg0, hg2⟩ : ∃ g : ℝ, 0 ≤ g ∧ g ^ 2 = (nX x - mX x ^ 2) * (mX x - 1) :=
     ⟨√((nX x - mX x ^ 2) * (mX x - 1)), Real.sqrt_nonneg _, Real.sq_sqrt (mul_pos hq hm1).le⟩
   have hUg : 2 * (1 - rhoC ^ 2) * g < Upoly x := by
@@ -384,7 +389,7 @@ theorem moment_bound_lt_rho (x : ℝ) (h0 : 0 ≤ x) (h1 : x ≤ 31 / 4) :
     (1 + √((nX x - mX x ^ 2) / (mX x - 1)))
       / √((nX x - mX x) / (mX x - 1) + 2 * √((nX x - mX x ^ 2) / (mX x - 1))) < rhoC := by
   have hc := contact_ineq x h0 h1
-  have hρ : 0 < rhoC := by unfold rhoC; norm_num
+  have hρ : 0 < rhoC := by rw [rhoC_eq]; norm_num
   have hm1 : 0 < mX x - 1 := by unfold mX; nlinarith [sq_nonneg x]
   have hq := q1poly_pos x h0 h1
   unfold q1poly at hq
@@ -424,9 +429,9 @@ end Grothe.LowerAnalytic
 
 def gen_moments():
     body = []
-    specs = [('q1poly', 'q1poly, nX, mX, C6', 'x', 4),
-             ('Upoly', 'Upoly, nX, mX, C6, rhoC', 'x', 4),
-             ('gap8', 'gap8, Upoly, q1poly, nX, mX, C6, rhoC', 'x', 8)]
+    specs = [('q1poly', 'q1poly, nX, mX, C6_eq', 'x', 4),
+             ('Upoly', 'Upoly, nX, mX, C6_eq, rhoC_eq', 'x', 4),
+             ('gap8', 'gap8, Upoly, q1poly, nX, mX, C6_eq, rhoC_eq', 'x', 8)]
     for name, unfold, var, deg in specs:
         leaves = fm_leaves(name)
         assert all(len(cs) == deg + 1 for _, _, cs in leaves)
@@ -572,11 +577,11 @@ end
     M, nx, ny, tree, nl = biv_out['high']
     certs.append(("highGap", M, nx, ny, tree, (YLO, YHI, Q(0), Q(1, 2)), "highGap y w", ['y', 'w'],
                   ['highGap', 'Qhat', 'KaY', 'KbY', 'LaY', 'Vpoly', 'Clin', 'tsos', 'Lu', 'thetaC', 'r0C',
-                   'v00C', 'vYC', 'vtC', 'vYtC', 'k1C', 'k2C', 'C6'],
+                   'v00C', 'vYC', 'vtC', 'vYtC', 'k1C', 'k2C', 'C6_eq'],
                   f"`highGap` on `[39/50, yHi] × [0, 1/2]` ({nl} leaves)"))
     M, nx, ny, tree, nl = biv_out['low']
     certs.append(("lowGap", M, nx, ny, tree, (Q(0), YLO, Q(0), Q(1)), "lowGap y u", ['y', 'u'],
-                  ['lowGap', 'Plow', 'aaC', 'bbC', 'ccC', 'ddC', 'C6'],
+                  ['lowGap', 'Plow', 'aaC', 'bbC', 'ccC', 'ddC', 'C6_eq'],
                   f"`lowGap` on `[0, 39/50] × [0, 1]` ({nl} leaves)"))
     for (cn, M, nx, ny, tree, box, expr, vars_, unfold, doc) in certs:
         xl, xh, yl, yh = box

@@ -53,7 +53,7 @@ lemma rpow_three_halves {a : ℝ} (ha : 0 ≤ a) : a ^ ((3 : ℝ) / 2) = a * √
   rw [show (3 : ℝ) / 2 = 1 + 1 / 2 by norm_num, Real.rpow_add' ha (by norm_num), Real.rpow_one,
     ← Real.sqrt_eq_rpow]
 
-lemma C6_pos : 0 < C6 := by unfold C6; norm_num
+lemma C6_pos : 0 < C6 := by rw [C6_eq]; norm_num
 
 /-- From `P ≤ 0` or `(27/50) P² ≤ C₆² D³` to `(3√6/10) P ≤ C₆ D^{3/2}`. -/
 lemma conclude_of_sq (P D : ℝ) (hD : 0 ≤ D) (h : P ≤ 0 ∨ 27 / 50 * P ^ 2 ≤ C6 ^ 2 * D ^ 3) :

@@ -237,7 +237,7 @@ theorem highGap_cover : coverOK highGapM 10 4 highGapT (39/50) (243505383503/250
 
 theorem highGap_eval (y : ℝ) (w : ℝ) : eval2 highGapM y w = highGap y w := by
   simp only [eval2, highGapM, List.map_cons, List.map_nil, evalL]
-  simp only [highGap, Qhat, KaY, KbY, LaY, Vpoly, Clin, tsos, Lu, thetaC, r0C, v00C, vYC, vtC, vYtC, k1C, k2C, C6]
+  simp only [highGap, Qhat, KaY, KbY, LaY, Vpoly, Clin, tsos, Lu, thetaC, r0C, v00C, vYC, vtC, vYtC, k1C, k2C, C6_eq]
   push_cast
   ring
 
@@ -270,7 +270,7 @@ theorem lowGap_cover : coverOK lowGapM 6 4 lowGapT (0) (39/50) (0) (1) = true :=
 
 theorem lowGap_eval (y : ℝ) (u : ℝ) : eval2 lowGapM y u = lowGap y u := by
   simp only [eval2, lowGapM, List.map_cons, List.map_nil, evalL]
-  simp only [lowGap, Plow, aaC, bbC, ccC, ddC, C6]
+  simp only [lowGap, Plow, aaC, bbC, ccC, ddC, C6_eq]
   push_cast
   ring
 
