@@ -308,7 +308,8 @@ lemma measurable_radR (a b : MvPolynomial (Fin d) ℝ) : Measurable (radR a b) :
     ((continuous_eval _).measurable.div ((continuous_eval _).measurable.const_mul 3))
 
 private lemma r_bound (A B α β : ℝ) (h : α * α + β * β ≠ 0) :
-    ((A * (α * α - β * β) + B * (2 * (α * β))) / (3 * (α * α + β * β))) ^ 2 ≤ A * A + B * B := by
+    ((A * (α * α - β * β) + B * (2 * (α * β))) / (3 * (α * α + β * β))) ^ 2
+      ≤ (A * A + B * B) / 9 := by
   have hU : 0 < α * α + β * β :=
     lt_of_le_of_ne (by nlinarith [mul_self_nonneg α, mul_self_nonneg β]) (Ne.symm h)
   rw [div_pow, div_le_iff₀ (by positivity)]
@@ -316,13 +317,15 @@ private lemma r_bound (A B α β : ℝ) (h : α * α + β * β ≠ 0) :
       ≤ (A * A + B * B) * ((α * α - β * β) ^ 2 + (2 * (α * β)) ^ 2) := by
     nlinarith [sq_nonneg (A * (2 * (α * β)) - B * (α * α - β * β))]
   have h2 : (α * α - β * β) ^ 2 + (2 * (α * β)) ^ 2 = (α * α + β * β) ^ 2 := by ring
-  rw [h2] at h1
-  nlinarith [mul_nonneg (add_nonneg (mul_self_nonneg A) (mul_self_nonneg B))
-    (sq_nonneg (α * α + β * β))]
+  have h3 : (A * A + B * B) / 9 * (3 * (α * α + β * β)) ^ 2
+      = (A * A + B * B) * (α * α + β * β) ^ 2 := by ring
+  rw [h3, ← h2]
+  exact h1
 
+/-- `r² ≤ c_R² + c_I²`, with `3c_R = radA` and `3c_I = radB`. -/
 lemma radR_sq_le (a b : MvPolynomial (Fin d) ℝ) (x : Fin d → ℝ) :
-    radR a b x ^ 2 ≤ eval x (radA a b * radA a b + radB a b * radB a b) := by
-  simp only [map_add, map_mul]
+    radR a b x ^ 2
+      ≤ (eval x (radA a b) * eval x (radA a b) + eval x (radB a b) * eval x (radB a b)) / 9 := by
   unfold radR
   split_ifs with h
   · nlinarith [mul_self_nonneg (eval x (radA a b)), mul_self_nonneg (eval x (radB a b))]
@@ -335,7 +338,9 @@ lemma memLp_radR (a b : MvPolynomial (Fin d) ℝ) : MemLp (radR a b) 2 (stdGauss
   refine integrable_of_abs_le_eval ((measurable_radR a b).pow_const 2).aestronglyMeasurable
     (radA a b * radA a b + radB a b * radB a b) fun x => ?_
   rw [abs_of_nonneg (sq_nonneg _)]
-  exact radR_sq_le a b x
+  simp only [map_add, map_mul]
+  nlinarith [radR_sq_le a b x, mul_self_nonneg (eval x (radA a b)),
+    mul_self_nonneg (eval x (radB a b))]
 
 /-- **The integration-by-parts input of the Stein cuts.** -/
 theorem radial_cut (a b : MvPolynomial (Fin d) ℝ)
