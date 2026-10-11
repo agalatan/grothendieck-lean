@@ -5,8 +5,8 @@ import Mathlib
 
 `stdGaussian d` is the product of `d` standard real Gaussians.  This file provides
 
-* integrability of polynomials (`integrable_eval`) and of functions dominated by a polynomial
-  (`integrable_of_abs_le_eval`);
+* integrability of polynomials (`integrable_eval`, `memLp_eval`) and of functions dominated by a
+  polynomial (`integrable_of_abs_le_eval`);
 * the scalar Stein identity `∫ t f(t) = ∫ f'(t)` (`stein_scalar`);
 * the coordinate Stein identity `∫ x_j F = ∫ D` for a function with slice derivative `D` in the
   `j`-th coordinate (`stein_coordinate`);
@@ -52,6 +52,13 @@ lemma integrable_of_abs_le_eval {d : ℕ} {F : (Fin d → ℝ) → ℝ}
     (h : ∀ x, |F x| ≤ MvPolynomial.eval x p) : Integrable F (stdGaussian d) :=
   (integrable_eval p).mono' hF (Filter.Eventually.of_forall fun x => by
     rw [Real.norm_eq_abs]; exact h x)
+
+/-- Polynomials are square integrable. -/
+lemma memLp_eval {d : ℕ} (p : MvPolynomial (Fin d) ℝ) :
+    MemLp (fun x => MvPolynomial.eval x p) 2 (stdGaussian d) := by
+  rw [memLp_two_iff_integrable_sq (MvPolynomial.continuous_eval p).aestronglyMeasurable]
+  exact (integrable_eval (p * p)).congr (Filter.Eventually.of_forall fun x => by
+    simp only [map_mul]; ring)
 
 /-! ### The scalar Stein identity -/
 

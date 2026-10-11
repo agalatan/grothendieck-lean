@@ -38,3 +38,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.sixth_moment_complex
 #print axioms Grothe.LowerAnalytic.coverOK_sound
 #print axioms Grothe.LowerAnalytic.lower_bound_of_tests
+#print axioms Grothe.LowerAnalytic.stein_coordinate
+#print axioms Grothe.LowerAnalytic.radial_parts
+#print axioms Grothe.LowerAnalytic.radial_cut
+#print axioms Grothe.LowerAnalytic.steinInputs_of_fluctuation
