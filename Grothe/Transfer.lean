@@ -107,14 +107,6 @@ lemma vectorOpt_nonneg (A : Fin m → Fin n → ℂ) : 0 ≤ vectorOpt A :=
     obtain ⟨_, _, _, _, _, _, rfl⟩ := hr
     exact norm_nonneg _
 
-/-- Trivially, `C(A) ≤ V(A)` (take one-dimensional vectors). -/
-lemma scalarOpt_le_vectorOpt (A : Fin m → Fin n → ℂ) : scalarOpt A ≤ vectorOpt A := by
-  apply csSup_le (scalarSet_nonempty A)
-  rintro r ⟨ε, δ, hε, hδ, rfl⟩
-  have := le_vectorOpt A (ι := Unit) (x := fun i => EuclideanSpace.single () (ε i))
-    (y := fun j => EuclideanSpace.single () (δ j)) (fun i => by simp [hε]) (fun j => by simp [hδ])
-  simpa [EuclideanSpace.inner_single_left] using this
-
 lemma IsGrothendieckBound.mono {K K' : ℝ} (h : IsGrothendieckBound K) (hK : K ≤ K') :
     IsGrothendieckBound K' := fun m n A =>
   (h m n A).trans (mul_le_mul_of_nonneg_right hK (scalarOpt_nonneg A))

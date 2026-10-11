@@ -18,10 +18,6 @@ def Llow : ℚ := 140148809 / 100000000
 
 theorem LB_lt_one : Llow * Bcap < 1 := by norm_num [Llow, Bcap]
 
-/-- The exact slack of the comparison. -/
-theorem LB_slack : 1 - Llow * Bcap = 11750239 / 10000000000000000 := by
-  norm_num [Llow, Bcap]
-
 /-- From `K ≥ 1/B` to the strict decimal endpoint. -/
 theorem lower_endpoint (K : ℝ) (hK : (1 : ℝ) / Bcap ≤ K) : (Llow : ℝ) < K := by
   have hB : (0 : ℝ) < Bcap := by norm_num [Bcap]

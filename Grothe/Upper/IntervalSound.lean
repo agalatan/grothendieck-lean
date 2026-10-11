@@ -206,23 +206,11 @@ lemma getD_take {α : Type*} (l : List α) (N n : ℕ) (z : α) (hn : n < N) :
         rw [List.take_succ_cons, List.getD_cons_succ, List.getD_cons_succ]
         exact ih N n (by omega)
 
-lemma memS_add {N : ℕ} {f g : ℕ → ℝ} {L M : List Ival} (hf : memS N f L) (hg : memS N g M) :
-    memS N (fun n => f n + g n) (addL L M) := by
-  intro n hn
-  rw [getD_addL]
-  exact mem_add (hf n hn) (hg n hn)
-
 lemma memB_add {N : ℕ} {p q : ℝ[X]} {L M : List Ival} (hp : memB N p L) (hq : memB N q M) :
     memB N (p + q) (addL L M) := by
   intro n hn
   rw [getD_addL, coeff_add]
   exact mem_add (hp n hn) (hq n hn)
-
-lemma memS_map_mulI {N : ℕ} {a : ℝ} {I : Ival} {f : ℕ → ℝ} {M : List Ival}
-    (ha : mem a I) (hf : memS N f M) : memS N (fun n => a * f n) (M.map (mulI I)) := by
-  intro n hn
-  rw [getD_map_mulI]
-  exact mem_mul ha (hf n hn)
 
 lemma memB_C_mul {N : ℕ} {a : ℝ} {I : Ival} {q : ℝ[X]} {M : List Ival}
     (ha : mem a I) (hq : memB N q M) : memB N (C a * q) (M.map (mulI I)) := by

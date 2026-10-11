@@ -86,9 +86,6 @@ lemma l1_pow_le (p : ℝ[X]) (n : ℕ) : l1 (p ^ n) ≤ l1 p ^ n := by
     rw [pow_succ, pow_succ]
     exact (l1_mul_le _ _).trans (mul_le_mul_of_nonneg_right ih (l1_nonneg _))
 
-lemma l1_C_mul_le (c : ℝ) (p : ℝ[X]) : l1 (C c * p) ≤ |c| * l1 p := by
-  simpa using l1_mul_le (C c) p
-
 end
 
 end Grothe

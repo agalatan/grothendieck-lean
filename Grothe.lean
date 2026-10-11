@@ -45,7 +45,6 @@ import Grothe.LowerAnalytic.Bernstein2
 import Grothe.LowerAnalytic.Moments
 import Grothe.LowerAnalytic.SixthMomentData
 import Grothe.LowerAnalytic.SixthMoment
-import Grothe.LowerAnalytic.Variance
 import Grothe.LowerAnalytic.Coupling
 import Grothe.LowerAnalytic.Fluctuation
 import Grothe.LowerAnalytic.GaussianMoments

@@ -73,10 +73,6 @@ end Upper
 /-- All stored indices satisfy `n + 3m ≤ 501`. -/
 theorem energyRows_within : tabWithin 501 energyRows = true := by native_decide
 
-/-- The rows and the entries of each row are listed in increasing order of their indices; in
-particular every index pair is stored once. -/
-theorem energyRows_sorted : tabSorted energyRows = true := by native_decide
-
 /-- **The finite computation**: the head of the kernel of the stored energies. -/
 theorem head_check : headInt 501 energyRows pList qList slopeQ ≤ ofRatLo headCapQ := by
   native_decide

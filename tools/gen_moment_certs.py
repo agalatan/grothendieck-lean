@@ -102,15 +102,6 @@ def check_tree(M, nx, ny, tree, box):
     mid = (yl + yh) / 2
     return check_tree(M, nx, ny, l, (xl, xh, yl, mid)) + check_tree(M, nx, ny, r, (xl, xh, mid, yh))
 
-def tree_from_paths(paths, axis_of_depth):
-    paths = set(paths)
-    def build(prefix):
-        if prefix in paths:
-            return 'leaf'
-        assert any(p.startswith(prefix + '0') for p in paths) and any(p.startswith(prefix + '1') for p in paths)
-        return (axis_of_depth(len(prefix)), build(prefix + '0'), build(prefix + '1'))
-    return build('')
-
 def adaptive_tree(M, nx, ny, box, xscale, depth=0):
     xl, xh, yl, yh = box
     b = bern2(M, nx, ny, xl, xh, yl, yh)

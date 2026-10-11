@@ -12,8 +12,6 @@ both by `native_decide`.  `rows_bound` is the resulting statement for each row, 
 
 namespace Grothe.Lower
 
-theorem rowData_length : rowData.length = 19 := rfl
-
 theorem rows_check : rowData.all checkRow = true := by native_decide
 
 theorem envelope_check :

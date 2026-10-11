@@ -95,13 +95,4 @@ def headDev (K : Nat) (tab : List RowI) (P Q : List Ival) (NZ MW : Nat) (c : Iva
 def tabWithin (N : Nat) (rows : List RowQ) : Bool :=
   rows.all fun r => decide (3 * r.1 ≤ N) && r.2.all fun e => e.1 + 3 * r.1 ≤ N
 
-/-- Strictly increasing first components. -/
-def increasing : List Nat → Bool
-  | a :: b :: rest => decide (a < b) && increasing (b :: rest)
-  | _ => true
-
-/-- The rows are listed by increasing `m` and the entries of each row by increasing `n`. -/
-def tabSorted (rows : List RowQ) : Bool :=
-  increasing (rows.map (·.1)) && rows.all fun r => increasing (r.2.map (·.1))
-
 end GrotheKernel

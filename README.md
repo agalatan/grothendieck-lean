@@ -116,9 +116,8 @@ value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 140148809/10^8 < K`.
   `RadialCut.lean`). They remain hypotheses of the main theorem because that theorem is
   stated for an abstract law of U, the Gaussian reduction being itself a hypothesis.
 * Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma, the
-  scalar sixth-moment and first-moment certificates from their tensor hypotheses, the variance
-  and retained-square identities, the Schur-complement gate, and the square completion for
-  the coupling vector.
+  scalar sixth-moment and first-moment certificates from their tensor hypotheses, the
+  Schur-complement gate, and the square completion for the coupling vector.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus `native_decide` facts for the finite
 exact computations (listed by `lake env lean scratch/Axioms.lean`; checked in CI). No `sorry`,
