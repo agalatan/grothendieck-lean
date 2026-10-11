@@ -46,7 +46,10 @@ description: Working conventions for the Lean 4 / Mathlib formalization of the c
 - `Grothe/LowerAnalytic/`: the lower certificate's analytic lemmas (moment lemma, bivariate
   Bernstein bounds, the `C₆`/`ρ` certificates `Moments`/`SixthMomentData`/`SixthMoment` generated
   by `tools/gen_moment_certs.py`, variance identities, the coupling square completion, Schur
-  gate, row mixing, endpoint).
+  gate, row mixing, endpoint), and the Gaussian side of the Stein cuts: `Gaussian` (`stdGaussian d`,
+  polynomial integrability, `stein_scalar`, `stein_coordinate`), `RadialParts` (`radial_parts`:
+  `3E[U H(U)] = E[S H(U)] + 2E[T H'(U)]`), `RadialCut` (`cutPrim_deriv`, `radial_cut`,
+  `steinInputs_of_fluctuation`).
 - `handoff/` (git-ignored) holds the research archives the generators in `tools/` read; the
   generated Lean data files are committed, the archives are not.
 - Only the best bounds are kept in the repo and its docs; superseded certificates are deleted,

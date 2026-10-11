@@ -46,3 +46,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.fluctuation_bound
 #print axioms Grothe.LowerAnalytic.gM_isGaussianExpectation
 #print axioms Grothe.LowerAnalytic.chaos3_hermite_sum
+#print axioms Grothe.LowerAnalytic.stein_coordinate
+#print axioms Grothe.LowerAnalytic.radial_parts
+#print axioms Grothe.LowerAnalytic.radial_cut
+#print axioms Grothe.LowerAnalytic.steinInputs_of_fluctuation

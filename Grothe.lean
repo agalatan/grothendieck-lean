@@ -53,3 +53,6 @@ import Grothe.LowerAnalytic.HermiteChaos
 import Grothe.LowerAnalytic.Schur
 import Grothe.LowerAnalytic.Rows
 import Grothe.LowerAnalytic.Endpoint
+import Grothe.LowerAnalytic.Gaussian
+import Grothe.LowerAnalytic.RadialParts
+import Grothe.LowerAnalytic.RadialCut
