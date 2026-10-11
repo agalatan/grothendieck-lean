@@ -1,4 +1,4 @@
-import Mathlib
+import Grothe.LowerAnalytic.Fluctuation
 
 /-!
 # The standard Gaussian measure on `Fin d → ℝ`
@@ -10,7 +10,9 @@ import Mathlib
 * the scalar Stein identity `∫ t f(t) = ∫ f'(t)` (`stein_scalar`);
 * the coordinate Stein identity `∫ x_j F = ∫ D` for a function with slice derivative `D` in the
   `j`-th coordinate (`stein_coordinate`);
-* the slice derivative of a polynomial (`hasDerivAt_eval_update`).
+* the slice derivative of a polynomial (`hasDerivAt_eval_update`);
+* the expectation of polynomials `gaussE d`, which is a Gaussian expectation in the sense of
+  `IsGaussianExpectation` and is nonnegative on squares.
 -/
 
 open MeasureTheory ProbabilityTheory
@@ -179,5 +181,41 @@ lemma hasDerivAt_eval_update {d : ℕ} (p : MvPolynomial (Fin d) ℝ) (x : Fin d
     rw [e]
     simp only [map_mul, MvPolynomial.eval_X]
     exact hp.mul hX
+
+/-! ### The expectation of polynomials -/
+
+/-- The expectation of a polynomial under the standard Gaussian measure. -/
+noncomputable def gaussE (d : ℕ) : MvPolynomial (Fin d) ℝ →ₗ[ℝ] ℝ where
+  toFun P := ∫ x, MvPolynomial.eval x P ∂(stdGaussian d)
+  map_add' P Q := by
+    simp only [map_add]
+    exact integral_add (integrable_eval P) (integrable_eval Q)
+  map_smul' c P := by
+    simp only [MvPolynomial.smul_eval, RingHom.id_apply, smul_eq_mul]
+    exact integral_const_mul c _
+
+lemma gaussE_apply {d : ℕ} (P : MvPolynomial (Fin d) ℝ) :
+    gaussE d P = ∫ x, MvPolynomial.eval x P ∂(stdGaussian d) := rfl
+
+/-- The expectation of polynomials satisfies the Gaussian integration by parts. -/
+theorem gaussE_isGaussianExpectation (d : ℕ) : IsGaussianExpectation (gaussE d) where
+  one := by simp [gaussE_apply]
+  ibp i P := by
+    rw [gaussE_apply, gaussE_apply]
+    have h := stein_coordinate i (fun x => MvPolynomial.eval x P)
+      (fun x => MvPolynomial.eval x (MvPolynomial.pderiv i P)) (integrable_eval P)
+      (integrable_eval _)
+      ((integrable_eval (MvPolynomial.X i * P)).congr (Filter.Eventually.of_forall fun x => by
+        simp only [map_mul, MvPolynomial.eval_X]))
+      fun x => by
+        have h := hasDerivAt_eval_update P x i (x i)
+        rwa [Function.update_eq_self] at h
+    rw [h]
+    exact integral_congr_ae (Filter.Eventually.of_forall fun x => by
+      simp only [map_mul, MvPolynomial.eval_X])
+
+lemma gaussE_mul_self_nonneg {d : ℕ} (P : MvPolynomial (Fin d) ℝ) : 0 ≤ gaussE d (P * P) := by
+  rw [gaussE_apply]
+  exact integral_nonneg fun x => by simp only [map_mul]; exact mul_self_nonneg _
 
 end Grothe.LowerAnalytic

@@ -1,19 +1,24 @@
 import Grothe.Lower.Stein
 import Grothe.LowerAnalytic.RadialParts
+import Grothe.LowerAnalytic.HermiteChaos
 
 /-!
-# The integration-by-parts input of the Stein cuts
+# The Stein inputs of cubic Gaussian chaos
 
-For real polynomials `a`, `b` on `Fin d → ℝ` with `Σ_j (x_j ∂_j a − ∂_j² a) = 3a` (and the same for
-`b`), `U = a² + b²`, `w = Σ_j ((∂_j a)² + (∂_j b)²)/3` and
-`r = [(Σ_j ((∂_j a)² − (∂_j b)²))(a² − b²) + 4ab Σ_j ∂_j a ∂_j b] / (3U)` (zero where `U = 0`), every
-certificate test satisfies, under the standard Gaussian measure,
+For real polynomials `a`, `b` on `Fin d → ℝ` with `ouL a = −3a`, `ouL b = −3b`, put `U = a² + b²`,
+`w = S/3` and `r = [A (a² − b²) + 2 B ab] / (3U)` (zero where `U = 0`), with `S`, `A`, `B` as in
+`Fluctuation`; for `q = a + ib` this is `r = Re(c q̄²)/U`.  Every certificate test satisfies, under
+the standard Gaussian measure,
 
   `E[Φ(U) − φ(U)] = E[(w − 1) φ(U) + r Y(U)]`
 
-(`radial_cut`).  This is the `parts` field of `Grothe.Lower.SteinInputs` for the law of `U`, with
-`v = w − 1`; `steinInputs_of_fluctuation` assembles `SteinInputs` from the fluctuation bound.  The test `h = Φ/u` is differentiable on the whole half-line: the primitive `Φ` is
-`C¹` across the knots (`cutPrim_deriv`), and near zero `h` is affine.
+(`radial_cut`): the test `h = Φ/u` is differentiable on the whole half-line, the primitive `Φ`
+being `C¹` across the knots (`cutPrim_deriv`) and `h` affine near zero.
+
+Together with the fluctuation bound this gives `Grothe.Lower.SteinInputs` for the law of `U`
+whenever `a`, `b` are in the third chaos with `E a² = E b² = 1/2`, `E ab = 0`
+(`gaussian_steinInputs`), in particular for combinations of Hermite products of degree three
+(`gaussian_steinInputs_hermite`).
 -/
 
 open MeasureTheory MvPolynomial Grothe.Lower
@@ -268,14 +273,6 @@ lemma cutH_radialTest (vs z : List ℚ) (hvs : meshOK 0 vs = true) :
 
 variable {d : ℕ}
 
-/-- `3 c_R = Σ_j ((∂_j a)² − (∂_j b)²)`. -/
-noncomputable def radA (a b : MvPolynomial (Fin d) ℝ) : MvPolynomial (Fin d) ℝ :=
-  ∑ j, (pderiv j a * pderiv j a - pderiv j b * pderiv j b)
-
-/-- `3 c_I = 2 Σ_j ∂_j a ∂_j b`. -/
-noncomputable def radB (a b : MvPolynomial (Fin d) ℝ) : MvPolynomial (Fin d) ℝ :=
-  2 * ∑ j, pderiv j a * pderiv j b
-
 /-- Three times the numerator of `r`. -/
 noncomputable def radN (a b : MvPolynomial (Fin d) ℝ) : MvPolynomial (Fin d) ℝ :=
   radA a b * (a * a - b * b) + radB a b * (2 * (a * b))
@@ -286,8 +283,8 @@ noncomputable def radR (a b : MvPolynomial (Fin d) ℝ) (x : Fin d → ℝ) : �
 
 lemma radT_eq (a b : MvPolynomial (Fin d) ℝ) :
     2 * radT a b = radU a b * radS a b + radN a b := by
-  simp only [radT, radS, radN, radA, radB, radU, radV, Finset.mul_sum, Finset.sum_mul,
-    ← Finset.sum_add_distrib]
+  simp only [radT, radS, radN, radA, radB, radU, radV, gam, Finset.mul_sum, Finset.sum_mul,
+    add_mul, sub_mul, mul_add, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]
   exact Finset.sum_congr rfl fun j _ => by ring
 
 lemma radR_mul (a b : MvPolynomial (Fin d) ℝ) (x : Fin d → ℝ) :
@@ -343,9 +340,7 @@ lemma memLp_radR (a b : MvPolynomial (Fin d) ℝ) : MemLp (radR a b) 2 (stdGauss
     mul_self_nonneg (eval x (radB a b))]
 
 /-- **The integration-by-parts input of the Stein cuts.** -/
-theorem radial_cut (a b : MvPolynomial (Fin d) ℝ)
-    (ha : ∑ j, (X j * pderiv j a - pderiv j (pderiv j a)) = 3 * a)
-    (hb : ∑ j, (X j * pderiv j b - pderiv j (pderiv j b)) = 3 * b)
+theorem radial_cut (a b : MvPolynomial (Fin d) ℝ) (ha : ouL a = -(3 * a)) (hb : ouL b = -(3 * b))
     (vs z : List ℚ) (hvs : meshOK 0 vs = true) :
     ∫ x, cutGap vs z (√(eval x (radU a b))) ∂(stdGaussian d)
       = ∫ x, ((eval x (radS a b) / 3 - 1) * cutPhi vs z (√(eval x (radU a b)))
@@ -396,38 +391,68 @@ theorem radial_cut (a b : MvPolynomial (Fin d) ℝ)
     integral_sub j30 i2, integral_sub j3 i0, integral_const_mul, integral_const_mul]
   linarith
 
-/-- `E S = 3 E U`. -/
-lemma integral_radS (a b : MvPolynomial (Fin d) ℝ)
-    (ha : ∑ j, (X j * pderiv j a - pderiv j (pderiv j a)) = 3 * a)
-    (hb : ∑ j, (X j * pderiv j b - pderiv j (pderiv j b)) = 3 * b) :
-    ∫ x, eval x (radS a b) ∂(stdGaussian d) = 3 * ∫ x, eval x (radU a b) ∂(stdGaussian d) := by
-  have hT : RadialTest (fun _ : ℝ => (1 : ℝ)) (fun _ => 0) 1 :=
-    ⟨fun u => hasDerivAt_const u 1, fun u hu => by rw [abs_one]; linarith,
-      fun u hu => by rw [mul_zero, abs_zero]; linarith⟩
-  have h := radial_parts hT a b ha hb
-  simp only [mul_one, mul_zero, integral_zero, add_zero] at h
-  exact h.symm
-
-/-- **The Stein inputs from the fluctuation bound.**  For the law of `U = a² + b²` under the
-standard Gaussian measure, with `v = w − 1` and `r` as above, the mean `E v = 0`, the square
-integrability of `v` and `r`, and the integration by parts hold; the fluctuation bound is the
-remaining input. -/
-theorem steinInputs_of_fluctuation (a b : MvPolynomial (Fin d) ℝ)
-    (ha : ∑ j, (X j * pderiv j a - pderiv j (pderiv j a)) = 3 * a)
-    (hb : ∑ j, (X j * pderiv j b - pderiv j (pderiv j b)) = 3 * b)
-    (hU : ∫ x, eval x (radU a b) ∂(stdGaussian d) = 1)
-    (hfl : ∫ x, (eval x (radS a b) / 3 - 1) ^ 2 ∂(stdGaussian d)
-        + 1 / 2 * ∫ x, radR a b x ^ 2 ∂(stdGaussian d)
-      ≤ (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2) / 3) :
+/-- **The Stein inputs of cubic Gaussian chaos.**  For `a`, `b` in the third chaos with
+`E a² = E b² = 1/2` and `E ab = 0` (the real and imaginary parts of a normalized `q` of bidegree
+`(2,1)`), the law of `U = a² + b²` under the standard Gaussian measure has the two analytic inputs
+of the Stein cuts, with `v = w − 1` and `r` as above: the fluctuation bound and the integration by
+parts. -/
+theorem gaussian_steinInputs (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (hb : Chaos3 b)
+    (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2)
+    (hbb : ∫ x, eval x b ^ 2 ∂(stdGaussian d) = 1 / 2)
+    (hab : ∫ x, eval x a * eval x b ∂(stdGaussian d) = 0) :
     SteinInputs (stdGaussian d) fun x => eval x (radU a b) := by
+  have hE := gaussE_isGaussianExpectation d
+  have haa' : gaussE d (a * a) = 1 / 2 := by
+    rw [gaussE_apply, ← haa]
+    exact integral_congr_ae (Filter.Eventually.of_forall fun x => by simp only [map_mul]; ring)
+  have hbb' : gaussE d (b * b) = 1 / 2 := by
+    rw [gaussE_apply, ← hbb]
+    exact integral_congr_ae (Filter.Eventually.of_forall fun x => by simp only [map_mul]; ring)
+  have hab' : gaussE d (a * b) = 0 := by
+    rw [gaussE_apply, ← hab]
+    exact integral_congr_ae (Filter.Eventually.of_forall fun x => by simp only [map_mul])
+  have hmean := fluctuation_mean hE ha hb haa' hbb'
+  have hbound := fluctuation_bound hE gaussE_mul_self_nonneg ha hb haa' hbb' hab'
+  simp only [gaussE_apply] at hmean hbound
   have hv : MemLp (fun x => eval x (radS a b) / 3 - 1) 2 (stdGaussian d) := by
     refine (memLp_congr_ae (Filter.Eventually.of_forall fun x => ?_)).1
       (memLp_eval (C (1 / 3 : ℝ) * radS a b - 1))
     simp only [map_sub, map_mul, eval_C, map_one]; ring
-  have hmean : ∫ x, (eval x (radS a b) / 3 - 1) ∂(stdGaussian d) = 0 := by
-    rw [integral_sub ((integrable_eval _).div_const 3) (integrable_const _), integral_div,
-      integral_radS a b ha hb, hU, integral_const, probReal_univ]
+  have hv0 : ∫ x, (eval x (radS a b) / 3 - 1) ∂(stdGaussian d) = 0 := by
+    rw [integral_sub ((integrable_eval _).div_const 3) (integrable_const _), integral_div, hmean,
+      integral_const, probReal_univ]
     norm_num
-  exact ⟨⟨_, radR a b, hv, memLp_radR a b, hmean, hfl, fun vs z h => radial_cut a b ha hb vs z h⟩⟩
+  have e1 : ∫ x, (eval x (radS a b) / 3 - 1) ^ 2 ∂(stdGaussian d)
+      = 1 / 9 * ∫ x, eval x ((radS a b - 3) * (radS a b - 3)) ∂(stdGaussian d) := by
+    rw [← integral_const_mul]
+    exact integral_congr_ae (Filter.Eventually.of_forall fun x => by
+      simp only [map_mul, map_sub, map_ofNat]; ring)
+  have e2 : ∫ x, radR a b x ^ 2 ∂(stdGaussian d)
+      ≤ 1 / 9 * (∫ x, eval x (radA a b * radA a b) ∂(stdGaussian d)
+        + ∫ x, eval x (radB a b * radB a b) ∂(stdGaussian d)) := by
+    rw [← integral_add (integrable_eval _) (integrable_eval _), ← integral_const_mul]
+    refine integral_mono (memLp_radR a b).integrable_sq
+      (((integrable_eval _).add (integrable_eval _)).const_mul _) fun x => ?_
+    have h := radR_sq_le a b x
+    simp only [map_mul]
+    linarith
+  have e3 : ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d)
+      = ∫ x, eval x (radU a b * radU a b) ∂(stdGaussian d) :=
+    integral_congr_ae (Filter.Eventually.of_forall fun x => by simp only [map_mul]; ring)
+  refine ⟨⟨_, radR a b, hv, memLp_radR a b, hv0, ?_, fun vs z h =>
+    radial_cut a b ha.eig hb.eig vs z h⟩⟩
+  rw [e1, e3]
+  linarith
+
+/-- The Stein inputs for combinations of Hermite products of total degree three. -/
+theorem gaussian_steinInputs_hermite (s : Finset (Fin d → ℕ)) (f g : (Fin d → ℕ) → ℝ)
+    (hs : ∀ α ∈ s, ∑ i, α i = 3)
+    (haa : ∫ x, eval x (∑ α ∈ s, C (f α) * hermiteProd α) ^ 2 ∂(stdGaussian d) = 1 / 2)
+    (hbb : ∫ x, eval x (∑ α ∈ s, C (g α) * hermiteProd α) ^ 2 ∂(stdGaussian d) = 1 / 2)
+    (hab : ∫ x, eval x (∑ α ∈ s, C (f α) * hermiteProd α)
+      * eval x (∑ α ∈ s, C (g α) * hermiteProd α) ∂(stdGaussian d) = 0) :
+    SteinInputs (stdGaussian d) fun x =>
+      eval x (radU (∑ α ∈ s, C (f α) * hermiteProd α) (∑ α ∈ s, C (g α) * hermiteProd α)) :=
+  gaussian_steinInputs _ _ (chaos3_hermite_sum s f hs) (chaos3_hermite_sum s g hs) haa hbb hab
 
 end Grothe.LowerAnalytic

@@ -3,11 +3,10 @@ import Grothe.LowerAnalytic.Gaussian
 /-!
 # Radial Gaussian integration by parts
 
-Let `a`, `b` be real polynomials on `Fin d → ℝ` with `Σ_j (x_j ∂_j a − ∂_j² a) = 3a` and the same
-for `b` (they are eigenfunctions of the Ornstein–Uhlenbeck generator with eigenvalue `−3`, as
-every cubic Hermite combination is).  Put `U = a² + b²`, `S = Σ_j ((∂_j a)² + (∂_j b)²)`,
-`V_j = a ∂_j a + b ∂_j b`, `T = Σ_j V_j²`.  For a differentiable test `H` with derivative `H'` and
-`|H(u)|, |u H'(u)| ≤ M(1 + u)` on `u ≥ 0`,
+Let `a`, `b` be real polynomials on `Fin d → ℝ` that are eigenfunctions of the Ornstein–Uhlenbeck
+generator with eigenvalue `−3` (`ouL a = −3a`, as for every cubic Hermite combination).  Put
+`U = a² + b²`, `S = Σ_j ((∂_j a)² + (∂_j b)²)`, `V_j = a ∂_j a + b ∂_j b`, `T = Σ_j V_j²`.  For a
+differentiable test `H` with derivative `H'` and `|H(u)|, |u H'(u)| ≤ M(1 + u)` on `u ≥ 0`,
 
   `3 E[U H(U)] = E[S H(U)] + 2 E[T H'(U)]`
 
@@ -20,20 +19,17 @@ namespace Grothe.LowerAnalytic
 
 variable {d : ℕ}
 
-/-- `U = a² + b²`. -/
-noncomputable def radU (a b : MvPolynomial (Fin d) ℝ) : MvPolynomial (Fin d) ℝ := a * a + b * b
-
 /-- `V_j = a ∂_j a + b ∂_j b`. -/
 noncomputable def radV (a b : MvPolynomial (Fin d) ℝ) (j : Fin d) : MvPolynomial (Fin d) ℝ :=
   a * pderiv j a + b * pderiv j b
 
-/-- `S = Σ_j ((∂_j a)² + (∂_j b)²)`. -/
-noncomputable def radS (a b : MvPolynomial (Fin d) ℝ) : MvPolynomial (Fin d) ℝ :=
-  ∑ j, (pderiv j a * pderiv j a + pderiv j b * pderiv j b)
-
 /-- `T = Σ_j V_j²`. -/
 noncomputable def radT (a b : MvPolynomial (Fin d) ℝ) : MvPolynomial (Fin d) ℝ :=
   ∑ j, radV a b j * radV a b j
+
+lemma radS_eq_sum (a b : MvPolynomial (Fin d) ℝ) :
+    radS a b = ∑ j, (pderiv j a * pderiv j a + pderiv j b * pderiv j b) := by
+  simp only [radS, gam, Finset.sum_add_distrib]
 
 lemma eval_radU (a b : MvPolynomial (Fin d) ℝ) (x : Fin d → ℝ) :
     eval x (radU a b) = eval x a * eval x a + eval x b * eval x b := by
@@ -167,7 +163,7 @@ lemma eval_radT_le (a b : MvPolynomial (Fin d) ℝ) (x : Fin d → ℝ) :
     simp only [radT, map_sum, map_mul]
     exact Finset.sum_nonneg fun j _ => mul_self_nonneg _
   rw [abs_of_nonneg h0]
-  simp only [radT, radS, map_sum, Finset.mul_sum]
+  simp only [radT, radS_eq_sum, map_sum, Finset.mul_sum]
   refine Finset.sum_le_sum fun j _ => ?_
   simp only [radV, eval_radU, map_add, map_mul]
   nlinarith [mul_self_nonneg (eval x a * eval x (pderiv j b) - eval x b * eval x (pderiv j a))]
@@ -175,11 +171,17 @@ lemma eval_radT_le (a b : MvPolynomial (Fin d) ℝ) (x : Fin d → ℝ) :
 /-- **Radial Gaussian integration by parts.** -/
 theorem radial_parts {H H' : ℝ → ℝ} {M : ℝ} (hT : RadialTest H H' M)
     (a b : MvPolynomial (Fin d) ℝ)
-    (ha : ∑ j, (X j * pderiv j a - pderiv j (pderiv j a)) = 3 * a)
-    (hb : ∑ j, (X j * pderiv j b - pderiv j (pderiv j b)) = 3 * b) :
+    (ha : ouL a = -(3 * a)) (hb : ouL b = -(3 * b)) :
     3 * ∫ x, eval x (radU a b) * H (eval x (radU a b)) ∂(stdGaussian d)
       = ∫ x, eval x (radS a b) * H (eval x (radU a b)) ∂(stdGaussian d)
         + 2 * ∫ x, eval x (radT a b) * H' (eval x (radU a b)) ∂(stdGaussian d) := by
+  have eig : ∀ F : MvPolynomial (Fin d) ℝ, ouL F = -(3 * F) →
+      ∑ j, (X j * pderiv j F - pderiv j (pderiv j F)) = 3 * F := fun F hF => by
+    rw [← neg_eq_iff_eq_neg, ouL_apply, ← Finset.sum_neg_distrib] at hF
+    rw [← hF]
+    exact Finset.sum_congr rfl fun j _ => by ring
+  replace ha := eig a ha
+  replace hb := eig b hb
   -- the linear functionals
   obtain ⟨L, hL⟩ : ∃ L : MvPolynomial (Fin d) ℝ → ℝ, ∀ p,
       L p = ∫ x, eval x p * H (eval x (radU a b)) ∂(stdGaussian d) := ⟨_, fun _ => rfl⟩
@@ -246,7 +248,7 @@ theorem radial_parts {H H' : ℝ → ℝ} {M : ℝ} (hT : RadialTest H H' M)
             - (pderiv j a * pderiv j a + pderiv j b * pderiv j b) := fun j => by
       simp only [Derivation.leibniz, smul_eq_mul]; ring
     simp only [e, Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.sum_mul, ha, hb, radU,
-      radS]
+      radS_eq_sum]
     ring
   have hsumL := hsum fun j => X j * (pderiv j a * a) + X j * (pderiv j b * b)
       - (pderiv j (pderiv j a * a) + pderiv j (pderiv j b * b))
