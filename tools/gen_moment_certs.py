@@ -6,7 +6,7 @@ Writes
   Grothe/LowerAnalytic/SixthMomentData.lean  (line majorants, scalar polynomials, covers)
 
 Usage:  python3 -I tools/gen_moment_certs.py [ARCHIVE_DIR]
-ARCHIVE_DIR defaults to handoff/lower-v5 and must contain local/split-moment-parameters.json and
+ARCHIVE_DIR defaults to handoff/lower-moments and must contain local/split-moment-parameters.json and
 local/first-moment-4045313.json.  Every polynomial, Bernstein coefficient and cover is computed
 here in exact rational arithmetic (the subdivisions adaptively); the archive's first-moment leaves
 are compared against the recomputation.
@@ -19,7 +19,7 @@ from math import comb
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-ARCH = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / 'handoff' / 'lower-v5'
+ARCH = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / 'handoff' / 'lower-moments'
 OUT = ROOT / 'Grothe' / 'LowerAnalytic'
 
 C6 = Q(4045313, 100000)

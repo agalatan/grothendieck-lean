@@ -58,8 +58,8 @@ certificates) and this Lean development (the machine-checked verification):
   majorizes the potential plus a nonnegative combination of Stein cuts, joined by convexity in
   σ. The inputs on the law of |q|² are the sixth-moment inequality
   E|q|⁶ ≤ 9m − 12 + 40.45313·(m−2)^{3/2}, the first-moment bound E|q| ≤ 0.973612157, and the
-  Stein-cut inequalities, which follow from Var(w) + ½E|c|² ≤ (m−2)/3 and Gaussian integration
-  by parts. Then K_G^ℂ ≥ 1/B.
+  Stein cuts, a family of inequalities E G(|q|²) ≥ 0 obtained from a fluctuation bound and a
+  Gaussian integration by parts. Then K_G^ℂ ≥ 1/B.
 
 ## What exactly is proved in Lean
 
@@ -97,26 +97,45 @@ tables of the rounding, of its polynomial truncation, and of the rounding withou
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
 value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 140148809/10^8 < K`.
 
-* Proved: positivity certificates in integer arithmetic, PSD gates by exact LᵀDL
-  factorisations, the Stein cuts from their two analytic inputs (by a completion of squares) and their
-  polynomial pieces, the majorant sweeps over 19,943
-  nodes, the moment-rectangle covers, the integration against the law of |q|², the chords in σ,
-  the bound of every row from its Gaussian reduction, the mixture envelope, and the endpoint.
-  Also proved, as standalone lemmas: the three-moment lemma, the scalar sixth-moment and
-  first-moment certificates, the variance and retained-square identities, the Schur-complement
-  gate and the square completion for the coupling vector.
+* Proved: positivity certificates in integer arithmetic; PSD gates by exact LᵀDL
+  factorisations; the Stein cuts from their two analytic inputs, by a completion of squares,
+  and their polynomial pieces; the majorant sweeps over 19,943 nodes; the moment-rectangle
+  covers; the integration against the law of |q|²; the chords in σ; the bound of every row
+  from its Gaussian reduction; the mixture envelope; and the endpoint.
 * Explicit hypotheses (not formalized): the Gaussian reduction of each row to an integrated
   potential, V ≤ t² − 2ℓt + 2β²/ε + E Ψ(σ√U) − κσ² − ε‖Qh + βv/ε‖², including its coupling
   vector; the node caps, convexity and Lipschitz bound of each potential (interval integration
-  outside Lean, slack 10⁻¹¹); the moment bounds on the law of |q|²; the two analytic inputs of
-  the Stein cuts, with w = Γ(q, q̄)/3 and c = Γ(q, q)/3: the fluctuation bound E w = 1,
-  Var(w) + ½E|c|² ≤ (E|q|⁴ − 2)/3, and the Gaussian integration by parts
+  outside Lean, slack 10⁻¹¹); the moment bounds on the law of U = |q|²; the two analytic
+  inputs of the Stein cuts for that law; and the transfer from the Gaussian operator to finite
+  matrices.
+* The two analytic inputs of the Stein cuts are, with w = Γ(q, q̄)/3 and c = Γ(q, q)/3, the
+  fluctuation bound E w = 1, Var(w) + ½E|c|² ≤ (E|q|⁴ − 2)/3, and the integration by parts
   E[Φ(U) − φ(U)] = E[(w−1)φ(U) + Re(c q̄²/U)·(φ(U) − Φ(U)/U)] for piecewise-linear tests φ with
-  primitive Φ, U = |q|²; and the transfer from the Gaussian operator to finite matrices.
+  primitive Φ. Both are proved in Lean for polynomials in the third Gaussian chaos under the
+  standard Gaussian measure (`Grothe/LowerAnalytic/Fluctuation.lean`, `RadialParts.lean`,
+  `RadialCut.lean`). They remain hypotheses of the main theorem because that theorem is
+  stated for an abstract law of U, the Gaussian reduction being itself a hypothesis.
+* Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma, the
+  scalar sixth-moment and first-moment certificates from their tensor hypotheses, the variance
+  and retained-square identities, the Schur-complement gate, and the square completion for
+  the coupling vector.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus `native_decide` facts for the finite
 exact computations (listed by `lake env lean scratch/Axioms.lean`; checked in CI). No `sorry`,
 no warnings.
+
+## Layout
+
+| path | content |
+|---|---|
+| `Grothe/Transfer.lean` | `IsGrothendieckBound`, the transfer inequality |
+| `Grothe/Upper/` | residual transfer, kernel composition, interval soundness, head check, final theorem |
+| `GrotheKernel/` | the fixed-point interval evaluator used by the head check |
+| `Grothe/Lower/` | positivity certificates, gates, Stein cuts, row and envelope checkers, final theorems |
+| `Grothe/Lower/RowData*.lean`, `Grothe/Upper/Data.lean` | generated certificate data |
+| `Grothe/LowerAnalytic/` | analytic lemmas: Gaussian integration by parts, fluctuation bound, moment certificates |
+| `tools/` | generators of the data modules from the research archives |
+| `scratch/Axioms.lean`, `scripts/check_axioms.py` | the axiom report and its check |
 
 ## Building
 

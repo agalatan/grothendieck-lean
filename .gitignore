@@ -5,3 +5,5 @@ __pycache__/
 handoff/
 scratch/*.log
 logs/
+.DS_Store
+.agents/
