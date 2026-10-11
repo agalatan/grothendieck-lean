@@ -80,7 +80,7 @@ def lean_str(s): return '"' + s + '"'
 
 man = json.load(open(CERT / "manifest.json"))
 EPS = Q(man["eps"]); B = Q(man["B"])
-assert EPS == Q(149, 200) and B == Q(71352729, 10**8)
+assert EPS == Q(149, 200) and B == Q(713467303, 10**9)
 for fn, h in man["files"].items():
     assert hashlib.sha256(open(CERT / fn, "rb").read()).hexdigest() == h, fn
 consts = json.load(open(ROWS))

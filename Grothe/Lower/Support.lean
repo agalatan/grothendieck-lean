@@ -68,7 +68,7 @@ theorem row_valid (r : Row) (hb : RowBound r) (V t : ℝ) (Qh v : E)
 
 /-- **Main lower-bound theorem (finite layer).**  Under the retained-square inequality of the
 crude row and the Gaussian reductions of the certified rows, every admissible `(V, t)` satisfies
-`V ≤ B`; with the Gaussian transfer `K_G^ℂ ≥ 1/B` this is `K_G^ℂ > 1.40148809`
+`V ≤ B`; with the Gaussian transfer `K_G^ℂ ≥ 1/B` this is `K_G^ℂ > 1.40160592`
 (`lower_endpoint`). -/
 theorem lower_bound_main (rows : List Row) (models : List EnvModel) (cells : List EnvCell)
     (hrows : rows.all checkRow = true)
