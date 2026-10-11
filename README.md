@@ -92,7 +92,8 @@ and `Grothe.upper_value_lt` shows this is below 1.404614202.
 value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 140148809/10^8 < K`.
 
 * Proved: positivity certificates in integer arithmetic, PSD gates by exact LᵀDL
-  factorisations, the polynomial pieces of the Stein cuts, the majorant sweeps over 19,943
+  factorisations, the Stein cuts from their two analytic inputs (by a completion of squares) and their
+  polynomial pieces, the majorant sweeps over 19,943
   nodes, the moment-rectangle covers, the integration against the law of |q|², the chords in σ,
   the bound of every row from its Gaussian reduction, the mixture envelope, and the endpoint.
   Also proved, as standalone lemmas: the three-moment lemma, the scalar sixth-moment and
@@ -101,8 +102,11 @@ value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 140148809/10^8 < K`.
 * Explicit hypotheses (not formalized): the Gaussian reduction of each row to an integrated
   potential, V ≤ t² − 2ℓt + 2β²/ε + E Ψ(σ√U) − κσ² − ε‖Qh + βv/ε‖², including its coupling
   vector; the node caps, convexity and Lipschitz bound of each potential (interval integration
-  outside Lean, slack 10⁻¹¹); the moment bounds on the law of |q|²; the Stein-cut inequalities
-  for that law; and the transfer from the Gaussian operator to finite matrices.
+  outside Lean, slack 10⁻¹¹); the moment bounds on the law of |q|²; the two analytic inputs of
+  the Stein cuts, with w = Γ(q, q̄)/3 and c = Γ(q, q)/3: the fluctuation bound E w = 1,
+  Var(w) + ½E|c|² ≤ (E|q|⁴ − 2)/3, and the Gaussian integration by parts
+  E[Φ(U) − φ(U)] = E[(w−1)φ(U) + Re(c q̄²/U)·(φ(U) − Φ(U)/U)] for piecewise-linear tests φ with
+  primitive Φ, U = |q|²; and the transfer from the Gaussian operator to finite matrices.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus `native_decide` facts for the finite
 exact computations (listed by `lake env lean scratch/Axioms.lean`; checked in CI). No `sorry`,
