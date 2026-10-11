@@ -7,7 +7,7 @@ For a residual `q` (a cubic chaos of bidegree `(2,1)`) with `σ = ‖q‖₂`, l
 `Moments μ U x` collects what the certificate uses about the law of `U`:
 `E U = 1`, `E U² = 2 + x²` with `0 ≤ x ≤ 31/4`, `E U³ ≤ 6 + 9x² + C₆x³` and `E √U ≤ ρ`.
 `SteinCut μ U` is the family of Stein-cut inequalities `E G(U) ≥ 0`, one for every mesh and
-every test vector (`cutG`).
+every test vector (`cutG`); it is derived from its analytic inputs in `Stein.lean`.
 
 `node_fn` integrates a polynomial majorant minus a nonnegative combination of cuts, and
 `rect_integral`, `chord_integral` are the two forms in which pointwise majorants of the

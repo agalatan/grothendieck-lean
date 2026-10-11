@@ -36,7 +36,8 @@ description: Working conventions for the Lean 4 / Mathlib formalization of the c
   certificate `posCert`/`posOn`, Taylor tails), `PSD`, `Gates`, `Moment` (constants `ρ`, `C6`, `ε`;
   `MPoly`, `J`, `checkJ`), `Sweep` (`CapsHold`, the majorant sweep `sweepTop`, `major_sound`),
   `Cuts` (Stein-cut test functions `cutG` and their polynomial pieces), `Law` (`Moments`,
-  `SteinCut`, integration lemmas), `Rows` (`Row`, parsers, `checkRow`, `rowBound_of_check`),
+  `SteinCut`, integration lemmas), `Stein` (`SteinInputs`, `steinCut_of_inputs`: the cuts from the
+  fluctuation bound and the radial integration by parts), `Rows` (`Row`, parsers, `checkRow`, `rowBound_of_check`),
   `Envelope`, `Endpoint`, `Support` (`RowReduction`, `lower_bound_main`), generated data
   (`RowData01`–`RowData19`, `RowData` from `tools/gen_lower_data.py`; bulk data are strings parsed
   at check time), `RowCheck` (the `native_decide` module, `lower_bound_data`).

@@ -14,6 +14,7 @@ import Grothe.Lower.Moment
 import Grothe.Lower.Sweep
 import Grothe.Lower.Cuts
 import Grothe.Lower.Law
+import Grothe.Lower.Stein
 import Grothe.Lower.Rows
 import Grothe.Lower.Envelope
 import Grothe.Lower.Endpoint

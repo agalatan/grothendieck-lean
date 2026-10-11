@@ -25,6 +25,7 @@ import Grothe
 #print axioms Grothe.Lower.posOn_sound
 #print axioms Grothe.Lower.cutSum_cell
 #print axioms Grothe.Lower.node_fn
+#print axioms Grothe.Lower.steinCut_of_inputs
 #print axioms Grothe.Lower.checkJ_sound
 #print axioms Grothe.Lower.envelope_bound
 #print axioms Grothe.LowerAnalytic.rowHolds_mix

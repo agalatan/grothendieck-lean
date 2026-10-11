@@ -1,4 +1,5 @@
 import Grothe.Lower.Rows
+import Grothe.Lower.Stein
 import Grothe.Lower.Envelope
 import Grothe.Lower.Endpoint
 import Grothe.LowerAnalytic.Rows
@@ -14,7 +15,8 @@ and
 
 where `Ψ` is the potential of the row (with coupling `e₁ + b`), known through its node caps
 (up to the slack `capPad`), its convexity and its Lipschitz constant, and where the law of
-`U = |q|²/σ²` satisfies the moment bounds (`Moments`) and the Stein cuts (`SteinCut`).
+`U = |q|²/σ²` satisfies the moment bounds (`Moments`) and the analytic inputs of the Stein cuts
+(`SteinInputs`: the fluctuation bound and the radial integration by parts).
 `row_valid` combines this with the certified bound `RowBound` into the retained-square
 inequality of the row with `C = 2β²/ε + cap + capPad`, and `lower_bound_main` combines the rows
 (and the crude row `(0, 0, ερ²)`) with the scalar envelope check into `V ≤ B`.
@@ -39,13 +41,13 @@ def RowOf (row : EnvRow) (V t : ℝ) (Qh v : E) : Prop :=
   RowHolds (ε : ℝ) row.ell row.beta row.C V t Qh v
 
 /-- **The Gaussian reduction of a row**: there are a law of the normalized residual
-(`U = |q|²/σ²` on a probability space) with the moment bounds and the Stein cuts, a potential
+(`U = |q|²/σ²` on a probability space) with the moment bounds and the inputs of the Stein cuts, a potential
 `Ψ` with the node caps of the row up to `capPad` (convex, `smax`-Lipschitz), and a scale
 `0 ≤ σ ≤ δρ`, such that `V` is bounded by the reduced expression with the price `κσ²`. -/
 def RowReduction (r : Row) (V t : ℝ) (Qh v : E) : Prop :=
   ∃ (Ω : Type) (_ : MeasurableSpace Ω) (μ : Measure Ω) (_ : IsProbabilityMeasure μ)
     (U : Ω → ℝ) (Ψ : ℝ → ℝ) (σ x : ℝ),
-    Moments μ U x ∧ SteinCut μ U ∧ CapsHold (fun s => Ψ s - capPad) r.nodeList r.smax ∧
+    Moments μ U x ∧ SteinInputs μ U ∧ CapsHold (fun s => Ψ s - capPad) r.nodeList r.smax ∧
     0 ≤ σ ∧ σ ≤ r.delta * ρ ∧ Integrable (fun ω => Ψ (σ * √(U ω))) μ ∧
     V ≤ t ^ 2 - 2 * r.ell * t + 2 * r.beta ^ 2 / ε + ∫ ω, Ψ (σ * √(U ω)) ∂μ - r.kappa * σ ^ 2
       - ε * ‖Qh + ((r.beta : ℝ) / ε) • v‖ ^ 2
@@ -55,7 +57,8 @@ theorem row_valid (r : Row) (hb : RowBound r) (V t : ℝ) (Qh v : E)
     (h : RowReduction r V t Qh v) : RowOf r.env V t Qh v := by
   obtain ⟨Ω, _, μ, _, U, Ψ, σ, x, hM, hS, hΨ, h0, h1, hf, hV⟩ := h
   have hf' : Integrable (fun ω => Ψ (σ * √(U ω)) - capPad) μ := hf.sub (integrable_const _)
-  have hbd := hb Ω μ U x (fun s => Ψ s - capPad) σ hM hS hΨ h0 h1 hf'
+  have hbd := hb Ω μ U x (fun s => Ψ s - capPad) σ hM (steinCut_of_inputs μ hM hS) hΨ h0 h1
+    hf'
   have e : ∫ ω, (Ψ (σ * √(U ω)) - capPad) ∂μ = ∫ ω, Ψ (σ * √(U ω)) ∂μ - capPad := by
     rw [integral_sub hf (integrable_const _), integral_const, probReal_univ, one_smul]
   rw [e] at hbd
