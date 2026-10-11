@@ -19,14 +19,16 @@ is the fourth-chaos component of `F²`, and (`chaos3_remainder`)
   `2 (E F⁴ − 3S²) − E[(Γ(F,F) − 3S)²] = E[J₄²]`.
 
 Applied to `a`, `a + b`, `b`, `b − a` for a pair with `E a² = E b² = 1/2`, `E ab = 0` this gives
-the fluctuation identity (`fluctuation_identity`): with `U = a² + b²`,
-`w = (Γ(a,a) + Γ(b,b))/3`, `c_R = (Γ(a,a) − Γ(b,b))/3`, `c_I = 2Γ(a,b)/3`,
+the fluctuation identity (`fluctuation_identity`): with `U = a² + b²` (`radU`),
+`S = Γ(a,a) + Γ(b,b)` (`radS`), `A = Γ(a,a) − Γ(b,b)` (`radA`), `B = 2Γ(a,b)` (`radB`),
 
-  `E w = 1`,
-  `(E U² − 2)/3 − E(w − 1)² − ½ E(c_R² + c_I²)
-     = (4 E J₄(a)² + E J₄(a+b)² + 4 E J₄(b)² + E J₄(b−a)²)/36`,
+  `E S = 3`,
+  `12 (E U² − 2) − 4 E(S − 3)² − 2 E(A² + B²)
+     = 4 E J₄(a)² + E J₄(a+b)² + 4 E J₄(b)² + E J₄(b−a)²`,
 
-hence the fluctuation bound when `E` is nonnegative on squares (`fluctuation_bound`).
+hence the fluctuation bound `E(S − 3)² + ½ E(A² + B²) ≤ 3 (E U² − 2)` when `E` is nonnegative on
+squares (`fluctuation_bound`).  For `q = a + ib` these are `w = Γ(q, q̄)/3 = S/3` and
+`c = Γ(q, q)/3 = (A + iB)/3`, so the bound reads `Var(w) + ½ E|c|² ≤ (E|q|⁴ − 2)/3`.
 -/
 
 open MvPolynomial
@@ -222,14 +224,17 @@ structure IsGaussianExpectation (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) : Prop
 def J4 (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (F : MvPolynomial ι ℝ) : MvPolynomial ι ℝ :=
   gam F F - gam2 F + C (3 * E (F * F))
 
-/-- `w = (Γ(a,a) + Γ(b,b))/3` for a pair `(a, b)` (real and imaginary part of `q`). -/
-def flucW (a b : MvPolynomial ι ℝ) : MvPolynomial ι ℝ := C (1 / 3) * (gam a a + gam b b)
+/-- `U = a² + b²` for a pair `(a, b)` (real and imaginary part of `q`). -/
+def radU (a b : MvPolynomial ι ℝ) : MvPolynomial ι ℝ := a * a + b * b
 
-/-- `c_R = (Γ(a,a) − Γ(b,b))/3`. -/
-def flucCR (a b : MvPolynomial ι ℝ) : MvPolynomial ι ℝ := C (1 / 3) * (gam a a - gam b b)
+/-- `S = Γ(a,a) + Γ(b,b) = 3w`. -/
+def radS (a b : MvPolynomial ι ℝ) : MvPolynomial ι ℝ := gam a a + gam b b
 
-/-- `c_I = 2Γ(a,b)/3`. -/
-def flucCI (a b : MvPolynomial ι ℝ) : MvPolynomial ι ℝ := C (1 / 3) * (2 * gam a b)
+/-- `A = Γ(a,a) − Γ(b,b) = 3c_R`. -/
+def radA (a b : MvPolynomial ι ℝ) : MvPolynomial ι ℝ := gam a a - gam b b
+
+/-- `B = 2Γ(a,b) = 3c_I`. -/
+def radB (a b : MvPolynomial ι ℝ) : MvPolynomial ι ℝ := 2 * gam a b
 
 section expectation
 
@@ -361,15 +366,16 @@ theorem chaos3_remainder (hF : Chaos3 F) :
 
 variable {a b : MvPolynomial ι ℝ}
 
-/-- The four projections `a`, `a + b`, `b`, `b − a`, before normalization. -/
-lemma fluctuation_aux (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = 1 / 2)
+/-- **The fluctuation identity** for a pair in the third chaos with `E a² = E b² = 1/2`,
+`E ab = 0`: the gap in the fluctuation bound is an explicit sum of squares, from the four
+projections `a`, `a + b`, `b`, `b − a`. -/
+theorem fluctuation_identity (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = 1 / 2)
     (hbb : E (b * b) = 1 / 2) (hab : E (a * b) = 0) :
-    12 * E ((a * a + b * b) * (a * a + b * b)) - 24
-      - 4 * E ((gam a a + gam b b - 3) * (gam a a + gam b b - 3))
-      - 2 * E ((gam a a - gam b b) * (gam a a - gam b b))
-      - 2 * E (2 * gam a b * (2 * gam a b))
+    12 * (E (radU a b * radU a b) - 2) - 4 * E ((radS a b - 3) * (radS a b - 3))
+      - 2 * (E (radA a b * radA a b) + E (radB a b * radB a b))
       = 4 * E (J4 E a * J4 E a) + E (J4 E (a + b) * J4 E (a + b))
         + 4 * E (J4 E b * J4 E b) + E (J4 E (b - a) * J4 E (b - a)) := by
+  unfold radU radS radA radB
   have Ra := chaos3_remainder hE ha
   have Rb := chaos3_remainder hE hb
   have Rp := chaos3_remainder hE (ha.add hb)
@@ -418,53 +424,20 @@ lemma fluctuation_aux (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = 1 / 2)
   linarith
 
 omit [DecidableEq ι] in
-/-- `E w = 1`. -/
+/-- `E S = 3`, that is `E w = 1`. -/
 theorem fluctuation_mean (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = 1 / 2)
-    (hbb : E (b * b) = 1 / 2) : E (flucW a b) = 1 := by
-  unfold flucW
-  rw [C_mul_apply, map_add, ha.gE_gam hE, hb.gE_gam hE, haa, hbb]
+    (hbb : E (b * b) = 1 / 2) : E (radS a b) = 3 := by
+  unfold radS
+  rw [map_add, ha.gE_gam hE, hb.gE_gam hE, haa, hbb]
   norm_num
 
-/-- **The fluctuation identity** for a pair in the third chaos with `E a² = E b² = 1/2`,
-`E ab = 0`: the gap in the fluctuation bound is an explicit sum of squares. -/
-theorem fluctuation_identity (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = 1 / 2)
-    (hbb : E (b * b) = 1 / 2) (hab : E (a * b) = 0) :
-    (E ((a * a + b * b) * (a * a + b * b)) - 2) / 3
-      - E ((flucW a b - 1) * (flucW a b - 1))
-      - 1 / 2 * (E (flucCR a b * flucCR a b) + E (flucCI a b * flucCI a b))
-      = (4 * E (J4 E a * J4 E a) + E (J4 E (a + b) * J4 E (a + b))
-        + 4 * E (J4 E b * J4 E b) + E (J4 E (b - a) * J4 E (b - a))) / 36 := by
-  have h := fluctuation_aux hE ha hb haa hbb hab
-  have h3 : (C (1 / 3) : MvPolynomial ι ℝ) * 3 = 1 := by
-    rw [show (3 : MvPolynomial ι ℝ) = C 3 from (map_ofNat C 3).symm, ← C_mul]
-    norm_num
-  have h9 : (C (1 / 9) : MvPolynomial ι ℝ) = C (1 / 3) * C (1 / 3) := by
-    rw [← C_mul]
-    norm_num
-  have e1 : (flucW a b - 1) * (flucW a b - 1)
-      = C (1 / 9) * ((gam a a + gam b b - 3) * (gam a a + gam b b - 3)) := by
-    unfold flucW
-    rw [h9]
-    linear_combination (2 * C (1 / 3) * (gam a a + gam b b) - 1 - 3 * C (1 / 3)) * h3
-  have e2 : flucCR a b * flucCR a b
-      = C (1 / 9) * ((gam a a - gam b b) * (gam a a - gam b b)) := by
-    unfold flucCR
-    rw [h9]
-    ring
-  have e3 : flucCI a b * flucCI a b = C (1 / 9) * (2 * gam a b * (2 * gam a b)) := by
-    unfold flucCI
-    rw [h9]
-    ring
-  rw [e1, e2, e3, C_mul_apply, C_mul_apply, C_mul_apply]
-  linarith
-
-/-- **The fluctuation bound** `E(w − 1)² + ½ E(c_R² + c_I²) ≤ (E U² − 2)/3`, for a Gaussian
+/-- **The fluctuation bound** `E(S − 3)² + ½ E(A² + B²) ≤ 3 (E U² − 2)`, for a Gaussian
 expectation that is nonnegative on squares. -/
 theorem fluctuation_bound (hpos : ∀ P : MvPolynomial ι ℝ, 0 ≤ E (P * P)) (ha : Chaos3 a)
     (hb : Chaos3 b) (haa : E (a * a) = 1 / 2) (hbb : E (b * b) = 1 / 2) (hab : E (a * b) = 0) :
-    E ((flucW a b - 1) * (flucW a b - 1))
-      + 1 / 2 * (E (flucCR a b * flucCR a b) + E (flucCI a b * flucCI a b))
-      ≤ (E ((a * a + b * b) * (a * a + b * b)) - 2) / 3 := by
+    E ((radS a b - 3) * (radS a b - 3))
+      + 1 / 2 * (E (radA a b * radA a b) + E (radB a b * radB a b))
+      ≤ 3 * (E (radU a b * radU a b) - 2) := by
   have h := fluctuation_identity hE ha hb haa hbb hab
   have h1 := hpos (J4 E a)
   have h2 := hpos (J4 E (a + b))

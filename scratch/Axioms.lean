@@ -42,11 +42,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.sixth_moment_complex
 #print axioms Grothe.LowerAnalytic.coverOK_sound
 #print axioms Grothe.LowerAnalytic.lower_bound_of_tests
-#print axioms Grothe.LowerAnalytic.fluctuation_identity
 #print axioms Grothe.LowerAnalytic.fluctuation_bound
-#print axioms Grothe.LowerAnalytic.gM_isGaussianExpectation
-#print axioms Grothe.LowerAnalytic.chaos3_hermite_sum
-#print axioms Grothe.LowerAnalytic.stein_coordinate
-#print axioms Grothe.LowerAnalytic.radial_parts
 #print axioms Grothe.LowerAnalytic.radial_cut
-#print axioms Grothe.LowerAnalytic.steinInputs_of_fluctuation
+#print axioms Grothe.LowerAnalytic.gaussian_steinInputs
+#print axioms Grothe.LowerAnalytic.gaussian_steinInputs_hermite
