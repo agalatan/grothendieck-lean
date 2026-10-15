@@ -16,6 +16,9 @@ import Grothe.Lower.Cuts
 import Grothe.Lower.Law
 import Grothe.Lower.Stein
 import Grothe.Lower.Rows
+import Grothe.Lower.Gate
+import Grothe.Lower.Mixed
+import Grothe.Lower.Boxes
 import Grothe.Lower.Envelope
 import Grothe.Lower.Endpoint
 import Grothe.Lower.Support
@@ -43,6 +46,7 @@ import Grothe.Lower.RowData17
 import Grothe.Lower.RowData18
 import Grothe.Lower.RowData19
 import Grothe.Lower.RowData
+import Grothe.Lower.MixedData
 import Grothe.Lower.RowCheck
 import Grothe.LowerAnalytic.MomentLemma
 import Grothe.LowerAnalytic.Bernstein2

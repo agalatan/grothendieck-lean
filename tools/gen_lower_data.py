@@ -9,7 +9,7 @@
 Inputs: `handoff/lower-stein/cert-0745/` (manifest.json, row_<t>.json, envelope.json) and the exact
 row constants `handoff/lower-stein/rows_final.json` written by the reference verifier
 (`verify_cert.py cert-0745 --rows rows_final.json`).  The row cap is the exact row maximum rounded up
-to a multiple of 10⁻¹²; the scalar envelope is replayed here with the Lean semantics.
+to a multiple of 10⁻¹⁵; the scalar envelope is replayed here with the Lean semantics.
 """
 import hashlib
 import json
@@ -103,8 +103,8 @@ for idx, fn in enumerate(rowfiles, 1):
     K = consts[R["name"]]
     assert Q(K["ell"]) == ell and Q(K["beta"]) == beta
     cap_exact = Q(K["C"]) - PAD - 2 * beta * beta / EPS
-    cap = Q(-((-cap_exact.numerator * 10**12) // cap_exact.denominator), 10**12)   # rounded up
-    assert cap_exact <= cap < cap_exact + Q(1, 10**12)
+    cap = Q(-((-cap_exact.numerator * 10**15) // cap_exact.denominator), 10**15)   # rounded up
+    assert cap_exact <= cap < cap_exact + Q(1, 10**15)
     nodes = ";".join(f"{qs(r)}:{qs(cc)}" for r, cc in zip(R["nodes"], R["caps"]))
     mesh = [Q(v) for v in R["mesh"]]
     assert not mesh or mesh[0] == 0
