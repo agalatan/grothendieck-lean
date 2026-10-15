@@ -119,7 +119,12 @@ value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 140160592/10^8 < K`.
   abstract law of U, the Gaussian reduction being itself assumed.
 * Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma, the
   scalar sixth-moment and first-moment certificates from their tensor hypotheses, the
-  Schur-complement gate, and the square completion for the coupling vector.
+  Schur-complement gate, the square completion for the coupling vector, and the exact form of
+  the fluctuation bound (`Influence.lean`): for a circular cubic chaos q = a + ib the slack in
+  Var(w) + ½E|c|² ≤ (E|q|⁴ − 2)/3 equals (2‖Π₂,₂|q|²‖² + ‖Π₃,₁q²‖²)/18, with the quartic identity
+  3κ = 4‖Π₁,₁|q|²‖² + 2‖Π₂,₀q²‖² + 2‖Π₂,₂|q|²‖² + ‖Π₃,₁q²‖², the influence inequality
+  4‖Π₁,₁|q|²‖² + 2‖Π₂,₀q²‖² ≤ 3κ, and the weighted bound on the first-chaos content of q|q|²
+  along any direction by the influence of that direction.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus `native_decide` facts for the finite
 exact computations (listed by `lake env lean scratch/Axioms.lean`; checked in CI). No `sorry`,
