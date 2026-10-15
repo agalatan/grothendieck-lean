@@ -39,6 +39,17 @@ form `fluctuation_identity_scaled`) read through the chaos decomposition: `S −
 components of different order are `E`-orthogonal (`gE_eigen_orth`).  The fluctuation bound
 `E(S−3v)² + ½E(A_rad² + B_rad²) ≤ 3κ` is `4A + C + 2B + ½D ≤ 3κ`, weaker than the identity.
 
+**The exact Stein slack** (`stein_slack`, `stein_energy_gap`): the chaos decompositions
+`radS − 3v = 2Π₂(U−v) + Π₄(U−v)`, `radA = 2Π₂P + Π₄P`, `radB = 2Π₂Q + Π₄Q` (`radS_eq_proj`,
+`radA_eq_proj`, `radB_eq_proj`; the sixth chaos drops out of `Γ(q,q̄)` and `Γ(q,q)`) give
+`Var(radS) = 4A + C` (`var_radS`) and `E(radA² + radB²) = 4B + D` (`gE_radA_radB`), hence
+
+  `E(S−3v)² + ½E(A_rad² + B_rad²) = 3κ − (2C + D)/2`,
+  `κ/3 − (Var(S)/9 + E(A_rad² + B_rad²)/18) = (2C + D)/18`,
+
+the exact form of the hypothesis H1 (`fluctuation_bound` is the case `2C + D ≥ 0`).  On the
+Wick cubic the Stein energy is `89/9`.
+
 **The influence inequality** (`influence_bound`): `4A + 2B ≤ 3κ`, dropping the chaos-4 terms,
 for an expectation nonnegative on squares.
 
@@ -50,8 +61,12 @@ only through `Π₂`, so with `I_α = E(∂_α a)² + E(∂_α b)²`
   `(E[P∂_α a] + E[Q∂_α b])² + (E[Q∂_α a] − E[P∂_α b])² ≤ B · I_α`.
 
 By Gaussian integration by parts `E[r q |q|²] = 2E[(U−v)∂_α q] + E[q² ∂_α q̄]` for the linear form
-`r = Σ αᵢxᵢ`, so these two bounds give `|E[r q|q|²]|² ≤ (2√A + √B)² I_α` (`influence_pairing`,
-in the form `E[r a U]² + E[r b U]² ≤ (2√A + √B)² I_α`).
+`r = Σ αᵢxᵢ` (`gE_linForm_mul_radU`), so these two bounds give
+`|E[r q|q|²]|² ≤ (2√A + √B)² I_α` (`influence_pairing`, in the form
+`E[r a U]² + E[r b U]² ≤ (2√A + √B)² I_α`).  Summing over an orthonormal basis of directions,
+`‖Π₁(q|q|²)‖² ≤ (2√A + √B)² · 3v`.  (The alternative representation
+`Π₁(q|q|²) = Π₁(q Π₄(U−v)) + ½Π₁(q̄ Π₄(q²))` through the fourth chaos, and the creation-operator
+bounds behind `‖Π₁(q|q|²)‖ ≤ √(2vC) + ½√(3vD)`, are not formalised here.)
 -/
 
 open MvPolynomial
@@ -240,6 +255,61 @@ lemma mul_eq_comps (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (a b : MvPolynomial
   unfold comp6 comp4 comp2
   linear_combination (-(gam2c a b)) * hh
 
+/-! ### Chaos decompositions of `U − v`, `P`, `Q` -/
+
+section decomp
+
+variable (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) {a b : MvPolynomial ι ℝ} {v : ℝ}
+
+omit [Fintype ι] in
+lemma C_half_add_C_half_sub (v : ℝ) : (C (v / 2) : MvPolynomial ι ℝ) + C (v / 2) - C v = 0 := by
+  rw [← C_add, ← C_sub, show v / 2 + v / 2 - v = 0 by ring, C_0]
+
+lemma radU_sub_eq_comps (haa : E (a * a) = v / 2) (hbb : E (b * b) = v / 2) :
+    radU a b - C v = (comp2 E a a + comp2 E b b) + (comp4 E a a + comp4 E b b)
+      + (comp6 E a a + comp6 E b b) := by
+  have ca := mul_eq_comps E a a
+  have cb := mul_eq_comps E b b
+  rw [haa] at ca
+  rw [hbb] at cb
+  unfold radU
+  linear_combination ca + cb + C_half_add_C_half_sub (ι := ι) v
+
+lemma radP_eq_comps (haa : E (a * a) = v / 2) (hbb : E (b * b) = v / 2) :
+    radP a b = (comp2 E a a - comp2 E b b) + (comp4 E a a - comp4 E b b)
+      + (comp6 E a a - comp6 E b b) := by
+  have ca := mul_eq_comps E a a
+  have cb := mul_eq_comps E b b
+  rw [haa] at ca
+  rw [hbb] at cb
+  unfold radP
+  linear_combination ca - cb
+
+lemma radQ_eq_comps (hab : E (a * b) = 0) :
+    radQ a b = 2 * comp2 E a b + 2 * comp4 E a b + 2 * comp6 E a b := by
+  have cc := mul_eq_comps E a b
+  rw [hab, C_0, add_zero] at cc
+  unfold radQ
+  linear_combination 2 * cc
+
+end decomp
+
+omit [Fintype ι] in
+/-- **Cauchy–Schwarz** for an expectation nonnegative on squares. -/
+lemma gE_cauchy_schwarz (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (hpos : ∀ P : MvPolynomial ι ℝ, 0 ≤ E (P * P)) (X Y : MvPolynomial ι ℝ) :
+    E (X * Y) ^ 2 ≤ E (X * X) * E (Y * Y) := by
+  have key : ∀ t : ℝ, 0 ≤ E (Y * Y) * (t * t) + (-2 * E (X * Y)) * t + E (X * X) := by
+    intro t
+    have h := hpos (X - C t * Y)
+    have e : (X - C t * Y) * (X - C t * Y)
+        = X * X - C t * (2 * (X * Y)) + C (t * t) * (Y * Y) := by
+      rw [C_mul]; ring
+    rw [e, map_add, map_sub, C_mul_apply, C_mul_apply, ofNat_mul_apply] at h
+    linarith
+  have h := discrim_le_zero key
+  unfold discrim at h
+  linarith
+
 section expectation
 
 variable {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ} (hE : IsGaussianExpectation E)
@@ -267,7 +337,7 @@ lemma gE_eigen_mean {X : MvPolynomial ι ℝ} (n : ℕ) [n.AtLeastTwo]
   rw [hX, map_neg, ofNat_mul_apply, neg_eq_zero] at h
   exact (mul_eq_zero.mp h).resolve_left hn
 
-variable [DecidableEq ι] {a b : MvPolynomial ι ℝ}
+variable [DecidableEq ι] {a b : MvPolynomial ι ℝ} {v : ℝ}
 
 lemma gE_gam2c (ha : Chaos3 a) (hb : Chaos3 b) : E (gam2c a b) = 6 * E (a * b) := by
   have h := gE_ouL hE (gam a b)
@@ -305,11 +375,153 @@ lemma comp6_eig (ha : Chaos3 a) (hb : Chaos3 b) : ouL (comp6 E a b) = -(6 * comp
     ha.ouL_gam2c hb, gam3c_eq hE ha hb, ouL_C]
   linear_combination (2 * gam2c a b + C (6 * E (a * b))) * hh + h6
 
+/-! ### The spectral projections of `U − v`, `P`, `Q` -/
+
+/-- The chaos components of `U − v`. -/
+lemma proj_radU (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) :
+    proj2 (radU a b - C v) = comp2 E a a + comp2 E b b
+      ∧ proj4 (radU a b - C v) = comp4 E a a + comp4 E b b
+      ∧ proj6 (radU a b - C v) = comp6 E a a + comp6 E b b :=
+  proj_eq (radU_sub_eq_comps E haa hbb) (eigen_add 2 (comp2_eig hE ha ha) (comp2_eig hE hb hb))
+    (eigen_add 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb))
+    (eigen_add 6 (comp6_eig hE ha ha) (comp6_eig hE hb hb))
+
+/-- The chaos components of `P = a² − b²`. -/
+lemma proj_radP (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) :
+    proj2 (radP a b) = comp2 E a a - comp2 E b b
+      ∧ proj4 (radP a b) = comp4 E a a - comp4 E b b
+      ∧ proj6 (radP a b) = comp6 E a a - comp6 E b b :=
+  proj_eq (radP_eq_comps E haa hbb) (eigen_sub 2 (comp2_eig hE ha ha) (comp2_eig hE hb hb))
+    (eigen_sub 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb))
+    (eigen_sub 6 (comp6_eig hE ha ha) (comp6_eig hE hb hb))
+
+/-- The chaos components of `Q = 2ab`. -/
+lemma proj_radQ (ha : Chaos3 a) (hb : Chaos3 b) (hab : E (a * b) = 0) :
+    proj2 (radQ a b) = 2 * comp2 E a b ∧ proj4 (radQ a b) = 2 * comp4 E a b
+      ∧ proj6 (radQ a b) = 2 * comp6 E a b :=
+  proj_eq (radQ_eq_comps E hab) (eigen_two_mul 2 (comp2_eig hE ha hb))
+    (eigen_two_mul 4 (comp4_eig hE ha hb)) (eigen_two_mul 6 (comp6_eig hE ha hb))
+
+lemma ouL_proj2_radU (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) :
+    ouL (proj2 (radU a b - C v)) = -(2 * proj2 (radU a b - C v)) := by
+  rw [(proj_radU hE ha hb haa hbb).1]
+  exact eigen_add 2 (comp2_eig hE ha ha) (comp2_eig hE hb hb)
+
+lemma ouL_proj4_radU (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) :
+    ouL (proj4 (radU a b - C v)) = -(4 * proj4 (radU a b - C v)) := by
+  rw [(proj_radU hE ha hb haa hbb).2.1]
+  exact eigen_add 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb)
+
+lemma ouL_proj6_radU (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) :
+    ouL (proj6 (radU a b - C v)) = -(6 * proj6 (radU a b - C v)) := by
+  rw [(proj_radU hE ha hb haa hbb).2.2]
+  exact eigen_add 6 (comp6_eig hE ha ha) (comp6_eig hE hb hb)
+
+lemma ouL_proj2_radP (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) : ouL (proj2 (radP a b)) = -(2 * proj2 (radP a b)) := by
+  rw [(proj_radP hE ha hb haa hbb).1]
+  exact eigen_sub 2 (comp2_eig hE ha ha) (comp2_eig hE hb hb)
+
+lemma ouL_proj4_radP (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) : ouL (proj4 (radP a b)) = -(4 * proj4 (radP a b)) := by
+  rw [(proj_radP hE ha hb haa hbb).2.1]
+  exact eigen_sub 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb)
+
+lemma ouL_proj6_radP (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) : ouL (proj6 (radP a b)) = -(6 * proj6 (radP a b)) := by
+  rw [(proj_radP hE ha hb haa hbb).2.2]
+  exact eigen_sub 6 (comp6_eig hE ha ha) (comp6_eig hE hb hb)
+
+lemma ouL_proj2_radQ (ha : Chaos3 a) (hb : Chaos3 b) (hab : E (a * b) = 0) :
+    ouL (proj2 (radQ a b)) = -(2 * proj2 (radQ a b)) := by
+  rw [(proj_radQ hE ha hb hab).1]
+  exact eigen_two_mul 2 (comp2_eig hE ha hb)
+
+lemma ouL_proj4_radQ (ha : Chaos3 a) (hb : Chaos3 b) (hab : E (a * b) = 0) :
+    ouL (proj4 (radQ a b)) = -(4 * proj4 (radQ a b)) := by
+  rw [(proj_radQ hE ha hb hab).2.1]
+  exact eigen_two_mul 4 (comp4_eig hE ha hb)
+
+lemma ouL_proj6_radQ (ha : Chaos3 a) (hb : Chaos3 b) (hab : E (a * b) = 0) :
+    ouL (proj6 (radQ a b)) = -(6 * proj6 (radQ a b)) := by
+  rw [(proj_radQ hE ha hb hab).2.2]
+  exact eigen_two_mul 6 (comp6_eig hE ha hb)
+
+/-! ### The chaos decompositions of `Γ(q,q̄)` and `Γ(q,q)` -/
+
+/-- `Γ(q,q̄) − 3v = 2Π₂(U−v) + Π₄(U−v)`: the sixth chaos drops out of `radS`. -/
+theorem radS_eq_proj (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) :
+    radS a b - C (3 * v) = 2 * proj2 (radU a b - C v) + proj4 (radU a b - C v) := by
+  obtain ⟨p2, p4, -⟩ := proj_radU hE ha hb haa hbb
+  rw [p2, p4]
+  unfold radS comp4 comp2
+  rw [haa, hbb]
+  have hh := two_mul_C_half (ι := ι)
+  have h3 : (C (3 * v) : MvPolynomial ι ℝ) = 2 * C (3 * (v / 2)) := by
+    rw [← C_two_mul]; congr 1; ring
+  linear_combination (-1 : MvPolynomial ι ℝ) * h3 - (gam2c a a + gam2c b b) * hh
+
+/-- `Re Γ(q,q) = 2Π₂P + Π₄P`. -/
+theorem radA_eq_proj (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) :
+    radA a b = 2 * proj2 (radP a b) + proj4 (radP a b) := by
+  obtain ⟨p2, p4, -⟩ := proj_radP hE ha hb haa hbb
+  rw [p2, p4]
+  unfold radA comp4 comp2
+  rw [haa, hbb]
+  have hh := two_mul_C_half (ι := ι)
+  linear_combination (-(gam2c a a - gam2c b b)) * hh
+
+/-- `Im Γ(q,q) = 2Π₂Q + Π₄Q`. -/
+theorem radB_eq_proj (ha : Chaos3 a) (hb : Chaos3 b) (hab : E (a * b) = 0) :
+    radB a b = 2 * proj2 (radQ a b) + proj4 (radQ a b) := by
+  obtain ⟨p2, p4, -⟩ := proj_radQ hE ha hb hab
+  rw [p2, p4]
+  unfold radB comp4 comp2
+  rw [hab]
+  have hh := two_mul_C_half (ι := ι)
+  have h30 : (C (3 * 0) : MvPolynomial ι ℝ) = 0 := by rw [mul_zero, C_0]
+  linear_combination (-2 * gam2c a b) * hh + 2 * h30
+
+omit [DecidableEq ι] in
+lemma gE_two_proj_add_sq {X Y : MvPolynomial ι ℝ} (hX : ouL X = -(2 * X))
+    (hY : ouL Y = -(4 * Y)) :
+    E ((2 * X + Y) * (2 * X + Y)) = 4 * E (X * X) + E (Y * Y) := by
+  rw [show (2 * X + Y) * (2 * X + Y) = 4 * (X * X) + Y * Y + 4 * (Y * X) by ring, map_add,
+    map_add, ofNat_mul_apply, ofNat_mul_apply, gE_eigen_orth hE 4 2 (by norm_num) hY hX]
+  ring
+
+/-- `Var(radS) = 4A + C`. -/
+theorem var_radS (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) :
+    E ((radS a b - C (3 * v)) * (radS a b - C (3 * v)))
+      = 4 * E (proj2 (radU a b - C v) * proj2 (radU a b - C v))
+        + E (proj4 (radU a b - C v) * proj4 (radU a b - C v)) := by
+  rw [radS_eq_proj hE ha hb haa hbb]
+  exact gE_two_proj_add_sq hE (ouL_proj2_radU hE ha hb haa hbb) (ouL_proj4_radU hE ha hb haa hbb)
+
+/-- `E(radA² + radB²) = 4B + D`. -/
+theorem gE_radA_radB (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) (hab : E (a * b) = 0) :
+    E (radA a b * radA a b) + E (radB a b * radB a b)
+      = 4 * (E (proj2 (radP a b) * proj2 (radP a b)) + E (proj2 (radQ a b) * proj2 (radQ a b)))
+        + (E (proj4 (radP a b) * proj4 (radP a b)) + E (proj4 (radQ a b) * proj4 (radQ a b))) := by
+  rw [radA_eq_proj hE ha hb haa hbb, radB_eq_proj hE ha hb hab,
+    gE_two_proj_add_sq hE (ouL_proj2_radP hE ha hb haa hbb) (ouL_proj4_radP hE ha hb haa hbb),
+    gE_two_proj_add_sq hE (ouL_proj2_radQ hE ha hb hab) (ouL_proj4_radQ hE ha hb hab)]
+  ring
+
 /-! ### The quartic identity -/
 
 /-- **The fluctuation identity**, scaled: for a pair in the third chaos with `E a² = E b² = v/2`,
 `E ab = 0` (the case `v = 1` is `fluctuation_identity`). -/
-theorem fluctuation_identity_scaled {v : ℝ} (ha : Chaos3 a) (hb : Chaos3 b)
+theorem fluctuation_identity_scaled (ha : Chaos3 a) (hb : Chaos3 b)
     (haa : E (a * a) = v / 2) (hbb : E (b * b) = v / 2) (hab : E (a * b) = 0) :
     12 * (E (radU a b * radU a b) - 2 * v ^ 2)
       - 4 * E ((radS a b - C (3 * v)) * (radS a b - C (3 * v)))
@@ -363,68 +575,12 @@ theorem fluctuation_identity_scaled {v : ℝ} (ha : Chaos3 a) (hb : Chaos3 b)
   simp only [map_add, map_sub, ofNat_mul_apply E 2, ofNat_mul_apply E 4, hp, hq]
   linarith
 
-/-- **The quartic identity** `3κ = 4A + 2B + 2C + D` for a circular pair in the third chaos with
-`E a² = E b² = v/2`, `E ab = 0`: `κ = E U² − 2v²`, `A = E(Π₂(U−v))²`, `B = E(Π₂P)² + E(Π₂Q)²`,
-`C = E(Π₄(U−v))²`, `D = E(Π₄P)² + E(Π₄Q)²`. -/
-theorem quartic_identity {v : ℝ} (ha : Chaos3 a) (hb : Chaos3 b)
-    (haa : E (a * a) = v / 2) (hbb : E (b * b) = v / 2) (hab : E (a * b) = 0) :
-    3 * (E (radU a b * radU a b) - 2 * v ^ 2)
-      = 4 * E (proj2 (radU a b - C v) * proj2 (radU a b - C v))
-        + 2 * (E (proj2 (radP a b) * proj2 (radP a b)) + E (proj2 (radQ a b) * proj2 (radQ a b)))
-        + 2 * E (proj4 (radU a b - C v) * proj4 (radU a b - C v))
-        + (E (proj4 (radP a b) * proj4 (radP a b)) + E (proj4 (radQ a b) * proj4 (radQ a b))) := by
-  -- the components and their eigen-equations
-  have e2a := comp2_eig hE ha ha
-  have e2b := comp2_eig hE hb hb
-  have e2c := comp2_eig hE ha hb
-  have e4a := comp4_eig hE ha ha
-  have e4b := comp4_eig hE hb hb
-  have e4c := comp4_eig hE ha hb
-  have e6a := comp6_eig hE ha ha
-  have e6b := comp6_eig hE hb hb
-  have e6c := comp6_eig hE ha hb
-  obtain ⟨S2, hS2⟩ : ∃ X, X = comp2 E a a + comp2 E b b := ⟨_, rfl⟩
-  obtain ⟨S4, hS4⟩ : ∃ X, X = comp4 E a a + comp4 E b b := ⟨_, rfl⟩
-  obtain ⟨S6, hS6⟩ : ∃ X, X = comp6 E a a + comp6 E b b := ⟨_, rfl⟩
-  obtain ⟨D2, hD2⟩ : ∃ X, X = comp2 E a a - comp2 E b b := ⟨_, rfl⟩
-  obtain ⟨D4, hD4⟩ : ∃ X, X = comp4 E a a - comp4 E b b := ⟨_, rfl⟩
-  obtain ⟨D6, hD6⟩ : ∃ X, X = comp6 E a a - comp6 E b b := ⟨_, rfl⟩
-  obtain ⟨Q2, hQ2⟩ : ∃ X, X = 2 * comp2 E a b := ⟨_, rfl⟩
-  obtain ⟨Q4, hQ4⟩ : ∃ X, X = 2 * comp4 E a b := ⟨_, rfl⟩
-  obtain ⟨Q6, hQ6⟩ : ∃ X, X = 2 * comp6 E a b := ⟨_, rfl⟩
-  have eS2 : ouL S2 = -(2 * S2) := by rw [hS2]; exact eigen_add 2 e2a e2b
-  have eS4 : ouL S4 = -(4 * S4) := by rw [hS4]; exact eigen_add 4 e4a e4b
-  have eS6 : ouL S6 = -(6 * S6) := by rw [hS6]; exact eigen_add 6 e6a e6b
-  have eD2 : ouL D2 = -(2 * D2) := by rw [hD2]; exact eigen_sub 2 e2a e2b
-  have eD4 : ouL D4 = -(4 * D4) := by rw [hD4]; exact eigen_sub 4 e4a e4b
-  have eD6 : ouL D6 = -(6 * D6) := by rw [hD6]; exact eigen_sub 6 e6a e6b
-  have eQ2 : ouL Q2 = -(2 * Q2) := by rw [hQ2]; exact eigen_two_mul 2 e2c
-  have eQ4 : ouL Q4 = -(4 * Q4) := by rw [hQ4]; exact eigen_two_mul 4 e4c
-  have eQ6 : ouL Q6 = -(6 * Q6) := by rw [hQ6]; exact eigen_two_mul 6 e6c
-  -- the decompositions of `U − v`, `P`, `Q`
-  have ca := mul_eq_comps E a a
-  have cb := mul_eq_comps E b b
-  have cc := mul_eq_comps E a b
-  rw [haa] at ca
-  rw [hbb] at cb
-  rw [hab, C_0, add_zero] at cc
-  have hc : (C (v / 2) : MvPolynomial ι ℝ) + C (v / 2) - C v = 0 := by
-    rw [← C_add, ← C_sub, show v / 2 + v / 2 - v = 0 by ring, C_0]
-  have dU : radU a b - C v = S2 + S4 + S6 := by
-    rw [hS6, hS4, hS2]; unfold radU; linear_combination ca + cb + hc
-  have dP : radP a b = D2 + D4 + D6 := by
-    rw [hD6, hD4, hD2]; unfold radP; linear_combination ca - cb
-  have dQ : radQ a b = Q2 + Q4 + Q6 := by
-    rw [hQ6, hQ4, hQ2]; unfold radQ; linear_combination 2 * cc
-  obtain ⟨pU2, pU4, -⟩ := proj_eq dU eS2 eS4 eS6
-  obtain ⟨pP2, pP4, -⟩ := proj_eq dP eD2 eD4 eD6
-  obtain ⟨pQ2, pQ4, -⟩ := proj_eq dQ eQ2 eQ4 eQ6
-  rw [pU2, pU4, pP2, pP4, pQ2, pQ4]
-  -- the fluctuation quantities through the components
-  have hh := two_mul_C_half (ι := ι)
-  have h3 : (C (3 * v) : MvPolynomial ι ℝ) = 2 * C (3 * (v / 2)) := by
-    rw [← C_two_mul]; congr 1; ring
-  have h30 : (C (3 * 0) : MvPolynomial ι ℝ) = 0 := by rw [mul_zero, C_0]
+/-- `J₄(a + b) = Π₄(U−v) + Π₄Q` and `J₄(b − a) = Π₄(U−v) − Π₄Q`. -/
+lemma J4_add_sub_eq_proj (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) (hab : E (a * b) = 0) :
+    J4 E (a + b) = proj4 (radU a b - C v) + proj4 (radQ a b)
+      ∧ J4 E (b - a) = proj4 (radU a b - C v) - proj4 (radQ a b) := by
+  rw [(proj_radU hE ha hb haa hbb).2.1, (proj_radQ hE ha hb hab).2.1]
   have sp : E ((a + b) * (a + b)) = v := by
     rw [show (a + b) * (a + b) = a * a + 2 * (a * b) + b * b by ring, map_add, map_add,
       ofNat_mul_apply, haa, hbb, hab]
@@ -433,54 +589,76 @@ theorem quartic_identity {v : ℝ} (ha : Chaos3 a) (hb : Chaos3 b)
     rw [show (b - a) * (b - a) = a * a - 2 * (a * b) + b * b by ring, map_add, map_sub,
       ofNat_mul_apply, haa, hbb, hab]
     ring
-  have hS : radS a b - C (3 * v) = S4 + 2 * S2 := by
-    rw [hS4, hS2]; unfold radS comp4 comp2; rw [haa, hbb]
-    linear_combination (-1 : MvPolynomial ι ℝ) * h3 - (gam2c a a + gam2c b b) * hh
-  have hA : radA a b = D4 + 2 * D2 := by
-    rw [hD4, hD2]; unfold radA comp4 comp2; rw [haa, hbb]
-    linear_combination (-(gam2c a a - gam2c b b)) * hh
-  have hB : radB a b = Q4 + 2 * Q2 := by
-    rw [hQ4, hQ2]; unfold radB comp4 comp2; rw [hab]
-    linear_combination (-2 * gam2c a b) * hh + 2 * h30
-  have hJp : J4 E (a + b) = S4 + Q4 := by
-    rw [hS4, hQ4]; unfold J4 comp4
+  have h3 : (C (3 * v) : MvPolynomial ι ℝ) = 2 * C (3 * (v / 2)) := by
+    rw [← C_two_mul]; congr 1; ring
+  have h30 : (C (3 * 0) : MvPolynomial ι ℝ) = 0 := by rw [mul_zero, C_0]
+  constructor
+  · unfold J4 comp4
     rw [← gam2c_self, gam2c_add_self, gam_add_self, sp, haa, hbb, hab]
     linear_combination h3 - 2 * h30
-  have hJm : J4 E (b - a) = S4 - Q4 := by
-    rw [hS4, hQ4]; unfold J4 comp4
+  · unfold J4 comp4
     rw [← gam2c_self, gam2c_sub_self, gam_sub_self, sm, haa, hbb, hab]
     linear_combination h3 + 2 * h30
-  have f1 : E ((radS a b - C (3 * v)) * (radS a b - C (3 * v))) = E (S4 * S4) + 4 * E (S2 * S2) := by
-    rw [hS, show (S4 + 2 * S2) * (S4 + 2 * S2) = S4 * S4 + 4 * (S2 * S2) + 4 * (S4 * S2) by ring,
-      map_add, map_add, ofNat_mul_apply, ofNat_mul_apply,
-      gE_eigen_orth hE 4 2 (by norm_num) eS4 eS2]
-    ring
-  have f2 : E (radA a b * radA a b) = E (D4 * D4) + 4 * E (D2 * D2) := by
-    rw [hA, show (D4 + 2 * D2) * (D4 + 2 * D2) = D4 * D4 + 4 * (D2 * D2) + 4 * (D4 * D2) by ring,
-      map_add, map_add, ofNat_mul_apply, ofNat_mul_apply,
-      gE_eigen_orth hE 4 2 (by norm_num) eD4 eD2]
-    ring
-  have f3 : E (radB a b * radB a b) = E (Q4 * Q4) + 4 * E (Q2 * Q2) := by
-    rw [hB, show (Q4 + 2 * Q2) * (Q4 + 2 * Q2) = Q4 * Q4 + 4 * (Q2 * Q2) + 4 * (Q4 * Q2) by ring,
-      map_add, map_add, ofNat_mul_apply, ofNat_mul_apply,
-      gE_eigen_orth hE 4 2 (by norm_num) eQ4 eQ2]
-    ring
+
+/-- **The quartic identity** `3κ = 4A + 2B + 2C + D` for a circular pair in the third chaos with
+`E a² = E b² = v/2`, `E ab = 0`: `κ = E U² − 2v²`, `A = E(Π₂(U−v))²`, `B = E(Π₂P)² + E(Π₂Q)²`,
+`C = E(Π₄(U−v))²`, `D = E(Π₄P)² + E(Π₄Q)²`. -/
+theorem quartic_identity (ha : Chaos3 a) (hb : Chaos3 b)
+    (haa : E (a * a) = v / 2) (hbb : E (b * b) = v / 2) (hab : E (a * b) = 0) :
+    3 * (E (radU a b * radU a b) - 2 * v ^ 2)
+      = 4 * E (proj2 (radU a b - C v) * proj2 (radU a b - C v))
+        + 2 * (E (proj2 (radP a b) * proj2 (radP a b)) + E (proj2 (radQ a b) * proj2 (radQ a b)))
+        + 2 * E (proj4 (radU a b - C v) * proj4 (radU a b - C v))
+        + (E (proj4 (radP a b) * proj4 (radP a b)) + E (proj4 (radQ a b) * proj4 (radQ a b))) := by
+  have F := fluctuation_identity_scaled hE ha hb haa hbb hab
+  have f1 := var_radS hE ha hb haa hbb
+  have f2 := gE_radA_radB hE ha hb haa hbb hab
+  obtain ⟨hJp, hJm⟩ := J4_add_sub_eq_proj hE ha hb haa hbb hab
   have f4 : 4 * E (J4 E a * J4 E a) + 4 * E (J4 E b * J4 E b)
-      = 2 * E (S4 * S4) + 2 * E (D4 * D4) := by
-    rw [← comp4_self, ← comp4_self, ← ofNat_mul_apply E 2, ← ofNat_mul_apply E 2, ← map_add,
-      hS4, hD4, ← ofNat_mul_apply E 4, ← ofNat_mul_apply E 4, ← map_add]
+      = 2 * E (proj4 (radU a b - C v) * proj4 (radU a b - C v))
+        + 2 * E (proj4 (radP a b) * proj4 (radP a b)) := by
+    rw [(proj_radU hE ha hb haa hbb).2.1, (proj_radP hE ha hb haa hbb).2.1, ← comp4_self,
+      ← comp4_self, ← ofNat_mul_apply E 2, ← ofNat_mul_apply E 2, ← map_add,
+      ← ofNat_mul_apply E 4, ← ofNat_mul_apply E 4, ← map_add]
     exact congrArg E (by ring)
   have f5 : E (J4 E (a + b) * J4 E (a + b)) + E (J4 E (b - a) * J4 E (b - a))
-      = 2 * E (S4 * S4) + 2 * E (Q4 * Q4) := by
+      = 2 * E (proj4 (radU a b - C v) * proj4 (radU a b - C v))
+        + 2 * E (proj4 (radQ a b) * proj4 (radQ a b)) := by
     rw [hJp, hJm, ← ofNat_mul_apply E 2, ← ofNat_mul_apply E 2, ← map_add, ← map_add]
     exact congrArg E (by ring)
-  have F := fluctuation_identity_scaled hE ha hb haa hbb hab
+  linarith
+
+/-- **The exact Stein slack** (the exact form of H1): in the normalisation of `fluctuation_bound`
+(`v = 1`) this reads `E(S−3)² + ½E(A_rad² + B_rad²) = 3(EU² − 2) − (2C + D)/2`. -/
+theorem stein_slack (ha : Chaos3 a) (hb : Chaos3 b)
+    (haa : E (a * a) = v / 2) (hbb : E (b * b) = v / 2) (hab : E (a * b) = 0) :
+    E ((radS a b - C (3 * v)) * (radS a b - C (3 * v)))
+      + 1 / 2 * (E (radA a b * radA a b) + E (radB a b * radB a b))
+      = 3 * (E (radU a b * radU a b) - 2 * v ^ 2)
+        - (2 * E (proj4 (radU a b - C v) * proj4 (radU a b - C v))
+          + (E (proj4 (radP a b) * proj4 (radP a b)) + E (proj4 (radQ a b) * proj4 (radQ a b))))
+          / 2 := by
+  have h := quartic_identity hE ha hb haa hbb hab
+  have f1 := var_radS hE ha hb haa hbb
+  have f2 := gE_radA_radB hE ha hb haa hbb hab
+  linarith
+
+/-- The Stein energy form of the slack: `κ/3 − (Var(radS)/9 + E(radA² + radB²)/18) = (2C + D)/18`. -/
+theorem stein_energy_gap (ha : Chaos3 a) (hb : Chaos3 b)
+    (haa : E (a * a) = v / 2) (hbb : E (b * b) = v / 2) (hab : E (a * b) = 0) :
+    (E (radU a b * radU a b) - 2 * v ^ 2) / 3
+      - (E ((radS a b - C (3 * v)) * (radS a b - C (3 * v))) / 9
+        + (E (radA a b * radA a b) + E (radB a b * radB a b)) / 18)
+      = (2 * E (proj4 (radU a b - C v) * proj4 (radU a b - C v))
+          + (E (proj4 (radP a b) * proj4 (radP a b)) + E (proj4 (radQ a b) * proj4 (radQ a b))))
+          / 18 := by
+  have h := stein_slack hE ha hb haa hbb hab
   linarith
 
 /-- **The influence inequality** `4A + 2B ≤ 3κ`: for a circular pair in the third chaos and an
 expectation nonnegative on squares,
 `4 E(Π₂(U−v))² + 2 (E(Π₂P)² + E(Π₂Q)²) ≤ 3 (E U² − 2v²)`. -/
-theorem influence_bound (hpos : ∀ P : MvPolynomial ι ℝ, 0 ≤ E (P * P)) {v : ℝ} (ha : Chaos3 a)
+theorem influence_bound (hpos : ∀ P : MvPolynomial ι ℝ, 0 ≤ E (P * P)) (ha : Chaos3 a)
     (hb : Chaos3 b) (haa : E (a * a) = v / 2) (hbb : E (b * b) = v / 2) (hab : E (a * b) = 0) :
     4 * E (proj2 (radU a b - C v) * proj2 (radU a b - C v))
       + 2 * (E (proj2 (radP a b) * proj2 (radP a b)) + E (proj2 (radQ a b) * proj2 (radQ a b)))
@@ -490,6 +668,215 @@ theorem influence_bound (hpos : ∀ P : MvPolynomial ι ℝ, 0 ≤ E (P * P)) {v
   have h2 := hpos (proj4 (radP a b))
   have h3 := hpos (proj4 (radQ a b))
   linarith
+
+/-! ### Directional pairings -/
+
+omit [DecidableEq ι] in
+/-- `E(G · Y) = E(Π₂G · Y)` for `Y` in the second chaos and `G = G₂ + G₄ + G₆`. -/
+lemma gE_mul_chaos2_eq_proj2 {G G2 G4 G6 Y : MvPolynomial ι ℝ} (h : G = G2 + G4 + G6)
+    (h2 : ouL G2 = -(2 * G2)) (h4 : ouL G4 = -(4 * G4)) (h6 : ouL G6 = -(6 * G6))
+    (hY : ouL Y = -(2 * Y)) : E (G * Y) = E (proj2 G * Y) := by
+  obtain ⟨p2, -, -⟩ := proj_eq h h2 h4 h6
+  rw [p2, h, add_mul, add_mul, map_add, map_add, gE_eigen_orth hE 4 2 (by norm_num) h4 hY,
+    gE_eigen_orth hE 6 2 (by norm_num) h6 hY]
+  ring
+
+lemma gE_radU_mul_chaos2 (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) {Y : MvPolynomial ι ℝ} (hY : ouL Y = -(2 * Y)) :
+    E ((radU a b - C v) * Y) = E (proj2 (radU a b - C v) * Y) :=
+  gE_mul_chaos2_eq_proj2 hE (radU_sub_eq_comps E haa hbb)
+    (eigen_add 2 (comp2_eig hE ha ha) (comp2_eig hE hb hb))
+    (eigen_add 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb))
+    (eigen_add 6 (comp6_eig hE ha ha) (comp6_eig hE hb hb)) hY
+
+lemma gE_radP_mul_chaos2 (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) {Y : MvPolynomial ι ℝ} (hY : ouL Y = -(2 * Y)) :
+    E (radP a b * Y) = E (proj2 (radP a b) * Y) :=
+  gE_mul_chaos2_eq_proj2 hE (radP_eq_comps E haa hbb)
+    (eigen_sub 2 (comp2_eig hE ha ha) (comp2_eig hE hb hb))
+    (eigen_sub 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb))
+    (eigen_sub 6 (comp6_eig hE ha ha) (comp6_eig hE hb hb)) hY
+
+lemma gE_radQ_mul_chaos2 (ha : Chaos3 a) (hb : Chaos3 b) (hab : E (a * b) = 0)
+    {Y : MvPolynomial ι ℝ} (hY : ouL Y = -(2 * Y)) :
+    E (radQ a b * Y) = E (proj2 (radQ a b) * Y) :=
+  gE_mul_chaos2_eq_proj2 hE (radQ_eq_comps E hab) (eigen_two_mul 2 (comp2_eig hE ha hb))
+    (eigen_two_mul 4 (comp4_eig hE ha hb)) (eigen_two_mul 6 (comp6_eig hE ha hb)) hY
+
+omit [Fintype ι] [DecidableEq ι] hE in
+/-- The complex Cauchy–Schwarz inequality `|E[(p + iq)(y − iz)]|² ≤ E|p + iq|² E|y + iz|²` in real
+form, for an expectation nonnegative on squares. -/
+lemma gE_cauchy_schwarz_pair (hpos : ∀ P : MvPolynomial ι ℝ, 0 ≤ E (P * P))
+    (p q y z : MvPolynomial ι ℝ) :
+    (E (p * y) + E (q * z)) ^ 2 + (E (q * y) - E (p * z)) ^ 2
+      ≤ (E (p * p) + E (q * q)) * (E (y * y) + E (z * z)) := by
+  obtain ⟨X, hX⟩ : ∃ X, X = E (p * y) + E (q * z) := ⟨_, rfl⟩
+  obtain ⟨Y, hY⟩ : ∃ Y, Y = E (q * y) - E (p * z) := ⟨_, rfl⟩
+  obtain ⟨I, hI⟩ : ∃ I, I = E (y * y) + E (z * z) := ⟨_, rfl⟩
+  rw [← hX, ← hY, ← hI]
+  have c1 := gE_cauchy_schwarz E hpos p y
+  have c2 := gE_cauchy_schwarz E hpos q z
+  have c3 := gE_cauchy_schwarz E hpos q y
+  have c4 := gE_cauchy_schwarz E hpos p z
+  have hI0 : 0 ≤ I := by rw [hI]; exact add_nonneg (hpos y) (hpos z)
+  rcases hI0.lt_or_eq with hIpos | hIzero
+  · -- the square completion `0 ≤ E|I·π − ⟨π,w⟩ w|² = I (I‖π‖² − |⟨π,w⟩|²)`
+    have h0 := add_nonneg (hpos (C I * p - (C X * y - C Y * z)))
+      (hpos (C I * q - (C X * z + C Y * y)))
+    have e1 : (C I * p - (C X * y - C Y * z)) * (C I * p - (C X * y - C Y * z))
+        = C (I * I) * (p * p) + C (X * X) * (y * y) + C (Y * Y) * (z * z)
+          - C (2 * I * X) * (p * y) + C (2 * I * Y) * (p * z) - C (2 * X * Y) * (y * z) := by
+      simp only [C_mul, map_ofNat]; ring
+    have e2 : (C I * q - (C X * z + C Y * y)) * (C I * q - (C X * z + C Y * y))
+        = C (I * I) * (q * q) + C (X * X) * (z * z) + C (Y * Y) * (y * y)
+          - C (2 * I * X) * (q * z) - C (2 * I * Y) * (q * y) + C (2 * X * Y) * (y * z) := by
+      simp only [C_mul, map_ofNat]; ring
+    rw [e1, e2] at h0
+    simp only [map_add, map_sub, C_mul_apply] at h0
+    have h1 : 0 ≤ I * (I * (E (p * p) + E (q * q)) - (X ^ 2 + Y ^ 2)) := by
+      rw [hX, hY, hI] at h0 ⊢
+      linarith
+    rw [← not_lt]
+    intro hc
+    have := mul_pos hIpos (sub_pos.mpr hc)
+    linarith
+  · have hy : E (y * y) = 0 := by linarith [hpos y, hpos z]
+    have hz : E (z * z) = 0 := by linarith [hpos y, hpos z]
+    rw [hy, mul_zero] at c1 c3
+    rw [hz, mul_zero] at c2 c4
+    rw [← hIzero, mul_zero, hX, hY]
+    nlinarith [sq_nonneg (E (p * y) - E (q * z)), sq_nonneg (E (q * y) + E (p * z))]
+
+/-- The directional derivative `∂_α = Σᵢ αᵢ ∂ᵢ`. -/
+def dirD (α : ι → ℝ) (F : MvPolynomial ι ℝ) : MvPolynomial ι ℝ := ∑ i, C (α i) * pderiv i F
+
+/-- The linear form `r = Σᵢ αᵢ xᵢ`. -/
+def linForm (α : ι → ℝ) : MvPolynomial ι ℝ := ∑ i, C (α i) * X i
+
+omit [DecidableEq ι] hE in
+lemma dirD_add (α : ι → ℝ) (P Q : MvPolynomial ι ℝ) :
+    dirD α (P + Q) = dirD α P + dirD α Q := by
+  unfold dirD
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [map_add]; ring
+
+omit [DecidableEq ι] hE in
+lemma dirD_mul (α : ι → ℝ) (P Q : MvPolynomial ι ℝ) :
+    dirD α (P * Q) = P * dirD α Q + Q * dirD α P := by
+  unfold dirD
+  rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [pderiv_mul]; ring
+
+omit hE in
+lemma Chaos3.ouL_dirD (ha : Chaos3 a) (α : ι → ℝ) : ouL (dirD α a) = -(2 * dirD α a) := by
+  unfold dirD
+  rw [map_sum, Finset.mul_sum, ← Finset.sum_neg_distrib]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [ouL_C_mul, ha.ouL_pderiv]; ring
+
+omit [DecidableEq ι] in
+/-- **Gaussian integration by parts** along a direction: `E[r F] = E[∂_α F]`. -/
+lemma gE_linForm_mul (α : ι → ℝ) (F : MvPolynomial ι ℝ) :
+    E (linForm α * F) = E (dirD α F) := by
+  unfold linForm dirD
+  rw [Finset.sum_mul, map_sum, map_sum]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [mul_assoc, C_mul_apply, hE.ibp, C_mul_apply]
+
+/-- **Pairing with `U − v`**: `E[(U−v)∂_α a]² + E[(U−v)∂_α b]² ≤ A · (E(∂_α a)² + E(∂_α b)²)`. -/
+theorem influence_pairing_U (hpos : ∀ P : MvPolynomial ι ℝ, 0 ≤ E (P * P)) (ha : Chaos3 a)
+    (hb : Chaos3 b) (haa : E (a * a) = v / 2) (hbb : E (b * b) = v / 2) (α : ι → ℝ) :
+    E ((radU a b - C v) * dirD α a) ^ 2 + E ((radU a b - C v) * dirD α b) ^ 2
+      ≤ E (proj2 (radU a b - C v) * proj2 (radU a b - C v))
+        * (E (dirD α a * dirD α a) + E (dirD α b * dirD α b)) := by
+  rw [gE_radU_mul_chaos2 hE ha hb haa hbb (ha.ouL_dirD α),
+    gE_radU_mul_chaos2 hE ha hb haa hbb (hb.ouL_dirD α)]
+  have c1 := gE_cauchy_schwarz E hpos (proj2 (radU a b - C v)) (dirD α a)
+  have c2 := gE_cauchy_schwarz E hpos (proj2 (radU a b - C v)) (dirD α b)
+  linarith
+
+/-- **Pairing with `q²`**: `|E[q² ∂_α q̄]|² ≤ B · E|∂_α q|²`, in real form
+`(E[P∂_α a] + E[Q∂_α b])² + (E[Q∂_α a] − E[P∂_α b])² ≤ B (E(∂_α a)² + E(∂_α b)²)`. -/
+theorem influence_pairing_PQ (hpos : ∀ P : MvPolynomial ι ℝ, 0 ≤ E (P * P)) (ha : Chaos3 a)
+    (hb : Chaos3 b) (haa : E (a * a) = v / 2) (hbb : E (b * b) = v / 2) (hab : E (a * b) = 0)
+    (α : ι → ℝ) :
+    (E (radP a b * dirD α a) + E (radQ a b * dirD α b)) ^ 2
+      + (E (radQ a b * dirD α a) - E (radP a b * dirD α b)) ^ 2
+      ≤ (E (proj2 (radP a b) * proj2 (radP a b)) + E (proj2 (radQ a b) * proj2 (radQ a b)))
+        * (E (dirD α a * dirD α a) + E (dirD α b * dirD α b)) := by
+  rw [gE_radP_mul_chaos2 hE ha hb haa hbb (ha.ouL_dirD α),
+    gE_radP_mul_chaos2 hE ha hb haa hbb (hb.ouL_dirD α),
+    gE_radQ_mul_chaos2 hE ha hb hab (ha.ouL_dirD α),
+    gE_radQ_mul_chaos2 hE ha hb hab (hb.ouL_dirD α)]
+  exact gE_cauchy_schwarz_pair hpos _ _ _ _
+
+/-- **The first-chaos component of `q|q|²`** through the second chaos: by integration by parts,
+`E[r a U] = 2E[(U−v)∂_α a] + E[P∂_α a] + E[Q∂_α b]` and
+`E[r b U] = 2E[(U−v)∂_α b] + E[Q∂_α a] − E[P∂_α b]` (that is `E[r q|q|²] = 2E[(U−v)∂_α q]
++ E[q² ∂_α q̄]`). -/
+theorem gE_linForm_mul_radU (ha : Chaos3 a) (hb : Chaos3 b) (v : ℝ) (α : ι → ℝ) :
+    E (linForm α * (a * radU a b))
+        = 2 * E ((radU a b - C v) * dirD α a) + E (radP a b * dirD α a)
+          + E (radQ a b * dirD α b)
+      ∧ E (linForm α * (b * radU a b))
+        = 2 * E ((radU a b - C v) * dirD α b) + E (radQ a b * dirD α a)
+          - E (radP a b * dirD α b) := by
+  have ma : E (dirD α a) = 0 := gE_eigen_mean hE 2 (by norm_num) (ha.ouL_dirD α)
+  have mb : E (dirD α b) = 0 := gE_eigen_mean hE 2 (by norm_num) (hb.ouL_dirD α)
+  have hU : dirD α (radU a b) = 2 * (a * dirD α a) + 2 * (b * dirD α b) := by
+    unfold radU
+    rw [dirD_add, dirD_mul, dirD_mul]; ring
+  constructor
+  · rw [gE_linForm_mul hE, dirD_mul, hU,
+      show a * (2 * (a * dirD α a) + 2 * (b * dirD α b)) + radU a b * dirD α a
+        = 2 * ((radU a b - C v) * dirD α a) + radP a b * dirD α a + radQ a b * dirD α b
+          + C (2 * v) * dirD α a by unfold radU radP radQ; rw [C_mul, map_ofNat]; ring,
+      map_add, map_add, map_add, ofNat_mul_apply, C_mul_apply, ma]
+    ring
+  · rw [gE_linForm_mul hE, dirD_mul, hU,
+      show b * (2 * (a * dirD α a) + 2 * (b * dirD α b)) + radU a b * dirD α b
+        = 2 * ((radU a b - C v) * dirD α b) + radQ a b * dirD α a - radP a b * dirD α b
+          + C (2 * v) * dirD α b by unfold radU radP radQ; rw [C_mul, map_ofNat]; ring,
+      map_add, map_sub, map_add, ofNat_mul_apply, C_mul_apply, mb]
+    ring
+
+omit [Fintype ι] [DecidableEq ι] hE in
+/-- `|2u + w|² ≤ (2√A + √B)² I` from `|u|² ≤ A I`, `|w|² ≤ B I` in `ℝ²`. -/
+lemma two_smul_add_sq_le {u1 u2 w1 w2 A B I : ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B) (hI : 0 ≤ I)
+    (hu : u1 ^ 2 + u2 ^ 2 ≤ A * I) (hw : w1 ^ 2 + w2 ^ 2 ≤ B * I) :
+    (2 * u1 + w1) ^ 2 + (2 * u2 + w2) ^ 2 ≤ (2 * Real.sqrt A + Real.sqrt B) ^ 2 * I := by
+  have sA := Real.sq_sqrt hA
+  have sB := Real.sq_sqrt hB
+  have nA := Real.sqrt_nonneg A
+  have nB := Real.sqrt_nonneg B
+  have hcs : (u1 * w1 + u2 * w2) ^ 2 ≤ (Real.sqrt A * Real.sqrt B * I) ^ 2 := by
+    calc (u1 * w1 + u2 * w2) ^ 2 ≤ (u1 ^ 2 + u2 ^ 2) * (w1 ^ 2 + w2 ^ 2) := by
+          nlinarith [sq_nonneg (u1 * w2 - u2 * w1)]
+      _ ≤ (A * I) * (B * I) :=
+          mul_le_mul hu hw (by positivity) (by nlinarith [sq_nonneg u1, sq_nonneg u2])
+      _ = (Real.sqrt A * Real.sqrt B * I) ^ 2 := by
+          rw [mul_pow, mul_pow, sA, sB]; ring
+  have h := (abs_le_of_sq_le_sq' hcs (by positivity)).2
+  nlinarith
+
+/-- **The directional content inequality**: for the linear form `r = Σ αᵢxᵢ`,
+`E[r a U]² + E[r b U]² ≤ (2√A + √B)² (E(∂_α a)² + E(∂_α b)²)`, i.e.
+`|E[r q|q|²]|² ≤ (2√A + √B)² E|∂_α q|²`. -/
+theorem influence_pairing (hpos : ∀ P : MvPolynomial ι ℝ, 0 ≤ E (P * P)) (ha : Chaos3 a)
+    (hb : Chaos3 b) (haa : E (a * a) = v / 2) (hbb : E (b * b) = v / 2) (hab : E (a * b) = 0)
+    (α : ι → ℝ) :
+    E (linForm α * (a * radU a b)) ^ 2 + E (linForm α * (b * radU a b)) ^ 2
+      ≤ (2 * Real.sqrt (E (proj2 (radU a b - C v) * proj2 (radU a b - C v)))
+          + Real.sqrt (E (proj2 (radP a b) * proj2 (radP a b))
+            + E (proj2 (radQ a b) * proj2 (radQ a b)))) ^ 2
+        * (E (dirD α a * dirD α a) + E (dirD α b * dirD α b)) := by
+  obtain ⟨h1, h2⟩ := gE_linForm_mul_radU hE ha hb v α
+  rw [h1, h2, add_assoc (2 * E ((radU a b - C v) * dirD α a)),
+    add_sub_assoc (2 * E ((radU a b - C v) * dirD α b))]
+  exact two_smul_add_sq_le (hpos _) (add_nonneg (hpos _) (hpos _)) (add_nonneg (hpos _) (hpos _))
+    (influence_pairing_U hE hpos ha hb haa hbb α) (influence_pairing_PQ hE hpos ha hb haa hbb hab α)
 
 end expectation
 
