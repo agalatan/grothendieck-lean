@@ -51,3 +51,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.stein_energy_gap
 #print axioms Grothe.LowerAnalytic.influence_bound
 #print axioms Grothe.LowerAnalytic.influence_pairing
+#print axioms Grothe.Lower.finite_transfer
+#print axioms Grothe.Lower.approximable_coordLp
+#print axioms Grothe.Lower.transfer_lower
+#print axioms Grothe.Lower.lower_bound_of_transfer
+#print axioms Grothe.Lower.lower_bound_of_transferL2

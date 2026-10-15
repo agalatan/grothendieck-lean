@@ -95,7 +95,11 @@ tables of the rounding, of its polynomial truncation, and of the rounding withou
   formal verification.
 
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
-value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 140160592/10^8 < K`.
+value), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 140160592/10^8 < K`, and the transfer
+`Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 140160592/10^8 < K`,
+where `TransferInputsL2 B` asks, for every δ > 0, for a probability space with an operator T on L²,
+a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and measurable ball-valued maps u, v with
+Σ⟨uₗ, T vₗ⟩ ≥ 1 − δ.
 
 * Proved: positivity certificates in integer arithmetic; PSD gates by exact LᵀDL
   factorisations; the Stein cuts from their two analytic inputs, by a completion of squares,
@@ -107,8 +111,11 @@ value) and `Grothe.Lower.lower_endpoint : 1/B ≤ K → 140160592/10^8 < K`.
   vector; the node caps, convexity and Lipschitz bound of each potential (exact-arithmetic
   certificates outside Lean: interval integration of Young-type price bounds, and, on the rows
   near the maximum, anchored quadratic bounds with the convex hull of the cap table; slack 10⁻¹¹); the moment bounds on the law of U = |q|²; the two analytic
-  inputs of the Stein cuts for that law; and the transfer from the Gaussian operator to finite
-  matrices.
+  inputs of the Stein cuts for that law; and, for the transfer to finite matrices, the two Gaussian
+  inputs of `TransferInputsL2`: the scalar cap of the witness T = P₁,₀ − εP₂,₁ over unimodular
+  functions on Gaussian space and its value ≥ 1 − δ on u(z) = z/‖z‖ in large dimension. The
+  transfer itself (finite partitions, phase choices on cells, L² approximation by ball-valued
+  simple functions, passage to the limit) is proved in Lean (`Grothe/Lower/Transfer*.lean`).
 * The two analytic inputs of the Stein cuts are, with w = Γ(q, q̄)/3 and c = Γ(q, q)/3, the
   fluctuation bound E w = 1, Var(w) + ½E|c|² ≤ (E|q|⁴ − 2)/3, and the integration by parts
   E[Φ(U) − φ(U)] = E[(w−1)φ(U) + Re(c q̄²/U)·(φ(U) − Φ(U)/U)] for piecewise-linear tests φ with
@@ -137,7 +144,7 @@ no warnings.
 | `Grothe/Transfer.lean` | `IsGrothendieckBound`, the transfer inequality |
 | `Grothe/Upper/` | residual transfer, kernel composition, interval soundness, head check, final theorem |
 | `GrotheKernel/` | the fixed-point interval evaluator used by the head check |
-| `Grothe/Lower/` | positivity certificates, gates, Stein cuts, row and envelope checkers, final theorems |
+| `Grothe/Lower/` | positivity certificates, gates, Stein cuts, row and envelope checkers, the transfer to finite matrices, final theorems |
 | `Grothe/Lower/RowData*.lean`, `Grothe/Upper/Data.lean` | generated certificate data |
 | `Grothe/LowerAnalytic/` | analytic lemmas: Gaussian integration by parts, fluctuation bound, moment certificates |
 | `tools/` | generators of the data modules from the research archives |
