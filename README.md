@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.401619290904 < K_G^ℂ < 1.404599424**
+> **1.401629903 < K_G^ℂ < 1.404599424**
 
 ## The constant
 
@@ -31,7 +31,7 @@ classical and quantum correlations in two-party Bell experiments.
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.401619290904 < K** | **K < 1.404599424** |
+| Oct 2026 | **this repository** | **1.401629903 < K** | **K < 1.404599424** |
 
 For orientation, the real constant has a longer numerical history: Krivine's upper bound
 π / (2 log(1+√2)) = 1.78221… (1979) was shown to be non-optimal by Braverman, Makarychev,
@@ -52,14 +52,11 @@ certificates) and this Lean development (the machine-checked verification):
   through the kernel of a polynomial truncation of the rounding. The bound is
   1/(c − ‖H − c·t‖), with the residual at most 133/10⁸.
 * **Lower bound.** The Gaussian witness T = P₁,₀ − ε·P₂,₁ with ε = 149/200, whose L^∞ → L¹
-  norm is capped by B = 71346049993/10¹¹ through 19 rows with coupling vectors and a scalar
-  envelope. Each row bounds E Ψ(|q|) − κσ² over all residuals q, a normalised cubic chaos of
+  norm is capped by B = 356727549/(5·10⁸) through 19 rows with coupling vectors and a scalar
+  envelope (rows 0.84–0.855 with 336-node anchored cap tables). Each row bounds E Ψ(|q|) − κσ² over all residuals q, a normalised cubic chaos of
   bidegree (2,1): for small σ by moment rectangles, and beyond by nodes at which a polynomial
   majorizes the potential plus a nonnegative combination of Stein cuts, joined by convexity in
-  σ. On the slab t ∈ [0.847, 0.854] the mixtures of the rows 0.84–0.86 are certified jointly in
-  (t, τ, x) on 3 lists of 2,552 boxes in two dyadic regions, with 115 exact node certificates for
-  the mixed potentials (12 batches) and the gate square completed with its first coordinate pinned
-  to the residual; 1,786 envelope cells outside the slab. The inputs on the law of |q|² are the sixth-moment inequality
+  σ. The inputs on the law of |q|² are the sixth-moment inequality
   E|q|⁶ ≤ 9m − 12 + 40.45313·(m−2)^{3/2}, the first-moment bound E|q| ≤ 0.973612157, and the
   Stein cuts, a family of inequalities E G(|q|²) ≥ 0 obtained from a fluctuation bound and a
   Gaussian integration by parts. Then K_G^ℂ ≥ 1/B.
@@ -98,8 +95,8 @@ tables of the rounding, of its polynomial truncation, and of the rounding withou
   formal verification.
 
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
-value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401619290904/10^12 < K`, and the transfer
-`Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 1401619290904/10^12 < K`,
+value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401629903/10^9 < K`, and the transfer
+`Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 1401629903/10^9 < K`,
 where `TransferInputsL2 B` asks, for every δ > 0, for a probability space with an operator T on L²,
 a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and measurable ball-valued maps u, v with
 Σ⟨uₗ, T vₗ⟩ ≥ 1 − δ.
@@ -109,7 +106,7 @@ a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and measurable 
   and their polynomial pieces; the majorant sweeps over 9,234 nodes; the moment-rectangle
   covers; the integration against the law of |q|²; the chords in σ; the bound of every row
   from its Gaussian reduction; the mixtures of rows (the retained gate square mixes by an exact
-  identity) and their joint boxes; the mixture envelope; and the endpoint.
+  identity; available for joint certificates, unused by the present data); the mixture envelope; and the endpoint.
 * Explicit hypotheses (not formalized): the simultaneous Gaussian reduction of the rows
   (`SharedReduction`): one residual p = Q_w c₁ with scale τ = ‖p‖₂ ≤ ρ and normalised law
   U = |p|²/τ² satisfying the moment bounds and the Stein inputs, one gate variable
