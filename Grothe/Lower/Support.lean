@@ -103,16 +103,14 @@ theorem row_valid (r : Row) (hb : RowBound r) (V t : ℝ) (Qh v : E)
 /-- **Main lower-bound theorem (finite layer).**  Under the retained-square inequality of the
 crude row and the simultaneous Gaussian reduction of the certified rows, every admissible `(V, t)`
 satisfies `V ≤ B`: outside the slab `[slabLo, slabHi]` of `t` by the scalar envelope of the rows'
-certified caps, on the slab by the boxes of the joint `(t, τ, x)` cover; with the Gaussian transfer `K_G^ℂ ≥ 1/B` this is
-`K_G^ℂ > 1.401616861` (`lower_endpoint`). -/
+certified caps, on the slab by the boxes of the regions of the joint `(t, τ, x)` cover; with the
+Gaussian transfer `K_G^ℂ ≥ 1/B` this is `K_G^ℂ > 1.401619290904` (`lower_endpoint`). -/
 theorem lower_bound_main (rows : List Row) (models : List EnvModel) (cells : List EnvCell)
-    (batches : List JBatch) (boxes : List String) (slabLo slabHi : ℚ)
+    (batches : List JBatch) (regions : List Region) (slabLo slabHi : ℚ)
     (hrows : rows.all checkRow = true) (hprices : rows.all checkRowPrice = true)
     (hout : checkOuter (crudeRow :: rows.map Row.env) models cells Bcap slabLo slabHi = true)
     (hbatches : batches.all (checkBatch rows) = true)
-    (hboxes : checkBoxes rows batches boxes Bcap = true)
-    (hcover : coverOK (boxes.length + 1) (slabLo, slabHi, 0, ρ, 0, xMax)
-      (boxes.map fun s => (parseBox s).dom) = true)
+    (hslab : checkSlab rows batches Bcap slabLo slabHi regions = true)
     (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
     (hcrude : RowOf crudeRow V t Qh v) (hred : SharedReduction rows V t Qh v) : V ≤ Bcap := by
   obtain ⟨Ω, _, μ, _, U, X1, X2, X3, τ, x, hM, hSI, hτ0, hτ1, hX, hshared⟩ := hred
@@ -120,9 +118,13 @@ theorem lower_bound_main (rows : List Row) (models : List EnvModel) (cells : Lis
   have hrows' : ∀ r ∈ rows, checkRow r = true := List.all_eq_true.1 hrows
   have hbatches' : ∀ b ∈ batches, checkBatch rows b = true := List.all_eq_true.1 hbatches
   by_cases hin : (slabLo : ℝ) ≤ t ∧ t ≤ slabHi
-  · -- the slab: a box of the cover contains `(t, τ, x)`
-    have hmem : Dom.mem (slabLo, slabHi, 0, ρ, 0, xMax) t τ x :=
-      ⟨hin.1, hin.2, by simpa using hτ0, hτ1, by simpa using hM.x0, hM.x1⟩
+  · -- the slab: a region contains `t`, and a box of its cover contains `(t, τ, x)`
+    simp only [checkSlab, Bool.and_eq_true, Bool.not_eq_true', List.isEmpty_eq_false_iff] at hslab
+    obtain ⟨hne, hregs⟩ := hslab
+    obtain ⟨reg, _, hlo, hhi, hboxes, hcover⟩ :=
+      regions_sound rows batches Bcap slabLo slabHi regions hregs hne t hin.1 hin.2
+    have hmem : Dom.mem (reg.lo, reg.hi, 0, ρ, 0, xMax) t τ x :=
+      ⟨hlo, hhi, by simpa using hτ0, hτ1, by simpa using hM.x0, hM.x1⟩
     obtain ⟨d, hd, hdm⟩ := coverOK_sound _ _ _ hcover t τ x hmem
     obtain ⟨s, hs, rfl⟩ := List.mem_map.1 hd
     have hchk := List.all_eq_true.1 hboxes s hs

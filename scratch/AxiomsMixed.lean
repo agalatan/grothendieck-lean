@@ -21,8 +21,7 @@ import Grothe
 #print axioms Grothe.Lower.prices_check
 #print axioms Grothe.Lower.outer_check
 #print axioms Grothe.Lower.batches_check
-#print axioms Grothe.Lower.boxes_check
-#print axioms Grothe.Lower.cover_check
+#print axioms Grothe.Lower.slab_check
 #print axioms Grothe.Lower.rows_bound
 #print axioms Grothe.Lower.lower_bound_data
 #print axioms Grothe.Lower.lower_bound_main
@@ -30,7 +29,9 @@ import Grothe
 #print axioms Grothe.Lower.row_valid
 #print axioms Grothe.Lower.rowReduction_of_shared
 #print axioms Grothe.Lower.box_sound
-#print axioms Grothe.Lower.slab_bound
+#print axioms Grothe.Lower.vslab_bound
+#print axioms Grothe.Lower.VHolds.mix
+#print axioms Grothe.Lower.regions_sound
 #print axioms Grothe.Lower.gateForm_ge
 #print axioms Grothe.Lower.batch_sound
 #print axioms Grothe.Lower.rowTNode_sound
