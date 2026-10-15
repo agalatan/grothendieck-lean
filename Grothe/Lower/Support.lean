@@ -104,7 +104,7 @@ theorem row_valid (r : Row) (hb : RowBound r) (V t : ℝ) (Qh v : E)
 crude row and the simultaneous Gaussian reduction of the certified rows, every admissible `(V, t)`
 satisfies `V ≤ B`: outside the slab `[slabLo, slabHi]` of `t` by the scalar envelope of the rows'
 certified caps, on the slab by the boxes of the regions of the joint `(t, τ, x)` cover; with the
-Gaussian transfer `K_G^ℂ ≥ 1/B` this is `K_G^ℂ > 1.401619290904` (`lower_endpoint`). -/
+Gaussian transfer `K_G^ℂ ≥ 1/B` this is `K_G^ℂ > 1.401629903` (`lower_endpoint`). -/
 theorem lower_bound_main (rows : List Row) (models : List EnvModel) (cells : List EnvCell)
     (batches : List JBatch) (regions : List Region) (slabLo slabHi : ℚ)
     (hrows : rows.all checkRow = true) (hprices : rows.all checkRowPrice = true)
@@ -117,30 +117,9 @@ theorem lower_bound_main (rows : List Row) (models : List EnvModel) (cells : Lis
   have hS : SteinCut μ U := steinCut_of_inputs μ hM hSI
   have hrows' : ∀ r ∈ rows, checkRow r = true := List.all_eq_true.1 hrows
   have hbatches' : ∀ b ∈ batches, checkBatch rows b = true := List.all_eq_true.1 hbatches
-  by_cases hin : (slabLo : ℝ) ≤ t ∧ t ≤ slabHi
-  · -- the slab: a region contains `t`, and a box of its cover contains `(t, τ, x)`
-    simp only [checkSlab, Bool.and_eq_true, Bool.not_eq_true', List.isEmpty_eq_false_iff] at hslab
-    obtain ⟨hne, hregs⟩ := hslab
-    obtain ⟨reg, _, hlo, hhi, hboxes, hcover⟩ :=
-      regions_sound rows batches Bcap slabLo slabHi regions hregs hne t hin.1 hin.2
-    have hmem : Dom.mem (reg.lo, reg.hi, 0, ρ, 0, xMax) t τ x :=
-      ⟨hlo, hhi, by simpa using hτ0, hτ1, by simpa using hM.x0, hM.x1⟩
-    obtain ⟨d, hd, hdm⟩ := coverOK_sound _ _ _ hcover t τ x hmem
-    obtain ⟨s, hs, rfl⟩ := List.mem_map.1 hd
-    have hchk := List.all_eq_true.1 hboxes s hs
-    cases hbb : boxBound rows batches (parseBox s) with
-    | none => simp [hbb] at hchk
-    | some val =>
-      simp only [hbb, decide_eq_true_eq] at hchk
-      obtain ⟨h1, h2, h3, h4, h5, h6⟩ := hdm
-      have := box_sound rows batches hrows' hbatches' (parseBox s) val hbb X1 X2 X3 τ hX hM hS
-        V t Qh v hv hshared ⟨h1, h2⟩ ⟨h3, h4⟩ ⟨h5, h6⟩
-      exact this.trans (by exact_mod_cast hchk)
-  · -- outside the slab: the scalar envelope of the certified rows
-    have hout' : t < slabLo ∨ (slabHi : ℝ) < t := by
-      rcases not_and_or.1 hin with h | h
-      · exact Or.inl (not_le.1 h)
-      · exact Or.inr (not_le.1 h)
+  -- the envelope outside the slab (everywhere when the slab is degenerate)
+  have houter : t < slabLo ∨ (slabHi : ℝ) < t ∨ slabLo = slabHi → V ≤ Bcap := by
+    intro hout'
     refine outer_bound (crudeRow :: rows.map Row.env) models cells Bcap slabLo slabHi hout t V
       ht0 ht1 hout' ?_
     intro i j hi hj θ hθ0 hθ1
@@ -157,5 +136,39 @@ theorem lower_bound_main (rows : List Row) (models : List EnvModel) (cells : Lis
             hτ0 hτ1 hX V t Qh v (hshared r hr))
     have := rowHolds_mix (ε : ℝ) _ _ _ _ _ _ V t hε Qh v hv (hmem i hi) (hmem j hj) θ hθ0 hθ1
     simpa only [F] using this
+  by_cases hemp : regions = []
+  · -- no regions: the slab is degenerate
+    subst hemp
+    simp only [checkSlab, List.isEmpty_nil, ↓reduceIte, beq_iff_eq] at hslab
+    exact houter (Or.inr (Or.inr hslab))
+  by_cases hin : (slabLo : ℝ) ≤ t ∧ t ≤ slabHi
+  · -- the slab: a region contains `t`, and a box of its cover contains `(t, τ, x)`
+    have hregs : checkRegions rows batches Bcap slabLo slabHi regions = true := by
+      have hne' : regions.isEmpty = false := by
+        cases regions with
+        | nil => exact absurd rfl hemp
+        | cons _ _ => rfl
+      simpa only [checkSlab, hne', Bool.false_eq_true, ↓reduceIte] using hslab
+    have hne : regions ≠ [] := hemp
+    obtain ⟨reg, _, hlo, hhi, hboxes, hcover⟩ :=
+      regions_sound rows batches Bcap slabLo slabHi regions hregs hne t hin.1 hin.2
+    have hmem : Dom.mem (reg.lo, reg.hi, 0, ρ, 0, xMax) t τ x :=
+      ⟨hlo, hhi, by simpa using hτ0, hτ1, by simpa using hM.x0, hM.x1⟩
+    obtain ⟨d, hd, hdm⟩ := coverOK_sound _ _ _ hcover t τ x hmem
+    obtain ⟨s, hs, rfl⟩ := List.mem_map.1 hd
+    have hchk := List.all_eq_true.1 hboxes s hs
+    cases hbb : boxBound rows batches (parseBox s) with
+    | none => simp [hbb] at hchk
+    | some val =>
+      simp only [hbb, decide_eq_true_eq] at hchk
+      obtain ⟨h1, h2, h3, h4, h5, h6⟩ := hdm
+      have := box_sound rows batches hrows' hbatches' (parseBox s) val hbb X1 X2 X3 τ hX hM hS
+        V t Qh v hv hshared ⟨h1, h2⟩ ⟨h3, h4⟩ ⟨h5, h6⟩
+      exact this.trans (by exact_mod_cast hchk)
+  · -- outside the slab: the scalar envelope of the certified rows
+    refine houter ?_
+    rcases not_and_or.1 hin with h | h
+    · exact Or.inl (not_le.1 h)
+    · exact Or.inr (Or.inl (not_le.1 h))
 
 end Grothe.Lower

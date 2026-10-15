@@ -368,10 +368,11 @@ def checkRegions (rows : List Row) (batches : List JBatch) (bound : ℚ) :
       (r.boxes.map fun s => (parseBox s).dom) &&
     checkRegions rows batches bound r.hi stop rest
 
-/-- The regions cover the slab `[lo, hi]`. -/
+/-- The regions cover the slab `[lo, hi]`; no region means a degenerate slab `lo = hi`, which
+the envelope covers entirely. -/
 def checkSlab (rows : List Row) (batches : List JBatch) (bound lo hi : ℚ) (regs : List Region) :
     Bool :=
-  !regs.isEmpty && checkRegions rows batches bound lo hi regs
+  if regs.isEmpty then lo == hi else checkRegions rows batches bound lo hi regs
 
 lemma regions_sound (rows : List Row) (batches : List JBatch) (bound : ℚ) :
     ∀ (prev stop : ℚ) (regs : List Region), checkRegions rows batches bound prev stop regs = true →
@@ -415,7 +416,7 @@ def checkOuter (rows : List EnvRow) (models : List EnvModel) (cells : List EnvCe
 
 lemma cellsOut_sound (rows : List EnvRow) (models : List EnvModel) (bound lo hi : ℚ) :
     ∀ (prev : ℚ) (cells : List EnvCell), checkCellsOut rows models bound lo hi prev cells = true →
-    cells ≠ [] → ∀ t : ℝ, (prev : ℝ) ≤ t → t ≤ 9 / 10 → (t < lo ∨ (hi : ℝ) < t) →
+    cells ≠ [] → ∀ t : ℝ, (prev : ℝ) ≤ t → t ≤ 9 / 10 → (t < lo ∨ (hi : ℝ) < t ∨ lo = hi) →
       ∃ c ∈ cells, (c.lo : ℝ) ≤ t ∧ t ≤ c.hi ∧ c.model < models.length ∧
         (let q := modelQuad rows (models.getD c.model ⟨0, 0, 0⟩)
          quadMax q.1 q.2.1 q.2.2 c.lo c.hi ≤ bound)
@@ -431,7 +432,12 @@ lemma cellsOut_sound (rows : List EnvRow) (models : List EnvModel) (bound lo hi 
         have hl' : (lo : ℝ) ≤ c.lo := by exact_mod_cast hl
         have hh' : (c.hi : ℝ) ≤ hi := by exact_mod_cast hh
         have hpt' : (c.lo : ℝ) ≤ t := by rw [hlo]; exact hpt
-        rcases hout with h | h <;> linarith
+        have hlh' : (c.lo : ℝ) < c.hi := by exact_mod_cast hlh
+        rcases hout with h | h | h
+        · linarith
+        · linarith
+        · have : (lo : ℝ) = hi := by exact_mod_cast h
+          linarith
       · exact hq
     · cases rest with
       | nil =>
@@ -445,10 +451,11 @@ lemma cellsOut_sound (rows : List EnvRow) (models : List EnvModel) (bound lo hi 
             (le_of_lt (not_le.1 hth)) ht hout
         exact ⟨c'', List.mem_cons_of_mem _ hc'', h1, h2, h3, h4⟩
 
-/-- **Soundness of the outer envelope**: `V ≤ bound` for `t ∉ [lo, hi]`. -/
+/-- **Soundness of the outer envelope**: `V ≤ bound` for `t ∉ [lo, hi]` (or everywhere when the
+slab is degenerate, `lo = hi`). -/
 theorem outer_bound (rows : List EnvRow) (models : List EnvModel) (cells : List EnvCell)
     (bound lo hi : ℚ) (hchk : checkOuter rows models cells bound lo hi = true) (t V : ℝ)
-    (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10) (hout : t < lo ∨ (hi : ℝ) < t)
+    (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10) (hout : t < lo ∨ (hi : ℝ) < t ∨ lo = hi)
     (hmix : ∀ i j : ℕ, i < rows.length → j < rows.length → ∀ θ : ℝ, 0 ≤ θ → θ ≤ 1 →
       V ≤ (1 - θ) * F (rows.getD i dfltRow) t + θ * F (rows.getD j dfltRow) t
         - (2 / (ε : ℝ)) * θ * (1 - θ) *
