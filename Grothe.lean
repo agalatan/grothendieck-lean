@@ -48,6 +48,7 @@ import Grothe.LowerAnalytic.SixthMoment
 import Grothe.LowerAnalytic.Coupling
 import Grothe.LowerAnalytic.Fluctuation
 import Grothe.LowerAnalytic.HermiteChaos
+import Grothe.LowerAnalytic.Influence
 import Grothe.LowerAnalytic.Schur
 import Grothe.LowerAnalytic.Rows
 import Grothe.LowerAnalytic.Endpoint
