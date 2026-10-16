@@ -9,7 +9,7 @@ Usage: tools/gen_lower_mixed.py [CERT_DIR]   (default handoff/lower-stein/cert-1
 
 CERT_DIR holds the cover (`improved_cover.json` with `regions`, or `joint_cover_certificate.json`
 with one `domain`) and the batch files it references (`review/*.json`); the source rows are
-`handoff/lower-stein/cert-0745c/` or `cert-0745/` (whichever the cover pins by hash).  Row indices refer to `rowData`
+`handoff/lower-stein/cert-0745d/`, `cert-0745c/` or `cert-0745/` (whichever the cover pins by hash).  Row indices refer to `rowData`
 (rows sorted by their nominal `t`).  Cell kinds: source (two rows, node references
 `(cell, node)`, `(-1, -1)` the zero node), `joint` (a batch, witness indices) and `joint_mix`
 (two batches mixed with weight `λ` before the gate completion).  Every box value is replayed
@@ -34,7 +34,8 @@ if len(sys.argv) > 1 and sys.argv[1] == "--empty":   # the per-row certificate: 
         "/-- No batches. -/\ndef mixedBatches : List JBatch := []\n\n/-- No regions. -/\ndef mixedRegions : List Region := []\n\nend Grothe.Lower\n")
     print("ok empty"); sys.exit(0)
 # the pinned source rows: whichever per-row certificate the cover pins by its manifest hash
-SOURCES = [(HANDOFF / "lower-stein" / "cert-0745c", HANDOFF / "lower-stein" / "cert-0745c" / "rows_final_c.json"),
+SOURCES = [(HANDOFF / "lower-stein" / "cert-0745d", HANDOFF / "lower-stein" / "cert-0745d" / "rows_final_d.json"),
+           (HANDOFF / "lower-stein" / "cert-0745c", HANDOFF / "lower-stein" / "cert-0745c" / "rows_final_c.json"),
            (HANDOFF / "lower-stein" / "cert-0745", HANDOFF / "lower-stein" / "rows_final.json")]
 NEW = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else HANDOFF / "lower-stein" / "cert-1401619290904"
 OUT = ROOT / "Grothe" / "Lower" / "MixedData.lean"

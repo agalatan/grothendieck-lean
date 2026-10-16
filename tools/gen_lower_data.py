@@ -6,9 +6,9 @@
                                   x-cells (moment rectangles, bank of cut vectors, nodes) as strings
   Grothe/Lower/RowData.lean       the list of rows, the fixed mixtures and the scalar cover
 
-Inputs: `handoff/lower-stein/cert-0745c/` (manifest.json, row_<t>.json, envelope.json) and the exact
-row constants `handoff/lower-stein/cert-0745c/rows_final_c.json` written by the reference verifier
-(`verify_cert.py cert-0745c --rows rows_final_c.json`).  The row cap is the exact row maximum rounded up
+Inputs: `handoff/lower-stein/<SOURCE>/` (default `cert-0745d`; manifest.json, row_<t>.json, envelope.json) and the exact
+row constants `<SOURCE>/rows_final_d.json` (`rows_final_c.json` for cert-0745c) written by the reference verifier
+(`verify_cert.py <SOURCE> --rows ...`).  The row cap is the exact row maximum rounded up
 to a multiple of 10⁻¹⁵; the scalar envelope is replayed here with the Lean semantics.
 """
 import hashlib
@@ -17,9 +17,14 @@ from fractions import Fraction as Q
 from math import isqrt
 from pathlib import Path
 
+import os
+import sys
 ROOT = Path(__file__).resolve().parent.parent
-CERT = ROOT / "handoff" / "lower-stein" / "cert-0745c"
-ROWS = ROOT / "handoff" / "lower-stein" / "cert-0745c" / "rows_final_c.json"
+HANDOFF = Path(os.environ.get("GROTHE_HANDOFF", ROOT / "handoff"))   # the (git-ignored) data folder; set it when running from a worktree
+# usage: tools/gen_lower_data.py [SOURCE]   SOURCE = cert-0745d (default) | cert-0745c (folder in handoff/lower-stein)
+SOURCE = sys.argv[1] if len(sys.argv) > 1 else "cert-0745d"
+CERT = HANDOFF / "lower-stein" / SOURCE
+ROWS = CERT / {"cert-0745d": "rows_final_d.json", "cert-0745c": "rows_final_c.json"}[SOURCE]
 OUT = ROOT / "Grothe" / "Lower"
 RHO = Q(973612157, 10**9)
 PAD = Q(1, 10**11)
@@ -80,7 +85,7 @@ def lean_str(s): return '"' + s + '"'
 
 man = json.load(open(CERT / "manifest.json"))
 EPS = Q(man["eps"]); B = Q(man["B"])
-assert EPS == Q(149, 200) and B == Q(356727549, 500000000)
+assert EPS == Q(149, 200) and B == {"cert-0745d": Q(713443719, 10**9), "cert-0745c": Q(356727549, 500000000)}[SOURCE]
 for fn, h in man["files"].items():
     assert hashlib.sha256(open(CERT / fn, "rb").read()).hexdigest() == h, fn
 consts = json.load(open(ROWS))
