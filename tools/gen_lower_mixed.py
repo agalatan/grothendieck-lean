@@ -9,7 +9,7 @@ Usage: tools/gen_lower_mixed.py [CERT_DIR]   (default handoff/lower-stein/cert-1
 
 CERT_DIR holds the cover (`improved_cover.json` with `regions`, or `joint_cover_certificate.json`
 with one `domain`) and the batch files it references (`review/*.json`); the source rows are
-`handoff/lower-stein/cert-0745d/`, `cert-0745c/` or `cert-0745/` (whichever the cover pins by hash).  Row indices refer to `rowData`
+`handoff/lower-stein/cert-0745e/`, `cert-0745d/`, `cert-0745c/` or `cert-0745/` (whichever the cover pins by hash).  Row indices refer to `rowData`
 (rows sorted by their nominal `t`).  Cell kinds: source (two rows, node references
 `(cell, node)`, `(-1, -1)` the zero node), `joint` (a batch, witness indices) and `joint_mix`
 (two batches mixed with weight `λ` before the gate completion).  Every box value is replayed
@@ -34,7 +34,8 @@ if len(sys.argv) > 1 and sys.argv[1] == "--empty":   # the per-row certificate: 
         "/-- No batches. -/\ndef mixedBatches : List JBatch := []\n\n/-- No regions. -/\ndef mixedRegions : List Region := []\n\nend Grothe.Lower\n")
     print("ok empty"); sys.exit(0)
 # the pinned source rows: whichever per-row certificate the cover pins by its manifest hash
-SOURCES = [(HANDOFF / "lower-stein" / "cert-0745d", HANDOFF / "lower-stein" / "cert-0745d" / "rows_final_d.json"),
+SOURCES = [(HANDOFF / "lower-stein" / "cert-0745e", HANDOFF / "lower-stein" / "cert-0745e" / "rows_final_e.json"),
+           (HANDOFF / "lower-stein" / "cert-0745d", HANDOFF / "lower-stein" / "cert-0745d" / "rows_final_d.json"),
            (HANDOFF / "lower-stein" / "cert-0745c", HANDOFF / "lower-stein" / "cert-0745c" / "rows_final_c.json"),
            (HANDOFF / "lower-stein" / "cert-0745", HANDOFF / "lower-stein" / "rows_final.json")]
 NEW = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else HANDOFF / "lower-stein" / "cert-1401619290904"
@@ -119,6 +120,16 @@ for bref in cert["joint_batches"]:
     assert b["source_manifest_sha256"] == cert["source_manifest_sha256"]
     names = b["rows"]; w = list(map(Q, b["weights"])); assert len(names) == 2 and w[0] + w[1] == 1 and min(w) >= 0
     th = w[1]; Ri, Rj = rows[index[names[0]]], rows[index[names[1]]]
+    # the stored mixed table is exactly the one of the source rows (exact rationals, no node rounding)
+    def capAt(R, s):
+        ns, cs = [Q(v) for v in R["nodes"]], [Q(v) for v in R["caps"]]
+        if s >= ns[-1]: return cs[-1] + Q(R["smax"]) * (s - ns[-1])
+        k = max(k for k in range(len(ns) - 1) if ns[k] <= s); return cs[k] + (cs[k + 1] - cs[k]) * (s - ns[k]) / (ns[k + 1] - ns[k])
+    assert all(isinstance(v, str) for R in (Ri, Rj) for v in R["nodes"] + R["caps"])
+    dd = [Q(R["theta"][9]) for R in (Ri, Rj)]
+    mn = sorted(set(Q(z) / d for R, d in zip((Ri, Rj), dd) for z in R["nodes"]))
+    assert mn == [Q(v) for v in b["nodes"]], "mixed nodes differ from the exact row nodes"
+    assert [w[0] * capAt(Ri, dd[0] * z) + w[1] * capAt(Rj, dd[1] * z) for z in mn] == [Q(v) for v in b["caps"]], "mixed caps differ"
     mesh = [Q(v) for v in b["mesh"]]; assert mesh[0] == 0 and all(u < v for u, v in zip(mesh, mesh[1:]))
     vs = ",".join(qs(rsqrt(t)) for t in mesh[1:])
     nodes = ";".join(f"{qs(r)}:{qs(c)}" for r, c in zip(b["nodes"], b["caps"]))
