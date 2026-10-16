@@ -6,8 +6,8 @@
                                   x-cells (moment rectangles, bank of cut vectors, nodes) as strings
   Grothe/Lower/RowData.lean       the list of rows, the fixed mixtures and the scalar cover
 
-Inputs: `handoff/lower-stein/<SOURCE>/` (default `cert-0745d`; manifest.json, row_<t>.json, envelope.json) and the exact
-row constants `<SOURCE>/rows_final_d.json` (`rows_final_c.json` for cert-0745c) written by the reference verifier
+Inputs: `handoff/lower-stein/<SOURCE>/` (default `cert-0745e`; manifest.json, row_<t>.json, envelope.json) and the exact
+row constants `<SOURCE>/rows_final_<e|d|c>.json` written by the reference verifier
 (`verify_cert.py <SOURCE> --rows ...`).  The row cap is the exact row maximum rounded up
 to a multiple of 10⁻¹⁵; the scalar envelope is replayed here with the Lean semantics.
 """
@@ -21,10 +21,10 @@ import os
 import sys
 ROOT = Path(__file__).resolve().parent.parent
 HANDOFF = Path(os.environ.get("GROTHE_HANDOFF", ROOT / "handoff"))   # the (git-ignored) data folder; set it when running from a worktree
-# usage: tools/gen_lower_data.py [SOURCE]   SOURCE = cert-0745d (default) | cert-0745c (folder in handoff/lower-stein)
-SOURCE = sys.argv[1] if len(sys.argv) > 1 else "cert-0745d"
+# usage: tools/gen_lower_data.py [SOURCE]   SOURCE = cert-0745e (default) | cert-0745d | cert-0745c (folder in handoff/lower-stein)
+SOURCE = sys.argv[1] if len(sys.argv) > 1 else "cert-0745e"
 CERT = HANDOFF / "lower-stein" / SOURCE
-ROWS = CERT / {"cert-0745d": "rows_final_d.json", "cert-0745c": "rows_final_c.json"}[SOURCE]
+ROWS = CERT / {"cert-0745e": "rows_final_e.json", "cert-0745d": "rows_final_d.json", "cert-0745c": "rows_final_c.json"}[SOURCE]
 OUT = ROOT / "Grothe" / "Lower"
 RHO = Q(973612157, 10**9)
 PAD = Q(1, 10**11)
@@ -85,7 +85,7 @@ def lean_str(s): return '"' + s + '"'
 
 man = json.load(open(CERT / "manifest.json"))
 EPS = Q(man["eps"]); B = Q(man["B"])
-assert EPS == Q(149, 200) and B == {"cert-0745d": Q(713443719, 10**9), "cert-0745c": Q(356727549, 500000000)}[SOURCE]
+assert EPS == Q(149, 200) and B == {"cert-0745e": Q(713440973, 10**9), "cert-0745d": Q(713443719, 10**9), "cert-0745c": Q(356727549, 500000000)}[SOURCE]
 for fn, h in man["files"].items():
     assert hashlib.sha256(open(CERT / fn, "rb").read()).hexdigest() == h, fn
 consts = json.load(open(ROWS))
@@ -110,6 +110,8 @@ for idx, fn in enumerate(rowfiles, 1):
     cap_exact = Q(K["C"]) - PAD - 2 * beta * beta / EPS
     cap = Q(-((-cap_exact.numerator * 10**15) // cap_exact.denominator), 10**15)   # rounded up
     assert cap_exact <= cap < cap_exact + Q(1, 10**15)
+    # cap nodes and caps are exact rationals read from their strings (no rounding: cert-0745e has k/800 nodes)
+    assert all(isinstance(v, str) for v in R["nodes"] + R["caps"]) and all(Q(qs(v)) == Q(v) for v in R["nodes"] + R["caps"])
     nodes = ";".join(f"{qs(r)}:{qs(cc)}" for r, cc in zip(R["nodes"], R["caps"]))
     mesh = [Q(v) for v in R["mesh"]]
     assert not mesh or mesh[0] == 0
