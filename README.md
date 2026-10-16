@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.401668504 < K_G^ℂ < 1.404599424**
+> **1.401674103 < K_G^ℂ < 1.404599424**
 
 ## The constant
 
@@ -31,7 +31,7 @@ classical and quantum correlations in two-party Bell experiments.
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.401668504 < K** | **K < 1.404599424** |
+| Oct 2026 | **this repository** | **1.401674103 < K** | **K < 1.404599424** |
 
 For orientation, the real constant has a longer numerical history: Krivine's upper bound
 π / (2 log(1+√2)) = 1.78221… (1979) was shown to be non-optimal by Braverman, Makarychev,
@@ -95,19 +95,19 @@ tables of the rounding, of its polynomial truncation, and of the rounding withou
   formal verification.
 
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
-value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401668504/10^9 < K`, and the transfer
-`Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 1401668504/10^9 < K`,
+value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401674103/10^9 < K`, and the transfer
+`Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 1401674103/10^9 < K`,
 where `TransferInputsL2 B` asks, for every δ > 0, for a probability space with an operator T on L²,
 a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and measurable ball-valued maps u, v with
 Σ⟨uₗ, T vₗ⟩ ≥ 1 − δ.
 
 * Proved: positivity certificates in integer arithmetic; PSD gates by exact LᵀDL
   factorisations; the Stein cuts from their two analytic inputs, by a completion of squares,
-  and their polynomial pieces; the majorant sweeps over 9,233 nodes; the moment-rectangle
+  and their polynomial pieces; the majorant sweeps over 9,237 nodes; the moment-rectangle
   covers; the integration against the law of |q|²; the chords in σ; the bound of every row
   from its Gaussian reduction; the mixtures of rows (the retained gate square mixes by an exact
-  identity); the common-law certificate: 38 batches of 440 joint Stein node certificates for mixed
-  potentials of rows 0.84–0.86, and 3,155 boxes of the slab [0.847, 0.8545] × [0, ρ] × [0, 31/4]
+  identity); the common-law certificate: 37 batches of 425 joint Stein node certificates for mixed
+  potentials of rows 0.84–0.86, and 3,219 boxes of the slab [0.847, 0.8545] × [0, ρ] × [0, 31/4]
   (source, joint and joint-mixture boxes, pinned gate price X₁ = p); the mixture envelope; and the endpoint.
 * Explicit hypotheses (not formalized): the simultaneous Gaussian reduction of the rows
   (`SharedReduction`): one residual p = Q_w c₁ with scale τ = ‖p‖₂ ≤ ρ and normalised law
@@ -115,8 +115,8 @@ a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and measurable 
   X = Q_w(c₁, c_A, conj c_B) with X₁ = p, and for every row its potential Ψ_r with the row inequality
   retaining the gate square, V ≤ t² − 2ℓt + 2β²/ε + E Ψ_r(δ_r τ√U) − δ_r τ² − E[X*N_r X + 2Re(conj p (g_r·X))] − ε‖Qh + βv/ε‖²; the node caps, convexity and Lipschitz bound of each potential (exact-arithmetic
   certificates outside Lean: interval integration of Young-type price bounds, and, on the rows
-  near the maximum, anchored quadratic bounds and, on s ∈ [0.2, 0.4) of rows 0.84–0.855, localised anchored bounds
-  (8,991 regions in the odd fibre directions, one S-lemma quadratic each, replayed in exact arithmetic), with the convex hull of
+  near the maximum, anchored quadratic bounds and, on s ∈ [0.2, 0.4) ∪ [0.525, 0.6) of rows 0.84–0.855, localised anchored bounds
+  (regions in the odd fibre directions, one S-lemma quadratic each, replayed in exact arithmetic), with the convex hull of
   the cap table; slack 10⁻¹¹); the moment bounds on the law of U = |q|²; the two analytic
   inputs of the Stein cuts for that law; and, for the transfer to finite matrices, the two Gaussian
   inputs of `TransferInputsL2`: the scalar cap of the witness T = P₁,₀ − εP₂,₁ over unimodular
