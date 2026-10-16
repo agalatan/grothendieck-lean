@@ -104,7 +104,7 @@ theorem row_valid (r : Row) (hb : RowBound r) (V t : ℝ) (Qh v : E)
 crude row and the simultaneous Gaussian reduction of the certified rows, every admissible `(V, t)`
 satisfies `V ≤ B`: outside the slab `[slabLo, slabHi]` of `t` by the scalar envelope of the rows'
 certified caps, on the slab by the boxes of the regions of the joint `(t, τ, x)` cover; with the
-Gaussian transfer `K_G^ℂ ≥ 1/B` this is `K_G^ℂ > 1.401629903` (`lower_endpoint`). -/
+Gaussian transfer `K_G^ℂ ≥ 1/B` this is `K_G^ℂ > 1.401643474` (`lower_endpoint`). -/
 theorem lower_bound_main (rows : List Row) (models : List EnvModel) (cells : List EnvCell)
     (batches : List JBatch) (regions : List Region) (slabLo slabHi : ℚ)
     (hrows : rows.all checkRow = true) (hprices : rows.all checkRowPrice = true)
