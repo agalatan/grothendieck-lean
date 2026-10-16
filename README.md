@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.401629903 < K_G^ℂ < 1.404599424**
+> **1.401643474 < K_G^ℂ < 1.404599424**
 
 ## The constant
 
@@ -31,7 +31,7 @@ classical and quantum correlations in two-party Bell experiments.
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.401629903 < K** | **K < 1.404599424** |
+| Oct 2026 | **this repository** | **1.401643474 < K** | **K < 1.404599424** |
 
 For orientation, the real constant has a longer numerical history: Krivine's upper bound
 π / (2 log(1+√2)) = 1.78221… (1979) was shown to be non-optimal by Braverman, Makarychev,
@@ -95,8 +95,8 @@ tables of the rounding, of its polynomial truncation, and of the rounding withou
   formal verification.
 
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
-value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401629903/10^9 < K`, and the transfer
-`Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 1401629903/10^9 < K`,
+value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401643474/10^9 < K`, and the transfer
+`Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 1401643474/10^9 < K`,
 where `TransferInputsL2 B` asks, for every δ > 0, for a probability space with an operator T on L²,
 a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and measurable ball-valued maps u, v with
 Σ⟨uₗ, T vₗ⟩ ≥ 1 − δ.
@@ -106,7 +106,9 @@ a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and measurable 
   and their polynomial pieces; the majorant sweeps over 9,234 nodes; the moment-rectangle
   covers; the integration against the law of |q|²; the chords in σ; the bound of every row
   from its Gaussian reduction; the mixtures of rows (the retained gate square mixes by an exact
-  identity; available for joint certificates, unused by the present data); the mixture envelope; and the endpoint.
+  identity); the common-law certificate: 22 batches of 265 joint Stein node certificates for mixed
+  potentials of rows 0.84–0.86, and 2,854 boxes of the slab [0.847, 0.854] × [0, ρ] × [0, 31/4]
+  (source, joint and joint-mixture boxes, pinned gate price X₁ = p); the mixture envelope; and the endpoint.
 * Explicit hypotheses (not formalized): the simultaneous Gaussian reduction of the rows
   (`SharedReduction`): one residual p = Q_w c₁ with scale τ = ‖p‖₂ ≤ ρ and normalised law
   U = |p|²/τ² satisfying the moment bounds and the Stein inputs, one gate variable
