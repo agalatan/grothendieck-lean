@@ -1,6 +1,5 @@
 import Grothe.Lower.Stein
 import Grothe.LowerAnalytic.RadialParts
-import Grothe.LowerAnalytic.HermiteChaos
 
 /-!
 # The Stein inputs of cubic Gaussian chaos
@@ -17,8 +16,7 @@ being `C¹` across the knots (`cutPrim_deriv`) and `h` affine near zero.
 
 Together with the fluctuation bound this gives `Grothe.Lower.SteinInputs` for the law of `U`
 whenever `a`, `b` are in the third chaos with `E a² = E b² = 1/2`, `E ab = 0`
-(`gaussian_steinInputs`), in particular for combinations of Hermite products of degree three
-(`gaussian_steinInputs_hermite`).
+(`gaussian_steinInputs`).
 -/
 
 open MeasureTheory MvPolynomial Grothe.Lower
@@ -443,16 +441,5 @@ theorem gaussian_steinInputs (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (h
     radial_cut a b ha.eig hb.eig vs z h⟩⟩
   rw [e1, e3]
   linarith
-
-/-- The Stein inputs for combinations of Hermite products of total degree three. -/
-theorem gaussian_steinInputs_hermite (s : Finset (Fin d → ℕ)) (f g : (Fin d → ℕ) → ℝ)
-    (hs : ∀ α ∈ s, ∑ i, α i = 3)
-    (haa : ∫ x, eval x (∑ α ∈ s, C (f α) * hermiteProd α) ^ 2 ∂(stdGaussian d) = 1 / 2)
-    (hbb : ∫ x, eval x (∑ α ∈ s, C (g α) * hermiteProd α) ^ 2 ∂(stdGaussian d) = 1 / 2)
-    (hab : ∫ x, eval x (∑ α ∈ s, C (f α) * hermiteProd α)
-      * eval x (∑ α ∈ s, C (g α) * hermiteProd α) ∂(stdGaussian d) = 0) :
-    SteinInputs (stdGaussian d) fun x =>
-      eval x (radU (∑ α ∈ s, C (f α) * hermiteProd α) (∑ α ∈ s, C (g α) * hermiteProd α)) :=
-  gaussian_steinInputs _ _ (chaos3_hermite_sum s f hs) (chaos3_hermite_sum s g hs) haa hbb hab
 
 end Grothe.LowerAnalytic

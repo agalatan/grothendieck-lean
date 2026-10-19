@@ -19,7 +19,8 @@ is the fourth-chaos component of `F²`, and (`chaos3_remainder`)
   `2 (E F⁴ − 3S²) − E[(Γ(F,F) − 3S)²] = E[J₄²]`.
 
 Applied to `a`, `a + b`, `b`, `b − a` for a pair with `E a² = E b² = 1/2`, `E ab = 0` this gives
-the fluctuation identity (`fluctuation_identity`): with `U = a² + b²` (`radU`),
+the fluctuation identity (`fluctuation_identity`, stated for `E a² = E b² = v/2`): with
+`U = a² + b²` (`radU`),
 `S = Γ(a,a) + Γ(b,b)` (`radS`), `A = Γ(a,a) − Γ(b,b)` (`radA`), `B = 2Γ(a,b)` (`radB`),
 
   `E S = 3`,
@@ -39,13 +40,14 @@ noncomputable section
 
 section derivations
 
-variable {ι : Type*}
-
-lemma pderiv_ofNat_mul (i : ι) (n : ℕ) [n.AtLeastTwo] (P : MvPolynomial ι ℝ) :
-    pderiv i ((OfNat.ofNat n : MvPolynomial ι ℝ) * P)
-      = (OfNat.ofNat n : MvPolynomial ι ℝ) * pderiv i P := by
-  change pderiv i ((n : MvPolynomial ι ℝ) * P) = (n : MvPolynomial ι ℝ) * pderiv i P
+/-- An additive map commutes with multiplication by a numeral. -/
+lemma ofNat_mul_apply {R S F : Type*} [NonAssocSemiring R] [NonAssocSemiring S] [FunLike F R S]
+    [AddMonoidHomClass F R S] (f : F) (n : ℕ) [n.AtLeastTwo] (x : R) :
+    f ((OfNat.ofNat n : R) * x) = (OfNat.ofNat n : S) * f x := by
+  change f ((n : R) * x) = (n : S) * f x
   rw [← nsmul_eq_mul, map_nsmul, nsmul_eq_mul]
+
+variable {ι : Type*}
 
 /-- Partial derivatives commute. -/
 lemma pderiv_pderiv_comm (i j : ι) (P : MvPolynomial ι ℝ) :
@@ -62,12 +64,6 @@ lemma pderiv_pderiv_comm (i j : ι) (P : MvPolynomial ι ℝ) :
         tsub_zero]
       ring
   | add p q hp hq => simp only [map_add, hp, hq]
-
-lemma ofNat_mul_apply (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (n : ℕ) [n.AtLeastTwo]
-    (P : MvPolynomial ι ℝ) :
-    E ((OfNat.ofNat n : MvPolynomial ι ℝ) * P) = (OfNat.ofNat n : ℝ) * E P := by
-  change E ((n : MvPolynomial ι ℝ) * P) = (n : ℝ) * E P
-  rw [← nsmul_eq_mul, map_nsmul, nsmul_eq_mul]
 
 lemma C_mul_apply (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (c : ℝ) (P : MvPolynomial ι ℝ) :
     E (C c * P) = c * E P := by
@@ -186,12 +182,12 @@ section eigen
 variable [DecidableEq ι] {F : MvPolynomial ι ℝ}
 
 lemma Chaos3.ouL_pderiv (hF : Chaos3 F) (j : ι) : ouL (pderiv j F) = -(2 * pderiv j F) := by
-  rw [Grothe.LowerAnalytic.ouL_pderiv, hF.eig, map_neg, pderiv_ofNat_mul]
+  rw [Grothe.LowerAnalytic.ouL_pderiv, hF.eig, map_neg, ofNat_mul_apply]
   ring
 
 lemma Chaos3.ouL_pderiv2 (hF : Chaos3 F) (i j : ι) :
     ouL (pderiv i (pderiv j F)) = -pderiv i (pderiv j F) := by
-  rw [Grothe.LowerAnalytic.ouL_pderiv, hF.ouL_pderiv, map_neg, pderiv_ofNat_mul]
+  rw [Grothe.LowerAnalytic.ouL_pderiv, hF.ouL_pderiv, map_neg, ofNat_mul_apply]
   ring
 
 lemma Chaos3.ouL_gam (hF : Chaos3 F) : ouL (gam F F) = 2 * gam2 F - 4 * gam F F := by
@@ -366,28 +362,33 @@ theorem chaos3_remainder (hF : Chaos3 F) :
 
 variable {a b : MvPolynomial ι ℝ}
 
-/-- **The fluctuation identity** for a pair in the third chaos with `E a² = E b² = 1/2`,
+omit hE [Fintype ι] [DecidableEq ι] in
+/-- `E(a ± b)² = v` for `E a² = E b² = v/2`, `E ab = 0`. -/
+lemma gE_add_sub_sq {v : ℝ} (haa : E (a * a) = v / 2) (hbb : E (b * b) = v / 2)
+    (hab : E (a * b) = 0) : E ((a + b) * (a + b)) = v ∧ E ((b - a) * (b - a)) = v := by
+  constructor
+  · rw [show (a + b) * (a + b) = a * a + 2 * (a * b) + b * b by ring, map_add, map_add,
+      ofNat_mul_apply, haa, hbb, hab]
+    ring
+  · rw [show (b - a) * (b - a) = a * a - 2 * (a * b) + b * b by ring, map_add, map_sub,
+      ofNat_mul_apply, haa, hbb, hab]
+    ring
+
+/-- **The fluctuation identity** for a pair in the third chaos with `E a² = E b² = v/2`,
 `E ab = 0`: the gap in the fluctuation bound is an explicit sum of squares, from the four
 projections `a`, `a + b`, `b`, `b − a`. -/
-theorem fluctuation_identity (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = 1 / 2)
-    (hbb : E (b * b) = 1 / 2) (hab : E (a * b) = 0) :
-    12 * (E (radU a b * radU a b) - 2) - 4 * E ((radS a b - 3) * (radS a b - 3))
+theorem fluctuation_identity {v : ℝ} (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
+    (hbb : E (b * b) = v / 2) (hab : E (a * b) = 0) :
+    12 * (E (radU a b * radU a b) - 2 * v ^ 2)
+      - 4 * E ((radS a b - C (3 * v)) * (radS a b - C (3 * v)))
       - 2 * (E (radA a b * radA a b) + E (radB a b * radB a b))
       = 4 * E (J4 E a * J4 E a) + E (J4 E (a + b) * J4 E (a + b))
         + 4 * E (J4 E b * J4 E b) + E (J4 E (b - a) * J4 E (b - a)) := by
-  unfold radU radS radA radB
   have Ra := chaos3_remainder hE ha
   have Rb := chaos3_remainder hE hb
   have Rp := chaos3_remainder hE (ha.add hb)
   have Rm := chaos3_remainder hE (ha.sub hb)
-  have sp : E ((a + b) * (a + b)) = 1 := by
-    rw [show (a + b) * (a + b) = a * a + 2 * (a * b) + b * b by ring, map_add, map_add,
-      ofNat_mul_apply, haa, hbb, hab]
-    norm_num
-  have sm : E ((b - a) * (b - a)) = 1 := by
-    rw [show (b - a) * (b - a) = a * a - 2 * (a * b) + b * b by ring, map_add, map_sub,
-      ofNat_mul_apply, haa, hbb, hab]
-    norm_num
+  obtain ⟨sp, sm⟩ := gE_add_sub_sq haa hbb hab
   have hp := ha.gE_gam hE
   rw [haa] at hp
   have hq := hb.gE_gam hE
@@ -411,16 +412,16 @@ theorem fluctuation_identity (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = 
           - 4 * (a * b * (b * b)) + b * b * (b * b) by ring] at Rm
   simp only [map_add, map_sub, ofNat_mul_apply E 2, ofNat_mul_apply E 4, ofNat_mul_apply E 6,
     hp, hq, hr] at Rp Rm
+  rw [gE_sub_C_sq hE (radS a b) (3 * v)]
+  unfold radU radS radA radB
   rw [show (a * a + b * b) * (a * a + b * b)
         = a * a * (a * a) + 2 * (a * a * (b * b)) + b * b * (b * b) by ring,
-    show (gam a a + gam b b - 3) * (gam a a + gam b b - 3)
-        = gam a a * gam a a + 2 * (gam a a * gam b b) + gam b b * gam b b
-          - 6 * gam a a - 6 * gam b b + 9 * 1 by ring,
+    show (gam a a + gam b b) * (gam a a + gam b b)
+        = gam a a * gam a a + 2 * (gam a a * gam b b) + gam b b * gam b b by ring,
     show (gam a a - gam b b) * (gam a a - gam b b)
         = gam a a * gam a a - 2 * (gam a a * gam b b) + gam b b * gam b b by ring,
     show 2 * gam a b * (2 * gam a b) = 4 * (gam a b * gam a b) by ring]
-  simp only [map_add, map_sub, ofNat_mul_apply E 2, ofNat_mul_apply E 4, ofNat_mul_apply E 6,
-    ofNat_mul_apply E 9, hE.one, hp, hq]
+  simp only [map_add, map_sub, ofNat_mul_apply E 2, ofNat_mul_apply E 4, hp, hq]
   linarith
 
 omit [DecidableEq ι] in
@@ -438,7 +439,9 @@ theorem fluctuation_bound (hpos : ∀ P : MvPolynomial ι ℝ, 0 ≤ E (P * P)) 
     E ((radS a b - 3) * (radS a b - 3))
       + 1 / 2 * (E (radA a b * radA a b) + E (radB a b * radB a b))
       ≤ 3 * (E (radU a b * radU a b) - 2) := by
-  have h := fluctuation_identity hE ha hb haa hbb hab
+  have h := fluctuation_identity (v := 1) hE ha hb (by norm_num [haa]) (by norm_num [hbb])
+    hab
+  rw [show (C (3 * 1) : MvPolynomial ι ℝ) = 3 by rw [mul_one]; exact map_ofNat C 3] at h
   have h1 := hpos (J4 E a)
   have h2 := hpos (J4 E (a + b))
   have h3 := hpos (J4 E b)

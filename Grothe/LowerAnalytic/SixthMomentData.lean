@@ -134,7 +134,7 @@ def gapLaT : Cover :=
 theorem gapLa_fits : fitsDeg gapLaM 3 0 = true := by decide
 
 theorem gapLa_cover : coverOK gapLaM 3 0 gapLaT (0) (1/6) (0) (1) = true := by
-  native_decide
+  decide +kernel
 
 theorem gapLa_eval (t : ℝ) : eval2 gapLaM t 0 = La t ^ 2 - t * (9 / 2 - 17 * t) ^ 2 := by
   simp only [eval2, gapLaM, List.map_cons, List.map_nil, evalL]
@@ -165,7 +165,7 @@ def gapLuT : Cover :=
 theorem gapLu_fits : fitsDeg gapLuM 4 0 = true := by decide
 
 theorem gapLu_cover : coverOK gapLuM 4 0 gapLuT (0) (1/2) (0) (1) = true := by
-  native_decide
+  decide +kernel
 
 theorem gapLu_eval (t : ℝ) : eval2 gapLuM t 0 = Lu t ^ 4 - (1 + 2 * t) ^ 2 * (1 - t) / 2 := by
   simp only [eval2, gapLuM, List.map_cons, List.map_nil, evalL]
@@ -196,7 +196,7 @@ def dhatT : Cover :=
 theorem dhat_fits : fitsDeg dhatM 4 1 = true := by decide
 
 theorem dhat_cover : coverOK dhatM 4 1 dhatT (39/50) (243505383503/250000000000) (0) (1/2) = true := by
-  native_decide
+  decide +kernel
 
 theorem dhat_eval (y : ℝ) (w : ℝ) : eval2 dhatM y w = Dhat y w := by
   simp only [eval2, dhatM, List.map_cons, List.map_nil, evalL]
@@ -233,7 +233,7 @@ def highGapT : Cover :=
 theorem highGap_fits : fitsDeg highGapM 10 4 = true := by decide
 
 theorem highGap_cover : coverOK highGapM 10 4 highGapT (39/50) (243505383503/250000000000) (0) (1/2) = true := by
-  native_decide
+  decide +kernel
 
 theorem highGap_eval (y : ℝ) (w : ℝ) : eval2 highGapM y w = highGap y w := by
   simp only [eval2, highGapM, List.map_cons, List.map_nil, evalL]
@@ -266,7 +266,7 @@ def lowGapT : Cover :=
 theorem lowGap_fits : fitsDeg lowGapM 6 4 = true := by decide
 
 theorem lowGap_cover : coverOK lowGapM 6 4 lowGapT (0) (39/50) (0) (1) = true := by
-  native_decide
+  decide +kernel
 
 theorem lowGap_eval (y : ℝ) (u : ℝ) : eval2 lowGapM y u = lowGap y u := by
   simp only [eval2, lowGapM, List.map_cons, List.map_nil, evalL]
