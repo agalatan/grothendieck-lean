@@ -397,54 +397,6 @@ lemma proj_radQ (ha : Chaos3 a) (hb : Chaos3 b) (hab : E (a * b) = 0) :
   proj_eq (radQ_eq_comps E hab) (eigen_two_mul 2 (comp2_eig hE ha hb))
     (eigen_two_mul 4 (comp4_eig hE ha hb)) (eigen_two_mul 6 (comp6_eig hE ha hb))
 
-lemma ouL_proj2_radU (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
-    (hbb : E (b * b) = v / 2) :
-    ouL (proj2 (radU a b - C v)) = -(2 * proj2 (radU a b - C v)) := by
-  rw [(proj_radU hE ha hb haa hbb).1]
-  exact eigen_add 2 (comp2_eig hE ha ha) (comp2_eig hE hb hb)
-
-lemma ouL_proj4_radU (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
-    (hbb : E (b * b) = v / 2) :
-    ouL (proj4 (radU a b - C v)) = -(4 * proj4 (radU a b - C v)) := by
-  rw [(proj_radU hE ha hb haa hbb).2.1]
-  exact eigen_add 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb)
-
-lemma ouL_proj6_radU (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
-    (hbb : E (b * b) = v / 2) :
-    ouL (proj6 (radU a b - C v)) = -(6 * proj6 (radU a b - C v)) := by
-  rw [(proj_radU hE ha hb haa hbb).2.2]
-  exact eigen_add 6 (comp6_eig hE ha ha) (comp6_eig hE hb hb)
-
-lemma ouL_proj2_radP (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
-    (hbb : E (b * b) = v / 2) : ouL (proj2 (radP a b)) = -(2 * proj2 (radP a b)) := by
-  rw [(proj_radP hE ha hb haa hbb).1]
-  exact eigen_sub 2 (comp2_eig hE ha ha) (comp2_eig hE hb hb)
-
-lemma ouL_proj4_radP (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
-    (hbb : E (b * b) = v / 2) : ouL (proj4 (radP a b)) = -(4 * proj4 (radP a b)) := by
-  rw [(proj_radP hE ha hb haa hbb).2.1]
-  exact eigen_sub 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb)
-
-lemma ouL_proj6_radP (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
-    (hbb : E (b * b) = v / 2) : ouL (proj6 (radP a b)) = -(6 * proj6 (radP a b)) := by
-  rw [(proj_radP hE ha hb haa hbb).2.2]
-  exact eigen_sub 6 (comp6_eig hE ha ha) (comp6_eig hE hb hb)
-
-lemma ouL_proj2_radQ (ha : Chaos3 a) (hb : Chaos3 b) (hab : E (a * b) = 0) :
-    ouL (proj2 (radQ a b)) = -(2 * proj2 (radQ a b)) := by
-  rw [(proj_radQ hE ha hb hab).1]
-  exact eigen_two_mul 2 (comp2_eig hE ha hb)
-
-lemma ouL_proj4_radQ (ha : Chaos3 a) (hb : Chaos3 b) (hab : E (a * b) = 0) :
-    ouL (proj4 (radQ a b)) = -(4 * proj4 (radQ a b)) := by
-  rw [(proj_radQ hE ha hb hab).2.1]
-  exact eigen_two_mul 4 (comp4_eig hE ha hb)
-
-lemma ouL_proj6_radQ (ha : Chaos3 a) (hb : Chaos3 b) (hab : E (a * b) = 0) :
-    ouL (proj6 (radQ a b)) = -(6 * proj6 (radQ a b)) := by
-  rw [(proj_radQ hE ha hb hab).2.2]
-  exact eigen_two_mul 6 (comp6_eig hE ha hb)
-
 /-! ### The chaos decompositions of `Γ(q,q̄)` and `Γ(q,q)` -/
 
 /-- `Γ(q,q̄) − 3v = 2Π₂(U−v) + Π₄(U−v)`: the sixth chaos drops out of `radS`. -/
@@ -496,8 +448,10 @@ theorem var_radS (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
     E ((radS a b - C (3 * v)) * (radS a b - C (3 * v)))
       = 4 * E (proj2 (radU a b - C v) * proj2 (radU a b - C v))
         + E (proj4 (radU a b - C v) * proj4 (radU a b - C v)) := by
-  rw [radS_eq_proj hE ha hb haa hbb]
-  exact gE_two_proj_add_sq hE (ouL_proj2_radU hE ha hb haa hbb) (ouL_proj4_radU hE ha hb haa hbb)
+  obtain ⟨p2, p4, -⟩ := proj_radU hE ha hb haa hbb
+  rw [radS_eq_proj hE ha hb haa hbb, p2, p4]
+  exact gE_two_proj_add_sq hE (eigen_add 2 (comp2_eig hE ha ha) (comp2_eig hE hb hb))
+    (eigen_add 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb))
 
 /-- `E(radA² + radB²) = 4B + D`. -/
 theorem gE_radA_radB (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
@@ -505,9 +459,13 @@ theorem gE_radA_radB (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
     E (radA a b * radA a b) + E (radB a b * radB a b)
       = 4 * (E (proj2 (radP a b) * proj2 (radP a b)) + E (proj2 (radQ a b) * proj2 (radQ a b)))
         + (E (proj4 (radP a b) * proj4 (radP a b)) + E (proj4 (radQ a b) * proj4 (radQ a b))) := by
-  rw [radA_eq_proj hE ha hb haa hbb, radB_eq_proj hE ha hb hab,
-    gE_two_proj_add_sq hE (ouL_proj2_radP hE ha hb haa hbb) (ouL_proj4_radP hE ha hb haa hbb),
-    gE_two_proj_add_sq hE (ouL_proj2_radQ hE ha hb hab) (ouL_proj4_radQ hE ha hb hab)]
+  obtain ⟨p2, p4, -⟩ := proj_radP hE ha hb haa hbb
+  obtain ⟨q2, q4, -⟩ := proj_radQ hE ha hb hab
+  rw [radA_eq_proj hE ha hb haa hbb, radB_eq_proj hE ha hb hab, p2, p4, q2, q4,
+    gE_two_proj_add_sq hE (eigen_sub 2 (comp2_eig hE ha ha) (comp2_eig hE hb hb))
+      (eigen_sub 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb)),
+    gE_two_proj_add_sq hE (eigen_two_mul 2 (comp2_eig hE ha hb))
+      (eigen_two_mul 4 (comp4_eig hE ha hb))]
   ring
 
 /-! ### The quartic identity -/

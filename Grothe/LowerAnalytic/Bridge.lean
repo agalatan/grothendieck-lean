@@ -1,5 +1,5 @@
 import Grothe.Lower.RowCheck
-import Grothe.LowerAnalytic.Moments
+import Grothe.LowerAnalytic.SixthMoment
 import Grothe.LowerAnalytic.RadialCut
 
 /-!
@@ -36,6 +36,7 @@ lemma integrable_sqrt {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsFin
   refine ((integrable_const (1 : ℝ)).add hZ1).mono'
     (Real.continuous_sqrt.comp_aestronglyMeasurable hZ1.aestronglyMeasurable)
     (Filter.Eventually.of_forall fun ω => ?_)
+  show ‖√(Z ω)‖ ≤ 1 + Z ω
   rw [Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), Real.sqrt_le_left (by linarith [hZ ω])]
   nlinarith [hZ ω]
 
@@ -105,8 +106,8 @@ theorem gaussian_moments (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (hb : 
     rw [integral_add (eval_pow_integrable a 2) (eval_pow_integrable b 2), haa, hbb]
     norm_num
   · have e : nX √(m - 2) = 9 * m - 12 + LowerAnalytic.C6 * (m - 2) ^ ((3 : ℝ) / 2) := by
-      rw [show (3 : ℝ) / 2 = 1 + 1 / 2 by norm_num, Real.rpow_add' (by linarith) (by norm_num),
-        Real.rpow_one, ← Real.sqrt_eq_rpow, nX, pow_succ, hx2]
+      rw [rpow_three_halves (by linarith), nX,
+        show √(m - 2) ^ 3 = √(m - 2) ^ 2 * √(m - 2) by ring, hx2]
       ring
     rw [e]
     exact h6
