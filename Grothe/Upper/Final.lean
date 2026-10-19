@@ -1,3 +1,4 @@
+import Grothe.Transfer
 import Grothe.Upper.Residual
 import Grothe.Upper.Head
 import Grothe.Upper.Data
@@ -18,7 +19,7 @@ rounding and the kernel `H₀` of the rounding without phase:
 * the coefficients of `H_X` beyond degree `501` are those of `H₀`, at most `72/10⁹` in total by
   Cauchy–Schwarz from the weighted square-sum bound of the hypothesis `hardy`, plus those of
   `H_X − H₀` (hypothesis `corr_tail`);
-* hence `‖H − c·t‖_𝒜 ≤ 133/10⁸` and `K_G^ℂ ≤ 1/(c − 133/10⁸)` (`residual_transfer`).
+* hence `‖H − c·t‖_𝒜 ≤ 133/10⁸` and `K_G^ℂ ≤ 1/(c − 133/10⁸)` (`transfer`).
 -/
 
 namespace Grothe
@@ -70,16 +71,14 @@ end Upper
 
 /-! ### The finite facts -/
 
-/-- All stored indices satisfy `n + 3m ≤ 501`. -/
-theorem energyRows_within : tabWithin 501 energyRows = true := by native_decide
-
-/-- **The finite computation**: the head of the kernel of the stored energies. -/
-theorem head_check : headInt 501 energyRows pList qList slopeQ ≤ ofRatLo headCapQ := by
+/-- **The finite computation** (by `native_decide`): the stored indices satisfy `n + 3m ≤ 501`,
+and the interval checker bounds the head of the kernel of the stored energies by `headCapQ`. -/
+theorem head_check : headOK 501 energyRows pList qList slopeQ headCapQ = true := by
   native_decide
 
-theorem pList_norm : (pList.map fun q => |q|).sum ≤ 1 := by native_decide
+theorem pList_norm : (pList.map fun q => |q|).sum ≤ 1 := by decide +kernel
 
-theorem qList_norm : (qList.map fun q => |q|).sum ≤ 1 := by native_decide
+theorem qList_norm : (qList.map fun q => |q|).sum ≤ 1 := by norm_num [qList, aQ]
 
 theorem budget : compareQ + (headCapQ + energyErrQ) + (72 / 1000000000 + corrTailQ)
     ≤ 133 / 100000000 := by
@@ -94,29 +93,31 @@ lemma l1_auxPoly : l1 auxPoly ≤ 1 :=
   (l1_ofListQ_le qList).trans (by exact_mod_cast qList_norm)
 
 lemma auxPoly_coeff_zero : auxPoly.coeff 0 = 0 := by
-  unfold auxPoly
-  rw [coeff_ofListQ]
-  simp [qList]
+  simp [auxPoly, coeff_ofListQ, qList]
 
-/-- The head of the kernel of the stored energies is within `headCapQ` of `c·t`. -/
-theorem head_stored_le :
-    ∑ j ∈ range 251, |∑ p ∈ headIdx 501,
-        (energyTable p : ℝ) * (termOf primaryPoly auxPoly p).coeff j
-          - if j = 0 then (slopeQ : ℝ) else 0| ≤ (headCapQ : ℝ) := by
-  have h2 := head_sound energyRows_within pList qList slopeQ
-  have e : (501 + 1) / 2 = 251 := by norm_num
-  rw [e] at h2
-  have h3 : (headInt 501 energyRows pList qList slopeQ : ℝ) ≤ (headCapQ : ℝ) * D :=
-    (Int.cast_le.2 head_check).trans (ofRatLo_le _)
-  exact le_of_mul_le_mul_right (h2.trans h3) D_pos
+lemma summable_kernelCoeff {E : ℕ × ℕ → ℝ} (h : Summable fun p => |E p|) :
+    Summable fun n => |kernelCoeff E n| :=
+  summable_abs_bivarKernel _ _ l1_primaryPoly l1_auxPoly E h
 
-/-- The residual of the kernel of the truncation up to degree `501`. -/
+lemma summable_abs_sub {E F : ℕ × ℕ → ℝ} (hE : Summable fun p => |E p|)
+    (hF : Summable fun p => |F p|) : Summable fun p => |E p - F p| :=
+  (hE.add hF).of_nonneg_of_le (fun _ => abs_nonneg _) fun p => abs_sub (E p) (F p)
+
+lemma kernelCoeff_sub {E F : ℕ × ℕ → ℝ} (hE : Summable fun p => |E p|)
+    (hF : Summable fun p => |F p|) (n : ℕ) :
+    kernelCoeff (fun p => E p - F p) n = kernelCoeff E n - kernelCoeff F n :=
+  bivarKernel_sub _ _ l1_primaryPoly l1_auxPoly E F hE hF n
+
+/-- The residual of the kernel of the truncation up to degree `501`: the head of the kernel of
+the stored energies (`head_check`) plus the distance of the energies (`energy_close`). -/
 theorem head_le {E EX E0 : ℕ × ℕ → ℝ} (hE : KernelHyps E EX E0) :
     ∑ j ∈ range 251, |kernelCoeff EX j - if j = 0 then (slopeQ : ℝ) else 0|
       ≤ (headCapQ : ℝ) + energyErrQ := by
   have h1 := head_residual_le primaryPoly auxPoly l1_primaryPoly l1_auxPoly auxPoly_coeff_zero EX
     (fun p => (energyTable p : ℝ)) hE.parityX (N := 501) (K := 251) (by norm_num) (slopeQ : ℝ)
-  have := head_stored_le
+  have h2 : ∑ j ∈ range 251, |∑ p ∈ headIdx 501,
+      (energyTable p : ℝ) * (termOf primaryPoly auxPoly p).coeff j
+        - if j = 0 then (slopeQ : ℝ) else 0| ≤ headCapQ := head_le_of_check head_check
   have := hE.energy_close
   unfold kernelCoeff
   linarith
@@ -153,25 +154,15 @@ theorem tail_le {E EX E0 : ℕ × ℕ → ℝ} (hE : KernelHyps E EX E0) :
 theorem residualX_le {E EX E0 : ℕ × ℕ → ℝ} (hE : KernelHyps E EX E0) :
     |kernelCoeff EX 0 - (slopeQ : ℝ)| + ∑' n, |kernelCoeff EX (n + 1)|
       ≤ (headCapQ : ℝ) + energyErrQ + (72 / 1000000000 + corrTailQ) := by
-  have hsX : Summable fun n => |kernelCoeff EX n| :=
-    summable_abs_bivarKernel primaryPoly auxPoly l1_primaryPoly l1_auxPoly EX hE.summableX
-  have hs0 : Summable fun n => |kernelCoeff E0 n| :=
-    summable_abs_bivarKernel primaryPoly auxPoly l1_primaryPoly l1_auxPoly E0 hE.summable0
-  have hd : Summable fun p => |EX p - E0 p| :=
-    Summable.of_nonneg_of_le (fun _ => abs_nonneg _) (fun p => abs_sub (EX p) (E0 p))
-      (hE.summableX.add hE.summable0)
-  have hsc : Summable fun n => |kernelCoeff (fun p => EX p - E0 p) n| :=
-    summable_abs_bivarKernel primaryPoly auxPoly l1_primaryPoly l1_auxPoly _ hd
-  have hc : ∀ n, kernelCoeff (fun p => EX p - E0 p) n = kernelCoeff EX n - kernelCoeff E0 n :=
-    bivarKernel_sub primaryPoly auxPoly l1_primaryPoly l1_auxPoly EX E0 hE.summableX hE.summable0
-  have htail : ∑' n, |kernelCoeff EX (n + 251)| ≤ 72 / 1000000000 + corrTailQ :=
-    tail_add_le (kernelCoeff EX) (kernelCoeff E0) _ hsX hs0 hsc hc 251 _ _ (tail_le hE)
-      hE.corr_tail
-  have hsplit := residual_split (kernelCoeff EX) hsX (slopeQ : ℝ) 250
-  rw [show (250 : ℕ) + 1 = 251 from rfl] at hsplit
-  have hhead := head_le hE
-  rw [hsplit]
-  exact add_le_add hhead htail
+  have hsX := summable_kernelCoeff hE.summableX
+  have htail : ∑' n, |kernelCoeff EX (n + 251)| ≤ 72 / 1000000000 + corrTailQ := by
+    refine (tail_add_le (summable_kernelCoeff hE.summable0)
+      (summable_kernelCoeff (summable_abs_sub hE.summableX hE.summable0)) (fun n => ?_) 251).trans
+      (add_le_add (tail_le hE) hE.corr_tail)
+    rw [kernelCoeff_sub hE.summableX hE.summable0]
+    ring
+  rw [residual_split (kernelCoeff EX) hsX (slopeQ : ℝ) 250]
+  exact add_le_add (head_le hE) htail
 
 /-- **Main theorem.**  `K_G^ℂ ≤ 87787300000000/62499883242891 < 1.404599424`.
 
@@ -224,35 +215,22 @@ here 0.54 %, and the two small assumed budgets 0.003 %.  The transfer inequality
 constant. -/
 theorem complex_grothendieck_upper (E EX E0 : ℕ × ℕ → ℝ) (hE : KernelHyps E EX E0) :
     IsGrothendieckBound (87787300000000 / 62499883242891) := by
-  have hs : Summable fun n => |kernelCoeff E n| :=
-    summable_abs_bivarKernel primaryPoly auxPoly l1_primaryPoly l1_auxPoly E hE.summable
-  have hsX : Summable fun n => |kernelCoeff EX n| :=
-    summable_abs_bivarKernel primaryPoly auxPoly l1_primaryPoly l1_auxPoly EX hE.summableX
-  have hd : Summable fun p => |E p - EX p| :=
-    Summable.of_nonneg_of_le (fun _ => abs_nonneg _) (fun p => abs_sub (E p) (EX p))
-      (hE.summable.add hE.summableX)
-  have e : ∀ n, kernelCoeff (fun p => E p - EX p) n = kernelCoeff E n - kernelCoeff EX n :=
-    bivarKernel_sub primaryPoly auxPoly l1_primaryPoly l1_auxPoly E EX hE.summable hE.summableX
-  have hsd : Summable fun n => |kernelCoeff E n - kernelCoeff EX n| :=
-    (summable_abs_bivarKernel primaryPoly auxPoly l1_primaryPoly l1_auxPoly _ hd).congr
-      fun n => by rw [← e n]; rfl
+  have hd := summable_abs_sub hE.summable hE.summableX
+  have e : ∀ n, kernelCoeff E n - kernelCoeff EX n = kernelCoeff (fun p => E p - EX p) n :=
+    fun n => (kernelCoeff_sub hE.summable hE.summableX n).symm
   have hcmp : ∑' n, |kernelCoeff E n - kernelCoeff EX n| ≤ (compareQ : ℝ) := by
-    have h := tsum_abs_bivarKernel_le primaryPoly auxPoly l1_primaryPoly l1_auxPoly _ hd
-    have e2 : ∑' n, |kernelCoeff E n - kernelCoeff EX n|
-        = ∑' j, |bivarKernel primaryPoly auxPoly (fun p => E p - EX p) j| :=
-      tsum_congr fun n => by rw [← e n]; rfl
-    rw [e2]
-    exact h.trans hE.compare
+    simp only [e]
+    exact (tsum_abs_bivarKernel_le _ _ l1_primaryPoly l1_auxPoly _ hd).trans hE.compare
   have hres : |kernelCoeff E 0 - (slopeQ : ℝ)| + ∑' n, |kernelCoeff E (n + 1)|
       ≤ 133 / 100000000 := by
-    have h1 := residual_perturb (kernelCoeff E) (kernelCoeff EX) hsX hsd (slopeQ : ℝ)
-    have h2 := residualX_le hE
+    have h1 := residual_perturb (kernelCoeff E) (kernelCoeff EX)
+      (summable_kernelCoeff hE.summableX) (by simpa only [e] using summable_kernelCoeff hd)
+      (slopeQ : ℝ)
     have h3 := (Rat.cast_le (K := ℝ)).2 budget
     push_cast at h3
-    linarith
-  have hc : (133 / 100000000 : ℝ) < (slopeQ : ℝ) := by norm_num [slopeQ]
-  refine (residual_transfer (kernelCoeff E) hs hE.valid (slopeQ : ℝ) _ hc hres).mono
-    (le_of_eq ?_)
+    linarith [residualX_le hE]
+  refine (transfer (kernelCoeff E) (summable_kernelCoeff hE.summable) hE.valid
+    (by norm_num [slopeQ]) hres).mono (le_of_eq ?_)
   norm_num [slopeQ]
 
 /-- The certified bound is below `1.404599424`. -/

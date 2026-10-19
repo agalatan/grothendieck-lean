@@ -1,16 +1,15 @@
-import Grothe.Transfer
+import Mathlib
 
 /-!
-# Radial kernels close to a multiple of the identity
+# Residuals of radial coefficient sequences
 
-`radialKernel h z = ∑ₙ hₙ z |z|^{2n}` is the kernel with radial coefficient sequence `h` (radial
-index `n` ↔ odd degree `2n+1`).
+The residual of a radial coefficient sequence `h` (radial index `n` ↔ odd degree `2n+1`) against
+the linear kernel `c·z` is `|h₀ − c| + Σ_{n ≥ 1} |hₙ|` (see `Grothe.transfer`).
 
-* `residual_transfer`: if the kernel is dominated and its residual against the linear kernel
-  `c·z` has coefficient norm `|h₀ − c| + Σ_{n ≥ 1} |hₙ| ≤ δ < c`, then `K_G^ℂ ≤ 1/(c − δ)`;
+* `tsum_abs_le_add`: termwise domination `|fₙ| ≤ |gₙ| + |dₙ|` of absolute series;
+* `tail_add_le`: the tail of `g + d` is at most the tails of `g` and `d`;
 * `residual_split`: the residual is a finite head plus a tail;
 * `residual_perturb`: the residual of `h` is at most that of `g` plus `Σ |hₙ − gₙ|`;
-* `tail_add_le`: the tail of `h = g + d` is at most the tails of `g` and `d`;
 * `hardy_tail`: a weighted square-sum bound `Σ_n hₙ² r^{2(2n+1)} ≤ B` with `r > 1` (the Parseval
   form of a mean-square bound for the analytic continuation of the kernel to the circle of
   radius `r`) bounds the tail `Σ_{n ≥ K} |hₙ|` by Cauchy–Schwarz.
@@ -22,28 +21,19 @@ open Finset
 
 noncomputable section
 
-/-- The radial kernel with coefficient sequence `c`: `z ↦ ∑ₙ cₙ z |z|^{2n}`. -/
-def radialKernel (c : ℕ → ℝ) (z : ℂ) : ℂ :=
-  ∑' n, (c n : ℂ) * (z * ((‖z‖ : ℝ) : ℂ) ^ (2 * n))
+/-- Termwise domination of absolute series. -/
+lemma tsum_abs_le_add {f g d : ℕ → ℝ} (hg : Summable fun n => |g n|)
+    (hd : Summable fun n => |d n|) (h : ∀ n, |f n| ≤ |g n| + |d n|) :
+    ∑' n, |f n| ≤ ∑' n, |g n| + ∑' n, |d n| := by
+  rw [← hg.tsum_add hd]
+  exact (Summable.of_nonneg_of_le (fun _ => abs_nonneg _) h (hg.add hd)).tsum_le_tsum h (hg.add hd)
 
-/-- **Residual transfer.**  A dominated radial kernel whose residual against `c·z` has coefficient
-norm at most `δ < c` gives `K_G^ℂ ≤ 1/(c − δ)`. -/
-theorem residual_transfer (h : ℕ → ℝ) (hs : Summable fun n => |h n|)
-    (hdom : DominatedKernel (radialKernel h)) (c δ : ℝ) (hδ : δ < c)
-    (hres : |h 0 - c| + ∑' n, |h (n + 1)| ≤ δ) : IsGrothendieckBound (1 / (c - δ)) := by
-  have h0 : c - |h 0 - c| ≤ |h 0| := by
-    have h1 := abs_sub_abs_le_abs_sub c (h 0)
-    rw [abs_sub_comm c (h 0)] at h1
-    linarith [le_abs_self c]
-  have hS : ∑' n, |h (n + 1)| < |h 0| := by linarith
-  have hdom' : DominatedKernel fun z =>
-      (((1 : ℝ)⁻¹ : ℝ) : ℂ) * ∑' k, (h k : ℂ) * (z * ((‖z‖ : ℝ) : ℂ) ^ (2 * k)) := by
-    have e : (fun z => (((1 : ℝ)⁻¹ : ℝ) : ℂ) * ∑' k, (h k : ℂ) * (z * ((‖z‖ : ℝ) : ℂ) ^ (2 * k)))
-        = radialKernel h := by
-      funext z; simp [radialKernel]
-    rw [e]; exact hdom
-  refine (transfer h hs 1 one_pos hdom' hS).mono ?_
-  exact one_div_le_one_div_of_le (by linarith) (by linarith)
+/-- The tail of a sum of two sequences. -/
+lemma tail_add_le {h g d : ℕ → ℝ} (hg : Summable fun n => |g n|) (hd : Summable fun n => |d n|)
+    (e : ∀ n, h n = g n + d n) (K : ℕ) :
+    ∑' n, |h (n + K)| ≤ ∑' n, |g (n + K)| + ∑' n, |d (n + K)| :=
+  tsum_abs_le_add ((summable_nat_add_iff K).mpr hg) ((summable_nat_add_iff K).mpr hd)
+    fun n => (e (n + K)).symm ▸ abs_add_le _ _
 
 /-- The residual is its head of length `K` plus the tail. -/
 theorem residual_split (h : ℕ → ℝ) (hs : Summable fun n => |h n|) (c : ℝ) (K : ℕ) :
@@ -63,36 +53,11 @@ theorem residual_split (h : ℕ → ℝ) (hs : Summable fun n => |h n|) (c : ℝ
 theorem residual_perturb (h g : ℕ → ℝ) (hg : Summable fun n => |g n|)
     (hd : Summable fun n => |h n - g n|) (c : ℝ) :
     |h 0 - c| + ∑' n, |h (n + 1)| ≤ |g 0 - c| + ∑' n, |g (n + 1)| + ∑' n, |h n - g n| := by
-  have hg1 : Summable fun n => |g (n + 1)| := (summable_nat_add_iff 1).mpr hg
-  have hd1 : Summable fun n => |h (n + 1) - g (n + 1)| :=
-    (summable_nat_add_iff 1).mpr hd
-  have hle : ∀ n, |h (n + 1)| ≤ |g (n + 1)| + |h (n + 1) - g (n + 1)| := fun n => by
-    have := abs_add_le (g (n + 1)) (h (n + 1) - g (n + 1))
-    rwa [add_sub_cancel] at this
-  have h1 : ∑' n, |h (n + 1)| ≤ ∑' n, |g (n + 1)| + ∑' n, |h (n + 1) - g (n + 1)| := by
-    rw [← Summable.tsum_add hg1 hd1]
-    exact Summable.tsum_le_tsum hle
-      (Summable.of_nonneg_of_le (fun _ => abs_nonneg _) hle (hg1.add hd1)) (hg1.add hd1)
-  have h0 : |h 0 - c| ≤ |g 0 - c| + |h 0 - g 0| := by
-    have := abs_sub_le (h 0) (g 0) c
-    linarith
+  have h1 := tsum_abs_le_add (f := fun n => h (n + 1)) (g := fun n => g (n + 1))
+    (d := fun n => h (n + 1) - g (n + 1)) ((summable_nat_add_iff 1).mpr hg)
+    ((summable_nat_add_iff 1).mpr hd) fun n => (abs_add_le _ _).trans_eq' (by rw [add_sub_cancel])
   rw [hd.tsum_eq_zero_add]
-  linarith
-
-/-- The tail of a sum of two sequences. -/
-theorem tail_add_le (h g d : ℕ → ℝ) (hh : Summable fun n => |h n|) (hg : Summable fun n => |g n|)
-    (hd : Summable fun n => |d n|) (e : ∀ n, d n = h n - g n) (K : ℕ) (A B : ℝ)
-    (hA : ∑' n, |g (n + K)| ≤ A) (hB : ∑' n, |d (n + K)| ≤ B) : ∑' n, |h (n + K)| ≤ A + B := by
-  have hh' : Summable fun n => |h (n + K)| := (summable_nat_add_iff K).mpr hh
-  have hg' : Summable fun n => |g (n + K)| := (summable_nat_add_iff K).mpr hg
-  have hd' : Summable fun n => |d (n + K)| := (summable_nat_add_iff K).mpr hd
-  have hle : ∀ n, |h (n + K)| ≤ |g (n + K)| + |d (n + K)| := fun n => by
-    rw [e]
-    have := abs_add_le (g (n + K)) (h (n + K) - g (n + K))
-    rwa [add_sub_cancel] at this
-  have h1 := Summable.tsum_le_tsum hle hh' (hg'.add hd')
-  rw [Summable.tsum_add hg' hd'] at h1
-  linarith
+  linarith [abs_sub_le (h 0) (g 0) c]
 
 /-- **Hardy tail.**  If `Σ_{n < J} hₙ² r^{2(2n+1)} ≤ B` for all `J`, with `r > 1`, then
 `Σ_{n ≥ K} |hₙ| ≤ T` whenever `B · r^{−2(2K+1)} ≤ T² (1 − r^{−4})`. -/
