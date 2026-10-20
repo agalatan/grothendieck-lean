@@ -34,17 +34,22 @@ lemma l1_eq_sum_range (p : ℝ[X]) {N : ℕ} (hN : p.natDegree < N) :
   · intro n _ hn
     simp [Polynomial.notMem_support_iff.1 hn]
 
+/-- `|coeff p j| ≤ ‖p‖_𝒜`. -/
+lemma abs_coeff_le_l1 (p : ℝ[X]) (j : ℕ) : |p.coeff j| ≤ l1 p := by
+  by_cases hj : j ∈ p.support
+  · exact Finset.single_le_sum (f := fun n => |p.coeff n|) (fun _ _ => abs_nonneg _) hj
+  · rw [Polynomial.notMem_support_iff.1 hj, abs_zero]; exact l1_nonneg p
+
+/-- `∑_{k<K} |coeff p k| ≤ ‖p‖_𝒜`. -/
+lemma sum_abs_coeff_le_l1 (p : ℝ[X]) (K : ℕ) : ∑ k ∈ Finset.range K, |p.coeff k| ≤ l1 p := by
+  rw [l1_eq_sum_range p (N := max K (p.natDegree + 1)) (by omega)]
+  exact Finset.sum_le_sum_of_subset_of_nonneg
+    (Finset.range_subset_range.2 (le_max_left _ _)) fun _ _ _ => abs_nonneg _
+
 lemma l1_add_le (p q : ℝ[X]) : l1 (p + q) ≤ l1 p + l1 q := by
-  set N := (p + q).natDegree + p.natDegree + q.natDegree + 1 with hNdef
-  have h1 : (p + q).natDegree < N := by omega
-  have h2 : p.natDegree < N := by omega
-  have h3 : q.natDegree < N := by omega
-  rw [l1_eq_sum_range (p + q) h1, l1_eq_sum_range p h2, l1_eq_sum_range q h3,
-    ← Finset.sum_add_distrib]
-  apply Finset.sum_le_sum
-  intro n _
-  simp only [coeff_add]
-  exact abs_add_le _ _
+  have h := fun r : ℝ[X] => l1_eq_sum_range r (N := (p + q).natDegree + p.natDegree + q.natDegree + 1)
+  rw [h (p + q) (by omega), h p (by omega), h q (by omega), ← Finset.sum_add_distrib]
+  exact Finset.sum_le_sum fun n _ => by rw [coeff_add]; exact abs_add_le _ _
 
 lemma l1_sum_le {ι : Type*} (s : Finset ι) (f : ι → ℝ[X]) :
     l1 (∑ i ∈ s, f i) ≤ ∑ i ∈ s, l1 (f i) := by

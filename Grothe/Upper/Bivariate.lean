@@ -26,13 +26,6 @@ open Polynomial Finset
 
 noncomputable section
 
-/-- `∑_{k<K} |coeff p k| ≤ ‖p‖_𝒜`. -/
-lemma sum_abs_coeff_le_l1 (p : ℝ[X]) (K : ℕ) : ∑ k ∈ range K, |p.coeff k| ≤ l1 p := by
-  rw [l1_eq_sum_range p (N := max K (p.natDegree + 1)) (by omega)]
-  apply sum_le_sum_of_subset_of_nonneg
-  · intro k hk; exact mem_range.2 (lt_of_lt_of_le (mem_range.1 hk) (le_max_left _ _))
-  · intro k _ _; exact abs_nonneg _
-
 /-! ### The terms -/
 
 /-- The index shift `⌊n/2⌋ + ⌊m/2⌋` (`= (n+m−1)/2` for `n+m` odd). -/
@@ -41,38 +34,17 @@ def shiftOf (p : ℕ × ℕ) : ℕ := p.1 / 2 + p.2 / 2
 /-- The polynomial `X^{shift} · P^n · Q^m` of an index pair. -/
 def termOf (P Q : ℝ[X]) (p : ℕ × ℕ) : ℝ[X] := X ^ shiftOf p * (P ^ p.1 * Q ^ p.2)
 
-lemma l1_termOf_le (P Q : ℝ[X]) (p : ℕ × ℕ) : l1 (termOf P Q p) ≤ l1 P ^ p.1 * l1 Q ^ p.2 := by
-  unfold termOf
-  have hX : l1 (X ^ shiftOf p) ≤ 1 := (l1_pow_le X _).trans (by rw [l1_X, one_pow])
-  have hPp : l1 (P ^ p.1) ≤ l1 P ^ p.1 := l1_pow_le P _
-  have hQp : l1 (Q ^ p.2) ≤ l1 Q ^ p.2 := l1_pow_le Q _
-  calc l1 (X ^ shiftOf p * (P ^ p.1 * Q ^ p.2))
-      ≤ l1 (X ^ shiftOf p) * (l1 (P ^ p.1) * l1 (Q ^ p.2)) :=
-        (l1_mul_le _ _).trans (mul_le_mul_of_nonneg_left (l1_mul_le _ _) (l1_nonneg _))
-    _ ≤ 1 * (l1 P ^ p.1 * l1 Q ^ p.2) :=
-        mul_le_mul hX (mul_le_mul hPp hQp (l1_nonneg _) (pow_nonneg (l1_nonneg _) _))
-          (mul_nonneg (l1_nonneg _) (l1_nonneg _)) zero_le_one
-    _ = _ := one_mul _
-
-lemma pow_mul_pow_le_one {P Q : ℝ[X]} (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (n m : ℕ) :
-    l1 P ^ n * l1 Q ^ m ≤ 1 :=
-  calc l1 P ^ n * l1 Q ^ m ≤ 1 * 1 :=
-        mul_le_mul (pow_le_one₀ (l1_nonneg _) hP) (pow_le_one₀ (l1_nonneg _) hQ)
-          (pow_nonneg (l1_nonneg _) _) zero_le_one
-    _ = 1 := one_mul _
-
 lemma l1_termOf_le_one {P Q : ℝ[X]} (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (p : ℕ × ℕ) :
-    l1 (termOf P Q p) ≤ 1 :=
-  (l1_termOf_le P Q p).trans (pow_mul_pow_le_one hP hQ _ _)
+    l1 (termOf P Q p) ≤ 1 := by
+  have h : ∀ (R : ℝ[X]) (k : ℕ), l1 R ≤ 1 → l1 (R ^ k) ≤ 1 := fun R k hR =>
+    (l1_pow_le R k).trans (pow_le_one₀ (l1_nonneg R) hR)
+  refine (l1_mul_le _ _).trans ((mul_le_mul (h _ _ l1_X.le) ((l1_mul_le _ _).trans ?_)
+    (l1_nonneg _) zero_le_one).trans (one_mul 1).le)
+  exact (mul_le_mul (h _ _ hP) (h _ _ hQ) (l1_nonneg _) zero_le_one).trans (one_mul 1).le
 
-lemma abs_coeff_termOf_le (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (p : ℕ × ℕ) (j : ℕ) :
-    |(termOf P Q p).coeff j| ≤ 1 := by
-  have h1 : |(termOf P Q p).coeff j| ≤ l1 (termOf P Q p) := by
-    have := sum_abs_coeff_le_l1 (termOf P Q p) (j + 1)
-    refine le_trans ?_ this
-    exact single_le_sum (f := fun k => |(termOf P Q p).coeff k|) (fun k _ => abs_nonneg _)
-      (mem_range.2 (Nat.lt_succ_self j))
-  exact h1.trans (l1_termOf_le_one hP hQ p)
+lemma abs_coeff_termOf_le {P Q : ℝ[X]} (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (p : ℕ × ℕ) (j : ℕ) :
+    |(termOf P Q p).coeff j| ≤ 1 :=
+  (abs_coeff_le_l1 _ j).trans (l1_termOf_le_one hP hQ p)
 
 /-- **Locality.**  If `Q` is divisible by `X`, the term of `(n, m)` is divisible by
 `X^{⌊n/2⌋ + ⌊m/2⌋ + m}`. -/
@@ -92,11 +64,11 @@ lemma coeff_termOf_eq_zero (P Q : ℝ[X]) (hQ : Q.coeff 0 = 0) (p : ℕ × ℕ) 
 `Σ'_{p} μ p · [X^j] termOf p`. -/
 def bivarKernel (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) (j : ℕ) : ℝ := ∑' p, μ p * (termOf P Q p).coeff j
 
-lemma summable_kernel_term (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ : ℕ × ℕ → ℝ)
+lemma summable_kernel_term {P Q : ℝ[X]} (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) {μ : ℕ × ℕ → ℝ}
     (hμ : Summable fun p => |μ p|) (j : ℕ) : Summable fun p => μ p * (termOf P Q p).coeff j := by
   refine Summable.of_norm_bounded hμ fun p => ?_
   rw [Real.norm_eq_abs, abs_mul]
-  exact mul_le_of_le_one_right (abs_nonneg _) (abs_coeff_termOf_le P Q hP hQ p j)
+  exact mul_le_of_le_one_right (abs_nonneg _) (abs_coeff_termOf_le hP hQ p j)
 
 /-- The partial sums of the kernel are at most `Σ|μ|`. -/
 lemma sum_abs_bivarKernel_le (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ : ℕ × ℕ → ℝ)
@@ -106,10 +78,10 @@ lemma sum_abs_bivarKernel_le (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) 
     intro j
     unfold bivarKernel
     have := norm_tsum_le_tsum_norm (f := fun p => μ p * (termOf P Q p).coeff j)
-      (by simpa [Real.norm_eq_abs, abs_mul] using (summable_kernel_term P Q hP hQ μ hμ j).norm)
+      (by simpa [Real.norm_eq_abs, abs_mul] using (summable_kernel_term hP hQ hμ j).norm)
     simpa only [Real.norm_eq_abs, abs_mul] using this
   have hterm : ∀ j, Summable fun p => |μ p| * |(termOf P Q p).coeff j| := fun j => by
-    simpa [abs_mul] using (summable_kernel_term P Q hP hQ μ hμ j).norm
+    simpa [abs_mul] using (summable_kernel_term hP hQ hμ j).norm
   calc ∑ j ∈ range J, |bivarKernel P Q μ j|
       ≤ ∑ j ∈ range J, ∑' p, |μ p| * |(termOf P Q p).coeff j| := sum_le_sum fun j _ => hk j
     _ = ∑' p, |μ p| * ∑ j ∈ range J, |(termOf P Q p).coeff j| := by
@@ -138,8 +110,8 @@ theorem bivarKernel_sub (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ �
     (hμ : Summable fun p => |μ p|) (hν : Summable fun p => |ν p|) (j : ℕ) :
     bivarKernel P Q (fun p => μ p - ν p) j = bivarKernel P Q μ j - bivarKernel P Q ν j := by
   unfold bivarKernel
-  rw [← Summable.tsum_sub (summable_kernel_term P Q hP hQ μ hμ j)
-    (summable_kernel_term P Q hP hQ ν hν j)]
+  rw [← Summable.tsum_sub (summable_kernel_term hP hQ hμ j)
+    (summable_kernel_term hP hQ hν j)]
   exact tsum_congr fun p => by ring
 
 /-! ### The head -/

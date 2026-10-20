@@ -13,62 +13,49 @@ namespace Grothe.Upper
 
 open GrotheKernel Polynomial
 
-lemma D_eq : (D : ℝ) = 2 ^ 128 := by unfold D K; norm_num
-
-lemma D_pos : (0 : ℝ) < (D : ℝ) := by rw [D_eq]; positivity
+lemma D_pos : (0 : ℝ) < (D : ℝ) := by unfold D K; positivity
 
 lemma D_pos_int : (0 : ℤ) < D := by unfold D K; positivity
-
-lemma D_ne_zero_int : (D : ℤ) ≠ 0 := D_pos_int.ne'
 
 /-- `x ∈ [I.lo/D, I.hi/D]`. -/
 def mem (x : ℝ) (I : Ival) : Prop := (I.lo : ℝ) ≤ x * D ∧ x * D ≤ I.hi
 
 lemma mem_zeroI_iff (x : ℝ) : mem x zeroI ↔ x = 0 := by
-  unfold mem zeroI
-  simp only [Int.cast_zero]
-  constructor
-  · rintro ⟨h1, h2⟩
-    have : x * D = 0 := le_antisymm h2 h1
-    rcases mul_eq_zero.1 this with h | h
-    · exact h
-    · exact absurd h D_pos.ne'
-  · rintro rfl; simp
+  simp only [mem, zeroI, Int.cast_zero, ← le_antisymm_iff, eq_comm (a := (0 : ℝ)), mul_eq_zero,
+    D_pos.ne', or_false]
 
 lemma mem_zero : mem 0 zeroI := (mem_zeroI_iff 0).2 rfl
 
 lemma mem_add {x y : ℝ} {a b : Ival} (hx : mem x a) (hy : mem y b) : mem (x + y) (addI a b) := by
   unfold mem addI at *
   push_cast
-  constructor <;> nlinarith [hx.1, hx.2, hy.1, hy.2]
+  constructor <;> linarith [hx.1, hx.2, hy.1, hy.2]
 
 lemma mem_neg {x : ℝ} {a : Ival} (hx : mem x a) : mem (-x) (negI a) := by
   unfold mem negI at *
   push_cast
-  constructor <;> nlinarith [hx.1, hx.2]
+  constructor <;> linarith [hx.1, hx.2]
 
-lemma shDown_mul_le (m : ℤ) : (shDown m : ℝ) * D ≤ m := by
-  unfold shDown
-  have := Int.ediv_mul_le m D_ne_zero_int
-  exact_mod_cast this
+lemma shDown_le {m : ℤ} {r : ℝ} (h : (m : ℝ) ≤ r * D) : (shDown m : ℝ) ≤ r := by
+  have : ((m / D : ℤ) : ℝ) * D ≤ m := by exact_mod_cast Int.ediv_mul_le m D_pos_int.ne'
+  exact le_of_mul_le_mul_right (this.trans h) D_pos
 
-lemma le_shUp_mul (m : ℤ) : (m : ℝ) ≤ (shUp m : ℝ) * D := by
+lemma le_shUp {m : ℤ} {r : ℝ} (h : r * D ≤ m) : r ≤ (shUp m : ℝ) := by
+  have : (((-m) / D : ℤ) : ℝ) * D ≤ -(m : ℝ) := by
+    exact_mod_cast Int.ediv_mul_le (-m) D_pos_int.ne'
   unfold shUp
-  have := Int.ediv_mul_le (-m) D_ne_zero_int
-  have h : (-((-m) / D) : ℤ) * D ≥ m := by linarith
-  exact_mod_cast h
+  push_cast
+  exact le_of_mul_le_mul_right (by linarith) D_pos
 
 lemma mul_bounds {x y a b c d : ℝ} (hx : a ≤ x ∧ x ≤ b) (hy : c ≤ y ∧ y ≤ d) :
     min (min (a * c) (a * d)) (min (b * c) (b * d)) ≤ x * y ∧
       x * y ≤ max (max (a * c) (a * d)) (max (b * c) (b * d)) := by
-  have h1 : min (a * y) (b * y) ≤ x * y := by
+  have h1 : min (a * y) (b * y) ≤ x * y ∧ x * y ≤ max (a * y) (b * y) := by
     rcases le_total 0 y with hy0 | hy0
-    · exact (min_le_left _ _).trans (mul_le_mul_of_nonneg_right hx.1 hy0)
-    · exact (min_le_right _ _).trans (mul_le_mul_of_nonpos_right hx.2 hy0)
-  have h1' : x * y ≤ max (a * y) (b * y) := by
-    rcases le_total 0 y with hy0 | hy0
-    · exact (mul_le_mul_of_nonneg_right hx.2 hy0).trans (le_max_right _ _)
-    · exact (mul_le_mul_of_nonpos_right hx.1 hy0).trans (le_max_left _ _)
+    · exact ⟨(min_le_left _ _).trans (mul_le_mul_of_nonneg_right hx.1 hy0),
+        (mul_le_mul_of_nonneg_right hx.2 hy0).trans (le_max_right _ _)⟩
+    · exact ⟨(min_le_right _ _).trans (mul_le_mul_of_nonpos_right hx.2 hy0),
+        (mul_le_mul_of_nonpos_right hx.1 hy0).trans (le_max_left _ _)⟩
   have h2 : ∀ e : ℝ, min (e * c) (e * d) ≤ e * y ∧ e * y ≤ max (e * c) (e * d) := by
     intro e
     rcases le_total 0 e with he | he
@@ -76,268 +63,150 @@ lemma mul_bounds {x y a b c d : ℝ} (hx : a ≤ x ∧ x ≤ b) (hy : c ≤ y �
         (mul_le_mul_of_nonneg_left hy.2 he).trans (le_max_right _ _)⟩
     · exact ⟨(min_le_right _ _).trans (mul_le_mul_of_nonpos_left hy.2 he),
         (mul_le_mul_of_nonpos_left hy.1 he).trans (le_max_left _ _)⟩
-  exact ⟨(min_le_min (h2 a).1 (h2 b).1).trans h1, h1'.trans (max_le_max (h2 a).2 (h2 b).2)⟩
+  exact ⟨(min_le_min (h2 a).1 (h2 b).1).trans h1.1, h1.2.trans (max_le_max (h2 a).2 (h2 b).2)⟩
 
 lemma mem_mul {x y : ℝ} {a b : Ival} (hx : mem x a) (hy : mem y b) : mem (x * y) (mulI a b) := by
-  unfold mem at *
-  unfold mulI
-  simp only
   have hb := mul_bounds hx hy
-  set m : ℤ := min (min (a.lo * b.lo) (a.lo * b.hi)) (min (a.hi * b.lo) (a.hi * b.hi)) with hm
-  set M : ℤ := max (max (a.lo * b.lo) (a.lo * b.hi)) (max (a.hi * b.lo) (a.hi * b.hi)) with hM
-  have hmc : (m : ℝ) = min (min ((a.lo : ℝ) * b.lo) (a.lo * b.hi)) (min (a.hi * b.lo) (a.hi * b.hi)) := by
-    rw [hm]; push_cast; rfl
-  have hMc : (M : ℝ) = max (max ((a.lo : ℝ) * b.lo) (a.lo * b.hi)) (max (a.hi * b.lo) (a.hi * b.hi)) := by
-    rw [hM]; push_cast; rfl
-  have hD := D_pos
-  constructor
-  · have h1 := shDown_mul_le m
-    rw [hmc] at h1
-    have h2 : (shDown m : ℝ) * D ≤ (x * D) * (y * D) := h1.trans hb.1
-    have h3 : (x * D) * (y * D) = (x * y * D) * D := by ring
-    rw [h3] at h2
-    exact le_of_mul_le_mul_right h2 hD
-  · have h1 := le_shUp_mul M
-    rw [hMc] at h1
-    have h2 : (x * D) * (y * D) ≤ (shUp M : ℝ) * D := hb.2.trans h1
-    have h3 : (x * D) * (y * D) = (x * y * D) * D := by ring
-    rw [h3] at h2
-    exact le_of_mul_le_mul_right h2 hD
+  rw [show x * D * (y * D) = x * y * D * D by ring] at hb
+  exact ⟨shDown_le (by push_cast; exact hb.1), le_shUp (by push_cast; exact hb.2)⟩
 
 lemma abs_le_absUpper {x : ℝ} {a : Ival} (hx : mem x a) : |x| * D ≤ absUpper a := by
-  unfold mem at hx
+  have h : |x * D| ≤ max (-(a.lo : ℝ)) a.hi := abs_le.2
+    ⟨by linarith [hx.1, le_max_left (-(a.lo : ℝ)) a.hi], hx.2.trans (le_max_right _ _)⟩
+  rw [abs_mul, abs_of_pos D_pos] at h
   unfold absUpper
   push_cast
-  have hD := D_pos
-  rcases le_total 0 x with h0 | h0
-  · rw [abs_of_nonneg h0]
-    exact hx.2.trans ((le_max_right _ _).trans (le_max_left _ _))
-  · rw [abs_of_nonpos h0]
-    have : -x * D ≤ -(a.lo : ℝ) := by linarith [hx.1]
-    exact this.trans ((le_max_left _ _).trans (le_max_left _ _))
-
-lemma absUpper_nonneg (a : Ival) : (0 : ℤ) ≤ absUpper a := le_max_right _ _
+  exact h.trans (le_max_left _ _)
 
 /-! ### Rationals -/
 
 lemma ofRatLo_le (q : ℚ) : (ofRatLo q : ℝ) ≤ (q : ℝ) * D := by
-  unfold ofRatLo
-  have h : ((Rat.floor (q * (D : ℚ)) : ℤ) : ℚ) ≤ q * (D : ℚ) := Rat.le_floor_iff.1 le_rfl
-  have h' : ((Rat.floor (q * (D : ℚ)) : ℤ) : ℝ) ≤ ((q * (D : ℚ) : ℚ) : ℝ) := by exact_mod_cast h
-  push_cast at h'
-  exact h'
+  have h : ((ofRatLo q : ℤ) : ℚ) ≤ q * (D : ℚ) := Rat.le_floor_iff.1 le_rfl
+  exact_mod_cast h
 
 lemma le_ofRatHi (q : ℚ) : (q : ℝ) * D ≤ (ofRatHi q : ℝ) := by
-  unfold ofRatHi
   have h : ((Rat.floor (-(q * (D : ℚ))) : ℤ) : ℚ) ≤ -(q * (D : ℚ)) := Rat.le_floor_iff.1 le_rfl
-  have h' : ((Rat.floor (-(q * (D : ℚ))) : ℤ) : ℝ) ≤ ((-(q * (D : ℚ)) : ℚ) : ℝ) := by exact_mod_cast h
-  push_cast at h' ⊢
+  have h' : ((Rat.floor (-(q * (D : ℚ))) : ℤ) : ℝ) ≤ -((q : ℝ) * D) := by exact_mod_cast h
+  unfold ofRatHi
+  push_cast
   linarith
 
 lemma mem_ofRatI (q : ℚ) : mem (q : ℝ) (ofRatI q) := ⟨ofRatLo_le q, le_ofRatHi q⟩
 
-lemma ofRatI_zero : ofRatI 0 = zeroI := by
-  simp [ofRatI, ofRatLo, ofRatHi, zeroI, Rat.floor]
+lemma ofRatI_zero : ofRatI 0 = zeroI := by simp [ofRatI, ofRatLo, ofRatHi, zeroI, Rat.floor]
 
 /-! ### Interval lists as coefficient sequences -/
 
-/-- `L` encloses the terms of `f` of index `< N`. -/
-def memS (N : ℕ) (f : ℕ → ℝ) (L : List Ival) : Prop :=
-  ∀ n, n < N → mem (f n) (L.getD n zeroI)
-
 /-- `L` encloses the coefficients of `p` of index `< N`. -/
-abbrev memB (N : ℕ) (p : ℝ[X]) (L : List Ival) : Prop := memS N p.coeff L
-
-lemma memS_mono {N M : ℕ} {f : ℕ → ℝ} {L : List Ival} (h : memS N f L) (hM : M ≤ N) :
-    memS M f L := fun n hn => h n (lt_of_lt_of_le hn hM)
+def memB (N : ℕ) (p : ℝ[X]) (L : List Ival) : Prop :=
+  ∀ n, n < N → mem (p.coeff n) (L.getD n zeroI)
 
 lemma memB_mono {N M : ℕ} {p : ℝ[X]} {L : List Ival} (h : memB N p L) (hM : M ≤ N) :
-    memB M p L := memS_mono h hM
+    memB M p L := fun n hn => h n (lt_of_lt_of_le hn hM)
 
-lemma memB_zero (N : ℕ) : memB N 0 [] := by
-  intro n _
-  simp only [coeff_zero, List.getD_nil]
-  exact mem_zero
-
-lemma addI_zeroI (a : Ival) : addI a zeroI = a := by cases a; simp [addI, zeroI]
-lemma zeroI_addI (a : Ival) : addI zeroI a = a := by cases a; simp [addI, zeroI]
-
-lemma mulI_zeroI (a : Ival) : mulI a zeroI = zeroI := by
-  simp [mulI, zeroI, shDown, shUp]
+lemma memB_zero (N : ℕ) : memB N 0 [] := fun _ _ => by simpa using mem_zero
 
 lemma getD_addL (l m : List Ival) (n : ℕ) :
     (addL l m).getD n zeroI = addI (l.getD n zeroI) (m.getD n zeroI) := by
+  have z1 : ∀ a, addI zeroI a = a := fun ⟨_, _⟩ => by simp [addI, zeroI]
+  have z2 : ∀ a, addI a zeroI = a := fun ⟨_, _⟩ => by simp [addI, zeroI]
   induction l generalizing m n with
-  | nil => simp [addL, zeroI_addI]
+  | nil => simp [addL, z1]
   | cons a l ih =>
     cases m with
-    | nil => simp [addL, addI_zeroI]
+    | nil => simp [addL, z2]
     | cons b m =>
       cases n with
-      | zero => simp [addL]
-      | succ n =>
-        show (addI a b :: addL l m).getD (n + 1) zeroI
-          = addI ((a :: l).getD (n + 1) zeroI) ((b :: m).getD (n + 1) zeroI)
-        rw [List.getD_cons_succ, List.getD_cons_succ, List.getD_cons_succ]
-        exact ih m n
-
-lemma getD_map_mulI (a : Ival) (m : List Ival) (n : ℕ) :
-    (m.map (mulI a)).getD n zeroI = mulI a (m.getD n zeroI) := by
-  induction m generalizing n with
-  | nil => simp [mulI_zeroI]
-  | cons b m ih =>
-    cases n with
-    | zero => simp
-    | succ n =>
-      rw [List.map_cons, List.getD_cons_succ, List.getD_cons_succ]
-      exact ih n
-
-lemma getD_take {α : Type*} (l : List α) (N n : ℕ) (z : α) (hn : n < N) :
-    (l.take N).getD n z = l.getD n z := by
-  induction l generalizing N n with
-  | nil => simp
-  | cons a l ih =>
-    cases N with
-    | zero => omega
-    | succ N =>
-      cases n with
-      | zero => simp
-      | succ n =>
-        rw [List.take_succ_cons, List.getD_cons_succ, List.getD_cons_succ]
-        exact ih N n (by omega)
+      | zero => rfl
+      | succ n => simp only [addL, List.getD_cons_succ]; exact ih m n
 
 lemma memB_add {N : ℕ} {p q : ℝ[X]} {L M : List Ival} (hp : memB N p L) (hq : memB N q M) :
-    memB N (p + q) (addL L M) := by
-  intro n hn
+    memB N (p + q) (addL L M) := fun n hn => by
   rw [getD_addL, coeff_add]
   exact mem_add (hp n hn) (hq n hn)
 
 lemma memB_C_mul {N : ℕ} {a : ℝ} {I : Ival} {q : ℝ[X]} {M : List Ival}
-    (ha : mem a I) (hq : memB N q M) : memB N (C a * q) (M.map (mulI I)) := by
-  intro n hn
-  rw [getD_map_mulI, coeff_C_mul]
+    (ha : mem a I) (hq : memB N q M) : memB N (C a * q) (M.map (mulI I)) := fun n hn => by
+  have hz : mulI I zeroI = zeroI := by simp [mulI, zeroI, shDown, shUp]
+  rw [← hz, List.getD_map, coeff_C_mul]
   exact mem_mul ha (hq n hn)
 
 lemma memB_X_mul {N : ℕ} {r : ℝ[X]} {R : List Ival} (hr : memB N r R) :
-    memB (N + 1) (X * r) (zeroI :: R) := by
-  intro n hn
+    memB (N + 1) (X * r) (zeroI :: R) := fun n hn => by
   cases n with
-  | zero => simp only [coeff_X_mul_zero, List.getD_cons_zero]; exact mem_zero
-  | succ n =>
-    rw [coeff_X_mul, List.getD_cons_succ]
-    exact hr n (by omega)
-
-lemma memS_take {N : ℕ} {f : ℕ → ℝ} {L : List Ival} (h : memS N f L) : memS N f (L.take N) := by
-  intro n hn
-  rw [getD_take _ _ _ _ hn]
-  exact h n hn
+  | zero => simpa using mem_zero
+  | succ n => rw [coeff_X_mul, List.getD_cons_succ]; exact hr n (by omega)
 
 lemma memB_take {N : ℕ} {p : ℝ[X]} {L : List Ival} (h : memB N p L) : memB N p (L.take N) :=
-  memS_take h
-
-lemma memB_nil_coeff {N : ℕ} {p : ℝ[X]} (h : memB N p []) {n : ℕ} (hn : n < N) : p.coeff n = 0 := by
-  have := h n hn
-  simpa [mem_zeroI_iff] using this
+  fun n hn => by
+    rw [List.getD_eq_getElem?_getD, List.getElem?_take_of_lt hn, ← List.getD_eq_getElem?_getD]
+    exact h n hn
 
 lemma memB_conv {L : List Ival} : ∀ {N : ℕ} {p q : ℝ[X]} {M : List Ival},
     memB N p L → memB N q M → memB N (p * q) (convI L M) := by
   induction L with
   | nil =>
     intro N p q M hp _ n hn
-    simp only [convI, List.getD_nil]
-    rw [mem_zeroI_iff, coeff_mul]
-    apply Finset.sum_eq_zero
-    intro ij hij
-    have hij' : ij.1 + ij.2 = n := by simpa using hij
-    have : ij.1 < N := by omega
-    rw [memB_nil_coeff hp this, zero_mul]
+    simp only [convI, List.getD_nil, mem_zeroI_iff, coeff_mul]
+    refine Finset.sum_eq_zero fun ij hij => ?_
+    have := (mem_zeroI_iff _).1 (by simpa using hp ij.1 (by simp at hij; omega))
+    rw [this, zero_mul]
   | cons a L ih =>
     intro N p q M hp hq
     cases N with
     | zero => intro n hn; omega
     | succ N =>
       have h0 : mem (p.coeff 0) a := by simpa using hp 0 (Nat.succ_pos N)
-      have hdiv : memB N (divX p) L := by
-        intro n hn
-        rw [coeff_divX]
-        simpa using hp (n + 1) (by omega)
-      have hq' : memB N q M := memB_mono hq (Nat.le_succ N)
-      have hXm := memB_X_mul (ih hdiv hq')
+      have hXm := memB_X_mul (ih (p := divX p) (fun n hn => by
+        simpa [coeff_divX] using hp (n + 1) (by omega)) (memB_mono hq (Nat.le_succ N)))
       have hpq : p * q = C (p.coeff 0) * q + X * (divX p * q) := by
         conv_lhs => rw [← X_mul_divX_add p]
         ring
+      rw [hpq]
       simp only [convI]
       split_ifs with hz
       · -- the entry is the zero interval: the constant coefficient vanishes
-        have ha : a = zeroI := by
-          obtain ⟨lo, hi⟩ := a
-          simp only [Bool.and_eq_true, beq_iff_eq] at hz
-          obtain ⟨h1, h2⟩ := hz
-          simp only [zeroI, Ival.mk.injEq]
-          exact ⟨h1, h2⟩
-        rw [ha, mem_zeroI_iff] at h0
-        rw [hpq, h0, map_zero, zero_mul, zero_add]
+        obtain ⟨lo, hi⟩ := a
+        simp only [Bool.and_eq_true, beq_iff_eq] at hz
+        obtain ⟨rfl, rfl⟩ := hz
+        rw [show (⟨0, 0⟩ : Ival) = zeroI from rfl, mem_zeroI_iff] at h0
+        rw [h0, map_zero, zero_mul, zero_add]
         exact hXm
-      · rw [hpq]
-        exact memB_add (memB_C_mul h0 hq) hXm
+      · exact memB_add (memB_C_mul h0 hq) hXm
 
 lemma memB_single {N : ℕ} {a : ℝ} {I : Ival} (ha : mem a I) : memB N (C a) [I] := by
   intro n _
   cases n with
   | zero => simpa using ha
-  | succ n => simp only [coeff_C_succ, List.getD_cons_succ, List.getD_nil]; exact mem_zero
+  | succ n => simpa [coeff_C_succ] using mem_zero
 
 /-! ### Extracting the inequalities -/
 
-lemma foldl_add_eq (f : Ival → ℤ) (l : List Ival) (s : ℤ) :
-    l.foldl (fun s a => s + f a) s = s + (l.map f).sum := by
-  induction l generalizing s with
-  | nil => simp
-  | cons a l ih => simp [List.foldl_cons, ih, add_assoc]
-
-lemma sum_range_getD_le (f : Ival → ℤ) (hf : ∀ a, 0 ≤ f a) (hz : f zeroI = 0) (l : List Ival) :
-    ∀ N : ℕ, ∑ k ∈ Finset.range N, f (l.getD k zeroI) ≤ (l.map f).sum := by
-  induction l with
-  | nil => intro N; simp [hz]
-  | cons a l ih =>
-    intro N
-    cases N with
-    | zero =>
-      simp only [Finset.range_zero, Finset.sum_empty, List.map_cons, List.sum_cons]
-      have := List.sum_nonneg (l := l.map f) (fun x hx => by
-        obtain ⟨y, _, rfl⟩ := List.mem_map.1 hx
-        exact hf y)
-      linarith [hf a]
-    | succ N =>
-      rw [Finset.sum_range_succ']
-      simp only [List.getD_cons_succ, List.getD_cons_zero, List.map_cons, List.sum_cons]
-      linarith [ih N]
-
-lemma absUpper_zeroI : absUpper zeroI = 0 := by simp [absUpper, zeroI]
-
-/-- `absSumFrom k L` bounds `D · Σ_{k ≤ n < N} |f n|` for every `N` with `memS N f L`. -/
-lemma absSumFrom_le {k N : ℕ} {f : ℕ → ℝ} {L : List Ival} (h : memS N f L) :
-    (∑ n ∈ Finset.Ico k N, |f n|) * D ≤ (absSumFrom k L : ℝ) := by
-  have h1 : ∀ n ∈ Finset.Ico k N, |f n| * D ≤ (absUpper (L.getD n zeroI) : ℝ) := by
-    intro n hn
-    rw [Finset.mem_Ico] at hn
-    exact abs_le_absUpper (h n hn.2)
-  have h2 : (∑ n ∈ Finset.Ico k N, |f n|) * D
-      ≤ ∑ n ∈ Finset.Ico k N, (absUpper (L.getD n zeroI) : ℝ) := by
+/-- `absSum L` bounds `D · Σ_{n < N} |pₙ|` for every `N` with `memB N p L`. -/
+lemma absSum_le {N : ℕ} {p : ℝ[X]} {L : List Ival} (h : memB N p L) :
+    (∑ n ∈ Finset.range N, |p.coeff n|) * D ≤ (absSum L : ℝ) := by
+  have h1 : (∑ n ∈ Finset.range N, |p.coeff n|) * D
+      ≤ ∑ n ∈ Finset.range N, (absUpper (L.getD n zeroI) : ℝ) := by
     rw [Finset.sum_mul]
-    exact Finset.sum_le_sum h1
-  refine h2.trans ?_
-  have h3 : ∑ n ∈ Finset.Ico k N, absUpper (L.getD n zeroI)
-      = ∑ j ∈ Finset.range (N - k), absUpper ((L.drop k).getD j zeroI) := by
-    rw [Finset.sum_Ico_eq_sum_range]
-    refine Finset.sum_congr rfl fun j _ => ?_
-    rw [List.getD_eq_getElem?_getD, List.getD_eq_getElem?_getD, List.getElem?_drop]
-  have h4 := sum_range_getD_le absUpper absUpper_nonneg absUpper_zeroI (L.drop k) (N - k)
-  have h5 : absSumFrom k L = ((L.drop k).map absUpper).sum := by
-    unfold absSumFrom; rw [foldl_add_eq]; simp
-  rw [h5]
-  have : (∑ n ∈ Finset.Ico k N, absUpper (L.getD n zeroI) : ℤ) ≤ ((L.drop k).map absUpper).sum := by
-    rw [h3]; exact h4
-  exact_mod_cast this
+    exact Finset.sum_le_sum fun n hn => abs_le_absUpper (h n (Finset.mem_range.1 hn))
+  refine h1.trans ?_
+  have hz : absUpper zeroI = 0 := by simp [absUpper, zeroI]
+  have key : ∀ (L : List Ival) (N : ℕ),
+      ∑ n ∈ Finset.range N, absUpper (L.getD n zeroI) ≤ (L.map absUpper).sum := by
+    intro L
+    induction L with
+    | nil => intro N; simp [hz]
+    | cons a l ih =>
+      intro N
+      cases N with
+      | zero =>
+        simp only [Finset.range_zero, Finset.sum_empty, List.map_cons, List.sum_cons]
+        exact add_nonneg (le_max_right _ _) (List.sum_nonneg fun x hx => by
+          obtain ⟨y, _, rfl⟩ := List.mem_map.1 hx
+          exact le_max_right _ _)
+      | succ N =>
+        rw [Finset.sum_range_succ']
+        simpa [add_comm] using ih N
+  exact_mod_cast key L N
 
 end Grothe.Upper

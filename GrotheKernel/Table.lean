@@ -14,7 +14,7 @@ radial coefficient sequence of `H` is the coefficient sequence of
 (`(m, [(n, E[n,m]), …])`); every intermediate polynomial is truncated to `K` coefficients.  The
 rows are processed in parallel tasks.
 
-The table itself is stored as a string of exact dyadic rationals (`parseTable`).
+The table itself is stored as strings of exact dyadic rationals, one per row (`parseRow`).
 -/
 
 namespace GrotheKernel
@@ -36,9 +36,6 @@ def parseRow (s : String) : RowQ :=
   | [m, es] => (m.toNat!, (es.splitOn ";").map parseEntry)
   | _ => (0, [])
 
-/-- Rows are separated by `|`. -/
-def parseTable (s : String) : List RowQ := (s.splitOn "|").map parseRow
-
 /-! ### Interval rows -/
 
 /-- An interval table row: the `m` index and its `(n, E[n,m])` entries. -/
@@ -50,12 +47,17 @@ def tabI (rows : List RowQ) : List RowI :=
 
 /-! ### Truncated composition -/
 
+/-- Multiplication by `P`, truncated to `K` coefficients. -/
+def mulT (K : Nat) (P L : List Ival) : List Ival := (convI P L).take K
+
+/-- `[L, f L, …, f^[n-1] L]`. -/
+def iterL (f : List Ival → List Ival) : Nat → List Ival → List (List Ival)
+  | 0, _ => []
+  | n + 1, L => L :: iterL f n (f L)
+
 /-- The powers `P^0, …, P^N`, each truncated to `K` coefficients. -/
-def powsT (K : Nat) (P : List Ival) : Nat → List (List Ival)
-  | 0 => [[ofRatI 1]]
-  | N + 1 =>
-    let prev := powsT K P N
-    prev ++ [(convI P (prev.getLastD [])).take K]
+def powsT (K : Nat) (P : List Ival) (N : Nat) : List (List Ival) :=
+  iterL (mulT K P) (N + 1) [ofRatI 1]
 
 /-- `k` leading zero coefficients: multiplication by `X^k`. -/
 def shiftX (k : Nat) (L : List Ival) : List Ival := List.replicate k zeroI ++ L
@@ -83,16 +85,19 @@ def bivarT (K : Nat) (tab : List RowI) (P Q : List Ival) (NZ MW : Nat) : List Iv
   let powQ := powsT K Q MW
   sumL ((tab.map fun r => Task.spawn fun _ => rowTermT K powP powQ r).map Task.get)
 
-/-- The sequential version (same value; used by the soundness proof). -/
-def bivarTSeq (K : Nat) (tab : List RowI) (P Q : List Ival) (NZ MW : Nat) : List Ival :=
-  sumL (tab.map (rowTermT K (powsT K P NZ) (powsT K Q MW)))
-
-/-- Scaled upper bound for `Σ_{j < K} |B_j − c·δ_{j0}|`. -/
-def headDev (K : Nat) (tab : List RowI) (P Q : List Ival) (NZ MW : Nat) (c : Ival) : Int :=
-  absSumFrom 0 (addL (bivarT K tab P Q NZ MW) [negI c])
-
 /-- All indices of the table satisfy `n + 3m ≤ N`. -/
 def tabWithin (N : Nat) (rows : List RowQ) : Bool :=
   rows.all fun r => decide (3 * r.1 ≤ N) && r.2.all fun e => e.1 + 3 * r.1 ≤ N
+
+/-- Scaled upper bound for the head `Σ_{j < (N+1)/2} |B_j − c·δ_{j0}|` of the residual of the
+kernel of the exact table `rows`, with `P`, `Q` given by the coefficient lists `pl`, `ql`. -/
+def headInt (N : Nat) (rows : List RowQ) (pl ql : List Rat) (c : Rat) : Int :=
+  absSum (addL (bivarT ((N + 1) / 2) (tabI rows) (pl.map ofRatI) (ql.map ofRatI) N (N / 3))
+    [negI (ofRatI c)])
+
+/-- **The head check**: the table has indices `n + 3m ≤ N`, and the head of the residual of its
+kernel is at most `cap`. -/
+def headOK (N : Nat) (rows : List RowQ) (pl ql : List Rat) (c cap : Rat) : Bool :=
+  tabWithin N rows && decide (headInt N rows pl ql c ≤ ofRatLo cap)
 
 end GrotheKernel

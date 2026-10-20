@@ -19,7 +19,6 @@ def D : Int := (2 : Int) ^ K
 structure Ival where
   lo : Int
   hi : Int
-deriving Repr, Inhabited
 
 /-- The interval `{0}`. -/
 def zeroI : Ival := ⟨0, 0⟩
@@ -72,7 +71,7 @@ def convI : List Ival → List Ival → List Ival
     if a.lo == 0 && a.hi == 0 then zeroI :: convI l m
     else addL (m.map (mulI a)) (zeroI :: convI l m)
 
-/-- Scaled sum of `absUpper` over all coefficients of index `≥ k`. -/
-def absSumFrom (k : Nat) (L : List Ival) : Int := (L.drop k).foldl (fun s a => s + absUpper a) 0
+/-- Scaled sum of `absUpper` over all coefficients. -/
+def absSum (L : List Ival) : Int := (L.map absUpper).sum
 
 end GrotheKernel

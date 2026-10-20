@@ -4,21 +4,20 @@ import Grothe.Transfer
 # The finite transfer: cell-constant functions and finite matrices (H5, stage 1)
 
 Let `H` be a complex inner product space (the role of `L²(μ)`), `T : H →L[ℂ] H` a bounded
-operator and `e : Fin N → H`, `e' : Fin M → H` two finite families (the role of the indicator
-functions `1_{Eᵢ}`, `1_{Fⱼ}` of two finite measurable partitions).  The *cell-constant functions*
-are the combinations `cellFun e c = ∑ᵢ cᵢ eᵢ`, and the matrix of `T` on the two families is
+operator and `L : (Fin N → ℂ) →ₗ[ℂ] H`, `L' : (Fin M → ℂ) →ₗ[ℂ] H` two linear maps (the role of
+`c ↦ ∑ᵢ cᵢ 1_{Eᵢ}` for two finite measurable partitions: the *cell-constant functions*).  The
+matrix of `T` on the two cell maps is
 
-  `cellMatrix T e e' i j = ⟪eᵢ, T e'ⱼ⟫`.
+  `cellMatrix T L L' i j = ⟪L eᵢ, T L' eⱼ⟫`.
 
 Everything in this module is finite-dimensional linear algebra:
 
-* `inner_cellFun`: `⟪cellFun e ε, T (cellFun e' δ)⟫ = ∑ᵢⱼ aᵢⱼ conj(εᵢ) δⱼ`, so the scalar
-  optimum `C(A)` of the matrix is bounded by any cap on the pairing over unimodular cell-constant
-  functions (`scalarOpt_cellMatrix_le`);
-* `pairVal_cellVec`: for cell-constant vector functions `uₗ = ∑ᵢ (xᵢ)ₗ eᵢ`, `vₗ = ∑ⱼ (yⱼ)ₗ e'ⱼ`
-  the value `∑ₗ ⟪uₗ, T vₗ⟫` equals `∑ᵢⱼ aᵢⱼ ⟪xᵢ, yⱼ⟫`, hence is at most `V(A)` when the `xᵢ, yⱼ`
-  lie in the unit ball (`le_vectorOpt_of_ball`, by padding the vectors to unit vectors in two
-  extra coordinates);
+* `inner_cell`: `⟪L ε, T (L' δ)⟫ = ∑ᵢⱼ aᵢⱼ conj(εᵢ) δⱼ`, so the scalar optimum `C(A)` of the
+  matrix is bounded by any cap on the pairing over unimodular cell-constant functions;
+* `pairVal_cellVec`: for cell-constant vector functions `uₗ = L (i ↦ (xᵢ)ₗ)`,
+  `vₗ = L' (j ↦ (yⱼ)ₗ)` the value `∑ₗ ⟪uₗ, T vₗ⟫` equals `∑ᵢⱼ aᵢⱼ ⟪xᵢ, yⱼ⟫`, hence is at most
+  `V(A)` when the `xᵢ, yⱼ` lie in the unit ball (`le_vectorOpt_of_ball`, by padding the vectors to
+  unit vectors in two extra coordinates);
 * `finite_transfer`: `IsGrothendieckBound K` and a cap `B` on the unimodular cell-constant
   pairings give `‖∑ₗ ⟪uₗ, T vₗ⟫‖ ≤ K · B` for every ball-valued cell-constant pair.
 
@@ -92,82 +91,60 @@ theorem _root_.Grothe.IsGrothendieckBound.one_le {K : ℝ} (hK : IsGrothendieckB
   · nlinarith [mul_le_mul_of_nonneg_left hC hK0]
   · nlinarith [mul_nonpos_of_nonpos_of_nonneg hK0.le hC0]
 
-/-! ### Cell-constant functions and the matrix of `T` -/
+/-! ### Cell maps and the matrix of `T` -/
 
 section Cells
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 variable {N M : ℕ} {ι : Type} [Fintype ι]
 
-/-- The cell-constant function with coefficients `c` on the cell family `e`: `∑ᵢ cᵢ eᵢ`. -/
-def cellFun (e : Fin N → H) (c : Fin N → ℂ) : H := ∑ i, c i • e i
+/-- The matrix `aᵢⱼ = ⟪L eᵢ, T L' eⱼ⟫` of `T` on two cell maps (`eᵢ` the standard basis). -/
+def cellMatrix (T : H →L[ℂ] H) (L : (Fin N → ℂ) →ₗ[ℂ] H) (L' : (Fin M → ℂ) →ₗ[ℂ] H) :
+    Fin N → Fin M → ℂ :=
+  fun i j => inner ℂ (L (Pi.single i 1)) (T (L' (Pi.single j 1)))
 
-/-- The matrix `aᵢⱼ = ⟪eᵢ, T e'ⱼ⟫` of `T` on two cell families. -/
-def cellMatrix (T : H →L[ℂ] H) (e : Fin N → H) (e' : Fin M → H) : Fin N → Fin M → ℂ :=
-  fun i j => inner ℂ (e i) (T (e' j))
-
-/-- The coordinates `ℓ ↦ ∑ᵢ (xᵢ)ₗ eᵢ` of the cell-constant vector function with values `xᵢ`. -/
-def cellVec (e : Fin N → H) (x : Fin N → EuclideanSpace ℂ ι) : ι → H :=
-  fun ℓ => cellFun e fun i => x i ℓ
+/-- The vector function `ℓ ↦ L (i ↦ (xᵢ)ₗ)` with cell values `xᵢ`. -/
+def cellVec (L : (Fin N → ℂ) →ₗ[ℂ] H) (x : Fin N → EuclideanSpace ℂ ι) : ι → H :=
+  fun ℓ => L fun i => x i ℓ
 
 /-- The value of `T` on a pair of vector functions: `∑ₗ ⟪uₗ, T vₗ⟫`. -/
 def pairVal (T : H →L[ℂ] H) (u v : ι → H) : ℂ := ∑ ℓ, inner ℂ (u ℓ) (T (v ℓ))
 
-lemma inner_cellFun (T : H →L[ℂ] H) (e : Fin N → H) (e' : Fin M → H) (c : Fin N → ℂ)
-    (d : Fin M → ℂ) :
-    inner ℂ (cellFun e c) (T (cellFun e' d))
-      = ∑ i, ∑ j, cellMatrix T e e' i j * (conj (c i) * d j) := by
-  simp only [cellFun, cellMatrix, map_sum, map_smul, sum_inner, inner_sum, inner_smul_left,
-    inner_smul_right, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  refine sum_congr rfl fun i _ => sum_congr rfl fun j _ => ?_
-  ring
+lemma inner_cell (T : H →L[ℂ] H) (L : (Fin N → ℂ) →ₗ[ℂ] H) (L' : (Fin M → ℂ) →ₗ[ℂ] H)
+    (c : Fin N → ℂ) (d : Fin M → ℂ) :
+    inner ℂ (L c) (T (L' d)) = ∑ i, ∑ j, cellMatrix T L L' i j * (conj (c i) * d j) := by
+  conv_lhs => rw [pi_eq_sum_univ' c, pi_eq_sum_univ' d]
+  simp only [map_sum, map_smul, sum_inner, inner_sum, inner_smul_left, inner_smul_right,
+    cellMatrix, mul_sum]
+  rw [sum_comm]
+  exact sum_congr rfl fun i _ => sum_congr rfl fun j _ => by ring
 
-lemma pairVal_cellVec (T : H →L[ℂ] H) (e : Fin N → H) (e' : Fin M → H)
+lemma pairVal_cellVec (T : H →L[ℂ] H) (L : (Fin N → ℂ) →ₗ[ℂ] H) (L' : (Fin M → ℂ) →ₗ[ℂ] H)
     (x : Fin N → EuclideanSpace ℂ ι) (y : Fin M → EuclideanSpace ℂ ι) :
-    pairVal T (cellVec e x) (cellVec e' y)
-      = ∑ i, ∑ j, cellMatrix T e e' i j * inner ℂ (x i) (y j) := by
-  simp only [pairVal, cellVec, inner_cellFun, inner_eq_sum]
-  rw [Finset.sum_comm]
-  refine sum_congr rfl fun i _ => ?_
-  rw [Finset.sum_comm]
-  refine sum_congr rfl fun j _ => ?_
-  rw [Finset.mul_sum]
-
-/-- The scalar optimum of the matrix of `T` is bounded by any cap on the pairing over
-unimodular cell-constant functions. -/
-theorem scalarOpt_cellMatrix_le (T : H →L[ℂ] H) (e : Fin N → H) (e' : Fin M → H) {B : ℝ}
-    (hB : ∀ (ε : Fin N → ℂ) (δ : Fin M → ℂ), (∀ i, ‖ε i‖ = 1) → (∀ j, ‖δ j‖ = 1) →
-      ‖inner ℂ (cellFun e ε) (T (cellFun e' δ))‖ ≤ B) :
-    scalarOpt (cellMatrix T e e') ≤ B := by
-  apply csSup_le (scalarSet_nonempty _)
-  rintro r ⟨ε, δ, hε, hδ, rfl⟩
-  rw [← inner_cellFun]
-  exact hB ε δ hε hδ
-
-/-- The value of `T` on ball-valued cell-constant vector functions is at most `V(A)`. -/
-theorem norm_pairVal_cellVec_le (T : H →L[ℂ] H) (e : Fin N → H) (e' : Fin M → H)
-    {x : Fin N → EuclideanSpace ℂ ι} {y : Fin M → EuclideanSpace ℂ ι}
-    (hx : ∀ i, ‖x i‖ ≤ 1) (hy : ∀ j, ‖y j‖ ≤ 1) :
-    ‖pairVal T (cellVec e x) (cellVec e' y)‖ ≤ vectorOpt (cellMatrix T e e') := by
-  rw [pairVal_cellVec]
-  exact le_vectorOpt_of_ball _ hx hy
+    pairVal T (cellVec L x) (cellVec L' y)
+      = ∑ i, ∑ j, cellMatrix T L L' i j * inner ℂ (x i) (y j) := by
+  simp only [pairVal, cellVec, inner_cell, inner_eq_sum, mul_sum]
+  rw [sum_comm]
+  exact sum_congr rfl fun i _ => sum_comm
 
 /-- **Finite transfer.**  A Grothendieck bound `K` and a cap `B` on the pairing of `T` over
 unimodular cell-constant functions bound the value of `T` on every ball-valued cell-constant
 vector pair by `K · B`. -/
 theorem finite_transfer {K B : ℝ} (hK : IsGrothendieckBound K) (T : H →L[ℂ] H)
-    (e : Fin N → H) (e' : Fin M → H)
+    (L : (Fin N → ℂ) →ₗ[ℂ] H) (L' : (Fin M → ℂ) →ₗ[ℂ] H)
     (hB : ∀ (ε : Fin N → ℂ) (δ : Fin M → ℂ), (∀ i, ‖ε i‖ = 1) → (∀ j, ‖δ j‖ = 1) →
-      ‖inner ℂ (cellFun e ε) (T (cellFun e' δ))‖ ≤ B)
+      ‖inner ℂ (L ε) (T (L' δ))‖ ≤ B)
     {x : Fin N → EuclideanSpace ℂ ι} {y : Fin M → EuclideanSpace ℂ ι}
     (hx : ∀ i, ‖x i‖ ≤ 1) (hy : ∀ j, ‖y j‖ ≤ 1) :
-    ‖pairVal T (cellVec e x) (cellVec e' y)‖ ≤ K * B :=
-  calc ‖pairVal T (cellVec e x) (cellVec e' y)‖
-      ≤ vectorOpt (cellMatrix T e e') := norm_pairVal_cellVec_le T e e' hx hy
-    _ ≤ K * scalarOpt (cellMatrix T e e') := hK _ _ _
-    _ ≤ K * B := mul_le_mul_of_nonneg_left (scalarOpt_cellMatrix_le T e e' hB)
-          (by linarith [hK.one_le])
+    ‖pairVal T (cellVec L x) (cellVec L' y)‖ ≤ K * B := by
+  have hC : scalarOpt (cellMatrix T L L') ≤ B := by
+    refine csSup_le (scalarSet_nonempty _) ?_
+    rintro r ⟨ε, δ, hε, hδ, rfl⟩
+    rw [← inner_cell]
+    exact hB ε δ hε hδ
+  rw [pairVal_cellVec]
+  exact (le_vectorOpt_of_ball _ hx hy).trans ((hK _ _ _).trans
+    (mul_le_mul_of_nonneg_left hC (by linarith [hK.one_le])))
 
 end Cells
 

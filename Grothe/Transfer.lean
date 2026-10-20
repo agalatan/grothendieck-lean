@@ -17,13 +17,12 @@ the supremum, so this agrees with the usual definition.
 
 A *rounding kernel* `Q : ℂ → ℂ` is **dominated** if `|∑ aᵢⱼ Q(⟪xᵢ, yⱼ⟫)| ≤ C(A)` for all unit
 families.  A kernel realised by jointly distributed unimodular random variables with
-`E[conj(εᵢ) δⱼ] = Q(⟪xᵢ, yⱼ⟫)` (a *valid* kernel) is dominated
-(`ValidKernel.dominated`), and convex combinations of dominated kernels are dominated.
+`E[conj(εᵢ) δⱼ] = Q(⟪xᵢ, yⱼ⟫)` (a *valid* kernel) is dominated (`ValidKernel.dominated`).
 
-The main result is the transfer inequality: if
-`q(z) = ∑ₙ cₙ z|z|^{2n}` with `∑ |cₙ| < ∞`, `q/M` is dominated, and `|c₀| > S := ∑_{n≥1} |cₙ|`,
-then `K_G^ℂ ≤ M / (|c₀| - S)`.  The proof realises each monomial `z|z|^{2n}` as an inner product
-of unit tensor vectors (`tpow`).
+The main result is the transfer inequality (`transfer`): if the radial kernel
+`z ↦ ∑ₙ hₙ z|z|^{2n}` (`radialKernel h`, `∑ |hₙ| < ∞`) is dominated and its residual against `c·z`
+satisfies `|h₀ − c| + ∑_{n≥1} |hₙ| ≤ δ < c`, then `K_G^ℂ ≤ 1/(c − δ)`.  The proof realises each
+monomial `z|z|^{2n}` as an inner product of unit tensor vectors (`tpow`).
 -/
 
 namespace Grothe
@@ -163,40 +162,6 @@ theorem ValidKernel.dominated {Q : ℂ → ℂ} (hQ : ValidKernel Q) : Dominated
           le_scalarOpt A (fun i => hε1 ω i) (fun j => hδ1 ω j)
     _ = scalarOpt A := by simp
 
-/-- Convex combinations of dominated kernels are dominated. -/
-theorem DominatedKernel.convex {k : ℕ} (w : Fin k → ℝ) (hw : ∀ i, 0 ≤ w i)
-    (hsum : ∑ i, w i = 1) (Q : Fin k → ℂ → ℂ) (hQ : ∀ i, DominatedKernel (Q i)) :
-    DominatedKernel fun z => ∑ i, (w i : ℂ) * Q i z := by
-  intro m n A ι _ x y hx hy
-  have e : ∑ i, ∑ j, A i j * ∑ l, (w l : ℂ) * Q l (inner ℂ (x i) (y j))
-      = ∑ l, (w l : ℂ) * ∑ i, ∑ j, A i j * Q l (inner ℂ (x i) (y j)) := by
-    simp only [Finset.mul_sum]
-    conv_rhs => rw [Finset.sum_comm]
-    refine sum_congr rfl fun i _ => ?_
-    rw [Finset.sum_comm]
-    refine sum_congr rfl fun l _ => sum_congr rfl fun j _ => ?_
-    ring
-  rw [e]
-  calc ‖∑ l, (w l : ℂ) * ∑ i, ∑ j, A i j * Q l (inner ℂ (x i) (y j))‖
-      ≤ ∑ l, ‖(w l : ℂ) * ∑ i, ∑ j, A i j * Q l (inner ℂ (x i) (y j))‖ := norm_sum_le _ _
-    _ ≤ ∑ l, w l * scalarOpt A := by
-        gcongr with l _
-        rw [norm_mul, Complex.norm_real, Real.norm_of_nonneg (hw l)]
-        exact mul_le_mul_of_nonneg_left (hQ l m n A ι x y hx hy) (hw l)
-    _ = scalarOpt A := by rw [← Finset.sum_mul, hsum, one_mul]
-
-/-- Positive mixtures, normalised by the total mass `M = ∑ wᵢ`. -/
-theorem DominatedKernel.mixture {k : ℕ} (w : Fin k → ℝ) (hw : ∀ i, 0 ≤ w i)
-    (hpos : 0 < ∑ i, w i) (Q : Fin k → ℂ → ℂ) (hQ : ∀ i, DominatedKernel (Q i)) :
-    DominatedKernel fun z => ((∑ i, w i : ℝ)⁻¹ : ℂ) * ∑ i, (w i : ℂ) * Q i z := by
-  have h := DominatedKernel.convex (fun i => w i / ∑ i, w i)
-    (fun i => div_nonneg (hw i) hpos.le) (by rw [← Finset.sum_div, div_self hpos.ne']) Q hQ
-  convert h using 2 with z
-  rw [Finset.mul_sum]
-  refine sum_congr rfl fun i _ => ?_
-  push_cast
-  ring
-
 /-! ### Tensor powers realising `z ↦ z |z|^{2n}` -/
 
 /-- Index type of `x^{⊗(n+1)} ⊗ x̄^{⊗n}`. -/
@@ -272,112 +237,75 @@ theorem norm_tensor_value_le {m n : ℕ} (A : Fin m → Fin n → ℂ) {ι : Typ
     (fun i => norm_tpow k (x i) (hx i)) (fun j => norm_tpow k (y j) (hy j))
   simpa only [inner_tpow] using this
 
-/-! ### The transfer inequality (1) -/
+/-! ### The transfer inequality -/
 
-/-- **Transfer inequality.**  Let `q(z) = ∑ₙ cₙ z|z|^{2n}` with `∑|cₙ| < ∞`.  If `q/M`
-is a dominated (e.g. valid) rounding kernel and `S = ∑_{n ≥ 1} |cₙ| < |c₀|`, then
-`K_G^ℂ ≤ M / (|c₀| - S)`. -/
-theorem transfer (c : ℕ → ℝ) (hc : Summable fun k => |c k|) (M : ℝ) (hM : 0 < M)
-    (hdom : DominatedKernel fun z =>
-      ((M⁻¹ : ℝ) : ℂ) * ∑' k, (c k : ℂ) * (z * ((‖z‖ : ℝ) : ℂ) ^ (2 * k)))
-    (hS : ∑' k, |c (k + 1)| < |c 0|) :
-    IsGrothendieckBound (M / (|c 0| - ∑' k, |c (k + 1)|)) := by
+/-- The radial kernel with coefficient sequence `h`: `z ↦ ∑ₙ hₙ z |z|^{2n}`. -/
+def radialKernel (h : ℕ → ℝ) (z : ℂ) : ℂ :=
+  ∑' n, (h n : ℂ) * (z * ((‖z‖ : ℝ) : ℂ) ^ (2 * n))
+
+/-- **Transfer inequality.**  If the radial kernel `z ↦ ∑ₙ hₙ z|z|^{2n}` (with `∑|hₙ| < ∞`) is
+dominated and its residual against the linear kernel `c·z` has coefficient norm
+`|h₀ − c| + ∑_{n ≥ 1} |hₙ| ≤ δ < c`, then `K_G^ℂ ≤ 1/(c − δ)`.
+
+For unit families `x, y` let `Bₖ = ∑ aᵢⱼ zᵢⱼ|zᵢⱼ|^{2k}`, `zᵢⱼ = ⟪xᵢ, yⱼ⟫`; then `‖Bₖ‖ ≤ V(A)`
+(tensor powers), `‖∑ₖ hₖ Bₖ‖ ≤ C(A)` (domination), and
+`c B₀ = ∑ₖ hₖ Bₖ − (h₀ − c) B₀ − ∑_{k ≥ 1} hₖ Bₖ` gives `c‖B₀‖ ≤ C(A) + δ V(A)`. -/
+theorem transfer (h : ℕ → ℝ) (hs : Summable fun n => |h n|)
+    (hdom : DominatedKernel (radialKernel h)) {c δ : ℝ} (hδ : δ < c)
+    (hres : |h 0 - c| + ∑' n, |h (n + 1)| ≤ δ) : IsGrothendieckBound (1 / (c - δ)) := by
   intro m n A
-  set S := ∑' k, |c (k + 1)| with hSdef
-  have hc' : Summable fun k => |c (k + 1)| := (summable_nat_add_iff 1).mpr hc
-  have hS0 : 0 ≤ S := tsum_nonneg fun _ => abs_nonneg _
-  have hc0 : 0 < |c 0| := lt_of_le_of_lt hS0 hS
+  have hs1 : Summable fun n => |h (n + 1)| := (summable_nat_add_iff 1).mpr hs
+  have hδ0 : 0 ≤ δ := le_trans (add_nonneg (abs_nonneg _) (tsum_nonneg fun _ => abs_nonneg _)) hres
+  have hc0 : 0 < c := hδ0.trans_lt hδ
   have hV0 := vectorOpt_nonneg A
-  -- the key estimate for one admissible family
-  have key : ∀ r ∈ vectorSet A, |c 0| * r ≤ M * scalarOpt A + S * vectorOpt A := by
+  have key : ∀ r ∈ vectorSet A, c * r ≤ scalarOpt A + δ * vectorOpt A := by
     rintro r ⟨ι, _, x, y, hx, hy, rfl⟩
-    have hz1 : ∀ i j, ‖inner ℂ (x i) (y j)‖ ≤ 1 := fun i j => by
-      have := norm_inner_le_norm (𝕜 := ℂ) (x i) (y j)
-      rwa [hx, hy, one_mul] at this
     obtain ⟨B, hB⟩ : ∃ B : ℕ → ℂ, ∀ k, B k =
         ∑ i, ∑ j, A i j * (inner ℂ (x i) (y j) * ((‖inner ℂ (x i) (y j)‖ : ℝ) : ℂ) ^ (2 * k)) :=
       ⟨_, fun _ => rfl⟩
     have hBle : ∀ k, ‖B k‖ ≤ vectorOpt A := fun k => by
       rw [hB]; exact norm_tensor_value_le A x y hx hy k
-    have hB0 : B 0 = ∑ i, ∑ j, A i j * inner ℂ (x i) (y j) := by
-      rw [hB]; simp
-    -- termwise summability
-    have hterm : ∀ i j, Summable fun k => (c k : ℂ) *
-        (inner ℂ (x i) (y j) * ((‖inner ℂ (x i) (y j)‖ : ℝ) : ℂ) ^ (2 * k)) := by
-      intro i j
-      refine Summable.of_norm_bounded hc fun k => ?_
-      rw [norm_mul, norm_mul, norm_pow, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs,
-        Real.norm_eq_abs, abs_norm]
-      have h1 : ‖inner ℂ (x i) (y j)‖ * ‖inner ℂ (x i) (y j)‖ ^ (2 * k) ≤ 1 := by
-        calc ‖inner ℂ (x i) (y j)‖ * ‖inner ℂ (x i) (y j)‖ ^ (2 * k) ≤ (1 : ℝ) * 1 ^ (2 * k) := by
-              gcongr <;> exact hz1 i j
-          _ = 1 := by simp
-      calc |c k| * (‖inner ℂ (x i) (y j)‖ * ‖inner ℂ (x i) (y j)‖ ^ (2 * k)) ≤ |c k| * 1 :=
-            mul_le_mul_of_nonneg_left h1 (abs_nonneg _)
-        _ = |c k| := mul_one _
-    have hsumB : Summable fun k => (c k : ℂ) * B k := by
-      refine Summable.of_norm_bounded (hc.mul_right (vectorOpt A)) fun k => ?_
+    have hB0 : B 0 = ∑ i, ∑ j, A i j * inner ℂ (x i) (y j) := by simp [hB]
+    -- the kernel value is `∑ₖ hₖ Bₖ`
+    have hsum : HasSum (fun k => (h k : ℂ) * B k)
+        (∑ i, ∑ j, A i j * radialKernel h (inner ℂ (x i) (y j))) := by
+      have hterm : ∀ i j, HasSum (fun k => A i j * ((h k : ℂ) *
+          (inner ℂ (x i) (y j) * ((‖inner ℂ (x i) (y j)‖ : ℝ) : ℂ) ^ (2 * k))))
+          (A i j * radialKernel h (inner ℂ (x i) (y j))) := fun i j => by
+        refine (Summable.hasSum (Summable.of_norm_bounded hs fun k => ?_)).mul_left (A i j)
+        have hz : ‖inner ℂ (x i) (y j)‖ ≤ 1 := by
+          simpa [hx, hy] using norm_inner_le_norm (𝕜 := ℂ) (x i) (y j)
+        rw [norm_mul, norm_mul, norm_pow, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs,
+          Real.norm_eq_abs, abs_norm]
+        rw [← pow_succ']
+        exact mul_le_of_le_one_right (abs_nonneg _) (pow_le_one₀ (norm_nonneg _) hz)
+      convert hasSum_sum fun i _ => hasSum_sum fun j _ => hterm i j using 1
+      funext k
+      simp only [hB, Finset.mul_sum]
+      exact sum_congr rfl fun i _ => sum_congr rfl fun j _ => by ring
+    have hdk := hdom m n A ι x y hx hy
+    rw [← hsum.tsum_eq, hsum.summable.tsum_eq_zero_add] at hdk
+    have htail : ‖∑' k, (h (k + 1) : ℂ) * B (k + 1)‖ ≤ (∑' k, |h (k + 1)|) * vectorOpt A :=
+      tsum_of_norm_bounded (hs1.hasSum.mul_right _) fun k => by
+        rw [norm_mul, Complex.norm_real, Real.norm_eq_abs]
+        exact mul_le_mul_of_nonneg_left (hBle _) (abs_nonneg _)
+    have h0 : ‖((h 0 - c : ℝ) : ℂ) * B 0‖ ≤ |h 0 - c| * vectorOpt A := by
       rw [norm_mul, Complex.norm_real, Real.norm_eq_abs]
-      exact mul_le_mul_of_nonneg_left (hBle k) (abs_nonneg _)
-    -- evaluate the dominated kernel on the family and swap the sums
-    have hdom' := hdom m n A ι x y hx hy
-    have hg : ∀ i j, Summable fun k => A i j * (((M⁻¹ : ℝ) : ℂ) *
-        ((c k : ℂ) * (inner ℂ (x i) (y j) * ((‖inner ℂ (x i) (y j)‖ : ℝ) : ℂ) ^ (2 * k)))) :=
-      fun i j => ((hterm i j).mul_left _).mul_left _
-    have hswap : ∑ i, ∑ j, A i j * (((M⁻¹ : ℝ) : ℂ) *
-          ∑' k, (c k : ℂ) * (inner ℂ (x i) (y j) * ((‖inner ℂ (x i) (y j)‖ : ℝ) : ℂ) ^ (2 * k)))
-        = ((M⁻¹ : ℝ) : ℂ) * ∑' k, (c k : ℂ) * B k := by
-      calc ∑ i, ∑ j, A i j * (((M⁻¹ : ℝ) : ℂ) *
-            ∑' k, (c k : ℂ) * (inner ℂ (x i) (y j) * ((‖inner ℂ (x i) (y j)‖ : ℝ) : ℂ) ^ (2 * k)))
-          = ∑ i, ∑ j, ∑' k, A i j * (((M⁻¹ : ℝ) : ℂ) *
-              ((c k : ℂ) * (inner ℂ (x i) (y j) * ((‖inner ℂ (x i) (y j)‖ : ℝ) : ℂ) ^ (2 * k)))) := by
-            refine sum_congr rfl fun i _ => sum_congr rfl fun j _ => ?_
-            rw [← tsum_mul_left, ← tsum_mul_left]
-        _ = ∑' k, ∑ i, ∑ j, A i j * (((M⁻¹ : ℝ) : ℂ) *
-              ((c k : ℂ) * (inner ℂ (x i) (y j) * ((‖inner ℂ (x i) (y j)‖ : ℝ) : ℂ) ^ (2 * k)))) := by
-            rw [Summable.tsum_finsetSum fun i _ => summable_sum fun j _ => hg i j]
-            refine sum_congr rfl fun i _ => ?_
-            rw [Summable.tsum_finsetSum fun j _ => hg i j]
-        _ = ((M⁻¹ : ℝ) : ℂ) * ∑' k, (c k : ℂ) * B k := by
-            rw [← tsum_mul_left]
-            refine tsum_congr fun k => ?_
-            rw [hB]
-            simp only [Finset.mul_sum]
-            refine sum_congr rfl fun i _ => sum_congr rfl fun j _ => ?_
-            ring
-    rw [hswap, norm_mul, Complex.norm_real, Real.norm_of_nonneg (inv_nonneg.2 hM.le),
-      inv_mul_le_iff₀ hM] at hdom'
-    -- split off the linear term
-    have hsplit : ∑' k, (c k : ℂ) * B k = (c 0 : ℂ) * B 0 + ∑' k, (c (k + 1) : ℂ) * B (k + 1) :=
-      hsumB.tsum_eq_zero_add
-    have hsumB' : Summable fun k => (c (k + 1) : ℂ) * B (k + 1) :=
-      (summable_nat_add_iff 1).mpr hsumB
-    have h2 : ‖∑' k, (c (k + 1) : ℂ) * B (k + 1)‖ ≤ S * vectorOpt A := by
-      calc ‖∑' k, (c (k + 1) : ℂ) * B (k + 1)‖
-          ≤ ∑' k, ‖(c (k + 1) : ℂ) * B (k + 1)‖ := norm_tsum_le_tsum_norm hsumB'.norm
-        _ ≤ ∑' k, |c (k + 1)| * vectorOpt A := by
-            refine Summable.tsum_le_tsum (fun k => ?_) hsumB'.norm (hc'.mul_right _)
-            rw [norm_mul, Complex.norm_real, Real.norm_eq_abs]
-            exact mul_le_mul_of_nonneg_left (hBle _) (abs_nonneg _)
-        _ = S * vectorOpt A := by rw [tsum_mul_right]
-    have h3 : ‖(c 0 : ℂ) * B 0‖ ≤ M * scalarOpt A + S * vectorOpt A := by
-      have : (c 0 : ℂ) * B 0
-          = (∑' k, (c k : ℂ) * B k) - ∑' k, (c (k + 1) : ℂ) * B (k + 1) := by
-        rw [hsplit]; ring
-      rw [this]
-      exact (norm_sub_le _ _).trans (add_le_add hdom' h2)
-    rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, hB0] at h3
-    exact h3
-  -- take the supremum over admissible families
-  have hVle : |c 0| * vectorOpt A ≤ M * scalarOpt A + S * vectorOpt A := by
-    have : vectorOpt A ≤ (M * scalarOpt A + S * vectorOpt A) / |c 0| := by
-      apply csSup_le (vectorSet_nonempty A)
-      intro r hr
-      rw [le_div_iff₀ hc0]
-      linarith [key r hr]
+      exact mul_le_mul_of_nonneg_left (hBle 0) (abs_nonneg _)
+    have e : (c : ℂ) * B 0 = ((h 0 : ℂ) * B 0 + ∑' k, (h (k + 1) : ℂ) * B (k + 1))
+        - ((h 0 - c : ℝ) : ℂ) * B 0 - ∑' k, (h (k + 1) : ℂ) * B (k + 1) := by push_cast; ring
+    have hcB : ‖(c : ℂ) * B 0‖ = c * ‖B 0‖ := by
+      rw [norm_mul, Complex.norm_real, Real.norm_of_nonneg hc0.le]
+    rw [← hB0, ← hcB, e]
+    refine (norm_sub_le _ _).trans ((add_le_add (norm_sub_le _ _) htail).trans ?_)
+    nlinarith [add_le_add (add_le_add hdk h0) htail]
+  have hV : c * vectorOpt A ≤ scalarOpt A + δ * vectorOpt A := by
+    have : vectorOpt A ≤ (scalarOpt A + δ * vectorOpt A) / c :=
+      csSup_le (vectorSet_nonempty A) fun r hr => by
+        rw [le_div_iff₀ hc0]; linarith [key r hr]
     rwa [le_div_iff₀ hc0, mul_comm] at this
-  rw [div_mul_eq_mul_div, le_div_iff₀ (by linarith)]
-  nlinarith [hVle]
+  rw [one_div_mul_eq_div, le_div_iff₀ (sub_pos.2 hδ)]
+  nlinarith
 
 end
 
