@@ -1,37 +1,37 @@
 import Grothe.Lower.Mixed
-import Grothe.Lower.Envelope
 import Grothe.LowerAnalytic.Rows
 
 /-!
-# The central boxes of the common-law certificate
+# The boxes of the common-law certificate
 
-On the slab `t ∈ [tLo, tHi]` the cap is certified on boxes `[t₋,t₊] × [τ₋,τ₊] × [x₋,x₊]`
-of `(t, τ, x)`, each with a fixed mixture `(1−θ, θ)` of two rows `i, j` and four certified
-`τ`-nodes: two enclosing `τ₋` and two enclosing `τ₊`, either Stein nodes of the two source rows
-rescaled to `τ = σ/δ` (a *source box*) or new exact node certificates of the mixed table (a
-*joint box*).  The chords at `τ₋`, `τ₊` give polynomials `L₋, L₊` in `x` with
-`E F_λ(τ±√U) − pad ≤ L±(x)`; by convexity in `τ` and the fixed first gate coordinate,
+The interval `[0, 9/10]` of `t` is covered by consecutive *regions*; each region `[t₋, t₊]` is
+partitioned dyadically into *boxes* `[t₋,t₊] × [τ₋,τ₊] × [x₋,x₊]` of `(t, τ, x)`
+(`coverOK`, `cover_sound`), and every box is bounded by `B`.  A box carries a fixed mixture
+`(1−θ, θ)` of two rows `i, j` and is bounded in one of two ways.
+
+* *Cap boxes* use only the certified caps of the rows (`RowBound`): each row, and the crude row
+  `(0, 0, ερ²)`, gives the scalar inequality `V ≤ t² − 2ℓt + C − ε‖Qh + (β/ε)v‖²` (`RowOf`), and
+  the mixture of two of them is a quadratic in `t` (`capVal`).
+* The other boxes use four certified `τ`-nodes: two enclosing `τ₋` and two enclosing `τ₊`, either
+  Stein nodes of the two source rows rescaled to `τ = σ/δ` (a *source box*) or new exact node
+  certificates of the mixed table (a *joint box*, or a *joint-mixture box* mixing two batches).
+  The chords at `τ₋`, `τ₊` give polynomials `L₋, L₊` in `x` with `E F_λ(τ±√U) − pad ≤ L±(x)`; by
+  convexity in `τ` and the fixed first gate coordinate,
 
   `V ≤ max_t (t² − 2ℓ̄t) + 2β̄²/ε + max_{x̂} max_{τ∈[τ₋,τ₊]} [chord(L₋(x̂), L₊(x̂))(τ) − Dτ²] + pad`
 
-with `D = δ̄ + gatePrice(N̄, ḡ)` (`boxVal`, `slab_bound`).  `boxBound` evaluates a box from the
-data, `coverOK` checks that the boxes form a dyadic partition of the slab (every point of the
-slab lies in a box, `coverOK_sound`), and `checkOuter` runs the scalar envelope outside the slab.
+  with `D = δ̄ + gatePrice(N̄, ḡ)` (`boxVal`, `vslab_bound`).
+
+`boxBound` evaluates a box from the data and `box_sound` is its soundness.
 -/
 
 open MeasureTheory
 
 namespace Grothe.Lower
 
-/-! ### The gate form of a row -/
+open LowerAnalytic
 
-/-- `g = δ b`. -/
-def Row.g1 (r : Row) : ℚ := r.delta * r.b1
-def Row.g2 (r : Row) : ℚ := r.delta * r.b2
-def Row.g3 (r : Row) : ℚ := r.delta * r.b3
-
-/-- The retained gate expression `X*N X + 2 Re(conj X₁ (g·X))` of a row. -/
-def Row.gate (r : Row) (X1 X2 X3 : ℂ) : ℝ := gateForm r.N r.g1 r.g2 r.g3 X1 X2 X3
+/-! ### Virtual rows and scalar rows -/
 
 /-- A *virtual row*: the parameters `(ℓ, β, δ, N, g)` of a row or of a mixture of rows. -/
 structure VRow where
@@ -61,54 +61,48 @@ lemma VRow.gate_mix (θ : ℚ) (a b : VRow) (X1 X2 X3 : ℂ) :
     (VRow.mix θ a b).gate X1 X2 X3 = (1 - θ) * a.gate X1 X2 X3 + θ * b.gate X1 X2 X3 :=
   gateForm_mix θ a.N b.N a.g1 a.g2 a.g3 b.g1 b.g2 b.g3 X1 X2 X3
 
-/-- The price of a single row `(θ = 0)` dominates its stored `κδ²`. -/
-def checkRowPrice (r : Row) : Bool :=
-  decide (0 < r.delta) && gateOK r.N &&
-    decide (r.kappa * r.delta ^ 2 ≤ r.delta + gatePrice r.N r.g1 r.g2 r.g3)
+/-- A scalar row `(ℓ, β, C)`. -/
+structure EnvRow where
+  ell : ℚ
+  beta : ℚ
+  C : ℚ
 
-section gate
+/-- The scalar row of a certified row: `C = 2β²/ε + cap + capPad`. -/
+def Row.env (r : Row) : EnvRow := ⟨r.ell, r.beta, 2 * r.beta ^ 2 / ε + r.cap + capPad⟩
 
-variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ] {U : Ω → ℝ}
-  {x : ℝ}
+/-- The crude row `(0, 0, ερ²)`. -/
+def crudeRow : EnvRow := ⟨0, 0, ε * ρ ^ 2⟩
 
-omit [IsProbabilityMeasure μ] in
-/-- The integrated gate form is at least `gatePrice · τ²` when `|X₁|² = τ² U`. -/
-lemma gate_integral_ge (N : Sym3) (g1 g2 g3 : ℚ) (hok : gateOK N = true) (X1 X2 X3 : Ω → ℂ)
-    (τ : ℝ) (hX : ∀ ω, ‖X1 ω‖ ^ 2 = τ ^ 2 * U ω) (hM : Moments μ U x)
-    (hint : Integrable (fun ω => gateForm N g1 g2 g3 (X1 ω) (X2 ω) (X3 ω)) μ) :
-    (gatePrice N g1 g2 g3 : ℝ) * τ ^ 2 ≤ ∫ ω, gateForm N g1 g2 g3 (X1 ω) (X2 ω) (X3 ω) ∂μ := by
-  have hpt : ∀ ω, (gatePrice N g1 g2 g3 : ℝ) * τ ^ 2 * U ω
-      ≤ gateForm N g1 g2 g3 (X1 ω) (X2 ω) (X3 ω) := by
-    intro ω
-    have := gateForm_ge N g1 g2 g3 hok (X1 ω) (X2 ω) (X3 ω)
-    rw [Complex.normSq_eq_norm_sq, hX ω] at this
-    linarith
-  have := integral_mono (hM.i1.const_mul _) hint hpt
-  rwa [integral_const_mul, hM.m1, mul_one] at this
-
-end gate
+/-- The scalar rows of a cap box: index `0` is the crude row, `k + 1` the row `k`. -/
+def envRowAt (rows : List Row) : ℕ → Option EnvRow
+  | 0 => some crudeRow
+  | k + 1 => rows[k]?.map Row.env
 
 /-! ### Box evaluation -/
 
 /-- `max_{t∈[tl,tu]} (t² − 2ℓt)`. -/
 def tPart (ell tl tu : ℚ) : ℚ := quadMax 0 (-2 * ell) 1 tl tu
 
-/-- `max_{τ∈[sl,su]} [L₋(x̂) + m(τ − sl) − Dτ²]`, `m` the slope of the chord of `L₋(x̂), L₊(x̂)`. -/
-def xPart (Lm Lp : MPoly) (D sl su xh : ℚ) : ℚ :=
-  let lo := Lm.Jq 0 1 xh
-  let hi := Lp.Jq 0 1 xh
-  let m := (hi - lo) / (su - sl)
-  quadMax (lo - m * sl) m (-D) sl su
+/-- `max_{τ∈[sl,su]} [chord(L₋(x̂), L₊(x̂))(τ) − Dτ²]`. -/
+def xPart (Lm Lp : MPoly) (D sl su xh : ℚ) : ℚ := chordMax (Lm.Jq 0 1 xh) (Lp.Jq 0 1 xh) D sl su
 
 /-- The bound of a box. -/
 def boxVal (ell beta D : ℚ) (Lm Lp : MPoly) (tl tu sl su xl xu : ℚ) : ℚ :=
   tPart ell tl tu + 2 * beta ^ 2 / ε + max (xPart Lm Lp D sl su xl) (xPart Lm Lp D sl su xu)
     + capPad
 
-/-- The kind of a box: a source box `(i, j, θ, refs of row i, refs of row j)`, a joint box
-`(batch, witness indices)`, or a joint-mixture box `(batch₀, batch₁, λ, indices₀, indices₁)`
-mixing two batches before the gate completion. -/
+/-- The bound of a cap box: the maximum on `[tl, tu]` of the mixture
+`(1−θ)Fₐ(t) + θF_b(t) − (2/ε)θ(1−θ)(βₐ − β_b)²` of `F(t) = t² − 2ℓt + C`. -/
+def capVal (a b : EnvRow) (θ tl tu : ℚ) : ℚ :=
+  quadMax ((1 - θ) * a.C + θ * b.C - 2 * (1 - θ) * θ * (a.beta - b.beta) ^ 2 / ε)
+    (-2 * ((1 - θ) * a.ell + θ * b.ell)) 1 tl tu
+
+/-- The kind of a box: a cap box `(i, j, θ)` (scalar rows, `0` the crude row), a source box
+`(i, j, θ, refs of row i, refs of row j)`, a joint box `(batch, witness indices)`, or a
+joint-mixture box `(batch₀, batch₁, λ, indices₀, indices₁)` mixing two batches before the gate
+completion. -/
 inductive BoxKind where
+  | cap (i j : ℕ) (θ : ℚ)
   | src (i j : ℕ) (θ : ℚ) (ri rj : List (Option (ℕ × ℕ)))
   | joint (b : ℕ) (ks : List ℕ)
   | jmix (b0 b1 : ℕ) (lam : ℚ) (k0 k1 : List ℕ)
@@ -131,10 +125,16 @@ def parseRefs (s : String) : List (Option (ℕ × ℕ)) := pairRefs ((splitL s "
 
 def dfltBox : Box := ⟨0, 0, 0, 0, 0, 0, .joint 0 []⟩
 
-/-- `s|tl,tu,sl,su,xl,xu|i,j,θ|refsᵢ|refsⱼ`, `j|tl,tu,sl,su,xl,xu|batch|k₀,k₁,k₂,k₃` or
+/-- `c|tl,tu,sl,su,xl,xu|i,j,θ`, `s|tl,tu,sl,su,xl,xu|i,j,θ|refsᵢ|refsⱼ`,
+`j|tl,tu,sl,su,xl,xu|batch|k₀,k₁,k₂,k₃` or
 `m|tl,tu,sl,su,xl,xu|batch₀,batch₁,λ|k₀,k₁,k₂,k₃|k₀',k₁',k₂',k₃'`. -/
 def parseBox (s : String) : Box :=
   match s.splitOn "|" with
+  | ["c", bx, ij] =>
+    match parseQs bx, ij.splitOn "," with
+    | [tl, tu, sl, su, xl, xu], [i, j, θ] =>
+      ⟨tl, tu, sl, su, xl, xu, .cap i.toNat! j.toNat! (parseQ θ)⟩
+    | _, _ => dfltBox
   | ["s", bx, ij, ri, rj] =>
     match parseQs bx, ij.splitOn "," with
     | [tl, tu, sl, su, xl, xu], [i, j, θ] =>
@@ -190,67 +190,75 @@ def chords4 (tns : List TNode) (sl su : ℚ) : Option (MPoly × MPoly) :=
     else none
   | _ => none
 
-/-- The final value from the virtual row and the two chord polynomials. -/
-def finish (a : VRow) (Lm Lp : MPoly) (b : Box) : Option ℚ :=
-  if gateOK a.N = true ∧ 0 ≤ Lm.a6 ∧ 0 ≤ Lp.a6 then
-    some (boxVal a.ell a.beta a.price Lm Lp b.tl b.tu b.sl b.su b.xl b.xu)
-  else none
+/-- A *component* of a box: a virtual row with the chord polynomials at `sl` and `su` of four
+resolved `τ`-nodes. -/
+def compData {α : Type} (a : VRow) (f : α → Option TNode) (refs : List α) (sl su : ℚ) :
+    Option (VRow × MPoly × MPoly) :=
+  match resolve f refs with
+  | some ns =>
+    match chords4 ns sl su with
+    | some (Lm, Lp) => some (a, Lm, Lp)
+    | none => none
+  | none => none
 
-/-- The virtual row and the chord polynomials of a batch on a box. -/
+/-- The mixture `(1−θ, θ)` of two components. -/
+def mixData (θ : ℚ) : Option (VRow × MPoly × MPoly) → Option (VRow × MPoly × MPoly) →
+    Option (VRow × MPoly × MPoly)
+  | some (a, Lm, Lp), some (b, Mm, Mp) =>
+    if 0 ≤ θ ∧ θ ≤ 1 then
+      some (VRow.mix θ a b, MPoly.lin (1 - θ) θ Lm Mm, MPoly.lin (1 - θ) θ Lp Mp)
+    else none
+  | _, _ => none
+
+/-- The component of a batch: the mixed virtual row and the batch's `τ`-nodes. -/
 def batchData (rows : List Row) (bt : JBatch) (ks : List ℕ) (sl su : ℚ) :
     Option (VRow × MPoly × MPoly) :=
   match rows[bt.i]?, rows[bt.j]? with
   | some Ri, some Rj =>
-    match resolve (fun k => bt.tnodes[k]?) ks with
-    | some ns =>
-      match chords4 ns sl su with
-      | some (Lm, Lp) => some (VRow.mix bt.θ Ri.vrow Rj.vrow, Lm, Lp)
-      | none => none
-    | none => none
+    compData (VRow.mix bt.θ Ri.vrow Rj.vrow) (fun k => bt.tnodes[k]?) ks sl su
   | _, _ => none
 
-/-- The bound of a box from the rows and the batches (`none` if the data are inconsistent). -/
-def boxBound (rows : List Row) (batches : List JBatch) (b : Box) : Option ℚ :=
-  if ¬ (0 ≤ b.sl ∧ b.sl < b.su ∧ b.tl ≤ b.tu ∧ 0 ≤ b.xl ∧ b.xl ≤ b.xu) then none else
+/-- The component of a box that is not a cap box. -/
+def boxData (rows : List Row) (batches : List JBatch) (b : Box) : Option (VRow × MPoly × MPoly) :=
   match b.kind with
+  | .cap _ _ _ => none
   | .src i j θ ri rj =>
     match rows[i]?, rows[j]? with
     | some Ri, some Rj =>
-      if ¬ (0 ≤ θ ∧ θ ≤ 1) then none else
-      match resolve (rowTNode Ri) ri, resolve (rowTNode Rj) rj with
-      | some ni, some nj =>
-        match chords4 ni b.sl b.su, chords4 nj b.sl b.su with
-        | some (Pim, Pip), some (Pjm, Pjp) =>
-          finish (VRow.mix θ Ri.vrow Rj.vrow) (MPoly.lin (1 - θ) θ Pim Pjm)
-            (MPoly.lin (1 - θ) θ Pip Pjp) b
-        | _, _ => none
-      | _, _ => none
+      mixData θ (compData Ri.vrow (rowTNode Ri) ri b.sl b.su)
+        (compData Rj.vrow (rowTNode Rj) rj b.sl b.su)
     | _, _ => none
   | .joint bi ks =>
     match batches[bi]? with
-    | some bt =>
-      match batchData rows bt ks b.sl b.su with
-      | some (a, Lm, Lp) => finish a Lm Lp b
-      | none => none
+    | some bt => batchData rows bt ks b.sl b.su
     | none => none
   | .jmix b0 b1 lam k0 k1 =>
-    if ¬ (0 ≤ lam ∧ lam ≤ 1) then none else
     match batches[b0]?, batches[b1]? with
     | some bt0, some bt1 =>
-      match batchData rows bt0 k0 b.sl b.su, batchData rows bt1 k1 b.sl b.su with
-      | some (a0, Lm0, Lp0), some (a1, Lm1, Lp1) =>
-        finish (VRow.mix lam a0 a1) (MPoly.lin (1 - lam) lam Lm0 Lm1)
-          (MPoly.lin (1 - lam) lam Lp0 Lp1) b
-      | _, _ => none
+      mixData lam (batchData rows bt0 k0 b.sl b.su) (batchData rows bt1 k1 b.sl b.su)
     | _, _ => none
 
-/-- Every box is consistent and bounded by `bound`. -/
-def checkBoxes (rows : List Row) (batches : List JBatch) (boxes : List String) (bound : ℚ) :
-    Bool :=
-  boxes.all fun s =>
-    match boxBound rows batches (parseBox s) with
-    | some v => decide (v ≤ bound)
-    | none => false
+/-- The bound of a box from the rows and the batches (`none` if the data are inconsistent). -/
+def boxBound (rows : List Row) (batches : List JBatch) (b : Box) : Option ℚ :=
+  if ¬ (0 ≤ b.sl ∧ b.sl < b.su ∧ 0 ≤ b.xl) then none else
+  match b.kind with
+  | .cap i j θ =>
+    match envRowAt rows i, envRowAt rows j with
+    | some a, some c => if 0 ≤ θ ∧ θ ≤ 1 then some (capVal a c θ b.tl b.tu) else none
+    | _, _ => none
+  | _ =>
+    match boxData rows batches b with
+    | some (a, Lm, Lp) =>
+      if gateOK a.N = true ∧ 0 ≤ Lm.a6 ∧ 0 ≤ Lp.a6 then
+        some (boxVal a.ell a.beta a.price Lm Lp b.tl b.tu b.sl b.su b.xl b.xu)
+      else none
+    | none => none
+
+/-- The box is consistent and bounded by `bound`. -/
+def boxOK (rows : List Row) (batches : List JBatch) (bound : ℚ) (b : Box) : Bool :=
+  match boxBound rows batches b with
+  | some v => decide (v ≤ bound)
+  | none => false
 
 /-! ### Coverage -/
 
@@ -349,7 +357,8 @@ theorem coverOK_sound : ∀ (f : ℕ) (d : Dom) (bs : List Dom), coverOK f d bs 
       rcases h with (h | h) | h <;>
         exact splitAxis_sound (coverOK f) (coverOK_sound f) d (b :: b' :: rest) _ h t τ x hm
 
-/-! ### Regions of the slab -/
+
+/-! ### Regions -/
 
 /-- A region `[lo, hi]` of `t` with its boxes. -/
 structure Region where
@@ -357,130 +366,34 @@ structure Region where
   hi : ℚ
   boxes : List String
 
-/-- Consecutive regions from `prev` to `stop`, each with its boxes checked and covering
+/-- The boxes of a region are bounded by `bound` (in parallel) and form a dyadic partition of
 `[lo, hi] × [0, ρ] × [0, 31/4]`. -/
-def checkRegions (rows : List Row) (batches : List JBatch) (bound : ℚ) :
-    ℚ → ℚ → List Region → Bool
-  | prev, stop, [] => prev == stop
-  | prev, stop, r :: rest =>
-    (r.lo == prev) && decide (r.lo < r.hi) && checkBoxes rows batches r.boxes bound &&
-    coverOK (r.boxes.length + 1) (r.lo, r.hi, 0, ρ, 0, xMax)
-      (r.boxes.map fun s => (parseBox s).dom) &&
-    checkRegions rows batches bound r.hi stop rest
+def checkRegion (rows : List Row) (batches : List JBatch) (bound : ℚ) (r : Region) : Bool :=
+  let bs := r.boxes.map parseBox
+  allPar (boxOK rows batches bound) bs &&
+    coverOK (bs.length + 1) (r.lo, r.hi, 0, ρ, 0, xMax) (bs.map Box.dom)
 
-/-- The regions cover the slab `[lo, hi]`; no region means a degenerate slab `lo = hi`, which
-the envelope covers entirely. -/
-def checkSlab (rows : List Row) (batches : List JBatch) (bound lo hi : ℚ) (regs : List Region) :
+/-- The regions are consecutive, cover `[0, 9/10]`, and are checked. -/
+def checkCover (rows : List Row) (batches : List JBatch) (bound : ℚ) (regs : List Region) :
     Bool :=
-  if regs.isEmpty then lo == hi else checkRegions rows batches bound lo hi regs
+  chainTo Region.lo Region.hi 0 (9 / 10) regs && regs.all (checkRegion rows batches bound)
 
-lemma regions_sound (rows : List Row) (batches : List JBatch) (bound : ℚ) :
-    ∀ (prev stop : ℚ) (regs : List Region), checkRegions rows batches bound prev stop regs = true →
-    regs ≠ [] → ∀ t : ℝ, (prev : ℝ) ≤ t → t ≤ stop →
-      ∃ r ∈ regs, (r.lo : ℝ) ≤ t ∧ t ≤ r.hi ∧ checkBoxes rows batches r.boxes bound = true ∧
-        coverOK (r.boxes.length + 1) (r.lo, r.hi, 0, ρ, 0, xMax)
-          (r.boxes.map fun s => (parseBox s).dom) = true
-  | _, _, [], _, hne, _, _, _ => absurd rfl hne
-  | prev, stop, r :: rest, h, _, t, hpt, ht => by
-    simp only [checkRegions, Bool.and_eq_true, beq_iff_eq, decide_eq_true_eq] at h
-    obtain ⟨⟨⟨⟨hlo, _⟩, hb⟩, hc⟩, hrest⟩ := h
-    by_cases hth : t ≤ (r.hi : ℝ)
-    · exact ⟨r, List.mem_cons_self .., by rw [hlo]; exact hpt, hth, hb, hc⟩
-    · cases rest with
-      | nil =>
-        simp only [checkRegions, beq_iff_eq] at hrest
-        exfalso
-        exact hth (ht.trans (by rw [hrest]))
-      | cons r' rest' =>
-        obtain ⟨r'', hr'', h1, h2, h3, h4⟩ := regions_sound rows batches bound r.hi stop
-          (r' :: rest') hrest (by simp) t (le_of_lt (not_le.1 hth)) ht
-        exact ⟨r'', List.mem_cons_of_mem _ hr'', h1, h2, h3, h4⟩
-
-/-! ### The scalar envelope outside the slab -/
-
-/-- Like `checkEnvCells`, but the cells inside `[lo, hi]` are not checked. -/
-def checkCellsOut (rows : List EnvRow) (models : List EnvModel) (bound lo hi : ℚ) :
-    ℚ → List EnvCell → Bool
-  | prev, [] => prev == 9 / 10
-  | prev, c :: rest =>
-    (c.lo == prev) && decide (c.lo < c.hi) && decide (c.hi ≤ 9 / 10) &&
-    decide (c.model < models.length) &&
-    ((decide (lo ≤ c.lo) && decide (c.hi ≤ hi)) ||
-     (let q := modelQuad rows (models.getD c.model ⟨0, 0, 0⟩)
-      decide (quadMax q.1 q.2.1 q.2.2 c.lo c.hi ≤ bound))) &&
-    checkCellsOut rows models bound lo hi c.hi rest
-
-def checkOuter (rows : List EnvRow) (models : List EnvModel) (cells : List EnvCell)
-    (bound lo hi : ℚ) : Bool :=
-  models.all (checkModel rows) && checkCellsOut rows models bound lo hi 0 cells
-
-lemma cellsOut_sound (rows : List EnvRow) (models : List EnvModel) (bound lo hi : ℚ) :
-    ∀ (prev : ℚ) (cells : List EnvCell), checkCellsOut rows models bound lo hi prev cells = true →
-    cells ≠ [] → ∀ t : ℝ, (prev : ℝ) ≤ t → t ≤ 9 / 10 → (t < lo ∨ (hi : ℝ) < t ∨ lo = hi) →
-      ∃ c ∈ cells, (c.lo : ℝ) ≤ t ∧ t ≤ c.hi ∧ c.model < models.length ∧
-        (let q := modelQuad rows (models.getD c.model ⟨0, 0, 0⟩)
-         quadMax q.1 q.2.1 q.2.2 c.lo c.hi ≤ bound)
-  | _, [], _, hne, _, _, _, _ => absurd rfl hne
-  | prev, c :: rest, h, _, t, hpt, ht, hout => by
-    simp only [checkCellsOut, Bool.and_eq_true, Bool.or_eq_true, beq_iff_eq,
-      decide_eq_true_eq] at h
-    obtain ⟨⟨⟨⟨⟨hlo, hlh⟩, hhi⟩, hm⟩, hq⟩, hrest⟩ := h
-    by_cases hth : t ≤ (c.hi : ℝ)
-    · refine ⟨c, List.mem_cons_self .., by rw [hlo]; exact hpt, hth, hm, ?_⟩
-      rcases hq with ⟨hl, hh⟩ | hq
-      · exfalso
-        have hl' : (lo : ℝ) ≤ c.lo := by exact_mod_cast hl
-        have hh' : (c.hi : ℝ) ≤ hi := by exact_mod_cast hh
-        have hpt' : (c.lo : ℝ) ≤ t := by rw [hlo]; exact hpt
-        have hlh' : (c.lo : ℝ) < c.hi := by exact_mod_cast hlh
-        rcases hout with h | h | h
-        · linarith
-        · linarith
-        · have : (lo : ℝ) = hi := by exact_mod_cast h
-          linarith
-      · exact hq
-    · cases rest with
-      | nil =>
-        simp only [checkCellsOut, beq_iff_eq] at hrest
-        exfalso
-        have : (c.hi : ℝ) = 9 / 10 := by rw [hrest]; norm_num
-        exact hth (ht.trans this.ge)
-      | cons c' rest' =>
-        obtain ⟨c'', hc'', h1, h2, h3, h4⟩ :=
-          cellsOut_sound rows models bound lo hi c.hi (c' :: rest') hrest (by simp) t
-            (le_of_lt (not_le.1 hth)) ht hout
-        exact ⟨c'', List.mem_cons_of_mem _ hc'', h1, h2, h3, h4⟩
-
-/-- **Soundness of the outer envelope**: `V ≤ bound` for `t ∉ [lo, hi]` (or everywhere when the
-slab is degenerate, `lo = hi`). -/
-theorem outer_bound (rows : List EnvRow) (models : List EnvModel) (cells : List EnvCell)
-    (bound lo hi : ℚ) (hchk : checkOuter rows models cells bound lo hi = true) (t V : ℝ)
-    (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10) (hout : t < lo ∨ (hi : ℝ) < t ∨ lo = hi)
-    (hmix : ∀ i j : ℕ, i < rows.length → j < rows.length → ∀ θ : ℝ, 0 ≤ θ → θ ≤ 1 →
-      V ≤ (1 - θ) * F (rows.getD i dfltRow) t + θ * F (rows.getD j dfltRow) t
-        - (2 / (ε : ℝ)) * θ * (1 - θ) *
-            ((rows.getD i dfltRow).beta - (rows.getD j dfltRow).beta) ^ 2) :
-    V ≤ bound := by
-  simp only [checkOuter, Bool.and_eq_true, List.all_eq_true] at hchk
-  obtain ⟨hmodels, hcells⟩ := hchk
-  have hne : cells ≠ [] := by
-    intro hnil
-    rw [hnil] at hcells
-    simp only [checkCellsOut, beq_iff_eq] at hcells
-    norm_num at hcells
-  obtain ⟨c, _, hlo, hhi, hm, hq⟩ := cellsOut_sound rows models bound lo hi 0 cells hcells hne t
-    (by simpa using ht0) ht1 hout
-  set m := models.getD c.model ⟨0, 0, 0⟩ with hm_def
-  have hmodel := hmodels m (getD_mem_of_lt _ _ _ hm)
-  simp only [checkModel, Bool.and_eq_true, decide_eq_true_eq] at hmodel
-  obtain ⟨⟨⟨hi', hj⟩, hθ0⟩, hθ1⟩ := hmodel
-  have h1 := hmix m.i m.j hi' hj m.θ (by exact_mod_cast hθ0) (by exact_mod_cast hθ1)
-  rw [← modelQuad_eval] at h1
-  have h2 := quadVal_le_quadMax (modelQuad rows m).1 (modelQuad rows m).2.1
-    (modelQuad rows m).2.2 c.lo c.hi t hlo hhi
-  have h3 : ((quadMax (modelQuad rows m).1 (modelQuad rows m).2.1 (modelQuad rows m).2.2
-      c.lo c.hi : ℚ) : ℝ) ≤ bound := by exact_mod_cast hq
-  linarith
+/-- **Soundness of the cover**: every admissible `(t, τ, x)` lies in a checked box. -/
+theorem cover_sound (rows : List Row) (batches : List JBatch) (bound : ℚ) (regs : List Region)
+    (h : checkCover rows batches bound regs = true) (t τ x : ℝ) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
+    (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ ρ) (hx0 : 0 ≤ x) (hx1 : x ≤ xMax) :
+    ∃ b : Box, boxOK rows batches bound b = true ∧ (b.tl : ℝ) ≤ t ∧ t ≤ b.tu ∧ (b.sl : ℝ) ≤ τ ∧
+      τ ≤ b.su ∧ (b.xl : ℝ) ≤ x ∧ x ≤ b.xu := by
+  simp only [checkCover, Bool.and_eq_true, List.all_eq_true] at h
+  obtain ⟨r, hr, hlo, hhi⟩ :=
+    chainTo_sound Region.lo Region.hi regs 0 (9 / 10) h.1 t (by simpa using ht0)
+      (by norm_num at ht1 ⊢; exact ht1)
+  have hreg := h.2 r hr
+  simp only [checkRegion, allPar_eq, Bool.and_eq_true, List.all_eq_true] at hreg
+  obtain ⟨d, hd, hdm⟩ := coverOK_sound _ _ _ hreg.2 t τ x
+    ⟨hlo, hhi, by simpa using hτ0, hτ1, by simpa using hx0, hx1⟩
+  obtain ⟨b, hb, rfl⟩ := List.mem_map.1 hd
+  exact ⟨b, hreg.1 b hb, hdm⟩
 
 /-! ### Soundness of the box bound -/
 
@@ -507,39 +420,24 @@ lemma J_combo_endpoint (P Q : MPoly) (w0 w1 : ℝ) (hw0 : 0 ≤ w0) (hw1 : 0 ≤
   · exact le_max_of_le_right (by linarith)
 
 /-- The chord in `τ` minus the price is at most `xPart`. -/
-lemma chord_quad_le (Lm Lp : MPoly) (D sl su xh : ℚ) (hslsu : sl < su) (τ : ℝ)
+lemma chord_le_xPart (Lm Lp : MPoly) (D sl su xh : ℚ) (hslsu : sl < su) (τ : ℝ)
     (hτl : (sl : ℝ) ≤ τ) (hτu : τ ≤ su) :
     ((su : ℝ) - τ) / (su - sl) * Lm.J 0 1 xh + (τ - sl) / (su - sl) * Lp.J 0 1 xh
       - D * τ ^ 2 ≤ (xPart Lm Lp D sl su xh : ℚ) := by
-  have hd : (0 : ℝ) < su - sl := by
-    have : (sl : ℝ) < su := by exact_mod_cast hslsu
-    linarith
-  have hdq : (su : ℚ) - sl ≠ 0 := by
-    have : sl ≠ su := hslsu.ne
-    intro h; apply this; linarith
-  simp only [xPart]
-  have hq := quadVal_le_quadMax (Lm.Jq 0 1 xh - (Lp.Jq 0 1 xh - Lm.Jq 0 1 xh) / (su - sl) * sl)
-    ((Lp.Jq 0 1 xh - Lm.Jq 0 1 xh) / (su - sl)) (-D) sl su τ hτl hτu
-  have e : ((Lm.Jq 0 1 xh - (Lp.Jq 0 1 xh - Lm.Jq 0 1 xh) / (su - sl) * sl : ℚ) : ℝ)
-      + ((Lp.Jq 0 1 xh - Lm.Jq 0 1 xh) / (su - sl) : ℚ) * τ + ((-D : ℚ) : ℝ) * τ ^ 2
-      = ((su : ℝ) - τ) / (su - sl) * Lm.J 0 1 xh + (τ - sl) / (su - sl) * Lp.J 0 1 xh
-        - D * τ ^ 2 := by
-    have e1 : ((Lm.Jq 0 1 xh : ℚ) : ℝ) = Lm.J 0 1 xh := by
-      have := MPoly.Jq_cast Lm 0 1 xh; push_cast at this; exact this
-    have e2 : ((Lp.Jq 0 1 xh : ℚ) : ℝ) = Lp.J 0 1 xh := by
-      have := MPoly.Jq_cast Lp 0 1 xh; push_cast at this; exact this
-    push_cast
-    rw [e1, e2]
-    field_simp
-    ring
-  rw [e] at hq
-  exact hq
+  have e : ∀ P : MPoly, ((P.Jq 0 1 xh : ℚ) : ℝ) = P.J 0 1 xh := fun P => by
+    have := MPoly.Jq_cast P 0 1 xh; push_cast at this; exact this
+  have h := chord_le_chordMax (Lm.Jq 0 1 xh) (Lp.Jq 0 1 xh) D sl su hslsu τ hτl hτu
+  rwa [e, e] at h
 
 section vrow
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ] {U : Ω → ℝ}
   {x : ℝ}
+
+/-- The retained-square inequality of a scalar row at `ε`. -/
+def RowOf (row : EnvRow) (V t : ℝ) (Qh v : E) : Prop :=
+  RowHolds (ε : ℝ) row.ell row.beta row.C V t Qh v
 
 /-- The data of one row in the shared reduction: a potential with the node caps of the row (up to
 `capPad`), integrable at the common scale, the integrable gate expression of the common gate
@@ -559,9 +457,8 @@ def VHolds (a : VRow) (Φ : ℝ → ℝ) (μ : Measure Ω) (U : Ω → ℝ) (X1 
     (τ V t : ℝ) (Qh v : E) : Prop :=
   Integrable (fun ω => Φ (τ * √(U ω))) μ ∧
   Integrable (fun ω => a.gate (X1 ω) (X2 ω) (X3 ω)) μ ∧
-  V ≤ t ^ 2 - 2 * a.ell * t + 2 * a.beta ^ 2 / ε + (∫ ω, Φ (τ * √(U ω)) ∂μ + capPad)
-    - a.delta * τ ^ 2 - ∫ ω, a.gate (X1 ω) (X2 ω) (X3 ω) ∂μ
-    - ε * ‖Qh + ((a.beta : ℝ) / ε) • v‖ ^ 2
+  RowHolds (ε : ℝ) a.ell a.beta (2 * (a.beta : ℝ) ^ 2 / ε + (∫ ω, Φ (τ * √(U ω)) ∂μ + capPad)
+    - a.delta * τ ^ 2 - ∫ ω, a.gate (X1 ω) (X2 ω) (X3 ω) ∂μ) V t Qh v
 
 /-- A row of the shared reduction is a virtual row with potential `s ↦ Ψ(δs) − capPad`. -/
 lemma vholds_of_row (r : Row) {X1 X2 X3 : Ω → ℂ} {τ V t : ℝ} {Qh v : E}
@@ -569,34 +466,12 @@ lemma vholds_of_row (r : Row) {X1 X2 X3 : Ω → ℂ} {τ V t : ℝ} {Qh v : E}
     ∃ Ψ : ℝ → ℝ, CapsHold (fun s => Ψ s - capPad) r.nodeList r.smax ∧
       VHolds r.vrow (fun s => Ψ (r.delta * s) - capPad) μ U X1 X2 X3 τ V t Qh v := by
   obtain ⟨Ψ, hΨ, hf, hg, hV⟩ := h
-  have e : (fun ω => Ψ (r.delta * (τ * √(U ω))) - capPad)
-      = fun ω => Ψ (r.delta * τ * √(U ω)) - capPad := by funext ω; rw [mul_assoc]
   refine ⟨Ψ, hΨ, ?_, hg, ?_⟩
-  · show Integrable (fun ω => Ψ (r.delta * (τ * √(U ω))) - capPad) μ
-    rw [e]; exact hf.sub (integrable_const _)
-  · have e2 : ∫ ω, (Ψ (r.delta * (τ * √(U ω))) - capPad) ∂μ
-        = ∫ ω, Ψ (r.delta * τ * √(U ω)) ∂μ - capPad := by
-      simp only [mul_assoc] at hf ⊢
-      rw [integral_sub hf (integrable_const _), integral_const, probReal_univ, one_smul]
-    have eg : ∫ ω, r.vrow.gate (X1 ω) (X2 ω) (X3 ω) ∂μ = ∫ ω, r.gate (X1 ω) (X2 ω) (X3 ω) ∂μ := rfl
-    show V ≤ _ - 2 * (r.vrow.ell : ℝ) * t + 2 * (r.vrow.beta : ℝ) ^ 2 / ε
-      + ((∫ ω, (Ψ (r.delta * (τ * √(U ω))) - capPad) ∂μ) + capPad) - (r.vrow.delta : ℝ) * τ ^ 2
-      - ∫ ω, r.vrow.gate (X1 ω) (X2 ω) (X3 ω) ∂μ - ε * ‖Qh + ((r.vrow.beta : ℝ) / ε) • v‖ ^ 2
-    rw [e2, eg]
-    have e3 : (r.vrow.ell : ℝ) = r.ell := rfl
-    have e4 : (r.vrow.beta : ℝ) = r.beta := rfl
-    have e5 : (r.vrow.delta : ℝ) = r.delta := rfl
-    rw [e3, e4, e5]
-    linarith
-
-/-- `(1−θ)‖a‖² + θ‖b‖² = ‖(1−θ)a + θb‖² + θ(1−θ)‖a − b‖²`. -/
-lemma mix_norm_sq (θ : ℝ) (hθ0 : 0 ≤ θ) (hθ1 : θ ≤ 1) (a b : E) :
-    (1 - θ) * ‖a‖ ^ 2 + θ * ‖b‖ ^ 2
-      = ‖(1 - θ) • a + θ • b‖ ^ 2 + θ * (1 - θ) * ‖a - b‖ ^ 2 := by
-  rw [norm_add_sq_real, norm_sub_sq_real, norm_smul, norm_smul, real_inner_smul_left,
-    real_inner_smul_right, mul_pow, mul_pow, Real.norm_eq_abs, Real.norm_eq_abs,
-    abs_of_nonneg (by linarith : (0:ℝ) ≤ 1 - θ), abs_of_nonneg hθ0]
-  ring
+  · simp only [← mul_assoc]
+    exact hf.sub (integrable_const _)
+  simp only [RowHolds, ← mul_assoc]
+  rw [integral_sub hf (integrable_const _), integral_const, probReal_univ, one_smul]
+  exact hV.trans_eq (by simp only [Row.vrow, VRow.gate, Row.gate]; ring)
 
 omit [IsProbabilityMeasure μ] in
 /-- **Mixing two virtual rows**, retaining the common square. -/
@@ -607,55 +482,25 @@ theorem VHolds.mix (θ : ℚ) (hθ0 : 0 ≤ θ) (hθ1 : θ ≤ 1) {a b : VRow} {
   obtain ⟨hfa, hga, hVa⟩ := ha
   obtain ⟨hfb, hgb, hVb⟩ := hb
   have hε : (0 : ℝ) < ε := by norm_num [ε]
-  have hθ0R : (0 : ℝ) ≤ θ := by exact_mod_cast hθ0
-  have hθ1R : (θ : ℝ) ≤ 1 := by exact_mod_cast hθ1
-  have hw0 : (0 : ℝ) ≤ 1 - θ := by linarith
   have egate : (fun ω => (VRow.mix θ a b).gate (X1 ω) (X2 ω) (X3 ω))
       = fun ω => (1 - θ) * a.gate (X1 ω) (X2 ω) (X3 ω) + θ * b.gate (X1 ω) (X2 ω) (X3 ω) := by
     funext ω; exact VRow.gate_mix θ a b _ _ _
   refine ⟨(hfa.const_mul _).add (hfb.const_mul _), ?_, ?_⟩
   · rw [egate]; exact (hga.const_mul _).add (hgb.const_mul _)
-  · have eI : ∫ ω, ((1 - (θ : ℝ)) * Φa (τ * √(U ω)) + θ * Φb (τ * √(U ω))) ∂μ
-        = (1 - θ) * ∫ ω, Φa (τ * √(U ω)) ∂μ + θ * ∫ ω, Φb (τ * √(U ω)) ∂μ := by
-      rw [integral_add (hfa.const_mul _) (hfb.const_mul _), integral_const_mul, integral_const_mul]
-    have eG : ∫ ω, (VRow.mix θ a b).gate (X1 ω) (X2 ω) (X3 ω) ∂μ
-        = (1 - θ) * ∫ ω, a.gate (X1 ω) (X2 ω) (X3 ω) ∂μ
-          + θ * ∫ ω, b.gate (X1 ω) (X2 ω) (X3 ω) ∂μ := by
-      rw [egate, integral_add (hga.const_mul _) (hgb.const_mul _), integral_const_mul,
-        integral_const_mul]
-    have hsq := mix_norm_sq (θ : ℝ) hθ0R hθ1R (Qh + ((a.beta : ℝ) / ε) • v)
-      (Qh + ((b.beta : ℝ) / ε) • v)
-    have e1 : (1 - (θ : ℝ)) • (Qh + ((a.beta : ℝ) / ε) • v)
-        + (θ : ℝ) • (Qh + ((b.beta : ℝ) / ε) • v)
-        = Qh + (((VRow.mix θ a b).beta : ℝ) / ε) • v := by
-      simp only [VRow.mix]
-      push_cast
-      module
-    have e2 : ‖(Qh + ((a.beta : ℝ) / ε) • v) - (Qh + ((b.beta : ℝ) / ε) • v)‖ ^ 2
-        = 2 * ((a.beta : ℝ) - b.beta) ^ 2 / ε ^ 2 := by
-      have : (Qh + ((a.beta : ℝ) / ε) • v) - (Qh + ((b.beta : ℝ) / ε) • v)
-          = (((a.beta : ℝ) - b.beta) / ε) • v := by
-        rw [sub_div, sub_smul]; abel
-      rw [this, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs, hv]
-      field_simp
-    rw [e1, e2] at hsq
-    have hβ : (1 - (θ : ℝ)) * (2 * (a.beta : ℝ) ^ 2 / ε) + θ * (2 * (b.beta : ℝ) ^ 2 / ε)
-        - ε * (θ * (1 - θ) * (2 * ((a.beta : ℝ) - b.beta) ^ 2 / ε ^ 2))
-        = 2 * ((VRow.mix θ a b).beta : ℝ) ^ 2 / ε := by
-      simp only [VRow.mix]; push_cast; field_simp; ring
-    show V ≤ t ^ 2 - 2 * ((VRow.mix θ a b).ell : ℝ) * t + 2 * ((VRow.mix θ a b).beta : ℝ) ^ 2 / ε
-      + ((∫ ω, ((1 - (θ : ℝ)) * Φa (τ * √(U ω)) + θ * Φb (τ * √(U ω))) ∂μ) + capPad)
-      - ((VRow.mix θ a b).delta : ℝ) * τ ^ 2 - ∫ ω, (VRow.mix θ a b).gate (X1 ω) (X2 ω) (X3 ω) ∂μ
-      - ε * ‖Qh + (((VRow.mix θ a b).beta : ℝ) / ε) • v‖ ^ 2
-    rw [eI, eG]
-    have hVa' := mul_le_mul_of_nonneg_left hVa hw0
-    have hVb' := mul_le_mul_of_nonneg_left hVb hθ0R
-    have eell : ((VRow.mix θ a b).ell : ℝ) = (1 - θ) * a.ell + θ * b.ell := by
-      simp only [VRow.mix]; push_cast; ring
-    have edel : ((VRow.mix θ a b).delta : ℝ) = (1 - θ) * a.delta + θ * b.delta := by
-      simp only [VRow.mix]; push_cast; ring
-    rw [eell, edel]
-    nlinarith [hVa', hVb', hsq, hβ]
+  have h := RowHolds.mix hε hv hVa hVb θ (by exact_mod_cast hθ0) (by exact_mod_cast hθ1)
+  rw [egate, integral_add (hfa.const_mul _) (hfb.const_mul _),
+    integral_add (hga.const_mul _) (hgb.const_mul _), integral_const_mul, integral_const_mul,
+    integral_const_mul, integral_const_mul]
+  have eβ : (((VRow.mix θ a b).beta : ℚ) : ℝ) = (1 - θ) * a.beta + θ * b.beta := by
+    simp only [VRow.mix]; push_cast; ring
+  have eℓ : (((VRow.mix θ a b).ell : ℚ) : ℝ) = (1 - θ) * a.ell + θ * b.ell := by
+    simp only [VRow.mix]; push_cast; ring
+  have eδ : (((VRow.mix θ a b).delta : ℚ) : ℝ) = (1 - θ) * a.delta + θ * b.delta := by
+    simp only [VRow.mix]; push_cast; ring
+  rw [eβ, eℓ, eδ]
+  convert h using 1
+  field_simp
+  ring
 
 omit [IsProbabilityMeasure μ] in
 set_option maxHeartbeats 800000 in
@@ -671,17 +516,17 @@ theorem vslab_bound (a : VRow) (hgate : gateOK a.N = true) {Φ : ℝ → ℝ}
     (hxu : x ≤ xu) :
     V ≤ (boxVal a.ell a.beta a.price Lm Lp tl tu sl su xl xu : ℚ) := by
   obtain ⟨hf, hg, hV⟩ := hV
+  have hV := RowHolds.le (by norm_num [ε]) hV
   have hG : (gatePrice a.N a.g1 a.g2 a.g3 : ℝ) * τ ^ 2 ≤ ∫ ω, a.gate (X1 ω) (X2 ω) (X3 ω) ∂μ :=
     gate_integral_ge a.N a.g1 a.g2 a.g3 hgate X1 X2 X3 τ hX hM hg
   have hsluR : (sl : ℝ) < su := by exact_mod_cast hslsu
-  have hT := TB.chord hconv _ _ τ _ _ (by exact_mod_cast hsl) hsluR hτl hτu hTm hTp
-  have hIle := hT.integral hf
+  have hIle := (TB.chord hconv _ _ τ _ _ (by exact_mod_cast hsl) hsluR hτl hτu hTm hTp).integral hf
   have hd : (0 : ℝ) < su - sl := by linarith
   have hw0' : (0 : ℝ) ≤ ((su : ℝ) - τ) / (su - sl) := div_nonneg (by linarith) hd.le
   have hw1' : (0 : ℝ) ≤ (τ - sl) / (su - sl) := div_nonneg (by linarith) hd.le
   have hxe := J_combo_endpoint Lm Lp _ _ hw0' hw1' h6m h6p x xl xu (by exact_mod_cast hxl0) hxl hxu
-  have hq1 := chord_quad_le Lm Lp a.price sl su xl hslsu τ hτl hτu
-  have hq2 := chord_quad_le Lm Lp a.price sl su xu hslsu τ hτl hτu
+  have hq1 := chord_le_xPart Lm Lp a.price sl su xl hslsu τ hτl hτu
+  have hq2 := chord_le_xPart Lm Lp a.price sl su xu hslsu τ hτl hτu
   have hxmax : ((su : ℝ) - τ) / (su - sl) * Lm.J 0 1 x + (τ - sl) / (su - sl) * Lp.J 0 1 x
       - (a.price : ℝ) * τ ^ 2
       ≤ max ((xPart Lm Lp a.price sl su xl : ℚ) : ℝ) ((xPart Lm Lp a.price sl su xu : ℚ) : ℝ) := by
@@ -694,9 +539,7 @@ theorem vslab_bound (a : VRow) (hgate : gateOK a.N = true) {Φ : ℝ → ℝ}
   simp only [boxVal, tPart]
   push_cast at htq ⊢
   rw [hprice] at hxmax
-  have hε : (0 : ℝ) < ε := by norm_num [ε]
-  have hn : 0 ≤ (ε : ℝ) * ‖Qh + ((a.beta : ℝ) / ε) • v‖ ^ 2 := mul_nonneg hε.le (sq_nonneg _)
-  linarith only [hV, hG, htq, hIle, hxmax, hn]
+  linarith only [hV, hG, htq, hIle, hxmax]
 
 end vrow
 
@@ -725,91 +568,110 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ] {U : Ω → ℝ}
   {x : ℝ}
 
-/-- The chord polynomials of a source row at `sl` and `su` from its resolved `τ`-nodes. -/
-lemma src_chords (R : Row) (hR : checkRow R = true) {Ψ : ℝ → ℝ}
-    (hΨ : CapsHold (fun s => Ψ s - capPad) R.nodeList R.smax) (hM : Moments μ U x)
-    (hS : SteinCut μ U) (refs : List (Option (ℕ × ℕ))) (ns : List TNode)
-    (hres : resolve (rowTNode R) refs = some ns) (sl su : ℚ) (Pm Pp : MPoly)
-    (hch : chords4 ns sl su = some (Pm, Pp)) :
-    TB μ U (fun s => Ψ (R.delta * s) - capPad) sl (Pm.J 0 1 x) ∧
-    TB μ U (fun s => Ψ (R.delta * s) - capPad) su (Pp.J 0 1 x) := by
-  have hδ : (0 : ℝ) ≤ R.delta := by exact_mod_cast (rowBound_of_check R hR).1.delta_pos.le
-  have hconv : ConvexOn ℝ (Set.Ici 0) fun s => Ψ (R.delta * s) - capPad :=
-    convexOn_scale hΨ.convex _ hδ
-  have hok : ∀ n ∈ ns, TNodeOK μ U x (fun s => Ψ (R.delta * s) - capPad) n := by
-    intro n hn
-    obtain ⟨ref, _, href⟩ := resolve_mem _ refs ns hres n hn
-    exact rowTNode_sound R hR hΨ hM hS ref n href
-  obtain ⟨n0, n1, n2, n3, rfl, h01, h23, rfl, rfl⟩ := chords4_some ns sl su Pm Pp hch
-  exact ⟨tchord_sound hconv n0 n1 sl h01 (hok n0 (by simp)) (hok n1 (by simp)),
+/-- A certified component: a convex potential `Φ` for which the virtual row `a` holds and
+`L₋`, `L₊` bound `E Φ(τ√U)` at `sl` and `su`. -/
+def Comp (μ : Measure Ω) (U : Ω → ℝ) (x : ℝ) (X1 X2 X3 : Ω → ℂ) (τ V t : ℝ) (Qh v : E) (sl su : ℚ)
+    (d : VRow × MPoly × MPoly) : Prop :=
+  ∃ Φ : ℝ → ℝ, ConvexOn ℝ (Set.Ici 0) Φ ∧ VHolds d.1 Φ μ U X1 X2 X3 τ V t Qh v ∧
+    TB μ U Φ sl (d.2.1.J 0 1 x) ∧ TB μ U Φ su (d.2.2.J 0 1 x)
+
+variable {X1 X2 X3 : Ω → ℂ} {τ V t : ℝ} {Qh v : E} {sl su : ℚ}
+
+omit [IsProbabilityMeasure μ] in
+/-- A component from certified `τ`-nodes of a convex potential of the virtual row. -/
+lemma compData_sound {α : Type} (a : VRow) (f : α → Option TNode) (refs : List α) {Φ : ℝ → ℝ}
+    (hconv : ConvexOn ℝ (Set.Ici 0) Φ) (hV : VHolds a Φ μ U X1 X2 X3 τ V t Qh v)
+    (hf : ∀ r n, f r = some n → TNodeOK μ U x Φ n) (d : VRow × MPoly × MPoly)
+    (h : compData a f refs sl su = some d) : Comp μ U x X1 X2 X3 τ V t Qh v sl su d := by
+  unfold compData at h
+  cases hns : resolve f refs with
+  | none => simp [hns] at h
+  | some ns =>
+  cases hch : chords4 ns sl su with
+  | none => simp [hns, hch] at h
+  | some P =>
+  obtain ⟨Lm, Lp⟩ := P
+  simp only [hns, hch, Option.some.injEq] at h
+  subst h
+  have hok : ∀ n ∈ ns, TNodeOK μ U x Φ n := fun n hn => by
+    obtain ⟨r, _, hr⟩ := resolve_mem f refs ns hns n hn
+    exact hf r n hr
+  obtain ⟨n0, n1, n2, n3, rfl, h01, h23, rfl, rfl⟩ := chords4_some _ sl su Lm Lp hch
+  exact ⟨Φ, hconv, hV, tchord_sound hconv n0 n1 sl h01 (hok n0 (by simp)) (hok n1 (by simp)),
     tchord_sound hconv n2 n3 su h23 (hok n2 (by simp)) (hok n3 (by simp))⟩
 
-/-- **A batch on a box**: the virtual row of the batch satisfies its inequality with the mixed
-potential, which is convex and has the certified chord polynomials. -/
-lemma batch_sound_box (rows : List Row) (hrows : ∀ r ∈ rows, checkRow r = true) (bt : JBatch)
-    (hbt : checkBatch rows bt = true) (ks : List ℕ) (sl su : ℚ) (a : VRow) (Lm Lp : MPoly)
-    (hdata : batchData rows bt ks sl su = some (a, Lm, Lp)) (X1 X2 X3 : Ω → ℂ) (τ : ℝ)
-    (hM : Moments μ U x) (hS : SteinCut μ U) (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2)
-    (hred : ∀ r ∈ rows, RowShared r μ U X1 X2 X3 τ V t Qh v) :
-    ∃ Φ : ℝ → ℝ, ConvexOn ℝ (Set.Ici 0) Φ ∧ VHolds a Φ μ U X1 X2 X3 τ V t Qh v ∧
-      TB μ U Φ sl (Lm.J 0 1 x) ∧ TB μ U Φ su (Lp.J 0 1 x) := by
-  unfold batchData at hdata
+omit [IsProbabilityMeasure μ] in
+/-- The mixture of two certified components is certified. -/
+lemma mixData_sound (θ : ℚ) (hv : ‖v‖ ^ 2 = 2) (d0 d1 : Option (VRow × MPoly × MPoly))
+    (h0 : ∀ d, d0 = some d → Comp μ U x X1 X2 X3 τ V t Qh v sl su d)
+    (h1 : ∀ d, d1 = some d → Comp μ U x X1 X2 X3 τ V t Qh v sl su d) (d : VRow × MPoly × MPoly)
+    (h : mixData θ d0 d1 = some d) : Comp μ U x X1 X2 X3 τ V t Qh v sl su d := by
+  match d0, d1, h with
+  | some (a, Lm, Lp), some (b, Mm, Mp), h =>
+    simp only [mixData] at h
+    split_ifs at h with hθ
+    simp only [Option.some.injEq] at h
+    subst h
+    obtain ⟨Φa, hca, hVa, hTma, hTpa⟩ := h0 _ rfl
+    obtain ⟨Φb, hcb, hVb, hTmb, hTpb⟩ := h1 _ rfl
+    have hθ0R : (0 : ℝ) ≤ θ := by exact_mod_cast hθ.1
+    have hw0 : (0 : ℝ) ≤ 1 - θ := by
+      have : (θ : ℝ) ≤ 1 := by exact_mod_cast hθ.2
+      linarith
+    refine ⟨fun s => (1 - θ) * Φa s + θ * Φb s, convexOn_mix hca hcb _ _ hw0 hθ0R,
+      VHolds.mix θ hθ.1 hθ.2 hv hVa hVb, ?_, ?_⟩
+    · show TB μ U _ sl ((MPoly.lin (1 - θ) θ Lm Mm).J 0 1 x)
+      rw [MPoly.J_lin]; push_cast
+      exact TB.mix _ _ hw0 hθ0R hTma hTmb
+    · show TB μ U _ su ((MPoly.lin (1 - θ) θ Lp Mp).J 0 1 x)
+      rw [MPoly.J_lin]; push_cast
+      exact TB.mix _ _ hw0 hθ0R hTpa hTpb
+  | none, _, h => simp [mixData] at h
+  | some _, none, h => simp [mixData] at h
+
+/-- The component of a source row. -/
+lemma src_sound (R : Row) (hR : checkRow R = true) (hM : Moments μ U x) (hS : SteinCut μ U)
+    (hred : RowShared R μ U X1 X2 X3 τ V t Qh v) (refs : List (Option (ℕ × ℕ)))
+    (d : VRow × MPoly × MPoly) (h : compData R.vrow (rowTNode R) refs sl su = some d) :
+    Comp μ U x X1 X2 X3 τ V t Qh v sl su d := by
+  obtain ⟨Ψ, hΨ, hV⟩ := vholds_of_row R hred
+  have hδ : (0 : ℝ) ≤ R.delta := by exact_mod_cast (checkRow_node R hR).1.le
+  exact compData_sound _ _ refs (convexOn_scale hΨ.convex _ hδ) hV
+    (fun ref n hn => rowTNode_sound R hR hΨ hM hS ref n hn) d h
+
+/-- **The component of a batch**: the virtual row of the batch holds with the mixed potential,
+whose `τ`-nodes are the batch's certified nodes. -/
+lemma batchData_sound (rows : List Row) (hrows : ∀ r ∈ rows, checkRow r = true) (bt : JBatch)
+    (hbt : checkBatch rows bt = true) (ks : List ℕ) (hM : Moments μ U x) (hS : SteinCut μ U)
+    (hv : ‖v‖ ^ 2 = 2) (hred : ∀ r ∈ rows, RowShared r μ U X1 X2 X3 τ V t Qh v)
+    (d : VRow × MPoly × MPoly) (h : batchData rows bt ks sl su = some d) :
+    Comp μ U x X1 X2 X3 τ V t Qh v sl su d := by
+  unfold batchData at h
   cases hRi : rows[bt.i]? with
-  | none => simp [hRi] at hdata
+  | none => simp [hRi] at h
   | some Ri =>
   cases hRj : rows[bt.j]? with
-  | none => simp [hRi, hRj] at hdata
+  | none => simp [hRi, hRj] at h
   | some Rj =>
-  simp only [hRi, hRj] at hdata
-  cases hns : resolve (fun k => bt.tnodes[k]?) ks with
-  | none => simp [hns] at hdata
-  | some ns =>
-  simp only [hns] at hdata
-  cases hch : chords4 ns sl su with
-  | none => simp [hch] at hdata
-  | some P =>
-  obtain ⟨Lm', Lp'⟩ := P
-  simp only [hch, Option.some.injEq, Prod.mk.injEq] at hdata
-  obtain ⟨rfl, rfl, rfl⟩ := hdata
-  have hRic := hrows Ri (List.mem_of_getElem? hRi)
-  have hRjc := hrows Rj (List.mem_of_getElem? hRj)
+  simp only [hRi, hRj] at h
   obtain ⟨Ψi, hΨi, hVi⟩ := vholds_of_row Ri (hred Ri (List.mem_of_getElem? hRi))
   obtain ⟨Ψj, hΨj, hVj⟩ := vholds_of_row Rj (hred Rj (List.mem_of_getElem? hRj))
-  have hok := batch_sound rows bt hbt Ri Rj hRi hRj hΨi hΨj hM hS
   have hθ : 0 ≤ bt.θ ∧ bt.θ ≤ 1 := by
     simp only [checkBatch, hRi, hRj, checkMixTable, Bool.and_eq_true, decide_eq_true_eq] at hbt
     exact ⟨hbt.1.1.1.1.1.1.1.1.1.1.1, hbt.1.1.1.1.1.1.1.1.1.1.2⟩
   have hθ0R : (0 : ℝ) ≤ bt.θ := by exact_mod_cast hθ.1
-  have hθ1R : (bt.θ : ℝ) ≤ 1 := by exact_mod_cast hθ.2
-  have hw0 : (0 : ℝ) ≤ 1 - bt.θ := by linarith
-  have hδi : (0 : ℝ) ≤ Ri.delta := by exact_mod_cast (rowBound_of_check Ri hRic).1.delta_pos.le
-  have hδj : (0 : ℝ) ≤ Rj.delta := by exact_mod_cast (rowBound_of_check Rj hRjc).1.delta_pos.le
-  have hconv : ConvexOn ℝ (Set.Ici 0) (mixPot Ri Rj bt.θ Ψi Ψj) :=
-    convexOn_mix (convexOn_scale hΨi.convex _ hδi) (convexOn_scale hΨj.convex _ hδj) _ _ hw0 hθ0R
-  obtain ⟨n0, n1, n2, n3, rfl, h01, h23, rfl, rfl⟩ := chords4_some ns sl su Lm' Lp' hch
-  have hmem : ∀ n ∈ [n0, n1, n2, n3], TNodeOK μ U x (mixPot Ri Rj bt.θ Ψi Ψj) n := by
-    intro n hn
-    obtain ⟨k, _, hk⟩ := resolve_mem _ ks _ hns n hn
-    exact hok n (List.mem_of_getElem? hk)
-  refine ⟨mixPot Ri Rj bt.θ Ψi Ψj, hconv, VHolds.mix bt.θ hθ.1 hθ.2 hv hVi hVj,
-    tchord_sound hconv n0 n1 sl h01 (hmem n0 (by simp)) (hmem n1 (by simp)),
-    tchord_sound hconv n2 n3 su h23 (hmem n2 (by simp)) (hmem n3 (by simp))⟩
-
-omit [IsProbabilityMeasure μ] in
-lemma finish_sound (a : VRow) (Lm Lp : MPoly) (b : Box) (val : ℚ)
-    (h : finish a Lm Lp b = some val) (hsl : 0 ≤ b.sl) (hslsu : b.sl < b.su) (hxl0 : 0 ≤ b.xl)
-    {Φ : ℝ → ℝ} (hconv : ConvexOn ℝ (Set.Ici 0) Φ) (X1 X2 X3 : Ω → ℂ) (τ : ℝ)
-    (hX : ∀ ω, ‖X1 ω‖ ^ 2 = τ ^ 2 * U ω) (hM : Moments μ U x) (V t : ℝ) (Qh v : E)
-    (hV : VHolds a Φ μ U X1 X2 X3 τ V t Qh v) (hTm : TB μ U Φ b.sl (Lm.J 0 1 x))
-    (hTp : TB μ U Φ b.su (Lp.J 0 1 x)) (ht : (b.tl : ℝ) ≤ t ∧ t ≤ b.tu)
-    (hτ : (b.sl : ℝ) ≤ τ ∧ τ ≤ b.su) (hx : (b.xl : ℝ) ≤ x ∧ x ≤ b.xu) : V ≤ val := by
-  unfold finish at h
-  split_ifs at h with hcond
-  simp only [Option.some.injEq] at h
-  subst h
-  obtain ⟨hgate, h6m, h6p⟩ := hcond
-  exact vslab_bound a hgate hconv X1 X2 X3 τ hX hM V t Qh v hV Lm Lp h6m h6p _ _ _ _ _ _ hTm hTp
-    hsl hslsu hτ.1 hτ.2 ht.1 ht.2 hxl0 hx.1 hx.2
+  have hw0 : (0 : ℝ) ≤ 1 - bt.θ := by
+    have : (bt.θ : ℝ) ≤ 1 := by exact_mod_cast hθ.2
+    linarith
+  have hδi : (0 : ℝ) ≤ Ri.delta :=
+    by exact_mod_cast (checkRow_node Ri (hrows Ri (List.mem_of_getElem? hRi))).1.le
+  have hδj : (0 : ℝ) ≤ Rj.delta :=
+    by exact_mod_cast (checkRow_node Rj (hrows Rj (List.mem_of_getElem? hRj))).1.le
+  have hok := batch_sound rows bt hbt Ri Rj hRi hRj hΨi hΨj hM hS
+  exact compData_sound _ _ ks
+    (convexOn_mix (convexOn_scale hΨi.convex _ hδi) (convexOn_scale hΨj.convex _ hδj) _ _ hw0
+      hθ0R) (VHolds.mix bt.θ hθ.1 hθ.2 hv hVi hVj)
+    (fun k n hk => hok n (List.mem_of_getElem? hk)) d h
 
 /-- **Soundness of a box**: `V ≤ val` for every `(t, τ, x)` in the box. -/
 theorem box_sound (rows : List Row) (batches : List JBatch)
@@ -817,118 +679,91 @@ theorem box_sound (rows : List Row) (batches : List JBatch)
     (b : Box) (val : ℚ) (hb : boxBound rows batches b = some val) (X1 X2 X3 : Ω → ℂ) (τ : ℝ)
     (hX : ∀ ω, ‖X1 ω‖ ^ 2 = τ ^ 2 * U ω) (hM : Moments μ U x) (hS : SteinCut μ U) (V t : ℝ)
     (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (hred : ∀ r ∈ rows, RowShared r μ U X1 X2 X3 τ V t Qh v)
+    (hscal : ∀ k a, envRowAt rows k = some a → RowOf a V t Qh v)
     (ht : (b.tl : ℝ) ≤ t ∧ t ≤ b.tu) (hτ : (b.sl : ℝ) ≤ τ ∧ τ ≤ b.su)
     (hx : (b.xl : ℝ) ≤ x ∧ x ≤ b.xu) : V ≤ val := by
+  have hε : (0 : ℝ) < ε := by norm_num [ε]
   unfold boxBound at hb
   split_ifs at hb with hvalid
-  obtain ⟨hsl, hslsu, _, hxl0, _⟩ := hvalid
-  cases hk : b.kind with
-  | src i j θ ri rj =>
+  obtain ⟨hsl, hslsu, hxl0⟩ := hvalid
+  -- the boxes with a component
+  have hcomp : ∀ d, boxData rows batches b = some d →
+      Comp μ U x X1 X2 X3 τ V t Qh v b.sl b.su d := by
+    intro d hd
+    unfold boxData at hd
+    cases hk : b.kind with
+    | cap i j θ => simp [hk] at hd
+    | src i j θ ri rj =>
+      simp only [hk] at hd
+      cases hRi : rows[i]? with
+      | none => simp [hRi] at hd
+      | some Ri =>
+      cases hRj : rows[j]? with
+      | none => simp [hRi, hRj] at hd
+      | some Rj =>
+      simp only [hRi, hRj] at hd
+      have mi := List.mem_of_getElem? hRi
+      have mj := List.mem_of_getElem? hRj
+      exact mixData_sound θ hv _ _
+        (src_sound Ri (hrows Ri mi) hM hS (hred Ri mi) ri) (src_sound Rj (hrows Rj mj) hM hS
+          (hred Rj mj) rj) d hd
+    | joint bi ks =>
+      simp only [hk] at hd
+      cases hbt : batches[bi]? with
+      | none => simp [hbt] at hd
+      | some bt =>
+      simp only [hbt] at hd
+      exact batchData_sound rows hrows bt (hbatches bt (List.mem_of_getElem? hbt)) ks hM hS hv
+        hred d hd
+    | jmix b0 b1 lam k0 k1 =>
+      simp only [hk] at hd
+      cases hbt0 : batches[b0]? with
+      | none => simp [hbt0] at hd
+      | some bt0 =>
+      cases hbt1 : batches[b1]? with
+      | none => simp [hbt0, hbt1] at hd
+      | some bt1 =>
+      simp only [hbt0, hbt1] at hd
+      exact mixData_sound lam hv _ _
+        (batchData_sound rows hrows bt0 (hbatches bt0 (List.mem_of_getElem? hbt0)) k0 hM hS hv
+          hred)
+        (batchData_sound rows hrows bt1 (hbatches bt1 (List.mem_of_getElem? hbt1)) k1 hM hS hv
+          hred) d hd
+  cases hk : b.kind
+  case cap i j θ =>
     simp only [hk] at hb
-    cases hRi : rows[i]? with
-    | none => simp [hRi] at hb
-    | some Ri =>
-    cases hRj : rows[j]? with
-    | none => simp [hRi, hRj] at hb
-    | some Rj =>
-    simp only [hRi, hRj] at hb
+    cases ha : envRowAt rows i with
+    | none => simp [ha] at hb
+    | some A =>
+    cases hc : envRowAt rows j with
+    | none => simp [ha, hc] at hb
+    | some C =>
+    simp only [ha, hc] at hb
     split_ifs at hb with hθ
-    cases hni : resolve (rowTNode Ri) ri with
-    | none => simp [hni] at hb
-    | some ni =>
-    cases hnj : resolve (rowTNode Rj) rj with
-    | none => simp [hni, hnj] at hb
-    | some nj =>
-    simp only [hni, hnj] at hb
-    cases hci : chords4 ni b.sl b.su with
-    | none => simp [hci] at hb
-    | some Pi =>
-    cases hcj : chords4 nj b.sl b.su with
-    | none => simp [hci, hcj] at hb
-    | some Pj =>
-    obtain ⟨Pim, Pip⟩ := Pi
-    obtain ⟨Pjm, Pjp⟩ := Pj
-    simp only [hci, hcj] at hb
-    have hRic := hrows Ri (List.mem_of_getElem? hRi)
-    have hRjc := hrows Rj (List.mem_of_getElem? hRj)
-    obtain ⟨Ψi, hΨi, hVi⟩ := vholds_of_row Ri (hred Ri (List.mem_of_getElem? hRi))
-    obtain ⟨Ψj, hΨj, hVj⟩ := vholds_of_row Rj (hred Rj (List.mem_of_getElem? hRj))
-    have hchi := src_chords Ri hRic hΨi hM hS ri ni hni b.sl b.su Pim Pip hci
-    have hchj := src_chords Rj hRjc hΨj hM hS rj nj hnj b.sl b.su Pjm Pjp hcj
-    obtain ⟨hθ0, hθ1⟩ := hθ
-    have hθ0R : (0 : ℝ) ≤ θ := by exact_mod_cast hθ0
-    have hθ1R : (θ : ℝ) ≤ 1 := by exact_mod_cast hθ1
-    have hw0 : (0 : ℝ) ≤ 1 - θ := by linarith
-    have hδi : (0 : ℝ) ≤ Ri.delta := by exact_mod_cast (rowBound_of_check Ri hRic).1.delta_pos.le
-    have hδj : (0 : ℝ) ≤ Rj.delta := by exact_mod_cast (rowBound_of_check Rj hRjc).1.delta_pos.le
-    have hconv : ConvexOn ℝ (Set.Ici 0) (mixPot Ri Rj θ Ψi Ψj) :=
-      convexOn_mix (convexOn_scale hΨi.convex _ hδi) (convexOn_scale hΨj.convex _ hδj) _ _ hw0
-        hθ0R
-    have hTm : TB μ U (mixPot Ri Rj θ Ψi Ψj) b.sl ((MPoly.lin (1 - θ) θ Pim Pjm).J 0 1 x) := by
-      rw [MPoly.J_lin]; push_cast
-      exact TB.mix _ _ hw0 hθ0R hchi.1 hchj.1
-    have hTp : TB μ U (mixPot Ri Rj θ Ψi Ψj) b.su ((MPoly.lin (1 - θ) θ Pip Pjp).J 0 1 x) := by
-      rw [MPoly.J_lin]; push_cast
-      exact TB.mix _ _ hw0 hθ0R hchi.2 hchj.2
-    exact finish_sound _ _ _ b val hb hsl hslsu hxl0 hconv X1 X2 X3 τ hX hM V t Qh v
-      (VHolds.mix θ hθ0 hθ1 hv hVi hVj) hTm hTp ht hτ hx
-  | joint bi ks =>
+    simp only [Option.some.injEq] at hb
+    subst hb
+    have h := (RowHolds.mix hε hv (hscal i A ha) (hscal j C hc) θ (by exact_mod_cast hθ.1)
+      (by exact_mod_cast hθ.2)).le hε.le
+    have hq := quadVal_le_quadMax
+      ((1 - θ) * A.C + θ * C.C - 2 * (1 - θ) * θ * (A.beta - C.beta) ^ 2 / ε)
+      (-2 * ((1 - θ) * A.ell + θ * C.ell)) 1 b.tl b.tu t ht.1 ht.2
+    unfold capVal
+    refine le_trans (le_of_le_of_eq h ?_) hq
+    push_cast
+    ring
+  all_goals
     simp only [hk] at hb
-    cases hbt : batches[bi]? with
-    | none => simp [hbt] at hb
-    | some bt =>
-    simp only [hbt] at hb
-    cases hdata : batchData rows bt ks b.sl b.su with
-    | none => simp [hdata] at hb
-    | some P =>
-    obtain ⟨a, Lm, Lp⟩ := P
-    simp only [hdata] at hb
-    obtain ⟨Φ, hconv, hV, hTm, hTp⟩ := batch_sound_box rows hrows bt
-      (hbatches bt (List.mem_of_getElem? hbt)) ks b.sl b.su a Lm Lp hdata X1 X2 X3 τ hM hS V t Qh v
-      hv hred
-    exact finish_sound a Lm Lp b val hb hsl hslsu hxl0 hconv X1 X2 X3 τ hX hM V t Qh v hV hTm hTp
-      ht hτ hx
-  | jmix b0 b1 lam k0 k1 =>
-    simp only [hk] at hb
-    split_ifs at hb with hlam
-    cases hbt0 : batches[b0]? with
-    | none => simp [hbt0] at hb
-    | some bt0 =>
-    cases hbt1 : batches[b1]? with
-    | none => simp [hbt0, hbt1] at hb
-    | some bt1 =>
-    simp only [hbt0, hbt1] at hb
-    cases hd0 : batchData rows bt0 k0 b.sl b.su with
-    | none => simp [hd0] at hb
-    | some P0 =>
-    cases hd1 : batchData rows bt1 k1 b.sl b.su with
-    | none => simp [hd0, hd1] at hb
-    | some P1 =>
-    obtain ⟨a0, Lm0, Lp0⟩ := P0
-    obtain ⟨a1, Lm1, Lp1⟩ := P1
-    simp only [hd0, hd1] at hb
-    obtain ⟨Φ0, hc0, hV0, hTm0, hTp0⟩ := batch_sound_box rows hrows bt0
-      (hbatches bt0 (List.mem_of_getElem? hbt0)) k0 b.sl b.su a0 Lm0 Lp0 hd0 X1 X2 X3 τ hM hS V t
-      Qh v hv hred
-    obtain ⟨Φ1, hc1, hV1, hTm1, hTp1⟩ := batch_sound_box rows hrows bt1
-      (hbatches bt1 (List.mem_of_getElem? hbt1)) k1 b.sl b.su a1 Lm1 Lp1 hd1 X1 X2 X3 τ hM hS V t
-      Qh v hv hred
-    obtain ⟨hl0, hl1⟩ := hlam
-    have hl0R : (0 : ℝ) ≤ lam := by exact_mod_cast hl0
-    have hl1R : (lam : ℝ) ≤ 1 := by exact_mod_cast hl1
-    have hw0 : (0 : ℝ) ≤ 1 - lam := by linarith
-    have hconv : ConvexOn ℝ (Set.Ici 0) fun s => (1 - (lam : ℝ)) * Φ0 s + lam * Φ1 s :=
-      convexOn_mix hc0 hc1 _ _ hw0 hl0R
-    have hTm : TB μ U (fun s => (1 - (lam : ℝ)) * Φ0 s + lam * Φ1 s) b.sl
-        ((MPoly.lin (1 - lam) lam Lm0 Lm1).J 0 1 x) := by
-      rw [MPoly.J_lin]; push_cast
-      exact TB.mix _ _ hw0 hl0R hTm0 hTm1
-    have hTp : TB μ U (fun s => (1 - (lam : ℝ)) * Φ0 s + lam * Φ1 s) b.su
-        ((MPoly.lin (1 - lam) lam Lp0 Lp1).J 0 1 x) := by
-      rw [MPoly.J_lin]; push_cast
-      exact TB.mix _ _ hw0 hl0R hTp0 hTp1
-    exact finish_sound _ _ _ b val hb hsl hslsu hxl0 hconv X1 X2 X3 τ hX hM V t Qh v
-      (VHolds.mix lam hl0 hl1 hv hV0 hV1) hTm hTp ht hτ hx
+    cases hd : boxData rows batches b with
+    | none => simp [hd] at hb
+    | some d =>
+    obtain ⟨a, Lm, Lp⟩ := d
+    simp only [hd] at hb
+    split_ifs at hb with hcond
+    simp only [Option.some.injEq] at hb
+    subst hb
+    obtain ⟨Φ, hconv, hV, hTm, hTp⟩ := hcomp _ hd
+    exact vslab_bound a hcond.1 hconv X1 X2 X3 τ hX hM V t Qh v hV Lm Lp hcond.2.1 hcond.2.2
+      _ _ _ _ _ _ hTm hTp hsl hslsu hτ.1 hτ.2 ht.1 ht.2 hxl0 hx.1 hx.2
 
 end data
 

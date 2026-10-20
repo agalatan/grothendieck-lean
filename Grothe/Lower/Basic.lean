@@ -4,13 +4,52 @@ import Mathlib
 # List polynomials and two extremal lemmas
 
 Horner evaluation `evalL` of a little-endian coefficient list and its expansion as a sum; the
-endpoint lemma for `a x² + b x³`, `b ≥ 0`, on `[p, q] ⊆ [0, ∞)` (`cubic_endpoint_le`); and the
-exact maximum of a quadratic on an interval (`quadVal_le_quadMax`).
+endpoint lemma for `a x² + b x³`, `b ≥ 0`, on `[p, q] ⊆ [0, ∞)` (`cubic_endpoint_le`); the
+exact maximum of a quadratic on an interval (`quadVal_le_quadMax`), and of a chord minus a
+square (`chordMax`, `chord_le_chordMax`).  `allPar` is `List.all` evaluated in parallel
+(`allPar_eq`), and `chainTo` checks that consecutive intervals cover an interval
+(`chainTo_sound`); the certificate checks use both.
 -/
 
 namespace Grothe.Lower
 
 open Finset
+
+/-- `l.all f`, evaluated in parallel with one task per element. -/
+def allPar {α : Type*} (f : α → Bool) (l : List α) : Bool :=
+  (l.map fun a => Task.spawn fun _ => f a).all Task.get
+
+@[simp] lemma allPar_eq {α : Type*} (f : α → Bool) (l : List α) : allPar f l = l.all f := by
+  induction l with
+  | nil => rfl
+  | cons a l ih =>
+    simp only [allPar, List.map_cons, List.all_cons] at ih ⊢
+    rw [← ih]
+    rfl
+
+/-- The intervals `[lo a, hi a]` of the list are consecutive from `prev` (each starts where the
+previous one ends) and the last one reaches `stop`. -/
+def chainTo {α : Type*} (lo hi : α → ℚ) : ℚ → ℚ → List α → Bool
+  | _, _, [] => false
+  | prev, stop, [a] => (lo a == prev) && decide (stop ≤ hi a)
+  | prev, stop, a :: b :: rest => (lo a == prev) && chainTo lo hi (hi a) stop (b :: rest)
+
+/-- **A chain of intervals covers `[prev, stop]`.** -/
+theorem chainTo_sound {α : Type*} (lo hi : α → ℚ) :
+    ∀ (l : List α) (prev stop : ℚ), chainTo lo hi prev stop l = true →
+      ∀ t : ℝ, (prev : ℝ) ≤ t → t ≤ stop → ∃ a ∈ l, (lo a : ℝ) ≤ t ∧ t ≤ hi a
+  | [], _, _, h, _, _, _ => by simp [chainTo] at h
+  | [a], prev, stop, h, t, h1, h2 => by
+    simp only [chainTo, Bool.and_eq_true, beq_iff_eq, decide_eq_true_eq] at h
+    exact ⟨a, List.mem_singleton_self a, by rw [h.1]; exact h1,
+      h2.trans (by exact_mod_cast h.2)⟩
+  | a :: b :: rest, prev, stop, h, t, h1, h2 => by
+    simp only [chainTo, Bool.and_eq_true, beq_iff_eq] at h
+    by_cases ht : t ≤ (hi a : ℝ)
+    · exact ⟨a, List.mem_cons_self .., by rw [h.1]; exact h1, ht⟩
+    · obtain ⟨c, hc, hc1, hc2⟩ :=
+        chainTo_sound lo hi (b :: rest) (hi a) stop h.2 t (le_of_lt (not_le.1 ht)) h2
+      exact ⟨c, List.mem_cons_of_mem _ hc, hc1, hc2⟩
 
 /-- Horner evaluation of a little-endian coefficient list. -/
 def evalL {R : Type*} [Semiring R] : List R → R → R
@@ -167,5 +206,27 @@ theorem quadVal_le_quadMax (c0 c1 c2 α β : ℚ) (t : ℝ) (hα : (α : ℝ) �
           nlinarith [mul_nonneg (sub_nonneg.2 hβ) (mul_nonneg (neg_nonneg.2 hc2.le)
             (by linarith : (0:ℝ) ≤ 2 * v - (β + t)))]
         exact this.trans ((le_max_right _ _).trans hend)
+
+/-- The exact maximum over `s ∈ [s₀, s₁]` of the chord through `(s₀, v₀)`, `(s₁, v₁)` minus
+`D s²`. -/
+def chordMax (v0 v1 D s0 s1 : ℚ) : ℚ :=
+  let m := (v1 - v0) / (s1 - s0)
+  quadMax (v0 - m * s0) m (-D) s0 s1
+
+theorem chord_le_chordMax (v0 v1 D s0 s1 : ℚ) (h : s0 < s1) (s : ℝ) (h0 : (s0 : ℝ) ≤ s)
+    (h1 : s ≤ s1) :
+    ((s1 : ℝ) - s) / (s1 - s0) * v0 + (s - s0) / (s1 - s0) * v1 - D * s ^ 2
+      ≤ (chordMax v0 v1 D s0 s1 : ℚ) := by
+  have hd : (s1 : ℝ) - s0 ≠ 0 := sub_ne_zero.2 (by exact_mod_cast h.ne')
+  have hq := quadVal_le_quadMax (v0 - (v1 - v0) / (s1 - s0) * s0) ((v1 - v0) / (s1 - s0)) (-D)
+    s0 s1 s h0 h1
+  have e : ((v0 - (v1 - v0) / (s1 - s0) * s0 : ℚ) : ℝ) + ((v1 - v0) / (s1 - s0) : ℚ) * s
+      + ((-D : ℚ) : ℝ) * s ^ 2
+      = ((s1 : ℝ) - s) / (s1 - s0) * v0 + (s - s0) / (s1 - s0) * v1 - D * s ^ 2 := by
+    push_cast
+    field_simp
+    ring
+  rw [e] at hq
+  exact hq
 
 end Grothe.Lower
