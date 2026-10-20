@@ -175,7 +175,9 @@ polynomial of degree `≤ 181` approximating `(iφ + (iφ)²/2 + (iφ)³/6) F₀
 
 * `valid` (mathematical lemma): `z ↦ Σ_j kernelCoeff E j · z|z|^{2j}` is a dominated kernel, i.e.
   it is the correlation kernel of the rounding, the correlations `p` and `−τ` being realised by
-  tensor powers;
+  tensor powers.  The index shift `⌊n/2⌋ + ⌊m/2⌋` of `kernelCoeff` is the true kernel only when `E`
+  vanishes on even `n + m` (the rounding has charge one); this parity of `E` is part of what `valid`
+  asserts, and is not a separate field (only `EX` has `parityX`, used in the head computation);
 * `summable`, `summableX`, `summable0`, `parityX` (mathematical lemmas): the three tables are
   summable (Parseval) and `EX (n, m) = 0` for `n + m` even;
 * `compare`: `Σ |E − EX| ≤ 2497/(2·10⁹)`.  The source proves `1.2484923099·10⁻⁶`.  It combines

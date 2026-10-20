@@ -17,11 +17,14 @@ large enough) whose value `‖∑ₗ ⟪uₗ, T vₗ⟫‖` is at least `1 − �
 * `lower_bound_of_transferL2 : TransferInputsL2 Bcap → IsGrothendieckBound K → Llow < K`,
   composing with `lower_endpoint`.
 
-**What remains hypothetical** is exactly `TransferInputsL2 Bcap` for the Gaussian witness:
-(i) the scalar cap `‖⟪f, T g⟫‖ ≤ Bcap` for a.e. unimodular `f, g` (the conclusion of the
-certificate `lower_bound_data` through the Gaussian reduction hypothesis), and (ii) the value
-`∑ₗ ⟪uₗ, T uₗ⟫ ≥ 1 − δ` of the witness on `u(z) = z/‖z‖` in dimension large enough.  Nothing
-else is assumed.
+**What remains hypothetical** is exactly `TransferInputsL2 Bcap`.  Note that `TransferInputsL2`
+does not name the operator: it asks for *some* `T` on some `L²` space, so read alone it already
+contains the whole claim.  Intended instance: the Gaussian witness `T = P₁,₀ − ε P₂,₁`, with
+(i) the scalar cap `‖⟪f, T g⟫‖ ≤ Bcap` for a.e. unimodular `f, g`, and (ii) the value
+`∑ₗ ⟪uₗ, T uₗ⟫ ≥ 1 − δ` on `u(z) = z/‖z‖` in dimension large enough.  For that instance (i) is
+what the certificate `lower_bound_data` yields *on paper*, through the Gaussian reduction; **no Lean
+theorem derives (i) from `lower_bound_data`**, so the two halves of the lower bound are linked
+outside Lean.
 -/
 
 namespace Grothe.Lower

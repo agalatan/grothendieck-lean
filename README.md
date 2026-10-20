@@ -81,7 +81,8 @@ tables of the rounding, of its polynomial truncation, and of the rounding withou
   square-sum bound; the assembly of the budgets; and the endpoint arithmetic.
 * Explicit hypotheses (not formalized): validity of the rounding kernel; summability and parity
   of the energies; the comparison Σ|E − EX| ≤ 2497/(2·10⁹) between the rounding and its
-  truncation (Taylor remainder of exp(iφ) with Hermite cutoffs 181, 91, 51, the bound |φ| < 1,
+  truncation (the mixed Taylor/cutoff lemma, archived with its scripts in the research folder
+  `handoff/upper-residual/global_norm/MIXED_TAYLOR_CUTOFF_LEMMA.md`; Taylor remainder of exp(iφ) with Hermite cutoffs 181, 91, 51, the bound |φ| < 1,
   a Bargmann Hilbert–Schmidt estimate, and directed coefficient enclosures); the weighted
   square-sum bound 7/4 at radius 259/250 for the rounding without phase (a Gaussian weighted
   Schur estimate plus a 65,536-arc contour certificate); and two table budgets below 3·10⁻¹¹.
@@ -103,6 +104,13 @@ where `TransferInputsL2 B` asks, for every δ > 0, for a finite measure space wi
 a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u, v in L² with Σₗ|uₗ|² ≤ 1 and
 Σₗ|vₗ|² ≤ 1 a.e. and ‖Σ⟨uₗ, T vₗ⟩‖ ≥ 1 − δ.
 
+**How the two halves fit.** These are two separate Lean theorems. `TransferInputsL2 B` does not
+name the operator, so read alone it already contains the claim; its intended instance is the
+Gaussian witness T = P₁,₀ − εP₂,₁, for which the scalar cap is what `lower_bound_data` gives
+*on paper* through the Gaussian reduction. No Lean theorem derives the scalar cap of that T from
+`lower_bound_data`; formalising this link (the witness on Lᵖ, unitary invariance, the z₁ ⊗ w
+splitting and the explicit potentials) is the main missing piece of the lower bound.
+
 * Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
   (trailing gate block positive definite, κδ² ≤ δ + gatePrice); the Stein cuts from their two analytic inputs, by a completion of squares,
   and their polynomial pieces; the majorant sweeps over 9,237 nodes; the moment-rectangle
@@ -113,7 +121,8 @@ a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u,
   (source, joint and joint-mixture boxes, pinned gate price X₁ = p); one cover of t ∈ [0, 9/10] by 230 regions
   (227 cap boxes, fixed mixtures of two certified row caps including the crude row, and the 3 slab regions);
   and the endpoint. All finite exact checks of the lower certificate are one `native_decide` (`cert_check`).
-* Explicit hypotheses (not formalized): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`), with ‖v‖² = 2
+* Explicit hypotheses (not formalized): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
+  from ‖Qk‖ ≤ E|Qk/‖Qk‖| ≤ ρ, which uses the moment bounds also for the cubic Qk/‖Qk‖), with ‖v‖² = 2
   and 0 ≤ t ≤ 9/10; the simultaneous Gaussian reduction of the rows (`SharedReduction`): one residual p = Q_w c₁ with scale τ = ‖p‖₂ ≤ ρ and normalised law
   U = |p|²/τ² satisfying the moment bounds and the Stein inputs, one gate variable
   X = Q_w(c₁, c_A, conj c_B) with X₁ = p, and for every row its potential Ψ_r with the row inequality
@@ -158,8 +167,8 @@ no warnings.
 
 | path | content |
 |---|---|
-| `Grothe/Transfer.lean` | `IsGrothendieckBound`, the transfer inequality |
-| `Grothe/Upper/` | residual transfer, kernel composition, interval soundness, head check, final theorem |
+| `Grothe/Transfer.lean` | `IsGrothendieckBound`, the transfer inequality in its residual form |
+| `Grothe/Upper/` | residual algebra and Hardy tail, kernel composition, interval soundness, head check, final theorem |
 | `GrotheKernel/` | the fixed-point interval evaluator used by the head check |
 | `Grothe/Lower/` | positivity certificates, Stein cuts, rows, mixtures and boxes, the one cover of t ∈ [0, 9/10], the transfer to finite matrices, final theorems |
 | `Grothe/Lower/RowData*.lean`, `Grothe/Upper/Data.lean` | generated certificate data |
