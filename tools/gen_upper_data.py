@@ -17,7 +17,7 @@ Inputs (folder `handoff/upper-residual/taylor`, or the folder given as first arg
 
 All numbers written are exact rationals.  Usage:
     python3 tools/gen_upper_data.py [handoff/upper-residual/taylor] [Grothe/Upper/Data.lean]"""
-import json, struct, sys, ast
+import json, os, struct, sys, ast
 from fractions import Fraction as Q
 
 N = 501                              # head degree in t
@@ -58,7 +58,7 @@ def load_npy(path):
     return rows, cols, vals
 
 def main():
-    src = sys.argv[1] if len(sys.argv) > 1 else "handoff/upper-residual/taylor"
+    src = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.environ.get("GROTHE_HANDOFF", "handoff"), "upper-residual", "taylor")
     out = sys.argv[2] if len(sys.argv) > 2 else "Grothe/Upper/Data.lean"
     inp = json.load(open(f"{src}/contour_input.json"))
     old = json.load(open(f"{src}/finite_head_N501_result.json"))

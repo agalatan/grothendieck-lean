@@ -52,11 +52,13 @@ certificates) and this Lean development (the machine-checked verification):
   through the kernel of a polynomial truncation of the rounding. The bound is
   1/(c − ‖H − c·t‖), with the residual at most 133/10⁸.
 * **Lower bound.** The Gaussian witness T = P₁,₀ − ε·P₂,₁ with ε = 149/200, whose L^∞ → L¹
-  norm is capped by B = 356727549/(5·10⁸) through 19 rows with coupling vectors and a scalar
-  envelope (rows 0.84–0.855 with 336-node anchored cap tables). Each row bounds E Ψ(|q|) − κσ² over all residuals q, a normalised cubic chaos of
-  bidegree (2,1): for small σ by moment rectangles, and beyond by nodes at which a polynomial
-  majorizes the potential plus a nonnegative combination of Stein cuts, joined by convexity in
-  σ. The inputs on the law of |q|² are the sixth-moment inequality
+  norm is capped by B = 7134326/10⁷. Each of 19 rows bounds E Ψ(|q|) − κσ² over all residuals q,
+  a normalised cubic chaos of bidegree (2,1): for small σ by moment rectangles, and beyond by nodes
+  at which a polynomial majorizes the potential plus a nonnegative combination of Stein cuts, joined
+  by convexity in σ (rows 0.84–0.855 use 396-node cap tables with anchored and localised quadratic
+  caps). Near the maximum, t ∈ [0.847, 0.8545], the rows share one residual (a common law), and
+  3,219 boxes in (t, τ, x) mix two rows or two joint node batches; elsewhere fixed mixtures of two
+  row caps cover t ∈ [0, 9/10]. The inputs on the law of |q|² are the sixth-moment inequality
   E|q|⁶ ≤ 9m − 12 + 40.45313·(m−2)^{3/2}, the first-moment bound E|q| ≤ 0.973612157, and the
   Stein cuts, a family of inequalities E G(|q|²) ≥ 0 obtained from a fluctuation bound and a
   Gaussian integration by parts. Then K_G^ℂ ≥ 1/B.
@@ -97,20 +99,22 @@ tables of the rounding, of its polynomial truncation, and of the rounding withou
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
 value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401674103/10^9 < K`, and the transfer
 `Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 1401674103/10^9 < K`,
-where `TransferInputsL2 B` asks, for every δ > 0, for a probability space with an operator T on L²,
-a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and measurable ball-valued maps u, v with
-Σ⟨uₗ, T vₗ⟩ ≥ 1 − δ.
+where `TransferInputsL2 B` asks, for every δ > 0, for a finite measure space with an operator T on L²,
+a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u, v in L² with Σₗ|uₗ|² ≤ 1 and
+Σₗ|vₗ|² ≤ 1 a.e. and ‖Σ⟨uₗ, T vₗ⟩‖ ≥ 1 − δ.
 
-* Proved: positivity certificates in integer arithmetic; PSD gates by exact LᵀDL
-  factorisations; the Stein cuts from their two analytic inputs, by a completion of squares,
+* Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
+  (trailing gate block positive definite, κδ² ≤ δ + gatePrice); the Stein cuts from their two analytic inputs, by a completion of squares,
   and their polynomial pieces; the majorant sweeps over 9,237 nodes; the moment-rectangle
   covers; the integration against the law of |q|²; the chords in σ; the bound of every row
   from its Gaussian reduction; the mixtures of rows (the retained gate square mixes by an exact
   identity); the common-law certificate: 37 batches of 425 joint Stein node certificates for mixed
   potentials of rows 0.84–0.86, and 3,219 boxes of the slab [0.847, 0.8545] × [0, ρ] × [0, 31/4]
-  (source, joint and joint-mixture boxes, pinned gate price X₁ = p); the mixture envelope; and the endpoint.
-* Explicit hypotheses (not formalized): the simultaneous Gaussian reduction of the rows
-  (`SharedReduction`): one residual p = Q_w c₁ with scale τ = ‖p‖₂ ≤ ρ and normalised law
+  (source, joint and joint-mixture boxes, pinned gate price X₁ = p); one cover of t ∈ [0, 9/10] by 230 regions
+  (227 cap boxes, fixed mixtures of two certified row caps including the crude row, and the 3 slab regions);
+  and the endpoint. All finite exact checks of the lower certificate are one `native_decide` (`cert_check`).
+* Explicit hypotheses (not formalized): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`), with ‖v‖² = 2
+  and 0 ≤ t ≤ 9/10; the simultaneous Gaussian reduction of the rows (`SharedReduction`): one residual p = Q_w c₁ with scale τ = ‖p‖₂ ≤ ρ and normalised law
   U = |p|²/τ² satisfying the moment bounds and the Stein inputs, one gate variable
   X = Q_w(c₁, c_A, conj c_B) with X₁ = p, and for every row its potential Ψ_r with the row inequality
   retaining the gate square, V ≤ t² − 2ℓt + 2β²/ε + E Ψ_r(δ_r τ√U) − δ_r τ² − E[X*N_r X + 2Re(conj p (g_r·X))] − ε‖Qh + βv/ε‖²; the node caps, convexity and Lipschitz bound of each potential (exact-arithmetic
@@ -126,22 +130,28 @@ a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and measurable 
 * The two analytic inputs of the Stein cuts are, with w = Γ(q, q̄)/3 and c = Γ(q, q)/3, the
   fluctuation bound E w = 1, Var(w) + ½E|c|² ≤ (E|q|⁴ − 2)/3, and the integration by parts
   E[Φ(U) − φ(U)] = E[(w−1)φ(U) + Re(c q̄²/U)·(φ(U) − Φ(U)/U)] for piecewise-linear tests φ with
-  primitive Φ. Both are proved in Lean: for real polynomials a, b in the third Gaussian chaos
-  with E a² = E b² = ½ and E ab = 0, the law of a² + b² under the standard Gaussian measure
-  satisfies them with no further hypothesis (`Grothe.LowerAnalytic.gaussian_steinInputs`).
-  They remain hypotheses of the main theorem only because that theorem is stated for an
-  abstract law of U, the Gaussian reduction being itself assumed.
+  primitive Φ. Both are proved in Lean for the Gaussian law: for real polynomials a, b in the third
+  Gaussian chaos with E a² = E b² = ½ and E ab = 0, the law of U = a² + b² under the standard Gaussian
+  measure satisfies them (`Grothe.LowerAnalytic.gaussian_steinInputs`).
+  `Grothe.LowerAnalytic.lower_bound_gaussian` instantiates `lower_bound_data` with this law and
+  discharges E U = 1, the integrability conditions, E U² ≥ 2, E√U ≤ ρ (derived from the other moment
+  fields by `moments_of_three`) and both Stein inputs. Still assumed there: the cap E U² ≤ 2 + (31/4)²,
+  the sixth-moment bound E U³ ≤ 9m − 12 + C₆(m − 2)^{3/2}, the gate variable and the per-row reduction
+  (`RowShared`), and the crude row. `sixth_moment_complex` derives the sixth-moment bound from a
+  cumulant bound, which is itself a hypothesis; it is not proved for the Gaussian law.
 * Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma, the
-  scalar sixth-moment and first-moment certificates from their tensor hypotheses, the
-  Schur-complement gate, the square completion for the coupling vector, and the exact form of
+  scalar sixth-moment and first-moment certificates (the sixth-moment one from its tensor and
+  cumulant hypotheses), and the exact form of
   the fluctuation bound (`Influence.lean`): for a circular cubic chaos q = a + ib the slack in
   Var(w) + ½E|c|² ≤ (E|q|⁴ − 2)/3 equals (2‖Π₂,₂|q|²‖² + ‖Π₃,₁q²‖²)/18, with the quartic identity
   3κ = 4‖Π₁,₁|q|²‖² + 2‖Π₂,₀q²‖² + 2‖Π₂,₂|q|²‖² + ‖Π₃,₁q²‖², the influence inequality
   4‖Π₁,₁|q|²‖² + 2‖Π₂,₀q²‖² ≤ 3κ, and the weighted bound on the first-chaos content of q|q|²
   along any direction by the influence of that direction.
 
-Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus `native_decide` facts for the finite
-exact computations (listed by `lake env lean scratch/Axioms.lean`; checked in CI). No `sorry`,
+Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus exactly two `native_decide` facts:
+`Grothe.head_check` (the upper head) and `Grothe.Lower.cert_check` (the lower certificate). All
+other finite computations (the polynomial norms, the moment covers) are kernel-checked
+(`decide +kernel`). The report is `lake env lean scratch/Axioms.lean`, checked in CI. No `sorry`,
 no warnings.
 
 ## Layout
@@ -151,9 +161,9 @@ no warnings.
 | `Grothe/Transfer.lean` | `IsGrothendieckBound`, the transfer inequality |
 | `Grothe/Upper/` | residual transfer, kernel composition, interval soundness, head check, final theorem |
 | `GrotheKernel/` | the fixed-point interval evaluator used by the head check |
-| `Grothe/Lower/` | positivity certificates, gates, Stein cuts, row and envelope checkers, the transfer to finite matrices, final theorems |
+| `Grothe/Lower/` | positivity certificates, Stein cuts, rows, mixtures and boxes, the one cover of t ∈ [0, 9/10], the transfer to finite matrices, final theorems |
 | `Grothe/Lower/RowData*.lean`, `Grothe/Upper/Data.lean` | generated certificate data |
-| `Grothe/LowerAnalytic/` | analytic lemmas: Gaussian integration by parts, fluctuation bound, moment certificates |
+| `Grothe/LowerAnalytic/` | analytic lemmas: Gaussian integration by parts, fluctuation bound, moment certificates, the bridge `lower_bound_gaussian` |
 | `tools/` | generators of the data modules from the research archives |
 | `scratch/Axioms.lean`, `scripts/check_axioms.py` | the axiom report and its check |
 

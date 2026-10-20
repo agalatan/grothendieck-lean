@@ -14,50 +14,52 @@ description: Working conventions for the Lean 4 / Mathlib formalization of the c
 - Quick experiments: put a file in `scratch/` and run `lake env lean scratch/File.lean`.
 - Worktrees share Mathlib: `mkdir -p .lake && ln -s /Users/alingalatan/workspaces/grothe/.lake/packages .lake/packages`
   inside the worktree, then `lake build` works without re-downloading anything.
-- Axiom check: `lake env lean scratch/Axioms.lean` (`#print axioms`). Only `propext`,
-  `Classical.choice`, `Quot.sound` and documented `native_decide` facts are acceptable.
+- Axiom check: `lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py`. Only `propext`,
+  `Classical.choice`, `Quot.sound` and the two documented `native_decide` facts are acceptable.
   No `sorry`, no `axiom`.
 
 ## Layout
 - `Grothe/Transfer.lean`: `scalarOpt`, `vectorOpt`, `IsGrothendieckBound`, `DominatedKernel`,
-  `ValidKernel`, `tpow` (tensor powers), `transfer` (the transfer inequality).
+  `ValidKernel`, `tpow` (tensor powers), `radialKernel`, `transfer` (the residual form: a dominated
+  kernel with |h₀ − c| + Σ_{n≥1}|hₙ| ≤ δ < c gives the bound 1/(c − δ)).
 - `Grothe/ListPoly.lean`: the Wiener norm `l1` of real polynomials.
 - `Grothe/Upper/`: the upper certificate, one two-coordinate rounding kernel
   `H(t) = Σ E[n,m] p(t)^n (−τ(t))^m` compared with `c·t` through the kernel of a truncation
-  (tables `E`, `EX`, `E0`). `Residual` (`radialKernel`, `residual_transfer`, `residual_perturb`,
-  `tail_add_le`, `hardy_tail`), `Bivariate` (`termOf`, `bivarKernel`, `ℓ¹` contraction
-  `tsum_abs_bivarKernel_le`, linearity `bivarKernel_sub`, locality `bivarKernel_eq_head`,
-  `head_residual_le`), `IntervalSound` and `Head` (soundness of the
-  Mathlib-free precompiled `GrotheKernel/`: `Basic` fixed-point intervals, `Table` truncated
-  bivariate composition `bivarT` and the dyadic table parser), generated `Data.lean`
-  (`tools/gen_upper_data.py` from `handoff/upper-residual/taylor`: `pList`, `qList`, the stored energies
-  as strings), `Final.lean` with `KernelHyps` and `complex_grothendieck_upper` (the `native_decide`
-  `head_check`, about 15 s).
+  (tables `E`, `EX`, `E0`). `Residual` (`residual_split`, `residual_perturb` from the generic
+  `tsum_abs_le_add`, `hardy_tail`), `Bivariate` (`termOf`, `bivarKernel`, `ℓ¹` contraction
+  `tsum_abs_bivarKernel_le`, `bivarKernel_sub`, `bivarKernel_eq_head`, `head_residual_le`),
+  `IntervalSound` (interval arithmetic soundness, `memB`) and `Head` (`rowPoly`/`tabPoly`,
+  `head_le_of_check : headOK … = true → head ≤ cap`) for the Mathlib-free precompiled `GrotheKernel/`
+  (`Basic` fixed-point intervals, `Table` the truncated bivariate composition, `headInt`, `headOK`),
+  generated `Data.lean` (`tools/gen_upper_data.py`), `Final.lean` with `KernelHyps` and
+  `complex_grothendieck_upper`. The only `native_decide` of the upper side is `head_check`.
 - `Grothe/Lower/`: the lower certificate (witness `P₁,₀ − εP₂,₁`, `ε = 149/200`). `Basic`
-  (`evalL`, endpoint lemma, `quadMax`), `Poly` (list polynomials, the integer positivity
-  certificate `posCert`/`posOn`, Taylor tails), `PSD`, `Gates`, `Moment` (constants `ρ`, `C6`, `ε`;
-  `MPoly`, `J`, `checkJ`), `Sweep` (`CapsHold`, the majorant sweep `sweepTop`, `major_sound`),
-  `Cuts` (Stein-cut test functions `cutG` and their polynomial pieces), `Law` (`Moments`,
-  `SteinCut`, integration lemmas), `Stein` (`SteinInputs`, `steinCut_of_inputs`: the cuts from the
-  fluctuation bound and the radial integration by parts), `Rows` (`Row`, parsers, `checkRow`, `rowBound_of_check`),
-  `Envelope`, `Endpoint`, `Support` (`RowReduction`, `lower_bound_main`), generated data
-  (`RowData01`–`RowData19`, `RowData` from `tools/gen_lower_data.py`; bulk data are strings parsed
-  at check time), `RowCheck` (the `native_decide` module, `lower_bound_data`).
-- `Grothe/LowerAnalytic/`: the lower certificate's analytic lemmas (moment lemma, bivariate
-  Bernstein bounds, the `C₆`/`ρ` certificates `Moments`/`SixthMomentData`/`SixthMoment` generated
-  by `tools/gen_moment_certs.py`, variance identities, the coupling square completion, Schur
-  gate, row mixing, endpoint), and the Gaussian side of the Stein cuts: `Fluctuation` (`ouL`,
-  `gam`, `Chaos3`, `IsGaussianExpectation`, pair quantities `radU/radS/radA/radB`,
-  `fluctuation_bound`), `HermiteChaos` (`chaos3_hermite_sum`), `Gaussian` (`stdGaussian d`,
-  polynomial integrability, `stein_coordinate`, the expectation `gaussE`), `RadialParts`
-  (`radial_parts`: `3E[U H(U)] = E[S H(U)] + 2E[T H'(U)]`), `RadialCut` (`cutPrim_deriv`,
-  `radial_cut`, `gaussian_steinInputs`: `SteinInputs` for the law of `a² + b²` with no analytic
-  hypothesis).
-- `handoff/` (git-ignored) holds the research archives the generators in `tools/` read; the
-  generated Lean data files are committed, the archives are not.
+  (`evalL`, `chainTo`/`chainTo_sound` for every interval chain, `quadMax`), `Poly` (list
+  polynomials, integer positivity certificates `posCert`/`posOn`), `Moment`, `Sweep` (`CapsHold`,
+  `major_sound`), `Cuts` (Stein-cut test functions), `Law` (`Moments`, `SteinCut`, `TB` integration
+  and chord lemmas), `Stein` (`SteinInputs`, `steinCut_of_inputs`), `Rows` (`Row`, `checkRow`
+  including the gate price), `Gate` (pinned gate price), `Mixed` (row mixtures `RowHolds.mix`,
+  joint batches), `Boxes` (box kinds source/joint/joint-mix/cap, `box_sound`, `cover_sound`),
+  `Endpoint`, `Support` (`SharedReduction`, `rowOf_of_shared`, `checkCert`, `lower_bound_main`),
+  generated data (`RowData*`, `MixedData` with `mixedBatches` and `coverRegions`, from
+  `tools/gen_lower_data.py` and `tools/gen_lower_mixed.py`), `RowCheck` (the single
+  `native_decide` `cert_check` and `lower_bound_data`), and `Transfer*` (`TransferInputsL2`,
+  `transfer_lower`, `lower_bound_of_transferL2`: cells as linear maps, limit by continuity).
+- `Grothe/LowerAnalytic/`: the moment lemma, Bernstein covers (`coverOK`, kernel-checked with
+  `decide +kernel`), the `C₆`/`ρ` certificates (`Moments`, `SixthMomentData`, `SixthMoment`,
+  generated by `tools/gen_moment_certs.py`; the sixth moment is reduced to an assumed cumulant
+  bound), `Rows` (row mixing), `Fluctuation` (`fluctuation_identity`, `fluctuation_bound`),
+  `Gaussian` (`stdGaussian d`, `gaussE`), `RadialParts`, `RadialCut` (`gaussian_steinInputs`),
+  `Influence` (the exact form of the fluctuation bound; Conjecture K groundwork), and `Bridge`
+  (`moments_of_three`, `gaussian_moments`, `lower_bound_gaussian`: `lower_bound_data` for the
+  Gaussian law with the remaining law hypotheses explicit).
+- `handoff/` (git-ignored) holds the research archives the generators in `tools/` read (set
+  `GROTHE_HANDOFF` when running from a worktree); the generated Lean data files are committed.
 - Only the best bounds are kept in the repo and its docs; superseded certificates are deleted,
-  not archived. CI (`.github/workflows/lean.yml`) builds everything, forbids `sorry`, and
-  prints `scratch/Axioms.lean`.
+  not archived. CI (`.github/workflows/lean.yml`) builds everything, forbids `sorry`/`axiom`/
+  `implemented_by`/`unsafe`, and checks `scratch/Axioms.lean` with `scripts/check_axioms.py`
+  (exactly the two documented `native_decide` facts; the headline theorems must be listed).
+  `scratch/DeadCode.lean` reports declarations unreachable from the headline theorems.
 
 ## Conventions
 - Matrices are `Fin m → Fin n → ℂ` (never `Matrix`: `rw` motives fail under implicit transparency).

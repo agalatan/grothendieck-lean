@@ -19,9 +19,9 @@ jobs:
           use-mathlib-cache: true
           build-args: "--log-level=warning"
 
-      - name: No sorry anywhere
+      - name: No sorry, axiom or unchecked code anywhere
         run: |
-          ! grep -rn --include='*.lean' -E '\bsorry\b' Grothe GrotheKernel Grothe.lean
+          ! grep -rn --include='*.lean' -E '\bsorry\b|^[[:space:]]*(private[[:space:]]+)?axiom[[:space:]]|implemented_by|@\[extern|\bunsafe\b|debug\.skipKernelTC' Grothe GrotheKernel Grothe.lean GrotheKernel.lean
 
       - name: Axiom report
         run: |

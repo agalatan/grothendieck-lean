@@ -7,7 +7,7 @@
                                 outside the central slab one cap box per region (the scalar
                                 envelope of `envelope.json`), on the slab the boxes of the cover
 
-Usage: tools/gen_lower_mixed.py [CERT_DIR]   (default handoff/lower-stein/cert-1401619290904)
+Usage: tools/gen_lower_mixed.py [CERT_DIR]   (default handoff/lower-stein/cert-combined-e, the certificate on master)
 
 CERT_DIR holds the cover (`improved_cover.json` with `regions`, or `joint_cover_certificate.json`
 with one `domain`) and the batch files it references (`review/*.json`); the source rows are
@@ -33,7 +33,7 @@ SOURCES = [(HANDOFF / "lower-stein" / "cert-0745e", HANDOFF / "lower-stein" / "c
            (HANDOFF / "lower-stein" / "cert-0745d", HANDOFF / "lower-stein" / "cert-0745d" / "rows_final_d.json"),
            (HANDOFF / "lower-stein" / "cert-0745c", HANDOFF / "lower-stein" / "cert-0745c" / "rows_final_c.json"),
            (HANDOFF / "lower-stein" / "cert-0745", HANDOFF / "lower-stein" / "rows_final.json")]
-NEW = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else HANDOFF / "lower-stein" / "cert-1401619290904"
+NEW = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else HANDOFF / "lower-stein" / "cert-combined-e"
 OUT = ROOT / "Grothe" / "Lower" / "MixedData.lean"
 EPS = Q(149, 200); RHO = Q(973612157, 10**9); C6 = Q(4045313, 100000); PAD = Q(1, 10**11); XMAX = Q(31, 4)
 
