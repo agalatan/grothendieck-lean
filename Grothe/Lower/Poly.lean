@@ -24,10 +24,6 @@ def parseQ (s : String) : ℚ :=
 /-- Parse a comma-separated list of rationals. -/
 def parseQs (s : String) : List ℚ := if s = "" then [] else (s.splitOn ",").map parseQ
 
-lemma getD_mem_of_lt {α : Type*} (l : List α) (d : α) (i : ℕ) (hi : i < l.length) :
-    l.getD i d ∈ l := by
-  rw [List.getD_eq_getElem _ _ hi]; exact List.getElem_mem hi
-
 def negL : List ℚ → List ℚ
   | [] => []
   | a :: r => (-a) :: negL r
