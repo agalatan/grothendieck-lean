@@ -532,20 +532,6 @@ theorem sixth_moment_complex (m M6 κ4 κ6 : ℝ) (hm : 2 ≤ m) (h4 : κ4 = 3 *
   rw [e] at hb
   linarith
 
-/-- The complex form with `x = √(m − 2)`: `M₆ ≤ 6 + 9x² + C₆ x³ = nX x`. -/
-theorem sixth_moment_le_nX (m M6 κ4 κ6 : ℝ) (hm : 2 ≤ m) (h4 : κ4 = 3 * (m - 2) / 2)
-    (h6 : κ6 = 5 / 2 * (M6 - 9 * m + 12))
-    (hb : κ6 ≤ C6 * (10 / (3 * √6)) * κ4 ^ ((3 : ℝ) / 2)) :
-    M6 ≤ nX √(m - 2) := by
-  have h := sixth_moment_complex m M6 κ4 κ6 hm h4 h6 hb
-  have hx : 0 ≤ m - 2 := by linarith
-  rw [rpow_three_halves hx] at h
-  have e : nX √(m - 2) = 9 * m - 12 + C6 * ((m - 2) * √(m - 2)) := by
-    unfold nX
-    rw [show √(m - 2) ^ 3 = √(m - 2) ^ 2 * √(m - 2) by ring, Real.sq_sqrt hx]
-    ring
-  rw [e]; exact h
-
 end
 
 end Grothe.LowerAnalytic

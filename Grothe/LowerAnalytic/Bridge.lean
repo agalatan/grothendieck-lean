@@ -1,0 +1,159 @@
+import Grothe.Lower.RowCheck
+import Grothe.LowerAnalytic.SixthMoment
+import Grothe.LowerAnalytic.RadialCut
+
+/-!
+# From the Gaussian lemmas to the hypotheses of `lower_bound_data`
+
+`lower_bound_data` is stated for an abstract law `U` packaged in `SharedReduction`, which asks
+for `Moments μ U x` and `SteinInputs μ U`.  This file instantiates both for the law of
+`U = a² + b² = |q|²` under the standard Gaussian measure, `q = a + ib` a normalized cubic chaos
+(`Chaos3 a`, `Chaos3 b`, `E a² = E b² = 1/2`, `E ab = 0`), and states the lower bound with only
+the genuinely open Gaussian facts left as hypotheses.
+
+* `moments_of_three`: `E √U ≤ ρ` and the integrability of `√U` are consequences of the other
+  fields of `Moments` (by `first_moment_lt_rho`), so `Moments` follows from three moments.
+* `gaussian_moments`: for the Gaussian law, `E U = 1`, `E U² ≥ 2` (from the fluctuation bound)
+  and integrability are proved; with `x = √(E U² − 2)`, `Moments` holds as soon as
+  `E U² ≤ 2 + xMax²` and the sixth-moment inequality `E U³ ≤ 9m − 12 + C₆ (m − 2)^{3/2}`
+  (`m = E U²`, the conclusion of `sixth_moment_complex`) hold.
+* `gaussian_steinInputs` (in `RadialCut.lean`) gives `SteinInputs` with no hypothesis.
+* `sharedReduction_of_gaussian` and `lower_bound_gaussian`: the finite-layer bound `V ≤ B` for a
+  Gaussian residual.  What remains assumed: the cap `E|q|⁴ ≤ 2 + (31/4)²`, the sixth-moment
+  inequality for `q` (proved only from its tensor hypotheses, `cumulant_bound`), the scale
+  `0 ≤ τ ≤ ρ`, the gate variable with `|X₁|² = τ² |q|²`, the row inequalities `RowShared` of the
+  Gaussian reduction, and the crude row.
+-/
+
+open MeasureTheory MvPolynomial Grothe.Lower
+
+namespace Grothe.LowerAnalytic
+
+/-- `√Z` is integrable when `Z ≥ 0` is. -/
+lemma integrable_sqrt {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsFiniteMeasure μ]
+    {Z : Ω → ℝ} (hZ : ∀ ω, 0 ≤ Z ω) (hZ1 : Integrable Z μ) :
+    Integrable (fun ω => √(Z ω)) μ := by
+  refine ((integrable_const (1 : ℝ)).add hZ1).mono'
+    (Real.continuous_sqrt.comp_aestronglyMeasurable hZ1.aestronglyMeasurable)
+    (Filter.Eventually.of_forall fun ω => ?_)
+  show ‖√(Z ω)‖ ≤ 1 + Z ω
+  rw [Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), Real.sqrt_le_left (by linarith [hZ ω])]
+  nlinarith [hZ ω]
+
+/-- **`Moments` from three moments**: the first-moment field `E √U ≤ ρ` follows from the others. -/
+theorem moments_of_three {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
+    (U : Ω → ℝ) (x : ℝ) (hU : ∀ ω, 0 ≤ U ω) (hx0 : 0 ≤ x) (hx1 : x ≤ xMax)
+    (i1 : Integrable U μ) (i2 : Integrable (fun ω => U ω ^ 2) μ)
+    (i3 : Integrable (fun ω => U ω ^ 3) μ) (m1 : ∫ ω, U ω ∂μ = 1)
+    (m2 : ∫ ω, U ω ^ 2 ∂μ = 2 + x ^ 2) (m3 : ∫ ω, U ω ^ 3 ∂μ ≤ nX x) :
+    Moments μ U x where
+  nonneg := hU
+  x0 := hx0
+  x1 := hx1
+  ih := integrable_sqrt hU i1
+  i1 := i1
+  i2 := i2
+  i3 := i3
+  mh := (first_moment_lt_rho μ U hU i1 i2 i3 x hx0 (by simpa [xMax] using hx1) m1 m2 m3).le
+  m1 := m1
+  m2 := m2
+  m3 := m3
+
+variable {d : ℕ}
+
+/-- `E[eval P ^ k] = E[eval (P^k)]`, the integrand written as a polynomial. -/
+private lemma eval_pow_integrable (P : MvPolynomial (Fin d) ℝ) (k : ℕ) :
+    Integrable (fun x => eval x P ^ k) (stdGaussian d) :=
+  (integrable_eval (P ^ k)).congr (Filter.Eventually.of_forall fun x => by simp)
+
+/-- **The moments of the Gaussian law.**  For `q = a + ib` a normalized cubic chaos, the law of
+`U = |q|²` satisfies `Moments` with `x = √(E U² − 2)`, given the cap `E U² ≤ 2 + xMax²` and the
+sixth-moment inequality. -/
+theorem gaussian_moments (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (hb : Chaos3 b)
+    (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2)
+    (hbb : ∫ x, eval x b ^ 2 ∂(stdGaussian d) = 1 / 2)
+    (hab : ∫ x, eval x a * eval x b ∂(stdGaussian d) = 0)
+    (hcap : ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) ≤ 2 + (xMax : ℝ) ^ 2)
+    (h6 : ∫ x, eval x (radU a b) ^ 3 ∂(stdGaussian d)
+      ≤ 9 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d)) - 12
+        + LowerAnalytic.C6 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2) ^ ((3 : ℝ) / 2)) :
+    Moments (stdGaussian d) (fun x => eval x (radU a b))
+      √(∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2) := by
+  set m := ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) with hm
+  have hE := gaussE_isGaussianExpectation d
+  have toE : ∀ P Q : MvPolynomial (Fin d) ℝ,
+      ∫ x, eval x P * eval x Q ∂(stdGaussian d) = gaussE d (P * Q) := fun P Q => by
+    rw [gaussE_apply]; simp only [map_mul]
+  have haa' : gaussE d (a * a) = 1 / 2 := by rw [← toE, ← haa]; simp only [sq]
+  have hbb' : gaussE d (b * b) = 1 / 2 := by rw [← toE, ← hbb]; simp only [sq]
+  have hab' : gaussE d (a * b) = 0 := by rw [← toE, hab]
+  -- `m ≥ 2` from the fluctuation bound
+  have hm2 : 2 ≤ m := by
+    have h := fluctuation_bound hE gaussE_mul_self_nonneg ha hb haa' hbb' hab'
+    have e : gaussE d (radU a b * radU a b) = m := by rw [hm, ← toE]; simp only [sq]
+    rw [e] at h
+    nlinarith [gaussE_mul_self_nonneg (radS a b - 3), gaussE_mul_self_nonneg (radA a b),
+      gaussE_mul_self_nonneg (radB a b)]
+  have hx2 : √(m - 2) ^ 2 = m - 2 := Real.sq_sqrt (by linarith)
+  refine moments_of_three _ _ _ (fun x => eval_radU_nonneg a b x) (Real.sqrt_nonneg _) ?_
+    (integrable_eval _) (eval_pow_integrable _ 2) (eval_pow_integrable _ 3) ?_ (by rw [hx2]; ring)
+    ?_
+  · rw [Real.sqrt_le_left (by norm_num [xMax])]
+    linarith
+  · have e : ∀ x, eval x (radU a b) = eval x a ^ 2 + eval x b ^ 2 := fun x => by
+      simp only [radU, map_add, map_mul, sq]
+    simp only [e]
+    rw [integral_add (eval_pow_integrable a 2) (eval_pow_integrable b 2), haa, hbb]
+    norm_num
+  · have e : nX √(m - 2) = 9 * m - 12 + LowerAnalytic.C6 * (m - 2) ^ ((3 : ℝ) / 2) := by
+      rw [rpow_three_halves (by linarith), nX,
+        show √(m - 2) ^ 3 = √(m - 2) ^ 2 * √(m - 2) by ring, hx2]
+      ring
+    rw [e]
+    exact h6
+
+variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+
+/-- **The Gaussian reduction discharges the law hypotheses of `SharedReduction`**: for the law of
+`|q|²` under the standard Gaussian measure, only the cap on `E|q|⁴`, the sixth-moment inequality,
+the scale, the gate variable and the row inequalities remain to be supplied. -/
+theorem sharedReduction_of_gaussian (rows : List Row) (V t : ℝ) (Qh v : E)
+    (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (hb : Chaos3 b)
+    (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2)
+    (hbb : ∫ x, eval x b ^ 2 ∂(stdGaussian d) = 1 / 2)
+    (hab : ∫ x, eval x a * eval x b ∂(stdGaussian d) = 0)
+    (hcap : ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) ≤ 2 + (xMax : ℝ) ^ 2)
+    (h6 : ∫ x, eval x (radU a b) ^ 3 ∂(stdGaussian d)
+      ≤ 9 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d)) - 12
+        + LowerAnalytic.C6 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2) ^ ((3 : ℝ) / 2))
+    (X1 X2 X3 : (Fin d → ℝ) → ℂ) (τ : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ ρ)
+    (hX : ∀ x, ‖X1 x‖ ^ 2 = τ ^ 2 * eval x (radU a b))
+    (hrows : ∀ r ∈ rows,
+      RowShared r (stdGaussian d) (fun x => eval x (radU a b)) X1 X2 X3 τ V t Qh v) :
+    SharedReduction rows V t Qh v :=
+  ⟨Fin d → ℝ, inferInstance, stdGaussian d, inferInstance, fun x => eval x (radU a b), X1, X2,
+    X3, τ, _, gaussian_moments a b ha hb haa hbb hab hcap h6,
+    gaussian_steinInputs a b ha hb haa hbb hab, hτ0, hτ1, hX, hrows⟩
+
+/-- **The finite-layer lower bound for a Gaussian residual**: `lower_bound_data` with the law
+hypotheses of `SharedReduction` discharged by the Gaussian lemmas. -/
+theorem lower_bound_gaussian (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤ t)
+    (ht1 : t ≤ 9 / 10) (hcrude : RowOf crudeRow V t Qh v)
+    (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (hb : Chaos3 b)
+    (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2)
+    (hbb : ∫ x, eval x b ^ 2 ∂(stdGaussian d) = 1 / 2)
+    (hab : ∫ x, eval x a * eval x b ∂(stdGaussian d) = 0)
+    (hcap : ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) ≤ 2 + (xMax : ℝ) ^ 2)
+    (h6 : ∫ x, eval x (radU a b) ^ 3 ∂(stdGaussian d)
+      ≤ 9 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d)) - 12
+        + LowerAnalytic.C6 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2) ^ ((3 : ℝ) / 2))
+    (X1 X2 X3 : (Fin d → ℝ) → ℂ) (τ : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ ρ)
+    (hX : ∀ x, ‖X1 x‖ ^ 2 = τ ^ 2 * eval x (radU a b))
+    (hrows : ∀ r ∈ rowData,
+      RowShared r (stdGaussian d) (fun x => eval x (radU a b)) X1 X2 X3 τ V t Qh v) :
+    V ≤ Bcap :=
+  lower_bound_data V t Qh v hv ht0 ht1 hcrude
+    (sharedReduction_of_gaussian rowData V t Qh v a b ha hb haa hbb hab hcap h6 X1 X2 X3 τ hτ0
+      hτ1 hX hrows)
+
+end Grothe.LowerAnalytic

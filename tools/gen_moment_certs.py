@@ -8,8 +8,9 @@ Writes
 Usage:  python3 -I tools/gen_moment_certs.py [ARCHIVE_DIR]
 ARCHIVE_DIR defaults to handoff/lower-moments and must contain local/split-moment-parameters.json and
 local/first-moment-4045313.json.  Every polynomial, Bernstein coefficient and cover is computed
-here in exact rational arithmetic (the subdivisions adaptively); the archive's first-moment leaves
-are compared against the recomputation.
+here in exact rational arithmetic (the subdivisions adaptively); the archive's first-moment
+polynomials are compared against the recomputation.  All covers are checked in Lean by
+`decide +kernel` (no `native_decide`).
 """
 import json
 import random
@@ -249,54 +250,51 @@ FM_POLY = {'q1poly': q1, 'Upoly': Up, 'gap8': gap8}
 FM_KEY = {'q1poly': 'beta_positive', 'Upoly': 'unsquared_sign', 'gap8': 'squared_gap'}
 FM_END = Q(31, 4)
 assert FM_END ** 2 > 60
-def fm_leaves(name):
-    p = FM_POLY[name]; c = fm['certificates'][FM_KEY[name]]
-    assert list(map(Q, c['polynomial'])) == p, name
-    leaves = []; right = Q(0)
-    for lo, hi, saved in c['cells']:
-        lo, hi, saved = Q(lo), Q(hi), Q(saved)
-        assert lo == right and lo < hi
-        cs = bern1(p, len(p) - 1, lo, hi)
-        assert min(cs) == saved and saved > 0
-        leaves.append((lo, hi, cs)); right = hi
-    assert right == FM_END
-    return leaves
+FM_EPS = Q(1, 10 ** 9)   # certified: p − FM_EPS ≥ 0 on [0, 31/4], hence p > 0
+for name in ('Upoly', 'gap8'):   # the archived polynomials agree with the recomputation
+    assert list(map(Q, fm['certificates'][FM_KEY[name]]['polynomial'])) == FM_POLY[name], name
 
-def leaf_lemma(name, unfold, var, deg, idx, l, h, cs):
-    c = min(cs)
-    for _ in range(3):
-        s = Q(random.randint(0, 97), 97); x = l + (h - l) * s
-        assert ev(FM_POLY[name], x) == sum(b * comb(deg, k) * s ** k * (1 - s) ** (deg - k) for k, b in enumerate(cs))
-    T = []
-    for k in range(deg + 1):
-        if k == 0: T.append(f"(1 - s) ^ {deg}")
-        elif k == deg: T.append(f"s ^ {deg}")
-        else:
-            sk = "s" if k == 1 else f"s ^ {k}"
-            T.append(f"{comb(deg, k)} * {sk} * (1 - s) ^ {deg - k}")
-    L = [f"lemma {name}_leaf{idx} ({var} : ℝ) (hl : {qr(l)} ≤ {var}) (hh : {var} ≤ {qr(h)}) :",
-         f"    {qr(c)} ≤ {name} {var} := by",
-         f"  obtain ⟨s, hs0, hs1, hv⟩ := exists_param hl hh (by norm_num)",
-         f"  have h1s : (0 : ℝ) ≤ 1 - s := by linarith"]
-    for k, t in enumerate(T):
-        L.append(f"  have T{k} : (0 : ℝ) ≤ {t} := by positivity")
-    L.append("  subst hv")
-    L.append(f"  simp only [{unfold}]")
-    hints = ", ".join(f"mul_nonneg (show (0 : ℝ) ≤ {qr(b)} - {qr(c)} by norm_num) T{k}" for k, b in enumerate(cs))
-    L.append(f"  linarith [{hints}]")
-    return "\n".join(L) + "\n\n", c
+def cover_theorems(name, unfold):
+    p = trim(FM_POLY[name]); n = len(p) - 1
+    M = [[p[0] - FM_EPS]] + [[v] for v in p[1:]]
+    tree = adaptive_tree1(M, n, Q(0), FM_END)
+    nl = len(check_tree(M, n, 0, tree, (Q(0), FM_END, Q(0), Q(1))))
+    print(name, 'leaves', nl)
+    return f"""/-- Coefficients of `{name} x − 1/10⁹`. -/
+def {name}M : List (List ℚ) :=
+  {mat_lean(M)}
 
-def pos_theorem(name, var, hi, leaves):
-    out = [f"theorem {name}_pos ({var} : ℝ) (h0 : 0 ≤ {var}) (h1 : {var} ≤ {qr(hi)}) : 0 < {name} {var} := by"]
-    prev = "h0"
-    for i, (l, h, c) in enumerate(leaves):
-        if i < len(leaves) - 1:
-            out.append(f"  rcases le_or_gt {var} {qr(h)} with hA{i} | hA{i}")
-            out.append(f"  · exact lt_of_lt_of_le (by norm_num) ({name}_leaf{i} {var} {prev} hA{i})")
-            prev = f"hA{i}.le"
-        else:
-            out.append(f"  exact lt_of_lt_of_le (by norm_num) ({name}_leaf{i} {var} {prev} h1)")
-    return "\n".join(out) + "\n\n"
+/-- Subdivision of `[0, 31/4]` ({nl} leaves). -/
+def {name}T : Cover :=
+  {tree_lean(tree)}
+
+theorem {name}_fits : fitsDeg {name}M {n} 0 = true := by decide
+
+theorem {name}_cover : coverOK {name}M {n} 0 {name}T 0 (31/4) 0 1 = true := by decide +kernel
+
+theorem {name}_eval (x : ℝ) : eval2 {name}M x 0 = {name} x - 1 / 1000000000 := by
+  simp only [eval2, {name}M, List.map_cons, List.map_nil, Lower.evalL]
+  simp only [{unfold}]
+  push_cast
+  ring
+
+theorem {name}_pos (x : ℝ) (h0 : 0 ≤ x) (h1 : x ≤ 31 / 4) : 0 < {name} x := by
+  have h := coverOK_sound _ _ _ {name}_fits _ _ _ _ _ {name}_cover x 0 (by push_cast; linarith)
+    (by push_cast; linarith) (by norm_num) (by norm_num)
+  rw [{name}_eval] at h
+  linarith
+
+"""
+
+Q1POS = """/-- `N − m² = 2 + 5x² + C₆x³ − x⁴ > 0`, since `x⁴ ≤ (31/4) x³ ≤ C₆ x³`. -/
+theorem q1poly_pos (x : ℝ) (h0 : 0 ≤ x) (h1 : x ≤ 31 / 4) : 0 < q1poly x := by
+  have h3 : 0 ≤ x ^ 3 := pow_nonneg h0 3
+  have h4 : x ^ 4 ≤ 31 / 4 * x ^ 3 := by
+    rw [pow_succ]; nlinarith [mul_le_mul_of_nonneg_left h1 h3]
+  simp only [q1poly, nX, mX, C6_eq]
+  nlinarith [sq_nonneg x]
+
+"""
 
 MOMENTS_HEADER = '''import Grothe.Lower.Moment
 import Grothe.LowerAnalytic.MomentLemma
@@ -317,12 +315,10 @@ For a normalized complex Gaussian cubic chaos `q` (`E|q|² = 1`) with `m = E|q|�
   `U² − 4(1−ρ²)²(N−m²)(m−1)` on `[0, 31/4]` (`q1poly_pos`, `Upoly_pos`, `gap8_pos`), giving
   `first_moment_lt_rho`.
 
-Each positivity statement is proved on a subdivision of the interval: on every leaf `[l, h]`
-the polynomial is rewritten in the Bernstein basis of `s = (x − l)/(h − l) ∈ [0, 1]`; since
-the Bernstein basis functions are nonnegative and sum to one, the polynomial is at least its
-smallest Bernstein coefficient, which is positive.  `linarith` verifies the Bernstein identity
-from the nonnegativity of the basis terms.  The square-root signs (`N − m² > 0`, `U > 0`) are
-established before the squared inequality is used.
+`N − m² > 0` is elementary; `U` and the squared gap are certified on `[0, 31/4]` by a
+subdivision with positive Bernstein coefficients of `p − 1/10⁹` on every leaf (`coverOK`,
+checked by the kernel).  The square-root signs (`N − m² > 0`, `U > 0`) are established before
+the squared inequality is used.
 -/
 
 namespace Grothe.LowerAnalytic
@@ -428,18 +424,8 @@ end Grothe.LowerAnalytic
 '''
 
 def gen_moments():
-    body = []
-    specs = [('q1poly', 'q1poly, nX, mX, C6_eq', 'x', 4),
-             ('Upoly', 'Upoly, nX, mX, C6_eq, rhoC_eq', 'x', 4),
-             ('gap8', 'gap8, Upoly, q1poly, nX, mX, C6_eq, rhoC_eq', 'x', 8)]
-    for name, unfold, var, deg in specs:
-        leaves = fm_leaves(name)
-        assert all(len(cs) == deg + 1 for _, _, cs in leaves)
-        lf = []
-        for i, (l, h, cs) in enumerate(leaves):
-            txt, c = leaf_lemma(name, unfold, var, deg, i, l, h, cs); body.append(txt); lf.append((l, h, c))
-        body.append(pos_theorem(name, var, FM_END, lf))
-        print(name, 'leaves', len(leaves))
+    body = [Q1POS, cover_theorems('Upoly', 'Upoly, nX, mX, C6_eq, rhoC_eq'),
+            cover_theorems('gap8', 'gap8, Upoly, q1poly, nX, mX, C6_eq, rhoC_eq')]
     (OUT / 'Moments.lean').write_text(MOMENTS_HEADER + "".join(body) + MOMENTS_FOOTER)
 
 # ---------------------------------------------------------------- SixthMomentData.lean
@@ -588,7 +574,7 @@ end
         w(f"/-- Coefficient matrix of {doc.split(' on ')[0]}. -/\ndef {cn}M : List (List ℚ) :=\n  {mat_lean(M)}\n")
         w(f"/-- Subdivision of the certificate box. -/\ndef {cn}T : Cover :=\n  {tree_lean(tree)}\n")
         w(f"theorem {cn}_fits : fitsDeg {cn}M {nx} {ny} = true := by decide\n")
-        w(f"theorem {cn}_cover : coverOK {cn}M {nx} {ny} {cn}T ({qq(xl)}) ({qq(xh)}) ({qq(yl)}) ({qq(yh)}) = true := by\n  native_decide\n")
+        w(f"theorem {cn}_cover : coverOK {cn}M {nx} {ny} {cn}T ({qq(xl)}) ({qq(xh)}) ({qq(yl)}) ({qq(yh)}) = true := by\n  decide +kernel\n")
         if len(vars_) == 1:
             v = vars_[0]
             stmt = f"eval2 {cn}M {v} 0 = {expr}"

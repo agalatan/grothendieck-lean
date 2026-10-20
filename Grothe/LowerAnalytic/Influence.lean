@@ -33,10 +33,9 @@ with `L compₖ = −k compₖ` (`comp2_eig`, `comp4_eig`, `comp6_eig`); `comp4 
 In complex notation this is `3κ = 4‖Π₁₁|q|²‖² + 2‖Π₂₀q²‖² + 2‖Π₂₂|q|²‖² + ‖Π₃₁q²‖²`; the real pair
 `(P, Q)` carries the complex norms without extra factors (checked on `q = X(|X|²−2)/√2`:
 `κ = 42, A = 9, B = 8, C = 25, D = 24`, and on `q = X₁(|X₂|²−1)`: `κ = 16, A = 5, B = 2,
-C = D = 8`).  The identity is the fluctuation identity of `Fluctuation.lean` (here in the scaled
-form `fluctuation_identity_scaled`) read through the chaos decomposition: `S − 3v = Π₄ + 2Π₂` of
-`U − v`, `A_rad = Π₄P + 2Π₂P`, `B_rad = Π₄Q + 2Π₂Q`, `J₄(a ± b) = Π₄(U−v) ± Π₄Q`, and chaos
-components of different order are `E`-orthogonal (`gE_eigen_orth`).  The fluctuation bound
+C = D = 8`).  The identity is the fluctuation identity of `Fluctuation.lean` read through the
+chaos decomposition: `S − 3v = Π₄ + 2Π₂` of `U − v`, `A_rad = Π₄P + 2Π₂P`,
+`B_rad = Π₄Q + 2Π₂Q`, `J₄(a ± b) = Π₄(U−v) ± Π₄Q`, and chaos components of different order are `E`-orthogonal (`gE_eigen_orth`).  The fluctuation bound
 `E(S−3v)² + ½E(A_rad² + B_rad²) ≤ 3κ` is `4A + C + 2B + ½D ≤ 3κ`, weaker than the identity.
 
 **The exact Stein slack** (`stein_slack`, `stein_energy_gap`): the chaos decompositions
@@ -76,12 +75,6 @@ namespace Grothe.LowerAnalytic
 noncomputable section
 
 variable {ι : Type*} [Fintype ι]
-
-lemma ouL_ofNat_mul (n : ℕ) [n.AtLeastTwo] (P : MvPolynomial ι ℝ) :
-    ouL ((OfNat.ofNat n : MvPolynomial ι ℝ) * P)
-      = (OfNat.ofNat n : MvPolynomial ι ℝ) * ouL P := by
-  change ouL ((n : MvPolynomial ι ℝ) * P) = (n : MvPolynomial ι ℝ) * ouL P
-  rw [← nsmul_eq_mul, map_nsmul, nsmul_eq_mul]
 
 lemma ouL_C_mul (c : ℝ) (P : MvPolynomial ι ℝ) : ouL (C c * P) = C c * ouL P := by
   rw [C_mul', C_mul', map_smul]
@@ -185,7 +178,7 @@ lemma proj_eq {G G2 G4 G6 : MvPolynomial ι ℝ} (h : G = G2 + G4 + G6) (h2 : ou
   have hL : ouL G = -(2 * G2) - 4 * G4 - 6 * G6 := by
     rw [h, map_add, map_add, h2, h4, h6]; ring
   have hLL : ouL (ouL G) = 4 * G2 + 16 * G4 + 36 * G6 := by
-    rw [hL, map_sub, map_sub, map_neg, ouL_ofNat_mul, ouL_ofNat_mul, ouL_ofNat_mul, h2, h4, h6]
+    rw [hL, map_sub, map_sub, map_neg, ofNat_mul_apply, ofNat_mul_apply, ofNat_mul_apply, h2, h4, h6]
     ring
   have c8 : (C 8 : MvPolynomial ι ℝ) = 8 := map_ofNat C 8
   have c4 : (C 4 : MvPolynomial ι ℝ) = 4 := map_ofNat C 4
@@ -218,7 +211,7 @@ lemma eigen_sub {X Y : MvPolynomial ι ℝ} (n : ℕ) [n.AtLeastTwo]
 lemma eigen_two_mul {X : MvPolynomial ι ℝ} (n : ℕ) [n.AtLeastTwo]
     (hX : ouL X = -((OfNat.ofNat n : MvPolynomial ι ℝ) * X)) :
     ouL (2 * X) = -((OfNat.ofNat n : MvPolynomial ι ℝ) * (2 * X)) := by
-  rw [ouL_ofNat_mul, hX]; ring
+  rw [ofNat_mul_apply, hX]; ring
 
 /-! ### Chaos components of a product -/
 
@@ -404,54 +397,6 @@ lemma proj_radQ (ha : Chaos3 a) (hb : Chaos3 b) (hab : E (a * b) = 0) :
   proj_eq (radQ_eq_comps E hab) (eigen_two_mul 2 (comp2_eig hE ha hb))
     (eigen_two_mul 4 (comp4_eig hE ha hb)) (eigen_two_mul 6 (comp6_eig hE ha hb))
 
-lemma ouL_proj2_radU (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
-    (hbb : E (b * b) = v / 2) :
-    ouL (proj2 (radU a b - C v)) = -(2 * proj2 (radU a b - C v)) := by
-  rw [(proj_radU hE ha hb haa hbb).1]
-  exact eigen_add 2 (comp2_eig hE ha ha) (comp2_eig hE hb hb)
-
-lemma ouL_proj4_radU (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
-    (hbb : E (b * b) = v / 2) :
-    ouL (proj4 (radU a b - C v)) = -(4 * proj4 (radU a b - C v)) := by
-  rw [(proj_radU hE ha hb haa hbb).2.1]
-  exact eigen_add 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb)
-
-lemma ouL_proj6_radU (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
-    (hbb : E (b * b) = v / 2) :
-    ouL (proj6 (radU a b - C v)) = -(6 * proj6 (radU a b - C v)) := by
-  rw [(proj_radU hE ha hb haa hbb).2.2]
-  exact eigen_add 6 (comp6_eig hE ha ha) (comp6_eig hE hb hb)
-
-lemma ouL_proj2_radP (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
-    (hbb : E (b * b) = v / 2) : ouL (proj2 (radP a b)) = -(2 * proj2 (radP a b)) := by
-  rw [(proj_radP hE ha hb haa hbb).1]
-  exact eigen_sub 2 (comp2_eig hE ha ha) (comp2_eig hE hb hb)
-
-lemma ouL_proj4_radP (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
-    (hbb : E (b * b) = v / 2) : ouL (proj4 (radP a b)) = -(4 * proj4 (radP a b)) := by
-  rw [(proj_radP hE ha hb haa hbb).2.1]
-  exact eigen_sub 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb)
-
-lemma ouL_proj6_radP (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
-    (hbb : E (b * b) = v / 2) : ouL (proj6 (radP a b)) = -(6 * proj6 (radP a b)) := by
-  rw [(proj_radP hE ha hb haa hbb).2.2]
-  exact eigen_sub 6 (comp6_eig hE ha ha) (comp6_eig hE hb hb)
-
-lemma ouL_proj2_radQ (ha : Chaos3 a) (hb : Chaos3 b) (hab : E (a * b) = 0) :
-    ouL (proj2 (radQ a b)) = -(2 * proj2 (radQ a b)) := by
-  rw [(proj_radQ hE ha hb hab).1]
-  exact eigen_two_mul 2 (comp2_eig hE ha hb)
-
-lemma ouL_proj4_radQ (ha : Chaos3 a) (hb : Chaos3 b) (hab : E (a * b) = 0) :
-    ouL (proj4 (radQ a b)) = -(4 * proj4 (radQ a b)) := by
-  rw [(proj_radQ hE ha hb hab).2.1]
-  exact eigen_two_mul 4 (comp4_eig hE ha hb)
-
-lemma ouL_proj6_radQ (ha : Chaos3 a) (hb : Chaos3 b) (hab : E (a * b) = 0) :
-    ouL (proj6 (radQ a b)) = -(6 * proj6 (radQ a b)) := by
-  rw [(proj_radQ hE ha hb hab).2.2]
-  exact eigen_two_mul 6 (comp6_eig hE ha hb)
-
 /-! ### The chaos decompositions of `Γ(q,q̄)` and `Γ(q,q)` -/
 
 /-- `Γ(q,q̄) − 3v = 2Π₂(U−v) + Π₄(U−v)`: the sixth chaos drops out of `radS`. -/
@@ -503,8 +448,10 @@ theorem var_radS (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
     E ((radS a b - C (3 * v)) * (radS a b - C (3 * v)))
       = 4 * E (proj2 (radU a b - C v) * proj2 (radU a b - C v))
         + E (proj4 (radU a b - C v) * proj4 (radU a b - C v)) := by
-  rw [radS_eq_proj hE ha hb haa hbb]
-  exact gE_two_proj_add_sq hE (ouL_proj2_radU hE ha hb haa hbb) (ouL_proj4_radU hE ha hb haa hbb)
+  obtain ⟨p2, p4, -⟩ := proj_radU hE ha hb haa hbb
+  rw [radS_eq_proj hE ha hb haa hbb, p2, p4]
+  exact gE_two_proj_add_sq hE (eigen_add 2 (comp2_eig hE ha ha) (comp2_eig hE hb hb))
+    (eigen_add 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb))
 
 /-- `E(radA² + radB²) = 4B + D`. -/
 theorem gE_radA_radB (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
@@ -512,68 +459,16 @@ theorem gE_radA_radB (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
     E (radA a b * radA a b) + E (radB a b * radB a b)
       = 4 * (E (proj2 (radP a b) * proj2 (radP a b)) + E (proj2 (radQ a b) * proj2 (radQ a b)))
         + (E (proj4 (radP a b) * proj4 (radP a b)) + E (proj4 (radQ a b) * proj4 (radQ a b))) := by
-  rw [radA_eq_proj hE ha hb haa hbb, radB_eq_proj hE ha hb hab,
-    gE_two_proj_add_sq hE (ouL_proj2_radP hE ha hb haa hbb) (ouL_proj4_radP hE ha hb haa hbb),
-    gE_two_proj_add_sq hE (ouL_proj2_radQ hE ha hb hab) (ouL_proj4_radQ hE ha hb hab)]
+  obtain ⟨p2, p4, -⟩ := proj_radP hE ha hb haa hbb
+  obtain ⟨q2, q4, -⟩ := proj_radQ hE ha hb hab
+  rw [radA_eq_proj hE ha hb haa hbb, radB_eq_proj hE ha hb hab, p2, p4, q2, q4,
+    gE_two_proj_add_sq hE (eigen_sub 2 (comp2_eig hE ha ha) (comp2_eig hE hb hb))
+      (eigen_sub 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb)),
+    gE_two_proj_add_sq hE (eigen_two_mul 2 (comp2_eig hE ha hb))
+      (eigen_two_mul 4 (comp4_eig hE ha hb))]
   ring
 
 /-! ### The quartic identity -/
-
-/-- **The fluctuation identity**, scaled: for a pair in the third chaos with `E a² = E b² = v/2`,
-`E ab = 0` (the case `v = 1` is `fluctuation_identity`). -/
-theorem fluctuation_identity_scaled (ha : Chaos3 a) (hb : Chaos3 b)
-    (haa : E (a * a) = v / 2) (hbb : E (b * b) = v / 2) (hab : E (a * b) = 0) :
-    12 * (E (radU a b * radU a b) - 2 * v ^ 2)
-      - 4 * E ((radS a b - C (3 * v)) * (radS a b - C (3 * v)))
-      - 2 * (E (radA a b * radA a b) + E (radB a b * radB a b))
-      = 4 * E (J4 E a * J4 E a) + E (J4 E (a + b) * J4 E (a + b))
-        + 4 * E (J4 E b * J4 E b) + E (J4 E (b - a) * J4 E (b - a)) := by
-  have Ra := chaos3_remainder hE ha
-  have Rb := chaos3_remainder hE hb
-  have Rp := chaos3_remainder hE (ha.add hb)
-  have Rm := chaos3_remainder hE (ha.sub hb)
-  have sp : E ((a + b) * (a + b)) = v := by
-    rw [show (a + b) * (a + b) = a * a + 2 * (a * b) + b * b by ring, map_add, map_add,
-      ofNat_mul_apply, haa, hbb, hab]
-    ring
-  have sm : E ((b - a) * (b - a)) = v := by
-    rw [show (b - a) * (b - a) = a * a - 2 * (a * b) + b * b by ring, map_add, map_sub,
-      ofNat_mul_apply, haa, hbb, hab]
-    ring
-  have hp := ha.gE_gam hE
-  rw [haa] at hp
-  have hq := hb.gE_gam hE
-  rw [hbb] at hq
-  have hr : E (gam a b) = 0 := by rw [hb.gE_gam_cross hE, hab, mul_zero]
-  rw [gE_sub_C_sq hE, haa, hp] at Ra
-  rw [gE_sub_C_sq hE, hbb, hq] at Rb
-  rw [gE_sub_C_sq hE, sp, gam_add_self,
-    show (gam a a + 2 * gam a b + gam b b) * (gam a a + 2 * gam a b + gam b b)
-        = gam a a * gam a a + 4 * (gam a b * gam a b) + gam b b * gam b b
-          + 4 * (gam a a * gam a b) + 2 * (gam a a * gam b b) + 4 * (gam b b * gam a b) by ring,
-    show (a + b) * (a + b) * ((a + b) * (a + b))
-        = a * a * (a * a) + 4 * (a * a * (a * b)) + 6 * (a * a * (b * b))
-          + 4 * (a * b * (b * b)) + b * b * (b * b) by ring] at Rp
-  rw [gE_sub_C_sq hE, sm, gam_sub_self,
-    show (gam a a - 2 * gam a b + gam b b) * (gam a a - 2 * gam a b + gam b b)
-        = gam a a * gam a a + 4 * (gam a b * gam a b) + gam b b * gam b b
-          - 4 * (gam a a * gam a b) + 2 * (gam a a * gam b b) - 4 * (gam b b * gam a b) by ring,
-    show (b - a) * (b - a) * ((b - a) * (b - a))
-        = a * a * (a * a) - 4 * (a * a * (a * b)) + 6 * (a * a * (b * b))
-          - 4 * (a * b * (b * b)) + b * b * (b * b) by ring] at Rm
-  simp only [map_add, map_sub, ofNat_mul_apply E 2, ofNat_mul_apply E 4, ofNat_mul_apply E 6,
-    hp, hq, hr] at Rp Rm
-  rw [gE_sub_C_sq hE (radS a b) (3 * v)]
-  unfold radU radS radA radB
-  rw [show (a * a + b * b) * (a * a + b * b)
-        = a * a * (a * a) + 2 * (a * a * (b * b)) + b * b * (b * b) by ring,
-    show (gam a a + gam b b) * (gam a a + gam b b)
-        = gam a a * gam a a + 2 * (gam a a * gam b b) + gam b b * gam b b by ring,
-    show (gam a a - gam b b) * (gam a a - gam b b)
-        = gam a a * gam a a - 2 * (gam a a * gam b b) + gam b b * gam b b by ring,
-    show 2 * gam a b * (2 * gam a b) = 4 * (gam a b * gam a b) by ring]
-  simp only [map_add, map_sub, ofNat_mul_apply E 2, ofNat_mul_apply E 4, hp, hq]
-  linarith
 
 /-- `J₄(a + b) = Π₄(U−v) + Π₄Q` and `J₄(b − a) = Π₄(U−v) − Π₄Q`. -/
 lemma J4_add_sub_eq_proj (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 2)
@@ -581,14 +476,7 @@ lemma J4_add_sub_eq_proj (ha : Chaos3 a) (hb : Chaos3 b) (haa : E (a * a) = v / 
     J4 E (a + b) = proj4 (radU a b - C v) + proj4 (radQ a b)
       ∧ J4 E (b - a) = proj4 (radU a b - C v) - proj4 (radQ a b) := by
   rw [(proj_radU hE ha hb haa hbb).2.1, (proj_radQ hE ha hb hab).2.1]
-  have sp : E ((a + b) * (a + b)) = v := by
-    rw [show (a + b) * (a + b) = a * a + 2 * (a * b) + b * b by ring, map_add, map_add,
-      ofNat_mul_apply, haa, hbb, hab]
-    ring
-  have sm : E ((b - a) * (b - a)) = v := by
-    rw [show (b - a) * (b - a) = a * a - 2 * (a * b) + b * b by ring, map_add, map_sub,
-      ofNat_mul_apply, haa, hbb, hab]
-    ring
+  obtain ⟨sp, sm⟩ := gE_add_sub_sq haa hbb hab
   have h3 : (C (3 * v) : MvPolynomial ι ℝ) = 2 * C (3 * (v / 2)) := by
     rw [← C_two_mul]; congr 1; ring
   have h30 : (C (3 * 0) : MvPolynomial ι ℝ) = 0 := by rw [mul_zero, C_0]
@@ -610,7 +498,7 @@ theorem quartic_identity (ha : Chaos3 a) (hb : Chaos3 b)
         + 2 * (E (proj2 (radP a b) * proj2 (radP a b)) + E (proj2 (radQ a b) * proj2 (radQ a b)))
         + 2 * E (proj4 (radU a b - C v) * proj4 (radU a b - C v))
         + (E (proj4 (radP a b) * proj4 (radP a b)) + E (proj4 (radQ a b) * proj4 (radQ a b))) := by
-  have F := fluctuation_identity_scaled hE ha hb haa hbb hab
+  have F := fluctuation_identity hE ha hb haa hbb hab
   have f1 := var_radS hE ha hb haa hbb
   have f2 := gE_radA_radB hE ha hb haa hbb hab
   obtain ⟨hJp, hJm⟩ := J4_add_sub_eq_proj hE ha hb haa hbb hab
