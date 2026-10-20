@@ -1,4 +1,4 @@
-import Grothe.Lower.PSD
+import Grothe.Lower.Law
 
 /-!
 # The retained gate square and its completion with a fixed first coordinate
@@ -16,19 +16,32 @@ square over `(X₂, X₃)` gives the pointwise lower bound
   `G(X) ≥ (N₁₁ + 2g₁ − wᵀ M⁻¹ w) |p|²`,  `w = (N₁₂ + g₂, N₁₃ + g₃)`,  `M` the trailing block
 
 (`gateForm_ge`, `gatePrice`), valid whenever the trailing `2×2` block is positive definite
-(`gateOK`).
+(`gateOK`); integrated against a law with `|X₁|² = τ² U`, `E U = 1`, it is at least
+`gatePrice · τ²` (`gate_integral_ge`).
 -/
 
+open MeasureTheory
+
 namespace Grothe.Lower
+
+/-- A symmetric `3×3` rational matrix (upper triangle). -/
+structure Sym3 where
+  m11 : ℚ
+  m12 : ℚ
+  m13 : ℚ
+  m22 : ℚ
+  m23 : ℚ
+  m33 : ℚ
+
+/-- `M − diag(a, b, c)`. -/
+def Sym3.subDiag (M : Sym3) (a b c : ℚ) : Sym3 :=
+  { M with m11 := M.m11 - a, m22 := M.m22 - b, m33 := M.m33 - c }
 
 /-- `Re(conj a · b)`, the real inner product of two complex numbers. -/
 def hre (a b : ℂ) : ℝ := (starRingEnd ℂ a * b).re
 
 lemma hre_eq (a b : ℂ) : hre a b = a.re * b.re + a.im * b.im := by
   simp [hre, Complex.mul_re]
-
-lemma hre_self (a : ℂ) : hre a a = Complex.normSq a := by
-  rw [hre_eq, Complex.normSq_apply]
 
 /-- The gate form `X*N X + 2 Re(conj X₁ · (g·X))` of a real symmetric `N` and a real `g`. -/
 def gateForm (N : Sym3) (g1 g2 g3 : ℚ) (X1 X2 X3 : ℂ) : ℝ :=
@@ -100,6 +113,19 @@ theorem gateForm_ge (N : Sym3) (g1 g2 g3 : ℚ) (hok : gateOK N = true) (X1 X2 X
   push_cast
   nlinarith [hre_part, him_part]
 
-/-! ### The gate form of a row -/
+/-- The integrated gate form is at least `gatePrice · τ²` when `|X₁|² = τ² U`. -/
+lemma gate_integral_ge {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} {U : Ω → ℝ} {x : ℝ}
+    (N : Sym3) (g1 g2 g3 : ℚ) (hok : gateOK N = true) (X1 X2 X3 : Ω → ℂ) (τ : ℝ)
+    (hX : ∀ ω, ‖X1 ω‖ ^ 2 = τ ^ 2 * U ω) (hM : Moments μ U x)
+    (hint : Integrable (fun ω => gateForm N g1 g2 g3 (X1 ω) (X2 ω) (X3 ω)) μ) :
+    (gatePrice N g1 g2 g3 : ℝ) * τ ^ 2 ≤ ∫ ω, gateForm N g1 g2 g3 (X1 ω) (X2 ω) (X3 ω) ∂μ := by
+  have hpt : ∀ ω, (gatePrice N g1 g2 g3 : ℝ) * τ ^ 2 * U ω
+      ≤ gateForm N g1 g2 g3 (X1 ω) (X2 ω) (X3 ω) := by
+    intro ω
+    have := gateForm_ge N g1 g2 g3 hok (X1 ω) (X2 ω) (X3 ω)
+    rw [Complex.normSq_eq_norm_sq, hX ω] at this
+    linarith
+  have := integral_mono (hM.i1.const_mul _) hint hpt
+  rwa [integral_const_mul, hM.m1, mul_one] at this
 
 end Grothe.Lower

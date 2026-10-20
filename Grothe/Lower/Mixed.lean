@@ -1,5 +1,4 @@
 import Grothe.Lower.Rows
-import Grothe.Lower.Gate
 
 /-!
 # Mixed potentials: common-law node bounds, chords in `τ`, and the mixed node tables
@@ -9,10 +8,7 @@ potential of a mixture of two rows with weights `(1−θ, θ)` is
 
   `F_λ(s) = (1−θ) Ψᵢ(δᵢ s) + θ Ψⱼ(δⱼ s)`,
 
-convex and known through the node caps of its components.  `TB μ U Φ τ val` records a bound
-`E Φ(τ√U) ≤ val` through an integrable pointwise majorant; it is produced at a node by a Stein
-node certificate (`TB.node`), at `τ = 0` by the zero cap (`TB.zero`), transported along `τ` by
-convexity (`TB.chord`) and mixed with nonnegative weights (`TB.mix`).  A `TNode` is a certified
+convex and known through the node caps of its components.  A `TNode` is a certified
 `τ`-node `(τ, P)` with `E Φ(τ√U) ≤ P.J 0 1 x` for the row's or the mixture's potential, either a
 Stein node of a source row rescaled to `τ = σ/δ` (`rowTNode`) or one of the new exact node
 certificates for the mixed table (`JBatch`, `checkBatch`, `batch_sound`); `capAt`/`capsHold_mix`
@@ -22,93 +18,6 @@ build the node caps of `F_λ` from those of its components.
 open MeasureTheory
 
 namespace Grothe.Lower
-
-/-! ### Integrable majorants at a scale -/
-
-section tb
-
-variable {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ] {U : Ω → ℝ}
-  {x : ℝ}
-
-/-- `E Φ(τ√U) ≤ val`, witnessed by an integrable pointwise majorant. -/
-def TB (μ : Measure Ω) (U : Ω → ℝ) (Φ : ℝ → ℝ) (τ val : ℝ) : Prop :=
-  ∃ B : Ω → ℝ, Integrable B μ ∧ (∀ ω, Φ (τ * √(U ω)) ≤ B ω) ∧ ∫ ω, B ω ∂μ ≤ val
-
-variable {μ}
-
-omit [IsProbabilityMeasure μ] in
-lemma TB.integral {Φ : ℝ → ℝ} {τ val : ℝ} (h : TB μ U Φ τ val)
-    (hf : Integrable (fun ω => Φ (τ * √(U ω))) μ) : ∫ ω, Φ (τ * √(U ω)) ∂μ ≤ val := by
-  obtain ⟨B, hB, hle, hv⟩ := h
-  exact (integral_mono hf hB hle).trans hv
-
-omit [IsProbabilityMeasure μ] in
-lemma TB.mono {Φ : ℝ → ℝ} {τ val val' : ℝ} (h : TB μ U Φ τ val) (hv : val ≤ val') :
-    TB μ U Φ τ val' := by
-  obtain ⟨B, hB, hle, hval⟩ := h
-  exact ⟨B, hB, hle, hval.trans hv⟩
-
-/-- The zero node: `Φ(0) ≤ c`. -/
-lemma TB.zero {Φ : ℝ → ℝ} (c : ℝ) (h : Φ 0 ≤ c) : TB μ U Φ 0 c :=
-  ⟨fun _ => c, integrable_const c, fun ω => by simpa using h, by
-    rw [integral_const, probReal_univ, one_smul]⟩
-
-/-- A Stein node: a polynomial majorant of `Φ(τ v)` plus a nonnegative combination of cuts. -/
-lemma TB.node {Φ : ℝ → ℝ} (hM : Moments μ U x) (hS : SteinCut μ U) (vs : List ℚ)
-    (hvs : meshOK 0 vs = true) (cs : List (ℚ × List ℚ)) (hcs : ∀ c ∈ cs, 0 ≤ c.1) (y : MPoly)
-    (h1 : 0 ≤ y.a1) (h6 : 0 ≤ y.a6) (τ : ℝ)
-    (hpt : ∀ v : ℝ, 0 ≤ v → Φ (τ * v) + cutSum vs cs v ≤ evalL (y.list.map ((↑) : ℚ → ℝ)) v) :
-    TB μ U Φ τ (y.J 0 1 x) := by
-  obtain ⟨hi, hv⟩ := node_fn μ hM hS vs hvs y h1 h6 cs hcs
-  exact ⟨_, hi, fun ω => by have := hpt _ (Real.sqrt_nonneg (U ω)); linarith, hv⟩
-
-omit [IsProbabilityMeasure μ] in
-/-- Convexity in `τ`: the chord of two node bounds. -/
-lemma TB.chord {Φ : ℝ → ℝ} (hconv : ConvexOn ℝ (Set.Ici 0) Φ) (τ0 τ1 s v0 v1 : ℝ)
-    (h0 : 0 ≤ τ0) (h01 : τ0 < τ1) (hs0 : τ0 ≤ s) (hs1 : s ≤ τ1)
-    (hT0 : TB μ U Φ τ0 v0) (hT1 : TB μ U Φ τ1 v1) :
-    TB μ U Φ s ((τ1 - s) / (τ1 - τ0) * v0 + (s - τ0) / (τ1 - τ0) * v1) := by
-  obtain ⟨B0, hB0, hle0, hv0⟩ := hT0
-  obtain ⟨B1, hB1, hle1, hv1⟩ := hT1
-  have hd : 0 < τ1 - τ0 := by linarith
-  obtain ⟨lam, hlam⟩ : ∃ lam : ℝ, lam = (s - τ0) / (τ1 - τ0) := ⟨_, rfl⟩
-  have l0 : 0 ≤ lam := by rw [hlam]; exact div_nonneg (by linarith) hd.le
-  have l1 : lam ≤ 1 := by rw [hlam, div_le_one hd]; linarith
-  have hs : (1 - lam) * τ0 + lam * τ1 = s := by rw [hlam]; field_simp; ring
-  have hw : (τ1 - s) / (τ1 - τ0) = 1 - lam := by rw [hlam]; field_simp; ring
-  rw [hw, ← hlam]
-  refine ⟨fun ω => (1 - lam) * B0 ω + lam * B1 ω, (hB0.const_mul _).add (hB1.const_mul _),
-    fun ω => ?_, ?_⟩
-  · have hsq := Real.sqrt_nonneg (U ω)
-    have hcv := hconv.2 (Set.mem_Ici.2 (mul_nonneg h0 hsq))
-      (Set.mem_Ici.2 (mul_nonneg (h0.trans h01.le) hsq)) (by linarith : 0 ≤ 1 - lam) l0
-      (by ring : (1 - lam) + lam = 1)
-    simp only [smul_eq_mul] at hcv
-    have e : (1 - lam) * (τ0 * √(U ω)) + lam * (τ1 * √(U ω)) = s * √(U ω) := by
-      rw [← hs]; ring
-    rw [e] at hcv
-    have a := mul_le_mul_of_nonneg_left (hle0 ω) (by linarith : 0 ≤ 1 - lam)
-    have b := mul_le_mul_of_nonneg_left (hle1 ω) l0
-    linarith
-  · rw [integral_add (hB0.const_mul _) (hB1.const_mul _), integral_const_mul, integral_const_mul]
-    nlinarith [mul_le_mul_of_nonneg_left hv0 (by linarith : 0 ≤ 1 - lam),
-      mul_le_mul_of_nonneg_left hv1 l0]
-
-omit [IsProbabilityMeasure μ] in
-/-- Mixing two potentials with nonnegative weights at the same scale. -/
-lemma TB.mix {Φ0 Φ1 : ℝ → ℝ} (w0 w1 : ℝ) (hw0 : 0 ≤ w0) (hw1 : 0 ≤ w1) {s v0 v1 : ℝ}
-    (hT0 : TB μ U Φ0 s v0) (hT1 : TB μ U Φ1 s v1) :
-    TB μ U (fun r => w0 * Φ0 r + w1 * Φ1 r) s (w0 * v0 + w1 * v1) := by
-  obtain ⟨B0, hB0, hle0, hv0⟩ := hT0
-  obtain ⟨B1, hB1, hle1, hv1⟩ := hT1
-  refine ⟨fun ω => w0 * B0 ω + w1 * B1 ω, (hB0.const_mul _).add (hB1.const_mul _), fun ω => ?_, ?_⟩
-  · have a := mul_le_mul_of_nonneg_left (hle0 ω) hw0
-    have b := mul_le_mul_of_nonneg_left (hle1 ω) hw1
-    linarith
-  · rw [integral_add (hB0.const_mul _) (hB1.const_mul _), integral_const_mul, integral_const_mul]
-    nlinarith [mul_le_mul_of_nonneg_left hv0 hw0, mul_le_mul_of_nonneg_left hv1 hw1]
-
-end tb
 
 /-! ### Convexity -/
 
@@ -120,15 +29,6 @@ lemma convexOn_scale {f : ℝ → ℝ} (hf : ConvexOn ℝ (Set.Ici 0) f) (δ : �
   simp only [smul_eq_mul] at this ⊢
   convert this using 2
   ring
-
-lemma convexOn_sub_const {f : ℝ → ℝ} (hf : ConvexOn ℝ (Set.Ici 0) f) (c : ℝ) :
-    ConvexOn ℝ (Set.Ici 0) fun s => f s - c := by
-  refine ⟨convex_Ici 0, fun s hs t ht a b ha hb hab => ?_⟩
-  have := hf.2 hs ht ha hb hab
-  simp only [smul_eq_mul] at this ⊢
-  have e : a * (f s - c) + b * (f t - c) = a * f s + b * f t - (a + b) * c := by ring
-  rw [hab] at e
-  linarith
 
 lemma convexOn_mix {f g : ℝ → ℝ} (hf : ConvexOn ℝ (Set.Ici 0) f) (hg : ConvexOn ℝ (Set.Ici 0) g)
     (w0 w1 : ℝ) (hw0 : 0 ≤ w0) (hw1 : 0 ≤ w1) :
@@ -317,50 +217,16 @@ def rowTNode (r : Row) : Option (ℕ × ℕ) → Option TNode
       | none => none
       | some n => some ⟨n.sigma / r.delta, n.y⟩
 
-lemma chainOK_node (nodes : List (ℚ × ℚ)) (smax : ℚ) (vs : List ℚ)
-    (table : List (List (List ℚ))) (kap cap xlo xhi : ℚ) :
-    ∀ (rest : List SNode) (p n : SNode),
-      chainOK nodes smax vs table kap cap xlo xhi p rest = true → n ∈ rest →
-      checkNode nodes smax vs table n = true
-  | [], _, _, _, hn => absurd hn (List.not_mem_nil)
-  | m :: rest, p, n, h, hn => by
-    simp only [chainOK, Bool.and_eq_true] at h
-    obtain ⟨⟨hm, _⟩, hrest⟩ := h
-    rcases List.mem_cons.1 hn with rfl | hn
-    · exact hm
-    · exact chainOK_node nodes smax vs table kap cap xlo xhi rest m n hrest hn
-
-lemma cell_node (nodes : List (ℚ × ℚ)) (smax : ℚ) (vs : List ℚ) (kap cap stop : ℚ) (c : XCell)
-    (h : checkCell nodes smax vs kap cap stop c = true) (n : SNode) (hn : n ∈ c.nodes) :
-    checkNode nodes smax vs (c.bank.map (cutPolys vs)) n = true := by
-  simp only [checkCell, Bool.and_eq_true] at h
-  obtain ⟨_, hnodes⟩ := h
-  cases hc : c.nodes with
-  | nil => rw [hc] at hn; simp at hn
-  | cons m rest =>
-    rw [hc] at hnodes hn
-    simp only [Bool.and_eq_true] at hnodes
-    obtain ⟨⟨⟨_, hm⟩, hchain⟩, _⟩ := hnodes
-    rcases List.mem_cons.1 hn with rfl | hn
-    · exact hm
-    · exact chainOK_node _ _ _ _ _ _ _ _ rest m n hchain hn
-
 /-- Every Stein node of a checked row passes its node check, and the mesh is valid. -/
 lemma checkRow_node (r : Row) (h : checkRow r = true) :
-    meshOK 0 r.vs = true ∧ ∀ c ∈ r.cellList, ∀ n ∈ c.nodes,
+    0 < r.delta ∧ meshOK 0 r.vs = true ∧ ∀ c ∈ r.cellList, ∀ n ∈ c.nodes,
       checkNode r.nodeList r.smax r.vs (c.bank.map (cutPolys r.vs)) n = true := by
-  simp only [checkRow, Bool.and_eq_true, decide_eq_true_eq, Bool.not_eq_true',
-    List.isEmpty_eq_false_iff] at h
-  obtain ⟨⟨⟨⟨⟨_, hmesh⟩, _⟩, _⟩, _⟩, hcells⟩ := h
-  refine ⟨hmesh, fun c hc n hn => ?_⟩
-  have hmem : Task.spawn (fun _ =>
-      checkCell r.nodeList r.smax r.vs r.kappa r.cap (r.delta * ρ) c) ∈
-      r.cellList.map fun c => Task.spawn fun _ =>
-        checkCell r.nodeList r.smax r.vs r.kappa r.cap (r.delta * ρ) c :=
-    List.mem_map.2 ⟨c, hc, rfl⟩
-  have hcell : checkCell r.nodeList r.smax r.vs r.kappa r.cap (r.delta * ρ) c = true :=
-    List.all_eq_true.1 hcells _ hmem
-  exact cell_node _ _ _ _ _ _ c hcell n hn
+  simp only [checkRow, allPar_eq, Bool.and_eq_true, decide_eq_true_eq, List.all_eq_true] at h
+  obtain ⟨⟨⟨⟨⟨hδ, -⟩, -⟩, hmesh⟩, -⟩, hcells⟩ := h
+  refine ⟨hδ, hmesh, fun c hc n hn => ?_⟩
+  have := hcells c hc
+  simp only [checkCell, Bool.and_eq_true, List.all_eq_true] at this
+  exact this.2 n hn
 
 section rownodes
 
@@ -373,9 +239,8 @@ lemma rowTNode_sound (r : Row) (hr : checkRow r = true) {Ψ : ℝ → ℝ}
     (hΨ : CapsHold (fun s => Ψ s - capPad) r.nodeList r.smax) (hM : Moments μ U x)
     (hS : SteinCut μ U) (ref : Option (ℕ × ℕ)) (tn : TNode) (h : rowTNode r ref = some tn) :
     TNodeOK μ U x (fun s => Ψ (r.delta * s) - capPad) tn := by
-  have hδ : 0 < r.delta := (rowBound_of_check r hr).1.delta_pos
+  obtain ⟨hδ, hmesh, hnodes⟩ := checkRow_node r hr
   have hδR : (0 : ℝ) < r.delta := by exact_mod_cast hδ
-  obtain ⟨hmesh, hnodes⟩ := checkRow_node r hr
   cases ref with
   | none =>
     simp only [rowTNode, zeroNode] at h
