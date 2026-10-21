@@ -28,7 +28,8 @@ the scalar certificate `cumulant_bound` of `SixthMoment.lean`.
   formalised**: the two Wick identities for `κ₄`, `κ₆` and the eleven charge-sector inequalities
   (sums of squares, block traces, the coupled `G` test, the charge split).  Everything else
   `cumulant_bound` needs (positivity, `s > 0`, the two Cauchy–Schwarz bounds `‖U‖² ≤ √s √T₄`,
-  `⟨D, U⟩ ≤ √V √‖U‖²`) is proved here.
+  `⟨D, U⟩ ≤ √V √‖U‖²`) is proved here.  `tools/check_tensor_facts.py` checks every field
+  numerically on random circular cubics with these exact definitions.
 * `sixth_moment_circular`: for a circular pair with `E a² = 1/2` and `TensorFacts E J a`,
   `E U³ ≤ 9m − 12 + C₆ (m − 2)^{3/2}`.
 * Under the standard Gaussian measure (`Circular.gaussian_mul`, `Circular.gaussian_sq_eq`,

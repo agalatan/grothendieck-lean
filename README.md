@@ -186,7 +186,7 @@ no warnings.
 | `Grothe/Lower/` | positivity certificates, Stein cuts, rows, mixtures and boxes, the one cover of t ∈ [0, 9/10], the transfer to finite matrices, final theorems |
 | `Grothe/Lower/RowData*.lean`, `Grothe/Upper/Data.lean` | generated certificate data |
 | `Grothe/LowerAnalytic/` | analytic lemmas: Gaussian integration by parts, fluctuation bound, fourth-moment cap, moment certificates, circular cubics and the sixth-moment reduction (`Circular.lean`), the bridge `lower_bound_gaussian` |
-| `tools/` | generators of the data modules from the research archives |
+| `tools/` | generators of the data modules from the research archives; `check_tensor_facts.py` checks the `TensorFacts` fields of `Circular.lean` numerically |
 | `scratch/Axioms.lean`, `scripts/check_axioms.py` | the axiom report and its check |
 
 ## Building
