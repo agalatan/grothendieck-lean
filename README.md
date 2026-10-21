@@ -143,9 +143,10 @@ splitting and the explicit potentials) is the main missing piece of the lower bo
   Gaussian chaos with E a² = E b² = ½ and E ab = 0, the law of U = a² + b² under the standard Gaussian
   measure satisfies them (`Grothe.LowerAnalytic.gaussian_steinInputs`).
   `Grothe.LowerAnalytic.lower_bound_gaussian` instantiates `lower_bound_data` with this law and
-  discharges E U = 1, the integrability conditions, E U² ≥ 2, E√U ≤ ρ (derived from the other moment
-  fields by `moments_of_three`) and both Stein inputs. Still assumed there: the cap E U² ≤ 2 + (31/4)²,
-  the sixth-moment bound E U³ ≤ 9m − 12 + C₆(m − 2)^{3/2}, the gate variable and the per-row reduction
+  discharges E U = 1, the integrability conditions, E U² ≥ 2, the cap E U² ≤ 62 ≤ 2 + (31/4)²
+  (`gaussian_radU_cap`: E F⁴ ≤ 93 (E F²)² for every real third-chaos F, applied to a, b, a ± b),
+  E√U ≤ ρ (derived from the other moment fields by `moments_of_three`) and both Stein inputs. Still
+  assumed there: the sixth-moment bound E U³ ≤ 9m − 12 + C₆(m − 2)^{3/2}, the gate variable and the per-row reduction
   (`RowShared`), and the crude row. `sixth_moment_complex` derives the sixth-moment bound from a
   cumulant bound, which is itself a hypothesis; it is not proved for the Gaussian law.
 * Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma, the
@@ -172,7 +173,7 @@ no warnings.
 | `GrotheKernel/` | the fixed-point interval evaluator used by the head check |
 | `Grothe/Lower/` | positivity certificates, Stein cuts, rows, mixtures and boxes, the one cover of t ∈ [0, 9/10], the transfer to finite matrices, final theorems |
 | `Grothe/Lower/RowData*.lean`, `Grothe/Upper/Data.lean` | generated certificate data |
-| `Grothe/LowerAnalytic/` | analytic lemmas: Gaussian integration by parts, fluctuation bound, moment certificates, the bridge `lower_bound_gaussian` |
+| `Grothe/LowerAnalytic/` | analytic lemmas: Gaussian integration by parts, fluctuation bound, fourth-moment cap, moment certificates, the bridge `lower_bound_gaussian` |
 | `tools/` | generators of the data modules from the research archives |
 | `scratch/Axioms.lean`, `scripts/check_axioms.py` | the axiom report and its check |
 
