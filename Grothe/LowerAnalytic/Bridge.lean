@@ -2,26 +2,31 @@ import Grothe.Lower.RowCheck
 import Grothe.LowerAnalytic.SixthMoment
 import Grothe.LowerAnalytic.RadialCut
 import Grothe.LowerAnalytic.FourthMoment
+import Grothe.LowerAnalytic.Circular
 
 /-!
 # From the Gaussian lemmas to the hypotheses of `lower_bound_data`
 
 `lower_bound_data` is stated for an abstract law `U` packaged in `SharedReduction`, which asks
 for `Moments μ U x` and `SteinInputs μ U`.  This file instantiates both for the law of
-`U = a² + b² = |q|²` under the standard Gaussian measure, `q = a + ib` a normalized cubic chaos
-(`Chaos3 a`, `Chaos3 b`, `E a² = E b² = 1/2`, `E ab = 0`), and states the lower bound with only
-the genuinely open Gaussian facts left as hypotheses.
+`U = a² + b² = |q|²` under the standard Gaussian measure, `q = a + ib` a normalized circular cubic
+chaos (`Chaos3 a`, `Chaos3 b`, `E a² = 1/2`, `Circular J a b`; `E b² = 1/2` and `E ab = 0`
+follow), and states the lower bound with only the genuinely open Gaussian facts left as
+hypotheses.
 
 * `moments_of_three`: `E √U ≤ ρ` and the integrability of `√U` are consequences of the other
   fields of `Moments` (by `first_moment_lt_rho`), so `Moments` follows from three moments.
 * `gaussian_moments`: for the Gaussian law, `E U = 1`, `E U² ≥ 2` (from the fluctuation bound),
   the cap `E U² ≤ 62 ≤ 2 + xMax²` (`gaussian_radU_cap`, in `FourthMoment.lean`) and
-  integrability are proved; with `x = √(E U² − 2)`, `Moments` holds as soon as the sixth-moment
-  inequality `E U³ ≤ 9m − 12 + C₆ (m − 2)^{3/2}` (`m = E U²`, the conclusion of
-  `sixth_moment_complex`) holds.
+  integrability are proved; with `x = √(E U² − 2)`, `Moments` holds with the sixth-moment
+  inequality `E U³ ≤ 9m − 12 + C₆ (m − 2)^{3/2}` (`m = E U²`) supplied by
+  `Circular.gaussian_sixth` from the tensor facts `TensorFacts` of `Circular.lean`.  (The
+  sixth-moment inequality is false for general real pairs `(a, b)` in the third chaos; it needs
+  the circularity `D_J q = i q`.)
 * `gaussian_steinInputs` (in `RadialCut.lean`) gives `SteinInputs` with no hypothesis.
 * `sharedReduction_of_gaussian` and `lower_bound_gaussian`: the finite-layer bound `V ≤ B` for a
-  Gaussian residual.  What remains assumed: the sixth-moment inequality for `q` (proved only from its tensor hypotheses, `cumulant_bound`), the scale
+  Gaussian residual.  What remains assumed: the tensor facts `TensorFacts` of the sixth-moment
+  certificate (the Wick identities for `κ₄`, `κ₆` and the charge-sector inequalities), the scale
   `0 ≤ τ ≤ ρ`, the gate variable with `|X₁|² = τ² |q|²`, the row inequalities `RowShared` of the
   Gaussian reduction, and the crude row.
 -/
@@ -67,18 +72,17 @@ private lemma eval_pow_integrable (P : MvPolynomial (Fin d) ℝ) (k : ℕ) :
     Integrable (fun x => eval x P ^ k) (stdGaussian d) :=
   (integrable_eval (P ^ k)).congr (Filter.Eventually.of_forall fun x => by simp)
 
-/-- **The moments of the Gaussian law.**  For `q = a + ib` a normalized cubic chaos, the law of
-`U = |q|²` satisfies `Moments` with `x = √(E U² − 2)`, given the sixth-moment inequality (the cap
-`E U² ≤ 2 + xMax²` is `gaussian_radU_cap`). -/
+/-- **The moments of the Gaussian law.**  For `q = a + ib` a normalized circular cubic chaos, the
+law of `U = |q|²` satisfies `Moments` with `x = √(E U² − 2)`, given the tensor facts of the
+sixth-moment certificate (the cap `E U² ≤ 2 + xMax²` is `gaussian_radU_cap`). -/
 theorem gaussian_moments (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (hb : Chaos3 b)
-    (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2)
-    (hbb : ∫ x, eval x b ^ 2 ∂(stdGaussian d) = 1 / 2)
-    (hab : ∫ x, eval x a * eval x b ∂(stdGaussian d) = 0)
-    (h6 : ∫ x, eval x (radU a b) ^ 3 ∂(stdGaussian d)
-      ≤ 9 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d)) - 12
-        + LowerAnalytic.C6 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2) ^ ((3 : ℝ) / 2)) :
+    (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) {J : Fin d → Fin d → ℝ}
+    (hc : Circular J a b) (hT : TensorFacts (gaussE d) J a) :
     Moments (stdGaussian d) (fun x => eval x (radU a b))
       √(∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2) := by
+  have hbb := hc.gaussian_sq_eq haa
+  have hab := hc.gaussian_mul
+  have h6 := hc.gaussian_sixth ha haa hT
   set m := ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) with hm
   have hE := gaussE_isGaussianExpectation d
   have toE : ∀ P Q : MvPolynomial (Fin d) ℝ,
@@ -117,42 +121,37 @@ theorem gaussian_moments (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (hb : 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
 /-- **The Gaussian reduction discharges the law hypotheses of `SharedReduction`**: for the law of
-`|q|²` under the standard Gaussian measure, only the sixth-moment inequality, the scale, the gate variable and the row inequalities remain to be supplied. -/
+`|q|²` under the standard Gaussian measure, `q` circular, only the tensor facts of the
+sixth-moment certificate, the scale, the gate variable and the row inequalities remain to be
+supplied. -/
 theorem sharedReduction_of_gaussian (rows : List Row) (V t : ℝ) (Qh v : E)
     (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (hb : Chaos3 b)
-    (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2)
-    (hbb : ∫ x, eval x b ^ 2 ∂(stdGaussian d) = 1 / 2)
-    (hab : ∫ x, eval x a * eval x b ∂(stdGaussian d) = 0)
-    (h6 : ∫ x, eval x (radU a b) ^ 3 ∂(stdGaussian d)
-      ≤ 9 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d)) - 12
-        + LowerAnalytic.C6 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2) ^ ((3 : ℝ) / 2))
+    (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) {J : Fin d → Fin d → ℝ}
+    (hc : Circular J a b) (hT : TensorFacts (gaussE d) J a)
     (X1 X2 X3 : (Fin d → ℝ) → ℂ) (τ : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ ρ)
     (hX : ∀ x, ‖X1 x‖ ^ 2 = τ ^ 2 * eval x (radU a b))
     (hrows : ∀ r ∈ rows,
       RowShared r (stdGaussian d) (fun x => eval x (radU a b)) X1 X2 X3 τ V t Qh v) :
     SharedReduction rows V t Qh v :=
   ⟨Fin d → ℝ, inferInstance, stdGaussian d, inferInstance, fun x => eval x (radU a b), X1, X2,
-    X3, τ, _, gaussian_moments a b ha hb haa hbb hab h6,
-    gaussian_steinInputs a b ha hb haa hbb hab, hτ0, hτ1, hX, hrows⟩
+    X3, τ, _, gaussian_moments a b ha hb haa hc hT,
+    gaussian_steinInputs a b ha hb haa (hc.gaussian_sq_eq haa) hc.gaussian_mul, hτ0, hτ1, hX,
+    hrows⟩
 
 /-- **The finite-layer lower bound for a Gaussian residual**: `lower_bound_data` with the law
 hypotheses of `SharedReduction` discharged by the Gaussian lemmas. -/
 theorem lower_bound_gaussian (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤ t)
     (ht1 : t ≤ 9 / 10) (hcrude : RowOf crudeRow V t Qh v)
     (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (hb : Chaos3 b)
-    (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2)
-    (hbb : ∫ x, eval x b ^ 2 ∂(stdGaussian d) = 1 / 2)
-    (hab : ∫ x, eval x a * eval x b ∂(stdGaussian d) = 0)
-    (h6 : ∫ x, eval x (radU a b) ^ 3 ∂(stdGaussian d)
-      ≤ 9 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d)) - 12
-        + LowerAnalytic.C6 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2) ^ ((3 : ℝ) / 2))
+    (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) {J : Fin d → Fin d → ℝ}
+    (hc : Circular J a b) (hT : TensorFacts (gaussE d) J a)
     (X1 X2 X3 : (Fin d → ℝ) → ℂ) (τ : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ ρ)
     (hX : ∀ x, ‖X1 x‖ ^ 2 = τ ^ 2 * eval x (radU a b))
     (hrows : ∀ r ∈ rowData,
       RowShared r (stdGaussian d) (fun x => eval x (radU a b)) X1 X2 X3 τ V t Qh v) :
     V ≤ Bcap :=
   lower_bound_data V t Qh v hv ht0 ht1 hcrude
-    (sharedReduction_of_gaussian rowData V t Qh v a b ha hb haa hbb hab h6 X1 X2 X3 τ hτ0
-      hτ1 hX hrows)
+    (sharedReduction_of_gaussian rowData V t Qh v a b ha hb haa hc hT X1 X2 X3 τ hτ0 hτ1 hX
+      hrows)
 
 end Grothe.LowerAnalytic

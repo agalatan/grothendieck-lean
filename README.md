@@ -145,10 +145,22 @@ splitting and the explicit potentials) is the main missing piece of the lower bo
   `Grothe.LowerAnalytic.lower_bound_gaussian` instantiates `lower_bound_data` with this law and
   discharges E U = 1, the integrability conditions, E U² ≥ 2, the cap E U² ≤ 62 ≤ 2 + (31/4)²
   (`gaussian_radU_cap`: E F⁴ ≤ 93 (E F²)² for every real third-chaos F, applied to a, b, a ± b),
-  E√U ≤ ρ (derived from the other moment fields by `moments_of_three`) and both Stein inputs. Still
-  assumed there: the sixth-moment bound E U³ ≤ 9m − 12 + C₆(m − 2)^{3/2}, the gate variable and the per-row reduction
-  (`RowShared`), and the crude row. `sixth_moment_complex` derives the sixth-moment bound from a
-  cumulant bound, which is itself a hypothesis; it is not proved for the Gaussian law.
+  E√U ≤ ρ (derived from the other moment fields by `moments_of_three`) and both Stein inputs. The
+  residual q = a + ib is required to be *circular* (`Circular J a b`: J a complex structure on ℝ^d
+  and D_J a = −b, D_J b = a for the rotation generator D_J = Σ Jⱼᵢ xⱼ∂ᵢ, i.e. D_J q = iq, the
+  bidegree (2,1) condition); E b² = E a² and E ab = 0 follow. The sixth-moment bound
+  E U³ ≤ 9m − 12 + C₆(m − 2)^{3/2} is **false** for general real third-chaos pairs with
+  E a² = E b² = ½, E ab = 0 (a = He₃(x₀)/√12, b = He₃(x₁)/√12 gives m = 47, E U³ = 13506 >
+  12622.55); for circular q it is derived in `Circular.lean` (`sixth_moment_circular`,
+  `Circular.gaussian_sixth`) from the scalar certificate `cumulant_bound`: the real cumulants of
+  a are converted with E a⁴ = (3/8) E U², E a⁶ = (5/16) E U³ (from E D_J P = 0), E a² = 6‖f‖²
+  for the kernel f = ∂³a/6, and the Cauchy–Schwarz inputs ‖SF‖² ≤ √s √T₄, ⟨FG, SF⟩ ≤ √V ‖SF‖ are
+  proved. Still assumed there: the tensor facts `TensorFacts` (the Wick identities
+  κ₄ = 1296(s + 3h/2), κ₆/46656 = (135/2)T₃ − 20V + (135/2)Q + (165/2)⟨D,U⟩ + 45‖U‖², and the
+  eleven charge-sector inequalities of the paper proof: the two sums of squares h ≤ 37s/39,
+  27h − 5s + 8‖G_anti‖² ≤ 216 tt, ‖G_anti‖² ≤ s/2, the cubic trace of G, the block traces of S,
+  the coupled G test and the charge split), the gate variable and the per-row reduction
+  (`RowShared`), and the crude row.
 * Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma, the
   scalar sixth-moment and first-moment certificates (the sixth-moment one from its tensor and
   cumulant hypotheses), and the exact form of
@@ -173,7 +185,7 @@ no warnings.
 | `GrotheKernel/` | the fixed-point interval evaluator used by the head check |
 | `Grothe/Lower/` | positivity certificates, Stein cuts, rows, mixtures and boxes, the one cover of t ∈ [0, 9/10], the transfer to finite matrices, final theorems |
 | `Grothe/Lower/RowData*.lean`, `Grothe/Upper/Data.lean` | generated certificate data |
-| `Grothe/LowerAnalytic/` | analytic lemmas: Gaussian integration by parts, fluctuation bound, fourth-moment cap, moment certificates, the bridge `lower_bound_gaussian` |
+| `Grothe/LowerAnalytic/` | analytic lemmas: Gaussian integration by parts, fluctuation bound, fourth-moment cap, moment certificates, circular cubics and the sixth-moment reduction (`Circular.lean`), the bridge `lower_bound_gaussian` |
 | `tools/` | generators of the data modules from the research archives |
 | `scratch/Axioms.lean`, `scripts/check_axioms.py` | the axiom report and its check |
 

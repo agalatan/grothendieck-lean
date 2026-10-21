@@ -60,6 +60,10 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.chaos3_fourth_le
 #print axioms Grothe.LowerAnalytic.gE_radU_sq_le
 #print axioms Grothe.LowerAnalytic.gaussian_radU_cap
+#print axioms Grothe.LowerAnalytic.gE_rotD
+#print axioms Grothe.LowerAnalytic.Chaos3.gE_sq_eq_kernel
+#print axioms Grothe.LowerAnalytic.sixth_moment_circular
+#print axioms Grothe.LowerAnalytic.Circular.gaussian_sixth
 #print axioms Grothe.LowerAnalytic.gaussian_moments
 #print axioms Grothe.LowerAnalytic.sharedReduction_of_gaussian
 #print axioms Grothe.LowerAnalytic.lower_bound_gaussian

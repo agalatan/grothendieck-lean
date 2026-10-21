@@ -57,4 +57,5 @@ import Grothe.LowerAnalytic.Rows
 import Grothe.LowerAnalytic.Gaussian
 import Grothe.LowerAnalytic.RadialParts
 import Grothe.LowerAnalytic.RadialCut
+import Grothe.LowerAnalytic.Circular
 import Grothe.LowerAnalytic.Bridge
