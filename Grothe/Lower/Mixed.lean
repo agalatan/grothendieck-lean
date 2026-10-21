@@ -10,9 +10,9 @@ potential of a mixture of two rows with weights `(1−θ, θ)` is
 
 convex and known through the node caps of its components.  A `TNode` is a certified
 `τ`-node `(τ, P)` with `E Φ(τ√U) ≤ P.J 0 1 x` for the row's or the mixture's potential, either a
-Stein node of a source row rescaled to `τ = σ/δ` (`rowTNode`) or one of the new exact node
-certificates for the mixed table (`JBatch`, `checkBatch`, `batch_sound`); `capAt`/`capsHold_mix`
-build the node caps of `F_λ` from those of its components.
+Stein node of a source row rescaled to `τ = σ/δ` (`rowTNode`) or one of the exact node
+certificates for the mixed table, with Stein or spectral cuts (`JBatch`, `checkBatch`,
+`batch_sound`); `capAt`/`capsHold_mix` build the node caps of `F_λ` from those of its components.
 -/
 
 open MeasureTheory
@@ -287,9 +287,11 @@ end rownodes
 /-! ### The mixed node tables -/
 
 /-- A batch of exact node certificates for the mixed potential of rows `i, j` with weight `θ`:
-the mixed node caps (`r:c;…`), the Lipschitz constant, the mesh (`v₁,v₂,…`) and the witnesses
-`τ:y₀,y₄,y₁,y₂,y₃:μ₁,…|z₁;z₂;…` (multipliers as integers over `10¹⁰`, cut vectors as integers
-over `10⁸`). -/
+the mixed node caps (`r:c;…`), the Lipschitz constant, the mesh (`v₁,v₂,…`) and the witnesses.
+A Stein batch (`spec = false`) has witnesses `τ:y₀,y₄,y₁,y₂,y₃:μ₁,…|z₁;z₂;…` (a nonnegative
+combination of cuts `cutG`; multipliers as integers over `10¹⁰`, cut vectors as integers over
+`10⁸`), a spectral batch (`spec = true`) has witnesses `τ:y₀,y₄,y₁,y₂,y₃:λ,μ,t,β,ν|φ₀,φ₁,…` (one
+spectral cut `specG` with the knot values `φₖ` of its test). -/
 structure JBatch where
   i : ℕ
   j : ℕ
@@ -297,6 +299,7 @@ structure JBatch where
   smax : ℚ
   nodes : String
   mesh : String
+  spec : Bool
   wits : List String
 
 def JBatch.nodeList (b : JBatch) : List (ℚ × ℚ) := (splitL b.nodes ";").map parseCap
@@ -316,8 +319,55 @@ def parseWit (s : String) : SNode × List (List ℚ) :=
 
 def JBatch.witList (b : JBatch) : List (SNode × List (List ℚ)) := b.wits.map parseWit
 
+/-- A spectral witness: the node `τ`, the majorant, the parameters `(λ, μ, t, β, ν)` and the knot
+values of the test. -/
+structure SWit where
+  tau : ℚ
+  y : MPoly
+  lam : ℚ
+  mu : ℚ
+  t : ℚ
+  be : ℚ
+  nu : ℚ
+  z : List ℚ
+
+def parseSWit (s : String) : SWit :=
+  match s.splitOn "|" with
+  | [a, k] =>
+    match a.splitOn ":" with
+    | [t, p, c] =>
+      match parseQs c with
+      | [l, m, tt, b, n] => ⟨parseQ t, parseMPoly p, l, m, tt, b, n, parseQs k⟩
+      | _ => ⟨0, ⟨0, 0, 0, 0, 0⟩, 0, 0, 0, 0, 0, []⟩
+    | _ => ⟨0, ⟨0, 0, 0, 0, 0⟩, 0, 0, 0, 0, 0, []⟩
+  | _ => ⟨0, ⟨0, 0, 0, 0, 0⟩, 0, 0, 0, 0, 0, []⟩
+
+def JBatch.switList (b : JBatch) : List SWit := b.wits.map parseSWit
+
 /-- The `τ`-nodes of a batch. -/
-def JBatch.tnodes (b : JBatch) : List TNode := b.witList.map fun w => ⟨w.1.sigma, w.1.y⟩
+def JBatch.tnodes (b : JBatch) : List TNode :=
+  if b.spec then b.switList.map fun w => ⟨w.tau, w.y⟩
+  else b.witList.map fun w => ⟨w.1.sigma, w.1.y⟩
+
+/-- The spectral node check: `λ, μ > 0`, `ν ≥ 0`, the majorant has `y₄, y₃ ≥ 0`, and
+`Ψ(τv) + G(v²) ≤ y(v)` for all `v ≥ 0` by the majorant sweep. -/
+def checkSWit (nodes : List (ℚ × ℚ)) (smax : ℚ) (vs : List ℚ) (w : SWit) : Bool :=
+  let arr := specPolys vs w.z w.lam w.mu w.t w.be w.nu
+  decide (0 < w.lam) && decide (0 < w.mu) && decide (0 ≤ w.nu) && decide (0 ≤ w.y.a1) &&
+    decide (0 ≤ w.y.a6) &&
+    sweepTop w.tau smax w.y.list (fun k => arr.getD k []) vs nodes
+
+lemma checkSWit_sound {Ψ : ℝ → ℝ} {nodes : List (ℚ × ℚ)} {smax : ℚ} (hΨ : CapsHold Ψ nodes smax)
+    (vs : List ℚ) (w : SWit) (h : checkSWit nodes smax vs w = true) :
+    0 < w.lam ∧ 0 < w.mu ∧ 0 ≤ w.nu ∧ 0 ≤ w.y.a1 ∧ 0 ≤ w.y.a6 ∧ ∀ v : ℝ, 0 ≤ v →
+      Ψ (w.tau * v) + specG vs w.z w.lam w.mu w.t w.be w.nu v
+        ≤ evalL (w.y.list.map ((↑) : ℚ → ℝ)) v := by
+  simp only [checkSWit, Bool.and_eq_true, decide_eq_true_eq] at h
+  obtain ⟨⟨⟨⟨⟨hl, hm⟩, hn⟩, h1⟩, h6⟩, hsw⟩ := h
+  refine ⟨hl, hm, hn, h1, h6, fun v hv => ?_⟩
+  refine major_sound Ψ nodes smax hΨ w.tau w.y.list _ vs _ (fun u _ hk => ?_) hsw v hv
+  rw [specPolys_getD]
+  exact specG_cell vs w.z w.lam w.mu w.t w.be w.nu u hk
 
 /-- The mixed potential `(1−θ)(Ψᵢ(δᵢ s) − capPad) + θ(Ψⱼ(δⱼ s) − capPad)`. -/
 def mixPot (ri rj : Row) (θ : ℚ) (Ψi Ψj : ℝ → ℝ) (s : ℝ) : ℝ :=
@@ -343,12 +393,13 @@ lemma checkMixTable_sound (ri rj : Row) (θ : ℚ) (nodes : List (ℚ × ℚ)) (
   exact capsHold_mix ri rj θ hθ0 hθ1 capPad hi hj hδi hδj hsi hhi hsj hhj nodes smax hnodes hsmax
 
 /-- The batch check: rows exist, the mixed table is valid, the mesh is valid, every witness
-passes the Stein node check against the mixed table. -/
+passes the Stein (or spectral) node check against the mixed table. -/
 def checkBatch (rows : List Row) (b : JBatch) : Bool :=
   match rows[b.i]?, rows[b.j]? with
   | some ri, some rj =>
     checkMixTable ri rj b.θ b.nodeList b.smax && meshOK 0 b.vs &&
-    b.witList.all fun w => checkNode b.nodeList b.smax b.vs (w.2.map (cutPolys b.vs)) w.1
+    if b.spec then b.switList.all (checkSWit b.nodeList b.smax b.vs)
+    else b.witList.all fun w => checkNode b.nodeList b.smax b.vs (w.2.map (cutPolys b.vs)) w.1
   | _, _ => false
 
 section batch
@@ -362,13 +413,20 @@ lemma batch_sound (rows : List Row) (b : JBatch) (h : checkBatch rows b = true) 
     (hi : CapsHold (fun s => Ψi s - capPad) ri.nodeList ri.smax)
     (hj : CapsHold (fun s => Ψj s - capPad) rj.nodeList rj.smax) (hM : Moments μ U x)
     (hS : SteinCut μ U) : ∀ tn ∈ b.tnodes, TNodeOK μ U x (mixPot ri rj b.θ Ψi Ψj) tn := by
-  simp only [checkBatch, hri, hrj, Bool.and_eq_true, List.all_eq_true] at h
+  simp only [checkBatch, hri, hrj, Bool.and_eq_true] at h
   obtain ⟨⟨htable, hmesh⟩, hwits⟩ := h
   have hcaps := checkMixTable_sound ri rj b.θ b.nodeList b.smax htable hi hj
   intro tn htn
-  obtain ⟨w, hw, rfl⟩ := List.mem_map.1 htn
-  obtain ⟨hfact, h1, h6, hcuts, _⟩ := node_sound hcaps b.vs w.2 w.1 (hwits w hw)
-  exact TB.node hM hS b.vs hmesh (nodeCutList w.2 w.1) hcuts w.1.y h1 h6 _ hfact
+  unfold JBatch.tnodes at htn
+  split_ifs at htn hwits with hsp
+  · obtain ⟨w, hw, rfl⟩ := List.mem_map.1 htn
+    obtain ⟨hl, hm, hn, h1, h6, hfact⟩ :=
+      checkSWit_sound hcaps b.vs w (List.all_eq_true.1 hwits w hw)
+    exact TB.specNode hM hS b.vs w.z w.lam w.mu w.t w.be w.nu hmesh hl hm hn w.y h1 h6 _ hfact
+  · obtain ⟨w, hw, rfl⟩ := List.mem_map.1 htn
+    obtain ⟨hfact, h1, h6, hcuts, _⟩ :=
+      node_sound hcaps b.vs w.2 w.1 (List.all_eq_true.1 hwits w hw)
+    exact TB.node hM hS b.vs hmesh (nodeCutList w.2 w.1) hcuts w.1.y h1 h6 _ hfact
 
 end batch
 

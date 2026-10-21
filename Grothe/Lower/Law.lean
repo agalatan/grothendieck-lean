@@ -6,14 +6,16 @@ import Grothe.Lower.Cuts
 For a residual `q` (a cubic chaos of bidegree `(2,1)`) with `σ = ‖q‖₂`, let `U = |q|²/σ²`.
 `Moments μ U x` collects what the certificate uses about the law of `U`:
 `E U = 1`, `E U² = 2 + x²` with `0 ≤ x ≤ 31/4`, `E U³ ≤ 6 + 9x² + C₆x³` and `E √U ≤ ρ`.
-`SteinCut μ U` is the family of Stein-cut inequalities `E G(U) ≥ 0`, one for every mesh and
-every test vector (`cutG`); it is derived from its analytic inputs in `Stein.lean`.
+`SteinCut μ U` collects the Stein-cut inequalities `E G(U) ≥ 0`: the cuts `cutG` (one for every
+mesh and test vector) and the spectral cuts `specG` (one for every mesh, test and
+`(λ, μ, t, β, ν)`, `λ, μ > 0`, `ν ≥ 0`); both are derived from their analytic inputs in `Stein.lean`.
 
 `node_fn` integrates a polynomial majorant minus a nonnegative combination of cuts and
 `rect_integral` a polynomial majorant at scale `σ`.  `TB μ U Φ τ val` records a bound
 `E Φ(τ√U) ≤ val` through an integrable pointwise majorant; it is produced at a node by a Stein
-node certificate (`TB.node`), at `τ = 0` by the zero cap (`TB.zero`), transported along `τ` by
-convexity (`TB.chord`) and mixed with nonnegative weights (`TB.mix`).
+node certificate (`TB.node`) or a spectral node certificate (`TB.specNode`), at `τ = 0` by the
+zero cap (`TB.zero`), transported along `τ` by convexity (`TB.chord`) and mixed with nonnegative
+weights (`TB.mix`).
 -/
 
 open MeasureTheory
@@ -36,14 +38,21 @@ structure Moments (μ : Measure Ω) (U : Ω → ℝ) (x : ℝ) : Prop where
   m2 : ∫ ω, U ω ^ 2 ∂μ = 2 + x ^ 2
   m3 : ∫ ω, U ω ^ 3 ∂μ ≤ 6 + 9 * x ^ 2 + C6 * x ^ 3
 
-/-- **The Stein-cut inequalities**: for every mesh `0 < v₁ < … < v_K` and every test vector
-`z = (φ(t₀), …, φ(t_{K−1}), β', α)`, with `φ` the continuous piecewise-linear function on the
-knots `tₖ = vₖ²` vanishing from `t_K` on and `Φ(u) = ∫₀ᵘ φ`,
+/-- **The Stein-cut inequalities**, two families of `E G(U) ≥ 0`.
 
-  `E[(φ(U) + β')² + 2 (φ(U) − Φ(U)/U)² + 2α (Φ(U) − φ(U)) + (α²/3)(U² − 2)] ≥ 0`. -/
-def SteinCut (μ : Measure Ω) (U : Ω → ℝ) : Prop :=
-  ∀ vs z : List ℚ, meshOK 0 vs = true →
+* `cut`: for every mesh `0 < v₁ < … < v_K` and every test vector
+  `z = (φ(t₀), …, φ(t_{K−1}), β', α)`, with `φ` the continuous piecewise-linear function on the
+  knots `tₖ = vₖ²` vanishing from `t_K` on and `Φ(u) = ∫₀ᵘ φ`,
+  `E[(φ(U) + β')² + 2 (φ(U) − Φ(U)/U)² + 2α (Φ(U) − φ(U)) + (α²/3)(U² − 2)] ≥ 0` (`cutG`).
+* `spec`: for every such test (knot values `z`) and every `λ, μ > 0`, `ν ≥ 0`, `t`, `β`, the
+  spectral cut `E[f(U)²/λ + g(U)²/μ + Φ(U) − φ(U) + (ν/3 − 2t)(U² − 2)] ≥ 0` with
+  `f = −(φ + β)/2 + (2t + λ/3)u` and `g = −(φ − Φ/u)/2 + (t + μ/3 − ν/2)u` (`specG`). -/
+structure SteinCut (μ : Measure Ω) (U : Ω → ℝ) : Prop where
+  cut : ∀ vs z : List ℚ, meshOK 0 vs = true →
     Integrable (fun ω => cutG vs z (√(U ω))) μ ∧ 0 ≤ ∫ ω, cutG vs z (√(U ω)) ∂μ
+  spec : ∀ (vs z : List ℚ) (lam mu t be nu : ℚ), meshOK 0 vs = true → 0 < lam → 0 < mu →
+    0 ≤ nu → Integrable (fun ω => specG vs z lam mu t be nu (√(U ω))) μ ∧
+      0 ≤ ∫ ω, specG vs z lam mu t be nu (√(U ω)) ∂μ
 
 lemma mpoly_at (p : MPoly) (σ s Uv : ℝ) (h : s ^ 2 = Uv) :
     evalL (p.list.map ((↑) : ℚ → ℝ)) (σ * s)
@@ -76,7 +85,7 @@ lemma cutSum_integral (hS : SteinCut μ U) (vs : List ℚ) (hvs : meshOK 0 vs = 
       Integrable (fun ω => cutSum vs cs (√(U ω))) μ ∧ 0 ≤ ∫ ω, cutSum vs cs (√(U ω)) ∂μ
   | [], _ => by simp [cutSum]
   | c :: r, h => by
-    obtain ⟨hi, hn⟩ := hS vs c.2 hvs
+    obtain ⟨hi, hn⟩ := hS.cut vs c.2 hvs
     obtain ⟨hri, hrn⟩ := cutSum_integral hS vs hvs r fun d hd => h d (List.mem_cons_of_mem _ hd)
     have hc : (0 : ℝ) ≤ c.1 := by exact_mod_cast h c (List.mem_cons_self ..)
     have e : (fun ω => cutSum vs (c :: r) (√(U ω)))
@@ -167,6 +176,32 @@ lemma TB.node {Φ : ℝ → ℝ} (hM : Moments μ U x) (hS : SteinCut μ U) (vs 
     TB μ U Φ τ (y.J 0 1 x) := by
   obtain ⟨hi, hv⟩ := node_fn μ hM hS vs hvs y h1 h6 cs hcs
   exact ⟨_, hi, fun ω => by have := hpt _ (Real.sqrt_nonneg (U ω)); linarith, hv⟩
+
+/-- A spectral node: a polynomial majorant of `Φ(τ v)` plus one spectral cut. -/
+lemma TB.specNode {Φ : ℝ → ℝ} (hM : Moments μ U x) (hS : SteinCut μ U) (vs z : List ℚ)
+    (lam mu t be nu : ℚ) (hvs : meshOK 0 vs = true) (hlam : 0 < lam) (hmu : 0 < mu)
+    (hnu : 0 ≤ nu) (y : MPoly)
+    (h1 : 0 ≤ y.a1) (h6 : 0 ≤ y.a6) (τ : ℝ)
+    (hpt : ∀ v : ℝ, 0 ≤ v →
+      Φ (τ * v) + specG vs z lam mu t be nu v ≤ evalL (y.list.map ((↑) : ℚ → ℝ)) v) :
+    TB μ U Φ τ (y.J 0 1 x) := by
+  obtain ⟨hC, hCi⟩ := hS.spec vs z lam mu t be nu hvs hlam hmu hnu
+  obtain ⟨hP, hPi⟩ := moment_poly μ hM y.a0 y.a1 y.a2 y.a4 y.a6 (by exact_mod_cast h1)
+    (by exact_mod_cast h6)
+  refine ⟨fun ω => (y.a0 + y.a1 * √(U ω) + y.a2 * U ω + y.a4 * U ω ^ 2 + y.a6 * U ω ^ 3)
+    - specG vs z lam mu t be nu (√(U ω)), hP.sub hC, fun ω => ?_, ?_⟩
+  · have key := mpoly_at y 1 (√(U ω)) (U ω) (Real.sq_sqrt (hM.nonneg ω))
+    rw [one_mul] at key
+    have := hpt _ (Real.sqrt_nonneg (U ω))
+    rw [key] at this
+    simp only [one_pow, mul_one] at this
+    linarith
+  · rw [integral_sub hP hC]
+    have eJ : y.J 0 1 x = y.a0 + y.a1 * ρ + y.a2 + y.a4 * (2 + x ^ 2)
+        + y.a6 * (6 + 9 * x ^ 2 + C6 * x ^ 3) := by
+      simp only [MPoly.J]; push_cast; ring
+    rw [eJ]
+    linarith
 
 omit [IsProbabilityMeasure μ] in
 /-- Convexity in `τ`: the chord of two node bounds. -/

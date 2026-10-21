@@ -1,5 +1,6 @@
 import Grothe.Lower.Stein
 import Grothe.LowerAnalytic.RadialParts
+import Grothe.LowerAnalytic.Covariance
 
 /-!
 # The Stein inputs of cubic Gaussian chaos
@@ -14,9 +15,10 @@ the standard Gaussian measure,
 (`radial_cut`): the test `h = Φ/u` is differentiable on the whole half-line, the primitive `Φ`
 being `C¹` across the knots (`cutPrim_deriv`) and `h` affine near zero.
 
-Together with the fluctuation bound this gives `Grothe.Lower.SteinInputs` for the law of `U`
-whenever `a`, `b` are in the third chaos with `E a² = E b² = 1/2`, `E ab = 0`
-(`gaussian_steinInputs`).
+Together with the separate spectral budgets of `SpectralBudget.lean`, the covariance order of
+`Covariance.lean` and the energy identity `2 E[(w − 1)U] + E[rU] = E U² − 2`
+(`energy_identity`) this gives `Grothe.Lower.SteinInputs` for the law of `U` whenever `a`, `b` are in the third chaos with `E a² = E b² = 1/2`, `E ab = 0`
+(`gaussian_steinInputs`), with no further hypothesis.
 -/
 
 open MeasureTheory MvPolynomial Grothe.Lower
@@ -389,11 +391,33 @@ theorem radial_cut (a b : MvPolynomial (Fin d) ℝ) (ha : ouL a = -(3 * a)) (hb 
     integral_sub j30 i2, integral_sub j3 i0, integral_const_mul, integral_const_mul]
   linarith
 
+/-- `Γ(U, U) = 4T`. -/
+lemma gam_radU (a b : MvPolynomial (Fin d) ℝ) : gam (radU a b) (radU a b) = 4 * radT a b := by
+  simp only [gam, radT, pderiv_radU, Finset.mul_sum]
+  exact Finset.sum_congr rfl fun j _ => by ring
+
+/-- **The energy identity** `2 E[SU] + E N = 3 E U²`, i.e. `2P + Q = E U² − 2` for
+`P = E[(w − 1)U]`, `Q = E[rU]`: the integration by parts `E[U · LU] = −E Γ(U, U)` with
+`LU = 2S − 6U` and `Γ(U, U) = 4T = 2(US + N)`. -/
+theorem energy_identity {E : MvPolynomial (Fin d) ℝ →ₗ[ℝ] ℝ} (hE : IsGaussianExpectation E)
+    {a b : MvPolynomial (Fin d) ℝ} (ha : Chaos3 a) (hb : Chaos3 b) :
+    2 * E (radS a b * radU a b) + E (radN a b) = 3 * E (radU a b * radU a b) := by
+  have hL : ouL (radU a b) = 2 * radS a b - 6 * radU a b := by
+    unfold radU radS; rw [map_add, ha.ouL_sq, hb.ouL_sq]; ring
+  have h := gE_mul_ouL hE (radU a b) (radU a b)
+  rw [hL, gam_radU, show (4 : MvPolynomial (Fin d) ℝ) * radT a b = 2 * (2 * radT a b) by ring,
+    radT_eq, show radU a b * (2 * radS a b - 6 * radU a b)
+      = 2 * (radS a b * radU a b) - 6 * (radU a b * radU a b) by ring] at h
+  rw [map_sub, ofNat_mul_apply, ofNat_mul_apply, ofNat_mul_apply, map_add,
+    mul_comm (radU a b) (radS a b)] at h
+  linarith
+
 /-- **The Stein inputs of cubic Gaussian chaos.**  For `a`, `b` in the third chaos with
 `E a² = E b² = 1/2` and `E ab = 0` (the real and imaginary parts of a normalized `q` of bidegree
-`(2,1)`), the law of `U = a² + b²` under the standard Gaussian measure has the two analytic inputs
-of the Stein cuts, with `v = w − 1` and `r` as above: the fluctuation bound and the integration by
-parts. -/
+`(2,1)`), the law of `U = a² + b²` under the standard Gaussian measure has the analytic inputs of
+the Stein cuts, with `v = w − 1` and `r` as above: the separate spectral budgets
+`E v² ≤ (2/3) E[vU]`, `E r² ≤ (2/3) E[rU]`, the identity `2 E[vU] + E[rU] = E U² − 2`, the
+covariance order `E[rU] ≤ (E U² − 2)/3`, and the integration by parts. -/
 theorem gaussian_steinInputs (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (hb : Chaos3 b)
     (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2)
     (hbb : ∫ x, eval x b ^ 2 ∂(stdGaussian d) = 1 / 2)
@@ -410,36 +434,54 @@ theorem gaussian_steinInputs (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (h
     rw [gaussE_apply, ← hab]
     exact integral_congr_ae (Filter.Eventually.of_forall fun x => by simp only [map_mul])
   have hmean := fluctuation_mean hE ha hb haa' hbb'
-  have hbound := fluctuation_bound hE gaussE_mul_self_nonneg ha hb haa' hbb' hab'
-  simp only [gaussE_apply] at hmean hbound
+  have hU1 : gaussE d (radU a b) = 1 := by
+    rw [radU, map_add, haa', hbb']; norm_num
+  have hbw := budget_w hE gaussE_mul_self_nonneg ha hb haa' hbb'
+  have hbc := budget_c hE gaussE_mul_self_nonneg ha hb haa' hbb' hab'
+  have hid := energy_identity hE ha hb
+  have hcov := covariance_order hE gaussE_mul_self_nonneg ha hb haa' hbb' hab'
   have hv : MemLp (fun x => eval x (radS a b) / 3 - 1) 2 (stdGaussian d) := by
     refine (memLp_congr_ae (Filter.Eventually.of_forall fun x => ?_)).1
       (memLp_eval (C (1 / 3 : ℝ) * radS a b - 1))
     simp only [map_sub, map_mul, eval_C, map_one]; ring
   have hv0 : ∫ x, (eval x (radS a b) / 3 - 1) ∂(stdGaussian d) = 0 := by
-    rw [integral_sub ((integrable_eval _).div_const 3) (integrable_const _), integral_div, hmean,
-      integral_const, probReal_univ]
+    rw [show (fun x => eval x (radS a b) / 3 - 1) = fun x => eval x (C (1 / 3 : ℝ) * radS a b - 1)
+      by funext x; simp only [map_sub, map_mul, eval_C, map_one]; ring, ← gaussE_apply, map_sub,
+      C_mul_apply, hmean, (gaussE_isGaussianExpectation d).one]
     norm_num
-  have e1 : ∫ x, (eval x (radS a b) / 3 - 1) ^ 2 ∂(stdGaussian d)
-      = 1 / 9 * ∫ x, eval x ((radS a b - 3) * (radS a b - 3)) ∂(stdGaussian d) := by
-    rw [← integral_const_mul]
-    exact integral_congr_ae (Filter.Eventually.of_forall fun x => by
-      simp only [map_mul, map_sub, map_ofNat]; ring)
+  have ev2 : ∫ x, (eval x (radS a b) / 3 - 1) ^ 2 ∂(stdGaussian d)
+      = 1 / 9 * gaussE d (radS a b * radS a b) - 2 / 3 * gaussE d (radS a b) + 1 := by
+    rw [show (fun x => (eval x (radS a b) / 3 - 1) ^ 2) = fun x => eval x
+        (C (1 / 9 : ℝ) * (radS a b * radS a b) - C (2 / 3 : ℝ) * radS a b + 1) by
+      funext x; simp only [map_add, map_sub, map_mul, eval_C, map_one]; ring, ← gaussE_apply,
+      map_add, map_sub, C_mul_apply, C_mul_apply, (gaussE_isGaussianExpectation d).one]
+  have evU : ∫ x, (eval x (radS a b) / 3 - 1) * eval x (radU a b) ∂(stdGaussian d)
+      = 1 / 3 * gaussE d (radS a b * radU a b) - gaussE d (radU a b) := by
+    rw [show (fun x => (eval x (radS a b) / 3 - 1) * eval x (radU a b)) = fun x => eval x
+        (C (1 / 3 : ℝ) * (radS a b * radU a b) - radU a b) by
+      funext x; simp only [map_sub, map_mul, eval_C]; ring, ← gaussE_apply, map_sub, C_mul_apply]
+  have erU : ∫ x, radR a b x * eval x (radU a b) ∂(stdGaussian d)
+      = 1 / 3 * gaussE d (radN a b) := by
+    rw [show (fun x => radR a b x * eval x (radU a b)) = fun x => eval x
+        (C (1 / 3 : ℝ) * radN a b) by
+      funext x; rw [radR_mul]; simp only [map_mul, eval_C]; ring, ← gaussE_apply, C_mul_apply]
   have e2 : ∫ x, radR a b x ^ 2 ∂(stdGaussian d)
-      ≤ 1 / 9 * (∫ x, eval x (radA a b * radA a b) ∂(stdGaussian d)
-        + ∫ x, eval x (radB a b * radB a b) ∂(stdGaussian d)) := by
-    rw [← integral_add (integrable_eval _) (integrable_eval _), ← integral_const_mul]
+      ≤ 1 / 9 * (gaussE d (radA a b * radA a b) + gaussE d (radB a b * radB a b)) := by
+    rw [gaussE_apply, gaussE_apply, ← integral_add (integrable_eval _) (integrable_eval _),
+      ← integral_const_mul]
     refine integral_mono (memLp_radR a b).integrable_sq
       (((integrable_eval _).add (integrable_eval _)).const_mul _) fun x => ?_
     have h := radR_sq_le a b x
     simp only [map_mul]
     linarith
-  have e3 : ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d)
-      = ∫ x, eval x (radU a b * radU a b) ∂(stdGaussian d) :=
-    integral_congr_ae (Filter.Eventually.of_forall fun x => by simp only [map_mul]; ring)
-  refine ⟨⟨_, radR a b, hv, memLp_radR a b, hv0, ?_, fun vs z h =>
+  have e3 : ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) = gaussE d (radU a b * radU a b) := by
+    rw [gaussE_apply]
+    exact integral_congr_ae (Filter.Eventually.of_forall fun x => by simp only [map_mul]; ring)
+  refine ⟨⟨_, radR a b, hv, memLp_radR a b, hv0, ?_, ?_, ?_, ?_, fun vs z h =>
     radial_cut a b ha.eig hb.eig vs z h⟩⟩
-  rw [e1, e3]
-  linarith
+  · rw [ev2, evU, hmean, hU1]; linarith
+  · rw [erU]; unfold radN at hid ⊢; linarith
+  · rw [evU, erU, e3, hU1]; linarith
+  · rw [erU, e3]; simp only [radN] at hid ⊢; linarith
 
 end Grothe.LowerAnalytic
