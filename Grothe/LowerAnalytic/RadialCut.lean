@@ -408,7 +408,8 @@ theorem energy_identity {E : MvPolynomial (Fin d) ℝ →ₗ[ℝ] ℝ} (hE : IsG
   rw [hL, gam_radU, show (4 : MvPolynomial (Fin d) ℝ) * radT a b = 2 * (2 * radT a b) by ring,
     radT_eq, show radU a b * (2 * radS a b - 6 * radU a b)
       = 2 * (radS a b * radU a b) - 6 * (radU a b * radU a b) by ring] at h
-  simp only [map_sub, map_add, ofNat_mul_apply, mul_comm (radU a b) (radS a b)] at h
+  rw [map_sub, ofNat_mul_apply, ofNat_mul_apply, ofNat_mul_apply, map_add,
+    mul_comm (radU a b) (radS a b)] at h
   linarith
 
 /-- **The Stein inputs of cubic Gaussian chaos.**  For `a`, `b` in the third chaos with
@@ -481,6 +482,6 @@ theorem gaussian_steinInputs (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (h
   · rw [ev2, evU, hmean, hU1]; linarith
   · rw [erU]; unfold radN at hid ⊢; linarith
   · rw [evU, erU, e3, hU1]; linarith
-  · rw [erU, e3]; unfold radN at hid; linarith
+  · rw [erU, e3]; simp only [radN] at hid ⊢; linarith
 
 end Grothe.LowerAnalytic

@@ -240,7 +240,17 @@ assert all(r["hi"] == r2["lo"] for r, r2 in zip(regions, regions[1:]))
 # ----- emit
 bt = ",\n".join(f"  ⟨{b['i']}, {b['j']}, {q(b['th'])}, {q(b['smax'])},\n   {lean_str(b['nodes'])},\n   {lean_str(b['vs'])},\n   {'true' if b['spec'] else 'false'},\n   [" +
                 ",\n    ".join(lean_str(w) for w in b["wits"]) + "]⟩" for b in batches)
-def region(r): return f"  ⟨{q(r['lo'])}, {q(r['hi'])},\n   [" + ",\n    ".join(lean_str(s) for s in r["boxes"]) + "]⟩"
+BCH = 500  # boxes per list literal (long list literals exceed the elaborator's recursion depth)
+boxdefs = []
+def region(r):
+    if len(r["boxes"]) <= BCH:
+        return f"  ⟨{q(r['lo'])}, {q(r['hi'])},\n   [" + ",\n    ".join(lean_str(s) for s in r["boxes"]) + "]⟩"
+    names = []
+    for k in range(0, len(r["boxes"]), BCH):
+        names.append(f"coverBoxes{len(boxdefs)}")
+        boxdefs.append(f"/-- Boxes of a slab region (part). -/\ndef {names[-1]} : List String :=\n[" +
+                       ",\n ".join(lean_str(s) for s in r["boxes"][k:k + BCH]) + "]\n\n")
+    return f"  ⟨{q(r['lo'])}, {q(r['hi'])},\n   " + " ++ ".join(names) + "⟩"
 CH = 32   # regions per chunk (long list literals exceed the elaborator's recursion depth)
 chunks = [regions[k:k + CH] for k in range(0, len(regions), CH)]
 rg = "".join(f"/-- Regions {k * CH}–{k * CH + len(c) - 1} of the cover. -/\ndef coverRegions{k} : List Region :=\n[" + ",\n".join(region(r) for r in c) + "]\n\n"
@@ -257,7 +267,7 @@ text = ("import Grothe.Lower.Boxes\n\n/-!\n# The common-law certificate data (ge
         "namespace Grothe.Lower\n\n"
         "/-- The batches: rows `(i, j)`, weight `θ`, Lipschitz constant, mixed node caps, mesh, kind (spectral or Stein) and witnesses. -/\n"
         "def mixedBatches : List JBatch :=\n[" + bt + "]\n\n"
-        + rg + "end Grothe.Lower\n")
+        + "".join(boxdefs) + rg + "end Grothe.Lower\n")
 OUT.write_text(text)
 print("ok", json.dumps(dict(source=str(NEW), batches=len(batches), nodes=nnodes, spectral_nodes=nspec, regions=len(regions), caps=len(runs), boxes=nboxes, kinds=kinds,
                             slab=[str(SLAB[0]), str(SLAB[1])], slab_max=float(worst), outer_max=float(outer), B=float(B),

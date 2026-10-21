@@ -47,6 +47,12 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.fluctuation_bound
 #print axioms Grothe.LowerAnalytic.radial_cut
 #print axioms Grothe.LowerAnalytic.gaussian_steinInputs
+#print axioms Grothe.LowerAnalytic.budget_w
+#print axioms Grothe.LowerAnalytic.budget_c
+#print axioms Grothe.LowerAnalytic.energy_identity
+#print axioms Grothe.LowerAnalytic.covariance_order
+#print axioms Grothe.Lower.spec_of_inputs
+#print axioms Grothe.Lower.checkSWit_sound
 #print axioms Grothe.LowerAnalytic.quartic_identity
 #print axioms Grothe.LowerAnalytic.stein_slack
 #print axioms Grothe.LowerAnalytic.stein_energy_gap
