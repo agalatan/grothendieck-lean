@@ -52,6 +52,7 @@ import Grothe.LowerAnalytic.SixthMomentData
 import Grothe.LowerAnalytic.SixthMoment
 import Grothe.LowerAnalytic.Fluctuation
 import Grothe.LowerAnalytic.Influence
+import Grothe.LowerAnalytic.FourthMoment
 import Grothe.LowerAnalytic.Rows
 import Grothe.LowerAnalytic.Gaussian
 import Grothe.LowerAnalytic.RadialParts

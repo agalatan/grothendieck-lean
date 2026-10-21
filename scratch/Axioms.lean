@@ -57,6 +57,9 @@ import Grothe
 #print axioms Grothe.Lower.transfer_lower
 #print axioms Grothe.Lower.lower_bound_of_transferL2
 #print axioms Grothe.LowerAnalytic.moments_of_three
+#print axioms Grothe.LowerAnalytic.chaos3_fourth_le
+#print axioms Grothe.LowerAnalytic.gE_radU_sq_le
+#print axioms Grothe.LowerAnalytic.gaussian_radU_cap
 #print axioms Grothe.LowerAnalytic.gaussian_moments
 #print axioms Grothe.LowerAnalytic.sharedReduction_of_gaussian
 #print axioms Grothe.LowerAnalytic.lower_bound_gaussian
