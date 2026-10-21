@@ -51,6 +51,8 @@ import Grothe.LowerAnalytic.Moments
 import Grothe.LowerAnalytic.SixthMomentData
 import Grothe.LowerAnalytic.SixthMoment
 import Grothe.LowerAnalytic.Fluctuation
+import Grothe.LowerAnalytic.SpectralBudget
+import Grothe.LowerAnalytic.Covariance
 import Grothe.LowerAnalytic.Influence
 import Grothe.LowerAnalytic.Rows
 import Grothe.LowerAnalytic.Gaussian

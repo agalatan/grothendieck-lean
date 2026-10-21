@@ -7,10 +7,13 @@
                                 outside the central slab one cap box per region (the scalar
                                 envelope of `envelope.json`), on the slab the boxes of the cover
 
-Usage: tools/gen_lower_mixed.py [CERT_DIR]   (default handoff/lower-stein/cert-combined-e, the certificate on master)
+Usage: tools/gen_lower_mixed.py [CERT_DIR]   (default handoff/lower-stein/cert-covariance/certificate, the certificate on master)
 
 CERT_DIR holds the cover (`improved_cover.json` with `regions`, or `joint_cover_certificate.json`
-with one `domain`) and the batch files it references (`review/*.json`); the source rows are
+with one `domain`) and the batch files it references (`used/*.json`): Stein batches (witnesses
+with a bank of cut vectors and multipliers) and spectral batches (`cut_family` =
+`separate_spectral_nu_zero` or `separate_spectral_covariance`: one spectral cut `(λ, μ, t, β, ν, φ)`
+per witness, the format of `verify_spectral_batch.py`); the source rows are
 `handoff/lower-stein/cert-0745e/`, `cert-0745d/`, `cert-0745c/` or `cert-0745/` (whichever the cover pins by hash).  Row indices refer to `rowData`
 (rows sorted by their nominal `t`).  Cell kinds: source (two rows, node references
 `(cell, node)`, `(-1, -1)` the zero node), `joint` (a batch, witness indices) and `joint_mix`
@@ -33,7 +36,7 @@ SOURCES = [(HANDOFF / "lower-stein" / "cert-0745e", HANDOFF / "lower-stein" / "c
            (HANDOFF / "lower-stein" / "cert-0745d", HANDOFF / "lower-stein" / "cert-0745d" / "rows_final_d.json"),
            (HANDOFF / "lower-stein" / "cert-0745c", HANDOFF / "lower-stein" / "cert-0745c" / "rows_final_c.json"),
            (HANDOFF / "lower-stein" / "cert-0745", HANDOFF / "lower-stein" / "rows_final.json")]
-NEW = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else HANDOFF / "lower-stein" / "cert-combined-e"
+NEW = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else HANDOFF / "lower-stein" / "cert-covariance" / "certificate"
 OUT = ROOT / "Grothe" / "Lower" / "MixedData.lean"
 EPS = Q(149, 200); RHO = Q(973612157, 10**9); C6 = Q(4045313, 100000); PAD = Q(1, 10**11); XMAX = Q(31, 4)
 
@@ -129,18 +132,30 @@ for bref in cert["joint_batches"]:
     vs = ",".join(qs(rsqrt(t)) for t in mesh[1:])
     nodes = ";".join(f"{qs(r)}:{qs(c)}" for r, c in zip(b["nodes"], b["caps"]))
     wits = []
+    spec = b.get("cut_family") in ("separate_spectral_nu_zero", "separate_spectral_covariance")
+    assert spec or "cut_family" not in b
     for wit in b["witnesses"]:
-        y = list(map(Q, wit["y"])); mu = [Q(v) * 10**10 for v in wit["mu"]]; assert all(m.denominator == 1 and m >= 0 for m in mu)
+        y = list(map(Q, wit["y"])); assert len(y) == 5
+        ys = ",".join(qs(v) for v in (y[0], y[4], y[1], y[2], y[3]))
+        if spec:
+            # one spectral cut: a = -1/2, lam, mu > 0, nu >= 0 (nu = 0 for the family without the covariance
+            # order), the test on the batch mesh vanishing at its last knot
+            c = wit["cut"]; assert c["mesh"] == b["mesh"] and Q(c["a"]) == Q(-1, 2)
+            lam, mu_, t, be, nu = (Q(c[k]) for k in ("lam", "mu", "t", "beta", "nu"))
+            assert lam > 0 and mu_ > 0 and nu >= 0 and (nu == 0 or b["cut_family"] == "separate_spectral_covariance")
+            phi = [Q(v) for v in c["phi_values"]]; assert len(phi) == len(mesh) and phi[-1] == 0
+            wits.append(f"{qs(wit['tau'])}:{ys}:{qs(lam)},{qs(mu_)},{qs(t)},{qs(be)},{qs(nu)}|" + ",".join(qs(v) for v in phi[:-1]))
+            continue
+        mu = [Q(v) * 10**10 for v in wit["mu"]]; assert all(m.denominator == 1 and m >= 0 for m in mu)
         bank = []
         for z in wit["bank"]:
             zz = [Q(v) * 10**8 for v in z]; assert all(v.denominator == 1 for v in zz) and len(zz) == len(mesh) + 1
             bank.append(",".join(str(v.numerator) for v in zz))
         assert len(mu) == len(bank)
-        wits.append(f"{qs(wit['tau'])}:" + ",".join(qs(v) for v in (y[0], y[4], y[1], y[2], y[3])) + ":" +
-                    ",".join(str(m.numerator) for m in mu) + "|" + ";".join(bank))
+        wits.append(f"{qs(wit['tau'])}:{ys}:" + ",".join(str(m.numerator) for m in mu) + "|" + ";".join(bank))
     tn = [(Q(wit["tau"]), mpoly(wit["y"])) for wit in b["witnesses"]]
     assert all(u[0] < v[0] for u, v in zip(tn, tn[1:]))
-    batches.append(dict(i=index[names[0]], j=index[names[1]], th=th, smax=Q(b["smax"]), nodes=nodes, vs=vs, wits=wits,
+    batches.append(dict(i=index[names[0]], j=index[names[1]], th=th, smax=Q(b["smax"]), nodes=nodes, vs=vs, wits=wits, spec=spec,
                         tnodes=tn, vrow=vmix(th, vrow(Ri), vrow(Rj))))
 
 # ----- boxes of every region, replayed
@@ -223,7 +238,7 @@ assert regions[0]["lo"] == 0 and regions[-1]["hi"] == Q(9, 10)
 assert all(r["hi"] == r2["lo"] for r, r2 in zip(regions, regions[1:]))
 
 # ----- emit
-bt = ",\n".join(f"  ⟨{b['i']}, {b['j']}, {q(b['th'])}, {q(b['smax'])},\n   {lean_str(b['nodes'])},\n   {lean_str(b['vs'])},\n   [" +
+bt = ",\n".join(f"  ⟨{b['i']}, {b['j']}, {q(b['th'])}, {q(b['smax'])},\n   {lean_str(b['nodes'])},\n   {lean_str(b['vs'])},\n   {'true' if b['spec'] else 'false'},\n   [" +
                 ",\n    ".join(lean_str(w) for w in b["wits"]) + "]⟩" for b in batches)
 def region(r): return f"  ⟨{q(r['lo'])}, {q(r['hi'])},\n   [" + ",\n    ".join(lean_str(s) for s in r["boxes"]) + "]⟩"
 CH = 32   # regions per chunk (long list literals exceed the elaborator's recursion depth)
@@ -232,17 +247,18 @@ rg = "".join(f"/-- Regions {k * CH}–{k * CH + len(c) - 1} of the cover. -/\nde
              for k, c in enumerate(chunks))
 rg += ("/-- The regions `(lo, hi)` covering `[0, 9/10]` with their boxes `kind|tl,tu,sl,su,xl,xu|…`. -/\ndef coverRegions : List Region :=\n  " +
        " ++ ".join(f"coverRegions{k}" for k in range(len(chunks))) + "\n\n")
-nnodes = sum(len(b["wits"]) for b in batches)
+nnodes = sum(len(b["wits"]) for b in batches); nspec = sum(len(b["wits"]) for b in batches if b["spec"])
 text = ("import Grothe.Lower.Boxes\n\n/-!\n# The common-law certificate data (generated by `tools/gen_lower_mixed.py`; do not edit)\n\n"
-        f"The {len(batches)} batches of exact node certificates for the mixed potentials ({nnodes} nodes) and the\n"
-        f"{len(regions)} regions covering `[0, 9/10] × [0, ρ] × [0, 31/4]`: {len(runs)} cap boxes outside the central slab\n"
+        f"The {len(batches)} batches of exact node certificates for the mixed potentials ({nnodes} nodes; {sum(b['spec'] for b in batches)} spectral\n"
+        f"batches with {nspec} nodes) and the {len(regions)} regions covering `[0, 9/10] × [0, ρ] × [0, 31/4]`:\n"
+        f"{len(runs)} cap boxes outside the central slab "
         f"`[{SLAB[0]}, {SLAB[1]}]` and, on the slab, {nboxes} boxes ({kinds['src']} source boxes, {kinds['joint']} joint boxes,\n"
-        f"{kinds['jmix']} joint-mixture boxes); source `{NEW.name}`.\n-/\n\n"
+        f"{kinds['jmix']} joint-mixture boxes); source `{NEW.relative_to(HANDOFF) if NEW.is_relative_to(HANDOFF) else NEW.name}`.\n-/\n\n"
         "namespace Grothe.Lower\n\n"
-        "/-- The batches: rows `(i, j)`, weight `θ`, Lipschitz constant, mixed node caps, mesh and witnesses. -/\n"
+        "/-- The batches: rows `(i, j)`, weight `θ`, Lipschitz constant, mixed node caps, mesh, kind (spectral or Stein) and witnesses. -/\n"
         "def mixedBatches : List JBatch :=\n[" + bt + "]\n\n"
         + rg + "end Grothe.Lower\n")
 OUT.write_text(text)
-print("ok", json.dumps(dict(source=NEW.name, batches=len(batches), nodes=nnodes, regions=len(regions), caps=len(runs), boxes=nboxes, kinds=kinds,
+print("ok", json.dumps(dict(source=str(NEW), batches=len(batches), nodes=nnodes, spectral_nodes=nspec, regions=len(regions), caps=len(runs), boxes=nboxes, kinds=kinds,
                             slab=[str(SLAB[0]), str(SLAB[1])], slab_max=float(worst), outer_max=float(outer), B=float(B),
                             bytes=OUT.stat().st_size)))

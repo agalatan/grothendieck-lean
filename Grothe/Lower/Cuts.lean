@@ -184,3 +184,132 @@ lemma cutSum_cell (vs : List ℚ) (cs : List (ℚ × List ℚ)) (v : ℝ)
     ring
 
 end Grothe.Lower
+
+/-! ### The spectral cuts -/
+
+namespace Grothe.Lower
+
+/-- The **spectral cut** on a cell, in the variable `u`: with `φ = A + Bu`,
+`Φ = e₀ + Au + (B/2)u²`, `d = φ − Φ/u` (read as `0` at `u = 0`),
+`f = −(φ + β)/2 + (2t + λ/3)u` and `g = −d/2 + (t + μ/3 − ν/2)u`,
+
+  `G(u) = f²/λ + g²/μ + Φ − φ + (ν/3 − 2t)(u² − 2)`. -/
+noncomputable def specCellG (A B e0 lam mu t be nu u : ℝ) : ℝ :=
+  (-(A + B * u + be) / 2 + (2 * t + lam / 3) * u) ^ 2 / lam
+    + (-(if u = 0 then 0 else A + B * u - (e0 + A * u + B / 2 * u ^ 2) / u) / 2
+      + (t + mu / 3 - nu / 2) * u) ^ 2 / mu
+    + (e0 + A * u + B / 2 * u ^ 2 - (A + B * u)) + (nu / 3 - 2 * t) * (u ^ 2 - 2)
+
+/-- The coefficients `f₀ = −(A + β)/2`, `f₁ = −B/2 + 2t + λ/3`, `g₂ = −B/4 + t + μ/3 − ν/2` of
+`f = f₀ + f₁u` and `ug = e₀/2 + g₂u²` on a cell. -/
+def specF0 (c : CutCell) (be : ℚ) : ℚ := -(c.A + be) / 2
+def specF1 (c : CutCell) (lam t : ℚ) : ℚ := -c.B / 2 + 2 * t + lam / 3
+def specG2 (c : CutCell) (mu t nu : ℚ) : ℚ := -c.B / 4 + t + mu / 3 - nu / 2
+
+/-- Coefficients in `v` of `v^{sh(k)} G(v²)` on the `k`-th mesh cell of a spectral cut
+`(λ, μ, t, β, ν)`: `G` itself on the first cell (where `e₀ = 0`), `u² G(u)` on the others. -/
+def specPolyV (k : ℕ) (c : CutCell) (lam mu t be nu : ℚ) : List ℚ :=
+  if k = 0 then
+    [specF0 c be ^ 2 / lam - c.A + 4 * t - 2 * nu / 3, 0,
+     2 * specF0 c be * specF1 c lam t / lam + (c.A - c.B), 0,
+     specF1 c lam t ^ 2 / lam + specG2 c mu t nu ^ 2 / mu + c.B / 2 + (nu / 3 - 2 * t)]
+  else
+    [c.e0 ^ 2 / (4 * mu), 0, 0, 0,
+     specF0 c be ^ 2 / lam + c.e0 * specG2 c mu t nu / mu + c.e0 - c.A + 4 * t - 2 * nu / 3, 0,
+     2 * specF0 c be * specF1 c lam t / lam + (c.A - c.B), 0,
+     specF1 c lam t ^ 2 / lam + specG2 c mu t nu ^ 2 / mu + c.B / 2 + (nu / 3 - 2 * t)]
+
+lemma specCellG_quartic (A B e0 lam mu t be nu u : ℝ) (hu : u ≠ 0) :
+    u ^ 2 * specCellG A B e0 lam mu t be nu u
+      = e0 ^ 2 / (4 * mu)
+        + ((-(A + be) / 2) ^ 2 / lam + e0 * (-B / 4 + t + mu / 3 - nu / 2) / mu + e0 - A + 4 * t
+          - 2 * nu / 3) * u ^ 2
+        + (2 * (-(A + be) / 2) * (-B / 2 + 2 * t + lam / 3) / lam + (A - B)) * u ^ 3
+        + ((-B / 2 + 2 * t + lam / 3) ^ 2 / lam + (-B / 4 + t + mu / 3 - nu / 2) ^ 2 / mu + B / 2
+          + (nu / 3 - 2 * t)) * u ^ 4 := by
+  simp only [specCellG, hu, ↓reduceIte]
+  have e : -(A + B * u - (e0 + A * u + B / 2 * u ^ 2) / u) / 2 + (t + mu / 3 - nu / 2) * u
+      = (e0 / 2 + (-B / 4 + t + mu / 3 - nu / 2) * u ^ 2) / u := by
+    field_simp; ring
+  rw [e, div_pow]
+  field_simp
+  ring
+
+lemma specCellG_first (A B lam mu t be nu u : ℝ) :
+    specCellG A B 0 lam mu t be nu u
+      = ((-(A + be) / 2) ^ 2 / lam - A + 4 * t - 2 * nu / 3)
+        + (2 * (-(A + be) / 2) * (-B / 2 + 2 * t + lam / 3) / lam + (A - B)) * u
+        + ((-B / 2 + 2 * t + lam / 3) ^ 2 / lam + (-B / 4 + t + mu / 3 - nu / 2) ^ 2 / mu + B / 2
+          + (nu / 3 - 2 * t)) * u ^ 2 := by
+  have e : (-(if u = 0 then 0 else A + B * u - (0 + A * u + B / 2 * u ^ 2) / u) / 2
+      + (t + mu / 3 - nu / 2) * u) = (-B / 4 + t + mu / 3 - nu / 2) * u := by
+    split_ifs with hu
+    · subst hu; ring
+    · field_simp; ring
+  simp only [specCellG]
+  rw [e]
+  ring
+
+/-- **The spectral cut function** `G(v²)` of the test `(vs, z)` with parameters
+`(λ, μ, t, β, ν)`. -/
+noncomputable def specG (vs z : List ℚ) (lam mu t be nu : ℚ) (v : ℝ) : ℝ :=
+  specCellG ((cutCells vs z).getD (pickIdx vs v) ⟨0, 0, 0⟩).A
+    ((cutCells vs z).getD (pickIdx vs v) ⟨0, 0, 0⟩).B
+    ((cutCells vs z).getD (pickIdx vs v) ⟨0, 0, 0⟩).e0 lam mu t be nu (v ^ 2)
+
+lemma specG_cell (vs z : List ℚ) (lam mu t be nu : ℚ) (v : ℝ) (hk : pickIdx vs v = 0 ∨ 0 < v) :
+    v ^ shOf (pickIdx vs v) * specG vs z lam mu t be nu v
+      = evalL ((specPolyV (pickIdx vs v) ((cutCells vs z).getD (pickIdx vs v) ⟨0, 0, 0⟩)
+          lam mu t be nu).map ((↑) : ℚ → ℝ)) v := by
+  by_cases h0 : pickIdx vs v = 0
+  · unfold specG
+    rw [h0]
+    have he := cutCells_head_e0 vs z
+    obtain ⟨c, hc⟩ : ∃ c, c = (cutCells vs z).getD 0 ⟨0, 0, 0⟩ := ⟨_, rfl⟩
+    rw [← hc] at he ⊢
+    rw [he, Rat.cast_zero, specCellG_first]
+    simp only [shOf, specPolyV, specF0, specF1, specG2, ↓reduceIte, List.map_cons, List.map_nil,
+      evalL]
+    push_cast
+    ring
+  · have hv : 0 < v := hk.resolve_left h0
+    have hu : v ^ 2 ≠ 0 := by positivity
+    unfold specG
+    obtain ⟨c, hc⟩ : ∃ c, c = (cutCells vs z).getD (pickIdx vs v) ⟨0, 0, 0⟩ := ⟨_, rfl⟩
+    rw [← hc]
+    have key := specCellG_quartic c.A c.B c.e0 lam mu t be nu (v ^ 2) hu
+    simp only [shOf, specPolyV, specF0, specF1, specG2, h0, ↓reduceIte, List.map_cons,
+      List.map_nil, evalL]
+    push_cast
+    linear_combination key
+
+/-- The polynomial pieces of the cells from index `i` on. -/
+def specPolysFrom (lam mu t be nu : ℚ) : ℕ → List CutCell → List (List ℚ)
+  | _, [] => []
+  | i, c :: r => specPolyV i c lam mu t be nu :: specPolysFrom lam mu t be nu (i + 1) r
+
+/-- The polynomial pieces of a spectral cut, one per mesh cell. -/
+def specPolys (vs z : List ℚ) (lam mu t be nu : ℚ) : List (List ℚ) :=
+  specPolysFrom lam mu t be nu 0 (cutCells vs z)
+
+lemma specPolysFrom_getD (lam mu t be nu : ℚ) : ∀ (cells : List CutCell) (i k : ℕ),
+    k < cells.length → (specPolysFrom lam mu t be nu i cells).getD k []
+      = specPolyV (i + k) (cells.getD k ⟨0, 0, 0⟩) lam mu t be nu
+  | [], _, _, h => absurd h (by simp)
+  | c :: r, i, 0, _ => by simp [specPolysFrom]
+  | c :: r, i, k + 1, h => by
+    simp only [specPolysFrom, List.getD_cons_succ]
+    rw [specPolysFrom_getD lam mu t be nu r (i + 1) k (by simpa using h)]
+    congr 1
+    omega
+
+lemma specPolys_getD (vs z : List ℚ) (lam mu t be nu : ℚ) (v : ℝ) :
+    (specPolys vs z lam mu t be nu).getD (pickIdx vs v) []
+      = specPolyV (pickIdx vs v) ((cutCells vs z).getD (pickIdx vs v) ⟨0, 0, 0⟩)
+          lam mu t be nu := by
+  have h := specPolysFrom_getD lam mu t be nu (cutCells vs z) 0 (pickIdx vs v)
+    (by rw [cutCells_length]; have := pickIdx_le vs v; omega)
+  rw [zero_add] at h
+  exact h
+
+end Grothe.Lower
