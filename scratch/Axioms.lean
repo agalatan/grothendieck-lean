@@ -47,6 +47,14 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.fluctuation_bound
 #print axioms Grothe.LowerAnalytic.radial_cut
 #print axioms Grothe.LowerAnalytic.gaussian_steinInputs
+#print axioms Grothe.LowerAnalytic.gaussian_gramInputs
+#print axioms Grothe.LowerAnalytic.gramZ_sq_le
+#print axioms Grothe.LowerAnalytic.gE_SU
+#print axioms Grothe.LowerAnalytic.N_eq
+#print axioms Grothe.Lower.gram_budget_of_scalars
+#print axioms Grothe.Lower.coupled_of_gram
+#print axioms Grothe.Lower.gspec_of_inputs
+#print axioms Grothe.Lower.budget_of_bud
 #print axioms Grothe.LowerAnalytic.budget_w
 #print axioms Grothe.LowerAnalytic.budget_c
 #print axioms Grothe.LowerAnalytic.energy_identity

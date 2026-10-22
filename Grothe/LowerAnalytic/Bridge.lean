@@ -3,12 +3,13 @@ import Grothe.LowerAnalytic.SixthMoment
 import Grothe.LowerAnalytic.RadialCut
 import Grothe.LowerAnalytic.FourthMoment
 import Grothe.LowerAnalytic.Circular
+import Grothe.LowerAnalytic.GramBudget
 
 /-!
 # From the Gaussian lemmas to the hypotheses of `lower_bound_data`
 
 `lower_bound_data` is stated for an abstract law `U` packaged in `SharedReduction`, which asks
-for `Moments μ U x` and `SteinInputs μ U`.  This file instantiates both for the law of
+for `Moments μ U x` and `GramInputs μ U`.  This file instantiates both for the law of
 `U = a² + b² = |q|²` under the standard Gaussian measure, `q = a + ib` a normalized circular cubic
 chaos (`Chaos3 a`, `Chaos3 b`, `E a² = 1/2`, `Circular J a b`; `E b² = 1/2` and `E ab = 0`
 follow), and states the lower bound with only the genuinely open Gaussian facts left as
@@ -23,12 +24,16 @@ hypotheses.
   `Circular.gaussian_sixth` from the tensor facts `TensorFacts` of `Circular.lean`.  (The
   sixth-moment inequality is false for general real pairs `(a, b)` in the third chaos; it needs
   the circularity `D_J q = i q`.)
-* `gaussian_steinInputs` (in `RadialCut.lean`) gives `SteinInputs` with no hypothesis.
+* `gaussian_steinInputs` (in `RadialCut.lean`) gives `SteinInputs` with no hypothesis;
+  `gaussian_gramInputs` (in `GramBudget.lean`) gives `GramInputs` (the inputs of all Stein cuts,
+  including the contraction-Gram budgets cited by the spectral nodes) from the tensor facts
+  `GramFacts` of the circular cubic.
 * `sharedReduction_of_gaussian` and `lower_bound_gaussian`: the finite-layer bound `V ≤ B` for a
   Gaussian residual.  What remains assumed: the tensor facts `TensorFacts` of the sixth-moment
-  certificate (the Wick identities for `κ₄`, `κ₆` and the charge-sector inequalities), the scale
-  `0 ≤ τ ≤ ρ`, the gate variable with `|X₁|² = τ² |q|²`, the row inequalities `RowShared` of the
-  Gaussian reduction, and the crude row.
+  certificate (the Wick identities for `κ₄`, `κ₆` and the charge-sector inequalities), the tensor
+  facts `GramFacts` of the contraction-Gram budget (the four spectral identities, `b ≤ n`, `y ≤ z`
+  and `G₁ ⪰ 0`), the scale `0 ≤ τ ≤ ρ`, the gate variable with `|X₁|² = τ² |q|²`, the row
+  inequalities `RowShared` of the Gaussian reduction, and the crude row.
 -/
 
 open MeasureTheory MvPolynomial Grothe.Lower
@@ -122,12 +127,12 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
 /-- **The Gaussian reduction discharges the law hypotheses of `SharedReduction`**: for the law of
 `|q|²` under the standard Gaussian measure, `q` circular, only the tensor facts of the
-sixth-moment certificate, the scale, the gate variable and the row inequalities remain to be
-supplied. -/
+sixth-moment certificate and of the contraction-Gram budget, the scale, the gate variable and the
+row inequalities remain to be supplied. -/
 theorem sharedReduction_of_gaussian (rows : List Row) (V t : ℝ) (Qh v : E)
     (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (hb : Chaos3 b)
     (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) {J : Fin d → Fin d → ℝ}
-    (hc : Circular J a b) (hT : TensorFacts (gaussE d) J a)
+    (hc : Circular J a b) (hT : TensorFacts (gaussE d) J a) (hG : GramFacts (gaussE d) J a b)
     (X1 X2 X3 : (Fin d → ℝ) → ℂ) (τ : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ ρ)
     (hX : ∀ x, ‖X1 x‖ ^ 2 = τ ^ 2 * eval x (radU a b))
     (hrows : ∀ r ∈ rows,
@@ -135,7 +140,7 @@ theorem sharedReduction_of_gaussian (rows : List Row) (V t : ℝ) (Qh v : E)
     SharedReduction rows V t Qh v :=
   ⟨Fin d → ℝ, inferInstance, stdGaussian d, inferInstance, fun x => eval x (radU a b), X1, X2,
     X3, τ, _, gaussian_moments a b ha hb haa hc hT,
-    gaussian_steinInputs a b ha hb haa (hc.gaussian_sq_eq haa) hc.gaussian_mul, hτ0, hτ1, hX,
+    gaussian_gramInputs a b ha hb haa (hc.gaussian_sq_eq haa) hc.gaussian_mul hG, hτ0, hτ1, hX,
     hrows⟩
 
 /-- **The finite-layer lower bound for a Gaussian residual**: `lower_bound_data` with the law
@@ -144,14 +149,14 @@ theorem lower_bound_gaussian (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 
     (ht1 : t ≤ 9 / 10) (hcrude : RowOf crudeRow V t Qh v)
     (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (hb : Chaos3 b)
     (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) {J : Fin d → Fin d → ℝ}
-    (hc : Circular J a b) (hT : TensorFacts (gaussE d) J a)
+    (hc : Circular J a b) (hT : TensorFacts (gaussE d) J a) (hG : GramFacts (gaussE d) J a b)
     (X1 X2 X3 : (Fin d → ℝ) → ℂ) (τ : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ ρ)
     (hX : ∀ x, ‖X1 x‖ ^ 2 = τ ^ 2 * eval x (radU a b))
     (hrows : ∀ r ∈ rowData,
       RowShared r (stdGaussian d) (fun x => eval x (radU a b)) X1 X2 X3 τ V t Qh v) :
     V ≤ Bcap :=
   lower_bound_data V t Qh v hv ht0 ht1 hcrude
-    (sharedReduction_of_gaussian rowData V t Qh v a b ha hb haa hc hT X1 X2 X3 τ hτ0 hτ1 hX
+    (sharedReduction_of_gaussian rowData V t Qh v a b ha hb haa hc hT hG X1 X2 X3 τ hτ0 hτ1 hX
       hrows)
 
 end Grothe.LowerAnalytic

@@ -30,14 +30,14 @@ open LowerAnalytic
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
 /-- **The simultaneous Gaussian reduction of the rows**: one probability space with one normalized
-law `U` (moment bounds and the inputs of the Stein cuts), one scale `0 ≤ τ ≤ ρ` and one gate
+law `U` (moment bounds and the inputs of the Stein cuts, `GramInputs`), one scale `0 ≤ τ ≤ ρ` and one gate
 variable `X = (X₁, X₂, X₃)` with `|X₁|² = τ² U` (its first coordinate is the residual), such that
 every row satisfies its inequality with its own potential and the retained gate square
 (`RowShared`). -/
 def SharedReduction (rows : List Row) (V t : ℝ) (Qh v : E) : Prop :=
   ∃ (Ω : Type) (_ : MeasurableSpace Ω) (μ : Measure Ω) (_ : IsProbabilityMeasure μ)
     (U : Ω → ℝ) (X1 X2 X3 : Ω → ℂ) (τ x : ℝ),
-    Moments μ U x ∧ SteinInputs μ U ∧ 0 ≤ τ ∧ τ ≤ ρ ∧ (∀ ω, ‖X1 ω‖ ^ 2 = τ ^ 2 * U ω) ∧
+    Moments μ U x ∧ GramInputs μ U ∧ 0 ≤ τ ∧ τ ≤ ρ ∧ (∀ ω, ‖X1 ω‖ ^ 2 = τ ^ 2 * U ω) ∧
     ∀ r ∈ rows, RowShared r μ U X1 X2 X3 τ V t Qh v
 
 /-- **A certified row holds in the shared reduction**: completing the gate square with its first
