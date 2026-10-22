@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.401691989174 < K_G^ℂ < 1.404598989011**
+> **1.401694929772 < K_G^ℂ < 1.404598989011**
 
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an 8-page explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
@@ -35,7 +35,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.401691989174 < K** | **K < 1.404598989011** |
+| Oct 2026 | **this repository** | **1.401694929772 < K** | **K < 1.404598989011** |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
 proposed as the exact value; it lies inside the interval, 2.31·10⁻⁵ below our upper bound.
@@ -47,7 +47,7 @@ complex matrix, with V over all finite-dimensional complex Hilbert spaces. Both 
 theorems conclude a statement about the constant itself.
 
 **Lower bound** — `Grothe.LowerAnalytic.lower_bound_of_nodeCaps :
-NodeCaps → IsGrothendieckBound K → 1.401691989174 < K`
+NodeCaps → IsGrothendieckBound K → 1.401694929772 < K`
 (`Grothe/LowerAnalytic/Reduction.lean`).
 
 The witness is the operator T = P₁,₀ − (149/200)·P₂,₁ on L² of the complex Gaussian measure
@@ -55,9 +55,10 @@ The witness is the operator T = P₁,₀ − (149/200)·P₂,₁ on L² of the c
 norm of T to finite matrices; the value of T on vector-valued test functions; the exact
 reduction of ⟨f, Tg⟩ for every pair of unimodular functions to 19 one-variable row
 inequalities; all analytic facts about the law of the cubic residual (moment bounds, Stein and
-spectral cuts, the contraction-Gram budgets, the sixth-moment Wick identity); and the finite
-certificate that combines them (336 node certificates and a cover of the parameter space by
-7,875 boxes, one `native_decide`). The **only hypothesis**, `NodeCaps`, states that 19 explicit
+spectral cuts, the contraction-Gram budgets, the sixth-moment Wick identity and the joint
+sixth-moment inequalities that tie the sixth moment to the same contraction scalars); and the
+finite certificate that combines them (351 node certificates and a cover of the parameter space
+by 8,679 boxes, one `native_decide`). The **only hypothesis**, `NodeCaps`, states that 19 explicit
 one-variable functions Ψ_r (defined in Lean as suprema of finite-dimensional Gaussian
 integrals) lie below stored rational values at their tabulated nodes. Those caps are certified
 by exact-arithmetic computations outside Lean; moving them inside is work in progress.
@@ -91,7 +92,7 @@ The head, computed in Lean (`head_check`), is 7143/10¹², 0.64% of the total
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus exactly two `native_decide` facts,
 `Grothe.head_check` (the upper head) and `Grothe.Lower.cert_check` (the lower certificate).
 Everything else is kernel-checked. No `sorry`. The axiom report `scratch/Axioms.lean`
-(140 theorems) is verified in CI by `scripts/check_axioms.py`.
+(146 theorems) is verified in CI by `scripts/check_axioms.py`.
 
 The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAILS.md).
 
@@ -108,7 +109,7 @@ The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAI
 | `scratch/Axioms.lean`, `scripts/check_axioms.py` | the axiom report and its check |
 | `docs/` | `LEAN_DETAILS.md` (inventory) and `overview.tex` (source of `OVERVIEW.pdf`) |
 
-About 28,000 lines of hand-written Lean and 11,000 lines of generated data.
+About 28,000 lines of hand-written Lean and 12,500 lines of generated data.
 
 ## Building
 

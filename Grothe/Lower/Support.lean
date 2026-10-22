@@ -84,7 +84,7 @@ lemma checkCert_eq (rows : List Row) (batches : List JBatch) (cuts boxes : List 
 /-- **Main lower-bound theorem (finite layer).**  Under the retained-square inequality of the
 crude row and the simultaneous Gaussian reduction of the certified rows, every admissible `(V, t)`
 satisfies `V ≤ B`: the point `(t, τ, x)` lies in a box of the cover, and the box bounds `V`; with
-the Gaussian transfer `K_G^ℂ ≥ 1/B` this is `K_G^ℂ > 1.401689235711` (`lower_endpoint`). -/
+the Gaussian transfer `K_G^ℂ ≥ 1/B` this is `K_G^ℂ > 1.401694929772` (`lower_endpoint`). -/
 theorem lower_bound_main (rows : List Row) (batches : List JBatch) (cuts boxes : List String)
     (hcert : checkCert rows batches cuts boxes = true)
     (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)

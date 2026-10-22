@@ -30,7 +30,7 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.401691989174\;<\;\KG\;<\;1.404598989011$\\[6pt]
+\Large $1.401694929772\;<\;\KG\;<\;1.404598989011$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, each resting on one explicitly stated
 family of externally certified numerical inputs (Section~\ref{sec:trust}).\vspace{4pt}
 \end{minipage}}
@@ -75,7 +75,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$ (Gaussian phase rounding)\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct 2026 & \textbf{this work} & $\mathbf{1.401691989174}$ & $\mathbf{1.404598989011}$\\\bottomrule
+Oct 2026 & \textbf{this work} & $\mathbf{1.401694929772}$ & $\mathbf{1.404598989011}$\\\bottomrule
 \end{tabular}
 \end{center}
 Haagerup's integral
@@ -117,9 +117,9 @@ A lower bound needs an operator $T$ whose \emph{vector} value is close to $1$ wh
 the projection onto linear functions minus a multiple of the projection onto the cubic chaos.
 \begin{itemize}
 \item \emph{Vector value.} With $u_\ell=z_\ell/\|z\|$, $\sum_\ell\langle u_\ell,Tu_\ell\rangle\ge1-(1+\epsilon)/(n+1)\to1$.
-\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=0.713423496548$.
+\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=0.713421999866$.
 \end{itemize}
-A finite-partition transfer turns this into matrices, so $\KG\ge1/B>1.401691989174$.
+A finite-partition transfer turns this into matrices, so $\KG\ge1/B>1.401694929772$.
 
 The scalar cap is the hard part. Writing $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$,
 \[
@@ -138,9 +138,10 @@ paying elsewhere. After a rotation $P_{1,0}h=t\,z_1$, and the cubic part of $k$ 
  $\E U^3\le9m-12+40.45313\,(m-2)^{3/2}$, $m=\E U^2$, which rests on thirteen tensor-contraction facts including the Wick
  expansion of the sixth cumulant; a first-moment bound; and families of \emph{Stein cuts}
  $\E\,G(U)\ge0$, obtained by Gaussian integration by parts and completing squares against spectral budgets, a covariance
- order and \emph{contraction-Gram budgets} (positive semidefinite Gram matrices of the coefficient tensor).
-\item \textbf{A finite certificate.} The parameters are covered by $7{,}875$ boxes in $(t,\tau,x)$; on each box a positive
- combination of rows and node certificates ($336$ joint nodes, $9{,}237$ row nodes, each a polynomial majorant checked in
+ order and \emph{contraction-Gram budgets} (positive semidefinite Gram matrices of the coefficient tensor), some of them
+ strengthened by a \emph{joint} sixth-moment inequality in the same contraction scalars.
+\item \textbf{A finite certificate.} The parameters are covered by $8{,}679$ boxes in $(t,\tau,x)$; on each box a positive
+ combination of rows and node certificates ($351$ joint nodes, $9{,}237$ row nodes, each a polynomial majorant checked in
  exact rational arithmetic) bounds the scalar value by $B$.
 \end{enumerate}
 
@@ -158,11 +159,11 @@ between our bounds is entirely the gap between restricted constructions and the 
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
 \textbf{Proved in Lean} & \textbf{Assumed (certified outside Lean)}\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_bound\_of\_nodeCaps : NodeCaps → IsGrothendieckBound K → 1.401691989174 < K}}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_bound\_of\_nodeCaps : NodeCaps → IsGrothendieckBound K → 1.401694929772 < K}}\\[2pt]
 the witness $T$ on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices; the polarisation identity;
 the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair (frames, fibre decomposition, Parseval,
 gates); all moment, Stein, spectral and contraction-Gram inequalities for every circular cubic, including the sixth-cumulant
-Wick identity; the finite certificate (one \lean{native\_decide})
+Wick identity and the joint sixth-moment inequalities; the finite certificate (one \lean{native\_decide})
 &
 \lean{NodeCaps}: the 19 potentials $\Psi_r$ (defined in Lean) lie below their stored rational caps at the tabulated nodes.
 These caps come from exact-arithmetic certificates (interval integration and anchored quadratic majorants), replayed
@@ -178,8 +179,8 @@ $6847009/(5\cdot10^{17})$ ($0.001\%$). The head computed in Lean, $7143/10^{12}$
 \end{tabular}
 \end{center}
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}, and exactly two pinned \lean{native\_decide} facts. No
-\lean{sorry}; CI builds everything and checks the axiom report (140 theorems). The development has about $28{,}000$ lines of
-hand-written Lean and $11{,}000$ lines of generated certificate data. The lower bound is close to fully formal: only
+\lean{sorry}; CI builds everything and checks the axiom report (146 theorems). The development has about $28{,}000$ lines of
+hand-written Lean and $12{,}500$ lines of generated certificate data. The lower bound is close to fully formal: only
 one-variable numerical caps remain. The upper bound still rests mainly on an external analytic comparison lemma.
 
 \section{Discoveries along the way}\label{sec:discoveries}
@@ -205,6 +206,14 @@ normalised by $\E|q|^2=1$, and $U=|q|^2$.
   \E X^2+\tfrac1{10}\E r^2\le\tfrac{34}{45}P-\tfrac1{18}Q .
  \]
  Each budget is certified by two positive semidefinite $2\times2$ Gram matrices of contractions of the coefficient tensor.
+\item \textbf{Joint sixth moment [Lean].} The sixth moment is controlled by the same contraction scalars
+ $(n,h,b,y,z)$: with $s_0=8n+2h+8b+8z$, $h_0=\frac83n+\frac23h+\frac83b+24y-\frac{16}3z$ one has
+ $\E U^2-2=x^2=\frac83s_0+4h_0$ and, for every $\alpha>0$,
+ \[
+  \E U^3\le6+9x^2+x\Bigl(\tfrac{135}{2}\alpha\,s_0+\bigl(\tfrac{11781}{32}+\tfrac{135}{2\alpha}\bigr)h_0\Bigr),
+ \]
+ from Hilbert--Schmidt bounds on the tensor contractions in the $\kappa_6$ identity and one completed square. A node
+ certificate may pay for this bracket inside its Gram budget, on a restricted range $x\le x_*$ checked box by box.
 \item \textbf{First moment [P,C].} $\E|q|\le0.97073$, from a two-plane small-ball estimate (a winding argument on $S^3$ and a
  horizontal Lipschitz bound). The sharp value $\sqrt\pi/2=0.8862$, which the Gaussian attains, is open.
 \end{itemize}

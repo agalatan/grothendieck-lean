@@ -44,8 +44,8 @@ truncation X = F₀ + v.
   formal verification.
 
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
-value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 700845994587/(5·10^11) < K`, and the transfer
-`Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 700845994587/(5·10^11) < K`,
+value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 350423732443/(25·10^10) < K`, and the transfer
+`Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 350423732443/(25·10^10) < K`,
 where `TransferInputsL2 B` asks, for every δ > 0, for a finite measure space with an operator T on L²,
 a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u, v in L² with Σₗ|uₗ|² ≤ 1 and
 Σₗ|vₗ|² ≤ 1 a.e. and ‖Σ⟨uₗ, T vₗ⟩‖ ≥ 1 − δ.
@@ -97,16 +97,18 @@ variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
   and their polynomial pieces; the majorant sweeps over 9,237 nodes; the moment-rectangle
   covers; the integration against the law of |q|²; the chords in σ; the bound of every row
   from its Gaussian reduction; the mixtures of rows (the retained gate square mixes by an exact
-  identity); the common-law certificate: 19 batches of 336 joint node certificates for mixed
-  potentials of rows 0.84–0.855 (4 inherited batches/60 nodes with Stein cuts, 15 batches/276 nodes
-  with one spectral cut each on 74-, 90- and 161-knot test meshes, 140 of them with ν > 0, i.e. using
-  the covariance order, and 65 citing a contraction-Gram certificate: the exact node checker verifies
+  identity); the common-law certificate: 21 batches of 351 node certificates for mixed
+  potentials of rows 0.84–0.855 (3 inherited batches/45 nodes with Stein cuts, 18 batches/306 nodes
+  with one spectral cut each on 74-, 90- and 161-knot test meshes, 136 of them with ν > 0, i.e. using
+  the covariance order, and 118 citing a contraction-Gram certificate: the exact node checker verifies
   identity (4) of the certificate coefficientwise, positivity of the two 2×2 matrices by diagonal and
-  determinant, and the nonnegative remainders), and the partition of
-  [0, 9/10] × [0, ρ] × [0, 31/4] into 7,875 closed boxes certified by 7,874 axis cuts (241 cap boxes:
-  fixed mixtures of two certified row caps including the crude row; 1,072 boxes with one component
-  and 6,562 mixing two, a component being a row or a mixture of two rows with four certified
-  τ-nodes, chorded twice in τ, pinned gate price X₁ = p);
+  determinant, and the nonnegative remainders; 41 of these are joint sixth-moment certificates, whose
+  identity also pays for ζ x_* J and whose cut carries ζ(−u³ + 9u² − 12), each used only on boxes with
+  x₊ ≤ x_*), and the partition of
+  [0, 9/10] × [0, ρ] × [0, 31/4] into 8,679 closed boxes certified by 8,678 axis cuts (224 cap boxes:
+  fixed mixtures of two certified row caps including the crude row; 1,884 boxes with one component
+  and 6,571 mixing two, a component being a row or a mixture of two rows with four certified
+  τ-nodes, chorded twice in τ, pinned gate price X₁ = p; every referenced node valid on the box);
   and the endpoint; the Gaussian witness on L²(γ_n) with its value on z/‖z‖, the orthogonality of the
   chaos ranges, the polarisation identity of the scalar pairing, the bound ‖P₁,₀h‖ ≤ √π/2 for |h| ≤ 1
   (rotation invariance of the Gaussian measure, E√(x²+y²) = √(π/2)) and the transfer inputs from the
@@ -144,14 +146,23 @@ variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
   aP + b₀Q − λ E X² − μ E|c|² = tr(M₀G₀) + tr(M₁G₁) + α(n − b) + β(z − y) + Σ eⱼvⱼ with eⱼ ≥ 0
   (`gramCert`; simplest instance E X² + E r²/10 ≤ 34P/45 − Q/18), and the *coupled family*
   E X² ≤ a_s P − b_s Q, a_s = (s + 5)/9, b_s = (s + 1/2 − 3/s)/9, s ≥ 2, which is the instance
-  λ = 9s, M₀ = (64, −16s, 4s²), α = 16(s² − 4) (`coupled_of_gram`).
+  λ = 9s, M₀ = (64, −16s, 4s²), α = 16(s² − 4) (`coupled_of_gram`); and the *joint sixth-moment
+  certificate* (`jointCert`, `gram_joint_of_scalars`): rational (kind, α > 0, x_* > 0, ζ ≥ 0) with the
+  Gram data, the vector of ζ x_* J subtracted from the five remainders, J = A_α s₀ + B_α h₀,
+  s₀ = 8n + 2h + 8b + 8z, h₀ = (8/3)n + (2/3)h + (8/3)b + 24y − (16/3)z, (A_α, B_α) = (150α, 198 + 150/α)
+  or ((135/2)α, 11781/32 + 135/(2α)), gives λ E X² + μ E|c|² + ζ x_* J ≤ aP + b₀Q; with the joint
+  sixth-moment inequality E U³ ≤ 6 + 9χ + xJ (x = √χ ≤ x_*) this is
+  λ E X² + μ E r² + ζ(E U³ − 6 − 9χ) ≤ aP + b₀Q whenever E U² ≤ 2 + x_*².
   From them `steinCut_of_inputs` proves the summed cuts (the budgets added), the spectral cuts
   E[f²/λ + g²/μ + Φ − φ + (ν/3 − 2t)(U² − 2)] ≥ 0, f = −(φ+β)/2 + (2t + λ/3)U,
   g = −(φ − Φ/U)/2 + (t + μ/3 − ν/2)U, λ, μ > 0, ν ≥ 0, which equal a sum of squares plus
   λ((2/3)P − E X²) + μ((2/3)Q − E r²) + ν(χ/3 − Q), and the general spectral cuts of a node citing a
   budget, with the coefficients of U shifted by af = a/2 − λ/3 and ag = μ/3 − b₀/2 (or by the sums
   Σ ηⱼ(sⱼ − 1)/18, Σ ηⱼ(sⱼ + 1/2 − 3/sⱼ)/18 of the coupled family), whose expectation is the squares plus
-  aP + b₀Q − λ E X² − μ E r². The inputs of `SteinInputs` are proved in Lean for the Gaussian law: for
+  aP + b₀Q − λ E X² − μ E r², and the joint cuts (`jspec_of_inputs`): the general spectral cut of a
+  joint certificate plus ζ(−U³ + 9U² − 12), whose expectation is the squares plus
+  aP + b₀Q − λ E X² − μ E r² − ζ(E U³ − 6 − 9χ) ≥ 0 when E U² ≤ 2 + x_*²; a joint node certifies its
+  majorant only for x ≤ x_*, and `nodeOf` checks x₊ ≤ x_* for every reference of a box. The inputs of `SteinInputs` are proved in Lean for the Gaussian law: for
   real polynomials a, b in the third Gaussian chaos with E a² = E b² = ½ and E ab = 0, the law of
   U = a² + b² under the standard Gaussian measure satisfies them
   (`Grothe.LowerAnalytic.gaussian_steinInputs`; the budgets from Ornstein–Uhlenbeck ladders in
@@ -182,6 +193,15 @@ variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
   identity of `GramTensor.lean` up to reindexing); so **every tensor fact of the contraction-Gram
   budget is proved** and `gaussian_gramInputs` has no hypothesis beyond circularity;
   `tools/check_gram_facts.py` checks the identities numerically with the exact Lean definitions.
+  The joint sixth-moment inequalities are proved in `JointSixth.lean` (`Circular.joint_sixth`): the
+  contraction norms of the real kernel f = ∂³a/6 are 1296 s = s₀ and 1296 h = h₀ (`tenS_eq_gram`:
+  G = (Re(H + 2N) + 2 Re B)/18 with the cross terms killed by charge conservation; `tenH_eq_gram`:
+  with S₊ = Sym(f ⋆ f + g ⋆ g), R = Sym(f ⋆ f − g ⋆ g), M = Sym(f ⋆ g + g ⋆ f) the derivation δ gives
+  δS₊ = 0, δR = −2M, δM = 2R, so ⟨S₊, R⟩ = 0 and ‖R‖² = ‖M‖², and 4h = ‖S₊‖² + ‖R‖² with
+  `sum_kerS_sq` and `hipV_V`), hence χ = (8/3)s₀ + 4h₀; the Hilbert–Schmidt bounds T₄ ≤ h², T₃ ≤ h√h,
+  Q ≤ s√h, V ≤ s√s (from the cubic-trace field), W ≤ h√s, ⟨D, U⟩ ≤ √V √W; in the Wick identity of κ₆
+  either −20V ≤ 0 (J2) or the completed square −20V + (165/2)√(VW) ≤ (5445/64)W (J3); and
+  √h₀ ≤ x/2, √s₀ ≤ 5x/8, 2√(s₀h₀) ≤ αs₀ + h₀/α (`joint_scalar`).
   `Grothe.LowerAnalytic.lower_bound_gaussian` instantiates `lower_bound_data` with this law and
   discharges E U = 1, the integrability conditions, E U² ≥ 2, the cap E U² ≤ 62 ≤ 2 + (31/4)²
   (`gaussian_radU_cap`: E F⁴ ≤ 93 (E F²)² for every real third-chaos F, applied to a, b, a ± b),
