@@ -146,3 +146,6 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.young_pair
 #print axioms Grothe.LowerAnalytic.qf_nonneg_of_ldlOK
 #print axioms Grothe.LowerAnalytic.qf_le_loewnerUp
+#print axioms Grothe.LowerAnalytic.pot_le_of_pieceOK
+#print axioms Grothe.LowerAnalytic.Jpot_le_qf
+#print axioms Grothe.LowerAnalytic.fn_eq_sum

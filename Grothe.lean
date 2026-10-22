@@ -95,3 +95,5 @@ import Grothe.LowerAnalytic.CapChordData
 import Grothe.LowerAnalytic.CapHull
 import Grothe.LowerAnalytic.CapMajorant
 import Grothe.LowerAnalytic.CapLinAlg
+import Grothe.LowerAnalytic.CapCoord
+import Grothe.LowerAnalytic.CapPiece
