@@ -22,15 +22,15 @@ states the lower bound with only the genuinely open Gaussian facts left as hypot
   integrability are proved; with `x = √(E U² − 2)`, `Moments` holds with the sixth-moment
   inequality `E U³ ≤ 9m − 12 + C₆ (m − 2)^{3/2}` (`m = E U²`) supplied by
   `Circular.gaussian_sixth` from the tensor facts `TensorFacts` of `Circular.lean`, assembled by
-  `TensorFactsRest.toTensorFacts` (`CircularTensor.lean`) from the five still-unproved fields
-  `TensorFactsRest` (`wick4`, `sos1`, `sos2`, `anti`, `block`, `cubicTrace`, `A0nn`, `A2nn` are
-  proved there).  (The
+  `TensorFactsRest.toTensorFacts` (`CircularTensor.lean`) from the four still-unproved fields
+  `TensorFactsRest` (`wick4`, `sos1`, `sos2`, `anti`, `block`, `cubicTrace`, `trace4`, `A0nn`,
+  `A2nn` are proved there).  (The
   sixth-moment inequality is false for general real pairs `(a, b)` in the third chaos; it needs
   the circularity `D_J q = i q`.)
 * `gaussian_steinInputs` (in `RadialCut.lean`) gives `SteinInputs` with no hypothesis.
 * `sharedReduction_of_gaussian` and `lower_bound_gaussian`: the finite-layer bound `V ≤ B` for a
   Gaussian residual.  What remains assumed: the tensor facts `TensorFactsRest` of the sixth-moment
-  certificate (the Wick identity for `κ₆` and four block inequalities), the scale
+  certificate (the Wick identity for `κ₆` and three block inequalities), the scale
   `0 ≤ τ ≤ ρ`, the gate variable with `|X₁|² = τ² |q|²`, the row inequalities `RowShared` of the
   Gaussian reduction, and the crude row.
 -/
