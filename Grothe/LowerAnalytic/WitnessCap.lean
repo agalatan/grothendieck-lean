@@ -1,5 +1,6 @@
 import Grothe.LowerAnalytic.Witness
 import Grothe.LowerAnalytic.GaussianRadial
+import Grothe.LowerAnalytic.WickChaos
 import Grothe.Lower.RowCheck
 
 /-!
@@ -18,11 +19,17 @@ The certificate (`lower_bound_data`) gives `V ≤ Bcap` from `‖v‖² = 2`, `0
 (`tOf_le`): `t = ‖Ph‖` with `|h| ≤ 1`, `‖Ph‖² = Re⟪h, Ph⟫ ≤ E|Ph|`, and `Ph = Σₗ cₗ zₗ` is a complex
 Gaussian, so `E|Ph| = (√π/2)‖Ph‖` (`integral_norm_linL`, by the rotation invariance
 `integral_two_linear` and the planar radius `integral_norm_gauss2` of `GaussianRadial.lean`); hence
-`t ≤ √π/2 < 0.9`.  The crude row follows from the identity and `‖Qk‖ ≤ ρ` (the first-moment bound of
-the normalised cubic `Qk/‖Qk‖`, item L3).  Hence the remaining hypotheses of the scalar cap, per
-admissible pair with `V ≥ 0`, are exactly (`ReductionHyp`):
+`t ≤ √π/2 < 0.9`.  The crude row follows from the identity and `‖Qk‖ ≤ ρ`, which is proved
+(`normQk_le_rho`, item L3): `Qk ∈ H₂,₁` is a combination of Wick cubics (`exists_wick_repr`), so
+`Qk/‖Qk‖ = a + ib` a.e. with `a, b` real polynomials, `Chaos3 a` and `Circular Jstd a b`
+(`WickChaos.lean`), `∫ a² = 1/2`; the certified first-moment bound `E √U ≤ ρ` of the law
+`U = a² + b²` (`gaussian_moments`, field `mh`, which rests on the sixth-moment inequality and hence
+on the still-open tensor fields `TensorFactsRest`) gives `E|Qk/‖Qk‖| ≤ ρ`, and
+`‖Qk‖² = Re⟪k, Qk⟫ ≤ E|Qk|` with `|k| ≤ 1`.  The tensor fields are assumed in the form
+`WickTensorHyp n : ∀ a b, Chaos3 a → Circular (Jstd n) a b → TensorFactsRest (gaussE (n+n)) (Jstd n) a`.
+Hence the remaining hypothesis of the scalar cap, per admissible pair with `V ≥ 0`, is exactly
+(`ReductionHyp`):
 
-* `‖Qk‖ ≤ ρ` (L3: `‖Qk‖ ≤ E|Qk/‖Qk‖| ≤ ρ`, the first-moment bound of a circular cubic);
 * a coupling vector `v` with `‖v‖² = 2` (on paper `v = z₁(|z₁|² − 2)` in the frame with `Ph = t z₁`)
   and `SharedReduction rowData V t Qh v` (L4: the Gaussian reduction of the rows with the shared
   residual, gate variable and potentials).
@@ -30,14 +37,15 @@ admissible pair with `V ≥ 0`, are exactly (`ReductionHyp`):
 Here `L²(γ_n)` is the real inner product space `E` of `lower_bound_data` through Mathlib's
 `InnerProductSpace ℝ (Lp ℂ 2 μ)` (real part of the complex inner product, same norm).
 
-* `witnessCap_of_reduction : (∀ f g unimodular, 0 ≤ VOf f g → ReductionHyp n f g) → WitnessCap n Bcap`;
+* `witnessCap_of_reduction : WickTensorHyp n → (∀ f g unimodular, 0 ≤ VOf f g → ReductionHyp n f g)
+  → WitnessCap n Bcap`;
 * `lower_bound_of_reduction`: the same hypotheses for all `n ≥ N` give `Llow < K` for every
   Grothendieck bound `K` (through `transferInputs_of_witnessCap` and `lower_bound_of_transferL2`).
 -/
 
 namespace Grothe.LowerAnalytic
 
-open MeasureTheory Grothe.Lower
+open MeasureTheory MvPolynomial Grothe.Lower
 open scoped ComplexConjugate
 
 noncomputable section
@@ -277,15 +285,217 @@ theorem tOf_le {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
     linarith [Real.pi_lt_d2]
   linarith
 
+/-! ### `H₂,₁` consists of circular cubics: the first-moment bound and the crude row -/
+
+/-- Every element of `H₂,₁` is a combination of Wick cubics. -/
+theorem exists_wick_repr {ψ : L2G n} (hψ : ψ ∈ H21 n) :
+    ∃ c : Fin n × Fin n × Fin n → ℂ, ψ = ∑ p, c p • wickL n p.1 p.2.1 p.2.2 := by
+  obtain ⟨h1, h2⟩ := Submodule.mem_inf.1 hψ
+  rw [chargeOne3, Submodule.span_union, Submodule.mem_sup] at h1
+  obtain ⟨y, hy, z, hz, rfl⟩ := h1
+  obtain ⟨d, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).1 hy
+  obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).1 hz
+  refine ⟨c, ?_⟩
+  have hmem : (∑ l, d l • zL n l + ∑ p, c p • wL n p.1 p.2.1 p.2.2)
+      - ∑ p, c p • wickL n p.1 p.2.1 p.2.2 ∈ H10 n := by
+    have e : (∑ l, d l • zL n l + ∑ p, c p • wL n p.1 p.2.1 p.2.2)
+        - ∑ p, c p • wickL n p.1 p.2.1 p.2.2
+        = ∑ l, d l • zL n l + ∑ p, c p • ((if p.1 = p.2.2 then (2 : ℂ) else 0) • zL n p.2.1
+          + (if p.2.1 = p.2.2 then (2 : ℂ) else 0) • zL n p.1) := by
+      rw [add_sub_assoc, ← Finset.sum_sub_distrib]
+      congr 1
+      refine Finset.sum_congr rfl fun p _ => ?_
+      rw [← smul_sub, wickL]
+      congr 1
+      abel
+    rw [e]
+    exact Submodule.add_mem _
+      (Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (zL_mem_H10 n l))
+      (Submodule.sum_mem _ fun p _ => Submodule.smul_mem _ _ (Submodule.add_mem _
+        (Submodule.smul_mem _ _ (zL_mem_H10 n _)) (Submodule.smul_mem _ _ (zL_mem_H10 n _))))
+  have hperp : (∑ l, d l • zL n l + ∑ p, c p • wL n p.1 p.2.1 p.2.2)
+      - ∑ p, c p • wickL n p.1 p.2.1 p.2.2 ∈ (H10 n)ᗮ :=
+    Submodule.sub_mem _ h2 (Submodule.sum_mem _ fun p _ => Submodule.smul_mem _ _
+      (Submodule.mem_inf.1 (wickL_mem_H21 n _ _ _)).2)
+  have h0 := Submodule.mem_inf.2 ⟨hmem, hperp⟩
+  rw [Submodule.inf_orthogonal_eq_bot, Submodule.mem_bot, sub_eq_zero] at h0
+  exact h0
+
+/-- The real part of `Σ_p c_p W_p`. -/
+def reP (c : Fin n × Fin n × Fin n → ℂ) : MvPolynomial (Fin (n + n)) ℝ :=
+  ∑ p, (C (c p).re * reW n p.1 p.2.1 p.2.2 - C (c p).im * imW n p.1 p.2.1 p.2.2)
+
+/-- The imaginary part of `Σ_p c_p W_p`. -/
+def imP (c : Fin n × Fin n × Fin n → ℂ) : MvPolynomial (Fin (n + n)) ℝ :=
+  ∑ p, (C (c p).re * imW n p.1 p.2.1 p.2.2 + C (c p).im * reW n p.1 p.2.1 p.2.2)
+
+lemma chaos3_reP (c : Fin n × Fin n × Fin n → ℂ) : Chaos3 (reP n c) :=
+  Chaos3.finset_sum _ fun _ _ =>
+    ((chaos3_imW n _ _ _).const_mul _).sub ((chaos3_reW n _ _ _).const_mul _)
+
+lemma chaos3_imP (c : Fin n × Fin n × Fin n → ℂ) : Chaos3 (imP n c) :=
+  Chaos3.finset_sum _ fun _ _ =>
+    ((chaos3_imW n _ _ _).const_mul _).add ((chaos3_reW n _ _ _).const_mul _)
+
+lemma circular_reP_imP (c : Fin n × Fin n × Fin n → ℂ) : Circular (Jstd n) (reP n c) (imP n c) where
+  anti := Jstd_anti n
+  sq_diag := Jstd_sq_diag n
+  sq_off := Jstd_sq_off n
+  da := by
+    unfold reP imP
+    rw [rotD_finset_sum, ← Finset.sum_neg_distrib]
+    refine Finset.sum_congr rfl fun p _ => ?_
+    rw [rotD_sub, rotD_C_mul, rotD_C_mul, rotD_reW, rotD_imW]; ring
+  db := by
+    unfold reP imP
+    rw [rotD_finset_sum]
+    refine Finset.sum_congr rfl fun p _ => ?_
+    rw [rotD_add, rotD_C_mul, rotD_C_mul, rotD_reW, rotD_imW]; ring
+
+lemma wickL_ae (a b c : Fin n) :
+    ⇑(wickL n a b c) =ᵐ[stdGaussian (n + n)]
+      fun x => (⟨eval x (reW n a b c), eval x (imW n a b c)⟩ : ℂ) := by
+  have e1 := Lp.coeFn_sub (wL n a b c - (if a = c then (2 : ℂ) else 0) • zL n b)
+    ((if b = c then (2 : ℂ) else 0) • zL n a)
+  have e2 := Lp.coeFn_sub (wL n a b c) ((if a = c then (2 : ℂ) else 0) • zL n b)
+  filter_upwards [e1, e2, Lp.coeFn_smul (if a = c then (2 : ℂ) else 0) (zL n b),
+    Lp.coeFn_smul (if b = c then (2 : ℂ) else 0) (zL n a), MemLp.coeFn_toLp (memLp_wc n a b c),
+    MemLp.coeFn_toLp (memLp_zc n b), MemLp.coeFn_toLp (memLp_zc n a)] with x h1 h2 h3 h4 h5 h6 h7
+  rw [wickL, h1, Pi.sub_apply, h2, Pi.sub_apply, h3, h4, Pi.smul_apply, Pi.smul_apply, wL, h5, zL,
+    zL, h6, h7, smul_eq_mul, smul_eq_mul]
+  apply Complex.ext
+  · simp only [eval_reW]
+  · simp only [eval_imW]
+
+lemma repr_ae (c : Fin n × Fin n × Fin n → ℂ) :
+    ⇑(∑ p, c p • wickL n p.1 p.2.1 p.2.2 : L2G n) =ᵐ[stdGaussian (n + n)]
+      fun x => (⟨eval x (reP n c), eval x (imP n c)⟩ : ℂ) := by
+  have h1 := coeFn_finset_sum n Finset.univ (fun p => c p • wickL n p.1 p.2.1 p.2.2)
+  have h2 : ∀ᵐ x ∂(stdGaussian (n + n)), ∀ p : Fin n × Fin n × Fin n,
+      (c p • wickL n p.1 p.2.1 p.2.2) x
+        = c p * ⟨eval x (reW n p.1 p.2.1 p.2.2), eval x (imW n p.1 p.2.1 p.2.2)⟩ :=
+    ae_all_iff.2 fun p => by
+      filter_upwards [Lp.coeFn_smul (c p) (wickL n p.1 p.2.1 p.2.2), wickL_ae n p.1 p.2.1 p.2.2]
+        with x hx hw
+      rw [hx, Pi.smul_apply, smul_eq_mul, hw]
+  filter_upwards [h1, h2] with x hx hx2
+  rw [hx]
+  simp only [hx2]
+  apply Complex.ext <;>
+    simp [reP, imP, Complex.re_sum, Complex.im_sum, Complex.mul_re, Complex.mul_im, map_sum,
+      map_sub, map_add, map_mul, eval_C]
+
+/-- **The remaining tensor hypothesis of the sixth-moment certificate**, for the circular cubics of
+`ℂⁿ` with the standard complex structure. -/
+def WickTensorHyp : Prop :=
+  ∀ a b : MvPolynomial (Fin (n + n)) ℝ, Chaos3 a → Circular (Jstd n) a b →
+    TensorFactsRest (gaussE (n + n)) (Jstd n) a
+
+/-- **The first-moment bound on `H₂,₁`**: `E|ψ| ≤ ρ` for every unit `ψ ∈ H₂,₁`. -/
+theorem integral_norm_le_rho_of_mem_H21 (hT : WickTensorHyp n) {ψ : L2G n} (hψ : ψ ∈ H21 n)
+    (h1 : ‖ψ‖ = 1) : ∫ x, ‖ψ x‖ ∂(stdGaussian (n + n)) ≤ ρ := by
+  obtain ⟨c, rfl⟩ := exists_wick_repr n hψ
+  obtain ⟨A, hA⟩ : ∃ A, A = reP n c := ⟨_, rfl⟩
+  obtain ⟨B, hB⟩ : ∃ B, B = imP n c := ⟨_, rfl⟩
+  obtain ⟨ψ, hψe⟩ : ∃ ψ : L2G n, ψ = ∑ p, c p • wickL n p.1 p.2.1 p.2.2 := ⟨_, rfl⟩
+  rw [← hψe] at h1 ⊢
+  have hae : ⇑ψ =ᵐ[stdGaussian (n + n)] fun x => (⟨eval x A, eval x B⟩ : ℂ) := by
+    rw [hψe, hA, hB]; exact repr_ae n c
+  have hA3 : Chaos3 A := hA ▸ chaos3_reP n c
+  have hc : Circular (Jstd n) A B := hA ▸ hB ▸ circular_reP_imP n c
+  have hE := gaussE_isGaussianExpectation (n + n)
+  have hnorm : ∫ x, (eval x A ^ 2 + eval x B ^ 2) ∂(stdGaussian (n + n)) = 1 := by
+    have h := inner_self_eq_norm_sq_to_K (𝕜 := ℂ) ψ
+    rw [inner_L2, h1] at h
+    have h2 : ∫ x, conj (ψ x) * ψ x ∂(stdGaussian (n + n))
+        = ((∫ x, (eval x A ^ 2 + eval x B ^ 2) ∂(stdGaussian (n + n)) : ℝ) : ℂ) := by
+      rw [← integral_complex_ofReal]
+      refine integral_congr_ae (hae.mono fun x hx => ?_)
+      simp only at hx ⊢
+      rw [hx, Complex.conj_mul', ← Complex.ofReal_pow, Complex.sq_norm, Complex.normSq_mk]
+      push_cast; ring
+    rw [h2] at h
+    have h3 : ((∫ x, (eval x A ^ 2 + eval x B ^ 2) ∂(stdGaussian (n + n)) : ℝ) : ℂ)
+        = ((1 : ℝ) : ℂ) := by rw [h]; norm_num
+    exact Complex.ofReal_injective h3
+  have hAB : ∫ x, eval x A ^ 2 ∂(stdGaussian (n + n)) = ∫ x, eval x B ^ 2 ∂(stdGaussian (n + n)) := by
+    have := hc.gE_sq_eq hE
+    rw [gaussE_apply, gaussE_apply] at this
+    simpa only [map_mul, sq] using this
+  have hiA : Integrable (fun x => eval x A ^ 2) (stdGaussian (n + n)) :=
+    (integrable_eval (A ^ 2)).congr (Filter.Eventually.of_forall fun x => by simp)
+  have hiB : Integrable (fun x => eval x B ^ 2) (stdGaussian (n + n)) :=
+    (integrable_eval (B ^ 2)).congr (Filter.Eventually.of_forall fun x => by simp)
+  have hAA : ∫ x, eval x A ^ 2 ∂(stdGaussian (n + n)) = 1 / 2 := by
+    rw [integral_add hiA hiB] at hnorm; linarith
+  have hM := gaussian_moments A B hA3 hAA hc (hT A B hA3 hc)
+  refine le_trans (le_of_eq ?_) hM.mh
+  refine integral_congr_ae (hae.mono fun x hx => ?_)
+  simp only at hx ⊢
+  rw [hx, Complex.norm_def, Complex.normSq_mk, radU]
+  simp only [map_add, map_mul]
+
+lemma norm_kOf_le {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
+    (hg : g ∈ Unimod (stdGaussian (n + n))) :
+    ∀ᵐ x ∂(stdGaussian (n + n)), ‖kOf n f g x‖ ≤ 1 := by
+  have hf' : ∀ᵐ x ∂(stdGaussian (n + n)), ‖f x‖ = 1 := hf
+  have hg' : ∀ᵐ x ∂(stdGaussian (n + n)), ‖g x‖ = 1 := hg
+  filter_upwards [Lp.coeFn_smul ((2 : ℂ)⁻¹) (f - g), Lp.coeFn_sub f g, hf', hg'] with x h1 h2 h3 h4
+  have h2n : ‖(2 : ℂ)⁻¹‖ = 2⁻¹ := by simp
+  rw [kOf, h1, Pi.smul_apply, h2, Pi.sub_apply, norm_smul, h2n]
+  calc 2⁻¹ * ‖f x - g x‖ ≤ 2⁻¹ * (‖f x‖ + ‖g x‖) :=
+        mul_le_mul_of_nonneg_left (norm_sub_le _ _) (by norm_num)
+    _ = 1 := by rw [h3, h4]; norm_num
+
+/-- **The crude-row input** `‖P₂,₁ k‖ ≤ ρ` for a unimodular pair (L3), from the first-moment bound
+on `H₂,₁`. -/
+theorem normQk_le_rho (hT : WickTensorHyp n) {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
+    (hg : g ∈ Unimod (stdGaussian (n + n))) : ‖QkOf n f g‖ ≤ ρ := by
+  obtain ⟨w, hw⟩ : ∃ w : L2G n, w = QkOf n f g := ⟨_, rfl⟩
+  have hmem : w ∈ H21 n := by
+    rw [hw, QkOf, Submodule.starProjection_apply]; exact Submodule.coe_mem _
+  have hρ : (0 : ℝ) ≤ ρ := by unfold ρ; norm_num
+  rw [← hw]
+  rcases (norm_nonneg w).eq_or_lt with h0 | h0
+  · rw [← h0]; exact hρ
+  obtain ⟨ψ, hψ⟩ : ∃ ψ : L2G n, ψ = ((‖w‖⁻¹ : ℝ) : ℂ) • w := ⟨_, rfl⟩
+  have hψm : ψ ∈ H21 n := hψ ▸ Submodule.smul_mem _ _ hmem
+  have hψ1 : ‖ψ‖ = 1 := by
+    rw [hψ, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (inv_nonneg.2 (norm_nonneg _)),
+      inv_mul_cancel₀ h0.ne']
+  have hint := integral_norm_le_rho_of_mem_H21 n hT hψm hψ1
+  have e : ∫ x, ‖ψ x‖ ∂(stdGaussian (n + n)) = ‖w‖⁻¹ * ∫ x, ‖w x‖ ∂(stdGaussian (n + n)) := by
+    rw [← integral_const_mul]
+    refine integral_congr_ae ?_
+    filter_upwards [Lp.coeFn_smul ((‖w‖⁻¹ : ℝ) : ℂ) w] with x hx
+    rw [hψ, hx, Pi.smul_apply, norm_smul, Complex.norm_real, Real.norm_eq_abs,
+      abs_of_nonneg (inv_nonneg.2 (norm_nonneg _))]
+  have hw2 : ‖w‖ ^ 2 ≤ ∫ x, ‖w x‖ ∂(stdGaussian (n + n)) := by
+    have e2 := re_inner_starProjection (H21 n) (kOf n f g)
+    rw [← QkOf, ← hw] at e2
+    rw [← e2]
+    calc (inner ℂ (kOf n f g) w).re ≤ ‖inner ℂ (kOf n f g) w‖ := Complex.re_le_norm _
+      _ ≤ ∫ x, ‖conj (kOf n f g x) * w x‖ ∂(stdGaussian (n + n)) := by
+          rw [inner_L2]; exact norm_integral_le_integral_norm _
+      _ ≤ ∫ x, ‖w x‖ ∂(stdGaussian (n + n)) :=
+          integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => norm_nonneg _)
+            ((Lp.memLp w).integrable one_le_two).norm (by
+              filter_upwards [norm_kOf_le n hf hg] with x hx
+              rw [norm_mul, Complex.norm_conj]
+              exact mul_le_of_le_one_left (norm_nonneg _) hx)
+  have h3 : ∫ x, ‖w x‖ ∂(stdGaussian (n + n)) ≤ ‖w‖ * ρ := by
+    have := mul_le_mul_of_nonneg_left hint (norm_nonneg w)
+    rwa [e, ← mul_assoc, mul_inv_cancel₀ h0.ne', one_mul] at this
+  nlinarith
+
 /-! ### The remaining hypotheses and the scalar cap -/
 
-/-- **The remaining inputs of the scalar cap for one pair** (`V ≥ 0` after the phase): the
-first-moment bound `‖Qk‖ ≤ ρ` of the cubic residual (crude row, L3), and a coupling vector `v` with
-`‖v‖² = 2` and the simultaneous Gaussian reduction of the rows `SharedReduction rowData V t Qh v`
-(L4).  (`t ≤ 9/10` is proved: `tOf_le`.) -/
+/-- **The remaining input of the scalar cap for one pair** (`V ≥ 0` after the phase): a coupling
+vector `v` with `‖v‖² = 2` and the simultaneous Gaussian reduction of the rows
+`SharedReduction rowData V t Qh v` (L4).  (`t ≤ 9/10` is proved, `tOf_le`; the crude-row input
+`‖Qk‖ ≤ ρ` is proved from `WickTensorHyp`, `normQk_le_rho`.) -/
 def ReductionHyp (f g : L2G n) : Prop :=
-  ‖QkOf n f g‖ ≤ ρ ∧
-    ∃ v : L2G n, ‖v‖ ^ 2 = 2 ∧ SharedReduction rowData (VOf n f g) (tOf n f g) (QhOf n f g) v
+  ∃ v : L2G n, ‖v‖ ^ 2 = 2 ∧ SharedReduction rowData (VOf n f g) (tOf n f g) (QhOf n f g) v
 
 lemma exists_phase (w : ℂ) : ∃ θ : ℂ, ‖θ‖ = 1 ∧ θ * w = ‖w‖ := by
   by_cases hw : w = 0
@@ -318,7 +528,7 @@ lemma rowOf_crude (f g : L2G n) (hk : ‖QkOf n f g‖ ≤ ρ) (v : L2G n) :
 /-- **The scalar cap from the reduction hypotheses**: `WitnessCap n Bcap`, i.e.
 `‖⟪f, T g⟫‖ ≤ Bcap` for a.e. unimodular `f, g`, from `ReductionHyp` on the pairs with `V ≥ 0`
 (the phase-rotated pairs). -/
-theorem witnessCap_of_reduction
+theorem witnessCap_of_reduction (hT : WickTensorHyp n)
     (hred : ∀ f g : L2G n, f ∈ Unimod (stdGaussian (n + n)) → g ∈ Unimod (stdGaussian (n + n)) →
       0 ≤ VOf n f g → ReductionHyp n f g) :
     WitnessCap n Bcap := by
@@ -328,18 +538,18 @@ theorem witnessCap_of_reduction
     rw [VOf, map_smul, inner_smul_right, hθw, Complex.ofReal_re]
   have hV : 0 ≤ VOf n f (θ • g) := hval ▸ norm_nonneg _
   have hg' := smul_mem_unimod n hθ hg
-  obtain ⟨hk, v, hv, hshared⟩ := hred f (θ • g) hf hg' hV
+  obtain ⟨v, hv, hshared⟩ := hred f (θ • g) hf hg' hV
   rw [← hval]
-  exact lower_bound_data _ _ _ v hv (norm_nonneg _) (tOf_le n hf hg') (rowOf_crude n f (θ • g) hk v)
-    hshared
+  exact lower_bound_data _ _ _ v hv (norm_nonneg _) (tOf_le n hf hg')
+    (rowOf_crude n f (θ • g) (normQk_le_rho n hT hf hg') v) hshared
 
 /-- **The lower bound from the reduction hypotheses**: `Llow < K` for every Grothendieck bound `K`
 if `ReductionHyp` holds for the unimodular pairs with `V ≥ 0` in every dimension `n ≥ N`. -/
-theorem lower_bound_of_reduction {K : ℝ} (N : ℕ)
+theorem lower_bound_of_reduction {K : ℝ} (N : ℕ) (hT : ∀ n, N ≤ n → WickTensorHyp n)
     (hred : ∀ n, N ≤ n → ∀ f g : L2G n, f ∈ Unimod (stdGaussian (n + n)) →
       g ∈ Unimod (stdGaussian (n + n)) → 0 ≤ VOf n f g → ReductionHyp n f g)
     (hK : IsGrothendieckBound K) : (Llow : ℝ) < K :=
-  lower_bound_of_witnessCap N (fun n hn => witnessCap_of_reduction n (hred n hn)) hK
+  lower_bound_of_witnessCap N (fun n hn => witnessCap_of_reduction n (hT n hn) (hred n hn)) hK
 
 end
 
