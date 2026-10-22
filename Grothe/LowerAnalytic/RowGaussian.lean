@@ -251,6 +251,102 @@ theorem rowSharedWith_frame (r : Row) (R : Sym2) (hE : r.E.psdOK = true)
 
 end frame
 
+/-! ### The shared reduction in the coordinate frame -/
+
+lemma rowData_delta_pos : rowData.all (fun r => decide (0 < r.delta)) = true := by decide +kernel
+
+section shared
+
+variable {n : ℕ} {ft gt : (Fin ((n + 1) + (n + 1)) → ℝ) → ℂ} (hfm : Measurable ft)
+  (hgm : Measurable gt) (hfb : ∀ x, ‖ft x‖ ≤ 1) (hgb : ∀ x, ‖gt x‖ ≤ 1)
+
+lemma cbound_zero : cbound 0 = 1 := by
+  simp [cbound, fibreB]
+
+include hfm hgm hfb hgb in
+/-- **`τ = ‖p‖ ≤ ρ`**, from `‖p‖² = ⟪c₀, p⟫ ≤ E|p|` (`|c₀| ≤ 1`) and the first-moment bound. -/
+theorem norm_pres_le_rho : ‖pres hfm hgm hfb hgb‖ ≤ ρ := by
+  set p := pres hfm hgm hfb hgb with hp
+  set c := cK hfm hgm hfb hgb 0 with hc
+  have hρ : (0 : ℝ) ≤ ρ := by unfold ρ; norm_num
+  have h1 : ‖p‖ ^ 2 = (inner ℂ c p).re := (re_inner_starProjection _ c).symm
+  have hcb : ∀ᵐ y ∂(stdGaussian (n + n)), ‖c y‖ ≤ 1 := by
+    filter_upwards [cfL_ae (measurable_kt hfm hgm) (norm_kt_le hfb hgb) 0] with y hy
+    rw [hc, cK, hy, ← cbound_zero]
+    exact norm_cf_le (norm_kt_le hfb hgb) 0 y
+  have hpi : Integrable (fun y => ‖p y‖) (stdGaussian (n + n)) :=
+    ((Lp.memLp p).integrable one_le_two).norm
+  have h2 : (inner ℂ c p).re ≤ ∫ y, ‖p y‖ ∂(stdGaussian (n + n)) := by
+    rw [re_inner_eq_integral]
+    refine integral_mono_ae (integrable_hre c p) hpi ?_
+    filter_upwards [hcb] with y hy
+    exact (le_abs_self _).trans ((abs_hre_le _ _).trans
+      (by nlinarith [norm_nonneg (p y), norm_nonneg (c y)]))
+  rcases (norm_nonneg p).eq_or_lt with h0 | h0
+  · rw [← h0]; exact hρ
+  have hu : ‖((‖p‖ : ℂ))⁻¹ • p‖ = 1 := by
+    rw [norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_norm, inv_mul_cancel₀ h0.ne']
+  have h3 := integral_norm_le_rho_of_mem_H21 n
+    (Submodule.smul_mem _ ((‖p‖ : ℂ)⁻¹) (pres_mem hfm hgm hfb hgb)) hu
+  have h4 : ∫ y, ‖(((‖p‖ : ℂ))⁻¹ • p : L2G n) y‖ ∂(stdGaussian (n + n))
+      = ‖p‖⁻¹ * ∫ y, ‖p y‖ ∂(stdGaussian (n + n)) := by
+    rw [← integral_const_mul]
+    refine integral_congr_ae ?_
+    filter_upwards [Lp.coeFn_smul ((‖p‖ : ℂ)⁻¹) p] with y hy
+    rw [hy, Pi.smul_apply, norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_norm]
+  rw [h4, inv_mul_le_iff₀ h0] at h3
+  nlinarith
+
+end shared
+
+/-- **The simultaneous Gaussian reduction of the rows in the coordinate frame**: for unimodular
+`f, g` on `ℂ^{n+1}` (`n ≥ 1`) with `P₁,₀ h = t ζ₀`, `SharedReduction rowData V t Qh v` holds with the
+coupling vector `v = vL 0`, given the node caps of the 19 certified potentials. -/
+theorem sharedReduction_frame {n : ℕ} (hn : 0 < n) (f g : L2G (n + 1))
+    (hf : f ∈ Unimod (stdGaussian ((n + 1) + (n + 1))))
+    (hg : g ∈ Unimod (stdGaussian ((n + 1) + (n + 1))))
+    (hP : (H10 (n + 1)).starProjection (hOf (n + 1) f g) = ((tOf (n + 1) f g : ℝ) : ℂ) • zeta0 n)
+    (hcaps : ∀ k, k < rowData.length → ∀ m ∈ (rowData.getD k row01).nodeList,
+      rowPot k m.1 - capPad ≤ m.2) :
+    SharedReduction rowData (VOf (n + 1) f g) (tOf (n + 1) f g) (QhOf (n + 1) f g) (vL (n + 1) 0) := by
+  have hfm : Measurable (trunc ⇑f) := measurable_trunc (Lp.stronglyMeasurable f).measurable
+  have hgm : Measurable (trunc ⇑g) := measurable_trunc (Lp.stronglyMeasurable g).measurable
+  have hfb := norm_trunc_le ⇑f
+  have hgb := norm_trunc_le ⇑g
+  have hfa : ⇑f =ᵐ[stdGaussian ((n + 1) + (n + 1))] trunc ⇑f := trunc_ae hf
+  have hga : ⇑g =ᵐ[stdGaussian ((n + 1) + (n + 1))] trunc ⇑g := trunc_ae hg
+  set p := pres hfm hgm hfb hgb with hp
+  obtain ⟨A, B, hA, hc, haa, hpA⟩ := poly_rep_H21 n hn (pres_mem hfm hgm hfb hgb)
+  set X1 : (Fin (n + n) → ℝ) → ℂ := fun y => (‖p‖ : ℂ) * (⟨eval y A, eval y B⟩ : ℂ) with hX1def
+  have hX : ∀ y, ‖X1 y‖ ^ 2 = ‖p‖ ^ 2 * eval y (radU A B) := fun y => by
+    rw [hX1def, norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs, Complex.sq_norm,
+      Complex.normSq_mk, radU]
+    simp only [map_add, map_mul]
+  refine sharedReduction_of_gaussian rowData _ _ _ _ A B hA haa hc X1 ⇑(X2e hfm hgm hfb hgb)
+    ⇑(X3e hfm hgm hfb hgb) ‖p‖ (norm_nonneg _) (norm_pres_le_rho hfm hgm hfb hgb) hX ?_
+  intro r hr
+  obtain ⟨k, hk, rfl⟩ := List.mem_iff_getElem.1 hr
+  have hkr : rowData.getD k row01 = rowData[k] := List.getD_eq_getElem _ _ hk
+  have hg' := List.all_eq_true.1 rowData_gatesOK _ hr
+  simp only [rowGatesOK, Bool.and_eq_true] at hg'
+  have hlen := rowGates_consistent.1
+  have hk' : k < rowGates.length := hlen ▸ hk
+  have hRg := List.all_eq_true.1 rowGates_ok _ (List.getElem_mem hk')
+  simp only [Bool.and_eq_true] at hRg
+  have hRk : rowR k = (rowGates[k]).2.2.2 := by unfold rowR; rw [List.getD_eq_getElem _ _ hk']
+  have hδ := List.all_eq_true.1 rowData_delta_pos _ hr
+  simp only [decide_eq_true_eq] at hδ
+  have hcaps' := capsHold_rowPot k hk (hcaps k hk)
+  rw [hkr] at hcaps'
+  refine ⟨rowPot k, ?_⟩
+  have e : rowPot k = pot (rowData[k]).E (rowR k) (rowData[k]).ell (rowData[k]).beta
+      (aFib (rowData[k]).b1 (rowData[k]).b2 (rowData[k]).b3) := by
+    funext s; simp only [rowPot, hkr]; rfl
+  rw [e] at hcaps' ⊢
+  exact rowSharedWith_frame hfm hgm hfb hgb (rowData[k]) (rowR k) hg'.1.1 hg'.1.2
+    (hRk ▸ hRg.1.1) (hRk ▸ hRg.1.2) (hRk ▸ hRg.2) hcaps' (by exact_mod_cast hδ.le) f g hfa hga hP X1
+    hpA (fun y => eval y (radU A B)) hX (fun y => eval_radU_nonneg A B y)
+
 end
 
 end Grothe.LowerAnalytic
