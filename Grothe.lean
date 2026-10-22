@@ -101,3 +101,4 @@ import Grothe.LowerAnalytic.CapPolar
 import Grothe.LowerAnalytic.CapSym
 import Grothe.LowerAnalytic.CapGrid
 import Grothe.LowerAnalytic.CapGridT
+import Grothe.LowerAnalytic.CapSymmetry
