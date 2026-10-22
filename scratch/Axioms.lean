@@ -189,3 +189,14 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.SphericalTransfer.cubic_tail_32_12
 #print axioms Grothe.LowerAnalytic.SphericalTransfer.infinite_defect
 #print axioms Grothe.LowerAnalytic.SphericalTransfer.global_cap_from_truncation
+#print axioms Grothe.UpperChaos.normSq_P3
+#print axioms Grothe.UpperChaos.norm_mul_P3_le_one
+#print axioms Grothe.UpperChaos.integral_moment
+#print axioms Grothe.UpperChaos.Ef_X0_mul
+#print axioms Grothe.UpperChaos.integral_hermite
+#print axioms Grothe.UpperChaos.integral_mehler
+#print axioms Grothe.UpperChaos.poly_complete
+#print axioms Grothe.UpperChaos.hermite_complete
+#print axioms Grothe.UpperChaos.hermiteBasis
+#print axioms Grothe.UpperChaos.hasSum_energy
+#print axioms Grothe.UpperChaos.integral_H_charge_one
