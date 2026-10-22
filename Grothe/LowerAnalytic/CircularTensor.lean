@@ -47,8 +47,13 @@ part of a circular cubic.  The pure linear-algebra facts are stated for an arbit
   certificate are `‖C₀ − θ S₀‖²` and `‖C₂ − θ S₂‖²` (`sector_nonneg`, `sector_data`:
   `⟨C, C_g⟩ = s − ‖N‖²/2`, `‖C_g‖² = s`, `⟨S, S_g⟩ = h − ‖M‖²/2`, `‖S_g‖² = h`,
   `3 ‖M‖² = ‖N‖² + (8/3) Q(f,f,f,f)`, `3h = s + 2 Q(f,f,f,f)`, `tt = h/6 − ‖M‖²/24`).
-* `TensorFactsRest` collects the eight remaining fields; `TensorFactsRest.toTensorFacts`
-  assembles `TensorFacts` from them for a circular pair.
+* `tenV_le`, `cubicTrace_circular` (the field `cubicTrace`): `V = tr G³ ≤ (s + 2η) √((s − η)/2)`.
+  With `G = G₀ + G₂` (commuting/anticommuting with `J`), `tr G³ = tr G₀³ + 3 tr(G₀ G₂²)` (the mixed
+  traces vanish), `tr(G₀ Y Yᵀ) ≤ √(tr G₀²/2) tr(Y Yᵀ)` from `2 ‖G₀ u‖² ≤ ‖G₀‖² ‖u‖²`, which is
+  Bessel's inequality for the orthogonal pair `u`, `J u` (`bessel_two`, `two_mulVec_sq_le`,
+  `trace_mul_self_le`), and `tr G₀² = s − η`, `tr G₂² = η`.
+* `TensorFactsRest` collects the remaining fields; `TensorFactsRest.toTensorFacts` assembles
+  `TensorFacts` from them for a circular pair.
 -/
 
 open MvPolynomial Matrix
@@ -294,6 +299,219 @@ lemma sum_tsq (v : ι → ℝ) (a : ι) : ∑ p, J p a * ∑ q, J p q * v q = v 
     _ = v a := by rw [hJ.sum_sq v a, neg_neg]
 
 end IsCplx
+
+/-! ### The cubic trace: the field `cubicTrace` -/
+
+section cubic
+
+variable (f : ι → ι → ι → ℝ)
+
+lemma tenV_eq_trace : tenV f = (matG f * matG f * matG f).trace := by
+  simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, matG, Matrix.of_apply, Finset.sum_mul, tenV]
+  exact Finset.sum_congr rfl fun a _ => Finset.sum_comm
+
+variable {J : ι → ι → ℝ} [DecidableEq ι]
+
+omit [DecidableEq ι] in
+lemma mulVec_dot_mulVec (A : Matrix ι ι ℝ) (v w : ι → ℝ) :
+    (A *ᵥ v) ⬝ᵥ (A *ᵥ w) = v ⬝ᵥ ((Aᵀ * A) *ᵥ w) := by
+  symm
+  rw [← mulVec_mulVec, dotProduct_mulVec v Aᵀ, vecMul_transpose]
+
+lemma matJ_tmul (hJ : IsCplx J) : (matJ J)ᵀ * matJ J = 1 := by
+  rw [matJ_transpose hJ.anti, Matrix.neg_mul, matJ_sq hJ.sq_diag hJ.sq_off, neg_neg]
+
+omit [DecidableEq ι] in
+lemma dot_matJ_mulVec_self (hJ : IsCplx J) (u : ι → ℝ) : u ⬝ᵥ (matJ J *ᵥ u) = 0 := by
+  have h : u ⬝ᵥ (matJ J *ᵥ u) = -(u ⬝ᵥ (matJ J *ᵥ u)) := by
+    conv_lhs => rw [dotProduct_mulVec, ← mulVec_transpose, matJ_transpose hJ.anti,
+      Matrix.neg_mulVec, neg_dotProduct, dotProduct_comm]
+  linarith
+
+/-- Bessel for the orthogonal pair `u`, `J u`. -/
+lemma bessel_two (hJ : IsCplx J) (u r : ι → ℝ) :
+    (r ⬝ᵥ u) ^ 2 + (r ⬝ᵥ (matJ J *ᵥ u)) ^ 2 ≤ (r ⬝ᵥ r) * (u ⬝ᵥ u) := by
+  have hvv : (matJ J *ᵥ u) ⬝ᵥ (matJ J *ᵥ u) = u ⬝ᵥ u := by
+    rw [mulVec_dot_mulVec, matJ_tmul hJ, one_mulVec]
+  have huv : u ⬝ᵥ (matJ J *ᵥ u) = 0 := dot_matJ_mulVec_self hJ u
+  have key : 0 ≤ ((u ⬝ᵥ u) • r - (r ⬝ᵥ u) • u - (r ⬝ᵥ (matJ J *ᵥ u)) • (matJ J *ᵥ u)) ⬝ᵥ
+      ((u ⬝ᵥ u) • r - (r ⬝ᵥ u) • u - (r ⬝ᵥ (matJ J *ᵥ u)) • (matJ J *ᵥ u)) :=
+    Finset.sum_nonneg fun i _ => mul_self_nonneg _
+  simp only [sub_dotProduct, dotProduct_sub, smul_dotProduct, dotProduct_smul, smul_eq_mul,
+    hvv, huv] at key
+  rw [dotProduct_comm u r, dotProduct_comm (matJ J *ᵥ u) r, dotProduct_comm (matJ J *ᵥ u) u,
+    huv] at key
+  by_cases h0 : u ⬝ᵥ u = 0
+  · have hu : u = 0 := dotProduct_self_eq_zero.1 h0
+    simp [hu]
+  · have hpos : 0 < u ⬝ᵥ u := lt_of_le_of_ne (Finset.sum_nonneg fun i _ => mul_self_nonneg _)
+      (Ne.symm h0)
+    have : 0 ≤ (u ⬝ᵥ u) * ((r ⬝ᵥ r) * (u ⬝ᵥ u) - (r ⬝ᵥ u) ^ 2 - (r ⬝ᵥ (matJ J *ᵥ u)) ^ 2) := by
+      nlinarith [key]
+    have := (mul_nonneg_iff_of_pos_left hpos).1 this
+    linarith
+
+/-- `2 ‖G u‖² ≤ tr(G²) ‖u‖²` for a symmetric `G` commuting with the complex structure. -/
+lemma two_mulVec_sq_le (hJ : IsCplx J) {G : Matrix ι ι ℝ} (hG : Gᵀ = G)
+    (hc : G * matJ J = matJ J * G) (u : ι → ℝ) :
+    2 * ((G *ᵥ u) ⬝ᵥ (G *ᵥ u)) ≤ (G * G).trace * (u ⬝ᵥ u) := by
+  -- `‖G J u‖ = ‖G u‖`
+  have h1 : (G *ᵥ (matJ J *ᵥ u)) ⬝ᵥ (G *ᵥ (matJ J *ᵥ u)) = (G *ᵥ u) ⬝ᵥ (G *ᵥ u) := by
+    rw [mulVec_mulVec, hc, ← mulVec_mulVec, mulVec_dot_mulVec (matJ J), matJ_tmul hJ, one_mulVec]
+  have hrow : ∀ w : ι → ℝ, (G *ᵥ w) ⬝ᵥ (G *ᵥ w) = ∑ i, ((fun j => G i j) ⬝ᵥ w) ^ 2 := fun w =>
+    Finset.sum_congr rfl fun i _ => by rw [sq]; rfl
+  have htr : (G * G).trace = ∑ i, (fun j => G i j) ⬝ᵥ (fun j => G i j) :=
+    calc (G * G).trace = (Gᵀ * G).trace := by rw [hG]
+      _ = ∑ i, ∑ j, G i j ^ 2 := trace_transpose_mul_self G
+      _ = _ := Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => sq _
+  calc 2 * ((G *ᵥ u) ⬝ᵥ (G *ᵥ u))
+      = (G *ᵥ u) ⬝ᵥ (G *ᵥ u) + (G *ᵥ (matJ J *ᵥ u)) ⬝ᵥ (G *ᵥ (matJ J *ᵥ u)) := by rw [h1]; ring
+    _ = ∑ i, (((fun j => G i j) ⬝ᵥ u) ^ 2 + ((fun j => G i j) ⬝ᵥ (matJ J *ᵥ u)) ^ 2) := by
+        rw [hrow, hrow, Finset.sum_add_distrib]
+    _ ≤ ∑ i, ((fun j => G i j) ⬝ᵥ (fun j => G i j)) * (u ⬝ᵥ u) :=
+        Finset.sum_le_sum fun i _ => bessel_two hJ u _
+    _ = (G * G).trace * (u ⬝ᵥ u) := by rw [htr, Finset.sum_mul]
+
+/-- `tr(G Y Yᵀ) ≤ √(tr(G²)/2) tr(Y Yᵀ)`. -/
+lemma trace_mul_self_le (hJ : IsCplx J) {G Y : Matrix ι ι ℝ} (hG : Gᵀ = G)
+    (hc : G * matJ J = matJ J * G) :
+    (G * (Y * Yᵀ)).trace ≤ √((G * G).trace / 2) * (Y * Yᵀ).trace := by
+  have hGG : 0 ≤ (G * G).trace := by
+    have := trace_transpose_mul_self_nonneg G; rwa [hG] at this
+  have hcol : ∀ u : ι → ℝ, u ⬝ᵥ (G *ᵥ u) ≤ √((G * G).trace / 2) * (u ⬝ᵥ u) := fun u => by
+    have h1 : (u ⬝ᵥ (G *ᵥ u)) ^ 2 ≤ (u ⬝ᵥ u) * ((G *ᵥ u) ⬝ᵥ (G *ᵥ u)) := by
+      have := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ u (G *ᵥ u)
+      simpa only [dotProduct, sq] using this
+    have h2 := two_mulVec_sq_le hJ hG hc u
+    have huu : 0 ≤ u ⬝ᵥ u := Finset.sum_nonneg fun i _ => mul_self_nonneg _
+    have h3 : (u ⬝ᵥ (G *ᵥ u)) ^ 2 ≤ ((G * G).trace / 2) * (u ⬝ᵥ u) ^ 2 := by nlinarith
+    have := le_sqrt_mul_sqrt_of_sq_le (by positivity) h3
+    rwa [Real.sqrt_sq huu] at this
+  -- `tr(G Y Yᵀ) = Σ_k ⟨Y_k, G Y_k⟩`, `tr(Y Yᵀ) = Σ_k ‖Y_k‖²`
+  have e1 : (G * (Y * Yᵀ)).trace = ∑ k, (fun i => Y i k) ⬝ᵥ (G *ᵥ fun i => Y i k) := by
+    rw [← Matrix.mul_assoc, Matrix.trace_mul_comm]
+    simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, dotProduct,
+      mulVec]
+  have e2 : (Y * Yᵀ).trace = ∑ k, (fun i => Y i k) ⬝ᵥ (fun i => Y i k) := by
+    rw [Matrix.trace_mul_comm]
+    simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, dotProduct]
+  rw [e1, e2, Finset.mul_sum]
+  exact Finset.sum_le_sum fun k _ => hcol _
+
+/-- `tr(X Y) = 0` when `X` commutes and `Y` anticommutes with `J`. -/
+lemma trace_comm_anticomm {Jm X Y : Matrix ι ι ℝ} (hJJ : Jm * Jm = -1) (hX : X * Jm = Jm * X)
+    (hY : Y * Jm = -(Jm * Y)) : (X * Y).trace = 0 := by
+  have h : (X * Y).trace = -(X * Y).trace := by
+    calc (X * Y).trace = (X * Y * -(Jm * Jm)).trace := by rw [hJJ, neg_neg, Matrix.mul_one]
+      _ = -(Jm * (X * Y * Jm)).trace := by
+          rw [Matrix.mul_neg, Matrix.trace_neg, ← Matrix.mul_assoc, Matrix.trace_mul_comm]
+      _ = -(X * (Jm * Y) * Jm).trace := by
+          rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, ← hX, Matrix.mul_assoc X Jm Y]
+      _ = (X * Y * (Jm * Jm)).trace := by
+          have hY' : Jm * Y = -(Y * Jm) := by rw [hY, neg_neg]
+          rw [hY', Matrix.mul_neg, Matrix.neg_mul, Matrix.trace_neg, neg_neg]
+          simp only [Matrix.mul_assoc]
+      _ = -(X * Y).trace := by rw [hJJ, Matrix.mul_neg, Matrix.mul_one, Matrix.trace_neg]
+  linarith
+
+/-- **The cubic trace**: `V ≤ (s + 2η) √((s − η)/2)`. -/
+theorem tenV_le (hJ : IsCplx J) :
+    tenV f ≤ (tenS f + 2 * tenGa f J) * √((tenS f - tenGa f J) / 2) := by
+  have hJt := matJ_transpose hJ.anti
+  have hJJ := matJ_sq hJ.sq_diag hJ.sq_off
+  set Jm := matJ J with hJm
+  set G := matG f with hG
+  have hGt : Gᵀ = G := matG_transpose f
+  set G₀ : Matrix ι ι ℝ := (1 / 2 : ℝ) • (G - Jm * G * Jm) with hG₀
+  set G₂ : Matrix ι ι ℝ := (1 / 2 : ℝ) • (G + Jm * G * Jm) with hG₂
+  have hsum : G = G₀ + G₂ := by rw [hG₀, hG₂, ← smul_add]; module
+  have hsym : (Jm * G * Jm)ᵀ = Jm * G * Jm := by
+    rw [Matrix.transpose_mul, Matrix.transpose_mul, hJt, hGt, Matrix.neg_mul, Matrix.mul_neg,
+      Matrix.mul_neg, neg_neg, Matrix.mul_assoc]
+  have hG₀t : G₀ᵀ = G₀ := by rw [hG₀, Matrix.transpose_smul, Matrix.transpose_sub, hGt, hsym]
+  have hG₂t : G₂ᵀ = G₂ := by rw [hG₂, Matrix.transpose_smul, Matrix.transpose_add, hGt, hsym]
+  have hJGJJ : Jm * G * Jm * Jm = -(Jm * G) := by
+    rw [Matrix.mul_assoc, hJJ, Matrix.mul_neg, Matrix.mul_one]
+  have hJJGJ : Jm * (Jm * G * Jm) = -(G * Jm) := by
+    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, hJJ, Matrix.neg_mul, Matrix.one_mul,
+      Matrix.neg_mul]
+  have hc₀ : G₀ * Jm = Jm * G₀ := by
+    rw [hG₀, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, hJGJJ, hJJGJ]
+    congr 1; abel
+  have hc₂ : G₂ * Jm = -(Jm * G₂) := by
+    rw [hG₂, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, hJGJJ, hJJGJ,
+      ← smul_neg]
+    congr 1; abel
+  have hc₂₂ : G₂ * G₂ * Jm = Jm * (G₂ * G₂) := by
+    rw [Matrix.mul_assoc, hc₂, Matrix.mul_neg, ← Matrix.mul_assoc, hc₂, Matrix.neg_mul, neg_neg,
+      Matrix.mul_assoc]
+  have hc₀₀ : G₀ * G₀ * Jm = Jm * (G₀ * G₀) := by
+    rw [Matrix.mul_assoc, hc₀, ← Matrix.mul_assoc, hc₀, Matrix.mul_assoc]
+  -- the traces
+  have hη : tenGa f J = (G₂ * G₂).trace := by
+    rw [tenGa_eq_trace]; change (G₂ᵀ * G₂).trace = _; rw [hG₂t]
+  have hs : tenS f = (G * G).trace := by rw [tenS_eq_trace, hGt]
+  have h02 : (G₀ * G₂).trace = 0 := trace_comm_anticomm hJJ hc₀ hc₂
+  have h20 : (G₂ * G₀).trace = 0 := by rw [Matrix.trace_mul_comm, h02]
+  have hs' : (G₀ * G₀).trace = tenS f - tenGa f J := by
+    rw [hs, hη, hsum, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, Matrix.trace_add,
+      Matrix.trace_add, Matrix.trace_add, h02, h20]
+    ring
+  have hV : tenV f = (G₀ * (G₀ * G₀)).trace + 3 * (G₀ * (G₂ * G₂)).trace := by
+    have z1 : (G₀ * G₀ * G₂).trace = 0 := trace_comm_anticomm hJJ hc₀₀ hc₂
+    have z2 : (G₂ * G₂ * G₂).trace = 0 := trace_comm_anticomm hJJ hc₂₂ hc₂
+    rw [tenV_eq_trace, ← hG, hsum]
+    simp only [Matrix.add_mul, Matrix.mul_add, Matrix.trace_add]
+    have c1 : (G₀ * G₂ * G₀).trace = (G₀ * G₀ * G₂).trace := by
+      rw [Matrix.trace_mul_comm, ← Matrix.mul_assoc]
+    have c2 : (G₂ * G₀ * G₀).trace = (G₀ * G₀ * G₂).trace := by
+      rw [Matrix.mul_assoc, Matrix.trace_mul_comm]
+    have c3 : (G₂ * G₀ * G₂).trace = (G₀ * G₂ * G₂).trace := by
+      rw [Matrix.mul_assoc, Matrix.trace_mul_comm]
+    have c4 : (G₂ * G₂ * G₀).trace = (G₀ * G₂ * G₂).trace := by
+      rw [Matrix.trace_mul_comm, ← Matrix.mul_assoc]
+    rw [c1, c2, c3, c4, z1, z2, Matrix.mul_assoc, Matrix.mul_assoc]
+    ring
+  have b1 := trace_mul_self_le hJ hG₀t hc₀ (Y := G₀)
+  have b2 := trace_mul_self_le hJ hG₀t hc₀ (Y := G₂)
+  rw [hG₀t, hs'] at b1
+  rw [hG₂t, ← hη, hs'] at b2
+  rw [hV]
+  linarith [b1, b2]
+
+/-- **The field `cubicTrace`**. -/
+theorem cubicTrace_of_cplx (hJ : IsCplx J) :
+    tenV f ^ 2 ≤ tenS f ^ 3 * ((1 + 2 * (tenGa f J / tenS f)) ^ 2 * (1 - tenGa f J / tenS f) / 2) := by
+  have hV0 := tenV_nonneg f
+  have hV := tenV_le f hJ
+  have hη := tenGa_le_half f hJ.anti hJ.sq_diag hJ.sq_off
+  have hη0 := tenGa_nonneg f J
+  have hs0 := tenS_nonneg f
+  have hd : 0 ≤ (tenS f - tenGa f J) / 2 := by linarith
+  have hb : 0 ≤ (tenS f + 2 * tenGa f J) * √((tenS f - tenGa f J) / 2) := by positivity
+  have hsq : tenV f ^ 2 ≤ ((tenS f + 2 * tenGa f J) * √((tenS f - tenGa f J) / 2)) ^ 2 :=
+    sq_le_sq' (by linarith) hV
+  rw [mul_pow, Real.sq_sqrt hd] at hsq
+  by_cases hs : tenS f = 0
+  · have : tenGa f J = 0 := by linarith
+    rw [hs, this] at hsq ⊢
+    simpa only [zero_div, mul_zero, add_zero, sub_zero, one_pow, mul_one, zero_pow two_ne_zero,
+      zero_pow three_ne_zero, zero_mul] using hsq
+  · have : tenS f ^ 3 * ((1 + 2 * (tenGa f J / tenS f)) ^ 2 * (1 - tenGa f J / tenS f) / 2)
+        = (tenS f + 2 * tenGa f J) ^ 2 * ((tenS f - tenGa f J) / 2) := by
+      field_simp
+    rw [this]
+    exact hsq
+
+end cubic
+
+/-- **The field `cubicTrace`** for the kernel of the real part of a circular cubic. -/
+theorem cubicTrace_circular [DecidableEq ι] {J : ι → ι → ℝ} {a b : MvPolynomial ι ℝ}
+    (hc : Circular J a b) :
+    tenV (cubicKernel a) ^ 2 ≤ tenS (cubicKernel a) ^ 3
+      * ((1 + 2 * (tenGa (cubicKernel a) J / tenS (cubicKernel a))) ^ 2
+        * (1 - tenGa (cubicKernel a) J / tenS (cubicKernel a)) / 2) :=
+  cubicTrace_of_cplx _ hc.isCplx
 
 /-! ### Slot operators on 3-tensors -/
 
@@ -1867,9 +2085,6 @@ structure TensorFactsRest (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (J : ι → 
   sos1 : tenH (cubicKernel a) ≤ 37 / 39 * tenS (cubicKernel a)
   sos2 : 27 * tenH (cubicKernel a) - 5 * tenS (cubicKernel a) + 8 * tenGa (cubicKernel a) J
     ≤ 216 * tenTT (cubicKernel a) J
-  cubicTrace : tenV (cubicKernel a) ^ 2 ≤ tenS (cubicKernel a) ^ 3
-    * ((1 + 2 * (tenGa (cubicKernel a) J / tenS (cubicKernel a))) ^ 2
-      * (1 - tenGa (cubicKernel a) J / tenS (cubicKernel a)) / 2)
   trace3 : tenT3 (cubicKernel a)
     ≤ √(tenTT (cubicKernel a) J) * (9 * tenH (cubicKernel a) / 2 - 17 * tenTT (cubicKernel a) J)
   trace4 : tenT4 (cubicKernel a) ≤ tenH (cubicKernel a) ^ 2 / 2
@@ -1888,8 +2103,8 @@ structure TensorFactsRest (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (J : ι → 
         * (9 * tenH (cubicKernel a) * tenTT (cubicKernel a) J - 54 * tenTT (cubicKernel a) J ^ 2))
 
 /-- **The tensor facts of a circular cubic** from the remaining ones: the fields `wick4`
-(`Chaos3.wick4`), `anti` (`tenGa_le_half`), `block` (`tenTT_le_sixth`), `A0nn`
-(`A0nn_circular`) and `A2nn` (`A2nn_circular`) are proved. -/
+(`Chaos3.wick4`), `anti` (`tenGa_le_half`), `block` (`tenTT_le_sixth`), `cubicTrace`
+(`cubicTrace_circular`), `A0nn` (`A0nn_circular`) and `A2nn` (`A2nn_circular`) are proved. -/
 theorem TensorFactsRest.toTensorFacts [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
     (hE : IsGaussianExpectation E) {J : ι → ι → ℝ} {a b : MvPolynomial ι ℝ} (ha : Chaos3 a)
     (hc : Circular J a b) (hR : TensorFactsRest E J a) : TensorFacts E J a where
@@ -1898,7 +2113,7 @@ theorem TensorFactsRest.toTensorFacts [DecidableEq ι] {E : MvPolynomial ι ℝ 
   sos1 := hR.sos1
   sos2 := hR.sos2
   anti := tenGa_le_half _ hc.anti hc.sq_diag hc.sq_off
-  cubicTrace := hR.cubicTrace
+  cubicTrace := cubicTrace_circular hc
   block := tenTT_le_sixth hc
   trace3 := hR.trace3
   trace4 := hR.trace4
