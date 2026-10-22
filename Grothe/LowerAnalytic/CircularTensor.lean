@@ -3648,7 +3648,7 @@ lemma comp_neg_right (X Y : T4 ι) : comp X (-Y) = -comp X Y := by
 
 lemma sum3_rot (F : ι → ι → ι → ℝ) : ∑ c, ∑ d, ∑ p, F c d p = ∑ p, ∑ c, ∑ d, F c d p :=
   (Finset.sum_congr rfl fun _ _ => Finset.sum_comm).trans Finset.sum_comm
-lemma sum3_swap13 (F : ι → ι → ι → ℝ) : ∑ c, ∑ d, ∑ p, F c d p = ∑ p, ∑ d, ∑ c, F c d p :=
+lemma sum3_pswap13 (F : ι → ι → ι → ℝ) : ∑ c, ∑ d, ∑ p, F c d p = ∑ p, ∑ d, ∑ c, F c d p :=
   ((Finset.sum_congr rfl fun _ _ => Finset.sum_comm).trans Finset.sum_comm).trans
     (Finset.sum_congr rfl fun _ _ => Finset.sum_comm)
 
@@ -3734,7 +3734,7 @@ lemma ap4_sq₃ (hJ : ∀ i j, J i j = -J j i) (X : T4 ι) (v : T2 ι) :
   funext a b
   simp only [ap4, jp, sq₃_apply, Finset.sum_mul, Finset.mul_sum, Pi.neg_apply,
     ← Finset.sum_neg_distrib]
-  rw [sum3_swap13 (fun c d p => J c p * X a b p d * v c d)]
+  rw [sum3_pswap13 (fun c d p => J c p * X a b p d * v c d)]
   refine Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun d _ =>
     Finset.sum_congr rfl fun c _ => ?_
   rw [hJ p c]; ring
@@ -3745,7 +3745,7 @@ include hJ
 lemma ip2_jp_self (v : T2 ι) : ip2 v (jp J v) = 0 := by
   have h : ip2 v (jp J v) = -ip2 v (jp J v) := by
     simp only [ip2, jp, Finset.mul_sum, ← Finset.sum_neg_distrib]
-    rw [sum3_swap13 (fun a b p => v a b * (J a p * v p b))]
+    rw [sum3_pswap13 (fun a b p => v a b * (J a p * v p b))]
     refine Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun b _ =>
       Finset.sum_congr rfl fun a _ => ?_
     rw [hJ.anti p a]; ring
@@ -4095,7 +4095,7 @@ lemma comp_sq₃_left (hJa : ∀ i j, J i j = -J j i) (X Y : T4 ι) :
   funext a b c d
   simp only [comp, sq₃_apply, sq₁_apply, Finset.sum_mul, Finset.mul_sum, Pi.neg_apply,
     ← Finset.sum_neg_distrib]
-  rw [sum3_swap13 (fun e f p => J e p * X a b p f * Y e f c d)]
+  rw [sum3_pswap13 (fun e f p => J e p * X a b p f * Y e f c d)]
   refine Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun f _ =>
     Finset.sum_congr rfl fun e _ => ?_
   rw [hJa e p]; ring
@@ -5139,7 +5139,7 @@ lemma k2_k2 (v : T2 ι) : k2 J (k2 J v) = v := by
 
 lemma ip2_jp_left (v w : T2 ι) : ip2 (jp J v) w = -ip2 v (jp J w) := by
   simp only [ip2, jp, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_neg_distrib]
-  rw [sum3_swap13 (fun a b p => J a p * v p b * w a b)]
+  rw [sum3_pswap13 (fun a b p => J a p * v p b * w a b)]
   refine Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun b _ =>
     Finset.sum_congr rfl fun a _ => ?_
   rw [hJ.anti p a]; ring
