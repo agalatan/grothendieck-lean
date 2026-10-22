@@ -68,3 +68,5 @@ import Grothe.LowerAnalytic.Witness
 import Grothe.LowerAnalytic.WitnessCap
 import Grothe.Lower.RowReduction
 import Grothe.Lower.RowGates
+import Grothe.LowerAnalytic.Potential
+import Grothe.LowerAnalytic.FibrePotential
