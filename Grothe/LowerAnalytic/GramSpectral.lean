@@ -4,7 +4,7 @@ import Grothe.LowerAnalytic.CircularTensor
 /-!
 # The spectral identities of the contraction-Gram budget
 
-The chaos energies `u₂ = ‖U₂‖²`, `v₂ = ‖(q²)₂‖²` (and, below, `u₄`, `v₄`) of a circular cubic
+The chaos energies `u₂ = ‖U₂‖²`, `v₂ = ‖(q²)₂‖²`, `u₄ = ‖U₄‖²`, `v₄ = ‖(q²)₄‖²` of a circular cubic
 `q = a + ib` in terms of the contraction scalars `n, h, b, y, z` of its complex coefficient tensor
 `t = gramT J a b` (`GramTensor.lean`).
 
@@ -29,6 +29,20 @@ The chaos energies `u₂ = ‖U₂‖²`, `v₂ = ‖(q²)₂‖²` (and, below,
   seven.  With `Σ (Re(H + 2N))² = (h + 4n + 4z)/2` (`sum_re_sq_K`; `tr(NH̄) = Σ H² = Σ N² = 0` by
   charge) this gives **`u₂ = 16n + 4h + 16z`** (`Circular.specU2_eq`) and **`v₂ = 32b`**
   (`Circular.specV2_eq`).
+* **The fourth chaos.**  `∂⁴ Π₄(ab) = 108 (Sym(f ⋆ g) + Sym(g ⋆ f))` with the contraction
+  `(f ⋆ g)_{ab,cd} = Σₓ f_{abx} g_{cdx}` and the partial symmetrisation `Sym` of
+  `CircularTensor.lean` (`pderiv4_comp4`), and the ladder `E X² = (1/24) Σ (∂⁴X)²`
+  (`gE_sq_chaos4`).  The sector expansion gives `τ ⋆ τ = (W_{abc;d} + W_{abd;c} + W_{cda;b}
+  + W_{cdb;a})/9` (`ccon_tau_eq`) and `τ ⋆ τ̄ = (D + C^{(adbc)} + C^{(acbd)} + C^{(bdac)}
+  + C^{(bcad)})/9` (`ccon_tau_conj_eq`, with the tensors `D`, `C` of `GramTensor.lean`).  Every
+  pairing of permuted copies of `W`, `D`, `C` whose slot charges disagree vanishes
+  (`hip_zero₁`–`hip_zero₄`, the slot charges `chg_W*`, `chg_D*`, `chg_C*`); the surviving ones
+  are the six Gram identities of `GramTensor.lean` up to reindexing (the lemmas `pv4_*`, `pu4_*`).
+  `‖Sym(τ ⋆ τ)‖² = 4y/81` (`hipV_V`: `Sym A` is fully symmetric, `‖Sym A‖² = 4⟨Sym A, W⟩` and three
+  of twelve pairings survive, `z + 2T = 3y`), whence **`v₄ = 96y`** (`Circular.specV4_eq`);
+  `‖Sym(f ⋆ f + g ⋆ g)‖² = (h + 4n + 4b + 16T)/486` (`sum_kerS_sq`: `S = Sym(Re(τ ⋆ τ̄))` is fully
+  symmetric, the symmetrisation is moved onto `D` and `C`, ten of sixty pairings survive), whence
+  **`u₄ = 16n + 4h + 16b + 96y − 32z`** (`Circular.specU4_eq`, with `2T = 3y − z`).
 -/
 
 open MvPolynomial ComplexConjugate
@@ -694,6 +708,7 @@ omit [Fintype ι] [DecidableEq ι] in
 lemma kern_eq_six (F : MvPolynomial ι ℝ) (i j k : ι) : kern F i j k = 6 * cubicKernel F i j k := by
   unfold cubicKernel; ring
 
+omit [DecidableEq ι] in
 /-- `∂ₙ∂ₘ Π₂(ab) = 18 (Σ_{ji} f_{mij} g_{nij} + Σ_{ji} f_{nij} g_{mij})`. -/
 lemma pderiv2_comp2 {a b : MvPolynomial ι ℝ} (ha : Chaos3 a) (hb : Chaos3 b) (m n : ι) :
     pderiv n (pderiv m (comp2 E a b)) = C (18 * (kerGs (cubicKernel a) (cubicKernel b) m n
@@ -819,6 +834,1060 @@ theorem Circular.specV2_eq : specV2 E a b = 32 * gramB (gramT J a b) := by
 end spectral2
 
 
+
+/-! ### Complex 4-tensors: contraction, partial symmetrisation, plain pairing -/
+
+section four
+
+/-- `(T ⋆ T')_{ab,cd} = Σₓ T_{abx} T'_{cdx}` for complex tensors. -/
+def ccon (T T' : ι → ι → ι → ℂ) (a b c d : ι) : ℂ := ∑ x, T a b x * T' c d x
+
+/-- The partial symmetrisation `(X_{abcd} + X_{acbd} + X_{adbc})/3`. -/
+def csym4 (X : ι → ι → ι → ι → ℂ) (a b c d : ι) : ℂ := (X a b c d + X a c b d + X a d b c) / 3
+
+/-- The plain (bilinear) pairing `Σ X Y`. -/
+def pip (X Y : ι → ι → ι → ι → ℂ) : ℂ := ∑ a, ∑ b, ∑ c, ∑ d, X a b c d * Y a b c d
+
+lemma pip_eq_hip (X Y : ι → ι → ι → ι → ℂ) :
+    pip X Y = hip X (fun a b c d => conj (Y a b c d)) := by
+  simp only [pip, hip, Complex.conj_conj]
+
+lemma pip_conj_left (X Y : ι → ι → ι → ι → ℂ) :
+    pip (fun a b c d => conj (X a b c d)) Y = conj (hip X Y) := by
+  simp only [pip, hip, map_sum, map_mul, Complex.conj_conj]
+
+lemma ccon_tauC_re (f g : ι → ι → ι → ℝ) (a b c d : ι) :
+    (ccon (tauC f g) (tauC f g) a b c d).re = con f f a b c d - con g g a b c d := by
+  simp only [ccon, con, Complex.re_sum, ← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl fun x _ => ?_
+  simp only [tauC, Complex.mul_re, Complex.add_re, Complex.add_im, Complex.ofReal_re,
+    Complex.ofReal_im, Complex.mul_im, Complex.I_re, Complex.I_im]
+  ring
+
+lemma ccon_tauC_im (f g : ι → ι → ι → ℝ) (a b c d : ι) :
+    (ccon (tauC f g) (tauC f g) a b c d).im = con f g a b c d + con g f a b c d := by
+  simp only [ccon, con, Complex.im_sum, ← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun x _ => ?_
+  simp only [tauC, Complex.mul_re, Complex.add_re, Complex.add_im, Complex.ofReal_re,
+    Complex.ofReal_im, Complex.mul_im, Complex.I_re, Complex.I_im]
+  ring
+
+lemma ccon_tauC_conj_re (f g : ι → ι → ι → ℝ) (a b c d : ι) :
+    (ccon (tauC f g) (fun a b c => conj (tauC f g a b c)) a b c d).re
+      = con f f a b c d + con g g a b c d := by
+  simp only [ccon, con, Complex.re_sum, ← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun x _ => ?_
+  simp only [tauC, Complex.mul_re, Complex.add_re, Complex.add_im, Complex.ofReal_re,
+    Complex.ofReal_im, Complex.mul_im, Complex.I_re, Complex.I_im, Complex.conj_re, Complex.conj_im]
+  ring
+
+omit [Fintype ι] in
+lemma csym4_re (X : ι → ι → ι → ι → ℂ) (a b c d : ι) :
+    (csym4 X a b c d).re = sym4 (fun a b c d => (X a b c d).re) a b c d := by
+  simp only [csym4, sym4, Complex.div_ofNat_re, Complex.add_re]
+
+omit [Fintype ι] in
+lemma csym4_im (X : ι → ι → ι → ι → ℂ) (a b c d : ι) :
+    (csym4 X a b c d).im = sym4 (fun a b c d => (X a b c d).im) a b c d := by
+  simp only [csym4, sym4, Complex.div_ofNat_im, Complex.add_im]
+
+omit [Fintype ι] in
+/-- `csym4 X` is fully symmetric when `X` is symmetric in each pair and under the pair swap. -/
+lemma csym4_symm {X : ι → ι → ι → ι → ℂ} (h12 : ∀ a b c d, X b a c d = X a b c d)
+    (h34 : ∀ a b c d, X a b d c = X a b c d) (hP : ∀ a b c d, X c d a b = X a b c d) :
+    (∀ a b c d, csym4 X b a c d = csym4 X a b c d) ∧ (∀ a b c d, csym4 X a c b d = csym4 X a b c d)
+      ∧ (∀ a b c d, csym4 X a b d c = csym4 X a b c d) := by
+  refine ⟨fun a b c d => ?_, fun a b c d => ?_, fun a b c d => ?_⟩ <;> simp only [csym4]
+  · rw [h12 a b c d, ← hP b c a d, ← hP b d a c]; ring
+  · rw [h34 a d b c]; ring
+  · rw [h34 a b c d]; ring
+
+lemma csum4_rot1 {M : Type*} [AddCommMonoid M] (F : ι → ι → ι → ι → M) :
+    ∑ a, ∑ b, ∑ c, ∑ d, F a b c d = ∑ b, ∑ c, ∑ d, ∑ a, F a b c d :=
+  Finset.sum_comm.trans (Finset.sum_congr rfl fun _ _ => Finset.sum_comm.trans
+    (Finset.sum_congr rfl fun _ _ => Finset.sum_comm))
+
+lemma csum4_rot2 {M : Type*} [AddCommMonoid M] (F : ι → ι → ι → ι → M) :
+    ∑ a, ∑ b, ∑ c, ∑ d, F a b c d = ∑ a, ∑ c, ∑ d, ∑ b, F a b c d :=
+  Finset.sum_congr rfl fun _ _ => Finset.sum_comm.trans
+    (Finset.sum_congr rfl fun _ _ => Finset.sum_comm)
+
+lemma csum4_rot3 {M : Type*} [AddCommMonoid M] (F : ι → ι → ι → ι → M) :
+    ∑ a, ∑ b, ∑ c, ∑ d, F a b c d = ∑ a, ∑ b, ∑ d, ∑ c, F a b c d :=
+  Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_comm
+
+variable {J : ι → ι → ℝ} (hA : ∀ i j, J i j = -J j i) {X Y : ι → ι → ι → ι → ℂ} {s s' : ℂ}
+include hA
+
+/-- Vanishing of a pairing by a charge mismatch in the first slot. -/
+lemma hip_zero₁ (hX : ∀ b c d, Chg J s (fun a => X a b c d))
+    (hY : ∀ b c d, Chg J s' (fun a => Y a b c d)) (h : s + conj s' ≠ 0) : hip X Y = 0 := by
+  unfold hip
+  rw [csum4_rot1]
+  exact Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ =>
+    Chg.sum_mul_eq_zero hA (hX b c d) (hY b c d).conj h
+
+/-- Vanishing of a pairing by a charge mismatch in the second slot. -/
+lemma hip_zero₂ (hX : ∀ a c d, Chg J s (fun b => X a b c d))
+    (hY : ∀ a c d, Chg J s' (fun b => Y a b c d)) (h : s + conj s' ≠ 0) : hip X Y = 0 := by
+  unfold hip
+  rw [csum4_rot2]
+  exact Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ =>
+    Chg.sum_mul_eq_zero hA (hX a c d) (hY a c d).conj h
+
+/-- Vanishing of a pairing by a charge mismatch in the third slot. -/
+lemma hip_zero₃ (hX : ∀ a b d, Chg J s (fun c => X a b c d))
+    (hY : ∀ a b d, Chg J s' (fun c => Y a b c d)) (h : s + conj s' ≠ 0) : hip X Y = 0 := by
+  unfold hip
+  rw [csum4_rot3]
+  exact Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun d _ =>
+    Chg.sum_mul_eq_zero hA (hX a b d) (hY a b d).conj h
+
+/-- Vanishing of a pairing by a charge mismatch in the fourth slot. -/
+lemma hip_zero₄ (hX : ∀ a b c, Chg J s (fun d => X a b c d))
+    (hY : ∀ a b c, Chg J s' (fun d => Y a b c d)) (h : s + conj s' ≠ 0) : hip X Y = 0 := by
+  unfold hip
+  exact Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun c _ =>
+    Chg.sum_mul_eq_zero hA (hX a b c) (hY a b c).conj h
+
+omit hA in
+lemma cI_ne₁ : Complex.I + conj (-Complex.I) ≠ 0 := by
+  rw [Complex.conj_neg_I]; exact two_I_ne_zero
+omit hA in
+lemma cI_ne₂ : -Complex.I + conj Complex.I ≠ 0 := by
+  rw [Complex.conj_I]; exact neg_two_I_ne_zero
+
+end four
+
+/-! ### Slot charges of `W`, `D`, `C` -/
+
+section charges4
+
+variable [DecidableEq ι] {J : ι → ι → ℝ} (hJ : IsCplx J) (f g : ι → ι → ι → ℝ)
+include hJ
+
+local notation "𝓽" => cplxT J f g
+
+/-- `W_{abj;c}`: charges `(+i, +i, +i, −i)`. -/
+lemma chg_W1 (b j c : ι) : Chg J Complex.I (fun a => ctW 𝓽 a b j c) :=
+  Chg.sum fun i => (chg_t1 hJ f g b i).mul_const _
+lemma chg_W2 (a j c : ι) : Chg J Complex.I (fun b => ctW 𝓽 a b j c) :=
+  Chg.sum fun i => (chg_t2 hJ f g a i).mul_const _
+lemma chg_W3 (a b c : ι) : Chg J Complex.I (fun j => ctW 𝓽 a b j c) :=
+  Chg.sum fun i => (chg_t1 hJ f g i c).const_mul _
+lemma chg_W4 (a b j : ι) : Chg J (-Complex.I) (fun c => ctW 𝓽 a b j c) :=
+  Chg.sum fun i => (chg_t3 hJ f g j i).const_mul _
+
+/-- `D_{ij;kl}`: charges `(+i, +i, −i, −i)`. -/
+lemma chg_D1 (j k l : ι) : Chg J Complex.I (fun i => ctD 𝓽 i j k l) :=
+  Chg.sum fun a => (chg_t1 hJ f g j a).mul_const _
+lemma chg_D2 (i k l : ι) : Chg J Complex.I (fun j => ctD 𝓽 i j k l) :=
+  Chg.sum fun a => (chg_t2 hJ f g i a).mul_const _
+lemma chg_D3 (i j l : ι) : Chg J (-Complex.I) (fun k => ctD 𝓽 i j k l) :=
+  Chg.sum fun a => (chg_ct1 hJ f g l a).const_mul _
+lemma chg_D4 (i j k : ι) : Chg J (-Complex.I) (fun l => ctD 𝓽 i j k l) :=
+  Chg.sum fun a => (chg_ct2 hJ f g k a).const_mul _
+
+/-- `C_{ij;kl}`: charges `(+i, +i, −i, −i)`. -/
+lemma chg_C1 (j k l : ι) : Chg J Complex.I (fun i => ctC 𝓽 i j k l) :=
+  Chg.sum fun a => (chg_t1 hJ f g a k).mul_const _
+lemma chg_C2 (i k l : ι) : Chg J Complex.I (fun j => ctC 𝓽 i j k l) :=
+  Chg.sum fun a => (chg_ct3 hJ f g l a).const_mul _
+lemma chg_C3 (i j l : ι) : Chg J (-Complex.I) (fun k => ctC 𝓽 i j k l) :=
+  Chg.sum fun a => (chg_t3 hJ f g i a).mul_const _
+lemma chg_C4 (i j k : ι) : Chg J (-Complex.I) (fun l => ctC 𝓽 i j k l) :=
+  Chg.sum fun a => (chg_ct1 hJ f g a j).const_mul _
+
+end charges4
+
+/-! ### The fourth-chaos ladder and the fourth derivatives -/
+
+section ladder4
+
+variable [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ} (hE : IsGaussianExpectation E)
+
+include hE in
+omit [DecidableEq ι] in
+lemma gE_sq_step {X : MvPolynomial ι ℝ} {k : ℝ} (hX : ouL X = -(C k * X)) (hk : k ≠ 0) :
+    E (X * X) = 1 / k * ∑ i, E (pderiv i X * pderiv i X) := by
+  have h := gE_gam_of_eigen hE hX
+  rw [gam, map_sum] at h
+  rw [h]; field_simp
+
+lemma ouL_pderiv_eig {X : MvPolynomial ι ℝ} {k : ℝ} (hX : ouL X = -(C k * X)) (i : ι) :
+    ouL (pderiv i X) = -(C (k - 1) * pderiv i X) := by
+  rw [ouL_pderiv, hX, map_neg, pderiv_C_mul, map_sub, map_one]; ring
+
+include hE in
+/-- **The fourth-chaos ladder**: `E X² = (1/24) Σ (∂⁴X)²` for constant fourth derivatives. -/
+lemma gE_sq_chaos4 {X : MvPolynomial ι ℝ} (hX : ouL X = -(4 * X)) (c : ι → ι → ι → ι → ℝ)
+    (hc : ∀ i j k l, pderiv l (pderiv k (pderiv j (pderiv i X))) = C (c i j k l)) :
+    E (X * X) = 1 / 24 * ∑ i, ∑ j, ∑ k, ∑ l, c i j k l ^ 2 := by
+  have h4 : ouL X = -(C 4 * X) := by rw [hX, map_ofNat]
+  have h3 : ∀ i, ouL (pderiv i X) = -(C 3 * pderiv i X) := fun i => by
+    rw [ouL_pderiv_eig h4]; norm_num
+  have h2 : ∀ i j, ouL (pderiv j (pderiv i X)) = -(C 2 * pderiv j (pderiv i X)) := fun i j => by
+    rw [ouL_pderiv_eig (h3 i)]; norm_num
+  have h1 : ∀ i j k, ouL (pderiv k (pderiv j (pderiv i X)))
+      = -(C 1 * pderiv k (pderiv j (pderiv i X))) := fun i j k => by
+    rw [ouL_pderiv_eig (h2 i j)]; norm_num
+  have e3 : ∀ i, E (pderiv i X * pderiv i X)
+      = 1 / 3 * ∑ j, E (pderiv j (pderiv i X) * pderiv j (pderiv i X)) := fun i =>
+    gE_sq_step hE (h3 i) (by norm_num)
+  have e2 : ∀ i j, E (pderiv j (pderiv i X) * pderiv j (pderiv i X))
+      = 1 / 2 * ∑ k, E (pderiv k (pderiv j (pderiv i X)) * pderiv k (pderiv j (pderiv i X))) :=
+    fun i j => gE_sq_step hE (h2 i j) (by norm_num)
+  have e1 : ∀ i j k, E (pderiv k (pderiv j (pderiv i X)) * pderiv k (pderiv j (pderiv i X)))
+      = 1 / 1 * ∑ l, E (pderiv l (pderiv k (pderiv j (pderiv i X)))
+        * pderiv l (pderiv k (pderiv j (pderiv i X)))) := fun i j k =>
+    gE_sq_step hE (h1 i j k) one_ne_zero
+  have e0 : ∀ i j k l, E (pderiv l (pderiv k (pderiv j (pderiv i X)))
+      * pderiv l (pderiv k (pderiv j (pderiv i X)))) = c i j k l ^ 2 := fun i j k l => by
+    rw [hc, ← map_mul, gE_C hE, sq]
+  rw [gE_sq_step hE h4 (by norm_num)]
+  simp only [e3, e2, e1, e0, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ =>
+    Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring
+
+omit [DecidableEq ι] in
+/-- `∂⁴ Γ(a,b) = 108 (Sym(f ⋆ g) + Sym(g ⋆ f))` for cubic chaoses with symmetric kernels. -/
+lemma pderiv4_gam {a b : MvPolynomial ι ℝ} (ha : Chaos3 a) (hb : Chaos3 b)
+    (hf : ∀ i j k, cubicKernel a i j k = cubicKernel a j i k)
+    (hg : ∀ i j k, cubicKernel b i j k = cubicKernel b j i k) (i j k l : ι) :
+    pderiv l (pderiv k (pderiv j (pderiv i (gam a b))))
+      = C (108 * (sym4 (con (cubicKernel a) (cubicKernel b)) i j k l
+        + sym4 (con (cubicKernel b) (cubicKernel a)) i j k l)) := by
+  simp only [gam, map_sum, pderiv_mul, map_add, ha.pderiv3_eq, hb.pderiv3_eq, pderiv_C, zero_mul,
+    mul_zero, zero_add, add_zero]
+  simp only [← map_mul, ← map_add, ← map_sum (C : ℝ →+* MvPolynomial ι ℝ)]
+  congr 1
+  have e1 : ∑ x, cubicKernel a j i x * cubicKernel b l k x
+      = con (cubicKernel a) (cubicKernel b) i j k l :=
+    Finset.sum_congr rfl fun x _ => by rw [hf j i, hg l k]
+  have e2 : ∑ x, cubicKernel a k i x * cubicKernel b l j x
+      = con (cubicKernel a) (cubicKernel b) i k j l :=
+    Finset.sum_congr rfl fun x _ => by rw [hf k i, hg l j]
+  have e3 : ∑ x, cubicKernel a l i x * cubicKernel b k j x
+      = con (cubicKernel a) (cubicKernel b) i l j k :=
+    Finset.sum_congr rfl fun x _ => by rw [hf l i, hg k j]
+  have e4 : ∑ x, cubicKernel a k j x * cubicKernel b l i x
+      = con (cubicKernel b) (cubicKernel a) i l j k :=
+    Finset.sum_congr rfl fun x _ => by rw [hf k j, hg l i]; ring
+  have e5 : ∑ x, cubicKernel a l j x * cubicKernel b k i x
+      = con (cubicKernel b) (cubicKernel a) i k j l :=
+    Finset.sum_congr rfl fun x _ => by rw [hf l j, hg k i]; ring
+  have e6 : ∑ x, cubicKernel a l k x * cubicKernel b j i x
+      = con (cubicKernel b) (cubicKernel a) i j k l :=
+    Finset.sum_congr rfl fun x _ => by rw [hf l k, hg j i]; ring
+  simp only [kern_eq_six, Finset.sum_add_distrib, sym4]
+  simp only [show ∀ (p q : ℝ), 6 * p * (6 * q) = 36 * (p * q) from fun p q => by ring,
+    ← Finset.mul_sum, e1, e2, e3, e4, e5, e6]
+  ring
+
+omit [DecidableEq ι] in
+lemma pderiv4_gam2c {a b : MvPolynomial ι ℝ} (ha : Chaos3 a) (hb : Chaos3 b) (i j k l : ι) :
+    pderiv l (pderiv k (pderiv j (pderiv i (gam2c a b)))) = 0 := by
+  simp only [gam2c, gam, map_sum, pderiv_mul, map_add, ha.pderiv3_eq, hb.pderiv3_eq, pderiv_C,
+    zero_mul, mul_zero, zero_add, add_zero, Finset.sum_const_zero, map_zero]
+
+/-- `∂⁴ Π₄(ab) = 108 (Sym(f ⋆ g) + Sym(g ⋆ f))`. -/
+lemma pderiv4_comp4 {a b : MvPolynomial ι ℝ} (ha : Chaos3 a) (hb : Chaos3 b)
+    (hf : ∀ i j k, cubicKernel a i j k = cubicKernel a j i k)
+    (hg : ∀ i j k, cubicKernel b i j k = cubicKernel b j i k) (i j k l : ι) :
+    pderiv l (pderiv k (pderiv j (pderiv i (comp4 E a b))))
+      = C (108 * (sym4 (con (cubicKernel a) (cubicKernel b)) i j k l
+        + sym4 (con (cubicKernel b) (cubicKernel a)) i j k l)) := by
+  unfold comp4
+  simp only [map_add, map_sub, pderiv4_gam ha hb hf hg, pderiv4_gam2c ha hb, pderiv_C, sub_zero,
+    add_zero]
+
+end ladder4
+
+/-! ### The sector expansions of `τ ⋆ τ` and `τ ⋆ τ̄` -/
+
+section expansions
+
+variable [DecidableEq ι] {J : ι → ι → ℝ} (hJ : IsCplx J) {f g : ι → ι → ι → ℝ}
+  (hsym : ∀ a b c, tauC f g a b c = (cplxT J f g a b c + cplxT J f g a c b + cplxT J f g c b a) / 3)
+  (ht : ∀ a b c, cplxT J f g a b c = cplxT J f g b a c)
+include hJ hsym ht
+
+/-- `τ ⋆ τ = (W_{abc;d} + W_{abd;c} + W_{cda;b} + W_{cdb;a})/9`. -/
+theorem ccon_tau_eq (a b c d : ι) : ccon (tauC f g) (tauC f g) a b c d
+    = (ctW (cplxT J f g) a b c d + ctW (cplxT J f g) a b d c + ctW (cplxT J f g) c d a b
+      + ctW (cplxT J f g) c d b a) / 9 := by
+  set t := cplxT J f g with ht_def
+  have e : ∀ x, tauC f g a b x * tauC f g c d x = (1 / 9 : ℂ)
+      * (t a b x * t c d x + t a b x * t c x d + t a b x * t x d c
+        + t a x b * t c d x + t a x b * t c x d + t a x b * t x d c
+        + t x b a * t c d x + t x b a * t c x d + t x b a * t x d c) :=
+    fun x => by rw [hsym a b x, hsym c d x]; ring
+  have hA := hJ.anti
+  have v11 : ∑ x, t a b x * t c d x = 0 :=
+    Chg.sum_mul_eq_zero hA (chg_t3 hJ f g a b) (chg_t3 hJ f g c d) neg_two_I_ne_zero
+  have v22 : ∑ x, t a x b * t c x d = 0 :=
+    Chg.sum_mul_eq_zero hA (chg_t2 hJ f g a b) (chg_t2 hJ f g c d) two_I_ne_zero
+  have v23 : ∑ x, t a x b * t x d c = 0 :=
+    Chg.sum_mul_eq_zero hA (chg_t2 hJ f g a b) (chg_t1 hJ f g d c) two_I_ne_zero
+  have v32 : ∑ x, t x b a * t c x d = 0 :=
+    Chg.sum_mul_eq_zero hA (chg_t1 hJ f g b a) (chg_t2 hJ f g c d) two_I_ne_zero
+  have v33 : ∑ x, t x b a * t x d c = 0 :=
+    Chg.sum_mul_eq_zero hA (chg_t1 hJ f g b a) (chg_t1 hJ f g d c) two_I_ne_zero
+  have s12 : ∑ x, t a b x * t c x d = ctW t a b c d := rfl
+  have s13 : ∑ x, t a b x * t x d c = ctW t a b d c :=
+    Finset.sum_congr rfl fun x _ => by rw [ht x d c]
+  have s21 : ∑ x, t a x b * t c d x = ctW t c d a b :=
+    Finset.sum_congr rfl fun x _ => mul_comm _ _
+  have s31 : ∑ x, t x b a * t c d x = ctW t c d b a :=
+    Finset.sum_congr rfl fun x _ => by rw [ht x b a]; ring
+  simp only [ccon, e, ← Finset.mul_sum, Finset.sum_add_distrib, v11, v22, v23, v32, v33, s12, s13,
+    s21, s31]
+  ring
+
+/-- `τ ⋆ τ̄ = (D_{ab;cd} + C_{ad;bc} + C_{ac;bd} + C_{bd;ac} + C_{bc;ad})/9`. -/
+theorem ccon_tau_conj_eq (a b c d : ι) :
+    ccon (tauC f g) (fun a b c => conj (tauC f g a b c)) a b c d
+      = (ctD (cplxT J f g) a b c d + ctC (cplxT J f g) a d b c + ctC (cplxT J f g) a c b d
+        + ctC (cplxT J f g) b d a c + ctC (cplxT J f g) b c a d) / 9 := by
+  set t := cplxT J f g with ht_def
+  have e : ∀ x, tauC f g a b x * conj (tauC f g c d x) = (1 / 9 : ℂ)
+      * (t a b x * conj (t c d x) + t a b x * conj (t c x d) + t a b x * conj (t x d c)
+        + t a x b * conj (t c d x) + t a x b * conj (t c x d) + t a x b * conj (t x d c)
+        + t x b a * conj (t c d x) + t x b a * conj (t c x d) + t x b a * conj (t x d c)) :=
+    fun x => by rw [hsym a b x, hsym c d x]; simp only [map_div₀, map_add, map_ofNat]; ring
+  have hA := hJ.anti
+  have v12 : ∑ x, t a b x * conj (t c x d) = 0 :=
+    Chg.sum_mul_eq_zero hA (chg_t3 hJ f g a b) (chg_ct2 hJ f g c d) neg_two_I_ne_zero
+  have v13 : ∑ x, t a b x * conj (t x d c) = 0 :=
+    Chg.sum_mul_eq_zero hA (chg_t3 hJ f g a b) (chg_ct1 hJ f g d c) neg_two_I_ne_zero
+  have v21 : ∑ x, t a x b * conj (t c d x) = 0 :=
+    Chg.sum_mul_eq_zero hA (chg_t2 hJ f g a b) (chg_ct3 hJ f g c d) two_I_ne_zero
+  have v31 : ∑ x, t x b a * conj (t c d x) = 0 :=
+    Chg.sum_mul_eq_zero hA (chg_t1 hJ f g b a) (chg_ct3 hJ f g c d) two_I_ne_zero
+  have s11 : ∑ x, t a b x * conj (t c d x) = ctD t a b c d := rfl
+  have s22 : ∑ x, t a x b * conj (t c x d) = ctC t a d b c := rfl
+  have s23 : ∑ x, t a x b * conj (t x d c) = ctC t a c b d :=
+    Finset.sum_congr rfl fun x _ => by rw [ht x d c]
+  have s32 : ∑ x, t x b a * conj (t c x d) = ctC t b d a c :=
+    Finset.sum_congr rfl fun x _ => by rw [ht x b a]
+  have s33 : ∑ x, t x b a * conj (t x d c) = ctC t b c a d :=
+    Finset.sum_congr rfl fun x _ => by rw [ht x b a, ht x d c]
+  simp only [ccon, e, ← Finset.mul_sum, Finset.sum_add_distrib, v12, v13, v21, v31, s11, s22, s23,
+    s32, s33]
+  ring
+
+end expansions
+
+/-! ### Conjugates and the plain pairing -/
+
+section pipl
+
+variable (t : ι → ι → ι → ℂ)
+
+lemma ctD_conj (a b c d : ι) : conj (ctD t a b c d) = ctD t c d a b := by
+  simp only [ctD, map_sum, map_mul, Complex.conj_conj]
+  exact Finset.sum_congr rfl fun x _ => mul_comm _ _
+
+lemma ctC_conj (i j k l : ι) : conj (ctC t i j k l) = ctC t l k j i := by
+  simp only [ctC, map_sum, map_mul, Complex.conj_conj]
+  exact Finset.sum_congr rfl fun x _ => mul_comm _ _
+
+variable {t}
+
+lemma pip_add_left (X Y Z : ι → ι → ι → ι → ℂ) :
+    pip (fun a b c d => X a b c d + Y a b c d) Z = pip X Z + pip Y Z := by
+  simp only [pip, add_mul, Finset.sum_add_distrib]
+lemma pip_add_right (X Y Z : ι → ι → ι → ι → ℂ) :
+    pip X (fun a b c d => Y a b c d + Z a b c d) = pip X Y + pip X Z := by
+  simp only [pip, mul_add, Finset.sum_add_distrib]
+lemma pip_div_left (X Y : ι → ι → ι → ι → ℂ) (n : ℕ) [n.AtLeastTwo] :
+    pip (fun a b c d => X a b c d / (OfNat.ofNat n : ℂ)) Y = pip X Y / OfNat.ofNat n := by
+  simp only [pip, div_mul_eq_mul_div, Finset.sum_div]
+lemma pip_div_right (X Y : ι → ι → ι → ι → ℂ) (n : ℕ) [n.AtLeastTwo] :
+    pip X (fun a b c d => Y a b c d / (OfNat.ofNat n : ℂ)) = pip X Y / OfNat.ofNat n := by
+  simp only [pip, mul_div_assoc, Finset.sum_div]
+lemma pip_swap23 (X Y : ι → ι → ι → ι → ℂ) :
+    pip (fun a b c d => X a c b d) (fun a b c d => Y a c b d) = pip X Y := csum4_swap23 _
+lemma pip_cyc' (X Y : ι → ι → ι → ι → ℂ) :
+    pip (fun a b c d => X a d b c) (fun a b c d => Y a d b c) = pip X Y := csum4_cyc' _
+lemma pip_cyc3 (X Y : ι → ι → ι → ι → ℂ) :
+    pip (fun a b c d => X b c a d) (fun a b c d => Y b c a d) = pip X Y := csum4_cyc3 _
+lemma pip_swap12 (X Y : ι → ι → ι → ι → ℂ) :
+    pip (fun a b c d => X b a c d) (fun a b c d => Y b a c d) = pip X Y := csum4_swap12 _
+lemma pip_perm_bdac (X Y : ι → ι → ι → ι → ℂ) :
+    pip (fun a b c d => X b d a c) (fun a b c d => Y b d a c) = pip X Y :=
+  (pip_swap12 (fun a b c d => X a d b c) (fun a b c d => Y a d b c)).trans (pip_cyc' X Y)
+
+end pipl
+
+/-! ### The pairings -/
+
+section pairings
+
+variable [DecidableEq ι] {J : ι → ι → ℝ} (hJ : IsCplx J) (f g : ι → ι → ι → ℝ)
+  (ht : ∀ a b c, cplxT J f g a b c = cplxT J f g b a c)
+include hJ ht
+
+local notation "𝓽" => cplxT J f g
+
+
+/-! #### The pairings of the v4 identity -/
+
+omit hJ in
+lemma pv4_00 : hip (ctW 𝓽) (ctW 𝓽) = (gramZ 𝓽 : ℂ) := by
+  calc hip (ctW 𝓽) (ctW 𝓽)
+      _ = _ := hipW_eq ht
+
+omit ht in
+lemma pv4_01 : hip (fun a b c d => ctW 𝓽 a b d c) (ctW 𝓽) = 0 :=
+  hip_zero₃ hJ.anti (fun a b d => chg_W4 hJ f g a b d) (fun a b d => chg_W3 hJ f g a b d) cI_ne₂
+
+omit ht in
+lemma pv4_02 : hip (fun a b c d => ctW 𝓽 c d a b) (ctW 𝓽) = 0 :=
+  hip_zero₂ hJ.anti (fun a c d => chg_W4 hJ f g c d a) (fun a c d => chg_W2 hJ f g a c d) cI_ne₂
+
+omit ht in
+lemma pv4_03 : hip (fun a b c d => ctW 𝓽 c d b a) (ctW 𝓽) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_W4 hJ f g c d b) (fun b c d => chg_W1 hJ f g b c d) cI_ne₂
+
+omit hJ ht in
+lemma pv4_10 : hip (fun a b c d => ctW 𝓽 a c b d) (ctW 𝓽) = (gramT0 𝓽 : ℂ) := by
+  calc hip (fun a b c d => ctW 𝓽 a c b d) (ctW 𝓽)
+      _ = _ := hipW23_eq
+
+omit ht in
+lemma pv4_11 : hip (fun a b c d => ctW 𝓽 a c d b) (ctW 𝓽) = 0 :=
+  hip_zero₂ hJ.anti (fun a c d => chg_W4 hJ f g a c d) (fun a c d => chg_W2 hJ f g a c d) cI_ne₂
+
+omit ht in
+lemma pv4_12 : hip (fun a b c d => ctW 𝓽 b d a c) (ctW 𝓽) = 0 :=
+  hip_zero₃ hJ.anti (fun a b d => chg_W4 hJ f g b d a) (fun a b d => chg_W3 hJ f g a b d) cI_ne₂
+
+omit ht in
+lemma pv4_13 : hip (fun a b c d => ctW 𝓽 b d c a) (ctW 𝓽) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_W4 hJ f g b d c) (fun b c d => chg_W1 hJ f g b c d) cI_ne₂
+
+omit ht in
+lemma pv4_20 : hip (fun a b c d => ctW 𝓽 a d b c) (ctW 𝓽) = 0 :=
+  hip_zero₃ hJ.anti (fun a b d => chg_W4 hJ f g a d b) (fun a b d => chg_W3 hJ f g a b d) cI_ne₂
+
+omit ht in
+lemma pv4_21 : hip (fun a b c d => ctW 𝓽 a d c b) (ctW 𝓽) = 0 :=
+  hip_zero₂ hJ.anti (fun a c d => chg_W4 hJ f g a d c) (fun a c d => chg_W2 hJ f g a c d) cI_ne₂
+
+omit hJ in
+lemma pv4_22 : hip (fun a b c d => ctW 𝓽 b c a d) (ctW 𝓽) = (gramT0 𝓽 : ℂ) := by
+  calc hip (fun a b c d => ctW 𝓽 b c a d) (ctW 𝓽)
+      _ = _ := (hipW123 ht).trans hipW23_eq
+
+omit ht in
+lemma pv4_23 : hip (fun a b c d => ctW 𝓽 b c d a) (ctW 𝓽) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_W4 hJ f g b c d) (fun b c d => chg_W1 hJ f g b c d) cI_ne₂
+
+
+/-! #### The pairings of the u4 identity -/
+
+omit hJ ht in
+lemma pu4_D000 : hip (ctD 𝓽) (ctD 𝓽) = (gramH 𝓽 : ℂ) := by
+  calc hip (ctD 𝓽) (ctD 𝓽)
+      _ = _ := hipD_D
+
+omit ht in
+lemma pu4_D001 : hip (fun a b c d => ctC 𝓽 a d b c) (ctD 𝓽) = 0 :=
+  hip_zero₂ hJ.anti (fun a c d => chg_C3 hJ f g a d c) (fun a c d => chg_D2 hJ f g a c d) cI_ne₂
+
+omit ht in
+lemma pu4_D002 : hip (fun a b c d => ctC 𝓽 a c b d) (ctD 𝓽) = 0 :=
+  hip_zero₂ hJ.anti (fun a c d => chg_C3 hJ f g a c d) (fun a c d => chg_D2 hJ f g a c d) cI_ne₂
+
+omit ht in
+lemma pu4_D003 : hip (fun a b c d => ctC 𝓽 b d a c) (ctD 𝓽) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C3 hJ f g b d c) (fun b c d => chg_D1 hJ f g b c d) cI_ne₂
+
+omit ht in
+lemma pu4_D004 : hip (fun a b c d => ctC 𝓽 b c a d) (ctD 𝓽) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C3 hJ f g b c d) (fun b c d => chg_D1 hJ f g b c d) cI_ne₂
+
+omit ht in
+lemma pu4_D010 : hip (ctD 𝓽) (fun a b c d => ctD 𝓽 c d a b) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_D1 hJ f g b c d) (fun b c d => chg_D3 hJ f g c d b) cI_ne₁
+
+omit ht in
+lemma pu4_D011 : hip (fun a b c d => ctC 𝓽 a d b c) (fun a b c d => ctD 𝓽 c d a b) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C1 hJ f g d b c) (fun b c d => chg_D3 hJ f g c d b) cI_ne₁
+
+omit ht in
+lemma pu4_D012 : hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctD 𝓽 c d a b) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C1 hJ f g c b d) (fun b c d => chg_D3 hJ f g c d b) cI_ne₁
+
+omit ht in
+lemma pu4_D013 : hip (fun a b c d => ctC 𝓽 b d a c) (fun a b c d => ctD 𝓽 c d a b) = 0 :=
+  hip_zero₂ hJ.anti (fun a c d => chg_C1 hJ f g d a c) (fun a c d => chg_D4 hJ f g c d a) cI_ne₁
+
+omit ht in
+lemma pu4_D014 : hip (fun a b c d => ctC 𝓽 b c a d) (fun a b c d => ctD 𝓽 c d a b) = 0 :=
+  hip_zero₂ hJ.anti (fun a c d => chg_C1 hJ f g c a d) (fun a c d => chg_D4 hJ f g c d a) cI_ne₁
+
+omit ht in
+lemma pu4_D100 : hip (ctD 𝓽) (fun a b c d => ctD 𝓽 a c b d) = 0 :=
+  hip_zero₂ hJ.anti (fun a c d => chg_D2 hJ f g a c d) (fun a c d => chg_D3 hJ f g a c d) cI_ne₁
+
+omit ht in
+lemma pu4_D101 : hip (fun a b c d => ctC 𝓽 a d b c) (fun a b c d => ctD 𝓽 a c b d) = 0 :=
+  hip_zero₃ hJ.anti (fun a b d => chg_C4 hJ f g a d b) (fun a b d => chg_D2 hJ f g a b d) cI_ne₂
+
+omit hJ in
+lemma pu4_D102 : hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctD 𝓽 a c b d) = (gramT0 𝓽 : ℂ) := by
+  calc hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctD 𝓽 a c b d)
+      _ = hip (ctC 𝓽) (ctD 𝓽) := hip_swap23 _ _
+      _ = _ := hipC_D ht
+
+omit ht in
+lemma pu4_D103 : hip (fun a b c d => ctC 𝓽 b d a c) (fun a b c d => ctD 𝓽 a c b d) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C3 hJ f g b d c) (fun b c d => chg_D1 hJ f g c b d) cI_ne₂
+
+omit ht in
+lemma pu4_D104 : hip (fun a b c d => ctC 𝓽 b c a d) (fun a b c d => ctD 𝓽 a c b d) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C3 hJ f g b c d) (fun b c d => chg_D1 hJ f g c b d) cI_ne₂
+
+omit ht in
+lemma pu4_D110 : hip (ctD 𝓽) (fun a b c d => ctD 𝓽 b d a c) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_D1 hJ f g b c d) (fun b c d => chg_D3 hJ f g b d c) cI_ne₁
+
+omit ht in
+lemma pu4_D111 : hip (fun a b c d => ctC 𝓽 a d b c) (fun a b c d => ctD 𝓽 b d a c) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C1 hJ f g d b c) (fun b c d => chg_D3 hJ f g b d c) cI_ne₁
+
+omit ht in
+lemma pu4_D112 : hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctD 𝓽 b d a c) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C1 hJ f g c b d) (fun b c d => chg_D3 hJ f g b d c) cI_ne₁
+
+omit hJ in
+lemma pu4_D113 : hip (fun a b c d => ctC 𝓽 b d a c) (fun a b c d => ctD 𝓽 b d a c) = (gramT0 𝓽 : ℂ) := by
+  calc hip (fun a b c d => ctC 𝓽 b d a c) (fun a b c d => ctD 𝓽 b d a c)
+      _ = hip (fun a b c d => ctC 𝓽 a d b c) (fun a b c d => ctD 𝓽 a d b c) := hip_swap12 _ _
+      _ = hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctD 𝓽 a c b d) := hip_swap34 _ _
+      _ = hip (ctC 𝓽) (ctD 𝓽) := hip_swap23 _ _
+      _ = _ := hipC_D ht
+
+omit ht in
+lemma pu4_D114 : hip (fun a b c d => ctC 𝓽 b c a d) (fun a b c d => ctD 𝓽 b d a c) = 0 :=
+  hip_zero₃ hJ.anti (fun a b d => chg_C2 hJ f g b a d) (fun a b d => chg_D4 hJ f g b d a) cI_ne₁
+
+omit ht in
+lemma pu4_D200 : hip (ctD 𝓽) (fun a b c d => ctD 𝓽 a c d b) = 0 :=
+  hip_zero₂ hJ.anti (fun a c d => chg_D2 hJ f g a c d) (fun a c d => chg_D4 hJ f g a c d) cI_ne₁
+
+omit ht in
+lemma pu4_D201 : hip (fun a b c d => ctC 𝓽 a d b c) (fun a b c d => ctD 𝓽 a c d b) = 0 :=
+  hip_zero₃ hJ.anti (fun a b d => chg_C4 hJ f g a d b) (fun a b d => chg_D2 hJ f g a d b) cI_ne₂
+
+omit hJ in
+lemma pu4_D202 : hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctD 𝓽 a c d b) = (gramT0 𝓽 : ℂ) := by
+  calc hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctD 𝓽 a c d b)
+      _ = hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctD 𝓽 a c b d) :=
+        congrArg (hip (fun a b c d => ctC 𝓽 a c b d)) (funext fun a => funext fun b => funext fun c => funext fun d => ctD_swap34 ht a c b d)
+      _ = hip (ctC 𝓽) (ctD 𝓽) := hip_swap23 _ _
+      _ = _ := hipC_D ht
+
+omit ht in
+lemma pu4_D203 : hip (fun a b c d => ctC 𝓽 b d a c) (fun a b c d => ctD 𝓽 a c d b) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C3 hJ f g b d c) (fun b c d => chg_D1 hJ f g c d b) cI_ne₂
+
+omit ht in
+lemma pu4_D204 : hip (fun a b c d => ctC 𝓽 b c a d) (fun a b c d => ctD 𝓽 a c d b) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C3 hJ f g b c d) (fun b c d => chg_D1 hJ f g c d b) cI_ne₂
+
+omit ht in
+lemma pu4_D210 : hip (ctD 𝓽) (fun a b c d => ctD 𝓽 d b a c) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_D1 hJ f g b c d) (fun b c d => chg_D3 hJ f g d b c) cI_ne₁
+
+omit ht in
+lemma pu4_D211 : hip (fun a b c d => ctC 𝓽 a d b c) (fun a b c d => ctD 𝓽 d b a c) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C1 hJ f g d b c) (fun b c d => chg_D3 hJ f g d b c) cI_ne₁
+
+omit ht in
+lemma pu4_D212 : hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctD 𝓽 d b a c) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C1 hJ f g c b d) (fun b c d => chg_D3 hJ f g d b c) cI_ne₁
+
+omit hJ in
+lemma pu4_D213 : hip (fun a b c d => ctC 𝓽 b d a c) (fun a b c d => ctD 𝓽 d b a c) = (gramT0 𝓽 : ℂ) := by
+  calc hip (fun a b c d => ctC 𝓽 b d a c) (fun a b c d => ctD 𝓽 d b a c)
+      _ = hip (fun a b c d => ctC 𝓽 b d a c) (fun a b c d => ctD 𝓽 b d a c) :=
+        congrArg (hip (fun a b c d => ctC 𝓽 b d a c)) (funext fun a => funext fun b => funext fun c => funext fun d => ctD_swap12 ht b d a c)
+      _ = hip (fun a b c d => ctC 𝓽 a d b c) (fun a b c d => ctD 𝓽 a d b c) := hip_swap12 _ _
+      _ = hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctD 𝓽 a c b d) := hip_swap34 _ _
+      _ = hip (ctC 𝓽) (ctD 𝓽) := hip_swap23 _ _
+      _ = _ := hipC_D ht
+
+omit ht in
+lemma pu4_D214 : hip (fun a b c d => ctC 𝓽 b c a d) (fun a b c d => ctD 𝓽 d b a c) = 0 :=
+  hip_zero₃ hJ.anti (fun a b d => chg_C2 hJ f g b a d) (fun a b d => chg_D4 hJ f g d b a) cI_ne₁
+
+omit hJ in
+lemma pu4_C000 : hip (ctD 𝓽) (ctC 𝓽) = (gramT0 𝓽 : ℂ) := by
+  calc hip (ctD 𝓽) (ctC 𝓽)
+      _ = _ := by rw [← hip_conj, hipC_D ht, Complex.conj_ofReal]
+
+omit ht in
+lemma pu4_C001 : hip (fun a b c d => ctC 𝓽 a d b c) (ctC 𝓽) = 0 :=
+  hip_zero₂ hJ.anti (fun a c d => chg_C3 hJ f g a d c) (fun a c d => chg_C2 hJ f g a c d) cI_ne₂
+
+omit ht in
+lemma pu4_C002 : hip (fun a b c d => ctC 𝓽 a c b d) (ctC 𝓽) = 0 :=
+  hip_zero₂ hJ.anti (fun a c d => chg_C3 hJ f g a c d) (fun a c d => chg_C2 hJ f g a c d) cI_ne₂
+
+omit ht in
+lemma pu4_C003 : hip (fun a b c d => ctC 𝓽 b d a c) (ctC 𝓽) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C3 hJ f g b d c) (fun b c d => chg_C1 hJ f g b c d) cI_ne₂
+
+omit ht in
+lemma pu4_C004 : hip (fun a b c d => ctC 𝓽 b c a d) (ctC 𝓽) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C3 hJ f g b c d) (fun b c d => chg_C1 hJ f g b c d) cI_ne₂
+
+omit ht in
+lemma pu4_C010 : hip (ctD 𝓽) (fun a b c d => ctC 𝓽 d c b a) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_D1 hJ f g b c d) (fun b c d => chg_C4 hJ f g d c b) cI_ne₁
+
+omit ht in
+lemma pu4_C011 : hip (fun a b c d => ctC 𝓽 a d b c) (fun a b c d => ctC 𝓽 d c b a) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C1 hJ f g d b c) (fun b c d => chg_C4 hJ f g d c b) cI_ne₁
+
+omit ht in
+lemma pu4_C012 : hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctC 𝓽 d c b a) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C1 hJ f g c b d) (fun b c d => chg_C4 hJ f g d c b) cI_ne₁
+
+omit ht in
+lemma pu4_C013 : hip (fun a b c d => ctC 𝓽 b d a c) (fun a b c d => ctC 𝓽 d c b a) = 0 :=
+  hip_zero₂ hJ.anti (fun a c d => chg_C1 hJ f g d a c) (fun a c d => chg_C3 hJ f g d c a) cI_ne₁
+
+omit ht in
+lemma pu4_C014 : hip (fun a b c d => ctC 𝓽 b c a d) (fun a b c d => ctC 𝓽 d c b a) = 0 :=
+  hip_zero₂ hJ.anti (fun a c d => chg_C1 hJ f g c a d) (fun a c d => chg_C3 hJ f g d c a) cI_ne₁
+
+omit ht in
+lemma pu4_C100 : hip (ctD 𝓽) (fun a b c d => ctC 𝓽 a c b d) = 0 :=
+  hip_zero₂ hJ.anti (fun a c d => chg_D2 hJ f g a c d) (fun a c d => chg_C3 hJ f g a c d) cI_ne₁
+
+omit ht in
+lemma pu4_C101 : hip (fun a b c d => ctC 𝓽 a d b c) (fun a b c d => ctC 𝓽 a c b d) = 0 :=
+  hip_zero₃ hJ.anti (fun a b d => chg_C4 hJ f g a d b) (fun a b d => chg_C2 hJ f g a b d) cI_ne₂
+
+omit hJ in
+lemma pu4_C102 : hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctC 𝓽 a c b d) = (gramN 𝓽 : ℂ) := by
+  calc hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctC 𝓽 a c b d)
+      _ = hip (ctC 𝓽) (ctC 𝓽) := hip_swap23 _ _
+      _ = _ := hipC_C ht
+
+omit ht in
+lemma pu4_C103 : hip (fun a b c d => ctC 𝓽 b d a c) (fun a b c d => ctC 𝓽 a c b d) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C3 hJ f g b d c) (fun b c d => chg_C1 hJ f g c b d) cI_ne₂
+
+omit ht in
+lemma pu4_C104 : hip (fun a b c d => ctC 𝓽 b c a d) (fun a b c d => ctC 𝓽 a c b d) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C3 hJ f g b c d) (fun b c d => chg_C1 hJ f g c b d) cI_ne₂
+
+omit ht in
+lemma pu4_C110 : hip (ctD 𝓽) (fun a b c d => ctC 𝓽 d b c a) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_D1 hJ f g b c d) (fun b c d => chg_C4 hJ f g d b c) cI_ne₁
+
+omit ht in
+lemma pu4_C111 : hip (fun a b c d => ctC 𝓽 a d b c) (fun a b c d => ctC 𝓽 d b c a) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C1 hJ f g d b c) (fun b c d => chg_C4 hJ f g d b c) cI_ne₁
+
+omit ht in
+lemma pu4_C112 : hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctC 𝓽 d b c a) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C1 hJ f g c b d) (fun b c d => chg_C4 hJ f g d b c) cI_ne₁
+
+omit hJ ht in
+lemma pu4_C113 : hip (fun a b c d => ctC 𝓽 b d a c) (fun a b c d => ctC 𝓽 d b c a) = (gramB 𝓽 : ℂ) := by
+  calc hip (fun a b c d => ctC 𝓽 b d a c) (fun a b c d => ctC 𝓽 d b c a)
+      _ = hip (fun a b c d => ctC 𝓽 a d b c) (fun a b c d => ctC 𝓽 d a c b) := hip_swap12 _ _
+      _ = hip (fun a b c d => ctC 𝓽 a d c b) (fun a b c d => ctC 𝓽 d a b c) := hip_swap23 _ _
+      _ = hip (fun a b c d => ctC 𝓽 a c d b) (fun a b c d => ctC 𝓽 c a b d) := hip_swap34 _ _
+      _ = hip (fun a b c d => ctC 𝓽 a b d c) (fun a b c d => ctC 𝓽 b a c d) := hip_swap23 _ _
+      _ = hip (fun a b c d => ctC 𝓽 b a d c) (ctC 𝓽) := hip_swap12 _ _
+      _ = _ := hipC1234_C
+
+omit ht in
+lemma pu4_C114 : hip (fun a b c d => ctC 𝓽 b c a d) (fun a b c d => ctC 𝓽 d b c a) = 0 :=
+  hip_zero₃ hJ.anti (fun a b d => chg_C2 hJ f g b a d) (fun a b d => chg_C3 hJ f g d b a) cI_ne₁
+
+omit ht in
+lemma pu4_C200 : hip (ctD 𝓽) (fun a b c d => ctC 𝓽 a c d b) = 0 :=
+  hip_zero₂ hJ.anti (fun a c d => chg_D2 hJ f g a c d) (fun a c d => chg_C4 hJ f g a c d) cI_ne₁
+
+omit ht in
+lemma pu4_C201 : hip (fun a b c d => ctC 𝓽 a d b c) (fun a b c d => ctC 𝓽 a c d b) = 0 :=
+  hip_zero₃ hJ.anti (fun a b d => chg_C4 hJ f g a d b) (fun a b d => chg_C2 hJ f g a d b) cI_ne₂
+
+omit hJ in
+lemma pu4_C202 : hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctC 𝓽 a c d b) = (gramT0 𝓽 : ℂ) := by
+  calc hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctC 𝓽 a c d b)
+      _ = hip (ctC 𝓽) (fun a b c d => ctC 𝓽 a b d c) := hip_swap23 _ _
+      _ = hip (fun a b c d => ctC 𝓽 a b d c) (ctC 𝓽) := hip_swap34 _ _
+      _ = _ := hipC34_C ht
+
+omit ht in
+lemma pu4_C203 : hip (fun a b c d => ctC 𝓽 b d a c) (fun a b c d => ctC 𝓽 a c d b) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C3 hJ f g b d c) (fun b c d => chg_C1 hJ f g c d b) cI_ne₂
+
+omit ht in
+lemma pu4_C204 : hip (fun a b c d => ctC 𝓽 b c a d) (fun a b c d => ctC 𝓽 a c d b) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C3 hJ f g b c d) (fun b c d => chg_C1 hJ f g c d b) cI_ne₂
+
+omit ht in
+lemma pu4_C210 : hip (ctD 𝓽) (fun a b c d => ctC 𝓽 b d c a) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_D1 hJ f g b c d) (fun b c d => chg_C4 hJ f g b d c) cI_ne₁
+
+omit ht in
+lemma pu4_C211 : hip (fun a b c d => ctC 𝓽 a d b c) (fun a b c d => ctC 𝓽 b d c a) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C1 hJ f g d b c) (fun b c d => chg_C4 hJ f g b d c) cI_ne₁
+
+omit ht in
+lemma pu4_C212 : hip (fun a b c d => ctC 𝓽 a c b d) (fun a b c d => ctC 𝓽 b d c a) = 0 :=
+  hip_zero₁ hJ.anti (fun b c d => chg_C1 hJ f g c b d) (fun b c d => chg_C4 hJ f g b d c) cI_ne₁
+
+omit hJ in
+lemma pu4_C213 : hip (fun a b c d => ctC 𝓽 b d a c) (fun a b c d => ctC 𝓽 b d c a) = (gramT0 𝓽 : ℂ) := by
+  calc hip (fun a b c d => ctC 𝓽 b d a c) (fun a b c d => ctC 𝓽 b d c a)
+      _ = hip (fun a b c d => ctC 𝓽 a d b c) (fun a b c d => ctC 𝓽 a d c b) := hip_swap12 _ _
+      _ = hip (fun a b c d => ctC 𝓽 a d c b) (fun a b c d => ctC 𝓽 a d b c) := hip_swap23 _ _
+      _ = hip (fun a b c d => ctC 𝓽 a c d b) (fun a b c d => ctC 𝓽 a c b d) := hip_swap34 _ _
+      _ = hip (fun a b c d => ctC 𝓽 a b d c) (ctC 𝓽) := hip_swap23 _ _
+      _ = _ := hipC34_C ht
+
+omit ht in
+lemma pu4_C214 : hip (fun a b c d => ctC 𝓽 b c a d) (fun a b c d => ctC 𝓽 b d c a) = 0 :=
+  hip_zero₃ hJ.anti (fun a b d => chg_C2 hJ f g b a d) (fun a b d => chg_C3 hJ f g b d a) cI_ne₁
+
+end pairings
+
+/-! ### Assembly: `‖Sym(τ ⋆ τ)‖² = 4y/81` and `‖Sym(f ⋆ f + g ⋆ g)‖² = (h + 4n + 4b + 16T)/486` -/
+
+section assembly
+
+variable [DecidableEq ι] {J : ι → ι → ℝ} (hJ : IsCplx J) (f g : ι → ι → ι → ℝ)
+  (hsym : ∀ a b c, tauC f g a b c = (cplxT J f g a b c + cplxT J f g a c b + cplxT J f g c b a) / 3)
+  (ht : ∀ a b c, cplxT J f g a b c = cplxT J f g b a c)
+include hJ hsym ht
+
+local notation "𝓽" => cplxT J f g
+
+omit hJ hsym ht [DecidableEq ι] in
+lemma hip_perm_cdba' (X Y : ι → ι → ι → ι → ℂ) :
+    hip (fun a b c d => X c d b a) (fun a b c d => Y c d b a) = hip X Y :=
+  (hip_swapP (fun a b c d => X a b d c) (fun a b c d => Y a b d c)).trans (hip_swap34 X Y)
+
+/-- **`‖Sym(τ ⋆ τ)‖² = 4y/81`**: with `τ ⋆ τ = A/9`, `A = W + W^{(34)} + W^{swP} + W^{swP(34)}`,
+`Sym A` is fully symmetric, so `‖Sym A‖² = ⟨Sym A, A⟩ = 4⟨Sym A, W⟩`, and of the twelve pairings
+`⟨W^σ, W⟩` in `⟨Sym A, W⟩` only three survive the charge count: `z + 2T = 3y`. -/
+theorem hipV_V : (hip (csym4 (ccon (tauC f g) (tauC f g)))
+    (csym4 (ccon (tauC f g) (tauC f g)))).re = 4 / 81 * gramY 𝓽 := by
+  set A : ι → ι → ι → ι → ℂ := fun a b c d => ctW 𝓽 a b c d + ctW 𝓽 a b d c + ctW 𝓽 c d a b
+    + ctW 𝓽 c d b a with hA
+  set V := csym4 (ccon (tauC f g) (tauC f g)) with hVdef
+  have hV : V = fun a b c d => csym4 A a b c d / 9 := by
+    funext a b c d
+    simp only [hVdef, csym4, ccon_tau_eq hJ hsym ht, hA]; ring
+  have hA12 : ∀ a b c d, A b a c d = A a b c d := fun a b c d => by
+    simp only [hA]; rw [ctW_symm12 ht a b c d, ctW_symm12 ht a b d c]; ring
+  have hA34 : ∀ a b c d, A a b d c = A a b c d := fun a b c d => by
+    simp only [hA]; rw [ctW_symm12 ht c d a b, ctW_symm12 ht c d b a]; ring
+  have hAP : ∀ a b c d, A c d a b = A a b c d := fun a b c d => by simp only [hA]; ring
+  obtain ⟨s12, s23, s34⟩ := csym4_symm hA12 hA34 hAP
+  have V12 : ∀ a b c d, V b a c d = V a b c d := fun a b c d => by rw [hV]; simp only [s12]
+  have V23 : ∀ a b c d, V a c b d = V a b c d := fun a b c d => by rw [hV]; simp only [s23]
+  have V34 : ∀ a b c d, V a b d c = V a b c d := fun a b c d => by rw [hV]; simp only [s34]
+  have Vcyc' : ∀ a b c d, V a d b c = V a b c d := fun a b c d => by rw [V23 a b d c, V34]
+  have VP : ∀ a b c d, V c d a b = V a b c d := fun a b c d => by
+    rw [V23 c a d b, V12 a c d b, V34 a c b d, V23]
+  have VPr : ∀ a b c d, V c d b a = V a b c d := fun a b c d => by rw [V34 c d a b, VP]
+  have h1 : hip V V = hip V (csym4 A) / 9 := by
+    have e : hip V V = hip V (fun a b c d => csym4 A a b c d / 9) := by rw [← hV]
+    rw [e, hip_div_right]
+  have h2 : hip V (csym4 A) = hip V A := by
+    have e : hip V (csym4 A) = hip V (fun a b c d => (A a b c d + A a c b d + A a d b c) / 3) := rfl
+    rw [e, hip_div_right, hip_add_right, hip_add_right]
+    have e2 : hip V (fun a b c d => A a c b d) = hip V A := by
+      rw [← hip_swap23 V A]
+      exact congrArg (fun X => hip X _) (funext fun a => funext fun b => funext fun c =>
+        funext fun d => (V23 a b c d).symm)
+    have e3 : hip V (fun a b c d => A a d b c) = hip V A := by
+      rw [← hip_cyc' V A]
+      exact congrArg (fun X => hip X _) (funext fun a => funext fun b => funext fun c =>
+        funext fun d => (Vcyc' a b c d).symm)
+    rw [e2, e3]; ring
+  have h3 : hip V A = 4 * hip V (ctW 𝓽) := by
+    have e : hip V A = hip V (fun a b c d => ctW 𝓽 a b c d + ctW 𝓽 a b d c + ctW 𝓽 c d a b
+        + ctW 𝓽 c d b a) := rfl
+    rw [e, hip_add_right, hip_add_right, hip_add_right]
+    have e1 : hip V (fun a b c d => ctW 𝓽 a b d c) = hip V (ctW 𝓽) := by
+      rw [← hip_swap34 V (ctW 𝓽)]
+      exact congrArg (fun X => hip X _) (funext fun a => funext fun b => funext fun c =>
+        funext fun d => (V34 a b c d).symm)
+    have e2 : hip V (fun a b c d => ctW 𝓽 c d a b) = hip V (ctW 𝓽) := by
+      rw [← hip_swapP V (ctW 𝓽)]
+      exact congrArg (fun X => hip X _) (funext fun a => funext fun b => funext fun c =>
+        funext fun d => (VP a b c d).symm)
+    have e3 : hip V (fun a b c d => ctW 𝓽 c d b a) = hip V (ctW 𝓽) := by
+      rw [← hip_perm_cdba' V (ctW 𝓽)]
+      exact congrArg (fun X => hip X _) (funext fun a => funext fun b => funext fun c =>
+        funext fun d => (VPr a b c d).symm)
+    rw [e1, e2, e3]; ring
+  have h4 : hip V (ctW 𝓽) = (hip A (ctW 𝓽) + hip (fun a b c d => A a c b d) (ctW 𝓽)
+      + hip (fun a b c d => A a d b c) (ctW 𝓽)) / 3 / 9 := by
+    rw [hV]
+    have e : hip (fun a b c d => csym4 A a b c d / 9) (ctW 𝓽)
+        = hip (fun a b c d => (A a b c d + A a c b d + A a d b c) / 3 / 9) (ctW 𝓽) := rfl
+    rw [e, hip_div_left, hip_div_left, hip_add_left, hip_add_left]
+  have hA0 : hip A (ctW 𝓽) = (gramZ 𝓽 : ℂ) := by
+    rw [hA, hip_add_left, hip_add_left, hip_add_left, pv4_00 f g ht, pv4_01 hJ f g,
+      pv4_02 hJ f g, pv4_03 hJ f g]
+    ring
+  have hA1 : hip (fun a b c d => A a c b d) (ctW 𝓽) = (gramT0 𝓽 : ℂ) := by
+    simp only [hA]
+    rw [hip_add_left, hip_add_left, hip_add_left, pv4_10 f g, pv4_11 hJ f g, pv4_12 hJ f g,
+      pv4_13 hJ f g]
+    ring
+  have hA2 : hip (fun a b c d => A a d b c) (ctW 𝓽) = (gramT0 𝓽 : ℂ) := by
+    simp only [hA]
+    rw [hip_add_left, hip_add_left, hip_add_left, pv4_20 hJ f g, pv4_21 hJ f g, pv4_22 f g ht,
+      pv4_23 hJ f g]
+    ring
+  have hfin : hip V V = ((4 * ((gramZ 𝓽 + gramT0 𝓽 + gramT0 𝓽) / 3 / 9) / 9 : ℝ) : ℂ) := by
+    rw [h1, h2, h3, h4, hA0, hA1, hA2]; push_cast; ring
+  rw [hfin, Complex.ofReal_re, gramY_eq ht]
+  ring
+
+/-- **`‖Sym(f ⋆ f + g ⋆ g)‖² = (h + 4n + 4b + 16T)/486`**: `S = Sym(Re(τ ⋆ τ̄))` is fully
+symmetric, so `‖S‖² = ⟨S, Re(τ ⋆ τ̄)⟩ = Re⟨S, (D + 4C^σ)/9⟩`, the symmetrisation is moved onto `D`
+and `C`, and of the sixty pairings of the sector components of `τ ⋆ τ̄` with the permuted `D`, `C`
+and their conjugates, ten survive the charge count. -/
+theorem sum_kerS_sq (hf : ∀ a b c, f a b c = f b a c) (hg : ∀ a b c, g a b c = g b a c) :
+    ∑ a, ∑ b, ∑ c, ∑ d, (kerS f a b c d + kerS g a b c d) ^ 2
+      = (gramH 𝓽 + 4 * gramN 𝓽 + 4 * gramB 𝓽 + 16 * gramT0 𝓽) / 486 := by
+  set S : T4 ι := fun a b c d => kerS f a b c d + kerS g a b c d with hS
+  set R : T4 ι := fun a b c d => con f f a b c d + con g g a b c d with hR
+  set Zt : ι → ι → ι → ι → ℂ := ccon (tauC f g) (fun a b c => conj (tauC f g a b c)) with hZt
+  set Sc : ι → ι → ι → ι → ℂ := fun a b c d => (S a b c d : ℂ) with hSc
+  have hSR : ∀ a b c d, S a b c d = sym4 R a b c d := fun a b c d => by
+    simp only [hS, hR, kerS, kerC_eq_con, sym4]; ring
+  have hRZ : ∀ a b c d, R a b c d = (Zt a b c d).re := fun a b c d => by
+    simp only [hR, hZt, ccon_tauC_conj_re]
+  have S12 : ∀ a b c d, S b a c d = S a b c d := fun a b c d => by
+    simp only [hS, kerS_sw12 hf, kerS_sw12 hg]
+  have S23 : ∀ a b c d, S a c b d = S a b c d := fun a b c d => by
+    simp only [hS, kerS_sw23 hf, kerS_sw23 hg]
+  have S34 : ∀ a b c d, S a b d c = S a b c d := fun a b c d => by
+    simp only [hS, kerS_sw34 hf, kerS_sw34 hg]
+  have Scyc : ∀ a b c d, S a c d b = S a b c d := fun a b c d => by rw [S34 a c b d, S23]
+  have Scyc' : ∀ a b c d, S a d b c = S a b c d := fun a b c d => by rw [S23 a b d c, S34]
+  have Sbdac : ∀ a b c d, S b d a c = S a b c d := fun a b c d => by
+    rw [S12 d b a c, S23 d a b c, S12 a d b c, Scyc']
+  have Sbcad : ∀ a b c d, S b c a d = S a b c d := fun a b c d => by
+    rw [S12 c b a d, S23 c a b d, S12 a c b d, S23]
+  -- `Σ S² = Σ S R`
+  have step1 : ∑ a, ∑ b, ∑ c, ∑ d, S a b c d ^ 2 = ∑ a, ∑ b, ∑ c, ∑ d, S a b c d * R a b c d := by
+    have e23 : ∑ a, ∑ b, ∑ c, ∑ d, S a b c d * R a c b d
+        = ∑ a, ∑ b, ∑ c, ∑ d, S a b c d * R a b c d :=
+      (csum4_swap23 fun a b c d => S a c b d * R a b c d).trans (Finset.sum_congr rfl fun a _ =>
+        Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ =>
+        Finset.sum_congr rfl fun d _ => by rw [S23])
+    have ecyc : ∑ a, ∑ b, ∑ c, ∑ d, S a b c d * R a d b c
+        = ∑ a, ∑ b, ∑ c, ∑ d, S a b c d * R a b c d :=
+      (csum4_cyc' fun a b c d => S a c d b * R a b c d).trans (Finset.sum_congr rfl fun a _ =>
+        Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ =>
+        Finset.sum_congr rfl fun d _ => by rw [Scyc])
+    calc ∑ a, ∑ b, ∑ c, ∑ d, S a b c d ^ 2
+        = ∑ a, ∑ b, ∑ c, ∑ d, (S a b c d * R a b c d + S a b c d * R a c b d
+            + S a b c d * R a d b c) / 3 := by
+          refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ =>
+            Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_
+          rw [sq, hSR a b c d]; simp only [sym4]; ring
+      _ = _ := by
+          simp only [← Finset.sum_div, Finset.sum_add_distrib, e23, ecyc]; ring
+  -- `Σ S R = Re (Sc · Zt)`
+  have step2 : ∑ a, ∑ b, ∑ c, ∑ d, S a b c d * R a b c d = (pip Sc Zt).re := by
+    simp only [pip, hSc, Complex.re_sum, Complex.re_ofReal_mul, hRZ]
+  -- `Sc · Zt = (Sc · D + 4 Sc · C)/9`
+  have eZ : Zt = fun a b c d => (ctD 𝓽 a b c d + ctC 𝓽 a d b c + ctC 𝓽 a c b d + ctC 𝓽 b d a c
+      + ctC 𝓽 b c a d) / 9 := funext fun a => funext fun b => funext fun c => funext fun d =>
+    ccon_tau_conj_eq hJ hsym ht a b c d
+  have step3 : pip Sc Zt = (pip Sc (ctD 𝓽) + 4 * pip Sc (ctC 𝓽)) / 9 := by
+    rw [eZ, pip_div_right, pip_add_right, pip_add_right, pip_add_right, pip_add_right]
+    have c1 : pip Sc (fun a b c d => ctC 𝓽 a d b c) = pip Sc (ctC 𝓽) := by
+      rw [← pip_cyc' Sc (ctC 𝓽)]
+      exact congrArg (fun X => pip X _) (funext fun a => funext fun b => funext fun c =>
+        funext fun d => by simp only [hSc, Scyc'])
+    have c2 : pip Sc (fun a b c d => ctC 𝓽 a c b d) = pip Sc (ctC 𝓽) := by
+      rw [← pip_swap23 Sc (ctC 𝓽)]
+      exact congrArg (fun X => pip X _) (funext fun a => funext fun b => funext fun c =>
+        funext fun d => by simp only [hSc, S23])
+    have c3 : pip Sc (fun a b c d => ctC 𝓽 b d a c) = pip Sc (ctC 𝓽) := by
+      rw [← pip_perm_bdac Sc (ctC 𝓽)]
+      exact congrArg (fun X => pip X _) (funext fun a => funext fun b => funext fun c =>
+        funext fun d => by simp only [hSc, Sbdac])
+    have c4 : pip Sc (fun a b c d => ctC 𝓽 b c a d) = pip Sc (ctC 𝓽) := by
+      rw [← pip_cyc3 Sc (ctC 𝓽)]
+      exact congrArg (fun X => pip X _) (funext fun a => funext fun b => funext fun c =>
+        funext fun d => by simp only [hSc, Sbcad])
+    rw [c1, c2, c3, c4]; ring
+  -- the symmetrisation moved onto the second factor, and `Re Zt = (Zt + conj Zt)/2`
+  have key : ∀ Y : ι → ι → ι → ι → ℂ, pip Sc Y
+      = ((hip Zt (fun a b c d => conj (Y a b c d)) + conj (hip Zt Y))
+        + (hip Zt (fun a b c d => conj (Y a c b d)) + conj (hip Zt (fun a b c d => Y a c b d)))
+        + (hip Zt (fun a b c d => conj (Y a c d b)) + conj (hip Zt (fun a b c d => Y a c d b))))
+        / 2 / 3 := by
+    intro Y
+    have eS : Sc = fun a b c d => ((Zt a b c d + conj (Zt a b c d)) + (Zt a c b d
+        + conj (Zt a c b d)) + (Zt a d b c + conj (Zt a d b c))) / 2 / 3 := by
+      funext a b c d
+      simp only [hSc, hSR, sym4, hRZ, Complex.add_conj]
+      push_cast; ring
+    rw [eS, pip_div_left, pip_div_left, pip_add_left, pip_add_left, pip_add_left, pip_add_left,
+      pip_add_left, pip_eq_hip Zt Y, pip_conj_left Zt Y]
+    have p23 : pip (fun a b c d => Zt a c b d) Y = pip Zt (fun a b c d => Y a c b d) :=
+      pip_swap23 Zt (fun a b c d => Y a c b d)
+    have p23c : pip (fun a b c d => conj (Zt a c b d)) Y
+        = pip (fun a b c d => conj (Zt a b c d)) (fun a b c d => Y a c b d) :=
+      pip_swap23 (fun a b c d => conj (Zt a b c d)) (fun a b c d => Y a c b d)
+    have pcy : pip (fun a b c d => Zt a d b c) Y = pip Zt (fun a b c d => Y a c d b) :=
+      pip_cyc' Zt (fun a b c d => Y a c d b)
+    have pcyc : pip (fun a b c d => conj (Zt a d b c)) Y
+        = pip (fun a b c d => conj (Zt a b c d)) (fun a b c d => Y a c d b) :=
+      pip_cyc' (fun a b c d => conj (Zt a b c d)) (fun a b c d => Y a c d b)
+    rw [p23, p23c, pcy, pcyc, pip_eq_hip Zt, pip_eq_hip Zt, pip_conj_left, pip_conj_left]
+  have expand : ∀ Y' : ι → ι → ι → ι → ℂ, hip Zt Y' = (hip (ctD 𝓽) Y'
+      + hip (fun a b c d => ctC 𝓽 a d b c) Y' + hip (fun a b c d => ctC 𝓽 a c b d) Y'
+      + hip (fun a b c d => ctC 𝓽 b d a c) Y' + hip (fun a b c d => ctC 𝓽 b c a d) Y') / 9 := by
+    intro Y'
+    rw [eZ, hip_div_left, hip_add_left, hip_add_left, hip_add_left, hip_add_left]
+  have hD : pip Sc (ctD 𝓽) = ((gramH 𝓽 + 4 * gramT0 𝓽) / 54 : ℝ) := by
+    rw [key (ctD 𝓽)]
+    simp only [ctD_conj]
+    rw [expand, expand, expand, expand, expand, expand]
+    rw [pu4_D000 f g, pu4_D001 hJ f g, pu4_D002 hJ f g, pu4_D003 hJ f g, pu4_D004 hJ f g,
+      pu4_D010 hJ f g, pu4_D011 hJ f g, pu4_D012 hJ f g, pu4_D013 hJ f g, pu4_D014 hJ f g,
+      pu4_D100 hJ f g, pu4_D101 hJ f g, pu4_D102 f g ht, pu4_D103 hJ f g, pu4_D104 hJ f g,
+      pu4_D110 hJ f g, pu4_D111 hJ f g, pu4_D112 hJ f g, pu4_D113 f g ht, pu4_D114 hJ f g,
+      pu4_D200 hJ f g, pu4_D201 hJ f g, pu4_D202 f g ht, pu4_D203 hJ f g, pu4_D204 hJ f g,
+      pu4_D210 hJ f g, pu4_D211 hJ f g, pu4_D212 hJ f g, pu4_D213 f g ht, pu4_D214 hJ f g]
+    simp only [map_div₀, map_add, map_zero, Complex.conj_ofReal, map_ofNat]
+    push_cast; ring
+  have hC : pip Sc (ctC 𝓽) = ((gramN 𝓽 + gramB 𝓽 + 3 * gramT0 𝓽) / 54 : ℝ) := by
+    rw [key (ctC 𝓽)]
+    simp only [ctC_conj]
+    rw [expand, expand, expand, expand, expand, expand]
+    rw [pu4_C000 f g ht, pu4_C001 hJ f g, pu4_C002 hJ f g, pu4_C003 hJ f g, pu4_C004 hJ f g,
+      pu4_C010 hJ f g, pu4_C011 hJ f g, pu4_C012 hJ f g, pu4_C013 hJ f g, pu4_C014 hJ f g,
+      pu4_C100 hJ f g, pu4_C101 hJ f g, pu4_C102 f g ht, pu4_C103 hJ f g, pu4_C104 hJ f g,
+      pu4_C110 hJ f g, pu4_C111 hJ f g, pu4_C112 hJ f g, pu4_C113 f g, pu4_C114 hJ f g,
+      pu4_C200 hJ f g, pu4_C201 hJ f g, pu4_C202 f g ht, pu4_C203 hJ f g, pu4_C204 hJ f g,
+      pu4_C210 hJ f g, pu4_C211 hJ f g, pu4_C212 hJ f g, pu4_C213 f g ht, pu4_C214 hJ f g]
+    simp only [map_div₀, map_add, map_zero, Complex.conj_ofReal, map_ofNat]
+    push_cast; ring
+  have hfin : (pip Sc (ctD 𝓽) + 4 * pip Sc (ctC 𝓽)) / 9
+      = ((gramH 𝓽 + 4 * gramN 𝓽 + 4 * gramB 𝓽 + 16 * gramT0 𝓽) / 486 : ℝ) := by
+    rw [hD, hC]; push_cast; ring
+  rw [step1, step2, step3, hfin, Complex.ofReal_re]
+
+end assembly
+
+/-! ### The spectral identities `u₄`, `v₄` for a circular cubic -/
+
+section spectral4
+
+variable [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ} (hE : IsGaussianExpectation E)
+  {J : ι → ι → ℝ} {a b : MvPolynomial ι ℝ} (ha : Chaos3 a) (hc : Circular J a b)
+  (haa : E (a * a) = 1 / 2)
+include hE ha hc haa
+
+/-- **`v₄ = 96y`** (the field `v4_eq`). -/
+theorem Circular.specV4_eq : specV4 E a b = 96 * gramY (gramT J a b) := by
+  have hb : Chaos3 b := hc.chaos3_right ha
+  have hbb : E (b * b) = 1 / 2 := by rw [← hc.gE_sq_eq hE, haa]
+  have hab : E (a * b) = 0 := hc.gE_mul hE
+  have hJ := hc.isCplx
+  have hsym := hc.tauC_eq
+  have ht : ∀ i j k, cplxT J (cubicKernel a) (cubicKernel b) i j k
+      = cplxT J (cubicKernel a) (cubicKernel b) j i k := gramT_symm12 J a b
+  have hf := cubicKernel_symm12 a
+  have hg := cubicKernel_symm12 b
+  obtain ⟨-, p4, -⟩ := proj_radP hE ha hb (v := 1) haa hbb
+  obtain ⟨-, q4, -⟩ := proj_radQ hE ha hb hab
+  show specV4 E a b = 96 * gramY (cplxT J (cubicKernel a) (cubicKernel b))
+  unfold specV4
+  rw [p4, q4]
+  have hP := eigen_sub 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb)
+  have hQ := eigen_two_mul 4 (comp4_eig hE ha hb)
+  set f := cubicKernel a with hf_def
+  set g := cubicKernel b with hg_def
+  have hcP : ∀ i j k l, pderiv l (pderiv k (pderiv j (pderiv i (comp4 E a a - comp4 E b b))))
+      = C (216 * (sym4 (con f f) i j k l - sym4 (con g g) i j k l)) := fun i j k l => by
+    rw [map_sub, map_sub, map_sub, map_sub, pderiv4_comp4 ha ha hf hf, pderiv4_comp4 hb hb hg hg,
+      ← map_sub]
+    congr 1; ring
+  have hcQ : ∀ i j k l, pderiv l (pderiv k (pderiv j (pderiv i (2 * comp4 E a b))))
+      = C (216 * (sym4 (con f g) i j k l + sym4 (con g f) i j k l)) := fun i j k l => by
+    rw [ofNat_mul_apply, ofNat_mul_apply, ofNat_mul_apply, ofNat_mul_apply,
+      pderiv4_comp4 ha hb hf hg, ← C_two_mul]
+    congr 1; ring
+  rw [gE_sq_chaos4 hE hP _ hcP, gE_sq_chaos4 hE hQ _ hcQ]
+  set V := csym4 (ccon (tauC f g) (tauC f g)) with hV
+  have hre : ∀ i j k l, sym4 (con f f) i j k l - sym4 (con g g) i j k l = (V i j k l).re :=
+    fun i j k l => by
+      rw [hV, csym4_re]
+      simp only [sym4, ccon_tauC_re]; ring
+  have him : ∀ i j k l, sym4 (con f g) i j k l + sym4 (con g f) i j k l = (V i j k l).im :=
+    fun i j k l => by
+      rw [hV, csym4_im]
+      simp only [sym4, ccon_tauC_im]; ring
+  have hns : ∀ i j k l, (216 * (V i j k l).re) ^ 2 + (216 * (V i j k l).im) ^ 2
+      = 46656 * Complex.normSq (V i j k l) := fun i j k l => by
+    rw [Complex.normSq_apply]; ring
+  have hVV := hipV_V hJ f g hsym ht
+  rw [hip_self_re, ← hV] at hVV
+  simp only [hre, him]
+  rw [← mul_add]
+  simp only [← Finset.sum_add_distrib, hns, ← Finset.mul_sum, hVV]
+  ring
+
+/-- **`u₄ = 16n + 4h + 16b + 96y − 32z`** (the field `u4_eq`). -/
+theorem Circular.specU4_eq : specU4 E a b = 16 * gramN (gramT J a b) + 4 * gramH (gramT J a b)
+    + 16 * gramB (gramT J a b) + 96 * gramY (gramT J a b) - 32 * gramZ (gramT J a b) := by
+  have hb : Chaos3 b := hc.chaos3_right ha
+  have hbb : E (b * b) = 1 / 2 := by rw [← hc.gE_sq_eq hE, haa]
+  have hJ := hc.isCplx
+  have hsym := hc.tauC_eq
+  have ht : ∀ i j k, cplxT J (cubicKernel a) (cubicKernel b) i j k
+      = cplxT J (cubicKernel a) (cubicKernel b) j i k := gramT_symm12 J a b
+  have hf := cubicKernel_symm12 a
+  have hg := cubicKernel_symm12 b
+  obtain ⟨-, p4, -⟩ := proj_radU hE ha hb (v := 1) haa hbb
+  show specU4 E a b = 16 * gramN (cplxT J (cubicKernel a) (cubicKernel b))
+    + 4 * gramH (cplxT J (cubicKernel a) (cubicKernel b))
+    + 16 * gramB (cplxT J (cubicKernel a) (cubicKernel b))
+    + 96 * gramY (cplxT J (cubicKernel a) (cubicKernel b))
+    - 32 * gramZ (cplxT J (cubicKernel a) (cubicKernel b))
+  unfold specU4
+  rw [p4]
+  have hX := eigen_add 4 (comp4_eig hE ha ha) (comp4_eig hE hb hb)
+  set f := cubicKernel a with hf_def
+  set g := cubicKernel b with hg_def
+  have hcd : ∀ i j k l, pderiv l (pderiv k (pderiv j (pderiv i (comp4 E a a + comp4 E b b))))
+      = C (216 * (kerS f i j k l + kerS g i j k l)) := fun i j k l => by
+    rw [map_add, map_add, map_add, map_add, pderiv4_comp4 ha ha hf hf, pderiv4_comp4 hb hb hg hg,
+      ← map_add, kerS_eq_sym4, kerS_eq_sym4]
+    congr 1; ring
+  rw [gE_sq_chaos4 hE hX _ hcd]
+  have e : ∀ i j k l, (216 * (kerS f i j k l + kerS g i j k l)) ^ 2
+      = 46656 * (kerS f i j k l + kerS g i j k l) ^ 2 := fun i j k l => by ring
+  simp only [e, ← Finset.mul_sum]
+  rw [sum_kerS_sq hJ f g hsym ht hf hg, gramY_eq ht]
+  ring
+
+end spectral4
 
 end
 

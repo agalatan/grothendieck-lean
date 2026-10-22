@@ -1,4 +1,6 @@
-"""Numerical check of the tensor facts `GramFacts` of Grothe/LowerAnalytic/GramBudget.lean.
+"""Numerical check of the tensor identities of the contraction-Gram budget (Grothe/LowerAnalytic/
+GramTensor.lean, GramSpectral.lean; all of them are proved in Lean, this script is a cross-check of
+the normalisations).
 
 For explicit and random normalised circular cubics q = a + ib in k complex dimensions (d = 2k real
 variables; E|q|^2 = 1, i.e. E a^2 = E b^2 = 1/2), with the standard complex structure J (pairs
@@ -13,7 +15,7 @@ real kernels f = d^3 a / 6, g = d^3 b / 6 (`cubicKernel`), this computes
   U4 = S - gam2 a - gam2 b + 3, P2 = (gam2 a - gam2 b)/2, P4 = radA - (gam2 a - gam2 b), Q2 = gam2c a b,
   Q4 = radB - 2 gam2c a b), by Gauss-Hermite quadrature (exact for the degrees involved),
 
-and reports the worst case of every field of `GramFacts`: the four identities u2 = 16n + 4h + 16z,
+and reports the worst case of every identity: the four spectral identities u2 = 16n + 4h + 16z,
 u4 = 16n + 4h + 16b + 96y - 32z, v2 = 32b, v4 = 96y (relative error) and the inequalities b <= n,
 y <= z, 0 <= n + b + 2T, 4T^2 <= h (n + b + 2T) with T = (3y - z)/2 (sign-normalised, <= 0 means the
 fact holds).  As cross-checks it also reports the proved Cauchy-Schwarz bound z^2 <= n h, the identity

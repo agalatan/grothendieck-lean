@@ -8,8 +8,9 @@ The spectral nodes of the certificate may cite the universal law budgets of `Gra
 contraction-Gram certificate accepted by `gramCert` gives `λ E X² + μ E r² ≤ A P + B Q`, and the
 coupled family `E X² ≤ a_s P − b_s Q`.  For a genuine circular cubic `q = a + ib`
 (`Circular J a b`, so `q = Σ t_{abc} :Z_a Z_b Z̄_c:` in complex coordinates) both rest on finite
-contraction identities for the coefficient tensor `t`.  This file sets them up for the Gaussian
-law of `U = |q|²` and derives `GramInputs` (`gaussian_gramInputs`).
+contraction identities for the coefficient tensor `t`, all proved in `GramTensor.lean` and
+`GramSpectral.lean`.  This file derives `GramInputs` for the Gaussian law of `U = |q|²`
+(`gaussian_gramInputs`).
 
 * **The complex coefficient tensor** `t = gramT J a b = 3 P₊P₊P₋ (f + ig)` of the real kernels
   `f = ∂³a/6`, `g = ∂³b/6`, its contractions `N, H, B, W, Y` and the scalars `n, h, b, y, z`,
@@ -24,14 +25,13 @@ law of `U = |q|²` and derives `GramInputs` (`gaussian_gramInputs`).
   `E(A² + B²) = 4v₂ + v₄`, `E N = 2v₂ + v₄` (`S = 3w`, `A + iB = 3c`, `N = 3 Re(c q̄²)`), i.e.
   `E X² = (4u₂ + u₄)/9`, `P = (2u₂ + u₄)/3`, `E|c|² = (4v₂ + v₄)/9`, `Q = (2v₂ + v₄)/3`, by the
   orthogonality of the chaos components.
-* **The spectral identities** `u₂ = 16n + 4h + 16z` and `v₂ = 32b` are proved in
-  `GramSpectral.lean` (`Circular.specU2_eq`, `Circular.specV2_eq`, by the complex charge calculus
-  and the second-chaos Ornstein–Uhlenbeck ladder).  **The tensor facts** `GramFacts E J a b`,
-  **not yet formalised** (`tools/check_gram_facts.py` checks every field numerically on explicit
-  and random circular cubics): the fourth-chaos identities `u₄ = 16n + 4h + 16b + 96y − 32z` and
-  `v₄ = 96y` (`(q²)₄ = 4 I₃,₁(Y)`).
-* `gaussian_gramInputs`: for a circular cubic, under `GramFacts`, the law of `U` under the
-  standard Gaussian measure
+* **The spectral identities** `u₂ = 16n + 4h + 16z`, `v₂ = 32b`, `u₄ = 16n + 4h + 16b + 96y − 32z`
+  and `v₄ = 96y` are proved in `GramSpectral.lean` (`Circular.specU2_eq`, `Circular.specV2_eq`,
+  `Circular.specU4_eq`, `Circular.specV4_eq`, by the complex charge calculus and the
+  Ornstein–Uhlenbeck ladders of the second and fourth chaos; `tools/check_gram_facts.py` checks
+  them numerically on explicit and random circular cubics).
+* `gaussian_gramInputs`: for a circular cubic (with no further hypothesis), the law of `U` under
+  the standard Gaussian measure
   has all inputs of the Stein cuts (`GramInputs`): the inputs of `gaussian_steinInputs`, every
   accepted Gram certificate (`gram_budget_of_scalars` on the scalars above, with `r² ≤ |c|²`),
   and the coupled family (`coupled_of_gram`).
@@ -46,19 +46,6 @@ noncomputable section
 variable {ι : Type*} [Fintype ι]
 
 variable (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (a b : MvPolynomial ι ℝ)
-
-/-- **The remaining tensor facts of the contraction-Gram budget** for a circular cubic
-`q = a + ib` (`t = gramT J a b`, `n, h, b, y, z` its contraction scalars): the two fourth-chaos
-spectral identities of the manuscript proof (`TENSOR_BUDGET_PROOF.md`, `COUPLED_BUDGET_PROOF.md`
-of the certificate), **not yet formalised**; `tools/check_gram_facts.py` checks every field
-numerically with these exact definitions.  (The order and Gram constraints `b ≤ n`, `y ≤ z`,
-`G₁ ⪰ 0` are proved in `GramTensor.lean`, the second-chaos identities `u₂`, `v₂` in
-`GramSpectral.lean`.) -/
-structure GramFacts (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (J : ι → ι → ℝ) (a b : MvPolynomial ι ℝ)
-    [DecidableEq ι] : Prop where
-  u4_eq : specU4 E a b = 16 * gramN (gramT J a b) + 4 * gramH (gramT J a b)
-    + 16 * gramB (gramT J a b) + 96 * gramY (gramT J a b) - 32 * gramZ (gramT J a b)
-  v4_eq : specV4 E a b = 96 * gramY (gramT J a b)
 
 /-! ### The spectral layer: `E X²`, `P`, `E|c|²`, `Q` through the spectral norms -/
 
@@ -171,13 +158,12 @@ section gaussian
 
 variable {d : ℕ}
 
-/-- **The inputs of all Stein cuts for the Gaussian law** of `U = |q|²`, `q = a + ib` with `a`,
-`b` in the third chaos, `E a² = E b² = 1/2`, `E ab = 0`, under the tensor facts `GramFacts` of the
-circular cubic: the inputs of `gaussian_steinInputs`, every accepted contraction-Gram certificate
-and the coupled family. -/
+/-- **The inputs of all Stein cuts for the Gaussian law** of `U = |q|²`, `q = a + ib` a
+circular cubic with `a` in the third chaos and `E a² = 1/2`: the inputs of
+`gaussian_steinInputs`, every accepted contraction-Gram certificate and the coupled family. -/
 theorem gaussian_gramInputs (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
     (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) {J : Fin d → Fin d → ℝ}
-    (hc : Circular J a b) (hG : GramFacts (gaussE d) J a b) :
+    (hc : Circular J a b) :
     GramInputs (stdGaussian d) fun x => eval x (radU a b) := by
   have hE := gaussE_isGaussianExpectation d
   have hb : Chaos3 b := hc.chaos3_right ha
@@ -188,6 +174,8 @@ theorem gaussian_gramInputs (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
   have hab' : gaussE d (a * b) = 0 := hc.gE_mul hE
   have u2 := hc.specU2_eq hE ha haa'
   have v2 := hc.specV2_eq hE ha haa'
+  have u4 := hc.specU4_eq hE ha haa'
+  have v4 := hc.specV4_eq hE ha haa'
   have hmean := fluctuation_mean hE ha hb haa' hbb'
   have hU1 : gaussE d (radU a b) = 1 := by
     rw [radU, map_add, haa', hbb']; norm_num
@@ -242,8 +230,7 @@ theorem gaussian_gramInputs (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
       = 4 * specU2 (gaussE d) a b + specU4 (gaussE d) a b := by
     rw [← sV, show (3 : MvPolynomial (Fin d) ℝ) = C 3 from (map_ofNat C 3).symm, gE_sub_C_sq hE]
     ring
-  -- the budget from an accepted Gram certificate, on the scalars of the tensor facts
-  have u4 := hG.u4_eq
+  -- the budget from an accepted Gram certificate, on the scalars of the tensor identities
   have hG0 := gramZ_sq_le (gramT J a b)
   have hgram : ∀ (lam mu : ℚ) (g : GramData), gramCert lam mu g = true →
       lam * ∫ x, (eval x (radS a b) / 3 - 1) ^ 2 ∂(stdGaussian d)
@@ -262,8 +249,8 @@ theorem gaussian_gramInputs (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
       (gramN_nonneg _) (gramH_nonneg _) (gramB_nonneg _) (gramY_nonneg _)
       ((gramY_nonneg _).trans (gramT_symm J a b)) (gramT_schatten J a b) (gramT_symm J a b) hG0
       (gramT_gram1a J a b) (gramT_gram1b J a b)
-      (by rw [evU, sSU, hU1, u2, u4]; ring) (by rw [erU, hN, sN, v2, hG.v4_eq]; ring)
-      (by rw [ev2]; linarith) (by rw [sAB, v2, hG.v4_eq]; ring)
+      (by rw [evU, sSU, hU1, u2, u4]; ring) (by rw [erU, hN, sN, v2, v4]; ring)
+      (by rw [ev2]; linarith) (by rw [sAB, v2, v4]; ring)
     nlinarith [mul_le_mul_of_nonneg_left e2 hmuR]
   refine ⟨⟨_, radR a b, hv, memLp_radR a b, hv0, ?_, ?_, ?_, ?_, fun vs z h =>
     radial_cut a b ha.eig hb.eig vs z h, hgram, fun s hs => coupled_of_gram _ _ _ _ hgram s hs⟩⟩
