@@ -6,6 +6,9 @@ import Grothe.Upper.IntervalSound
 import Grothe.Upper.Head
 import Grothe.Upper.Data
 import Grothe.Upper.Final
+import Grothe.Upper.Disk
+import Grothe.Upper.Realise
+import Grothe.Upper.Compose
 import Grothe.Lower.Basic
 import Grothe.Lower.Poly
 import Grothe.Lower.Moment
