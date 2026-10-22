@@ -168,7 +168,7 @@ splitting and the explicit potentials) is the main missing piece of the lower bo
   `Circular.gaussian_sixth`) from the scalar certificate `cumulant_bound`: the real cumulants of
   a are converted with E a⁴ = (3/8) E U², E a⁶ = (5/16) E U³ (from E D_J P = 0), E a² = 6‖f‖²
   for the kernel f = ∂³a/6, and the Cauchy–Schwarz inputs ‖SF‖² ≤ √s √T₄, ⟨FG, SF⟩ ≤ √V ‖SF‖ are
-  proved. Of the thirteen tensor facts `TensorFacts` of the paper proof, nine are proved in
+  proved. Of the thirteen tensor facts `TensorFacts` of the paper proof, twelve are proved in
   `CircularTensor.lean`: the Wick identity κ₄ = 1296(s + 3h/2) for every cubic chaos
   (`Chaos3.wick4`), ‖G_anti‖² ≤ s/2 (`tenGa_le_half`), the charge-two block tt = h/6 − ‖M‖²/24
   ≤ h/6 (`tenTT_le_sixth`), the cubic trace V = tr G³ ≤ (s + 2η)√((s − η)/2), η = ‖G_anti‖²
@@ -184,12 +184,17 @@ splitting and the explicit potentials) is the main missing piece of the lower bo
   block trace T₄ = ‖S²‖² ≤ h²/2 + 8h·tt − 48tt² (`trace4_circular`: S acts on pairs with the
   charge blocks S₀₀, S₀₂, S₂₀, S₂₂ of norms² 4tt, (h − 6tt)/2, (h − 6tt)/2, 2tt, S₂₂ commutes
   with the complex structure J ⊗ 1 since S has no charge four, and Hilbert–Schmidt
-  submultiplicativity gains a factor 2 on the J-linear products), through a real charge
-  calculus (slot operators of J, the derivation δ with δf = −g, δg = f for the kernels of a, b,
-  and the tetrahedral contraction); `Circular.chaos3_right` shows that b is a cubic chaos when
-  a is. Still assumed (`TensorFactsRest`, four fields): the Wick identity
-  κ₆/46656 = (135/2)T₃ − 20V + (135/2)Q + (165/2)⟨D,U⟩ + 45‖U‖² and three block inequalities
-  (the block trace T₃ of S, the coupled G test and the charge split); besides these, the gate
+  submultiplicativity gains a factor 2 on the J-linear products), the block trace
+  T₃ = ⟨S², S⟩ ≤ √tt (9h/2 − 17tt) (`trace3_circular`, the same block walks), the coupled G test
+  Q = ⟨vec G, S vec G⟩ ≤ (2s − η)√tt + √(2η(s − η)(h − 6tt)) (`coupled_circular`: vec G splits
+  into its J ⊗ J charge parts G₀, G_anti of norms² s − η, η, and S acts blockwise) and the
+  charge split ‖U‖² = ⟨S², C⟩ ≤ θT₃ + √(A₀(3h²/8 + h·tt/2 + 3tt²/2)) + √(A₂(9h·tt − 54tt²))
+  (`chargeSplit_circular`: C − θS has no charge four, so Cauchy–Schwarz in the two charge
+  sectors against the blocks of S²), all through a real charge calculus (slot operators of J,
+  the derivation δ with δf = −g, δg = f for the kernels of a, b, and the tetrahedral
+  contraction); `Circular.chaos3_right` shows that b is a cubic chaos when a is. Still assumed
+  (`TensorFactsRest`, one field): the Wick identity
+  κ₆/46656 = (135/2)T₃ − 20V + (135/2)Q + (165/2)⟨D,U⟩ + 45‖U‖²; besides this, the gate
   variable and the per-row reduction (`RowShared`), and the crude row.
 * Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma, the
   scalar sixth-moment and first-moment certificates (the sixth-moment one from its tensor and

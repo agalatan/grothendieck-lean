@@ -80,6 +80,9 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.sos1_circular
 #print axioms Grothe.LowerAnalytic.sos2_circular
 #print axioms Grothe.LowerAnalytic.trace4_circular
+#print axioms Grothe.LowerAnalytic.trace3_circular
+#print axioms Grothe.LowerAnalytic.coupled_circular
+#print axioms Grothe.LowerAnalytic.chargeSplit_circular
 #print axioms Grothe.LowerAnalytic.TensorFactsRest.toTensorFacts
 #print axioms Grothe.LowerAnalytic.gaussian_moments
 #print axioms Grothe.LowerAnalytic.sharedReduction_of_gaussian
