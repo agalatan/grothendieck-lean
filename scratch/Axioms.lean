@@ -149,3 +149,6 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.JointSixth.s0_eq_tensor
 #print axioms Grothe.LowerAnalytic.JointSixth.h0_eq_tensor
 #print axioms Grothe.LowerAnalytic.joint_sixth_budget
+#print axioms Grothe.Lower.MPoly.momentLift_eval
+#print axioms Grothe.Lower.MPoly.momentLift_J
+#print axioms Grothe.Lower.MPoly.momentLift_majorant
