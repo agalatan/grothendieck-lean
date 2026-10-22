@@ -6,11 +6,14 @@ This file lists, module by module, what the Lean development proves and which in
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
-**Upper bound.** `Grothe.fresh_upper : DirectHyps E EX → IsGrothendieckBound (438936500000000000000000/312499512981434072227643)`,
-and `Grothe.upper_value_lt` shows this is below 1.404598989011 (`Grothe/Upper/PolynomialBridge.lean`).
+**Upper bound.** `Grothe.fresh_upper : DirectHyps E EX → IsGrothendieckBound (500000000000000000/355973576656604491)`,
+and `Grothe.upper_value_lt` shows this is below 1.404598635371 (`Grothe/Upper/PolynomialBridge.lean`).
 Here E and EX are the energy tables of the rounding T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6
 (disk-valued, since |P₃(x)|² = 1 − x⁴(3 − x²)/36 ≤ 1 for |φ| < 1), and of its polynomial
-truncation X = F₀ + v.
+truncation X = F₀ + v. The kernel is H(t) = Σ E[n,m] p(t)ⁿ(−τ(t))ᵐ with the preprocessors
+p(t) = t·P(t²) (`pList`, degree 41) and τ(t) = αt³ + βt⁷ (`qList`), both of Wiener norm ≤ 1, so
+that both are realised by tensor powers (`Grothe/Upper/Realise.lean`); they do not enter the
+energies, and are chosen to make the kernel nearly linear. The slope is c = 1779870886481/(25·10¹¹).
 
 * Proved from scratch: the transfer inequality via tensor powers and its residual form
   K ≤ 1/(c − ‖H − c·t‖); the ℓ¹ contraction and linearity of the kernel composition; that the
@@ -29,11 +32,12 @@ truncation X = F₀ + v.
   `handoff/research-third-decimal/upper-polynomial-bridge-20261022/`); `energy_close`: the
   stored energies are within 6847009/(5·10¹⁷) of EX in ℓ¹; `hardy`: the weighted square-sum
   bound 7/4 at radius 4149/4000 for the kernel of T itself (a Gaussian weighted Schur estimate
-  valid for every bounded rounding, plus a 65,580-arc contour certificate with mean 1.72879),
+  valid for every bounded rounding, plus a 65,596-arc contour certificate with mean 1.69818 for this p, τ; archived in
+  `handoff/research-third-decimal/upper-newpq-20261022/`),
   which Lean turns into the tail bound 36748/10¹² beyond degree 501.
-* **How much rests on these hypotheses.** Of the total residual 554771095509/(5·10¹⁷)
-  ≈ 1.10954·10⁻⁶, the assumed comparison bound 1065637497/10¹⁵ is 96.04%, the tail from
-  `hardy` (36748/10¹²) 3.31%, the computation verified in Lean (headCapQ = 7143/10¹²) 0.64%,
+* **How much rests on these hypotheses.** Of the total residual 600639595509/(5·10¹⁷)
+  ≈ 1.20128·10⁻⁶, the assumed comparison bound 1065637497/10¹⁵ is 88.71%, the computation
+  verified in Lean (headCapQ = 98880/10¹²) 8.23%, the tail from `hardy` (36748/10¹²) 3.06%,
   and the assumed energy-table error 6847009/(5·10¹⁷) 0.001%. The source's bound on |φ| is
   0.99999963 against the required 1. The bound therefore depends almost entirely on the
   external analysis behind the comparison hypothesis.

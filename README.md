@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.401695322458 < K_G^ℂ < 1.404598989011**
+> **1.401695322458 < K_G^ℂ < 1.404598635371**
 >
 > and, with **no hypothesis at all** (every step proved in Lean): **K_G^ℂ ≤ 1.40578**
 
@@ -40,11 +40,11 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.401695322458 < K** | **K < 1.404598989011** |
+| Oct 2026 | **this repository** | **1.401695322458 < K** | **K < 1.404598635371** |
 | Oct 2026 | this repository, fully formal (no hypothesis) | | K ≤ 1.40578 |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
-proposed as the exact value; it lies inside the interval, 2.31·10⁻⁵ below our upper bound.
+proposed as the exact value; it lies inside the interval, 2.27·10⁻⁵ below our upper bound.
 
 ## What is proved, and under which assumptions
 
@@ -81,15 +81,17 @@ moment cost within the conic recipe, with explicit attaining points and its
 application to genuine cubic moments on each node range.
 
 **Upper bound** — `Grothe.fresh_upper :
-DirectHyps E EX → IsGrothendieckBound (438936500000000000000000/312499512981434072227643)`,
-and `Grothe.upper_value_lt` shows this is below 1.404598989011
+DirectHyps E EX → IsGrothendieckBound (500000000000000000/355973576656604491)`,
+and `Grothe.upper_value_lt` shows this is below 1.404598635371
 (`Grothe/Upper/PolynomialBridge.lean`).
 
 The rounding is T = F₀·P₃(φ): a smoothed two-coordinate Gaussian phase rounding F₀ times the
 cubic Taylor polynomial P₃(x) = 1 + ix − x²/2 − ix³/6 of a damped polynomial phase φ. Since
 |P₃(x)|² = 1 − x⁴(3 − x²)/36 ≤ 1 for |φ| < 1, T is a disk-valued (hence admissible) rounding.
-Its correlation kernel H is compared with c·t through the kernel of a polynomial truncation
-X = F₀ + v, and the bound is 1/(c − ‖H − c·t‖) with residual at most 554771095509/(5·10¹⁷).
+Its correlation kernel H(t) = Σ E[n,m] p(t)ⁿ(−τ(t))ᵐ, with the odd preprocessors p of degree 41
+and τ(t) = αt³ + βt⁷ (Wiener norms ≤ 1), is compared with c·t, c = 1779870886481/(25·10¹¹),
+through the kernel of a polynomial truncation X = F₀ + v, and the bound is 1/(c − ‖H − c·t‖)
+with residual at most 600639595509/(5·10¹⁷).
 Lean proves the transfer inequality (via tensor powers), the composition and locality of the
 kernel, the evaluation of the head of the kernel through degree 501 from 21,168 stored energies
 by a verified interval checker, the tail bound and the endpoint arithmetic. The structure
@@ -99,12 +101,12 @@ by a verified interval checker, the tail bound and the endpoint arithmetic. The 
 | field | content | share of the residual |
 |---|---|---|
 | `valid`, `summable`, `summableX`, `parityX` | the tables are the energies of the actual rounding and truncation | — |
-| `compare` | Σ\|E − EX\| ≤ 1065637497/10¹⁵ (external computer-assisted comparison lemma) | 96.04% |
+| `compare` | Σ\|E − EX\| ≤ 1065637497/10¹⁵ (external computer-assisted comparison lemma) | 88.71% |
 | `energy_close` | the stored energies are within 6847009/(5·10¹⁷) of EX | 0.001% |
-| `hardy` | weighted square sum ≤ 7/4 at radius 4149/4000, giving the tail 36748/10¹² beyond degree 501 | 3.31% |
+| `hardy` | weighted square sum ≤ 7/4 at radius 4149/4000, giving the tail 36748/10¹² beyond degree 501 | 3.06% |
 
-The head, computed in Lean (`head_check`), is 7143/10¹², 0.64% of the total
-554771095509/(5·10¹⁷).
+The head, computed in Lean (`head_check`), is 98880/10¹², 8.23% of the total
+600639595509/(5·10¹⁷).
 
 **Unconditional upper bound** — `Grothe.haagerup_bound : IsGrothendieckBound (140578/100000)`
 (`Grothe/Haagerup/Identity.lean`, with the finite check in `Grothe/Upper/Haagerup.lean`), with **no hypothesis**.
