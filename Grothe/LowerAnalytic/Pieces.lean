@@ -104,7 +104,7 @@ theorem inner_T (i j : Fin 6) (r s : L2G n) :
 
 lemma norm_T (j : Fin 6) (r : L2G n) : ‖T n j r‖ = ‖r‖ := by
   have h := inner_T j j r r
-  rw [if_pos rfl, mul_one, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K] at h
+  rw [ite_eq_left rfl, mul_one, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K] at h
   have h2 : ‖T n j r‖ ^ 2 = ‖r‖ ^ 2 := by exact_mod_cast h
   exact (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h2
 
@@ -298,7 +298,7 @@ theorem wick_rep (a b c : Fin (n + 1)) :
     refine ⟨4, 4, oneL n, Submodule.mem_span_singleton_self _, ?_⟩
     refine lp_eq_of_joinR (wickL_ae' _ _ _ _) (smul_T_ae _ _ _ (oneL_ae n)) fun z y => ?_
     rw [wickFn_joinR, tensorFn_joinR]
-    simp only [joinR_zc0, map_mul, Complex.conj_ofReal, if_true, fibreB, Matrix.cons_val,
+    simp only [joinR_zc0, map_mul, Complex.conj_ofReal, ite_true, fibreB, Matrix.cons_val,
       Fin.isValue, fB4, one_mul]
     push_cast
     simp only [div_eq_mul_inv, s_inv]
@@ -307,15 +307,14 @@ theorem wick_rep (a b c : Fin (n + 1)) :
     refine ⟨2, 2 * ((√2 : ℝ) : ℂ), zbL n c, Submodule.subset_span ⟨c, rfl⟩, ?_⟩
     refine lp_eq_of_joinR (wickL_ae' _ _ _ _) (smul_T_ae _ _ _ (zbL_ae n c)) fun z y => ?_
     rw [wickFn_joinR, tensorFn_joinR]
-    simp only [joinR_zc0, joinR_zc_succ, map_mul, map_sub, Complex.conj_ofReal, if_true, if_false, fibreB, Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one, Fin.isValue, Fin.succ_inj, Fin.succ_ne_zero, (Fin.succ_ne_zero _).symm, fB1, fB2, fB4, one_mul, mul_one, Complex.conj_conj, ite_false, ite_true, zero_mul, sub_zero]
-    push_cast
+    simp only [joinR_zc0, joinR_zc_succ, ite_false, fibreB, Matrix.cons_val, Fin.isValue, (Fin.succ_ne_zero _).symm, fB2, zero_mul, sub_zero]
     try simp only [div_eq_mul_inv, s_inv]
     ring
   · -- (0,b+1,0)
     refine ⟨1, 2, zL n b, zL_mem_H10 n b, ?_⟩
     refine lp_eq_of_joinR (wickL_ae' _ _ _ _) (smul_T_ae _ _ _ (zL_ae n b)) fun z y => ?_
     rw [wickFn_joinR, tensorFn_joinR]
-    simp only [joinR_zc0, joinR_zc_succ, map_mul, map_sub, Complex.conj_ofReal, if_true, if_false, fibreB, Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one, Fin.isValue, Fin.succ_inj, Fin.succ_ne_zero, (Fin.succ_ne_zero _).symm, fB1, fB2, fB4, one_mul, mul_one, Complex.conj_conj, ite_false, ite_true, zero_mul, sub_zero]
+    simp only [joinR_zc0, joinR_zc_succ, map_mul, Complex.conj_ofReal, ite_true, ite_false, fibreB, Matrix.cons_val_zero, Matrix.cons_val_one, Fin.isValue, Fin.succ_ne_zero, fB1, zero_mul, sub_zero]
     push_cast
     try simp only [div_eq_mul_inv, s_inv]
     linear_combination (zc n b y * z * conj z) * hs2 + (2 * zc n b y) * nsq z
@@ -323,15 +322,14 @@ theorem wick_rep (a b c : Fin (n + 1)) :
     refine ⟨3, ((√2 : ℝ) : ℂ), qL n b c, Submodule.subset_span ⟨(b, c), rfl⟩, ?_⟩
     refine lp_eq_of_joinR (wickL_ae' _ _ _ _) (smul_T_ae _ _ _ (qL_ae n b c)) fun z y => ?_
     rw [wickFn_joinR, tensorFn_joinR]
-    simp only [joinR_zc0, joinR_zc_succ, map_mul, map_sub, Complex.conj_ofReal, if_true, if_false, fibreB, Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one, Fin.isValue, Fin.succ_inj, Fin.succ_ne_zero, (Fin.succ_ne_zero _).symm, fB1, fB2, fB4, one_mul, mul_one, Complex.conj_conj, ite_false, ite_true, zero_mul, sub_zero]
-    push_cast
+    simp only [joinR_zc0, joinR_zc_succ, ite_false, fibreB, Matrix.cons_val, Fin.isValue, Fin.succ_inj, (Fin.succ_ne_zero _).symm, zero_mul, sub_zero]
     try simp only [div_eq_mul_inv, s_inv]
     split_ifs <;> ring
   · -- (a+1,0,0)
     refine ⟨1, 2, zL n a, zL_mem_H10 n a, ?_⟩
     refine lp_eq_of_joinR (wickL_ae' _ _ _ _) (smul_T_ae _ _ _ (zL_ae n a)) fun z y => ?_
     rw [wickFn_joinR, tensorFn_joinR]
-    simp only [joinR_zc0, joinR_zc_succ, map_mul, map_sub, Complex.conj_ofReal, if_true, if_false, fibreB, Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one, Fin.isValue, Fin.succ_inj, Fin.succ_ne_zero, (Fin.succ_ne_zero _).symm, fB1, fB2, fB4, one_mul, mul_one, Complex.conj_conj, ite_false, ite_true, zero_mul, sub_zero]
+    simp only [joinR_zc0, joinR_zc_succ, map_mul, Complex.conj_ofReal, ite_true, ite_false, fibreB, Matrix.cons_val_zero, Matrix.cons_val_one, Fin.isValue, Fin.succ_ne_zero, fB1, zero_mul, sub_zero]
     push_cast
     try simp only [div_eq_mul_inv, s_inv]
     linear_combination (zc n a y * z * conj z) * hs2 + (2 * zc n a y) * nsq z
@@ -339,27 +337,23 @@ theorem wick_rep (a b c : Fin (n + 1)) :
     refine ⟨3, ((√2 : ℝ) : ℂ), qL n a c, Submodule.subset_span ⟨(a, c), rfl⟩, ?_⟩
     refine lp_eq_of_joinR (wickL_ae' _ _ _ _) (smul_T_ae _ _ _ (qL_ae n a c)) fun z y => ?_
     rw [wickFn_joinR, tensorFn_joinR]
-    simp only [joinR_zc0, joinR_zc_succ, map_mul, map_sub, Complex.conj_ofReal, if_true, if_false, fibreB, Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one, Fin.isValue, Fin.succ_inj, Fin.succ_ne_zero, (Fin.succ_ne_zero _).symm, fB1, fB2, fB4, one_mul, mul_one, Complex.conj_conj, ite_false, ite_true, zero_mul, sub_zero]
-    push_cast
+    simp only [joinR_zc0, joinR_zc_succ, ite_false, fibreB, Matrix.cons_val, Fin.isValue, Fin.succ_inj, (Fin.succ_ne_zero _).symm, zero_mul, sub_zero]
     try simp only [div_eq_mul_inv, s_inv]
     split_ifs <;> ring
   · -- (a+1,b+1,0)
     refine ⟨5, ((√2 : ℝ) : ℂ), zzL n a b, Submodule.subset_span ⟨(a, b), rfl⟩, ?_⟩
     refine lp_eq_of_joinR (wickL_ae' _ _ _ _) (smul_T_ae _ _ _ (zzL_ae n a b)) fun z y => ?_
     rw [wickFn_joinR, tensorFn_joinR]
-    simp only [joinR_zc0, joinR_zc_succ, map_mul, map_sub, Complex.conj_ofReal, if_true, if_false, fibreB, Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one, Fin.isValue, Fin.succ_inj, Fin.succ_ne_zero, (Fin.succ_ne_zero _).symm, fB1, fB2, fB4, one_mul, mul_one, Complex.conj_conj, ite_false, ite_true, zero_mul, sub_zero]
-    push_cast
+    simp only [joinR_zc0, joinR_zc_succ, map_mul, Complex.conj_ofReal, ite_false, fibreB, Matrix.cons_val, Fin.isValue, Fin.succ_ne_zero, zero_mul, sub_zero]
     try simp only [div_eq_mul_inv, s_inv]
     ring
   · -- (a+1,b+1,c+1)
     refine ⟨0, 1, wickL n a b c, wickL_mem_H21 n a b c, ?_⟩
     refine lp_eq_of_joinR (wickL_ae' _ _ _ _) (smul_T_ae _ _ _ (wickL_ae' n a b c)) fun z y => ?_
     rw [wickFn_joinR, tensorFn_joinR]
-    simp only [joinR_zc0, joinR_zc_succ, map_mul, map_sub, Complex.conj_ofReal, if_true, if_false, fibreB, Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one, Fin.isValue, Fin.succ_inj, Fin.succ_ne_zero, (Fin.succ_ne_zero _).symm, fB1, fB2, fB4, one_mul, mul_one, Complex.conj_conj, ite_false, ite_true, zero_mul, sub_zero]
-    push_cast
+    simp only [joinR_zc_succ, fibreB, Matrix.cons_val_zero, Fin.isValue, Fin.succ_inj, one_mul, mul_one]
     try simp only [div_eq_mul_inv, s_inv]
     simp only [wickFn, wc]
-    try split_ifs <;> ring
 
 lemma finiteDimensional_Kspace (j : Fin 6) : FiniteDimensional ℂ (Kspace n j) := by
   fin_cases j
@@ -392,13 +386,13 @@ theorem exists_piece_repr {ψ : L2G (n + 1)} (hψ : ψ ∈ H21 (n + 1)) :
     rw [hrep p]
     simp_rw [apply_ite (T n _), map_smul, map_zero]
     rw [Finset.sum_ite_eq Finset.univ (jj p) (fun j => (c p * κ p) • T n j (r p)),
-      if_pos (Finset.mem_univ _), smul_smul]
+      ite_eq_left (Finset.mem_univ _), smul_smul]
 
 /-- `‖Σ_j T j (R j)‖² = Σ_j ‖R j‖²`. -/
 lemma norm_sq_sum_T (R : Fin 6 → L2G n) : ‖∑ j, T n j (R j)‖ ^ 2 = ∑ j, ‖R j‖ ^ 2 := by
   rw [@norm_sq_eq_re_inner ℂ, sum_inner]
   simp_rw [inner_sum, inner_T, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ,
-    if_true]
+    ite_true]
   rw [RCLike.re_to_complex, Complex.re_sum]
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [inner_self_eq_norm_sq_to_K]

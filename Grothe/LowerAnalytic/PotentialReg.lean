@@ -94,7 +94,7 @@ lemma pot_abs_dist (hE : E.psdOK = true) (hR : R.psdOK = true) (x y : ℝ) :
 theorem continuous_pot_abs (hE : E.psdOK = true) (hR : R.psdOK = true) :
     Continuous fun s : ℝ => pot E R ℓ β a |s| := by
   refine (LipschitzWith.of_dist_le_mul (K := ⟨lipC a, lipC_nonneg⟩) fun x y => ?_).continuous
-  simp only [Real.dist_eq, NNReal.coe_mk]
+  simp only [Real.dist_eq]
   exact pot_abs_dist hE hR x y
 
 /-- **Integrability of `Ψ_r(δ|P|)`** for an integrable `|P|`. -/
