@@ -21,7 +21,8 @@ invertible (`E ≻ 0`, `R ≻ 0`), the supremum over `m` in (1) is the supremum 
 
   `J_r(y, s) = ∫ (|L + B·(My + s a)| + |L − B·(My + s a)|) dγ − yᵀMy`             (`Jpot`),
 
-and `Ψ_r(s) = sup_y J_r(y, s)` (`pot`).  Proved here:
+and `Ψ_r(s) = sup_y J_r(y, s)` (`pot`).  This file has the fibre functions, their growth bounds and
+the packed variable; proved in `FibreSup.lean`:
 
 * `fibreExpr_le_Jpot`: for `f₀, g₀` with `|f₀|, |g₀| ≤ 1`, `h₀ = (f₀+g₀)/2`, `k₀ = (f₀−g₀)/2` and
   the coefficient vector `K = coefFib k₀` (`K_j = ∫ conj(B_j) k₀`, packed), the fibre expression
@@ -34,8 +35,12 @@ and `Ψ_r(s) = sup_y J_r(y, s)` (`pot`).  Proved here:
 * `pot_lipschitz`: `Ψ_r(t) ≤ Ψ_r(s) + smax_r (t − s)` for `0 ≤ s ≤ t`, from
   `|J_r(y, t) − J_r(y, s)| ≤ 2(t − s) E|B·a| ≤ 2(t − s)(|1 + b₁| + (2/e)|b₂| + |b₃|/√2)` and the
   Lipschitz header `rowData_smaxOK` (`2/e ≤ 0.7358`, `1/√2 ≤ 0.707107`).
-* `capsHold_pot`: `CapsHold (Ψ_r − capPad) r.nodeList r.smax` from the node caps alone, which are
-  the data certified outside Lean (`Ψ_r(r_k) − capPad ≤ c_k`, hypothesis `hcaps`).
+* `capsHold_pot`, `capsHold_rowPot`: `CapsHold (Ψ_r − capPad) r.nodeList r.smax` from the node caps
+  alone, which are the data certified outside Lean (`Ψ_r(r_k) − capPad ≤ c_k`, hypothesis `hcaps`).
+
+The reduction uses `Ψ_r` at `s = |u|` for a complex coupling `u = q(w)`; the certified `(1)` is
+stated for real `s ≥ 0`.  The two agree by the rotation `z ↦ e^{iφ}z` of the fibre (charge one), which
+is still to be proved (PLAN_L4.md, S5′).
 -/
 
 open MeasureTheory Real Set Grothe.Lower

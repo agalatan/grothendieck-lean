@@ -554,6 +554,125 @@ theorem pot_lip (hE : E.psdOK = true) (hR : R.psdOK = true) (s t : ℝ) (hst : s
   ciSup_le fun y => (Jpot_lip E R ℓ β a y s t hst).trans
     (by linarith [Jpot_le_pot E R ℓ β a hE hR y s])
 
+/-! ### The Lipschitz constant of a row and the node caps -/
+
+/-- `a = (1 + b₁, b₂, b₃, 0, …, 0)`. -/
+def aFib (b1 b2 b3 : ℝ) : Fib := ⟨((1 + b1 : ℝ) : ℂ), (b2 : ℂ), (b3 : ℂ), 0, 0, 0⟩
+
+lemma norm_fB1_eq (z : ℂ) : ‖fB1 z‖ = |Complex.normSq z - 1| := by
+  rw [fB1, Complex.norm_real, Real.norm_eq_abs]
+
+lemma norm_fB2_eq (z : ℂ) : ‖fB2 z‖ = Complex.normSq z / √2 := by
+  rw [fB2, norm_div, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _),
+    Complex.normSq_eq_norm_sq]
+
+lemma integral_norm_fB2 : ∫ z, ‖fB2 z‖ ∂gaussC = 1 / √2 := by
+  simp_rw [norm_fB2_eq]
+  rw [integral_div, integral_normSq_gaussC]
+
+lemma integral_norm_fB1 : ∫ z, ‖fB1 z‖ ∂gaussC = 2 / exp 1 := by
+  simp_rw [norm_fB1_eq]
+  exact integral_abs_normSq_sub_one
+
+/-- `E|B·a| ≤ |1 + b₁| + (2/e)|b₂| + |b₃|/√2`. -/
+lemma integral_norm_aFib_le (b1 b2 b3 : ℝ) :
+    ∫ z, ‖(aFib b1 b2 b3).fn z‖ ∂gaussC ≤ |1 + b1| + |b2| * (2 / exp 1) + |b3| * (1 / √2) := by
+  have i1 : Integrable (fun z => ‖fB1 z‖) gaussC := integrable_fB1.norm
+  have i2 : Integrable (fun z => ‖fB2 z‖) gaussC := integrable_fB2.norm
+  have hA : Integrable (fun z => ‖(aFib b1 b2 b3).fn z‖) gaussC :=
+    (integrable_of_le_qw _ (aFib b1 b2 b3).continuous_fn _ (fun z => (aFib b1 b2 b3).norm_fn_le z)).norm
+  have hpt : ∀ z, ‖(aFib b1 b2 b3).fn z‖ ≤ |1 + b1| + |b2| * ‖fB1 z‖ + |b3| * ‖fB2 z‖ := by
+    intro z
+    have e : (aFib b1 b2 b3).fn z = ((1 + b1 : ℝ) : ℂ) + (b2 : ℂ) * fB1 z + (b3 : ℂ) * fB2 z := by
+      simp [Fib.fn, aFib, Complex.conj_ofReal]
+    rw [e]
+    refine (norm_add_le _ _).trans (add_le_add ((norm_add_le _ _).trans (le_of_eq ?_)) (le_of_eq ?_))
+    · rw [norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs]
+    · rw [norm_mul, Complex.norm_real, Real.norm_eq_abs]
+  have hm := integral_mono hA (((integrable_const |1 + b1|).add (i1.const_mul |b2|)).add
+    (i2.const_mul |b3|)) hpt
+  have hsum : ∫ z, (|1 + b1| + |b2| * ‖fB1 z‖ + |b3| * ‖fB2 z‖) ∂gaussC
+      = |1 + b1| + |b2| * (2 / exp 1) + |b3| * (1 / √2) := by
+    have j0 : Integrable (fun _ : ℂ => |1 + b1|) gaussC := integrable_const _
+    have j1 : Integrable (fun z : ℂ => |b2| * ‖fB1 z‖) gaussC := i1.const_mul _
+    have j2 : Integrable (fun z : ℂ => |b3| * ‖fB2 z‖) gaussC := i2.const_mul _
+    have j01 : Integrable (fun z : ℂ => |1 + b1| + |b2| * ‖fB1 z‖) gaussC := j0.add j1
+    rw [integral_add j01 j2, integral_add j0 j1, integral_const_mul, integral_const_mul,
+      integral_norm_fB1, integral_norm_fB2, integral_const, probReal_univ, one_smul]
+  linarith [hm.trans_eq hsum]
+
+lemma inv_sqrt_two_le : 1 / √2 ≤ 707107 / 1000000 := by
+  have h2 : (0 : ℝ) < √2 := by positivity
+  have hs : √2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  rw [div_le_iff₀ h2]
+  nlinarith [sq_nonneg (707107 / 1000000 * √2 - 1)]
+
+/-- **The node-cap interface of a potential**: convexity, the Lipschitz header and the node caps
+(the data certified outside Lean) give `CapsHold (Ψ − capPad)`. -/
+theorem capsHold_pot (E : Sym3) (R : Sym2) (ℓ β b1 b2 b3 : ℝ) (hE : E.psdOK = true)
+    (hR : R.psdOK = true) (nodes : List (ℚ × ℚ)) (smax : ℚ)
+    (hsm : 2 * (|1 + b1| + 7358 / 10000 * |b2| + 707107 / 1000000 * |b3|) ≤ smax)
+    (hcaps : ∀ n ∈ nodes, pot E R ℓ β (aFib b1 b2 b3) n.1 - capPad ≤ n.2) :
+    CapsHold (fun s => pot E R ℓ β (aFib b1 b2 b3) s - capPad) nodes smax where
+  convex := by
+    refine ⟨convex_Ici 0, fun x _ y _ u v hu hv huv => ?_⟩
+    have h := (pot_convexOn E R ℓ β (aFib b1 b2 b3) hE hR).2 (mem_univ x) (mem_univ y) hu hv huv
+    simp only [smul_eq_mul] at h ⊢
+    have : u * (capPad : ℝ) + v * capPad = capPad := by rw [← add_mul, huv, one_mul]
+    linarith
+  caps := hcaps
+  lip := by
+    intro s t _ hst
+    have h := pot_lip E R ℓ β (aFib b1 b2 b3) hE hR s t hst
+    have hI := integral_norm_aFib_le b1 b2 b3
+    have he := two_div_exp_one_le
+    have hq := inv_sqrt_two_le
+    have hc : ∫ z, ‖(aFib b1 b2 b3).fn z‖ ∂gaussC
+        ≤ |1 + b1| + 7358 / 10000 * |b2| + 707107 / 1000000 * |b3| := by
+      refine hI.trans ?_
+      nlinarith [abs_nonneg b2, abs_nonneg b3, mul_le_mul_of_nonneg_left he (abs_nonneg b2),
+        mul_le_mul_of_nonneg_left hq (abs_nonneg b3)]
+    have hts : 0 ≤ t - s := by linarith
+    have := mul_le_mul_of_nonneg_left hc (by linarith : (0 : ℝ) ≤ 2 * (t - s))
+    nlinarith
+
+/-! ### The potentials of the 19 rows -/
+
+/-- The certified fibre potential of the `k`-th row (`E`, `ℓ`, `β`, `b` from `rowData`, `R` from
+`rowGates`). -/
+def rowPot (k : ℕ) (s : ℝ) : ℝ :=
+  let r := rowData.getD k row01
+  pot r.E (rowR k) r.ell r.beta (aFib r.b1 r.b2 r.b3) s
+
+/-- **The node-cap interface for every row**: given the node caps of the certified potential of
+row `k` (data certified outside Lean), `CapsHold (Ψ_k − capPad)` holds with the row's nodes and
+Lipschitz constant. -/
+theorem capsHold_rowPot (k : ℕ) (hk : k < rowData.length)
+    (hcaps : ∀ n ∈ (rowData.getD k row01).nodeList, rowPot k n.1 - capPad ≤ n.2) :
+    CapsHold (fun s => rowPot k s - capPad) (rowData.getD k row01).nodeList
+      (rowData.getD k row01).smax := by
+  have hmem : rowData.getD k row01 ∈ rowData := by
+    rw [List.getD_eq_getElem _ _ hk]; exact List.getElem_mem hk
+  have hg := List.all_eq_true.1 rowData_gatesOK _ hmem
+  simp only [rowGatesOK, Bool.and_eq_true] at hg
+  have hsm := List.all_eq_true.1 rowData_smaxOK _ hmem
+  simp only [decide_eq_true_eq] at hsm
+  have hlen := rowGates_consistent.1
+  have hR : (rowR k).psdOK = true := by
+    have hk' : k < rowGates.length := hlen ▸ hk
+    have h := List.all_eq_true.1 rowGates_ok _ (List.getElem_mem hk')
+    simp only [Bool.and_eq_true] at h
+    unfold rowR
+    rw [List.getD_eq_getElem _ _ hk']
+    exact h.1.1
+  have hsmR : 2 * (|1 + ((rowData.getD k row01).b1 : ℝ)| + 7358 / 10000 * |((rowData.getD k row01).b2 : ℝ)|
+      + 707107 / 1000000 * |((rowData.getD k row01).b3 : ℝ)|) ≤ ((rowData.getD k row01).smax : ℝ) := by
+    have := (Rat.cast_le (K := ℝ)).2 hsm
+    simp only [Rat.cast_mul, Rat.cast_add, Rat.cast_abs, Rat.cast_one, Rat.cast_ofNat,
+      Rat.cast_div] at this
+    exact this
+  exact capsHold_pot _ _ _ _ _ _ _ hg.1.1 hR _ _ hsmR hcaps
+
 end
 
 end Grothe.LowerAnalytic
