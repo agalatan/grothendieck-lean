@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.401687463503 < K_G^ℂ < 1.404599424**
+> **1.401689235711 < K_G^ℂ < 1.404599424**
 
 ## The constant
 
@@ -31,7 +31,7 @@ classical and quantum correlations in two-party Bell experiments.
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.401687463503 < K** | **K < 1.404599424** |
+| Oct 2026 | **this repository** | **1.401689235711 < K** | **K < 1.404599424** |
 
 For orientation, the real constant has a longer numerical history: Krivine's upper bound
 π / (2 log(1+√2)) = 1.78221… (1979) was shown to be non-optimal by Braverman, Makarychev,
@@ -52,12 +52,12 @@ certificates) and this Lean development (the machine-checked verification):
   through the kernel of a polynomial truncation of the rounding. The bound is
   1/(c − ‖H − c·t‖), with the residual at most 133/10⁸.
 * **Lower bound.** The Gaussian witness T = P₁,₀ − ε·P₂,₁ with ε = 149/200, whose L^∞ → L¹
-  norm is capped by B = 3567129/(5·10⁶) = 0.7134258. Each of 19 rows bounds E Ψ(|q|) − κσ² over all residuals q,
+  norm is capped by B = 713424897989/10¹² = 0.713424897989. Each of 19 rows bounds E Ψ(|q|) − κσ² over all residuals q,
   a normalised cubic chaos of bidegree (2,1): for small σ by moment rectangles, and beyond by nodes
   at which a polynomial majorizes the potential plus a nonnegative combination of Stein cuts, joined
   by convexity in σ (rows 0.84–0.855 use 396-node cap tables with anchored and localised quadratic
-  caps). The rows share one residual (a common law), and 4,604 closed boxes partition
-  (t, τ, x) ∈ [0, 9/10] × [0, ρ] × [0, 31/4]: near the maximum, t ∈ [0.8454375, 0.854578125], a box
+  caps). The rows share one residual (a common law), and 4,697 closed boxes partition
+  (t, τ, x) ∈ [0, 9/10] × [0, ρ] × [0, 31/4]: near the maximum, t ∈ [0.844, 0.855], a box
   mixes one or two components (rows, or joint node batches of mixed potentials, chorded in τ between
   four certified nodes), elsewhere it mixes two row caps. The inputs on the law of |q|² are the sixth-moment inequality
   E|q|⁶ ≤ 9m − 12 + 40.45313·(m−2)^{3/2}, the first-moment bound E|q| ≤ 0.973612157, and the
@@ -99,8 +99,8 @@ tables of the rounding, of its polynomial truncation, and of the rounding withou
   formal verification.
 
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
-value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401687463503/10^12 < K`, and the transfer
-`Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 1401687463503/10^12 < K`,
+value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401689235711/10^12 < K`, and the transfer
+`Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 1401689235711/10^12 < K`,
 where `TransferInputsL2 B` asks, for every δ > 0, for a finite measure space with an operator T on L²,
 a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u, v in L² with Σₗ|uₗ|² ≤ 1 and
 Σₗ|vₗ|² ≤ 1 a.e. and ‖Σ⟨uₗ, T vₗ⟩‖ ≥ 1 − δ.
@@ -117,13 +117,14 @@ splitting and the explicit potentials) is the main missing piece of the lower bo
   and their polynomial pieces; the majorant sweeps over 9,237 nodes; the moment-rectangle
   covers; the integration against the law of |q|²; the chords in σ; the bound of every row
   from its Gaussian reduction; the mixtures of rows (the retained gate square mixes by an exact
-  identity); the common-law certificate: 52 batches of 686 joint node certificates for mixed
-  potentials of rows 0.84–0.86 (37 batches/425 nodes with Stein cuts, 15 batches/261 nodes with one
-  spectral cut each on 74-, 90- and 161-knot test meshes, 163 of them with ν > 0, i.e. using the
-  covariance order), and the partition of [0, 9/10] × [0, ρ] × [0, 31/4] into 4,604 closed boxes
-  certified by 4,603 axis cuts (231 cap boxes: fixed mixtures of two certified row caps including
-  the crude row; 1,326 boxes with one component and 3,047 mixing two, a component being a row or a
-  mixture of two rows with four certified τ-nodes, chorded twice in τ, pinned gate price X₁ = p);
+  identity); the common-law certificate: 35 batches of 676 joint node certificates for mixed
+  potentials of rows 0.84–0.855 (5 batches/65 nodes with Stein cuts, 30 batches/611 nodes with one
+  spectral cut each: 82 nodes on the 74-knot test mesh and 529 on the 241-knot mesh (k/30)², k ≤ 240,
+  all with ν = 0, so the covariance order is proved but not used by the data), and the partition of
+  [0, 9/10] × [0, ρ] × [0, 31/4] into 4,697 closed boxes certified by 4,696 axis cuts (221 cap boxes:
+  fixed mixtures of two certified row caps including the crude row; 1,245 boxes with one component
+  and 3,231 mixing two, a component being a row or a mixture of two rows with four certified
+  τ-nodes, chorded twice in τ, pinned gate price X₁ = p);
   and the endpoint. All finite exact checks of the lower certificate are one `native_decide` (`cert_check`).
 * Explicit hypotheses (not formalized): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
   from ‖Qk‖ ≤ E|Qk/‖Qk‖| ≤ ρ, which uses the moment bounds also for the cubic Qk/‖Qk‖), with ‖v‖² = 2
