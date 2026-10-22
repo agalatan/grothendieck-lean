@@ -62,5 +62,6 @@ import Grothe.LowerAnalytic.RadialParts
 import Grothe.LowerAnalytic.RadialCut
 import Grothe.LowerAnalytic.Circular
 import Grothe.LowerAnalytic.CircularTensor
+import Grothe.LowerAnalytic.GramTensor
 import Grothe.LowerAnalytic.GramBudget
 import Grothe.LowerAnalytic.Bridge

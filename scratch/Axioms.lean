@@ -49,6 +49,10 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.gaussian_steinInputs
 #print axioms Grothe.LowerAnalytic.gaussian_gramInputs
 #print axioms Grothe.LowerAnalytic.gramZ_sq_le
+#print axioms Grothe.LowerAnalytic.gramT_schatten
+#print axioms Grothe.LowerAnalytic.gramT_symm
+#print axioms Grothe.LowerAnalytic.gramT_gram1a
+#print axioms Grothe.LowerAnalytic.gramT_gram1b
 #print axioms Grothe.LowerAnalytic.gE_SU
 #print axioms Grothe.LowerAnalytic.N_eq
 #print axioms Grothe.Lower.gram_budget_of_scalars

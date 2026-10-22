@@ -1,6 +1,5 @@
 import Grothe.LowerAnalytic.RadialCut
-import Grothe.LowerAnalytic.Influence
-import Grothe.LowerAnalytic.Circular
+import Grothe.LowerAnalytic.GramTensor
 
 /-!
 # The contraction-Gram budget of circular cubic chaos
@@ -12,27 +11,24 @@ coupled family `E X² ≤ a_s P − b_s Q`.  For a genuine circular cubic `q = a
 contraction identities for the coefficient tensor `t`.  This file sets them up for the Gaussian
 law of `U = |q|²` and derives `GramInputs` (`gaussian_gramInputs`).
 
-* **The complex coefficient tensor** `cplxT J f g = 3 P₊P₊P₋ (f + ig)` of the real kernels
-  `f = ∂³a/6`, `g = ∂³b/6` (`cubicKernel`), with the projections `P± = (1 ∓ iJ)/2` on the
-  `∓i`-eigenspaces of the complex structure `J` (two holomorphic slots, one antiholomorphic);
-  for a circular pair this is the tensor `t` of the manuscript in the real indices (an isometric
-  embedding, `E|q|² = 2‖t‖²`).  Its contractions `N, H, B, W, Y` (`ctN`, `ctH`, `ctB`, `ctW`,
-  `ctY`) and the scalars `n = ‖N‖², h = ‖H‖², b = ‖B‖², y = ‖Y‖², z = Re tr(N Hᵀ)` (`gramN`,
-  `gramH`, `gramB`, `gramY`, `gramZ`).  `z² ≤ nh` (`G₀ = Gram(N, Hᵀ) ⪰ 0`) is proved
-  (`gramZ_sq_le`, Cauchy–Schwarz).
-* **The spectral norms** `u₂ = ‖U₂‖², u₄ = ‖U₄‖²` of the chaos components of `U − 1` and
-  `v₂ = ‖(q²)₂‖², v₄ = ‖(q²)₄‖²` of `q² = P + iQ` (`specU2`, `specU4`, `specV2`, `specV4`, through
-  the projections `proj2`, `proj4` of `Influence.lean`).  **Proved**, for `a`, `b` in the third
-  chaos with `E a² = E b² = 1/2`, `E ab = 0` and a Gaussian expectation: `E(S − 3)² = 4u₂ + u₄`,
-  `E[(S − 3)(U − 1)] = 2u₂ + u₄`, `E(A² + B²) = 4v₂ + v₄`, `E N = 2v₂ + v₄` (`S = 3w`,
-  `A + iB = 3c`, `N = 3 Re(c q̄²)`), i.e. `E X² = (4u₂ + u₄)/9`, `P = (2u₂ + u₄)/3`,
-  `E|c|² = (4v₂ + v₄)/9`, `Q = (2v₂ + v₄)/3`, by the orthogonality of the chaos components.
+* **The complex coefficient tensor** `t = gramT J a b = 3 P₊P₊P₋ (f + ig)` of the real kernels
+  `f = ∂³a/6`, `g = ∂³b/6`, its contractions `N, H, B, W, Y` and the scalars `n, h, b, y, z`,
+  the spectral norms `u₂ = ‖U₂‖², u₄ = ‖U₄‖²` of the chaos components of `U − 1` and
+  `v₂ = ‖(q²)₂‖², v₄ = ‖(q²)₄‖²` of `q² = P + iQ` (`specU2`, `specU4`, `specV2`, `specV4`) are
+  defined in `GramTensor.lean`, which also proves `z² ≤ nh` (`G₀ ⪰ 0`, `gramZ_sq_le`),
+  Schatten–Hölder `b ≤ n` (`gramT_schatten`), `y ≤ z` (`gramT_symm`) and
+  `G₁ = Gram(D, C₊₊) = [[h, T], [T, (n + b + 2T)/4]] ⪰ 0`, `T = (3y − z)/2` (`gramT_gram1a`,
+  `gramT_gram1b`).
+* **The spectral layer.**  **Proved**, for `a`, `b` in the third chaos with `E a² = E b² = 1/2`,
+  `E ab = 0` and a Gaussian expectation: `E(S − 3)² = 4u₂ + u₄`, `E[(S − 3)(U − 1)] = 2u₂ + u₄`,
+  `E(A² + B²) = 4v₂ + v₄`, `E N = 2v₂ + v₄` (`S = 3w`, `A + iB = 3c`, `N = 3 Re(c q̄²)`), i.e.
+  `E X² = (4u₂ + u₄)/9`, `P = (2u₂ + u₄)/3`, `E|c|² = (4v₂ + v₄)/9`, `Q = (2v₂ + v₄)/3`, by the
+  orthogonality of the chaos components.
 * **The tensor facts** `GramFacts E J a b`, **not yet formalised** (`tools/check_gram_facts.py`
-  checks every field numerically on explicit and random circular cubics):
-  `u₂ = 16n + 4h + 16z` (the coefficient matrix `4N + 2Hᵀ` of `U₂`),
+  checks every field numerically on explicit and random circular cubics): the four spectral
+  identities `u₂ = 16n + 4h + 16z` (the coefficient matrix `4N + 2Hᵀ` of `U₂`),
   `u₄ = 16n + 4h + 16b + 96y − 32z`, `v₂ = 32b` (`(q²)₂ = 4 I₂,₀(B)`), `v₄ = 96y`
-  (`(q²)₄ = 4 I₃,₁(Y)`), `b ≤ n` (Schatten–Hölder), `y ≤ z` (symmetrisation, `z = ‖W‖²`), and
-  `G₁ = Gram(D, C₊₊) = [[h, T], [T, (n + b + 2T)/4]] ⪰ 0`, `T = (3y − z)/2`.
+  (`(q²)₄ = 4 I₃,₁(Y)`).
 * `gaussian_gramInputs`: under `GramFacts`, the law of `U` under the standard Gaussian measure
   has all inputs of the Stein cuts (`GramInputs`): the inputs of `gaussian_steinInputs`, every
   accepted Gram certificate (`gram_budget_of_scalars` on the scalars above, with `r² ≤ |c|²`),
@@ -47,104 +43,14 @@ noncomputable section
 
 variable {ι : Type*} [Fintype ι]
 
-/-! ### The complex coefficient tensor and its contractions -/
-
-section tensors
-
-variable [DecidableEq ι]
-
-/-- `P₊ = (1 − iJ)/2` (`s = 1`) and `P₋ = (1 + iJ)/2` (`s = −1`). -/
-def cplxProj (J : ι → ι → ℝ) (s : ℝ) (a a' : ι) : ℂ :=
-  ((if a = a' then 1 else 0) - s * Complex.I * J a a') / 2
-
-/-- The complex coefficient tensor `t = 3 P₊P₊P₋ (f + ig)` of `q = a + ib` with real kernels
-`f`, `g`. -/
-def cplxT (J : ι → ι → ℝ) (f g : ι → ι → ι → ℝ) (a b c : ι) : ℂ :=
-  3 * ∑ a', ∑ b', ∑ c', cplxProj J 1 a a' * cplxProj J 1 b b' * cplxProj J (-1) c c'
-    * (f a' b' c' + Complex.I * g a' b' c')
-
-/-- The tensor `t` of the circular cubic `q = a + ib`. -/
-def gramT (J : ι → ι → ℝ) (a b : MvPolynomial ι ℝ) : ι → ι → ι → ℂ :=
-  cplxT J (cubicKernel a) (cubicKernel b)
-
-end tensors
-
-variable (t : ι → ι → ι → ℂ)
-
-/-- `N_{ab} = Σ_{jk} t_{ajk} t̄_{bjk}`. -/
-def ctN (a b : ι) : ℂ := ∑ j, ∑ k, t a j k * conj (t b j k)
-/-- `H_{ab} = Σ_{jk} t_{jka} t̄_{jkb}`. -/
-def ctH (a b : ι) : ℂ := ∑ j, ∑ k, t j k a * conj (t j k b)
-/-- `B_{be} = Σ_{ad} t_{abd} t_{dea}`. -/
-def ctB (b e : ι) : ℂ := ∑ a, ∑ d, t a b d * t d e a
-/-- `W_{abj;c} = Σ_i t_{abi} t_{jic}`. -/
-def ctW (a b j c : ι) : ℂ := ∑ i, t a b i * t j i c
-/-- `Y = Sym_{a,b,j} W`. -/
-def ctY (a b j c : ι) : ℂ :=
-  (ctW t a b j c + ctW t a j b c + ctW t b a j c + ctW t b j a c + ctW t j a b c
-    + ctW t j b a c) / 6
-
-/-- `n = ‖N‖²`. -/
-def gramN : ℝ := ∑ a, ∑ b, Complex.normSq (ctN t a b)
-/-- `h = ‖H‖²`. -/
-def gramH : ℝ := ∑ a, ∑ b, Complex.normSq (ctH t a b)
-/-- `b = ‖B‖²`. -/
-def gramB : ℝ := ∑ b, ∑ e, Complex.normSq (ctB t b e)
-/-- `y = ‖Y‖²`. -/
-def gramY : ℝ := ∑ a, ∑ b, ∑ j, ∑ c, Complex.normSq (ctY t a b j c)
-/-- `z = Re tr(N Hᵀ) = Re Σ_{ab} N_{ab} H_{ab}`. -/
-def gramZ : ℝ := ∑ a, ∑ b, (ctN t a b * ctH t a b).re
-
-lemma gramN_nonneg : 0 ≤ gramN t :=
-  Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _
-lemma gramH_nonneg : 0 ≤ gramH t :=
-  Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _
-lemma gramB_nonneg : 0 ≤ gramB t :=
-  Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _
-lemma gramY_nonneg : 0 ≤ gramY t :=
-  Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
-    Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _
-
-/-- **`G₀ = Gram(N, Hᵀ)` is positive semidefinite**: `z² ≤ n h` (Cauchy–Schwarz). -/
-lemma gramZ_sq_le : gramZ t ^ 2 ≤ gramN t * gramH t := by
-  have hM : |gramZ t| ≤ ∑ a, ∑ b, ‖ctN t a b‖ * ‖ctH t a b‖ := by
-    refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun a _ => ?_)
-    refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun b _ => ?_)
-    exact (Complex.abs_re_le_norm _).trans (by rw [norm_mul])
-  have hCS : (∑ a, ∑ b, ‖ctN t a b‖ * ‖ctH t a b‖) ^ 2
-      ≤ (∑ a, ∑ b, ‖ctN t a b‖ ^ 2) * ∑ a, ∑ b, ‖ctH t a b‖ ^ 2 := by
-    have := Finset.sum_mul_sq_le_sq_mul_sq (Finset.univ : Finset (ι × ι))
-      (fun p => ‖ctN t p.1 p.2‖) (fun p => ‖ctH t p.1 p.2‖)
-    simpa only [Fintype.sum_prod_type] using this
-  have e1 : gramN t = ∑ a, ∑ b, ‖ctN t a b‖ ^ 2 := by
-    simp only [gramN, Complex.normSq_eq_norm_sq]
-  have e2 : gramH t = ∑ a, ∑ b, ‖ctH t a b‖ ^ 2 := by
-    simp only [gramH, Complex.normSq_eq_norm_sq]
-  rw [e1, e2]
-  calc gramZ t ^ 2 = |gramZ t| ^ 2 := (sq_abs _).symm
-    _ ≤ (∑ a, ∑ b, ‖ctN t a b‖ * ‖ctH t a b‖) ^ 2 := pow_le_pow_left₀ (abs_nonneg _) hM 2
-    _ ≤ _ := hCS
-
-/-! ### The spectral norms -/
-
 variable (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (a b : MvPolynomial ι ℝ)
 
-/-- `u₂ = ‖U₂‖²`, the second-chaos energy of `U − 1`. -/
-def specU2 : ℝ := E (proj2 (radU a b - C 1) * proj2 (radU a b - C 1))
-/-- `u₄ = ‖U₄‖²`. -/
-def specU4 : ℝ := E (proj4 (radU a b - C 1) * proj4 (radU a b - C 1))
-/-- `v₂ = ‖(q²)₂‖² = ‖P₂‖² + ‖Q₂‖²` for `q² = P + iQ`. -/
-def specV2 : ℝ :=
-  E (proj2 (radP a b) * proj2 (radP a b)) + E (proj2 (radQ a b) * proj2 (radQ a b))
-/-- `v₄ = ‖(q²)₄‖²`. -/
-def specV4 : ℝ :=
-  E (proj4 (radP a b) * proj4 (radP a b)) + E (proj4 (radQ a b) * proj4 (radQ a b))
-
-/-- **The tensor facts of the contraction-Gram budget** for a circular cubic `q = a + ib`
-(`t = gramT J a b`, `n, h, b, y, z` its contraction scalars): the four spectral identities and
-the order and Gram constraints of the manuscript proof (`TENSOR_BUDGET_PROOF.md`,
-`COUPLED_BUDGET_PROOF.md` of the certificate), **not yet formalised**; `tools/check_gram_facts.py`
-checks every field numerically with these exact definitions. -/
+/-- **The remaining tensor facts of the contraction-Gram budget** for a circular cubic
+`q = a + ib` (`t = gramT J a b`, `n, h, b, y, z` its contraction scalars): the four spectral
+identities of the manuscript proof (`TENSOR_BUDGET_PROOF.md`, `COUPLED_BUDGET_PROOF.md` of the
+certificate), **not yet formalised**; `tools/check_gram_facts.py` checks every field numerically
+with these exact definitions.  (The order and Gram constraints `b ≤ n`, `y ≤ z`, `G₁ ⪰ 0` are
+proved in `GramTensor.lean`.) -/
 structure GramFacts (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (J : ι → ι → ℝ) (a b : MvPolynomial ι ℝ)
     [DecidableEq ι] : Prop where
   u2_eq : specU2 E a b = 16 * gramN (gramT J a b) + 4 * gramH (gramT J a b)
@@ -153,13 +59,6 @@ structure GramFacts (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (J : ι → ι →
     + 16 * gramB (gramT J a b) + 96 * gramY (gramT J a b) - 32 * gramZ (gramT J a b)
   v2_eq : specV2 E a b = 32 * gramB (gramT J a b)
   v4_eq : specV4 E a b = 96 * gramY (gramT J a b)
-  schatten : gramB (gramT J a b) ≤ gramN (gramT J a b)
-  symm : gramY (gramT J a b) ≤ gramZ (gramT J a b)
-  gram1a : 0 ≤ gramN (gramT J a b) + gramB (gramT J a b)
-    + (3 * gramY (gramT J a b) - gramZ (gramT J a b))
-  gram1b : (3 * gramY (gramT J a b) - gramZ (gramT J a b)) ^ 2
-    ≤ gramH (gramT J a b) * (gramN (gramT J a b) + gramB (gramT J a b)
-      + (3 * gramY (gramT J a b) - gramZ (gramT J a b)))
 
 /-! ### The spectral layer: `E X²`, `P`, `E|c|²`, `Q` through the spectral norms -/
 
@@ -365,7 +264,8 @@ theorem gaussian_gramInputs (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a) (hb
       (∫ x, (eval x (radS a b) / 3 - 1) ^ 2 ∂(stdGaussian d))
       (1 / 9 * (gaussE d (radA a b * radA a b) + gaussE d (radB a b * radB a b)))
       (gramN_nonneg _) (gramH_nonneg _) (gramB_nonneg _) (gramY_nonneg _)
-      ((gramY_nonneg _).trans hG.symm) hG.schatten hG.symm hG0 hG.gram1a hG.gram1b
+      ((gramY_nonneg _).trans (gramT_symm J a b)) (gramT_schatten J a b) (gramT_symm J a b) hG0
+      (gramT_gram1a J a b) (gramT_gram1b J a b)
       (by rw [evU, sSU, hU1, u2, u4]; ring) (by rw [erU, hN, sN, hG.v2_eq, hG.v4_eq]; ring)
       (by rw [ev2]; linarith) (by rw [sAB, hG.v2_eq, hG.v4_eq]; ring)
     nlinarith [mul_le_mul_of_nonneg_left e2 hmuR]
