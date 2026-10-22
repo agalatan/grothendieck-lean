@@ -183,6 +183,106 @@ theorem integral_tail_poly (P : CP) {R : ℝ} (hR : 0 < R) :
   · field_simp; ring
   · simp
 
+
+/-! ### The uniform grid -/
+
+/-- The angular nodes `θⱼ = −π + 2πj/N`. -/
+def thN (N j : ℕ) : ℝ := -π + 2 * π * j / N
+
+/-- The ring index `⌊|z|/h⌋`. -/
+def ridx (h : ℝ) (z : ℂ) : ℕ := ⌊‖z‖ / h⌋₊
+
+/-- The angular index `⌈(arg z + π) N/(2π)⌉ − 1`. -/
+def jidx (N : ℕ) (z : ℂ) : ℕ := ⌈(Complex.arg z + π) * N / (2 * π)⌉₊ - 1
+
+lemma measurable_ridx (h : ℝ) : Measurable (ridx h) :=
+  (measurable_norm.div_const h).nat_floor
+
+lemma measurable_jidx (N : ℕ) : Measurable (jidx N) := by
+  have : Measurable fun z : ℂ => ⌈(Complex.arg z + π) * N / (2 * π)⌉₊ :=
+    (((Complex.measurable_arg.add_const π).mul_const _).div_const _).nat_ceil
+  exact (measurable_from_top (f := fun n : ℕ => n - 1)).comp this
+
+lemma jidx_pos_arg (N : ℕ) (hN : 0 < N) (z : ℂ) :
+    0 < (Complex.arg z + π) * N / (2 * π) ∧ (Complex.arg z + π) * N / (2 * π) ≤ N := by
+  have h1 := Complex.neg_pi_lt_arg z
+  have h2 := Complex.arg_le_pi z
+  have hN' : (0 : ℝ) < N := by exact_mod_cast hN
+  have hp := pi_pos
+  constructor
+  · apply div_pos (mul_pos (by linarith) hN') (by positivity)
+  · rw [div_le_iff₀ (by positivity)]; nlinarith
+
+lemma jidx_lt (N : ℕ) (hN : 0 < N) (z : ℂ) : jidx N z < N := by
+  obtain ⟨h1, h2⟩ := jidx_pos_arg N hN z
+  have : ⌈(Complex.arg z + π) * N / (2 * π)⌉₊ ≤ N := Nat.ceil_le.2 h2
+  unfold jidx; omega
+
+/-- **The cell indicator** of the cell `(i, j)` is `[ridx z = i ∧ jidx z = j]`. -/
+lemma cellInd_eq {h : ℝ} (hh : 0 < h) {N : ℕ} (hN : 0 < N) (i j : ℕ) (z : ℂ) :
+    cellInd (i * h) ((i + 1) * h) (thN N j) (thN N (j + 1)) z
+      = if ridx h z = i ∧ jidx N z = j then 1 else 0 := by
+  have hN' : (0 : ℝ) < N := by exact_mod_cast hN
+  have hp := pi_pos
+  have hr : (i * h ≤ ‖z‖ ∧ ‖z‖ < (i + 1) * h) ↔ ridx h z = i := by
+    unfold ridx
+    rw [Nat.floor_eq_iff (div_nonneg (norm_nonneg _) hh.le), le_div_iff₀ hh, div_lt_iff₀ hh]
+  obtain ⟨hx0, -⟩ := jidx_pos_arg N hN z
+  have hj : (thN N j < Complex.arg z ∧ Complex.arg z ≤ thN N (j + 1)) ↔ jidx N z = j := by
+    have hc : jidx N z = j ↔ ⌈(Complex.arg z + π) * N / (2 * π)⌉₊ = j + 1 := by
+      have : 0 < ⌈(Complex.arg z + π) * N / (2 * π)⌉₊ := Nat.ceil_pos.2 hx0
+      unfold jidx; omega
+    rw [hc, Nat.ceil_eq_iff (Nat.succ_ne_zero j), Nat.succ_sub_one]
+    have k1 : thN N j < Complex.arg z ↔ 2 * π * j < (Complex.arg z + π) * N := by
+      unfold thN
+      rw [show -π + 2 * π * j / N < Complex.arg z ↔ 2 * π * j / N < Complex.arg z + π by
+        constructor <;> intro <;> linarith, div_lt_iff₀ hN']
+    have k2 : Complex.arg z ≤ thN N (j + 1) ↔ (Complex.arg z + π) * N ≤ 2 * π * (j + 1) := by
+      unfold thN
+      push_cast
+      rw [show Complex.arg z ≤ -π + 2 * π * (j + 1) / N ↔ Complex.arg z + π ≤ 2 * π * (j + 1) / N by
+        constructor <;> intro <;> linarith, le_div_iff₀ hN']
+    rw [k1, k2, lt_div_iff₀ (by positivity), div_le_iff₀ (by positivity)]
+    push_cast
+    constructor
+    · rintro ⟨h1, h2⟩; constructor <;> linarith
+    · rintro ⟨h1, h2⟩; constructor <;> linarith
+  unfold cellInd
+  by_cases hc : ridx h z = i ∧ jidx N z = j
+  · obtain ⟨h1, h2⟩ := hr.2 hc.1
+    obtain ⟨h3, h4⟩ := hj.2 hc.2
+    simp only [hc.1, hc.2, h1, h2, h3, h4, and_self, ↓reduceIte]
+  · have : ¬(i * h ≤ ‖z‖ ∧ ‖z‖ < (i + 1) * h ∧ thN N j < Complex.arg z ∧
+        Complex.arg z ≤ thN N (j + 1)) := fun hh' => hc ⟨hr.1 ⟨hh'.1, hh'.2.1⟩, hj.1 hh'.2.2⟩
+    simp only [this, hc, ↓reduceIte]
+
+lemma tailInd_eq {h : ℝ} (hh : 0 < h) (Nr : ℕ) (z : ℂ) :
+    tailInd (Nr * h) z = if Nr ≤ ridx h z then 1 else 0 := by
+  unfold tailInd ridx
+  congr 1
+  apply propext
+  rw [Nat.le_floor_iff (div_nonneg (norm_nonneg _) hh.le), le_div_iff₀ hh]
+
+/-- **The partition of unity** of the grid. -/
+lemma partition {h : ℝ} (hh : 0 < h) {N : ℕ} (hN : 0 < N) (Nr : ℕ) (z : ℂ) :
+    ∑ i ∈ range Nr, ∑ j ∈ range N, cellInd (i * h) ((i + 1) * h) (thN N j) (thN N (j + 1)) z
+      + tailInd (Nr * h) z = 1 := by
+  simp_rw [cellInd_eq hh hN, tailInd_eq hh]
+  by_cases hr : ridx h z < Nr
+  · rw [show (if Nr ≤ ridx h z then (1 : ℝ) else 0) = 0 by simp only [show ¬ Nr ≤ ridx h z by omega, ↓reduceIte], add_zero, Finset.sum_eq_single (ridx h z)]
+    · rw [Finset.sum_eq_single (jidx N z)]
+      · simp
+      · intro j _ hj; simp [Ne.symm hj]
+      · intro hj; exact absurd (mem_range.2 (jidx_lt N hN z)) hj
+    · intro i _ hi
+      exact Finset.sum_eq_zero fun j _ => by simp [Ne.symm hi]
+    · intro hi; exact absurd (mem_range.2 hr) hi
+  · rw [show (if Nr ≤ ridx h z then (1 : ℝ) else 0) = 1 by simp only [show Nr ≤ ridx h z by omega, ↓reduceIte]]
+    rw [Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j _ => ?_]
+    · simp
+    · have : ridx h z ≠ i := fun e => hr (e ▸ mem_range.1 hi)
+      simp [this]
+
 end
 
 end Grothe.LowerAnalytic
