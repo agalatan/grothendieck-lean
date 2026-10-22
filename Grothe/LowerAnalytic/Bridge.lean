@@ -22,19 +22,16 @@ states the lower bound with only the genuinely open Gaussian facts left as hypot
   the cap `E U² ≤ 62 ≤ 2 + xMax²` (`gaussian_radU_cap`, in `FourthMoment.lean`) and
   integrability are proved; with `x = √(E U² − 2)`, `Moments` holds with the sixth-moment
   inequality `E U³ ≤ 9m − 12 + C₆ (m − 2)^{3/2}` (`m = E U²`) supplied by
-  `Circular.gaussian_sixth` from the tensor facts `TensorFacts` of `Circular.lean`, assembled by
-  `TensorFactsRest.toTensorFacts` (`CircularTensor.lean`) from the one still-unproved field
-  `TensorFactsRest` (the Wick identity `wick6`; the twelve others are proved there).  (The
-  sixth-moment inequality is false for general real pairs `(a, b)` in the third chaos; it needs
-  the circularity `D_J q = i q`.)
+  `Circular.gaussian_sixth` from the tensor facts `TensorFacts` of `Circular.lean`, all proved
+  (`Circular.tensorFacts`, `CircularTensor.lean`; the Wick identity `wick6` is `Chaos3.wick6`,
+  `WickSix.lean`).  (The sixth-moment inequality is false for general real pairs `(a, b)` in the
+  third chaos; it needs the circularity `D_J q = i q`.)
 * `gaussian_steinInputs` (in `RadialCut.lean`) gives `SteinInputs` with no hypothesis;
   `gaussian_gramInputs` (in `GramBudget.lean`) gives `GramInputs` (the inputs of all Stein cuts,
   including the contraction-Gram budgets cited by the spectral nodes) for every circular cubic,
   from the tensor identities proved in `GramTensor.lean` and `GramSpectral.lean`.
 * `sharedReduction_of_gaussian` and `lower_bound_gaussian`: the finite-layer bound `V ≤ B` for a
-  Gaussian residual.  What remains assumed: the tensor facts `TensorFactsRest` of the sixth-moment
-  certificate (the Wick identity for `κ₆`), the scale
-  `0 ≤ τ ≤ ρ`, the gate variable with `|X₁|² = τ² |q|²`, the row inequalities `RowShared` of the
+  Gaussian residual.  What remains assumed: the scale `0 ≤ τ ≤ ρ`, the gate variable with `|X₁|² = τ² |q|²`, the row inequalities `RowShared` of the
   Gaussian reduction, and the crude row.
 -/
 
@@ -84,11 +81,11 @@ law of `U = |q|²` satisfies `Moments` with `x = √(E U² − 2)`, given the te
 sixth-moment certificate (the cap `E U² ≤ 2 + xMax²` is `gaussian_radU_cap`). -/
 theorem gaussian_moments (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
     (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) {J : Fin d → Fin d → ℝ}
-    (hc : Circular J a b) (hR : TensorFactsRest (gaussE d) J a) :
+    (hc : Circular J a b) :
     Moments (stdGaussian d) (fun x => eval x (radU a b))
       √(∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2) := by
   have hb : Chaos3 b := hc.chaos3_right ha
-  have hT : TensorFacts (gaussE d) J a := hR.toTensorFacts (gaussE_isGaussianExpectation d) ha hc
+  have hT : TensorFacts (gaussE d) J a := hc.tensorFacts (gaussE_isGaussianExpectation d) ha
   have hbb := hc.gaussian_sq_eq haa
   have hab := hc.gaussian_mul
   have h6 := hc.gaussian_sixth ha haa hT
@@ -130,20 +127,19 @@ theorem gaussian_moments (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
 /-- **The Gaussian reduction discharges the law hypotheses of `SharedReduction`**: for the law of
-`|q|²` under the standard Gaussian measure, `q` circular, only the remaining tensor facts of the
-sixth-moment certificate and of the contraction-Gram budget, the scale, the gate variable and the
+`|q|²` under the standard Gaussian measure, `q` circular, only the scale, the gate variable and the
 row inequalities remain to be supplied. -/
 theorem sharedReduction_of_gaussian (rows : List Row) (V t : ℝ) (Qh v : E)
     (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
     (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) {J : Fin d → Fin d → ℝ}
-    (hc : Circular J a b) (hR : TensorFactsRest (gaussE d) J a)
+    (hc : Circular J a b)
     (X1 X2 X3 : (Fin d → ℝ) → ℂ) (τ : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ ρ)
     (hX : ∀ x, ‖X1 x‖ ^ 2 = τ ^ 2 * eval x (radU a b))
     (hrows : ∀ r ∈ rows,
       RowShared r (stdGaussian d) (fun x => eval x (radU a b)) X1 X2 X3 τ V t Qh v) :
     SharedReduction rows V t Qh v :=
   ⟨Fin d → ℝ, inferInstance, stdGaussian d, inferInstance, fun x => eval x (radU a b), X1, X2,
-    X3, τ, _, gaussian_moments a b ha haa hc hR,
+    X3, τ, _, gaussian_moments a b ha haa hc,
     gaussian_gramInputs a b ha haa hc,
     hτ0, hτ1, hX, hrows⟩
 
@@ -153,14 +149,14 @@ theorem lower_bound_gaussian (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 
     (ht1 : t ≤ 9 / 10) (hcrude : RowOf crudeRow V t Qh v)
     (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
     (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) {J : Fin d → Fin d → ℝ}
-    (hc : Circular J a b) (hR : TensorFactsRest (gaussE d) J a)
+    (hc : Circular J a b)
     (X1 X2 X3 : (Fin d → ℝ) → ℂ) (τ : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ ρ)
     (hX : ∀ x, ‖X1 x‖ ^ 2 = τ ^ 2 * eval x (radU a b))
     (hrows : ∀ r ∈ rowData,
       RowShared r (stdGaussian d) (fun x => eval x (radU a b)) X1 X2 X3 τ V t Qh v) :
     V ≤ Bcap :=
   lower_bound_data V t Qh v hv ht0 ht1 hcrude
-    (sharedReduction_of_gaussian rowData V t Qh v a b ha haa hc hR X1 X2 X3 τ hτ0 hτ1 hX
+    (sharedReduction_of_gaussian rowData V t Qh v a b ha haa hc X1 X2 X3 τ hτ0 hτ1 hX
       hrows)
 
 end Grothe.LowerAnalytic
