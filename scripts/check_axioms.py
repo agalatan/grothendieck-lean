@@ -10,7 +10,8 @@ Fails unless
 import re, sys
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
 NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",          # upper: head of the kernel
-          "Grothe.Lower.cert_check._native.native_decide.ax_1_1"}    # lower: rows, batches, cover
+          "Grothe.Lower.cert_check._native.native_decide.ax_1_1",    # lower: rows, batches, cover
+          "Grothe.LowerAnalytic.capChords_check._native.native_decide.ax_1_1"}  # lower: chord nodes of the cap tables
 REQUIRED = {"Grothe.complex_grothendieck_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.Lower.lower_endpoint", "Grothe.Lower.lower_bound_of_transferL2",
             "Grothe.LowerAnalytic.gaussian_steinInputs", "Grothe.LowerAnalytic.lower_bound_gaussian",

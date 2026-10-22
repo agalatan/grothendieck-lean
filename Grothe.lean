@@ -91,3 +91,7 @@ import Grothe.LowerAnalytic.FibreIntegral
 import Grothe.LowerAnalytic.RowGaussian
 import Grothe.LowerAnalytic.Frame
 import Grothe.LowerAnalytic.Reduction
+import Grothe.LowerAnalytic.CapChordData
+import Grothe.LowerAnalytic.CapHull
+import Grothe.LowerAnalytic.CapMajorant
+import Grothe.LowerAnalytic.CapLinAlg

@@ -139,3 +139,10 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.fibreGram_eq
 #print axioms Grothe.Lower.rowGates_ok
 #print axioms Grothe.Lower.rowData_gatesOK
+#print axioms Grothe.LowerAnalytic.nodeCaps_of_vertexCaps
+#print axioms Grothe.LowerAnalytic.lower_bound_of_vertexCaps
+#print axioms Grothe.LowerAnalytic.rowPot_le_chord
+#print axioms Grothe.LowerAnalytic.anchored_pair_poly
+#print axioms Grothe.LowerAnalytic.young_pair
+#print axioms Grothe.LowerAnalytic.qf_nonneg_of_ldlOK
+#print axioms Grothe.LowerAnalytic.qf_le_loewnerUp
