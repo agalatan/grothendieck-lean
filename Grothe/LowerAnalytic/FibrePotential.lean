@@ -48,17 +48,17 @@ noncomputable section
 /-! ### The fibre functions -/
 
 /-- `|z|² − 1`. -/
-def B1 (z : ℂ) : ℂ := ((Complex.normSq z - 1 : ℝ) : ℂ)
+def fB1 (z : ℂ) : ℂ := ((Complex.normSq z - 1 : ℝ) : ℂ)
 /-- `z²/√2`. -/
-def B2 (z : ℂ) : ℂ := z ^ 2 / (√2 : ℝ)
+def fB2 (z : ℂ) : ℂ := z ^ 2 / (√2 : ℝ)
 /-- `z(|z|² − 2)/√2`. -/
-def B4 (z : ℂ) : ℂ := z * ((Complex.normSq z - 2 : ℝ) : ℂ) / (√2 : ℝ)
+def fB4 (z : ℂ) : ℂ := z * ((Complex.normSq z - 2 : ℝ) : ℂ) / (√2 : ℝ)
 /-- `L(z) = z(ℓ + β(|z|² − 2))`. -/
 def Lf (ℓ β : ℝ) (z : ℂ) : ℂ := z * ((ℓ + β * (Complex.normSq z - 2) : ℝ) : ℂ)
 
-lemma continuous_B1 : Continuous B1 := by unfold B1; fun_prop
-lemma continuous_B2 : Continuous B2 := by unfold B2; fun_prop
-lemma continuous_B4 : Continuous B4 := by unfold B4; fun_prop
+lemma continuous_fB1 : Continuous fB1 := by unfold fB1; fun_prop
+lemma continuous_fB2 : Continuous fB2 := by unfold fB2; fun_prop
+lemma continuous_fB4 : Continuous fB4 := by unfold fB4; fun_prop
 lemma continuous_Lf (ℓ β : ℝ) : Continuous (Lf ℓ β) := by unfold Lf; fun_prop
 
 /-- The growth weight `(1 + |z|²)²`. -/
@@ -74,22 +74,22 @@ lemma one_add_normSq_le_qw (z : ℂ) : 1 + Complex.normSq z ≤ qw z := by
 
 lemma norm_le_qw (z : ℂ) : ‖z‖ ≤ qw z := (norm_le_one_add_normSq z).trans (one_add_normSq_le_qw z)
 
-lemma norm_B1_le (z : ℂ) : ‖B1 z‖ ≤ qw z := by
-  rw [B1, Complex.norm_real, Real.norm_eq_abs]
+lemma norm_fB1_le (z : ℂ) : ‖fB1 z‖ ≤ qw z := by
+  rw [fB1, Complex.norm_real, Real.norm_eq_abs]
   refine (abs_sub _ _).trans ?_
   rw [abs_one, abs_of_nonneg (Complex.normSq_nonneg z)]
   linarith [one_add_normSq_le_qw z]
 
-lemma norm_B2_le (z : ℂ) : ‖B2 z‖ ≤ qw z := by
-  rw [B2, norm_div, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _),
+lemma norm_fB2_le (z : ℂ) : ‖fB2 z‖ ≤ qw z := by
+  rw [fB2, norm_div, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _),
     div_le_iff₀ (by positivity), ← Complex.normSq_eq_norm_sq]
   have h1 : (1 : ℝ) ≤ √2 := by rw [Real.le_sqrt (by norm_num) (by norm_num)]; norm_num
   have h2 := one_add_normSq_le_qw z
   have h3 := Complex.normSq_nonneg z
   nlinarith [qw_nonneg z]
 
-lemma norm_B4_le (z : ℂ) : ‖B4 z‖ ≤ 2 * qw z := by
-  rw [B4, norm_div, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs,
+lemma norm_fB4_le (z : ℂ) : ‖fB4 z‖ ≤ 2 * qw z := by
+  rw [fB4, norm_div, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs,
     Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), div_le_iff₀ (by positivity)]
   have h1 : (1 : ℝ) ≤ √2 := by rw [Real.le_sqrt (by norm_num) (by norm_num)]; norm_num
   have h2 := norm_le_one_add_normSq z
@@ -138,9 +138,9 @@ lemma integrable_qw : Integrable qw gaussC :=
   integrable_of_le_qw' qw (by unfold qw; fun_prop) 1 fun z => by
     rw [abs_of_nonneg (qw_nonneg z), one_mul]
 
-lemma integrable_B1 : Integrable B1 gaussC := integrable_of_le_qw B1 continuous_B1 1 (by simpa using norm_B1_le)
-lemma integrable_B2 : Integrable B2 gaussC := integrable_of_le_qw B2 continuous_B2 1 (by simpa using norm_B2_le)
-lemma integrable_B4 : Integrable B4 gaussC := integrable_of_le_qw B4 continuous_B4 2 norm_B4_le
+lemma integrable_fB1 : Integrable fB1 gaussC := integrable_of_le_qw fB1 continuous_fB1 1 (by simpa using norm_fB1_le)
+lemma integrable_fB2 : Integrable fB2 gaussC := integrable_of_le_qw fB2 continuous_fB2 1 (by simpa using norm_fB2_le)
+lemma integrable_fB4 : Integrable fB4 gaussC := integrable_of_le_qw fB4 continuous_fB4 2 norm_fB4_le
 lemma integrable_id : Integrable (fun z : ℂ => z) gaussC :=
   integrable_of_le_qw _ continuous_id 1 (by simpa using norm_le_qw)
 lemma integrable_conj : Integrable (fun z : ℂ => conj z) gaussC :=
@@ -163,7 +163,7 @@ namespace Fib
 
 /-- `B·y`. -/
 def fn (v : Fib) (z : ℂ) : ℂ :=
-  v.e1 + v.e2 * B1 z + conj v.e3 * B2 z + v.z1 * z + v.z2 * B4 z + v.d * conj z
+  v.e1 + v.e2 * fB1 z + conj v.e3 * fB2 z + v.z1 * z + v.z2 * fB4 z + v.d * conj z
 
 def add (v w : Fib) : Fib := ⟨v.e1 + w.e1, v.e2 + w.e2, v.e3 + w.e3, v.z1 + w.z1, v.z2 + w.z2, v.d + w.d⟩
 def sub (v w : Fib) : Fib := ⟨v.e1 - w.e1, v.e2 - w.e2, v.e3 - w.e3, v.z1 - w.z1, v.z2 - w.z2, v.d - w.d⟩
@@ -193,14 +193,14 @@ lemma fn_smul (s : ℝ) (v : Fib) (z : ℂ) : (v.smul s).fn z = (s : ℂ) * v.fn
 
 lemma continuous_fn (v : Fib) : Continuous v.fn := by
   unfold fn
-  exact (((((continuous_const.add (continuous_const.mul continuous_B1)).add
-    (continuous_const.mul continuous_B2)).add (continuous_const.mul continuous_id)).add
-    (continuous_const.mul continuous_B4)).add (continuous_const.mul Complex.continuous_conj))
+  exact (((((continuous_const.add (continuous_const.mul continuous_fB1)).add
+    (continuous_const.mul continuous_fB2)).add (continuous_const.mul continuous_id)).add
+    (continuous_const.mul continuous_fB4)).add (continuous_const.mul Complex.continuous_conj))
 
 lemma norm_fn_le (v : Fib) (z : ℂ) :
     ‖v.fn z‖ ≤ (‖v.e1‖ + ‖v.e2‖ + ‖v.e3‖ + ‖v.z1‖ + 2 * ‖v.z2‖ + ‖v.d‖) * qw z := by
   have h0 : (1 : ℝ) ≤ qw z := by unfold qw; nlinarith [Complex.normSq_nonneg z]
-  calc ‖v.fn z‖ ≤ ‖v.e1‖ + ‖v.e2 * B1 z‖ + ‖conj v.e3 * B2 z‖ + ‖v.z1 * z‖ + ‖v.z2 * B4 z‖
+  calc ‖v.fn z‖ ≤ ‖v.e1‖ + ‖v.e2 * fB1 z‖ + ‖conj v.e3 * fB2 z‖ + ‖v.z1 * z‖ + ‖v.z2 * fB4 z‖
         + ‖v.d * conj z‖ := by
         unfold fn
         refine (norm_add_le _ _).trans (add_le_add ?_ le_rfl)
@@ -213,10 +213,10 @@ lemma norm_fn_le (v : Fib) (z : ℂ) :
         simp only [norm_mul, Complex.norm_conj]
         gcongr
         · exact le_mul_of_one_le_right (norm_nonneg _) h0
-        · exact norm_B1_le z
-        · exact norm_B2_le z
+        · exact norm_fB1_le z
+        · exact norm_fB2_le z
         · exact norm_le_qw z
-        · exact norm_B4_le z
+        · exact norm_fB4_le z
         · exact norm_le_qw z
     _ = _ := by ring
 

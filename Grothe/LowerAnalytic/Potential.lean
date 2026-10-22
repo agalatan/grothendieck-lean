@@ -1,4 +1,5 @@
 import Grothe.Lower.RowGates
+import Grothe.LowerAnalytic.GaussianRadial
 
 /-!
 # The standard complex Gaussian on `ℂ` and the fibre potential of a row (L4, S4)
@@ -93,9 +94,6 @@ lemma integral_normSq_gaussC : ∫ z, Complex.normSq z ∂gaussC = 1 := by
 
 /-! ### `E||z|² − 1| = 2/e` by polar coordinates -/
 
-/-- The planar Gaussian `γ ⊗ γ`. -/
-abbrev gauss2 : Measure (ℝ × ℝ) := (gaussianReal 0 1).prod (gaussianReal 0 1)
-
 lemma integral_stdGaussian_two (F : ℝ × ℝ → ℝ) (hF : Continuous F) :
     ∫ x, F (x 0, x 1) ∂(stdGaussian 2) = ∫ p, F p ∂gauss2 := by
   have h := (measurePreserving_finTwoArrow (gaussianReal 0 1)).map_eq
@@ -103,24 +101,6 @@ lemma integral_stdGaussian_two (F : ℝ × ℝ → ℝ) (hF : Continuous F) :
       = ∫ p, F p ∂((stdGaussian 2).map MeasurableEquiv.finTwoArrow) :=
         (integral_map (by fun_prop) hF.aestronglyMeasurable).symm
     _ = ∫ p, F p ∂gauss2 := by rw [stdGaussian, h]
-
-lemma gaussianPDFReal_mul (x y : ℝ) :
-    gaussianPDFReal 0 1 x * gaussianPDFReal 0 1 y = (2 * π)⁻¹ * exp (-(x ^ 2 + y ^ 2) / 2) := by
-  simp only [gaussianPDFReal_def, NNReal.coe_one, mul_one, sub_zero]
-  have h : (√(2 * π))⁻¹ * (√(2 * π))⁻¹ = (2 * π)⁻¹ := by
-    rw [← mul_inv, Real.mul_self_sqrt (by positivity)]
-  rw [← h, show -(x ^ 2 + y ^ 2) / 2 = -x ^ 2 / 2 + -y ^ 2 / 2 by ring, exp_add]; ring
-
-lemma integral_gauss2_eq (F : ℝ × ℝ → ℝ) :
-    ∫ p, F p ∂gauss2
-      = ∫ p : ℝ × ℝ, gaussianPDFReal 0 1 p.1 * gaussianPDFReal 0 1 p.2 * F p := by
-  rw [gauss2, gaussianReal_of_var_ne_zero 0 one_ne_zero,
-    MeasureTheory.prod_withDensity (measurable_gaussianPDF 0 1) (measurable_gaussianPDF 0 1),
-    integral_withDensity_eq_integral_toReal_smul (by fun_prop)
-      (Filter.Eventually.of_forall fun p => ENNReal.mul_lt_top gaussianPDF_lt_top gaussianPDF_lt_top),
-    ← Measure.volume_eq_prod]
-  congr 1; ext p
-  rw [ENNReal.toReal_mul, toReal_gaussianPDF, toReal_gaussianPDF, smul_eq_mul]
 
 /-- The antiderivative `G(r) = (r²/2) e^{−r²/2}` of `(1 − r²/2) r e^{−r²/2}`. -/
 lemma hasDerivAt_G (r : ℝ) :

@@ -23,20 +23,19 @@ states the lower bound with only the genuinely open Gaussian facts left as hypot
   integrability are proved; with `x = √(E U² − 2)`, `Moments` holds with the sixth-moment
   inequality `E U³ ≤ 9m − 12 + C₆ (m − 2)^{3/2}` (`m = E U²`) supplied by
   `Circular.gaussian_sixth` from the tensor facts `TensorFacts` of `Circular.lean`, assembled by
-  `TensorFactsRest.toTensorFacts` (`CircularTensor.lean`) from the eight still-unproved fields
-  `TensorFactsRest` (`wick4`, `anti`, `block`, `A0nn`, `A2nn` are proved there).  (The
+  `TensorFactsRest.toTensorFacts` (`CircularTensor.lean`) from the one still-unproved field
+  `TensorFactsRest` (the Wick identity `wick6`; the twelve others are proved there).  (The
   sixth-moment inequality is false for general real pairs `(a, b)` in the third chaos; it needs
   the circularity `D_J q = i q`.)
 * `gaussian_steinInputs` (in `RadialCut.lean`) gives `SteinInputs` with no hypothesis;
   `gaussian_gramInputs` (in `GramBudget.lean`) gives `GramInputs` (the inputs of all Stein cuts,
-  including the contraction-Gram budgets cited by the spectral nodes) from the tensor facts
-  `GramFacts` of the circular cubic.
+  including the contraction-Gram budgets cited by the spectral nodes) for every circular cubic,
+  from the tensor identities proved in `GramTensor.lean` and `GramSpectral.lean`.
 * `sharedReduction_of_gaussian` and `lower_bound_gaussian`: the finite-layer bound `V ≤ B` for a
   Gaussian residual.  What remains assumed: the tensor facts `TensorFactsRest` of the sixth-moment
-  certificate (the Wick identity for `κ₆` and seven charge-sector inequalities), the tensor facts
-  `GramFacts` of the contraction-Gram budget (the four spectral identities, `b ≤ n`, `y ≤ z` and
-  `G₁ ⪰ 0`), the scale `0 ≤ τ ≤ ρ`, the gate variable with `|X₁|² = τ² |q|²`, the row inequalities
-  `RowShared` of the Gaussian reduction, and the crude row.
+  certificate (the Wick identity for `κ₆`), the scale
+  `0 ≤ τ ≤ ρ`, the gate variable with `|X₁|² = τ² |q|²`, the row inequalities `RowShared` of the
+  Gaussian reduction, and the crude row.
 -/
 
 open MeasureTheory MvPolynomial Grothe.Lower
@@ -137,7 +136,7 @@ row inequalities remain to be supplied. -/
 theorem sharedReduction_of_gaussian (rows : List Row) (V t : ℝ) (Qh v : E)
     (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
     (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) {J : Fin d → Fin d → ℝ}
-    (hc : Circular J a b) (hR : TensorFactsRest (gaussE d) J a) (hG : GramFacts (gaussE d) J a b)
+    (hc : Circular J a b) (hR : TensorFactsRest (gaussE d) J a)
     (X1 X2 X3 : (Fin d → ℝ) → ℂ) (τ : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ ρ)
     (hX : ∀ x, ‖X1 x‖ ^ 2 = τ ^ 2 * eval x (radU a b))
     (hrows : ∀ r ∈ rows,
@@ -145,7 +144,7 @@ theorem sharedReduction_of_gaussian (rows : List Row) (V t : ℝ) (Qh v : E)
     SharedReduction rows V t Qh v :=
   ⟨Fin d → ℝ, inferInstance, stdGaussian d, inferInstance, fun x => eval x (radU a b), X1, X2,
     X3, τ, _, gaussian_moments a b ha haa hc hR,
-    gaussian_gramInputs a b ha (hc.chaos3_right ha) haa (hc.gaussian_sq_eq haa) hc.gaussian_mul hG,
+    gaussian_gramInputs a b ha haa hc,
     hτ0, hτ1, hX, hrows⟩
 
 /-- **The finite-layer lower bound for a Gaussian residual**: `lower_bound_data` with the law
@@ -154,14 +153,14 @@ theorem lower_bound_gaussian (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 
     (ht1 : t ≤ 9 / 10) (hcrude : RowOf crudeRow V t Qh v)
     (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
     (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) {J : Fin d → Fin d → ℝ}
-    (hc : Circular J a b) (hR : TensorFactsRest (gaussE d) J a) (hG : GramFacts (gaussE d) J a b)
+    (hc : Circular J a b) (hR : TensorFactsRest (gaussE d) J a)
     (X1 X2 X3 : (Fin d → ℝ) → ℂ) (τ : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ ρ)
     (hX : ∀ x, ‖X1 x‖ ^ 2 = τ ^ 2 * eval x (radU a b))
     (hrows : ∀ r ∈ rowData,
       RowShared r (stdGaussian d) (fun x => eval x (radU a b)) X1 X2 X3 τ V t Qh v) :
     V ≤ Bcap :=
   lower_bound_data V t Qh v hv ht0 ht1 hcrude
-    (sharedReduction_of_gaussian rowData V t Qh v a b ha haa hc hR hG X1 X2 X3 τ hτ0 hτ1 hX
+    (sharedReduction_of_gaussian rowData V t Qh v a b ha haa hc hR X1 X2 X3 τ hτ0 hτ1 hX
       hrows)
 
 end Grothe.LowerAnalytic

@@ -13,7 +13,8 @@ projections and for the unimodular test family).  In `L²(γ_n)`:
   orthogonal complement of `H₁,₀` inside the charge-one polynomials of degree `≤ 3`
   (`chargeOne3 n = span{z_l, z_a z_b z̄_c}`); this is the span of the Wick cubics
   `z_a z_b z̄_c − δ_ac z_b − δ_bc z_a`, since each monomial `z_a z_b z̄_c` is a Wick cubic plus an
-  element of `H₁,₀` and the Wick cubics are orthogonal to `H₁,₀`.  Both are finite-dimensional, so
+  element of `H₁,₀` and the Wick cubics are orthogonal to `H₁,₀` (`wickL_mem_H21` in
+  `WickCubic.lean`, by the complex Wick identity).  Both are finite-dimensional, so
   the orthogonal projections `P₁,₀ = (H10 n).starProjection`, `P₂,₁ = (H21 n).starProjection`
   exist, and the **witness** is `witness n = P₁,₀ − ε P₂,₁`, `ε = 149/200`
   (`witnessOf n K` for a general closed `K`; the value theorem needs only `K ⊥ H₁,₀`).

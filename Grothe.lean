@@ -62,10 +62,15 @@ import Grothe.LowerAnalytic.RadialParts
 import Grothe.LowerAnalytic.RadialCut
 import Grothe.LowerAnalytic.Circular
 import Grothe.LowerAnalytic.CircularTensor
+import Grothe.LowerAnalytic.GramTensor
+import Grothe.LowerAnalytic.GramSpectral
 import Grothe.LowerAnalytic.GramBudget
 import Grothe.LowerAnalytic.Bridge
+import Grothe.LowerAnalytic.GaussianRadial
 import Grothe.LowerAnalytic.Witness
 import Grothe.LowerAnalytic.WitnessCap
+import Grothe.LowerAnalytic.WickCubic
+import Grothe.LowerAnalytic.WickChaos
 import Grothe.Lower.RowReduction
 import Grothe.Lower.RowGates
 import Grothe.LowerAnalytic.Potential

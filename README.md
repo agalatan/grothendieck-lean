@@ -108,7 +108,9 @@ a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u,
 
 **How the two halves fit.** The Gaussian witness is now defined in Lean
 (`Grothe/LowerAnalytic/Witness.lean`): on ℂⁿ = ℝ^{n+n} with the standard Gaussian measure,
-H₁,₀ = span{zₗ}, H₂,₁ = (charge-one polynomials of degree ≤ 3) ⊓ H₁,₀ᗮ (the span of the Wick cubics),
+H₁,₀ = span{zₗ}, H₂,₁ = (charge-one polynomials of degree ≤ 3) ⊓ H₁,₀ᗮ (the span of the Wick cubics
+zₐz_b z̄_c − 2δ_ac z_b − 2δ_bc zₐ, which lie in it by the complex Wick identity
+E[z̄ᵢzₐz_b z̄_c] = 4(δ_ia δ_bc + δ_ib δ_ac), `WickCubic.lean`),
 and `witness n = P₁,₀ − εP₂,₁` (orthogonal projections, ε = 149/200). The **value half** of
 `TransferInputsL2` is proved: for uₗ = zₗ/‖z‖, `norm_pairVal_witness : 1 − (1+ε)/(n+1) ≤ ‖Σₗ⟨uₗ, T uₗ⟩‖`
 (from E‖z‖² = 2n, E‖z‖⁴ = 4n(n+1), E‖z‖ ≥ 2n/√(2(n+1)) and the orthogonality of the two chaos
@@ -117,12 +119,19 @@ ranges), and `transferInputs_of_witnessCap : (∀ n ≥ N, WitnessCap n B) → T
 The **scalar-cap half** is reduced to the certificate (`WitnessCap.lean`): for unimodular f, g
 with h = (f+g)/2, k = (f−g)/2, t = ‖P₁,₀h‖, the polarisation identity `VOf_eq`,
 Re⟨f, Tg⟩ = t² − ε‖P₂,₁h‖² − ‖P₁,₀k‖² + ε‖P₂,₁k‖², is proved, and
-`witnessCap_of_reduction : (∀ unimodular f g with Re⟨f,Tg⟩ ≥ 0, ReductionHyp n f g) → WitnessCap n Bcap`
-applies `lower_bound_data` to V = Re⟨f, Tg⟩ (after a phase) with the crude row derived from
-‖P₂,₁k‖ ≤ ρ. `ReductionHyp n f g` is exactly what remains: t ≤ 9/10 (on paper t ≤ E|z₁|/‖z₁‖₂ = √π/2),
-‖P₂,₁k‖ ≤ ρ (the first-moment bound of the cubic residual, L3), and a coupling vector v with ‖v‖² = 2
-and `SharedReduction rowData V t (P₂,₁h) v` (the Gaussian reduction of the rows, L4).
-`lower_bound_of_reduction : (∀ n ≥ N, ∀ f g, … → ReductionHyp n f g) → IsGrothendieckBound K → Llow < K`
+`witnessCap_of_reduction : WickTensorHyp n → (∀ unimodular f g with Re⟨f,Tg⟩ ≥ 0, ReductionHyp n f g) → WitnessCap n Bcap`
+applies `lower_bound_data` to V = Re⟨f, Tg⟩ (after a phase) with the bound t ≤ 9/10 proved
+(`tOf_le`: P₁,₀h is a complex Gaussian, so ‖P₁,₀h‖² = Re⟨h, P₁,₀h⟩ ≤ E|P₁,₀h| = (√π/2)‖P₁,₀h‖, by the
+rotation invariance of the Gaussian measure and E√(x²+y²) = √(π/2) in `GaussianRadial.lean`) and the
+crude row derived from ‖P₂,₁k‖ ≤ ρ, which is proved (`normQk_le_rho`, L3): P₂,₁k ∈ H₂,₁ is a
+combination of Wick cubics (`exists_wick_repr`), its real and imaginary parts are polynomials a, b with
+`Chaos3 a` and `Circular Jstd a b` for the standard complex structure (`WickChaos.lean`), so the
+certified first-moment bound E√(a² + b²) ≤ ρ of `gaussian_moments` applies to P₂,₁k/‖P₂,₁k‖, and
+‖P₂,₁k‖² = Re⟨k, P₂,₁k⟩ ≤ E|P₂,₁k| since |k| ≤ 1. That first-moment bound rests on the sixth-moment
+inequality, hence on the open tensor fields, assumed as `WickTensorHyp n` (`TensorFactsRest` for every
+circular cubic pair of ℂⁿ). `ReductionHyp n f g` is exactly what remains: a coupling vector v with
+‖v‖² = 2 and `SharedReduction rowData V t (P₂,₁h) v` (the Gaussian reduction of the rows, L4).
+`lower_bound_of_reduction : (∀ n ≥ N, WickTensorHyp n) → (∀ n ≥ N, ∀ f g, … → ReductionHyp n f g) → IsGrothendieckBound K → Llow < K`
 composes everything; `TransferInputsL2 B` itself no longer needs to be assumed.
 
 * Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
@@ -141,7 +150,8 @@ composes everything; `TransferInputsL2 B` itself no longer needs to be assumed.
   and 6,562 mixing two, a component being a row or a mixture of two rows with four certified
   τ-nodes, chorded twice in τ, pinned gate price X₁ = p);
   and the endpoint; the Gaussian witness on L²(γ_n) with its value on z/‖z‖, the orthogonality of the
-  chaos ranges, the polarisation identity of the scalar pairing and the transfer inputs from the
+  chaos ranges, the polarisation identity of the scalar pairing, the bound ‖P₁,₀h‖ ≤ √π/2 for |h| ≤ 1
+  (rotation invariance of the Gaussian measure, E√(x²+y²) = √(π/2)) and the transfer inputs from the
   scalar caps. All finite exact checks of the lower certificate are one `native_decide` (`cert_check`).
 * Explicit hypotheses (not formalized): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
   from ‖Qk‖ ≤ E|Qk/‖Qk‖| ≤ ρ, which uses the moment bounds also for the cubic Qk/‖Qk‖), with ‖v‖² = 2
@@ -155,12 +165,14 @@ composes everything; `TransferInputsL2 B` itself no longer needs to be assumed.
   the cap table; slack 10⁻¹¹); the moment bounds on the law of U = |q|²; the analytic
   inputs of the Stein cuts for that law; and, for the scalar cap of the witness T = P₁,₀ − εP₂,₁
   over unimodular functions on Gaussian space, `ReductionHyp` (for every unimodular pair with
-  Re⟨f,Tg⟩ ≥ 0: t = ‖P₁,₀h‖ ≤ 9/10, the first-moment bound ‖P₂,₁k‖ ≤ ρ of the cubic residual, and a
-  coupling vector with ‖v‖² = 2 and `SharedReduction` for V = Re⟨f,Tg⟩, t, P₂,₁h, v). The
-  transfer itself (finite partitions, phase choices on cells, L² approximation by ball-valued
-  simple functions, passage to the limit), the witness, its value ≥ 1 − (1+ε)/(n+1) on u(z) = z/‖z‖,
-  the polarisation identity and the crude row from ‖P₂,₁k‖ ≤ ρ are proved in Lean
-  (`Grothe/Lower/Transfer*.lean`, `Grothe/LowerAnalytic/Witness.lean`, `WitnessCap.lean`).
+  Re⟨f,Tg⟩ ≥ 0: a coupling vector with ‖v‖² = 2 and `SharedReduction` for V = Re⟨f,Tg⟩, t = ‖P₁,₀h‖,
+  P₂,₁h, v) and `WickTensorHyp` (the tensor fields `TensorFactsRest` for the circular cubics of ℂⁿ,
+  needed by the first-moment bound of the cubic residual). The transfer itself (finite partitions,
+  phase choices on cells, L² approximation by ball-valued simple functions, passage to the limit), the
+  witness, its value ≥ 1 − (1+ε)/(n+1) on u(z) = z/‖z‖, the polarisation identity, the bound
+  t ≤ √π/2 < 9/10, the identification of H₂,₁ with the circular cubic polynomials and the crude row
+  ‖P₂,₁k‖ ≤ ρ from the certified first-moment bound are proved in Lean (`Grothe/Lower/Transfer*.lean`,
+  `Grothe/LowerAnalytic/{GaussianRadial,Witness,WitnessCap,WickCubic,WickChaos}.lean`).
 * The analytic inputs of the Stein cuts (`GramInputs`, extending `SteinInputs`) are, with
   w = Γ(q, q̄)/3, c = Γ(q, q)/3, X = w − 1, r = Re(c q̄²)/U, P = E[XU] and Q = E[rU]: E w = 1; the
   separate spectral budgets E X² ≤ (2/3)P and E r² ≤ (2/3)Q (gaps ‖U₄‖²/9 and ‖(q²)₄‖²/9 + E(|c|² − r²));
@@ -190,17 +202,31 @@ composes everything; `TransferInputsL2 B` itself no longer needs to be assumed.
   (`Grothe.LowerAnalytic.gaussian_steinInputs`; the budgets from Ornstein–Uhlenbeck ladders in
   `SpectralBudget.lean`, the covariance order `covariance_order` in `Covariance.lean`, where
   P − Q = Σ Var(Γ(∂ᵢa, ∂ₖb) − Γ(∂ₖa, ∂ᵢb)) + ½‖T − Tᵀ‖² for the matrix T = Σᵢ ∂ᵢ∇²a ⊗ ∂ᵢ∇²b). The
-  contraction-Gram budgets are derived in `GramBudget.lean` (`gaussian_gramInputs`) from the tensor
-  facts `GramFacts` of the circular cubic: with the complex coefficient tensor t = 3P₊P₊P₋(f + ig) of
+  contraction-Gram budgets are derived in `GramBudget.lean` (`gaussian_gramInputs`) for every
+  circular cubic: with the complex coefficient tensor t = 3P₊P₊P₋(f + ig) of
   the real kernels f = ∂³a/6, g = ∂³b/6 (P± = (1 ∓ iJ)/2 the projections of the complex structure J)
   and its contractions defined in Lean, the **proved** part is the spectral layer E X² = (4u₂ + u₄)/9,
   P = (2u₂ + u₄)/3, E|c|² = (4v₂ + v₄)/9, Q = (2v₂ + v₄)/3 for the chaos energies u₂ = ‖U₂‖²,
   u₄ = ‖U₄‖² of U − 1 and v₂, v₄ of q² (orthogonality of the chaos projections of `Influence.lean`),
-  r² ≤ |c|², the Cauchy–Schwarz bound z² ≤ nh (G₀ ⪰ 0) and the soundness of an accepted certificate
-  on any scalars with these properties (`gram_budget_of_scalars`); **still assumed** (`GramFacts`) are
-  the finite contraction identities u₂ = 16n + 4h + 16z, u₄ = 16n + 4h + 16b + 96y − 32z, v₂ = 32b,
-  v₄ = 96y and the inequalities b ≤ n (Schatten–Hölder), y ≤ z (symmetrisation, z = ‖W‖²) and
-  G₁ ⪰ 0; `tools/check_gram_facts.py` checks every field numerically with the exact Lean definitions.
+  r² ≤ |c|², the Cauchy–Schwarz bound z² ≤ nh (G₀ ⪰ 0), the soundness of an accepted certificate
+  on any scalars with these properties (`gram_budget_of_scalars`), and, in `GramTensor.lean` by
+  finite sum manipulations for every tensor symmetric in its first two slots, the inequalities
+  b ≤ n (Schatten–Hölder: b = Re Σ M_x M_{σx} ≤ ‖M‖² = n for the Gram matrix M of the slices
+  t_{a·d}), y ≤ z (z = ‖W‖², y = ‖Sym W‖² = (z + 2T)/3 with T = Re⟨W^{(23)}, W⟩ ≤ z) and G₁ ⪰ 0
+  (G₁ = Gram(D, C₊₊) with ‖D‖² = h, ⟨D, C₊₊⟩ = T, ‖C₊₊‖² = (n + b + 2T)/4, 2T = 3y − z);
+  and, in `GramSpectral.lean`, the second-chaos identities u₂ = 16n + 4h + 16z and v₂ = 32b
+  (`Circular.specU2_eq`, `Circular.specV2_eq`: a complex charge calculus on the slots of t — the
+  kernel τ = f + ig of a circular pair has δτ = iτ, so τ = Sym t with t = 3P₊P₊P₋τ, and every
+  contraction of two slots whose J-eigenvalues do not cancel vanishes — reduces the second
+  derivatives ∂²Π₂|q|² = 36 Re Σ τ τ̄ and ∂²Π₂q² = 36 Σ τ τ to (H + 2N)/9 and 2B/9, and the
+  Ornstein–Uhlenbeck ladder E X² = ½ Σ (∂²X)² gives the energies) and the fourth-chaos identities
+  u₄ = 16n + 4h + 16b + 96y − 32z and v₄ = 96y (`Circular.specU4_eq`, `Circular.specV4_eq`:
+  ∂⁴Π₄ = 108(Sym(f⋆g) + Sym(g⋆f)), the ladder E X² = (1/24) Σ (∂⁴X)², the sector expansions
+  τ⋆τ = (W + W^{(34)} + W^{swP} + W^{swP(34)})/9 and τ⋆τ̄ = (D + 4 C^σ)/9, and a charge count of the
+  pairings of permuted W, D, C: three of twelve survive for v₄, ten of sixty for u₄, each a Gram
+  identity of `GramTensor.lean` up to reindexing); so **every tensor fact of the contraction-Gram
+  budget is proved** and `gaussian_gramInputs` has no hypothesis beyond circularity;
+  `tools/check_gram_facts.py` checks the identities numerically with the exact Lean definitions.
   `Grothe.LowerAnalytic.lower_bound_gaussian` instantiates `lower_bound_data` with this law and
   discharges E U = 1, the integrability conditions, E U² ≥ 2, the cap E U² ≤ 62 ≤ 2 + (31/4)²
   (`gaussian_radU_cap`: E F⁴ ≤ 93 (E F²)² for every real third-chaos F, applied to a, b, a ± b),
@@ -214,21 +240,34 @@ composes everything; `TransferInputsL2 B` itself no longer needs to be assumed.
   `Circular.gaussian_sixth`) from the scalar certificate `cumulant_bound`: the real cumulants of
   a are converted with E a⁴ = (3/8) E U², E a⁶ = (5/16) E U³ (from E D_J P = 0), E a² = 6‖f‖²
   for the kernel f = ∂³a/6, and the Cauchy–Schwarz inputs ‖SF‖² ≤ √s √T₄, ⟨FG, SF⟩ ≤ √V ‖SF‖ are
-  proved. Of the thirteen tensor facts `TensorFacts` of the paper proof, five are proved in
+  proved. Of the thirteen tensor facts `TensorFacts` of the paper proof, twelve are proved in
   `CircularTensor.lean`: the Wick identity κ₄ = 1296(s + 3h/2) for every cubic chaos
   (`Chaos3.wick4`), ‖G_anti‖² ≤ s/2 (`tenGa_le_half`), the charge-two block tt = h/6 − ‖M‖²/24
-  ≤ h/6 (`tenTT_le_sixth`) and the two sector quantities A₀ = ‖C₀ − θS₀‖² ≥ 0,
-  A₂ = ‖C₂ − θS₂‖² ≥ 0 (`A0nn_circular`, `A2nn_circular`), through a real charge calculus
-  (slot operators of J, the derivation δ with δf = −g, δg = f for the kernels of a, b, and the
-  tetrahedral contraction); `Circular.chaos3_right` shows that b is a cubic chaos when a is.
-  Still assumed (`TensorFactsRest`, eight fields): the Wick identity
-  κ₆/46656 = (135/2)T₃ − 20V + (135/2)Q + (165/2)⟨D,U⟩ + 45‖U‖² and seven charge-sector
-  inequalities (the two sums of squares h ≤ 37s/39 and 27h − 5s + 8‖G_anti‖² ≤ 216 tt, the
-  cubic trace of G, the block traces T₃, T₄ of S, the coupled G test and the charge split);
-  besides these, the tensor facts `GramFacts` of the contraction-Gram budget (eight fields, above: the
-  four spectral identities u₂ = 16n + 4h + 16z, u₄ = 16n + 4h + 16b + 96y − 32z, v₂ = 32b, v₄ = 96y,
-  b ≤ n, y ≤ z and the two conditions of G₁ ⪰ 0), the gate variable and the per-row reduction
-  (`RowShared`), and the crude row.
+  ≤ h/6 (`tenTT_le_sixth`), the cubic trace V = tr G³ ≤ (s + 2η)√((s − η)/2), η = ‖G_anti‖²
+  (`cubicTrace_circular`: G = G₀ + G₂ with G₀ commuting with J, the mixed traces vanish and
+  2‖G₀u‖² ≤ ‖G₀‖²‖u‖² is Bessel's inequality for the pair u, Ju), the two sector quantities
+  A₀ = ‖C₀ − θS₀‖² ≥ 0, A₂ = ‖C₂ − θS₂‖² ≥ 0 (`A0nn_circular`, `A2nn_circular`), and the two
+  sums of squares h ≤ 37s/39 and 27h − 5s + 8η ≤ 216 tt (`sos1_circular`, `sos2_circular`: with
+  B = (J₃f) ⋆ f the charge-one relation K₁₂C = C − (J₁ + J₂)B identifies the real avatars
+  x₁ = (1 + K₁₃)(C₀ − J₁B₀)/2 and y = (1 − K₁₂)C₀ of the complex sectors (+,−,−,+) and (+,+,−,−);
+  37s − 39h = (45/8)‖(1 − H)(1 − V)x₁‖² + 6‖sw24 y − (1 + H)(1 + V)x₁/4‖² + 12‖C₂ − VC₂‖² and
+  216tt − 27h + 5s − 8η = 3‖(1 − H)x₁‖² + ‖G₀ − 3JM₀‖²/2, H, V the slot swaps (14), (23), the
+  entries reduced to ‖C₀‖², ⟨C₀, K₁₂C₀⟩, ‖C₂‖², η and the tetrahedral Q(f,f,f,f)), and the
+  block trace T₄ = ‖S²‖² ≤ h²/2 + 8h·tt − 48tt² (`trace4_circular`: S acts on pairs with the
+  charge blocks S₀₀, S₀₂, S₂₀, S₂₂ of norms² 4tt, (h − 6tt)/2, (h − 6tt)/2, 2tt, S₂₂ commutes
+  with the complex structure J ⊗ 1 since S has no charge four, and Hilbert–Schmidt
+  submultiplicativity gains a factor 2 on the J-linear products), the block trace
+  T₃ = ⟨S², S⟩ ≤ √tt (9h/2 − 17tt) (`trace3_circular`, the same block walks), the coupled G test
+  Q = ⟨vec G, S vec G⟩ ≤ (2s − η)√tt + √(2η(s − η)(h − 6tt)) (`coupled_circular`: vec G splits
+  into its J ⊗ J charge parts G₀, G_anti of norms² s − η, η, and S acts blockwise) and the
+  charge split ‖U‖² = ⟨S², C⟩ ≤ θT₃ + √(A₀(3h²/8 + h·tt/2 + 3tt²/2)) + √(A₂(9h·tt − 54tt²))
+  (`chargeSplit_circular`: C − θS has no charge four, so Cauchy–Schwarz in the two charge
+  sectors against the blocks of S²), all through a real charge calculus (slot operators of J,
+  the derivation δ with δf = −g, δg = f for the kernels of a, b, and the tetrahedral
+  contraction); `Circular.chaos3_right` shows that b is a cubic chaos when a is. Still assumed
+  (`TensorFactsRest`, one field): the Wick identity
+  κ₆/46656 = (135/2)T₃ − 20V + (135/2)Q + (165/2)⟨D,U⟩ + 45‖U‖²; besides this, the gate
+  variable and the per-row reduction (`RowShared`), and the crude row.
 * Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma, the
   scalar sixth-moment and first-moment certificates (the sixth-moment one from its tensor and
   cumulant hypotheses), and the exact form of
@@ -253,8 +292,8 @@ no warnings.
 | `GrotheKernel/` | the fixed-point interval evaluator used by the head check |
 | `Grothe/Lower/` | positivity certificates, Stein cuts and the law budgets cited by nodes (`Gram.lean`), rows, mixtures and boxes, the one cover of t ∈ [0, 9/10], the transfer to finite matrices, final theorems |
 | `Grothe/Lower/RowData*.lean`, `Grothe/Upper/Data.lean` | generated certificate data |
-| `Grothe/LowerAnalytic/` | analytic lemmas: Gaussian integration by parts, spectral budgets and covariance order, fourth-moment cap, moment certificates, circular cubics and the sixth-moment reduction (`Circular.lean`), the proved tensor facts and the charge calculus (`CircularTensor.lean`), the contraction-Gram budget (`GramBudget.lean`), the bridge `lower_bound_gaussian` |
-| `tools/` | generators of the data modules from the research archives; `check_tensor_facts.py` and `check_gram_facts.py` check the `TensorFacts` fields of `Circular.lean` and the `GramFacts` fields of `GramBudget.lean` numerically |
+| `Grothe/LowerAnalytic/` | analytic lemmas: Gaussian integration by parts, spectral budgets and covariance order, fourth-moment cap, moment certificates, circular cubics and the sixth-moment reduction (`Circular.lean`), the proved tensor facts and the charge calculus (`CircularTensor.lean`), the contraction tensors of a circular cubic and their Gram inequalities (`GramTensor.lean`), the complex charge calculus and the spectral identities (`GramSpectral.lean`), the contraction-Gram budget (`GramBudget.lean`), the bridge `lower_bound_gaussian` |
+| `tools/` | generators of the data modules from the research archives; `check_tensor_facts.py` and `check_gram_facts.py` check the `TensorFacts` fields of `Circular.lean` and the (proved) contraction-Gram identities of `GramTensor.lean`/`GramSpectral.lean` numerically |
 | `scratch/Axioms.lean`, `scripts/check_axioms.py` | the axiom report and its check |
 
 ## Building

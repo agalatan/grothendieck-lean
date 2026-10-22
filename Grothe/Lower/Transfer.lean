@@ -17,14 +17,15 @@ large enough) whose value `‖∑ₗ ⟪uₗ, T vₗ⟫‖` is at least `1 − �
 * `lower_bound_of_transferL2 : TransferInputsL2 Bcap → IsGrothendieckBound K → Llow < K`,
   composing with `lower_endpoint`.
 
-**What remains hypothetical** is exactly `TransferInputsL2 Bcap`.  Note that `TransferInputsL2`
-does not name the operator: it asks for *some* `T` on some `L²` space, so read alone it already
-contains the whole claim.  Intended instance: the Gaussian witness `T = P₁,₀ − ε P₂,₁`, with
-(i) the scalar cap `‖⟪f, T g⟫‖ ≤ Bcap` for a.e. unimodular `f, g`, and (ii) the value
-`∑ₗ ⟪uₗ, T uₗ⟫ ≥ 1 − δ` on `u(z) = z/‖z‖` in dimension large enough.  For that instance (i) is
-what the certificate `lower_bound_data` yields *on paper*, through the Gaussian reduction; **no Lean
-theorem derives (i) from `lower_bound_data`**, so the two halves of the lower bound are linked
-outside Lean.
+`TransferInputsL2` does not name the operator: it asks for *some* `T` on some `L²` space.  Its
+instance is the Gaussian witness `T = P₁,₀ − ε P₂,₁` of `Grothe/LowerAnalytic/Witness.lean`:
+`transferInputs_of_witnessCap : (∀ n ≥ N, WitnessCap n B) → TransferInputsL2 B` proves it from
+the scalar caps `WitnessCap n B` (`‖⟪f, T g⟫‖ ≤ B` for a.e. unimodular `f, g` on `L²(γ_n)`), the
+value `‖∑ₗ ⟪uₗ, T uₗ⟫‖ ≥ 1 − (1+ε)/(n+1)` on `u(z) = z/‖z‖` being proved there
+(`norm_pairVal_witness`).  The scalar cap at `Bcap` is reduced in `WitnessCap.lean`
+(`witnessCap_of_reduction`) to `lower_bound_data` through the polarisation identity, with the
+remaining hypotheses `ReductionHyp` (the first-moment bound of the cubic residual and the Gaussian
+reduction of the rows); `lower_bound_of_reduction` composes everything into `Llow < K`.
 -/
 
 namespace Grothe.Lower

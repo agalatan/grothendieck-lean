@@ -1,4 +1,5 @@
 import Grothe.LowerAnalytic.WitnessCap
+import Grothe.LowerAnalytic.WickCubic
 
 /-!
 # The per-row Gaussian reduction: frame, h-side identity, gate algebra, assembly (L4)
@@ -24,7 +25,7 @@ The scalar cap of the witness rests on `SharedReduction rowData V t Qh v` for ev
   exactly (`rowData_gatesOK`, kernel `decide`).
 * **The coupling vector** `vL n l = z_l(|z_l|² − 4)/(2√2)`, i.e. `ζ(|ζ|² − 2)` for the unit
   coordinate `ζ = z_l/√2`: `vL_mem_H21` and `norm_vL_sq : ‖vL n l‖² = 2`, from the Gaussian
-  moments `E|z|⁴ = 8`, `E|z|⁶ = 48` (`inner_zL_zL`, `inner_wL_zL`, `gE_X_pow_six`, …).
+  moments `E|z|⁴ = 8`, `E|z|⁶ = 48` (`inner_zL_zL_ite`, `inner_wL_zL`, `gE_X_pow_six`, …).
 * **Assembly** (`rowSharedWith_of_bracket`): the row inequality `RowSharedWith` from the a.e. fibre
   bound `Bk ≤ Ψ(δ|p|)` of the pre-potential bracket and the integrated k-side bound, with the law
   `U = |p|²/τ²` of the residual `p` at scale `τ = ‖p‖₂ > 0`.
@@ -395,12 +396,6 @@ lemma pderiv_quad_zero {d : ℕ} {i a b c : Fin d} (ha : a ≠ i) (hb : b ≠ i)
 
 /-! ### Index bookkeeping -/
 
-lemma castAdd_ne_natAdd (l m : Fin n) : Fin.castAdd n l ≠ Fin.natAdd n m := by
-  intro h
-  have := congrArg Fin.val h
-  simp only [Fin.val_castAdd, Fin.val_natAdd] at this
-  omega
-
 lemma castAdd_ne_castAdd {l m : Fin n} (h : l ≠ m) : Fin.castAdd n l ≠ Fin.castAdd n m := by
   intro e; exact h (Fin.ext (by simpa using congrArg Fin.val e))
 
@@ -410,7 +405,7 @@ lemma natAdd_ne_natAdd {l m : Fin n} (h : l ≠ m) : Fin.natAdd n l ≠ Fin.natA
 /-! ### The inner products `⟪z_l, z_m⟫` and `⟪z_l|z_l|², z_m⟫` -/
 
 /-- `⟪z_l, z_m⟫ = 2δ_{lm}`. -/
-lemma inner_zL_zL (l m : Fin n) : inner ℂ (zL n l) (zL n m) = if l = m then 2 else 0 := by
+lemma inner_zL_zL_ite (l m : Fin n) : inner ℂ (zL n l) (zL n m) = if l = m then 2 else 0 := by
   rw [inner_eq_of_ae n (zL n l) (zL n m) (zc n l) (zc n m) (MemLp.coeFn_toLp _)
     (MemLp.coeFn_toLp _)
     (X (Fin.castAdd n l) * X (Fin.castAdd n m) + X (Fin.natAdd n l) * X (Fin.natAdd n m))
@@ -506,7 +501,7 @@ lemma vL_mem_chargeOne3 (l : Fin n) : vL n l ∈ chargeOne3 n :=
     (Submodule.smul_mem _ _ (Submodule.subset_span (Or.inl ⟨l, rfl⟩))))
 
 lemma inner_vL_zL (l m : Fin n) : inner ℂ (vL n l) (zL n m) = 0 := by
-  rw [vL, inner_smul_left, inner_sub_left, inner_smul_left, inner_wL_zL, inner_zL_zL]
+  rw [vL, inner_smul_left, inner_sub_left, inner_smul_left, inner_wL_zL, inner_zL_zL_ite]
   split_ifs <;> norm_num [Complex.ext_iff]
 
 /-- `v_l ⊥ H₁,₀`. -/
