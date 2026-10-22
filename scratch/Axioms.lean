@@ -181,3 +181,11 @@ import Grothe
 
 #print axioms Grothe.LowerAnalytic.MomentCone.exists_feasible_iff
 #print axioms Grothe.LowerAnalytic.MomentCone.boundaryChecked_node
+
+#print axioms Grothe.LowerAnalytic.SphericalTransfer.cubic_ratio_nonneg
+#print axioms Grothe.LowerAnalytic.SphericalTransfer.cubicAmp_recurrence
+#print axioms Grothe.LowerAnalytic.SphericalTransfer.cubicAmp_tail
+#print axioms Grothe.LowerAnalytic.SphericalTransfer.cubicAmp_32_13
+#print axioms Grothe.LowerAnalytic.SphericalTransfer.cubic_tail_32_12
+#print axioms Grothe.LowerAnalytic.SphericalTransfer.infinite_defect
+#print axioms Grothe.LowerAnalytic.SphericalTransfer.global_cap_from_truncation

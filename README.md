@@ -80,6 +80,13 @@ The strengthened parameter family and exact majorant-transport rule are proved t
 moment cost within the conic recipe, with explicit attaining points and its
 application to genuine cubic moments on each node range.
 
+A separate global research interface transfers finite Gaussian Hermite games to compact
+spherical operators while preserving the same bounded response pair. The paper proof and
+its computational limitations are in [docs/SPHERICAL_TRANSFER.md](docs/SPHERICAL_TRANSFER.md).
+`Grothe/LowerAnalytic/SphericalTransfer.lean` proves the exact cubic multiplier tail and
+signed cap assembly. The analytic bridge and a useful spherical norm cap are not formalized;
+this interface changes neither endpoint.
+
 **Upper bound** — `Grothe.fresh_upper :
 DirectHyps E EX → IsGrothendieckBound (438936500000000000000000/312499512981434072227643)`,
 and `Grothe.upper_value_lt` shows this is below 1.404598989011
@@ -118,7 +125,7 @@ Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus exactly three `native_
 `Grothe.head_check` (the upper head), `Grothe.haagerup_check` (the unconditional upper bound) and
 `Grothe.Lower.cert_check` (the lower certificate).
 Everything else is kernel-checked. No `sorry`. The axiom report `scratch/Axioms.lean`
-(179 theorems) is verified in CI by `scripts/check_axioms.py`.
+(186 theorems) is verified in CI by `scripts/check_axioms.py`.
 
 The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAILS.md).
 

@@ -28,7 +28,11 @@ REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.LowerAnalytic.MomentCone.boundary_attained",
             "Grothe.LowerAnalytic.MomentCone.boundary_node",
             "Grothe.LowerAnalytic.MomentCone.exists_feasible_iff",
-            "Grothe.LowerAnalytic.MomentCone.boundaryChecked_node"}
+            "Grothe.LowerAnalytic.MomentCone.boundaryChecked_node",
+            "Grothe.LowerAnalytic.SphericalTransfer.cubicAmp_recurrence",
+            "Grothe.LowerAnalytic.SphericalTransfer.cubicAmp_tail",
+            "Grothe.LowerAnalytic.SphericalTransfer.cubic_tail_32_12",
+            "Grothe.LowerAnalytic.SphericalTransfer.global_cap_from_truncation"}
 text = sys.stdin.read()
 if re.search(r"(^|\n)[^\n]*: error", text):
     sys.exit("the axiom report contains Lean errors")

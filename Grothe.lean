@@ -110,3 +110,4 @@ import Grothe.Lower.MomentLift
 import Grothe.LowerAnalytic.MomentCone
 import Grothe.LowerAnalytic.JointContractions
 import Grothe.LowerAnalytic.MomentConeBoundary
+import Grothe.LowerAnalytic.SphericalTransfer

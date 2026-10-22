@@ -2,6 +2,17 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
+**Global spherical-dual research interface.** `Grothe/LowerAnalytic/SphericalTransfer.lean`
+proves the signed finite and countable coefficient-defect bound, a positive factorization
+controlling the inverse cubic Jacobi multipliers, their exact binomial recurrence and
+all-index monotonicity, and the uniform omitted-multiplier allowance
+`cubic_tail_32_12 : 12 < r → cubicAmp 32 r (149/200) < 419/5000000000`.
+The exact value at index 13 is `17513/209010560960`, checked in the kernel without
+`native_decide`. `global_cap_from_truncation` states the conditional cap assembly.
+The analytic Gaussian random-restriction/spherical harmonic bridge is a paper proof;
+neither that bridge nor a numerical spherical norm cap is proved by this module.
+It introduces no hypothesis into either existing endpoint and changes neither bound.
+
 
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
