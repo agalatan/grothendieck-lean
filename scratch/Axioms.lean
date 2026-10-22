@@ -30,7 +30,7 @@ import Grothe
 #print axioms Grothe.Lower.batch_sound
 #print axioms Grothe.Lower.rowTNode_sound
 #print axioms Grothe.Lower.capsHold_mix
-#print axioms Grothe.Lower.coverOK_sound
+#print axioms Grothe.Lower.partOK_sound
 #print axioms Grothe.Lower.rowBound_of_check
 #print axioms Grothe.Lower.major_sound
 #print axioms Grothe.Lower.posOn_sound

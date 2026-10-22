@@ -133,7 +133,7 @@ def sweep (σ smax : ℚ) (maj : List ℚ) (cp : ℕ → List ℚ) :
     | n :: n' :: ns =>
       decide (n.1 < n'.1) && (decide (k = 0) || decide (0 < lo)) &&
         decide (lo < (nextStep (n'.1 / σ) k vs n (n' :: ns)).1) &&
-        posOn (pieceP (shOf k) maj (n.2 - slope n n' * n.1) (slope n n' * σ) (cp k)) 7 lo
+        posOn (pieceP (shOf k) maj (n.2 - slope n n' * n.1) (slope n n' * σ) (cp k)) 9 lo
           (nextStep (n'.1 / σ) k vs n (n' :: ns)).1 &&
         sweep σ smax maj cp f (nextStep (n'.1 / σ) k vs n (n' :: ns)).1
           (nextStep (n'.1 / σ) k vs n (n' :: ns)).2.1
@@ -200,7 +200,7 @@ theorem sweep_sound (Ψ : ℝ → ℝ) (smax σ : ℚ) (hσ : 0 < σ) (maj : Lis
           hk.imp id fun h0 => lt_of_lt_of_le (by exact_mod_cast h0) hv
         by_cases hvh : v < (st.1 : ℝ)
         · have hidx' : pickIdx vsAll v = k := by rw [hidx v hv, s2 v hvh, add_zero]
-          have hP := posOn_sound _ 7 lo st.1 hlt hpos v hv hvh.le
+          have hP := posOn_sound _ 9 lo st.1 hlt hpos v hv hvh.le
           rw [evalL_pieceP] at hP
           have hgv := hg v hv0 (by rw [hidx']; exact hk')
           rw [hidx'] at hgv
