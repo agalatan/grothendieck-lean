@@ -44,8 +44,8 @@ truncation X = F₀ + v.
   formal verification.
 
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
-value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 700845994587/(5·10^11) < K`, and the transfer
-`Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 700845994587/(5·10^11) < K`,
+value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401692002039/10^12 < K`, and the transfer
+`Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 1401692002039/10^12 < K`,
 where `TransferInputsL2 B` asks, for every δ > 0, for a finite measure space with an operator T on L²,
 a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u, v in L² with Σₗ|uₗ|² ≤ 1 and
 Σₗ|vₗ|² ≤ 1 a.e. and ‖Σ⟨uₗ, T vₗ⟩‖ ≥ 1 − δ.
@@ -103,7 +103,7 @@ variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
   the covariance order, and 65 citing a contraction-Gram certificate: the exact node checker verifies
   identity (4) of the certificate coefficientwise, positivity of the two 2×2 matrices by diagonal and
   determinant, and the nonnegative remainders), and the partition of
-  [0, 9/10] × [0, ρ] × [0, 31/4] into 7,875 closed boxes certified by 7,874 axis cuts (241 cap boxes:
+  [0, 9/10] × [0, ρ] × [0, 31/4] into 7,939 closed boxes certified by 7,874 axis cuts (241 cap boxes:
   fixed mixtures of two certified row caps including the crude row; 1,072 boxes with one component
   and 6,562 mixing two, a component being a row or a mixture of two rows with four certified
   τ-nodes, chorded twice in τ, pinned gate price X₁ = p);
@@ -246,3 +246,15 @@ other finite computations (the polynomial norms, the moment covers) are kernel-c
 (`decide +kernel`). The report is `lake env lean scratch/Axioms.lean`, checked in CI. No `sorry`,
 no warnings.
 
+
+
+**Joint sixth-moment budgets (formalized).** `Grothe/LowerAnalytic/JointSixth.lean`
+proves the two parameterized bounds J2/J3 for every genuine circular cubic, including the
+normalization of the real cubic kernel and its five complex contraction invariants.
+`Grothe/Lower/Reserve.lean` accepts a signed linear reserve against those same invariants;
+`Grothe/LowerAnalytic/JointBudget.lean` proves `joint_sixth_budget`, combining the finite
+reserve certificate and J3 with the actual spectral quantities of the cubic on a checked
+kurtosis range. These proofs use only the standard logical axioms. They do not add a
+hypothesis to the headline lower theorem. The present endpoint uses a refined cover of
+7,939 boxes with the existing 276 spectral witnesses; the stronger external joint-moment
+certificate still needs its complete finite-checker and cover integration.

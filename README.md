@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.401691989174 < K_G^ℂ < 1.404598989011**
+> **1.401692002039 < K_G^ℂ < 1.404598989011**
 
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an 8-page explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
@@ -35,7 +35,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.401691989174 < K** | **K < 1.404598989011** |
+| Oct 2026 | **this repository** | **1.401692002039 < K** | **K < 1.404598989011** |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
 proposed as the exact value; it lies inside the interval, 2.31·10⁻⁵ below our upper bound.
@@ -47,7 +47,7 @@ complex matrix, with V over all finite-dimensional complex Hilbert spaces. Both 
 theorems conclude a statement about the constant itself.
 
 **Lower bound** — `Grothe.LowerAnalytic.lower_bound_of_nodeCaps :
-NodeCaps → IsGrothendieckBound K → 1.401691989174 < K`
+NodeCaps → IsGrothendieckBound K → 1.401692002039 < K`
 (`Grothe/LowerAnalytic/Reduction.lean`).
 
 The witness is the operator T = P₁,₀ − (149/200)·P₂,₁ on L² of the complex Gaussian measure
@@ -57,10 +57,15 @@ reduction of ⟨f, Tg⟩ for every pair of unimodular functions to 19 one-variab
 inequalities; all analytic facts about the law of the cubic residual (moment bounds, Stein and
 spectral cuts, the contraction-Gram budgets, the sixth-moment Wick identity); and the finite
 certificate that combines them (336 node certificates and a cover of the parameter space by
-7,875 boxes, one `native_decide`). The **only hypothesis**, `NodeCaps`, states that 19 explicit
+7,939 boxes, one `native_decide`). The **only hypothesis**, `NodeCaps`, states that 19 explicit
 one-variable functions Ψ_r (defined in Lean as suprema of finite-dimensional Gaussian
 integrals) lie below stored rational values at their tabulated nodes. Those caps are certified
 by exact-arithmetic computations outside Lean; moving them inside is work in progress.
+
+The joint sixth-moment/Stein budgets are also formalized in
+`Grothe/LowerAnalytic/JointSixth.lean`, `Grothe/Lower/Reserve.lean` and
+`Grothe/LowerAnalytic/JointBudget.lean`. They retain shared tensor constraints;
+the stronger joint-moment numerical certificate is not yet integrated into the endpoint.
 
 **Upper bound** — `Grothe.fresh_upper :
 DirectHyps E EX → IsGrothendieckBound (438936500000000000000000/312499512981434072227643)`,

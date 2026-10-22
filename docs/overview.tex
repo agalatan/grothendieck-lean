@@ -30,7 +30,7 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.401691989174\;<\;\KG\;<\;1.404598989011$\\[6pt]
+\Large $1.401692002039\;<\;\KG\;<\;1.404598989011$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, each resting on one explicitly stated
 family of externally certified numerical inputs (Section~\ref{sec:trust}).\vspace{4pt}
 \end{minipage}}
@@ -75,7 +75,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$ (Gaussian phase rounding)\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct 2026 & \textbf{this work} & $\mathbf{1.401691989174}$ & $\mathbf{1.404598989011}$\\\bottomrule
+Oct 2026 & \textbf{this work} & $\mathbf{1.401692002039}$ & $\mathbf{1.404598989011}$\\\bottomrule
 \end{tabular}
 \end{center}
 Haagerup's integral
@@ -117,9 +117,9 @@ A lower bound needs an operator $T$ whose \emph{vector} value is close to $1$ wh
 the projection onto linear functions minus a multiple of the projection onto the cubic chaos.
 \begin{itemize}
 \item \emph{Vector value.} With $u_\ell=z_\ell/\|z\|$, $\sum_\ell\langle u_\ell,Tu_\ell\rangle\ge1-(1+\epsilon)/(n+1)\to1$.
-\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=0.713423496548$.
+\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=0.71342349$.
 \end{itemize}
-A finite-partition transfer turns this into matrices, so $\KG\ge1/B>1.401691989174$.
+A finite-partition transfer turns this into matrices, so $\KG\ge1/B>1.401692002039$.
 
 The scalar cap is the hard part. Writing $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$,
 \[
@@ -139,7 +139,7 @@ paying elsewhere. After a rotation $P_{1,0}h=t\,z_1$, and the cubic part of $k$ 
  expansion of the sixth cumulant; a first-moment bound; and families of \emph{Stein cuts}
  $\E\,G(U)\ge0$, obtained by Gaussian integration by parts and completing squares against spectral budgets, a covariance
  order and \emph{contraction-Gram budgets} (positive semidefinite Gram matrices of the coefficient tensor).
-\item \textbf{A finite certificate.} The parameters are covered by $7{,}875$ boxes in $(t,\tau,x)$; on each box a positive
+\item \textbf{A finite certificate.} The parameters are covered by $7{,}939$ boxes in $(t,\tau,x)$; on each box a positive
  combination of rows and node certificates ($336$ joint nodes, $9{,}237$ row nodes, each a polynomial majorant checked in
  exact rational arithmetic) bounds the scalar value by $B$.
 \end{enumerate}
@@ -158,7 +158,7 @@ between our bounds is entirely the gap between restricted constructions and the 
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
 \textbf{Proved in Lean} & \textbf{Assumed (certified outside Lean)}\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_bound\_of\_nodeCaps : NodeCaps → IsGrothendieckBound K → 1.401691989174 < K}}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_bound\_of\_nodeCaps : NodeCaps → IsGrothendieckBound K → 1.401692002039 < K}}\\[2pt]
 the witness $T$ on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices; the polarisation identity;
 the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair (frames, fibre decomposition, Parseval,
 gates); all moment, Stein, spectral and contraction-Gram inequalities for every circular cubic, including the sixth-cumulant
@@ -209,6 +209,14 @@ normalised by $\E|q|^2=1$, and $U=|q|^2$.
  horizontal Lipschitz bound). The sharp value $\sqrt\pi/2=0.8862$, which the Gaussian attains, is open.
 \end{itemize}
 
+\paragraph{A common budget for the same tensor.}
+The sixth moment and the Stein fluctuations cannot be optimized independently:
+both depend on the same contraction invariants. We now formalize this connection
+in Lean, including the real/complex normalization and a finite checker that reserves
+part of the contraction budget before accepting a Stein cut. Signed reserve
+coefficients are retained. The analytic theorem is proved; the stronger external
+joint-moment certificate still needs its complete node and cover integration.
+
 \subsection{The remote functional}
 Let $L=z_1(a+b|z_1|^2)$ with the constants of the witness, and for a cubic $G$ put
 $\Lambda(G)=\E|L+G|+\E|L-G|-\E|G|^2/\epsilon$ and $S=\sup_v\{2\E|L+\sqrt vU|-v/\epsilon\}$, $U$ a complex Gaussian. The
@@ -221,8 +229,8 @@ conjecture $\Lambda(G)\le S$ for all cubics (``Conjecture~K'') is the analytic h
  so $\sup_G\Lambda-2\E|L|=\sup_t\bigl[\tfrac{\pi^2\epsilon}{4}\|P_{2,1}t\|^2-\pi\E(|t|\,|\Re L|)\bigr]$ over real functions
  $|t|\le1$. All of the gain sits near the hyperplane $\Re z_1=0$.
 \item \textbf{The Gaussian is a strict local maximum [P,C].} At the Gaussian point every direction that involves $z_1$ has
- negative second variation, certified in interval arithmetic for seven sector coefficients. The only flat direction is the
- Gaussian family itself, along which the fourth-order term is strictly negative.
+ negative second variation, certified in interval arithmetic for seven sector coefficients. The Hessian's kernel is the
+ entire $z_1$-independent cubic sector; a negative fourth-order term controls those genuine cubic directions.
 \item \textbf{The independent sector [P,C].} For every cubic $q$ not involving $z_1$, $\Lambda(q)<S+3.6\cdot10^{-7}$. Moment
  inequalities alone stall about $10^{-5}$ above $S$, because $h(x)=2\E|L+\sqrt x|$ is a Bernstein function and the
  three-moment relaxation is maximised by a two-point law [P]. Going below that floor needs the Stein and spectral cuts.
@@ -257,7 +265,8 @@ cubic part of the response and $\mathcal N$ for the value of the witness on it.
  $S-\sup\Lambda$ ($10^{-3}$) & 1.68 & 1.42 & 1.08 & 0.73 & 0.43 & 0.32 & 0\\\bottomrule
  \end{tabular}
  \end{center}
- Concentrated cubics leave room of order $10^{-3}$; only genuinely diffuse laws approach the benchmark.
+ The tested concentrated cubics leave room of order $10^{-3}$; these diffuse sums approach the benchmark.
+ This evidence does not classify all near-maximizers.
 \end{itemize}
 
 \subsection{Limits of the witness method}
@@ -315,9 +324,10 @@ in the second.
 
 \section*{How this was made}
 The constructions and certificates were found by several AI research systems working on a shared manuscript, cross-checking
-each other's packages by independent replay. This Lean development turns the certificates into theorems: every claim above
-marked as proved is a Lean theorem whose axioms are checked in CI. The research manuscript and the certificate packages are
-kept outside the repository.
+each other's packages by independent replay. The endpoint theorems have the explicit Lean hypothesis lists in
+Section~\ref{sec:trust}, and their axioms are audited in CI. The discoveries labelled [P] and [C] also include paper proofs
+and external exact or interval certificates; they are not all formalized in Lean. The research manuscript and the
+certificate packages are kept outside the repository.
 
 \section*{References}
 \small\sloppy
@@ -339,4 +349,5 @@ kept outside the repository.
 \item N.~Brunner et al., \emph{Bell nonlocality}, Rev.\ Mod.\ Phys.\ 86 (2014),
  \href{https://arxiv.org/abs/1303.2849}{arXiv:1303.2849}.
 \end{itemize}
+
 \end{document}
