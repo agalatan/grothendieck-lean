@@ -76,3 +76,4 @@ import Grothe.Lower.RowGates
 import Grothe.LowerAnalytic.Potential
 import Grothe.LowerAnalytic.FibrePotential
 import Grothe.LowerAnalytic.FibreSup
+import Grothe.LowerAnalytic.Fibre
