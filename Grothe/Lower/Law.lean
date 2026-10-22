@@ -8,9 +8,10 @@ For a residual `q` (a cubic chaos of bidegree `(2,1)`) with `σ = ‖q‖₂`, l
 `E U = 1`, `E U² = 2 + x²` with `0 ≤ x ≤ 31/4`, `E U³ ≤ 6 + 9x² + C₆x³` and `E √U ≤ ρ`.
 `SteinCut μ U` collects the Stein-cut inequalities `E G(U) ≥ 0`: the cuts `cutG` (one for every
 mesh and test vector), the spectral cuts `specG` (one for every mesh, test and
-`(λ, μ, t, β, ν)`, `λ, μ > 0`, `ν ≥ 0`) and the general spectral cuts `gspecG` of a node citing a
-law budget (`GBud`: a contraction-Gram certificate or the coupled family, `Gram.lean`); all are
-derived from their analytic inputs in `Stein.lean`.
+`(λ, μ, t, β, ν)`, `λ, μ > 0`, `ν ≥ 0`), the general spectral cuts `gspecG` of a node citing a
+law budget (`GBud`: a contraction-Gram certificate or the coupled family, `Gram.lean`) and the
+joint cuts `jspecG` of a node citing a joint sixth-moment certificate, valid when
+`E U² ≤ 2 + x_*²`; all are derived from their analytic inputs in `Stein.lean`.
 
 `node_fn` integrates a polynomial majorant minus a nonnegative combination of cuts and
 `rect_integral` a polynomial majorant at scale `σ`.  `TB μ U Φ τ val` records a bound
@@ -50,7 +51,9 @@ structure Moments (μ : Measure Ω) (U : Ω → ℝ) (x : ℝ) : Prop where
   spectral cut `E[f(U)²/λ + g(U)²/μ + Φ(U) − φ(U) + (ν/3 − 2t)(U² − 2)] ≥ 0` with
   `f = −(φ + β)/2 + (2t + λ/3)u` and `g = −(φ − Φ/u)/2 + (t + μ/3 − ν/2)u` (`specG`).
 * `gspec`: the same with the coefficients of `u` shifted by the budget shifts `(af, ag)` of a
-  cited law budget `bud` passing its exact check `GBud.ok` (`gspecG`). -/
+  cited law budget `bud` passing its exact check `GBud.ok` (`gspecG`).
+* `jspec`: the general spectral cut of a joint certificate `(g, j)` accepted by `jointCert`, plus
+  `ζ(−U³ + 9U² − 12)` (`jspecG`), when `E U² ≤ 2 + x_*²`. -/
 structure SteinCut (μ : Measure Ω) (U : Ω → ℝ) : Prop where
   cut : ∀ vs z : List ℚ, meshOK 0 vs = true →
     Integrable (fun ω => cutG vs z (√(U ω))) μ ∧ 0 ≤ ∫ ω, cutG vs z (√(U ω)) ∂μ
@@ -61,6 +64,13 @@ structure SteinCut (μ : Measure Ω) (U : Ω → ℝ) : Prop where
     0 < mu → 0 ≤ nu → bud.ok lam mu = true →
     Integrable (fun ω => gspecG vs z lam mu t be nu (bud.af lam) (bud.ag mu) (√(U ω))) μ ∧
       0 ≤ ∫ ω, gspecG vs z lam mu t be nu (bud.af lam) (bud.ag mu) (√(U ω)) ∂μ
+  jspec : ∀ (vs z : List ℚ) (lam mu t be nu : ℚ) (g : GramData) (j : JointData),
+    meshOK 0 vs = true → 0 < lam → 0 < mu → 0 ≤ nu → jointCert lam mu g j = true →
+    ∫ ω, U ω ^ 2 ∂μ ≤ 2 + (j.xs : ℝ) ^ 2 →
+    Integrable (fun ω => jspecG vs z lam mu t be nu ((GBud.joint g j).af lam)
+      ((GBud.joint g j).ag mu) j.ze (√(U ω))) μ ∧
+      0 ≤ ∫ ω, jspecG vs z lam mu t be nu ((GBud.joint g j).af lam) ((GBud.joint g j).ag mu) j.ze
+        (√(U ω)) ∂μ
 
 lemma mpoly_at (p : MPoly) (σ s Uv : ℝ) (h : s ^ 2 = Uv) :
     evalL (p.list.map ((↑) : ℚ → ℝ)) (σ * s)
@@ -226,6 +236,38 @@ lemma TB.gspecNode {Φ : ℝ → ℝ} (hM : Moments μ U x) (hS : SteinCut μ U)
     (by exact_mod_cast h6)
   refine ⟨fun ω => (y.a0 + y.a1 * √(U ω) + y.a2 * U ω + y.a4 * U ω ^ 2 + y.a6 * U ω ^ 3)
     - gspecG vs z lam mu t be nu (bud.af lam) (bud.ag mu) (√(U ω)), hP.sub hC, fun ω => ?_, ?_⟩
+  · have key := mpoly_at y 1 (√(U ω)) (U ω) (Real.sq_sqrt (hM.nonneg ω))
+    rw [one_mul] at key
+    have := hpt _ (Real.sqrt_nonneg (U ω))
+    rw [key] at this
+    simp only [one_pow, mul_one] at this
+    linarith
+  · rw [integral_sub hP hC]
+    have eJ : y.J 0 1 x = y.a0 + y.a1 * ρ + y.a2 + y.a4 * (2 + x ^ 2)
+        + y.a6 * (6 + 9 * x ^ 2 + C6 * x ^ 3) := by
+      simp only [MPoly.J]; push_cast; ring
+    rw [eJ]
+    linarith
+
+/-- A joint node: a polynomial majorant of `Φ(τ v)` plus one joint cut of a node citing the joint
+certificate `(g, j)`, for `x ≤ x_*`. -/
+lemma TB.jspecNode {Φ : ℝ → ℝ} (hM : Moments μ U x) (hS : SteinCut μ U) (vs z : List ℚ)
+    (lam mu t be nu : ℚ) (g : GramData) (j : JointData) (hvs : meshOK 0 vs = true)
+    (hlam : 0 < lam) (hmu : 0 < mu) (hnu : 0 ≤ nu) (hok : jointCert lam mu g j = true)
+    (hx : x ≤ j.xs) (y : MPoly) (h1 : 0 ≤ y.a1) (h6 : 0 ≤ y.a6) (τ : ℝ)
+    (hpt : ∀ v : ℝ, 0 ≤ v →
+      Φ (τ * v) + jspecG vs z lam mu t be nu ((GBud.joint g j).af lam) ((GBud.joint g j).ag mu)
+        j.ze v ≤ evalL (y.list.map ((↑) : ℚ → ℝ)) v) :
+    TB μ U Φ τ (y.J 0 1 x) := by
+  have hU2 : ∫ ω, U ω ^ 2 ∂μ ≤ 2 + (j.xs : ℝ) ^ 2 := by
+    rw [hM.m2]
+    nlinarith [hM.x0]
+  obtain ⟨hC, hCi⟩ := hS.jspec vs z lam mu t be nu g j hvs hlam hmu hnu hok hU2
+  obtain ⟨hP, hPi⟩ := moment_poly μ hM y.a0 y.a1 y.a2 y.a4 y.a6 (by exact_mod_cast h1)
+    (by exact_mod_cast h6)
+  refine ⟨fun ω => (y.a0 + y.a1 * √(U ω) + y.a2 * U ω + y.a4 * U ω ^ 2 + y.a6 * U ω ^ 3)
+    - jspecG vs z lam mu t be nu ((GBud.joint g j).af lam) ((GBud.joint g j).ag mu) j.ze
+      (√(U ω)), hP.sub hC, fun ω => ?_, ?_⟩
   · have key := mpoly_at y 1 (√(U ω)) (U ω) (Real.sq_sqrt (hM.nonneg ω))
     rw [one_mul] at key
     have := hpt _ (Real.sqrt_nonneg (U ω))

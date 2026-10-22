@@ -293,8 +293,11 @@ combination of cuts `cutG`; multipliers as integers over `10¹⁰`, cut vectors 
 `10⁸`), a spectral batch (`spec = true`) has witnesses `τ:y₀,y₄,y₁,y₂,y₃:λ,μ,t,β,ν|φ₀,φ₁,…` (one
 spectral cut `specG` with the knot values `φₖ` of its test) or, citing a law budget,
 `τ:y₀,y₄,y₁,y₂,y₃:λ,μ,t,β,ν:budget|φ₀,φ₁,…` with `budget = g,A,B,m₀₀,m₀₁,m₁₁,k₀₀,k₀₁,k₁₁,α,β`
-(a contraction-Gram certificate) or `c,s₁,η₁,s₂,η₂,…` (the coupled family); the cut is then the
-general spectral cut `gspecG` with the shifts of the budget. -/
+(a contraction-Gram certificate), `c,s₁,η₁,s₂,η₂,…` (the coupled family) or
+`j,k,α,x_*,ζ,A,B,m₀₀,m₀₁,m₁₁,k₀₀,k₀₁,k₁₁,α',β'` (a joint sixth-moment certificate, `k = 1` for the
+bracket (J3), `k = 0` for (J2)); the cut is then the general spectral cut `gspecG` with the shifts of
+the budget, plus `ζ(−u³ + 9u² − 12)` for a joint certificate (`jspecG`), and a joint node is
+certified only for `x ≤ x_*` (`JBatch.tnodeX`). -/
 structure JBatch where
   i : ℕ
   j : ℕ
@@ -340,8 +343,9 @@ def pairsOf : List ℚ → List (ℚ × ℚ)
   | a :: b :: r => (a, b) :: pairsOf r
   | _ => []
 
-/-- The cited budget `g,A,B,m₀₀,m₀₁,m₁₁,k₀₀,k₀₁,k₁₁,α,β` or `c,s₁,η₁,…`; a malformed string
-gives a budget failing its check. -/
+/-- The cited budget `g,A,B,m₀₀,m₀₁,m₁₁,k₀₀,k₀₁,k₁₁,α,β`, `c,s₁,η₁,…` or
+`j,k,α,x_*,ζ,A,B,m₀₀,m₀₁,m₁₁,k₀₀,k₀₁,k₁₁,α',β'`; a malformed string gives a budget failing its
+check. -/
 def parseGBud (s : String) : GBud :=
   match s.splitOn "," with
   | "g" :: rest =>
@@ -349,6 +353,11 @@ def parseGBud (s : String) : GBud :=
     | [A, B, m00, m01, m11, k00, k01, k11, ga, gb] =>
       .gram ⟨A, B, m00, m01, m11, k00, k01, k11, ga, gb⟩
     | _ => .gram ⟨0, 0, 0, 0, 0, 0, 0, 0, -1, 0⟩
+  | "j" :: rest =>
+    match rest.map parseQ with
+    | [k, al, xs, ze, A, B, m00, m01, m11, k00, k01, k11, ga, gb] =>
+      .joint ⟨A, B, m00, m01, m11, k00, k01, k11, ga, gb⟩ ⟨k == 1, al, xs, ze⟩
+    | _ => .joint ⟨0, 0, 0, 0, 0, 0, 0, 0, -1, 0⟩ ⟨false, 0, 0, 0⟩
   | "c" :: rest => .coupled (pairsOf (rest.map parseQ))
   | _ => .coupled [(0, 1)]
 
@@ -371,14 +380,15 @@ def parseSWit (s : String) : SWit :=
 
 def JBatch.switList (b : JBatch) : List SWit := b.wits.map parseSWit
 
-/-- The `τ`-nodes of a batch. -/
-def JBatch.tnodes (b : JBatch) : List TNode :=
-  if b.spec then b.switList.map fun w => ⟨w.tau, w.y⟩
-  else b.witList.map fun w => ⟨w.1.sigma, w.1.y⟩
+/-- The `τ`-nodes of a batch, each with its range `x ≤ x_*` (`x_* = 31/4` except for a joint
+node). -/
+def JBatch.tnodeX (b : JBatch) : List (TNode × ℚ) :=
+  if b.spec then b.switList.map fun w => (⟨w.tau, w.y⟩, w.bud.xcap)
+  else b.witList.map fun w => (⟨w.1.sigma, w.1.y⟩, xMax)
 
 /-- The spectral node check: `λ, μ > 0`, `ν ≥ 0`, the majorant has `y₄, y₃ ≥ 0`, the cited
 budget passes its exact check (`GBud.ok`: identity (4) coefficientwise, PSD by diagonal and
-determinant, nonnegative remainders; or `s_j ≥ 2`, `η_j ≥ 0`, `Σ η_j ≤ λ`), and
+determinant, nonnegative remainders; or `s_j ≥ 2`, `η_j ≥ 0`, `Σ η_j ≤ λ`; or `jointCert`), and
 `Ψ(τv) + G(v²) ≤ y(v)` for all `v ≥ 0` by the majorant sweep. -/
 def checkSWit (nodes : List (ℚ × ℚ)) (smax : ℚ) (vs : List ℚ) (w : SWit) : Bool :=
   decide (0 < w.lam) && decide (0 < w.mu) && decide (0 ≤ w.nu) && decide (0 ≤ w.y.a1) &&
@@ -387,6 +397,10 @@ def checkSWit (nodes : List (ℚ × ℚ)) (smax : ℚ) (vs : List ℚ) (w : SWit
     | .sep =>
       let arr := specPolys vs w.z w.lam w.mu w.t w.be w.nu
       sweepTop w.tau smax w.y.list (fun k => arr.getD k []) vs nodes
+    | .joint g j =>
+      let arr := jspecPolys vs w.z w.lam w.mu w.t w.be w.nu ((GBud.joint g j).af w.lam)
+        ((GBud.joint g j).ag w.mu) j.ze
+      jointCert w.lam w.mu g j && sweepTop w.tau smax w.y.list (fun k => arr.getD k []) vs nodes
     | bud =>
       let arr := gspecPolys vs w.z w.lam w.mu w.t w.be w.nu (bud.af w.lam) (bud.ag w.mu)
       bud.ok w.lam w.mu && sweepTop w.tau smax w.y.list (fun k => arr.getD k []) vs nodes
@@ -399,7 +413,10 @@ lemma checkSWit_sound {Ψ : ℝ → ℝ} {nodes : List (ℚ × ℚ)} {smax : ℚ
           ≤ evalL (w.y.list.map ((↑) : ℚ → ℝ)) v) ∨
        (w.bud.ok w.lam w.mu = true ∧ ∀ v : ℝ, 0 ≤ v →
         Ψ (w.tau * v) + gspecG vs w.z w.lam w.mu w.t w.be w.nu (w.bud.af w.lam) (w.bud.ag w.mu) v
-          ≤ evalL (w.y.list.map ((↑) : ℚ → ℝ)) v)) := by
+          ≤ evalL (w.y.list.map ((↑) : ℚ → ℝ)) v) ∨
+       (∃ g j, w.bud = .joint g j ∧ jointCert w.lam w.mu g j = true ∧ ∀ v : ℝ, 0 ≤ v →
+        Ψ (w.tau * v) + jspecG vs w.z w.lam w.mu w.t w.be w.nu ((GBud.joint g j).af w.lam)
+          ((GBud.joint g j).ag w.mu) j.ze v ≤ evalL (w.y.list.map ((↑) : ℚ → ℝ)) v)) := by
   obtain ⟨tau, y, lam, mu, t, be, nu, z, bud⟩ := w
   cases bud with
   | sep =>
@@ -412,17 +429,24 @@ lemma checkSWit_sound {Ψ : ℝ → ℝ} {nodes : List (ℚ × ℚ)} {smax : ℚ
   | gram g =>
     simp only [checkSWit, Bool.and_eq_true, decide_eq_true_eq] at h
     obtain ⟨⟨⟨⟨⟨hl, hm⟩, hn⟩, h1⟩, h6⟩, hok, hsw⟩ := h
-    refine ⟨hl, hm, hn, h1, h6, Or.inr ⟨hok, fun v hv => ?_⟩⟩
+    refine ⟨hl, hm, hn, h1, h6, Or.inr (Or.inl ⟨hok, fun v hv => ?_⟩)⟩
     refine major_sound Ψ nodes smax hΨ tau y.list _ vs _ (fun u _ hk => ?_) hsw v hv
     rw [gspecPolys_getD]
     exact gspecG_cell vs z lam mu t be nu _ _ u hk
   | coupled se =>
     simp only [checkSWit, Bool.and_eq_true, decide_eq_true_eq] at h
     obtain ⟨⟨⟨⟨⟨hl, hm⟩, hn⟩, h1⟩, h6⟩, hok, hsw⟩ := h
-    refine ⟨hl, hm, hn, h1, h6, Or.inr ⟨hok, fun v hv => ?_⟩⟩
+    refine ⟨hl, hm, hn, h1, h6, Or.inr (Or.inl ⟨hok, fun v hv => ?_⟩)⟩
     refine major_sound Ψ nodes smax hΨ tau y.list _ vs _ (fun u _ hk => ?_) hsw v hv
     rw [gspecPolys_getD]
     exact gspecG_cell vs z lam mu t be nu _ _ u hk
+  | joint g j =>
+    simp only [checkSWit, Bool.and_eq_true, decide_eq_true_eq] at h
+    obtain ⟨⟨⟨⟨⟨hl, hm⟩, hn⟩, h1⟩, h6⟩, hok, hsw⟩ := h
+    refine ⟨hl, hm, hn, h1, h6, Or.inr (Or.inr ⟨g, j, rfl, hok, fun v hv => ?_⟩)⟩
+    refine major_sound Ψ nodes smax hΨ tau y.list _ vs _ (fun u _ hk => ?_) hsw v hv
+    rw [jspecPolys_getD]
+    exact jspecG_cell vs z lam mu t be nu _ _ _ u hk
 
 /-- The mixed potential `(1−θ)(Ψᵢ(δᵢ s) − capPad) + θ(Ψⱼ(δⱼ s) − capPad)`. -/
 def mixPot (ri rj : Row) (θ : ℚ) (Ψi Ψj : ℝ → ℝ) (s : ℝ) : ℝ :=
@@ -462,26 +486,31 @@ section batch
 variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ] {U : Ω → ℝ}
   {x : ℝ}
 
-/-- **The `τ`-nodes of a checked batch are certified** for the mixed potential. -/
+/-- **The `τ`-nodes of a checked batch are certified** for the mixed potential, on their range
+`x ≤ x_*`. -/
 lemma batch_sound (rows : List Row) (b : JBatch) (h : checkBatch rows b = true) (ri rj : Row)
     (hri : rows[b.i]? = some ri) (hrj : rows[b.j]? = some rj) {Ψi Ψj : ℝ → ℝ}
     (hi : CapsHold (fun s => Ψi s - capPad) ri.nodeList ri.smax)
     (hj : CapsHold (fun s => Ψj s - capPad) rj.nodeList rj.smax) (hM : Moments μ U x)
-    (hS : SteinCut μ U) : ∀ tn ∈ b.tnodes, TNodeOK μ U x (mixPot ri rj b.θ Ψi Ψj) tn := by
+    (hS : SteinCut μ U) :
+    ∀ p ∈ b.tnodeX, x ≤ p.2 → TNodeOK μ U x (mixPot ri rj b.θ Ψi Ψj) p.1 := by
   simp only [checkBatch, hri, hrj, Bool.and_eq_true] at h
   obtain ⟨⟨htable, hmesh⟩, hwits⟩ := h
   have hcaps := checkMixTable_sound ri rj b.θ b.nodeList b.smax htable hi hj
-  intro tn htn
-  unfold JBatch.tnodes at htn
-  split_ifs at htn hwits with hsp
-  · obtain ⟨w, hw, rfl⟩ := List.mem_map.1 htn
+  intro p hp hxp
+  unfold JBatch.tnodeX at hp
+  split_ifs at hp hwits with hsp
+  · obtain ⟨w, hw, rfl⟩ := List.mem_map.1 hp
     obtain ⟨hl, hm, hn, h1, h6, hfact⟩ :=
       checkSWit_sound hcaps b.vs w (List.all_eq_true.1 hwits w hw)
-    rcases hfact with ⟨-, hfact⟩ | ⟨hok, hfact⟩
+    rcases hfact with ⟨-, hfact⟩ | ⟨hok, hfact⟩ | ⟨g, j, hgj, hok, hfact⟩
     · exact TB.specNode hM hS b.vs w.z w.lam w.mu w.t w.be w.nu hmesh hl hm hn w.y h1 h6 _ hfact
     · exact TB.gspecNode hM hS b.vs w.z w.lam w.mu w.t w.be w.nu w.bud hmesh hl hm hn hok w.y h1
         h6 _ hfact
-  · obtain ⟨w, hw, rfl⟩ := List.mem_map.1 htn
+    · have hx : x ≤ j.xs := by simpa only [hgj, GBud.xcap] using hxp
+      exact TB.jspecNode hM hS b.vs w.z w.lam w.mu w.t w.be w.nu g j hmesh hl hm hn hok hx w.y
+        h1 h6 _ hfact
+  · obtain ⟨w, hw, rfl⟩ := List.mem_map.1 hp
     obtain ⟨hfact, h1, h6, hcuts, _⟩ :=
       node_sound hcaps b.vs w.2 w.1 (List.all_eq_true.1 hwits w hw)
     exact TB.node hM hS b.vs hmesh (nodeCutList w.2 w.1) hcuts w.1.y h1 h6 _ hfact

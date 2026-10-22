@@ -239,7 +239,10 @@ structure SteinInputs (μ : Measure Ω) (U : Ω → ℝ) : Prop where
 * every contraction-Gram certificate `g` accepted by `gramCert λ μ g` gives
   `λ E v² + μ E r² ≤ A P + B Q`;
 * the coupled family `E v² ≤ a_s P − b_s Q`, `a_s = (s + 5)/9`, `b_s = (s + 1/2 − 3/s)/9`,
-  for every rational `s ≥ 2`. -/
+  for every rational `s ≥ 2`;
+* every joint certificate `(g, j)` accepted by `jointCert` gives, when `E U² ≤ 2 + x_*²`,
+  `λ E v² + μ E r² + ζ(E U³ − 6 − 9χ) ≤ A P + B Q` (`χ = E U² − 2`; the joint sixth-moment
+  inequality `E U³ ≤ 6 + 9χ + x_* J` with the strengthened budget). -/
 structure GramInputs (μ : Measure Ω) (U : Ω → ℝ) : Prop where
   ex : ∃ v r : Ω → ℝ, MemLp v 2 μ ∧ MemLp r 2 μ ∧ ∫ ω, v ω ∂μ = 0 ∧
     ∫ ω, v ω ^ 2 ∂μ ≤ 2 / 3 * ∫ ω, v ω * U ω ∂μ ∧
@@ -252,12 +255,17 @@ structure GramInputs (μ : Measure Ω) (U : Ω → ℝ) : Prop where
     (∀ (lam mu : ℚ) (g : GramData), gramCert lam mu g = true →
       lam * ∫ ω, v ω ^ 2 ∂μ + mu * ∫ ω, r ω ^ 2 ∂μ
         ≤ g.A * ∫ ω, v ω * U ω ∂μ + g.B * ∫ ω, r ω * U ω ∂μ) ∧
-    ∀ s : ℚ, 2 ≤ s → ∫ ω, v ω ^ 2 ∂μ
-      ≤ (s + 5) / 9 * ∫ ω, v ω * U ω ∂μ - (s + 1 / 2 - 3 / s) / 9 * ∫ ω, r ω * U ω ∂μ
+    (∀ s : ℚ, 2 ≤ s → ∫ ω, v ω ^ 2 ∂μ
+      ≤ (s + 5) / 9 * ∫ ω, v ω * U ω ∂μ - (s + 1 / 2 - 3 / s) / 9 * ∫ ω, r ω * U ω ∂μ) ∧
+    ∀ (lam mu : ℚ) (g : GramData) (j : JointData), jointCert lam mu g j = true →
+      ∫ ω, U ω ^ 2 ∂μ ≤ 2 + (j.xs : ℝ) ^ 2 →
+      lam * ∫ ω, v ω ^ 2 ∂μ + mu * ∫ ω, r ω ^ 2 ∂μ
+          + j.ze * (∫ ω, U ω ^ 3 ∂μ - 6 - 9 * (∫ ω, U ω ^ 2 ∂μ - 2))
+        ≤ g.A * ∫ ω, v ω * U ω ∂μ + g.B * ∫ ω, r ω * U ω ∂μ
 
 lemma GramInputs.toSteinInputs {μ : Measure Ω} {U : Ω → ℝ} (h : GramInputs μ U) :
     SteinInputs μ U := by
-  obtain ⟨v, r, hv, hr, hv0, hbv, hbr, hsum, hcov, hparts, -, -⟩ := h.ex
+  obtain ⟨v, r, hv, hr, hv0, hbv, hbr, hsum, hcov, hparts, -, -, -⟩ := h.ex
   exact ⟨v, r, hv, hr, hv0, hbv, hbr, hsum, hcov, hparts⟩
 
 /-- **The cited budget from the inputs**: for a budget `bud` passing its exact check,
@@ -290,6 +298,7 @@ lemma budget_of_bud (lam mu : ℚ) (hlam : 0 ≤ lam) (hmu : 0 ≤ mu) (bud : GB
     have h3 := mul_le_mul_of_nonneg_left hsepv (sub_nonneg.2 hleR)
     simp only [GBud.af, GBud.ag]
     linarith
+  | joint g j => simp [GBud.ok] at hok
 
 variable (μ : Measure Ω) [IsProbabilityMeasure μ] {U : Ω → ℝ} {x : ℝ}
 
@@ -557,8 +566,8 @@ theorem spec_of_inputs (hM : Moments μ U x) (hS : SteinInputs μ U) (vs z : Lis
   `E G(U) = E[λ(X − f/λ)² + μ(r − g/μ)²] + (2λ/3 + 2af) P − λ E X² + (2μ/3 − 2ag) Q − μ E r²
             + ν(χ/3 − Q)`
 
-(using `E X = 0`, the radial integration by parts and `2P + Q = χ`), nonnegative under the budget
-`λ E X² + μ E r² ≤ (2λ/3 + 2af) P + (2μ/3 − 2ag) Q`. -/
+(using `E X = 0`, the radial integration by parts and `2P + Q = χ`), at least `−D` under the
+budget `λ E X² + μ E r² ≤ (2λ/3 + 2af) P + (2μ/3 − 2ag) Q + D`. -/
 theorem gspec_of_vr (hM : Moments μ U x) (v r : Ω → ℝ) (hv : MemLp v 2 μ) (hr : MemLp r 2 μ)
     (hv0 : ∫ ω, v ω ∂μ = 0)
     (hsum : 2 * ∫ ω, v ω * U ω ∂μ + ∫ ω, r ω * U ω ∂μ = ∫ ω, U ω ^ 2 ∂μ - 2)
@@ -567,11 +576,12 @@ theorem gspec_of_vr (hM : Moments μ U x) (v r : Ω → ℝ) (hv : MemLp v 2 μ)
       ∫ ω, cutGap vs z (√(U ω)) ∂μ
         = ∫ ω, (v ω * cutPhi vs z (√(U ω)) + r ω * cutY vs z (√(U ω))) ∂μ)
     (vs z : List ℚ) (lam mu t be nu af ag : ℚ) (hvs : meshOK 0 vs = true) (hlam : 0 < lam)
-    (hmu : 0 < mu) (hnu : 0 ≤ nu)
+    (hmu : 0 < mu) (hnu : 0 ≤ nu) (D : ℝ)
     (hbud : (lam : ℝ) * ∫ ω, v ω ^ 2 ∂μ + mu * ∫ ω, r ω ^ 2 ∂μ
-      ≤ (2 * lam / 3 + 2 * af) * ∫ ω, v ω * U ω ∂μ + (2 * mu / 3 - 2 * ag) * ∫ ω, r ω * U ω ∂μ) :
+      ≤ (2 * lam / 3 + 2 * af) * ∫ ω, v ω * U ω ∂μ + (2 * mu / 3 - 2 * ag) * ∫ ω, r ω * U ω ∂μ
+        + D) :
     Integrable (fun ω => gspecG vs z lam mu t be nu af ag (√(U ω))) μ ∧
-      0 ≤ ∫ ω, gspecG vs z lam mu t be nu af ag (√(U ω)) ∂μ := by
+      -D ≤ ∫ ω, gspecG vs z lam mu t be nu af ag (√(U ω)) ∂μ := by
   have hlamR : (0 : ℝ) < lam := by exact_mod_cast hlam
   have hmuR : (0 : ℝ) < mu := by exact_mod_cast hmu
   have hU := memLp_U μ hM
@@ -677,13 +687,55 @@ theorem gspec_of_inputs (hM : Moments μ U x) (hS : GramInputs μ U) (vs z : Lis
     (hnu : 0 ≤ nu) (hok : bud.ok lam mu = true) :
     Integrable (fun ω => gspecG vs z lam mu t be nu (bud.af lam) (bud.ag mu) (√(U ω))) μ ∧
       0 ≤ ∫ ω, gspecG vs z lam mu t be nu (bud.af lam) (bud.ag mu) (√(U ω)) ∂μ := by
-  obtain ⟨v, r, hv, hr, hv0, hbv, hbr, hsum, hcov, hparts, hgram, hfam⟩ := hS.ex
-  exact gspec_of_vr μ hM v r hv hr hv0 hsum hcov hparts vs z lam mu t be nu _ _ hvs hlam hmu hnu
-    (budget_of_bud lam mu hlam.le hmu.le bud hok _ _ _ _ hbv hbr hgram hfam)
+  obtain ⟨v, r, hv, hr, hv0, hbv, hbr, hsum, hcov, hparts, hgram, hfam, -⟩ := hS.ex
+  have h := gspec_of_vr μ hM v r hv hr hv0 hsum hcov hparts vs z lam mu t be nu (bud.af lam)
+    (bud.ag mu) hvs hlam hmu hnu 0 (by linarith [budget_of_bud lam mu hlam.le hmu.le bud hok _ _ _ _ hbv hbr hgram hfam])
+  rw [neg_zero] at h
+  exact h
+
+/-- The joint cuts from the analytic inputs: the general spectral cut of the joint certificate is at
+least `ζ(E U³ − 9 E U² + 12)` by the joint budget, and the added term is `ζ E(−U³ + 9U² − 12)`. -/
+theorem jspec_of_inputs (hM : Moments μ U x) (hS : GramInputs μ U) (vs z : List ℚ)
+    (lam mu t be nu : ℚ) (g : GramData) (j : JointData) (hvs : meshOK 0 vs = true)
+    (hlam : 0 < lam) (hmu : 0 < mu) (hnu : 0 ≤ nu) (hok : jointCert lam mu g j = true)
+    (hx : ∫ ω, U ω ^ 2 ∂μ ≤ 2 + (j.xs : ℝ) ^ 2) :
+    Integrable (fun ω => jspecG vs z lam mu t be nu ((GBud.joint g j).af lam)
+      ((GBud.joint g j).ag mu) j.ze (√(U ω))) μ ∧
+      0 ≤ ∫ ω, jspecG vs z lam mu t be nu ((GBud.joint g j).af lam) ((GBud.joint g j).ag mu) j.ze
+        (√(U ω)) ∂μ := by
+  obtain ⟨v, r, hv, hr, hv0, -, -, hsum, hcov, hparts, -, -, hjoint⟩ := hS.ex
+  have hb := hjoint lam mu g j hok hx
+  obtain ⟨hI, hG⟩ := gspec_of_vr μ hM v r hv hr hv0 hsum hcov hparts vs z lam mu t be nu
+    ((GBud.joint g j).af lam) ((GBud.joint g j).ag mu) hvs hlam hmu hnu
+    (-(j.ze * (∫ ω, U ω ^ 3 ∂μ - 9 * ∫ ω, U ω ^ 2 ∂μ + 12))) (by
+      simp only [GBud.af, GBud.ag]
+      push_cast
+      nlinarith)
+  have h3n : Integrable (fun ω => -(U ω) ^ 3) μ := hM.i3.neg
+  have h29 : Integrable (fun ω => 9 * U ω ^ 2) μ := hM.i2.const_mul 9
+  have h32 : Integrable (fun ω => -(U ω) ^ 3 + 9 * U ω ^ 2) μ := h3n.add h29
+  have h0 : Integrable (fun ω => -(U ω) ^ 3 + 9 * U ω ^ 2 - 12) μ := h32.sub (integrable_const _)
+  have hpoly : Integrable (fun ω => (j.ze : ℝ) * (-(U ω) ^ 3 + 9 * U ω ^ 2 - 12)) μ :=
+    h0.const_mul _
+  have hint : ∫ ω, (-(U ω) ^ 3 + 9 * U ω ^ 2 - 12) ∂μ
+      = -(∫ ω, U ω ^ 3 ∂μ) + 9 * ∫ ω, U ω ^ 2 ∂μ - 12 := by
+    rw [integral_sub h32 (integrable_const _), integral_add h3n h29,
+      integral_neg, integral_const_mul, integral_const, probReal_univ, one_smul]
+  have e : (fun ω => jspecG vs z lam mu t be nu ((GBud.joint g j).af lam)
+      ((GBud.joint g j).ag mu) j.ze (√(U ω))) = fun ω => gspecG vs z lam mu t be nu
+        ((GBud.joint g j).af lam) ((GBud.joint g j).ag mu) (√(U ω))
+        + (j.ze : ℝ) * (-(U ω) ^ 3 + 9 * U ω ^ 2 - 12) := by
+    funext ω
+    rw [jspecG, Real.sq_sqrt (hM.nonneg ω)]
+  rw [e]
+  refine ⟨hI.add hpoly, ?_⟩
+  rw [integral_add hI hpoly, integral_const_mul, hint]
+  linarith
 
 /-- **The Stein cuts follow from the analytic inputs.** -/
 theorem steinCut_of_inputs (hM : Moments μ U x) (hS : GramInputs μ U) : SteinCut μ U :=
   ⟨cut_of_inputs μ hM hS.toSteinInputs, spec_of_inputs μ hM hS.toSteinInputs,
-    gspec_of_inputs μ hM hS⟩
+    gspec_of_inputs μ hM hS, fun vs z lam mu t be nu g j hvs hlam hmu hnu hok hx =>
+      jspec_of_inputs μ hM hS vs z lam mu t be nu g j hvs hlam hmu hnu hok hx⟩
 
 end Grothe.Lower

@@ -440,4 +440,58 @@ lemma gspecPolys_getD (vs z : List ℚ) (lam mu t be nu af ag : ℚ) (v : ℝ) :
   rw [zero_add] at h
   exact h
 
+/-! ### The joint cut: the term `ζ(−u³ + 9u² − 12)` -/
+
+/-- Coefficients in `v` of `v^{sh(k)} ζ(−v⁶ + 9v⁴ − 12)` on the `k`-th mesh cell. -/
+def jointPolyV (k : ℕ) (ze : ℚ) : List ℚ :=
+  if k = 0 then [-12 * ze, 0, 0, 0, 9 * ze, 0, -ze]
+  else [0, 0, 0, 0, -12 * ze, 0, 0, 0, 9 * ze, 0, -ze]
+
+/-- The **joint cut**: the general spectral cut plus `ζ(−u³ + 9u² − 12)`, `u = v²`. -/
+noncomputable def jspecG (vs z : List ℚ) (lam mu t be nu af ag ze : ℚ) (v : ℝ) : ℝ :=
+  gspecG vs z lam mu t be nu af ag v + ze * (-(v ^ 2) ^ 3 + 9 * (v ^ 2) ^ 2 - 12)
+
+lemma jspecG_cell (vs z : List ℚ) (lam mu t be nu af ag ze : ℚ) (v : ℝ)
+    (hk : pickIdx vs v = 0 ∨ 0 < v) :
+    v ^ shOf (pickIdx vs v) * jspecG vs z lam mu t be nu af ag ze v
+      = evalL ((addLq (gspecPolyV (pickIdx vs v) ((cutCells vs z).getD (pickIdx vs v) ⟨0, 0, 0⟩)
+          lam mu t be nu af ag) (jointPolyV (pickIdx vs v) ze)).map ((↑) : ℚ → ℝ)) v := by
+  rw [jspecG, mul_add, gspecG_cell vs z lam mu t be nu af ag v hk, evalL_addLq]
+  congr 1
+  by_cases h0 : pickIdx vs v = 0
+  · simp only [h0, shOf, jointPolyV, ↓reduceIte, List.map_cons, List.map_nil, evalL]
+    push_cast; ring
+  · simp only [h0, shOf, jointPolyV, ↓reduceIte, List.map_cons, List.map_nil, evalL]
+    push_cast; ring
+
+/-- The polynomial pieces of the joint cut from index `i` on. -/
+def jspecPolysFrom (lam mu t be nu af ag ze : ℚ) : ℕ → List CutCell → List (List ℚ)
+  | _, [] => []
+  | i, c :: r => addLq (gspecPolyV i c lam mu t be nu af ag) (jointPolyV i ze)
+      :: jspecPolysFrom lam mu t be nu af ag ze (i + 1) r
+
+/-- The polynomial pieces of a joint cut, one per mesh cell. -/
+def jspecPolys (vs z : List ℚ) (lam mu t be nu af ag ze : ℚ) : List (List ℚ) :=
+  jspecPolysFrom lam mu t be nu af ag ze 0 (cutCells vs z)
+
+lemma jspecPolysFrom_getD (lam mu t be nu af ag ze : ℚ) : ∀ (cells : List CutCell) (i k : ℕ),
+    k < cells.length → (jspecPolysFrom lam mu t be nu af ag ze i cells).getD k []
+      = addLq (gspecPolyV (i + k) (cells.getD k ⟨0, 0, 0⟩) lam mu t be nu af ag)
+          (jointPolyV (i + k) ze)
+  | [], _, _, h => absurd h (by simp)
+  | c :: r, i, 0, _ => by simp [jspecPolysFrom]
+  | c :: r, i, k + 1, h => by
+    simp only [jspecPolysFrom, List.getD_cons_succ]
+    rw [jspecPolysFrom_getD lam mu t be nu af ag ze r (i + 1) k (by simpa using h)]
+    congr 2 <;> omega
+
+lemma jspecPolys_getD (vs z : List ℚ) (lam mu t be nu af ag ze : ℚ) (v : ℝ) :
+    (jspecPolys vs z lam mu t be nu af ag ze).getD (pickIdx vs v) []
+      = addLq (gspecPolyV (pickIdx vs v) ((cutCells vs z).getD (pickIdx vs v) ⟨0, 0, 0⟩)
+          lam mu t be nu af ag) (jointPolyV (pickIdx vs v) ze) := by
+  have h := jspecPolysFrom_getD lam mu t be nu af ag ze (cutCells vs z) 0 (pickIdx vs v)
+    (by rw [cutCells_length]; have := pickIdx_le vs v; omega)
+  rw [zero_add] at h
+  exact h
+
 end Grothe.Lower
