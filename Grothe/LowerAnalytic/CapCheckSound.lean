@@ -222,15 +222,22 @@ lemma memo_getD {α : Type} (k : ℕ) (f : ℕ → α) (d : α) (i : ℕ) (e : �
   · simp [Array.getD, h]
 
 lemma get3_memo3 {α : Type} (k1 : ℕ) (k2 : ℕ → ℕ) (k3 : ℕ → ℕ → ℕ) (f : ℕ → ℕ → ℕ → α) (d : α)
-    (a b c : ℕ) : get3 (memo3 k1 k2 k3 f d) a b c (f a b c) = f a b c := by
+    (a b c : ℕ) : get3 (memo3 k1 k2 k3 f d) a b c (fun _ => f a b c) = f a b c := by
   unfold get3 memo3
-  rw [memo_getD]
-  split_ifs with h1
-  · rw [memo_getD]
-    split_ifs with h2
-    · rw [memo_getD]; split_ifs <;> rfl
-    · simp [Array.getD]
-  · simp [Array.getD]
+  by_cases h1 : a < k1
+  · by_cases h2 : b < k2 a
+    · simp only [memo_getD, h1, h2, ↓reduceIte]
+      split
+      · simp [memo]
+      · rfl
+    · simp only [memo_getD, h1, h2, ↓reduceIte]
+      split
+      · rename_i h; simp at h
+      · rfl
+  · simp only [memo_getD, h1, ↓reduceIte]
+    split
+    · rename_i h; simp [Array.getD] at h
+    · rfl
 
 /-- The specification of the weighted cell functional. -/
 def cwSpec (gd : GridData) (T : Tables) (w : ℕ) (P : CP) : Ival :=

@@ -45,7 +45,7 @@ def cellOK (gd : GridData) (ell beta : Rat) (i j : Nat) : Bool :=
     decide (gd.nb i j ≤ gd.c) && decide (gd.gg i j ≤ gd.c)
 
 /-- The grid check. -/
-def gridOK (gd : GridData) (ell beta : Rat) : Bool :=
+@[noinline] def gridOK (gd : GridData) (ell beta : Rat) : Bool :=
   decide (0 < gd.h) && decide (0 < gd.N) && decide (1 ≤ gd.c) && decide (0 < gd.Nr) &&
     (List.range gd.Nr).all fun i => (List.range gd.N).all fun j => cellOK gd ell beta i j
 
@@ -124,7 +124,7 @@ def ringCells (ell beta : Rat) (r : Recipe) (Nr N : Nat) (h : Rat) (radF : Nat �
     (pa, pb, na, nb, gg)).toArray
 
 /-- The grid of a recipe. -/
-def mkGrid (ell beta : Rat) (r : Recipe) (Nr N : Nat) (h : Rat) (T : Tables) : GridData :=
+@[noinline] def mkGrid (ell beta : Rat) (r : Recipe) (Nr N : Nat) (h : Rat) (T : Tables) : GridData :=
   let radA : Array (Array Float) := T.rad.map fun a => a.map ivF
   let angA : Array (Array (Float × Float)) := T.ang.map fun a => a.map fun p => (ivF p.1, ivF p.2)
   let radF := fun i m => (radA.getD i #[]).getD m 0.0
@@ -218,9 +218,10 @@ def memo3 {α : Type} (k1 : Nat) (k2 : Nat → Nat) (k3 : Nat → Nat → Nat) (
     (d : α) : Array (Array (Array α)) :=
   memo k1 (fun a => memo (k2 a) (fun b => memo (k3 a b) (f a b) d) #[]) #[]
 
-/-- Lookup in a three-level table with a fallback. -/
-def get3 {α : Type} (A : Array (Array (Array α))) (a b c : Nat) (e : α) : α :=
-  ((A.getD a #[]).getD b #[]).getD c e
+/-- Lookup in a three-level table with a (lazy) fallback. -/
+def get3 {α : Type} (A : Array (Array (Array α))) (a b c : Nat) (e : Unit → α) : α :=
+  let r := (A.getD a #[]).getD b #[]
+  if h : c < r.size then r[c] else e ()
 
 /-- The number of angular harmonics tabulated for the weight `w`. -/
 def nwOf (w : Nat) : Nat := if w = 0 then 4 else if w = 1 then 1 else if w = 2 then 3 else 5
@@ -231,18 +232,18 @@ def mCW (gd : GridData) (T : Tables) (g : Nat → Nat → Nat → Ival) (w m n :
 
 /-- **The enclosure of the coefficient matrix** (fast version: the weights, the angular sums and
 the weighted moments are tabulated once). -/
-def matI (ell beta : Rat) (gd : GridData) (T : Tables) : Array (Array Ival) :=
+@[noinline] def matI (ell beta : Rat) (gd : GridData) (T : Tables) : Array (Array Ival) :=
   let wA := memo3 gd.Nr (fun _ => gd.N) (fun _ _ => 4) (fun i j w => wI gd w i j) zeroI
-  let wf := fun w i j => get3 wA i j w (wI gd w i j)
+  let wf := fun w i j => get3 wA i j w (fun _ => wI gd w i j)
   let sC := memo3 4 nwOf (fun _ _ => gd.Nr) (fun w n => angSumCW gd.N wf T w n) zeroI
   let sS := memo3 4 nwOf (fun _ _ => gd.Nr) (fun w n => angSumSW gd.N wf T w n) zeroI
-  let gC := fun w n i => get3 sC w n i (angSumCW gd.N (wI gd) T w n i)
-  let gS := fun w n i => get3 sS w n i (angSumSW gd.N (wI gd) T w n i)
+  let gC := fun w n i => get3 sC w n i (fun _ => angSumCW gd.N (wI gd) T w n i)
+  let gS := fun w n i => get3 sS w n i (fun _ => angSumSW gd.N (wI gd) T w n i)
   let tC := memo3 4 (fun _ => 13) (fun w _ => nwOf w) (fun w m n => mCW gd T gC w m n) zeroI
   let tS := memo3 4 (fun _ => 13) (fun w _ => nwOf w) (fun w m n => mCW gd T gS w m n) zeroI
-  let fC := fun w m (n : Int) => get3 tC w m n.natAbs (wmC gd T w m n.natAbs)
+  let fC := fun w m (n : Int) => get3 tC w m n.natAbs (fun _ => wmC gd T w m n.natAbs)
   let fS := fun w m (n : Int) =>
-    let v := get3 tS w m n.natAbs (wmS gd T w m n.natAbs)
+    let v := get3 tS w m n.natAbs (fun _ => wmS gd T w m n.natAbs)
     if n < 0 then negI v else v
   matOf ell beta (fun w P => polyI (fC w) (fS w) P) (tailPolyI T)
 
@@ -253,14 +254,14 @@ def entryPolys (ell beta : Rat) : List CP :=
     (List.range 144).map (fun k => uuCP ell beta (k / 12) (k % 12))
 
 /-- The degree bounds `m ≤ 16`, `|n| ≤ 12` of the table hypothesis. -/
-def polyBoundsOK (ell beta : Rat) : Bool :=
+@[noinline] def polyBoundsOK (ell beta : Rat) : Bool :=
   (entryPolys ell beta).all fun P => (CP.polar P).all fun t => decide (t.m ≤ 16) && decide (t.n.natAbs ≤ 12)
 
 /-- The lower endpoints as rationals. -/
-def loQ (M : Array (Array Ival)) : List (List Rat) :=
+@[noinline] def loQ (M : Array (Array Ival)) : List (List Rat) :=
   M.toList.map fun a => a.toList.map fun I => (I.lo : Rat) / (D : Rat)
 /-- The upper endpoints as rationals. -/
-def hiQ (M : Array (Array Ival)) : List (List Rat) :=
+@[noinline] def hiQ (M : Array (Array Ival)) : List (List Rat) :=
   M.toList.map fun a => a.toList.map fun I => (I.hi : Rat) / (D : Rat)
 
 end GrotheKernel
