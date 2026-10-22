@@ -1,4 +1,5 @@
 import Grothe.LowerAnalytic.CapGrid
+import GrotheKernel.CapCheck
 
 /-!
 # Grid prices and the exact cell decomposition of the integrated majorant
@@ -22,11 +23,13 @@ namespace Grothe.LowerAnalytic
 
 noncomputable section
 
-/-- `D = S(S² + 4R² + 4R|A − B|)` over `ℚ`. -/
-def majDq (A B R : ℚ) : ℚ := (A + B) * ((A + B) ^ 2 + 4 * R ^ 2 + 4 * R * |A - B|)
+lemma absQ_eq (q : ℚ) : absQ q = |q| := by
+  unfold absQ; split_ifs with h
+  · rw [abs_of_neg h]
+  · rw [abs_of_nonneg (not_lt.1 h)]
 
 lemma majDq_cast (A B R : ℚ) : (majDq A B R : ℝ) = majD A B R := by
-  simp [majDq, majD]
+  simp [majDq, majD, absQ_eq]
 
 lemma majD_mono {A B R R' : ℝ} (hA : 0 < A) (hB : 0 < B) (hR : 0 ≤ R) (h : R ≤ R') :
     majD A B R ≤ majD A B R' := by
@@ -37,9 +40,6 @@ lemma majD_mono {A B R R' : ℝ} (hA : 0 < A) (hB : 0 < B) (hR : 0 ≤ R) (h : R
   have h3 : R * |A - B| ≤ R' * |A - B| := mul_le_mul_of_nonneg_right h this
   have hS : 0 < A + B := by linarith
   exact mul_le_mul_of_nonneg_left (by linarith) hS.le
-
-/-- `r(|ℓ − 2β| + |β| r²)`, a bound for `|L|` on `|z| ≤ r`. -/
-def rlb (ell beta r : ℚ) : ℚ := r * (|ell - 2 * beta| + |beta| * r ^ 2)
 
 lemma norm_Lf_le_rlb (ell beta : ℚ) {z : ℂ} {r : ℚ} (hz : ‖z‖ ≤ r) :
     ‖Lf ell beta z‖ ≤ rlb ell beta r := by
@@ -53,34 +53,9 @@ lemma norm_Lf_le_rlb (ell beta : ℚ) {z : ℂ} {r : ℚ} (hz : ‖z‖ ≤ r) :
     rw [abs_mul, abs_pow, abs_norm]
     exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hn hz 2) (abs_nonneg _)
   have : (rlb ell beta r : ℝ) = (r : ℝ) * (|(ell : ℝ) - 2 * beta| + |(beta : ℝ)| * (r : ℝ) ^ 2) := by
-    simp [rlb]
+    simp [rlb, absQ_eq]
   rw [this]
   exact mul_le_mul hz h1 (abs_nonneg _) (hn.trans hz)
-
-/-- A uniform grid with cell prices. -/
-structure GridData where
-  Nr : ℕ
-  N : ℕ
-  h : ℚ
-  pa : ℕ → ℕ → ℚ
-  pb : ℕ → ℕ → ℚ
-  na : ℕ → ℕ → ℚ
-  nb : ℕ → ℕ → ℚ
-  gg : ℕ → ℕ → ℚ
-  c : ℚ
-
-/-- The cell conditions. -/
-def cellOK (gd : GridData) (ell beta : ℚ) (i j : ℕ) : Bool :=
-  decide (0 < gd.pa i j) && decide (0 < gd.pb i j) && decide (1 ≤ gd.na i j * gd.pa i j) &&
-    decide (1 ≤ gd.nb i j * gd.pb i j) && decide (0 ≤ gd.gg i j) &&
-    decide (gd.gg i j * majDq (gd.pa i j) (gd.pb i j) (rlb ell beta ((i + 1) * gd.h)) ≤ 8) &&
-    decide (gd.pa i j ≤ gd.c) && decide (gd.pb i j ≤ gd.c) && decide (gd.na i j ≤ gd.c) &&
-    decide (gd.nb i j ≤ gd.c) && decide (gd.gg i j ≤ gd.c)
-
-/-- The grid check. -/
-def gridOK (gd : GridData) (ell beta : ℚ) : Bool :=
-  decide (0 < gd.h) && decide (0 < gd.N) && decide (1 ≤ gd.c) && decide (0 < gd.Nr) &&
-    (List.range gd.Nr).all fun i => (List.range gd.N).all fun j => cellOK gd ell beta i j
 
 /-- A grid function: the cell value on the rings, `d` on the tail. -/
 def gridFun (gd : GridData) (F : ℕ → ℕ → ℚ) (d : ℝ) (z : ℂ) : ℝ :=
