@@ -168,12 +168,18 @@ splitting and the explicit potentials) is the main missing piece of the lower bo
   `Circular.gaussian_sixth`) from the scalar certificate `cumulant_bound`: the real cumulants of
   a are converted with E a⁴ = (3/8) E U², E a⁶ = (5/16) E U³ (from E D_J P = 0), E a² = 6‖f‖²
   for the kernel f = ∂³a/6, and the Cauchy–Schwarz inputs ‖SF‖² ≤ √s √T₄, ⟨FG, SF⟩ ≤ √V ‖SF‖ are
-  proved. Still assumed there: the tensor facts `TensorFacts` (the Wick identities
-  κ₄ = 1296(s + 3h/2), κ₆/46656 = (135/2)T₃ − 20V + (135/2)Q + (165/2)⟨D,U⟩ + 45‖U‖², and the
-  eleven charge-sector inequalities of the paper proof: the two sums of squares h ≤ 37s/39,
-  27h − 5s + 8‖G_anti‖² ≤ 216 tt, ‖G_anti‖² ≤ s/2, the cubic trace of G, the block traces of S,
-  the coupled G test and the charge split), the gate variable and the per-row reduction
-  (`RowShared`), and the crude row.
+  proved. Of the thirteen tensor facts `TensorFacts` of the paper proof, five are proved in
+  `CircularTensor.lean`: the Wick identity κ₄ = 1296(s + 3h/2) for every cubic chaos
+  (`Chaos3.wick4`), ‖G_anti‖² ≤ s/2 (`tenGa_le_half`), the charge-two block tt = h/6 − ‖M‖²/24
+  ≤ h/6 (`tenTT_le_sixth`) and the two sector quantities A₀ = ‖C₀ − θS₀‖² ≥ 0,
+  A₂ = ‖C₂ − θS₂‖² ≥ 0 (`A0nn_circular`, `A2nn_circular`), through a real charge calculus
+  (slot operators of J, the derivation δ with δf = −g, δg = f for the kernels of a, b, and the
+  tetrahedral contraction); `Circular.chaos3_right` shows that b is a cubic chaos when a is.
+  Still assumed (`TensorFactsRest`, eight fields): the Wick identity
+  κ₆/46656 = (135/2)T₃ − 20V + (135/2)Q + (165/2)⟨D,U⟩ + 45‖U‖² and seven charge-sector
+  inequalities (the two sums of squares h ≤ 37s/39 and 27h − 5s + 8‖G_anti‖² ≤ 216 tt, the
+  cubic trace of G, the block traces T₃, T₄ of S, the coupled G test and the charge split);
+  besides these, the gate variable and the per-row reduction (`RowShared`), and the crude row.
 * Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma, the
   scalar sixth-moment and first-moment certificates (the sixth-moment one from its tensor and
   cumulant hypotheses), and the exact form of
@@ -198,7 +204,7 @@ no warnings.
 | `GrotheKernel/` | the fixed-point interval evaluator used by the head check |
 | `Grothe/Lower/` | positivity certificates, Stein cuts, rows, mixtures and boxes, the one cover of t ∈ [0, 9/10], the transfer to finite matrices, final theorems |
 | `Grothe/Lower/RowData*.lean`, `Grothe/Upper/Data.lean` | generated certificate data |
-| `Grothe/LowerAnalytic/` | analytic lemmas: Gaussian integration by parts, spectral budgets and covariance order, fourth-moment cap, moment certificates, circular cubics and the sixth-moment reduction (`Circular.lean`), the bridge `lower_bound_gaussian` |
+| `Grothe/LowerAnalytic/` | analytic lemmas: Gaussian integration by parts, spectral budgets and covariance order, fourth-moment cap, moment certificates, circular cubics and the sixth-moment reduction (`Circular.lean`), the proved tensor facts and the charge calculus (`CircularTensor.lean`), the bridge `lower_bound_gaussian` |
 | `tools/` | generators of the data modules from the research archives; `check_tensor_facts.py` checks the `TensorFacts` fields of `Circular.lean` numerically |
 | `scratch/Axioms.lean`, `scripts/check_axioms.py` | the axiom report and its check |
 

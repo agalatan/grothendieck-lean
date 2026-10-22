@@ -131,7 +131,8 @@ lemma rotD_cubic [DecidableEq ι] {P : MvPolynomial ι ℝ}
     map_sum]
 
 /-- The imaginary part of a circular cubic is a cubic chaos. -/
-theorem Circular.chaos3_right [DecidableEq ι] {a b : MvPolynomial ι ℝ} (hc : Circular J a b)
+theorem Circular.chaos3_right [DecidableEq ι] {J : ι → ι → ℝ} {a b : MvPolynomial ι ℝ}
+    (hc : Circular J a b)
     (ha : Chaos3 a) : Chaos3 b where
   eig := by
     have hb : b = -rotD J a := by rw [hc.da, neg_neg]
