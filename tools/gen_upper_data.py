@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Write `Grothe/Upper/Data.lean`: the exact data of the upper certificate.
 
-Inputs (folder `handoff/upper-residual/taylor`, or the folder given as first argument):
+Inputs (folder `handoff/upper-residual/taylor`, or the folder given as first argument, and the
+folder `handoff/research-third-decimal/upper-polynomial-bridge-20261022`, or the third argument):
 
 * `contour_input.json`: the profile `x`, `a`, `b`, `eta`, the odd polynomial `p` and the working
   slope `c` (decimal strings / fractions).  No other field of that file is used.
@@ -10,22 +11,22 @@ Inputs (folder `handoff/upper-residual/taylor`, or the folder given as first arg
 * `X_energy_N501.npy`: the binary64 energy table of the truncated rounding `X`; every entry is read
   as the exact dyadic rational it represents.  Only the entries with `n + 3 m <= 501` are kept.
 * `finite_head_N501_result.json`, `kernel_result.json`: the rational error bounds of the table
-  (reflection, rotation, grouping) and of the correction tail.
-* `taylor_comparison_result.json`, `baseline_tail_result.json`, `endpoint_result.json`: the
-  comparison bound, the contour bound and the assembled endpoint (checked against the constants
-  written here).
+  (reflection, rotation, grouping) and the certified head of the stored table.
+* `result.json`, `fresh_hardy_result.json` (second folder): the comparison bound of the rounding
+  `T = F₀ P₃(φ)` with `X`, the contour bound of the kernel of `T` and the assembled endpoint
+  (checked against the constants of `PolynomialBridge.lean` repeated here).
 
 All numbers written are exact rationals.  Usage:
-    python3 tools/gen_upper_data.py [handoff/upper-residual/taylor] [Grothe/Upper/Data.lean]"""
+    python3 tools/gen_upper_data.py [handoff/upper-residual/taylor] [Grothe/Upper/Data.lean] [bridge]"""
 import json, os, struct, sys, ast
 from fractions import Fraction as Q
 
 N = 501                              # head degree in t
 HEAD_CAP = Q(7143, 10 ** 12)         # certified bound for the computed head (value 7.14272e-9)
-COMPARE = Q(2497, 2 * 10 ** 9)       # l1 distance of the energies of the rounding and of X
-TAIL = Q(72, 10 ** 9)                # Hardy tail bound of the base kernel beyond degree N
-SQUARE, RADIUS = Q(7, 4), Q(259, 250)   # weighted square-sum bound and its radius
-DELTA = Q(133, 10 ** 8)              # total residual
+COMPARE = Q(1065637497, 10 ** 15)    # l1 distance of the energies of the rounding T and of X
+TAIL = Q(36748, 10 ** 12)            # Hardy tail bound of the kernel of T beyond degree N
+SQUARE, RADIUS = Q(7, 4), Q(4149, 4000)   # weighted square-sum bound and its radius
+DELTA = Q(554771095509, 5 * 10 ** 17)     # total residual
 
 def up(q, k=18):
     """Round a positive rational up to k decimals."""
@@ -60,12 +61,13 @@ def load_npy(path):
 def main():
     src = sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.environ.get("GROTHE_HANDOFF", "handoff"), "upper-residual", "taylor")
     out = sys.argv[2] if len(sys.argv) > 2 else "Grothe/Upper/Data.lean"
+    bridge = sys.argv[3] if len(sys.argv) > 3 else os.path.join(os.environ.get("GROTHE_HANDOFF", "handoff"),
+        "research-third-decimal", "upper-polynomial-bridge-20261022")
     inp = json.load(open(f"{src}/contour_input.json"))
     old = json.load(open(f"{src}/finite_head_N501_result.json"))
     ker = json.load(open(f"{src}/kernel_result.json"))
-    cmp_ = json.load(open(f"{src}/taylor_comparison_result.json"))
-    tl = json.load(open(f"{src}/baseline_tail_result.json"))
-    end = json.load(open(f"{src}/endpoint_result.json"))
+    res = json.load(open(f"{bridge}/result.json"))
+    tl = json.load(open(f"{bridge}/fresh_hardy_result.json"))
     ph = json.load(open(f"{src}/phase_damped_m4_d36_eps1p05.json"))
     prof = [rat(s) for s in inp["profile"]]
     a, b, eta, c = rat(inp["a"]), rat(inp["b"]), rat(inp["eta"]), rat(inp["working_slope"])
@@ -89,18 +91,17 @@ def main():
     base = (raw + ref + rot) * (2 + raw + ref + rot) + grp           # table of the base, l1
     fin = 2 * energy + base + gamma1 * Q(201, 100) + Q(1, 10 ** 290)
     if fin != rat(ker["finite_arithmetic_error_cap"]): raise SystemExit("error budget mismatch")
-    corr = rat(ker["best_correction_tail"]["tail_cap"]) + fin - energy
-    err_e, err_c = up(energy), up(corr)
+    err_e = up(energy)
     if rat(ker["center_residual_head_l1_upper_rational"]) > HEAD_CAP: raise SystemExit("head cap")
-    if rat(cmp_["comparison_upper"]) > COMPARE: raise SystemExit("comparison cap")
+    if rat(res["comparison_cap"]) != COMPARE or rat(res["head_cap"]) != HEAD_CAP or rat(res["energy_error"]) != err_e:
+        raise SystemExit("comparison data")
     if rat(tl["radius"]) != RADIUS or rat(tl["mean_square_upper_rational"]) > SQUARE or tl["N"] != N:
         raise SystemExit("contour data")
     if rat(tl["tail_cap"]) > TAIL: raise SystemExit("tail cap")
-    if c != rat(end["working_slope"]) or DELTA != rat(end["wiener_error_cap"]): raise SystemExit("endpoint data")
-    if HEAD_CAP + err_e + err_c + TAIL + COMPARE > DELTA: raise SystemExit("budget does not close")
+    if HEAD_CAP + err_e + TAIL + COMPARE != DELTA or DELTA != rat(res["best_residual"]): raise SystemExit("budget")
     if not DELTA < c: raise SystemExit("residual not below the slope")
     bound = 1 / (c - DELTA)
-    if bound != rat(end["endpoint_exact"]): raise SystemExit("endpoint mismatch")
+    if bound != rat(res["best_endpoint"]): raise SystemExit("endpoint mismatch")
 
     rows, cols, vals = load_npy(f"{src}/X_energy_N501.npy")
     table = {}
@@ -128,19 +129,19 @@ rationals and exact dyadic rationals).
 `v(s) = Σ_j x_j L_j^{{(−1/2)}}(s) / √(Γ(j + ½)/j!)` (`profileQ`), and, with `U = |z|²`, `V = |w|²`,
 `W = Re(z̄w)`, `D = Im(z̄w)`,
 
-  `φ(z, w) = D · exp(−ε(U + V)) · S(U, V, W)`,  `F = F₀ · exp(iφ)`
+  `φ(z, w) = D · exp(−ε(U + V)) · S(U, V, W)`,  `T = F₀ · P₃(φ)`,  `P₃(x) = 1 + ix − x²/2 − ix³/6`
 
 (`phaseEpsQ`, `phaseStrs`: `S` has {len(mono)} monomials).  The rounding is the smoothed function
-`G(x) = 𝔼 F(M x + √(I − M²) Z)`, `M = P_u + √η (I − P_u)` with `P_u` the orthogonal projection on
+`G(x) = 𝔼 T(M x + √(I − M²) Z)`, `M = P_u + √η (I − P_u)` with `P_u` the orthogonal projection on
 `u = (1, b)`; the primary coordinate has correlation `p(t)` and the auxiliary one `−τ(t)`,
 `τ(t) = (t³ + a² t⁷)/(1 + a²)`.  A function `Y` of this kind has the correlation kernel
 
   `H_Y(t) = Σ_{{n,m}} E_Y[n,m] · p(t)^n · (−τ(t))^m`,
 
 with `E_Y[n,m] ≥ 0` its chaos energies (primary degree `n`, auxiliary degree `m`, `n + m` odd).
-Three such functions occur: the rounding `F₀ e^{{iφ}}`, the base `F₀`, and the truncation
-`X = F₀ + v`, where `v` is a fixed polynomial of degree `≤ 181` approximating
-`(iφ + (iφ)²/2 + (iφ)³/6) F₀` (Hermite cutoffs `181`, `91`, `51` for the three terms).
+Two such functions occur: the rounding `T` and the truncation `X = F₀ + v`, where `v` is a fixed
+polynomial of degree `≤ 181` approximating `(iφ + (iφ)²/2 + (iφ)³/6) F₀` (Hermite cutoffs `181`,
+`91`, `51` for the three terms).
 
 * `profileQ`, `aQ`, `bQ`, `etaQ`, `phaseEpsQ`, `phaseStrs`: the parameters of the rounding;
 * `pList`: the coefficients of `P`, where `p(t) = t·P(t²)` (degree {2 * len(P) - 1}, `Σ|p_k| ≤ 1`);
@@ -151,14 +152,11 @@ Three such functions occur: the rounding `F₀ e^{{iφ}}`, the base `F₀`, and 
   as exact dyadic rationals;
 * `energyErrQ`: a bound for `Σ_{{n+3m ≤ {N}}} |E_X[n,m] − Ê[n,m]|` established by the source
   computation ({float(energy):.6e}, rounded up);
-* `corrTailQ`: a bound for the kernel coefficients of `E_X − E_{{F₀}}` beyond degree `{N}`
-  established by the source computation ({float(corr):.6e}, rounded up);
-* `compareQ`: the bound for `Σ |E[n,m] − E_X[n,m]|` established by the source computation
-  ({float(rat(cmp_["comparison_upper"])):.9e});
 * `headCapQ`: the bound certified in `Final.lean` for `Σ_{{k ≤ {N}}} |[t^k](Ĥ(t) − c·t)|`, where `Ĥ`
   is the kernel of `Ê`.
 
-The certified bound is `1/(c − {DELTA}) = {bound}`.
+The certified bound (`PolynomialBridge.lean`) is
+`1/(c − {DELTA}) = {bound}`.
 -/
 
 namespace Grothe.Upper
@@ -186,10 +184,6 @@ open GrotheKernel
         '  "' + f"{i},{j},{k}:{cf.numerator}/{cf.denominator}" + '"' for (i, j, k), cf in mono) + "]\n")
     L.append("/-- The `ℓ¹` error bound of the stored energies of `X`. -/")
     L.append(f"def energyErrQ : ℚ := {lean_rat(err_e)}\n")
-    L.append("/-- The bound for the kernel coefficients of `E_X − E_{F₀}` beyond degree `501`. -/")
-    L.append(f"def corrTailQ : ℚ := {lean_rat(err_c)}\n")
-    L.append("/-- The `ℓ¹` distance of the energies of the rounding and of `X`. -/")
-    L.append(f"def compareQ : ℚ := {lean_rat(COMPARE)}\n")
     L.append("/-- Certified bound for the head of the stored table. -/")
     L.append(f"def headCapQ : ℚ := {lean_rat(HEAD_CAP)}\n")
     L.append("/-- The stored energies, one string per auxiliary degree `m`. -/")

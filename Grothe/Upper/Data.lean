@@ -11,19 +11,19 @@ rationals and exact dyadic rationals).
 `v(s) = Σ_j x_j L_j^{(−1/2)}(s) / √(Γ(j + ½)/j!)` (`profileQ`), and, with `U = |z|²`, `V = |w|²`,
 `W = Re(z̄w)`, `D = Im(z̄w)`,
 
-  `φ(z, w) = D · exp(−ε(U + V)) · S(U, V, W)`,  `F = F₀ · exp(iφ)`
+  `φ(z, w) = D · exp(−ε(U + V)) · S(U, V, W)`,  `T = F₀ · P₃(φ)`,  `P₃(x) = 1 + ix − x²/2 − ix³/6`
 
 (`phaseEpsQ`, `phaseStrs`: `S` has 1140 monomials).  The rounding is the smoothed function
-`G(x) = 𝔼 F(M x + √(I − M²) Z)`, `M = P_u + √η (I − P_u)` with `P_u` the orthogonal projection on
+`G(x) = 𝔼 T(M x + √(I − M²) Z)`, `M = P_u + √η (I − P_u)` with `P_u` the orthogonal projection on
 `u = (1, b)`; the primary coordinate has correlation `p(t)` and the auxiliary one `−τ(t)`,
 `τ(t) = (t³ + a² t⁷)/(1 + a²)`.  A function `Y` of this kind has the correlation kernel
 
   `H_Y(t) = Σ_{n,m} E_Y[n,m] · p(t)^n · (−τ(t))^m`,
 
 with `E_Y[n,m] ≥ 0` its chaos energies (primary degree `n`, auxiliary degree `m`, `n + m` odd).
-Three such functions occur: the rounding `F₀ e^{iφ}`, the base `F₀`, and the truncation
-`X = F₀ + v`, where `v` is a fixed polynomial of degree `≤ 181` approximating
-`(iφ + (iφ)²/2 + (iφ)³/6) F₀` (Hermite cutoffs `181`, `91`, `51` for the three terms).
+Two such functions occur: the rounding `T` and the truncation `X = F₀ + v`, where `v` is a fixed
+polynomial of degree `≤ 181` approximating `(iφ + (iφ)²/2 + (iφ)³/6) F₀` (Hermite cutoffs `181`,
+`91`, `51` for the three terms).
 
 * `profileQ`, `aQ`, `bQ`, `etaQ`, `phaseEpsQ`, `phaseStrs`: the parameters of the rounding;
 * `pList`: the coefficients of `P`, where `p(t) = t·P(t²)` (degree 101, `Σ|p_k| ≤ 1`);
@@ -34,14 +34,11 @@ Three such functions occur: the rounding `F₀ e^{iφ}`, the base `F₀`, and th
   as exact dyadic rationals;
 * `energyErrQ`: a bound for `Σ_{n+3m ≤ 501} |E_X[n,m] − Ê[n,m]|` established by the source
   computation (1.369402e-11, rounded up);
-* `corrTailQ`: a bound for the kernel coefficients of `E_X − E_{F₀}` beyond degree `501`
-  established by the source computation (2.728774e-11, rounded up);
-* `compareQ`: the bound for `Σ |E[n,m] − E_X[n,m]|` established by the source computation
-  (1.248492310e-06);
 * `headCapQ`: the bound certified in `Final.lean` for `Σ_{k ≤ 501} |[t^k](Ĥ(t) − c·t)|`, where `Ĥ`
   is the kernel of `Ê`.
 
-The certified bound is `1/(c − 133/100000000) = 87787300000000/62499883242891`.
+The certified bound (`PolynomialBridge.lean`) is
+`1/(c − 554771095509/500000000000000000) = 438936500000000000000000/312499512981434072227643`.
 -/
 
 namespace Grothe.Upper
@@ -1233,12 +1230,6 @@ def phaseStrs : List String := [
 
 /-- The `ℓ¹` error bound of the stored energies of `X`. -/
 def energyErrQ : ℚ := (6847009 : ℚ) / 500000000000000000
-
-/-- The bound for the kernel coefficients of `E_X − E_{F₀}` beyond degree `501`. -/
-def corrTailQ : ℚ := (426371 : ℚ) / 15625000000000000
-
-/-- The `ℓ¹` distance of the energies of the rounding and of `X`. -/
-def compareQ : ℚ := (2497 : ℚ) / 2000000000
 
 /-- Certified bound for the head of the stored table. -/
 def headCapQ : ℚ := (7143 : ℚ) / 1000000000000

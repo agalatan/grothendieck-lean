@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.401691989174 < K_G^ℂ < 1.404599424**
+> **1.401691989174 < K_G^ℂ < 1.404598989011**
 
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an 8-page explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
@@ -35,10 +35,10 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.401691989174 < K** | **K < 1.404599424** |
+| Oct 2026 | **this repository** | **1.401691989174 < K** | **K < 1.404598989011** |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
-proposed as the exact value; it lies inside the interval, 2.35·10⁻⁵ below our upper bound.
+proposed as the exact value; it lies inside the interval, 2.31·10⁻⁵ below our upper bound.
 
 ## What is proved, and under which assumptions
 
@@ -62,21 +62,31 @@ one-variable functions Ψ_r (defined in Lean as suprema of finite-dimensional Ga
 integrals) lie below stored rational values at their tabulated nodes. Those caps are certified
 by exact-arithmetic computations outside Lean; moving them inside is work in progress.
 
-**Upper bound** — `Grothe.complex_grothendieck_upper :
-KernelHyps E EX E0 → IsGrothendieckBound (87787300000000/62499883242891)`, and
-`Grothe.upper_value_lt` shows this is below 1.404599424 (`Grothe/Upper/Final.lean`).
+**Upper bound** — `Grothe.fresh_upper :
+DirectHyps E EX → IsGrothendieckBound (438936500000000000000000/312499512981434072227643)`,
+and `Grothe.upper_value_lt` shows this is below 1.404598989011
+(`Grothe/Upper/PolynomialBridge.lean`).
 
-The rounding is a smoothed two-coordinate Gaussian phase rounding with a damped polynomial
-phase factor; its correlation kernel is compared with c·t through a polynomial truncation, and
-the bound is 1/(c − ‖H − c·t‖) with residual at most 133/10⁸. Lean proves the transfer
-inequality (via tensor powers), the composition and locality of the kernel, the evaluation of
-the head of the kernel through degree 501 from 21,168 stored energies by a verified interval
-checker, the tail bound and the endpoint arithmetic. The structure `KernelHyps` collects what is
-**assumed**: that the stored tables are the energies of an actual rounding (validity,
-summability, parity), the comparison Σ|E − EX| ≤ 2497/(2·10⁹) between the rounding and its
-truncation (93.9% of the residual budget; an external computer-assisted lemma), a weighted
-square-sum bound used for the tail (5.4%), and two small table budgets. The part computed in
-Lean is 0.54% of the budget.
+The rounding is T = F₀·P₃(φ): a smoothed two-coordinate Gaussian phase rounding F₀ times the
+cubic Taylor polynomial P₃(x) = 1 + ix − x²/2 − ix³/6 of a damped polynomial phase φ. Since
+|P₃(x)|² = 1 − x⁴(3 − x²)/36 ≤ 1 for |φ| < 1, T is a disk-valued (hence admissible) rounding.
+Its correlation kernel H is compared with c·t through the kernel of a polynomial truncation
+X = F₀ + v, and the bound is 1/(c − ‖H − c·t‖) with residual at most 554771095509/(5·10¹⁷).
+Lean proves the transfer inequality (via tensor powers), the composition and locality of the
+kernel, the evaluation of the head of the kernel through degree 501 from 21,168 stored energies
+by a verified interval checker, the tail bound and the endpoint arithmetic. The structure
+`DirectHyps E EX` (tables E of the rounding T and EX of the truncation X) collects what is
+**assumed**:
+
+| field | content | share of the residual |
+|---|---|---|
+| `valid`, `summable`, `summableX`, `parityX` | the tables are the energies of the actual rounding and truncation | — |
+| `compare` | Σ\|E − EX\| ≤ 1065637497/10¹⁵ (external computer-assisted comparison lemma) | 96.04% |
+| `energy_close` | the stored energies are within 6847009/(5·10¹⁷) of EX | 0.001% |
+| `hardy` | weighted square sum ≤ 7/4 at radius 4149/4000, giving the tail 36748/10¹² beyond degree 501 | 3.31% |
+
+The head, computed in Lean (`head_check`), is 7143/10¹², 0.64% of the total
+554771095509/(5·10¹⁷).
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus exactly two `native_decide` facts,
 `Grothe.head_check` (the upper head) and `Grothe.Lower.cert_check` (the lower certificate).
