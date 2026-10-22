@@ -10,7 +10,7 @@ by the upper bound (`PolynomialBridge.lean`):
 
 * `head_check` (by `native_decide`): the stored indices satisfy `n + 3m ≤ 501`, and the interval
   checker bounds the head (degrees `≤ 501`) of the kernel of the stored energies `Ê` by
-  `headCapQ = 7.143·10⁻⁹` against `c·t`;
+  `headCapQ = 9.888·10⁻⁸` against `c·t`;
 * the `ℓ¹` norms of the correlation polynomials are at most `1`, hence the passage from tables to
   kernels is an `ℓ¹` contraction (`summable_kernelCoeff`, `kernelCoeff_sub`).
 -/
@@ -45,7 +45,7 @@ theorem head_check : headOK 501 energyRows pList qList slopeQ headCapQ = true :=
 
 theorem pList_norm : (pList.map fun q => |q|).sum ≤ 1 := by decide +kernel
 
-theorem qList_norm : (qList.map fun q => |q|).sum ≤ 1 := by norm_num [qList, aQ]
+theorem qList_norm : (qList.map fun q => |q|).sum ≤ 1 := by decide +kernel
 
 /-! ### From tables to kernels -/
 

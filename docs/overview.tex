@@ -30,7 +30,7 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.401695322458\;<\;\KG\;<\;1.404598989011$\\[6pt]
+\Large $1.401695322458\;<\;\KG\;<\;1.404598635371$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, each resting on one explicitly stated
 family of externally certified numerical inputs (Section~\ref{sec:trust}).\\[4pt]
 With \textbf{no hypothesis at all}, every step proved in Lean: $\KG\le1.40578$.\vspace{4pt}
@@ -76,13 +76,13 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$ (Gaussian phase rounding)\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct 2026 & \textbf{this work} & $\mathbf{1.401695322458}$ & $\mathbf{1.404598989011}$\\
+Oct 2026 & \textbf{this work} & $\mathbf{1.401695322458}$ & $\mathbf{1.404598635371}$\\
 Oct 2026 & this work, fully formal & & $1.40578$ (no hypothesis)\\\bottomrule
 \end{tabular}
 \end{center}
 Haagerup's integral
 $1/\gamma^\dagger=1.404575934\ldots$, $\gamma^\dagger=\int_0^{\pi/2}\cos^2t\,(1+\sin^2t)^{-1/2}dt$, has been proposed as the
-exact value. It lies inside our interval, $2.31\cdot10^{-5}$ below the upper bound. For the real constant the corresponding
+exact value. It lies inside our interval, $2.27\cdot10^{-5}$ below the upper bound. For the real constant the corresponding
 recent results are $1.773\le K_G^{\R}\le1.7799$ (Heilman--Jones--Malavolta, October 2026).
 
 \section{Two dual constructions}
@@ -104,11 +104,12 @@ this gives the unconditional bound $\KG\le1.40578$ (\lean{haagerup\_bound}), whi
 $F_0=\ph\bigl(z+\sqrt{1+a^2}\,v(|z|^2)\,w\bigr)$ with a twelve-term Laguerre profile $v$, multiplied by the cubic Taylor
 polynomial of a damped polynomial phase $\varphi$: $T=F_0P_3(\varphi)$, $P_3(x)=1+ix-x^2/2-ix^3/6$. The identity
 $|P_3(x)|^2=1-x^4(3-x^2)/36$ and $|\varphi|<1$ give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
-Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $101$ and
-$\tau(t)=(t^3+a^2t^7)/(1+a^2)$. Compared with $c\,t$, $c=625000/877873$, the residual is at most
-$\delta=554771095509/(5\cdot10^{17})\approx1.10954\cdot10^{-6}$:
+Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $41$ and
+$\tau(t)=\alpha t^3+\beta t^7$, $\alpha+\beta<1$ (any odd preprocessors of Wiener norm $\le1$ are realised by tensor
+powers). Compared with $c\,t$, $c=1779870886481/(25\cdot10^{11})$, the residual is at most
+$\delta=600639595509/(5\cdot10^{17})\approx1.20128\cdot10^{-6}$:
 \[
- \KG\le\frac1{c-\delta}=\frac{438936500000000000000000}{312499512981434072227643}<1.404598989011 .
+ \KG\le\frac1{c-\delta}=\frac{500000000000000000}{355973576656604491}<1.404598635371 .
 \]
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
@@ -171,14 +172,14 @@ Wick identity; the finite certificate (one \lean{native\_decide})
 \lean{NodeCaps}: the 19 potentials $\Psi_r$ (defined in Lean) lie below their stored rational caps at the tabulated nodes.
 These caps come from exact-arithmetic certificates (interval integration and anchored quadratic majorants), replayed
 independently but not yet formalised.\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{fresh\_upper : DirectHyps E EX → IsGrothendieckBound (438936500000000000000000/312499512981434072227643)}}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{fresh\_upper : DirectHyps E EX → IsGrothendieckBound (500000000000000000/355973576656604491)}}\\[2pt]
 the transfer inequality (tensor powers); kernel composition and locality; the head of the kernel through degree 501 from
 21,168 stored energies by a verified interval evaluator (one \lean{native\_decide}); the tail bound; the endpoint
 &
 \lean{DirectHyps}: the tables $E$, $E_X$ are the energies of the rounding $T=F_0P_3(\varphi)$ and of its truncation $X$
-(validity, summability, parity); the comparison $\sum|E-E_X|\le1065637497/10^{15}$ ($96.04\%$ of the residual budget); a
-weighted square-sum bound $7/4$ at radius $4149/4000$, giving the tail $36748/10^{12}$ ($3.31\%$); the table error
-$6847009/(5\cdot10^{17})$ ($0.001\%$). The head computed in Lean, $7143/10^{12}$, is $0.64\%$.\\\midrule
+(validity, summability, parity); the comparison $\sum|E-E_X|\le1065637497/10^{15}$ ($88.71\%$ of the residual budget); a
+weighted square-sum bound $7/4$ at radius $4149/4000$, giving the tail $36748/10^{12}$ ($3.06\%$); the table error
+$6847009/(5\cdot10^{17})$ ($0.001\%$). The head computed in Lean, $98880/10^{12}$, is $8.23\%$.\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (140578/100000)}}\\[2pt]
 Haagerup's identity for the phase rounding, $\E[\overline{\ph\langle g,x\rangle}\,\ph\langle g,y\rangle]=\sum_k\frac\pi4\frac{(1/2)_k^2}{k!(k+1)!}z|z|^{2k}$
 (Euler integral, Gaussian integrals, Beta integrals, reduction to two complex Gaussians); the transfer through the cubic
