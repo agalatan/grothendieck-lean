@@ -174,13 +174,20 @@ the transfer inequality (tensor powers); kernel composition and locality; the he
 \lean{DirectHyps}: the tables $E$, $E_X$ are the energies of the rounding $T=F_0P_3(\varphi)$ and of its truncation $X$
 (validity, summability, parity); the comparison $\sum|E-E_X|\le1065637497/10^{15}$ ($96.04\%$ of the residual budget); a
 weighted square-sum bound $7/4$ at radius $4149/4000$, giving the tail $36748/10^{12}$ ($3.31\%$); the table error
-$6847009/(5\cdot10^{17})$ ($0.001\%$). The head computed in Lean, $7143/10^{12}$, is $0.64\%$.\\\bottomrule
+$6847009/(5\cdot10^{17})$ ($0.001\%$). The head computed in Lean, $7143/10^{12}$, is $0.64\%$.\\\midrule
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (140578/100000)}}\\[2pt]
+Haagerup's identity for the phase rounding, $\E[\overline{\ph\langle g,x\rangle}\,\ph\langle g,y\rangle]=\sum_k\frac\pi4\frac{(1/2)_k^2}{k!(k+1)!}z|z|^{2k}$
+(Euler integral, Gaussian integrals, Beta integrals, reduction to two complex Gaussians); the transfer through the cubic
+preprocessor $p(t)=\frac{2267}{2500}t-0.09319996\,t^3$; $4000$ exact terms (one \lean{native\_decide}) and a telescoping tail
+&
+nothing: this bound has no hypothesis. It is weaker than the certified bound above, and than Haagerup's $1.40491$, because
+only a cubic preprocessor and a finite head are used.\\\bottomrule
 \end{tabular}
 \end{center}
-Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}, and exactly two pinned \lean{native\_decide} facts. No
-\lean{sorry}; CI builds everything and checks the axiom report (140 theorems). The development has about $28{,}000$ lines of
+Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}, and exactly three pinned \lean{native\_decide} facts. No
+\lean{sorry}; CI builds everything and checks the axiom report (145 theorems). The development has about $28{,}000$ lines of
 hand-written Lean and $11{,}000$ lines of generated certificate data. The lower bound is close to fully formal: only
-one-variable numerical caps remain. The upper bound still rests mainly on an external analytic comparison lemma.
+one-variable numerical caps remain. The sharp upper bound still rests mainly on an external analytic comparison lemma; a weaker upper bound, $1.40578$, is fully formal.
 
 \section{Discoveries along the way}\label{sec:discoveries}
 Status labels: \textbf{[Lean]} machine-checked in this repository; \textbf{[P]} written proof; \textbf{[P,C]} proof with an
