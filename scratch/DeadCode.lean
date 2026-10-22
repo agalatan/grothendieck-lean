@@ -25,7 +25,7 @@ partial def usedClosure (env : Environment) (roots : List Name) : NameSet := Id.
 
 elab "#deadcode" : command => do
   let env ← getEnv
-  let roots := [`Grothe.complex_grothendieck_upper, `Grothe.Lower.lower_bound_data, `Grothe.Lower.lower_endpoint,
+  let roots := [`Grothe.fresh_upper, `Grothe.Lower.lower_bound_data, `Grothe.Lower.lower_endpoint,
     `Grothe.Lower.lower_bound_of_transferL2, `Grothe.LowerAnalytic.gaussian_steinInputs,
     `Grothe.LowerAnalytic.sixth_moment_complex, `Grothe.LowerAnalytic.first_moment_lt_rho,
     `Grothe.LowerAnalytic.fluctuation_bound, `Grothe.LowerAnalytic.lower_bound_gaussian]

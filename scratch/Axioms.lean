@@ -1,9 +1,9 @@
 import Grothe
-#print axioms Grothe.complex_grothendieck_upper
+#print axioms Grothe.fresh_upper
+#print axioms Grothe.upper_value_lt
 #print axioms Grothe.head_check
 #print axioms Grothe.head_le
 #print axioms Grothe.tail_le
-#print axioms Grothe.residualX_le
 #print axioms Grothe.tail_numeric
 #print axioms Grothe.Upper.head_le_of_check
 #print axioms Grothe.Upper.memB_bivarT
@@ -12,7 +12,7 @@ import Grothe
 #print axioms Grothe.Upper.summable_abs_bivarKernel
 #print axioms Grothe.Upper.tsum_abs_bivarKernel_le
 #print axioms Grothe.Upper.bivarKernel_sub
-#print axioms Grothe.residual_perturb
+#print axioms Grothe.residual_split
 #print axioms Grothe.hardy_tail
 #print axioms Grothe.transfer
 #print axioms Grothe.Lower.cert_check

@@ -6,10 +6,7 @@ import Mathlib
 The residual of a radial coefficient sequence `h` (radial index `n` ↔ odd degree `2n+1`) against
 the linear kernel `c·z` is `|h₀ − c| + Σ_{n ≥ 1} |hₙ|` (see `Grothe.transfer`).
 
-* `tsum_abs_le_add`: termwise domination `|fₙ| ≤ |gₙ| + |dₙ|` of absolute series;
-* `tail_add_le`: the tail of `g + d` is at most the tails of `g` and `d`;
 * `residual_split`: the residual is a finite head plus a tail;
-* `residual_perturb`: the residual of `h` is at most that of `g` plus `Σ |hₙ − gₙ|`;
 * `hardy_tail`: a weighted square-sum bound `Σ_n hₙ² r^{2(2n+1)} ≤ B` with `r > 1` (the Parseval
   form of a mean-square bound for the analytic continuation of the kernel to the circle of
   radius `r`) bounds the tail `Σ_{n ≥ K} |hₙ|` by Cauchy–Schwarz.
@@ -20,20 +17,6 @@ namespace Grothe
 open Finset
 
 noncomputable section
-
-/-- Termwise domination of absolute series. -/
-lemma tsum_abs_le_add {f g d : ℕ → ℝ} (hg : Summable fun n => |g n|)
-    (hd : Summable fun n => |d n|) (h : ∀ n, |f n| ≤ |g n| + |d n|) :
-    ∑' n, |f n| ≤ ∑' n, |g n| + ∑' n, |d n| := by
-  rw [← hg.tsum_add hd]
-  exact (Summable.of_nonneg_of_le (fun _ => abs_nonneg _) h (hg.add hd)).tsum_le_tsum h (hg.add hd)
-
-/-- The tail of a sum of two sequences. -/
-lemma tail_add_le {h g d : ℕ → ℝ} (hg : Summable fun n => |g n|) (hd : Summable fun n => |d n|)
-    (e : ∀ n, h n = g n + d n) (K : ℕ) :
-    ∑' n, |h (n + K)| ≤ ∑' n, |g (n + K)| + ∑' n, |d (n + K)| :=
-  tsum_abs_le_add ((summable_nat_add_iff K).mpr hg) ((summable_nat_add_iff K).mpr hd)
-    fun n => (e (n + K)).symm ▸ abs_add_le _ _
 
 /-- The residual is its head of length `K` plus the tail. -/
 theorem residual_split (h : ℕ → ℝ) (hs : Summable fun n => |h n|) (c : ℝ) (K : ℕ) :
@@ -48,16 +31,6 @@ theorem residual_split (h : ℕ → ℝ) (hs : Summable fun n => |h n|) (c : ℝ
   rw [e1, e2]
   simp only [ite_true]
   ring
-
-/-- The residual of `h` is at most the residual of `g` plus the `ℓ¹` distance of `h` and `g`. -/
-theorem residual_perturb (h g : ℕ → ℝ) (hg : Summable fun n => |g n|)
-    (hd : Summable fun n => |h n - g n|) (c : ℝ) :
-    |h 0 - c| + ∑' n, |h (n + 1)| ≤ |g 0 - c| + ∑' n, |g (n + 1)| + ∑' n, |h n - g n| := by
-  have h1 := tsum_abs_le_add (f := fun n => h (n + 1)) (g := fun n => g (n + 1))
-    (d := fun n => h (n + 1) - g (n + 1)) ((summable_nat_add_iff 1).mpr hg)
-    ((summable_nat_add_iff 1).mpr hd) fun n => (abs_add_le _ _).trans_eq' (by rw [add_sub_cancel])
-  rw [hd.tsum_eq_zero_add]
-  linarith [abs_sub_le (h 0) (g 0) c]
 
 /-- **Hardy tail.**  If `Σ_{n < J} hₙ² r^{2(2n+1)} ≤ B` for all `J`, with `r > 1`, then
 `Σ_{n ≥ K} |hₙ| ≤ T` whenever `B · r^{−2(2K+1)} ≤ T² (1 − r^{−4})`. -/

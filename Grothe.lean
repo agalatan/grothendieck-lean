@@ -6,6 +6,7 @@ import Grothe.Upper.IntervalSound
 import Grothe.Upper.Head
 import Grothe.Upper.Data
 import Grothe.Upper.Final
+import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.Disk
 import Grothe.Upper.Realise
 import Grothe.Upper.Compose

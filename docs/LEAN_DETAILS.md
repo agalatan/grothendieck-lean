@@ -6,9 +6,11 @@ This file lists, module by module, what the Lean development proves and which in
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
-**Upper bound.** `Grothe.complex_grothendieck_upper : KernelHyps E EX E0 → IsGrothendieckBound (87787300000000/62499883242891)`,
-and `Grothe.upper_value_lt` shows this is below 1.404599424. Here E, EX, E0 are the energy
-tables of the rounding, of its polynomial truncation, and of the rounding without phase.
+**Upper bound.** `Grothe.fresh_upper : DirectHyps E EX → IsGrothendieckBound (438936500000000000000000/312499512981434072227643)`,
+and `Grothe.upper_value_lt` shows this is below 1.404598989011 (`Grothe/Upper/PolynomialBridge.lean`).
+Here E and EX are the energy tables of the rounding T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6
+(disk-valued, since |P₃(x)|² = 1 − x⁴(3 − x²)/36 ≤ 1 for |φ| < 1), and of its polynomial
+truncation X = F₀ + v.
 
 * Proved from scratch: the transfer inequality via tensor powers and its residual form
   K ≤ 1/(c − ‖H − c·t‖); the ℓ¹ contraction and linearity of the kernel composition; that the
@@ -17,18 +19,24 @@ tables of the rounding, of its polynomial truncation, and of the rounding withou
   fixed-point interval checker (`GrotheKernel/`, soundness in
   `Grothe/Upper/IntervalSound.lean`); the tail bound by Cauchy–Schwarz from a weighted
   square-sum bound; the assembly of the budgets; and the endpoint arithmetic.
-* Explicit hypotheses (not formalized): validity of the rounding kernel; summability and parity
-  of the energies; the comparison Σ|E − EX| ≤ 2497/(2·10⁹) between the rounding and its
-  truncation (the mixed Taylor/cutoff lemma, archived with its scripts in the research folder
-  `handoff/upper-residual/global_norm/MIXED_TAYLOR_CUTOFF_LEMMA.md`; Taylor remainder of exp(iφ) with Hermite cutoffs 181, 91, 51, the bound |φ| < 1,
-  a Bargmann Hilbert–Schmidt estimate, and directed coefficient enclosures); the weighted
-  square-sum bound 7/4 at radius 259/250 for the rounding without phase (a Gaussian weighted
-  Schur estimate plus a 65,536-arc contour certificate); and two table budgets below 3·10⁻¹¹.
-* **How much rests on these hypotheses.** Of the total residual 133/10⁸, the assumed comparison
-  bound is 93.9%, the tail hypothesis 5.4%, and the computation verified in Lean
-  (7.1427·10⁻⁹) 0.54%. The margin is 2.3·10⁻⁹, and the source's bound on |φ| is 0.99999963
-  against the required 1. The bound therefore depends almost entirely on the external analysis
-  behind the comparison hypothesis.
+* Explicit hypotheses (fields of `DirectHyps E EX`, not formalized): `valid` (the kernel of E is
+  the dominated correlation kernel of the smoothed rounding T); `summable`, `summableX`,
+  `parityX` (summability of both tables, odd total degrees of EX); `compare`:
+  Σ|E − EX| ≤ 1065637497/10¹⁵ (the energy-difference / mixed-cutoff inequality applied directly
+  to T − X with Hermite cutoffs 181, 91, 51, the bound |φ| < 1, a Bargmann Hilbert–Schmidt
+  estimate, directed coefficient enclosures and the exact norm ‖v‖ < 1/100; the source value is
+  1.06563749615·10⁻⁶; archived with its scripts in the research folder
+  `handoff/research-third-decimal/upper-polynomial-bridge-20261022/`); `energy_close`: the
+  stored energies are within 6847009/(5·10¹⁷) of EX in ℓ¹; `hardy`: the weighted square-sum
+  bound 7/4 at radius 4149/4000 for the kernel of T itself (a Gaussian weighted Schur estimate
+  valid for every bounded rounding, plus a 65,580-arc contour certificate with mean 1.72879),
+  which Lean turns into the tail bound 36748/10¹² beyond degree 501.
+* **How much rests on these hypotheses.** Of the total residual 554771095509/(5·10¹⁷)
+  ≈ 1.10954·10⁻⁶, the assumed comparison bound 1065637497/10¹⁵ is 96.04%, the tail from
+  `hardy` (36748/10¹²) 3.31%, the computation verified in Lean (headCapQ = 7143/10¹²) 0.64%,
+  and the assumed energy-table error 6847009/(5·10¹⁷) 0.001%. The source's bound on |φ| is
+  0.99999963 against the required 1. The bound therefore depends almost entirely on the
+  external analysis behind the comparison hypothesis.
 * **Independent replay.** The source computations were replayed on a different machine: the
   nodal table and the Taylor centre arrays were regenerated bit for bit, and the kernel head,
   contour tail, comparison and endpoint pass on the regenerated data (energy table reproduced

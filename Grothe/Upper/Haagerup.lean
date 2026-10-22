@@ -150,6 +150,24 @@ lemma tsum_haagCoeff_tail_le (K : ℕ) (hK : 1 ≤ K) :
   exact mul_le_mul_of_nonneg_left (Real.tsum_le_of_sum_range_le
     (fun i => by exact_mod_cast (haagR_pos _).le) (sum_haagR_le K hK)) (by positivity)
 
+/-! ### Residual perturbation -/
+
+lemma tsum_abs_le_add' {f g d : ℕ → ℝ} (hg : Summable fun n => |g n|)
+    (hd : Summable fun n => |d n|) (h : ∀ n, |f n| ≤ |g n| + |d n|) :
+    ∑' n, |f n| ≤ ∑' n, |g n| + ∑' n, |d n| := by
+  rw [← hg.tsum_add hd]
+  exact (Summable.of_nonneg_of_le (fun _ => abs_nonneg _) h (hg.add hd)).tsum_le_tsum h (hg.add hd)
+
+/-- The residual of `h` is at most the residual of `g` plus the `ℓ¹` distance of `h` and `g`. -/
+theorem residual_perturb' (h g : ℕ → ℝ) (hg : Summable fun n => |g n|)
+    (hd : Summable fun n => |h n - g n|) (c : ℝ) :
+    |h 0 - c| + ∑' n, |h (n + 1)| ≤ |g 0 - c| + ∑' n, |g (n + 1)| + ∑' n, |h n - g n| := by
+  have h1 := tsum_abs_le_add' (f := fun n => h (n + 1)) (g := fun n => g (n + 1))
+    (d := fun n => h (n + 1) - g (n + 1)) ((summable_nat_add_iff 1).mpr hg)
+    ((summable_nat_add_iff 1).mpr hd) fun n => (abs_add_le _ _).trans_eq' (by rw [add_sub_cancel])
+  rw [hd.tsum_eq_zero_add]
+  linarith [abs_sub_le (h 0) (g 0) c]
+
 /-! ### Splitting the coefficients -/
 
 /-- The first `K` coefficients. -/
@@ -321,7 +339,7 @@ theorem haagerup_residual :
   have hsLo := summable_abs_compCoeff (summable_cLo haagK) l1_haagP
   have hd : Summable fun n => |compCoeff haagCoeff haagP n - compCoeff (cLo haagK) haagP n| := by
     simpa only [hadd, add_sub_cancel_left] using summable_abs_compCoeff (summable_cHi haagK) l1_haagP
-  have h1 := residual_perturb (compCoeff haagCoeff haagP) (compCoeff (cLo haagK) haagP) hsLo hd
+  have h1 := residual_perturb' (compCoeff haagCoeff haagP) (compCoeff (cLo haagK) haagP) hsLo hd
     (Real.pi / 4 * (2267 / 2500 : ℚ))
   -- the finite part
   have hfin : |compCoeff (cLo haagK) haagP 0 - Real.pi / 4 * (2267 / 2500 : ℚ)|

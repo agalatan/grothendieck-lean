@@ -12,7 +12,7 @@ STANDARD = {"propext", "Classical.choice", "Quot.sound"}
 NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",          # upper: head of the kernel
           "Grothe.Lower.cert_check._native.native_decide.ax_1_1",    # lower: rows, batches, cover
           "Grothe.haagerup_check._native.native_decide.ax_1_1"}      # Haagerup route: residual of the cubic preprocessing
-REQUIRED = {"Grothe.complex_grothendieck_upper", "Grothe.Lower.lower_bound_data",
+REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.Lower.lower_endpoint", "Grothe.Lower.lower_bound_of_transferL2",
             "Grothe.LowerAnalytic.gaussian_steinInputs", "Grothe.LowerAnalytic.lower_bound_gaussian",
             "Grothe.LowerAnalytic.norm_pairVal_witness", "Grothe.LowerAnalytic.transferInputs_of_witnessCap",

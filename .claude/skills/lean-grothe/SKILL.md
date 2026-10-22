@@ -25,14 +25,15 @@ description: Working conventions for the Lean 4 / Mathlib formalization of the c
 - `Grothe/ListPoly.lean`: the Wiener norm `l1` of real polynomials.
 - `Grothe/Upper/`: the upper certificate, one two-coordinate rounding kernel
   `H(t) = Σ E[n,m] p(t)^n (−τ(t))^m` compared with `c·t` through the kernel of a truncation
-  (tables `E`, `EX`, `E0`). `Residual` (`residual_split`, `residual_perturb` from the generic
-  `tsum_abs_le_add`, `hardy_tail`), `Bivariate` (`termOf`, `bivarKernel`, `ℓ¹` contraction
+  (tables `E` of the rounding `T = F₀ P₃(φ)` and `EX` of the truncation). `Residual`
+  (`residual_split`, `hardy_tail`), `Bivariate` (`termOf`, `bivarKernel`, `ℓ¹` contraction
   `tsum_abs_bivarKernel_le`, `bivarKernel_sub`, `bivarKernel_eq_head`, `head_residual_le`),
   `IntervalSound` (interval arithmetic soundness, `memB`) and `Head` (`rowPoly`/`tabPoly`,
   `head_le_of_check : headOK … = true → head ≤ cap`) for the Mathlib-free precompiled `GrotheKernel/`
   (`Basic` fixed-point intervals, `Table` the truncated bivariate composition, `headInt`, `headOK`),
-  generated `Data.lean` (`tools/gen_upper_data.py`), `Final.lean` with `KernelHyps` and
-  `complex_grothendieck_upper`. The only `native_decide` of the upper side is `head_check`.
+  generated `Data.lean` (`tools/gen_upper_data.py`), `Final.lean` (`kernelCoeff`, the native
+  `head_check`, the `ℓ¹` contraction lemmas) and `PolynomialBridge.lean` with `DirectHyps` and
+  `fresh_upper`. The only `native_decide` of the upper side is `head_check`.
 - `Grothe/Lower/`: the lower certificate (witness `P₁,₀ − εP₂,₁`, `ε = 149/200`). `Basic`
   (`evalL`, `chainTo`/`chainTo_sound` for every interval chain, `quadMax`), `Poly` (list
   polynomials, integer positivity certificates `posCert`/`posOn`), `Moment`, `Sweep` (`CapsHold`,
