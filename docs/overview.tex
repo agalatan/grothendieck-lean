@@ -185,7 +185,7 @@ only a cubic preprocessor and a finite head are used.\\\bottomrule
 \end{tabular}
 \end{center}
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}, and exactly three pinned \lean{native\_decide} facts. No
-\lean{sorry}; CI builds everything and checks the axiom report (162 theorems). The development has about $28{,}000$ lines of
+\lean{sorry}; CI builds everything and checks the axiom report (168 theorems). The development has about $28{,}000$ lines of
 hand-written Lean and $11{,}000$ lines of generated certificate data. The lower bound is close to fully formal: only
 one-variable numerical caps remain. The sharp upper bound still rests mainly on an external analytic comparison lemma; a weaker upper bound, $1.40578$, is fully formal.
 
@@ -227,6 +227,9 @@ Retaining the upper bound on the negative cumulant contraction yields a stronger
 parameterized moment family. An exact transport identity then upgrades a node's
 majorant when its budget permits a larger moment-cut weight, without a new
 half-line search. These two refinements are also formalized in Lean.
+The moment costs also admit a convex formulation with two $2\times2$ PSD blocks
+and linear constraints. An exact rational checker connects each accepted recipe
+to the actual cubic moment inequality, replacing the outer parameter grid.
 
 \subsection{The remote functional}
 Let $L=z_1(a+b|z_1|^2)$ with the constants of the witness, and for a cubic $G$ put

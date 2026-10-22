@@ -161,3 +161,9 @@ import Grothe
 #print axioms Grothe.DiskKernel.dominated
 #print axioms Grothe.haagerup_bound
 #print axioms Grothe.haagerup_dominated
+#print axioms Grothe.LowerAnalytic.MomentCone.gram_weighted
+#print axioms Grothe.LowerAnalytic.MomentCone.gram_node
+#print axioms Grothe.LowerAnalytic.MomentCone.check_sound
+#print axioms Grothe.LowerAnalytic.MomentCone.gram_node_of_check
+#print axioms Grothe.LowerAnalytic.MomentCone.young_eighth_check
+#print axioms Grothe.LowerAnalytic.MomentCone.shifted_half_check

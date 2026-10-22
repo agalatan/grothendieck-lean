@@ -147,6 +147,47 @@ theorem gram_node {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
     nlinarith
   exact (mul_le_mul_iff_right₀ hxmax).1 (by simpa only [mul_comm xmax] using hscaled)
 
+
+/-- Exact rational acceptance of a homogeneous moment-cost recipe. The two positive
+first diagonals and determinant tests also imply nonnegative second diagonals. -/
+def check (weight t z A B r1 r2 : ℚ) : Bool := decide (
+  0 < weight ∧ 0 < t ∧ 0 < z ∧ 40 * weight ≤ z ∧ t + z ≤ A + 40 * weight ∧
+  r1 + r2 ≤ B - 198 * weight ∧ (135 * weight / 2) ^ 2 ≤ t * r1 ∧
+  (165 * weight / 2) ^ 2 ≤ z * r2)
+
+/-- Rational acceptance implies exactly the real hypotheses of the analytic cone theorem. -/
+theorem check_sound (weight t z A B r1 r2 : ℚ) (hc : check weight t z A B r1 r2 = true) :
+    (0 : ℝ) < weight ∧ (0 : ℝ) < t ∧ (0 : ℝ) < z ∧
+      Feasible weight t z A B r1 r2 := by
+  simp only [check, decide_eq_true_eq] at hc
+  obtain ⟨hw, ht, hz, hzl, hls, hlh, hpt, hpz⟩ := hc
+  refine ⟨by exact_mod_cast hw, by exact_mod_cast ht, by exact_mod_cast hz, ?_⟩
+  exact ⟨by exact_mod_cast hzl, by exact_mod_cast hls, by exact_mod_cast hlh,
+    by exact_mod_cast hpt, by exact_mod_cast hpz⟩
+
+/-- A checked finite recipe supplies the actual node's sixth-moment reserve, with no
+new moment hypothesis. Positive node multipliers and the range remain explicit checks. -/
+theorem gram_node_of_check {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
+    (hE : IsGaussianExpectation E) {J : ι → ι → ℝ} {u v : MvPolynomial ι ℝ}
+    (hu : Chaos3 u) (hc : Circular J u v) (huu : E (u * u) = 1 / 2)
+    (ζ xmax t z A B r1 r2 : ℚ) (hζ : 0 < ζ) (hxmax : 0 < xmax)
+    (hcheck : check (ζ * xmax) t z A B r1 r2 = true)
+    (hrange : Real.sqrt (E (radU u v ^ 2) - 2) ≤ (xmax : ℝ)) :
+    (ζ : ℝ) * (E (radU u v ^ 3) - 6 - 9 * (E (radU u v ^ 2) - 2))
+      ≤ (A : ℝ) * s0 (gramT J u v) + (B : ℝ) * h0 (gramT J u v) := by
+  obtain ⟨_, ht, hz, H⟩ := check_sound _ _ _ _ _ _ _ hcheck
+  have H' : Feasible ((ζ : ℝ) * xmax) t z A B r1 r2 := by
+    simpa only [Rat.cast_mul] using H
+  exact gram_node hE hu hc huu (by exact_mod_cast hζ) (by exact_mod_cast hxmax) ht hz H' hrange
+
+/-- Exact recovery of the transported nodes' Young point, by kernel arithmetic. -/
+theorem young_eighth_check : check 1 (135 / 16) 40 (135 / 16) (29061 / 32) 540 (5445 / 32) = true := by
+  norm_num [check]
+
+/-- A shifted-family point with s₀ coefficient 75 and improved h₀ coefficient 9054/23. -/
+theorem shifted_half_check : check 1 (207 / 4) (253 / 4) 75 (9054 / 23) (2025 / 23) (2475 / 23) = true := by
+  norm_num [check]
+
 end
 
 end Grothe.LowerAnalytic.MomentCone

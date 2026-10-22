@@ -281,3 +281,12 @@ same reserved Gram checker and actual spectral quantities, deriving the moment
 bound internally. `Grothe/Lower/MomentLift.lean` proves the pointwise transport
 and exact normalized price change −d C₆ x³ when the moment-cut weight increases
 by d. An increased weight still requires an accepted budget certificate.
+
+`Grothe/LowerAnalytic/MomentCone.lean` gives a homogeneous convex recipe for the
+moment cost: two PSD2 determinant tests and three linear inequalities. It proves
+both the actual cubic moment bound and soundness of an exact rational checker,
+including node range and positive-multiplier checks. The moment parameters can
+therefore be optimized jointly with the contraction-Gram budget, rather than
+searched on an outer grid. This is a sufficient certificate cone, not an exact
+characterization of actual response laws. Its two concrete check examples are
+proved by kernel arithmetic; no native axiom is added.

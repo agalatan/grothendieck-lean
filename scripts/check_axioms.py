@@ -20,7 +20,8 @@ REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.LowerAnalytic.normQk_le_rho", "Grothe.LowerAnalytic.lower_bound_of_nodeCaps",
             "Grothe.haagerup_bound", "Grothe.LowerAnalytic.JointSixth.gram_j_eta",
             "Grothe.LowerAnalytic.JointSixth.gram_j2_shifted",
-            "Grothe.LowerAnalytic.joint_eta_budget", "Grothe.Lower.MPoly.momentLift_majorant"}
+            "Grothe.LowerAnalytic.joint_eta_budget", "Grothe.Lower.MPoly.momentLift_majorant",
+            "Grothe.LowerAnalytic.MomentCone.gram_node_of_check"}
 text = sys.stdin.read()
 if re.search(r"(^|\n)[^\n]*: error", text):
     sys.exit("the axiom report contains Lean errors")

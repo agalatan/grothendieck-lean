@@ -107,7 +107,7 @@ Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus exactly three `native_
 `Grothe.head_check` (the upper head), `Grothe.haagerup_check` (the unconditional upper bound) and
 `Grothe.Lower.cert_check` (the lower certificate).
 Everything else is kernel-checked. No `sorry`. The axiom report `scratch/Axioms.lean`
-(162 theorems) is verified in CI by `scripts/check_axioms.py`.
+(168 theorems) is verified in CI by `scripts/check_axioms.py`.
 
 The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAILS.md).
 
