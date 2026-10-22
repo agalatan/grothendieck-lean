@@ -24,28 +24,44 @@ def majDq (A B R : Rat) : Rat := (A + B) * ((A + B) ^ 2 + 4 * R ^ 2 + 4 * R * ab
 /-- `r(|ℓ − 2β| + |β| r²)`. -/
 def rlb (ell beta r : Rat) : Rat := r * (absQ (ell - 2 * beta) + absQ beta * r ^ 2)
 
-/-- A uniform grid with cell prices. -/
+/-- A uniform grid with dyadic cell prices, stored by their numerators: `pa = PA/2⁵⁰`,
+`na = NA/2⁵⁰`, `gg = G/2¹⁰⁰`, the ring bound `rl = RL/2⁵⁰`. -/
 structure GridData where
   Nr : Nat
   N : Nat
   h : Rat
-  pa : Nat → Nat → Rat
-  pb : Nat → Nat → Rat
-  na : Nat → Nat → Rat
-  nb : Nat → Nat → Rat
-  gg : Nat → Nat → Rat
-  c : Rat
+  PA : Nat → Nat → Nat
+  PB : Nat → Nat → Nat
+  NA : Nat → Nat → Nat
+  NB : Nat → Nat → Nat
+  G : Nat → Nat → Nat
+  RL : Nat → Nat
+
+/-- `2⁵⁰`. -/
+def two50 : Nat := 1125899906842624
+/-- `2¹⁰⁰`. -/
+def two100 : Nat := two50 * two50
+
+def GridData.pa (gd : GridData) (i j : Nat) : Rat := (gd.PA i j : Rat) / two50
+def GridData.pb (gd : GridData) (i j : Nat) : Rat := (gd.PB i j : Rat) / two50
+def GridData.na (gd : GridData) (i j : Nat) : Rat := (gd.NA i j : Rat) / two50
+def GridData.nb (gd : GridData) (i j : Nat) : Rat := (gd.NB i j : Rat) / two50
+def GridData.gg (gd : GridData) (i j : Nat) : Rat := (gd.G i j : Rat) / two100
+def GridData.rl (gd : GridData) (i : Nat) : Rat := (gd.RL i : Rat) / two50
+/-- The common bound of the prices. -/
+def GridData.c (_gd : GridData) : Rat := (2 : Rat) ^ 151
 
 /-- The cell conditions. -/
 def cellOK (gd : GridData) (ell beta : Rat) (i j : Nat) : Bool :=
   decide (0 < gd.pa i j) && decide (0 < gd.pb i j) && decide (1 ≤ gd.na i j * gd.pa i j) &&
     decide (1 ≤ gd.nb i j * gd.pb i j) && decide (0 ≤ gd.gg i j) &&
-    decide (gd.gg i j * majDq (gd.pa i j) (gd.pb i j) (rlb ell beta ((i + 1) * gd.h)) ≤ 8) &&
+    decide (rlb ell beta ((i + 1) * gd.h) ≤ gd.rl i) &&
+    decide (gd.gg i j * majDq (gd.pa i j) (gd.pb i j) (gd.rl i) ≤ 8) &&
     decide (gd.pa i j ≤ gd.c) && decide (gd.pb i j ≤ gd.c) && decide (gd.na i j ≤ gd.c) &&
     decide (gd.nb i j ≤ gd.c) && decide (gd.gg i j ≤ gd.c)
 
-/-- The grid check. -/
-@[noinline] def gridOK (gd : GridData) (ell beta : Rat) : Bool :=
+/-- The grid check (not run: `gridOK_mkGrid` proves it for every recipe grid). -/
+def gridOK (gd : GridData) (ell beta : Rat) : Bool :=
   decide (0 < gd.h) && decide (0 < gd.N) && decide (1 ≤ gd.c) && decide (0 < gd.Nr) &&
     (List.range gd.Nr).all fun i => (List.range gd.N).all fun j => cellOK gd ell beta i j
 
@@ -92,19 +108,26 @@ def priceCP (ell beta : Rat) (r : Recipe) (sg : Rat) : CP :=
 def polarF (P : CP) : List (Nat × Int × Float × Float) :=
   (CP.polar P).map fun t => (t.m, t.n, kqF t.cc, kqF t.cs)
 
-/-- The dyadic price `⌊2³⁰ x⌋/2³⁰ ≥ 2⁻³⁰` as its numerator. -/
+/-- The dyadic price numerator `max 1 ⌊2⁵⁰ x⌋` (at most `2⁶⁴`). -/
 def dyNum (x : Float) : Nat :=
-  let y := (x * 1073741824.0).floor
-  if y < 1.0 then 1 else if y > 1.0e15 then 1000000000000000 else y.toUInt64.toNat
+  let y := (x * 1125899906842624.0).floor
+  max 1 (if y < 1.0 then 1 else if y > 1.0e19 then 10000000000000000000 else y.toUInt64.toNat)
 
-def two30 : Nat := 1073741824
-def two60 : Nat := two30 * two30
+/-- `|a − b|` on `Nat`. -/
+def natDist (a b : Nat) : Nat := if b ≤ a then a - b else b - a
 
-/-- The cell values `(pa, pb, na, nb, gg)` of a ring. -/
-def ringCells (ell beta : Rat) (r : Recipe) (Nr N : Nat) (h : Rat) (radF : Nat → Nat → Float)
+/-- The scaled denominator `2¹⁵⁰ D(pa, pb, rl)` from the numerators. -/
+def majN (PA PB RL : Nat) : Nat :=
+  (PA + PB) * ((PA + PB) ^ 2 + 4 * RL ^ 2 + 4 * RL * natDist PA PB)
+
+/-- The ring bound numerator `⌈2⁵⁰ rlb((i+1)h)⌉`. -/
+def rlNum (ell beta h : Rat) (i : Nat) : Nat := (-(Rat.floor (-(rlb ell beta ((i + 1) * h) * two50)))).toNat
+
+/-- The cell numerators `(PA, PB, NA, NB, G)` of a ring. -/
+def ringCells (ell beta : Rat) (r : Recipe) (N : Nat) (h : Rat) (radF : Nat → Nat → Float)
     (angF : Nat → Int → Float × Float) (tP tM : List (Nat × Int × Float × Float)) (i : Nat) :
-    Array (Rat × Rat × Rat × Rat × Rat) :=
-  let rl := rlb ell beta ((i + 1) * h)
+    Array (Nat × Nat × Nat × Nat × Nat) :=
+  let RL := rlNum ell beta h i
   let sc := ratF r.scale
   ((List.range N).map fun j =>
     let ev := fun (ts : List (Nat × Int × Float × Float)) =>
@@ -116,12 +139,7 @@ def ringCells (ell beta : Rat) (r : Recipe) (Nr N : Nat) (h : Rat) (radF : Nat �
     let vB := ev tM / mass
     let pA : Nat := dyNum (sc * Float.sqrt (if vA > 1.0e-24 then vA else 1.0e-24))
     let pB : Nat := dyNum (sc * Float.sqrt (if vB > 1.0e-24 then vB else 1.0e-24))
-    let pa : Rat := (pA : Rat) / two30
-    let pb : Rat := (pB : Rat) / two30
-    let na : Rat := (((two60 + pA - 1) / pA : Nat) : Rat) / two30
-    let nb : Rat := (((two60 + pB - 1) / pB : Nat) : Rat) / two30
-    let gg : Rat := ((8 * (two60 : Rat) / majDq pa pb rl).floor : Rat) / two60
-    (pa, pb, na, nb, gg)).toArray
+    (pA, pB, (two100 + pA - 1) / pA, (two100 + pB - 1) / pB, 8 * two100 * two100 * two50 / majN pA pB RL)).toArray
 
 /-- The grid of a recipe. -/
 @[noinline] def mkGrid (ell beta : Rat) (r : Recipe) (Nr N : Nat) (h : Rat) (T : Tables) : GridData :=
@@ -133,17 +151,11 @@ def ringCells (ell beta : Rat) (r : Recipe) (Nr N : Nat) (h : Rat) (radF : Nat �
     if n < 0 then (p.1, -p.2) else p
   let tP := polarF (priceCP ell beta r 1)
   let tM := polarF (priceCP ell beta r (-1))
-  let cells : Array (Array (Rat × Rat × Rat × Rat × Rat)) :=
-    ((List.range Nr).map (ringCells ell beta r Nr N h radF angF tP tM)).toArray
-  let get := fun i j => (cells.getD i #[]).getD j (1, 1, 1, 1, 0)
-  let c : Rat := cells.foldl (fun acc a => a.foldl (fun acc v =>
-    let m1 := if v.1 > v.2.1 then v.1 else v.2.1
-    let m2 := if v.2.2.1 > v.2.2.2.1 then v.2.2.1 else v.2.2.2.1
-    let m3 := if m1 > m2 then m1 else m2
-    let m4 := if m3 > v.2.2.2.2 then m3 else v.2.2.2.2
-    if acc > m4 then acc else m4) acc) 1
+  let cells : Array (Array (Nat × Nat × Nat × Nat × Nat)) :=
+    ((List.range Nr).map (ringCells ell beta r N h radF angF tP tM)).toArray
+  let get := fun i j => (cells.getD i #[]).getD j (1, 1, two100, two100, 0)
   ⟨Nr, N, h, fun i j => (get i j).1, fun i j => (get i j).2.1, fun i j => (get i j).2.2.1,
-    fun i j => (get i j).2.2.2.1, fun i j => (get i j).2.2.2.2, c⟩
+    fun i j => (get i j).2.2.2.1, fun i j => (get i j).2.2.2.2, rlNum ell beta h⟩
 
 /-! ### The interval enclosure of the coefficient matrix -/
 
@@ -166,8 +178,22 @@ def wQ (gd : GridData) (w i j : Nat) : Rat :=
   | 2 => (gd.na i j - gd.nb i j) / 2 + gd.gg i j * (gd.pa i j ^ 2 - gd.pb i j ^ 2) / 4
   | _ => gd.gg i j
 
-/-- The weight intervals. -/
-def wI (gd : GridData) (w i j : Nat) : Ival := ofRatI (wQ gd w i j)
+/-- The weight intervals, in integer arithmetic at the scale `2¹²⁸` from the numerators
+(`mem_wI`: they enclose `wQ`). -/
+def wI (gd : GridData) (w i j : Nat) : Ival :=
+  let PA : Int := gd.PA i j
+  let PB : Int := gd.PB i j
+  let NA : Int := gd.NA i j
+  let NB : Int := gd.NB i j
+  let G : Int := gd.G i j
+  let d := PA ^ 2 - PB ^ 2
+  match w with
+  | 0 => let v := (NA + NB) * 2 ^ 77; ⟨v, v⟩
+  | 1 => let a := (PA + PB) * 2 ^ 77; let x := G * d ^ 2
+    ⟨a - (-((-x) / 2 ^ 176)), a - x / 2 ^ 176⟩
+  | 2 => let a := (NA - NB) * 2 ^ 77; let x := G * d
+    ⟨a + x / 2 ^ 74, a + (-((-x) / 2 ^ 74))⟩
+  | _ => let v := G * 2 ^ 28; ⟨v, v⟩
 
 /-- `Σⱼ wᵢⱼ AngC(j, n)` and `Σⱼ wᵢⱼ AngS(j, n)` for a weight table `wf` (`= wI`). -/
 def angSumCW (N : Nat) (wf : Nat → Nat → Nat → Ival) (T : Tables) (w : Nat) (n : Int) (i : Nat) : Ival :=

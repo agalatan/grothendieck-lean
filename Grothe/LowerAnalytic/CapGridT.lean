@@ -87,7 +87,8 @@ lemma gridOK_cell {i j : ℕ} (hi : i < gd.Nr) (hj : j < gd.N) : cellOK gd ell b
 
 lemma gridOK_cell' {i j : ℕ} (hi : i < gd.Nr) (hj : j < gd.N) :
     0 < gd.pa i j ∧ 0 < gd.pb i j ∧ 1 ≤ gd.na i j * gd.pa i j ∧ 1 ≤ gd.nb i j * gd.pb i j ∧
-      0 ≤ gd.gg i j ∧ gd.gg i j * majDq (gd.pa i j) (gd.pb i j) (rlb ell beta ((i + 1) * gd.h)) ≤ 8 ∧
+      0 ≤ gd.gg i j ∧ rlb ell beta ((i + 1) * gd.h) ≤ gd.rl i ∧
+      gd.gg i j * majDq (gd.pa i j) (gd.pb i j) (gd.rl i) ≤ 8 ∧
       gd.pa i j ≤ gd.c ∧ gd.pb i j ≤ gd.c ∧ gd.na i j ≤ gd.c ∧ gd.nb i j ≤ gd.c ∧ gd.gg i j ≤ gd.c := by
   have h := gridOK_cell hok hi hj
   simp only [cellOK, Bool.and_eq_true, decide_eq_true_eq] at h
@@ -147,29 +148,31 @@ def gridPrices : Prices ell beta where
         push_cast
         exact h1.le
       have hL := norm_Lf_le_rlb ell beta hz
-      have hm := majD_mono hA hB (norm_nonneg _) hL
-      have h8 : (gd.gg i j : ℝ) * majDq (gd.pa i j) (gd.pb i j) (rlb ell beta ((i + 1) * gd.h)) ≤ 8 := by
+      have hrl : ((rlb ell beta ((i + 1) * gd.h) : ℚ) : ℝ) ≤ (gd.rl i : ℝ) := by
         exact_mod_cast hc.2.2.2.2.2.1
+      have hm := majD_mono hA hB (norm_nonneg _) (hL.trans hrl)
+      have h8 : (gd.gg i j : ℝ) * majDq (gd.pa i j) (gd.pb i j) (gd.rl i) ≤ 8 := by
+        exact_mod_cast hc.2.2.2.2.2.2.1
       rw [majDq_cast] at h8
       calc (gd.gg i j : ℝ) * majD (gd.pa i j) (gd.pb i j) ‖Lf ell beta z‖
-          ≤ (gd.gg i j : ℝ) * majD (gd.pa i j) (gd.pb i j) (rlb ell beta ((i + 1) * gd.h)) :=
+          ≤ (gd.gg i j : ℝ) * majD (gd.pa i j) (gd.pb i j) (gd.rl i) :=
             mul_le_mul_of_nonneg_left hm hg0
         _ ≤ 8 := h8
     · simp
   bA z := gridFun_cases hok _ _ (fun x => x ≤ gd.c) z
-    (fun i j hi hj _ _ => by exact_mod_cast (gridOK_cell' hok hi hj).2.2.2.2.2.2.1)
-    (fun _ => gridOK_c hok)
-  bB z := gridFun_cases hok _ _ (fun x => x ≤ gd.c) z
     (fun i j hi hj _ _ => by exact_mod_cast (gridOK_cell' hok hi hj).2.2.2.2.2.2.2.1)
     (fun _ => gridOK_c hok)
-  bnA z := gridFun_cases hok _ _ (fun x => x ≤ gd.c) z
+  bB z := gridFun_cases hok _ _ (fun x => x ≤ gd.c) z
     (fun i j hi hj _ _ => by exact_mod_cast (gridOK_cell' hok hi hj).2.2.2.2.2.2.2.2.1)
     (fun _ => gridOK_c hok)
-  bnB z := gridFun_cases hok _ _ (fun x => x ≤ gd.c) z
+  bnA z := gridFun_cases hok _ _ (fun x => x ≤ gd.c) z
     (fun i j hi hj _ _ => by exact_mod_cast (gridOK_cell' hok hi hj).2.2.2.2.2.2.2.2.2.1)
     (fun _ => gridOK_c hok)
+  bnB z := gridFun_cases hok _ _ (fun x => x ≤ gd.c) z
+    (fun i j hi hj _ _ => by exact_mod_cast (gridOK_cell' hok hi hj).2.2.2.2.2.2.2.2.2.2.1)
+    (fun _ => gridOK_c hok)
   bg z := gridFun_cases hok _ _ (fun x => x ≤ gd.c) z
-    (fun i j hi hj _ _ => by exact_mod_cast (gridOK_cell' hok hi hj).2.2.2.2.2.2.2.2.2.2)
+    (fun i j hi hj _ _ => by exact_mod_cast (gridOK_cell' hok hi hj).2.2.2.2.2.2.2.2.2.2.2)
     (fun _ => (zero_le_one.trans (gridOK_c hok)))
 
 end ok

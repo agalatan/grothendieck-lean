@@ -1,5 +1,5 @@
 import Grothe.LowerAnalytic.CapTables
-import Grothe.LowerAnalytic.CapCheckSound
+import Grothe.LowerAnalytic.CapGridOK
 
 /-!
 # The shared tables of the checker and their correctness

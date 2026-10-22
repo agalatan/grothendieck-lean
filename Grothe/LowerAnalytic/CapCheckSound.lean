@@ -117,6 +117,58 @@ lemma mem_angSAt {Nr N : ℕ} {h : ℚ} {T : Tables} (hT : TablesOK Nr N h T) {j
     conv => arg 1; rw [e]
     exact_mod_cast this
 
+/-! ### The weights -/
+
+lemma ediv_pow_le (x : ℤ) (k : ℕ) : ((x / 2 ^ k : ℤ) : ℝ) ≤ (x : ℝ) / 2 ^ k := by
+  have hk : (0 : ℤ) < 2 ^ k := by positivity
+  rw [le_div_iff₀ (by positivity)]
+  have := Int.ediv_mul_le x hk.ne'
+  exact_mod_cast this
+
+lemma le_neg_ediv_neg_pow (x : ℤ) (k : ℕ) : (x : ℝ) / 2 ^ k ≤ ((-((-x) / 2 ^ k) : ℤ) : ℝ) := by
+  have h := ediv_pow_le (-x) k
+  push_cast at h ⊢
+  rw [neg_div] at h
+  linarith
+
+lemma two50_eq : (two50 : ℝ) = 2 ^ 50 := by norm_num [two50]
+lemma two100_eq : (two100 : ℝ) = 2 ^ 100 := by norm_num [two100, two50]
+lemma D_eq : ((D : ℤ) : ℝ) = 2 ^ 128 := by norm_num [D, K]
+
+/-- **The integer weights enclose the rational weights.** -/
+lemma mem_wI (gd : GridData) (w i j : ℕ) : mem (wQ gd w i j) (wI gd w i j) := by
+  unfold mem wI wQ
+  rw [D_eq]
+  rcases w with _ | _ | _ | w
+  · simp only [GridData.na, GridData.nb]; push_cast; rw [two50_eq]
+    constructor <;> apply le_of_eq <;> ring
+  · simp only [GridData.pa, GridData.pb, GridData.gg]
+    push_cast; rw [two50_eq, two100_eq]
+    have e : ((((gd.PA i j : ℝ) / 2 ^ 50 + (gd.PB i j : ℝ) / 2 ^ 50) / 2
+        - (gd.G i j : ℝ) / 2 ^ 100 * (((gd.PA i j : ℝ) / 2 ^ 50) ^ 2 - ((gd.PB i j : ℝ) / 2 ^ 50) ^ 2) ^ 2
+          / 16)) * 2 ^ 128
+        = ((gd.PA i j : ℝ) + gd.PB i j) * 2 ^ 77
+          - ((gd.G i j : ℝ) * ((gd.PA i j : ℝ) ^ 2 - (gd.PB i j : ℝ) ^ 2) ^ 2) / 2 ^ 176 := by ring
+    rw [e]
+    have h1 := ediv_pow_le ((gd.G i j : ℤ) * ((gd.PA i j : ℤ) ^ 2 - (gd.PB i j : ℤ) ^ 2) ^ 2) 176
+    have h2 := le_neg_ediv_neg_pow ((gd.G i j : ℤ) * ((gd.PA i j : ℤ) ^ 2 - (gd.PB i j : ℤ) ^ 2) ^ 2) 176
+    push_cast at h1 h2 ⊢
+    constructor <;> linarith
+  · simp only [GridData.na, GridData.nb, GridData.pa, GridData.pb, GridData.gg]
+    push_cast; rw [two50_eq, two100_eq]
+    have e : (((gd.NA i j : ℝ) / 2 ^ 50 - (gd.NB i j : ℝ) / 2 ^ 50) / 2
+        + (gd.G i j : ℝ) / 2 ^ 100 * (((gd.PA i j : ℝ) / 2 ^ 50) ^ 2 - ((gd.PB i j : ℝ) / 2 ^ 50) ^ 2)
+          / 4) * 2 ^ 128
+        = ((gd.NA i j : ℝ) - gd.NB i j) * 2 ^ 77
+          + ((gd.G i j : ℝ) * ((gd.PA i j : ℝ) ^ 2 - (gd.PB i j : ℝ) ^ 2)) / 2 ^ 74 := by ring
+    rw [e]
+    have h1 := ediv_pow_le ((gd.G i j : ℤ) * ((gd.PA i j : ℤ) ^ 2 - (gd.PB i j : ℤ) ^ 2)) 74
+    have h2 := le_neg_ediv_neg_pow ((gd.G i j : ℤ) * ((gd.PA i j : ℤ) ^ 2 - (gd.PB i j : ℤ) ^ 2)) 74
+    push_cast at h1 h2 ⊢
+    constructor <;> linarith
+  · simp only [GridData.gg]; push_cast; rw [two100_eq]
+    constructor <;> apply le_of_eq <;> ring
+
 /-! ### The weighted moments -/
 
 /-- `Σᵢ Rad(i, m) Σⱼ wᵢⱼ AngC(j, n)`. -/
@@ -136,13 +188,13 @@ include hT in
 lemma mem_wmC (w : ℕ) {m : ℕ} (hm : m ≤ 16) {n : ℤ} (hn : n.natAbs ≤ 12) :
     mem (wmCr gd w m n) (wmC gd T w m n) :=
   mem_sumI_range _ _ _ fun i hi => mem_mul (hT.1 i hi m hm)
-    (mem_sumI_range _ _ _ fun _ hj => mem_mul (mem_ofRatI _) (mem_angCAt hT hj hn))
+    (mem_sumI_range _ _ _ fun _ hj => mem_mul (mem_wI _ _ _ _) (mem_angCAt hT hj hn))
 
 include hT in
 lemma mem_wmS (w : ℕ) {m : ℕ} (hm : m ≤ 16) {n : ℤ} (hn : n.natAbs ≤ 12) :
     mem (wmSr gd w m n) (wmS gd T w m n) :=
   mem_sumI_range _ _ _ fun i hi => mem_mul (hT.1 i hi m hm)
-    (mem_sumI_range _ _ _ fun _ hj => mem_mul (mem_ofRatI _) (mem_angSAt hT hj hn))
+    (mem_sumI_range _ _ _ fun _ hj => mem_mul (mem_wI _ _ _ _) (mem_angSAt hT hj hn))
 
 end wm
 
@@ -396,54 +448,6 @@ lemma bounds_of_mem {x : ℝ} {I : Ival} (h : mem x I) :
   obtain ⟨h1, h2⟩ := h
   push_cast
   exact ⟨(div_le_iff₀ hD).2 h1, (le_div_iff₀ hD).2 h2⟩
-
-/-! ### The node check -/
-
-/-- The coupling vector `a = (1 + b₁, b₂, b₃, 0, …)` of a row. -/
-def avOf (r : Grothe.Lower.Row) (j : ℕ) : ℚ :=
-  if j = 0 then 1 + r.b1 else if j = 1 then r.b2 else if j = 2 then r.b3 else 0
-
-lemma aFib_vec (r : Grothe.Lower.Row) (j : ℕ) (hj : j < 12) :
-    (aFib r.b1 r.b2 r.b3).vec j = avOf r j := by
-  interval_cases j <;> simp [Fib.vec, aFib, avOf]
-
-/-- **The node check**: the grid of the recipe passes `gridOK`, the polynomial degrees fit the
-tables, and the piece check passes at `c + capPad`. -/
-def nodeOK (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (s c : ℚ) (rec : Recipe) (Nr N : ℕ)
-    (h : ℚ) (T : Tables) : Bool :=
-  let gd := mkGrid r.ell r.beta rec Nr N h T
-  let M := matI r.ell r.beta gd T
-  gridOK gd r.ell r.beta && polyBoundsOK r.ell r.beta &&
-    pieceOK (loQ M) (hiQ M) (mMat r.E Rg) (avOf r) s (c + Grothe.Lower.capPad)
-
-/-- **Soundness of the node check**: `Ψ(s) − capPad ≤ c` for the potential of the row. -/
-theorem pot_le_of_nodeOK (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (s c : ℚ) (rec : Recipe)
-    (Nr N : ℕ) (h : ℚ) (T : Tables) (hT : TablesOK Nr N h T)
-    (hchk : nodeOK r Rg s c rec Nr N h T = true) :
-    pot r.E Rg r.ell r.beta (aFib r.b1 r.b2 r.b3) s - Grothe.Lower.capPad ≤ c := by
-  simp only [nodeOK, Bool.and_eq_true] at hchk
-  obtain ⟨⟨hok, hp⟩, hpc⟩ := hchk
-  set gd := mkGrid r.ell r.beta rec Nr N h T with hgd
-  have hT' : TablesOK gd.Nr gd.N gd.h T := hT
-  have hpot := pot_le_of_pieceOK (r.ell : ℝ) r.beta (gridPrices hok) r.E Rg
-    (aFib r.b1 r.b2 r.b3) (avOf r) (aFib_vec r) s (c + Grothe.Lower.capPad) _ _ ?_ hpc
-  · push_cast at hpot; linarith
-  intro I hI J hJ
-  have hM : ((matI r.ell r.beta gd T).getD I #[]).getD J zeroI
-      = if I ≤ J then entryOf r.ell r.beta (cwSpec gd T) (tailPolyI T) I J
-        else entryOf r.ell r.beta (cwSpec gd T) (tailPolyI T) J I := by
-    rw [matI_eq, matOf_getD _ _ _ _ hI hJ]
-  have hmem : mem (Tint r.ell r.beta (gridPrices hok) I J)
-      (((matI r.ell r.beta gd T).getD I #[]).getD J zeroI) := by
-    rw [hM]
-    split_ifs
-    · exact mem_entryOf hok hp hT' hI hJ
-    · rw [Tint_symm]; exact mem_entryOf hok hp hT' hJ hI
-  have hsz : I < (matI r.ell r.beta gd T).size := by rw [matI_eq]; simp [matOf, hI]
-  have hsz2 : J < ((matI r.ell r.beta gd T).getD I #[]).size := by
-    rw [matI_eq]; unfold matOf; rw [toArray_map_range_getD _ _ _ hI]; simp [hJ]
-  rw [loQ_at _ hsz hsz2, hiQ_at _ hsz hsz2]
-  exact bounds_of_mem hmem
 
 end
 

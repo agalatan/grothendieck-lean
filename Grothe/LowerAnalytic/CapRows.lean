@@ -1,5 +1,6 @@
 import Grothe.LowerAnalytic.CapHull
 import Grothe.LowerAnalytic.CapTablesMk
+import Grothe.LowerAnalytic.CapGridOK
 
 /-!
 # The vertex caps of whole rows from the node checker
@@ -73,6 +74,10 @@ theorem vertexCapsRow_of_rowOK {k : ℕ} {recs : List (ℕ × ℕ × Recipe)} {g
     have hG := hadm _ (List.getElem_mem hg)
     simp only [gridAdm, Bool.and_eq_true, decide_eq_true_eq] at hG
     obtain ⟨⟨⟨⟨hh, h1⟩, h8⟩, hN⟩, hN'⟩ := hG
-    exact pot_le_of_nodeOK _ _ _ _ rc _ _ _ _ (tablesOK_mk hh h1 h8 hN hN') hchk
+    have hNr : 0 < grids[g].1 := by
+      by_contra h0
+      have : grids[g].1 = 0 := by omega
+      rw [this] at h1; norm_num at h1
+    exact pot_le_of_nodeOK _ _ _ _ rc _ _ _ _ (tablesOK_mk hh h1 h8 hN hN') hh (by omega) hNr hchk
 
 end Grothe.LowerAnalytic
