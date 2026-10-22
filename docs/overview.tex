@@ -40,8 +40,8 @@ family of externally certified numerical inputs (Section~\ref{sec:trust}).\vspac
 Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
 true optimum. The best constant in the complex case, $\KG$, has been known since 1987 to lie roughly in $[1.338,1.405]$; its
 first two decimals were settled only in September 2026. We improve both bounds, to an interval of width $0.0029$, and verify
-the arguments in Lean. This note explains the problem, the two constructions, exactly what the computer checks, and why the
-remaining gap is hard: the two sides are dual optimisation problems, and the obstruction on both is the nonlinear (cubic and
+the arguments in Lean. This note explains the problem, the two constructions, exactly what the computer checks, the new inequalities and
+obstructions found along the way, and why the remaining gap is hard: the two sides are dual optimisation problems, and the obstruction on both is the nonlinear (cubic and
 higher) structure of bounded functions of Gaussian vectors.
 \end{abstract}
 
@@ -178,6 +178,97 @@ Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}, and exactly 
 hand-written Lean and $11{,}000$ lines of generated certificate data. The lower bound is close to fully formal: only
 one-variable numerical caps remain. The upper bound still rests mainly on an external analytic comparison lemma.
 
+\section{Discoveries along the way}\label{sec:discoveries}
+Status labels: \textbf{[Lean]} machine-checked in this repository; \textbf{[P]} written proof; \textbf{[P,C]} proof with an
+exact or interval-arithmetic certificate replayed independently; \textbf{[F]} floating-point evidence only.
+
+\subsection{Inequalities for cubic Gaussian chaos}
+Throughout, $q$ is a circular cubic Wick polynomial (bidegree $(2,1)$) in any number of complex Gaussian variables,
+normalised by $\E|q|^2=1$, and $U=|q|^2$.
+\begin{itemize}
+\item \textbf{Sharp fourth moment [Lean].} Every real third-chaos variable satisfies $\E F^4\le93\,(\E F^2)^2$, with equality
+ for $x^3-3x$. Hence $\E U^2\le62$.
+\item \textbf{Sixth moment [Lean].} $\E U^3\le9m-12+C_6(m-2)^{3/2}$ with $m=\E U^2$ and $C_6=40.45313$. The Wick monomial mixed
+ with Gaussian noise attains $40.295$, so the constant is sharp to $0.4\%$. The inequality is \emph{false} without circularity:
+ two real cubics $He_3(x_0)/\sqrt{12}$, $He_3(x_1)/\sqrt{12}$ give $m=47$ and $\E U^3=13506>12622.55$.
+\item \textbf{The sixth cumulant as a sum over graphs [Lean].} The Wick identity for $\kappa_6$ of a cubic chaos is proved by
+ expanding $\E F^2,\E F^4,\E F^6$ over closed cubic multigraphs, one Gaussian integration by parts per edge ($69+15+3$
+ certified steps). The disconnected graphs cancel, and the six connected cubic multigraphs on six vertices give the tensor
+ contractions.
+\item \textbf{Contraction-Gram budgets [Lean].} A new family of universal inequalities between the chaos components of $U$
+ and of $q^2$. With $X=\Gamma(q,\bar q)/3-1$, $c=\Gamma(q,q)/3$, $r=\Re(c\bar q^2)/U$, $P=\E[XU]$, $Q=\E[rU]$, for example
+ \[
+  \E X^2+\tfrac1{10}\E r^2\le\tfrac{34}{45}P-\tfrac1{18}Q .
+ \]
+ Each budget is certified by two positive semidefinite $2\times2$ Gram matrices of contractions of the coefficient tensor.
+\item \textbf{First moment [P,C].} $\E|q|\le0.97073$, from a two-plane small-ball estimate (a winding argument on $S^3$ and a
+ horizontal Lipschitz bound). The sharp value $\sqrt\pi/2=0.8862$, which the Gaussian attains, is open.
+\end{itemize}
+
+\subsection{The remote functional}
+Let $L=z_1(a+b|z_1|^2)$ with the constants of the witness, and for a cubic $G$ put
+$\Lambda(G)=\E|L+G|+\E|L-G|-\E|G|^2/\epsilon$ and $S=\sup_v\{2\E|L+\sqrt vU|-v/\epsilon\}$, $U$ a complex Gaussian. The
+conjecture $\Lambda(G)\le S$ for all cubics (``Conjecture~K'') is the analytic heart of the lower bound.
+\begin{itemize}
+\item \textbf{A one-function reformulation [P].} Circular symmetry and $|a+b|+|a-b|=2\max(|a|,|b|)$ give exactly
+ \[
+  \Lambda(G)=2\E|L|+\pi\,\E\bigl(|\Re G|-|\Re L|\bigr)_+-\E|G|^2/\epsilon,
+ \]
+ so $\sup_G\Lambda-2\E|L|=\sup_t\bigl[\tfrac{\pi^2\epsilon}{4}\|P_{2,1}t\|^2-\pi\E(|t|\,|\Re L|)\bigr]$ over real functions
+ $|t|\le1$. All of the gain sits near the hyperplane $\Re z_1=0$.
+\item \textbf{The Gaussian is a strict local maximum [P,C].} At the Gaussian point every direction that involves $z_1$ has
+ negative second variation, certified in interval arithmetic for seven sector coefficients. The only flat direction is the
+ Gaussian family itself, along which the fourth-order term is strictly negative.
+\item \textbf{The independent sector [P,C].} For every cubic $q$ not involving $z_1$, $\Lambda(q)<S+3.6\cdot10^{-7}$. Moment
+ inequalities alone stall about $10^{-5}$ above $S$, because $h(x)=2\E|L+\sqrt x|$ is a Bernstein function and the
+ three-moment relaxation is maximised by a two-point law [P]. Going below that floor needs the Stein and spectral cuts.
+\item \textbf{Two natural shortcuts are false [P,C].} $|q|^2$ does not dominate $\E|q|^2\cdot\mathrm{Exp}(1)$ in convex order,
+ and there is no Gaussian Laplace domination: $Q=X(4(|X|^2-2)+3i(|Y|^2-1))/\sqrt{41}$ has $\E e^{-20|Q|^2}<0.0453<1/21$.
+\end{itemize}
+
+\subsection{Actual responses}
+Instead of bounding $\Lambda$ for all cubics, one can use that the cubic comes from a bounded response. Write $F$ for the
+cubic part of the response and $\mathcal N$ for the value of the witness on it.
+\begin{itemize}
+\item \textbf{Exact support [P].} The paired support $\frac12(\E|A+B|+\E|A-B|)$ is exactly the pointwise support function
+ of the complex response set $\{(h,k)=(e^{i\alpha}\cos\theta,\,ie^{i\alpha}\sin\theta)\}$, because
+ $(|A+B|+|A-B|)^2=4\max_\theta|A\cos\theta-iB\sin\theta|^2$.
+\item \textbf{Concentrated cubics are harmless [P,C].} At $\epsilon=1891/2500$ on the central rows $0.84\le t\le0.851$,
+ $\mathcal N<0.71325<1/1.402$ whenever the cubic part of the response concentrates enough energy on a structured subspace:
+ \begin{itemize}
+ \item $80\%$ on one diagonal Wick direction;
+ \item $90\%$ on one mixed monomial $X^2\bar Y$, or on a whole slice $\{X^2\bar A\}$;
+ \item $93.5\%$, $96.2\%$, $97.6\%$, $99.2\%$ on any cubic in $2,3,4,6$ remote coordinates;
+ \item $95.5\%$ to $99.95\%$ on $H_{2,0}(A)H_{0,1}(B)$ with $\dim A\le24$, via a sharp support theorem whose extremiser has law
+  $R_mG/\sqrt{m(m+1)}$, $R_m\sim\Gamma(m,1)$.
+ \end{itemize}
+ The remainder of the cubic may be arbitrary and fully coupled.
+\item \textbf{The obstruction to covering [P].} $Q_N=X_1(\sum_{j\le N}|X_j|^2-N-1)/\sqrt{N+1}$ keeps an influential direction
+ while its projection onto every fixed-dimensional core tends to zero. So ``small core or Gaussian'' is not an exhaustive
+ dichotomy.
+\item \textbf{How far from the benchmark structured cubics sit [F].} Remote-only payoffs relative to $S$:
+ \begin{center}\small
+ \begin{tabular}{@{}lccccccc@{}}\toprule
+ sum of $N$ slices, $N=$ & 1 & 2 & 4 & 8 & 16 & 24 & $\infty$ (Gaussian)\\\midrule
+ $S-\sup\Lambda$ ($10^{-3}$) & 1.68 & 1.42 & 1.08 & 0.73 & 0.43 & 0.32 & 0\\\bottomrule
+ \end{tabular}
+ \end{center}
+ Concentrated cubics leave room of order $10^{-3}$; only genuinely diffuse laws approach the benchmark.
+\end{itemize}
+
+\subsection{Limits of the witness method}
+\begin{itemize}
+\item \textbf{Ceilings [F] and [P,C].} The norm of the cubic witness $P_{1,0}-\epsilon P_{2,1}$ is about $0.71314$ at its
+ best $\epsilon\approx0.756$ [F]: no certificate for it exceeds $1.40226$. Explicit ``chirp'' responses prove that games of
+ degree $\le5$ cannot exceed $1.4036705$, and of degree $\le7$ cannot exceed $1.4044895$ [P,C].
+\item \textbf{Extending the pattern fails [P,C].} The full alternating game $\sum_{k\ge0}(-1)^kP_{k+1,k}$ has
+ $\sup_n\|\cdot\|_{\infty\to1}=1$, attained by explicit unimodular responses (one in complex dimension $308{,}835$ is
+ replayed). So better high-degree games must be re-optimised against new responses, not extrapolated.
+\item \textbf{No duality gap, but no free lunch [P].} By the minimax of Section~2.3, combining a pool of actual responses
+ truncated at level $D$, value $v_D$, with a witness certified to $v_D+\delta$ and a mixture whose omitted coefficient tail is
+ at most $\tau$, gives $1/(v_D+\delta)\le\KG\le1/(v_D-\tau)$. The interval for $1/\KG$ has width exactly $\delta+\tau$.
+\end{itemize}
+
 \section{Why the gap is hard}
 \paragraph{The witness class caps the lower bound.} A game supported on degrees $\{1,3\}$ sees only the cubic constraint on
 roundings. Even a perfect evaluation of the norm of $P_{1,0}-\epsilon P_{2,1}$ cannot certify more than about $1.40226$
@@ -191,6 +282,12 @@ support functions, both lose about $2\cdot10^{-2}$ on the best degree-5 game. Th
 with a large cubic part is forced to have a degree-five part too. Through the visible coordinate, the cubic part sees the
 average of the remote coefficient profile and the quintic part its variation, and boundedness makes the profile vary. A
 certificate that treats the chaos degrees as independent cannot see this coupling.
+The coupling is \emph{driver sharing}: in the dimension-limit model the best degree-5 game has norm $0.712464$
+($1/N=1.40358$) when its degree-5 mixed sectors $(|z_1|^2-1)W$ and $z_1^2\overline W$ are driven by the same remote cubic $W$ as
+the cubic sector, and $0.724753$ when they are driven by independent copies; the optimum then switches the degree-5 part off.
+So a higher-degree certificate must let one remote residual feed several degrees through the visible coordinate. The cubic
+rows already do this for their degree-3 sectors; extending them to the degree-5 companions of the same residual is the
+next construction [F].
 
 \paragraph{Why the complex case is harder than the real one.} For real $\pm1$ responses, $h=\frac12(f+g)$ and
 $k=\frac12(f-g)$ have disjoint supports, so the two sides of a game decouple at every degree. For complex unimodular

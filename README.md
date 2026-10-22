@@ -5,8 +5,9 @@ complex Grothendieck constant:
 
 > **1.401691989174 < K_G^ℂ < 1.404599424**
 
-**New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — a 5-page explanation of the problem, the two
-constructions, what exactly the computer checks, and why the remaining gap is hard.
+**New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an 8-page explanation of the problem, the two
+constructions, what exactly the computer checks, the new inequalities and obstructions found along
+the way, and why the remaining gap is hard.
 
 ## The constant
 
