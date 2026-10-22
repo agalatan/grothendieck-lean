@@ -95,10 +95,19 @@ by a verified interval checker, the tail bound and the endpoint arithmetic. The 
 The head, computed in Lean (`head_check`), is 7143/10¹², 0.64% of the total
 554771095509/(5·10¹⁷).
 
-Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus exactly two `native_decide` facts,
-`Grothe.head_check` (the upper head) and `Grothe.Lower.cert_check` (the lower certificate).
+**Unconditional upper bound** — `Grothe.haagerup_bound : IsGrothendieckBound (140578/100000)`
+(`Grothe/Haagerup/Identity.lean`, with the finite check in `Grothe/Upper/Haagerup.lean`), with **no hypothesis**.
+Lean proves Haagerup's identity for the Gaussian phase rounding,
+E[conj(phase⟨g,x⟩)·phase⟨g,y⟩] = Σ_k (π/4)(1/2)_k²/(k!(k+1)!) z|z|^{2k} with z = ⟨x,y⟩, and combines it
+with a cubic preprocessor, 4,000 exact series terms and a telescoping tail. The value K ≤ 1.40578 is
+weaker than the certified bound above (and than Haagerup's 1.40491, which needs the full inverse series);
+it is the best upper bound in this repository that rests on nothing outside Lean.
+
+Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus exactly three `native_decide` facts,
+`Grothe.head_check` (the upper head), `Grothe.haagerup_check` (the unconditional upper bound) and
+`Grothe.Lower.cert_check` (the lower certificate).
 Everything else is kernel-checked. No `sorry`. The axiom report `scratch/Axioms.lean`
-(140 theorems) is verified in CI by `scripts/check_axioms.py`.
+(162 theorems) is verified in CI by `scripts/check_axioms.py`.
 
 The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAILS.md).
 
@@ -107,7 +116,7 @@ The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAI
 | path | content |
 |---|---|
 | `Grothe/Transfer.lean` | `IsGrothendieckBound`, the transfer inequality in its residual form |
-| `Grothe/Upper/`, `GrotheKernel/` | upper bound: residual algebra, Hardy tail, kernel composition, interval evaluator and its soundness, head check, final theorem |
+| `Grothe/Upper/`, `Grothe/Haagerup/`, `GrotheKernel/` | upper bounds: Haagerup's phase-rounding identity, residual algebra, Hardy tail, kernel composition, interval evaluator and its soundness, head check, final theorem |
 | `Grothe/Lower/` | lower certificate: positivity checks, Stein cuts and law budgets, rows, mixtures, the box cover, the endpoint, the transfer to finite matrices |
 | `Grothe/LowerAnalytic/` | Gaussian analysis: the witness on L²(γ_n), integration by parts, chaos projections, spectral budgets, circular cubics, the Wick multigraph expansion and sixth cumulant, contraction tensors, the fibre potentials and the per-row reduction, `lower_bound_of_nodeCaps` |
 | `Grothe/Lower/RowData*.lean`, `Grothe/Lower/MixedData.lean`, `Grothe/Upper/Data.lean` | generated certificate data |
@@ -125,7 +134,7 @@ lake build
 lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py
 ```
 
-A full build takes about 20 minutes on 8 cores; the two native checks dominate. CI
+A full build takes about 20 minutes on 8 cores; the three native checks dominate. CI
 (`.github/workflows/lean.yml`) builds everything on every push to `master`, forbids `sorry`,
 `axiom`, `implemented_by`, `extern` and `unsafe`, and checks the axiom report.
 

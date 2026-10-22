@@ -43,6 +43,20 @@ truncation X = F₀ + v.
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
+**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (140578/100000)`
+(`Grothe/Upper/Haagerup.lean`, `GrotheKernel/Haagerup.lean`), with no hypothesis. The analysis is in
+`Grothe/Haagerup/`: tilted one-dimensional Gaussian integrals (`Gauss1D`); the correlated pair integral
+E[conj U·V·e^{−u|U|²−v|V|²}] = 2z/Δ² (`GaussG`); the Euler representation |a|⁻¹ = π^{−1/2}∫t^{−1/2}e^{−t|a|²}dt
+with its Fubini swap (`Euler`); the Beta integrals J_k and Haagerup's coefficients
+(2/π)(k+1)4^k J_k² = (π/4)(1/2)_k²/(k!(k+1)!) (`BetaJ`, `Series`); four real-orthonormal coordinates of the
+standard Gaussian are independent standard Gaussians, by characteristic functions (`Law`); the reduction to
+two complex Gaussians, the radial identity and the phase rounding as a disk-valued rounding
+(`Identity`: `integral_phase_pair`, `Phi2_radial`, `haagerup_disk`, `haagerup_dominated`). Disk-valued
+roundings are dominated (`Grothe/Upper/Disk.lean`); polynomial preprocessors are realised by tensor powers
+(`Realise.lean`) and composed with radial kernels (`Compose.lean`). The preprocessor is
+p(t) = (2267/2500)t − (9319996/10⁸)t³; `haagerup_check` evaluates 4,000 exact series terms by a Horner interval
+checker with a soundness proof, and the tail Σ_{k≥K} r_k ≤ g_K/(2K) telescopes.
+
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
 value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401692002039/10^12 < K`, and the transfer
 `Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 1401692002039/10^12 < K`,
@@ -240,8 +254,9 @@ variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
   4‖Π₁,₁|q|²‖² + 2‖Π₂,₀q²‖² ≤ 3κ, and the weighted bound on the first-chaos content of q|q|²
   along any direction by the influence of that direction.
 
-Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus exactly two `native_decide` facts:
-`Grothe.head_check` (the upper head) and `Grothe.Lower.cert_check` (the lower certificate). All
+Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus exactly three `native_decide` facts:
+`Grothe.head_check` (the upper head), `Grothe.haagerup_check` (the 4,000-term series check of the
+unconditional upper bound `Grothe.haagerup_bound`) and `Grothe.Lower.cert_check` (the lower certificate). All
 other finite computations (the polynomial norms, the moment covers) are kernel-checked
 (`decide +kernel`). The report is `lake env lean scratch/Axioms.lean`, checked in CI. No `sorry`,
 no warnings.
