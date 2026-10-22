@@ -41,7 +41,7 @@ description: Working conventions for the Lean 4 / Mathlib formalization of the c
   including the gate price), `Gate` (pinned gate price), `Mixed` (row mixtures `RowHolds.mix`,
   joint batches), `Boxes` (box kinds source/joint/joint-mix/cap, `box_sound`, `cover_sound`),
   `Endpoint`, `Support` (`SharedReduction`, `rowOf_of_shared`, `checkCert`, `lower_bound_main`),
-  generated data (`RowData*`, `MixedData` with `mixedBatches` and `coverRegions`, from
+  generated data (`RowData*`, `MixedData` with `mixedBatches`, `coverBoxes` and `coverCuts`, from
   `tools/gen_lower_data.py` and `tools/gen_lower_mixed.py`), `RowCheck` (the single
   `native_decide` `cert_check` and `lower_bound_data`), and `Transfer*` (`TransferInputsL2`,
   `transfer_lower`, `lower_bound_of_transferL2`: cells as linear maps, limit by continuity).

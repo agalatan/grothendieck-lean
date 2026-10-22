@@ -2,41 +2,40 @@
 """Generate the common-law (mixed) certificate data module (exact rationals only):
 
   Grothe/Lower/MixedData.lean   the batches of exact node certificates for the mixed potentials
-                                and the regions covering t ∈ [0, 9/10] with their boxes, as strings
-                                parsed at check time (`parseWit`, `parseBox` in Mixed.lean/Boxes.lean):
-                                outside the central slab one cap box per region (the scalar
-                                envelope of `envelope.json`), on the slab the boxes of the cover
+                                (`mixedBatches`), the boxes of the cover of [0, 9/10] × [0, ρ] × [0, 31/4]
+                                (`coverBoxes`) and its partition certificate (`coverCuts`), as strings
+                                parsed at check time (`parseWit`, `parseBox`, `parseTree` in
+                                Mixed.lean/Boxes.lean)
 
-Usage: tools/gen_lower_mixed.py [CERT_DIR]   (default handoff/lower-stein/cert-covariance/certificate, the certificate on master)
+Usage: tools/gen_lower_mixed.py [CERT_DIR]   (default handoff/lower-stein/cert-joint, the certificate on master)
 
-CERT_DIR holds the cover (`improved_cover.json` with `regions`, or `joint_cover_certificate.json`
-with one `domain`) and the batch files it references (`used/*.json`): Stein batches (witnesses
-with a bank of cut vectors and multipliers) and spectral batches (`cut_family` =
-`separate_spectral_nu_zero` or `separate_spectral_covariance`: one spectral cut `(λ, μ, t, β, ν, φ)`
-per witness, the format of `verify_spectral_batch.py`); the source rows are
-`handoff/lower-stein/cert-0745e/`, `cert-0745d/`, `cert-0745c/` or `cert-0745/` (whichever the cover pins by hash).  Row indices refer to `rowData`
-(rows sorted by their nominal `t`).  Cell kinds: source (two rows, node references
-`(cell, node)`, `(-1, -1)` the zero node), `joint` (a batch, witness indices) and `joint_mix`
-(two batches mixed with weight `λ` before the gate completion).  Every box value is replayed
-here with the Lean semantics (virtual rows, quadratic maxima) and compared with the stored bound
-and the cap; the dyadic coverage of every region and the cap boxes of the envelope are replayed too.
+CERT_DIR is the spectral-envelope package: `inherited.json` (the 19 source rows parsed from
+`RowData*.lean`, the inherited batches of Stein node certificates with their witnesses (meshes in `v = √u`), and the
+inherited boxes `kind|bounds|refs`), and `cover.json` (`target`, `lower`, the mixtures `groups`, the
+node references `nodes`, the new spectral nodes `newnodes` (one spectral cut `(λ, μ, t, β, ν)` with
+`ν ≥ 0` (absent means `0`) on the test mesh `rv` of the node, the majorant `P = (a₀, a₁, a₂, a₄, a₆)`),
+and the `boxes` of the partition, each evaluated through an inherited box (`original`) or a `choice`
+of one or two groups with four bracketing node references each, the chords optionally taken on a
+larger `scale_domain` and restricted to the box). Spectral nodes of one mixed potential sharing a
+test mesh form one batch.
+
+The rows of `inherited.json` are cross-checked field by field against the committed `RowData*.lean`
+(so that the node references index the same Stein nodes), every box value is replayed with the Lean
+semantics (virtual rows, pinned gate price, chords and re-chords in τ, `x` endpoints, quadratic
+maxima, one pad) and compared with the stored bound and the cap, and a guillotine partition
+certificate (axis cuts, replayed) is produced for the boxes.
 """
-import hashlib
 import json
 import os
+import re
 import sys
 from fractions import Fraction as Q
-from math import isqrt
 from pathlib import Path
 
+sys.setrecursionlimit(100000)
 ROOT = Path(__file__).resolve().parent.parent
 HANDOFF = Path(os.environ.get("GROTHE_HANDOFF", ROOT / "handoff"))   # the (git-ignored) data folder; set it when running from a worktree
-# the pinned source rows: whichever per-row certificate the cover pins by its manifest hash
-SOURCES = [(HANDOFF / "lower-stein" / "cert-0745e", HANDOFF / "lower-stein" / "cert-0745e" / "rows_final_e.json"),
-           (HANDOFF / "lower-stein" / "cert-0745d", HANDOFF / "lower-stein" / "cert-0745d" / "rows_final_d.json"),
-           (HANDOFF / "lower-stein" / "cert-0745c", HANDOFF / "lower-stein" / "cert-0745c" / "rows_final_c.json"),
-           (HANDOFF / "lower-stein" / "cert-0745", HANDOFF / "lower-stein" / "rows_final.json")]
-NEW = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else HANDOFF / "lower-stein" / "cert-covariance" / "certificate"
+NEW = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else HANDOFF / "lower-stein" / "cert-joint"
 OUT = ROOT / "Grothe" / "Lower" / "MixedData.lean"
 EPS = Q(149, 200); RHO = Q(973612157, 10**9); C6 = Q(4045313, 100000); PAD = Q(1, 10**11); XMAX = Q(31, 4)
 
@@ -44,31 +43,31 @@ def qs(x):
     x = Q(x); return f"{x.numerator}/{x.denominator}" if x.denominator != 1 else f"{x.numerator}"
 def q(x):
     x = Q(x); return f"({x.numerator} : ℚ) / {x.denominator}" if x.denominator != 1 else f"({x.numerator} : ℚ)"
-def rsqrt(x):
-    a, b = isqrt(x.numerator), isqrt(x.denominator); assert a * a == x.numerator and b * b == x.denominator; return Q(a, b)
 def lean_str(s): return '"' + s + '"'
-def sha(p): return hashlib.sha256(open(p, "rb").read()).hexdigest()
 
-# ----- the cover and the pinned source rows
-cover_file = next(f for f in ("improved_cover.json", "joint_cover_certificate.json") if (NEW / f).exists())
-cert = json.load(open(NEW / cover_file))
-CERT, ROWS_FILE = next((c, r) for c, r in SOURCES if hashlib.sha256(open(c / "manifest.json", "rb").read()).hexdigest() == cert["source_manifest_sha256"])
-if "source_rows_sha256" in cert: assert hashlib.sha256(open(ROWS_FILE, "rb").read()).hexdigest() == cert["source_rows_sha256"]
-man = json.load(open(CERT / "manifest.json"))
-assert sha(CERT / "manifest.json") == cert["source_manifest_sha256"]
-for fn, h in man["files"].items(): assert sha(CERT / fn) == h, fn
-rowfiles = sorted((f for f in man["files"] if f.startswith("row_")), key=lambda f: Q(json.load(open(CERT / f))["t"]))
-rows = [json.load(open(CERT / f)) for f in rowfiles]
-index = {R["name"]: k for k, R in enumerate(rows)}
-B = Q(cert["target"])
-regions_json = cert["regions"] if "regions" in cert else [dict(domain=cert["domain"], cells=cert["cells"])]
-for r in regions_json:
-    d = tuple(map(Q, r["domain"])); assert d[2:] == (0, RHO, 0, XMAX) and d[0] < d[1]
-regions_json.sort(key=lambda r: Q(r["domain"][0]))
-SLAB = (Q(regions_json[0]["domain"][0]), Q(regions_json[-1]["domain"][1]))
-for a, b in zip(regions_json, regions_json[1:]): assert Q(a["domain"][1]) == Q(b["domain"][0])
+inh = json.load(open(NEW / "inherited.json")); cov = json.load(open(NEW / "cover.json"))
+for key, value in (("eps", EPS), ("rho", RHO), ("C6", C6), ("xmax", XMAX), ("pad", PAD)): assert Q(inh[key]) == value, key
+B = Q(cov["target"]); L = Q(cov["lower"]); assert cov["fails"] == [] and B * L < 1
+rows = inh["rows"]
 
-# ----- Lean-side arithmetic (mirrors Basic.lean / Gate.lean / Boxes.lean)
+# ----- the rows: cross-check against the committed RowData modules (field by field, exact)
+NUM = re.compile(r"\((-?\d+) : ℚ\)(?: / (\d+))?")
+for k, R in enumerate(rows):
+    text = (ROOT / "Grothe" / "Lower" / f"RowData{k + 1:02d}.lean").read_text()
+    nums = [Q(int(a), int(b) if b else 1) for a, b in NUM.findall(text)]
+    assert nums[:6] == [Q(R[f]) for f in ("ell", "beta", "delta", "kappa", "smax", "cap")], ("row header", k)
+    assert nums[6:12] == [Q(v) for v in R["E"]] and nums[12:15] == [Q(v) for v in R["b"]], ("row gate", k)
+    strs = re.findall(r'"([^"]*)"', text)
+    assert [(Q(a), Q(b)) for a, b in (s.split(":") for s in strs[0].split(";"))] == [(Q(x), Q(y)) for x, y in R["table"]], ("row table", k)
+    assert [Q(v) for v in strs[1].split(",") if v] == [Q(v) for v in R["mesh"][1:]] and Q(R["mesh"][0]) == 0, ("row mesh", k)
+    cells = strs[2:]; assert len(cells) == len(R["cells"]), ("row cells", k)
+    for cl, cj in zip(cells, R["cells"]):
+        xlo, xhi, _, _, nodes = cl.split("|")
+        assert [Q(xlo), Q(xhi)] == [Q(v) for v in cj["x"]]
+        ln = [(Q(s.split(":")[0]), [Q(v) for v in s.split(":")[1].split(",")]) for s in nodes.split(";")] if nodes else []
+        assert ln == [(Q(n["tau"]), [Q(v) for v in n["P"]]) for n in cj["nodes"]], ("row nodes", k)
+
+# ----- Lean-side arithmetic (mirrors Basic.lean / Gate.lean / Mixed.lean / Boxes.lean)
 def quadVal(c0, c1, c2, t): return c0 + c1 * t + c2 * t * t
 def quadMax(c0, c1, c2, a, b):
     e = max(quadVal(c0, c1, c2, a), quadVal(c0, c1, c2, b))
@@ -76,199 +75,209 @@ def quadMax(c0, c1, c2, a, b):
         v = -c1 / (2 * c2)
         if a <= v <= b: return max(e, quadVal(c0, c1, c2, v))
     return e
-def J(y, x):   # y = (a0, a1, a2, a4, a6) = (y0, y4, y1, y2, y3); J 0 1 x
+def J(y, x):   # y = (a0, a1, a2, a4, a6); J 0 1 x
     a0, a1, a2, a4, a6 = y
     return a0 + RHO * a1 + a2 + a4 * (2 + x * x) + a6 * (6 + 9 * x * x + C6 * x ** 3)
 def lin(a, b, p, r): return tuple(a * u + b * v for u, v in zip(p, r))
-def mpoly(yjson):  # JSON order y0,y1,y2,y3,y4 -> MPoly order a0,a1,a2,a4,a6
-    y = list(map(Q, yjson)); return (y[0], y[4], y[1], y[2], y[3])
-def vrow(R):   # (ell, beta, delta, N (6 entries), g1, g2, g3)
-    th = [Q(v) for v in R["theta"]]; d = th[9]
-    return (th[13], th[14], d, (th[0] - (EPS - d), th[1], th[2], th[3], th[4], th[5]), d * th[10], d * th[11], d * th[12])
+def vrow(R):   # VRow: (ell, beta, delta, N (6 entries), g1, g2, g3) with N = E − diag(ε − δ, 0, 0), g = δ b
+    E = [Q(v) for v in R["E"]]; d = Q(R["delta"]); b = [Q(v) for v in R["b"]]
+    return (Q(R["ell"]), Q(R["beta"]), d, (E[0] - (EPS - d), E[1], E[2], E[3], E[4], E[5]), d * b[0], d * b[1], d * b[2])
 def vmix(th, a, b):
     return tuple((1 - th) * u + th * v for u, v in zip(a[:3], b[:3])) + (tuple((1 - th) * u + th * v for u, v in zip(a[3], b[3])),) + \
         tuple((1 - th) * u + th * v for u, v in zip(a[4:], b[4:]))
 def gatePrice(N, g):
     m11, m12, m13, m22, m23, m33 = N; w1, w2 = m12 + g[1], m13 + g[2]; det = m22 * m33 - m23 * m23
-    assert m22 > 0 and det > 0
+    assert m22 > 0 and det > 0, "gateOK"
     return m11 + 2 * g[0] - (m33 * w1 * w1 - 2 * m23 * w1 * w2 + m22 * w2 * w2) / det
 def vprice(a): return a[2] + gatePrice(a[3], a[4:])
-def rowPriceOK(R):
-    a = vrow(R); return Q(R["kappa"]) * a[2] * a[2] <= vprice(a)
-def tnode(R, ref):
-    ci, ni = ref
-    if ci < 0: return (Q(0), (Q(R["caps"][0]), Q(0), Q(0), Q(0), Q(0)))
-    n = R["cells"][ci]["nodes"][ni]; return (Q(n["sigma"]) / vrow(R)[2], mpoly(n["y"]))
-def tchord(n0, n1, s):
-    assert 0 <= n0[0] <= s <= n1[0]
+def tchord(n0, n1, s):   # tchordOK and tchordP
+    assert 0 <= n0[0] <= s <= n1[0], "tchordOK"
     if n0[0] < n1[0]: return lin((n1[0] - s) / (n1[0] - n0[0]), (s - n0[0]) / (n1[0] - n0[0]), n0[1], n1[1])
     return n0[1]
 def boxVal(a, Lm, Lp, tl, tu, sl, su, xl, xu):
-    ell, beta, D = a[0], a[1], vprice(a); assert Lm[4] >= 0 and Lp[4] >= 0
+    ell, beta, D = a[0], a[1], vprice(a); assert Lm[4] >= 0 and Lp[4] >= 0 and 0 <= sl < su and 0 <= xl
     def xPart(xh):
         lo, hi = J(Lm, xh), J(Lp, xh); m = (hi - lo) / (su - sl)
         return quadMax(lo - m * sl, m, -D, sl, su)
     return quadMax(Q(0), -2 * ell, Q(1), tl, tu) + 2 * beta * beta / EPS + max(xPart(xl), xPart(xu)) + PAD
+def capAt(xs, ys, smax, s):   # capAt: the interpolant of the caps, continued by the Lipschitz line
+    if s >= xs[-1]: return ys[-1] + smax * (s - xs[-1])
+    k = max(k for k in range(len(xs) - 1) if xs[k] <= s); return ys[k] + (ys[k + 1] - ys[k]) * (s - xs[k]) / (xs[k + 1] - xs[k])
+def rowTable(R): return [Q(x) for x, y in R["table"]], [Q(y) for x, y in R["table"]], Q(R["smax"]), Q(R["delta"])
+def rowTNode(R, ref):   # the zero node or a Stein node rescaled to τ = σ/δ
+    xs, ys, _, d = rowTable(R)
+    if ref is None: assert xs[0] == 0; return (Q(0), (ys[0], Q(0), Q(0), Q(0), Q(0)))
+    ci, ni = ref; n = R["cells"][ci]["nodes"][ni]; return (Q(n["tau"]) / d, tuple(Q(v) for v in n["P"]))
+def samePot(a, b, al, c, d, ga):
+    return (a == c and b == d and al == ga) or (al == 0 and ga == 0 and a == c) or (al == 1 and ga == 1 and b == d)
+VR = [vrow(R) for R in rows]
 
-# ----- batches
-batches = []
-for bref in cert["joint_batches"]:
-    p = NEW / bref["file"]; assert sha(p) == bref["sha256"], bref["file"]
-    b = json.load(open(p))
-    assert b["source_manifest_sha256"] == cert["source_manifest_sha256"]
-    names = b["rows"]; w = list(map(Q, b["weights"])); assert len(names) == 2 and w[0] + w[1] == 1 and min(w) >= 0
-    th = w[1]; Ri, Rj = rows[index[names[0]]], rows[index[names[1]]]
-    # the stored mixed table is exactly the one of the source rows (exact rationals, no node rounding)
-    def capAt(R, s):
-        ns, cs = [Q(v) for v in R["nodes"]], [Q(v) for v in R["caps"]]
-        if s >= ns[-1]: return cs[-1] + Q(R["smax"]) * (s - ns[-1])
-        k = max(k for k in range(len(ns) - 1) if ns[k] <= s); return cs[k] + (cs[k + 1] - cs[k]) * (s - ns[k]) / (ns[k + 1] - ns[k])
-    assert all(isinstance(v, str) for R in (Ri, Rj) for v in R["nodes"] + R["caps"])
-    dd = [Q(R["theta"][9]) for R in (Ri, Rj)]
-    mn = sorted(set(Q(z) / d for R, d in zip((Ri, Rj), dd) for z in R["nodes"]))
-    assert mn == [Q(v) for v in b["nodes"]], "mixed nodes differ from the exact row nodes"
-    assert [w[0] * capAt(Ri, dd[0] * z) + w[1] * capAt(Rj, dd[1] * z) for z in mn] == [Q(v) for v in b["caps"]], "mixed caps differ"
+# ----- the inherited batches (Stein witnesses) and the new spectral batches
+batches = []   # dicts: i, j, th, smax, nodes, vs, spec, wits, tnodes
+for b in inh["batches"]:
+    i, j, th = int(b["i"]), int(b["j"]), Q(b["theta"]); assert 0 <= th <= 1
     mesh = [Q(v) for v in b["mesh"]]; assert mesh[0] == 0 and all(u < v for u, v in zip(mesh, mesh[1:]))
-    vs = ",".join(qs(rsqrt(t)) for t in mesh[1:])
-    nodes = ";".join(f"{qs(r)}:{qs(c)}" for r, c in zip(b["nodes"], b["caps"]))
-    wits = []
-    spec = b.get("cut_family") in ("separate_spectral_nu_zero", "separate_spectral_covariance")
-    assert spec or "cut_family" not in b
-    for wit in b["witnesses"]:
-        y = list(map(Q, wit["y"])); assert len(y) == 5
-        ys = ",".join(qs(v) for v in (y[0], y[4], y[1], y[2], y[3]))
-        if spec:
-            # one spectral cut: a = -1/2, lam, mu > 0, nu >= 0 (nu = 0 for the family without the covariance
-            # order), the test on the batch mesh vanishing at its last knot
-            c = wit["cut"]; assert c["mesh"] == b["mesh"] and Q(c["a"]) == Q(-1, 2)
-            lam, mu_, t, be, nu = (Q(c[k]) for k in ("lam", "mu", "t", "beta", "nu"))
-            assert lam > 0 and mu_ > 0 and nu >= 0 and (nu == 0 or b["cut_family"] == "separate_spectral_covariance")
-            phi = [Q(v) for v in c["phi_values"]]; assert len(phi) == len(mesh) and phi[-1] == 0
-            wits.append(f"{qs(wit['tau'])}:{ys}:{qs(lam)},{qs(mu_)},{qs(t)},{qs(be)},{qs(nu)}|" + ",".join(qs(v) for v in phi[:-1]))
-            continue
-        mu = [Q(v) * 10**10 for v in wit["mu"]]; assert all(m.denominator == 1 and m >= 0 for m in mu)
+    wits = []; tn = []
+    for n in b["nodes"]:
+        P = [Q(v) for v in n["P"]]; assert len(P) == 5 and P[1] >= 0 and P[4] >= 0
+        mu = [Q(v) * 10**10 for v in n["mu"]]; assert all(m.denominator == 1 and m >= 0 for m in mu)
         bank = []
-        for z in wit["bank"]:
+        for z in n["bank"]:
             zz = [Q(v) * 10**8 for v in z]; assert all(v.denominator == 1 for v in zz) and len(zz) == len(mesh) + 1
             bank.append(",".join(str(v.numerator) for v in zz))
         assert len(mu) == len(bank)
-        wits.append(f"{qs(wit['tau'])}:{ys}:" + ",".join(str(m.numerator) for m in mu) + "|" + ";".join(bank))
-    tn = [(Q(wit["tau"]), mpoly(wit["y"])) for wit in b["witnesses"]]
+        wits.append(f"{qs(n['tau'])}:" + ",".join(qs(v) for v in P) + ":" + ",".join(str(m.numerator) for m in mu) + "|" + ";".join(bank))
+        tn.append((Q(n["tau"]), tuple(P)))
     assert all(u[0] < v[0] for u, v in zip(tn, tn[1:]))
-    batches.append(dict(i=index[names[0]], j=index[names[1]], th=th, smax=Q(b["smax"]), nodes=nodes, vs=vs, wits=wits, spec=spec,
-                        tnodes=tn, vrow=vmix(th, vrow(Ri), vrow(Rj))))
+    batches.append(dict(i=i, j=j, th=th, smax=Q(b["smax"]), nodes=";".join(f"{qs(x)}:{qs(y)}" for x, y in b["table"]),
+                        vs=",".join(qs(v) for v in mesh[1:]), spec=False, wits=wits, tnodes=tn))
+NINH = len(batches)
+newnodes = cov["newnodes"]; groups_new = {}
+for name, n in newnodes.items():
+    groups_new.setdefault((n["i"], n["j"], Q(n["theta"]), tuple(Q(v) for v in n["rv"])), []).append(name)
+newref = {}; meshes = set()
+for (i, j, th, rv), names in sorted(groups_new.items(), key=lambda kv: (kv[0][:3], len(kv[0][3]), kv[0][3])):
+    assert 0 <= th <= 1; meshes.add(len(rv))
+    Ri, Rj = rows[i], rows[j]; (xi, yi, si, di), (xj, yj, sj, dj) = rowTable(Ri), rowTable(Rj)
+    # the mixed table: the mixed interpolants at the union of the rescaled abscissae, the mixed Lipschitz constant
+    xs = sorted(set([x / di for x in xi] + [x / dj for x in xj]))
+    ys = [(1 - th) * capAt(xi, yi, si, di * x) + th * capAt(xj, yj, sj, dj * x) for x in xs]
+    smax = (1 - th) * di * si + th * dj * sj
+    rv = list(rv); assert rv[0] == 0 and all(u < v for u, v in zip(rv, rv[1:]))
+    names.sort(key=lambda nm: (Q(newnodes[nm]["tau"]), nm)); wits = []; tn = []
+    for k, nm in enumerate(names):
+        n = newnodes[nm]; assert [Q(v) for v in n["rv"]] == rv and n.get("eta") is None
+        lam, mu, t, be, tau = (Q(n[f]) for f in ("lam", "mu", "t", "beta", "tau")); assert lam > 0 and mu > 0 and tau > 0
+        nu = Q(n.get("nu") or 0); assert nu >= 0
+        phi = [Q(v) for v in n["phi"]]; assert len(phi) == len(rv) - 1
+        P = [Q(v) for v in n["P"]]; assert len(P) == 5 and P[1] >= 0 and P[4] >= 0
+        wits.append(f"{qs(tau)}:" + ",".join(qs(v) for v in P) + f":{qs(lam)},{qs(mu)},{qs(t)},{qs(be)},{qs(nu)}|" + ",".join(qs(v) for v in phi))
+        tn.append((tau, tuple(P))); newref[nm] = (len(batches), k)
+    assert all(u[0] <= v[0] for u, v in zip(tn, tn[1:]))
+    batches.append(dict(i=i, j=j, th=th, smax=smax, nodes=";".join(f"{qs(x)}:{qs(y)}" for x, y in zip(xs, ys)),
+                        vs=",".join(qs(v) for v in rv[1:]), spec=True, wits=wits, tnodes=tn))
+BV = [vmix(b["th"], VR[b["i"]], VR[b["j"]]) for b in batches]
 
-# ----- boxes of every region, replayed
-def batch_chords(b, refs, sl, su):
-    (k0, k1), (k2, k3) = refs
-    return tchord(b["tnodes"][k0], b["tnodes"][k1], sl), tchord(b["tnodes"][k2], b["tnodes"][k3], su)
-regions = []; worst = Q(0); kinds = dict(src=0, joint=0, jmix=0); nboxes = 0
-for reg in regions_json:
-    dom = tuple(map(Q, reg["domain"])); boxes = []; doms = []
-    for cell in reg["cells"]:
-        box = tuple(map(Q, cell["box"])); tl, tu, sl, su, xl, xu = box
-        assert 0 <= sl < su and tl < tu and 0 <= xl < xu
-        bx = ",".join(qs(v) for v in box)
-        if cell.get("kind") == "joint":
-            bk = cell["batch"]; b = batches[bk]; (k0, k1), (k2, k3) = cell["joint_refs"]
-            Lm, Lp = batch_chords(b, cell["joint_refs"], sl, su); a = b["vrow"]
-            boxes.append(f"j|{bx}|{bk}|{k0},{k1},{k2},{k3}"); kinds["joint"] += 1
-        elif cell.get("kind") == "joint_mix":
-            b0, b1 = cell["batches"]; lam = Q(cell["mix"]); assert 0 <= lam <= 1
-            r0, r1 = cell["refs"]
-            Lm0, Lp0 = batch_chords(batches[b0], r0, sl, su); Lm1, Lp1 = batch_chords(batches[b1], r1, sl, su)
-            Lm, Lp = lin(1 - lam, lam, Lm0, Lm1), lin(1 - lam, lam, Lp0, Lp1); a = vmix(lam, batches[b0]["vrow"], batches[b1]["vrow"])
-            ks = lambda r: ",".join(str(k) for pr in r for k in pr)
-            boxes.append(f"m|{bx}|{b0},{b1},{qs(lam)}|{ks(r0)}|{ks(r1)}"); kinds["jmix"] += 1
+# ----- the node references of the cover and the groups
+def refdata(r):   # (string, (i, j, θ) of its potential, τ-node)
+    if r[0] == "z": i = r[1]; return f"z,{i}", (i, i, Q(0)), rowTNode(rows[i], None)
+    if r[0] == "s": i, ci, ni = r[1:]; return f"s,{i},{ci},{ni}", (i, i, Q(0)), rowTNode(rows[i], (ci, ni))
+    if r[0] == "b": bi, k = r[1:]; assert bi < NINH
+    else: bi, k = newref[r[1]]
+    b = batches[bi]; return f"b,{bi},{k}", (b["i"], b["j"], b["th"]), b["tnodes"][k]
+NODES = [refdata(r) for r in cov["nodes"]]
+GROUPS = []
+for g in cov["groups"]:
+    w = [(int(i), Q(v)) for i, v in g["weights"]]; assert sum(v for _, v in w) == 1 and all(v > 0 for _, v in w) and w == sorted(w)
+    if len(w) == 1: GROUPS.append((w[0][0], w[0][0], Q(0)))
+    else: assert len(w) == 2; GROUPS.append((w[0][0], w[1][0], w[1][1]))
+
+# ----- boxes: Lean strings and the replay of their values
+def comp(i, j, th, s0, s1, refs, sl, su):
+    """A component `i,j,θ,s0,s1;ref;ref;ref;ref`: (string, VRow, L₋, L₊) with the chords at s0, s1 re-chorded at sl, su."""
+    assert 0 <= th <= 1 and len(refs) == 4
+    ns = []
+    for rs, pot, tnode in refs: assert samePot(*pot, i, j, th), ("potential", rs, pot, (i, j, th)); ns.append(tnode)
+    m0, m1 = (s0, tchord(ns[0], ns[1], s0)), (s1, tchord(ns[2], ns[3], s1))
+    return (f"{i},{j},{qs(th)},{qs(s0)},{qs(s1)};" + ";".join(rs for rs, _, _ in refs),
+            vmix(th, VR[i], VR[j]), tchord(m0, m1, sl), tchord(m0, m1, su))
+def mixcomp(th, c0, c1):
+    assert 0 <= th <= 1
+    return vmix(th, c0[1], c1[1]), lin(1 - th, th, c0[2], c1[2]), lin(1 - th, th, c0[3], c1[3])
+def srcrefs(i, s):   # the eight integers of an inherited source reference: pairs (cell, node), a negative cell the zero node
+    v = list(map(int, s.split(","))); assert len(v) == 8
+    return [refdata(("z", i) if c < 0 else ("s", i, c, n)) for c, n in zip(v[::2], v[1::2])]
+def batrefs(bi, s): return [refdata(("b", bi, int(k))) for k in s.split(",")]
+envs = [(Q(0), Q(0), EPS * RHO ** 2)] + [(Q(R["ell"]), Q(R["beta"]), 2 * Q(R["beta"]) ** 2 / EPS + Q(R["cap"]) + PAD) for R in rows]
+boxes = []; doms = []; kinds = dict(cap=0, one=0, two=0, original=0, choice=0); worst = Q(0)
+for bx in cov["boxes"]:
+    bb = tuple(Q(v) for v in bx["bounds"]); tl, tu, sl, su, xl, xu = bb; assert tl < tu and 0 <= sl < su and 0 <= xl < xu
+    bs = ",".join(qs(v) for v in bb); assert ("original" in bx) != ("choice" in bx)
+    if "original" in bx:
+        kind, obounds, *refs = inh["boxes"][bx["original"]].split("|"); ob = [Q(v) for v in obounds.split(",")]; kinds["original"] += 1
+        if kind == "c":
+            i, j, th = refs[0].split(","); i, j, th = int(i), int(j), Q(th); assert 0 <= th <= 1
+            a, c = envs[i], envs[j]
+            val = quadMax((1 - th) * a[2] + th * c[2] - 2 * (1 - th) * th * (a[1] - c[1]) ** 2 / EPS, -2 * ((1 - th) * a[0] + th * c[0]), Q(1), tl, tu)
+            boxes.append(f"c|{bs}|{i},{j},{qs(th)}"); kinds["cap"] += 1
         else:
-            assert "kind" not in cell
-            Ri, Rj = rows[index[cell["i"]]], rows[index[cell["j"]]]; th = Q(cell["theta"]); assert 0 <= th <= 1
-            pi, pj = cell["points"]
-            Pim = tchord(tnode(Ri, pi[0][0]), tnode(Ri, pi[0][1]), sl); Pip = tchord(tnode(Ri, pi[1][0]), tnode(Ri, pi[1][1]), su)
-            Pjm = tchord(tnode(Rj, pj[0][0]), tnode(Rj, pj[0][1]), sl); Pjp = tchord(tnode(Rj, pj[1][0]), tnode(Rj, pj[1][1]), su)
-            Lm, Lp = lin(1 - th, th, Pim, Pjm), lin(1 - th, th, Pip, Pjp); a = vmix(th, vrow(Ri), vrow(Rj))
-            refs = lambda pr: ",".join(f"{u},{c}" for ab in pr for u, c in ab)
-            boxes.append(f"s|{bx}|{index[cell['i']]},{index[cell['j']]},{qs(th)}|{refs(pi)}|{refs(pj)}"); kinds["src"] += 1
-        v = boxVal(a, Lm, Lp, *box)
-        assert v == Q(cell["bound"]) and v <= B, (cell["box"], float(v), float(Q(cell["bound"])))
-        worst = max(worst, v); doms.append(box)
-    # coverage (dyadic partition)
-    def cover(dom, ids):
-        if len(ids) == 1: assert doms[ids[0]] == dom; return
-        for k in (0, 2, 4):
-            mid = (dom[k] + dom[k + 1]) / 2
-            if any(doms[i][k] < mid < doms[i][k + 1] for i in ids): continue
-            L = [i for i in ids if doms[i][k + 1] <= mid]; R = [i for i in ids if doms[i][k] >= mid]
-            if not L or not R: continue
-            a_, b_ = list(dom), list(dom); a_[k + 1] = mid; b_[k] = mid
-            cover(tuple(a_), L); cover(tuple(b_), R); return
-        raise AssertionError("not a dyadic partition")
-    cover(dom, list(range(len(doms))))
-    regions.append(dict(lo=dom[0], hi=dom[1], boxes=boxes)); nboxes += len(boxes)
-assert all(rowPriceOK(R) for R in rows)
+            s0, s1 = ob[2], ob[3]; assert s0 <= sl < su <= s1
+            if kind == "s":
+                i, j, th = refs[0].split(","); i, j, th = int(i), int(j), Q(th)
+                c0, c1 = comp(i, i, Q(0), s0, s1, srcrefs(i, refs[1]), sl, su), comp(j, j, Q(0), s0, s1, srcrefs(j, refs[2]), sl, su)
+                a, Lm, Lp = mixcomp(th, c0, c1); boxes.append(f"m|{bs}|{qs(th)}|{c0[0]}|{c1[0]}"); kinds["two"] += 1
+            elif kind == "j":
+                bi = int(refs[0]); b = batches[bi]
+                c0 = comp(b["i"], b["j"], b["th"], s0, s1, batrefs(bi, refs[1]), sl, su)
+                a, Lm, Lp = c0[1:]; boxes.append(f"b|{bs}|{c0[0]}"); kinds["one"] += 1
+            else:
+                assert kind == "m"
+                b0, b1, lam = refs[0].split(","); b0, b1, lam = int(b0), int(b1), Q(lam); B0, B1 = batches[b0], batches[b1]
+                c0 = comp(B0["i"], B0["j"], B0["th"], s0, s1, batrefs(b0, refs[1]), sl, su)
+                c1 = comp(B1["i"], B1["j"], B1["th"], s0, s1, batrefs(b1, refs[2]), sl, su)
+                a, Lm, Lp = mixcomp(lam, c0, c1); boxes.append(f"m|{bs}|{qs(lam)}|{c0[0]}|{c1[0]}"); kinds["two"] += 1
+            val = boxVal(a, Lm, Lp, *bb)
+    else:
+        ch = bx["choice"]; kinds["choice"] += 1
+        s0, s1 = (Q(v) for v in ch.get("scale_domain", (sl, su))); assert s0 <= sl < su <= s1
+        cs = [comp(*GROUPS[gi], s0, s1, [NODES[k] for k in ri], sl, su) for gi, ri in zip(ch["groups"], ch["refs"])]
+        if len(cs) == 1: a, Lm, Lp = cs[0][1:]; boxes.append(f"b|{bs}|{cs[0][0]}"); kinds["one"] += 1
+        else:
+            assert len(cs) == 2; th = Q(ch["theta"]); a, Lm, Lp = mixcomp(th, cs[0], cs[1])
+            boxes.append(f"m|{bs}|{qs(th)}|{cs[0][0]}|{cs[1][0]}"); kinds["two"] += 1
+        val = boxVal(a, Lm, Lp, *bb)
+    assert val == Q(bx["upper"]) and val <= B, ("box value", bx["bounds"], float(val), float(Q(bx["upper"])))
+    worst = max(worst, val); doms.append(bb)
 
-# ----- the cap boxes outside the slab (the scalar envelope, Lean semantics): maximal runs of
-# envelope cells with the same mixture, cut at the slab ends; scalar row 0 is the crude row
-env = json.load(open(CERT / "envelope.json")); step = Q(env["step"])
-assert len(env["cells"]) * step == Q(9, 10)
-consts = json.load(open(ROWS_FILE))
-env_rows = {"crude": dict(k=0, ell=Q(0), beta=Q(0), C=EPS * RHO ** 2)}
-for k, R in enumerate(rows):
-    K = consts[R["name"]]; ell, beta = Q(K["ell"]), Q(K["beta"])
-    cap_exact = Q(K["C"]) - PAD - 2 * beta * beta / EPS
-    cap = Q(-((-cap_exact.numerator * 10**15) // cap_exact.denominator), 10**15)
-    env_rows[R["name"]] = dict(k=k + 1, ell=ell, beta=beta, C=2 * beta * beta / EPS + cap + PAD)
-runs = []
-for k, (i, j, th) in enumerate(env["cells"]):
-    lo, hi = k * step, (k + 1) * step
-    if SLAB[0] <= lo and hi <= SLAB[1]: continue
-    assert hi <= SLAB[0] or lo >= SLAB[1]
-    key = (i, j, Q(th))
-    if runs and runs[-1][2] == key and runs[-1][1] == lo and lo != SLAB[1]: runs[-1][1] = hi
-    else: runs.append([lo, hi, key])
-outer = Q(0)
-for lo, hi, (i, j, th) in runs:
-    a, b = env_rows[i], env_rows[j]; assert 0 <= th <= 1
-    c0 = (1 - th) * a["C"] + th * b["C"] - 2 * (1 - th) * th * (a["beta"] - b["beta"]) ** 2 / EPS
-    c1 = -2 * ((1 - th) * a["ell"] + th * b["ell"])
-    v = quadMax(c0, c1, Q(1), lo, hi); assert v <= B; outer = max(outer, v)
-    regions.append(dict(lo=lo, hi=hi, boxes=[f"c|{qs(lo)},{qs(hi)},0,{qs(RHO)},0,{qs(XMAX)}|{a['k']},{b['k']},{qs(th)}"]))
-regions.sort(key=lambda r: r["lo"])
-assert regions[0]["lo"] == 0 and regions[-1]["hi"] == Q(9, 10)
-assert all(r["hi"] == r2["lo"] for r, r2 in zip(regions, regions[1:]))
+# ----- the partition certificate: guillotine cuts (axis k ∈ {0 (t), 1 (τ), 2 (x)} at `mid`), replayed
+DOM = (Q(0), Q(9, 10), Q(0), RHO, Q(0), XMAX)
+tokens = []
+def cut(dom, ids):
+    if len(ids) == 1:
+        assert doms[ids[0]] == dom, "leaf"; tokens.append("."); return
+    for k in (0, 1, 2):
+        cands = sorted(set(doms[i][2 * k + 1] for i in ids if dom[2 * k] < doms[i][2 * k + 1] < dom[2 * k + 1]),
+                       key=lambda m: abs(sum(1 for i in ids if doms[i][2 * k + 1] <= m) - len(ids) / 2))
+        for mid in cands:
+            if any(doms[i][2 * k] < mid < doms[i][2 * k + 1] for i in ids): continue
+            Lb = [i for i in ids if doms[i][2 * k + 1] <= mid]; Rb = [i for i in ids if mid <= doms[i][2 * k]]
+            if not Lb or not Rb: continue
+            a, b = list(dom), list(dom); a[2 * k + 1] = mid; b[2 * k] = mid
+            tokens.append(f"{k},{qs(mid)}"); cut(tuple(a), Lb); cut(tuple(b), Rb); return
+    raise AssertionError("no guillotine cut")
+cut(DOM, list(range(len(doms))))
+assert tokens.count(".") == len(doms)
 
 # ----- emit
 bt = ",\n".join(f"  ⟨{b['i']}, {b['j']}, {q(b['th'])}, {q(b['smax'])},\n   {lean_str(b['nodes'])},\n   {lean_str(b['vs'])},\n   {'true' if b['spec'] else 'false'},\n   [" +
                 ",\n    ".join(lean_str(w) for w in b["wits"]) + "]⟩" for b in batches)
-BCH = 500  # boxes per list literal (long list literals exceed the elaborator's recursion depth)
-boxdefs = []
-def region(r):
-    if len(r["boxes"]) <= BCH:
-        return f"  ⟨{q(r['lo'])}, {q(r['hi'])},\n   [" + ",\n    ".join(lean_str(s) for s in r["boxes"]) + "]⟩"
-    names = []
-    for k in range(0, len(r["boxes"]), BCH):
-        names.append(f"coverBoxes{len(boxdefs)}")
-        boxdefs.append(f"/-- Boxes of a slab region (part). -/\ndef {names[-1]} : List String :=\n[" +
-                       ",\n ".join(lean_str(s) for s in r["boxes"][k:k + BCH]) + "]\n\n")
-    return f"  ⟨{q(r['lo'])}, {q(r['hi'])},\n   " + " ++ ".join(names) + "⟩"
-CH = 32   # regions per chunk (long list literals exceed the elaborator's recursion depth)
-chunks = [regions[k:k + CH] for k in range(0, len(regions), CH)]
-rg = "".join(f"/-- Regions {k * CH}–{k * CH + len(c) - 1} of the cover. -/\ndef coverRegions{k} : List Region :=\n[" + ",\n".join(region(r) for r in c) + "]\n\n"
-             for k, c in enumerate(chunks))
-rg += ("/-- The regions `(lo, hi)` covering `[0, 9/10]` with their boxes `kind|tl,tu,sl,su,xl,xu|…`. -/\ndef coverRegions : List Region :=\n  " +
-       " ++ ".join(f"coverRegions{k}" for k in range(len(chunks))) + "\n\n")
-nnodes = sum(len(b["wits"]) for b in batches); nspec = sum(len(b["wits"]) for b in batches if b["spec"])
+BCH = 500   # boxes per list literal (long list literals exceed the elaborator's recursion depth)
+TCH = 1000  # cut tokens per string
+bchunks = [boxes[k:k + BCH] for k in range(0, len(boxes), BCH)]
+tchunks = [tokens[k:k + TCH] for k in range(0, len(tokens), TCH)]
+bdefs = "".join(f"/-- Boxes {k * BCH}–{k * BCH + len(c) - 1} of the cover. -/\ndef coverBoxes{k} : List String :=\n[" +
+                ",\n ".join(lean_str(s) for s in c) + "]\n\n" for k, c in enumerate(bchunks))
+bdefs += ("/-- The boxes `kind|tl,tu,sl,su,xl,xu|…` of the cover of `[0, 9/10] × [0, ρ] × [0, 31/4]`. -/\ndef coverBoxes : List String :=\n  " +
+          " ++ ".join(f"coverBoxes{k}" for k in range(len(bchunks))) + "\n\n")
+tdefs = "".join(f"/-- Cut tokens {k * TCH}–{k * TCH + len(c) - 1} of the partition certificate. -/\ndef coverCuts{k} : String :=\n  " +
+                lean_str("|".join(c)) + "\n\n" for k, c in enumerate(tchunks))
+tdefs += ("/-- The partition certificate of the cover, in preorder: a cut `k,mid` of axis `k` (`0` for `t`, `1` for `τ`, `2` for `x`)\n"
+          "at `mid` followed by its two subtrees, or a leaf `.`. -/\ndef coverCuts : List String :=\n  [" +
+          ", ".join(f"coverCuts{k}" for k in range(len(tchunks))) + "].flatMap fun s => splitL s \"|\"\n\n")
+nnodes = sum(len(b["wits"]) for b in batches); nspec = sum(len(b["wits"]) for b in batches if b["spec"]); nnew = len(batches) - NINH
+ncov = sum(1 for b in batches if b["spec"] for w in b["wits"] if Q(w.split("|")[0].split(":")[2].split(",")[4]) > 0)
+ms = sorted(meshes); meshdesc = (", ".join(f"{m}-" for m in ms[:-1]) + f" and {ms[-1]}-knot test meshes") if len(ms) > 1 else f"the {ms[0]}-knot test mesh"
 text = ("import Grothe.Lower.Boxes\n\n/-!\n# The common-law certificate data (generated by `tools/gen_lower_mixed.py`; do not edit)\n\n"
-        f"The {len(batches)} batches of exact node certificates for the mixed potentials ({nnodes} nodes; {sum(b['spec'] for b in batches)} spectral\n"
-        f"batches with {nspec} nodes) and the {len(regions)} regions covering `[0, 9/10] × [0, ρ] × [0, 31/4]`:\n"
-        f"{len(runs)} cap boxes outside the central slab "
-        f"`[{SLAB[0]}, {SLAB[1]}]` and, on the slab, {nboxes} boxes ({kinds['src']} source boxes, {kinds['joint']} joint boxes,\n"
-        f"{kinds['jmix']} joint-mixture boxes); source `{NEW.relative_to(HANDOFF) if NEW.is_relative_to(HANDOFF) else NEW.name}`.\n-/\n\n"
+        f"The {len(batches)} batches of exact node certificates for the mixed potentials ({nnodes} nodes: {NINH} batches with\n"
+        f"{nnodes - nspec} Stein nodes, {nnew} batches with {nspec} spectral nodes on {meshdesc}, {ncov} of them\n"
+        f"with ν > 0, i.e. using the covariance order) and the\n"
+        f"{len(boxes)} boxes of the partition of `[0, 9/10] × [0, ρ] × [0, 31/4]` ({kinds['cap']} cap boxes, {kinds['one']} boxes with one\n"
+        f"component, {kinds['two']} boxes mixing two components) with its certificate of {len(tokens) - len(boxes)} axis cuts;\n"
+        f"source `{NEW.relative_to(HANDOFF) if NEW.is_relative_to(HANDOFF) else NEW.name}`.\n-/\n\n"
         "namespace Grothe.Lower\n\n"
         "/-- The batches: rows `(i, j)`, weight `θ`, Lipschitz constant, mixed node caps, mesh, kind (spectral or Stein) and witnesses. -/\n"
-        "def mixedBatches : List JBatch :=\n[" + bt + "]\n\n"
-        + "".join(boxdefs) + rg + "end Grothe.Lower\n")
+        "def mixedBatches : List JBatch :=\n[" + bt + "]\n\n" + bdefs + tdefs + "end Grothe.Lower\n")
 OUT.write_text(text)
-print("ok", json.dumps(dict(source=str(NEW), batches=len(batches), nodes=nnodes, spectral_nodes=nspec, regions=len(regions), caps=len(runs), boxes=nboxes, kinds=kinds,
-                            slab=[str(SLAB[0]), str(SLAB[1])], slab_max=float(worst), outer_max=float(outer), B=float(B),
-                            bytes=OUT.stat().st_size)))
+print("ok", json.dumps(dict(source=str(NEW), batches=len(batches), inherited=NINH, nodes=nnodes, spectral_nodes=nspec, covariance_nodes=ncov,
+                            meshes=sorted(meshes), boxes=len(boxes), kinds=kinds,
+                            cuts=len(tokens) - len(boxes), box_max=float(worst), B=float(B), lower=str(L), slack=str(1 - B * L), bytes=OUT.stat().st_size)))

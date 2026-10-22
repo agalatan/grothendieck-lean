@@ -4,19 +4,21 @@ import Grothe.LowerAnalytic.Rows
 /-!
 # The boxes of the common-law certificate
 
-The interval `[0, 9/10]` of `t` is covered by consecutive *regions*; each region `[t₋, t₊]` is
-partitioned dyadically into *boxes* `[t₋,t₊] × [τ₋,τ₊] × [x₋,x₊]` of `(t, τ, x)`
-(`coverOK`, `cover_sound`), and every box is bounded by `B`.  A box carries a fixed mixture
-`(1−θ, θ)` of two rows `i, j` and is bounded in one of two ways.
+The domain `[0, 9/10] × [0, ρ] × [0, 31/4]` of `(t, τ, x)` is partitioned into closed *boxes*
+`[t₋,t₊] × [τ₋,τ₊] × [x₋,x₊]`, certified by a tree of axis cuts (`partOK`, `partOK_sound`), and
+every box is bounded by `B`.  A box is bounded in one of two ways.
 
-* *Cap boxes* use only the certified caps of the rows (`RowBound`): each row, and the crude row
+* *Cap boxes* use only the certified caps of two rows (`RowBound`): each row, and the crude row
   `(0, 0, ερ²)`, gives the scalar inequality `V ≤ t² − 2ℓt + C − ε‖Qh + (β/ε)v‖²` (`RowOf`), and
   the mixture of two of them is a quadratic in `t` (`capVal`).
-* The other boxes use four certified `τ`-nodes: two enclosing `τ₋` and two enclosing `τ₊`, either
-  Stein nodes of the two source rows rescaled to `τ = σ/δ` (a *source box*) or new exact node
-  certificates of the mixed table (a *joint box*, or a *joint-mixture box* mixing two batches).
-  The chords at `τ₋`, `τ₊` give polynomials `L₋, L₊` in `x` with `E F_λ(τ±√U) − pad ≤ L±(x)`; by
-  convexity in `τ` and the fixed first gate coordinate,
+* The other boxes carry one *component*, or two components mixed with a weight before the gate
+  completion.  A component (`CompRef`) is a mixture `(1−θ, θ)` of two rows `i, j` (a single row is
+  `(i, i, 0)`) together with four certified `τ`-nodes of its potential (`NRef`, `nodeOf`): two
+  enclosing a scale `s₀` and two enclosing `s₁`, each a Stein node of a source row rescaled to
+  `τ = σ/δ`, the zero node of a row, or an exact node certificate of a batch for the same potential
+  (`samePot`).  The chords at `s₀`, `s₁` are chorded again at `τ₋`, `τ₊` (`rechord`, convexity in
+  `τ` twice), which gives polynomials `L₋, L₊` in `x` with `E F(τ±√U) − pad ≤ L±(x)`; with the
+  fixed first gate coordinate,
 
   `V ≤ max_t (t² − 2ℓ̄t) + 2β̄²/ε + max_{x̂} max_{τ∈[τ₋,τ₊]} [chord(L₋(x̂), L₊(x̂))(τ) − Dτ²] + pad`
 
@@ -97,15 +99,30 @@ def capVal (a b : EnvRow) (θ tl tu : ℚ) : ℚ :=
   quadMax ((1 - θ) * a.C + θ * b.C - 2 * (1 - θ) * θ * (a.beta - b.beta) ^ 2 / ε)
     (-2 * ((1 - θ) * a.ell + θ * b.ell)) 1 tl tu
 
-/-- The kind of a box: a cap box `(i, j, θ)` (scalar rows, `0` the crude row), a source box
-`(i, j, θ, refs of row i, refs of row j)`, a joint box `(batch, witness indices)`, or a
-joint-mixture box `(batch₀, batch₁, λ, indices₀, indices₁)` mixing two batches before the gate
-completion. -/
+/-- A reference to a certified `τ`-node: the zero node of row `i`, the Stein node `(cell, node)`
+of row `i` (rescaled to `τ = σ/δ`), or the witness `k` of batch `b`. -/
+inductive NRef where
+  | zero (i : ℕ)
+  | src (i ci ni : ℕ)
+  | bat (b k : ℕ)
+
+/-- A component: the mixture `(i, j, θ)` of two rows (a single row `i` is `(i, i, 0)`), the chord
+scales `s₀ ≤ s₁`, and four node references `[n₀, n₁, n₂, n₃]` with `τ(n₀) ≤ s₀ ≤ τ(n₁)` and
+`τ(n₂) ≤ s₁ ≤ τ(n₃)`. -/
+structure CompRef where
+  i : ℕ
+  j : ℕ
+  θ : ℚ
+  s0 : ℚ
+  s1 : ℚ
+  refs : List NRef
+
+/-- The kind of a box: a cap box `(i, j, θ)` (scalar rows, `0` the crude row), one component, or
+two components mixed with weight `θ` before the gate completion. -/
 inductive BoxKind where
   | cap (i j : ℕ) (θ : ℚ)
-  | src (i j : ℕ) (θ : ℚ) (ri rj : List (Option (ℕ × ℕ)))
-  | joint (b : ℕ) (ks : List ℕ)
-  | jmix (b0 b1 : ℕ) (lam : ℚ) (k0 k1 : List ℕ)
+  | one (c : CompRef)
+  | two (θ : ℚ) (c0 c1 : CompRef)
 
 structure Box where
   tl : ℚ
@@ -116,18 +133,27 @@ structure Box where
   xu : ℚ
   kind : BoxKind
 
-/-- Pairs `(cell, node)` from a flat integer list; a negative cell index is the zero node. -/
-def pairRefs : List ℤ → List (Option (ℕ × ℕ))
-  | a :: b :: r => (if a < 0 then none else some (a.toNat, b.toNat)) :: pairRefs r
-  | _ => []
+/-- `z,i`, `s,i,cell,node` or `b,batch,k`. -/
+def parseNRef (s : String) : NRef :=
+  match s.splitOn "," with
+  | ["z", i] => .zero i.toNat!
+  | ["s", i, c, n] => .src i.toNat! c.toNat! n.toNat!
+  | ["b", b, k] => .bat b.toNat! k.toNat!
+  | _ => .zero 0
 
-def parseRefs (s : String) : List (Option (ℕ × ℕ)) := pairRefs ((splitL s ",").map String.toInt!)
+/-- `i,j,θ,s₀,s₁;ref;ref;ref;ref`. -/
+def parseComp (s : String) : CompRef :=
+  match splitL s ";" with
+  | g :: refs =>
+    match g.splitOn "," with
+    | [i, j, θ, s0, s1] => ⟨i.toNat!, j.toNat!, parseQ θ, parseQ s0, parseQ s1, refs.map parseNRef⟩
+    | _ => ⟨0, 0, 0, 0, 0, []⟩
+  | [] => ⟨0, 0, 0, 0, 0, []⟩
 
-def dfltBox : Box := ⟨0, 0, 0, 0, 0, 0, .joint 0 []⟩
+def dfltBox : Box := ⟨0, 0, 0, 0, 0, 0, .one ⟨0, 0, 0, 0, 0, []⟩⟩
 
-/-- `c|tl,tu,sl,su,xl,xu|i,j,θ`, `s|tl,tu,sl,su,xl,xu|i,j,θ|refsᵢ|refsⱼ`,
-`j|tl,tu,sl,su,xl,xu|batch|k₀,k₁,k₂,k₃` or
-`m|tl,tu,sl,su,xl,xu|batch₀,batch₁,λ|k₀,k₁,k₂,k₃|k₀',k₁',k₂',k₃'`. -/
+/-- `c|tl,tu,sl,su,xl,xu|i,j,θ`, `b|tl,tu,sl,su,xl,xu|comp` or
+`m|tl,tu,sl,su,xl,xu|θ|comp₀|comp₁`. -/
 def parseBox (s : String) : Box :=
   match s.splitOn "|" with
   | ["c", bx, ij] =>
@@ -135,22 +161,15 @@ def parseBox (s : String) : Box :=
     | [tl, tu, sl, su, xl, xu], [i, j, θ] =>
       ⟨tl, tu, sl, su, xl, xu, .cap i.toNat! j.toNat! (parseQ θ)⟩
     | _, _ => dfltBox
-  | ["s", bx, ij, ri, rj] =>
-    match parseQs bx, ij.splitOn "," with
-    | [tl, tu, sl, su, xl, xu], [i, j, θ] =>
-      ⟨tl, tu, sl, su, xl, xu, .src i.toNat! j.toNat! (parseQ θ) (parseRefs ri) (parseRefs rj)⟩
-    | _, _ => dfltBox
-  | ["j", bx, b, ks] =>
+  | ["b", bx, c] =>
+    match parseQs bx with
+    | [tl, tu, sl, su, xl, xu] => ⟨tl, tu, sl, su, xl, xu, .one (parseComp c)⟩
+    | _ => dfltBox
+  | ["m", bx, θ, c0, c1] =>
     match parseQs bx with
     | [tl, tu, sl, su, xl, xu] =>
-      ⟨tl, tu, sl, su, xl, xu, .joint b.toNat! ((splitL ks ",").map String.toNat!)⟩
+      ⟨tl, tu, sl, su, xl, xu, .two (parseQ θ) (parseComp c0) (parseComp c1)⟩
     | _ => dfltBox
-  | ["m", bx, bb, k0, k1] =>
-    match parseQs bx, bb.splitOn "," with
-    | [tl, tu, sl, su, xl, xu], [b0, b1, lam] =>
-      ⟨tl, tu, sl, su, xl, xu, .jmix b0.toNat! b1.toNat! (parseQ lam)
-        ((splitL k0 ",").map String.toNat!) ((splitL k1 ",").map String.toNat!)⟩
-    | _, _ => dfltBox
   | _ => dfltBox
 
 /-- Resolve a list of references, all of which must succeed. -/
@@ -190,14 +209,52 @@ def chords4 (tns : List TNode) (sl su : ℚ) : Option (MPoly × MPoly) :=
     else none
   | _ => none
 
-/-- A *component* of a box: a virtual row with the chord polynomials at `sl` and `su` of four
-resolved `τ`-nodes. -/
-def compData {α : Type} (a : VRow) (f : α → Option TNode) (refs : List α) (sl su : ℚ) :
+/-- The chords at `s₀` and `s₁` of four `τ`-nodes `[n₀, n₁, n₂, n₃]`, as `τ`-nodes (each twice,
+for `chords4`). -/
+def rechord (tns : List TNode) (s0 s1 : ℚ) : Option (List TNode) :=
+  match tns with
+  | [n0, n1, n2, n3] =>
+    if tchordOK n0 n1 s0 && tchordOK n2 n3 s1 then
+      some [⟨s0, tchordP n0 n1 s0⟩, ⟨s1, tchordP n2 n3 s1⟩, ⟨s0, tchordP n0 n1 s0⟩,
+        ⟨s1, tchordP n2 n3 s1⟩]
+    else none
+  | _ => none
+
+/-- The potentials `(a, b, α)` and `(c, d, γ)` coincide: the same mixture, or both the single row
+`a = c` (`α = γ = 0`), or both the single row `b = d` (`α = γ = 1`). -/
+def samePot (a b : ℕ) (α : ℚ) (c d : ℕ) (γ : ℚ) : Bool :=
+  (a == c && b == d && α == γ) || (α == 0 && γ == 0 && a == c) || (α == 1 && γ == 1 && b == d)
+
+/-- The `τ`-node of a reference, provided its potential is that of the mixture `(i, j, θ)`. -/
+def nodeOf (rows : List Row) (batches : List JBatch) (i j : ℕ) (θ : ℚ) : NRef → Option TNode
+  | .zero r =>
+    if samePot r r 0 i j θ then
+      match rows[r]? with
+      | some R => rowTNode R none
+      | none => none
+    else none
+  | .src r ci ni =>
+    if samePot r r 0 i j θ then
+      match rows[r]? with
+      | some R => rowTNode R (some (ci, ni))
+      | none => none
+    else none
+  | .bat b k =>
+    match batches[b]? with
+    | some bt => if samePot bt.i bt.j bt.θ i j θ then bt.tnodes[k]? else none
+    | none => none
+
+/-- A *component* of a box: a virtual row with the chord polynomials at `sl` and `su`, from four
+resolved `τ`-nodes chorded at `s₀`, `s₁` and chorded again at `sl`, `su`. -/
+def compData {α : Type} (a : VRow) (f : α → Option TNode) (refs : List α) (s0 s1 sl su : ℚ) :
     Option (VRow × MPoly × MPoly) :=
   match resolve f refs with
   | some ns =>
-    match chords4 ns sl su with
-    | some (Lm, Lp) => some (a, Lm, Lp)
+    match rechord ns s0 s1 with
+    | some ms =>
+      match chords4 ms sl su with
+      | some (Lm, Lp) => some (a, Lm, Lp)
+      | none => none
     | none => none
   | none => none
 
@@ -210,33 +267,24 @@ def mixData (θ : ℚ) : Option (VRow × MPoly × MPoly) → Option (VRow × MPo
     else none
   | _, _ => none
 
-/-- The component of a batch: the mixed virtual row and the batch's `τ`-nodes. -/
-def batchData (rows : List Row) (bt : JBatch) (ks : List ℕ) (sl su : ℚ) :
+/-- The component of a `CompRef`: the mixed virtual row of its rows and its nodes. -/
+def compRefData (rows : List Row) (batches : List JBatch) (c : CompRef) (sl su : ℚ) :
     Option (VRow × MPoly × MPoly) :=
-  match rows[bt.i]?, rows[bt.j]? with
+  match rows[c.i]?, rows[c.j]? with
   | some Ri, some Rj =>
-    compData (VRow.mix bt.θ Ri.vrow Rj.vrow) (fun k => bt.tnodes[k]?) ks sl su
+    if 0 ≤ c.θ ∧ c.θ ≤ 1 then
+      compData (VRow.mix c.θ Ri.vrow Rj.vrow) (nodeOf rows batches c.i c.j c.θ) c.refs c.s0 c.s1
+        sl su
+    else none
   | _, _ => none
 
 /-- The component of a box that is not a cap box. -/
 def boxData (rows : List Row) (batches : List JBatch) (b : Box) : Option (VRow × MPoly × MPoly) :=
   match b.kind with
   | .cap _ _ _ => none
-  | .src i j θ ri rj =>
-    match rows[i]?, rows[j]? with
-    | some Ri, some Rj =>
-      mixData θ (compData Ri.vrow (rowTNode Ri) ri b.sl b.su)
-        (compData Rj.vrow (rowTNode Rj) rj b.sl b.su)
-    | _, _ => none
-  | .joint bi ks =>
-    match batches[bi]? with
-    | some bt => batchData rows bt ks b.sl b.su
-    | none => none
-  | .jmix b0 b1 lam k0 k1 =>
-    match batches[b0]?, batches[b1]? with
-    | some bt0, some bt1 =>
-      mixData lam (batchData rows bt0 k0 b.sl b.su) (batchData rows bt1 k1 b.sl b.su)
-    | _, _ => none
+  | .one c => compRefData rows batches c b.sl b.su
+  | .two θ c0 c1 =>
+    mixData θ (compRefData rows batches c0 b.sl b.su) (compRefData rows batches c1 b.sl b.su)
 
 /-- The bound of a box from the rows and the batches (`none` if the data are inconsistent). -/
 def boxBound (rows : List Row) (batches : List JBatch) (b : Box) : Option ℚ :=
@@ -294,23 +342,23 @@ def Dom.mem (d : Dom) (t τ x : ℝ) : Prop :=
   (d.1 : ℝ) ≤ t ∧ t ≤ d.2.1 ∧ (d.2.2.1 : ℝ) ≤ τ ∧ τ ≤ d.2.2.2.1 ∧ (d.2.2.2.2.1 : ℝ) ≤ x ∧
     x ≤ d.2.2.2.2.2
 
-/-- Split along axis `k` at its midpoint: no box straddles the midpoint, both halves are
-nonempty, and both halves are covered recursively. -/
-def splitAxis (rec : Dom → List Dom → Bool) (d : Dom) (bs : List Dom) (k : ℕ) : Bool :=
-  let mid := (d.lo k + d.hi k) / 2
-  !(bs.any fun b => decide (b.lo k < mid) && decide (mid < b.hi k)) &&
-  (let L := bs.filter fun b => decide (b.hi k ≤ mid)
-   let R := bs.filter fun b => decide (mid ≤ b.lo k)
-   !L.isEmpty && !R.isEmpty && rec (d.left k mid) L && rec (d.right k mid) R)
+/-- A partition certificate: a leaf (one box, the domain itself), or a cut of axis `k` at `mid`
+with the certificates of the two halves. -/
+inductive PTree where
+  | leaf
+  | cut (k : ℕ) (mid : ℚ) (L R : PTree)
 
-/-- The dyadic partition check. -/
-def coverOK : ℕ → Dom → List Dom → Bool
-  | 0, _, _ => false
-  | f + 1, d, bs =>
+/-- The partition check: at a leaf the boxes are exactly the domain; at a cut no box straddles
+`mid`, and the boxes on each side partition that half of the domain. -/
+def partOK : PTree → Dom → List Dom → Bool
+  | .leaf, d, bs =>
     match bs with
     | [b] => b == d
-    | _ => splitAxis (coverOK f) d bs 0 || splitAxis (coverOK f) d bs 1 ||
-        splitAxis (coverOK f) d bs 2
+    | _ => false
+  | .cut k mid L R, d, bs =>
+    !(bs.any fun b => decide (b.lo k < mid) && decide (mid < b.hi k)) &&
+    partOK L (d.left k mid) (bs.filter fun b => decide (b.hi k ≤ mid)) &&
+    partOK R (d.right k mid) (bs.filter fun b => decide (mid ≤ b.lo k))
 
 lemma mem_left_or_right (d : Dom) (k : ℕ) (mid : ℚ) (t τ x : ℝ) (h : d.mem t τ x) :
     (d.left k mid).mem t τ x ∨ (d.right k mid).mem t τ x := by
@@ -329,71 +377,69 @@ lemma mem_left_or_right (d : Dom) (k : ℕ) (mid : ℚ) (t τ x : ℝ) (h : d.me
     · exact Or.inl ⟨h1, h2, h3, h4, h5, ht⟩
     · exact Or.inr ⟨h1, h2, h3, h4, le_of_lt (not_le.1 ht), h6⟩
 
-lemma splitAxis_sound (rec : Dom → List Dom → Bool)
-    (hrec : ∀ d bs, rec d bs = true → ∀ t τ x : ℝ, d.mem t τ x → ∃ b ∈ bs, b.mem t τ x)
-    (d : Dom) (bs : List Dom) (k : ℕ) (h : splitAxis rec d bs k = true) (t τ x : ℝ)
-    (hm : d.mem t τ x) : ∃ b ∈ bs, b.mem t τ x := by
-  simp only [splitAxis, Bool.and_eq_true, Bool.not_eq_true', List.isEmpty_eq_false_iff] at h
-  obtain ⟨_, ⟨⟨_, _⟩, hL⟩, hR⟩ := h
-  rcases mem_left_or_right d k _ t τ x hm with hl | hr
-  · obtain ⟨b, hb, hbm⟩ := hrec _ _ hL t τ x hl
-    exact ⟨b, (List.mem_filter.1 hb).1, hbm⟩
-  · obtain ⟨b, hb, hbm⟩ := hrec _ _ hR t τ x hr
-    exact ⟨b, (List.mem_filter.1 hb).1, hbm⟩
-
-/-- **Soundness of the coverage check**: every point of the domain lies in a box. -/
-theorem coverOK_sound : ∀ (f : ℕ) (d : Dom) (bs : List Dom), coverOK f d bs = true →
+/-- **Soundness of the partition check**: every point of the domain lies in a box. -/
+theorem partOK_sound : ∀ (T : PTree) (d : Dom) (bs : List Dom), partOK T d bs = true →
     ∀ t τ x : ℝ, d.mem t τ x → ∃ b ∈ bs, b.mem t τ x
-  | 0, _, _, h => by simp [coverOK] at h
-  | f + 1, d, bs, h => by
+  | .leaf, d, bs, h => by
     intro t τ x hm
     match bs, h with
     | [b], h =>
-      simp only [coverOK, beq_iff_eq] at h
+      simp only [partOK, beq_iff_eq] at h
       exact ⟨b, List.mem_singleton_self b, h ▸ hm⟩
-    | [], h => simp [coverOK, splitAxis] at h
-    | b :: b' :: rest, h =>
-      simp only [coverOK, Bool.or_eq_true] at h
-      rcases h with (h | h) | h <;>
-        exact splitAxis_sound (coverOK f) (coverOK_sound f) d (b :: b' :: rest) _ h t τ x hm
+    | [], h => simp [partOK] at h
+    | _ :: _ :: _, h => simp [partOK] at h
+  | .cut k mid L R, d, bs, h => by
+    intro t τ x hm
+    simp only [partOK, Bool.and_eq_true] at h
+    obtain ⟨⟨-, hL⟩, hR⟩ := h
+    rcases mem_left_or_right d k mid t τ x hm with hl | hr
+    · obtain ⟨b, hb, hbm⟩ := partOK_sound L _ _ hL t τ x hl
+      exact ⟨b, (List.mem_filter.1 hb).1, hbm⟩
+    · obtain ⟨b, hb, hbm⟩ := partOK_sound R _ _ hR t τ x hr
+      exact ⟨b, (List.mem_filter.1 hb).1, hbm⟩
 
+/-- Parse a certificate in preorder: a leaf `.`, or a cut `k,mid` followed by its two subtrees. -/
+def parseTree : ℕ → List String → Option (PTree × List String)
+  | 0, _ => none
+  | _ + 1, [] => none
+  | f + 1, tok :: rest =>
+    if tok = "." then some (.leaf, rest)
+    else
+      match tok.splitOn "," with
+      | [k, m] =>
+        match parseTree f rest with
+        | some (L, rest1) =>
+          match parseTree f rest1 with
+          | some (R, rest2) => some (.cut k.toNat! (parseQ m) L R, rest2)
+          | none => none
+        | none => none
+      | _ => none
 
-/-! ### Regions -/
+/-- The certificate of a token list (a bare leaf if malformed). -/
+def treeOf (toks : List String) : PTree :=
+  match parseTree (toks.length + 1) toks with
+  | some (T, []) => T
+  | _ => .leaf
 
-/-- A region `[lo, hi]` of `t` with its boxes. -/
-structure Region where
-  lo : ℚ
-  hi : ℚ
-  boxes : List String
-
-/-- The boxes of a region are bounded by `bound` (in parallel) and form a dyadic partition of
-`[lo, hi] × [0, ρ] × [0, 31/4]`. -/
-def checkRegion (rows : List Row) (batches : List JBatch) (bound : ℚ) (r : Region) : Bool :=
-  let bs := r.boxes.map parseBox
-  allPar (boxOK rows batches bound) bs &&
-    coverOK (bs.length + 1) (r.lo, r.hi, 0, ρ, 0, xMax) (bs.map Box.dom)
-
-/-- The regions are consecutive, cover `[0, 9/10]`, and are checked. -/
-def checkCover (rows : List Row) (batches : List JBatch) (bound : ℚ) (regs : List Region) :
+/-- The boxes are bounded by `bound` (in parallel) and partition `[0, 9/10] × [0, ρ] × [0, 31/4]`
+according to the certificate `cuts`. -/
+def checkCover (rows : List Row) (batches : List JBatch) (bound : ℚ) (cuts boxes : List String) :
     Bool :=
-  chainTo Region.lo Region.hi 0 (9 / 10) regs && regs.all (checkRegion rows batches bound)
+  let bs := boxes.map parseBox
+  allPar (boxOK rows batches bound) bs &&
+    partOK (treeOf cuts) (0, 9 / 10, 0, ρ, 0, xMax) (bs.map Box.dom)
 
 /-- **Soundness of the cover**: every admissible `(t, τ, x)` lies in a checked box. -/
-theorem cover_sound (rows : List Row) (batches : List JBatch) (bound : ℚ) (regs : List Region)
-    (h : checkCover rows batches bound regs = true) (t τ x : ℝ) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
-    (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ ρ) (hx0 : 0 ≤ x) (hx1 : x ≤ xMax) :
+theorem cover_sound (rows : List Row) (batches : List JBatch) (bound : ℚ)
+    (cuts boxes : List String) (h : checkCover rows batches bound cuts boxes = true) (t τ x : ℝ)
+    (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10) (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ ρ) (hx0 : 0 ≤ x) (hx1 : x ≤ xMax) :
     ∃ b : Box, boxOK rows batches bound b = true ∧ (b.tl : ℝ) ≤ t ∧ t ≤ b.tu ∧ (b.sl : ℝ) ≤ τ ∧
       τ ≤ b.su ∧ (b.xl : ℝ) ≤ x ∧ x ≤ b.xu := by
-  simp only [checkCover, Bool.and_eq_true, List.all_eq_true] at h
-  obtain ⟨r, hr, hlo, hhi⟩ :=
-    chainTo_sound Region.lo Region.hi regs 0 (9 / 10) h.1 t (by simpa using ht0)
-      (by norm_num at ht1 ⊢; exact ht1)
-  have hreg := h.2 r hr
-  simp only [checkRegion, allPar_eq, Bool.and_eq_true, List.all_eq_true] at hreg
-  obtain ⟨d, hd, hdm⟩ := coverOK_sound _ _ _ hreg.2 t τ x
-    ⟨hlo, hhi, by simpa using hτ0, hτ1, by simpa using hx0, hx1⟩
+  simp only [checkCover, allPar_eq, Bool.and_eq_true, List.all_eq_true] at h
+  obtain ⟨d, hd, hdm⟩ := partOK_sound _ _ _ h.2 t τ x
+    ⟨by simpa using ht0, by push_cast; exact ht1, by simpa using hτ0, hτ1, by simpa using hx0, hx1⟩
   obtain ⟨b, hb, rfl⟩ := List.mem_map.1 hd
-  exact ⟨b, hreg.1 b hb, hdm⟩
+  exact ⟨b, h.1 b hb, hdm⟩
 
 /-! ### Soundness of the box bound -/
 
@@ -439,17 +485,22 @@ variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasu
 def RowOf (row : EnvRow) (V t : ℝ) (Qh v : E) : Prop :=
   RowHolds (ε : ℝ) row.ell row.beta row.C V t Qh v
 
-/-- The data of one row in the shared reduction: a potential with the node caps of the row (up to
-`capPad`), integrable at the common scale, the integrable gate expression of the common gate
-variable, and the row inequality with the retained gate square. -/
-def RowShared (r : Row) (μ : Measure Ω) (U : Ω → ℝ) (X1 X2 X3 : Ω → ℂ) (τ V t : ℝ)
-    (Qh v : E) : Prop :=
-  ∃ Ψ : ℝ → ℝ, CapsHold (fun s => Ψ s - capPad) r.nodeList r.smax ∧
+/-- The data of one row in the shared reduction with the potential `Ψ`: the node caps of the row
+(up to `capPad`), integrability at the common scale, the integrable gate expression of the common
+gate variable, and the row inequality with the retained gate square. -/
+def RowSharedWith (r : Row) (Ψ : ℝ → ℝ) (μ : Measure Ω) (U : Ω → ℝ) (X1 X2 X3 : Ω → ℂ)
+    (τ V t : ℝ) (Qh v : E) : Prop :=
+  CapsHold (fun s => Ψ s - capPad) r.nodeList r.smax ∧
     Integrable (fun ω => Ψ (r.delta * τ * √(U ω))) μ ∧
     Integrable (fun ω => r.gate (X1 ω) (X2 ω) (X3 ω)) μ ∧
     V ≤ t ^ 2 - 2 * r.ell * t + 2 * r.beta ^ 2 / ε + ∫ ω, Ψ (r.delta * τ * √(U ω)) ∂μ
       - r.delta * τ ^ 2 - ∫ ω, r.gate (X1 ω) (X2 ω) (X3 ω) ∂μ
       - ε * ‖Qh + ((r.beta : ℝ) / ε) • v‖ ^ 2
+
+/-- The data of one row in the shared reduction, for some potential (`RowSharedWith`). -/
+def RowShared (r : Row) (μ : Measure Ω) (U : Ω → ℝ) (X1 X2 X3 : Ω → ℂ) (τ V t : ℝ)
+    (Qh v : E) : Prop :=
+  ∃ Ψ : ℝ → ℝ, RowSharedWith r Ψ μ U X1 X2 X3 τ V t Qh v
 
 /-- The inequality of a virtual row with the padded potential `Φ` (`E Φ(τ√U) + capPad` is the
 mixed `E Ψ`), its gate square retained. -/
@@ -461,12 +512,11 @@ def VHolds (a : VRow) (Φ : ℝ → ℝ) (μ : Measure Ω) (U : Ω → ℝ) (X1 
     - a.delta * τ ^ 2 - ∫ ω, a.gate (X1 ω) (X2 ω) (X3 ω) ∂μ) V t Qh v
 
 /-- A row of the shared reduction is a virtual row with potential `s ↦ Ψ(δs) − capPad`. -/
-lemma vholds_of_row (r : Row) {X1 X2 X3 : Ω → ℂ} {τ V t : ℝ} {Qh v : E}
-    (h : RowShared r μ U X1 X2 X3 τ V t Qh v) :
-    ∃ Ψ : ℝ → ℝ, CapsHold (fun s => Ψ s - capPad) r.nodeList r.smax ∧
-      VHolds r.vrow (fun s => Ψ (r.delta * s) - capPad) μ U X1 X2 X3 τ V t Qh v := by
-  obtain ⟨Ψ, hΨ, hf, hg, hV⟩ := h
-  refine ⟨Ψ, hΨ, ?_, hg, ?_⟩
+lemma vholds_of_row (r : Row) {Ψ : ℝ → ℝ} {X1 X2 X3 : Ω → ℂ} {τ V t : ℝ} {Qh v : E}
+    (h : RowSharedWith r Ψ μ U X1 X2 X3 τ V t Qh v) :
+    VHolds r.vrow (fun s => Ψ (r.delta * s) - capPad) μ U X1 X2 X3 τ V t Qh v := by
+  obtain ⟨-, hf, hg, hV⟩ := h
+  refine ⟨?_, hg, ?_⟩
   · simp only [← mul_assoc]
     exact hf.sub (integrable_const _)
   simp only [RowHolds, ← mul_assoc]
@@ -562,11 +612,108 @@ lemma chords4_some (tns : List TNode) (sl su : ℚ) (Pm Pp : MPoly)
   | [_, _, _], h => simp [chords4] at h
   | _ :: _ :: _ :: _ :: _ :: _, h => simp [chords4] at h
 
+/-- The mixed potential of a single row. -/
+lemma mixPot_zero (ri rj : Row) (Ψi Ψj : ℝ → ℝ) :
+    mixPot ri rj 0 Ψi Ψj = fun s => Ψi (ri.delta * s) - capPad := by
+  funext s; simp [mixPot]
+
+lemma mixPot_one (ri rj : Row) (Ψi Ψj : ℝ → ℝ) :
+    mixPot ri rj 1 Ψi Ψj = fun s => Ψj (rj.delta * s) - capPad := by
+  funext s; simp [mixPot]
+
+/-- Potentials identified by `samePot` coincide. -/
+lemma samePot_sound (rows : List Row) (Ψ : Row → ℝ → ℝ) {a b c d : ℕ} {α γ : ℚ}
+    (h : samePot a b α c d γ = true) {Ra Rb Rc Rd : Row} (ha : rows[a]? = some Ra)
+    (hb : rows[b]? = some Rb) (hc : rows[c]? = some Rc) (hd : rows[d]? = some Rd) :
+    mixPot Ra Rb α (Ψ Ra) (Ψ Rb) = mixPot Rc Rd γ (Ψ Rc) (Ψ Rd) := by
+  simp only [samePot, Bool.or_eq_true, Bool.and_eq_true, beq_iff_eq] at h
+  rcases h with (⟨⟨hac, hbd⟩, hag⟩ | ⟨⟨ha0, hg0⟩, hac⟩) | ⟨⟨ha1, hg1⟩, hbd⟩
+  · subst hac hbd hag; rw [ha] at hc; rw [hb] at hd; cases hc; cases hd; rfl
+  · subst ha0 hg0 hac; rw [ha] at hc; cases hc; rw [mixPot_zero, mixPot_zero]
+  · subst ha1 hg1 hbd; rw [hb] at hd; cases hd; rw [mixPot_one, mixPot_one]
+
 section data
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ] {U : Ω → ℝ}
   {x : ℝ}
+
+omit [IsProbabilityMeasure μ] in
+lemma TNodeOK.congr {Φ Φ' : ℝ → ℝ} (e : Φ = Φ') {n : TNode} (h : TNodeOK μ U x Φ n) :
+    TNodeOK μ U x Φ' n := e ▸ h
+
+/-- **The nodes of a component are certified** for the mixed potential of its rows: a Stein or
+zero node of a row, or a witness of a batch, each for the same potential. -/
+lemma nodeOf_sound (rows : List Row) (batches : List JBatch)
+    (hrows : ∀ r ∈ rows, checkRow r = true) (hbatches : ∀ b ∈ batches, checkBatch rows b = true)
+    (Ψ : Row → ℝ → ℝ) (hΨ : ∀ r ∈ rows, CapsHold (fun s => Ψ r s - capPad) r.nodeList r.smax)
+    (hM : Moments μ U x) (hS : SteinCut μ U) (i j : ℕ) (θ : ℚ) {Ri Rj : Row}
+    (hRi : rows[i]? = some Ri) (hRj : rows[j]? = some Rj) (ref : NRef) (n : TNode)
+    (h : nodeOf rows batches i j θ ref = some n) :
+    TNodeOK μ U x (mixPot Ri Rj θ (Ψ Ri) (Ψ Rj)) n := by
+  cases ref with
+  | zero r =>
+    simp only [nodeOf] at h
+    split_ifs at h with hsp
+    cases hR : rows[r]? with
+    | none => simp [hR] at h
+    | some R =>
+      simp only [hR] at h
+      have hm := List.mem_of_getElem? hR
+      exact (rowTNode_sound R (hrows R hm) (hΨ R hm) hM hS none n h).congr
+        ((mixPot_zero R R (Ψ R) (Ψ R)).symm.trans (samePot_sound rows Ψ hsp hR hR hRi hRj))
+  | src r ci ni =>
+    simp only [nodeOf] at h
+    split_ifs at h with hsp
+    cases hR : rows[r]? with
+    | none => simp [hR] at h
+    | some R =>
+      simp only [hR] at h
+      have hm := List.mem_of_getElem? hR
+      exact (rowTNode_sound R (hrows R hm) (hΨ R hm) hM hS (some (ci, ni)) n h).congr
+        ((mixPot_zero R R (Ψ R) (Ψ R)).symm.trans (samePot_sound rows Ψ hsp hR hR hRi hRj))
+  | bat b k =>
+    simp only [nodeOf] at h
+    cases hbt : batches[b]? with
+    | none => simp [hbt] at h
+    | some bt =>
+      simp only [hbt] at h
+      split_ifs at h with hsp
+      have hb := hbatches bt (List.mem_of_getElem? hbt)
+      cases hRa : rows[bt.i]? with
+      | none => simp [checkBatch, hRa] at hb
+      | some Ra =>
+      cases hRb : rows[bt.j]? with
+      | none => simp [checkBatch, hRa, hRb] at hb
+      | some Rb =>
+      exact (batch_sound rows bt hb Ra Rb hRa hRb (hΨ Ra (List.mem_of_getElem? hRa))
+        (hΨ Rb (List.mem_of_getElem? hRb)) hM hS n (List.mem_of_getElem? h)).congr
+        (samePot_sound rows Ψ hsp hRa hRb hRi hRj)
+
+omit [IsProbabilityMeasure μ] in
+/-- The chords at `s₀`, `s₁` of certified nodes of a convex potential are certified nodes. -/
+lemma rechord_sound {Φ : ℝ → ℝ} (hconv : ConvexOn ℝ (Set.Ici 0) Φ) (ns ms : List TNode)
+    (s0 s1 : ℚ) (h : rechord ns s0 s1 = some ms) (hok : ∀ n ∈ ns, TNodeOK μ U x Φ n) :
+    ∀ m ∈ ms, TNodeOK μ U x Φ m := by
+  match ns, h with
+  | [n0, n1, n2, n3], h =>
+    simp only [rechord] at h
+    split_ifs at h with hc
+    simp only [Option.some.injEq] at h
+    subst h
+    simp only [Bool.and_eq_true] at hc
+    have h0 : TNodeOK μ U x Φ ⟨s0, tchordP n0 n1 s0⟩ :=
+      tchord_sound hconv n0 n1 s0 hc.1 (hok n0 (by simp)) (hok n1 (by simp))
+    have h1 : TNodeOK μ U x Φ ⟨s1, tchordP n2 n3 s1⟩ :=
+      tchord_sound hconv n2 n3 s1 hc.2 (hok n2 (by simp)) (hok n3 (by simp))
+    intro m hm
+    simp only [List.mem_cons, List.not_mem_nil, or_false] at hm
+    rcases hm with rfl | rfl | rfl | rfl <;> assumption
+  | [], h => simp [rechord] at h
+  | [_], h => simp [rechord] at h
+  | [_, _], h => simp [rechord] at h
+  | [_, _, _], h => simp [rechord] at h
+  | _ :: _ :: _ :: _ :: _ :: _, h => simp [rechord] at h
 
 /-- A certified component: a convex potential `Φ` for which the virtual row `a` holds and
 `L₋`, `L₊` bound `E Φ(τ√U)` at `sl` and `su`. -/
@@ -579,26 +726,30 @@ variable {X1 X2 X3 : Ω → ℂ} {τ V t : ℝ} {Qh v : E} {sl su : ℚ}
 
 omit [IsProbabilityMeasure μ] in
 /-- A component from certified `τ`-nodes of a convex potential of the virtual row. -/
-lemma compData_sound {α : Type} (a : VRow) (f : α → Option TNode) (refs : List α) {Φ : ℝ → ℝ}
-    (hconv : ConvexOn ℝ (Set.Ici 0) Φ) (hV : VHolds a Φ μ U X1 X2 X3 τ V t Qh v)
+lemma compData_sound {α : Type} (a : VRow) (f : α → Option TNode) (refs : List α) (s0 s1 : ℚ)
+    {Φ : ℝ → ℝ} (hconv : ConvexOn ℝ (Set.Ici 0) Φ) (hV : VHolds a Φ μ U X1 X2 X3 τ V t Qh v)
     (hf : ∀ r n, f r = some n → TNodeOK μ U x Φ n) (d : VRow × MPoly × MPoly)
-    (h : compData a f refs sl su = some d) : Comp μ U x X1 X2 X3 τ V t Qh v sl su d := by
+    (h : compData a f refs s0 s1 sl su = some d) : Comp μ U x X1 X2 X3 τ V t Qh v sl su d := by
   unfold compData at h
   cases hns : resolve f refs with
   | none => simp [hns] at h
   | some ns =>
-  cases hch : chords4 ns sl su with
-  | none => simp [hns, hch] at h
+  cases hms : rechord ns s0 s1 with
+  | none => simp [hns, hms] at h
+  | some ms =>
+  cases hch : chords4 ms sl su with
+  | none => simp [hns, hms, hch] at h
   | some P =>
   obtain ⟨Lm, Lp⟩ := P
-  simp only [hns, hch, Option.some.injEq] at h
+  simp only [hns, hms, hch, Option.some.injEq] at h
   subst h
   have hok : ∀ n ∈ ns, TNodeOK μ U x Φ n := fun n hn => by
     obtain ⟨r, _, hr⟩ := resolve_mem f refs ns hns n hn
     exact hf r n hr
+  have hok' := rechord_sound hconv ns ms s0 s1 hms hok
   obtain ⟨n0, n1, n2, n3, rfl, h01, h23, rfl, rfl⟩ := chords4_some _ sl su Lm Lp hch
-  exact ⟨Φ, hconv, hV, tchord_sound hconv n0 n1 sl h01 (hok n0 (by simp)) (hok n1 (by simp)),
-    tchord_sound hconv n2 n3 su h23 (hok n2 (by simp)) (hok n3 (by simp))⟩
+  exact ⟨Φ, hconv, hV, tchord_sound hconv n0 n1 sl h01 (hok' n0 (by simp)) (hok' n1 (by simp)),
+    tchord_sound hconv n2 n3 su h23 (hok' n2 (by simp)) (hok' n3 (by simp))⟩
 
 omit [IsProbabilityMeasure μ] in
 /-- The mixture of two certified components is certified. -/
@@ -629,56 +780,47 @@ lemma mixData_sound (θ : ℚ) (hv : ‖v‖ ^ 2 = 2) (d0 d1 : Option (VRow × M
   | none, _, h => simp [mixData] at h
   | some _, none, h => simp [mixData] at h
 
-/-- The component of a source row. -/
-lemma src_sound (R : Row) (hR : checkRow R = true) (hM : Moments μ U x) (hS : SteinCut μ U)
-    (hred : RowShared R μ U X1 X2 X3 τ V t Qh v) (refs : List (Option (ℕ × ℕ)))
-    (d : VRow × MPoly × MPoly) (h : compData R.vrow (rowTNode R) refs sl su = some d) :
+/-- **The component of a `CompRef`**: the mixed virtual row of its rows holds with the mixed
+potential, whose certified nodes are those referenced. -/
+lemma compRef_sound (rows : List Row) (batches : List JBatch)
+    (hrows : ∀ r ∈ rows, checkRow r = true) (hbatches : ∀ b ∈ batches, checkBatch rows b = true)
+    (Ψ : Row → ℝ → ℝ) (hΨ : ∀ r ∈ rows, RowSharedWith r (Ψ r) μ U X1 X2 X3 τ V t Qh v)
+    (hM : Moments μ U x) (hS : SteinCut μ U) (hv : ‖v‖ ^ 2 = 2) (c : CompRef)
+    (d : VRow × MPoly × MPoly) (h : compRefData rows batches c sl su = some d) :
     Comp μ U x X1 X2 X3 τ V t Qh v sl su d := by
-  obtain ⟨Ψ, hΨ, hV⟩ := vholds_of_row R hred
-  have hδ : (0 : ℝ) ≤ R.delta := by exact_mod_cast (checkRow_node R hR).1.le
-  exact compData_sound _ _ refs (convexOn_scale hΨ.convex _ hδ) hV
-    (fun ref n hn => rowTNode_sound R hR hΨ hM hS ref n hn) d h
-
-/-- **The component of a batch**: the virtual row of the batch holds with the mixed potential,
-whose `τ`-nodes are the batch's certified nodes. -/
-lemma batchData_sound (rows : List Row) (hrows : ∀ r ∈ rows, checkRow r = true) (bt : JBatch)
-    (hbt : checkBatch rows bt = true) (ks : List ℕ) (hM : Moments μ U x) (hS : SteinCut μ U)
-    (hv : ‖v‖ ^ 2 = 2) (hred : ∀ r ∈ rows, RowShared r μ U X1 X2 X3 τ V t Qh v)
-    (d : VRow × MPoly × MPoly) (h : batchData rows bt ks sl su = some d) :
-    Comp μ U x X1 X2 X3 τ V t Qh v sl su d := by
-  unfold batchData at h
-  cases hRi : rows[bt.i]? with
+  unfold compRefData at h
+  cases hRi : rows[c.i]? with
   | none => simp [hRi] at h
   | some Ri =>
-  cases hRj : rows[bt.j]? with
+  cases hRj : rows[c.j]? with
   | none => simp [hRi, hRj] at h
   | some Rj =>
   simp only [hRi, hRj] at h
-  obtain ⟨Ψi, hΨi, hVi⟩ := vholds_of_row Ri (hred Ri (List.mem_of_getElem? hRi))
-  obtain ⟨Ψj, hΨj, hVj⟩ := vholds_of_row Rj (hred Rj (List.mem_of_getElem? hRj))
-  have hθ : 0 ≤ bt.θ ∧ bt.θ ≤ 1 := by
-    simp only [checkBatch, hRi, hRj, checkMixTable, Bool.and_eq_true, decide_eq_true_eq] at hbt
-    exact ⟨hbt.1.1.1.1.1.1.1.1.1.1.1, hbt.1.1.1.1.1.1.1.1.1.1.2⟩
-  have hθ0R : (0 : ℝ) ≤ bt.θ := by exact_mod_cast hθ.1
-  have hw0 : (0 : ℝ) ≤ 1 - bt.θ := by
-    have : (bt.θ : ℝ) ≤ 1 := by exact_mod_cast hθ.2
+  split_ifs at h with hθ
+  have mi := List.mem_of_getElem? hRi
+  have mj := List.mem_of_getElem? hRj
+  have hcaps : ∀ r ∈ rows, CapsHold (fun s => Ψ r s - capPad) r.nodeList r.smax :=
+    fun r hr => (hΨ r hr).1
+  have hθ0R : (0 : ℝ) ≤ c.θ := by exact_mod_cast hθ.1
+  have hw0 : (0 : ℝ) ≤ 1 - c.θ := by
+    have : (c.θ : ℝ) ≤ 1 := by exact_mod_cast hθ.2
     linarith
-  have hδi : (0 : ℝ) ≤ Ri.delta :=
-    by exact_mod_cast (checkRow_node Ri (hrows Ri (List.mem_of_getElem? hRi))).1.le
-  have hδj : (0 : ℝ) ≤ Rj.delta :=
-    by exact_mod_cast (checkRow_node Rj (hrows Rj (List.mem_of_getElem? hRj))).1.le
-  have hok := batch_sound rows bt hbt Ri Rj hRi hRj hΨi hΨj hM hS
-  exact compData_sound _ _ ks
-    (convexOn_mix (convexOn_scale hΨi.convex _ hδi) (convexOn_scale hΨj.convex _ hδj) _ _ hw0
-      hθ0R) (VHolds.mix bt.θ hθ.1 hθ.2 hv hVi hVj)
-    (fun k n hk => hok n (List.mem_of_getElem? hk)) d h
+  have hδi : (0 : ℝ) ≤ Ri.delta := by exact_mod_cast (checkRow_node Ri (hrows Ri mi)).1.le
+  have hδj : (0 : ℝ) ≤ Rj.delta := by exact_mod_cast (checkRow_node Rj (hrows Rj mj)).1.le
+  exact compData_sound _ _ c.refs c.s0 c.s1
+    (convexOn_mix (convexOn_scale (hcaps Ri mi).convex _ hδi)
+      (convexOn_scale (hcaps Rj mj).convex _ hδj) _ _ hw0 hθ0R)
+    (VHolds.mix c.θ hθ.1 hθ.2 hv (vholds_of_row Ri (hΨ Ri mi)) (vholds_of_row Rj (hΨ Rj mj)))
+    (fun ref n hn => nodeOf_sound rows batches hrows hbatches Ψ hcaps hM hS c.i c.j c.θ hRi hRj
+      ref n hn) d h
 
 /-- **Soundness of a box**: `V ≤ val` for every `(t, τ, x)` in the box. -/
 theorem box_sound (rows : List Row) (batches : List JBatch)
     (hrows : ∀ r ∈ rows, checkRow r = true) (hbatches : ∀ b ∈ batches, checkBatch rows b = true)
     (b : Box) (val : ℚ) (hb : boxBound rows batches b = some val) (X1 X2 X3 : Ω → ℂ) (τ : ℝ)
     (hX : ∀ ω, ‖X1 ω‖ ^ 2 = τ ^ 2 * U ω) (hM : Moments μ U x) (hS : SteinCut μ U) (V t : ℝ)
-    (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (hred : ∀ r ∈ rows, RowShared r μ U X1 X2 X3 τ V t Qh v)
+    (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (Ψ : Row → ℝ → ℝ)
+    (hΨ : ∀ r ∈ rows, RowSharedWith r (Ψ r) μ U X1 X2 X3 τ V t Qh v)
     (hscal : ∀ k a, envRowAt rows k = some a → RowOf a V t Qh v)
     (ht : (b.tl : ℝ) ≤ t ∧ t ≤ b.tu) (hτ : (b.sl : ℝ) ≤ τ ∧ τ ≤ b.su)
     (hx : (b.xl : ℝ) ≤ x ∧ x ≤ b.xu) : V ≤ val := by
@@ -693,42 +835,13 @@ theorem box_sound (rows : List Row) (batches : List JBatch)
     unfold boxData at hd
     cases hk : b.kind with
     | cap i j θ => simp [hk] at hd
-    | src i j θ ri rj =>
+    | one c =>
       simp only [hk] at hd
-      cases hRi : rows[i]? with
-      | none => simp [hRi] at hd
-      | some Ri =>
-      cases hRj : rows[j]? with
-      | none => simp [hRi, hRj] at hd
-      | some Rj =>
-      simp only [hRi, hRj] at hd
-      have mi := List.mem_of_getElem? hRi
-      have mj := List.mem_of_getElem? hRj
-      exact mixData_sound θ hv _ _
-        (src_sound Ri (hrows Ri mi) hM hS (hred Ri mi) ri) (src_sound Rj (hrows Rj mj) hM hS
-          (hred Rj mj) rj) d hd
-    | joint bi ks =>
+      exact compRef_sound rows batches hrows hbatches Ψ hΨ hM hS hv c d hd
+    | two θ c0 c1 =>
       simp only [hk] at hd
-      cases hbt : batches[bi]? with
-      | none => simp [hbt] at hd
-      | some bt =>
-      simp only [hbt] at hd
-      exact batchData_sound rows hrows bt (hbatches bt (List.mem_of_getElem? hbt)) ks hM hS hv
-        hred d hd
-    | jmix b0 b1 lam k0 k1 =>
-      simp only [hk] at hd
-      cases hbt0 : batches[b0]? with
-      | none => simp [hbt0] at hd
-      | some bt0 =>
-      cases hbt1 : batches[b1]? with
-      | none => simp [hbt0, hbt1] at hd
-      | some bt1 =>
-      simp only [hbt0, hbt1] at hd
-      exact mixData_sound lam hv _ _
-        (batchData_sound rows hrows bt0 (hbatches bt0 (List.mem_of_getElem? hbt0)) k0 hM hS hv
-          hred)
-        (batchData_sound rows hrows bt1 (hbatches bt1 (List.mem_of_getElem? hbt1)) k1 hM hS hv
-          hred) d hd
+      exact mixData_sound θ hv _ _ (compRef_sound rows batches hrows hbatches Ψ hΨ hM hS hv c0)
+        (compRef_sound rows batches hrows hbatches Ψ hΨ hM hS hv c1) d hd
   cases hk : b.kind
   case cap i j θ =>
     simp only [hk] at hb
