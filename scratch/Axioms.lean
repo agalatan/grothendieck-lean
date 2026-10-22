@@ -53,6 +53,9 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.gramT_symm
 #print axioms Grothe.LowerAnalytic.gramT_gram1a
 #print axioms Grothe.LowerAnalytic.gramT_gram1b
+#print axioms Grothe.LowerAnalytic.tauC_eq_sym
+#print axioms Grothe.LowerAnalytic.Circular.specU2_eq
+#print axioms Grothe.LowerAnalytic.Circular.specV2_eq
 #print axioms Grothe.LowerAnalytic.gE_SU
 #print axioms Grothe.LowerAnalytic.N_eq
 #print axioms Grothe.Lower.gram_budget_of_scalars

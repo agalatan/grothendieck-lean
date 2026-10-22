@@ -185,9 +185,15 @@ splitting and the explicit potentials) is the main missing piece of the lower bo
   b ≤ n (Schatten–Hölder: b = Re Σ M_x M_{σx} ≤ ‖M‖² = n for the Gram matrix M of the slices
   t_{a·d}), y ≤ z (z = ‖W‖², y = ‖Sym W‖² = (z + 2T)/3 with T = Re⟨W^{(23)}, W⟩ ≤ z) and G₁ ⪰ 0
   (G₁ = Gram(D, C₊₊) with ‖D‖² = h, ⟨D, C₊₊⟩ = T, ‖C₊₊‖² = (n + b + 2T)/4, 2T = 3y − z);
-  **still assumed** (`GramFacts`) are the four finite contraction identities u₂ = 16n + 4h + 16z,
-  u₄ = 16n + 4h + 16b + 96y − 32z, v₂ = 32b, v₄ = 96y; `tools/check_gram_facts.py` checks every
-  field numerically with the exact Lean definitions.
+  and, in `GramSpectral.lean`, the second-chaos identities u₂ = 16n + 4h + 16z and v₂ = 32b
+  (`Circular.specU2_eq`, `Circular.specV2_eq`: a complex charge calculus on the slots of t — the
+  kernel τ = f + ig of a circular pair has δτ = iτ, so τ = Sym t with t = 3P₊P₊P₋τ, and every
+  contraction of two slots whose J-eigenvalues do not cancel vanishes — reduces the second
+  derivatives ∂²Π₂|q|² = 36 Re Σ τ τ̄ and ∂²Π₂q² = 36 Σ τ τ to (H + 2N)/9 and 2B/9, and the
+  Ornstein–Uhlenbeck ladder E X² = ½ Σ (∂²X)² gives the energies);
+  **still assumed** (`GramFacts`) are the two fourth-chaos identities
+  u₄ = 16n + 4h + 16b + 96y − 32z and v₄ = 96y; `tools/check_gram_facts.py` checks every field
+  numerically with the exact Lean definitions.
   `Grothe.LowerAnalytic.lower_bound_gaussian` instantiates `lower_bound_data` with this law and
   discharges E U = 1, the integrability conditions, E U² ≥ 2, the cap E U² ≤ 62 ≤ 2 + (31/4)²
   (`gaussian_radU_cap`: E F⁴ ≤ 93 (E F²)² for every real third-chaos F, applied to a, b, a ± b),
@@ -212,9 +218,9 @@ splitting and the explicit potentials) is the main missing piece of the lower bo
   κ₆/46656 = (135/2)T₃ − 20V + (135/2)Q + (165/2)⟨D,U⟩ + 45‖U‖² and seven charge-sector
   inequalities (the two sums of squares h ≤ 37s/39 and 27h − 5s + 8‖G_anti‖² ≤ 216 tt, the
   cubic trace of G, the block traces T₃, T₄ of S, the coupled G test and the charge split);
-  besides these, the tensor facts `GramFacts` of the contraction-Gram budget (four fields, above: the
-  spectral identities u₂ = 16n + 4h + 16z, u₄ = 16n + 4h + 16b + 96y − 32z, v₂ = 32b, v₄ = 96y),
-  the gate variable and the per-row reduction (`RowShared`), and the crude row.
+  besides these, the tensor facts `GramFacts` of the contraction-Gram budget (two fields, above: the
+  fourth-chaos identities u₄ = 16n + 4h + 16b + 96y − 32z, v₄ = 96y), the gate variable and the
+  per-row reduction (`RowShared`), and the crude row.
 * Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma, the
   scalar sixth-moment and first-moment certificates (the sixth-moment one from its tensor and
   cumulant hypotheses), and the exact form of
@@ -239,7 +245,7 @@ no warnings.
 | `GrotheKernel/` | the fixed-point interval evaluator used by the head check |
 | `Grothe/Lower/` | positivity certificates, Stein cuts and the law budgets cited by nodes (`Gram.lean`), rows, mixtures and boxes, the one cover of t ∈ [0, 9/10], the transfer to finite matrices, final theorems |
 | `Grothe/Lower/RowData*.lean`, `Grothe/Upper/Data.lean` | generated certificate data |
-| `Grothe/LowerAnalytic/` | analytic lemmas: Gaussian integration by parts, spectral budgets and covariance order, fourth-moment cap, moment certificates, circular cubics and the sixth-moment reduction (`Circular.lean`), the proved tensor facts and the charge calculus (`CircularTensor.lean`), the contraction tensors of a circular cubic and their Gram inequalities (`GramTensor.lean`), the contraction-Gram budget (`GramBudget.lean`), the bridge `lower_bound_gaussian` |
+| `Grothe/LowerAnalytic/` | analytic lemmas: Gaussian integration by parts, spectral budgets and covariance order, fourth-moment cap, moment certificates, circular cubics and the sixth-moment reduction (`Circular.lean`), the proved tensor facts and the charge calculus (`CircularTensor.lean`), the contraction tensors of a circular cubic and their Gram inequalities (`GramTensor.lean`), the complex charge calculus and the spectral identities (`GramSpectral.lean`), the contraction-Gram budget (`GramBudget.lean`), the bridge `lower_bound_gaussian` |
 | `tools/` | generators of the data modules from the research archives; `check_tensor_facts.py` and `check_gram_facts.py` check the `TensorFacts` fields of `Circular.lean` and the `GramFacts` fields of `GramBudget.lean` numerically |
 | `scratch/Axioms.lean`, `scripts/check_axioms.py` | the axiom report and its check |
 

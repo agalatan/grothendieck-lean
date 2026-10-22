@@ -34,8 +34,9 @@ states the lower bound with only the genuinely open Gaussian facts left as hypot
 * `sharedReduction_of_gaussian` and `lower_bound_gaussian`: the finite-layer bound `V ≤ B` for a
   Gaussian residual.  What remains assumed: the tensor facts `TensorFactsRest` of the sixth-moment
   certificate (the Wick identity for `κ₆` and seven charge-sector inequalities), the tensor facts
-  `GramFacts` of the contraction-Gram budget (the four spectral identities; `b ≤ n`, `y ≤ z` and
-  `G₁ ⪰ 0` are proved in `GramTensor.lean`), the scale `0 ≤ τ ≤ ρ`, the gate variable with `|X₁|² = τ² |q|²`, the row inequalities
+  `GramFacts` of the contraction-Gram budget (the fourth-chaos identities `u₄`, `v₄`; `b ≤ n`,
+  `y ≤ z`, `G₁ ⪰ 0` and `u₂`, `v₂` are proved in `GramTensor.lean`, `GramSpectral.lean`), the
+  scale `0 ≤ τ ≤ ρ`, the gate variable with `|X₁|² = τ² |q|²`, the row inequalities
   `RowShared` of the Gaussian reduction, and the crude row.
 -/
 
@@ -145,7 +146,7 @@ theorem sharedReduction_of_gaussian (rows : List Row) (V t : ℝ) (Qh v : E)
     SharedReduction rows V t Qh v :=
   ⟨Fin d → ℝ, inferInstance, stdGaussian d, inferInstance, fun x => eval x (radU a b), X1, X2,
     X3, τ, _, gaussian_moments a b ha haa hc hR,
-    gaussian_gramInputs a b ha (hc.chaos3_right ha) haa (hc.gaussian_sq_eq haa) hc.gaussian_mul hG,
+    gaussian_gramInputs a b ha haa hc hG,
     hτ0, hτ1, hX, hrows⟩
 
 /-- **The finite-layer lower bound for a Gaussian residual**: `lower_bound_data` with the law
