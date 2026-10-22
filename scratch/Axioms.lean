@@ -200,3 +200,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.hermiteBasis
 #print axioms Grothe.UpperChaos.hasSum_energy
 #print axioms Grothe.UpperChaos.integral_H_charge_one
+#print axioms Grothe.UpperChaos.map_e2
+#print axioms Grothe.UpperChaos.integral_hermite2
+#print axioms Grothe.UpperChaos.hermite2_complete
+#print axioms Grothe.UpperChaos.hermiteBasis2
+#print axioms Grothe.UpperChaos.hasSum_energy2
