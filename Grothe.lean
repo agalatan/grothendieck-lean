@@ -86,3 +86,4 @@ import Grothe.LowerAnalytic.MixedChaos
 import Grothe.LowerAnalytic.Tensor
 import Grothe.LowerAnalytic.Pieces
 import Grothe.LowerAnalytic.KSide
+import Grothe.LowerAnalytic.PotentialReg
