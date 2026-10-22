@@ -76,6 +76,9 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Chaos3.wick4
 #print axioms Grothe.LowerAnalytic.A0nn_circular
 #print axioms Grothe.LowerAnalytic.A2nn_circular
+#print axioms Grothe.LowerAnalytic.cubicTrace_circular
+#print axioms Grothe.LowerAnalytic.sos1_circular
+#print axioms Grothe.LowerAnalytic.sos2_circular
 #print axioms Grothe.LowerAnalytic.TensorFactsRest.toTensorFacts
 #print axioms Grothe.LowerAnalytic.gaussian_moments
 #print axioms Grothe.LowerAnalytic.sharedReduction_of_gaussian
