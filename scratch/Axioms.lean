@@ -100,3 +100,6 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.integral_norm_linL
 #print axioms Grothe.LowerAnalytic.norm_starProjection_H10_le
 #print axioms Grothe.LowerAnalytic.tOf_le
+#print axioms Grothe.LowerAnalytic.stein_coordinate_complex
+#print axioms Grothe.LowerAnalytic.integral_conj_zc_mul_wc
+#print axioms Grothe.LowerAnalytic.wickL_mem_H21

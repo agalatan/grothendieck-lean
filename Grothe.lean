@@ -67,3 +67,4 @@ import Grothe.LowerAnalytic.Bridge
 import Grothe.LowerAnalytic.GaussianRadial
 import Grothe.LowerAnalytic.Witness
 import Grothe.LowerAnalytic.WitnessCap
+import Grothe.LowerAnalytic.WickCubic

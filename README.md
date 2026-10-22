@@ -108,7 +108,9 @@ a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u,
 
 **How the two halves fit.** The Gaussian witness is now defined in Lean
 (`Grothe/LowerAnalytic/Witness.lean`): on ℂⁿ = ℝ^{n+n} with the standard Gaussian measure,
-H₁,₀ = span{zₗ}, H₂,₁ = (charge-one polynomials of degree ≤ 3) ⊓ H₁,₀ᗮ (the span of the Wick cubics),
+H₁,₀ = span{zₗ}, H₂,₁ = (charge-one polynomials of degree ≤ 3) ⊓ H₁,₀ᗮ (the span of the Wick cubics
+zₐz_b z̄_c − 2δ_ac z_b − 2δ_bc zₐ, which lie in it by the complex Wick identity
+E[z̄ᵢzₐz_b z̄_c] = 4(δ_ia δ_bc + δ_ib δ_ac), `WickCubic.lean`),
 and `witness n = P₁,₀ − εP₂,₁` (orthogonal projections, ε = 149/200). The **value half** of
 `TransferInputsL2` is proved: for uₗ = zₗ/‖z‖, `norm_pairVal_witness : 1 − (1+ε)/(n+1) ≤ ‖Σₗ⟨uₗ, T uₗ⟩‖`
 (from E‖z‖² = 2n, E‖z‖⁴ = 4n(n+1), E‖z‖ ≥ 2n/√(2(n+1)) and the orthogonality of the two chaos
@@ -163,7 +165,7 @@ composes everything; `TransferInputsL2 B` itself no longer needs to be assumed.
   transfer itself (finite partitions, phase choices on cells, L² approximation by ball-valued
   simple functions, passage to the limit), the witness, its value ≥ 1 − (1+ε)/(n+1) on u(z) = z/‖z‖,
   the polarisation identity, the bound t ≤ √π/2 < 9/10 and the crude row from ‖P₂,₁k‖ ≤ ρ are proved
-  in Lean (`Grothe/Lower/Transfer*.lean`, `Grothe/LowerAnalytic/{GaussianRadial,Witness,WitnessCap}.lean`).
+  in Lean (`Grothe/Lower/Transfer*.lean`, `Grothe/LowerAnalytic/{GaussianRadial,Witness,WitnessCap,WickCubic}.lean`).
 * The analytic inputs of the Stein cuts (`GramInputs`, extending `SteinInputs`) are, with
   w = Γ(q, q̄)/3, c = Γ(q, q)/3, X = w − 1, r = Re(c q̄²)/U, P = E[XU] and Q = E[rU]: E w = 1; the
   separate spectral budgets E X² ≤ (2/3)P and E r² ≤ (2/3)Q (gaps ‖U₄‖²/9 and ‖(q²)₄‖²/9 + E(|c|² − r²));
