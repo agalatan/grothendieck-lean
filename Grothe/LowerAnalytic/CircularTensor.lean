@@ -368,19 +368,22 @@ lemma der3_sq (T : ι → ι → ι → ℝ) : der3 J (der3 J T)
     ← sl_comm23]
   module
 
+/-- **Charge one**: if `δ² T = −T` then `(J₁J₂ + J₁J₃ + J₂J₃) T = T`. -/
+lemma charge_one_e2 {T : ι → ι → ι → ℝ} (hT : der3 J (der3 J T) = -T) :
+    sl₁ J (sl₂ J T) + sl₁ J (sl₃ J T) + sl₂ J (sl₃ J T) = T := by
+  have h := der3_sq hJ T
+  rw [hT] at h
+  have h' : (2 : ℝ) • (sl₁ J (sl₂ J T) + sl₁ J (sl₃ J T) + sl₂ J (sl₃ J T)) = (2 : ℝ) • T := by
+    rw [← sub_eq_zero]
+    have : -(3 : ℝ) • T + (2 : ℝ) • (sl₁ J (sl₂ J T) + sl₁ J (sl₃ J T) + sl₂ J (sl₃ J T))
+        - -T = 0 := by rw [← h]; abel
+    rw [← this]; module
+  exact smul_right_injective _ (two_ne_zero) h'
+
 /-- **Charge one**: if `δ² T = −T` then `J₁J₂J₃ T = δ T`. -/
 lemma sl_triple_of_charge_one {T : ι → ι → ι → ℝ} (hT : der3 J (der3 J T) = -T) :
     sl₁ J (sl₂ J (sl₃ J T)) = der3 J T := by
-  have h2 : sl₁ J (sl₂ J T) + sl₁ J (sl₃ J T) + sl₂ J (sl₃ J T) = T := by
-    have h := der3_sq hJ T
-    rw [hT] at h
-    have h' : (2 : ℝ) • (sl₁ J (sl₂ J T) + sl₁ J (sl₃ J T) + sl₂ J (sl₃ J T)) = (2 : ℝ) • T := by
-      rw [← sub_eq_zero]
-      have : -(3 : ℝ) • T + (2 : ℝ) • (sl₁ J (sl₂ J T) + sl₁ J (sl₃ J T) + sl₂ J (sl₃ J T))
-          - -T = 0 := by rw [← h]; abel
-      rw [← this]; module
-    exact smul_right_injective _ (two_ne_zero) h'
-  have h3 := congrArg (sl₁ J) h2
+  have h3 := congrArg (sl₁ J) (charge_one_e2 hJ hT)
   rw [map_add, map_add, sl_sq1 hJ, sl_sq1 hJ] at h3
   rw [der3_apply', ← h3]
   abel
@@ -916,10 +919,11 @@ lemma ip4_kerSmm (hJ : IsCplx J) (f : ι → ι → ι → ℝ) :
   ring
 
 /-- **The charge-two block of `S`** for a pair of symmetric kernels with `δf = −g`, `δg = f`:
-`tt = h/6 − ‖M‖²/24 ≤ h/6`, `M = Sym(g ⋆ f + f ⋆ g)`. -/
-theorem tenTT_le_sixth_of_der (hJ : IsCplx J) {f g : ι → ι → ι → ℝ}
+`tt = h/6 − ‖M‖²/24`, `M = Sym(g ⋆ f + f ⋆ g)`. -/
+theorem tenTT_eq_of_der (hJ : IsCplx J) {f g : ι → ι → ι → ℝ}
     (hf : ∀ a b c, f a b c = f b a c) (hdf : der3 J f = -g) (hdg : der3 J g = f) :
-    tenTT f J ≤ tenH f / 6 := by
+    tenTT f J = tenH f / 6
+      - ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g)) / 24 := by
   have h1 : der4 J (kerS f) = -sym4 (con g f + con f g) := by
     rw [kerS_eq_sym4, der4_sym4, der4_con hJ, hdf, con_neg_left, con_neg_right, ← neg_add,
       sym4_neg]
@@ -950,9 +954,15 @@ theorem tenTT_le_sixth_of_der (hJ : IsCplx J) {f g : ι → ι → ι → ℝ}
       con_neg_right, neg_neg]
   have h8 : ip4 (kerS f) (sq₃ J (sq₄ J (sq₁ J (sq₂ J (kerS f))))) = ip4 (kerS f) (sym4 (con g g)) := by
     rw [← K12_K34, ← om4_apply, h7]
-  have hm := ip4_self_nonneg (sym4 (con g f + con f g))
   rw [tenTT_eq_ip4, ip4_kerSmm hJ, tenH_eq_ip4, ip4_K34_eq (kerS_swP' hf), h8, h5]
   linarith
+
+/-- `tt ≤ h/6` for a pair of symmetric kernels with `δf = −g`, `δg = f`. -/
+theorem tenTT_le_sixth_of_der (hJ : IsCplx J) {f g : ι → ι → ι → ℝ}
+    (hf : ∀ a b c, f a b c = f b a c) (hdf : der3 J f = -g) (hdg : der3 J g = f) :
+    tenTT f J ≤ tenH f / 6 := by
+  rw [tenTT_eq_of_der hJ hf hdf hdg]
+  linarith [ip4_self_nonneg (sym4 (con g f + con f g))]
 
 /-- **The field `block`**: `tt ≤ h/6` for the kernel of the real part of a circular cubic. -/
 theorem tenTT_le_sixth [DecidableEq ι] {a b : MvPolynomial ι ℝ} (hc : Circular J a b) :
