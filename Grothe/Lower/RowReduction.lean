@@ -22,6 +22,9 @@ The scalar cap of the witness rests on `SharedReduction rowData V t Qh v` for ev
   `X*NX + 2Re(conj X₁ (g·X))` with `N = E − diag(ε − δ, 0, 0)`, `g = δb`, and the paper's
   `X*EX − (ε − δ)|X₁|² + 2δ Re(conj X₁ (b·X))`.  The three `E`-gates of all 19 rows are checked
   exactly (`rowData_gatesOK`, kernel `decide`).
+* **The coupling vector** `vL n l = z_l(|z_l|² − 4)/(2√2)`, i.e. `ζ(|ζ|² − 2)` for the unit
+  coordinate `ζ = z_l/√2`: `vL_mem_H21` and `norm_vL_sq : ‖vL n l‖² = 2`, from the Gaussian
+  moments `E|z|⁴ = 8`, `E|z|⁶ = 48` (`inner_zL_zL`, `inner_wL_zL`, `gE_X_pow_six`, …).
 * **Assembly** (`rowSharedWith_of_bracket`): the row inequality `RowSharedWith` from the a.e. fibre
   bound `Bk ≤ Ψ(δ|p|)` of the pre-potential bracket and the integrated k-side bound, with the law
   `U = |p|²/τ²` of the residual `p` at scale `τ = ‖p‖₂ > 0`.
@@ -229,7 +232,7 @@ end Grothe.Lower
 
 namespace Grothe.LowerAnalytic
 
-open Grothe.Lower
+open Grothe.Lower MvPolynomial
 
 noncomputable section
 
@@ -317,6 +320,245 @@ theorem VOf_frame (f g : L2G n) (ℓ β : ℝ) (ζ v : L2G n) (hζ : ζ ∈ H10 
   rw [VOf_eq]
   unfold QhOf
   linarith
+
+/-! ### The coupling vector `v = ζ(|ζ|² − 2)` -/
+
+/-! ### Gaussian moments of degree four and six -/
+
+lemma gE_X_pow_four {d : ℕ} (i : Fin d) : gaussE d (X i ^ 4) = 3 := by
+  have h := gE_X_sq_mul_X_sq i i
+  rw [← pow_add] at h
+  norm_num at h
+  exact h
+
+lemma gE_X_pow_six {d : ℕ} (i : Fin d) : gaussE d (X i ^ 6) = 15 := by
+  have hE := gaussE_isGaussianExpectation d
+  have h := hE.ibp i (X i ^ 5)
+  rw [pderiv_pow, pderiv_X_self, mul_one] at h
+  rw [show X i ^ 6 = X i * X i ^ 5 by ring, h]
+  simp only [Nat.cast_ofNat, Nat.add_one_sub_one]
+  rw [ofNat_mul_apply, gE_X_pow_four]; norm_num
+
+lemma gE_X_pow_four_mul_X_sq {d : ℕ} {i j : Fin d} (hij : i ≠ j) :
+    gaussE d (X i ^ 4 * X j ^ 2) = 3 := by
+  have hE := gaussE_isGaussianExpectation d
+  have h := hE.ibp i (X i ^ 3 * X j ^ 2)
+  rw [pderiv_mul, pderiv_pow, pderiv_X_self, pderiv_pow, pderiv_X_of_ne (Ne.symm hij)] at h
+  rw [show X i ^ 4 * X j ^ 2 = X i * (X i ^ 3 * X j ^ 2) by ring, h]
+  simp only [Nat.cast_ofNat, Nat.add_one_sub_one, mul_one, mul_zero, add_zero]
+  rw [mul_assoc, ofNat_mul_apply, gE_X_sq_mul_X_sq]; simp [hij]
+
+/-- `E[X_i R] = 0` when `R` does not depend on `X_i`. -/
+lemma gE_X_mul_eq_zero {d : ℕ} (i : Fin d) (R : MvPolynomial (Fin d) ℝ) (h : pderiv i R = 0) :
+    gaussE d (X i * R) = 0 := by
+  rw [(gaussE_isGaussianExpectation d).ibp, h, map_zero]
+
+/-! ### Complex integrals of polynomial type -/
+
+/-- A complex integrand whose real and imaginary parts are polynomials. -/
+lemma integral_eq_gaussE (F : (Fin (n + n) → ℝ) → ℂ) (P Q : MvPolynomial (Fin (n + n)) ℝ)
+    (h : ∀ x, F x = ⟨eval x P, eval x Q⟩) :
+    ∫ x, F x ∂(stdGaussian (n + n)) = ⟨gaussE (n + n) P, gaussE (n + n) Q⟩ := by
+  have e : F = fun x => ((eval x P : ℝ) : ℂ) + ((eval x Q : ℝ) : ℂ) * Complex.I := by
+    funext x; rw [h x]; apply Complex.ext <;> simp
+  rw [e, integral_add (integrable_eval P).ofReal ((integrable_eval Q).ofReal.mul_const _),
+    integral_mul_const, integral_complex_ofReal, integral_complex_ofReal]
+  apply Complex.ext <;> simp [gaussE_apply]
+
+lemma inner_eq_of_ae (u v : L2G n) (F G : (Fin (n + n) → ℝ) → ℂ)
+    (hu : ∀ᵐ x ∂(stdGaussian (n + n)), u x = F x)
+    (hv : ∀ᵐ x ∂(stdGaussian (n + n)), v x = G x) (P Q : MvPolynomial (Fin (n + n)) ℝ)
+    (h : ∀ x, conj (F x) * G x = ⟨eval x P, eval x Q⟩) :
+    inner ℂ u v = ⟨gaussE (n + n) P, gaussE (n + n) Q⟩ := by
+  rw [inner_L2, ← integral_eq_gaussE n (fun x => conj (F x) * G x) P Q h]
+  refine integral_congr_ae ?_
+  filter_upwards [hu, hv] with x h1 h2
+  rw [h1, h2]
+
+lemma norm_sq_eq_of_ae (u : L2G n) (F : (Fin (n + n) → ℝ) → ℂ)
+    (hu : ∀ᵐ x ∂(stdGaussian (n + n)), u x = F x) (P : MvPolynomial (Fin (n + n)) ℝ)
+    (h : ∀ x, ‖F x‖ ^ 2 = eval x P) : ‖u‖ ^ 2 = gaussE (n + n) P := by
+  have h1 := inner_eq_of_ae n u u F F hu hu P 0 (fun x => by
+    rw [Complex.conj_mul', ← h x, ← Complex.ofReal_pow]
+    refine Complex.ext ?_ ?_
+    · simp only [Complex.ofReal_re]
+    · simp only [Complex.ofReal_im, map_zero])
+  have h2 := inner_self_eq_norm_sq (𝕜 := ℂ) u
+  rw [h1] at h2
+  simpa using h2.symm
+
+/-- `∂_i ((X_a² + X_b²) X_c) = 0` when `i ∉ {a, b, c}`. -/
+lemma pderiv_quad_zero {d : ℕ} {i a b c : Fin d} (ha : a ≠ i) (hb : b ≠ i) (hc : c ≠ i) :
+    pderiv i ((X a ^ 2 + X b ^ 2) * X c : MvPolynomial (Fin d) ℝ) = 0 := by
+  simp only [pderiv_mul, pderiv_pow, map_add, pderiv_X_of_ne ha, pderiv_X_of_ne hb,
+    pderiv_X_of_ne hc, mul_zero, zero_mul, add_zero]
+
+/-! ### Index bookkeeping -/
+
+lemma castAdd_ne_natAdd (l m : Fin n) : Fin.castAdd n l ≠ Fin.natAdd n m := by
+  intro h
+  have := congrArg Fin.val h
+  simp only [Fin.val_castAdd, Fin.val_natAdd] at this
+  omega
+
+lemma castAdd_ne_castAdd {l m : Fin n} (h : l ≠ m) : Fin.castAdd n l ≠ Fin.castAdd n m := by
+  intro e; exact h (Fin.ext (by simpa using congrArg Fin.val e))
+
+lemma natAdd_ne_natAdd {l m : Fin n} (h : l ≠ m) : Fin.natAdd n l ≠ Fin.natAdd n m := by
+  intro e; exact h (Fin.ext (by simpa using congrArg Fin.val e))
+
+/-! ### The inner products `⟪z_l, z_m⟫` and `⟪z_l|z_l|², z_m⟫` -/
+
+/-- `⟪z_l, z_m⟫ = 2δ_{lm}`. -/
+lemma inner_zL_zL (l m : Fin n) : inner ℂ (zL n l) (zL n m) = if l = m then 2 else 0 := by
+  rw [inner_eq_of_ae n (zL n l) (zL n m) (zc n l) (zc n m) (MemLp.coeFn_toLp _)
+    (MemLp.coeFn_toLp _)
+    (X (Fin.castAdd n l) * X (Fin.castAdd n m) + X (Fin.natAdd n l) * X (Fin.natAdd n m))
+    (X (Fin.castAdd n l) * X (Fin.natAdd n m) - X (Fin.natAdd n l) * X (Fin.castAdd n m))
+    (fun x => by
+      apply Complex.ext <;> simp [zc]
+      ring)]
+  by_cases h : l = m
+  · subst h
+    simp only [ite_true]
+    apply Complex.ext
+    · simp only [Complex.re_ofNat]
+      rw [← sq, ← sq, map_add, gE_X_sq, gE_X_sq]; norm_num
+    · simp only [Complex.im_ofNat]
+      rw [mul_comm (X (Fin.natAdd n l)), sub_self, map_zero]
+  · simp only [h, ite_false]
+    apply Complex.ext
+    · simp only [Complex.zero_re]
+      rw [map_add, gE_X_mul_eq_zero _ _ (pderiv_X_of_ne (castAdd_ne_castAdd n (Ne.symm h))),
+        gE_X_mul_eq_zero _ _ (pderiv_X_of_ne (natAdd_ne_natAdd n (Ne.symm h))), add_zero]
+    · simp only [Complex.zero_im]
+      rw [map_sub, gE_X_mul_eq_zero _ _ (pderiv_X_of_ne (castAdd_ne_natAdd n l m).symm),
+        gE_X_mul_eq_zero _ _ (pderiv_X_of_ne (castAdd_ne_natAdd n m l)), sub_zero]
+
+/-- `⟪z_l |z_l|², z_m⟫ = 8δ_{lm}`. -/
+lemma inner_wL_zL (l m : Fin n) : inner ℂ (wL n l l l) (zL n m) = if l = m then 8 else 0 := by
+  rw [inner_eq_of_ae n (wL n l l l) (zL n m) (wc n l l l) (zc n m) (MemLp.coeFn_toLp _)
+    (MemLp.coeFn_toLp _)
+    ((X (Fin.castAdd n l) ^ 2 + X (Fin.natAdd n l) ^ 2)
+      * (X (Fin.castAdd n l) * X (Fin.castAdd n m) + X (Fin.natAdd n l) * X (Fin.natAdd n m)))
+    ((X (Fin.castAdd n l) ^ 2 + X (Fin.natAdd n l) ^ 2)
+      * (X (Fin.castAdd n l) * X (Fin.natAdd n m) - X (Fin.natAdd n l) * X (Fin.castAdd n m)))
+    (fun x => by apply Complex.ext <;> (simp [wc, zc]; ring))]
+  have hab := castAdd_ne_natAdd n l l
+  by_cases h : l = m
+  · subst h
+    simp only [ite_true]
+    apply Complex.ext
+    · simp only [Complex.re_ofNat]
+      rw [show (X (Fin.castAdd n l) ^ 2 + X (Fin.natAdd n l) ^ 2)
+          * (X (Fin.castAdd n l) * X (Fin.castAdd n l) + X (Fin.natAdd n l) * X (Fin.natAdd n l))
+          = X (Fin.castAdd n l) ^ 2 * X (Fin.castAdd n l) ^ 2
+            + X (Fin.castAdd n l) ^ 2 * X (Fin.natAdd n l) ^ 2
+            + X (Fin.natAdd n l) ^ 2 * X (Fin.castAdd n l) ^ 2
+            + X (Fin.natAdd n l) ^ 2 * X (Fin.natAdd n l) ^ 2 by ring,
+        map_add, map_add, map_add, gE_X_sq_mul_X_sq, gE_X_sq_mul_X_sq, gE_X_sq_mul_X_sq,
+        gE_X_sq_mul_X_sq]
+      simp only [ite_true, hab, hab.symm, ite_false]
+      norm_num
+    · simp only [Complex.im_ofNat]
+      rw [mul_comm (X (Fin.natAdd n l)), sub_self, mul_zero, map_zero]
+  · simp only [h, ite_false]
+    have hac := castAdd_ne_castAdd n (Ne.symm h)
+    have hbd := natAdd_ne_natAdd n (Ne.symm h)
+    have had := castAdd_ne_natAdd n l m
+    have hbc := castAdd_ne_natAdd n m l
+    apply Complex.ext
+    · simp only [Complex.zero_re]
+      rw [show (X (Fin.castAdd n l) ^ 2 + X (Fin.natAdd n l) ^ 2)
+          * (X (Fin.castAdd n l) * X (Fin.castAdd n m) + X (Fin.natAdd n l) * X (Fin.natAdd n m))
+          = X (Fin.castAdd n m) * ((X (Fin.castAdd n l) ^ 2 + X (Fin.natAdd n l) ^ 2) * X (Fin.castAdd n l))
+            + X (Fin.natAdd n m) * ((X (Fin.castAdd n l) ^ 2 + X (Fin.natAdd n l) ^ 2) * X (Fin.natAdd n l))
+          by ring, map_add, gE_X_mul_eq_zero _ _ (pderiv_quad_zero hac.symm hbc.symm hac.symm),
+        gE_X_mul_eq_zero _ _ (pderiv_quad_zero had hbd.symm hbd.symm), add_zero]
+    · simp only [Complex.zero_im]
+      rw [show (X (Fin.castAdd n l) ^ 2 + X (Fin.natAdd n l) ^ 2)
+          * (X (Fin.castAdd n l) * X (Fin.natAdd n m) - X (Fin.natAdd n l) * X (Fin.castAdd n m))
+          = X (Fin.natAdd n m) * ((X (Fin.castAdd n l) ^ 2 + X (Fin.natAdd n l) ^ 2) * X (Fin.castAdd n l))
+            - X (Fin.castAdd n m) * ((X (Fin.castAdd n l) ^ 2 + X (Fin.natAdd n l) ^ 2) * X (Fin.natAdd n l))
+          by ring, map_sub, gE_X_mul_eq_zero _ _ (pderiv_quad_zero had hbd.symm had),
+        gE_X_mul_eq_zero _ _ (pderiv_quad_zero hac.symm hbc.symm hbc.symm), sub_zero]
+
+/-! ### The coupling vector -/
+
+/-- **The coupling vector** `v_l = z_l(|z_l|² − 4)/(2√2)`, i.e. `ζ(|ζ|² − 2)` for the unit
+coordinate `ζ = z_l/√2`. -/
+def vL (l : Fin n) : L2G n :=
+  (((2 * √2)⁻¹ : ℝ) : ℂ) • (wL n l l l - (4 : ℂ) • zL n l)
+
+lemma vL_coeFn (l : Fin n) :
+    ∀ᵐ x ∂(stdGaussian (n + n)),
+      vL n l x = (((2 * √2)⁻¹ : ℝ) : ℂ) * (wc n l l l x - 4 * zc n l x) := by
+  filter_upwards [Lp.coeFn_smul ((((2 * √2)⁻¹ : ℝ) : ℂ)) (wL n l l l - (4 : ℂ) • zL n l),
+    Lp.coeFn_sub (wL n l l l) ((4 : ℂ) • zL n l), Lp.coeFn_smul (4 : ℂ) (zL n l),
+    MemLp.coeFn_toLp (memLp_wc n l l l), MemLp.coeFn_toLp (memLp_zc n l)] with x h1 h2 h3 h4 h5
+  rw [vL, h1, Pi.smul_apply, h2, Pi.sub_apply, h3, Pi.smul_apply, smul_eq_mul, smul_eq_mul]
+  unfold wL zL at *
+  rw [h4, h5]
+
+lemma vL_mem_chargeOne3 (l : Fin n) : vL n l ∈ chargeOne3 n :=
+  Submodule.smul_mem _ _ (Submodule.sub_mem _
+    (Submodule.subset_span (Or.inr ⟨(l, l, l), rfl⟩))
+    (Submodule.smul_mem _ _ (Submodule.subset_span (Or.inl ⟨l, rfl⟩))))
+
+lemma inner_vL_zL (l m : Fin n) : inner ℂ (vL n l) (zL n m) = 0 := by
+  rw [vL, inner_smul_left, inner_sub_left, inner_smul_left, inner_wL_zL, inner_zL_zL]
+  split_ifs <;> norm_num [Complex.ext_iff]
+
+/-- `v_l ⊥ H₁,₀`. -/
+lemma vL_mem_orthogonal (l : Fin n) : vL n l ∈ (H10 n)ᗮ := by
+  have h : H10 n ≤ (ℂ ∙ vL n l)ᗮ := by
+    refine Submodule.span_le.2 ?_
+    rintro _ ⟨m, rfl⟩
+    exact Submodule.mem_orthogonal_singleton_iff_inner_right.2 (inner_vL_zL n l m)
+  exact Submodule.orthogonal_le h
+    (Submodule.le_orthogonal_orthogonal _ (Submodule.mem_span_singleton_self _))
+
+/-- **`v_l ∈ H₂,₁`.** -/
+theorem vL_mem_H21 (l : Fin n) : vL n l ∈ H21 n :=
+  Submodule.mem_inf.2 ⟨vL_mem_chargeOne3 n l, vL_mem_orthogonal n l⟩
+
+/-- `‖z_l(|z_l|² − 4)‖² = 16`. -/
+lemma norm_sq_wL_sub (l : Fin n) : ‖wL n l l l - (4 : ℂ) • zL n l‖ ^ 2 = 16 := by
+  have hab := castAdd_ne_natAdd n l l
+  rw [norm_sq_eq_of_ae n _ (fun x => wc n l l l x - 4 * zc n l x) ?_
+    ((X (Fin.castAdd n l) ^ 2 + X (Fin.natAdd n l) ^ 2)
+      * (X (Fin.castAdd n l) ^ 2 + X (Fin.natAdd n l) ^ 2 - 4) ^ 2) ?_]
+  · rw [show (X (Fin.castAdd n l) ^ 2 + X (Fin.natAdd n l) ^ 2)
+        * (X (Fin.castAdd n l) ^ 2 + X (Fin.natAdd n l) ^ 2 - (4 : MvPolynomial (Fin (n + n)) ℝ)) ^ 2
+        = X (Fin.castAdd n l) ^ 6 + X (Fin.natAdd n l) ^ 6
+          + 3 * (X (Fin.castAdd n l) ^ 4 * X (Fin.natAdd n l) ^ 2)
+          + 3 * (X (Fin.natAdd n l) ^ 4 * X (Fin.castAdd n l) ^ 2)
+          + 16 * X (Fin.castAdd n l) ^ 2 + 16 * X (Fin.natAdd n l) ^ 2
+          - 8 * (X (Fin.castAdd n l) ^ 2 * X (Fin.castAdd n l) ^ 2)
+          - 16 * (X (Fin.castAdd n l) ^ 2 * X (Fin.natAdd n l) ^ 2)
+          - 8 * (X (Fin.natAdd n l) ^ 2 * X (Fin.natAdd n l) ^ 2) by ring]
+    simp only [map_add, map_sub]
+    repeat rw [ofNat_mul_apply]
+    rw [gE_X_pow_six, gE_X_pow_six, gE_X_pow_four_mul_X_sq hab, gE_X_pow_four_mul_X_sq hab.symm,
+      gE_X_sq, gE_X_sq, gE_X_sq_mul_X_sq, gE_X_sq_mul_X_sq, gE_X_sq_mul_X_sq]
+    simp only [ite_true, hab, ite_false]
+    norm_num
+  · filter_upwards [Lp.coeFn_sub (wL n l l l) ((4 : ℂ) • zL n l), Lp.coeFn_smul (4 : ℂ) (zL n l),
+      MemLp.coeFn_toLp (memLp_wc n l l l), MemLp.coeFn_toLp (memLp_zc n l)] with x h2 h3 h4 h5
+    rw [h2, Pi.sub_apply, h3, Pi.smul_apply, smul_eq_mul]
+    unfold wL zL at *
+    rw [h4, h5]
+  · intro x
+    simp only [wc, zc, Complex.sq_norm, Complex.normSq_apply, Complex.sub_re, Complex.sub_im,
+      Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im, Complex.re_ofNat,
+      Complex.im_ofNat, map_add, map_sub, map_mul, map_pow, eval_X, map_ofNat]
+    ring
+
+/-- **`‖v_l‖² = 2`.** -/
+theorem norm_vL_sq (l : Fin n) : ‖vL n l‖ ^ 2 = 2 := by
+  rw [vL, norm_smul, mul_pow, norm_sq_wL_sub, Complex.norm_real, Real.norm_eq_abs, abs_inv,
+    abs_of_pos (by positivity), inv_pow, mul_pow, Real.sq_sqrt (by norm_num)]
+  norm_num
 
 end
 
