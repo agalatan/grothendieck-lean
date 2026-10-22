@@ -152,3 +152,7 @@ import Grothe
 #print axioms Grothe.Lower.MPoly.momentLift_eval
 #print axioms Grothe.Lower.MPoly.momentLift_J
 #print axioms Grothe.Lower.MPoly.momentLift_majorant
+#print axioms Grothe.LowerAnalytic.JointSixth.gram_j_eta
+#print axioms Grothe.LowerAnalytic.JointSixth.gram_j2_shifted
+#print axioms Grothe.LowerAnalytic.JointSixth.shifted_hcoeff_lt
+#print axioms Grothe.LowerAnalytic.joint_eta_budget

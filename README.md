@@ -66,6 +66,8 @@ The joint sixth-moment/Stein budgets are also formalized in
 `Grothe/LowerAnalytic/JointSixth.lean`, `Grothe/Lower/Reserve.lean` and
 `Grothe/LowerAnalytic/JointBudget.lean`. They retain shared tensor constraints;
 the stronger joint-moment numerical certificate is not yet integrated into the endpoint.
+The strengthened parameter family and exact majorant-transport rule are proved too
+(`JointSixth.gram_j_eta`, `JointSixth.gram_j2_shifted`, `Grothe/Lower/MomentLift.lean`).
 
 **Upper bound** — `Grothe.fresh_upper :
 DirectHyps E EX → IsGrothendieckBound (438936500000000000000000/312499512981434072227643)`,

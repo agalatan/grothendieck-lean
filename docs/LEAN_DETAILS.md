@@ -258,3 +258,11 @@ kurtosis range. These proofs use only the standard logical axioms. They do not a
 hypothesis to the headline lower theorem. The present endpoint uses a refined cover of
 7,939 boxes with the existing 276 spectral witnesses; the stronger external joint-moment
 certificate still needs its complete finite-checker and cover integration.
+
+`JointSixth.gram_j_eta` retains both bounds on the negative cumulant contraction;
+`gram_j2_shifted` improves the h₀ coefficient from 198+150/α to
+198+150/(α+4/15) for α≥12/55. `joint_eta_budget` connects this family to the
+same reserved Gram checker and actual spectral quantities, deriving the moment
+bound internally. `Grothe/Lower/MomentLift.lean` proves the pointwise transport
+and exact normalized price change −d C₆ x³ when the moment-cut weight increases
+by d. An increased weight still requires an accepted budget certificate.
