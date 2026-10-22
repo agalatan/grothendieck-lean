@@ -117,7 +117,7 @@ lemma realToC_zc (x : Fin (m + m) → ℝ) (l : Fin m) : realToC (WithLp.toLp 2 
 lemma apply_eq_sum (v : EuclideanSpace ℂ (Fin m)) (l : Fin m) :
     W v l = ∑ k, W (EuclideanSpace.single k 1) l * v k := by
   have hv : v = ∑ k, v k • EuclideanSpace.single k (1 : ℂ) := by
-    ext j; simp [Pi.single_apply, mul_ite, Finset.sum_ite_eq']
+    ext j; simp [Pi.single_apply, mul_ite]
   conv_lhs => rw [hv]
   rw [map_sum]
   simp only [map_smul]
@@ -281,7 +281,7 @@ lemma QhOf_Cop (f g : L2G m) : QhOf m (Cop W f) (Cop W g) = Cop W (QhOf m f g) :
 lemma norm_sq_sum_zL (α : Fin m → ℂ) : ‖∑ l, α l • zL m l‖ ^ 2 = 2 * ∑ l, ‖α l‖ ^ 2 := by
   rw [@norm_sq_eq_re_inner ℂ, sum_inner]
   simp_rw [inner_sum, inner_smul_left, inner_smul_right, inner_zL_zL, mul_ite, mul_one, mul_zero,
-    Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    Finset.sum_ite_eq, Finset.mem_univ, ite_true]
   rw [RCLike.re_to_complex, Complex.re_sum, Finset.mul_sum]
   refine Finset.sum_congr rfl fun l _ => ?_
   rw [show conj (α l) * (α l * 2) = 2 * (conj (α l) * α l) by ring, Complex.conj_mul',
@@ -308,14 +308,14 @@ theorem exists_Cop_eq (hm : 0 < m) {ζ : L2G m} (hζ : ζ ∈ H10 m) (h1 : ‖ζ
     nlinarith [norm_nonneg u]
   -- an orthonormal basis with `b i0 = u`
   let v : Fin m → EuclideanSpace ℂ (Fin m) := fun i => if i = i0 then u else 0
-  have hv : Orthonormal ℂ (({i0} : Set (Fin m)).restrict v) := by
+  have hv : Orthonormal ℂ (({i0} : Set (Fin m)).domRestrict v) := by
     rw [orthonormal_iff_ite]
     rintro ⟨i, hi⟩ ⟨j, hj⟩
     simp only [Set.mem_singleton_iff] at hi hj
     subst hi hj
-    rw [if_pos rfl]
+    rw [ite_eq_left rfl]
     show inner ℂ (v i0) (v i0) = 1
-    simp only [v, if_pos rfl]
+    simp only [v, ite_eq_left rfl]
     rw [inner_self_eq_norm_sq_to_K, hu1]; simp
   obtain ⟨b, hb⟩ := Orthonormal.exists_orthonormalBasis_extension_of_card_eq (𝕜 := ℂ)
     (E := EuclideanSpace ℂ (Fin m)) (ι := Fin m) (by simp) hv
@@ -343,7 +343,7 @@ theorem exists_Cop_eq (hm : 0 < m) {ζ : L2G m} (hζ : ζ ∈ H10 m) (h1 : ‖ζ
     by_cases h : k = i0
     · subst h; simp
     · simp [h, Ne.symm h]
-  simp_rw [← Finset.sum_smul, hco, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+  simp_rw [← Finset.sum_smul, hco, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, ite_true]
 
 /-- Transfer of the shared reduction along a pair with the same norms `‖Qh + c v‖`. -/
 lemma sharedReduction_congr {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]

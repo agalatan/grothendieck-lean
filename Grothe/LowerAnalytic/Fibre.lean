@@ -94,13 +94,13 @@ lemma VisT_cases (i : VisT n) : i = a0 n ∨ i = a1 n := by
 lemma visU_visC (u : VisT n → ℝ) : visU n (visC n u) = u := by
   funext i
   rcases VisT_cases n i with rfl | rfl
-  · rw [visU, if_pos rfl, visC_re]; field_simp
-  · rw [visU, if_neg (a0_ne_a1 n).symm, visC_im]; field_simp
+  · rw [visU, ite_eq_left rfl, visC_re]; field_simp
+  · rw [visU, ite_eq_right (a0_ne_a1 n).symm, visC_im]; field_simp
 
 lemma visC_visU (z : ℂ) : visC n (visU n z) = z := by
   apply Complex.ext
-  · rw [visC_re, visU, if_pos rfl]; field_simp
-  · rw [visC_im, visU, if_neg (a0_ne_a1 n).symm]; field_simp
+  · rw [visC_re, visU, ite_eq_left rfl]; field_simp
+  · rw [visC_im, visU, ite_eq_right (a0_ne_a1 n).symm]; field_simp
 
 lemma continuous_visC : Continuous (visC n) := by unfold visC; fun_prop
 
@@ -146,11 +146,11 @@ lemma splitE_symm_apply (w : RemT n → ℝ) (u : VisT n → ℝ) (i : Fin ((n +
     (splitE n).symm (w, u) i = if h : isVis n i then u ⟨i, h⟩ else w ⟨i, h⟩ := rfl
 
 lemma join_i0 (z : ℂ) (w : RemT n → ℝ) : join n z w (i0 n) = √2 * z.re := by
-  rw [join, splitE_symm_apply, dif_pos (show isVis n (i0 n) from Or.inl rfl), visU]
-  exact if_pos rfl
+  rw [join, splitE_symm_apply, dite_eq_left (show isVis n (i0 n) from Or.inl rfl), visU]
+  exact ite_eq_left rfl
 
 lemma join_i1 (z : ℂ) (w : RemT n → ℝ) : join n z w (i1 n) = √2 * z.im := by
-  rw [join, splitE_symm_apply, dif_pos (show isVis n (i1 n) from Or.inr rfl), visU, if_neg]
+  rw [join, splitE_symm_apply, dite_eq_left (show isVis n (i1 n) from Or.inr rfl), visU, ite_eq_right]
   intro e
   exact i0_ne_i1 n (congrArg Subtype.val e).symm
 

@@ -29,7 +29,7 @@ theorem starProjection_H10_eq (u : L2G n) :
     refine Submodule.mem_orthogonal_singleton_iff_inner_left.2 ?_
     rw [inner_sub_right, inner_sum]
     simp_rw [inner_smul_right, inner_zL_zL]
-    simp [Finset.sum_ite_eq']
+    simp
   exact Submodule.orthogonal_le h
     (Submodule.le_orthogonal_orthogonal _ (Submodule.mem_span_singleton_self _))
 
@@ -67,8 +67,8 @@ def rz (l : Fin (n + 1)) (hl : l ≠ 0) (w : RemT n → ℝ) : ℂ :=
 
 lemma zc_join_remote (l : Fin (n + 1)) (hl : l ≠ 0) (z : ℂ) (w : RemT n → ℝ) :
     zc (n + 1) l (join n z w) = rz l hl w := by
-  simp only [zc, rz, join, splitE_symm_apply, dif_neg (castAdd_not_vis l hl),
-    dif_neg (natAdd_not_vis l hl)]
+  simp only [zc, rz, join, splitE_symm_apply, dite_eq_right (castAdd_not_vis l hl),
+    dite_eq_right (natAdd_not_vis l hl)]
 
 lemma integrable_conj_zc_mul (l : Fin (n + 1)) (u : L2G (n + 1)) :
     Integrable (fun x => conj (zc (n + 1) l x) * u x) (stdGaussian ((n + 1) + (n + 1))) := by

@@ -32,7 +32,7 @@ lemma re_inner_eq_integral (a b : L2G n) :
 lemma integrable_hre (a b : L2G n) :
     Integrable (fun y => hre (a y) (b y)) (stdGaussian (n + n)) :=
   ((L2.integrable_inner (𝕜 := ℂ) a b).congr
-    (Filter.Eventually.of_forall fun y => RCLike.inner_apply' _ _)).re
+    (Filter.Eventually.of_forall fun _ => RCLike.inner_apply' _ _)).re
 
 /-! ### Hilbert forms -/
 
@@ -110,7 +110,7 @@ lemma formH3_add (M : Sym3) (u1 u2 u3 w1 w2 w3 : L2G n)
   simp only [Set.mem_insert_iff, Set.mem_singleton_iff, forall_eq_or_imp, forall_eq] at h h'
   obtain ⟨⟨a1, a2, a3⟩, ⟨b1, b2, b3⟩, ⟨c1, c2, c3⟩⟩ := h
   obtain ⟨⟨d1, d2, d3⟩, ⟨e1, e2, e3⟩, ⟨g1, g2, g3⟩⟩ := h'
-  simp only [a1, a2, a3, b1, b2, b3, c1, c2, c3, d1, d2, d3, e1, e2, e3, g1, g2, g3,
+  simp only [a1, a2, a3, b2, b3, c3, d1, e1, e2, g1, g2, g3,
     Complex.zero_re]
   ring
 
@@ -123,7 +123,7 @@ lemma formH2_add (M : Sym2) (u1 u2 w1 w2 : L2G n)
   simp only [Set.mem_insert_iff, Set.mem_singleton_iff, forall_eq_or_imp, forall_eq] at h h'
   obtain ⟨⟨a1, a2⟩, ⟨b1, b2⟩⟩ := h
   obtain ⟨⟨d1, d2⟩, ⟨e1, e2⟩⟩ := h'
-  simp only [a1, a2, b1, b2, d1, d2, e1, e2, Complex.zero_re]
+  simp only [a1, a2, b2, d1, e1, e2, Complex.zero_re]
   ring
 
 /-! ### Decomposition along two orthogonal subspaces -/
@@ -216,13 +216,13 @@ theorem norm_sq_starProjection_span_orth {ι : Type*} [Fintype ι] [DecidableEq 
       rintro _ ⟨m, rfl⟩
       refine Submodule.mem_orthogonal_singleton_iff_inner_left.2 ?_
       rw [inner_sub_right, inner_sum]
-      simp_rw [inner_smul_right, hg, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+      simp_rw [inner_smul_right, hg, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, ite_true]
       field_simp; ring
     exact Submodule.orthogonal_le h
       (Submodule.le_orthogonal_orthogonal _ (Submodule.mem_span_singleton_self _))
   rw [hP, @norm_sq_eq_re_inner ℂ, sum_inner]
   simp_rw [inner_sum, inner_smul_left, inner_smul_right, hg, mul_ite, mul_zero, Finset.sum_ite_eq,
-    Finset.mem_univ, if_true]
+    Finset.mem_univ, ite_true]
   rw [RCLike.re_to_complex, Complex.re_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_div₀, Complex.conj_ofReal,

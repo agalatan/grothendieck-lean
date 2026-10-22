@@ -140,7 +140,6 @@ lemma integral_gate (r : Row) (p x2 x3 : L2G n) {P : (Fin (n + n) → ℝ) → �
     rw [Row.gate_eq, ← hy]
     simp only [hre, Complex.sq_norm, Complex.normSq_apply, Complex.mul_re, Complex.add_re, Complex.mul_im, Complex.add_im, Complex.ratCast_re,
       Complex.ratCast_im, Complex.conj_re, Complex.conj_im]
-    push_cast
     ring
   have i3 := integrable_form3 r.E p x2 x3
   have ipp := integrable_hre p p
@@ -199,7 +198,7 @@ theorem rowSharedWith_frame (r : Row) (R : Sym2) (hE : r.E.psdOK = true)
     (hP : (H10 (n + 1)).starProjection (hOf (n + 1) f g) = ((tOf (n + 1) f g : ℝ) : ℂ) • zeta0 n)
     (X1 : (Fin (n + n) → ℝ) → ℂ) (hX1 : ⇑(pres hfm hgm hfb hgb) =ᵐ[stdGaussian (n + n)] X1)
     (U : (Fin (n + n) → ℝ) → ℝ) (hU : ∀ y, ‖X1 y‖ ^ 2 = ‖pres hfm hgm hfb hgb‖ ^ 2 * U y)
-    (hU0 : ∀ y, 0 ≤ U y) :
+    (_hU0 : ∀ y, 0 ≤ U y) :
     RowSharedWith r (pot r.E R r.ell r.beta (aFib r.b1 r.b2 r.b3)) (stdGaussian (n + n)) U X1
       ⇑(X2e hfm hgm hfb hgb) ⇑(X3e hfm hgm hfb hgb) ‖pres hfm hgm hfb hgb‖ (VOf (n + 1) f g)
       (tOf (n + 1) f g) (QhOf (n + 1) f g) (vL (n + 1) 0) := by

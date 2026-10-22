@@ -129,7 +129,7 @@ lemma ouL_imW (a b c : Fin n) : ouL (imW n a b c) = -(3 * imW n a b c) := by
 
 lemma third_cub {ι : Type*} [DecidableEq ι] (p q r i j k : ι) :
     ∃ t : ℝ, pderiv i (pderiv j (pderiv k (X p * X q * X r : MvPolynomial ι ℝ))) = C t := by
-  simp only [map_add, pderiv_mul, pderiv_X', pderiv_C, pderiv_C_mul, mul_zero, zero_mul, add_zero,
+  simp only [map_add, pderiv_mul, pderiv_X', pderiv_C, mul_zero, zero_mul, add_zero,
     zero_add]
   simp only [← C_mul, ← C_add]
   exact ⟨_, rfl⟩
