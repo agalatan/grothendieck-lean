@@ -66,5 +66,8 @@ import Grothe.LowerAnalytic.GramTensor
 import Grothe.LowerAnalytic.GramSpectral
 import Grothe.LowerAnalytic.GramBudget
 import Grothe.LowerAnalytic.Bridge
+import Grothe.LowerAnalytic.GaussianRadial
 import Grothe.LowerAnalytic.Witness
 import Grothe.LowerAnalytic.WitnessCap
+import Grothe.LowerAnalytic.WickCubic
+import Grothe.LowerAnalytic.WickChaos

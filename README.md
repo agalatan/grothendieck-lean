@@ -108,7 +108,9 @@ a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u,
 
 **How the two halves fit.** The Gaussian witness is now defined in Lean
 (`Grothe/LowerAnalytic/Witness.lean`): on ℂⁿ = ℝ^{n+n} with the standard Gaussian measure,
-H₁,₀ = span{zₗ}, H₂,₁ = (charge-one polynomials of degree ≤ 3) ⊓ H₁,₀ᗮ (the span of the Wick cubics),
+H₁,₀ = span{zₗ}, H₂,₁ = (charge-one polynomials of degree ≤ 3) ⊓ H₁,₀ᗮ (the span of the Wick cubics
+zₐz_b z̄_c − 2δ_ac z_b − 2δ_bc zₐ, which lie in it by the complex Wick identity
+E[z̄ᵢzₐz_b z̄_c] = 4(δ_ia δ_bc + δ_ib δ_ac), `WickCubic.lean`),
 and `witness n = P₁,₀ − εP₂,₁` (orthogonal projections, ε = 149/200). The **value half** of
 `TransferInputsL2` is proved: for uₗ = zₗ/‖z‖, `norm_pairVal_witness : 1 − (1+ε)/(n+1) ≤ ‖Σₗ⟨uₗ, T uₗ⟩‖`
 (from E‖z‖² = 2n, E‖z‖⁴ = 4n(n+1), E‖z‖ ≥ 2n/√(2(n+1)) and the orthogonality of the two chaos
@@ -117,12 +119,19 @@ ranges), and `transferInputs_of_witnessCap : (∀ n ≥ N, WitnessCap n B) → T
 The **scalar-cap half** is reduced to the certificate (`WitnessCap.lean`): for unimodular f, g
 with h = (f+g)/2, k = (f−g)/2, t = ‖P₁,₀h‖, the polarisation identity `VOf_eq`,
 Re⟨f, Tg⟩ = t² − ε‖P₂,₁h‖² − ‖P₁,₀k‖² + ε‖P₂,₁k‖², is proved, and
-`witnessCap_of_reduction : (∀ unimodular f g with Re⟨f,Tg⟩ ≥ 0, ReductionHyp n f g) → WitnessCap n Bcap`
-applies `lower_bound_data` to V = Re⟨f, Tg⟩ (after a phase) with the crude row derived from
-‖P₂,₁k‖ ≤ ρ. `ReductionHyp n f g` is exactly what remains: t ≤ 9/10 (on paper t ≤ E|z₁|/‖z₁‖₂ = √π/2),
-‖P₂,₁k‖ ≤ ρ (the first-moment bound of the cubic residual, L3), and a coupling vector v with ‖v‖² = 2
-and `SharedReduction rowData V t (P₂,₁h) v` (the Gaussian reduction of the rows, L4).
-`lower_bound_of_reduction : (∀ n ≥ N, ∀ f g, … → ReductionHyp n f g) → IsGrothendieckBound K → Llow < K`
+`witnessCap_of_reduction : WickTensorHyp n → (∀ unimodular f g with Re⟨f,Tg⟩ ≥ 0, ReductionHyp n f g) → WitnessCap n Bcap`
+applies `lower_bound_data` to V = Re⟨f, Tg⟩ (after a phase) with the bound t ≤ 9/10 proved
+(`tOf_le`: P₁,₀h is a complex Gaussian, so ‖P₁,₀h‖² = Re⟨h, P₁,₀h⟩ ≤ E|P₁,₀h| = (√π/2)‖P₁,₀h‖, by the
+rotation invariance of the Gaussian measure and E√(x²+y²) = √(π/2) in `GaussianRadial.lean`) and the
+crude row derived from ‖P₂,₁k‖ ≤ ρ, which is proved (`normQk_le_rho`, L3): P₂,₁k ∈ H₂,₁ is a
+combination of Wick cubics (`exists_wick_repr`), its real and imaginary parts are polynomials a, b with
+`Chaos3 a` and `Circular Jstd a b` for the standard complex structure (`WickChaos.lean`), so the
+certified first-moment bound E√(a² + b²) ≤ ρ of `gaussian_moments` applies to P₂,₁k/‖P₂,₁k‖, and
+‖P₂,₁k‖² = Re⟨k, P₂,₁k⟩ ≤ E|P₂,₁k| since |k| ≤ 1. That first-moment bound rests on the sixth-moment
+inequality, hence on the open tensor fields, assumed as `WickTensorHyp n` (`TensorFactsRest` for every
+circular cubic pair of ℂⁿ). `ReductionHyp n f g` is exactly what remains: a coupling vector v with
+‖v‖² = 2 and `SharedReduction rowData V t (P₂,₁h) v` (the Gaussian reduction of the rows, L4).
+`lower_bound_of_reduction : (∀ n ≥ N, WickTensorHyp n) → (∀ n ≥ N, ∀ f g, … → ReductionHyp n f g) → IsGrothendieckBound K → Llow < K`
 composes everything; `TransferInputsL2 B` itself no longer needs to be assumed.
 
 * Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
@@ -141,7 +150,8 @@ composes everything; `TransferInputsL2 B` itself no longer needs to be assumed.
   and 6,562 mixing two, a component being a row or a mixture of two rows with four certified
   τ-nodes, chorded twice in τ, pinned gate price X₁ = p);
   and the endpoint; the Gaussian witness on L²(γ_n) with its value on z/‖z‖, the orthogonality of the
-  chaos ranges, the polarisation identity of the scalar pairing and the transfer inputs from the
+  chaos ranges, the polarisation identity of the scalar pairing, the bound ‖P₁,₀h‖ ≤ √π/2 for |h| ≤ 1
+  (rotation invariance of the Gaussian measure, E√(x²+y²) = √(π/2)) and the transfer inputs from the
   scalar caps. All finite exact checks of the lower certificate are one `native_decide` (`cert_check`).
 * Explicit hypotheses (not formalized): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
   from ‖Qk‖ ≤ E|Qk/‖Qk‖| ≤ ρ, which uses the moment bounds also for the cubic Qk/‖Qk‖), with ‖v‖² = 2
@@ -155,12 +165,14 @@ composes everything; `TransferInputsL2 B` itself no longer needs to be assumed.
   the cap table; slack 10⁻¹¹); the moment bounds on the law of U = |q|²; the analytic
   inputs of the Stein cuts for that law; and, for the scalar cap of the witness T = P₁,₀ − εP₂,₁
   over unimodular functions on Gaussian space, `ReductionHyp` (for every unimodular pair with
-  Re⟨f,Tg⟩ ≥ 0: t = ‖P₁,₀h‖ ≤ 9/10, the first-moment bound ‖P₂,₁k‖ ≤ ρ of the cubic residual, and a
-  coupling vector with ‖v‖² = 2 and `SharedReduction` for V = Re⟨f,Tg⟩, t, P₂,₁h, v). The
-  transfer itself (finite partitions, phase choices on cells, L² approximation by ball-valued
-  simple functions, passage to the limit), the witness, its value ≥ 1 − (1+ε)/(n+1) on u(z) = z/‖z‖,
-  the polarisation identity and the crude row from ‖P₂,₁k‖ ≤ ρ are proved in Lean
-  (`Grothe/Lower/Transfer*.lean`, `Grothe/LowerAnalytic/Witness.lean`, `WitnessCap.lean`).
+  Re⟨f,Tg⟩ ≥ 0: a coupling vector with ‖v‖² = 2 and `SharedReduction` for V = Re⟨f,Tg⟩, t = ‖P₁,₀h‖,
+  P₂,₁h, v) and `WickTensorHyp` (the tensor fields `TensorFactsRest` for the circular cubics of ℂⁿ,
+  needed by the first-moment bound of the cubic residual). The transfer itself (finite partitions,
+  phase choices on cells, L² approximation by ball-valued simple functions, passage to the limit), the
+  witness, its value ≥ 1 − (1+ε)/(n+1) on u(z) = z/‖z‖, the polarisation identity, the bound
+  t ≤ √π/2 < 9/10, the identification of H₂,₁ with the circular cubic polynomials and the crude row
+  ‖P₂,₁k‖ ≤ ρ from the certified first-moment bound are proved in Lean (`Grothe/Lower/Transfer*.lean`,
+  `Grothe/LowerAnalytic/{GaussianRadial,Witness,WitnessCap,WickCubic,WickChaos}.lean`).
 * The analytic inputs of the Stein cuts (`GramInputs`, extending `SteinInputs`) are, with
   w = Γ(q, q̄)/3, c = Γ(q, q)/3, X = w − 1, r = Re(c q̄²)/U, P = E[XU] and Q = E[rU]: E w = 1; the
   separate spectral budgets E X² ≤ (2/3)P and E r² ≤ (2/3)Q (gaps ‖U₄‖²/9 and ‖(q²)₄‖²/9 + E(|c|² − r²));
