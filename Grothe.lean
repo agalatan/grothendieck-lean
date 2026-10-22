@@ -14,6 +14,8 @@ import Grothe.Upper.Haagerup
 import Grothe.Haagerup.Gauss1D
 import Grothe.Haagerup.GaussG
 import Grothe.Haagerup.Euler
+import Grothe.Haagerup.BetaJ
+import Grothe.Haagerup.Series
 import Grothe.Lower.Basic
 import Grothe.Lower.Poly
 import Grothe.Lower.Moment
