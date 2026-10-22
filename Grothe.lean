@@ -80,3 +80,4 @@ import Grothe.LowerAnalytic.Fibre
 import Grothe.LowerAnalytic.FibreRot
 import Grothe.LowerAnalytic.FibreHermite
 import Grothe.LowerAnalytic.MixedChaos
+import Grothe.LowerAnalytic.Tensor
