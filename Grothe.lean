@@ -11,6 +11,9 @@ import Grothe.Upper.Disk
 import Grothe.Upper.Realise
 import Grothe.Upper.Compose
 import Grothe.Upper.Haagerup
+import Grothe.Haagerup.Gauss1D
+import Grothe.Haagerup.GaussG
+import Grothe.Haagerup.Euler
 import Grothe.Lower.Basic
 import Grothe.Lower.Poly
 import Grothe.Lower.Moment
