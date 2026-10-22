@@ -4,6 +4,11 @@ Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bou
 complex Grothendieck constant:
 
 > **1.401695322458 < K_G^ℂ < 1.404598989011**
+>
+> and, with **no hypothesis at all** (every step proved in Lean): **K_G^ℂ ≤ 1.40578**
+
+The two sharp bounds each rest on one explicitly stated family of externally certified numerical
+inputs; the unconditional bound rests on nothing outside Lean (see below).
 
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an 8-page explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
@@ -36,6 +41,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
 | Oct 2026 | **this repository** | **1.401695322458 < K** | **K < 1.404598989011** |
+| Oct 2026 | this repository, fully formal (no hypothesis) | | K ≤ 1.40578 |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
 proposed as the exact value; it lies inside the interval, 2.31·10⁻⁵ below our upper bound.
@@ -43,7 +49,7 @@ proposed as the exact value; it lies inside the interval, 2.31·10⁻⁵ below o
 ## What is proved, and under which assumptions
 
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
-complex matrix, with V over all finite-dimensional complex Hilbert spaces. Both headline
+complex matrix, with V over all finite-dimensional complex Hilbert spaces. All three headline
 theorems conclude a statement about the constant itself.
 
 **Lower bound** — `Grothe.LowerAnalytic.lower_bound_of_nodeCaps :
@@ -64,7 +70,7 @@ by exact-arithmetic computations outside Lean; moving them inside is work in pro
 
 The joint sixth-moment/Stein budgets are also formalized in
 `Grothe/LowerAnalytic/JointSixth.lean`, `Grothe/Lower/Reserve.lean` and
-`Grothe/LowerAnalytic/JointBudget.lean`. They retain the shared tensor constraints. The endpoint now uses 41 joint-moment node
+`Grothe/LowerAnalytic/JointBudget.lean`. They retain the shared tensor constraints. The endpoint uses 41 joint-moment node
 certificates, each checked on its certified kurtosis range and connected to the Gaussian
 cubic by `Grothe/LowerAnalytic/JointContractions.lean`. Two of those nodes use the
 stronger Young budget transported by an exact identity; the cover contains 8,756 boxes.
@@ -129,7 +135,7 @@ The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAI
 | `scratch/Axioms.lean`, `scripts/check_axioms.py` | the axiom report and its check |
 | `docs/` | `LEAN_DETAILS.md` (inventory) and `overview.tex` (source of `OVERVIEW.pdf`) |
 
-About 28,000 lines of hand-written Lean and 11,000 lines of generated data.
+About 32,000 lines of hand-written Lean and 12,000 lines of generated data.
 
 ## Building
 

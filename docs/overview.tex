@@ -32,7 +32,8 @@
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
 \Large $1.401695322458\;<\;\KG\;<\;1.404598989011$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, each resting on one explicitly stated
-family of externally certified numerical inputs (Section~\ref{sec:trust}).\vspace{4pt}
+family of externally certified numerical inputs (Section~\ref{sec:trust}).\\[4pt]
+With \textbf{no hypothesis at all}, every step proved in Lean: $\KG\le1.40578$.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
@@ -75,7 +76,8 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$ (Gaussian phase rounding)\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct 2026 & \textbf{this work} & $\mathbf{1.401695322458}$ & $\mathbf{1.404598989011}$\\\bottomrule
+Oct 2026 & \textbf{this work} & $\mathbf{1.401695322458}$ & $\mathbf{1.404598989011}$\\
+Oct 2026 & this work, fully formal & & $1.40578$ (no hypothesis)\\\bottomrule
 \end{tabular}
 \end{center}
 Haagerup's integral
@@ -96,7 +98,9 @@ correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
  \E\bigl[\overline{f(\cdot)}\,g(\cdot)\bigr]=H(t)=\sum_{k\ge0}c_k\,t|t|^{2k}.
 \]
 If $H(t)=c\,t+r(t)$ with $\|r\|_A=\sum_k|c_k-c\,\delta_{k0}|<c$, a tensor-power argument (Krivine's trick) gives
-$\KG\le1/(c-\|r\|_A)$. Haagerup's choice $f=\ph$ gives $1.40491$. Our rounding is a smoothed two-coordinate phase rounding,
+$\KG\le1/(c-\|r\|_A)$. Haagerup's choice $f=\ph$ gives $1.40491$. Lean proves Haagerup's identity for $f=\ph$ from scratch
+(Euler and Beta integrals, the law of orthonormal Gaussian coordinates); with a cubic preprocessor and $4000$ exact terms
+this gives the unconditional bound $\KG\le1.40578$ (\lean{haagerup\_bound}), which needs no hypothesis. Our sharp rounding is a smoothed two-coordinate phase rounding,
 $F_0=\ph\bigl(z+\sqrt{1+a^2}\,v(|z|^2)\,w\bigr)$ with a twelve-term Laguerre profile $v$, multiplied by the cubic Taylor
 polynomial of a damped polynomial phase $\varphi$: $T=F_0P_3(\varphi)$, $P_3(x)=1+ix-x^2/2-ix^3/6$. The identity
 $|P_3(x)|^2=1-x^4(3-x^2)/36$ and $|\varphi|<1$ give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
@@ -185,8 +189,8 @@ only a cubic preprocessor and a finite head are used.\\\bottomrule
 \end{tabular}
 \end{center}
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}, and exactly three pinned \lean{native\_decide} facts. No
-\lean{sorry}; CI builds everything and checks the axiom report (179 theorems). The development has about $28{,}000$ lines of
-hand-written Lean and $11{,}000$ lines of generated certificate data. The lower bound is close to fully formal: only
+\lean{sorry}; CI builds everything and checks the axiom report (179 theorems). The development has about $32{,}000$ lines of
+hand-written Lean and $12{,}000$ lines of generated certificate data. The lower bound is close to fully formal: only
 one-variable numerical caps remain. The sharp upper bound still rests mainly on an external analytic comparison lemma; a weaker upper bound, $1.40578$, is fully formal.
 
 \section{Discoveries along the way}\label{sec:discoveries}
