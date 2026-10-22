@@ -129,10 +129,24 @@ combination of Wick cubics (`exists_wick_repr`), its real and imaginary parts ar
 certified first-moment bound E√(a² + b²) ≤ ρ of `gaussian_moments` applies to P₂,₁k/‖P₂,₁k‖, and
 ‖P₂,₁k‖² = Re⟨k, P₂,₁k⟩ ≤ E|P₂,₁k| since |k| ≤ 1. That first-moment bound rests on the sixth-moment
 inequality, which is proved for every circular cubic (all tensor facts, `Circular.tensorFacts`).
-`ReductionHyp n f g` is exactly what remains: a coupling vector v with
-‖v‖² = 2 and `SharedReduction rowData V t (P₂,₁h) v` (the Gaussian reduction of the rows, L4).
-`lower_bound_of_reduction : (∀ n ≥ N, ∀ f g, … → ReductionHyp n f g) → IsGrothendieckBound K → Llow < K`
-composes everything; `TransferInputsL2 B` itself no longer needs to be assumed.
+`ReductionHyp n f g` (a coupling vector v with ‖v‖² = 2 and `SharedReduction rowData V t (P₂,₁h) v`)
+is proved for n ≥ 2 from the node caps of the 19 certified fibre potentials alone
+(`reductionHyp_of_nodeCaps`, L4, `Grothe/LowerAnalytic/{Fibre,FibreRot,FibreHermite,FibrePotential,FibreSup,
+PotentialReg,Tensor,Pieces,KSide,FibreIntegral,RowGaussian,Frame,Reduction}.lean`): a unitary frame moves
+P₁,₀h to the visible coordinate ζ₀ = z₀/√2 (`exists_Cop_eq`); the Gaussian measure splits as
+γ_ℂ ⊗ γ_{remote} (`split2`); the fibre potential Ψ_r(s) = sup_y [∫(|L + B·(My + sa)| + |L − B·(My + sa)|) − yᵀMy]
+is defined exactly as certified (basis B = (1, |z|²−1, z²/√2, z, z(|z|²−2)/√2, z̄), M = diag(E,E,R,R,εI₂)),
+bounds every fibre expression at a complex coupling u by Ψ_r(|u|) (`fibreExprC_le_pot`, rotation
+invariance), and is convex, even and Lipschitz with the header constant smax via E||z|²−1| = 2/e
+(`capsHold_rowPot`); ‖P₂,₁k‖² is bounded by the six remote projections of the fibre coefficients
+(the six mixed pieces B_j ⊗ K_j of H₂,₁(n+1), `norm_sq_starProjection_H21_le`), ‖P₁,₀k‖² splits exactly,
+and the gates E ⪰ 0, E ⪰ diag(−1,ε,ε), R ⪰ diag(−1,ε), R ⪰ diag(ε,0) (checked exactly, `rowData_gatesOK`,
+`rowGates_ok`) give the k-side inequality (`kside`); the integrated fibre bound and the k-side
+inequality give each row inequality with the residual p = Π_{H₂,₁}c₀, its circular law and the gate
+variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
+`lower_bound_of_nodeCaps : NodeCaps → IsGrothendieckBound K → Llow < K` composes everything:
+**the only remaining hypothesis of the lower bound is `NodeCaps`**, the node caps
+Ψ_r(r_k) − 10⁻¹¹ ≤ c_k of the 19 certified potentials (exact-arithmetic certificates outside Lean).
 
 * Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
   (trailing gate block positive definite, κδ² ≤ δ + gatePrice); the Stein cuts (summed, spectral and general spectral) from their analytic inputs, by completions of squares,
@@ -163,10 +177,8 @@ composes everything; `TransferInputsL2 B` itself no longer needs to be assumed.
   near the maximum, anchored quadratic bounds and, on s ∈ [0.2, 0.4) ∪ [0.525, 0.6) of rows 0.84–0.855, localised anchored bounds
   (regions in the odd fibre directions, one S-lemma quadratic each, replayed in exact arithmetic), with the convex hull of
   the cap table; slack 10⁻¹¹); the moment bounds on the law of U = |q|²; the analytic
-  inputs of the Stein cuts for that law; and, for the scalar cap of the witness T = P₁,₀ − εP₂,₁
-  over unimodular functions on Gaussian space, `ReductionHyp` (for every unimodular pair with
-  Re⟨f,Tg⟩ ≥ 0: a coupling vector with ‖v‖² = 2 and `SharedReduction` for V = Re⟨f,Tg⟩, t = ‖P₁,₀h‖,
-  P₂,₁h, v). The transfer itself (finite partitions,
+  inputs of the Stein cuts for that law. In the headline theorem `lower_bound_of_nodeCaps` all of these
+  except the node caps (`NodeCaps`) are proved for the witness T = P₁,₀ − εP₂,₁ (see above). The transfer itself (finite partitions,
   phase choices on cells, L² approximation by ball-valued simple functions, passage to the limit), the
   witness, its value ≥ 1 − (1+ε)/(n+1) on u(z) = z/‖z‖, the polarisation identity, the bound
   t ≤ √π/2 < 9/10, the identification of H₂,₁ with the circular cubic polynomials and the crude row

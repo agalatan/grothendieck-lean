@@ -125,3 +125,17 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.exists_wick_repr
 #print axioms Grothe.LowerAnalytic.integral_norm_le_rho_of_mem_H21
 #print axioms Grothe.LowerAnalytic.normQk_le_rho
+#print axioms Grothe.LowerAnalytic.lower_bound_of_nodeCaps
+#print axioms Grothe.LowerAnalytic.reductionHyp_of_nodeCaps
+#print axioms Grothe.LowerAnalytic.sharedReduction_frame
+#print axioms Grothe.LowerAnalytic.rowSharedWith_frame
+#print axioms Grothe.LowerAnalytic.kside
+#print axioms Grothe.LowerAnalytic.norm_sq_starProjection_H21_le
+#print axioms Grothe.LowerAnalytic.fibre_integrated
+#print axioms Grothe.LowerAnalytic.fibreExprC_le_pot
+#print axioms Grothe.LowerAnalytic.capsHold_rowPot
+#print axioms Grothe.LowerAnalytic.exists_Cop_eq
+#print axioms Grothe.LowerAnalytic.integral_abs_normSq_sub_one
+#print axioms Grothe.LowerAnalytic.fibreGram_eq
+#print axioms Grothe.Lower.rowGates_ok
+#print axioms Grothe.Lower.rowData_gatesOK
