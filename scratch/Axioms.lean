@@ -139,3 +139,13 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.fibreGram_eq
 #print axioms Grothe.Lower.rowGates_ok
 #print axioms Grothe.Lower.rowData_gatesOK
+#print axioms Grothe.Lower.reserved_gram_budget
+#print axioms Grothe.Lower.joint_reserve_value
+#print axioms Grothe.Lower.joint_moment_range
+#print axioms Grothe.Lower.reserved_moment_cut
+#print axioms Grothe.LowerAnalytic.JointSixth.gram_j1
+#print axioms Grothe.LowerAnalytic.JointSixth.gram_j2
+#print axioms Grothe.LowerAnalytic.JointSixth.gram_j3
+#print axioms Grothe.LowerAnalytic.JointSixth.s0_eq_tensor
+#print axioms Grothe.LowerAnalytic.JointSixth.h0_eq_tensor
+#print axioms Grothe.LowerAnalytic.joint_sixth_budget

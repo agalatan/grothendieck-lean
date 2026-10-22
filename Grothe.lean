@@ -92,3 +92,6 @@ import Grothe.LowerAnalytic.FibreIntegral
 import Grothe.LowerAnalytic.RowGaussian
 import Grothe.LowerAnalytic.Frame
 import Grothe.LowerAnalytic.Reduction
+import Grothe.Lower.Reserve
+import Grothe.LowerAnalytic.JointSixth
+import Grothe.LowerAnalytic.JointBudget
