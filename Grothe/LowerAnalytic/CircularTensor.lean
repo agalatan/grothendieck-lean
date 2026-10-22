@@ -1,6 +1,7 @@
 import Grothe.LowerAnalytic.Circular
 import Grothe.LowerAnalytic.Covariance
 import Grothe.LowerAnalytic.FourthMoment
+import Grothe.LowerAnalytic.WickSix
 
 /-!
 # The tensor facts of circular cubics
@@ -93,8 +94,8 @@ part of a circular cubic.  The pure linear-algebra facts are stated for an arbit
   ⟨G_a, S_{ac} G_c⟩` (`ap4_P0`, `ap4_Q0`, …); `⟨G₀, S₀₀ G₀⟩ ≤ 2√τ (s − η)`,
   `⟨G₂, S₂₂ G₂⟩ ≤ √τ η` (complex gain), and the two mixed terms are each
   `≤ √(ρ η (s − η))`, `ρ = (h − 6τ)/2`.
-* `TensorFactsRest` collects the remaining field (the Wick identity `wick6`);
-  `TensorFactsRest.toTensorFacts` assembles `TensorFacts` from it for a circular pair.
+* `Circular.tensorFacts` assembles `TensorFacts` for a circular pair; the Wick identity `wick6`
+  is `Chaos3.wick6` (`WickSix.lean`).
 -/
 
 open MvPolynomial Matrix
@@ -5325,25 +5326,17 @@ theorem chargeSplit_circular [DecidableEq ι] {J : ι → ι → ℝ} {a b : MvP
 
 set_option linter.unusedSectionVars true
 
-/-! ### The partial constructor -/
+/-! ### The tensor facts of a circular cubic -/
 
-/-- The fields of `TensorFacts` that are **not yet proved** for circular cubics. -/
-structure TensorFactsRest (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (J : ι → ι → ℝ) (a : MvPolynomial ι ℝ) :
-    Prop where
-  wick6 : (E (a ^ 6) - 15 * E (a ^ 4) * E (a ^ 2) + 30 * E (a ^ 2) ^ 3) / 46656
-    = 135 / 2 * tenT3 (cubicKernel a) - 20 * tenV (cubicKernel a)
-      + 135 / 2 * tenQ (cubicKernel a) + 165 / 2 * tenDU (cubicKernel a)
-      + 45 * tenU2 (cubicKernel a)
-
-/-- **The tensor facts of a circular cubic** from the remaining one: every field except the
-Wick identity `wick6` is proved (`Chaos3.wick4`, `sos1_circular`, `sos2_circular`,
-`tenGa_le_half`, `tenTT_le_sixth`, `cubicTrace_circular`, `trace3_circular`, `trace4_circular`,
-`coupled_circular`, `A0nn_circular`, `A2nn_circular`, `chargeSplit_circular`). -/
-theorem TensorFactsRest.toTensorFacts [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
+/-- **The tensor facts of a circular cubic**: `Chaos3.wick4`, `Chaos3.wick6`, `sos1_circular`,
+`sos2_circular`, `tenGa_le_half`, `tenTT_le_sixth`, `cubicTrace_circular`, `trace3_circular`,
+`trace4_circular`, `coupled_circular`, `A0nn_circular`, `A2nn_circular`,
+`chargeSplit_circular`. -/
+theorem Circular.tensorFacts [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
     (hE : IsGaussianExpectation E) {J : ι → ι → ℝ} {a b : MvPolynomial ι ℝ} (ha : Chaos3 a)
-    (hc : Circular J a b) (hR : TensorFactsRest E J a) : TensorFacts E J a where
+    (hc : Circular J a b) : TensorFacts E J a where
   wick4 := ha.wick4 hE
-  wick6 := hR.wick6
+  wick6 := ha.wick6 hE
   sos1 := sos1_circular hc
   sos2 := sos2_circular hc
   anti := tenGa_le_half _ hc.anti hc.sq_diag hc.sq_off

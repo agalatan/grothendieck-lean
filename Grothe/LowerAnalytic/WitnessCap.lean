@@ -23,10 +23,9 @@ Gaussian, so `E|Ph| = (√π/2)‖Ph‖` (`integral_norm_linL`, by the rotation 
 (`normQk_le_rho`, item L3): `Qk ∈ H₂,₁` is a combination of Wick cubics (`exists_wick_repr`), so
 `Qk/‖Qk‖ = a + ib` a.e. with `a, b` real polynomials, `Chaos3 a` and `Circular Jstd a b`
 (`WickChaos.lean`), `∫ a² = 1/2`; the certified first-moment bound `E √U ≤ ρ` of the law
-`U = a² + b²` (`gaussian_moments`, field `mh`, which rests on the sixth-moment inequality and hence
-on the still-open tensor fields `TensorFactsRest`) gives `E|Qk/‖Qk‖| ≤ ρ`, and
-`‖Qk‖² = Re⟪k, Qk⟫ ≤ E|Qk|` with `|k| ≤ 1`.  The tensor fields are assumed in the form
-`WickTensorHyp n : ∀ a b, Chaos3 a → Circular (Jstd n) a b → TensorFactsRest (gaussE (n+n)) (Jstd n) a`.
+`U = a² + b²` (`gaussian_moments`, field `mh`, which rests on the sixth-moment inequality, proved
+through the tensor facts `Circular.tensorFacts`) gives `E|Qk/‖Qk‖| ≤ ρ`, and
+`‖Qk‖² = Re⟪k, Qk⟫ ≤ E|Qk|` with `|k| ≤ 1`.
 Hence the remaining hypothesis of the scalar cap, per admissible pair with `V ≥ 0`, is exactly
 (`ReductionHyp`):
 
@@ -37,7 +36,7 @@ Hence the remaining hypothesis of the scalar cap, per admissible pair with `V �
 Here `L²(γ_n)` is the real inner product space `E` of `lower_bound_data` through Mathlib's
 `InnerProductSpace ℝ (Lp ℂ 2 μ)` (real part of the complex inner product, same norm).
 
-* `witnessCap_of_reduction : WickTensorHyp n → (∀ f g unimodular, 0 ≤ VOf f g → ReductionHyp n f g)
+* `witnessCap_of_reduction : (∀ f g unimodular, 0 ≤ VOf f g → ReductionHyp n f g)
   → WitnessCap n Bcap`;
 * `lower_bound_of_reduction`: the same hypotheses for all `n ≥ N` give `Llow < K` for every
   Grothendieck bound `K` (through `transferInputs_of_witnessCap` and `lower_bound_of_transferL2`).
@@ -385,14 +384,8 @@ lemma repr_ae (c : Fin n × Fin n × Fin n → ℂ) :
     simp [reP, imP, Complex.re_sum, Complex.im_sum, Complex.mul_re, Complex.mul_im, map_sum,
       map_sub, map_add, map_mul, eval_C]
 
-/-- **The remaining tensor hypothesis of the sixth-moment certificate**, for the circular cubics of
-`ℂⁿ` with the standard complex structure. -/
-def WickTensorHyp : Prop :=
-  ∀ a b : MvPolynomial (Fin (n + n)) ℝ, Chaos3 a → Circular (Jstd n) a b →
-    TensorFactsRest (gaussE (n + n)) (Jstd n) a
-
 /-- **The first-moment bound on `H₂,₁`**: `E|ψ| ≤ ρ` for every unit `ψ ∈ H₂,₁`. -/
-theorem integral_norm_le_rho_of_mem_H21 (hT : WickTensorHyp n) {ψ : L2G n} (hψ : ψ ∈ H21 n)
+theorem integral_norm_le_rho_of_mem_H21 {ψ : L2G n} (hψ : ψ ∈ H21 n)
     (h1 : ‖ψ‖ = 1) : ∫ x, ‖ψ x‖ ∂(stdGaussian (n + n)) ≤ ρ := by
   obtain ⟨c, rfl⟩ := exists_wick_repr n hψ
   obtain ⟨A, hA⟩ : ∃ A, A = reP n c := ⟨_, rfl⟩
@@ -428,7 +421,7 @@ theorem integral_norm_le_rho_of_mem_H21 (hT : WickTensorHyp n) {ψ : L2G n} (hψ
     (integrable_eval (B ^ 2)).congr (Filter.Eventually.of_forall fun x => by simp)
   have hAA : ∫ x, eval x A ^ 2 ∂(stdGaussian (n + n)) = 1 / 2 := by
     rw [integral_add hiA hiB] at hnorm; linarith
-  have hM := gaussian_moments A B hA3 hAA hc (hT A B hA3 hc)
+  have hM := gaussian_moments A B hA3 hAA hc
   refine le_trans (le_of_eq ?_) hM.mh
   refine integral_congr_ae (hae.mono fun x hx => ?_)
   simp only at hx ⊢
@@ -449,7 +442,7 @@ lemma norm_kOf_le {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
 
 /-- **The crude-row input** `‖P₂,₁ k‖ ≤ ρ` for a unimodular pair (L3), from the first-moment bound
 on `H₂,₁`. -/
-theorem normQk_le_rho (hT : WickTensorHyp n) {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
+theorem normQk_le_rho {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
     (hg : g ∈ Unimod (stdGaussian (n + n))) : ‖QkOf n f g‖ ≤ ρ := by
   obtain ⟨w, hw⟩ : ∃ w : L2G n, w = QkOf n f g := ⟨_, rfl⟩
   have hmem : w ∈ H21 n := by
@@ -463,7 +456,7 @@ theorem normQk_le_rho (hT : WickTensorHyp n) {f g : L2G n} (hf : f ∈ Unimod (s
   have hψ1 : ‖ψ‖ = 1 := by
     rw [hψ, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (inv_nonneg.2 (norm_nonneg _)),
       inv_mul_cancel₀ h0.ne']
-  have hint := integral_norm_le_rho_of_mem_H21 n hT hψm hψ1
+  have hint := integral_norm_le_rho_of_mem_H21 n hψm hψ1
   have e : ∫ x, ‖ψ x‖ ∂(stdGaussian (n + n)) = ‖w‖⁻¹ * ∫ x, ‖w x‖ ∂(stdGaussian (n + n)) := by
     rw [← integral_const_mul]
     refine integral_congr_ae ?_
@@ -493,7 +486,7 @@ theorem normQk_le_rho (hT : WickTensorHyp n) {f g : L2G n} (hf : f ∈ Unimod (s
 /-- **The remaining input of the scalar cap for one pair** (`V ≥ 0` after the phase): a coupling
 vector `v` with `‖v‖² = 2` and the simultaneous Gaussian reduction of the rows
 `SharedReduction rowData V t Qh v` (L4).  (`t ≤ 9/10` is proved, `tOf_le`; the crude-row input
-`‖Qk‖ ≤ ρ` is proved from `WickTensorHyp`, `normQk_le_rho`.) -/
+`‖Qk‖ ≤ ρ` is proved, `normQk_le_rho`.) -/
 def ReductionHyp (f g : L2G n) : Prop :=
   ∃ v : L2G n, ‖v‖ ^ 2 = 2 ∧ SharedReduction rowData (VOf n f g) (tOf n f g) (QhOf n f g) v
 
@@ -528,7 +521,7 @@ lemma rowOf_crude (f g : L2G n) (hk : ‖QkOf n f g‖ ≤ ρ) (v : L2G n) :
 /-- **The scalar cap from the reduction hypotheses**: `WitnessCap n Bcap`, i.e.
 `‖⟪f, T g⟫‖ ≤ Bcap` for a.e. unimodular `f, g`, from `ReductionHyp` on the pairs with `V ≥ 0`
 (the phase-rotated pairs). -/
-theorem witnessCap_of_reduction (hT : WickTensorHyp n)
+theorem witnessCap_of_reduction
     (hred : ∀ f g : L2G n, f ∈ Unimod (stdGaussian (n + n)) → g ∈ Unimod (stdGaussian (n + n)) →
       0 ≤ VOf n f g → ReductionHyp n f g) :
     WitnessCap n Bcap := by
@@ -541,15 +534,15 @@ theorem witnessCap_of_reduction (hT : WickTensorHyp n)
   obtain ⟨v, hv, hshared⟩ := hred f (θ • g) hf hg' hV
   rw [← hval]
   exact lower_bound_data _ _ _ v hv (norm_nonneg _) (tOf_le n hf hg')
-    (rowOf_crude n f (θ • g) (normQk_le_rho n hT hf hg') v) hshared
+    (rowOf_crude n f (θ • g) (normQk_le_rho n hf hg') v) hshared
 
 /-- **The lower bound from the reduction hypotheses**: `Llow < K` for every Grothendieck bound `K`
 if `ReductionHyp` holds for the unimodular pairs with `V ≥ 0` in every dimension `n ≥ N`. -/
-theorem lower_bound_of_reduction {K : ℝ} (N : ℕ) (hT : ∀ n, N ≤ n → WickTensorHyp n)
+theorem lower_bound_of_reduction {K : ℝ} (N : ℕ)
     (hred : ∀ n, N ≤ n → ∀ f g : L2G n, f ∈ Unimod (stdGaussian (n + n)) →
       g ∈ Unimod (stdGaussian (n + n)) → 0 ≤ VOf n f g → ReductionHyp n f g)
     (hK : IsGrothendieckBound K) : (Llow : ℝ) < K :=
-  lower_bound_of_witnessCap N (fun n hn => witnessCap_of_reduction n (hT n hn) (hred n hn)) hK
+  lower_bound_of_witnessCap N (fun n hn => witnessCap_of_reduction n (hred n hn)) hK
 
 end
 
