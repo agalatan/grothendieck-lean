@@ -12,13 +12,13 @@ Haagerup's rounding `ε = phase⟪g, x⟫` (`g` a standard complex Gaussian vect
 
 (`haagCoeff`, `haagR`: `r_0 = 1`, `r_{k+1} = r_k (2k+1)²/(4(k+1)(k+2))`).  This file proves
 that **if this kernel is dominated** (Haagerup's identity: it is the correlation kernel of the
-phase rounding), then `K_G^ℂ ≤ 1.40615` (`haagerup_upper`).
+phase rounding), then `K_G^ℂ ≤ 1.40578` (`haagerup_upper`).
 
-The preprocessor is `p(t) = a t − b t³` (`haagP`, `a = 0.9068`, `b = 0.0931999`, `‖p‖_𝒜 < 1`) and
+The preprocessor is `p(t) = a t − b t³` (`haagP`, `a = 0.9068`, `b = 0.09319996`, `‖p‖_𝒜 < 1`) and
 the kernel after preprocessing is `compCoeff haagCoeff haagP` (`Compose.lean`).  The residual
 against `s = (π/4) a` splits as
 
-* the terms `k < K = 1000`: a polynomial of degree `< 3K`, whose residual `≤ (π/4) · cap` is
+* the terms `k < K = 4000`: a polynomial of degree `< 3K`, whose residual `≤ (π/4) · cap` is
   certified by the Horner interval evaluation `haagCheck` (`haagerup_check`, `native_decide`);
 * the terms `k ≥ K`: by the `ℓ¹` contraction at most `Σ_{k≥K} c_k ≤ (π/4) g_K/(2K)`, where
   `g_k = r_k (k+1)(2k+1)` is nonincreasing (`haagG_antitone`: `(2k+1)(2k+3) ≤ 4(k+1)²`), so
@@ -272,21 +272,21 @@ lemma coeff_compTerm_eq_zero {P : ℝ[X]} (hP : P.natDegree ≤ 1) {k n : ℕ} (
 /-! ### The data -/
 
 /-- The preprocessor `P = a − bX`, `p(t) = a t − b t³`. -/
-def haagPl : List ℚ := [2267 / 2500, -931999 / 10000000]
+def haagPl : List ℚ := [2267 / 2500, -9319996 / 100000000]
 
 /-- The number of exact terms. -/
-def haagK : ℕ := 1000
+def haagK : ℕ := 4000
 
 /-- The certified residual cap of the finite part (in units of `π/4`). -/
-def haagCap : ℚ := 9992425 / 10000000000
+def haagCap : ℚ := 9990056 / 10000000000
 
 /-- The tail constant: `g_K ≤ haagGam`. -/
-def haagGam : ℚ := 63677887 / 100000000
+def haagGam : ℚ := 63665956 / 100000000
 
 /-- **The finite computation** (by `native_decide`): the residual of
-`Σ_{k<1000} r_k p(t)^{2k+1}` against `a·t` is at most `haagCap`, and `g_{1000} ≤ haagGam`. -/
+`Σ_{k<4000} r_k p(t)^{2k+1}` against `a·t` is at most `haagCap`, and `g_{4000} ≤ haagGam`. -/
 theorem haagerup_check :
-    haagCheck 3000 haagPl haagK (2267 / 2500) haagCap haagGam = true := by
+    haagCheck 12000 haagPl haagK (2267 / 2500) haagCap haagGam = true := by
   native_decide
 
 noncomputable def haagP : ℝ[X] := ofListQ haagPl
@@ -344,8 +344,8 @@ theorem haagerup_residual :
   -- the finite part
   have hfin : |compCoeff (cLo haagK) haagP 0 - Real.pi / 4 * (2267 / 2500 : ℚ)|
       + ∑' n, |compCoeff (cLo haagK) haagP (n + 1)| ≤ Real.pi / 4 * haagCap := by
-    rw [residual_split _ hsLo _ 2999]
-    have htail : ∑' n, |compCoeff (cLo haagK) haagP (n + (2999 + 1))| = 0 := by
+    rw [residual_split _ hsLo _ 11999]
+    have htail : ∑' n, |compCoeff (cLo haagK) haagP (n + (11999 + 1))| = 0 := by
       refine (tsum_congr fun n => ?_).trans tsum_zero
       rw [compCoeff_cLo, hornerP_eq]
       rw [mul_sum, finsetSum_coeff]
@@ -368,7 +368,7 @@ theorem haagerup_residual :
         abs_of_pos (show 0 < Real.pi / 4 by positivity)]
       congr 1
       split_ifs <;> ring
-    rw [show (2999 + 1 : ℕ) = 3000 from rfl]
+    rw [show (11999 + 1 : ℕ) = 12000 from rfl]
     have hPdef : ofListQ haagPl = haagP := rfl
     rw [hPdef] at hchk
     simp only [e, ← mul_sum]
@@ -389,13 +389,13 @@ theorem haagerup_residual :
     gcongr
   linarith
 
-/-- **Haagerup's rounding gives `K_G^ℂ ≤ 1.40615`**, provided its kernel is dominated.
+/-- **Haagerup's rounding gives `K_G^ℂ ≤ 1.40578`**, provided its kernel is dominated.
 
 The hypothesis `hH` is Haagerup's identity: for unit vectors with `⟪x, y⟫ = z`,
 `𝔼[conj(phase⟪g, x⟫) · phase⟪g, y⟫] = Σ_k c_k z|z|^{2k}` (which makes `radialKernel haagCoeff`
 valid, hence dominated); see `handoff/research-third-decimal/PLAN_UPPER.md` §3.3. -/
 theorem haagerup_upper (hH : DominatedKernel (radialKernel haagCoeff)) :
-    IsGrothendieckBound (140615 / 100000) := by
+    IsGrothendieckBound (140578 / 100000) := by
   have hpi := Real.pi_gt_d6
   have hδ : Real.pi / 4 * ((haagCap : ℝ) + (haagGam : ℝ) / (2 * haagK))
       < Real.pi / 4 * (2267 / 2500 : ℚ) := by
