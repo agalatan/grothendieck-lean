@@ -67,3 +67,4 @@ import Grothe.LowerAnalytic.Bridge
 import Grothe.LowerAnalytic.Witness
 import Grothe.LowerAnalytic.WitnessCap
 import Grothe.Lower.RowReduction
+import Grothe.Lower.RowGates
