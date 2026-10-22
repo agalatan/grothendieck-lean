@@ -95,3 +95,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.VOf_eq
 #print axioms Grothe.LowerAnalytic.witnessCap_of_reduction
 #print axioms Grothe.LowerAnalytic.lower_bound_of_reduction
+#print axioms Grothe.LowerAnalytic.integral_norm_gauss2
+#print axioms Grothe.LowerAnalytic.integral_two_linear
+#print axioms Grothe.LowerAnalytic.integral_norm_linL
+#print axioms Grothe.LowerAnalytic.norm_starProjection_H10_le
+#print axioms Grothe.LowerAnalytic.tOf_le

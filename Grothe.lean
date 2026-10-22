@@ -64,5 +64,6 @@ import Grothe.LowerAnalytic.Circular
 import Grothe.LowerAnalytic.CircularTensor
 import Grothe.LowerAnalytic.GramBudget
 import Grothe.LowerAnalytic.Bridge
+import Grothe.LowerAnalytic.GaussianRadial
 import Grothe.LowerAnalytic.Witness
 import Grothe.LowerAnalytic.WitnessCap

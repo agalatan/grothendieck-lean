@@ -119,7 +119,9 @@ with h = (f+g)/2, k = (f−g)/2, t = ‖P₁,₀h‖, the polarisation identity 
 Re⟨f, Tg⟩ = t² − ε‖P₂,₁h‖² − ‖P₁,₀k‖² + ε‖P₂,₁k‖², is proved, and
 `witnessCap_of_reduction : (∀ unimodular f g with Re⟨f,Tg⟩ ≥ 0, ReductionHyp n f g) → WitnessCap n Bcap`
 applies `lower_bound_data` to V = Re⟨f, Tg⟩ (after a phase) with the crude row derived from
-‖P₂,₁k‖ ≤ ρ. `ReductionHyp n f g` is exactly what remains: t ≤ 9/10 (on paper t ≤ E|z₁|/‖z₁‖₂ = √π/2),
+‖P₂,₁k‖ ≤ ρ and the bound t ≤ 9/10 proved (`tOf_le`: P₁,₀h is a complex Gaussian, so
+‖P₁,₀h‖² = Re⟨h, P₁,₀h⟩ ≤ E|P₁,₀h| = (√π/2)‖P₁,₀h‖, by the rotation invariance of the Gaussian
+measure and E√(x²+y²) = √(π/2) in `GaussianRadial.lean`). `ReductionHyp n f g` is exactly what remains:
 ‖P₂,₁k‖ ≤ ρ (the first-moment bound of the cubic residual, L3), and a coupling vector v with ‖v‖² = 2
 and `SharedReduction rowData V t (P₂,₁h) v` (the Gaussian reduction of the rows, L4).
 `lower_bound_of_reduction : (∀ n ≥ N, ∀ f g, … → ReductionHyp n f g) → IsGrothendieckBound K → Llow < K`
@@ -141,7 +143,8 @@ composes everything; `TransferInputsL2 B` itself no longer needs to be assumed.
   and 6,562 mixing two, a component being a row or a mixture of two rows with four certified
   τ-nodes, chorded twice in τ, pinned gate price X₁ = p);
   and the endpoint; the Gaussian witness on L²(γ_n) with its value on z/‖z‖, the orthogonality of the
-  chaos ranges, the polarisation identity of the scalar pairing and the transfer inputs from the
+  chaos ranges, the polarisation identity of the scalar pairing, the bound ‖P₁,₀h‖ ≤ √π/2 for |h| ≤ 1
+  (rotation invariance of the Gaussian measure, E√(x²+y²) = √(π/2)) and the transfer inputs from the
   scalar caps. All finite exact checks of the lower certificate are one `native_decide` (`cert_check`).
 * Explicit hypotheses (not formalized): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
   from ‖Qk‖ ≤ E|Qk/‖Qk‖| ≤ ρ, which uses the moment bounds also for the cubic Qk/‖Qk‖), with ‖v‖² = 2
@@ -155,12 +158,12 @@ composes everything; `TransferInputsL2 B` itself no longer needs to be assumed.
   the cap table; slack 10⁻¹¹); the moment bounds on the law of U = |q|²; the analytic
   inputs of the Stein cuts for that law; and, for the scalar cap of the witness T = P₁,₀ − εP₂,₁
   over unimodular functions on Gaussian space, `ReductionHyp` (for every unimodular pair with
-  Re⟨f,Tg⟩ ≥ 0: t = ‖P₁,₀h‖ ≤ 9/10, the first-moment bound ‖P₂,₁k‖ ≤ ρ of the cubic residual, and a
-  coupling vector with ‖v‖² = 2 and `SharedReduction` for V = Re⟨f,Tg⟩, t, P₂,₁h, v). The
+  Re⟨f,Tg⟩ ≥ 0: the first-moment bound ‖P₂,₁k‖ ≤ ρ of the cubic residual, and a
+  coupling vector with ‖v‖² = 2 and `SharedReduction` for V = Re⟨f,Tg⟩, t = ‖P₁,₀h‖, P₂,₁h, v). The
   transfer itself (finite partitions, phase choices on cells, L² approximation by ball-valued
   simple functions, passage to the limit), the witness, its value ≥ 1 − (1+ε)/(n+1) on u(z) = z/‖z‖,
-  the polarisation identity and the crude row from ‖P₂,₁k‖ ≤ ρ are proved in Lean
-  (`Grothe/Lower/Transfer*.lean`, `Grothe/LowerAnalytic/Witness.lean`, `WitnessCap.lean`).
+  the polarisation identity, the bound t ≤ √π/2 < 9/10 and the crude row from ‖P₂,₁k‖ ≤ ρ are proved
+  in Lean (`Grothe/Lower/Transfer*.lean`, `Grothe/LowerAnalytic/{GaussianRadial,Witness,WitnessCap}.lean`).
 * The analytic inputs of the Stein cuts (`GramInputs`, extending `SteinInputs`) are, with
   w = Γ(q, q̄)/3, c = Γ(q, q)/3, X = w − 1, r = Re(c q̄²)/U, P = E[XU] and Q = E[rU]: E w = 1; the
   separate spectral budgets E X² ≤ (2/3)P and E r² ≤ (2/3)Q (gaps ‖U₄‖²/9 and ‖(q²)₄‖²/9 + E(|c|² − r²));
