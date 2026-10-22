@@ -84,6 +84,9 @@ def bCP (j : Nat) : CP :=
 /-- `L = z(ℓ + β(|z|² − 2)) = β z²z̄ + (ℓ − 2β) z`. -/
 def lCP (ell beta : Rat) : CP := [(2, 1, KC.ofRat beta), (1, 0, KC.ofRat (ell - 2 * beta))]
 
+/-- The constant `1`. -/
+def oneCP : CP := [(0, 0, KC.ofRat 1)]
+
 /-- `uⱼ = Re(Bⱼ L̄)`. -/
 def uCP (ell beta : Rat) (j : Nat) : CP := CP.mul (bCP j) (CP.conj (lCP ell beta))
 /-- `Gᵢⱼ = Re(Bᵢ B̄ⱼ)`. -/
