@@ -13,7 +13,9 @@ NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",          # upper: he
           "Grothe.Lower.cert_check._native.native_decide.ax_1_1"}    # lower: rows, batches, cover
 REQUIRED = {"Grothe.complex_grothendieck_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.Lower.lower_endpoint", "Grothe.Lower.lower_bound_of_transferL2",
-            "Grothe.LowerAnalytic.gaussian_steinInputs", "Grothe.LowerAnalytic.lower_bound_gaussian"}
+            "Grothe.LowerAnalytic.gaussian_steinInputs", "Grothe.LowerAnalytic.lower_bound_gaussian",
+            "Grothe.LowerAnalytic.norm_pairVal_witness", "Grothe.LowerAnalytic.transferInputs_of_witnessCap",
+            "Grothe.LowerAnalytic.witnessCap_of_reduction", "Grothe.LowerAnalytic.lower_bound_of_reduction"}
 text = sys.stdin.read()
 if re.search(r"(^|\n)[^\n]*: error", text):
     sys.exit("the axiom report contains Lean errors")

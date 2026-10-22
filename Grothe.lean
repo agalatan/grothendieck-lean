@@ -11,6 +11,7 @@ import Grothe.Lower.Poly
 import Grothe.Lower.Moment
 import Grothe.Lower.Sweep
 import Grothe.Lower.Cuts
+import Grothe.Lower.Gram
 import Grothe.Lower.Law
 import Grothe.Lower.Stein
 import Grothe.Lower.Rows
@@ -61,4 +62,9 @@ import Grothe.LowerAnalytic.RadialParts
 import Grothe.LowerAnalytic.RadialCut
 import Grothe.LowerAnalytic.Circular
 import Grothe.LowerAnalytic.CircularTensor
+import Grothe.LowerAnalytic.GramTensor
+import Grothe.LowerAnalytic.GramSpectral
+import Grothe.LowerAnalytic.GramBudget
 import Grothe.LowerAnalytic.Bridge
+import Grothe.LowerAnalytic.Witness
+import Grothe.LowerAnalytic.WitnessCap

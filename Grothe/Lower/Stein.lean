@@ -12,7 +12,10 @@ test `φ`, its primitive `Φ`, `Y(u) = φ(u) − Φ(u)/u`, `X = φ(U) + β'` and
 
 (`cut_of_inputs`; `E v² + ½ E r² ≤ s` is the sum of the budgets), and for the spectral cuts
 the two squares are completed separately against the two budgets, with the covariance order
-`E[rU] ≤ s` as a third nonnegative term (`spec_of_inputs`).
+`E[rU] ≤ s` as a third nonnegative term (`spec_of_inputs`).  A node citing a further law budget
+`λ E v² + μ E r² ≤ a P + b₀ Q` (`GramInputs`: a contraction-Gram certificate or the coupled
+one-parameter family of `Gram.lean`) completes the squares with shifted coefficients
+(`gspec_of_inputs`).
 
 `cutPhi`, `cutY`, `cutGap` are `φ`, `Y`, `Φ − φ` on the mesh cells, as functions of `v = √u`.
 -/
@@ -229,6 +232,65 @@ structure SteinInputs (μ : Measure Ω) (U : Ω → ℝ) : Prop where
       ∫ ω, cutGap vs z (√(U ω)) ∂μ
         = ∫ ω, (v ω * cutPhi vs z (√(U ω)) + r ω * cutY vs z (√(U ω))) ∂μ
 
+/-- **The analytic inputs of all Stein cuts**: the inputs of `SteinInputs` for the same pair
+`(v, r)`, together with the two further universal law budgets of genuine circular cubics
+(`Gram.lean`):
+
+* every contraction-Gram certificate `g` accepted by `gramCert λ μ g` gives
+  `λ E v² + μ E r² ≤ A P + B Q`;
+* the coupled family `E v² ≤ a_s P − b_s Q`, `a_s = (s + 5)/9`, `b_s = (s + 1/2 − 3/s)/9`,
+  for every rational `s ≥ 2`. -/
+structure GramInputs (μ : Measure Ω) (U : Ω → ℝ) : Prop where
+  ex : ∃ v r : Ω → ℝ, MemLp v 2 μ ∧ MemLp r 2 μ ∧ ∫ ω, v ω ∂μ = 0 ∧
+    ∫ ω, v ω ^ 2 ∂μ ≤ 2 / 3 * ∫ ω, v ω * U ω ∂μ ∧
+    ∫ ω, r ω ^ 2 ∂μ ≤ 2 / 3 * ∫ ω, r ω * U ω ∂μ ∧
+    2 * ∫ ω, v ω * U ω ∂μ + ∫ ω, r ω * U ω ∂μ = ∫ ω, U ω ^ 2 ∂μ - 2 ∧
+    ∫ ω, r ω * U ω ∂μ ≤ (∫ ω, U ω ^ 2 ∂μ - 2) / 3 ∧
+    (∀ vs z : List ℚ, meshOK 0 vs = true →
+      ∫ ω, cutGap vs z (√(U ω)) ∂μ
+        = ∫ ω, (v ω * cutPhi vs z (√(U ω)) + r ω * cutY vs z (√(U ω))) ∂μ) ∧
+    (∀ (lam mu : ℚ) (g : GramData), gramCert lam mu g = true →
+      lam * ∫ ω, v ω ^ 2 ∂μ + mu * ∫ ω, r ω ^ 2 ∂μ
+        ≤ g.A * ∫ ω, v ω * U ω ∂μ + g.B * ∫ ω, r ω * U ω ∂μ) ∧
+    ∀ s : ℚ, 2 ≤ s → ∫ ω, v ω ^ 2 ∂μ
+      ≤ (s + 5) / 9 * ∫ ω, v ω * U ω ∂μ - (s + 1 / 2 - 3 / s) / 9 * ∫ ω, r ω * U ω ∂μ
+
+lemma GramInputs.toSteinInputs {μ : Measure Ω} {U : Ω → ℝ} (h : GramInputs μ U) :
+    SteinInputs μ U := by
+  obtain ⟨v, r, hv, hr, hv0, hbv, hbr, hsum, hcov, hparts, -, -⟩ := h.ex
+  exact ⟨v, r, hv, hr, hv0, hbv, hbr, hsum, hcov, hparts⟩
+
+/-- **The cited budget from the inputs**: for a budget `bud` passing its exact check,
+`λ E v² + μ E r² ≤ (2λ/3 + 2af) P + (2μ/3 − 2ag) Q` with the shifts `af = bud.af λ`,
+`ag = bud.ag μ`. -/
+lemma budget_of_bud (lam mu : ℚ) (hlam : 0 ≤ lam) (hmu : 0 ≤ mu) (bud : GBud)
+    (hok : bud.ok lam mu = true) (V R P Q : ℝ) (hsepv : V ≤ 2 / 3 * P) (hsepr : R ≤ 2 / 3 * Q)
+    (hgram : ∀ (lam mu : ℚ) (g : GramData), gramCert lam mu g = true →
+      lam * V + mu * R ≤ g.A * P + g.B * Q)
+    (hfam : ∀ s : ℚ, 2 ≤ s → V ≤ (s + 5) / 9 * P - (s + 1 / 2 - 3 / s) / 9 * Q) :
+    (lam : ℝ) * V + mu * R ≤ (2 * lam / 3 + 2 * bud.af lam) * P + (2 * mu / 3 - 2 * bud.ag mu) * Q := by
+  have hlamR : (0 : ℝ) ≤ lam := by exact_mod_cast hlam
+  have hmuR : (0 : ℝ) ≤ mu := by exact_mod_cast hmu
+  have h1 := mul_le_mul_of_nonneg_left hsepv hlamR
+  have h2 := mul_le_mul_of_nonneg_left hsepr hmuR
+  cases bud with
+  | sep =>
+    simp only [GBud.af, GBud.ag, Rat.cast_zero]
+    linarith
+  | gram g =>
+    have h := hgram lam mu g hok
+    simp only [GBud.af, GBud.ag]
+    push_cast
+    linarith
+  | coupled se =>
+    simp only [GBud.ok, Bool.and_eq_true, decide_eq_true_eq] at hok
+    obtain ⟨hoks, hle⟩ := hok
+    have hc := coupled_sum V P Q hfam se hoks
+    have hleR : (budSum1 se : ℝ) ≤ lam := by exact_mod_cast hle
+    have h3 := mul_le_mul_of_nonneg_left hsepv (sub_nonneg.2 hleR)
+    simp only [GBud.af, GBud.ag]
+    linarith
+
 variable (μ : Measure Ω) [IsProbabilityMeasure μ] {U : Ω → ℝ} {x : ℝ}
 
 /-- A measurable function of `√U` of quadratic growth in `√U` is square integrable. -/
@@ -352,6 +414,13 @@ lemma specG_eq (vs z : List ℚ) (lam mu t be nu : ℚ) (v : ℝ) :
         + (-cutY vs z v / 2 + (t + mu / 3 - nu / 2) * v ^ 2) ^ 2 / mu
         + cutGap vs z v + (nu / 3 - 2 * t) * ((v ^ 2) ^ 2 - 2) := by
   simp only [specG, specCellG, cutPhi, cutY, cutGap, cellAt]
+
+lemma gspecG_eq (vs z : List ℚ) (lam mu t be nu af ag : ℚ) (v : ℝ) :
+    gspecG vs z lam mu t be nu af ag v
+      = (-(cutPhi vs z v + be) / 2 + (2 * t + lam / 3 + af) * v ^ 2) ^ 2 / lam
+        + (-cutY vs z v / 2 + (t + mu / 3 - nu / 2 - ag) * v ^ 2) ^ 2 / mu
+        + cutGap vs z v + (nu / 3 - 2 * t) * ((v ^ 2) ^ 2 - 2) := by
+  simp only [gspecG, gspecCellG, cutPhi, cutY, cutGap, cellAt]
 
 omit [IsProbabilityMeasure μ] in
 lemma integral_add8 (f1 f2 f3 f4 f5 f6 f7 f8 : Ω → ℝ) (h1 : Integrable f1 μ)
@@ -483,8 +552,138 @@ theorem spec_of_inputs (hM : Moments μ U x) (hS : SteinInputs μ U) (vs z : Lis
     mul_nonneg hmuR.le (by linarith)
   linarith
 
+/-- The general spectral cut for explicit `v`, `r`: with the shifted `f`, `g` of `gspecG`,
+
+  `E G(U) = E[λ(X − f/λ)² + μ(r − g/μ)²] + (2λ/3 + 2af) P − λ E X² + (2μ/3 − 2ag) Q − μ E r²
+            + ν(χ/3 − Q)`
+
+(using `E X = 0`, the radial integration by parts and `2P + Q = χ`), nonnegative under the budget
+`λ E X² + μ E r² ≤ (2λ/3 + 2af) P + (2μ/3 − 2ag) Q`. -/
+theorem gspec_of_vr (hM : Moments μ U x) (v r : Ω → ℝ) (hv : MemLp v 2 μ) (hr : MemLp r 2 μ)
+    (hv0 : ∫ ω, v ω ∂μ = 0)
+    (hsum : 2 * ∫ ω, v ω * U ω ∂μ + ∫ ω, r ω * U ω ∂μ = ∫ ω, U ω ^ 2 ∂μ - 2)
+    (hcov : ∫ ω, r ω * U ω ∂μ ≤ (∫ ω, U ω ^ 2 ∂μ - 2) / 3)
+    (hparts : ∀ vs z : List ℚ, meshOK 0 vs = true →
+      ∫ ω, cutGap vs z (√(U ω)) ∂μ
+        = ∫ ω, (v ω * cutPhi vs z (√(U ω)) + r ω * cutY vs z (√(U ω))) ∂μ)
+    (vs z : List ℚ) (lam mu t be nu af ag : ℚ) (hvs : meshOK 0 vs = true) (hlam : 0 < lam)
+    (hmu : 0 < mu) (hnu : 0 ≤ nu)
+    (hbud : (lam : ℝ) * ∫ ω, v ω ^ 2 ∂μ + mu * ∫ ω, r ω ^ 2 ∂μ
+      ≤ (2 * lam / 3 + 2 * af) * ∫ ω, v ω * U ω ∂μ + (2 * mu / 3 - 2 * ag) * ∫ ω, r ω * U ω ∂μ) :
+    Integrable (fun ω => gspecG vs z lam mu t be nu af ag (√(U ω))) μ ∧
+      0 ≤ ∫ ω, gspecG vs z lam mu t be nu af ag (√(U ω)) ∂μ := by
+  have hlamR : (0 : ℝ) < lam := by exact_mod_cast hlam
+  have hmuR : (0 : ℝ) < mu := by exact_mod_cast hmu
+  have hU := memLp_U μ hM
+  have hφ : MemLp (fun ω => cutPhi vs z (√(U ω))) 2 μ :=
+    memLp_of_growth μ hM _ (measurable_cutPhi vs z) _ (cutPhi_le vs z)
+  obtain ⟨CY, hCY⟩ := cutY_le vs z hvs
+  have hY : MemLp (fun ω => cutY vs z (√(U ω))) 2 μ :=
+    memLp_of_growth μ hM _ (measurable_cutY vs z) _ hCY
+  have hA : Integrable (fun ω => cutGap vs z (√(U ω))) μ := by
+    have hm : AEStronglyMeasurable (fun ω => cutGap vs z (√(U ω))) μ :=
+      ((measurable_cutGap vs z).comp_aemeasurable
+        hM.i1.aestronglyMeasurable.aemeasurable.sqrt).aestronglyMeasurable
+    refine (((integrable_const 1).add hM.i2).const_mul (2 * cellBound vs z)).mono' hm
+      (Filter.Eventually.of_forall fun ω => ?_)
+    have h := cutGap_le vs z (√(U ω))
+    rwa [Real.sq_sqrt (hM.nonneg ω)] at h
+  obtain ⟨F, hF⟩ : ∃ F : Ω → ℝ,
+      F = fun ω => (-1 / 2 : ℝ) * (cutPhi vs z (√(U ω)) + be) + (2 * t + lam / 3 + af) * U ω :=
+    ⟨_, rfl⟩
+  obtain ⟨Gf, hGf⟩ : ∃ Gf : Ω → ℝ,
+      Gf = fun ω => (-1 / 2 : ℝ) * cutY vs z (√(U ω)) + (t + mu / 3 - nu / 2 - ag) * U ω :=
+    ⟨_, rfl⟩
+  have hFm : MemLp F 2 μ := by
+    rw [hF]; exact ((hφ.add (memLp_const _)).const_mul _).add (hU.const_mul _)
+  have hGm : MemLp Gf 2 μ := by
+    rw [hGf]; exact (hY.const_mul _).add (hU.const_mul _)
+  have m1 : MemLp (fun ω => v ω - (lam : ℝ)⁻¹ * F ω) 2 μ := hv.sub (hFm.const_mul _)
+  have m2 : MemLp (fun ω => r ω - (mu : ℝ)⁻¹ * Gf ω) 2 μ := hr.sub (hGm.const_mul _)
+  have ivU : Integrable (fun ω => v ω * U ω) μ := hv.integrable_mul hU
+  have irU : Integrable (fun ω => r ω * U ω) μ := hr.integrable_mul hU
+  have iv2 := hv.integrable_sq
+  have ir2 := hr.integrable_sq
+  have iv : Integrable v μ := hv.integrable one_le_two
+  have ivφ : Integrable (fun ω => v ω * cutPhi vs z (√(U ω))) μ := hv.integrable_mul hφ
+  have irY : Integrable (fun ω => r ω * cutY vs z (√(U ω))) μ := hr.integrable_mul hY
+  have i1 : Integrable (fun ω => (lam : ℝ) * (v ω - (lam : ℝ)⁻¹ * F ω) ^ 2) μ :=
+    m1.integrable_sq.const_mul _
+  have i2 : Integrable (fun ω => (mu : ℝ) * (r ω - (mu : ℝ)⁻¹ * Gf ω) ^ 2) μ :=
+    m2.integrable_sq.const_mul _
+  have i3 : Integrable (fun ω => (2 * (lam : ℝ) / 3 + 2 * af) * (v ω * U ω) - lam * v ω ^ 2) μ :=
+    (ivU.const_mul _).sub (iv2.const_mul _)
+  have i4 : Integrable (fun ω => (2 * (mu : ℝ) / 3 - 2 * ag) * (r ω * U ω) - mu * r ω ^ 2) μ :=
+    (irU.const_mul _).sub (ir2.const_mul _)
+  have ivr : Integrable (fun ω => v ω * cutPhi vs z (√(U ω)) + r ω * cutY vs z (√(U ω))) μ :=
+    ivφ.add irY
+  have i5 : Integrable (fun ω => cutGap vs z (√(U ω))
+      - (v ω * cutPhi vs z (√(U ω)) + r ω * cutY vs z (√(U ω)))) μ := hA.sub ivr
+  have i6 : Integrable (fun ω => -(be : ℝ) * v ω) μ := iv.const_mul _
+  have iUU : Integrable (fun ω => U ω ^ 2 - 2) μ := hM.i2.sub (integrable_const _)
+  have i8 : Integrable (fun ω => (nu : ℝ) * ((U ω ^ 2 - 2) / 3 - r ω * U ω)) μ :=
+    ((iUU.div_const 3).sub irU).const_mul _
+  have i7 : Integrable (fun ω => 2 * (t : ℝ) * (2 * (v ω * U ω) + r ω * U ω - (U ω ^ 2 - 2))) μ :=
+    ((((ivU.const_mul 2).add irU).sub iUU)).const_mul _
+  have e : (fun ω => gspecG vs z lam mu t be nu af ag (√(U ω))) = fun ω =>
+      (lam : ℝ) * (v ω - (lam : ℝ)⁻¹ * F ω) ^ 2 + (mu : ℝ) * (r ω - (mu : ℝ)⁻¹ * Gf ω) ^ 2
+        + ((2 * (lam : ℝ) / 3 + 2 * af) * (v ω * U ω) - lam * v ω ^ 2)
+        + ((2 * (mu : ℝ) / 3 - 2 * ag) * (r ω * U ω) - mu * r ω ^ 2)
+        + (cutGap vs z (√(U ω)) - (v ω * cutPhi vs z (√(U ω)) + r ω * cutY vs z (√(U ω))))
+        + -(be : ℝ) * v ω + 2 * (t : ℝ) * (2 * (v ω * U ω) + r ω * U ω - (U ω ^ 2 - 2))
+        + (nu : ℝ) * ((U ω ^ 2 - 2) / 3 - r ω * U ω) := by
+    funext ω
+    rw [gspecG_eq, hF, hGf, Real.sq_sqrt (hM.nonneg ω)]
+    field_simp
+    ring
+  obtain ⟨hI, hE⟩ := integral_add8 μ _ _ _ _ _ _ _ _ i1 i2 i3 i4 i5 i6 i7 i8
+  rw [e]
+  refine ⟨hI, ?_⟩
+  rw [hE]
+  have n1 : 0 ≤ ∫ ω, (lam : ℝ) * (v ω - (lam : ℝ)⁻¹ * F ω) ^ 2 ∂μ :=
+    integral_nonneg fun ω => mul_nonneg hlamR.le (sq_nonneg _)
+  have n2 : 0 ≤ ∫ ω, (mu : ℝ) * (r ω - (mu : ℝ)⁻¹ * Gf ω) ^ 2 ∂μ :=
+    integral_nonneg fun ω => mul_nonneg hmuR.le (sq_nonneg _)
+  have n3 : ∫ ω, ((2 * (lam : ℝ) / 3 + 2 * af) * (v ω * U ω) - lam * v ω ^ 2) ∂μ
+      = (2 * lam / 3 + 2 * af) * ∫ ω, v ω * U ω ∂μ - lam * ∫ ω, v ω ^ 2 ∂μ := by
+    rw [integral_sub (ivU.const_mul _) (iv2.const_mul _), integral_const_mul, integral_const_mul]
+  have n4 : ∫ ω, ((2 * (mu : ℝ) / 3 - 2 * ag) * (r ω * U ω) - mu * r ω ^ 2) ∂μ
+      = (2 * mu / 3 - 2 * ag) * ∫ ω, r ω * U ω ∂μ - mu * ∫ ω, r ω ^ 2 ∂μ := by
+    rw [integral_sub (irU.const_mul _) (ir2.const_mul _), integral_const_mul, integral_const_mul]
+  have n5 : ∫ ω, (cutGap vs z (√(U ω))
+      - (v ω * cutPhi vs z (√(U ω)) + r ω * cutY vs z (√(U ω)))) ∂μ = 0 := by
+    rw [integral_sub hA ivr, hparts vs z hvs, sub_self]
+  have n6 : ∫ ω, -(be : ℝ) * v ω ∂μ = 0 := by rw [integral_const_mul, hv0, mul_zero]
+  have n7 : ∫ ω, 2 * (t : ℝ) * (2 * (v ω * U ω) + r ω * U ω - (U ω ^ 2 - 2)) ∂μ = 0 := by
+    have j1 : Integrable (fun ω => 2 * (v ω * U ω)) μ := ivU.const_mul 2
+    have j2 : Integrable (fun ω => 2 * (v ω * U ω) + r ω * U ω) μ := j1.add irU
+    rw [integral_const_mul, integral_sub j2 iUU, integral_add j1 irU, integral_const_mul,
+      integral_sub hM.i2 (integrable_const _), integral_const, probReal_univ, one_smul]
+    rw [show 2 * ∫ ω, v ω * U ω ∂μ + ∫ ω, r ω * U ω ∂μ - (∫ ω, U ω ^ 2 ∂μ - 2) = 0 by linarith,
+      mul_zero]
+  have n8 : ∫ ω, (nu : ℝ) * ((U ω ^ 2 - 2) / 3 - r ω * U ω) ∂μ
+      = nu * ((∫ ω, U ω ^ 2 ∂μ - 2) / 3 - ∫ ω, r ω * U ω ∂μ) := by
+    rw [integral_const_mul, integral_sub (iUU.div_const 3) irU, integral_div,
+      integral_sub hM.i2 (integrable_const _), integral_const, probReal_univ, one_smul]
+  have b3 : 0 ≤ (nu : ℝ) * ((∫ ω, U ω ^ 2 ∂μ - 2) / 3 - ∫ ω, r ω * U ω ∂μ) :=
+    mul_nonneg (by exact_mod_cast hnu) (by linarith)
+  rw [n3, n4, n5, n6, n7, n8]
+  linarith
+
+/-- The general spectral cuts from the analytic inputs: the cited budget is supplied by
+`budget_of_bud`. -/
+theorem gspec_of_inputs (hM : Moments μ U x) (hS : GramInputs μ U) (vs z : List ℚ)
+    (lam mu t be nu : ℚ) (bud : GBud) (hvs : meshOK 0 vs = true) (hlam : 0 < lam) (hmu : 0 < mu)
+    (hnu : 0 ≤ nu) (hok : bud.ok lam mu = true) :
+    Integrable (fun ω => gspecG vs z lam mu t be nu (bud.af lam) (bud.ag mu) (√(U ω))) μ ∧
+      0 ≤ ∫ ω, gspecG vs z lam mu t be nu (bud.af lam) (bud.ag mu) (√(U ω)) ∂μ := by
+  obtain ⟨v, r, hv, hr, hv0, hbv, hbr, hsum, hcov, hparts, hgram, hfam⟩ := hS.ex
+  exact gspec_of_vr μ hM v r hv hr hv0 hsum hcov hparts vs z lam mu t be nu _ _ hvs hlam hmu hnu
+    (budget_of_bud lam mu hlam.le hmu.le bud hok _ _ _ _ hbv hbr hgram hfam)
+
 /-- **The Stein cuts follow from the analytic inputs.** -/
-theorem steinCut_of_inputs (hM : Moments μ U x) (hS : SteinInputs μ U) : SteinCut μ U :=
-  ⟨cut_of_inputs μ hM hS, spec_of_inputs μ hM hS⟩
+theorem steinCut_of_inputs (hM : Moments μ U x) (hS : GramInputs μ U) : SteinCut μ U :=
+  ⟨cut_of_inputs μ hM hS.toSteinInputs, spec_of_inputs μ hM hS.toSteinInputs,
+    gspec_of_inputs μ hM hS⟩
 
 end Grothe.Lower

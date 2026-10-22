@@ -1,4 +1,4 @@
-import Grothe.Lower.Cuts
+import Grothe.Lower.Gram
 
 /-!
 # The law of the normalized residual: moments, Stein cuts, integration
@@ -7,8 +7,10 @@ For a residual `q` (a cubic chaos of bidegree `(2,1)`) with `σ = ‖q‖₂`, l
 `Moments μ U x` collects what the certificate uses about the law of `U`:
 `E U = 1`, `E U² = 2 + x²` with `0 ≤ x ≤ 31/4`, `E U³ ≤ 6 + 9x² + C₆x³` and `E √U ≤ ρ`.
 `SteinCut μ U` collects the Stein-cut inequalities `E G(U) ≥ 0`: the cuts `cutG` (one for every
-mesh and test vector) and the spectral cuts `specG` (one for every mesh, test and
-`(λ, μ, t, β, ν)`, `λ, μ > 0`, `ν ≥ 0`); both are derived from their analytic inputs in `Stein.lean`.
+mesh and test vector), the spectral cuts `specG` (one for every mesh, test and
+`(λ, μ, t, β, ν)`, `λ, μ > 0`, `ν ≥ 0`) and the general spectral cuts `gspecG` of a node citing a
+law budget (`GBud`: a contraction-Gram certificate or the coupled family, `Gram.lean`); all are
+derived from their analytic inputs in `Stein.lean`.
 
 `node_fn` integrates a polynomial majorant minus a nonnegative combination of cuts and
 `rect_integral` a polynomial majorant at scale `σ`.  `TB μ U Φ τ val` records a bound
@@ -46,13 +48,19 @@ structure Moments (μ : Measure Ω) (U : Ω → ℝ) (x : ℝ) : Prop where
   `E[(φ(U) + β')² + 2 (φ(U) − Φ(U)/U)² + 2α (Φ(U) − φ(U)) + (α²/3)(U² − 2)] ≥ 0` (`cutG`).
 * `spec`: for every such test (knot values `z`) and every `λ, μ > 0`, `ν ≥ 0`, `t`, `β`, the
   spectral cut `E[f(U)²/λ + g(U)²/μ + Φ(U) − φ(U) + (ν/3 − 2t)(U² − 2)] ≥ 0` with
-  `f = −(φ + β)/2 + (2t + λ/3)u` and `g = −(φ − Φ/u)/2 + (t + μ/3 − ν/2)u` (`specG`). -/
+  `f = −(φ + β)/2 + (2t + λ/3)u` and `g = −(φ − Φ/u)/2 + (t + μ/3 − ν/2)u` (`specG`).
+* `gspec`: the same with the coefficients of `u` shifted by the budget shifts `(af, ag)` of a
+  cited law budget `bud` passing its exact check `GBud.ok` (`gspecG`). -/
 structure SteinCut (μ : Measure Ω) (U : Ω → ℝ) : Prop where
   cut : ∀ vs z : List ℚ, meshOK 0 vs = true →
     Integrable (fun ω => cutG vs z (√(U ω))) μ ∧ 0 ≤ ∫ ω, cutG vs z (√(U ω)) ∂μ
   spec : ∀ (vs z : List ℚ) (lam mu t be nu : ℚ), meshOK 0 vs = true → 0 < lam → 0 < mu →
     0 ≤ nu → Integrable (fun ω => specG vs z lam mu t be nu (√(U ω))) μ ∧
       0 ≤ ∫ ω, specG vs z lam mu t be nu (√(U ω)) ∂μ
+  gspec : ∀ (vs z : List ℚ) (lam mu t be nu : ℚ) (bud : GBud), meshOK 0 vs = true → 0 < lam →
+    0 < mu → 0 ≤ nu → bud.ok lam mu = true →
+    Integrable (fun ω => gspecG vs z lam mu t be nu (bud.af lam) (bud.ag mu) (√(U ω))) μ ∧
+      0 ≤ ∫ ω, gspecG vs z lam mu t be nu (bud.af lam) (bud.ag mu) (√(U ω)) ∂μ
 
 lemma mpoly_at (p : MPoly) (σ s Uv : ℝ) (h : s ^ 2 = Uv) :
     evalL (p.list.map ((↑) : ℚ → ℝ)) (σ * s)
@@ -190,6 +198,34 @@ lemma TB.specNode {Φ : ℝ → ℝ} (hM : Moments μ U x) (hS : SteinCut μ U) 
     (by exact_mod_cast h6)
   refine ⟨fun ω => (y.a0 + y.a1 * √(U ω) + y.a2 * U ω + y.a4 * U ω ^ 2 + y.a6 * U ω ^ 3)
     - specG vs z lam mu t be nu (√(U ω)), hP.sub hC, fun ω => ?_, ?_⟩
+  · have key := mpoly_at y 1 (√(U ω)) (U ω) (Real.sq_sqrt (hM.nonneg ω))
+    rw [one_mul] at key
+    have := hpt _ (Real.sqrt_nonneg (U ω))
+    rw [key] at this
+    simp only [one_pow, mul_one] at this
+    linarith
+  · rw [integral_sub hP hC]
+    have eJ : y.J 0 1 x = y.a0 + y.a1 * ρ + y.a2 + y.a4 * (2 + x ^ 2)
+        + y.a6 * (6 + 9 * x ^ 2 + C6 * x ^ 3) := by
+      simp only [MPoly.J]; push_cast; ring
+    rw [eJ]
+    linarith
+
+/-- A general spectral node: a polynomial majorant of `Φ(τ v)` plus one general spectral cut
+of a node citing the budget `bud`. -/
+lemma TB.gspecNode {Φ : ℝ → ℝ} (hM : Moments μ U x) (hS : SteinCut μ U) (vs z : List ℚ)
+    (lam mu t be nu : ℚ) (bud : GBud) (hvs : meshOK 0 vs = true) (hlam : 0 < lam) (hmu : 0 < mu)
+    (hnu : 0 ≤ nu) (hok : bud.ok lam mu = true) (y : MPoly)
+    (h1 : 0 ≤ y.a1) (h6 : 0 ≤ y.a6) (τ : ℝ)
+    (hpt : ∀ v : ℝ, 0 ≤ v →
+      Φ (τ * v) + gspecG vs z lam mu t be nu (bud.af lam) (bud.ag mu) v
+        ≤ evalL (y.list.map ((↑) : ℚ → ℝ)) v) :
+    TB μ U Φ τ (y.J 0 1 x) := by
+  obtain ⟨hC, hCi⟩ := hS.gspec vs z lam mu t be nu bud hvs hlam hmu hnu hok
+  obtain ⟨hP, hPi⟩ := moment_poly μ hM y.a0 y.a1 y.a2 y.a4 y.a6 (by exact_mod_cast h1)
+    (by exact_mod_cast h6)
+  refine ⟨fun ω => (y.a0 + y.a1 * √(U ω) + y.a2 * U ω + y.a4 * U ω ^ 2 + y.a6 * U ω ^ 3)
+    - gspecG vs z lam mu t be nu (bud.af lam) (bud.ag mu) (√(U ω)), hP.sub hC, fun ω => ?_, ?_⟩
   · have key := mpoly_at y 1 (√(U ω)) (U ω) (Real.sq_sqrt (hM.nonneg ω))
     rw [one_mul] at key
     have := hpt _ (Real.sqrt_nonneg (U ω))

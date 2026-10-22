@@ -7,26 +7,29 @@
                                 parsed at check time (`parseWit`, `parseSWit`, `parseBox`, `parseTree` in
                                 Mixed.lean/Boxes.lean)
 
-Usage: tools/gen_lower_mixed.py [CERT_DIR]   (default handoff/lower-stein/cert-finemesh/certificate, the certificate on master)
+Usage: tools/gen_lower_mixed.py [CERT_DIR]   (default handoff/lower-stein/cert-gram, the certificate on master)
 
-CERT_DIR holds the cover (`improved_cover.json` with `regions`, or `joint_cover_certificate.json` with one
-`domain`) and the batch files it references by hash (`joint_batches`): Stein batches (witnesses with a bank
-of cut vectors and multipliers) and spectral batches (`cut_family` = `separate_spectral_nu_zero` or
-`separate_spectral_covariance`: one spectral cut `(λ, μ, t, β, ν, φ)` per witness on the batch's own test
-mesh, whose knots must be rational squares; the format of `verify_spectral_batch.py`).  The source rows are
-`handoff/lower-stein/cert-0745e/` (or `cert-0745d/`, `cert-0745c/`, whichever the cover pins by the hash of
-its manifest; every file of the manifest and the exact row constants are hash-checked), and they are
+CERT_DIR is the contraction-Gram package: `inherited.json` (the 19 source rows, the inherited mixed node
+batches as `(i, j, θ, τ, P)` tables, the inherited boxes `kind|bounds|refs`), `cover.json` (`target`,
+`lower`, the mixtures `groups`, the node references `nodes`, the new spectral nodes `newnodes` (one spectral
+cut `(λ, μ, t, β, ν)`, `ν ≥ 0`, on the test mesh `rv` of the node, the majorant `P = (a₀, a₁, a₂, a₄, a₆)`,
+and optionally the cited law budget: `tensor_budget` = a contraction-Gram certificate `(A, B, M0, M1, α, β)`
+or `extra_budgets` = multipliers `(s_j, η_j)` of the coupled family), and the `boxes` of the partition, each
+evaluated through an inherited box (`original`) or a `choice` of one or two groups with four bracketing node
+references each, the chords optionally taken on a larger `scale_domain` and restricted to the box) and
+`SHA256SUMS` (both data files are hash-checked).  Spectral nodes of one mixed potential sharing a test mesh
+form one batch.
+
+The witnesses of the inherited Stein batches are not in the package; they are taken from the hash-pinned
+batch files of the fine-mesh package (`cert-finemesh/certificate/improved_cover.json`, `joint_batches`),
+matched by rows, weights, mesh and every `(τ, P)` node of the inherited batch; only the inherited batches
+some box or node reference uses are emitted (indices remapped).  The rows of `inherited.json` are
 cross-checked field by field against the committed `RowData*.lean` (so that the node references index the
-same Stein nodes); row indices refer to `rowData` (rows sorted by their nominal `t`).
-
-Cover cells: source (two rows `i, j` with weight `θ`, node references `(cell, node)` per row, `(-1, -1)` the
-zero node), `joint` (a batch, witness indices) and `joint_mix` (two batches mixed with weight `λ` before the
-gate completion).  Only the batches some cell references are emitted (indices remapped).  Every cell becomes
-a box with one component (`b|…`) or two mixed components (`m|…`); outside the central slab the scalar
-envelope of `envelope.json` gives cap boxes (`c|…`, maximal runs of cells with the same mixture).  Every box
-value is replayed here with the Lean semantics (virtual rows, pinned gate price, chords in τ, `x` endpoints,
-quadratic maxima, one pad) and compared with the stored bound and the cap, and a guillotine partition
-certificate (axis cuts, replayed) is produced for the boxes.
+same Stein nodes), every Gram certificate is checked as `gramCert` does (PSD by diagonal and determinant,
+nonnegative remainders of identity (4)), every box value is replayed with the Lean semantics (virtual rows,
+pinned gate price, chords and re-chords in τ, `x` endpoints, quadratic maxima, one pad) and compared with
+the stored bound and the cap, and a guillotine partition certificate (axis cuts, replayed) is produced for
+the boxes.
 """
 import hashlib
 import json
@@ -40,11 +43,8 @@ from pathlib import Path
 sys.setrecursionlimit(100000)
 ROOT = Path(__file__).resolve().parent.parent
 HANDOFF = Path(os.environ.get("GROTHE_HANDOFF", ROOT / "handoff"))   # the (git-ignored) data folder; set it when running from a worktree
-# the pinned source rows: whichever per-row certificate the cover pins by its manifest hash
-SOURCES = [(HANDOFF / "lower-stein" / "cert-0745e", HANDOFF / "lower-stein" / "cert-0745e" / "rows_final_e.json"),
-           (HANDOFF / "lower-stein" / "cert-0745d", HANDOFF / "lower-stein" / "cert-0745d" / "rows_final_d.json"),
-           (HANDOFF / "lower-stein" / "cert-0745c", HANDOFF / "lower-stein" / "cert-0745c" / "rows_final_c.json")]
-NEW = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else HANDOFF / "lower-stein" / "cert-finemesh" / "certificate"
+NEW = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else HANDOFF / "lower-stein" / "cert-gram"
+FINEMESH = HANDOFF / "lower-stein" / "cert-finemesh" / "certificate"   # the witnesses of the inherited Stein batches
 OUT = ROOT / "Grothe" / "Lower" / "MixedData.lean"
 EPS = Q(149, 200); RHO = Q(973612157, 10**9); C6 = Q(4045313, 100000); PAD = Q(1, 10**11); XMAX = Q(31, 4)
 
@@ -52,59 +52,42 @@ def qs(x):
     x = Q(x); return f"{x.numerator}/{x.denominator}" if x.denominator != 1 else f"{x.numerator}"
 def q(x):
     x = Q(x); return f"({x.numerator} : ℚ) / {x.denominator}" if x.denominator != 1 else f"({x.numerator} : ℚ)"
-def rsqrt(x):
-    x = Q(x); a, b = isqrt(x.numerator), isqrt(x.denominator); assert a * a == x.numerator and b * b == x.denominator, x; return Q(a, b)
 def lean_str(s): return '"' + s + '"'
 def sha(p): return hashlib.sha256(open(p, "rb").read()).hexdigest()
-def mpoly(yjson):  # JSON order y0,y1,y2,y3,y4 -> MPoly order a0,a1,a2,a4,a6 = y0,y4,y1,y2,y3
+def mpoly(yjson):  # batch-file order y0,y1,y2,y3,y4 -> MPoly order a0,a1,a2,a4,a6 = y0,y4,y1,y2,y3
     y = [Q(v) for v in yjson]; assert len(y) == 5; return (y[0], y[4], y[1], y[2], y[3])
+def rsqrt(x):   # the batch-file meshes are in u = v²; the knots must be rational squares
+    x = Q(x); a, b = isqrt(x.numerator), isqrt(x.denominator); assert a * a == x.numerator and b * b == x.denominator, x; return Q(a, b)
 
-# ----- the cover and the pinned source rows (hashes of the manifest, every file of it, the row constants)
-cover_file = next(f for f in ("improved_cover.json", "joint_cover_certificate.json") if (NEW / f).exists())
-cov = json.load(open(NEW / cover_file))
-CERT, ROWS_FILE = next((c, r) for c, r in SOURCES if sha(c / "manifest.json") == cov["source_manifest_sha256"])
-assert sha(ROWS_FILE) == cov["source_rows_sha256"]
-if "source_verifier_sha256" in cov and (HANDOFF / "lower-stein" / "verify_cert.py").exists():
-    assert sha(HANDOFF / "lower-stein" / "verify_cert.py") == cov["source_verifier_sha256"]
-man = json.load(open(CERT / "manifest.json")); assert Q(man["eps"]) == EPS
-for fn, h in man["files"].items(): assert sha(CERT / fn) == h, fn
-B = Q(cov["target"]); L = Q(cov["endpoint"]); assert B > 0 and L > 0 and B * L < 1
-consts = json.load(open(ROWS_FILE))
-rowfiles = sorted((f for f in man["files"] if f.startswith("row_")), key=lambda f: Q(json.load(open(CERT / f))["t"]))
-rows = []   # the rows in the schema of the committed data: header, gate, table (x, y), mesh (in v), cells with nodes (σ, P)
-for f in rowfiles:
-    R = json.load(open(CERT / f)); th = [Q(v) for v in R["theta"]]; ell, beta, delta = th[13], th[14], th[9]
-    K = consts[R["name"]]; assert Q(K["ell"]) == ell and Q(K["beta"]) == beta
-    cap_exact = Q(K["C"]) - PAD - 2 * beta * beta / EPS
-    cap = Q(-((-cap_exact.numerator * 10**15) // cap_exact.denominator), 10**15)   # rounded up, as in gen_lower_data.py
-    assert all(isinstance(v, str) for v in R["nodes"] + R["caps"])
-    mesh = [Q(v) for v in R["mesh"]]; assert not mesh or mesh[0] == 0
-    rows.append(dict(name=R["name"], ell=ell, beta=beta, delta=delta, kappa=Q(R["kappa"]), smax=Q(R["smax"]), cap=cap,
-                     E=th[0:6], b=th[10:13], table=[(Q(x), Q(y)) for x, y in zip(R["nodes"], R["caps"])], mesh=[rsqrt(t) for t in mesh],
-                     cells=[dict(x=[Q(v) for v in c["x"]], nodes=[dict(tau=Q(n["sigma"]), P=mpoly(n["y"])) for n in c.get("nodes", [])])
-                            for c in R["cells"]]))
-index = {R["name"]: k for k, R in enumerate(rows)}
-for n in cov["rows"]: assert n in index
+# ----- the package (hash-checked) and its constants
+sums = dict(line.split()[::-1] for line in (NEW / "SHA256SUMS").read_text().splitlines() if line.strip())
+for fn in ("cover.json", "inherited.json"): assert sha(NEW / fn) == sums[fn], ("hash", fn)
+inh = json.load(open(NEW / "inherited.json")); cov = json.load(open(NEW / "cover.json"))
+for key, value in (("eps", EPS), ("rho", RHO), ("C6", C6), ("xmax", XMAX), ("pad", PAD)): assert Q(inh[key]) == value, key
+B = Q(cov["target"]); L = Q(cov["lower"]); assert cov["fails"] == [] and B * L < 1
+rows = inh["rows"]
 
 # ----- the rows: cross-check against the committed RowData modules (field by field, exact)
 NUM = re.compile(r"\((-?\d+) : ℚ\)(?: / (\d+))?")
+names = []
 for k, R in enumerate(rows):
     text = (ROOT / "Grothe" / "Lower" / f"RowData{k + 1:02d}.lean").read_text()
-    assert f"`{R['name']}`" in text, ("row name", k)
+    names.append(re.search(r"`([^`]*)`", text).group(1))
     nums = [Q(int(a), int(b) if b else 1) for a, b in NUM.findall(text)]
-    assert nums[:6] == [R[f] for f in ("ell", "beta", "delta", "kappa", "smax", "cap")], ("row header", k)
-    assert nums[6:12] == R["E"] and nums[12:15] == R["b"], ("row gate", k)
+    assert nums[:6] == [Q(R[f]) for f in ("ell", "beta", "delta", "kappa", "smax", "cap")], ("row header", k)
+    assert nums[6:12] == [Q(v) for v in R["E"]] and nums[12:15] == [Q(v) for v in R["b"]], ("row gate", k)
     strs = re.findall(r'"([^"]*)"', text)
-    assert [(Q(a), Q(b)) for a, b in (s.split(":") for s in strs[0].split(";"))] == R["table"], ("row table", k)
-    assert [Q(v) for v in strs[1].split(",") if v] == R["mesh"][1:] and (not R["mesh"] or R["mesh"][0] == 0), ("row mesh", k)
+    assert [(Q(a), Q(b)) for a, b in (s.split(":") for s in strs[0].split(";"))] == [(Q(x), Q(y)) for x, y in R["table"]], ("row table", k)
+    assert [Q(v) for v in strs[1].split(",") if v] == [Q(v) for v in R["mesh"][1:]] and Q(R["mesh"][0]) == 0, ("row mesh", k)
     cells = strs[2:]; assert len(cells) == len(R["cells"]), ("row cells", k)
     for cl, cj in zip(cells, R["cells"]):
         xlo, xhi, _, _, nodes = cl.split("|")
-        assert [Q(xlo), Q(xhi)] == cj["x"]
-        ln = [(Q(s.split(":")[0]), tuple(Q(v) for v in s.split(":")[1].split(","))) for s in nodes.split(";")] if nodes else []
-        assert ln == [(n["tau"], n["P"]) for n in cj["nodes"]], ("row nodes", k)
+        assert [Q(xlo), Q(xhi)] == [Q(v) for v in cj["x"]]
+        ln = [(Q(s.split(":")[0]), [Q(v) for v in s.split(":")[1].split(",")]) for s in nodes.split(";")] if nodes else []
+        assert ln == [(Q(n["tau"]), [Q(v) for v in n["P"]]) for n in cj["nodes"]], ("row nodes", k)
+assert len(set(names)) == len(names)
 
-# ----- Lean-side arithmetic (mirrors Basic.lean / Gate.lean / Mixed.lean / Boxes.lean)
+# ----- Lean-side arithmetic (mirrors Basic.lean / Gate.lean / Gram.lean / Mixed.lean / Boxes.lean)
 def quadVal(c0, c1, c2, t): return c0 + c1 * t + c2 * t * t
 def quadMax(c0, c1, c2, a, b):
     e = max(quadVal(c0, c1, c2, a), quadVal(c0, c1, c2, b))
@@ -117,8 +100,8 @@ def J(y, x):   # y = (a0, a1, a2, a4, a6); J 0 1 x
     return a0 + RHO * a1 + a2 + a4 * (2 + x * x) + a6 * (6 + 9 * x * x + C6 * x ** 3)
 def lin(a, b, p, r): return tuple(a * u + b * v for u, v in zip(p, r))
 def vrow(R):   # VRow: (ell, beta, delta, N (6 entries), g1, g2, g3) with N = E − diag(ε − δ, 0, 0), g = δ b
-    E = R["E"]; d = R["delta"]; b = R["b"]
-    return (R["ell"], R["beta"], d, (E[0] - (EPS - d), E[1], E[2], E[3], E[4], E[5]), d * b[0], d * b[1], d * b[2])
+    E = [Q(v) for v in R["E"]]; d = Q(R["delta"]); b = [Q(v) for v in R["b"]]
+    return (Q(R["ell"]), Q(R["beta"]), d, (E[0] - (EPS - d), E[1], E[2], E[3], E[4], E[5]), d * b[0], d * b[1], d * b[2])
 def vmix(th, a, b):
     return tuple((1 - th) * u + th * v for u, v in zip(a[:3], b[:3])) + (tuple((1 - th) * u + th * v for u, v in zip(a[3], b[3])),) + \
         tuple((1 - th) * u + th * v for u, v in zip(a[4:], b[4:]))
@@ -140,66 +123,129 @@ def boxVal(a, Lm, Lp, tl, tu, sl, su, xl, xu):
 def capAt(xs, ys, smax, s):   # capAt: the interpolant of the caps, continued by the Lipschitz line
     if s >= xs[-1]: return ys[-1] + smax * (s - xs[-1])
     k = max(k for k in range(len(xs) - 1) if xs[k] <= s); return ys[k] + (ys[k + 1] - ys[k]) * (s - xs[k]) / (xs[k + 1] - xs[k])
-def rowTable(R): return [x for x, y in R["table"]], [y for x, y in R["table"]], R["smax"], R["delta"]
+def rowTable(R): return [Q(x) for x, y in R["table"]], [Q(y) for x, y in R["table"]], Q(R["smax"]), Q(R["delta"])
 def rowTNode(R, ref):   # the zero node or a Stein node rescaled to τ = σ/δ
     xs, ys, _, d = rowTable(R)
     if ref is None: assert xs[0] == 0; return (Q(0), (ys[0], Q(0), Q(0), Q(0), Q(0)))
-    ci, ni = ref; n = R["cells"][ci]["nodes"][ni]; return (n["tau"] / d, n["P"])
+    ci, ni = ref; n = R["cells"][ci]["nodes"][ni]; return (Q(n["tau"]) / d, tuple(Q(v) for v in n["P"]))
 def samePot(a, b, al, c, d, ga):
     return (a == c and b == d and al == ga) or (al == 0 and ga == 0 and a == c) or (al == 1 and ga == 1 and b == d)
-VR = [vrow(R) for R in rows]
-for R, a in zip(rows, VR): assert R["kappa"] * a[2] * a[2] <= vprice(a), ("row price", R["name"])
-
-# ----- the batches referenced by the cover (hash-pinned files; Stein witnesses or spectral witnesses)
-regions_json = cov["regions"] if "regions" in cov else [dict(domain=cov["domain"], cells=cov["cells"])]
-used = set()
-for reg in regions_json:
-    for cell in reg["cells"]:
-        if cell.get("kind") == "joint": used.add(cell["batch"])
-        elif cell.get("kind") == "joint_mix": used.update(cell["batches"])
-batches = []; bmap = {}; meshes = {}; NALL = 0
-for bk, bref in enumerate(cov["joint_batches"]):
-    p = (NEW / bref["file"]).resolve(); assert p.is_relative_to(NEW) and sha(p) == bref["sha256"], bref["file"]
-    b = json.load(open(p)); NALL += len(b["witnesses"])
-    assert b["source_manifest_sha256"] == cov["source_manifest_sha256"]
-    if bk not in used: continue
-    names = b["rows"]; w = [Q(v) for v in b["weights"]]; assert len(names) == 2 and w[0] + w[1] == 1 and min(w) >= 0
-    i, j, th = index[names[0]], index[names[1]], w[1]; Ri, Rj = rows[i], rows[j]
-    (xi, yi, si, di), (xj, yj, sj, dj) = rowTable(Ri), rowTable(Rj)
-    # the mixed table: the mixed interpolants at the union of the rescaled abscissae, the mixed Lipschitz constant
+def mixTable(i, j, th):   # the mixed table: the mixed interpolants at the union of the rescaled abscissae, the mixed Lipschitz constant
+    (xi, yi, si, di), (xj, yj, sj, dj) = rowTable(rows[i]), rowTable(rows[j])
     xs = sorted(set([x / di for x in xi] + [x / dj for x in xj]))
-    ys = [(1 - th) * capAt(xi, yi, si, di * x) + th * capAt(xj, yj, sj, dj * x) for x in xs]
-    smax = (1 - th) * di * si + th * dj * sj
-    assert xs == [Q(v) for v in b["nodes"]] and ys == [Q(v) for v in b["caps"]] and smax == Q(b["smax"]), ("mixed table", bref["file"])
+    return xs, [(1 - th) * capAt(xi, yi, si, di * x) + th * capAt(xj, yj, sj, dj * x) for x in xs], (1 - th) * di * si + th * dj * sj
+def psd2(p, qq, r): return p >= 0 and r >= 0 and qq * qq <= p * r
+def gramCert(lam, mu, A, Bq, m00, m01, m11, k00, k01, k11, ga, gb):   # Gram.lean `gramCert`
+    sos = [m00 + k11 / 4 + ga, m11 + k00, k11 / 4 - ga, 3 * k01 + 3 * k11 / 4 - gb, 2 * m01 - k01 - k11 / 4 + gb]
+    PC = [Q(16), Q(4), Q(16, 3), Q(32), Q(0)]; QC = [Q(0), Q(0), Q(64, 3), Q(32), Q(0)]
+    XC = [Q(80, 9), Q(20, 9), Q(16, 9), Q(96, 9), Q(32, 9)]; CC = [Q(0), Q(0), Q(128, 9), Q(96, 9), Q(0)]
+    return lam >= 0 and mu >= 0 and psd2(m00, m01, m11) and psd2(k00, k01, k11) and ga >= 0 and gb >= 0 and \
+        all(A * p + Bq * qq - lam * x - mu * c - s >= 0 for p, qq, x, c, s in zip(PC, QC, XC, CC, sos))
+VR = [vrow(R) for R in rows]
+
+# ----- which inherited batches the cover uses (node references `b` and inherited boxes `j`, `m`)
+used_inh = set()
+for r in cov["nodes"]:
+    if r[0] == "b": used_inh.add(int(r[1]))
+for bx in cov["boxes"]:
+    if "original" in bx:
+        kind, _, *refs = inh["boxes"][bx["original"]].split("|")
+        if kind == "j": used_inh.add(int(refs[0]))
+        elif kind == "m": used_inh.update(int(v) for v in refs[0].split(",")[:2])
+
+# ----- the inherited Stein batches: witnesses from the hash-pinned fine-mesh batch files
+fcov = json.load(open(FINEMESH / "improved_cover.json"))
+fbatches = []
+for bref in fcov["joint_batches"]:
+    p = (FINEMESH / bref["file"]).resolve(); assert p.is_relative_to(FINEMESH) and sha(p) == bref["sha256"], bref["file"]
+    b = json.load(open(p))
+    if "cut_family" in b: continue   # spectral batches of that package: not inherited here
+    fbatches.append((bref["file"], b))
+batches = []   # dicts: i, j, th, smax, nodes, vs, spec, wits, tnodes
+inhmap = {}    # inherited batch index -> (emitted batch index, {inherited node index: witness index})
+for bk in sorted(used_inh):
+    b = inh["batches"][bk]; i, j, th = int(b["i"]), int(b["j"]), Q(b["theta"]); assert 0 <= th <= 1
     mesh = [Q(v) for v in b["mesh"]]; assert mesh[0] == 0 and all(u < v for u, v in zip(mesh, mesh[1:]))
-    vs = [rsqrt(t) for t in mesh[1:]]   # the knots must be rational squares (breakpoints in v = √u)
-    spec = b.get("cut_family") in ("separate_spectral_nu_zero", "separate_spectral_covariance"); assert spec or "cut_family" not in b
+    want = [(Q(n["tau"]), tuple(Q(v) for v in n["P"])) for n in b["nodes"]]
+    xs, ys, smax = mixTable(i, j, th)
+    assert [(Q(x), Q(y)) for x, y in b["table"]] == list(zip(xs, ys)) and Q(b["smax"]) == smax, ("inherited table", bk)
+    found = None
+    for fn, fb in fbatches:
+        if fb["rows"] != [names[i], names[j]] or [Q(v) for v in fb["weights"]] != [1 - th, th]: continue
+        if [rsqrt(v) for v in fb["mesh"]] != mesh: continue
+        have = {(Q(w["tau"]), mpoly(w["y"])): w for w in fb["witnesses"]}
+        if all(key in have for key in want): found = (fn, fb, have); break
+    assert found is not None, ("inherited batch without witnesses", bk)
+    fn, fb, have = found
+    assert fb["source_manifest_sha256"] == fcov["source_manifest_sha256"]
+    assert [Q(v) for v in fb["nodes"]] == xs and [Q(v) for v in fb["caps"]] == ys and Q(fb["smax"]) == smax, ("fine-mesh table", fn)
     wits = []; tn = []
-    for wit in b["witnesses"]:
-        P = mpoly(wit["y"]); assert P[1] >= 0 and P[4] >= 0; tau = Q(wit["tau"]); assert tau > 0
-        ys_ = ",".join(qs(v) for v in P)
-        if spec:
-            # one spectral cut: a = -1/2, λ, μ > 0, ν ≥ 0 (ν = 0 for the family without the covariance order), the test
-            # on the batch mesh vanishing at its last knot
-            c = wit["cut"]; assert [Q(v) for v in c["mesh"]] == mesh and Q(c["a"]) == Q(-1, 2)
-            lam, mu_, t, be, nu = (Q(c[k]) for k in ("lam", "mu", "t", "beta", "nu"))
-            assert lam > 0 and mu_ > 0 and nu >= 0 and (nu == 0 or b["cut_family"] == "separate_spectral_covariance")
-            phi = [Q(v) for v in c["phi_values"]]; assert len(phi) == len(mesh) and phi[-1] == 0
-            wits.append(f"{qs(tau)}:{ys_}:{qs(lam)},{qs(mu_)},{qs(t)},{qs(be)},{qs(nu)}|" + ",".join(qs(v) for v in phi[:-1]))
-        else:
-            mu = [Q(v) * 10**10 for v in wit["mu"]]; assert all(m.denominator == 1 and m >= 0 for m in mu)
-            bank = []
-            for z in wit["bank"]:
-                zz = [Q(v) * 10**8 for v in z]; assert all(v.denominator == 1 for v in zz) and len(zz) == len(mesh) + 1
-                bank.append(",".join(str(v.numerator) for v in zz))
-            assert len(mu) == len(bank)
-            wits.append(f"{qs(tau)}:{ys_}:" + ",".join(str(m.numerator) for m in mu) + "|" + ";".join(bank))
+    for tau, P in want:
+        w = have[(tau, P)]; assert P[1] >= 0 and P[4] >= 0 and tau > 0
+        mu = [Q(v) * 10**10 for v in w["mu"]]; assert all(m.denominator == 1 and m >= 0 for m in mu)
+        bank = []
+        for z in w["bank"]:
+            zz = [Q(v) * 10**8 for v in z]; assert all(v.denominator == 1 for v in zz) and len(zz) == len(mesh) + 1
+            bank.append(",".join(str(v.numerator) for v in zz))
+        assert len(mu) == len(bank)
+        wits.append(f"{qs(tau)}:" + ",".join(qs(v) for v in P) + ":" + ",".join(str(m.numerator) for m in mu) + "|" + ";".join(bank))
         tn.append((tau, P))
     assert all(u[0] < v[0] for u, v in zip(tn, tn[1:]))
-    if spec: meshes[len(mesh)] = meshes.get(len(mesh), 0) + len(wits)
-    bmap[bk] = len(batches)
+    inhmap[bk] = (len(batches), {k: k for k in range(len(want))}, fn)
     batches.append(dict(i=i, j=j, th=th, smax=smax, nodes=";".join(f"{qs(x)}:{qs(y)}" for x, y in zip(xs, ys)),
-                        vs=",".join(qs(v) for v in vs), spec=spec, wits=wits, tnodes=tn, file=bref["file"]))
+                        vs=",".join(qs(v) for v in mesh[1:]), spec=False, wits=wits, tnodes=tn))
+NINH = len(batches)
+
+# ----- the new spectral batches: one per mixed potential (normalised to i < j) and test mesh
+newnodes = cov["newnodes"]; groups_new = {}
+def potential(n):   # the mixed potential of a node, normalised to `(i, j, θ)` with i < j (a single row is `(i, i, 0)`)
+    i, j, th = int(n["i"]), int(n["j"]), Q(n["theta"]); assert 0 <= th <= 1 and "weights" not in n
+    if i == j or th == 0: return (i, i, Q(0))
+    if th == 1: return (j, j, Q(0))
+    return (i, j, th) if i < j else (j, i, 1 - th)
+for name, n in newnodes.items():
+    groups_new.setdefault(potential(n) + (tuple(Q(v) for v in n["rv"]),), []).append(name)
+newref = {}; meshes = {}; ngram = 0; ncoupled = 0
+for (i, j, th, rv), nms in sorted(groups_new.items(), key=lambda kv: (kv[0][:3], len(kv[0][3]), kv[0][3])):
+    xs, ys, smax = mixTable(i, j, th)
+    rv = list(rv); assert rv[0] == 0 and all(u < v for u, v in zip(rv, rv[1:]))
+    nms.sort(key=lambda nm: (Q(newnodes[nm]["tau"]), nm)); wits = []; tn = []
+    for k, nm in enumerate(nms):
+        n = newnodes[nm]; assert [Q(v) for v in n["rv"]] == rv and n.get("eta") is None
+        lam, mu, t, be, tau = (Q(n[f]) for f in ("lam", "mu", "t", "beta", "tau")); assert lam > 0 and mu > 0 and tau > 0
+        nu = Q(n.get("nu") or 0); assert nu >= 0
+        phi = [Q(v) for v in n["phi"]]; assert len(phi) == len(rv) - 1
+        P = [Q(v) for v in n["P"]]; assert len(P) == 5 and P[1] >= 0 and P[4] >= 0
+        bud = ""
+        if "tensor_budget" in n:   # a contraction-Gram certificate, checked as Gram.lean `gramCert` does
+            d = n["tensor_budget"]; assert not n.get("extra_budgets")
+            g = [Q(d["A"]), Q(d["B"])] + [Q(v) for v in d["M0"]] + [Q(v) for v in d["M1"]] + [Q(d["alpha"]), Q(d["beta"])]
+            assert len(g) == 10 and gramCert(lam, mu, *g), ("gramCert", nm)
+            bud = ":g," + ",".join(qs(v) for v in g); ngram += 1
+        elif n.get("extra_budgets"):   # multipliers of the coupled family
+            se = [(Q(s), Q(e)) for s, e in n["extra_budgets"]]
+            assert all(s >= 2 and e >= 0 for s, e in se) and sum(e for _, e in se) <= lam, ("coupled", nm)
+            bud = ":c," + ",".join(f"{qs(s)},{qs(e)}" for s, e in se); ncoupled += 1
+        wits.append(f"{qs(tau)}:" + ",".join(qs(v) for v in P) + f":{qs(lam)},{qs(mu)},{qs(t)},{qs(be)},{qs(nu)}{bud}|" + ",".join(qs(v) for v in phi))
+        tn.append((tau, tuple(P))); newref[nm] = (len(batches), k)
+    assert all(u[0] <= v[0] for u, v in zip(tn, tn[1:]))
+    meshes[len(rv)] = meshes.get(len(rv), 0) + len(wits)
+    batches.append(dict(i=i, j=j, th=th, smax=smax, nodes=";".join(f"{qs(x)}:{qs(y)}" for x, y in zip(xs, ys)),
+                        vs=",".join(qs(v) for v in rv[1:]), spec=True, wits=wits, tnodes=tn))
+
+# ----- the node references of the cover and the groups
+def refdata(r):   # (string, (i, j, θ) of its potential, τ-node)
+    if r[0] == "z": i = r[1]; return f"z,{i}", (i, i, Q(0)), rowTNode(rows[i], None)
+    if r[0] == "s": i, ci, ni = r[1:]; return f"s,{i},{ci},{ni}", (i, i, Q(0)), rowTNode(rows[i], (ci, ni))
+    if r[0] == "b": bi, k = inhmap[int(r[1])][0], inhmap[int(r[1])][1][int(r[2])]
+    else: bi, k = newref[r[1]]
+    b = batches[bi]; return f"b,{bi},{k}", (b["i"], b["j"], b["th"]), b["tnodes"][k]
+NODES = [refdata(r) for r in cov["nodes"]]
+GROUPS = []
+for g in cov["groups"]:
+    w = [(int(i), Q(v)) for i, v in g["weights"]]; assert sum(v for _, v in w) == 1 and all(v > 0 for _, v in w) and w == sorted(w)
+    if len(w) == 1: GROUPS.append((w[0][0], w[0][0], Q(0)))
+    else: assert len(w) == 2; GROUPS.append((w[0][0], w[1][0], w[1][1]))
 
 # ----- boxes: Lean strings and the replay of their values
 def comp(i, j, th, s0, s1, refs, sl, su):
@@ -213,67 +259,51 @@ def comp(i, j, th, s0, s1, refs, sl, su):
 def mixcomp(th, c0, c1):
     assert 0 <= th <= 1
     return vmix(th, c0[1], c1[1]), lin(1 - th, th, c0[2], c1[2]), lin(1 - th, th, c0[3], c1[3])
-def srcref(i, cn):   # a node reference `(cell, node)` of row `i`, a negative cell the zero node: (string, potential, τ-node)
-    c, n = cn
-    if c < 0: return f"z,{i}", (i, i, Q(0)), rowTNode(rows[i], None)
-    return f"s,{i},{c},{n}", (i, i, Q(0)), rowTNode(rows[i], (c, n))
-def batref(bk, k):
-    bi = bmap[bk]; b = batches[bi]; return f"b,{bi},{k}", (b["i"], b["j"], b["th"]), b["tnodes"][k]
-def batcomp(bk, refs, sl, su):   # refs = [[k0, k1], [k2, k3]]
-    b = batches[bmap[bk]]; (k0, k1), (k2, k3) = refs
-    return comp(b["i"], b["j"], b["th"], sl, su, [batref(bk, k) for k in (k0, k1, k2, k3)], sl, su)
-boxes = []; doms = []; kinds = dict(cap=0, one=0, two=0, source=0, joint=0, joint_mix=0); worst = Q(0)
-for reg in regions_json:
-    d = tuple(Q(v) for v in reg["domain"]); assert d[2:] == (0, RHO, 0, XMAX) and 0 <= d[0] < d[1] <= Q(9, 10)
-regions_json.sort(key=lambda r: Q(r["domain"][0]))
-SLAB = (Q(regions_json[0]["domain"][0]), Q(regions_json[-1]["domain"][1]))
-for a, b in zip(regions_json, regions_json[1:]): assert Q(a["domain"][1]) == Q(b["domain"][0])
-for reg in regions_json:
-    dom = tuple(Q(v) for v in reg["domain"])
-    for cell in reg["cells"]:
-        bb = tuple(Q(v) for v in cell["box"]); tl, tu, sl, su, xl, xu = bb
-        assert dom[0] <= tl < tu <= dom[1] and 0 <= sl < su <= RHO and 0 <= xl < xu <= XMAX
-        bs = ",".join(qs(v) for v in bb)
-        if cell.get("kind") == "joint":
-            c0 = batcomp(cell["batch"], cell["joint_refs"], sl, su); a, Lm, Lp = c0[1:]
-            boxes.append(f"b|{bs}|{c0[0]}"); kinds["one"] += 1; kinds["joint"] += 1
-        elif cell.get("kind") == "joint_mix":
-            b0, b1 = cell["batches"]; lam = Q(cell["mix"]); r0, r1 = cell["refs"]
-            c0, c1 = batcomp(b0, r0, sl, su), batcomp(b1, r1, sl, su); a, Lm, Lp = mixcomp(lam, c0, c1)
-            boxes.append(f"m|{bs}|{qs(lam)}|{c0[0]}|{c1[0]}"); kinds["two"] += 1; kinds["joint_mix"] += 1
+def srcrefs(i, s):   # the eight integers of an inherited source reference: pairs (cell, node), a negative cell the zero node
+    v = list(map(int, s.split(","))); assert len(v) == 8
+    return [refdata(("z", i) if c < 0 else ("s", i, c, n)) for c, n in zip(v[::2], v[1::2])]
+def batrefs(bi, s): return [refdata(("b", bi, int(k))) for k in s.split(",")]
+envs = [(Q(0), Q(0), EPS * RHO ** 2)] + [(Q(R["ell"]), Q(R["beta"]), 2 * Q(R["beta"]) ** 2 / EPS + Q(R["cap"]) + PAD) for R in rows]
+boxes = []; doms = []; kinds = dict(cap=0, one=0, two=0, original=0, choice=0, scale_domain=0); worst = Q(0)
+for bx in cov["boxes"]:
+    bb = tuple(Q(v) for v in bx["bounds"]); tl, tu, sl, su, xl, xu = bb; assert tl < tu and 0 <= sl < su and 0 <= xl < xu
+    bs = ",".join(qs(v) for v in bb); assert ("original" in bx) != ("choice" in bx)
+    if "original" in bx:
+        kind, obounds, *refs = inh["boxes"][bx["original"]].split("|"); ob = [Q(v) for v in obounds.split(",")]; kinds["original"] += 1
+        if kind == "c":
+            i, j, th = refs[0].split(","); i, j, th = int(i), int(j), Q(th); assert 0 <= th <= 1
+            a, c = envs[i], envs[j]
+            val = quadMax((1 - th) * a[2] + th * c[2] - 2 * (1 - th) * th * (a[1] - c[1]) ** 2 / EPS, -2 * ((1 - th) * a[0] + th * c[0]), Q(1), tl, tu)
+            boxes.append(f"c|{bs}|{i},{j},{qs(th)}"); kinds["cap"] += 1
         else:
-            assert "kind" not in cell
-            i, j, th = index[cell["i"]], index[cell["j"]], Q(cell["theta"]); pi, pj = cell["points"]
-            c0 = comp(i, i, Q(0), sl, su, [srcref(i, cn) for pr in pi for cn in pr], sl, su)
-            c1 = comp(j, j, Q(0), sl, su, [srcref(j, cn) for pr in pj for cn in pr], sl, su)
-            a, Lm, Lp = mixcomp(th, c0, c1)
-            boxes.append(f"m|{bs}|{qs(th)}|{c0[0]}|{c1[0]}"); kinds["two"] += 1; kinds["source"] += 1
+            s0, s1 = ob[2], ob[3]; assert s0 <= sl < su <= s1
+            if kind == "s":
+                i, j, th = refs[0].split(","); i, j, th = int(i), int(j), Q(th)
+                c0, c1 = comp(i, i, Q(0), s0, s1, srcrefs(i, refs[1]), sl, su), comp(j, j, Q(0), s0, s1, srcrefs(j, refs[2]), sl, su)
+                a, Lm, Lp = mixcomp(th, c0, c1); boxes.append(f"m|{bs}|{qs(th)}|{c0[0]}|{c1[0]}"); kinds["two"] += 1
+            elif kind == "j":
+                bk = int(refs[0]); b = batches[inhmap[bk][0]]
+                c0 = comp(b["i"], b["j"], b["th"], s0, s1, batrefs(bk, refs[1]), sl, su)
+                a, Lm, Lp = c0[1:]; boxes.append(f"b|{bs}|{c0[0]}"); kinds["one"] += 1
+            else:
+                assert kind == "m"
+                b0, b1, lam = refs[0].split(","); b0, b1, lam = int(b0), int(b1), Q(lam); B0, B1 = batches[inhmap[b0][0]], batches[inhmap[b1][0]]
+                c0 = comp(B0["i"], B0["j"], B0["th"], s0, s1, batrefs(b0, refs[1]), sl, su)
+                c1 = comp(B1["i"], B1["j"], B1["th"], s0, s1, batrefs(b1, refs[2]), sl, su)
+                a, Lm, Lp = mixcomp(lam, c0, c1); boxes.append(f"m|{bs}|{qs(lam)}|{c0[0]}|{c1[0]}"); kinds["two"] += 1
+            val = boxVal(a, Lm, Lp, *bb)
+    else:
+        ch = bx["choice"]; kinds["choice"] += 1
+        if "scale_domain" in ch: kinds["scale_domain"] += 1
+        s0, s1 = (Q(v) for v in ch.get("scale_domain", (sl, su))); assert s0 <= sl < su <= s1
+        cs = [comp(*GROUPS[gi], s0, s1, [NODES[k] for k in ri], sl, su) for gi, ri in zip(ch["groups"], ch["refs"])]
+        if len(cs) == 1: a, Lm, Lp = cs[0][1:]; boxes.append(f"b|{bs}|{cs[0][0]}"); kinds["one"] += 1
+        else:
+            assert len(cs) == 2; th = Q(ch["theta"]); a, Lm, Lp = mixcomp(th, cs[0], cs[1])
+            boxes.append(f"m|{bs}|{qs(th)}|{cs[0][0]}|{cs[1][0]}"); kinds["two"] += 1
         val = boxVal(a, Lm, Lp, *bb)
-        assert val == Q(cell["bound"]) and val <= B, ("box value", cell["box"], float(val), float(Q(cell["bound"])))
-        worst = max(worst, val); doms.append(bb)
-slab_max = worst
-
-# ----- the cap boxes outside the slab (the scalar envelope, Lean semantics): maximal runs of envelope cells with the
-# same mixture, cut at the slab ends; scalar row 0 is the crude row `(0, 0, ερ²)`, row k+1 the certified row k
-env = json.load(open(CERT / "envelope.json")); step = Q(env["step"])
-assert len(env["cells"]) * step == Q(9, 10)
-envs = {"crude": (0, Q(0), Q(0), EPS * RHO ** 2)}
-for k, R in enumerate(rows): envs[R["name"]] = (k + 1, R["ell"], R["beta"], 2 * R["beta"] ** 2 / EPS + R["cap"] + PAD)
-runs = []
-for k, (i, j, th) in enumerate(env["cells"]):
-    lo, hi = k * step, (k + 1) * step
-    if SLAB[0] <= lo and hi <= SLAB[1]: continue
-    assert hi <= SLAB[0] or lo >= SLAB[1]
-    key = (i, j, Q(th))
-    if runs and runs[-1][2] == key and runs[-1][1] == lo and lo != SLAB[1]: runs[-1][1] = hi
-    else: runs.append([lo, hi, key])
-outer = Q(0)
-for lo, hi, (i, j, th) in runs:
-    (ka, la, ba, Ca), (kb, lb, bb_, Cb) = envs[i], envs[j]; assert 0 <= th <= 1
-    val = quadMax((1 - th) * Ca + th * Cb - 2 * (1 - th) * th * (ba - bb_) ** 2 / EPS, -2 * ((1 - th) * la + th * lb), Q(1), lo, hi)
-    assert val <= B, ("cap box", lo, hi); outer = max(outer, val); worst = max(worst, val)
-    boxes.append(f"c|{qs(lo)},{qs(hi)},0,{qs(RHO)},0,{qs(XMAX)}|{ka},{kb},{qs(th)}"); kinds["cap"] += 1
-    doms.append((lo, hi, Q(0), RHO, Q(0), XMAX))
+    assert val == Q(bx["upper"]) and val <= B, ("box value", bx["bounds"], float(val), float(Q(bx["upper"])))
+    worst = max(worst, val); doms.append(bb)
 
 # ----- the partition certificate: guillotine cuts (axis k ∈ {0 (t), 1 (τ), 2 (x)} at `mid`), replayed
 DOM = (Q(0), Q(9, 10), Q(0), RHO, Q(0), XMAX)
@@ -310,23 +340,23 @@ tdefs = "".join(f"/-- Cut tokens {k * TCH}–{k * TCH + len(c) - 1} of the parti
 tdefs += ("/-- The partition certificate of the cover, in preorder: a cut `k,mid` of axis `k` (`0` for `t`, `1` for `τ`, `2` for `x`)\n"
           "at `mid` followed by its two subtrees, or a leaf `.`. -/\ndef coverCuts : List String :=\n  [" +
           ", ".join(f"coverCuts{k}" for k in range(len(tchunks))) + "].flatMap fun s => splitL s \"|\"\n\n")
-nnodes = sum(len(b["wits"]) for b in batches); nspec = sum(len(b["wits"]) for b in batches if b["spec"])
-nsb = sum(1 for b in batches if b["spec"]); nstein = len(batches) - nsb
+nnodes = sum(len(b["wits"]) for b in batches); nspec = sum(len(b["wits"]) for b in batches if b["spec"]); nnew = len(batches) - NINH
 ncov = sum(1 for b in batches if b["spec"] for w in b["wits"] if Q(w.split("|")[0].split(":")[2].split(",")[4]) > 0)
 ms = sorted(meshes); meshdesc = (", ".join(f"{m}-" for m in ms[:-1]) + f" and {ms[-1]}-knot test meshes") if len(ms) > 1 else f"the {ms[0]}-knot test mesh"
 src = NEW.relative_to(HANDOFF) if NEW.is_relative_to(HANDOFF) else NEW.name
 text = ("import Grothe.Lower.Boxes\n\n/-!\n# The common-law certificate data (generated by `tools/gen_lower_mixed.py`; do not edit)\n\n"
-        f"The {len(batches)} batches of exact node certificates for the mixed potentials ({nnodes} nodes: {nstein} batches with\n"
-        f"{nnodes - nspec} Stein nodes, {nsb} batches with {nspec} spectral nodes on {meshdesc}, {ncov} of them\n"
-        f"with ν > 0, i.e. using the covariance order; the batches of the source package that no box references are omitted) and the\n"
-        f"{len(boxes)} boxes of the partition of `[0, 9/10] × [0, ρ] × [0, 31/4]` ({kinds['cap']} cap boxes outside the central slab\n"
-        f"`[{SLAB[0]}, {SLAB[1]}]`, {kinds['one']} boxes with one component, {kinds['two']} boxes mixing two components) with its\n"
-        f"certificate of {len(tokens) - len(boxes)} axis cuts; source `{src}`.\n-/\n\n"
+        f"The {len(batches)} batches of exact node certificates for the mixed potentials ({nnodes} nodes: {NINH} inherited batches\n"
+        f"with {nnodes - nspec} Stein nodes, {nnew} batches with {nspec} spectral nodes on {meshdesc}, {ncov} of them\n"
+        f"with ν > 0, i.e. using the covariance order, {ngram} citing a contraction-Gram certificate and {ncoupled} the coupled family;\n"
+        f"the inherited batches that no box or node references are omitted) and the\n"
+        f"{len(boxes)} boxes of the partition of `[0, 9/10] × [0, ρ] × [0, 31/4]` ({kinds['cap']} cap boxes, {kinds['one']} boxes with one\n"
+        f"component, {kinds['two']} boxes mixing two components) with its certificate of {len(tokens) - len(boxes)} axis cuts;\n"
+        f"source `{src}` (inherited Stein witnesses from `{FINEMESH.relative_to(HANDOFF)}`).\n-/\n\n"
         "namespace Grothe.Lower\n\n"
         "/-- The batches: rows `(i, j)`, weight `θ`, Lipschitz constant, mixed node caps, mesh, kind (spectral or Stein) and witnesses. -/\n"
         "def mixedBatches : List JBatch :=\n[" + bt + "]\n\n" + bdefs + tdefs + "end Grothe.Lower\n")
 OUT.write_text(text)
-print("ok", json.dumps(dict(source=str(NEW), batches=len(batches), batches_in_package=len(cov["joint_batches"]), nodes=nnodes, nodes_in_package=NALL,
-                            stein_batches=nstein, spectral_batches=nsb, spectral_nodes=nspec, covariance_nodes=ncov, spectral_meshes=meshes,
-                            boxes=len(boxes), kinds=kinds, cuts=len(tokens) - len(boxes), slab=[str(SLAB[0]), str(SLAB[1])],
-                            slab_max=float(slab_max), outer_max=float(outer), B=str(B), lower=str(L), slack=str(1 - B * L), bytes=OUT.stat().st_size)))
+print("ok", json.dumps(dict(source=str(NEW), batches=len(batches), inherited=NINH, inherited_files=sorted(set(v[2] for v in inhmap.values())),
+                            nodes=nnodes, stein_nodes=nnodes - nspec, spectral_nodes=nspec, covariance_nodes=ncov, gram_nodes=ngram,
+                            coupled_nodes=ncoupled, meshes=meshes, boxes=len(boxes), kinds=kinds, cuts=len(tokens) - len(boxes),
+                            box_max=float(worst), B=str(B), lower=str(L), slack=str(1 - B * L), bytes=OUT.stat().st_size)))
