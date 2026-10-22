@@ -90,3 +90,4 @@ import Grothe.LowerAnalytic.PotentialReg
 import Grothe.LowerAnalytic.FibreIntegral
 import Grothe.LowerAnalytic.RowGaussian
 import Grothe.LowerAnalytic.Frame
+import Grothe.LowerAnalytic.Reduction

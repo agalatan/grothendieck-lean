@@ -276,6 +276,84 @@ lemma tOf_Cop (f g : L2G m) : tOf m (Cop W f) (Cop W g) = tOf m f g := by
 lemma QhOf_Cop (f g : L2G m) : QhOf m (Cop W f) (Cop W g) = Cop W (QhOf m f g) := by
   rw [QhOf, QhOf, hOf_Cop, Q_Cop]
 
+/-! ### Moving a unit first-chaos vector to the visible coordinate -/
+
+lemma norm_sq_sum_zL (α : Fin m → ℂ) : ‖∑ l, α l • zL m l‖ ^ 2 = 2 * ∑ l, ‖α l‖ ^ 2 := by
+  rw [@norm_sq_eq_re_inner ℂ, sum_inner]
+  simp_rw [inner_sum, inner_smul_left, inner_smul_right, inner_zL_zL, mul_ite, mul_one, mul_zero,
+    Finset.sum_ite_eq, Finset.mem_univ, if_true]
+  rw [RCLike.re_to_complex, Complex.re_sum, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun l _ => ?_
+  rw [show conj (α l) * (α l * 2) = 2 * (conj (α l) * α l) by ring, Complex.conj_mul',
+    ← Complex.ofReal_pow, ← Complex.ofReal_ofNat, ← Complex.ofReal_mul, Complex.ofReal_re]
+
+/-- **The rotation to the visible coordinate**: for a unit `ζ ∈ H₁,₀` there is a unitary `W` with
+`C_W ζ = z₀/√2`. -/
+theorem exists_Cop_eq (hm : 0 < m) {ζ : L2G m} (hζ : ζ ∈ H10 m) (h1 : ‖ζ‖ = 1) :
+    ∃ W : EuclideanSpace ℂ (Fin m) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin m),
+      Cop W ζ = (((√2 : ℝ) : ℂ)⁻¹) • zL m ⟨0, hm⟩ := by
+  classical
+  obtain ⟨α, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun ℂ).1 hζ
+  set i0 : Fin m := ⟨0, hm⟩
+  have hs : ((√2 : ℝ) : ℂ) ≠ 0 := by exact_mod_cast sqrt_two_ne
+  set u : EuclideanSpace ℂ (Fin m) := WithLp.toLp 2 fun l => ((√2 : ℝ) : ℂ) * conj (α l) with hu
+  have hu1 : ‖u‖ = 1 := by
+    have h2 := norm_sq_sum_zL α
+    rw [h1, one_pow] at h2
+    have : ‖u‖ ^ 2 = 1 := by
+      rw [EuclideanSpace.norm_sq_eq]
+      simp only [hu, PiLp.toLp_apply, norm_mul, Complex.norm_conj, Complex.norm_real,
+        Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), mul_pow, Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]
+      rw [← Finset.mul_sum]; linarith
+    nlinarith [norm_nonneg u]
+  -- an orthonormal basis with `b i0 = u`
+  let v : Fin m → EuclideanSpace ℂ (Fin m) := fun i => if i = i0 then u else 0
+  have hv : Orthonormal ℂ (({i0} : Set (Fin m)).restrict v) := by
+    rw [orthonormal_iff_ite]
+    rintro ⟨i, hi⟩ ⟨j, hj⟩
+    simp only [Set.mem_singleton_iff] at hi hj
+    subst hi hj
+    rw [if_pos rfl]
+    show inner ℂ (v i0) (v i0) = 1
+    simp only [v, if_pos rfl]
+    rw [inner_self_eq_norm_sq_to_K, hu1]; simp
+  obtain ⟨b, hb⟩ := Orthonormal.exists_orthonormalBasis_extension_of_card_eq (𝕜 := ℂ)
+    (E := EuclideanSpace ℂ (Fin m)) (ι := Fin m) (by simp) hv
+  have hb0 : b i0 = u := by rw [hb i0 (by simp)]; simp [v]
+  refine ⟨b.repr.symm, ?_⟩
+  rw [map_sum]
+  simp_rw [map_smul, Cop_zL, Finset.smul_sum, smul_smul]
+  rw [Finset.sum_comm]
+  have hco : ∀ k, ∑ l, α l * wco m b.repr.symm l k = if k = i0 then (((√2 : ℝ) : ℂ)⁻¹) else 0 := by
+    intro k
+    have hw : ∀ l, wco m b.repr.symm l k = b k l := fun l => by
+      simp [wco, OrthonormalBasis.repr_symm_single]
+    simp_rw [hw]
+    have hinner : inner ℂ (b i0) (b k) = if i0 = k then (1 : ℂ) else 0 := by
+      rw [orthonormal_iff_ite.1 b.orthonormal]
+    rw [hb0, PiLp.inner_apply] at hinner
+    simp only [hu, PiLp.toLp_apply, RCLike.inner_apply, map_mul, Complex.conj_conj,
+      Complex.conj_ofReal] at hinner
+    have e : ∑ l, α l * b k l = (((√2 : ℝ) : ℂ)⁻¹) * ∑ l, ((√2 : ℝ) : ℂ) * α l * b k l := by
+      rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun l _ => ?_; field_simp
+    rw [e]
+    have hinner' : ∑ l, ((√2 : ℝ) : ℂ) * α l * b k l = if i0 = k then (1 : ℂ) else 0 := by
+      rw [← hinner]; refine Finset.sum_congr rfl fun l _ => ?_; ring
+    rw [hinner']
+    by_cases h : k = i0
+    · subst h; simp
+    · simp [h, Ne.symm h]
+  simp_rw [← Finset.sum_smul, hco, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+
+/-- Transfer of the shared reduction along a pair with the same norms `‖Qh + c v‖`. -/
+lemma sharedReduction_congr {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    {rows : List Row} {V t : ℝ} {Qh₁ v₁ Qh₂ v₂ : E} (h : SharedReduction rows V t Qh₁ v₁)
+    (hn : ∀ c : ℝ, ‖Qh₁ + c • v₁‖ = ‖Qh₂ + c • v₂‖) : SharedReduction rows V t Qh₂ v₂ := by
+  obtain ⟨Ω, hΩ, μ, hμ, U, X1, X2, X3, τ, x, hM, hG, h0, h1, hX, hrows⟩ := h
+  refine ⟨Ω, hΩ, μ, hμ, U, X1, X2, X3, τ, x, hM, hG, h0, h1, hX, fun r hr => ?_⟩
+  obtain ⟨Ψ, hc, hi, hg, hV⟩ := hrows r hr
+  exact ⟨Ψ, hc, hi, hg, by rw [← hn]; exact hV⟩
+
 end
 
 end Grothe.LowerAnalytic
