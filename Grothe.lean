@@ -99,3 +99,4 @@ import Grothe.LowerAnalytic.CapCoord
 import Grothe.LowerAnalytic.CapPiece
 import Grothe.LowerAnalytic.CapPolar
 import Grothe.LowerAnalytic.CapSym
+import Grothe.LowerAnalytic.CapSymmetry
