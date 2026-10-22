@@ -156,3 +156,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.JointSixth.gram_j2_shifted
 #print axioms Grothe.LowerAnalytic.JointSixth.shifted_hcoeff_lt
 #print axioms Grothe.LowerAnalytic.joint_eta_budget
+#print axioms Grothe.haagerup_upper
+#print axioms Grothe.DominatedKernel.comp_radial
+#print axioms Grothe.DiskKernel.dominated
+#print axioms Grothe.haagerup_bound
+#print axioms Grothe.haagerup_dominated

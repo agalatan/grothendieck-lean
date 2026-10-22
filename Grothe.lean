@@ -7,6 +7,17 @@ import Grothe.Upper.Head
 import Grothe.Upper.Data
 import Grothe.Upper.Final
 import Grothe.Upper.PolynomialBridge
+import Grothe.Upper.Disk
+import Grothe.Upper.Realise
+import Grothe.Upper.Compose
+import Grothe.Upper.Haagerup
+import Grothe.Haagerup.Gauss1D
+import Grothe.Haagerup.GaussG
+import Grothe.Haagerup.Euler
+import Grothe.Haagerup.BetaJ
+import Grothe.Haagerup.Series
+import Grothe.Haagerup.Law
+import Grothe.Haagerup.Identity
 import Grothe.Lower.Basic
 import Grothe.Lower.Poly
 import Grothe.Lower.Moment
