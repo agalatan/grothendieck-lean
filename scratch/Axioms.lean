@@ -78,6 +78,13 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Chaos3.gE_sq_eq_kernel
 #print axioms Grothe.LowerAnalytic.sixth_moment_circular
 #print axioms Grothe.LowerAnalytic.Circular.gaussian_sixth
+#print axioms Grothe.LowerAnalytic.Circular.chaos3_right
+#print axioms Grothe.LowerAnalytic.tenGa_le_half
+#print axioms Grothe.LowerAnalytic.tenTT_le_sixth
+#print axioms Grothe.LowerAnalytic.Chaos3.wick4
+#print axioms Grothe.LowerAnalytic.A0nn_circular
+#print axioms Grothe.LowerAnalytic.A2nn_circular
+#print axioms Grothe.LowerAnalytic.TensorFactsRest.toTensorFacts
 #print axioms Grothe.LowerAnalytic.gaussian_moments
 #print axioms Grothe.LowerAnalytic.sharedReduction_of_gaussian
 #print axioms Grothe.LowerAnalytic.lower_bound_gaussian

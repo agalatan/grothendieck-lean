@@ -125,6 +125,11 @@ lemma gam_mul_self (F : MvPolynomial ι ℝ) : gam (F * F) (F * F) = 4 * (F * F)
   rw [pderiv_mul]
   ring
 
+/-- Leibniz rule for the carré du champ in its first slot. -/
+lemma gam_mul_left (P R Z : MvPolynomial ι ℝ) : gam (P * R) Z = P * gam R Z + R * gam P Z := by
+  simp only [gam, pderiv_mul, Finset.mul_sum, ← Finset.sum_add_distrib]
+  exact Finset.sum_congr rfl fun i _ => by ring
+
 lemma gam_add_self (a b : MvPolynomial ι ℝ) :
     gam (a + b) (a + b) = gam a a + 2 * gam a b + gam b b := by
   unfold gam

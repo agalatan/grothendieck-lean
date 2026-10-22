@@ -39,11 +39,6 @@ noncomputable section
 
 variable {ι : Type*} [Fintype ι]
 
-/-- Leibniz rule for the carré du champ. -/
-lemma gam_mul_left (X Y Z : MvPolynomial ι ℝ) : gam (X * Y) Z = X * gam Y Z + Y * gam X Z := by
-  simp only [gam, Finset.mul_sum, ← Finset.sum_add_distrib]
-  exact Finset.sum_congr rfl fun i _ => by rw [pderiv_mul]; ring
-
 omit [Fintype ι] in
 lemma swap4 {κ β : Type*} [Fintype ι] [Fintype κ] [AddCommMonoid β] (F : κ → κ → ι → ι → β) :
     ∑ p, ∑ q, ∑ i, ∑ k, F p q i k = ∑ i, ∑ k, ∑ p, ∑ q, F p q i k := by
