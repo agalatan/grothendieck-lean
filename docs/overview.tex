@@ -190,7 +190,7 @@ only a cubic preprocessor and a finite head are used.\\\bottomrule
 \end{tabular}
 \end{center}
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}, and exactly three pinned \lean{native\_decide} facts. No
-\lean{sorry}; CI builds everything and checks the axiom report (179 theorems). The development has about $32{,}000$ lines of
+\lean{sorry}; CI builds everything and checks the axiom report (186 theorems). The development has about $32{,}000$ lines of
 hand-written Lean and $12{,}000$ lines of generated certificate data. The lower bound is close to fully formal: only
 one-variable numerical caps remain. The sharp upper bound still rests mainly on an external analytic comparison lemma; a weaker upper bound, $1.40578$, is fully formal.
 
@@ -315,6 +315,15 @@ cubic part of the response and $\mathcal N$ for the value of the witness on it.
 \item \textbf{No duality gap, but no free lunch [P].} By the minimax of Section~2.3, combining a pool of actual responses
  truncated at level $D$, value $v_D$, with a witness certified to $v_D+\delta$ and a mixture whose omitted coefficient tail is
  at most $\tau$, gives $1/(v_D+\delta)\le\KG\le1/(v_D-\tau)$. The interval for $1/\KG$ has width exactly $\delta+\tau$.
+\item \textbf{A global spherical form, and why it does not certify cheaply [P] and [Lean].} Finite Gaussian Hermite games
+ transfer, in every Gaussian dimension, to compact operators on the sphere with the same bounded responses and the same
+ shared drivers; the numerical bounds are unchanged. The dual operator can then be truncated with a rigorous error: the
+ cubic multiplier tail and the signed cap assembly are proved in Lean (\lean{SphericalTransfer.cubic\_tail\_32\_12},
+ \lean{global\_cap\_from\_truncation}); the analytic bridge is a written proof (\texttt{docs/SPHERICAL\_TRANSFER.md}). But
+ the operator has no square-integrable kernel: its multiplicity-weighted squared coefficients grow like $r^7$. So no
+ Hilbert--Schmidt-type certificate can control it, and direct coefficient optimisation is impractical (about
+ $8\cdot10^{20}$ coefficients in the tested truncation). A useful norm cap must bound the signed action on bounded
+ responses, exploiting the unitary symmetry.
 \end{itemize}
 
 \section{Why the gap is hard}
