@@ -139,3 +139,8 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.fibreGram_eq
 #print axioms Grothe.Lower.rowGates_ok
 #print axioms Grothe.Lower.rowData_gatesOK
+#print axioms Grothe.haagerup_upper
+#print axioms Grothe.DominatedKernel.comp_radial
+#print axioms Grothe.DiskKernel.dominated
+#print axioms Grothe.haagerup_bound
+#print axioms Grothe.haagerup_dominated
