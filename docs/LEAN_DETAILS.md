@@ -111,16 +111,15 @@ variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
   and their polynomial pieces; the majorant sweeps over 9,237 nodes; the moment-rectangle
   covers; the integration against the law of |q|²; the chords in σ; the bound of every row
   from its Gaussian reduction; the mixtures of rows (the retained gate square mixes by an exact
-  identity); the common-law certificate: 19 batches of 336 joint node certificates for mixed
-  potentials of rows 0.84–0.855 (4 inherited batches/60 nodes with Stein cuts, 15 batches/276 nodes
-  with one spectral cut each on 74-, 90- and 161-knot test meshes, 140 of them with ν > 0, i.e. using
-  the covariance order, and 65 citing a contraction-Gram certificate: the exact node checker verifies
-  identity (4) of the certificate coefficientwise, positivity of the two 2×2 matrices by diagonal and
-  determinant, and the nonnegative remainders), and the partition of
-  [0, 9/10] × [0, ρ] × [0, 31/4] into 7,939 closed boxes certified by 7,874 axis cuts (241 cap boxes:
-  fixed mixtures of two certified row caps including the crude row; 1,072 boxes with one component
-  and 6,562 mixing two, a component being a row or a mixture of two rows with four certified
-  τ-nodes, chorded twice in τ, pinned gate price X₁ = p);
+  identity); the common-law certificate: 21 batches of 351 node certificates for mixed
+  potentials of rows 0.84–0.855 (3 inherited batches/45 nodes with Stein cuts, 18 batches/306 nodes
+  with spectral cuts on 74-, 90- and 161-knot test meshes, 136 of them using covariance order,
+  and 118 citing a contraction-Gram certificate). Of those, 41 carry a joint sixth-moment
+  budget. The finite checker verifies each signed reserve and both positive semidefinite
+  2×2 matrices; the analytic bridge derives that same budget for the actual cubic.
+  Joint nodes are restricted to their checked kurtosis range throughout the cover.
+  The partition of [0, 9/10] × [0, ρ] × [0, 31/4] has 8,756 closed boxes and 8,755 axis cuts:
+  224 cap boxes, 1,983 boxes with one component, and 6,549 mixing two components;
   and the endpoint; the Gaussian witness on L²(γ_n) with its value on z/‖z‖, the orthogonality of the
   chaos ranges, the polarisation identity of the scalar pairing, the bound ‖P₁,₀h‖ ≤ √π/2 for |h| ≤ 1
   (rotation invariance of the Gaussian measure, E√(x²+y²) = √(π/2)) and the transfer inputs from the
@@ -270,9 +269,10 @@ normalization of the real cubic kernel and its five complex contraction invarian
 `Grothe/LowerAnalytic/JointBudget.lean` proves `joint_sixth_budget`, combining the finite
 reserve certificate and J3 with the actual spectral quantities of the cubic on a checked
 kurtosis range. These proofs use only the standard logical axioms. They do not add a
-hypothesis to the headline lower theorem. The present endpoint uses a refined cover of
-7,939 boxes with the existing 276 spectral witnesses; the stronger external joint-moment
-certificate still needs its complete finite-checker and cover integration.
+hypothesis to the headline lower theorem. The present endpoint uses all 41 joint-moment nodes through the integrated
+`JointData`/`jointCert` checker and `Circular.joint_sixth` analytic bridge in
+`JointContractions.lean`. The 306 spectral witnesses and 45 inherited Stein witnesses
+are combined in an 8,756-box cover. No extra hypothesis is added to `NodeCaps`.
 
 `JointSixth.gram_j_eta` retains both bounds on the negative cumulant contraction;
 `gram_j2_shifted` improves the h₀ coefficient from 198+150/α to
@@ -290,3 +290,26 @@ therefore be optimized jointly with the contraction-Gram budget, rather than
 searched on an outer grid. This is a sufficient certificate cone, not an exact
 characterization of actual response laws. Its two concrete check examples are
 proved by kernel arithmetic; no native axiom is added.
+
+
+`Grothe/LowerAnalytic/MomentConeBoundary.lean` proves the exact scalar optimum
+inside this sufficient cone. For positive moment weight w and positive s-cost A,
+the least h-cost B is
+
+- 11781w/32 + 18225w²/(4A) when 11A ≤ 360w;
+- 198w + 22500w²/(A+40w) when 11A ≥ 360w.
+
+The two formulas agree at the boundary. `Feasible.boundary_lower` proves necessity;
+`boundary_attained` gives explicit positive-diagonal feasible points achieving it.
+The first branch recovers J3, and the second is the shifted family. Thus searching
+the eta/beta parameters cannot improve on this envelope. This optimality concerns
+the moment-cost recipe; genuine response feasibility remains a stronger condition.
+
+`boundary_moment` and `boundary_node` connect the optimized boundary directly to
+the actual circular cubic and to a moment correction on a checked node range.
+
+`exists_feasible_iff` identifies the boundary epigraph exactly with projection of
+the positive-diagonal cost cone. `boundaryCheck` is a three-rational exact checker;
+`boundaryChecked_node` proves soundness for the actual circular cubic, including
+the positive-multiplier and kurtosis-range conditions. The four auxiliary conic
+variables need not be retained in a moment-cost certificate.

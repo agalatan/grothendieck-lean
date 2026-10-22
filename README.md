@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.401692002039 < K_G^ℂ < 1.404598989011**
+> **1.401695322458 < K_G^ℂ < 1.404598989011**
 
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an 8-page explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
@@ -35,7 +35,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.401692002039 < K** | **K < 1.404598989011** |
+| Oct 2026 | **this repository** | **1.401695322458 < K** | **K < 1.404598989011** |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
 proposed as the exact value; it lies inside the interval, 2.31·10⁻⁵ below our upper bound.
@@ -47,7 +47,7 @@ complex matrix, with V over all finite-dimensional complex Hilbert spaces. Both 
 theorems conclude a statement about the constant itself.
 
 **Lower bound** — `Grothe.LowerAnalytic.lower_bound_of_nodeCaps :
-NodeCaps → IsGrothendieckBound K → 1.401692002039 < K`
+NodeCaps → IsGrothendieckBound K → 1.401695322458 < K`
 (`Grothe/LowerAnalytic/Reduction.lean`).
 
 The witness is the operator T = P₁,₀ − (149/200)·P₂,₁ on L² of the complex Gaussian measure
@@ -56,18 +56,23 @@ norm of T to finite matrices; the value of T on vector-valued test functions; th
 reduction of ⟨f, Tg⟩ for every pair of unimodular functions to 19 one-variable row
 inequalities; all analytic facts about the law of the cubic residual (moment bounds, Stein and
 spectral cuts, the contraction-Gram budgets, the sixth-moment Wick identity); and the finite
-certificate that combines them (336 node certificates and a cover of the parameter space by
-7,939 boxes, one `native_decide`). The **only hypothesis**, `NodeCaps`, states that 19 explicit
+certificate that combines them (351 node certificates and a cover of the parameter space by
+8,756 boxes, one `native_decide`). The **only hypothesis**, `NodeCaps`, states that 19 explicit
 one-variable functions Ψ_r (defined in Lean as suprema of finite-dimensional Gaussian
 integrals) lie below stored rational values at their tabulated nodes. Those caps are certified
 by exact-arithmetic computations outside Lean; moving them inside is work in progress.
 
 The joint sixth-moment/Stein budgets are also formalized in
 `Grothe/LowerAnalytic/JointSixth.lean`, `Grothe/Lower/Reserve.lean` and
-`Grothe/LowerAnalytic/JointBudget.lean`. They retain shared tensor constraints;
-the stronger joint-moment numerical certificate is not yet integrated into the endpoint.
+`Grothe/LowerAnalytic/JointBudget.lean`. They retain the shared tensor constraints. The endpoint now uses 41 joint-moment node
+certificates, each checked on its certified kurtosis range and connected to the Gaussian
+cubic by `Grothe/LowerAnalytic/JointContractions.lean`. Two of those nodes use the
+stronger Young budget transported by an exact identity; the cover contains 8,756 boxes.
 The strengthened parameter family and exact majorant-transport rule are proved too
 (`JointSixth.gram_j_eta`, `JointSixth.gram_j2_shifted`, `Grothe/Lower/MomentLift.lean`).
+`Grothe/LowerAnalytic/MomentConeBoundary.lean` proves the exact two-branch minimum
+moment cost within the conic recipe, with explicit attaining points and its
+application to genuine cubic moments on each node range.
 
 **Upper bound** — `Grothe.fresh_upper :
 DirectHyps E EX → IsGrothendieckBound (438936500000000000000000/312499512981434072227643)`,
@@ -107,7 +112,7 @@ Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus exactly three `native_
 `Grothe.head_check` (the upper head), `Grothe.haagerup_check` (the unconditional upper bound) and
 `Grothe.Lower.cert_check` (the lower certificate).
 Everything else is kernel-checked. No `sorry`. The axiom report `scratch/Axioms.lean`
-(168 theorems) is verified in CI by `scripts/check_axioms.py`.
+(179 theorems) is verified in CI by `scripts/check_axioms.py`.
 
 The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAILS.md).
 

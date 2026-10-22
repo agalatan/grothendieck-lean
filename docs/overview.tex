@@ -30,7 +30,7 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.401692002039\;<\;\KG\;<\;1.404598989011$\\[6pt]
+\Large $1.401695322458\;<\;\KG\;<\;1.404598989011$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, each resting on one explicitly stated
 family of externally certified numerical inputs (Section~\ref{sec:trust}).\vspace{4pt}
 \end{minipage}}
@@ -75,7 +75,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$ (Gaussian phase rounding)\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct 2026 & \textbf{this work} & $\mathbf{1.401692002039}$ & $\mathbf{1.404598989011}$\\\bottomrule
+Oct 2026 & \textbf{this work} & $\mathbf{1.401695322458}$ & $\mathbf{1.404598989011}$\\\bottomrule
 \end{tabular}
 \end{center}
 Haagerup's integral
@@ -117,9 +117,9 @@ A lower bound needs an operator $T$ whose \emph{vector} value is close to $1$ wh
 the projection onto linear functions minus a multiple of the projection onto the cubic chaos.
 \begin{itemize}
 \item \emph{Vector value.} With $u_\ell=z_\ell/\|z\|$, $\sum_\ell\langle u_\ell,Tu_\ell\rangle\ge1-(1+\epsilon)/(n+1)\to1$.
-\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=0.71342349$.
+\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=0.7134218$.
 \end{itemize}
-A finite-partition transfer turns this into matrices, so $\KG\ge1/B>1.401692002039$.
+A finite-partition transfer turns this into matrices, so $\KG\ge1/B>1.401695322458$.
 
 The scalar cap is the hard part. Writing $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$,
 \[
@@ -139,8 +139,8 @@ paying elsewhere. After a rotation $P_{1,0}h=t\,z_1$, and the cubic part of $k$ 
  expansion of the sixth cumulant; a first-moment bound; and families of \emph{Stein cuts}
  $\E\,G(U)\ge0$, obtained by Gaussian integration by parts and completing squares against spectral budgets, a covariance
  order and \emph{contraction-Gram budgets} (positive semidefinite Gram matrices of the coefficient tensor).
-\item \textbf{A finite certificate.} The parameters are covered by $7{,}939$ boxes in $(t,\tau,x)$; on each box a positive
- combination of rows and node certificates ($336$ joint nodes, $9{,}237$ row nodes, each a polynomial majorant checked in
+\item \textbf{A finite certificate.} The parameters are covered by $8{,}756$ boxes in $(t,\tau,x)$; on each box a positive
+ combination of rows and node certificates ($351$ mixed nodes, $9{,}237$ row nodes, each a polynomial majorant checked in
  exact rational arithmetic) bounds the scalar value by $B$.
 \end{enumerate}
 
@@ -158,7 +158,7 @@ between our bounds is entirely the gap between restricted constructions and the 
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
 \textbf{Proved in Lean} & \textbf{Assumed (certified outside Lean)}\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_bound\_of\_nodeCaps : NodeCaps → IsGrothendieckBound K → 1.401692002039 < K}}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_bound\_of\_nodeCaps : NodeCaps → IsGrothendieckBound K → 1.401695322458 < K}}\\[2pt]
 the witness $T$ on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices; the polarisation identity;
 the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair (frames, fibre decomposition, Parseval,
 gates); all moment, Stein, spectral and contraction-Gram inequalities for every circular cubic, including the sixth-cumulant
@@ -185,7 +185,7 @@ only a cubic preprocessor and a finite head are used.\\\bottomrule
 \end{tabular}
 \end{center}
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}, and exactly three pinned \lean{native\_decide} facts. No
-\lean{sorry}; CI builds everything and checks the axiom report (168 theorems). The development has about $28{,}000$ lines of
+\lean{sorry}; CI builds everything and checks the axiom report (179 theorems). The development has about $28{,}000$ lines of
 hand-written Lean and $11{,}000$ lines of generated certificate data. The lower bound is close to fully formal: only
 one-variable numerical caps remain. The sharp upper bound still rests mainly on an external analytic comparison lemma; a weaker upper bound, $1.40578$, is fully formal.
 
@@ -221,8 +221,8 @@ The sixth moment and the Stein fluctuations cannot be optimized independently:
 both depend on the same contraction invariants. We now formalize this connection
 in Lean, including the real/complex normalization and a finite checker that reserves
 part of the contraction budget before accepting a Stein cut. Signed reserve
-coefficients are retained. The analytic theorem is proved; the stronger external
-joint-moment certificate still needs its complete node and cover integration.
+coefficients are retained. The endpoint uses 41 such nodes, with each node restricted
+to its proved kurtosis range; the full checker and analytic bridge are in Lean.
 Retaining the upper bound on the negative cumulant contraction yields a stronger
 parameterized moment family. An exact transport identity then upgrades a node's
 majorant when its budget permits a larger moment-cut weight, without a new
@@ -230,6 +230,22 @@ half-line search. These two refinements are also formalized in Lean.
 The moment costs also admit a convex formulation with two $2\times2$ PSD blocks
 and linear constraints. An exact rational checker connects each accepted recipe
 to the actual cubic moment inequality, replacing the outer parameter grid.
+Its exact scalar boundary is also proved in Lean. For moment weight $w>0$ and
+$s_0$ cost $A>0$, the minimum $h_0$ cost is
+\[
+ B_{\min}(w,A)=
+ \begin{cases}
+ 11781w/32+18225w^2/(4A),&11A\le360w,\\
+ 198w+22500w^2/(A+40w),&11A\ge360w.
+ \end{cases}
+\]
+Both branches have explicit feasible recipes. A three-rational checker for
+$(w,A,B)$ therefore replaces the auxiliary moment-cost variables, and Lean
+connects its acceptance to the actual cubic on the checked node range. The
+contraction reserve and pointwise majorant still need their own exact checks.
+This is optimality within the certificate family; it does not identify all
+attainable response laws.
+
 
 \subsection{The remote functional}
 Let $L=z_1(a+b|z_1|^2)$ with the constants of the witness, and for a cubic $G$ put

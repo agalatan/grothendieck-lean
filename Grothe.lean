@@ -80,6 +80,7 @@ import Grothe.LowerAnalytic.WickSix
 import Grothe.LowerAnalytic.GramTensor
 import Grothe.LowerAnalytic.GramSpectral
 import Grothe.LowerAnalytic.GramBudget
+import Grothe.LowerAnalytic.JointSixth
 import Grothe.LowerAnalytic.Bridge
 import Grothe.LowerAnalytic.GaussianRadial
 import Grothe.LowerAnalytic.Witness
@@ -104,7 +105,8 @@ import Grothe.LowerAnalytic.RowGaussian
 import Grothe.LowerAnalytic.Frame
 import Grothe.LowerAnalytic.Reduction
 import Grothe.Lower.Reserve
-import Grothe.LowerAnalytic.JointSixth
 import Grothe.LowerAnalytic.JointBudget
 import Grothe.Lower.MomentLift
 import Grothe.LowerAnalytic.MomentCone
+import Grothe.LowerAnalytic.JointContractions
+import Grothe.LowerAnalytic.MomentConeBoundary

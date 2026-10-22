@@ -1,5 +1,6 @@
 import Grothe.LowerAnalytic.RadialCut
 import Grothe.LowerAnalytic.GramSpectral
+import Grothe.LowerAnalytic.JointContractions
 
 /-!
 # The contraction-Gram budget of circular cubic chaos
@@ -34,7 +35,9 @@ contraction identities for the coefficient tensor `t`, all proved in `GramTensor
   the standard Gaussian measure
   has all inputs of the Stein cuts (`GramInputs`): the inputs of `gaussian_steinInputs`, every
   accepted Gram certificate (`gram_budget_of_scalars` on the scalars above, with `r² ≤ |c|²`),
-  and the coupled family (`coupled_of_gram`).
+  the coupled family (`coupled_of_gram`), and every accepted joint certificate
+  (`gram_joint_of_scalars` with `s₀`, `h₀`, and the joint sixth-moment inequality
+  `Circular.joint_sixth` of `JointContractions.lean` on the range `x ≤ x_*`).
 -/
 
 open MeasureTheory MvPolynomial Grothe.Lower ComplexConjugate
@@ -252,8 +255,69 @@ theorem gaussian_gramInputs (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
       (by rw [evU, sSU, hU1, u2, u4]; ring) (by rw [erU, hN, sN, v2, v4]; ring)
       (by rw [ev2]; linarith) (by rw [sAB, v2, v4]; ring)
     nlinarith [mul_le_mul_of_nonneg_left e2 hmuR]
+  -- the joint certificates: the strengthened budget and the joint sixth-moment inequality
+  have e3' : ∫ x, eval x (radU a b) ^ 3 ∂(stdGaussian d) = gaussE d (radU a b ^ 3) := by
+    rw [gaussE_apply]
+    exact integral_congr_ae (Filter.Eventually.of_forall fun x => by simp only [map_pow])
+  have e2' : ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) = gaussE d (radU a b ^ 2) := by
+    rw [gaussE_apply]
+    exact integral_congr_ae (Filter.Eventually.of_forall fun x => by simp only [map_pow])
+  have hjoint : ∀ (lam mu : ℚ) (g : GramData) (j : JointData), jointCert lam mu g j = true →
+      ∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) ≤ 2 + (j.xs : ℝ) ^ 2 →
+      lam * ∫ x, (eval x (radS a b) / 3 - 1) ^ 2 ∂(stdGaussian d)
+          + mu * ∫ x, radR a b x ^ 2 ∂(stdGaussian d)
+          + j.ze * (∫ x, eval x (radU a b) ^ 3 ∂(stdGaussian d) - 6
+            - 9 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2))
+        ≤ g.A * ∫ x, (eval x (radS a b) / 3 - 1) * eval x (radU a b) ∂(stdGaussian d)
+          + g.B * ∫ x, radR a b x * eval x (radU a b) ∂(stdGaussian d) := by
+    intro lam mu g j hg hx
+    obtain ⟨hal, hxs, hze, -, hmu⟩ := jointCert_pos hg
+    have hmuR : (0 : ℝ) ≤ mu := by exact_mod_cast hmu
+    have halR : (0 : ℝ) < j.al := by exact_mod_cast hal
+    have hxsR : (0 : ℝ) < j.xs := by exact_mod_cast hxs
+    have hzeR : (0 : ℝ) ≤ j.ze := by exact_mod_cast hze
+    have key := gram_joint_of_scalars lam mu g j hg (gramN (gramT J a b)) (gramH (gramT J a b))
+      (gramB (gramT J a b)) (gramY (gramT J a b)) (gramZ (gramT J a b))
+      (∫ x, (eval x (radS a b) / 3 - 1) * eval x (radU a b) ∂(stdGaussian d))
+      (∫ x, radR a b x * eval x (radU a b) ∂(stdGaussian d))
+      (∫ x, (eval x (radS a b) / 3 - 1) ^ 2 ∂(stdGaussian d))
+      (1 / 9 * (gaussE d (radA a b * radA a b) + gaussE d (radB a b * radB a b)))
+      (jointS0 (gramT J a b)) (jointH0 (gramT J a b))
+      (gramN_nonneg _) (gramH_nonneg _) (gramB_nonneg _) (gramY_nonneg _)
+      ((gramY_nonneg _).trans (gramT_symm J a b)) (gramT_schatten J a b) (gramT_symm J a b) hG0
+      (gramT_gram1a J a b) (gramT_gram1b J a b)
+      (by rw [evU, sSU, hU1, u2, u4]; ring) (by rw [erU, hN, sN, v2, v4]; ring)
+      (by rw [ev2]; linarith) (by rw [sAB, v2, v4]; ring) rfl rfl
+    have h6 := hc.joint_sixth hE ha haa' j.young halR
+    rw [← e3', ← e2'] at h6
+    have hA : jointA j.young (j.al : ℝ) = (j.cA : ℝ) := by
+      cases hy : j.young <;> simp [jointA, JointData.cA, hy]
+    have hB : jointB j.young (j.al : ℝ) = (j.cB : ℝ) := by
+      cases hy : j.young <;> simp [jointB, JointData.cB, hy]
+    rw [hA, hB] at h6
+    have hcA : (0 : ℝ) ≤ j.cA := by
+      cases hy : j.young <;> simp only [JointData.cA, hy] <;> push_cast <;> positivity
+    have hcB : (0 : ℝ) ≤ j.cB := by
+      cases hy : j.young <;> simp only [JointData.cB, hy] <;> push_cast <;> positivity
+    have hJ0 : 0 ≤ (j.cA : ℝ) * jointS0 (gramT J a b) + j.cB * jointH0 (gramT J a b) :=
+      add_nonneg (mul_nonneg hcA hc.jointS0_nonneg) (mul_nonneg hcB hc.jointH0_nonneg)
+    have hsx : √(∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2) ≤ j.xs := by
+      rw [Real.sqrt_le_left hxsR.le]; linarith
+    have hmom : j.ze * (∫ x, eval x (radU a b) ^ 3 ∂(stdGaussian d) - 6
+          - 9 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2))
+        ≤ j.ze * j.xs * (j.cA * jointS0 (gramT J a b) + j.cB * jointH0 (gramT J a b)) := by
+      have h7 := mul_le_mul_of_nonneg_right hsx hJ0
+      have h8 : ∫ x, eval x (radU a b) ^ 3 ∂(stdGaussian d) - 6
+          - 9 * (∫ x, eval x (radU a b) ^ 2 ∂(stdGaussian d) - 2)
+          ≤ j.xs * (j.cA * jointS0 (gramT J a b) + j.cB * jointH0 (gramT J a b)) := by linarith
+      calc _ ≤ (j.ze : ℝ) * (j.xs * (j.cA * jointS0 (gramT J a b) + j.cB * jointH0 (gramT J a b))) :=
+            mul_le_mul_of_nonneg_left h8 hzeR
+        _ = _ := by ring
+    have he := mul_le_mul_of_nonneg_left e2 hmuR
+    linarith
   refine ⟨⟨_, radR a b, hv, memLp_radR a b, hv0, ?_, ?_, ?_, ?_, fun vs z h =>
-    radial_cut a b ha.eig hb.eig vs z h, hgram, fun s hs => coupled_of_gram _ _ _ _ hgram s hs⟩⟩
+    radial_cut a b ha.eig hb.eig vs z h, hgram, fun s hs => coupled_of_gram _ _ _ _ hgram s hs,
+    hjoint⟩⟩
   · rw [ev2, evU, hmean, hU1]; linarith
   · rw [erU]; unfold radN at hid ⊢; linarith
   · rw [evU, erU, e3, hU1]; linarith

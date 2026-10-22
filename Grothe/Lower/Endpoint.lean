@@ -3,19 +3,19 @@ import Mathlib
 /-!
 # The strict endpoint comparison for the lower bound
 
-`B = 71342349/10⁸ = 0.71342349` is the certified operator-norm cap of the Gaussian
+`B = 3567109/(5·10⁶) = 0.7134218` is the certified operator-norm cap of the Gaussian
 witness `T = P₁,₀ − ε P₂,₁` (`ε = 149/200`); `K_G^ℂ ≥ 1/B` together with the exact comparison
-`(1401692002039/10¹²) · B < 1` (slack `24950389/10²⁰`) gives the strict lower bound
-`K_G^ℂ > 1.401692002039`.
+`(700847661229/(5·10¹¹)) · B < 1` (slack `1083039/(25·10¹⁷)`) gives the strict lower bound
+`K_G^ℂ > 1.401695322458`.
 -/
 
 namespace Grothe.Lower
 
 /-- The certified operator-norm cap. -/
-def Bcap : ℚ := 71342349 / 100000000
+def Bcap : ℚ := 3567109 / 5000000
 
 /-- The strict lower endpoint. -/
-def Llow : ℚ := 1401692002039 / 1000000000000
+def Llow : ℚ := 700847661229 / 500000000000
 
 theorem LB_lt_one : Llow * Bcap < 1 := by norm_num [Llow, Bcap]
 

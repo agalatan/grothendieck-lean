@@ -31,9 +31,18 @@ the Gram matrices `G₀ = Gram(N, Hᵀ) = [[n, z], [z, h]]` and
 * **The coupled one-parameter family** `E X² ≤ a_s P − b_s Q`, `a_s = (s + 5)/9`,
   `b_s = (s + 1/2 − 3/s)/9`, `s ≥ 2` (`COUPLED_BUDGET_PROOF.md`), cited through nonnegative
   multipliers `η_j` with `Σ η_j ≤ λ`.
-* `GBud` is what a node carries: nothing (`sep`, the separate budgets), a Gram certificate, or a
-  list of `(s_j, η_j)`; `GBud.af`, `GBud.ag` are the shifts of the coefficients of `u` in the two
-  completed squares (as in the certificate's `certify_spectral.py`), and `GBud.ok` the exact check.
+* **The joint sixth-moment budget** (`JointData`, `jointCert`): a Gram certificate whose identity
+  (4) also pays for `ζ x_* J`, `J = A_α s₀ + B_α h₀` with `s₀ = (8, 2, 8, 0, 8)·v`,
+  `h₀ = (8/3, 2/3, 8/3, 24, −16/3)·v` in the coordinates `v = (n, h, b, y, z)` and
+  `(A_α, B_α) = (150α, 198 + 150/α)` or `((135/2)α, 11781/32 + 135/(2α))` (the two brackets of the
+  joint sixth-moment inequality `E U³ ≤ 6 + 9χ + x J`, `x = √χ`, `JointContractions.lean`): the rational
+  vector of `ζ x_* J` is subtracted from the five remainders.  `gram_joint_of_scalars` is its
+  soundness: `λ E X² + μ E|c|² + ζ x_* J ≤ A P + B Q`.  A node citing it adds `ζ(−u³ + 9u² − 12)`
+  to its cut and is used only for `x ≤ x_*` (`GBud.xcap`).
+* `GBud` is what a node carries: nothing (`sep`, the separate budgets), a Gram certificate, a
+  list of `(s_j, η_j)`, or a joint certificate; `GBud.af`, `GBud.ag` are the shifts of the
+  coefficients of `u` in the two completed squares (as in the certificate's `certify_spectral.py`),
+  and `GBud.ok` the exact check of the first three kinds (the joint kind is checked by `jointCert`).
 -/
 
 namespace Grothe.Lower
@@ -159,14 +168,87 @@ lemma coupled_of_gram (V R P Q : ℝ)
   have h3 := (mul_nonneg_iff_of_pos_left hs').1 h2
   linarith
 
+/-! ### The joint sixth-moment budget -/
+
+/-- The joint data of a node: the bracket (`young`: (J3), otherwise (J2)), the parameter `α`, the
+range `x_*` and the weight `ζ` of the cut `ζ(−u³ + 9u² − 12)`. -/
+structure JointData where
+  young : Bool
+  al : ℚ
+  xs : ℚ
+  ze : ℚ
+
+/-- The coefficient `A_α` of `s₀`. -/
+def JointData.cA (j : JointData) : ℚ := if j.young then 135 / 2 * j.al else 150 * j.al
+/-- The coefficient `B_α` of `h₀`. -/
+def JointData.cB (j : JointData) : ℚ :=
+  if j.young then 11781 / 32 + 135 / (2 * j.al) else 198 + 150 / j.al
+
+/-- The coefficients of `ζ x_* (A_α s₀ + B_α h₀)` in `(n, h, b, y, z)`. -/
+def JointData.jn (j : JointData) : ℚ := j.ze * j.xs * (8 * j.cA + 8 / 3 * j.cB)
+def JointData.jh (j : JointData) : ℚ := j.ze * j.xs * (2 * j.cA + 2 / 3 * j.cB)
+def JointData.jb (j : JointData) : ℚ := j.ze * j.xs * (8 * j.cA + 8 / 3 * j.cB)
+def JointData.jy (j : JointData) : ℚ := j.ze * j.xs * (24 * j.cB)
+def JointData.jz (j : JointData) : ℚ := j.ze * j.xs * (8 * j.cA - 16 / 3 * j.cB)
+
+/-- **The exact acceptance of a joint certificate**: `α, x_* > 0`, `ζ ≥ 0`, and the checks of
+`gramCert` with the vector of `ζ x_* J` subtracted from the five remainders. -/
+def jointCert (lam mu : ℚ) (g : GramData) (j : JointData) : Bool :=
+  decide (0 < j.al) && decide (0 < j.xs) && decide (0 ≤ j.ze) &&
+    decide (0 ≤ lam) && decide (0 ≤ mu) && psd2 g.m00 g.m01 g.m11 && psd2 g.k00 g.k01 g.k11 &&
+    decide (0 ≤ g.ga) && decide (0 ≤ g.gb) && decide (j.jn ≤ g.en lam) && decide (j.jh ≤ g.eh lam) &&
+    decide (j.jb ≤ g.eb lam mu) && decide (j.jy ≤ g.ey lam mu) && decide (j.jz ≤ g.ez lam)
+
+lemma jointCert_pos {lam mu : ℚ} {g : GramData} {j : JointData} (h : jointCert lam mu g j = true) :
+    0 < j.al ∧ 0 < j.xs ∧ 0 ≤ j.ze ∧ 0 ≤ lam ∧ 0 ≤ mu := by
+  simp only [jointCert, Bool.and_eq_true, decide_eq_true_eq] at h
+  exact ⟨h.1.1.1.1.1.1.1.1.1.1.1.1.1, h.1.1.1.1.1.1.1.1.1.1.1.1.2, h.1.1.1.1.1.1.1.1.1.1.1.2,
+    h.1.1.1.1.1.1.1.1.1.1.2, h.1.1.1.1.1.1.1.1.1.2⟩
+
+/-- **Soundness of a joint certificate**: under the hypotheses of `gram_budget_of_scalars` and the
+definitions of `s₀`, `h₀`, `λ E X² + μ E|c|² + ζ x_* (A_α s₀ + B_α h₀) ≤ A P + B Q`. -/
+theorem gram_joint_of_scalars (lam mu : ℚ) (g : GramData) (j : JointData)
+    (hg : jointCert lam mu g j = true)
+    (n h b y z P Q X2 C2 S0 H0 : ℝ) (hn : 0 ≤ n) (hh : 0 ≤ h) (hb : 0 ≤ b) (hy : 0 ≤ y)
+    (hz : 0 ≤ z) (hbn : b ≤ n) (hyz : y ≤ z) (hG0 : z ^ 2 ≤ n * h)
+    (hG1a : 0 ≤ n + b + (3 * y - z)) (hG1b : (3 * y - z) ^ 2 ≤ h * (n + b + (3 * y - z)))
+    (hP : P = 16 * n + 4 * h + 16 / 3 * b + 32 * y) (hQ : Q = 64 / 3 * b + 32 * y)
+    (hX : X2 = (80 * n + 20 * h + 16 * b + 96 * y + 32 * z) / 9)
+    (hC : C2 = (128 * b + 96 * y) / 9) (hS0 : S0 = 8 * n + 2 * h + 8 * b + 8 * z)
+    (hH0 : H0 = 8 / 3 * n + 2 / 3 * h + 8 / 3 * b + 24 * y - 16 / 3 * z) :
+    (lam : ℝ) * X2 + mu * C2 + j.ze * j.xs * (j.cA * S0 + j.cB * H0) ≤ g.A * P + g.B * Q := by
+  simp only [jointCert, psd2, Bool.and_eq_true, decide_eq_true_eq] at hg
+  obtain ⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨-, -⟩, -⟩, -⟩, -⟩, ⟨⟨h00, h11⟩, h01⟩⟩, ⟨⟨k00, k11⟩, k01⟩⟩, hga⟩, hgb⟩, en⟩,
+    eh⟩, eb⟩, ey⟩, ez⟩ := hg
+  have t0 := psd_pair (p := (g.m00 : ℝ)) (q := (g.m01 : ℝ)) (r := (g.m11 : ℝ)) (a := n) (c := h)
+    (s := z) (by exact_mod_cast h00) (by exact_mod_cast h11) (by exact_mod_cast h01) hn hh hG0
+  have t1 := psd_pair (p := (g.k00 : ℝ)) (q := (g.k01 : ℝ)) (r := (g.k11 : ℝ)) (a := h)
+    (c := (n + b + (3 * y - z)) / 4) (s := (3 * y - z) / 2) (by exact_mod_cast k00)
+    (by exact_mod_cast k11) (by exact_mod_cast k01) hh (by linarith) (by nlinarith)
+  have en' : (0 : ℝ) ≤ ((g.en lam - j.jn : ℚ) : ℝ) := by exact_mod_cast sub_nonneg.2 en
+  have eh' : (0 : ℝ) ≤ ((g.eh lam - j.jh : ℚ) : ℝ) := by exact_mod_cast sub_nonneg.2 eh
+  have eb' : (0 : ℝ) ≤ ((g.eb lam mu - j.jb : ℚ) : ℝ) := by exact_mod_cast sub_nonneg.2 eb
+  have ey' : (0 : ℝ) ≤ ((g.ey lam mu - j.jy : ℚ) : ℝ) := by exact_mod_cast sub_nonneg.2 ey
+  have ez' : (0 : ℝ) ≤ ((g.ez lam - j.jz : ℚ) : ℝ) := by exact_mod_cast sub_nonneg.2 ez
+  simp only [GramData.en, GramData.eh, GramData.eb, GramData.ey, GramData.ez, JointData.jn,
+    JointData.jh, JointData.jb, JointData.jy, JointData.jz] at en' eh' eb' ey' ez'
+  push_cast at en' eh' eb' ey' ez'
+  have hga' : (0 : ℝ) ≤ g.ga := by exact_mod_cast hga
+  have hgb' : (0 : ℝ) ≤ g.gb := by exact_mod_cast hgb
+  subst hP hQ hX hC hS0 hH0
+  nlinarith [mul_nonneg en' hn, mul_nonneg eh' hh, mul_nonneg eb' hb, mul_nonneg ey' hy,
+    mul_nonneg ez' hz, mul_nonneg hga' (sub_nonneg.2 hbn), mul_nonneg hgb' (sub_nonneg.2 hyz)]
+
 /-! ### What a node carries -/
 
 /-- The budget a spectral node cites: the separate budgets only (`sep`, the inherited spectral
-cut), a contraction-Gram certificate, or multipliers `(s_j, η_j)` of the coupled family. -/
+cut), a contraction-Gram certificate, multipliers `(s_j, η_j)` of the coupled family, or a joint
+sixth-moment certificate. -/
 inductive GBud where
   | sep
   | gram (g : GramData)
   | coupled (se : List (ℚ × ℚ))
+  | joint (g : GramData) (j : JointData)
 
 /-- `Σ η_j`, `Σ η_j (s_j − 1)/18` and `Σ η_j (s_j + 1/2 − 3/s_j)/18`. -/
 def budSum1 : List (ℚ × ℚ) → ℚ
@@ -189,18 +271,28 @@ def GBud.af (lam : ℚ) : GBud → ℚ
   | .sep => 0
   | .gram g => g.A / 2 - lam / 3
   | .coupled se => budSum2 se
+  | .joint g _ => g.A / 2 - lam / 3
 
 /-- The shift `ag` of the coefficient of `u` in `g` (`t + μ/3 − ν/2 − ag`). -/
 def GBud.ag (mu : ℚ) : GBud → ℚ
   | .sep => 0
   | .gram g => mu / 3 - g.B / 2
   | .coupled se => budSum3 se
+  | .joint g _ => mu / 3 - g.B / 2
 
-/-- The exact check of the cited budget. -/
+/-- The exact check of the cited budget (a joint certificate is checked by `jointCert` with its
+own cut). -/
 def GBud.ok (lam mu : ℚ) : GBud → Bool
   | .sep => true
   | .gram g => gramCert lam mu g
   | .coupled se => budOKs se && decide (budSum1 se ≤ lam)
+  | .joint _ _ => false
+
+/-- The range `x ≤ x_*` of a node: `x_*` for a joint certificate, `31/4` (all of the domain)
+otherwise. -/
+def GBud.xcap : GBud → ℚ
+  | .joint _ j => j.xs
+  | _ => xMax
 
 /-- The coupled family summed with nonnegative multipliers:
 `(Σ η_j) E X² ≤ (2 Σ η_j (s_j − 1)/18 + (2/3) Σ η_j) P − 2 (Σ η_j (s_j + 1/2 − 3/s_j)/18) Q`. -/

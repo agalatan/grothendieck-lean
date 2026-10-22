@@ -7,14 +7,16 @@
                                 parsed at check time (`parseWit`, `parseSWit`, `parseBox`, `parseTree` in
                                 Mixed.lean/Boxes.lean)
 
-Usage: tools/gen_lower_mixed.py [CERT_DIR]   (default handoff/lower-stein/cert-gram, the certificate on master)
+Usage: tools/gen_lower_mixed.py [CERT_DIR]   (default handoff/lower-stein/cert-jointmoment, the certificate on master)
 
 CERT_DIR is the contraction-Gram package: `inherited.json` (the 19 source rows, the inherited mixed node
 batches as `(i, j, θ, τ, P)` tables, the inherited boxes `kind|bounds|refs`), `cover.json` (`target`,
 `lower`, the mixtures `groups`, the node references `nodes`, the new spectral nodes `newnodes` (one spectral
 cut `(λ, μ, t, β, ν)`, `ν ≥ 0`, on the test mesh `rv` of the node, the majorant `P = (a₀, a₁, a₂, a₄, a₆)`,
-and optionally the cited law budget: `tensor_budget` = a contraction-Gram certificate `(A, B, M0, M1, α, β)`
-or `extra_budgets` = multipliers `(s_j, η_j)` of the coupled family), and the `boxes` of the partition, each
+and optionally the cited law budget: `tensor_budget` = a contraction-Gram certificate `(A, B, M0, M1, α, β)`,
+with `sixth_joint` = `(kind, α, x_*, ζ)` a joint sixth-moment certificate (the vector of `ζ x_* J` subtracted
+from the remainders, the cut `ζ(−u³ + 9u² − 12)` added, the node valid for `x ≤ x_*` only), or
+`extra_budgets` = multipliers `(s_j, η_j)` of the coupled family), and the `boxes` of the partition, each
 evaluated through an inherited box (`original`) or a `choice` of one or two groups with four bracketing node
 references each, the chords optionally taken on a larger `scale_domain` and restricted to the box) and
 `SHA256SUMS` (both data files are hash-checked).  Spectral nodes of one mixed potential sharing a test mesh
@@ -26,10 +28,10 @@ matched by rows, weights, mesh and every `(τ, P)` node of the inherited batch; 
 some box or node reference uses are emitted (indices remapped).  The rows of `inherited.json` are
 cross-checked field by field against the committed `RowData*.lean` (so that the node references index the
 same Stein nodes), every Gram certificate is checked as `gramCert` does (PSD by diagonal and determinant,
-nonnegative remainders of identity (4)), every box value is replayed with the Lean semantics (virtual rows,
-pinned gate price, chords and re-chords in τ, `x` endpoints, quadratic maxima, one pad) and compared with
-the stored bound and the cap, and a guillotine partition certificate (axis cuts, replayed) is produced for
-the boxes.
+nonnegative remainders of identity (4)) and every joint certificate as `jointCert` does, every box value is
+replayed with the Lean semantics (virtual rows, pinned gate price, chords and re-chords in τ, `x` endpoints,
+quadratic maxima, one pad; every node reference with its range `x₊ ≤ x_*`) and compared with the stored bound
+and the cap, and a guillotine partition certificate (axis cuts, replayed) is produced for the boxes.
 """
 import hashlib
 import json
@@ -43,7 +45,7 @@ from pathlib import Path
 sys.setrecursionlimit(100000)
 ROOT = Path(__file__).resolve().parent.parent
 HANDOFF = Path(os.environ.get("GROTHE_HANDOFF", ROOT / "handoff"))   # the (git-ignored) data folder; set it when running from a worktree
-NEW = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else HANDOFF / "lower-stein" / "cert-gram"
+NEW = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else HANDOFF / "lower-stein" / "cert-jointmoment"
 FINEMESH = HANDOFF / "lower-stein" / "cert-finemesh" / "certificate"   # the witnesses of the inherited Stein batches
 OUT = ROOT / "Grothe" / "Lower" / "MixedData.lean"
 EPS = Q(149, 200); RHO = Q(973612157, 10**9); C6 = Q(4045313, 100000); PAD = Q(1, 10**11); XMAX = Q(31, 4)
@@ -141,6 +143,15 @@ def gramCert(lam, mu, A, Bq, m00, m01, m11, k00, k01, k11, ga, gb):   # Gram.lea
     XC = [Q(80, 9), Q(20, 9), Q(16, 9), Q(96, 9), Q(32, 9)]; CC = [Q(0), Q(0), Q(128, 9), Q(96, 9), Q(0)]
     return lam >= 0 and mu >= 0 and psd2(m00, m01, m11) and psd2(k00, k01, k11) and ga >= 0 and gb >= 0 and \
         all(A * p + Bq * qq - lam * x - mu * c - s >= 0 for p, qq, x, c, s in zip(PC, QC, XC, CC, sos))
+def jointCert(lam, mu, A, Bq, m00, m01, m11, k00, k01, k11, ga, gb, young, al, xs, ze):   # Gram.lean `jointCert`
+    if not (al > 0 and xs > 0 and ze >= 0): return False
+    cA, cB = (Q(135, 2) * al, Q(11781, 32) + Q(135, 2) / al) if young else (150 * al, 198 + 150 / al)
+    jv = [ze * xs * (cA * a + cB * h) for a, h in zip([8, 2, 8, 0, 8], [Q(8, 3), Q(2, 3), Q(8, 3), Q(24), Q(-16, 3)])]
+    sos = [m00 + k11 / 4 + ga, m11 + k00, k11 / 4 - ga, 3 * k01 + 3 * k11 / 4 - gb, 2 * m01 - k01 - k11 / 4 + gb]
+    PC = [Q(16), Q(4), Q(16, 3), Q(32), Q(0)]; QC = [Q(0), Q(0), Q(64, 3), Q(32), Q(0)]
+    XC = [Q(80, 9), Q(20, 9), Q(16, 9), Q(96, 9), Q(32, 9)]; CC = [Q(0), Q(0), Q(128, 9), Q(96, 9), Q(0)]
+    return lam >= 0 and mu >= 0 and psd2(m00, m01, m11) and psd2(k00, k01, k11) and ga >= 0 and gb >= 0 and \
+        all(A * p + Bq * qq - lam * x - mu * c - s - jj >= 0 for p, qq, x, c, s, jj in zip(PC, QC, XC, CC, sos, jv))
 VR = [vrow(R) for R in rows]
 
 # ----- which inherited batches the cover uses (node references `b` and inherited boxes `j`, `m`)
@@ -189,7 +200,7 @@ for bk in sorted(used_inh):
             bank.append(",".join(str(v.numerator) for v in zz))
         assert len(mu) == len(bank)
         wits.append(f"{qs(tau)}:" + ",".join(qs(v) for v in P) + ":" + ",".join(str(m.numerator) for m in mu) + "|" + ";".join(bank))
-        tn.append((tau, P))
+        tn.append((tau, P, XMAX))
     assert all(u[0] < v[0] for u, v in zip(tn, tn[1:]))
     inhmap[bk] = (len(batches), {k: k for k in range(len(want))}, fn)
     batches.append(dict(i=i, j=j, th=th, smax=smax, nodes=";".join(f"{qs(x)}:{qs(y)}" for x, y in zip(xs, ys)),
@@ -205,7 +216,7 @@ def potential(n):   # the mixed potential of a node, normalised to `(i, j, θ)` 
     return (i, j, th) if i < j else (j, i, 1 - th)
 for name, n in newnodes.items():
     groups_new.setdefault(potential(n) + (tuple(Q(v) for v in n["rv"]),), []).append(name)
-newref = {}; meshes = {}; ngram = 0; ncoupled = 0
+newref = {}; meshes = {}; ngram = 0; ncoupled = 0; njoint = 0
 for (i, j, th, rv), nms in sorted(groups_new.items(), key=lambda kv: (kv[0][:3], len(kv[0][3]), kv[0][3])):
     xs, ys, smax = mixTable(i, j, th)
     rv = list(rv); assert rv[0] == 0 and all(u < v for u, v in zip(rv, rv[1:]))
@@ -216,8 +227,15 @@ for (i, j, th, rv), nms in sorted(groups_new.items(), key=lambda kv: (kv[0][:3],
         nu = Q(n.get("nu") or 0); assert nu >= 0
         phi = [Q(v) for v in n["phi"]]; assert len(phi) == len(rv) - 1
         P = [Q(v) for v in n["P"]]; assert len(P) == 5 and P[1] >= 0 and P[4] >= 0
-        bud = ""
-        if "tensor_budget" in n:   # a contraction-Gram certificate, checked as Gram.lean `gramCert` does
+        bud = ""; xcap = XMAX
+        if "tensor_budget" in n and "sixth_joint" in n:   # a joint certificate, checked as Gram.lean `jointCert` does
+            d = n["tensor_budget"]; jd = n["sixth_joint"]; assert not n.get("extra_budgets")
+            assert set(jd) <= {"kind", "alpha", "xmax", "weight"} and jd.get("kind", "triangle") in ("triangle", "young")
+            young = jd.get("kind", "triangle") == "young"; al, xcap, ze = Q(jd["alpha"]), Q(jd["xmax"]), Q(jd["weight"])
+            g = [Q(d["A"]), Q(d["B"])] + [Q(v) for v in d["M0"]] + [Q(v) for v in d["M1"]] + [Q(d["alpha"]), Q(d["beta"])]
+            assert len(g) == 10 and jointCert(lam, mu, *g, young, al, xcap, ze), ("jointCert", nm)
+            bud = f":j,{1 if young else 0},{qs(al)},{qs(xcap)},{qs(ze)}," + ",".join(qs(v) for v in g); ngram += 1; njoint += 1
+        elif "tensor_budget" in n:   # a contraction-Gram certificate, checked as Gram.lean `gramCert` does
             d = n["tensor_budget"]; assert not n.get("extra_budgets")
             g = [Q(d["A"]), Q(d["B"])] + [Q(v) for v in d["M0"]] + [Q(v) for v in d["M1"]] + [Q(d["alpha"]), Q(d["beta"])]
             assert len(g) == 10 and gramCert(lam, mu, *g), ("gramCert", nm)
@@ -227,7 +245,8 @@ for (i, j, th, rv), nms in sorted(groups_new.items(), key=lambda kv: (kv[0][:3],
             assert all(s >= 2 and e >= 0 for s, e in se) and sum(e for _, e in se) <= lam, ("coupled", nm)
             bud = ":c," + ",".join(f"{qs(s)},{qs(e)}" for s, e in se); ncoupled += 1
         wits.append(f"{qs(tau)}:" + ",".join(qs(v) for v in P) + f":{qs(lam)},{qs(mu)},{qs(t)},{qs(be)},{qs(nu)}{bud}|" + ",".join(qs(v) for v in phi))
-        tn.append((tau, tuple(P))); newref[nm] = (len(batches), k)
+        assert "sixth_joint" not in n or bud.startswith(":j"), ("joint without tensor budget", nm)
+        tn.append((tau, tuple(P), xcap)); newref[nm] = (len(batches), k)
     assert all(u[0] <= v[0] for u, v in zip(tn, tn[1:]))
     meshes[len(rv)] = meshes.get(len(rv), 0) + len(wits)
     batches.append(dict(i=i, j=j, th=th, smax=smax, nodes=";".join(f"{qs(x)}:{qs(y)}" for x, y in zip(xs, ys)),
@@ -235,8 +254,8 @@ for (i, j, th, rv), nms in sorted(groups_new.items(), key=lambda kv: (kv[0][:3],
 
 # ----- the node references of the cover and the groups
 def refdata(r):   # (string, (i, j, θ) of its potential, τ-node)
-    if r[0] == "z": i = r[1]; return f"z,{i}", (i, i, Q(0)), rowTNode(rows[i], None)
-    if r[0] == "s": i, ci, ni = r[1:]; return f"s,{i},{ci},{ni}", (i, i, Q(0)), rowTNode(rows[i], (ci, ni))
+    if r[0] == "z": i = r[1]; return f"z,{i}", (i, i, Q(0)), rowTNode(rows[i], None) + (XMAX,)
+    if r[0] == "s": i, ci, ni = r[1:]; return f"s,{i},{ci},{ni}", (i, i, Q(0)), rowTNode(rows[i], (ci, ni)) + (XMAX,)
     if r[0] == "b": bi, k = inhmap[int(r[1])][0], inhmap[int(r[1])][1][int(r[2])]
     else: bi, k = newref[r[1]]
     b = batches[bi]; return f"b,{bi},{k}", (b["i"], b["j"], b["th"]), b["tnodes"][k]
@@ -248,11 +267,14 @@ for g in cov["groups"]:
     else: assert len(w) == 2; GROUPS.append((w[0][0], w[1][0], w[1][1]))
 
 # ----- boxes: Lean strings and the replay of their values
-def comp(i, j, th, s0, s1, refs, sl, su):
-    """A component `i,j,θ,s0,s1;ref;ref;ref;ref`: (string, VRow, L₋, L₊) with the chords at s0, s1 re-chorded at sl, su."""
+def comp(i, j, th, s0, s1, refs, sl, su, xu):
+    """A component `i,j,θ,s0,s1;ref;ref;ref;ref`: (string, VRow, L₋, L₊) with the chords at s0, s1 re-chorded at sl, su;
+    every referenced node must be valid on the box (`xu ≤ x_*`, as `nodeOf` checks)."""
     assert 0 <= th <= 1 and len(refs) == 4
     ns = []
-    for rs, pot, tnode in refs: assert samePot(*pot, i, j, th), ("potential", rs, pot, (i, j, th)); ns.append(tnode)
+    for rs, pot, tnode in refs:
+        assert samePot(*pot, i, j, th), ("potential", rs, pot, (i, j, th))
+        assert xu <= tnode[2], ("range", rs, xu, tnode[2]); ns.append(tnode[:2])
     m0, m1 = (s0, tchord(ns[0], ns[1], s0)), (s1, tchord(ns[2], ns[3], s1))
     return (f"{i},{j},{qs(th)},{qs(s0)},{qs(s1)};" + ";".join(rs for rs, _, _ in refs),
             vmix(th, VR[i], VR[j]), tchord(m0, m1, sl), tchord(m0, m1, su))
@@ -279,24 +301,24 @@ for bx in cov["boxes"]:
             s0, s1 = ob[2], ob[3]; assert s0 <= sl < su <= s1
             if kind == "s":
                 i, j, th = refs[0].split(","); i, j, th = int(i), int(j), Q(th)
-                c0, c1 = comp(i, i, Q(0), s0, s1, srcrefs(i, refs[1]), sl, su), comp(j, j, Q(0), s0, s1, srcrefs(j, refs[2]), sl, su)
+                c0, c1 = comp(i, i, Q(0), s0, s1, srcrefs(i, refs[1]), sl, su, xu), comp(j, j, Q(0), s0, s1, srcrefs(j, refs[2]), sl, su, xu)
                 a, Lm, Lp = mixcomp(th, c0, c1); boxes.append(f"m|{bs}|{qs(th)}|{c0[0]}|{c1[0]}"); kinds["two"] += 1
             elif kind == "j":
                 bk = int(refs[0]); b = batches[inhmap[bk][0]]
-                c0 = comp(b["i"], b["j"], b["th"], s0, s1, batrefs(bk, refs[1]), sl, su)
+                c0 = comp(b["i"], b["j"], b["th"], s0, s1, batrefs(bk, refs[1]), sl, su, xu)
                 a, Lm, Lp = c0[1:]; boxes.append(f"b|{bs}|{c0[0]}"); kinds["one"] += 1
             else:
                 assert kind == "m"
                 b0, b1, lam = refs[0].split(","); b0, b1, lam = int(b0), int(b1), Q(lam); B0, B1 = batches[inhmap[b0][0]], batches[inhmap[b1][0]]
-                c0 = comp(B0["i"], B0["j"], B0["th"], s0, s1, batrefs(b0, refs[1]), sl, su)
-                c1 = comp(B1["i"], B1["j"], B1["th"], s0, s1, batrefs(b1, refs[2]), sl, su)
+                c0 = comp(B0["i"], B0["j"], B0["th"], s0, s1, batrefs(b0, refs[1]), sl, su, xu)
+                c1 = comp(B1["i"], B1["j"], B1["th"], s0, s1, batrefs(b1, refs[2]), sl, su, xu)
                 a, Lm, Lp = mixcomp(lam, c0, c1); boxes.append(f"m|{bs}|{qs(lam)}|{c0[0]}|{c1[0]}"); kinds["two"] += 1
             val = boxVal(a, Lm, Lp, *bb)
     else:
         ch = bx["choice"]; kinds["choice"] += 1
         if "scale_domain" in ch: kinds["scale_domain"] += 1
         s0, s1 = (Q(v) for v in ch.get("scale_domain", (sl, su))); assert s0 <= sl < su <= s1
-        cs = [comp(*GROUPS[gi], s0, s1, [NODES[k] for k in ri], sl, su) for gi, ri in zip(ch["groups"], ch["refs"])]
+        cs = [comp(*GROUPS[gi], s0, s1, [NODES[k] for k in ri], sl, su, xu) for gi, ri in zip(ch["groups"], ch["refs"])]
         if len(cs) == 1: a, Lm, Lp = cs[0][1:]; boxes.append(f"b|{bs}|{cs[0][0]}"); kinds["one"] += 1
         else:
             assert len(cs) == 2; th = Q(ch["theta"]); a, Lm, Lp = mixcomp(th, cs[0], cs[1])
@@ -347,7 +369,8 @@ src = NEW.relative_to(HANDOFF) if NEW.is_relative_to(HANDOFF) else NEW.name
 text = ("import Grothe.Lower.Boxes\n\n/-!\n# The common-law certificate data (generated by `tools/gen_lower_mixed.py`; do not edit)\n\n"
         f"The {len(batches)} batches of exact node certificates for the mixed potentials ({nnodes} nodes: {NINH} inherited batches\n"
         f"with {nnodes - nspec} Stein nodes, {nnew} batches with {nspec} spectral nodes on {meshdesc}, {ncov} of them\n"
-        f"with ν > 0, i.e. using the covariance order, {ngram} citing a contraction-Gram certificate and {ncoupled} the coupled family;\n"
+        f"with ν > 0, i.e. using the covariance order, {ngram} citing a contraction-Gram certificate ({njoint} of them\n"
+        f"a joint sixth-moment certificate, valid for x ≤ x_*) and {ncoupled} the coupled family;\n"
         f"the inherited batches that no box or node references are omitted) and the\n"
         f"{len(boxes)} boxes of the partition of `[0, 9/10] × [0, ρ] × [0, 31/4]` ({kinds['cap']} cap boxes, {kinds['one']} boxes with one\n"
         f"component, {kinds['two']} boxes mixing two components) with its certificate of {len(tokens) - len(boxes)} axis cuts;\n"
@@ -358,5 +381,5 @@ text = ("import Grothe.Lower.Boxes\n\n/-!\n# The common-law certificate data (ge
 OUT.write_text(text)
 print("ok", json.dumps(dict(source=str(NEW), batches=len(batches), inherited=NINH, inherited_files=sorted(set(v[2] for v in inhmap.values())),
                             nodes=nnodes, stein_nodes=nnodes - nspec, spectral_nodes=nspec, covariance_nodes=ncov, gram_nodes=ngram,
-                            coupled_nodes=ncoupled, meshes=meshes, boxes=len(boxes), kinds=kinds, cuts=len(tokens) - len(boxes),
+                            joint_nodes=njoint, coupled_nodes=ncoupled, meshes=meshes, boxes=len(boxes), kinds=kinds, cuts=len(tokens) - len(boxes),
                             box_max=float(worst), B=str(B), lower=str(L), slack=str(1 - B * L), bytes=OUT.stat().st_size)))

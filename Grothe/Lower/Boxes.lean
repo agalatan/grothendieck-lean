@@ -16,7 +16,8 @@ every box is bounded by `B`.  A box is bounded in one of two ways.
   `(i, i, 0)`) together with four certified `τ`-nodes of its potential (`NRef`, `nodeOf`): two
   enclosing a scale `s₀` and two enclosing `s₁`, each a Stein node of a source row rescaled to
   `τ = σ/δ`, the zero node of a row, or an exact node certificate of a batch for the same potential
-  (`samePot`).  The chords at `s₀`, `s₁` are chorded again at `τ₋`, `τ₊` (`rechord`, convexity in
+  (`samePot`) whose range `x ≤ x_*` contains the box (`x₊ ≤ x_*`, checked for every reference, so
+  for both scales of the chords and both components of a mixture).  The chords at `s₀`, `s₁` are chorded again at `τ₋`, `τ₊` (`rechord`, convexity in
   `τ` twice), which gives polynomials `L₋, L₊` in `x` with `E F(τ±√U) − pad ≤ L±(x)`; with the
   fixed first gate coordinate,
 
@@ -225,8 +226,9 @@ def rechord (tns : List TNode) (s0 s1 : ℚ) : Option (List TNode) :=
 def samePot (a b : ℕ) (α : ℚ) (c d : ℕ) (γ : ℚ) : Bool :=
   (a == c && b == d && α == γ) || (α == 0 && γ == 0 && a == c) || (α == 1 && γ == 1 && b == d)
 
-/-- The `τ`-node of a reference, provided its potential is that of the mixture `(i, j, θ)`. -/
-def nodeOf (rows : List Row) (batches : List JBatch) (i j : ℕ) (θ : ℚ) : NRef → Option TNode
+/-- The `τ`-node of a reference, provided its potential is that of the mixture `(i, j, θ)` and
+its range contains `x ≤ xu`. -/
+def nodeOf (rows : List Row) (batches : List JBatch) (i j : ℕ) (θ xu : ℚ) : NRef → Option TNode
   | .zero r =>
     if samePot r r 0 i j θ then
       match rows[r]? with
@@ -241,7 +243,12 @@ def nodeOf (rows : List Row) (batches : List JBatch) (i j : ℕ) (θ : ℚ) : NR
     else none
   | .bat b k =>
     match batches[b]? with
-    | some bt => if samePot bt.i bt.j bt.θ i j θ then bt.tnodes[k]? else none
+    | some bt =>
+      if samePot bt.i bt.j bt.θ i j θ then
+        match bt.tnodeX[k]? with
+        | some p => if xu ≤ p.2 then some p.1 else none
+        | none => none
+      else none
     | none => none
 
 /-- A *component* of a box: a virtual row with the chord polynomials at `sl` and `su`, from four
@@ -267,14 +274,15 @@ def mixData (θ : ℚ) : Option (VRow × MPoly × MPoly) → Option (VRow × MPo
     else none
   | _, _ => none
 
-/-- The component of a `CompRef`: the mixed virtual row of its rows and its nodes. -/
-def compRefData (rows : List Row) (batches : List JBatch) (c : CompRef) (sl su : ℚ) :
+/-- The component of a `CompRef`: the mixed virtual row of its rows and its nodes, valid up to
+`x ≤ xu`. -/
+def compRefData (rows : List Row) (batches : List JBatch) (c : CompRef) (sl su xu : ℚ) :
     Option (VRow × MPoly × MPoly) :=
   match rows[c.i]?, rows[c.j]? with
   | some Ri, some Rj =>
     if 0 ≤ c.θ ∧ c.θ ≤ 1 then
-      compData (VRow.mix c.θ Ri.vrow Rj.vrow) (nodeOf rows batches c.i c.j c.θ) c.refs c.s0 c.s1
-        sl su
+      compData (VRow.mix c.θ Ri.vrow Rj.vrow) (nodeOf rows batches c.i c.j c.θ xu) c.refs c.s0
+        c.s1 sl su
     else none
   | _, _ => none
 
@@ -282,9 +290,10 @@ def compRefData (rows : List Row) (batches : List JBatch) (c : CompRef) (sl su :
 def boxData (rows : List Row) (batches : List JBatch) (b : Box) : Option (VRow × MPoly × MPoly) :=
   match b.kind with
   | .cap _ _ _ => none
-  | .one c => compRefData rows batches c b.sl b.su
+  | .one c => compRefData rows batches c b.sl b.su b.xu
   | .two θ c0 c1 =>
-    mixData θ (compRefData rows batches c0 b.sl b.su) (compRefData rows batches c1 b.sl b.su)
+    mixData θ (compRefData rows batches c0 b.sl b.su b.xu)
+      (compRefData rows batches c1 b.sl b.su b.xu)
 
 /-- The bound of a box from the rows and the batches (`none` if the data are inconsistent). -/
 def boxBound (rows : List Row) (batches : List JBatch) (b : Box) : Option ℚ :=
@@ -647,9 +656,9 @@ zero node of a row, or a witness of a batch, each for the same potential. -/
 lemma nodeOf_sound (rows : List Row) (batches : List JBatch)
     (hrows : ∀ r ∈ rows, checkRow r = true) (hbatches : ∀ b ∈ batches, checkBatch rows b = true)
     (Ψ : Row → ℝ → ℝ) (hΨ : ∀ r ∈ rows, CapsHold (fun s => Ψ r s - capPad) r.nodeList r.smax)
-    (hM : Moments μ U x) (hS : SteinCut μ U) (i j : ℕ) (θ : ℚ) {Ri Rj : Row}
+    (hM : Moments μ U x) (hS : SteinCut μ U) (i j : ℕ) (θ xu : ℚ) (hxu : x ≤ xu) {Ri Rj : Row}
     (hRi : rows[i]? = some Ri) (hRj : rows[j]? = some Rj) (ref : NRef) (n : TNode)
-    (h : nodeOf rows batches i j θ ref = some n) :
+    (h : nodeOf rows batches i j θ xu ref = some n) :
     TNodeOK μ U x (mixPot Ri Rj θ (Ψ Ri) (Ψ Rj)) n := by
   cases ref with
   | zero r =>
@@ -679,6 +688,13 @@ lemma nodeOf_sound (rows : List Row) (batches : List JBatch)
     | some bt =>
       simp only [hbt] at h
       split_ifs at h with hsp
+      cases hp : bt.tnodeX[k]? with
+      | none => simp [hp] at h
+      | some p =>
+      simp only [hp] at h
+      split_ifs at h with hxp
+      simp only [Option.some.injEq] at h
+      subst h
       have hb := hbatches bt (List.mem_of_getElem? hbt)
       cases hRa : rows[bt.i]? with
       | none => simp [checkBatch, hRa] at hb
@@ -687,7 +703,8 @@ lemma nodeOf_sound (rows : List Row) (batches : List JBatch)
       | none => simp [checkBatch, hRa, hRb] at hb
       | some Rb =>
       exact (batch_sound rows bt hb Ra Rb hRa hRb (hΨ Ra (List.mem_of_getElem? hRa))
-        (hΨ Rb (List.mem_of_getElem? hRb)) hM hS n (List.mem_of_getElem? h)).congr
+        (hΨ Rb (List.mem_of_getElem? hRb)) hM hS p (List.mem_of_getElem? hp)
+        (hxu.trans (by exact_mod_cast hxp))).congr
         (samePot_sound rows Ψ hsp hRa hRb hRi hRj)
 
 omit [IsProbabilityMeasure μ] in
@@ -785,8 +802,8 @@ potential, whose certified nodes are those referenced. -/
 lemma compRef_sound (rows : List Row) (batches : List JBatch)
     (hrows : ∀ r ∈ rows, checkRow r = true) (hbatches : ∀ b ∈ batches, checkBatch rows b = true)
     (Ψ : Row → ℝ → ℝ) (hΨ : ∀ r ∈ rows, RowSharedWith r (Ψ r) μ U X1 X2 X3 τ V t Qh v)
-    (hM : Moments μ U x) (hS : SteinCut μ U) (hv : ‖v‖ ^ 2 = 2) (c : CompRef)
-    (d : VRow × MPoly × MPoly) (h : compRefData rows batches c sl su = some d) :
+    (hM : Moments μ U x) (hS : SteinCut μ U) (hv : ‖v‖ ^ 2 = 2) (c : CompRef) (xu : ℚ)
+    (hxu : x ≤ xu) (d : VRow × MPoly × MPoly) (h : compRefData rows batches c sl su xu = some d) :
     Comp μ U x X1 X2 X3 τ V t Qh v sl su d := by
   unfold compRefData at h
   cases hRi : rows[c.i]? with
@@ -811,8 +828,8 @@ lemma compRef_sound (rows : List Row) (batches : List JBatch)
     (convexOn_mix (convexOn_scale (hcaps Ri mi).convex _ hδi)
       (convexOn_scale (hcaps Rj mj).convex _ hδj) _ _ hw0 hθ0R)
     (VHolds.mix c.θ hθ.1 hθ.2 hv (vholds_of_row Ri (hΨ Ri mi)) (vholds_of_row Rj (hΨ Rj mj)))
-    (fun ref n hn => nodeOf_sound rows batches hrows hbatches Ψ hcaps hM hS c.i c.j c.θ hRi hRj
-      ref n hn) d h
+    (fun ref n hn => nodeOf_sound rows batches hrows hbatches Ψ hcaps hM hS c.i c.j c.θ xu hxu
+      hRi hRj ref n hn) d h
 
 /-- **Soundness of a box**: `V ≤ val` for every `(t, τ, x)` in the box. -/
 theorem box_sound (rows : List Row) (batches : List JBatch)
@@ -837,11 +854,12 @@ theorem box_sound (rows : List Row) (batches : List JBatch)
     | cap i j θ => simp [hk] at hd
     | one c =>
       simp only [hk] at hd
-      exact compRef_sound rows batches hrows hbatches Ψ hΨ hM hS hv c d hd
+      exact compRef_sound rows batches hrows hbatches Ψ hΨ hM hS hv c b.xu hx.2 d hd
     | two θ c0 c1 =>
       simp only [hk] at hd
-      exact mixData_sound θ hv _ _ (compRef_sound rows batches hrows hbatches Ψ hΨ hM hS hv c0)
-        (compRef_sound rows batches hrows hbatches Ψ hΨ hM hS hv c1) d hd
+      exact mixData_sound θ hv _ _
+        (compRef_sound rows batches hrows hbatches Ψ hΨ hM hS hv c0 b.xu hx.2)
+        (compRef_sound rows batches hrows hbatches Ψ hΨ hM hS hv c1 b.xu hx.2) d hd
   cases hk : b.kind
   case cap i j θ =>
     simp only [hk] at hb

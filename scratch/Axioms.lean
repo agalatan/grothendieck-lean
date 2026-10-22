@@ -64,6 +64,12 @@ import Grothe
 #print axioms Grothe.Lower.coupled_of_gram
 #print axioms Grothe.Lower.gspec_of_inputs
 #print axioms Grothe.Lower.budget_of_bud
+#print axioms Grothe.Lower.gram_joint_of_scalars
+#print axioms Grothe.Lower.jspec_of_inputs
+#print axioms Grothe.LowerAnalytic.tenS_eq_gram
+#print axioms Grothe.LowerAnalytic.tenH_eq_gram
+#print axioms Grothe.LowerAnalytic.joint_scalar
+#print axioms Grothe.LowerAnalytic.Circular.joint_sixth
 #print axioms Grothe.LowerAnalytic.budget_w
 #print axioms Grothe.LowerAnalytic.budget_c
 #print axioms Grothe.LowerAnalytic.energy_identity
@@ -167,3 +173,11 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.MomentCone.gram_node_of_check
 #print axioms Grothe.LowerAnalytic.MomentCone.young_eighth_check
 #print axioms Grothe.LowerAnalytic.MomentCone.shifted_half_check
+
+#print axioms Grothe.LowerAnalytic.MomentCone.Feasible.boundary_lower
+#print axioms Grothe.LowerAnalytic.MomentCone.boundary_attained
+
+#print axioms Grothe.LowerAnalytic.MomentCone.boundary_node
+
+#print axioms Grothe.LowerAnalytic.MomentCone.exists_feasible_iff
+#print axioms Grothe.LowerAnalytic.MomentCone.boundaryChecked_node
