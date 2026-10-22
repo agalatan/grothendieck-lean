@@ -1090,6 +1090,7 @@ lemma pderiv4_gam2c {a b : MvPolynomial ι ℝ} (ha : Chaos3 a) (hb : Chaos3 b) 
   simp only [gam2c, gam, map_sum, pderiv_mul, map_add, ha.pderiv3_eq, hb.pderiv3_eq, pderiv_C,
     zero_mul, mul_zero, zero_add, add_zero, Finset.sum_const_zero, map_zero]
 
+omit [DecidableEq ι] in
 /-- `∂⁴ Π₄(ab) = 108 (Sym(f ⋆ g) + Sym(g ⋆ f))`. -/
 lemma pderiv4_comp4 {a b : MvPolynomial ι ℝ} (ha : Chaos3 a) (hb : Chaos3 b)
     (hf : ∀ i j k, cubicKernel a i j k = cubicKernel a j i k)
