@@ -33,11 +33,6 @@ noncomputable section
 
 variable {ι : Type*} [Fintype ι]
 
-/-- Leibniz rule for the carré du champ in its first slot. -/
-lemma gam_mul_left (P R Z : MvPolynomial ι ℝ) : gam (P * R) Z = P * gam R Z + R * gam P Z := by
-  simp only [gam, pderiv_mul, Finset.mul_sum, ← Finset.sum_add_distrib]
-  exact Finset.sum_congr rfl fun i _ => by ring
-
 section expectation
 
 variable {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ} (hE : IsGaussianExpectation E)
