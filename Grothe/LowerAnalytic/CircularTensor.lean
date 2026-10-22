@@ -35,7 +35,19 @@ part of a circular cubic.  The pure linear-algebra facts are stated for an arbit
   the second-chaos derivatives `∂ᵢF` and Wick's formula `gE_four_chaos1` for their first-chaos
   derivatives, whose constant derivatives are `6 f`; the resulting index sums are `s = ‖C‖²`,
   the tetrahedral contraction `cQ = ⟨C, C^{(23)}⟩` (`3h = s + 2 cQ`, `three_tenH`) and `‖f‖²`.
-* `TensorFactsRest` collects the ten remaining fields; `TensorFactsRest.toTensorFacts`
+* **The tetrahedral contraction** `Q4 T₁ T₂ T₃ T₄ = Σ T₁_{abx} T₂_{cdx} T₃_{acy} T₄_{bdy}`
+  (`= ⟨T₁ ⋆ T₂, (T₃ ⋆ T₄)^{(23)}⟩`): `J` transfers along the six edges with a sign
+  (`Q4_sl₁`, …), the vertices can be relabelled (`Q4_swap12`, `Q4_swap23`, `Q4_swap24`,
+  `Q4_pairswap`), and `Σᵢ Q(…, δTᵢ, …) = 0` (`Q4_der`).  For a circular pair the
+  charge-one relation `(J₁J₂ + J₁J₃ + J₂J₃) f = f` gives `3 Q(J₁J₂ f, f, f, f) = Q(f,f,f,f)`,
+  `J`'s on two disjoint edges give `0`, and `3 Q(g,g,f,f) = Q(f,f,f,f)` (`Q4_gg`), whence
+  `⟨N, N^{(23)}⟩ = (4/3) Q(f,f,f,f)` for `N = g ⋆ f + f ⋆ g` (`ip4_N_sw23`).
+* `A0nn_circular`, `A2nn_circular` (the fields `A0nn`, `A2nn`): with `C₀ = (C + C_g)/2`,
+  `C₂ = (C − C_g)/2` and `S₀ = Sym C₀`, `S₂ = Sym C₂`, the quantities `A₀`, `A₂` of the
+  certificate are `‖C₀ − θ S₀‖²` and `‖C₂ − θ S₂‖²` (`sector_nonneg`, `sector_data`:
+  `⟨C, C_g⟩ = s − ‖N‖²/2`, `‖C_g‖² = s`, `⟨S, S_g⟩ = h − ‖M‖²/2`, `‖S_g‖² = h`,
+  `3 ‖M‖² = ‖N‖² + (8/3) Q(f,f,f,f)`, `3h = s + 2 Q(f,f,f,f)`, `tt = h/6 − ‖M‖²/24`).
+* `TensorFactsRest` collects the eight remaining fields; `TensorFactsRest.toTensorFacts`
   assembles `TensorFacts` from them for a circular pair.
 -/
 
@@ -1362,6 +1374,486 @@ theorem Chaos3.wick4 {F : MvPolynomial ι ℝ} (hF : Chaos3 F) :
 
 end wick4
 
+/-! ### The tetrahedral contraction -/
+
+section tetra
+
+/-- The tetrahedral contraction `Q(T₁,T₂,T₃,T₄) = Σ T₁_{abx} T₂_{cdx} T₃_{acy} T₄_{bdy}`: the four
+tensors sit at the vertices of `K₄`, the six indices on its edges. -/
+def Q4 (T₁ T₂ T₃ T₄ : ι → ι → ι → ℝ) : ℝ :=
+  ∑ a, ∑ b, ∑ c, ∑ d, ∑ x, ∑ y, T₁ a b x * T₂ c d x * (T₃ a c y * T₄ b d y)
+
+lemma Q4_eq_ip4 (T₁ T₂ T₃ T₄ : ι → ι → ι → ℝ) :
+    Q4 T₁ T₂ T₃ T₄ = ip4 (con T₁ T₂) (sw23 (con T₃ T₄)) := by
+  unfold Q4 ip4 con sw23
+  simp only [Finset.sum_mul_sum]
+
+omit [Fintype ι] in
+lemma sw23_add (X Y : T4 ι) : sw23 (X + Y) = sw23 X + sw23 Y := rfl
+omit [Fintype ι] in
+lemma sw23_neg (X : T4 ι) : sw23 (-X) = -sw23 X := rfl
+lemma sw23_sq₁ {J : ι → ι → ℝ} (X : T4 ι) : sw23 (sq₁ J X) = sq₁ J (sw23 X) := rfl
+lemma sw23_sq₂ {J : ι → ι → ℝ} (X : T4 ι) : sw23 (sq₂ J X) = sq₃ J (sw23 X) := rfl
+lemma sw23_sq₃ {J : ι → ι → ℝ} (X : T4 ι) : sw23 (sq₃ J X) = sq₂ J (sw23 X) := rfl
+lemma sw23_sq₄ {J : ι → ι → ℝ} (X : T4 ι) : sw23 (sq₄ J X) = sq₄ J (sw23 X) := rfl
+
+variable (T₁ T₂ T₃ T₄ T T' : ι → ι → ι → ℝ)
+
+lemma Q4_add₁ : Q4 (T + T') T₂ T₃ T₄ = Q4 T T₂ T₃ T₄ + Q4 T' T₂ T₃ T₄ := by
+  simp only [Q4_eq_ip4, con_add_left, ip4_add_left]
+lemma Q4_add₂ : Q4 T₁ (T + T') T₃ T₄ = Q4 T₁ T T₃ T₄ + Q4 T₁ T' T₃ T₄ := by
+  simp only [Q4_eq_ip4, con_add_right, ip4_add_left]
+lemma Q4_add₃ : Q4 T₁ T₂ (T + T') T₄ = Q4 T₁ T₂ T T₄ + Q4 T₁ T₂ T' T₄ := by
+  simp only [Q4_eq_ip4, con_add_left, sw23_add, ip4_add_right]
+lemma Q4_add₄ : Q4 T₁ T₂ T₃ (T + T') = Q4 T₁ T₂ T₃ T + Q4 T₁ T₂ T₃ T' := by
+  simp only [Q4_eq_ip4, con_add_right, sw23_add, ip4_add_right]
+lemma Q4_neg₁ : Q4 (-T) T₂ T₃ T₄ = -Q4 T T₂ T₃ T₄ := by
+  simp only [Q4_eq_ip4, con_neg_left, ip4_neg_left]
+lemma Q4_neg₂ : Q4 T₁ (-T) T₃ T₄ = -Q4 T₁ T T₃ T₄ := by
+  simp only [Q4_eq_ip4, con_neg_right, ip4_neg_left]
+lemma Q4_neg₃ : Q4 T₁ T₂ (-T) T₄ = -Q4 T₁ T₂ T T₄ := by
+  simp only [Q4_eq_ip4, con_neg_left, sw23_neg, ip4_neg_right]
+lemma Q4_neg₄ : Q4 T₁ T₂ T₃ (-T) = -Q4 T₁ T₂ T₃ T := by
+  simp only [Q4_eq_ip4, con_neg_right, sw23_neg, ip4_neg_right]
+lemma Q4_sub₁ : Q4 (T - T') T₂ T₃ T₄ = Q4 T T₂ T₃ T₄ - Q4 T' T₂ T₃ T₄ := by
+  rw [sub_eq_add_neg, Q4_add₁, Q4_neg₁, sub_eq_add_neg]
+
+/-- The pair swap `(T₁T₂)(T₃T₄)`. -/
+lemma Q4_pairswap : Q4 T₁ T₂ T₃ T₄ = Q4 T₃ T₄ T₁ T₂ := by
+  rw [Q4_eq_ip4, Q4_eq_ip4, ← ip4_sw23 (con T₁ T₂), ip4_comm]; rfl
+
+/-- The transposition `(T₁T₂)`. -/
+lemma Q4_swap12 : Q4 T₁ T₂ T₃ T₄ = Q4 T₂ T₁ (fun a c y => T₃ c a y) (fun b d y => T₄ d b y) := by
+  unfold Q4
+  rw [swap4 (fun a b c d => ∑ x, ∑ y, T₁ a b x * T₂ c d x * (T₃ a c y * T₄ b d y))]
+  refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl
+    fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun x _ =>
+    Finset.sum_congr rfl fun y _ => by ring
+
+lemma sum6_eq (F : ι → ι → ι → ι → ι → ι → ℝ) :
+    ∑ a, ∑ b, ∑ c, ∑ d, ∑ x, ∑ y, F a b c d x y
+      = ∑ p : ι × ι × ι × ι × ι × ι, F p.1 p.2.1 p.2.2.1 p.2.2.2.1 p.2.2.2.2.1 p.2.2.2.2.2 := by
+  simp only [Fintype.sum_prod_type]
+
+/-- The transposition `(T₂T₃)` (`a ↔ x`, `d ↔ y`). -/
+lemma Q4_swap23 : Q4 T₁ T₂ T₃ T₄
+    = Q4 (fun a b x => T₁ x b a) (fun c d x => T₃ x c d) (fun a c y => T₂ c y a)
+      (fun b d y => T₄ b y d) := by
+  unfold Q4
+  rw [sum6_eq, sum6_eq]
+  exact Fintype.sum_equiv
+    ⟨fun p => (p.2.2.2.2.1, p.2.1, p.2.2.1, p.2.2.2.2.2, p.1, p.2.2.2.1),
+     fun p => (p.2.2.2.2.1, p.2.1, p.2.2.1, p.2.2.2.2.2, p.1, p.2.2.2.1),
+     fun _ => rfl, fun _ => rfl⟩ _ _ (fun p => by simp only [Equiv.coe_fn_mk]; ring)
+
+/-- The transposition `(T₂T₄)` (`b ↔ x`, `c ↔ y`). -/
+lemma Q4_swap24 : Q4 T₁ T₂ T₃ T₄
+    = Q4 (fun a b x => T₁ a x b) (fun c d x => T₄ x d c) (fun a c y => T₃ a y c)
+      (fun b d y => T₂ y d b) := by
+  unfold Q4
+  rw [sum6_eq, sum6_eq]
+  exact Fintype.sum_equiv
+    ⟨fun p => (p.1, p.2.2.2.2.1, p.2.2.2.2.2, p.2.2.2.1, p.2.1, p.2.2.1),
+     fun p => (p.1, p.2.2.2.2.1, p.2.2.2.2.2, p.2.2.2.1, p.2.1, p.2.2.1),
+     fun _ => rfl, fun _ => rfl⟩ _ _ (fun p => by simp only [Equiv.coe_fn_mk]; ring)
+
+end tetra
+
+section transfer
+
+variable {J : ι → ι → ℝ} (hJ : IsCplx J)
+include hJ
+
+/-- Transfer along the edges of `K₄`. -/
+lemma Q4_sl₁ (T₁ T₂ T₃ T₄ : ι → ι → ι → ℝ) :
+    Q4 (sl₁ J T₁) T₂ T₃ T₄ = -Q4 T₁ T₂ (sl₁ J T₃) T₄ := by
+  rw [Q4_eq_ip4, Q4_eq_ip4, ← sq₁_con, ip4_sq₁ hJ, ← sq₁_con, sw23_sq₁]
+lemma Q4_sl₂ (T₁ T₂ T₃ T₄ : ι → ι → ι → ℝ) :
+    Q4 (sl₂ J T₁) T₂ T₃ T₄ = -Q4 T₁ T₂ T₃ (sl₁ J T₄) := by
+  rw [Q4_eq_ip4, Q4_eq_ip4, ← sq₂_con, ip4_sq₂ hJ, ← sq₃_con, ← sw23_sq₃]
+lemma Q4_sl₁' (T₁ T₂ T₃ T₄ : ι → ι → ι → ℝ) :
+    Q4 T₁ (sl₁ J T₂) T₃ T₄ = -Q4 T₁ T₂ (sl₂ J T₃) T₄ := by
+  rw [Q4_eq_ip4, Q4_eq_ip4, ← sq₃_con, ip4_sq₃ hJ, ← sq₂_con, ← sw23_sq₂]
+lemma Q4_sl₂' (T₁ T₂ T₃ T₄ : ι → ι → ι → ℝ) :
+    Q4 T₁ (sl₂ J T₂) T₃ T₄ = -Q4 T₁ T₂ T₃ (sl₂ J T₄) := by
+  rw [Q4_eq_ip4, Q4_eq_ip4, ← sq₄_con, ip4_sq₄ hJ, ← sq₄_con, sw23_sq₄]
+lemma Q4_sl₃ (T₁ T₂ T₃ T₄ : ι → ι → ι → ℝ) :
+    Q4 (sl₃ J T₁) T₂ T₃ T₄ = -Q4 T₁ (sl₃ J T₂) T₃ T₄ := by
+  rw [Q4_eq_ip4, Q4_eq_ip4, eq_neg_of_add_eq_zero_left (con_sl₃ hJ T₁ T₂), ip4_neg_left]
+lemma Q4_sl₃' (T₁ T₂ T₃ T₄ : ι → ι → ι → ℝ) :
+    Q4 T₁ T₂ (sl₃ J T₃) T₄ = -Q4 T₁ T₂ T₃ (sl₃ J T₄) := by
+  rw [Q4_eq_ip4, Q4_eq_ip4, eq_neg_of_add_eq_zero_left (con_sl₃ hJ T₃ T₄), sw23_neg, ip4_neg_right]
+
+/-- The derivation identity: `Σᵢ Q(…, δTᵢ, …) = 0`. -/
+lemma Q4_der (T₁ T₂ T₃ T₄ : ι → ι → ι → ℝ) :
+    Q4 (der3 J T₁) T₂ T₃ T₄ + Q4 T₁ (der3 J T₂) T₃ T₄ + Q4 T₁ T₂ (der3 J T₃) T₄
+      + Q4 T₁ T₂ T₃ (der3 J T₄) = 0 := by
+  simp only [der3_apply', Q4_add₁, Q4_add₂, Q4_add₃, Q4_add₄, Q4_sl₁ hJ, Q4_sl₂ hJ, Q4_sl₁' hJ,
+    Q4_sl₂' hJ, Q4_sl₃ hJ, Q4_sl₃' hJ]
+  ring
+
+end transfer
+
+/-! ### The tetrahedral invariants of a circular pair -/
+
+section invariants
+
+variable {J : ι → ι → ℝ} (hJ : IsCplx J) {f g : ι → ι → ι → ℝ}
+  (hf : ∀ a b c, f a b c = f b a c) (hf13 : ∀ a b c, f a b c = f c b a)
+  (hdf : der3 J f = -g) (hdg : der3 J g = f)
+include hJ hf hf13 hdf hdg
+
+omit hJ hdf hdg in
+lemma Q4_K13_eq : Q4 (sl₁ J (sl₃ J f)) f f f = Q4 (sl₁ J (sl₂ J f)) f f f := by
+  have hf23 : ∀ a b c, f a c b = f a b c := fun a b c => by
+    rw [hf13 a c b, hf b c a, ← hf13 a b c]
+  rw [Q4_swap24 (sl₁ J (sl₂ J f)) f f f]
+  congr 1
+  · funext a b x
+    simp only [sl₁_apply, sl₂_apply, sl₃_apply, Finset.mul_sum]
+    refine Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_
+    rw [hf23 p q b]
+  · funext c d x; exact hf13 c d x
+  · funext a c y; exact hf23 a y c
+  · funext b d y; exact hf13 b d y
+
+omit hJ hdf hdg in
+lemma Q4_K23_eq : Q4 (sl₂ J (sl₃ J f)) f f f = Q4 (sl₁ J (sl₂ J f)) f f f := by
+  have hf23 : ∀ a b c, f a c b = f a b c := fun a b c => by
+    rw [hf13 a c b, hf b c a, ← hf13 a b c]
+  rw [Q4_swap23 (sl₁ J (sl₂ J f)) f f f]
+  congr 1
+  · funext a b x
+    simp only [sl₁_apply, sl₂_apply, sl₃_apply, Finset.mul_sum]
+    rw [Finset.sum_comm]
+    refine Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_
+    rw [hf13 a q p]; ring
+  · funext c d x; rw [hf c d x, hf13 d c x]
+  · funext a c y; rw [hf13 a c y, hf y c a]
+  · funext b d y; exact hf23 b y d
+
+/-- `Q(J₁J₂ f, f, f, f) = Q(f,f,f,f)/3`: the three pairs of slots of `T₁` are equivalent. -/
+lemma Q4_K12 : 3 * Q4 (sl₁ J (sl₂ J f)) f f f = Q4 f f f f := by
+  have hff : der3 J (der3 J f) = -f := by rw [hdf, map_neg, hdg]
+  have := congrArg (fun T => Q4 T f f f) (charge_one_e2 hJ hff)
+  simp only [Q4_add₁, Q4_K13_eq hf hf13, Q4_K23_eq hf hf13] at this
+  linarith
+
+omit hf13 hdf hdg in
+/-- `Q(J₃ f, f, J₃ f, f) = 0`: `J`'s on two disjoint edges. -/
+lemma Q4_sl₃_sl₃ : Q4 (sl₃ J f) f (sl₃ J f) f = 0 := by
+  have h := Q4_swap12 (sl₃ J f) f (sl₃ J f) f
+  have e1 : (fun a c y => sl₃ J f c a y) = sl₃ J f := by
+    funext a c y; simp only [sl₃_apply]; exact Finset.sum_congr rfl fun p _ => by rw [hf c a]
+  have e2 : (fun b d y => f d b y) = f := by funext b d y; exact hf d b y
+  rw [e1, e2] at h
+  have h' := Q4_sl₃ hJ f f (sl₃ J f) f
+  linarith
+
+omit hdf hdg in
+lemma Q4_sl₁_sl₂ : Q4 (sl₁ J f) (sl₂ J f) f f = 0 := by
+  have hf23 : ∀ a b c, f a c b = f a b c := fun a b c => by
+    rw [hf13 a c b, hf b c a, ← hf13 a b c]
+  rw [Q4_swap23, ← Q4_sl₃_sl₃ hJ hf]
+  congr 1
+  · funext a b x; simp only [sl₁_apply, sl₃_apply]
+    exact Finset.sum_congr rfl fun p _ => by rw [hf13 p b a]
+  · funext c d x; rw [hf x c d, hf23 c d x]
+  · funext a c y; simp only [sl₂_apply, sl₃_apply]
+    exact Finset.sum_congr rfl fun p _ => by rw [hf13 c p a, hf23 a c p]
+  · funext b d y; exact hf23 b d y
+
+omit hdf hdg in
+lemma Q4_sl₂_sl₁ : Q4 (sl₂ J f) (sl₁ J f) f f = 0 := by
+  have hf23 : ∀ a b c, f a c b = f a b c := fun a b c => by
+    rw [hf13 a c b, hf b c a, ← hf13 a b c]
+  have h0 : Q4 (sl₃ J f) f f (sl₃ J f) = 0 := by
+    have := Q4_sl₃' hJ (sl₃ J f) f f f
+    rw [Q4_sl₃_sl₃ hJ hf] at this
+    linarith
+  rw [Q4_swap24, ← h0]
+  congr 1
+  · funext a b x; simp only [sl₂_apply, sl₃_apply]
+    exact Finset.sum_congr rfl fun p _ => by rw [hf23 a p b]
+  · funext c d x; exact hf13 x d c
+  · funext a c y; exact hf23 a c y
+  · funext b d y; simp only [sl₁_apply, sl₃_apply]
+    exact Finset.sum_congr rfl fun p _ => by rw [hf13 p d b]
+
+/-- **`3 Q(g,g,f,f) = Q(f,f,f,f)`**. -/
+lemma Q4_gg : 3 * Q4 g g f f = Q4 f f f f := by
+  have hff : der3 J (der3 J f) = -f := by rw [hdf, map_neg, hdg]
+  have e2 := charge_one_e2 hJ hff
+  have e3 := sl_triple_of_charge_one hJ hff
+  have hq := Q4_K12 hJ hf hf13 hdf hdg
+  have h13 := Q4_K13_eq (J := J) hf hf13
+  have h23 := Q4_K23_eq (J := J) hf hf13
+  have hX : sl₁ J (sl₂ J (sl₃ J f)) = sl₃ J (sl₁ J (sl₂ J f)) := by rw [sl_comm23, sl_comm13]
+  have hg : g = -sl₁ J (sl₂ J (sl₃ J f)) := by rw [e3, hdf, neg_neg]
+  have h1 : Q4 g g f f = Q4 (sl₁ J (sl₂ J f)) (sl₁ J (sl₂ J f)) f f := by
+    rw [hg, Q4_neg₁, Q4_neg₂, neg_neg, hX, Q4_sl₃ hJ, sl_sq3 hJ, Q4_neg₂, neg_neg]
+  have h2 : Q4 f (sl₁ J (sl₂ J f)) f f = Q4 (sl₁ J (sl₂ J f)) f f f := by
+    rw [Q4_swap12 f]
+    congr 1
+    · funext a c y; exact hf c a y
+    · funext b d y; exact hf d b y
+  have h3 : Q4 (sl₁ J f) (sl₁ J f) f f = Q4 (sl₁ J (sl₂ J f)) f f f := by
+    rw [Q4_sl₁ hJ, Q4_sl₁' hJ, neg_neg, Q4_pairswap, ← sl_comm12]
+  have h4 : Q4 (sl₂ J f) (sl₂ J f) f f = Q4 (sl₁ J (sl₂ J f)) f f f := by
+    rw [Q4_sl₂ hJ, Q4_sl₂' hJ, neg_neg, Q4_pairswap, ← sl_comm12, h2]
+  have h5 : Q4 (sl₁ J f) (sl₃ J f) f f = -Q4 (sl₁ J (sl₂ J f)) f f f := by
+    rw [← h13, sl_comm13, Q4_sl₃ hJ, neg_neg]
+  have h6 : Q4 (sl₂ J f) (sl₃ J f) f f = -Q4 (sl₁ J (sl₂ J f)) f f f := by
+    rw [← h23, sl_comm23, Q4_sl₃ hJ, neg_neg]
+  have hd : sl₃ J (sl₁ J (sl₂ J f)) = sl₁ J f + sl₂ J f + sl₃ J f := by
+    rw [← hX, e3, der3_apply']
+  have hii : Q4 (sl₁ J (sl₃ J f)) (sl₁ J (sl₂ J f)) f f = 0 := by
+    rw [sl_comm13, Q4_sl₃ hJ, hd, Q4_add₂, Q4_add₂, h3, Q4_sl₁_sl₂ hJ hf hf13, h5]
+    ring
+  have hiii : Q4 (sl₂ J (sl₃ J f)) (sl₁ J (sl₂ J f)) f f = 0 := by
+    rw [sl_comm23, Q4_sl₃ hJ, hd, Q4_add₂, Q4_add₂, h4, Q4_sl₂_sl₁ hJ hf hf13, h6]
+    ring
+  have hK : sl₁ J (sl₂ J f) = f - sl₁ J (sl₃ J f) - sl₂ J (sl₃ J f) := by linear_combination e2
+  rw [h1]
+  conv_lhs => arg 2; arg 1; rw [hK]
+  rw [Q4_sub₁, Q4_sub₁, h2, hii, hiii]
+  linarith
+
+/-- `Q(g,f,g,f) + Q(g,f,f,g) = (2/3) Q(f,f,f,f)`. -/
+lemma Q4_gf : Q4 g f g f + Q4 g f f g = 2 / 3 * Q4 f f f f := by
+  have h := Q4_der hJ g f f f
+  rw [hdg, hdf, Q4_neg₂, Q4_neg₃, Q4_neg₄] at h
+  have := Q4_gg hJ hf hf13 hdf hdg
+  linarith
+
+/-- `⟨N, N^{(23)}⟩ = (4/3) Q(f,f,f,f)` for `N = g ⋆ f + f ⋆ g`. -/
+lemma ip4_N_sw23 (hg : ∀ a b c, g a b c = g b a c) :
+    ip4 (con g f + con f g) (sw23 (con g f + con f g)) = 4 / 3 * Q4 f f f f := by
+  rw [sw23_add, ip4_add_left, ip4_add_right, ip4_add_right, ← Q4_eq_ip4, ← Q4_eq_ip4,
+    ← Q4_eq_ip4, ← Q4_eq_ip4]
+  have e1 : Q4 f g g f = Q4 g f g f := by
+    rw [Q4_swap12 f g]
+    congr 1
+    · funext a c y; exact hg c a y
+    · funext b d y; exact hf d b y
+  have e2 : Q4 f g f g = Q4 g f f g := by
+    rw [Q4_swap12 f g]
+    congr 1
+    · funext a c y; exact hf c a y
+    · funext b d y; exact hg d b y
+  have := Q4_gf hJ hf hf13 hdf hdg
+  linarith
+
+end invariants
+
+/-! ### The charge sectors of `C` and `S`: the fields `A0nn` and `A2nn` -/
+
+section sector
+
+lemma ip4_sw23_eq (X : T4 ι) : ip4 X (sw23 X) = ∑ a, ∑ b, ∑ c, ∑ d, X a b c d * X a c b d := rfl
+
+lemma sum_X13 {X : T4 ι} (hX : ∀ a b c d, X a b d c = X a b c d) :
+    ∑ a, ∑ b, ∑ c, ∑ d, X a b c d * X a d b c = ∑ a, ∑ b, ∑ c, ∑ d, X a b c d * X a c b d :=
+  (Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ =>
+    Finset.sum_congr rfl fun d _ => by rw [← hX a b c d]).trans
+    (sum4_swap34 fun a b c d => X a b c d * X a c b d)
+
+lemma sum_X23 {X : T4 ι} (hX : ∀ a b c d, X a b d c = X a b c d) :
+    ∑ a, ∑ b, ∑ c, ∑ d, X a c b d * X a d b c = ∑ a, ∑ b, ∑ c, ∑ d, X a b c d * X a c b d :=
+  (Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ =>
+    Finset.sum_congr rfl fun d _ => by rw [← hX a d c b]).trans
+    ((sum4_cyc fun a b c d => X a b d c * X a c b d).trans
+    (Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ =>
+      Finset.sum_congr rfl fun d _ => by rw [hX a b c d]))
+
+/-- `9 ‖Sym X‖² = 3 ‖X‖² + 6 ⟨X, X^{(23)}⟩` for `X` symmetric in its second pair. -/
+lemma nine_sym4_sq {X : T4 ι} (hX : ∀ a b c d, X a b d c = X a b c d) :
+    9 * ip4 (sym4 X) (sym4 X) = 3 * ip4 X X + 6 * ip4 X (sw23 X) := by
+  have e : ∀ a b c d, sym4 X a b c d * sym4 X a b c d
+      = (X a b c d ^ 2 + X a c b d ^ 2 + X a d b c ^ 2
+        + 2 * (X a b c d * X a c b d) + 2 * (X a b c d * X a d b c)
+        + 2 * (X a c b d * X a d b c)) / 9 := fun a b c d => by
+    unfold sym4; ring
+  have e2 : ∑ a, ∑ b, ∑ c, ∑ d, X a c b d ^ 2 = ip4 X X :=
+    (sum4_swap23 fun a b c d => X a b c d ^ 2).trans (by simp only [ip4, sq])
+  have e3 : ∑ a, ∑ b, ∑ c, ∑ d, X a d b c ^ 2 = ip4 X X :=
+    (sum4_cyc' fun a b c d => X a b c d ^ 2).trans (by simp only [ip4, sq])
+  have e1 : ∑ a, ∑ b, ∑ c, ∑ d, X a b c d ^ 2 = ip4 X X := by simp only [ip4, sq]
+  rw [ip4_sw23_eq]
+  unfold ip4
+  simp only [e, ← Finset.sum_div, Finset.sum_add_distrib, ← Finset.mul_sum]
+  rw [e1, e2, e3, sum_X13 hX, sum_X23 hX]
+  unfold ip4
+  ring
+
+/-- `3 ⟨X, Sym X⟩ = ‖X‖² + 2 ⟨X, X^{(23)}⟩` for `X` symmetric in its second pair. -/
+lemma three_ip4_sym4 {X : T4 ι} (hX : ∀ a b c d, X a b d c = X a b c d) :
+    3 * ip4 X (sym4 X) = ip4 X X + 2 * ip4 X (sw23 X) := by
+  have e : ∀ a b c d, X a b c d * sym4 X a b c d
+      = (X a b c d * X a b c d + X a b c d * X a c b d + X a b c d * X a d b c) / 3 :=
+    fun a b c d => by unfold sym4; ring
+  rw [ip4_sw23_eq]
+  unfold ip4
+  simp only [e, ← Finset.sum_div, Finset.sum_add_distrib]
+  rw [sum_X13 hX]
+  ring
+
+/-- `0 ≤ ‖X − θ Sym X‖² = ‖X‖² + k_θ ‖Sym X‖²`. -/
+lemma sector_nonneg {X : T4 ι} (hX : ∀ a b c d, X a b d c = X a b c d) :
+    0 ≤ ip4 X X + kC * ip4 (sym4 X) (sym4 X) := by
+  have h := ip4_self_nonneg (X - thetaC • sym4 X)
+  rw [ip4_sub_left, ip4_sub_right, ip4_sub_right, ip4_smul_left, ip4_smul_right, ip4_smul_left,
+    ip4_smul_right, ip4_comm (sym4 X) X] at h
+  have h1 := three_ip4_sym4 hX
+  have h2 := nine_sym4_sq hX
+  have hXP : ip4 X (sym4 X) = ip4 (sym4 X) (sym4 X) := by linarith
+  rw [hXP] at h
+  unfold kC
+  linarith
+
+variable {J : ι → ι → ℝ} (hJ : IsCplx J) {f g : ι → ι → ι → ℝ}
+  (hf : ∀ a b c, f a b c = f b a c) (hg : ∀ a b c, g a b c = g b a c)
+  (hf13 : ∀ a b c, f a b c = f c b a) (hdf : der3 J f = -g) (hdg : der3 J g = f)
+include hJ hdf hdg
+
+omit hdg in
+lemma der4_C : der4 J (con f f) = -(con g f + con f g) := by
+  rw [der4_con hJ, hdf, con_neg_left, con_neg_right, neg_add]
+omit hdf in
+lemma der4_Cg : der4 J (con g g) = con g f + con f g := by
+  rw [der4_con hJ, hdg, add_comm]
+lemma der4_N : der4 J (con g f + con f g) = (2 : ℝ) • (con f f - con g g) := by
+  rw [map_add, der4_con hJ, der4_con hJ, hdf, hdg, con_neg_left, con_neg_right]
+  module
+
+/-- `⟨C, C_g⟩ = s − ‖N‖²/2`. -/
+lemma ip4_C_Cg : ip4 (con f f) (con g g)
+    = ip4 (con f f) (con f f) - ip4 (con g f + con f g) (con g f + con f g) / 2 := by
+  have h := ip4_der4_sq hJ (con f f)
+  simp only [der4_C hJ hdf, map_neg, der4_N hJ hdf hdg, ip4_neg_left, ip4_neg_right,
+    ip4_smul_right, ip4_sub_right, neg_neg] at h
+  linarith
+
+/-- `‖C_g‖² = s`. -/
+lemma ip4_Cg_Cg : ip4 (con g g) (con g g) = ip4 (con f f) (con f f) := by
+  have h := ip4_der4_sq hJ (con g g)
+  simp only [der4_Cg hJ hdg, der4_N hJ hdf hdg, ip4_smul_right, ip4_sub_right] at h
+  rw [ip4_comm (con g g) (con f f), ip4_C_Cg hJ hdf hdg] at h
+  linarith
+
+/-- `⟨S, S_g⟩ = h − ‖M‖²/2`. -/
+lemma ip4_S_Sg : ip4 (sym4 (con f f)) (sym4 (con g g))
+    = ip4 (sym4 (con f f)) (sym4 (con f f))
+      - ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g)) / 2 := by
+  have h := ip4_der4_sq hJ (sym4 (con f f))
+  simp only [der4_sym4, der4_C hJ hdf, map_neg, der4_N hJ hdf hdg, sym4_neg, sym4_smul,
+    sym4_sub, ip4_neg_left, ip4_neg_right, ip4_smul_right, ip4_sub_right, neg_neg] at h
+  linarith
+
+/-- `‖S_g‖² = h`. -/
+lemma ip4_Sg_Sg : ip4 (sym4 (con g g)) (sym4 (con g g)) = ip4 (sym4 (con f f)) (sym4 (con f f)) := by
+  have h := ip4_der4_sq hJ (sym4 (con g g))
+  simp only [der4_sym4, der4_Cg hJ hdg, der4_N hJ hdf hdg, sym4_smul, sym4_sub,
+    ip4_smul_right, ip4_sub_right] at h
+  rw [ip4_comm (sym4 (con g g)) (sym4 (con f f)), ip4_S_Sg hJ hdf hdg] at h
+  linarith
+
+include hf hg hf13
+
+/-- The sector identities needed for `A0nn`, `A2nn`. -/
+lemma sector_data :
+    tenS f = ip4 (con f f) (con f f) ∧ tenH f = ip4 (sym4 (con f f)) (sym4 (con f f))
+    ∧ 3 * ip4 (sym4 (con f f)) (sym4 (con f f))
+        = ip4 (con f f) (con f f) + 2 * ip4 (con f f) (sw23 (con f f))
+    ∧ 3 * ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g))
+        = ip4 (con g f + con f g) (con g f + con f g) + 8 / 3 * ip4 (con f f) (sw23 (con f f))
+    ∧ tenTT f J = ip4 (sym4 (con f f)) (sym4 (con f f)) / 6
+        - ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g)) / 24
+    ∧ ip4 ((1 / 2 : ℝ) • (con f f + con g g)) ((1 / 2 : ℝ) • (con f f + con g g))
+        = ip4 (con f f) (con f f) - ip4 (con g f + con f g) (con g f + con f g) / 4
+    ∧ ip4 ((1 / 2 : ℝ) • (con f f - con g g)) ((1 / 2 : ℝ) • (con f f - con g g))
+        = ip4 (con g f + con f g) (con g f + con f g) / 4
+    ∧ sym4 ((1 / 2 : ℝ) • (con f f + con g g)) = (1 / 2 : ℝ) • (sym4 (con f f) + sym4 (con g g))
+    ∧ sym4 ((1 / 2 : ℝ) • (con f f - con g g)) = (1 / 2 : ℝ) • (sym4 (con f f) - sym4 (con g g))
+    ∧ ip4 ((1 / 2 : ℝ) • (sym4 (con f f) + sym4 (con g g)))
+        ((1 / 2 : ℝ) • (sym4 (con f f) + sym4 (con g g)))
+        = ip4 (sym4 (con f f)) (sym4 (con f f))
+          - ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g)) / 4
+    ∧ ip4 ((1 / 2 : ℝ) • (sym4 (con f f) - sym4 (con g g)))
+        ((1 / 2 : ℝ) • (sym4 (con f f) - sym4 (con g g)))
+        = ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g)) / 4 := by
+  have hN : ∀ a b c d, (con g f + con f g) a b d c = (con g f + con f g) a b c d :=
+    fun a b c d => by simp only [Pi.add_apply, con, hf d c, hg d c]
+  have hs : tenS f = ip4 (con f f) (con f f) := by
+    rw [tenS_eq_sum_kerC_sq]; simp only [ip4, kerC_eq_con, sq]
+  have hh : tenH f = ip4 (sym4 (con f f)) (sym4 (con f f)) := tenH_eq_ip4 f
+  have hq : 3 * ip4 (sym4 (con f f)) (sym4 (con f f))
+      = ip4 (con f f) (con f f) + 2 * ip4 (con f f) (sw23 (con f f)) := by
+    have := three_tenH hf; rw [hs, hh] at this; exact this
+  have hm : 3 * ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g))
+      = ip4 (con g f + con f g) (con g f + con f g) + 8 / 3 * ip4 (con f f) (sw23 (con f f)) := by
+    have h1 := nine_sym4_sq hN
+    have h2 := ip4_N_sw23 hJ hf hf13 hdf hdg hg
+    rw [Q4_eq_ip4] at h2
+    linarith
+  have htt := tenTT_eq_of_der hJ hf hdf hdg
+  rw [hh] at htt
+  have hCg := ip4_Cg_Cg hJ hdf hdg
+  have hCCg := ip4_C_Cg hJ hdf hdg
+  have hSg := ip4_Sg_Sg hJ hdf hdg
+  have hSSg := ip4_S_Sg hJ hdf hdg
+  refine ⟨hs, hh, hq, hm, htt, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · rw [ip4_smul_left, ip4_smul_right, ip4_add_left, ip4_add_right, ip4_add_right, hCg,
+      ip4_comm (con g g) (con f f), hCCg]; ring
+  · rw [ip4_smul_left, ip4_smul_right, ip4_sub_left, ip4_sub_right, ip4_sub_right, hCg,
+      ip4_comm (con g g) (con f f), hCCg]; ring
+  · rw [sym4_smul, sym4_add]
+  · rw [sym4_smul, sym4_sub]
+  · rw [ip4_smul_left, ip4_smul_right, ip4_add_left, ip4_add_right, ip4_add_right, hSg,
+      ip4_comm (sym4 (con g g)) (sym4 (con f f)), hSSg]; ring
+  · rw [ip4_smul_left, ip4_smul_right, ip4_sub_left, ip4_sub_right, ip4_sub_right, hSg,
+      ip4_comm (sym4 (con g g)) (sym4 (con f f)), hSSg]; ring
+
+/-- **The field `A0nn`**: `A₀ = ‖C₀ − θ S₀‖² ≥ 0`. -/
+theorem A0nn_of_der : 0 ≤ 2 * tenS f / 3 - 2 * tenH f + (18 + 6 * kC) * tenTT f J := by
+  obtain ⟨hs, hh, hq, hm, htt, hC0, -, hS0, -, hS0n, -⟩ := sector_data hJ hf hg hf13 hdf hdg
+  have hX : ∀ a b c d, ((1 / 2 : ℝ) • (con f f + con g g)) a b d c
+      = ((1 / 2 : ℝ) • (con f f + con g g)) a b c d := fun a b c d => by
+    simp only [Pi.smul_apply, Pi.add_apply, con, hf d c, hg d c]
+  have h0 := sector_nonneg hX
+  rw [hC0, hS0, hS0n] at h0
+  rw [hs, hh, htt]
+  nlinarith
+
+/-- **The field `A2nn`**: `A₂ = ‖C₂ − θ S₂‖² ≥ 0`. -/
+theorem A2nn_of_der : 0 ≤ tenS f / 3 + (2 + kC) * tenH f - (18 + 6 * kC) * tenTT f J := by
+  obtain ⟨hs, hh, hq, hm, htt, -, hC2, -, hS2, -, hS2n⟩ := sector_data hJ hf hg hf13 hdf hdg
+  have hX : ∀ a b c d, ((1 / 2 : ℝ) • (con f f - con g g)) a b d c
+      = ((1 / 2 : ℝ) • (con f f - con g g)) a b c d := fun a b c d => by
+    simp only [Pi.smul_apply, Pi.sub_apply, con, hf d c, hg d c]
+  have h0 := sector_nonneg hX
+  rw [hC2, hS2, hS2n] at h0
+  rw [hs, hh, htt]
+  nlinarith
+
+end sector
+
+/-- **The field `A0nn`** for the kernel of the real part of a circular cubic. -/
+theorem A0nn_circular [DecidableEq ι] {J : ι → ι → ℝ} {a b : MvPolynomial ι ℝ}
+    (hc : Circular J a b) :
+    0 ≤ 2 * tenS (cubicKernel a) / 3 - 2 * tenH (cubicKernel a)
+      + (18 + 6 * kC) * tenTT (cubicKernel a) J :=
+  A0nn_of_der hc.isCplx (cubicKernel_symm12 a) (cubicKernel_symm12 b)
+    (fun x y z => by unfold cubicKernel; rw [kern_rev]) hc.der3_left hc.der3_right
+
+/-- **The field `A2nn`** for the kernel of the real part of a circular cubic. -/
+theorem A2nn_circular [DecidableEq ι] {J : ι → ι → ℝ} {a b : MvPolynomial ι ℝ}
+    (hc : Circular J a b) :
+    0 ≤ tenS (cubicKernel a) / 3 + (2 + kC) * tenH (cubicKernel a)
+      - (18 + 6 * kC) * tenTT (cubicKernel a) J :=
+  A2nn_of_der hc.isCplx (cubicKernel_symm12 a) (cubicKernel_symm12 b)
+    (fun x y z => by unfold cubicKernel; rw [kern_rev]) hc.der3_left hc.der3_right
+
 /-! ### The partial constructor -/
 
 /-- The fields of `TensorFacts` that are **not yet proved** for circular cubics. -/
@@ -1385,10 +1877,6 @@ structure TensorFactsRest (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (J : ι → 
     ≤ (2 * tenS (cubicKernel a) - tenGa (cubicKernel a) J) * √(tenTT (cubicKernel a) J)
       + √(2 * tenGa (cubicKernel a) J * (tenS (cubicKernel a) - tenGa (cubicKernel a) J)
           * (tenH (cubicKernel a) - 6 * tenTT (cubicKernel a) J))
-  A0nn : 0 ≤ 2 * tenS (cubicKernel a) / 3 - 2 * tenH (cubicKernel a)
-    + (18 + 6 * kC) * tenTT (cubicKernel a) J
-  A2nn : 0 ≤ tenS (cubicKernel a) / 3 + (2 + kC) * tenH (cubicKernel a)
-    - (18 + 6 * kC) * tenTT (cubicKernel a) J
   chargeSplit : tenU2 (cubicKernel a) ≤ thetaC * tenT3 (cubicKernel a)
     + √((2 * tenS (cubicKernel a) / 3 - 2 * tenH (cubicKernel a)
           + (18 + 6 * kC) * tenTT (cubicKernel a) J)
@@ -1399,7 +1887,8 @@ structure TensorFactsRest (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (J : ι → 
         * (9 * tenH (cubicKernel a) * tenTT (cubicKernel a) J - 54 * tenTT (cubicKernel a) J ^ 2))
 
 /-- **The tensor facts of a circular cubic** from the remaining ones: the fields `wick4`
-(`Chaos3.wick4`), `anti` (`tenGa_le_half`) and `block` (`tenTT_le_sixth`) are proved. -/
+(`Chaos3.wick4`), `anti` (`tenGa_le_half`), `block` (`tenTT_le_sixth`), `A0nn`
+(`A0nn_circular`) and `A2nn` (`A2nn_circular`) are proved. -/
 theorem TensorFactsRest.toTensorFacts [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
     (hE : IsGaussianExpectation E) {J : ι → ι → ℝ} {a b : MvPolynomial ι ℝ} (ha : Chaos3 a)
     (hc : Circular J a b) (hR : TensorFactsRest E J a) : TensorFacts E J a where
@@ -1413,8 +1902,8 @@ theorem TensorFactsRest.toTensorFacts [DecidableEq ι] {E : MvPolynomial ι ℝ 
   trace3 := hR.trace3
   trace4 := hR.trace4
   coupled := hR.coupled
-  A0nn := hR.A0nn
-  A2nn := hR.A2nn
+  A0nn := A0nn_circular hc
+  A2nn := A2nn_circular hc
   chargeSplit := hR.chargeSplit
 
 end
