@@ -78,3 +78,4 @@ import Grothe.LowerAnalytic.FibrePotential
 import Grothe.LowerAnalytic.FibreSup
 import Grothe.LowerAnalytic.Fibre
 import Grothe.LowerAnalytic.FibreRot
+import Grothe.LowerAnalytic.FibreHermite
