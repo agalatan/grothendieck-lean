@@ -1,4 +1,6 @@
 import Grothe.LowerAnalytic.Circular
+import Grothe.LowerAnalytic.Covariance
+import Grothe.LowerAnalytic.FourthMoment
 
 /-!
 # The tensor facts of circular cubics
@@ -26,7 +28,14 @@ part of a circular cubic.  The pure linear-algebra facts are stated for an arbit
   `δ² = −4 + 2 Σ_{i<j} JᵢJⱼ` and the symmetry of `S` give `⟨S, J₁J₂ S⟩ = (4h − ‖M‖²)/12`;
   `Ω S = S_g`; and `‖S₋₋‖² = (h − ⟨S,J₁J₂S⟩ − ⟨S,J₃J₄S⟩ + ⟨S,ΩS⟩)/4`, whence
   `tt = h/6 − ‖M‖²/24`.
-* `TensorFactsRest` collects the eleven remaining fields; `TensorFactsRest.toTensorFacts`
+* `Chaos3.wick4` (the field `wick4`): `κ₄ = E F⁴ − 3 (E F²)² = 1296 (s + 3h/2)` for any cubic
+  chaos `F` with kernel `f`.  `E F⁴ = E (F² Γ)` by integration by parts, `F² = Π₆ + Π₄ + Π₂ + E F²`
+  and `Γ = Π₄ + 2Π₂ + 3 E F²` (`mul_eq_comps`, `J4`, `comp2`), the chaos components are
+  orthogonal, and `E Γ²`, `E Γ₂²` are computed exactly from the pairing formula `quad_four` for
+  the second-chaos derivatives `∂ᵢF` and Wick's formula `gE_four_chaos1` for their first-chaos
+  derivatives, whose constant derivatives are `6 f`; the resulting index sums are `s = ‖C‖²`,
+  the tetrahedral contraction `cQ = ⟨C, C^{(23)}⟩` (`3h = s + 2 cQ`, `three_tenH`) and `‖f‖²`.
+* `TensorFactsRest` collects the ten remaining fields; `TensorFactsRest.toTensorFacts`
   assembles `TensorFacts` from them for a circular pair.
 -/
 
@@ -954,13 +963,400 @@ end block
 
 
 
+/-! ### Sum bookkeeping -/
+
+section sums
+
+lemma sum4_swap23 (F : ι → ι → ι → ι → ℝ) :
+    ∑ a, ∑ b, ∑ c, ∑ d, F a c b d = ∑ a, ∑ b, ∑ c, ∑ d, F a b c d :=
+  Finset.sum_congr rfl fun _ _ => Finset.sum_comm
+
+lemma sum4_swap34 (F : ι → ι → ι → ι → ℝ) :
+    ∑ a, ∑ b, ∑ c, ∑ d, F a b d c = ∑ a, ∑ b, ∑ c, ∑ d, F a b c d :=
+  Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_comm
+
+/-- `(b c d) ↦ (c d b)`. -/
+lemma sum4_cyc (F : ι → ι → ι → ι → ℝ) :
+    ∑ a, ∑ b, ∑ c, ∑ d, F a c d b = ∑ a, ∑ b, ∑ c, ∑ d, F a b c d :=
+  (sum4_swap23 fun a b c d => F a b d c).trans (sum4_swap34 F)
+
+/-- `(b c d) ↦ (d b c)`. -/
+lemma sum4_cyc' (F : ι → ι → ι → ι → ℝ) :
+    ∑ a, ∑ b, ∑ c, ∑ d, F a d b c = ∑ a, ∑ b, ∑ c, ∑ d, F a b c d :=
+  (sum4_swap34 fun a b c d => F a c b d).trans (sum4_swap23 F)
+
+/-- `Σᵢ Σₗ Σₚ Σ_q F p i q l = Σₐ Σ_b Σ_c Σ_d F a b c d`. -/
+lemma sum4_reorder (F : ι → ι → ι → ι → ℝ) :
+    ∑ i, ∑ l, ∑ p, ∑ q, F p i q l = ∑ a, ∑ b, ∑ c, ∑ d, F a b c d :=
+  ((swap4 fun p q i l => F p i q l).symm).trans (sum4_swap23 F)
+
+lemma sum4_mul_sum4 (A B : ι → ι → ℝ) :
+    ∑ i, ∑ l, ∑ p, ∑ q, A p i * B q l = (∑ i, ∑ p, A p i) * ∑ l, ∑ q, B q l := by
+  rw [Finset.sum_mul_sum]
+  exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => (Finset.sum_mul_sum _ _ _ _).symm
+
+variable {f : ι → ι → ι → ℝ}
+
+lemma kerC_sym34 (hf : ∀ a b c, f a b c = f b a c) (a b c d : ι) :
+    kerC f a b d c = kerC f a b c d :=
+  Finset.sum_congr rfl fun e _ => by rw [hf d c]
+
+lemma sum_kerC_diag : ∑ p, ∑ i, kerC f p i p i = ∑ i, ∑ j, ∑ k, f i j k ^ 2 :=
+  Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ =>
+    Finset.sum_congr rfl fun _ _ => (sq _).symm
+
+lemma sum_kerC_trace (hf23 : ∀ a b c, f a c b = f a b c) (i l : ι) :
+    ∑ p, kerC f p i p l = kerG f i l := by
+  unfold kerC kerG
+  refine Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun e _ => ?_
+  rw [hf23 p e i, hf23 p e l]
+
+lemma sum_kerC_trace' (hcyc : ∀ a b c, f a b c = f b c a) (p q : ι) :
+    ∑ i, kerC f p i q i = kerG f p q := by
+  unfold kerC kerG
+  refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun e _ => ?_
+  rw [hcyc p i e, hcyc q i e]
+
+/-- The tetrahedral contraction `⟨C, C^{(23)}⟩`. -/
+def cQ (f : ι → ι → ι → ℝ) : ℝ := ∑ a, ∑ b, ∑ c, ∑ d, kerC f a b c d * kerC f a c b d
+
+lemma sum_C13 (hf : ∀ a b c, f a b c = f b a c) :
+    ∑ a, ∑ b, ∑ c, ∑ d, kerC f a b c d * kerC f a d b c = cQ f :=
+  (Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ =>
+    Finset.sum_congr rfl fun d _ => by rw [← kerC_sym34 hf a b c d]).trans
+    (sum4_swap34 fun a b c d => kerC f a b c d * kerC f a c b d)
+
+lemma sum_C23 (hf : ∀ a b c, f a b c = f b a c) :
+    ∑ a, ∑ b, ∑ c, ∑ d, kerC f a c b d * kerC f a d b c = cQ f :=
+  (Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ =>
+    Finset.sum_congr rfl fun d _ => by rw [← kerC_sym34 hf a d c b]).trans
+    ((sum4_cyc fun a b c d => kerC f a b d c * kerC f a c b d).trans
+    (Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ =>
+      Finset.sum_congr rfl fun d _ => by rw [kerC_sym34 hf a b c d]))
+
+lemma sum_C2sq : ∑ a, ∑ b, ∑ c, ∑ d, kerC f a c b d ^ 2 = tenS f :=
+  (sum4_swap23 fun a b c d => kerC f a b c d ^ 2).trans (tenS_eq_sum_kerC_sq f).symm
+
+lemma sum_C3sq : ∑ a, ∑ b, ∑ c, ∑ d, kerC f a d b c ^ 2 = tenS f :=
+  (sum4_cyc' fun a b c d => kerC f a b c d ^ 2).trans (tenS_eq_sum_kerC_sq f).symm
+
+/-- `3h = s + 2⟨C, C^{(23)}⟩`. -/
+lemma three_tenH (hf : ∀ a b c, f a b c = f b a c) : 3 * tenH f = tenS f + 2 * cQ f := by
+  have e : ∀ a b c d, kerS f a b c d ^ 2
+      = (kerC f a b c d ^ 2 + kerC f a c b d ^ 2 + kerC f a d b c ^ 2
+        + 2 * (kerC f a b c d * kerC f a c b d) + 2 * (kerC f a b c d * kerC f a d b c)
+        + 2 * (kerC f a c b d * kerC f a d b c)) / 9 := fun a b c d => by
+    unfold kerS; ring
+  unfold tenH
+  simp only [e, ← Finset.sum_div, Finset.sum_add_distrib, ← Finset.mul_sum]
+  rw [← tenS_eq_sum_kerC_sq, sum_C2sq, sum_C3sq, sum_C13 hf, sum_C23 hf]
+  unfold cQ
+  ring
+
+lemma sum_split (X1 X2 Y1 X4 X5 X6 Y2 : ι → ι → ℝ) :
+    ∑ i, ∑ l, (1 / 2 * X1 i l + X2 i l - 1 / 4 * Y1 i l + X4 i l + X5 i l + X6 i l - 1 / 2 * Y2 i l)
+      = 1 / 2 * (∑ i, ∑ l, X1 i l) + ∑ i, ∑ l, X2 i l - 1 / 4 * (∑ i, ∑ l, Y1 i l)
+        + ∑ i, ∑ l, X4 i l + ∑ i, ∑ l, X5 i l + ∑ i, ∑ l, X6 i l - 1 / 2 * (∑ i, ∑ l, Y2 i l) := by
+  simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum]
+
+/-- The sum appearing in `E Γ²`. -/
+lemma sumK_identity (hf : ∀ a b c, f a b c = f b a c) (hf13 : ∀ a b c, f a b c = f c b a) :
+    ∑ i, ∑ l, (1 / 2 * ((∑ p, ∑ q, (36 * kerC f p i p i * (36 * kerC f q l q l)
+        + 36 * kerC f p i q l * (36 * kerC f p i q l) + 36 * kerC f p i q l * (36 * kerC f p i q l))
+        - 1 / 2 * (∑ p, 36 * kerC f p i p i) * (∑ q, 36 * kerC f q l q l))
+      + (∑ p, ∑ q, (36 * kerC f p i p l * (36 * kerC f q i q l)
+        + 36 * kerC f p i q i * (36 * kerC f p l q l) + 36 * kerC f p i q l * (36 * kerC f p l q i))
+        - 1 / 2 * (∑ p, 36 * kerC f p i p l) * (∑ q, 36 * kerC f q i q l))
+      + (∑ p, ∑ q, (36 * kerC f p i p l * (36 * kerC f q i q l)
+        + 36 * kerC f p i q i * (36 * kerC f p l q l) + 36 * kerC f p i q l * (36 * kerC f p l q i))
+        - 1 / 2 * (∑ p, 36 * kerC f p i p l) * (∑ q, 36 * kerC f q i q l))))
+    = 324 * (∑ i, ∑ j, ∑ k, f i j k ^ 2) ^ 2 + 3240 * tenS f + 1296 * cQ f := by
+  have hf23 : ∀ a b c, f a c b = f a b c := fun a b c => by
+    rw [hf13 a c b, hf b c a, ← hf13 a b c]
+  have hcyc : ∀ a b c, f a b c = f b c a := fun a b c => by rw [hf a b c, hf23 b a c]
+  -- the seven sums
+  have T1 : ∑ i, ∑ l, ∑ p, ∑ q, 36 * kerC f p i p i * (36 * kerC f q l q l)
+      = (36 * ∑ i, ∑ j, ∑ k, f i j k ^ 2) ^ 2 := by
+    rw [sum4_mul_sum4 (fun p i => 36 * kerC f p i p i) (fun q l => 36 * kerC f q l q l)]
+    simp only [← Finset.mul_sum]
+    rw [Finset.sum_comm, sum_kerC_diag]; ring
+  have T2 : ∑ i, ∑ l, ∑ p, ∑ q, 36 * kerC f p i q l * (36 * kerC f p i q l) = 1296 * tenS f := by
+    rw [sum4_reorder (fun a b c d => 36 * kerC f a b c d * (36 * kerC f a b c d)),
+      tenS_eq_sum_kerC_sq]
+    simp only [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ =>
+      Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring
+  have T3 : ∑ i, ∑ l, (∑ p, 36 * kerC f p i p i) * (∑ q, 36 * kerC f q l q l)
+      = (36 * ∑ i, ∑ j, ∑ k, f i j k ^ 2) ^ 2 := by
+    simp only [Finset.sum_mul_sum]; exact T1
+  have T4 : ∑ i, ∑ l, ∑ p, ∑ q, 36 * kerC f p i p l * (36 * kerC f q i q l) = 1296 * tenS f := by
+    have e : ∀ i l, ∑ p, ∑ q, 36 * kerC f p i p l * (36 * kerC f q i q l)
+        = (36 * kerG f i l) * (36 * kerG f i l) := fun i l => by
+      rw [← Finset.sum_mul_sum, ← Finset.mul_sum, sum_kerC_trace hf23]
+    simp only [e]
+    unfold tenS
+    simp only [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring
+  have T5 : ∑ i, ∑ l, ∑ p, ∑ q, 36 * kerC f p i q i * (36 * kerC f p l q l) = 1296 * tenS f := by
+    rw [← swap4 (fun p q i l => 36 * kerC f p i q i * (36 * kerC f p l q l))]
+    have e : ∀ p q, ∑ i, ∑ l, 36 * kerC f p i q i * (36 * kerC f p l q l)
+        = (36 * kerG f p q) * (36 * kerG f p q) := fun p q => by
+      rw [← Finset.sum_mul_sum, ← Finset.mul_sum, sum_kerC_trace' hcyc]
+    simp only [e]
+    unfold tenS
+    simp only [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring
+  have T6 : ∑ i, ∑ l, ∑ p, ∑ q, 36 * kerC f p i q l * (36 * kerC f p l q i) = 1296 * cQ f := by
+    rw [sum4_reorder (fun a b c d => 36 * kerC f a b c d * (36 * kerC f a d c b)), ← sum_C13 hf]
+    simp only [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ =>
+      Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by
+        rw [kerC_sym34 hf a d b c]; ring
+  have T7 : ∑ i, ∑ l, (∑ p, 36 * kerC f p i p l) * (∑ q, 36 * kerC f q i q l) = 1296 * tenS f := by
+    have e : ∀ i l, (∑ p, 36 * kerC f p i p l) * (∑ q, 36 * kerC f q i q l)
+        = (36 * kerG f i l) * (36 * kerG f i l) := fun i l => by
+      rw [← Finset.mul_sum, sum_kerC_trace hf23]
+    simp only [e]
+    unfold tenS
+    simp only [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring
+  -- split the sum
+  have split : ∀ i l, (1 / 2 * ((∑ p, ∑ q, (36 * kerC f p i p i * (36 * kerC f q l q l)
+        + 36 * kerC f p i q l * (36 * kerC f p i q l) + 36 * kerC f p i q l * (36 * kerC f p i q l))
+        - 1 / 2 * (∑ p, 36 * kerC f p i p i) * (∑ q, 36 * kerC f q l q l))
+      + (∑ p, ∑ q, (36 * kerC f p i p l * (36 * kerC f q i q l)
+        + 36 * kerC f p i q i * (36 * kerC f p l q l) + 36 * kerC f p i q l * (36 * kerC f p l q i))
+        - 1 / 2 * (∑ p, 36 * kerC f p i p l) * (∑ q, 36 * kerC f q i q l))
+      + (∑ p, ∑ q, (36 * kerC f p i p l * (36 * kerC f q i q l)
+        + 36 * kerC f p i q i * (36 * kerC f p l q l) + 36 * kerC f p i q l * (36 * kerC f p l q i))
+        - 1 / 2 * (∑ p, 36 * kerC f p i p l) * (∑ q, 36 * kerC f q i q l))))
+      = 1 / 2 * (∑ p, ∑ q, 36 * kerC f p i p i * (36 * kerC f q l q l))
+        + ∑ p, ∑ q, 36 * kerC f p i q l * (36 * kerC f p i q l)
+        - 1 / 4 * ((∑ p, 36 * kerC f p i p i) * (∑ q, 36 * kerC f q l q l))
+        + ∑ p, ∑ q, 36 * kerC f p i p l * (36 * kerC f q i q l)
+        + ∑ p, ∑ q, 36 * kerC f p i q i * (36 * kerC f p l q l)
+        + ∑ p, ∑ q, 36 * kerC f p i q l * (36 * kerC f p l q i)
+        - 1 / 2 * ((∑ p, 36 * kerC f p i p l) * (∑ q, 36 * kerC f q i q l)) := fun i l => by
+    simp only [Finset.sum_add_distrib]
+    ring
+  have key := sum_split (fun i l => ∑ p, ∑ q, 36 * kerC f p i p i * (36 * kerC f q l q l))
+    (fun i l => ∑ p, ∑ q, 36 * kerC f p i q l * (36 * kerC f p i q l))
+    (fun i l => (∑ p, 36 * kerC f p i p i) * (∑ q, 36 * kerC f q l q l))
+    (fun i l => ∑ p, ∑ q, 36 * kerC f p i p l * (36 * kerC f q i q l))
+    (fun i l => ∑ p, ∑ q, 36 * kerC f p i q i * (36 * kerC f p l q l))
+    (fun i l => ∑ p, ∑ q, 36 * kerC f p i q l * (36 * kerC f p l q i))
+    (fun i l => (∑ p, 36 * kerC f p i p l) * (∑ q, 36 * kerC f q i q l))
+  rw [Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => split i l, key, T1, T2, T3,
+    T4, T5, T6, T7]
+  ring
+
+end sums
+
+/-! ### Wick's formula for the fourth moment -/
+
+section wick4
+
+variable {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ} (hE : IsGaussianExpectation E)
+include hE
+
+lemma gE_pair_chaos1 {Y Y' : MvPolynomial ι ℝ} {u u' : ι → ℝ} (hY' : ouL Y' = -Y')
+    (hu : ∀ k, pderiv k Y = C (u k)) (hu' : ∀ k, pderiv k Y' = C (u' k)) :
+    E (Y * Y') = ∑ k, u k * u' k := by
+  rw [gE_mul_chaos1 hE hY', gam]
+  simp only [hu, hu', ← map_mul, ← map_sum, gE_C hE]
+
+omit hE in
+lemma gam_chaos1 {Y Y' : MvPolynomial ι ℝ} {u u' : ι → ℝ}
+    (hu : ∀ k, pderiv k Y = C (u k)) (hu' : ∀ k, pderiv k Y' = C (u' k)) :
+    gam Y Y' = C (∑ k, u k * u' k) := by
+  simp only [gam, hu, hu', ← map_mul, ← map_sum]
+
+/-- **Wick's formula** for four first-chaos polynomials with constant derivatives. -/
+lemma gE_four_chaos1 {Y₁ Y₂ Y₃ Y₄ : MvPolynomial ι ℝ} {u₁ u₂ u₃ u₄ : ι → ℝ}
+    (h₂ : ouL Y₂ = -Y₂) (h₃ : ouL Y₃ = -Y₃) (h₄ : ouL Y₄ = -Y₄)
+    (hu₁ : ∀ k, pderiv k Y₁ = C (u₁ k)) (hu₂ : ∀ k, pderiv k Y₂ = C (u₂ k))
+    (hu₃ : ∀ k, pderiv k Y₃ = C (u₃ k)) (hu₄ : ∀ k, pderiv k Y₄ = C (u₄ k)) :
+    E (Y₁ * Y₂ * Y₃ * Y₄) = (∑ k, u₁ k * u₂ k) * (∑ k, u₃ k * u₄ k)
+      + (∑ k, u₁ k * u₃ k) * (∑ k, u₂ k * u₄ k) + (∑ k, u₁ k * u₄ k) * (∑ k, u₂ k * u₃ k) := by
+  rw [gE_mul_chaos1 hE h₄, gam_mul_left, gam_mul_left, gam_chaos1 hu₃ hu₄, gam_chaos1 hu₂ hu₄,
+    gam_chaos1 hu₁ hu₄,
+    show Y₁ * Y₂ * C (∑ k, u₃ k * u₄ k) + Y₃ * (Y₁ * C (∑ k, u₂ k * u₄ k) + Y₂ * C (∑ k, u₁ k * u₄ k))
+      = C (∑ k, u₃ k * u₄ k) * (Y₁ * Y₂) + C (∑ k, u₂ k * u₄ k) * (Y₁ * Y₃)
+        + C (∑ k, u₁ k * u₄ k) * (Y₂ * Y₃) by ring,
+    map_add, map_add, C_mul_apply, C_mul_apply, C_mul_apply, gE_pair_chaos1 hE h₂ hu₁ hu₂,
+    gE_pair_chaos1 hE h₃ hu₁ hu₃, gE_pair_chaos1 hE h₃ hu₂ hu₃]
+  ring
+
+variable [DecidableEq ι]
+
+/-- **The fourth cumulant of a cubic chaos**: `κ₄ = 1296 (s + 3h/2)` (the field `wick4`). -/
+theorem Chaos3.wick4 {F : MvPolynomial ι ℝ} (hF : Chaos3 F) :
+    E (F ^ 4) - 3 * E (F ^ 2) ^ 2 = 1296 * (tenS (cubicKernel F) + 3 * tenH (cubicKernel F) / 2) := by
+  have hf12 : ∀ a b c, cubicKernel F a b c = cubicKernel F b a c := cubicKernel_symm12 F
+  have hf13 : ∀ a b c, cubicKernel F a b c = cubicKernel F c b a := fun a b c => by
+    unfold cubicKernel; rw [kern_rev]
+  have hf23 : ∀ a b c, cubicKernel F a c b = cubicKernel F a b c := fun a b c => by
+    rw [hf13 a c b, hf12 b c a, ← hf13 a b c]
+  have hcyc : ∀ a b c, cubicKernel F a b c = cubicKernel F b c a := fun a b c => by
+    rw [hf12 a b c, hf23 b a c]
+  -- first-chaos data
+  have hY : ∀ p i, ouL (pderiv p (pderiv i F)) = -pderiv p (pderiv i F) := hF.ouL_pderiv2
+  have hu : ∀ p i k, pderiv k (pderiv p (pderiv i F)) = C (6 * cubicKernel F k p i) :=
+    fun p i k => by rw [hF.pderiv3_eq]; congr 1; unfold cubicKernel; ring
+  have hK : ∀ p i q l, (∑ k, 6 * cubicKernel F k p i * (6 * cubicKernel F k q l))
+      = 36 * kerC (cubicKernel F) p i q l := fun p i q l => by
+    unfold kerC
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun k _ => ?_
+    rw [hcyc k p i, hcyc k q l]; ring
+  have hpair : ∀ p i q l, E (pderiv p (pderiv i F) * pderiv q (pderiv l F))
+      = 36 * kerC (cubicKernel F) p i q l := fun p i q l => by
+    rw [gE_pair_chaos1 hE (hY q l) (hu p i) (hu q l), hK]
+  have hfour : ∀ p i q l p' i' q' l', E (pderiv p (pderiv i F) * pderiv q (pderiv l F)
+      * pderiv p' (pderiv i' F) * pderiv q' (pderiv l' F))
+      = 36 * kerC (cubicKernel F) p i q l * (36 * kerC (cubicKernel F) p' i' q' l')
+        + 36 * kerC (cubicKernel F) p i p' i' * (36 * kerC (cubicKernel F) q l q' l')
+        + 36 * kerC (cubicKernel F) p i q' l' * (36 * kerC (cubicKernel F) q l p' i') :=
+    fun p i q l p' i' q' l' => by
+    rw [gE_four_chaos1 hE (hY _ _) (hY _ _) (hY _ _) (hu p i) (hu q l) (hu p' i') (hu q' l'), hK,
+      hK, hK, hK, hK, hK]
+  have hfour' : ∀ p i q l p' i' q' l', E (pderiv p (pderiv i F) * pderiv q (pderiv l F)
+      * (pderiv p' (pderiv i' F) * pderiv q' (pderiv l' F)))
+      = 36 * kerC (cubicKernel F) p i q l * (36 * kerC (cubicKernel F) p' i' q' l')
+        + 36 * kerC (cubicKernel F) p i p' i' * (36 * kerC (cubicKernel F) q l q' l')
+        + 36 * kerC (cubicKernel F) p i q' l' * (36 * kerC (cubicKernel F) q l p' i') :=
+    fun p i q l p' i' q' l' => by rw [← mul_assoc, hfour]
+  -- the carré du champ of two first derivatives
+  have hΓΓ : ∀ i l i' l', E (gam (pderiv i F) (pderiv l F) * gam (pderiv i' F) (pderiv l' F))
+      = ∑ p, ∑ q, (36 * kerC (cubicKernel F) p i p l * (36 * kerC (cubicKernel F) q i' q l')
+        + 36 * kerC (cubicKernel F) p i q i' * (36 * kerC (cubicKernel F) p l q l')
+        + 36 * kerC (cubicKernel F) p i q l' * (36 * kerC (cubicKernel F) p l q i')) :=
+    fun i l i' l' => by
+    rw [gam, gam, Finset.sum_mul_sum, map_sum]
+    refine Finset.sum_congr rfl fun p _ => ?_
+    rw [map_sum]
+    refine Finset.sum_congr rfl fun q _ => ?_
+    rw [← mul_assoc, hfour]
+  have hΓ : ∀ i l, E (gam (pderiv i F) (pderiv l F)) = ∑ p, 36 * kerC (cubicKernel F) p i p l :=
+    fun i l => by
+    rw [gam, map_sum]; exact Finset.sum_congr rfl fun p _ => hpair p i p l
+  -- `E Γ²`
+  have hGG : E (gam F F * gam F F)
+      = 324 * (∑ i, ∑ j, ∑ k, cubicKernel F i j k ^ 2) ^ 2 + 3240 * tenS (cubicKernel F)
+        + 1296 * cQ (cubicKernel F) := by
+    rw [← sumK_identity hf12 hf13, gam, Finset.sum_mul_sum, map_sum]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [map_sum]
+    refine Finset.sum_congr rfl fun l _ => ?_
+    rw [← mul_assoc, quad_four hE (hF.quad i) (hF.quad i) (hF.quad l) (hF.quad l)]
+    simp only [hΓΓ, hΓ]
+  -- `E Γ₂²`
+  have hC2 : ∑ a, ∑ b, ∑ c, ∑ d, 36 * kerC (cubicKernel F) a b c d * (36 * kerC (cubicKernel F) a b c d)
+      = 1296 * tenS (cubicKernel F) := by
+    rw [tenS_eq_sum_kerC_sq]
+    simp only [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ =>
+      Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring
+  have hdiag : ∑ i, ∑ p, 36 * kerC (cubicKernel F) p i p i
+      = 36 * ∑ i, ∑ j, ∑ k, cubicKernel F i j k ^ 2 := by
+    simp only [← Finset.mul_sum]
+    rw [Finset.sum_comm, sum_kerC_diag]
+  have hG2 : E (gam2 F * gam2 F)
+      = (36 * ∑ i, ∑ j, ∑ k, cubicKernel F i j k ^ 2) ^ 2 + 2592 * tenS (cubicKernel F) := by
+    have e : gam2 F = ∑ j, ∑ p, pderiv p (pderiv j F) * pderiv p (pderiv j F) := rfl
+    rw [e]
+    simp only [Finset.sum_mul_sum, map_sum, hfour']
+    simp only [Finset.sum_add_distrib]
+    rw [sum4_mul_sum4 (fun p j => 36 * kerC (cubicKernel F) p j p j)
+        (fun p' j' => 36 * kerC (cubicKernel F) p' j' p' j'),
+      sum4_reorder (fun a b c d => 36 * kerC (cubicKernel F) a b c d
+        * (36 * kerC (cubicKernel F) a b c d)), hC2, hdiag]
+    ring
+  -- the chaos components of `F²` and `Γ`
+  have hS : E (F * F) = 6 * ∑ i, ∑ j, ∑ k, cubicKernel F i j k ^ 2 := hF.gE_sq_eq_kernel hE
+  have hJ4 : ouL (J4 E F) = -(4 * J4 E F) := hF.ouL_J4 hE
+  have hc2 : ouL (comp2 E F F) = -(2 * comp2 E F F) := comp2_eig hE hF hF
+  have hc6 : ouL (comp6 E F F) = -(6 * comp6 E F F) := comp6_eig hE hF hF
+  have o64 : E (comp6 E F F * J4 E F) = 0 := gE_eigen_orth hE 6 4 (by norm_num) hc6 hJ4
+  have o62 : E (comp6 E F F * comp2 E F F) = 0 := gE_eigen_orth hE 6 2 (by norm_num) hc6 hc2
+  have o42 : E (J4 E F * comp2 E F F) = 0 := gE_eigen_orth hE 4 2 (by norm_num) hJ4 hc2
+  have m6 : E (comp6 E F F) = 0 := gE_eigen_mean hE 6 (by norm_num) hc6
+  have m4 : E (J4 E F) = 0 := gE_eigen_mean hE 4 (by norm_num) hJ4
+  have m2 : E (comp2 E F F) = 0 := gE_eigen_mean hE 2 (by norm_num) hc2
+  have hF2 : F * F = comp6 E F F + J4 E F + comp2 E F F + C (E (F * F)) := by
+    have := mul_eq_comps E F F
+    rwa [comp4_self] at this
+  have hΓd : gam F F = J4 E F + 2 * comp2 E F F + C (3 * E (F * F)) := by
+    unfold J4 comp2
+    rw [gam2c_self]
+    have h := two_mul_C_half (ι := ι)
+    linear_combination (-(gam2 F)) * h
+  have hEΓ : E (gam F F) = 3 * E (F * F) := hF.gE_gam hE
+  have hF4 : E (F ^ 4) = E (F * F * gam F F) := by
+    have h := gE_mul_ouL hE (F * F * F) F
+    rw [hF.eig, gam_mul_left, gam_mul_left, show F * F * F * -(3 * F) = -(3 * F ^ 4) by ring,
+      map_neg, ofNat_mul_apply,
+      show F * F * gam F F + F * (F * gam F F + F * gam F F) = 3 * (F * F * gam F F) by ring,
+      ofNat_mul_apply] at h
+    linarith
+  -- `E comp2²`
+  have hc2sq : E (comp2 E F F * comp2 E F F) = 648 * tenS (cubicKernel F) := by
+    have e : comp2 E F F * comp2 E F F
+        = C (1 / 4) * (gam2 F * gam2 F) - C (3 * E (F * F)) * gam2 F
+          + C (3 * E (F * F)) * C (3 * E (F * F)) := by
+      unfold comp2
+      rw [gam2c_self, show (C (3 * E (F * F)) : MvPolynomial ι ℝ) * gam2 F
+          = 2 * C (1 / 2) * (C (3 * E (F * F)) * gam2 F) by rw [two_mul_C_half, one_mul],
+        show (C (1 / 4) : MvPolynomial ι ℝ) = C (1 / 2) * C (1 / 2) by rw [← C_mul]; norm_num]
+      ring
+    rw [e, map_add, map_sub, C_mul_apply, C_mul_apply, C_mul_apply, gE_C hE, hG2, hF.gE_gam2 hE, hS]
+    ring
+  -- `E (F² Γ)` and `E J₄²`
+  have hF2Γ : E (F * F * gam F F) = E (J4 E F * J4 E F) + 2 * E (comp2 E F F * comp2 E F F)
+      + 3 * E (F * F) ^ 2 := by
+    have key : ∀ S : ℝ, (comp6 E F F + J4 E F + comp2 E F F + C S)
+        * (J4 E F + 2 * comp2 E F F + C (3 * S))
+        = J4 E F * J4 E F + (comp2 E F F * comp2 E F F + comp2 E F F * comp2 E F F)
+          + C S * C (3 * S)
+          + (comp6 E F F * J4 E F + (comp6 E F F * comp2 E F F + comp6 E F F * comp2 E F F)
+            + C (3 * S) * comp6 E F F + (J4 E F * comp2 E F F + J4 E F * comp2 E F F)
+            + C (3 * S) * J4 E F + J4 E F * comp2 E F F + C (3 * S) * comp2 E F F + C S * J4 E F
+            + (C S * comp2 E F F + C S * comp2 E F F)) := fun S => by ring
+    conv_lhs => rw [hF2, hΓd, key]
+    simp only [map_add, C_mul_apply, o64, o62, o42, m6, m4, m2, gE_C hE]
+    ring
+  have hJ4sq : E (J4 E F * J4 E F) = E (gam F F * gam F F) - 4 * E (comp2 E F F * comp2 E F F)
+      - 9 * E (F * F) ^ 2 := by
+    have e1 : J4 E F = gam F F - 2 * comp2 E F F - C (3 * E (F * F)) := by rw [hΓd]; ring
+    have h1 : E (J4 E F * J4 E F) = E (J4 E F * gam F F) := by
+      conv_lhs => rw [show J4 E F * J4 E F
+        = J4 E F * (gam F F - 2 * comp2 E F F - C (3 * E (F * F))) by rw [← e1]]
+      rw [mul_sub, mul_sub, map_sub, map_sub,
+        show J4 E F * (2 * comp2 E F F) = 2 * (J4 E F * comp2 E F F) by ring, ofNat_mul_apply,
+        o42, mul_comm (J4 E F) (C _), C_mul_apply, m4]
+      ring
+    have h2 : E (comp2 E F F * gam F F) = 2 * E (comp2 E F F * comp2 E F F) := by
+      rw [hΓd, mul_add, mul_add, map_add, map_add, mul_comm (comp2 E F F) (J4 E F), o42,
+        show comp2 E F F * (2 * comp2 E F F) = 2 * (comp2 E F F * comp2 E F F) by ring,
+        ofNat_mul_apply, mul_comm _ (C _), C_mul_apply, m2]
+      ring
+    rw [h1, e1, sub_mul, sub_mul, map_sub, map_sub,
+      show 2 * comp2 E F F * gam F F = 2 * (comp2 E F F * gam F F) by ring, ofNat_mul_apply, h2,
+      C_mul_apply, hEΓ]
+    ring
+  -- assemble
+  have h3 : 3 * tenH (cubicKernel F) = tenS (cubicKernel F) + 2 * cQ (cubicKernel F) :=
+    three_tenH hf12
+  rw [hF4, hF2Γ, hJ4sq, hGG, hc2sq, show F ^ 2 = F * F from sq F, hS]
+  linarith
+
+end wick4
+
 /-! ### The partial constructor -/
 
 /-- The fields of `TensorFacts` that are **not yet proved** for circular cubics. -/
 structure TensorFactsRest (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (J : ι → ι → ℝ) (a : MvPolynomial ι ℝ) :
     Prop where
-  wick4 : E (a ^ 4) - 3 * E (a ^ 2) ^ 2
-    = 1296 * (tenS (cubicKernel a) + 3 * tenH (cubicKernel a) / 2)
   wick6 : (E (a ^ 6) - 15 * E (a ^ 4) * E (a ^ 2) + 30 * E (a ^ 2) ^ 3) / 46656
     = 135 / 2 * tenT3 (cubicKernel a) - 20 * tenV (cubicKernel a)
       + 135 / 2 * tenQ (cubicKernel a) + 165 / 2 * tenDU (cubicKernel a)
@@ -992,12 +1388,12 @@ structure TensorFactsRest (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (J : ι → 
           - (18 + 6 * kC) * tenTT (cubicKernel a) J)
         * (9 * tenH (cubicKernel a) * tenTT (cubicKernel a) J - 54 * tenTT (cubicKernel a) J ^ 2))
 
-/-- **The tensor facts of a circular cubic** from the remaining ones: the fields `anti`
-(`tenGa_le_half`) and `block` (`tenTT_le_sixth`) are proved. -/
+/-- **The tensor facts of a circular cubic** from the remaining ones: the fields `wick4`
+(`Chaos3.wick4`), `anti` (`tenGa_le_half`) and `block` (`tenTT_le_sixth`) are proved. -/
 theorem TensorFactsRest.toTensorFacts [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
-    {J : ι → ι → ℝ} {a b : MvPolynomial ι ℝ} (hc : Circular J a b) (hR : TensorFactsRest E J a) :
-    TensorFacts E J a where
-  wick4 := hR.wick4
+    (hE : IsGaussianExpectation E) {J : ι → ι → ℝ} {a b : MvPolynomial ι ℝ} (ha : Chaos3 a)
+    (hc : Circular J a b) (hR : TensorFactsRest E J a) : TensorFacts E J a where
+  wick4 := ha.wick4 hE
   wick6 := hR.wick6
   sos1 := hR.sos1
   sos2 := hR.sos2
