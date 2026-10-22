@@ -10,3 +10,10 @@ logs/
 resources/
 outputs/
 .claude/worktrees/
+docs/*.aux
+docs/*.log
+docs/*.out
+docs/*.fls
+docs/*.fdb_latexmk
+docs/*.toc
+docs/overview.pdf
