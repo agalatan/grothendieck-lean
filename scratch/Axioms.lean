@@ -97,3 +97,10 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.gaussian_moments
 #print axioms Grothe.LowerAnalytic.sharedReduction_of_gaussian
 #print axioms Grothe.LowerAnalytic.lower_bound_gaussian
+#print axioms Grothe.LowerAnalytic.integral_rad_ge
+#print axioms Grothe.LowerAnalytic.norm_pairVal_witness
+#print axioms Grothe.LowerAnalytic.transferInputs_of_witnessCap
+#print axioms Grothe.LowerAnalytic.lower_bound_of_witnessCap
+#print axioms Grothe.LowerAnalytic.VOf_eq
+#print axioms Grothe.LowerAnalytic.witnessCap_of_reduction
+#print axioms Grothe.LowerAnalytic.lower_bound_of_reduction

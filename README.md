@@ -106,12 +106,24 @@ where `TransferInputsL2 B` asks, for every δ > 0, for a finite measure space wi
 a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u, v in L² with Σₗ|uₗ|² ≤ 1 and
 Σₗ|vₗ|² ≤ 1 a.e. and ‖Σ⟨uₗ, T vₗ⟩‖ ≥ 1 − δ.
 
-**How the two halves fit.** These are two separate Lean theorems. `TransferInputsL2 B` does not
-name the operator, so read alone it already contains the claim; its intended instance is the
-Gaussian witness T = P₁,₀ − εP₂,₁, for which the scalar cap is what `lower_bound_data` gives
-*on paper* through the Gaussian reduction. No Lean theorem derives the scalar cap of that T from
-`lower_bound_data`; formalising this link (the witness on Lᵖ, unitary invariance, the z₁ ⊗ w
-splitting and the explicit potentials) is the main missing piece of the lower bound.
+**How the two halves fit.** The Gaussian witness is now defined in Lean
+(`Grothe/LowerAnalytic/Witness.lean`): on ℂⁿ = ℝ^{n+n} with the standard Gaussian measure,
+H₁,₀ = span{zₗ}, H₂,₁ = (charge-one polynomials of degree ≤ 3) ⊓ H₁,₀ᗮ (the span of the Wick cubics),
+and `witness n = P₁,₀ − εP₂,₁` (orthogonal projections, ε = 149/200). The **value half** of
+`TransferInputsL2` is proved: for uₗ = zₗ/‖z‖, `norm_pairVal_witness : 1 − (1+ε)/(n+1) ≤ ‖Σₗ⟨uₗ, T uₗ⟩‖`
+(from E‖z‖² = 2n, E‖z‖⁴ = 4n(n+1), E‖z‖ ≥ 2n/√(2(n+1)) and the orthogonality of the two chaos
+ranges), and `transferInputs_of_witnessCap : (∀ n ≥ N, WitnessCap n B) → TransferInputsL2 B`, where
+`WitnessCap n B` is the scalar cap ‖⟨f, T g⟩‖ ≤ B of `witness n` over a.e. unimodular f, g.
+The **scalar-cap half** is reduced to the certificate (`WitnessCap.lean`): for unimodular f, g
+with h = (f+g)/2, k = (f−g)/2, t = ‖P₁,₀h‖, the polarisation identity `VOf_eq`,
+Re⟨f, Tg⟩ = t² − ε‖P₂,₁h‖² − ‖P₁,₀k‖² + ε‖P₂,₁k‖², is proved, and
+`witnessCap_of_reduction : (∀ unimodular f g with Re⟨f,Tg⟩ ≥ 0, ReductionHyp n f g) → WitnessCap n Bcap`
+applies `lower_bound_data` to V = Re⟨f, Tg⟩ (after a phase) with the crude row derived from
+‖P₂,₁k‖ ≤ ρ. `ReductionHyp n f g` is exactly what remains: t ≤ 9/10 (on paper t ≤ E|z₁|/‖z₁‖₂ = √π/2),
+‖P₂,₁k‖ ≤ ρ (the first-moment bound of the cubic residual, L3), and a coupling vector v with ‖v‖² = 2
+and `SharedReduction rowData V t (P₂,₁h) v` (the Gaussian reduction of the rows, L4).
+`lower_bound_of_reduction : (∀ n ≥ N, ∀ f g, … → ReductionHyp n f g) → IsGrothendieckBound K → Llow < K`
+composes everything; `TransferInputsL2 B` itself no longer needs to be assumed.
 
 * Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
   (trailing gate block positive definite, κδ² ≤ δ + gatePrice); the Stein cuts (summed, spectral and general spectral) from their analytic inputs, by completions of squares,
@@ -128,7 +140,9 @@ splitting and the explicit potentials) is the main missing piece of the lower bo
   fixed mixtures of two certified row caps including the crude row; 1,072 boxes with one component
   and 6,562 mixing two, a component being a row or a mixture of two rows with four certified
   τ-nodes, chorded twice in τ, pinned gate price X₁ = p);
-  and the endpoint. All finite exact checks of the lower certificate are one `native_decide` (`cert_check`).
+  and the endpoint; the Gaussian witness on L²(γ_n) with its value on z/‖z‖, the orthogonality of the
+  chaos ranges, the polarisation identity of the scalar pairing and the transfer inputs from the
+  scalar caps. All finite exact checks of the lower certificate are one `native_decide` (`cert_check`).
 * Explicit hypotheses (not formalized): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
   from ‖Qk‖ ≤ E|Qk/‖Qk‖| ≤ ρ, which uses the moment bounds also for the cubic Qk/‖Qk‖), with ‖v‖² = 2
   and 0 ≤ t ≤ 9/10; the simultaneous Gaussian reduction of the rows (`SharedReduction`): one residual p = Q_w c₁ with scale τ = ‖p‖₂ ≤ ρ and normalised law
@@ -139,11 +153,14 @@ splitting and the explicit potentials) is the main missing piece of the lower bo
   near the maximum, anchored quadratic bounds and, on s ∈ [0.2, 0.4) ∪ [0.525, 0.6) of rows 0.84–0.855, localised anchored bounds
   (regions in the odd fibre directions, one S-lemma quadratic each, replayed in exact arithmetic), with the convex hull of
   the cap table; slack 10⁻¹¹); the moment bounds on the law of U = |q|²; the analytic
-  inputs of the Stein cuts for that law; and, for the transfer to finite matrices, the two Gaussian
-  inputs of `TransferInputsL2`: the scalar cap of the witness T = P₁,₀ − εP₂,₁ over unimodular
-  functions on Gaussian space and its value ≥ 1 − δ on u(z) = z/‖z‖ in large dimension. The
+  inputs of the Stein cuts for that law; and, for the scalar cap of the witness T = P₁,₀ − εP₂,₁
+  over unimodular functions on Gaussian space, `ReductionHyp` (for every unimodular pair with
+  Re⟨f,Tg⟩ ≥ 0: t = ‖P₁,₀h‖ ≤ 9/10, the first-moment bound ‖P₂,₁k‖ ≤ ρ of the cubic residual, and a
+  coupling vector with ‖v‖² = 2 and `SharedReduction` for V = Re⟨f,Tg⟩, t, P₂,₁h, v). The
   transfer itself (finite partitions, phase choices on cells, L² approximation by ball-valued
-  simple functions, passage to the limit) is proved in Lean (`Grothe/Lower/Transfer*.lean`).
+  simple functions, passage to the limit), the witness, its value ≥ 1 − (1+ε)/(n+1) on u(z) = z/‖z‖,
+  the polarisation identity and the crude row from ‖P₂,₁k‖ ≤ ρ are proved in Lean
+  (`Grothe/Lower/Transfer*.lean`, `Grothe/LowerAnalytic/Witness.lean`, `WitnessCap.lean`).
 * The analytic inputs of the Stein cuts (`GramInputs`, extending `SteinInputs`) are, with
   w = Γ(q, q̄)/3, c = Γ(q, q)/3, X = w − 1, r = Re(c q̄²)/U, P = E[XU] and Q = E[rU]: E w = 1; the
   separate spectral budgets E X² ≤ (2/3)P and E r² ≤ (2/3)Q (gaps ‖U₄‖²/9 and ‖(q²)₄‖²/9 + E(|c|² − r²));
