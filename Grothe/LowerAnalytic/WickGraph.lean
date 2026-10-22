@@ -61,6 +61,14 @@ lemma cw_perm (F : MvPolynomial ι ℝ) {w w' : List ι} (h : w.Perm w') : cw F 
 
 lemma cw_three (F : MvPolynomial ι ℝ) (a b c : ι) : cw F [a, b, c] = kern F a b c := rfl
 
+/-- The constant term of an iterated derivative as a function of the multiset of directions. -/
+def cwm (F : MvPolynomial ι ℝ) : Multiset ι → ℝ := Quot.lift (cw F) (fun _ _ h => cw_perm F h)
+
+lemma cw3_eq (F : MvPolynomial ι ℝ) (a b c : ι) : cw F [a, b, c] = cwm F (a ::ₘ b ::ₘ c ::ₘ 0) := rfl
+
+lemma cubicKernel_eq_cwm (F : MvPolynomial ι ℝ) (a b c : ι) :
+    cubicKernel F a b c = cwm F (a ::ₘ b ::ₘ c ::ₘ 0) / 6 := rfl
+
 variable [Fintype ι]
 
 section chaos
@@ -105,12 +113,16 @@ variable {N : ℕ}
 
 /-- Attach the index `j` of a new edge `(a, b)` to the words of its endpoints. -/
 def addE (a b : Fin N) (j : ι) (w : Fin N → List ι) : Fin N → List ι := fun v =>
-  if v = a then j :: (if v = b then j :: w v else w v) else (if v = b then j :: w v else w v)
+  (if v = a then [j] else []) ++ ((if v = b then [j] else []) ++ w v)
 
 /-- The nested edge sum of a partial graph. -/
 def gsum (φ : (Fin N → List ι) → ℝ) : List (Fin N × Fin N) → (Fin N → List ι) → ℝ
   | [], w => φ w
   | e :: es, w => ∑ j, gsum φ es (addE e.1 e.2 j w)
+
+omit [Fintype ι] in
+lemma addE_apply (a b : Fin N) (j : ι) (w : Fin N → List ι) (v : Fin N) :
+    addE a b j w v = (if v = a then [j] else []) ++ ((if v = b then [j] else []) ++ w v) := rfl
 
 @[simp] lemma gsum_nil (φ : (Fin N → List ι) → ℝ) (w : Fin N → List ι) : gsum φ [] w = φ w := rfl
 
@@ -133,14 +145,8 @@ omit [Fintype ι] in
 lemma length_addE (a b : Fin N) (j : ι) (w : Fin N → List ι) (v : Fin N) :
     (addE a b j w v).length = (w v).length + (if a = v then 1 else 0) + (if b = v then 1 else 0) := by
   unfold addE
-  by_cases ha : v = a
-  · subst ha
-    by_cases hb : v = b
-    · subst hb; simp
-    · simp [hb, Ne.symm hb]
-  · by_cases hb : v = b
-    · subst hb; simp [ha, Ne.symm ha]
-    · simp [ha, hb, Ne.symm ha, Ne.symm hb]
+  simp only [List.length_append, eq_comm (a := a), eq_comm (a := b)]
+  split_ifs <;> simp <;> omega
 
 /-- Agreement of two summands on all words of the final lengths. -/
 lemma gsum_congr {φ ψ : (Fin N → List ι) → ℝ} (es : List (Fin N × Fin N)) (w : Fin N → List ι)
@@ -162,9 +168,8 @@ def PermInv (φ : (Fin N → List ι) → ℝ) : Prop :=
 
 omit [Fintype ι] in
 lemma addE_perm {w w' : Fin N → List ι} (h : ∀ v, (w v).Perm (w' v)) (a b : Fin N) (j : ι)
-    (v : Fin N) : (addE a b j w v).Perm (addE a b j w' v) := by
-  unfold addE
-  split_ifs <;> simp [h v]
+    (v : Fin N) : (addE a b j w v).Perm (addE a b j w' v) :=
+  ((h v).append_left _).append_left _
 
 lemma gsum_congr_perm {φ : (Fin N → List ι) → ℝ} (hφ : PermInv φ) (es : List (Fin N × Fin N))
     {w w' : Fin N → List ι} (h : ∀ v, (w v).Perm (w' v)) : gsum φ es w = gsum φ es w' := by
@@ -181,7 +186,7 @@ lemma addE_comm (a b c d : Fin N) (j j' : ι) (w : Fin N → List ι) (v : Fin N
   rw [List.perm_iff_count]
   intro x
   unfold addE
-  split_ifs <;> simp only [List.count_cons] <;> omega
+  split_ifs <;> simp only [List.count_cons, List.count_append, List.count_nil] <;> omega
 
 lemma gsum_perm {φ : (Fin N → List ι) → ℝ} (hφ : PermInv φ) {es es' : List (Fin N × Fin N)}
     (h : es.Perm es') (w : Fin N → List ι) : gsum φ es w = gsum φ es' w := by
@@ -208,7 +213,7 @@ lemma addE_normP (e : Fin N × Fin N) (j : ι) (w : Fin N → List ι) (v : Fin 
     rw [List.perm_iff_count]
     intro x
     unfold addE
-    split_ifs <;> simp only [List.count_cons]
+    split_ifs <;> simp only [List.count_cons, List.count_append, List.count_nil] <;> omega
 
 lemma gsum_map_normP {φ : (Fin N → List ι) → ℝ} (hφ : PermInv φ) (es : List (Fin N × Fin N))
     (w : Fin N → List ι) : gsum φ (es.map normP) w = gsum φ es w := by
