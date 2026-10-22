@@ -87,3 +87,4 @@ import Grothe.LowerAnalytic.Tensor
 import Grothe.LowerAnalytic.Pieces
 import Grothe.LowerAnalytic.KSide
 import Grothe.LowerAnalytic.PotentialReg
+import Grothe.LowerAnalytic.FibreIntegral
