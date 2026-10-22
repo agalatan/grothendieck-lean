@@ -79,3 +79,4 @@ import Grothe.LowerAnalytic.FibreSup
 import Grothe.LowerAnalytic.Fibre
 import Grothe.LowerAnalytic.FibreRot
 import Grothe.LowerAnalytic.FibreHermite
+import Grothe.LowerAnalytic.MixedChaos
