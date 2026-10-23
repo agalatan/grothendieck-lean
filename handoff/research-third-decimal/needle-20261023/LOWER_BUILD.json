@@ -1,0 +1,121 @@
+{
+  "status": "verified",
+  "scope": "Strict lower endpoint under the unchanged Grothe.LowerAnalytic.NodeCaps premise; no unconditional lower-bound claim.",
+  "headline": "Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data",
+  "bound": {
+    "B": "5707374123/8000000000",
+    "L": "175211923811/125000000000",
+    "strict_reciprocal_comparison": "B*L < 1",
+    "boxes": 9057,
+    "changed_original_parents": 43,
+    "partition_tokens": 18113
+  },
+  "source_sha256": {
+    "Grothe/Research/RefinedLower.lean": "32d9a2d01ebd381e3fa49c03e18719c1c84957e207e8c21343b8613856b6703c",
+    "Grothe/Research/RefinedCoverData.lean": "9277b97b50561ea069d2d2a69139546e8b631c8b5cb7d31c2f7643ab9a3f0fe3",
+    "Grothe/Research/RefinedCoverParts.lean": "c3f020b57f510bc344c6499b9474091d173d0bb1fe6718f116d15b69b5bf739b",
+    "Grothe/Research/RefinedCoverBoxes0.lean": "62dac6f5fff4848c183983c07b36a72c4b74bbeb443051f3fe1d88c11a383fe3",
+    "Grothe/Research/RefinedCoverBoxes1.lean": "6cb2d50bfbcc49884bccc1506893eb573ce16a709a5ae9bcc060198b361b260f",
+    "Grothe/Research/RefinedCoverBoxes2.lean": "a487c1fc0604ff49f8e37443f5fb40924a5eaf74201a559c80101899d094169d",
+    "Grothe/Research/RefinedCoverBoxes3.lean": "082c4333625fea4bdcd726e8bca5ad4722f856f6df8a4e81df47eda9d7fc70c1",
+    "Grothe/Research/RefinedCoverPartition.lean": "c7a41b37b2afbb2c8ad92c60515850aef125e649f9c4c75a664468e39b44ccef",
+    "Grothe/Research/RefinedCoverResult.lean": "62062ed8ebb844aff31982926a493d8f40d160e0f344d939a151867159ef96f0"
+  },
+  "ci": {
+    "run_id": 39901871873,
+    "commit": "7afdc136e2f1cd23ff60dcb0b426bd83f34c06bb",
+    "repository": "agalatan/grothendieck-lean",
+    "conclusion": "success",
+    "url": "https://github.com/agalatan/grothendieck-lean/actions/runs/39901871873",
+    "source_equality": "All nine sources byte-identical to this commit.",
+    "full_log": "FULL_CI.log",
+    "full_axioms": "FULL_AXIOMS.txt",
+    "build_and_audit": "Fresh full source build and full axiom report completed successfully.",
+    "stages_seconds": {
+      "RefinedCoverData": 13,
+      "RefinedCoverParts": 5.8,
+      "RefinedCoverPartition": 7.2,
+      "RefinedCoverBoxes3": 24,
+      "RefinedLower": 6,
+      "RefinedCoverBoxes1": 523,
+      "RefinedCoverBoxes2": 653,
+      "RefinedCoverBoxes0": 913,
+      "RefinedCoverResult": 6.9
+    }
+  },
+  "axiom_audit": {
+    "log": "LOWER_AXIOMS.txt",
+    "required_theorems": 15,
+    "checker_command": "python3 -I scripts/check_axioms.py --refined-cover < handoff/research-third-decimal/needle-20261023/LOWER_AXIOMS.txt",
+    "checker_result": "checked 15 theorems; native_decide facts used: 13 of 82",
+    "headline_standard_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "headline_native_facts": [
+      "Grothe.Lower.certBatches0._native.native_decide.ax_1_1",
+      "Grothe.Lower.certBatches1._native.native_decide.ax_1_1",
+      "Grothe.Lower.certBatches2._native.native_decide.ax_1_1",
+      "Grothe.Lower.certRows0._native.native_decide.ax_1_1",
+      "Grothe.Lower.certRows1._native.native_decide.ax_1_1",
+      "Grothe.Lower.certRows2._native.native_decide.ax_1_1",
+      "Grothe.Lower.certRows3._native.native_decide.ax_1_1",
+      "Grothe.Lower.certRows4._native.native_decide.ax_1_1",
+      "Grothe.Research.RefinedLowerCheck.certRefinedBoxes0._native.native_decide.ax_1_1",
+      "Grothe.Research.RefinedLowerCheck.certRefinedBoxes1._native.native_decide.ax_1_1",
+      "Grothe.Research.RefinedLowerCheck.certRefinedBoxes2._native.native_decide.ax_1_1",
+      "Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1",
+      "Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1"
+    ],
+    "headline_native_facts_exactly_expected": true,
+    "obsolete_original_cover_native_facts_used": false
+  },
+  "droplet": {
+    "status": "all_nine_stages_passed",
+    "root": "/dev/shm/codex-needle-finite-jump-20261023",
+    "command": "nice -n19 lean -j1 -o Grothe/Research/<module>.olean Grothe/Research/<module>.lean",
+    "ordering": [
+      "RefinedLower",
+      "RefinedCoverData",
+      "RefinedCoverParts",
+      "RefinedCoverBoxes0",
+      "RefinedCoverBoxes1",
+      "RefinedCoverBoxes2",
+      "RefinedCoverBoxes3",
+      "RefinedCoverPartition",
+      "RefinedCoverResult"
+    ],
+    "combined_default_rebuild": "Skipped after successful fresh full GitHub CI at the identical sources.",
+    "logs": "LOWER_DROPLET_LOGS.json",
+    "remote_source_hashes_match": true,
+    "all_nine_oleans_exist": true,
+    "resource_sampling": {
+      "interval_seconds": 1,
+      "initial_stages_not_sampled": [
+        "RefinedLower",
+        "RefinedCoverData",
+        "RefinedCoverParts"
+      ],
+      "max_sampled_VmHWM_kb": 7835948,
+      "sampled_cpu_note": "Per-process counters were sampled once per second; end counters can be short by less than approximately one sample interval. The completed-children CPU base at the Boxes2 checkpoint is exact to kernel accounting precision.",
+      "sampled_total_cpu_seconds": 3120.12,
+      "completed_children_cpu_at_boxes2_checkpoint_seconds": 2260.5,
+      "single_boxes0_smaps_kb": {
+        "Pss": 1111384,
+        "Pss_Anon": 462404,
+        "Pss_File": 640384,
+        "Shared_Clean": 6455800,
+        "Private_Clean": 6996,
+        "Private_Dirty": 471016
+      },
+      "single_boxes0_smaps_note": "One checkpoint: large mapped-file RSS is mostly shared; this is not a peak-private-memory measurement."
+    },
+    "process_completion": {
+      "lean_pipeline": "Naturally completed with exit code 0 before the CI-success stop request.",
+      "resource_sampler": "Resource JSON preserved; only owned local sampler SSH PID 98511 terminated after completion and waited (SSH exit 255).",
+      "other_jobs_touched": false
+    }
+  },
+  "lean_version": "Lean (version 4.34.1, x86_64-unknown-linux-gnu, commit 5045d0056413266e57c625dcd7c365b10e377c52, Release)"
+}

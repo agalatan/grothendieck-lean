@@ -36,6 +36,12 @@ four native box chunks, partition and final endpoint. No running Lean
 process remained when full CI succeeded. `LOWER_BUILD.json` distinguishes
 that targeted droplet run from the complete fresh-source CI verification.
 
+The final sync adds upstream `HardyKernel.lean` definitions from master
+`b4b0e55`. They leave both endpoint theorems and all their hypotheses
+unchanged. The incoming module passed Lean with warnings treated as errors
+against the refined upper overlay (`HARDY_KERNEL_BUILD.json` and its log);
+the branch push runs the full combined CI again.
+
 The independently replayed lower patch changes 43 parents into 344 children,
 retains the other 8,713 domains, and matches every original canonical box
 string before export. The native proof uses the existing eight row/batch

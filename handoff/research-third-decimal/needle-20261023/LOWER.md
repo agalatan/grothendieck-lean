@@ -1,7 +1,7 @@
 # Lower endpoint: reuse the certified law nodes before regenerating integrals
 
-23 October 2026. Complete finite arithmetic assembly; no new Gaussian
-integrations, no new law-node certificates, and no unconditional endpoint claim.
+23 October 2026. Complete Lean-checked finite assembly under the unchanged
+`NodeCaps` premise; no new Gaussian integrations or law-node certificates.
 
 ## Completed result
 
@@ -33,14 +33,29 @@ The generated Lean data is `Grothe/Research/RefinedCoverData.lean`, with
 independently reconstructed and matched **all 8,756 original canonical box
 strings** against committed `MixedData.lean` before emitting the refinement;
 the canonical map of 3 inherited and 18 spectral batches is unchanged.
-The new native box/partition facts and endpoint theorem are being integrated
-separately; the arithmetic export itself does not assert their completion.
+All four native box chunks, the partition check, and the final theorem have
+passed both the sequential droplet build and the fresh full GitHub build at
+`7afdc136e2f1cd23ff60dcb0b426bd83f34c06bb`
+([run 39901871873](https://github.com/agalatan/grothendieck-lean/actions/runs/39901871873)).
+The nine lower sources are byte-identical to that successful CI commit.
+
+The headline theorem is
+`Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`:
+under `NodeCaps`, every `IsGrothendieckBound K` satisfies `L < K`.
+`LOWER_AXIOMS.txt` contains all fifteen audited lower declarations; the
+central `--refined-cover` audit passes. The headline depends on exactly the
+eight existing row/batch native facts and five new cover native facts,
+alongside `propext`, `Classical.choice`, and `Quot.sound`. None of the five
+obsolete original cover facts is used. Source hashes, build stages, resource
+measurements, and the exact dependency list are saved in `LOWER_BUILD.json`;
+the droplet logs are preserved in `LOWER_DROPLET_LOGS.json`.
 
 Reproduce and check the final data without running discovery:
 
 ```sh
 python3 -I tools/needle_cover_refine.py --verify handoff/research-third-decimal/needle-20261023/minimal-cover-ledger.json
 python3 -I tools/needle_cover_lean.py --check
+python3 -I scripts/check_axioms.py --refined-cover < handoff/research-third-decimal/needle-20261023/LOWER_AXIOMS.txt
 ```
 
 ## What actually binds
@@ -106,9 +121,10 @@ existing source-row Stein nodes already present in the checked row data.
 The ledger verifier independently recomputes every replacement cap and checks
 the complete exact Cartesian grid of each replaced parent. The exporter
 writes a new source package, preserves unchanged boxes and all existing node
-proofs, and appends arithmetic-only cap-box recipes if needed. A generated
-Lean certificate must still pass the existing complete `checkCert` and
-partition checks before the new global endpoint is asserted.
+proofs, and appends arithmetic-only cap-box recipes if needed. The delivered
+Lean proof has passed `checkCover` at the new `B`, including the complete
+partition check, and reuses the eight unchanged row/batch checks. This
+supplies the new global endpoint under the same analytic premise.
 
 ## First complete discovery pass at B = 0.7134215
 

@@ -140,3 +140,4 @@ import Grothe.LowerAnalytic.ScalarCubicFamilyCeiling
 import Grothe.Research.CoupledMajorizer
 import Grothe.Research.SemiconvexChord
 import Grothe.Research.RefinedCoverResult
+import Grothe.UpperChaos.HardyKernel
