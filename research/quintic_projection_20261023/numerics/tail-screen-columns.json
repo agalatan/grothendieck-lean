@@ -1,0 +1,72 @@
+{
+  "status": "NUMERICAL_INPUT_ONLY",
+  "provenance": "phase_Z analytic; six frozen six-feature pair holdout means from quintic-local-oracle-final.json; two old balanced column estimates from prior endpoint experiment (ordinary quadrature C1 estimates, directed-integral approximations to p/s3/s5). Floating estimates only.",
+  "oracle_replay_sha256": "e8cd298cfe561d2f6c0c2dbd830cf8e98637ce644f8c0d030434b9517fdcc753",
+  "labels": [
+    "phase_Z",
+    "frozen_six_feature_0",
+    "frozen_six_feature_1",
+    "frozen_six_feature_2",
+    "frozen_six_feature_3",
+    "frozen_six_feature_4",
+    "frozen_six_feature_5",
+    "old_balanced_119623/500000",
+    "old_balanced_14953/62500"
+  ],
+  "columns_p_s3_s5_C1": [
+    [
+      0.7853981633974483,
+      0.09817477042468103,
+      0.03681553890925539,
+      1.0
+    ],
+    [
+      0.7036137993445394,
+      -0.011959854256673319,
+      -0.004746502190440619,
+      0.6868940817578318
+    ],
+    [
+      0.6947085832148558,
+      -0.02352434277609947,
+      -0.007989878714976178,
+      0.6626706531717492
+    ],
+    [
+      0.7037863979413296,
+      -0.011734384271042855,
+      -0.004679741475058597,
+      0.6873770148035666
+    ],
+    [
+      0.6940726689633633,
+      -0.02436050908395894,
+      -0.008253136246271093,
+      0.6608276943329033
+    ],
+    [
+      0.6980110904300031,
+      -0.019232855983958425,
+      -0.006777152982132864,
+      0.6716883332046582
+    ],
+    [
+      0.7018468502743521,
+      -0.014267572218547603,
+      -0.0054287324035033864,
+      0.6819530458193155
+    ],
+    [
+      0.713136288035707,
+      1.0869988978e-06,
+      -0.004043086348984326,
+      0.703373325934321
+    ],
+    [
+      0.7131348833481966,
+      -7.701393528e-07,
+      -0.004043765645798751,
+      0.703368991177463
+    ]
+  ]
+}

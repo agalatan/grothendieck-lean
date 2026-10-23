@@ -103,7 +103,7 @@ $\KG\le1/(c-\|r\|_A)$. Haagerup's choice $f=\ph$ gives $1.40491$. Lean proves Ha
 this gives the unconditional bound $\KG\le1.40578$ (\lean{haagerup\_bound}), which needs no hypothesis. Our sharp rounding is a smoothed two-coordinate phase rounding,
 $F_0=\ph\bigl(z+\sqrt{1+a^2}\,v(|z|^2)\,w\bigr)$ with a twelve-term Laguerre profile $v$, multiplied by the cubic Taylor
 polynomial of a damped polynomial phase $\varphi$: $T=F_0P_3(\varphi)$, $P_3(x)=1+ix-x^2/2-ix^3/6$. The identity
-$|P_3(x)|^2=1-x^4(3-x^2)/36$ and $|\varphi|<1$ give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
+$|P_3(x)|^2=1-x^4(3-x^2)/36$ and the proved bound $\varphi^2\le3$ give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
 Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $41$ and
 $\tau(t)=\alpha t^3+\beta t^7$, $\alpha+\beta<1$ (any odd preprocessors of Wiener norm $\le1$ are realised by tensor
 powers). Compared with $c\,t$, $c=1779870886481/(25\cdot10^{11})$, the residual is at most
@@ -167,19 +167,21 @@ between our bounds is entirely the gap between restricted constructions and the 
 the witness $T$ on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices; the polarisation identity;
 the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair (frames, fibre decomposition, Parseval,
 gates); all moment, Stein, spectral and contraction-Gram inequalities for every circular cubic, including the sixth-cumulant
-Wick identity; the finite certificate (one \lean{native\_decide})
+Wick identity; the finite certificate (13 single-threaded native checks)
 &
 \lean{NodeCaps}: the 19 potentials $\Psi_r$ (defined in Lean) lie below their stored rational caps at the tabulated nodes.
-These caps come from exact-arithmetic certificates (interval integration and anchored quadratic majorants), replayed
-independently but not yet formalised.\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{fresh\_upper : DirectHyps E EX → IsGrothendieckBound (500000000000000000/355973576656604491)}}\\[2pt]
-the transfer inequality (tensor powers); kernel composition and locality; the head of the kernel through degree 501 from
+The separate \lean{GrotheCaps} target reduces this to \lean{CapsRest}: four rows' vertex caps and any excluded-node caps.
+Its heavy native checks have no recorded verification stamp in the current tree.\\\midrule
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under three numerical bounds, proves $\KG\le500000000000000000/355973576656604491$.}\\[2pt]
+the concrete disk-valued rounding; Gaussian Hermite completeness, Parseval and Mehler, charge selection, summability;
+the transfer inequality (tensor powers); kernel composition and locality; the head through degree 501 from
 21,168 stored energies by a verified interval evaluator (one \lean{native\_decide}); the tail bound; the endpoint
 &
-\lean{DirectHyps}: the tables $E$, $E_X$ are the energies of the rounding $T=F_0P_3(\varphi)$ and of its truncation $X$
-(validity, summability, parity); the comparison $\sum|E-E_X|\le1065637497/10^{15}$ ($88.71\%$ of the residual budget); a
+\lean{compare}: the actual energies of the smoothed rounding $G_T$ and of $X$ satisfy
+$\sum|E-E_X|\le1065637497/10^{15}$ ($88.71\%$ of the residual budget); \lean{hardy}: a
 weighted square-sum bound $7/4$ at radius $4149/4000$, giving the tail $36748/10^{12}$ ($3.06\%$); the table error
-$6847009/(5\cdot10^{17})$ ($0.001\%$). The head computed in Lean, $98880/10^{12}$, is $8.23\%$.\\\midrule
+$6847009/(5\cdot10^{17})$ on the finite head (\lean{energy\_close}, $0.001\%$). The head computed in Lean,
+$98880/10^{12}$, is $8.23\%$.\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (140578/100000)}}\\[2pt]
 Haagerup's identity for the phase rounding, $\E[\overline{\ph\langle g,x\rangle}\,\ph\langle g,y\rangle]=\sum_k\frac\pi4\frac{(1/2)_k^2}{k!(k+1)!}z|z|^{2k}$
 (Euler integral, Gaussian integrals, Beta integrals, reduction to two complex Gaussians); the transfer through the cubic
@@ -189,10 +191,13 @@ nothing: this bound has no hypothesis. It is weaker than the certified bound abo
 only a cubic preprocessor and a finite head are used.\\\bottomrule
 \end{tabular}
 \end{center}
-Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}, and exactly three pinned \lean{native\_decide} facts. No
-\lean{sorry}; CI builds everything and checks the axiom report (186 theorems). The development has about $32{,}000$ lines of
-hand-written Lean and $12{,}000$ lines of generated certificate data. The lower bound is close to fully formal: only
-one-variable numerical caps remain. The sharp upper bound still rests mainly on an external analytic comparison lemma; a weaker upper bound, $1.40578$, is fully formal.
+Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}.\par
+The native facts pinned in \path{scripts/check_axioms.py} check the upper head, phase cover, Haagerup bound,
+cap chords and 13 lower-certificate chunks.
+No \lean{sorry}; CI builds the default target and checks its axiom report. The 60 additional cap-range checks belong to
+the separate heavy \lean{GrotheCaps} target, whose source stamp CI checks once recorded. The generic response and
+quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
+the sharp upper bound rests mainly on an external numerical comparison lemma. The weaker upper bound $1.40578$ is fully formal.
 
 \section{Discoveries along the way}\label{sec:discoveries}
 Status labels: \textbf{[Lean]} machine-checked in this repository; \textbf{[P]} written proof; \textbf{[P,C]} proof with an
@@ -257,7 +262,7 @@ Let $L=z_1(a+b|z_1|^2)$ with the constants of the witness, and for a cubic $G$ p
 $\Lambda(G)=\E|L+G|+\E|L-G|-\E|G|^2/\epsilon$ and $S=\sup_v\{2\E|L+\sqrt vU|-v/\epsilon\}$, $U$ a complex Gaussian. The
 conjecture $\Lambda(G)\le S$ for all cubics (``Conjecture~K'') is the analytic heart of the lower bound.
 \begin{itemize}
-\item \textbf{A one-function reformulation [P].} Circular symmetry and $|a+b|+|a-b|=2\max(|a|,|b|)$ give exactly
+\item \textbf{A one-function reformulation [P].} Circular symmetry, $\E|W|=(\pi/2)\E|\Re W|$, and the identity $|a+b|+|a-b|=2\max(|a|,|b|)$ for real $a,b$ give exactly
  \[
   \Lambda(G)=2\E|L|+\pi\,\E\bigl(|\Re G|-|\Re L|\bigr)_+-\E|G|^2/\epsilon,
  \]
@@ -356,8 +361,8 @@ in the second.
 
 \section{Open problems}
 \begin{enumerate}
-\item Formalise the node caps (\lean{NodeCaps}), which would make the lower bound fully machine-checked.
-\item Formalise the rounding behind the upper bound: its Hermite expansion, the comparison lemma and the contour tail bound.
+\item Complete and verify the node caps (\lean{CapsRest} in the separate target), which would make the lower bound fully machine-checked.
+\item Discharge the sharp upper rounding's numerical comparison, energy-table error and contour tail bounds; its Hermite expansion and structural analytic bridge are formalized.
 \item Certify a game of degree $\ge5$ with a \emph{multi-grade fibre}: one bounded function of the visible coordinate and one
  remote direction per degree, so that the cross-degree coupling is kept. This is the route to a lower bound above $1.403$.
 \item Run a complex primal/dual search, alternating linear programs over games of degree $\le D$ and pools of roundings, to

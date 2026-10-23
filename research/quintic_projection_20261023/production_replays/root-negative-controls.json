@@ -1,0 +1,117 @@
+{
+  "status": "PASS",
+  "baseline_profiles": 2,
+  "controls_rejected": 14,
+  "controls": [
+    {
+      "name": "false strict lower bound",
+      "status": "REJECTED",
+      "exception": "ArithmeticError",
+      "reason": "Requested finite quintic lower bound failed"
+    },
+    {
+      "name": "false strict upper bound",
+      "status": "REJECTED",
+      "exception": "ArithmeticError",
+      "reason": "Requested finite quintic upper bound failed"
+    },
+    {
+      "name": "nonpositive b=0",
+      "status": "REJECTED",
+      "exception": "ValueError",
+      "reason": "Positive rational b required"
+    },
+    {
+      "name": "nonpositive b=-1/10",
+      "status": "REJECTED",
+      "exception": "ValueError",
+      "reason": "Positive rational b required"
+    },
+    {
+      "name": "nonpositive m=0",
+      "status": "REJECTED",
+      "exception": "ValueError",
+      "reason": "Positive integer m required"
+    },
+    {
+      "name": "nonpositive m=-1",
+      "status": "REJECTED",
+      "exception": "ValueError",
+      "reason": "Positive integer m required"
+    },
+    {
+      "name": "noncanonical integer m='01'",
+      "status": "REJECTED",
+      "exception": "ValueError",
+      "reason": "Integer m required"
+    },
+    {
+      "name": "noncanonical integer m=True",
+      "status": "REJECTED",
+      "exception": "ValueError",
+      "reason": "Integer m required"
+    },
+    {
+      "name": "noncanonical integer m=1.5",
+      "status": "REJECTED",
+      "exception": "ValueError",
+      "reason": "Integer m required"
+    },
+    {
+      "name": "invalid precision_bits=95",
+      "status": "REJECTED",
+      "exception": "ValueError",
+      "reason": "At least 96 bits required"
+    },
+    {
+      "name": "invalid precision_bits='128'",
+      "status": "REJECTED",
+      "exception": "ValueError",
+      "reason": "At least 96 bits required"
+    },
+    {
+      "name": "invalid precision_bits=128.0",
+      "status": "REJECTED",
+      "exception": "ValueError",
+      "reason": "At least 96 bits required"
+    },
+    {
+      "name": "invalid precision_bits=True",
+      "status": "REJECTED",
+      "exception": "ValueError",
+      "reason": "At least 96 bits required"
+    },
+    {
+      "name": "empty response bank",
+      "status": "REJECTED",
+      "exception": "ValueError",
+      "reason": "At least one actual profile is required"
+    }
+  ],
+  "bank_controls_rejected": 5,
+  "bank_controls": [
+    {
+      "name": "too-small finite dimension",
+      "status": "REJECTED"
+    },
+    {
+      "name": "wrong first response kind",
+      "status": "REJECTED"
+    },
+    {
+      "name": "incomplete cancellation triangle",
+      "status": "REJECTED"
+    },
+    {
+      "name": "nonpositive norm floor",
+      "status": "REJECTED"
+    },
+    {
+      "name": "false common support floor",
+      "status": "REJECTED"
+    }
+  ],
+  "verifier_sha256": "41251b715346f83efc4688a666d6b1258f6f8711eeafa3291e62f134d4bad155",
+  "certificate_sha256": "fe17f1eee9a1dd84fbbe30c74b552df449887fa5fd6b33ba4528b253cba0ae50",
+  "scope": "Actual verifier calls; false lower/upper bounds recompute the Arb integrals."
+}
