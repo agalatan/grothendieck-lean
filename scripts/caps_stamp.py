@@ -7,18 +7,22 @@ larger machine with
 and after a successful run the stamp is recorded with
     python3 scripts/caps_stamp.py --write "<machine, date, wall time>"
 CI runs `python3 scripts/caps_stamp.py --check`. It fails if any file in the import closure of
-Grothe.LowerAnalytic.CapNodes (plus lean-toolchain and lake-manifest.json) changed since the
+the 15 row modules CapRowKK, plus CapNodes.lean, GrotheCaps.lean, lean-toolchain and lake-manifest.json, changed since the
 recorded verification. Otherwise those modules need no rebuild.
 """
 import hashlib, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STAMP = os.path.join(ROOT, "docs", "CAPS_VERIFIED.txt")
-TOP = "Grothe.LowerAnalytic.CapNodes"
+# the heavy modules (60 native range facts) and their import closure; CapNodes itself (a short combination
+# proof) is hashed as a single file: changes elsewhere in the lower development only require re-checking it,
+# which the verification command does anyway.
+CAP_ROWS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
+TOPS = [f"Grothe.LowerAnalytic.CapRow{k:02d}" for k in CAP_ROWS]
 
 
-def closure(top):
-    seen, todo = set(), [top]
+def closure(tops):
+    seen, todo = set(), list(tops)
     while todo:
         m = todo.pop()
         if m in seen:
@@ -36,7 +40,8 @@ def closure(top):
 
 def digest():
     h = hashlib.sha256()
-    files = [os.path.join(*m.split(".")) + ".lean" for m in closure(TOP)]
+    files = [os.path.join(*m.split(".")) + ".lean" for m in closure(TOPS)]
+    files += ["Grothe/LowerAnalytic/CapNodes.lean", "GrotheCaps.lean"]
     files += ["lean-toolchain", "lake-manifest.json"]
     for f in files:
         h.update(f.encode() + b"\0")
