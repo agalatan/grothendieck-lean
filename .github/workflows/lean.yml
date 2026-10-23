@@ -13,15 +13,15 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 360
-    # one auto-merge at a time, in push order; plain branch checks run in parallel
-    concurrency:
-      group: ${{ startsWith(github.ref_name, 'ready/') && 'merge-into-master' || github.ref }}
-      cancel-in-progress: false
+    # No concurrency group: GitHub keeps only ONE pending run per group and cancels older pending ones, which
+    # silently dropped deliveries. ready/ runs build in parallel; the first green one moves master, and a run whose
+    # final push is rejected (master moved) re-dispatches itself, i.e. re-merges with the new master and rebuilds.
     steps:
       - uses: actions/checkout@v4
         with:
@@ -55,9 +55,15 @@ jobs:
       - name: Node caps (separate target GrotheCaps, verified off CI) unchanged since verification
         run: python3 scripts/caps_stamp.py --check
 
-      - name: Auto-merge into master (fast-forward to the checked merge)
+      - name: Auto-merge into master (fast-forward to the checked merge), or retry if master moved
         if: startsWith(github.ref_name, 'ready/')
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          # rejected (master untouched) if master moved during the build; then push the ready branch again
-          git push origin merge-candidate:master
-          git push origin --delete "${GITHUB_REF_NAME}"
+          if git push origin merge-candidate:master; then
+            git push origin --delete "${GITHUB_REF_NAME}"
+          else
+            echo "master moved during the build: re-dispatching this ready branch against the new master"
+            gh workflow run lean.yml --ref "${GITHUB_REF_NAME}"
+            exit 1
+          fi
