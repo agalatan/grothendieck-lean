@@ -33,7 +33,7 @@
 \Large $1.401695322458\;<\;\KG\;<\;1.404598635371$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, each resting on one explicitly stated
 family of externally certified numerical inputs (Section~\ref{sec:trust}).\\[4pt]
-With \textbf{no hypothesis at all}, every step proved in Lean: $\KG\le1.40578$.\vspace{4pt}
+With \textbf{no hypothesis at all}, every step proved in Lean: $\KG\le1.404951$.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
@@ -77,7 +77,7 @@ year & who & lower bound & upper bound\\\midrule
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
 Oct 2026 & \textbf{this work} & $\mathbf{1.401695322458}$ & $\mathbf{1.404598635371}$\\
-Oct 2026 & this work, fully formal & & $1.40578$ (no hypothesis)\\\bottomrule
+Oct 2026 & this work, fully formal & & $1.404951$ (no hypothesis)\\\bottomrule
 \end{tabular}
 \end{center}
 Haagerup's integral
@@ -99,8 +99,8 @@ correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
 \]
 If $H(t)=c\,t+r(t)$ with $\|r\|_A=\sum_k|c_k-c\,\delta_{k0}|<c$, a tensor-power argument (Krivine's trick) gives
 $\KG\le1/(c-\|r\|_A)$. Haagerup's choice $f=\ph$ gives $1.40491$. Lean proves Haagerup's identity for $f=\ph$ from scratch
-(Euler and Beta integrals, the law of orthonormal Gaussian coordinates); with a cubic preprocessor and $4000$ exact terms
-this gives the unconditional bound $\KG\le1.40578$ (\lean{haagerup\_bound}), which needs no hypothesis. Our sharp rounding is a smoothed two-coordinate phase rounding,
+(Euler and Beta integrals, the law of orthonormal Gaussian coordinates); with a degree-thirteen preprocessor, $2000$ exact terms and a weighted infinite-tail certificate
+this gives the unconditional bound $\KG\le1.404951$ (\lean{haagerup\_bound}), which needs no hypothesis. Our sharp rounding is a smoothed two-coordinate phase rounding,
 $F_0=\ph\bigl(z+\sqrt{1+a^2}\,v(|z|^2)\,w\bigr)$ with a twelve-term Laguerre profile $v$, multiplied by the cubic Taylor
 polynomial of a damped polynomial phase $\varphi$: $T=F_0P_3(\varphi)$, $P_3(x)=1+ix-x^2/2-ix^3/6$. The identity
 $|P_3(x)|^2=1-x^4(3-x^2)/36$ and the proved bound $\varphi^2\le3$ give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
@@ -182,13 +182,13 @@ $\sum|E-E_X|\le1065637497/10^{15}$ ($88.71\%$ of the residual budget); \lean{har
 weighted square-sum bound $7/4$ at radius $4149/4000$, giving the tail $36748/10^{12}$ ($3.06\%$); the table error
 $6847009/(5\cdot10^{17})$ on the finite head (\lean{energy\_close}, $0.001\%$). The head computed in Lean,
 $98880/10^{12}$, is $8.23\%$.\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (140578/100000)}}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (1404951/1000000)}}\\[2pt]
 Haagerup's identity for the phase rounding, $\E[\overline{\ph\langle g,x\rangle}\,\ph\langle g,y\rangle]=\sum_k\frac\pi4\frac{(1/2)_k^2}{k!(k+1)!}z|z|^{2k}$
-(Euler integral, Gaussian integrals, Beta integrals, reduction to two complex Gaussians); the transfer through the cubic
-preprocessor $p(t)=\frac{2267}{2500}t-0.09319996\,t^3$; $4000$ exact terms (one \lean{native\_decide}) and a telescoping tail
+(Euler integral, Gaussian integrals, Beta integrals, reduction to two complex Gaussians); the transfer through
+a degree-thirteen preprocessor $p(t)=tP(t^2)$ with $\|P\|_1=1$ and $\|P^4\|_1\le.998935$; $2000$ exact terms and a weighted infinite tail, certified together by one \lean{native\_decide}
 &
 nothing: this bound has no hypothesis. It is weaker than the certified bound above, and than Haagerup's $1.40491$, because
-only a cubic preprocessor and a finite head are used.\\\bottomrule
+a finite degree-thirteen preprocessor and explicit residual bounds are used.\\\bottomrule
 \end{tabular}
 \end{center}
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}.\par
@@ -197,11 +197,47 @@ cap chords and 13 lower-certificate chunks.
 No \lean{sorry}; CI builds the default target and checks its axiom report. The 60 additional cap-range checks belong to
 the separate heavy \lean{GrotheCaps} target, whose source stamp CI checks once recorded. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
-the sharp upper bound rests mainly on an external numerical comparison lemma. The weaker upper bound $1.40578$ is fully formal.
+the sharp upper bound rests mainly on an external numerical comparison lemma. The weaker upper bound $1.404951$ is fully formal.
 
+\clearpage
 \section{Discoveries along the way}\label{sec:discoveries}
 Status labels: \textbf{[Lean]} machine-checked in this repository; \textbf{[P]} written proof; \textbf{[P,C]} proof with an
 exact or interval-arithmetic certificate replayed independently; \textbf{[F]} floating-point evidence only.
+
+\subsection{Finite powers give a sharper fully formal bound}
+\textbf{[Lean]} A preprocessor may have coefficient norm $\|P\|_1=1$ while
+$\|P^4\|_1<1$. Retaining cancellation before taking absolute coefficient
+sums gives $\|X^kP^{2k+1}\|_1\le q^{\lfloor k/2\rfloor}$, where
+$q=199787/200000$. A finite weighted telescope prices the whole remaining
+series. For an exact degree-thirteen preprocessor, the complete $2000$-term
+residual is at most $(\pi/4)\,11\cdot10^{-6}$, and the infinite tail is at
+most $(\pi/4)\,21.6\cdot10^{-6}$. The Gaussian phase identity and tensor
+transfer therefore prove $\KG\le1.404951$ with no external inputs.
+
+The obstruction for simpler preprocessors is exact: if $|P(-1)|=\|P\|_1=1$,
+then $\|P^n\|_1=1$ for every $n$. A negative even radial-index coefficient
+breaks that coherent boundary phase. The power contraction, weighted tail,
+integer checker soundness and endpoint are all formalized.
+
+\subsection{Common responses, common tails, and an architecture separator}
+\textbf{[P; supporting algebra in Lean]} A symmetry-closed family of actual cubic responses has an exact
+five-mode first/cubic image and a fixed-size original-noise replica representation. It preserves the shared
+quadratic drivers: a scalar Gaussian used to describe a cubic's law must retain third-chaos noise correlation
+$\rho^3$, rather than acquire first-chaos correlation $\rho$.
+
+\textbf{[Lean]} All correlation samples of a response pair use the same signed Hermite coefficients. Prices
+$a_i$ with $|\sum_i a_i\rho_i^{2k+1}|\le1$ for all $k\ge2$ bound the complete omitted absolute tail. A finite
+front and one geometric remainder budget certify every index. The resulting separator is linear in response
+columns, so it bounds whole convex pools, with explicit integration-error costs. Numerical pool screens
+still require certified input integrals; a favorable relaxation value is not an achievable rounding score.
+
+\textbf{[P,C; polynomial certificate in Lean]} The entire Gaussian-phase cubic-preprocessor family
+$H_{\rm phys}(A\rho+B\rho^3)$, $|A|+|B|\le1$, including arbitrary complex phases and convex mixtures,
+has full reciprocal score at most $0.71186$. This is below the incumbent $0.7119471533\ldots$.
+The separator is $\Re(c_0-\frac9{25}c_1-c_2-c_3)$; positive polynomial certificates handle all complex phases.
+Thus optimizing this class further cannot improve the current upper bound. General non-Gaussian cubic
+responses and nonlinear shared image fields are not excluded. The Gaussian-family coefficient extraction
+is a written application of the Gaussian phase identity; it is not yet connected end to end in Lean.
 
 \subsection{Inequalities for cubic Gaussian chaos}
 Throughout, $q$ is a circular cubic Wick polynomial (bidegree $(2,1)$) in any number of complex Gaussian variables,
@@ -375,8 +411,7 @@ in the second.
 The constructions and certificates were found by several AI research systems working on a shared manuscript, cross-checking
 each other's packages by independent replay. The endpoint theorems have the explicit Lean hypothesis lists in
 Section~\ref{sec:trust}, and their axioms are audited in CI. The discoveries labelled [P] and [C] also include paper proofs
-and external exact or interval certificates; they are not all formalized in Lean. The research manuscript and the
-certificate packages are kept outside the repository.
+and external exact or interval certificates; they are not all formalized in Lean. Selected written proofs and reproducible certificate records accompany the repository; the larger working manuscript is maintained separately.
 
 \section*{References}
 \small\sloppy

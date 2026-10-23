@@ -1,0 +1,17 @@
+'Grothe.Upper.SpectralScreen.all_level_price_of_front_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.common_tail_price' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.full_score_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.affine_error_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.finite_mixture_score_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.phase_conditions_unit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.phase_conditions' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.real_polynomial_cap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.trigonometric_square_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.axis_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.axis_le_real_polynomial' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.normalized_complex_cap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.complex_score_cap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.score_le_separator' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.full_score_cap_of_low_identity' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

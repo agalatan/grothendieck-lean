@@ -98,6 +98,10 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
   - the grep for `sorry` / `axiom` / `implemented_by` / `extern` / `unsafe` / `Task.spawn`;
   - the axiom report (`scripts/check_axioms.py`);
   - the caps stamp (`scripts/caps_stamp.py --check`).
+- **Skipped when nothing Lean-relevant changed:** if a push (for `ready/`: the merge with master) touches only files
+  outside `Grothe/`, `GrotheKernel/`, the root `.lean` files, `lakefile.toml`, `lake-manifest.json`, `lean-toolchain`,
+  `scratch/Axioms.lean` (the CI axiom report; other `scratch/` files are not built by CI), `scripts/check_axioms.py`, `scripts/caps_stamp.py` and `.github/workflows/`, the build and the checks are
+  skipped and the job succeeds. Documentation-only deliveries still auto-merge.
 - **What differs for `ready/<topic>`:** the merge with master and the auto-merge.
 - **Cost:** every push uses CI minutes, which the private repository pays for. Push work branches when they matter,
   not after every small commit.

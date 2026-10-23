@@ -1,0 +1,87 @@
+\section{A global upper bound from finite-power Wiener contraction}
+Let $\|P\|_{\mathcal A}$ be the sum of the absolute values of a polynomial's
+coefficients.  The Gaussian phase correlation kernel is
+\[
+ h(z)=\frac\pi4\sum_{k\ge0}r_kz|z|^{2k},\qquad
+ r_0=1,\quad r_{k+1}=r_k\frac{(2k+1)^2}{4(k+1)(k+2)}.
+\]
+Its Gaussian identity and the tensor realization of every real radial
+preprocessor $p(t)=tP(t^2)$ with $\|P\|_{\mathcal A}\le1$ are already proved
+in Lean.  The following bound therefore has no additional analytic inputs:
+\[
+ \boxed{K_G^{\mathbb C}\le1.404951.}
+\]
+The new ingredient is a bound on powers \emph{before} taking an absolute
+coefficient sum.  For any polynomial $P$, if
+$\|P\|_{\mathcal A}\le1$ and $\|P^4\|_{\mathcal A}\le q<1$, then
+\[
+ \|X^kP^{2k+1}\|_{\mathcal A}\le q^{\lfloor k/2\rfloor}.
+\]
+Indeed, $2k+1=4\lfloor k/2\rfloor+2(k\bmod2)+1$, and the coefficient norm
+is submultiplicative.  This retains cancellations lost by the estimate
+$\|P^{2k+1}\|_{\mathcal A}\le\|P\|_{\mathcal A}^{2k+1}=1$.
+
+Use the exact polynomial
+\[
+ \begin{aligned}
+ 10^{12}P(X)={}&906284633979-93047318709X-490402143X^3\\
+              &-125872719X^4-38769671X^5-13002779X^6.
+ \end{aligned}
+\]
+Its coefficient norm equals one.  The finite certificate proves
+\[
+ \|P^4\|_{\mathcal A}\le q:=\frac{199787}{200000},\qquad
+ r_{2000}(2001)(4001)\le\gamma:=\frac{637}{1000}.
+\]
+Write $a=906284633979/10^{12}$.  The complete polynomial
+$P\sum_{k<2000}r_k(XP^2)^k$ has degree below $26000$; its residual against
+$a$ has coefficient norm at most $11/10^6$.  This checks every finite
+coefficient; no numerical truncation of this polynomial is assumed.
+
+For the infinite part, monotonicity of
+$g_k=r_k(k+1)(2k+1)$ implies
+$r_k\le\gamma/(2k(k+1))$ for $k\ge2000$.  Grouping consecutive pairs gives
+\[
+ r_k+r_{k+1}\le\frac\gamma2\left(\frac1k-\frac1{k+2}\right).
+\]
+Define the finite weighted telescope
+\[
+ T_{k,0}=\frac1k,\qquad
+ T_{k,N+1}=\frac1k-\frac1{k+2}+qT_{k+2,N}.
+\]
+A nonnegative, summable sequence with the preceding pair bound and the
+coarse tail bound $\sum_{j\ge k}r_j\le\gamma/(2k)$ satisfies
+\[
+ \sum_{j\ge k}r_jq^{\lfloor j/2\rfloor}
+ \le\frac\gamma2q^{\lfloor k/2\rfloor}T_{k,N}.
+\]
+This follows by induction on $N$, retaining the uncomputed suffix through
+its coarse telescope.  Outward integer arithmetic at 128-bit fixed-point
+precision, with $k=2000$ and $N=8192$, proves
+\[
+ \frac\gamma2q^{1000}T_{2000,8192}
+ <0.000021491<\frac{27}{1250000}.
+\]
+Combining the finite residual and the infinite tail gives
+\[
+ \|h\circ p-(\pi a/4)\operatorname{id}\|_{\mathcal A}
+ \le\frac\pi4\left(\frac{11}{10^6}+\frac{27}{1250000}\right).
+\]
+The residual transfer inequality yields
+\[
+ K_G^{\mathbb C}\le
+ \frac4{\pi(a-11/10^6-27/1250000)}<1.404951.
+\]
+The transfer, infinite-series estimate and all certificate soundness lemmas
+are proved in Lean.  A separate directed FLINT polynomial replay checks the
+same complete finite residual; exact rational arithmetic independently
+checks the coefficient budget and fourth-power contraction.
+
+The role of higher degree is structural.  If
+$|P(-1)|=\|P\|_{\mathcal A}=1$, then $\|P^n\|_{\mathcal A}=1$ for every
+$n$: evaluation at $-1$ gives the lower bound, and submultiplicativity the
+upper bound.  Normalized polynomials $a-bX-cX^3$ with nonnegative
+$a,b,c$ have this obstruction.  The negative $X^4$ term breaks that common
+boundary phase, and the fourth-power certificate quantifies the saving.
+This improvement concerns the hypothesis-free bound; it does not alter the
+repository's sharper conditional endpoints.

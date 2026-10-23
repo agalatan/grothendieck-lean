@@ -11,7 +11,8 @@ import Grothe.Haagerup.Law
   `integral_coords4`);
 * `haagerup_disk`: Haagerup's phase rounding `ε = phase⟪g, x⟫` (on `ℂ^{ι ⊕ 1}`, so that an
   orthogonal unit vector always exists) realises `radialKernel haagCoeff`;
-* `Grothe.haagerup_bound`: **`K_G^ℂ ≤ 1.40578`, with no hypotheses.**
+* `Grothe.haagerup_dominated`: the Gaussian phase kernel is dominated, without hypotheses.
+  The unconditional endpoint is assembled in `Grothe.Haagerup.Power`.
 -/
 
 namespace Grothe.Haag
@@ -201,10 +202,5 @@ namespace Grothe
 /-- Haagerup's kernel is dominated. -/
 theorem haagerup_dominated : DominatedKernel (radialKernel haagCoeff) :=
   Haag.haagerup_disk.dominated
-
-/-- **`K_G^ℂ ≤ 1.40578`, hypothesis-free**: Haagerup's phase rounding with the cubic preprocessor
-`p(t) = 0.9068 t − 0.09319996 t³` and the residual transfer. -/
-theorem haagerup_bound : IsGrothendieckBound (140578 / 100000) :=
-  haagerup_upper haagerup_dominated
 
 end Grothe

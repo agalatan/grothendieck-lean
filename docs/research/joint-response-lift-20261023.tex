@@ -1,0 +1,505 @@
+\subsection{A shared Gram lift before the fibre supremum (23 October)}
+\label{sec:shared-response-gram-lift}
+
+\paragraph{Scope.}
+The following extraction is dimension-free and applies to every actual
+disc-valued response pair. The stability constraint additionally requires a
+globally near-maximizing pair, as in
+\S\ref{sec:fresh-second-chaos-stability}. Neither the extraction nor the
+floating-point diagnostics below gives a new numerical endpoint. In particular,
+the atomic laws of \S\ref{sec:binding-audit-20261023} do not specify the new
+observables and cannot be declared excluded by assigning them convenient values.
+
+\paragraph{The common projection budget.}
+Use the realification of complex Gaussian $L^2$, with scalar product
+$\operatorname{Re}\mathbb E\overline u v$. Let $P$ be the full first-chaos
+projection, and let $P_0$ project onto any chosen complex subspace of that
+chaos. Fix bounded real features $A_1,\ldots,A_r,B_1,\ldots,B_s$ and form the
+\emph{single} tuple
+\[
+ v=(fA_1,\ldots,fA_r,gB_1,\ldots,gB_s),\qquad
+ x_i=P_0v_i,\quad z_i=v_i-x_i.
+\]
+Write $\operatorname{Gr}(u)_{ij}=\operatorname{Re}\langle u_i,u_j\rangle$.
+The measured matrix $X=\operatorname{Gr}(x)$ and the residual matrices
+\[
+ V=\operatorname{Gr}(z)=\operatorname{Gr}(v)-X,\qquad
+ K=\operatorname{Gr}(Pv-x)
+\]
+satisfy
+\begin{equation}\label{eq:shared-gram-interval}
+ \boxed{0\preceq K\preceq V,\qquad
+       \operatorname{Gr}(Pv)=X+K.}
+\end{equation}
+Indeed $Pz_i=Pv_i-x_i$. For any real $c$,
+$c^{\mathsf T}Kc=\|P\sum c_i z_i\|^2$ lies between zero and
+$\|\sum c_i z_i\|^2=c^{\mathsf T}Vc$. Orthogonality to the measured
+space proves the other two identities. No independence, conditional
+Gaussianity, tensor-rank bound or estimate of an individual Hermite tail is used.
+
+Crucially, the mixed block of $\operatorname{Gr}(v)$ is
+\[
+ \operatorname{Gr}(v)_{i,r+j}
+   =\mathbb E\bigl[\operatorname{Re}(\overline f g)A_iB_j\bigr].
+\]
+It is a moment of the \emph{same pair}. Separate Bessel budgets discard it.
+The dimension of \eqref{eq:shared-gram-interval} is $r+s$, regardless of the
+number of unmeasured Gaussian directions.
+
+\paragraph{A sharp scalar completion screen.}
+For one feature on each branch, put $c=X_{12}$,
+$v=V_{12}$ and $R=\sqrt{V_{11}V_{22}}$. Every possible residual coefficient
+$k=K_{12}$ obeys the sharper interval
+\begin{equation}\label{eq:shared-cross-interval}
+ \boxed{|2k-v|\le R.}
+\end{equation}
+One proof uses the reflection $2P-I$: it is an isometry and
+$2\langle Pz_1,Pz_2\rangle-\langle z_1,z_2\rangle
+=\langle(2P-I)z_1,z_2\rangle$. Apply Cauchy--Schwarz.
+For $V=I_2$, projection onto $(1,1)$ attains $k=1/2$; projection onto
+$(1,-1)$ attains $k=-1/2$. Thus the radius $R/2$ cannot be reduced from
+Gram information alone. The separate estimate $|k|\le R$ has twice that radius
+when $v=0$.
+
+Suppose stability gives $|c+k|\le a$. Eliminating \emph{all} completions yields
+\begin{equation}\label{eq:shared-completion-screen}
+ \boxed{|2c+v|\le R+2a.}
+\end{equation}
+This follows by subtracting $2k-v$ from $2(c+k)$ and using the triangle
+inequality. For example, $c=1/5$, $v=0$, $R=1/10$ and $a=13/100$ fail
+the screen: $2/5>9/25$. Separate Cauchy and stability still allow $k=-2/25$.
+This is an exact example separating the two completion tests, not an example
+at a Grothendieck binding node.
+
+\paragraph{Connection to actual response stability.}
+Retain the weights and measured moments before taking any fibre supremum:
+\[
+ D_f[i,j]=\mathbb E(|Tg|A_iA_j),\qquad
+ D_g[i,j]=\mathbb E(|Tf|B_iB_j),\qquad
+ C=(X+K)_{fg}.
+\]
+If the pointwise feature budgets are at most $L^2$, a globally
+$\delta$-near-maximizing pair has the necessary finite-dimensional completion
+\begin{equation}\label{eq:shared-stability-completion}
+ 0\preceq K\preceq V,\qquad
+ \begin{pmatrix}D_f&\varepsilon(X+K)_{fg}\\
+ \varepsilon(X+K)_{gf}&D_g\end{pmatrix}
+       +10L^2\sqrt\delta\,I\succeq0.
+\end{equation}
+For scalar features, one may use
+$a=\sqrt{(D_f+10L^2\sqrt\delta)(D_g+10L^2\sqrt\delta)}/\varepsilon$
+in \eqref{eq:shared-completion-screen}. The signed weights
+$\operatorname{Re}(\overline f Tg)$ and
+$\operatorname{Re}(\overline g Tf)$ give the stronger original Hessian
+constraint. They must not silently be substituted for the positive weights
+in a computation that assumes the latter.
+
+\paragraph{Finite dual prices for the residual block.}
+For real symmetric matrices $Z,Y$, the two finite checks
+$Y\succeq0$ and $Y-Z\succeq0$ imply
+\begin{equation}\label{eq:shared-gram-price}
+ \langle Z,K\rangle\le\langle Y,V\rangle
+ \qquad(0\preceq K\preceq V).
+\end{equation}
+Here $\langle A,B\rangle=\operatorname{tr}(AB)$. Indeed
+$\langle Z,K\rangle\le\langle Y,K\rangle\le\langle Y,V\rangle$.
+Rational Gram factorizations of $Y$ and $Y-Z$ suffice to check the prices;
+an optimizer's eigenvalues are unnecessary. The rank-one version is included
+in the Lean module below.
+
+This budget is exact for arbitrary Hilbert-space feature vectors: given
+$0\preceq K\preceq V$, choose $A=V^{\dagger/2}KV^{\dagger/2}$ on
+$\operatorname{ran}V$. Then $0\preceq A\preceq I$ and the block operator
+\[
+ \Pi=\begin{pmatrix}A&\sqrt{A(I-A)}\\
+                      \sqrt{A(I-A)}&I-A\end{pmatrix}
+\]
+is an orthogonal projection. Applying it to the columns of
+$(V^{1/2},0)^{\mathsf T}$ realizes $K$. This does \emph{not} realize
+arbitrary such columns as $fA_i,gB_j$ on Gaussian space. The remaining
+structure must enter through their local response moments.
+
+\paragraph{A moment-constrained fibre support interface.}
+There is a dimension-free way to choose the features so that their response
+moments can be replaced by moments of the two polynomial images, with a
+controlled near-maximizer error. This avoids declaring arbitrary bounded
+responses independent of those images.
+
+\paragraph{An image-determined near-maximizer lift.}
+Let $a=|Tg|$, $b=|Tf|$, $\phi_g=\operatorname{phase}(Tg)$ and
+$\phi_f=\operatorname{phase}(Tf)$. A globally $\delta$-near-maximizing pair
+satisfies
+\begin{equation}\label{eq:shared-weighted-alignment}
+ \mathbb E\,a|f-\phi_g|^2\le2\delta,\qquad
+ \mathbb E\,b|g-\phi_f|^2\le2\delta.
+\end{equation}
+For example, the first bound follows from the pointwise disc inequality
+$a|f-\phi_g|^2\le2(a-\operatorname{Re}\overline f Tg)$ and
+$\mathbb E|Tg|\le M$, since replacing $f$ by $\phi_g$ is admissible in
+the same dimension. Both inequalities hold for the original pair; successive
+phase replacements or existence of a maximizer are unnecessary.
+
+Choose real bounded image-dependent rules $\alpha_i,\beta_j$ with
+$\sum\alpha_i^2,\sum\beta_j^2\le1$, fix $\tau>0$, and set
+\[
+ A_i=\sqrt{\frac a{a+\tau}}\,\alpha_i,
+ \qquad B_j=\sqrt{\frac b{b+\tau}}\,\beta_j.
+\]
+Then, summing over features,
+\begin{equation}\label{eq:shared-cutoff-alignment}
+ \sum_i\|(f-\phi_g)A_i\|_2^2\le\frac{2\delta}{\tau},\qquad
+ \sum_j\|(g-\phi_f)B_j\|_2^2\le\frac{2\delta}{\tau}.
+\end{equation}
+Indeed $\sum A_i^2/a\le1/\tau$, including $a=0$ by continuity.
+Define the image tuple
+$\widetilde v=(\phi_g A,\phi_f B)$. Its full, measured and residual
+Gram matrices differ in operator norm from those of $v=(fA,gB)$ by at most
+\[
+ 4\sqrt{2\delta/\tau}.
+\]
+To see this, the synthesis operators of both tuples have Hilbert--Schmidt
+norm at most $\sqrt2$, and their difference has norm at most
+$2\sqrt{\delta/\tau}$. Use
+$\|U^*U-\widetilde U^*\widetilde U\|
+\le(\|U\|+\|\widetilde U\|)\|U-\widetilde U\|$.
+The same argument applies after any orthogonal projection.
+For the cross block alone the sharper error is
+$2\sqrt{2\delta/\tau}$, because each individual branch has synthesis norm
+at most one. Consequently the \emph{image-determined} necessary condition is
+\begin{equation}\label{eq:shared-image-stability}
+ \boxed{\begin{pmatrix}D_f&\varepsilon\widetilde C\\
+       \varepsilon\widetilde C^{\mathsf T}&D_g\end{pmatrix}
+       \succeq-\left(10+2\varepsilon\sqrt{2/\tau}\right)\sqrt\delta\,I,}
+\end{equation}
+where $\widetilde C=\operatorname{Gr}(P\widetilde v)_{fg}$ and $D_f,D_g$
+are unchanged. Its measured and unmeasured matrices satisfy the exact common
+Gram interval for $\widetilde v$. For fixed positive $\tau$, the error vanishes
+uniformly in the dimension. This is a necessary condition on global
+near-maximizers, not a bound on all arbitrary cubic perturbations.
+
+At fixed polynomial-image state the features and $\widetilde v$ are now
+known functions, rather than moments of free response variables. One possible
+rule uses clipped $\operatorname{Re}(\overline{\phi_g}\ell_i)/(a+\eta)$,
+normalized to the declared feature budget, and its other-branch counterpart.
+The image law must still come from the same pair under $T$; arbitrary pairs
+of polynomial images are an outer relaxation. No claim is made that the
+present radial tables already enforce that compatibility.
+
+\paragraph{The local moment support.}
+Here is a way to retain those moments rather than append free matrices after
+the old table. Fix a remote state $w$, including the conditional polynomial
+images $(Tf)(\cdot,w),(Tg)(\cdot,w)$, and any bounded feature rule. For
+fixed real quadratic-dual variable $y$, let $F_y(z;u,v)$ be the linear
+two-response payoff from the old fibre identity and let
+$m(z;u,v)$ collect the measured coefficients, the joint Gram entries and the
+weighted feature moments just defined. If their fibre expectation is $b$, then
+for \emph{every} real multiplier vector $\theta$,
+\begin{align}
+ \sup_{\substack{|f|,|g|\le1\\\mathbb E_z m(z;f,g)=b}}
+ \{\mathbb E_zF_y(z;f,g)-y^{\mathsf T}My\}
+ &\le\mathbb E_z\sigma_z(y,\theta)-y^{\mathsf T}My-\theta\cdot b,
+ \label{eq:shared-local-support}\\
+ \sigma_z(y,\theta)
+ &=\sup_{|u|,|v|\le1}
+       \{F_y(z;u,v)+\theta\cdot m(z;u,v)\}.\nonumber
+\end{align}
+This is just the pointwise support inequality, integrated before subtracting
+the measured moments. Supremizing in $y$ preserves the bound; infimizing
+over chosen prices remains valid. No tensor supremum is interchanged with an
+infimum. Each inner support is on two complex discs, hence four real variables.
+It retains $\operatorname{Re}(\overline u v)$; replacing it by two independent
+one-disc supports would discard precisely the joint information.
+
+For response-independent features the moment integrands give the quadratic
+support
+\[
+ c+\sup_{|u|,|v|\le1}
+ \{a|u|^2+b|v|^2+\operatorname{Re}(\overline p u+\overline q v)
+                         +2\operatorname{Re}(\overline u wv)\}.
+\]
+One disc can be eliminated exactly. For $r\ge0$ define
+\[
+ \chi_b(r)=\begin{cases}b+r,&2b+r\ge0,\\
+                         -r^2/(4b),&2b+r<0.\end{cases}
+\]
+Maximizing first the phase and then the modulus of $v$ gives the equivalent
+\emph{two-real-variable} support
+\begin{equation}\label{eq:shared-two-real-support}
+ c+\sup_{|u|\le1}\{a|u|^2+\operatorname{Re}(\overline p u)
+                   +\chi_b(|q+2\overline w u|)\}.
+\end{equation}
+Indeed $\chi_b(r)=\max_{0\le t\le1}(bt^2+rt)$; its maximizer is $1$ in
+the first branch and $-r/(2b)$ in the second. Both the bound and attainment
+are kernel-checked in the Lean module. Negative diagonal prices must use the
+second branch when applicable: assuming optimal responses are unimodular
+would otherwise give a false support value. If $a,b\ge0$, separate convexity
+puts both responses on their circles and reduces the last search to one angle.
+These simplifications do not apply unchanged to features depending nonlinearly
+on the response, such as clipped response-weighted scores.
+
+The standalone checker \code{tools/joint\_disk\_support.py} implements a
+rational enclosure of \eqref{eq:shared-two-real-support}. On a rectangle $R$
+meeting the unit disc, let $n_-$ be its minimum squared distance to the origin
+and $n_+=\min\{1,\max_{\rm corners}|u|^2\}$. Bound the quadratic term by
+$an_+$ if $a\ge0$, and by $an_-$ otherwise. The linear term is bounded by
+the minimum of $|p|$ and its maximum over the four corners. Finally use
+\[
+ |q+2\overline w u|\le
+ \min\{|q|+2|w|,\max_{\rm corners}|q+2\overline w u|\}.
+\]
+The corner bound follows from convexity of the norm; $\chi_b$ is increasing
+because it is the supremum of $bt^2+rt$ with $t\ge0$. Adding these three
+bounds gives a valid cell upper bound. Feasible rational points give lower
+bounds. Rational square-root enclosures follow from integer square roots;
+dyadic subdivision preserves a cover of the disc, and cells are discarded
+only when disjoint from it or below the incumbent lower bound. Thus the
+returned interval is rigorous even if a cell budget is exhausted before
+reaching the requested tolerance. This checker covers fixed rational local
+coefficients; it does not integrate over Gaussian states or certify a norm cap.
+
+\paragraph{An exact $3\times3$ complex SDP for the local support.}
+There is a stronger simplification of the same quadratic support. Put
+\[
+ H=\begin{pmatrix}
+ 0&\overline p/2&\overline q/2\\
+ p/2&a&w\\q/2&\overline w&b
+ \end{pmatrix}.
+\]
+Then, exactly,
+\begin{align}
+ \sup_{|u|,|v|\le1}(1,u,v)^*H(1,u,v)
+ &=\max_{X\succeq0,\ X_{00}=1,\ X_{11},X_{22}\le1}
+           \operatorname{tr}(HX)\label{eq:shared-exact-local-sdp}\\
+ &=\min_{\substack{\lambda_1,\lambda_2\ge0\\
+             \operatorname{diag}(\lambda_0,\lambda_1,\lambda_2)-H\succeq0}}
+            (\lambda_0+\lambda_1+\lambda_2).\nonumber
+\end{align}
+Here $X$ is complex Hermitian and $\lambda_0$ is real without a sign
+restriction. This is a local two-response result, not an exact SDP for the
+whole Grothendieck problem.
+
+Equivalently, the complete local quadratic moment body is
+\[
+ \boxed{\operatorname{conv}\{zz^*:z=(1,u,v),\ |u|,|v|\le1\}
+       =\{X\succeq0:X_{00}=1,\ X_{11},X_{22}\le1\}.}
+\]
+Thus a loss in this part of a lifted certificate can be removed without a
+higher moment hierarchy. This is local convexification only; it does not
+identify which fields of such moments arise from a common Gaussian response
+pair with prescribed polynomial projections.
+
+For completeness, the feasible set of $X$ is compact and convex. If an extreme
+point has rank $r\ge2$, write $X=RR^*$ with $R$ of full column rank. The real
+space of Hermitian $r\times r$ matrices has dimension $r^2\ge4$. Therefore
+there is a nonzero Hermitian $U$ with
+$\operatorname{diag}(RUR^*)=0$, since this imposes at most three real equations.
+For sufficiently small $t>0$, the distinct matrices
+$R(I\pm tU)R^*$ are positive semidefinite and preserve all three diagonals.
+Their average is $X$, contradicting extremality. Every extreme point thus has
+rank one. Since $X_{00}=1$, write it as $(1,u,v)(1,u,v)^*$ after a common phase
+rotation, with $|u|,|v|\le1$. A linear objective attains its optimum at an
+extreme point, proving the first equality. The strictly feasible point
+$\operatorname{diag}(1,1/2,1/2)$ and a sufficiently large diagonal dual matrix
+give strong duality and attainment for the displayed primal and dual.
+
+This is the usual complex correlation-matrix rank argument, here adapted to
+the two-disc support; see Li--Tam, \emph{A note on extreme correlation matrices},
+SIAM J. Matrix Anal. Appl. 15 (1994), 903--908,
+\href{https://doi.org/10.1137/S0895479892240683}{doi:10.1137/S0895479892240683}.
+The real symmetric perturbation space has dimension $r(r+1)/2$ instead;
+the argument permits rank two with three real diagonal constraints. Thus this
+exact local simplification specifically uses complex response phases. Adding
+more response branches also invalidates the rank-one dimension count.
+
+For rational data, any rational feasible dual prices are accepted by checking
+the seven principal minors of the $3\times3$ Hermitian slack, together with
+$\lambda_1,\lambda_2\ge0$. A floating SDP only proposes the prices; a small
+rational diagonal loading makes the slack certifiably positive when necessary.
+\code{tools/two\_disc\_sdp.py} contains a standard-library exact verifier and
+a separate optional proposal mode. Its four local examples, including an
+interior coupled optimizer, have exact dual--primal gaps below $10^{-8}$.
+This replaces the rectangle mesh for the quadratic local support. The rectangle
+checker remains an independent enclosure method. Neither checker supplies the
+Gaussian integral or the global joint-image law cover.
+
+There is also a direct continuous-cell rule. If
+$H(s)=\sum_j\omega_j(s)H_j$, with nonnegative weights summing to one, interpolate
+feasible dual prices by the same weights. The slack is the corresponding
+convex combination of the certified positive semidefinite slacks, so the local
+support is at most $\sum_j\omega_j(s)\sum_i\lambda_{j,i}$ throughout the cell.
+This applies directly when the coefficient matrix is affine in the cell
+parameters; more general inputs need a certified coefficient enclosure.
+The old negative quadratic in $y$ remains separate and is spent once.
+
+For a fixed lifted state the dual support is convex in the moment prices:
+it is a supremum of affine functions of those prices, even after supremizing
+in $y$. This does not make the inner maximization in $y$ concave or justify
+exchanging the tensor supremum and price infimum.
+
+For a positive definite $M$, the outer quadratic dual is coercive. Bounded
+features and fixed polynomial images give an integrable bound
+$C_0+C_1\|y\|-\lambda_{\min}(M)\|y\|^2$ on its value, with an added
+explicit constant for the moment prices. Thus a finite ball in $y$ and the two
+discs suffice for interval subdivision; Gaussian polynomial tails are paid as
+in the old potential checker. This gives a finite support obligation for each
+specified lifted state and price. It does \emph{not} yet give a finite cover
+of all admissible remote laws of those states. In particular the conditional
+images must remain the actual images of the same responses, rather than free
+polynomials chosen separately for each moment.
+
+\paragraph{A bilinear alternative for fixed feature rules.}
+There is also a useful way to avoid the absolute-weight price when the real
+features $A,B$ are response-independent. Let $M_A$ denote multiplication by
+$A$ and use the signed Hessian form from
+\S\ref{sec:fresh-second-chaos-stability}. For $\lambda\ge0$,
+\[
+ J(f,g)+\lambda H(A,B)
+ =\operatorname{Re}\langle f,S_\lambda g\rangle,\qquad
+ S_\lambda=T+\lambda(M_{A^2}T+TM_{B^2}+2\varepsilon M_APM_B).
+\]
+If the features have a uniform bound in every dimension, the near-maximizer
+Hessian theorem and a maximizing sequence imply
+\[
+ \boxed{\|T\|_{\infty\to1}\le
+        \sup_n\|S_\lambda\|_{\infty\to1}.}
+\]
+Indeed, at a $\delta$-near-maximizer the right payoff is at least
+$\|T\|-\delta-10\lambda L^2\sqrt\delta$; now let $\delta\downarrow0$.
+The same argument permits finite nonnegative sums of bounded feature tests.
+This is a new certificate interface, not a claim that the modified norm is
+smaller or already bounded. Response-dependent clipped scores do not define
+one fixed bilinear operator and must instead use the lifted support interface.
+
+\paragraph{A common-row fallback.}
+For row functionals $F_i(f,g)$ before their fibre supremum,
+$\sup_{f,g}\sum w_iF_i\le\sum w_i\sup_{f,g}F_i$.
+Since the pre-supremum functional is affine in $(M,L,\delta a)$, its common
+potential uses $\overline M=\sum w_iM_i$, $\overline L=\sum w_iL_i$ and
+$\overline A=\sum w_i\delta_i a_i$; its dual subtracts
+$m^{\mathsf T}\overline M^{-1}m$. Averaging $M_i^{-1}$ would be incorrect.
+This replacement preserves the existing common-square mixing identity.
+It cannot also claim the old full discarded-square deficit a second time.
+
+\paragraph{Quadratic features close the missing first-chaos map exactly.}
+The free completion in \eqref{eq:shared-stability-completion} is unnecessary
+for an important feature class. For a Hermitian matrix $M$, let
+\[
+ A_M(z)=z^*Mz-\operatorname{tr}M,\qquad
+ W_{jl;i}={:}z_jz_l\overline z_i{:}.
+\]
+The pointwise Wick identity is
+\begin{equation}\label{eq:shared-quadratic-wick}
+ A_Mz_l=\sum_jM_{lj}z_j+\sum_{i,j}M_{ij}W_{jl;i}.
+\end{equation}
+Consequently every disc-valued response, not only a near-maximizer, satisfies
+\begin{align}
+ [P(fA_M)]_l
+ &=\sum_j\overline{M_{lj}}\langle z_j,f\rangle
+       +\sum_{i,j}\overline{M_{ij}}\langle W_{jl;i},f\rangle
+       \nonumber\\
+ &=\sum_j\overline{M_{lj}}\langle z_j,Tf\rangle
+       -\varepsilon^{-1}\sum_{i,j}\overline{M_{ij}}
+                                      \langle W_{jl;i},Tf\rangle.
+       \label{eq:shared-quadratic-closure}
+\end{align}
+Here $[Ph]_l=\langle z_l,h\rangle$. Reality of $A_M$ moves it to the test
+probe, and \eqref{eq:shared-quadratic-wick} lies entirely in the first and
+$(2,1)$ chaoses. Thus higher response coefficients vanish from the pairing.
+No multiplication operator on all of $L^2$ is assumed: the bounded response
+times $A_M$ is in $L^2$, and the probe product is a fixed polynomial.
+
+Write the last expression as $\mathcal D_M(Tf)_l$. The full cross block is
+now exactly
+\[
+ C_{ij}=\operatorname{Re}\langle\mathcal D_{M_i}(Tf),
+                                      \mathcal D_{N_j}(Tg)\rangle.
+\]
+It is a contraction of the actual linear and cubic tensors. Changing its
+unmeasured part independently while leaving those images fixed would violate
+\eqref{eq:shared-quadratic-closure}. This addresses precisely the completion
+freedom exposed by the score-feature diagnostic; it does not assert that
+every quadratic-feature stability matrix is violated at a binding state.
+
+The features are unbounded, so the bounded-feature remainder constant cannot
+be reused. There is an explicit dimension-free substitute. If
+$\|A_M\|_2=\|M\|_{\rm HS}=a$, then
+\[
+ \mathbb EA_M^4\le9a^4,\qquad
+ \mathbb EA_M^6\le265a^6,\qquad
+ \mathbb EA_M^8\le14833a^8.
+\]
+To prove these, diagonalize $M$ and write
+$A_M=\sum\lambda_j(|z_j|^2-1)$. For $k\ge2$ its cumulant is
+$(k-1)!\sum\lambda_j^k$, whose absolute value is at most $(k-1)!a^k$.
+The moment--cumulant partition formula has nonnegative coefficients; replacing
+each cumulant by this bound gives the corresponding even moment of
+$a(\operatorname{Exp}(1)-1)$. Those centered even moments are the derangement
+numbers $9,265,14833$.
+
+For two such features with norms $a,b$, the $L^8$ remainder in
+\S\ref{sec:fresh-second-chaos-stability}, using $\|Tf\|_2,\|Tg\|_2\le1$,
+is at most
+\[
+ C(A,B)\le\frac{183}{4}(a^4+b^4)+\frac{45}{2}a^2b^2
+                   +\frac{489}{20}(a^3b+ab^3)
+             \le48(a^2+b^2)^2.
+\]
+Here $\sqrt{14833}<122$, $\sqrt{265}<163/10$ and $\varepsilon\le1$.
+For the last inequality put $S=a^2+b^2$, $r=ab$; the difference multiplied
+by $276$ is
+$(138r-489S/20)^2+(9279/400)S^2\ge0$.
+Therefore orthonormal Hermitian feature families give the necessary matrix
+inequality
+\begin{equation}\label{eq:shared-quadratic-stability}
+ \boxed{\begin{pmatrix}D_f&\varepsilon C\\
+                         \varepsilon C^{\mathsf T}&D_g\end{pmatrix}
+             \succeq-16\sqrt{3\delta}\,I}
+\end{equation}
+for global $\delta$-near-maximizers. This also holds with the original signed
+weights. No clipping error or free residual Gram completion is present. The
+pointwise Wick identity, Hilbert-space probe closure and rational remainder
+budget are kernel-checked in \code{QuadraticFeatures.lean}; the Gaussian
+moment--cumulant application and matrix assembly here are written proofs.
+
+The constant feature may be included without losing closure. For
+$A=c+A_M$ with $\|A\|_2=a$, Minkowski and Cauchy--Schwarz give
+$\|A\|_4\le2a$, $\|A\|_6\le\sqrt8\,a$ and
+$\|A\|_8\le\sqrt{13}\,a$. Indeed $9=(\sqrt3)^4$,
+$265<343=(\sqrt7)^6$ and $14833<20736=(\sqrt{12})^8$.
+Since $(\sqrt8)^3<23$, the remainder becomes at most
+\[
+ \frac{507}{8}(a^4+b^4)+40a^2b^2+
+                         \frac{69}{2}(a^3b+ab^3)
+                 \le67(a^2+b^2)^2.
+\]
+For the last inequality, multiplying the difference by $347$ gives
+$(347r/2-69S/2)^2+(541/8)S^2\ge0$.
+Thus affine-quadratic feature families have matrix error at most
+$4\sqrt{67\delta}\,I$. This second rational budget is also in Lean.
+
+Thus the next uniform certificate can retain joint polynomial images and
+their explicit quadratic contractions, use the exact local two-disc SDP for
+moment prices, and bound the weighted image integrals. It still needs a
+global joint-tensor inequality and complete row cover. A marginal radial law
+alone contains neither the contraction map nor those weighted integrals.
+
+\paragraph{Formalization and diagnostic status.}
+The Hilbert-space Gram interval, its nested-projection specialization,
+reflection estimate, scalar completion screen, factored prices, finite
+moment-support assembly, pointwise alignment and cutoff inequalities,
+cross-inner-product perturbation, scalar disc support and its attainment,
+and near-maximizer price accounting are formalized in
+\code{Grothe/LowerAnalytic/ResponseGram.lean}. The Gaussian application,
+Gaussian image-lift and matrix-norm error estimates, the two-disc support
+construction, matrix dilation and bilinear operator
+identity above are paper proofs; they are not asserted to have been formalized
+by those abstract lemmas. Discovery scripts and independent-grid results are
+recorded in \code{docs/JOINT\_RESPONSE\_LIFT\_2026-10-23.md}.
+No numerical endpoint is changed.
+
+\code{TwoDisc.lean} additionally proves the positive-slack factorization and
+its universal support bound, and sharp bounds and attainment for the four local
+examples. These proofs use rational sum-of-squares factorizations, so the four
+sharp local support values, unlike the floating SDP proposals, require no
+external numerical hypothesis. The general rank-one SDP exactness argument
+and the principal-minor proposal checker remain paper and external checks.

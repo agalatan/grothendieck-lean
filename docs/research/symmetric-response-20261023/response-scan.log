@@ -1,0 +1,7 @@
+PASS analytic gradient against finite differences 1.0454507389998091e-09
+4 0.745 {'holdout_cross_score': 0.7126648806421815, 'holdout_baseline_cross_score': 0.7119000904953838, 'holdout_one_sided_update_cross_score': 0.71266488064338, 'seconds': 8.323622113093734}
+16 0.745 {'holdout_cross_score': 0.713017820908504, 'holdout_baseline_cross_score': 0.7129113885742518, 'holdout_one_sided_update_cross_score': 0.7130178209162201, 'seconds': 8.822539255023003}
+128 0.745 {'holdout_cross_score': 0.7132558714188201, 'holdout_baseline_cross_score': 0.713250101091066, 'holdout_one_sided_update_cross_score': 0.7132558714190159, 'seconds': 8.683577820658684}
+4 0.7564 {'holdout_cross_score': 0.7119246873690668, 'holdout_baseline_cross_score': 0.7115305111671932, 'holdout_one_sided_update_cross_score': 0.7119246873629346, 'seconds': 7.112691408023238}
+16 0.7564 {'holdout_cross_score': 0.7126065870542614, 'holdout_baseline_cross_score': 0.7125962185387308, 'holdout_one_sided_update_cross_score': 0.7126065870543761, 'seconds': 7.991565782576799}
+128 0.7564 {'holdout_cross_score': 0.713059457675309, 'holdout_baseline_cross_score': 0.7129532000716051, 'holdout_one_sided_update_cross_score': 0.713059457676672, 'seconds': 8.08471154794097}

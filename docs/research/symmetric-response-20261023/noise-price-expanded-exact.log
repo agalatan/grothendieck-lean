@@ -1,0 +1,4 @@
+PASS rational all-level price; exact midpoint screen for 12 columns; 0.7120360183182265
+PASS invalid price and understated midpoint bound rejected
+The midpoint screen has no positive exclusion margin against the target.
+No pool exclusion or Grothendieck endpoint is certified by this replay.

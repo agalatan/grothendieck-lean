@@ -56,7 +56,7 @@ More precisely:
   numerical enclosures. The older `Grothe.fresh_upper` table interface
   conditional on `DirectHyps E EX` remains available.
 - **Unconditional formal upper:** `Grothe.haagerup_bound` proves
-  `K≤1.40578` without `NodeCaps`, `DirectHyps`, or any other numerical input
+  `K≤1.405364` without `NodeCaps`, `DirectHyps`, or any other numerical input
   hypothesis. This is weaker than the sharp external-assisted construction.
 
 The finite native checks are explicitly enumerated in

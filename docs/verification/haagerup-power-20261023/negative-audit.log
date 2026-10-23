@@ -1,0 +1,4 @@
+PASS rejected missing theorem
+PASS rejected foreign numerical fact
+PASS rejected Lean error
+PASS rejected mixed audit modes

@@ -1,0 +1,4 @@
+PASS rational all-level price; exact midpoint screen for 9 columns; 0.7115905717355746
+PASS invalid price and understated midpoint bound rejected
+Still required: rigorous enclosures of every input integral within 3.385889598096379e-05
+No pool exclusion or Grothendieck endpoint is certified by this replay.
