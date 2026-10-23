@@ -28,25 +28,23 @@ apply simultaneously; an exact checksum is not an analytic theorem.
 The current main-development interval is
 
 \[
-1.401695322458<K_G^{\mathbb C}<1.404598635371.
+1.401696986171<K_G^{\mathbb C}<1.404598570779.
 \]
 
 More precisely:
 
-- **Lower:** `B=0.7134218=3567109/5000000`. The fully formal implication
-  `NodeCaps → IsGrothendieckBound K → 1.401695322458<K` ends in
-  `Grothe/LowerAnalytic/Reduction.lean`. Its stronger reciprocal is
-  `1/B=1.401695322458607…`. Gaussian-to-finite transfer, the original witness,
-  its vector value, row reduction, circular-cubic tensor/Stein identities,
-  joint sixth-moment budgets and the finite cover are formalized. The remaining
-  `NodeCaps` hypothesis is about the **actual** nineteen fibre potentials at
-  their stored nodes. The separate `GrotheCaps` target reduces it to
-  `CapsRest`, comprising the remaining four rows' vertex caps and any
-  excluded-node caps of the other rows. The exclusion lists are currently
-  empty. The heavy range checks have no recorded verification stamp in the
-  current tree and are not part of default CI.
+- **Lower:** `B=0.713420953220=35671047661/50000000000`. The current
+  implication `NodeCaps → IsGrothendieckBound K → 1.401696986171<K`
+  ends in `Grothe/Research/RefinedCoverResult.lean`. The 10,521-box cover
+  uses the original source bank and two unshifted row-14 law nodes.
+  Gaussian-to-finite transfer, the original witness, its vector value,
+  row reduction and circular-cubic tensor/Stein budgets are formalized.
+  `NodeCaps` still concerns the actual nineteen fibre potentials. The
+  separate `GrotheCaps` route retains `CapsRest` for rows 12–15; its other
+  60 range facts have a recorded droplet verification stamp. Those heavy
+  facts are separate from the default CI build.
 - **Upper:** `Grothe.UpperChaos.fresh_upper_rounder` formally gives
-  `K≤500000000000000000/355973576656604491=1.404598635370998…`, conditional
+  `K≤500000000000000000/355973593026532891=1.404598570778625…`, conditional
   on an L² charge-one truncation `X` and the numerical bounds `compare`,
   `energy_close` and `hardy`. The concrete rounding, Gaussian Hermite
   completeness/Parseval/Mehler, charge selection, actual-rounding validity
@@ -56,11 +54,11 @@ More precisely:
   numerical enclosures. The older `Grothe.fresh_upper` table interface
   conditional on `DirectHyps E EX` remains available.
 - **Unconditional formal upper:** `Grothe.haagerup_bound` proves
-  `K≤1.405364` without `NodeCaps`, `DirectHyps`, or any other numerical input
+  `K≤1.404951` without `NodeCaps`, `DirectHyps`, or any other numerical input
   hypothesis. This is weaker than the sharp external-assisted construction.
 
 The finite native checks are explicitly enumerated in
-`scripts/check_axioms.py`; the lower certificate is assembled from thirteen
+`scripts/check_axioms.py`; the lower certificate is assembled from fourteen
 single-threaded checks. The upper head, unconditional Haagerup check,
 phase cover and cap chords have separate native facts, and the heavy caps
 target has a separate report. The generic research lemmas add no native
@@ -131,12 +129,13 @@ The binding audit identifies five distinct losses:
 - Moment and finite Stein/Gram cuts constrain the radial law of `|q|²` without
   asserting that this law, all projections and both responses are jointly realizable.
 
-The current exact maximum box cap is between `0.713421798525` and
-`0.713421798526`, only about `1.4745e−9` below `B`. Per-box padding is `1e−11`.
-Removing those allowances is irrelevant to the size of the remaining problem.
+The adaptive cover's exact maximum is approximately `0.713420953219917`,
+below the rounded cap `B=0.713420953220`. Its earlier per-box padding
+is already part of exact recipe evaluation. Removing rounding allowances
+cannot account for the size of the remaining problem.
 
-More decisively, four exact atomic radial laws satisfy the 671 cuts in the
-audited bank and the required moments, with table-objective scores exceeding
+In the original frozen audit, four exact atomic radial laws satisfy the
+671 cuts in that audited bank and the required moments, with table-objective scores exceeding
 `0.713412812507`, `0.713414640742`, `0.713406413945` and `0.713352277645`.
 All four were independently replayed using rational arithmetic. Each exceeds
 `500/701=0.7132667617689…`. Consequently repricing the **same** finite table
@@ -144,6 +143,10 @@ and cut bank cannot reach that target at those points. These are not actual
 cubics, response pairs, or counterexamples to Conjecture K. They establish an
 obstruction to a particular relaxation, not an obstruction to the true norm.
 The bank includes the cuts needed at those points, not every conceivable cut.
+Later merges of inherited Stein tests exclude all four fixed atomic laws;
+reoptimizing the law largely restores their scores. The original four laws
+therefore do not certify an obstruction to the current adaptive bank. See
+`COMMON_STEIN_REASSESSMENT_2026-10-23.md` for that distinction.
 
 The older decomposition into roughly 78% row/gate loss and 22% law loss is
 a floating diagnostic of a dated binding rule, not an exact ledger for every
@@ -176,7 +179,7 @@ cancellation banks cannot beat the incumbent direct rounding score.
 Even perfect cubic certification is limited. The numerical realizable
 adversary model at the best `ε≈0.7564` gives norm about `0.7131355`, reciprocal
 `1.402258`. This is numerical evidence, not a proved exact cubic optimum.
-Used only as a diagnostic, that ceiling leaves about **80.62%** of the current
+Used only as a diagnostic, that ceiling leaves about **80.66%** of the current
 interval above it. At the current `ε=.745`, the model already gives norm
 about `.713288`, so this fixed parameter cannot plausibly reach 1.402.
 Changing ε requires a new complete cover, including its flanks.
@@ -195,13 +198,13 @@ alternating pattern fails: its dimension-uniform scalar norm is one.
 The current slope is
 
 \[
-c=0.7119483545924,
-\qquad A=c-\delta=0.711947153313208982,
-\quad\delta=1.201279191018\cdot10^{-6}.
+c=0.7119483103461,
+\qquad A=c-\delta=0.711947186053065782,
+\quad\delta=1.124293034218\cdot10^{-6}.
 \]
 
-The residual consists of comparison `1.065637497e−6` (88.71%), native
-head `9.8880e−8` (8.23%), Hardy tail `3.6748e−8` (3.06%), and table
+The residual consists of comparison `1.065637497e−6` (94.78%), native
+head `2.8153e−8` (2.50%), Hardy tail `3.04888432e−8` (2.71%), and table
 error `1.3694018e−11` (about .001%). These are upper allowances, not
 measurements of the actual residual or the proportion of the theorem that
 is mathematically true.
@@ -209,17 +212,17 @@ is mathematically true.
 Even removing **all** residual would yield only
 
 \[
-1/c=1.40459626537449\ldots,
+1/c=1.40459635266761\ldots,
 \]
 
-a gain of `2.3699965e−6` in K. Removing the comparison allowance alone gives
-about `1.40459653298078`. None of that can close the `.002903312913`
+a gain of `2.218111014592e−6` in K. Removing the comparison allowance alone gives
+about `1.404596468388596`. None of that can close the `.002901584608`
 two-sided interval. The stable archive likewise has a fixed zero-residual
 reciprocal `1.4045937`. Better upper arithmetic matters for trust and for
 millionths; a substantial advance needs a different family or a different
 signed coefficient balance.
 
-The proposed Haagerup value `1.404575934663742…` is only about 0.782% of
+The proposed Haagerup value `1.404575934663742…` is only about 0.780% of
 the current interval below its upper endpoint. Reaching that value on the
 upper side would still leave almost the whole lower-side gap. Conversely,
 success with cubic Conjecture K would not justify that conjectured exact value.
@@ -394,7 +397,7 @@ Agreement of the two optimizations inside the same pool supplies neither.
 The archived repaired pool and its later chirp search are explicit warnings:
 recognizable phase columns were inaccurate under coarse quadrature, and
 stable payoffs hid coefficient changes around `1.65e−4`. The large chirp pool
-still scores about `.711892`, below the current `.711947153313…` incumbent,
+still scores about `.711892`, below the current `.711947179793…` incumbent,
 even before all remaining family-specific tail obligations.
 
 So the two sides are obstructed by the same response body in the precise

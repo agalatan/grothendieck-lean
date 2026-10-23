@@ -38,6 +38,33 @@ Selected pointwise prices near the binding region still leave mixture and
 law-price optimization as a possible next route; they are not optimality
 certificates or actual response lower bounds.
 
+A subsequent bounded test fuses six inherited Stein witnesses into one
+mixed-source witness on their common 161-knot mesh. Exact Jensen square
+identities justify the fusion; eliminating the averaged auxiliary multiplier
+preserves its cut. One majorant LP then passes a depth-nine whole-half-line
+check (951 intervals, 973 Bernstein leaves, degree ten), and the existing
+Lean `checkBatch` accepts the ordinary mixed batch. At the selected state
+its cap is approximately `0.713418480665612`, a saving of
+`0.000001958069314442` against that old mixture. This does not alter the
+frozen global certificate. Two endpoint LPs with the center's fused cut also
+pass whole-half-line checks, but their full binding-box cap is only
+`0.713420448939047`. Splitting at the already proved midpoint leaves that
+maximum unchanged: an endpoint dominates. Fusing new endpoint witnesses at
+their actual interpolation weights improves that cap to
+`0.713420038569143`, still above `0.71342`. Keeping the better old lower
+endpoint and the new upper endpoint gives a complete neighborhood cap
+`0.713419752787476`; inserting the midpoint also validates two children
+with the same maximum. This clears
+`0.71342` locally, but remains above `10000/14017`, the cap needed for a
+strict `1.401700` reciprocal. The wider original t/x slab is also above the
+target. This selects a valid local candidate; it is not a stronger global
+endpoint. Endpoint acceptance, full-box validity and complete coverage remain
+separate obligations. The selected neighborhood intersects one current leaf
+but contains no complete leaf, so even a successful local price needs an
+explicit partition with the old valid recipe on the complement. The
+experiment and replay live under
+`handoff/research-third-decimal/adaptive-next-20261023/fused/`.
+
 `data/lower-unshifted/` retains the complete cover, forest ledger, two law
 nodes and immutable starting inputs. `tools/needle_adaptive_global.py`
 replays every root, event and final recipe using only durable clone-local
@@ -68,6 +95,23 @@ endpoint follows. The later Rice/Bessel and Schwinger derivation handles the
 incumbent's nonconstant radial profile. Numerical normalization checks agree,
 but directed integration of the correction moments is still needed. These
 research outputs remain under `handoff/research-third-decimal/`.
+
+## Combined upper continuation and validation
+
+Master `b93ec83` contributes degree-41/15 preprocessors, a new working
+slope and head cap, clone-local exact energy inputs, and a fresh directed
+Gaussian Schur/Hardy replay for the new composed kernel. The raw rounding,
+truncation energies, comparison allowance and energy-table allowance stay
+unchanged. The Hardy premise has the same radius and budget but applies
+to the new kernel. Combining these inputs with the linear-budget deduction
+gives `500000000000000000/355973593026532891 < 1.404598570779`
+under the same three numerical interfaces. The Gaussian Schur/continuation
+argument and numerical hypotheses remain external; this is conditional.
+All 15 affected upper modules passed fresh warning-as-error checks. The actual
+40-declaration combined axiom report uses the 14 lower native facts plus the
+upper head and phase facts. Its logs, source/dependency guards and exact
+arithmetic are in `data/upper-preprocess/verification/`; full default coverage
+is delegated to branch CI.
 
 ## Earlier upper continuation and validation
 
@@ -113,7 +157,8 @@ endpoint. See [the next campaign](../handoff/research-third-decimal/needle-20261
 
 ## Integration with current master
 
-The current campaign includes GitHub master `197b82f`. Its two spectral-error
+The current campaign includes GitHub master `b93ec83`. The earlier `197b82f`
+spectral exchange contribution, its two spectral-error
 lemmas and canonical signed-head exporter are retained. Both lemmas use only
 the standard axioms; the directed exporter pays one coefficient-l1 error
 allowance for every admissible spectral price. Its tied-branch phase oracle

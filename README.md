@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.401696986171 < K_G^ℂ < 1.404598623023**
+> **1.401696986171 < K_G^ℂ < 1.404598570779**
 >
 > and, with **no hypothesis at all** (every step proved in Lean): **K_G^ℂ ≤ 1.404951**
 
@@ -40,11 +40,11 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.401696986171 < K** | **K < 1.404598623023** |
+| Oct 2026 | **this repository** | **1.401696986171 < K** | **K < 1.404598570779** |
 | Oct 2026 | this repository, fully formal (no hypothesis) | | K ≤ 1.404951 |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
-proposed as the exact value; it lies inside the interval, 2.27·10⁻⁵ below our upper bound.
+proposed as the exact value; it lies inside the interval, 2.26·10⁻⁵ below our upper bound.
 
 ## What is proved, and under which assumptions
 
@@ -117,8 +117,8 @@ scale interpolation domains; see `data/lower-unshifted/README.md`.
 
 
 **Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder`, for an L² charge-one truncation `X`, proves
-`compare → energy_close → hardy → IsGrothendieckBound (500000000000000000/355973579786182891)`,
-and `Grothe.upper_value_lt` shows this is below 1.404598623023
+`compare → energy_close → hardy → IsGrothendieckBound (500000000000000000/355973593026532891)`,
+and `Grothe.upper_value_lt` shows this is below 1.404598570779
 (`Grothe/UpperChaos/PhiBound.lean`; the table interface is `Grothe.fresh_upper` in `Grothe/Upper/PolynomialBridge.lean`).
 
 The rounding is the smoothing G_T of T = F₀·P₃(φ): a two-coordinate Gaussian phase rounding F₀ times the
@@ -126,9 +126,9 @@ cubic Taylor polynomial P₃(x) = 1 + ix − x²/2 − ix³/6 of a damped polyno
 from the stored data (`Grothe/UpperChaos/Rounder.lean`). Lean proves that G_T is measurable, charge one and
 disk-valued: |P₃(x)|² = 1 − x⁴(3 − x²)/36 and φ² ≤ 3 everywhere (`phiBound`, an exact bisection cover of a box plus an
 analytic far field; native fact `phi_cover_check`). Its correlation kernel H(t) = Σ E[n,m] p(t)ⁿ(−τ(t))ᵐ, with the odd
-preprocessors p of degree 41 and τ(t) = αt³ + βt⁷ (Wiener norms ≤ 1), is compared with c·t,
-c = 1779870886481/(25·10¹¹), through the kernel of a truncation X, and the bound is 1/(c − ‖H − c·t‖) with residual
-at most 597510017109/(5·10¹⁷).
+preprocessors of degrees 41 and 15 (Wiener norms ≤ 1, auxiliary linear coefficient zero), is compared with c·t,
+c = 7119483103461/10¹³, through the kernel of a truncation X, and the bound is 1/(c − ‖H − c·t‖) with residual
+at most 562146517109/(5·10¹⁷).
 Lean proves the complex Gaussian chaos calculus on ℂ² (`Grothe/UpperChaos/`: Hermite basis, completeness,
 Parseval, the Mehler formula for L² functions, charge selection, energies → kernel), hence the structural facts
 (validity, summability, parity) for G_T and X; the transfer inequality; the evaluation of the head of the kernel
@@ -137,17 +137,22 @@ arithmetic. What is **assumed** (numerical statements about G_T and X):
 
 | hypothesis | content | share of the residual |
 |---|---|---|
-| `compare` | Σ\|E(G_T) − E(X)\| ≤ 1065637497/10¹⁵ (external computer-assisted comparison lemma) | 89.17% |
+| `compare` | Σ\|E(G_T) − E(X)\| ≤ 1065637497/10¹⁵ (external computer-assisted comparison lemma) | 94.78% |
 | `energy_close` | the stored energies are within 6847009/(5·10¹⁷) of E(X) | 0.001% |
-| `hardy` | weighted square sum ≤ 7/4 at radius 4149/4000, giving the tail 19055527/(625·10¹²) beyond degree 501 | 2.55% |
+| `hardy` | weighted square sum ≤ 7/4 at radius 4149/4000, giving the tail 19055527/(625·10¹²) beyond degree 501 | 2.71% |
 
-The head, computed in Lean (`head_check`), is 98880/10¹², 8.27% of the total
-597510017109/(5·10¹⁷).
+The head, computed in Lean (`head_check`), is 28153/10¹², 2.50% of the total
+562146517109/(5·10¹⁷).
 
-The tail deduction reserves the linear coefficient's already known weighted
-square before applying Cauchy–Schwarz. This strengthens the conclusion under
-the same three numerical hypotheses (`hardy_budget_after_linear`,
-`linear_lower`, `tail_le`); it requires no new source computation.
+The tail deduction reserves the linear coefficient's known weighted square
+before applying Cauchy–Schwarz (`hardy_budget_after_linear`, `linear_lower`,
+`tail_le`). This uses the same three numerical hypotheses.
+
+The current parameters and all 21,168 exact energies are in
+`data/upper-preprocess/certificate.json`; `python3 tools/gen_upper_data.py`
+regenerates the Lean data. The directed head and the fresh 65,594-arc Gaussian
+Schur/Hardy replay are recorded alongside it. The comparison and energy-table
+accuracy inputs are inherited; no extra head-comparison assumption is used.
 
 **Unconditional upper bound** — `Grothe.haagerup_bound : IsGrothendieckBound (1404951/1000000)`
 (`Grothe/Haagerup/Power.lean`, with the finite check in `Grothe/Haagerup/PowerCheck.lean`), with **no hypothesis**.
@@ -188,8 +193,8 @@ response searches are exploratory. See [the replica report](docs/SYMMETRIC_RESPO
 
 A linear separator excludes the entire Gaussian-phase cubic-preprocessor
 family, including complex phases and convex mixtures, from improving the current
-upper score: its reciprocal score is at most 0.71186, below the certified incumbent score floor
-0.71194715957. Seventeen additional Lean results check the polynomial separator,
+upper score: its reciprocal score is at most 0.71186, below the incumbent
+0.7119471860. Seventeen additional Lean results check the polynomial separator,
 common signed-tail prices, error propagation, and finite-mixture assembly.
 The Gaussian-family application is a written proof with an explicit Lean
 low-coefficient interface. An incumbent's coefficient-l1 error is paid once

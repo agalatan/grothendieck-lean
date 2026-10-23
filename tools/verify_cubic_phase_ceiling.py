@@ -134,7 +134,8 @@ def calculate():
     # pi < 355/113, elementary and also available in Lean.
     score_cap = Q(22659, 100000)*Q(355, 113)
     assert score_cap < Q(71186, 100000)
-    incumbent = Q(355973576656604491, 500000000000000000)
+    certificate = Path(__file__).resolve().parents[1]/'data/upper-preprocess/certificate.json'
+    incumbent = Q(json.loads(certificate.read_text())['incumbent_score'])
     assert score_cap < incumbent
     print('PASS full complex cubic-phase architecture score <', float(score_cap),
           '< 0.71186 < incumbent')

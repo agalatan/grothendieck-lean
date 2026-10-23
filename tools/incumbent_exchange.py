@@ -109,7 +109,8 @@ def replay_head(src, out):
     score = mids[0]-sum(map(abs,mids[1:]))-xi
     result = {'scope': 'Directed finite-head replay; inherited analytic inputs unchanged.',
               'input_sha256': hashlib.sha256(src.read_bytes()).hexdigest(),
-              'source_sha256': data['source_sha256'], 'precision_bits': ctx.prec,
+              'source_sha256': data.get('source_sha256', data.get('baseline_source_sha256')),
+              'precision_bits': ctx.prec,
               'head': list(map(str,mids)), 'rounding_l1_radius': str(radius),
               'head_residual_upper': str(head_residual+radius),
               'analytic_l1_radius': str(inherited), 'total_l1_radius': str(xi),

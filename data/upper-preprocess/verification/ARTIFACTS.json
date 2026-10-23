@@ -1,0 +1,17 @@
+{
+  "Grothe.Upper.Data": "b9b35f94bb590e3e990d3955b3fdbe935b8580ea1ee72590052362a1d3a3965a",
+  "Grothe.Upper.Residual": "0ff3b443e40a89a456ef78266a879c45715711005e46f3dea7574f17c290b3e3",
+  "Grothe.Upper.Haagerup": "fefddbcbb4533171dfaeb1f8053c227fbc8c555889ae915d7fd2056209b1b25b",
+  "Grothe.Upper.Final": "0073e7cb848da81e3caa58187ce26de1ce6b4ddb84cb676552efe058e02f5a33",
+  "Grothe.Haagerup.Series": "295414fa57c15826d672419a2b14d7c8c68e7250bab656cb98f246d7f590bfc1",
+  "Grothe.Upper.PolynomialBridge": "6bea09d3f046da8f34bf779bdb10a38b3c46a6767cefd47112a620e628c78db3",
+  "Grothe.UpperChaos.Kernel2": "b57716cb8f2e878c366f0ae6f55f594b0c73c29858beeaf72b26129797940f87",
+  "Grothe.Haagerup.Identity": "4b9f39c8ac28d62102774d60398a7e9d4e3ed79667fb72f53dd64b002c023e52",
+  "Grothe.UpperChaos.Realise2": "9b297b959c9c59f45b75b0d3c4ce7f031ca5f4a2ec3b7b5cb2148f3c865ad392",
+  "Grothe.UpperChaos.Structural": "589e4daa3eb9ca0aae6227e87597b26fe634d32ec96a8979d517b321dd5c28ea",
+  "Grothe.UpperChaos.Rounder": "cded8951f3253c6234d894b2848cb01244afd6dd21145a9bdf4c90b6f7331b28",
+  "Grothe.UpperChaos.HardyKernel": "40a896314d0f98525236ab839f41beb04a6dc0d23cdacd99fa2278611dd471e0",
+  "Grothe.UpperChaos.PhiCover": "9c1370eec75d399b6f8c89757d000998784aef28f3e90b2d3daca99b061e65f7",
+  "Grothe.UpperChaos.PhiCoverCheck": "5639dca6dd2f25722f1fc12a6c5b8d1f573a840c24192ee70f1b6a0272066f9f",
+  "Grothe.UpperChaos.PhiBound": "b3f1abfc94a0f40d8d58cafe0ced7b3f7003b4036b9e858ad620e179c6b77742"
+}

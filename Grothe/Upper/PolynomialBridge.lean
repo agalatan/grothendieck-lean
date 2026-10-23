@@ -3,7 +3,7 @@ import Grothe.Upper.Residual
 import Grothe.Upper.Final
 
 /-!
-# `K_G^ℂ ≤ 500000000000000000/355973579786182891 < 1.404598623023`
+# `K_G^ℂ ≤ 500000000000000000/355973593026532891 < 1.404598570779`
 
 **The rounding.**  `F₀` is the two-coordinate Gaussian rounding and `φ` the damped polynomial phase
 of `Data.lean` (`φ² ≤ 3` everywhere).  The rounding is the bounded function
@@ -17,18 +17,18 @@ rounding is an average of unit-modulus ones, so its correlation kernel is domina
 Two energy tables occur, each giving a kernel `Σ_{n,m} E[n,m] p(t)^n (−τ(t))^m =
 Σ_j kernelCoeff E j · t^{2j+1}`: `E` of the rounding `T` and `EX` of the truncation `X = F₀ + v`,
 `v` the fixed polynomial of degree `≤ 181` of `Data.lean`.  The kernel of `E` is compared with the
-linear kernel `c·t`, `c = 1779870886481/(25·10¹¹)`:
+linear kernel `c·t`, `c = 7119483103461/10¹³`:
 
 * `‖H − H_X‖_𝒜 ≤ Σ |E − E_X| ≤ compareQ = 1065637497/10¹⁵` (hypothesis `compare` and the `ℓ¹`
   contraction of the composition);
 * the residual of `H_X` up to degree `501` is at most `headCapQ + energyErrQ`: the interval checker
   certifies (`head_check`, by `native_decide`) that the head of the kernel of the stored energies
-  `Ê` is within `headCapQ = 98880/10¹²` of `c·t`, and `E_X` is within `energyErrQ` of `Ê` in `ℓ¹`
+  `Ê` is within `headCapQ = 28153/10¹²` of `c·t`, and `E_X` is within `energyErrQ` of `Ê` in `ℓ¹`
   (hypothesis `energy_close`);
 * the same finite-head bound forces `h₀ ≥ slopeQ − headResidualQ`. Deducting `h₀²r²` from
   the weighted square budget `7/4` at radius `r = 4149/4000` bounds the coefficients beyond
   degree `501` by `tailQ = 19055527/625000000000000`; no stronger Hardy hypothesis is used;
-* hence `‖H − c·t‖_𝒜 ≤ 597510017109/(5·10¹⁷)` and `K_G^ℂ ≤ 1/(c − 597510017109/(5·10¹⁷))`
+* hence `‖H − c·t‖_𝒜 ≤ 562146517109/(5·10¹⁷)` and `K_G^ℂ ≤ 1/(c − 562146517109/(5·10¹⁷))`
   (`transfer`).
 -/
 
@@ -132,10 +132,10 @@ theorem linear_lower {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) :
 theorem tail_numeric :
     (shiftedBudgetQ : ℝ) * (4149 / 4000 : ℝ)⁻¹ ^ (2 * (2 * 250 + 1))
       ≤ (tailQ : ℝ) ^ 2 * (1 - (4149 / 4000 : ℝ)⁻¹ ^ 4) := by
-  have hN : (120466616071567034739418795803669547412017975 * 4000 ^ 1002 : ℕ)
+  have hN : (120466612014855450483734486263666950819517975 * 4000 ^ 1002 : ℕ)
       ≤ 14643885483565936271617911329 * 4149 ^ 1002 := by
     decide +kernel
-  have hR : (120466616071567034739418795803669547412017975 * 4000 ^ 1002 : ℝ)
+  have hR : (120466612014855450483734486263666950819517975 * 4000 ^ 1002 : ℝ)
       ≤ 14643885483565936271617911329 * 4149 ^ 1002 := by
     exact_mod_cast hN
   have hb : (0 : ℝ) < 4149 ^ 1002 := by positivity
@@ -165,7 +165,7 @@ theorem tail_le {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) :
     (by norm_num [tailQ]) tail_numeric
   simpa only [Nat.add_assoc, show 250 + 1 = 251 by norm_num] using ht
 
-/-- **Main theorem.**  `K_G^ℂ ≤ 500000000000000000/355973579786182891 < 1.404598623023`.
+/-- **Main theorem.**  `K_G^ℂ ≤ 500000000000000000/355973593026532891 < 1.404598570779`.
 
 Hypotheses (`hE : DirectHyps E EX`), for the tables `E` of the rounding `T = F₀ P₃(φ)` and `EX`
 of the truncation `X = F₀ + v`:
@@ -193,26 +193,26 @@ of the truncation `X = F₀ + v`:
   mean-square bound for the kernel of the rounding on the circle `|t| = 4149/4000`: a
   *mathematical lemma* (the Gaussian Schur estimate, valid for any bounded measurable rounding,
   and the holomorphic continuation of the Gaussian correlation) and a *numerical enclosure*: the
-  contour certificate (65 596 arcs, Arb ball arithmetic), giving the mean `1.69818 < 7/4`.
+  contour certificate (65 594 arcs, Arb ball arithmetic), giving the mean `1.70148 < 7/4`.
 
 What is proved here: the kernel of the stored table is within `headCapQ` of `c·t` up to degree
 `501` (`head_check`, the interval computation); the passage from tables to kernels (`ℓ¹`
 contraction, locality of the head, Cauchy–Schwarz tail); and the assembly
 
-  `1065637497/10¹⁵ + 98880/10¹² + 6847009/(5·10¹⁷) + 19055527/625000000000000 = 597510017109/(5·10¹⁷)`.
+  `1065637497/10¹⁵ + 28153/10¹² + 6847009/(5·10¹⁷) + 19055527/625000000000000 = 562146517109/(5·10¹⁷)`.
 
 The tail calculation deducts the linear energy already forced by the same head inputs.
 The three numerical premises and the rounding remain unchanged; the transfer inequality gives
 the smaller constant. -/
 theorem fresh_upper (E EX : ℕ × ℕ → ℝ) (hE : DirectHyps E EX) :
-    IsGrothendieckBound (500000000000000000 / 355973579786182891) := by
+    IsGrothendieckBound (500000000000000000 / 355973593026532891) := by
   have hs := summable_kernelCoeff hE.summable
   have hr : |kernelCoeff E 0 - (slopeQ : ℝ)| + ∑' n, |kernelCoeff E (n + 1)|
-      ≤ 597510017109 / 500000000000000000 := by
+      ≤ 562146517109 / 500000000000000000 := by
     rw [residual_split (kernelCoeff E) hs (slopeQ : ℝ) 250]
     have h := add_le_add (head_residual_le hE) (tail_le hE)
     have e : (headResidualQ : ℝ) + tailQ =
-        597510017109 / 500000000000000000 := by
+        562146517109 / 500000000000000000 := by
       norm_num [headResidualQ, compareQ, headCapQ, energyErrQ, tailQ]
     linarith
   refine (transfer (kernelCoeff E) hs hE.valid (by norm_num [slopeQ]) hr).mono (le_of_eq ?_)
@@ -220,11 +220,11 @@ theorem fresh_upper (E EX : ℕ × ℕ → ℝ) (hE : DirectHyps E EX) :
 
 /-- The new exact upper endpoint is below the stated decimal. -/
 theorem upper_value_lt :
-    (500000000000000000 / 355973579786182891 : ℝ) < 1.404598623023 := by norm_num
+    (500000000000000000 / 355973593026532891 : ℝ) < 1.404598570779 := by norm_num
 
 /-- This endpoint is strictly smaller than the previous one. -/
 theorem upper_value_improves :
-    (500000000000000000 / 355973579786182891 : ℝ) <
-      500000000000000000 / 355973576656604491 := by norm_num
+    (500000000000000000 / 355973593026532891 : ℝ) <
+      500000000000000000 / 355973589896954491 := by norm_num
 
 end Grothe

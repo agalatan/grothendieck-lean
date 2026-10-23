@@ -18,7 +18,7 @@ without copying it. Use targeted module builds; full builds run on the droplet o
 
 Headline `Grothe.UpperChaos.fresh_upper_rounder` (`Grothe/UpperChaos/PhiBound.lean`):
 
-    K_G^ℂ ≤ 500000000000000000/355973579786182891  (< 1.404598623023)
+    K_G^ℂ ≤ 500000000000000000/355973593026532891  (< 1.404598570779)
 
 for the concrete rounding `GT` (smoothed `F₀·P₃(φ)` built from `Grothe/Upper/Data.lean`), assuming only
 
@@ -47,9 +47,16 @@ are theorems.  Module map (all in `Grothe/UpperChaos/`):
 The sharper tail reserves the linear coefficient's weighted square from the
 same `7/4` budget before Cauchy–Schwarz (`hardy_budget_after_linear`,
 `linear_lower`, `tail_le`). It changes no numerical premise. The complete
-endpoint build and axiom audit passed in
+endpoint for the preceding preprocessors passed the full build and axiom audit in
 [run 39901871873](https://github.com/agalatan/grothendieck-lean/actions/runs/39901871873);
-the subsequently integrated `HardyKernel` definitions do not change that endpoint.
+the current degree-41/15 preprocessors come from `data/upper-preprocess/`.
+All 15 affected upper modules passed fresh warning-as-error checks, including
+the head and phase-cover native facts. The actual 40-declaration combined
+report uses 16 of 83 registered native facts (14 lower plus the upper head
+and phase cover). Logs and source guards are in
+`data/upper-preprocess/verification/`; the preceding CI run is historical
+evidence only. `HardyKernel` fixes definitions and does not
+discharge the numerical Hardy premise.
 
 ## 2. `|φ| < 1` (input of the EXTERNAL `compare` argument) — external certificate
 
@@ -74,8 +81,8 @@ bisection levels into 8 modules / 8 native facts of ~3 min each (no Task.spawn).
 
 ## 3. `hardy` (N4) — plan and progress
 
-Source certificate: `handoff/research-third-decimal/upper-polynomial-bridge-20261022/verify_hardy.py`
-and `inputs/GAUSSIAN_SCHUR_TAIL_PROOF.md`. Kernel `H(t) = Σ_j h_j t^{2j+1}`, `h = kernelCoeff(energy GT)`.
+Source certificate: `tools/verify_upper_hardy.py`, with the full current preprocessing,
+contour data and analytic input in `data/upper-preprocess/` (see its README). Kernel `H(t) = Σ_j h_j t^{2j+1}`, `h = kernelCoeff(energy GT)`.
 Lean route (detailed in PLAN_UPPER.md §6f):
 
 1. **Holomorphic continuation (next).** For complex symmetric 2×2 `R` with `I ± Re R ≻ 0` define

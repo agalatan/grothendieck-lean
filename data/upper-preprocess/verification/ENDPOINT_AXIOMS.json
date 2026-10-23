@@ -1,0 +1,63 @@
+{
+  "generic_upper": {
+    "declaration": "Grothe.fresh_upper",
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound",
+      "Grothe.head_check._native.native_decide.ax_1_1"
+    ]
+  },
+  "concrete_upper": {
+    "declaration": "Grothe.UpperChaos.fresh_upper_rounder",
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound",
+      "Grothe.head_check._native.native_decide.ax_1_1",
+      "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1"
+    ]
+  },
+  "lower": {
+    "declaration": "Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data",
+    "axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound",
+      "Grothe.Lower.certBatches0._native.native_decide.ax_1_1",
+      "Grothe.Lower.certBatches1._native.native_decide.ax_1_1",
+      "Grothe.Lower.certBatches2._native.native_decide.ax_1_1",
+      "Grothe.Lower.certRows0._native.native_decide.ax_1_1",
+      "Grothe.Lower.certRows1._native.native_decide.ax_1_1",
+      "Grothe.Lower.certRows2._native.native_decide.ax_1_1",
+      "Grothe.Lower.certRows3._native.native_decide.ax_1_1",
+      "Grothe.Lower.certRows4._native.native_decide.ax_1_1",
+      "Grothe.Research.LawNodeCheck.certLawNodes._native.native_decide.ax_1_1",
+      "Grothe.Research.RefinedLowerCheck.certRefinedBoxes0._native.native_decide.ax_1_1",
+      "Grothe.Research.RefinedLowerCheck.certRefinedBoxes1._native.native_decide.ax_1_1",
+      "Grothe.Research.RefinedLowerCheck.certRefinedBoxes2._native.native_decide.ax_1_1",
+      "Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1",
+      "Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1"
+    ]
+  },
+  "native_union": [
+    "Grothe.Lower.certBatches0._native.native_decide.ax_1_1",
+    "Grothe.Lower.certBatches1._native.native_decide.ax_1_1",
+    "Grothe.Lower.certBatches2._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows0._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows1._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows2._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows3._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows4._native.native_decide.ax_1_1",
+    "Grothe.Research.LawNodeCheck.certLawNodes._native.native_decide.ax_1_1",
+    "Grothe.Research.RefinedLowerCheck.certRefinedBoxes0._native.native_decide.ax_1_1",
+    "Grothe.Research.RefinedLowerCheck.certRefinedBoxes1._native.native_decide.ax_1_1",
+    "Grothe.Research.RefinedLowerCheck.certRefinedBoxes2._native.native_decide.ax_1_1",
+    "Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1",
+    "Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1",
+    "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1",
+    "Grothe.head_check._native.native_decide.ax_1_1"
+  ],
+  "same_DirectHyps": true,
+  "same_NodeCaps": true
+}

@@ -94,18 +94,18 @@ steps. No numerical response integral is certified by these modules. See
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
 **Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder` proves
-`IsGrothendieckBound (500000000000000000/355973579786182891)` for the concrete rounding,
+`IsGrothendieckBound (500000000000000000/355973593026532891)` for the concrete rounding,
 given an L² charge-one truncation `X` and the numerical bounds `compare`, `energy_close`, `hardy`.
-`Grothe.upper_value_lt` shows this is below 1.404598623023 (`Grothe/UpperChaos/PhiBound.lean`).
+`Grothe.upper_value_lt` shows this is below 1.404598570779 (`Grothe/UpperChaos/PhiBound.lean`).
 The older table interface `Grothe.fresh_upper : DirectHyps E EX → IsGrothendieckBound (...)`
 remains in `Grothe/Upper/PolynomialBridge.lean`.
 The actual rounding is G_T, the smoothing of T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6.
 It is defined in `Grothe/UpperChaos/Rounder.lean`. Lean proves φ² ≤ 3 (`phiBound`), hence
 |P₃(φ)|² = 1 − φ⁴(3 − φ²)/36 ≤ 1 and disk-valuedness of T and G_T. Here E is the actual
 energy table of G_T and EX that of X. The kernel is H(t) = Σ E[n,m] p(t)ⁿ(−τ(t))ᵐ with the preprocessors
-p(t) = t·P(t²) (`pList`, degree 41) and τ(t) = αt³ + βt⁷ (`qList`), both of Wiener norm ≤ 1, so
+p(t) = t·P(t²) (`pList`, degree 41) and −τ(t) = t·Q(t²) (`qList`, degree 15), both of Wiener norm ≤ 1 and Q(0) = 0, so
 that both are realised by tensor powers (`Grothe/Upper/Realise.lean`); they do not enter the
-energies, and are chosen to make the kernel nearly linear. The slope is c = 1779870886481/(25·10¹¹).
+energies, and are chosen to make the kernel nearly linear. The slope is c = 7119483103461/10¹³.
 
 * Proved from scratch: the complex Gaussian Hermite basis on ℂ², completeness, Parseval,
   the L² Mehler formula, charge selection, energy summability and the energies-to-kernel
@@ -125,14 +125,14 @@ energies, and are chosen to make the kernel nearly linear. The slope is c = 1779
   `handoff/research-third-decimal/upper-polynomial-bridge-20261022/`); `energy_close`: the
   stored energies are within 6847009/(5·10¹⁷) of EX on `headIdx 501` in ℓ¹; `hardy`: the weighted square-sum
   bound 7/4 at radius 4149/4000 for the kernel of G_T itself (a Gaussian weighted Schur estimate
-  valid for every bounded rounding, plus a 65,596-arc contour certificate with mean 1.69818 for this p, τ; archived in
-  `handoff/research-third-decimal/upper-newpq-20261022/`),
+  valid for every bounded rounding, plus a fresh 65,594-arc contour certificate with mean below 1.70148 for this p, τ;
+  the certificate and canonical inputs are in `data/upper-preprocess/`),
   which Lean turns into the tail bound 19055527/(625·10¹²) beyond degree 501. The concrete theorem
   also takes the structural inputs X ∈ L² and charge-one equivariance of X. Actual-rounding
   validity, summability and parity are derived, rather than remaining `DirectHyps` inputs.
-* **How much rests on these hypotheses.** Of the total residual 597510017109/(5·10¹⁷)
-  ≈ 1.19502·10⁻⁶, the assumed comparison bound 1065637497/10¹⁵ is 89.17%, the computation
-  verified in Lean (headCapQ = 98880/10¹²) 8.27%, the tail from `hardy` (19055527/(625·10¹²)) 2.55%,
+* **How much rests on these hypotheses.** Of the total residual 562146517109/(5·10¹⁷)
+  ≈ 1.12429·10⁻⁶, the assumed comparison bound 1065637497/10¹⁵ is 94.78%, the computation
+  verified in Lean (headCapQ = 28153/10¹²) 2.50%, the tail from `hardy` (19055527/(625·10¹²)) 2.71%,
   and the assumed energy-table error 6847009/(5·10¹⁷) 0.001%. The external comparison uses
   the stronger bound |φ| < 1; formal disk-valuedness needs only the proved φ² ≤ 3.
   The bound therefore depends almost entirely on the

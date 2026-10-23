@@ -12,7 +12,7 @@ rectangle checker is also supplied.
 
 The exploratory matrix completion still admits the configurations tested. The
 small common-row gains are insufficient. Neither headline bound changes:
-`1.401695322458 < K_G^C < 1.404598635371`, under the inputs documented in
+`1.401696986171 < K_G^C < 1.404598570779`, under the inputs documented in
 [/Users/alingalatan/workspaces/grothe/README.md](/Users/alingalatan/workspaces/grothe/README.md).
 All numerical diagnostics in this report use epsilon `149/200`; they cannot
 be transferred to `1891/2500` without recomputation and a new certificate.
