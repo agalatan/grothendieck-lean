@@ -127,6 +127,16 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
   Kill your own processes by pid. Never use `pkill -f` or `killall`: it kills other agents' builds.
 - **Waiting on a process:** wait on its pid, e.g. `while kill -0 <pid>; do sleep 30; done`.
   Never wait with `pgrep -f "<pattern>"`, because it matches its own shell command line and never ends.
+- **Starting and stopping long jobs (builds, scans): always in their own process group.** Killing a `lake` process
+  does not kill its `lean` children; an orphaned `lean` keeps writing the same `.olean` as a restarted build. Start
+  every long job like this, on the laptop or the droplet (`setsid` does not exist on macOS; `set -m` works on both):
+  ```sh
+  cd <your directory>
+  bash -c 'set -m; nohup bash -c "lake build X" > build.log 2>&1 & echo $! > job.pid'
+  ```
+  `job.pid` holds the process-group id. To wait: `while kill -0 "$(cat job.pid)" 2>/dev/null; do sleep 30; done`.
+  To stop the job with ALL its children and nothing else: `kill -- -"$(cat job.pid)"`. Check that it is gone with
+  `pgrep -g "$(cat job.pid)"` (prints nothing). Never stop a job you did not start; ask its owner or the user.
 - **Droplet** (`ssh yo`): use it for heavy runs, each agent in its own directory under `~`. Its
   disk is small, so check `df -h ~` first and keep at least 3 GB free. The Lean packages in
   `~/grothe-caps/.lake/packages` can be symlinked; do not hardlink into other agents' build
