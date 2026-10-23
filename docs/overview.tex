@@ -33,7 +33,7 @@
 \Large $1.401695390488\;<\;\KG\;<\;1.404598623023$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, each resting on one explicitly stated
 family of externally certified numerical inputs (Section~\ref{sec:trust}).\\[4pt]
-With \textbf{no hypothesis at all}, every step proved in Lean: $\KG\le1.40578$.\vspace{4pt}
+With \textbf{no hypothesis at all}, every step proved in Lean: $\KG\le1.405364$.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
@@ -77,7 +77,7 @@ year & who & lower bound & upper bound\\\midrule
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
 Oct 2026 & \textbf{this work} & $\mathbf{1.401695390488}$ & $\mathbf{1.404598623023}$\\
-Oct 2026 & this work, fully formal & & $1.40578$ (no hypothesis)\\\bottomrule
+Oct 2026 & this work, fully formal & & $1.405364$ (no hypothesis)\\\bottomrule
 \end{tabular}
 \end{center}
 Haagerup's integral
@@ -99,8 +99,8 @@ correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
 \]
 If $H(t)=c\,t+r(t)$ with $\|r\|_A=\sum_k|c_k-c\,\delta_{k0}|<c$, a tensor-power argument (Krivine's trick) gives
 $\KG\le1/(c-\|r\|_A)$. Haagerup's choice $f=\ph$ gives $1.40491$. Lean proves Haagerup's identity for $f=\ph$ from scratch
-(Euler and Beta integrals, the law of orthonormal Gaussian coordinates); with a cubic preprocessor and $4000$ exact terms
-this gives the unconditional bound $\KG\le1.40578$ (\lean{haagerup\_bound}), which needs no hypothesis. Our sharp rounding is a smoothed two-coordinate phase rounding,
+(Euler and Beta integrals, the law of orthonormal Gaussian coordinates); with a degree-seven preprocessor and $2000$ exact terms
+this gives the unconditional bound $\KG\le1.405364$ (\lean{haagerup\_bound}), which needs no hypothesis. Our sharp rounding is a smoothed two-coordinate phase rounding,
 $F_0=\ph\bigl(z+\sqrt{1+a^2}\,v(|z|^2)\,w\bigr)$ with a twelve-term Laguerre profile $v$, multiplied by the cubic Taylor
 polynomial of a damped polynomial phase $\varphi$: $T=F_0P_3(\varphi)$, $P_3(x)=1+ix-x^2/2-ix^3/6$. The identity
 $|P_3(x)|^2=1-x^4(3-x^2)/36$ and the proved bound $\varphi^2\le3$ give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
@@ -182,13 +182,13 @@ $\sum|E-E_X|\le1065637497/10^{15}$ ($89.17\%$ of the residual budget); \lean{har
 weighted square-sum bound $7/4$ at radius $4149/4000$, giving the tail $19055527/(625\cdot10^{12})$ ($2.55\%$); the table error
 $6847009/(5\cdot10^{17})$ on the finite head (\lean{energy\_close}, $0.001\%$). The head computed in Lean,
 $98880/10^{12}$, is $8.27\%$.\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (140578/100000)}}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (351341/250000)}}\\[2pt]
 Haagerup's identity for the phase rounding, $\E[\overline{\ph\langle g,x\rangle}\,\ph\langle g,y\rangle]=\sum_k\frac\pi4\frac{(1/2)_k^2}{k!(k+1)!}z|z|^{2k}$
-(Euler integral, Gaussian integrals, Beta integrals, reduction to two complex Gaussians); the transfer through the cubic
-preprocessor $p(t)=\frac{2267}{2500}t-0.09319996\,t^3$; $4000$ exact terms (one \lean{native\_decide}) and a telescoping tail
+(Euler integral, Gaussian integrals, Beta integrals, reduction to two complex Gaussians); the transfer through
+$p(t)=.90642006t-.09308903t^3-.00049091t^7$; $2000$ exact terms (one \lean{native\_decide}) and a telescoping tail
 &
 nothing: this bound has no hypothesis. It is weaker than the certified bound above, and than Haagerup's $1.40491$, because
-only a cubic preprocessor and a finite head are used.\\\bottomrule
+only a degree-seven preprocessor and a finite head are used.\\\bottomrule
 \end{tabular}
 \end{center}
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}.\par
@@ -197,7 +197,7 @@ cap chords, the lower row/batch certificates and both finite covers.
 No \lean{sorry}; CI builds the default target and checks its axiom report. The 60 additional cap-range checks belong to
 the separate heavy \lean{GrotheCaps} target, whose source stamp CI checks once recorded. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
-the sharp upper bound rests mainly on an external numerical comparison lemma. The weaker upper bound $1.40578$ is fully formal.
+the sharp upper bound rests mainly on an external numerical comparison lemma. The weaker upper bound $1.405364$ is fully formal.
 Before the tail Cauchy--Schwarz step, the known linear coefficient's weighted square is deducted from $7/4$; this uses the same numerical hypotheses.
 The research modules also prove 13 algebraic facts for coupled complex modulus majorizers, finite descent and semiconvex chord
 assembly, using only the three standard axioms. Their Gaussian integration, response extraction and global-cover

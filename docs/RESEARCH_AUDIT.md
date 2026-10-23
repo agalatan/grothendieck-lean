@@ -36,6 +36,13 @@ provenance, without discharging the other comparison premises; see
 
 ## Integration with current master
 
+The endpoint continuation also merges master `5f4b0f4`. Its degree-seven
+Haagerup preprocessor improves the independent, hypothesis-free bound to
+`1.405364`. The combined README and overview retain that upstream result
+alongside the sharper conditional endpoints; the three numerical hypotheses
+of the sharper upper theorem are unchanged. The other incoming changes are
+CI and collaboration workflow updates.
+
 The work was reviewed and rebased onto GitHub master `6a869c8`. Its changes
 relative to the original research base `98f61ec` matter as follows:
 

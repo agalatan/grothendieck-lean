@@ -72,7 +72,7 @@ energies, and are chosen to make the kernel nearly linear. The slope is c = 1779
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
-**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (140578/100000)`
+**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (351341/250000)`
 (`Grothe/Upper/Haagerup.lean`, `GrotheKernel/Haagerup.lean`), with no hypothesis. The analysis is in
 `Grothe/Haagerup/`: tilted one-dimensional Gaussian integrals (`Gauss1D`); the correlated pair integral
 E[conj U·V·e^{−u|U|²−v|V|²}] = 2z/Δ² (`GaussG`); the Euler representation |a|⁻¹ = π^{−1/2}∫t^{−1/2}e^{−t|a|²}dt
@@ -83,8 +83,12 @@ two complex Gaussians, the radial identity and the phase rounding as a disk-valu
 (`Identity`: `integral_phase_pair`, `Phi2_radial`, `haagerup_disk`, `haagerup_dominated`). Disk-valued
 roundings are dominated (`Grothe/Upper/Disk.lean`); polynomial preprocessors are realised by tensor powers
 (`Realise.lean`) and composed with radial kernels (`Compose.lean`). The preprocessor is
-p(t) = (2267/2500)t − (9319996/10⁸)t³; `haagerup_check` evaluates 4,000 exact series terms by a Horner interval
-checker with a soundness proof, and the tail Σ_{k≥K} r_k ≤ g_K/(2K) telescopes.
+p(t) = (90642006/10⁸)t − (9308903/10⁸)t³ − (49091/10⁸)t⁷, with Wiener norm exactly one.
+`haagerup_check` evaluates 2,000 exact series terms by a Horner interval checker with a soundness proof.
+The radial coefficient cutoff 14,000 covers the entire finite polynomial (degree at most 13,996),
+so this step discards no finite coefficients. Its normalized residual cap is 275/10⁶. The tail
+Σ_{k≥K} r_k ≤ g_K/(2K) telescopes; g₂₀₀₀ ≤ 637/1000 gives the normalized allowance .00015925.
+Thus the net slope is at least (π/4)·.90598581, and π > 3.141592 proves K ≤ 1.405364.
 
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
 value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401692002039/10^12 < K`, and the transfer
@@ -300,7 +304,7 @@ current tree, so completed verification of the 60 range checks is not claimed he
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
 `scripts/check_axioms.py`: `Grothe.head_check` (the upper head), `Grothe.haagerup_check`
-(the 4,000-term unconditional upper check), `Grothe.UpperChaos.phi_cover_check`
+(the 2,000-term unconditional upper check), `Grothe.UpperChaos.phi_cover_check`
 (φ² ≤ 3), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
 and the 13 chunks `Grothe.Lower.certRows0`–`4`,
 `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower certificate (assembled into

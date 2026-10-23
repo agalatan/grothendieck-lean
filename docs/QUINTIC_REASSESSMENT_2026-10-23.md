@@ -26,7 +26,7 @@ The repository's audited baseline remains:
   truncation `X` and the three numerical bounds `compare`, `energy_close`
   and `hardy`. The older table interface `Grothe.fresh_upper`, conditional
   on `DirectHyps E EX`, remains available.
-* `K_G^C <= 1.40578`, the completed unconditional Lean upper theorem.
+* `K_G^C <= 1.405364`, the completed unconditional Lean upper theorem.
 
 Those are distinct proof statuses. The current files and hypotheses take
 precedence over older manuscript endpoints. Stronger archived upper numbers
