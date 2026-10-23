@@ -1,4 +1,4 @@
-# Node caps in Lean: status of branch `work/lower-caps2` (23 Oct 2026, ~05:00 EEST)
+# Node caps in Lean: status (23 Oct 2026, ~10:00 EEST; merged into master from work/lower-caps2)
 
 Goal: discharge `NodeCaps`, the only hypothesis of `Grothe.LowerAnalytic.lower_bound_of_nodeCaps`
 (lower bound K_G^ℂ > Llow). The design and the four cap routes (P, A, M, H) are in
@@ -24,11 +24,13 @@ each range is checked sequentially; lake runs the 15 row modules in separate pro
 
 ## What is verified and what is not
 
-* **NOT YET VERIFIED: the 60 range facts.** Commit 9288964 compiles structurally (checked with the
-  facts replaced by `sorry`: `vertexCapsRowKK`, `vertexCaps_of_capsRest`, `lower_bound_of_capsRest`
-  elaborate). The full build was started on the droplet at 00:50 UTC 23 Oct (`yo:~/grothe-caps`,
-  log `~/grothe-caps/full.log`, last line `EXIT <code>`); at 01:51 UTC no row module had finished yet
-  (droplet load ~12 from other jobs). Check it: `ssh yo 'grep -a "CapRow\|EXIT\|error" ~/grothe-caps/full.log | grep -v warning'`.
+* **VERIFIED: all 60 range facts pass** (no excluded nodes). `lake build GrotheCaps` of master 4304b22 on
+  the droplet (`yo:~/grothe-caps`, log `caps2.log`), 23 Oct 02:48–06:48 UTC: wall 239 min 41 s, CPU 1269 min,
+  every module single-threaded, load ~12 from other jobs. Per row module (s): rows 0–8 (coarse grid)
+  2255, 2322, 2355, 2594, 2727, 2807, 3593, 3029, 6005; rows 9, 10, 11, 16, 17, 18 (fine grid)
+  9940, 9782, 9409, 9884, 10377, 10069. `lake env lean scratch/AxiomsCaps.lean | python3
+  scripts/check_axioms.py --caps`: OK (60 range facts + capChords_check + the cert_check chunks).
+  Stamp `docs/CAPS_VERIFIED.txt` = sha256 fe2ea85d…f16eea over 140 files (unchanged by master up to 9233765).
 * Evidence that every node passes (indicative only, it ran with `Task.spawn`, see below): #eval diagnostics
   of `nodeCheck` over all 196 nodes of each of the 15 rows (Mac rows 0–8, 17, 18; droplet rows 9–11, 16)
   reported failures only at row 3 node 0 and row 6 node 0; both fixed (below). Fine-grid nodes took
