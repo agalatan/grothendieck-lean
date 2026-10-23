@@ -10,7 +10,6 @@ Fails unless
 import re, sys
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
 NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",          # upper: head of the kernel
-          "Grothe.Lower.cert_check._native.native_decide.ax_1_1",    # lower: rows, batches, cover
           "Grothe.haagerup_check._native.native_decide.ax_1_1",      # Haagerup route: residual of the cubic preprocessing
           "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1",  # upper: phase cover φ² ≤ 3
           "Grothe.LowerAnalytic.capChords_check._native.native_decide.ax_1_1"}  # lower: chord nodes of the cap tables
@@ -18,6 +17,9 @@ NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",          # upper: he
 CAP_ROWS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
 NATIVE |= {f"Grothe.LowerAnalytic.capRange{k:02d}_{j}._native.native_decide.ax_1_1"
            for k in CAP_ROWS for j in range(4)}
+# lower: the certificate check in 13 single-threaded chunks (Grothe/Lower/Cert/)
+NATIVE |= {f"Grothe.Lower.{n}._native.native_decide.ax_1_1" for n in
+           ['certRows0', 'certRows1', 'certRows2', 'certRows3', 'certRows4', 'certBatches0', 'certBatches1', 'certBatches2', 'certBoxes0', 'certBoxes1', 'certBoxes2', 'certBoxes3', 'certPartition']}
 REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.Lower.lower_endpoint", "Grothe.Lower.lower_bound_of_transferL2",
             "Grothe.LowerAnalytic.gaussian_steinInputs", "Grothe.LowerAnalytic.lower_bound_gaussian",
