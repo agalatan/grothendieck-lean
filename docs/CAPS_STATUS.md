@@ -67,6 +67,31 @@ Diagnose single nodes quickly (interpreted driver calling the precompiled kernel
 `#eval show IO Unit from do let Ts := capGrids.map fun G => mkTables G.1 G.2.1 G.2.2; IO.println (nodeCheck k (parseRecs capRecipesKK) capGrids Ts [] i)`,
 built with `lake build Grothe.LowerAnalytic.TmpX` (delete it afterwards).
 
+## Verification procedure for master (target GrotheCaps, outside CI)
+
+Since master c8fc97e the 15 `CapRowKK` modules form the separate lean_lib `GrotheCaps`
+(`GrotheCaps.lean`); CI does not build them but runs `python3 scripts/caps_stamp.py --check`, which
+compares a sha256 of the import closure of the row modules + `CapNodes.lean` + `GrotheCaps.lean` (+
+`lean-toolchain`, `lake-manifest.json`) with `docs/CAPS_VERIFIED.txt` (warning while absent, failure on mismatch).
+To (re)verify, on a machine with ≥ 8 cores (droplet `yo`):
+```
+git archive <master commit> | tar -x -C <dir>   # or rsync -a --delete --exclude .lake <checkout>/ yo:~/grothe-caps/
+cd <dir>; lake exe cache get
+lake build GrotheCaps                            # several hours single-threaded per module (see timings)
+lake env lean scratch/AxiomsCaps.lean | python3 scripts/check_axioms.py --caps
+python3 scripts/caps_stamp.py --write "droplet yo, <date>, <wall time>"
+```
+then commit `docs/CAPS_VERIFIED.txt` on a branch (e.g. `work/caps-stamp`) and push it; the integrator merges.
+Timing (droplet, load ~12 from other jobs, 23 Oct): row 7 (196 coarse-grid nodes, 4 ranges) took
+4,562 s in one process, i.e. ~23 s per node; fine-grid rows are slower.
+
+Suggested refactor (not done): the row modules import `CapHull` → `Reduction` → the whole lower
+certificate, so any change in the lower chain changes the stamp and forces the multi-hour rebuild.
+Make `CapRowKK` import only the checker and its soundness (`CapRows` without `CapHull`, i.e. move
+`VertexCapsRow`/`ExclCaps` and `nodeCap_of_rangeOK` into a module that depends only on `rowData`,
+`rowPot`, `CapCheckSound`, `CapTablesMk`, `CapGridOK`), and let `CapHull`/`CapNodes` do the combination
+with `lower_bound_of_vertexCaps`.
+
 ## Droplet `ssh yo` (8 cores, 31 GB)
 
 * `~/grothe-caps`: rsync copy of this worktree (no .git), elan installed in `~/.elan`, Mathlib cache fetched.
