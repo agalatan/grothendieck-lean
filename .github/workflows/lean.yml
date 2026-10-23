@@ -21,7 +21,7 @@ jobs:
 
       - name: No sorry, axiom or unchecked code anywhere
         run: |
-          ! grep -rn --include='*.lean' -E '\bsorry\b|^[[:space:]]*(private[[:space:]]+)?axiom[[:space:]]|implemented_by|@\[extern|\bunsafe\b|debug\.skipKernelTC' Grothe GrotheKernel Grothe.lean GrotheKernel.lean
+          ! grep -rn --include='*.lean' -E '\bsorry\b|^[[:space:]]*(private[[:space:]]+)?axiom[[:space:]]|implemented_by|@\[extern|\bunsafe\b|debug\.skipKernelTC|Task\.spawn' Grothe GrotheKernel Grothe.lean GrotheKernel.lean
 
       - name: Axiom report
         run: |

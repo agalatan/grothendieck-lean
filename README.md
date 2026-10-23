@@ -150,7 +150,7 @@ certificate (assembled into `Grothe.Lower.cert_check`),
 `capChords_check` (the chord nodes of the cap tables) and the 60 range checks `capRangeKK_j` of the node caps.
 Every native check is single-threaded code (no `Task.spawn`).
 Everything else is kernel-checked. No `sorry`. The axiom report `scratch/Axioms.lean`
-(227 theorems) is verified in CI by `scripts/check_axioms.py`.
+(256 theorems) is verified in CI by `scripts/check_axioms.py`.
 
 The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAILS.md).
 
