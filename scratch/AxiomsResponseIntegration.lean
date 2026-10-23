@@ -1,0 +1,132 @@
+import Grothe.LowerAnalytic.DiffuseCubicObstruction
+import Grothe.LowerAnalytic.JointRowRepricing
+import Grothe.LowerAnalytic.ProjectionGateCeiling
+import Grothe.LowerAnalytic.QuinticTransferAudit
+import Grothe.LowerAnalytic.ResponseCompression
+import Grothe.LowerAnalytic.ScalarCubicFamilyCeiling
+import Grothe.Lower.PrimalAudit
+import Grothe.Lower.SteinFusion
+import Grothe.LowerAnalytic.QuadraticFeatures
+import Grothe.LowerAnalytic.ReplicaState
+import Grothe.LowerAnalytic.ResponseGram
+import Grothe.LowerAnalytic.TwoDisc
+import Grothe.Upper.KernelScreen
+import Grothe.Upper.SpectralScreen
+import Grothe.Upper.CubicPhaseScreen
+
+#print axioms Grothe.LowerAnalytic.DiffuseCubicObstruction.finite_bridge_lower
+#print axioms Grothe.LowerAnalytic.DiffuseCubicObstruction.above_target
+#print axioms Grothe.LowerAnalytic.DiffuseCubicObstruction.reciprocal_ceiling
+#print axioms Grothe.LowerAnalytic.JointRowRepricing.visible_completion
+#print axioms Grothe.LowerAnalytic.JointRowRepricing.invQuad_shift
+#print axioms Grothe.LowerAnalytic.JointRowRepricing.price_shift
+#print axioms Grothe.LowerAnalytic.JointRowRepricing.dual_constant_is_row
+#print axioms Grothe.LowerAnalytic.JointRowRepricing.forcing_scale
+#print axioms Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_apply
+#print axioms Grothe.LowerAnalytic.ProjectionGateCeiling.coefficient_le_projected_norm
+#print axioms Grothe.LowerAnalytic.ProjectionGateCeiling.preserves_coefficient_of_selfadjoint
+#print axioms Grothe.LowerAnalytic.ProjectionGateCeiling.gateEnergy_lower
+#print axioms Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_norm_sq
+#print axioms Grothe.LowerAnalytic.ProjectionGateCeiling.gateEnergy_rankOne
+#print axioms Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_preserves_coefficient
+#print axioms Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_selfadjoint
+#print axioms Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_contraction
+#print axioms Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_idempotent
+#print axioms Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_c0
+#print axioms Grothe.LowerAnalytic.QuinticTransferAudit.diagonal_error_bound
+#print axioms Grothe.LowerAnalytic.QuinticTransferAudit.diagonal_one_sided_bounds
+#print axioms Grothe.LowerAnalytic.QuinticTransferAudit.negative_of_error_bound
+#print axioms Grothe.LowerAnalytic.QuinticTransferAudit.strict_interval_convex_mix
+#print axioms Grothe.LowerAnalytic.QuinticTransferAudit.signed_step_decreases
+#print axioms Grothe.LowerAnalytic.QuinticTransferAudit.signed_step_margin
+#print axioms Grothe.LowerAnalytic.QuinticTransferAudit.cramer_three_column_cancellation
+#print axioms Grothe.LowerAnalytic.QuinticTransferAudit.linear_necessary_score_affine_bound
+#print axioms Grothe.LowerAnalytic.QuinticTransferAudit.linear_necessary_score_bound
+#print axioms Grothe.LowerAnalytic.QuinticTransferAudit.zero_cubic_necessary_score_bound
+#print axioms Grothe.LowerAnalytic.ResponseCompression.norm_sq_sum
+#print axioms Grothe.LowerAnalytic.ResponseCompression.compression_bessel
+#print axioms Grothe.LowerAnalytic.ResponseCompression.compression_block_nonneg
+#print axioms Grothe.LowerAnalytic.ResponseCompression.three_grade_cut
+#print axioms Grothe.LowerAnalytic.ResponseCompression.three_grade_cut_unnormalized
+#print axioms Grothe.LowerAnalytic.ResponseCompression.two_by_two_moment_cut
+#print axioms Grothe.LowerAnalytic.ResponseCompression.fake_radial_parseval
+#print axioms Grothe.LowerAnalytic.ResponseCompression.fake_radial_rejected
+#print axioms Grothe.LowerAnalytic.ResponseCompression.fake_radial_repair_energy
+#print axioms Grothe.LowerAnalytic.ResponseCompression.fake_radial_repair
+#print axioms Grothe.LowerAnalytic.ResponseCompression.fake_visible_parseval
+#print axioms Grothe.LowerAnalytic.ResponseCompression.fake_visible_rejected
+#print axioms Grothe.LowerAnalytic.ResponseCompression.forced_visible_companion
+#print axioms Grothe.LowerAnalytic.ResponseCompression.mulResponse_ae
+#print axioms Grothe.LowerAnalytic.ResponseCompression.mulResponse_contracts
+#print axioms Grothe.LowerAnalytic.ResponseCompression.bounded_response_compression
+#print axioms Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.affine_cancel
+#print axioms Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.mixed_floor_le_max
+#print axioms Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.family_floor
+#print axioms Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.opposite_slopes
+#print axioms Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.rounded_mix_floor
+#print axioms Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.floor_positive
+#print axioms Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.reciprocal_ceiling
+#print axioms Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.ceiling_below_140226
+#print axioms Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.spectral_ratio_ceiling
+#print axioms Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.pure_cubic_coefficient_above_floor
+#print axioms Grothe.Lower.PrimalAudit.primal_le_dual
+#print axioms Grothe.Lower.PrimalAudit.no_dual_below_primal
+#print axioms Grothe.LowerAnalytic.ResponseGram.gram_qform
+#print axioms Grothe.LowerAnalytic.ResponseGram.projection_gram_interval
+#print axioms Grothe.LowerAnalytic.ResponseGram.nested_projection_gram_interval
+#print axioms Grothe.LowerAnalytic.ResponseGram.reflection_cross_bound
+#print axioms Grothe.LowerAnalytic.ResponseGram.orthogonal_projection_cross_bound
+#print axioms Grothe.LowerAnalytic.ResponseGram.factored_price_bound
+#print axioms Grothe.LowerAnalytic.ResponseGram.moment_support_bound
+#print axioms Grothe.LowerAnalytic.ResponseGram.completion_screen
+#print axioms Grothe.LowerAnalytic.ResponseGram.no_completion
+#print axioms Grothe.LowerAnalytic.ResponseGram.priced_nearmax_bound
+#print axioms Grothe.LowerAnalytic.ResponseGram.weighted_alignment
+#print axioms Grothe.LowerAnalytic.ResponseGram.regularized_alignment_bound
+#print axioms Grothe.LowerAnalytic.ResponseGram.inner_perturbation_bound
+#print axioms Grothe.LowerAnalytic.ResponseGram.disk_quadratic_bound
+#print axioms Grothe.LowerAnalytic.ResponseGram.disk_quadratic_attained
+#print axioms Grothe.LowerAnalytic.ResponseGram.two_disc_price_bound
+#print axioms Grothe.LowerAnalytic.TwoDisc.slack_factorization
+#print axioms Grothe.LowerAnalytic.TwoDisc.support_of_factor
+#print axioms Grothe.LowerAnalytic.TwoDisc.bilinear_support
+#print axioms Grothe.LowerAnalytic.TwoDisc.independent_interior_support
+#print axioms Grothe.LowerAnalytic.TwoDisc.coupled_interior_support
+#print axioms Grothe.LowerAnalytic.TwoDisc.complex_linear_support
+#print axioms Grothe.LowerAnalytic.TwoDisc.sharp_examples_attained
+#print axioms Grothe.LowerAnalytic.QuadraticFeatures.quadratic_mul_linear
+#print axioms Grothe.LowerAnalytic.QuadraticFeatures.probe_projection_closure
+#print axioms Grothe.LowerAnalytic.QuadraticFeatures.quadratic_remainder_budget
+#print axioms Grothe.LowerAnalytic.QuadraticFeatures.affine_quadratic_remainder_budget
+#print axioms Grothe.Lower.SteinFusion.perspective_variance
+#print axioms Grothe.Lower.SteinFusion.perspective_fusion_le
+#print axioms Grothe.Lower.SteinFusion.unit_fusion_identity
+#print axioms Grothe.Lower.SteinFusion.specCellG_unit_fusion
+#print axioms Grothe.Lower.SteinFusion.unit_fusion_le
+#print axioms Grothe.Lower.SteinFusion.common_kernel_projection
+#print axioms Grothe.LowerAnalytic.ReplicaState.firstCoeff_normSq
+#print axioms Grothe.LowerAnalytic.ReplicaState.firstCoeff_cross
+#print axioms Grothe.LowerAnalytic.ReplicaState.residual_nonneg
+#print axioms Grothe.LowerAnalytic.ReplicaState.variance_identity
+#print axioms Grothe.LowerAnalytic.ReplicaState.sqrt_variance_identity
+#print axioms Grothe.LowerAnalytic.ReplicaState.scalar_surrogate_gap
+#print axioms Grothe.LowerAnalytic.ReplicaState.scalar_surrogate_strict
+#print axioms Grothe.Upper.KernelScreen.weighted_tail
+#print axioms Grothe.Upper.KernelScreen.full_score_upper
+#print axioms Grothe.Upper.KernelScreen.priced_score_upper
+#print axioms Grothe.Upper.KernelScreen.all_level_price_bound
+#print axioms Grothe.Upper.SpectralScreen.all_level_price_of_front_tail
+#print axioms Grothe.Upper.SpectralScreen.common_tail_price
+#print axioms Grothe.Upper.SpectralScreen.full_score_upper
+#print axioms Grothe.Upper.SpectralScreen.affine_error_bound
+#print axioms Grothe.Upper.SpectralScreen.finite_mixture_score_bound
+#print axioms Grothe.Upper.CubicPhaseScreen.phase_conditions_unit
+#print axioms Grothe.Upper.CubicPhaseScreen.phase_conditions
+#print axioms Grothe.Upper.CubicPhaseScreen.real_polynomial_cap
+#print axioms Grothe.Upper.CubicPhaseScreen.trigonometric_square_bound
+#print axioms Grothe.Upper.CubicPhaseScreen.axis_nonneg
+#print axioms Grothe.Upper.CubicPhaseScreen.axis_le_real_polynomial
+#print axioms Grothe.Upper.CubicPhaseScreen.normalized_complex_cap
+#print axioms Grothe.Upper.CubicPhaseScreen.complex_score_cap
+#print axioms Grothe.Upper.CubicPhaseScreen.score_le_separator
+#print axioms Grothe.Upper.CubicPhaseScreen.full_score_cap_of_low_identity

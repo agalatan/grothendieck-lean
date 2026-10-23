@@ -1,0 +1,361 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,hyperref}
+\newcommand{\E}{\mathbb E}
+\newcommand{\CN}{\mathrm{CN}}
+\newcommand{\ph}{\operatorname{phase}}
+\newtheorem{proposition}{Proposition}
+\title{A symmetry-closed response map and original-noise replicas}
+\author{Grothendieck certificate project}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+
+\paragraph{Purpose and scope.}
+The genuine cubic used to obstruct the frozen radial tables also supplies
+actual bounded responses. This note retains the shared projection fields and
+the original Gaussian noise coupling. It gives an exact finite-dimensional
+image map for a restricted symmetry class and a fixed-size replica model for
+its entire correlation kernel. It gives no global norm cap, improved numerical
+endpoint, or complete upper-rounding score. The invariant-space and Gaussian
+conditioning arguments are paper proofs. Seven replica algebra results and
+four tail/price bounds are formalized separately in Lean.
+
+\section*{1. The invariant first/cubic space}
+Fix $m\ge2$, $d=m(m+1)/2$, and $D=m(m+1)$. Let $Z$, $X_i$, and $Y_{ij}$,
+$1\le i\le j\le m$, be independent standard proper complex Gaussians. Put
+\[
+ q=\frac{\sum_i X_i^2\bar Y_{ii}
+          +\sqrt2\sum_{i<j}X_iX_j\bar Y_{ij}}{\sqrt D},\qquad
+ A_X=\frac{\|X\|^2-m}{\sqrt m},\qquad
+ A_Y=\frac{\|Y\|^2-d}{\sqrt d}.
+\]
+Act by $U\in U(m)$ on $X$ and by its unitary symmetric-square representation
+on $Y$, leaving $Z$ fixed. Then $q,A_X,A_Y$ are invariant. In addition require
+charge one under simultaneous scalar rotation of all original Gaussian
+coordinates. The first and $(2,1)$ cubic invariant modes are the orthonormal tuple
+\begin{equation}\label{eq:five-modes}
+ B=\left(Z,\frac{Z(|Z|^2-2)}{\sqrt2},ZA_X,ZA_Y,q\right).
+\end{equation}
+
+Here is an elementary classification. The central scalar subgroup gives weight
+one to $X$ and weight two to $Y$. There is no invariant remote linear or
+holomorphic quadratic. Among neutral quadratics, diagonal torus invariance,
+coordinate permutations and two-coordinate rotations leave exactly the centered
+norms of $X$ and $Y$. Among remote $(2,1)$ cubics, the central weights leave only
+$XX\bar Y$. Diagonal torus invariance pairs each $X_iX_j$ with $\bar Y_{ij}$;
+permutations and a two-coordinate rotation impose the relative coefficients
+$1,\sqrt2$ displayed above. Combining remote and visible degrees yields
+\eqref{eq:five-modes}. Wick ordering commutes with the unitary action.
+The norms and orthogonality follow directly from independent Gaussian moments.
+
+For $T=P_{1,0}-\epsilon P_{2,1}$, write
+$\Lambda=\operatorname{diag}(1,-\epsilon,-\epsilon,-\epsilon,-\epsilon)$.
+For $c\ne0$ define
+\[
+ f_c=\ph\left(\sum_{j=0}^4c_jB_j\right),\qquad
+ \kappa_j(c)=\E[\bar B_j f_c].
+\]
+The exact best-response image is
+\[
+ Tf_c=\sum_jB_j(\Lambda\kappa(c))_j,
+\]
+and the pair payoff is
+\begin{equation}\label{eq:finite-pair-payoff}
+ J(c,e)=\Re\bigl(\kappa(c)^*\Lambda\kappa(e)\bigr).
+\end{equation}
+Thus the norm restricted to invariant, charge-one responses is the supremum
+of \eqref{eq:finite-pair-payoff} over two five-component complex vectors.
+Indeed the coefficient body of disc-valued responses is compact, since only
+finitely many integrable probes are retained. A maximizing pair can be replaced
+by mutual phase best responses without loss, and their images lie in
+\eqref{eq:five-modes}. Conversely every displayed phase is an actual admissible
+response. This is an exact restricted-class formulation; averaging an arbitrary
+maximizer under $U(m)$ need not preserve its payoff, so no unrestricted equality
+is asserted.
+
+If $e=(c_0,c_1,c_2,c_3,-c_4)$, changing $Y$ to $-Y$ gives
+\[
+ J(c,e)=|\kappa_0|^2-\epsilon\sum_{j=1}^3|\kappa_j|^2
+                    +\epsilon|\kappa_4|^2.
+\]
+Both shared quadratic penalties remain. The numerical engine first optimizes
+this paired family and then performs unrestricted alternating best responses
+within the five-mode image class. These searches do not certify their suprema.
+
+\section*{2. An exact one-point scalar state}
+There are independent variables $Z,G\sim\CN(0,1)$,
+$R\sim\Gamma(m,1)$ and $V\sim\Gamma(d-1,1)$ such that the entire tuple
+\eqref{eq:five-modes} has the law obtained from
+\begin{equation}\label{eq:scalar-state}
+ q=\frac{RG}{\sqrt D},\qquad
+ A_X=\frac{R-m}{\sqrt m},\qquad
+ A_Y=\frac{|G|^2+V-d}{\sqrt d}.
+\end{equation}
+To prove this, condition on $X$ and project the proper Gaussian $Y$ onto the unit
+symmetric-square direction of $X$. Its projection is a standard proper Gaussian
+independent of the orthogonal residual, whose squared norm is gamma of shape
+$d-1$. The conditional distribution does not depend on $X$'s direction; the
+squared projection coefficient is $R^2/D$. This proves the joint statement,
+including $\|Y\|^2=|G|^2+V$.
+
+The scalar $G$ in \eqref{eq:scalar-state} is not a new first-chaos coordinate.
+It is a distributional coordinate of the original cubic. In particular $A_Y$
+must not be replaced by an independent neutral Gaussian. The exact correlations
+are
+\[
+ \E[A_X|q|^2]=\frac2{\sqrt m},\qquad
+ \E[A_Y|q|^2]=\frac1{\sqrt d},\qquad \E A_XA_Y=0.
+\]
+More generally, for integer $k\ge1$,
+\[
+ \E[A_X|q|^{2k}]=\frac{2k}{\sqrt m}\E|q|^{2k},\qquad
+ \E[A_Y|q|^{2k}]=\frac{k}{\sqrt d}\E|q|^{2k}.
+\]
+These follow from gamma integration by parts; their moment versions, through
+$k=4$, and the complete five-mode Gram are checked over exact rationals in the
+standard-library verifier. An independent $A_Y$ surrogate fails even the first
+mixed moment.
+
+For a smooth radial test $F$ for which the integrals and integration by parts
+are justified, the stronger identities are
+\[
+ \E[A_XF(|q|^2)]=\frac2{\sqrt m}\E[|q|^2F'(|q|^2)],\qquad
+ \E[A_YF(|q|^2)]=\frac1{\sqrt d}\E[|q|^2F'(|q|^2)].
+\]
+They apply, for example, to compactly supported $C^1$ tests. In an ansatz whose
+visible conditional mean depends only on $|q|^2$, the two shared quadratic
+coefficients are therefore tied. They cannot be chosen independently to
+saturate separate projection budgets. This extra relation is not asserted for
+general responses depending separately on $A_X,A_Y$.
+
+There is an order-one spectral error if that warning is ignored. Keep the true
+radius pair $(R,R')$ under original $X$ noise, but independently give the scalar
+$G$ first-chaos correlation $\rho$. Since
+$\E[RR']=m^2+m\rho^2$, this artificial model gives
+\[
+ \E[q\bar q']_{\rm artificial}=\frac{m\rho+\rho^3}{m+1},\qquad
+ \E[q\bar q']_{\rm original}=\rho^3.
+\]
+Their difference is exactly $m\rho(1-\rho^2)/(m+1)>0$ for
+$m>0$ and $0<\rho<1$. Thus convergence of a one-point law to a Gaussian does
+not turn a third-chaos limit into a first-chaos noise coordinate. The factorized
+gap and its strictness are Lean theorems. The covariance formulas follow from
+the original Gaussian moments, not from those algebra theorems alone.
+
+\section*{3. Two replicas with the original Gaussian coupling}
+A one-point state does not determine a Hermite spectrum. For real
+$0\le\rho\le1$, couple the original coordinates by
+$X'=\rho X+\sqrt{1-\rho^2}\widetilde X$, and likewise for $Y,Z$, with fresh
+independent original Gaussian blocks. Let
+\[
+ R=\|X\|^2,\quad R'=\|X'\|^2,\quad C=\sum_iX_i\bar X'_i.
+\]
+Their Gram is a two-by-two complex Wishart state. The symmetric-square probe
+Gram has entries $R^2,R'^2,C^2$. In a common unitary basis of the two probe
+directions, choose coefficients
+\[
+ a_1=\frac{\bar C^2}{R},\qquad
+ a_2=\sqrt{R'^2-|C|^4/R^2}.
+\]
+Cauchy--Schwarz makes the radicand nonnegative. If
+$(y_1,y_2)$ and $(y'_1,y'_2)$ are proper Gaussian coordinate pairs with
+$\E[y_j\bar y'_k]=\rho\delta_{jk}$, then
+\[
+ q=R\bar y_1/\sqrt D,\qquad
+ q'=(a_1\bar y'_1+a_2\bar y'_2)/\sqrt D.
+\]
+In particular
+\[
+ \E[q\bar q'\mid X,X']=\rho C^2/D,\qquad
+ \E[q\bar q']=\rho^3.
+\]
+The common unitary basis depends on $X,X'$, but the conditional Gaussian
+distribution of the jointly isotropic $Y,Y'$ does not. The remaining squared
+norms form an independent two-by-two Wishart state of dimension $d-2$.
+Consequently
+\[
+ \|Y\|^2=|y_1|^2+|y_2|^2+V_0,\qquad
+ \|Y'\|^2=|y'_1|^2+|y'_2|^2+V_1,
+\]
+with $(V_0,V_1)$ the diagonal of that residual Wishart state. This retains the
+dependence of both quadratic drivers on the same cubic projection coordinates.
+
+Each Wishart state can be sampled from two gamma variables and one proper
+complex Gaussian: for dimension $k$, take $r\sim\Gamma(k,1)$,
+$s\sim\Gamma(k-1,1)$ and $h\sim\CN(0,1)$ independently, and put
+\[
+ C=\rho r+\sqrt{1-\rho^2}\sqrt r\bar h,
+\quad
+ r'=\rho^2r+(1-\rho^2)(|h|^2+s)
+       +2\rho\sqrt{1-\rho^2}\sqrt r\Re h.
+\]
+At $k=1$, set $s=0$. Together with the visible pair and two projected $Y$
+coordinate pairs, this uses twenty real scalar uniforms, independent of $m$.
+It is a reparameterization of the original two-replica law, not an independent
+Gaussian replacement. Endpoint $\rho=1$ is interpreted with zero new noise.
+
+For any coefficient pair $c,e$ this state determines the actual kernel
+\[
+ K_{c,e}(\rho)=\E[\overline{f_c(Z,X,Y)}f_e(Z',X',Y')].
+\]
+Thus lower-witness adversaries can be carried into upper-pool discovery with
+their original correlation structure. A certified full upper score still
+requires coefficient enclosures and an infinite-tail bound. Neither follows
+from these sampling formulas or the five-mode low-degree calculation alone.
+
+\section*{4. A full-tail screen without fitting tail coefficients}
+For charge-one disc-valued responses let
+$c_k=\Re\langle P_{k+1,k}f,P_{k+1,k}g\rangle$. Parseval and
+Cauchy--Schwarz give $\sum_k|c_k|\le1$. Taking the real part of the original
+Gaussian noise kernel gives
+\[
+ K(\rho)=\sum_{k\ge0}c_k\rho^{2k+1}.
+\]
+Real coefficients can also be realized by averaging the response pair with
+its conjugate-reflected pair, so this is a legitimate response-mixture score.
+Put $T=\sum_{k\ge2}|c_k|$ and
+$R_i=K(\rho_i)-c_0\rho_i-c_1\rho_i^3$, with $0<\rho_i\le1$.
+Then $|R_i|\le\rho_i^5 T$, so the complete rounding score obeys
+\[
+ D(c)=c_0-|c_1|-T
+ \le c_0-|c_1|-\frac{|R_i|}{\rho_i^5}.
+\]
+This is an upper screen on a candidate's achievable score, not a certified
+lower score that would prove a Grothendieck upper bound.
+
+More usefully, choose $|s|\le1$ and real prices $a_i$ satisfying
+$\sum_i|a_i|\rho_i^5\le1$. Then
+\begin{equation}\label{eq:pool-price}
+ D(c)\le c_0-sc_1-\sum_i a_iR_i.
+\end{equation}
+Indeed $sc_1\le|c_1|$ and
+$\sum_i a_iR_i\le\sum_i|a_i|\rho_i^5T\le T$.
+The right side is affine in a response column. It therefore bounds every
+convex mixture of a fixed pool by the largest priced column. Minimizing that
+largest value is a small linear program on physical kernel samples. An
+optimized upper screen below the incumbent score would exclude that pool,
+provided the kernel integrals and low coefficients were rigorously enclosed.
+It does not exclude a larger pool or give a universal witness cap.
+
+The same prices define an admissible lower-witness multiplier sequence:
+\[
+ \lambda_0=1,\qquad\lambda_1=-s,\qquad
+ \lambda_k=-\sum_i a_i\rho_i^{2k+1}\quad(k\ge2).
+\]
+The budget gives $|\lambda_k|\le1$ at every index; this all-index statement is
+also proved in Lean. Its payoff on a response column is exactly
+\eqref{eq:pool-price}. Thus a failed upper pool produces a concrete witness
+against which to search for a missing response. A low payoff on that finite
+pool does not bound the witness's global norm. Any new adversary must return
+to the pool with its original-noise kernel, rather than merely its cubic score.
+Equivalently, on charge-one functions its operator is
+\[
+ T_a=\left(1+\sum_i a_i\rho_i\right)P_{1,0}
+ +\left(-s+\sum_i a_i\rho_i^3\right)P_{2,1}
+ -\sum_i a_i\mathsf T_{\rho_i},
+\]
+where $\mathsf T_\rho$ is the original Gaussian noise operator and
+$\mathsf T_1=I$. Thus the complete multiplier sequence is represented by a
+finite collection of physical noise channels. No global cap or finite-matrix
+transfer certificate for $T_a$ is asserted here.
+Unlike the cubic operator in Section~1, $T_a$ need not have a five-mode image:
+noise applied to a phase produces higher-degree components. Searching the
+five-mode phase family against it is a restricted adversary search, not an
+exact best-response oracle for the new operator.
+
+There is a direct error ledger. If $c_0,c_1,K(\rho_i)$ are enclosed about
+midpoints with errors $e_0,e_1,e_i$, add
+\[
+ e_0+|s|e_1+\sum_i|a_i|(e_i+\rho_i e_0+\rho_i^3e_1)
+\]
+to the midpoint right side of \eqref{eq:pool-price} for each column. This
+supports interval certification without recovering millions of individual
+chaos coefficients. Sampling variation is not such an enclosure.
+
+\section*{5. An exact obstruction to the first price-induced witness}
+The numerical adversary search suggests a simpler analytic baseline.
+Let $f_m=\ph(Z+q_m/\sqrt3)$ and $g_m=\ph(Z-q_m/\sqrt3)$.
+For every fixed real noise correlation, the replica construction gives
+\[
+ (q_m,q'_m)\ \Longrightarrow\ (G,G'),\qquad
+ \E[G\bar G']=\rho^3,
+\]
+where the limit is a proper Gaussian pair independent of the visible pair.
+Indeed $R/m,R'/m,C/m$ tend in probability to $1,1,\rho$ by the Gaussian law
+of large numbers. The normalized projection coefficients tend to
+$1,\rho^2,\sqrt{1-\rho^4}$ in the common two-coordinate representation.
+This proves the joint limit directly, with its original noise grade retained.
+The phase arguments have continuous nondegenerate Gaussian limits, so bounded
+convergence under a coupling, or the bounded continuous mapping theorem,
+gives convergence of their kernels.
+
+Write the Gaussian phase kernel as
+\[
+ H(t)=\frac\pi4\sum_{k\ge0}
+   \frac{(1/2)_k^2}{k!(k+1)!}t^{2k+1}.
+\]
+The limiting response-pair kernel is exactly
+\[
+ K_\infty(\rho)=H\left(\frac{3\rho-\rho^3}{4}\right),\qquad
+ c_0=\frac{3\pi}{16},\quad c_1=-\frac{101\pi}{2048}.
+\]
+This is a classical cubic preprocessor of the Gaussian phase kernel. The
+new search has therefore rediscovered a known type of rounding ingredient;
+it should be included as an analytic baseline before further pool optimization.
+
+The low coefficients also converge. This requires more than pointwise kernel
+convergence alone. Here the uniform Parseval bound $\sum_k|c_k^{(m)}|\le1$
+gives
+\[
+ |K_m(r)/r-c_0^{(m)}|\le r^2,\qquad
+ \left|\frac{K_m(r)-c_0^{(m)}r}{r^3}-c_1^{(m)}\right|\le r^2.
+\]
+First fix $r$, pass to the kernel limit, and then let $r$ decrease to zero;
+the first estimate gives convergence of $c_0^{(m)}$, and the second gives
+convergence of $c_1^{(m)}$. Thus every finite priced payoff converges as well.
+
+There is a qualification when treating such a limit as an upper-pool column:
+componentwise coefficient convergence alone need not give convergence of the
+absolute tail. Apply $\mathsf T_{\sqrt\eta}$ to both finite responses first,
+with $0<\eta<1$. The mixed coefficients become
+$\eta^{2k+1}c_k^{(m)}$. The same finite-head extraction works at every fixed
+index; together with the uniform absolute-mass bound it gives $\ell^1$
+convergence for fixed $\eta$, by splitting a finite head and a geometric tail.
+Then let $\eta\uparrow1$ for the summable limiting sequence. A diagonal choice
+proves membership in the $\ell^1$ closure of actual disc-valued response columns.
+This does not assert a uniform tail for unsmoothed cubic phases or provide a
+quantitative finite dimension here.
+
+For the rationalized nine-column price saved with the replay data, an exact
+standard-library series certificate gives limiting payoff
+\[
+ 0.7169925532763968\ldots>\frac{7169}{10000}.
+\]
+It uses Machin's identity with alternating rational arctangent remainders to
+enclose $\pi$. At each required argument $0\le t\le1/2$, the displayed
+Haagerup series has successive term ratio at most $t^2\le1/4$, so a geometric
+remainder encloses its entire tail. Forty-eight terms give an enclosure of
+width less than $10^{-25}$. The interval verifier recomputes all terms and
+the exact price budget; no quadrature or stochastic estimate is used.
+Consequently the global norm of \emph{that price-induced witness} exceeds
+$0.7169$, already on limits of genuine finite cubic responses, and sufficiently
+large finite $m$ have the same strict obstruction. This rejects that witness
+as an improvement on the incumbent cap. It concerns neither the incumbent
+cubic witness nor the original-response conjecture.
+
+\paragraph{Formal and numerical controls.}
+The projection coefficient, covariance identity, nonnegative residual and
+variance reconstruction are proved in
+\texttt{Grothe/LowerAnalytic/ReplicaState.lean}, together with the artificial
+noise gap and strictness. The tail sum, single-sample full-score bound and
+finite priced screen are proved in
+\texttt{Grothe/Upper/KernelScreen.lean}, as is all-index admissibility of the
+price-induced witness. The invariant classification
+and Wishart conditioning are the paper arguments above. Exact one-point mixed
+moments and floating replica cross-Gram controls are separate checks. The exact
+cross-Gram target is
+$\operatorname{diag}(\rho,\rho^3,\rho^3,\rho^3,\rho^3)$.
+Floating checks and optimizations do not certify a norm or an improved endpoint.
+
+\end{document}

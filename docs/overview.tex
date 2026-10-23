@@ -199,9 +199,30 @@ the separate heavy \lean{GrotheCaps} target, whose source stamp CI checks once r
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
 the sharp upper bound rests mainly on an external numerical comparison lemma. The weaker upper bound $1.40578$ is fully formal.
 
+\clearpage
 \section{Discoveries along the way}\label{sec:discoveries}
 Status labels: \textbf{[Lean]} machine-checked in this repository; \textbf{[P]} written proof; \textbf{[P,C]} proof with an
 exact or interval-arithmetic certificate replayed independently; \textbf{[F]} floating-point evidence only.
+
+\subsection{Common responses, common tails, and an architecture separator}
+\textbf{[P; supporting algebra in Lean]} A symmetry-closed family of actual cubic responses has an exact
+five-mode first/cubic image and a fixed-size original-noise replica representation. It preserves the shared
+quadratic drivers: a scalar Gaussian used to describe a cubic's law must retain third-chaos noise correlation
+$\rho^3$, rather than acquire first-chaos correlation $\rho$.
+
+\textbf{[Lean]} All correlation samples of a response pair use the same signed Hermite coefficients. Prices
+$a_i$ with $|\sum_i a_i\rho_i^{2k+1}|\le1$ for all $k\ge2$ bound the complete omitted absolute tail. A finite
+front and one geometric remainder budget certify every index. The resulting separator is linear in response
+columns, so it bounds whole convex pools, with explicit integration-error costs. Numerical pool screens
+still require certified input integrals; a favorable relaxation value is not an achievable rounding score.
+
+\textbf{[P,C; polynomial certificate in Lean]} The entire Gaussian-phase cubic-preprocessor family
+$H_{\rm phys}(A\rho+B\rho^3)$, $|A|+|B|\le1$, including arbitrary complex phases and convex mixtures,
+has full reciprocal score at most $0.71186$. This is below the incumbent $0.7119471533\ldots$.
+The separator is $\Re(c_0-\frac9{25}c_1-c_2-c_3)$; positive polynomial certificates handle all complex phases.
+Thus optimizing this class further cannot improve the current upper bound. General non-Gaussian cubic
+responses and nonlinear shared image fields are not excluded. The Gaussian-family coefficient extraction
+is a written application of the Gaussian phase identity; it is not yet connected end to end in Lean.
 
 \subsection{Inequalities for cubic Gaussian chaos}
 Throughout, $q$ is a circular cubic Wick polynomial (bidegree $(2,1)$) in any number of complex Gaussian variables,
@@ -375,8 +396,7 @@ in the second.
 The constructions and certificates were found by several AI research systems working on a shared manuscript, cross-checking
 each other's packages by independent replay. The endpoint theorems have the explicit Lean hypothesis lists in
 Section~\ref{sec:trust}, and their axioms are audited in CI. The discoveries labelled [P] and [C] also include paper proofs
-and external exact or interval certificates; they are not all formalized in Lean. The research manuscript and the
-certificate packages are kept outside the repository.
+and external exact or interval certificates; they are not all formalized in Lean. Selected written proofs and reproducible certificate records accompany the repository; the larger working manuscript is maintained separately.
 
 \section*{References}
 \small\sloppy

@@ -1,0 +1,206 @@
+'Grothe.LowerAnalytic.DiffuseCubicObstruction.finite_bridge_lower' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.DiffuseCubicObstruction.above_target' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.DiffuseCubicObstruction.reciprocal_ceiling' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.JointRowRepricing.visible_completion' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointRowRepricing.invQuad_shift' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointRowRepricing.price_shift' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointRowRepricing.dual_constant_is_row' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointRowRepricing.forcing_scale' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.coefficient_le_projected_norm' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.preserves_coefficient_of_selfadjoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.gateEnergy_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_norm_sq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.gateEnergy_rankOne' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_preserves_coefficient' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_selfadjoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_contraction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_idempotent' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_c0' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.diagonal_error_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.diagonal_one_sided_bounds' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.negative_of_error_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.strict_interval_convex_mix' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.signed_step_decreases' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.signed_step_margin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.cramer_three_column_cancellation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.linear_necessary_score_affine_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.linear_necessary_score_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.zero_cubic_necessary_score_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.norm_sq_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.compression_bessel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.compression_block_nonneg' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.three_grade_cut' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.three_grade_cut_unnormalized' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.two_by_two_moment_cut' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.fake_radial_parseval' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.fake_radial_rejected' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.fake_radial_repair_energy' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.fake_radial_repair' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.fake_visible_parseval' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.fake_visible_rejected' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.forced_visible_companion' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.mulResponse_ae' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.mulResponse_contracts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.bounded_response_compression' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.affine_cancel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.mixed_floor_le_max' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.family_floor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.opposite_slopes' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.rounded_mix_floor' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.floor_positive' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.reciprocal_ceiling' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.ceiling_below_140226' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.spectral_ratio_ceiling' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.pure_cubic_coefficient_above_floor' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.Lower.PrimalAudit.primal_le_dual' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.PrimalAudit.no_dual_below_primal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.gram_qform' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.projection_gram_interval' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.nested_projection_gram_interval' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.reflection_cross_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.orthogonal_projection_cross_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.factored_price_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.moment_support_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.completion_screen' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.no_completion' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.priced_nearmax_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.weighted_alignment' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.regularized_alignment_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.inner_perturbation_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.disk_quadratic_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.disk_quadratic_attained' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.two_disc_price_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.TwoDisc.slack_factorization' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.TwoDisc.support_of_factor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.TwoDisc.bilinear_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.TwoDisc.independent_interior_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.TwoDisc.coupled_interior_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.TwoDisc.complex_linear_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.TwoDisc.sharp_examples_attained' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.QuadraticFeatures.quadratic_mul_linear' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.QuadraticFeatures.probe_projection_closure' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuadraticFeatures.quadratic_remainder_budget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuadraticFeatures.affine_quadratic_remainder_budget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.Lower.SteinFusion.perspective_variance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.SteinFusion.perspective_fusion_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.SteinFusion.unit_fusion_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.SteinFusion.specCellG_unit_fusion' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.SteinFusion.unit_fusion_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.SteinFusion.common_kernel_projection' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ReplicaState.firstCoeff_normSq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ReplicaState.firstCoeff_cross' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ReplicaState.residual_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ReplicaState.variance_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ReplicaState.sqrt_variance_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ReplicaState.scalar_surrogate_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ReplicaState.scalar_surrogate_strict' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.KernelScreen.weighted_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.KernelScreen.full_score_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.KernelScreen.priced_score_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.KernelScreen.all_level_price_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.all_level_price_of_front_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.common_tail_price' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.full_score_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.affine_error_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.finite_mixture_score_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.phase_conditions_unit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.phase_conditions' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.real_polynomial_cap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.trigonometric_square_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.axis_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.axis_le_real_polynomial' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.normalized_complex_cap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.complex_score_cap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.score_le_separator' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.full_score_cap_of_low_identity' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
