@@ -6,7 +6,7 @@ import Mathlib.Analysis.SpecialFunctions.Exp
 
 Horner evaluation `evalG ev p x = Σ ev(pᵢ) xⁱ` of coefficient lists; the Taylor shift
 `shiftG … m p` evaluates to `p(m + x)` (`evalG_shiftG`), so `shiftAll` shifts all three variables
-(`e3_shiftAll`); `absEval3` bounds `|e3 B x y z|` on the box `|x| ≤ r, |y| ≤ s, |z| ≤ t`
+(`e3_shiftAll`); `absEval3` bounds `|he3 B x y z|` on the box `|x| ≤ r, |y| ≤ s, |z| ≤ t`
 (`abs_e3_le`); a dense array built on `range n` evaluates to the triple sum (`evalG_range_map`).
 -/
 
@@ -73,53 +73,53 @@ lemma evalG_map {α β : Type} (ev₁ : α → ℝ) (ev₂ : β → ℝ) (f : α
 /-! ### The three levels -/
 
 /-- One variable. -/
-def e1 (p : List ℤ) (x : ℝ) : ℝ := evalG (fun a : ℤ => (a : ℝ)) p x
+def he1 (p : List ℤ) (x : ℝ) : ℝ := evalG (fun a : ℤ => (a : ℝ)) p x
 
 /-- Two variables (outer index `x`). -/
-def e2 (p : List (List ℤ)) (x y : ℝ) : ℝ := evalG (fun a => e1 a y) p x
+def he2 (p : List (List ℤ)) (x y : ℝ) : ℝ := evalG (fun a => he1 a y) p x
 
 /-- Three variables (outer index `x`). -/
-def e3 (p : List (List (List ℤ))) (x y z : ℝ) : ℝ := evalG (fun a => e2 a y z) p x
+def he3 (p : List (List (List ℤ))) (x y z : ℝ) : ℝ := evalG (fun a => he2 a y z) p x
 
-lemma e1_add1 (a b : List ℤ) (y : ℝ) : e1 (add1 a b) y = e1 a y + e1 b y :=
+lemma e1_add1 (a b : List ℤ) (y : ℝ) : he1 (add1 a b) y = he1 a y + he1 b y :=
   evalG_zipAddG _ _ (fun a b => by push_cast; ring) a b y
 
-lemma e1_smul1 (m : ℤ) (a : List ℤ) (y : ℝ) : e1 (smul1 m a) y = m * e1 a y := by
+lemma e1_smul1 (m : ℤ) (a : List ℤ) (y : ℝ) : he1 (smul1 m a) y = m * he1 a y := by
   induction a with
-  | nil => simp [smul1, e1]
+  | nil => simp [smul1, he1]
   | cons b p ih =>
-    simp only [smul1, e1, List.map_cons, evalG_cons] at ih ⊢
+    simp only [smul1, he1, List.map_cons, evalG_cons] at ih ⊢
     rw [ih]; push_cast; ring
 
-lemma e2_add2 (a b : List (List ℤ)) (y z : ℝ) : e2 (add2 a b) y z = e2 a y z + e2 b y z :=
+lemma e2_add2 (a b : List (List ℤ)) (y z : ℝ) : he2 (add2 a b) y z = he2 a y z + he2 b y z :=
   evalG_zipAddG _ _ (fun a b => e1_add1 a b z) a b y
 
-lemma e2_smul2 (m : ℤ) (a : List (List ℤ)) (y z : ℝ) : e2 (smul2 m a) y z = m * e2 a y z := by
+lemma e2_smul2 (m : ℤ) (a : List (List ℤ)) (y z : ℝ) : he2 (smul2 m a) y z = m * he2 a y z := by
   induction a with
-  | nil => simp [smul2, e2]
+  | nil => simp [smul2, he2]
   | cons b p ih =>
-    simp only [smul2, e2, List.map_cons, evalG_cons] at ih ⊢
+    simp only [smul2, he2, List.map_cons, evalG_cons] at ih ⊢
     rw [ih, e1_smul1]; ring
 
-lemma e1_shift1 (m : ℤ) (p : List ℤ) (x : ℝ) : e1 (shift1 m p) x = e1 p (m + x) :=
+lemma e1_shift1 (m : ℤ) (p : List ℤ) (x : ℝ) : he1 (shift1 m p) x = he1 p (m + x) :=
   evalG_shiftG _ _ _ _ (fun a b => by push_cast; ring) (fun m a => by push_cast; ring) (by simp) m p x
 
-lemma e2_shift2 (m : ℤ) (p : List (List ℤ)) (x y : ℝ) : e2 (shift2 m p) x y = e2 p (m + x) y :=
+lemma e2_shift2 (m : ℤ) (p : List (List ℤ)) (x y : ℝ) : he2 (shift2 m p) x y = he2 p (m + x) y :=
   evalG_shiftG _ _ _ _ (fun a b => e1_add1 a b y) (fun m a => e1_smul1 m a y) (by simp) m p x
 
 lemma e3_shift3 (m : ℤ) (p : List (List (List ℤ))) (x y z : ℝ) :
-    e3 (shift3 m p) x y z = e3 p (m + x) y z :=
+    he3 (shift3 m p) x y z = he3 p (m + x) y z :=
   evalG_shiftG _ _ _ _ (fun a b => e2_add2 a b y z) (fun m a => e2_smul2 m a y z) (by simp)
     m p x
 
 /-- **All three shifts.** -/
 theorem e3_shiftAll (mU mV mW : ℤ) (A : List (List (List ℤ))) (x y z : ℝ) :
-    e3 (shiftAll mU mV mW A) x y z = e3 A (mU + x) (mV + y) (mW + z) := by
+    he3 (shiftAll mU mV mW A) x y z = he3 A (mU + x) (mV + y) (mW + z) := by
   rw [shiftAll, e3_shift3]
-  unfold e3
+  unfold he3
   refine evalG_map _ _ _ (fun row => ?_) A _
   rw [e2_shift2]
-  unfold e2
+  unfold he2
   exact evalG_map _ _ _ (fun a => e1_shift1 mW a z) row _
 
 /-! ### Absolute bounds -/
@@ -158,18 +158,18 @@ lemma absEval3_eq (r s t : ℕ) (p : List (List (List ℤ))) :
   | nil => simp [absEval3]
   | cons a p ih => simp only [absEval3, List.foldr_cons, evalG_cons] at ih ⊢; push_cast; rw [ih]
 
-lemma abs_e1_le (p : List ℤ) {x : ℝ} {r : ℕ} (hx : |x| ≤ r) : |e1 p x| ≤ absEval1 r p := by
+lemma abs_e1_le (p : List ℤ) {x : ℝ} {r : ℕ} (hx : |x| ≤ r) : |he1 p x| ≤ absEval1 r p := by
   rw [absEval1_eq]
   exact abs_evalG_le _ _ (fun a => by simp [Nat.cast_natAbs]) (fun a => by positivity) p hx
 
 lemma abs_e2_le (p : List (List ℤ)) {x y : ℝ} {r s : ℕ} (hx : |x| ≤ r) (hy : |y| ≤ s) :
-    |e2 p x y| ≤ absEval2 r s p := by
+    |he2 p x y| ≤ absEval2 r s p := by
   rw [absEval2_eq]
   exact abs_evalG_le _ _ (fun a => abs_e1_le a hy) (fun a => by positivity) p hx
 
 /-- **The absolute bound** on a box. -/
 theorem abs_e3_le (p : List (List (List ℤ))) {x y z : ℝ} {r s t : ℕ} (hx : |x| ≤ r)
-    (hy : |y| ≤ s) (hz : |z| ≤ t) : |e3 p x y z| ≤ absEval3 r s t p := by
+    (hy : |y| ≤ s) (hz : |z| ≤ t) : |he3 p x y z| ≤ absEval3 r s t p := by
   rw [absEval3_eq]
   exact abs_evalG_le _ _ (fun a => abs_e2_le a hy hz) (fun a => by positivity) p hx
 

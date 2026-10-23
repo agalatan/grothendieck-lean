@@ -44,7 +44,7 @@ lemma list_sum_mul {β : Type} (l : List β) (h : β → ℝ) (c : ℝ) :
 
 /-- **The dense array evaluates to the scaled phase polynomial.** -/
 theorem e3_denseA0 {ts : List ((ℕ × ℕ × ℕ) × ℚ)} (hts : termsOK ts = true) (U V W : ℝ) :
-    e3 (denseA0 ts) ((2 : ℝ) ^ SC * U) ((2 : ℝ) ^ SC * V) ((2 : ℝ) ^ SC * W)
+    he3 (denseA0 ts) ((2 : ℝ) ^ SC * U) ((2 : ℝ) ^ SC * V) ((2 : ℝ) ^ SC * W)
       = (commonDen ts : ℝ) * (2 : ℝ) ^ (DEG * SC) * Ssum ts U V W := by
   set L := commonDen ts with hL
   set X := (2 : ℝ) ^ SC * U
@@ -66,10 +66,10 @@ theorem e3_denseA0 {ts : List ((ℕ × ℕ × ℕ) × ℚ)} (hts : termsOK ts = 
     rw [← sum_map_filter]
     rfl
   -- unfold the three Horner levels into sums
-  have h3 : e3 (denseA0 ts) X Y Z = ∑ i ∈ range (DEG + 1), ∑ j ∈ range (DEG + 1),
+  have h3 : he3 (denseA0 ts) X Y Z = ∑ i ∈ range (DEG + 1), ∑ j ∈ range (DEG + 1),
       ∑ k ∈ range (DEG + 1), (ts.map fun t => if t.1 = (i, j, k) then w t i j k else 0).sum
         * Z ^ k * Y ^ j * X ^ i := by
-    simp only [denseA0, e3, e2, e1, ← hL]
+    simp only [denseA0, he3, he2, he1, ← hL]
     rw [evalG_range_map]
     refine sum_congr rfl fun i _ => ?_
     rw [evalG_range_map, sum_mul]
