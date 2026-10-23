@@ -7,3 +7,4 @@ handoff/lower-stein/cert-0745d/tools/replay_midcaps.py whitespace=-blank-at-eol
 
 # Frozen exact replay tables are reviewed through their manifest and replays.
 handoff/**/*.json linguist-generated=true
+Grothe/Research/RefinedCoverData.lean linguist-generated=true

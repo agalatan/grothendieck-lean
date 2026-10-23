@@ -1,0 +1,38 @@
+{
+  "validated_utc": "2026-10-23T04:15:05.651970+00:00",
+  "lean_version": "4.34.1",
+  "host": "yo",
+  "owned_overlay": "/dev/shm/codex-hardyb-20261023",
+  "priority": "nice 19, sequential, exact subprocess PID waits",
+  "warning_as_error": true,
+  "project_dependency_count": 139,
+  "changed_modules": [
+    "Grothe/Upper/Data.lean",
+    "Grothe/Upper/Residual.lean",
+    "Grothe/Upper/PolynomialBridge.lean",
+    "Grothe/UpperChaos/Structural.lean",
+    "Grothe/UpperChaos/Rounder.lean",
+    "Grothe/UpperChaos/PhiBound.lean"
+  ],
+  "compiled_unchanged_dependencies": [
+    "Grothe/UpperChaos/Energy2.lean",
+    "Grothe/UpperChaos/Kernel2.lean",
+    "Grothe/UpperChaos/Realise2.lean",
+    "Grothe/UpperChaos/PhiCover.lean"
+  ],
+  "data_declarations_identical_to_previous": true,
+  "direct_hyps_identical_to_previous": true,
+  "endpoint": "500000000000000000/355973579786182891",
+  "advertised_strict_decimal": "1.404598623023",
+  "tail_cap": "19055527/625000000000000",
+  "residual_cap": "597510017109/500000000000000000",
+  "source_sha256": {
+    "Grothe/Upper/Data.lean": "0a64faff42fbb6ec86c492eef35e153f3af36d4eb2fe168bf5e56012b8bf156c",
+    "Grothe/Upper/Residual.lean": "46ddf03c1a9b6535abb671045b5799418f0ba209d60096978934a3fe79e9177b",
+    "Grothe/Upper/PolynomialBridge.lean": "049062296dbc8ae477ab8282b19fa4d924a9666f9682be94274e92e6ae61af91",
+    "Grothe/UpperChaos/Structural.lean": "31f255ee1f5b54f7e365d792ce0d7eb7c91b8979cf343f43d9912548dd3b9c81",
+    "Grothe/UpperChaos/Rounder.lean": "1cb1521574c88a2d4cb486a98b278c652ee5feb6d3cedd27ccfd51444e253dec",
+    "Grothe/UpperChaos/PhiBound.lean": "88dc6a327f21ee9c26cfcda8ec550c98398d274dfc590eb6485e620b86c18d24"
+  },
+  "axiom_log": "UPPER_AXIOMS.txt"
+}

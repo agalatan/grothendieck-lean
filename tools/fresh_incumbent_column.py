@@ -71,7 +71,7 @@ def freeze(repo):
             'inherited_premises':['DirectHyps.valid: actual rounding is dominated',
                                  'DirectHyps.compare: actual energy vs truncation l1 bound compareQ',
                                  'DirectHyps.energy_close: truncation head energies vs exact stored table l1 bound energyErrQ',
-                                 'DirectHyps.hardy: actual rounding weighted square sum <=7/4 at4149/4000; yields tailQ beyond501',
+                                 'DirectHyps.hardy: weighted square sum <=7/4 at4149/4000; together with the head/comparison-derived linear lower bound yields tailQ beyond501',
                                  'DirectHyps summability/parity as stated in PolynomialBridge.lean']}
 
 

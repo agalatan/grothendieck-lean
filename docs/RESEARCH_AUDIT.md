@@ -3,7 +3,36 @@
 This branch consolidates the rank-one cap campaign, fresh response-class
 obstructions, and coupled-image continuation. Research snapshots and their
 replay data live under `handoff/research-third-decimal/`; the maintained Lean
-ingredients live in `Grothe/Research/`. **No headline bound changes.**
+ingredients live in `Grothe/Research/`. The initial audit changes no bound;
+the subsequent cover and Hardy-budget refinements below improve both endpoints.
+
+## Current continuation: a smaller upper bound
+
+`Grothe.fresh_upper` now gives the exact bound
+`500000000000000000/355973579786182891 < 1.404598623023` under exactly
+the same `DirectHyps`. The concrete `fresh_upper_rounder` has the same
+three numerical hypotheses and truncation conditions. The existing finite
+head bounds the linear coefficient from below; deducting its known weighted
+square from the Hardy budget reduces the tail cap to `3.04888432e-8`.
+No source integral, energy entry, preprocessor or numerical premise is changed.
+The gain is about `1.235e-8` in the upper endpoint. See
+[the derivation and validation](../handoff/research-third-decimal/needle-20261023/UPPER.md).
+
+The historical frozen incumbent exports retain their original source hashes,
+tail budgets and proof scope. New exports read the smaller canonical tail cap.
+The refined global lower cover has 9,057 boxes and cap `0.713421765375`.
+It retains the certified rows, mixed batches, witness and `NodeCaps`, and
+gives the strict endpoint `1.401695390488`. Only 43 parent boxes need new
+subdivision/mixture choices, producing 344 children; the remaining source/law proofs are reused.
+The complete partition and every final box have separate Lean check declarations;
+their final native validation is running as recorded in the continuation's README.
+
+The second, fourth and sixth moments of the actual damped phase have also
+been recovered as exact rationals directly from `Upper/Data.lean`. All three
+equal the retained comparison inputs. This restores missing numerical
+provenance, without discharging the other comparison premises; see
+[MOMENTS.md](../handoff/research-third-decimal/needle-20261023/MOMENTS.md) and
+[the remaining source gap](../handoff/research-third-decimal/needle-20261023/HS_GAP.md).
 
 ## Integration with current master
 
@@ -19,17 +48,19 @@ relative to the original research base `98f61ec` matter as follows:
   does not discharge the stronger external estimates entering `compare`.
   The coupled concrete rounder is outside the separable class excluded by
   this branch's finite-price theorem.
-- The scalar row/mixed data, parameter cover, numerical upper inputs and
-  endpoints are unchanged. The exact local box-8150 improvement is therefore
+- At that integration base the scalar row/mixed data, parameter cover,
+  numerical upper inputs and endpoints matched the original research base. The exact local box-8150 improvement is therefore
   still applicable, with its original analytic premises and local scope.
 - Upstream separates the expensive cap ranges into `GrotheCaps`. The
   `CapsRest` interface retains rows 12–15. No `CAPS_VERIFIED.txt` was present
   at this integration base; the stamp checker warns that the full target
   has not been verified. The default lower headline still assumes
   `NodeCaps`. This branch does not claim to have run that heavy target.
-- The lower certificate now uses 13 sequential native chunks. Historical
+- At that integration base the lower certificate used 13 sequential native chunks. Historical
   build/axiom counts in the research snapshots are not validation of this
-  rebased tree. No new native facts are introduced here.
+  rebased tree. The subsequent refined cover adds five native facts, replacing
+  the old five cover checks in the new endpoint's dependency set; its eight
+  row/batch checks are reused.
 - The fixed cubic witness at `ε = 149/200` cannot reach `1.402`: upstream
   constructs a genuine finite Gaussian response with pairing `> 0.71329 >
   500/701`. The Lean module `DiffuseCubicObstruction` checks the finite

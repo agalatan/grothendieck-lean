@@ -1,0 +1,74 @@
+{
+  "status": "PASS",
+  "scope": "Replay the saved exact research certificates from a fresh checkout.\n\nStandard-library Python only. Does not launch Lean builds, Gaussian discovery\nsearches or integration regeneration. The written analytic premises of each\ncertificate remain in force. --full also replays the seven frozen scalar\ncountermodels; they are relaxation examples, not Gaussian realizations.\n",
+  "frozen_inputs_checked": 242,
+  "full": true,
+  "checks": [
+    {
+      "check": "real-mixture",
+      "status": "PASS",
+      "seconds": 0.05848712499937392
+    },
+    {
+      "check": "complex-mixture",
+      "status": "PASS",
+      "seconds": 0.06731924999985495
+    },
+    {
+      "check": "independent-complex",
+      "status": "PASS",
+      "seconds": 0.03772025000216672
+    },
+    {
+      "check": "coupled-pair",
+      "status": "PASS",
+      "seconds": 0.08207429100002628
+    },
+    {
+      "check": "finite-jump",
+      "status": "PASS",
+      "seconds": 0.11413337499834597
+    },
+    {
+      "check": "wick-identities",
+      "status": "PASS",
+      "seconds": 0.037017000002379064
+    },
+    {
+      "check": "moment-extension",
+      "status": "PASS",
+      "seconds": 0.054698042000381975
+    },
+    {
+      "check": "moment-negative-controls",
+      "status": "PASS",
+      "seconds": 4.1519755000008445
+    },
+    {
+      "check": "incumbent-prefix",
+      "status": "PASS",
+      "seconds": 0.08846095799890463
+    },
+    {
+      "check": "rankone-tau-a",
+      "status": "PASS",
+      "seconds": 2.9144652079994557
+    },
+    {
+      "check": "rankone-tau-b",
+      "status": "PASS",
+      "seconds": 2.702534000000014
+    },
+    {
+      "check": "rankone-box",
+      "status": "PASS",
+      "seconds": 0.2502171250016545
+    },
+    {
+      "check": "seven-scalar-countermodels",
+      "status": "PASS",
+      "seconds": 27.615468207997765
+    }
+  ],
+  "not_claimed": "Gaussian integrations, all-dimensional outer covers, full Lean build or a new endpoint."
+}

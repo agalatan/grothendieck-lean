@@ -20,6 +20,9 @@ NATIVE |= {f"Grothe.LowerAnalytic.capRange{k:02d}_{j}._native.native_decide.ax_1
 # lower: the certificate check in 13 single-threaded chunks (Grothe/Lower/Cert/)
 NATIVE |= {f"Grothe.Lower.{n}._native.native_decide.ax_1_1" for n in
            ['certRows0', 'certRows1', 'certRows2', 'certRows3', 'certRows4', 'certBatches0', 'certBatches1', 'certBatches2', 'certBoxes0', 'certBoxes1', 'certBoxes2', 'certBoxes3', 'certPartition']}
+NATIVE |= {f"Grothe.Research.RefinedLowerCheck.{n}._native.native_decide.ax_1_1" for n in
+           ['certRefinedBoxes0', 'certRefinedBoxes1', 'certRefinedBoxes2',
+            'certRefinedBoxes3', 'certRefinedPartition']}
 REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.Lower.lower_endpoint", "Grothe.Lower.lower_bound_of_transferL2",
             "Grothe.LowerAnalytic.gaussian_steinInputs", "Grothe.LowerAnalytic.lower_bound_gaussian",
@@ -117,12 +120,43 @@ RESEARCH_CORE = {
     'Grothe.Research.SemiconvexChord.checked_mesh_allowance',
 }
 REQUIRED |= RESEARCH_CORE
+
+# The sharper Hardy tail reuses the existing head fact; no native fact is added.
+HARDY_BUDGET = {
+    'Grothe.hardy_budget_after_linear',
+    'Grothe.head_residual_le',
+    'Grothe.linear_lower',
+    'Grothe.tail_numeric',
+    'Grothe.tail_le',
+    'Grothe.upper_value_improves',
+    'Grothe.fresh_upper',
+    'Grothe.UpperChaos.fresh_upper_rounder',
+}
+REQUIRED |= HARDY_BUDGET
+
+REFINED_LOWER = {
+    f'Grothe.Research.RefinedLower.{name}' for name in [
+        'profile_bound_of_refined_cover', 'witnessCap_of_refined_cover_reduction',
+        'witnessCap_of_refined_cover', 'transferInputs_of_refined_cover',
+        'lower_bound_of_refined_cover', 'strict_lower_bound_of_refined_cover']
+} | {
+    f'Grothe.Research.RefinedLowerCheck.{name}' for name in [
+        'certRefinedBoxes0', 'certRefinedBoxes1', 'certRefinedBoxes2',
+        'certRefinedBoxes3', 'certRefinedPartition', 'refined_cover_checked',
+        'refined_reciprocal_lower_bound', 'refined_endpoint_lt_reciprocal',
+        'lower_bound_of_refined_cover_data']
+}
+REQUIRED |= REFINED_LOWER
 # `--caps`: the report of scratch/AxiomsCaps.lean (separate target GrotheCaps, see README)
 if "--caps" in sys.argv:
     REQUIRED = {"Grothe.LowerAnalytic.lower_bound_of_capsRest"}
 elif "--research" in sys.argv:
     REQUIRED = RESEARCH_CORE
     NATIVE = set()
+elif "--hardy-budget" in sys.argv:
+    REQUIRED = HARDY_BUDGET
+elif "--refined-cover" in sys.argv:
+    REQUIRED = REFINED_LOWER
 elif "--response-geometry" in sys.argv:
     REQUIRED = RESPONSE_GEOMETRY
     NATIVE = set()

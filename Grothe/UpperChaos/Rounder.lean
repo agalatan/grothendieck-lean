@@ -193,7 +193,7 @@ theorem fresh_upper_concrete (hφ : PhiBound) {X : ℂ × ℂ → ℂ} (hXL : Me
     (hclose : ∑ p ∈ headIdx 501, |energy (hXL.toLp X) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ))
     (hhardy : ∀ J, ∑ n ∈ Finset.range J, kernelCoeff (energy ((memLp_GT hφ).toLp GT)) n ^ 2
       * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4) :
-    IsGrothendieckBound (500000000000000000 / 355973576656604491) :=
+    IsGrothendieckBound (500000000000000000 / 355973579786182891) :=
   fresh_upper_of_rounding measurable_GT (norm_GT_le hφ) (fun _ u hc => GT_rot2 hc u)
     (memLp_GT hφ) hXL hXch hcompare hclose hhardy
 

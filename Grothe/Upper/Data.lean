@@ -40,7 +40,7 @@ polynomial of degree `≤ 181` approximating `(iφ + (iφ)²/2 + (iφ)³/6) F₀
   is the kernel of `Ê`.
 
 The certified bound (`PolynomialBridge.lean`) is
-`1/(c − 600639595509/500000000000000000) = 500000000000000000/355973576656604491`.
+`1/(c − 597510017109/500000000000000000) = 500000000000000000/355973579786182891`.
 -/
 
 namespace Grothe.Upper
