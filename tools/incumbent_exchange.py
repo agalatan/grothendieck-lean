@@ -59,13 +59,21 @@ def export_data(out):
     bridge=ROOT/'Grothe/Upper/PolynomialBridge.lean'
     bt=bridge.read_text()
     for target,name in [('compare','compareQ'),('hardy_tail','tailQ')]:
-        literal=re.search(r'def '+name+r' : ℚ := ([^\n]+)',bt)[1]
-        data[target]=str(Q(literal.replace(' ','')))
+        if target=='compare':
+            ct=(ROOT/'Grothe/Upper/ComparisonData.lean').read_text()
+            body=re.search(r'def compareQ : ℚ := ([^\n]+)',ct)[1]
+            n,d=re.fullmatch(rational,body.strip()).groups()
+            data[target]=str(Q(int(n),int(d or 1)))
+        else:
+            literal=re.search(r'def '+name+r' : ℚ := ([^\n]+)',bt)[1]
+            data[target]=str(Q(literal.replace(' ','')))
     data['incumbent_score'] = str(Q(data['slopeQ'])-sum(Q(data[k]) for k in
         ['compare', 'hardy_tail', 'energyErrQ', 'headCapQ']))
     data['source'] = 'Grothe/Upper/Data.lean'
     data['source_sha256'] = hashlib.sha256(source.read_bytes()).hexdigest()
     data['bridge_sha256'] = hashlib.sha256(bridge.read_bytes()).hexdigest()
+    data['comparison_scope']='selected_head'
+    data['localized_recipe_sha256']=hashlib.sha256((ROOT/'data/localized-comparison/recipe.json').read_bytes()).hexdigest()
     data['scope'] = 'Exact export. Inherits the analytic hypotheses of PolynomialBridge.lean.'
     dump(out, data)
     print('PASS export: 21168 exact energies; 1140 phase terms; incumbent ledger', flush=True)

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Directed assembly of a new preprocessing certificate, with the same rounder.
 
-The Gaussian comparison and energy error are inherited. The new polynomial
-head is recomputed with Arb and the matching fresh Hardy result is required.
+The Gaussian component-error enclosures and energy error are inherited. The
+selected-block comparison is reassembled, the head is recomputed with Arb,
+and the matching directed Hardy result is required.
 Canonical inputs contain all data needed to regenerate the Lean data module.
 """
 import argparse
@@ -24,6 +25,12 @@ def main():
     p.add_argument('--check',action='store_true',help='Check an existing canonical certificate without changing it.')
     a=p.parse_args()
     data=json.loads(a.baseline.read_text());proposal=json.loads(a.proposal.read_text())
+    if data.get('comparison_scope')=='selected_head':
+        from gen_localized_comparison import main as verify_localized
+        localized=verify_localized(check=True)
+        assert Q(data['compare'])==Q(localized['comparison_cap'])
+        recipe_path=Path(__file__).resolve().parents[1]/'data/localized-comparison/recipe.json'
+        assert data['localized_recipe_sha256']==hashlib.sha256(recipe_path.read_bytes()).hexdigest()
     hard=json.loads(a.hardy.read_text())
     contour=a.hardy.parent/'inputs/contour_input.json'
     proof=a.hardy.parent/'inputs/GAUSSIAN_SCHUR_TAIL_PROOF.md'

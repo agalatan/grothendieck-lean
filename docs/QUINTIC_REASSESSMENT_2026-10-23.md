@@ -21,7 +21,7 @@ The repository's audited baseline remains:
   `CapsRest`: the remaining four rows' vertex caps and any excluded-node
   caps of the other rows. Its full heavy verification has no recorded stamp
   in the current tree.
-* `K_G^C < 1.404598583128`: `Grothe.UpperChaos.fresh_upper_rounder`
+* `K_G^C < 1.404598170764`: `Grothe.UpperChaos.fresh_upper_rounder`
   proves this for the concrete rounding, assuming an L² charge-one
   truncation `X` and the three numerical bounds `compare`, `energy_close`
   and `hardy`. The older table interface `Grothe.fresh_upper`, conditional
@@ -46,7 +46,7 @@ Two quantitative facts determine the scale of the next work:
    above it. Cubic repricing and sharper certification cannot close that part.
 2. The upper construction's slope is `.7119483103461`; its certified net
    score is `.711947179793908982`. Removing its entire residual allowance
-   would improve the reciprocal by only about `2.23e-6`. A substantial upper
+   would improve the reciprocal by only about `1.82e-6`. A substantial upper
    improvement needs a better response family or signed coefficient balance.
 
 Thus the lower obstruction is partly the witness itself; the upper

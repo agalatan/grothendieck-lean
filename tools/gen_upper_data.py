@@ -74,9 +74,10 @@ The tensor-power correlations are `p(t)=t P(t²)` and `q(t)=t Q(t²)`.
 Both coefficient l1 norms are at most one and `Q(0)=0`; no restriction to
 only two nonzero auxiliary coefficients is imposed.
 
-`energyStrs` stores the same 21168 exact dyadic energies of the truncation X,
-with `n+3m ≤ 501`. `energyErrQ` and the Gaussian comparison are inherited.
-The new head and Gaussian Schur/Hardy contour are independently replayed.
+`energyStrs` stores 21168 exact dyadic energies of the truncation X,
+with `n+3m ≤ 501`. `energyErrQ` is inherited. The selected-block comparison
+uses the Gaussian component-error inputs and exact finite masses in
+`ComparisonData.lean`. The head and Schur/Hardy contour have independent replays.
 Under the documented Gaussian inputs the bound is
 `1/(c-{delta}) = {d['exact_bound']} < {d['headline_decimal']}`.
 -/

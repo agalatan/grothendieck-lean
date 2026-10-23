@@ -2,9 +2,9 @@
 
 Under the documented Gaussian inputs, the certificate proves
 
-**K_G^C < 1.404598583128.**
+**K_G^C < 1.404598170764.**
 
-The exact reciprocal score is `355973589896954491/500000000000000000`.
+The exact reciprocal score is `355973694404074991/500000000000000000`.
 This is a global upper certificate, not a bound on a selected response region.
 The lower certificate is unaffected.
 
@@ -23,21 +23,24 @@ residual about `c t`, with `c = 7119483103461/10000000000000`:
 
 | contribution | exact allowance | status |
 |---|---:|---|
-| rounding/truncation energy comparison | `1065637497/1000000000000000` | inherited external Gaussian input |
+| selected-block energy comparison | `107077907/125000000000000` | proved from inherited component-error inputs and native finite masses |
 | finite head through degree 501 | `28153/1000000000000` | freshly checked in Arb and Lean |
 | stored energy-table accuracy | `6847009/500000000000000000` | inherited external Gaussian input |
 | infinite tail after degree 501 | `36748/1000000000000` | fresh contour arithmetic, same analytic Schur input |
 
-Their sum is `delta = 565276095509/500000000000000000`.
+Their sum is `delta = 460768975009/500000000000000000`.
 The already formalized transfer theorem gives
-`K_G^C <= 1/(c-delta) < 1.404598583128`.
+`K_G^C <= 1/(c-delta) < 1.404598170764`.
 No additional head-comparison hypothesis is introduced.
 
 The native Lean checker proves the complete finite-head statement over exact
 dyadic energy data and rational polynomial coefficients. It also proves the
 polynomial l1 constraints, locality, transfer and rational endpoint assembly.
 The concrete theorem `Grothe.UpperChaos.fresh_upper_rounder` still explicitly
-assumes `compare`, `energy_close` and `hardy`, for a charge-one L2 truncation `X`.
+takes `ComparisonInputs`, `energy_close` and `hardy`, for a charge-one L2 truncation `X`.
+The first records an exact Gaussian error decomposition, spectral supports and
+component norm bounds. Their source enclosures and identification remain external;
+Lean derives the selected comparison. See `../localized-comparison/PROOF.md`.
 Thus this is not a new unconditional Lean endpoint. The unconditional theorem
 `Grothe.haagerup_bound` remains separate.
 
@@ -57,6 +60,7 @@ is not part of the proof.
 
 ```sh
 mkdir -p handoff/upper-preprocess-replay
+python3 -I tools/gen_localized_comparison.py --check
 python3 tools/gen_upper_data.py data/upper-preprocess/certificate.json handoff/upper-preprocess-replay/Data.lean
 cmp Grothe/Upper/Data.lean handoff/upper-preprocess-replay/Data.lean
 python3 -I tools/verify_upper_preprocess.py data/upper-preprocess/certificate.json data/upper-preprocess/proposal.json data/upper-preprocess/hardy_result.json --check --out handoff/upper-preprocess-replay/head.json
@@ -79,7 +83,7 @@ exact bound, source hash and verifier hash. The `inputs/` directory pins the
 Schur proof and smoothing parameters. A sequential LP produced the proposal;
 neither LP optimality nor floating point output is a certificate premise.
 
-The dominant remaining allowance is the inherited comparison (94.26% of the
-residual). Further gains from a new response must account for its full signed
+The dominant remaining allowance is the selected comparison (92.96% of the
+residual), derived from the inherited Gaussian component-error enclosures. Further gains from a new response must account for its full signed
 kernel and shared tail; a better slope or a truncated mixture score alone
 does not establish an endpoint.

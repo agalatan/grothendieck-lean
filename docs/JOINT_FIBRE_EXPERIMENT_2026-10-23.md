@@ -501,7 +501,7 @@ uniform cap from falling below `.7131526`, even with perfect integration and
 optimal scalar moment prices. Under the usual reciprocal conversion this
 limits a certificate using this unchanged surrogate to less than
 `1/.7131526 = 1.402224432752...`. It cannot approach the current upper endpoint
-`1.404598583128` through scalar repricing alone. This is not a ceiling for all
+`1.404598170764` through scalar repricing alone. This is not a ceiling for all
 cubic witnesses, other mixed matrices, or a model retaining the actual cubic
 projection. Those changes alter the optimization problem.
 
