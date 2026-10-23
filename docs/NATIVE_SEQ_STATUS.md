@@ -25,7 +25,24 @@ across processes (one fact per module, `lake` builds modules in parallel).
 | `Grothe.Upper.Final` | `head_check` | 62 s (module build) |
 | `Grothe.Upper.Haagerup` | `haagerup_check` | 257 s |
 | `Grothe.Lower.RowCheck` (monolithic, PR #1) | `cert_check` | 4,421 s (74 min) |
-| `Grothe/Lower/Cert/*` (this branch) | 13 chunks | see the table below once built |
+| `Grothe/Lower/Cert/*` (this branch) | 13 chunks | 37 min wall for all 13 in parallel (table below) |
+
+Chunk modules (built together by `lake build Grothe.Lower.RowCheck`, 8 processes on the shared
+droplet; each time is the module build including its single-threaded native check):
+| chunk | time | chunk | time |
+|---|---|---|---|
+| `Partition` | 40 s | `Rows0` | 967 s |
+| `Batches0` | 337 s | `Rows1` | 1,108 s |
+| `Batches1` | 344 s | `Rows2` | 557 s |
+| `Batches2` | 395 s | `Rows3` | 1,220 s |
+| `Boxes0` | 2,199 s | `Rows4` | 392 s |
+| `Boxes1` | 2,172 s | `Boxes2` | 1,534 s |
+| `Boxes3` | 1,809 s | | |
+All 13 return `true`; `RowCheck` (the reassembly, `decide +kernel` for the length bound) builds in
+13 s with no warning; `#print axioms Grothe.Lower.lower_bound_data` shows exactly the standard
+axioms and the 13 chunk facts. The boxes dominate: splitting them into 8 chunks of 1,100 would
+bring the wall time to about 20 min. Not yet run: the full build of this branch with the
+caps/upper-chaos modules of master and `check_axioms.py` on it (expected count: 227 + 13 = 240).
 
 Full build of PR #1's tree (98f61ec + c6942a2) on the droplet: 87 min wall, EXIT 0, 0 warnings;
 `check_axioms.py`: 186 theorems, 3 native facts — the sequential evaluation reproduces `true` for

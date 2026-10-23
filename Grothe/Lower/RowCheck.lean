@@ -31,14 +31,14 @@ theorem cert_check : checkCert rowData mixedBatches coverCuts coverBoxes = true 
   have hr : rowData.all checkRow = true :=
     all_of_chunk _ _ 0 4 certRows0 <| all_of_chunk _ _ 4 4 certRows1 <|
       all_of_chunk _ _ 8 4 certRows2 <| all_of_chunk _ _ 12 4 certRows3 <|
-      all_of_chunk _ _ 16 4 certRows4 <| all_drop_of_le _ _ _ (by decide)
+      all_of_chunk _ _ 16 4 certRows4 <| all_drop_of_le _ _ _ (by decide +kernel)
   have hb : mixedBatches.all (checkBatch rowData) = true :=
     all_of_chunk _ _ 0 7 certBatches0 <| all_of_chunk _ _ 7 7 certBatches1 <|
-      all_of_chunk _ _ 14 7 certBatches2 <| all_drop_of_le _ _ _ (by decide)
+      all_of_chunk _ _ 14 7 certBatches2 <| all_drop_of_le _ _ _ (by decide +kernel)
   have hx : coverBoxList.all (boxOK rowData mixedBatches Bcap) = true :=
     all_of_chunk _ _ 0 2200 certBoxes0 <| all_of_chunk _ _ 2200 2200 certBoxes1 <|
       all_of_chunk _ _ 4400 2200 certBoxes2 <| all_of_chunk _ _ 6600 2200 certBoxes3 <|
-      all_drop_of_le _ _ _ (by decide)
+      all_drop_of_le _ _ _ (by decide +kernel)
   have hp := certPartition
   simp only [coverBoxList] at hx hp
   simp only [checkCert_eq, checkCover, allPar_eq, hr, hb, hx, hp, Bool.and_self]
