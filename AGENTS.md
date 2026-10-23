@@ -137,6 +137,11 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
 
 - No `sorry`, `axiom`, `implemented_by`, `extern` or `unsafe` (CI rejects them). The build must
   be warning-free.
+- **Inputs of committed data live in the repository.** Anything used to *generate* a committed file (search
+  outputs, recipe JSON, certificate data, generator arguments) goes in `data/` (or `handoff/` if it is research-only),
+  never only in a session scratchpad, `/tmp` or `/private/tmp`: macOS clears `/private/tmp` on every reboot, and that is
+  how the cap recipes were once lost. A generated `.lean` file must be reproducible byte for byte from `data/` with its
+  generator; never edit a generated file by hand (change its inputs and regenerate).
 - **`native_decide`:** no `Task.spawn`, and no other threading over shared data, inside code
   evaluated by `native_decide`. A parallel check crashed with a malloc double free, which means
   memory corruption in trusted code. To parallelise, split the check into several facts in
