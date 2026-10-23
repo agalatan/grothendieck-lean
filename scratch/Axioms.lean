@@ -315,3 +315,16 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.ceiling_below_140226
 #print axioms Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.spectral_ratio_ceiling
 #print axioms Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.pure_cubic_coefficient_above_floor
+#print axioms Grothe.Research.CoupledMajorizer.complex_norm_majorizer
+#print axioms Grothe.Research.CoupledMajorizer.complex_norm_majorizer_exact
+#print axioms Grothe.Research.CoupledMajorizer.coupled_update_bound
+#print axioms Grothe.Research.CoupledMajorizer.finite_weighted_majorizer
+#print axioms Grothe.Research.CoupledMajorizer.diagonal_step_identity
+#print axioms Grothe.Research.CoupledMajorizer.finite_diagonal_descent
+#print axioms Grothe.Research.CoupledMajorizer.finite_diagonal_strict_descent
+#print axioms Grothe.Research.SemiconvexChord.chord_of_lifted
+#print axioms Grothe.Research.SemiconvexChord.profile_square
+#print axioms Grothe.Research.SemiconvexChord.finite_expectation_chord
+#print axioms Grothe.Research.SemiconvexChord.gate_reassembly
+#print axioms Grothe.Research.SemiconvexChord.chord_allowance
+#print axioms Grothe.Research.SemiconvexChord.checked_mesh_allowance

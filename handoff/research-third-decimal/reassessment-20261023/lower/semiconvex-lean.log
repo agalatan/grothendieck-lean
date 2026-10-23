@@ -1,0 +1,8 @@
+'Grothe.Reassessment.SemiconvexChord.chord_of_lifted' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Reassessment.SemiconvexChord.profile_square' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Reassessment.SemiconvexChord.finite_expectation_chord' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.Reassessment.SemiconvexChord.gate_reassembly' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Reassessment.SemiconvexChord.chord_allowance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Reassessment.SemiconvexChord.checked_mesh_allowance' depends on axioms: [propext, Classical.choice, Quot.sound]

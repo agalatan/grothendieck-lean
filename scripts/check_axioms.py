@@ -99,9 +99,30 @@ RESPONSE_GEOMETRY = {
     'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.spectral_ratio_ceiling',
     'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.pure_cubic_coefficient_above_floor'}
 REQUIRED |= RESPONSE_GEOMETRY
+
+# Coupled-image and semiconvex ingredients: every public fact is audited.
+RESEARCH_CORE = {
+    'Grothe.Research.CoupledMajorizer.complex_norm_majorizer',
+    'Grothe.Research.CoupledMajorizer.complex_norm_majorizer_exact',
+    'Grothe.Research.CoupledMajorizer.coupled_update_bound',
+    'Grothe.Research.CoupledMajorizer.finite_weighted_majorizer',
+    'Grothe.Research.CoupledMajorizer.diagonal_step_identity',
+    'Grothe.Research.CoupledMajorizer.finite_diagonal_descent',
+    'Grothe.Research.CoupledMajorizer.finite_diagonal_strict_descent',
+    'Grothe.Research.SemiconvexChord.chord_of_lifted',
+    'Grothe.Research.SemiconvexChord.profile_square',
+    'Grothe.Research.SemiconvexChord.finite_expectation_chord',
+    'Grothe.Research.SemiconvexChord.gate_reassembly',
+    'Grothe.Research.SemiconvexChord.chord_allowance',
+    'Grothe.Research.SemiconvexChord.checked_mesh_allowance',
+}
+REQUIRED |= RESEARCH_CORE
 # `--caps`: the report of scratch/AxiomsCaps.lean (separate target GrotheCaps, see README)
 if "--caps" in sys.argv:
     REQUIRED = {"Grothe.LowerAnalytic.lower_bound_of_capsRest"}
+elif "--research" in sys.argv:
+    REQUIRED = RESEARCH_CORE
+    NATIVE = set()
 elif "--response-geometry" in sys.argv:
     REQUIRED = RESPONSE_GEOMETRY
     NATIVE = set()

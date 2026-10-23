@@ -1,0 +1,27 @@
+{
+  "inputs": {
+    "cover.json": "ac7bc2d09c5cc215bc6cf6f16efbc58b7e55b2fb9095733e65ee57009a504dba",
+    "inherited.json": "3e7ddd38eb4d7ebeb8db0af1f14f50774c4c93a259fb9c6053c92ec760bdb44e"
+  },
+  "nodes": [
+    {
+      "bernstein_leaves": 933,
+      "intervals": 880,
+      "max_degree": 10,
+      "node": "b3-232.json",
+      "tau": "29/125",
+      "weights": [
+        [
+          14,
+          "4/5"
+        ],
+        [
+          15,
+          "1/5"
+        ]
+      ]
+    }
+  ],
+  "scope": "Replays finite law majorants against inherited source tables; no new source cap or endpoint improvement is asserted.",
+  "status": "PASS_INHERITED_NODES_ONLY"
+}

@@ -1,0 +1,1767 @@
+[
+  {
+    "hash": "cc08ff08b3e5450db1851685c56ca667f919d42be7ff728d273550e2073d2a86",
+    "paths": [
+      "handoff/lower-price-family/research-note.md"
+    ],
+    "chars": 10985,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "63576b8247af22a5edf5e90862cc81f7f8e0d736f379b4afe00499c2e19c8252",
+    "paths": [
+      "handoff/lower-price-family/README.md"
+    ],
+    "chars": 1046,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "dee4c8febd8d42d602881a649b3b7c440440e08874af77864611b4cc21832801",
+    "paths": [
+      "handoff/lower-price-family/audit/GENERAL_QUADRATIC_TRANSFER.md"
+    ],
+    "chars": 4309,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "b9fd8eb290c13a5f82d43f39a1f755780dfeb887e82652ebf7d77adc74c84269",
+    "paths": [
+      "handoff/lower-price-family/audit/PARAMETRIC_RESULTS.md"
+    ],
+    "chars": 4577,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "0e01ad570767eac9447a0ed22c2d89f83b65aed4bf263be116ab4c0788d4aa8e",
+    "paths": [
+      "handoff/lower-price-family/audit/CENTERED_FAMILY_REVIEW.md"
+    ],
+    "chars": 3185,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "1d80b6ddc13b14c13c7b85b62e7436a149a66eec4a1b6a8c8fdd57f358fdbbf9",
+    "paths": [
+      "handoff/lower-price-family/audit/AUDIT.md"
+    ],
+    "chars": 8180,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "e4b7d2982ee7bbec22e0749303d03f6f512e5c9e60b373f84b4b14231867904c",
+    "paths": [
+      "handoff/lower-price-family/audit/PARAMETRIC_ANALYTIC_AUDIT.md"
+    ],
+    "chars": 4074,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "16cf6c70e5be858772534a80036a1663c15cbad93949ce83f2ba5f9f2d8218f7",
+    "paths": [
+      "handoff/lower-v4/research-note.md",
+      "handoff/lower-v4/report.md"
+    ],
+    "chars": 8852,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "df629322275cbcf63f6ed15ebb8f37b26fd861bd4e4eb235bcac0419ab91d674",
+    "paths": [
+      "handoff/lower-v4/README.md"
+    ],
+    "chars": 2588,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "3bb9b82ff7bab7ba3e95a265e58796d9b97b14a9138851d03368024e086a3668",
+    "paths": [
+      "handoff/lower-v4/VERIFICATION.md"
+    ],
+    "chars": 2470,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "8548c6a1d71cf7762ef13c89025bf0eb8570e1aee5909628090c01c89e1cfb77",
+    "paths": [
+      "handoff/lower-v4/LEAN_HANDOFF.md"
+    ],
+    "chars": 12496,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "9719db5d37ba6f68dc4bf2806139aa4d511406e631bb5af28e8b402cd481a3fd",
+    "paths": [
+      "handoff/lower-v4/proofs/POSITIVE_PRICE_SCALING.md"
+    ],
+    "chars": 3234,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "4d4991d04ed81e52b6769d2d14afbb772d6f39d76351e77df06a63cc098a9f2c",
+    "paths": [
+      "handoff/lower-v4/proofs/joint-cumulant-consequence.md"
+    ],
+    "chars": 5166,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "4b235c44936db991ce0c925463a3dcd7df81cda4f57d0299ca7a07e9d34dc81d",
+    "paths": [
+      "handoff/lower-v4/proofs/FINAL_PORTABLE_AUDIT.md"
+    ],
+    "chars": 14906,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "e92fcfdd7a32efcc2435e3cb37840a55ed4ccd368954639012e7e600fb322237",
+    "paths": [
+      "handoff/lower-v4/proofs/JOINT_PAIR_AUDIT.md"
+    ],
+    "chars": 5846,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "b8c8c4c8e0e22fc345af25c4c69ab60895d512a17eeea214662e9c08fd0706a5",
+    "paths": [
+      "handoff/lower-v4/proofs/FINAL_CURRENT_AUDIT.md"
+    ],
+    "chars": 5729,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "498ea22a9df8657989f26c1806942f5cf1d28b53e60100c894dc3e81581bbbcd",
+    "paths": [
+      "handoff/lower-v4/proofs/charge-one-sos-proof.md"
+    ],
+    "chars": 5673,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "ab1c02856520b565b53cb48287e377b8d4c8697a24599168245ef071ac881cea",
+    "paths": [
+      "handoff/lower-v4/proofs/correlated-block-consequence.md"
+    ],
+    "chars": 6511,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "49f6e573b5cffdebc3915603febae4c30738727b459832cdbef5f784d0d4b13e",
+    "paths": [
+      "handoff/lower-v4/proofs/blended-block-consequence.md"
+    ],
+    "chars": 2792,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "9c0e55ab2a3302bf4399cdde576a65e590086560d19e264b3176e0b0f4aa5da7",
+    "paths": [
+      "handoff/lower-v4/proofs/charge_four_operator_bound.md"
+    ],
+    "chars": 5803,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "01f3f9f9e250b62c417eef1cdd2f0c98662bd766cbd78c068b0cea0e8bcbe8bc",
+    "paths": [
+      "handoff/lower-v4/proofs/AVERAGED_QUADRATIC_MAJORANTS.md"
+    ],
+    "chars": 2842,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "8b3d288c6ce1865ff0d9fb4fa5b30a826e7daac1d342542015d9d13c79252c3c",
+    "paths": [
+      "handoff/lower-v4/proofs/PORTABLE_ASSEMBLY_AUDIT.md"
+    ],
+    "chars": 8345,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "7496ecc6dcb903ed4653cf2d5174d6c4a94dcad98c7470e76e4a3a67b1143c36",
+    "paths": [
+      "handoff/lower-v4/proofs/RESEARCH_README.md"
+    ],
+    "chars": 5352,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "1695f30e4d1dff9e2389edcaeef4906e1e3b5ddbdb51dfbb18484bc805af7b4e",
+    "paths": [
+      "handoff/lower-v4/proofs/PRE_POINTWISE_CHECKPOINT.md"
+    ],
+    "chars": 8653,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "910c7a3baf5b5ac9a873c8427999303345cfd8342c0271591002590db89ba5b3",
+    "paths": [
+      "handoff/lower-v4/proofs/charge-block-traces.md"
+    ],
+    "chars": 2891,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "c1b1067b7b1a28b9bce0c905fe09182375a94189e398158c5c9d02c0b713148c",
+    "paths": [
+      "handoff/lower-v4/proofs/joint_contraction_bound.md"
+    ],
+    "chars": 5196,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "4f27261d90f4d6a7c9af4fd18e4a9a5d4e3fb6dd9161b2aaa2d804854d2ae271",
+    "paths": [
+      "handoff/lower-v4/proofs/first-absolute-moment.md"
+    ],
+    "chars": 1869,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "7b026c8ae2c5ec35f4f7ef0cfebd1e6a5e698a653341ebd9decc97ca78a20ac0",
+    "paths": [
+      "handoff/lower-v4/proofs/FINAL_AUDIT.md"
+    ],
+    "chars": 6189,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "e9f999343d9b57225ab43ea30badb8d4e7414714199ebb2b0d03c019a7cef4e2",
+    "paths": [
+      "handoff/lower-v4/proofs/COUPLED_BLOCK_AUDIT.md"
+    ],
+    "chars": 4818,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "70fb8feb24f3dbf2ee547bcc1e9cf16d88fa2f10edd23ded64758b189d439d58",
+    "paths": [
+      "handoff/lower-v4/proofs/POINTWISE_PHYSICAL_JOINS.md"
+    ],
+    "chars": 5298,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "ce627e5400416405f8c411ea1125d6d5fa64fd291655e7987d469b1986854d0d",
+    "paths": [
+      "handoff/lower-v4/proofs/sos-audit-and-spectral-obstruction.md"
+    ],
+    "chars": 3748,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "7e19ebb8221b0ef19867ae480434d03bf48deff9f67069263c6f29372f9030ea",
+    "paths": [
+      "handoff/lower-v4/proofs/CORRELATED_INDEPENDENT_AUDIT.md"
+    ],
+    "chars": 2590,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "035b38c24bd436638ff3d3de2f56d7a8ea77e1dd35cfdd190b03ff8fd30de3ec",
+    "paths": [
+      "handoff/lower-v4/proofs/improved-cumulant-consequence.md"
+    ],
+    "chars": 3725,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "cd2b76b2bae7e4cd52bad3d8c8a797bda871ca82f54f52c40734e03c3d94d0ba",
+    "paths": [
+      "handoff/lower-v4/proofs/PRE_POINTWISE_PORTABLE_AUDIT.md"
+    ],
+    "chars": 7341,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "655c5dc2da4776ad952c05ac79918d6179e00f154717fb61cd56496d8761606e",
+    "paths": [
+      "handoff/lower-v4/proofs/coupled-block-consequence.md"
+    ],
+    "chars": 5258,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "d222eecbb1b14b45962677ea2b15d27c45799c06e071eeddb8f12bb5061adafd",
+    "paths": [
+      "handoff/lower-v4/extension-1401/research-note.md",
+      "handoff/lower-v4/extension-1401/report.md"
+    ],
+    "chars": 7418,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "b687155b6218c2bdcfaa45db2009e95f782ca5eb7819a64cf9623d55abda3ac6",
+    "paths": [
+      "handoff/lower-v4/extension-1401/README.md"
+    ],
+    "chars": 4156,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "e658d4609790bb101b6311df588e46167ab1d0ccb18a41c7812eb4e27d663e16",
+    "paths": [
+      "handoff/lower-v4/extension-1401/VERIFICATION.md"
+    ],
+    "chars": 2994,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "07abf92c26c7d53c84ef95596de56836d5995c944dddbec682492fef1719d91e",
+    "paths": [
+      "handoff/lower-v4/extension-1401/LEAN_EXTENSION.md"
+    ],
+    "chars": 3284,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "44e4f06d9932da8e53e05e45fef80b0a55a2d8b8a6ae96dddbb189e779bea63b",
+    "paths": [
+      "handoff/lower-v4/dependencies/sharp-cubic/research-note.md"
+    ],
+    "chars": 6055,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "0218f7dbcc9f2d90ca9fdfcde86d75ec77c1f5b393ce6658f053cdff46c4637e",
+    "paths": [
+      "handoff/lower-v4/dependencies/sharp-cubic/README.md"
+    ],
+    "chars": 2807,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "3a18c6a931f83277f4cdd40d826839ba073fe7fe24e92e931e17619e1ec26d5b",
+    "paths": [
+      "handoff/lower-v4/dependencies/sharp-cubic/LEAN_HANDOFF.md"
+    ],
+    "chars": 4306,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "aebc6d37ae7e11cf20437fb81708591eb3de70f3746d4e914cea2dbd4d1f23b9",
+    "paths": [
+      "handoff/lower-v4/dependencies/sharp-cubic/cubic-proof.md"
+    ],
+    "chars": 5369,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "961a899ab5340c2f8c3212b68299f7cb24ad1486cd7d8ccb4c1035889f7d43b9",
+    "paths": [
+      "handoff/lower-v4/dependencies/sharp-cubic/exploration.md"
+    ],
+    "chars": 2230,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "ffb4d51d80c3d0a1b8823ff2107cb7340daa37f513c23d3bdab3e6b7bf2e044b",
+    "paths": [
+      "handoff/lower-v4/dependencies/sharp-cubic/inherited/README.md"
+    ],
+    "chars": 266,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "4d16e949ff9c978db2965cafe61c9057298db57f829ff0152daa6c26baf00ad1",
+    "paths": [
+      "handoff/lower-v4/extension-1401/price-theory/FRESH_PRICE_PROOF.md"
+    ],
+    "chars": 7711,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "72f3346a597abb631ac5a5d19f828bcbfba8f0868216fc12ed109b28f791267f",
+    "paths": [
+      "handoff/lower-v4/extension-1401/price-theory/PORTABLE_EXTENSION_AUDIT.md"
+    ],
+    "chars": 2965,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "4ec846e7100279398026671f5fb8b53135696d0b78fc0cff112ab1798babe397",
+    "paths": [
+      "handoff/lower-v4/extension-1401/price-theory/RECENTERED_SCHUR.md"
+    ],
+    "chars": 1171,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "ccb6ebe323d4a2dcbcb3074fdfd929c5342bf7cd8f133f32d1cc1813b3a6cc8d",
+    "paths": [
+      "handoff/lower-v4/extension-1401/price-theory/FRESH_PRICE_THEORY.md"
+    ],
+    "chars": 9235,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "ebbb82cb4c78e0b8ea74b225bdd9bf86274ef34c6f857e8ec799253a45306a99",
+    "paths": [
+      "handoff/lower-v4/extension-1401/price-theory/PHYSICAL_NODE_AUDIT.md"
+    ],
+    "chars": 10822,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "aa22fbdcae9e8ef2dc76c40a8a5566531f0ea79a13dbbcbf393cd9ddc68e555b",
+    "paths": [
+      "handoff/lower-v4/extension-1401/price-theory/WEIGHTED_CRITERION_SCOPE.md"
+    ],
+    "chars": 749,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "15ac8dc6c3cec17580f7484ab951ef53a38bcd759e12e5e28aad743f17529571",
+    "paths": [
+      "handoff/lower-v4/extension-1401/price-theory/FROZEN_PRICE_REPLAY_AUDIT.md"
+    ],
+    "chars": 5027,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "20a36a79c94936827f85af51f5b85c2978bd3c3f8aa307cdaf4a76d4716cfdf1",
+    "paths": [
+      "handoff/lower-v5/FINAL_SCOPE_AUDIT.md",
+      "handoff/lower-moments/FINAL_SCOPE_AUDIT.md"
+    ],
+    "chars": 4026,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "bcb078f012e5b826e5c025d389f8df405b7aab83d280634e5b3afd87cd7e3d06",
+    "paths": [
+      "handoff/lower-v5/README.md",
+      "handoff/lower-moments/README.md"
+    ],
+    "chars": 6730,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "d68d573ff904746764a64ac64d90e74841809b129ff82484cfeaf4d72b8c089e",
+    "paths": [
+      "handoff/lower-v5/LEAN_HANDOFF.md",
+      "handoff/lower-moments/LEAN_HANDOFF.md"
+    ],
+    "chars": 6304,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "3441f42d029533dd9af09fa5e8efb7174d66627f069384622d17e0a370920c5a",
+    "paths": [
+      "handoff/lower-v5/local/COUPLED_G_TEST_IMPROVEMENT.md",
+      "handoff/lower-moments/local/COUPLED_G_TEST_IMPROVEMENT.md"
+    ],
+    "chars": 3272,
+    "coverage": "full detailed read",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "0dfd9bdbec098190584233462da726bf6dde9c2f017587e60f8f3eb72d7589bc",
+    "paths": [
+      "handoff/lower-v5/local/MIXED_CONTRACTION_CAUCHY.md",
+      "handoff/lower-moments/local/MIXED_CONTRACTION_CAUCHY.md"
+    ],
+    "chars": 4649,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "fcdda741bd8e4463e43432a82b2b3668a4e54993bd2198b5636ed0c224f73bb9",
+    "paths": [
+      "handoff/lower-v5/local/RETAINED_QUADRATIC_CURVATURE.md",
+      "handoff/lower-moments/local/RETAINED_QUADRATIC_CURVATURE.md"
+    ],
+    "chars": 4133,
+    "coverage": "full detailed read",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "5cdc7793c1c8fffd1d35310da85ce03fd6128121dda4cb3e2d194b9895656aef",
+    "paths": [
+      "handoff/lower-v5/local/INDEPENDENT_FINAL_MOMENT_AUDIT.md",
+      "handoff/lower-moments/local/INDEPENDENT_FINAL_MOMENT_AUDIT.md"
+    ],
+    "chars": 4488,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "d1fc830d7f3ba4a04cb624560dc092760da02634544050c9c4447aa2bcf55cc7",
+    "paths": [
+      "handoff/lower-v5/local/NONLINEAR_SHIFT_INDEPENDENT_AUDIT.md",
+      "handoff/lower-moments/local/NONLINEAR_SHIFT_INDEPENDENT_AUDIT.md"
+    ],
+    "chars": 2749,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "82f9574f971f0fac9487cfdb7f92908d468b3c41885f70a0a2e43a44875d2418",
+    "paths": [
+      "handoff/lower-v5/local/INDEPENDENT_CAUCHY_AUDIT.md",
+      "handoff/lower-moments/local/INDEPENDENT_CAUCHY_AUDIT.md"
+    ],
+    "chars": 3012,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "4b24c28cafea3aff2dd189515e107da3d0d49b82372aee579caa823a850b7c7d",
+    "paths": [
+      "handoff/lower-v5/local/CHARGE_SPLIT_SCALAR_CERTIFICATE.md",
+      "handoff/lower-moments/local/CHARGE_SPLIT_SCALAR_CERTIFICATE.md"
+    ],
+    "chars": 3604,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "f068ee7d92d794be2268c3d170ceb77de87db875cb4063caea78e0d4a33eca5b",
+    "paths": [
+      "handoff/lower-v5/local/MOMENT_RADIAL_SLACK.md",
+      "handoff/lower-moments/local/MOMENT_RADIAL_SLACK.md"
+    ],
+    "chars": 1716,
+    "coverage": "full detailed read",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "00d657788dc22bf10b53bcc04d7d85ea8fe96a06338aeca949148eec69d6e998",
+    "paths": [
+      "handoff/lower-v5/local/FIRST_MOMENT_BRIDGE.md",
+      "handoff/lower-moments/local/FIRST_MOMENT_BRIDGE.md"
+    ],
+    "chars": 1482,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "043029391424d78bc89fcfbad353b0c9f50eaf3d82a2c8fb54aa42c99f779b75",
+    "paths": [
+      "handoff/lower-v5/local/LEAN_HANDOFF.md",
+      "handoff/lower-moments/local/LEAN_HANDOFF.md"
+    ],
+    "chars": 8787,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "3eab472e88dfe1b0786865b9b51c0652c374b2fb0a9079401e2c39bce84bd6e0",
+    "paths": [
+      "handoff/lower-v5/local/LOWER_INTERNAL_AUDIT.md",
+      "handoff/lower-moments/local/LOWER_INTERNAL_AUDIT.md"
+    ],
+    "chars": 3206,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "2a9873c31855a486c7f74d6b38332412f920ab0177590dfbb4fcf765395ab44f",
+    "paths": [
+      "handoff/lower-v5/local/NODE_REPAIR_LIFT.md",
+      "handoff/lower-moments/local/NODE_REPAIR_LIFT.md"
+    ],
+    "chars": 3360,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "05026fc5e3dc0b4e94cb121c0a9f9834dfa5f1cb7b4b115cf94f9b4148efaf00",
+    "paths": [
+      "handoff/lower-v5/local/PROJECTED_SQUARE_IMPROVEMENT.md",
+      "handoff/lower-moments/local/PROJECTED_SQUARE_IMPROVEMENT.md"
+    ],
+    "chars": 3909,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "9e4db9d83fee2cb82cfbfc5ecca9329d536ab8b7c676214e13b1f0d7b3649a6d",
+    "paths": [
+      "handoff/lower-v5/local/DIRECT_MIXED_TRACE_IMPROVEMENT.md",
+      "handoff/lower-moments/local/DIRECT_MIXED_TRACE_IMPROVEMENT.md"
+    ],
+    "chars": 3350,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "97ed2263f2c28d314def1bbf09337ae181d4418e613ba49b18212c53057f01d1",
+    "paths": [
+      "handoff/lower-v5/local/CHARGE_SPLIT_SQUARE_IMPROVEMENT.md",
+      "handoff/lower-moments/local/CHARGE_SPLIT_SQUARE_IMPROVEMENT.md"
+    ],
+    "chars": 4789,
+    "coverage": "full detailed read",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "6074d8ed6f48e2a497434f161ef6d68d423478a06f3d26b30001bd8ae513e781",
+    "paths": [
+      "handoff/lower-stein/FINAL_T3.md"
+    ],
+    "chars": 4602,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "6d5483850570c8a671a3480e2e06a8d3de4eb0f573a0e2846a18edfa737d8345",
+    "paths": [
+      "handoff/lower-stein/STEIN_HYPOTHESIS.md"
+    ],
+    "chars": 4319,
+    "coverage": "full detailed read",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "633e2eec342f85dcca244dc1aa1c943b0b6392528d778fd2a374d579009d452c",
+    "paths": [
+      "handoff/lower-stein/PROGRESS.md"
+    ],
+    "chars": 645,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "36c2119190f7888d6be1b06e74052084e19d17259b82c85cd2bb77ceb262781b",
+    "paths": [
+      "handoff/lower-stein/CERT_FORMAT.md"
+    ],
+    "chars": 10684,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "6794d9d548c9482a6bd90abb2dc4f7dbde8b8edef95c83d95cc1bbe732c00456",
+    "paths": [
+      "handoff/lower-stein/H2_PROGRESS.md"
+    ],
+    "chars": 1520,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "d9dc9485e17f4db2497fc454bee364dabe455af34ab056b01bd4d7bd5408535d",
+    "paths": [
+      "handoff/lower-stein/H1_PLAN.md"
+    ],
+    "chars": 1822,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "2477eded84ceeffc36e1410797d1fcda85401eba803efd6c7a045eacb37d1bac",
+    "paths": [
+      "handoff/lower-stein/PLAN.md"
+    ],
+    "chars": 974,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "c190ded5fed45ed3be3087f001a1db45d977afddf9edf0e3de3680c77b145246",
+    "paths": [
+      "handoff/lower-stein/H2_PLAN.md"
+    ],
+    "chars": 1527,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "fed458dae93126af1ef28465407184934d0495d6c10d43897d31c0959305c848",
+    "paths": [
+      "handoff/lower-stein/H1_PROGRESS.md"
+    ],
+    "chars": 2543,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "b5222fb2f5fdee28f9f2c571d94ae66e43425e4f74193147e615892db50b8afb",
+    "paths": [
+      "handoff/lower-stein/cert-0745f/NOTES_04_0525.md"
+    ],
+    "chars": 1646,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "691a53e94f96575ca06d1f168a944cb6b757906624891fdd38b39391c6e85566",
+    "paths": [
+      "handoff/lower-stein/cert-covariance/PROOF.md"
+    ],
+    "chars": 4569,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "a49e0801a737ec3fd367b5ac8ffb3a85b15c3d57d948ed688b4a8772674c95d0",
+    "paths": [
+      "handoff/lower-stein/cert-covariance/COVARIANCE_PROOF.md"
+    ],
+    "chars": 6051,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "d1a1240e2816d0e8fcce85e426d4b0d9a5eaad596d2dd5344f216175ef7d0488",
+    "paths": [
+      "handoff/lower-stein/cert-covariance/VALIDATION.md"
+    ],
+    "chars": 2010,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "f5f876d6f8ee76cec754760e4a064f53b881f84cc2e09ce424c74a17df81ef3c",
+    "paths": [
+      "handoff/lower-stein/cert-covariance/README.md"
+    ],
+    "chars": 2638,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "fd0ba5660da385a91481534a82f7a99f25a527b7016b4af59cafc20b71092aae",
+    "paths": [
+      "handoff/lower-stein/cert-covariance/SPECTRAL_PROOF.md"
+    ],
+    "chars": 4503,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "e678cd9f273f5aa78aa7e9c0a2f38e84880657351587c72b65cfe91ddec34a5d",
+    "paths": [
+      "handoff/lower-stein/cert-covariance/LEAN_HANDOFF.md"
+    ],
+    "chars": 4228,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "b95a6dac3d33a54931502f8848715590856a6a58f929a6db8b9735f7d9ef71dd",
+    "paths": [
+      "handoff/lower-stein/cert-finemesh/section.tex"
+    ],
+    "chars": 5108,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "820125841fd12a61cb8338b865323e48756d5c9ecc9c746bd672c8e29c5a7be3",
+    "paths": [
+      "handoff/lower-stein/cert-finemesh/PROOF.md"
+    ],
+    "chars": 9176,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "4f5d89f95f05a2580b5443dbbf5a9f06ae9b643f4976783cf126b76678b2b0e7",
+    "paths": [
+      "handoff/lower-stein/cert-finemesh/HANDOFF_STATUS.md"
+    ],
+    "chars": 1751,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "414742666797c6f339f5af1ddbffd4fc592d2b35c9b2c7655cc92c687665c72b",
+    "paths": [
+      "handoff/lower-stein/cert-finemesh/LEAN_NOTE.md"
+    ],
+    "chars": 3220,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "506396a1b7625b6d01b50f72239d6575f8148049e50004015b5e90f59c66f440",
+    "paths": [
+      "handoff/lower-stein/cert-finemesh/README.md"
+    ],
+    "chars": 1719,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "6ccb6d1608c7c9699b8422c4603aeed5cea22ae44ffcfe35dc9cd3e8d4393621",
+    "paths": [
+      "handoff/lower-stein/cert-finemesh/SPECTRAL_PROOF.md",
+      "handoff/lower-stein/cert-spectral/SPECTRAL_PROOF.md",
+      "handoff/lower-stein/cert-finemesh-final/SPECTRAL_PROOF.md"
+    ],
+    "chars": 4410,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "a099bf3b8e67870cd8021306c91dbfc49203f1111834e96c1ea4f85539d881c7",
+    "paths": [
+      "handoff/lower-stein/cert-jointmoment-lifted-codex/COUPLED_BUDGET_PROOF.md",
+      "handoff/lower-stein/cert-gram-refined-codex/COUPLED_BUDGET_PROOF.md",
+      "handoff/lower-stein/cert-jointmoment/COUPLED_BUDGET_PROOF.md",
+      "handoff/lower-stein/cert-gram/COUPLED_BUDGET_PROOF.md",
+      "outputs/joint-budget-20261022/certificate/COUPLED_BUDGET_PROOF.md"
+    ],
+    "chars": 4842,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "cf98876033818353da0b75daa23e16acc374b232bc1befce8148fdee33992012",
+    "paths": [
+      "handoff/lower-stein/cert-jointmoment-lifted-codex/section.tex",
+      "handoff/lower-stein/cert-jointmoment/section.tex",
+      "outputs/joint-budget-20261022/certificate/section.tex"
+    ],
+    "chars": 10713,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "824dfa784f2062e550fc23ab0065fd12655f519b10fb058358cbf8ec0aa226ae",
+    "paths": [
+      "handoff/lower-stein/cert-jointmoment-lifted-codex/PROOF.md",
+      "outputs/joint-budget-20261022/certificate/PROOF.md"
+    ],
+    "chars": 34699,
+    "coverage": "full detailed read",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "15276936e0ae6d291991bac92be1e64f0475a51be73580c12e439e4bff650596",
+    "paths": [
+      "handoff/lower-stein/cert-jointmoment-lifted-codex/LIFTED_PROOF.md",
+      "outputs/joint-budget-20261022/certificate/LIFTED_PROOF.md"
+    ],
+    "chars": 2358,
+    "coverage": "full detailed read",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "bf7d8effa371a6d6c05937d6075cfdd57234b619225faf7cb060b8df22cddd32",
+    "paths": [
+      "handoff/lower-stein/cert-jointmoment-lifted-codex/LEAN_NOTE.md",
+      "outputs/joint-budget-20261022/certificate/LEAN_NOTE.md"
+    ],
+    "chars": 1994,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "bb23f9db4df5b620f1eb6c3627ee39d3c0e470797913b55aa5b8e2daecb86f34",
+    "paths": [
+      "handoff/lower-stein/cert-jointmoment-lifted-codex/JOINT_SIXTH_PROOF.md",
+      "handoff/lower-stein/cert-jointmoment/JOINT_SIXTH_PROOF.md",
+      "outputs/joint-budget-20261022/certificate/JOINT_SIXTH_PROOF.md"
+    ],
+    "chars": 6163,
+    "coverage": "full detailed read",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "08a124238e748385dc0ad3eb1ee3de7c0332b2bae399dbee40cc1aec80a3e4d9",
+    "paths": [
+      "handoff/lower-stein/cert-jointmoment-lifted-codex/README.md",
+      "outputs/joint-budget-20261022/certificate/README.md"
+    ],
+    "chars": 1702,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "1e4780feef0f054fc82457d8c0aeaa303195e5cd6d852e3abc2909825c7a7df2",
+    "paths": [
+      "handoff/lower-stein/cert-jointmoment-lifted-codex/SEARCH_NOTES.md",
+      "handoff/lower-stein/cert-jointmoment/SEARCH_NOTES.md",
+      "outputs/joint-budget-20261022/certificate/SEARCH_NOTES.md"
+    ],
+    "chars": 1021,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "66ce33ad0a9c145e58802ab5aff13a306acca997a060b3e2eb6760d9eec22aea",
+    "paths": [
+      "handoff/lower-stein/cert-jointmoment-lifted-codex/TENSOR_BUDGET_PROOF.md",
+      "handoff/lower-stein/cert-gram-refined-codex/TENSOR_BUDGET_PROOF.md",
+      "handoff/lower-stein/cert-jointmoment/TENSOR_BUDGET_PROOF.md",
+      "handoff/lower-stein/cert-gram/TENSOR_BUDGET_PROOF.md",
+      "outputs/joint-budget-20261022/certificate/TENSOR_BUDGET_PROOF.md"
+    ],
+    "chars": 5808,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "9b8e303ccf3ae8ffd7d6e17cd7300831bd5b30e8150699258833e950d7e6a793",
+    "paths": [
+      "handoff/lower-stein/cert-combined/PIPELINE.md"
+    ],
+    "chars": 6347,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "8ce284e5b250027868c0231cb86e2375e78aff6b084f0dd2f9488f2e9fcb2206",
+    "paths": [
+      "handoff/lower-stein/cert-combined/REPLAY.md"
+    ],
+    "chars": 4519,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "635e23804e53c8ca41095ae98a1349ee3f2ce211f912d7e6dd8b424f7acd3cb3",
+    "paths": [
+      "handoff/lower-stein/cert-1401621059539/ch26-rotation-gate-refinement.tex"
+    ],
+    "chars": 15488,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "139df58fa6a8aba322c8927a9f3092ac9b50e1f674eca4ebfbbf7a741f438608",
+    "paths": [
+      "handoff/lower-stein/cert-1401621059539/REPLAY.md"
+    ],
+    "chars": 5155,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "b46c8faf7f78fa4655d84e447d771a2af17186308c3c2cb03b921ecdb208bf35",
+    "paths": [
+      "handoff/lower-stein/cert-1401621059539/LEAN.md"
+    ],
+    "chars": 1413,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "6ee005da9a30614edb29c125440c620b1f078fe56d2fbe877cb1b162786a70ca",
+    "paths": [
+      "handoff/lower-stein/cert-1401621059539/HANDOFF.md"
+    ],
+    "chars": 6793,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "b62cbfc6b135cd047dc2f0dc9134c4f25a7233b64263ce8675d068d55627316f",
+    "paths": [
+      "handoff/lower-stein/cert-1401616861/REPLAY.md"
+    ],
+    "chars": 7678,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "2211be7aa57dd84050712cfc872003c66c31fe1acd72e5151c4b1cee059cf747",
+    "paths": [
+      "handoff/lower-stein/cert-1401616861/LEAN.md"
+    ],
+    "chars": 4557,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "95e1001c22feb549831a4834b2e14e653edf5cf700a7e0de52771f303d1830da",
+    "paths": [
+      "handoff/lower-stein/cert-combined-d/PIPELINE.md"
+    ],
+    "chars": 2844,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "f99b94268799a0b3b721d3e944e5c6bc9803410f63744c8ee4aac8f5aefccd9d",
+    "paths": [
+      "handoff/lower-stein/cert-combined-d/REPLAY.md"
+    ],
+    "chars": 3382,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "eb3a965649ff26dc2baeeb4b9755465cd2c7f500b0dddbc70f6654e0e7a95fa4",
+    "paths": [
+      "handoff/lower-stein/cert-finer/section.tex"
+    ],
+    "chars": 3920,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "79520e35d4a4e2ebac5df381732f6372515b33773fe2ca1f9410794358f35c73",
+    "paths": [
+      "handoff/lower-stein/cert-finer/PROOF.md"
+    ],
+    "chars": 14454,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "f80114b29021eae749a30473ebf2baf78bd5e90bf6802061178d55408622d296",
+    "paths": [
+      "handoff/lower-stein/cert-finer/LEAN_NOTE.md"
+    ],
+    "chars": 2840,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "d5fcc954c43cc43f86e6a9b67cbd589ccead81c04496b7f5860308401ce5a95f",
+    "paths": [
+      "handoff/lower-stein/cert-finer/README.md"
+    ],
+    "chars": 2674,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "77bfe733a6c74c909964c2205af08b06868ca48205599ed1905e2d069f3ac835",
+    "paths": [
+      "handoff/lower-stein/cert-combined-e/PIPELINE.md"
+    ],
+    "chars": 3364,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "503fed68708ea9f94b1f7d7c5e113bb99f4baa42024b369d7f4d8eab4cabd508",
+    "paths": [
+      "handoff/lower-stein/cert-combined-e/REPLAY.md"
+    ],
+    "chars": 3029,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "5b86f05b862c73ee7fe28f44c498409cbac565833f3dd72a2a41bf3a7d2e3500",
+    "paths": [
+      "handoff/lower-stein/cert-gram-refined-codex/section.tex",
+      "handoff/lower-stein/cert-gram/section.tex"
+    ],
+    "chars": 7583,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "caec8553605fb1ec8407d3cd88ebf456c82c7895d063b16230556ca5ebed50bd",
+    "paths": [
+      "handoff/lower-stein/cert-gram-refined-codex/PROOF.md"
+    ],
+    "chars": 28218,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "da4e868b2e93b0fa827fac0a0981857fce2fa0160d1a7f4abfe4dac9d53ba891",
+    "paths": [
+      "handoff/lower-stein/cert-gram-refined-codex/LEAN_NOTE.md"
+    ],
+    "chars": 3431,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "9a1c35794d72633feb506d00e29d53b5495b89836d00d9735f3f2febd9ebc76b",
+    "paths": [
+      "handoff/lower-stein/cert-gram-refined-codex/README.md"
+    ],
+    "chars": 2351,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "bc816d8c3e7cbd50266d795db44713d0bd423ac7aeca0b9a2e094e59d0a17204",
+    "paths": [
+      "handoff/lower-stein/cert-gram-refined-codex/SEARCH_NOTES.md",
+      "handoff/lower-stein/cert-gram/SEARCH_NOTES.md"
+    ],
+    "chars": 1509,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "4add175fe056084481efa7715b0befbf98e8694f5de1fa588b7b0534cf7f07f1",
+    "paths": [
+      "handoff/lower-stein/cert-gram-refined-codex/REFINEMENT.md"
+    ],
+    "chars": 1159,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "d1c7fb7d1564a47ee816c16124a53b08e542bbc957b5cadb69f85321d0deffc0",
+    "paths": [
+      "handoff/lower-stein/cert-jointmoment/PROOF.md"
+    ],
+    "chars": 34593,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "c6ccb16155d047ac87f08389442349ed13bbcdc7b7696b4744586560575f4dcf",
+    "paths": [
+      "handoff/lower-stein/cert-jointmoment/LEAN_NOTE.md"
+    ],
+    "chars": 1888,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "8742def30b93393cd95e90de42e5772d316a7ec4755758b3cf97d7187b960c4d",
+    "paths": [
+      "handoff/lower-stein/cert-jointmoment/README.md"
+    ],
+    "chars": 1338,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "5c6ad86651024b72eebd3f3b00683cb9b0b22a1f8ecfc74d6a6f34ef91e2600e",
+    "paths": [
+      "handoff/lower-stein/cert-0745e/CAPS_PROVENANCE_e.md"
+    ],
+    "chars": 2254,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "4bd9db760afd11ff6110baad7b089ca006760fe7a28f53cf902e06ff2da3720c",
+    "paths": [
+      "handoff/lower-stein/cert-0745e/REBUILD.md"
+    ],
+    "chars": 2460,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "81b35cbbf994902ec2b36d4f8ba358c322d216a0e107d737d7f5fd5983ad8f40",
+    "paths": [
+      "handoff/lower-stein/cert-0745e/MIDCAPS_e.md"
+    ],
+    "chars": 5155,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "60ff89171c00840a27593752bdd9f9b05b6ba07736eb8a03e5d4046bcecba833",
+    "paths": [
+      "handoff/lower-stein/cert-spectral/PROOF.md"
+    ],
+    "chars": 4122,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "28f8f96ab4c016eecfcb7cfe9677599d23dab6a8b50939845c9383676ea579cc",
+    "paths": [
+      "handoff/lower-stein/cert-spectral/VALIDATION.md"
+    ],
+    "chars": 1977,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "b7140956475817c267d75d588087eb13e6b5d31739f78bab7784858ad362d1d8",
+    "paths": [
+      "handoff/lower-stein/cert-spectral/README.md"
+    ],
+    "chars": 2415,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "92730b4315527f46fe16bcf1fcf2f1b6ac3fb573448e9dfa52e1294cde60cab8",
+    "paths": [
+      "handoff/lower-stein/cert-spectral/LEAN_HANDOFF.md"
+    ],
+    "chars": 5739,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "6f0ec18c296e6024566527fd2d94a15c377df897be66e258443603923d01620d",
+    "paths": [
+      "handoff/lower-stein/cert-0745c/REBUILD.md"
+    ],
+    "chars": 11217,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "d5bd1fae583aa711a39825bc133bd7ac615b15652994e457a181b07c6df83bc1",
+    "paths": [
+      "handoff/lower-stein/cert-0745c/CAPS_PROVENANCE_c.md"
+    ],
+    "chars": 6004,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "bcda8d51b32e059313be0bcd699c4630110194db1e30643b9dc1d75e4bb95b8e",
+    "paths": [
+      "handoff/lower-stein/cert-0745d/CAPS_PROVENANCE_d.md"
+    ],
+    "chars": 3349,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "cced714831805c9aa92833f50daf2ce5fa673c2b361521b686f500c46c788648",
+    "paths": [
+      "handoff/lower-stein/cert-0745d/REBUILD.md"
+    ],
+    "chars": 5469,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "dc9589afc12c550f87bec15943dea7367a52bae4b60a4590f415c132e485b2fb",
+    "paths": [
+      "handoff/lower-stein/cert-0745d/MIDCAPS.md"
+    ],
+    "chars": 15232,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "3b8e1ca7cf1a7f8b943e688e1af645c956150c39c1d1863359062de550a642b3",
+    "paths": [
+      "handoff/lower-stein/cert-finemesh-final/section.tex"
+    ],
+    "chars": 5202,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "3638674ed2a8f8aa343b0e50c839a269a130dce213834b6abe82a65708bda33e",
+    "paths": [
+      "handoff/lower-stein/cert-finemesh-final/PROOF.md"
+    ],
+    "chars": 9313,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "8372de3e012cb3d1a10ed8c4b7978ba79080cdc9ca8e261428856672e4e39e02",
+    "paths": [
+      "handoff/lower-stein/cert-finemesh-final/LEAN_NOTE.md"
+    ],
+    "chars": 3215,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "dbabc048b06ce292cbb84247cab6014265ac612683bc2c5094de33c2518ec730",
+    "paths": [
+      "handoff/lower-stein/cert-finemesh-final/README.md"
+    ],
+    "chars": 1719,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "f150a8b3ed0e40625f234434f947acece3d70c7230f928f36f214b636d1bcac2",
+    "paths": [
+      "handoff/lower-stein/eps0748/PROGRESS_caps.md"
+    ],
+    "chars": 4311,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "51fc4056a5478f997616201af618a210199b4cfbf9b8c94c0142ed438a359b52",
+    "paths": [
+      "handoff/lower-stein/eps0748/PROGRESS.md"
+    ],
+    "chars": 6525,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "697868f679eebe4112040b0ac613c10391b0b926ebb9173aa4245b080c2a8cee",
+    "paths": [
+      "handoff/lower-stein/cert-gram/PROOF.md"
+    ],
+    "chars": 28107,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "d8c669364816bab3a27ee721782ac613271fed7d72538e57d8538bd23216f771",
+    "paths": [
+      "handoff/lower-stein/cert-gram/LEAN_NOTE.md"
+    ],
+    "chars": 3320,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "37d52cfa3dbf486c491041b87b85f6ffae601a35f98338b87ac00292d52562ef",
+    "paths": [
+      "handoff/lower-stein/cert-gram/README.md"
+    ],
+    "chars": 2272,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "5fed67255d18df3ecf41a20232c582d5278856f0a45700b3d35469613314fa10",
+    "paths": [
+      "handoff/lower-stein/cert-1401619290904/REPLAY.md"
+    ],
+    "chars": 3420,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "954d677861c03c222faf44b87fdd2bb62525458cc6a4f2119888476e4b5f45ca",
+    "paths": [
+      "handoff/lower-stein/cert-1401619290904/LEAN.md"
+    ],
+    "chars": 3777,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "0d68e563070fdebf1780a5de9f3ff5d314db3316f065a592b6d791a980b3fe38",
+    "paths": [
+      "handoff/lower-stein/cert-1401619290904/NODE_DESIGN.md"
+    ],
+    "chars": 2821,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "6b96c8e1e1576abd84ed5193cc40f9ee5e3b86f869c5370ccf05d609e991b5e6",
+    "paths": [
+      "handoff/lower-stein/cert-1401619290904/MIXTURE_NOTE.md"
+    ],
+    "chars": 2947,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "0edebf6e70f6404bedefe3f67466f306b362e04f0f09682f5774cc43001cfabd",
+    "paths": [
+      "handoff/lower-stein/cert-joint/section.tex"
+    ],
+    "chars": 5051,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "5f6eed87314e718b1829857af530c177c5b40401dc941746499345664697a5c3",
+    "paths": [
+      "handoff/lower-stein/cert-joint/PROOF.md"
+    ],
+    "chars": 15929,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "42672cecd40b83cf265ea4716b89935fda87a1f77fa441cfb4eea1306d380a94",
+    "paths": [
+      "handoff/lower-stein/cert-joint/LEAN_NOTE.md"
+    ],
+    "chars": 2986,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "164eb942e3730011911ccba78162c0c51a2d0b788aa7c363f91bff4ed6c21709",
+    "paths": [
+      "handoff/lower-stein/cert-joint/README.md"
+    ],
+    "chars": 2101,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "684a363202c05ac3a6bcc75458743045bb1453bdac6de4dae6bf8af9d10556de",
+    "paths": [
+      "handoff/lower-stein/cert-covariance/tex/covariance-envelope.tex",
+      "handoff/lower-stein/cert-covariance/tex/live-manuscript/lower-bound/covariance-envelope.tex"
+    ],
+    "chars": 5396,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "87a6dc89e4d15723a4dae5169e9596592c449a580c82432ba9d194e76a66fa30",
+    "paths": [
+      "handoff/lower-stein/cert-covariance/tex/MANUSCRIPT_CHANGES.md"
+    ],
+    "chars": 1858,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "cec52dd83b818508ef90eab0e73b22b13c40740b0010704f5b2f8dcebd177645",
+    "paths": [
+      "handoff/lower-stein/cert-covariance/tex/spectral-envelope.tex",
+      "handoff/lower-stein/cert-spectral/tex/spectral-envelope.tex"
+    ],
+    "chars": 4685,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "1a7fb1147b9647e94ae69cb8b509849d34c79b178dad4aa518c0823a20f99d79",
+    "paths": [
+      "handoff/lower-stein/cert-covariance/tex/live-manuscript/ch36-K-state.tex"
+    ],
+    "chars": 36209,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "22dbf8047b1dc970c21170934ea0b17c33e33b718122b72a68c58c0c217c16a7",
+    "paths": [
+      "handoff/lower-stein/cert-covariance/tex/live-manuscript/main.tex"
+    ],
+    "chars": 12041,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "ace906cb255c1d1c3a8702eff17d21d3316df5cce85d619d97c23ac2b4d24fca",
+    "paths": [
+      "handoff/lower-stein/cert-covariance/tex/live-manuscript/ch2-certified.tex"
+    ],
+    "chars": 51751,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "1645e8e1d2200c55a3432b0b8ab6008dedb4af0a855f7928c54a58eb27d4b1e2",
+    "paths": [
+      "handoff/lower-stein/cert-covariance/tex/live-manuscript/lower-bound/obstruction-1402.tex"
+    ],
+    "chars": 8394,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "a6e7136e2e59b231c545eea1a45a1bc2c09d0ea72c1e8441e8a01899eef3f5e9",
+    "paths": [
+      "handoff/lower-stein/cert-covariance/tex/live-manuscript/lower-bound/spectral-envelope.tex",
+      "handoff/lower-stein/cert-jointmoment-lifted-codex/reused/spectral-envelope.tex",
+      "handoff/lower-stein/cert-gram-refined-codex/reused/spectral-envelope.tex",
+      "handoff/lower-stein/cert-jointmoment/reused/spectral-envelope.tex",
+      "handoff/lower-stein/cert-gram/reused/spectral-envelope.tex",
+      "handoff/lower-stein/cert-joint/reused/spectral-envelope.tex",
+      "outputs/joint-budget-20261022/certificate/reused/spectral-envelope.tex"
+    ],
+    "chars": 5567,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "1b9522971cb6a7dc2aa82d3f0b18ef57a60f98bfeed3dfece3a223cadb62f4a2",
+    "paths": [
+      "handoff/lower-stein/cert-covariance/tex/live-manuscript/lower-bound/04-witness-certificates.tex"
+    ],
+    "chars": 661,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "703f97a671f84fdd54901199d96acf63ac13339b4b50e0efc9299cd33866b220",
+    "paths": [
+      "handoff/lower-stein/cert-finemesh/explorations/README.md",
+      "handoff/lower-stein/cert-finemesh-final/explorations/README.md"
+    ],
+    "chars": 4246,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "5ecc9d6892a1a05f39445c63715e33f0decbc1416a213043279b1f89e643bc5b",
+    "paths": [
+      "handoff/lower-stein/cert-jointmoment-lifted-codex/reused/covariance-envelope.tex",
+      "handoff/lower-stein/cert-gram-refined-codex/reused/covariance-envelope.tex",
+      "handoff/lower-stein/cert-jointmoment/reused/covariance-envelope.tex",
+      "handoff/lower-stein/cert-gram/reused/covariance-envelope.tex",
+      "handoff/lower-stein/cert-joint/reused/covariance-envelope.tex",
+      "outputs/joint-budget-20261022/certificate/reused/covariance-envelope.tex"
+    ],
+    "chars": 7025,
+    "coverage": "full detailed read",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "da7813bee420aa89608ad91b5d7bd1a1dd72004c5ece4d4cd126b2b30d95821a",
+    "paths": [
+      "handoff/lower-stein/cert-jointmoment-lifted-codex/reused/sixth-moment-bridge.tex",
+      "handoff/lower-stein/cert-gram-refined-codex/reused/sixth-moment-bridge.tex",
+      "handoff/lower-stein/cert-jointmoment/reused/sixth-moment-bridge.tex",
+      "handoff/lower-stein/cert-gram/reused/sixth-moment-bridge.tex",
+      "outputs/joint-budget-20261022/certificate/reused/sixth-moment-bridge.tex"
+    ],
+    "chars": 10814,
+    "coverage": "full detailed read",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "e575c38982d3bc34f9537b48f5ee5722abdb564a1e2986e7ce464187e142d733",
+    "paths": [
+      "handoff/lower-stein/cert-jointmoment-lifted-codex/reused/sharp-influence.tex",
+      "handoff/lower-stein/cert-gram-refined-codex/reused/sharp-influence.tex",
+      "handoff/lower-stein/cert-jointmoment/reused/sharp-influence.tex",
+      "handoff/lower-stein/cert-gram/reused/sharp-influence.tex",
+      "outputs/joint-budget-20261022/certificate/reused/sharp-influence.tex"
+    ],
+    "chars": 5148,
+    "coverage": "full detailed read",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "533f3452943093937db01594946c2b260efab8e985a647619f1467f9c9001303",
+    "paths": [
+      "handoff/lower-stein/cert-spectral/tex/MANUSCRIPT_CHANGES.md"
+    ],
+    "chars": 1655,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "6c8282ba0884da224534e805ea64ee2f71df1178708b0572f2d58c8b15694246",
+    "paths": [
+      "handoff/lower-import/research-note.md"
+    ],
+    "chars": 8234,
+    "coverage": "section-heading skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "6f120ba674e1dd558d7b390c6462a049517623eb5ac1dee0f6c85a91f2d82229",
+    "paths": [
+      "handoff/lower-import/independent-profile-audit.md"
+    ],
+    "chars": 3060,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "1863fe0af7d0e258b663a350900cd95db1c19a87c8e82a791c4e5227d7870d70",
+    "paths": [
+      "handoff/lower-import/received-instance-audit.md"
+    ],
+    "chars": 10870,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "b7c4367e7394427744dbbfe21257af2fda441c3907d311ff03dc78049bdac6eb",
+    "paths": [
+      "handoff/lower-import/README.md"
+    ],
+    "chars": 1348,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "14bb9ae513fcbbd0e0f144365886d49378b448025b8f399f5c19c6c28db3782c",
+    "paths": [
+      "handoff/lower-import/finite-dimension/theorem.md"
+    ],
+    "chars": 6435,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "f2b96e3fbb7aa076eb84347fb21ae7e83dbffea480ffe25fcfc15ef54ebf6eae",
+    "paths": [
+      "handoff/lower/research-note.md"
+    ],
+    "chars": 8236,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "2173ee975c5ca933ae131b9a8eb7b43b623106ead42fa2ffed44e77a463207de",
+    "paths": [
+      "handoff/lower/base/research-note.md"
+    ],
+    "chars": 7793,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "d20e5cdef3e1fc60fd8a1dec86639afc6cdd22c1eb7789a4f4ccccf4e49ccb35",
+    "paths": [
+      "handoff/lower/base/quadrature_moment_lemma.md"
+    ],
+    "chars": 4458,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "323aa7374d4257cc0bbc7abb848cbe8f44549f2def17230b328453b686f03865",
+    "paths": [
+      "handoff/lower/base/README.md"
+    ],
+    "chars": 2363,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "b8b0deef60fa78196f4a3d4cac51baeecfbeaad9afd49f4909ae2ce60dac0b68",
+    "paths": [
+      "outputs/joint-budget-20261022/joint-budget-note.tex"
+    ],
+    "chars": 1349,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "a0350ad45621924b4a89b3003564d7fff632416b01de4ba6120c457b2f6d66c0",
+    "paths": [
+      "outputs/joint-budget-20261022/DEPENDENCIES.md"
+    ],
+    "chars": 1824,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "4e5879ca61247c97c021de6015fd28bd6dd980d82b0fa3d27fd8dc71e0120bde",
+    "paths": [
+      "outputs/joint-budget-20261022/README.md"
+    ],
+    "chars": 3544,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "6f39b61f44860fcbaf986aa76e3ff747a3d473e4792e7b24c8b46ca92ba77951",
+    "paths": [
+      "outputs/joint-budget-20261022/FINAL_VALIDATION.md"
+    ],
+    "chars": 1213,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "4c8a130d005784b61f549d7bf51d3c1637064d2d40b0f0c9407fac9312185185",
+    "paths": [
+      "outputs/joint-budget-20261022/manuscript-section.tex"
+    ],
+    "chars": 14429,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "3f90dbee4cd9af82b42bb899d8b3dcfbf91a0c82f802124ab1de1e579f9ea66c",
+    "paths": [
+      "outputs/joint-budget-20261022/lean-patch/README.md"
+    ],
+    "chars": 9287,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "5febe3ca4e31a561e50240d520ea016de1ecffadf7f2e959d7922a15d62edddb",
+    "paths": [
+      "outputs/joint-budget-20261022/lean-patch/docs/LEAN_DETAILS.md"
+    ],
+    "chars": 27181,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "6495823f2ab869d1c30273281934a261e611291503a009caa8f3882bb15b4ccc",
+    "paths": [
+      "outputs/binding-audit-20261023/package/REPORT.md"
+    ],
+    "chars": 12267,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "87cfa06ea7fbc44648baa8d4775ab4633227bf9ce0636d2d078ad7e12b373734",
+    "paths": [
+      "outputs/binding-audit-20261023/package/ATTACK_PLAN.md"
+    ],
+    "chars": 22429,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "254eb38e7c12c191ff35d1a0b084b40aa0f20a95dff9e16323e9fdf0a9ec97a8",
+    "paths": [
+      "outputs/binding-audit-20261023/package/README.md"
+    ],
+    "chars": 2157,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  },
+  {
+    "hash": "87978e191dc6cf55e08a91b415d83d7bc14a12a9bd0bc749b460d9f71819bb8b",
+    "paths": [
+      "outputs/binding-audit-20261023/package/manuscript-section.tex"
+    ],
+    "chars": 5398,
+    "coverage": "opening and conclusion skim",
+    "notes": "Historical duplicate paths are represented by one SHA256 content. Full proof verification not claimed."
+  }
+]

@@ -1,0 +1,90 @@
+{
+  "status": "FLOATING_DISCOVERY_ONLY_NO_GLOBAL_CLAIM",
+  "target_score": 0.711947,
+  "family": "Real conjugate-reflected mixture of phase(z)*exp(i*a*|w|^2) and phase(z)*exp(i*d*|w|^2), constant phase delta relative to positive-slope orientation.",
+  "baseline_inverse_prefix": 1.0000774337545213,
+  "inverse_terms_retained": [
+    1,
+    3,
+    5,
+    7
+  ],
+  "runs": [
+    {
+      "start": [
+        0,
+        0,
+        0
+      ],
+      "parameters": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "inverse_prefix": 1.0000774337545213,
+      "evaluations": 134,
+      "converged": true
+    },
+    {
+      "start": [
+        0.1,
+        -0.1,
+        0
+      ],
+      "parameters": [
+        1.093130798836526e-08,
+        9.413952778662035e-09,
+        9.75291671898586e-10
+      ],
+      "inverse_prefix": 1.0000774337545213,
+      "evaluations": 243,
+      "converged": true
+    },
+    {
+      "start": [
+        0.1,
+        -0.1,
+        0.05
+      ],
+      "parameters": [
+        -2.0016364137848626e-09,
+        1.2452812935288867e-08,
+        -4.773908461336293e-09
+      ],
+      "inverse_prefix": 1.0000774337545213,
+      "evaluations": 233,
+      "converged": true
+    },
+    {
+      "start": [
+        0.3,
+        -0.2,
+        0
+      ],
+      "parameters": [
+        -7.4288748298082265e-09,
+        -6.279627194472056e-09,
+        1.007712779959645e-08
+      ],
+      "inverse_prefix": 1.0000774337545213,
+      "evaluations": 256,
+      "converged": true
+    },
+    {
+      "start": [
+        0.3,
+        0.2,
+        0
+      ],
+      "parameters": [
+        8.861283725491768e-09,
+        -1.1293702995425406e-08,
+        1.1964266081768497e-08
+      ],
+      "inverse_prefix": 1.0000774337545213,
+      "evaluations": 289,
+      "converged": true
+    }
+  ],
+  "scope": "Arbitrary common scalar preprocessing is screened by inverse prefix. This diagnostic does not rule out nonlocal asymmetric kernels, independent preprocessors, or arbitrary mixtures."
+}

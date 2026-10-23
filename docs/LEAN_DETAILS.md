@@ -301,6 +301,21 @@ the separate caps report is `scratch/AxiomsCaps.lean`. The generic response, cub
 and quintic-transfer lemmas add no native facts or endpoint hypotheses. No `sorry`,
 no warnings.
 
+**Coupled-image and chord arithmetic.** `Grothe/Research/CoupledMajorizer.lean`
+proves seven public facts: a zero-safe complex Young modulus majorizer and its
+exact-price form, a common two-image update with opposite signs, finite
+weighted assembly, diagonal square completion, finite descent and strict
+descent. `Grothe/Research/SemiconvexChord.lean` proves six public facts: lifted
+chord correction, the profile square identity, same-second-moment expectation
+assembly, gate reassembly, mesh allowance and its checked rational value.
+All 13 declarations are imported by `Grothe.lean`, printed in
+`scratch/Axioms.lean` and required by `scripts/check_axioms.py`; the targeted
+report can be checked with `--research`. They use only `propext`,
+`Classical.choice`, `Quot.sound`, with no additional native facts. They do not
+prove Gaussian curvature, response extraction, a saddle exchange or an
+all-dimensional cover. No endpoint or endpoint hypothesis is changed.
+See [RESEARCH_AUDIT.md](RESEARCH_AUDIT.md) for the external proof and replay scope.
+
 
 
 **Joint sixth-moment budgets (formalized).** `Grothe/LowerAnalytic/JointSixth.lean`

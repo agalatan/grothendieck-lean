@@ -1,0 +1,122 @@
+{
+  "unregularized": {
+    "eta": "0",
+    "dual_value": "8199/5000",
+    "primal_value": "8/5",
+    "closure_bracket_width": "199/5000",
+    "quadratic_matrix": [
+      [
+        "8111995986367/4561438041600",
+        "-17444102735/22807190208"
+      ],
+      [
+        "-17444102735/22807190208",
+        "8158908151/2850898776"
+      ]
+    ],
+    "allowance": "0",
+    "step": [
+      "-12829786118/114916489965",
+      "-29777043851/459665959860"
+    ],
+    "guaranteed_decrement": "885354742619/38305496655000",
+    "actual_decrement": "172961837310509706451627/5282319866350378280490000",
+    "finite_amplitude_trials": 81,
+    "diagonal_majorizer_decrement": "236/24875",
+    "diagonal_update_actual_decrement": "1652709/99002500",
+    "scope": "finite probability fixture, not an actual Gaussian cubic response"
+  },
+  "zero_safe": {
+    "eta": "2/5",
+    "dual_value": "8199/5000",
+    "primal_value": "8/5",
+    "closure_bracket_width": "199/5000",
+    "quadratic_matrix": [
+      [
+        "2003241041303/1200378432000",
+        "-3708038287/6001892160"
+      ],
+      [
+        "-3708038287/6001892160",
+        "399801619/150047304"
+      ]
+    ],
+    "allowance": "18/3125",
+    "step": [
+      "-330077738/2480918085",
+      "-91022593/1984734468"
+    ],
+    "guaranteed_decrement": "18065699777/826972695000",
+    "actual_decrement": "82548656023722494179/2461981817792026890000",
+    "finite_amplitude_trials": 81,
+    "diagonal_majorizer_decrement": "71777/9950000",
+    "diagonal_update_actual_decrement": "88231017/4950125000",
+    "scope": "finite probability fixture, not an actual Gaussian cubic response"
+  },
+  "wick_sectors": {
+    "charge_one_indices_through_degree_seven": 231,
+    "negative_cubic_sector_types": [
+      [
+        0,
+        1,
+        2,
+        2
+      ],
+      [
+        1,
+        0,
+        2,
+        0
+      ],
+      [
+        2,
+        1,
+        0,
+        0
+      ]
+    ],
+    "negative_linear_visible_indices": [
+      [
+        0,
+        0
+      ]
+    ]
+  },
+  "complex_young_inequalities": 1875,
+  "linear_visible_profiles": {
+    "profile_coefficients_checked": 13,
+    "h_first_coefficients_in_units_sqrt_pi": [
+      "1/2",
+      "-1/8",
+      "1/32",
+      "-5/768"
+    ],
+    "A_first_coefficients_in_units_sqrt_pi": [
+      "1/2",
+      "-1/4",
+      "3/32",
+      "-5/192"
+    ]
+  },
+  "conditional_gaussian_allowance": {
+    "plane_integral_in_units_pi_eta_cubed": "1/3",
+    "gamma_inverse_moments_checked": 98,
+    "finite_cubic_inverse_variance_bounds": {
+      "3": "9",
+      "4": "16/3",
+      "8": "64/21",
+      "16": "256/105",
+      "100": "10000/4851"
+    }
+  },
+  "finite_cubic_transfer": {
+    "conditional_variance_mean": "1",
+    "conditional_variance_variance": "5/m",
+    "density_second_derivative_polynomial_second_moment": "4",
+    "large_variance_remainder_constant": "169/25",
+    "uniform_remainder_constant": "7",
+    "finite_cubic_density_L1_bound": "min(2,2*sqrt(5/m),35/m)",
+    "scope": "coefficient test independent of whole buffer, L2 norm at most one"
+  },
+  "status": "PASS exact algebra; no Gaussian integration or endpoint claim"
+}

@@ -1,0 +1,3486 @@
+{
+  "status": "DISCOVERY_GRADED_COUPLED_IMAGE_SADDLE_NO_ENDPOINT",
+  "scope": "Discovery: solve the coupled negative-image problem in a closed graded model.\n\nRun substantial sample sizes on ssh yo in your own directory. No Gaussian\nintegral enclosure, dimension-free cover, or global endpoint is asserted.\nZ,X have original grade1 and W original grade3. The basis below retains ALL\ngrade1/3 modes of this two-visible-coordinate plus diffuse-cubic model.\n",
+  "parameters": {
+    "fit_power": 19,
+    "eval_power": 21,
+    "seed": 3,
+    "maxiter": 100,
+    "out": "/home/agalatan/apap/codex-coupled-image-20261023/root/saddle-19-21-seed3-midpoint.json"
+  },
+  "runtime": {
+    "host": "ubuntu-s-2vcpu-2gb-sfo3-01",
+    "pid": 1485502,
+    "python": "3.12.3",
+    "numpy": "2.3.5"
+  },
+  "sobol_uniform_transform": "52-bit scrambled Sobol cell midpoints: u+2^-53",
+  "script_sha256": "245b7a7ba4f545b59db844388842bd975c27d18eaff61404f5cf524e77e939da",
+  "contact": {
+    "epsilon": "149/200",
+    "ell": 0.8565701672802419,
+    "beta": 0.14750207856599754,
+    "variance": 0.0282998738033631
+  },
+  "frozen_fixture_sha256": "15a863df1e06635370165f3fa922ca019bd036a1652869168e10d7c6d4ba7ef0",
+  "negative_basis": [
+    "H21(Z)",
+    "Z*(|X|\u00b2-1)",
+    "X\u00b2*conj(Z)/sqrt2",
+    "first X"
+  ],
+  "positive_q_basis": [
+    "H21(X)",
+    "X*(|Z|\u00b2-1)",
+    "Z\u00b2*conj(X)/sqrt2",
+    "grade3 W"
+  ],
+  "rows": [
+    {
+      "name": "Gaussian",
+      "q_direction": {
+        "real": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "imag": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "partial_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "iterations": 4,
+        "evaluations": 6
+      },
+      "full_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 4,
+        "evaluations": 6
+      },
+      "partial_fit": {
+        "dual_value": 1.4849849050166681,
+        "fixed_positive_image_outer_trial": 0.7132860457524173,
+        "phase_pair_payoff_estimate": 0.7132860601509934,
+        "negative_image_gap_upper_estimate": 2.7064869787922985e-09,
+        "positive_image_defect_estimate": 1.71050616859009e-08,
+        "gap_identity_error": -1.4020783314399887e-15,
+        "closure_gradient_norm": 0.00010202481975230618,
+        "negative_coefficients": {
+          "real": [
+            -0.2800051741359814,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            -7.966195651726723e-06,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2800051741364027,
+            2.001776502069897e-05,
+            7.590786396266121e-06,
+            -4.769804725605304e-05
+          ],
+          "imag": [
+            -7.966196965361692e-06,
+            7.857868696457716e-07,
+            -9.468655649320795e-06,
+            -4.761658798956589e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8565659264210261,
+          7.3114326167300625e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            -0.00012394305320257646,
+            4.2593671730060624e-05,
+            9.204045412498394e-06,
+            0.22581996250417455
+          ],
+          "imag": [
+            -6.27572144636781e-05,
+            9.46561186904667e-06,
+            1.1486521792583992e-06,
+            -3.7228295968788516e-05
+          ]
+        }
+      },
+      "full_fit": {
+        "dual_value": 1.4849849036789673,
+        "fixed_positive_image_outer_trial": 0.7132860444147164,
+        "phase_pair_payoff_estimate": 0.7132860606433719,
+        "negative_image_gap_upper_estimate": 2.0043736540327035e-14,
+        "positive_image_defect_estimate": 1.6228673310583534e-08,
+        "gap_identity_error": -2.1526564738517794e-15,
+        "closure_gradient_norm": 2.8141886341316366e-07,
+        "negative_coefficients": {
+          "real": [
+            -0.28000516796057745,
+            1.8802953627812053e-05,
+            5.210159483059944e-06,
+            -2.037124476077566e-05
+          ],
+          "imag": [
+            -7.962494558658074e-06,
+            4.5464978755816457e-07,
+            -6.501656312358129e-06,
+            -2.111957072077055e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2800051681358948,
+            1.8801653159845178e-05,
+            5.211086304587192e-06,
+            -2.0384252104872633e-05
+          ],
+          "imag": [
+            -7.9623857393558e-06,
+            4.1882043212667004e-07,
+            -6.502734348848144e-06,
+            -1.974423949599067e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8565659216586659,
+          7.3073676128895815e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            -0.00012378214094335352,
+            2.7706454632435243e-05,
+            1.6563232330698728e-06,
+            0.22581997751974092
+          ],
+          "imag": [
+            -6.289230728040423e-05,
+            7.962717363164122e-06,
+            1.930515686503544e-06,
+            -3.720775419780654e-05
+          ]
+        }
+      },
+      "partial_independent_eval": {
+        "dual_value": 1.484989253443516,
+        "fixed_positive_image_outer_trial": 0.7132903941792652,
+        "phase_pair_payoff_estimate": 0.7132903965166476,
+        "negative_image_gap_upper_estimate": 2.1465747591887765e-10,
+        "positive_image_defect_estimate": 2.5520482539367733e-09,
+        "gap_identity_error": 8.3792751913671e-15,
+        "closure_gradient_norm": 2.5825039454565684e-05,
+        "negative_coefficients": {
+          "real": [
+            -0.2800051741359814,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            -7.966195651726723e-06,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2800032003149833,
+            4.079741978638154e-06,
+            -4.751952476948232e-06,
+            1.966328957940675e-06
+          ],
+          "imag": [
+            5.229490936164467e-06,
+            2.790561711294872e-06,
+            -5.218401010714682e-06,
+            4.780434596430638e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8565714649807521,
+          -2.854060980314599e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            -4.046697371833926e-05,
+            -1.6611275860604326e-06,
+            1.4684662821717548e-07,
+            0.22580223764208496
+          ],
+          "imag": [
+            4.1677990089618426e-05,
+            -3.905118644377119e-06,
+            4.309351412610711e-07,
+            -1.8306117810416924e-06
+          ]
+        }
+      },
+      "full_independent_eval": {
+        "dual_value": 1.4849892547527797,
+        "fixed_positive_image_outer_trial": 0.7132903954885288,
+        "phase_pair_payoff_estimate": 0.7132903952800561,
+        "negative_image_gap_upper_estimate": 3.016390658165052e-09,
+        "positive_image_defect_estimate": 2.807918043636943e-09,
+        "gap_identity_error": 6.903239234860835e-17,
+        "closure_gradient_norm": 0.00010772515161532324,
+        "negative_coefficients": {
+          "real": [
+            -0.28000516796057745,
+            1.8802953627812053e-05,
+            5.210159483059944e-06,
+            -2.037124476077566e-05
+          ],
+          "imag": [
+            -7.962494558658074e-06,
+            4.5464978755816457e-07,
+            -6.501656312358129e-06,
+            -2.111957072077055e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2800032108839832,
+            2.860780246109704e-06,
+            -7.13182173310586e-06,
+            2.932578522975444e-05
+          ],
+          "imag": [
+            5.239203780936734e-06,
+            2.38924793963884e-06,
+            -2.243482967925083e-06,
+            7.623436387814839e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8565714727477545,
+          -2.8617187102057684e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            -4.045829313297081e-05,
+            -1.6590318873343348e-05,
+            -7.390058352259828e-06,
+            0.22580220940372528
+          ],
+          "imag": [
+            4.169068538464172e-05,
+            -5.458557167762644e-06,
+            1.208700914606683e-06,
+            -1.799694124792609e-06
+          ]
+        }
+      },
+      "negative_image_correction_independent_eval": -1.3092635864353497e-09,
+      "MM_step_fit": {
+        "eta": 0.003,
+        "predicted_decrement_sampled": -4.534703563598915e-08,
+        "allowance_sampled": 4.6275287736901e-08,
+        "actual_decrement_sampled": 1.0371166148104294e-09,
+        "minimum_curvature_eigenvalue": 1.3157312936804506,
+        "step_norm": 2.0392944757922584e-05
+      },
+      "MM_step_independent_eval": {
+        "dual_value": 1.4849892539688765,
+        "fixed_positive_image_outer_trial": 0.7132903947046256,
+        "phase_pair_payoff_estimate": 0.7132903960645661,
+        "negative_image_gap_upper_estimate": 1.3174181272966475e-09,
+        "positive_image_defect_estimate": 2.677360827863443e-09,
+        "gap_identity_error": 2.207016313333865e-15,
+        "closure_gradient_norm": 7.036974528180475e-05,
+        "negative_coefficients": {
+          "real": [
+            -0.2799946835302265,
+            1.0658558609330603e-05,
+            3.945826246518151e-06,
+            -1.2450087830988374e-05
+          ],
+          "imag": [
+            -7.507946692011271e-06,
+            -1.3220450349072566e-07,
+            -4.5979906273002205e-06,
+            -5.208602986380493e-07
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2800041268882023,
+            3.39083432854127e-06,
+            -6.553292133978626e-06,
+            1.86912504579208e-05
+          ],
+          "imag": [
+            4.9261539315668855e-06,
+            2.8914032425484162e-06,
+            -3.115429400527158e-06,
+            5.487012171460393e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8565722274845403,
+          -2.672754850763931e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            -4.046536131251406e-05,
+            -1.0788831325578759e-05,
+            -4.4599203439419795e-06,
+            0.2257995034194869
+          ],
+          "imag": [
+            4.167757068312761e-05,
+            -4.2926489153138095e-06,
+            6.209689660884412e-07,
+            -1.809603710790581e-06
+          ]
+        }
+      },
+      "analytic_buffer_step": {
+        "status": "ANALYTIC_BUFFER_CONSTANTS_NUMERICAL_GRADIENT",
+        "eta": 0.001,
+        "sigma": 0.16822566333161867,
+        "reciprocal_modulus_bound": 10.536168000785503,
+        "curvature_diagonal_upper": [
+          6.592836644635974,
+          6.592836644635974,
+          6.592836644635974,
+          11.536168000785503,
+          6.592836644635974,
+          6.592836644635974,
+          6.592836644635974,
+          11.536168000785503
+        ],
+        "allowance_analytic_upper": 2.3557231078091985e-08,
+        "predicted_decrement_using_sampled_gradient": -2.331588334624182e-08,
+        "actual_decrement_sampled": 4.4063530602045375e-10,
+        "step_norm": 4.8904693257442265e-06
+      },
+      "analytic_buffer_independent_eval": {
+        "dual_value": 1.4849892534924807,
+        "fixed_positive_image_outer_trial": 0.7132903942282298,
+        "phase_pair_payoff_estimate": 0.7132903964552904,
+        "negative_image_gap_upper_estimate": 3.4269822444170904e-10,
+        "positive_image_defect_estimate": 2.5697816362584984e-09,
+        "gap_identity_error": 2.287583036469159e-14,
+        "closure_gradient_norm": 3.4505818824413366e-05,
+        "negative_coefficients": {
+          "real": [
+            -0.28000494598819237,
+            2.2566261817708683e-06,
+            8.543589248006072e-07,
+            -4.0956087065914215e-06
+          ],
+          "imag": [
+            -7.974007539028101e-06,
+            5.1924441789342043e-08,
+            -1.055452720031754e-06,
+            -3.893579596967046e-07
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2800032226278763,
+            3.933231715690767e-06,
+            -5.142458037614555e-06,
+            7.466049063212752e-06
+          ],
+          "imag": [
+            5.237459422573038e-06,
+            2.742769810948903e-06,
+            -4.734176035606299e-06,
+            5.304244824125967e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8565714831638929,
+          -2.859239640905231e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            -4.046465448338681e-05,
+            -4.661895511291221e-06,
+            -1.3686088168246718e-06,
+            0.22580217265532912
+          ],
+          "imag": [
+            4.167917410090289e-05,
+            -4.191258324631178e-06,
+            5.741971985988144e-07,
+            -1.8239338988300327e-06
+          ]
+        }
+      },
+      "elapsed_seconds": 3.0584618765860796,
+      "normalized_remote_fourth_excess_exact_formula": "42*abs(kappa)^4",
+      "normalized_remote_fourth_excess": 0.0,
+      "sqrt_fourth_excess": 0.0
+    },
+    {
+      "name": "remote-H21",
+      "q_direction": {
+        "real": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "imag": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "partial_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "iterations": 4,
+        "evaluations": 6
+      },
+      "full_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "iterations": 10,
+        "evaluations": 12
+      },
+      "partial_fit": {
+        "dual_value": 1.4786864413322625,
+        "fixed_positive_image_outer_trial": 0.7069875820680116,
+        "phase_pair_payoff_estimate": 0.7078171690796413,
+        "negative_image_gap_upper_estimate": 0.0014946202837249796,
+        "positive_image_defect_estimate": 0.0023242072953547042,
+        "gap_identity_error": 6.938893903907228e-18,
+        "closure_gradient_norm": 0.07062612551227862,
+        "negative_coefficients": {
+          "real": [
+            -0.2912484762609846,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            5.967914572559379e-07,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2912484763725112,
+            -0.03275515689791177,
+            -0.015181247158147662,
+            -0.022882491578587072
+          ],
+          "imag": [
+            5.968199268711362e-07,
+            -4.973810070684499e-06,
+            1.6862858708381805e-05,
+            -2.3641826975062457e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8652907648418304,
+          -1.8023325438001891e-07
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.1768964902489592,
+            0.022515234965733988,
+            0.010888063562898627,
+            0.00010298731846584359
+          ],
+          "imag": [
+            9.176736015449327e-07,
+            1.6118922844116206e-05,
+            2.2049945329942707e-06,
+            -1.5689822979508287e-05
+          ]
+        }
+      },
+      "full_fit": {
+        "dual_value": 1.4775410574160992,
+        "fixed_positive_image_outer_trial": 0.7058421981518483,
+        "phase_pair_payoff_estimate": 0.7085888540347074,
+        "negative_image_gap_upper_estimate": 3.6716425378224237e-19,
+        "positive_image_defect_estimate": 0.0027466558828667447,
+        "gap_identity_error": 7.693932296826134e-15,
+        "closure_gradient_norm": 1.05569930905076e-09,
+        "negative_coefficients": {
+          "real": [
+            -0.29314520946975414,
+            -0.03060984495177887,
+            -0.010364169039480578,
+            -0.012402435538368428
+          ],
+          "imag": [
+            3.385460969211716e-06,
+            -3.35331784317225e-06,
+            4.8862003182818845e-06,
+            -1.9335080500348666e-05
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2931452097783162,
+            -0.030609844902047594,
+            -0.01036416887227743,
+            -0.012402435674187272
+          ],
+          "imag": [
+            3.385411010749897e-06,
+            -3.3532219942634136e-06,
+            4.885626966263097e-06,
+            -1.9335119304296575e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8672172368981232,
+          -2.4865338687229954e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.16890712972518482,
+            0.015827743443905057,
+            0.006825117579451121,
+            0.0001165256642304306
+          ],
+          "imag": [
+            1.266099547677525e-05,
+            2.541660360428304e-05,
+            6.5531591359068935e-06,
+            1.1195671621284114e-05
+          ]
+        }
+      },
+      "partial_independent_eval": {
+        "dual_value": 1.478686840900675,
+        "fixed_positive_image_outer_trial": 0.7069879816364242,
+        "phase_pair_payoff_estimate": 0.7078242395841802,
+        "negative_image_gap_upper_estimate": 0.001493803853314029,
+        "positive_image_defect_estimate": 0.0023300618010641747,
+        "gap_identity_error": -5.84601811404184e-15,
+        "closure_gradient_norm": 0.07061890704493555,
+        "negative_coefficients": {
+          "real": [
+            -0.2912484762609846,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            5.967914572559379e-07,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2912625851484402,
+            -0.03271935610111939,
+            -0.015161059615824729,
+            -0.02291276085130608
+          ],
+          "imag": [
+            9.931397307045385e-07,
+            -1.997447316646914e-05,
+            -2.095498073986527e-05,
+            6.811158307787465e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8653086812202366,
+          -4.482723217319462e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.17682464908749332,
+            0.02252860412812064,
+            0.010879519654187852,
+            -6.215415726798549e-06
+          ],
+          "imag": [
+            2.231391740076258e-05,
+            6.28557547862205e-06,
+            9.342323693364067e-06,
+            -1.0245677714653642e-05
+          ]
+        }
+      },
+      "full_independent_eval": {
+        "dual_value": 1.477543388536085,
+        "fixed_positive_image_outer_trial": 0.705844529271834,
+        "phase_pair_payoff_estimate": 0.708599981965604,
+        "negative_image_gap_upper_estimate": 1.0932374290204772e-08,
+        "positive_image_defect_estimate": 0.0027554636261464933,
+        "gap_identity_error": 2.2256502196782435e-15,
+        "closure_gradient_norm": 0.00019246472431395586,
+        "negative_coefficients": {
+          "real": [
+            -0.29314520946975414,
+            -0.03060984495177887,
+            -0.010364169039480578,
+            -0.012402435538368428
+          ],
+          "imag": [
+            3.385460969211716e-06,
+            -3.35331784317225e-06,
+            4.8862003182818845e-06,
+            -1.9335080500348666e-05
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.293153751966117,
+            -0.03053884398847506,
+            -0.010314433622998961,
+            -0.012439780599687918
+          ],
+          "imag": [
+            5.150229614521499e-08,
+            -1.439818014557493e-05,
+            -2.795870104539868e-05,
+            3.527268346841146e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8672392218310941,
+          -3.1295644671580636e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.16880404402675134,
+            0.015822606077713252,
+            0.006797778721783412,
+            1.504685147125486e-05
+          ],
+          "imag": [
+            1.9237898268343577e-05,
+            -1.0740896725421652e-05,
+            1.2653506402603686e-05,
+            -2.3366343894754842e-05
+          ]
+        }
+      },
+      "negative_image_correction_independent_eval": 0.0011434523645901251,
+      "MM_step_fit": {
+        "eta": 0.003,
+        "predicted_decrement_sampled": 0.0006922793147242312,
+        "allowance_sampled": 4.990347317686068e-08,
+        "actual_decrement_sampled": 0.0009625204871344106,
+        "minimum_curvature_eigenvalue": 1.295029374414645,
+        "step_norm": 0.0208911108233779
+      },
+      "MM_step_independent_eval": {
+        "dual_value": 1.477725236264054,
+        "fixed_positive_image_outer_trial": 0.7060263769998032,
+        "phase_pair_payoff_estimate": 0.7083641840932504,
+        "negative_image_gap_upper_estimate": 0.0002343823347751045,
+        "positive_image_defect_estimate": 0.0025721894282172636,
+        "gap_identity_error": -5.060188379424346e-15,
+        "closure_gradient_norm": 0.02812525952109913,
+        "negative_coefficients": {
+          "real": [
+            -0.29167061696103236,
+            -0.018022704361865798,
+            -0.007679286076701225,
+            -0.007243677416007274
+          ],
+          "imag": [
+            2.1476639236376412e-07,
+            -4.197783140430676e-06,
+            8.706841313662726e-06,
+            -6.73924333707258e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2924574230719565,
+            -0.031320525098918826,
+            -0.01159524265935715,
+            -0.016770231381393823
+          ],
+          "imag": [
+            2.3534892798966273e-06,
+            -1.6171279954646225e-05,
+            -2.867430493337751e-05,
+            1.6065013985790176e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8665292594706167,
+          -5.127397242118276e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.17190514257104378,
+            0.01852933108042641,
+            0.008414465778780364,
+            8.224069597088846e-06
+          ],
+          "imag": [
+            2.4112976800024776e-05,
+            2.08634871257883e-06,
+            9.41537518220424e-06,
+            -2.2195646441768e-05
+          ]
+        }
+      },
+      "analytic_buffer_step": {
+        "status": "NOT_APPLICABLE_NO_GAUSSIAN_BUFFER"
+      },
+      "analytic_buffer_independent_eval": null,
+      "elapsed_seconds": 2.8351139929145575,
+      "normalized_remote_fourth_excess_exact_formula": "42*abs(kappa)^4",
+      "normalized_remote_fourth_excess": 42.0,
+      "sqrt_fourth_excess": 6.48074069840786
+    },
+    {
+      "name": "remote-hard-defect",
+      "q_direction": {
+        "real": [
+          0.325,
+          0.0,
+          0.0,
+          0.9457140159688869
+        ],
+        "imag": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "partial_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "iterations": 4,
+        "evaluations": 6
+      },
+      "full_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 8,
+        "evaluations": 10
+      },
+      "partial_fit": {
+        "dual_value": 1.4848220035917412,
+        "fixed_positive_image_outer_trial": 0.7131231443274904,
+        "phase_pair_payoff_estimate": 0.7131042734484264,
+        "negative_image_gap_upper_estimate": 4.1793219548680056e-05,
+        "positive_image_defect_estimate": 2.292234048475474e-05,
+        "gap_identity_error": 1.1600963245594897e-17,
+        "closure_gradient_norm": 0.011281181303695655,
+        "negative_coefficients": {
+          "real": [
+            -0.2803955666098227,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            3.714988512985344e-06,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2803955666103719,
+            -0.006580510895213119,
+            -0.0030351995491183174,
+            -0.0016333319875261529
+          ],
+          "imag": [
+            3.7149885137617564e-06,
+            3.7139332233433864e-05,
+            1.6402010027685527e-05,
+            -1.1224215776091859e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.85684415449618,
+          -6.873277692137636e-08
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.0682301651790487,
+            0.0017974831430029635,
+            0.0008679006411948544,
+            0.21383709436847753
+          ],
+          "imag": [
+            -7.515392882508591e-05,
+            4.658738883559273e-06,
+            -1.1561443842726396e-05,
+            2.6197137290924618e-05
+          ]
+        }
+      },
+      "full_fit": {
+        "dual_value": 1.4847863406494395,
+        "fixed_positive_image_outer_trial": 0.7130874813851886,
+        "phase_pair_payoff_estimate": 0.7131181245698914,
+        "negative_image_gap_upper_estimate": 3.960163436341569e-16,
+        "positive_image_defect_estimate": 3.064318471012465e-05,
+        "gap_identity_error": 6.9231594198790325e-15,
+        "closure_gradient_norm": 3.489725378470115e-08,
+        "negative_coefficients": {
+          "real": [
+            -0.2804552019250869,
+            -0.006018430031256793,
+            -0.002044075435594855,
+            -0.0009505989252477431
+          ],
+          "imag": [
+            3.1134835089303956e-06,
+            2.525737156467709e-05,
+            2.2036166187767568e-05,
+            -8.610499821275242e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28045522215967,
+            -0.006018423561268766,
+            -0.0020440771452807367,
+            -0.0009506013420391754
+          ],
+          "imag": [
+            3.1139304321228268e-06,
+            2.5258436545392596e-05,
+            2.2041305388526795e-05,
+            -8.616077430507264e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.856909837545442,
+          1.2974339376817245e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.06717068345109321,
+            0.001365506672089321,
+            0.000572038050625627,
+            0.21391123951660926
+          ],
+          "imag": [
+            -9.717185419324826e-05,
+            1.1624228766618593e-06,
+            -9.428673430551847e-06,
+            2.6407549153618215e-05
+          ]
+        }
+      },
+      "partial_independent_eval": {
+        "dual_value": 1.4848318009836206,
+        "fixed_positive_image_outer_trial": 0.7131329417193697,
+        "phase_pair_payoff_estimate": 0.7131116661003271,
+        "negative_image_gap_upper_estimate": 4.2394406239787016e-05,
+        "positive_image_defect_estimate": 2.11187872038468e-05,
+        "gap_identity_error": 6.69753355965301e-15,
+        "closure_gradient_norm": 0.011347238033740244,
+        "negative_coefficients": {
+          "real": [
+            -0.2803955666098227,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            3.714988512985344e-06,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2803745283538974,
+            -0.006656477584495706,
+            -0.003066848004214513,
+            -0.0015415997551758115
+          ],
+          "imag": [
+            3.5736565202011847e-06,
+            1.7608078809845572e-06,
+            -4.630032142639937e-06,
+            -2.0291950847072288e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8568313914444069,
+          -2.8811025931906042e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.06844667608572916,
+            0.0017322058695947511,
+            0.000874785695737566,
+            0.21383457377429124
+          ],
+          "imag": [
+            -7.450401894223563e-06,
+            1.9633207171191054e-05,
+            -4.076317776586626e-06,
+            1.8257644638145745e-05
+          ]
+        }
+      },
+      "full_independent_eval": {
+        "dual_value": 1.484795533166351,
+        "fixed_positive_image_outer_trial": 0.7130966739021001,
+        "phase_pair_payoff_estimate": 0.7131252063335451,
+        "negative_image_gap_upper_estimate": 1.6526765588017155e-08,
+        "positive_image_defect_estimate": 2.8548958207983305e-05,
+        "gap_identity_error": -2.676603784532855e-15,
+        "closure_gradient_norm": 0.00024073440346816734,
+        "negative_coefficients": {
+          "real": [
+            -0.2804552019250869,
+            -0.006018430031256793,
+            -0.002044075435594855,
+            -0.0009505989252477431
+          ],
+          "imag": [
+            3.1134835089303956e-06,
+            2.525737156467709e-05,
+            2.2036166187767568e-05,
+            -8.610499821275242e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2804357409744165,
+            -0.006096918898979649,
+            -0.0020827958326654207,
+            -0.0008582317939755382
+          ],
+          "imag": [
+            4.095374798144319e-06,
+            -1.5619397821271494e-05,
+            -9.901226548379664e-06,
+            -9.586125632196811e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8568976880158621,
+          -2.9622290013582575e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.06738617431327379,
+            0.0013030611904819962,
+            0.0005815262474638741,
+            0.21390792712669562
+          ],
+          "imag": [
+            -1.4757368891908346e-05,
+            1.3302388928653722e-05,
+            -7.861884022030192e-07,
+            2.121233718919578e-05
+          ]
+        }
+      },
+      "negative_image_correction_independent_eval": 3.6267817269619584e-05,
+      "MM_step_fit": {
+        "eta": 0.003,
+        "predicted_decrement_sampled": 2.121515217327521e-05,
+        "allowance_sampled": 4.4136613291330185e-08,
+        "actual_decrement_sampled": 2.9704736711266833e-05,
+        "minimum_curvature_eigenvalue": 1.3147559089098202,
+        "step_norm": 0.003811217223079456
+      },
+      "MM_step_independent_eval": {
+        "dual_value": 1.4848017385233576,
+        "fixed_positive_image_outer_trial": 0.7131028792591068,
+        "phase_pair_payoff_estimate": 0.7131211970098872,
+        "negative_image_gap_upper_estimate": 7.030189443558312e-06,
+        "positive_image_defect_estimate": 2.5347940218626266e-05,
+        "gap_identity_error": -5.35979070913177e-15,
+        "closure_gradient_norm": 0.004616315359009731,
+        "negative_coefficients": {
+          "real": [
+            -0.28039475010360176,
+            -0.003438498580509432,
+            -0.0015476198227875808,
+            -0.0005536499679039061
+          ],
+          "imag": [
+            3.812852996137174e-06,
+            1.9136933867795243e-05,
+            8.836345848362652e-06,
+            -1.962391744453514e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2804152146837094,
+            -0.006327946076700314,
+            -0.002329740675989407,
+            -0.0011478293595439891
+          ],
+          "imag": [
+            3.362396010331474e-06,
+            -1.2013696403257562e-05,
+            -5.6500621331652765e-06,
+            -1.890576880084211e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8568746523521776,
+          -2.572660892357498e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.06780923604598059,
+            0.0014826835736381626,
+            0.0006972389829318391,
+            0.21386816880637277
+          ],
+          "imag": [
+            -1.2061617373325502e-05,
+            1.8696112365130884e-05,
+            -2.924867517192062e-06,
+            1.953776133598903e-05
+          ]
+        }
+      },
+      "analytic_buffer_step": {
+        "status": "ANALYTIC_BUFFER_CONSTANTS_NUMERICAL_GRADIENT",
+        "eta": 0.001,
+        "sigma": 0.159093367658375,
+        "reciprocal_modulus_bound": 11.140966320554282,
+        "curvature_diagonal_upper": [
+          6.92851483206564,
+          6.92851483206564,
+          6.92851483206564,
+          12.140966320554282,
+          6.92851483206564,
+          6.92851483206564,
+          6.92851483206564,
+          12.140966320554282
+        ],
+        "allowance_analytic_upper": 2.6339321960130803e-08,
+        "predicted_decrement_using_sampled_gradient": 4.4003444468690386e-06,
+        "actual_decrement_sampled": 8.295559441817701e-06,
+        "step_norm": 0.0007907509808894808
+      },
+      "analytic_buffer_independent_eval": {
+        "dual_value": 1.484823434975599,
+        "fixed_positive_image_outer_trial": 0.7131245757113482,
+        "phase_pair_payoff_estimate": 0.7131140487194847,
+        "negative_image_gap_upper_estimate": 3.244251985759111e-05,
+        "positive_image_defect_estimate": 2.191552800230871e-05,
+        "gap_identity_error": 8.264043068568691e-15,
+        "closure_gradient_norm": 0.009919781489517736,
+        "negative_coefficients": {
+          "real": [
+            -0.28039533955033946,
+            -0.0007075723502557636,
+            -0.0003263495256022664,
+            -0.0001345529368582376
+          ],
+          "imag": [
+            3.7237016203400947e-06,
+            4.006345312882916e-06,
+            1.766258063163681e-06,
+            -8.689942293997948e-07
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28038355777901297,
+            -0.0065896935149357475,
+            -0.002910835159785319,
+            -0.0014342579380547146
+          ],
+          "imag": [
+            3.607971041310919e-06,
+            -1.7202020366997136e-06,
+            -5.156188789847354e-06,
+            -1.906919406015594e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.856840943323213,
+          -2.910127065550855e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.06831116279121648,
+            0.0016665827385695018,
+            0.0008304881465426028,
+            0.21384129611860273
+          ],
+          "imag": [
+            -7.426288502017002e-06,
+            1.8962917373880974e-05,
+            -3.4814645099995107e-06,
+            1.8541749645438624e-05
+          ]
+        }
+      },
+      "elapsed_seconds": 3.125334123149514,
+      "normalized_remote_fourth_excess_exact_formula": "42*abs(kappa)^4",
+      "normalized_remote_fourth_excess": 0.4685789062500001,
+      "sqrt_fourth_excess": 0.6845282362693303
+    },
+    {
+      "name": "remote-binding-defect",
+      "q_direction": {
+        "real": [
+          0.3191241309819436,
+          0.0,
+          0.0,
+          0.9477129254289084
+        ],
+        "imag": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "partial_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "iterations": 4,
+        "evaluations": 6
+      },
+      "full_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 8,
+        "evaluations": 10
+      },
+      "partial_fit": {
+        "dual_value": 1.484832164278332,
+        "fixed_positive_image_outer_trial": 0.7131333050140811,
+        "phase_pair_payoff_estimate": 0.7131149725747709,
+        "negative_image_gap_upper_estimate": 3.92844937410246e-05,
+        "positive_image_defect_estimate": 2.0952054426468305e-05,
+        "gap_identity_error": -4.2916686101169416e-15,
+        "closure_gradient_norm": 0.010932947489738653,
+        "negative_coefficients": {
+          "real": [
+            -0.28037201654677,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            3.1167734253140214e-06,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28037201654330723,
+            -0.006387476738982,
+            -0.0029477829430090063,
+            -0.00155341956144075
+          ],
+          "imag": [
+            3.1167731472607964e-06,
+            4.1400234311412026e-05,
+            2.365655493775408e-05,
+            -1.3094100801317048e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8568271591233483,
+          7.66399993679806e-07
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.06712777064644138,
+            0.0017130176517430049,
+            0.0008296205390066926,
+            0.21427263296903112
+          ],
+          "imag": [
+            -8.766830746295657e-05,
+            4.015017839883945e-06,
+            -1.223613118530459e-05,
+            2.5402970051034272e-05
+          ]
+        }
+      },
+      "full_fit": {
+        "dual_value": 1.4847986120496512,
+        "fixed_positive_image_outer_trial": 0.7130997527854004,
+        "phase_pair_payoff_estimate": 0.7131278873530487,
+        "negative_image_gap_upper_estimate": 4.711579596398163e-17,
+        "positive_image_defect_estimate": 2.8134567650857348e-05,
+        "gap_identity_error": 2.5355219768381787e-15,
+        "closure_gradient_norm": 1.1986371012210933e-08,
+        "negative_coefficients": {
+          "real": [
+            -0.28042883759386444,
+            -0.005841527006017172,
+            -0.001983872827439966,
+            -0.0009075354776477252
+          ],
+          "imag": [
+            3.09768568260763e-06,
+            2.5923884118136943e-05,
+            2.554140761723056e-05,
+            -9.233229146616217e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28042884006209734,
+            -0.005841525222753398,
+            -0.0019838727847125356,
+            -0.0009075369099116013
+          ],
+          "imag": [
+            3.0980306920231843e-06,
+            2.5929207717238424e-05,
+            2.55460128665903e-05,
+            -9.234302719843021e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8568896149013493,
+          1.4549180088960223e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.06610241488213402,
+            0.001304969411936222,
+            0.0005470840117370766,
+            0.21434308376288294
+          ],
+          "imag": [
+            -0.0001044176230807544,
+            8.503764549047152e-07,
+            -9.206040742892312e-06,
+            2.7343134028251234e-05
+          ]
+        }
+      },
+      "partial_independent_eval": {
+        "dual_value": 1.4848415453327457,
+        "fixed_positive_image_outer_trial": 0.7131426860684948,
+        "phase_pair_payoff_estimate": 0.7131221460701451,
+        "negative_image_gap_upper_estimate": 3.985771344814719e-05,
+        "positive_image_defect_estimate": 1.9317715107321342e-05,
+        "gap_identity_error": 8.896464972043064e-15,
+        "closure_gradient_norm": 0.010998727512647388,
+        "negative_coefficients": {
+          "real": [
+            -0.28037201654677,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            3.1167734253140214e-06,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28035185313438954,
+            -0.006460270017299946,
+            -0.0029790768503087676,
+            -0.0014671457706055264
+          ],
+          "imag": [
+            4.766340203770024e-06,
+            1.8006672882748034e-06,
+            -2.2528495954847653e-06,
+            -2.109213072827282e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8568149483793087,
+          -3.6781537131914954e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.06733349684430953,
+            0.0016531823379165392,
+            0.0008361884328616919,
+            0.21427196703735155
+          ],
+          "imag": [
+            -9.742897211535823e-06,
+            2.0018221506204933e-05,
+            -3.939674833327136e-06,
+            2.0880931306662814e-05
+          ]
+        }
+      },
+      "full_independent_eval": {
+        "dual_value": 1.4848073946588842,
+        "fixed_positive_image_outer_trial": 0.7131085353946334,
+        "phase_pair_payoff_estimate": 0.7131346838448231,
+        "negative_image_gap_upper_estimate": 1.6725336630266308e-08,
+        "positive_image_defect_estimate": 2.61651755253087e-05,
+        "gap_identity_error": -1.0995300806990183e-15,
+        "closure_gradient_norm": 0.0002416518323204142,
+        "negative_coefficients": {
+          "real": [
+            -0.28042883759386444,
+            -0.005841527006017172,
+            -0.001983872827439966,
+            -0.0009075354776477252
+          ],
+          "imag": [
+            3.09768568260763e-06,
+            2.5923884118136943e-05,
+            2.554140761723056e-05,
+            -9.233229146616217e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2804095471648353,
+            -0.005919995761108328,
+            -0.0020245810188802035,
+            -0.0008159655834174238
+          ],
+          "imag": [
+            4.772978431666635e-06,
+            -1.559429127677652e-05,
+            -1.0236314500903003e-05,
+            -1.0387278150074317e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8568773531842635,
+          -3.426064499045811e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.0663142193243823,
+            0.0012447304373983264,
+            0.0005568921229957606,
+            0.21434189240586385
+          ],
+          "imag": [
+            -1.7453503059796928e-05,
+            1.406184976516001e-05,
+            -6.398344037533611e-07,
+            2.358002147227814e-05
+          ]
+        }
+      },
+      "negative_image_correction_independent_eval": 3.415067386147719e-05,
+      "MM_step_fit": {
+        "eta": 0.003,
+        "predicted_decrement_sampled": 1.9965699572890244e-05,
+        "allowance_sampled": 4.278034073820245e-08,
+        "actual_decrement_sampled": 2.795375269060152e-05,
+        "minimum_curvature_eigenvalue": 1.314802189820247,
+        "step_norm": 0.0036995929124435103
+      },
+      "MM_step_independent_eval": {
+        "dual_value": 1.4848132397080356,
+        "fixed_positive_image_outer_trial": 0.7131143804437847,
+        "phase_pair_payoff_estimate": 0.7131309435424285,
+        "negative_image_gap_upper_estimate": 6.61975659325084e-06,
+        "positive_image_defect_estimate": 2.318285523287514e-05,
+        "gap_identity_error": -4.104989324805672e-15,
+        "closure_gradient_norm": 0.004478008148158656,
+        "negative_coefficients": {
+          "real": [
+            -0.28037067181626074,
+            -0.0033382012357725103,
+            -0.0015048154300297085,
+            -0.0005275611852526879
+          ],
+          "imag": [
+            3.3918018699751744e-06,
+            2.126357736910524e-05,
+            1.2171138844811398e-05,
+            -2.790047369685498e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28039010755043436,
+            -0.00614495632134836,
+            -0.0022646143794593358,
+            -0.0010923786384023247
+          ],
+          "imag": [
+            4.31989282721492e-06,
+            -1.2681136186636918e-05,
+            -4.97944522058108e-06,
+            -1.9452691915221105e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.856855526958423,
+          -3.188799439359652e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.0667250939008157,
+            0.001416127548213157,
+            0.0006679046348364527,
+            0.21430335756227487
+          ],
+          "imag": [
+            -1.6067391950567373e-05,
+            1.9257629831627962e-05,
+            -2.744216183429329e-06,
+            2.2344733972635773e-05
+          ]
+        }
+      },
+      "analytic_buffer_step": {
+        "status": "ANALYTIC_BUFFER_CONSTANTS_NUMERICAL_GRADIENT",
+        "eta": 0.001,
+        "sigma": 0.15942963552822695,
+        "reciprocal_modulus_bound": 11.117467872475338,
+        "curvature_diagonal_upper": [
+          6.915472605920624,
+          6.915472605920624,
+          6.915472605920624,
+          12.117467872475338,
+          6.915472605920624,
+          6.915472605920624,
+          6.915472605920624,
+          12.117467872475338
+        ],
+        "allowance_analytic_upper": 2.622832970919807e-08,
+        "predicted_decrement_using_sampled_gradient": 4.145082716262218e-06,
+        "actual_decrement_sampled": 7.816247744596438e-06,
+        "step_norm": 0.0007686445304073133
+      },
+      "analytic_buffer_independent_eval": {
+        "dual_value": 1.4848336615412638,
+        "fixed_positive_image_outer_trial": 0.713134802277013,
+        "phase_pair_payoff_estimate": 0.7131243321497552,
+        "negative_image_gap_upper_estimate": 3.050451115689121e-05,
+        "positive_image_defect_estimate": 2.003438390213787e-05,
+        "gap_identity_error": 2.991205373670258e-15,
+        "closure_gradient_norm": 0.009615763904595129,
+        "negative_coefficients": {
+          "real": [
+            -0.2803717877766765,
+            -0.0006881033555837354,
+            -0.0003175785160246859,
+            -0.00012823559519439993
+          ],
+          "imag": [
+            3.1660398124080398e-06,
+            4.469053979609763e-06,
+            2.530510667066492e-06,
+            -1.1286069011705948e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2803602151783948,
+            -0.006396736489252474,
+            -0.0028285058331423826,
+            -0.0013645781402011935
+          ],
+          "imag": [
+            4.646056807863657e-06,
+            -1.2434395138283062e-06,
+            -2.799048672923087e-06,
+            -1.9875502409575364e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8568237894374506,
+          -3.555743846469367e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.06720576682969193,
+            0.001590648931879571,
+            0.000794280348286798,
+            0.21427817774377406
+          ],
+          "imag": [
+            -1.114637838444196e-05,
+            1.9314111815335072e-05,
+            -3.4872893832064463e-06,
+            2.109962486163365e-05
+          ]
+        }
+      },
+      "elapsed_seconds": 2.7787675205618143,
+      "normalized_remote_fourth_excess_exact_formula": "42*abs(kappa)^4",
+      "normalized_remote_fourth_excess": 0.4356000000000002,
+      "sqrt_fourth_excess": 0.6600000000000003
+    },
+    {
+      "name": "remote-mixture",
+      "q_direction": {
+        "real": [
+          0.5000000000000001,
+          0.0,
+          0.0,
+          0.8660254037844388
+        ],
+        "imag": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "partial_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "iterations": 4,
+        "evaluations": 6
+      },
+      "full_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 9,
+        "evaluations": 11
+      },
+      "partial_fit": {
+        "dual_value": 1.4842742336017891,
+        "fixed_positive_image_outer_trial": 0.7125753743375383,
+        "phase_pair_payoff_estimate": 0.7125618581769516,
+        "negative_image_gap_upper_estimate": 0.00017267213206647423,
+        "positive_image_defect_estimate": 0.000159155971485466,
+        "gap_identity_error": 5.63806813735912e-15,
+        "closure_gradient_norm": 0.023180323813798115,
+        "negative_coefficients": {
+          "real": [
+            -0.2815370689875779,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            -4.437993744054805e-06,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28153706898824415,
+            -0.012906245994460726,
+            -0.0059364233645730355,
+            -0.004724031564692738
+          ],
+          "imag": [
+            -4.437993738763575e-06,
+            -2.1082837336504243e-06,
+            -7.200529882496947e-05,
+            4.027899935966255e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8576851232113294,
+          7.466297043852432e-07
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.09948641566700563,
+            0.00502689369874614,
+            0.002407100481769626,
+            0.19649604087370098
+          ],
+          "imag": [
+            5.135622566827763e-05,
+            -1.4787788754526197e-05,
+            -1.6209398409280344e-06,
+            -3.404033672018665e-05
+          ]
+        }
+      },
+      "full_fit": {
+        "dual_value": 1.4841311089534877,
+        "fixed_positive_image_outer_trial": 0.7124322496892368,
+        "phase_pair_payoff_estimate": 0.7126352981748137,
+        "negative_image_gap_upper_estimate": 1.217977209543905e-17,
+        "positive_image_defect_estimate": 0.00020304848557946344,
+        "gap_identity_error": 2.5002786299688218e-15,
+        "closure_gradient_norm": 6.518787715534381e-09,
+        "negative_coefficients": {
+          "real": [
+            -0.28175227484758886,
+            -0.011749163405650439,
+            -0.003996556350261209,
+            -0.0026794367538806583
+          ],
+          "imag": [
+            -2.5458991760055947e-06,
+            4.868316339756634e-06,
+            -4.4084348054302224e-05,
+            1.3032409322637298e-05
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28175227583103685,
+            -0.011749161475387963,
+            -0.003996556770834006,
+            -0.002679437520561927
+          ],
+          "imag": [
+            -2.545440153114598e-06,
+            4.867496887600497e-06,
+            -4.408278631347198e-05,
+            1.3034752296335291e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8579253565016086,
+          7.723186210423227e-07
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.09701345712928844,
+            0.0037085489695108174,
+            0.0015552475073126765,
+            0.19674853699023104
+          ],
+          "imag": [
+            3.854934668628335e-05,
+            -2.7234985001513825e-06,
+            -9.560202128099045e-06,
+            -2.6798006786106318e-05
+          ]
+        }
+      },
+      "partial_independent_eval": {
+        "dual_value": 1.4842969489945061,
+        "fixed_positive_image_outer_trial": 0.7125980897302553,
+        "phase_pair_payoff_estimate": 0.7125816840611521,
+        "negative_image_gap_upper_estimate": 0.00017170306773666005,
+        "positive_image_defect_estimate": 0.00015529739861924402,
+        "gap_identity_error": -1.4201638996735877e-14,
+        "closure_gradient_norm": 0.023102032857334413,
+        "negative_coefficients": {
+          "real": [
+            -0.2815370689875779,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            -4.437993744054805e-06,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28150993742307234,
+            -0.012927239480899652,
+            -0.005862621500472165,
+            -0.004647200529012449
+          ],
+          "imag": [
+            6.958551852783201e-06,
+            1.0718104148729693e-05,
+            5.702846534083458e-06,
+            -1.9252555755844243e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8576793177847813,
+          -3.0681366194641735e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.09963420553184957,
+            0.0049079994919531385,
+            0.00240500156926281,
+            0.19648374523401696
+          ],
+          "imag": [
+            -4.164026296769302e-06,
+            1.1907882976756437e-05,
+            -7.301968704365139e-06,
+            4.036320628745648e-06
+          ]
+        }
+      },
+      "full_independent_eval": {
+        "dual_value": 1.4841542812225526,
+        "fixed_positive_image_outer_trial": 0.7124554219583017,
+        "phase_pair_payoff_estimate": 0.7126541775043592,
+        "negative_image_gap_upper_estimate": 1.7358468683747523e-08,
+        "positive_image_defect_estimate": 0.0001987729045240905,
+        "gap_identity_error": -2.1206723443273345e-15,
+        "closure_gradient_norm": 0.000248305468409713,
+        "negative_coefficients": {
+          "real": [
+            -0.28175227484758886,
+            -0.011749163405650439,
+            -0.003996556350261209,
+            -0.0026794367538806583
+          ],
+          "imag": [
+            -2.5458991760055947e-06,
+            4.868316339756634e-06,
+            -4.4084348054302224e-05,
+            1.3032409322637298e-05
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2817244354183636,
+            -0.011768787394751604,
+            -0.003932647905414985,
+            -0.002593954289483719
+          ],
+          "imag": [
+            4.299980706958051e-06,
+            8.730865814491335e-06,
+            2.6127488383447435e-05,
+            -3.621658002538739e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8579189830596978,
+          -1.1586920876174855e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.0971639551556715,
+            0.0035841821956075237,
+            0.0015490444852238581,
+            0.19673681517294794
+          ],
+          "imag": [
+            -8.229701598393476e-06,
+            1.977385204337597e-05,
+            -1.0791453098799039e-05,
+            9.468542315262908e-07
+          ]
+        }
+      },
+      "negative_image_correction_independent_eval": 0.00014266777195359737,
+      "MM_step_fit": {
+        "eta": 0.003,
+        "predicted_decrement_sampled": 8.612023770243499e-05,
+        "allowance_sampled": 5.38021036322056e-08,
+        "actual_decrement_sampled": 0.00011994601847264974,
+        "minimum_curvature_eigenvalue": 1.3132540073576144,
+        "step_norm": 0.007606543393896623
+      },
+      "MM_step_independent_eval": {
+        "dual_value": 1.484177328362806,
+        "fixed_positive_image_outer_trial": 0.7124784690985551,
+        "phase_pair_payoff_estimate": 0.7126315846065246,
+        "negative_image_gap_upper_estimate": 2.699542166442849e-05,
+        "positive_image_defect_estimate": 0.00018011092962925705,
+        "gap_identity_error": -4.763713295358185e-15,
+        "closure_gradient_norm": 0.009167954863434241,
+        "negative_coefficients": {
+          "real": [
+            -0.2815652921274065,
+            -0.006805954277200318,
+            -0.0030117401653351962,
+            -0.0015702007523698289
+          ],
+          "imag": [
+            -3.1914151211126653e-06,
+            1.2498983713827524e-06,
+            -3.833666689222834e-05,
+            1.0497228235012925e-05
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28165075560612784,
+            -0.012235193354214184,
+            -0.004427083461594565,
+            -0.0034496812290120155
+          ],
+          "imag": [
+            5.2108678702204506e-06,
+            1.2211805789228935e-05,
+            2.5218692404837684e-05,
+            -3.3159393681526965e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8578343690269634,
+          -1.679309018804559e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.09814120164813578,
+            0.004127046965184508,
+            0.0018860175802060508,
+            0.19660740803905088
+          ],
+          "imag": [
+            -9.81841160221829e-06,
+            1.7752809401708708e-05,
+            -1.065088128721288e-05,
+            2.4457120588238e-06
+          ]
+        }
+      },
+      "analytic_buffer_step": {
+        "status": "ANALYTIC_BUFFER_CONSTANTS_NUMERICAL_GRADIENT",
+        "eta": 0.001,
+        "sigma": 0.1456876980136701,
+        "reciprocal_modulus_bound": 12.166118862961262,
+        "curvature_diagonal_upper": [
+          7.497500121915075,
+          7.497500121915075,
+          7.497500121915075,
+          13.166118862961262,
+          7.497500121915075,
+          7.497500121915075,
+          7.497500121915075,
+          13.166118862961262
+        ],
+        "allowance_analytic_upper": 3.140964143745598e-08,
+        "predicted_decrement_using_sampled_gradient": 1.6604029258569463e-05,
+        "actual_decrement_sampled": 3.13033823213793e-05,
+        "step_norm": 0.0014565100761151951
+      },
+      "analytic_buffer_independent_eval": {
+        "dual_value": 1.4842657235609802,
+        "fixed_positive_image_outer_trial": 0.7125668642967293,
+        "phase_pair_payoff_estimate": 0.7125929541985282,
+        "negative_image_gap_upper_estimate": 0.00013332575338925314,
+        "positive_image_defect_estimate": 0.00015941565518771763,
+        "gap_identity_error": -4.0023323197302396e-16,
+        "closure_gradient_norm": 0.02033401261083859,
+        "negative_coefficients": {
+          "real": [
+            -0.2815368891863003,
+            -0.0012824309209070852,
+            -0.0005898712419950864,
+            -0.00035886520416682054
+          ],
+          "imag": [
+            -4.411257988748689e-06,
+            -1.831244618411856e-07,
+            -7.14662804882113e-06,
+            3.012832826616489e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2815395357868895,
+            -0.012804499340865349,
+            -0.005583309189651033,
+            -0.004339280699383822
+          ],
+          "imag": [
+            6.8785973722616585e-06,
+            1.166461634489817e-05,
+            9.785477175733255e-06,
+            -2.3960154998025273e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8577112765827087,
+          -2.9481912572487667e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.09934355908375843,
+            0.004716660786288631,
+            0.0022845424865758092,
+            0.19650505895378154
+          ],
+          "imag": [
+            -6.1387714634302274e-06,
+            1.4266374327977403e-05,
+            -8.459155275590078e-06,
+            4.450865753209066e-06
+          ]
+        }
+      },
+      "elapsed_seconds": 3.2391734067350626,
+      "normalized_remote_fourth_excess_exact_formula": "42*abs(kappa)^4",
+      "normalized_remote_fourth_excess": 2.625000000000002,
+      "sqrt_fourth_excess": 1.6201851746019658
+    },
+    {
+      "name": "visible-A",
+      "q_direction": {
+        "real": [
+          0.0,
+          0.35,
+          0.0,
+          0.9367496997597597
+        ],
+        "imag": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "partial_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "iterations": 4,
+        "evaluations": 6
+      },
+      "full_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 7,
+        "evaluations": 9
+      },
+      "partial_fit": {
+        "dual_value": 1.483402940424299,
+        "fixed_positive_image_outer_trial": 0.7117040811600481,
+        "phase_pair_payoff_estimate": 0.7104308553881308,
+        "negative_image_gap_upper_estimate": 0.0018650407514758558,
+        "positive_image_defect_estimate": 0.0005918149795535021,
+        "gap_identity_error": -5.001424621675632e-15,
+        "closure_gradient_norm": 0.08634966290236061,
+        "negative_coefficients": {
+          "real": [
+            -0.28175223206797356,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            -1.259094721371638e-05,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28175223207377603,
+            -0.0018484431728163612,
+            -0.0013090527737381846,
+            -0.04314183764564847
+          ],
+          "imag": [
+            -1.2590947293860414e-05,
+            1.3866195795876207e-05,
+            -4.423951932667807e-06,
+            1.786114473285817e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8579108588122437,
+          1.2038798370236914e-05
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.000436336703323743,
+            0.052168418498890506,
+            -0.008373121016057233,
+            0.21156573593117126
+          ],
+          "imag": [
+            -4.728868516194371e-05,
+            -1.3419312140405679e-05,
+            3.994378364701916e-06,
+            -6.042414922358034e-05
+          ]
+        }
+      },
+      "full_fit": {
+        "dual_value": 1.4826011925392342,
+        "fixed_positive_image_outer_trial": 0.7109023332749833,
+        "phase_pair_payoff_estimate": 0.712284978024199,
+        "negative_image_gap_upper_estimate": 4.2313688837111935e-16,
+        "positive_image_defect_estimate": 0.0013826447492113311,
+        "gap_identity_error": -4.769839037632728e-15,
+        "closure_gradient_norm": 3.5519402393323314e-08,
+        "negative_coefficients": {
+          "real": [
+            -0.2829340182571025,
+            -0.0010115157803986976,
+            -0.000519736028621493,
+            -0.018523609570462864
+          ],
+          "imag": [
+            -8.958189910982976e-06,
+            5.724667744118487e-06,
+            5.859281946835702e-06,
+            4.405927431025612e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2829340162573767,
+            -0.001011511219670565,
+            -0.0005197585771466732,
+            -0.018523609132131816
+          ],
+          "imag": [
+            -8.958583594392588e-06,
+            5.723300907146338e-06,
+            5.864922490765032e-06,
+            4.4066163078057725e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8586345984701403,
+          8.736457292466554e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.0002074043246327875,
+            0.03881856839951618,
+            -0.01521517621393004,
+            0.2127450638343784
+          ],
+          "imag": [
+            -6.995831372803366e-05,
+            -1.804584801112739e-06,
+            -2.6621900182094633e-09,
+            -4.6813158050693126e-05
+          ]
+        }
+      },
+      "partial_independent_eval": {
+        "dual_value": 1.4834058562843022,
+        "fixed_positive_image_outer_trial": 0.7117069970200514,
+        "phase_pair_payoff_estimate": 0.7104332630171197,
+        "negative_image_gap_upper_estimate": 0.0018653757783524902,
+        "positive_image_defect_estimate": 0.0005916417754280618,
+        "gap_identity_error": 7.197367701827773e-15,
+        "closure_gradient_norm": 0.08635695839527308,
+        "negative_coefficients": {
+          "real": [
+            -0.28175223206797356,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            -1.259094721371638e-05,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2817222782874131,
+            -0.001866539998341851,
+            -0.0013230356173761987,
+            -0.043144813493982165
+          ],
+          "imag": [
+            1.3975714582496017e-05,
+            1.8172048498606988e-06,
+            -4.115250210581821e-06,
+            3.669347172892439e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8578945508072672,
+          -9.334841133586125e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.0004464481978183495,
+            0.05217363228516061,
+            -0.00837873783797624,
+            0.2116217829406361
+          ],
+          "imag": [
+            3.16636075931005e-05,
+            -1.8139128649833618e-06,
+            -3.58882601487154e-07,
+            1.603285333129703e-05
+          ]
+        }
+      },
+      "full_independent_eval": {
+        "dual_value": 1.4826035069632368,
+        "fixed_positive_image_outer_trial": 0.710904647698986,
+        "phase_pair_payoff_estimate": 0.7122861696681689,
+        "negative_image_gap_upper_estimate": 1.634456691087164e-09,
+        "positive_image_defect_estimate": 0.0013815236036321722,
+        "gap_identity_error": -7.471670851466605e-15,
+        "closure_gradient_norm": 7.157575986383428e-05,
+        "negative_coefficients": {
+          "real": [
+            -0.2829340182571025,
+            -0.0010115157803986976,
+            -0.000519736028621493,
+            -0.018523609570462864
+          ],
+          "imag": [
+            -8.958189910982976e-06,
+            5.724667744118487e-06,
+            5.859281946835702e-06,
+            4.405927431025612e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2829034954409421,
+            -0.0010237107382603053,
+            -0.000537062640577044,
+            -0.018539330371483663
+          ],
+          "imag": [
+            9.782668244321844e-06,
+            1.4569328860205588e-06,
+            -4.7113087287102435e-06,
+            3.844064096107896e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8586177580024121,
+          -6.4314212077018484e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.00016586560132536286,
+            0.03883832808890082,
+            -0.01521727245381999,
+            0.2127976853759569
+          ],
+          "imag": [
+            6.578999108599206e-05,
+            -2.0326207395922965e-06,
+            -1.9615962857805078e-07,
+            1.0765290621483097e-05
+          ]
+        }
+      },
+      "negative_image_correction_independent_eval": 0.0008023493210653765,
+      "MM_step_fit": {
+        "eta": 0.003,
+        "predicted_decrement_sampled": 0.0005107027163704406,
+        "allowance_sampled": 4.577833193599225e-08,
+        "actual_decrement_sampled": 0.0006963997017084278,
+        "minimum_curvature_eigenvalue": 1.3135260234677093,
+        "step_norm": 0.011846984034241965
+      },
+      "MM_step_independent_eval": {
+        "dual_value": 1.4827091573235818,
+        "fixed_positive_image_outer_trial": 0.7110102980593309,
+        "phase_pair_payoff_estimate": 0.7118190066723806,
+        "negative_image_gap_upper_estimate": 0.00024599805282530136,
+        "positive_image_defect_estimate": 0.0010547066658574606,
+        "gap_identity_error": -1.7554100534278305e-14,
+        "closure_gradient_norm": 0.03135765568418619,
+        "negative_coefficients": {
+          "real": [
+            -0.2823143661806486,
+            -0.0006200097481879081,
+            -0.0001810271048234238,
+            -0.01181597959823762
+          ],
+          "imag": [
+            -1.66958406460171e-05,
+            1.6974653317782588e-05,
+            -1.2233544340327306e-05,
+            4.952962968677838e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28257357009381556,
+            -0.0012570055304826527,
+            -0.0008389773688028614,
+            -0.027478735560679472
+          ],
+          "imag": [
+            1.4838766953935911e-05,
+            -5.762321068982505e-06,
+            1.2542679331119524e-06,
+            1.8592012138349788e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8584440739426216,
+          -9.467212105492007e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.00026112103418391715,
+            0.04370382472103806,
+            -0.012734253826148753,
+            0.2123450327934274
+          ],
+          "imag": [
+            5.394648292343934e-05,
+            -1.3713816008789128e-06,
+            -1.1192737193095745e-06,
+            1.0656047773196524e-05
+          ]
+        }
+      },
+      "analytic_buffer_step": {
+        "status": "ANALYTIC_BUFFER_CONSTANTS_NUMERICAL_GRADIENT",
+        "eta": 0.001,
+        "sigma": 0.15758533961778018,
+        "reciprocal_modulus_bound": 11.247580867640126,
+        "curvature_diagonal_upper": [
+          6.987688571061961,
+          6.987688571061961,
+          6.987688571061961,
+          12.247580867640126,
+          6.987688571061961,
+          6.987688571061961,
+          6.987688571061961,
+          12.247580867640126
+        ],
+        "allowance_analytic_upper": 2.6845847382441026e-08,
+        "predicted_decrement_using_sampled_gradient": 0.00015234004853609604,
+        "actual_decrement_sampled": 0.0002757569198941212,
+        "step_norm": 0.003530668384212445
+      },
+      "analytic_buffer_independent_eval": {
+        "dual_value": 1.4831300126704376,
+        "fixed_positive_image_outer_trial": 0.7114311534061868,
+        "phase_pair_payoff_estimate": 0.7109218401850095,
+        "negative_image_gap_upper_estimate": 0.0012243722445250944,
+        "positive_image_defect_estimate": 0.0007150590233480337,
+        "gap_identity_error": 2.491496592371689e-16,
+        "closure_gradient_norm": 0.06996486470637629,
+        "negative_coefficients": {
+          "real": [
+            -0.28175198183147854,
+            -0.00019708205896533593,
+            -0.00013957654480858817,
+            -0.0035223985713458113
+          ],
+          "imag": [
+            -1.257047603123932e-05,
+            1.4743968474412446e-06,
+            -4.6031288157510476e-07,
+            1.464670679478524e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2820198856646992,
+            -0.001657489783679316,
+            -0.001120324948814556,
+            -0.038479697504659426
+          ],
+          "imag": [
+            1.2992809019378091e-05,
+            3.064162452020438e-06,
+            -4.989886007866849e-06,
+            2.459484396379356e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8580973556603066,
+          -8.550468124361721e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.00038486520822243454,
+            0.049657913872464474,
+            -0.009674913037397766,
+            0.21180345739883233
+          ],
+          "imag": [
+            3.9381140996613725e-05,
+            -1.0532541735829997e-06,
+            -8.572391110691994e-07,
+            1.3116173089651911e-05
+          ]
+        }
+      },
+      "elapsed_seconds": 3.0641627442091703
+    },
+    {
+      "name": "visible-AB",
+      "q_direction": {
+        "real": [
+          0.0,
+          0.25,
+          0.25,
+          0.9354143466934853
+        ],
+        "imag": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "partial_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "iterations": 4,
+        "evaluations": 6
+      },
+      "full_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 7,
+        "evaluations": 9
+      },
+      "partial_fit": {
+        "dual_value": 1.4819699808122646,
+        "fixed_positive_image_outer_trial": 0.7102711215480138,
+        "phase_pair_payoff_estimate": 0.7101621559304829,
+        "negative_image_gap_upper_estimate": 0.002183262775168581,
+        "positive_image_defect_estimate": 0.0020742971576384215,
+        "gap_identity_error": 6.613633252161577e-16,
+        "closure_gradient_norm": 0.09344618786811935,
+        "negative_coefficients": {
+          "real": [
+            -0.28229496863939213,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            -9.12598839273696e-06,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28229496864210346,
+            -0.0010619072701887043,
+            7.374955741520502e-05,
+            -0.04671636279352555
+          ],
+          "imag": [
+            -9.125988327142975e-06,
+            6.627639825753992e-06,
+            -3.2696411453287564e-06,
+            5.719939343435234e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8587505115407644,
+          8.932911746226818e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.00027580552317178325,
+            0.03145504082237067,
+            0.01005598293111835,
+            0.21189413131652193
+          ],
+          "imag": [
+            -6.716657716231932e-05,
+            -3.908854128334404e-06,
+            1.2285181943056744e-07,
+            -4.761315936255265e-05
+          ]
+        }
+      },
+      "full_fit": {
+        "dual_value": 1.4810332567977862,
+        "fixed_positive_image_outer_trial": 0.7093343975335353,
+        "phase_pair_payoff_estimate": 0.7126715370687353,
+        "negative_image_gap_upper_estimate": 6.742404102020926e-15,
+        "positive_image_defect_estimate": 0.003337139535206243,
+        "gap_identity_error": -4.839878497975292e-16,
+        "closure_gradient_norm": 1.4186582140349743e-07,
+        "negative_coefficients": {
+          "real": [
+            -0.2831975625445509,
+            -0.00024272085047455212,
+            2.978502427776973e-05,
+            -0.02001938762403389
+          ],
+          "imag": [
+            -4.653938825143774e-06,
+            -3.794737805691008e-06,
+            1.0500040629708847e-05,
+            6.271742882471245e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2831975517384722,
+            -0.00024264255254081917,
+            2.977950111816318e-05,
+            -0.020019388296726625
+          ],
+          "imag": [
+            -4.669278687081439e-06,
+            -3.744819539225643e-06,
+            1.0499005049546619e-05,
+            6.277438210160766e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8595055685696003,
+          5.130046652975645e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            -6.144697432323506e-05,
+            0.01693131239822481,
+            0.002579794784794191,
+            0.21316924036755105
+          ],
+          "imag": [
+            -5.865388297679938e-05,
+            -4.48345452677803e-06,
+            -3.5632398956465348e-06,
+            -2.575430932344856e-05
+          ]
+        }
+      },
+      "partial_independent_eval": {
+        "dual_value": 1.481972017872116,
+        "fixed_positive_image_outer_trial": 0.7102731586078652,
+        "phase_pair_payoff_estimate": 0.7101630635706762,
+        "negative_image_gap_upper_estimate": 0.0021840374291662045,
+        "positive_image_defect_estimate": 0.0020739423919755775,
+        "gap_identity_error": -1.5651542562000742e-15,
+        "closure_gradient_norm": 0.09346267650169553,
+        "negative_coefficients": {
+          "real": [
+            -0.28229496863939213,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            -9.12598839273696e-06,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28226972335085115,
+            -0.0010726525592754045,
+            5.9162897164095714e-05,
+            -0.04672447726902516
+          ],
+          "imag": [
+            1.0401628420946081e-05,
+            7.022482743364424e-06,
+            -4.8676877268499795e-06,
+            6.885647185306959e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8587379375355283,
+          -6.937852956721141e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.0002623381688367314,
+            0.03146678393715135,
+            0.010054457350415491,
+            0.2119325772002428
+          ],
+          "imag": [
+            5.780446338073632e-05,
+            -4.400370261043981e-06,
+            8.206161528744532e-07,
+            1.2624708130991944e-05
+          ]
+        }
+      },
+      "full_independent_eval": {
+        "dual_value": 1.4810357650676693,
+        "fixed_positive_image_outer_trial": 0.7093369058034185,
+        "phase_pair_payoff_estimate": 0.7126769708472792,
+        "negative_image_gap_upper_estimate": 3.850802666611968e-09,
+        "positive_image_defect_estimate": 0.0033400688946633715,
+        "gap_identity_error": -4.683753385137379e-17,
+        "closure_gradient_norm": 0.00012094673936096856,
+        "negative_coefficients": {
+          "real": [
+            -0.2831975625445509,
+            -0.00024272085047455212,
+            2.978502427776973e-05,
+            -0.02001938762403389
+          ],
+          "imag": [
+            -4.653938825143774e-06,
+            -3.794737805691008e-06,
+            1.0500040629708847e-05,
+            6.271742882471245e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2831866132899616,
+            -0.00024986276008986404,
+            1.3193918374208558e-05,
+            -0.019963907739269558
+          ],
+          "imag": [
+            2.8616787785673642e-06,
+            1.0275421168301066e-05,
+            -7.371356422322901e-06,
+            2.682017646716227e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8595035661524575,
+          -1.4042868808697428e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            3.938843843991333e-05,
+            0.016885036878074862,
+            0.0025774763486784463,
+            0.21317937783082125
+          ],
+          "imag": [
+            7.090282541196178e-05,
+            -2.444412853008712e-06,
+            -9.971887376716601e-07,
+            -1.0760429258526372e-06
+          ]
+        }
+      },
+      "negative_image_correction_independent_eval": 0.0009362528044467577,
+      "MM_step_fit": {
+        "eta": 0.003,
+        "predicted_decrement_sampled": 0.0005965660415778461,
+        "allowance_sampled": 4.351858784410487e-08,
+        "actual_decrement_sampled": 0.0008134020959877919,
+        "minimum_curvature_eigenvalue": 1.3143343822797977,
+        "step_norm": 0.012777307581206177
+      },
+      "MM_step_independent_eval": {
+        "dual_value": 1.4811585192664898,
+        "fixed_positive_image_outer_trial": 0.7094596600022389,
+        "phase_pair_payoff_estimate": 0.7120055458591757,
+        "negative_image_gap_upper_estimate": 0.000287002483066817,
+        "positive_image_defect_estimate": 0.002832888339996593,
+        "gap_identity_error": -7.049048844631756e-15,
+        "closure_gradient_norm": 0.03388042912651292,
+        "negative_coefficients": {
+          "real": [
+            -0.2826018844615976,
+            -0.00045668048315931464,
+            0.00018443970145685107,
+            -0.0127641185542541
+          ],
+          "imag": [
+            -1.1497160456930104e-05,
+            7.2304598099867034e-06,
+            -5.9249220280274105e-06,
+            1.0779127051687731e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28297145345160146,
+            -0.0004437790207268881,
+            1.3946153488965702e-05,
+            -0.029701605490579673
+          ],
+          "imag": [
+            9.984838922971225e-06,
+            5.704165086687391e-08,
+            3.057675475113059e-06,
+            7.7395520180414e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8593318427955552,
+          -6.28957988512216e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            9.304633255206254e-05,
+            0.02220859505883234,
+            0.005289688673985573,
+            0.2126932544396258
+          ],
+          "imag": [
+            8.126331415557128e-05,
+            -4.51799910606688e-06,
+            1.1341491996147684e-06,
+            5.972950777300669e-06
+          ]
+        }
+      },
+      "analytic_buffer_step": {
+        "status": "ANALYTIC_BUFFER_CONSTANTS_NUMERICAL_GRADIENT",
+        "eta": 0.001,
+        "sigma": 0.15736069896242427,
+        "reciprocal_modulus_bound": 11.263637379551518,
+        "curvature_diagonal_upper": [
+          6.9966003365855824,
+          6.9966003365855824,
+          6.9966003365855824,
+          12.263637379551518,
+          6.9966003365855824,
+          6.9966003365855824,
+          6.9966003365855824,
+          12.263637379551518
+        ],
+        "allowance_analytic_upper": 2.6922549803533703e-08,
+        "predicted_decrement_using_sampled_gradient": 0.0001780160238006094,
+        "actual_decrement_sampled": 0.00032228856082339163,
+        "step_norm": 0.0038109674563413603
+      },
+      "analytic_buffer_independent_eval": {
+        "dual_value": 1.4816496729859392,
+        "fixed_positive_image_outer_trial": 0.7099508137216883,
+        "phase_pair_payoff_estimate": 0.7108000085914894,
+        "negative_image_gap_upper_estimate": 0.0014333395327817662,
+        "positive_image_defect_estimate": 0.0022825344025924365,
+        "gap_identity_error": 9.60819965256654e-15,
+        "closure_gradient_norm": 0.07571586932612695,
+        "negative_coefficients": {
+          "real": [
+            -0.2822947561051341,
+            -0.00011306537998068376,
+            7.835441268550334e-06,
+            -0.0038092816850727237
+          ],
+          "imag": [
+            -9.135023302988987e-06,
+            6.93657807220677e-07,
+            -3.5373249093885557e-07,
+            4.1380203974536803e-07
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2825193771571545,
+            -0.0008577791627267585,
+            8.993760354831041e-05,
+            -0.04166272785348202
+          ],
+          "imag": [
+            1.2398712626195208e-05,
+            3.5632200579938566e-06,
+            -2.142274627260621e-06,
+            2.7486012723285927e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8589518997910559,
+          -8.435724223775781e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.00019053222950535728,
+            0.028719769604323424,
+            0.00863701887776286,
+            0.21215320510649144
+          ],
+          "imag": [
+            6.27294202342956e-05,
+            -2.6067693399167417e-07,
+            8.385708802378672e-07,
+            1.7019051836155764e-05
+          ]
+        }
+      },
+      "elapsed_seconds": 3.1704856380820274
+    },
+    {
+      "name": "coupled-Wick",
+      "q_direction": {
+        "real": [
+          0.5,
+          0.25,
+          0.25,
+          0.7905694150420949
+        ],
+        "imag": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "partial_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "iterations": 4,
+        "evaluations": 6
+      },
+      "full_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 8,
+        "evaluations": 11
+      },
+      "partial_fit": {
+        "dual_value": 1.4817908989407536,
+        "fixed_positive_image_outer_trial": 0.7100920396765027,
+        "phase_pair_payoff_estimate": 0.7093857132034708,
+        "negative_image_gap_upper_estimate": 0.002540844968617195,
+        "positive_image_defect_estimate": 0.0018345184955878223,
+        "gap_identity_error": 2.55351295663786e-15,
+        "closure_gradient_norm": 0.10020161746054768,
+        "negative_coefficients": {
+          "real": [
+            -0.28296984604344627,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            -6.41414929980025e-06,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28296984604528586,
+            -0.010694108439932957,
+            -0.006892589874411704,
+            -0.04919591734504447
+          ],
+          "imag": [
+            -6.41414936946182e-06,
+            -7.814106727680364e-05,
+            -7.905867268787337e-05,
+            5.5005720156880425e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8590889422916106,
+          -7.112644094149634e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.10724239911612055,
+            0.035220400951443104,
+            0.012061026957002893,
+            0.17928120840567302
+          ],
+          "imag": [
+            0.00010418713738072493,
+            -7.98787499714738e-06,
+            3.309616762245593e-05,
+            -2.8023515249619415e-05
+          ]
+        }
+      },
+      "full_fit": {
+        "dual_value": 1.4805932964708712,
+        "fixed_positive_image_outer_trial": 0.7088944372066204,
+        "phase_pair_payoff_estimate": 0.7119750630031093,
+        "negative_image_gap_upper_estimate": 4.519320489984883e-18,
+        "positive_image_defect_estimate": 0.0030806257964869827,
+        "gap_identity_error": -1.9554670382948558e-15,
+        "closure_gradient_norm": 3.6700407004501923e-09,
+        "negative_coefficients": {
+          "real": [
+            -0.28451421419626194,
+            -0.011936379164756516,
+            -0.0052064129078243475,
+            -0.021912998177809555
+          ],
+          "imag": [
+            -5.0450478688506095e-06,
+            -2.9837650328972347e-05,
+            -5.15997704497133e-05,
+            1.2746792115898588e-05
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28451421425431783,
+            -0.011936379315356361,
+            -0.005206412389077139,
+            -0.02191299813886198
+          ],
+          "imag": [
+            -5.0467461715312525e-06,
+            -2.9836399327789884e-05,
+            -5.1600919222917274e-05,
+            1.27468007722455e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8604090337942815,
+          -5.877946959453179e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.10314720673836594,
+            0.020310331708035336,
+            0.004403761867304783,
+            0.18073788202914792
+          ],
+          "imag": [
+            8.109282048025305e-05,
+            1.700833897501252e-05,
+            1.4425055862647992e-05,
+            -2.336717472352522e-05
+          ]
+        }
+      },
+      "partial_independent_eval": {
+        "dual_value": 1.4818029364485763,
+        "fixed_positive_image_outer_trial": 0.7101040771843254,
+        "phase_pair_payoff_estimate": 0.7094075251014453,
+        "negative_image_gap_upper_estimate": 0.0025342688552190506,
+        "positive_image_defect_estimate": 0.0018377167723297805,
+        "gap_identity_error": -9.161508357502512e-15,
+        "closure_gradient_norm": 0.10007574032329296,
+        "negative_coefficients": {
+          "real": [
+            -0.28296984604344627,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            -6.41414929980025e-06,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2829383710652917,
+            -0.0106843101004909,
+            -0.006803559031348738,
+            -0.049139982242545815
+          ],
+          "imag": [
+            9.250786388507295e-06,
+            5.074187199781747e-06,
+            -1.1626477500812228e-05,
+            8.904289965922917e-07
+          ]
+        },
+        "projected_positive_p": [
+          0.8590821845657797,
+          -5.171884807714938e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.10734849003076888,
+            0.03512030553031233,
+            0.012046744569340663,
+            0.1792891676971299
+          ],
+          "imag": [
+            2.1574366667632794e-05,
+            -6.208571171702925e-07,
+            -8.086040192926856e-06,
+            -2.4108771268940436e-06
+          ]
+        }
+      },
+      "full_independent_eval": {
+        "dual_value": 1.48060923109576,
+        "fixed_positive_image_outer_trial": 0.7089103718315091,
+        "phase_pair_payoff_estimate": 0.7119951655290839,
+        "negative_image_gap_upper_estimate": 2.0025902407505958e-08,
+        "positive_image_defect_estimate": 0.003084813723475512,
+        "gap_identity_error": -1.7568412002955114e-15,
+        "closure_gradient_norm": 0.0002592573110829442,
+        "negative_coefficients": {
+          "real": [
+            -0.28451421419626194,
+            -0.011936379164756516,
+            -0.0052064129078243475,
+            -0.021912998177809555
+          ],
+          "imag": [
+            -5.0450478688506095e-06,
+            -2.9837650328972347e-05,
+            -5.15997704497133e-05,
+            1.2746792115898588e-05
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2844725736386453,
+            -0.01195542737660546,
+            -0.005136610637869971,
+            -0.0218384784029282
+          ],
+          "imag": [
+            9.632451873506512e-06,
+            3.159856091326909e-05,
+            2.5878066352102837e-05,
+            -3.010387642460522e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8603928748136311,
+          -5.12452635163807e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.10331034958107431,
+            0.020196602635152196,
+            0.00439769316523096,
+            0.18075712306305045
+          ],
+          "imag": [
+            7.173029716799693e-07,
+            1.708950138877806e-05,
+            -1.4508327353143637e-05,
+            9.046606238329508e-06
+          ]
+        }
+      },
+      "negative_image_correction_independent_eval": 0.0011937053528163766,
+      "MM_step_fit": {
+        "eta": 0.003,
+        "predicted_decrement_sampled": 0.0007490650476224192,
+        "allowance_sampled": 4.393112547498191e-08,
+        "actual_decrement_sampled": 0.0010274220589907568,
+        "minimum_curvature_eigenvalue": 1.3115703299492838,
+        "step_norm": 0.015752919337716782
+      },
+      "MM_step_independent_eval": {
+        "dual_value": 1.480778032649335,
+        "fixed_positive_image_outer_trial": 0.7090791733850841,
+        "phase_pair_payoff_estimate": 0.7113028240674389,
+        "negative_image_gap_upper_estimate": 0.00034806050895953345,
+        "positive_image_defect_estimate": 0.0025717111913225285,
+        "gap_identity_error": 8.134552059724243e-15,
+        "closure_gradient_norm": 0.03703628928066415,
+        "negative_coefficients": {
+          "real": [
+            -0.28348334335733627,
+            -0.006521621823623454,
+            -0.004036625838534303,
+            -0.013749964292403025
+          ],
+          "imag": [
+            -9.848206550836288e-06,
+            -3.52158732783977e-05,
+            -4.415308983770744e-05,
+            1.3011931994285213e-05
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2840285132571976,
+            -0.011516567218182942,
+            -0.00537590233865976,
+            -0.031858157701112826
+          ],
+          "imag": [
+            1.3403959037016224e-05,
+            3.361607222105371e-05,
+            2.2125262858470036e-05,
+            -2.665684175557801e-05
+          ]
+        },
+        "projected_positive_p": [
+          0.8600155249637003,
+          -7.465443377277503e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.10496467609820961,
+            0.025670975770456288,
+            0.007228188327908124,
+            0.18013497724790695
+          ],
+          "imag": [
+            2.0288197207854756e-06,
+            1.5098233499923207e-05,
+            -1.5102843790500611e-05,
+            1.038916843524259e-05
+          ]
+        }
+      },
+      "analytic_buffer_step": {
+        "status": "ANALYTIC_BUFFER_CONSTANTS_NUMERICAL_GRADIENT",
+        "eta": 0.001,
+        "sigma": 0.13299406425514615,
+        "reciprocal_modulus_bound": 13.327315477065973,
+        "curvature_diagonal_upper": [
+          8.141993272658542,
+          8.141993272658542,
+          8.141993272658542,
+          14.327315477065973,
+          8.141993272658542,
+          8.141993272658542,
+          8.141993272658542,
+          14.327315477065973
+        ],
+        "allowance_analytic_upper": 3.769156972494718e-08,
+        "predicted_decrement_using_sampled_gradient": 0.00017992295754029174,
+        "actual_decrement_sampled": 0.0003321028289589023,
+        "step_norm": 0.003625711407358429
+      },
+      "analytic_buffer_independent_eval": {
+        "dual_value": 1.4814713120329182,
+        "fixed_positive_image_outer_trial": 0.7097724527686673,
+        "phase_pair_payoff_estimate": 0.7099694756348363,
+        "negative_image_gap_upper_estimate": 0.001806797745768878,
+        "positive_image_defect_estimate": 0.0020038206119468633,
+        "gap_identity_error": 9.024465202900345e-15,
+        "closure_gradient_norm": 0.08440368668526074,
+        "negative_coefficients": {
+          "real": [
+            -0.2829696643306309,
+            -0.0009785031143994267,
+            -0.0006306779897735106,
+            -0.0034337212024941606
+          ],
+          "imag": [
+            -6.410505738764804e-06,
+            -7.166710834382265e-06,
+            -7.2473064886471695e-06,
+            3.863041368195457e-06
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28324191578487196,
+            -0.01096885660575716,
+            -0.0066254087284525484,
+            -0.04473278466502542
+          ],
+          "imag": [
+            1.0542900770754956e-05,
+            1.1554796806881104e-05,
+            -3.11248045908463e-06,
+            -8.179879304730893e-06
+          ]
+        },
+        "projected_positive_p": [
+          0.8593381161281327,
+          -5.931786856049753e-06
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.10690891175129007,
+            0.03274315673222878,
+            0.010839461797281116,
+            0.179477046891953
+          ],
+          "imag": [
+            1.4683354839453629e-05,
+            4.85607336494659e-06,
+            -1.002804254064285e-05,
+            4.419393561706799e-06
+          ]
+        }
+      },
+      "elapsed_seconds": 3.0682074557989836
+    },
+    {
+      "name": "complex-coupled",
+      "q_direction": {
+        "real": [
+          0.5,
+          0.0,
+          0.25,
+          0.7905694150420949
+        ],
+        "imag": [
+          0.0,
+          0.25,
+          0.0,
+          0.0
+        ]
+      },
+      "partial_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+        "iterations": 4,
+        "evaluations": 6
+      },
+      "full_optimizer": {
+        "success": true,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 9,
+        "evaluations": 12
+      },
+      "partial_fit": {
+        "dual_value": 1.481933945467179,
+        "fixed_positive_image_outer_trial": 0.7102350862029281,
+        "phase_pair_payoff_estimate": 0.7101948628523241,
+        "negative_image_gap_upper_estimate": 0.0015088175270988038,
+        "positive_image_defect_estimate": 0.001468594176492595,
+        "gap_identity_error": -2.2681509448396753e-15,
+        "closure_gradient_norm": 0.07659393882432153,
+        "negative_coefficients": {
+          "real": [
+            -0.2839542252644867,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            -0.0005260396494927797,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28395422450582164,
+            -0.013635821016466473,
+            -0.005938814008850945,
+            -0.019783146794651436
+          ],
+          "imag": [
+            -0.0005260394451214792,
+            -0.0005062829726895666,
+            0.0006787514571888103,
+            -0.030856322306825827
+          ]
+        },
+        "projected_positive_p": [
+          0.8593176780272205,
+          -0.0006098843796134394
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.10254064651589267,
+            -0.000834319697458618,
+            0.018382867294961754,
+            0.18014952873852777
+          ],
+          "imag": [
+            0.002641961565465276,
+            0.037543488083355836,
+            0.0060132213700748414,
+            9.175461480132449e-05
+          ]
+        }
+      },
+      "full_fit": {
+        "dual_value": 1.481195326657822,
+        "fixed_positive_image_outer_trial": 0.7094964673935711,
+        "phase_pair_payoff_estimate": 0.7116596080487986,
+        "negative_image_gap_upper_estimate": 2.4861900950729464e-17,
+        "positive_image_defect_estimate": 0.0021631406552285485,
+        "gap_identity_error": 1.0325941490751944e-15,
+        "closure_gradient_norm": 8.617977953438122e-09,
+        "negative_coefficients": {
+          "real": [
+            -0.2849833246198589,
+            -0.012909242563371646,
+            -0.004426802894031594,
+            -0.009256140738595937
+          ],
+          "imag": [
+            -0.0003299063536687655,
+            -0.0005147596642797425,
+            -0.0001260582230945844,
+            -0.01315877224484125
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2849833245522528,
+            -0.012909242393512845,
+            -0.004426803580919903,
+            -0.009256140350727629
+          ],
+          "imag": [
+            -0.0003299118066066872,
+            -0.0005147613549978929,
+            -0.0001260584104117221,
+            -0.013158772080260644
+          ]
+        },
+        "projected_positive_p": [
+          0.8601826890919919,
+          -0.0010730877313226174
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.0992806549629371,
+            -0.006662878299475232,
+            0.015147912901106321,
+            0.1811063558884605
+          ],
+          "imag": [
+            0.0020598835585028358,
+            0.027787135919326716,
+            0.01076613948750282,
+            9.708295769990296e-05
+          ]
+        }
+      },
+      "partial_independent_eval": {
+        "dual_value": 1.4819564215482606,
+        "fixed_positive_image_outer_trial": 0.7102575622840097,
+        "phase_pair_payoff_estimate": 0.7102139656966546,
+        "negative_image_gap_upper_estimate": 0.0015115175871761991,
+        "positive_image_defect_estimate": 0.0014679209998316287,
+        "gap_identity_error": 1.0517628434847381e-14,
+        "closure_gradient_norm": 0.0766758918336227,
+        "negative_coefficients": {
+          "real": [
+            -0.2839542252644867,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "imag": [
+            -0.0005260396494927797,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2839230682196192,
+            -0.013599328124231105,
+            -0.00581572403026896,
+            -0.01975027106520962
+          ],
+          "imag": [
+            -0.0005504385515744429,
+            -0.0004763492762635332,
+            0.0007825041468621969,
+            -0.030948966649480828
+          ]
+        },
+        "projected_positive_p": [
+          0.8593154343942994,
+          -0.0005847274431366387
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.10257698897830647,
+            -0.0009395678640218686,
+            0.01836079999323503,
+            0.18016982034238416
+          ],
+          "imag": [
+            0.00256507566411628,
+            0.037585122357571624,
+            0.006009259614635379,
+            -1.4773393761263762e-05
+          ]
+        }
+      },
+      "full_independent_eval": {
+        "dual_value": 1.4812182997516692,
+        "fixed_positive_image_outer_trial": 0.7095194404874183,
+        "phase_pair_payoff_estimate": 0.7116838099384174,
+        "negative_image_gap_upper_estimate": 1.902611035686979e-08,
+        "positive_image_defect_estimate": 0.0021643884770997553,
+        "gap_identity_error": -9.672384421177682e-15,
+        "closure_gradient_norm": 0.0002412212552365938,
+        "negative_coefficients": {
+          "real": [
+            -0.2849833246198589,
+            -0.012909242563371646,
+            -0.004426802894031594,
+            -0.009256140738595937
+          ],
+          "imag": [
+            -0.0003299063536687655,
+            -0.0005147596642797425,
+            -0.0001260582230945844,
+            -0.01315877224484125
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.2849560963085353,
+            -0.01289337309761795,
+            -0.004309942310192324,
+            -0.009222844456018581
+          ],
+          "imag": [
+            -0.00035674330505363635,
+            -0.0005075182749192121,
+            -3.57504525576598e-05,
+            -0.01317753468730907
+          ]
+        },
+        "projected_positive_p": [
+          0.860181777576204,
+          -0.00105048167255814
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.0993300646082438,
+            -0.006761383890004571,
+            0.015135842872738082,
+            0.18112720916732047
+          ],
+          "imag": [
+            0.0020171956750042177,
+            0.027774312942390474,
+            0.010771336948307194,
+            -9.461104666563194e-06
+          ]
+        }
+      },
+      "negative_image_correction_independent_eval": 0.0007381217965913844,
+      "MM_step_fit": {
+        "eta": 0.003,
+        "predicted_decrement_sampled": 0.00046803147871628996,
+        "allowance_sampled": 4.1861844846354604e-08,
+        "actual_decrement_sampled": 0.0006370363733267936,
+        "minimum_curvature_eigenvalue": 1.3112887499004835,
+        "step_norm": 0.013177100410152048
+      },
+      "MM_step_independent_eval": {
+        "dual_value": 1.4813196350372704,
+        "fixed_positive_image_outer_trial": 0.7096207757730195,
+        "phase_pair_payoff_estimate": 0.7113034051349388,
+        "negative_image_gap_upper_estimate": 0.00019998302369457819,
+        "positive_image_defect_estimate": 0.0018826123856105646,
+        "gap_identity_error": -3.3324037973514464e-15,
+        "closure_gradient_norm": 0.027772906653073876,
+        "negative_coefficients": {
+          "real": [
+            -0.28431713188676866,
+            -0.007311626627649378,
+            -0.0034969077834766356,
+            -0.005823938605271495
+          ],
+          "imag": [
+            -0.0003430519728561048,
+            -0.0011624631748526316,
+            -0.00010092762221943172,
+            -0.008514856054499946
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28466049209131034,
+            -0.013177590397228838,
+            -0.004581431768857205,
+            -0.013042952692732611
+          ],
+          "imag": [
+            -0.00045371302749421536,
+            0.00016252635237337185,
+            0.00030169964435340093,
+            -0.01946162949208307
+          ]
+        },
+        "projected_positive_p": [
+          0.8599341465626553,
+          -0.0008743537502812551
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.10060746010673584,
+            -0.004658317290871345,
+            0.01631206876901344,
+            0.1807187835239942
+          ],
+          "imag": [
+            0.0022148518697858765,
+            0.03125061109442053,
+            0.009048197661959278,
+            -1.1959340249703507e-05
+          ]
+        }
+      },
+      "analytic_buffer_step": {
+        "status": "ANALYTIC_BUFFER_CONSTANTS_NUMERICAL_GRADIENT",
+        "eta": 0.001,
+        "sigma": 0.13299406425514615,
+        "reciprocal_modulus_bound": 13.327315477065973,
+        "curvature_diagonal_upper": [
+          8.141993272658542,
+          8.141993272658542,
+          8.141993272658542,
+          14.327315477065973,
+          8.141993272658542,
+          8.141993272658542,
+          8.141993272658542,
+          14.327315477065973
+        ],
+        "allowance_analytic_upper": 3.769156972494718e-08,
+        "predicted_decrement_using_sampled_gradient": 0.00010886417979609782,
+        "actual_decrement_sampled": 0.00020119823824593652,
+        "step_norm": 0.002898829592102556
+      },
+      "analytic_buffer_independent_eval": {
+        "dual_value": 1.481755098860067,
+        "fixed_positive_image_outer_trial": 0.7100562395958161,
+        "phase_pair_payoff_estimate": 0.7105333664560384,
+        "negative_image_gap_upper_estimate": 0.0010814787791141763,
+        "positive_image_defect_estimate": 0.0015586056393287464,
+        "gap_identity_error": -7.706509042026966e-15,
+        "closure_gradient_norm": 0.06473354826022244,
+        "negative_coefficients": {
+          "real": [
+            -0.283954019639898,
+            -0.0012477513956971682,
+            -0.000543431326333167,
+            -0.0013807726183679664
+          ],
+          "imag": [
+            -0.0005260495917853717,
+            -4.630018617813165e-05,
+            6.215013712811813e-05,
+            -0.002153711317550426
+          ]
+        },
+        "projected_negative_images": {
+          "real": [
+            -0.28412388957508755,
+            -0.013550912034159495,
+            -0.005677938485922465,
+            -0.018087088938350322
+          ],
+          "imag": [
+            -0.000498268009010987,
+            -0.0005168024877428018,
+            0.0006175207559141712,
+            -0.02802940366436101
+          ]
+        },
+        "projected_positive_p": [
+          0.8594802417066736,
+          -0.0006752048227943834
+        ],
+        "projected_positive_q": {
+          "real": [
+            0.10221548678949638,
+            -0.0018490075837496514,
+            0.017875232750795004,
+            0.18028155060426318
+          ],
+          "imag": [
+            0.0024995012134191403,
+            0.03599010508343989,
+            0.006803906402062827,
+            -1.4739539481545817e-05
+          ]
+        }
+      },
+      "elapsed_seconds": 3.196215344592929
+    }
+  ],
+  "warning": "QMC residuals and held-out checks are not integration error bounds. A fixed EXACT inner optimum is a lower bound on the all-response norm, not a global upper cap; a numerical dual trial must retain its negative-image residual bracket. The majorizer and buffer constants are analytic, but gradients/expectations here remain discovery."
+}

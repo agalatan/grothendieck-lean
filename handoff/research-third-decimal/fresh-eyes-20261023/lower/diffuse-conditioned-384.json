@@ -1,0 +1,62 @@
+{
+  "scope": "Discovery quadrature after exact conditioning of unused Gaussian modes.\n\nFor the diffuse contact, first/cubic basis elements factor into one visible\ncomplex Hermite polynomial and one orthonormal remote Wick mode. All remote\nproducts are integrated symbolically. Image-centered polar quadrature then\nintegrates only visible |Z|^2 and the image L+sqrt(v)W. No random projections\nor unconstrained Gram completions occur. Results are not interval enclosures.\n",
+  "parameters": {
+    "outer": 192,
+    "radial": 384,
+    "angular": 512,
+    "eta": 0.01,
+    "out": "handoff/research-third-decimal/fresh-eyes-20261023/lower/diffuse-conditioned-384.json"
+  },
+  "contact": [
+    0.8565701672801842,
+    0.14750207856597156,
+    0.028299873803404752
+  ],
+  "total_mass": 1.0000000000134215,
+  "R0": 2.6845637583902673,
+  "R0_target": 2.684563758389262,
+  "blocks": [
+    {
+      "parity": "real",
+      "feature_rank": 25,
+      "score_hessian": {
+        "-1": {
+          "raw_min": 6.820904458425725e-05,
+          "whitened_min": 5.671181796526289e-05
+        },
+        "1": {
+          "raw_min": 0.015350721978184498,
+          "whitened_min": 0.0025334557158942683
+        }
+      },
+      "regularized_weighted_operator_eigen_interval": [
+        -0.9252813892764206,
+        0.9863374631126854
+      ],
+      "independent_H21_Y_R": 1.2419884419817724,
+      "independent_H21_Y_D": 1.1679468902954824,
+      "independent_H21_Y_score_margin": 0.01875809923333116
+    },
+    {
+      "parity": "imag",
+      "feature_rank": 24,
+      "score_hessian": {
+        "-1": {
+          "raw_min": -1.0038542896110368e-16,
+          "whitened_min": 0.002192807893052002
+        },
+        "1": {
+          "raw_min": -7.512626439497832e-17,
+          "whitened_min": 0.0025334557158942415
+        }
+      },
+      "regularized_weighted_operator_eigen_interval": [
+        -0.9252813892764206,
+        0.9354108163007154
+      ],
+      "independent_H21_Y_R": 1.2419884419817724,
+      "independent_H21_Y_D": 1.1679468902954824,
+      "independent_H21_Y_score_margin": 0.01875809923333116
+    }
+  ]
+}

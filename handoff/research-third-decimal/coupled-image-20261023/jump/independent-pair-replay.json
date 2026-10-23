@@ -1,0 +1,83 @@
+{
+  "unregularized": {
+    "eta": "0",
+    "dual_value": "8199/5000",
+    "primal_value": "8/5",
+    "closure_bracket_width": "199/5000",
+    "quadratic_matrix": [
+      [
+        "8111995986367/4561438041600",
+        "-17444102735/22807190208"
+      ],
+      [
+        "-17444102735/22807190208",
+        "8158908151/2850898776"
+      ]
+    ],
+    "allowance": "0",
+    "step": [
+      "-12829786118/114916489965",
+      "-29777043851/459665959860"
+    ],
+    "guaranteed_decrement": "885354742619/38305496655000",
+    "actual_decrement": "172961837310509706451627/5282319866350378280490000",
+    "finite_amplitude_trials": 81,
+    "scope": "finite probability fixture, not an actual Gaussian cubic response"
+  },
+  "zero_safe": {
+    "eta": "2/5",
+    "dual_value": "8199/5000",
+    "primal_value": "8/5",
+    "closure_bracket_width": "199/5000",
+    "quadratic_matrix": [
+      [
+        "2003241041303/1200378432000",
+        "-3708038287/6001892160"
+      ],
+      [
+        "-3708038287/6001892160",
+        "399801619/150047304"
+      ]
+    ],
+    "allowance": "18/3125",
+    "step": [
+      "-330077738/2480918085",
+      "-91022593/1984734468"
+    ],
+    "guaranteed_decrement": "18065699777/826972695000",
+    "actual_decrement": "82548656023722494179/2461981817792026890000",
+    "finite_amplitude_trials": 81,
+    "scope": "finite probability fixture, not an actual Gaussian cubic response"
+  },
+  "wick_sectors": {
+    "charge_one_indices_through_degree_seven": 231,
+    "negative_cubic_sector_types": [
+      [
+        0,
+        1,
+        2,
+        2
+      ],
+      [
+        1,
+        0,
+        2,
+        0
+      ],
+      [
+        2,
+        1,
+        0,
+        0
+      ]
+    ],
+    "negative_linear_visible_indices": [
+      [
+        0,
+        0
+      ]
+    ]
+  },
+  "complex_young_inequalities": 1875,
+  "status": "PASS exact algebra; no Gaussian integration or endpoint claim"
+}

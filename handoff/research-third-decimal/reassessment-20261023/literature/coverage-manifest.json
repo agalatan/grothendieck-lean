@@ -1,0 +1,2429 @@
+[
+  {
+    "sha256": "ffd69b6c23bdde3719309151a7a79b4c30d9945309edb4e1d202d2a44ff727d0",
+    "bytes": 44986,
+    "representative": "resources/papers/haagerup-1987-complex-upper/summary.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "dc986c19eb73c2b08177393a719ae858773451f7ac72ea54e9cc5b0c364654f1",
+    "bytes": 58029,
+    "representative": "resources/papers/pisier-2012-survey/summary.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "07e7498f9dcf1b3a03dd1d9d672315d25d6ecf8d8922d75b33163cf7bcedaf1a",
+    "bytes": 40304,
+    "representative": "resources/papers/bmmn-2011-krivine-bound/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "c0fe6fe387109e7f9416cde68a6d1fa92bcea60452787403b49247d8318fd21b",
+    "bytes": 39921,
+    "representative": "resources/papers/krivine-1979-constantes/summary.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "6b050127de38ccfe3337dc2b0fabdd4d8a1345ff7c430f5dac86ee48543f5bd7",
+    "bytes": 36218,
+    "representative": "resources/papers/bov-2012-rank-constraint/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "fff00629b8034998fb2f590a213cf634f69da9c78610479e5355ad2433e925c6",
+    "bytes": 6850,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/README.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "565a6c1d96f0ff1fed7f6d612ef034b7a536345b379b71481df4232e4454b81f",
+    "bytes": 19146,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/17-milman/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ca0c3c7e75cbd6edccd2d9e5471c1ee12a0dfaff17733edb87058695d0fdb5d2",
+    "bytes": 24140,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/17-milman/fulltext.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "4835282b89722b4ec12c6674e84ec56b57f57b769c9f947ba0a18cc183a58a45",
+    "bytes": 13973,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/06-davis/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "383ec840b88f8168d9dfa12b7d72f082998b37398b70a7b74aaf9ce0d066146e",
+    "bytes": 13139,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/06-davis/fulltext.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "5b47a0af063f883af43d34f89c05c16def4a341b49acab8f28574def0f44ae2a",
+    "bytes": 25404,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/02-argyros-petrakis/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "a039b247138ceafae3253ab24ee5058e94b81cb8cc954d529d8df6b5d22e8d94",
+    "bytes": 27054,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/05-casazza-kalton/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "82c2aebff98a79b006a4fb2b5321a5e9ca1405168b8a4bf3ed648933434a8393",
+    "bytes": 23527,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/22-weis/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "29feb8fce590f983d386e848164e3a556d3ea99702064ef02b8b028a4265e608",
+    "bytes": 39324,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/15-koenig/summary.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "9705d4592b49fed28a4113a79fd1918090fd28985035454dd4b3b7782392b052",
+    "bytes": 28571,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/13-kalton/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "296a7b56868569846513791635b7f4601e6e3adcec383e73f757233ee5456f99",
+    "bytes": 11867,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/01-alonso-ullan/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "4c4bf1df803fb59b1a6d8330efe518b4d7a28456325cb4c3651e0b369fd1ea25",
+    "bytes": 6510,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/01-alonso-ullan/fulltext.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "0bc8c8796c77afde95fcd754b0d5ff27ce9e19ab00adffdc47355a13047b4752",
+    "bytes": 23989,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/14-kaminska-turett/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "a35f68acfe2aad974b90a23eb2088efd04fc37e6aa0753be06a541ec51e3f154",
+    "bytes": 11478,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/18-montgomery-smith/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "f92b8a3108c15d14ad06ab12faa1d235a6e4a52bd4a6e92479032b7d3c44cab1",
+    "bytes": 7041,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/18-montgomery-smith/fulltext.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "c5a1059d69f3d51b438223f93d2bb52be2ecae724c1ec61e8f1b496654084dec",
+    "bytes": 15169,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/10-ghoussoub-maurey-schachermayer/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "663dd36d76bf80145ea5ee4dcd20e2f61681daf65f6eb3e824c56b6d6c087ef1",
+    "bytes": 13730,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/03-ball-pajor/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "67c49749c3c96fe10933d1c0df1dae635e23625e5f5c5a2b4d043f1510fdfeb6",
+    "bytes": 12712,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/03-ball-pajor/fulltext.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "28ac0f1aea533fa87e11efb0a66730dd9fec34d030f3e60f23e6ec1e7aa871c1",
+    "bytes": 19827,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/11-gowers/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "5a0304c304b1c75ee45ae6a419cf0fac6d532c553930910e5445977ea582e1fa",
+    "bytes": 20236,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/04-blasco/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "29162f96ff91fbca32bdbc44b2c1d658b2c83fc952a87fecbfd8ccf6930e6646",
+    "bytes": 12488,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/21-talagrand/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "534715bb1021403b878e3f850cac698a81209ecba59552b5e4747b122f9c9f6e",
+    "bytes": 25564,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/07-defant-junge/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "5f0114d5823f91e75bc8eb5458099706f6ae107917788d2cb8b1d0d1822fa474",
+    "bytes": 31530,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/16-mankiewicz-tomczak/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "8cc2a2de3e1b19dc849a2eb776101926eeea27485f7510e154db3cc66dc6a5ba",
+    "bytes": 17881,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/08-dilworth/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "31496663dce445496dceaba97d8f5407ad9be8989fd61e4b182a3eb7a7399aba",
+    "bytes": 16278,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/08-dilworth/fulltext.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b1a2c7cafe07c556e55f7b98ca1fe095a672e1ac2bb419650d1598ac8e91e207",
+    "bytes": 22589,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/19-preiss/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "3198af74d0bb9ef540ff20d591f35acd5d41f8dd6e84cabe6558736fe4c8c211",
+    "bytes": 19529,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/19-preiss/fulltext.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "e134e39016f85406b551f95bafaba371f3fbc3e5a3a8600de3d801ab6e69a06d",
+    "bytes": 13909,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/20-read/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "8f176146804db6ada7876f3786fb9a6d82387ab3b22d457378d8c3e3af7d9e98",
+    "bytes": 14011,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/20-read/fulltext.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "55b7db76d965d52d9b8f62844dab6045f22a2e503ab066de042c332090a8b9d9",
+    "bytes": 27074,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/12-hunziker-jarchow-mascioni/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "3cd9f3ab3a96799d0ff988bd5d05c1d72de2de5b04bfa75b03291cd848f7d0a6",
+    "bytes": 31274,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/12-hunziker-jarchow-mascioni/fulltext.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "98eda2bb9852182faf1b2aa224d1a1075e806045ed7b0fd1a7b45f89562effca",
+    "bytes": 23233,
+    "representative": "resources/books/geometry-of-banach-spaces-1990/articles/09-figiel/summary.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "925043667ed11a3703e4744a6f146ccddfdb99b33a7ed8966295e46d25ec31cd",
+    "bytes": 310150,
+    "representative": "resources/papers/pisier-2012-survey/src/grothendieck.bams-june3.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "214bc2992e6a6e94c99053226b66aa7d9a3a70b176f6718a54f1c8be6fff3e48",
+    "bytes": 301669,
+    "representative": "resources/papers/pisier-2012-survey/src/grothendieck.arxiv-march31.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "04b01fc4ab2fe7fc7175dd8c0bb87aafe7f2386f7f8c93e661e62e987e6f5d6d",
+    "bytes": 98642,
+    "representative": "resources/papers/bmmn-2011-krivine-bound/src/GroKri.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ffdbb8ca6d33725cf743cf18be3316dc311f5ef3e06ebdcd69f881533ce41301",
+    "bytes": 75292,
+    "representative": "resources/papers/bov-2012-rank-constraint/src/rankgroth_ov.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "080cd4b0a87bed60ff4cb391735b165dd61c5e274b72b60f814df294c384fa33",
+    "bytes": 21337,
+    "representative": "handoff/research-third-decimal/PLAN_LEAN_CLOSURE.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "5b6d5c4488b56d246add9126d65e4f12b2544825486c4ff9b0535947fbbe1419",
+    "bytes": 2761,
+    "representative": "handoff/research-third-decimal/PROMPT_GPT_PFSD_COUPLED.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "e0f961a097484ecdc7117e92213a1dd2bc912f2f63f972796773dfb924d55856",
+    "bytes": 21285,
+    "representative": "handoff/research-third-decimal/conjecture_handoff.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b4dcbc257ac59d75ee196963dc0ba1b19c6a959321dfa51d77effffb5685b3ed",
+    "bytes": 4945,
+    "representative": "handoff/research-third-decimal/PROMPT_GPT_SHARED_A.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/shared-a-regions-20261021/PROMPT_GPT_SHARED_A.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ae76fbf4a34bd97de293a8922d17f7138914a8d6f6b8939775f661fae12e5366",
+    "bytes": 6613,
+    "representative": "handoff/research-third-decimal/JOINT6_CODEX_HANDOFF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "96eaa8d247a5606c30720cf5b309bc33b2ad5afc3ce9a8c8c4775fd715dd12d7",
+    "bytes": 25046,
+    "representative": "handoff/research-third-decimal/NOTE.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "cb4fc56e634a43bfcc3561a01914de9c7f64a399e8546862b8908191b5d19ec4",
+    "bytes": 5651,
+    "representative": "handoff/research-third-decimal/PROMPT_REPLY_K_REFORMULATION.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "1b88c35d49faa15e22456cf03814e2652825b30288cabc470e765071aa2f7be4",
+    "bytes": 19434,
+    "representative": "handoff/research-third-decimal/conjecture_K_handoff.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "1baee59625883af4712cf83f51729ff2365914204b8b7f0963b6fd369ce83126",
+    "bytes": 3549,
+    "representative": "handoff/research-third-decimal/PROMPT_GPT_MULTIGRADE_FIBRE.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "418771b7c3437902c6684afdce12e7a1bfb6aa45c32946830c58a381d1d6a5ef",
+    "bytes": 4769,
+    "representative": "handoff/research-third-decimal/PROMPT_GPT_MULTISLICE_BAND.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "5ec9adf6c604c55fc58df8bcfffea3f988ac3fbf0e8bb0d5e058ae555a0e9ea0",
+    "bytes": 4651,
+    "representative": "handoff/research-third-decimal/LITERATURE_SCREEN_20261021.md",
+    "duplicates": [],
+    "coverage": "complete text retrieved and read; proof depth varies, see audit notes"
+  },
+  {
+    "sha256": "2d73d8877db72039ed9b84e0978bd9e968602e0eb9e12c0642a35d8bf9ebb86d",
+    "bytes": 11161,
+    "representative": "handoff/research-third-decimal/stein_cut_handoff.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "e58be2cf0d93aa8d30c9a3fa5997d61d21837b097e90a1420843530c11c3483c",
+    "bytes": 11242,
+    "representative": "handoff/research-third-decimal/lemma_usage.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "bb4f054b11634cddf9e4d70e837ef66eb0ada81327bd5827d2c965503b4c324a",
+    "bytes": 4101,
+    "representative": "handoff/research-third-decimal/PROMPT_GPT_M1_TH.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "265feb5e4a44a7e96b3e6be1e48919646de62eff0fca63064af1411d2edb6615",
+    "bytes": 4451,
+    "representative": "handoff/research-third-decimal/PROMPT_GPT_SLICE_CONE.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "108a7aecc0590f8fba41d4061efde0ea655e1f24c6436d25f4cdf0fe946cd058",
+    "bytes": 30577,
+    "representative": "handoff/research-third-decimal/PLAN_1402.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "6fbeadf881838b5812dc8821f496938833bd3507df7e0ee9ca4643d263c76377",
+    "bytes": 2568,
+    "representative": "handoff/research-third-decimal/PROMPT_GPT_COMBINE_GRAM_FINEMESH.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "513d917dc6a1a4f5880180f0fd8324835ee92735c3ab4d084b96e8cfaeace70d",
+    "bytes": 36404,
+    "representative": "handoff/research-third-decimal/lower_bound_report.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "4790ea6f53e367696c872dca45d58b4daaaaf54ae78941af1248a3c612432ce1",
+    "bytes": 15863,
+    "representative": "handoff/research-third-decimal/PROMPT_GPT_CONJECTURE_K_v1_unsent.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "2b51fcc890e1abbd89c27ae856658e1d47bf4719e66b77b0fe77d06d6d3c7691",
+    "bytes": 25430,
+    "representative": "handoff/research-third-decimal/PLAN_L4.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "072c0c26f9c99daa766011c443e750ae11759e4a827f1a32e9fa8cddba6336ef",
+    "bytes": 5250,
+    "representative": "handoff/research-third-decimal/PROMPT_GPT_IMPROVE_LOWER.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "6a1cc4919bf27fd9bac64e48c637301f6bb9b19b9d3477f8702a07a99fbd9da2",
+    "bytes": 15524,
+    "representative": "handoff/research-third-decimal/PLAN_CAPS.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "6e6e9a7e53e4842a79c6c3e5fdaba59c974609d29aa135e67b8e19eb726e0cde",
+    "bytes": 6800,
+    "representative": "handoff/research-third-decimal/PROMPT_GPT_LARGE_A_SMALL_BUFFER.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/two-driver-small-buffer-20261021/PROMPT_GPT_LARGE_A_SMALL_BUFFER.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "def7693a04d379a584686f7e4a0fec6a3625f76f14ba3d3d3bda67f852874859",
+    "bytes": 4844,
+    "representative": "handoff/research-third-decimal/PROMPT_GPT_PVD.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/l1l2-chaos21-20261021/PROMPT_GPT_PVD.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b277473233424c27f38661e43ba6125aa475a84dcb19f155bc27a40ef80acd28",
+    "bytes": 9462,
+    "representative": "handoff/research-third-decimal/potentials.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "239cc68c8a9dadd4ea9988415e3552672b5ee26857d0d5a896a2530625ef21f4",
+    "bytes": 8635,
+    "representative": "handoff/research-third-decimal/anchored_potential_handoff.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "eb460ff126454942c49871e99ff8a5bb36b660d56f06ce543d5f74a7bdebb30b",
+    "bytes": 1691,
+    "representative": "handoff/research-third-decimal/PROMPT_GPT_K_MINIMAL.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ba65f5af060a57c76e78d062f5edc1a0c7e128ea807127ad745e2d58626ed353",
+    "bytes": 26459,
+    "representative": "handoff/research-third-decimal/PLAN_UPPER.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "7c9546d3f5c0333c0a53319ee19494a631b739a0cd80cc817812f605560f367c",
+    "bytes": 6285,
+    "representative": "handoff/research-third-decimal/PLAN_MOVE_NEEDLE.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "0635796506fd9821e042f1faddbe5d74ecadd5355ccada6211dad85a6c404a74",
+    "bytes": 10768,
+    "representative": "handoff/research-third-decimal/WHY_THE_GAP.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "a6f6e5d89cf442d83134f5b253ab86639c0602c1baf58d6bb609507a7c4e3bbe",
+    "bytes": 6173,
+    "representative": "handoff/research-third-decimal/PROMPT_GPT_SPHERICAL_NEXT.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "4dcab5113615ffe13db729f1ce7107dd2cf848e3721381843f0f736da70fa9d6",
+    "bytes": 4658,
+    "representative": "handoff/research-third-decimal/PROMPT_GPT_CONJECTURE_K.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "284a81808f15f1b3a1973198c65af5c0f0d93e1a179d06c7a3591e413f577283",
+    "bytes": 23792,
+    "representative": "handoff/research-third-decimal/breakthrough/02-algorithms-complexity.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "06b47a60b4f15a6a9f45742f4cdfd810cdd93bffa0f2118d91f0354d67a64f12",
+    "bytes": 26960,
+    "representative": "handoff/research-third-decimal/breakthrough/01-quantum-bell.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "e0b6562d9fb13fa598a422dfdfc96a3f88b97aa1b2a313a30fbeac821ae77586",
+    "bytes": 30921,
+    "representative": "handoff/research-third-decimal/breakthrough/05-latest-literature.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "76ccc274f2518119bd6539f6d950266eb58ef1e8a151a9cdcac0c97ec1c2a9c7",
+    "bytes": 21077,
+    "representative": "handoff/research-third-decimal/breakthrough/03-operator-banach.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "1c9e7333977469c4a7adb92802eb92461060939761e1670fea5d0276572b972d",
+    "bytes": 45338,
+    "representative": "handoff/research-third-decimal/breakthrough/00-state-of-the-math.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "d867dcd2b2b44f4783588a3ea99237bb03ac96083d4e7ffb5e253d56a91ce65b",
+    "bytes": 5452,
+    "representative": "handoff/research-third-decimal/pipeline/INDEX.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "0a4d7e8b2f35891227c3e31eb7f1de8af9eb3e64d0e2cf15d19241fff2ecf839",
+    "bytes": 10625,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/section.tex",
+    "duplicates": [
+      "handoff/research-third-decimal/conditional-response-contact-20261022/source-after/ch25-parts/89g-conditional-gaussian-contact.tex"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ff669a133e28fb131161c28fd11c9bdb2bee8d90f6777eda32c61f98ff216e25",
+    "bytes": 1064,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/VALIDATION.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "776abec90f9103da01145450eb780497cae5b054c123664ddae03581117f9ece",
+    "bytes": 2307,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "c134fad0e8a9ae2d974b56002eb294a43063f4c6a17c8e75868938ef152ec637",
+    "bytes": 3184,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/SOURCE_CHANGES.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "bfb294c4197264e91f2b214a7f48e976afb16e5af2bedd2378574f1560f9bec7",
+    "bytes": 4377,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/LEAN_PORT.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "4d4420ccb891d1b6b62a5d4af903fbc86e12d5c011780e678e3dc21247a6d69e",
+    "bytes": 14225,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/HANDOFF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b09abec15e3c5d611f3985b6195643cb6d49afc3bc8f46b739e2bac809532afa",
+    "bytes": 4914,
+    "representative": "handoff/research-third-decimal/spherical-response-contact-20261022/IDE_HANDOFF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "df6a12b9aeb0393e62ed1bd01084bc7cc8b42d2dc34cb7306206a2e17a5ccaca",
+    "bytes": 12896,
+    "representative": "handoff/research-third-decimal/spherical-response-contact-20261022/PROOF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "6cffca3aa2b1a2a7882fd610b5eeb0bcffd799e9f80969fa1afaded19ca9268b",
+    "bytes": 1550,
+    "representative": "handoff/research-third-decimal/spherical-response-contact-20261022/VALIDATION.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "e8c2dc81606e5ad2b455b19686e52d6edd0a1b58c03aaec29b6f92933c6f0828",
+    "bytes": 1029,
+    "representative": "handoff/research-third-decimal/spherical-response-contact-20261022/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b01a3699531730dbb485dc32be665332c06d7ea923e28c613fed5c8d74525828",
+    "bytes": 6605,
+    "representative": "handoff/research-third-decimal/analytic-tail-experiment-20261022/PROOF.md",
+    "duplicates": [
+      "handoff/research-third-decimal/shared-response-pool-20261022/certificates/phase/PROOF.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "19555703912eb85c9b8b7f6028bd4115f99410616e751a7dccabc1fc0de32934",
+    "bytes": 1959,
+    "representative": "handoff/research-third-decimal/analytic-tail-experiment-20261022/EXPERIMENT.md",
+    "duplicates": [
+      "handoff/research-third-decimal/shared-response-pool-20261022/experiments/phase/EXPERIMENT.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "2fcc0edd599258b43c78e23107e295aef336db4f08d229df88dc40f085a16d21",
+    "bytes": 1530,
+    "representative": "handoff/research-third-decimal/analytic-tail-experiment-20261022/README.md",
+    "duplicates": [
+      "handoff/research-third-decimal/shared-response-pool-20261022/certificates/phase/README.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "39c4a9b40f14d0c280422a1c0b34e93e85bd8ccdddabaaa1dd146f0acdd1747c",
+    "bytes": 7804,
+    "representative": "handoff/research-third-decimal/phase-preserving-contact-20261022/IDE_HANDOFF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ba4f3a5fb98f362d83c7f4c091966b096b0eebc9e18f450c06fa566c4e39fee2",
+    "bytes": 14034,
+    "representative": "handoff/research-third-decimal/phase-preserving-contact-20261022/PROOF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "fb624d7b34d599e48bc46983c2ba6f9fc76a37ae129ef24bdfe4630da1b9f48e",
+    "bytes": 3091,
+    "representative": "handoff/research-third-decimal/phase-preserving-contact-20261022/VALIDATION.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "822ba79f0bdd8ea71b0e90e0c2ee66a75b9b6d709c5f2a468941e03e4b459673",
+    "bytes": 2613,
+    "representative": "handoff/research-third-decimal/phase-preserving-contact-20261022/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "95537eb9ee65c020869bad1c8a98fdc97917dd26b42b85e9d368176c79b45b8e",
+    "bytes": 60963,
+    "representative": "handoff/research-third-decimal/conjecture-K-report/conjecture_K_report.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "de1325b28993a3712a4aa722a23e8445e2836b63074afe504f38ab9255d3f879",
+    "bytes": 13403,
+    "representative": "handoff/research-third-decimal/conjecture-K-report/WEIGHTED_CONTENT_FOR_GPT.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "7c705c628fc8ae948fbfab87749fe460d23848d2d3f501680494673b2a45987a",
+    "bytes": 8882,
+    "representative": "handoff/research-third-decimal/conjecture-K-report/JUNTA_PROPOSAL_FOR_GPT.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "220bc6f90bfee3def8cb24a1938cf91d81a69c456ecdecb9c68f7150347ee8d8",
+    "bytes": 75524,
+    "representative": "handoff/research-third-decimal/conjecture-K-report/conjecture_K_report.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "4f86509cbe20efe59e8e3939663a9a5a042eba6e6a9c8ddb562e3c17889060ed",
+    "bytes": 30308,
+    "representative": "handoff/research-third-decimal/conjecture-K-report/ATTACK_PLAN_20261022.md",
+    "duplicates": [],
+    "coverage": "complete text retrieved and read; proof depth varies, see audit notes"
+  },
+  {
+    "sha256": "55ea32fd40212874e2c606d3696a8be38d37442a07820d39c9b30b753cd26702",
+    "bytes": 4500,
+    "representative": "handoff/research-third-decimal/ctiger-2026-10-15/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "998468b6f709235f8debbd2a46f52879b5650981f9ab8a3b74583c079036fbea",
+    "bytes": 4007,
+    "representative": "handoff/research-third-decimal/lower-eps/MAP.md",
+    "duplicates": [
+      "handoff/research-third-decimal/pipeline/lower-eps/MAP.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "01a8d6132a0661a2dac0c0234e8f465d846309d92edf3cf564499ca580df7854",
+    "bytes": 2005,
+    "representative": "handoff/research-third-decimal/lower-eps/RESULTS.md",
+    "duplicates": [
+      "handoff/research-third-decimal/pipeline/lower-eps/RESULTS.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "3c4d9a11293efb19f905f209eedc46262e07a363b8751d99086786d40bce4875",
+    "bytes": 5329,
+    "representative": "handoff/research-third-decimal/deg5/METHOD.md",
+    "duplicates": [
+      "handoff/research-third-decimal/pipeline/deg5/METHOD.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "043eb682a6fa81d87bf1f4ab7532187bfad1a1cb4f99ebbdf20dd00192c09e10",
+    "bytes": 6960,
+    "representative": "handoff/research-third-decimal/deg5/METHOD5.md",
+    "duplicates": [
+      "handoff/research-third-decimal/pipeline/deg5/METHOD5.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "baae650a72936ca6f29520f26dcf7e2e106af3c36698212f53c3846019f21042",
+    "bytes": 2898,
+    "representative": "handoff/research-third-decimal/deg5/REPORT.md",
+    "duplicates": [
+      "handoff/research-third-decimal/pipeline/deg5/REPORT.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ff62de09559a6d51a466db3a6cbf5a36698e1a4532270ce5e11b470070cbbeb2",
+    "bytes": 3812,
+    "representative": "handoff/research-third-decimal/deg5/REPORT5.md",
+    "duplicates": [
+      "handoff/research-third-decimal/pipeline/deg5/REPORT5.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "2b6a3344032c6611a00205e22446d745817b673a8968cbc468df3540867b91cd",
+    "bytes": 6820,
+    "representative": "handoff/research-third-decimal/chirp-tail-experiment-20261022/PROOF.md",
+    "duplicates": [
+      "handoff/research-third-decimal/shared-response-pool-20261022/certificates/chirp/PROOF.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "07053a6cb79bfbb2dd145ee0f0c7aaad27e8bf4207e18a80ec439e4a189a8be5",
+    "bytes": 1131,
+    "representative": "handoff/research-third-decimal/chirp-tail-experiment-20261022/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "2cf2265a7f73d96bd0dafc88b6da37348c813b6f63ef1b416a44bf8db200fad2",
+    "bytes": 2970,
+    "representative": "handoff/research-third-decimal/chirp-tail-experiment-20261022/SEARCH_REPORT.md",
+    "duplicates": [
+      "handoff/research-third-decimal/shared-response-pool-20261022/experiments/chirp/SEARCH_REPORT.md",
+      "handoff/research-third-decimal/shared-response-pool-20261022/certificates/chirp/SEARCH_REPORT.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "43977a2c95f6d7b9125386c37c9291b23c350816b2f23f0644b570e0eb043cc6",
+    "bytes": 11841,
+    "representative": "handoff/research-third-decimal/coupled/COUPLED.md",
+    "duplicates": [
+      "handoff/research-third-decimal/pipeline/coupled/COUPLED.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "270cf0f32cf991ae1eda5d725e6527d649f7d7644eca24c48fdb124a3cd84cd1",
+    "bytes": 24747,
+    "representative": "handoff/research-third-decimal/audits-2026-10-20/math_audit_lower.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "949e6f66bb7beeb1e339deb4c0c083e25b980bd6160738d2f70a86cdcc37aabb",
+    "bytes": 41643,
+    "representative": "handoff/research-third-decimal/audits-2026-10-20/math_audit_upperK.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "e1ac07d171ae68bf967086cc96cc462ac158374498b647a18bded014ef22e3ba",
+    "bytes": 42841,
+    "representative": "handoff/research-third-decimal/shared-response-pool-20261022/ch17-crossbound.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "957657c1396cbe18efbae1cb1e70f0ab5440c65728163be634c479f7669a3623",
+    "bytes": 1714,
+    "representative": "handoff/research-third-decimal/shared-response-pool-20261022/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "1f749f8cecb29ce6b10124a49bfcc7623c9c7d7d35c2919057c68e6930a26b91",
+    "bytes": 10267,
+    "representative": "handoff/research-third-decimal/shared-response-pool-20261022/HANDOFF.md",
+    "duplicates": [],
+    "coverage": "complete text retrieved and read; proof depth varies, see audit notes"
+  },
+  {
+    "sha256": "6098374da5c78d77a493295589fe1d34045ae0b264932191621c8f05742b256e",
+    "bytes": 4178,
+    "representative": "handoff/research-third-decimal/response-pool-audit-20261022/README.md",
+    "duplicates": [
+      "handoff/research-third-decimal/shared-response-pool-20261022/certificates/audit/README.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "6af6815b7162d715d4fd714192b48ef6d63f3de6c55f2046e8c60102dfc1d279",
+    "bytes": 3789,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/PROMPT.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "06ab843e074e497f3088709c2f06dd2bd2994735b84006a946a8da08cd42bf42",
+    "bytes": 4184,
+    "representative": "handoff/research-third-decimal/upper-polynomial-bridge-20261022/tex_fragment.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "768cd52a783f3a09ead5d3765a1ae8b4ea22432650575a94ba9dbf9244e5a1ee",
+    "bytes": 10514,
+    "representative": "handoff/research-third-decimal/upper-polynomial-bridge-20261022/HANDOFF.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "296467bb850a40b92436947646815d407e50f710e910d2c1402a9e96be1e6429",
+    "bytes": 3720,
+    "representative": "handoff/research-third-decimal/residual/RESULTS.md",
+    "duplicates": [
+      "handoff/research-third-decimal/pipeline/residual/RESULTS.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "5caa443e652389a5e35f7b4901ec1d0baae96d576cde5bf8998c5eb1823cac73",
+    "bytes": 2973,
+    "representative": "handoff/research-third-decimal/residual/RESULTS2.md",
+    "duplicates": [
+      "handoff/research-third-decimal/pipeline/residual/RESULTS2.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "cfcade527bad611c70aa49fe096b20025b984db2147288f6b177ea98d08db167",
+    "bytes": 3713,
+    "representative": "handoff/research-third-decimal/bundles/conjK-state-20261020-PROMPT.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ba1923f16c9121424e5c4d4bcbbb5fa81e5c9fb37cf983db5de59beea50bf743",
+    "bytes": 357,
+    "representative": "handoff/research-third-decimal/pipeline/kclt/PROGRESS.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "1e430f46e506fba712a847b898a6215f4059a564acb39e03b11c14cbbf5280ad",
+    "bytes": 7535,
+    "representative": "handoff/research-third-decimal/pipeline/kclt/RESULTS.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "bdeaef62d3fa7a6257995665400237580cebdb2ccb146bc30b44fd83a0c14c95",
+    "bytes": 4396,
+    "representative": "handoff/research-third-decimal/pipeline/deg9/RESULTS.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "33dc10dbc8ecd357508febae111175d42838be06f79ecb8c22c6bd70cc9dbda6",
+    "bytes": 7374,
+    "representative": "handoff/research-third-decimal/pipeline/phase/RESULTS.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "3e091265ce68c47f99a883e44b85a28ba6a448bfebc33111aa5a23f97db0b601",
+    "bytes": 1504,
+    "representative": "handoff/research-third-decimal/pipeline/kconj/PROGRESS.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "5ee6ac407781914300f3beb3c2629e035304118b9ec02ef5d341848d7f80284a",
+    "bytes": 9056,
+    "representative": "handoff/research-third-decimal/pipeline/kconj/RESULTS.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "6074d8ed6f48e2a497434f161ef6d68d423478a06f3d26b30001bd8ae513e781",
+    "bytes": 4753,
+    "representative": "handoff/research-third-decimal/pipeline/wcert/FINAL_T3.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ea4a9d6f189f910b4ac52149d7e23bcf8c0129ebe71d9a44b9fb451a4e383d83",
+    "bytes": 6400,
+    "representative": "handoff/research-third-decimal/pipeline/wcert/FINAL_T2.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "6d5483850570c8a671a3480e2e06a8d3de4eb0f573a0e2846a18edfa737d8345",
+    "bytes": 4656,
+    "representative": "handoff/research-third-decimal/pipeline/wcert/STEIN_HYPOTHESIS.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/STEIN_HYPOTHESIS.md",
+      "handoff/research-third-decimal/gpt-reviews/shared-residual-20261015/source/STEIN_HYPOTHESIS.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "2cd334ab1a75fe40861b8cc167df0d75f63a226d8c0ad5cff93ff634309c8617",
+    "bytes": 7615,
+    "representative": "handoff/research-third-decimal/pipeline/wcert/STATUS.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "68d0a6c8b37cff5afac866416a501009ec62e503d94c00fbe3fecfaa1ba0506d",
+    "bytes": 7192,
+    "representative": "handoff/research-third-decimal/pipeline/wcert/PROGRESS.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "36c2119190f7888d6be1b06e74052084e19d17259b82c85cd2bb77ceb262781b",
+    "bytes": 11460,
+    "representative": "handoff/research-third-decimal/pipeline/wcert/CERT_FORMAT.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/CERT_FORMAT.md",
+      "handoff/research-third-decimal/gpt-reviews/shared-residual-20261015/source/CERT_FORMAT.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "12f123d66236a4a6a3fac333b2cbb3e75296b3e0e790ef3b5f53c95a46c79736",
+    "bytes": 3111,
+    "representative": "handoff/research-third-decimal/pipeline/wcert/STAGE2.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "bbe573ed9e6a826db4167cfdc305731e76cb2c83d1ce3e914a4ed219108f5e5d",
+    "bytes": 3344,
+    "representative": "handoff/research-third-decimal/pipeline/wcert/CAPS_PROVENANCE.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "24588a9a1e5d6761704d42290f949361943ff4cf6943de246e8a27e53b2f55c0",
+    "bytes": 4200,
+    "representative": "handoff/research-third-decimal/pipeline/wcert/STAGE2_STEIN.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "688e24f72eee341db9f126765da6d7a825ddfce62a56e5d4e5b475d187eaa946",
+    "bytes": 2173,
+    "representative": "handoff/research-third-decimal/pipeline/wcert/LEAN_PORT_PLAN.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "0996ef092e583a937bce0ae89a74602587bc2ff3d4543421efc1af0d5e793a98",
+    "bytes": 6713,
+    "representative": "handoff/research-third-decimal/pipeline/wcert/PROGRESS_T4.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "614bc36d8135a71b43b3bdcaac2222f6847bd7da5f293d5361cd7515cdd460dc",
+    "bytes": 897,
+    "representative": "handoff/research-third-decimal/pipeline/kproof/PROGRESS.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b1adcea6a75f39e55760d2c01b23dfc797a9e80eddb4ebeefbf33cc8dac390ea",
+    "bytes": 17669,
+    "representative": "handoff/research-third-decimal/pipeline/kproof/PROOF_NOTES.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "56cc0f0021882aa9a1cf1846471d70c3b0c16426eb968651892174cae460960d",
+    "bytes": 14537,
+    "representative": "handoff/research-third-decimal/pipeline/d5/DERIVATION5.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "5f68ad88ff289c5c979f96a0c32305f2396634ac3c37bebde6d6879c76f686ac",
+    "bytes": 716,
+    "representative": "handoff/research-third-decimal/pipeline/d5/PROGRESS.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "f6ad74e4baafe37e2cb561f433e0ccc0cc95cff901c805cdc5a35ff6534ca846",
+    "bytes": 7042,
+    "representative": "handoff/research-third-decimal/pipeline/d5/RESULTS.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "3293bb02491ddacc3fb1490581b71e0a4140397d73531e007aa8670872d4ea1f",
+    "bytes": 1636,
+    "representative": "handoff/research-third-decimal/pipeline/gate/PROGRESS.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "0f464144dc3575ad9531571553788210fb506b8746fd957964958d9858c12e12",
+    "bytes": 12854,
+    "representative": "handoff/research-third-decimal/pipeline/gate/KSIDE.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "026321bd04102011c7d729fe77cc7e3e2a782447fa81dca68847db60c330d3de",
+    "bytes": 8800,
+    "representative": "handoff/research-third-decimal/pipeline/gate/AUDIT_DELTA.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "a685d20cface7f46a5f687d62c168129b787a725e79784ac25e7fe34074034fd",
+    "bytes": 11624,
+    "representative": "handoff/research-third-decimal/pipeline/wcert/t3/CERT_FORMAT_T2.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "34759c9a8921eccbfa13e30a4aad5ad7085c58e4bbb7b9bc2bf9c8451edaa8b0",
+    "bytes": 13167,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/source-after/main.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "10f2a3ba112a63c2519930e8ca7fa554b3f2d1da0e67b0be9fd4d5cdb1c66808",
+    "bytes": 6730,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/source-after/ch25-weak-k.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "5b177507fc4720593a6fac34cb392841e381dab4f8b111968e10a011344221b0",
+    "bytes": 12922,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/source-before/main.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "d585dd1e3e53ace7302b59a56d3def85fb0c2577909eb4a15ca10d82df35bb73",
+    "bytes": 6191,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/source-before/ch25-weak-k.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "242e4b45e463497d97ea53ad6554ca7ef06df9fe7909a8f2eb34c06af53a9fad",
+    "bytes": 18483,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/source-after/lower-bound/obstruction-1402.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "1c47c80236d62a0daa2ec7ade7e8feccac319cedf5d8165bb3d54c3247a1a60d",
+    "bytes": 10186,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/source-after/ch25-parts/91c-joint-structure.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "49e6f966712ac318d7428f3a639efb91de6eabfdb9c5ae00193a3a6d67d626c2",
+    "bytes": 11184,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/source-after/ch25-parts/89e-phase-preserving-contact.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "f1683d0e3f5c182118c8b071f2c57540e5ac5158d73801cfa099e8f86e16b499",
+    "bytes": 17237,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/source-before/lower-bound/obstruction-1402.tex",
+    "duplicates": [
+      "handoff/research-third-decimal/spherical-response-contact-20261022/after/lower-bound/obstruction-1402.tex"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "eb5278def0192d18e82e37fc8c3ded979232d16d6daa28f4e7585a28f8c364f7",
+    "bytes": 9778,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/source-before/ch25-parts/91c-joint-structure.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "14e4ba412e524aabb9bf80e1441edcfb69d6565eaf5c2489665d2aed31337a10",
+    "bytes": 10764,
+    "representative": "handoff/research-third-decimal/conditional-response-contact-20261022/source-before/ch25-parts/89e-phase-preserving-contact.tex",
+    "duplicates": [
+      "handoff/research-third-decimal/phase-preserving-contact-20261022/tex/89e-phase-preserving-contact.tex",
+      "handoff/research-third-decimal/phase-preserving-contact-20261022/live-after/ch25-parts/89e-phase-preserving-contact.tex"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "6d475b39b69d2a2fdd6567fd31624424b9d76666d4080815b6e22f80dc3ab6d5",
+    "bytes": 9355,
+    "representative": "handoff/research-third-decimal/spherical-response-contact-20261022/tex/89f-spherical-core-contact.tex",
+    "duplicates": [
+      "handoff/research-third-decimal/spherical-response-contact-20261022/after/ch25-parts/89f-spherical-core-contact.tex"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "3e91b589e404a0a9f73491fdf1c9544bc940fd50e53d9ea931ece53dc855d597",
+    "bytes": 46107,
+    "representative": "handoff/research-third-decimal/spherical-response-contact-20261022/before/ch36-K-state.tex",
+    "duplicates": [
+      "handoff/research-third-decimal/phase-preserving-contact-20261022/live-after/ch36-K-state.tex"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "fb2ef996fe8fd283770f4945456d34635cac28ec0e10f0ca9742c996bfee3667",
+    "bytes": 5707,
+    "representative": "handoff/research-third-decimal/spherical-response-contact-20261022/before/ch25-weak-k.tex",
+    "duplicates": [
+      "handoff/research-third-decimal/phase-preserving-contact-20261022/live-after/ch25-weak-k.tex"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "71627575a5f0aa5cb28a1cca569838231994cad21dbfa51abf8423d0568403b5",
+    "bytes": 47326,
+    "representative": "handoff/research-third-decimal/spherical-response-contact-20261022/after/ch36-K-state.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "78adc824991477005315a3170c0203a15f7fec122e8b5d00bc24df5e65fc39ba",
+    "bytes": 6103,
+    "representative": "handoff/research-third-decimal/spherical-response-contact-20261022/after/ch25-weak-k.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "3cb6b42aea87c2f2c77a5b648b372def3964d383825928223a41ea50f59f015e",
+    "bytes": 15795,
+    "representative": "handoff/research-third-decimal/spherical-response-contact-20261022/before/lower-bound/obstruction-1402.tex",
+    "duplicates": [
+      "handoff/research-third-decimal/phase-preserving-contact-20261022/live-after/lower-bound/obstruction-1402.tex"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "21eabc5d878c3f1ad47fb278889f03a84a2603ffae8baa1b1d6618f58c922df2",
+    "bytes": 26496,
+    "representative": "handoff/research-third-decimal/spherical-response-contact-20261022/before/ch25-parts/91-gaussian-point-and-cone-reach.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b52d9c8081821901f2fd2bd5a31f9c68af9f55bdc67418a854b24288699b049f",
+    "bytes": 27692,
+    "representative": "handoff/research-third-decimal/spherical-response-contact-20261022/after/ch25-parts/91-gaussian-point-and-cone-reach.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "83dbf9f824f2af00294fa912bd90eb558e32d5dbb4ada5dcc67687b7f760be35",
+    "bytes": 2408,
+    "representative": "handoff/research-third-decimal/gpt-reviews/spectral-20261015/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "0101d5957ffcc9a02e7b6aa14985471f90ab1eb7b85cb2e9e99dfedc5ca3ad4d",
+    "bytes": 9983,
+    "representative": "handoff/research-third-decimal/gpt-reviews/spectral-20261015/spectral_review.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "214712d45f121efadf29a16988f8e453408049bd89df7553bc19f9455cac1f1a",
+    "bytes": 9629,
+    "representative": "handoff/research-third-decimal/gpt-reviews/spectral-20261015/REVIEW.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b65f31eb7314c7cd136c32622026ed057aff236c51121ada4246c6e40a6457a1",
+    "bytes": 7167,
+    "representative": "handoff/research-third-decimal/gpt-reviews/k-forest-20261020/HANDOFF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "559a5f4305b28ad3002feeb2946d73a54b0ef17e2661d49a4e46d602cd8156e8",
+    "bytes": 3275,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "88e9cb28335e4dfc97ce6447af827c9bd0164a558ca3b6b71c02a3e2d4696ea3",
+    "bytes": 12082,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/HANDOFF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "cbc1894940f761d51cde7bf6688497f303e1436ca885ada6f2e6e44812d50010",
+    "bytes": 5784,
+    "representative": "handoff/research-third-decimal/gpt-reviews/diagonal-improvement-20261015/RESULT.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/diagonal-improvement-20261015/grothendieck-diagonal-improvement.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "e5626b02270a290aae582c1ea8361dfe20fae6efcfbe62aa94247aad931e9b11",
+    "bytes": 11719,
+    "representative": "handoff/research-third-decimal/gpt-reviews/diagonal-improvement-20261015/ch25-gaussian-sharpening.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "646991cd717236d2b51ae1c4b41e0c92e687e26aad8eef61b48fa8e0810807ac",
+    "bytes": 1230,
+    "representative": "handoff/research-third-decimal/gpt-reviews/diagonal-improvement-20261015/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "777f0fb91fcf3f53b5a27a2ee59e0670cf5231492a6b0b057e268b76e4660afb",
+    "bytes": 9777,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/HANDOFF.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/HANDOFF.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "9385f173959639a079ee29b61fe02d2405ec12a8c5fb0292073a02c585c7e92c",
+    "bytes": 8759,
+    "representative": "handoff/research-third-decimal/gpt-reviews/remote-diagonal-20261015/HANDOFF.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/remote-diagonal-20261015/package/HANDOFF.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b48e8400f8d4b600fbf5d59511a06a873749d6a741a9ca50cdc42ae0c08ab975",
+    "bytes": 6395,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/HANDOFF.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/HANDOFF.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "0256f18aba5869acf19c9885a311c940653423594489494a4f2f8ef3ca548934",
+    "bytes": 15571,
+    "representative": "handoff/research-third-decimal/gpt-reviews/pinned-gate-20261015/grothendieck-next-lower-bound.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/pinned-gate-20261015/package/RESULTS.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "e8bb2c54078c5e8048c258d384d2ba397226747dab6b049a94bb54ec7a088f63",
+    "bytes": 8611,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-residual-20261015/shared_residual_refinement.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "d2d17acddb8c3cf09f25c49917e4f65a633790833973e7d4415117e54184db0c",
+    "bytes": 1781,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-residual-20261015/PORTING.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "7a23086b80384b57c1a2e66133df302c3175945970373bdf43731196ab621696",
+    "bytes": 617,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-residual-20261015/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "c37238ef6f75088c6be8bb89036d033c07a3811563603036cabd1076d49aef37",
+    "bytes": 8199,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-residual-20261015/ch18-shared-residual.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "74b154789554fe03c4b077491bcba4c02114fc4f4a9da3cc5d05b6d0a0c3ec9b",
+    "bytes": 7218,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-residual-20261015/HANDOFF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b72d4e93562b46440edf067c1587992726b3b8adb600cd85e390bd42cc2b261d",
+    "bytes": 15280,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-a-regions-20261021/proof.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b2d1d2cc1b3b1899a3e3a1a45b2f5c4c802c7534ecec8e751b0d8b44395bae44",
+    "bytes": 17285,
+    "representative": "handoff/research-third-decimal/gpt-reviews/residual-cubics-20261015/grothendieck-residual-cubics-proof.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/residual-cubics-20261015/package/PROOF.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "f8bc1b47be2329dcfd9bde922d823d0691ca44c4788057615a2fe57b56c1a35e",
+    "bytes": 2354,
+    "representative": "handoff/research-third-decimal/gpt-reviews/upper-review-20261015/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "20149dac06d6c4a37c71a6bf43b84b7be552bbadd0db105648053e6ffa29feb4",
+    "bytes": 28994,
+    "representative": "handoff/research-third-decimal/gpt-reviews/upper-review-20261015/grothendieck-review-and-improvements.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "72be785bf5aff15b8118169d5469a8ab7af28aaf71c4200a94fe6125b5213ea3",
+    "bytes": 9420,
+    "representative": "handoff/research-third-decimal/gpt-reviews/k-next-20261020/HANDOFF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "1f4d33abcab184530d5ba9d8ad3abf1328a1da81fa96a50526f08619293ae651",
+    "bytes": 2866,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/PACKAGING_AUDIT.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ae3c78f6fce04eaeed2ebe8901a436cce24fc2a7a420f046363dad2662744642",
+    "bytes": 1022,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/ARCHIVE_NOTE.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "bc2a28bf361702cffcd172bdf5749120d70eb143b703ea264680db5261ea0174",
+    "bytes": 1574,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "6ee005da9a30614edb29c125440c620b1f078fe56d2fbe877cb1b162786a70ca",
+    "bytes": 6793,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/HANDOFF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "66530ffa079007a31903c071b091c052a1cf13069f5dcb0339c17234d6a44fc3",
+    "bytes": 9292,
+    "representative": "handoff/research-third-decimal/gpt-reviews/l1l2-chaos21-20261021/proof.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "55067e4eb97ffb9f6de6b66d31c9c28c5acba5c56d69cc934a67a976d289f650",
+    "bytes": 19650,
+    "representative": "handoff/research-third-decimal/gpt-reviews/bidegree-20261022/grothendieck-bidegree-report.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "ede863e949a20125ec99cb37429e0dd65aaf63b1ce035e786d983c6596c7d885",
+    "bytes": 14055,
+    "representative": "handoff/research-third-decimal/gpt-reviews/spectral-20261015/received/HANDOFF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "9f2276e97f7a2b0946b1dfef38c9ecf367d1698426cb09af72cdf3d8f44cb01e",
+    "bytes": 9228,
+    "representative": "handoff/research-third-decimal/gpt-reviews/spectral-20261015/tex_proposed/main.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "022a691a5b7a78eeaf13d53742b9f8305d6710408840cbbfbd7d486606226386",
+    "bytes": 9740,
+    "representative": "handoff/research-third-decimal/gpt-reviews/spectral-20261015/tex_proposed/ch19-spectral-review.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "be86b785f35e9dc7b9f435df48ac9c5f183f658e68088225c8d358dd8444ad55",
+    "bytes": 14534,
+    "representative": "handoff/research-third-decimal/gpt-reviews/spectral-20261015/corrected/HANDOFF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ce8422f49444c7b2f13d29889f331b7dd2e7f37c7a3a5724a53cb8a3107abd47",
+    "bytes": 28029,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/tex/ch27-shared-sector-refinements.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ab100097e205102c5d67ef5dcb0a177c48011f73e078604cb8da097738e2f119",
+    "bytes": 28245,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/tex/shared_sector_refinements_standalone.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "3d455de293b4204566e94d7eb1f77caba7385e2af16b81d69a4caf77da4d014b",
+    "bytes": 6197,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/shared/shared_b_section.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "d7b5376596a3ff23f57d25c6e129afa9d062a040f56f41e83b4540d2b1916d4c",
+    "bytes": 7571,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/shared/SYMMETRIC_SHARED_B.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "fefb444019e0f0f07159a4bb4d016a68e66125718214a88da52ab42a934b5956",
+    "bytes": 2245,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/profile/bounded_response_variance.tex",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/profile/bounded_response_variance.tex"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ddc61cc8c70836cffc3d378e0ad7a5d81a2c11ef6f6c8911739bf59ea8ad2f2a",
+    "bytes": 6033,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/diagonal/common_shift_insert.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "eeb94145030b4d40ab1f20e431ac8e9aaf25fc9220d6b604cc64cdd8389dcd38",
+    "bytes": 10014,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/diagonal/COMMON_SHIFT_PROOF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b7a1a277f4c9457424584a3a59948751a7f7bb3fae47565094a6f76a4f707030",
+    "bytes": 4064,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/ring/C4_A_THEOREM.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "4c1afc0b37ea882f4b6009f5c96a01fd98426461e94a5e8f198e26f0e561c4b7",
+    "bytes": 4907,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/ring/RING_QUADRATIC_BOUND.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "3c6a95a5678e98bcff42d692b8dcf3c7b0da1e3d234d5596ef418f7b33fd1cec",
+    "bytes": 5368,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/ring/a_ring_addendum.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "d56c2c43630544d855b24a95d6b563a39a623b3f283f03db06879c0e68e2c715",
+    "bytes": 3334,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/ring/c4_addendum.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "94ea6d0d587834dbc10e74354b4030e95952dcb0bf19d292b0146b3d0588d8e0",
+    "bytes": 6979,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/ring/A_RING_PROOF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "72fc1a9eff9cede6e67ef2dc304c6aacddc970bf443bed4ad413eb7563f48f76",
+    "bytes": 1981,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/gate-demo/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "4b7ed3e0e215ed8a2e9af73acba6324731aa75427ad061acb391a6d0e8b22478",
+    "bytes": 9146,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/rotation/SHARP_REMOTE_ROTATION_COST.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "dd6ee48a39636e87b52444f983d194690d5ca5e768f0c3480592c828c6df5559",
+    "bytes": 6421,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/rotation/rotation_cost_addendum.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "29433086d3495a1750491d20e2560a3a0346fe28cb9ded391fcd0f96488640c7",
+    "bytes": 9243,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-sector-20261015/diagonal/even_refinement/EVEN_SECTOR_REDUCTION.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "9a92d3ac11ec2dd2221ca408a503e99ad79480f79ba970c93675e8b524de1f2f",
+    "bytes": 1456,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "41df80221af7a047afbda90aa53d1d02bc0d6d99a9a9e4ff0c1a15acc8451eda",
+    "bytes": 790,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/VERIFICATION.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "0b5f294adb1c1e1a7a1b509cde94703b476c4ef468f6ddbb825ef9fe05cea984",
+    "bytes": 33388,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/tex/ch24-weaker-k.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "40334df4c0c7b8bc8d17833e113976fffe04661645ba82d74435f81c7c72e823",
+    "bytes": 33751,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/tex/research_update.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "867ceebd5309d1adbe721d8d775b25f66710f92628c45e166b0d76f956e7509a",
+    "bytes": 16786,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/penalty/ROTATION_WARD.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/ward/ROTATION_WARD.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "11634a33ae94e750b40849cdcc151f95ea866851ea29b9058f4c290971cac76a",
+    "bytes": 11966,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/penalty/rotation_ward.tex",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/ward/rotation_ward.tex"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "f909cea9669eeb3dc9f7d186602f0dab7d5994b2f174877d90bf6de17f32294d",
+    "bytes": 8487,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/penalty/RETAINED_H_SQUARE.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/ward/RETAINED_H_SQUARE.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "30c7d8df5c699fbdc5e37ba8a13362758b2035ca8859dc4fdaceef13c0b33abf",
+    "bytes": 3171,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/penalty/retained_h_square.tex",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/ward/retained_h_square.tex"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "2d313a4efb0b1d323fc3d84400c544e38623d801ae76a3c2191c2c361a8d15ab",
+    "bytes": 17128,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/content/ch22-residual-cubics.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "66946a86619fb83e9c22a1c052e50e26b51846571a27b105403a9ebd6427ac1a",
+    "bytes": 5086,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/content/localization_and_obstruction.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "fe756665569efc8075701e414e6a95b9dc611dfb5dd520e51c5dd4393ca2fba7",
+    "bytes": 6037,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/content/LOCAL_CHANNELS.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "f1003c2b96621fe2ffc6b26a58b0efd181a48cc18966edcdeb816814b6d79504",
+    "bytes": 1118,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/content/RICE_CORRECTION.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "85ea7809a23bb13fdc3717f99eff47b37eb0dbe6162fc02607149ca017cb01c0",
+    "bytes": 4985,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/content/GAUSSIAN_LOCALIZATION.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "fb65dcba3f82762f6cc640b788221b497d694109c2864fa3035a1412eca9e469",
+    "bytes": 2280,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/strategy/REPLAY.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "4608fddbf9b9add7a2e9281b2f022264e1588a8b1fa1412ddeb8d1a9e203556d",
+    "bytes": 6389,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/strategy/gaussian_profile_certificate.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "eff5cbbcd1b3ffa47b168e8360d3fca982b47bde92cd7b990fa5f264ce406963",
+    "bytes": 4387,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/strategy/noise_stable_weak_k.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "5ce918a703a2ce2533f562e88cc04d8805b984ee628100149d96c31fc192ab17",
+    "bytes": 8110,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/strategy/UNIFORM_GAUSSIAN_PROFILE_CERTIFICATE.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "c333035a070ba6f3129a6635a79d3698d5fa6cb00744ab8e11b6048bf6a4b2bc",
+    "bytes": 6522,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/strategy/TIED_GRAM_AUDIT.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "8c6b109e0785b89160fffab1494d76bfe0918aa9892b62102022bef54a43c901",
+    "bytes": 9806,
+    "representative": "handoff/research-third-decimal/gpt-reviews/weak-k-20261015/package/strategy/NOISE_STABLE_WEAK_K.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "1b74af4dfb044dc1f7590ae363f2b3dee365feb0a3dcad08cda0026751fad46d",
+    "bytes": 1202,
+    "representative": "handoff/research-third-decimal/gpt-reviews/remote-diagonal-20261015/package/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "431c6240ae9fcf56e948f0b4a04ca1681e8aee2f2faa6f90d887d8e9f73845a7",
+    "bytes": 17227,
+    "representative": "handoff/research-third-decimal/gpt-reviews/remote-diagonal-20261015/package/tex/research_update.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "f851e0ab8885c9e1a0eccb80e920aa1e843fe6c56a1bef0f1b6e55ba1c10a7de",
+    "bytes": 16898,
+    "representative": "handoff/research-third-decimal/gpt-reviews/remote-diagonal-20261015/package/tex/ch22-remote-cubic-refinement.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "f4fea87557eca86ded66af4f3776542e2bf08fd079b0950a20a2440733404114",
+    "bytes": 15103,
+    "representative": "handoff/research-third-decimal/gpt-reviews/remote-diagonal-20261015/package/joint_sectors/DIAGONAL_GAUSSIAN_ENVELOPE.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "0ee541c4b7d5e1f331c87afbb702ec2d570c9fe73501d9fa87fd8aa64c298b63",
+    "bytes": 8353,
+    "representative": "handoff/research-third-decimal/gpt-reviews/remote-diagonal-20261015/package/joint_sectors/diagonal_gaussian_appendix.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "237293f2fef8acfd24eefe52ffa2a4781b2fab87cd1defdf57b5e33125c9291d",
+    "bytes": 2633,
+    "representative": "handoff/research-third-decimal/gpt-reviews/remote-diagonal-20261015/package/numeric/remote_refinement.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "5571758a95ef15333bb64a842b0bee241986cfe5349322ba9a78bb3bd7af96f9",
+    "bytes": 5005,
+    "representative": "handoff/research-third-decimal/gpt-reviews/remote-diagonal-20261015/package/numeric/NUMERIC_REFINEMENT.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "f9a627dbe133084625807b30f2d1bd8e079dbed0f3ae2be59b58729cd76d5f60",
+    "bytes": 9860,
+    "representative": "handoff/research-third-decimal/gpt-reviews/remote-diagonal-20261015/package/math_audit/CANCELLATION_PRESERVING_GRAM.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b5e0d6856497282d078a2a02dc1b621b35dac441e1cdab33ecd9bdc543b9f007",
+    "bytes": 5628,
+    "representative": "handoff/research-third-decimal/gpt-reviews/remote-diagonal-20261015/package/math_audit/PROFILE_TRANSPORT.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "a79a735f4a14425b1fc7ef871d035ff35a3c7c4fb9a5b487f3924e8bdb9efc1f",
+    "bytes": 8127,
+    "representative": "handoff/research-third-decimal/gpt-reviews/remote-diagonal-20261015/package/math_audit/AUDIT_AND_IMPROVEMENTS.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "fc8bb94209aa2799d22aca241b227ea15a3718469f260d8cbdb2d2ffd42c73c1",
+    "bytes": 1896,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/PORTING.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "12afc2655a4dfd0f13cd117d27a2288e793a8ea91c3c08489e3d3c69ba526f16",
+    "bytes": 1910,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "da62104a21e6067091b456d4de277cb124a39d06eab7b95e4765a8ab66e12f9d",
+    "bytes": 1483,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/mesh_freedom.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "0d68e563070fdebf1780a5de9f3ff5d314db3316f065a592b6d791a980b3fe38",
+    "bytes": 2821,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/NODE_DESIGN.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "6b96c8e1e1576abd84ed5193cc40f9ee5e3b86f869c5370ccf05d609e991b5e6",
+    "bytes": 2947,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/MIXTURE_NOTE.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/inherited/MIXTURE_NOTE.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "c10202efba630fdbe7251cbc9da1105ac515811d04e0236b3305a3c5e5dcf871",
+    "bytes": 21604,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/tex/research_update.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "edfa956ba21a79891a09b9b86c21fd3326e475aef02512c371db288a91ac1de1",
+    "bytes": 21397,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/tex/ch21-common-law-refinement.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "bb0572f0501e9219618f940bafd8340442dcd06c319eca7ee56c107924677bd0",
+    "bytes": 9071,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/dual_theory/dual_theory_appendix.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "fd3b04a8822bd516fc7ff348b780503ed6d8c6d04e2a416323d54bfff032ddeb",
+    "bytes": 12514,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/dual_theory/EXACT_DUAL_AND_CLIPPING.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "75f17d565f3c3adb60f00ba75cbce8303621c6808600802f56c814a502d48490",
+    "bytes": 2552,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/dual_theory/RADIAL_SHORTCUT_COUNTEREXAMPLE.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ed64594e8ee6be5e68a3f5f909810aa9679e51eb956a921bc07ee1014f24443f",
+    "bytes": 4737,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/dual_theory/AUDIT_FROZEN_FLOOR.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "9e063ada6cfae967108e42d2b42b0dd4371b50179457ae6d2e1df87b5abb5c53",
+    "bytes": 3968,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/dual_theory/coupled_slack.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b02c72207f33b5fd87ec45ce66fe227119502c47c11b907304c0b809d1af6a8e",
+    "bytes": 7560,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/dual_theory/AUDIT_FINAL.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ccb68544a8be158b6301feeccbd8bf288c8d8da043154de08b0bbd2ee7d31774",
+    "bytes": 9391,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/dual_theory/dual_theory.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "5eeafdeb6fdced85f58d152b6a8a81afd00baf3095d7ec8a28b1e280f3fcc10f",
+    "bytes": 3666,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/dual_theory/coupled_slack_appendix.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "17660038c8a42804bf0279ff209acd56ee1567b73e6a407ec5ad113e14f80ee4",
+    "bytes": 5580,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/dual_theory/COUPLED_SLACK_REFINEMENT.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "7bf71aa251c09f7682b9b27847d09df069326d6bdfebd2c02174be659782b4b6",
+    "bytes": 1410,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/dual_theory/radial_shortcut_counterexample.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "3d473d831e44eb8b99dcffa71fb80ea466ca8c133290157839ea32feb07f3b00",
+    "bytes": 4604,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/format_floor/FROZEN_TABLE_FLOOR.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "e889a0525516815248883ec15c58966c190ecd5148b0b10e37c3fd2a4cf7cdf6",
+    "bytes": 2396,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/coupled_received/coupled-stein-refinement/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "9adca12410354c8e4324dd5581101e0852e1fc016064297ded7cebf7efdaa5de",
+    "bytes": 9877,
+    "representative": "handoff/research-third-decimal/gpt-reviews/common-law-20261015/package/coupled_received/coupled-stein-refinement/HANDOFF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "e67606232dad4a9a9a04067c888e5cb1fe3bdf8ef46064549209d7de25da8e1a",
+    "bytes": 1987,
+    "representative": "handoff/research-third-decimal/gpt-reviews/pinned-gate-20261015/package/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "e14a97b0e8c58cd0a2d79efb7c3e36c12af6c17a7ffdf8f7d35878cea6e4546a",
+    "bytes": 14042,
+    "representative": "handoff/research-third-decimal/gpt-reviews/pinned-gate-20261015/package/shared/HANDOFF.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/shared-residual-20261015/received/HANDOFF.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "3203afabefb17033402013495bcb16d840746e0e176eeeeca31fbc269d68dea8",
+    "bytes": 1464,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-residual-20261015/review/fixed_coordinate_gate.tex",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/inherited/fixed_coordinate_gate.tex"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "10d15135d3c3a0a11c369b42b4175ecdd8ea1494c6a8f8292a29ae3b4e52b4fc",
+    "bytes": 10264,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-residual-20261015/review/MATH.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/inherited/MATH.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "27b65d80c62c141ae30e2ba7458291cf11f464f3e45500ed3ccb1b1888c710d9",
+    "bytes": 6801,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-residual-20261015/review/AUDIT.md",
+    "duplicates": [
+      "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/inherited/AUDIT.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "cec57d0651e97b8b12dde008ec279eea653783b74bc0157e4ad78a9762aee7c8",
+    "bytes": 9199,
+    "representative": "handoff/research-third-decimal/gpt-reviews/shared-residual-20261015/tex_proposed/main.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "e10a0f775796867388288c0aba814a006dd7d1e9a7b3627a59ea99f3552e1fa6",
+    "bytes": 2025,
+    "representative": "handoff/research-third-decimal/gpt-reviews/residual-cubics-20261015/package/HANDOFF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "635e23804e53c8ca41095ae98a1349ee3f2ce211f912d7e6dd8b424f7acd3cb3",
+    "bytes": 15488,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/tex/ch26-rotation-gate-refinement.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "2b2c676bb6f0b5658747d32331e493b42d90d12faa501ddb259b01c5eac5efd3",
+    "bytes": 15720,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/tex/rotation_gate_proof.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "c33e82435f05064a686fdb4e25fd66ade978f0e41fc21f602545dedff841a2b3",
+    "bytes": 2075,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/verification/INDEPENDENT_ANCHOR_REPLAY.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ff02ee7cbac146878d43543cfdd7a9b632e87993acc62227563547e2f9d06e16",
+    "bytes": 8410,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/verification/AUDIT_FINAL.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "0c5c880885c5d25ad4db1f9c12dc7d849ab32d5d3d46eaeed453b38eec7fc4f5",
+    "bytes": 2078,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/verification/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "a1ec9efca6779ae94f7929435ce1f8914231f560274889e531e0ece5553515e4",
+    "bytes": 6716,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/profile/GATE_INSERTION_AUDIT.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "42ce433289d3efb199ce6b8ffcd41ef62c454927ca2dd47b1d4f70bcf2f7fd80",
+    "bytes": 4369,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/profile/BOUNDED_RESPONSE_VARIANCE.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "0a5048e8205a74354ce4f197be6dd2af9587af9206f75ec4d5af087836f6d2c0",
+    "bytes": 5788,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/rotation/rotation_gate_insertion.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "3edd055ae1db4a11d2ff62696ae3a9858f840700c6b6fdf112b43db8311468c2",
+    "bytes": 5184,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/rotation/ROTATION_BATCH_REPLAY.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b314c91404db24600b061865f3eae98c5ddac6237ef06e26af848d0312023765",
+    "bytes": 14345,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/rotation/ROTATION_GATE_INSERTION.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "c34df997f978b8821292da678b7c19b20d3f24f1bd9e98dbd81df3e3816aea33",
+    "bytes": 4008,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/rebase/README.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "2524049d2f77db23f346ce14346fb58793fbe3593f5241ae498346c9b149e5d6",
+    "bytes": 2296,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/rebase/anchor_rebasing.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ca1055abbf7d113437a9573786d7437722ce97279d06c30ededbf1306e391b42",
+    "bytes": 4668,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/rebase/ANCHOR_REBASING_LEMMA.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "2438c3a4e2c83a8bb6f93a32d3a6e00c7c053dbb61b365fb02574c1969007b08",
+    "bytes": 2487,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/inherited/CERTIFICATE_METHOD.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "d20f41e2f99350d14f8079e8043ae04377304513f27964cad5b26c9024cb5d8a",
+    "bytes": 2074,
+    "representative": "handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/proofs/inherited/common_law_augmentation.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "09d300e786fd2209c8281564969700884af7468b34e0d5f718cb96788eed81e8",
+    "bytes": 7494,
+    "representative": "handoff/research-third-decimal/gpt-reviews/alternating-multiplier-20261011-replay/stability/damped_alternating.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "8dbf69c573ef2f2981bac66e9c6cdef9b6c3e12f37f4314fb3f7b4150c9e5034",
+    "bytes": 11649,
+    "representative": "handoff/research-third-decimal/gpt-reviews/alternating-multiplier-20261011-replay/analytic/one_coordinate_norm.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "10e5dabc438d69687e9e52e36bc27738d823159f8a6a4a16c614781e5705185f",
+    "bytes": 16094,
+    "representative": "handoff/research-third-decimal/gpt-reviews/alternating-multiplier-20261011-replay/analytic/complex_alternating_counterexample.md",
+    "duplicates": [],
+    "coverage": "complete text retrieved and read; proof depth varies, see audit notes"
+  },
+  {
+    "sha256": "b220bfcf370d7b3f1c4b279ad0ba633e35b116eb3e6da71e0a9cbb2933b9c6ff",
+    "bytes": 2262,
+    "representative": "handoff/research-third-decimal/gpt-reviews/cold-start-20261020/bonly-band-hermite-majorant/isolated_task_followup.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "7ad83cb9699ea4ba07a4ba402300babd3ef1353027c7a905c787aeee861a7ac6",
+    "bytes": 3135,
+    "representative": "handoff/research-third-decimal/gpt-reviews/cold-start-20261020/bonly-diffuse/isolated_task_prompt.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "b889e5a1bf7f26ac6013dd83bc5c39435ec2cf12be62319013e73cf73fb6e18b",
+    "bytes": 5398,
+    "representative": "handoff/research-third-decimal/analytic-tail-experiment-20261022/general_quadratic/PROOF.md",
+    "duplicates": [
+      "handoff/research-third-decimal/shared-response-pool-20261022/experiments/general-quadratic/PROOF.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "f97aa85b4ae170a0edc5bc82a9851312b70099157f0fda863aa64c0aaafd4fd1",
+    "bytes": 2979,
+    "representative": "handoff/research-third-decimal/analytic-tail-experiment-20261022/general_quadratic/RESULTS.md",
+    "duplicates": [
+      "handoff/research-third-decimal/shared-response-pool-20261022/experiments/general-quadratic/RESULTS.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "acfd7463bdead251be68380fa223fa9b03898169f5bf703d195dc6e9f8dc86ca",
+    "bytes": 44901,
+    "representative": "handoff/research-third-decimal/phase-preserving-contact-20261022/before/ch36-K-state.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "e790f36f139bd727fca92aae252dcae5b96e6c2f2b68b9e3c1c368f2e03881d3",
+    "bytes": 5362,
+    "representative": "handoff/research-third-decimal/phase-preserving-contact-20261022/before/ch25-weak-k.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "47faea188c27b7d2d95619de33b60570d16dd73fe7b2f58be226aba6de27e5b4",
+    "bytes": 22314,
+    "representative": "handoff/research-third-decimal/phase-preserving-contact-20261022/live-after/ch25-parts/91-gaussian-point-and-cone-reach.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "8ff5c7c256a1830c3dbe8f8a9fdbc628e937e4ce263a25aa4b4e42f5310b1dac",
+    "bytes": 15086,
+    "representative": "handoff/research-third-decimal/phase-preserving-contact-20261022/before/lower-bound/obstruction-1402.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "9fdba55a0d1c54dfaa5d184d81186d28ed50382ca8993de57f17558ac31ab147",
+    "bytes": 20201,
+    "representative": "handoff/research-third-decimal/phase-preserving-contact-20261022/before/ch25-parts/91-gaussian-point-and-cone-reach.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "91a56bd1e9a430655b44e22b14e5cb7ecb10df9c668ec1b09245107a4f553cfe",
+    "bytes": 7768,
+    "representative": "handoff/research-third-decimal/shared-response-pool-20261022/experiments/polynomial/README.md",
+    "duplicates": [
+      "handoff/research-third-decimal/response-pool-audit-20261022/fresh/README.md"
+    ],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "54e7eb5be906fc0c5d36dd35470bfa268dceb333dd574b2aacc59e0ebb98e860",
+    "bytes": 2698,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/tex/preamble.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "657e41831bdb8d6b83ba63b90e1c5764097282b6f09a4fe7bdfcc46908bc4530",
+    "bytes": 558,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/tex/main.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "a099bf3b8e67870cd8021306c91dbfc49203f1111834e96c1ea4f85539d881c7",
+    "bytes": 4843,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/reference/COUPLED_BUDGET_PROOF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "e180ca464a8dbed6322390dd50780f7500e934bd7c2fb5a429bd45f9e6e5a978",
+    "bytes": 13318,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/reference/independent-sector-base-PROOF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "ddf949c6a23ffb5a2eb587e1d54b545accb971237579cedb4676eaec43d7be3c",
+    "bytes": 6297,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/reference/two-point-reduction-PROOF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "e8648df7f2809d82ef79089e32b1e869fb8a793a972933262238d995d5383a38",
+    "bytes": 6978,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/reference/independent-sector-certificate-PROOF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "6ccb6d1608c7c9699b8422c4603aeed5cea22ae44ffcfe35dc9cd3e8d4393621",
+    "bytes": 4688,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/reference/SPECTRAL_PROOF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "66ce33ad0a9c145e58802ab5aff13a306acca997a060b3e2eb6760d9eec22aea",
+    "bytes": 5809,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/reference/TENSOR_BUDGET_PROOF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "703f97a671f84fdd54901199d96acf63ac13339b4b50e0efc9299cd33866b220",
+    "bytes": 4246,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/reference/law-layer-explorations.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "5b86f05b862c73ee7fe28f44c498409cbac565833f3dd72a2a41bf3a7d2e3500",
+    "bytes": 7583,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/tex/sections/contraction-gram.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "5ecc9d6892a1a05f39445c63715e33f0decbc1416a213043279b1f89e643bc5b",
+    "bytes": 7025,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/tex/sections/covariance-envelope.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "0c527e796e0bf0a41035f862e460e8d5dc0a4eb9ecb04bee91491a7484fc5974",
+    "bytes": 7008,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/tex/sections/00-problem.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "a6fc4a70641d512f4c8d8d733b72d1568a90a3068695887d044df33596ffb4db",
+    "bytes": 1292,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/tex/sections/gaussian-family.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "fe5c973fd1b61a97dbb66cfd62404d3e681f9c64b4b96b30d2538bf3f1df229d",
+    "bytes": 10313,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/tex/sections/ch6-stein-anchors.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "a6e7136e2e59b231c545eea1a45a1bc2c09d0ea72c1e8441e8a01899eef3f5e9",
+    "bytes": 5567,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/tex/sections/spectral-envelope.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "da7813bee420aa89608ad91b5d7bd1a1dd72004c5ece4d4cd126b2b30d95821a",
+    "bytes": 10814,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/tex/sections/sixth-moment-bridge.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "bf46f2cdab7ada9f8c62bd5cd004760f4422366c24dca0c9685c8a32130070c7",
+    "bytes": 746,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/tex/sections/zz-external.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "572fa98c2a8397f4835beb219690a6cf9576772d60c9678a9431e6b8dfcdd2c1",
+    "bytes": 1276,
+    "representative": "handoff/research-third-decimal/subproblem-independent-sector/tex/sections/floor.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "0b9fbcb9b565380bcda069c3d84205b89aa2620eee4a0b4b8399550e24ddb64b",
+    "bytes": 24009,
+    "representative": "handoff/research-third-decimal/upper-polynomial-bridge-20261022/source-patches/ch3-upper.before.tex",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "c01f2e7ef4170957647d222f1e5a0269ab88501117922fefa6486eb6800d745e",
+    "bytes": 4295,
+    "representative": "handoff/research-third-decimal/upper-polynomial-bridge-20261022/inputs/MIXED_TAYLOR_CUTOFF_LEMMA.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "151feb4bd4f37ba19e6ec078b00f11b4fc6ffc01b715e971e2c1a34ed29557e3",
+    "bytes": 4561,
+    "representative": "handoff/research-third-decimal/upper-polynomial-bridge-20261022/inputs/GAUSSIAN_SCHUR_TAIL_PROOF.md",
+    "duplicates": [],
+    "coverage": "inventoried and exact-hash deduplicated only; not deeply read in this literature subtask"
+  },
+  {
+    "sha256": "5fac0d8f4990176f2fe88f7bbd67a327d76127b477c431f983246b87b26c4a29",
+    "bytes": 5819,
+    "representative": "handoff/further-squeeze-note.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "d6de915c3859f2d04047ac2f9df42fa03f52f2f3627e8b8f735cab3f272054db",
+    "bytes": 4451,
+    "representative": "handoff/START_HERE-v2.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "037c0abd17e353c0abe6e4daefb01358a3d9ad88d99e4046705ce1784fd14189",
+    "bytes": 4154,
+    "representative": "handoff/START_HERE.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "068a4378f29204502a81d16ef4daab253cd5f6aeaf2aeae42fc73c657ee33863",
+    "bytes": 2000,
+    "representative": "handoff/REFERENCES.md",
+    "duplicates": [],
+    "coverage": "complete text retrieved and read; proof depth varies, see audit notes"
+  },
+  {
+    "sha256": "d19b88c7db5f5056e6d00a5945d0aaba6908d5af7ae334197d402812ddc110c8",
+    "bytes": 4391,
+    "representative": "handoff/REPRODUCE.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "e886d37bbeaed31ee96f7e620bbdc0c2595d51b735adb1ed2e879675ddc995ae",
+    "bytes": 7667,
+    "representative": "handoff/LEAN_HANDOFF.md",
+    "duplicates": [],
+    "coverage": "targeted reading: relevant sections and claims, not complete"
+  },
+  {
+    "sha256": "79781b11123e03060ac236669c23b4155f0d1e399c8b6fb3c36face8eadde395",
+    "bytes": 5407,
+    "representative": "handoff/formalization/LOWER_PRICE_FAMILY_ADDENDUM.md",
+    "duplicates": [],
+    "coverage": "targeted headings and analytic trust-boundary passages"
+  },
+  {
+    "sha256": "5153cb7c286a2eba8433a2ab788caf9b967aa7be9a2e336dd68903caf40f6717",
+    "bytes": 14251,
+    "representative": "handoff/formalization/FINITE_CERTIFICATE_MAP.md",
+    "duplicates": [],
+    "coverage": "targeted headings and analytic trust-boundary passages"
+  },
+  {
+    "sha256": "d4fa10fb4ebf89a9843599ec2f3178ed2c14a2b20de178af4c70cfb44b59b1a2",
+    "bytes": 24681,
+    "representative": "handoff/formalization/LOWER_FORMALIZATION.md",
+    "duplicates": [],
+    "coverage": "targeted headings and analytic trust-boundary passages"
+  },
+  {
+    "sha256": "330b05aa6a8e15d7df22d3afcf87b7c8aa7411e63f248f13671f4dde621ad872",
+    "bytes": 5132,
+    "representative": "handoff/formalization/LOWER_IMPORT_ADDENDUM.md",
+    "duplicates": [],
+    "coverage": "targeted headings and analytic trust-boundary passages"
+  },
+  {
+    "sha256": "664161f351769079837368749f5fcd5a7fba9197b7828de51b3a02d6d87f6e93",
+    "bytes": 29133,
+    "representative": "handoff/formalization/UPPER_FORMALIZATION.md",
+    "duplicates": [],
+    "coverage": "targeted headings and analytic trust-boundary passages"
+  }
+]

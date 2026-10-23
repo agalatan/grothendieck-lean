@@ -1,0 +1,29 @@
+{
+  "scripts": [
+    {
+      "path": "tools/fresh_barrier_frozen_countermodel.py",
+      "sha256": "21fa5c3d54db7191b675144321199780aaa1eb6983c6041b1b8e8521dc8da46f"
+    },
+    {
+      "path": "tools/fresh_barrier_moment_extension.py",
+      "sha256": "aa2403df3f79dc3dd01a66dfef04bf3b0bf53ff2797d46d2ddbd7cb2923335a1"
+    },
+    {
+      "path": "tools/fresh_barrier_negative_tests.py",
+      "sha256": "19b359b1361aefaf75c52f9eea97c615a0105e9c95be16ed2431240ce653f9ba"
+    },
+    {
+      "path": "tools/fresh_barrier_radial_spectral.py",
+      "sha256": "01d1b735e3462151cf194f75e7f63bd9f2bbc45fb96880238198e1518b6744d5"
+    },
+    {
+      "path": "tools/fresh_barrier_repair.py",
+      "sha256": "be7288109cee78a107ac848054050fc0b36133c0c7e7800a3ac9242b2e3c636a"
+    },
+    {
+      "path": "tools/fresh_barrier_verify_repairs.py",
+      "sha256": "bb19451a3f66ca3b301dcad0b018cb61dc5757079360133842902f200b27a8a5"
+    }
+  ],
+  "scope": "Portable standard-library proof replay uses the frozen local verifier; NumPy/SciPy are required only for discovery."
+}

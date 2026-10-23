@@ -137,3 +137,5 @@ import Grothe.LowerAnalytic.ProjectionGateCeiling
 import Grothe.LowerAnalytic.QuinticTransferAudit
 import Grothe.LowerAnalytic.ResponseCompression
 import Grothe.LowerAnalytic.ScalarCubicFamilyCeiling
+import Grothe.Research.CoupledMajorizer
+import Grothe.Research.SemiconvexChord

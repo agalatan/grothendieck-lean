@@ -1,0 +1,157 @@
+# Research audit and coupled-image tools
+
+This branch consolidates the rank-one cap campaign, fresh response-class
+obstructions, and coupled-image continuation. Research snapshots and their
+replay data live under `handoff/research-third-decimal/`; the maintained Lean
+ingredients live in `Grothe/Research/`. **No headline bound changes.**
+
+## Integration with current master
+
+The work was reviewed and rebased onto GitHub master `6a869c8`. Its changes
+relative to the original research base `98f61ec` matter as follows:
+
+- The concrete upper rounder is now defined and structurally justified in
+  Lean. `Grothe.UpperChaos.fresh_upper_rounder` takes the three numerical
+  inputs `compare`, `energy_close`, `hardy`, with explicit `MemLp X` and
+  charge-one conditions for the truncation. Validity, summability and parity
+  are derived. The generic `DirectHyps` table theorem still exists.
+- The phase cover proves `phiT² ≤ 3`, sufficient for disk-valuedness. It
+  does not discharge the stronger external estimates entering `compare`.
+  The coupled concrete rounder is outside the separable class excluded by
+  this branch's finite-price theorem.
+- The scalar row/mixed data, parameter cover, numerical upper inputs and
+  endpoints are unchanged. The exact local box-8150 improvement is therefore
+  still applicable, with its original analytic premises and local scope.
+- Upstream separates the expensive cap ranges into `GrotheCaps`. The
+  `CapsRest` interface retains rows 12–15. No `CAPS_VERIFIED.txt` was present
+  at this integration base; the stamp checker warns that the full target
+  has not been verified. The default lower headline still assumes
+  `NodeCaps`. This branch does not claim to have run that heavy target.
+- The lower certificate now uses 13 sequential native chunks. Historical
+  build/axiom counts in the research snapshots are not validation of this
+  rebased tree. No new native facts are introduced here.
+- The fixed cubic witness at `ε = 149/200` cannot reach `1.402`: upstream
+  constructs a genuine finite Gaussian response with pairing `> 0.71329 >
+  500/701`. The Lean module `DiffuseCubicObstruction` checks the finite
+  pairing arithmetic under its Gaussian integral bounds; the construction
+  and those bounds have external proofs and directed certificates. Joint
+  constraints cannot remove this genuine response.
+- `ScalarCubicFamilyCeiling` formalizes the conditional arithmetic of the
+  scalar-cubic architecture ceiling `< 1.4022581233`, for all complex
+  multipliers and scalar/vector norms taken over all Gaussian dimensions.
+  This does not bound every smaller fixed-dimensional game. Its Gaussian realization and integration inputs
+  remain external. Reaching `1.402` with a real parameter requires retuning within
+  the necessary window `0.745928 < ε < 0.766838`; the window alone is not a
+  sufficient certificate. This is a witness-family limit, not an upper
+  bound on the Grothendieck constant.
+- Upstream now proves that multiplication by a common bounded response
+  compresses between orthonormal banks to a contraction matrix
+  (`ResponseCompression`). Its joint row repricing complements this
+  branch's finite common-image descent. Gaussian bank orthogonality,
+  projected response extraction and integrated prices still need their
+  actual analytic justification.
+
+The authoritative interfaces for this comparison are the actual Lean
+declarations and the updated upstream README and Lean inventory. Upstream's
+exact neutral-chirp closure transports any realizable base kernel. Our
+uniform phase-mixture obstruction excludes its scalar-phase-base subclass,
+not closures of arbitrary coupled rounders. Upstream's separate two-bank
+cancellation ceiling also has a different scope; neither result generally
+subsumes the other.
+
+## What is in Lean
+
+`Grothe/Research/CoupledMajorizer.lean` proves seven public facts:
+
+- the complex Young modulus majorizer, including its zero-safe allowance;
+- its exact-price form away from zero;
+- the finite-amplitude two-image update with the same `d,e` and correct
+  opposite signs;
+- finite weighted assembly;
+- exact diagonal square completion, finite descent and strict descent.
+
+`Grothe/Research/SemiconvexChord.lean` contains six arithmetic facts from the
+rank-one campaign: the lifted chord correction, profile square, same-second-
+moment expectation assembly, gate reassembly, mesh allowance and exact
+rational mesh value. Gaussian convexity and response extraction are not
+assumed to follow from these arithmetic facts.
+
+Both modules are imported by `Grothe.lean`, reported in
+`scratch/Axioms.lean`, and their core facts are required by the central axiom
+checker. All 13 public declarations typecheck on Lean 4.34.1 with warnings
+treated as errors and use only `propext`, `Classical.choice`, `Quot.sound`.
+The targeted check ran in an owned droplet tmpfs directory using cached
+Mathlib imports, without disk-writing builds. Its log is
+`handoff/research-third-decimal/integration-20261023/lean-coverage.log`.
+
+The global saddle exchange, Gaussian projection/integration bounds, density
+transfer, and full phase-mixture obstruction remain paper proofs with
+external exact/directed checks. They are not newly formalized endpoint
+theorems. The full default library and central axiom report are for the
+repository's Lean CI; the local validation described here is targeted.
+
+## Research entry points
+
+- [Rank-one local certificate](../handoff/research-third-decimal/rank-one-certification-20261023/PROGRESS.md):
+  exact box cap `0.713417810549848`, with source/reduction premises retained.
+- [Fresh assessment](../handoff/research-third-decimal/fresh-eyes-20261023/ASSESSMENT.md):
+  raw rounding obstructions, scalar moment/tail barriers and signed pools.
+- [Coupled-image progress](../handoff/research-third-decimal/coupled-image-20261023/PROGRESS.md):
+  exact separable phase-mixture ceiling `D < 0.711916311229984`, including
+  complex scalar charged preprocessors; complete missing response fields;
+  analytic curvature and finite-cubic density error `≤ 35/m`.
+- [Initial assessment](../handoff/research-third-decimal/reassessment-20261023/ASSESSMENT.md):
+  the earlier audit and conditional arithmetic refinements, with historical
+  validation clearly distinguished.
+
+The conditioned field near `-0.00639397` and extra fixed-dual correction near
+`3.35635e-5` are discovery quadrature, not directed enclosures or global
+caps. The next numerical proof target is `a_C ≤ -0.006` for the frozen
+visible trial. A uniform tensor estimate and outer cover are still missing.
+This is a local proof-development target, not a route to `1.402` at unchanged
+`ε = 149/200`. The next global attack should retune the witness and combine
+the common-response compression and complete projected fields. Gate costs
+must use the actual chaos projections; raw conditional fields can add a
+false penalty. A free common projector can collapse fields to rank one, so
+field Gram data alone do not replace Gaussian grading.
+
+## Replay
+
+The saved finite replays use standard-library Python; directed Arb scripts
+add `python-flint==0.9.0`. Substantial discovery runs belong on the droplet.
+The immutable inputs are included and hashed in
+`handoff/research-third-decimal/integration-20261023/INPUTS.json`.
+Run `python3 -I tools/research_replay.py --full` for the saved exact suite,
+including the seven scalar countermodels. This runs no Lean build or
+Gaussian discovery search.
+The clean-export replay report is
+`handoff/research-third-decimal/integration-20261023/fresh-checkout-replays.json`.
+The clone-local source resolver also passes 22 path, rejection, digest and
+isolated-import checks. The localized optimizer, exact transport (27
+fixtures) and analytic converter were replayed against the exported inputs;
+their outputs are stored beside that report. Frozen legacy absolute paths
+are mapped only to known checkout-local `handoff/` paths, and their original
+SHA checks remain enforced.
+The directory READMEs provide the complete commands and proof scope. Quick
+coupled checks from repository root are:
+
+```sh
+python3 -I tools/coupled_preprocess_mixture_certificate.py --output /tmp/real-price.json
+python3 tools/coupled_preprocess_complex_certificate.py --output /tmp/complex-price.json
+python3 -I tools/coupled_jump_complex_price_check.py --out /tmp/complex-independent.json
+python3 -I tools/coupled_pair_dual_exact.py --out /tmp/coupled-pair.json
+python3 -I tools/coupled_jump_exact.py --out /tmp/finite-jump.json
+```
+
+The real price replay must certify 67 Bernstein leaves at maximum depth 9.
+The complex extension additionally verifies physical phase composition and
+an exact polynomial factorization. All full residual coefficients are paid;
+the numerical discovery optimizer is not trusted by the certificate.
+
+No supplied books or PDFs, generated Lean binaries, caches, or unrelated
+worktree files are included in the commit. Original frozen ledgers retain
+their historical hashes; updated integration status is recorded separately.
+The older upper-reassessment regeneration scripts still require external
+source integration datasets named in their notes. Their saved results and
+conditional proof source are retained; those external Gaussian computations
+are not represented as fresh-clone replays here.

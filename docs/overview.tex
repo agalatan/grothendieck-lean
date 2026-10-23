@@ -198,6 +198,9 @@ No \lean{sorry}; CI builds the default target and checks its axiom report. The 6
 the separate heavy \lean{GrotheCaps} target, whose source stamp CI checks once recorded. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
 the sharp upper bound rests mainly on an external numerical comparison lemma. The weaker upper bound $1.40578$ is fully formal.
+The research modules also prove 13 facts for coupled complex modulus majorizers, finite descent and semiconvex chord
+assembly, using only the three standard axioms. Their Gaussian integration, response extraction and global-cover
+obligations remain separate; these facts change neither endpoint nor its hypotheses.
 
 \section{Discoveries along the way}\label{sec:discoveries}
 Status labels: \textbf{[Lean]} machine-checked in this repository; \textbf{[P]} written proof; \textbf{[P,C]} proof with an
@@ -311,8 +314,10 @@ cubic part of the response and $\mathcal N$ for the value of the witness on it.
 
 \subsection{Limits of the witness method}
 \begin{itemize}
-\item \textbf{Ceilings [F] and [P,C].} The norm of the cubic witness $P_{1,0}-\epsilon P_{2,1}$ is about $0.71314$ at its
- best $\epsilon\approx0.756$ [F]: no certificate for it exceeds $1.40226$. Explicit ``chirp'' responses prove that games of
+\item \textbf{Ceilings [P,C] and [Lean].} Actual finite Gaussian responses give the scalar cubic family a
+ ratio ceiling $<1.4022581233$ when taking suprema over Gaussian dimensions, for every complex multiplier; its generic cancellation arithmetic
+ is in Lean, its Gaussian construction and integral bounds are external. At $\epsilon=149/200$ a genuine response
+ gives norm $>0.71329$, excluding $1.402$ for that witness. Explicit ``chirp'' responses prove that games of
  degree $\le5$ cannot exceed $1.4036705$, and of degree $\le7$ cannot exceed $1.4044895$ [P,C].
 \item \textbf{Extending the pattern fails [P,C].} The full alternating game $\sum_{k\ge0}(-1)^kP_{k+1,k}$ has
  $\sup_n\|\cdot\|_{\infty\to1}=1$, attained by explicit unimodular responses (one in complex dimension $308{,}835$ is
@@ -333,8 +338,8 @@ cubic part of the response and $\mathcal N$ for the value of the witness on it.
 
 \section{Why the gap is hard}
 \paragraph{The witness class caps the lower bound.} A game supported on degrees $\{1,3\}$ sees only the cubic constraint on
-roundings. Even a perfect evaluation of the norm of $P_{1,0}-\epsilon P_{2,1}$ cannot certify more than about $1.40226$
-(numerical, best $\epsilon\approx0.756$). Proved obstructions are known for higher degrees: every game of degree $\le5$ is
+roundings. Even a perfect evaluation of the norm of $P_{1,0}-\epsilon P_{2,1}$ cannot certify more than $1.4022581233$
+(the certified family ceiling above). Proved obstructions are known for higher degrees: every game of degree $\le5$ is
 capped at $1.4036705$, and every game of degree $\le7$ at $1.4044895$, both below Haagerup's value. Reaching the upper
 end of the interval therefore needs games of degree $\ge9$; in the real case the certified game uses all odd degrees up to
 $21$.

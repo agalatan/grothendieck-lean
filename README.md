@@ -10,7 +10,7 @@ complex Grothendieck constant:
 The two sharp bounds each rest on one explicitly stated family of externally certified numerical
 inputs; the unconditional bound rests on nothing outside Lean (see below).
 
-**New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an 8-page explanation of the problem, the two
+**New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
 the way, and why the remaining gap is hard.
 
@@ -153,6 +153,13 @@ Every native check is single-threaded code (no `Task.spawn`).
 Everything else is kernel-checked. No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`; the separate caps report is `scratch/AxiomsCaps.lean`.
 
+`Grothe/Research/` adds 13 kernel-checked facts for coupled complex modulus
+majorizers, finite descent and semiconvex chord assembly. They use only the
+three standard axioms above and add no native facts. Gaussian integration,
+response extraction and global covers needed to apply them remain separate
+obligations; neither headline bound nor its hypotheses change. Their scope
+and exact research replays are indexed in [docs/RESEARCH_AUDIT.md](docs/RESEARCH_AUDIT.md).
+
 The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAILS.md).
 
 ## Layout
@@ -163,6 +170,7 @@ The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAI
 | `Grothe/Upper/`, `Grothe/Haagerup/`, `GrotheKernel/` | upper bounds: Haagerup's phase-rounding identity, residual algebra, Hardy tail, kernel composition, interval evaluator and its soundness, head check, final theorem |
 | `Grothe/Lower/` | lower certificate: positivity checks, Stein cuts and law budgets, rows, mixtures, the box cover, the endpoint, the transfer to finite matrices |
 | `Grothe/LowerAnalytic/` | Gaussian analysis: the witness on L²(γ_n), integration by parts, chaos projections, spectral budgets, circular cubics, the Wick multigraph expansion and sixth cumulant, contraction tensors, the fibre potentials and the per-row reduction, `lower_bound_of_nodeCaps` |
+| `Grothe/Research/` | coupled modulus majorizers, finite descent and semiconvex chord arithmetic |
 | `Grothe/Lower/RowData*.lean`, `Grothe/Lower/MixedData.lean`, `Grothe/Upper/Data.lean` | generated certificate data |
 | `tools/` | generators of the data modules and numerical cross-checks |
 | `scratch/Axioms.lean`, `scripts/check_axioms.py` | the axiom report and its check |
@@ -179,7 +187,7 @@ lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py
 ```
 
 A full build takes about 20 minutes on 8 cores; the native checks dominate. CI
-(`.github/workflows/lean.yml`) builds everything on every push to `master`, forbids `sorry`,
+(`.github/workflows/lean.yml`) builds the default target on every pushed branch, forbids `sorry`,
 `axiom`, `implemented_by`, `extern` and `unsafe`, and checks the axiom report.
 
 ## How this was made
