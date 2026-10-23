@@ -209,3 +209,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_H2_XY
 #print axioms Grothe.UpperChaos.Bm_eq_integral
 #print axioms Grothe.UpperChaos.mehler_L2
+#print axioms Grothe.UpperChaos.hasSum_energy_bideg
+#print axioms Grothe.UpperChaos.summable_abs_energy
+#print axioms Grothe.UpperChaos.hasSum_kernel_real
+#print axioms Grothe.UpperChaos.integral_H2_charge_one
+#print axioms Grothe.UpperChaos.energy_eq_zero_of_even

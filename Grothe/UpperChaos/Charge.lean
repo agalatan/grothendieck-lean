@@ -81,32 +81,36 @@ lemma ev_mul_H (z : ℂ) (p q : ℕ) : ev (c * z) (H p q) = c ^ p * conj c ^ q *
 
 omit hc
 
+/-- A unit `c` with `c̄^p c^{q+1} ≠ 1` when `p ≠ q + 1`. -/
+lemma exists_charge_witness {p q : ℕ} (hpq : p ≠ q + 1) :
+    ∃ c : ℂ, ‖c‖ = 1 ∧ conj (c ^ p * conj c ^ q) * c ≠ 1 := by
+  set k : ℤ := (q : ℤ) + 1 - p with hk
+  have hk0 : (k : ℂ) ≠ 0 := by rw [Int.cast_ne_zero]; omega
+  set c : ℂ := Complex.exp (((Real.pi : ℂ) / k) * Complex.I) with hcdef
+  have hc1 : ‖c‖ = 1 := by
+    rw [hcdef, show ((Real.pi : ℂ) / k) * Complex.I = ((Real.pi / k : ℝ) : ℂ) * Complex.I by
+      push_cast; ring]
+    exact Complex.norm_exp_ofReal_mul_I _
+  have hc0 : c ≠ 0 := Complex.exp_ne_zero _
+  have hci : conj c = c⁻¹ := by
+    refine eq_inv_of_mul_eq_one_left ?_
+    rw [← Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_norm_sq, hc1]; simp
+  refine ⟨c, hc1, ?_⟩
+  have hpow : conj (c ^ p * conj c ^ q) * c = c ^ k := by
+    rw [map_mul, map_pow, map_pow, Complex.conj_conj, hci, hk, zpow_sub₀ hc0, zpow_add₀ hc0,
+      zpow_natCast, zpow_natCast, zpow_one, inv_pow]
+    field_simp
+  rw [hpow, hcdef, ← Complex.exp_int_mul,
+    show (k : ℂ) * ((Real.pi : ℂ) / k * Complex.I) = Real.pi * Complex.I by field_simp,
+    Complex.exp_pi_mul_I]
+  norm_num
+
 /-- **Charge selection**: if `G(cz) = c G(z)` for every `|c| = 1`, then `E[conj H_{pq} · G] = 0`
 unless `p = q + 1`. -/
 theorem integral_H_charge_one {G : ℂ → ℂ} (hG : ∀ c z, ‖c‖ = 1 → G (c * z) = c * G z)
     {p q : ℕ} (hpq : p ≠ q + 1) : ∫ z, conj (ev z (H p q)) * G z ∂gaussC = 0 := by
   -- a unit `c` with `c^{q+1} c̄^p ≠ 1`
-  obtain ⟨c, hc1, hcne⟩ : ∃ c : ℂ, ‖c‖ = 1 ∧ conj (c ^ p * conj c ^ q) * c ≠ 1 := by
-    set k : ℤ := (q : ℤ) + 1 - p with hk
-    have hk0 : (k : ℂ) ≠ 0 := by rw [Int.cast_ne_zero]; omega
-    set c : ℂ := Complex.exp (((Real.pi : ℂ) / k) * Complex.I) with hcdef
-    have hc1 : ‖c‖ = 1 := by
-      rw [hcdef, show ((Real.pi : ℂ) / k) * Complex.I = ((Real.pi / k : ℝ) : ℂ) * Complex.I by
-        push_cast; ring]
-      exact Complex.norm_exp_ofReal_mul_I _
-    have hc0 : c ≠ 0 := Complex.exp_ne_zero _
-    have hci : conj c = c⁻¹ := by
-      refine eq_inv_of_mul_eq_one_left ?_
-      rw [← Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_norm_sq, hc1]; simp
-    refine ⟨c, hc1, ?_⟩
-    have hpow : conj (c ^ p * conj c ^ q) * c = c ^ k := by
-      rw [map_mul, map_pow, map_pow, Complex.conj_conj, hci, hk, zpow_sub₀ hc0, zpow_add₀ hc0,
-        zpow_natCast, zpow_natCast, zpow_one, inv_pow]
-      field_simp
-    rw [hpow, hcdef, ← Complex.exp_int_mul,
-      show (k : ℂ) * ((Real.pi : ℂ) / k * Complex.I) = Real.pi * Complex.I by field_simp,
-      Complex.exp_pi_mul_I]
-    norm_num
+  obtain ⟨c, hc1, hcne⟩ := exists_charge_witness hpq
   have hcc : conj c * c = 1 := by
     rw [← Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_norm_sq, hc1]; simp
   have hrot := integral_rot_gaussC c hc1 (fun z => conj (ev z (H p q)) * G z)
