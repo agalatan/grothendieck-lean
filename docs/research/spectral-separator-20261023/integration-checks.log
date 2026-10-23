@@ -1,0 +1,13 @@
+PASS rebase onto GitHub master 9c08e96.
+PASS all nine added Lean module targets; no build warnings.
+PASS 61 additional selected theorem reports; only propext, Classical.choice, Quot.sound.
+PASS exact response-Gram, quadratic-feature, shared-kernel and original-noise controls.
+PASS four exact finite table/cut countermodels and common-Stein corruption controls.
+PASS rational noise prices, spectral front/geometric tail, analytic baselines and corrupted-data rejection.
+PASS exact cubic-phase polynomial ceiling and regenerated Lean source match.
+PASS CI forbidden-proof/threading scan.
+PASS all 140 node-cap source-closure files unchanged from master.
+PASS overview rebuilt as nine pages and visually inspected.
+Full default build and 317-report audit delegated to GitHub CI.
+The separate GrotheCaps target has no verification stamp; its pre-existing status is unchanged.
+Floating response integrals are not certified by these checks; neither endpoint changes.

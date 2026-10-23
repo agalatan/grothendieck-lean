@@ -1,0 +1,218 @@
+[
+  {
+    "scope": "FLOAT full-score screening using the original-noise replica kernel.\n\nNo coefficient fitting: |K(r)-c0*r-c1*r^3|/r^5 is a lower bound for\nthe omitted absolute tail. Consequently the displayed score is an UPPER\nscreen for one response column, never a certified achievable full score.\nIt cannot exclude using this column in a signed mixture with other columns.\nAll numbers here are floating discovery estimates, without error enclosures.\n",
+    "m": 16,
+    "epsilon_used_to_find_response": "priced-noise",
+    "power": 20,
+    "c0_cross_estimate": 0.6641076918811135,
+    "c1_cross_estimate": -0.059434730565128394,
+    "degree_3_head_score_estimate": 0.6046729613159851,
+    "kernels": [
+      {
+        "rho": 0.5,
+        "values": [
+          0.32450631578818656,
+          0.32433818470968256
+        ],
+        "mean": 0.32442225024893456,
+        "tail_lower_screen": 0.006472139871396665,
+        "full_score_upper_screen": 0.5982008214445884
+      },
+      {
+        "rho": 0.7,
+        "values": [
+          0.44246941319467603,
+          0.4423257955163715
+        ],
+        "mean": 0.4423976043555238,
+        "tail_lower_screen": 0.012445215549572371,
+        "full_score_upper_screen": 0.5922277457664128
+      },
+      {
+        "rho": 0.85,
+        "values": [
+          0.5223045433009702,
+          0.5221414138130183
+        ],
+        "mean": 0.5222229785569943,
+        "tail_lower_screen": 0.01300008242214301,
+        "full_score_upper_screen": 0.5916728788938421
+      },
+      {
+        "rho": 0.95,
+        "values": [
+          0.569680912005701,
+          0.5696015371857224
+        ],
+        "mean": 0.5696412245957116,
+        "tail_lower_screen": 0.013315436028131887,
+        "full_score_upper_screen": 0.5913575252878532
+      },
+      {
+        "rho": 1.0,
+        "values": [
+          0.5913884001821291,
+          0.591422552835575
+        ],
+        "mean": 0.5914054765088521,
+        "tail_lower_screen": 0.01326748480713301,
+        "full_score_upper_screen": 0.5914054765088521
+      }
+    ],
+    "full_score_upper_screen": 0.5913575252878532,
+    "images": [
+      [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0011107783999495544,
+          0.0032305053836576927
+        ],
+        [
+          0.014149641062539811,
+          0.00185424635581358
+        ],
+        [
+          0.010256636446122389,
+          -0.00046524894222257473
+        ],
+        [
+          0.4339349761713556,
+          -0.037500484811964455
+        ]
+      ],
+      [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0011107783999495544,
+          0.0032305053836576927
+        ],
+        [
+          0.014149641062539811,
+          0.00185424635581358
+        ],
+        [
+          0.010256636446122389,
+          -0.00046524894222257473
+        ],
+        [
+          -0.4339349761713556,
+          0.037500484811964455
+        ]
+      ]
+    ]
+  },
+  {
+    "scope": "FLOAT full-score screening using the original-noise replica kernel.\n\nNo coefficient fitting: |K(r)-c0*r-c1*r^3|/r^5 is a lower bound for\nthe omitted absolute tail. Consequently the displayed score is an UPPER\nscreen for one response column, never a certified achievable full score.\nIt cannot exclude using this column in a signed mixture with other columns.\nAll numbers here are floating discovery estimates, without error enclosures.\n",
+    "m": 128,
+    "epsilon_used_to_find_response": "priced-noise",
+    "power": 20,
+    "c0_cross_estimate": 0.5873612580845093,
+    "c1_cross_estimate": -0.15523421973989462,
+    "degree_3_head_score_estimate": 0.43212703834461474,
+    "kernels": [
+      {
+        "rho": 0.5,
+        "values": [
+          0.273421812829053,
+          0.27344169192865264
+        ],
+        "mean": 0.2734317523788528,
+        "tail_lower_screen": 0.02702717426928103,
+        "full_score_upper_screen": 0.4050998640753337
+      },
+      {
+        "rho": 0.7,
+        "values": [
+          0.353167260388239,
+          0.3533311703407049
+        ],
+        "mean": 0.35324921536447196,
+        "tail_lower_screen": 0.027716593823411104,
+        "full_score_upper_screen": 0.4044104445212036
+      },
+      {
+        "rho": 0.85,
+        "values": [
+          0.3918191015015926,
+          0.3920165893407107
+        ],
+        "mean": 0.39191784542115166,
+        "tail_lower_screen": 0.027058519279997396,
+        "full_score_upper_screen": 0.4050685190646173
+      },
+      {
+        "rho": 0.95,
+        "values": [
+          0.40466834132967855,
+          0.4046749164580003
+        ],
+        "mean": 0.40467162889383945,
+        "tail_lower_screen": 0.026141283865567334,
+        "full_score_upper_screen": 0.4059857544790474
+      },
+      {
+        "rho": 1.0,
+        "values": [
+          0.4067325751412436,
+          0.406740173580572
+        ],
+        "mean": 0.4067363743609078,
+        "tail_lower_screen": 0.0253906639837069,
+        "full_score_upper_screen": 0.4067363743609078
+      }
+    ],
+    "full_score_upper_screen": 0.4044104445212036,
+    "images": [
+      [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          -0.012375274558414669,
+          0.00011456067236011615
+        ],
+        [
+          -0.031586362143890385,
+          0.005454354721100689
+        ],
+        [
+          0.021872720039815156,
+          0.0026323338156671247
+        ],
+        [
+          0.5850476782544788,
+          -0.00315897924316552
+        ]
+      ],
+      [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          -0.012375274558414669,
+          0.00011456067236011615
+        ],
+        [
+          -0.031586362143890385,
+          0.005454354721100689
+        ],
+        [
+          0.021872720039815156,
+          0.0026323338156671247
+        ],
+        [
+          -0.5850476782544788,
+          0.00315897924316552
+        ]
+      ]
+    ]
+  }
+]

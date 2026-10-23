@@ -1,0 +1,4 @@
+PASS exact joint state: 2 five-mode Gram; shared quadratic moments; independent and first-grade surrogates rejected
+PASS exact joint state: 4 five-mode Gram; shared quadratic moments; independent and first-grade surrogates rejected
+PASS exact joint state: 16 five-mode Gram; shared quadratic moments; independent and first-grade surrogates rejected
+PASS exact joint state: 128 five-mode Gram; shared quadratic moments; independent and first-grade surrogates rejected

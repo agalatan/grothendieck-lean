@@ -1,0 +1,158 @@
+[
+  {
+    "scope": "FLOAT adversary search against a finite-pool physical-kernel price.\n\nThe price defines an admissible all-level witness; its global norm is unknown.\nThis searches only reflected five-mode phase pairs. A newly found high-payoff\ncolumn must return to the upper-pool screen with its original-noise kernel.\nNo integral enclosure or endpoint is produced by this discovery tool.\n",
+    "m": 16,
+    "epsilon": "priced-noise",
+    "fit_power": 17,
+    "image_coefficients": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        0.0011107783999495544,
+        0.0032305053836576927
+      ],
+      [
+        0.014149641062539811,
+        0.00185424635581358
+      ],
+      [
+        0.010256636446122389,
+        -0.00046524894222257473
+      ],
+      [
+        0.4339349761713556,
+        -0.037500484811964455
+      ]
+    ],
+    "two_branch_images": [
+      [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0011107783999495544,
+          0.0032305053836576927
+        ],
+        [
+          0.014149641062539811,
+          0.00185424635581358
+        ],
+        [
+          0.010256636446122389,
+          -0.00046524894222257473
+        ],
+        [
+          0.4339349761713556,
+          -0.037500484811964455
+        ]
+      ],
+      [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0011107783999495544,
+          0.0032305053836576927
+        ],
+        [
+          0.014149641062539811,
+          0.00185424635581358
+        ],
+        [
+          0.010256636446122389,
+          -0.00046524894222257473
+        ],
+        [
+          -0.4339349761713556,
+          0.037500484811964455
+        ]
+      ]
+    ],
+    "fit_priced_payoff": 0.7158769758686767,
+    "fit_success": true,
+    "fit_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+    "fit_gradient_max": 2745.112279301564
+  },
+  {
+    "scope": "FLOAT adversary search against a finite-pool physical-kernel price.\n\nThe price defines an admissible all-level witness; its global norm is unknown.\nThis searches only reflected five-mode phase pairs. A newly found high-payoff\ncolumn must return to the upper-pool screen with its original-noise kernel.\nNo integral enclosure or endpoint is produced by this discovery tool.\n",
+    "m": 128,
+    "epsilon": "priced-noise",
+    "fit_power": 17,
+    "image_coefficients": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        -0.012375274558414669,
+        0.00011456067236011615
+      ],
+      [
+        -0.031586362143890385,
+        0.005454354721100689
+      ],
+      [
+        0.021872720039815156,
+        0.0026323338156671247
+      ],
+      [
+        0.5850476782544788,
+        -0.00315897924316552
+      ]
+    ],
+    "two_branch_images": [
+      [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          -0.012375274558414669,
+          0.00011456067236011615
+        ],
+        [
+          -0.031586362143890385,
+          0.005454354721100689
+        ],
+        [
+          0.021872720039815156,
+          0.0026323338156671247
+        ],
+        [
+          0.5850476782544788,
+          -0.00315897924316552
+        ]
+      ],
+      [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          -0.012375274558414669,
+          0.00011456067236011615
+        ],
+        [
+          -0.031586362143890385,
+          0.005454354721100689
+        ],
+        [
+          0.021872720039815156,
+          0.0026323338156671247
+        ],
+        [
+          -0.5850476782544788,
+          0.00315897924316552
+        ]
+      ]
+    ],
+    "fit_priced_payoff": 0.7190157897408425,
+    "fit_success": true,
+    "fit_message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+    "fit_gradient_max": 1.6093400771222497
+  }
+]

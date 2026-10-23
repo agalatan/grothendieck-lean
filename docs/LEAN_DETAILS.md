@@ -13,14 +13,85 @@ The analytic Gaussian random-restriction/spherical harmonic bridge is a paper pr
 neither that bridge nor a numerical spherical norm cap is proved by this module.
 It introduces no hypothesis into either existing endpoint and changes neither bound.
 
+**Binding-relaxation audit.** `Grothe/Lower/PrimalAudit.lean` proves finite
+primal-versus-dual separation for a fixed table and cut bank: nonnegative atom
+weights satisfying the cuts force every pointwise dual majorant to cost at least
+the primal score. Both theorems are kernel-checked without numerical axioms.
+The four concrete atomic laws in [the binding audit](BINDING_AUDIT_2026-10-23.md)
+are checked externally with exact rational arithmetic; this module does not
+formalize their numerical data, realize them as Gaussian cubics, or change an endpoint.
+
+**Joint response Gram lift.** `Grothe/LowerAnalytic/ResponseGram.lean` proves
+the shared residual Gram interval for nested orthogonal projections, a sharp
+scalar cross-coefficient interval using an orthogonal reflection, elimination
+of all scalar completions, factored PSD prices, finite moment-support assembly,
+pointwise weighted alignment, a modulus cutoff error, cross-inner-product
+perturbation, exact scalar disc support and attainment, and explicit
+near-maximizer price accounting, and the complex two-disc dual price bound.
+Its sixteen theorems use only standard axioms.
+`Grothe/LowerAnalytic/TwoDisc.lean` adds seven theorems: exact factored-slack
+soundness, the universal factored support bound, four sharp local support
+bounds, and attainment of all four. `Grothe/LowerAnalytic/QuadraticFeatures.lean`
+adds the finite Wick decomposition, Hilbert-space probe closure, and two rational
+remainder budgets for centered and affine quadratic features. All eleven new
+theorems also use only standard axioms. The general SDP rank-one argument,
+Gaussian response application and modified bilinear-operator
+interface are written proofs in [the lift report](JOINT_RESPONSE_LIFT_2026-10-23.md).
+The droplet diagnostics are floating-point exploration, not numerical data
+theorems. This module does not establish a uniform lifted norm cap or alter
+either endpoint.
+
+**Common Stein kernels.** `Grothe/Lower/SteinFusion.lean` adds six results:
+the exact perspective variance identity, its fusion inequality, the unit-price
+fusion identity and inequality, the specialization to the existing spectral-cut
+cell formula (including zero), and simultaneous orthogonal projection of both
+kernels preserving every retained moment while decreasing both norms.
+The universal merged-cut expectation remains an application of the existing
+`Grothe.Lower.spec_of_inputs`. The finite-feature Schur equivalence and the
+genuine-cubic floor for every convex mixture of the nineteen frozen tables
+are paper proofs with external exact/directed checks, as recorded in
+[the common-kernel reassessment](COMMON_STEIN_REASSESSMENT_2026-10-23.md).
+The table floor is not a lower bound on the original witness norm.
+
+**Original-noise replica and full-tail screen.**
+`Grothe/LowerAnalytic/ReplicaState.lean` proves seven results: the two-coordinate
+Gram realization (five identities/inequalities), the exact gap produced by
+giving a distributional Gaussian coordinate the wrong chaos grade, and its
+strictness. `Grothe/Upper/KernelScreen.lean` proves the absolute weighted-tail
+bound, the necessary single-kernel full-score bound, the finite priced
+screen, and the all-index admissibility of its induced witness multipliers.
+The screen is affine in response columns, so common prices can screen
+their mixtures before tail coefficients are recovered. These eleven results use
+only standard axioms. The invariant-space classification, original Gaussian
+conditioning, and extraction of the mixed Hermite coefficients are written
+arguments, not formalized here. Numerical integral values are not Lean inputs
+and no new endpoint follows. See [the replica report](SYMMETRIC_RESPONSE_REPLICAS_2026-10-23.md).
+
+**Common signed-tail prices and cubic Gaussian-phase separator.**
+`Grothe/Upper/SpectralScreen.lean` adds five results: a finite front/geometric
+tail certificate for all indices, pricing the common signed tail before taking
+absolute values, the resulting full-score inequality, affine enclosure errors,
+and assembly over finite response mixtures. `Grothe/Upper/CubicPhaseScreen.lean`
+adds ten public results checking the two positive triangle polynomials, the
+complex-phase modulus comparison, a degree-seven scalar polynomial cap, and
+the full-score implication from the explicit low-coefficient identity.
+These results use only standard axioms, without new native facts. The complete
+Gaussian-family application and coefficient extraction remain written analytic
+steps. No numerical response integral is certified by these modules. See
+[the separator report](CUBIC_PHASE_SEPARATOR_2026-10-23.md).
+
 
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
-**Upper bound.** `Grothe.fresh_upper : DirectHyps E EX → IsGrothendieckBound (500000000000000000/355973576656604491)`,
-and `Grothe.upper_value_lt` shows this is below 1.404598635371 (`Grothe/Upper/PolynomialBridge.lean`).
+**Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder` proves
+`IsGrothendieckBound (500000000000000000/355973576656604491)` for the concrete
+rounding from its three numerical inputs `compare`, `energy_close`, and `hardy`
+(`Grothe/UpperChaos/PhiBound.lean`). `Grothe.upper_value_lt` places this below
+1.404598635371. The generic table interface remains `Grothe.fresh_upper` with
+`DirectHyps E EX` in `Grothe/Upper/PolynomialBridge.lean`.
 Here E and EX are the energy tables of the rounding T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6
-(disk-valued, since |P₃(x)|² = 1 − x⁴(3 − x²)/36 ≤ 1 for |φ| < 1), and of its polynomial
+(disk-valued, since |P₃(x)|² = 1 − x⁴(3 − x²)/36 ≤ 1 for φ² ≤ 3), and of its polynomial
 truncation X = F₀ + v. The kernel is H(t) = Σ E[n,m] p(t)ⁿ(−τ(t))ᵐ with the preprocessors
 p(t) = t·P(t²) (`pList`, degree 41) and τ(t) = αt³ + βt⁷ (`qList`), both of Wiener norm ≤ 1, so
 that both are realised by tensor powers (`Grothe/Upper/Realise.lean`); they do not enter the
@@ -33,9 +104,13 @@ energies, and are chosen to make the kernel nearly linear. The slope is c = 1779
   fixed-point interval checker (`GrotheKernel/`, soundness in
   `Grothe/Upper/IntervalSound.lean`); the tail bound by Cauchy–Schwarz from a weighted
   square-sum bound; the assembly of the budgets; and the endpoint arithmetic.
-* Explicit hypotheses (fields of `DirectHyps E EX`, not formalized): `valid` (the kernel of E is
+* Structural fields of the generic `DirectHyps E EX` interface, now derived
+  for the concrete rounding in `Grothe/UpperChaos/`: `valid` (the kernel of E is
   the dominated correlation kernel of the smoothed rounding T); `summable`, `summableX`,
-  `parityX` (summability of both tables, odd total degrees of EX); `compare`:
+  `parityX` (summability of both tables, odd total degrees of EX). The proofs
+  include the complex Hermite basis, completeness, Parseval, Mehler, charge
+  selection, measurability, and the phase cover `phiBound`.
+* Remaining numerical hypotheses: `compare`:
   Σ|E − EX| ≤ 1065637497/10¹⁵ (the energy-difference / mixed-cutoff inequality applied directly
   to T − X with Hermite cutoffs 181, 91, 51, the bound |φ| < 1, a Bargmann Hilbert–Schmidt
   estimate, directed coefficient enclosures and the exact norm ‖v‖ < 1/100; the source value is
@@ -118,8 +193,16 @@ and the gates E ⪰ 0, E ⪰ diag(−1,ε,ε), R ⪰ diag(−1,ε), R ⪰ diag(�
 inequality give each row inequality with the residual p = Π_{H₂,₁}c₀, its circular law and the gate
 variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
 `lower_bound_of_nodeCaps : NodeCaps → IsGrothendieckBound K → Llow < K` composes everything:
-**the only remaining hypothesis of the lower bound is `NodeCaps`**, the node caps
+**the default target retains the hypothesis `NodeCaps`**, the node caps
 Ψ_r(r_k) − 10⁻¹¹ ≤ c_k of the 19 certified potentials (exact-arithmetic certificates outside Lean).
+The cap-checker machinery is now formalized, including node majorants, polar
+integration, interval tables and Loewner/LDL checks. The separate target
+`GrotheCaps` derives `lower_bound_of_capsRest` from the localized central rows
+via 60 heavy range checks. These checks require independent execution and a
+recorded source stamp; they are not run in the default CI target. The remaining
+localized rows are 0.84, 0.845, 0.85 and 0.855. See `docs/CAPS_STATUS.md` and
+`docs/CAPS_M_STATUS.md` for the verification status, rather than treating the
+presence of generated range facts as a completed heavy build.
 
 * Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
   (trailing gate block positive definite, κδ² ≤ δ + gatePrice); the Stein cuts (summed, spectral and general spectral) from their analytic inputs, by completions of squares,
@@ -269,13 +352,17 @@ variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
   4‖Π₁,₁|q|²‖² + 2‖Π₂,₀q²‖² ≤ 3κ, and the weighted bound on the first-chaos content of q|q|²
   along any direction by the influence of that direction.
 
-Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus 15 `native_decide` facts:
+Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the pinned `native_decide` facts:
 `Grothe.head_check` (the upper head), `Grothe.haagerup_check` (the 4,000-term series check of the
 unconditional upper bound `Grothe.haagerup_bound`) and the 13 chunks `Grothe.Lower.certRows0`–`4`,
 `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower certificate (assembled into
-`Grothe.Lower.cert_check`). Every native check is single-threaded (no `Task.spawn`). All
+`Grothe.Lower.cert_check`), the upper phase-cover check `phi_cover_check`, and
+the cap chord/range checks listed in `scripts/check_axioms.py` (the heavy
+range checks belong to the separate target). Every native check is
+single-threaded (no `Task.spawn`). All
 other finite computations (the polynomial norms, the moment covers) are kernel-checked
-(`decide +kernel`). The report is `lake env lean scratch/Axioms.lean`, checked in CI. No `sorry`,
+(`decide +kernel`). The 317-report default audit is
+`lake env lean scratch/Axioms.lean`, checked in CI. No `sorry`,
 no warnings.
 
 
