@@ -2852,4 +2852,10 @@ def capRowsData : List (Nat × List (Nat × Nat × String) × List Nat) := [
   (18, capRecipes18, [])
 ]
 
+/-- The two grids: 400 rings × 128 angular cells and 1600 × 256 on `[0, 8]`. -/
+def capGrids : List (Nat × Nat × Rat) := [(400, 128, 1 / 50), (1600, 256, 1 / 200)]
+
+/-- The excluded nodes of row `k`. -/
+def capExcl (k : Nat) : List Nat := ((capRowsData.lookup k).map (·.2)).getD []
+
 end Grothe.LowerAnalytic

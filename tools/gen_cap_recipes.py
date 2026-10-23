@@ -49,6 +49,10 @@ lines.append("def capRowsData : List (Nat × List (Nat × Nat × String) × List
 lines.append(",\n".join(f"  ({k}, capRecipes{k:02d}, [{', '.join(map(str, excl[k]))}])" for k in sorted(rows)))
 lines.append("]")
 lines.append("")
+lines += ["/-- The two grids: 400 rings × 128 angular cells and 1600 × 256 on `[0, 8]`. -/",
+          "def capGrids : List (Nat × Nat × Rat) := [(400, 128, 1 / 50), (1600, 256, 1 / 200)]", "",
+          "/-- The excluded nodes of row `k`. -/",
+          "def capExcl (k : Nat) : List Nat := ((capRowsData.lookup k).map (·.2)).getD []", ""]
 lines += ["end Grothe.LowerAnalytic", ""]
 OUT.write_text("\n".join(lines))
 print(f"wrote {OUT}: rows {sorted(rows)}, {sum(len(v) for v in rows.values())} recipes")

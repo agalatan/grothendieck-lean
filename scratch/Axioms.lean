@@ -154,6 +154,5 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.tablesOK_mk
 #print axioms Grothe.LowerAnalytic.Tint_grid
 #print axioms Grothe.LowerAnalytic.integral_gaussC_polar
-#print axioms Grothe.LowerAnalytic.vertexCapsRow_of_rowOK
-#print axioms Grothe.LowerAnalytic.capRows_check
+#print axioms Grothe.LowerAnalytic.nodeCap_of_rangeOK
 #print axioms Grothe.LowerAnalytic.lower_bound_of_capsRest
