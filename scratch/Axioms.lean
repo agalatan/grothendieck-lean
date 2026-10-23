@@ -219,3 +219,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.rounding_diskKernel
 #print axioms Grothe.UpperChaos.structural_fields
 #print axioms Grothe.UpperChaos.fresh_upper_of_rounding
+#print axioms Grothe.UpperChaos.measurable_GT
+#print axioms Grothe.UpperChaos.norm_GT_le
+#print axioms Grothe.UpperChaos.GT_rot2
+#print axioms Grothe.UpperChaos.memLp_GT
+#print axioms Grothe.UpperChaos.fresh_upper_concrete
