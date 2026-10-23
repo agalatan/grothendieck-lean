@@ -131,3 +131,4 @@ import Grothe.LowerAnalytic.CapTablesMk
 import Grothe.LowerAnalytic.CapRecipeData
 import Grothe.LowerAnalytic.CapRows
 import Grothe.LowerAnalytic.CapNodes
+import Grothe.LowerAnalytic.CapPieceNodes
