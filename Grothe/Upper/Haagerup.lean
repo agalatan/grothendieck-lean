@@ -4,7 +4,7 @@ import Grothe.Upper.Residual
 import GrotheKernel.Haagerup
 
 /-!
-# Haagerup's phase rounding with a cubic preprocessor
+# Haagerup's phase rounding with a degree-seven preprocessor
 
 Haagerup's rounding `ε = phase⟪g, x⟫` (`g` a standard complex Gaussian vector) has the kernel
 
@@ -12,13 +12,14 @@ Haagerup's rounding `ε = phase⟪g, x⟫` (`g` a standard complex Gaussian vect
 
 (`haagCoeff`, `haagR`: `r_0 = 1`, `r_{k+1} = r_k (2k+1)²/(4(k+1)(k+2))`).  This file proves
 that **if this kernel is dominated** (Haagerup's identity: it is the correlation kernel of the
-phase rounding), then `K_G^ℂ ≤ 1.40578` (`haagerup_upper`).
+phase rounding), then `K_G^ℂ ≤ 1.405364` (`haagerup_upper`).
 
-The preprocessor is `p(t) = a t − b t³` (`haagP`, `a = 0.9068`, `b = 0.09319996`, `‖p‖_𝒜 < 1`) and
+The preprocessor is `p(t) = .90642006 t − .09308903 t³ − .00049091 t⁷`
+(`haagP`, `‖p‖_𝒜 = 1`) and
 the kernel after preprocessing is `compCoeff haagCoeff haagP` (`Compose.lean`).  The residual
 against `s = (π/4) a` splits as
 
-* the terms `k < K = 4000`: a polynomial of degree `< 3K`, whose residual `≤ (π/4) · cap` is
+* the terms `k < K = 2000`: a radial polynomial of degree `< 7K`, whose residual `≤ (π/4) · cap` is
   certified by the Horner interval evaluation `haagCheck` (`haagerup_check`, `native_decide`);
 * the terms `k ≥ K`: by the `ℓ¹` contraction at most `Σ_{k≥K} c_k ≤ (π/4) g_K/(2K)`, where
   `g_k = r_k (k+1)(2k+1)` is nonincreasing (`haagG_antitone`: `(2k+1)(2k+3) ≤ 4(k+1)²`), so
@@ -260,33 +261,34 @@ lemma natDegree_ofListQ_le : ∀ l : List ℚ, (ofListQ l).natDegree ≤ l.lengt
     simp only [List.length_cons] at ih ⊢
     omega
 
-lemma coeff_compTerm_eq_zero {P : ℝ[X]} (hP : P.natDegree ≤ 1) {k n : ℕ} (hn : 3 * k + 1 < n) :
+lemma coeff_compTerm_eq_zero {P : ℝ[X]} {d : ℕ} (hP : P.natDegree ≤ d)
+    {k n : ℕ} (hn : k + (2 * k + 1) * d < n) :
     (compTerm P k).coeff n = 0 := by
   apply coeff_eq_zero_of_natDegree_lt
   refine lt_of_le_of_lt (natDegree_mul_le) ?_
   have h1 : (X ^ k : ℝ[X]).natDegree ≤ k := natDegree_X_pow_le k
-  have h2 : (P ^ (2 * k + 1)).natDegree ≤ (2 * k + 1) * 1 :=
+  have h2 : (P ^ (2 * k + 1)).natDegree ≤ (2 * k + 1) * d :=
     (natDegree_pow_le).trans (Nat.mul_le_mul_left _ hP)
   omega
 
 /-! ### The data -/
 
-/-- The preprocessor `P = a − bX`, `p(t) = a t − b t³`. -/
-def haagPl : List ℚ := [2267 / 2500, -9319996 / 100000000]
+/-- The preprocessor `P = a − bX − cX³`, `p(t) = a t − b t³ − c t⁷`. -/
+def haagPl : List ℚ := [90642006 / 100000000, -9308903 / 100000000, 0, -49091 / 100000000]
 
 /-- The number of exact terms. -/
-def haagK : ℕ := 4000
+def haagK : ℕ := 2000
 
 /-- The certified residual cap of the finite part (in units of `π/4`). -/
-def haagCap : ℚ := 9990056 / 10000000000
+def haagCap : ℚ := 275 / 1000000
 
 /-- The tail constant: `g_K ≤ haagGam`. -/
-def haagGam : ℚ := 63665956 / 100000000
+def haagGam : ℚ := 637 / 1000
 
 /-- **The finite computation** (by `native_decide`): the residual of
-`Σ_{k<4000} r_k p(t)^{2k+1}` against `a·t` is at most `haagCap`, and `g_{4000} ≤ haagGam`. -/
+`Σ_{k<2000} r_k p(t)^{2k+1}` against `a·t` is at most `haagCap`, and `g_{2000} ≤ haagGam`. -/
 theorem haagerup_check :
-    haagCheck 12000 haagPl haagK (2267 / 2500) haagCap haagGam = true := by
+    haagCheck 14000 haagPl haagK (90642006 / 100000000) haagCap haagGam = true := by
   native_decide
 
 noncomputable def haagP : ℝ[X] := ofListQ haagPl
@@ -294,7 +296,7 @@ noncomputable def haagP : ℝ[X] := ofListQ haagPl
 lemma l1_haagP : l1 haagP ≤ 1 :=
   (l1_ofListQ_le haagPl).trans (by norm_num [haagPl])
 
-lemma natDegree_haagP : haagP.natDegree ≤ 1 := by
+lemma natDegree_haagP : haagP.natDegree ≤ 3 := by
   have := natDegree_ofListQ_le haagPl
   simpa [haagP, haagPl] using this
 
@@ -324,7 +326,7 @@ lemma compCoeff_cLo (n : ℕ) :
 
 /-- **The residual of the preprocessed Haagerup kernel.** -/
 theorem haagerup_residual :
-    |compCoeff haagCoeff haagP 0 - Real.pi / 4 * (2267 / 2500 : ℚ)|
+    |compCoeff haagCoeff haagP 0 - Real.pi / 4 * (90642006 / 100000000 : ℚ)|
         + ∑' n, |compCoeff haagCoeff haagP (n + 1)|
       ≤ Real.pi / 4 * ((haagCap : ℝ) + (haagGam : ℝ) / (2 * haagK)) := by
   have hc := haagerup_check
@@ -340,12 +342,12 @@ theorem haagerup_residual :
   have hd : Summable fun n => |compCoeff haagCoeff haagP n - compCoeff (cLo haagK) haagP n| := by
     simpa only [hadd, add_sub_cancel_left] using summable_abs_compCoeff (summable_cHi haagK) l1_haagP
   have h1 := residual_perturb' (compCoeff haagCoeff haagP) (compCoeff (cLo haagK) haagP) hsLo hd
-    (Real.pi / 4 * (2267 / 2500 : ℚ))
+    (Real.pi / 4 * (90642006 / 100000000 : ℚ))
   -- the finite part
-  have hfin : |compCoeff (cLo haagK) haagP 0 - Real.pi / 4 * (2267 / 2500 : ℚ)|
+  have hfin : |compCoeff (cLo haagK) haagP 0 - Real.pi / 4 * (90642006 / 100000000 : ℚ)|
       + ∑' n, |compCoeff (cLo haagK) haagP (n + 1)| ≤ Real.pi / 4 * haagCap := by
-    rw [residual_split _ hsLo _ 11999]
-    have htail : ∑' n, |compCoeff (cLo haagK) haagP (n + (11999 + 1))| = 0 := by
+    rw [residual_split _ hsLo _ 13999]
+    have htail : ∑' n, |compCoeff (cLo haagK) haagP (n + (13999 + 1))| = 0 := by
       refine (tsum_congr fun n => ?_).trans tsum_zero
       rw [compCoeff_cLo, hornerP_eq]
       rw [mul_sum, finsetSum_coeff]
@@ -361,14 +363,14 @@ theorem haagerup_residual :
     rw [htail, add_zero]
     have hchk := haag_le_of_check hres
     have e : ∀ n, |compCoeff (cLo haagK) haagP n
-        - if n = 0 then Real.pi / 4 * ((2267 / 2500 : ℚ) : ℝ) else 0|
+        - if n = 0 then Real.pi / 4 * ((90642006 / 100000000 : ℚ) : ℝ) else 0|
         = Real.pi / 4 * |(haagP * hornerP (X * haagP ^ 2) (haagList haagK)).coeff n
-          - if n = 0 then ((2267 / 2500 : ℚ) : ℝ) else 0| := fun n => by
+          - if n = 0 then ((90642006 / 100000000 : ℚ) : ℝ) else 0| := fun n => by
       rw [compCoeff_cLo, ← abs_of_pos (show 0 < Real.pi / 4 by positivity), ← abs_mul,
         abs_of_pos (show 0 < Real.pi / 4 by positivity)]
       congr 1
       split_ifs <;> ring
-    rw [show (11999 + 1 : ℕ) = 12000 from rfl]
+    rw [show (13999 + 1 : ℕ) = 14000 from rfl]
     have hPdef : ofListQ haagPl = haagP := rfl
     rw [hPdef] at hchk
     simp only [e, ← mul_sum]
@@ -389,16 +391,16 @@ theorem haagerup_residual :
     gcongr
   linarith
 
-/-- **Haagerup's rounding gives `K_G^ℂ ≤ 1.40578`**, provided its kernel is dominated.
+/-- **Haagerup's rounding gives `K_G^ℂ ≤ 1.405364`**, provided its kernel is dominated.
 
 The hypothesis `hH` is Haagerup's identity: for unit vectors with `⟪x, y⟫ = z`,
 `𝔼[conj(phase⟪g, x⟫) · phase⟪g, y⟫] = Σ_k c_k z|z|^{2k}` (which makes `radialKernel haagCoeff`
 valid, hence dominated); see `handoff/research-third-decimal/PLAN_UPPER.md` §3.3. -/
 theorem haagerup_upper (hH : DominatedKernel (radialKernel haagCoeff)) :
-    IsGrothendieckBound (140578 / 100000) := by
+    IsGrothendieckBound (351341 / 250000) := by
   have hpi := Real.pi_gt_d6
   have hδ : Real.pi / 4 * ((haagCap : ℝ) + (haagGam : ℝ) / (2 * haagK))
-      < Real.pi / 4 * (2267 / 2500 : ℚ) := by
+      < Real.pi / 4 * (90642006 / 100000000 : ℚ) := by
     apply mul_lt_mul_of_pos_left _ (by positivity)
     norm_num [haagCap, haagGam, haagK]
   refine (transfer_comp summable_haagCoeff hH l1_haagP hδ haagerup_residual).mono ?_
