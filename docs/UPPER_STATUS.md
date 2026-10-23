@@ -42,13 +42,18 @@ certificate: `handoff/upper-residual/phi-cover/phi_cover_exact.py` (python-flint
 shifts + arb; run on the droplet `~/grothe-cx/venv/bin/python phi_cover_exact.py phase.json 98/100 8`),
 log `phi_cover_exact.log` in the same folder.  Model per box: exact Taylor shift of S, first-order
 model of the exponential (`P1 = S(1 − ε(hU+hV))` exact, remainder `(ε rs)²/2 e^{ε rs}`), quadratic bound for
-UV − W², arb for exp.  Result: see §2a (filled in when the run finishes).
+UV − W², arb for exp.
+
+**§2a Result (2026-10-23): |φ| < 0.98995 everywhere.** U+V < 60: φ² < 0.98 on all 149,433 leaves
+(296,888 evaluated boxes, max leaf bound 0.979999754, 3115 s on 8 processes); U+V ≥ 60: |φ| ≤ 0.0559.
+The script, log and README are in `handoff/upper-residual/phi-cover/` (git-ignored; the main checkout of
+the user's laptop) — the script is reproduced verbatim in `tools/phi_cover_exact.py` on this branch.
 
 Proposed Lean version (not built): same structure as `PhiCheck` with `leafOK` replaced by the
 first-order exponential model; needs a tight rational upper bound of `e^{−x}` at non-integer x (Taylor
 sum lower bound `e^{x} ≥ Σ_{k≤K} x^k/k!` with K ≈ 2x+20, or a table of `e^{−j/64}` enclosures) and of
-`e^{y}` for small y (`e^y ≤ 1/(1−y)`). ~2·10⁵ leaves × ~10 ms ⇒ ~35 min native; split by the first 3
-bisection levels into 8 modules / 8 native facts of ~4–5 min each (no Task.spawn).
+`e^{y}` for small y (`e^y ≤ 1/(1−y)`). ~1.5·10⁵ leaves × ~10 ms ⇒ ~25 min native; split by the first 3
+bisection levels into 8 modules / 8 native facts of ~3 min each (no Task.spawn).
 
 ## 3. `hardy` (N4) — plan and progress
 
@@ -68,7 +73,8 @@ Lean route (detailed in PLAN_UPPER.md §6f):
 2. Parseval on the circle: `Σ |h_j|² r^{2(2j+1)} = (1/2π)∫|H(re^{iθ})|² dθ`.
 3. Gaussian Schur lemma `|H(R)|² ≤ 1/[64 j⁴ |det(I−R²)|² det Z det W]` (operator norm of the kernel on L²).
 4. Precompiled checker over the arcs (rational enclosures of cos/sin, 2×2 matrix arithmetic).
-Progress: none in Lean yet (this session ran out of budget after the cover); start with 1(a).
+Progress: `Grothe/UpperChaos/HardyKernel.lean` fixes the definitions (`Sym2C`, `detIm`, `Amat`, `Cmat`,
+`kExp`, `kHol`, `Hhol`, `Rt`); nothing proved about them yet. Next: 1(a) integrability and holomorphy.
 
 ## 4. Other open items
 
