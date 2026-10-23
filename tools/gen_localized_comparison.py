@@ -10,6 +10,9 @@ import hashlib
 import json
 from math import factorial, isqrt
 from pathlib import Path
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+from head_weights import Weights
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -30,9 +33,9 @@ def main(check=False):
     raw={k:d[k] for k in ['profileQ','aQ','bQ','etaQ','phaseEpsQ','phase']}
     raw_hash=hashlib.sha256(json.dumps(raw,sort_keys=True,separators=(',',':')).encode()).hexdigest()
     assert raw_hash=='420f677e6cf18e8c74fb7fce89c74b58f64676031f8c788ce36543e116753af7'
-    bands=[];rounding=Q(j['rounding_error']);assert rounding<Q(1,10**18)
+    weights=Weights(d['pList'],d['qList']);bands=[];rounding=Q(j['rounding_error']);assert rounding<Q(1,10**18)
     def add(lo,hi,eps,origin):
-        mass=sum(v for n,m,v in entries if lo<n+m and (hi==0 or n+m<=hi))
+        mass=sum(v*weights(n,m)**2 for n,m,v in entries if lo<n+m and (hi==0 or n+m<=hi))
         cap=sqrt_up(mass+Q(d['energyErrQ']))
         bands.append(dict(lo=lo,hi=hi,error=str(ceil_grid(eps,10**18)),norm=str(cap),origin=origin))
     add(0,0,Q(1,10**18),'frozen-vector rounding')
@@ -53,9 +56,12 @@ def main(check=False):
                 delta=str(delta),score=str(score),bound=str(bound),headline=f'{float(headline):.12f}',
                 source_sha256=hashlib.sha256(src.read_bytes()).hexdigest(),
                 rounder_source_sha256=raw_hash,
+                weight_method='128-bit outward interval costs, 21 unshifted coefficients; unit cost otherwise',
+                weight_script_sha256=hashlib.sha256((ROOT/'tools/head_weights.py').read_bytes()).hexdigest(),
                 energy_source_sha256=hashlib.sha256(json.dumps({'energies':d['energies'],
+                    'pList':d['pList'],'qList':d['qList'],
                     'energyErrQ':d['energyErrQ']},sort_keys=True,separators=(',',':')).encode()).hexdigest(),
-                scope='Finite selected-block comparison; inherited Gaussian component-error inputs.')
+                scope='Weighted finite selected-block comparison; unchanged inherited Gaussian component-error inputs.')
     recipe_path=ROOT/'data/localized-comparison/recipe.json'
     recipe_text=json.dumps(recipe,indent=2)+'\n'
     if check:assert recipe_path.read_text()==recipe_text
@@ -70,8 +76,18 @@ def main(check=False):
     lines.append(f'def compareQ : ℚ := {rat(cap)}\n')
     lines.append('end Grothe.Upper\n')
     lean_path=ROOT/'Grothe/Upper/ComparisonData.lean'
-    if check:assert lean_path.read_text()=='\n'.join(lines)
-    else:lean_path.write_text('\n'.join(lines))
+    if check:
+        assert lean_path.read_text()=='\n'.join(lines)
+        for key,value in dict(compare=str(cap),delta=str(delta),incumbent_score=str(score),
+                exact_bound=str(bound),headline_upper=str(headline),headline_decimal=recipe['headline'],
+                localized_recipe_sha256=hashlib.sha256(recipe_text.encode()).hexdigest()).items():
+            assert d[key]==value,(key,d[key],value)
+    else:
+        lean_path.write_text('\n'.join(lines))
+        d.update(compare=str(cap),delta=str(delta),incumbent_score=str(score),
+                 exact_bound=str(bound),headline_upper=str(headline),headline_decimal=recipe['headline'],
+                 localized_recipe_sha256=hashlib.sha256(recipe_text.encode()).hexdigest())
+        p.write_text(json.dumps(d,indent=2)+'\n')
     print('Comparison',float(cap),'pieces',len(bands),'upper',recipe['headline'],flush=True)
     return recipe
 

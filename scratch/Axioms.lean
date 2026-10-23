@@ -411,3 +411,8 @@ import Grothe
 #print axioms Grothe.HaagerupPower.finite_identity
 #print axioms Grothe.HaagerupPower.exact_upper
 #print axioms Grothe.HaagerupPower.value_lt
+
+#print axioms Grothe.Upper.headWeight_sound
+#print axioms Grothe.Upper.comparisonWeight_sound
+#print axioms Grothe.Upper.head_residual_le_weighted
+#print axioms Grothe.Upper.BandComparison.weighted_compare

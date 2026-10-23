@@ -157,6 +157,42 @@ theorem head_perturbation (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (S 
         mul_le_of_le_one_right (abs_nonneg _)
           ((sum_abs_coeff_le_l1 _ _).trans (l1_termOf_le_one hP hQ p))
 
+/-- The coefficient cost of each block can be retained in the perturbation
+bound. The same finite kernel head is used on both sides. -/
+theorem head_perturbation_weighted (P Q : ℝ[X]) (S : Finset (ℕ × ℕ))
+    (μ ν : ℕ × ℕ → ℝ) (K : ℕ) (w : (ℕ × ℕ) → ℝ)
+    (hw : ∀ p ∈ S, ∑ j ∈ range K, |(termOf P Q p).coeff j| ≤ w p) :
+    ∑ j ∈ range K, |∑ p ∈ S, μ p * (termOf P Q p).coeff j -
+      ∑ p ∈ S, ν p * (termOf P Q p).coeff j| ≤ ∑ p ∈ S, w p * |μ p - ν p| := by
+  calc
+    _ ≤ ∑ j ∈ range K, ∑ p ∈ S, |μ p - ν p| * |(termOf P Q p).coeff j| := by
+      refine sum_le_sum fun j _ => ?_
+      rw [← sum_sub_distrib]
+      refine (abs_sum_le_sum_abs _ _).trans (le_of_eq (sum_congr rfl fun p _ => ?_))
+      rw [← sub_mul, abs_mul]
+    _ = ∑ p ∈ S, (∑ j ∈ range K, |(termOf P Q p).coeff j|) * |μ p - ν p| := by
+      rw [sum_comm]
+      exact sum_congr rfl fun p _ => by rw [sum_mul]; apply sum_congr rfl; intro j _; ring
+    _ ≤ _ := sum_le_sum fun p hp =>
+      mul_le_mul_of_nonneg_right (hw p hp) (abs_nonneg _)
+
+/-- A weighted version of the finite-head residual comparison. -/
+theorem head_residual_le_weighted (P Q : ℝ[X]) (hQ0 : Q.coeff 0 = 0)
+    (μ ν : ℕ × ℕ → ℝ) (hpar : ∀ p : ℕ × ℕ, (p.1 + p.2) % 2 = 0 → μ p = 0)
+    {N K : ℕ} (hK : 2 * K ≤ N + 1) (c : ℝ) (w : (ℕ × ℕ) → ℝ)
+    (hw : ∀ p ∈ headIdx N, ∑ j ∈ range K, |(termOf P Q p).coeff j| ≤ w p) :
+    ∑ j ∈ range K, |bivarKernel P Q μ j - if j = 0 then c else 0| ≤
+      ∑ j ∈ range K, |∑ p ∈ headIdx N, ν p * (termOf P Q p).coeff j - if j = 0 then c else 0| +
+        ∑ p ∈ headIdx N, w p * |μ p - ν p| := by
+  refine le_trans ?_ (add_le_add le_rfl (head_perturbation_weighted P Q (headIdx N) μ ν K w hw))
+  rw [← sum_add_distrib]
+  refine sum_le_sum fun j hj => ?_
+  rw [bivarKernel_eq_head P Q hQ0 μ hpar (N := N) (by have := mem_range.1 hj; omega)]
+  have := abs_add_le (∑ p ∈ headIdx N, ν p * (termOf P Q p).coeff j - if j = 0 then c else 0)
+    (∑ p ∈ headIdx N, μ p * (termOf P Q p).coeff j - ∑ p ∈ headIdx N, ν p * (termOf P Q p).coeff j)
+  refine le_trans (le_of_eq ?_) this
+  congr 1; ring
+
 /-- **The head of the residual**: the first `K` radial coefficients (`2K ≤ N + 1`) of the kernel
 of `μ`, compared with `c` in degree one, are controlled by those of the kernel of any table `ν`
 on `headIdx N` and the `ℓ¹` distance of the tables there. -/

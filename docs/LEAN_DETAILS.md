@@ -94,9 +94,9 @@ steps. No numerical response integral is certified by these modules. See
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
 **Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder` proves
-`IsGrothendieckBound (500000000000000000/355973694404074991)` for the concrete rounding,
+`IsGrothendieckBound (500000000000000000/355973696735190991)` for the concrete rounding,
 given an L² charge-one truncation `X` and component-error inputs, table accuracy and Hardy.
-`Grothe.upper_value_lt` shows this is below 1.404598170764 (`Grothe/UpperChaos/PhiBound.lean`).
+`Grothe.upper_value_lt` shows this is below 1.404598161566 (`Grothe/UpperChaos/PhiBound.lean`).
 The older table interface `Grothe.fresh_upper : DirectHyps E EX → IsGrothendieckBound (...)`
 remains in `Grothe/Upper/PolynomialBridge.lean`.
 The actual rounding is G_T, the smoothing of T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6.
@@ -123,8 +123,12 @@ energies, and are chosen to make the kernel nearly linear. The slope is c = 7119
   enclosures at cutoffs 181, 91, 51, these are the smoothed mixed-Taylor errors
   and frozen-vector rounding error. Their identification with the supplied
   approximation and their Gaussian norm enclosures remain external. Lean proves
-  `Σ_(p in headIdx 501) |E(p)-EX(p)| ≤ 107077907/(125·10¹²)` from them, using
-  `2 Σ A_r e_r + (Σ e_r)²`. The finite Hermite blocks are identified with the
+  `Σ_(p in headIdx 501) w(p) |E(p)-EX(p)| ≤ 13311891/(15625·10⁹)` from them, using
+  `2 Σ A_r e_r + (Σ e_r)²`, with `A_r²` enclosing `Σ w(p)² EX(p)` on its band.
+  `HeadWeight.lean` proves `w(p)` bounds the retained coefficient mass of each
+  preprocessed block; all costs lie in `[0,1]`. Its interval extraction reuses
+  the existing sound power and convolution routines. No Gaussian input is added.
+  The finite Hermite blocks are identified with the
   actual Gaussian energies in `EnergyBlock.lean`. The native `comparison_check`
   proves all 18 band radii from the stored table and `energyErrQ`, and checks the
   rational comparison budget. Neither a near-linear kernel nor the final head
@@ -136,9 +140,9 @@ energies, and are chosen to make the kernel nearly linear. The slope is c = 7119
   65,594-arc directed contour. The concrete theorem also takes X ∈ L² and
   charge-one equivariance. Validity, summability, parity, and the phase cover
   for the actual rounding are derived.
-* **Residual ledger.** The total is 460768975009/(5·10¹⁷), approximately
-  9.21538·10⁻⁷. The selected comparison contributes 92.96%, the native finite
-  head 3.06%, the Hardy tail 3.99%, and the table error about 0.0015%.
+* **Residual ledger.** The total is 458437859009/(5·10¹⁷), approximately
+  9.16876·10⁻⁷. The selected comparison contributes 92.92%, the native finite
+  head 3.07%, the Hardy tail 4.01%, and the table error about 0.0015%.
   These percentages describe allowances, not fractions of the proof left
   unformalized. The Gaussian component-error inputs remain the main numerical
   limitation. Full scope, source bindings and reproduction commands are in

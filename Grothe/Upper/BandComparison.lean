@@ -74,4 +74,56 @@ theorem compare [DecidableEq ι] (S : Finset ι) (J : Finset κ) (x y : ∀ i, V
       rw [sum_add_distrib, mul_sum]; congr 1; apply sum_congr rfl; intro i _; ring
     _ ≤ _ := add_le_add (mul_le_mul_of_nonneg_left hc (by norm_num)) hquad
 
+/-- Weighted comparison for a downstream kernel. The cross-term radius uses
+squared coefficient costs, whereas the quadratic error is still paid once.
+This preserves the same error decomposition and all overlapping supports. -/
+theorem weighted_compare [DecidableEq ι] (S : Finset ι) (J : Finset κ)
+    (w : ι → ℝ) (x y : ∀ i, V i) (d : κ → ∀ i, V i)
+    (B : κ → Finset ι) (A e : κ → ℝ) (E : ℝ)
+    (hw : ∀ i ∈ S, 0 ≤ w i ∧ w i ≤ 1)
+    (hdecomp : ∀ i ∈ S, y i - x i = ∑ j ∈ J, d j i)
+    (hsupport : ∀ j ∈ J, ∀ i ∈ S, i ∉ B j → d j i = 0)
+    (hA : ∀ j ∈ J, 0 ≤ A j) (he : ∀ j ∈ J, 0 ≤ e j)
+    (hx : ∀ j ∈ J, ∑ i ∈ S ∩ B j, (w i * ‖x i‖) ^ 2 ≤ A j ^ 2)
+    (hd : ∀ j ∈ J, ∑ i ∈ S ∩ B j, ‖d j i‖ ^ 2 ≤ e j ^ 2)
+    (hquad : ∑ i ∈ S, ‖y i - x i‖ ^ 2 ≤ E) :
+    ∑ i ∈ S, w i * |‖y i‖ ^ 2 - ‖x i‖ ^ 2|
+      ≤ 2 * (∑ j ∈ J, A j * e j) + E := by
+  classical
+  have hc : ∑ i ∈ S, w i * ‖x i‖ * ‖y i - x i‖ ≤ ∑ j ∈ J, A j * e j := by
+    calc
+      _ ≤ ∑ i ∈ S, (w i * ‖x i‖) * ∑ j ∈ J, ‖d j i‖ := by
+        refine sum_le_sum fun i hi => mul_le_mul_of_nonneg_left ?_
+          (mul_nonneg (hw i hi).1 (norm_nonneg _))
+        rw [hdecomp i hi]
+        exact norm_sum_le _ _
+      _ = ∑ j ∈ J, ∑ i ∈ S, (w i * ‖x i‖) * ‖d j i‖ := by
+        simp_rw [mul_sum]; rw [sum_comm]
+      _ ≤ ∑ j ∈ J, A j * e j := by
+        refine sum_le_sum fun j hj => ?_
+        have ha : √(∑ i ∈ S ∩ B j, (w i * ‖x i‖) ^ 2) ≤ A j :=
+          (Real.sqrt_le_left (hA j hj)).2 (hx j hj)
+        have hb : √(∑ i ∈ S ∩ B j, ‖d j i‖ ^ 2) ≤ e j :=
+          (Real.sqrt_le_left (he j hj)).2 (hd j hj)
+        have hcs := (Real.sum_mul_le_sqrt_mul_sqrt (S ∩ B j)
+          (fun i => w i * ‖x i‖) (fun i => ‖d j i‖)).trans
+          (mul_le_mul ha hb (Real.sqrt_nonneg _) (hA j hj))
+        have eq : ∑ i ∈ S, (w i * ‖x i‖) * ‖d j i‖ =
+            ∑ i ∈ S ∩ B j, (w i * ‖x i‖) * ‖d j i‖ := by
+          symm
+          exact sum_subset inter_subset_left fun i hi hni => by
+            rw [hsupport j hj i hi (by simpa [hi] using hni), norm_zero, mul_zero]
+        rwa [eq]
+  calc
+    _ ≤ ∑ i ∈ S, w i * (2 * ‖x i‖ * ‖y i - x i‖ + ‖y i - x i‖ ^ 2) :=
+      sum_le_sum fun i hi => mul_le_mul_of_nonneg_left (norm_sq_difference _ _) (hw i hi).1
+    _ = 2 * (∑ i ∈ S, w i * ‖x i‖ * ‖y i - x i‖) +
+        ∑ i ∈ S, w i * ‖y i - x i‖ ^ 2 := by
+      simp_rw [mul_add]; rw [sum_add_distrib, mul_sum]
+      congr 1; apply sum_congr rfl; intro i _; ring
+    _ ≤ 2 * (∑ j ∈ J, A j * e j) + ∑ i ∈ S, ‖y i - x i‖ ^ 2 := by
+      refine add_le_add (mul_le_mul_of_nonneg_left hc (by norm_num)) ?_
+      exact sum_le_sum fun i hi => mul_le_of_le_one_left (sq_nonneg _) (hw i hi).2
+    _ ≤ _ := add_le_add le_rfl hquad
+
 end Grothe.Upper.BandComparison

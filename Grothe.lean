@@ -10,6 +10,7 @@ import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.BandComparison
 import Grothe.Upper.ComparisonData
 import Grothe.Upper.ComparisonMass
+import Grothe.Upper.HeadWeight
 import Grothe.Upper.Disk
 import Grothe.Upper.Realise
 import Grothe.Upper.Compose

@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.401695322458 < K_G^ℂ < 1.404598170764**
+> **1.401695322458 < K_G^ℂ < 1.404598161566**
 >
 > and, with **no hypothesis at all** (every step proved in Lean): **K_G^ℂ ≤ 1.404951**
 
@@ -40,7 +40,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.401695322458 < K** | **K < 1.404598170764** |
+| Oct 2026 | **this repository** | **1.401695322458 < K** | **K < 1.404598161566** |
 | Oct 2026 | this repository, fully formal (no hypothesis) | | K ≤ 1.404951 |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
@@ -103,14 +103,15 @@ range facts, about 15–30 CPU-hours) exceed the CI runner, so they and `lower_b
 `lake build GrotheCaps && lake env lean scratch/AxiomsCaps.lean | python3 scripts/check_axioms.py --caps`, after which
 `python3 scripts/caps_stamp.py --write "<machine, date>"` records the hash of every source they depend on in
 `docs/CAPS_VERIFIED.txt`. CI checks that hash (`caps_stamp.py --check`): it fails when those sources change
-without a new verification. No verification stamp is recorded in the current tree, so the separate target's full
-verification is not claimed here and CI only warns about the missing stamp. The default target proves
-the lower bound with the hypothesis `NodeCaps` (`lower_bound_of_nodeCaps`).
+without a new verification. The current stamp records the successful droplet build and axiom audit of all fifteen row modules;
+its 140-file source closure is checked by CI. The four remaining rows are still the explicit
+`CapsRest` inputs. The default target proves the lower bound with `NodeCaps`
+(`lower_bound_of_nodeCaps`); the separate target derives it from `CapsRest`.
 
 
 **Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder`, for an L² charge-one truncation `X`, proves
-`ComparisonInputs → energy_close → hardy → IsGrothendieckBound (500000000000000000/355973694404074991)`,
-and `Grothe.upper_value_lt` shows this is below 1.404598170764
+`ComparisonInputs → energy_close → hardy → IsGrothendieckBound (500000000000000000/355973696735190991)`,
+and `Grothe.upper_value_lt` shows this is below 1.404598161566
 (`Grothe/UpperChaos/PhiBound.lean`; the table interface is `Grothe.fresh_upper` in `Grothe/Upper/PolynomialBridge.lean`).
 
 The rounding is the smoothing G_T of T = F₀·P₃(φ): a two-coordinate Gaussian phase rounding F₀ times the
@@ -120,26 +121,27 @@ disk-valued: |P₃(x)|² = 1 − x⁴(3 − x²)/36 and φ² ≤ 3 everywhere (`
 analytic far field; native fact `phi_cover_check`). Its correlation kernel H(t) = Σ E[n,m] p(t)ⁿ(−τ(t))ᵐ, with the odd
 preprocessors of degrees 41 and 15 (Wiener norms ≤ 1, auxiliary linear coefficient zero), is compared with c·t,
 c = 7119483103461/10¹³, through the kernel of a truncation X, and the bound is 1/(c − ‖H − c·t‖) with residual
-at most 460768975009/(5·10¹⁷).
+at most 458437859009/(5·10¹⁷).
 Lean proves the complex Gaussian chaos calculus on ℂ² (`Grothe/UpperChaos/`: Hermite basis, completeness,
 Parseval, the Mehler formula for L² functions, charge selection, energies → kernel), hence the structural facts
 (validity, summability, parity) for G_T and X; the transfer inequality; the evaluation of the head of the kernel
 through degree 501 from 21,168 stored energies by a verified interval checker; the tail bound and the endpoint
 arithmetic. It also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
-only with X's energy in its selected band; the quadratic error is paid once.
+only with X's energy in its selected band, weighted by the retained coefficient cost; the quadratic error is paid once.
 A native check derives every band radius from the stored table and its accuracy
-allowance. The comparison is at most 107077907/(125·10¹²).
+allowance. Lean proves every coefficient cost with outward interval polynomial arithmetic.
+The weighted comparison is at most 13311891/(15625·10⁹).
 What remains **input**:
 
 | hypothesis | content | share of the residual |
 |---|---|---|
-| `ComparisonInputs` | exact error decomposition, spectral supports and inherited Gaussian component norm caps; Lean derives the selected comparison | 92.96% |
+| `ComparisonInputs` | exact error decomposition, spectral supports and inherited Gaussian component norm caps; Lean derives the selected comparison | 92.92% |
 | `energy_close` | the stored energies are within 6847009/(5·10¹⁷) of E(X) | 0.001% |
-| `hardy` | weighted square sum ≤ 7/4 at radius 4149/4000, giving the tail 36748/10¹² beyond degree 501 | 3.99% |
+| `hardy` | weighted square sum ≤ 7/4 at radius 4149/4000, giving the tail 36748/10¹² beyond degree 501 | 4.01% |
 
-The head, computed in Lean (`head_check`), is 28153/10¹², 3.06% of the total
-460768975009/(5·10¹⁷).
+The head, computed in Lean (`head_check`), is 28153/10¹², 3.07% of the total
+458437859009/(5·10¹⁷).
 
 The current parameters and all 21,168 exact energies are in
 `data/upper-preprocess/certificate.json`; `python3 tools/gen_upper_data.py`
@@ -190,7 +192,7 @@ response searches are exploratory. See [the replica report](docs/SYMMETRIC_RESPO
 A linear separator excludes the entire Gaussian-phase cubic-preprocessor
 family, including complex phases and convex mixtures, from improving the current
 upper score: its reciprocal score is at most 0.71186, below the incumbent
-0.7119473888. Seventeen additional Lean results check the polynomial separator,
+0.7119473934. Seventeen additional Lean results check the polynomial separator,
 common signed-tail prices, error propagation, and finite-mixture assembly.
 The Gaussian-family application is a written proof with an explicit Lean
 low-coefficient interface. An incumbent's coefficient-l1 error is paid once
