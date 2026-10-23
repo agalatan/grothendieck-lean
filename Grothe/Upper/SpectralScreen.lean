@@ -111,6 +111,46 @@ theorem affine_error_bound {ι : Type*} [Fintype ι]
       rw [abs_mul]
       exact mul_le_mul_of_nonneg_left (he i) (abs_nonneg _)
 
+/-- A single coefficient error ball pays for every admissible spectral price.
+It is not an independent error at each noise point used to construct the price. -/
+theorem l1_anchor_price_bound (price err : ℕ → ℝ)
+    (he : Summable fun n => |err n|) (hp : ∀ n, |price n| ≤ 1)
+    (radius : ℝ) (hr : ∑' n, |err n| ≤ radius) :
+    |∑' n, price n * err n| ≤ radius := by
+  have hb : ∀ n, ‖price n * err n‖ ≤ |err n| := by
+    intro n
+    rw [Real.norm_eq_abs, abs_mul]
+    exact mul_le_of_le_one_left (abs_nonneg _) (hp n)
+  have hs := Summable.of_norm_bounded he hb
+  exact ((norm_tsum_le_tsum_norm hs.norm).trans
+    (hs.norm.tsum_le_tsum hb he)).trans hr
+
+set_option maxHeartbeats 1000000 in
+/-- The complete score is 1-Lipschitz in the coefficient l1 norm.
+An actual response is still needed to apply this algebraic certificate. -/
+theorem full_score_l1_lower (c mid : ℕ → ℝ)
+    (hc : Summable fun n => |c n|) (hm : Summable fun n => |mid n|)
+    (he : Summable fun n => |c n - mid n|) (radius : ℝ)
+    (hr : ∑' n, |c n - mid n| ≤ radius) :
+    mid 0 - (∑' n, |mid (n+1)|) - radius ≤ c 0 - (∑' n, |c (n+1)|) := by
+  have hc1 : Summable fun n => |c (n+1)| := (summable_nat_add_iff 1).mpr hc
+  have hm1 : Summable fun n => |mid (n+1)| := (summable_nat_add_iff 1).mpr hm
+  have he1 : Summable fun n => |c (n+1) - mid (n+1)| :=
+    (summable_nat_add_iff 1).mpr he
+  have ht : (∑' n, |c (n+1)|) ≤
+      (∑' n, |mid (n+1)|) + ∑' n, |c (n+1)-mid (n+1)| := by
+    rw [← hm1.tsum_add he1]
+    apply hc1.tsum_le_tsum _ (hm1.add he1)
+    intro n
+    calc
+      |c (n+1)| = |mid (n+1)+(c (n+1)-mid (n+1))| := by congr 1; ring
+      _ ≤ _ := abs_add_le _ _
+  have hz := neg_abs_le (c 0 - mid 0)
+  have hs : |c 0-mid 0| + (∑' n, |c (n+1)-mid (n+1)|) ≤ radius := by
+    rw [← he.tsum_eq_zero_add]
+    exact hr
+  linarith
+
 /-- The separator, rather than the concave full score, is averaged over a pool. -/
 theorem finite_mixture_score_bound {ι : Type*} [Fintype ι]
     (w c0 c1 c2 c3 : ι → ℝ) (s cap tail : ℝ)

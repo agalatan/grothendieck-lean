@@ -69,10 +69,18 @@ arguments, not formalized here. Numerical integral values are not Lean inputs
 and no new endpoint follows. See [the replica report](SYMMETRIC_RESPONSE_REPLICAS_2026-10-23.md).
 
 **Common signed-tail prices and cubic Gaussian-phase separator.**
-`Grothe/Upper/SpectralScreen.lean` adds five results: a finite front/geometric
+`Grothe/Upper/SpectralScreen.lean` adds seven results: a finite front/geometric
 tail certificate for all indices, pricing the common signed tail before taking
 absolute values, the resulting full-score inequality, affine enclosure errors,
-and assembly over finite response mixtures. `Grothe/Upper/CubicPhaseScreen.lean`
+assembly over finite response mixtures, the single coefficient-l1 error allowance
+for every admissible price (`l1_anchor_price_bound`), and the 1-Lipschitz lower
+bound for the complete score (`full_score_l1_lower`). This lets an exchange retain
+the incumbent's signed coefficients and pay its error once across all sampled
+correlations. `tools/incumbent_exchange.py` exports those coefficients from the
+committed data and replays their finite polynomial composition using Arb.
+The phase-perturbation oracle in `tools/incumbent_phase_exchange.py` remains
+floating discovery; its kernel integrals and optimizer output are not certificates.
+`Grothe/Upper/CubicPhaseScreen.lean`
 adds ten public results checking the two positive triangle polynomials, the
 complex-phase modulus comparison, a degree-seven scalar polynomial cap, and
 the full-score implication from the explicit low-coefficient identity.
