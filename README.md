@@ -63,7 +63,7 @@ reduction of ⟨f, Tg⟩ for every pair of unimodular functions to 19 one-variab
 inequalities; all analytic facts about the law of the cubic residual (moment bounds, Stein and
 spectral cuts, the contraction-Gram budgets, the sixth-moment Wick identity); and the finite
 certificate that combines them (351 node certificates and a cover of the parameter space by
-8,756 boxes, one `native_decide`). The **only hypothesis**, `NodeCaps`, states that 19 explicit
+8,756 boxes, checked by 13 single-threaded `native_decide` chunks). The **only hypothesis**, `NodeCaps`, states that 19 explicit
 one-variable functions Ψ_r (defined in Lean as suprema of finite-dimensional Gaussian
 integrals) lie below stored rational values at their tabulated nodes. Those caps are certified
 by exact-arithmetic computations outside Lean; moving them inside is work in progress.
@@ -87,8 +87,29 @@ its computational limitations are in [docs/SPHERICAL_TRANSFER.md](docs/SPHERICAL
 signed cap assembly. The analytic bridge and a useful spherical norm cap are not formalized;
 this interface changes neither endpoint.
 
-**Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder :
-compare → energy_close → hardy → IsGrothendieckBound (500000000000000000/355973576656604491)`,
+The node-cap proof infrastructure is in Lean (`Grothe/LowerAnalytic/Cap*.lean`):
+the 505 chord nodes follow from the vertex caps by convexity (`nodeCaps_of_vertexCaps`, `capChords_check`);
+a vertex cap Ψ_r(s) − 10⁻¹¹ ≤ c is proved from an anchored-pair majorant with dyadic cell prices on a uniform
+polar grid, verified interval enclosures of the integrated coefficient matrix (`CapTables.lean`), a Loewner bound
+and an exact LDLᵀ check (`pot_le_of_nodeOK`); the per-node price recipes (`CapRecipeData.lean`) are checked by the
+precompiled kernel `GrotheKernel/CapCheck.lean`, one `native_decide` fact per range of nodes (`capRangeKK_j`,
+four per row, one module `CapRowKK.lean` per row; no parallel tasks). Hence
+`lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → Llow < K`, where **`CapsRest`** comprises the vertex caps
+of the rows 0.84, 0.845, 0.85, 0.855 and any excluded-node caps of the other rows. The exclusion lists are currently empty.
+
+**Node caps: a separate build target.** The 15 row modules `CapRowKK.lean` (60 single-threaded `native_decide`
+range facts, about 15–30 CPU-hours) exceed the CI runner, so they and `lower_bound_of_capsRest` live in the target
+`GrotheCaps`, not in the default target `Grothe`. They are verified on a larger machine with
+`lake build GrotheCaps && lake env lean scratch/AxiomsCaps.lean | python3 scripts/check_axioms.py --caps`, after which
+`python3 scripts/caps_stamp.py --write "<machine, date>"` records the hash of every source they depend on in
+`docs/CAPS_VERIFIED.txt`. CI checks that hash (`caps_stamp.py --check`): it fails when those sources change
+without a new verification. No verification stamp is recorded in the current tree, so the separate target's full
+verification is not claimed here and CI only warns about the missing stamp. The default target proves
+the lower bound with the hypothesis `NodeCaps` (`lower_bound_of_nodeCaps`).
+
+
+**Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder`, for an L² charge-one truncation `X`, proves
+`compare → energy_close → hardy → IsGrothendieckBound (500000000000000000/355973576656604491)`,
 and `Grothe.upper_value_lt` shows this is below 1.404598635371
 (`Grothe/UpperChaos/PhiBound.lean`; the table interface is `Grothe.fresh_upper` in `Grothe/Upper/PolynomialBridge.lean`).
 
@@ -123,11 +144,14 @@ with a cubic preprocessor, 4,000 exact series terms and a telescoping tail. The 
 weaker than the certified bound above (and than Haagerup's 1.40491, which needs the full inverse series);
 it is the best upper bound in this repository that rests on nothing outside Lean.
 
-Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus exactly four `native_decide` facts,
+Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in `scripts/check_axioms.py`:
 `Grothe.head_check` (the upper head), `Grothe.UpperChaos.phi_cover_check` (the phase cover φ² ≤ 3),
-`Grothe.haagerup_check` (the unconditional upper bound) and `Grothe.Lower.cert_check` (the lower certificate).
+`Grothe.haagerup_check` (the unconditional upper bound), the 13 chunks `Grothe.Lower.certRows0`–`4`, `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower
+certificate (assembled into `Grothe.Lower.cert_check`),
+`capChords_check` (the chord nodes of the cap tables) and the 60 range checks `capRangeKK_j` of the node caps.
+Every native check is single-threaded code (no `Task.spawn`).
 Everything else is kernel-checked. No `sorry`. The axiom report `scratch/Axioms.lean`
-(227 theorems) is verified in CI by `scripts/check_axioms.py`.
+is verified in CI by `scripts/check_axioms.py`; the separate caps report is `scratch/AxiomsCaps.lean`.
 
 The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAILS.md).
 
@@ -154,7 +178,7 @@ lake build
 lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py
 ```
 
-A full build takes about 20 minutes on 8 cores; the three native checks dominate. CI
+A full build takes about 20 minutes on 8 cores; the native checks dominate. CI
 (`.github/workflows/lean.yml`) builds everything on every push to `master`, forbids `sorry`,
 `axiom`, `implemented_by`, `extern` and `unsafe`, and checks the axiom report.
 
