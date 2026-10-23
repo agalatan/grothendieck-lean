@@ -10,7 +10,7 @@ Fails unless
 import re, sys
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
 NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",          # upper: head of the kernel
-          "Grothe.haagerup_check._native.native_decide.ax_1_1",      # Haagerup route: residual of the cubic preprocessing
+          "Grothe.HaagerupPower.check._native.native_decide.ax_1_1",      # Haagerup route: finite residual, fourth power and weighted tail
           "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1",  # upper: phase cover φ² ≤ 3
           "Grothe.LowerAnalytic.capChords_check._native.native_decide.ax_1_1"}  # lower: chord nodes of the cap tables
 # lower: node caps of the certified rows, four ranges of nodes per row (Grothe/LowerAnalytic/CapRowKK.lean)
@@ -26,7 +26,11 @@ REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.LowerAnalytic.norm_pairVal_witness", "Grothe.LowerAnalytic.transferInputs_of_witnessCap",
             "Grothe.LowerAnalytic.witnessCap_of_reduction", "Grothe.LowerAnalytic.lower_bound_of_reduction",
             "Grothe.LowerAnalytic.normQk_le_rho", "Grothe.LowerAnalytic.lower_bound_of_nodeCaps",
-            "Grothe.haagerup_bound", "Grothe.LowerAnalytic.JointSixth.gram_j_eta",
+            "Grothe.haagerup_bound", "Grothe.HaagerupPower.upper",
+            "Grothe.Upper.PowerTail.weighted_tail_bound",
+            "Grothe.Upper.PowerTail.compTerm_power_bound",
+            "Grothe.Upper.PowerTail.no_power_saving_of_boundary",
+            "Grothe.LowerAnalytic.JointSixth.gram_j_eta",
             "Grothe.LowerAnalytic.JointSixth.gram_j2_shifted",
             "Grothe.LowerAnalytic.joint_eta_budget", "Grothe.Lower.MPoly.momentLift_majorant",
             "Grothe.LowerAnalytic.MomentCone.gram_node_of_check",
@@ -163,6 +167,37 @@ JOINT_RESPONSE = {
     'Grothe.Upper.SpectralScreen.full_score_upper',
 }
 REQUIRED |= JOINT_RESPONSE
+POWER_HAAGERUP = {
+    'Grothe.HaagerupPower.R_telescope',
+    'Grothe.HaagerupPower.check',
+    'Grothe.HaagerupPower.composed_tail',
+    'Grothe.HaagerupPower.degree_P',
+    'Grothe.HaagerupPower.exact_upper',
+    'Grothe.HaagerupPower.finite_identity',
+    'Grothe.HaagerupPower.finite_residual',
+    'Grothe.HaagerupPower.gamma_bound',
+    'Grothe.HaagerupPower.norm_P',
+    'Grothe.HaagerupPower.norm_fourth',
+    'Grothe.HaagerupPower.residual',
+    'Grothe.HaagerupPower.summable_R',
+    'Grothe.HaagerupPower.upper',
+    'Grothe.HaagerupPower.value_lt',
+    'Grothe.HaagerupPower.weighted_R_tail',
+    'Grothe.Upper.PowerTail.compTerm_power_bound',
+    'Grothe.Upper.PowerTail.eval_neg_one_le',
+    'Grothe.Upper.PowerTail.mem_polyPowI',
+    'Grothe.Upper.PowerTail.mem_powIval',
+    'Grothe.Upper.PowerTail.mem_telescope',
+    'Grothe.Upper.PowerTail.no_power_saving_of_boundary',
+    'Grothe.Upper.PowerTail.power_norm_of_check',
+    'Grothe.Upper.PowerTail.summable_weighted',
+    'Grothe.Upper.PowerTail.tail_numeric_of_check',
+    'Grothe.Upper.PowerTail.weightedTail_pair',
+    'Grothe.Upper.PowerTail.weighted_composition',
+    'Grothe.Upper.PowerTail.weighted_tail_bound',
+    'Grothe.haagerup_bound',
+}
+REQUIRED |= POWER_HAAGERUP
 # `--caps`: the report of scratch/AxiomsCaps.lean (separate target GrotheCaps, see README)
 if "--caps" in sys.argv:
     REQUIRED = {"Grothe.LowerAnalytic.lower_bound_of_capsRest"}
@@ -176,6 +211,12 @@ if "--responses" in sys.argv:
 elif "--response-geometry" in sys.argv:
     REQUIRED = RESPONSE_GEOMETRY
     NATIVE = set()
+# The hypothesis-free power route must use its own numerical fact only.
+if "--haagerup-power" in sys.argv:
+    if any(flag in sys.argv for flag in ("--caps", "--responses", "--response-geometry")):
+        sys.exit("choose one axiom audit mode")
+    REQUIRED = POWER_HAAGERUP
+    NATIVE = {"Grothe.HaagerupPower.check._native.native_decide.ax_1_1"}
 text = sys.stdin.read()
 if re.search(r"(^|\n)[^\n]*: error", text):
     sys.exit("the axiom report contains Lean errors")

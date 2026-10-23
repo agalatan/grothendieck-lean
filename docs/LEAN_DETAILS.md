@@ -135,8 +135,8 @@ energies, and are chosen to make the kernel nearly linear. The slope is c = 1779
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
-**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (140578/100000)`
-(`Grothe/Upper/Haagerup.lean`, `GrotheKernel/Haagerup.lean`), with no hypothesis. The analysis is in
+**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (1404951/1000000)`
+(`Grothe/Haagerup/Power.lean`), with no hypothesis. The analysis is in
 `Grothe/Haagerup/`: tilted one-dimensional Gaussian integrals (`Gauss1D`); the correlated pair integral
 E[conj U·V·e^{−u|U|²−v|V|²}] = 2z/Δ² (`GaussG`); the Euler representation |a|⁻¹ = π^{−1/2}∫t^{−1/2}e^{−t|a|²}dt
 with its Fubini swap (`Euler`); the Beta integrals J_k and Haagerup's coefficients
@@ -145,9 +145,16 @@ standard Gaussian are independent standard Gaussians, by characteristic function
 two complex Gaussians, the radial identity and the phase rounding as a disk-valued rounding
 (`Identity`: `integral_phase_pair`, `Phi2_radial`, `haagerup_disk`, `haagerup_dominated`). Disk-valued
 roundings are dominated (`Grothe/Upper/Disk.lean`); polynomial preprocessors are realised by tensor powers
-(`Realise.lean`) and composed with radial kernels (`Compose.lean`). The preprocessor is
-p(t) = (2267/2500)t − (9319996/10⁸)t³; `haagerup_check` evaluates 4,000 exact series terms by a Horner interval
-checker with a soundness proof, and the tail Σ_{k≥K} r_k ≤ g_K/(2K) telescopes.
+(`Realise.lean`) and composed with radial kernels (`Compose.lean`). The degree-13 preprocessor is
+stored in `Grothe/Haagerup/PowerCheck.lean`, with coefficient norm exactly one and fourth-power
+norm at most 199787/200000. Its native check verifies every coefficient of the complete
+2,000-term composition (radial cutoff 26,000), the fourth-power norm and an 8,192-step weighted
+telescope. The normalized residual caps are 11/10⁶ for the finite part and 27/1,250,000 for
+the entire infinite tail. `Grothe/Upper/PowerTail.lean` proves the general finite-power
+composition estimate, weighted-tail telescope, checker soundness and the coherent-boundary
+obstruction. The phase identity, residual and tensor transfer yield K ≤ 1.404951 with no
+external inputs. All algebraic theory uses standard axioms; the single numerical fact is
+`Grothe.HaagerupPower.check._native.native_decide.ax_1_1`.
 
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
 value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401692002039/10^12 < K`, and the transfer
@@ -356,8 +363,8 @@ current tree, so completed verification of the 60 range checks is not claimed he
   along any direction by the influence of that direction.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
-`scripts/check_axioms.py`: `Grothe.head_check` (the upper head), `Grothe.haagerup_check`
-(the 4,000-term unconditional upper check), `Grothe.UpperChaos.phi_cover_check`
+`scripts/check_axioms.py`: `Grothe.head_check` (the upper head), `Grothe.HaagerupPower.check`
+(the finite residual, power budget and weighted tail of the unconditional upper bound), `Grothe.UpperChaos.phi_cover_check`
 (φ² ≤ 3), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
 and the 13 chunks `Grothe.Lower.certRows0`–`4`,
 `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower certificate (assembled into

@@ -5,7 +5,7 @@ complex Grothendieck constant:
 
 > **1.401695322458 < K_G^ℂ < 1.404598635371**
 >
-> and, with **no hypothesis at all** (every step proved in Lean): **K_G^ℂ ≤ 1.40578**
+> and, with **no hypothesis at all** (every step proved in Lean): **K_G^ℂ ≤ 1.404951**
 
 The two sharp bounds each rest on one explicitly stated family of externally certified numerical
 inputs; the unconditional bound rests on nothing outside Lean (see below).
@@ -41,7 +41,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
 | Oct 2026 | **this repository** | **1.401695322458 < K** | **K < 1.404598635371** |
-| Oct 2026 | this repository, fully formal (no hypothesis) | | K ≤ 1.40578 |
+| Oct 2026 | this repository, fully formal (no hypothesis) | | K ≤ 1.404951 |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
 proposed as the exact value; it lies inside the interval, 2.27·10⁻⁵ below our upper bound.
@@ -136,17 +136,22 @@ arithmetic. What is **assumed** (numerical statements about G_T and X):
 The head, computed in Lean (`head_check`), is 98880/10¹², 8.23% of the total
 600639595509/(5·10¹⁷).
 
-**Unconditional upper bound** — `Grothe.haagerup_bound : IsGrothendieckBound (140578/100000)`
-(`Grothe/Haagerup/Identity.lean`, with the finite check in `Grothe/Upper/Haagerup.lean`), with **no hypothesis**.
+**Unconditional upper bound** — `Grothe.haagerup_bound : IsGrothendieckBound (1404951/1000000)`
+(`Grothe/Haagerup/Power.lean`, with the finite check in `Grothe/Haagerup/PowerCheck.lean`), with **no hypothesis**.
 Lean proves Haagerup's identity for the Gaussian phase rounding,
 E[conj(phase⟨g,x⟩)·phase⟨g,y⟩] = Σ_k (π/4)(1/2)_k²/(k!(k+1)!) z|z|^{2k} with z = ⟨x,y⟩, and combines it
-with a cubic preprocessor, 4,000 exact series terms and a telescoping tail. The value K ≤ 1.40578 is
-weaker than the certified bound above (and than Haagerup's 1.40491, which needs the full inverse series);
-it is the best upper bound in this repository that rests on nothing outside Lean.
+with a degree-13 preprocessor and 2,000 exact series terms. Its coefficient norm equals one, but its
+fourth power has norm at most 199787/200000. Keeping that cancellation shrinks the entire infinite
+tail to at most (π/4)·.0000216; the complete finite residual is at most (π/4)·.000011.
+The general weighted-tail theorem and the boundary-phase obstruction are proved in
+`Grothe/Upper/PowerTail.lean`. The Gaussian identity, tensor realization, finite checker soundness,
+infinite tail and final transfer are all proved in Lean, with one pinned numerical check and no
+external analytic hypotheses. See [the complete proof and replay](docs/HAAGERUP_POWER.md).
+This remains weaker than the conditional bound above and Haagerup's 1.40491.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in `scripts/check_axioms.py`:
 `Grothe.head_check` (the upper head), `Grothe.UpperChaos.phi_cover_check` (the phase cover φ² ≤ 3),
-`Grothe.haagerup_check` (the unconditional upper bound), the 13 chunks `Grothe.Lower.certRows0`–`4`, `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower
+`Grothe.HaagerupPower.check` (the degree-13 residual, fourth-power budget and weighted tail), the 13 chunks `Grothe.Lower.certRows0`–`4`, `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower
 certificate (assembled into `Grothe.Lower.cert_check`),
 `capChords_check` (the chord nodes of the cap tables) and the 60 range checks `capRangeKK_j` of the node caps.
 Every native check is single-threaded code (no `Task.spawn`).

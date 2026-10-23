@@ -18,6 +18,7 @@ import Grothe.Haagerup.BetaJ
 import Grothe.Haagerup.Series
 import Grothe.Haagerup.Law
 import Grothe.Haagerup.Identity
+import Grothe.Haagerup.Power
 import Grothe.Lower.Basic
 import Grothe.Lower.Poly
 import Grothe.Lower.Moment
@@ -146,3 +147,4 @@ import Grothe.LowerAnalytic.ProjectionGateCeiling
 import Grothe.LowerAnalytic.QuinticTransferAudit
 import Grothe.LowerAnalytic.ResponseCompression
 import Grothe.LowerAnalytic.ScalarCubicFamilyCeiling
+import Grothe.UpperChaos.HardyKernel

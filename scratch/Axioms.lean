@@ -175,7 +175,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.JointSixth.gram_j2_shifted
 #print axioms Grothe.LowerAnalytic.JointSixth.shifted_hcoeff_lt
 #print axioms Grothe.LowerAnalytic.joint_eta_budget
-#print axioms Grothe.haagerup_upper
+#print axioms Grothe.HaagerupPower.upper
 #print axioms Grothe.DominatedKernel.comp_radial
 #print axioms Grothe.DiskKernel.dominated
 #print axioms Grothe.haagerup_bound
@@ -376,3 +376,31 @@ import Grothe
 #print axioms Grothe.Upper.CubicPhaseScreen.complex_score_cap
 #print axioms Grothe.Upper.CubicPhaseScreen.score_le_separator
 #print axioms Grothe.Upper.CubicPhaseScreen.full_score_cap_of_low_identity
+
+#print axioms Grothe.HaagerupPower.norm_fourth
+#print axioms Grothe.HaagerupPower.composed_tail
+#print axioms Grothe.HaagerupPower.finite_residual
+#print axioms Grothe.HaagerupPower.residual
+#print axioms Grothe.Upper.PowerTail.compTerm_power_bound
+#print axioms Grothe.Upper.PowerTail.weighted_composition
+#print axioms Grothe.Upper.PowerTail.power_norm_of_check
+#print axioms Grothe.Upper.PowerTail.tail_numeric_of_check
+#print axioms Grothe.Upper.PowerTail.weighted_tail_bound
+#print axioms Grothe.Upper.PowerTail.no_power_saving_of_boundary
+
+#print axioms Grothe.Upper.PowerTail.mem_polyPowI
+#print axioms Grothe.Upper.PowerTail.mem_powIval
+#print axioms Grothe.Upper.PowerTail.mem_telescope
+#print axioms Grothe.Upper.PowerTail.summable_weighted
+#print axioms Grothe.Upper.PowerTail.weightedTail_pair
+#print axioms Grothe.Upper.PowerTail.eval_neg_one_le
+#print axioms Grothe.HaagerupPower.check
+#print axioms Grothe.HaagerupPower.norm_P
+#print axioms Grothe.HaagerupPower.degree_P
+#print axioms Grothe.HaagerupPower.gamma_bound
+#print axioms Grothe.HaagerupPower.summable_R
+#print axioms Grothe.HaagerupPower.R_telescope
+#print axioms Grothe.HaagerupPower.weighted_R_tail
+#print axioms Grothe.HaagerupPower.finite_identity
+#print axioms Grothe.HaagerupPower.exact_upper
+#print axioms Grothe.HaagerupPower.value_lt
