@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "finite_m": "1000000000000",
+  "old_bank": {
+    "profiles": [
+      {
+        "c": "119623/500000",
+        "b": "119623/500000",
+        "p_upper": "71313628803570718091875653572281/100000000000000000000000000000000",
+        "actual_finite_s5_upper": "-40430863439843/10000000000000000",
+        "actual_finite_s3_bounds": [
+          "2717494744386293579045383576081801/2500000000002500000000000000000000000000",
+          "424609335102094920539119670311594643/390625000000390625000000000000000000000000"
+        ]
+      },
+      {
+        "c": "14953/62500",
+        "b": "14953/62500",
+        "p_upper": "17828372083704916807056966376969/25000000000000000000000000000000",
+        "actual_finite_s5_upper": "-40437656407987/10000000000000000",
+        "actual_finite_s3_bounds": [
+          "-9626754411850133606439567506864527727/12500000000012500000000000000000000000000000",
+          "-19253458821029119775106236866291285227/25000000000025000000000000000000000000000000"
+        ]
+      }
+    ],
+    "p_upper_strict": "71314/100000",
+    "s3_exact": "0",
+    "s5_upper_strict": "-4042/1000000",
+    "C1_lower": "700556668281/1000000000000",
+    "C1_lower_strict": "7/10"
+  },
+  "new_bank": {
+    "p_upper_from_common_support": "7123725189658119/10000000000000000",
+    "p_upper_strict": "35619/50000",
+    "s3_exact": "0",
+    "s5_exact": "0",
+    "C1_lower": "144177179349/200000000000",
+    "C1_lower_strict": "18/25"
+  },
+  "new_p_upper_reason": "Actual finite positive Cramer weights cancel s3,s5, so p equals their convex mixture of the three certified finite support payoffs.",
+  "old_mixture_reason": "The certified actual finite cubic intervals have strict opposite signs. Thus theta=-s3_2/(s3_1-s3_2) lies strictly between zero and one and makes the cubic coefficient exactly zero. Both individual columns have the stated p and s5 bounds, inherited by this convex mixture. The balanced cmax endpoint grid bounds both profiles below.",
+  "sources": {
+    "old": {
+      "path": "quintic-all-moments-replay.json",
+      "sha256": "b1a221809cf43a4dd345277737f24601d5b36d1173cc573d3c5ecc4e01d4ebc5"
+    },
+    "new": {
+      "path": "exchange-active-cancellation-replay.json",
+      "sha256": "9e0094503161448e557332515a023f51e42b06fcee80524baff188b2c6c1d960"
+    },
+    "endpoint": {
+      "path": "exchange-endpoint-lower-replay.json",
+      "sha256": "f1ba8e02f3f5f092ece44a5dfce19bcf603ee8129163862f89898b4aff12f19c"
+    }
+  },
+  "verifier_sha256": "544ada800b2396731855438451c24c006b70a39f35b08c52f2d756da5dd5a5e1"
+}

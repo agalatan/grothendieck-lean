@@ -1,0 +1,105 @@
+{
+  "status": "NUMERICAL_ONLY",
+  "scope": "Necessary full-tail budget tests for a supplied response-column bank.\n\nInput columns are [p,s3,s5,C1]. These can be estimates or certified data;\nthis floating LP is a numerical screen only. For complete real chaos\ncoefficients, the direct score is at most\np-|s3|-|s5|-|C1-p-s3-s5|. No assumption that these moments determine the\ntail is made: the bound follows from Parseval and the triangle inequality.\n",
+  "columns_p_s3_s5_C1": [
+    [
+      0.7853981633974483,
+      0.09817477042468103,
+      0.03681553890925539,
+      1.0
+    ],
+    [
+      0.7036137993445394,
+      -0.011959854256673319,
+      -0.004746502190440619,
+      0.6868940817578318
+    ],
+    [
+      0.6947085832148558,
+      -0.02352434277609947,
+      -0.007989878714976178,
+      0.6626706531717492
+    ],
+    [
+      0.7037863979413296,
+      -0.011734384271042855,
+      -0.004679741475058597,
+      0.6873770148035666
+    ],
+    [
+      0.6940726689633633,
+      -0.02436050908395894,
+      -0.008253136246271093,
+      0.6608276943329033
+    ],
+    [
+      0.6980110904300031,
+      -0.019232855983958425,
+      -0.006777152982132864,
+      0.6716883332046582
+    ],
+    [
+      0.7018468502743521,
+      -0.014267572218547603,
+      -0.0054287324035033864,
+      0.6819530458193155
+    ],
+    [
+      0.713136288035707,
+      1.0869988978e-06,
+      -0.004043086348984326,
+      0.703373325934321
+    ],
+    [
+      0.7131348833481966,
+      -7.701393528e-07,
+      -0.004043765645798751,
+      0.703368991177463
+    ]
+  ],
+  "zero_cubic_quintic_test": {
+    "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+    "minimum_signed_tail": 0.010243297501183735,
+    "weights": [
+      0.12997068735652662,
+      0.0,
+      0.0,
+      0.5298821187636861,
+      0.0,
+      0.3401471938797873,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "full_tail_necessary_score_relaxation": {
+    "status": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+    "score_upper_diagnostic": 0.7103622224432851,
+    "weights": [
+      0.04293614172968696,
+      0.0,
+      0.0,
+      0.35927710848664723,
+      0.0,
+      0.0,
+      0.0,
+      0.5977867497836444,
+      0.0
+    ],
+    "absolute_penalties": [
+      0.0,
+      0.0025175102368155578,
+      0.0
+    ],
+    "inequality_duals": [
+      -0.9592850024485656,
+      -0.0,
+      -0.0,
+      -1.0000000000010159,
+      -0.22200170732336008,
+      -0.0
+    ]
+  },
+  "input_sha256": "5d8e906b78ec0b13be26fc972777f8547da051db5c6f68770ba3b0ffb3d79f50",
+  "source_sha256": "df346c3d7fe78be826e889b0f8dac84dbe0ae73dfe5a76a15dbd5d16c8af5bbf"
+}

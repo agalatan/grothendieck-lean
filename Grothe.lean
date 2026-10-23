@@ -131,3 +131,9 @@ import Grothe.LowerAnalytic.CapTablesMk
 import Grothe.LowerAnalytic.CapRecipeData
 import Grothe.LowerAnalytic.CapRows
 import Grothe.LowerAnalytic.CapPieceNodes
+import Grothe.LowerAnalytic.DiffuseCubicObstruction
+import Grothe.LowerAnalytic.JointRowRepricing
+import Grothe.LowerAnalytic.ProjectionGateCeiling
+import Grothe.LowerAnalytic.QuinticTransferAudit
+import Grothe.LowerAnalytic.ResponseCompression
+import Grothe.LowerAnalytic.ScalarCubicFamilyCeiling

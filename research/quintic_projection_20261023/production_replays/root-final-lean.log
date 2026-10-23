@@ -1,0 +1,30 @@
+'Grothe.LowerAnalytic.QuinticTransferAudit.diagonal_error_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.diagonal_one_sided_bounds' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.negative_of_error_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.strict_interval_convex_mix' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.signed_step_decreases' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.signed_step_margin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.cramer_three_column_cancellation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.linear_necessary_score_affine_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.linear_necessary_score_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.zero_cubic_necessary_score_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

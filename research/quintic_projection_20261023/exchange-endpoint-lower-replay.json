@@ -1,0 +1,76 @@
+{
+  "status": "PASS",
+  "proof_status": "Arb exponential-quantile lower certificate for original endpoint C(1).\n\nFor 0<c<1/sqrt(2), b>0, R=|Z|^2,T=|G|^2 are independent Exp(1).\nSet u=R[1+c(R-2)/sqrt(2)]^2/b^2, d=(u-T)/(u+T).\nThe exact conditional angular mean is C(d)=d/AGM(1,|d|), increasing\nwith d, hence increasing with R and decreasing with T. The positivity\nof 1-sqrt(2)c makes u increasing on R>=0.\n\nOn an n by n equal exponential-quantile grid, exclude first R-bin and\nlast T-bin and bound that union by -1 (mass 2/n-1/n^2). For remaining\ncells evaluate lower R and upper T corners. With two AGM steps,\ng2<=AGM<=a2. Thus C(d)>=d/a2 for d>0, and C(d)>=d/g2 for d<0.\nAmbiguous signs are bounded by -1. All finite sums/logs/sqrts are Arb.\nThe angular/monotonicity arguments are separate paper facts, not Lean.\n",
+  "n": 1024,
+  "precision_bits": 128,
+  "interior_cells_per_profile": 1046529,
+  "boundary_union_mass": "2047/1048576",
+  "profiles": [
+    {
+      "kind": "normalized_G_phase",
+      "c": "1126037/12500000",
+      "b": "16260103/50000000",
+      "endpoint_lower": {
+        "ball": "[0.66162682108282774485987972314975325 +/- 4.87e-36]",
+        "rational_bounds": [
+          "330813410541/500000000000",
+          "661626821083/1000000000000"
+        ]
+      },
+      "ambiguous_corner_signs": 0
+    },
+    {
+      "kind": "normalized_G_phase",
+      "c": "900639/10000000",
+      "b": "32555119/100000000",
+      "endpoint_lower": {
+        "ball": "[0.66117546895789020926535626806987998 +/- 6.71e-36]",
+        "rational_bounds": [
+          "661175468957/1000000000000",
+          "330587734479/500000000000"
+        ]
+      },
+      "ambiguous_corner_signs": 0
+    },
+    {
+      "kind": "old_balanced_common_lower",
+      "c": "14953/62500",
+      "b": "14953/62500",
+      "endpoint_lower": {
+        "ball": "[0.70055666828103338229495136111778736 +/- 4.46e-36]",
+        "rational_bounds": [
+          "700556668281/1000000000000",
+          "350278334141/500000000000"
+        ]
+      },
+      "ambiguous_corner_signs": 0
+    }
+  ],
+  "exact_finite_weight_mixed_endpoint_lower": {
+    "ball": "[0.72089 +/- 4.11e-6]",
+    "rational_bounds": [
+      "144177179349/200000000000",
+      "360443673017/500000000000"
+    ]
+  },
+  "exact_finite_weight_mixed_p_upper": {
+    "ball": "[0.71237 +/- 3.24e-6]",
+    "rational_bounds": [
+      "71237180281/100000000000",
+      "89046654343/125000000000"
+    ]
+  },
+  "exact_finite_weight_raw_score_upper_2p_minus_C1": {
+    "ball": "[0.70386 +/- 3.75e-6]",
+    "rational_bounds": [
+      "703856259587/1000000000000",
+      "703860572741/1000000000000"
+    ]
+  },
+  "incumbent": "711947/1000000",
+  "old_common_lower_reason": "For balanced c=b and 0<c<1/sqrt(2), u=R*(1/c+(R-2)/sqrt(2))^2 decreases in c. Thus cmax=14953/62500 supplies a lower C1 bound for both original rational balanced profiles.",
+  "seconds": 12.849290015175939,
+  "active_input_sha256": "459026c3f5f5651d8bd9aa9a1fb0cc464d5d525813cc51fb6a01252e30789bad",
+  "active_replay_sha256": "9e0094503161448e557332515a023f51e42b06fcee80524baff188b2c6c1d960",
+  "verifier_sha256": "8f44ab833c568f9e245ec64e5b1557f56fe17884ffdf073de33e30537d7ade0c"
+}
