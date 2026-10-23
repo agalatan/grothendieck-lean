@@ -76,6 +76,7 @@ theorem pieceCap_of_pieceOneOK (x : ℕ × ℕ × List String × List String) (j
   | none => rw [hj] at h; exact absurd h (by simp)
   | some y =>
     rw [hj] at h
+    change pieceCheck x.1 x.2.1 y = true at h
     obtain ⟨hjl, hy⟩ := List.getElem?_eq_some_iff.1 hj
     have hjl' : j < x.2.2.2.length := by simpa [pieceList] using hjl
     refine ⟨y.2.2.2, ?_, ?_⟩
@@ -92,9 +93,9 @@ theorem pieceCap_of_pieceOneOK (x : ℕ × ℕ × List String × List String) (j
       have hG := pieceGrids_adm _ (List.getElem_mem hgp)
       simp only [gridAdm, Bool.and_eq_true, decide_eq_true_eq] at hG
       obtain ⟨⟨⟨⟨hh, h1⟩, h8⟩, hN⟩, hN'⟩ := hG
-      have hy1 : y.2.1 = pieceGrids[g] := by rw [hyp]; simp [pieceList, e1, p, g]
+      have hy1 : y.2.1 = pieceGrids[g] := by rw [hyp]; simp only [pieceList, List.getElem_map]; exact e1
       have hy2 : y.2.2.1 = mkTables pieceGrids[g].1 pieceGrids[g].2.1 pieceGrids[g].2.2 := by
-        rw [hyp]; simp [pieceList, ← e2, p, g]
+        rw [hyp]; simp only [pieceList, List.getElem_map]; exact e2
       intro w hw
       unfold pieceCheck at h
       rw [hy1, hy2] at h

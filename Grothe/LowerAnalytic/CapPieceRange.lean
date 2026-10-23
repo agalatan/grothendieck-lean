@@ -48,8 +48,7 @@ def pieceCoverOK (x : ℕ × ℕ × List String × List String) : Bool :=
 
 /-- **The check of piece `j`** of a piece node (on its grid, with the tables `Ts`). -/
 def pieceOneOK (Ts : List Tables) (x : ℕ × ℕ × List String × List String) (j : ℕ) : Bool :=
-  let ds := parseDirs x.2.2.1
-  match (pieceList Ts ds x.2.2.2)[j]? with
+  match (pieceList Ts (parseDirs x.2.2.1) x.2.2.2)[j]? with
   | some y => pieceCheck x.1 x.2.1 y
   | none => false
 
