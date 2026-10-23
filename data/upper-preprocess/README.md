@@ -2,9 +2,9 @@
 
 Under the documented Gaussian inputs, the certificate proves
 
-**K_G^C < 1.404598170764.**
+**K_G^C < 1.404598161566.**
 
-The exact reciprocal score is `355973694404074991/500000000000000000`.
+The exact reciprocal score is `355973696735190991/500000000000000000`.
 This is a global upper certificate, not a bound on a selected response region.
 The lower certificate is unaffected.
 
@@ -23,14 +23,14 @@ residual about `c t`, with `c = 7119483103461/10000000000000`:
 
 | contribution | exact allowance | status |
 |---|---:|---|
-| selected-block energy comparison | `107077907/125000000000000` | proved from inherited component-error inputs and native finite masses |
+| weighted selected-block energy comparison | `13311891/15625000000000` | proved from inherited component-error inputs and native finite masses |
 | finite head through degree 501 | `28153/1000000000000` | freshly checked in Arb and Lean |
 | stored energy-table accuracy | `6847009/500000000000000000` | inherited external Gaussian input |
 | infinite tail after degree 501 | `36748/1000000000000` | fresh contour arithmetic, same analytic Schur input |
 
-Their sum is `delta = 460768975009/500000000000000000`.
+Their sum is `delta = 458437859009/500000000000000000`.
 The already formalized transfer theorem gives
-`K_G^C <= 1/(c-delta) < 1.404598170764`.
+`K_G^C <= 1/(c-delta) < 1.404598161566`.
 No additional head-comparison hypothesis is introduced.
 
 The native Lean checker proves the complete finite-head statement over exact
@@ -83,7 +83,7 @@ exact bound, source hash and verifier hash. The `inputs/` directory pins the
 Schur proof and smoothing parameters. A sequential LP produced the proposal;
 neither LP optimality nor floating point output is a certificate premise.
 
-The dominant remaining allowance is the selected comparison (92.96% of the
+The dominant remaining allowance is the selected comparison (92.92% of the
 residual), derived from the inherited Gaussian component-error enclosures. Further gains from a new response must account for its full signed
 kernel and shared tail; a better slope or a truncated mixture score alone
 does not establish an endpoint.

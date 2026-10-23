@@ -115017,14 +115017,14 @@
       "8701999049242289/1532495540865888858358347027150309183618739122183602176"
     ]
   ],
-  "compare": "107077907/125000000000000",
+  "compare": "13311891/15625000000000",
   "hardy_tail": "9187/250000000000",
-  "incumbent_score": "355973694404074991/500000000000000000",
+  "incumbent_score": "355973696735190991/500000000000000000",
   "scope": "Native finite head and selected-block error comparison, with inherited Gaussian coefficient-error enclosures and Hardy input.",
-  "delta": "460768975009/500000000000000000",
-  "exact_bound": "500000000000000000/355973694404074991",
-  "headline_upper": "351149542691/250000000000",
-  "headline_decimal": "1.404598170764",
+  "delta": "458437859009/500000000000000000",
+  "exact_bound": "500000000000000000/355973696735190991",
+  "headline_upper": "702299080783/500000000000",
+  "headline_decimal": "1.404598161566",
   "hardy_square_cap": "7/4",
   "hardy_radius": "4149/4000",
   "fresh_hardy_sha256": "767122a6f834c23f3bd7e12d5f9a834ca0faf63b3920c7378fc506ba0ed37d8b",
@@ -115034,5 +115034,5 @@
   "baseline_bridge_sha256": "27e4a5b3c0cc30222d9d0d064a7c49ec37ce5d2569303df7d3f4a8a9a6073d04",
   "baseline_source_commit": "1fc68323630674a096e0ffef66a1b740d7f7fec6",
   "comparison_scope": "selected_head",
-  "localized_recipe_sha256": "4229bc5f6480ef16ddd2967123f3adb100b1aa91427c429996725c0d128a3e8e"
+  "localized_recipe_sha256": "eee651704b9daa645da548d06b806711d83ea7dc58b2b450b79d1f62ffbda84b"
 }

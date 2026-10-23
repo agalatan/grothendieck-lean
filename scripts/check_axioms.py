@@ -23,7 +23,9 @@ NATIVE |= {f"Grothe.Lower.{n}._native.native_decide.ax_1_1" for n in
            ['certRows0', 'certRows1', 'certRows2', 'certRows3', 'certRows4', 'certBatches0', 'certBatches1', 'certBatches2', 'certBoxes0', 'certBoxes1', 'certBoxes2', 'certBoxes3', 'certPartition']}
 REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.Upper.comparison_check", "Grothe.Upper.actual_band_mass",
-            "Grothe.Upper.BandComparison.compare", "Grothe.UpperChaos.norm_energyBlock_sq",
+            "Grothe.Upper.BandComparison.compare", "Grothe.Upper.BandComparison.weighted_compare",
+            "Grothe.Upper.headWeight_sound", "Grothe.Upper.comparisonWeight_sound",
+            "Grothe.Upper.head_residual_le_weighted", "Grothe.UpperChaos.norm_energyBlock_sq",
             "Grothe.UpperChaos.localized_comparison",
             "Grothe.Lower.lower_endpoint", "Grothe.Lower.lower_bound_of_transferL2",
             "Grothe.LowerAnalytic.gaussian_steinInputs", "Grothe.LowerAnalytic.lower_bound_gaussian",
@@ -207,7 +209,9 @@ REQUIRED |= POWER_HAAGERUP
 UPPER_COMPARISON = {
     'Grothe.fresh_upper', 'Grothe.upper_value_lt',
     'Grothe.Upper.comparison_check', 'Grothe.Upper.actual_band_mass',
-    'Grothe.Upper.BandComparison.compare',
+    'Grothe.Upper.BandComparison.compare', 'Grothe.Upper.BandComparison.weighted_compare',
+    'Grothe.Upper.headWeight_sound', 'Grothe.Upper.comparisonWeight_sound',
+    'Grothe.Upper.head_residual_le_weighted',
     'Grothe.UpperChaos.norm_energyBlock_sq', 'Grothe.UpperChaos.localized_comparison',
     'Grothe.UpperChaos.fresh_upper_of_rounding',
     'Grothe.UpperChaos.fresh_upper_concrete', 'Grothe.UpperChaos.fresh_upper_rounder',

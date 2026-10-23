@@ -10,3 +10,8 @@ import Grothe.UpperChaos.PhiBound
 #print axioms Grothe.UpperChaos.fresh_upper_of_rounding
 #print axioms Grothe.UpperChaos.fresh_upper_concrete
 #print axioms Grothe.UpperChaos.fresh_upper_rounder
+
+#print axioms Grothe.Upper.headWeight_sound
+#print axioms Grothe.Upper.comparisonWeight_sound
+#print axioms Grothe.Upper.head_residual_le_weighted
+#print axioms Grothe.Upper.BandComparison.weighted_compare

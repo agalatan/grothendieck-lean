@@ -17,7 +17,7 @@ with `n+3m ≤ 501`. `energyErrQ` is inherited. The selected-block comparison
 uses the Gaussian component-error inputs and exact finite masses in
 `ComparisonData.lean`. The head and Schur/Hardy contour have independent replays.
 Under the documented Gaussian inputs the bound is
-`1/(c-460768975009/500000000000000000) = 500000000000000000/355973694404074991 < 1.404598170764`.
+`1/(c-458437859009/500000000000000000) = 500000000000000000/355973696735190991 < 1.404598161566`.
 -/
 
 namespace Grothe.Upper

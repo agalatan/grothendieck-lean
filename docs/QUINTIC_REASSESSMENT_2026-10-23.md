@@ -21,7 +21,7 @@ The repository's audited baseline remains:
   `CapsRest`: the remaining four rows' vertex caps and any excluded-node
   caps of the other rows. Its full heavy verification has no recorded stamp
   in the current tree.
-* `K_G^C < 1.404598170764`: `Grothe.UpperChaos.fresh_upper_rounder`
+* `K_G^C < 1.404598161566`: `Grothe.UpperChaos.fresh_upper_rounder`
   proves this for the concrete rounding, assuming an L² charge-one
   truncation `X` and the three numerical bounds `compare`, `energy_close`
   and `hardy`. The older table interface `Grothe.fresh_upper`, conditional

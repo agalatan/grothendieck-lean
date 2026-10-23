@@ -13,11 +13,11 @@ see `AGENTS.md` for worktree and delivery rules.
 
 Headline `Grothe.UpperChaos.fresh_upper_rounder` (`Grothe/UpperChaos/PhiBound.lean`):
 
-    K_G^ℂ ≤ 500000000000000000/355973694404074991  (< 1.404598170764)
+    K_G^ℂ ≤ 500000000000000000/355973696735190991  (< 1.404598161566)
 
 for the concrete rounding `GT` (smoothed `F₀·P₃(φ)` built from `Grothe/Upper/Data.lean`), assuming only
 
-* `ComparisonInputs`: the exact spectrally supported Gaussian error decomposition and inherited component norm caps; Lean derives its selected-head energy comparison,
+* `ComparisonInputs`: the exact spectrally supported Gaussian error decomposition and inherited component norm caps; Lean derives its weighted selected-head energy comparison (with coefficient costs proved from the preprocessors),
 * `energy_close`: `Σ_{n+3m≤501} |energy X − energyTable| ≤ energyErrQ`,
 * `hardy`: `Σ_{n<J} kernelCoeff(energy GT)_n² (4149/4000)^{2(2n+1)} ≤ 7/4`,
 
