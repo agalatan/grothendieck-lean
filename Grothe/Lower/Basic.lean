@@ -6,7 +6,7 @@ import Mathlib
 Horner evaluation `evalL` of a little-endian coefficient list and its expansion as a sum; the
 endpoint lemma for `a x² + b x³`, `b ≥ 0`, on `[p, q] ⊆ [0, ∞)` (`cubic_endpoint_le`); the
 exact maximum of a quadratic on an interval (`quadVal_le_quadMax`), and of a chord minus a
-square (`chordMax`, `chord_le_chordMax`).  `allPar` is `List.all` evaluated in parallel
+square (`chordMax`, `chord_le_chordMax`).  `allPar` is `List.all`
 (`allPar_eq`), and `chainTo` checks that consecutive intervals cover an interval
 (`chainTo_sound`); the certificate checks use both.
 -/
@@ -15,17 +15,11 @@ namespace Grothe.Lower
 
 open Finset
 
-/-- `l.all f`, evaluated in parallel with one task per element. -/
+/-- `l.all f` (evaluated sequentially: the native checks are single-threaded). -/
 def allPar {α : Type*} (f : α → Bool) (l : List α) : Bool :=
-  (l.map fun a => Task.spawn fun _ => f a).all Task.get
+  l.all f
 
-@[simp] lemma allPar_eq {α : Type*} (f : α → Bool) (l : List α) : allPar f l = l.all f := by
-  induction l with
-  | nil => rfl
-  | cons a l ih =>
-    simp only [allPar, List.map_cons, List.all_cons] at ih ⊢
-    rw [← ih]
-    rfl
+@[simp] lemma allPar_eq {α : Type*} (f : α → Bool) (l : List α) : allPar f l = l.all f := rfl
 
 /-- The intervals `[lo a, hi a]` of the list are consecutive from `prev` (each starts where the
 previous one ends) and the last one reaches `stop`. -/

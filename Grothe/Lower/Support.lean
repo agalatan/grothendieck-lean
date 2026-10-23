@@ -66,20 +66,16 @@ theorem rowOf_of_shared (r : Row) (hr : checkRow r = true) {Ω : Type} [Measurab
   nlinarith [hV, hG, hsq, hbd]
 
 /-- **All exact checks of the certificate**: the rows, the batches of mixed node certificates,
-and the boxes partitioning `[0, 9/10] × [0, ρ] × [0, 31/4]` against the bound `B` (the three in
-parallel). -/
+and the boxes partitioning `[0, 9/10] × [0, ρ] × [0, 31/4]` against the bound `B` (evaluated
+sequentially). -/
 def checkCert (rows : List Row) (batches : List JBatch) (cuts boxes : List String) : Bool :=
-  let r := Task.spawn fun _ => allPar checkRow rows
-  let b := Task.spawn fun _ => allPar (checkBatch rows) batches
-  let c := Task.spawn fun _ => checkCover rows batches Bcap cuts boxes
-  r.get && b.get && c.get
+  allPar checkRow rows && allPar (checkBatch rows) batches
+    && checkCover rows batches Bcap cuts boxes
 
 lemma checkCert_eq (rows : List Row) (batches : List JBatch) (cuts boxes : List String) :
     checkCert rows batches cuts boxes
       = (rows.all checkRow && batches.all (checkBatch rows)
-        && checkCover rows batches Bcap cuts boxes) := by
-  simp only [← allPar_eq]
-  rfl
+        && checkCover rows batches Bcap cuts boxes) := rfl
 
 /-- **Main lower-bound theorem (finite layer).**  Under the retained-square inequality of the
 crude row and the simultaneous Gaussian reduction of the certified rows, every admissible `(V, t)`
