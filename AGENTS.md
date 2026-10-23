@@ -15,8 +15,14 @@ These rules keep them from overwriting each other's work. Read them before doing
   |---|---|---|
   | Codex instance | `codex/<topic>` | `/Users/alingalatan/workspaces/grothe-codex-<topic>` |
   | Claude session | `claude/<topic>` | `/Users/alingalatan/workspaces/grothe-claude-<topic>` |
-  | Claude worker (sub-agent) | `work/<topic>` | `/Users/alingalatan/workspaces/grothe/.claude/worktrees/<topic>` |
+  | Claude worker (sub-agent) | `claude/<topic>` | `/Users/alingalatan/workspaces/grothe/.claude/worktrees/<topic>` |
 
+- **Say who made it, in every branch and commit.**
+  - Branches start with `codex/` or `claude/`, and delivery branches with `ready/codex-<topic>` or
+    `ready/claude-<topic>`.
+  - Every commit subject starts with `[codex]` or `[claude]`, e.g. `[codex] Lower: joint image compatibility`.
+  - CI's auto-merge commit is `Merge ready/<name> (CI auto-merge)`, so the author shows in master's history.
+  - Older branches named `work/<topic>` are Claude's.
 - **Never force-push, never rewrite pushed history.** Never use `git stash` in a shared checkout, and never
   `reset --hard`, `clean` or `checkout --` files you did not create.
 - **Always sync before you work and before you deliver:** run `scripts/sync_master.sh`. It fetches, prunes, and
@@ -72,7 +78,8 @@ Do this when the user says the work should go into master.
 6. **Documentation:** if a bound, a hypothesis or the axiom report changed, update `README.md`, `docs/overview.tex` +
    `OVERVIEW.pdf` and `docs/LEAN_DETAILS.md` in the same delivery.
 7. **Push your branch** (`git push -u origin <branch>`). CI builds and checks it; this push merges nothing.
-8. **Deliver:** `git push origin HEAD:ready/<topic>` (a new name each time, e.g. `ready/<topic>-2`).
+8. **Deliver:** `git push origin HEAD:ready/<agent>-<topic>`, with `<agent>` = `codex` or `claude`; use a new name
+   each time (e.g. `ready/codex-<topic>-2`).
    - CI merges it into the **current** master, builds and checks the **merged** tree. Only if everything is green does
      it fast-forward `master` and delete the `ready/` branch.
    - If CI fails, master is untouched: fix, commit, and push a new `ready/` name.
