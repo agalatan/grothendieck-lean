@@ -9,7 +9,8 @@ import Grothe.Lower.Support
 and price, mesh, `x`-coverage, and every cell: moment rectangles, node majorants with their Stein
 cuts, `σ`-chords), the exact node certificates of the mixed potentials (Stein and spectral), and
 the boxes partitioning `[0, 9/10] × [0, ρ] × [0, 31/4]` (every box bounded by `B`, the partition
-certified by its axis cuts); rows, cells, batches and boxes are checked in parallel.
+certified by its axis cuts); rows, cells, batches and boxes are
+checked sequentially (single-threaded native code).
 `lower_bound_data` is the finite-layer theorem `V ≤ B` for the certificate data.
 -/
 

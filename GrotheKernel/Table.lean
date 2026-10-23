@@ -12,7 +12,7 @@ radial coefficient sequence of `H` is the coefficient sequence of
 
 `bivarT K` encloses the first `K` coefficients of `B` for a finite table given row by row
 (`(m, [(n, E[n,m]), …])`); every intermediate polynomial is truncated to `K` coefficients.  The
-rows are processed in parallel tasks.
+rows are processed sequentially (single-threaded native code).
 
 The table itself is stored as strings of exact dyadic rationals, one per row (`parseRow`).
 -/
@@ -78,12 +78,12 @@ def sumL : List (List Ival) → List Ival
   | [] => []
   | L :: rest => addL L (sumL rest)
 
-/-- **The first `K` coefficients of `B`** (rows in parallel); `NZ`, `MW` bound the indices `n`,
+/-- **The first `K` coefficients of `B`** ; `NZ`, `MW` bound the indices `n`,
 `m` of the table. -/
 def bivarT (K : Nat) (tab : List RowI) (P Q : List Ival) (NZ MW : Nat) : List Ival :=
   let powP := powsT K P NZ
   let powQ := powsT K Q MW
-  sumL ((tab.map fun r => Task.spawn fun _ => rowTermT K powP powQ r).map Task.get)
+  sumL (tab.map fun r => rowTermT K powP powQ r)
 
 /-- All indices of the table satisfy `n + 3m ≤ N`. -/
 def tabWithin (N : Nat) (rows : List RowQ) : Bool :=

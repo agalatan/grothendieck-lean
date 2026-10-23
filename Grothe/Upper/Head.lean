@@ -187,7 +187,7 @@ theorem memB_bivarT {P Q : ℝ[X]} {PI QI : List Ival} {K : ℕ} (hP : memB K P 
     memB K (tabPoly P Q rows) (bivarT K (tabI rows) PI QI NZ MW) := by
   have e : bivarT K (tabI rows) PI QI NZ MW
       = sumL ((tabI rows).map (rowTermT K (powsT K PI NZ) (powsT K QI MW))) := by
-    unfold bivarT; simp only [List.map_map]; rfl
+    rfl
   rw [e]
   clear e
   unfold tabPoly tabI
