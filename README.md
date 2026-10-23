@@ -186,10 +186,12 @@ response searches are exploratory. See [the replica report](docs/SYMMETRIC_RESPO
 A linear separator excludes the entire Gaussian-phase cubic-preprocessor
 family, including complex phases and convex mixtures, from improving the current
 upper score: its reciprocal score is at most 0.71186, below the certified incumbent score floor
-0.7119471533. Fifteen additional Lean results check the polynomial separator,
+0.71194715957. Seventeen additional Lean results check the polynomial separator,
 common signed-tail prices, error propagation, and finite-mixture assembly.
 The Gaussian-family application is a written proof with an explicit Lean
-low-coefficient interface. The numerical pool screens remain uncertified;
+low-coefficient interface. An incumbent's coefficient-l1 error is paid once
+for every admissible spectral price; the complete score has the same error
+allowance. The numerical pool screens and phase-perturbation searches remain uncertified;
 none of these research interfaces changes either endpoint.
 See [the separator proof and trust boundary](docs/CUBIC_PHASE_SEPARATOR_2026-10-23.md).
 `Grothe/Research/` adds 13 kernel-checked facts for coupled complex modulus

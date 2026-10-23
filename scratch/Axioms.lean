@@ -365,6 +365,8 @@ import Grothe
 #print axioms Grothe.Upper.SpectralScreen.common_tail_price
 #print axioms Grothe.Upper.SpectralScreen.full_score_upper
 #print axioms Grothe.Upper.SpectralScreen.affine_error_bound
+#print axioms Grothe.Upper.SpectralScreen.l1_anchor_price_bound
+#print axioms Grothe.Upper.SpectralScreen.full_score_l1_lower
 #print axioms Grothe.Upper.SpectralScreen.finite_mixture_score_bound
 #print axioms Grothe.Upper.CubicPhaseScreen.phase_conditions_unit
 #print axioms Grothe.Upper.CubicPhaseScreen.phase_conditions
