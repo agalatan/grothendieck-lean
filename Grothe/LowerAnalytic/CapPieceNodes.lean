@@ -6,7 +6,8 @@ import Grothe.LowerAnalytic.CapRows
 
 A *piece node* is `(k, i, dirs, pieces)`: node `i` of row `k`, the directions `d₀, d₂, d₃` and the
 encoded pieces `g;recipe;constraints` (`parsePiece`, grid `g` of `pieceGrids`).  `pieceNodeOK`
-runs the coverage check and the constrained node check of every piece (in parallel tasks);
+runs the coverage check and the constrained node check of every piece (sequentially: no
+threads inside `native_decide`; long runs are split into separate facts and modules);
 `capOfPieceNode` turns a passing check into the cap of the node.
 -/
 
@@ -24,7 +25,7 @@ def pieceList (Ts : List Tables) (ds : List (List ℚ)) (pcs : List String) :
     let x := parsePiece ds p
     (x.2.1, pieceGrids.getD x.1 (0, 0, 0), Ts.getD x.1 ⟨#[], #[], #[]⟩, x.2.2)
 
-/-- **The check of a piece node** (the pieces in parallel). -/
+/-- **The check of a piece node** (sequential; parallelism only through separate native facts). -/
 def pieceNodeOK (Ts : List Tables) (x : ℕ × ℕ × List String × List String) : Bool :=
   let r := rowData.getD x.1 row01
   let nd := r.nodeList.getD x.2.1 (0, 0)
@@ -32,9 +33,7 @@ def pieceNodeOK (Ts : List Tables) (x : ℕ × ℕ × List String × List String
   let P := pieceList Ts ds x.2.2.2
   x.2.2.2.all (fun p => decide ((parsePiece ds p).1 < pieceGrids.length)) &&
     capCoverOK ds (P.map fun y => y.2.2.2) &&
-    ((P.map fun y => Task.spawn fun _ =>
-      nodeOKc r (rowR x.1) nd.1 nd.2 y.1 y.2.1.1 y.2.1.2.1 y.2.1.2.2 y.2.2.1 y.2.2.2).all
-      fun t => t.get)
+    P.all fun y => nodeOKc r (rowR x.1) nd.1 nd.2 y.1 y.2.1.1 y.2.1.2.1 y.2.1.2.2 y.2.2.1 y.2.2.2
 
 /-- The cap statement of node `i` of row `k`. -/
 def NodeCap (k i : ℕ) : Prop :=
@@ -50,8 +49,7 @@ lemma pieceGrids_adm : ∀ G ∈ pieceGrids, gridAdm G = true := by
 theorem nodeCap_of_pieceNodeOK (x : ℕ × ℕ × List String × List String)
     (h : pieceNodeOK (pieceGrids.map fun G => mkTables G.1 G.2.1 G.2.2) x = true) :
     NodeCap x.1 x.2.1 := by
-  simp only [pieceNodeOK, Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq, List.all_map,
-    Function.comp_def, Task.spawn] at h
+  simp only [pieceNodeOK, Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq] at h
   obtain ⟨⟨hg, hcov⟩, hall⟩ := h
   unfold NodeCap rowPot
   refine pot_le_of_pieces _ _ _ _ _ _ (fun y hy => ?_) (fun y hy => ?_) hcov (fun y hy => hall y hy)
@@ -66,9 +64,11 @@ theorem nodeCap_of_pieceNodeOK (x : ℕ × ℕ × List String × List String)
   · have e2 : (pieceGrids.map fun G => mkTables G.1 G.2.1 G.2.2).getD g ⟨#[], #[], #[]⟩
         = mkTables pieceGrids[g].1 pieceGrids[g].2.1 pieceGrids[g].2.2 := by
       rw [List.getD_eq_getElem _ _ (by simpa using hgp), List.getElem_map]
+    dsimp only
     rw [e1, e2]
     exact tablesOK_mk hh h1 h8 hN hN'
-  · rw [e1]
+  · dsimp only
+    rw [e1]
     refine ⟨hh, by omega, ?_⟩
     by_contra h0
     have : pieceGrids[g].1 = 0 := by omega
