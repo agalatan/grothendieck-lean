@@ -58,7 +58,24 @@ The excluded pieces are the failures found by track B (`data/caps-m/pd3-results.
 
 The generated modules are `D/C/N14x150` with `R14x150_0..1`, and `D/C/N14x200` with `R14x200_0..10`.
 
-Build results and timings are recorded under "Results" below.
+**Results (23 Oct, laptop, single-threaded facts, load ~5–7 from other agents):**
+
+| node | coverage fact | range facts | node theorem |
+|---|---|---|---|
+| 14:150 | 75 s | 2 facts (4 + 4 pieces, 1600 × 1024): 546 s, 582 s | `nodeCap_14x150` builds, 46 s |
+| 14:200 | 85 s | 11 facts (31 pieces): 286–747 s each, 17.5 min wall in parallel | `nodeCap_14x200` builds, 52 s |
+
+- Cost is about 2.3 min per piece on 1600 × 1024 and about 1 min on 1600 × 256.
+- `#print axioms nodeCap_14x150`: `propext`, `Classical.choice`, `Quot.sound`, `pieceCover_14x150`,
+  `pieceRange_14x150_0/1`. 14:200 is analogous, with its 12 facts. `nodeCap_of_ranges` uses only the 3 standard
+  axioms.
+- So both nodes are certified **modulo their excluded (failing) pieces**: `hex` is the bound of J on piece 0
+  (14:150) and on pieces 0–6, 12, 18, 24, 30 (14:200).
+- The test ran on the laptop, not the droplet. The droplet was below the free space needed for a fresh dependency
+  build (≥ 3 GB floor), and track B's 14:280 diagnostic was running there.
+- `CapPieceRange` / `CapPieceNodes` are imported by `Grothe.lean`, so CI builds them. The generated
+  `CapPieces/*` modules are not yet imported anywhere: build them explicitly with
+  `lake build Grothe.LowerAnalytic.CapPieces.N<k>x<i>`.
 
 ## How to continue
 

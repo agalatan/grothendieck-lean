@@ -185,7 +185,8 @@ def write_nodes(pieces, sel):
                        f"  refine nodeCap_of_ranges {name} {exs} pieceCover_{tag} (fun j hj hx => ?_) hex",
                        f"  have hn : ({name}).2.2.2.length = {len(pcs)} := rfl",
                        "  rw [hn] at hj",
-                       "  simp only [List.mem_cons, List.not_mem_nil, or_false, not_or] at hx",
+                       *(["  simp only [List.mem_cons, List.not_mem_nil, or_false" + (", not_or" if len(excl) > 1 else "") + "] at hx"]
+                         if excl else []),
                        f"  obtain {pat} := (by omega : {alts})" if rs else "  omega",
                        ]
         if rs: node.append(f"  exacts [{uses}]")

@@ -17,7 +17,7 @@ theorem nodeCap_14x150
   refine nodeCap_of_ranges pieceNode_14x150 [0] pieceCover_14x150 (fun j hj hx => ?_) hex
   have hn : (pieceNode_14x150).2.2.2.length = 9 := rfl
   rw [hn] at hj
-  simp only [List.mem_cons, List.not_mem_nil, or_false, not_or] at hx
+  simp only [List.mem_cons, List.not_mem_nil, or_false] at hx
   obtain h | h := (by omega : (1 ≤ j ∧ j < 5) ∨ (5 ≤ j ∧ j < 9))
   exacts [pieceOneOK_of_range pieceRange_14x150_0 h.1 h.2, pieceOneOK_of_range pieceRange_14x150_1 h.1 h.2]
 
