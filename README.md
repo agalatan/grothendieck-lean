@@ -63,7 +63,7 @@ reduction of ⟨f, Tg⟩ for every pair of unimodular functions to 19 one-variab
 inequalities; all analytic facts about the law of the cubic residual (moment bounds, Stein and
 spectral cuts, the contraction-Gram budgets, the sixth-moment Wick identity); and the finite
 certificate that combines them (351 node certificates and a cover of the parameter space by
-8,756 boxes, one `native_decide`). The **only hypothesis**, `NodeCaps`, states that 19 explicit
+8,756 boxes, checked by 13 single-threaded `native_decide` chunks). The **only hypothesis**, `NodeCaps`, states that 19 explicit
 one-variable functions Ψ_r (defined in Lean as suprema of finite-dimensional Gaussian
 integrals) lie below stored rational values at their tabulated nodes. Those caps are certified
 by exact-arithmetic computations outside Lean; moving them inside is work in progress.
@@ -136,8 +136,10 @@ it is the best upper bound in this repository that rests on nothing outside Lean
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in `scripts/check_axioms.py`:
 `Grothe.head_check` (the upper head), `Grothe.UpperChaos.phi_cover_check` (the phase cover φ² ≤ 3),
-`Grothe.haagerup_check` (the unconditional upper bound), `Grothe.Lower.cert_check` (the lower certificate),
+`Grothe.haagerup_check` (the unconditional upper bound), the 13 chunks `Grothe.Lower.certRows0`–`4`, `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower
+certificate (assembled into `Grothe.Lower.cert_check`),
 `capChords_check` (the chord nodes of the cap tables) and the 60 range checks `capRangeKK_j` of the node caps.
+Every native check is single-threaded code (no `Task.spawn`).
 Everything else is kernel-checked. No `sorry`. The axiom report `scratch/Axioms.lean`
 (227 theorems) is verified in CI by `scripts/check_axioms.py`.
 
@@ -166,7 +168,7 @@ lake build
 lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py
 ```
 
-A full build takes about 20 minutes on 8 cores; the three native checks dominate. CI
+A full build takes about 20 minutes on 8 cores; the native checks dominate. CI
 (`.github/workflows/lean.yml`) builds everything on every push to `master`, forbids `sorry`,
 `axiom`, `implemented_by`, `extern` and `unsafe`, and checks the axiom report.
 

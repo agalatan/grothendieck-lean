@@ -138,7 +138,8 @@ variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
   and the endpoint; the Gaussian witness on L²(γ_n) with its value on z/‖z‖, the orthogonality of the
   chaos ranges, the polarisation identity of the scalar pairing, the bound ‖P₁,₀h‖ ≤ √π/2 for |h| ≤ 1
   (rotation invariance of the Gaussian measure, E√(x²+y²) = √(π/2)) and the transfer inputs from the
-  scalar caps. All finite exact checks of the lower certificate are one `native_decide` (`cert_check`).
+  scalar caps. All finite exact checks of the lower certificate are 13 single-threaded `native_decide` chunks
+  (`Grothe/Lower/Cert/`), assembled into `cert_check`.
 * Inputs of the intermediate theorem `lower_bound_data` (all of them are now derived in Lean, except the node caps `NodeCaps`, by the chain ending in `lower_bound_of_nodeCaps`): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
   from ‖Qk‖ ≤ E|Qk/‖Qk‖| ≤ ρ, which uses the moment bounds also for the cubic Qk/‖Qk‖), with ‖v‖² = 2
   and 0 ≤ t ≤ 9/10; the simultaneous Gaussian reduction of the rows (`SharedReduction`): one residual p = Q_w c₁ with scale τ = ‖p‖₂ ≤ ρ and normalised law
@@ -268,9 +269,11 @@ variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
   4‖Π₁,₁|q|²‖² + 2‖Π₂,₀q²‖² ≤ 3κ, and the weighted bound on the first-chaos content of q|q|²
   along any direction by the influence of that direction.
 
-Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus exactly three `native_decide` facts:
+Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus 15 `native_decide` facts:
 `Grothe.head_check` (the upper head), `Grothe.haagerup_check` (the 4,000-term series check of the
-unconditional upper bound `Grothe.haagerup_bound`) and `Grothe.Lower.cert_check` (the lower certificate). All
+unconditional upper bound `Grothe.haagerup_bound`) and the 13 chunks `Grothe.Lower.certRows0`–`4`,
+`certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower certificate (assembled into
+`Grothe.Lower.cert_check`). Every native check is single-threaded (no `Task.spawn`). All
 other finite computations (the polynomial norms, the moment covers) are kernel-checked
 (`decide +kernel`). The report is `lake env lean scratch/Axioms.lean`, checked in CI. No `sorry`,
 no warnings.
