@@ -205,3 +205,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.hermite2_complete
 #print axioms Grothe.UpperChaos.hermiteBasis2
 #print axioms Grothe.UpperChaos.hasSum_energy2
+#print axioms Grothe.UpperChaos.map_mehlerY
+#print axioms Grothe.UpperChaos.integral_H2_XY
+#print axioms Grothe.UpperChaos.Bm_eq_integral
+#print axioms Grothe.UpperChaos.mehler_L2
