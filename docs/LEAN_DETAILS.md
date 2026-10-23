@@ -207,7 +207,7 @@ and the gates E ⪰ 0, E ⪰ diag(−1,ε,ε), R ⪰ diag(−1,ε), R ⪰ diag(�
 inequality give each row inequality with the residual p = Π_{H₂,₁}c₀, its circular law and the gate
 variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
 `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data :
-NodeCaps → IsGrothendieckBound K → 1.401695390488 < K` composes everything
+NodeCaps → IsGrothendieckBound K → 1.401695673376 < K` composes everything
 through `Grothe/Research/RefinedCoverResult.lean`:
 **the only remaining hypothesis of this default-target theorem is `NodeCaps`**, the node caps
 Ψ_r(r_k) − 10⁻¹¹ ≤ c_k of the 19 certified potentials (exact-arithmetic certificates outside Lean).
@@ -234,17 +234,21 @@ The four remaining rows still require `CapsRest`.
   budget. The finite checker verifies each signed reserve and both positive semidefinite
   2×2 matrices; the analytic bridge derives that same budget for the actual cubic.
   Joint nodes are restricted to their checked kurtosis range throughout the cover.
-  The refined partition of [0, 9/10] × [0, ρ] × [0, 31/4] has 9,057 closed boxes.
-  It uses only the existing certified node potentials and their valid ranges;
-  43 parent boxes use finer subdivisions and reoptimized row mixtures.
+  The refined partition of [0, 9/10] × [0, ρ] × [0, 31/4] has 10,234 closed boxes.
+  It retains the existing certified node potentials and their valid ranges, and adds two
+  pure-row law-scale nodes for row 14 using the original unshifted source table and Stein cuts.
+  Their one appended batch passes `LawNodeCheck.certLawNodes`. Finer subdivisions and
+  reoptimized row mixtures cover every previous blocker, including the broad cap box.
   Lean also checks the endpoint and proves the Gaussian witness on L²(γ_n) with its value on z/‖z‖, the orthogonality of the
   chaos ranges, the polarisation identity of the scalar pairing, the bound ‖P₁,₀h‖ ≤ √π/2 for |h| ≤ 1
   (rotation invariance of the Gaussian measure, E√(x²+y²) = √(π/2)) and the transfer inputs from the
   scalar caps. The headline uses five row checks and three mixed-batch checks from
   `Grothe/Lower/Cert/`, plus four refined-box chunks and a refined-partition
-  check from `Grothe/Research/`. These are 13 single-threaded `native_decide`
-  facts; the complete refined cover is connected to the Gaussian reduction
-  and transfer by `RefinedLower.lean` and `RefinedCoverResult.lean`.
+  check from `Grothe/Research/`, and the additional law-batch check. These are 14
+  single-threaded `native_decide` facts. `LawNodeLower.lean` proves nine interfaces
+  connecting checked extra batches and a complete cover to the same Gaussian reduction
+  and transfer. `RefinedLower.lean` specializes the interface to no additional batches;
+  `RefinedCoverResult.lean` supplies the current complete certificate.
 * Inputs of the intermediate theorem `lower_bound_data` (all of them are now derived in Lean, except the node caps `NodeCaps`, by the chain ending in `lower_bound_of_refined_cover_data`): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
   from ‖Qk‖ ≤ E|Qk/‖Qk‖| ≤ ρ, which uses the moment bounds also for the cubic Qk/‖Qk‖), with ‖v‖² = 2
   and 0 ≤ t ≤ 9/10; the simultaneous Gaussian reduction of the rows (`SharedReduction`): one residual p = Q_w c₁ with scale τ = ‖p‖₂ ≤ ρ and normalised law
@@ -381,7 +385,8 @@ Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` fa
 and the 13 chunks `Grothe.Lower.certRows0`–`4`,
 `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower certificate (assembled into
 `Grothe.Lower.cert_check`). The refined cover additionally has four box checks `certRefinedBoxes0`–`3`
-and `certRefinedPartition` in `Grothe.Research.RefinedLowerCheck`.
+and `certRefinedPartition` in `Grothe.Research.RefinedLowerCheck`, together with
+`Grothe.Research.LawNodeCheck.certLawNodes` for the added pure-row batch.
 The separate caps target additionally uses 60 range checks
 `capRangeKK_j`. Every native check is single-threaded (no `Task.spawn`). All
 other finite computations (the polynomial norms, the moment covers) are kernel-checked
@@ -416,8 +421,8 @@ reserve certificate and J3 with the actual spectral quantities of the cubic on a
 kurtosis range. These proofs use only the standard logical axioms. They do not add a
 hypothesis to the headline lower theorem. The present endpoint uses all 41 joint-moment nodes through the integrated
 `JointData`/`jointCert` checker and `Circular.joint_sixth` analytic bridge in
-`JointContractions.lean`. The 306 spectral witnesses and 45 inherited Stein witnesses
-are combined in a 9,057-box cover. No extra hypothesis is added to `NodeCaps`.
+`JointContractions.lean`. The 306 spectral witnesses, 45 inherited Stein witnesses and two new pure-row
+Stein witnesses are combined in a 10,234-box cover. No extra hypothesis is added to `NodeCaps`.
 
 `JointSixth.gram_j_eta` retains both bounds on the negative cumulant contraction;
 `gram_j2_shifted` improves the h₀ coefficient from 198+150/α to
@@ -458,3 +463,10 @@ the positive-diagonal cost cone. `boundaryCheck` is a three-rational exact check
 `boundaryChecked_node` proves soundness for the actual circular cubic, including
 the positive-multiplier and kurtosis-range conditions. The four auxiliary conic
 variables need not be retained in a moment-cost certificate.
+
+**Reproducible law-scale extension.** `data/lower-unshifted/` contains the complete
+source snapshots, two exact unshifted node certificates and the final cover. The generator
+`tools/needle_unshifted_lean.py` verifies their hashes, the old canonical node map,
+every whole-half-line node proof, every box and the guillotine partition before exporting
+`LawNodeData.lean` and `RefinedCoverData.lean`. Its `--check` mode reproduces the
+committed data byte for byte. No source cap, witness multiplier or `NodeCaps` input changes.

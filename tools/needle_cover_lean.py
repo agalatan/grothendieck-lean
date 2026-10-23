@@ -44,17 +44,20 @@ def canonical_maps(cov,inh):
         for k,name in enumerate(names):newmap[name]=(len(inhmap)+bi,k)
     return inhmap,newmap
 
-def node_string(ref,inhmap,newmap):
+def node_string(ref,inhmap,newmap,extra_map=None):
     if ref[0]in['s','z']:return ','.join(map(str,ref))
     if ref[0]=='b':return f'b,{inhmap[int(ref[1])]},{int(ref[2])}'
+    if ref[0]=='u':
+        assert extra_map is not None and ref[1] in extra_map
+        b,k=extra_map[ref[1]];return f'b,{b},{k}'
     assert ref[0]=='n';b,k=newmap[ref[1]];return f'b,{b},{k}'
 
 def component(i,j,t,s0,s1,refs):
     assert len(refs)==4
     return f'{i},{j},{qs(t)},{qs(s0)},{qs(s1)};'+';'.join(refs)
 
-def serialize(cov,inh,inhmap,newmap):
-    nodes=[node_string(r,inhmap,newmap) for r in cov['nodes']];out=[]
+def serialize(cov,inh,inhmap,newmap,extra_map=None):
+    nodes=[node_string(r,inhmap,newmap,extra_map) for r in cov['nodes']];out=[]
     def src(r,s):
         ns=list(map(int,s.split(',')));assert len(ns)==8
         return [f'z,{r}' if c<0 else f's,{r},{c},{n}' for c,n in zip(ns[::2],ns[1::2])]
@@ -64,6 +67,9 @@ def serialize(cov,inh,inhmap,newmap):
         return (w[0][0],w[0][0],Q(0)) if len(w)==1 else (w[0][0],w[1][0],w[1][1])
     for b in cov['boxes']:
         bounds=','.join(map(qs,b['bounds']));sl,su=map(Q,b['bounds'][2:4])
+        if 'cap_choice'in b:
+            i,j,t=b['cap_choice'];assert int(i)==i and int(j)==j and 0<=Q(t)<=1
+            out.append(f'c|{bounds}|{int(i)},{int(j)},{qs(t)}');continue
         if 'choice'in b:
             ch=b['choice'];s0,s1=map(Q,ch.get('scale_domain',(sl,su)))
             cs=[component(*group(g),s0,s1,[nodes[k] for k in rr]) for g,rr in zip(ch['groups'],ch['refs'])]

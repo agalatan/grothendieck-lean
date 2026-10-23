@@ -6,7 +6,57 @@ replay data live under `handoff/research-third-decimal/`; the maintained Lean
 ingredients live in `Grothe/Research/`. The initial audit changes no bound;
 the subsequent cover and Hardy-budget refinements below improve both endpoints.
 
-## Current continuation: a smaller upper bound
+## Current lower continuation: reusable unshifted law nodes
+
+The strict lower endpoint is now `1.401695673376`, under exactly `NodeCaps`.
+The complete 10,234-box cover has cap `713421621393/10^12`. Two new pure-row
+law-scale nodes for row 14 use the original source table and existing Stein
+cuts. They form one appended checked batch; no shifted-source or rank-one
+response premise is introduced. The endpoint uses eight old row/batch facts,
+five reflected cover facts and one new reflected law-batch fact.
+
+The exact campaign first reprices the 139 blockers of the initial target,
+then refines the remaining boxes and the broad cap box. Its final binding
+row-envelope value is approximately `0.7134216213924581`. This is a limit
+of that selected envelope calculation, not a Gaussian norm lower bound.
+All source snapshots, generation inputs, final node certificates, cover and
+replay commands are retained in `data/lower-unshifted/`. The deterministic
+exporter replays the full certificate and reproduces both generated Lean
+data files. `LawNodeLower.lean` supplies the generic extended-batch transfer
+interface; the original witness and heavy cap import closure are unchanged.
+
+All twelve modules in the changed dependency chain pass fresh Lean 4.34.1
+checks with warnings treated as errors. Both central focused axiom audits
+accept the actual 25-declaration report, using fourteen of the 83 allowed
+native facts. The endpoint has no dependency on the old cover checks.
+Source hashes, raw stage logs and the endpoint's actual axiom list are retained
+in `data/lower-unshifted/verification/`. The full default build is delegated
+to branch CI.
+
+The separate bounded coupled asymmetric upper experiment did not pass its
+`0.711950` discovery gate. Its common-price midpoint calculation is below
+that threshold, but its new integral errors are not certified; no exclusion
+theorem or upper endpoint follows. Its scope and replay are recorded in
+`handoff/research-third-decimal/exchange-20261023/RESULT.md`.
+
+The next bounded lower diagnostic splits cap box 194 into 128 cells. Ordinary
+components improve 98 of them, but fifteen binding cells retain the same cap.
+Pointwise checks at their centers then expose interval slack. A bounded
+adaptive refinement clears the entire local obligation with 174 cells and
+exact cap approximately `0.7134208864780055`, using only the existing components
+and fallback recipes. It introduces no new node or analytic premise. This
+is a local certificate for the next campaign, not part of the frozen global
+cover or a further endpoint theorem. The current full cover has 24 boxes above
+the next target `0.71342160`; the other obligations still need repricing.
+The separate upper follow-up derives the
+conditional Rice/Bessel and Schwinger formulas for the incumbent's first and
+damped-polynomial moments. Its degree-eleven radial profile prevents the
+proposed finite-gamma shortcut. Numerical normalization checks agree, but
+certified integration of the remaining two-variable integrals is still needed.
+The diagnostic outputs and derivation remain in the research handoff.
+
+## Earlier upper continuation and validation
+
 
 `Grothe.fresh_upper` now gives the exact bound
 `500000000000000000/355973579786182891 < 1.404598623023` under exactly
@@ -20,9 +70,9 @@ The gain is about `1.235e-8` in the upper endpoint. See
 
 The historical frozen incumbent exports retain their original source hashes,
 tail budgets and proof scope. New exports read the smaller canonical tail cap.
-The refined global lower cover has 9,057 boxes and cap `0.713421765375`.
+The earlier refined global lower cover had 9,057 boxes and cap `0.713421765375`.
 It retains the certified rows, mixed batches, witness and `NodeCaps`, and
-gives the strict endpoint `1.401695390488`. Only 43 parent boxes need new
+gave the strict endpoint `1.401695390488`. Only 43 parent boxes need new
 subdivision/mixture choices, producing 344 children; the remaining source/law proofs are reused.
 The complete partition and every final box have separate Lean checks. The
 endpoint continuation before the latest rebase passed the full Lean build and axiom audit in
@@ -49,11 +99,17 @@ endpoint. See [the next campaign](../handoff/research-third-decimal/needle-20261
 
 ## Integration with current master
 
-The latest rebase is onto GitHub master `9fc3f3d`. Its degree-thirteen
+The current campaign includes GitHub master `a1dd968`. Its durable cap-recipe
+inputs and generation rules are adopted here. These upstream changes do not
+alter the endpoint hypotheses, source cap data or mathematical interfaces.
+The new law-node inputs also live in `data/` and reproduce the generated Lean
+files byte for byte. The heavy cap verification stamp still matches.
+
+The preceding rebase was onto GitHub master `9fc3f3d`. Its degree-thirteen
 preprocessor and fourth-power tail proof improve the independent,
 hypothesis-free upper bound to `1.404951`. The combined tree retains that
 result, the new response/Stein/replica and spectral interfaces, and the
-verified cap stamp. Our sharper conditional endpoints remain
+verified cap stamp. At that rebase the sharper conditional endpoints were
 `1.401695390488` and `1.404598623023`, with unchanged hypotheses and unchanged
 endpoint proof sources. The combined axiom registry contains 208 required
 theorems and 82 allowed native facts; the targeted saved reports and their

@@ -1,0 +1,28 @@
+{
+  "modules": [
+    "Grothe.Research.RefinedCoverBoxes2"
+  ],
+  "job_pid": 1561014,
+  "job_pgid": 1561014,
+  "LEAN_PATH": "/dev/shm/codex-law-node-lower-20261023/lib:/home/agalatan/grothe-caps/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/Qq/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/aesop/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/batteries/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/importGraph/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/mathlib/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/plausible/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/proofwidgets/.lake/build/lib/lean",
+  "started_unix": 1792751827.7968159,
+  "stages": [
+    {
+      "module": "Grothe.Research.RefinedCoverBoxes2",
+      "source_sha256": "5a1c1fd4d552037acf2184e93577e9b6ca5b749adfc7ece9dc0f727792ff8232",
+      "command": [
+        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
+        "-DwarningAsError=true",
+        "-o",
+        "/dev/shm/codex-law-node-worker2-20261023/lib/Grothe/Research/RefinedCoverBoxes2.olean",
+        "/dev/shm/codex-law-node-worker2-20261023/Grothe/Research/RefinedCoverBoxes2.lean"
+      ],
+      "started_unix": 1792751827.7970471,
+      "exit_code": 0,
+      "seconds": 573.3858053684235,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "status": "PASS",
+  "finished_unix": 1792752401.1831832
+}

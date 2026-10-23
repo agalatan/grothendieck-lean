@@ -23,6 +23,7 @@ NATIVE |= {f"Grothe.Lower.{n}._native.native_decide.ax_1_1" for n in
 NATIVE |= {f"Grothe.Research.RefinedLowerCheck.{n}._native.native_decide.ax_1_1" for n in
            ['certRefinedBoxes0', 'certRefinedBoxes1', 'certRefinedBoxes2',
             'certRefinedBoxes3', 'certRefinedPartition']}
+NATIVE.add("Grothe.Research.LawNodeCheck.certLawNodes._native.native_decide.ax_1_1")
 REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.Lower.lower_endpoint", "Grothe.Lower.lower_bound_of_transferL2",
             "Grothe.LowerAnalytic.gaussian_steinInputs", "Grothe.LowerAnalytic.lower_bound_gaussian",
@@ -244,11 +245,21 @@ REFINED_LOWER = {
         'refined_reciprocal_lower_bound', 'refined_endpoint_lt_reciprocal',
         'lower_bound_of_refined_cover_data']
 }
+REFINED_LOWER.add("Grothe.Research.LawNodeCheck.certLawNodes")
 REQUIRED |= REFINED_LOWER
+
+LAW_NODES = {
+    f'Grothe.Research.LawNodeLower.{name}' for name in [
+        'certified_rows', 'certified_mixed_batches', 'extended_batches_checked',
+        'profile_bound_of_law_nodes', 'witnessCap_of_law_nodes_reduction',
+        'witnessCap_of_law_nodes', 'transferInputs_of_law_nodes',
+        'lower_bound_of_law_nodes', 'strict_lower_bound_of_law_nodes']
+}
+REQUIRED |= LAW_NODES
 # Select one targeted audit, or require every family for the full report.
 audit_modes = [flag for flag in (
     "--caps", "--responses", "--response-geometry", "--haagerup-power",
-    "--research", "--hardy-budget", "--refined-cover") if flag in sys.argv]
+    "--research", "--hardy-budget", "--refined-cover", "--law-nodes") if flag in sys.argv]
 if len(audit_modes) > 1:
     sys.exit("choose one axiom audit mode")
 if "--caps" in sys.argv:
@@ -269,6 +280,8 @@ elif "--hardy-budget" in sys.argv:
     REQUIRED = HARDY_BUDGET
 elif "--refined-cover" in sys.argv:
     REQUIRED = REFINED_LOWER
+elif "--law-nodes" in sys.argv:
+    REQUIRED = LAW_NODES
 text = sys.stdin.read()
 if re.search(r"(^|\n)[^\n]*: error", text):
     sys.exit("the axiom report contains Lean errors")

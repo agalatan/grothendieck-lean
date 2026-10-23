@@ -1,0 +1,47 @@
+{
+  "module": "Grothe.Research.LawNodeLower",
+  "job_pid": 1539872,
+  "job_pgid": 1539872,
+  "command": [
+    "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
+    "-DwarningAsError=true",
+    "-o",
+    "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/LawNodeLower.olean",
+    "/dev/shm/codex-law-node-lower-20261023/Grothe/Research/LawNodeLower.lean"
+  ],
+  "LEAN_PATH": "/dev/shm/codex-law-node-lower-20261023/lib:/home/agalatan/grothe-caps/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/Qq/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/aesop/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/batteries/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/importGraph/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/mathlib/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/plausible/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/proofwidgets/.lake/build/lib/lean",
+  "source_sha256": "98251caa0573240e4963ac23ef04b57899d675f901638beb1282c0e2467fc378",
+  "dependency_manifest_sha256": "a844e1f0d8b53e028bd793e2069cdd84ec6d25e8a314c535be0c6df17b8bb7a1",
+  "dependency_source_count": 101,
+  "dependency_source_differences": [],
+  "started_unix": 1792749883.4969532,
+  "exit_code": 0,
+  "build_seconds": 8.693484783172607,
+  "axioms_exit_code": 0,
+  "native_axioms": [
+    "Grothe.Lower.certBatches0._native.native_decide.ax_1_1",
+    "Grothe.Lower.certBatches1._native.native_decide.ax_1_1",
+    "Grothe.Lower.certBatches2._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows0._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows1._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows2._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows3._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows4._native.native_decide.ax_1_1"
+  ],
+  "exact_eight_existing_native_facts": true,
+  "axioms_no_sorry": true,
+  "finished_unix": 1792749899.3351147,
+  "status": "PASS",
+  "artifact_sha256": {
+    "TARGET_BUILD.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "TARGET_AXIOMS.log": "8dac03ad87369b8dc49411eae95a6a747f035a3921c1c09ccbeb43e028d4304b",
+    "AxiomsLawNodeLower.lean": "f35287e793411be3ec459e08a75d961f5849d7c9525e3746dbe51bc465195a7f"
+  },
+  "repository_head": "1de841d0306716aac9ae84cb0a31620e6cc329f2",
+  "lean_toolchain": "leanprover/lean4:v4.34.1",
+  "read_only_cache_overlay": "Symlinks to unchanged cached Grothe siblings; no cache copy, hardlink or mutation. Own .olean generated only in owned tmpfs.",
+  "preflight_disk_free": "3.9 GB on root filesystem; target artifacts held in tmpfs",
+  "nine_public_declarations_reported": true,
+  "all_axioms_exactly_standard_plus_eight_old_facts": true,
+  "setup_note": "Initial cache search-path shadowing was corrected before the successful target build; no Lean source repair was necessary."
+}

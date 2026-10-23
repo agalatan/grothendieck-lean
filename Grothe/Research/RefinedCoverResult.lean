@@ -4,13 +4,14 @@ import Grothe.Research.RefinedCoverBoxes2
 import Grothe.Research.RefinedCoverBoxes3
 import Grothe.Research.RefinedCoverPartition
 import Grothe.Research.RefinedLower
+import Grothe.Research.LawNodeCheck
 
 /-!
 # A strict lower improvement with the same Gaussian node-cap assumption
 
 The four sequential native checks and the separate partition check certify the entire
-refined finite cover. The existing rows, mixed-node certificates, witness and `NodeCaps`
-are unchanged. The final endpoint is `1.401695390488`, conditional on exactly `NodeCaps`.
+refined finite cover. Additional pure-row law nodes pass the existing batch checker.
+The existing rows, mixed-node certificates, witness and `NodeCaps` are unchanged.
 -/
 
 open Grothe.Lower Grothe.LowerAnalytic Grothe.Research.RefinedCoverData
@@ -22,8 +23,8 @@ set_option maxHeartbeats 0
 
 /-- All refined boxes pass, and their partition covers the whole original domain. -/
 theorem refined_cover_checked :
-    checkCover rowData mixedBatches refinedB refinedCuts refinedBoxes = true := by
-  have hx : refinedBoxList.all (boxOK rowData mixedBatches refinedB) = true :=
+    checkCover rowData refinedBatches refinedB refinedCuts refinedBoxes = true := by
+  have hx : refinedBoxList.all (boxOK rowData refinedBatches refinedB) = true :=
     all_of_chunk _ _ 0 3000 certRefinedBoxes0 <|
       all_of_chunk _ _ 3000 3000 certRefinedBoxes1 <|
       all_of_chunk _ _ 6000 3000 certRefinedBoxes2 <|
@@ -36,8 +37,8 @@ theorem refined_cover_checked :
 /-- The reciprocal cap is a Grothendieck lower bound under the original `NodeCaps`. -/
 theorem refined_reciprocal_lower_bound (hcaps : NodeCaps) {K : ℝ}
     (hK : IsGrothendieckBound K) : 1 / (refinedB : ℝ) ≤ K :=
-  RefinedLower.lower_bound_of_refined_cover refinedB refinedCuts refinedBoxes
-    refined_cover_checked hcaps hK
+  LawNodeLower.lower_bound_of_law_nodes LawNodeData.extraBatches refinedB refinedCuts refinedBoxes
+    LawNodeCheck.certLawNodes refined_cover_checked hcaps hK
 
 /-- Exact rational comparison; no native check is added for the endpoint decimal. -/
 theorem refined_endpoint_lt_reciprocal : (refinedL : ℝ) < 1 / (refinedB : ℝ) := by

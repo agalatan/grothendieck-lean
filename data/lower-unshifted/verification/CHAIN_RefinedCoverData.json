@@ -1,0 +1,65 @@
+{
+  "modules": [
+    "Grothe.Research.RefinedCoverData",
+    "Grothe.Research.RefinedCoverParts",
+    "Grothe.Research.RefinedCoverBoxes0",
+    "Grothe.Research.RefinedCoverBoxes1",
+    "Grothe.Research.RefinedCoverBoxes2",
+    "Grothe.Research.RefinedCoverBoxes3",
+    "Grothe.Research.RefinedCoverPartition",
+    "Grothe.Research.RefinedLower",
+    "Grothe.Research.RefinedCoverResult"
+  ],
+  "job_pid": 1555100,
+  "job_pgid": 1555100,
+  "LEAN_PATH": "/dev/shm/codex-law-node-lower-20261023/lib:/home/agalatan/grothe-caps/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/Qq/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/aesop/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/batteries/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/importGraph/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/mathlib/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/plausible/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/proofwidgets/.lake/build/lib/lean",
+  "started_unix": 1792751096.4589453,
+  "stages": [
+    {
+      "module": "Grothe.Research.RefinedCoverData",
+      "source_sha256": "5cb2f7cce4a39a80f715bc0d1777d87e1c5a653bf9dfd06bf61624b741d9fbf9",
+      "command": [
+        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
+        "-DwarningAsError=true",
+        "-o",
+        "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/RefinedCoverData.olean",
+        "/dev/shm/codex-law-node-lower-20261023/Grothe/Research/RefinedCoverData.lean"
+      ],
+      "started_unix": 1792751096.46412,
+      "exit_code": 0,
+      "seconds": 13.009392261505127,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "Grothe.Research.RefinedCoverParts",
+      "source_sha256": "c3f020b57f510bc344c6499b9474091d173d0bb1fe6718f116d15b69b5bf739b",
+      "command": [
+        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
+        "-DwarningAsError=true",
+        "-o",
+        "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/RefinedCoverParts.olean",
+        "/dev/shm/codex-law-node-lower-20261023/Grothe/Research/RefinedCoverParts.lean"
+      ],
+      "started_unix": 1792751109.4740243,
+      "exit_code": 0,
+      "seconds": 7.820458173751831,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "Grothe.Research.RefinedCoverBoxes0",
+      "source_sha256": "9d0f279e77f90088ab38f44f6dda07751fa86eb3b0dba7cd8c7cd999d8110cdd",
+      "command": [
+        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
+        "-DwarningAsError=true",
+        "-o",
+        "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/RefinedCoverBoxes0.olean",
+        "/dev/shm/codex-law-node-lower-20261023/Grothe/Research/RefinedCoverBoxes0.lean"
+      ],
+      "started_unix": 1792751117.295282,
+      "exit_code": 0,
+      "seconds": 1336.4949731826782,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "status": "RUNNING"
+}

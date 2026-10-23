@@ -60,7 +60,15 @@ def verify(path):
 
 def verify_unshifted(path):
     doc=json.loads(path.read_text())
-    inherited=resolve_archived_handoff_path(doc['inherited'],Path(__file__).resolve().parents[1])
+    root=Path(__file__).resolve().parents[1]
+    # The active campaign keeps a byte-identical, hash-pinned source in data/.
+    # Only this exact clone-local input is admitted in addition to legacy
+    # handoff provenance; no outside checkout or arbitrary data path is probed.
+    if doc['inherited']=='data/lower-unshifted/inputs/inherited.json':
+        inherited=(root/doc['inherited']).resolve(strict=True)
+        L.require(inherited.is_relative_to(root) and inherited.is_file(),'original source escapes current checkout')
+    else:
+        inherited=resolve_archived_handoff_path(doc['inherited'],root)
     L.require(L.sha(inherited)==doc['inherited_sha256'],'inherited SHA mismatch')
     row=json.loads(inherited.read_text())['rows'][doc['row_index']]
     old=L.source_from_table(row['table'],row['smax'],Q(row['delta']))

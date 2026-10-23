@@ -1,0 +1,8 @@
+{
+  "status": "RUNNING",
+  "controller_pid": 1570205,
+  "controller_pgid": 1570205,
+  "source_sha256": "c7a41b37b2afbb2c8ad92c60515850aef125e649f9c4c75a664468e39b44ccef",
+  "owned_worker": "/dev/shm/codex-law-node-workerpartition-20261023",
+  "assembly_reuses_verified_worker_output": true
+}

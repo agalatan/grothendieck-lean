@@ -1,0 +1,47 @@
+{
+  "P": [
+    "344128921429/250000000000",
+    "0",
+    "4955944899/200000000000",
+    "224349877/500000000000",
+    "2271049/250000000000"
+  ],
+  "P0_upward_tax": "1/10000000",
+  "baseline_chord_P": [
+    "2480366497319011721997147612508597/1801439850948198400000000000000000",
+    "0",
+    "1434973897106647679922882504469137/57646075230342348800000000000000000",
+    "13432683521115531802135776118559/57646075230342348800000000000000000",
+    "669001024865036502635529803567/57646075230342348800000000000000000"
+  ],
+  "cut_ref": [
+    0,
+    3
+  ],
+  "format": "needle-unshifted-explicit-scale/v1",
+  "inherited": "data/lower-unshifted/inputs/inherited.json",
+  "inherited_sha256": "3e7ddd38eb4d7ebeb8db0af1f14f50774c4c93a259fb9c6053c92ec760bdb44e",
+  "left_ref": [
+    1,
+    2
+  ],
+  "proof": {
+    "bernstein_leaves": 441,
+    "intervals": 438,
+    "max_degree": 10
+  },
+  "right_ref": [
+    0,
+    3
+  ],
+  "row_index": 14,
+  "scope": "Uses only the original unshifted source table and its inherited Stein cut bank. No shifted cap or rank-one response reduction is needed.",
+  "status": "PASS_EXACT_ORIGINAL_SOURCE_ONLY",
+  "tau": "10709733727/51200000000",
+  "uniform_moment_saving": "5661107384027964920262623750180351342952561/96714065569170333976494080000000000000000000000",
+  "uniform_moment_saving_decimal": 5.8534478420609e-05,
+  "x_interval": [
+    "0",
+    "31/256"
+  ]
+}

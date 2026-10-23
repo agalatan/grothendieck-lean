@@ -1,0 +1,10 @@
+{
+  "seed4302-lo": {
+    "path": "data/lower-unshifted/nodes/seed4302-lo.json",
+    "sha256": "cfc0c6b36b4a5d14f4217d9e5cfa789b643b75800b5ed8956f71b4848660bec2"
+  },
+  "seed4302-hi": {
+    "path": "data/lower-unshifted/nodes/seed4302-hi.json",
+    "sha256": "c6bc9ffe47760dd8586d8c374be6b9633658c7c2ae9edf321e3f71a2fb135b78"
+  }
+}

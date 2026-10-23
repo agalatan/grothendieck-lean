@@ -1,0 +1,36 @@
+{
+  "status": "PASS_EXACT_ORIGINAL_MAP_NODES_BOXES_AND_PARTITION",
+  "original_boxes": 8756,
+  "boxes": 10234,
+  "partition_tokens": 20467,
+  "old_batches": 21,
+  "extra_batches": 1,
+  "extra_nodes": 2,
+  "extra_node_map": {
+    "seed4302-hi": [
+      21,
+      1
+    ],
+    "seed4302-lo": [
+      21,
+      0
+    ]
+  },
+  "B": "713421621393/1000000000000",
+  "L": "43802989793/31250000000",
+  "actual_upper": "2105484884992468337160308003217359356302639368859611673/2951249053656346575359512150016000000000000000000000000",
+  "source_sha256": {
+    "data/lower-unshifted/nodes/seed4302-hi.json": "c6bc9ffe47760dd8586d8c374be6b9633658c7c2ae9edf321e3f71a2fb135b78",
+    "data/lower-unshifted/nodes/seed4302-lo.json": "cfc0c6b36b4a5d14f4217d9e5cfa789b643b75800b5ed8956f71b4848660bec2",
+    "data/lower-unshifted/cover.json": "8652fb976025f7da63847413b2ad79903f3680c12125dcaee371f1505345d836",
+    "data/lower-unshifted/inputs/inherited.json": "3e7ddd38eb4d7ebeb8db0af1f14f50774c4c93a259fb9c6053c92ec760bdb44e",
+    "data/lower-unshifted/inputs/cover.json": "ac7bc2d09c5cc215bc6cf6f16efbc58b7e55b2fb9095733e65ee57009a504dba",
+    "data/lower-unshifted/inputs/minimal-cover-ledger.json": "93e59d433570d40d35a3b53cb492828b327ec87a572c667f7dbf4d2d53024616",
+    "data/lower-unshifted/inputs/source-manifest.json": "4f7d643212fe2f39a3320aab774e4f61b5d7dbeb8ad4aef54f2af4efea158bac",
+    "Grothe/Lower/MixedData.lean": "a529b61562c93f665403968361aabb292cc72d93c8a47b74037ea474603bf0d0"
+  },
+  "lean_sha256": {
+    "LawNodeData.lean": "3b8fb2cb2a574b5f4daa3594f0c6f38963a0de3a860ac26b145379db256dd936",
+    "RefinedCoverData.lean": "5cb2f7cce4a39a80f715bc0d1777d87e1c5a653bf9dfd06bf61624b741d9fbf9"
+  }
+}

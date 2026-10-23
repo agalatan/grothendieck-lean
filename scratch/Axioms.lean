@@ -436,3 +436,13 @@ import Grothe
 #print axioms Grothe.head_residual_le
 #print axioms Grothe.linear_lower
 #print axioms Grothe.upper_value_improves
+#print axioms Grothe.Research.LawNodeLower.certified_rows
+#print axioms Grothe.Research.LawNodeLower.certified_mixed_batches
+#print axioms Grothe.Research.LawNodeLower.extended_batches_checked
+#print axioms Grothe.Research.LawNodeLower.profile_bound_of_law_nodes
+#print axioms Grothe.Research.LawNodeLower.witnessCap_of_law_nodes_reduction
+#print axioms Grothe.Research.LawNodeLower.witnessCap_of_law_nodes
+#print axioms Grothe.Research.LawNodeLower.transferInputs_of_law_nodes
+#print axioms Grothe.Research.LawNodeLower.lower_bound_of_law_nodes
+#print axioms Grothe.Research.LawNodeLower.strict_lower_bound_of_law_nodes
+#print axioms Grothe.Research.LawNodeCheck.certLawNodes

@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "exporter_sha256": "c0312f9ab7265aee82dddf352d3c58329454ff0c2201cce5f7e8febb94b097c2",
+  "export_and_check_identical": true,
+  "all_source_and_output_hashes_match": true,
+  "negative_controls_rejected": [
+    "remaining failed boxes",
+    "non-strict reciprocal endpoint",
+    "tampered new-node hash",
+    "changed old node index",
+    "partition hole"
+  ],
+  "cap_child_arithmetic_and_serialization": "PASS",
+  "optimized_python_refusal": "PASS",
+  "independent_read_only_review": "finite_jump: no substantive issue; original-index range hardening added",
+  "canonical_cover_sha256": "5cb2f7cce4a39a80f715bc0d1777d87e1c5a653bf9dfd06bf61624b741d9fbf9",
+  "endpoint": {
+    "B": "713421621393/1000000000000",
+    "L": "43802989793/31250000000"
+  },
+  "generator_tool_sha256": {
+    "needle_unshifted_lean.py": "c0312f9ab7265aee82dddf352d3c58329454ff0c2201cce5f7e8febb94b097c2",
+    "needle_cover_lean.py": "d0204cd6299f056b730f203196db50c1ecfd0fec819fe0bf66517a024b4a08f4",
+    "needle_cover_refine.py": "1766ce359329ee4983aae07c651fc7eddc2a3099f1e573ee0a15b4f7cc44d35f",
+    "needle_rankone_nodes.py": "678362fbf653bb92ef59f5add28536624c2ede77e3731ad62e3a64b35a0a85e0",
+    "needle_unshifted_export.py": "61192f34e641bb4915693bbc75bb8874a079215f20be6da4eb93a52a4b13e504",
+    "rankone_law.py": "2ddb264ba0e94392a5b43b93b24992d754fb5d0fe1b70592c19c698c890c7132",
+    "rankone_source_paths.py": "97ba6b42e138eb1b6cac41064560a48d42ad6059c3d1a8c2b52eae644e1895cb"
+  }
+}
