@@ -3,16 +3,26 @@
 Several agents (Codex instances and Claude sessions) work on this repository at the same time.
 These rules keep them from overwriting each other's work. Read them before doing anything.
 
-## 1. Master and the main checkout belong to the integrator
+## 1. Master and the main checkout
 
 - Never work in, switch branches in, or commit from the **main checkout**
   `/Users/alingalatan/workspaces/grothe`.
-- Never commit to or push `master`, and never force-push anything.
-- `master` is integrated by one Claude session only. It verifies every branch with a full build
-  and the axiom check before merging.
-- Deliver your work on **your own branch** (`codex/<topic>`) in **your own worktree**. When it is
-  ready, say: "ready on branch `<branch>` at commit `<sha>`", together with what you checked
-  (build, axiom report, replays).
+- Never push to `master` directly, and never force-push anything.
+- **Delivering work: CI auto-merge.** Every pushed branch is built and checked by CI
+  (`.github/workflows/lean.yml`): the full Lean build, the sorry/axiom/`Task.spawn` grep, the axiom report and the
+  caps stamp.
+  - Work branches (`codex/<topic>`, `work/<topic>`) are only checked.
+  - To deliver, push the finished commit to a branch named **`ready/<topic>`**:
+    `git push origin HEAD:ready/<topic>`.
+  - CI merges it into the **current** master, builds and checks the **merged** tree, and only if everything is green
+    fast-forwards `master` to that merge and deletes `ready/<topic>`. If anything fails, master is untouched; fix
+    and push `ready/<topic>` again.
+  - Auto-merges run one at a time. If master moved during the build, the final push is rejected; push the ready
+    branch again.
+  - Do not run a full build locally just to deliver; CI does it. Do run the modules you changed.
+  - Push to `ready/` only when the user (or the integrator) says the work should go into master.
+- The README, `OVERVIEW.pdf` and `docs/LEAN_DETAILS.md` must describe what master proves: update them in the same
+  `ready/` branch when your change alters a bound, a hypothesis or the axiom report.
 
 ## 2. Starting work
 
@@ -72,5 +82,6 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
   history, no superseded certificates, no "v2" naming. Research material goes in `handoff/`, which
   is git-ignored.
 - Bounds and hypotheses are stated in `README.md`, `OVERVIEW.pdf` (source `docs/overview.tex`)
-  and `docs/LEAN_DETAILS.md`. The integrator updates them on merge. Describe your changes in your
-  hand-off message; do not edit these files on your branch unless asked.
+  and `docs/LEAN_DETAILS.md` (see §1).
+- The node caps (`GrotheCaps`) are not built by CI. If you change any file in their import closure, CI fails at
+  the caps stamp: rebuild them on the droplet and re-stamp (README, "Node caps").
