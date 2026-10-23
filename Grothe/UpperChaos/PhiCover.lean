@@ -278,6 +278,157 @@ theorem walk_sound {ts : List ((ℕ × ℕ × ℕ) × ℚ)} (hts : termsOK ts = 
           · exact ih cs _ rest' h1 U V W hb' hW2 h60
           · exact ih rest' _ rest h U V W hb' hW2 h60
 
+/-! ### The far field -/
+
+/-- `s^n e^{−21 s/20} ≤ 60^n e^{−63}` for `n ≤ 63 ≤ (21/20) s`. -/
+lemma pow_mul_exp_le {n : ℕ} (hn : n ≤ 63) {s : ℝ} (hs : 60 ≤ s) :
+    s ^ n * Real.exp (-(21 / 20) * s) ≤ 60 ^ n * Real.exp (-63) := by
+  have h1 : s / 60 ≤ Real.exp (s / 60 - 1) := by linarith [Real.add_one_le_exp (s / 60 - 1)]
+  have h0 : 0 ≤ s / 60 := by positivity
+  have h2 : (s / 60) ^ n ≤ Real.exp ((21 / 20) * (s - 60)) := by
+    calc (s / 60) ^ n ≤ Real.exp (s / 60 - 1) ^ n := pow_le_pow_left₀ h0 h1 n
+      _ = Real.exp (n * (s / 60 - 1)) := by rw [← Real.exp_nat_mul]
+      _ ≤ Real.exp ((21 / 20) * (s - 60)) := by
+          apply Real.exp_le_exp.2
+          have : (n : ℝ) ≤ 63 := by exact_mod_cast hn
+          have : 0 ≤ s / 60 - 1 := by linarith
+          nlinarith
+  have e : s ^ n = 60 ^ n * (s / 60) ^ n := by rw [div_pow]; field_simp
+  rw [e, mul_assoc]
+  refine mul_le_mul_of_nonneg_left ?_ (by positivity)
+  calc (s / 60) ^ n * Real.exp (-(21 / 20) * s)
+      ≤ Real.exp ((21 / 20) * (s - 60)) * Real.exp (-(21 / 20) * s) :=
+        mul_le_mul_of_nonneg_right h2 (Real.exp_pos _).le
+    _ = Real.exp (-63) := by rw [← Real.exp_add]; congr 1; ring
+
+lemma abs_list_sum_le {β : Type} (l : List β) (f : β → ℝ) :
+    |(l.map f).sum| ≤ (l.map fun t => |f t|).sum := by
+  induction l with
+  | nil => simp
+  | cons t l ih => simp only [List.map_cons, List.sum_cons]; exact (abs_add_le _ _).trans (by linarith)
+
+lemma list_sum_le {β : Type} (l : List β) (f g : β → ℝ) (h : ∀ t ∈ l, f t ≤ g t) :
+    (l.map f).sum ≤ (l.map g).sum := by
+  induction l with
+  | nil => simp
+  | cons t l ih =>
+    simp only [List.map_cons, List.sum_cons]
+    exact add_le_add (h t (by simp)) (ih fun t ht => h t (by simp [ht]))
+
+lemma foldl_add_rat {β : Type} (g : β → ℚ) (l : List β) (a : ℚ) :
+    l.foldl (fun s t => s + g t) a = a + (l.map g).sum := by
+  induction l generalizing a with
+  | nil => simp
+  | cons t l ih => simp [ih]; ring
+
+lemma exp_63_ge : ((qd : ℝ) / qn) ^ 63 ≤ Real.exp 63 := by
+  have h := Real.exp_one_gt_d9
+  have h1 : (qd : ℝ) / qn ≤ Real.exp 1 := by
+    rw [qd, qn]; push_cast; linarith [show (2718281828 : ℝ) / 1000000000 ≤ 2.7182818283 by norm_num]
+  calc ((qd : ℝ) / qn) ^ 63 ≤ Real.exp 1 ^ 63 :=
+        pow_le_pow_left₀ (by rw [qd, qn]; positivity) h1 63
+    _ = Real.exp 63 := by rw [← Real.exp_nat_mul]; norm_num
+
+/-- **The far field**: `g ≤ 3` for `U + V ≥ 60`. -/
+theorem far_sound {ts : List ((ℕ × ℕ × ℕ) × ℚ)} (hts : termsOK ts = true)
+    (hfar : farOK ts = true) {U V W : ℝ} (hU : 0 ≤ U) (hV : 0 ≤ V) (hW2 : W ^ 2 ≤ U * V)
+    (h60 : 60 ≤ U + V) : gphi ts U V W ≤ 3 := by
+  set s := U + V with hs_def
+  have hs0 : 0 ≤ s := by linarith
+  have hUs : U ≤ s := by linarith
+  have hVs : V ≤ s := by linarith
+  have hUV4 : U * V ≤ (s / 2) ^ 2 := by nlinarith [sq_nonneg (U - V)]
+  have hWs : |W| ≤ s / 2 := by
+    rw [abs_le]; constructor <;> nlinarith [sq_nonneg (W + s / 2), sq_nonneg (W - s / 2)]
+  have hdeg : ∀ t ∈ ts, t.1.1 + t.1.2.1 + t.1.2.2 ≤ DEG := fun t ht => by
+    have := List.all_eq_true.1 hts t ht
+    simp at this; exact this.1
+  -- the sum of the crude terms
+  set X : ℝ := (ts.map fun t => |(t.2 : ℝ)| / 2 ^ (t.1.2.2 + 1)
+      * (s ^ (t.1.1 + t.1.2.1 + t.1.2.2 + 1) * Real.exp (-(21 / 20) * s))).sum with hX
+  have hX0 : 0 ≤ X := by
+    rw [hX]
+    exact List.sum_nonneg (fun x hx => by
+      obtain ⟨t, -, rfl⟩ := List.mem_map.1 hx
+      positivity)
+  -- `|S| · (s/2) e^{−21s/20} ≤ X`
+  have hS : |Ssum ts U V W| * (s / 2 * Real.exp (-(21 / 20) * s)) ≤ X := by
+    have h1 := abs_list_sum_le ts fun t => (t.2 : ℝ) * U ^ t.1.1 * V ^ t.1.2.1 * W ^ t.1.2.2
+    have h2 : (ts.map fun t => |(t.2 : ℝ) * U ^ t.1.1 * V ^ t.1.2.1 * W ^ t.1.2.2|).sum
+        ≤ (ts.map fun t => |(t.2 : ℝ)| * s ^ t.1.1 * s ^ t.1.2.1 * (s / 2) ^ t.1.2.2).sum := by
+      refine list_sum_le _ _ _ fun t _ => ?_
+      rw [abs_mul, abs_mul, abs_mul, abs_pow, abs_pow, abs_pow, abs_of_nonneg hU, abs_of_nonneg hV]
+      gcongr
+    have hE : 0 ≤ s / 2 * Real.exp (-(21 / 20) * s) := by positivity
+    calc |Ssum ts U V W| * (s / 2 * Real.exp (-(21 / 20) * s))
+        ≤ (ts.map fun t => |(t.2 : ℝ)| * s ^ t.1.1 * s ^ t.1.2.1 * (s / 2) ^ t.1.2.2).sum
+            * (s / 2 * Real.exp (-(21 / 20) * s)) :=
+          mul_le_mul_of_nonneg_right (h1.trans h2) hE
+      _ = X := by
+          rw [hX, list_sum_mul]
+          congr 1
+          refine List.map_congr_left fun t _ => ?_
+          rw [div_pow, pow_add, pow_add, pow_succ]
+          field_simp
+          ring
+  -- `X ≤ e^{−63} · tot ≤ 17/10`
+  have hXle : X ≤ 17 / 10 := by
+    have h1 : X ≤ (ts.map fun t => |(t.2 : ℝ)| / 2 ^ (t.1.2.2 + 1)
+        * (60 ^ (t.1.1 + t.1.2.1 + t.1.2.2 + 1) * Real.exp (-63))).sum := by
+      refine list_sum_le _ _ _ fun t ht => ?_
+      refine mul_le_mul_of_nonneg_left (pow_mul_exp_le ?_ h60) (by positivity)
+      have := hdeg t ht; simp only [DEG] at this; omega
+    have hfar' := hfar
+    simp only [farOK, decide_eq_true_eq] at hfar'
+    rw [foldl_add_rat (fun t : (ℕ × ℕ × ℕ) × ℚ => (if t.2 < 0 then -t.2 else t.2) / (2 : ℚ) ^ (t.1.2.2 + 1)
+      * (60 : ℚ) ^ (t.1.1 + t.1.2.1 + t.1.2.2 + 1)), zero_add] at hfar'
+    have hc := (Rat.cast_le (K := ℝ)).2 hfar'
+    push_cast at hc
+    rw [List.map_map] at hc
+    have habs : ∀ q : ℚ, ((if q < 0 then -q else q : ℚ) : ℝ) = |(q : ℝ)| := fun q => by
+      split_ifs with h
+      · rw [abs_of_neg (by exact_mod_cast h)]; push_cast; ring
+      · rw [abs_of_nonneg (by exact_mod_cast not_lt.1 h)]
+    have e1 : (ts.map fun t => |(t.2 : ℝ)| / 2 ^ (t.1.2.2 + 1)
+        * (60 ^ (t.1.1 + t.1.2.1 + t.1.2.2 + 1) * Real.exp (-63))).sum
+        = (ts.map ((fun r : ℚ => (r : ℝ)) ∘ fun t => (if t.2 < 0 then -t.2 else t.2)
+            / (2 : ℚ) ^ (t.1.2.2 + 1) * (60 : ℚ) ^ (t.1.1 + t.1.2.1 + t.1.2.2 + 1))).sum
+          * Real.exp (-63) := by
+      rw [list_sum_mul]
+      congr 1
+      refine List.map_congr_left fun t _ => ?_
+      simp only [Function.comp]
+      push_cast
+      rw [habs]; ring
+    rw [e1] at h1
+    have hq : (0 : ℝ) < (qn : ℝ) ^ 63 := by rw [qn]; positivity
+    have h63 := exp_63_ge
+    have hexp : Real.exp (-63) * Real.exp 63 = 1 := by rw [← Real.exp_add]; norm_num
+    set T := (ts.map ((fun r : ℚ => (r : ℝ)) ∘ fun t => (if t.2 < 0 then -t.2 else t.2)
+            / (2 : ℚ) ^ (t.1.2.2 + 1) * (60 : ℚ) ^ (t.1.1 + t.1.2.1 + t.1.2.2 + 1))).sum
+    have hT : T ≤ 17 / 10 * ((qd : ℝ) / qn) ^ 63 := by
+      rw [div_pow, mul_div_assoc', le_div_iff₀ hq]; exact hc
+    calc X ≤ T * Real.exp (-63) := h1
+      _ ≤ 17 / 10 * Real.exp 63 * Real.exp (-63) := by
+          refine mul_le_mul_of_nonneg_right (hT.trans ?_) (Real.exp_pos _).le
+          exact mul_le_mul_of_nonneg_left h63 (by norm_num)
+      _ = 17 / 10 := by rw [mul_assoc, mul_comm (Real.exp 63), hexp, mul_one]
+  -- conclude
+  have hUVW : U * V - W ^ 2 ≤ (s / 2) ^ 2 := by nlinarith [sq_nonneg W]
+  have hUVW0 : 0 ≤ U * V - W ^ 2 := by linarith
+  have he : Real.exp (-(21 / 10) * (U + V)) = Real.exp (-(21 / 20) * s) ^ 2 := by
+    rw [← Real.exp_nat_mul]; congr 1; rw [hs_def]; push_cast; ring
+  unfold gphi
+  rw [he]
+  have hA : (U * V - W ^ 2) * Real.exp (-(21 / 20) * s) ^ 2 * Ssum ts U V W ^ 2
+      ≤ (|Ssum ts U V W| * (s / 2 * Real.exp (-(21 / 20) * s))) ^ 2 := by
+    rw [mul_pow, mul_pow, sq_abs]
+    have : 0 ≤ Real.exp (-(21 / 20) * s) ^ 2 * Ssum ts U V W ^ 2 := by positivity
+    nlinarith
+  have hB : (|Ssum ts U V W| * (s / 2 * Real.exp (-(21 / 20) * s))) ^ 2 ≤ (17 / 10) ^ 2 :=
+    pow_le_pow_left₀ (by positivity) (hS.trans hXle) 2
+  linarith [show ((17 : ℝ) / 10) ^ 2 ≤ 3 by norm_num]
+
 end
 
 end Grothe.UpperChaos
