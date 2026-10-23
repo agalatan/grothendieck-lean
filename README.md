@@ -87,6 +87,17 @@ its computational limitations are in [docs/SPHERICAL_TRANSFER.md](docs/SPHERICAL
 signed cap assembly. The analytic bridge and a useful spherical norm cap are not formalized;
 this interface changes neither endpoint.
 
+The node caps are now certified inside Lean except on the rows 0.84–0.855 (`Grothe/LowerAnalytic/Cap*.lean`):
+the 505 chord nodes follow from the vertex caps by convexity (`nodeCaps_of_vertexCaps`, `capChords_check`);
+a vertex cap Ψ_r(s) − 10⁻¹¹ ≤ c is proved from an anchored-pair majorant with dyadic cell prices on a uniform
+polar grid, verified interval enclosures of the integrated coefficient matrix (`CapTables.lean`), a Loewner bound
+and an exact LDLᵀ check (`pot_le_of_nodeOK`); the per-node price recipes (`CapRecipeData.lean`) are checked by the
+precompiled kernel `GrotheKernel/CapCheck.lean`, one `native_decide` fact per range of nodes (`capRangeKK_j`,
+four per row, one module `CapRowKK.lean` per row; no parallel tasks). Hence
+`lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → Llow < K`, where **`CapsRest`** is the vertex caps
+of the rows 0.84, 0.845, 0.85, 0.855 (localised S-lemma caps; checkers for them are in progress on `work/caps-m`).
+
+
 **Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder :
 compare → energy_close → hardy → IsGrothendieckBound (500000000000000000/355973576656604491)`,
 and `Grothe.upper_value_lt` shows this is below 1.404598635371
@@ -123,9 +134,10 @@ with a cubic preprocessor, 4,000 exact series terms and a telescoping tail. The 
 weaker than the certified bound above (and than Haagerup's 1.40491, which needs the full inverse series);
 it is the best upper bound in this repository that rests on nothing outside Lean.
 
-Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus exactly four `native_decide` facts,
+Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in `scripts/check_axioms.py`:
 `Grothe.head_check` (the upper head), `Grothe.UpperChaos.phi_cover_check` (the phase cover φ² ≤ 3),
-`Grothe.haagerup_check` (the unconditional upper bound) and `Grothe.Lower.cert_check` (the lower certificate).
+`Grothe.haagerup_check` (the unconditional upper bound), `Grothe.Lower.cert_check` (the lower certificate),
+`capChords_check` (the chord nodes of the cap tables) and the 60 range checks `capRangeKK_j` of the node caps.
 Everything else is kernel-checked. No `sorry`. The axiom report `scratch/Axioms.lean`
 (227 theorems) is verified in CI by `scripts/check_axioms.py`.
 

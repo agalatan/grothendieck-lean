@@ -12,7 +12,12 @@ STANDARD = {"propext", "Classical.choice", "Quot.sound"}
 NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",          # upper: head of the kernel
           "Grothe.Lower.cert_check._native.native_decide.ax_1_1",    # lower: rows, batches, cover
           "Grothe.haagerup_check._native.native_decide.ax_1_1",      # Haagerup route: residual of the cubic preprocessing
-          "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1"}  # upper: phase cover φ² ≤ 3
+          "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1",  # upper: phase cover φ² ≤ 3
+          "Grothe.LowerAnalytic.capChords_check._native.native_decide.ax_1_1"}  # lower: chord nodes of the cap tables
+# lower: node caps of the certified rows, four ranges of nodes per row (Grothe/LowerAnalytic/CapRowKK.lean)
+CAP_ROWS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
+NATIVE |= {f"Grothe.LowerAnalytic.capRange{k:02d}_{j}._native.native_decide.ax_1_1"
+           for k in CAP_ROWS for j in range(4)}
 REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.Lower.lower_endpoint", "Grothe.Lower.lower_bound_of_transferL2",
             "Grothe.LowerAnalytic.gaussian_steinInputs", "Grothe.LowerAnalytic.lower_bound_gaussian",
@@ -33,7 +38,8 @@ REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.LowerAnalytic.SphericalTransfer.cubicAmp_recurrence",
             "Grothe.LowerAnalytic.SphericalTransfer.cubicAmp_tail",
             "Grothe.LowerAnalytic.SphericalTransfer.cubic_tail_32_12",
-            "Grothe.LowerAnalytic.SphericalTransfer.global_cap_from_truncation"}
+            "Grothe.LowerAnalytic.SphericalTransfer.global_cap_from_truncation",
+            "Grothe.LowerAnalytic.lower_bound_of_capsRest"}
 text = sys.stdin.read()
 if re.search(r"(^|\n)[^\n]*: error", text):
     sys.exit("the axiom report contains Lean errors")
