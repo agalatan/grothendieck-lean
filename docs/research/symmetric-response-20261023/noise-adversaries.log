@@ -1,0 +1,5 @@
+PASS physical-kernel gradient; converging finite differences [5.915820484814205e-06, 4.435050793283324e-08]
+16 0.745 fit priced payoff 0.7133047440479616 iterations 92
+16 0.8 fit priced payoff 0.7158769758686767 iterations 53
+128 0.745 fit priced payoff 0.7135688633563531 iterations 80
+128 0.8 fit priced payoff 0.7190157897408425 iterations 48

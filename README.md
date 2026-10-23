@@ -5,12 +5,12 @@ complex Grothendieck constant:
 
 > **1.401695322458 < K_G^ℂ < 1.404598635371**
 >
-> and, with **no hypothesis at all** (every step proved in Lean): **K_G^ℂ ≤ 1.405364**
+> and, with **no hypothesis at all** (every step proved in Lean): **K_G^ℂ ≤ 1.404951**
 
 The two sharp bounds each rest on one explicitly stated family of externally certified numerical
 inputs; the unconditional bound rests on nothing outside Lean (see below).
 
-**New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — a 9-page explanation of the problem, the two
+**New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
 the way, and why the remaining gap is hard.
 
@@ -41,7 +41,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
 | Oct 2026 | **this repository** | **1.401695322458 < K** | **K < 1.404598635371** |
-| Oct 2026 | this repository, fully formal (no hypothesis) | | K ≤ 1.405364 |
+| Oct 2026 | this repository, fully formal (no hypothesis) | | K ≤ 1.404951 |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
 proposed as the exact value; it lies inside the interval, 2.27·10⁻⁵ below our upper bound.
@@ -136,24 +136,49 @@ arithmetic. What is **assumed** (numerical statements about G_T and X):
 The head, computed in Lean (`head_check`), is 98880/10¹², 8.23% of the total
 600639595509/(5·10¹⁷).
 
-**Unconditional upper bound** — `Grothe.haagerup_bound : IsGrothendieckBound (351341/250000)`
-(`Grothe/Haagerup/Identity.lean`, with the finite check in `Grothe/Upper/Haagerup.lean`), with **no hypothesis**.
+**Unconditional upper bound** — `Grothe.haagerup_bound : IsGrothendieckBound (1404951/1000000)`
+(`Grothe/Haagerup/Power.lean`, with the finite check in `Grothe/Haagerup/PowerCheck.lean`), with **no hypothesis**.
 Lean proves Haagerup's identity for the Gaussian phase rounding,
 E[conj(phase⟨g,x⟩)·phase⟨g,y⟩] = Σ_k (π/4)(1/2)_k²/(k!(k+1)!) z|z|^{2k} with z = ⟨x,y⟩, and combines it
-with the preprocessor p(t) = .90642006t − .09308903t³ − .00049091t⁷, 2,000 exact series terms
-and a telescoping tail. Its Wiener norm is exactly one. The finite residual is at most (π/4)·.000275;
-the omitted series contributes at most (π/4)·.00015925. The value K ≤ 1.405364 is
-weaker than the certified bound above (and than Haagerup's 1.40491, which needs the full inverse series);
-it is the best upper bound in this repository that rests on nothing outside Lean.
+with a degree-13 preprocessor and 2,000 exact series terms. Its coefficient norm equals one, but its
+fourth power has norm at most 199787/200000. Keeping that cancellation shrinks the entire infinite
+tail to at most (π/4)·.0000216; the complete finite residual is at most (π/4)·.000011.
+The general weighted-tail theorem and the boundary-phase obstruction are proved in
+`Grothe/Upper/PowerTail.lean`. The Gaussian identity, tensor realization, finite checker soundness,
+infinite tail and final transfer are all proved in Lean, with one pinned numerical check and no
+external analytic hypotheses. See [the complete proof and replay](docs/HAAGERUP_POWER.md).
+This remains weaker than the conditional bound above and Haagerup's 1.40491.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in `scripts/check_axioms.py`:
 `Grothe.head_check` (the upper head), `Grothe.UpperChaos.phi_cover_check` (the phase cover φ² ≤ 3),
-`Grothe.haagerup_check` (the unconditional upper bound), the 13 chunks `Grothe.Lower.certRows0`–`4`, `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower
+`Grothe.HaagerupPower.check` (the degree-13 residual, fourth-power budget and weighted tail), the 13 chunks `Grothe.Lower.certRows0`–`4`, `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower
 certificate (assembled into `Grothe.Lower.cert_check`),
 `capChords_check` (the chord nodes of the cap tables) and the 60 range checks `capRangeKK_j` of the node caps.
 Every native check is single-threaded code (no `Task.spawn`).
 Everything else is kernel-checked. No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`; the separate caps report is `scratch/AxiomsCaps.lean`.
+
+Joint-response proof interfaces retain shared Gram constraints, exact two-disc
+support, quadratic-feature closure and common Stein tests before completing
+squares. These add 35 selected results checked with standard axioms. The
+finite primal interface also makes explicit when a relaxed law obstructs a
+certificate without representing an actual Gaussian response.
+
+An exact five-mode symmetry reduction and an original-noise replica model
+preserve the shared drivers and chaos grades of a restricted response family.
+Eleven supporting algebra/series theorems use only standard axioms. The Gaussian
+conditioning and invariant-space classification are written proofs; numerical
+response searches are exploratory. See [the replica report](docs/SYMMETRIC_RESPONSE_REPLICAS_2026-10-23.md).
+
+A linear separator excludes the entire Gaussian-phase cubic-preprocessor
+family, including complex phases and convex mixtures, from improving the current
+upper score: its reciprocal score is at most 0.71186, below the incumbent
+0.7119471533. Fifteen additional Lean results check the polynomial separator,
+common signed-tail prices, error propagation, and finite-mixture assembly.
+The Gaussian-family application is a written proof with an explicit Lean
+low-coefficient interface. The numerical pool screens remain uncertified;
+none of these research interfaces changes either endpoint.
+See [the separator proof and trust boundary](docs/CUBIC_PHASE_SEPARATOR_2026-10-23.md).
 
 The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAILS.md).
 

@@ -1,0 +1,5 @@
+phase condition -1 Bernstein shape 11 4 minimum 9/640
+phase condition 1 Bernstein shape 11 4 minimum 9/640
+tangent quotient Bernstein ['285761973783/1717986918400', '1920796785347/8589934592000', '2487532348179/8589934592000', '3202332295011/8589934592000', '4157517803443/8589934592000', '220673771643/343597383680']
+rational polynomial cap 0.22657593324158756
+PASS full complex cubic-phase architecture score < 0.7118535398230088 < 0.71186 < incumbent

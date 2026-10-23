@@ -1,9 +1,13 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-Branch `work/upper-chaos` (fast-forwarded to master 5bed67f; master contains everything below up to
-the phase cover).  Builds were run on the droplet (`ssh yo`, copy `/home/agalatan/grothe-chaos`, packages
-symlinked from `~/grothe-caps`); any machine with the Mathlib cache works:
-`lake build && lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py`.
+The sharper conditional upper bound is described below. The independent hypothesis-free
+route now proves `Grothe.haagerup_bound : IsGrothendieckBound (1404951/1000000)`.
+Its finite-power contraction, complete residual and weighted infinite tail are documented in
+`/Users/alingalatan/workspaces/grothe-codex-joint-image/docs/HAAGERUP_POWER.md`;
+that theorem does not require any of the analytic inputs listed here.
+
+Build only changed modules locally. Run full builds on the droplet (`ssh yo`) or in CI;
+see `AGENTS.md` for worktree and delivery rules.
 
 ## 1. What is proved
 

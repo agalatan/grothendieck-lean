@@ -1,0 +1,83 @@
+{
+  "scope": "FLOAT necessary bound for mixtures, from original-noise kernel values.\n\nThis solves a relaxation ABOVE the best complete score in a finite response\npool. It can reject a poor pool after rigorous integral enclosure; it NEVER\nproves that its optimum is an achievable score. Here the inputs are floating\ndiscovery integrals, so no rejection or endpoint is certified.\n",
+  "pool_columns": 8,
+  "incumbent_full_score": 0.711947153313209,
+  "full_score_upper_screen": 0.7115905717352287,
+  "cubic_price": 0.9308324717736696,
+  "kernel_prices": [
+    {
+      "rho": 0.5,
+      "price": 0.0
+    },
+    {
+      "rho": 0.7,
+      "price": -3.313121835754167
+    },
+    {
+      "rho": 0.85,
+      "price": -0.4433934466952102
+    },
+    {
+      "rho": 0.95,
+      "price": 0.0
+    },
+    {
+      "rho": 1.0,
+      "price": 0.24642758523793873
+    }
+  ],
+  "price_budget": 0.9999999999994917,
+  "uniform_integral_error_amplification": 10.531400014771084,
+  "sufficient_uniform_enclosure_to_exclude_pool": 3.385889601384623e-05,
+  "columns": [
+    {
+      "m": 16,
+      "discovery_epsilon": 0.745,
+      "mixture_weight": 0.14783705336190886,
+      "priced_score_upper_screen": 0.7115905717352189
+    },
+    {
+      "m": 16,
+      "discovery_epsilon": 0.7564,
+      "mixture_weight": 0.5724013889878505,
+      "priced_score_upper_screen": 0.7115905717352202
+    },
+    {
+      "m": 128,
+      "discovery_epsilon": 0.745,
+      "mixture_weight": 0.04094422523929869,
+      "priced_score_upper_screen": 0.7115905717352214
+    },
+    {
+      "m": 128,
+      "discovery_epsilon": 0.7564,
+      "mixture_weight": 0.0,
+      "priced_score_upper_screen": 0.7112524812736433
+    },
+    {
+      "m": 16,
+      "discovery_epsilon": 0.77,
+      "mixture_weight": 0.0,
+      "priced_score_upper_screen": 0.7110722219321371
+    },
+    {
+      "m": 16,
+      "discovery_epsilon": 0.8,
+      "mixture_weight": 0.0,
+      "priced_score_upper_screen": 0.7107142920569064
+    },
+    {
+      "m": 128,
+      "discovery_epsilon": 0.77,
+      "mixture_weight": 0.0,
+      "priced_score_upper_screen": 0.7104160006893924
+    },
+    {
+      "m": 128,
+      "discovery_epsilon": 0.8,
+      "mixture_weight": 0.23881733241094294,
+      "priced_score_upper_screen": 0.7115905717352287
+    }
+  ],
+  "warning": "The displayed relaxation optimum is NOT an achievable rounding score."
+}

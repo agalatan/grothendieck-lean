@@ -10,7 +10,7 @@ Fails unless
 import re, sys
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
 NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",          # upper: head of the kernel
-          "Grothe.haagerup_check._native.native_decide.ax_1_1",      # Haagerup route: residual of degree-seven preprocessing
+          "Grothe.HaagerupPower.check._native.native_decide.ax_1_1",      # Haagerup route: finite residual, fourth power and weighted tail
           "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1",  # upper: phase cover φ² ≤ 3
           "Grothe.LowerAnalytic.capChords_check._native.native_decide.ax_1_1"}  # lower: chord nodes of the cap tables
 # lower: node caps of the certified rows, four ranges of nodes per row (Grothe/LowerAnalytic/CapRowKK.lean)
@@ -26,7 +26,11 @@ REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.LowerAnalytic.norm_pairVal_witness", "Grothe.LowerAnalytic.transferInputs_of_witnessCap",
             "Grothe.LowerAnalytic.witnessCap_of_reduction", "Grothe.LowerAnalytic.lower_bound_of_reduction",
             "Grothe.LowerAnalytic.normQk_le_rho", "Grothe.LowerAnalytic.lower_bound_of_nodeCaps",
-            "Grothe.haagerup_bound", "Grothe.LowerAnalytic.JointSixth.gram_j_eta",
+            "Grothe.haagerup_bound", "Grothe.HaagerupPower.upper",
+            "Grothe.Upper.PowerTail.weighted_tail_bound",
+            "Grothe.Upper.PowerTail.compTerm_power_bound",
+            "Grothe.Upper.PowerTail.no_power_saving_of_boundary",
+            "Grothe.LowerAnalytic.JointSixth.gram_j_eta",
             "Grothe.LowerAnalytic.JointSixth.gram_j2_shifted",
             "Grothe.LowerAnalytic.joint_eta_budget", "Grothe.Lower.MPoly.momentLift_majorant",
             "Grothe.LowerAnalytic.MomentCone.gram_node_of_check",
@@ -99,12 +103,120 @@ RESPONSE_GEOMETRY = {
     'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.spectral_ratio_ceiling',
     'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.pure_cubic_coefficient_above_floor'}
 REQUIRED |= RESPONSE_GEOMETRY
+JOINT_RESPONSE = {
+    'Grothe.Lower.PrimalAudit.no_dual_below_primal',
+    'Grothe.Lower.PrimalAudit.primal_le_dual',
+    'Grothe.Lower.SteinFusion.common_kernel_projection',
+    'Grothe.Lower.SteinFusion.perspective_fusion_le',
+    'Grothe.Lower.SteinFusion.perspective_variance',
+    'Grothe.Lower.SteinFusion.specCellG_unit_fusion',
+    'Grothe.Lower.SteinFusion.unit_fusion_identity',
+    'Grothe.Lower.SteinFusion.unit_fusion_le',
+    'Grothe.LowerAnalytic.QuadraticFeatures.affine_quadratic_remainder_budget',
+    'Grothe.LowerAnalytic.QuadraticFeatures.probe_projection_closure',
+    'Grothe.LowerAnalytic.QuadraticFeatures.quadratic_mul_linear',
+    'Grothe.LowerAnalytic.QuadraticFeatures.quadratic_remainder_budget',
+    'Grothe.LowerAnalytic.ReplicaState.firstCoeff_cross',
+    'Grothe.LowerAnalytic.ReplicaState.firstCoeff_normSq',
+    'Grothe.LowerAnalytic.ReplicaState.residual_nonneg',
+    'Grothe.LowerAnalytic.ReplicaState.scalar_surrogate_gap',
+    'Grothe.LowerAnalytic.ReplicaState.scalar_surrogate_strict',
+    'Grothe.LowerAnalytic.ReplicaState.sqrt_variance_identity',
+    'Grothe.LowerAnalytic.ReplicaState.variance_identity',
+    'Grothe.LowerAnalytic.ResponseGram.completion_screen',
+    'Grothe.LowerAnalytic.ResponseGram.disk_quadratic_attained',
+    'Grothe.LowerAnalytic.ResponseGram.disk_quadratic_bound',
+    'Grothe.LowerAnalytic.ResponseGram.factored_price_bound',
+    'Grothe.LowerAnalytic.ResponseGram.gram_qform',
+    'Grothe.LowerAnalytic.ResponseGram.inner_perturbation_bound',
+    'Grothe.LowerAnalytic.ResponseGram.moment_support_bound',
+    'Grothe.LowerAnalytic.ResponseGram.nested_projection_gram_interval',
+    'Grothe.LowerAnalytic.ResponseGram.no_completion',
+    'Grothe.LowerAnalytic.ResponseGram.orthogonal_projection_cross_bound',
+    'Grothe.LowerAnalytic.ResponseGram.priced_nearmax_bound',
+    'Grothe.LowerAnalytic.ResponseGram.projection_gram_interval',
+    'Grothe.LowerAnalytic.ResponseGram.reflection_cross_bound',
+    'Grothe.LowerAnalytic.ResponseGram.regularized_alignment_bound',
+    'Grothe.LowerAnalytic.ResponseGram.two_disc_price_bound',
+    'Grothe.LowerAnalytic.ResponseGram.weighted_alignment',
+    'Grothe.LowerAnalytic.TwoDisc.bilinear_support',
+    'Grothe.LowerAnalytic.TwoDisc.complex_linear_support',
+    'Grothe.LowerAnalytic.TwoDisc.coupled_interior_support',
+    'Grothe.LowerAnalytic.TwoDisc.independent_interior_support',
+    'Grothe.LowerAnalytic.TwoDisc.sharp_examples_attained',
+    'Grothe.LowerAnalytic.TwoDisc.slack_factorization',
+    'Grothe.LowerAnalytic.TwoDisc.support_of_factor',
+    'Grothe.Upper.CubicPhaseScreen.axis_le_real_polynomial',
+    'Grothe.Upper.CubicPhaseScreen.axis_nonneg',
+    'Grothe.Upper.CubicPhaseScreen.complex_score_cap',
+    'Grothe.Upper.CubicPhaseScreen.full_score_cap_of_low_identity',
+    'Grothe.Upper.CubicPhaseScreen.normalized_complex_cap',
+    'Grothe.Upper.CubicPhaseScreen.phase_conditions',
+    'Grothe.Upper.CubicPhaseScreen.phase_conditions_unit',
+    'Grothe.Upper.CubicPhaseScreen.real_polynomial_cap',
+    'Grothe.Upper.CubicPhaseScreen.score_le_separator',
+    'Grothe.Upper.CubicPhaseScreen.trigonometric_square_bound',
+    'Grothe.Upper.KernelScreen.all_level_price_bound',
+    'Grothe.Upper.KernelScreen.full_score_upper',
+    'Grothe.Upper.KernelScreen.priced_score_upper',
+    'Grothe.Upper.KernelScreen.weighted_tail',
+    'Grothe.Upper.SpectralScreen.affine_error_bound',
+    'Grothe.Upper.SpectralScreen.all_level_price_of_front_tail',
+    'Grothe.Upper.SpectralScreen.common_tail_price',
+    'Grothe.Upper.SpectralScreen.finite_mixture_score_bound',
+    'Grothe.Upper.SpectralScreen.full_score_upper',
+}
+REQUIRED |= JOINT_RESPONSE
+POWER_HAAGERUP = {
+    'Grothe.HaagerupPower.R_telescope',
+    'Grothe.HaagerupPower.check',
+    'Grothe.HaagerupPower.composed_tail',
+    'Grothe.HaagerupPower.degree_P',
+    'Grothe.HaagerupPower.exact_upper',
+    'Grothe.HaagerupPower.finite_identity',
+    'Grothe.HaagerupPower.finite_residual',
+    'Grothe.HaagerupPower.gamma_bound',
+    'Grothe.HaagerupPower.norm_P',
+    'Grothe.HaagerupPower.norm_fourth',
+    'Grothe.HaagerupPower.residual',
+    'Grothe.HaagerupPower.summable_R',
+    'Grothe.HaagerupPower.upper',
+    'Grothe.HaagerupPower.value_lt',
+    'Grothe.HaagerupPower.weighted_R_tail',
+    'Grothe.Upper.PowerTail.compTerm_power_bound',
+    'Grothe.Upper.PowerTail.eval_neg_one_le',
+    'Grothe.Upper.PowerTail.mem_polyPowI',
+    'Grothe.Upper.PowerTail.mem_powIval',
+    'Grothe.Upper.PowerTail.mem_telescope',
+    'Grothe.Upper.PowerTail.no_power_saving_of_boundary',
+    'Grothe.Upper.PowerTail.power_norm_of_check',
+    'Grothe.Upper.PowerTail.summable_weighted',
+    'Grothe.Upper.PowerTail.tail_numeric_of_check',
+    'Grothe.Upper.PowerTail.weightedTail_pair',
+    'Grothe.Upper.PowerTail.weighted_composition',
+    'Grothe.Upper.PowerTail.weighted_tail_bound',
+    'Grothe.haagerup_bound',
+}
+REQUIRED |= POWER_HAAGERUP
 # `--caps`: the report of scratch/AxiomsCaps.lean (separate target GrotheCaps, see README)
 if "--caps" in sys.argv:
     REQUIRED = {"Grothe.LowerAnalytic.lower_bound_of_capsRest"}
+# Check the combined response proof families without rebuilding the endpoint
+# certificates. These generic theorems must use no numerical native facts.
+if "--responses" in sys.argv:
+    if "--caps" in sys.argv:
+        sys.exit("choose either --caps or --responses")
+    REQUIRED = RESPONSE_GEOMETRY | JOINT_RESPONSE
+    NATIVE = set()
 elif "--response-geometry" in sys.argv:
     REQUIRED = RESPONSE_GEOMETRY
     NATIVE = set()
+# The hypothesis-free power route must use its own numerical fact only.
+if "--haagerup-power" in sys.argv:
+    if any(flag in sys.argv for flag in ("--caps", "--responses", "--response-geometry")):
+        sys.exit("choose one axiom audit mode")
+    REQUIRED = POWER_HAAGERUP
+    NATIVE = {"Grothe.HaagerupPower.check._native.native_decide.ax_1_1"}
 text = sys.stdin.read()
 if re.search(r"(^|\n)[^\n]*: error", text):
     sys.exit("the axiom report contains Lean errors")

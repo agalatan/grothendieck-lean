@@ -18,6 +18,7 @@ import Grothe.Haagerup.BetaJ
 import Grothe.Haagerup.Series
 import Grothe.Haagerup.Law
 import Grothe.Haagerup.Identity
+import Grothe.Haagerup.Power
 import Grothe.Lower.Basic
 import Grothe.Lower.Poly
 import Grothe.Lower.Moment
@@ -131,6 +132,15 @@ import Grothe.LowerAnalytic.CapTablesMk
 import Grothe.LowerAnalytic.CapRecipeData
 import Grothe.LowerAnalytic.CapRows
 import Grothe.LowerAnalytic.CapPieceNodes
+import Grothe.Lower.PrimalAudit
+import Grothe.LowerAnalytic.ResponseGram
+import Grothe.LowerAnalytic.TwoDisc
+import Grothe.LowerAnalytic.QuadraticFeatures
+import Grothe.Lower.SteinFusion
+import Grothe.LowerAnalytic.ReplicaState
+import Grothe.Upper.KernelScreen
+import Grothe.Upper.SpectralScreen
+import Grothe.Upper.CubicPhaseScreen
 import Grothe.LowerAnalytic.DiffuseCubicObstruction
 import Grothe.LowerAnalytic.JointRowRepricing
 import Grothe.LowerAnalytic.ProjectionGateCeiling

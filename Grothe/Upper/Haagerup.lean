@@ -4,28 +4,14 @@ import Grothe.Upper.Residual
 import GrotheKernel.Haagerup
 
 /-!
-# Haagerup's phase rounding with a degree-seven preprocessor
+# Haagerup coefficients and sound finite composition
 
-Haagerup's rounding `ε = phase⟪g, x⟫` (`g` a standard complex Gaussian vector) has the kernel
-
-  `φ(z) = Σ_k c_k z|z|^{2k}`,  `c_k = (π/4) r_k`,  `r_k = (1/2)_k² / (k!(k+1)!)`
-
-(`haagCoeff`, `haagR`: `r_0 = 1`, `r_{k+1} = r_k (2k+1)²/(4(k+1)(k+2))`).  This file proves
-that **if this kernel is dominated** (Haagerup's identity: it is the correlation kernel of the
-phase rounding), then `K_G^ℂ ≤ 1.405364` (`haagerup_upper`).
-
-The preprocessor is `p(t) = .90642006 t − .09308903 t³ − .00049091 t⁷`
-(`haagP`, `‖p‖_𝒜 = 1`) and
-the kernel after preprocessing is `compCoeff haagCoeff haagP` (`Compose.lean`).  The residual
-against `s = (π/4) a` splits as
-
-* the terms `k < K = 2000`: a radial polynomial of degree `< 7K`, whose residual `≤ (π/4) · cap` is
-  certified by the Horner interval evaluation `haagCheck` (`haagerup_check`, `native_decide`);
-* the terms `k ≥ K`: by the `ℓ¹` contraction at most `Σ_{k≥K} c_k ≤ (π/4) g_K/(2K)`, where
-  `g_k = r_k (k+1)(2k+1)` is nonincreasing (`haagG_antitone`: `(2k+1)(2k+3) ≤ 4(k+1)²`), so
-  `r_k ≤ g_K / ((k+1)(2k+1)) ≤ g_K/(2k(k+1))` telescopes.
-
-Then `K_G^ℂ ≤ 4/(π (a − cap − g_K/(2K)))` and `π > 3.141592`.
+The positive coefficients `haagR`, their monotone telescoping majorant and
+summability describe the Gaussian phase kernel. This module also proves the
+soundness of the outward Horner residual checker for any rational polynomial.
+The current degree-13 preprocessor and its finite-power tail certificate are
+assembled in `Grothe.Haagerup.Power`; the Gaussian identity is proved in
+`Grothe.Haagerup.Identity`.
 -/
 
 namespace Grothe
@@ -271,143 +257,6 @@ lemma coeff_compTerm_eq_zero {P : ℝ[X]} {d : ℕ} (hP : P.natDegree ≤ d)
     (natDegree_pow_le).trans (Nat.mul_le_mul_left _ hP)
   omega
 
-/-! ### The data -/
-
-/-- The preprocessor `P = a − bX − cX³`, `p(t) = a t − b t³ − c t⁷`. -/
-def haagPl : List ℚ := [90642006 / 100000000, -9308903 / 100000000, 0, -49091 / 100000000]
-
-/-- The number of exact terms. -/
-def haagK : ℕ := 2000
-
-/-- The certified residual cap of the finite part (in units of `π/4`). -/
-def haagCap : ℚ := 275 / 1000000
-
-/-- The tail constant: `g_K ≤ haagGam`. -/
-def haagGam : ℚ := 637 / 1000
-
-/-- **The finite computation** (by `native_decide`): the residual of
-`Σ_{k<2000} r_k p(t)^{2k+1}` against `a·t` is at most `haagCap`, and `g_{2000} ≤ haagGam`. -/
-theorem haagerup_check :
-    haagCheck 14000 haagPl haagK (90642006 / 100000000) haagCap haagGam = true := by
-  native_decide
-
-noncomputable def haagP : ℝ[X] := ofListQ haagPl
-
-lemma l1_haagP : l1 haagP ≤ 1 :=
-  (l1_ofListQ_le haagPl).trans (by norm_num [haagPl])
-
-lemma natDegree_haagP : haagP.natDegree ≤ 3 := by
-  have := natDegree_ofListQ_le haagPl
-  simpa [haagP, haagPl] using this
-
-/-- The finite part of the kernel is `(π/4) · P · Horner(r; X P²)`. -/
-lemma compCoeff_cLo (n : ℕ) :
-    compCoeff (cLo haagK) haagP n
-      = Real.pi / 4 * (haagP * hornerP (X * haagP ^ 2) (haagList haagK)).coeff n := by
-  unfold compCoeff
-  rw [tsum_eq_sum (s := range haagK) fun k hk => by
-    simp [cLo, show ¬ k < haagK from fun h => hk (mem_range.2 h)]]
-  rw [hornerP_eq, mul_sum, finsetSum_coeff, mul_sum]
-  have hlen : (haagList haagK).length = haagK := by rw [haagList_eq]; simp
-  rw [hlen]
-  refine sum_congr rfl fun k hk => ?_
-  have hk' := mem_range.1 hk
-  have hget : (haagList haagK).getD k 0 = haagR k := by
-    rw [haagList_eq, List.getD_eq_getElem?_getD, List.getElem?_map, List.getElem?_range hk']
-    rfl
-  have hc : cLo haagK k = haagCoeff k := by simp [cLo, hk']
-  rw [hget, hc, haagCoeff, compTerm]
-  have e : haagP * (C ((haagR k : ℚ) : ℝ) * (X * haagP ^ 2) ^ k)
-      = C ((haagR k : ℚ) : ℝ) * (X ^ k * haagP ^ (2 * k + 1)) := by
-    rw [mul_pow, ← pow_mul]
-    ring
-  rw [e, coeff_C_mul]
-  ring
-
-/-- **The residual of the preprocessed Haagerup kernel.** -/
-theorem haagerup_residual :
-    |compCoeff haagCoeff haagP 0 - Real.pi / 4 * (90642006 / 100000000 : ℚ)|
-        + ∑' n, |compCoeff haagCoeff haagP (n + 1)|
-      ≤ Real.pi / 4 * ((haagCap : ℝ) + (haagGam : ℝ) / (2 * haagK)) := by
-  have hc := haagerup_check
-  simp only [haagCheck, Bool.and_eq_true, decide_eq_true_eq] at hc
-  obtain ⟨hres, hgam⟩ := hc
-  have hsplit : ∀ k, haagCoeff k = cLo haagK k + cHi haagK k := fun k => by
-    unfold cLo cHi; split_ifs <;> ring
-  have hadd : ∀ n, compCoeff haagCoeff haagP n
-      = compCoeff (cLo haagK) haagP n + compCoeff (cHi haagK) haagP n := fun n => by
-    rw [← compCoeff_add (summable_cLo _) (summable_cHi _) l1_haagP]
-    exact congrArg (fun c => compCoeff c haagP n) (funext hsplit)
-  have hsLo := summable_abs_compCoeff (summable_cLo haagK) l1_haagP
-  have hd : Summable fun n => |compCoeff haagCoeff haagP n - compCoeff (cLo haagK) haagP n| := by
-    simpa only [hadd, add_sub_cancel_left] using summable_abs_compCoeff (summable_cHi haagK) l1_haagP
-  have h1 := residual_perturb' (compCoeff haagCoeff haagP) (compCoeff (cLo haagK) haagP) hsLo hd
-    (Real.pi / 4 * (90642006 / 100000000 : ℚ))
-  -- the finite part
-  have hfin : |compCoeff (cLo haagK) haagP 0 - Real.pi / 4 * (90642006 / 100000000 : ℚ)|
-      + ∑' n, |compCoeff (cLo haagK) haagP (n + 1)| ≤ Real.pi / 4 * haagCap := by
-    rw [residual_split _ hsLo _ 13999]
-    have htail : ∑' n, |compCoeff (cLo haagK) haagP (n + (13999 + 1))| = 0 := by
-      refine (tsum_congr fun n => ?_).trans tsum_zero
-      rw [compCoeff_cLo, hornerP_eq]
-      rw [mul_sum, finsetSum_coeff]
-      rw [sum_eq_zero fun k hk => ?_, mul_zero, abs_zero]
-      have hk' : k < haagK := by
-        have hlen : (haagList haagK).length = haagK := by rw [haagList_eq]; simp
-        rw [← hlen]; exact mem_range.1 hk
-      have e : haagP * (C (((haagList haagK).getD k 0 : ℚ) : ℝ) * (X * haagP ^ 2) ^ k)
-          = C (((haagList haagK).getD k 0 : ℚ) : ℝ) * compTerm haagP k := by
-        rw [compTerm, mul_pow, ← pow_mul]; ring
-      rw [e, coeff_C_mul, coeff_compTerm_eq_zero natDegree_haagP (by unfold haagK at hk'; omega),
-        mul_zero]
-    rw [htail, add_zero]
-    have hchk := haag_le_of_check hres
-    have e : ∀ n, |compCoeff (cLo haagK) haagP n
-        - if n = 0 then Real.pi / 4 * ((90642006 / 100000000 : ℚ) : ℝ) else 0|
-        = Real.pi / 4 * |(haagP * hornerP (X * haagP ^ 2) (haagList haagK)).coeff n
-          - if n = 0 then ((90642006 / 100000000 : ℚ) : ℝ) else 0| := fun n => by
-      rw [compCoeff_cLo, ← abs_of_pos (show 0 < Real.pi / 4 by positivity), ← abs_mul,
-        abs_of_pos (show 0 < Real.pi / 4 by positivity)]
-      congr 1
-      split_ifs <;> ring
-    rw [show (13999 + 1 : ℕ) = 14000 from rfl]
-    have hPdef : ofListQ haagPl = haagP := rfl
-    rw [hPdef] at hchk
-    simp only [e, ← mul_sum]
-    exact mul_le_mul_of_nonneg_left hchk (by positivity)
-  -- the tail part
-  have htl : ∑' n, |compCoeff haagCoeff haagP n - compCoeff (cLo haagK) haagP n|
-      ≤ Real.pi / 4 * ((haagGam : ℝ) / (2 * haagK)) := by
-    simp only [hadd, add_sub_cancel_left]
-    refine (tsum_abs_compCoeff_le (summable_cHi haagK) l1_haagP).trans
-      ((tsum_abs_cHi_le haagK (by norm_num [haagK])).trans ?_)
-    have hg : (haagG haagK : ℝ) ≤ haagGam := by
-      have : haagG haagK = (haagList (haagK + 1)).getD haagK 0
-          * (((haagK + 1) * (2 * haagK + 1) : ℕ) : ℚ) := by
-        rw [haagList_eq, List.getD_eq_getElem?_getD, List.getElem?_map,
-          List.getElem?_range (Nat.lt_succ_self _)]
-        simp [haagG]
-      exact_mod_cast this ▸ hgam
-    gcongr
-  linarith
-
-/-- **Haagerup's rounding gives `K_G^ℂ ≤ 1.405364`**, provided its kernel is dominated.
-
-The hypothesis `hH` is Haagerup's identity: for unit vectors with `⟪x, y⟫ = z`,
-`𝔼[conj(phase⟪g, x⟫) · phase⟪g, y⟫] = Σ_k c_k z|z|^{2k}` (which makes `radialKernel haagCoeff`
-valid, hence dominated); see `handoff/research-third-decimal/PLAN_UPPER.md` §3.3. -/
-theorem haagerup_upper (hH : DominatedKernel (radialKernel haagCoeff)) :
-    IsGrothendieckBound (351341 / 250000) := by
-  have hpi := Real.pi_gt_d6
-  have hδ : Real.pi / 4 * ((haagCap : ℝ) + (haagGam : ℝ) / (2 * haagK))
-      < Real.pi / 4 * (90642006 / 100000000 : ℚ) := by
-    apply mul_lt_mul_of_pos_left _ (by positivity)
-    norm_num [haagCap, haagGam, haagK]
-  refine (transfer_comp summable_haagCoeff hH l1_haagP hδ haagerup_residual).mono ?_
-  rw [← mul_sub, one_div, inv_le_iff_one_le_mul₀ (by
-    apply mul_pos (by positivity); norm_num [haagCap, haagGam, haagK])]
-  norm_num [haagCap, haagGam, haagK]
-  nlinarith
 
 end
 
