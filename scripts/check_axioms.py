@@ -10,7 +10,7 @@ Fails unless
 import re, sys
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
 NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",          # upper: head of the kernel
-          "Grothe.haagerup_check._native.native_decide.ax_1_1",      # Haagerup route: residual of the cubic preprocessing
+          "Grothe.haagerup_check._native.native_decide.ax_1_1",      # Haagerup route: residual of degree-seven preprocessing
           "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1",  # upper: phase cover φ² ≤ 3
           "Grothe.LowerAnalytic.capChords_check._native.native_decide.ax_1_1"}  # lower: chord nodes of the cap tables
 # lower: node caps of the certified rows, four ranges of nodes per row (Grothe/LowerAnalytic/CapRowKK.lean)

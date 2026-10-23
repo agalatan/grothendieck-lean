@@ -259,7 +259,7 @@ At least **80.615%** remains above its ceiling. This is a restriction on
 the method, not evidence that the true constant equals its ceiling.
 These research results change neither endpoint nor the remaining cap and
 numerical comparison obligations described in README. The unconditional
-completed Lean upper bound remains `1.40578`.
+completed Lean upper bound is `1.405364`.
 
 ### A certified failure of automatic upper conversion
 
