@@ -24,8 +24,13 @@ The refined global lower cover has 9,057 boxes and cap `0.713421765375`.
 It retains the certified rows, mixed batches, witness and `NodeCaps`, and
 gives the strict endpoint `1.401695390488`. Only 43 parent boxes need new
 subdivision/mixture choices, producing 344 children; the remaining source/law proofs are reused.
-The complete partition and every final box have separate Lean check declarations;
-their final native validation is running as recorded in the continuation's README.
+The complete partition and every final box have separate Lean checks. The
+combined tree passed the fresh full Lean build and axiom audit in
+[CI run 39901871873](https://github.com/agalatan/grothendieck-lean/actions/runs/39901871873):
+345 reported theorems, using 22 of the 82 allowed native facts. The lower
+endpoint's dependency set reuses eight old row/batch checks and adds five
+cover checks. The separate heavy `GrotheCaps` target remains unverified;
+its source digest is unchanged.
 
 The second, fourth and sixth moments of the actual damped phase have also
 been recovered as exact rationals directly from `Upper/Data.lean`. All three
@@ -33,6 +38,13 @@ equal the retained comparison inputs. This restores missing numerical
 provenance, without discharging the other comparison premises; see
 [MOMENTS.md](../handoff/research-third-decimal/needle-20261023/MOMENTS.md) and
 [the remaining source gap](../handoff/research-third-decimal/needle-20261023/HS_GAP.md).
+
+Nearby Stein scale nodes expose a further lower-bound route. Two new nodes
+using only the original row-14 source and Stein bank lower the exact cap of
+box 4302 to `0.7133695405035759`. The standalone Lean `checkBatch` evaluates
+to `true`, and an independent audit checks scaling, padding, moments and
+the whole half-line. This is a fixed-box improvement, not another global
+endpoint. See [the next campaign](../handoff/research-third-decimal/needle-20261023/UNSHIFTED_NEXT.md).
 
 ## Integration with current master
 
@@ -147,7 +159,9 @@ The conditioned field near `-0.00639397` and extra fixed-dual correction near
 caps. The next numerical proof target is `a_C ≤ -0.006` for the frozen
 visible trial. A uniform tensor estimate and outer cover are still missing.
 This is a local proof-development target, not a route to `1.402` at unchanged
-`ε = 149/200`. The next global attack should retune the witness and combine
+`ε = 149/200`. For modest gains within this witness, the next complete-cover
+campaign first adds nearby unshifted Stein nodes at the remaining blockers.
+Reaching `1.402` requires retuning the witness and combining
 the common-response compression and complete projected fields. Gate costs
 must use the actual chaos projections; raw conditional fields can add a
 false penalty. A free common projector can collapse fields to rank one, so

@@ -1,0 +1,61 @@
+{
+  "bounds": [
+    "341/400",
+    "3413/4000",
+    "106123725113/512000000000",
+    "10709733727/51200000000",
+    "0",
+    "31/256"
+  ],
+  "box": 4302,
+  "cover_sha256": "ac7bc2d09c5cc215bc6cf6f16efbc58b7e55b2fb9095733e65ee57009a504dba",
+  "inherited_sha256": "3e7ddd38eb4d7ebeb8db0af1f14f50774c4c93a259fb9c6053c92ec760bdb44e",
+  "new_upper": "97549748309009118309478504291786222202261960160170915592342073518404548512117607828529556292918001235737716806279851099116008801815197511/136745042744813016787620824974086064720585030062433001790482385860762411845312843525747511999471398881853440000000000000000000000000000000",
+  "new_upper_decimal": 0.7133695405035759,
+  "node_inputs": [
+    {
+      "path": "handoff/research-third-decimal/needle-20261023/unshifted4302-lo.json",
+      "proof": {
+        "bernstein_leaves": 440,
+        "intervals": 438,
+        "max_degree": 10,
+        "scope": "Only the original unshifted row source caps and inherited Stein cuts; no shifted source or rank-one response premise.",
+        "status": "PASS_EXACT_ORIGINAL_SOURCE_ONLY",
+        "tau": "106123725113/512000000000",
+        "uniform_moment_saving_decimal": 6.760528945310008e-05
+      },
+      "sha256": "c67740f8beacb24b133cb208fbf3e32d164fde81d6a24c0a555b6a3ab8bb462a"
+    },
+    {
+      "path": "handoff/research-third-decimal/needle-20261023/unshifted4302-hi.json",
+      "proof": {
+        "bernstein_leaves": 441,
+        "intervals": 438,
+        "max_degree": 10,
+        "scope": "Only the original unshifted row source caps and inherited Stein cuts; no shifted source or rank-one response premise.",
+        "status": "PASS_EXACT_ORIGINAL_SOURCE_ONLY",
+        "tau": "10709733727/51200000000",
+        "uniform_moment_saving_decimal": 5.8534478420609e-05
+      },
+      "sha256": "31fd11d52b3ce13dc9aa5b7a9fc03716549bb8115601e6028ed7bbdc732acf9a"
+    }
+  ],
+  "old_upper": "390227559211150881145219961945351311335335862159467901409470848757246508873081813487195272828234374469347389279196270331386600187089176303/546980170979252067150483299896344258882340120249732007161929543443049647381251374102990047997885595527413760000000000000000000000000000000",
+  "old_upper_decimal": 0.713421765385994,
+  "remaining_obligations": [
+    "Check the emitted pure-row Stein JBatch with existing checkBatch and connect it through the generic finite cover interface.",
+    "Other boxes control the global cap. The current 9057-box endpoint cover is unchanged."
+  ],
+  "saving": "63905984595990844084887646994233839570517939114628725061643587535379920830832601962075294322974331983270814489632964032583847490797/1223669286307051604363497315204349572443713915547498897453981081528075273783560121035771919458357036974080000000000000000000000000000000",
+  "saving_decimal": 5.2224882418071176e-05,
+  "scale_interpolation_allowance": "0",
+  "scope": "Exact original box 4302 assembly with two new unshifted law-scale nodes.\n\nUses the unchanged virtual row, gate completion, second source row and PAD.\nOnly row14's law polynomials at the actual scale endpoints change. Their\nordinary convex scale chord has no rank-one or semiconvex allowance.\nThis proves one fixed box, not a whole-cover endpoint improvement.\n",
+  "source_assumption": "The same original NodeCaps; no shifted source-cap or rank-one response reduction is used.",
+  "status": "PASS_EXACT_BOX4302_WITH_ORIGINAL_SOURCE_ONLY",
+  "uniform_box_saving_floor": "2296126977145932457863161229788288675593396520926629/48357032784585166988247040000000000000000000000000000000",
+  "uniform_box_saving_floor_decimal": 4.74827929863776e-05,
+  "weights": {
+    "14": "405596789/500000000",
+    "16": "94403211/500000000"
+  }
+}

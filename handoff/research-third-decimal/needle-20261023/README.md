@@ -21,12 +21,20 @@ Lean 4.34.1 with warnings treated as errors. The central targeted axiom audit
 passes; the tail arithmetic adds no native fact. See `UPPER.md`,
 `UPPER_BUILD.json`, and `UPPER_AXIOMS.txt`.
 
-The generic lower bridge, data, and parsed-data module passed Lean. The four
-native box checks, partition check, final endpoint assembly, and combined
-root axiom audit are running sequentially on the owned droplet overlay.
-Until their successful logs are recorded, the lower export is an exact
-complete arithmetic certificate awaiting final Lean validation. `LOWER.md`
-records its construction and premise boundary.
+The complete combined tree passed the fresh GitHub Lean build and axiom
+audit at commit `7afdc136e2f1cd23ff60dcb0b426bd83f34c06bb`:
+[run 39901871873](https://github.com/agalatan/grothendieck-lean/actions/runs/39901871873).
+All four native box checks, the partition check, final lower endpoint,
+updated upper endpoint and default import graph passed. The axiom report
+checks 345 theorems and uses 22 of the 82 allowed native facts. The forbidden
+code check also passed. `FULL_CI.log` and `FULL_AXIOMS.txt` preserve the raw
+build and extracted report; the central checker independently reaccepts
+that report locally. `LOWER.md` records construction and premise boundaries.
+
+The droplet independently completed all nine lower modules, including the
+four native box chunks, partition and final endpoint. No running Lean
+process remained when full CI succeeded. `LOWER_BUILD.json` distinguishes
+that targeted droplet run from the complete fresh-source CI verification.
 
 The independently replayed lower patch changes 43 parents into 344 children,
 retains the other 8,713 domains, and matches every original canonical box
@@ -39,6 +47,7 @@ From the repository root:
 python3 -I tools/needle_cover_refine.py --verify handoff/research-third-decimal/needle-20261023/minimal-cover-ledger.json
 python3 -I tools/needle_cover_lean.py --check
 python3 scripts/check_axioms.py --hardy-budget < handoff/research-third-decimal/needle-20261023/UPPER_AXIOMS.txt
+python3 scripts/check_axioms.py < handoff/research-third-decimal/needle-20261023/FULL_AXIOMS.txt
 python3 -I tools/research_replay.py --full
 ```
 
@@ -66,6 +75,11 @@ worse. It is not included in the endpoint cover.
 
 The saved rank-one bank can be repriced at the remaining low-defect blockers,
 but its shifted-response analytic majorants and extraction bridge are not
-consequences of `NodeCaps` alone. New scale nodes and whole-half-line law
-checks are required before its local source gains can improve a mixture box.
-Those experiments remain separate from the endpoint cover in this directory.
+consequences of `NodeCaps` alone. A subsequent test found that two new nearby
+scale nodes also certify against the original, unshifted source. Their
+whole-half-line checks and the existing Lean `checkBatch` pass. They lower
+box 4302 to `0.7133695405035759` under the original `NodeCaps`, without a
+semiconvex interpolation cost. This local result is independently audited in
+`UNSHIFTED_AUDIT.md`; `UNSHIFTED_NEXT.md` describes the next whole-cover campaign.
+The current endpoint cover is unchanged by this experiment. The Lean probe
+is an evaluation of the checker, not a new reflected theorem.

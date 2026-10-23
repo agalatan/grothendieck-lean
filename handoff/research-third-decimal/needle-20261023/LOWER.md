@@ -150,3 +150,12 @@ single improved rank-one box already bounds the global norm.
 Heavy discovery uses only one low-priority process in owned droplet tmpfs
 `/dev/shm/codex-needle-cover-20261023`, with source hashes pinned in each
 ledger. No main checkout or master branch is changed.
+
+## Follow-up: new original-source law nodes
+
+The separate experiment in `UNSHIFTED_NEXT.md` certifies two new row-14 law
+scales against the original unshifted caps, passes a standalone Lean
+`checkBatch` evaluation, and improves original box 4302 by about `5.22e-5`.
+It leaves this completed global cover unchanged. Its pure-row nodes are
+reusable across mixture weights; the next complete campaign should exploit
+that reuse before adding any shifted-response analytic premise.
