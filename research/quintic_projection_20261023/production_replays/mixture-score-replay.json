@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "theta": "49/250",
+  "beta_range": [
+    "0",
+    "1"
+  ],
+  "score_upper_intercept": "8886081/12500000",
+  "score_upper_slope": "-659/125000000",
+  "requested_strict_target": "711947/1000000",
+  "identity": "D_full <= (1+theta)*p+(theta-1)*s3+(1+theta)*s5-theta*C1",
+  "scope": "Exact rational consequence of the independently replayed bank constants.\n\nThis verifies a direct full-Wiener-score ceiling for mixtures of the two\nspecified banks. It is not a Grothendieck bound or a Gaussian formalization.\nRun verify_bank_constants.py in the supplied frozen certificate directory\nfirst; that verifier derives the constants from the companion Arb replays.\n",
+  "input_sha256": "6d46d8dc446ee7385649c526f76a73fdd286b2b63c4cec38231d49362b33fd7e",
+  "verifier_sha256": "c1c638abff9d7619d6bcc7edc0c5f87b043ba5c1f2a3b62fe96ebf950df3f569"
+}

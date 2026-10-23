@@ -17,40 +17,49 @@ It introduces no hypothesis into either existing endpoint and changes neither bo
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
-**Upper bound.** `Grothe.fresh_upper : DirectHyps E EX → IsGrothendieckBound (500000000000000000/355973576656604491)`,
-and `Grothe.upper_value_lt` shows this is below 1.404598635371 (`Grothe/Upper/PolynomialBridge.lean`).
-Here E and EX are the energy tables of the rounding T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6
-(disk-valued, since |P₃(x)|² = 1 − x⁴(3 − x²)/36 ≤ 1 for |φ| < 1), and of its polynomial
-truncation X = F₀ + v. The kernel is H(t) = Σ E[n,m] p(t)ⁿ(−τ(t))ᵐ with the preprocessors
+**Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder` proves
+`IsGrothendieckBound (500000000000000000/355973576656604491)` for the concrete rounding,
+given an L² charge-one truncation `X` and the numerical bounds `compare`, `energy_close`, `hardy`.
+`Grothe.upper_value_lt` shows this is below 1.404598635371 (`Grothe/UpperChaos/PhiBound.lean`).
+The older table interface `Grothe.fresh_upper : DirectHyps E EX → IsGrothendieckBound (...)`
+remains in `Grothe/Upper/PolynomialBridge.lean`.
+The actual rounding is G_T, the smoothing of T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6.
+It is defined in `Grothe/UpperChaos/Rounder.lean`. Lean proves φ² ≤ 3 (`phiBound`), hence
+|P₃(φ)|² = 1 − φ⁴(3 − φ²)/36 ≤ 1 and disk-valuedness of T and G_T. Here E is the actual
+energy table of G_T and EX that of X. The kernel is H(t) = Σ E[n,m] p(t)ⁿ(−τ(t))ᵐ with the preprocessors
 p(t) = t·P(t²) (`pList`, degree 41) and τ(t) = αt³ + βt⁷ (`qList`), both of Wiener norm ≤ 1, so
 that both are realised by tensor powers (`Grothe/Upper/Realise.lean`); they do not enter the
 energies, and are chosen to make the kernel nearly linear. The slope is c = 1779870886481/(25·10¹¹).
 
-* Proved from scratch: the transfer inequality via tensor powers and its residual form
+* Proved from scratch: the complex Gaussian Hermite basis on ℂ², completeness, Parseval,
+  the L² Mehler formula, charge selection, energy summability and the energies-to-kernel
+  identity (`Grothe/UpperChaos/`); measurability, charge one and disk-valuedness of G_T;
+  the transfer inequality via tensor powers and its residual form
   K ≤ 1/(c − ‖H − c·t‖); the ℓ¹ contraction and linearity of the kernel composition; that the
   head through degree 501 depends only on energies with n + 3m ≤ 501; the evaluation of the
   head of the stored table of the truncation (21,168 exact dyadic entries) by a sound
   fixed-point interval checker (`GrotheKernel/`, soundness in
   `Grothe/Upper/IntervalSound.lean`); the tail bound by Cauchy–Schwarz from a weighted
   square-sum bound; the assembly of the budgets; and the endpoint arithmetic.
-* Explicit hypotheses (fields of `DirectHyps E EX`, not formalized): `valid` (the kernel of E is
-  the dominated correlation kernel of the smoothed rounding T); `summable`, `summableX`,
-  `parityX` (summability of both tables, odd total degrees of EX); `compare`:
-  Σ|E − EX| ≤ 1065637497/10¹⁵ (the energy-difference / mixed-cutoff inequality applied directly
-  to T − X with Hermite cutoffs 181, 91, 51, the bound |φ| < 1, a Bargmann Hilbert–Schmidt
+* Explicit numerical hypotheses of the concrete theorem: `compare`,
+  Σ|E − EX| ≤ 1065637497/10¹⁵ (the energy-difference / mixed-cutoff inequality with
+  Hermite cutoffs 181, 91, 51, a Bargmann Hilbert–Schmidt
   estimate, directed coefficient enclosures and the exact norm ‖v‖ < 1/100; the source value is
   1.06563749615·10⁻⁶; archived with its scripts in the research folder
   `handoff/research-third-decimal/upper-polynomial-bridge-20261022/`); `energy_close`: the
-  stored energies are within 6847009/(5·10¹⁷) of EX in ℓ¹; `hardy`: the weighted square-sum
-  bound 7/4 at radius 4149/4000 for the kernel of T itself (a Gaussian weighted Schur estimate
+  stored energies are within 6847009/(5·10¹⁷) of EX on `headIdx 501` in ℓ¹; `hardy`: the weighted square-sum
+  bound 7/4 at radius 4149/4000 for the kernel of G_T itself (a Gaussian weighted Schur estimate
   valid for every bounded rounding, plus a 65,596-arc contour certificate with mean 1.69818 for this p, τ; archived in
   `handoff/research-third-decimal/upper-newpq-20261022/`),
-  which Lean turns into the tail bound 36748/10¹² beyond degree 501.
+  which Lean turns into the tail bound 36748/10¹² beyond degree 501. The concrete theorem
+  also takes the structural inputs X ∈ L² and charge-one equivariance of X. Actual-rounding
+  validity, summability and parity are derived, rather than remaining `DirectHyps` inputs.
 * **How much rests on these hypotheses.** Of the total residual 600639595509/(5·10¹⁷)
   ≈ 1.20128·10⁻⁶, the assumed comparison bound 1065637497/10¹⁵ is 88.71%, the computation
   verified in Lean (headCapQ = 98880/10¹²) 8.23%, the tail from `hardy` (36748/10¹²) 3.06%,
-  and the assumed energy-table error 6847009/(5·10¹⁷) 0.001%. The source's bound on |φ| is
-  0.99999963 against the required 1. The bound therefore depends almost entirely on the
+  and the assumed energy-table error 6847009/(5·10¹⁷) 0.001%. The external comparison uses
+  the stronger bound |φ| < 1; formal disk-valuedness needs only the proved φ² ≤ 3.
+  The bound therefore depends almost entirely on the
   external analysis behind the comparison hypothesis.
 * **Independent replay.** The source computations were replayed on a different machine: the
   nodal table and the Taylor centre arrays were regenerated bit for bit, and the kernel head,
@@ -118,8 +127,17 @@ and the gates E ⪰ 0, E ⪰ diag(−1,ε,ε), R ⪰ diag(−1,ε), R ⪰ diag(�
 inequality give each row inequality with the residual p = Π_{H₂,₁}c₀, its circular law and the gate
 variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
 `lower_bound_of_nodeCaps : NodeCaps → IsGrothendieckBound K → Llow < K` composes everything:
-**the only remaining hypothesis of the lower bound is `NodeCaps`**, the node caps
+**the only remaining hypothesis of this default-target theorem is `NodeCaps`**, the node caps
 Ψ_r(r_k) − 10⁻¹¹ ≤ c_k of the 19 certified potentials (exact-arithmetic certificates outside Lean).
+
+The separate `GrotheCaps` target supplies `lower_bound_of_capsRest :
+CapsRest → IsGrothendieckBound K → Llow < K` (`CapNodes.lean`). It assembles 60 single-threaded
+native range checks for 15 rows, while the chord nodes follow from vertex caps by convexity
+(`CapHull.lean`, `capChords_check`). `CapsRest` comprises the vertex caps of rows
+0.84, 0.845, 0.85, 0.855 and any excluded-node caps of the other rows; the exclusion lists
+are currently empty. This heavy target is not built by default CI. Its source stamp is
+checked separately by `scripts/caps_stamp.py`; no verification stamp is recorded in the
+current tree, so completed verification of the 60 range checks is not claimed here.
 
 * Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
   (trailing gate block positive definite, κδ² ≤ δ + gatePrice); the Stein cuts (summed, spectral and general spectral) from their analytic inputs, by completions of squares,
@@ -269,13 +287,18 @@ variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
   4‖Π₁,₁|q|²‖² + 2‖Π₂,₀q²‖² ≤ 3κ, and the weighted bound on the first-chaos content of q|q|²
   along any direction by the influence of that direction.
 
-Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus 15 `native_decide` facts:
-`Grothe.head_check` (the upper head), `Grothe.haagerup_check` (the 4,000-term series check of the
-unconditional upper bound `Grothe.haagerup_bound`) and the 13 chunks `Grothe.Lower.certRows0`–`4`,
+Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
+`scripts/check_axioms.py`: `Grothe.head_check` (the upper head), `Grothe.haagerup_check`
+(the 4,000-term unconditional upper check), `Grothe.UpperChaos.phi_cover_check`
+(φ² ≤ 3), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
+and the 13 chunks `Grothe.Lower.certRows0`–`4`,
 `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower certificate (assembled into
-`Grothe.Lower.cert_check`). Every native check is single-threaded (no `Task.spawn`). All
+`Grothe.Lower.cert_check`). The separate caps target additionally uses 60 range checks
+`capRangeKK_j`. Every native check is single-threaded (no `Task.spawn`). All
 other finite computations (the polynomial norms, the moment covers) are kernel-checked
-(`decide +kernel`). The report is `lake env lean scratch/Axioms.lean`, checked in CI. No `sorry`,
+(`decide +kernel`). The report is `lake env lean scratch/Axioms.lean`, checked in CI;
+the separate caps report is `scratch/AxiomsCaps.lean`. The generic response, cubic-ceiling
+and quintic-transfer lemmas add no native facts or endpoint hypotheses. No `sorry`,
 no warnings.
 
 

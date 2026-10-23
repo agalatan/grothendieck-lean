@@ -41,9 +41,70 @@ REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.LowerAnalytic.SphericalTransfer.cubicAmp_tail",
             "Grothe.LowerAnalytic.SphericalTransfer.cubic_tail_32_12",
             "Grothe.LowerAnalytic.SphericalTransfer.global_cap_from_truncation"}
+# Generic response geometry: every exported theorem is audited by default CI.
+RESPONSE_GEOMETRY = {
+    'Grothe.LowerAnalytic.DiffuseCubicObstruction.finite_bridge_lower',
+    'Grothe.LowerAnalytic.DiffuseCubicObstruction.above_target',
+    'Grothe.LowerAnalytic.DiffuseCubicObstruction.reciprocal_ceiling',
+    'Grothe.LowerAnalytic.JointRowRepricing.visible_completion',
+    'Grothe.LowerAnalytic.JointRowRepricing.invQuad_shift',
+    'Grothe.LowerAnalytic.JointRowRepricing.price_shift',
+    'Grothe.LowerAnalytic.JointRowRepricing.dual_constant_is_row',
+    'Grothe.LowerAnalytic.JointRowRepricing.forcing_scale',
+    'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_apply',
+    'Grothe.LowerAnalytic.ProjectionGateCeiling.coefficient_le_projected_norm',
+    'Grothe.LowerAnalytic.ProjectionGateCeiling.preserves_coefficient_of_selfadjoint',
+    'Grothe.LowerAnalytic.ProjectionGateCeiling.gateEnergy_lower',
+    'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_norm_sq',
+    'Grothe.LowerAnalytic.ProjectionGateCeiling.gateEnergy_rankOne',
+    'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_preserves_coefficient',
+    'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_selfadjoint',
+    'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_contraction',
+    'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_idempotent',
+    'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_c0',
+    'Grothe.LowerAnalytic.QuinticTransferAudit.diagonal_error_bound',
+    'Grothe.LowerAnalytic.QuinticTransferAudit.diagonal_one_sided_bounds',
+    'Grothe.LowerAnalytic.QuinticTransferAudit.negative_of_error_bound',
+    'Grothe.LowerAnalytic.QuinticTransferAudit.strict_interval_convex_mix',
+    'Grothe.LowerAnalytic.QuinticTransferAudit.signed_step_decreases',
+    'Grothe.LowerAnalytic.QuinticTransferAudit.signed_step_margin',
+    'Grothe.LowerAnalytic.QuinticTransferAudit.cramer_three_column_cancellation',
+    'Grothe.LowerAnalytic.QuinticTransferAudit.linear_necessary_score_affine_bound',
+    'Grothe.LowerAnalytic.QuinticTransferAudit.linear_necessary_score_bound',
+    'Grothe.LowerAnalytic.QuinticTransferAudit.zero_cubic_necessary_score_bound',
+    'Grothe.LowerAnalytic.ResponseCompression.norm_sq_sum',
+    'Grothe.LowerAnalytic.ResponseCompression.compression_bessel',
+    'Grothe.LowerAnalytic.ResponseCompression.compression_block_nonneg',
+    'Grothe.LowerAnalytic.ResponseCompression.three_grade_cut',
+    'Grothe.LowerAnalytic.ResponseCompression.three_grade_cut_unnormalized',
+    'Grothe.LowerAnalytic.ResponseCompression.two_by_two_moment_cut',
+    'Grothe.LowerAnalytic.ResponseCompression.fake_radial_parseval',
+    'Grothe.LowerAnalytic.ResponseCompression.fake_radial_rejected',
+    'Grothe.LowerAnalytic.ResponseCompression.fake_radial_repair_energy',
+    'Grothe.LowerAnalytic.ResponseCompression.fake_radial_repair',
+    'Grothe.LowerAnalytic.ResponseCompression.fake_visible_parseval',
+    'Grothe.LowerAnalytic.ResponseCompression.fake_visible_rejected',
+    'Grothe.LowerAnalytic.ResponseCompression.forced_visible_companion',
+    'Grothe.LowerAnalytic.ResponseCompression.mulResponse_ae',
+    'Grothe.LowerAnalytic.ResponseCompression.mulResponse_contracts',
+    'Grothe.LowerAnalytic.ResponseCompression.bounded_response_compression',
+    'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.affine_cancel',
+    'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.mixed_floor_le_max',
+    'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.family_floor',
+    'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.opposite_slopes',
+    'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.rounded_mix_floor',
+    'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.floor_positive',
+    'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.reciprocal_ceiling',
+    'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.ceiling_below_140226',
+    'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.spectral_ratio_ceiling',
+    'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.pure_cubic_coefficient_above_floor'}
+REQUIRED |= RESPONSE_GEOMETRY
 # `--caps`: the report of scratch/AxiomsCaps.lean (separate target GrotheCaps, see README)
 if "--caps" in sys.argv:
     REQUIRED = {"Grothe.LowerAnalytic.lower_bound_of_capsRest"}
+elif "--response-geometry" in sys.argv:
+    REQUIRED = RESPONSE_GEOMETRY
+    NATIVE = set()
 text = sys.stdin.read()
 if re.search(r"(^|\n)[^\n]*: error", text):
     sys.exit("the axiom report contains Lean errors")
