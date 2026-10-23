@@ -478,20 +478,20 @@ lemma qf_conj (P T : ℕ → ℕ → ℝ) (n : ℕ) (w : ℕ → ℝ) :
           T k l * (P k i * w i) * (P l j * w j) :=
         Finset.sum_congr rfl fun _ _ => Finset.sum_comm
 
-/-- **The cap of a piece** (no constraints): if the enclosure `lo ≤ T ≤ up` of the integrated
-coefficient matrix holds and `pieceOK` passes, then `Ψ(s) ≤ cap`. -/
-theorem pot_le_of_pieceOK (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
+/-- **The bound of a piece at one point**: if the enclosure `lo ≤ T ≤ up` of the integrated
+coefficient matrix holds and the form of `N = pieceN …` is nonnegative at `(1, y)`, then
+`J(y, s) ≤ cap`. -/
+theorem Jpot_le_of_qfN (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
     (s cap : ℚ) (lo up : QMat)
     (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ Tint ℓ β pr i j ∧ Tint ℓ β pr i j ≤ up.at i j)
-    (hchk : pieceOK lo up (mMat E R) av s cap = true) :
-    pot E R ℓ β a s ≤ cap := by
-  simp only [pieceOK, Bool.and_eq_true] at hchk
-  obtain ⟨henc', hldl⟩ := hchk
-  refine ciSup_le fun y => (Jpot_le_qf ℓ β pr E R a y s).trans ?_
+    (henc' : enclOK lo up 13 = true) (y : Fib)
+    (hN : 0 ≤ qf (fun i j => ((pieceN (mMat E R) av s cap (loewnerUp lo up 13)).at i j : ℝ)) 13
+      (wOf y.vec)) :
+    Jpot E R ℓ β a y s ≤ cap := by
+  refine (Jpot_le_qf ℓ β pr E R a y s).trans ?_
   set Tup := loewnerUp lo up 13
   have hL := qf_le_loewnerUp henc' (Tint ℓ β pr) henc
     (wOf ((Fib.M E R y).add (a.smul s)).vec)
-  have hN := qf_nonneg_of_ldlOK hldl (wOf y.vec)
   -- expand qf N
   have hNe : qf (fun i j => ((pieceN (mMat E R) av s cap Tup).at i j : ℝ)) 13 (wOf y.vec)
       = qf (fun i j => (((if i = 0 ∧ j = 0 then cap else 0)
@@ -543,6 +543,17 @@ theorem pot_le_of_pieceOK (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
     simp [wOf]
   rw [hq2] at hN
   linarith
+
+/-- **The cap of a piece** (no constraints): if the enclosure `lo ≤ T ≤ up` of the integrated
+coefficient matrix holds and `pieceOK` passes, then `Ψ(s) ≤ cap`. -/
+theorem pot_le_of_pieceOK (av : ℕ → ℚ) (hav : ∀ j < 12, a.vec j = av j)
+    (s cap : ℚ) (lo up : QMat)
+    (henc : ∀ i < 13, ∀ j < 13, (lo.at i j : ℝ) ≤ Tint ℓ β pr i j ∧ Tint ℓ β pr i j ≤ up.at i j)
+    (hchk : pieceOK lo up (mMat E R) av s cap = true) :
+    pot E R ℓ β a s ≤ cap := by
+  simp only [pieceOK, Bool.and_eq_true] at hchk
+  exact ciSup_le fun y => Jpot_le_of_qfN ℓ β pr E R a av hav s cap lo up henc hchk.1 y
+    (qf_nonneg_of_ldlOK hchk.2 _)
 
 end
 
