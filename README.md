@@ -10,7 +10,7 @@ complex Grothendieck constant:
 The two sharp bounds each rest on one explicitly stated family of externally certified numerical
 inputs; the unconditional bound rests on nothing outside Lean (see below).
 
-**New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an 8-page explanation of the problem, the two
+**New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
 the way, and why the remaining gap is hard.
 
@@ -152,6 +152,28 @@ certificate (assembled into `Grothe.Lower.cert_check`),
 Every native check is single-threaded code (no `Task.spawn`).
 Everything else is kernel-checked. No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`; the separate caps report is `scratch/AxiomsCaps.lean`.
+
+Joint-response proof interfaces retain shared Gram constraints, exact two-disc
+support, quadratic-feature closure and common Stein tests before completing
+squares. These add 35 selected results checked with standard axioms. The
+finite primal interface also makes explicit when a relaxed law obstructs a
+certificate without representing an actual Gaussian response.
+
+An exact five-mode symmetry reduction and an original-noise replica model
+preserve the shared drivers and chaos grades of a restricted response family.
+Eleven supporting algebra/series theorems use only standard axioms. The Gaussian
+conditioning and invariant-space classification are written proofs; numerical
+response searches are exploratory. See [the replica report](docs/SYMMETRIC_RESPONSE_REPLICAS_2026-10-23.md).
+
+A linear separator excludes the entire Gaussian-phase cubic-preprocessor
+family, including complex phases and convex mixtures, from improving the current
+upper score: its reciprocal score is at most 0.71186, below the incumbent
+0.7119471533. Fifteen additional Lean results check the polynomial separator,
+common signed-tail prices, error propagation, and finite-mixture assembly.
+The Gaussian-family application is a written proof with an explicit Lean
+low-coefficient interface. The numerical pool screens remain uncertified;
+none of these research interfaces changes either endpoint.
+See [the separator proof and trust boundary](docs/CUBIC_PHASE_SEPARATOR_2026-10-23.md).
 
 The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAILS.md).
 

@@ -1,0 +1,16 @@
+PASS rebase onto GitHub master 6a869c83bdd8a59661d6664b37ac1b5a2770c2a0.
+PASS all 15 affected Lean module targets (six master modules and nine delivery modules); no build warnings.
+PASS combined 116-theorem response audit; only propext, Classical.choice, Quot.sound.
+PASS missing-report, injected-native-axiom and conflicting-audit-mode negative controls.
+PASS all 311 master theorem reports retained, plus 61 new selected reports: 372 unique reports configured.
+PASS exact response-Gram and quadratic-feature controls replayed after the rebase.
+PASS shared-kernel, original-noise and common-Stein controls from the prior unchanged-source replay.
+PASS rational spectral front/geometric-tail prices, analytic baselines and corrupted-data rejection.
+PASS exact cubic-phase polynomial ceiling and regenerated Lean source match.
+PASS CI forbidden-proof/threading scan; no unresolved merge markers.
+PASS all 140 node-cap source-closure files and the CI workflow unchanged from master.
+PASS merged overview rebuilt as nine pages, without TeX warnings, and visually inspected.
+The full default build and 372-report audit are delegated to GitHub CI.
+GrotheCaps has no recorded verification stamp; this pre-existing status is unchanged.
+The upper theorem still requires an L2 charge-one truncation and its three numerical hypotheses.
+Floating response integrals are not certified by these checks; neither endpoint changes.

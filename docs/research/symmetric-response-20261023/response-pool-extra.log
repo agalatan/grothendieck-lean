@@ -1,0 +1,5 @@
+PASS analytic gradient against finite differences 1.0454507389998091e-09
+16 0.77 {'holdout_cross_score': 0.7124310278077751, 'holdout_baseline_cross_score': 0.7122202262156531, 'holdout_one_sided_update_cross_score': 0.7124310278035255, 'seconds': 8.691234486177564}
+128 0.77 {'holdout_cross_score': 0.7132207543971334, 'holdout_baseline_cross_score': 0.7125990023641782, 'holdout_one_sided_update_cross_score': 0.7132207543990652, 'seconds': 8.580135138705373}
+16 0.8 {'holdout_cross_score': 0.7132374668573775, 'holdout_baseline_cross_score': 0.7113908313853347, 'holdout_one_sided_update_cross_score': 0.713237466861915, 'seconds': 6.76441291347146}
+128 0.8 {'holdout_cross_score': 0.7150687965113496, 'holdout_baseline_cross_score': 0.7118176838919129, 'holdout_one_sided_update_cross_score': 0.7150687965109858, 'seconds': 8.18703442811966}

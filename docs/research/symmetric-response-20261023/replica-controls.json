@@ -1,0 +1,258 @@
+[
+  {
+    "m": 4,
+    "rho": 0.0,
+    "power": 18,
+    "scope": "FLOAT controls for an EXACT original-Gaussian two-replica construction.\n\nTwo 2x2 Wishart states replace the large X and residual-Y blocks. Projection\ncoordinates keep q and norm(Y) coupled. Gaussian noise acts on ORIGINAL X,Y,\nnot on independently relabeled scalar R,G,V. Dimension is 20 real uniforms.\nThis is a simulation/control tool, not an interval kernel certificate.\n",
+    "cross_gram_max_error": 0.0012373742361530507,
+    "cross_gram_diagonal": [
+      [
+        2.1363655962010674e-05,
+        1.8131617874269455e-06
+      ],
+      [
+        0.0012371373795034186,
+        2.4209595840495336e-05
+      ],
+      [
+        -0.0003086012506583569,
+        -2.4610019858386904e-05
+      ],
+      [
+        -0.00016312171037002134,
+        0.00011668380093962413
+      ],
+      [
+        9.004223826554278e-06,
+        -2.3560272303460313e-05
+      ]
+    ],
+    "mean_q_cross": 9.0042238265539e-06,
+    "conditional_covariance_algebra_error": 1.4210854715202004e-14,
+    "conditional_variance_algebra_error": 5.684341886080802e-14
+  },
+  {
+    "m": 4,
+    "rho": 0.5,
+    "power": 18,
+    "scope": "FLOAT controls for an EXACT original-Gaussian two-replica construction.\n\nTwo 2x2 Wishart states replace the large X and residual-Y blocks. Projection\ncoordinates keep q and norm(Y) coupled. Gaussian noise acts on ORIGINAL X,Y,\nnot on independently relabeled scalar R,G,V. Dimension is 20 real uniforms.\nThis is a simulation/control tool, not an interval kernel certificate.\n",
+    "cross_gram_max_error": 0.002786686110153811,
+    "cross_gram_diagonal": [
+      [
+        0.5000172226018085,
+        1.570244169082624e-06
+      ],
+      [
+        0.12773907055926845,
+        0.0005129443906243776
+      ],
+      [
+        0.12472506740451483,
+        3.5382171581302e-05
+      ],
+      [
+        0.12553386869336197,
+        -0.00015256566784122588
+      ],
+      [
+        0.12501258781296973,
+        -9.555482758387362e-06
+      ]
+    ],
+    "mean_q_cross": 0.1250125878129698,
+    "conditional_covariance_algebra_error": 2.842170943040401e-14,
+    "conditional_variance_algebra_error": 5.684341886080802e-14
+  },
+  {
+    "m": 4,
+    "rho": 0.9,
+    "power": 18,
+    "scope": "FLOAT controls for an EXACT original-Gaussian two-replica construction.\n\nTwo 2x2 Wishart states replace the large X and residual-Y blocks. Projection\ncoordinates keep q and norm(Y) coupled. Gaussian noise acts on ORIGINAL X,Y,\nnot on independently relabeled scalar R,G,V. Dimension is 20 real uniforms.\nThis is a simulation/control tool, not an interval kernel certificate.\n",
+    "cross_gram_max_error": 0.00231986387644066,
+    "cross_gram_diagonal": [
+      [
+        0.9000070102411895,
+        7.903388999687546e-07
+      ],
+      [
+        0.7313023563826803,
+        0.0002844705474142589
+      ],
+      [
+        0.7288728246131668,
+        -2.4314084513948023e-05
+      ],
+      [
+        0.729059862608381,
+        3.3856532961843457e-05
+      ],
+      [
+        0.7290195097106842,
+        5.986678943161925e-06
+      ]
+    ],
+    "mean_q_cross": 0.7290195097106836,
+    "conditional_covariance_algebra_error": 5.684341886080802e-14,
+    "conditional_variance_algebra_error": 1.4210854715202004e-14
+  },
+  {
+    "m": 4,
+    "rho": 1.0,
+    "power": 18,
+    "scope": "FLOAT controls for an EXACT original-Gaussian two-replica construction.\n\nTwo 2x2 Wishart states replace the large X and residual-Y blocks. Projection\ncoordinates keep q and norm(Y) coupled. Gaussian noise acts on ORIGINAL X,Y,\nnot on independently relabeled scalar R,G,V. Dimension is 20 real uniforms.\nThis is a simulation/control tool, not an interval kernel certificate.\n",
+    "cross_gram_max_error": 0.0009271568467819504,
+    "cross_gram_diagonal": [
+      [
+        0.9999974422660554,
+        0.0
+      ],
+      [
+        0.9991620128576062,
+        0.0
+      ],
+      [
+        0.9999642694047358,
+        0.0
+      ],
+      [
+        0.9998301248957886,
+        0.0
+      ],
+      [
+        1.0000166992294175,
+        -7.674272711665171e-12
+      ]
+    ],
+    "mean_q_cross": 1.0000166992294186,
+    "conditional_covariance_algebra_error": 5.684341886080802e-14,
+    "conditional_variance_algebra_error": 1.1368683772161603e-13
+  },
+  {
+    "m": 128,
+    "rho": 0.0,
+    "power": 18,
+    "scope": "FLOAT controls for an EXACT original-Gaussian two-replica construction.\n\nTwo 2x2 Wishart states replace the large X and residual-Y blocks. Projection\ncoordinates keep q and norm(Y) coupled. Gaussian noise acts on ORIGINAL X,Y,\nnot on independently relabeled scalar R,G,V. Dimension is 20 real uniforms.\nThis is a simulation/control tool, not an interval kernel certificate.\n",
+    "cross_gram_max_error": 0.0012373742361530507,
+    "cross_gram_diagonal": [
+      [
+        2.1363655962010674e-05,
+        1.8131617874269455e-06
+      ],
+      [
+        0.0012371373795034186,
+        2.4209595840495336e-05
+      ],
+      [
+        -7.399404258869912e-05,
+        -0.0001907272465163896
+      ],
+      [
+        0.00044066558593810253,
+        1.1161259490141252e-05
+      ],
+      [
+        2.878808893602754e-06,
+        2.4877735912093737e-05
+      ]
+    ],
+    "mean_q_cross": 2.8788088936019874e-06,
+    "conditional_covariance_algebra_error": 2.5421149729252077e-13,
+    "conditional_variance_algebra_error": 7.275957614183426e-12
+  },
+  {
+    "m": 128,
+    "rho": 0.5,
+    "power": 18,
+    "scope": "FLOAT controls for an EXACT original-Gaussian two-replica construction.\n\nTwo 2x2 Wishart states replace the large X and residual-Y blocks. Projection\ncoordinates keep q and norm(Y) coupled. Gaussian noise acts on ORIGINAL X,Y,\nnot on independently relabeled scalar R,G,V. Dimension is 20 real uniforms.\nThis is a simulation/control tool, not an interval kernel certificate.\n",
+    "cross_gram_max_error": 0.002786686110153811,
+    "cross_gram_diagonal": [
+      [
+        0.5000172226018085,
+        1.570244169082624e-06
+      ],
+      [
+        0.12773907055926845,
+        0.0005129443906243776
+      ],
+      [
+        0.12491228869668713,
+        -7.11247025053622e-05
+      ],
+      [
+        0.12559720882071407,
+        2.9907210928711763e-05
+      ],
+      [
+        0.12499801253014081,
+        2.2890037920576126e-05
+      ]
+    ],
+    "mean_q_cross": 0.1249980125301407,
+    "conditional_covariance_algebra_error": 1.8749713606747085e-12,
+    "conditional_variance_algebra_error": 7.275957614183426e-12
+  },
+  {
+    "m": 128,
+    "rho": 0.9,
+    "power": 18,
+    "scope": "FLOAT controls for an EXACT original-Gaussian two-replica construction.\n\nTwo 2x2 Wishart states replace the large X and residual-Y blocks. Projection\ncoordinates keep q and norm(Y) coupled. Gaussian noise acts on ORIGINAL X,Y,\nnot on independently relabeled scalar R,G,V. Dimension is 20 real uniforms.\nThis is a simulation/control tool, not an interval kernel certificate.\n",
+    "cross_gram_max_error": 0.00231986387644066,
+    "cross_gram_diagonal": [
+      [
+        0.9000070102411895,
+        7.903388999687546e-07
+      ],
+      [
+        0.7313023563826803,
+        0.0002844705474142589
+      ],
+      [
+        0.7290349915650901,
+        2.0012624020555014e-06
+      ],
+      [
+        0.729361433037585,
+        2.4345744824193168e-05
+      ],
+      [
+        0.7289945661819764,
+        9.348158715820488e-06
+      ]
+    ],
+    "mean_q_cross": 0.7289945661819766,
+    "conditional_covariance_algebra_error": 3.6662903532026344e-12,
+    "conditional_variance_algebra_error": 3.637978807091713e-12
+  },
+  {
+    "m": 128,
+    "rho": 1.0,
+    "power": 18,
+    "scope": "FLOAT controls for an EXACT original-Gaussian two-replica construction.\n\nTwo 2x2 Wishart states replace the large X and residual-Y blocks. Projection\ncoordinates keep q and norm(Y) coupled. Gaussian noise acts on ORIGINAL X,Y,\nnot on independently relabeled scalar R,G,V. Dimension is 20 real uniforms.\nThis is a simulation/control tool, not an interval kernel certificate.\n",
+    "cross_gram_max_error": 0.0008379871423938035,
+    "cross_gram_diagonal": [
+      [
+        0.9999974422660554,
+        0.0
+      ],
+      [
+        0.9991620128576062,
+        0.0
+      ],
+      [
+        1.0001010748606802,
+        0.0
+      ],
+      [
+        1.0002735072178577,
+        0.0
+      ],
+      [
+        1.000002219387559,
+        -2.262073032126766e-12
+      ]
+    ],
+    "mean_q_cross": 1.00000221938756,
+    "conditional_covariance_algebra_error": 3.637978807091713e-12,
+    "conditional_variance_algebra_error": 1.0913936421275139e-11
+  }
+]

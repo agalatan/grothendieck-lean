@@ -1,0 +1,112 @@
+\subsection{Reconstructing the binding certificate configurations}
+\label{sec:binding-audit-20261023}
+\paragraph{Scope (23 October).}
+This audit uses master \code{98f61ec} and its lifted joint-moment
+certificate at $\varepsilon=149/200$. It changes neither endpoint.
+The finite data are reconstructed exactly; the four radial countermodels
+below concern a fixed table-and-cut relaxation, not actual responses.
+The report, data and logs are in
+\pathref{/Users/alingalatan/workspaces/grothe/outputs/binding-audit-20261023/};
+the account of the discarded variables is in
+\pathref{/Users/alingalatan/workspaces/grothe/docs/BINDING\_AUDIT\_2026-10-23.md}.
+
+\paragraph{The finite envelope \st{C}.}
+The read-only prefix of the existing data generator reproduces all
+21 batches, 351 nodes and 8,756 boxes. Their strings agree exactly with
+the committed Lean data; all box bounds, node ranges and the partition
+are replayed. This does not recompute the source Gaussian integrals or
+independently recheck every half-line node majorant.
+The maximum box bound is between $0.713421798525$ and $0.713421798526$,
+leaving about $1.4745\cdot10^{-9}$ below the headline $0.7134218$.
+The explicit pad is $10^{-11}$. Neither is the principal loss.
+There are 130 boxes within $10^{-7}$ of that maximum, with enclosing
+$t$ interval $[0.84425,0.8545]$. Adaptive refinement to a common target
+does not identify these with near-maximizing actual responses.
+
+For rule 7234 the certificate expression is maximized near
+$(t,\tau,x)=(0.8495,0.245542324,0.7265625)$ and has the decomposition
+\[
+ -0.719702191279+0.055407255822+1.408882874811
+       -0.031166140839+10^{-11},
+\]
+with the displayed terms rounded. They are respectively the visible
+quadratic, beta completion, moment-majorant expectation, pinned price
+and pad. They must not be treated as numerical error terms.
+Selecting direct chords from the available nodes of the same potentials
+saves about $2.9500\cdot10^{-6}$ at this point. Across twelve selected
+rules the pointwise savings range from zero to about
+$1.3985\cdot10^{-5}$. No replacement cover is asserted.
+
+\paragraph{Exact feasible laws for a fixed relaxation \st{C}.}
+Let $\widehat\Psi_i$ denote the stored source interpolants, and fix the
+profile, price and parameter point of a selected rule. Define
+\[
+ R_{\rm tab}(\nu)=t^2-2\bar\ell t+\frac{2\bar\beta^2}{\varepsilon}
+ +\int\sum_iw_i\widehat\Psi_i(\delta_i\tau\sqrt u)\,d\nu(u)
+ -D\tau^2+10^{-11}.
+\]
+Four rational atomic probability laws satisfy exactly
+\[
+ \mathbb EU=1,\quad \mathbb EU^2=2+x^2,\quad
+ \mathbb EU^3\le6+9x^2+40.45313x^3,\quad
+ \mathbb E\sqrt U\le0.973612157,
+\]
+and all 671 listed cut functions on their certified ranges. This bank
+contains the 306 spectral/joint cuts, 126 distinct inherited mixed Stein
+cuts, and 239 additional distinct source Stein cuts from the five cells
+referenced by the four rules. It is not the set of all possible tests.
+The exact strict lower bounds for $R_{\rm tab}$ are
+\[
+\begin{array}{c|c|c}
+ \text{rule}&\text{atoms}&R_{\rm tab}(\nu)>\\\hline
+ 7234&10&0.713412812507\\
+ 5661&15&0.713414640742\\
+ 1247&12&0.713406413945\\
+ 8701&11&0.713352277645
+\end{array}
+\]
+and each exceeds $500/701$. Floating LPs only discover the laws.
+The independent standard-library verifier recomputes rational moments,
+every cut and the table score without an optimizer.
+
+Thus a dual majorant using this fixed table and finite cut bank cannot
+have cost below the corresponding feasible primal score. The generic
+finite separation argument is kernel-proved in
+\code{Grothe.Lower.PrimalAudit}; these four numerical instances remain
+external exact checks. No claim of literature novelty is made.
+In particular the laws are not Gaussian cubic laws or bounded response
+pairs. The tables are upper envelopes of the exact potentials.
+These witnesses therefore obstruct this specified relaxation only;
+they neither violate the original inequality nor exclude improved
+tables, stronger cuts, reoptimized row profiles, or a different witness
+such as $1891/2500$. No minimax floor over all profiles is proved.
+
+\paragraph{Which joint data the next reduction must retain.}
+The pre-supremum reduction has the same response pair, remote cubic $p$,
+gate vector $(p,X_2,X_3)$ and $Qh$. After mixing, it drops
+\[
+ \varepsilon\|Qh+(\bar\beta/\varepsilon)v\|^2,
+ \qquad
+ \mathbb E\|Y+C^{-1}h\,p\|_C^2,\quad Y=(X_2,X_3).
+\]
+The beta mixture saving has already been used. At rule 7234, vanishing
+of the latter remainder would require approximately
+$X_2=-0.532438p$, $X_3=-0.256700p$.
+The saved radial data specify these target ratios but not the actual
+remainders or the response-weighted fields $P(fA_i)$ and $P(gB_j)$.
+Those fields must be retained and constrained before the fibre
+supremum. A free cross block can be set to zero, so appending block
+positivity after forgetting it supplies no new restriction.
+
+There is also a row-consensus loss. If $F_i(f,g)$ is the fibre
+expression before its supremum, then
+\[
+ \sup_{f,g}\sum_iw_iF_i(f,g)
+ \le\sum_iw_i\sup_{f,g}F_i(f,g).
+\]
+The left side averages the quadratic matrices, visible terms and
+coupling vectors before maximizing over one common section. The
+current scalar tables use the right side. The nonnegative difference
+has not been quantitatively certified here. It is a further joint
+observable, not a proved numerical improvement or a second allowance
+to spend an existing square.

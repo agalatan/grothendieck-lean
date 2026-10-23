@@ -1,0 +1,259 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,hyperref}
+\newcommand{\E}{\mathbb E}
+\newcommand{\ph}{\operatorname{phase}}
+\newcommand{\D}{\mathcal D}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\title{A common-tail dual and a separator for cubic Gaussian-phase rounding}
+\author{Grothendieck certificate project}
+\date{23 October 2026}
+\begin{document}
+\maketitle
+
+\paragraph{Status.}
+Neither Grothendieck endpoint changes. We prove an obstruction to an entire
+rounding architecture, including its complex phases and convex mixtures. This
+is not a lower bound on the constant. We also strengthen a necessary pool
+screen by retaining the common signed Hermite tail. The latter screen has
+uncertified numerical integrals; its floating values are not achievable scores.
+
+\section*{1. Price the common tail before taking absolute values}
+For a charge-one bounded response pair write its real mixed coefficients as
+$c_k$, with $\sum_k|c_k|\le1$, and
+\[
+ K(\rho)=\sum_{k\ge0}c_k\rho^{2k+1},\qquad
+ \D(c)=c_0-\sum_{k\ge1}|c_k|.
+\]
+Real coefficients can be obtained by mixing with the conjugate-reflected
+pair; one must take the real parts before the score's absolute values.
+Let $0\le\rho_i\le1$, $|s|\le1$, and suppose
+\[
+ \left|\sum_i a_i\rho_i^{2k+1}\right|\le1\quad(k\ge2).
+ \tag{1}
+\]
+Absolute summability permits interchanging the finite price sum and the tail:
+\[
+ \left|\sum_i a_i\bigl(K(\rho_i)-c_0\rho_i-c_1\rho_i^3\bigr)\right|
+ \le\sum_{k\ge2}|c_k|.
+\]
+Consequently
+\[
+ \boxed{\D(c)\le
+ (1+\sum_i a_i\rho_i)c_0+
+ (-s+\sum_i a_i\rho_i^3)c_1-\sum_i a_iK(\rho_i).}\tag{2}
+\]
+The right side is one linear functional of a response column. Hence a common
+price bounds every convex mixture of columns, even though $\D$ itself is concave.
+In particular, averaging individual upper bounds on $\D$ would not be valid.
+
+A finite certificate for (1) is
+\[
+ \left|\sum_i a_i\rho_i^{2k+1}\right|\le1\quad(2\le k\le M),\qquad
+ \sum_i|a_i|\rho_i^{2M+3}\le1.\tag{3}
+\]
+For $k>M$ each nonnegative power decreases, proving the remaining inequalities.
+This retains cancellations between the prices on the finite front. It can be
+strictly stronger than $\sum_i|a_i|\rho_i^5\le1$.
+For midpoint errors $e_0,e_1,e_i$, the added allowance in (2) is exactly bounded by
+\[
+ |1+\sum_i a_i\rho_i|e_0+
+ |-s+\sum_i a_i\rho_i^3|e_1+\sum_i|a_i|e_i.\tag{4}
+\]
+The results underlying (1)--(4), and finite-mixture assembly, are formalized in
+\texttt{Grothe.Upper.SpectralScreen}; no Gaussian integral is assumed computed
+by these Lean theorems.
+
+\section*{2. An entire Gaussian-phase architecture is insufficient}
+Let $Z$ and $G$ be independent proper standard complex Gaussians whose original
+noise correlations are $\rho$ and $\rho^3$. Gaussian phase rounding of two
+normalized linear forms in these grades has physical correlation
+\[
+ K_{A,B}(\rho)=H_{\rm phys}(A\rho+B\rho^3),\qquad |A|+|B|\le1,
+\]
+where
+\[
+ H_{\rm phys}(z)=\pi\left(\frac z4+\frac{z|z|^2}{32}
+ +\frac{3z|z|^4}{256}+\frac{25z|z|^6}{4096}+\cdots\right).
+\]
+Indeed, Cauchy--Schwarz bounds the sum of the first- and third-grade inner
+products by one. This also permits multiple independent Gaussians in each
+grade. The identity is the Gaussian phase identity proved elsewhere in the
+repository. The physical kernel is not the holomorphic odd series evaluated
+at $A\rho+B\rho^3$ when these coefficients are complex.
+
+\begin{theorem}[Uniform architecture separator]
+For every $|A|+|B|\le1$, the mixed coefficients of $K_{A,B}$ satisfy
+\[
+ \Re(c_0-\tfrac9{25}c_1-c_2-c_3)<0.71186.
+ \tag{5}
+\]
+Every probability mixture, and its coefficient-$\ell^1$ closure, therefore has
+\[
+ \boxed{\D(c)\le0.71186<
+ \frac{355973576656604491}{500000000000000000}.}\tag{6}
+\]
+The rightmost fraction is the incumbent full reciprocal score, under its
+documented analytic inputs. Thus this architecture cannot improve that score.
+\end{theorem}
+
+\begin{proof}
+By charge-one equivariance factor out the common phase of $A$, and put
+$A=a\ge0$, $B=rz$, $r\ge0$, $a+r\le1$, $|z|=1$.
+When $A=0$, choose any common phase and use the same representation; when $r=0$
+the choice of $z$ is immaterial. Expanding the physical kernel gives
+\begin{align*}
+ c_0/\pi&=a/4,\\
+ c_1/\pi&=B/4+a^3/32,\\
+ c_2/\pi&=a^2(2B+\bar B)/32+3a^5/256,\\
+ c_3/\pi&=a(2|B|^2+B^2)/32
+ +(9a^4B+6a^4\bar B)/256+25a^7/4096.
+\end{align*}
+For $e=9/25$ write
+\[
+ (c_0-ec_1-c_2-c_3)/\pi=F(z)=U-vz-w\bar z-tz^2,
+\]
+with real quantities
+\begin{align*}
+ U&=a/4-ea^3/32-3a^5/256-25a^7/4096-ar^2/16,\\
+ v&=r(e/4+a^2/16+9a^4/256),\qquad
+ w=r(a^2/32+3a^4/128),\qquad t=ar^2/32.
+\end{align*}
+Set $C_1=-U(v+w)+vt$, $C_2=vw-Ut$, $C_3=wt\ge0$.
+The exact certificate proves
+\[
+ C_1-4C_2+9C_3\le0,\qquad C_1+4C_2+9C_3\le0.\tag{7}
+\]
+Here is a finite reproducible positivity proof for the whole triangle, including
+its boundary. Divide $-(C_1\pm4C_2+9C_3)$ by $ar$ as a polynomial, substitute
+$r=(1-a)b$, and express it in the tensor Bernstein basis of degrees $(10,3)$
+on $[0,1]^2$. Every one of its 44 coefficients is at least $9/640$ for each
+sign. Multiplying back by $ar\ge0$ proves (7); no division at a boundary point
+is needed. The exported matrices are checked by exact reconstruction, and the
+Lean proof expands the positive polynomials directly with \texttt{ring} and
+\texttt{positivity}, without \texttt{native\_decide}.
+
+If $x=\Re z$, direct expansion gives
+\[
+ |F(-1)|^2-|F(z)|^2
+ =2(1+x)\{-C_1+2C_2(1-x)-C_3(2x-1)^2\}\ge0,
+\]
+using $-1\le x\le1$ and $C_1+4|C_2|+9C_3\le0$.
+Also $F(-1)=U+v+w-t\ge0$. It increases in $r\in[0,1-a]$:
+its derivative is
+\[
+ e/4+3a^2/32+15a^4/256-3ar/16
+ \ge e/4-3/64>0.
+\]
+It remains to bound the univariate polynomial $P(a)=F(-1)|_{r=1-a}$.
+At $a_0=29/32$ its tangent remainder is
+\[
+ P(a_0)+P'(a_0)(a-a_0)-P(a)=(a-a_0)^2 Q(a).
+\]
+The degree-five Bernstein coefficients of $Q$ are
+\[
+ \frac{285761973783}{1717986918400},\quad
+ \frac{1920796785347}{8589934592000},\quad
+ \frac{2487532348179}{8589934592000},\quad
+ \frac{3202332295011}{8589934592000},\quad
+ \frac{4157517803443}{8589934592000},\quad
+ \frac{220673771643}{343597383680}.
+\]
+Each exceeds $4/25$. Completing the square gives the exact rational comparison
+\[
+ P(a)\le P(a_0)+\frac{25}{16}P'(a_0)^2
+ <\frac{22659}{100000}.
+\]
+Therefore, including an arbitrary factored common phase,
+\[
+ \Re(c_0-ec_1-c_2-c_3)\le\pi|F(z)|
+ <\frac{355}{113}\frac{22659}{100000}<0.71186.
+\]
+For real mixed coefficients,
+$\D(c)\le c_0-ec_1-c_2-c_3$. This inequality and (5) use one linear
+functional, so they apply to convex mixtures. Continuity gives the non-strict
+bound in the $\ell^1$ closure. This proves (6).
+\end{proof}
+
+\paragraph{Formal boundary.}
+The algebraic triangle certificate, trigonometric modulus comparison, scalar
+cap, and the full-score implication from the displayed low-coefficient identity
+are formalized in \texttt{Grothe.Upper.CubicPhaseScreen}. The general Gaussian
+phase identity already exists in Lean. Its composition, extraction of these four
+coefficients, normalization of arbitrary complex $A,B$, and the closure argument
+are supplied in this written application; they have not been wired into one
+end-to-end Lean theorem about the Gaussian family. No new hypothesis is added
+to either Grothendieck endpoint. The separator is not a universal witness cap.
+
+\section*{3. Exact angular averaging of the shared projection state}
+For the symmetric cubic $q_m$ in the preceding replica note, set
+$d=m(m+1)/2$ and $D=m(m+1)$. Its one-point state can be written using independent
+$T,S\sim\operatorname{Exp}(1)$, $R\sim\Gamma(m,1)$, $V\sim\Gamma(d-1,1)$:
+\[
+ A_X=(R-m)/\sqrt m,\quad A_Y=(S+V-d)/\sqrt d,\quad |q_m|=R\sqrt S/\sqrt D.
+\]
+For an image coefficient vector $c$ define
+\[
+ b=c_0+c_1(T-2)/\sqrt2+c_2 A_X+c_3 A_Y,
+ \qquad a=\sqrt T|b|,\quad v=|c_4|R\sqrt S/\sqrt D.
+\]
+Let $u(a,b)=\E_\theta\ph(a+be^{i\theta})$ for nonnegative $a,b$; this is real.
+The exact relative-phase average gives the visible projection integrand
+$\sqrt T\ph(b)u(a,v)$ and the remote one
+$\ph(c_4)(R\sqrt S/\sqrt D)u(v,a)$. The visible factors for the other three
+projections are $(T-2)/\sqrt2,A_X,A_Y$. In particular, the $S$ appearing in
+$A_Y$ is the same $S$ as in $|q_m|$.
+
+For $a<b$, $t=a/b$ gives
+\[
+ u(a,b)=\frac t2\,{}_2F_1(1/2,1/2;2;t^2).
+\]
+For $a\ge b$ and $a>0$, put $r=b/a$ and $\chi=((1-r)/(1+r))^2$. In the
+parameter convention for complete elliptic integrals,
+\[
+ u(a,b)=\frac{(1+r)E(1-\chi)+(1-r)K(1-\chi)}\pi.
+\]
+These follow by differentiating the circle mean of $|a+be^{i\theta}|$;
+at $a=b$ the limit is $2/\pi$. We set $u(0,0)=0$. For conventions and derivative
+identities see \url{https://dlmf.nist.gov/19.2} and
+\url{https://dlmf.nist.gov/19.4}; DLMF uses the modulus whereas SciPy uses its
+square as the parameter.
+
+Subtracting any fixed $\alpha\sqrt T$ from the visible integrand and adding
+the exact projection means is unbiased. The means are
+$\alpha\sqrt\pi/2$, $-\alpha\sqrt\pi/(4\sqrt2)$, $0$, $0$.
+The analogous remote anchor has mean
+$\ph(c_4)m\sqrt\pi/(2\sqrt D)$.
+These are integration controls, not changes to the response or its noise law.
+The four remaining radial integrals are currently evaluated by scrambled Sobol
+sampling. Independent scrambles are used in opposite projection factors before
+forming bilinear coefficients. Neither a scramble difference nor a stable
+optimizer payoff is a deterministic enclosure.
+
+\section*{4. What the computations establish and leave open}
+With the new head estimates and the same original-noise kernels, the
+twelve-column midpoint common-tail screen is approximately $0.71160588$.
+Under assumed head errors $10^{-6}$ and kernel errors $10^{-5}$, the rationalized
+price gives a conditional upper screen of about $0.71190294$. Those numerical
+response error assumptions remain unproved. The two analytic baseline columns
+are independently enclosed by positive rational series. A standard-library
+replay checks every front price, the infinite geometric tail, the interval
+algebra, and rejection of corrupted data. It proves no pool exclusion.
+
+The new separator was attacked on the droplet in the eleven-dimensional
+weighted-degree-$\le7$, charge-one image space of $(Z,G)$ with noise grades
+$(1,3)$. Independent evaluations gave payoffs near $0.7742$--$0.7745$. They
+are floating evidence against using this separator as a global lower witness.
+Their first mixed coefficient is near $0.4813$, so a large adversarial payoff
+does not by itself yield a competitive upper score. All four starting points
+converged to essentially the same radial visible response; this run supplies no
+evidence of a new optimal rounding mechanism.
+
+The rigorous strategic conclusion is narrower and useful: further optimization
+within linear Gaussian-phase preprocessors of grades one and three, even with
+arbitrary complex phases and convex mixing, cannot beat the incumbent. A viable
+upper improvement must leave that class. New dual prices must be attacked in a
+larger image space, and the signed full tail must be paid for before reporting
+an improvement. The global actual-response inequality remains open.
+\end{document}

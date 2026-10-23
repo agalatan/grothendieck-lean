@@ -1,0 +1,217 @@
+\subsection{Common Stein kernels and a genuine-cubic floor for the frozen tables}
+\label{sec:common-stein-reassessment-20261023}
+
+\paragraph{Scope and reassessment.}
+The finite-bank countermodels of \S\ref{sec:binding-audit-20261023} do not
+establish a barrier for the complete radial Stein relaxation. In fact all four
+can be excluded by merging two inherited tests before completing their squares.
+Reoptimizing the law largely replaces those atoms without recovering a useful
+payoff gain. A stronger obstruction is supplied below by an explicit genuine
+finite-dimensional cubic and all nineteen frozen source tables. Neither result
+changes a numerical Grothendieck endpoint.
+
+\paragraph{One kernel for every test.}
+For a unit genuine $(2,1)$ cubic retain the existing definitions
+\[
+ U=|q|^2,\qquad X=\Gamma(q,\bar q)/3-1,\qquad
+ r=\Re(\Gamma(q,q)\bar q^2)/(3U),
+\]
+with $r=0$ at zero. Write $P=\E UX$, $Q_c=\E Ur$ and
+$\chi=\E U^2-2$. The inherited inputs are
+\[
+ \E X=0,\quad \E X^2\le2P/3,\quad \E r^2\le2Q_c/3,
+ \quad 2P+Q_c=\chi,\quad Q_c\le\chi/3.
+\]
+For each continuous piecewise-affine test $\phi_j$, eventually zero, set
+$\Phi_j(u)=\int_0^u\phi_j(s)\,ds$ and
+$d_j(u)=\phi_j(u)-\Phi_j(u)/u$, with $d_j(0)=0$. All tests use the same
+$X,r$ in
+\[
+ \E[\Phi_j(U)-\phi_j(U)]
+   =\E[X\phi_j(U)+rd_j(U)].
+\]
+These are existing Gaussian inputs, proved in
+\code{Grothe/LowerAnalytic/RadialCut.lean}; no conditional Gaussianity is added.
+
+\begin{proposition}[Exact finite-feature compression, paper proof]
+For a fixed law with $\E U^2<\infty$, put
+\[
+ v_X=(1,U,\phi_1(U),\ldots,\phi_s(U)),\qquad
+ v_r=(U,d_1(U),\ldots,d_s(U)),
+\]
+$G_X=\E v_Xv_X^{\mathsf T}$, $G_r=\E v_rv_r^{\mathsf T}$, and
+$A_j=\E[\Phi_j(U)-\phi_j(U)]$. Existence of a common square-integrable
+kernel for these finite Stein equations and separate budgets is equivalent to
+existence of $P,Q_c,\xi,s_X,s_r$ satisfying
+\[
+ \begin{pmatrix}G_X&(0,P,\xi)^{\mathsf T}\\(0,P,\xi)&s_X\end{pmatrix}\succeq0,
+ \qquad
+ \begin{pmatrix}G_r&(Q_c,A-\xi)^{\mathsf T}\\(Q_c,A-\xi)&s_r\end{pmatrix}\succeq0,
+\]
+\[
+ s_X\le2P/3,\quad s_r\le2Q_c/3,\quad
+ 2P+Q_c=\chi,\quad Q_c\le\chi/3.
+\]
+\end{proposition}
+\begin{proof}
+Necessity follows from the two augmented Gram matrices. Conversely, a positive
+block $\left(\begin{smallmatrix}G&y\\y^{\mathsf T}&s\end{smallmatrix}\right)$
+implies $(c^{\mathsf T}y)^2\le s c^{\mathsf T}Gc$. The functional
+$\sum c_i v_i\mapsto c^{\mathsf T}y$ is therefore well-defined and bounded
+on the feature span. Riesz representation supplies one vector in that span
+with all the prescribed pairings and squared norm at most $s$. Apply this to
+each block. The same $\xi$ makes every Stein equation hold simultaneously.
+The argument includes singular Grams; positivity enforces their nullspace
+compatibility. Orthogonal projection preserves all retained moments and lowers
+both variance costs, so nonnegative-price coupled variance budgets can also be
+retained.
+\end{proof}
+
+This finite-family equivalence does not encode the extra pointwise gradient
+cone $X\ge-1$, $|r|\le1+X$, characterize cubic laws, or impose bounded-response
+realizability. Its matrices are determined by the law and the chosen tests;
+they are not arbitrary completions of unknown Gaussian projection data.
+The simultaneous projection principle is formalized as
+\code{Grothe.Lower.SteinFusion.common\_kernel\_projection}.
+
+\paragraph{An exact compiler for old tests.}
+For an inherited cut with $\mu=\lambda/2$, $t=-\lambda/6$, $\nu=0$,
+divide all parameters and test values by $\lambda$. It becomes
+\[
+ G_i=f_i^2+2g_i^2+\Phi_i-\phi_i+(u^2-2)/3,
+ \qquad f_i=-(\phi_i+\beta_i)/2,\quad g_i=-d_i/2.
+\]
+Merge the two tests and centering parameters with weight $0<w<1$, refining
+their meshes to the exact union. Then
+\begin{equation}\label{eq:common-stein-fusion}
+ G_w=wG_1+(1-w)G_2
+ -w(1-w)\bigl((f_1-f_2)^2+2(g_1-g_2)^2\bigr).
+\end{equation}
+The merged test is admissible under the existing
+\code{Grothe.Lower.spec\_of\_inputs} theorem. Thus its expectation is
+nonnegative, even when separate nonnegativity of the old cuts would allow
+incompatible predictions for their common kernel. More generally,
+\[
+ \frac{x^2}{a}+\frac{y^2}{b}-\frac{(x+y)^2}{a+b}
+ =\frac{(bx-ay)^2}{ab(a+b)},\qquad a,b>0.
+\]
+Both identities, the associated inequalities and the specialization of
+\eqref{eq:common-stein-fusion} to the actual spectral-cell formula are
+Lean proved. This is an exact convex compilation of existing inputs, not a
+new universal chaos inequality.
+
+\paragraph{Exact and exploratory checks.}
+Each of the four old atomic laws passes all 671 old cuts. A merge of two of
+those inherited cuts has expectation below $-0.0661$, $-0.2629$, $-0.0989$ and
+$-0.0122$ at indices $7234,5661,1247,8701$, respectively; both constituent
+expectations remain nonnegative. The stored rational certificates verify
+the union mesh, mixing weight, negative expectation and variance-saving
+identity. Four independently proposed 16-knot tests also separate the laws.
+All eight exact replays and eight corruption controls pass.
+
+This does not quantify a comparable objective improvement. Three adaptive
+tests change the four finite-grid scores by approximately $0$, $2.36\cdot10^{-8}$,
+$1.17\cdot10^{-9}$ and $7.51\cdot10^{-9}$: other atomic laws replace them.
+A joint law/kernel conic discovery solve at rule 5661 gives approximately
+$0.713412131532$, against $0.713414640743$ for the old grid. This is a
+3,735-point calculation, not a continuous-law cap. The compressed SDP attempts
+failed numerically; no certificate is inferred from them.
+
+\begin{proposition}[Genuine-cubic floor for all frozen row mixtures, \st{P,C}]
+Let $f_i$ be the nineteen frozen source upper tables of master
+\code{98f61ec}, retaining their exact parameters $\ell_i,\beta_i,\delta_i,
+k_i,h_i,C_i$. Let $w_i\ge0$, $\sum_iw_i=1$, and average these parameters
+before forming the beta square and Schur price. At
+\[
+ \epsilon=149/200,\qquad t=341/400,\qquad
+ \tau=239818283/10^9,
+\]
+there is an explicit unit genuine cubic $q_{128}$ on 8,384 remote coordinates
+such that every such mixture satisfies
+\begin{equation}\label{eq:genuine-frozen-table-floor}
+ \boxed{t^2-2t\ell_w+\frac{2\beta_w^2}{\epsilon}
+ +\sum_iw_i\E f_i(\delta_i\tau|q_{128}|)
+ -(k_w-h_w^{\mathsf T}C_w^{-1}h_w)\tau^2
+ >\frac{14267}{20000}=0.71335>\frac{500}{701}.}
+\end{equation}
+Adding the existing positive padding only increases the left side.
+\end{proposition}
+\begin{proof}
+For independent proper complex coordinates $X_i,Y_{ij}$, $1\le i\le j\le m$,
+put
+\[
+ q_m=\frac{\sum_iX_i^2\bar Y_{ii}
+       +\sqrt2\sum_{i<j}X_iX_j\bar Y_{ij}}{\sqrt{m(m+1)}}.
+\]
+The two coordinate blocks are disjoint, so this is a genuine Wick cubic.
+Conditionally on $X$, its variance is $R_m^2/[m(m+1)]$,
+where $R_m=\sum|X_i|^2\sim\Gamma(m,1)$. Hence
+\[
+ q_m\stackrel{\mathrm{law}}=\frac{R_mG}{\sqrt{m(m+1)}},\qquad
+ \E|q_m|^{2k}=\frac{k!(m)_{2k}}{[m(m+1)]^k},
+\]
+with $G$ independent and standard proper complex Gaussian. Its variance is one
+and its kurtosis excess is $(8m+12)/(m(m+1))$. Take $m=128$; the exact mean
+modulus and sixth-moment gates are checked from these formulas.
+
+For each table, choose slopes $0\le d\le s_{\max,i}$ and intercepts
+$b=\min_j(y_j-dx_j)$. Each line $b+ds$ lies below every table cell and the
+entire final ray. Their maximum is a convex minorant. If its initial value
+and slope are $b_0,d_0$ and its nonnegative slope jumps at $a_j\ge0$ are
+$\Delta_j$, its exact Rayleigh expectation is
+\[
+ H(\sigma)=b_0+\frac{\sqrt\pi\sigma}{2}
+       \left(d_0+\sum_j\Delta_j\operatorname{erfc}(a_j/\sigma)\right).
+\]
+As a function of $R_m$, this expectation is convex. Partition its gamma
+radius into $[0,64]$, width-two intervals through 192, and $[192,\infty)$.
+Conditional Jensen bounds the expectation below by the sum of cell masses
+times $H$ at the exact conditional mean. Both tails are retained. The masses
+and first moments follow from
+\[
+ \Pr(R_m>a)=e^{-a}\sum_{j=0}^{m-1}\frac{a^j}{j!},\qquad
+ \E[R_m\mathbf1_{R_m>a}]=m\Pr(R_{m+1}>a).
+\]
+The verifier recomputes these quantities and the error functions using
+256-bit Arb balls.
+
+For fixed rational $\beta_0,z$, completing squares gives
+\[
+ \frac{2\beta_w^2}{\epsilon}\ge
+ \frac{4\beta_0\beta_w-2\beta_0^2}{\epsilon},\qquad
+ h_w^{\mathsf T}C_w^{-1}h_w\ge
+ 2z^{\mathsf T}h_w-z^{\mathsf T}C_wz.
+\]
+All nineteen $C_i$ are checked positive definite over the rationals. The
+resulting lower bound is affine in $w$; checking nineteen directed strict
+inequalities therefore proves it for every mixture. The table JSON is
+hash-pinned and agrees exactly with the previously audited source rows.
+Discovery weights or quadrature convergence are not proof premises.
+\end{proof}
+
+\paragraph{The obstruction and the next target.}
+This is a floor for the \emph{stored upper-table expression}, not for the
+exact fibre potentials or the original witness norm. We have not shown that
+the same response pair produces $q_{128}$ at these $t,\tau$. It is not a
+counterexample to the original-response conjecture. It does not apply to new
+profiles, shifted potentials, an averaged potential formed before its supremum,
+or another value of $\epsilon$.
+
+It does establish that arbitrary improvements to radial constraints alone,
+even all valid constraints of genuine cubic laws, cannot finish this frozen
+nineteen-table architecture: the explicit cubic remains admissible. The next
+global certificate must change the profiles or retain the common response
+relation $p=Q_w\E_Zk$ together with the actual images $Tf,Tg$ and the negative
+projection costs. Rejecting individual atomic laws is no longer an adequate
+measure of progress.
+
+\paragraph{Files and formal scope.}
+The report is \code{docs/COMMON\_STEIN\_REASSESSMENT\_2026-10-23.md}; proof
+data and logs are under \code{outputs/common-stein-20261023/}.
+\code{tools/verify\_common\_stein.py} uses only the standard library;
+\code{tools/verify\_genuine\_table\_floor.py} additionally uses
+\code{python-flint}. The six general fusion and simultaneous projection
+results are Lean formalized in \code{Grothe/Lower/SteinFusion.lean}.
+The finite-feature Schur equivalence and the Gaussian/Jensen application are
+paper proofs with external exact/directed numerical replays. No headline
+endpoint is changed.

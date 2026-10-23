@@ -14,6 +14,74 @@ neither that bridge nor a numerical spherical norm cap is proved by this module.
 It introduces no hypothesis into either existing endpoint and changes neither bound.
 
 
+**Binding-relaxation audit.** `Grothe/Lower/PrimalAudit.lean` proves finite
+primal-versus-dual separation for a fixed table and cut bank: nonnegative atom
+weights satisfying the cuts force every pointwise dual majorant to cost at least
+the primal score. Both theorems are kernel-checked without numerical axioms.
+The four concrete atomic laws in [the binding audit](BINDING_AUDIT_2026-10-23.md)
+are checked externally with exact rational arithmetic; this module does not
+formalize their numerical data, realize them as Gaussian cubics, or change an endpoint.
+
+**Joint response Gram lift.** `Grothe/LowerAnalytic/ResponseGram.lean` proves
+the shared residual Gram interval for nested orthogonal projections, a sharp
+scalar cross-coefficient interval using an orthogonal reflection, elimination
+of all scalar completions, factored PSD prices, finite moment-support assembly,
+pointwise weighted alignment, a modulus cutoff error, cross-inner-product
+perturbation, exact scalar disc support and attainment, and explicit
+near-maximizer price accounting, and the complex two-disc dual price bound.
+Its sixteen theorems use only standard axioms.
+`Grothe/LowerAnalytic/TwoDisc.lean` adds seven theorems: exact factored-slack
+soundness, the universal factored support bound, four sharp local support
+bounds, and attainment of all four. `Grothe/LowerAnalytic/QuadraticFeatures.lean`
+adds the finite Wick decomposition, Hilbert-space probe closure, and two rational
+remainder budgets for centered and affine quadratic features. All eleven new
+theorems also use only standard axioms. The general SDP rank-one argument,
+Gaussian response application and modified bilinear-operator
+interface are written proofs in [the lift report](JOINT_RESPONSE_LIFT_2026-10-23.md).
+The droplet diagnostics are floating-point exploration, not numerical data
+theorems. This module does not establish a uniform lifted norm cap or alter
+either endpoint.
+
+**Common Stein kernels.** `Grothe/Lower/SteinFusion.lean` adds six results:
+the exact perspective variance identity, its fusion inequality, the unit-price
+fusion identity and inequality, the specialization to the existing spectral-cut
+cell formula (including zero), and simultaneous orthogonal projection of both
+kernels preserving every retained moment while decreasing both norms.
+The universal merged-cut expectation remains an application of the existing
+`Grothe.Lower.spec_of_inputs`. The finite-feature Schur equivalence and the
+genuine-cubic floor for every convex mixture of the nineteen frozen tables
+are paper proofs with external exact/directed checks, as recorded in
+[the common-kernel reassessment](COMMON_STEIN_REASSESSMENT_2026-10-23.md).
+The table floor is not a lower bound on the original witness norm.
+
+**Original-noise replica and full-tail screen.**
+`Grothe/LowerAnalytic/ReplicaState.lean` proves seven results: the two-coordinate
+Gram realization (five identities/inequalities), the exact gap produced by
+giving a distributional Gaussian coordinate the wrong chaos grade, and its
+strictness. `Grothe/Upper/KernelScreen.lean` proves the absolute weighted-tail
+bound, the necessary single-kernel full-score bound, the finite priced
+screen, and the all-index admissibility of its induced witness multipliers.
+The screen is affine in response columns, so common prices can screen
+their mixtures before tail coefficients are recovered. These eleven results use
+only standard axioms. The invariant-space classification, original Gaussian
+conditioning, and extraction of the mixed Hermite coefficients are written
+arguments, not formalized here. Numerical integral values are not Lean inputs
+and no new endpoint follows. See [the replica report](SYMMETRIC_RESPONSE_REPLICAS_2026-10-23.md).
+
+**Common signed-tail prices and cubic Gaussian-phase separator.**
+`Grothe/Upper/SpectralScreen.lean` adds five results: a finite front/geometric
+tail certificate for all indices, pricing the common signed tail before taking
+absolute values, the resulting full-score inequality, affine enclosure errors,
+and assembly over finite response mixtures. `Grothe/Upper/CubicPhaseScreen.lean`
+adds ten public results checking the two positive triangle polynomials, the
+complex-phase modulus comparison, a degree-seven scalar polynomial cap, and
+the full-score implication from the explicit low-coefficient identity.
+These results use only standard axioms, without new native facts. The complete
+Gaussian-family application and coefficient extraction remain written analytic
+steps. No numerical response integral is certified by these modules. See
+[the separator report](CUBIC_PHASE_SEPARATOR_2026-10-23.md).
+
+
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
