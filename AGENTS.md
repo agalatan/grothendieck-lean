@@ -83,8 +83,9 @@ Do this when the user says the work should go into master.
    - CI merges it into the **current** master, builds and checks the **merged** tree. Only if everything is green does
      it fast-forward `master` and delete the `ready/` branch.
    - If CI fails, master is untouched: fix, commit, and push a new `ready/` name.
-   - If the final push was rejected because master moved, push the same commit again under a new `ready/` name.
-   - Auto-merges run one at a time.
+   - If master moved while CI was building, the run re-dispatches itself automatically: it merges with the new
+     master and rebuilds. You will see one failed run ("master moved") followed by a new one. Do nothing.
+   - Several `ready/` branches may build at the same time; the first green one moves master.
 9. **After the merge:** run `scripts/sync_master.sh`, then `git branch -d <branch>` and `git worktree remove <path>` if
    you are done, or keep working on the branch (go back to step 3 before the next delivery).
 
