@@ -105,6 +105,73 @@ theorem integral_two_channel (G : ℂ × ℂ → ℂ) (hG : Measurable G) {a w :
   rw [map_S4] at i2
   exact i1.symm.trans i2.symm
 
+/-! ### The rounding kernel -/
+
+lemma norm_inner_le_one {κ : Type} [Fintype κ] {u v : EuclideanSpace ℂ κ} (hu : ‖u‖ = 1)
+    (hv : ‖v‖ = 1) : ‖⟪u, v⟫_ℂ‖ ≤ 1 := by
+  simpa [hu, hv] using norm_inner_le_norm (𝕜 := ℂ) u v
+
+variable {G : ℂ × ℂ → ℂ}
+
+lemma Bm_toLp (hGL : MemLp G 2 mu2) {ρ₁ ρ₂ : ℂ} (h₁ : ‖ρ₁‖ ≤ 1) (h₂ : ‖ρ₂‖ ≤ 1) :
+    Bm h₁ h₂ (hGL.toLp G) (hGL.toLp G) = ∫ ω, conj (G (Xof ω)) * G (Yof ρ₁ ρ₂ ω) ∂mu4 := by
+  rw [Bm_eq_integral]
+  refine integral_congr_ae ?_
+  filter_upwards [mp_X.quasiMeasurePreserving.ae_eq_comp hGL.coeFn_toLp,
+    (mp_Y h₁ h₂).quasiMeasurePreserving.ae_eq_comp hGL.coeFn_toLp] with ω hx hy
+  simp only [Function.comp] at hx hy
+  rw [hx, hy]
+
+lemma chargeOne_toLp (hGL : MemLp G 2 mu2) (hch : ∀ c u, ‖c‖ = 1 → G (rot2 c u) = c * G u) :
+    ChargeOne (hGL.toLp G) := by
+  intro i hi
+  rw [inner_hvec2_left]
+  have hint : ∫ u, conj (H2 i u) * (hGL.toLp G) u ∂mu2 = ∫ u, conj (H2 i u) * G u ∂mu2 := by
+    refine integral_congr_ae ?_
+    filter_upwards [hGL.coeFn_toLp] with u hu
+    rw [hu]
+  rw [hint, integral_H2_charge_one hGL hch hi, mul_zero]
+
+open Polynomial in
+/-- **The two-channel Gaussian rounding with a disk-valued charge-one `G` realises the radial
+kernel of its chaos energies** (with preprocessors `P, Q`). -/
+theorem rounding_diskKernel (hGm : Measurable G) (hG1 : ∀ u, ‖G u‖ ≤ 1)
+    (hch : ∀ c u, ‖c‖ = 1 → G (rot2 c u) = c * G u) (hGL : MemLp G 2 mu2) {P Q : ℝ[X]}
+    (hP : Grothe.l1 P ≤ 1) (hQ : Grothe.l1 Q ≤ 1) :
+    DiskKernel (radialKernel (Grothe.Upper.bivarKernel P Q (energy (hGL.toLp G)))) := by
+  intro m n ι _ x y hx hy
+  set s2 : ℂ := ((√2 : ℝ) : ℂ)
+  refine ⟨EuclideanSpace ℂ (Option (Grothe.RIdx ι (P.natDegree + 1)))
+      × EuclideanSpace ℂ (Option (Grothe.RIdx ι (Q.natDegree + 1))), inferInstance,
+    (ProbabilityTheory.stdGaussian _).prod (ProbabilityTheory.stdGaussian _), inferInstance,
+    fun q i => G (⟪q.1, emb (Grothe.realL P (x i))⟫_ℂ / s2, ⟪q.2, emb (Grothe.realL Q (x i))⟫_ℂ / s2),
+    fun q j => G (⟪q.1, emb (Grothe.realR P (y j))⟫_ℂ / s2, ⟪q.2, emb (Grothe.realR Q (y j))⟫_ℂ / s2),
+    fun i => (hGm.comp (by fun_prop)).aestronglyMeasurable,
+    fun j => (hGm.comp (by fun_prop)).aestronglyMeasurable,
+    fun q i => hG1 _, fun q j => hG1 _, fun i j => ?_⟩
+  set a := emb (Grothe.realL P (x i))
+  set b := emb (Grothe.realR P (y j))
+  set a' := emb (Grothe.realL Q (x i))
+  set b' := emb (Grothe.realR Q (y j))
+  have ha : ‖a‖ = 1 := norm_emb (Grothe.norm_realL P hP _ (hx i))
+  have hb : ‖b‖ = 1 := norm_emb (Grothe.norm_realR P hP _ (hy j))
+  have ha' : ‖a'‖ = 1 := norm_emb (Grothe.norm_realL Q hQ _ (hx i))
+  have hb' : ‖b'‖ = 1 := norm_emb (Grothe.norm_realR Q hQ _ (hy j))
+  obtain ⟨w, hw, haw, hbw⟩ := exists_decomp ha hb (norm_eNone _) (inner_emb_eNone _)
+  obtain ⟨w', hw', haw', hbw'⟩ := exists_decomp ha' hb' (norm_eNone _) (inner_emb_eNone _)
+  rw [← sig_eq] at hbw hbw'
+  have hρ₁ : ⟪a, b⟫_ℂ = Grothe.polyKernel P ⟪x i, y j⟫_ℂ := by
+    rw [inner_emb, Grothe.inner_realL_realR]
+  have hρ₂ : ⟪a', b'⟫_ℂ = Grothe.polyKernel Q ⟪x i, y j⟫_ℂ := by
+    rw [inner_emb, Grothe.inner_realL_realR]
+  have h₁ : ‖Grothe.polyKernel P ⟪x i, y j⟫_ℂ‖ ≤ 1 := hρ₁ ▸ norm_inner_le_one ha hb
+  have h₂ : ‖Grothe.polyKernel Q ⟪x i, y j⟫_ℂ‖ ≤ 1 := hρ₂ ▸ norm_inner_le_one ha' hb'
+  have hz : ‖⟪x i, y j⟫_ℂ‖ ≤ 1 := norm_inner_le_one (hx i) (hy j)
+  show ∫ q, conj (G (⟪q.1, a⟫_ℂ / s2, ⟪q.2, a'⟫_ℂ / s2)) * G (⟪q.1, b⟫_ℂ / s2, ⟪q.2, b'⟫_ℂ / s2)
+      ∂((ProbabilityTheory.stdGaussian _).prod (ProbabilityTheory.stdGaussian _)) = _
+  rw [hbw, hbw', integral_two_channel G hGm ha hw haw ha' hw' haw', hρ₁, hρ₂,
+    ← Bm_toLp hGL h₁ h₂, Bm_polyKernel (chargeOne_toLp hGL hch) hP hQ hz h₁ h₂]
+
 end
 
 end Grothe.UpperChaos

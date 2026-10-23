@@ -112,4 +112,4 @@ import Grothe.LowerAnalytic.JointContractions
 import Grothe.LowerAnalytic.MomentConeBoundary
 import Grothe.LowerAnalytic.SphericalTransfer
 import Grothe.UpperChaos.TaylorPhase
-import Grothe.UpperChaos.Energy2
+import Grothe.UpperChaos.Structural

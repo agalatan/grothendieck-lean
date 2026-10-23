@@ -214,3 +214,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.hasSum_kernel_real
 #print axioms Grothe.UpperChaos.integral_H2_charge_one
 #print axioms Grothe.UpperChaos.energy_eq_zero_of_even
+#print axioms Grothe.UpperChaos.Bm_polyKernel
+#print axioms Grothe.UpperChaos.integral_two_channel
+#print axioms Grothe.UpperChaos.rounding_diskKernel
+#print axioms Grothe.UpperChaos.structural_fields
+#print axioms Grothe.UpperChaos.fresh_upper_of_rounding
