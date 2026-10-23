@@ -1,5 +1,6 @@
 import Grothe.UpperChaos.Structural
 import Grothe.UpperChaos.TaylorPhase
+import GrotheKernel.PhiCheck
 
 /-!
 # The concrete rounding of the upper certificate
@@ -26,26 +27,10 @@ namespace Grothe.UpperChaos
 
 noncomputable section
 
-/-! ### Parsing the phase monomials -/
-
-/-- A rational `p/q` from a string. -/
-def parseQ (s : String) : ℚ :=
-  match s.splitOn "/" with
-  | [a] => ((a.toInt?).getD 0 : ℚ)
-  | [a, b] => ((a.toInt?).getD 0 : ℚ) / ((b.toNat?).getD 1 : ℚ)
-  | _ => 0
-
-/-- A monomial `i,j,k:c`. -/
-def parseTerm (s : String) : (ℕ × ℕ × ℕ) × ℚ :=
-  match s.splitOn ":" with
-  | [p, c] =>
-    match p.splitOn "," with
-    | [i, j, k] => (((i.toNat?).getD 0, (j.toNat?).getD 0, (k.toNat?).getD 0), parseQ c)
-    | _ => ((0, 0, 0), 0)
-  | _ => ((0, 0, 0), 0)
+/-! ### The phase polynomial -/
 
 /-- The monomials of the phase polynomial `S`. -/
-def phaseTerms : List ((ℕ × ℕ × ℕ) × ℚ) := phaseStrs.map parseTerm
+def phaseTerms : List ((ℕ × ℕ × ℕ) × ℚ) := phaseStrs.map GrotheKernel.parseTerm
 
 /-- `S(U, V, W) = Σ c U^i V^j W^k`. -/
 def Sphase (U V W : ℝ) : ℝ :=
