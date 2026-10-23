@@ -188,12 +188,12 @@ hypotheses are the phase cover `φ² ≤ 3` and the three numerical comparisons 
 energies of `G_T` and those of a charge-one truncation `X`. -/
 theorem fresh_upper_concrete (hφ : PhiBound) {X : ℂ × ℂ → ℂ} (hXL : MemLp X 2 mu2)
     (hXch : ∀ c u, ‖c‖ = 1 → X (rot2 c u) = c * X u)
-    (hcompare : ∑' p, |energy ((memLp_GT hφ).toLp GT) p - energy (hXL.toLp X) p|
+    (hcompare : ∑ p ∈ headIdx 501, |energy ((memLp_GT hφ).toLp GT) p - energy (hXL.toLp X) p|
       ≤ (compareQ : ℝ))
     (hclose : ∑ p ∈ headIdx 501, |energy (hXL.toLp X) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ))
     (hhardy : ∀ J, ∑ n ∈ Finset.range J, kernelCoeff (energy ((memLp_GT hφ).toLp GT)) n ^ 2
       * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4) :
-    IsGrothendieckBound (500000000000000000 / 355973589896954491) :=
+    IsGrothendieckBound (500000000000000000 / 355973694404074991) :=
   fresh_upper_of_rounding measurable_GT (norm_GT_le hφ) (fun _ u hc => GT_rot2 hc u)
     (memLp_GT hφ) hXL hXch hcompare hclose hhardy
 

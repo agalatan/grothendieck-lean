@@ -10,6 +10,7 @@ Fails unless
 import re, sys
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
 NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",          # upper: head of the kernel
+          "Grothe.Upper.comparison_check._native.native_decide.ax_1_1", # upper: selected-band masses and comparison assembly
           "Grothe.HaagerupPower.check._native.native_decide.ax_1_1",      # Haagerup route: finite residual, fourth power and weighted tail
           "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1",  # upper: phase cover φ² ≤ 3
           "Grothe.LowerAnalytic.capChords_check._native.native_decide.ax_1_1"}  # lower: chord nodes of the cap tables
@@ -21,6 +22,9 @@ NATIVE |= {f"Grothe.LowerAnalytic.capRange{k:02d}_{j}._native.native_decide.ax_1
 NATIVE |= {f"Grothe.Lower.{n}._native.native_decide.ax_1_1" for n in
            ['certRows0', 'certRows1', 'certRows2', 'certRows3', 'certRows4', 'certBatches0', 'certBatches1', 'certBatches2', 'certBoxes0', 'certBoxes1', 'certBoxes2', 'certBoxes3', 'certPartition']}
 REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
+            "Grothe.Upper.comparison_check", "Grothe.Upper.actual_band_mass",
+            "Grothe.Upper.BandComparison.compare", "Grothe.UpperChaos.norm_energyBlock_sq",
+            "Grothe.UpperChaos.localized_comparison",
             "Grothe.Lower.lower_endpoint", "Grothe.Lower.lower_bound_of_transferL2",
             "Grothe.LowerAnalytic.gaussian_steinInputs", "Grothe.LowerAnalytic.lower_bound_gaussian",
             "Grothe.LowerAnalytic.norm_pairVal_witness", "Grothe.LowerAnalytic.transferInputs_of_witnessCap",
@@ -200,6 +204,15 @@ POWER_HAAGERUP = {
     'Grothe.haagerup_bound',
 }
 REQUIRED |= POWER_HAAGERUP
+UPPER_COMPARISON = {
+    'Grothe.fresh_upper', 'Grothe.upper_value_lt',
+    'Grothe.Upper.comparison_check', 'Grothe.Upper.actual_band_mass',
+    'Grothe.Upper.BandComparison.compare',
+    'Grothe.UpperChaos.norm_energyBlock_sq', 'Grothe.UpperChaos.localized_comparison',
+    'Grothe.UpperChaos.fresh_upper_of_rounding',
+    'Grothe.UpperChaos.fresh_upper_concrete', 'Grothe.UpperChaos.fresh_upper_rounder',
+}
+REQUIRED |= UPPER_COMPARISON
 # `--caps`: the report of scratch/AxiomsCaps.lean (separate target GrotheCaps, see README)
 if "--caps" in sys.argv:
     REQUIRED = {"Grothe.LowerAnalytic.lower_bound_of_capsRest"}
@@ -219,6 +232,13 @@ if "--haagerup-power" in sys.argv:
         sys.exit("choose one axiom audit mode")
     REQUIRED = POWER_HAAGERUP
     NATIVE = {"Grothe.HaagerupPower.check._native.native_decide.ax_1_1"}
+if "--upper-comparison" in sys.argv:
+    if any(flag in sys.argv for flag in ("--caps", "--responses", "--response-geometry", "--haagerup-power")):
+        sys.exit("choose one axiom audit mode")
+    REQUIRED = UPPER_COMPARISON
+    NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",
+              "Grothe.Upper.comparison_check._native.native_decide.ax_1_1",
+              "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1"}
 text = sys.stdin.read()
 if re.search(r"(^|\n)[^\n]*: error", text):
     sys.exit("the axiom report contains Lean errors")

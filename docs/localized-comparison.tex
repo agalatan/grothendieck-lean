@@ -1,0 +1,92 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,geometry,hyperref}
+\geometry{margin=1in}
+\newtheorem{theorem}{Theorem}
+\newcommand{\E}{\mathbb E}
+\title{A selected-spectrum comparison for Gaussian rounding}
+\author{Alin Galatan}
+\date{October 2026}
+\begin{document}\maketitle
+
+The following comparison yields, under the inherited Gaussian component-error
+enclosures and the explicit inputs described below,
+\[
+ K_G^{\mathbb C}\le
+ \frac{500000000000000000}{355973694404074991}
+ <1.404598170764.
+\]
+The rounding function and its preprocessors are unchanged. The improvement
+comes from comparing only the spectral blocks that enter the finite kernel
+head. This is a global bound, not a concentration-region result.
+
+\begin{theorem}[Selected-spectrum comparison]
+Let $G,X$ lie in a Gaussian $L^2$ space with orthogonal chaos blocks $P_p$.
+Let $S$ be a finite set of blocks and write $G-X=\sum_r D_r$. Suppose that
+$D_r$ is supported on a specified band $B_r$ and $\|D_r\|_2\le e_r$,
+with $A_r,e_r\ge0$.
+If $A_r^2\ge\sum_{p\in S\cap B_r}\|P_pX\|_2^2$, then
+\[
+ \sum_{p\in S}\left|\|P_pG\|_2^2-\|P_pX\|_2^2\right|
+ \le 2\sum_r A_re_r+\left(\sum_r e_r\right)^2.
+\]
+The bands may overlap. The same error components are retained throughout.
+\end{theorem}
+\begin{proof}
+For vectors $x,y$ in a normed space,
+$|\|y\|^2-\|x\|^2|\le2\|x\|\|y-x\|+\|y-x\|^2$.
+Apply this to each block. The linear part is bounded by
+\[
+ \sum_p\|P_pX\|\|P_p(G-X)\|
+ \le\sum_r\sum_{p\in S\cap B_r}\|P_pX\|\|P_pD_r\|
+ \le\sum_r A_re_r,
+\]
+by Cauchy--Schwarz and orthogonality. The quadratic part is at most
+$\|G-X\|_2^2\le(\sum_r e_r)^2$.
+\end{proof}
+
+For the certificate, $S=\{(n,m):n+3m\le501\}$. If the stored energy table
+$\widehat E$ satisfies
+$\sum_{p\in S}|E_X(p)-\widehat E(p)|\le\eta$, choose rational radii with
+\[
+ A_r^2\ge\sum_{p\in S\cap B_r}\widehat E(p)+\eta,
+ \qquad \eta=\frac{6847009}{500000000000000000}.
+\]
+This proves the required actual energy bounds. Native Lean arithmetic checks
+all eighteen radii and the assembled comparison allowance
+\[
+ C=\frac{107077907}{125000000000000}=8.56623256\cdot10^{-7}.
+\]
+With slope $c=7119483103461/10^{13}$ and the existing finite-head, table-error
+and Hardy allowances, the total residual is
+\[
+ \delta=C+\frac{28153}{10^{12}}+
+ \frac{6847009}{5\cdot10^{17}}+\frac{36748}{10^{12}}
+ =\frac{460768975009}{5\cdot10^{17}}.
+\]
+The formal kernel transfer gives $K_G^{\mathbb C}\le1/(c-\delta)$.
+
+\paragraph{Source of the error pieces.}
+Write $B$ for multiplication by $i\phi$, and
+$T=F_0+BF_0+B^2F_0/2+B^3F_0/6$, $X_{\rm raw}=F_0+v$.
+The inherited Gaussian certificate provides finite Hermite approximants
+$c_j$ at cutoffs $181,91,51$, with component-error and high-tail bounds.
+Split $B^jF_0-c_j$ into its supplied finite degree bands and the tail, divide
+by $j!$, and include $\sum_jc_j/j!-v$ as the rounding-error piece.
+Their sum is exactly $T-X_{\rm raw}$. Gaussian smoothing contracts $L^2$
+and preserves total chaos degree, so it preserves the asserted supports and
+norm upper bounds. Every piece may depend on the same coordinates.
+
+\paragraph{Formalization and remaining inputs.}
+Lean proves the finite-block inequality, the Gaussian Hermite-block
+identification, the finite table masses, the comparison budget and the
+endpoint assembly. The concrete theorem takes the explicit decomposition,
+component norm bounds and support as \texttt{ComparisonInputs}; it does not
+assume a near-linear kernel or replace the native head check.
+The source Gaussian integrals and tail enclosures, identification of the
+specified approximation with these pieces, table accuracy, and the analytic
+Schur/Hardy input remain external. This statement therefore does not improve
+the separate hypothesis-free Lean upper theorem.
+Exact data and source bindings are in
+\texttt{data/localized-comparison/recipe.json}; the full dependency ledger is
+\texttt{data/localized-comparison/PROOF.md}.
+\end{document}

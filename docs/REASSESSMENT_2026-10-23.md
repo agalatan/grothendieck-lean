@@ -28,7 +28,7 @@ apply simultaneously; an exact checksum is not an analytic theorem.
 The current main-development interval is
 
 \[
-1.401695322458<K_G^{\mathbb C}<1.404598583128.
+1.401695322458<K_G^{\mathbb C}<1.404598170764.
 \]
 
 More precisely:
@@ -46,7 +46,7 @@ More precisely:
   empty. The heavy range checks have no recorded verification stamp in the
   current tree and are not part of default CI.
 - **Upper:** `Grothe.UpperChaos.fresh_upper_rounder` formally gives
-  `K≤500000000000000000/355973589896954491=1.404598635370998…`, conditional
+  `K≤500000000000000000/355973694404074991=1.404598635370998…`, conditional
   on an L² charge-one truncation `X` and the numerical bounds `compare`,
   `energy_close` and `hardy`. The concrete rounding, Gaussian Hermite
   completeness/Parseval/Mehler, charge selection, actual-rounding validity
@@ -196,12 +196,12 @@ The current slope is
 
 \[
 c=0.7119483103461,
-\qquad A=c-\delta=0.711947179793908982,
-\quad\delta=1.130552191018\cdot10^{-6}.
+\qquad A=c-\delta=0.711947388808149982,
+\quad\delta=9.21537950018\cdot10^{-7}.
 \]
 
-The residual consists of comparison `1.065637497e−6` (94.26%), native
-head `2.8153e−8` (2.49%), Hardy tail `3.6748e−8` (3.25%), and table
+The residual consists of the selected-band comparison `8.56623256e−7` (92.96%), native
+head `2.8153e−8` (3.06%), Hardy tail `3.6748e−8` (3.99%), and table
 error `1.3694018e−11` (about .001%). These are upper allowances, not
 measurements of the actual residual or the proportion of the theorem that
 is mathematically true.
@@ -212,14 +212,14 @@ Even removing **all** residual would yield only
 1/c=1.40459635266761\ldots,
 \]
 
-a gain of `2.2304597e−6` in K. Removing the comparison allowance alone gives
-about `1.40459648073723`. None of that can close the `.002903260669`
+a gain of `1.8180962e−6` in K. Removing the comparison allowance alone gives
+about `1.40459648073723`. None of that can close the `.002902848306`
 two-sided interval. The stable archive likewise has a fixed zero-residual
 reciprocal `1.4045937`. Better upper arithmetic matters for trust and for
 millionths; a substantial advance needs a different family or a different
 signed coefficient balance.
 
-The proposed Haagerup value `1.404575934663742…` is only about 0.780% of
+The proposed Haagerup value `1.404575934663742…` is only about 0.766% of
 the current interval below its upper endpoint. Reaching that value on the
 upper side would still leave almost the whole lower-side gap. Conversely,
 success with cubic Conjecture K would not justify that conjectured exact value.
