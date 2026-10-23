@@ -178,7 +178,8 @@ def cover_text(B, L, strings, tokens):
     out += 'def refinedBatches : List Grothe.Lower.JBatch :=\n'
     out += '  Grothe.Lower.mixedBatches ++ Grothe.Research.LawNodeData.extraBatches\n\n'
     out += f'def refinedB : ℚ := {B.numerator} / {B.denominator}\n'
-    out += f'def refinedL : ℚ := {L.numerator} / {L.denominator}\n\n'
+    out += f'def refinedL : ℚ := {L.numerator} / {L.denominator}\n'
+    out += f'def refinedChunkSize : ℕ := {(len(strings) + 3) // 4}\n\n'
     names = []
     for k, start in enumerate(range(0, len(strings), 500)):
         name = f'refinedBoxes{k}'
@@ -240,6 +241,7 @@ def export(cover_path, out_dir, check=False):
             path.write_text(text)
     return dict(status='PASS_EXACT_ORIGINAL_MAP_NODES_BOXES_AND_PARTITION',
                 original_boxes=len(oldstrings), boxes=len(strings), partition_tokens=len(tokens),
+                chunk_size=(len(strings) + 3) // 4,
                 old_batches=count, extra_batches=extra_count, extra_nodes=len(docs),
                 extra_node_map={name: list(pair) for name, pair in sorted(extra_map.items())},
                 B=str(B), L=str(L), actual_upper=str(upper), source_sha256=sources,

@@ -100,7 +100,7 @@ Progress: `Grothe/UpperChaos/HardyKernel.lean` fixes the definitions (`Sym2C`, `
   from the Lean phase data; see the continuation's
   [MOMENTS.md](../handoff/research-third-decimal/needle-20261023/MOMENTS.md).
   The other Hermite-tail and coefficient inputs are still separate obligations.
-* The refined lower endpoint is `1.401695673376`, conditional on the same
+* The refined lower endpoint is `1.401696986171`, conditional on the same
   `NodeCaps`, through `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`.
   The separate `GrotheCaps` target now has a matching stamp for its 60 range
   facts; the four remaining rows still require `CapsRest`.

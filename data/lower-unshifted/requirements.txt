@@ -1,2 +1,1 @@
-numpy==2.5.4
-scipy==1.18.1
+# Exact search, replay and Lean export require only the Python standard library.

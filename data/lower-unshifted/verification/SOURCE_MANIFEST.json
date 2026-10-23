@@ -2,13 +2,13 @@
   "LawNodeLower": "98251caa0573240e4963ac23ef04b57899d675f901638beb1282c0e2467fc378",
   "LawNodeData": "3b8fb2cb2a574b5f4daa3594f0c6f38963a0de3a860ac26b145379db256dd936",
   "LawNodeCheck": "a36dbdb7072511d3500aba7f55977fe8f748dd2a205e5d83c3ec42fbed1c71e8",
-  "RefinedCoverData": "5cb2f7cce4a39a80f715bc0d1777d87e1c5a653bf9dfd06bf61624b741d9fbf9",
-  "RefinedCoverParts": "c3f020b57f510bc344c6499b9474091d173d0bb1fe6718f116d15b69b5bf739b",
-  "RefinedCoverBoxes0": "9d0f279e77f90088ab38f44f6dda07751fa86eb3b0dba7cd8c7cd999d8110cdd",
-  "RefinedCoverBoxes1": "5c6d45c6641d29d79645ca3d17f19e68b5c47b40f15608d5fefd6f6be034efb4",
-  "RefinedCoverBoxes2": "5a1c1fd4d552037acf2184e93577e9b6ca5b749adfc7ece9dc0f727792ff8232",
-  "RefinedCoverBoxes3": "65181214bbc972f20c5442e6747dc8af9c9c4f3de5b3a704eb499364b97a74d4",
-  "RefinedCoverPartition": "c7a41b37b2afbb2c8ad92c60515850aef125e649f9c4c75a664468e39b44ccef",
   "RefinedLower": "5b20153011d78e5deaca779b656a131541b7cabb2cca9baa874739e782190c4c",
-  "RefinedCoverResult": "e44b69cb74e0675cf76e8c3257866da44b4c9bcd11ccf7a911745436431920f0"
+  "RefinedCoverData": "e37906ef3818b51951bac4e2d7cefc3a59f28c263b85dcf0a77cace32ea18f0d",
+  "RefinedCoverParts": "c3f020b57f510bc344c6499b9474091d173d0bb1fe6718f116d15b69b5bf739b",
+  "RefinedCoverBoxes0": "8377cc62f86088dc095866d0a32f359a9c1003063fdffadf42398e72d4c6a877",
+  "RefinedCoverBoxes1": "c006d650fecfcfa0a001e55dbc230ed5549125f5685a4dd60fc3099bb1c974e8",
+  "RefinedCoverBoxes2": "ba7ad63ba0a1895be8889aa142d7bf2765649f5176756fee79050a1cd90b2c28",
+  "RefinedCoverBoxes3": "36e4b1678579d5e2d348594b9386f9a9da534532a1878748a194cb48bc732f2e",
+  "RefinedCoverPartition": "c7a41b37b2afbb2c8ad92c60515850aef125e649f9c4c75a664468e39b44ccef",
+  "RefinedCoverResult": "2029703d188893f37618213c6dc389e82bb9b85498ffa0f9fa712c8b0e753755"
 }

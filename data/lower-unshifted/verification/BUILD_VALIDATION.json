@@ -1,208 +1,82 @@
 {
   "status": "PASS",
   "lean_toolchain": "leanprover/lean4:v4.34.1",
-  "warnings_as_errors": true,
-  "box_count": 10234,
-  "B": "713421621393/1000000000000",
-  "L": "43802989793/31250000000",
-  "same_NodeCaps": true,
-  "modules": {
+  "warning_as_error": true,
+  "B": "35671047661/50000000000",
+  "L": "1401696986171/1000000000000",
+  "boxes": 10521,
+  "chunk_size": 2631,
+  "last_chunk_boxes": 2628,
+  "fresh_module_count": 8,
+  "fresh_modules": [
+    "RefinedCoverData",
+    "RefinedCoverParts",
+    "RefinedCoverBoxes0",
+    "RefinedCoverBoxes1",
+    "RefinedCoverBoxes2",
+    "RefinedCoverBoxes3",
+    "RefinedCoverPartition",
+    "RefinedCoverResult"
+  ],
+  "reused_generic_modules": [
+    "LawNodeLower",
+    "LawNodeData",
+    "LawNodeCheck",
+    "RefinedLower"
+  ],
+  "reused_modules": {
+    "LawNodeLower": {
+      "source_sha256": "98251caa0573240e4963ac23ef04b57899d675f901638beb1282c0e2467fc378",
+      "artifact_sha256": "2ea1722c11ea07eec47e47af634024c68658d755f3382a7ab91ff65db397e3d1",
+      "artifact": "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/LawNodeLower.olean",
+      "previous_build_status": "PASS"
+    },
     "LawNodeData": {
-      "module": "Grothe.Research.LawNodeData",
       "source_sha256": "3b8fb2cb2a574b5f4daa3594f0c6f38963a0de3a860ac26b145379db256dd936",
-      "command": [
-        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
-        "-DwarningAsError=true",
-        "-o",
-        "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/LawNodeData.olean",
-        "/dev/shm/codex-law-node-lower-20261023/Grothe/Research/LawNodeData.lean"
-      ],
-      "started_unix": 1792750515.4864836,
-      "exit_code": 0,
-      "seconds": 7.457449913024902,
-      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      "artifact_sha256": "5302c8c2bc788f5cf60f1ff6cc531625635de5fc18be19616e9652869bf70106",
+      "artifact": "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/LawNodeData.olean",
+      "previous_build_status": "PASS"
     },
     "LawNodeCheck": {
-      "module": "Grothe.Research.LawNodeCheck",
       "source_sha256": "a36dbdb7072511d3500aba7f55977fe8f748dd2a205e5d83c3ec42fbed1c71e8",
-      "command": [
-        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
-        "-DwarningAsError=true",
-        "-o",
-        "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/LawNodeCheck.olean",
-        "/dev/shm/codex-law-node-lower-20261023/Grothe/Research/LawNodeCheck.lean"
-      ],
-      "started_unix": 1792750522.9444883,
-      "exit_code": 0,
-      "seconds": 11.971901893615723,
-      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      "artifact_sha256": "08ffc79f109571aa7baeef519baa35cd5b97bbdf69a042a4bae734fcbcf3d511",
+      "artifact": "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/LawNodeCheck.olean",
+      "previous_build_status": "PASS"
     },
     "RefinedLower": {
-      "module": "Grothe.Research.RefinedLower",
       "source_sha256": "5b20153011d78e5deaca779b656a131541b7cabb2cca9baa874739e782190c4c",
-      "command": [
-        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
-        "-DwarningAsError=true",
-        "-o",
-        "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/RefinedLower.olean",
-        "/dev/shm/codex-law-node-lower-20261023/Grothe/Research/RefinedLower.lean"
-      ],
-      "started_unix": 1792753130.6412387,
-      "exit_code": 0,
-      "seconds": 7.325195550918579,
-      "log_sha256": "772f524b106c15e089e8aa2844d2a20ba5542821bb1d16e8c13a3e5d93d6fa8e"
+      "artifact_sha256": "0b26615b5dbed7dfe3d97f9efe3aeed272793aed1fd65ad514bddfe41903bc29",
+      "artifact": "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/RefinedLower.olean",
+      "previous_build_status": "PASS"
     },
-    "RefinedCoverData": {
-      "module": "Grothe.Research.RefinedCoverData",
-      "source_sha256": "5cb2f7cce4a39a80f715bc0d1777d87e1c5a653bf9dfd06bf61624b741d9fbf9",
-      "command": [
-        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
-        "-DwarningAsError=true",
-        "-o",
-        "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/RefinedCoverData.olean",
-        "/dev/shm/codex-law-node-lower-20261023/Grothe/Research/RefinedCoverData.lean"
-      ],
-      "started_unix": 1792751096.46412,
-      "exit_code": 0,
-      "seconds": 13.009392261505127,
-      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    "Upper.KernelScreen": {
+      "source_sha256": "397c099273241b121391a43b0aedc183c40e7e0a7c38d100dc401d0cd39c6aa3",
+      "artifact_sha256": "f4641622514c87ae29c3f68d50a03a9a08a62e509962071df203ccc6e006cc77",
+      "artifact": "/dev/shm/codex-spectral-merge-20261023/lib/Grothe/Upper/KernelScreen.olean",
+      "previous_build_status": "PASS"
     },
-    "RefinedCoverParts": {
-      "module": "Grothe.Research.RefinedCoverParts",
-      "source_sha256": "c3f020b57f510bc344c6499b9474091d173d0bb1fe6718f116d15b69b5bf739b",
-      "command": [
-        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
-        "-DwarningAsError=true",
-        "-o",
-        "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/RefinedCoverParts.olean",
-        "/dev/shm/codex-law-node-lower-20261023/Grothe/Research/RefinedCoverParts.lean"
-      ],
-      "started_unix": 1792751109.4740243,
-      "exit_code": 0,
-      "seconds": 7.820458173751831,
-      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    "RefinedCoverBoxes0": {
-      "module": "Grothe.Research.RefinedCoverBoxes0",
-      "source_sha256": "9d0f279e77f90088ab38f44f6dda07751fa86eb3b0dba7cd8c7cd999d8110cdd",
-      "command": [
-        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
-        "-DwarningAsError=true",
-        "-o",
-        "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/RefinedCoverBoxes0.olean",
-        "/dev/shm/codex-law-node-lower-20261023/Grothe/Research/RefinedCoverBoxes0.lean"
-      ],
-      "started_unix": 1792751117.295282,
-      "exit_code": 0,
-      "seconds": 1336.4949731826782,
-      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    "RefinedCoverBoxes1": {
-      "module": "Grothe.Research.RefinedCoverBoxes1",
-      "source_sha256": "5c6d45c6641d29d79645ca3d17f19e68b5c47b40f15608d5fefd6f6be034efb4",
-      "command": [
-        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
-        "-DwarningAsError=true",
-        "-o",
-        "/dev/shm/codex-law-node-worker1-20261023/lib/Grothe/Research/RefinedCoverBoxes1.olean",
-        "/dev/shm/codex-law-node-worker1-20261023/Grothe/Research/RefinedCoverBoxes1.lean"
-      ],
-      "started_unix": 1792752278.4668438,
-      "exit_code": 0,
-      "seconds": 850.0173742771149,
-      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    "RefinedCoverBoxes2": {
-      "module": "Grothe.Research.RefinedCoverBoxes2",
-      "source_sha256": "5a1c1fd4d552037acf2184e93577e9b6ca5b749adfc7ece9dc0f727792ff8232",
-      "command": [
-        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
-        "-DwarningAsError=true",
-        "-o",
-        "/dev/shm/codex-law-node-worker2-20261023/lib/Grothe/Research/RefinedCoverBoxes2.olean",
-        "/dev/shm/codex-law-node-worker2-20261023/Grothe/Research/RefinedCoverBoxes2.lean"
-      ],
-      "started_unix": 1792751827.7970471,
-      "exit_code": 0,
-      "seconds": 573.3858053684235,
-      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    "RefinedCoverBoxes3": {
-      "module": "Grothe.Research.RefinedCoverBoxes3",
-      "source_sha256": "65181214bbc972f20c5442e6747dc8af9c9c4f3de5b3a704eb499364b97a74d4",
-      "command": [
-        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
-        "-DwarningAsError=true",
-        "-o",
-        "/dev/shm/codex-law-node-worker3-20261023/lib/Grothe/Research/RefinedCoverBoxes3.olean",
-        "/dev/shm/codex-law-node-worker3-20261023/Grothe/Research/RefinedCoverBoxes3.lean"
-      ],
-      "started_unix": 1792751827.8155107,
-      "exit_code": 0,
-      "seconds": 450.574179649353,
-      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    "RefinedCoverPartition": {
-      "module": "Grothe.Research.RefinedCoverPartition",
-      "source_sha256": "c7a41b37b2afbb2c8ad92c60515850aef125e649f9c4c75a664468e39b44ccef",
-      "command": [
-        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
-        "-DwarningAsError=true",
-        "-o",
-        "/dev/shm/codex-law-node-workerpartition-20261023/lib/Grothe/Research/RefinedCoverPartition.olean",
-        "/dev/shm/codex-law-node-workerpartition-20261023/Grothe/Research/RefinedCoverPartition.lean"
-      ],
-      "started_unix": 1792752969.1603854,
-      "exit_code": 0,
-      "seconds": 9.099298238754272,
-      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "reused_owned_worker": "/dev/shm/codex-law-node-workerpartition-20261023",
-      "artifact_sha256": "91be7b9e44b370847a8d9cd0313f41a95ed6964eeef15414654c77e2d606bcc8"
-    },
-    "RefinedCoverResult": {
-      "module": "Grothe.Research.RefinedCoverResult",
-      "source_sha256": "e44b69cb74e0675cf76e8c3257866da44b4c9bcd11ccf7a911745436431920f0",
-      "command": [
-        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
-        "-DwarningAsError=true",
-        "-o",
-        "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/RefinedCoverResult.olean",
-        "/dev/shm/codex-law-node-lower-20261023/Grothe/Research/RefinedCoverResult.lean"
-      ],
-      "started_unix": 1792753137.9669054,
-      "exit_code": 0,
-      "seconds": 15.603403806686401,
-      "log_sha256": "82428bfba9e95ee8c9dcedc5594aa48efb01a43bb0a616788c94046d4c4a70fd"
-    },
-    "LawNodeLower": {
-      "module": "Grothe.Research.LawNodeLower",
-      "source_sha256": "98251caa0573240e4963ac23ef04b57899d675f901638beb1282c0e2467fc378",
-      "exit_code": 0,
-      "seconds": 8.693484783172607,
-      "command": [
-        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
-        "-DwarningAsError=true",
-        "-o",
-        "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/LawNodeLower.olean",
-        "/dev/shm/codex-law-node-lower-20261023/Grothe/Research/LawNodeLower.lean"
-      ]
+    "Upper.SpectralScreen": {
+      "source_sha256": "7e9177925b715fda38484fa4a304496c0cc345147203cb7ff3987a50a2b28db6",
+      "artifact_sha256": "0c68110c20ea0c644fafccf6c82344a8435ece16656769a7e9b4c05804887bff",
+      "artifact": "/dev/shm/codex-spectral-merge-20261023/lib/Grothe/Upper/SpectralScreen.olean",
+      "previous_build_status": "PASS"
     }
   },
   "source_sha256": {
     "LawNodeLower": "98251caa0573240e4963ac23ef04b57899d675f901638beb1282c0e2467fc378",
     "LawNodeData": "3b8fb2cb2a574b5f4daa3594f0c6f38963a0de3a860ac26b145379db256dd936",
     "LawNodeCheck": "a36dbdb7072511d3500aba7f55977fe8f748dd2a205e5d83c3ec42fbed1c71e8",
-    "RefinedCoverData": "5cb2f7cce4a39a80f715bc0d1777d87e1c5a653bf9dfd06bf61624b741d9fbf9",
-    "RefinedCoverParts": "c3f020b57f510bc344c6499b9474091d173d0bb1fe6718f116d15b69b5bf739b",
-    "RefinedCoverBoxes0": "9d0f279e77f90088ab38f44f6dda07751fa86eb3b0dba7cd8c7cd999d8110cdd",
-    "RefinedCoverBoxes1": "5c6d45c6641d29d79645ca3d17f19e68b5c47b40f15608d5fefd6f6be034efb4",
-    "RefinedCoverBoxes2": "5a1c1fd4d552037acf2184e93577e9b6ca5b749adfc7ece9dc0f727792ff8232",
-    "RefinedCoverBoxes3": "65181214bbc972f20c5442e6747dc8af9c9c4f3de5b3a704eb499364b97a74d4",
-    "RefinedCoverPartition": "c7a41b37b2afbb2c8ad92c60515850aef125e649f9c4c75a664468e39b44ccef",
     "RefinedLower": "5b20153011d78e5deaca779b656a131541b7cabb2cca9baa874739e782190c4c",
-    "RefinedCoverResult": "e44b69cb74e0675cf76e8c3257866da44b4c9bcd11ccf7a911745436431920f0"
+    "RefinedCoverData": "e37906ef3818b51951bac4e2d7cefc3a59f28c263b85dcf0a77cace32ea18f0d",
+    "RefinedCoverParts": "c3f020b57f510bc344c6499b9474091d173d0bb1fe6718f116d15b69b5bf739b",
+    "RefinedCoverBoxes0": "8377cc62f86088dc095866d0a32f359a9c1003063fdffadf42398e72d4c6a877",
+    "RefinedCoverBoxes1": "c006d650fecfcfa0a001e55dbc230ed5549125f5685a4dd60fc3099bb1c974e8",
+    "RefinedCoverBoxes2": "ba7ad63ba0a1895be8889aa142d7bf2765649f5176756fee79050a1cd90b2c28",
+    "RefinedCoverBoxes3": "36e4b1678579d5e2d348594b9386f9a9da534532a1878748a194cb48bc732f2e",
+    "RefinedCoverPartition": "c7a41b37b2afbb2c8ad92c60515850aef125e649f9c4c75a664468e39b44ccef",
+    "RefinedCoverResult": "2029703d188893f37618213c6dc389e82bb9b85498ffa0f9fa712c8b0e753755"
   },
-  "axiom_reports": 25,
+  "actual_axiom_reports": 27,
   "focused_checks": [
     {
       "command": [
@@ -212,7 +86,7 @@
         "--law-nodes"
       ],
       "exit_code": 0,
-      "output": "AXIOMS_LAW_NODES_CHECK.log"
+      "log": "AXIOMS_LAW_NODES_CHECK.log"
     },
     {
       "command": [
@@ -222,7 +96,7 @@
         "--refined-cover"
       ],
       "exit_code": 0,
-      "output": "AXIOMS_REFINED_COVER_CHECK.log"
+      "log": "AXIOMS_REFINED_COVER_CHECK.log"
     }
   ],
   "endpoint_axioms": {
@@ -246,11 +120,6 @@
       "Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1",
       "Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1"
     ],
-    "standard_axioms": [
-      "Classical.choice",
-      "Quot.sound",
-      "propext"
-    ],
     "native_facts": [
       "Grothe.Lower.certBatches0._native.native_decide.ax_1_1",
       "Grothe.Lower.certBatches1._native.native_decide.ax_1_1",
@@ -267,41 +136,54 @@
       "Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1",
       "Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1"
     ],
-    "native_fact_count": 14,
     "all_axiom_count": 17,
+    "native_fact_count": 14,
     "no_old_cover_facts": true
   },
-  "all_12_frozen_sources_match": true,
-  "no_lean_child_interrupted": true,
-  "controlled_queue_note": "Completed original prefix and three independently checked chunks; original controller stopped at private-source guard before any duplicate native check. Final partition was checked by an isolated worker and its output reused exactly once; wrapper/result assembled from owned outputs. Raw prefix manifest retains RUNNING because this controller intentionally did not finish the initial duplicate plan.",
+  "new_upper_axioms": {
+    "Grothe.Upper.SpectralScreen.l1_anchor_price_bound": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "Grothe.Upper.SpectralScreen.full_score_l1_lower": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "same_NodeCaps": true,
   "maximum_native_workers": 3,
-  "full_default_build": "Delegated to GitHub CI; not run locally.",
+  "generator_helper_sha256": {
+    "needle_unshifted_lean.py": "e46494f2baee4d80a409368004100c9a9d7c3ba175192c2bdc3f7b594ba5db48",
+    "needle_unshifted_export.py": "61192f34e641bb4915693bbc75bb8874a079215f20be6da4eb93a52a4b13e504",
+    "needle_cover_lean.py": "d0204cd6299f056b730f203196db50c1ecfd0fec819fe0bf66517a024b4a08f4",
+    "needle_cover_refine.py": "1766ce359329ee4983aae07c651fc7eddc2a3099f1e573ee0a15b4f7cc44d35f",
+    "needle_rankone_nodes.py": "678362fbf653bb92ef59f5add28536624c2ede77e3731ad62e3a64b35a0a85e0",
+    "rankone_analytic_localized.py": "1ef6b8d10eb7b464666504780c0bc73a0fa0813d621e6a591edd87ec806333bc",
+    "rankone_analytic_localized_convert.py": "b47a61aaea5e10a9d685f7113ab6b86c2112d9c71ce3b058b444ea8dbdc8b7c5"
+  },
+  "registry_sha256": "9c3b4c308b787a87aebcdb784755945756ee6395838b302a377c85cc260b4934",
+  "full_default_build": "Delegated to GitHub CI; no full default build or full scratch220 report run here.",
   "verification_file_sha256": {
-    "AXIOMS_LAW_NODES_CHECK.log": "46fac66a37fc7134cf73522d4834313ab208a4d87ce9c363b6f5f79efc9f96c5",
-    "AXIOMS_REFINED_COVER_CHECK.log": "46fac66a37fc7134cf73522d4834313ab208a4d87ce9c363b6f5f79efc9f96c5",
-    "Axioms.lean": "3de120b9f8b82018d7a201a929993a1f2b3bdac04e037644df32044309153f53",
+    "AXIOMS_LAW_NODES_CHECK.log": "74c866d4d65a571c631621d78f2dab4bf074252c6566579c0b2357059fc918b2",
+    "AXIOMS_REFINED_COVER_CHECK.log": "74c866d4d65a571c631621d78f2dab4bf074252c6566579c0b2357059fc918b2",
+    "Axioms.lean": "e48c675ed3a01e93f4df72c1abfd7f8caeda1775ecfda5fae7b40e53e46eb6db",
+    "BUILD_INPUTS.json": "8bdd398bfb21b00794da470864a1989ad64b9099231fe56f889322916ab2da06",
     "CHAIN_LawNodeData.json": "60fa093b64d66f715670e1ffa086dca672021b0625dcbca52b3ac1a4f327fe32",
-    "CHAIN_RefinedCoverBoxes1.json": "dbb6bce7a3dffd9807c08dbc58099d323eb39faeb8cf2fd6c337493898a1b117",
-    "CHAIN_RefinedCoverBoxes2.json": "72ad77c9a3754f00f8d615418389674e56a6e21e954aa0878811578e98fbfb84",
-    "CHAIN_RefinedCoverBoxes3.json": "414d42b046b9cc556244493aa5354e31b2082222c8a3f92a5ed7ac478fda654b",
-    "CHAIN_RefinedCoverData.json": "f65bd7e93627ea587ddb375121eab53536985159356c56422146aecbb68c6b97",
-    "CHAIN_RefinedCoverPartition-worker.json": "fc39fd2676f401005f536b3d40c10f54f82d7442a7046e372d834ac70facb8fe",
-    "CHAIN_RefinedCoverPartition.json": "96617082d0401d692e933e99c6edc7e200ff94218ca394964c189c2641d8da28",
-    "ENDPOINT_AXIOMS.json": "b4d0dc8f46e5a8249019221bcf1cf6d3c1873fe0325d8a3823d984bd481eda54",
-    "EXPORT.json": "15b72267ee46ee25acb4d5d001e6ff8a71fa139659a826dbe3f10595e675b0d7",
-    "EXPORT_CHECK.json": "15b72267ee46ee25acb4d5d001e6ff8a71fa139659a826dbe3f10595e675b0d7",
-    "EXPORT_VALIDATION.json": "cacdaf2e12d2b3aa18eddf4d19c6e958f4ded627dbda42e615c80e928bf80117",
-    "FINAL_AXIOMS.log": "d4b9ef78b3c17332e084d4bf0cfb2c5f1a39806d7e24265160e8a2f0a094131f",
+    "COVER_ARTIFACTS.json": "7fd40b69c61e5f89a5c23cf86141da511309f8d64e044dd5f90e872863d8990b",
+    "COVER_BUILD.json": "16bd4e2fec9c848d54c81cc6aed40756d721eb9462df8e5e6fd9458785e10bde",
+    "ENDPOINT_AXIOMS.json": "80f3cc6bd26be9cb40cab052154d0d4fbe51ce5947e9a84498bcd6f970eef9be",
+    "EXPORT.json": "ba74a22d75abfc9b9734c9f94037e2e73a07c93b989e3dae5d02f0ef31340fe6",
+    "EXPORT_CHECK.json": "ba74a22d75abfc9b9734c9f94037e2e73a07c93b989e3dae5d02f0ef31340fe6",
+    "FINAL_AXIOMS.log": "d6f56bad9d7d809ca020e02f632a551ef20c2abc05e912893a0ebd88c2ebbd1b",
     "LawNodeCheck.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "LawNodeData.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "LawNodeLower.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "LawNodeLower_AXIOMS.log": "8dac03ad87369b8dc49411eae95a6a747f035a3921c1c09ccbeb43e028d4304b",
     "LawNodeLower_BUILD.json": "6ccbe4f4bebfe8bd900216cc0956d2a4687767dafe31280131df351d842c4e88",
-    "PARALLEL_FINAL.json": "149c8161ba8049d0a986fa84c5b8f027def6e6824480b884ab882afe6f308bb7",
-    "PARTITION_WORKER_SETUP.json": "2e43f7916022a96a319caf423198e5d29727ea886f5bd94a7e9bd22da20cd342",
     "REDUCTION_DEPENDENCIES.json": "a844e1f0d8b53e028bd793e2069cdd84ec6d25e8a314c535be0c6df17b8bb7a1",
-    "REMOTE_AXIOMS_SOURCE_SHA.json": "6d486c2867d2bfb535e6dbf5dd3f4d30b539d14773bef3276fd44b4c4349eb60",
-    "REMOTE_SOURCE_MANIFEST.json": "f6f44883ce61c4a3dda390b6a5d06eb80951968916ee03ccd620fd6faa299d05",
+    "REUSED_PROOFS.json": "00f4569f3e4e8b11c5115fa2110867ae604f3b3ef40b268d38ca98e1aca26503",
     "RefinedCoverBoxes0.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "RefinedCoverBoxes1.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "RefinedCoverBoxes2.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -311,6 +193,6 @@
     "RefinedCoverParts.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "RefinedCoverResult.log": "82428bfba9e95ee8c9dcedc5594aa48efb01a43bb0a616788c94046d4c4a70fd",
     "RefinedLower.log": "772f524b106c15e089e8aa2844d2a20ba5542821bb1d16e8c13a3e5d93d6fa8e",
-    "SOURCE_MANIFEST.json": "f6f44883ce61c4a3dda390b6a5d06eb80951968916ee03ccd620fd6faa299d05"
+    "SOURCE_MANIFEST.json": "94a48e6415cac6703ead428271e44f03723f066a17572a86d6044bcf8180879c"
   }
 }

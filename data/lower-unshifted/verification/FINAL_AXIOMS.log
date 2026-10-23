@@ -219,3 +219,5 @@
  Grothe.Research.RefinedLowerCheck.certRefinedBoxes2._native.native_decide.ax_1_1,
  Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1,
  Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1]
+'Grothe.Upper.SpectralScreen.l1_anchor_price_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.full_score_l1_lower' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -25,11 +25,11 @@ set_option maxHeartbeats 0
 theorem refined_cover_checked :
     checkCover rowData refinedBatches refinedB refinedCuts refinedBoxes = true := by
   have hx : refinedBoxList.all (boxOK rowData refinedBatches refinedB) = true :=
-    all_of_chunk _ _ 0 3000 certRefinedBoxes0 <|
-      all_of_chunk _ _ 3000 3000 certRefinedBoxes1 <|
-      all_of_chunk _ _ 6000 3000 certRefinedBoxes2 <|
-      all_of_chunk _ _ 9000 3000 certRefinedBoxes3 <|
-      all_drop_of_le _ _ _ (by decide +kernel)
+    all_of_chunk _ _ 0 refinedChunkSize certRefinedBoxes0 <|
+      all_of_chunk _ _ refinedChunkSize refinedChunkSize certRefinedBoxes1 <|
+      all_of_chunk _ _ (2 * refinedChunkSize) refinedChunkSize certRefinedBoxes2 <|
+      all_of_chunk _ _ (3 * refinedChunkSize) refinedChunkSize certRefinedBoxes3 <|
+      all_drop_of_le _ _ (4 * refinedChunkSize) (by decide +kernel)
   have hp := certRefinedPartition
   simp only [refinedBoxList] at hx hp
   simp only [checkCover, allPar_eq, hx, hp, Bool.and_self]

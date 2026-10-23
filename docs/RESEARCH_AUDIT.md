@@ -6,54 +6,68 @@ replay data live under `handoff/research-third-decimal/`; the maintained Lean
 ingredients live in `Grothe/Research/`. The initial audit changes no bound;
 the subsequent cover and Hardy-budget refinements below improve both endpoints.
 
-## Current lower continuation: reusable unshifted law nodes
+## Current lower continuation: adaptive component cover
 
-The strict lower endpoint is now `1.401695673376`, under exactly `NodeCaps`.
-The complete 10,234-box cover has cap `713421621393/10^12`. Two new pure-row
-law-scale nodes for row 14 use the original source table and existing Stein
-cuts. They form one appended checked batch; no shifted-source or rank-one
-response premise is introduced. The endpoint uses eight old row/batch facts,
-five reflected cover facts and one new reflected law-batch fact.
+The strict lower endpoint is now `1.401696986171`, under exactly `NodeCaps`.
+The complete 10,521-box cover has cap `35671047661/50000000000`, or
+`0.713420953220`. It retains the two pure-row law-scale nodes for row 14,
+their single appended batch, and all original row and mixed-node certificates.
+The endpoint uses eight row/batch facts, five reflected cover facts and the
+law-batch fact. No shifted source, rank-one response premise or new source
+cap is introduced.
 
-The exact campaign first reprices the 139 blockers of the initial target,
-then refines the remaining boxes and the broad cap box. Its final binding
-row-envelope value is approximately `0.7134216213924581`. This is a limit
-of that selected envelope calculation, not a Gaussian norm lower bound.
-All source snapshots, generation inputs, final node certificates, cover and
-replay commands are retained in `data/lower-unshifted/`. The deterministic
-exporter replays the full certificate and reproduces both generated Lean
-data files. `LawNodeLower.lean` supplies the generic extended-batch transfer
-interface; the original witness and heavy cap import closure are unchanged.
+The finite campaign starts from the immutable 10,234-box certified input.
+Its 287 binary splits and 803 same-domain repricings preserve a complete
+partition. Components restricted to a child retain their original scale
+interpolation domain. Seventy new reference labels expose existing source
+nodes; the original 1,191-entry prefix stays unchanged. The two law-node
+certificates and their generated Lean batch stay byte-identical.
 
-All twelve modules in the changed dependency chain pass fresh Lean 4.34.1
-checks with warnings treated as errors. Both central focused axiom audits
-accept the actual 25-declaration report, using fourteen of the 83 allowed
-native facts. The endpoint has no dependency on the old cover checks.
-Source hashes, raw stage logs and the endpoint's actual axiom list are retained
-in `data/lower-unshifted/verification/`. The full default build is delegated
-to branch CI.
+The former cap-194 envelope obstruction is cleared by ordinary components.
+A plateau in the next search came from clipping proposed child bounds by an
+unchanged fallback: greedy splitting repeatedly selected t while hiding
+progress in the other coordinates. Comparing the unclipped proposals and
+compacting redundant descendants resolves that search issue. This does not
+establish a Gaussian norm floor or optimality of the certificate bank.
 
-The separate bounded coupled asymmetric upper experiment did not pass its
-`0.711950` discovery gate. Its common-price midpoint calculation is below
-that threshold, but its new integral errors are not certified; no exclusion
-theorem or upper endpoint follows. Its scope and replay are recorded in
-`handoff/research-third-decimal/exchange-20261023/RESULT.md`.
+The exact accepted maximum is approximately `0.713420953219917`, below the
+rounded cap. The more ambitious search target `0.71342` remains unmet, with
+877 final boxes above it. The accepted cap has zero failures and a strict
+reciprocal comparison. Its gain over `1.401695673376` is `0.000001312795`.
+Selected pointwise prices near the binding region still leave mixture and
+law-price optimization as a possible next route; they are not optimality
+certificates or actual response lower bounds.
 
-The next bounded lower diagnostic splits cap box 194 into 128 cells. Ordinary
-components improve 98 of them, but fifteen binding cells retain the same cap.
-Pointwise checks at their centers then expose interval slack. A bounded
-adaptive refinement clears the entire local obligation with 174 cells and
-exact cap approximately `0.7134208864780055`, using only the existing components
-and fallback recipes. It introduces no new node or analytic premise. This
-is a local certificate for the next campaign, not part of the frozen global
-cover or a further endpoint theorem. The current full cover has 24 boxes above
-the next target `0.71342160`; the other obligations still need repricing.
-The separate upper follow-up derives the
-conditional Rice/Bessel and Schwinger formulas for the incumbent's first and
-damped-polynomial moments. Its degree-eleven radial profile prevents the
-proposed finite-gamma shortcut. Numerical normalization checks agree, but
-certified integration of the remaining two-variable integrals is still needed.
-The diagnostic outputs and derivation remain in the research handoff.
+`data/lower-unshifted/` retains the complete cover, forest ledger, two law
+nodes and immutable starting inputs. `tools/needle_adaptive_global.py`
+replays every root, event and final recipe using only durable clone-local
+inputs. The old local diagnostic hash is provenance only; replay does not
+open its ignored research file. `tools/needle_unshifted_lean.py` independently
+checks the old canonical reference map, law proofs, every final box and
+full guillotine partition before reproducing the two generated Lean files.
+
+The four single-threaded native chunks have balanced width 2,631. The kernel
+checks their extent against the actual list length. Eight cover modules
+passed fresh warning-as-error checks. Four unchanged generic/law modules are
+reused only after exact source and artifact hash checks. Both focused axiom
+audits pass the actual 27-declaration report, using 14 of 83 registered native
+facts. Build records and
+the actual endpoint axiom list are retained in
+`data/lower-unshifted/verification/`. The full default build is separate
+branch CI.
+
+The preceding published 10,234-box cover passed the full default build and
+axiom audit in [CI run 39943279372](https://github.com/agalatan/grothendieck-lean/actions/runs/39943279372):
+440 reported theorems, using 23 of 83 allowed native facts. The current
+10,521-box cover has its own fresh reflected checks and axiom report.
+
+The bounded coupled asymmetric upper experiment did not pass its `0.711950`
+discovery gate. Its common-price midpoint calculation is below that threshold,
+but its new integral errors are not certified; no exclusion theorem or upper
+endpoint follows. The later Rice/Bessel and Schwinger derivation handles the
+incumbent's nonconstant radial profile. Numerical normalization checks agree,
+but directed integration of the correction moments is still needed. These
+research outputs remain under `handoff/research-third-decimal/`.
 
 ## Earlier upper continuation and validation
 
@@ -99,9 +113,13 @@ endpoint. See [the next campaign](../handoff/research-third-decimal/needle-20261
 
 ## Integration with current master
 
-The current campaign includes GitHub master `a1dd968`. Its durable cap-recipe
-inputs and generation rules are adopted here. These upstream changes do not
-alter the endpoint hypotheses, source cap data or mathematical interfaces.
+The current campaign includes GitHub master `197b82f`. Its two spectral-error
+lemmas and canonical signed-head exporter are retained. Both lemmas use only
+the standard axioms; the directed exporter pays one coefficient-l1 error
+allowance for every admissible spectral price. Its tied-branch phase oracle
+is exploratory and changes neither endpoint. The earlier durable cap-recipe
+inputs and generation rules are also adopted. These changes do not alter the
+lower endpoint hypotheses or source cap data.
 The new law-node inputs also live in `data/` and reproduce the generated Lean
 files byte for byte. The heavy cap verification stamp still matches.
 

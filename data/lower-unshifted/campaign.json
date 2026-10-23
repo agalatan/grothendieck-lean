@@ -1,80 +1,38 @@
 {
-  "status": "COMPLETE_EXACT_ORIGINAL_SOURCE_ONLY",
-  "source_commit": "1de841d0306716aac9ae84cb0a31620e6cc329f2",
-  "B": "713421621393/1000000000000",
-  "L": "43802989793/31250000000",
-  "actual_global_upper": "2105484884992468337160308003217359356302639368859611673/2951249053656346575359512150016000000000000000000000000",
-  "strict_reciprocal": true,
-  "boxes": 10234,
-  "replaced_current_parent_boxes": 169,
-  "new_pure_row_nodes": 2,
-  "new_batches": 1,
-  "pure_row_index": 14,
-  "new_node_endpoint_reference_uses": {
-    "seed4302-lo": 636,
-    "seed4302-hi": 602
-  },
-  "remaining_blockers": 0,
-  "binding_parent": 194,
-  "binding_scope": "Minimum attainable pointwise row-13/14 envelope formula, numerically matched; not an actual Gaussian scalar-norm floor.",
-  "stages": [
-    {
-      "requested_B": ".71342165",
-      "new_parent_boxes": 139,
-      "total_boxes": 10030,
-      "actual_max_decimal": 0.7134216481739288
-    },
-    {
-      "requested_B": ".71342163",
-      "new_parent_boxes": 19,
-      "total_boxes": 10163,
-      "actual_max_decimal": 0.7134216295196167
-    },
-    {
-      "requested_B": ".713421623",
-      "new_parent_boxes": 9,
-      "total_boxes": 10226,
-      "actual_max_decimal": 0.713421622761154
-    },
-    {
-      "requested_B": ".7134216214",
-      "new_parent_boxes": 2,
-      "total_boxes": 10234,
-      "actual_max_decimal": 0.7134216213924581
-    }
-  ],
-  "validation": {
-    "command": "python3 -B -I tools/needle_unshifted_campaign.py --verify data/lower-unshifted/cover-ledger.json",
-    "runtime": "/usr/bin/python3 on ssh yo; standard library only",
-    "stdout": "REPLAY_PASS boxes 10234 actual_upper 0.7134216213924581 remaining 0",
-    "candidate_sha256": "8652fb976025f7da63847413b2ad79903f3680c12125dcaee371f1505345d836",
-    "ledger_sha256": "5028e14d222edbe7ca674e1f20e511e48ae09417ec9af286055def635fccee4c",
-    "scope": "Exact node half-line acceptance, complete changed-parent Cartesian grids, exact old-box reconstruction, fallback dominance, full saved-cover equality, global maximum and strict reciprocal arithmetic. Lean reflection/complete independent exporter are separate."
+  "status": "COMPLETE_EXACT_ADAPTIVE_EXISTING_BANK",
+  "source_commit": "4093bdb7a4e24e6f7136c225d0e5fc69dcd16de5",
+  "B": "35671047661/50000000000",
+  "L": "1401696986171/1000000000000",
+  "actual_global_upper": "3061091086568538174059946686088240113938449814514898333270834768056573695617991253142104447660942939764617941602043484165403950869237394797743022871/4290722150439749418053975404045427232006691590862334571655281589244066076428248437685774314446030291075072000000000000000000000000000000000000000000",
+  "actual_global_upper_decimal": 0.713420953219917,
+  "boxes": 10521,
+  "base_boxes": 10234,
+  "binary_splits": 287,
+  "same_domain_reprices": 803,
+  "original_reference_prefix": 1191,
+  "additional_existing_source_aliases": 70,
+  "reference_count": 1261,
+  "new_law_nodes": 0,
+  "retained_law_nodes": 2,
+  "retained_extra_batches": 1,
+  "same_NodeCaps": true,
+  "exploratory_target": "0.71342",
+  "exploratory_target_remaining": 877,
+  "accepted_cap_remaining": 0,
+  "source_sha256": {
+    "cover.json": "3068afebb149a44e8fa6fb092a3084a5d90246fe72a42665984a1beb5677fbd3",
+    "cover-ledger.json": "b9cc7b780451c3fc3c2d0b593cd70312fba80555579c46a3a366cc1dec841eec",
+    "inputs/certified-start-cover.json": "8652fb976025f7da63847413b2ad79903f3680c12125dcaee371f1505345d836",
+    "inputs/certified-start-ledger.json": "5028e14d222edbe7ca674e1f20e511e48ae09417ec9af286055def635fccee4c"
   },
   "tool_sha256": {
+    "tools/needle_adaptive_global.py": "424dd0e7799defe3c55f57ef417a2d46edf9719e68d3dc7cfd1f6b92806b5844",
     "tools/needle_unshifted_campaign.py": "da986f9bce4da9042f3a7aa79e1eb3d6c20cc542d8ed9d7b90537b1f32b8d3f1",
-    "tools/needle_rankone_nodes.py": "678362fbf653bb92ef59f5add28536624c2ede77e3731ad62e3a64b35a0a85e0",
     "tools/needle_cover_refine.py": "1766ce359329ee4983aae07c651fc7eddc2a3099f1e573ee0a15b4f7cc44d35f",
+    "tools/needle_rankone_nodes.py": "678362fbf653bb92ef59f5add28536624c2ede77e3731ad62e3a64b35a0a85e0",
     "tools/rankone_law.py": "2ddb264ba0e94392a5b43b93b24992d754fb5d0fe1b70592c19c698c890c7132",
     "tools/rankone_source_paths.py": "97ba6b42e138eb1b6cac41064560a48d42ad6059c3d1a8c2b52eae644e1895cb"
   },
-  "discovery_environment": {
-    "owned_root": "/dev/shm/codex-unshifted-global-finite-jump-20261023",
-    "jobs": "Four sequential nice19 one-process jobs; job process group PIDs1540009,1544308,1545872,1547567; all completed normally.",
-    "threads": "OPENBLAS_NUM_THREADS=OMP_NUM_THREADS=MKL_NUM_THREADS=1",
-    "optional_packages_installed_but_not_used": {
-      "numpy": "2.5.4",
-      "scipy": "1.18.1"
-    },
-    "gaussian_integrations": 0,
-    "new_LP_node_discovery": 0
-  },
-  "binding_envelope_indices": [
-    13,
-    14
-  ],
-  "binding_source_row_indices": [
-    12,
-    13
-  ]
+  "replay_command": "python3 -B -I tools/needle_adaptive_global.py --start-cover data/lower-unshifted/inputs/certified-start-cover.json --start-ledger data/lower-unshifted/inputs/certified-start-ledger.json --verify data/lower-unshifted/cover-ledger.json",
+  "scope": "Exact rational forest/recipe certificate under the original NodeCaps. Current Lean build and axiom validation are recorded separately under verification/."
 }

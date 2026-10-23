@@ -1,0 +1,245 @@
+{
+  "status": "PASS",
+  "pid": 1599272,
+  "pgid": 1599272,
+  "started_unix": 1792757454.8921654,
+  "maximum_native_workers": 3,
+  "LEAN_PATH": "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/lib:/home/agalatan/grothe-caps/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/Qq/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/aesop/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/batteries/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/importGraph/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/mathlib/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/plausible/.lake/build/lib/lean:/home/agalatan/grothe-caps/.lake/packages/proofwidgets/.lake/build/lib/lean",
+  "stages": [
+    {
+      "module": "Grothe.Research.RefinedCoverData",
+      "source_sha256": "e37906ef3818b51951bac4e2d7cefc3a59f28c263b85dcf0a77cace32ea18f0d",
+      "command": [
+        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
+        "-DwarningAsError=true",
+        "-o",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/lib/Grothe/Research/RefinedCoverData.olean",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/Grothe/Research/RefinedCoverData.lean"
+      ],
+      "pid": 1599273,
+      "pgid": 1599272,
+      "started_unix": 1792757454.8979611,
+      "exit_code": 0,
+      "seconds": 11.7224440574646,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "Grothe.Research.RefinedCoverParts",
+      "source_sha256": "c3f020b57f510bc344c6499b9474091d173d0bb1fe6718f116d15b69b5bf739b",
+      "command": [
+        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
+        "-DwarningAsError=true",
+        "-o",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/lib/Grothe/Research/RefinedCoverParts.olean",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/Grothe/Research/RefinedCoverParts.lean"
+      ],
+      "pid": 1599802,
+      "pgid": 1599272,
+      "started_unix": 1792757466.621402,
+      "exit_code": 0,
+      "seconds": 7.307840824127197,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "Grothe.Research.RefinedCoverBoxes2",
+      "source_sha256": "ba7ad63ba0a1895be8889aa142d7bf2765649f5176756fee79050a1cd90b2c28",
+      "command": [
+        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
+        "-DwarningAsError=true",
+        "-o",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/lib/Grothe/Research/RefinedCoverBoxes2.olean",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/Grothe/Research/RefinedCoverBoxes2.lean"
+      ],
+      "pid": 1599899,
+      "pgid": 1599272,
+      "started_unix": 1792757473.9315636,
+      "exit_code": 0,
+      "seconds": 506.13928151130676,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "Grothe.Research.RefinedCoverBoxes1",
+      "source_sha256": "c006d650fecfcfa0a001e55dbc230ed5549125f5685a4dd60fc3099bb1c974e8",
+      "command": [
+        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
+        "-DwarningAsError=true",
+        "-o",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/lib/Grothe/Research/RefinedCoverBoxes1.olean",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/Grothe/Research/RefinedCoverBoxes1.lean"
+      ],
+      "pid": 1599898,
+      "pgid": 1599272,
+      "started_unix": 1792757473.931037,
+      "exit_code": 0,
+      "seconds": 975.2965767383575,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "Grothe.Research.RefinedCoverPartition",
+      "source_sha256": "c7a41b37b2afbb2c8ad92c60515850aef125e649f9c4c75a664468e39b44ccef",
+      "command": [
+        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
+        "-DwarningAsError=true",
+        "-o",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/lib/Grothe/Research/RefinedCoverPartition.olean",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/Grothe/Research/RefinedCoverPartition.lean"
+      ],
+      "pid": 1610172,
+      "pgid": 1599272,
+      "started_unix": 1792758450.2294474,
+      "exit_code": 0,
+      "seconds": 10.002320766448975,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "Grothe.Research.RefinedCoverBoxes0",
+      "source_sha256": "8377cc62f86088dc095866d0a32f359a9c1003063fdffadf42398e72d4c6a877",
+      "command": [
+        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
+        "-DwarningAsError=true",
+        "-o",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/lib/Grothe/Research/RefinedCoverBoxes0.olean",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/Grothe/Research/RefinedCoverBoxes0.lean"
+      ],
+      "pid": 1599897,
+      "pgid": 1599272,
+      "started_unix": 1792757473.930537,
+      "exit_code": 0,
+      "seconds": 1207.347529411316,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "Grothe.Research.RefinedCoverBoxes3",
+      "source_sha256": "36e4b1678579d5e2d348594b9386f9a9da534532a1878748a194cb48bc732f2e",
+      "command": [
+        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
+        "-DwarningAsError=true",
+        "-o",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/lib/Grothe/Research/RefinedCoverBoxes3.olean",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/Grothe/Research/RefinedCoverBoxes3.lean"
+      ],
+      "pid": 1605155,
+      "pgid": 1599272,
+      "started_unix": 1792757981.072314,
+      "exit_code": 0,
+      "seconds": 709.2081990242004,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "module": "Grothe.Research.RefinedCoverResult",
+      "source_sha256": "2029703d188893f37618213c6dc389e82bb9b85498ffa0f9fa712c8b0e753755",
+      "command": [
+        "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
+        "-DwarningAsError=true",
+        "-o",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/lib/Grothe/Research/RefinedCoverResult.olean",
+        "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/Grothe/Research/RefinedCoverResult.lean"
+      ],
+      "pid": 1611926,
+      "pgid": 1599272,
+      "started_unix": 1792758690.281985,
+      "exit_code": 0,
+      "seconds": 18.74272632598877,
+      "log_sha256": "82428bfba9e95ee8c9dcedc5594aa48efb01a43bb0a616788c94046d4c4a70fd"
+    }
+  ],
+  "reused_modules": {
+    "LawNodeLower": {
+      "source_sha256": "98251caa0573240e4963ac23ef04b57899d675f901638beb1282c0e2467fc378",
+      "artifact_sha256": "2ea1722c11ea07eec47e47af634024c68658d755f3382a7ab91ff65db397e3d1",
+      "artifact": "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/LawNodeLower.olean",
+      "previous_build_status": "PASS"
+    },
+    "LawNodeData": {
+      "source_sha256": "3b8fb2cb2a574b5f4daa3594f0c6f38963a0de3a860ac26b145379db256dd936",
+      "artifact_sha256": "5302c8c2bc788f5cf60f1ff6cc531625635de5fc18be19616e9652869bf70106",
+      "artifact": "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/LawNodeData.olean",
+      "previous_build_status": "PASS"
+    },
+    "LawNodeCheck": {
+      "source_sha256": "a36dbdb7072511d3500aba7f55977fe8f748dd2a205e5d83c3ec42fbed1c71e8",
+      "artifact_sha256": "08ffc79f109571aa7baeef519baa35cd5b97bbdf69a042a4bae734fcbcf3d511",
+      "artifact": "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/LawNodeCheck.olean",
+      "previous_build_status": "PASS"
+    },
+    "RefinedLower": {
+      "source_sha256": "5b20153011d78e5deaca779b656a131541b7cabb2cca9baa874739e782190c4c",
+      "artifact_sha256": "0b26615b5dbed7dfe3d97f9efe3aeed272793aed1fd65ad514bddfe41903bc29",
+      "artifact": "/dev/shm/codex-law-node-lower-20261023/lib/Grothe/Research/RefinedLower.olean",
+      "previous_build_status": "PASS"
+    },
+    "Upper.KernelScreen": {
+      "source_sha256": "397c099273241b121391a43b0aedc183c40e7e0a7c38d100dc401d0cd39c6aa3",
+      "artifact_sha256": "f4641622514c87ae29c3f68d50a03a9a08a62e509962071df203ccc6e006cc77",
+      "artifact": "/dev/shm/codex-spectral-merge-20261023/lib/Grothe/Upper/KernelScreen.olean",
+      "previous_build_status": "PASS"
+    },
+    "Upper.SpectralScreen": {
+      "source_sha256": "7e9177925b715fda38484fa4a304496c0cc345147203cb7ff3987a50a2b28db6",
+      "artifact_sha256": "0c68110c20ea0c644fafccf6c82344a8435ece16656769a7e9b4c05804887bff",
+      "artifact": "/dev/shm/codex-spectral-merge-20261023/lib/Grothe/Upper/SpectralScreen.olean",
+      "previous_build_status": "PASS"
+    }
+  },
+  "candidate": {
+    "B": "35671047661/50000000000",
+    "L": "1401696986171/1000000000000",
+    "boxes": 10521,
+    "chunk_size": 2631,
+    "source_sha256": {
+      "data/lower-unshifted/nodes/seed4302-hi.json": "c6bc9ffe47760dd8586d8c374be6b9633658c7c2ae9edf321e3f71a2fb135b78",
+      "data/lower-unshifted/nodes/seed4302-lo.json": "cfc0c6b36b4a5d14f4217d9e5cfa789b643b75800b5ed8956f71b4848660bec2",
+      "data/lower-unshifted/cover.json": "3068afebb149a44e8fa6fb092a3084a5d90246fe72a42665984a1beb5677fbd3",
+      "data/lower-unshifted/inputs/inherited.json": "3e7ddd38eb4d7ebeb8db0af1f14f50774c4c93a259fb9c6053c92ec760bdb44e",
+      "data/lower-unshifted/inputs/cover.json": "ac7bc2d09c5cc215bc6cf6f16efbc58b7e55b2fb9095733e65ee57009a504dba",
+      "data/lower-unshifted/inputs/minimal-cover-ledger.json": "93e59d433570d40d35a3b53cb492828b327ec87a572c667f7dbf4d2d53024616",
+      "data/lower-unshifted/inputs/source-manifest.json": "4f7d643212fe2f39a3320aab774e4f61b5d7dbeb8ad4aef54f2af4efea158bac",
+      "Grothe/Lower/MixedData.lean": "a529b61562c93f665403968361aabb292cc72d93c8a47b74037ea474603bf0d0"
+    }
+  },
+  "finished_unix": 1792758717.0139446,
+  "reports": 27,
+  "endpoint_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound",
+    "Grothe.Lower.certBatches0._native.native_decide.ax_1_1",
+    "Grothe.Lower.certBatches1._native.native_decide.ax_1_1",
+    "Grothe.Lower.certBatches2._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows0._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows1._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows2._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows3._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows4._native.native_decide.ax_1_1",
+    "Grothe.Research.LawNodeCheck.certLawNodes._native.native_decide.ax_1_1",
+    "Grothe.Research.RefinedLowerCheck.certRefinedBoxes0._native.native_decide.ax_1_1",
+    "Grothe.Research.RefinedLowerCheck.certRefinedBoxes1._native.native_decide.ax_1_1",
+    "Grothe.Research.RefinedLowerCheck.certRefinedBoxes2._native.native_decide.ax_1_1",
+    "Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1",
+    "Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1"
+  ],
+  "exact_native_facts": [
+    "Grothe.Lower.certBatches0._native.native_decide.ax_1_1",
+    "Grothe.Lower.certBatches1._native.native_decide.ax_1_1",
+    "Grothe.Lower.certBatches2._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows0._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows1._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows2._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows3._native.native_decide.ax_1_1",
+    "Grothe.Lower.certRows4._native.native_decide.ax_1_1",
+    "Grothe.Research.LawNodeCheck.certLawNodes._native.native_decide.ax_1_1",
+    "Grothe.Research.RefinedLowerCheck.certRefinedBoxes0._native.native_decide.ax_1_1",
+    "Grothe.Research.RefinedLowerCheck.certRefinedBoxes1._native.native_decide.ax_1_1",
+    "Grothe.Research.RefinedLowerCheck.certRefinedBoxes2._native.native_decide.ax_1_1",
+    "Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1",
+    "Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1"
+  ],
+  "axiom_command": [
+    "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean",
+    "-DwarningAsError=true",
+    "/dev/shm/codex-adaptive-cover-20261023-3068afebb1/FINAL_AXIOMS.lean"
+  ],
+  "axiom_exit_code": 0,
+  "axiom_seconds": 7.988566160202026,
+  "axiom_log_sha256": "d6f56bad9d7d809ca020e02f632a551ef20c2abc05e912893a0ebd88c2ebbd1b"
+}

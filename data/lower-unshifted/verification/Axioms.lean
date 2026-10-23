@@ -1,3 +1,4 @@
+import Grothe.Upper.SpectralScreen
 import Grothe.Research.RefinedCoverResult
 
 #print axioms Grothe.Research.LawNodeCheck.certLawNodes
@@ -25,3 +26,6 @@ import Grothe.Research.RefinedCoverResult
 #print axioms Grothe.Research.RefinedLowerCheck.refined_reciprocal_lower_bound
 #print axioms Grothe.Research.RefinedLowerCheck.refined_endpoint_lt_reciprocal
 #print axioms Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data
+
+#print axioms Grothe.Upper.SpectralScreen.l1_anchor_price_bound
+#print axioms Grothe.Upper.SpectralScreen.full_score_l1_lower

@@ -1,0 +1,30 @@
+{
+  "scope": "Unchanged generic interface, law-node data/batch and empty-extension wrapper. These four were checked for the prior7158afb delivery and are reused by exact source/cache hashes; they are not claimed freshly built for the new cover.",
+  "reused_sources": {
+    "LawNodeLower": "98251caa0573240e4963ac23ef04b57899d675f901638beb1282c0e2467fc378",
+    "LawNodeData": "3b8fb2cb2a574b5f4daa3594f0c6f38963a0de3a860ac26b145379db256dd936",
+    "LawNodeCheck": "a36dbdb7072511d3500aba7f55977fe8f748dd2a205e5d83c3ec42fbed1c71e8",
+    "RefinedLower": "5b20153011d78e5deaca779b656a131541b7cabb2cca9baa874739e782190c4c"
+  },
+  "retained_raw_evidence": [
+    "LawNodeLower_BUILD.json",
+    "LawNodeLower.log",
+    "LawNodeLower_AXIOMS.log",
+    "CHAIN_LawNodeData.json",
+    "LawNodeData.log",
+    "LawNodeCheck.log",
+    "RefinedLower.log",
+    "REDUCTION_DEPENDENCIES.json"
+  ],
+  "fresh_cover_targets": [
+    "RefinedCoverData",
+    "RefinedCoverParts",
+    "RefinedCoverBoxes0",
+    "RefinedCoverBoxes1",
+    "RefinedCoverBoxes2",
+    "RefinedCoverBoxes3",
+    "RefinedCoverPartition",
+    "RefinedCoverResult"
+  ],
+  "upper_target_validation": "handoff/research-third-decimal/spectral-merge-20261023/VALIDATION.json"
+}

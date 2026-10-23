@@ -19,11 +19,6 @@
     "Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1",
     "Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1"
   ],
-  "standard_axioms": [
-    "Classical.choice",
-    "Quot.sound",
-    "propext"
-  ],
   "native_facts": [
     "Grothe.Lower.certBatches0._native.native_decide.ax_1_1",
     "Grothe.Lower.certBatches1._native.native_decide.ax_1_1",
@@ -40,7 +35,7 @@
     "Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1",
     "Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1"
   ],
-  "native_fact_count": 14,
   "all_axiom_count": 17,
+  "native_fact_count": 14,
   "no_old_cover_facts": true
 }
