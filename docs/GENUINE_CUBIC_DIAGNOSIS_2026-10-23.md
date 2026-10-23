@@ -11,7 +11,7 @@ norm certificate for this unchanged witness can prove a reciprocal bound
 at or above **`1.401955`**, including the proposed `1.402` target.
 
 Against the previously audited conditional interval
-`1.401695322458 < K_G^C < 1.404598635371`, even the finite obstruction limits
+`1.401695322458 < K_G^C < 1.404598583128`, even the finite obstruction limits
 this unchanged witness's possible lower-end gain to less than `.000260`,
 under nine percent of that interval. This is a restriction on the chosen
 witness, rather than evidence that the true constant is near that ceiling.
@@ -159,7 +159,7 @@ Wiener score is at most
  \le m_0^2-m_1^2+m_q^2<.70631.
 \]
 
-This is already below the incumbent `.711947153313208982`, before paying
+This is already below the incumbent `.711947179793908982`, before paying
 any higher tail. The example can defeat an underweighted cubic witness
 while leaving too much positive cubic coefficient for a good individual
 rounding. A mixture might cancel that signed coefficient; this calculation

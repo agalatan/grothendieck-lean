@@ -13,7 +13,7 @@ see `AGENTS.md` for worktree and delivery rules.
 
 Headline `Grothe.UpperChaos.fresh_upper_rounder` (`Grothe/UpperChaos/PhiBound.lean`):
 
-    K_G^ℂ ≤ 500000000000000000/355973576656604491  (< 1.404598635371)
+    K_G^ℂ ≤ 500000000000000000/355973589896954491  (< 1.404598583128)
 
 for the concrete rounding `GT` (smoothed `F₀·P₃(φ)` built from `Grothe/Upper/Data.lean`), assuming only
 
@@ -61,8 +61,8 @@ bisection levels into 8 modules / 8 native facts of ~3 min each (no Task.spawn).
 
 ## 3. `hardy` (N4) — plan and progress
 
-Source certificate: `handoff/research-third-decimal/upper-polynomial-bridge-20261022/verify_hardy.py`
-and `inputs/GAUSSIAN_SCHUR_TAIL_PROOF.md`. Kernel `H(t) = Σ_j h_j t^{2j+1}`, `h = kernelCoeff(energy GT)`.
+Source certificate: `tools/verify_upper_hardy.py`, with the full current preprocessing,
+contour data and analytic input in `data/upper-preprocess/` (see its README). Kernel `H(t) = Σ_j h_j t^{2j+1}`, `h = kernelCoeff(energy GT)`.
 Lean route (detailed in PLAN_UPPER.md §6f):
 
 1. **Holomorphic continuation (next).** For complex symmetric 2×2 `R` with `I ± Re R ≻ 0` define
