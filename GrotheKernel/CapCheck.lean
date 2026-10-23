@@ -91,6 +91,27 @@ structure Recipe where
   var : List (List Rat)
   scale : Rat
 
+/-- A rational `p` or `p/q` from a string (`0` on malformed input; recipes are search data). -/
+def parseRat (s : String) : Rat :=
+  match s.splitOn "/" with
+  | [a] => ((a.toInt?).getD 0 : Rat)
+  | [a, b] => ((a.toInt?).getD 0 : Rat) / ((b.toNat?).getD 1 : Rat)
+  | _ => 0
+
+/-- A recipe `v₀|f₁|…|scale` (comma-separated rationals). -/
+def parseRecipe (s : String) : Recipe :=
+  let parts := s.splitOn "|"
+  let vec := fun (t : String) => (t.splitOn ",").map parseRat
+  match parts with
+  | [] => ⟨[], [], 1⟩
+  | v :: rest =>
+    let sc := (rest.getLast?).getD "1"
+    ⟨vec v, (rest.dropLast).map vec, parseRat sc⟩
+
+/-- The recipes of a row from their string encoding. -/
+def parseRecs (l : List (Nat × Nat × String)) : List (Nat × Nat × Recipe) :=
+  l.map fun x => (x.1, x.2.1, parseRecipe x.2.2)
+
 def ratF (q : Rat) : Float := Float.ofInt q.num / Float.ofNat q.den
 def kqF (x : KQ) : Float := ratF x.p + ratF x.q * 1.4142135623730951
 def ivF (I : Ival) : Float := Float.scaleB (Float.ofInt ((I.lo + I.hi) / 2)) (-128)

@@ -144,9 +144,19 @@ and the gates E ⪰ 0, E ⪰ diag(−1,ε,ε), R ⪰ diag(−1,ε), R ⪰ diag(�
 `rowGates_ok`) give the k-side inequality (`kside`); the integrated fibre bound and the k-side
 inequality give each row inequality with the residual p = Π_{H₂,₁}c₀, its circular law and the gate
 variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
-`lower_bound_of_nodeCaps : NodeCaps → IsGrothendieckBound K → Llow < K` composes everything:
-**the only remaining hypothesis of the lower bound is `NodeCaps`**, the node caps
-Ψ_r(r_k) − 10⁻¹¹ ≤ c_k of the 19 certified potentials (exact-arithmetic certificates outside Lean).
+`lower_bound_of_nodeCaps : NodeCaps → IsGrothendieckBound K → Llow < K` composes everything, and the
+node caps are now certified inside Lean except on rows 0.84–0.855 (`Grothe/LowerAnalytic/Cap*.lean`):
+the 505 chord nodes follow from the vertex caps by convexity (`nodeCaps_of_vertexCaps`, `capChords_check`);
+a vertex cap Ψ_r(s) − 10⁻¹¹ ≤ c is proved from the anchored-pair majorant
+|L + p| + |L − p| ≤ ν(|L|² + |p|²) + 2δν Re(pL̄) + (A+B)/2 − (g/16)(4Re(pL̄) − δ)² with dyadic cell prices
+on a uniform polar grid (`priced_pair`, `Tint_grid`), interval enclosures of the integrated 13×13 coefficient
+matrix from verified one-dimensional tables (`CapTables.lean`, `tablesOK_mk`), a Loewner bound and an exact
+LDLᵀ check (`pot_le_of_pieceOK`, `pot_le_of_nodeOK`); the prices come from per-node recipes (anchored
+quadratics or interval price-layer lifts, `CapRecipeData.lean`, `tools/gen_cap_recipes.py`) and are checked by
+the precompiled kernel `GrotheKernel/CapCheck.lean` (`capRows_check`, native_decide, parallel tasks).
+**The remaining hypothesis of the lower bound is `CapsRest`** (`lower_bound_of_capsRest`): the vertex caps of
+the rows 0.84, 0.845, 0.85, 0.855 (their mid-range caps are localised S-lemma caps, not yet ported) and of the
+nodes listed as excluded in `capRowsData`.
 
 * Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
   (trailing gate block positive definite, κδ² ≤ δ + gatePrice); the Stein cuts (summed, spectral and general spectral) from their analytic inputs, by completions of squares,

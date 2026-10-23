@@ -149,3 +149,11 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.pot_le_of_pieceOK
 #print axioms Grothe.LowerAnalytic.Jpot_le_qf
 #print axioms Grothe.LowerAnalytic.fn_eq_sum
+#print axioms Grothe.LowerAnalytic.pot_le_of_nodeOK
+#print axioms Grothe.LowerAnalytic.gridOK_mkGrid
+#print axioms Grothe.LowerAnalytic.tablesOK_mk
+#print axioms Grothe.LowerAnalytic.Tint_grid
+#print axioms Grothe.LowerAnalytic.integral_gaussC_polar
+#print axioms Grothe.LowerAnalytic.vertexCapsRow_of_rowOK
+#print axioms Grothe.LowerAnalytic.capRows_check
+#print axioms Grothe.LowerAnalytic.lower_bound_of_capsRest

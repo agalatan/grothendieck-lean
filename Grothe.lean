@@ -104,4 +104,8 @@ import Grothe.LowerAnalytic.CapGridT
 import Grothe.LowerAnalytic.CapSymmetry
 import Grothe.LowerAnalytic.CapCheckSound
 import Grothe.LowerAnalytic.CapTables
+import Grothe.LowerAnalytic.CapGridOK
 import Grothe.LowerAnalytic.CapTablesMk
+import Grothe.LowerAnalytic.CapRecipeData
+import Grothe.LowerAnalytic.CapRows
+import Grothe.LowerAnalytic.CapNodes
