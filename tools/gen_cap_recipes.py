@@ -2,6 +2,7 @@
 """Generate `Grothe/LowerAnalytic/CapRecipeData.lean`: the price recipes of the vertex-node caps.
 
 usage: tools/gen_cap_recipes.py ROWINDEX:recipes.json[:EXCL] [...]
+       tools/gen_cap_recipes.py $(cat data/cap-recipes/rows.txt)     (the current data; canonical source of the recipes)
 EXCL: comma-separated node indices whose caps are left to certify (excluded from the row check).
 recipes.json: list of {k, g, v0 (12 rationals), var (list of 12-vectors), scale} (k = node index in
 `Row.nodeList`, g = grid index of the row's grid list), as written by the recipe search (anchored proposal, AF proposal_m.py; search only:

@@ -35,9 +35,14 @@ each range is checked sequentially; lake runs the 15 row modules in separate pro
   of `nodeCheck` over all 196 nodes of each of the 15 rows (Mac rows 0–8, 17, 18; droplet rows 9–11, 16)
   reported failures only at row 3 node 0 and row 6 node 0; both fixed (below). Fine-grid nodes took
   ~9 s each, coarse ~5 s, with 8 parallel tasks on 8 cores.
-* Two hand patches of the generated `CapRecipeData.lean` (the recipe JSON inputs of
-  `tools/gen_cap_recipes.py` were in a lost scratch directory; the Lean file is now the only copy of the recipes):
-  row 3 node 0 uses the recipe of node 1 on grid 1 (1600×256); row 6 node 0 uses its own recipe on grid 1.
+* Recipes: the canonical source is `data/cap-recipes/rowKK.json` (2,761 recipes; rationals as strings), with the
+  generator arguments in `data/cap-recipes/rows.txt`. They were exported from `CapRecipeData.lean` by
+  `tools/export_cap_recipes.py` after the original search outputs were lost, and
+  `python3 tools/gen_cap_recipes.py $(cat data/cap-recipes/rows.txt)` reproduces `CapRecipeData.lean` byte for byte.
+  They include the two fixes of the failing nodes: row 3 node 0 uses the recipe of node 1 on grid 1 (1600×256);
+  row 6 node 0 uses its own recipe on grid 1. Change recipes only in the JSON, then regenerate.
+  Recipes are search output only: the Lean check certifies every cap from its recipe, so a bad recipe can make a
+  check fail but never make a false cap pass.
 
 ## Why no parallel tasks (soundness concern)
 
