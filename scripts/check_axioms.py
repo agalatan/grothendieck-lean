@@ -161,6 +161,8 @@ JOINT_RESPONSE = {
     'Grothe.Upper.KernelScreen.priced_score_upper',
     'Grothe.Upper.KernelScreen.weighted_tail',
     'Grothe.Upper.SpectralScreen.affine_error_bound',
+    'Grothe.Upper.SpectralScreen.l1_anchor_price_bound',
+    'Grothe.Upper.SpectralScreen.full_score_l1_lower',
     'Grothe.Upper.SpectralScreen.all_level_price_of_front_tail',
     'Grothe.Upper.SpectralScreen.common_tail_price',
     'Grothe.Upper.SpectralScreen.finite_mixture_score_bound',

@@ -231,6 +231,13 @@ front and one geometric remainder budget certify every index. The resulting sepa
 columns, so it bounds whole convex pools, with explicit integration-error costs. Numerical pool screens
 still require certified input integrals; a favorable relaxation value is not an achievable rounding score.
 
+\textbf{[Lean]} An exchange can retain the incumbent's signed coefficients with one error allowance.
+If $\sum_k|c_k-\widehat c_k|\le\xi$, then every admissible spectral price has error at most $\xi$,
+and the full reciprocal score satisfies $D(c)\ge D(\widehat c)-\xi$.
+The same coefficient error must not be charged independently at every sampled correlation.
+The current bounded phase-perturbation searches use this interface for discovery; their Gaussian
+integrals still require certification before they can improve either endpoint.
+
 \textbf{[P,C; polynomial certificate in Lean]} The entire Gaussian-phase cubic-preprocessor family
 $H_{\rm phys}(A\rho+B\rho^3)$, $|A|+|B|\le1$, including arbitrary complex phases and convex mixtures,
 has full reciprocal score at most $0.71186$. This is below the incumbent $0.7119471533\ldots$.
