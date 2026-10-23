@@ -253,7 +253,7 @@ adversary. Coarse discovery itself overestimates some frozen values;
 the holdout distinction matters.
 
 Relative to the audited conditional interval
-`1.401695322458 < K_G^C < 1.404598635371`, the scalar `P10-z P21` architecture
+`1.401695322458 < K_G^C < 1.404598583128`, the scalar `P10-z P21` architecture
 has room for less than `.000562801`, about **19.385%** of that interval.
 At least **80.615%** remains above its ceiling. This is a restriction on
 the method, not evidence that the true constant equals its ceiling.
@@ -312,7 +312,7 @@ mixture therefore has
 \]
 
 The available absolute-tail budget to beat the incumbent
-`.711947153313208982` at `p≈.71313547` is only `.00118831`.
+`.711947179793908982` at `p≈.71313547` is only `.00118831`.
 Thus even the conservative **certified** tail loss is over six times
 that budget. Ordinary quadrature estimates `C1≈.703370788764`, suggesting
 the stronger tail `.009764677096`; those extra digits remain numerical.

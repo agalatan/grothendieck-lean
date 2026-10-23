@@ -73,7 +73,7 @@ theorem fresh_upper_rounder {X : ℂ × ℂ → ℂ} (hXL : MeasureTheory.MemLp 
     (hclose : ∑ p ∈ headIdx 501, |energy (hXL.toLp X) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ))
     (hhardy : ∀ J, ∑ n ∈ Finset.range J, kernelCoeff (energy ((memLp_GT phiBound).toLp GT)) n ^ 2
       * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4) :
-    IsGrothendieckBound (500000000000000000 / 355973576656604491) :=
+    IsGrothendieckBound (500000000000000000 / 355973589896954491) :=
   fresh_upper_concrete phiBound hXL hXch hcompare hclose hhardy
 
 end

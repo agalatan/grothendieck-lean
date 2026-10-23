@@ -21,7 +21,7 @@ The repository's audited baseline remains:
   `CapsRest`: the remaining four rows' vertex caps and any excluded-node
   caps of the other rows. Its full heavy verification has no recorded stamp
   in the current tree.
-* `K_G^C < 1.404598635371`: `Grothe.UpperChaos.fresh_upper_rounder`
+* `K_G^C < 1.404598583128`: `Grothe.UpperChaos.fresh_upper_rounder`
   proves this for the concrete rounding, assuming an L² charge-one
   truncation `X` and the three numerical bounds `compare`, `energy_close`
   and `hardy`. The older table interface `Grothe.fresh_upper`, conditional
@@ -44,9 +44,9 @@ Two quantitative facts determine the scale of the next work:
    **1.4022581233 for every complex z**. This is a method ceiling, not an
    upper bound on the constant. At least 80.6% of the audited interval lies
    above it. Cubic repricing and sharper certification cannot close that part.
-2. The upper construction's slope is `.7119483545924`; its certified net
-   score is `.711947153313208982`. Removing its entire residual allowance
-   would improve the reciprocal by only about `2.37e-6`. A substantial upper
+2. The upper construction's slope is `.7119483103461`; its certified net
+   score is `.711947179793908982`. Removing its entire residual allowance
+   would improve the reciprocal by only about `2.23e-6`. A substantial upper
    improvement needs a better response family or signed coefficient balance.
 
 Thus the lower obstruction is partly the witness itself; the upper
@@ -277,7 +277,7 @@ The coarse certified constants above give, for `0<=beta<=1`,
 
 \[
 L_\theta\le .71088648-.000005272\,\beta
-             \le .71088648<.711947153313208982.        \tag{7}
+             \le .71088648<.711947179793908982.        \tag{7}
 \]
 
 This is a certificate, not an empirical LP. Its rational implication is

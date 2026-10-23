@@ -7,6 +7,7 @@ proves that its optimum is an achievable score. Here the inputs are floating
 discovery integrals, so no rejection or endpoint is certified.
 """
 import argparse
+import hashlib
 import json
 from fractions import Fraction as Q
 from pathlib import Path
@@ -62,7 +63,10 @@ def main():
     # If every c0,c1,K is enclosed within delta, this bounds the added
     # error for the same prices. No value of delta is assumed certified.
     amplification = float(1+abs(s)+np.sum(abs(prices)*(1+rho+rho**3)))
-    incumbent = 355973576656604491/500000000000000000
+    certificate_path=Path(__file__).resolve().parents[1]/'data/upper-preprocess/certificate.json'
+    certificate=json.loads(certificate_path.read_text())
+    qi=Q(certificate['incumbent_score'])
+    incumbent=float(qi)
     # Freeze a genuinely admissible rational all-level price. This proves
     # algebra on the stored midpoint data, NOT the Gaussian integral values.
     qr=[Q(str(float(r))) for r in rho]
@@ -79,9 +83,8 @@ def main():
         frozen.append({'c0':str(q0),'c1':str(q1),'kernels':list(map(str,qk))})
     qbound=max(qbounds)
     qamp=1+abs(qs)+sum(abs(p)*(1+r+r**3) for p,r in zip(qa,qr))
-    qi=Q(355973576656604491,500000000000000000)
-    incumbent_slope=Q(1779870886481,25*10**11)
-    incumbent_residual=Q(600639595509,5*10**17)
+    incumbent_slope=Q(certificate['slopeQ'])
+    incumbent_residual=Q(certificate['delta'])
     assert incumbent_slope-incumbent_residual==qi
     rational={'scope':'Exact algebra on frozen floating midpoints; no integral enclosure.',
               'cubic_price':str(qs),'tests':[{'rho':str(r),'price':str(p)} for r,p in zip(qr,qa)],
@@ -95,7 +98,8 @@ def main():
            'sufficient_uniform_enclosure_to_exclude_pool':max(0,(incumbent-dual)/amplification),
            'rational_midpoint_screen':rational,
            'incumbent_ledger':{
-               'source':'Grothe/Upper/PolynomialBridge.lean at baseline 98f61ec; under DirectHyps',
+               'source':'data/upper-preprocess/certificate.json; under DirectHyps',
+               'certificate_sha256':hashlib.sha256(certificate_path.read_bytes()).hexdigest(),
                'slope':str(incumbent_slope),'l1_residual':str(incumbent_residual),
                'any_admissible_price_payoff_upper':str(incumbent_slope+incumbent_residual),
                'note':'The incumbent is retained via its certified residual enclosure, not treated as an exact linear kernel column.'},
