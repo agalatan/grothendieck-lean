@@ -27,3 +27,6 @@ jobs:
         run: |
           lake env lean scratch/Axioms.lean | tee axioms.txt
           python3 scripts/check_axioms.py < axioms.txt
+
+      - name: Node caps (separate target GrotheCaps, verified off CI) unchanged since verification
+        run: python3 scripts/caps_stamp.py --check

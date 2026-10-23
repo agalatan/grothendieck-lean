@@ -246,4 +246,3 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Tint_grid
 #print axioms Grothe.LowerAnalytic.integral_gaussC_polar
 #print axioms Grothe.LowerAnalytic.nodeCap_of_rangeOK
-#print axioms Grothe.LowerAnalytic.lower_bound_of_capsRest

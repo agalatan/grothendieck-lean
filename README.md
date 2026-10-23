@@ -97,6 +97,15 @@ four per row, one module `CapRowKK.lean` per row; no parallel tasks). Hence
 `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → Llow < K`, where **`CapsRest`** is the vertex caps
 of the rows 0.84, 0.845, 0.85, 0.855 (localised S-lemma caps; checkers for them are in progress on `work/caps-m`).
 
+**Node caps: a separate build target.** The 15 row modules `CapRowKK.lean` (60 single-threaded `native_decide`
+range facts, about 15–30 CPU-hours) exceed the CI runner, so they and `lower_bound_of_capsRest` live in the target
+`GrotheCaps`, not in the default target `Grothe`. They are verified on a larger machine with
+`lake build GrotheCaps && lake env lean scratch/AxiomsCaps.lean | python3 scripts/check_axioms.py --caps`, after which
+`python3 scripts/caps_stamp.py --write "<machine, date>"` records the hash of every source they depend on in
+`docs/CAPS_VERIFIED.txt`. CI checks that hash (`caps_stamp.py --check`): it fails when those sources change
+without a new verification. Until the first verification is recorded, CI only warns. The default target proves
+the lower bound with the hypothesis `NodeCaps` (`lower_bound_of_nodeCaps`).
+
 
 **Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder :
 compare → energy_close → hardy → IsGrothendieckBound (500000000000000000/355973576656604491)`,

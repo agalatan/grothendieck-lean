@@ -38,8 +38,10 @@ REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.LowerAnalytic.SphericalTransfer.cubicAmp_recurrence",
             "Grothe.LowerAnalytic.SphericalTransfer.cubicAmp_tail",
             "Grothe.LowerAnalytic.SphericalTransfer.cubic_tail_32_12",
-            "Grothe.LowerAnalytic.SphericalTransfer.global_cap_from_truncation",
-            "Grothe.LowerAnalytic.lower_bound_of_capsRest"}
+            "Grothe.LowerAnalytic.SphericalTransfer.global_cap_from_truncation"}
+# `--caps`: the report of scratch/AxiomsCaps.lean (separate target GrotheCaps, see README)
+if "--caps" in sys.argv:
+    REQUIRED = {"Grothe.LowerAnalytic.lower_bound_of_capsRest"}
 text = sys.stdin.read()
 if re.search(r"(^|\n)[^\n]*: error", text):
     sys.exit("the axiom report contains Lean errors")
