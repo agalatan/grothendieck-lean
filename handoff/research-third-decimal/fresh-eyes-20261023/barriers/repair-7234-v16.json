@@ -1,0 +1,227 @@
+{
+  "scope": "FLOAT discovery: can finite spectral PSD constraints be repaired cheaply?\n\nThe final laws, when requested, are independently checked with exact fractions.\nLP status and finite support limits are not global objective certificates.\n",
+  "source": "/Users/alingalatan/workspaces/grothe/outputs/binding-audit-20261023/radial-complete-7234-exact.json",
+  "index": 7234,
+  "vmax": 16.0,
+  "max_degree": 6,
+  "history": [
+    {
+      "iteration": 0,
+      "potential": 1.4088738888065417,
+      "worst_scaled_eigenvalue": -0.008181817965703836,
+      "new_cuts": 1,
+      "spectral_cuts": 1
+    },
+    {
+      "iteration": 1,
+      "potential": 1.4088738851698168,
+      "worst_scaled_eigenvalue": -0.0002139285157569546,
+      "new_cuts": 1,
+      "spectral_cuts": 2
+    },
+    {
+      "iteration": 2,
+      "potential": 1.4088738850684355,
+      "worst_scaled_eigenvalue": 8.080653232288945e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 3
+    },
+    {
+      "iteration": 3,
+      "potential": 1.4088738850683449,
+      "worst_scaled_eigenvalue": 9.999998189022647e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 4
+    },
+    {
+      "iteration": 4,
+      "potential": 1.4088738850683444,
+      "worst_scaled_eigenvalue": 1.0000000718522626e-06,
+      "new_cuts": 0,
+      "spectral_cuts": 4
+    }
+  ],
+  "final_potential": 1.4088738850683444,
+  "support": [
+    {
+      "v": 0.26,
+      "weight": 0.04850129500242055
+    },
+    {
+      "v": 0.795,
+      "weight": 0.7563786541048
+    },
+    {
+      "v": 1.515,
+      "weight": 0.18599255813258816
+    },
+    {
+      "v": 2.33375,
+      "weight": 0.0027206094756611825
+    },
+    {
+      "v": 2.699367088607595,
+      "weight": 0.002760744604298956
+    },
+    {
+      "v": 3.7,
+      "weight": 0.003306746204152759
+    },
+    {
+      "v": 4.5,
+      "weight": 5.5708401649410575e-06
+    },
+    {
+      "v": 5.0,
+      "weight": 3.0940062326516295e-05
+    },
+    {
+      "v": 5.94,
+      "weight": 0.0003028815103624987
+    },
+    {
+      "v": 16.0,
+      "weight": 6.322436632318752e-11
+    }
+  ],
+  "equality_error": 1.1102230246251565e-16,
+  "max_scaled_inequality_violation": 1.1102230246251565e-16,
+  "score": 0.71341280878269,
+  "exact_original_model_verified": true,
+  "exact_original_model_result": {
+    "score": "795309524848893033008000382497157677279065212288803764765701032897005032709778281170392716767590141983860186762793029243935875856501710815320753205327812657799853043134402753549/1114795690598749985361196056442114281708329114536070359066228010659674726180205929833286984993694135218867688849964545553203200000000000000000000000000000000000000000000000000000",
+    "score_float": 0.7134128087826902,
+    "target": "500/701",
+    "strict_excess": "114131619699023458010239909450390918460156546416259567642418730963164839451610183801801957233621921252146495735640723397448975407699281539847996934796673117696983237216330237849/781471779109723739738198435565922111477538709289785321705425835472431983052324356813134176480579588788426249883825146432795443200000000000000000000000000000000000000000000000000000",
+    "cuts": 671,
+    "atoms": 10,
+    "sixth_moment": "5230683486384869122256871453534787653422256786883/199137243562803200000000000000000000000000000000",
+    "sixth_slack": "52306891139184773077715212346577743213117/199137243562803200000000000000000000000000000000",
+    "minimum_cut_slack": "168861365912651729865049348275794309744565859244209288593544899582348621359095957359046423468198529322387274612898599571631739094824719004681966383168202979/495472327830704748691673719648417949572316342523492923458773404906784062448325557472629898066256519069878240303267184640000000000000000000000000000000000000000000000000",
+    "minimum_cut": "old-stein-348"
+  },
+  "exact_spectral_tests": [
+    {
+      "degree": 2,
+      "blocks": [
+        {
+          "parity": 0,
+          "indices": [
+            0,
+            2
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 2
+        },
+        {
+          "parity": 1,
+          "indices": [
+            1
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 1
+        }
+      ]
+    },
+    {
+      "degree": 3,
+      "blocks": [
+        {
+          "parity": 0,
+          "indices": [
+            0,
+            2
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 2
+        },
+        {
+          "parity": 1,
+          "indices": [
+            1,
+            3
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 2
+        }
+      ]
+    },
+    {
+      "degree": 4,
+      "blocks": [
+        {
+          "parity": 0,
+          "indices": [
+            0,
+            2,
+            4
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 3
+        },
+        {
+          "parity": 1,
+          "indices": [
+            1,
+            3
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 2
+        }
+      ]
+    },
+    {
+      "degree": 5,
+      "blocks": [
+        {
+          "parity": 0,
+          "indices": [
+            0,
+            2,
+            4
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 3
+        },
+        {
+          "parity": 1,
+          "indices": [
+            1,
+            3,
+            5
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 3
+        }
+      ]
+    },
+    {
+      "degree": 6,
+      "blocks": [
+        {
+          "parity": 0,
+          "indices": [
+            0,
+            2,
+            4,
+            6
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 4
+        },
+        {
+          "parity": 1,
+          "indices": [
+            1,
+            3,
+            5
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 3
+        }
+      ]
+    }
+  ],
+  "all_spectral_blocks_psd_exact": true,
+  "exact_law": "handoff/research-third-decimal/fresh-eyes-20261023/barriers/repair-7234-v16-law-exact.json"
+}

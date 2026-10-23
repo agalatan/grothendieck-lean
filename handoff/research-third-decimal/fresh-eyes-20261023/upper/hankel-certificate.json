@@ -1,0 +1,13 @@
+{
+  "status": "PASS: rigorous Arb rectangle and analytic-tail upper bound",
+  "python_flint_version": "0.9.0",
+  "precision_bits": 96,
+  "mesh_denominator": 40,
+  "radius": 6,
+  "rectangles": 57600,
+  "finite_square_upper_enclosure": "[1.660188842218042342489661 +/- 6.26e-25]",
+  "tail_upper_enclosure": "[0.000699347955182448318069494707 +/- 3.66e-31]",
+  "HS_squared_upper_enclosure": "[1.66088819017322479080773 +/- 1.13e-24]",
+  "certified_HS_squared_lt": 2,
+  "scope": "one-coordinate, charge-one, arbitrary complex disk-valued bilinear responses; alternating functional only"
+}

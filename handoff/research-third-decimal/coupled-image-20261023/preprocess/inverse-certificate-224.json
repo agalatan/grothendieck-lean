@@ -1,0 +1,114 @@
+{
+  "normalized_inverse_coefficients_in_ascending_b_powers": [
+    [
+      "1"
+    ],
+    [
+      "-1/8",
+      "-1"
+    ],
+    [
+      "0",
+      "5/8",
+      "2"
+    ],
+    [
+      "-1/1024",
+      "-7/64",
+      "-21/8",
+      "-5"
+    ]
+  ],
+  "symbolic_composition_identity_through_degree": 7,
+  "retained_absolute_inverse_degrees": [
+    1,
+    3,
+    7
+  ],
+  "uniform_b_inequality": "For x=4c/pi and y=x/(1-b), inverse Wiener cost >= y+(b+1/8)y^3+(5b^3+21b^2/8+7b/64+1/1024)y^7 >= x+x^3/8+x^7/1024.",
+  "general_normalized_K_coefficients": "K/kappa=1+r1*t^2+r2*t^4+r3*t^6+...; r1,r2,r3>=0 and r2<=r1^2 suffice.",
+  "general_inverse_degree_seven": "d7=-1/1024-7*r1/64-7*r1^2/2+7*r2/8-12*r1^3+8*r1*r2-r3 <= -1/1024.",
+  "exact_positive_decomposition": "-d7-1/1024=7*r1/64+21*r1^2/8+4*r1^3+r3+(7/8+8*r1)*(r1^2-r2).",
+  "general_degree_seven_negative_polynomial": [
+    [
+      [
+        0,
+        0,
+        0
+      ],
+      "-1/1024"
+    ],
+    [
+      [
+        0,
+        0,
+        1
+      ],
+      "-1"
+    ],
+    [
+      [
+        0,
+        1,
+        0
+      ],
+      "7/8"
+    ],
+    [
+      [
+        1,
+        0,
+        0
+      ],
+      "-7/64"
+    ],
+    [
+      [
+        1,
+        1,
+        0
+      ],
+      "8"
+    ],
+    [
+      [
+        2,
+        0,
+        0
+      ],
+      "-7/2"
+    ],
+    [
+      [
+        3,
+        0,
+        0
+      ],
+      "-12"
+    ]
+  ],
+  "status": "RIGOROUS_RESTRICTED_CLASS_OBSTRUCTION_NOT_A_GLOBAL_ENDPOINT",
+  "python_flint_version": "0.9.0",
+  "precision_bits": 224,
+  "score_ceiling_root_lower_rational": "711900642945/1000000000000",
+  "score_ceiling_root_upper_rational": "711900642946/1000000000000",
+  "prefix_at_lower_root_bracket": "[0.999999999998874205953514323014356914481490117953699698506940943014 +/- 2.25e-67]",
+  "prefix_at_upper_root_bracket": "[1.00000000000054455640473507023256554875372226484714086148797434390 +/- 3.99e-66]",
+  "incumbent_lower_score_rational": "711947/1000000",
+  "inverse_prefix_at_incumbent_lower": "[1.00007743375452122912310353594434574266024554691987571880119219092 +/- 1.05e-66]",
+  "inverse_prefix_excess_at_incumbent_lower": "[7.7433754521229123103535944345742660245546919875718801192190919e-5 +/- 4.59e-67]",
+  "local_asymmetric_chirp_prefix_expansion": {
+    "x": "[0.906479074155564868917195909454171860058779531247845978532444180806 +/- 5.56e-67]",
+    "L": "[1.18923870941607564377183578036616717699742995701346142032836667189 +/- 3.42e-66]",
+    "M": "[0.799865344846334931807102789399706458302289972863919667881624060318 +/- 5.19e-67]",
+    "N": "[0.382533022691302031401699663498488176998487128295267495857026915019 +/- 5.76e-67]",
+    "uniform_quadratic_lower_coefficient_on_a_squared_plus_d_squared": "[0.385953193630521371683216327232474447846813556222404624151884763297 +/- 6.48e-67]",
+    "quadratic_coefficient_on_delta_squared": "[0.594619354708037821885917890183083588498714978506730710164183335947 +/- 6.00e-67]",
+    "meaning": "P7(a,d,delta)=P7(0)+L*(a^2+d^2+delta^2)/2+M*a*d+N*abs(a*d)+o(a^2+d^2+delta^2). This is a local obstruction only."
+  },
+  "scope": "C=phi(p)*product_j[1+A_j*(1-q_j^2)]^(-1)*product_l exp[-s_l*(1-R_l)], A_j,s_l>=0, p and q_j arbitrary real odd scalar Wiener contractions, R_l any physically supplied even neutral correlation with R_l(0)=0 and Wiener norm <=1. Independent nonlinear scalar channel preprocessors are included. Each Hermitian quadratic auxiliary block is diagonalized before applying its scalar preprocessor.",
+  "stronger_structural_theorem": "The optimal full residual score for this separable modulation class equals the phase-only scalar preprocessing optimum: exactify the residual kernel with a common real odd Wiener contraction, remove one reciprocal affine factor without decreasing the score, and repeat. Neutral Gaussian exponential factors are Wiener limits of such products.",
+  "secondary_common_preprocessor_scope": "H=phi*K where 0<K(0)<=1 and K/K(0)=1+r1*t^2+r2*t^4+r3*t^6+..., r1,r2,r3>=0, r2<=r1^2. This secondary inverse-prefix proof does not require the resolvent factorization.",
+  "excluded": "Arbitrary coupled responses; Hermitian forms whose off-diagonal couplings join coordinates preprocessed differently and cannot be diagonalized within one covariance block; arbitrary convex mixtures unless their averaged kernel independently satisfies a stated factorization or secondary inverse-prefix condition; global complex Grothendieck endpoints.",
+  "physical_realization": "Independent proper complex z,w; F=G=phase(z)*exp(i*a*|w|^2), b=a^2/(1+a^2). Kernel phi(z)/(1+a^2*(1-|z|^2))."
+}

@@ -1,0 +1,1414 @@
+{
+  "status": "FLOATING DISCOVERY ONLY; finite coefficient head excludes infinite tail",
+  "response_formula": "F(X)=phase(u X)exp(i X*H X), G(Y)=phase(v Y)exp(i Y*K Y)",
+  "physical_covariance": "Sigma=[[I,R],[R*,I]], R=diag(scales_j*t**grades_j), real |t|<=1",
+  "analytic_continuation": "Use identical analytic t in both off-diagonal blocks",
+  "validation": {
+    "phase_kernel_max_error": 1.2228410187227362e-15,
+    "same_grade_phase_max_error": 1.1133411481696098e-15,
+    "same_chirp_closed_form_max_error": 2.225165239224212e-16,
+    "odd_parity_max_error": 0.0,
+    "swap_conjugacy_max_error": 3.337167946540778e-16,
+    "reflection_conjugacy_max_error": 0.0,
+    "min_physical_Sigma_eigenvalue_on_test_grid": 0.13,
+    "MC_checks": [
+      {
+        "candidate": "phase-opposed-a032",
+        "samples": 300000,
+        "t": 0.68,
+        "kernel": [
+          0.48461584280560804,
+          0.0
+        ],
+        "MC_mean": [
+          0.4838087981637706,
+          0.000566811590169094
+        ],
+        "complex_RMS_standard_error": 0.0015978409657450782,
+        "absolute_error": 0.000986203038257618,
+        "error_over_RMS_SE": 0.6172097595443414
+      },
+      {
+        "candidate": "asym-diagonal",
+        "samples": 300000,
+        "t": 0.68,
+        "kernel": [
+          0.4802872064621748,
+          0.028484834832039504
+        ],
+        "MC_mean": [
+          0.47979452185427846,
+          0.026931133953563547
+        ],
+        "complex_RMS_standard_error": 0.0016011162052586934,
+        "absolute_error": 0.0016299461778337822,
+        "error_over_RMS_SE": 1.018006171245035
+      },
+      {
+        "candidate": "asym-general-1",
+        "samples": 300000,
+        "t": 0.68,
+        "kernel": [
+          0.4631666999430803,
+          -0.005732769763123256
+        ],
+        "MC_mean": [
+          0.4633125974171636,
+          -0.005971186188087038
+        ],
+        "complex_RMS_standard_error": 0.0016179264322068424,
+        "absolute_error": 0.00027951469484875326,
+        "error_over_RMS_SE": 0.17276106582145198
+      }
+    ]
+  },
+  "degree": 51,
+  "diagnostics": [
+    {
+      "candidate": {
+        "name": "phase-pure",
+        "u": {
+          "real": [
+            1.0,
+            0.0
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "v": {
+          "real": [
+            1.0,
+            0.0
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "H": {
+          "real": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "K": {
+          "real": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "grades": [
+          1,
+          3
+        ],
+        "scales": [
+          1.0,
+          1.0
+        ]
+      },
+      "D_head_conjugate_mixture": 0.5803650446773824,
+      "D_head_oriented_complex": 0.5803650446773824,
+      "coefficient_cross_radius_max_drift": 9.52479555601855e-13,
+      "orientation_phase": 1.0755601093730167e-16,
+      "first_odd_real_coefficients": [
+        0.7853981633974483,
+        0.09817477042468105,
+        0.0368155389092554,
+        0.019174759848570512,
+        0.011744540407249435,
+        0.007927564774893352,
+        0.005709734153345791
+      ],
+      "branch_checks": [
+        {
+          "min_real_a": 1.0,
+          "min_real_d": 1.0,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.6724000000000002,
+          "fft_points": 2048,
+          "radius": 0.82,
+          "degree": 51,
+          "max_even_coefficient": 6.064792505237447e-14
+        },
+        {
+          "min_real_a": 1.0,
+          "min_real_d": 1.0,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.8100000000000004,
+          "fft_points": 4096,
+          "radius": 0.9,
+          "degree": 51,
+          "max_even_coefficient": 6.425764184914522e-16
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "name": "phase-opposed-a027",
+        "u": {
+          "real": [
+            0.9654290825583872,
+            0.26066585229076455
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "v": {
+          "real": [
+            0.9654290825583872,
+            -0.26066585229076455
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "H": {
+          "real": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "K": {
+          "real": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "grades": [
+          1,
+          3
+        ],
+        "scales": [
+          1.0,
+          1.0
+        ]
+      },
+      "D_head_conjugate_mixture": 0.6906052965519195,
+      "D_head_oriented_complex": 0.6906052965519195,
+      "coefficient_cross_radius_max_drift": 1.5861687035851895e-12,
+      "orientation_phase": 1.1016241872132934e-16,
+      "first_odd_real_coefficients": [
+        0.7320329605717666,
+        0.026126565565499114,
+        0.008511284370996733,
+        0.0035451819193885754,
+        0.0016007786856254403,
+        0.0007726982947922673,
+        0.00039335278788982117
+      ],
+      "branch_checks": [
+        {
+          "min_real_a": 0.9999999999999999,
+          "min_real_d": 0.9999999999999999,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.6427988063347084,
+          "fft_points": 2048,
+          "radius": 0.82,
+          "degree": 51,
+          "max_even_coefficient": 3.317157779969106e-14
+        },
+        {
+          "min_real_a": 0.9999999999999999,
+          "min_real_d": 0.9999999999999999,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.7892210083312312,
+          "fft_points": 4096,
+          "radius": 0.9,
+          "degree": 51,
+          "max_even_coefficient": 4.970441879512991e-16
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "name": "phase-opposed-a030",
+        "u": {
+          "real": [
+            0.9578262852211513,
+            0.2873478855663454
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "v": {
+          "real": [
+            0.9578262852211513,
+            -0.2873478855663454
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "H": {
+          "real": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "K": {
+          "real": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "grades": [
+          1,
+          3
+        ],
+        "scales": [
+          1.0,
+          1.0
+        ]
+      },
+      "D_head_conjugate_mixture": 0.7033149748836921,
+      "D_head_oriented_complex": 0.7033149748836921,
+      "coefficient_cross_radius_max_drift": 1.0958546379937043e-12,
+      "orientation_phase": 1.0617894894129461e-16,
+      "first_odd_real_coefficients": [
+        0.7205487737591271,
+        0.010959546242404875,
+        0.003459161552816947,
+        0.0015639990074405152,
+        0.0006821537878786853,
+        0.00030189597348274656,
+        0.0001379704162753831
+      ],
+      "branch_checks": [
+        {
+          "min_real_a": 0.9999999999999998,
+          "min_real_d": 0.9999999999999998,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.6365157569552515,
+          "fft_points": 2048,
+          "radius": 0.82,
+          "degree": 51,
+          "max_even_coefficient": 2.4552067818351013e-14
+        },
+        {
+          "min_real_a": 0.9999999999999998,
+          "min_real_d": 0.9999999999999998,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.7847846747748506,
+          "fft_points": 4096,
+          "radius": 0.9,
+          "degree": 51,
+          "max_even_coefficient": 4.869195622543012e-16
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "name": "phase-opposed-a032",
+        "u": {
+          "real": [
+            0.9524241471993242,
+            0.30477572710378376
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "v": {
+          "real": [
+            0.9524241471993242,
+            -0.30477572710378376
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "H": {
+          "real": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "K": {
+          "real": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "grades": [
+          1,
+          3
+        ],
+        "scales": [
+          1.0,
+          1.0
+        ]
+      },
+      "D_head_conjugate_mixture": 0.7111890184255419,
+      "D_head_oriented_complex": 0.7111890184255419,
+      "coefficient_cross_radius_max_drift": 1.0789128350570026e-12,
+      "orientation_phase": 1.0978619842263369e-16,
+      "first_odd_real_coefficients": [
+        0.7124439072908639,
+        0.00032520732706758123,
+        0.00010034903037979561,
+        0.0004186387608174044,
+        0.00023012116274662983,
+        0.00010268073499948573,
+        4.3996569581866444e-05
+      ],
+      "branch_checks": [
+        {
+          "min_real_a": 1.0,
+          "min_real_d": 1.0,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.6321001222321169,
+          "fft_points": 2048,
+          "radius": 0.82,
+          "degree": 51,
+          "max_even_coefficient": 4.483135834129274e-14
+        },
+        {
+          "min_real_a": 1.0,
+          "min_real_d": 1.0,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.781661296500471,
+          "fft_points": 4096,
+          "radius": 0.9,
+          "degree": 51,
+          "max_even_coefficient": 3.6638975594128226e-16
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "name": "phase-opposed-a034",
+        "u": {
+          "real": [
+            0.9467727448197129,
+            0.3219027332387024
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "v": {
+          "real": [
+            0.9467727448197129,
+            -0.3219027332387024
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "H": {
+          "real": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "K": {
+          "real": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "grades": [
+          1,
+          3
+        ],
+        "scales": [
+          1.0,
+          1.0
+        ]
+      },
+      "D_head_conjugate_mixture": 0.6894557025647039,
+      "D_head_oriented_complex": 0.6894557025647039,
+      "coefficient_cross_radius_max_drift": 9.4396619008294e-13,
+      "orientation_phase": 1.078061852074762e-16,
+      "first_odd_real_coefficients": [
+        0.7040141299726144,
+        -0.010675085150335105,
+        -0.003216515173141256,
+        -0.0005637569362431748,
+        -8.902605563653593e-05,
+        -1.2390414845486574e-05,
+        -1.067637354594181e-06
+      ],
+      "branch_checks": [
+        {
+          "min_real_a": 1.0000000000000002,
+          "min_real_d": 1.0000000000000002,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.6275237779012235,
+          "fft_points": 2048,
+          "radius": 0.82,
+          "degree": 51,
+          "max_even_coefficient": 4.6327479760891074e-14
+        },
+        {
+          "min_real_a": 1.0000000000000002,
+          "min_real_d": 1.0000000000000002,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.7784193143865012,
+          "fft_points": 4096,
+          "radius": 0.9,
+          "degree": 51,
+          "max_even_coefficient": 4.4144709393832564e-16
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "name": "symmetric-cross-chirp-008",
+        "u": {
+          "real": [
+            0.9524241471993242,
+            0.30477572710378376
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "v": {
+          "real": [
+            0.9524241471993242,
+            -0.30477572710378376
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "H": {
+          "real": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              -0.08
+            ],
+            [
+              0.08,
+              0.0
+            ]
+          ]
+        },
+        "K": {
+          "real": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              -0.08
+            ],
+            [
+              0.08,
+              0.0
+            ]
+          ]
+        },
+        "grades": [
+          1,
+          3
+        ],
+        "scales": [
+          1.0,
+          1.0
+        ]
+      },
+      "D_head_conjugate_mixture": 0.6832615407877112,
+      "D_head_oriented_complex": 0.6832615407877112,
+      "coefficient_cross_radius_max_drift": 1.1956717799454707e-12,
+      "orientation_phase": 1.0864123257771499e-16,
+      "first_odd_real_coefficients": [
+        0.6984801684716392,
+        0.00779884847857503,
+        0.006354757266543977,
+        0.0006080822809941662,
+        0.00027046575685748435,
+        0.00010604024220607046,
+        4.5488240739134914e-05
+      ],
+      "branch_checks": [
+        {
+          "min_real_a": 0.9877460062021908,
+          "min_real_d": 0.9877460062021906,
+          "min_abs_det": 1.0070221806556954,
+          "max_abs_hypergeometric_argument": 0.609760029978459,
+          "fft_points": 2048,
+          "radius": 0.82,
+          "degree": 51,
+          "max_even_coefficient": 7.473230911288633e-14
+        },
+        {
+          "min_real_a": 0.9852451193620859,
+          "min_real_d": 0.9852451193620858,
+          "min_abs_det": 1.0044055665135616,
+          "max_abs_hypergeometric_argument": 0.7495246612978249,
+          "fft_points": 4096,
+          "radius": 0.9,
+          "degree": 51,
+          "max_even_coefficient": 3.112611186776086e-16
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "name": "symmetric-cross-chirp-016",
+        "u": {
+          "real": [
+            0.9524241471993242,
+            0.30477572710378376
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "v": {
+          "real": [
+            0.9524241471993242,
+            -0.30477572710378376
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "H": {
+          "real": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              -0.16
+            ],
+            [
+              0.16,
+              0.0
+            ]
+          ]
+        },
+        "K": {
+          "real": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              -0.16
+            ],
+            [
+              0.16,
+              0.0
+            ]
+          ]
+        },
+        "grades": [
+          1,
+          3
+        ],
+        "scales": [
+          1.0,
+          1.0
+        ]
+      },
+      "D_head_conjugate_mixture": 0.6036678519748837,
+      "D_head_oriented_complex": 0.6036678519748837,
+      "coefficient_cross_radius_max_drift": 4.1312095902432905e-13,
+      "orientation_phase": 1.0680136576981759e-16,
+      "first_odd_real_coefficients": [
+        0.6586833240642233,
+        0.028677330205761645,
+        0.0226114201362675,
+        0.0025716971583448003,
+        0.0008433259202205777,
+        0.0002040779669560205,
+        6.524776451935678e-05
+      ],
+      "branch_checks": [
+        {
+          "min_real_a": 0.9530141287644163,
+          "min_real_d": 0.9530141287644163,
+          "min_abs_det": 1.0282007928271284,
+          "max_abs_hypergeometric_argument": 0.5517813782710616,
+          "fft_points": 2048,
+          "radius": 0.82,
+          "degree": 51,
+          "max_even_coefficient": 2.028574257689758e-14
+        },
+        {
+          "min_real_a": 0.9438354946582536,
+          "min_real_d": 0.9438354946582532,
+          "min_abs_det": 1.0176660242169857,
+          "max_abs_hypergeometric_argument": 0.6735391018858141,
+          "fft_points": 4096,
+          "radius": 0.9,
+          "degree": 51,
+          "max_even_coefficient": 4.558517441140365e-16
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "name": "asym-diagonal",
+        "u": {
+          "real": [
+            0.9524241471993242,
+            0.30477572710378376
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "v": {
+          "real": [
+            0.9524241471993242,
+            -0.30477572710378376
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "H": {
+          "real": [
+            [
+              0.08,
+              0.0
+            ],
+            [
+              0.0,
+              -0.04
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "K": {
+          "real": [
+            [
+              -0.03,
+              0.0
+            ],
+            [
+              0.0,
+              0.07
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "grades": [
+          1,
+          3
+        ],
+        "scales": [
+          1.0,
+          1.0
+        ]
+      },
+      "D_head_conjugate_mixture": 0.7028103826366421,
+      "D_head_oriented_complex": 0.6901123498771427,
+      "coefficient_cross_radius_max_drift": 1.1544829698636986e-12,
+      "orientation_phase": -0.06505806288792566,
+      "first_odd_real_coefficients": [
+        0.7066194643183729,
+        0.0020612415746432,
+        -1.9134445062421826e-05,
+        -0.0007308334506469364,
+        0.0007093065310425171,
+        0.00021740792584893327,
+        5.203048351823981e-05
+      ],
+      "branch_checks": [
+        {
+          "min_real_a": 0.9741910420078395,
+          "min_real_d": 0.9491724067310038,
+          "min_abs_det": 1.0044491074337953,
+          "max_abs_hypergeometric_argument": 0.6272916410341246,
+          "fft_points": 2048,
+          "radius": 0.82,
+          "degree": 51,
+          "max_even_coefficient": 1.71103633831619e-14
+        },
+        {
+          "min_real_a": 0.9691042758812735,
+          "min_real_d": 0.9384849723643881,
+          "min_abs_det": 1.0034840851167084,
+          "max_abs_hypergeometric_argument": 0.7738715662920647,
+          "fft_points": 4096,
+          "radius": 0.9,
+          "degree": 51,
+          "max_even_coefficient": 2.8008920625263793e-16
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "name": "asym-imaginary-offdiag",
+        "u": {
+          "real": [
+            0.9524241471993242,
+            0.30477572710378376
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "v": {
+          "real": [
+            0.9524241471993242,
+            -0.30477572710378376
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "H": {
+          "real": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              -0.12
+            ],
+            [
+              0.12,
+              0.0
+            ]
+          ]
+        },
+        "K": {
+          "real": [
+            [
+              -0.0,
+              0.0
+            ],
+            [
+              -0.0,
+              -0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.04
+            ],
+            [
+              -0.04,
+              0.0
+            ]
+          ]
+        },
+        "grades": [
+          1,
+          3
+        ],
+        "scales": [
+          1.0,
+          1.0
+        ]
+      },
+      "D_head_conjugate_mixture": 0.6124867581097336,
+      "D_head_oriented_complex": 0.6124867581097336,
+      "coefficient_cross_radius_max_drift": 1.1621287966199259e-12,
+      "orientation_phase": 1.12031356027544e-16,
+      "first_odd_real_coefficients": [
+        0.6603815686645336,
+        -0.03870300773578967,
+        -0.007802549639325982,
+        0.0009941354243373866,
+        0.00025276689984096755,
+        7.833344107055661e-05,
+        3.600018482982031e-05
+      ],
+      "branch_checks": [
+        {
+          "min_real_a": 0.9806274357412981,
+          "min_real_d": 0.9851663766047942,
+          "min_abs_det": 1.0116873808401432,
+          "max_abs_hypergeometric_argument": 0.6227457033069054,
+          "fft_points": 2048,
+          "radius": 0.82,
+          "degree": 51,
+          "max_even_coefficient": 2.3873418811582422e-14
+        },
+        {
+          "min_real_a": 0.9785237227151993,
+          "min_real_d": 0.9812266440777003,
+          "min_abs_det": 1.0097343979849152,
+          "max_abs_hypergeometric_argument": 0.7708237543568447,
+          "fft_points": 4096,
+          "radius": 0.9,
+          "degree": 51,
+          "max_even_coefficient": 4.29331247579501e-16
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "name": "asym-real-offdiag",
+        "u": {
+          "real": [
+            0.9524241471993242,
+            0.30477572710378376
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "v": {
+          "real": [
+            0.9524241471993242,
+            -0.30477572710378376
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "H": {
+          "real": [
+            [
+              0.0,
+              0.12
+            ],
+            [
+              0.12,
+              0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "K": {
+          "real": [
+            [
+              -0.0,
+              -0.04
+            ],
+            [
+              -0.04,
+              -0.0
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "grades": [
+          1,
+          3
+        ],
+        "scales": [
+          1.0,
+          1.0
+        ]
+      },
+      "D_head_conjugate_mixture": 0.6882238919273017,
+      "D_head_oriented_complex": 0.6642769731555069,
+      "coefficient_cross_radius_max_drift": 1.4566986678270353e-12,
+      "orientation_phase": -0.002413883049877779,
+      "first_odd_real_coefficients": [
+        0.6952910984373794,
+        0.00040434507973800853,
+        -0.004697966872124391,
+        0.001477237055795064,
+        -0.0004254344808719845,
+        -5.273894252133084e-05,
+        -3.1053746243412147e-06
+      ],
+      "branch_checks": [
+        {
+          "min_real_a": 0.9742096991904298,
+          "min_real_d": 0.9609737155086517,
+          "min_abs_det": 1.0116873808401432,
+          "max_abs_hypergeometric_argument": 0.6308510430201039,
+          "fft_points": 2048,
+          "radius": 0.82,
+          "degree": 51,
+          "max_even_coefficient": 4.829064799457637e-14
+        },
+        {
+          "min_real_a": 0.9691794223388073,
+          "min_real_d": 0.9458005775123561,
+          "min_abs_det": 1.0097343979849152,
+          "max_abs_hypergeometric_argument": 0.7859208393874596,
+          "fft_points": 4096,
+          "radius": 0.9,
+          "degree": 51,
+          "max_even_coefficient": 3.3554309888462785e-16
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "name": "asym-general-1",
+        "u": {
+          "real": [
+            0.9524241471993242,
+            0.30477572710378376
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "v": {
+          "real": [
+            0.9578262852211515,
+            -0.28162005885692487
+          ],
+          "imag": [
+            0.0,
+            -0.057087212130841676
+          ]
+        },
+        "H": {
+          "real": [
+            [
+              0.03,
+              0.0
+            ],
+            [
+              0.0,
+              -0.03
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              -0.08
+            ],
+            [
+              0.08,
+              0.0
+            ]
+          ]
+        },
+        "K": {
+          "real": [
+            [
+              0.02,
+              -0.06
+            ],
+            [
+              -0.06,
+              0.02
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "grades": [
+          1,
+          3
+        ],
+        "scales": [
+          1.0,
+          1.0
+        ]
+      },
+      "D_head_conjugate_mixture": 0.6749432024656741,
+      "D_head_oriented_complex": 0.6367542905575376,
+      "coefficient_cross_radius_max_drift": 9.898389515829215e-13,
+      "orientation_phase": 0.03265788469018673,
+      "first_odd_real_coefficients": [
+        0.684190576319612,
+        -0.0069632493602612994,
+        -0.0003598739636546971,
+        0.0013039352752646565,
+        0.00024793930006250075,
+        0.00020935278306191037,
+        8.735816876473537e-05
+      ],
+      "branch_checks": [
+        {
+          "min_real_a": 0.9687491409566418,
+          "min_real_d": 0.9737560064687673,
+          "min_abs_det": 1.0108316975103533,
+          "max_abs_hypergeometric_argument": 0.6316044669459239,
+          "fft_points": 2048,
+          "radius": 0.82,
+          "degree": 51,
+          "max_even_coefficient": 7.068155144802578e-14
+        },
+        {
+          "min_real_a": 0.9599191171801033,
+          "min_real_d": 0.9688534271007753,
+          "min_abs_det": 1.0106316083194518,
+          "max_abs_hypergeometric_argument": 0.7846418705386989,
+          "fft_points": 4096,
+          "radius": 0.9,
+          "degree": 51,
+          "max_even_coefficient": 3.893072519341121e-16
+        }
+      ]
+    },
+    {
+      "candidate": {
+        "name": "asym-general-2",
+        "u": {
+          "real": [
+            0.9524241471993242,
+            0.30477572710378376
+          ],
+          "imag": [
+            0.0,
+            0.0
+          ]
+        },
+        "v": {
+          "real": [
+            0.9467727448197129,
+            -0.31548611016299716
+          ],
+          "imag": [
+            0.0,
+            0.06395220059363411
+          ]
+        },
+        "H": {
+          "real": [
+            [
+              0.03,
+              0.0
+            ],
+            [
+              0.0,
+              -0.03
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.08
+            ],
+            [
+              -0.08,
+              0.0
+            ]
+          ]
+        },
+        "K": {
+          "real": [
+            [
+              0.02,
+              0.06
+            ],
+            [
+              0.06,
+              0.02
+            ]
+          ],
+          "imag": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0
+            ]
+          ]
+        },
+        "grades": [
+          1,
+          3
+        ],
+        "scales": [
+          1.0,
+          1.0
+        ]
+      },
+      "D_head_conjugate_mixture": 0.6909617988955818,
+      "D_head_oriented_complex": 0.6791419063235506,
+      "coefficient_cross_radius_max_drift": 1.2931202875502145e-12,
+      "orientation_phase": 0.030503147939013858,
+      "first_odd_real_coefficients": [
+        0.711502025705132,
+        0.017997961366121792,
+        0.0017499099275861008,
+        0.0004895335190155209,
+        0.00020069515965418877,
+        7.768641574225216e-05,
+        1.2587970881946358e-05
+      ],
+      "branch_checks": [
+        {
+          "min_real_a": 0.9670881903056835,
+          "min_real_d": 0.9757573104322473,
+          "min_abs_det": 1.0108316975103533,
+          "max_abs_hypergeometric_argument": 0.6206067738073685,
+          "fft_points": 2048,
+          "radius": 0.82,
+          "degree": 51,
+          "max_even_coefficient": 3.849422040269482e-14
+        },
+        {
+          "min_real_a": 0.9579297539047003,
+          "min_real_d": 0.9703671886769822,
+          "min_abs_det": 1.0106316083194518,
+          "max_abs_hypergeometric_argument": 0.7687363432674024,
+          "fft_points": 4096,
+          "radius": 0.9,
+          "degree": 51,
+          "max_even_coefficient": 4.297617797672355e-16
+        }
+      ]
+    }
+  ],
+  "best_head_candidate": "phase-opposed-a032",
+  "no_endpoint_claim": "No tail enclosure, interval coefficient calculation, or global optimizer is supplied."
+}

@@ -1,0 +1,26 @@
+{
+  "discovery": {
+    "constant_rounding_allowance": "1/1000000000",
+    "method": "five-coefficient LP, fixed old cuts, exact rational acceptance",
+    "objective_x": "1/10"
+  },
+  "format": "rankone-reused-stein/v1",
+  "new_P": [
+    "689825183713/500000000000",
+    "0",
+    "10791761709/250000000000",
+    "-222558237/500000000000",
+    "4094473/200000000000"
+  ],
+  "node_ref": [
+    15,
+    1,
+    5
+  ],
+  "source_selection": "handoff/research-third-decimal/rank-one-certification-20261023/law/m15-localized-selection.json",
+  "source_selection_sha256": "3c92d33898a7ffef9c0a8d880dd9e35f903dea82744ccfc07d24b8c46fb9220b",
+  "x_interval": [
+    "0",
+    "31/256"
+  ]
+}

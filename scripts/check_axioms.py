@@ -20,6 +20,9 @@ NATIVE |= {f"Grothe.LowerAnalytic.capRange{k:02d}_{j}._native.native_decide.ax_1
 # lower: the certificate check in 13 single-threaded chunks (Grothe/Lower/Cert/)
 NATIVE |= {f"Grothe.Lower.{n}._native.native_decide.ax_1_1" for n in
            ['certRows0', 'certRows1', 'certRows2', 'certRows3', 'certRows4', 'certBatches0', 'certBatches1', 'certBatches2', 'certBoxes0', 'certBoxes1', 'certBoxes2', 'certBoxes3', 'certPartition']}
+NATIVE |= {f"Grothe.Research.RefinedLowerCheck.{n}._native.native_decide.ax_1_1" for n in
+           ['certRefinedBoxes0', 'certRefinedBoxes1', 'certRefinedBoxes2',
+            'certRefinedBoxes3', 'certRefinedPartition']}
 REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
             "Grothe.Lower.lower_endpoint", "Grothe.Lower.lower_bound_of_transferL2",
             "Grothe.LowerAnalytic.gaussian_steinInputs", "Grothe.LowerAnalytic.lower_bound_gaussian",
@@ -198,25 +201,74 @@ POWER_HAAGERUP = {
     'Grothe.haagerup_bound',
 }
 REQUIRED |= POWER_HAAGERUP
-# `--caps`: the report of scratch/AxiomsCaps.lean (separate target GrotheCaps, see README)
+# Coupled-image and semiconvex ingredients: every public fact is audited.
+RESEARCH_CORE = {
+    'Grothe.Research.CoupledMajorizer.complex_norm_majorizer',
+    'Grothe.Research.CoupledMajorizer.complex_norm_majorizer_exact',
+    'Grothe.Research.CoupledMajorizer.coupled_update_bound',
+    'Grothe.Research.CoupledMajorizer.finite_weighted_majorizer',
+    'Grothe.Research.CoupledMajorizer.diagonal_step_identity',
+    'Grothe.Research.CoupledMajorizer.finite_diagonal_descent',
+    'Grothe.Research.CoupledMajorizer.finite_diagonal_strict_descent',
+    'Grothe.Research.SemiconvexChord.chord_of_lifted',
+    'Grothe.Research.SemiconvexChord.profile_square',
+    'Grothe.Research.SemiconvexChord.finite_expectation_chord',
+    'Grothe.Research.SemiconvexChord.gate_reassembly',
+    'Grothe.Research.SemiconvexChord.chord_allowance',
+    'Grothe.Research.SemiconvexChord.checked_mesh_allowance',
+}
+REQUIRED |= RESEARCH_CORE
+
+# The sharper Hardy tail reuses the existing head fact; no native fact is added.
+HARDY_BUDGET = {
+    'Grothe.hardy_budget_after_linear',
+    'Grothe.head_residual_le',
+    'Grothe.linear_lower',
+    'Grothe.tail_numeric',
+    'Grothe.tail_le',
+    'Grothe.upper_value_improves',
+    'Grothe.fresh_upper',
+    'Grothe.UpperChaos.fresh_upper_rounder',
+}
+REQUIRED |= HARDY_BUDGET
+
+REFINED_LOWER = {
+    f'Grothe.Research.RefinedLower.{name}' for name in [
+        'profile_bound_of_refined_cover', 'witnessCap_of_refined_cover_reduction',
+        'witnessCap_of_refined_cover', 'transferInputs_of_refined_cover',
+        'lower_bound_of_refined_cover', 'strict_lower_bound_of_refined_cover']
+} | {
+    f'Grothe.Research.RefinedLowerCheck.{name}' for name in [
+        'certRefinedBoxes0', 'certRefinedBoxes1', 'certRefinedBoxes2',
+        'certRefinedBoxes3', 'certRefinedPartition', 'refined_cover_checked',
+        'refined_reciprocal_lower_bound', 'refined_endpoint_lt_reciprocal',
+        'lower_bound_of_refined_cover_data']
+}
+REQUIRED |= REFINED_LOWER
+# Select one targeted audit, or require every family for the full report.
+audit_modes = [flag for flag in (
+    "--caps", "--responses", "--response-geometry", "--haagerup-power",
+    "--research", "--hardy-budget", "--refined-cover") if flag in sys.argv]
+if len(audit_modes) > 1:
+    sys.exit("choose one axiom audit mode")
 if "--caps" in sys.argv:
     REQUIRED = {"Grothe.LowerAnalytic.lower_bound_of_capsRest"}
-# Check the combined response proof families without rebuilding the endpoint
-# certificates. These generic theorems must use no numerical native facts.
-if "--responses" in sys.argv:
-    if "--caps" in sys.argv:
-        sys.exit("choose either --caps or --responses")
+elif "--responses" in sys.argv:
     REQUIRED = RESPONSE_GEOMETRY | JOINT_RESPONSE
     NATIVE = set()
 elif "--response-geometry" in sys.argv:
     REQUIRED = RESPONSE_GEOMETRY
     NATIVE = set()
-# The hypothesis-free power route must use its own numerical fact only.
-if "--haagerup-power" in sys.argv:
-    if any(flag in sys.argv for flag in ("--caps", "--responses", "--response-geometry")):
-        sys.exit("choose one axiom audit mode")
+elif "--haagerup-power" in sys.argv:
     REQUIRED = POWER_HAAGERUP
     NATIVE = {"Grothe.HaagerupPower.check._native.native_decide.ax_1_1"}
+elif "--research" in sys.argv:
+    REQUIRED = RESEARCH_CORE
+    NATIVE = set()
+elif "--hardy-budget" in sys.argv:
+    REQUIRED = HARDY_BUDGET
+elif "--refined-cover" in sys.argv:
+    REQUIRED = REFINED_LOWER
 text = sys.stdin.read()
 if re.search(r"(^|\n)[^\n]*: error", text):
     sys.exit("the axiom report contains Lean errors")

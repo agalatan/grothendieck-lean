@@ -1,0 +1,80 @@
+{
+  "scope": "Deterministic floating check of the independent-cubic flat Hessian sector.\n\nThe nonnegativity is proved algebraically in FULL_HESSIAN_AND_FLAT_SECTOR.md.\nThis script checks the contact and regularized margins by Rice quadrature;\nthese decimals are not interval enclosures or a Grothendieck certificate.\n",
+  "epsilon": "149/200",
+  "Laguerre_order": 192,
+  "fixture_sha256": "15a863df1e06635370165f3fa922ca019bd036a1652869168e10d7c6d4ba7ef0",
+  "contact": {
+    "ell": 0.8565701672801842,
+    "beta": 0.14750207856597156,
+    "v": 0.028299873803404752,
+    "R0": 2.6845637583892517,
+    "target_2_over_epsilon": 2.684563758389262,
+    "stationarity_residual": -1.021405182655144e-14
+  },
+  "adaptive_quadrature_error_estimate_not_enclosure": 5.2661337613626016e-11,
+  "rows": [
+    {
+      "eta": 0.1,
+      "R_eta": 1.7977710323671146,
+      "D_eta": 0.6655171640200738,
+      "rice_mass": 0.9999999999999999,
+      "signed_full_hessian_margin": 0.06356076147266143,
+      "variance_identity_margin": 0.06356076147265921,
+      "contact_error_contribution": 2.220446049250313e-15
+    },
+    {
+      "eta": 0.05,
+      "R_eta": 2.0863997750484033,
+      "D_eta": 0.8615823228992663,
+      "rice_mass": 0.9999999999999999,
+      "signed_full_hessian_margin": 0.05082414892803855,
+      "variance_identity_margin": 0.05082414892803544,
+      "contact_error_contribution": 3.1086244689504383e-15
+    },
+    {
+      "eta": 0.02,
+      "R_eta": 2.3551868093552506,
+      "D_eta": 1.0638301367430576,
+      "rice_mass": 0.9999999999999999,
+      "signed_full_hessian_margin": 0.03071909782157789,
+      "variance_identity_margin": 0.030719097821573893,
+      "contact_error_contribution": 3.9968028886505635e-15
+    },
+    {
+      "eta": 0.01,
+      "R_eta": 2.4839768839628573,
+      "D_eta": 1.1679468902951402,
+      "rice_mass": 0.9999999999999999,
+      "signed_full_hessian_margin": 0.018758099233625147,
+      "variance_identity_margin": 0.018758099233620706,
+      "contact_error_contribution": 4.440892098500626e-15
+    },
+    {
+      "eta": 0.005,
+      "R_eta": 2.565908605902621,
+      "D_eta": 1.2369688229214322,
+      "rice_mass": 0.9999999999999999,
+      "signed_full_hessian_margin": 0.010719874042776523,
+      "variance_identity_margin": 0.01071987404277186,
+      "contact_error_contribution": 4.6629367034256575e-15
+    },
+    {
+      "eta": 0.002,
+      "R_eta": 2.6272638307221454,
+      "D_eta": 1.2903738934051476,
+      "rice_mass": 0.9999999999999999,
+      "signed_full_hessian_margin": 0.004780430659023338,
+      "variance_identity_margin": 0.004780430659018453,
+      "contact_error_contribution": 4.884981308350689e-15
+    },
+    {
+      "eta": 0.001,
+      "R_eta": 2.6521690473094632,
+      "D_eta": 1.312592666146578,
+      "rice_mass": 0.9999999999999999,
+      "signed_full_hessian_margin": 0.0025100440585137385,
+      "variance_identity_margin": 0.0025100440585088535,
+      "contact_error_contribution": 4.884981308350689e-15
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "status": "PASS: rigorous restricted-model operator obstruction",
+  "scope": "Independent ordinary complex z of grade1, charge-one under z rotation alone; auxiliary either any finite/countable neutral Gaussian family Y correlated by t\u00b2I, or ordinary real Gaussian family V correlated by tI with responses globally even in V. Arbitrary joint radial/auxiliary dependence is allowed.",
+  "python_flint_version": "0.9.0",
+  "moments": {
+    "precision_bits": 128,
+    "mesh_denominator": 1000,
+    "radius": 6,
+    "rectangles_per_integral": 6000,
+    "rational_caps": [
+      2,
+      2,
+      1
+    ],
+    "finite_upper_enclosures": [
+      "[1.1597761209288637965167372618002566 +/- 4.11e-35]",
+      "[0.9147511694958414186489339711358701 +/- 6.02e-35]",
+      "[0.7827056486441284638467608023910156 +/- 4.25e-35]"
+    ],
+    "tail_upper_enclosures": [
+      "[3.105455629927837988460316400127576422e-20 +/- 5.79e-57]",
+      "[2.324875198034021463793695729666619278e-17 +/- 1.33e-54]",
+      "[6.408513964264176573316606630517134634e-15 +/- 5.14e-52]"
+    ],
+    "zeta_upper_enclosures": [
+      "[1.1597761209288637965477918180995350 +/- 3.64e-35]",
+      "[0.9147511694958414418976859514760847 +/- 2.23e-35]",
+      "[0.7827056486441348723607250665675889 +/- 5.91e-35]"
+    ]
+  },
+  "hankel_certificate": {
+    "status": "PASS: rigorous Arb rectangle and analytic-tail upper bound",
+    "python_flint_version": "0.9.0",
+    "precision_bits": 128,
+    "mesh_denominator": 40,
+    "radius": 6,
+    "rectangles": 57600,
+    "finite_square_upper_enclosure": "[1.660188842218042342489661339299229 +/- 2.54e-34]",
+    "tail_upper_enclosure": "[0.0006993479551824483180694947068200672363 +/- 5.65e-41]",
+    "HS_squared_upper_enclosure": "[1.660888190173224790807730834006049 +/- 1.86e-34]",
+    "certified_HS_squared_lt": 2,
+    "scope": "one-coordinate, charge-one, arbitrary complex disk-valued bilinear responses; alternating functional only"
+  },
+  "rho": "7/8",
+  "eps": "1/1000",
+  "t": "1/500",
+  "gamma_enclosure": "[0.7119586597782638015124585488053977677 +/- 3.55e-38]",
+  "phase_energy_enclosures": [
+    "[0.78539816339744830961566084581987572105 +/- 2.65e-39]",
+    "[0.098174770424681038701957605727484465131 +/- 2.87e-40]",
+    "[0.036815538909255389513234102147806674424 +/- 2.79e-40]"
+  ],
+  "alpha_squared_enclosures": [
+    "[1.1031513594371573462054939402837541537 +/- 4.38e-38]",
+    "[0.13789391992964466827568674253546926921 +/- 7.97e-39]",
+    "[0.05171021997361675060338252845080097596 +/- 6.34e-39]"
+  ],
+  "block_bounds": {
+    "j0_upper": "[0.9999246206684267376215288021052064673 +/- 3.79e-38]",
+    "j0_negative_absolute": "[0.8781250000000000000000000000000000000 +/- 1.38e-38]",
+    "j1_negative_absolute": "[0.9995863885473911953425245791109064556 +/- 3.45e-38]",
+    "j1_upper": "[0.87412500000000000000000000000000000000 +/- 8.39e-39]",
+    "j2_upper": "[0.99900000000000000000000000000000000000 +/- 4.55e-39]",
+    "j2_negative_absolute": "[0.8821250000000000000000000000000000000 +/- 1.33e-38]",
+    "j_ge3_norm": "[0.99900000000000000000000000000000000000 +/- 4.55e-39]"
+  },
+  "uniform_operator_norm_rational": "99993/100000",
+  "D_ceiling_enclosure": "[0.7119088226720793230463526767069813899 +/- 4.13e-38]",
+  "contractions": "Separate linear Gaussian contractions preserving z-charge and auxiliary parity/grade classes may be absorbed into responses; no nonlinear final correlation preprocessing",
+  "included_even_images": "Arbitrary even Gaussian images Q(V), including finite quadratic drivers and arbitrary nonlinear dependence on them; radial coupling with |z| is allowed.",
+  "not_claimed": "No Grothendieck endpoint, nonlinear final preprocessing, symmetry-breaking response, or arbitrary correlated driver process without the stated Gaussian representation is covered."
+}
