@@ -72,7 +72,14 @@ reproduces the MIDCAPS caps, which were made with exactint's 2 × 2 point-RMS pr
 slack only 1e-12 .. 2e-12 at the binding piece (plus capPad 1e-11).
 * Run `CapPDiag` on nodes 14:150 (9 pieces, nq 1024), 14:200 (42 pieces, nq 256/1024) and
   14:280 (167 pieces, nq 256): grid forced to 0, then the stored grid (without 280).
-* STATUS when this file was written: still running on the droplet (lean pid 1457251, log
+* RESULT (pd3, sequential, master sources; raw output `data/caps-m/pd3-results.txt`):
+  * node 14:150 (s = 9/40, one-direction format, 9 pieces on 1600 × 1024): coverage OK, 8/9 pieces pass;
+    piece 0 (the centre slab |τ₃| ≤ 3/1000) fails.
+  * node 14:200 (s = 7/20, two-direction format, 42 pieces on 1600 × 1024 / 1600 × 256): coverage OK,
+    31/42 pass; pieces 0–6, 12, 18, 24, 30 fail (the boxes touching the centre interval I₀ in τ₂ or τ₃).
+  * node 14:280 (s = 11/20, 167 pieces, coarse 400 × 128 forced): pending.
+  * The failing pieces are the ones near the maximiser, where the float slack is ~1e-12.
+* (superseded) STATUS when this file was written: still running on the droplet (lean pid 1457251, log
   `~/grothe-capsm/pdiag2.log`). The droplet was oversubscribed by other sessions (load ≈ 12), so
   it was very slow. The result lines start with `node 14:…` (grep `info:`).
   * If the stored-grid run passes at the binding pieces: generate CapPieceData and run.
