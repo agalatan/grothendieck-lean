@@ -200,6 +200,84 @@ theorem leaf_sound {ts : List ((ℕ × ℕ × ℕ) × ℚ)} (hts : termsOK ts = 
   · positivity
   · simpa [mul_div_assoc] using hE
 
+/-! ### The tree -/
+
+lemma inBox_split {b : Box} {c : Char} (hc : c = 'U' ∨ c = 'V' ∨ c = 'W') {U V W : ℝ}
+    (h : InBox b U V W) : InBox (splitBox b c).1 U V W ∨ InBox (splitBox b c).2 U V W := by
+  obtain ⟨h1, h2, h3, h4, h5, h6⟩ := h
+  rcases hc with rfl | rfl | rfl
+  · rcases le_total ((2 : ℝ) ^ SC * U) (((b.Ul + b.Uh) / 2 : ℤ) : ℝ) with hm | hm
+    · left; exact ⟨h1, hm, h3, h4, h5, h6⟩
+    · right; exact ⟨hm, h2, h3, h4, h5, h6⟩
+  · rcases le_total ((2 : ℝ) ^ SC * V) (((b.Vl + b.Vh) / 2 : ℤ) : ℝ) with hm | hm
+    · left; exact ⟨h1, h2, h3, hm, h5, h6⟩
+    · right; exact ⟨h1, h2, hm, h4, h5, h6⟩
+  · rcases le_total ((2 : ℝ) ^ SC * W) (((b.Wl + b.Wh) / 2 : ℤ) : ℝ) with hm | hm
+    · left; exact ⟨h1, h2, h3, h4, h5, hm⟩
+    · right; exact ⟨h1, h2, h3, h4, hm, h6⟩
+
+/-- **Soundness of the tree walk.** -/
+theorem walk_sound {ts : List ((ℕ × ℕ × ℕ) × ℚ)} (hts : termsOK ts = true) :
+    ∀ (fuel : ℕ) (cs : List Char) (b : Box) (rest : List Char),
+      walk (commonDen ts) (denseA0 ts) fuel cs b = some rest →
+      ∀ U V W : ℝ, InBox b U V W → W ^ 2 ≤ U * V → U + V < 60 → gphi ts U V W ≤ 3 := by
+  intro fuel
+  induction fuel with
+  | zero => intro cs b rest h; simp [walk] at h
+  | succ fuel ih =>
+    intro cs b rest h U V W hb hW2 h60
+    cases cs with
+    | nil => simp [walk] at h
+    | cons c cs =>
+      simp only [walk] at h
+      by_cases hL : c = 'L'
+      · subst hL
+        simp only [↓reduceIte] at h
+        by_cases hok : leafOK (commonDen ts) (denseA0 ts) b = true
+        · exact leaf_sound hts hok hb hW2
+        · simp [hok] at h
+      by_cases hF : c = 'F'
+      · subst hF
+        simp only [show ('F' : Char) ≠ 'L' by decide, ↓reduceIte] at h
+        by_cases hfl : farLeaf b = true
+        · have hfar : 60 * (2 : ℤ) ^ SC ≤ b.Ul + b.Vl := by simpa [farLeaf] using hfl
+          obtain ⟨h1, -, h3, -, -, -⟩ := hb
+          have : (60 : ℝ) * (2 : ℝ) ^ SC ≤ (2 : ℝ) ^ SC * U + (2 : ℝ) ^ SC * V := by
+            have := (Int.cast_le (R := ℝ)).2 hfar; push_cast at this; linarith
+          have hS : (0 : ℝ) < (2 : ℝ) ^ SC := by positivity
+          nlinarith
+        · simp [hfl] at h
+      by_cases hX : c = 'X'
+      · subst hX
+        simp only [show ('X' : Char) ≠ 'L' by decide, show ('X' : Char) ≠ 'F' by decide,
+          ↓reduceIte] at h
+        by_cases hel : emptyLeaf b = true
+        · have he : 0 ≤ b.Ul ∧ 0 ≤ b.Vl ∧ b.Uh * b.Vh < w2lo b := by simpa [emptyLeaf, and_assoc] using hel
+          obtain ⟨h1, h2, h3, h4, h5, h6⟩ := hb
+          have hS : (0 : ℝ) < (2 : ℝ) ^ SC := by positivity
+          have hU : 0 ≤ U := by
+            have : (0 : ℝ) ≤ b.Ul := by exact_mod_cast he.1
+            nlinarith
+          have hV : 0 ≤ V := by
+            have : (0 : ℝ) ≤ b.Vl := by exact_mod_cast he.2.1
+            nlinarith
+          have hlt : (b.Uh : ℝ) * b.Vh < w2lo b := by exact_mod_cast he.2.2
+          have hw := w2lo_le h5 h6
+          have hUV := D_bound hS hU hV h2 h4 hw
+          nlinarith
+        · simp [hel] at h
+      by_cases hS : c = 'U' ∨ c = 'V' ∨ c = 'W'
+      swap
+      · simp [hL, hF, hX, hS] at h
+      simp only [hL, hF, hX, hS, ↓reduceIte] at h
+      · cases h1 : walk (commonDen ts) (denseA0 ts) fuel cs (splitBox b c).1 with
+        | none => simp [h1] at h
+        | some rest' =>
+          simp only [h1] at h
+          rcases inBox_split hS hb with hb' | hb'
+          · exact ih cs _ rest' h1 U V W hb' hW2 h60
+          · exact ih rest' _ rest h U V W hb' hW2 h60
+
 end
 
 end Grothe.UpperChaos
