@@ -224,3 +224,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.GT_rot2
 #print axioms Grothe.UpperChaos.memLp_GT
 #print axioms Grothe.UpperChaos.fresh_upper_concrete
+#print axioms Grothe.UpperChaos.phi_cover_check
+#print axioms Grothe.UpperChaos.leaf_sound
+#print axioms Grothe.UpperChaos.walk_sound
+#print axioms Grothe.UpperChaos.far_sound
+#print axioms Grothe.UpperChaos.phiBound
+#print axioms Grothe.UpperChaos.fresh_upper_rounder

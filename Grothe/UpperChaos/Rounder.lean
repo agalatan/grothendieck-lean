@@ -15,9 +15,9 @@ From the data of `Grothe/Upper/Data.lean` (`profileQ`, `aQ`, `bQ`, `etaQ`, `phas
 * `T = F₀ · P₃(φ)` and its smoothing `G_T(x) = E_Z T(Mx + √(1−η)(I − P_u) Z)`,
   `M = P_u + √η (I − P_u)`, `P_u` the projection on `u = (1, b)` (`GT`).
 
-`G_T` is measurable and of charge one; it is disk-valued as soon as `|φ| ≤ 1` (the certified cover,
-kept as the hypothesis `PhiBound`).  `fresh_upper_concrete`: the sharp upper bound from `PhiBound`,
-a charge-one `X ∈ L²` and the three numerical fields for `E = energy G_T`, `EX = energy X`.
+`G_T` is measurable and of charge one; it is disk-valued as soon as `φ² ≤ 3` (`PhiBound`, proved
+in `PhiBound.lean`).  `fresh_upper_concrete`: the sharp upper bound from `PhiBound`, a charge-one
+`X ∈ L²` and the three numerical fields for `E = energy G_T`, `EX = energy X`.
 -/
 
 open MeasureTheory ProbabilityTheory Grothe.LowerAnalytic Grothe.Upper
@@ -95,11 +95,15 @@ lemma continuous_P3 : Continuous P3 := by unfold P3; fun_prop
 lemma measurable_Tround : Measurable Tround :=
   measurable_F0.mul (continuous_P3.comp continuous_phiT).measurable
 
-/-- The certified cover of the phase: `|φ| ≤ 1` everywhere. -/
-def PhiBound : Prop := ∀ u, |phiT u| ≤ 1
+/-- The phase cover: `φ² ≤ 3` everywhere (proved in `PhiCover.lean`; it is all that
+`|P₃(φ)| ≤ 1` needs). -/
+def PhiBound : Prop := ∀ u, phiT u ^ 2 ≤ 3
 
-lemma norm_Tround_le (hφ : PhiBound) (u : ℂ × ℂ) : ‖Tround u‖ ≤ 1 :=
-  norm_mul_P3_le_one (Haag.norm_ph_le _) (hφ u)
+lemma norm_Tround_le (hφ : PhiBound) (u : ℂ × ℂ) : ‖Tround u‖ ≤ 1 := by
+  rw [Tround, norm_mul]
+  calc ‖F0 u‖ * ‖P3 (phiT u)‖ ≤ 1 * 1 :=
+        mul_le_mul (Haag.norm_ph_le _) (norm_P3_le_one (hφ u)) (norm_nonneg _) zero_le_one
+    _ = 1 := one_mul 1
 
 /-! ### Charge one -/
 
@@ -180,7 +184,7 @@ lemma memLp_GT (hφ : PhiBound) : MemLp GT 2 mu2 :=
 /-! ### The headline -/
 
 /-- **The sharp upper bound for the concrete rounding of the certificate**: the remaining
-hypotheses are the certified cover `|φ| ≤ 1` and the three numerical comparisons between the
+hypotheses are the phase cover `φ² ≤ 3` and the three numerical comparisons between the
 energies of `G_T` and those of a charge-one truncation `X`. -/
 theorem fresh_upper_concrete (hφ : PhiBound) {X : ℂ × ℂ → ℂ} (hXL : MemLp X 2 mu2)
     (hXch : ∀ c u, ‖c‖ = 1 → X (rot2 c u) = c * X u)
