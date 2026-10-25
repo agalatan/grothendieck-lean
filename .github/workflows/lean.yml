@@ -61,7 +61,7 @@ jobs:
         run: |
           # files that affect the Lean build or its checks; everything else (README, docs/, AGENTS.md, tools/, ...)
           # needs no build
-          LEAN_PATHS='^(Grothe/|GrotheKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCaps\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|scratch/AxiomsCaps\.lean$|scripts/check_axioms\.py$|scripts/caps_stamp\.py$|\.github/workflows/)'
+          LEAN_PATHS='^(Grothe/|GrotheKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCaps\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|scratch/AxiomsCaps\.lean$|scripts/check_axioms\.py$|scripts/caps_stamp\.py$|scripts/test_caps_stamp\.py$|\.github/workflows/)'
           if [[ "${GITHUB_REF_NAME}" == ready/* ]]; then base=origin/master          # HEAD = master + this branch
           elif [ "${GITHUB_REF_NAME}" = master ]; then base="$BEFORE"                # the previous master
           else base=$(git merge-base origin/master HEAD); fi                         # what the branch adds to master
@@ -88,6 +88,10 @@ jobs:
           use-mathlib-cache: true
           use-github-cache: false     # no per-branch cache entries: they evict each other in the 10 GB quota
           build: false
+
+      - name: Unit tests of the caps verification script
+        if: steps.scope.outputs.lean == 'true'
+        run: python3 scripts/test_caps_stamp.py
 
       - name: Is the cached GrotheCaps build verified for these sources?
         if: steps.scope.outputs.lean == 'true'
