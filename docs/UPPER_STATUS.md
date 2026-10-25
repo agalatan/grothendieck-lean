@@ -211,4 +211,4 @@ the global bound, so the bands still need per-coefficient enclosures. They need 
 Until step 3 lands, the share of the residual that is proved does not move. Steps 1–2 make the statement explicit and
 checkable, which is still worth doing first: they are cheap, and steps 3–4 build on them.
 
-Follow-up tasks: see the sub-issues of epic #17 linked from #20.
+Follow-up tasks (sub-issues of epic #17): step 1 → #39, step 2 → #40, step 3 → #41.
