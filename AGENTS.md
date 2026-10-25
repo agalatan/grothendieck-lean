@@ -127,6 +127,10 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
 - **What differs for `ready/<topic>`:** the merge with master and the auto-merge. A push to master by CI does not start a
   new run (GitHub never triggers workflows from the workflow token); the merged commit is exactly the tree that was
   checked, and CI marks it with the status "Lean proof check (verified before merge)" linking to that run.
+- **Deliveries that change `.github/workflows/`** cannot be pushed to master with the default workflow token (GitHub
+  refuses it). They auto-merge only if the repository secret `MERGE_TOKEN` exists (a fine-grained personal access token
+  for this repository with *Contents: read and write* and *Workflows: read and write*); otherwise open a pull request
+  and let the user merge it. CI says so explicitly and does not retry.
 - **Cost:** every push uses CI minutes, which the private repository pays for. Push work branches when they matter,
   not after every small commit.
 

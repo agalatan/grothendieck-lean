@@ -28,6 +28,9 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          # MERGE_TOKEN (optional repository secret, fine-grained PAT with contents + workflows write) lets the
+          # auto-merge push deliveries that change .github/workflows; the default token is refused for those
+          token: ${{ secrets.MERGE_TOKEN || github.token }}
 
       - name: Merge the ready branch into the current master
         if: startsWith(github.ref_name, 'ready/')
@@ -99,7 +102,15 @@ jobs:
               gh issue close "$n" --comment "Closed by ${GITHUB_REF_NAME} (CI auto-merge, $(git rev-parse --short merge-candidate))" || true
             done
           else
-            echo "master moved during the build: re-dispatching this ready branch against the new master"
-            gh workflow run lean.yml --ref "${GITHUB_REF_NAME}"
+            git fetch -q origin master
+            if [ "$(git rev-parse origin/master)" != "$base" ]; then
+              echo "master moved during the build: re-dispatching this ready branch against the new master"
+              gh workflow run lean.yml --ref "${GITHUB_REF_NAME}"
+            elif git diff --name-only "$base" merge-candidate | grep -q '^\.github/workflows/'; then
+              echo "::error::The push was refused because this delivery changes .github/workflows and the token may not"
+              echo "::error::update workflows. Add the MERGE_TOKEN secret (see AGENTS.md section 4) or merge it with a PR."
+            else
+              echo "::error::The push to master was refused for another reason (see above). Not retrying."
+            fi
             exit 1
           fi
