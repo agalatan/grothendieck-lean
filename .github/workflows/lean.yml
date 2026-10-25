@@ -14,6 +14,7 @@ on:
 permissions:
   contents: write
   actions: write
+  issues: write
 
 jobs:
   build:
@@ -83,8 +84,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          base=$(git rev-parse origin/master)   # before the push updates origin/master
           if git push origin merge-candidate:master; then
             git push origin --delete "${GITHUB_REF_NAME}"
+            # a push by the workflow token does not trigger GitHub's "Closes #n" handling: close them here
+            for n in $(git log --format=%B "$base"..merge-candidate \
+                       | grep -oiE '(close[sd]?|fix(e[sd])?|resolve[sd]?) +#[0-9]+' | grep -oE '[0-9]+' | sort -u); do
+              gh issue close "$n" --comment "Closed by ${GITHUB_REF_NAME} (CI auto-merge, $(git rev-parse --short merge-candidate))" || true
+            done
           else
             echo "master moved during the build: re-dispatching this ready branch against the new master"
             gh workflow run lean.yml --ref "${GITHUB_REF_NAME}"

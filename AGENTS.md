@@ -19,8 +19,8 @@ the side (`side: lower`, `side: upper`), the owner (`owner: codex`, `owner: clau
   - Comment on the issue when you push a milestone or hit a blocker.
   - Update the labels as things change.
 - **When delivering:**
-  - Put `Closes #<n>` in the body of the delivered commit. The CI auto-merge then closes the issue when it reaches
-    master.
+  - Put `Closes #<n>` in the body of a commit of the delivery. The CI auto-merge closes the issue itself, with a comment
+    naming the delivery, once master moves (GitHub's own keyword handling does not fire for the workflow's push).
   - Tick the task in its epic.
 - **Attack plans and research ideas are issues too** (`area: research`), with the full reasoning and numbers. Do not
   leave them only in a local file.
