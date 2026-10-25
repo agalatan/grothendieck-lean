@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
-"""Stamp of the sources behind the separate target GrotheCaps (the node caps certified in Lean).
+"""Source hash of the separate target GrotheCaps (the node caps certified in Lean), recorded in the build cache.
 
-The 15 modules Grothe/LowerAnalytic/CapRowKK.lean are too heavy for CI. They are built on a
-larger machine with
-    lake build GrotheCaps && lake env lean scratch/AxiomsCaps.lean | python3 scripts/check_axioms.py --caps
-and after a successful run the stamp is recorded with
-    python3 scripts/caps_stamp.py --write "<machine, date, wall time>"
-CI runs `python3 scripts/caps_stamp.py --check`. It fails if any file in the import closure of
-the 15 row modules CapRowKK, plus CapNodes.lean, GrotheCaps.lean, lean-toolchain and lake-manifest.json, changed since the
-recorded verification. Otherwise those modules need no rebuild.
+The 15 heavy modules Grothe/LowerAnalytic/CapRowKK.lean (60 single-threaded native_decide facts, hours) are built only
+on the droplet's self-hosted runner (lean.yml, job "heavy", modes warm/caps). After a successful build and both axiom
+reports there, the runner records the hash of every source they depend on next to the build products:
+    python3 scripts/caps_stamp.py --mark-cache          # writes .lake/build/caps-closure.sha
+and saves .lake/build to the Actions cache. A CI run restores that cache and calls
+    python3 scripts/caps_stamp.py --check-cache         # exit 0 iff the cached caps match the current sources
+On a match the cached caps modules are exactly the verified ones for these sources, so CI builds GrotheCaps (Lake
+replays them) and checks its axiom report; on a mismatch CI dispatches a caps run on the droplet instead of building.
+--digest prints the hash. The hash covers the import closure of the CapRowKK modules plus CapNodes.lean,
+GrotheCaps.lean, lean-toolchain and lake-manifest.json.
 """
 import hashlib, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-STAMP = os.path.join(ROOT, "docs", "CAPS_VERIFIED.txt")
+MARK = os.path.join(ROOT, ".lake", "build", "caps-closure.sha")
 # the heavy modules (60 native range facts) and their import closure; CapNodes itself (a short combination
 # proof) is hashed as a single file: changes elsewhere in the lower development only require re-checking it,
 # which the verification command does anyway.
@@ -51,21 +53,24 @@ def digest():
 
 def main():
     d, n = digest()
-    if "--write" in sys.argv:
-        note = sys.argv[sys.argv.index("--write") + 1] if len(sys.argv) > sys.argv.index("--write") + 1 else ""
-        with open(STAMP, "w") as f:
-            f.write(f"sha256 {d}\nfiles {n}\nverified {note}\n")
-        print(f"recorded {d} ({n} files)")
+    if "--digest" in sys.argv:
+        print(d)
         return
-    if not os.path.exists(STAMP):
-        print(f"WARNING: GrotheCaps has never been verified (current sources {d}, {n} files)")
+    if "--mark-cache" in sys.argv:
+        os.makedirs(os.path.dirname(MARK), exist_ok=True)
+        with open(MARK, "w") as f:
+            f.write(d + "\n")
+        print(f"marked the cached GrotheCaps build as verified for sources {d} ({n} files)")
         return
-    rec = dict(l.split(" ", 1) for l in open(STAMP).read().splitlines() if " " in l)
-    if rec.get("sha256") != d:
-        print(f"FAIL: sources of GrotheCaps changed since the recorded verification ({rec.get('verified', '?')}).")
-        print(f"recorded {rec.get('sha256')}, current {d}. Rebuild GrotheCaps on a large machine and re-stamp.")
+    # --check-cache (default)
+    if not os.path.exists(MARK):
+        print(f"no verified GrotheCaps build in the cache (current sources {d}, {n} files)")
         sys.exit(1)
-    print(f"GrotheCaps sources unchanged since verification: {rec.get('verified', '?')} ({n} files)")
+    rec = open(MARK).read().strip()
+    if rec != d:
+        print(f"the cached GrotheCaps build was verified for sources {rec}, current sources are {d} ({n} files)")
+        sys.exit(1)
+    print(f"the cached GrotheCaps build is verified for the current sources {d} ({n} files)")
 
 
 main()

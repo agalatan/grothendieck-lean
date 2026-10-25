@@ -119,10 +119,11 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
   - the full Lean build;
   - the grep for `sorry` / `axiom` / `implemented_by` / `extern` / `unsafe` / `Task.spawn`;
   - the axiom report (`scripts/check_axioms.py`);
-  - the caps stamp (`scripts/caps_stamp.py --check`).
+  - the caps gate: whether the cached `GrotheCaps` build is verified for the current sources
+    (`scripts/caps_stamp.py --check-cache`); if so, `GrotheCaps` is built (replayed) and its axiom report checked.
 - **Skipped when nothing Lean-relevant changed:** if a push (for `ready/`: the merge with master) touches only files
   outside `Grothe/`, `GrotheKernel/`, the root `.lean` files, `lakefile.toml`, `lake-manifest.json`, `lean-toolchain`,
-  `scratch/Axioms.lean` (the CI axiom report; other `scratch/` files are not built by CI), `scripts/check_axioms.py`, `scripts/caps_stamp.py` and `.github/workflows/`, the build and the checks are
+  `scratch/Axioms.lean`, `scratch/AxiomsCaps.lean` (the CI axiom reports; other `scratch/` files are not built by CI), `scripts/check_axioms.py`, `scripts/caps_stamp.py` and `.github/workflows/`, the build and the checks are
   skipped and the job succeeds. Documentation-only deliveries still auto-merge.
 - **What differs for `ready/<topic>`:** the merge with master and the auto-merge. A push to master by CI does not start a
   new run (GitHub never triggers workflows from the workflow token); the merged commit is exactly the tree that was
@@ -137,10 +138,12 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
   incremental `lake build Grothe GrotheCaps` in a persistent workspace, both axiom reports, then the cache save. So
   GitHub-hosted runs start from master's latest build *including* the verified caps modules. Trust: a cached
   `native_decide` result is not re-executed; only our own runner on master writes the cache, and Lake reuses a file
-  only if its source, dependency and toolchain hashes match. The caps stamp remains an independent check.
-- **Caps changes.** If a `ready/` delivery changes a file in the caps closure, its stamp check fails and CI dispatches a
-  **caps** run on the droplet: it builds `GrotheCaps` for the merged tree (hours), commits the new stamp onto the ready
-  branch and re-dispatches the check. Nothing to do by hand; just wait.
+  only if its source, dependency and toolchain hashes match; the droplet also records the caps' source hash in the cache
+  (`.lake/build/caps-closure.sha`), and CI builds `GrotheCaps` only when it matches.
+- **Caps changes.** If a change touches a file in the caps closure, the cached caps no longer match and CI does not try
+  the hours-long build (it would time out): it dispatches a **caps** run on the droplet for that branch (for `ready/`:
+  the tree merged with master) and fails with a message. The droplet builds `GrotheCaps`, runs both axiom reports, marks
+  and saves a cache for that branch, and re-dispatches the check, which then passes. Nothing to do by hand; just wait.
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for stop/remove).
   It shares Mathlib with the other droplet work via `~/grothe-caps/.lake/packages` — do not delete that directory.
 - **Cost:** every push uses CI minutes, which the private repository pays for. Push work branches when they matter,
@@ -203,5 +206,5 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
   is git-ignored.
 - Bounds and hypotheses are stated in `README.md`, `OVERVIEW.pdf` (source `docs/overview.tex`)
   and `docs/LEAN_DETAILS.md` (see §3, step 6).
-- The node caps (`GrotheCaps`) are not built by CI. If you change any file in their import closure, CI fails at
-  the caps stamp: rebuild them on the droplet and re-stamp (README, "Node caps").
+- The node caps (`GrotheCaps`) are built on the droplet runner and replayed by CI from the cache. Changing a file in
+  their import closure triggers a droplet rebuild of hours (§4) — avoid touching that closure casually.

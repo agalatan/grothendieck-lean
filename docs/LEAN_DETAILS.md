@@ -405,7 +405,7 @@ current tree, so completed verification of the 60 range checks is not claimed he
 | `CapSym`, `CapGrid`, `CapGridT`, `CapGridOK`, `CapTables`, `CapTablesMk` | symbolic polynomials over ℚ(√2); cell prices on uniform polar grids and the exact cell decomposition of the integrated majorant; verified interval tables (`tablesOK_mk`) |
 | `CapPiece`, `CapCheckSound` | node certificate soundness (`pot_le_of_pieceOK`, `pot_le_of_nodeOK`) for the precompiled checker `GrotheKernel/CapCheck.lean` |
 | `CapSymmetry`, `CapHull`, `CapChordData` | the symmetries S_c, S_- of the fibre integral; chord nodes from vertex caps by convexity (`capChords_check`, `nodeCaps_of_vertexCaps`) |
-| `CapRecipeData`, `CapRows`, `CapRow00`–`CapRow18`, `CapNodes` | recipes (generated from `data/cap-recipes/`); `rangeOK` and its soundness; 60 range facts `capRangeKK_j` (target `GrotheCaps`, not built by CI; stamp `docs/CAPS_VERIFIED.txt`); `lower_bound_of_capsRest` |
+| `CapRecipeData`, `CapRows`, `CapRow00`–`CapRow18`, `CapNodes` | recipes (generated from `data/cap-recipes/`); `rangeOK` and its soundness; 60 range facts `capRangeKK_j` (target `GrotheCaps`, built on the droplet runner and replayed by CI from the verified build cache, `scripts/caps_stamp.py`); `lower_bound_of_capsRest` |
 | `CapCover`, `CapConstr`, `CapPieceNodes` | localised caps of rows 12–15 (route M): coverage by constrained pieces up to S_c, S_-; the S-lemma bound on a piece; piece-node checks (issue #12) |
 
 **`Grothe/Lower/Cert/`: the lower certificate in 13 single-threaded chunks.** `Rows0`–`Rows4`, `Batches0`–`Batches2`,

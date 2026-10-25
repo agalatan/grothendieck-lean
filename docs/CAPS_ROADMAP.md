@@ -6,8 +6,8 @@ This is the single entry point for anyone (Codex or Claude) continuing the node 
 
 The lower bound is `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401695322458 < K`, in the separate
 target `GrotheCaps` (see the README, "Node caps"). `CapsRest` is the vertex caps of **rows 12–15** (t = 0.84, 0.845,
-0.85, 0.855). Rows 0–11 and 16–18 are certified: 60 native range facts, verified on the droplet, stamp in
-`docs/CAPS_VERIFIED.txt`. Removing `CapsRest` makes the lower bound unconditional, apart from the 77 pinned native
+0.85, 0.855). Rows 0–11 and 16–18 are certified: 60 native range facts, built by the droplet's CI runner
+and replayed by CI from the verified build cache (`.lake/build/caps-closure.sha`, see `AGENTS.md` §4). Removing `CapsRest` makes the lower bound unconditional, apart from the 77 pinned native
 facts.
 
 ## Tracks
@@ -93,6 +93,7 @@ This does not depend on B's choice of fix. B's choice only changes the data.
   ```sh
   lake build GrotheCaps && lake env lean scratch/AxiomsCaps.lean | python3 scripts/check_axioms.py --caps
   ```
-  Then run `python3 scripts/caps_stamp.py --write "<machine, date, wall time, branch sha>"` and commit
-  `docs/CAPS_VERIFIED.txt`.
-- **Delivery:** through `ready/<agent>-<topic>` (`AGENTS.md` §3). CI skips the caps build and checks the stamp.
+  This now runs automatically on the droplet's CI runner (job `heavy`, modes `warm`/`caps`), which marks and saves the
+  verified build cache; no manual stamp.
+- **Delivery:** through `ready/<agent>-<topic>` (`AGENTS.md` §3). A change to the caps closure makes CI dispatch the
+  rebuild to the droplet automatically (hours) and re-check afterwards.

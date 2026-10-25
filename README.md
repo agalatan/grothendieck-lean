@@ -97,17 +97,14 @@ four per row, one module `CapRowKK.lean` per row; no parallel tasks). Hence
 `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → Llow < K`, where **`CapsRest`** comprises the vertex caps
 of the rows 0.84, 0.845, 0.85, 0.855 and any excluded-node caps of the other rows. The exclusion lists are currently empty.
 
-**Node caps: a separate build target.** The 15 row modules `CapRowKK.lean` (60 single-threaded `native_decide`
-range facts, about 15–30 CPU-hours) exceed the CI runner, so they and `lower_bound_of_capsRest` live in the target
-`GrotheCaps`, not in the default target `Grothe`. They are verified on a larger machine with
-`lake build GrotheCaps && lake env lean scratch/AxiomsCaps.lean | python3 scripts/check_axioms.py --caps`, after which
-`python3 scripts/caps_stamp.py --write "<machine, date>"` records the hash of every source they depend on in
-`docs/CAPS_VERIFIED.txt`. CI checks that hash (`caps_stamp.py --check`): it fails when those sources change
-without a new verification. The current stamp records the successful droplet build and axiom audit of all fifteen row modules;
-its 140-file source closure is checked by CI. The four remaining rows are still the explicit
-`CapsRest` inputs. The default target proves the lower bound with `NodeCaps`
-(`lower_bound_of_nodeCaps`); the separate target derives it from `CapsRest`.
-
+**Node caps: a separate build target, checked by CI through the build cache.** The 15 row modules `CapRowKK.lean`
+(60 single-threaded `native_decide` range facts, about 21 CPU-hours) and `lower_bound_of_capsRest` live in the target
+`GrotheCaps`. They are built on the droplet's self-hosted CI runner, which then runs both axiom reports, records the hash
+of every source they depend on next to the build (`scripts/caps_stamp.py --mark-cache`) and saves the build cache. Every
+CI run restores that cache: when the recorded hash matches the current sources, CI builds `GrotheCaps` (Lean replays the
+verified modules) and checks `scratch/AxiomsCaps.lean`; when it does not, CI dispatches the rebuild to the droplet
+instead of attempting it (see `AGENTS.md` §4). So CI checks `lower_bound_of_capsRest`, whose only hypothesis
+**`CapsRest`** is the vertex caps of the rows 0.84, 0.845, 0.85, 0.855 (work in progress, epic #12).
 
 **Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder`, for an L² charge-one truncation `X`, proves
 `ComparisonInputs → energy_close → hardy → IsGrothendieckBound (500000000000000000/355973696735190991)`,

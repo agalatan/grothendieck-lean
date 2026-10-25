@@ -30,7 +30,7 @@ each range is checked sequentially; lake runs the 15 row modules in separate pro
   2255, 2322, 2355, 2594, 2727, 2807, 3593, 3029, 6005; rows 9, 10, 11, 16, 17, 18 (fine grid)
   9940, 9782, 9409, 9884, 10377, 10069. `lake env lean scratch/AxiomsCaps.lean | python3
   scripts/check_axioms.py --caps`: OK (60 range facts + capChords_check + the cert_check chunks).
-  Stamp `docs/CAPS_VERIFIED.txt` = sha256 fe2ea85d…f16eea over 140 files (unchanged by master up to 9233765).
+  Source closure sha256 fe2ea85d…f16eea over 140 files (unchanged by master up to 9233765); now recorded in the build cache.
 * Evidence that every node passes (indicative only, it ran with `Task.spawn`, see below): #eval diagnostics
   of `nodeCheck` over all 196 nodes of each of the 15 rows (Mac rows 0–8, 17, 18; droplet rows 9–11, 16)
   reported failures only at row 3 node 0 and row 6 node 0; both fixed (below). Fine-grid nodes took
@@ -77,18 +77,15 @@ built with `lake build Grothe.LowerAnalytic.TmpX` (delete it afterwards).
 ## Verification procedure for master (target GrotheCaps, outside CI)
 
 Since master c8fc97e the 15 `CapRowKK` modules form the separate lean_lib `GrotheCaps`
-(`GrotheCaps.lean`); CI does not build them but runs `python3 scripts/caps_stamp.py --check`, which
-compares a sha256 of the import closure of the row modules + `CapNodes.lean` + `GrotheCaps.lean` (+
-`lean-toolchain`, `lake-manifest.json`) with `docs/CAPS_VERIFIED.txt` (warning while absent, failure on mismatch).
-To (re)verify, on a machine with ≥ 8 cores (droplet `yo`):
+(`GrotheCaps.lean`). They are built by the droplet's self-hosted CI runner (`lean.yml`, job `heavy`), which runs
+both axiom reports, records the sha256 of their source closure in `.lake/build/caps-closure.sha`
+(`scripts/caps_stamp.py --mark-cache`) and saves the build cache; CI replays them from that cache when the hash matches
+the current sources and otherwise dispatches the rebuild to the droplet (`AGENTS.md` §4). Manual verification, if ever
+needed, on a machine with ≥ 8 cores:
 ```
-git archive <master commit> | tar -x -C <dir>   # or rsync -a --delete --exclude .lake <checkout>/ yo:~/grothe-caps/
-cd <dir>; lake exe cache get
-lake build GrotheCaps                            # several hours single-threaded per module (see timings)
+lake exe cache get && lake build GrotheCaps
 lake env lean scratch/AxiomsCaps.lean | python3 scripts/check_axioms.py --caps
-python3 scripts/caps_stamp.py --write "droplet yo, <date>, <wall time>"
 ```
-then commit `docs/CAPS_VERIFIED.txt` on a branch (e.g. `work/caps-stamp`) and push it; the integrator merges.
 Timing (droplet, load ~12 from other jobs, 23 Oct): row 7 (196 coarse-grid nodes, 4 ranges) took
 4,562 s in one process, i.e. ~23 s per node; fine-grid rows are slower.
 
