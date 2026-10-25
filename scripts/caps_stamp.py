@@ -8,9 +8,11 @@ and after a successful run the stamp is recorded with
     python3 scripts/caps_stamp.py --write "<machine, date, wall time>"
 CI runs `python3 scripts/caps_stamp.py --check`. It fails if any file in the import closure of
 the 15 row modules CapRowKK, plus CapNodes.lean, GrotheCaps.lean, lean-toolchain and lake-manifest.json, changed since the
-recorded verification. Otherwise those modules need no rebuild.
+recorded verification, or if the stamp is missing. Otherwise those modules need no rebuild.
+With no arguments, the script checks the stamp. `--digest` prints the current source hash
+and file count without reading or changing the stamp.
 """
-import hashlib, os, re, sys
+import argparse, hashlib, os, re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STAMP = os.path.join(ROOT, "docs", "CAPS_VERIFIED.txt")
@@ -31,10 +33,11 @@ def closure(tops):
         if not os.path.exists(path):  # Mathlib or core
             continue
         seen.add(m)
-        for line in open(path, encoding="utf-8"):
-            mm = re.match(r"\s*import\s+(\S+)", line)
-            if mm:
-                todo.append(mm.group(1))
+        with open(path, encoding="utf-8") as source:
+            for line in source:
+                mm = re.match(r"\s*import\s+(\S+)", line)
+                if mm:
+                    todo.append(mm.group(1))
     return sorted(seen)
 
 
@@ -45,27 +48,42 @@ def digest():
     files += ["lean-toolchain", "lake-manifest.json"]
     for f in files:
         h.update(f.encode() + b"\0")
-        h.update(open(os.path.join(ROOT, f), "rb").read())
+        with open(os.path.join(ROOT, f), "rb") as source:
+            h.update(source.read())
     return h.hexdigest(), len(files)
 
 
-def main():
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument("--check", action="store_true", help="check the verification stamp (default)")
+    modes.add_argument("--digest", action="store_true", help="print the current source hash and file count")
+    modes.add_argument("--write", metavar="NOTE", help="record a successful verification with its provenance")
+    args = parser.parse_args(argv)
+    if args.write is not None and not args.write.strip():
+        parser.error("--write requires a nonempty verification note")
+
     d, n = digest()
-    if "--write" in sys.argv:
-        note = sys.argv[sys.argv.index("--write") + 1] if len(sys.argv) > sys.argv.index("--write") + 1 else ""
+    if args.digest:
+        print(f"sha256 {d}\nfiles {n}")
+        return 0
+    if args.write is not None:
         with open(STAMP, "w") as f:
-            f.write(f"sha256 {d}\nfiles {n}\nverified {note}\n")
+            f.write(f"sha256 {d}\nfiles {n}\nverified {args.write}\n")
         print(f"recorded {d} ({n} files)")
-        return
+        return 0
     if not os.path.exists(STAMP):
-        print(f"WARNING: GrotheCaps has never been verified (current sources {d}, {n} files)")
-        return
-    rec = dict(l.split(" ", 1) for l in open(STAMP).read().splitlines() if " " in l)
+        print(f"FAIL: GrotheCaps has no verification stamp (current sources {d}, {n} files)")
+        return 1
+    with open(STAMP) as stamp:
+        rec = dict(l.split(" ", 1) for l in stamp.read().splitlines() if " " in l)
     if rec.get("sha256") != d:
         print(f"FAIL: sources of GrotheCaps changed since the recorded verification ({rec.get('verified', '?')}).")
         print(f"recorded {rec.get('sha256')}, current {d}. Rebuild GrotheCaps on a large machine and re-stamp.")
-        sys.exit(1)
+        return 1
     print(f"GrotheCaps sources unchanged since verification: {rec.get('verified', '?')} ({n} files)")
+    return 0
 
 
-main()
+if __name__ == "__main__":
+    raise SystemExit(main())
