@@ -5,11 +5,15 @@ open Lean Meta Elab Command
 # Dead-code report (audit tool, not part of the library)
 
 `lake env lean scratch/DeadCode.lean` lists, per module, the declarations of `Grothe`/`GrotheKernel`
-that are not reachable from the headline theorems below (auto-generated names filtered). Deliberate
-standalone results (e.g. `Influence.lean`, the sixth-moment reduction) show up here by design.
+that are not reachable from the current headline theorems and selected standalone results below
+(auto-generated names filtered). Missing roots are errors.
+
+This reports on the default `Grothe` target; declarations available only through the separate
+`GrotheCaps` target are outside its scope. "Unused" means unreachable from the selected roots, not
+deletable: other standalone results or external users may still depend on a declaration.
 -/
 
-/-- Transitive closure of constants used by `roots`, restricted to the `Grothe` namespace. -/
+/-- Transitive closure of constants used by `roots`. -/
 partial def usedClosure (env : Environment) (roots : List Name) : NameSet := Id.run do
   let mut seen : NameSet := {}
   let mut stack := roots
@@ -25,10 +29,15 @@ partial def usedClosure (env : Environment) (roots : List Name) : NameSet := Id.
 
 elab "#deadcode" : command => do
   let env ← getEnv
-  let roots := [`Grothe.fresh_upper, `Grothe.Lower.lower_bound_data, `Grothe.Lower.lower_endpoint,
+  let roots := [`Grothe.LowerAnalytic.lower_bound_of_nodeCaps,
+    `Grothe.UpperChaos.fresh_upper_rounder, `Grothe.haagerup_bound,
+    `Grothe.fresh_upper, `Grothe.Lower.lower_bound_data, `Grothe.Lower.lower_endpoint,
     `Grothe.Lower.lower_bound_of_transferL2, `Grothe.LowerAnalytic.gaussian_steinInputs,
     `Grothe.LowerAnalytic.sixth_moment_complex, `Grothe.LowerAnalytic.first_moment_lt_rho,
     `Grothe.LowerAnalytic.fluctuation_bound, `Grothe.LowerAnalytic.lower_bound_gaussian]
+  for n in roots do
+    if (env.find? n).isNone then
+      throwError "dead-code root is missing: {n}"
   let used := usedClosure env roots
   let mut out : Std.HashMap Name (Array Name) := {}
   for (n, _) in env.constants.toList do
