@@ -186,7 +186,11 @@ Runtime figures are deliberately distinguished:
   (`CAPS_STATUS.md:27–31`). Their source stamp still matches.
 - Historical upper-head module: 62 s. Phase source comment: approximately
   1.5 min, not a fresh benchmark.
-- Current per-fact times for comparison, chords, Haagerup power, individual
+- Historical Haagerup `PowerCheck.lean` build: **522.95 s wall / 509.46 s user CPU**,
+  from `docs/verification/haagerup-resolvent-20261025/native-build.log`. Its source
+  hash matches the audited baseline. This includes elaboration and native execution,
+  not an isolated per-fact timer or a fresh audit measurement.
+- Current per-fact times for comparison, chords, individual
   cap ranges and anonymous examples are **unmeasured**. The old 257 s
   `haagerup_check` timing concerns a superseded fact and is not reused.
 
@@ -214,7 +218,7 @@ handwritten split is stale, and a header heuristic is not a reliable replacement
 | Shared row-gate extraction / range assembly | 36 repeated gate lines in three files; 105 repeated index-assembly lines in fifteen cap-row files. Potential net savings 15–20 / 60–75 respectively. | Generated/protected cap code; change generators, one approved closure batch. |
 | Complex Gaussian foundation below fibre-specific Gram proofs | Lower radial specializations: 26 lines; ~75 lines of repeated upper monomial IBP inductions; six-vector Gram proof in FibreHermite:83–350 is a larger candidate. | Already substantial reuse exists: upper moments import lower foundations. Preserve variance/dimension adapters; no net saving established. [#52](https://github.com/agalatan/grothendieck-lean/issues/52). |
 | Remove unused partition straddler scan | `Boxes.lean:368` evaluates a scan at 8,755 internal nodes; `partOK_sound:403` discards that premise. [#56](https://github.com/agalatan/grothendieck-lean/issues/56). | Native/closure change needs approval and replay; runtime saving unmeasured. |
-| Trim the inverse polynomial | 64 generated zero lines and shorter products, preserving the polynomial. [#54](https://github.com/agalatan/grothendieck-lean/issues/54). | Native-input approval and reproducible regeneration. |
+| Trim the inverse polynomial | 64 generated zero lines; fewer zero-list operations, preserving the polynomial. The checker already skips zero multiplications. [#54](https://github.com/agalatan/grothendieck-lean/issues/54). | Native-input approval and reproducible regeneration. |
 
 A wholesale interval-library merger would overstate duplication: `Basic.lean`
 (77 lines) and `IntervalSound.lean` (212) already serve Table, Haagerup and
@@ -244,3 +248,22 @@ included without the user's go-ahead. This includes #49, #51, #54, #56 and the
 closure portions of #52/#53. Preserve the same 140-file digest for safe deliveries.
 Workflow #48 stays with reserved PR #44. All wider estimates above are proposals,
 not claimed delivered improvements.
+
+## Approved follow-up: inverse-list trim (#54)
+
+The user approved #54 only among the gated changes. The canonical inverse now
+contains 65 coefficients (actual degree 64); 64 trailing zeros and 64 generated
+Lean lines are removed. All other certificate fields and public theorem statements
+are unchanged. The degree bounds used internally in the defect and seed proofs
+are tightened to 94 and 303 coefficient slots. The documentation and overview PDF
+now state the actual polynomial degree.
+
+Exact rational comparison and an independent integer mirror give identical
+zero-extended interval coefficients and acceptance results. The defect array
+shrinks from 129 to 94 entries; the seed array remains 303 entries. The affected
+convolutions save 128 zero-branch traversals and 93 interval additions, but no
+interval multiplications. No full-certificate speedup is claimed. A fresh 192-bit
+FLINT replay checks the complete head, seed, tail and endpoint; see
+`docs/verification/haagerup-trim-20261026/`. Lean build/CI status is recorded
+separately from that external replay. The native-fact count and cap digest remain
+unchanged. All other gated proposals remain unapproved.
