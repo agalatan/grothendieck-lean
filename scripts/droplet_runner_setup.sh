@@ -33,7 +33,8 @@ else
   echo "runner started (pgid $(cat runner.pid))"
 fi
 LINE="@reboot cd $HOME/actions-runner && bash -c 'set -m; nohup ./run.sh > runner.log 2>&1 & echo \$! > runner.pid'"
-( crontab -l 2>/dev/null | grep -v 'actions-runner' ; echo "$LINE" ) | crontab -
+# (crontab -l fails on an empty crontab; with set -e/pipefail that must not abort before the new line is written)
+{ crontab -l 2>/dev/null | grep -v 'actions-runner' || true; echo "$LINE"; } | crontab -
 echo "crontab:"; crontab -l | grep actions-runner
 REMOTE
 gh api "repos/$REPO/actions/runners" --jq '.runners[] | "\(.name) \(.status) \([.labels[].name]|join(","))"'
