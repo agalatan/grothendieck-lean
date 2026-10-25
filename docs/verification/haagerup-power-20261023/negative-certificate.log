@@ -1,4 +1,0 @@
-PASS rejected mismatched source
-PASS rejected invalid fourth-power budget
-PASS rejected understated infinite tail
-PASS rejected understated finite residual

@@ -1,8 +1,8 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
 The sharper conditional upper bound is described below. The independent hypothesis-free
-route now proves `Grothe.haagerup_bound : IsGrothendieckBound (1404951/1000000)`.
-Its finite-power contraction, complete residual and weighted infinite tail are documented in
+route now proves `Grothe.haagerup_bound : IsGrothendieckBound (1404909543/1000000000)`.
+Its polynomial resolvent, complete residual and signed infinite tail are documented in
 `/Users/alingalatan/workspaces/grothe-codex-joint-image/docs/HAAGERUP_POWER.md`;
 that theorem does not require any of the analytic inputs listed here.
 
