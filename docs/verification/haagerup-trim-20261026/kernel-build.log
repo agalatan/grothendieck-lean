@@ -1,0 +1,11 @@
+✔ [2/11] Built GrotheKernel.Basic (489ms)
+✔ [3/11] Built GrotheKernel.Basic:c.o (579ms)
+✔ [4/11] Built GrotheKernel.Basic:dynlib (218ms)
+✔ [5/11] Built GrotheKernel.Haagerup (904ms)
+✔ [6/11] Built GrotheKernel.Haagerup:c.o (222ms)
+✔ [7/11] Built GrotheKernel.Haagerup:dynlib (189ms)
+✔ [8/11] Built GrotheKernel.PowerTail (754ms)
+✔ [9/11] Built GrotheKernel.PowerTail:c.o (208ms)
+✔ [10/11] Built GrotheKernel.PowerTail:dynlib (186ms)
+✔ [11/11] Built GrotheKernel.ResolventTail (796ms)
+Build completed successfully (11 jobs).

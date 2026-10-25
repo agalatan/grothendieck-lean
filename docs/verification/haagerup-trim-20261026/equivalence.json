@@ -1,0 +1,74 @@
+{
+  "kind": "independent_exact_integer_mirror_not_native_runtime_benchmark",
+  "original_commit": "4e9f32d78a198da551239bbfa9e56e713d765cae",
+  "original_certificate_sha256": "a8f26f4720aaf10b2f257314845c082bf1c45ae3d6ec1b80a91e8a97ad9161fd",
+  "kernel_sources_unchanged_from_original": {
+    "GrotheKernel/Basic.lean": "d4a738a79075cd3742dada74bf7c51bc7adc6b246f13f2a7fdecf9192a5e9fb5",
+    "GrotheKernel/PowerTail.lean": "d6db307d7ee6a753a6da0edc77c1e716e745b436160a79d5e4b32d3468e433be",
+    "GrotheKernel/ResolventTail.lean": "bf46b65a256ac5f198bc62bf1b576a8fac6fb87504d876951b814829d0857c62"
+  },
+  "current_certificate_R_length": 65,
+  "other_certificate_fields_unchanged": true,
+  "coefficient_functions_equal_after_zero_extension": true,
+  "zero_suffix_removed": 64,
+  "scale_bits": 128,
+  "operation_count_scope": "R convolution plus final defect subtraction; excludes unchanged P powers, rational conversion, list allocation and absSum",
+  "metrics": {
+    "defect": {
+      "before": {
+        "inverse_list_length": 129,
+        "interval_output_length": 129,
+        "abs_sum_scaled": "76032548714827333692305",
+        "cap_scaled_floor": "340282366920938463463374607",
+        "check_accepted": true,
+        "operations": {
+          "conv_first_argument_branches": 129,
+          "interval_multiplications": 1950,
+          "interval_additions": 1951
+        }
+      },
+      "after": {
+        "inverse_list_length": 65,
+        "interval_output_length": 94,
+        "abs_sum_scaled": "76032548714827333692305",
+        "cap_scaled_floor": "340282366920938463463374607",
+        "check_accepted": true,
+        "operations": {
+          "conv_first_argument_branches": 65,
+          "interval_multiplications": 1950,
+          "interval_additions": 1922
+        }
+      },
+      "zero_padded_interval_pairs_identical": true,
+      "abs_sum_identical": true
+    },
+    "seed": {
+      "before": {
+        "inverse_list_length": 129,
+        "interval_output_length": 303,
+        "abs_sum_scaled": "169426233530563755793600970187336503331",
+        "cap_scaled_floor": "169460618726627354804760554501020569305",
+        "check_accepted": true,
+        "operations": {
+          "conv_first_argument_branches": 129,
+          "interval_multiplications": 15535,
+          "interval_additions": 15361
+        }
+      },
+      "after": {
+        "inverse_list_length": 65,
+        "interval_output_length": 303,
+        "abs_sum_scaled": "169426233530563755793600970187336503331",
+        "cap_scaled_floor": "169460618726627354804760554501020569305",
+        "check_accepted": true,
+        "operations": {
+          "conv_first_argument_branches": 65,
+          "interval_multiplications": 15535,
+          "interval_additions": 15297
+        }
+      },
+      "zero_padded_interval_pairs_identical": true,
+      "abs_sum_identical": true
+    }
+  }
+}

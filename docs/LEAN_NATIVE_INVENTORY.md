@@ -4,7 +4,7 @@ Static source audit only; no Lean builds or native reruns performed. Named nativ
 
 | Fact | Source native site | Allowlist | Report coverage | Runtime evidence |
 |---|---|---|---|---|
-| `Grothe.HaagerupPower.check` | `Grothe/Haagerup/PowerCheck.lean:173` | yes | Direct #print axioms in scratch/Axioms.lean | Unmeasured per fact at audited commit |
+| `Grothe.HaagerupPower.check` | `Grothe/Haagerup/PowerCheck.lean:173` (audited baseline; 109 after #54) | yes | Direct #print axioms in scratch/Axioms.lean | Historical matching-source module build: 522.95 s wall / 509.46 s user CPU; not isolated per-fact timing |
 | `Grothe.Lower.certBatches0` | `Grothe/Lower/Cert/Batches0.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 337 s; docs/NATIVE_SEQ_STATUS.md:31–42; not isolated native/current-commit measurement |
 | `Grothe.Lower.certBatches1` | `Grothe/Lower/Cert/Batches1.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 344 s; docs/NATIVE_SEQ_STATUS.md:31–42; not isolated native/current-commit measurement |
 | `Grothe.Lower.certBatches2` | `Grothe/Lower/Cert/Batches2.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 395 s; docs/NATIVE_SEQ_STATUS.md:31–42; not isolated native/current-commit measurement |
