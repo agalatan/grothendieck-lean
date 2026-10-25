@@ -17,13 +17,13 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 360
     # No concurrency group: GitHub keeps only ONE pending run per group and cancels older pending ones, which
     # silently dropped deliveries. ready/ runs build in parallel; the first green one moves master, and a run whose
     # final push is rejected (master moved) re-dispatches itself, i.e. re-merges with the new master and rebuilds.
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
