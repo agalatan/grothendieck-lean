@@ -7,6 +7,9 @@ import Grothe.Upper.Head
 import Grothe.Upper.Data
 import Grothe.Upper.Final
 import Grothe.Upper.PolynomialBridge
+import Grothe.Upper.BandComparison
+import Grothe.Upper.ComparisonData
+import Grothe.Upper.ComparisonMass
 import Grothe.Upper.Disk
 import Grothe.Upper.Realise
 import Grothe.Upper.Compose
@@ -114,6 +117,8 @@ import Grothe.LowerAnalytic.MomentConeBoundary
 import Grothe.LowerAnalytic.SphericalTransfer
 import Grothe.UpperChaos.TaylorPhase
 import Grothe.UpperChaos.PhiBound
+import Grothe.UpperChaos.EnergyBlock
+import Grothe.UpperChaos.LocalizedComparison
 import Grothe.LowerAnalytic.CapChordData
 import Grothe.LowerAnalytic.CapHull
 import Grothe.LowerAnalytic.CapMajorant

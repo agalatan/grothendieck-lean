@@ -18,17 +18,17 @@ without copying it. Use targeted module builds; full builds run on the droplet o
 
 Headline `Grothe.UpperChaos.fresh_upper_rounder` (`Grothe/UpperChaos/PhiBound.lean`):
 
-    K_G^ℂ ≤ 500000000000000000/355973593026532891  (< 1.404598570779)
+    K_G^ℂ ≤ 500000000000000000/355973697533655491  (< 1.404598158416)
 
 for the concrete rounding `GT` (smoothed `F₀·P₃(φ)` built from `Grothe/Upper/Data.lean`), assuming only
 
-* `compare`: `Σ |energy GT − energy X| ≤ compareQ`,
+* `ComparisonInputs`: the exact spectrally supported Gaussian error decomposition and inherited component norm caps; Lean derives its selected-head energy comparison,
 * `energy_close`: `Σ_{n+3m≤501} |energy X − energyTable| ≤ energyErrQ`,
 * `hardy`: `Σ_{n<J} kernelCoeff(energy GT)_n² (4149/4000)^{2(2n+1)} ≤ 7/4`,
 
-for some charge-one `X ∈ L²(gaussC ⊗ gaussC)` (the truncation `F₀ + v`; its correction vector `v` lives
+for some charge-one `X ∈ L²(gaussC ⊗ gaussC)` (the smoothed truncation of `F₀ + v`; its correction vector `v` lives
 in `handoff/upper-residual/global_norm/frozen_taylor_correction_D201.npz`, not in Lean).
-Axioms: standard + `head_check` + `phi_cover_check` (native).  The structural fields of the old
+Axioms: standard + `head_check` + `comparison_check` + `phi_cover_check` (native). The structural fields of the old
 `DirectHyps` (`valid`, `summable`, `summableX`, `parityX`) and `|P₃(φ)| ≤ 1` (via `phiBound : φ² ≤ 3`)
 are theorems.  Module map (all in `Grothe/UpperChaos/`):
 
@@ -50,17 +50,17 @@ same `7/4` budget before Cauchy–Schwarz (`hardy_budget_after_linear`,
 endpoint for the preceding preprocessors passed the full build and axiom audit in
 [run 39901871873](https://github.com/agalatan/grothendieck-lean/actions/runs/39901871873);
 the current degree-41/15 preprocessors come from `data/upper-preprocess/`.
-All 15 affected upper modules passed fresh warning-as-error checks, including
-the head and phase-cover native facts. The actual 40-declaration combined
-report uses 16 of 83 registered native facts (14 lower plus the upper head
-and phase cover). Logs and source guards are in
+The affected upper modules have fresh warning-as-error coverage, including
+the head, selected-band comparison and phase-cover native facts. The combined
+endpoint report uses 17 of 84 registered native facts (14 lower plus those
+three upper facts). Logs and source guards are in
 `data/upper-preprocess/verification/`; the preceding CI run is historical
 evidence only. `HardyKernel` fixes definitions and does not
 discharge the numerical Hardy premise.
 
-## 2. `|φ| < 1` (input of the EXTERNAL `compare` argument) — external certificate
+## 2. `|φ| < 1` (input of the inherited coefficient-error argument)
 
-`compare` is external; its proof (MIXED_TAYLOR_CUTOFF_LEMMA) uses `|φ| < 1` (operator norm of
+The Gaussian component-error enclosures are external; their source proof uses `|φ| < 1` (operator norm of
 multiplication by iφ). sup|φ| ≈ 0.96725 (float search), so the margin is ~3%.  Rigorous external
 certificate: `handoff/upper-residual/phi-cover/phi_cover_exact.py` (python-flint, exact integer Taylor
 shifts + arb; run on the droplet `~/grothe-cx/venv/bin/python phi_cover_exact.py phase.json 98/100 8`),
@@ -102,12 +102,14 @@ Progress: `Grothe/UpperChaos/HardyKernel.lean` fixes the definitions (`Sym2C`, `
 
 ## 4. Other open items
 
-* `compare` and `energy_close` stay external (verified-quadrature projects).
+* The Gaussian identification and norm bounds in `ComparisonInputs`, and
+  `energy_close`, stay external (verified-quadrature projects). Lean derives
+  the selected energy comparison from those inputs.
   The second, fourth and sixth phase moments are now exactly reproducible
   from the Lean phase data; see the continuation's
   [MOMENTS.md](../handoff/research-third-decimal/needle-20261023/MOMENTS.md).
   The other Hermite-tail and coefficient inputs are still separate obligations.
-* The refined lower endpoint is `1.401696986171`, conditional on the same
+* The refined lower endpoint is `1.401697049825`, conditional on the same
   `NodeCaps`, through `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`.
   The separate `GrotheCaps` target now has a matching stamp for its 60 range
   facts; the four remaining rows still require `CapsRest`.

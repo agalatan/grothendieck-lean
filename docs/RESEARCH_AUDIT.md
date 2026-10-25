@@ -6,87 +6,36 @@ replay data live under `handoff/research-third-decimal/`; the maintained Lean
 ingredients live in `Grothe/Research/`. The initial audit changes no bound;
 the subsequent cover and Hardy-budget refinements below improve both endpoints.
 
-## Current lower continuation: adaptive component cover
+## Current lower continuation: fused law nodes and complete coverage
 
-The strict lower endpoint is now `1.401696986171`, under exactly `NodeCaps`.
-The complete 10,521-box cover has cap `35671047661/50000000000`, or
-`0.713420953220`. It retains the two pure-row law-scale nodes for row 14,
-their single appended batch, and all original row and mixed-node certificates.
-The endpoint uses eight row/batch facts, five reflected cover facts and the
-law-batch fact. No shifted source, rank-one response premise or new source
-cap is introduced.
+The strict endpoint is `1.401697049825`, under unchanged `NodeCaps`. The
+complete 10,762-box certificate has cap `356710460411/500000000000`, or
+`0.713420920822`. It retains two pure-row law nodes and adds three mixed-source
+Young nodes. Their single new batch uses original rows 14 and 15 with fixed
+theta `177107909/800000000` and kurtosis range `x <= 4/5`. The source tables,
+witness and heavy cap closure are unchanged.
 
-The finite campaign starts from the immutable 10,234-box certified input.
-Its 287 binary splits and 803 same-domain repricings preserve a complete
-partition. Components restricted to a child retain their original scale
-interpolation domain. Seventy new reference labels expose existing source
-nodes; the original 1,191-entry prefix stays unchanged. The two law-node
-certificates and their generated Lean batch stay byte-identical.
+The accepted global gain over `1.401696986171` is `0.000000063654`. Exact fusion
+and whole-half-line majorant checks supply local bounds; legal interpolation
+brackets, 241 binary splits and 280 repricings turn them into a complete cover.
+The preserved 10,521-box baseline and the original node/group prefixes are pinned.
+51 appended aliases expose existing source nodes. The old cap-9750
+region is improved by keeping its law scale and kurtosis, rather than its
+uniform row cap. Pruning removes unnecessary branches and unused new nodes.
 
-The former cap-194 envelope obstruction is cleared by ordinary components.
-A plateau in the next search came from clipping proposed child bounds by an
-unchanged fallback: greedy splitting repeatedly selected t while hiding
-progress in the other coordinates. Comparing the unclipped proposals and
-compacting redundant descendants resolves that search issue. This does not
-establish a Gaussian norm floor or optimality of the certificate bank.
+`tools/needle_fused_global.py --verify` replays the complete forest from durable
+inputs. `tools/needle_mixed_nodes.py` rechecks the full mixed source and budget;
+its corruption controls reject source, budget, range and majorant changes.
+`tools/needle_unshifted_lean.py --check` independently verifies the old canonical
+map, all node proofs, every final bound and the guillotine partition, then
+reproduces both generated Lean files. Historical LP or fusion records are not
+acceptance inputs.
 
-The exact accepted maximum is approximately `0.713420953219917`, below the
-rounded cap. The more ambitious search target `0.71342` remains unmet, with
-877 final boxes above it. The accepted cap has zero failures and a strict
-reciprocal comparison. Its gain over `1.401695673376` is `0.000001312795`.
-Selected pointwise prices near the binding region still leave mixture and
-law-price optimization as a possible next route; they are not optimality
-certificates or actual response lower bounds.
-
-A subsequent bounded test fuses six inherited Stein witnesses into one
-mixed-source witness on their common 161-knot mesh. Exact Jensen square
-identities justify the fusion; eliminating the averaged auxiliary multiplier
-preserves its cut. One majorant LP then passes a depth-nine whole-half-line
-check (951 intervals, 973 Bernstein leaves, degree ten), and the existing
-Lean `checkBatch` accepts the ordinary mixed batch. At the selected state
-its cap is approximately `0.713418480665612`, a saving of
-`0.000001958069314442` against that old mixture. This does not alter the
-frozen global certificate. Two endpoint LPs with the center's fused cut also
-pass whole-half-line checks, but their full binding-box cap is only
-`0.713420448939047`. Splitting at the already proved midpoint leaves that
-maximum unchanged: an endpoint dominates. Fusing new endpoint witnesses at
-their actual interpolation weights improves that cap to
-`0.713420038569143`, still above `0.71342`. Keeping the better old lower
-endpoint and the new upper endpoint gives a complete neighborhood cap
-`0.713419752787476`; inserting the midpoint also validates two children
-with the same maximum. This clears
-`0.71342` locally, but remains above `10000/14017`, the cap needed for a
-strict `1.401700` reciprocal. The wider original t/x slab is also above the
-target. This selects a valid local candidate; it is not a stronger global
-endpoint. Endpoint acceptance, full-box validity and complete coverage remain
-separate obligations. The selected neighborhood intersects one current leaf
-but contains no complete leaf, so even a successful local price needs an
-explicit partition with the old valid recipe on the complement. The
-experiment and replay live under
-`handoff/research-third-decimal/adaptive-next-20261023/fused/`.
-
-`data/lower-unshifted/` retains the complete cover, forest ledger, two law
-nodes and immutable starting inputs. `tools/needle_adaptive_global.py`
-replays every root, event and final recipe using only durable clone-local
-inputs. The old local diagnostic hash is provenance only; replay does not
-open its ignored research file. `tools/needle_unshifted_lean.py` independently
-checks the old canonical reference map, law proofs, every final box and
-full guillotine partition before reproducing the two generated Lean files.
-
-The four single-threaded native chunks have balanced width 2,631. The kernel
-checks their extent against the actual list length. Eight cover modules
-passed fresh warning-as-error checks. Four unchanged generic/law modules are
-reused only after exact source and artifact hash checks. Both focused axiom
-audits pass the actual 27-declaration report, using 14 of 83 registered native
-facts. Build records and
-the actual endpoint axiom list are retained in
-`data/lower-unshifted/verification/`. The full default build is separate
-branch CI.
-
-The preceding published 10,234-box cover passed the full default build and
-axiom audit in [CI run 39943279372](https://github.com/agalatan/grothendieck-lean/actions/runs/39943279372):
-440 reported theorems, using 23 of 83 allowed native facts. The current
-10,521-box cover has its own fresh reflected checks and axiom report.
+The lower endpoint retains 14 native facts and the same Gaussian hypothesis.
+The research cap `0.71342` remains unmet by 939 boxes; accepted B has zero
+failures. This is a small global improvement, not an optimality theorem or a
+Gaussian norm floor. The current reflected-check records are in
+`data/lower-unshifted/verification/`; full default coverage is separate branch CI.
 
 The bounded coupled asymmetric upper experiment did not pass its `0.711950`
 discovery gate. Its common-price midpoint calculation is below that threshold,
@@ -98,20 +47,28 @@ research outputs remain under `handoff/research-third-decimal/`.
 
 ## Combined upper continuation and validation
 
-Master `b93ec83` contributes degree-41/15 preprocessors, a new working
-slope and head cap, clone-local exact energy inputs, and a fresh directed
-Gaussian Schur/Hardy replay for the new composed kernel. The raw rounding,
-truncation energies, comparison allowance and energy-table allowance stay
-unchanged. The Hardy premise has the same radius and budget but applies
-to the new kernel. Combining these inputs with the linear-budget deduction
-gives `500000000000000000/355973593026532891 < 1.404598570779`
-under the same three numerical interfaces. The Gaussian Schur/continuation
-argument and numerical hypotheses remain external; this is conditional.
-All 15 affected upper modules passed fresh warning-as-error checks. The actual
-40-declaration combined axiom report uses the 14 lower native facts plus the
-upper head and phase facts. Its logs, source/dependency guards and exact
-arithmetic are in `data/upper-preprocess/verification/`; full default coverage
-is delegated to branch CI.
+Master `d4df11f` contributes the selected-spectrum comparison: explicit shared
+error pieces, spectral supports and Gaussian norm caps yield the comparison
+`107077907/125000000000000`. The native band-mass check bounds the eighteen
+selected energy radii. This replaces the old global energy-comparison interface
+in the concrete theorem with `ComparisonInputs`. Its identification with the
+Gaussian truncation and norm enclosures remains external, as do energy-table
+accuracy and the Hardy input.
+
+Combining that comparison with the forced linear coefficient's deduction from
+the same Hardy budget gives tail `30488839/1000000000000000`, residual
+`457639394509/500000000000000000`, and upper endpoint
+`500000000000000000/355973697533655491 < 1.404598158416`.
+No stronger Hardy input is used. The raw rounder, energies, preprocessors and
+contour certificate remain fixed. Both the raw contour-tail assembly and this
+derived ledger have exact arithmetic checks. The lower endpoint's premise is
+unaffected. Combined fresh checks and axiom reports are retained in
+`data/upper-preprocess/verification/`.
+
+The prior branch state passed the full default build in
+[CI run 39959562283](https://github.com/agalatan/grothendieck-lean/actions/runs/39959562283).
+That result applies to its frozen sources; the current merged certificate has
+fresh targeted coverage and a separate branch CI run.
 
 ## Earlier upper continuation and validation
 
@@ -157,7 +114,7 @@ endpoint. See [the next campaign](../handoff/research-third-decimal/needle-20261
 
 ## Integration with current master
 
-The current campaign includes GitHub master `b93ec83`. The earlier `197b82f`
+The current campaign includes GitHub master `d4df11f`. The earlier `197b82f`
 spectral exchange contribution, its two spectral-error
 lemmas and canonical signed-head exporter are retained. Both lemmas use only
 the standard axioms; the directed exporter pays one coefficient-l1 error

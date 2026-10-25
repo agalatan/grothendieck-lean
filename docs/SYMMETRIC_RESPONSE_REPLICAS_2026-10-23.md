@@ -146,7 +146,7 @@ The original-noise cross-Gram controls were checked at `rho=0,0.5,0.9,1` for
 The full-kernel pool screen used eight columns (`m=16,128`, four epsilons)
 plus the analytic Gaussian-phase baseline. Its midpoint relaxation is about
 `0.711590572`, below the incumbent reciprocal score
-`355973593026532891/500000000000000000 = 0.711947186053065782`.
+`355973697533655491/500000000000000000 = 0.711947395067310982`.
 Adding the Gaussian-phase baseline did not change the screen. This diagnoses
 the tested finite pool; it is not a statement about all invariant responses.
 
@@ -212,7 +212,7 @@ column definitions are preserved for the next iteration.
 
 The incumbent is retained separately through its existing kernel enclosure:
 under the documented `DirectHyps`, slope `7119483103461/10^13` and absolute
-coefficient residual `562146517109/(5*10^17)`. Every admissible price evaluates
+coefficient residual `457639394509/(5*10^17)`. Every admissible price evaluates
 it within that residual of the slope. It must not be replaced by an exactly
 linear fictitious response column. A priced bound on a candidate pool also
 bounds its mixtures with the incumbent by the maximum of that bound and

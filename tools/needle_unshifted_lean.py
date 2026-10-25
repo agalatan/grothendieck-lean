@@ -4,7 +4,8 @@
 Reads only the durable data/lower-unshifted inputs. Replays every new node
 and every final box, binds the original canonical reference map to all old
 MixedData box strings, and checks the complete guillotine partition. The
-old 21 batches keep their indices; pure-row batches are appended by row,
+old 21 batches and the existing pure-row law batch keep their indices.
+Further Stein or Gram/joint batches are appended by potential and mesh,
 with nodes ordered by exact scale and identifier. No discovery is rerun.
 Use --out-dir for a probe before replacing canonical generated Lean data.
 """
@@ -21,10 +22,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from needle_cover_lean import canonical_maps, refined_tokens, serialize
 from needle_cover_refine import Campaign, capvalue, mix, value, verify
 from needle_rankone_nodes import verify_unshifted
-from needle_unshifted_export import batch_term
+from needle_unshifted_export import batch_term, spectral_batch_term
+from needle_mixed_nodes import (FORMAT as MIXED_FORMAT, batch_key, source_weights,
+                                verify_mixed, xcap)
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'data/lower-unshifted'
+# Bind the complete label/potential prefix of the last certified 10,521-box
+# cover without requiring another copy of its large source and box tables.
+PREFIX_NODES, PREFIX_GROUPS = 1261, 19
+PURE_NAMES = ('seed4302-lo', 'seed4302-hi')
+PREFIX_SHA256 = '8cf14c02abf1fbba9d6fdc0a72917b69f1896432588481a12b60a71ff9f03cc3'
 
 
 def sha(path):
@@ -41,14 +49,32 @@ def local_input(path):
     return local
 
 
+def check_prefix(cover):
+    assert len(cover['nodes']) >= PREFIX_NODES and len(cover['groups']) >= PREFIX_GROUPS, \
+        'Certified node/group prefix was shortened'
+    projection = dict(nodes=cover['nodes'][:PREFIX_NODES], groups=cover['groups'][:PREFIX_GROUPS],
+                      newnodes=cover['newnodes'],
+                      u_nodes={name: cover['u_nodes'][name] for name in PURE_NAMES})
+    digest = hashlib.sha256(json.dumps(projection, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+    assert digest == PREFIX_SHA256, 'Certified node/group/reference prefix changed'
+
+
 class ExportCampaign(Campaign):
     def __init__(self, base, cover, docs):
         super().__init__(base)
-        assert cover['groups'] == self.cover['groups'], 'Original potentials changed'
+        assert cover['groups'][:len(self.cover['groups'])] == self.cover['groups'], 'Original potentials changed'
         assert cover['newnodes'] == self.cover['newnodes'], 'Existing spectral nodes changed'
         self.cover = cover
         self.nodes = cover['nodes']
         self.docs = docs
+        self.gv = []
+        for group in cover['groups']:
+            weights = [(i, Q(a)) for i, a in group['weights']]
+            assert len(weights) in (1, 2) and all(type(i) is int and 0 <= i < len(self.rv) and a > 0
+                                                 for i, a in weights), 'Invalid group rows/weights'
+            assert [i for i, _ in weights] == sorted({i for i, _ in weights})
+            assert sum(a for _, a in weights) == 1, 'Group weights do not sum to one'
+            self.gv.append(tuple(sum(a*self.rv[i][k] for i, a in weights) for k in range(8)))
 
     def node(self, index, group, xu):
         assert isinstance(index, int) and 0 <= index < len(self.nodes)
@@ -56,11 +82,17 @@ class ExportCampaign(Campaign):
         if ref[0] != 'u':
             return super().node(index, group, xu)
         d = self.docs[ref[1]]
-        expected = [(int(i), Q(a)) for i, a in self.cover['groups'][group]['weights']]
-        assert expected == [(d['row_index'], Q(1))], 'New node belongs to another potential'
-        p = tuple(map(Q, d['P']))
+        expected = tuple((int(i), Q(a)) for i, a in self.cover['groups'][group]['weights'])
+        if d['format'] == MIXED_FORMAT:
+            assert expected == source_weights(d['witness']), 'New spectral node belongs to another potential'
+            assert xu <= xcap(d), 'Spectral node used beyond its checked x range'
+            n = d['witness']
+        else:
+            assert expected == ((d['row_index'], Q(1)),), 'New node belongs to another potential'
+            n = d
+        p = tuple(map(Q, n['P']))
         assert len(p) == 5 and p[1] >= 0 and p[4] >= 0
-        return Q(d['tau']), p
+        return Q(n['tau']), p
 
     def box_upper(self, box):
         bb = tuple(map(Q, box['bounds']))
@@ -136,7 +168,7 @@ def canonical_old_map(old, inherited):
 
 
 def new_batches(cover, inherited, old_batch_count):
-    docs, sources, grouped = {}, {}, {}
+    docs, sources, stein_groups, spectral_groups = {}, {}, {}, {}
     refs = cover['nodes']
     names = {r[1] for r in refs if r[0] == 'u'}
     assert names == set(cover['u_nodes']), 'Unbound or unused new-node identifier'
@@ -146,24 +178,40 @@ def new_batches(cover, inherited, old_batch_count):
         digest = hashlib.sha256(payload).hexdigest()
         assert digest == binding['sha256'], ('New node hash mismatch', name)
         d = json.loads(payload)
-        assert d['format'] == 'needle-unshifted-explicit-scale/v1'
         assert d['inherited'] == 'data/lower-unshifted/inputs/inherited.json'
         assert d['inherited_sha256'] == sha(DATA / 'inputs/inherited.json')
-        assert isinstance(d['row_index'], int) and 0 <= d['row_index'] < len(inherited['rows'])
-        verify_unshifted(path)
+        if d['format'] == MIXED_FORMAT:
+            checked, _ = verify_mixed(path)
+            assert checked == d
+            spectral_groups.setdefault(batch_key(d), []).append(name)
+        else:
+            assert d['format'] == 'needle-unshifted-explicit-scale/v1', 'Unsupported law-node format'
+            assert type(d['row_index']) is int and 0 <= d['row_index'] < len(inherited['rows'])
+            verify_unshifted(path)
+            stein_groups.setdefault(d['row_index'], []).append(name)
         assert sha(path) == digest, ('Node changed during verification', name)
         docs[name], sources[str(path.relative_to(ROOT))] = d, digest
-        grouped.setdefault(d['row_index'], []).append(name)
     out = 'import Grothe.Lower.RowData\nimport Grothe.Lower.MixedData\n\n'
     out += '/-! Generated by `tools/needle_unshifted_lean.py`: checked original-source law scales. -/\n\n'
     out += 'namespace Grothe.Research.LawNodeData\n\nopen Grothe.Lower\n\n'
-    extra_map, batch_names = {}, []
-    for bi, (row, names) in enumerate(sorted(grouped.items())):
-        names.sort(key=lambda name: (Q(docs[name]['tau']), name))
-        batch = f'lawBatch{row}'
+    extra_map, batch_names, batches = {}, [], []
+    assert all(name in docs and docs[name]['row_index'] == 14 for name in PURE_NAMES), \
+        'Existing pure law batch is missing'
+    batches.append(('lawBatch14', False, 14, list(PURE_NAMES)))
+    for row, names in sorted(stein_groups.items()):
+        names = [name for name in names if name not in PURE_NAMES]
+        if names:
+            batches.append((f'lawSteinBatch{len(batches)-1}', False, row, names))
+    for key, names in sorted(spectral_groups.items(), key=lambda kv: (kv[0][:3], len(kv[0][3]), kv[0][3])):
+        batches.append((f'lawSpectralBatch{len(batches)-1}', True, None, names))
+    for bi, (batch, spectral, row, names) in enumerate(batches):
+        names.sort(key=lambda name: (Q((docs[name]['witness'] if spectral else docs[name])['tau']), name))
         batch_names.append(batch)
         out += f'def {batch} : JBatch :=\n  '
-        out += batch_term(row, inherited['rows'][row], [docs[name] for name in names]) + '\n\n'
+        if spectral:
+            out += spectral_batch_term(inherited['rows'], [docs[name] for name in names]) + '\n\n'
+        else:
+            out += batch_term(row, inherited['rows'][row], [docs[name] for name in names]) + '\n\n'
         for ni, name in enumerate(names):
             extra_map[name] = (old_batch_count + bi, ni)
     out += 'def extraBatches : List JBatch :=\n  [' + ', '.join(batch_names) + ']\n\n'
@@ -198,6 +246,8 @@ def cover_text(B, L, strings, tokens):
 
 
 def export(cover_path, out_dir, check=False):
+    if not __debug__:
+        raise ValueError('Reject -O/-OO: exact assertions required')
     cover_path = local_input(cover_path)
     payload = cover_path.read_bytes()
     cover = json.loads(payload)
@@ -207,7 +257,12 @@ def export(cover_path, out_dir, check=False):
         path = base / name
         source_pins[str(path.relative_to(ROOT))] = sha(path)
     source_pins['Grothe/Lower/MixedData.lean'] = sha(ROOT / 'Grothe/Lower/MixedData.lean')
+    for name in ('needle_unshifted_lean.py', 'needle_unshifted_export.py', 'needle_mixed_nodes.py',
+                 'needle_rankone_nodes.py', 'needle_cover_lean.py', 'needle_cover_refine.py',
+                 'rankone_law.py', 'rankone_source_paths.py'):
+        source_pins['tools/'+name] = sha(ROOT / 'tools' / name)
     assert cover.get('fails') == [], 'Incomplete cover or missing failure ledger'
+    check_prefix(cover)
     B, L = Q(cover['target']), Q(cover['lower'])
     assert 0 < B and 0 < L and B*L < 1, 'Invalid reciprocal endpoint'
     old, inherited, frozen_nodes = original_data(base)

@@ -46,44 +46,48 @@ not more clipping or a finer radial mesh. Neither endpoint has changed.
 
 Fresh reassessment: [the common-kernel and frozen-table audit](COMMON_STEIN_REASSESSMENT_2026-10-23.md) now excludes all four old atomic laws with merges of inherited tests, but law reoptimization largely restores their scores. More decisively, a genuine finite cubic gives a directed floor above `0.71335` for every convex mixture of all nineteen frozen tables at an admissible state. Thus radial constraints alone cannot finish that fixed-table architecture. The next global attack must change the profiles or retain the actual response relation and joint polynomial image fields. This floor is for stored upper tables, not the witness norm.
 
-## Immediate continuation after the adaptive cover
+## Current complete certificate and next attack
 
-The complete cover now certifies `1.401696986171` under unchanged `NodeCaps`.
-Adaptive refinement and repricing gave a genuine global gain; the smaller
-research cap `0.71342` still has 877 failing boxes. Further mesh refinement
-alone has diminishing returns near the binding region.
+The complete lower certificate has cap `0.713420920822` and strict reciprocal
+endpoint `1.401697049825`, under unchanged `NodeCaps`. It uses the two original
+pure-row law nodes and three additional mixed-source Young nodes. The mixed
+source has original-row weights `1-theta,theta` on rows 14 and 15, with
+`theta=177107909/800000000`; its kurtosis range is `0 <= x <= 4/5`.
+Every scale interpolation uses an actual accepted endpoint bracket.
 
-The next bounded experiment fuses six existing Stein witnesses into one
-ordinary mixed-source witness before reoptimizing its polynomial majorant.
-One exact whole-half-line check gives a pointwise cap near `0.713418480666`,
-a saving near `1.958e-6` against the selected old mixture. The ordinary
-`checkBatch` accepts this research node. Reusing its fused cut in endpoint
-LPs gives a valid full binding-box cap `0.713420448939047`, which misses the
-smaller target `0.71342`; inserting the midpoint does not lower that maximum.
-Endpoint-specific fusion improves the full neighborhood cap further; the
-best hybrid keeps the old lower endpoint and new upper endpoint. Its valid
-whole-neighborhood chord cap is `0.713419752787476`, below `0.71342`
-locally; inserting the midpoint leaves the same maximum. It does not reach the strict `1.401700` reciprocal cap,
-and the wider original t/x slab still fails. The complete global cover must
-pass before promotion. The old 10,521-box certificate stays frozen during
-these tests.
-Keep the original source caps and the common residual; do not interpolate a
-single node to neighboring scales without a valid law-convexity bracket.
+Fusion combines inherited Stein tests on their common 161-knot mesh before
+reoptimizing the majorant. Exact square identities justify the cut. The selected
+nodes pass whole-half-line checks; minimax prices at both kurtosis endpoints
+avoid mistaking a pointwise saving for a rectangle bound. The complete split
+forest keeps valid old recipes on the complement. Nodes that do not contribute
+to the final proof are excluded from the maintained certificate.
 
-The next promotion step should optimize the worst box value, retain all
-previous accepted endpoint choices, and add the resulting mixed nodes as a
-checked research batch. Its scale brackets and kurtosis range must stay
-explicit. Insert legal local partitions with the old recipe on the
-complement, then reoptimize and replay the complete cover. Only a strictly
-smaller global maximum warrants regenerated Lean data and fresh batch,
-box, partition and endpoint checks. Pointwise LP gains alone are insufficient.
+The remaining global-cap obstruction is more specific than a mesh issue.
+At the old cap cell 9750, the pure row-15 envelope is exactly optimal among
+convex mixtures of all existing global row caps: the KKT directional gaps are
+nonnegative, with the smallest nonzero gap about `8.83119e-6`. This is a floor
+of that relaxation, not a lower bound for the actual Gaussian witness norm.
+Retaining scale and kurtosis through existing row-15 law nodes lowers this
+entire region to `0.713420920822`; every new subrectangle has a valid recipe.
+Pruning removes unnecessary splits before Lean export.
 
-This campaign can use an appended research mixed batch and should avoid the
-heavy cap import closure. It neither proves `CapsRest` nor repairs the
-localized row-12–15 cap pieces. The separate cap tracks are recorded in
-[the caps roadmap](CAPS_ROADMAP.md). Broader joint-response work below remains
-necessary for a large improvement, but the positive fusion test justifies
-this smaller, directly certifiable next step first.
+The accepted gain over `1.401696986171` is only `0.000000063654`.
+The target `0.71342` remains unmet. Thus this closes the local-to-global
+certificate gap but does not settle the third decimal or establish optimality
+of the current law bank. A larger gain needs a stronger bound in the newly
+binding law region or genuinely shared response constraints. Repeating global
+row-cap mixing at the proved KKT floor cannot supply that gain.
+
+The next bounded numerical test should price the complete binding rectangles
+with the actual scale and kurtosis retained, preserving the incumbent as a
+fallback. Any new mixed law price needs an exact budget, whole-half-line proof,
+legal interpolation bracket and a strictly improved complete cover. If these
+local refinements keep returning comparable small gains, prioritize the joint
+response-feasibility route below rather than finer global-cap meshes.
+
+The cap sources, witness multiplier and heavy cap import closure stay fixed.
+Completing rows 12--15 under `CapsRest` remains a separate formalization track;
+see [the caps roadmap](CAPS_ROADMAP.md).
 
 ## Decision
 
@@ -91,7 +95,7 @@ The next stage is complete: a common signed-tail spectral budget replaces the
 independent residual relaxation, and an exact degree-seven separator proves
 that the full Gaussian-phase cubic-preprocessor family, with arbitrary complex
 phases and convex mixtures, has score at most `0.71186`. It cannot beat the
-incumbent `0.711947186053065782`. Leave that architecture rather than optimize
+incumbent `0.711947395067310982`. Leave that architecture rather than optimize
 its scalar parameters again. This does not exclude general finite cubic phases.
 The common-tail screen of the updated twelve-column pool is `0.711605880` at
 midpoints; its error-dependent bounds are still conditional on unproved
@@ -117,18 +121,18 @@ sequence and a tail allowance. A fictitious law admitted by a relaxation does no
 
 ## 1. Baseline and quantitative objectives
 
-The combined development after integration of master `b93ec83` has
+The combined development after integration of master `d4df11f` has
 
 \[
- 1.401696986171<K_G^{\mathbb C}<1.404598570779.
+ 1.401697049825<K_G^{\mathbb C}<1.404598158416.
 \]
 
-The interval width is `0.002901584608`. Both sharp bounds have the numerical
+The interval width is `0.002901108591`. Both sharp bounds have the numerical
 input hypotheses documented in the repository. The separate fully formal upper
 bound is \(K_G^{\mathbb C}\le1.404951\).
 
 The current lower witness is \(P_{1,0}-(149/200)P_{2,1}\), with cap
-\(B_0=0.713420953220\), checked on 10,521 boxes. The default target retains `NodeCaps`, the numerical caps
+\(B_0=0.713420920822\), checked on 10,762 boxes. The default target retains `NodeCaps`, the numerical caps
 for the 19 fibre potentials. Master now formalizes the majorant/integration
 checkers and the route `lower_bound_of_capsRest` in the separate heavy target
 `GrotheCaps`. That route retains only the localized central rows after the
@@ -139,15 +143,17 @@ it does not change the numerical cap, and this branch leaves all cap sources unc
 The current upper certificate has the exact reciprocal denominator
 
 \[
- A_0=\frac{355973593026532891}{500000000000000000}
-     =0.711947186053065782.
+ A_0=\frac{355973697533655491}{500000000000000000}
+     =0.711947395067310982.
 \]
 
 Master's upper theorem `Grothe.UpperChaos.fresh_upper_rounder` now constructs
 the rounding and derives its Hermite, Mehler, charge and boundedness properties
 inside Lean, including the phase cover. The truncation X still has explicit
-L² and charge-one inputs; `compare`, `energy_close` and `hardy` are its numerical
-inputs. The generic `DirectHyps` interface still
+L² and charge-one inputs; `ComparisonInputs`, `energy_close` and `hardy` are its
+explicit inputs. The first specifies the error decomposition, spectral supports
+and Gaussian component norm caps; Lean derives the selected-head comparison.
+The generic `DirectHyps` interface still
 exists, but its structural fields are not additional hypotheses of the
 concrete theorem. This removes duplicated formalization work from the attack.
 
@@ -173,7 +179,7 @@ This would give \(K_G^{\mathbb C}\ge1/0.713260>1.402\). It is a target, not
 an available cap. Changing the witness requires revalidating the entire row
 cover, including the flanks; the master cap at `149/200` cannot be inherited at
 `1891/2500`. The numerical difference between the current master cap and
-`500/701`, about `0.0001550382311`, indicates the scale of the problem, not a
+`500/701`, about `0.0001541590531`, indicates the scale of the problem, not a
 transferable error budget between these two witnesses.
 
 The larger objective requires higher-degree witnesses. The numerical cubic
@@ -374,7 +380,7 @@ for the same ineffective inequality.
 
 Keep the current certified rounding as an incumbent. The historical analytic
 chirp pool is not a replacement: its recorded score near `0.711892` was already
-below the present `0.711947186053065782`, even before all remaining tail costs.
+below the present `0.711947395067310982`, even before all remaining tail costs.
 An earlier phase-response pool also suffered inaccurate coefficients hidden by
 stable witness payoffs.
 
@@ -468,7 +474,7 @@ harmonic enumeration is not the primary attack.
 
 Keep closure of the existing `NodeCaps` proof as a separate formalization
 task. On the upper side, improving the external comparison estimate may give
-a useful small gain: it accounts for 94.78% of the current residual allowance.
+a useful small gain: it accounts for 93.59% of the current residual allowance.
 Neither task substitutes for the joint-geometry target or establishes a new
 rounding family.
 

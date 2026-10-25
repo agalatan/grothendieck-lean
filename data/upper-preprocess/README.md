@@ -1,20 +1,22 @@
 # Current polynomial preprocessing certificate
 
-The frozen contour-tail assembly in `certificate.json`, under the documented
-Gaussian inputs, proves
+Under the documented Gaussian inputs, the certificate proves
 
-**K_G^C < 1.404598583128.**
+**K_G^C < 1.404598170764.**
 
-The exact reciprocal score is `355973589896954491/500000000000000000`.
+The exact reciprocal score is `355973694404074991/500000000000000000`.
 This is a global upper certificate, not a bound on a selected response region.
-The lower certificate is unaffected. The current Lean theorem further reserves
-the known linear coefficient's weighted square from the same Hardy budget. It
-uses tail `19055527/625000000000000` and total residual
-`562146517109/500000000000000000`, giving
-**K_G^C < 1.404598570779**, with exact reciprocal score
-`355973593026532891/500000000000000000`. This is a derived assembly in
-`Grothe/Upper/PolynomialBridge.lean`; the frozen contour result and its
-unrefined assembly fields remain unchanged for reproducibility.
+The lower certificate is unaffected.
+
+The current Lean assembly also deducts the linear coefficient's forced
+weighted square from the same Hardy budget. The derived tail is
+`30488839/1000000000000000`, the residual is
+`457639394509/500000000000000000`, and the exact reciprocal score is
+`355973697533655491/500000000000000000`. Thus the current endpoint is
+**K_G^C < 1.404598158416**. These derived fields are recorded in
+`linear_budget_refinement`; the frozen contour-tail fields above are retained
+for exact replay. The selected comparison contributes 93.59% of the refined
+residual, the head 3.08%, and the tail 3.33%.
 
 ## Mathematical assembly and trust boundary
 
@@ -31,22 +33,25 @@ residual about `c t`, with `c = 7119483103461/10000000000000`:
 
 | contribution | exact allowance | status |
 |---|---:|---|
-| rounding/truncation energy comparison | `1065637497/1000000000000000` | inherited external Gaussian input |
+| selected-block energy comparison | `107077907/125000000000000` | proved from inherited component-error inputs and native finite masses |
 | finite head through degree 501 | `28153/1000000000000` | freshly checked in Arb and Lean |
 | stored energy-table accuracy | `6847009/500000000000000000` | inherited external Gaussian input |
 | infinite tail after degree 501 | `36748/1000000000000` | fresh contour arithmetic, same analytic Schur input |
 
-Their sum is `delta = 565276095509/500000000000000000`.
+Their sum is `delta = 460768975009/500000000000000000`.
 The already formalized transfer theorem gives
-`K_G^C <= 1/(c-delta) < 1.404598583128`.
+`K_G^C <= 1/(c-delta) < 1.404598170764`.
 No additional head-comparison hypothesis is introduced.
 
 The native Lean checker proves the complete finite-head statement over exact
 dyadic energy data and rational polynomial coefficients. The Lean development
 separately proves the polynomial l1 constraints, locality, transfer and
 rational endpoint assembly.
-The refined concrete theorem `Grothe.UpperChaos.fresh_upper_rounder` still explicitly
-assumes `compare`, `energy_close` and `hardy`, for a charge-one L2 truncation `X`.
+The concrete theorem `Grothe.UpperChaos.fresh_upper_rounder` still explicitly
+takes `ComparisonInputs`, `energy_close` and `hardy`, for a charge-one L2 truncation `X`.
+The first records an exact Gaussian error decomposition, spectral supports and
+component norm bounds. Their source enclosures and identification remain external;
+Lean derives the selected comparison. See `../localized-comparison/PROOF.md`.
 Thus this is not a new unconditional Lean endpoint. The unconditional theorem
 `Grothe.haagerup_bound` remains separate.
 
@@ -66,6 +71,7 @@ is not part of the proof.
 
 ```sh
 mkdir -p handoff/upper-preprocess-replay
+python3 -I tools/gen_localized_comparison.py --check
 python3 tools/gen_upper_data.py data/upper-preprocess/certificate.json handoff/upper-preprocess-replay/Data.lean
 cmp Grothe/Upper/Data.lean handoff/upper-preprocess-replay/Data.lean
 python3 -I tools/verify_upper_preprocess.py data/upper-preprocess/certificate.json data/upper-preprocess/proposal.json data/upper-preprocess/hardy_result.json --check --out handoff/upper-preprocess-replay/head.json
@@ -88,17 +94,8 @@ exact bound, source hash and verifier hash. The `inputs/` directory pins the
 Schur proof and smoothing parameters. A sequential LP produced the proposal;
 neither LP optimality nor floating point output is a certificate premise.
 
-The dominant remaining allowance is the inherited comparison (94.26% of the
-unrefined residual, 94.78% after the linear-budget deduction). Further gains from a new response must account for its full signed
+The dominant remaining allowance is the selected comparison (92.96% of the
+raw residual, or 93.59% after the linear-budget deduction), derived from the
+inherited Gaussian component-error enclosures. Further gains from a new response must account for its full signed
 kernel and shared tail; a better slope or a truncated mixture score alone
 does not establish an endpoint.
-
-## Combined Lean validation
-
-All 15 affected upper modules passed fresh warning-as-error checks, including
-the head and phase-cover native facts. The actual 40-declaration upper/lower
-report uses 16 of 83 registered native facts. The completed 10,521-box lower
-proofs were reused only after exact source, dependency and artifact guards;
-the 140-source heavy cap stamp stays unchanged. Raw logs, generated-data
-hashes and exact combined arithmetic are retained in `verification/`.
-The full default build and complete axiom inventory are separate branch CI.

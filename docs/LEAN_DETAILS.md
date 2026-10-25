@@ -94,9 +94,9 @@ steps. No numerical response integral is certified by these modules. See
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
 **Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder` proves
-`IsGrothendieckBound (500000000000000000/355973593026532891)` for the concrete rounding,
-given an L² charge-one truncation `X` and the numerical bounds `compare`, `energy_close`, `hardy`.
-`Grothe.upper_value_lt` shows this is below 1.404598570779 (`Grothe/UpperChaos/PhiBound.lean`).
+`IsGrothendieckBound (500000000000000000/355973697533655491)` for the concrete rounding,
+given an L² charge-one truncation `X` and component-error inputs, table accuracy and Hardy.
+`Grothe.upper_value_lt` shows this is below 1.404598158416 (`Grothe/UpperChaos/PhiBound.lean`).
 The older table interface `Grothe.fresh_upper : DirectHyps E EX → IsGrothendieckBound (...)`
 remains in `Grothe/Upper/PolynomialBridge.lean`.
 The actual rounding is G_T, the smoothing of T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6.
@@ -117,31 +117,37 @@ energies, and are chosen to make the kernel nearly linear. The slope is c = 7119
   fixed-point interval checker (`GrotheKernel/`, soundness in
   `Grothe/Upper/IntervalSound.lean`); the tail bound by Cauchy–Schwarz from a weighted
   square-sum bound; the assembly of the budgets; and the endpoint arithmetic.
-* Explicit numerical hypotheses of the concrete theorem: `compare`,
-  Σ|E − EX| ≤ 1065637497/10¹⁵ (the energy-difference / mixed-cutoff inequality with
-  Hermite cutoffs 181, 91, 51, a Bargmann Hilbert–Schmidt
-  estimate, directed coefficient enclosures and the exact norm ‖v‖ < 1/100; the source value is
-  1.06563749615·10⁻⁶; archived with its scripts in the research folder
-  `handoff/research-third-decimal/upper-polynomial-bridge-20261022/`); `energy_close`: the
-  stored energies are within 6847009/(5·10¹⁷) of EX on `headIdx 501` in ℓ¹; `hardy`: the weighted square-sum
-  bound 7/4 at radius 4149/4000 for the kernel of G_T itself (a Gaussian weighted Schur estimate
-  valid for every bounded rounding, plus a fresh 65,594-arc contour certificate with mean below 1.70148 for this p, τ;
-  the certificate and canonical inputs are in `data/upper-preprocess/`),
-  which Lean turns into the tail bound 19055527/(625·10¹²) beyond degree 501. The concrete theorem
-  also takes the structural inputs X ∈ L² and charge-one equivariance of X. Actual-rounding
-  validity, summability and parity are derived, rather than remaining `DirectHyps` inputs.
-* **How much rests on these hypotheses.** Of the total residual 562146517109/(5·10¹⁷)
-  ≈ 1.12429·10⁻⁶, the assumed comparison bound 1065637497/10¹⁵ is 94.78%, the computation
-  verified in Lean (headCapQ = 28153/10¹²) 2.50%, the tail from `hardy` (19055527/(625·10¹²)) 2.71%,
-  and the assumed energy-table error 6847009/(5·10¹⁷) 0.001%. The external comparison uses
-  the stronger bound |φ| < 1; formal disk-valuedness needs only the proved φ² ≤ 3.
-  The bound therefore depends almost entirely on the
-  external analysis behind the comparison hypothesis.
-  The tail calculation first reserves the linear coefficient's known energy:
-  `head_residual_le` gives `h₀ ≥ slopeQ − compareQ − headCapQ − energyErrQ`;
-  `hardy_budget_after_linear` deducts its weighted square from `7/4` and
-  `tail_numeric` verifies the smaller tail cap with `decide +kernel`.
-  This adds no numerical premise or native fact.
+* The selected comparison is proved in `Grothe/UpperChaos/LocalizedComparison.lean`.
+  `ComparisonInputs` records an exact shared-coordinate error decomposition,
+  total-chaos supports and component L² norm bounds. From the inherited Gaussian
+  enclosures at cutoffs 181, 91, 51, these are the smoothed mixed-Taylor errors
+  and frozen-vector rounding error. Their identification with the supplied
+  approximation and their Gaussian norm enclosures remain external. Lean proves
+  `Σ_(p in headIdx 501) |E(p)-EX(p)| ≤ 107077907/(125·10¹²)` from them, using
+  `2 Σ A_r e_r + (Σ e_r)²`. The finite Hermite blocks are identified with the
+  actual Gaussian energies in `EnergyBlock.lean`. The native `comparison_check`
+  proves all 18 band radii from the stored table and `energyErrQ`, and checks the
+  rational comparison budget. Neither a near-linear kernel nor the final head
+  residual is assumed by this interface.
+* Other explicit inputs: `energy_close`, the stored energies are within
+  6847009/(5·10¹⁷) of EX on `headIdx 501` in ℓ¹; and `hardy`, the weighted
+  square-sum bound 7/4 at radius 4149/4000 for the kernel of G_T itself.
+  The latter uses the inherited Gaussian Schur analysis and the recorded
+  65,594-arc directed contour. The concrete theorem also takes X ∈ L² and
+  charge-one equivariance. Validity, summability, parity, and the phase cover
+  for the actual rounding are derived.
+* **Residual ledger.** The total is 457639394509/(5·10¹⁷), approximately
+  9.15279·10⁻⁷. The selected comparison contributes 93.59%, the native finite
+  head 3.08%, the Hardy tail 3.33%, and the table error about 0.0015%.
+  These percentages describe allowances, not fractions of the proof left
+  unformalized. The Gaussian component-error inputs remain the main numerical
+  limitation. Full scope, source bindings and reproduction commands are in
+  `data/localized-comparison/PROOF.md`; `docs/localized-comparison.tex` gives
+  the mathematical argument.
+* The same finite-head estimate forces `h₀ ≥ slopeQ − headResidualQ`.
+  `hardy_budget_after_linear` deducts that coefficient's weighted square from
+  `7/4`; the shifted tail bound `30488839/10¹⁵` follows by exact kernel arithmetic.
+  This uses the selected comparison and the original Hardy input.
 * **Independent replay.** The source computations were replayed on a different machine: the
   nodal table and the Taylor centre arrays were regenerated bit for bit, and the kernel head,
   contour tail, comparison and endpoint pass on the regenerated data (energy table reproduced
@@ -215,7 +221,7 @@ and the gates E ⪰ 0, E ⪰ diag(−1,ε,ε), R ⪰ diag(−1,ε), R ⪰ diag(�
 inequality give each row inequality with the residual p = Π_{H₂,₁}c₀, its circular law and the gate
 variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
 `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data :
-NodeCaps → IsGrothendieckBound K → 1.401696986171 < K` composes everything
+NodeCaps → IsGrothendieckBound K → 1.401697049825 < K` composes everything
 through `Grothe/Research/RefinedCoverResult.lean`:
 **the only remaining hypothesis of this default-target theorem is `NodeCaps`**, the node caps
 Ψ_r(r_k) − 10⁻¹¹ ≤ c_k of the 19 certified potentials (exact-arithmetic certificates outside Lean).
@@ -242,7 +248,7 @@ The four remaining rows still require `CapsRest`.
   budget. The finite checker verifies each signed reserve and both positive semidefinite
   2×2 matrices; the analytic bridge derives that same budget for the actual cubic.
   Joint nodes are restricted to their checked kurtosis range throughout the cover.
-  The refined partition of [0, 9/10] × [0, ρ] × [0, 31/4] has 10,521 closed boxes.
+  The refined partition of [0, 9/10] × [0, ρ] × [0, 31/4] has 10,762 closed boxes.
   It retains the existing certified node potentials and their valid ranges, and adds two
   pure-row law-scale nodes for row 14 using the original unshifted source table and Stein cuts.
   Their one appended batch passes `LawNodeCheck.certLawNodes`. Adaptive binary
@@ -391,8 +397,9 @@ The four remaining rows still require `CapsRest`.
   along any direction by the influence of that direction.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
-`scripts/check_axioms.py`: `Grothe.head_check` (the upper head), `Grothe.HaagerupPower.check`
-(the finite residual, power budget and weighted tail of the unconditional upper bound), `Grothe.UpperChaos.phi_cover_check`
+`scripts/check_axioms.py`: `Grothe.head_check` (the upper head),
+`Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
+`Grothe.HaagerupPower.check` (the finite residual, power budget and weighted tail of the unconditional upper bound), `Grothe.UpperChaos.phi_cover_check`
 (φ² ≤ 3), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
 and the 13 chunks `Grothe.Lower.certRows0`–`4`,
 `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower certificate (assembled into
@@ -431,10 +438,11 @@ normalization of the real cubic kernel and its five complex contraction invarian
 `Grothe/LowerAnalytic/JointBudget.lean` proves `joint_sixth_budget`, combining the finite
 reserve certificate and J3 with the actual spectral quantities of the cubic on a checked
 kurtosis range. These proofs use only the standard logical axioms. They do not add a
-hypothesis to the headline lower theorem. The bank's 41 joint-moment nodes are verified through the integrated
+hypothesis to the headline lower theorem. The bank's 41 original joint-moment nodes are verified through the integrated
 `JointData`/`jointCert` checker and `Circular.joint_sixth` analytic bridge in
-`JointContractions.lean`. The 306 spectral witnesses, 45 inherited Stein witnesses and two new pure-row
-Stein witnesses are combined in a 10,521-box cover. No extra hypothesis is added to `NodeCaps`.
+`JointContractions.lean`. The 306 original spectral witnesses, 45 inherited Stein witnesses,
+two new pure-row Stein witnesses and three new mixed-source Young witnesses
+are combined in a 10,762-box cover. No extra hypothesis is added to `NodeCaps`.
 
 `JointSixth.gram_j_eta` retains both bounds on the negative cumulant contraction;
 `gram_j2_shifted` improves the h₀ coefficient from 198+150/α to
@@ -476,13 +484,17 @@ the positive-diagonal cost cone. `boundaryCheck` is a three-rational exact check
 the positive-multiplier and kurtosis-range conditions. The four auxiliary conic
 variables need not be retained in a moment-cost certificate.
 
-**Reproducible law-scale extension.** `data/lower-unshifted/` contains the complete
-source snapshots, two exact unshifted node certificates and the final cover.
-`tools/needle_adaptive_global.py` replays the final forest of binary splits and
-same-domain repricings from the immutable `certified-start-*` inputs. It checks
-every parent restriction and final bound without reading an ignored research file.
-The generator
-`tools/needle_unshifted_lean.py` verifies their hashes, the old canonical node map,
-every whole-half-line node proof, every box and the guillotine partition before exporting
-`LawNodeData.lean` and `RefinedCoverData.lean`. Its `--check` mode reproduces the
-committed data byte for byte. No source cap, witness multiplier or `NodeCaps` input changes.
+**Reproducible law-scale extension.** `data/lower-unshifted/` contains the original
+source snapshots, two pure-row and three mixed-source law certificates, and the complete
+10,762-box cover. `tools/needle_fused_global.py --verify` replays its 241 binary
+splits and 280 same-domain repricings from the immutable 10,521-box baseline.
+The original node/group prefix is pinned. Added source references name existing
+Stein or zero nodes; they introduce no new source cap.
+
+`tools/needle_mixed_nodes.py` checks each mixed source, its Gram/Young budget,
+kurtosis range and whole-half-line majorant. No historical fusion or LP file is
+an acceptance input. The generator `tools/needle_unshifted_lean.py` independently
+checks every law certificate, the original canonical reference map, every final
+box and the guillotine partition. `--check` reproduces `LawNodeData.lean` and
+`RefinedCoverData.lean` byte for byte. The original pure-row batch stays at index
+21; the three mixed nodes form batch 22. No checker-core or heavy cap source changes.

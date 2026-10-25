@@ -12,11 +12,12 @@ The tensor-power correlations are `p(t)=t P(t²)` and `q(t)=t Q(t²)`.
 Both coefficient l1 norms are at most one and `Q(0)=0`; no restriction to
 only two nonzero auxiliary coefficients is imposed.
 
-`energyStrs` stores the same 21168 exact dyadic energies of the truncation X,
-with `n+3m ≤ 501`. `energyErrQ` and the Gaussian comparison are inherited.
-The new head and Gaussian Schur/Hardy contour are independently replayed.
+`energyStrs` stores 21168 exact dyadic energies of the truncation X,
+with `n+3m ≤ 501`. `energyErrQ` is inherited. The selected-block comparison
+uses the Gaussian component-error inputs and exact finite masses in
+`ComparisonData.lean`. The head and Schur/Hardy contour have independent replays.
 The source certificate's unrefined contour-tail assembly is
-`1/(c-565276095509/500000000000000000) = 500000000000000000/355973589896954491 < 1.404598583128`.
+`1/(c-460768975009/500000000000000000) = 500000000000000000/355973694404074991 < 1.404598170764`.
 `PolynomialBridge.lean` further deducts the forced linear coefficient from
 the same Hardy budget to obtain the current sharper conditional endpoint.
 -/

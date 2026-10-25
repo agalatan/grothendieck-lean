@@ -6,5 +6,17 @@
   "seed4302-hi": {
     "path": "data/lower-unshifted/nodes/seed4302-hi.json",
     "sha256": "c6bc9ffe47760dd8586d8c374be6b9633658c7c2ae9edf321e3f71a2fb135b78"
+  },
+  "fused-hi": {
+    "path": "data/lower-unshifted/nodes/fused-hi.json",
+    "sha256": "121a4b59618720609780257436b5ffc77fc04b95f93f0c5f1de44781c226a72d"
+  },
+  "fused-lo": {
+    "path": "data/lower-unshifted/nodes/fused-lo.json",
+    "sha256": "bfc57415c045cd81113cb387c698c73a3ab574eed8a462d3c46048aee450b040"
+  },
+  "focus-3": {
+    "path": "data/lower-unshifted/nodes/focus-3.json",
+    "sha256": "479fc83a6aa406d62a744a19ac2ab11a62ed83bfe5c6d1062daba53e54934af0"
   }
 }

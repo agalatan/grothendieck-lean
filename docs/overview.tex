@@ -30,9 +30,9 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.401696986171\;<\;\KG\;<\;1.404598570779$\\[6pt]
-\normalsize Both bounds are theorems of a Lean~4/Mathlib development, each resting on one explicitly stated
-family of externally certified numerical inputs (Section~\ref{sec:trust}).\\[4pt]
+\Large $1.401697049825\;<\;\KG\;<\;1.404598158416$\\[6pt]
+\normalsize Both bounds are theorems of a Lean~4/Mathlib development, resting on explicitly stated
+analytic and computer-assisted inputs (Section~\ref{sec:trust}).\\[4pt]
 With \textbf{no hypothesis at all}, every step proved in Lean: $\KG\le1.404951$.\vspace{4pt}
 \end{minipage}}
 \end{center}
@@ -76,13 +76,13 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$ (Gaussian phase rounding)\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct 2026 & \textbf{this work} & $\mathbf{1.401696986171}$ & $\mathbf{1.404598570779}$\\
+Oct 2026 & \textbf{this work} & $\mathbf{1.401697049825}$ & $\mathbf{1.404598158416}$\\
 Oct 2026 & this work, fully formal & & $1.404951$ (no hypothesis)\\\bottomrule
 \end{tabular}
 \end{center}
 Haagerup's integral
 $1/\gamma^\dagger=1.404575934\ldots$, $\gamma^\dagger=\int_0^{\pi/2}\cos^2t\,(1+\sin^2t)^{-1/2}dt$, has been proposed as the
-exact value. It lies inside our interval, $2.26\cdot10^{-5}$ below the upper bound. For the real constant the corresponding
+exact value. It lies inside our interval, $2.22\cdot10^{-5}$ below the upper bound. For the real constant the corresponding
 recent results are $1.773\le K_G^{\R}\le1.7799$ (Heilman--Jones--Malavolta, October 2026).
 
 \section{Two dual constructions}
@@ -107,12 +107,23 @@ $|P_3(x)|^2=1-x^4(3-x^2)/36$ and the proved bound $\varphi^2\le3$ give $|T|\le1$
 Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $41$ and
 $\tau$ of degree $15$ with zero linear coefficient (any odd preprocessors of Wiener norm $\le1$ are realised by tensor
 powers). Compared with $c\,t$, $c=7119483103461/10^{13}$, the residual is at most
-$\delta=562146517109/(5\cdot10^{17})\approx1.12429\cdot10^{-6}$:
+$\delta=457639394509/(5\cdot10^{17})\approx9.15279\cdot10^{-7}$:
 \[
- \KG\le\frac1{c-\delta}=\frac{500000000000000000}{355973593026532891}<1.404598570779 .
+ \KG\le\frac1{c-\delta}=\frac{500000000000000000}{355973697533655491}<1.404598158416 .
 \]
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
+
+\paragraph{Selected-spectrum comparison.}
+The finite head only sees $S=\{(n,m):n+3m\le501\}$. Write its approximation error as
+$G_T-X=\sum_r D_r$, where $D_r$ is supported in degree band $B_r$ with $\|D_r\|_2\le e_r$.
+For nonnegative radii $A_r^2\ge\sum_{p\in S\cap B_r}E_X(p)$, Lean proves
+\[
+ \sum_{p\in S}|E_{G_T}(p)-E_X(p)|
+ \le2\sum_r A_re_r+\Bigl(\sum_r e_r\Bigr)^2.
+\]
+All pieces may share coordinates. Native arithmetic checks eighteen radii from the stored table and its error allowance.
+The Gaussian component-error enclosures and their identification with the pieces remain explicit inputs.
 
 \subsection{Lower bounds: Hermite projection games}
 A lower bound needs an operator $T$ whose \emph{vector} value is close to $1$ while its \emph{scalar} value is small. We use
@@ -122,11 +133,11 @@ A lower bound needs an operator $T$ whose \emph{vector} value is close to $1$ wh
 the projection onto linear functions minus a multiple of the projection onto the cubic chaos.
 \begin{itemize}
 \item \emph{Vector value.} With $u_\ell=z_\ell/\|z\|$, $\sum_\ell\langle u_\ell,Tu_\ell\rangle\ge1-(1+\epsilon)/(n+1)\to1$.
-\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=0.713420953220$.
+\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=0.713420920822$.
 \end{itemize}
-A finite-partition transfer turns this into matrices, so $\KG\ge1/B>1.401696986171$.
-The complete cover has 10,521 boxes. Two added pure-row law nodes use the original source caps and
-Stein cuts, so the Gaussian assumptions are unchanged. Their batch, every box and the full partition
+A finite-partition transfer turns this into matrices, so $\KG\ge1/B>1.401697049825$.
+The complete cover has 10,762 boxes. Two added pure-row law nodes and three mixed-source Young nodes use the original source caps and
+Stein cuts, so the Gaussian assumptions are unchanged. Their batches, every box and the full partition
 are checked separately. Adaptive binary splits reprice the existing components while preserving
 their scale interpolation domains. All generation inputs are retained in \path{data/lower-unshifted/}.
 
@@ -148,8 +159,8 @@ paying elsewhere. After a rotation $P_{1,0}h=t\,z_1$, and the cubic part of $k$ 
  expansion of the sixth cumulant; a first-moment bound; and families of \emph{Stein cuts}
  $\E\,G(U)\ge0$, obtained by Gaussian integration by parts and completing squares against spectral budgets, a covariance
  order and \emph{contraction-Gram budgets} (positive semidefinite Gram matrices of the coefficient tensor).
-\item \textbf{A finite certificate.} The parameters are covered by $10{,}521$ boxes in $(t,\tau,x)$; on each box a positive
- combination of rows and node certificates ($351$ existing mixed nodes, two added pure-row law nodes and $9{,}237$ row nodes, each a polynomial majorant checked in
+\item \textbf{A finite certificate.} The parameters are covered by $10{,}762$ boxes in $(t,\tau,x)$; on each box a positive
+ combination of rows and node certificates ($351$ existing mixed nodes, two added pure-row law nodes, three added mixed-source Young nodes and $9{,}237$ row nodes, each a polynomial majorant checked in
  exact rational arithmetic) bounds the scalar value by $B$.
 \end{enumerate}
 
@@ -167,7 +178,7 @@ and a lower bound from a game with a uniform scalar norm cap. Finite-pool dualit
 \begin{center}\small
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
 \textbf{Proved in Lean} & \textbf{Assumed (certified outside Lean)}\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_bound\_of\_refined\_cover\_data : NodeCaps → IsGrothendieckBound K → 1.401696986171 < K}}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_bound\_of\_refined\_cover\_data : NodeCaps → IsGrothendieckBound K → 1.401697049825 < K}}\\[2pt]
 the witness $T$ on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices; the polarisation identity;
 the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair (frames, fibre decomposition, Parseval,
 gates); all moment, Stein, spectral and contraction-Gram inequalities for every circular cubic, including the sixth-cumulant
@@ -176,16 +187,16 @@ Wick identity; the finite certificate (five row, three original-batch, one added
 \lean{NodeCaps}: the 19 potentials $\Psi_r$ (defined in Lean) lie below their stored rational caps at the tabulated nodes.
 The separate \lean{GrotheCaps} target reduces this to \lean{CapsRest}: four rows' vertex caps and any excluded-node caps.
 Its 60 range facts have a recorded verification stamp; the four remaining rows still require \lean{CapsRest}.\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under three numerical bounds, proves $\KG\le500000000000000000/355973593026532891$.}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error, table-accuracy and Hardy inputs, proves $\KG\le500000000000000000/355973697533655491$.}\\[2pt]
 the concrete disk-valued rounding; Gaussian Hermite completeness, Parseval and Mehler, charge selection, summability;
 the transfer inequality (tensor powers); kernel composition and locality; the head through degree 501 from
-21,168 stored energies by a verified interval evaluator (one \lean{native\_decide}); the tail bound; the endpoint
+21,168 stored energies by a verified interval evaluator (one \lean{native\_decide}); the tail bound; the endpoint; the selected-block comparison and native band masses
 &
-\lean{compare}: the actual energies of the smoothed rounding $G_T$ and of $X$ satisfy
-$\sum|E-E_X|\le1065637497/10^{15}$ ($94.78\%$ of the residual budget); \lean{hardy}: a
-weighted square-sum bound $7/4$ at radius $4149/4000$, giving the tail $19055527/(625\cdot10^{12})$ ($2.71\%$); the table error
-$6847009/(5\cdot10^{17})$ on the finite head (\lean{energy\_close}, $0.001\%$). The head computed in Lean,
-$28153/10^{12}$, is $2.50\%$.\\\midrule
+\lean{ComparisonInputs}: an exact error decomposition, spectral supports and inherited Gaussian component norm caps.
+Lean derives the selected comparison $107077907/(125\cdot10^{12})$ ($93.59\%$ of the residual allowance).
+The input identification remains external. \lean{hardy}: weighted square sum $7/4$ at radius $4149/4000$,
+with tail $30488839/10^{15}$ ($3.33\%$); finite table accuracy $6847009/(5\cdot10^{17})$.
+The native head is $28153/10^{12}$ ($3.08\%$).\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (1404951/1000000)}}\\[2pt]
 Haagerup's identity for the phase rounding, $\E[\overline{\ph\langle g,x\rangle}\,\ph\langle g,y\rangle]=\sum_k\frac\pi4\frac{(1/2)_k^2}{k!(k+1)!}z|z|^{2k}$
 (Euler integral, Gaussian integrals, Beta integrals, reduction to two complex Gaussians); the transfer through
@@ -196,18 +207,17 @@ a finite degree-thirteen preprocessor and explicit residual bounds are used.\\\b
 \end{tabular}
 \end{center}
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}.\par
-The native facts pinned in \path{scripts/check_axioms.py} check the upper head, phase cover, Haagerup bound,
-cap chords, the lower row/batch certificates, the additional pure-row law nodes and both finite covers.
+The native facts pinned in \path{scripts/check_axioms.py} check the upper head, selected-band masses, phase cover, Haagerup bound,
+cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and both finite covers.
 No \lean{sorry}; CI builds the default target and checks its axiom report. The 60 additional cap-range checks belong to
 the separate heavy \lean{GrotheCaps} target, whose recorded verification stamp CI checks. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
-the sharp upper bound rests mainly on an external numerical comparison lemma. The weaker upper bound $1.404951$ is fully formal.
+the sharp upper bound retains external Gaussian component-error and Hardy inputs. The weaker upper bound $1.404951$ is fully formal.
 Before the tail Cauchy--Schwarz step, the known linear coefficient's weighted square is deducted from $7/4$; this uses the same numerical hypotheses.
 The research modules also prove 13 algebraic facts for coupled complex modulus majorizers, finite descent and semiconvex chord
 assembly, using only the three standard axioms. Their Gaussian integration, response extraction and global-cover
 obligations remain separate; these facts change neither endpoint nor its hypotheses.
 
-\clearpage
 \section{Discoveries along the way}\label{sec:discoveries}
 Status labels: \textbf{[Lean]} machine-checked in this repository; \textbf{[P]} written proof; \textbf{[P,C]} proof with an
 exact or interval-arithmetic certificate replayed independently; \textbf{[F]} floating-point evidence only.
@@ -248,7 +258,7 @@ integrals still require certification before they can improve either endpoint.
 
 \textbf{[P,C; polynomial certificate in Lean]} The entire Gaussian-phase cubic-preprocessor family
 $H_{\rm phys}(A\rho+B\rho^3)$, $|A|+|B|\le1$, including arbitrary complex phases and convex mixtures,
-has full reciprocal score at most $0.71186$. This is below the incumbent $0.7119471860\ldots$.
+has full reciprocal score at most $0.71186$. This is below the incumbent $0.7119473950\ldots$.
 The separator is $\Re(c_0-\frac9{25}c_1-c_2-c_3)$; positive polynomial certificates handle all complex phases.
 Thus optimizing this class further cannot improve the current upper bound. General non-Gaussian cubic
 responses and nonlinear shared image fields are not excluded. The Gaussian-family coefficient extraction

@@ -3,7 +3,7 @@
 Worktree: `/Users/alingalatan/workspaces/grothe-codex-joint-image`.
 Branch: `codex/joint-response-delivery-20261023`.
 Baseline endpoints, under the existing documented inputs, remain
-`1.401696986171 < K_G^C < 1.404598570779`.
+`1.401697049825 < K_G^C < 1.404598158416`.
 The integrated baseline is GitHub master `b1e3598`. Its concrete upper-rounding
 theorem and split native checks are preserved. The default lower theorem still
 uses `NodeCaps`; the heavy separate caps route is not reverified by this work.
@@ -18,7 +18,7 @@ K_{A,B}(\rho)=H_{\rm phys}(A\rho+B\rho^3),\qquad |A|+|B|\le1.
 \]
 
 Its full reciprocal score is at most `0.71186`. The incumbent score is
-`0.711947186053065782`. Thus further optimization or convex mixing inside this
+`0.711947395067310982`. Thus further optimization or convex mixing inside this
 family cannot beat the incumbent. This is a restriction on a rounding
 architecture, **not** a new Grothendieck endpoint and **not** a bound on arbitrary
 genuine cubic-phase responses. Non-Gaussian finite cubics and responses using

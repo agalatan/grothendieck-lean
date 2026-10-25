@@ -258,10 +258,28 @@ LAW_NODES = {
         'lower_bound_of_law_nodes', 'strict_lower_bound_of_law_nodes']
 }
 REQUIRED |= LAW_NODES
+
+# Selected-band comparison and its concrete Gaussian wrapper.
+UPPER_COMPARISON = {
+    'Grothe.Upper.BandComparison.compare',
+    'Grothe.Upper.actual_band_mass',
+    'Grothe.Upper.comparison_check',
+    'Grothe.UpperChaos.fresh_upper_concrete',
+    'Grothe.UpperChaos.fresh_upper_of_rounding',
+    'Grothe.UpperChaos.fresh_upper_rounder',
+    'Grothe.UpperChaos.localized_comparison',
+    'Grothe.UpperChaos.norm_energyBlock_sq',
+    'Grothe.fresh_upper',
+    'Grothe.upper_value_lt',
+}
+REQUIRED |= UPPER_COMPARISON
+NATIVE |= {'Grothe.Upper.comparison_check._native.native_decide.ax_1_1'}
+REQUIRED |= {'Grothe.Upper.actual_band_mass', 'Grothe.UpperChaos.norm_energyBlock_sq', 'Grothe.Upper.BandComparison.compare', 'Grothe.UpperChaos.localized_comparison', 'Grothe.Upper.comparison_check'}
+
 # Select one targeted audit, or require every family for the full report.
 audit_modes = [flag for flag in (
     "--caps", "--responses", "--response-geometry", "--haagerup-power",
-    "--research", "--hardy-budget", "--refined-cover", "--law-nodes") if flag in sys.argv]
+    "--research", "--hardy-budget", "--refined-cover", "--law-nodes", "--upper-comparison") if flag in sys.argv]
 if len(audit_modes) > 1:
     sys.exit("choose one axiom audit mode")
 if "--caps" in sys.argv:
@@ -275,6 +293,11 @@ elif "--response-geometry" in sys.argv:
 elif "--haagerup-power" in sys.argv:
     REQUIRED = POWER_HAAGERUP
     NATIVE = {"Grothe.HaagerupPower.check._native.native_decide.ax_1_1"}
+elif "--upper-comparison" in sys.argv:
+    REQUIRED = UPPER_COMPARISON
+    NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",
+              "Grothe.Upper.comparison_check._native.native_decide.ax_1_1",
+              "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1"}
 elif "--research" in sys.argv:
     REQUIRED = RESEARCH_CORE
     NATIVE = set()

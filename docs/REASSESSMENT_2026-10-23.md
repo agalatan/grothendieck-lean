@@ -28,13 +28,13 @@ apply simultaneously; an exact checksum is not an analytic theorem.
 The current main-development interval is
 
 \[
-1.401696986171<K_G^{\mathbb C}<1.404598570779.
+1.401697049825<K_G^{\mathbb C}<1.404598158416.
 \]
 
 More precisely:
 
 - **Lower:** `B=0.713420953220=35671047661/50000000000`. The current
-  implication `NodeCaps → IsGrothendieckBound K → 1.401696986171<K`
+  implication `NodeCaps → IsGrothendieckBound K → 1.401697049825<K`
   ends in `Grothe/Research/RefinedCoverResult.lean`. The 10,521-box cover
   uses the original source bank and two unshifted row-14 law nodes.
   Gaussian-to-finite transfer, the original witness, its vector value,
@@ -44,7 +44,7 @@ More precisely:
   60 range facts have a recorded droplet verification stamp. Those heavy
   facts are separate from the default CI build.
 - **Upper:** `Grothe.UpperChaos.fresh_upper_rounder` formally gives
-  `K≤500000000000000000/355973593026532891=1.404598570778625…`, conditional
+  `K≤500000000000000000/355973697533655491=1.404598570778625…`, conditional
   on an L² charge-one truncation `X` and the numerical bounds `compare`,
   `energy_close` and `hardy`. The concrete rounding, Gaussian Hermite
   completeness/Parseval/Mehler, charge selection, actual-rounding validity
@@ -199,11 +199,11 @@ The current slope is
 
 \[
 c=0.7119483103461,
-\qquad A=c-\delta=0.711947186053065782,
-\quad\delta=1.124293034218\cdot10^{-6}.
+\qquad A=c-\delta=0.711947395067310982,
+\quad\delta=9.152793034218\cdot10^{-6}.
 \]
 
-The residual consists of comparison `1.065637497e−6` (94.78%), native
+The residual consists of comparison `1.065637497e−6` (93.59%), native
 head `2.8153e−8` (2.50%), Hardy tail `3.04888432e−8` (2.71%), and table
 error `1.3694018e−11` (about .001%). These are upper allowances, not
 measurements of the actual residual or the proportion of the theorem that
@@ -222,7 +222,7 @@ reciprocal `1.4045937`. Better upper arithmetic matters for trust and for
 millionths; a substantial advance needs a different family or a different
 signed coefficient balance.
 
-The proposed Haagerup value `1.404575934663742…` is only about 0.780% of
+The proposed Haagerup value `1.404575934663742…` is only about 0.766% of
 the current interval below its upper endpoint. Reaching that value on the
 upper side would still leave almost the whole lower-side gap. Conversely,
 success with cubic Conjecture K would not justify that conjectured exact value.

@@ -1,12 +1,13 @@
 import Grothe.UpperChaos.PhiCover
 import Grothe.UpperChaos.PhiCoverCheck
+import Grothe.UpperChaos.LocalizedComparison
 
 /-!
 # `φ² ≤ 3` everywhere, and the upper bound with only the numerical comparisons left
 
 `phiBound : PhiBound` from the cover (`walk_sound`, `phi_cover_check`) on `U + V < 60` and the far
 field (`far_sound`).  `fresh_upper_rounder`: the sharp upper bound for the concrete rounding `G_T`
-assuming only `compare`, `energy_close`, `hardy` (for a charge-one `X ∈ L²`).
+from component-error inputs, table accuracy and Hardy (for a charge-one `X ∈ L²`).
 -/
 
 open GrotheKernel Grothe.Upper
@@ -64,17 +65,16 @@ theorem phiBound : PhiBound := by
     refine ⟨by positivity, by nlinarith, by positivity, by nlinarith, by nlinarith, by nlinarith⟩
   · exact far_sound hts hfar hU hV hW2 h60
 
-/-- **The sharp upper bound for the concrete rounding** with only the numerical comparisons
-`compare`, `energy_close`, `hardy` as hypotheses. -/
+/-- **The sharp upper bound for the concrete rounding** from the explicit spectral-error decomposition,
+component norm bounds, table accuracy and Hardy input. -/
 theorem fresh_upper_rounder {X : ℂ × ℂ → ℂ} (hXL : MeasureTheory.MemLp X 2 mu2)
     (hXch : ∀ c u, ‖c‖ = 1 → X (rot2 c u) = c * X u)
-    (hcompare : ∑' p, |energy ((memLp_GT phiBound).toLp GT) p - energy (hXL.toLp X) p|
-      ≤ (compareQ : ℝ))
+    (herrors : ComparisonInputs ((memLp_GT phiBound).toLp GT) (hXL.toLp X))
     (hclose : ∑ p ∈ headIdx 501, |energy (hXL.toLp X) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ))
     (hhardy : ∀ J, ∑ n ∈ Finset.range J, kernelCoeff (energy ((memLp_GT phiBound).toLp GT)) n ^ 2
       * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4) :
-    IsGrothendieckBound (500000000000000000 / 355973593026532891) :=
-  fresh_upper_concrete phiBound hXL hXch hcompare hclose hhardy
+    IsGrothendieckBound (500000000000000000 / 355973697533655491) :=
+  fresh_upper_concrete phiBound hXL hXch (localized_comparison herrors hclose) hclose hhardy
 
 end
 

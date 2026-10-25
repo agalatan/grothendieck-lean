@@ -1,31 +1,32 @@
-# Complete adaptive cover with unshifted law nodes
+# Complete cover with pure-row and mixed-source law nodes
 
-The complete certificate has **10,521 boxes**, cap
+The complete certificate has **10,762 boxes**, with
 
 ```
-B = 35671047661/50000000000    = 0.713420953220
-L = 1401696986171/1000000000000 = 1.401696986171
+B = 356710460411/500000000000 = 0.713420920822
+L = 56067881993/40000000000   = 1.401697049825
 ```
 
-Every box is at most B, and L < 1/B. The exact maximum is approximately
-`0.713420953219917`. The gain over the preceding strict endpoint
-`1.401695673376` is `0.000001312795`.
+Every box is at most B and L < 1/B. The exact maximum is approximately
+`0.713420920821955`. The gain over `1.401696986171` is
+`0.000000063654`. The mathematical premise remains exactly **NodeCaps**;
+the witness, original source tables and heavy cap import closure are unchanged.
 
-The forest starts from the immutable 10,234-box certified input in
-`inputs/certified-start-cover.json`. Its 287 binary splits and 803
-same-domain repricings produce the final 10,521 boxes. Every child retains
-its parent's valid recipe as a fallback. Inherited components preserve
-their original scale interpolation domains. The full split forest and every
-root, event and final bound are checked with exact rational arithmetic.
+The node bank contains two pure-row law nodes and three mixed-source Young
+nodes. The mixed source uses original rows 14 and 15, normalized by each row's
+delta, with theta `177107909/800000000`. Its certified kurtosis range is
+`0 <= x <= 4/5`. Each file contains the full witness and its exact proof data.
+Historical fusion and LP paths are provenance only and are never opened for
+acceptance. The original pure-row batch is preserved at index 21, and the
+mixed nodes form one appended batch at index 22.
 
-The original 1,191 reference prefix is unchanged. Seventy further labels
-name existing source-table Stein nodes or zero nodes; they add no source
-cap or law scale. The only added law certificates remain the two original
-unshifted row-14 nodes in `nodes/`, grouped into one appended batch. Their
-whole-half-line proofs use the original source, affine tail and Stein cuts.
-Their historical `x_interval` is a saving comparison, not a restriction on
-the certified law inequality. The mathematical premise remains exactly
-**NodeCaps**. The witness and heavy cap import closure are unchanged.
+The forest starts from the immutable 10,521-box input in
+`inputs/fused-start-cover.json`. Its 241 binary splits and
+280 same-domain repricings produce the complete final cover.
+Old recipes remain valid fallbacks. Restricted components retain their original
+scale interpolation domains. The original 1,261-reference and 19-group prefixes
+are pinned; 51 further references expose existing source Stein or zero
+nodes, and three references name the new mixed nodes. No source cap is added.
 
 ## Replay
 
@@ -34,50 +35,40 @@ From the repository root, with standard-library Python:
 ```sh
 python3 -B -I tools/needle_rankone_nodes.py --verify data/lower-unshifted/nodes/seed4302-lo.json
 python3 -B -I tools/needle_rankone_nodes.py --verify data/lower-unshifted/nodes/seed4302-hi.json
-python3 -B -I tools/needle_adaptive_global.py \
-  --start-cover data/lower-unshifted/inputs/certified-start-cover.json \
-  --start-ledger data/lower-unshifted/inputs/certified-start-ledger.json \
-  --verify data/lower-unshifted/cover-ledger.json
+python3 -B -I tools/needle_mixed_nodes.py --verify data/lower-unshifted/nodes/fused-lo.json
+python3 -B -I tools/needle_mixed_nodes.py --verify data/lower-unshifted/nodes/fused-hi.json
+python3 -B -I tools/needle_mixed_nodes.py --verify data/lower-unshifted/nodes/focus-3.json
+python3 -B -I tools/needle_fused_global.py --verify data/lower-unshifted/cover-ledger.json
 python3 -B -I tools/needle_unshifted_lean.py --check
 ```
 
-`cover.json` is the sole final cover and `cover-ledger.json` its replayable
-forest ledger. The explicit starting paths map the original logical source
-labels to their byte-identical durable copies. This prevents replay from
-mistaking the new canonical cover for its own starting input.
-`local_adaptive_sha256` records historical discovery provenance; verification
-replays all split events and recipes and does not open that research file.
-No ignored handoff, external checkout or historical generator snapshot is
-needed to replay the final certificate.
+`cover.json` is the sole final cover and `cover-ledger.json` its exact replay
+ledger. All acceptance inputs are durable, clone-local files. The preserved
+baseline, original source tables, source manifest and seed proofs are pinned
+by hashes. No ignored handoff or generation script is needed for verification.
+The older `certified-start-*` inputs remain intact for their original replay
+chain. The deterministic exporter checks the original canonical node map,
+every new node, every final recipe and the complete guillotine partition before
+reproducing the generated Lean data byte for byte.
 
-`inputs/` also retains the original canonical source tables, cover and
-minimal-refinement ledger required by the original node-reference map.
-Their manifest pins exact bytes; archived names are provenance labels only.
-`nodes.json` binds the two law nodes by clone-local path and SHA256.
+## Lean scope
 
-The deterministic exporter independently checks the original canonical
-node map, both law proofs, every final box and the complete guillotine
-partition, then generates `LawNodeData.lean` and `RefinedCoverData.lean`.
-The law data stay byte-identical; the cover includes chunk size 2,631.
-Four reflected chunks and a partition fact supply the finite cover, and
-the kernel checks that their extent covers the actual box list.
-Python acceptance alone is separate from Lean reflection and the endpoint.
-Eight cover modules passed fresh warning-as-error Lean checks. Four unchanged
-generic/law modules were reused by exact source and artifact hashes. The actual
-27-declaration report passes both focused axiom audits and uses 14 of the
-83 registered native facts; the endpoint itself has those 14 plus the three
-standard axioms. The current build records and reports are in `verification/`.
+The new law batch and all four box chunks are reflected separately, with a
+partition fact. Chunk width is 2,691; the kernel checks its extent against the
+actual box-list length. Python replay and Lean reflection are separate checks.
+Fresh validation covers `LawNodeData`, `LawNodeCheck` and the eight cover
+modules. The unchanged generic lower bridges and original row/batch proofs
+are reused only after source, dependency and artifact hash checks.
+The lower endpoint still uses 14 native facts plus the three standard axioms.
+Raw logs, the actual endpoint axiom list and build records live in `verification/`.
+The full default build is separate branch CI.
 
-## Scope of the bounded search
+## Remaining obstruction
 
-The exploratory target `0.71342` was not cleared: 877 final boxes remain
-above it. The accepted cap B above has **zero** failing boxes. The accepted
-endpoint follows from that complete cap, not the smaller search target.
-Selected pointwise bounds near the binding region do not prove optimality
-of the node bank or a Gaussian norm floor. Further mixture/law-price
-optimization remains a research direction.
-
-Discovery and exact replay use only the Python standard library. Heavy
-runs used one low-priority process in an owned droplet directory. The
-ledger records generator hashes and stage parameters; `VERIFY.log` retains
-the final replay through the canonical durable paths.
+The search cap `0.71342` is not cleared: 939 final boxes exceed it.
+The accepted B above has zero failures. A whole-region subdivision of the old
+cap cell 9750 retains scale and kurtosis information through existing row-15
+law nodes. A KKT floor for mixing the uniform global row caps therefore does
+not imply a floor for this stronger law relaxation or the actual Gaussian norm.
+The final cover omits unused source nodes and redundant subdivisions. Further
+local prices need another complete global replay before changing the endpoint.

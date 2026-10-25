@@ -10,7 +10,7 @@ import Grothe.Research.LawNodeCheck
 # A strict lower improvement with the same Gaussian node-cap assumption
 
 The four sequential native checks and the separate partition check certify the entire
-refined finite cover. Additional pure-row law nodes pass the existing batch checker.
+refined finite cover. Additional original-source law nodes pass the existing batch checker.
 The existing rows, mixed-node certificates, witness and `NodeCaps` are unchanged.
 -/
 

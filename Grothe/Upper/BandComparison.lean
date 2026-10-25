@@ -1,0 +1,77 @@
+import Mathlib
+
+/-!+# Localized comparison of squared block norms
+
+A finite kernel head only sees selected chaos blocks. Error pieces supported in
+known bands pair with the norm of the comparison vector on those bands, rather
+than its whole infinite tail. The quadratic error is charged once.
+-/
+
+namespace Grothe.Upper.BandComparison
+
+open Finset
+
+variable {ι κ : Type*} {V : ι → Type*} [∀ i, NormedAddCommGroup (V i)]
+
+lemma norm_sq_difference (x y : V i) :
+    |‖y‖ ^ 2 - ‖x‖ ^ 2| ≤ 2 * ‖x‖ * ‖y - x‖ + ‖y - x‖ ^ 2 := by
+  have h := abs_norm_sub_norm_le y x
+  have ht : ‖y‖ ≤ ‖x‖ + ‖y - x‖ := by
+    simpa [sub_add_cancel, add_comm] using norm_add_le (y - x) x
+  calc
+    |‖y‖ ^ 2 - ‖x‖ ^ 2| = |‖y‖ - ‖x‖| * (‖y‖ + ‖x‖) := by
+      rw [← abs_of_nonneg (add_nonneg (norm_nonneg y) (norm_nonneg x)), ← abs_mul]
+      congr 1; ring
+    _ ≤ ‖y - x‖ * (‖y‖ + ‖x‖) :=
+      mul_le_mul_of_nonneg_right h (by positivity)
+    _ ≤ 2 * ‖x‖ * ‖y - x‖ + ‖y - x‖ ^ 2 := by
+      nlinarith [mul_nonneg (norm_nonneg (y - x)) (sub_nonneg.mpr ht)]
+
+lemma band_cross (S : Finset ι) (x d : ∀ i, V i) {A e : ℝ}
+    (hA : 0 ≤ A) (he : 0 ≤ e)
+    (hx : ∑ i ∈ S, ‖x i‖ ^ 2 ≤ A ^ 2)
+    (hd : ∑ i ∈ S, ‖d i‖ ^ 2 ≤ e ^ 2) :
+    ∑ i ∈ S, ‖x i‖ * ‖d i‖ ≤ A * e := by
+  have ha : √(∑ i ∈ S, ‖x i‖ ^ 2) ≤ A := (Real.sqrt_le_left hA).2 hx
+  have hb : √(∑ i ∈ S, ‖d i‖ ^ 2) ≤ e := (Real.sqrt_le_left he).2 hd
+  exact (Real.sum_mul_le_sqrt_mul_sqrt S (fun i => ‖x i‖) (fun i => ‖d i‖)).trans
+    (mul_le_mul ha hb (Real.sqrt_nonneg _) hA)
+
+/-- The same selected blocks and the same error pieces are used throughout.
+The band of each piece may overlap the other bands. -/
+theorem compare [DecidableEq ι] (S : Finset ι) (J : Finset κ) (x y : ∀ i, V i)
+    (d : κ → ∀ i, V i) (B : κ → Finset ι) (A e : κ → ℝ) (E : ℝ)
+    (hdecomp : ∀ i ∈ S, y i - x i = ∑ j ∈ J, d j i)
+    (hsupport : ∀ j ∈ J, ∀ i ∈ S, i ∉ B j → d j i = 0)
+    (hA : ∀ j ∈ J, 0 ≤ A j) (he : ∀ j ∈ J, 0 ≤ e j)
+    (hx : ∀ j ∈ J, ∑ i ∈ S ∩ B j, ‖x i‖ ^ 2 ≤ A j ^ 2)
+    (hd : ∀ j ∈ J, ∑ i ∈ S ∩ B j, ‖d j i‖ ^ 2 ≤ e j ^ 2)
+    (hquad : ∑ i ∈ S, ‖y i - x i‖ ^ 2 ≤ E) :
+    ∑ i ∈ S, |‖y i‖ ^ 2 - ‖x i‖ ^ 2|
+      ≤ 2 * (∑ j ∈ J, A j * e j) + E := by
+  classical
+  have hc : ∑ i ∈ S, ‖x i‖ * ‖y i - x i‖ ≤ ∑ j ∈ J, A j * e j := by
+    calc
+      _ ≤ ∑ i ∈ S, ‖x i‖ * ∑ j ∈ J, ‖d j i‖ := by
+        refine sum_le_sum fun i hi => mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)
+        rw [hdecomp i hi]
+        exact norm_sum_le _ _
+      _ = ∑ j ∈ J, ∑ i ∈ S, ‖x i‖ * ‖d j i‖ := by
+        simp_rw [mul_sum]; rw [sum_comm]
+      _ ≤ ∑ j ∈ J, A j * e j := by
+        refine sum_le_sum fun j hj => ?_
+        have hb := band_cross (S ∩ B j) x (d j) (hA j hj) (he j hj) (hx j hj) (hd j hj)
+        have eq : ∑ i ∈ S, ‖x i‖ * ‖d j i‖ =
+            ∑ i ∈ S ∩ B j, ‖x i‖ * ‖d j i‖ := by
+          symm
+          exact sum_subset inter_subset_left fun i hi hni => by
+            rw [hsupport j hj i hi (by simpa [hi] using hni), norm_zero, mul_zero]
+        rwa [eq]
+  calc
+    _ ≤ ∑ i ∈ S, (2 * ‖x i‖ * ‖y i - x i‖ + ‖y i - x i‖ ^ 2) :=
+      sum_le_sum fun i _ => norm_sq_difference _ _
+    _ = 2 * (∑ i ∈ S, ‖x i‖ * ‖y i - x i‖) + ∑ i ∈ S, ‖y i - x i‖ ^ 2 := by
+      rw [sum_add_distrib, mul_sum]; congr 1; apply sum_congr rfl; intro i _; ring
+    _ ≤ _ := add_le_add (mul_le_mul_of_nonneg_left hc (by norm_num)) hquad
+
+end Grothe.Upper.BandComparison
