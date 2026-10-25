@@ -1,87 +1,104 @@
-\section{A global upper bound from finite-power Wiener contraction}
-Let $\|P\|_{\mathcal A}$ be the sum of the absolute values of a polynomial's
-coefficients.  The Gaussian phase correlation kernel is
+\section{A global upper bound from a signed resolvent certificate}
+For a real polynomial, let $\|P\|_{\mathcal A}$ denote its absolute
+coefficient sum. Haagerup's Gaussian phase kernel is
 \[
  h(z)=\frac\pi4\sum_{k\ge0}r_kz|z|^{2k},\qquad
  r_0=1,\quad r_{k+1}=r_k\frac{(2k+1)^2}{4(k+1)(k+2)}.
 \]
-Its Gaussian identity and the tensor realization of every real radial
-preprocessor $p(t)=tP(t^2)$ with $\|P\|_{\mathcal A}\le1$ are already proved
-in Lean.  The following bound therefore has no additional analytic inputs:
+The Gaussian identity, tensor realization, complete residual estimate, and
+matrix transfer are proved in Lean. The resulting bound has no external
+analytic or numerical premises:
 \[
- \boxed{K_G^{\mathbb C}\le1.404951.}
+ \boxed{K_G^{\mathbb C}\le\frac{1404909543}{1000000000}=1.404909543.}
 \]
-The new ingredient is a bound on powers \emph{before} taking an absolute
-coefficient sum.  For any polynomial $P$, if
-$\|P\|_{\mathcal A}\le1$ and $\|P^4\|_{\mathcal A}\le q<1$, then
-\[
- \|X^kP^{2k+1}\|_{\mathcal A}\le q^{\lfloor k/2\rfloor}.
-\]
-Indeed, $2k+1=4\lfloor k/2\rfloor+2(k\bmod2)+1$, and the coefficient norm
-is submultiplicative.  This retains cancellations lost by the estimate
-$\|P^{2k+1}\|_{\mathcal A}\le\|P\|_{\mathcal A}^{2k+1}=1$.
 
-Use the exact polynomial
+\subsection{A finite inverse certificate for the entire signed tail}
+Let $A,T,R$ be real polynomials, with $\|A\|_{\mathcal A}\le1$, and suppose
 \[
- \begin{aligned}
- 10^{12}P(X)={}&906284633979-93047318709X-490402143X^3\\
-              &-125872719X^4-38769671X^5-13002779X^6.
- \end{aligned}
+ \|1-R(1-A)\|_{\mathcal A}\le\eta<1,
+ \qquad \|RT\|_{\mathcal A}\le B.
 \]
-Its coefficient norm equals one.  The finite certificate proves
+For every polynomial $S$, the identity
+$S=(1-R(1-A))S+R(1-A)S$ gives
 \[
- \|P^4\|_{\mathcal A}\le q:=\frac{199787}{200000},\qquad
- r_{2000}(2001)(4001)\le\gamma:=\frac{637}{1000}.
+ (1-\eta)\|S\|_{\mathcal A}\le\|R(1-A)S\|_{\mathcal A}.
 \]
-Write $a=906284633979/10^{12}$.  The complete polynomial
-$P\sum_{k<2000}r_k(XP^2)^k$ has degree below $26000$; its residual against
-$a$ has coefficient norm at most $11/10^6$.  This checks every finite
-coefficient; no numerical truncation of this polynomial is assumed.
+Apply this to $S_n=\sum_{i<n}TA^i$. Since
+$(1-A)S_n=T-TA^n$, submultiplicativity gives
+\[
+ \|S_n\|_{\mathcal A}\le\frac{2B}{1-\eta}.
+\]
+If $a_i\ge0$ decreases with $i$, finite summation by parts now yields
+\[
+ \left\|\sum_{i<n}a_iTA^i\right\|_{\mathcal A}
+ \le a_0\frac{2B}{1-\eta}.
+\]
+Indeed, writing each weighted sum as the last weight times $S_n$ plus
+$\sum_{i<n-1}(a_i-a_{i+1})S_{i+1}$ makes the weights telescope to $a_0$.
+No infinite inverse or analytic continuation is invoked.
 
-For the infinite part, monotonicity of
-$g_k=r_k(k+1)(2k+1)$ implies
-$r_k\le\gamma/(2k(k+1))$ for $k\ge2000$.  Grouping consecutive pairs gives
+For $A=XP^2$ and $T=X^KP^{2K+1}$, every coefficient of the infinite
+composition suffix is already determined by finitely many terms, because
+$X^kP^{2k+1}$ has zero coefficients below $k$. Thus the finite bounds imply
 \[
- r_k+r_{k+1}\le\frac\gamma2\left(\frac1k-\frac1{k+2}\right).
+ \left\|\sum_{k\ge K}r_kX^kP^{2k+1}\right\|_{\mathcal A}
+ \le r_K\frac{2B}{1-\eta}.
 \]
-Define the finite weighted telescope
+Lean proves this coefficient by coefficient, then bounds every finite
+absolute coefficient sum before taking its supremum. This retains the
+signed cancellation across the whole suffix.
+
+\subsection{A short combined seed and exact data}
+When $\|P\|_{\mathcal A}\le1$ and $\|P^4\|_{\mathcal A}\le q$, a short
+combined product suffices to price $B$. If $s\le2K+1$ and
+$\|RP^s\|_{\mathcal A}\le b$, then
 \[
- T_{k,0}=\frac1k,\qquad
- T_{k,N+1}=\frac1k-\frac1{k+2}+qT_{k+2,N}.
+ B\le bq^{\lfloor(2K+1-s)/4\rfloor}.
 \]
-A nonnegative, summable sequence with the preceding pair bound and the
-coarse tail bound $\sum_{j\ge k}r_j\le\gamma/(2k)$ satisfies
+This follows by dividing the remaining exponent by four. The norm of
+$RP^s$ is evaluated as a single polynomial, preserving cancellation between
+$R$ and $P^s$.
+
+The repository stores every rational coefficient in
+\texttt{data/haagerup-resolvent/certificate.json}; the Lean data are generated
+byte for byte from that file. Here $\deg P=14$, $\deg R=128$, and
 \[
- \sum_{j\ge k}r_jq^{\lfloor j/2\rfloor}
- \le\frac\gamma2q^{\lfloor k/2\rfloor}T_{k,N}.
+ \begin{gathered}
+ K=1024,\qquad s=17,\qquad a=P(0)=
+ \frac{1020379367568975}{1125899906842624},\\
+ q=\frac{998903}{10^6},\quad b=\frac{249}{500},\quad
+ \eta=10^{-12},\quad\gamma=\frac{637}{1000}.
+ \end{gathered}
 \]
-This follows by induction on $N$, retaining the uncomputed suffix through
-its coarse telescope.  Outward integer arithmetic at 128-bit fixed-point
-precision, with $k=2000$ and $N=8192$, proves
+Lean proves $\|P\|_{\mathcal A}\le1$ by exact rational arithmetic.
+The native certificate checks the fourth-power, inverse-defect,
+combined-seed, and finite-head budgets by outward integer arithmetic at
+128-bit precision.
+It also checks $r_K(K+1)(2K+1)\le\gamma$. Consequently the normalized
+infinite tail is at most
 \[
- \frac\gamma2q^{1000}T_{2000,8192}
- <0.000021491<\frac{27}{1250000}.
+ \frac{2b\gamma q^{508}}{(1025)(2049)(1-\eta)}
+ <\frac{174}{10^9}.
 \]
-Combining the finite residual and the infinite tail gives
+The full finite polynomial
+$P\sum_{k<1024}r_k(XP^2)^k-a$ has degree below $29696$, and all its
+coefficients are checked. Its norm is at most $95/10^9$. Hence
 \[
  \|h\circ p-(\pi a/4)\operatorname{id}\|_{\mathcal A}
- \le\frac\pi4\left(\frac{11}{10^6}+\frac{27}{1250000}\right).
+ \le\frac\pi4\frac{269}{10^9},\qquad p(t)=tP(t^2).
 \]
-The residual transfer inequality yields
+The proved residual transfer and a proved lower enclosure of $\pi$ give
 \[
- K_G^{\mathbb C}\le
- \frac4{\pi(a-11/10^6-27/1250000)}<1.404951.
+ K_G^{\mathbb C}\le\frac4{\pi(a-269/10^9)}<1.404909543.
 \]
-The transfer, infinite-series estimate and all certificate soundness lemmas
-are proved in Lean.  A separate directed FLINT polynomial replay checks the
-same complete finite residual; exact rational arithmetic independently
-checks the coefficient budget and fourth-power contraction.
+An independent directed FLINT replay checks the complete finite polynomial
+and seed; exact rational arithmetic checks the inverse defect and power
+budget. These external replays audit the data; the Lean theorem has no
+hypotheses requiring their results.
 
-The role of higher degree is structural.  If
+The obstruction for simpler preprocessors remains exact: if
 $|P(-1)|=\|P\|_{\mathcal A}=1$, then $\|P^n\|_{\mathcal A}=1$ for every
-$n$: evaluation at $-1$ gives the lower bound, and submultiplicativity the
-upper bound.  Normalized polynomials $a-bX-cX^3$ with nonnegative
-$a,b,c$ have this obstruction.  The negative $X^4$ term breaks that common
-boundary phase, and the fourth-power certificate quantifies the saving.
-This improvement concerns the hypothesis-free bound; it does not alter the
-repository's sharper conditional endpoints.
+$n$, by evaluation at $-1$ and submultiplicativity. Breaking that common
+boundary phase permits a power contraction. The resolvent certificate
+additionally retains cancellation \emph{between} consecutive composed
+powers. The sharper conditional endpoints are separate and unchanged.

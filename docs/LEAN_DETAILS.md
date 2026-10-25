@@ -154,7 +154,7 @@ energies, and are chosen to make the kernel nearly linear. The slope is c = 7119
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
-**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (1404951/1000000)`
+**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (1404909543/1000000000)`
 (`Grothe/Haagerup/Power.lean`), with no hypothesis. The analysis is in
 `Grothe/Haagerup/`: tilted one-dimensional Gaussian integrals (`Gauss1D`); the correlated pair integral
 E[conj U·V·e^{−u|U|²−v|V|²}] = 2z/Δ² (`GaussG`); the Euler representation |a|⁻¹ = π^{−1/2}∫t^{−1/2}e^{−t|a|²}dt
@@ -164,16 +164,18 @@ standard Gaussian are independent standard Gaussians, by characteristic function
 two complex Gaussians, the radial identity and the phase rounding as a disk-valued rounding
 (`Identity`: `integral_phase_pair`, `Phi2_radial`, `haagerup_disk`, `haagerup_dominated`). Disk-valued
 roundings are dominated (`Grothe/Upper/Disk.lean`); polynomial preprocessors are realised by tensor powers
-(`Realise.lean`) and composed with radial kernels (`Compose.lean`). The degree-13 preprocessor is
-stored in `Grothe/Haagerup/PowerCheck.lean`, with coefficient norm exactly one and fourth-power
-norm at most 199787/200000. Its native check verifies every coefficient of the complete
-2,000-term composition (radial cutoff 26,000), the fourth-power norm and an 8,192-step weighted
-telescope. The normalized residual caps are 11/10⁶ for the finite part and 27/1,250,000 for
-the entire infinite tail. `Grothe/Upper/PowerTail.lean` proves the general finite-power
-composition estimate, weighted-tail telescope, checker soundness and the coherent-boundary
-obstruction. The phase identity, residual and tensor transfer yield K ≤ 1.404951 with no
-external inputs. All algebraic theory uses standard axioms; the single numerical fact is
-`Grothe.HaagerupPower.check._native.native_decide.ax_1_1`.
+(`Realise.lean`) and composed with radial kernels (`Compose.lean`). The degree-29 preprocessor and degree-128 approximate inverse are
+generated from `data/haagerup-resolvent/certificate.json`. The coefficient norm is exactly one;
+the fourth-power norm is at most 998903/10⁶. A single sequential native check verifies the complete
+1,024-term composition (radial cutoff 29,696), the power norm, inverse defect ≤10⁻¹²,
+combined-seed norm ≤249/500, and the infinite signed-tail budget. The normalized residual caps are
+95/10⁹ for the finite part and 174/10⁹ for the entire infinite tail.
+`Grothe/Upper/ResolventTail.lean` proves the finite inverse-defect estimate, geometric-prefix bound,
+Abel summation, coefficient-locality passage to the full suffix, seed power bound and checker
+soundness. `Grothe/Upper/PowerTail.lean` supplies the power contraction and coherent-boundary
+obstruction. The phase identity, residual and tensor transfer yield K ≤ 1.404909543 with no external
+inputs. The single numerical fact is `Grothe.HaagerupPower.check._native.native_decide.ax_1_1`.
+
 
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
 value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401692002039/10^12 < K`, and the transfer
@@ -413,7 +415,7 @@ current tree, so completed verification of the 60 range checks is not claimed he
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
 `scripts/check_axioms.py`: `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
-`Grothe.HaagerupPower.check` (the finite residual, power budget and weighted tail of the unconditional upper bound), `Grothe.UpperChaos.phi_cover_check`
+`Grothe.HaagerupPower.check` (the finite residual, power norm, inverse defect, combined seed and signed tail of the unconditional upper bound), `Grothe.UpperChaos.phi_cover_check`
 (φ² ≤ 3), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
 and the 13 chunks `Grothe.Lower.certRows0`–`4`,
 `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower certificate (assembled into

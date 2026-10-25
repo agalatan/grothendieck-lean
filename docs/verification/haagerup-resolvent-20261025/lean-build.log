@@ -1,0 +1,20 @@
+Lean (version 4.34.1, x86_64-unknown-linux-gnu, commit 5045d0056413266e57c625dcd7c365b10e377c52, Release)
+Sun Oct 25 21:58:40 UTC 2026
+d4a738a79075cd3742dada74bf7c51bc7adc6b246f13f2a7fdecf9192a5e9fb5  GrotheKernel/Basic.lean
+4f878618a2c1d661defae7941920b720dc272f4219e0e36a1051524cea1673d5  GrotheKernel/Haagerup.lean
+d6db307d7ee6a753a6da0edc77c1e716e745b436160a79d5e4b32d3468e433be  GrotheKernel/PowerTail.lean
+bf46b65a256ac5f198bc62bf1b576a8fac6fb87504d876951b814829d0857c62  GrotheKernel/ResolventTail.lean
+7f755db6514c63235f1e3a0430a6f19daef3e6ff047be829795660dea366abd9  Grothe/Upper/PowerTail.lean
+e441685febdcbafd62ba6a21ae1678ea8dd160859ecdf0bd9508ae817ce4095d  Grothe/Upper/Haagerup.lean
+1e32fe20629ad75bf6d181df1592170b252de7f75c19dcc9b8864c79e94575de  Grothe/Upper/ResolventTail.lean
+6dfbe6d549e3019a6d61d53948937db73b4b6b313bb83f1916efd37116bb3067  Grothe/Haagerup/Series.lean
+af0289851ec01cb8121dc7651f3cfb0599ac70a56a1457c1a31035730d3394f6  Grothe/Haagerup/Identity.lean
+fb5caf32fc6ec2fc99d4027f499d6e108c4134d800c9b529f971bb6618eacac4  Grothe/Haagerup/PowerCheck.lean
+4f072c589fd8cc5caf72a382848a0e46d01fd9a50e1aa7144ce353209d097ca7  Grothe/Haagerup/Power.lean
+BUILD Grothe/Upper/Haagerup
+BUILD Grothe/Haagerup/Series
+BUILD Grothe/Haagerup/Identity
+BUILD Grothe/Upper/ResolventTail
+BUILD Grothe/Haagerup/Power
+BUILD KernelRootCoverage
+PASS all selected builds, including complete endpoint

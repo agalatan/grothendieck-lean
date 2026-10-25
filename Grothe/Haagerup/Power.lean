@@ -1,41 +1,42 @@
 import Grothe.Haagerup.Identity
-import Grothe.Upper.PowerTail
+import Grothe.Upper.ResolventTail
 import Grothe.Haagerup.PowerCheck
 
 /-!
 # A hypothesis-free upper bound from finite-power cancellation
 
-The preprocessor has degree 13 and Wiener norm one, while its fourth power
-has norm at most 0.998935. The full 2,000-term residual and the complete
-weighted infinite tail are checked by outward integer arithmetic.
+The degree-29 preprocessor has Wiener norm one. A finite polynomial
+resolvent and a combined seed retain cancellation across the complete
+infinite tail. All data and the 1,024-term head are checked outwards.
 -/
 
 set_option maxRecDepth 100000
 set_option maxHeartbeats 4000000
 
 namespace Grothe.HaagerupPower
-open GrotheKernel Grothe.Upper Grothe.Upper.PowerTail Polynomial Finset
+open GrotheKernel Grothe.Upper Grothe.Upper.PowerTail Grothe.Upper.ResolventTail Polynomial Finset
 
 noncomputable section
 noncomputable def P : ℝ[X] := ofListQ pl
+noncomputable def R : ℝ[X] := ofListQ rl
 
 lemma norm_P : l1 P ≤ 1 :=
   (l1_ofListQ_le pl).trans (by norm_num [pl])
 
-lemma degree_P : P.natDegree ≤ 6 := by
+lemma degree_P : P.natDegree ≤ 14 := by
   have h := natDegree_ofListQ_le pl
   simpa [P,pl] using h
 
 lemma norm_fourth : l1 (P^4) ≤ (ratio : ℝ) := by
   have hc := check
   simp only [checks, Bool.and_eq_true] at hc
-  apply power_norm_of_check pl 4 25 ratio _ hc.1.2
+  apply power_norm_of_check pl 4 57 ratio _ hc.1.1.1.2
   exact lt_of_le_of_lt ((natDegree_pow_le).trans (Nat.mul_le_mul_left 4 degree_P)) (by norm_num)
 
 lemma gamma_bound : haagG terms ≤ gamma := by
   have hc := check
   simp only [checks, Bool.and_eq_true] at hc
-  have h := hc.1.1
+  have h := hc.1.1.1.1
   simp only [haagCheck, Bool.and_eq_true, decide_eq_true_eq] at h
   have he : haagG terms = (haagList (terms+1)).getD terms 0 *
       (((terms+1)*(2*terms+1) : ℕ) : ℚ) := by
@@ -44,81 +45,84 @@ lemma gamma_bound : haagG terms ≤ gamma := by
     simp [haagG]
   exact he ▸ h.2
 
-lemma summable_R : Summable fun k => (haagR k : ℝ) := by
-  have h : Summable fun i => (haagR (i+1) : ℝ) :=
-    summable_of_sum_range_le (fun i => by exact_mod_cast (haagR_pos _).le)
-      (sum_haagR_le 1 le_rfl)
-  exact (summable_nat_add_iff 1).mp h
+lemma norm_defect : l1 (1-R*(1-X*P^2)) ≤ (defectCap : ℝ) := by
+  have hc := check
+  simp only [checks, Bool.and_eq_true] at hc
+  apply defect_of_check pl rl 158 defectCap _ hc.1.1.2
+  change (1-R*(1-X*P^2)).natDegree < 158
+  have hr : R.natDegree ≤ 128 := by
+    simpa [R,rl] using natDegree_ofListQ_le rl
+  have h1 : (X*P^2).natDegree ≤ 29 := by
+    have h := natDegree_mul_le (p := (X : ℝ[X])) (q := P^2)
+    have h2 := (natDegree_pow_le (p := P) (n := 2)).trans (Nat.mul_le_mul_left 2 degree_P)
+    simp only [natDegree_X] at h
+    omega
+  have hd : (1-X*P^2).natDegree ≤ 29 :=
+    (natDegree_sub_le _ _).trans (max_le (by simp) h1)
+  have hp : (R*(1-X*P^2)).natDegree ≤ 157 :=
+    natDegree_mul_le.trans (Nat.add_le_add hr hd)
+  exact lt_of_le_of_lt ((natDegree_sub_le _ _).trans (max_le (by simp) hp)) (by norm_num)
 
-lemma R_telescope {K k : ℕ} (hK : 1 ≤ K) (hk : K ≤ k) {g : ℚ} (hg : haagG K ≤ g) :
-    (haagR k : ℝ) ≤ (g : ℝ)/(2*(k : ℝ)*((k : ℝ)+1)) := by
-  have hk0 : (0 : ℝ) < k := by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one (hK.trans hk))
-  have hr0 : (0 : ℝ) ≤ haagR k := by exact_mod_cast (haagR_pos k).le
-  have h1 := (haagR_le K k hk).trans (div_le_div_of_nonneg_right hg (by positivity))
-  have h1r : (haagR k : ℝ) ≤ (g : ℝ)/(((k : ℝ)+1)*(2*(k : ℝ)+1)) := by exact_mod_cast h1
-  have hmul := (le_div_iff₀ (by positivity : 0 < ((k : ℝ)+1)*(2*(k : ℝ)+1))).mp h1r
-  apply (le_div_iff₀ (by positivity : 0 < 2*(k : ℝ)*((k : ℝ)+1))).mpr
-  nlinarith
+lemma norm_seed : l1 (R*P^seedPower) ≤ (seedCap : ℝ) := by
+  have hc := check
+  simp only [checks, Bool.and_eq_true] at hc
+  apply seed_of_check pl rl seedPower 367 seedCap _ hc.1.2
+  change (R*P^seedPower).natDegree < 367
+  have hr : R.natDegree ≤ 128 := by
+    simpa [R,rl] using natDegree_ofListQ_le rl
+  have h2 := (natDegree_pow_le (p := P) (n := seedPower)).trans (Nat.mul_le_mul_left seedPower degree_P)
+  have h3 := natDegree_mul_le (p := R) (q := P^seedPower)
+  norm_num [seedPower] at h2 h3 ⊢
+  omega
 
-lemma weighted_R_tail {K : ℕ} (hK : 1 ≤ K) {g q : ℚ} (hg : haagG K ≤ g)
-    (hq0 : 0 ≤ q) (hq1 : q ≤ 1) (N : ℕ) :
-    weightedTail (fun k => (haagR k : ℝ)) (q : ℝ) K ≤
-      (g : ℝ)/2*(q : ℝ)^(K/2)*telescope K (q : ℝ) N := by
-  apply weighted_tail_bound _ summable_R (fun k => by exact_mod_cast (haagR_pos k).le)
-    (q : ℝ) (g : ℝ) (by exact_mod_cast hq0) (by exact_mod_cast hq1) K _ _ N K le_rfl
-  · intro k hk
-    have h0 : 1 ≤ k := hK.trans hk
-    have hG : (haagG k : ℝ) ≤ g := by exact_mod_cast ((haagG_antitone hk).trans hg)
-    exact (Real.tsum_le_of_sum_range_le (fun i => by exact_mod_cast (haagR_pos _).le)
-      (sum_haagR_le k h0)).trans (div_le_div_of_nonneg_right hG (by positivity))
-  · intro k hk
-    have h0 : (0 : ℝ) < k := by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one (hK.trans hk))
-    have h1 := R_telescope hK hk hg
-    have h2 := R_telescope hK (show K ≤ k+1 by omega) hg
-    push_cast at h2
-    rw [show (k : ℝ)+1+1=(k : ℝ)+2 by ring] at h2
-    have he : (g : ℝ)/(2*(k : ℝ)*((k : ℝ)+1)) +
-        (g : ℝ)/(2*((k : ℝ)+1)*((k : ℝ)+2)) =
-        (g : ℝ)/2*(1/(k : ℝ)-1/((k : ℝ)+2)) := by
-      field_simp
-      ring
-    have h := add_le_add h1 h2
-    rw [he] at h
-    simpa only [Nat.cast_add, Nat.cast_ofNat] using h
+lemma R_succ_le (k : ℕ) : (haagR (k+1) : ℝ) ≤ haagR k := by
+  rw [haagR]
+  have hp : (0 : ℝ) < haagR k := by exact_mod_cast haagR_pos k
+  have hn : (0 : ℝ) ≤ k := Nat.cast_nonneg k
+  push_cast
+  apply (div_le_iff₀ (by positivity : 0 < 4*((k : ℝ)+1)*((k : ℝ)+2))).2
+  nlinarith [mul_nonneg hp.le hn]
 
 lemma composed_tail : ∑' n, |compCoeff (cHi terms) P n| ≤ Real.pi/4*(tailCap : ℝ) := by
-  have hq0 : (0 : ℝ) ≤ ratio := by norm_num [ratio]
-  have hq1 : (ratio : ℝ) ≤ 1 := by norm_num [ratio]
-  have hs : Summable fun k => |cHi terms k| *(ratio : ℝ)^(k/2) :=
-    Summable.of_nonneg_of_le (fun _ => by positivity)
-      (fun k => mul_le_of_le_one_right (abs_nonneg _) (pow_le_one₀ hq0 hq1)) (summable_cHi terms)
-  have hid : (∑' k, |cHi terms k| *(ratio : ℝ)^(k/2)) =
-      Real.pi/4*weightedTail (fun k => (haagR k : ℝ)) (ratio : ℝ) terms := by
-    rw [← hs.sum_add_tsum_nat_add terms]
-    have hz : ∑ k ∈ range terms, |cHi terms k| *(ratio : ℝ)^(k/2) = 0 := by
-      apply sum_eq_zero
-      intro k hk
-      simp [cHi,mem_range.mp hk]
-    rw [hz,zero_add]
-    unfold weightedTail
+  have hdef : (defectCap : ℝ) < 1 := by norm_num [defectCap]
+  have hq : (0 : ℝ) ≤ ratio := by norm_num [ratio]
+  have hs := seed_power_bound P R norm_P hq norm_fourth seedPower terms
+    (by norm_num [seedPower, terms]) norm_seed
+  have ht := composition_tail_bound (fun k => (haagR k : ℝ)) P R terms
+    (fun k => by exact_mod_cast (haagR_pos k).le) R_succ_le norm_P hdef norm_defect hs
+  have hc := check
+  simp only [checks, Bool.and_eq_true] at hc
+  have hn := tail_numeric_of_check terms seedPower ratio seedCap gamma defectCap tailCap hc.2
+  have hg : (haagR terms : ℝ) ≤ (gamma : ℝ)/(((terms+1)*(2*terms+1) : ℕ) : ℝ) := by
+    have h := gamma_bound
+    unfold haagG at h
+    apply (le_div_iff₀ (by positivity : (0 : ℝ) < ((terms+1)*(2*terms+1) : ℕ))).2
+    push_cast
+    exact_mod_cast h
+  have hnonneg : 0 ≤ 2*((seedCap : ℝ)*(ratio : ℝ)^((2*terms+1-seedPower)/4))/(1-defectCap) := by
+    apply div_nonneg
+    · exact mul_nonneg (by norm_num) (mul_nonneg (by norm_num [seedCap]) (pow_nonneg hq _))
+    · linarith
+  have hbound : (haagR terms : ℝ)*
+      (2*((seedCap : ℝ)*(ratio : ℝ)^((2*terms+1-seedPower)/4))/(1-defectCap)) ≤ tailCap := by
+    have hmul := mul_le_mul_of_nonneg_right hg hnonneg
+    have he : (gamma : ℝ)/(((terms+1)*(2*terms+1) : ℕ) : ℝ)*
+        (2*((seedCap : ℝ)*(ratio : ℝ)^((2*terms+1-seedPower)/4))/(1-defectCap)) =
+        (2*(seedCap : ℝ)*gamma / (((terms+1)*(2*terms+1) : ℕ) : ℝ) / (1-defectCap))*
+        (ratio : ℝ)^((2*terms+1-seedPower)/4) := by ring
+    exact hmul.trans (he.le.trans hn)
+  have he (n : ℕ) : compCoeff (cHi terms) P n = Real.pi/4*
+      compCoeff (fun k => if k < terms then 0 else (haagR k : ℝ)) P n := by
+    unfold compCoeff
     rw [← tsum_mul_left]
     apply tsum_congr
     intro k
-    rw [cHi, ite_eq_right (show ¬ k+terms<terms by omega), abs_of_nonneg (haagCoeff_nonneg _)]
-    unfold haagCoeff
-    ring
-  have htail := weighted_R_tail (show 1 ≤ terms by norm_num [terms]) gamma_bound
-    (show 0 ≤ ratio by norm_num [ratio]) (show ratio ≤ 1 by norm_num [ratio]) 8192
-  have hc := check
-  simp only [checks,Bool.and_eq_true] at hc
-  have hnum := tail_numeric_of_check terms 8192 ratio gamma tailCap hc.2
-  calc
-    _ ≤ ∑' k, |cHi terms k| *(ratio : ℝ)^(k/2) :=
-      weighted_composition (summable_cHi terms) norm_P _
-        (fun _ => pow_nonneg hq0 _) (fun _ => pow_le_one₀ hq0 hq1)
-        (compTerm_power_bound norm_P hq0 norm_fourth)
-    _ = _ := hid
-    _ ≤ _ := mul_le_mul_of_nonneg_left (htail.trans hnum) (by positivity)
+    unfold cHi haagCoeff
+    dsimp only
+    split_ifs <;> ring
+  simp_rw [he, abs_mul, abs_of_nonneg (by positivity : 0 ≤ Real.pi/4)]
+  rw [tsum_mul_left]
+  exact mul_le_mul_of_nonneg_left (ht.trans hbound) (by positivity)
 
 lemma finite_identity (n : ℕ) :
     compCoeff (cLo terms) P n = Real.pi/4*(P*hornerP (X*P^2) (haagList terms)).coeff n := by
@@ -146,33 +150,34 @@ lemma finite_residual :
       ∑' n, |compCoeff (cLo terms) P (n+1)| ≤ Real.pi/4*(headCap : ℝ) := by
   have hc := check
   simp only [checks,Bool.and_eq_true] at hc
-  have h := hc.1.1
+  have h := hc.1.1.1.1
   simp only [haagCheck,Bool.and_eq_true] at h
   have hfin := haag_le_of_check h.1
   have hpdef : ofListQ pl = P := rfl
   rw [hpdef] at hfin
-  rw [residual_split _ (summable_abs_compCoeff (summable_cLo terms) norm_P) _ 25999]
-  have hz : ∑' n, |compCoeff (cLo terms) P (n+(25999+1))| = 0 := by
+  rw [residual_split _ (summable_abs_compCoeff (summable_cLo terms) norm_P) _ (cutoff-1)]
+  have hz : ∑' n, |compCoeff (cLo terms) P (n+(cutoff-1+1))| = 0 := by
     apply (tsum_congr fun n => ?_).trans tsum_zero
     rw [finite_identity,hornerP_eq,mul_sum,finsetSum_coeff]
     have hlen : (haagList terms).length = terms := by rw [haagList_eq]; simp
     rw [hlen,sum_eq_zero]
     · simp
     · intro k hk
-      have hk' : k < 2000 := by simpa [terms] using mem_range.mp hk
+      have hk' : k < 1024 := by simpa [terms] using mem_range.mp hk
       have he : P*(C (((haagList terms).getD k 0 : ℚ) : ℝ)*(X*P^2)^k) =
           C (((haagList terms).getD k 0 : ℚ) : ℝ)*compTerm P k := by
         rw [compTerm,mul_pow,← pow_mul]; ring
       rw [he,coeff_C_mul]
-      have hz : (compTerm P k).coeff (n+26000) = 0 := by
+      have hz : (compTerm P k).coeff (n+cutoff) = 0 := by
         apply coeff_eq_zero_of_natDegree_lt
         unfold compTerm
         have h1 := natDegree_X_pow_le (R := ℝ) k
-        have h2 : (P^(2*k+1)).natDegree ≤ (2*k+1)*6 :=
+        have h2 : (P^(2*k+1)).natDegree ≤ (2*k+1)*14 :=
           natDegree_pow_le.trans (Nat.mul_le_mul_left _ degree_P)
         have h3 := natDegree_mul_le (p := (X : ℝ[X])^k) (q := P^(2*k+1))
+        norm_num [cutoff]
         omega
-      simp only [show n+(25999+1)=n+26000 by omega,hz,mul_zero]
+      simp only [show n+(cutoff-1+1)=n+cutoff by norm_num [cutoff],hz,mul_zero]
   rw [hz,add_zero]
   have he : ∀ n, |compCoeff (cLo terms) P n-if n=0 then Real.pi/4*(slope : ℝ) else 0| =
       Real.pi/4*|(P*hornerP (X*P^2) (haagList terms)).coeff n-if n=0 then (slope : ℝ) else 0| := by
@@ -211,7 +216,7 @@ theorem exact_upper : IsGrothendieckBound
   norm_num [headCap,tailCap,slope]
 
 lemma value_lt : (1/(Real.pi/4*(slope : ℝ)-Real.pi/4*((headCap : ℝ)+tailCap))) <
-    1404951/1000000 := by
+    1404909543/1000000000 := by
   have hd : Real.pi/4*((headCap : ℝ)+tailCap) < Real.pi/4*(slope : ℝ) := by
     apply mul_lt_mul_of_pos_left _ (by positivity)
     norm_num [headCap,tailCap,slope]
@@ -221,7 +226,7 @@ lemma value_lt : (1/(Real.pi/4*(slope : ℝ)-Real.pi/4*((headCap : ℝ)+tailCap)
   nlinarith
 
 /-- The rational public endpoint, with no hypotheses. -/
-theorem upper : IsGrothendieckBound (1404951/1000000) :=
+theorem upper : IsGrothendieckBound (1404909543/1000000000) :=
   exact_upper.mono value_lt.le
 
 end
@@ -230,7 +235,7 @@ end Grothe.HaagerupPower
 namespace Grothe
 
 /-- The public hypothesis-free upper bound for every finite complex matrix. -/
-theorem haagerup_bound : IsGrothendieckBound (1404951/1000000) :=
+theorem haagerup_bound : IsGrothendieckBound (1404909543/1000000000) :=
   HaagerupPower.upper
 
 end Grothe

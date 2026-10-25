@@ -1,123 +1,100 @@
-# Hypothesis-free upper bound by finite-power contraction
+# Hypothesis-free upper bound from a signed resolvent
 
-`Grothe.haagerup_bound` proves
+`Grothe.haagerup_bound` proves **K_G^ℂ ≤ 1.404909543** for every finite complex
+matrix, with no Gaussian, integration, or numerical-tail hypotheses.
+The sharper conditional upper bound and lower endpoint are separate.
 
-\[
-K_G^{\mathbb C}\le 1.404951
-\]
+The Gaussian phase identity, tensor realization, complete finite residual,
+infinite signed-tail estimate, checker soundness and matrix transfer are
+all in Lean. One pinned `native_decide` fact accepts five finite checks by
+outward integer arithmetic. External replay results are not hypotheses of
+the theorem.
 
-for all finite complex matrices, with **no Gaussian, integration, or tail hypotheses**.
-The sharper conditional upper bound and the lower endpoint are unchanged.
+## Why the tail is smaller
 
-The phase-rounding identity, tensor realization, complete finite residual,
-infinite-series estimate, checker soundness and residual transfer are all in
-Lean. One pinned `native_decide` fact checks three finite statements using
-outward integer arithmetic. An independent FLINT ball-polynomial calculation
-checks the complete finite composition, not just sampled coefficients.
+Put A = X P² and T = X^K P^(2K+1). Find a rational polynomial R satisfying
 
-## The reusable improvement
+- ‖1 − R(1 − A)‖₁ ≤ η < 1;
+- ‖R T‖₁ ≤ B.
 
-A polynomial of coefficient norm one need not have every power of norm one.
-If `l1 P <= 1` and `l1 (P^4) <= q < 1`, submultiplicativity yields
+The finite identity S = (1 − R(1 − A))S + R(1 − A)S implies
+(1 − η)‖S‖₁ ≤ ‖R(1 − A)S‖₁. Applying it to the geometric prefix gives
 
-\[
-\|X^kP^{2k+1}\|_1\le q^{\lfloor k/2\rfloor}.
-\]
+‖Σ_(i<n) T A^i‖₁ ≤ 2B/(1 − η).
 
-`Grothe.Upper.PowerTail.compTerm_power_bound` proves this for every real
-polynomial. `weighted_composition` transports the individual prices through
-an absolutely summable radial correlation kernel. The sum uses the same
-signed coefficients before taking the absolute coefficient norm.
+Finite Abel summation prices a decreasing nonnegative coefficient sequence
+by its initial coefficient times this uniform bound. The Haagerup sequence
+r_k decreases, so the entire signed suffix costs at most 2 r_K B/(1 − η).
+Every coefficient only sees finitely many terms because the kth term has a
+factor X^k. Lean uses this locality to pass the finite estimate to the full
+absolute coefficient sum. It does not assume convergence of an infinite
+inverse or exchange two infinite sums.
 
-There is an exact obstruction for simpler preprocessors: if
-`abs (P.eval (-1)) = l1 P = 1`, then `l1 (P^n) = 1` for every power.
-`no_power_saving_of_boundary` proves this. In particular, a normalized
-`a - bX - cX^3` with nonnegative `a,b,c` cannot save anything this way.
-A negative even-index coefficient breaks that common boundary phase.
+The combined product R P^17 is certified before taking absolute values.
+Together with ‖P⁴‖₁ ≤ q, it gives
 
-## Exact data and complete tail
+B ≤ ‖R P^17‖₁ q^floor((2K+1−17)/4).
 
-The preprocessor is `p(t) = t P(t^2)` with
+This preserves cancellation both between consecutive powers and inside the
+short combined product. The theorem applies to any real polynomials with
+the stated finite norm certificates.
 
-\[
-P(X)=\frac{906284633979-93047318709X-490402143X^3
--125872719X^4-38769671X^5-13002779X^6}{10^{12}}.
-\]
+## Complete certificate
 
-Its coefficient norm equals one; its fourth-power norm is below
-`q = 199787/200000`. The positive normalized Haagerup coefficients satisfy
-`r_0=1` and `r_(k+1)=r_k (2k+1)^2/(4(k+1)(k+2))`.
-Their monotone majorant `g_k=r_k(k+1)(2k+1)` obeys
-`g_2000 <= gamma = 637/1000`.
+The preprocessor p(t) = t P(t²) has degree 29; P has degree 14, coefficient
+norm exactly one, and constant coefficient
+1020379367568975/1125899906842624. The resolvent R has degree 128.
 
-The finite checker evaluates every coefficient of
-`P sum_(k<2000) r_k (X P^2)^k`, with radial cutoff 26,000, and accepts the
-normalized residual `11/10^6` against `a = 906284633979/10^12`.
+The exact budgets are:
 
-For the entire infinite suffix, consecutive pairs telescope:
+- K = 1,024 series terms; radial cutoff 29,696 includes every coefficient;
+- q = 998903/10⁶ for the fourth power;
+- η = 10⁻¹² for the inverse defect;
+- b = 249/500 for ‖R P^17‖₁;
+- γ = 637/1000 for r_K(K+1)(2K+1);
+- finite normalized residual ≤ 95/10⁹;
+- infinite normalized residual ≤ 174/10⁹.
 
-\[
-r_k+r_{k+1}\le\frac\gamma2\left(\frac1k-\frac1{k+2}\right).
-\]
+The complete signed-tail allowance is
+2 b γ q^508 / ((1025)(2049)(1 − η)), which is below 174/10⁹.
+Residual transfer and the proved lower enclosure for π give the endpoint.
 
-The finite recurrence
+Canonical inputs live in
+`/Users/alingalatan/workspaces/grothe-codex-joint-image/data/haagerup-resolvent/certificate.json`.
+The generator
+`/Users/alingalatan/workspaces/grothe-codex-joint-image/tools/gen_haagerup_power.py`
+reproduces
+`/Users/alingalatan/workspaces/grothe-codex-joint-image/Grothe/Haagerup/PowerCheck.lean`
+byte for byte. Floating searches propose data and play no role in acceptance.
 
-\[
-T_{k,0}=1/k,\qquad T_{k,N+1}=1/k-1/(k+2)+qT_{k+2,N}
-\]
+## Sources and replay
 
-retains the uncomputed remainder through its unweighted telescope. The
-formal theorem `weighted_tail_bound` applies to any nonnegative summable
-sequence with these coarse and two-step bounds. Here it proves
+- `/Users/alingalatan/workspaces/grothe-codex-joint-image/Grothe/Upper/ResolventTail.lean`: finite inverse certificate, Abel summation, coefficient locality, short seed and checker soundness.
+- `/Users/alingalatan/workspaces/grothe-codex-joint-image/GrotheKernel/ResolventTail.lean`: finite outward computations at the existing 128-bit scale.
+- `/Users/alingalatan/workspaces/grothe-codex-joint-image/Grothe/Haagerup/Power.lean`: complete composition and public matrix theorem.
+- `/Users/alingalatan/workspaces/grothe-codex-joint-image/docs/research/haagerup-power.tex`: full written proof.
+- `/Users/alingalatan/workspaces/grothe-codex-joint-image/tools/verify_haagerup_power.py`: independent rational and directed-ball replay.
 
-\[
-\sum_{k\ge2000} r_k q^{\lfloor k/2\rfloor}
-\le (\gamma/2)q^{1000}T_{2000,8192}<27/1250000.
-\]
-
-With the factor `pi/4`, the total residual is at most
-`(pi/4) (11/10^6 + 27/1250000)`. The existing residual transfer and a proved
-lower enclosure of pi give the public endpoint.
-
-## Source and verification
-
-- `/Users/alingalatan/workspaces/grothe-codex-joint-image/Grothe/Upper/PowerTail.lean`: general contraction, weighted telescope, boundary obstruction, and finite-checker soundness.
-- `/Users/alingalatan/workspaces/grothe-codex-joint-image/GrotheKernel/PowerTail.lean`: outward fixed-point computations, using the existing 128-bit scale.
-- `/Users/alingalatan/workspaces/grothe-codex-joint-image/Grothe/Haagerup/PowerCheck.lean`: exact preprocessor and one sequential native certificate.
-- `/Users/alingalatan/workspaces/grothe-codex-joint-image/Grothe/Haagerup/Power.lean`: infinite-series proof and unconditional matrix bound.
-- `/Users/alingalatan/workspaces/grothe-codex-joint-image/docs/research/haagerup-power.tex`: full manuscript proof.
-- `/Users/alingalatan/workspaces/grothe-codex-joint-image/tools/haagerup_power_certificate.json`: portable exact parameters.
-
-From any directory, the independent replay needs only `python-flint` and
-Python's standard library:
+From any directory, with Python and `python-flint`:
 
 ```sh
-python3 -I /Users/alingalatan/workspaces/grothe-codex-joint-image/tools/verify_haagerup_power.py /Users/alingalatan/workspaces/grothe-codex-joint-image/tools/haagerup_power_certificate.json --out /tmp/haagerup-power-replay.json
+python3 -I /Users/alingalatan/workspaces/grothe-codex-joint-image/tools/verify_haagerup_power.py /Users/alingalatan/workspaces/grothe-codex-joint-image/data/haagerup-resolvent/certificate.json --out /tmp/haagerup-resolvent-replay.json
 ```
 
-The replay binds every numerical parameter to the Lean source. Floating
-searches only proposed the polynomial; they are absent from acceptance.
-The Lean theorem has no numerical premises. Its axiom report uses only
-`propext`, `Classical.choice`, `Quot.sound`, and
-`Grothe.HaagerupPower.check._native.native_decide.ax_1_1`.
-The old finite preprocessor certificate is removed rather than retained as
-a second public bound. No node-cap source is changed.
+The replay checks byte-identical generated data, complete finite head and
+seed polynomials, exact rational inverse defect and fourth power, directed
+infinite-tail arithmetic, and the final endpoint. It checks all coefficients,
+not a sample.
 
-## Auditing the proof
-
-The focused report prints all 28 public results in this route, and its strict
-checker permits only the one native fact belonging to this certificate:
+The focused axiom audit covers every public result in this route and permits
+only `propext`, `Classical.choice`, `Quot.sound` and the certificate's one
+native fact `Grothe.HaagerupPower.check._native.native_decide.ax_1_1`:
 
 ```sh
 lake env lean /Users/alingalatan/workspaces/grothe-codex-joint-image/scratch/AxiomsPower.lean | python3 /Users/alingalatan/workspaces/grothe-codex-joint-image/scripts/check_axioms.py --haagerup-power
 ```
 
-Run the command from the worktree root so Lake selects its pinned toolchain.
-The default CI report includes the same 28 results and all other required
-repository theorems. Missing results, Lean errors and numerical facts from
-other certificates are rejected by the focused checker.
-
-Fresh replay results and the axiom report are in
-`/Users/alingalatan/workspaces/grothe-codex-joint-image/docs/verification/haagerup-power-20261023/`.
-The manifest binds those results to the Lean sources and portable certificate.
-The new TeX proof and updated overview compile without layout warnings.
+Run this from the worktree root. The normal CI audit includes the same
+results. Fresh logs and their source manifest are in
+`/Users/alingalatan/workspaces/grothe-codex-joint-image/docs/verification/haagerup-resolvent-20261025/`.
+The lower node-cap import closure is unchanged.
