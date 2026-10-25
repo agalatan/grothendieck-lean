@@ -111,3 +111,134 @@ Progress: `Grothe/UpperChaos/HardyKernel.lean` fixes the definitions (`Sym2C`, `
   `NodeCaps`, through `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`.
   The separate `GrotheCaps` target now has a matching stamp for its 60 range
   facts; the four remaining rows still require `CapsRest`.
+
+## 5. `ComparisonInputs`: formalisation plan
+
+*Issue #20. Written from the master sources (`Grothe/UpperChaos/LocalizedComparison.lean`,
+`Grothe/Upper/ComparisonData.lean`, `data/localized-comparison/{recipe.json,PROOF.md}`,
+`docs/localized-comparison.tex`) and the inherited certificate (laptop archive
+`handoff/upper-residual/global_norm/`: `MIXED_TAYLOR_CUTOFF_LEMMA.md`, `GAUSSIAN_POLYNOMIAL_NORM.md`,
+`certify_taylor_comparison.py`, `taylor_comparison_result.json`). It is a plan; nothing below is implemented.*
+
+### 5.1 What the hypothesis says
+
+```lean
+structure ComparisonInputs (G X : Lp ℂ 2 mu2) where
+  piece      : ComparisonIndex → Lp ℂ 2 mu2                         -- 18 pieces
+  difference : G - X = ∑ j, piece j
+  norm_le    : ∀ j, ‖piece j‖ ≤ (comparisonBand j).error
+  support    : ∀ j p, (comparisonBand j).contains p.1 p.2 = false → energy (piece j) p = 0
+```
+
+Lean already proves everything downstream of it:
+- `localized_comparison` (the band inequality, Cauchy–Schwarz per band, quadratic error paid once);
+- the radii `A_r` from the stored table with `energy_close`;
+- the cost weights;
+- the budget `C = 13311891/15625·10⁹`.
+
+So the hypothesis is exactly three facts about one explicit decomposition of G_T − X:
+
+1. an algebraic identity;
+2. degree supports;
+3. 18 rational norm bounds.
+
+### 5.2 Where the 18 pieces come from
+
+Write `B = ·iφ` and `T = F₀ + BF₀ + B²F₀/2 + B³F₀/6`, `X_raw = F₀ + v`.
+
+- **The approximants:** an inherited arb certificate supplies finite Hermite vectors `c_j` (dyadic data), with cutoffs
+  `D_j = 181, 91, 51`.
+- **The pieces:**
+  - for each Taylor power j, the band pieces `P_I(B^jF₀ − c_j)/j!`;
+  - the high tail `P_{>D_j}(B^jF₀)/j!`;
+  - the rounding piece `Σ_j c_j/j! − v`.
+- **Smoothing:** the pieces are smoothed like G_T and X. Smoothing contracts L² and preserves total degree.
+
+The norm bounds:
+- **Finite bands:** `ε_{j,I} = 1/(25·10⁹) + (11/500)·HS_{j,I} + 10⁻¹⁸`.
+  - `1/(25·10⁹)` is the arb quadrature error of the coefficients of `B^jF₀`.
+  - `HS` is a rectangular weighted-Bargmann Hilbert–Schmidt bound for the omitted inputs.
+  - The propagation through `B^j` uses `|φ| < 1` (operator norm ≤ 1; issue #19).
+- **High tails:** `t_j² ≤ E φ^{2j} − Σ_I max(0, ‖P_I c_j‖ − ε_{j,I})²`.
+  - This uses `|F₀| = 1`, orthogonality and the reverse triangle inequality.
+  - `E φ^{2j}` is an exact Gaussian moment of a damped polynomial.
+- **Rounding:** `‖Σ c_j/j! − v‖ ≤ 10⁻¹⁸`, checked against the frozen `v` (degree 201).
+
+### 5.3 Who carries the residual
+
+The decomposition shares below use the raw weighted-comparison residual
+458437859009/(5·10¹⁷), before the forced linear-coefficient Hardy deduction.
+The active refined residual is 455308278509/(5·10¹⁷); its comparison pieces are
+identical. Each share below is the term 2·A_r·e_r divided by the raw residual;
+the quadratic term (Σe_r)² is 0.01%.
+
+| piece | e_r | A_r | share of residual |
+|---|---|---|---|
+| power 1, **high tail** (>181) | 7.28e-6 | 0.0394 | **62.51%** |
+| power 2, **high tail** (>91) | 1.16e-6 | 0.0650 | **16.43%** |
+| power 3, **high tail** (>51) | 3.55e-7 | 0.0915 | **7.09%** |
+| power 1, bands 101–181 | 1.2e-8 … 1.5e-6 | 0.013–0.040 | 5.52% |
+| power 2, bands 51–91 | 6e-9 … 1.1e-7 | 0.026–0.051 | 0.87% |
+| power 3, bands 11–51 | 6e-11 … 2.5e-8 | 0.08–0.14 | 0.43% |
+| low bands [0,51) (A ≈ 1) and rounding | ≤ 1.9e-10 | ≈ 1 | 0.05% |
+
+**86% of the residual is the three high tails.** The low bands are tiny, but only because their coefficients are
+known to about 10⁻¹¹: their `A_r ≈ 1` makes any looser bound expensive.
+
+### 5.4 Each field: classification and how to prove it
+
+| field / item | kind | Lean route | cost |
+|---|---|---|---|
+| `difference` | exact algebra, once the objects exist | define `c_j`, `v`, the 18 pieces and a concrete X = smoothing(F₀ + v) in Lean (`c_j` and `v` as generated data: about 260k + 35k + 6.6k + 354k dyadic coefficients); Taylor identity `F₀·P₃(φ) = T`; linearity of the smoothing | 2–4 w (data plumbing; overlaps #21, concrete X) |
+| `support` | structural | `P_I`/`P_{>D}` are degree projections (Hermite basis `Grothe/UpperChaos/HermiteC2Basis.lean`); smoothing preserves total degree (Mehler, `mehler_L2`) | 1 w |
+| `norm_le`, rounding piece | finite exact | single-threaded native check of `‖Σ c_j/j! − v‖² ≤ 10⁻³⁶` over the data | 2–3 d |
+| `E φ^{2j}` (in the tails) | finite exact | the Laguerre-dilation formula (GAUSSIAN_POLYNOMIAL_NORM.md, eq. (4)): finite rational sums, exactly as `arb_norm.c` does | 1–2 w |
+| `‖P_I c_j‖` (in the tails) | finite exact | sums of squares of the data | days |
+| `HS_{j,I}` (omitted inputs) | finite exact | rectangular Hilbert–Schmidt bound in Laguerre form (finite Wick identity); exact rational check | 2 w |
+| `1/(25·10⁹)`: coefficient enclosures of `B^jF₀ = iʲφʲF₀` | **analytic: verified integration** | rigorous Gaussian integrals of a phase function times polynomials. No Lean infrastructure exists for this; it needs interval Taylor-model integration | months |
+| propagation through `B^j` | analytic, small | `|φ| < 1` (#19) ⇒ `‖B^j‖ ≤ 1` | with #19 |
+
+Everything except the coefficient enclosures is a finite exact computation, or structural.
+
+### 5.5 A cheaper route for the tails (86% of the residual)
+
+Since `c_j` is supported in degree ≤ D_j, `P_{>D_j}(B^jF₀) = P_{>D_j}(B^jF₀ − c_j)`, hence
+
+```
+t_j ≤ ‖B^jF₀ − c_j‖,   ‖B^jF₀ − c_j‖² = E φ^{2j} − 2 Re⟨c_j, B^jF₀⟩ + ‖c_j‖².
+```
+
+- **What it needs:** `E φ^{2j}` and `‖c_j‖²` are finite and exact (§5.4). Only one integral per power remains,
+  `I_j = ⟨c_j, φʲF₀⟩`, instead of all coefficients up to D_j.
+- **Accuracy:** about 5·10⁻¹² absolute for j = 1 (t₁² ≈ 5.3·10⁻¹¹).
+- **Cost in bound:** the new bound also contains the low-band errors (`t₁² + Σ_I ε_I²`), so the power-1 tail grows by
+  about 2% (7.28e-6 → 7.43e-6). That is about +1.3% of the residual, about +2·10⁻⁸ on K.
+- **Feasibility:** `F₀ = phase(z + κ v(|z|²) w)` has closed-form angular Fourier modes (hypergeometric, as in the
+  Step-20 evaluator). By rotation invariance, `I_j` reduces to a 2-dimensional integral over `(|z|, |w|)`, with a
+  known singular curve `|z| = κ v(|z|²)|w|`.
+
+**It does not help the band pieces.** Bounding a band piece by the whole error ‖B^jF₀ − c_j‖ (≈ 7·10⁻⁶) instead of
+its own error raises 2·A_I·e_I to about 1.3·10⁻⁶ in total for power 1. That would undo the comparison's gain over
+the global bound, so the bands still need per-coefficient enclosures. They need only about 10⁻¹¹ (power 1, degrees
+101–181) to 10⁻⁹ precision, on about 150k coefficients.
+
+### 5.6 Ranked plan
+
+| step | content | turns into Lean | residual made formal |
+|---|---|---|---|
+| 1 | concrete objects: `c_j`, `v`, X, the 18 pieces; prove `difference` and `support` | identification of the decomposition | 0% (removes the "identification" trust; `ComparisonInputs` becomes 18 explicit numeric norm statements) |
+| 2 | finite exact parts: rounding norm, `E φ^{2j}`, `‖P_I c_j‖`, HS bounds | all non-integral numbers | 0% alone, a prerequisite for 3 and 4 |
+| 3 | design spike, then verified 2-D integration of `I_j` (tail route §5.5) | t₁, t₂, t₃ | **≈ 86%** (with about +1.3% looser residual) |
+| 4 | per-coefficient enclosures for the bands (`φʲF₀` against Hermite functions, degrees ≤ 181/91/51) | ε_{j,I} | the remaining ≈ 7% |
+
+**Timeline:**
+- Steps 1–2: about 4–6 weeks of Lean, plus native checks of a few CPU-hours.
+- Step 3: a 1–2 week spike to choose the integration method (interval Taylor models over the reduced 2-D domain,
+  in `GrotheKernel`, single-threaded modules), then about 6–10 weeks.
+- Step 4: months, and possibly not worth it. The bands carry 7%, and an alternative is to keep them as an isolated,
+  replayed external certificate.
+
+Until step 3 lands, the share of the residual that is proved does not move. Steps 1–2 make the statement explicit and
+checkable, which is still worth doing first: they are cheap, and steps 3–4 build on them.
+
+Follow-up tasks (sub-issues of epic #17): step 1 → #39, step 2 → #40, step 3 → #41.

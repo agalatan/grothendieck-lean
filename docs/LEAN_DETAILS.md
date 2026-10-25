@@ -399,6 +399,39 @@ The four remaining rows still require `CapsRest`.
   4‖Π₁,₁|q|²‖² + 2‖Π₂,₀q²‖² ≤ 3κ, and the weighted bound on the first-chaos content of q|q|²
   along any direction by the influence of that direction.
 
+## Module map (selected groups)
+
+**`Grothe/UpperChaos/`: the sharp upper bound for the concrete rounding**
+
+| modules | content |
+|---|---|
+| `ComplexMoments`, `ComplexHermite`, `Mehler`, `Completeness`, `HermiteComplete`, `HermiteBasis`, `Charge` | one complex coordinate: E[zᵃz̄ᵇ] = δ a!, Hermite polynomials and orthogonality, Mehler for polynomials, density of polynomials in L²(stdGaussian d), Hilbert basis and Parseval, charge selection |
+| `GaussC2`, `HermiteC2`, `HermiteC2Basis`, `LawY`, `MehlerL2`, `Energy2`, `Kernel2` | two coordinates: ℂ² as ℝ⁴, tensor Hermite basis, law of ρX + √(1−\|ρ\|²)W, Mehler for L² functions, chaos energies by bidegree, the physical kernel of a charge-one function |
+| `Realise2`, `Structural` | two-channel rounding with tensor-realised preprocessors (`rounding_diskKernel`); the structural fields (validity, summability, parity) as theorems |
+| `TaylorPhase`, `Rounder` | \|P₃(x)\|² = 1 − x⁴(3 − x²)/36; the concrete rounding G_T from `Grothe/Upper/Data.lean` |
+| `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 3 everywhere: bisection-tree cover (`phi_cover_check`), analytic far field, `phiBound`, headline `fresh_upper_rounder` |
+| `EnergyBlock`, `LocalizedComparison` | actual Gaussian energies of error blocks; the selected-spectrum comparison |
+| `HardyKernel` | definitions for the Hardy-tail proof (holomorphic Gaussian kernel; issue #18) |
+
+**`Grothe/LowerAnalytic/Cap*`: the node caps**
+
+| modules | content |
+|---|---|
+| `CapCoord`, `CapLinAlg`, `CapMajorant`, `CapPolar` | real coordinates of the fibre variable; exact quadratic-form checks (Loewner bound, LDLᵀ); the anchored-pair majorant of \|L + p\| + \|L − p\|; polar cells of the complex Gaussian |
+| `CapSym`, `CapGrid`, `CapGridT`, `CapGridOK`, `CapTables`, `CapTablesMk` | symbolic polynomials over ℚ(√2); cell prices on uniform polar grids and the exact cell decomposition of the integrated majorant; verified interval tables (`tablesOK_mk`) |
+| `CapPiece`, `CapCheckSound` | node certificate soundness (`pot_le_of_pieceOK`, `pot_le_of_nodeOK`) for the precompiled checker `GrotheKernel/CapCheck.lean` |
+| `CapSymmetry`, `CapHull`, `CapChordData` | the symmetries S_c, S_- of the fibre integral; chord nodes from vertex caps by convexity (`capChords_check`, `nodeCaps_of_vertexCaps`) |
+| `CapRecipeData`, `CapRows`, `CapRow00`–`CapRow18`, `CapNodes` | recipes (generated from `data/cap-recipes/`); `rangeOK` and its soundness; 60 range facts `capRangeKK_j` (target `GrotheCaps`, not built by CI; stamp `docs/CAPS_VERIFIED.txt`); `lower_bound_of_capsRest` |
+| `CapCover`, `CapConstr`, `CapPieceNodes` | localised caps of rows 12–15 (route M): coverage by constrained pieces up to S_c, S_-; the S-lemma bound on a piece; piece-node checks (issue #12) |
+
+**`Grothe/Lower/Cert/`: the original lower certificate in 13 single-threaded chunks.** `Rows0`–`Rows4`, `Batches0`–`Batches2`,
+`Boxes0`–`Boxes3` and `Partition` each hold one `native_decide` fact (`certRowsK`, `certBatchesK`, `certBoxesK`,
+`certPartition`); `Parts` holds the shared definitions; `Grothe/Lower/RowCheck.lean` assembles them into `cert_check`.
+The active refined endpoint uses the eight original row/batch facts, one law-node
+fact and five refined-cover facts (14 native inputs). The original cover remains
+in the default development; the complete registry has 24 native facts outside
+the separate 60 cap-range facts. There are 451 axiom-report entries.
+
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
 `scripts/check_axioms.py`: `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),

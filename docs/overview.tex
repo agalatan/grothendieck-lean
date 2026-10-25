@@ -187,7 +187,7 @@ gates); all moment, Stein, spectral and contraction-Gram inequalities for every 
 Wick identity; the finite certificate (five row, three original-batch, one added law-batch and five refined-cover native checks)
 &
 \lean{NodeCaps}: the 19 potentials $\Psi_r$ (defined in Lean) lie below their stored rational caps at the tabulated nodes.
-The separate \lean{GrotheCaps} target reduces this to \lean{CapsRest}: four rows' vertex caps and any excluded-node caps.
+The separate \lean{GrotheCaps} target reduces this to \lean{CapsRest}: the vertex caps of rows 12--15 ($t=0.84$--$0.855$) and any excluded-node caps.
 Its 60 range facts have a recorded verification stamp; the four remaining rows still require \lean{CapsRest}.\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error, table-accuracy and Hardy inputs, proves $\KG\le500000000000000000/355973699864771491$.}\\[2pt]
 the concrete disk-valued rounding; Gaussian Hermite completeness, Parseval and Mehler, charge selection, summability;
@@ -211,6 +211,7 @@ a finite degree-thirteen preprocessor and explicit residual bounds are used.\\\b
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}.\par
 The native facts pinned in \path{scripts/check_axioms.py} check the upper head, selected-band masses, phase cover, Haagerup bound,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and both finite covers.
+There are 24 native facts outside the separate cap-range target; the report \path{scratch/Axioms.lean} lists 451 theorems.
 No \lean{sorry}; CI builds the default target and checks its axiom report. The 60 additional cap-range checks belong to
 the separate heavy \lean{GrotheCaps} target, whose recorded verification stamp CI checks. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
@@ -426,8 +427,12 @@ independent, have identical marginals and covariances, but $\E[\bar r\,q|q|^2]$ 
 in the second.
 
 \section{Open problems}
+Planned work is tracked as GitHub issues of the repository: epics \#12 (unconditional lower bound), \#17 (upper inputs),
+\#22 (better lower bound), \#29 (build infrastructure) and \#34 (research plans).
 \begin{enumerate}
 \item Complete and verify the node caps (\lean{CapsRest} in the separate target), which would make the lower bound fully machine-checked.
+ The caps of rows 12--15 are localised caps: coverage by constrained pieces is checked in Lean, and most pieces pass; the
+ remaining pieces fail the exact positivity check of their S-lemma matrix by about $10^{-5}$ and need re-optimised multipliers.
 \item Discharge the sharp upper rounding's numerical comparison, energy-table error and contour tail bounds; its Hermite expansion and structural analytic bridge are formalized.
 \item Certify a game of degree $\ge5$ with a \emph{multi-grade fibre}: one bounded function of the visible coordinate and one
  remote direction per degree, so that the cross-degree coupling is kept. This is the route to a lower bound above $1.403$.
