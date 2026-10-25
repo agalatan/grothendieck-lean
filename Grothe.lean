@@ -155,3 +155,5 @@ import Grothe.LowerAnalytic.QuinticTransferAudit
 import Grothe.LowerAnalytic.ResponseCompression
 import Grothe.LowerAnalytic.ScalarCubicFamilyCeiling
 import Grothe.UpperChaos.HardyKernel
+import Grothe.Upper.ResponseGeometry
+import Grothe.Haagerup.PhaseGeometry

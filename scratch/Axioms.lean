@@ -431,3 +431,14 @@ import Grothe
 #print axioms Grothe.Upper.ResolventTail.defect_of_check
 #print axioms Grothe.Upper.ResolventTail.seed_of_check
 #print axioms Grothe.Upper.ResolventTail.tail_numeric_of_check
+#print axioms Grothe.Upper.ResponseGeometry.support_defect
+#print axioms Grothe.Upper.ResponseGeometry.normalized_distance
+#print axioms Grothe.Upper.ResponseGeometry.weighted_support_loss
+#print axioms Grothe.Upper.ResponseGeometry.kernel_transport
+#print axioms Grothe.Upper.ResponseGeometry.energy_transport
+#print axioms Grothe.Upper.ResponseGeometry.finite_energy_comparison
+#print axioms Grothe.Upper.ResponseGeometry.full_energy_comparison
+#print axioms Grothe.Upper.ResponseGeometry.orbit_energy_zero
+#print axioms Grothe.HaagerupPhaseGeometry.scaled_lower
+#print axioms Grothe.HaagerupPhaseGeometry.harmonic_lower
+#print axioms Grothe.HaagerupPhaseGeometry.degree_moment_not_summable
