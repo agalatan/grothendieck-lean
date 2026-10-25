@@ -121,7 +121,7 @@ sequence and a tail allowance. A fictitious law admitted by a relaxation does no
 
 ## 1. Baseline and quantitative objectives
 
-The combined development after integration of master `46e2a48` has
+The combined development after integration of master `40db77d` has
 
 \[
  1.401697049825<K_G^{\mathbb C}<1.404598149218.
@@ -191,17 +191,16 @@ tests; do not assume a longer alternating multiplier is an improvement.
 ## 2. Diagnosis: the missing constraint is joint realizability
 
 Write \(P_k=P_{k+1,k}\), and let \(c_k\) be the real mixed coefficients of an
-actual response mixture. The manuscript's complex duality states
+actual response mixture. The endpoint arguments use two one-sided transfers:
+a realizable kernel with positive full score gives an upper bound, and a
+witness with a dimension-uniform scalar norm cap gives a lower bound. The
+archived manuscript proposes a global complex minimax equality, but that
+completeness argument is not established by the present development and is
+not an input to either endpoint. Finite-pool LP duality does not establish it.
 
-\[
- \frac1{K_G^{\mathbb C}}
- =\sup_{c\in\mathcal C}\left(c_0-\sum_{k\ge1}|c_k|\right)
- =\inf_{\lambda_0=1,\ |\lambda_k|\le1}N(\lambda).
-\]
-
-There is no intrinsic duality gap. There are two approximation errors: the lower
-proof allows joint data that may not be realizable, while the upper search has
-only a restricted collection of realizable responses. For any candidate pair,
+There are two distinct approximation errors: the lower proof allows joint
+data that may not be realizable, while the upper search has only a restricted
+collection of realizable responses. For any candidate pair,
 
 \[
  N(\lambda)-D(c)
@@ -529,7 +528,7 @@ line-audited every manuscript module again in this planning pass.
 - [Convex joint dual and certified descent](/Users/alingalatan/workspaces/grothe/handoff/research-third-decimal/handoff-2026-10-15/ch25-parts/88-joint-dual-descent.tex).
 - [Original-response target and all-dimensions obligation](/Users/alingalatan/workspaces/grothe/handoff/research-third-decimal/handoff-2026-10-15/lower-bound/obstruction-1402.tex).
 - [Spherical bridge, truncation and obstructions](/Users/alingalatan/workspaces/grothe/docs/SPHERICAL_TRANSFER.md).
-- [Heilman–Jones–Malavolta, Primal/Dual Method, Sections 2–3](https://arxiv.org/html/2610.10477v1): real-case exchange and graded joint compactification; its heuristic oracle does not certify a global norm. The complex duality used above is the manuscript's argument.
+- [Heilman–Jones–Malavolta, Primal/Dual Method, Sections 2–3](https://arxiv.org/html/2610.10477v1): real-case exchange and graded joint compactification; its heuristic oracle does not certify a global norm. A global complex minimax extension needs an independent completeness argument; neither endpoint here assumes it.
 - [Jones, Regularity lemma, Theorems 3.8–3.9 and following remark](https://arxiv.org/html/2610.16180v1): multivariate graded structure and nonconstructive general size bound. No unverified rate is used here.
 - [Herry–Malicet–Poly, Limit distributions for polynomials](https://arxiv.org/html/2412.06749v1): joint polynomial-limit framework; not a quantitative original-response inequality at our target accuracy.
 - [Designolle–Vértesi–Pokutta, Better bounds on finite-order Grothendieck constants](https://arxiv.org/html/2409.03739v3): construction versus global scalar certification, and applicability of the computational framework to complex problems; its reported constants are not imported.

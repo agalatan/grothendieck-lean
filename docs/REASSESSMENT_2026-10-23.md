@@ -44,8 +44,8 @@ More precisely:
   60 range facts have a recorded droplet verification stamp. Those heavy
   facts are separate from the default CI build.
 - **Upper:** `Grothe.UpperChaos.fresh_upper_rounder` formally gives
-  `K≤500000000000000000/355973699864771491=1.404598570778625…`, conditional
-  on an L² charge-one truncation `X` and the numerical bounds `compare`,
+  `K≤500000000000000000/355973699864771491=1.404598149217039…`, conditional
+  on an L² charge-one truncation `X` and the component-error input `ComparisonInputs`,
   `energy_close` and `hardy`. The concrete rounding, Gaussian Hermite
   completeness/Parseval/Mehler, charge selection, actual-rounding validity
   and energy summability are formalized, as are kernel transfer, tensor
@@ -70,8 +70,9 @@ substituted silently for this baseline:
 1. The 15/20/22 October portions of `ch17-crossbound.tex`, `ch4-ceilings.tex`
    and `breakthrough/00-state-of-the-math.md` quote earlier endpoints. For
    current endpoint arithmetic, the actual Lean interfaces and current
-   generated certificate take precedence. Statements that the lower transfer
-   or complex minimax argument is still unwritten are superseded.
+   generated certificate take precedence. The lower transfer is formalized.
+   The archived complex minimax claim remains a separate completeness
+   argument; the endpoints do not assume it.
 2. The archive's matrix-prefix construction assembles `<1.404598428856`.
    The matrix note itself still displays an earlier `<1.404598524179`.
    Both are external-assisted packages, not the present main theorem's
@@ -200,12 +201,12 @@ The current slope is
 \[
 c=0.7119483103461,
 \qquad A=c-\delta=0.711947399729542982,
-\quad\delta=9.106173034218\cdot10^{-6}.
+\quad\delta=9.10616557018\cdot10^{-7}.
 \]
 
-The residual consists of comparison `1.065637497e−6` (93.56%), native
-head `2.8153e−8` (2.50%), Hardy tail `3.04888432e−8` (2.71%), and table
-error `1.3694018e−11` (about .001%). These are upper allowances, not
+The residual consists of comparison `8.51961024e−7` (93.56%), native
+head `2.8153e−8` (3.09%), Hardy tail `3.0488839e−8` (3.35%), and table
+error `1.3694018e−11` (about .0015%). These are upper allowances, not
 measurements of the actual residual or the proportion of the theorem that
 is mathematically true.
 
@@ -215,8 +216,8 @@ Even removing **all** residual would yield only
 1/c=1.40459635266761\ldots,
 \]
 
-a gain of `2.218111014592e−6` in K. Removing the comparison allowance alone gives
-about `1.404596468388596`. None of that can close the `.002901584608`
+a gain of about `1.79655e−6` in K. Removing the comparison allowance alone gives
+about `1.40459646838859`. None of that can close the `.002901099393`
 two-sided interval. The stable archive likewise has a fixed zero-residual
 reciprocal `1.4045937`. Better upper arithmetic matters for trust and for
 millionths; a substantial advance needs a different family or a different
@@ -346,18 +347,14 @@ D(c)=c_0-\sum_{k\ge1}|c_k|,
 \quad\lambda_0=1,\quad\lambda_k\in[-1,1].
 \]
 
-The manuscript's complete analytic argument proves
-
-\[
-\frac1{K_G^{\mathbb C}}=\sup_{c\in C}D(c)=\min_\lambda N(\lambda). (5)
-\]
-
-The proof uses residual rounding transfer, finite-partition matrix transfer
-with the vector test `Z/||Z||`, and Sion minimax on the weak-star compact
-multiplier cube paired with `ℓ¹`. It does not require compactness of the
-response set or an integral kernel. This exact complex equality is a paper
-result here; it is not itself wholly formalized in Lean. Its component
-transfer machinery is much more formalized than old notes imply.
+The archived manuscript proposes the global complex identity
+`1/K = sup D(c) = inf N(lambda)`. The present development does not establish
+its completeness step. Neither endpoint uses that equality: the upper
+endpoint follows from a realizable rounding with a certified full score,
+and the lower endpoint from a dimension-uniform witness norm cap. Finite
+pool duality, Sion minimax on a response body, and the two endpoint transfers
+do not by themselves identify that body's optimum with the full matrix
+constant. Any such identification needs an independent argument.
 
 For every feasible pair, the exact gap is
 
@@ -400,8 +397,8 @@ stable payoffs hid coefficient changes around `1.65e−4`. The large chirp pool
 still scores about `.711892`, below the current `.711947179793…` incumbent,
 even before all remaining family-specific tail obligations.
 
-So the two sides are obstructed by the same response body in the precise
-sense of (5), but **not demonstrably by one missing inequality**. A good
+The two sides can use a common response library, but they are **not
+demonstrably obstructed by one missing inequality**. A good
 common experiment must separately measure improved global separation and
 improved realizable signed cancellation.
 
@@ -414,8 +411,9 @@ their hypotheses matter more here than their numerical constants.
   Sections 2–3: Gaussian Hermite-game minimax and the actual-response exchange
   algorithm. This gives the right discovery loop and the distinction between
   heuristic response search and rigorous global certification. Real sign
-  support identities do not transfer to phases. The complex minimax proof
-  used here is the repository's independent argument in (5).
+  support identities do not transfer to phases. The archived complex minimax
+  extension requires an independent completeness argument; no endpoint here
+  assumes it.
 - [Heilman–Jones–Malavolta, complex bounds](https://arxiv.org/html/2609.25462v1):
   complex Gaussian phase kernels, admissible tensor preprocessing and residual
   repair directly fit this project. Their `1.4<K<1.404898554746` result is an
