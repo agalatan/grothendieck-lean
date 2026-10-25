@@ -131,6 +131,18 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
   refuses it). They auto-merge only if the repository secret `MERGE_TOKEN` exists (a fine-grained personal access token
   for this repository with *Contents: read and write* and *Workflows: read and write*); otherwise open a pull request
   and let the user merge it. CI says so explicitly and does not retry.
+- **Build cache (one, owned by master).** All runs restore `.lake/build` from the Actions cache written by the last
+  **warm** run on master; no other run saves a cache (per-branch entries evicted each other in the 10 GB quota). After
+  every auto-merge CI dispatches a warm run on the droplet's self-hosted runner (labels `self-hosted, heavy`): an
+  incremental `lake build Grothe GrotheCaps` in a persistent workspace, both axiom reports, then the cache save. So
+  GitHub-hosted runs start from master's latest build *including* the verified caps modules. Trust: a cached
+  `native_decide` result is not re-executed; only our own runner on master writes the cache, and Lake reuses a file
+  only if its source, dependency and toolchain hashes match. The caps stamp remains an independent check.
+- **Caps changes.** If a `ready/` delivery changes a file in the caps closure, its stamp check fails and CI dispatches a
+  **caps** run on the droplet: it builds `GrotheCaps` for the merged tree (hours), commits the new stamp onto the ready
+  branch and re-dispatches the check. Nothing to do by hand; just wait.
+- **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for stop/remove).
+  It shares Mathlib with the other droplet work via `~/grothe-caps/.lake/packages` — do not delete that directory.
 - **Cost:** every push uses CI minutes, which the private repository pays for. Push work branches when they matter,
   not after every small commit.
 
