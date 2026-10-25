@@ -47,9 +47,9 @@ research outputs remain under `handoff/research-third-decimal/`.
 
 ## Combined upper continuation and validation
 
-Master `d4df11f` contributes the selected-spectrum comparison: explicit shared
+Master `46e2a48` contributes the selected-spectrum comparison: explicit shared
 error pieces, spectral supports and Gaussian norm caps yield the comparison
-`107077907/125000000000000`. The native band-mass check bounds the eighteen
+`13311891/15625000000000`. The native band-mass check bounds the eighteen
 selected energy radii. This replaces the old global energy-comparison interface
 in the concrete theorem with `ComparisonInputs`. Its identification with the
 Gaussian truncation and norm enclosures remains external, as do energy-table
@@ -57,8 +57,8 @@ accuracy and the Hardy input.
 
 Combining that comparison with the forced linear coefficient's deduction from
 the same Hardy budget gives tail `30488839/1000000000000000`, residual
-`457639394509/500000000000000000`, and upper endpoint
-`500000000000000000/355973697533655491 < 1.404598158416`.
+`455308278509/500000000000000000`, and upper endpoint
+`500000000000000000/355973699864771491 < 1.404598149218`.
 No stronger Hardy input is used. The raw rounder, energies, preprocessors and
 contour certificate remain fixed. Both the raw contour-tail assembly and this
 derived ledger have exact arithmetic checks. The lower endpoint's premise is
@@ -68,7 +68,7 @@ unaffected. Combined fresh checks and axiom reports are retained in
 The prior branch state passed the full default build in
 [CI run 39959562283](https://github.com/agalatan/grothendieck-lean/actions/runs/39959562283).
 That result applies to its frozen sources; the current merged certificate has
-fresh targeted coverage and a separate branch CI run.
+an explicit targeted-build receipt gap and requires its own full branch CI run.
 
 ## Earlier upper continuation and validation
 
@@ -114,7 +114,7 @@ endpoint. See [the next campaign](../handoff/research-third-decimal/needle-20261
 
 ## Integration with current master
 
-The current campaign includes GitHub master `d4df11f`. The earlier `197b82f`
+The current campaign includes GitHub master `46e2a48`. The earlier `197b82f`
 spectral exchange contribution, its two spectral-error
 lemmas and canonical signed-head exporter are retained. Both lemmas use only
 the standard axioms; the directed exporter pays one coefficient-l1 error

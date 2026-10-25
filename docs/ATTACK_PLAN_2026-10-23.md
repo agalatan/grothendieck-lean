@@ -95,7 +95,7 @@ The next stage is complete: a common signed-tail spectral budget replaces the
 independent residual relaxation, and an exact degree-seven separator proves
 that the full Gaussian-phase cubic-preprocessor family, with arbitrary complex
 phases and convex mixtures, has score at most `0.71186`. It cannot beat the
-incumbent `0.711947395067310982`. Leave that architecture rather than optimize
+incumbent `0.711947399729542982`. Leave that architecture rather than optimize
 its scalar parameters again. This does not exclude general finite cubic phases.
 The common-tail screen of the updated twelve-column pool is `0.711605880` at
 midpoints; its error-dependent bounds are still conditional on unproved
@@ -121,13 +121,13 @@ sequence and a tail allowance. A fictitious law admitted by a relaxation does no
 
 ## 1. Baseline and quantitative objectives
 
-The combined development after integration of master `d4df11f` has
+The combined development after integration of master `46e2a48` has
 
 \[
- 1.401697049825<K_G^{\mathbb C}<1.404598158416.
+ 1.401697049825<K_G^{\mathbb C}<1.404598149218.
 \]
 
-The interval width is `0.002901108591`. Both sharp bounds have the numerical
+The interval width is `0.002901099393`. Both sharp bounds have the numerical
 input hypotheses documented in the repository. The separate fully formal upper
 bound is \(K_G^{\mathbb C}\le1.404951\).
 
@@ -143,8 +143,8 @@ it does not change the numerical cap, and this branch leaves all cap sources unc
 The current upper certificate has the exact reciprocal denominator
 
 \[
- A_0=\frac{355973697533655491}{500000000000000000}
-     =0.711947395067310982.
+ A_0=\frac{355973699864771491}{500000000000000000}
+     =0.711947399729542982.
 \]
 
 Master's upper theorem `Grothe.UpperChaos.fresh_upper_rounder` now constructs
@@ -380,7 +380,7 @@ for the same ineffective inequality.
 
 Keep the current certified rounding as an incumbent. The historical analytic
 chirp pool is not a replacement: its recorded score near `0.711892` was already
-below the present `0.711947395067310982`, even before all remaining tail costs.
+below the present `0.711947399729542982`, even before all remaining tail costs.
 An earlier phase-response pool also suffered inaccurate coefficients hidden by
 stable witness payoffs.
 
@@ -474,7 +474,7 @@ harmonic enumeration is not the primary attack.
 
 Keep closure of the existing `NodeCaps` proof as a separate formalization
 task. On the upper side, improving the external comparison estimate may give
-a useful small gain: it accounts for 93.59% of the current residual allowance.
+a useful small gain: it accounts for 93.56% of the current residual allowance.
 Neither task substitutes for the joint-geometry target or establishes a new
 rounding family.
 

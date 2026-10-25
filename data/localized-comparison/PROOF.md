@@ -1,31 +1,31 @@
-# Selected-spectrum comparison
+# Weighted selected-spectrum comparison
 
 The selected-spectrum comparison with the raw contour-tail allowance gives
 
-**K_G^C < 1.404598170764.**
+**K_G^C < 1.404598161566.**
 
 The current Lean assembly also deducts the forced linear coefficient's
 weighted square from the same Hardy budget. This gives
-`K_G^C < 1.404598158416`, with reciprocal score
-`355973697533655491/500000000000000000`. The arithmetic below retains the
+`K_G^C < 1.404598149218`, with reciprocal score
+`355973699864771491/500000000000000000`. The arithmetic below retains the
 raw tail for replay; the derived assembly is recorded in
 `../upper-preprocess/certificate.json` under `linear_budget_refinement`.
 
 The rounding, polynomial preprocessors, 21,168 stored energies, finite-head cap
-and Hardy certificate are unchanged. The improvement comes from retaining the
+and Hardy certificate are unchanged. The improvement comes from retaining coefficient costs as well as the
 spectral supports of the inherited Gaussian coefficient-error enclosures.
 
 ## The inequality
 
 Let `S = {(n,m): n+3m <= 501}`. For L2 functions `G,X`, suppose
 `G-X = sum_r D_r`, where the component `D_r` has total-chaos support in its
-specified band `B_r` and `||D_r||_2 <= e_r`. Let
+specified band `B_r` and `||D_r||_2 <= e_r`. Let coefficient costs satisfy `0 <= w(p) <= 1`. Require
 
-`A_r^2 >= sum_(p in S intersect B_r) energy(X,p)`, with nonnegative `A_r,e_r`.
+`A_r^2 >= sum_(p in S intersect B_r) w(p)^2 energy(X,p)`, with nonnegative `A_r,e_r`.
 
 Then
 
-`sum_(p in S) |energy(G,p)-energy(X,p)| <= 2 sum_r A_r e_r + (sum_r e_r)^2`.
+`sum_(p in S) w(p) |energy(G,p)-energy(X,p)| <= 2 sum_r A_r e_r + (sum_r e_r)^2`.
 
 The same functions and error components occur throughout; their supports may
 overlap arbitrarily. No independence, new Gaussian coordinate, or signed-tail
@@ -33,15 +33,40 @@ cancellation is assumed. The quadratic error is paid once.
 
 For each bidegree, regard the finitely many Hermite coefficients as a vector.
 The elementary norm inequality gives an error at most
-`2 ||X_p|| ||(G-X)_p|| + ||(G-X)_p||^2`. Expand the linear error into its
+`w(p) (2 ||X_p|| ||(G-X)_p|| + ||(G-X)_p||^2)`. Expand the linear error into its
 pieces. Support restricts its pairing with `X` to `S intersect B_r`;
-Cauchy–Schwarz bounds that pairing by `A_r e_r`. Parseval and the triangle
-inequality bound the sum of quadratic errors by `(sum e_r)^2`.
+Cauchy–Schwarz bounds that pairing by `A_r e_r`, using the weighted vector `w(p) X_p`. Parseval and the triangle
+inequality, together with `0 <= w(p) <= 1`, bound the sum of quadratic errors by `(sum e_r)^2`.
 
 Lean proves this algebra in `Grothe/Upper/BandComparison.lean`, constructs the
 actual finite Gaussian Hermite blocks in `Grothe/UpperChaos/EnergyBlock.lean`,
 and derives the selected energy comparison in
 `Grothe/UpperChaos/LocalizedComparison.lean`.
+
+## Costs of the actual coefficient map
+
+For any finite linear coefficient map `K(E)_j = sum_p a(j,p) E(p)`,
+`w(p) >= sum_(j<K) |a(j,p)|` gives
+`sum_(j<K) |K(E)_j-K(EX)_j| <= sum_p w(p) |E(p)-EX(p)|`.
+Lean proves this triangle inequality in `head_perturbation_weighted` and connects
+it to kernel locality in `head_residual_le_weighted`.
+
+Here `a(j,p)` is the coefficient of `X^shift P^n Q^m`. Write `Q=X R`.
+The first 251 coefficients only use the first
+`k = 251 - (floor(n/2)+floor(m/2)+m)` coefficients of `P^n R^m`, truncated at
+zero. For `k <= 21` and the finite index range, the checker computes those
+coefficients by 128-bit outward fixed-point interval arithmetic. The cost is
+the smaller of one and the resulting absolute coefficient sum. All other
+indices have cost one. All powers and convolutions are enclosed by the existing
+proved interval routines. `headWeight_sound` proves soundness of every cost;
+`comparisonWeight_bounds` proves it belongs to `[0,1]`. These are ordinary Lean
+proofs, with no new native fact or analytic input. The native band-mass check
+uses the costs computed from the canonical preprocessors, not supplied floats.
+
+`tools/head_weights.py` reproduces the same integer interval arithmetic. The
+squared costs enter the comparison radii. The inherited table error is charged
+once, since `w(p)^2 <= 1`. The original table head and Hardy certificate remain
+unchanged.
 
 ## Finite radii and exact assembly
 
@@ -50,7 +75,7 @@ The existing table accuracy input is
 `eta = 6847009/500000000000000000`.
 For each band choose an outward rational radius satisfying
 
-`A_r^2 >= sum_(p in S intersect B_r) Ehat(p) + eta`.
+`A_r^2 >= sum_(p in S intersect B_r) w(p)^2 Ehat(p) + eta`.
 
 This gives the required actual-vector mass bound. `ComparisonMass.lean`
 proves the passage from table accuracy to these radii. Its native fact checks
@@ -59,17 +84,17 @@ every band mass and the final rational budget independently of Python.
 There are 18 error pieces. All exact values, their source roles and the
 reproduction hashes are in `recipe.json`. The resulting allowance is
 
-`C = 107077907/125000000000000 = 0.000000856623256`.
+`C = 13311891/15625000000000 = 0.000000851961024`.
 
 Together with the unchanged head, table error and Hardy allowances:
 
-`delta = 460768975009/500000000000000000`,
+`delta = 458437859009/500000000000000000`,
 
-`c-delta = 355973694404074991/500000000000000000`.
+`c-delta = 355973696735190991/500000000000000000`.
 
 The formal transfer theorem gives
 
-`K_G^C <= 500000000000000000/355973694404074991 < 1.404598170764`.
+`K_G^C <= 500000000000000000/355973696735190991 < 1.404598161566`.
 
 ## Inherited Gaussian inputs: what remains external
 

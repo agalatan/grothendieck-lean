@@ -18,11 +18,11 @@ without copying it. Use targeted module builds; full builds run on the droplet o
 
 Headline `Grothe.UpperChaos.fresh_upper_rounder` (`Grothe/UpperChaos/PhiBound.lean`):
 
-    K_G^ℂ ≤ 500000000000000000/355973697533655491  (< 1.404598158416)
+    K_G^ℂ ≤ 500000000000000000/355973699864771491  (< 1.404598149218)
 
 for the concrete rounding `GT` (smoothed `F₀·P₃(φ)` built from `Grothe/Upper/Data.lean`), assuming only
 
-* `ComparisonInputs`: the exact spectrally supported Gaussian error decomposition and inherited component norm caps; Lean derives its selected-head energy comparison,
+* `ComparisonInputs`: the exact spectrally supported Gaussian error decomposition and inherited component norm caps; Lean derives its weighted selected-head energy comparison (with coefficient costs proved from the preprocessors),
 * `energy_close`: `Σ_{n+3m≤501} |energy X − energyTable| ≤ energyErrQ`,
 * `hardy`: `Σ_{n<J} kernelCoeff(energy GT)_n² (4149/4000)^{2(2n+1)} ≤ 7/4`,
 
@@ -50,12 +50,10 @@ same `7/4` budget before Cauchy–Schwarz (`hardy_budget_after_linear`,
 endpoint for the preceding preprocessors passed the full build and axiom audit in
 [run 39901871873](https://github.com/agalatan/grothendieck-lean/actions/runs/39901871873);
 the current degree-41/15 preprocessors come from `data/upper-preprocess/`.
-The affected upper modules have fresh warning-as-error coverage, including
-the head, selected-band comparison and phase-cover native facts. The combined
-endpoint report uses 17 of 84 registered native facts (14 lower plus those
-three upper facts). Logs and source guards are in
-`data/upper-preprocess/verification/`; the preceding CI run is historical
-evidence only. `HardyKernel` fixes definitions and does not
+The current exact arithmetic and generated data replay pass. Full merged-tree
+Lean validation is delegated to branch CI. Earlier targeted receipts were cleared
+before collection and are not current build evidence. The explicit gap and source
+guards are in `data/upper-preprocess/verification/`. `HardyKernel` does not
 discharge the numerical Hardy premise.
 
 ## 2. `|φ| < 1` (input of the inherited coefficient-error argument)

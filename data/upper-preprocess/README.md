@@ -2,21 +2,21 @@
 
 Under the documented Gaussian inputs, the certificate proves
 
-**K_G^C < 1.404598170764.**
+**K_G^C < 1.404598161566.**
 
-The exact reciprocal score is `355973694404074991/500000000000000000`.
+The exact reciprocal score is `355973696735190991/500000000000000000`.
 This is a global upper certificate, not a bound on a selected response region.
 The lower certificate is unaffected.
 
-The current Lean assembly also deducts the linear coefficient's forced
-weighted square from the same Hardy budget. The derived tail is
-`30488839/1000000000000000`, the residual is
-`457639394509/500000000000000000`, and the exact reciprocal score is
-`355973697533655491/500000000000000000`. Thus the current endpoint is
-**K_G^C < 1.404598158416**. These derived fields are recorded in
-`linear_budget_refinement`; the frozen contour-tail fields above are retained
-for exact replay. The selected comparison contributes 93.59% of the refined
-residual, the head 3.08%, and the tail 3.33%.
+The current Lean assembly also deducts the linear coefficient's forced weighted
+square from the same Hardy budget. Its tail is `30488839/1000000000000000`,
+residual `455308278509/500000000000000000`, and reciprocal score
+`355973699864771491/500000000000000000`, giving **K_G^C < 1.404598149218**.
+These derived values are checked under `linear_budget_refinement`; the raw
+contour-tail fields above remain unchanged for reproducibility. The weighted
+comparison contributes 93.56% of the refined residual, the head 3.09%, and the
+tail 3.35%. No stronger Gaussian or Hardy input is used.
+
 
 ## Mathematical assembly and trust boundary
 
@@ -33,20 +33,19 @@ residual about `c t`, with `c = 7119483103461/10000000000000`:
 
 | contribution | exact allowance | status |
 |---|---:|---|
-| selected-block energy comparison | `107077907/125000000000000` | proved from inherited component-error inputs and native finite masses |
+| weighted selected-block energy comparison | `13311891/15625000000000` | proved from inherited component-error inputs and native finite masses |
 | finite head through degree 501 | `28153/1000000000000` | freshly checked in Arb and Lean |
 | stored energy-table accuracy | `6847009/500000000000000000` | inherited external Gaussian input |
 | infinite tail after degree 501 | `36748/1000000000000` | fresh contour arithmetic, same analytic Schur input |
 
-Their sum is `delta = 460768975009/500000000000000000`.
+Their sum is `delta = 458437859009/500000000000000000`.
 The already formalized transfer theorem gives
-`K_G^C <= 1/(c-delta) < 1.404598170764`.
+`K_G^C <= 1/(c-delta) < 1.404598161566`.
 No additional head-comparison hypothesis is introduced.
 
 The native Lean checker proves the complete finite-head statement over exact
-dyadic energy data and rational polynomial coefficients. The Lean development
-separately proves the polynomial l1 constraints, locality, transfer and
-rational endpoint assembly.
+dyadic energy data and rational polynomial coefficients. The Lean development separately proves the
+polynomial l1 constraints, locality, transfer and rational endpoint assembly.
 The concrete theorem `Grothe.UpperChaos.fresh_upper_rounder` still explicitly
 takes `ComparisonInputs`, `energy_close` and `hardy`, for a charge-one L2 truncation `X`.
 The first records an exact Gaussian error decomposition, spectral supports and
@@ -94,8 +93,15 @@ exact bound, source hash and verifier hash. The `inputs/` directory pins the
 Schur proof and smoothing parameters. A sequential LP produced the proposal;
 neither LP optimality nor floating point output is a certificate premise.
 
-The dominant remaining allowance is the selected comparison (92.96% of the
-raw residual, or 93.59% after the linear-budget deduction), derived from the
-inherited Gaussian component-error enclosures. Further gains from a new response must account for its full signed
+The dominant remaining allowance is the selected comparison (92.92% of the
+residual), derived from the inherited Gaussian component-error enclosures. Further gains from a new response must account for its full signed
 kernel and shared tail; a better slope or a truncated mixture score alone
 does not establish an endpoint.
+
+## Validation scope
+
+The current lower data pass exact whole-cover replay and byte-for-byte export.
+Temporary targeted Lean receipts from 23 October were cleared before collection;
+they are not claimed as current validation. The final merged branch is checked
+by full GitHub Lean CI, including the actual axiom report and unchanged heavy
+cap stamp. See `verification/` for source guards and the explicit build-record gap.

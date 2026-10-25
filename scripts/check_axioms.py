@@ -262,8 +262,12 @@ REQUIRED |= LAW_NODES
 # Selected-band comparison and its concrete Gaussian wrapper.
 UPPER_COMPARISON = {
     'Grothe.Upper.BandComparison.compare',
+    'Grothe.Upper.BandComparison.weighted_compare',
     'Grothe.Upper.actual_band_mass',
+    'Grothe.Upper.comparisonWeight_sound',
     'Grothe.Upper.comparison_check',
+    'Grothe.Upper.headWeight_sound',
+    'Grothe.Upper.head_residual_le_weighted',
     'Grothe.UpperChaos.fresh_upper_concrete',
     'Grothe.UpperChaos.fresh_upper_of_rounding',
     'Grothe.UpperChaos.fresh_upper_rounder',

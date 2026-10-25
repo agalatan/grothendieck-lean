@@ -28,7 +28,7 @@ apply simultaneously; an exact checksum is not an analytic theorem.
 The current main-development interval is
 
 \[
-1.401697049825<K_G^{\mathbb C}<1.404598158416.
+1.401697049825<K_G^{\mathbb C}<1.404598149218.
 \]
 
 More precisely:
@@ -44,7 +44,7 @@ More precisely:
   60 range facts have a recorded droplet verification stamp. Those heavy
   facts are separate from the default CI build.
 - **Upper:** `Grothe.UpperChaos.fresh_upper_rounder` formally gives
-  `K≤500000000000000000/355973697533655491=1.404598570778625…`, conditional
+  `K≤500000000000000000/355973699864771491=1.404598570778625…`, conditional
   on an L² charge-one truncation `X` and the numerical bounds `compare`,
   `energy_close` and `hardy`. The concrete rounding, Gaussian Hermite
   completeness/Parseval/Mehler, charge selection, actual-rounding validity
@@ -199,11 +199,11 @@ The current slope is
 
 \[
 c=0.7119483103461,
-\qquad A=c-\delta=0.711947395067310982,
-\quad\delta=9.152793034218\cdot10^{-6}.
+\qquad A=c-\delta=0.711947399729542982,
+\quad\delta=9.106173034218\cdot10^{-6}.
 \]
 
-The residual consists of comparison `1.065637497e−6` (93.59%), native
+The residual consists of comparison `1.065637497e−6` (93.56%), native
 head `2.8153e−8` (2.50%), Hardy tail `3.04888432e−8` (2.71%), and table
 error `1.3694018e−11` (about .001%). These are upper allowances, not
 measurements of the actual residual or the proportion of the theorem that

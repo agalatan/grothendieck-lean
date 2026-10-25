@@ -453,3 +453,8 @@ import Grothe
 #print axioms Grothe.Research.LawNodeLower.lower_bound_of_law_nodes
 #print axioms Grothe.Research.LawNodeLower.strict_lower_bound_of_law_nodes
 #print axioms Grothe.Research.LawNodeCheck.certLawNodes
+
+#print axioms Grothe.Upper.headWeight_sound
+#print axioms Grothe.Upper.comparisonWeight_sound
+#print axioms Grothe.Upper.head_residual_le_weighted
+#print axioms Grothe.Upper.BandComparison.weighted_compare

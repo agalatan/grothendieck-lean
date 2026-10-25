@@ -21,7 +21,7 @@ The combined repository now reports:
   `CapsRest`: the remaining four rows' vertex caps and any excluded-node
   caps of the other rows. A recorded droplet stamp verifies the other
   60 range facts; the remaining four rows are still hypotheses.
-* `K_G^C < 1.404598158416`: `Grothe.UpperChaos.fresh_upper_rounder`
+* `K_G^C < 1.404598149218`: `Grothe.UpperChaos.fresh_upper_rounder`
   proves this for the concrete rounding, assuming an L² charge-one
   truncation `X` and the three numerical bounds `compare`, `energy_close`
   and `hardy`. The older table interface `Grothe.fresh_upper`, conditional

@@ -45,11 +45,11 @@ structure ComparisonInputs (G X : Lp ℂ 2 mu2) where
   support : ∀ (j : ComparisonIndex) (p : ℕ × ℕ),
     (comparisonBand j).contains p.1 p.2 = false → energy (piece j) p = 0
 
-/-- Localizing the comparison charges only the selected head's band masses.
+/-- Localizing the comparison charges only the selected head's weighted band masses.
 The entire quadratic error is included once, even when the bands overlap. -/
 theorem localized_comparison {G X : Lp ℂ 2 mu2} (h : ComparisonInputs G X)
     (hclose : ∑ p ∈ headIdx 501, |energy X p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ)) :
-    ∑ p ∈ headIdx 501, |energy G p - energy X p| ≤ (compareQ : ℝ) := by
+    ∑ p ∈ headIdx 501, comparisonWeight p * |energy G p - energy X p| ≤ (compareQ : ℝ) := by
   classical
   generalize hS : headIdx 501 = S at hclose ⊢
   let a : ComparisonIndex → ℝ := fun j => ((comparisonBand j).norm : ℝ)
@@ -68,9 +68,10 @@ theorem localized_comparison {G X : Lp ℂ 2 mu2} (h : ComparisonInputs G X)
       rw [h.difference]
       exact (norm_sum_le _ _).trans (sum_le_sum fun j _ => h.norm_le j)
     exact (pow_le_pow_left₀ (norm_nonneg _) hn 2)
-  have hc := BandComparison.compare S (univ : Finset ComparisonIndex)
+  have hc := BandComparison.weighted_compare S (univ : Finset ComparisonIndex) comparisonWeight
     (energyBlock X) (energyBlock G) (fun j => energyBlock (h.piece j))
     (fun j => bandIndices (comparisonBand j)) a e ((∑ j, e j) ^ 2)
+    (fun p _ => comparisonWeight_bounds p)
     (fun p _ => by rw [← energyBlock_sub, h.difference, energyBlock_sum])
     (fun j _ p hp hpb => by
       have hn : (comparisonBand j).contains p.1 p.2 = false := by
@@ -85,7 +86,7 @@ theorem localized_comparison {G X : Lp ℂ 2 mu2} (h : ComparisonInputs G X)
       have hi : S ∩ bandIndices (comparisonBand j) = bandIndices (comparisonBand j) := by
         rw [← hS]
         exact inter_eq_right.mpr (bandIndices_subset _)
-      simpa only [hi, norm_energyBlock_sq] using hh)
+      simpa only [hi, mul_pow, norm_energyBlock_sq] using hh)
     (fun j _ => by
       simp_rw [norm_energyBlock_sq]
       exact (energy_sum_le_norm_sq _ _).trans

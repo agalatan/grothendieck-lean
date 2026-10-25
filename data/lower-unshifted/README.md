@@ -56,9 +56,10 @@ reproducing the generated Lean data byte for byte.
 The new law batch and all four box chunks are reflected separately, with a
 partition fact. Chunk width is 2,691; the kernel checks its extent against the
 actual box-list length. Python replay and Lean reflection are separate checks.
-Fresh validation covers `LawNodeData`, `LawNodeCheck` and the eight cover
-modules. The unchanged generic lower bridges and original row/batch proofs
-are reused only after source, dependency and artifact hash checks.
+The required Lean coverage includes `LawNodeData`, `LawNodeCheck`, the eight cover
+modules and their generic bridges. Temporary targeted build receipts were lost
+before collection; the final merged tree requires full GitHub Lean CI. Exact
+Python replay is recorded separately and is not a replacement for reflection.
 The lower endpoint still uses 14 native facts plus the three standard axioms.
 Raw logs, the actual endpoint axiom list and build records live in `verification/`.
 The full default build is separate branch CI.

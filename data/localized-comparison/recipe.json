@@ -4,7 +4,7 @@
       "lo": 0,
       "hi": 0,
       "error": "1/1000000000000000000",
-      "norm": "249852857157/250000000000",
+      "norm": "62462505733/62500000000",
       "origin": "frozen-vector rounding"
     },
     {
@@ -53,7 +53,7 @@
       "lo": 181,
       "hi": 0,
       "error": "7276265983447/1000000000000000000",
-      "norm": "39673216051/1000000000000",
+      "norm": "1575463739/40000000000",
       "origin": "Taylor power 1, high tail"
     },
     {
@@ -88,7 +88,7 @@
       "lo": 91,
       "hi": 0,
       "error": "231742890319/200000000000000000",
-      "norm": "65190061393/1000000000000",
+      "norm": "65016027087/1000000000000",
       "origin": "Taylor power 2, high tail"
     },
     {
@@ -123,19 +123,21 @@
       "lo": 51,
       "hi": 0,
       "error": "177488542479/500000000000000000",
-      "norm": "91640672869/1000000000000",
+      "norm": "18303390503/200000000000",
       "origin": "Taylor power 3, high tail"
     }
   ],
-  "comparison_cap": "107077907/125000000000000",
+  "comparison_cap": "13311891/15625000000000",
   "error_radius": "5453935035799/500000000000000000",
-  "cross": "107063034257015782069081/250000000000000000000000000000",
-  "delta": "460768975009/500000000000000000",
-  "score": "355973694404074991/500000000000000000",
-  "bound": "500000000000000000/355973694404074991",
-  "headline": "1.404598170764",
+  "cross": "1703684083888711864747/4000000000000000000000000000",
+  "delta": "458437859009/500000000000000000",
+  "score": "355973696735190991/500000000000000000",
+  "bound": "500000000000000000/355973696735190991",
+  "headline": "1.404598161566",
   "source_sha256": "5619546626b7588ce64a2229aa58b0d161bde613dbf9a5eaad94a3ef93461915",
   "rounder_source_sha256": "420f677e6cf18e8c74fb7fce89c74b58f64676031f8c788ce36543e116753af7",
-  "energy_source_sha256": "c8c0d68f61cadf1b43525f66a1f1be91124f0ed49de9664a67c95cd6305dc2c4",
-  "scope": "Finite selected-block comparison; inherited Gaussian component-error inputs."
+  "weight_method": "128-bit outward interval costs, 21 unshifted coefficients; unit cost otherwise",
+  "weight_script_sha256": "5050a4631f3d01eefd2992013af6a8ad29061f7e8ccde0d016706ce6b7ae0d67",
+  "energy_source_sha256": "9214d8877ecbada51c876cffeb9bb06f0202b931d3f791b7f2c61e023e646ac0",
+  "scope": "Weighted finite selected-block comparison; unchanged inherited Gaussian component-error inputs."
 }
