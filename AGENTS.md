@@ -124,7 +124,9 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
   outside `Grothe/`, `GrotheKernel/`, the root `.lean` files, `lakefile.toml`, `lake-manifest.json`, `lean-toolchain`,
   `scratch/Axioms.lean` (the CI axiom report; other `scratch/` files are not built by CI), `scripts/check_axioms.py`, `scripts/caps_stamp.py` and `.github/workflows/`, the build and the checks are
   skipped and the job succeeds. Documentation-only deliveries still auto-merge.
-- **What differs for `ready/<topic>`:** the merge with master and the auto-merge.
+- **What differs for `ready/<topic>`:** the merge with master and the auto-merge. A push to master by CI does not start a
+  new run (GitHub never triggers workflows from the workflow token); the merged commit is exactly the tree that was
+  checked, and CI marks it with the status "Lean proof check (verified before merge)" linking to that run.
 - **Cost:** every push uses CI minutes, which the private repository pays for. Push work branches when they matter,
   not after every small commit.
 

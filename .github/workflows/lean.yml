@@ -15,6 +15,7 @@ permissions:
   contents: write
   actions: write
   issues: write
+  statuses: write
 
 jobs:
   build:
@@ -87,6 +88,11 @@ jobs:
           base=$(git rev-parse origin/master)   # before the push updates origin/master
           if git push origin merge-candidate:master; then
             git push origin --delete "${GITHUB_REF_NAME}"
+            # the token push does not start a run on master: mark the merged commit as verified by this run
+            gh api -X POST "repos/${GITHUB_REPOSITORY}/statuses/$(git rev-parse merge-candidate)" \
+              -f state=success -f context="Lean proof check (verified before merge)" \
+              -f description="Built and checked as ${GITHUB_REF_NAME} merged into master" \
+              -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >/dev/null || true
             # a push by the workflow token does not trigger GitHub's "Closes #n" handling: close them here
             for n in $(git log --format=%B "$base"..merge-candidate \
                        | grep -oiE '(close[sd]?|fix(e[sd])?|resolve[sd]?) +#[0-9]+' | grep -oE '[0-9]+' | sort -u); do
