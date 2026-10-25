@@ -3,6 +3,28 @@
 Several agents (Codex instances and Claude sessions) work on this repository at the same time.
 These rules keep them from overwriting each other's work. Read them before doing anything.
 
+## 0. Work items live in GitHub Issues
+
+All planned work is tracked as GitHub Issues: **epics** (label `type: epic`), with **tasks** (`type: task`) as
+sub-issues. Labels give the area (`area: lean`, `area: docs`, `area: infra`, `area: research`, `area: compute`),
+the side (`side: lower`, `side: upper`), the owner (`owner: codex`, `owner: claude`) and the status
+(`status: in progress`, `status: blocked`, `status: needs decision`).
+
+- **Before starting:**
+  - Find the issue (`gh issue list`, `gh issue view <n>`). If none exists, create one with full context.
+  - Comment that you are starting, with your branch and worktree.
+  - Set the `owner:` and `status: in progress` labels.
+- **While working:**
+  - Reference the issue in commit bodies (`Refs #<n>`).
+  - Comment on the issue when you push a milestone or hit a blocker.
+  - Update the labels as things change.
+- **When delivering:**
+  - Put `Closes #<n>` in the body of the delivered commit. The CI auto-merge then closes the issue when it reaches
+    master.
+  - Tick the task in its epic.
+- **Attack plans and research ideas are issues too** (`area: research`), with the full reasoning and numbers. Do not
+  leave them only in a local file.
+
 ## 1. Ground rules
 
 - **Never commit on `master`**, locally or on GitHub, and never push to it. Only CI moves `master`, through the
