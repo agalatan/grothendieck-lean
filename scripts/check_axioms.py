@@ -10,7 +10,8 @@ Fails unless
 import re, sys
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
 NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",          # upper: head of the kernel
-          "Grothe.HaagerupPower.check._native.native_decide.ax_1_1",      # Haagerup route: finite residual, fourth power and weighted tail
+          "Grothe.Upper.comparison_check._native.native_decide.ax_1_1", # upper: selected-band masses and comparison assembly
+          "Grothe.HaagerupPower.check._native.native_decide.ax_1_1",      # Haagerup route: finite residual, power norm, inverse defect, seed and signed tail
           "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1",  # upper: phase cover φ² ≤ 3
           "Grothe.LowerAnalytic.capChords_check._native.native_decide.ax_1_1"}  # lower: chord nodes of the cap tables
 # lower: node caps of the certified rows, four ranges of nodes per row (Grothe/LowerAnalytic/CapRowKK.lean)
@@ -174,7 +175,6 @@ JOINT_RESPONSE = {
 }
 REQUIRED |= JOINT_RESPONSE
 POWER_HAAGERUP = {
-    'Grothe.HaagerupPower.R_telescope',
     'Grothe.HaagerupPower.check',
     'Grothe.HaagerupPower.composed_tail',
     'Grothe.HaagerupPower.degree_P',
@@ -185,10 +185,8 @@ POWER_HAAGERUP = {
     'Grothe.HaagerupPower.norm_P',
     'Grothe.HaagerupPower.norm_fourth',
     'Grothe.HaagerupPower.residual',
-    'Grothe.HaagerupPower.summable_R',
     'Grothe.HaagerupPower.upper',
     'Grothe.HaagerupPower.value_lt',
-    'Grothe.HaagerupPower.weighted_R_tail',
     'Grothe.Upper.PowerTail.compTerm_power_bound',
     'Grothe.Upper.PowerTail.eval_neg_one_le',
     'Grothe.Upper.PowerTail.mem_polyPowI',
@@ -202,6 +200,24 @@ POWER_HAAGERUP = {
     'Grothe.Upper.PowerTail.weighted_composition',
     'Grothe.Upper.PowerTail.weighted_tail_bound',
     'Grothe.haagerup_bound',
+    'Grothe.HaagerupPower.norm_defect',
+    'Grothe.HaagerupPower.norm_seed',
+    'Grothe.HaagerupPower.R_succ_le',
+    'Grothe.Upper.ResolventTail.l1_neg',
+    'Grothe.Upper.ResolventTail.l1_sub_le',
+    'Grothe.Upper.ResolventTail.l1_smul_le',
+    'Grothe.Upper.ResolventTail.inverse_defect_bound',
+    'Grothe.Upper.ResolventTail.geometric_difference',
+    'Grothe.Upper.ResolventTail.geometric_prefix_bound',
+    'Grothe.Upper.ResolventTail.decreasing_weights_bound',
+    'Grothe.Upper.ResolventTail.compTerm_geometric',
+    'Grothe.Upper.ResolventTail.seed_power_bound',
+    'Grothe.Upper.ResolventTail.compTerm_coeff_zero',
+    'Grothe.Upper.ResolventTail.composition_tail_bound',
+    'Grothe.Upper.ResolventTail.memB_neg',
+    'Grothe.Upper.ResolventTail.defect_of_check',
+    'Grothe.Upper.ResolventTail.seed_of_check',
+    'Grothe.Upper.ResolventTail.tail_numeric_of_check',
 }
 REQUIRED |= POWER_HAAGERUP
 # Coupled-image and semiconvex ingredients: every public fact is audited.

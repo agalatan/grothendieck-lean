@@ -24,9 +24,6 @@
  Classical.choice,
  Quot.sound,
  Grothe.HaagerupPower.check._native.native_decide.ax_1_1]
-'Grothe.HaagerupPower.summable_R' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Grothe.HaagerupPower.R_telescope' depends on axioms: [propext, Classical.choice, Quot.sound]
-'Grothe.HaagerupPower.weighted_R_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Grothe.HaagerupPower.composed_tail' depends on axioms: [propext,
  Classical.choice,
  Quot.sound,
@@ -53,3 +50,27 @@
  Classical.choice,
  Quot.sound,
  Grothe.HaagerupPower.check._native.native_decide.ax_1_1]
+'Grothe.HaagerupPower.norm_defect' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.HaagerupPower.check._native.native_decide.ax_1_1]
+'Grothe.HaagerupPower.norm_seed' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.HaagerupPower.check._native.native_decide.ax_1_1]
+'Grothe.HaagerupPower.R_succ_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.ResolventTail.l1_neg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.ResolventTail.l1_sub_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.ResolventTail.l1_smul_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.ResolventTail.inverse_defect_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.ResolventTail.geometric_difference' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.ResolventTail.geometric_prefix_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.ResolventTail.decreasing_weights_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.ResolventTail.compTerm_geometric' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.ResolventTail.seed_power_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.ResolventTail.compTerm_coeff_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.ResolventTail.composition_tail_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.ResolventTail.memB_neg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.ResolventTail.defect_of_check' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.ResolventTail.seed_of_check' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.ResolventTail.tail_numeric_of_check' depends on axioms: [propext, Classical.choice, Quot.sound]

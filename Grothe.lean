@@ -15,6 +15,7 @@ import Grothe.Upper.Disk
 import Grothe.Upper.Realise
 import Grothe.Upper.Compose
 import Grothe.Upper.Haagerup
+import Grothe.Upper.ResolventTail
 import Grothe.Haagerup.Gauss1D
 import Grothe.Haagerup.GaussG
 import Grothe.Haagerup.Euler

@@ -1,0 +1,4 @@
+PASS altered defect rejected after matching generated-source binding
+PASS altered tail rejected after matching generated-source binding
+PASS altered head rejected after matching generated-source binding
+PASS all negative numerical checks

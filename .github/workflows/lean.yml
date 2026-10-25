@@ -1,31 +1,48 @@
 name: Lean proof check
 
-# Runs on every pushed branch.
-# * master, work/*, codex/*, ...: build and checks only.
+# Runs on every pushed branch (mode "check", GitHub-hosted runner).
+# * master, claude/*, codex/*, ...: build and checks only.
 # * ready/<name>: the branch is merged into the CURRENT master, the MERGED tree is built and checked, and on
 #   success master is fast-forwarded to that merge (auto-merge). On failure master is untouched.
-#   See AGENTS.md, "Delivering work".
+# Heavy work runs on the droplet (self-hosted runner, labels: self-hosted, heavy), dispatched by mode:
+# * warm (on master, after every auto-merge): incremental build of Grothe + GrotheCaps in a persistent workspace,
+#   both axiom reports, then saves .lake/build as the shared build cache that every run restores.
+# * caps (on a ready/ branch whose caps stamp no longer matches): builds GrotheCaps for the merged tree, writes the
+#   stamp commit onto the ready branch and re-dispatches the check.
+# Cache policy: only "warm" runs on master write the cache; all other runs only read it (see AGENTS.md section 4).
 
 on:
   push:
     branches: ['**']
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "check (default), warm (master, droplet) or caps (ready/ branch, droplet)"
+        default: check
+        type: choice
+        options: [check, warm, caps]
 
 permissions:
   contents: write
   actions: write
+  issues: write
+  statuses: write
 
 jobs:
   build:
+    if: github.event_name == 'push' || inputs.mode == 'check' || inputs.mode == ''
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     # No concurrency group: GitHub keeps only ONE pending run per group and cancels older pending ones, which
     # silently dropped deliveries. ready/ runs build in parallel; the first green one moves master, and a run whose
-    # final push is rejected (master moved) re-dispatches itself, i.e. re-merges with the new master and rebuilds.
+    # final push is rejected because master moved re-dispatches itself.
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          # MERGE_TOKEN (optional repository secret, fine-grained PAT with contents + workflows write) lets the
+          # auto-merge push deliveries that change .github/workflows; the default token is refused for those
+          token: ${{ secrets.MERGE_TOKEN || github.token }}
 
       - name: Merge the ready branch into the current master
         if: startsWith(github.ref_name, 'ready/')
@@ -56,11 +73,20 @@ jobs:
           if echo "$changed" | grep -qE "$LEAN_PATHS"; then echo "lean=true" >> "$GITHUB_OUTPUT"
           else echo "no Lean-relevant file changed: skipping the build and the checks"; echo "lean=false" >> "$GITHUB_OUTPUT"; fi
 
+      - name: Restore the shared build cache (written only by master warm runs)
+        if: steps.scope.outputs.lean == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: .lake/build
+          key: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+
       - name: Build the Lean development (Mathlib from cache)
         if: steps.scope.outputs.lean == 'true'
         uses: leanprover/lean-action@v1
         with:
           use-mathlib-cache: true
+          use-github-cache: false     # no per-branch cache entries: they evict each other in the 10 GB quota
           build-args: "--log-level=warning"
 
       - name: No sorry, axiom or unchecked code anywhere
@@ -74,19 +100,120 @@ jobs:
           lake env lean scratch/Axioms.lean | tee axioms.txt
           python3 scripts/check_axioms.py < axioms.txt
 
-      - name: Node caps (separate target GrotheCaps, verified off CI) unchanged since verification
+      - name: Node caps (separate target GrotheCaps) unchanged since verification
         if: steps.scope.outputs.lean == 'true'
-        run: python3 scripts/caps_stamp.py --check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if python3 scripts/caps_stamp.py --check; then exit 0; fi
+          if [[ "${GITHUB_REF_NAME}" == ready/* ]]; then
+            echo "::error::The caps sources changed. Dispatched the GrotheCaps rebuild on the droplet (mode caps); it adds"
+            echo "::error::the new stamp to ${GITHUB_REF_NAME} and re-dispatches this check. Nothing to do by hand."
+            gh workflow run lean.yml --ref "${GITHUB_REF_NAME}" -f mode=caps
+          fi
+          exit 1
 
       - name: Auto-merge into master (fast-forward to the checked merge), or retry if master moved
         if: startsWith(github.ref_name, 'ready/')
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          base=$(git rev-parse origin/master)   # before the push updates origin/master
           if git push origin merge-candidate:master; then
             git push origin --delete "${GITHUB_REF_NAME}"
+            # the token push does not start a run on master: mark the merged commit as verified by this run
+            gh api -X POST "repos/${GITHUB_REPOSITORY}/statuses/$(git rev-parse merge-candidate)" \
+              -f state=success -f context="Lean proof check (verified before merge)" \
+              -f description="Built and checked as ${GITHUB_REF_NAME} merged into master" \
+              -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >/dev/null || true
+            # a push by the workflow token does not trigger GitHub's "Closes #n" handling: close them here
+            for n in $(git log --format=%B "$base"..merge-candidate \
+                       | grep -oiE '(close[sd]?|fix(e[sd])?|resolve[sd]?) +#[0-9]+' | grep -oE '[0-9]+' | sort -u); do
+              gh issue close "$n" --comment "Closed by ${GITHUB_REF_NAME} (CI auto-merge, $(git rev-parse --short merge-candidate))" || true
+            done
+            # refresh the shared build cache from the new master on the droplet
+            gh workflow run lean.yml --ref master -f mode=warm || true
           else
-            echo "master moved during the build: re-dispatching this ready branch against the new master"
-            gh workflow run lean.yml --ref "${GITHUB_REF_NAME}"
+            git fetch -q origin master
+            if [ "$(git rev-parse origin/master)" != "$base" ]; then
+              echo "master moved during the build: re-dispatching this ready branch against the new master"
+              gh workflow run lean.yml --ref "${GITHUB_REF_NAME}"
+            elif git diff --name-only "$base" merge-candidate | grep -q '^\.github/workflows/'; then
+              echo "::error::The push was refused because this delivery changes .github/workflows and the token may not"
+              echo "::error::update workflows. Add the MERGE_TOKEN secret (see AGENTS.md section 4) or merge it with a PR."
+            else
+              echo "::error::The push to master was refused for another reason (see above). Not retrying."
+            fi
             exit 1
           fi
+
+  heavy:
+    if: github.event_name == 'workflow_dispatch' && (inputs.mode == 'warm' || inputs.mode == 'caps')
+    runs-on: [self-hosted, heavy]
+    timeout-minutes: 4320
+    # one heavy job at a time on the droplet; a newer pending warm run supersedes an older one
+    concurrency:
+      group: droplet-heavy
+      cancel-in-progress: false
+    env:
+      SHARED_PACKAGES: /home/agalatan/grothe-caps/.lake/packages   # shared Mathlib packages on the droplet
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          clean: false                  # keep the persistent .lake between runs (incremental builds)
+
+      - name: Merge the ready branch into the current master (caps mode)
+        if: inputs.mode == 'caps'
+        run: |
+          git config user.name "grothe-ci"
+          git config user.email "grothe-ci@users.noreply.github.com"
+          git fetch origin master
+          git checkout -B merge-candidate origin/master
+          git merge --no-ff --no-edit "origin/${GITHUB_REF_NAME}" -m "Merge ${GITHUB_REF_NAME} (caps check)"
+
+      - name: Lean toolchain and shared Mathlib packages
+        run: |
+          export PATH="$HOME/.elan/bin:$PATH"
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          mkdir -p .lake
+          if [ ! -e .lake/packages ]; then ln -s "$SHARED_PACKAGES" .lake/packages; fi
+          lake --version
+          df -h . | tail -1
+
+      - name: Restore the shared build cache if the workspace is empty
+        if: hashFiles('.lake/build/lib/lean/Grothe.olean') == ''
+        uses: actions/cache/restore@v4
+        with:
+          path: .lake/build
+          key: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+
+      - name: Build Grothe and GrotheCaps (incremental; hours if the caps sources changed)
+        run: lake build Grothe GrotheCaps --log-level=warning
+
+      - name: Axiom reports (default target and caps target)
+        run: |
+          lake env lean scratch/Axioms.lean > axioms.txt; python3 scripts/check_axioms.py < axioms.txt
+          lake env lean scratch/AxiomsCaps.lean > axioms-caps.txt; python3 scripts/check_axioms.py --caps < axioms-caps.txt
+
+      - name: Save the shared build cache (master only)
+        if: inputs.mode == 'warm' && github.ref_name == 'master'
+        uses: actions/cache/save@v4
+        with:
+          path: .lake/build
+          key: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+
+      - name: Stamp the caps on the ready branch and re-dispatch its check (caps mode)
+        if: inputs.mode == 'caps'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/caps_stamp.py --write "droplet runner, $(date -u +%F), run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          cp docs/CAPS_VERIFIED.txt /tmp/caps-stamp-$$.txt
+          git checkout -B stamp "origin/${GITHUB_REF_NAME}"
+          cp /tmp/caps-stamp-$$.txt docs/CAPS_VERIFIED.txt; rm -f /tmp/caps-stamp-$$.txt
+          git add docs/CAPS_VERIFIED.txt
+          git commit -m "[ci] Caps: verification stamp of GrotheCaps for ${GITHUB_REF_NAME} merged into master"
+          git push origin "stamp:${GITHUB_REF_NAME}"
+          gh workflow run lean.yml --ref "${GITHUB_REF_NAME}"

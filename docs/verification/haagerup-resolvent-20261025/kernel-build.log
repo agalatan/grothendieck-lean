@@ -1,0 +1,18 @@
+info: abel: no previous manifest, creating one from scratch
+info: toolchain not updated; already up-to-date
+✔ [2/16] Built GrotheKernel.Basic (904ms)
+✔ [3/16] Built GrotheKernel.Basic:c.o (394ms)
+✔ [4/16] Built GrotheKernel.Basic:dynlib (238ms)
+✔ [5/16] Built GrotheKernel.Haagerup (789ms)
+✔ [6/16] Built GrotheKernel.Haagerup:c.o (311ms)
+✔ [7/16] Built GrotheKernel.Haagerup:dynlib (109ms)
+✔ [8/16] Built GrotheKernel.PowerTail (588ms)
+✔ [9/16] Built GrotheKernel.PowerTail:c.o (231ms)
+✔ [10/16] Built GrotheKernel.PowerTail:dynlib (70ms)
+✔ [11/16] Built GrotheKernel.ResolventTail (510ms)
+✔ [12/16] Built GrotheKernel.ResolventTail:c.o (302ms)
+✔ [13/16] Built GrotheKernel.ResolventTail:dynlib (72ms)
+✔ [14/16] Built GrotheKernel (397ms)
+✔ [15/16] Built GrotheKernel:c.o (156ms)
+✔ [16/16] Built GrotheKernel:shared (121ms)
+Build completed successfully (16 jobs).

@@ -121,7 +121,7 @@ sequence and a tail allowance. A fictitious law admitted by a relaxation does no
 
 ## 1. Baseline and quantitative objectives
 
-The combined development after integration of master `40db77d` has
+The combined development after integration of master `4e9f32d` has
 
 \[
  1.401697049825<K_G^{\mathbb C}<1.404598149218.
@@ -129,7 +129,7 @@ The combined development after integration of master `40db77d` has
 
 The interval width is `0.002901099393`. Both sharp bounds have the numerical
 input hypotheses documented in the repository. The separate fully formal upper
-bound is \(K_G^{\mathbb C}\le1.404951\).
+bound is \(K_G^{\mathbb C}\le1.404909543\).
 
 The current lower witness is \(P_{1,0}-(149/200)P_{2,1}\), with cap
 \(B_0=0.713420920822\), checked on 10,762 boxes. The default target retains `NodeCaps`, the numerical caps

@@ -1,20 +1,22 @@
 {
-  "status": "TARGETED_BUILD_RECORD_LOST_REQUIRES_FULL_CI",
-  "scope": "Frozen pre-weighted-master snapshot. This is not a successful Lean build record.",
-  "fresh_upper_count": 17,
-  "fresh_lower_count": 10,
-  "expected_axiom_report_count": 47,
-  "actual_axiom_report_available": false,
-  "completed_module_results_recoverable": false,
-  "lean_result": "Not established by these records; requires the full branch CI on the combined tree.",
-  "B": "356710460411/500000000000",
-  "L": "56067881993/40000000000",
-  "boxes": 10762,
-  "exact_data_checks": {
-    "export": "PASS; retained exact report with all source and generated-Lean hashes freshly matched",
-    "complete_partition_and_recipes": "PASS; retained exact replay with cover/ledger hashes freshly matched",
-    "negative_controls": "PASS; eight controls freshly rejected during recovery"
+  "actual_axiom_report_available": true,
+  "actual_axiom_report_count": 451,
+  "ci_receipt": "CI.json",
+  "ci_receipt_sha256": "713ebc63bda9e0acd743693faca587a1059ab8ce3e9fff4ec3b33dceef563c38",
+  "combined_current_root_ci": "PENDING_SEPARATE_CI",
+  "endpoint": {
+    "bound": "500000000000000000/355973699864771491",
+    "premises": "ComparisonInputs, energy table accuracy and Hardy input remain explicit.",
+    "strict_headline": "1.404598149218"
   },
-  "build_gap": "BUILD_GAP.json",
-  "build_gap_sha256": "d20b9b272962a6f2af06f39ab64fc6d5ddaef66370a1bd4889ec1655095ffe53"
+  "historical_gap": "BUILD_GAP.json",
+  "historical_gap_sha256": "d20b9b272962a6f2af06f39ab64fc6d5ddaef66370a1bd4889ec1655095ffe53",
+  "historical_targeted_status": "TARGETED_BUILD_RECORD_LOST_REQUIRES_FULL_CI",
+  "lean_result": "Successful full default-target CI; current endpoint source closure separately guarded against the tested source. The newly merged current root requires separate CI.",
+  "run_id": 40234828241,
+  "run_url": "https://github.com/agalatan/grothendieck-lean/actions/runs/40234828241",
+  "scope": "Successful full default-target CI at the tested commit; current upper endpoint import closure and certificate inputs guarded separately below.",
+  "source_commit": "5f46810672e97231883db052b614c966399512b1",
+  "status": "PASS_FULL_CI_FOR_PINNED_ENDPOINT_SCOPE",
+  "targeted_logs_recovered": false
 }

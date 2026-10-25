@@ -19,8 +19,8 @@ the side (`side: lower`, `side: upper`), the owner (`owner: codex`, `owner: clau
   - Comment on the issue when you push a milestone or hit a blocker.
   - Update the labels as things change.
 - **When delivering:**
-  - Put `Closes #<n>` in the body of the delivered commit. The CI auto-merge then closes the issue when it reaches
-    master.
+  - Put `Closes #<n>` in the body of a commit of the delivery. The CI auto-merge closes the issue itself, with a comment
+    naming the delivery, once master moves (GitHub's own keyword handling does not fire for the workflow's push).
   - Tick the task in its epic.
 - **Attack plans and research ideas are issues too** (`area: research`), with the full reasoning and numbers. Do not
   leave them only in a local file.
@@ -124,7 +124,25 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
   outside `Grothe/`, `GrotheKernel/`, the root `.lean` files, `lakefile.toml`, `lake-manifest.json`, `lean-toolchain`,
   `scratch/Axioms.lean` (the CI axiom report; other `scratch/` files are not built by CI), `scripts/check_axioms.py`, `scripts/caps_stamp.py` and `.github/workflows/`, the build and the checks are
   skipped and the job succeeds. Documentation-only deliveries still auto-merge.
-- **What differs for `ready/<topic>`:** the merge with master and the auto-merge.
+- **What differs for `ready/<topic>`:** the merge with master and the auto-merge. A push to master by CI does not start a
+  new run (GitHub never triggers workflows from the workflow token); the merged commit is exactly the tree that was
+  checked, and CI marks it with the status "Lean proof check (verified before merge)" linking to that run.
+- **Deliveries that change `.github/workflows/`** cannot be pushed to master with the default workflow token (GitHub
+  refuses it). They auto-merge only if the repository secret `MERGE_TOKEN` exists (a fine-grained personal access token
+  for this repository with *Contents: read and write* and *Workflows: read and write*); otherwise open a pull request
+  and let the user merge it. CI says so explicitly and does not retry.
+- **Build cache (one, owned by master).** All runs restore `.lake/build` from the Actions cache written by the last
+  **warm** run on master; no other run saves a cache (per-branch entries evicted each other in the 10 GB quota). After
+  every auto-merge CI dispatches a warm run on the droplet's self-hosted runner (labels `self-hosted, heavy`): an
+  incremental `lake build Grothe GrotheCaps` in a persistent workspace, both axiom reports, then the cache save. So
+  GitHub-hosted runs start from master's latest build *including* the verified caps modules. Trust: a cached
+  `native_decide` result is not re-executed; only our own runner on master writes the cache, and Lake reuses a file
+  only if its source, dependency and toolchain hashes match. The caps stamp remains an independent check.
+- **Caps changes.** If a `ready/` delivery changes a file in the caps closure, its stamp check fails and CI dispatches a
+  **caps** run on the droplet: it builds `GrotheCaps` for the merged tree (hours), commits the new stamp onto the ready
+  branch and re-dispatches the check. Nothing to do by hand; just wait.
+- **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for stop/remove).
+  It shares Mathlib with the other droplet work via `~/grothe-caps/.lake/packages` — do not delete that directory.
 - **Cost:** every push uses CI minutes, which the private repository pays for. Push work branches when they matter,
   not after every small commit.
 
