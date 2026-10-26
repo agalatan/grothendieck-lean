@@ -15,17 +15,17 @@ The user subsequently requested an active 15-minute continuation timer,
 `finish-rows-12-15-caps-and-cache`, and authorized the droplet runner cache
 campaign. Read the latest human scope in `handoff/caps-centre/STATE.md`.
 
-The snapshot has 100 completed centres (15 historical and 85 new), all with zero
+The snapshot has 109 completed centres (15 historical and 94 new), all with zero
 best residual. This is partial coverage, not the final remaining maximum.
 `cover-baseline-codex-15b7.json` records an exact replay of all 10,762 boxes at
 the unchanged padding and cover, including the approximately 4.50e-14 margin.
 All 38 centres stored on 1600×256 are covered; the larger-grid phase continues.
 `rest-inventory-codex-15b7.json` separately inventories the 358 localised nodes
 and 900 unverified anchored candidates needed for the full remaining row caps.
-This checkpoint was captured from a live worker. Its recorded running status,
-PIDs and null exit code are historical observations; only completed evidence is
-backed up. Inspect actual processes before resuming, and do not infer that the
-job stopped or finished from the committed snapshot.
+This checkpoint was captured after the original local worker paused gracefully
+(exit75, no surviving child/controller), to prepare the user-authorized batching
+speedup. It is still partial coverage. Inspect actual processes and the current
+handoff before resuming; a historical pause does not rule out a new remote job.
 
 ## Audit and save a live checkpoint
 
@@ -41,7 +41,47 @@ Review the metadata's file list before staging it. The tool preserves the full
 observed progress but selects artifacts only from completed accepted centres.
 It neither stops the worker nor marks a build cache verified.
 
-## Resume
+## Portable research speedup
+
+The human requested faster processing. The portable configuration at
+`portable/Codex15b7Portable/portable-config.json` preserves all109 completed
+records and prepares249 remaining centres with relative output paths. Its input
+checkpoint is the immutable
+`checkpoints/centre-codex-15b7-before-portable-109.json`; do not overwrite that file.
+Both stored and finer-grid modules regenerate byte for byte through
+`tools/caps_centre_portable.py`. Legacy absolute-path scratch sources are retained
+for hash validation only, never rebuilt remotely. No caps, padding or cover changed.
+
+The numerical research prefetcher is `tools/caps_centre_batch.py`. It holds the
+same campaign lock and starts one Lake invocation at a time, initially with at
+most two independent export modules. It guards memory, disk and foreign runner
+activity, uses separate owned journals, preserves partial output, and validates
+exports and exact solutions individually. It does not verify native facts, declare
+a global maximum, or publish a cache. The first remote run is a two-target export
+pilot; inspect its actual concurrency, runtime, RSS and outputs before the full run.
+
+Read current `handoff/caps-centre/STATE.md` and `SPEEDUP.md` for actual remote
+folder, source commit, PID and phase. Never resume the old local worker while a
+remote prefetch job survives. After all copied results validate and the prefetcher
+is stopped, the unchanged campaign driver can replay/repair the portable manifest
+using a NEW progress path and run directory; do not mutate the old fingerprint:
+
+```sh
+python3 tools/caps_centre_campaign.py run --agent-id codex-15b7 \
+  --manifest data/caps-m/plan/portable/Codex15b7Portable/manifest.json \
+  --progress data/caps-m/plan/centre-campaign-portable-codex-15b7.json \
+  --run-dir handoff/caps-centre/campaign-portable \
+  --stop-file handoff/caps-centre/STOP_REQUESTED_PORTABLE
+```
+
+Start long jobs in their own process groups. The full campaign, including complete
+interval repair replay, must account for all358 centres before a final count or
+maximum is reported. Final Lean verification/cache production remains CI-only.
+
+## Legacy local resume
+
+Use this only if the portable transition has deliberately been abandoned and no
+remote job or portable campaign is active; it would otherwise duplicate research.
 
 1. Read current `AGENTS.md`. Reuse the existing worktree and its private build.
    For a fresh checkout, use the original path above (export-source hashes include

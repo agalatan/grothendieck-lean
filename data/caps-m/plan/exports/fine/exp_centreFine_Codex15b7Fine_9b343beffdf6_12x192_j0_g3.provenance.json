@@ -1,0 +1,8 @@
+{
+  "fingerprint": "9b343beffdf674b96fb8216b1bb3f9ef7a7eb3d6afd0c5f0b08a9e0c67e3ee1b",
+  "grid": 3,
+  "key": "12:192:0",
+  "module_source_sha256": "f163923d43ad6d8813a205df5b63304b6855c5a43e7dcf7db11874c965b69cf0",
+  "node_sha256": "02118252ef6b7d9a67266ae815eede2c49bc2aa7df44b3b91c4d97d595eb1c7c",
+  "piece_sha256": "d536648f51a2fc933747e7292d03f7a7792f1f081e6442f72740b89a82a62adf"
+}
