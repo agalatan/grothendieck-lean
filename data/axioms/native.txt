@@ -83,5 +83,10 @@ Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1
 Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1
 Grothe.ScalarTailRefinement.power_check._native.native_decide.ax_1_1
 Grothe.Upper.comparison_check._native.native_decide.ax_1_1
-Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1
+Grothe.UpperChaos.phi_cover_check_0._native.native_decide.ax_1_1
+Grothe.UpperChaos.phi_cover_check_1._native.native_decide.ax_1_1
+Grothe.UpperChaos.phi_cover_check_2._native.native_decide.ax_1_1
+Grothe.UpperChaos.phi_cover_check_3._native.native_decide.ax_1_1
+Grothe.UpperChaos.phi_cover_check_4._native.native_decide.ax_1_1
+Grothe.UpperChaos.phi_cover_check_5._native.native_decide.ax_1_1
 Grothe.head_check._native.native_decide.ax_1_1
