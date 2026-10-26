@@ -235,6 +235,7 @@ import Grothe.UpperChaos.Rounder
 import Grothe.UpperChaos.SchurBound
 import Grothe.UpperChaos.SchurIntegrability
 import Grothe.UpperChaos.SchurKernel
+import Grothe.UpperChaos.SchurMain
 import Grothe.UpperChaos.SchurTest
 import Grothe.UpperChaos.Structural
 import Grothe.UpperChaos.Sym2R
