@@ -3,13 +3,15 @@
 # optional sharding. See AGENTS.md section 11.
 #
 #   scripts/cloud.sh [options] lean   <Module> [<Module> ...]   build Lean modules (e.g. native_decide facts)
+# At most 2 CI jobs per agent at a time (AGENTS.md section 8): your running cloud shards plus the checks of --ref;
+# set AGENT_ID so the limit is counted for you.
 #   scripts/cloud.sh [options] check                            the full proof check of the branch, no merge
 #   scripts/cloud.sh [options] script <path> [args ...]         a committed .py / .sh / .cpp
 #   scripts/cloud.sh fetch <run-id> [dir]                       download the results of an earlier run
 #   scripts/cloud.sh list                                       recent cloud runs
 # Options:
 #   --ref <branch>     the branch to run (default: the current branch; it must be pushed and up to date)
-#   --shards <N>       parallel jobs (1-32, default 1): lean deals modules round-robin; scripts get SHARD/NSHARDS
+#   --shards <N>       parallel jobs (default 1; at most 2 minus your running CI jobs): lean deals modules round-robin; scripts get SHARD/NSHARDS
 #   --runner droplet   script jobs only: the droplet (more memory, no 6-hour limit), one job at a time
 #   --timeout <min>    minutes per shard (default 120)
 #   --no-wait          print the run and return immediately (then: scripts/cloud.sh fetch <run-id>)
@@ -85,7 +87,12 @@ if [ "$kind" = script ]; then
   git -C "$TOP" cat-file -e "origin/$ref:$path" 2>/dev/null || die "$path is not committed on origin/$ref"
 fi
 
-id="${AGENT_ID:-$(whoami)}-$(date -u +%Y%m%d%H%M%S)-$RANDOM"
+# at most 2 CI jobs per agent at a time (AGENTS.md section 8): your cloud shards and the checks of this branch
+agent="${AGENT_ID:-$(whoami)}"
+if ! CI_NEED="$shards" "$TOP/scripts/ci_active.sh" "$agent" "$ref" "ready/${ref#*/}"; then
+  die "this job ($shards shard(s)) would exceed the limit of 2 CI jobs per agent; wait for one to finish (AGENT_ID=$agent)"
+fi
+id="$agent-$(date -u +%Y%m%d%H%M%S)-$RANDOM"
 gh workflow run cloud.yml --repo "$REPO" --ref "$ref" -f id="$id" -f kind="$kind" -f targets="$targets" \
   -f shards="$shards" -f runner="$runner" -f timeout="$timeout" >/dev/null
 # find the run by its unique id (it appears within a few seconds)

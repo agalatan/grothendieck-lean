@@ -4,7 +4,7 @@ Several agents (Codex instances and Claude sessions) work on this repository at 
 machines (the user's laptop and the droplet). These rules keep them from overwriting each other's work. Read all of
 them before doing anything.
 
-**The five rules that matter most:**
+**The six rules that matter most:**
 1. Never commit or push to `master`. Work in your own worktree and branch; deliver by pushing `ready/<agent>-<topic>`
    (§7). Only CI moves `master`. **The delivery check is the test:** do not check the same tree beforehand (no
    cloud check, droplet or full local build, no extra branch push); if it fails, fix and push again.
@@ -13,6 +13,8 @@ them before doing anything.
    run in CI (§5, §8).
 4. Sign everything with your agent ID (§2) and clean up after yourself (§14).
 5. Never stop, delete or overwrite what another agent started or owns. Ask the user.
+6. **At most 2 CI jobs per agent at a time** (proof checks of your branches and cloud shards, §8). Check with
+   `scripts/ci_active.sh <agent-id> <your branches>`.
 
 ## 1. Work items live in GitHub Issues
 
@@ -210,8 +212,9 @@ miss only makes the run take longer (it stays "pending"). The workflow runs on e
 
 Also:
 - **Superseded runs are cancelled automatically:** a new push to a branch cancels that branch's older GitHub-hosted
-  check (one concurrency group per branch). Droplet checks are never cancelled (a killed build leaves orphaned
-  processes); they queue on the single runner.
+  check (one concurrency group per branch). Master's checks are never cancelled: each master commit gets its own
+  check. Droplet checks are never cancelled either (a killed build leaves orphaned processes); they queue on the
+  single runner.
 - **Merged branches are cleaned automatically** (`.github/workflows/cancel-merged.yml`): when a pull request is merged
   or a branch is deleted, its running checks are cancelled and its build caches deleted. Merged pull-request branches
   are deleted automatically (repository setting).
@@ -220,6 +223,13 @@ Also:
 - **Force the droplet** for a pushed branch: `gh workflow run lean.yml --ref <branch> -f mode=caps`.
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for
   stop/remove). It shares Mathlib with other droplet work through `~/grothe-caps/.lake/packages`; never delete that.
+- **At most 2 CI jobs per agent at a time.** An agent (one agent ID) may have at most two jobs queued or running in
+  GitHub Actions: the proof checks of its own branches (work branches and `ready/` deliveries) and its cloud jobs,
+  each cloud shard counting as one. Before you push a branch or start a cloud job, run
+  `scripts/ci_active.sh <agent-id> <your branches...>`: it lists your active jobs and exits 1 when there is no room.
+  `scripts/cloud.sh` enforces the limit for cloud jobs (set `AGENT_ID`). Master's own check (after your delivery
+  merges) does not count. If you are at the limit, wait for a job to finish; a re-push of the same branch replaces
+  its running check and does not add one.
 - **Cost:** the repository is private, so CI minutes are billed. Push work branches when it matters, not after every
   small commit.
 
@@ -260,9 +270,9 @@ a time). Every job runs a **pushed** commit, so it is reproducible, and its resu
 
 ```sh
 scripts/cloud.sh lean Grothe.UpperChaos.HardyArcPart0 Grothe.UpperChaos.HardyArcPart1   # build modules
-scripts/cloud.sh --shards 4 lean M0 M1 M2 M3                # one module per parallel job (e.g. native_decide facts)
+scripts/cloud.sh --shards 2 lean M0 M1 M2 M3                # modules dealt over 2 parallel jobs (e.g. native_decide facts)
 scripts/cloud.sh check                                      # the full proof check of the branch, without merging
-scripts/cloud.sh --shards 8 script tools/sweep.py --grid 64 # a committed .py/.sh/.cpp, 8 shards (SHARD, NSHARDS)
+scripts/cloud.sh --shards 2 script tools/sweep.py --grid 64 # a committed .py/.sh/.cpp, 2 shards (SHARD, NSHARDS)
 scripts/cloud.sh --runner droplet script tools/big.py       # script jobs needing > 15 GB or > 6 h
 scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; download results later
 ```
@@ -272,7 +282,7 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   `cloud/**`. Delete it when done (§14).
 - **Lean jobs** (`lean`, `check`) run on GitHub-hosted runners (measured: 4 vCPUs, AMD EPYC, 15 GB RAM, 85 GB free
   disk; at most 6 hours per job) and start from the master cache, so only what your branch changes is built. `lean`
-  deals the modules round-robin over the shards: split long `native_decide` checks into separate modules and run them
+  deals the modules round-robin over the shards (at most 2 at a time, the per-agent limit of §8): split long `native_decide` checks into separate modules and run them
   in parallel. `check` needs a verified cache for the branch's node caps; if they changed, push the branch instead
   (§8).
 - **Script jobs** run a script committed in the branch (never an inline command): `.py` with `python3` (packages in

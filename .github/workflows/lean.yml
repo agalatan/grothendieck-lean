@@ -108,12 +108,13 @@ jobs:
     needs: route
     runs-on: ${{ fromJSON(needs.route.outputs.runs_on) }}
     timeout-minutes: ${{ needs.route.outputs.droplet == 'true' && 4320 || 360 }}
-    # GitHub-hosted: one group PER BRANCH, cancel-in-progress (a new push supersedes the older check). The droplet has
-    # one runner, so its jobs queue by themselves; they are never cancelled by a newer push (a killed build leaves
-    # orphaned lean processes), hence a group of their own.
+    # Branches (GitHub-hosted): one group PER BRANCH, cancel-in-progress (a new push supersedes the older check).
+    # Master: never cancelled; every master commit gets its own check (a cancelled run marks its commit with a cross,
+    # and a long first build would be lost), so its group is per commit. The droplet has one runner, so its jobs queue
+    # by themselves and are never cancelled (a killed build leaves orphaned lean processes).
     concurrency:
-      group: ${{ needs.route.outputs.droplet == 'true' && format('droplet-{0}', github.run_id) || format('check-{0}', github.ref) }}
-      cancel-in-progress: ${{ needs.route.outputs.droplet != 'true' }}
+      group: ${{ needs.route.outputs.droplet == 'true' && format('droplet-{0}', github.run_id) || (github.ref_name == 'master' && format('check-master-{0}', github.sha) || format('check-{0}', github.ref)) }}
+      cancel-in-progress: ${{ needs.route.outputs.droplet != 'true' && github.ref_name != 'master' }}
     env:
       LEAN: ${{ needs.route.outputs.lean }}
       DROPLET: ${{ needs.route.outputs.droplet }}
