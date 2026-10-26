@@ -224,7 +224,7 @@ def arcLenUp (lo hi : Int) : Int :=
 def cover (j rho : Ival) (dat : RData) (neg : Bool) (w tol : Int) : Nat → Int → Int → Option Int
   | depth, lo, hi =>
     let attempt :=
-      if hi - lo ≤ w then
+      if hi - lo ≤ w && posI (addI (intI 1) (mulI ⟨lo, hi⟩ ⟨lo, hi⟩)) then
         match schurValue j (Rbox dat (circleBox rho neg ⟨lo, hi⟩)) with
         | some v =>
           -- accept when the bound exceeds the midpoint value by at most `tol` (scaled), or at the last level
@@ -259,5 +259,21 @@ def circleTotal (j rho : Ival) (dat : RData) (w tol : Int) (k depth : Nat) : Opt
   match go false, go true with
   | some a, some b => some (a + b)
   | _, _ => none
+
+/-! ### The tube gates on a larger circle (for the region of holomorphy) -/
+
+/-- `I ± Re R ≻ 0` on a box of `R`. -/
+def tubeOK (R : SC) : Bool :=
+  let reR := SC.re R
+  let one : SR := ⟨intI 1, zeroI, intI 1⟩
+  (SR.add one (SR.smul (negI (intI 1)) reR)).PD && (SR.add one reR).PD
+
+/-- The tube gates on all pieces of `[lo, hi]` (scaled `s`), bisecting at most `depth` times. -/
+def tubeCover (rho : Ival) (dat : RData) (neg : Bool) : Nat → Int → Int → Bool
+  | depth, lo, hi =>
+    (posI (addI (intI 1) (mulI ⟨lo, hi⟩ ⟨lo, hi⟩)) && tubeOK (Rbox dat (circleBox rho neg ⟨lo, hi⟩))) ||
+      match depth with
+      | 0 => false
+      | d + 1 => tubeCover rho dat neg d lo ((lo + hi) / 2) && tubeCover rho dat neg d ((lo + hi) / 2) hi
 
 end GrotheKernel.HardyArc
