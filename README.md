@@ -194,7 +194,8 @@ The native head computation remains part of the proof.
 
 **Fully formal unconditional upper bound** — `Grothe.haagerup_bound : IsGrothendieckBound (1404909543/1000000000)`
 (`Grothe/Haagerup/Power.lean`, with the finite check in `Grothe/Haagerup/PowerCheck.lean`), with **no hypothesis**.
-Lean proves Haagerup's identity for the Gaussian phase rounding,
+Lean derives Haagerup's identity from the complex Hermite basis and Mehler formula,
+with the Gaussian phase coefficients evaluated by a finite Pochhammer identity:
 E[conj(phase⟨g,x⟩)·phase⟨g,y⟩] = Σ_k (π/4)(1/2)_k²/(k!(k+1)!) z|z|^{2k} with z = ⟨x,y⟩, and combines it
 with a degree-29 preprocessor and 1,024 exact series terms. A finite polynomial approximate inverse
 retains cancellation across the complete infinite suffix. Its inverse defect and a short combined

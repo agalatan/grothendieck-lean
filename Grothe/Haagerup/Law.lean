@@ -1,4 +1,4 @@
-import Grothe.Haagerup.GaussG
+import Grothe.Haagerup.Phase
 
 /-!
 # Four orthonormal coordinates of the standard Gaussian
