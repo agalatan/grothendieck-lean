@@ -7,6 +7,7 @@ import itertools
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -16,6 +17,9 @@ ROOT = SCRIPT.parent.parent
 SPEC = importlib.util.spec_from_file_location("check_axioms", SCRIPT)
 CHECKER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(CHECKER)
+GENERATOR_SPEC = importlib.util.spec_from_file_location("gen_root_imports", ROOT / "tools/gen_root_imports.py")
+GENERATOR = importlib.util.module_from_spec(GENERATOR_SPEC)
+GENERATOR_SPEC.loader.exec_module(GENERATOR)
 MODES = ("caps", "responses", "response-geometry", "haagerup-power", "upper-comparison",
          "phase-response", "research", "hardy-budget", "refined-cover", "law-nodes")
 
@@ -76,6 +80,42 @@ class CheckAxiomsTests(unittest.TestCase):
                 self.assertTrue(expected <= CHECKER.REQUIRED)
                 self.assertEqual(native, set() if mode == "research" else CHECKER.NATIVE)
 
+    def test_data_registries_preserve_topic_modes_and_local_native_facts(self):
+        self.assertEqual(set(CHECKER.MODES), set(MODES))
+        for mode in MODES:
+            with self.subTest(mode=mode):
+                path = ROOT / "data/axioms/modes" / f"{mode}.required.txt"
+                self.assertEqual(CHECKER.names(path), CHECKER.audit_policy(mode)[0])
+        research_native = ROOT / "data/axioms/modes/research.native.txt"
+        self.assertTrue(research_native.is_file())
+        self.assertEqual(CHECKER.names(research_native), set())
+        local_native = {f"Grothe.Research.RefinedLowerCheck.{name}._native.native_decide.ax_1_1"
+                        for name in ("certRefinedBoxes0", "certRefinedBoxes1", "certRefinedBoxes2",
+                                     "certRefinedBoxes3", "certRefinedPartition")}
+        local_native.add("Grothe.Research.LawNodeCheck.certLawNodes._native.native_decide.ax_1_1")
+        self.assertTrue(local_native <= CHECKER.NATIVE)
+
+    def test_mode_lists_are_sorted_checked_and_normalized(self):
+        mode_files = {str(path.relative_to(ROOT))
+                      for path in (ROOT / "data/axioms/modes").glob("*.txt")}
+        self.assertTrue(mode_files <= set(GENERATOR.SORTED_LISTS))
+        self.assertEqual(GENERATOR.list_problems(), [])
+        with tempfile.TemporaryDirectory() as directory:
+            relative = "data/axioms/modes/research.required.txt"
+            path = Path(directory) / relative
+            path.parent.mkdir(parents=True)
+            path.write_text("# focused registry\nTest.z\nTest.a\nTest.z\n")
+            with patch.object(GENERATOR, "ROOT", directory), \
+                    patch.object(GENERATOR, "SORTED_LISTS", [relative]), \
+                    patch.object(GENERATOR, "AXIOM_REPORTS", []):
+                problems = GENERATOR.list_problems()
+                self.assertTrue(any("duplicate entries" in problem for problem in problems))
+                self.assertTrue(any("not sorted" in problem for problem in problems))
+                with contextlib.redirect_stdout(io.StringIO()):
+                    GENERATOR.normalize_lists()
+                self.assertEqual(GENERATOR.list_problems(), [])
+                self.assertEqual(GENERATOR.entries(relative), ["Test.a", "Test.z"])
+
     def test_policy_copies_are_isolated(self):
         for mode in ("default",) + MODES:
             with self.subTest(mode=mode):
@@ -121,7 +161,7 @@ class CheckAxiomsTests(unittest.TestCase):
         head = "Grothe.head_check._native.native_decide.ax_1_1"
         power = "Grothe.HaagerupPower.check._native.native_decide.ax_1_1"
         for mode, foreign in [("responses", head), ("response-geometry", head),
-                              ("phase-response", head),
+                              ("phase-response", head), ("research", head),
                               ("haagerup-power", head), ("upper-comparison", power)]:
             with self.subTest(mode=mode):
                 extra = f"'Test.foreignRoute' depends on axioms: [{foreign}]\n"
@@ -133,7 +173,8 @@ class CheckAxiomsTests(unittest.TestCase):
                 self.assertEqual(self.run_main([f"--{first}", f"--{second}"], self.report())[0], 2)
 
     def test_unknown_abbreviated_and_positional_arguments_are_rejected(self):
-        for arg in ("--unknown", "--response", "--haagerup-pow", "--phase", "unexpected"):
+        for arg in ("--unknown", "--response", "--haagerup-pow", "--phase", "--rese", "--hardy",
+                    "--refined", "--law", "unexpected"):
             with self.subTest(arg=arg):
                 self.assertEqual(self.run_main([arg], self.report())[0], 2)
 
@@ -207,6 +248,14 @@ class CheckAxiomsTests(unittest.TestCase):
                          self.report() + diagnostic):
                 with self.subTest(diagnostic=diagnostic, text_start=text[:80]):
                     self.assertEqual(self.run_main([], text)[0], 1)
+
+    def test_each_topic_mode_keeps_strict_report_consumption(self):
+        for mode in ("research", "hardy-budget", "refined-cover", "law-nodes"):
+            for extra in ("error: failed to load module\n",
+                          "'Extra.unchecked' depends on axioms: [sorryAx\n",
+                          "'Extra.unchecked' depends on axioms: []junk\n"):
+                with self.subTest(mode=mode, extra=extra):
+                    self.assertEqual(self.run_main([f"--{mode}"], self.report(mode) + extra)[0], 1)
 
     def test_import_does_not_parse_arguments_or_read_stdin(self):
         code = ("import importlib.util, sys\n"

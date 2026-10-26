@@ -85,17 +85,22 @@ Do this when the user says the work should go into master.
 4. **Combine with master.**
    - If your branch was never pushed: `git rebase origin/master`.
    - If it was pushed: `git merge origin/master` (no rebase, no force-push).
-   - Usual conflicts:
-     - import lists in `Grothe.lean` / `GrotheKernel.lean`: keep both sides;
-     - `scratch/Axioms.lean`: keep both sides;
-     - `scripts/check_axioms.py` (NATIVE / REQUIRED): take the union;
-     - `README.md`: describe the combined state.
+   - Lists that every delivery extends no longer conflict:
+     - `Grothe.lean` / `GrotheKernel.lean` are **generated** (every module under `Grothe/`, `GrotheKernel/` except
+       `data/root-imports-exclude.txt`): never edit them by hand; after adding a module, and after any merge, run
+       `python3 tools/gen_root_imports.py` (CI fails if they are stale);
+     - `scratch/Axioms.lean`, `scratch/AxiomsCaps.lean`, `data/axioms/*.txt` (native facts and required theorems,
+       formerly in `scripts/check_axioms.py`) are sorted one-entry-per-line lists that git union-merges
+       (`.gitattributes`); keep them sorted (CI checks order and duplicates);
+     - a module that must not be built by CI (e.g. a new `GrotheCaps`-only module) goes into
+       `data/root-imports-exclude.txt`;
+     - `README.md` still needs a hand merge: describe the combined state.
 5. **Lean coverage:**
    - Build every module you added or changed, plus the modules that import them (`lake build <Module> ...`).
    - No `sorry`, no warnings.
-   - Every headline theorem has a `#print axioms` line in `scratch/Axioms.lean`, and is in REQUIRED if it is a main
-     result.
-   - Every new `native_decide` fact is in NATIVE.
+   - Every headline theorem has a `#print axioms` line in `scratch/Axioms.lean`, and is in `data/axioms/required.txt`
+     if it is a main result.
+   - Every new `native_decide` fact is in `data/axioms/native.txt`.
    - A full local build is NOT needed; CI does it.
 6. **Documentation:** if a bound, a hypothesis or the axiom report changed, update `README.md`, `docs/overview.tex` +
    `OVERVIEW.pdf` and `docs/LEAN_DETAILS.md` in the same delivery.
@@ -206,7 +211,7 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
   evaluated by `native_decide`. A parallel check crashed with a malloc double free, which means
   memory corruption in trusted code. To parallelise, split the check into several facts in
   separate modules; lake runs them as separate processes.
-- Every `native_decide` fact must be listed in `scripts/check_axioms.py` and covered by
+- Every `native_decide` fact must be listed in `data/axioms/native.txt` (read by `scripts/check_axioms.py`) and covered by
   `scratch/Axioms.lean`.
 - The repository proves only the current best bounds, written as if designed from the start. No
   history, no superseded certificates, no "v2" naming. Research material goes in `handoff/`, which
