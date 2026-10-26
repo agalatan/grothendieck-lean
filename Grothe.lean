@@ -22,6 +22,7 @@ import Grothe.Haagerup.CanonicalTrace.Chunk14
 import Grothe.Haagerup.CanonicalTrace.Chunk15
 import Grothe.Haagerup.CanonicalTrace.Chunk16
 import Grothe.Haagerup.CanonicalTrace.Chunk17
+import Grothe.Haagerup.CanonicalTrace.Convolution
 import Grothe.Haagerup.CompleteMonotone
 import Grothe.Haagerup.Identity
 import Grothe.Haagerup.Law

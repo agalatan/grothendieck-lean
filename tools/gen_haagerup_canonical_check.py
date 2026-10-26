@@ -19,6 +19,8 @@ RELATIVE_DIR = Path("Grothe/Haagerup/CanonicalTrace")
 NAMESPACE = "Grothe.HaagerupCanonical.Trace"
 MODULE_PREFIX = "Grothe.Haagerup.CanonicalTrace"
 FINAL_NAMES = ("coefficient_check", "completed_check", "seed_check", "defect_check")
+CONV_BLOCK_SIZE = 5
+CONV_BLOCK_THRESHOLD = 2000
 D = 2**128
 ZERO = (0, 0)
 
@@ -73,6 +75,16 @@ def mul(a, b):
 def conv(left, right):
     """Exact convI order, including its zero coefficients for an empty RHS."""
     out = []
+    for coefficient in reversed(left):
+        shifted = [ZERO] + out
+        out = shifted if coefficient == ZERO else add(
+            [mul(coefficient, value) for value in right], shifted)
+    return out
+
+
+def conv_with_tail(left, right, tail):
+    """The exact convI recursion with a literal result for the unprocessed suffix."""
+    out = list(tail)
     for coefficient in reversed(left):
         shifted = [ZERO] + out
         out = shifted if coefficient == ZERO else add(
@@ -165,6 +177,46 @@ def render_blocks(data, parameters):
         if report:
             progress(name)
 
+    def convolution_lemma(name, typ, left_name, right_name, left, right):
+        """Bound each kernel computation to five left coefficients without regrouping arithmetic."""
+        if len(left) * len(right) <= CONV_BLOCK_THRESHOLD:
+            lemma(name, typ)
+            return
+        stem = name + "_conv"
+        chunks = [left[i:i + CONV_BLOCK_SIZE] for i in range(0, len(left), CONV_BLOCK_SIZE)]
+        count = len(chunks)
+        states = {count: []}
+        for i in range(count - 1, -1, -1):
+            states[i] = conv_with_tail(chunks[i], right, states[i + 1])
+        require(states[0] == conv(left, right), "blocked convolution changed exact arithmetic")
+        emit(f"def {stem}_suffix{count} : List Ival := []")
+        interval_def(f"{stem}_result{count}", [])
+        lemma(f"{stem}_suffixEq{count}",
+              f"convI {stem}_suffix{count} {right_name} = {stem}_result{count}",
+              "rfl", report=False)
+        for i in range(count - 1, -1, -1):
+            interval_def(f"{stem}_block{i}", chunks[i])
+            emit(f"def {stem}_suffix{i} : List Ival := {stem}_block{i} ++ {stem}_suffix{i+1}")
+            interval_def(f"{stem}_result{i}", states[i])
+            lemma(f"{stem}_blockStep{i}",
+                  f"convWithTail {stem}_block{i} {right_name} {stem}_result{i+1} = {stem}_result{i}",
+                  report=False)
+            # Keep this local progress command inside its declaration block so
+            # the stable primary/helper grouping does not change.
+            sections[section][-1] += (
+                'run_cmd do\n  let out ← IO.getStdout\n'
+                f'  out.putStrLn "Canonical convolution: reached {stem}_blockStep{i}"\n'
+                '  out.flush\n\n')
+            lemma(f"{stem}_suffixEq{i}",
+                  f"convI {stem}_suffix{i} {right_name} = {stem}_result{i}",
+                  f"exact convBlockGlue {stem}_suffixEq{i+1} {stem}_blockStep{i}",
+                  report=False)
+        lemma(f"{stem}_input", f"{left_name} = {stem}_suffix0", report=False)
+        lemma(f"{stem}_eq", f"convI {left_name} {right_name} = {stem}_result0",
+              f"exact (congrArg (fun left => convI left {right_name}) {stem}_input).trans {stem}_suffixEq0",
+              report=False)
+        lemma(name, typ, f"rw [{stem}_eq] <;> decide +kernel")
+
     emit(dedent('''
     deriving instance DecidableEq for Ival
 
@@ -236,27 +288,30 @@ def render_blocks(data, parameters):
         interval_def(name, values)
     lemma("p_interval_eq", "plQ.map ofRatI = pI")
     lemma("r_interval_eq", "rlQ.map ofRatI = rI")
-    lemma("ratioA_step", "zeroI :: convI pI pI = ratioA")
-    lemma("ratioY_step", "(convI rI ratioA).map negI = ratioY")
+    convolution_lemma("ratioA_step", "zeroI :: convI pI pI = ratioA", "pI", "pI", p, p)
+    convolution_lemma("ratioY_step", "(convI rI ratioA).map negI = ratioY", "rI", "ratioA", r, a)
     interval_def("correction6", corr[6])
     lemma("correctionEq6", "hornerI 170 ratioY correctionWeights6 = correction6", "rfl", report=False)
     for j in range(5, -1, -1):
         interval_def(f"correction{j}", corr[j])
-        lemma(f"correctionStep{j}",
-              f"(addL [ofRatI d{j}_64] (convI ratioY correction{j+1})).take 170 = correction{j}")
+        convolution_lemma(f"correctionStep{j}",
+              f"(addL [ofRatI d{j}_64] (convI ratioY correction{j+1})).take 170 = correction{j}",
+              "ratioY", f"correction{j+1}", y, corr[j+1])
         lemma(f"correctionEq{j}", f"hornerI 170 ratioY correctionWeights{j} = correction{j}",
               f"exact correctionGlue correctionEq{j+1} correctionStep{j}", report=False)
     interval_def("tailI", head[64])
-    lemma("tail_step", "convI rI correction0 = tailI")
+    convolution_lemma("tail_step", "convI rI correction0 = tailI", "rI", "correction0", r, corr[0])
     emit("def head64 : List Ival := tailI")
     lemma("headEq64", "hornerWithTailI 170 ratioA tailI weights64 = head64", "rfl", report=False)
     for k in range(63, -1, -1):
         interval_def(f"head{k}", head[k])
-        lemma(f"headStep{k}", f"(addL [ofRatI c{k}] (convI ratioA head{k+1})).take 170 = head{k}")
+        convolution_lemma(f"headStep{k}",
+              f"(addL [ofRatI c{k}] (convI ratioA head{k+1})).take 170 = head{k}",
+              "ratioA", f"head{k+1}", a, head[k+1])
         lemma(f"headEq{k}", f"hornerWithTailI 170 ratioA tailI weights{k} = head{k}",
               f"exact headGlue headEq{k+1} headStep{k}", report=False)
     interval_def("completedI", completed)
-    lemma("final_step", "convI pI head0 = completedI")
+    convolution_lemma("final_step", "convI pI head0 = completedI", "pI", "head0", p, head[0])
     lemma("completed_literal_ok",
           "decide (absSum (addL completedI [negI (ofRatI slopeQ)]) ≤ ofRatLo prefixCapQ) = true")
 
@@ -264,16 +319,17 @@ def render_blocks(data, parameters):
     lemma("powerEq0", "polyPowI pI 0 = power0")
     for n in range(1, 18):
         interval_def(f"power{n}", power[n])
-        lemma(f"powerStep{n}", f"convI pI power{n-1} = power{n}")
+        convolution_lemma(f"powerStep{n}", f"convI pI power{n-1} = power{n}",
+              "pI", f"power{n-1}", p, power[n-1])
         lemma(f"powerEq{n}", f"polyPowI pI {n} = power{n}",
               f"exact powerGlue powerEq{n-1} powerStep{n}", report=False)
     interval_def("seedI", seed_product)
-    lemma("seed_product_step", "convI rI power17 = seedI")
+    convolution_lemma("seed_product_step", "convI rI power17 = seedI", "rI", "power17", r, power[17])
     lemma("seed_literal_ok", "decide (absSum seedI ≤ ofRatLo seedCapQ) = true")
     for name, values in (("inverseD", inverse_d), ("inverseProduct", inverse_product), ("defectI", defect)):
         interval_def(name, values)
     lemma("inverseD_step", "addL [ofRatI 1] (ratioA.map negI) = inverseD")
-    lemma("inverseProduct_step", "convI rI inverseD = inverseProduct")
+    convolution_lemma("inverseProduct_step", "convI rI inverseD = inverseProduct", "rI", "inverseD", r, inverse_d)
     lemma("defect_step", "addL [ofRatI 1] (inverseProduct.map negI) = defectI")
     lemma("defect_literal_ok", "decide (absSum defectI ≤ ofRatLo defectCapQ) = true")
 
@@ -365,6 +421,48 @@ def render_blocks(data, parameters):
     return sections, progress_count
 
 
+def render_convolution_module():
+    """Core-only proof that continuation blocks preserve the original recursion."""
+    return dedent('''
+    import GrotheKernel.ResolventCompletion
+
+    /-!
+    Agent-ID: codex-aa04. Exact continuation blocks for interval convolution.
+    Regenerate with tools/gen_haagerup_canonical_check.py.
+    -/
+
+    namespace Grothe.HaagerupCanonical.Trace
+
+    open GrotheKernel
+
+    def convWithTail : List Ival → List Ival → List Ival → List Ival
+      | [], _, tail => tail
+      | a :: front, rhs, tail =>
+        if a.lo == 0 && a.hi == 0 then
+          zeroI :: convWithTail front rhs tail
+        else
+          addL (rhs.map (mulI a)) (zeroI :: convWithTail front rhs tail)
+
+    theorem convI_append (front suffix rhs : List Ival) :
+        convI (front ++ suffix) rhs =
+          convWithTail front rhs (convI suffix rhs) := by
+      induction front with
+      | nil => rfl
+      | cons a front ih =>
+        exact congrArg (fun tail =>
+          if a.lo == 0 && a.hi == 0 then zeroI :: tail
+          else addL (rhs.map (mulI a)) (zeroI :: tail)) ih
+
+    theorem convBlockGlue {front suffix rhs s t : List Ival}
+        (h : convI suffix rhs = s) (hs : convWithTail front rhs s = t) :
+        convI (front ++ suffix) rhs = t :=
+      (convI_append front suffix rhs).trans
+        ((congrArg (convWithTail front rhs) h).trans hs)
+
+    end Grothe.HaagerupCanonical.Trace
+    ''').lstrip()
+
+
 def render(data, parameters):
     """Return Core arithmetic chunks, source bindings, and final checks."""
     sections, expected_progress = render_blocks(data, parameters)
@@ -385,7 +483,7 @@ def render(data, parameters):
     bundles.append(("Bindings", "bindings", sections["bindings"]))
     bundles.append(("Checks", "checks", sections["checks"]))
 
-    output = {}
+    output = {RELATIVE_DIR / "Convolution.lean": render_convolution_module()}
     declarations = []
     progress_index = 0
     previous = None
@@ -393,6 +491,8 @@ def render(data, parameters):
         imports = []
         if previous:
             imports.append(f"import {previous}")
+        if any("convWithTail " in block for block in blocks):
+            imports.append(f"import {MODULE_PREFIX}.Convolution")
         if kind == "core":
             imports.append("import GrotheKernel.ResolventCompletion")
         elif kind == "bindings":
@@ -463,7 +563,10 @@ def main(argv=None):
         else:
             (destination / RELATIVE_DIR).mkdir(parents=True, exist_ok=True)
             for name, text in output.items():
-                (destination/name).write_bytes(text.encode("utf-8"))
+                path = destination / name
+                content = text.encode("utf-8")
+                if not path.is_file() or path.read_bytes() != content:
+                    path.write_bytes(content)
             print(f"Wrote {len(output)} canonical trace modules under {destination / RELATIVE_DIR}")
     except (OSError, ValueError, KeyError, TypeError) as error:
         parser.exit(1, f"error: {error}\n")

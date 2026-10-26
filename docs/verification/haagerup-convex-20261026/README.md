@@ -1,6 +1,7 @@
 # Second-Abel Haagerup bound verification
 
-Agent: `codex-aa04`. Work branch: `codex/lean-audit`. Issue: #112.
+Agent: `codex-aa04`. Work branch: `codex/haagerup-convex-ready`.
+Ready branch: `ready/codex-haagerup-convex`. Combined master: `0effd0330fa5f76d6e68750d6cfa9cbec8510ccf`. Issue: #112.
 
 The public theorem `Grothe.haagerup_bound` proves
 `IsGrothendieckBound (1404909409/1000000000)` with no hypotheses.
@@ -14,7 +15,7 @@ The native certificate still checks its original Abel allowance, 174·10⁻⁹;
 Lean derives the stronger allowance from it using exact arithmetic.
 
 `data/haagerup-resolvent/certificate.json`, its generated `PowerCheck.lean`,
-and the native-fact inventories are byte-identical to commit `8306e2c`.
+and the native-fact inventories are byte-identical to the combined master.
 The certificate's `upper` metadata is its original baseline endpoint;
 the replay separately binds the strengthened cap and endpoint to `Power.lean`.
 There is no new numerical hypothesis or native fact.
@@ -30,7 +31,9 @@ There is no new numerical hypothesis or native fact.
 - `script-tests.log`: repository script tests, including parsing the current
   saved multiline axiom report.
 - `root-check.log`, `data-check.log`, and `caps-check.log`: generated imports,
-  exact data binding, and unchanged verified caps closure.
+  exact data binding, and source equality of all 54 caps-closure files with master.
+  No cap-cache verification or marker write is claimed.
+- `pdf-review.log`: regenerated merged overview and visual layout review.
 - `SHA256SUMS`: source files and verification artifacts at delivery.
 
 ```sh
@@ -41,12 +44,14 @@ python3 -I tools/verify_haagerup_power.py data/haagerup-resolvent/certificate.js
 python3 -m unittest discover -s scripts -p 'test_*.py'
 python3 tools/gen_haagerup_power.py --check
 python3 tools/gen_root_imports.py --check
-python3 scripts/caps_stamp.py --check
+python3 scripts/caps_stamp.py --digest
 ```
 
 The replay requires `python-flint` (version 0.9.0 in this receipt).
-This is targeted local validation. No full build, CI job, ready-branch delivery,
-or droplet use was performed for this checkpoint; CI is deferred by the user.
-The caps digest remains
-`fe2ea85d90646c9e01d46fd614051a61b2dd26399c585e39e620ab9d41f16eea`
-for 140 files.
+This records targeted local validation of the combined ready tree. The normal
+ready-branch workflow runs the full merged-tree build and default axiom audit
+before automatic merge. Those CI results are separate from this local receipt.
+The user explicitly requested that delivery workflow. No manual droplet job is
+needed for this unchanged caps closure. The caps digest is
+`3bf3f36f1aa49fe345e655971cd99364aaf736fb0f101b298884703df3a2ef0f`
+for 54 files.

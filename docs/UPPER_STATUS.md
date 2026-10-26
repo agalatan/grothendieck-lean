@@ -1,14 +1,15 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
 The sharper conditional upper bound is described below. The independent hypothesis-free
-route now proves `Grothe.haagerup_bound : IsGrothendieckBound (1404909140/1000000000)`.
+candidate targets `Grothe.haagerup_bound : IsGrothendieckBound (1404909140/1000000000)`.
+**Finite-check verification and the final axiom audit remain pending.**
 Its canonical resolvent completion, complete residual and infinite remainder are
 documented in `docs/HAAGERUP_POWER.md`. It combines 64 series terms with six
-correction terms, using complete monotonicity at every difference order. A checked
+correction terms, using complete monotonicity at every difference order. A
 170-coefficient prefix and a weighted finite-polynomial tail bound control the
-complete residual. The finite checks assemble kernel-checked arithmetic steps
-through exact recurrence and input-binding lemmas. The theorem depends only on the
-three standard axioms and requires none of the analytic inputs listed here.
+complete residual. The finite-check implementation assembles literal arithmetic steps
+through exact recurrence and input-binding lemmas. On kernel acceptance, the intended
+proof uses only the three standard axioms and none of the analytic inputs listed here.
 `tools/verify_haagerup_canonical.py` provides an independent directed replay.
 
 Build only changed modules locally. Run full builds on the droplet (`ssh yo`) or in CI;
@@ -129,8 +130,8 @@ Progress (claude/hardy, 26 Oct):
   mean bound. The incumbent results specialize these proofs without changing
   their statements. The written Schur inequality in
   `data/upper-preprocess/inputs/GAUSSIAN_SCHUR_TAIL_PROOF.md` has universal
-  disk-valued pair scope, but its formalization and the Gaussian
-  identification remain open. Reusing a numerical contour cover also
+  disk-valued pair scope, now formalized by the Schur bound below. The
+  Gaussian identification remains open. Reusing a numerical contour cover also
   requires matching its actual smoothing and preprocessing data.
 - **3 Gaussian Schur bound — proved** (`claude/hardy-2`). `SchurMain.norm_HholPair_sq_le`: for `B = A − jI`
   (`j > 0`), `Z = Re B`, `T = Z − Cr Z⁻¹ Cr`, `E = (Cr Z⁻¹ Cr + Ci Z⁻¹ Ci)/2`, `W = 2T + E`, under the gates

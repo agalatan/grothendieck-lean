@@ -1,28 +1,28 @@
-import Grothe.Haagerup.CanonicalData
+import Grothe.Haagerup.CanonicalTrace.Checks
 
 /-!
 # Kernel checks for the canonical resolvent completion
 
-The polynomial and resolvent are the existing rational data. All new finite
-checks produce kernel proofs; the earlier native certificate is not used.
+Exact literal arithmetic steps and recurrence identities discharge each finite
+check. The existing native certificate is not used by these proofs.
 -/
-
-set_option maxRecDepth 1000000
-set_option maxHeartbeats 0
 
 namespace Grothe.HaagerupCanonical
 
 open GrotheKernel HaagerupPower Upper.FiniteDifference
 
-lemma defect_check : resolventNormOK pl rl defectCap = true := by decide +kernel
+lemma defect_check : resolventNormOK pl rl defectCap = true :=
+  Trace.defect_check
 
-lemma seed_check : seedNormOK pl rl seedPower seedCap = true := by decide +kernel
+lemma seed_check : seedNormOK pl rl seedPower seedCap = true :=
+  Trace.seed_check
 
 lemma coefficient_check : haagR start ≤ 1/10000 ∧
-    iterDiff order haagR start ≤ 37/10000000000000 := by decide +kernel
+    iterDiff order haagR start ≤ 37/10000000000000 :=
+  Trace.coefficient_check
 
 lemma completed_check :
-    completedHeadOK cutoff start pl rl (haagList start) differences slope prefixCap = true := by
-  decide +kernel
+    completedHeadOK cutoff start pl rl (haagList start) differences slope prefixCap = true :=
+  Trace.completed_check
 
 end Grothe.HaagerupCanonical

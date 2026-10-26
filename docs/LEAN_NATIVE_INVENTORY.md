@@ -3,9 +3,9 @@
 This inventory covers the named native facts allowed for the supported `Grothe`
 and `GrotheCaps` targets, plus the four anonymous table diagnostics below. The
 current allowlist has **84 named facts: 24 outside the 60 cap ranges**. The default
-report contains **587 print directives**, with **371 required declarations**.
-These are source/registry counts; final verification of the combined delivery is
-its runner build and both strict axiom reports.
+report and required-declaration counts will be refreshed after the merged registries
+are finalized. These are source/registry inventories; verification of the combined
+delivery requires its build and strict axiom reports.
 
 The lower chain uses the refined 10,762-box cover. Its finite checks comprise
 five row chunks, three mixed-batch chunks, one law-node fact and five refined-cover
@@ -32,8 +32,9 @@ printed in `scratch/Axioms.lean`. All sixteen scalar-tail reports use only
 standard axioms. Source and report hashes are recorded under
 `data/scalar-tail-refinement/verification/`.
 
-**Canonical upper-bound route (#113).** `Grothe.haagerup_bound` uses the four
-`Grothe.HaagerupCanonical` kernel checks and only the three standard axioms.
+**Canonical upper-bound candidate (#113), pending finite-check verification.**
+The proposed `Grothe.haagerup_bound` uses the four `Grothe.HaagerupCanonical`
+kernel checks and is intended to depend only on the three standard axioms.
 Its focused audit, `scratch/AxiomsPower.lean` with `--haagerup-power`, permits
 no native axioms. The generated `Grothe.HaagerupPower.check` is retained unchanged
 and remains in the global report and allowlist; it is not a dependency of the

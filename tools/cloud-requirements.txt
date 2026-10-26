@@ -1,0 +1,5 @@
+# Python packages installed for cloud script jobs on GitHub-hosted runners (.github/workflows/cloud.yml).
+python-flint
+numpy
+scipy
+mpmath
