@@ -172,6 +172,9 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
   branch and re-dispatches the check. Nothing to do by hand; just wait.
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for stop/remove).
   It shares Mathlib with the other droplet work via `~/grothe-caps/.lake/packages` — do not delete that directory.
+- **Superseded runs are cancelled automatically.** Pushing a branch again cancels that branch's older CI run (one
+  concurrency group per branch, `cancel-in-progress`); other branches and the droplet's heavy jobs are unaffected. No
+  manual `gh run cancel` is needed for re-pushes.
 - **Cost:** every push uses CI minutes, which the private repository pays for. Push work branches when they matter,
   not after every small commit.
 
