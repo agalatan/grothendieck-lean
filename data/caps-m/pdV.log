@@ -1,0 +1,20 @@
+Mon Oct 26 00:56:17 UTC 2026
+✔ [8944/9067] Built Grothe.LowerAnalytic.CapPDVData (718ms)
+ℹ [9067/9067] Built Grothe.LowerAnalytic.CapPDV (1611s)
+info: Grothe/LowerAnalytic/CapPDV.lean:20:0: V 14:200 piece 0 grid 2 capUp=1614413203/623720731237510320 pieceOKc=true
+V 14:200 piece 2 grid 2 capUp=0 pieceOKc=true
+V 14:200 piece 3 grid 2 capUp=0 pieceOKc=true
+V 14:200 piece 4 grid 1 capUp=0 pieceOKc=true
+V 14:200 piece 5 grid 1 capUp=0 pieceOKc=true
+V 14:200 piece 12 grid 2 capUp=0 pieceOKc=true
+V 14:200 piece 18 grid 2 capUp=0 pieceOKc=true
+V 14:200 piece 24 grid 1 capUp=0 pieceOKc=true
+V 14:200 piece 30 grid 1 capUp=0 pieceOKc=true
+V 14:280 piece 5 grid 1 capUp=0 pieceOKc=true
+V 14:280 piece 98 grid 1 capUp=0 pieceOKc=true
+Build completed successfully (9067 jobs).
+
+real	27m2.725s
+user	26m54.938s
+sys	0m9.988s
+EXIT 0

@@ -149,10 +149,12 @@ Results for the 16 pieces that fail on their stored grid (`data/caps-m-lmi/sol_*
 | node | failing (stored grid) | fixed, Δcap = 0 | needs Δcap | Lean re-check of the new multipliers |
 |---|---|---|---|---|
 | 14:150 | 0 | 0 | — | 0 ✓ |
-| 14:200 | 0–6, 12, 18, 24, 30 | 1–6, 12, 18, 24, 30 | 0: +2.59e-9 (`1614413203/623720731237510320`) | 1, 6 ✓ (rest: see below) |
-| 14:280 | 0, 5, 98, 103 | all four | — | 0, 103 ✓ |
+| 14:200 | 0–6, 12, 18, 24, 30 | 1–6, 12, 18, 24, 30 | 0: +2.59e-9 (`1614413203/623720731237510320`) | all ✓ (0 at its Δcap) |
+| 14:280 | 0, 5, 98, 103 | all four | — | all ✓ |
 
-So 15 of 16 failures are cured with no cap change; one piece needs +2.59e-9. Earlier fix ideas are superseded:
+All 16 new multiplier sets pass the Lean checker `nodeOKc`/`pieceOKc` (speed worker: 14:150/0, 14:200/1, 6,
+14:280/0, 103; this branch: the other 11, `tools/caps-m-diag/CapPDV.lean`, `data/caps-m/pdV.log`, 27 min on the
+droplet). So 15 of 16 failures are cured with no cap change; one piece needs +2.59e-9. Earlier fix ideas are superseded:
 finer grids do not help (the defect is the multipliers, not the enclosure), and the λ-scaling grid is ~100× slower.
 
 **Treatment of 14:200 piece 0 (decision).** The cover has `Bcap − max box = 0.7134218 − 0.71342178230 ≈ 1.77e-8` of
