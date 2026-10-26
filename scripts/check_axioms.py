@@ -235,6 +235,20 @@ UPPER_COMPARISON = {
     'Grothe.UpperChaos.fresh_upper_concrete', 'Grothe.UpperChaos.fresh_upper_rounder',
 }
 REQUIRED |= UPPER_COMPARISON
+PHASE_RESPONSE = {
+    'Grothe.Upper.ResponseGeometry.support_defect',
+    'Grothe.Upper.ResponseGeometry.normalized_distance',
+    'Grothe.Upper.ResponseGeometry.weighted_support_loss',
+    'Grothe.Upper.ResponseGeometry.kernel_transport',
+    'Grothe.Upper.ResponseGeometry.energy_transport',
+    'Grothe.Upper.ResponseGeometry.finite_energy_comparison',
+    'Grothe.Upper.ResponseGeometry.full_energy_comparison',
+    'Grothe.Upper.ResponseGeometry.orbit_energy_zero',
+    'Grothe.HaagerupPhaseGeometry.scaled_lower',
+    'Grothe.HaagerupPhaseGeometry.harmonic_lower',
+    'Grothe.HaagerupPhaseGeometry.degree_moment_not_summable',
+}
+REQUIRED |= PHASE_RESPONSE
 
 def audit_policy(mode):
     """Return the existing required results and native allowlist for one mode."""
@@ -245,6 +259,7 @@ def audit_policy(mode):
         # Generic response results must use no numerical native facts.
         "responses": (RESPONSE_GEOMETRY | JOINT_RESPONSE, set()),
         "response-geometry": (RESPONSE_GEOMETRY, set()),
+        "phase-response": (PHASE_RESPONSE, set()),
         "haagerup-power": (POWER_HAAGERUP,
                            {"Grothe.HaagerupPower.check._native.native_decide.ax_1_1"}),
         "upper-comparison": (UPPER_COMPARISON,
@@ -291,7 +306,8 @@ def parse_reports(text):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
     modes = parser.add_mutually_exclusive_group()
-    for mode in ("caps", "responses", "response-geometry", "haagerup-power", "upper-comparison"):
+    for mode in ("caps", "responses", "response-geometry", "haagerup-power", "upper-comparison",
+                 "phase-response"):
         modes.add_argument(f"--{mode}", action="store_const", const=mode, dest="mode",
                            help=f"check the {mode} report")
     parser.set_defaults(mode="default")
