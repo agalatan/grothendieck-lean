@@ -77,7 +77,8 @@ slack only 1e-12 .. 2e-12 at the binding piece (plus capPad 1e-11).
     piece 0 (the centre slab |τ₃| ≤ 3/1000) fails.
   * node 14:200 (s = 7/20, two-direction format, 42 pieces on 1600 × 1024 / 1600 × 256): coverage OK,
     31/42 pass; pieces 0–6, 12, 18, 24, 30 fail (the boxes touching the centre interval I₀ in τ₂ or τ₃).
-  * node 14:280 (s = 11/20, 167 pieces, coarse 400 × 128 forced): pending.
+  * node 14:280 (s = 11/20, 167 pieces, coarse 400 × 128 forced): coverage OK, 154/167 pass; fail 0, 1, 2, 5, 6,
+    31, 32, 36, 98, 99, 103, 104, 129. On the stored grid (1600 × 256) only 0, 5, 98, 103 fail.
   * The failing pieces are the ones near the maximiser, where the float slack is ~1e-12.
 * (superseded) STATUS when this file was written: still running on the droplet (lean pid 1457251, log
   `~/grothe-capsm/pdiag2.log`). The droplet was oversubscribed by other sessions (load ≈ 12), so
@@ -128,3 +129,49 @@ cd ~/grothe-cx/t4/pkg && ~/grothe-cx/venv/bin/python propM.py ~/grothe-cx/wc/wce
 # build + check one module on the droplet
 cd ~/grothe-capsm && export PATH=$HOME/.elan/bin:$PATH && lake build Grothe.LowerAnalytic.CapPieceNodes
 ```
+
+## 5. Why pieces fail, and the fix (25–26 Oct)
+
+**Mechanism (verified, `data/caps-m/pdmA.log`, `pdmB.log`).** Every failing piece of 14:150 and 14:200 carries a
+two-sided centre constraint `|τ| ≤ 3/1000`. On those pieces the cap margin is fine (the Schur complement at the cap
+entry is ≥ 0), but the cap-free 12 × 12 block of `N − Σ S_c` has a pivot ≈ −5e-6 … −1e-5: the S-lemma multiplier λ of
+the centre constraint is a hair too small. Raising λ makes the block PSD but costs cap (λ·(3/1000)² enters the cap
+entry), so a uniform scaling is a bad trade: the exact grid search (`tools/caps-m-diag/CapPDH.lean`,
+`data/caps-m/pdH.log`) found for 14:150 piece 0 λ × 1.01 → Δcap 1e-8, × 1.05 → 1e-7, × 1 → no Δcap works.
+
+**Fix: re-optimise all multipliers of the piece jointly.** The multipliers enter the checked matrix linearly, so the
+best (λ, μ) is a small SDP. The speed worker (#42) built this on master: `Grothe/LowerAnalytic/CapExport.lean` exports
+`N`, `A_c`, `B_c` with the checker's own functions (≈ 3.5 min per piece, once), `tools/caps_lmi.py solve` solves the
+SDP, refines to 60 digits and rounds to rationals with an exact LDL (seconds per piece); see `docs/SPEED_TOOLS.md`.
+Results for the 16 pieces that fail on their stored grid (`data/caps-m-lmi/sol_*.json` on master; overrides in
+`data/caps-m/overrides.json`):
+
+| node | failing (stored grid) | fixed, Δcap = 0 | needs Δcap | Lean re-check of the new multipliers |
+|---|---|---|---|---|
+| 14:150 | 0 | 0 | — | 0 ✓ |
+| 14:200 | 0–6, 12, 18, 24, 30 | 1–6, 12, 18, 24, 30 | 0: +2.59e-9 (`1614413203/623720731237510320`) | 1, 6 ✓ (rest: see below) |
+| 14:280 | 0, 5, 98, 103 | all four | — | 0, 103 ✓ |
+
+So 15 of 16 failures are cured with no cap change; one piece needs +2.59e-9. Earlier fix ideas are superseded:
+finer grids do not help (the defect is the multipliers, not the enclosure), and the λ-scaling grid is ~100× slower.
+
+**Treatment of 14:200 piece 0 (decision).** The cover has `Bcap − max box = 0.7134218 − 0.71342178230 ≈ 1.77e-8` of
+slack, and `capPad` enters every row constant linearly (`Row.env`: `C = 2β²/ε + cap + capPad`), so any uniform
+increase up to ~1.7e-8 keeps `K > 1.401695322458` without touching the cover. Two options:
+1. raise `capPad` (`Grothe/Lower/Moment.lean`, now 1e-11) to the largest Δcap needed over ALL route-M nodes, with
+   margin (e.g. 5e-9 if the full sweep stays ≤ 2.6e-9); one global change, re-checked by `cert_check` (CI) and one
+   GrotheCaps rebuild + stamp (capPad is in the caps closure);
+2. raise only the stored caps of the affected nodes (row data change, also re-checked by `cert_check`).
+**Recommendation: option 1, decided after the fast sweep of all 358 route-M nodes** (export + `caps_lmi.py`, about
+16,719 × 3.5 min ≈ 1,000 CPU-hours for the exports — far too much; export only the pieces that fail with their stored
+multipliers, which the range facts of track C identify; at the row-14 rate of ~10% failing pieces that is ≈ 1,700
+pieces ≈ 100 CPU-hours). If the sweep finds a Δcap above ~1e-8, fall back to option 2 for those nodes.
+
+**Next steps (for whoever continues).**
+1. Track C (`claude/caps-m-pipeline`, `docs/CAPS_M_PIPELINE.md`): read `data/caps-m/overrides.json` in
+   `tools/gen_cap_pieces.py nodes` (replace the multipliers of the listed pieces), regenerate 14:150, 14:200, 14:280,
+   and rebuild their range facts: 14:150 and 14:280 then have no excluded pieces; 14:200 keeps piece 0 until capPad
+   is raised.
+2. Sweep the other route-M nodes: run the range facts (or `exportPieces` with `ok`) to find failing pieces, export
+   them, `caps_lmi.py solve`, add to `overrides.json`, re-check in Lean.
+3. Decide capPad from the sweep's largest Δcap (above).
