@@ -5,33 +5,32 @@
 #             checkout, so that its .lake/build stays current: new worktrees clone it (AGENTS.md §2). It never
 #             starts a second one (pid in $MAIN/.lake/master-build.pid, log in $MAIN/.lake/master-build.log).
 #   --status  only report the local build cache: which master commit it holds, and whether a build is running.
-# The cache is complete for a commit only when $MAIN/.lake/build/built-commit names it: the build writes that file
-# after `lake build Grothe` succeeds, and deletes it when it starts. A fast-forward of the main checkout while a
-# build is running restarts that build (changing sources under a running build leaves it inconsistent).
+# The build itself is scripts/master_build_job.sh: after `lake build Grothe` succeeds it records the commit in
+# .lake/build/built-commit and publishes a consistent snapshot .lake/master-cache, which worktrees clone with
+# scripts/clone_master_build.sh. A fast-forward of the main checkout while a build is running restarts that build
+# (changing sources under a running build leaves it inconsistent).
 set -euo pipefail
 MAIN=/Users/alingalatan/workspaces/grothe
 PIDF="$MAIN/.lake/master-build.pid"
 LOG="$MAIN/.lake/master-build.log"
-MARK="$MAIN/.lake/build/built-commit"
 
 running() { [ -f "$PIDF" ] && kill -0 "$(cat "$PIDF")" 2>/dev/null; }
 
 start_build() {
-  rm -f "$MARK"
-  (cd "$MAIN" && bash -c 'set -m; nohup nice -n 15 bash -c "lake build Grothe && git rev-parse HEAD > .lake/build/built-commit" > .lake/master-build.log 2>&1 & echo $! > .lake/master-build.pid')
+  (cd "$MAIN" && bash -c 'set -m; nohup nice -n 15 bash scripts/master_build_job.sh > .lake/master-build.log 2>&1 & echo $! > .lake/master-build.pid')
   echo "started master build in the main checkout (pgid $(cat "$PIDF")); log $LOG"
 }
 
 status() {
   local head built
   head=$(git -C "$MAIN" rev-parse HEAD)
-  built=$(cat "$MARK" 2>/dev/null || true)
+  built=$(cat "$MAIN/.lake/master-cache/built-commit" 2>/dev/null || true)
   if [ "$built" = "$head" ]; then
-    echo "local build cache: complete for master $(git -C "$MAIN" rev-parse --short HEAD)"
+    echo "local build cache (.lake/master-cache): master $(git -C "$MAIN" rev-parse --short HEAD), current"
   elif [ -n "$built" ]; then
-    echo "local build cache: complete for an older master ${built:0:7} (main checkout is at $(git -C "$MAIN" rev-parse --short HEAD))"
+    echo "local build cache (.lake/master-cache): master ${built:0:7}; the main checkout is at $(git -C "$MAIN" rev-parse --short HEAD)"
   else
-    echo "local build cache: no complete build recorded"
+    echo "local build cache: none published yet"
   fi
   if running; then
     echo "master build running (pgid $(cat "$PIDF")), $(grep -oE '\[[0-9]+/[0-9]+\]' "$LOG" | tail -1)"
@@ -64,7 +63,7 @@ elif [ "${1:-}" = "--build" ]; then
     echo "master build already running (pgid $(cat "$PIDF")); log $LOG"
   elif [ "$WT" != "$MAIN" ]; then
     echo "the main checkout is not on master; not building it" >&2
-  elif [ "$(cat "$MARK" 2>/dev/null || true)" = "$(git -C "$MAIN" rev-parse HEAD)" ]; then
+  elif [ "$(cat "$MAIN/.lake/master-cache/built-commit" 2>/dev/null || true)" = "$(git -C "$MAIN" rev-parse HEAD)" ]; then
     echo "local build cache already complete for this master"
   else
     start_build
