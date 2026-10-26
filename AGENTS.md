@@ -169,8 +169,8 @@ Do this when the user says the work should go into master.
    - If master moved while CI was building, the run re-dispatches itself automatically: it merges with the new
      master and rebuilds. You will see one failed run ("master moved") followed by a new one. Do nothing.
    - Several `ready/` branches may build at the same time; the first green one moves master.
-9. **After the merge:** run `scripts/sync_master.sh`, then `git branch -d <branch>` and `git worktree remove <path>` if
-   you are done, or keep working on the branch (go back to step 3 before the next delivery).
+9. **After the merge:** run `scripts/sync_master.sh`, then either keep working on the branch (go back to §2b before the
+   next delivery) or, if you are done, **clean up completely** (§7).
 
 Report to the user: the `ready/` branch name, the CI run, and the resulting master commit.
 
@@ -286,3 +286,32 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
   and `docs/LEAN_DETAILS.md` (see §3, step 6).
 - The node caps (`GrotheCaps`) are not built by CI. If you change any file in their import closure, CI fails at
   the caps stamp: rebuild them on the droplet and re-stamp (README, "Node caps").
+
+## 7. Cleaning up: leave nothing behind
+
+Lean build directories are big: each worktree build clone diverges from its source as you build, a droplet build is
+1–3 GB, and the laptop and the droplet are shared. Disks have run full more than once and stopped everyone's work.
+So every agent cleans up what it created, as soon as it is no longer needed.
+
+**When your work is merged, abandoned or handed over:**
+1. **Local worktree:** `git worktree remove <path>`. This also deletes its `.lake/build` clone and its untracked logs.
+   If it refuses because of local changes, commit or push them first, or ask the user. Never `--force` over
+   uncommitted work you have not looked at.
+2. **Local branches:** `git branch -d <branch>` for every branch you created that is merged. For unmerged ones, delete
+   them only once their content is delivered or deliberately abandoned, with `-D`, and say so in the issue.
+3. **Remote branches:** delete your merged branches on GitHub (`git push origin --delete <branch>`), including
+   `ready/` branches merged through a PR (CI deletes them only when it merges them itself). Do not keep backup
+   branches (`…-before-…`, `…-pre-rebase`) once the rebase or merge is verified.
+4. **Droplet:** delete your signed folder (`ssh yo 'rm -rf ~/<agent-id>-<topic>'`, §0b) once its results are committed
+   (inputs in `data/`, research results in `handoff/`, §6). Stop your jobs first (`kill -- -"$(cat job.pid)"`).
+5. **Scratch files:** delete logs, `job.pid` files, exported data and throwaway modules you created outside the
+   repository's tracked files: in the worktree before removing it, and on the droplet.
+6. **Issue:** say in the issue that you cleaned up, and remove your `owner:` and `status:` labels if you stop working
+   on it.
+
+**Never delete what is not yours:** another agent's worktree, branch or droplet folder, the main checkout's
+`.lake/build` (the shared master build), the runner's workspace (`~/actions-runner`), or the shared Mathlib packages
+(`~/grothe-caps/.lake/packages`). If something looks stale but is not yours, list it for the user instead.
+
+**Check periodically:** `git worktree list`, `git branch -vv`, `git branch -r`, `scripts/droplet_status.sh` and
+`df -h`. Leave the machines at least as clean as you found them.
