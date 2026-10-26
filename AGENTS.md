@@ -66,6 +66,29 @@ Resuming an existing worktree: sync first, then bring your branch up to date (§
 Disk space is tight. Do not copy `.lake/build` wholesale; it is about 1.6 GB per copy. Build only the modules you
 change (`lake build Grothe.X.Y`). Run full builds on the droplet (see §5).
 
+## 2b. Before EVERY push: start from a fresh master
+
+Master moves several times an hour: other agents deliver, and the user merges by hand. A branch pushed on top of an
+old master wastes a full CI build and usually conflicts. So before **every** push — a work branch, a `ready/`
+delivery, and especially a re-push after a CI failure or a conflict — do this:
+
+1. `scripts/sync_master.sh`: fetch, and fast-forward the local `master` to GitHub's.
+2. **Evaluate the delta:** `git log --oneline HEAD..origin/master` and `git diff --stat HEAD...origin/master`. Read
+   what changed and decide whether your work must change because of it: renamed lemmas, a new hypothesis interface,
+   a better bound, duplicated work, changed data, or regenerated files.
+3. **Combine with that fresh master:**
+   - never pushed: `git rebase origin/master`;
+   - already pushed: `git merge origin/master` (no rebase, no force-push).
+4. **Fix every conflict properly.** Resolve each one by understanding both sides; never by taking "ours" or
+   "theirs" blindly.
+   - Regenerate generated files instead of hand-merging them (`python3 tools/gen_root_imports.py`).
+   - Keep the union of sorted list files (`data/axioms/*`, `scratch/Axioms*.lean`).
+   - Take master's version of shared scripts and re-apply only your intended change.
+5. **Re-check what you touched:** build the changed modules and the modules that import them, and run the script
+   tests (`scripts/test_*.py`) and `python3 tools/gen_root_imports.py --check`. Only then push.
+
+If master moved again while you were doing this, repeat from 1. Report the master commit you combined with.
+
 ## 3. Delivering work: the checklist
 
 Do this when the user says the work should go into master.
@@ -109,7 +132,8 @@ Do this when the user says the work should go into master.
    each time (e.g. `ready/codex-<topic>-2`).
    - CI merges it into the **current** master, builds and checks the **merged** tree. Only if everything is green does
      it fast-forward `master` and delete the `ready/` branch.
-   - If CI fails, master is untouched: fix, commit, and push a new `ready/` name.
+   - If CI fails, master is untouched: fix, commit, then do §2b again (fresh master, delta, conflicts) before
+     pushing a new `ready/` name.
    - If master moved while CI was building, the run re-dispatches itself automatically: it merges with the new
      master and rebuilds. You will see one failed run ("master moved") followed by a new one. Do nothing.
    - Several `ready/` branches may build at the same time; the first green one moves master.
