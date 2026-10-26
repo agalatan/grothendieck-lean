@@ -246,19 +246,23 @@ def cover (j rho : Ival) (dat : RData) (neg : Bool) (w tol : Int) : Nat → Int 
         | some x, some y => some (x + y)
         | _, _ => none
 
-/-- The whole circle: both charts, `s ∈ [−1, 0]` and `[0, 1]`, each split into `2^k` initial pieces. -/
-def circleTotal (j rho : Ival) (dat : RData) (w tol : Int) (k depth : Nat) : Option Int :=
-  let n : Int := (2 : Int) ^ k
-  let pieces := (List.range (2 ^ k)).flatMap fun (i : Nat) =>
-    let a : Int := Int.ofNat i
-    [(-D + a * D / n, -D + (a + 1) * D / n), (a * D / n, (a + 1) * D / n)]
-  let go (neg : Bool) : Option Int := pieces.foldl (fun acc p =>
-    match acc, cover j rho dat neg w tol depth p.1 p.2 with
-    | some a, some x => some (a + x)
-    | _, _ => none) (some 0)
-  match go false, go true with
-  | some a, some b => some (a + b)
-  | _, _ => none
+/-- The left endpoint `−1 + k/n` (scaled) of piece `k` of `[−1, 1]` cut into `2n` pieces (`n` divides `D`). -/
+def pieceLo (n k : Nat) : Int := -D + Int.ofNat k * (D / Int.ofNat n)
+
+/-- The sum of `cover` over the pieces `k ∈ [k₀, k₀ + m)` of one chart (`none` if a piece fails). -/
+def chartSum (j rho : Ival) (dat : RData) (neg : Bool) (w tol : Int) (depth n : Nat) : Nat → Nat → Option Int
+  | _, 0 => some 0
+  | k₀, m + 1 =>
+    match cover j rho dat neg w tol depth (pieceLo n k₀) (pieceLo n (k₀ + 1)),
+        chartSum j rho dat neg w tol depth n (k₀ + 1) m with
+    | some x, some y => some (x + y)
+    | _, _ => none
+
+/-- A part of the circle passes when its sum is at most `cap` (scaled). -/
+def partOK (j rho : Ival) (dat : RData) (neg : Bool) (w tol : Int) (depth n k₀ m : Nat) (cap : Int) : Bool :=
+  match chartSum j rho dat neg w tol depth n k₀ m with
+  | some x => decide (x ≤ cap)
+  | none => false
 
 /-! ### The tube gates on a larger circle (for the region of holomorphy) -/
 

@@ -204,6 +204,8 @@ import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
 import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussC2
+import Grothe.UpperChaos.HardyArcCircle
+import Grothe.UpperChaos.HardyArcCover
 import Grothe.UpperChaos.HardyArcSound
 import Grothe.UpperChaos.HardyHolo
 import Grothe.UpperChaos.HardyKernel
