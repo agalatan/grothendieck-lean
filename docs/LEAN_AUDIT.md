@@ -333,14 +333,39 @@ since been checked; no headline mathematical soundness defect has been found.
   combined-master [run 40256701427](https://github.com/agalatan/grothendieck-lean/actions/runs/40256701427)
   was also cancelled before completion. Neither cancellation is counted as a
   successful combined-master check. Subsequent green scope-skipped runs do not
-  provide that evidence either. At this update, combined-master
+  provide that evidence either. The subsequent combined-master
   [run 40259931326](https://github.com/agalatan/grothendieck-lean/actions/runs/40259931326)
-  on `3a23cdd` is still building; final integration verification remains tracked
-  in [#46](https://github.com/agalatan/grothendieck-lean/issues/46).
+  on `3a23cdd` was also cancelled. Older combined-master
+  [run 40257288744](https://github.com/agalatan/grothendieck-lean/actions/runs/40257288744)
+  on `ddee32a` completed its full 9,169-job Lean build, then failed the generated
+  root check. [PR #78](https://github.com/agalatan/grothendieck-lean/pull/78)
+  repaired that root; the current local root check passes. The older run's later
+  axiom, forbidden-code and cap-stamp gates were skipped, so it is not a full
+  verification pass. Final integration verification remains tracked in
+  [#46](https://github.com/agalatan/grothendieck-lean/issues/46).
+
+- [#80](https://github.com/agalatan/grothendieck-lean/issues/80): the unweighted
+  band comparison specializes `weighted_compare` at constant weight one. The
+  response-energy estimate then uses that comparison with one error piece
+  supported on the entire selected set. This removes **35 proof lines**
+  across `Upper/BandComparison.lean` and `Upper/ResponseGeometry.lean` while
+  preserving all 12 declaration statements and native inputs. Both
+  specializations pass warning-as-error elaboration; all 12 declaration
+  type/axiom fingerprints match their baselines. The shared weighted proof and the
+  `band_cross` API remain intact. Focused imports replace the blanket Mathlib
+  import: Lake's imported-artifact count drops from 8,908 to 1,509 for
+  `BandComparison`, and from 8,909 to 2,041 for `ResponseGeometry`. Both actual
+  modules build warning-free. Eight additional explicit import lines make the
+  net source reduction **27 lines**. This reduces isolated-module dependency
+  loading; no full-build or native runtime improvement is claimed. Delivery
+  and aggregate CI are tracked in #80.
 
 The measured production Lean reduction across #54, #55 and #59 is **124 lines**:
 60 proof lines and 64 generated zero-coefficient lines. No module or native fact
 is removed, and no meaningful native runtime improvement is established.
+The additional #80 compaction brings the net total to **151 lines**: 95 proof
+lines and 64 generated coefficient lines removed, with eight explicit import
+lines added.
 Other gated changes to native facts/inputs, headline interfaces, and caps-closure
 sources remain unapproved. Workflow #48 remains coordinated with reserved PR #44.
 

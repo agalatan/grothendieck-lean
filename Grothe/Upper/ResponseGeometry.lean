@@ -1,3 +1,6 @@
+import Mathlib.Analysis.InnerProductSpace.LinearMap
+import Mathlib.Topology.Algebra.InfiniteSum.Real
+import Mathlib.Tactic.Module
 import Grothe.Upper.BandComparison
 
 /-!
@@ -77,6 +80,7 @@ theorem finite_energy_comparison {ι : Type*} (S : Finset ι)
     (hbessel : ∀ z, ∑ i ∈ S, ‖Q i z‖ ^ 2 ≤ ‖z‖ ^ 2)
     (x y : H) (e : ℝ) (he : 0 ≤ e) (hd : ‖y-U x‖ ≤ e) :
     ∑ i ∈ S, |‖Q i y‖ ^ 2-‖P i x‖ ^ 2| ≤ 2*‖x‖*e+e^2 := by
+  classical
   have henergy : ∀ i, ‖Q i (U x)‖ ^ 2 = ‖P i x‖ ^ 2 :=
     fun i => energy_transport U (P i) (Q i) (htrans i) x
   have hx : ∑ i ∈ S, ‖Q i (U x)‖ ^ 2 ≤ ‖x‖ ^ 2 := by
@@ -86,25 +90,11 @@ theorem finite_energy_comparison {ι : Type*} (S : Finset ι)
       _ = ∑ i ∈ S, ‖Q i (y-U x)‖ ^ 2 := by simp only [map_sub]
       _ ≤ ‖y-U x‖ ^ 2 := hbessel _
       _ ≤ e^2 := pow_le_pow_left₀ (norm_nonneg _) hd 2
-  have hc := BandComparison.band_cross (V := fun _ : ι => H) S (fun i => Q i (U x))
-    (fun i => Q i y-Q i (U x)) (norm_nonneg x) he hx herr
-  calc
-    _ = ∑ i ∈ S, |‖Q i y‖ ^ 2-‖Q i (U x)‖ ^ 2| := by
-      simp_rw [henergy]
-    _ ≤ ∑ i ∈ S, (2*‖Q i (U x)‖*‖Q i y-Q i (U x)‖ +
-        ‖Q i y-Q i (U x)‖ ^ 2) :=
-      sum_le_sum fun i _ => BandComparison.norm_sq_difference
-        (V := fun _ : ι => H) (i := i) _ _
-    _ = 2*(∑ i ∈ S, ‖Q i (U x)‖*‖Q i y-Q i (U x)‖) +
-        ∑ i ∈ S, ‖Q i y-Q i (U x)‖ ^ 2 := by
-      rw [sum_add_distrib, mul_sum]
-      congr 1
-      apply sum_congr rfl
-      intro i _
-      ring
-    _ ≤ 2*(‖x‖*e)+e^2 :=
-      add_le_add (mul_le_mul_of_nonneg_left hc (by norm_num)) herr
-    _ = 2*‖x‖*e+e^2 := by ring
+  simpa only [henergy, Finset.sum_singleton, mul_assoc] using
+    BandComparison.compare S {()} (fun i => Q i (U x)) (fun i => Q i y)
+      (fun _ i => Q i y - Q i (U x)) (fun _ => S) (fun _ => ‖x‖) (fun _ => e) (e ^ 2)
+      (by simp) (by intro _ _ _ hi hni; exact (hni hi).elim) (by simp [norm_nonneg]) (by simpa using he)
+      (by simpa using hx) (by simpa using herr) herr
 
 /-- The aligned comparison includes the entire infinite tail; no cutoff is assumed. -/
 theorem full_energy_comparison {ι : Type*}
