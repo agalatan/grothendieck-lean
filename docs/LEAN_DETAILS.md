@@ -273,10 +273,13 @@ headline endpoints are unchanged.
 
 **Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (1404909543/1000000000)`
 (`Grothe/Haagerup/Power.lean`), with no hypothesis. The analysis is in
-`Grothe/Haagerup/`: tilted one-dimensional Gaussian integrals (`Gauss1D`); the correlated pair integral
-E[conj U·V·e^{−u|U|²−v|V|²}] = 2z/Δ² (`GaussG`); the Euler representation |a|⁻¹ = π^{−1/2}∫t^{−1/2}e^{−t|a|²}dt
-with its Fubini swap (`Euler`); the Beta integrals J_k and Haagerup's coefficients
-(2/π)(k+1)4^k J_k² = (π/4)(1/2)_k²/(k!(k+1)!) (`BetaJ`, `Series`); four real-orthonormal coordinates of the
+`Grothe/Haagerup/`: the shared Gaussian phase and planar laws (`Phase`); the charge-one
+Hermite coefficient, evaluated using odd Gaussian moments and a finite Pochhammer identity
+(`PhaseCoefficients`, `UpperChaos/PhaseMoments`, `UpperChaos/HermiteExpansion`,
+`UpperChaos/PhaseCombinatorics`); its squared normalized value
+(π/4)(1/2)_k²/(k!(k+1)!) is `haagCoeff k`. The complex Hermite basis and polynomial Mehler
+formula give the phase correlation on the entire closed unit disk (`PhaseKernel`).
+Four real-orthonormal coordinates of the
 standard Gaussian are independent standard Gaussians, by characteristic functions (`Law`); the reduction to
 two complex Gaussians, the radial identity and the phase rounding as a disk-valued rounding
 (`Identity`: `integral_phase_pair`, `Phi2_radial`, `haagerup_disk`, `haagerup_dominated`). Disk-valued

@@ -23,21 +23,6 @@ noncomputable section
 
 /-! ### Planar Gaussians -/
 
-/-- `(a, b) ↦ (a + ib)/√2`. -/
-def cxs (q : ℝ × ℝ) : ℂ := cx q / ((√2 : ℝ) : ℂ)
-
-lemma continuous_cxs : Continuous cxs := by
-  unfold cxs; fun_prop
-
-lemma measurable_cxs : Measurable cxs := continuous_cxs.measurable
-
-lemma map_cxs : g2.map cxs = gaussC := by
-  have h := (measurePreserving_finTwoArrow (gaussianReal 0 1)).map_eq
-  have e : toC = cxs ∘ MeasurableEquiv.finTwoArrow := by
-    funext x; simp [toC, cxs, cx, MeasurableEquiv.finTwoArrow, Complex.ext_iff]
-  rw [gaussC, Grothe.LowerAnalytic.stdGaussian, e, ← Measure.map_map measurable_cxs
-    MeasurableEquiv.finTwoArrow.measurable, h]
-
 /-- `((p₁, p₂), (p₁', p₂')) ↦ ((cxs p₁, cxs p₂), (cxs p₁', cxs p₂'))`. -/
 def S4 (p : ((ℝ × ℝ) × (ℝ × ℝ)) × ((ℝ × ℝ) × (ℝ × ℝ))) : (ℂ × ℂ) × (ℂ × ℂ) :=
   ((cxs p.1.1, cxs p.1.2), (cxs p.2.1, cxs p.2.2))

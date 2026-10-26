@@ -1,4 +1,5 @@
 import Grothe.UpperChaos.LawY
+import Grothe.UpperChaos.DiagonalPairing
 
 /-!
 # The complex Mehler formula on `ℂ²` for `L²` functions (U3 of PLAN_UPPER)
@@ -123,34 +124,11 @@ lemma Bm_hvec2 (i j : Idx2) : Bm h₁ h₂ (hvec2 i) (hvec2 j) = if i = j then l
 /-- **The complex Mehler formula on `ℂ²` for `L²` functions.** -/
 theorem mehler_L2 (F G : Lp ℂ 2 mu2) :
     HasSum (fun i => conj ⟪hvec2 i, F⟫_ℂ * lam ρ₁ ρ₂ i * ⟪hvec2 i, G⟫_ℂ) (Bm h₁ h₂ F G) := by
-  -- step 1: `Bm h_i G = λ_i ⟪h_i, G⟫`
-  have step1 : ∀ i, Bm h₁ h₂ (hvec2 i) G = lam ρ₁ ρ₂ i * ⟪hvec2 i, G⟫_ℂ := fun i => by
-    set T : Lp ℂ 2 mu2 →L[ℂ] ℂ :=
-      (innerSL ℂ (PX (hvec2 i))).comp (PY h₁ h₂).toContinuousLinearMap
-    have hT : ∀ G', T G' = Bm h₁ h₂ (hvec2 i) G' := fun G' => rfl
-    have hs := (hermiteBasis2.hasSum_repr G).mapL T
-    simp only [map_smul, smul_eq_mul, hermiteBasis2_apply] at hs
-    simp only [hT, Bm_hvec2 h₁ h₂, mul_ite, mul_zero] at hs
-    have hs' : HasSum (fun j => if j = i then hermiteBasis2.repr G i * lam ρ₁ ρ₂ i else 0)
-        (hermiteBasis2.repr G i * lam ρ₁ ρ₂ i) := hasSum_ite_eq i _
-    have : (fun j => if i = j then hermiteBasis2.repr G j * lam ρ₁ ρ₂ i else 0)
-        = fun j => if j = i then hermiteBasis2.repr G i * lam ρ₁ ρ₂ i else 0 := by
-      funext j; by_cases h : j = i
-      · subst h; simp
-      · simp [h, Ne.symm h]
-    rw [hs.unique (this ▸ hs'), HilbertBasis.repr_apply_apply, hermiteBasis2_apply, mul_comm]
-  -- step 2: expand `F`
-  set S : Lp ℂ 2 mu2 →L[ℂ] ℂ := (innerSL ℂ (PY h₁ h₂ G)).comp (PX).toContinuousLinearMap
-  have hS : ∀ F', S F' = conj (Bm h₁ h₂ F' G) := fun F' => by
-    simp [S, Bm, inner_conj_symm]
-  have hs := (hermiteBasis2.hasSum_repr F).mapL S
-  simp only [map_smul, smul_eq_mul, hermiteBasis2_apply] at hs
-  simp only [hS, step1] at hs
-  have hc := hs.mapL Complex.conjCLE.toContinuousLinearMap
-  simp only [ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, map_mul, Complex.conj_conj,
-    HilbertBasis.repr_apply_apply, hermiteBasis2_apply] at hc
-  convert hc using 1
-  funext i; ring
+  simpa only [hermiteBasis2_apply, Bm, LinearIsometry.coe_toContinuousLinearMap] using
+    hasSum_diagonal_pairing hermiteBasis2 PX.toContinuousLinearMap
+      (PY h₁ h₂).toContinuousLinearMap (lam ρ₁ ρ₂)
+      (fun i j => by simpa only [hermiteBasis2_apply, Bm,
+        LinearIsometry.coe_toContinuousLinearMap] using Bm_hvec2 h₁ h₂ i j) F G
 
 end
 
