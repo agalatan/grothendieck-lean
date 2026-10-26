@@ -359,9 +359,12 @@ import Grothe
 #print axioms Grothe.ScalarTailRefinement.outer_composition_bound
 #print axioms Grothe.ScalarTailRefinement.outer_composition_saving
 #print axioms Grothe.ScalarTailRefinement.power_check
+#print axioms Grothe.ScalarTailRefinement.refined_score_of_published_budgets
 #print axioms Grothe.ScalarTailRefinement.refined_score_of_published_inputs
 #print axioms Grothe.ScalarTailRefinement.score_acceptance
 #print axioms Grothe.ScalarTailRefinement.supported_composition_arbitrary_power_bound
+#print axioms Grothe.ScalarTailRefinement.wallis_rational_check
+#print axioms Grothe.ScalarTailRefinement.wallis_tail_bound
 #print axioms Grothe.Upper.BandComparison.compare
 #print axioms Grothe.Upper.BandComparison.weighted_compare
 #print axioms Grothe.Upper.CubicPhaseScreen.axis_le_real_polynomial

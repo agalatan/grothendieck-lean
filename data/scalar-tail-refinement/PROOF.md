@@ -13,7 +13,8 @@ The new ingredient is the exact norm of a sixteenth polynomial power.
 
 The companion [Lean module](../../Grothe/Haagerup/ScalarTailRefinement.lean)
 proves the polynomial/tail refinement and the implication from the stated
-numerical ledger. It does **not** establish a new unconditional Lean
+numerical ledger. Its fixed phase-tail estimate is also proved, rather than
+assumed, using only the standard axioms. It does **not** establish a new unconditional Lean
 `IsGrothendieckBound` theorem: the published scalar Gaussian identity and
 integral/continuation certificates have not all been connected to this
 module in Lean. This distinction is separate from the older, stronger
@@ -188,6 +189,24 @@ The formal contribution in this delivery is the sixteenth-power norm
 certificate, the complete Wiener tail deduction, and exact ledger
 arithmetic/implication in
 [ScalarTailRefinement.lean](../../Grothe/Haagerup/ScalarTailRefinement.lean).
+The fixed Wallis estimate is derived from the existing formal Haagerup
+majorant, using an exact split at 120. If `r_j=4*h_j/pi` and
+`g_j=r_j*(j+1)*(2*j+1)`, then
+
+\[
+\sum_{j\ge67}h_j
+\le\frac{\pi}{4}\left(\sum_{j=67}^{119}r_j+\frac{g_{120}}{240}\right)
+\le\frac{355}{452}\left(\sum_{j=67}^{119}r_j+\frac{g_{120}}{240}\right)
+\le\frac1{268}.
+\]
+
+The final rational expression is approximately
+`0.003730857677462347`, below `1/268`. Its finite comparison uses
+proof-producing `decide +kernel`; no native fact is added. The direct
+`refined_score_of_published_budgets` corollary therefore has no Wallis
+hypothesis. It retains the published numerical budget inequalities,
+whose Gaussian interpretation remains outside this formal score theorem.
+
 It does not assert that the published numerical integral facts have
 already been proved in Lean, and it does not change the existing
 hypothesis-free Lean upper endpoint by this module alone. Build/axiom

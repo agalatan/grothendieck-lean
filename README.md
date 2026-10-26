@@ -195,8 +195,12 @@ exact selector mass. The resulting reciprocal is below `1.404898431637415`.
 
 `Grothe/Haagerup/ScalarTailRefinement.lean` proves the finite power certificate,
 the general signed suffix inequality and the rational score transfer with the
-published budgets explicit. Its single numerical fact uses sequential outward
-interval arithmetic. The four pinned public verification stages were replayed
+published numerical budgets explicit. The phase-tail estimate at index 67 is
+proved by an exact split at 120 and the existing infinite-tail majorant;
+it is no longer an assumption of `refined_score_of_published_budgets`.
+This uses only standard axioms. The single native numerical fact still checks
+the polynomial power using sequential outward interval arithmetic.
+The four pinned public verification stages were replayed
 successfully, including directed energy integration and the complete head/tail
 audit; the two accepted coefficient tables were hash-checked, not regenerated.
 This is a written corollary of the published proof, with its new steps checked

@@ -10,10 +10,15 @@ single native fact checks the degree-592 polynomial `P₅^16`, with norm at most
 by `(581/1000)^8` times the old estimate. Exact rational arithmetic includes the
 unchanged published slope, prefix, finite-block tail, other tails and selector
 mass, and accepts the reciprocal `1.40489844`.
-The numerical budget inequalities and Wallis estimate remain explicit
-hypotheses of `refined_score_of_published_inputs`; their Gaussian
-interpretation is not formalized here. The theorem concludes a normalized
-score inequality, not `IsGrothendieckBound`.
+`wallis_tail_bound` proves the fixed phase-tail estimate at 67, combining
+the exact terms 67--119 with `tsum_haagCoeff_tail_le 120` and π ≤ 355/113.
+Its rational comparison uses proof-producing `decide +kernel`; this adds
+no native axiom. `refined_score_of_published_budgets` therefore needs only
+the published slope, prefix, finite-block, other-tail and selector-mass
+inequalities. Their Gaussian interpretation is not formalized here.
+The theorem concludes a normalized score inequality, not
+`IsGrothendieckBound`. The general Wallis-parameterized transfer remains
+available as `refined_score_of_published_inputs`.
 The corresponding written unconditional corollary uses HJM's proved inputs.
 All four pinned public non-regeneration verifiers pass; the accepted integral
 tables were hash-checked, not regenerated. See
@@ -467,7 +472,7 @@ The four remaining rows still require `CapsRest`.
 The active refined endpoint uses the eight original row/batch facts, one law-node
 fact and five refined-cover facts (14 native inputs). The original cover remains
 in the default development; the complete registry has 25 native facts outside
-the separate 60 cap-range facts. There are 490 axiom-report entries.
+the separate 60 cap-range facts. There are 493 axiom-report entries.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`): `Grothe.head_check` (the upper head),

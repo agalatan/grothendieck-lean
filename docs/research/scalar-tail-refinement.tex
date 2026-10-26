@@ -7,6 +7,8 @@ The new polynomial, suffix and arithmetic statements are also proved in
 \path{Grothe/Haagerup/ScalarTailRefinement.lean}. The published Gaussian
 interpretation and integration facts are explicit inputs to the Lean score
 theorem; the complete Grothendieck conclusion is not yet formalized here.
+The fixed phase-tail estimate used below is independently derived in Lean,
+so it is not an extra hypothesis of the final score corollary.
 
 Let $\rho_5(t)=tP_5(t^2)$ be exactly the degree-75 preprocessor in their
 equation (5.4), with positive raw selector weight
@@ -32,6 +34,17 @@ outer part of branch 5 costs at most
  \frac{w_5q^8}{268}
  =8.20505217878206\ldots\,10^{-10}.
 \]
+For the formal fixed phase-tail estimate, let $r_j=4h_j/\pi$ and
+$g_j=r_j(j+1)(2j+1)$. The existing telescoping majorant and an exact
+rational check give
+\[
+ \sum_{j\ge67}h_j\le\frac{\pi}{4}
+ \left(\sum_{j=67}^{119}r_j+\frac{g_{120}}{240}\right)
+ \le\frac{355}{452}
+ \left(\sum_{j=67}^{119}r_j+\frac{g_{120}}{240}\right)
+ \le\frac1{268}.
+\]
+The finite comparison is kernel-checked, with no additional native fact.
 This replaces only equation (6.20)'s coarse reserve $w_5/268$. All output
 degrees of the first 67 outer blocks remain paid, including their complete
 tail beyond output index 119. The omitted-outer bound may also pay degrees

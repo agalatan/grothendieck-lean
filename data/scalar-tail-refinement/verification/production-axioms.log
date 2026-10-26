@@ -25,6 +25,10 @@
  Classical.choice,
  Quot.sound,
  Grothe.ScalarTailRefinement.power_check._native.native_decide.ax_1_1]
+'Grothe.ScalarTailRefinement.refined_score_of_published_budgets' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.ScalarTailRefinement.power_check._native.native_decide.ax_1_1]
 'Grothe.ScalarTailRefinement.refined_score_of_published_inputs' depends on axioms: [propext,
  Classical.choice,
  Quot.sound,
@@ -33,3 +37,5 @@
 'Grothe.ScalarTailRefinement.supported_composition_arbitrary_power_bound' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
+'Grothe.ScalarTailRefinement.wallis_rational_check' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.ScalarTailRefinement.wallis_tail_bound' depends on axioms: [propext, Classical.choice, Quot.sound]

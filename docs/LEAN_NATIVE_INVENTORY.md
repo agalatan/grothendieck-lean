@@ -3,11 +3,11 @@
 Static source audit only; no Lean builds or native reruns performed. Named native axiom names are matched against the configured allowlist. Indirect report coverage is source-traced, not a newly executed axiom report. Historical times are module build times and do not measure individual native evaluations.
 
 **2026-10-26 extension.** `Grothe.ScalarTailRefinement.power_check`, at
-`Grothe/Haagerup/ScalarTailRefinement.lean:69`, checks the scalar sixteenth-power
+`Grothe/Haagerup/ScalarTailRefinement.lean:70`, checks the scalar sixteenth-power
 norm. Its generated axiom is registered in `data/axioms/native.txt`, and it has
 a direct printer in `scratch/Axioms.lean`. The exact production module built
-without warnings on the droplet (9.2 seconds for the module, not isolated
-native timing), followed by all 13 new axiom printers. Source and report hashes
+without warnings on the droplet, followed by all 16 scalar-tail axiom
+printers. The fixed Wallis estimate adds no native fact. Source and report hashes
 are recorded under `data/scalar-tail-refinement/verification/`. The table below
 retains its historical scope and timings.
 

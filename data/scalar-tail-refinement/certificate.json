@@ -78,5 +78,5 @@
       "wallis_tail": "(6.14)"
     }
   },
-  "scope": "Exact finite polynomial, Wiener-tail refinement and rational arithmetic. Published scalar analytic budgets and Wallis input are explicit hypotheses of the Lean score theorem; this certificate does not establish a Lean Grothendieck endpoint."
+  "scope": "Exact finite polynomial, complete Wiener tail and rational ledger. The fixed phase-tail bound is proved without a new native fact. Published numerical scalar budgets and their Gaussian interpretation remain inputs to the score theorem; no end-to-end Lean Grothendieck endpoint is asserted."
 }

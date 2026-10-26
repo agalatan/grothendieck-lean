@@ -105,6 +105,18 @@ def main():
     require(len(power) == 593 and audit['P16_degree'] == 592, 'Power degree/cutoff differs')
     require(Q(audit['power_cap']) == cap, 'Power cap differs')
 
+    # Independent finite arithmetic behind the standard-axiom Wallis proof.
+    # The infinite suffix deduction itself is in the Lean module.
+    phase_r = [Q(1)]
+    for k in range(120):
+        phase_r.append(phase_r[-1]*Q((2*k+1)**2, 4*(k+1)*(k+2)))
+    phase_chunk = sum(phase_r[67:120])
+    phase_majorant = phase_r[120]*121*241
+    wallis_rational = Q(355, 452)*(phase_chunk+phase_majorant/240)
+    require(phase_chunk == 4*120*121*phase_r[120]-4*67*68*phase_r[67],
+            'Exact phase prefix identity differs')
+    require(wallis_rational < Q(1, 268), 'Finite phase-tail comparison failed')
+
     # Independent constants identified in PROOF.md, not read from assertions
     # of the arithmetic receipt that this calculation checks.
     paper = {
@@ -158,6 +170,7 @@ def main():
         independent_power16_receipt_sha256=sha(HERE/'POWER16_ARITHMETIC_AUDIT.json'),
         production_certificate_sha256=sha(args.certificate),
         verified_power_norm=str(norm), power_cap=str(cap), reciprocal_claim=str(claim),
+        wallis_finite_rational_upper=str(wallis_rational),
         lean_compilation_performed=False,
         scope='Archived non-regeneration replay and exact polynomial/ledger arithmetic only. '
               'Published Gaussian and integral claims are cited in PROOF.md; '

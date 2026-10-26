@@ -12,8 +12,9 @@ The exact polynomial has Wiener norm at most one and a strictly contracting
 power. Its omitted outer suffix retains that contraction before the Wallis
 bound is applied. The rational ledger includes the exact selector mass.
 
-The final score theorem explicitly assumes the published scalar analytic
-budgets and Wallis bound. It does not assert a Grothendieck endpoint.
+The Wallis bound follows from the Haagerup recurrence and a kernel-checked
+rational comparison. The final score corollary explicitly assumes only the
+published scalar analytic budgets. It does not assert a Grothendieck endpoint.
 See data/scalar-tail-refinement/PROOF.md for the mathematical inputs.
 -/
 
@@ -69,7 +70,60 @@ def ratio : ℚ := 581/1000
 lemma power_check : powerNormOK pl 16 ratio = true := by
   native_decide
 
+/-- Finite part of the physical phase suffix, before its pi/4 factor. -/
+def wallisChunk : ℚ := ∑ k ∈ range 120, if k < 67 then 0 else haagR k
+
+/-- A proof-producing rational comparison, with no native evaluation. -/
+lemma wallis_rational_check :
+    (355 : ℚ)/113/4 * (wallisChunk + haagG 120/240) ≤ 1/268 := by
+  decide +kernel
+
 noncomputable section
+
+/-- The entire omitted physical phase suffix is bounded from the existing
+Haagerup recurrence and telescoping lemmas, with no external Wallis input. -/
+lemma wallis_tail_bound : (∑' k, |cHi 67 k|) ≤ (1 : ℝ)/268 := by
+  have hfinite : ∑ k ∈ range 120, |cHi 67 k| = Real.pi/4*(wallisChunk : ℝ) := by
+    unfold wallisChunk
+    push_cast
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro k hk
+    by_cases h : k < 67
+    · simp [cHi, h]
+    · simp only [cHi, ite_eq_right h, abs_of_nonneg (haagCoeff_nonneg k)]
+      rfl
+  have hshift : ∑' k, |cHi 67 (k+120)| = ∑' k, haagCoeff (k+120) := by
+    apply tsum_congr
+    intro k
+    simp [cHi, show ¬ k+120 < 67 by omega, abs_of_nonneg (haagCoeff_nonneg _)]
+  have hpi : Real.pi ≤ (355/113 : ℝ) := by linarith [Real.pi_lt_d20]
+  have hnonneg : (0 : ℝ) ≤ (wallisChunk : ℝ) + (haagG 120 : ℝ)/240 := by
+    have hr := haagR_pos 120
+    have ht : (0 : ℚ) ≤ wallisChunk := Finset.sum_nonneg fun k _ => by
+      split_ifs
+      · exact le_rfl
+      · exact (haagR_pos k).le
+    have ht' : (0 : ℝ) ≤ (wallisChunk : ℝ) := by exact_mod_cast ht
+    unfold haagG
+    push_cast
+    positivity
+  calc
+    (∑' k, |cHi 67 k|) = (∑ k ∈ range 120, |cHi 67 k|) +
+        ∑' k, |cHi 67 (k+120)| :=
+      ((summable_cHi 67).sum_add_tsum_nat_add 120).symm
+    _ = Real.pi/4*(wallisChunk : ℝ) + ∑' k, haagCoeff (k+120) := by rw [hfinite, hshift]
+    _ ≤ Real.pi/4*(wallisChunk : ℝ) + Real.pi/4*((haagG 120 : ℝ)/(2*120)) :=
+      add_le_add_right (tsum_haagCoeff_tail_le 120 (by norm_num)) _
+    _ = Real.pi/4*((wallisChunk : ℝ)+(haagG 120 : ℝ)/240) := by ring
+    _ ≤ (355/113 : ℝ)/4*((wallisChunk : ℝ)+(haagG 120 : ℝ)/240) :=
+      mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_right hpi (by norm_num)) hnonneg
+    _ ≤ (1 : ℝ)/268 := by
+      have hc : (((355 : ℚ)/113/4 * (wallisChunk + haagG 120/240) : ℚ) : ℝ) ≤
+          (((1 : ℚ)/268 : ℚ) : ℝ) := by
+        exact_mod_cast wallis_rational_check
+      push_cast at hc
+      exact hc
 
 def P : ℝ[X] := ofListQ pl
 
@@ -248,6 +302,22 @@ theorem refined_score_of_published_inputs
   exact normalized_score_of_published_budgets linear prefixCost finite67 otherTails
     ((branch5Weight : ℝ)*(∑' n, |compCoeff (cHi 67) P n|)) mass
     hlinear hprefix hfinite67 hother (branch5_outer_bound hWallis) hmass
+
+/-- The normalized score corollary needs only the published numerical
+budgets: its Wallis input is discharged by wallis_tail_bound. The Gaussian
+interpretation of the remaining budgets is not asserted by this theorem. -/
+theorem refined_score_of_published_budgets
+    (linear prefixCost finite67 otherTails mass : ℝ)
+    (hlinear : (slopeLower : ℝ) ≤ linear)
+    (hprefix : prefixCost ≤ (prefixUpper : ℝ))
+    (hfinite67 : finite67 ≤ (finite67Upper : ℝ))
+    (hother : otherTails ≤ (otherTailsUpper : ℝ))
+    (hmass : mass = (selectorMass : ℝ)) :
+    1/(reciprocalClaim : ℝ) <
+      (linear-(prefixCost+finite67+otherTails+
+        (branch5Weight : ℝ)*(∑' n, |compCoeff (cHi 67) P n|)))/mass := by
+  exact refined_score_of_published_inputs linear prefixCost finite67 otherTails mass
+    hlinear hprefix hfinite67 hother hmass wallis_tail_bound
 
 end
 end Grothe.ScalarTailRefinement
