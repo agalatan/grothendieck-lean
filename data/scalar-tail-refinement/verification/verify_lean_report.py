@@ -3,7 +3,7 @@
 
 This checks an existing report; it does not compile Lean. The complete input
 must contain exactly the sixteen scalar-tail results, using only the
-repository's standard axioms and the single generated native power fact.
+repository's standard axioms and no native evaluation axioms.
 """
 import argparse
 import hashlib
@@ -24,8 +24,6 @@ EXPECTED = {PREFIX + name for name in (
     "refined_score_of_published_inputs",
     "wallis_rational_check", "wallis_tail_bound", "refined_score_of_published_budgets",
 )}
-NATIVE = PREFIX + "power_check._native.native_decide.ax_1_1"
-STANDARD_ONLY = {PREFIX + "wallis_rational_check", PREFIX + "wallis_tail_bound"}
 
 
 def load_checker():
@@ -44,8 +42,8 @@ def verify_report(text, checker):
     if registered != EXPECTED:
         raise ValueError("scalar-tail required registry differs from the sixteen expected results")
     registered_native = {name for name in native if name.startswith(PREFIX)}
-    if registered_native != {NATIVE}:
-        raise ValueError("scalar-tail native registry must contain exactly the generated power axiom")
+    if registered_native:
+        raise ValueError("scalar-tail native registry must be empty")
 
     reports = checker.parse_reports(text)
     names = [name for name, _ in reports]
@@ -54,19 +52,14 @@ def verify_report(text, checker):
     missing, extra = EXPECTED - set(names), set(names) - EXPECTED
     if missing or extra:
         raise ValueError(f"report theorem set differs: missing={sorted(missing)}, extra={sorted(extra)}")
-    allowed = checker.STANDARD | {NATIVE}
-    disallowed = [(name, axiom) for name, axioms in reports for axiom in axioms if axiom not in allowed]
+    disallowed = [(name, axiom) for name, axioms in reports for axiom in axioms
+                  if axiom not in checker.STANDARD]
     if disallowed:
         raise ValueError(f"disallowed scalar-tail axioms: {disallowed}")
-    if any(name in STANDARD_ONLY and not set(axioms) <= checker.STANDARD
-           for name, axioms in reports):
-        raise ValueError("Wallis proofs must use only standard axioms")
-    observed = {axiom for _, axioms in reports for axiom in axioms if axiom not in checker.STANDARD}
-    if observed != {NATIVE}:
-        raise ValueError("the generated native power axiom was not observed")
     return {"status": "PASS_STRICT_SCALAR_TAIL_LEAN_REPORT", "theorems": len(reports),
-            "native_facts_observed": sorted(observed), "required_registry_matches": True,
+            "native_facts_observed": [], "required_registry_matches": True,
             "native_registry_matches": True, "wallis_standard_axioms_only": True,
+            "all_standard_axioms_only": True,
             "scope": "Existing axiom report and registry consistency only; no Lean compilation performed."}
 
 

@@ -5,7 +5,7 @@ This file lists, module by module, what the Lean development proves and which in
 **Published scalar-tail refinement.**
 `Grothe/Haagerup/ScalarTailRefinement.lean` proves an arbitrary finite-power
 Wiener composition bound and its signed supported-suffix consequence. Its
-single native fact checks the degree-592 polynomial `P₅^16`, with norm at most
+kernel-checked proof (`cbv`) checks the degree-592 polynomial `P₅^16`, with norm at most
 `581/1000`. The omitted outer indices start at 67, so their norms are bounded
 by `(581/1000)^8` times the old estimate. Exact rational arithmetic includes the
 unchanged published slope, prefix, finite-block tail, other tails and selector
@@ -13,7 +13,7 @@ mass, and accepts the reciprocal `1.40489844`.
 `wallis_tail_bound` proves the fixed phase-tail estimate at 67, combining
 the exact terms 67--119 with `tsum_haagCoeff_tail_le 120` and π ≤ 355/113.
 Its rational comparison uses proof-producing `decide +kernel`; this adds
-no native axiom. `refined_score_of_published_budgets` therefore needs only
+no native axiom. All sixteen scalar-tail results now use only standard axioms. `refined_score_of_published_budgets` therefore needs only
 the published slope, prefix, finite-block, other-tail and selector-mass
 inequalities. Their Gaussian interpretation is not formalized here.
 The theorem concludes a normalized score inequality, not
@@ -505,14 +505,14 @@ rounding or improve an endpoint.
 `certPartition`); `Parts` holds the shared definitions; `Grothe/Lower/RowCheck.lean` assembles them into `cert_check`.
 The active refined endpoint uses the eight original row/batch facts, one law-node
 fact and five refined-cover facts (14 native inputs). The original cover remains
-in the default development; the complete registry has 25 native facts outside
-the separate 60 cap-range facts. There are 493 axiom-report entries.
+in the default development; the complete registry has 29 native facts outside
+the separate 60 cap-range facts after the scalar power check becomes a kernel proof.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`): `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
 `Grothe.HaagerupPower.check` (the finite residual, power norm, inverse defect, combined seed and signed tail of the unconditional upper bound),
-`Grothe.ScalarTailRefinement.power_check` (the scalar sixteenth-power norm), `Grothe.UpperChaos.phi_cover_check_0`–`5`
+`Grothe.UpperChaos.phi_cover_check_0`–`5`
 (the phase cover |φ| < 1), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
 and the 13 chunks `Grothe.Lower.certRows0`–`4`,
 `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower certificate (assembled into

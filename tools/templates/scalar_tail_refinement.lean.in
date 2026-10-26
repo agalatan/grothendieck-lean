@@ -29,9 +29,9 @@ def pl : List ℚ := [@PL@]
 
 def ratio : ℚ := @RATIO@
 
-/-- A single outward fixed-point, finite-polynomial check. -/
+/-- Kernel-checked outward fixed-point bound for the finite polynomial power. -/
 lemma power_check : powerNormOK pl @POWER@ ratio = true := by
-  native_decide
+  set_option cbv.maxSteps 16000000 in cbv
 
 /-- Finite part of the physical phase suffix, before its pi/4 factor. -/
 def wallisChunk : ℚ := ∑ k ∈ range 120, if k < @START@ then 0 else haagR k

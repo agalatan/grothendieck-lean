@@ -219,8 +219,9 @@ the general signed suffix inequality and the rational score transfer with the
 published numerical budgets explicit. The phase-tail estimate at index 67 is
 proved by an exact split at 120 and the existing infinite-tail majorant;
 it is no longer an assumption of `refined_score_of_published_budgets`.
-This uses only standard axioms. The single native numerical fact still checks
-the polynomial power using sequential outward interval arithmetic.
+The polynomial power is checked by proof-producing `cbv` using the same outward
+interval arithmetic. All sixteen scalar-tail results now use only standard
+axioms, with no native evaluation axiom.
 The four pinned public verification stages were replayed
 successfully, including directed energy integration and the complete head/tail
 audit; the two accepted coefficient tables were hash-checked, not regenerated.
@@ -233,7 +234,7 @@ Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` fa
 `Grothe.head_check` (the upper head), `Grothe.UpperChaos.phi_cover_check_0`–`5` (the phase cover |φ| < 1),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
 `Grothe.HaagerupPower.check` (the residual, power norm, inverse defect, combined seed and signed tail),
-`Grothe.ScalarTailRefinement.power_check` (the scalar sixteenth-power norm), the 13 chunks `Grothe.Lower.certRows0`–`4`, `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower
+the 13 chunks `Grothe.Lower.certRows0`–`4`, `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower
 certificate (assembled into `Grothe.Lower.cert_check`), the four
 `Grothe.Research.RefinedLowerCheck.certRefinedBoxes0`–`3` chunks and
 `certRefinedPartition` for the refined cover,

@@ -424,7 +424,7 @@ since been checked; no headline mathematical soundness defect has been found.
   All six replacement proofs also pass isolated elaboration. No native input,
   headline interface, or cap-closure file changes. All 17 ordinary affected modules
   also build warning-free through `HardyHolo` and `LocalizedComparison`; the
-  20-module static reverse closure additionally includes `PhiBound`, `Grothe`,
+  20-module static reverse closure at the #88 delivery tree additionally includes `PhiBound`, `Grothe`,
   and the separate `GrotheCaps` aggregate. Full
   [primary run 40278773502](https://github.com/agalatan/grothendieck-lean/actions/runs/40278773502)
   passed all 9,180 jobs and verification gates: 502 theorem reports, 30 of 90
@@ -489,3 +489,17 @@ Open findings are [#48](https://github.com/agalatan/grothendieck-lean/issues/48)
 implementation: the existing kernel is already shared, and no measured benefit
 justified a change to the native/caps layer. The proof-only Hermite-span compaction
 is tracked separately in [#88](https://github.com/agalatan/grothendieck-lean/issues/88).
+
+
+## One native check removed (#100)
+
+The user's later instruction explicitly authorized removing one native check.
+`Grothe.ScalarTailRefinement.power_check` now proves the same Boolean equality
+with proof-producing `cbv`. Its finite polynomial, outward arithmetic, bound,
+all theorem statements and analytic hypotheses are unchanged. The generator
+template is updated with the production module. The corresponding native axiom
+is removed from the allowlist, reducing its size from 90 to 89 relative to
+master `e8736cf`; the theorem remains required and printed. The scalar report
+checker now rejects every native dependency across all sixteen scalar results.
+The cap-source digest remains unchanged. Full delivery CI is left running at
+the user's request; its eventual outcome is separate from local validation.
