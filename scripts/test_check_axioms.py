@@ -20,7 +20,7 @@ SPEC.loader.exec_module(CHECKER)
 GENERATOR_SPEC = importlib.util.spec_from_file_location("gen_root_imports", ROOT / "tools/gen_root_imports.py")
 GENERATOR = importlib.util.module_from_spec(GENERATOR_SPEC)
 GENERATOR_SPEC.loader.exec_module(GENERATOR)
-MODES = ("caps", "responses", "response-geometry", "haagerup-power", "upper-comparison",
+MODES = ("responses", "response-geometry", "haagerup-power", "upper-comparison",
          "phase-response", "research", "hardy-budget", "refined-cover", "law-nodes")
 
 
@@ -54,10 +54,8 @@ class CheckAxiomsTests(unittest.TestCase):
         for mode, expected in headlines.items():
             with self.subTest(mode=mode):
                 self.assertTrue(expected <= CHECKER.audit_policy(mode)[0])
-        self.assertEqual(CHECKER.audit_policy("caps")[0],
-                         {"Grothe.LowerAnalytic.lower_bound_of_capsRest"})
-        for mode in ("default", "caps"):
-            self.assertEqual(CHECKER.audit_policy(mode)[1], CHECKER.NATIVE)
+        self.assertIn("Grothe.LowerAnalytic.lower_bound_of_capsRest", CHECKER.audit_policy("default")[0])
+        self.assertEqual(CHECKER.audit_policy("default")[1], CHECKER.NATIVE)
         for mode in ("responses", "response-geometry", "phase-response"):
             self.assertEqual(CHECKER.audit_policy(mode)[1], set())
         self.assertEqual(CHECKER.audit_policy("phase-response")[0], CHECKER.PHASE_RESPONSE)

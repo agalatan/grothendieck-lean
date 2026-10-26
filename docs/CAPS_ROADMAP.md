@@ -135,7 +135,7 @@ This does not depend on B's choice of fix. B's choice only changes the data.
 - **Generated files** are reproducible from `data/` byte for byte; never hand-edit them.
 - **Verifying `GrotheCaps`:**
   ```sh
-  lake build GrotheCaps && lake env lean scratch/AxiomsCaps.lean | python3 scripts/check_axioms.py --caps
+  lake build Grothe && lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py
   ```
   This runs automatically on the droplet's CI runner (job `heavy`, modes `warm`/`caps`). After both targets
   and reports pass, the runner records `.lake/build/caps-closure.sha` with `scripts/caps_stamp.py --mark-cache`

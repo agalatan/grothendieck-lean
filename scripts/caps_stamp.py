@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-"""Source hash of the separate target GrotheCaps, recorded in its verified build cache.
+"""Source hash of the node-cap modules (CapRowKK, CapNodes), recorded in the verified build cache.
 
 The 15 heavy CapRowKK modules contain 60 single-threaded native_decide facts. The droplet's self-hosted runner
-builds GrotheCaps and checks both axiom reports before recording the sources beside the build products:
+builds Grothe (node caps included) and checks the axiom report before recording the sources beside the build products:
     python3 scripts/caps_stamp.py --mark-cache          # writes .lake/build/caps-closure.sha
 CI restores the cache and calls
     python3 scripts/caps_stamp.py --check-cache         # (the default) exit 0 iff the verified caps match
-On a match CI builds GrotheCaps (Lake replays the verified facts) and checks its axiom report. On a mismatch or
+On a match CI builds Grothe (Lake replays the verified facts) and checks the axiom report. On a mismatch or
 missing marker it dispatches a runner caps build instead. --digest prints the hash and file count without reading
 or writing the marker; --list also lists the exact hashed files.
 
-The hash covers the computation import closure of the CapRowKK modules, plus CapNodes.lean, GrotheCaps.lean,
-GrotheCapsKernel.lean, lean-toolchain, lake-manifest.json and lakefile.toml. These six extras are hashed directly,
+The hash covers the computation import closure of the CapRowKK modules, plus CapNodes.lean,
+GrotheCapsKernel.lean, lean-toolchain, lake-manifest.json and lakefile.toml. These five extras are hashed directly,
 without traversing their imports: lower-bound proof edits require re-checking the assembly, not the heavy facts.
 The checker library root is pinned because its whole precompiled shared object is loaded by every importer, and
 the Lake configuration controls native compilation. The current decoupled boundary is 48 computation modules
@@ -24,11 +24,11 @@ import argparse, hashlib, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MARK = os.path.join(ROOT, ".lake", "build", "caps-closure.sha")
 PROJECT_PREFIXES = ("Grothe.", "GrotheKernel.", "GrotheCapsKernel.")
-PROJECT_ROOTS = ("Grothe", "GrotheKernel", "GrotheCapsKernel", "GrotheCaps")
+PROJECT_ROOTS = ("Grothe", "GrotheKernel", "GrotheCapsKernel")
 CAP_ROWS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
 TOPS = [f"Grothe.LowerAnalytic.CapRow{k:02d}" for k in CAP_ROWS]
-EXTRA = ["Grothe/LowerAnalytic/CapNodes.lean", "GrotheCaps.lean", "GrotheCapsKernel.lean", "lean-toolchain",
-         "lake-manifest.json", "lakefile.toml"]
+EXTRA = ["Grothe/LowerAnalytic/CapNodes.lean", "GrotheCapsKernel.lean", "lean-toolchain", "lake-manifest.json",
+         "lakefile.toml"]
 IMPORT = re.compile(r"\s*(?:public\s+)?(?:meta\s+)?import(?:\s+(.*))?$")
 MODULE = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(\.[A-Za-z_][A-Za-z0-9_']*)*$")
 
@@ -124,11 +124,11 @@ def main(argv=None):
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument("--check-cache", action="store_true",
-                       help="check that the cached GrotheCaps build is verified for these sources (default)")
+                       help="check that the cached node-cap build is verified for these sources (default)")
     modes.add_argument("--digest", action="store_true", help="print the current source hash and file count")
     modes.add_argument("--list", action="store_true", help="list the exact hashed source files, hash and count")
     modes.add_argument("--mark-cache", action="store_true",
-                       help="record that the GrotheCaps build in .lake/build was verified for these sources")
+                       help="record that the node-cap build in .lake/build was verified for these sources")
     args = parser.parse_args(argv)
     try:
         d, n = digest()
@@ -146,17 +146,17 @@ def main(argv=None):
         os.makedirs(os.path.dirname(MARK), exist_ok=True)
         with open(MARK, "w") as f:
             f.write(d + "\n")
-        print(f"marked the cached GrotheCaps build as verified for sources {d} ({n} files)")
+        print(f"marked the cached node-cap build as verified for sources {d} ({n} files)")
         return 0
     if not os.path.exists(MARK):
-        print(f"FAIL: no verified GrotheCaps build in the cache (current sources {d}, {n} files)")
+        print(f"FAIL: no verified node-cap build in the cache (current sources {d}, {n} files)")
         return 1
     with open(MARK) as mark:
         rec = mark.read().strip()
     if rec != d:
-        print(f"FAIL: the cached GrotheCaps build was verified for sources {rec}; current sources are {d} ({n} files)")
+        print(f"FAIL: the cached node-cap build was verified for sources {rec}; current sources are {d} ({n} files)")
         return 1
-    print(f"the cached GrotheCaps build is verified for the current sources {d} ({n} files)")
+    print(f"the cached node-cap build is verified for the current sources {d} ({n} files)")
     return 0
 
 

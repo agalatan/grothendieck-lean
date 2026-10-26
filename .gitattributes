@@ -16,7 +16,6 @@ handoff/research-third-decimal/needle-20261023/FULL_CI.log whitespace=-blank-at-
 # checked by `python3 tools/gen_root_imports.py --check` in CI. Grothe.lean / GrotheKernel.lean are NOT here:
 # they are generated; resolve a conflict there by running `python3 tools/gen_root_imports.py`.
 scratch/Axioms.lean merge=union
-scratch/AxiomsCaps.lean merge=union
 data/axioms/*.txt merge=union
 data/axioms/modes/*.txt merge=union
 data/root-imports-exclude.txt merge=union

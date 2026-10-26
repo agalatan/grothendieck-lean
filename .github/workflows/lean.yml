@@ -7,9 +7,11 @@ name: Lean proof check
 # The master cache: every update of master gets one check on master (a hand merge triggers it by its push; an
 # auto-merge dispatches it). That check restores the previous master cache, builds incrementally, runs every check, and
 # when all are green and the caps came verified from the cache, saves .lake/build as the new master cache.
-# Heavy work runs on the droplet (self-hosted runner, labels: self-hosted, heavy), only when the caps sources change:
-# * caps (on a branch whose cached GrotheCaps build does not match its sources): builds GrotheCaps for the tree CI
-#   checks (for ready/: merged with master), marks and saves the cache for that branch, and re-dispatches the check.
+# One target: `lake build Grothe` builds everything, the node-cap rows included (replayed from the verified cache).
+# Heavy work runs on the droplet (self-hosted runner, labels: self-hosted, heavy), only when the node-cap sources change
+# (a cold build of the cap rows takes hours, beyond a GitHub-hosted job):
+# * caps (on a branch whose cached cap build does not match its sources): builds Grothe for the tree CI checks
+#   (for ready/: merged with master), marks and saves the cache for that branch, and re-dispatches the check.
 # * warm (on master, dispatched by the master check when its cached caps do not match): the same for master, then
 #   saves the master cache; the runner workspace usually holds that build already (from the branch's caps run).
 # See AGENTS.md section 4c.
@@ -81,7 +83,7 @@ jobs:
         run: |
           # files that affect the Lean build or its checks; everything else (README, docs/, AGENTS.md, tools/, ...)
           # needs no build
-          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|GrotheCaps\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|scratch/AxiomsCaps\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/test_caps_stamp\.py$|\.github/workflows/)'
+          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/test_caps_stamp\.py$|\.github/workflows/)'
           if [[ "${GITHUB_REF_NAME}" == ready/* ]]; then base=origin/master          # HEAD = master + this branch
           elif [ "${GITHUB_REF_NAME}" = master ]; then base="$BEFORE"                # the previous master
           else base=$(git merge-base origin/master HEAD); fi                         # what the branch adds to master
@@ -116,14 +118,26 @@ jobs:
           python3 scripts/test_caps_stamp.py
           python3 scripts/test_check_axioms.py
 
-      - name: Is the cached GrotheCaps build verified for these sources?
+      - name: Are the cached node caps verified for these sources?
         if: steps.scope.outputs.lean == 'true'
         id: caps
         run: |
           if python3 scripts/caps_stamp.py --check-cache; then echo "ok=true" >> "$GITHUB_OUTPUT"
           else echo "ok=false" >> "$GITHUB_OUTPUT"; fi
 
-      - name: Build Grothe
+      - name: If the node caps are not verified for these sources, dispatch their rebuild on the droplet
+        # before building: a cold build of the cap rows takes hours, beyond a GitHub-hosted job
+        if: steps.scope.outputs.lean == 'true' && steps.caps.outputs.ok != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${GITHUB_REF_NAME}" = master ]; then mode=warm; else mode=caps; fi
+          echo "::error::The node-cap sources differ from the verified cached build (or there is no cache yet). Dispatched"
+          echo "::error::a ${mode} run on the droplet; it builds Grothe and re-dispatches this check. Nothing to do by hand."
+          gh workflow run lean.yml --ref "${GITHUB_REF_NAME}" -f mode=${mode}
+          exit 1
+
+      - name: Build Grothe (everything, node caps included)
         if: steps.scope.outputs.lean == 'true'
         run: lake build Grothe --log-level=warning
 
@@ -141,24 +155,6 @@ jobs:
         run: |
           lake env lean scratch/Axioms.lean | tee axioms.txt
           python3 scripts/check_axioms.py < axioms.txt
-
-      - name: Build and check GrotheCaps (replayed from the verified cache)
-        if: steps.scope.outputs.lean == 'true' && steps.caps.outputs.ok == 'true'
-        run: |
-          lake build GrotheCaps --log-level=warning
-          lake env lean scratch/AxiomsCaps.lean | tee axioms-caps.txt
-          python3 scripts/check_axioms.py --caps < axioms-caps.txt
-
-      - name: If GrotheCaps is not verified for these sources, dispatch its rebuild on the droplet
-        if: steps.scope.outputs.lean == 'true' && steps.caps.outputs.ok != 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          if [ "${GITHUB_REF_NAME}" = master ]; then mode=warm; else mode=caps; fi
-          echo "::error::The caps sources differ from the verified cached build (or there is no cache yet). Dispatched"
-          echo "::error::a ${mode} run on the droplet; it builds GrotheCaps and re-dispatches this check. Nothing to do by hand."
-          gh workflow run lean.yml --ref "${GITHUB_REF_NAME}" -f mode=${mode}
-          exit 1
 
       - name: Save the master cache (green check of master)
         # every step above passed (a failed step stops the job), the caps were replayed from the verified cache
@@ -284,15 +280,14 @@ jobs:
         # native certificates and cap rows together; its small import closure contains no certificate chunks.
         run: lake build Grothe.Haagerup.ScalarTailRefinement --log-level=warning
 
-      - name: Build Grothe and GrotheCaps (incremental; hours if the caps sources changed)
-        run: lake build Grothe GrotheCaps --log-level=warning
+      - name: Build Grothe (everything; hours if the node-cap sources changed)
+        run: lake build Grothe --log-level=warning
 
-      - name: Axiom reports (default target and caps target)
+      - name: Axiom report
         run: |
           lake env lean scratch/Axioms.lean > axioms.txt; python3 scripts/check_axioms.py < axioms.txt
-          lake env lean scratch/AxiomsCaps.lean > axioms-caps.txt; python3 scripts/check_axioms.py --caps < axioms-caps.txt
 
-      - name: Mark the cached GrotheCaps build as verified for these sources, and record the built commit
+      - name: Mark the cached node caps as verified for these sources, and record the built commit
         run: |
           python3 scripts/caps_stamp.py --mark-cache
           # Record which tree the runner built; consumers restore Actions caches, not this workspace.
