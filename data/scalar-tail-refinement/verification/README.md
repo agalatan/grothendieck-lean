@@ -32,8 +32,9 @@ The archive contains:
   production certificate by hash; it is excluded from the input manifest.
 - `LEAN_BUILD.json` and `production-*.log`: the successful targeted
   production build, source/dependency hashes, and all 16 scalar-tail
-  axiom reports. The fixed Wallis estimate uses only standard axioms;
-  the polynomial power uses one explicitly registered native fact.
+  axiom reports. All sixteen results use only standard axioms; the polynomial
+  power is checked by `decide +kernel`, without native axioms. The report verifier
+  rejects any scalar-tail native registry entry or native report dependency.
   This is targeted module
   coverage; CI checks the complete root target and full axiom report.
 - `verify_lean_report.py`: consumes the entire archived report through the

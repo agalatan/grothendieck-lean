@@ -227,7 +227,7 @@ nothing: this bound has no hypothesis. The sharper conditional bound above uses 
 \end{center}
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}.\par
 The native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}, check the upper head, selected-band masses, the six-part phase cover, Haagerup bound,
-the scalar sixteenth-power norm, cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and both finite covers.
+cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and both finite covers.
 The native-fact inventory and the report \path{scratch/Axioms.lean} enumerate the checked declarations.
 No \lean{sorry}; CI builds the default target and checks its axiom report. The 60 additional cap-range checks belong to
 the separate heavy \lean{GrotheCaps} target, whose recorded verification stamp CI checks. The generic response and
@@ -274,9 +274,9 @@ $(581/1000)^8$. Its weighted reserve falls from $6.31935\cdot10^{-8}$
 to $8.20506\cdot10^{-10}$. Keeping the published prefix, complete finite-block
 tail, other tails and exact selector mass gives the written corollary
 $\KG<1.40489844$. Four pinned public verifiers pass; accepted coefficient
-tables are hash-checked. Lean proves the power check, complete suffix
-estimate and score arithmetic. It also derives the phase-tail bound by an
-exact split at 120, without another native fact. Published Gaussian and
+tables are hash-checked. Lean proves the power check with \lean{decide +kernel},
+complete suffix estimate and score arithmetic, all without native axioms.
+It also derives the phase-tail bound by an exact split at 120. Published Gaussian and
 numerical integral budgets remain external; the fully formal endpoint
 \lean{haagerup\_bound} is unchanged.
 The deduction and provenance are in
