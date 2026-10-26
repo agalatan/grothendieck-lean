@@ -48,9 +48,9 @@ lemma gamma_bound : haagG terms ≤ gamma := by
 lemma norm_defect : l1 (1-R*(1-X*P^2)) ≤ (defectCap : ℝ) := by
   have hc := check
   simp only [checks, Bool.and_eq_true] at hc
-  apply defect_of_check pl rl 158 defectCap _ hc.1.1.2
-  change (1-R*(1-X*P^2)).natDegree < 158
-  have hr : R.natDegree ≤ 128 := by
+  apply defect_of_check pl rl 94 defectCap _ hc.1.1.2
+  change (1-R*(1-X*P^2)).natDegree < 94
+  have hr : R.natDegree ≤ 64 := by
     simpa [R,rl] using natDegree_ofListQ_le rl
   have h1 : (X*P^2).natDegree ≤ 29 := by
     have h := natDegree_mul_le (p := (X : ℝ[X])) (q := P^2)
@@ -59,16 +59,16 @@ lemma norm_defect : l1 (1-R*(1-X*P^2)) ≤ (defectCap : ℝ) := by
     omega
   have hd : (1-X*P^2).natDegree ≤ 29 :=
     (natDegree_sub_le _ _).trans (max_le (by simp) h1)
-  have hp : (R*(1-X*P^2)).natDegree ≤ 157 :=
+  have hp : (R*(1-X*P^2)).natDegree ≤ 93 :=
     natDegree_mul_le.trans (Nat.add_le_add hr hd)
   exact lt_of_le_of_lt ((natDegree_sub_le _ _).trans (max_le (by simp) hp)) (by norm_num)
 
 lemma norm_seed : l1 (R*P^seedPower) ≤ (seedCap : ℝ) := by
   have hc := check
   simp only [checks, Bool.and_eq_true] at hc
-  apply seed_of_check pl rl seedPower 367 seedCap _ hc.1.2
-  change (R*P^seedPower).natDegree < 367
-  have hr : R.natDegree ≤ 128 := by
+  apply seed_of_check pl rl seedPower 303 seedCap _ hc.1.2
+  change (R*P^seedPower).natDegree < 303
+  have hr : R.natDegree ≤ 64 := by
     simpa [R,rl] using natDegree_ofListQ_le rl
   have h2 := (natDegree_pow_le (p := P) (n := seedPower)).trans (Nat.mul_le_mul_left seedPower degree_P)
   have h3 := natDegree_mul_le (p := R) (q := P^seedPower)

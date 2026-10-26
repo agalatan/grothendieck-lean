@@ -151,6 +151,16 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
 - **Cost:** every push uses CI minutes, which the private repository pays for. Push work branches when they matter,
   not after every small commit.
 
+## 4a. Pull requests
+
+- **Agents open a pull request only for deliveries that change `.github/workflows/`** (the workflow token cannot push
+  those). Every other delivery goes through `ready/<agent>-<topic>` alone, with no PR: CI merges it into the current
+  master, checks the merged tree and moves master.
+- **Agents never merge a pull request by hand.**
+- **The user may merge by hand** to speed up the queue, provided the PR branch is up to date with master (no
+  "out-of-date" warning on GitHub) and its latest CI run is green. Then the merged result is the tree CI checked. A
+  hand merge is a normal push, so CI also runs on master afterwards.
+
 ## 4b. If you find yourself in the main checkout
 
 Run `pwd; git rev-parse --show-toplevel; git branch --show-current; git status --short`.
