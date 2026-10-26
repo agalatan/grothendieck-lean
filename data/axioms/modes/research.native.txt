@@ -1,1 +1,2 @@
 # --research: native allowlist (empty means no native facts; sorted; union-merged).
+# Research-only audit accepts no native_decide facts.
