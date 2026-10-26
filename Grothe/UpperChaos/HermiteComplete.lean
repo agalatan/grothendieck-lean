@@ -35,32 +35,28 @@ def spanH : Submodule ℂ CPoly := Submodule.span ℂ (Set.range fun pq : ℕ ×
 lemma H_mem (p q : ℕ) : H p q ∈ spanH := Submodule.subset_span ⟨(p, q), rfl⟩
 
 lemma X0_mul_mem {v : CPoly} (hv : v ∈ spanH) : X 0 * v ∈ spanH := by
-  induction hv using Submodule.span_induction with
-  | mem v hv =>
-    obtain ⟨⟨p, q⟩, rfl⟩ := hv
-    have : X 0 * H p q = A0 (H p q) + pderiv 1 (H p q) := by simp [A0]
-    rw [this, ← H_succ_left]
-    refine spanH.add_mem (H_mem _ _) ?_
-    cases q with
-    | zero => rw [pderiv1_H_zero]; exact spanH.zero_mem
-    | succ q => rw [pderiv1_H_succ]; exact spanH.smul_of_tower_mem _ (H_mem _ _)
-  | zero => simp
-  | add u v _ _ hu hv => rw [mul_add]; exact spanH.add_mem hu hv
-  | smul c v _ hv => rw [mul_smul_comm]; exact spanH.smul_mem c hv
+  refine (Submodule.span_le.2 ?_ :
+    spanH ≤ spanH.comap (LinearMap.mul ℂ _ (X 0))) hv
+  rintro _ ⟨⟨p, q⟩, rfl⟩
+  change X 0 * H p q ∈ spanH
+  have : X 0 * H p q = A0 (H p q) + pderiv 1 (H p q) := by simp [A0]
+  rw [this, ← H_succ_left]
+  refine spanH.add_mem (H_mem _ _) ?_
+  cases q with
+  | zero => rw [pderiv1_H_zero]; exact spanH.zero_mem
+  | succ q => rw [pderiv1_H_succ]; exact spanH.smul_of_tower_mem _ (H_mem _ _)
 
 lemma X1_mul_mem {v : CPoly} (hv : v ∈ spanH) : X 1 * v ∈ spanH := by
-  induction hv using Submodule.span_induction with
-  | mem v hv =>
-    obtain ⟨⟨p, q⟩, rfl⟩ := hv
-    have : X 1 * H p q = A1 (H p q) + pderiv 0 (H p q) := by simp [A1]
-    rw [this, A1_H]
-    refine spanH.add_mem (H_mem _ _) ?_
-    cases p with
-    | zero => rw [pderiv0_H_zero]; exact spanH.zero_mem
-    | succ p => rw [pderiv0_H_succ]; exact spanH.smul_of_tower_mem _ (H_mem _ _)
-  | zero => simp
-  | add u v _ _ hu hv => rw [mul_add]; exact spanH.add_mem hu hv
-  | smul c v _ hv => rw [mul_smul_comm]; exact spanH.smul_mem c hv
+  refine (Submodule.span_le.2 ?_ :
+    spanH ≤ spanH.comap (LinearMap.mul ℂ _ (X 1))) hv
+  rintro _ ⟨⟨p, q⟩, rfl⟩
+  change X 1 * H p q ∈ spanH
+  have : X 1 * H p q = A1 (H p q) + pderiv 0 (H p q) := by simp [A1]
+  rw [this, A1_H]
+  refine spanH.add_mem (H_mem _ _) ?_
+  cases p with
+  | zero => rw [pderiv0_H_zero]; exact spanH.zero_mem
+  | succ p => rw [pderiv0_H_succ]; exact spanH.smul_of_tower_mem _ (H_mem _ _)
 
 /-- **Every polynomial in `z, z̄` is a combination of Hermite polynomials.** -/
 theorem mem_span_H (P : CPoly) : P ∈ spanH := by
