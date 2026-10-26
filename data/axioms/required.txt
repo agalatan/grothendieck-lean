@@ -259,6 +259,10 @@ Grothe.Upper.comparisonWeight_sound
 Grothe.Upper.comparison_check
 Grothe.Upper.headWeight_sound
 Grothe.Upper.head_residual_le_weighted
+Grothe.UpperChaos.RadialRepair.complement_identity
+Grothe.UpperChaos.RadialRepair.norm_phaseRepair_le_one
+Grothe.UpperChaos.RadialRepair.phaseRepair_change_sq_le
+Grothe.UpperChaos.RadialRepair.radial_gap_sq_le
 Grothe.UpperChaos.differentiableOn_HholPair_Rt
 Grothe.UpperChaos.fresh_upper_concrete
 Grothe.UpperChaos.fresh_upper_of_rounding
@@ -268,6 +272,10 @@ Grothe.UpperChaos.hardy_of_pair_inputs
 Grothe.UpperChaos.localized_comparison
 Grothe.UpperChaos.norm_energyBlock_sq
 Grothe.UpperChaos.phi_abs_lt_one
+Grothe.UpperChaos.radial_distance_le_of_sixth_moment
+Grothe.UpperChaos.radial_kernel_ceiling
+Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le
+Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le_two_mul
 Grothe.fresh_upper
 Grothe.haagerup_bound
 Grothe.hardy_budget_after_linear
