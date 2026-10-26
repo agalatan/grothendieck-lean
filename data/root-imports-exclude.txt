@@ -1,0 +1,24 @@
+# Modules that tools/gen_root_imports.py must NOT import in the root files Grothe.lean / GrotheKernel.lean.
+# One module per line, sorted; `#` starts a comment. Union-merged by git (.gitattributes).
+#
+# Separate target GrotheCaps (60 native range facts, hours): built on the droplet runner, replayed by CI from the
+# verified build cache — never part of the default target `Grothe`.
+Grothe.LowerAnalytic.CapNodes
+Grothe.LowerAnalytic.CapRow00
+Grothe.LowerAnalytic.CapRow01
+Grothe.LowerAnalytic.CapRow02
+Grothe.LowerAnalytic.CapRow03
+Grothe.LowerAnalytic.CapRow04
+Grothe.LowerAnalytic.CapRow05
+Grothe.LowerAnalytic.CapRow06
+Grothe.LowerAnalytic.CapRow07
+Grothe.LowerAnalytic.CapRow08
+Grothe.LowerAnalytic.CapRow09
+Grothe.LowerAnalytic.CapRow10
+Grothe.LowerAnalytic.CapRow11
+Grothe.LowerAnalytic.CapRow16
+Grothe.LowerAnalytic.CapRow17
+Grothe.LowerAnalytic.CapRow18
+# Kernel modules used only by Grothe.Upper (they are built through Grothe.lean, not through the GrotheKernel root).
+GrotheKernel.BandMass
+GrotheKernel.HeadWeight
