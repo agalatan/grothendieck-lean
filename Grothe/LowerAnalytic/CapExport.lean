@@ -1,4 +1,4 @@
-import Grothe.LowerAnalytic.CapPieceNodes
+import Grothe.LowerAnalytic.CapPieceRange
 
 /-!
 # Export of the piece matrices (tooling for the S-lemma multiplier search)
