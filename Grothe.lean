@@ -211,6 +211,7 @@ import Grothe.UpperChaos.HardyArcPart0
 import Grothe.UpperChaos.HardyArcPart1
 import Grothe.UpperChaos.HardyArcPart2
 import Grothe.UpperChaos.HardyArcPart3
+import Grothe.UpperChaos.HardyArcRegion
 import Grothe.UpperChaos.HardyArcSound
 import Grothe.UpperChaos.HardyHolo
 import Grothe.UpperChaos.HardyKernel
