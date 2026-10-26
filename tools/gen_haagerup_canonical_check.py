@@ -424,7 +424,7 @@ def render_blocks(data, parameters):
 def render_convolution_module():
     """Core-only proof that continuation blocks preserve the original recursion."""
     return dedent('''
-    import GrotheKernel.ResolventCompletion
+    import Grothe.Haagerup.CanonicalArithmetic
 
     /-!
     Agent-ID: codex-aa04. Exact continuation blocks for interval convolution.
@@ -494,7 +494,7 @@ def render(data, parameters):
         if any("convWithTail " in block for block in blocks):
             imports.append(f"import {MODULE_PREFIX}.Convolution")
         if kind == "core":
-            imports.append("import GrotheKernel.ResolventCompletion")
+            imports.append("import Grothe.Haagerup.CanonicalArithmetic")
         elif kind == "bindings":
             imports.append("import Grothe.Haagerup.CanonicalData")
         imports.append("import Lean.Elab.Command")

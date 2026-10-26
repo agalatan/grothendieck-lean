@@ -1,6 +1,6 @@
 import Grothe.Upper.Haagerup
 import Grothe.Upper.ResolventTail
-import GrotheKernel.ResolventCompletion
+import Grothe.Haagerup.CanonicalArithmetic
 
 /-!
 # Soundness of finite resolvent completion certificates

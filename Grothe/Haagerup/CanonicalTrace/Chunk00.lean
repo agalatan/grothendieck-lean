@@ -1,4 +1,4 @@
-import GrotheKernel.ResolventCompletion
+import Grothe.Haagerup.CanonicalArithmetic
 import Lean.Elab.Command
 
 /-!

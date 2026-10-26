@@ -27,8 +27,8 @@ partition checker. Its unused straddler scan is absent, making
 [#56](https://github.com/agalatan/grothendieck-lean/issues/56) moot. This is a
 soundness/maintenance change; no speedup is claimed.
 
-Current source registries contain **587 default reports, 371 required declarations
-and 84 named native facts (24 ordinary plus 60 cap ranges)**. The current inventory
+Current source registries contain **586 default reports, 370 required declarations
+and 83 named native facts (23 ordinary plus 60 cap ranges)**. The current inventory
 is [LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md). The older counts and
 coverage measurements in the baseline review describe that earlier tree only.
 The baseline's retired-cover structural checks are not presented as a verification
@@ -195,7 +195,7 @@ provenance but do not substitute for those checks.
 
 The current supported-target inventory, including individual names, source
 locations, report coverage and runtime provenance, is
-[LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md). It contains 84 allowlisted
+[LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md). It contains 83 allowlisted
 native facts and separately identifies four anonymous table diagnostics.
 
 | Facts | Count | Computation |
@@ -209,12 +209,11 @@ native facts and separately identifies four anonymous table diagnostics.
 | `LowerAnalytic.capChords_check` | 1 | Exact chord inequalities, valid independent vertex endpoints. |
 | `head_check` | 1 | Stored upper-table index bounds and interval head residual through degree 501. |
 | `Upper.comparison_check` | 1 | Selected weighted band masses/radii and cross/quadratic comparison budget. |
-| `HaagerupPower.check` | 1 | 1,024-term finite head, fourth-power norm, inverse defect, combined seed and signed resolvent tail. |
 | `UpperChaos.phi_cover_check_0`–`5` | 6 | Sequential phase-term cover chunks and the analytic-far-field numerical inequality. |
 | Anonymous `CapTables` examples | 4 | Nine-entry parser length, sample table validity, rejection of a wrong interval, one radial interval. |
 
-`NATIVE` has 84 entries; `REQUIRED` has 315 declarations. All REQUIRED names are
-present among 532 distinct default-report print directives. The 24 ordinary
+`NATIVE` has 83 entries; `REQUIRED` has 370 declarations. All REQUIRED names are
+present among 586 distinct default-report print directives. The 23 ordinary
 named checks have direct default-report printers; the 60 ranges are covered
 through the separate caps report. The checker rejects unlisted axioms in reported theorems;
 it does **not** establish source-inventory completeness. Add a source-site audit

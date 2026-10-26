@@ -1,7 +1,7 @@
-import Grothe.Haagerup.PowerCheck
+import Grothe.Haagerup.PowerData
 import Grothe.Upper.Haagerup
 import Grothe.Upper.FiniteDifference
-import GrotheKernel.ResolventCompletion
+import Grothe.Haagerup.CanonicalArithmetic
 
 /-! Exact parameters of the canonical resolvent completion. -/
 namespace Grothe.HaagerupCanonical

@@ -1,6 +1,6 @@
 import Grothe.Haagerup.CanonicalTrace.Chunk13
 import Grothe.Haagerup.CanonicalTrace.Convolution
-import GrotheKernel.ResolventCompletion
+import Grothe.Haagerup.CanonicalArithmetic
 import Lean.Elab.Command
 
 /-!

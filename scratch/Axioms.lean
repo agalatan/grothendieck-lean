@@ -42,7 +42,6 @@ import Grothe
 #print axioms Grothe.HaagerupPhaseGeometry.degree_moment_not_summable
 #print axioms Grothe.HaagerupPhaseGeometry.harmonic_lower
 #print axioms Grothe.HaagerupPhaseGeometry.scaled_lower
-#print axioms Grothe.HaagerupPower.check
 #print axioms Grothe.Lower.MPoly.momentLift_J
 #print axioms Grothe.Lower.MPoly.momentLift_eval
 #print axioms Grothe.Lower.MPoly.momentLift_majorant

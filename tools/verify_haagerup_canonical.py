@@ -31,7 +31,7 @@ def main():
     spec = importlib.util.spec_from_file_location('generator', root/'tools/gen_haagerup_power.py')
     generator = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(generator)
-    assert (root/'Grothe/Haagerup/PowerCheck.lean').read_text() == generator.render(data)
+    assert (root/'Grothe/Haagerup/PowerData.lean').read_text() == generator.render(data)
     pl, rl = ([Q(x) for x in data[n]] for n in ('P', 'R'))
     eta, seed_cap = (Q(data[n]) for n in ('defect_cap', 'seed_cap'))
     seed = data['seed_power']
@@ -113,12 +113,12 @@ def main():
     public = Q(targets[0].replace(' ', ''))
     assert f'IsGrothendieckBound ({targets[0]})' in proof
     assert endpoint < public
-    names = ['Grothe/Haagerup/Power.lean', 'Grothe/Haagerup/PowerCheck.lean',
+    names = ['Grothe/Haagerup/Power.lean', 'Grothe/Haagerup/PowerData.lean',
              'Grothe/Haagerup/CanonicalData.lean', 'Grothe/Haagerup/CanonicalCheck.lean',
              'Grothe/Haagerup/CanonicalProof.lean', 'Grothe/Haagerup/CompleteMonotone.lean',
              'Grothe/Upper/FiniteDifference.lean', 'Grothe/Upper/ResolventCompletion.lean',
              'Grothe/Upper/ResolventCertificate.lean', 'Grothe/Upper/WeightedTail.lean',
-             'GrotheKernel/ResolventCompletion.lean',
+             'Grothe/Haagerup/CanonicalArithmetic.lean',
              'tools/gen_haagerup_canonical_check.py']
     # Record the exact generated proof sources used by the public bindings.
     # Reproducibility is checked separately with the generator's --check mode;

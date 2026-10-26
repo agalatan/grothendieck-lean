@@ -1,4 +1,4 @@
-import GrotheKernel.ResolventCompletion
+import Grothe.Haagerup.CanonicalArithmetic
 
 /-!
 Agent-ID: codex-aa04. Exact continuation blocks for interval convolution.

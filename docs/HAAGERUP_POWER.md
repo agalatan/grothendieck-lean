@@ -144,7 +144,7 @@ candidate proof.
 - `Grothe/Upper/ResolventCompletion.lean`: the all-order completion identity and infinite remainder estimate.
 - `Grothe/Upper/ResolventCertificate.lean`: soundness of the checked finite coefficient prefix.
 - `Grothe/Upper/WeightedTail.lean`: the coefficient-tail bound from a scaled polynomial norm.
-- `GrotheKernel/ResolventCompletion.lean`: outward integer computation of the finite head and correction.
+- `Grothe/Haagerup/CanonicalArithmetic.lean`: outward integer computation of the finite head and correction.
 - `Grothe/Haagerup/CanonicalTrace/`: generated literal arithmetic steps and their recurrence and input bindings; kernel acceptance is pending.
 - `Grothe/Haagerup/CanonicalCheck.lean`: the four public check statements whose kernel proofs must be completed.
 - `Grothe/Haagerup/CanonicalProof.lean`: complete composition and matrix transfer from those checks.

@@ -39,7 +39,6 @@ Grothe.HaagerupCompleteMonotone.tendsto_iterDiff_haagR_zero
 Grothe.HaagerupPhaseGeometry.degree_moment_not_summable
 Grothe.HaagerupPhaseGeometry.harmonic_lower
 Grothe.HaagerupPhaseGeometry.scaled_lower
-Grothe.HaagerupPower.check
 Grothe.Lower.MPoly.momentLift_majorant
 Grothe.Lower.PrimalAudit.no_dual_below_primal
 Grothe.Lower.PrimalAudit.primal_le_dual
