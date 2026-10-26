@@ -22,11 +22,7 @@ theorem all_level_price_of_front_tail {ι : Type*} [Fintype ι]
   · exact hfront n hn
   · have hp : ∀ i, r i ^ (2 * n + 5) ≤ r i ^ (2 * L + 5) := by
       intro i
-      obtain ⟨k, hk⟩ := Nat.exists_eq_add_of_le (le_of_not_gt hn)
-      rw [hk]
-      have he : 2 * (L + k) + 5 = 2 * k + (2 * L + 5) := by omega
-      rw [he, pow_add]
-      exact mul_le_of_le_one_left (pow_nonneg (hr i) _) (pow_le_one₀ (hr i) (hr1 i))
+      exact pow_le_pow_of_le_one (hr i) (hr1 i) (by omega)
     calc
       |∑ i, price i * r i ^ (2 * n + 5)| ≤ ∑ i, |price i * r i ^ (2 * n + 5)| :=
         Finset.abs_sum_le_sum_abs _ _
@@ -66,9 +62,8 @@ theorem common_tail_price {ι : Type*} [Fintype ι]
     intro n
     rw [Real.norm_eq_abs, abs_mul]
     exact mul_le_of_le_one_right (abs_nonneg _) (hspec n)
-  have hs := Summable.of_norm_bounded ha hb
   rw [hid]
-  exact (norm_tsum_le_tsum_norm hs.norm).trans (hs.norm.tsum_le_tsum hb ha)
+  exact tsum_of_norm_bounded ha.hasSum hb
 
 theorem full_score_upper {ι : Type*} [Fintype ι]
     (r price K : ι → ℝ) (a : ℕ → ℝ) (ha : Summable fun n => |a n|)
@@ -98,18 +93,10 @@ theorem affine_error_bound {ι : Type*} [Fintype ι]
     (w x mid err : ι → ℝ) (he : ∀ i, |x i - mid i| ≤ err i) :
     |∑ i, w i * x i - ∑ i, w i * mid i| ≤ ∑ i, |w i| * err i := by
   rw [← Finset.sum_sub_distrib]
-  calc
-    |∑ i, (w i * x i - w i * mid i)| = |∑ i, w i * (x i - mid i)| := by
-      congr 1
-      apply Finset.sum_congr rfl
-      intro i _
-      ring
-    _ ≤ ∑ i, |w i * (x i - mid i)| := Finset.abs_sum_le_sum_abs _ _
-    _ ≤ ∑ i, |w i| * err i := by
-      apply Finset.sum_le_sum
-      intro i _
-      rw [abs_mul]
-      exact mul_le_mul_of_nonneg_left (he i) (abs_nonneg _)
+  simp_rw [← mul_sub]
+  exact (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun i _ => by
+    rw [abs_mul]
+    exact mul_le_mul_of_nonneg_left (he i) (abs_nonneg _))
 
 /-- A single coefficient error ball pays for every admissible spectral price.
 It is not an independent error at each noise point used to construct the price. -/
@@ -121,9 +108,7 @@ theorem l1_anchor_price_bound (price err : ℕ → ℝ)
     intro n
     rw [Real.norm_eq_abs, abs_mul]
     exact mul_le_of_le_one_left (abs_nonneg _) (hp n)
-  have hs := Summable.of_norm_bounded he hb
-  exact ((norm_tsum_le_tsum_norm hs.norm).trans
-    (hs.norm.tsum_le_tsum hb he)).trans hr
+  exact (tsum_of_norm_bounded he.hasSum hb).trans hr
 
 set_option maxHeartbeats 1000000 in
 /-- The complete score is 1-Lipschitz in the coefficient l1 norm.

@@ -16,7 +16,8 @@ ROOT = SCRIPT.parent.parent
 SPEC = importlib.util.spec_from_file_location("check_axioms", SCRIPT)
 CHECKER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(CHECKER)
-MODES = ("caps", "responses", "response-geometry", "haagerup-power", "upper-comparison")
+MODES = ("caps", "responses", "response-geometry", "haagerup-power", "upper-comparison",
+         "phase-response")
 
 
 class CheckAxiomsTests(unittest.TestCase):
@@ -43,6 +44,8 @@ class CheckAxiomsTests(unittest.TestCase):
             "response-geometry": {"Grothe.LowerAnalytic.DiffuseCubicObstruction.above_target"},
             "haagerup-power": {"Grothe.HaagerupPower.upper"},
             "upper-comparison": {"Grothe.fresh_upper"},
+            "phase-response": {"Grothe.Upper.ResponseGeometry.full_energy_comparison",
+                               "Grothe.HaagerupPhaseGeometry.harmonic_lower"},
         }
         for mode, expected in headlines.items():
             with self.subTest(mode=mode):
@@ -51,8 +54,10 @@ class CheckAxiomsTests(unittest.TestCase):
                          {"Grothe.LowerAnalytic.lower_bound_of_capsRest"})
         for mode in ("default", "caps"):
             self.assertEqual(CHECKER.audit_policy(mode)[1], CHECKER.NATIVE)
-        for mode in ("responses", "response-geometry"):
+        for mode in ("responses", "response-geometry", "phase-response"):
             self.assertEqual(CHECKER.audit_policy(mode)[1], set())
+        self.assertEqual(CHECKER.audit_policy("phase-response")[0], CHECKER.PHASE_RESPONSE)
+        self.assertTrue(CHECKER.PHASE_RESPONSE <= CHECKER.audit_policy("default")[0])
         self.assertEqual(CHECKER.audit_policy("haagerup-power")[1],
                          {"Grothe.HaagerupPower.check._native.native_decide.ax_1_1"})
         self.assertEqual(CHECKER.audit_policy("upper-comparison")[1],
@@ -105,6 +110,7 @@ class CheckAxiomsTests(unittest.TestCase):
         head = "Grothe.head_check._native.native_decide.ax_1_1"
         power = "Grothe.HaagerupPower.check._native.native_decide.ax_1_1"
         for mode, foreign in [("responses", head), ("response-geometry", head),
+                              ("phase-response", head),
                               ("haagerup-power", head), ("upper-comparison", power)]:
             with self.subTest(mode=mode):
                 extra = f"'Test.foreignRoute' depends on axioms: [{foreign}]\n"
@@ -116,7 +122,7 @@ class CheckAxiomsTests(unittest.TestCase):
                 self.assertEqual(self.run_main([f"--{first}", f"--{second}"], self.report())[0], 2)
 
     def test_unknown_abbreviated_and_positional_arguments_are_rejected(self):
-        for arg in ("--unknown", "--response", "--haagerup-pow", "unexpected"):
+        for arg in ("--unknown", "--response", "--haagerup-pow", "--phase", "unexpected"):
             with self.subTest(arg=arg):
                 self.assertEqual(self.run_main([arg], self.report())[0], 2)
 

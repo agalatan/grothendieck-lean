@@ -1,0 +1,76 @@
+\subsection{Weighted phase errors and transport of a response certificate}
+
+The following statements are proved in
+\texttt{Grothe/Upper/ResponseGeometry.lean}. They concern a real Hilbert space;
+complex response spaces may be realified. No Gaussian integration or improved
+Grothendieck endpoint is an input or a conclusion of these statements.
+
+If $\|u\|=1$, then the exact support defect is
+\[
+ a-\langle au,v\rangle
+ =\frac a2\bigl(\|u-v\|^2+1-\|v\|^2\bigr).
+\]
+For unit $u,v$ and $a,b\ge0$, the reverse triangle inequality gives
+\[
+ a\|u-v\|\le\|au-bv\|+|a-b|\le2\|au-bv\|.
+\]
+Consequently
+\[
+ a^2\|u-v\|^2\le4\|au-bv\|^2,
+ \qquad
+ a\bigl(a-\langle au,v\rangle\bigr)\le2\|au-bv\|^2.
+\]
+These division-free statements include zero moduli. At positive $a$, they
+bound the ordinary support loss by $2\|au-bv\|^2/a$; no uniform positive
+lower bound for the image modulus is being assumed.
+
+Let $U$ be a linear isometric equivalence. A correlation operator is preserved
+under a common change of coordinates precisely in the following form:
+\[
+ BU=UA\quad\Longrightarrow\quad
+ \langle Ux,BUy\rangle=\langle x,Ay\rangle.
+\]
+For a family of linear blocks, require the corresponding explicit relation
+$Q_iU=UP_i$. It implies $\|Q_iUx\|^2=\|P_ix\|^2$. Suppose also that
+\[
+ \sum_{i\in S}\|Q_i z\|^2\le\|z\|^2
+ \quad\text{for every finite }S\text{ and every }z.
+\]
+If $e\ge0$ and $\|y-Ux\|\le e$, then
+\[
+ \sum_i\left|\|Q_i y\|^2-\|P_i x\|^2\right|
+ \le2\|x\|e+e^2.                                    \tag{*}
+\]
+To prove this, apply
+$|\|s+d\|^2-\|s\|^2|\le2\|s\|\|d\|+\|d\|^2$
+in each block, and then Cauchy--Schwarz and Bessel to every finite sum.
+The nonnegative infinite sum is bounded by the same constant. In particular,
+a pure motion $y=Ux$ has exactly zero price, including its complete tail.
+The eight Lean statements establish the identities, the finite comparison,
+the passage to the entire spectrum, and this zero-price specialization.
+
+The intertwining hypothesis cannot be dropped. For instance, interchanging
+two coordinates preserves total chaos degree but can change the individual
+coordinate bidegrees. An anisotropic preprocessor must be transported along
+with the response before applying $(*)$.
+
+\paragraph{An all-index phase-spectrum obstruction.}
+The additional three statements in
+\texttt{Grothe/Haagerup/}\allowbreak\texttt{PhaseGeometry.lean}
+use the exact phase coefficients
+\[
+ c_k=\frac\pi4r_k,\qquad r_0=1,\qquad
+ r_{k+1}=r_k\frac{(2k+1)^2}{4(k+1)(k+2)}.
+\]
+For $k\ge1$, put $b_k=4k(k+1)r_k$. Then $b_1=1$ and
+$b_{k+1}=b_k+r_k$. Thus
+\[
+ r_k\ge\frac1{4k(k+1)},\qquad
+ (2k+1)c_k\ge\frac\pi{16(k+1)}\quad(k\ge1).
+\]
+Comparison with the harmonic series proves that
+$\sum_k(2k+1)c_k$ is not summable. These are all-index kernel proofs, without
+new numerical native facts. They exclude a finite first-degree-moment price
+for the phase spectrum; they do not exclude a modulus-weighted phase metric.
+The Gaussian identification of a particular coordinate motion and the
+verification of numerical response integrals are separate application tasks.
