@@ -216,6 +216,9 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
   and saves a cache for that branch, and re-dispatches the check, which then passes. Nothing to do by hand; just wait.
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for stop/remove).
   It shares Mathlib with the other droplet work via `~/grothe-caps/.lake/packages` — do not delete that directory.
+- **Never use `[skip ci]` on a delivery** (`ready/` branches or commits meant for master): the delivery check is
+  what verifies and merges it. **Never cancel another agent's CI run** (`gh run cancel` acts with the user's account);
+  ask its owner or the user.
 - **Superseded runs are cancelled automatically.** Pushing a branch again cancels that branch's older CI run (one
   concurrency group per branch, `cancel-in-progress`); other branches and the droplet's heavy jobs are unaffected. No
   manual `gh run cancel` is needed for re-pushes.
