@@ -201,15 +201,56 @@ class BatchTests(unittest.TestCase):
         self.assertEqual(resumed.state['fingerprint']['lean_child_threads'], 1)
         self.assertEqual(resumed.state['summary']['raw_exact'], 0)
 
-    def test_five_profile_rejects_six_and_changed_resume_settings(self):
+    def test_five_profile_rejects_eight_and_changed_resume_settings(self):
         for field in ('batch_size', 'lake_threads'):
-            setattr(self.config, field, 6)
+            setattr(self.config, field, 8)
             with self.assertRaises(ValueError):
                 self.config.validate()
             setattr(self.config, field, 5)
         owner = self.new_batch(export_only=True)
         owner.update()
         self.config.lake_threads = 4
+        with self.assertRaisesRegex(ValueError, 'source/config changed'):
+            self.new_batch()
+
+    def test_seven_export_groups_warm_start_and_default_pair(self):
+        for initial, indices, sizes in [(7, range(201, 209), [7, 2]),
+                                        (2, range(201, 210), [2, 7, 1])]:
+            with self.subTest(initial=initial):
+                self.setup_batch_fixture(indices)
+                self.config.batch_size = self.config.lake_threads = 7
+                self.config.initial_batch_size = initial
+                self.config.export_only = True
+                self.config.validate()
+                owner = self.new_batch()
+                calls = self.fake_runner(owner, lambda _phase, keys:
+                                         [self.export(owner.entries[k]) for k in keys] and 0)
+                self.assertEqual(owner.run(), 0)
+                self.assertEqual([len(keys) for _, _, keys in calls], sizes)
+                before = {k: (self.root/e['export']).read_bytes() for k, e in owner.entries.items()}
+                resumed = self.new_batch()
+                calls2 = self.fake_runner(resumed, lambda *_: self.fail('Closed exports must be reused'))
+                self.assertEqual(resumed.run(), 0)
+                self.assertFalse(calls2)
+                self.assertEqual(before, {k: (self.root/e['export']).read_bytes() for k, e in resumed.entries.items()})
+                self.assertEqual(resumed.state['fingerprint']['lake_parent_threads'], 7)
+                self.assertEqual(resumed.state['fingerprint']['lean_child_threads'], 1)
+                self.assertEqual(resumed.state['summary']['raw_exact'], 0)
+
+    def test_seven_warm_start_requires_export_only_and_rejects_eight(self):
+        self.config.batch_size = self.config.lake_threads = self.config.initial_batch_size = 7
+        with self.assertRaisesRegex(ValueError, 'export-only'):
+            self.config.validate()
+        self.config.export_only = True
+        self.config.validate()
+        for field in ('batch_size', 'initial_batch_size', 'lake_threads'):
+            setattr(self.config, field, 8)
+            with self.assertRaises(ValueError):
+                self.config.validate()
+            setattr(self.config, field, 7)
+        owner = self.new_batch()
+        owner.update()
+        self.config.initial_batch_size = 2
         with self.assertRaisesRegex(ValueError, 'source/config changed'):
             self.new_batch()
 
