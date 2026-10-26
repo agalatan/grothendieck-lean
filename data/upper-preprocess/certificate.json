@@ -115034,5 +115034,15 @@
   "baseline_bridge_sha256": "27e4a5b3c0cc30222d9d0d064a7c49ec37ce5d2569303df7d3f4a8a9a6073d04",
   "baseline_source_commit": "1fc68323630674a096e0ffef66a1b740d7f7fec6",
   "comparison_scope": "selected_head",
-  "localized_recipe_sha256": "eee651704b9daa645da548d06b806711d83ea7dc58b2b450b79d1f62ffbda84b"
+  "localized_recipe_sha256": "eee651704b9daa645da548d06b806711d83ea7dc58b2b450b79d1f62ffbda84b",
+  "linear_budget_refinement": {
+    "hardy_tail": "30488839/1000000000000000",
+    "head_residual": "440063859009/500000000000000000",
+    "linear_lower": "355973715109190991/500000000000000000",
+    "delta": "455308278509/500000000000000000",
+    "incumbent_score": "355973699864771491/500000000000000000",
+    "exact_bound": "500000000000000000/355973699864771491",
+    "headline_decimal": "1.404598149218",
+    "scope": "Derived from the same weighted selected-head component-error, table-accuracy and Hardy inputs. Frozen contour-tail assembly fields above remain unchanged."
+  }
 }

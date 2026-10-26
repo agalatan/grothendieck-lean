@@ -1,0 +1,16 @@
+{
+  "status": "PASS_EIGHT_NEGATIVE_CONTROLS_REJECTED",
+  "node": "data/lower-unshifted/nodes/fused-lo.json",
+  "node_sha256": "bfc57415c045cd81113cb387c698c73a3ab574eed8a462d3c46048aee450b040",
+  "helper_sha256": "cc5e5ad5dc510638dbdc701f7d8e6d60005d75fed02d3b4a21fcd7265ceaa649",
+  "negative_controls_rejected": [
+    "source_hash",
+    "source_path",
+    "table_hash",
+    "source_weight",
+    "negative_gram_diagonal",
+    "nonzero_nu",
+    "x_range",
+    "wrong_majorant"
+  ]
+}

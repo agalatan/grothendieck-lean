@@ -1,0 +1,28 @@
+{
+  "actual_axiom_report_available": true,
+  "actual_axiom_report_count": 451,
+  "ci_receipt": "CI.json",
+  "ci_receipt_sha256": "6a9f214c7df54b676b0c2d3b43533ba825557244a567bc9c74af7a807881d205",
+  "combined_current_root_ci": "PENDING_SEPARATE_CI",
+  "endpoint": {
+    "B": "356710460411/500000000000",
+    "L": "56067881993/40000000000",
+    "boxes": 10762,
+    "premise": "NodeCaps remains explicit."
+  },
+  "exact_data_checks": {
+    "complete_partition_and_recipes": "PASS; retained exact replay with cover/ledger hashes freshly matched",
+    "export": "PASS; retained exact report with all source and generated-Lean hashes freshly matched",
+    "negative_controls": "PASS; eight controls freshly rejected during recovery"
+  },
+  "historical_gap": "BUILD_GAP.json",
+  "historical_gap_sha256": "d20b9b272962a6f2af06f39ab64fc6d5ddaef66370a1bd4889ec1655095ffe53",
+  "historical_targeted_status": "TARGETED_BUILD_RECORD_LOST_REQUIRES_FULL_CI",
+  "lean_result": "Successful full default-target CI; current endpoint source closure separately guarded against the tested source. The newly merged current root requires separate CI.",
+  "run_id": 40234828241,
+  "run_url": "https://github.com/agalatan/grothendieck-lean/actions/runs/40234828241",
+  "scope": "Successful full default-target CI at the tested commit; current lower endpoint import closure and certificate inputs guarded separately below.",
+  "source_commit": "5f46810672e97231883db052b614c966399512b1",
+  "status": "PASS_FULL_CI_FOR_PINNED_ENDPOINT_SCOPE",
+  "targeted_logs_recovered": false
+}

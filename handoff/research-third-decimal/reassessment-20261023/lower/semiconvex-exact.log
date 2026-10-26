@@ -1,0 +1,11 @@
+m12 L10 PSD PASS; c^2/d = 0.201270106645
+m13 L10 PSD PASS; c^2/d = 0.205486859326
+m14 L10 PSD PASS; c^2/d = 0.206088396965
+m15 L10 PSD PASS; c^2/d = 0.185560150007
+m16 L10 PSD PASS; c^2/d = 0.108978179688
+m1213 L10 PSD PASS; c^2/d = 0.203600085585
+m1314 L10 PSD PASS; c^2/d = 0.2058442935
+m1415 L10 PSD PASS; c^2/d = 0.202472558688
+m1415h L10 PSD PASS; c^2/d = 0.196798535528
+PASS 256 exact chord identities; width 1/500 costs at most 207/1000000000
+No Gaussian integration, new node majorant, complete cover, or endpoint asserted.

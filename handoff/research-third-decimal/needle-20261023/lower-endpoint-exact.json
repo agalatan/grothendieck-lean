@@ -1,0 +1,13 @@
+{
+  "status": "PASS_EXACT_LOWER_ENDPOINT_ARITHMETIC",
+  "bound": "5707374123/8000000000",
+  "lower": "175211923811/125000000000",
+  "strict_product_slack": "51057247/1000000000000000000000",
+  "reciprocal_decimal": 1.4016953904880716,
+  "displayed_improvement": "6803/100000000000",
+  "displayed_improvement_decimal": 6.803e-08,
+  "changed_parent_boxes": 43,
+  "final_boxes": 9057,
+  "partition_tokens": 18113,
+  "scope": "Exact cap/display arithmetic only. Full box and partition Lean checks logged separately; Gaussian NodeCaps premise unchanged."
+}

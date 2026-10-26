@@ -1,0 +1,72 @@
+{
+  "status": "PASS: rigorous restricted-model operator obstruction",
+  "scope": "Independent ordinary complex z of grade1, charge-one under z rotation alone; auxiliary either any finite/countable neutral Gaussian family Y correlated by t\u00b2I, or ordinary real Gaussian family V correlated by tI with responses globally even in V. Arbitrary joint radial/auxiliary dependence is allowed.",
+  "python_flint_version": "0.9.0",
+  "moments": {
+    "precision_bits": 192,
+    "mesh_denominator": 1200,
+    "radius": 6,
+    "rectangles_per_integral": 7200,
+    "rational_caps": [
+      2,
+      2,
+      1
+    ],
+    "finite_upper_enclosures": [
+      "[1.15916884795108153593920787033488816781855338271105004 +/- 2.89e-54]",
+      "[0.91404016072337423430526784961558077284700732149933463 +/- 5.38e-54]",
+      "[0.78156995541010043867772030635989176793916612208774920 +/- 5.46e-54]"
+    ],
+    "tail_upper_enclosures": [
+      "[3.10545562992783798846031640012757642157745974117967037397e-20 +/- 8.69e-77]",
+      "[2.32487519803402146379369572966661927799263286288055319321e-17 +/- 8.71e-74]",
+      "[6.4085139642641765733166066305171346337546881369582768313e-15 +/- 6.25e-71]"
+    ],
+    "zeta_upper_enclosures": [
+      "[1.15916884795108153597026242663416654770315654671232580 +/- 5.06e-54]",
+      "[0.91404016072337425755401982995579541078396461816552741 +/- 5.31e-54]",
+      "[0.78156995541010684719168457053646508454579663922238296 +/- 1.94e-54]"
+    ]
+  },
+  "hankel_certificate": {
+    "status": "PASS: rigorous Arb rectangle and analytic-tail upper bound",
+    "python_flint_version": "0.9.0",
+    "precision_bits": 192,
+    "mesh_denominator": 40,
+    "radius": 6,
+    "rectangles": 57600,
+    "finite_square_upper_enclosure": "[1.6601888422180423424896613392992289409289791443170577 +/- 4.03e-53]",
+    "tail_upper_enclosure": "[0.00069934795518244831806949470682006723628576243773594092637 +/- 4.88e-60]",
+    "HS_squared_upper_enclosure": "[1.6608881901732247908077308340060490081652649067547937 +/- 3.30e-53]",
+    "certified_HS_squared_lt": 2,
+    "scope": "one-coordinate, charge-one, arbitrary complex disk-valued bilinear responses; alternating functional only"
+  },
+  "rho": "7/8",
+  "eps": "1/1000",
+  "t": "1/500",
+  "gamma_enclosure": "[0.71195865977826380151245854880539776772777114410798580228 +/- 4.77e-57]",
+  "phase_energy_enclosures": [
+    "[0.785398163397448309615660845819875721049292349843776455244 +/- 3.45e-58]",
+    "[0.0981747704246810387019576057274844651311615437304720569055 +/- 4.32e-59]",
+    "[0.0368155389092553895132341021478066744241855788989270213396 +/- 5.37e-59]"
+  ],
+  "alpha_squared_enclosures": [
+    "[1.10315135943715734620549394028375415370999435927062164818 +/- 4.57e-57]",
+    "[0.137893919929644668275686742535469269213749294908827706023 +/- 3.94e-58]",
+    "[0.051710219973616750603382528450800975955155985590810389759 +/- 5.18e-58]"
+  ],
+  "block_bounds": {
+    "j0_upper": "[0.99992462066842673762152880210520646729059782141985241588 +/- 2.56e-57]",
+    "j0_negative_absolute": "[0.878125000000000000000000000000000000000000000000000000000 +/- 5.87e-58]",
+    "j1_negative_absolute": "[0.99958638854739119534252457911090645561901086496279015209 +/- 5.88e-57]",
+    "j1_upper": "[0.874125000000000000000000000000000000000000000000000000000 +/- 3.34e-58]",
+    "j2_upper": "[0.999000000000000000000000000000000000000000000000000000000 +/- 1.77e-58]",
+    "j2_negative_absolute": "[0.882125000000000000000000000000000000000000000000000000000 +/- 5.22e-58]",
+    "j_ge3_norm": "[0.999000000000000000000000000000000000000000000000000000000 +/- 1.77e-58]"
+  },
+  "uniform_operator_norm_rational": "99993/100000",
+  "D_ceiling_enclosure": "[0.71190882267207932304635267670698138988403020012789824327 +/- 1.25e-57]",
+  "contractions": "Separate linear Gaussian contractions preserving z-charge and auxiliary parity/grade classes may be absorbed into responses; no nonlinear final correlation preprocessing",
+  "included_even_images": "Arbitrary even Gaussian images Q(V), including finite quadratic drivers and arbitrary nonlinear dependence on them; radial coupling with |z| is allowed.",
+  "not_claimed": "No Grothendieck endpoint, nonlinear final preprocessing, symmetry-breaking response, or arbitrary correlated driver process without the stated Gaussian representation is covered."
+}

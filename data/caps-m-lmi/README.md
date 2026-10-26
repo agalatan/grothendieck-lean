@@ -12,13 +12,20 @@ on the piece's stored grid:
 
 **Solutions** (`tools/caps_lmi.py solve`): `sol_14x150.json`, `sol_14x200.json`, `sol_14x280.json`. Per piece:
 
-- `status`: `fixed`, `cap_up` or `fail`;
+- `status`: `fixed` or `cap_up` means the rounded rational matrix passed the Python Fraction LDLᵀ test;
+  `fail` means the search found no accepted witness, not proven infeasibility;
 - `lm`: rational `[λ, μ]` per constraint, in the order of the piece's constraint string;
-- `cap_up`: the smallest certified cap increase;
-- `t_opt`: the optimal scaled smallest eigenvalue;
-- `min_eig_refined`: that eigenvalue after the 60-digit refinement.
+- `cap_up`: a sufficient feasible increase for the exported matrix, after exact rational checking; minimality
+  and the necessity of any increase are unproved;
+- `t_opt`: the SDP solver's numerical estimate of the optimal scaled smallest eigenvalue;
+- `min_eig_refined`: the smallest eigenvalue estimate after the 60-digit refinement, not an interval enclosure.
 
-| node | failing (stored multipliers) | fixed, no cap change | needs a cap increase | Lean re-check (`pieceOKc`) |
+No exact dual certificate or certified optimal value is produced. The rational matrix witnesses remain proposals
+for the Lean pipeline: `pieceOKc` must check the actual piece's enclosure and multiplier admissibility as well as
+LDLᵀ. A node also needs valid tables, the polynomial checks, every piece check and `capCoverOK`. The named Lean
+re-checks below do not certify all exported pieces, the complete node, or a changed lower cover.
+
+| node | failing (stored multipliers) | fixed, no cap change | feasible cap increase found | Lean re-check (`pieceOKc`) |
 |---|---|---|---|---|
 | 14:150 | 0 | 0 | — | piece 0: true |
 | 14:200 | 0–6, 12, 18, 24, 30 | 1–6, 12, 18, 24, 30 | piece 0: +2.59e-9 | pieces 1, 6: true |

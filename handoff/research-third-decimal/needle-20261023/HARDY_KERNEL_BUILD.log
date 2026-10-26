@@ -1,0 +1,6 @@
+Source commit: b4b0e558cdedb919081b071e934ed59bbc51e8b7
+Source SHA256: 01eaefd27bd34b98ed84089de99dbbbd8f0484ba9d0db4b245c83f36b3c72598
+Lean (version 4.34.1, x86_64-unknown-linux-gnu, commit 5045d0056413266e57c625dcd7c365b10e377c52, Release)
+Command: nice -n19 lean -j1 -DwarningAsError=true -o Grothe/UpperChaos/HardyKernel.olean Grothe/UpperChaos/HardyKernel.lean
+Compiler output: empty
+EXIT=0
