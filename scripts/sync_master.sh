@@ -3,7 +3,7 @@
 # Run it before starting work and before delivering. Safe to run from any worktree, by any agent.
 #   --build   afterwards, start the local master build job (scripts/master_build_job.sh: background, niced,
 #             incremental, in its own worktree) unless it is running or the cache is current. It publishes the
-#             snapshot .lake/master-cache that new worktrees clone (AGENTS.md §2). One job at a time (pid in
+#             snapshot .lake/master-cache that new worktrees clone (AGENTS.md §5). One job at a time (pid in
 #             $MAIN/.lake/master-build.pid, log in $MAIN/.lake/master-build.log).
 #   --status  only report the local build cache: which master commit it holds, and whether a build is running.
 set -euo pipefail

@@ -52,7 +52,7 @@ def run : IO Unit := exportPieces "/home/agalatan/<dir>/exp_14x200.jsonl" pieceN
 #eval run
 ```
 
-Start it as a process group (`AGENTS.md` §5). The output file is appended and flushed after every piece.
+Start it as a process group (`AGENTS.md` §12). The output file is appended and flushed after every piece.
 
 **Re-checking a fix in Lean**: export the piece again, with its constraint string edited to the new multipliers.
 The `ok` field is then `pieceOKc` itself.

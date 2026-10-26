@@ -1,6 +1,6 @@
 name: Cloud job
 
-# On-demand compute for agents (AGENTS.md section 4d). Dispatched by scripts/cloud.sh, never by a push:
+# On-demand compute for agents (AGENTS.md section 11). Dispatched by scripts/cloud.sh, never by a push:
 #   gh workflow run cloud.yml --ref <branch> -f id=<unique id> -f kind=<lean|check|script> -f targets=<...>
 # * lean:   build the given Lean modules of <branch> (incremental from the master cache), e.g. native_decide facts;
 #           with shards = N the modules are dealt round-robin over N parallel jobs.

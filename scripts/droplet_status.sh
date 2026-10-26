@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # One-screen status of the shared droplet (ssh yo). Read-only: it never kills or deletes anything.
 # Run from the laptop:   scripts/droplet_status.sh
-# Shows: load, memory, disk (with the 3 GB floor of AGENTS.md section 5), the CI runner, every running Lean build
+# Shows: load, memory, disk (with the 3 GB floor of AGENTS.md section 12), the CI runner, every running Lean build
 # grouped by directory (= owner) with its age, orphaned lean processes (parent died: ppid 1, they keep writing
 # .olean files and must be stopped by their owner), long-running wait loops, and the biggest build directories.
 set -euo pipefail
@@ -12,7 +12,7 @@ uptime | sed 's/^ */load: /'
 free -g | awk '/^Mem:/{printf "memory: %s GB used of %s GB, %s GB available\n",$3,$2,$7}'
 df -h / | awk 'NR==2{print "disk: "$4" free of "$2" ("$5" used)"}'
 avail_kb=$(df -k / | awk 'NR==2{print $4}')
-[ "$avail_kb" -lt $((3*1024*1024)) ] && echo "WARNING: below the 3 GB floor (AGENTS.md section 5)"
+[ "$avail_kb" -lt $((3*1024*1024)) ] && echo "WARNING: below the 3 GB floor (AGENTS.md section 12)"
 
 echo; echo "== CI runner"
 if [ -f ~/actions-runner/runner.pid ] && kill -0 "$(cat ~/actions-runner/runner.pid)" 2>/dev/null; then

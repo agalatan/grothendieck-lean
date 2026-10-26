@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Smoke test of the cloud jobs (AGENTS.md section 4d): each shard writes its index and a small exact computation to
+"""Smoke test of the cloud jobs (AGENTS.md section 11): each shard writes its index and a small exact computation to
 $OUT, so `scripts/cloud.sh --shards 2 script tools/cloud_selftest.py` shows the whole round trip."""
 import json
 import os

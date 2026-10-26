@@ -238,10 +238,9 @@ Its provenance hash covers 48 local computation
 modules and five directly hashed extras (53 files total); the extras' imports
 are not traversed. The numerical checker has its own precompiled library,
 \lean{GrotheCapsKernel}, whose constants retain the \lean{GrotheKernel} namespace.
-CI checks \path{.lake/build/caps-closure.sha} before building. A missing or mismatched
-marker fails closed and dispatches the runner build and the audit before
-the cache is marked. The same persistent build supplies subsequent CI replay
-and the master warm run; no separate manual droplet verification is needed.
+The caps digest is part of the build-cache key: when no verified cache matches, CI runs the same check on
+the self-hosted runner, which builds, audits and marks \path{.lake/build/caps-closure.sha} before saving
+the cache. That persistent build supplies later CI replay; no separate manual droplet verification is needed.
 A digest alone is not verification. The localised-piece checkers
 likewise import only computable definitions and rational data; their campaign
 and final wiring remain separate. The generic response and

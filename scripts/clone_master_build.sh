@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Give a worktree master's compiled build, so that Lake rebuilds only what the branch changes (AGENTS.md §2).
+# Give a worktree master's compiled build, so that Lake rebuilds only what the branch changes (AGENTS.md §5).
 #   scripts/clone_master_build.sh <worktree>            # worktree without a .lake/build yet
 #   scripts/clone_master_build.sh --replace <worktree>  # delete the worktree's .lake/build first (refresh)
 # It links the shared Lean packages and clones the published snapshot of the main checkout's master build
