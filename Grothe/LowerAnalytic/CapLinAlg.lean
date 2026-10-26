@@ -1,4 +1,5 @@
 import Mathlib
+import Grothe.LowerAnalytic.CapLinAlgDefs
 
 /-!
 # Exact quadratic-form checks for the cap certificates (route Core, finite-dimensional part)
@@ -18,47 +19,15 @@ open Finset
 
 namespace Grothe.LowerAnalytic
 
-/-- A rational matrix as a list of rows. -/
-abbrev QMat := List (List ℚ)
-
-/-- The entry `(i, j)` (zero outside the list). -/
-def QMat.at (m : QMat) (i j : ℕ) : ℚ := (m.getD i []).getD j 0
-
 /-- The real quadratic form `Σ_{i,j<n} m_ij w_i w_j`. -/
 noncomputable def qf (m : ℕ → ℕ → ℝ) (n : ℕ) (w : ℕ → ℝ) : ℝ :=
   ∑ i ∈ range n, ∑ j ∈ range n, m i j * w i * w j
-
-/-- The matrix built from a function. -/
-def QMat.ofFn (n : ℕ) (f : ℕ → ℕ → ℚ) : QMat := (List.range n).map fun i => (List.range n).map (f i)
 
 lemma QMat.at_ofFn {n : ℕ} (f : ℕ → ℕ → ℚ) {i j : ℕ} (hi : i < n) (hj : j < n) :
     (QMat.ofFn n f).at i j = f i j := by
   simp [QMat.at, QMat.ofFn, List.getD_eq_getElem?_getD, hi, hj]
 
 /-! ### Exact `LDLᵀ` -/
-
-/-- One step of the elimination: given the rows `L₀ … L_{k−1}` (as lists of length `k`) and the
-pivots, the next row and pivot. -/
-def ldlStep (m : QMat) (Ls : List (List ℚ)) (ds : List ℚ) (k : ℕ) : List ℚ × ℚ :=
-  let row : List ℚ := (List.range k).foldl (fun acc j =>
-    let s := ((List.range j).map fun t => (acc.getD t 0) * ((Ls.getD j []).getD t 0) * ds.getD t 0).sum
-    let dj := ds.getD j 0
-    acc ++ [if dj = 0 then 0 else (m.at k j - s) / dj]) []
-  let dk := m.at k k - ((List.range k).map fun t => (row.getD t 0) ^ 2 * ds.getD t 0).sum
-  (row ++ [1], dk)
-
-/-- The exact `LDLᵀ` elimination of the leading `n × n` block. -/
-def ldl (m : QMat) (n : ℕ) : QMat × List ℚ :=
-  (List.range n).foldl (fun (acc : QMat × List ℚ) k =>
-    let r := ldlStep m acc.1 acc.2 k
-    (acc.1 ++ [r.1], acc.2 ++ [r.2])) ([], [])
-
-/-- The check `m = L diag(d) Lᵀ`, `d ≥ 0` of the elimination. -/
-def ldlOK (m : QMat) (n : ℕ) : Bool :=
-  let r := ldl m n
-  (List.range n).all (fun i => (List.range n).all fun j =>
-    m.at i j == ((List.range n).map fun k => r.1.at i k * r.2.getD k 0 * r.1.at j k).sum) &&
-  (List.range n).all fun k => decide (0 ≤ r.2.getD k 0)
 
 lemma sum_range_map {n : ℕ} (f : ℕ → ℚ) : ((List.range n).map f).sum = ∑ k ∈ range n, f k := by
   induction n with
@@ -97,15 +66,6 @@ theorem qf_nonneg_of_ldlOK {m : QMat} {n : ℕ} (h : ldlOK m n = true) (w : ℕ 
 
 /-! ### The Loewner upper matrix of an interval matrix -/
 
-/-- The midpoint `(lo + hi)/2`. -/
-def midM (lo hi : QMat) (i j : ℕ) : ℚ := (lo.at i j + hi.at i j) / 2
-/-- The radius `(hi − lo)/2`. -/
-def radM (lo hi : QMat) (i j : ℕ) : ℚ := (hi.at i j - lo.at i j) / 2
-
-/-- The largest row sum of the radii. -/
-def rhoM (lo hi : QMat) (n : ℕ) : ℚ :=
-  (List.range n).foldl (fun acc i => max acc ((List.range n).map (radM lo hi i)).sum) 0
-
 lemma rowsum_le_rhoM (lo hi : QMat) (n : ℕ) {i : ℕ} (hi' : i < n) :
     ∑ j ∈ range n, radM lo hi i j ≤ rhoM lo hi n := by
   rw [← sum_range_map]
@@ -128,15 +88,6 @@ lemma rowsum_le_rhoM (lo hi : QMat) (n : ℕ) {i : ℕ} (hi' : i < n) :
       · exact (le_max_right _ _).trans (mono _ _)
       · exact ih _ h
   exact key _ 0 (List.mem_range.2 hi')
-
-/-- `mid + ρ I`. -/
-def loewnerUp (lo hi : QMat) (n : ℕ) : QMat :=
-  QMat.ofFn n fun i j => midM lo hi i j + if i = j then rhoM lo hi n else 0
-
-/-- The enclosure check: `lo ≤ hi` and both symmetric on the leading `n × n` block. -/
-def enclOK (lo hi : QMat) (n : ℕ) : Bool :=
-  (List.range n).all fun i => (List.range n).all fun j =>
-    decide (lo.at i j ≤ hi.at i j) && lo.at i j == lo.at j i && hi.at i j == hi.at j i
 
 /-- **The Loewner bound** (AF §5): a real matrix with entries in `[lo, hi]` is below
 `mid + ρ I` in quadratic-form order. -/

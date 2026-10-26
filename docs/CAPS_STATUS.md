@@ -1,119 +1,107 @@
-# Node caps in Lean: status (23 Oct 2026, ~10:00 EEST; merged into master from work/lower-caps2)
+# Node caps in Lean: status (26 Oct 2026)
 
-Goal: discharge `NodeCaps`, the only hypothesis of `Grothe.LowerAnalytic.lower_bound_of_nodeCaps`
-(lower bound K_G^ℂ > Llow). The design and the four cap routes (P, A, M, H) are in
-`handoff/research-third-decimal/PLAN_CAPS.md` (git-ignored; §1–§8). This file is the self-contained summary.
+The original default-target lower theorem remains
+`lower_bound_of_nodeCaps : NodeCaps → IsGrothendieckBound K → 1.401695322458 < K`.
+The refined default-target theorem improves this to 1.401697049825 under
+the same `NodeCaps` hypothesis; see the README for its certificate.
+The separate target supplies
+`lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → Llow < K`.
+`CapsRest` consists of the vertex caps of rows 12–15 (t = 0.84, 0.845,
+0.85, 0.855), plus any excluded-node caps of rows 0–11 and 16–18. All
+exclusion lists are currently empty.
 
-## Headline on this branch
+## Computation and proof layers
 
-`Grothe.LowerAnalytic.lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → Llow < K`
-(`Grothe/LowerAnalytic/CapNodes.lean`). `CapsRest` = the vertex caps of the rows NOT in
-`capRowsDone` (rows 12–15 = t 0.84, 0.845, 0.85, 0.855) plus the caps at excluded nodes of the
-certified rows (all exclusion lists are currently EMPTY).
+The 15 `CapRowKK` modules for rows 0–11 and 16–18 contain the existing
+60 `capRangeKK_j` facts, four sequential ranges per row. Their theorem
+statements and native computations are unchanged. Each heavy module imports
+only `CapRangeDefs` and `CapRecipeData`. The computation layer separates
+`RowDataTypes`, `RowGateData`, `CapChords`, `CapLinAlgDefs`, `CapPieceDefs`,
+`CapNodeDefs`, `CapRangeDefs` and `CapTablesData` from analytic soundness.
+Its local closure contains the numerical checker and rational data, without
+`Reduction`, `WitnessCap`, `Bridge`, `RowCheck`, the lower certificate, or
+the checker-soundness and convexity-assembly modules.
 
-Proved (no sorry): chord nodes from vertex caps by convexity (`CapHull`, native fact `capChords_check`);
-the anchored-pair majorant and node checker with soundness (`CapMajorant`, `CapPiece`, `CapPolar`,
-`CapSym`, `CapGrid`, `CapGridT`, `CapGridOK`, `CapCheckSound`: `pot_le_of_nodeOK`); verified tables
-(`CapTables`, `CapTablesMk`: `tablesOK_mk`); range check `rangeOK` + soundness `nodeCap_of_rangeOK`
-(`CapRows.lean`).
+`CapRows` retains `VertexCapsRow`, `ExclCaps` and `nodeCap_of_rangeOK`.
+`CapAssembly` retains the chord check `capChords_check`, convexity assembly,
+`nodeCaps_of_vertexCaps` and `lower_bound_of_vertexCaps`; `CapHull` is a
+compatibility import. These proof modules belong to the default `Grothe`
+target. `CapNodes` contains the 15 unchanged `vertexCapsRowKK` proofs,
+`CapsRest`, and the final assembly of `lower_bound_of_capsRest`.
 
-Finite computation: one `native_decide` fact per range of 49 nodes, `capRangeKK_j` (j = 0..3) in
-`Grothe/LowerAnalytic/CapRowKK.lean` for KK ∈ {00..11, 16, 17, 18} → **60 native facts** (+ `capChords_check`,
-`head_check`, `cert_check`), all pinned in `scripts/check_axioms.py`. No `Task.spawn` in the cap checks:
-each range is checked sequentially; lake runs the 15 row modules in separate processes.
+The rows 12–15 piece checks have the same separation. `CapCoverDefs`
+contains `Cons` and the rational coverage predicates; `CapConstrDefs`
+contains the constrained matrices, parsers and `nodeOKc`. `CapPieceRange`
+imports these pure definitions, row/gate data and `CapTablesData`.
+Its local import closure has 32 modules; generated coverage/range modules
+for one node have 34, including their data. Semantic regions and all
+soundness proofs remain in `CapCover`, `CapConstr` and `CapPieceNodes`.
+These generated piece facts are not yet imported by `GrotheCaps`.
 
-## What is verified and what is not
+The generated default Lean root excludes the 15 heavy row modules and
+`CapNodes`, using `data/root-imports-exclude.txt`. They belong to the separate
+`GrotheCaps` target. Ordinary CI builds the default target and checks the
+source stamp. Its heavy job builds both targets and audits both axiom
+reports when the stamped sources change on a `ready/` delivery.
+No `Task.spawn` is used inside the native range checks; parallelism is
+between separate Lean processes. The numerical checker remains in
+`GrotheKernel/CapCheck.lean`.
 
-* **VERIFIED: all 60 range facts pass** (no excluded nodes). `lake build GrotheCaps` of master 4304b22 on
-  the droplet (`yo:~/grothe-caps`, log `caps2.log`), 23 Oct 02:48–06:48 UTC: wall 239 min 41 s, CPU 1269 min,
-  every module single-threaded, load ~12 from other jobs. Per row module (s): rows 0–8 (coarse grid)
-  2255, 2322, 2355, 2594, 2727, 2807, 3593, 3029, 6005; rows 9, 10, 11, 16, 17, 18 (fine grid)
-  9940, 9782, 9409, 9884, 10377, 10069. `lake env lean scratch/AxiomsCaps.lean | python3
-  scripts/check_axioms.py --caps`: OK (60 range facts + capChords_check + the cert_check chunks).
-  Stamp `docs/CAPS_VERIFIED.txt` = sha256 fe2ea85d…f16eea over 140 files (unchanged by master up to 9233765).
-* Evidence that every node passes (indicative only, it ran with `Task.spawn`, see below): #eval diagnostics
-  of `nodeCheck` over all 196 nodes of each of the 15 rows (Mac rows 0–8, 17, 18; droplet rows 9–11, 16)
-  reported failures only at row 3 node 0 and row 6 node 0; both fixed (below). Fine-grid nodes took
-  ~9 s each, coarse ~5 s, with 8 parallel tasks on 8 cores.
-* Recipes: the canonical source is `data/cap-recipes/rowKK.json` (2,761 recipes; rationals as strings), with the
-  generator arguments in `data/cap-recipes/rows.txt`. They were exported from `CapRecipeData.lean` by
-  `tools/export_cap_recipes.py` after the original search outputs were lost, and
-  `python3 tools/gen_cap_recipes.py $(cat data/cap-recipes/rows.txt)` reproduces `CapRecipeData.lean` byte for byte.
-  They include the two fixes of the failing nodes: row 3 node 0 uses the recipe of node 1 on grid 1 (1600×256);
-  row 6 node 0 uses its own recipe on grid 1. Change recipes only in the JSON, then regenerate.
-  Recipes are search output only: the Lean check certifies every cap from its recipe, so a bad recipe can make a
-  check fail but never make a false cap pass.
+## Source-stamp boundary: 53 files
 
-## Why no parallel tasks (soundness concern)
+`python3 scripts/caps_stamp.py --digest` computes the source hash and file
+count without recording verification. The current boundary contains 48 local
+modules reachable from the 15 heavy row modules, followed by five direct
+extras: `Grothe/LowerAnalytic/CapNodes.lean`, `GrotheCaps.lean`,
+`lean-toolchain`, `lake-manifest.json`, and `lakefile.toml`.
+The extras' imports are not traversed. The total is 53 files, down from 140
+before the split. `python3 scripts/caps_stamp.py --list` lists the exact paths.
 
-Two full builds of the earlier single fact `capRows_check` (all nodes as `Task.spawn` tasks inside one
-`native_decide`) aborted with SIGABRT after 33 and 105 min: macOS crash reports
-(`~/Library/Logs/DiagnosticReports/lean-2026-10-23-0247*.ips`, `-0322*.ips`) show
-`malloc: pointer being freed was not allocated` in `lean::mpz::~mpz` called from `GrotheKernel.mulI`
-inside `angSumSW` (shared interval tables, big integers). That is a reference-count race / memory
-corruption in compiled code run by `native_decide`; a run that does not crash could still be corrupted.
-Unresolved cause (suspects: values reached inside tasks through constants or extracted closed terms that are
-not marked multi-threaded). The integrator therefore asked for single-threaded checks only.
-**The facts on master also use `Task.spawn`** (`Grothe/Lower/Basic.lean:20` `allPar`,
-`Grothe/Lower/Support.lean:72–74` for `cert_check`, `GrotheKernel/Table.lean:86` for `head_check`); same concern.
+The stamp records the verified computational source bytes and direct extras.
+It is not a full dependency or reproducibility manifest: it does not hash
+every analytic proof reachable through `CapNodes` or `GrotheCaps`, or the
+workflow and report scripts. Lake checks ordinary build dependencies
+separately. Changes to soundness or the lower certificate outside the stamp
+set therefore leave the heavy-computation hash unchanged. The default build
+checks the proof layer; the heavy separate-target build checks the final
+`CapNodes` assembly.
 
-## How to rebuild
+## Verification status and CI sequence
 
-```
-export PATH="$HOME/.elan/bin:$PATH"
-lake exe cache get                 # Mathlib oleans
-lake build                         # everything; the 15 CapRowKK modules dominate
-lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py
-```
-Regenerate the row modules: `python3 tools/gen_cap_nodes.py [--size 49] 0 1 2 3 4 5 6 7 8 9 10 11 16 17 18`
-(rows must match `capRowsData` in `CapRecipeData.lean`). To exclude failing nodes, edit the third
-component of the row in `capRowsData` (they then become part of `CapsRest`).
+Acceptance of this split requires the `ready/` heavy CI run.
+A successful `GrotheCaps` build and both axiom reports establish verification
+for the checked sources; `docs/CAPS_VERIFIED.txt` records that run. An unchanged theorem statement or a read-only
+digest is not a verification record. The scratch-branch comment probe in
+`RowCheck.lean` leaves the digest unchanged; a comment in `CapRangeDefs.lean`
+changes it. Neither probe writes a verification stamp.
 
-Diagnose single nodes quickly (interpreted driver calling the precompiled kernel): a module inside
-`Grothe/` (NOT `lake env lean`, which does not load the precompiled `GrotheKernel` dynlib) with
-`#eval show IO Unit from do let Ts := capGrids.map fun G => mkTables G.1 G.2.1 G.2.2; IO.println (nodeCheck k (parseRecs capRecipesKK) capGrids Ts [] i)`,
-built with `lake build Grothe.LowerAnalytic.TmpX` (delete it afterwards).
+For Lean-relevant checks, the ordinary CI job builds `Grothe`, checks its
+axiom report and calls `python3 scripts/caps_stamp.py --check` (also the
+script's default). That reads the committed `docs/CAPS_VERIFIED.txt`.
+A missing or mismatched stamp fails closed. On a `ready/` delivery, CI
+also dispatches the heavy `caps` job on the droplet runner.
 
-## Verification procedure for master (target GrotheCaps, outside CI)
+The heavy job merges the ready branch with current master, builds `Grothe`
+and `GrotheCaps`, and checks `scratch/Axioms.lean` and
+`scratch/AxiomsCaps.lean` with `scripts/check_axioms.py` (the latter with
+`--caps`). Only after these pass does it call
+`scripts/caps_stamp.py --write "<run evidence>"`, commit the resulting
+`docs/CAPS_VERIFIED.txt` onto the ready branch and repeat its check.
+The ordinary CI check then verifies the stamp against its merged candidate.
+After auto-merge, a `warm` run updates the shared master build cache.
+Use this route without a separate manual droplet verification. The actual
+heavy run, repeated ready check and auto-merge remain the acceptance evidence.
 
-Since master c8fc97e the 15 `CapRowKK` modules form the separate lean_lib `GrotheCaps`
-(`GrotheCaps.lean`); CI does not build them but runs `python3 scripts/caps_stamp.py --check`, which
-compares a sha256 of the import closure of the row modules + `CapNodes.lean` + `GrotheCaps.lean` (+
-`lean-toolchain`, `lake-manifest.json`) with `docs/CAPS_VERIFIED.txt` (warning while absent, failure on mismatch).
-To (re)verify, on a machine with ≥ 8 cores (droplet `yo`):
-```
-git archive <master commit> | tar -x -C <dir>   # or rsync -a --delete --exclude .lake <checkout>/ yo:~/grothe-caps/
-cd <dir>; lake exe cache get
-lake build GrotheCaps                            # several hours single-threaded per module (see timings)
-lake env lean scratch/AxiomsCaps.lean | python3 scripts/check_axioms.py --caps
-python3 scripts/caps_stamp.py --write "droplet yo, <date>, <wall time>"
-```
-then commit `docs/CAPS_VERIFIED.txt` on a branch (e.g. `work/caps-stamp`) and push it; the integrator merges.
-Timing (droplet, load ~12 from other jobs, 23 Oct): row 7 (196 coarse-grid nodes, 4 ranges) took
-4,562 s in one process, i.e. ~23 s per node; fine-grid rows are slower.
+## Data and remaining rows
 
-Suggested refactor (not done): the row modules import `CapHull` → `Reduction` → the whole lower
-certificate, so any change in the lower chain changes the stamp and forces the multi-hour rebuild.
-Make `CapRowKK` import only the checker and its soundness (`CapRows` without `CapHull`, i.e. move
-`VertexCapsRow`/`ExclCaps` and `nodeCap_of_rangeOK` into a module that depends only on `rowData`,
-`rowPot`, `CapCheckSound`, `CapTablesMk`, `CapGridOK`), and let `CapHull`/`CapNodes` do the combination
-with `lower_bound_of_vertexCaps`.
+Recipe inputs live in `data/cap-recipes/rowKK.json`, with generator arguments
+in `data/cap-recipes/rows.txt`. Change the JSON and regenerate rather than
+hand-editing `CapRecipeData.lean`. Lower-row and gate inputs are similarly
+kept in `data/`; generated modules must reproduce byte for byte. A failed
+recipe can make its cap check fail; it cannot bypass the numerical checker.
 
-## Droplet `ssh yo` (8 cores, 31 GB)
-
-* `~/grothe-caps`: rsync copy of this worktree (no .git), elan installed in `~/.elan`, Mathlib cache fetched.
-  Update with `rsync -a --delete --exclude .lake --exclude .git <worktree>/ yo:~/grothe-caps/`.
-* `~/grothe-capsm`: another worker's copy (M route) — do not touch.
-* Recipe search tools: `~/grothe-cx/wc/wcert/plift.py` (P lifts), `~/grothe-cx/t4/pkg/{table_generator,proposal_m}.py`
-  (anchored recipes); Mac copies under `~/Documents/Codex/2026-10-10/plea/outputs/anchored-tables-20261011/`.
-* Never `pkill -f PATTERN` over ssh (kills the ssh shell, and other workers' lake processes); kill by pid.
-
-## Remaining work
-
-1. Confirm the 60 range facts (droplet build), then a local full build + axiom check; commit "verified".
-2. Rows 12–15 (t 0.84–0.855): their mid-range caps (s ∈ [0.2, 0.42] ∪ [0.525, 0.6]) are localised
-   S-lemma caps (route M, ~9,000 pieces × ~1 min each in the current checker) — not ported; they stay in `CapsRest`.
-   `CapSymmetry.lean` already provides `pot_le_of_cover` for the symmetric piece covers.
-3. The README of this branch describes the state above; merge into master is the integrator's call
-   (base of this branch is master e8d67b5; master has moved since — merge conflicts expected in
-   README.md, scratch/Axioms.lean, scripts/check_axioms.py, Grothe.lean).
+Rows 12–15 remain explicit `CapsRest` inputs. Their localized-piece data,
+computation campaign and final wiring are roadmap Tracks B/C. Track A
+separates both the existing 60 range facts and the localized-piece checks
+from the lower proof chain. It changes no cap, certificate or theorem
+statement, and does not discharge the remaining rows.

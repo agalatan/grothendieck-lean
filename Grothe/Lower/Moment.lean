@@ -22,13 +22,8 @@ namespace Grothe.Lower
 def ρ : ℚ := 973612157 / 1000000000
 /-- `C₆ = 40.45313`, the sixth-moment coefficient. -/
 def C6 : ℚ := 4045313 / 100000
-/-- The witness parameter `ε = 149/200`. -/
-def ε : ℚ := 149 / 200
 /-- The upper end `31/4` of the `x`-range (`E|ξ|⁴ ≤ 2 + (31/4)² = 62.0625`). -/
 def xMax : ℚ := 31 / 4
-/-- The slack `10⁻¹¹` added to the node caps of the potentials. -/
-def capPad : ℚ := 1 / 100000000000
-
 /-- A physical polynomial `a₀ + a₁ s + a₂ s² + a₄ s⁴ + a₆ s⁶`. -/
 structure MPoly where
   a0 : ℚ

@@ -1,3 +1,4 @@
+import Grothe.LowerAnalytic.CapCoverDefs
 import Grothe.LowerAnalytic.CapCoord
 import Grothe.LowerAnalytic.CapSymmetry
 
@@ -13,6 +14,7 @@ all four sign changes (`tau_cj_re`, `tau_ng_im`, …), so every `y` is the image
 `τ₂(w), τ₃(w) ≥ 0` (`exists_orbit_rep`), and a piece list covers the fibre space modulo the
 symmetries as soon as the boxes it defines in `τ`-space cover `ℝ × [0, ∞)²`.
 
+The computable constraints and checks are in `CapCoverDefs`.
 `capCoverOK` decides this exactly: per coordinate, the finitely many interval endpoints (and `0`)
 cut the line into points and open intervals, on each of which every constraint has a constant
 truth value; one rational sample per cell (`cands`) is tested (`sample_exists`).
@@ -24,15 +26,6 @@ open Finset Grothe.Lower
 namespace Grothe.LowerAnalytic
 
 /-! ### Constraints -/
-
-/-- A linear constraint `lo ≤ v·vec(M y)`, and `≤ hi` when `hi` is given, with the S-lemma
-multipliers `lam` (of `(τ − lo)(hi − τ)`) and `mu` (of `τ − lo`). -/
-structure Cons where
-  v : List ℚ
-  lo : ℚ
-  hi : Option ℚ
-  lam : ℚ
-  mu : ℚ
 
 /-- `τ_v(y) = v · vec(M y)`. -/
 noncomputable def tauOf (E : Sym3) (R : Sym2) (v : List ℚ) (y : Fib) : ℝ :=
@@ -48,10 +41,6 @@ def Cons.Holds (E : Sym3) (R : Sym2) (c : Cons) (y : Fib) : Prop := c.Cond (tauO
 def pieceSet (E : Sym3) (R : Sym2) (pc : List Cons) : Set Fib := {y | ∀ c ∈ pc, c.Holds E R y}
 
 /-! ### Directions and their symmetries -/
-
-/-- `d` vanishes outside the coordinates `blk`. -/
-def suppOK (d : List ℚ) (blk : List ℕ) : Bool :=
-  (List.range 12).all fun i => blk.contains i || d.getD i 0 == 0
 
 lemma vec_cj (w : Fib) (i : ℕ) :
     w.cj.vec i = if i = 3 ∨ i = 4 ∨ i = 5 ∨ i = 8 ∨ i = 9 ∨ i = 11 then -w.vec i else w.vec i := by
@@ -101,12 +90,6 @@ lemma tau_ng_im (E : Sym3) (R : Sym2) {d : List ℚ} (hd : suppOK d [8, 9, 11] =
     rw [Fib.M_ng, vec_ng]; simp at hi; rcases hi with rfl | rfl | rfl <;> simp
   simpa using this
 
-/-- Coefficientwise equality of two vectors on the first 12 coordinates. -/
-def vecEq (v w : List ℚ) : Bool := (List.range 12).all fun i => v.getD i 0 == w.getD i 0
-
-/-- Coefficientwise `v = −w`. -/
-def vecNeg (v w : List ℚ) : Bool := (List.range 12).all fun i => v.getD i 0 == -w.getD i 0
-
 lemma tau_of_vecEq (E : Sym3) (R : Sym2) {v w : List ℚ} (h : vecEq v w = true) (y : Fib) :
     tauOf E R v y = tauOf E R w y := by
   unfold tauOf
@@ -123,16 +106,6 @@ lemma tau_of_vecNeg (E : Sym3) (R : Sym2) {v w : List ℚ} (h : vecNeg v w = tru
   rw [show v.getD i 0 = -w.getD i 0 from by simpa using this]
   push_cast; ring
 
-/-- The coordinate (`0, 1, 2` for `d₀, d₂, d₃`) and sign of a constraint, if any. -/
-def dirOf (ds : List (List ℚ)) (c : Cons) : Option (ℕ × Bool) :=
-  if vecEq c.v (ds.getD 0 []) then some (0, true)
-  else if vecNeg c.v (ds.getD 0 []) then some (0, false)
-  else if vecEq c.v (ds.getD 1 []) then some (1, true)
-  else if vecNeg c.v (ds.getD 1 []) then some (1, false)
-  else if vecEq c.v (ds.getD 2 []) then some (2, true)
-  else if vecNeg c.v (ds.getD 2 []) then some (2, false)
-  else none
-
 lemma tau_of_dirOf (E : Sym3) (R : Sym2) {ds : List (List ℚ)} {c : Cons} {k : ℕ} {σ : Bool}
     (h : dirOf ds c = some (k, σ)) (y : Fib) :
     tauOf E R c.v y = (if σ then 1 else -1) * tauOf E R (ds.getD k []) y := by
@@ -147,13 +120,6 @@ lemma tau_of_dirOf (E : Sym3) (R : Sym2) {ds : List (List ℚ)} {c : Cons} {k : 
   · simp [tau_of_vecNeg E R h6]
 
 /-! ### One-dimensional samples -/
-
-/-- The smallest element of `S` above `b` (or `b + 2`). -/
-def nxt (S : List ℚ) (b : ℚ) : ℚ := ((S.filter fun c => decide (b < c)).min?).getD (b + 2)
-
-/-- One rational sample per cell of the partition of the line by `S`. -/
-def cands (S : List ℚ) : List ℚ :=
-  (S.min?.getD 0 - 1) :: S.flatMap fun b => [b, (b + nxt S b) / 2]
 
 lemma nxt_spec (S : List ℚ) (b : ℚ) :
     (b < nxt S b) ∧ ∀ c ∈ S, b < c → nxt S b ≤ c := by
@@ -220,40 +186,6 @@ theorem sample_exists (S : List ℚ) (x : ℝ) :
     constructor <;> constructor <;> intro h <;> linarith
 
 /-! ### The coverage check -/
-
-/-- The rational condition `lo ≤ σ x (≤ hi)`. -/
-def condQ (c : Cons) (σ : Bool) (x : ℚ) : Bool :=
-  let t := if σ then x else -x
-  decide (c.lo ≤ t) && match c.hi with
-    | none => true
-    | some h => decide (t ≤ h)
-
-/-- The endpoints that a constraint contributes to its coordinate. -/
-def bndsOf (c : Cons) (σ : Bool) : List ℚ :=
-  if σ then c.lo :: c.hi.toList else -c.lo :: c.hi.toList.map Neg.neg
-
-/-- The endpoints of coordinate `k` (and `0`). -/
-def bndsK (ds : List (List ℚ)) (P : List (List Cons)) (k : ℕ) : List ℚ :=
-  0 :: (P.flatMap fun pc => pc.flatMap fun c =>
-    match dirOf ds c with
-    | some (k', σ) => if k' = k then bndsOf c σ else []
-    | none => [])
-
-/-- A piece contains the sample point `q`. -/
-def pieceAt (ds : List (List ℚ)) (pc : List Cons) (q : ℕ → ℚ) : Bool :=
-  pc.all fun c =>
-    match dirOf ds c with
-    | some (k, σ) => condQ c σ (q k)
-    | none => false
-
-/-- **The coverage check**: the odd directions live on their blocks, and every sample of
-`ℝ × [0, ∞)²` lies in some piece. -/
-def capCoverOK (ds : List (List ℚ)) (P : List (List Cons)) : Bool :=
-  suppOK (ds.getD 1 []) [6, 7, 10] && suppOK (ds.getD 2 []) [8, 9, 11] &&
-    (cands (bndsK ds P 0)).all fun q0 => (cands (bndsK ds P 1)).all fun q2 =>
-      (cands (bndsK ds P 2)).all fun q3 =>
-        !decide (0 ≤ q2) || !decide (0 ≤ q3) ||
-          P.any fun pc => pieceAt ds pc fun k => if k = 0 then q0 else if k = 1 then q2 else q3
 
 lemma cond_iff {c : Cons} {σ : Bool} {x : ℝ} {q : ℚ}
     (h : ∀ b ∈ bndsOf c σ, (((b : ℝ) ≤ x ↔ (b : ℝ) ≤ q) ∧ (x ≤ b ↔ (q : ℝ) ≤ b))) :

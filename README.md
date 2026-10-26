@@ -104,14 +104,17 @@ four per row, one module `CapRowKK.lean` per row; no parallel tasks). Hence
 `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → Llow < K`, where **`CapsRest`** comprises the vertex caps
 of the rows 0.84, 0.845, 0.85, 0.855 and any excluded-node caps of the other rows. The exclusion lists are currently empty.
 
-**Node caps: a separate build target.** The 15 row modules `CapRowKK.lean` (60 single-threaded `native_decide`
-range facts, about 15–30 CPU-hours) exceed the CI runner, so they and `lower_bound_of_capsRest` live in the target
-`GrotheCaps`, not in the default target `Grothe`. They are verified on a larger machine with
-`lake build GrotheCaps && lake env lean scratch/AxiomsCaps.lean | python3 scripts/check_axioms.py --caps`, after which
-`python3 scripts/caps_stamp.py --write "<machine, date>"` records the hash of every source they depend on in
-`docs/CAPS_VERIFIED.txt`. CI checks that hash (`caps_stamp.py --check`): it fails when those sources change
-without a new verification. The recorded stamp verifies all 60 range facts on the droplet;
-the 140-file import closure is unchanged in this branch. Rows 12–15 remain under `CapsRest`.
+**Node caps: a separate build target.**
+The 15 `CapRowKK.lean` modules contain the 60 single-threaded `native_decide`
+range facts for rows 0–11 and 16–18. They import `CapRangeDefs` and
+`CapRecipeData`: the rational row, gate, chord and recipe data and numerical
+checker, independently of the Gaussian analysis and lower certificate.
+The default target `Grothe` builds range-check soundness in `CapRows` and
+convexity assembly in `CapAssembly` (`CapHull` is a compatibility import).
+The separate target `GrotheCaps` also builds the heavy facts and `CapNodes`,
+which contains the 15 unchanged row-assembly proofs and
+`lower_bound_of_capsRest`.
+
 The default target proves
 the lower bound with the hypothesis `NodeCaps` (`lower_bound_of_refined_cover_data`). The additional law nodes
 use the original source caps and existing Stein cuts; they add no Gaussian premise.
@@ -122,6 +125,36 @@ The current cover uses adaptive binary splits and repriced row mixtures. Its
 forest ledger replays from immutable starting inputs, preserving inherited
 scale interpolation domains; see `data/lower-unshifted/README.md`.
 
+The source stamp covers 53 files: the 48 local computation modules
+reachable from the heavy row modules, plus `CapNodes.lean`, `GrotheCaps.lean`,
+`lean-toolchain`, `lake-manifest.json` and `lakefile.toml`. The five extras are
+hashed directly; their imports are not traversed. This replaces the former
+140-file boundary. Changes confined to analytic soundness or the lower
+certificate outside this set do not invalidate the heavy-computation hash.
+The stamp records verification of these computation sources; it is not a
+complete dependency or build-artifact manifest. Lake checks ordinary build
+dependencies separately.
+
+CI builds the default target and checks `docs/CAPS_VERIFIED.txt` with
+`python3 scripts/caps_stamp.py --check` (also the script's default).
+A changed source stamp on a `ready/` delivery automatically dispatches the
+heavy CI job on the droplet runner. That job builds `Grothe` and `GrotheCaps`,
+runs both axiom reports, then uses `scripts/caps_stamp.py --write "<run evidence>"`
+to commit the verified stamp onto the ready branch and repeat its check.
+The ordinary CI job checks the stamp; the heavy job checks the separate
+`CapNodes` assembly. A read-only digest does not establish verification.
+Deliver through this CI route without a separate manual droplet build.
+See `AGENTS.md` §4 and `docs/CAPS_STATUS.md`.
+
+The default lower theorem still assumes `NodeCaps`.
+The separate theorem reduces this to `CapsRest`: the vertex caps of rows
+12–15 (t = 0.84, 0.845, 0.85, 0.855), plus any excluded-node caps of the
+other rows. All exclusion lists are empty. No cap, recipe, row data, bound
+or theorem statement changes. The rows 12–15 piece checks likewise import
+only rational data and computable definitions (`CapCoverDefs`,
+`CapConstrDefs`, `CapPieceRange`); `CapCover`, `CapConstr` and `CapPieceNodes`
+provide their soundness. Their generated facts and final `CapsRest` wiring
+remain a separate campaign, outside the current `GrotheCaps` target.
 
 **Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder`, for an L² charge-one truncation `X`, proves
 `ComparisonInputs → energy_close → hardy → IsGrothendieckBound (500000000000000000/355973699864771491)`,
@@ -291,9 +324,15 @@ lake build
 lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py
 ```
 
-A full build takes about 20 minutes on 8 cores; the native checks dominate. CI
-(`.github/workflows/lean.yml`) builds the default target on every pushed branch, forbids `sorry`,
-`axiom`, `implemented_by`, `extern` and `unsafe`, and checks the axiom report.
+`lake build` selects the default target `Grothe`; the heavy cap rows and
+`CapNodes` belong to `GrotheCaps`. For Lean-relevant pushes, CI builds the
+default target, checks the generated roots and axiom report, and forbids
+`sorry`, `axiom`, `implemented_by`, `extern`, `unsafe` and `Task.spawn`.
+It also checks the committed cap-source stamp. A stale stamp on a `ready/`
+delivery dispatches the heavy `GrotheCaps` build and caps audit on the droplet
+runner; that job writes the verified stamp and repeats the check. A `ready/`
+run checks the branch merged with current master before auto-merging;
+documentation-only changes may skip the Lean checks.
 
 ## How this was made
 

@@ -6,15 +6,20 @@ This is the single entry point for anyone (Codex or Claude) continuing the node 
 
 The lower bound is `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401695322458 < K`, in the separate
 target `GrotheCaps` (see the README, "Node caps"). `CapsRest` is the vertex caps of **rows 12–15** (t = 0.84, 0.845,
-0.85, 0.855). Rows 0–11 and 16–18 are certified: 60 native range facts, verified on the droplet, stamp in
-`docs/CAPS_VERIFIED.txt`. Removing `CapsRest` makes the lower bound unconditional, apart from the 77 pinned native
-facts.
+0.85, 0.855), plus any excluded-node caps of the other rows; the exclusion
+lists are empty. Rows 0–11 and 16–18 have 60 existing native range facts.
+Track A isolates their computation from the analytic proof layer. Ordinary CI
+checks the committed source stamp. A changed stamp on a `ready/` delivery
+automatically dispatches the heavy separate-target build and both axiom
+reports on the droplet runner (`AGENTS.md` §4).
+Removing `CapsRest` would make the lower bound unconditional, apart from
+the pinned `native_decide` facts.
 
 ## Tracks
 
 | track | owner (23 Oct) | branch | status file |
 |---|---|---|---|
-| A. Decouple the heavy facts from the lower chain | Codex | `codex/caps-decouple` | the prompt is in the user's chat; branch commit 38b64a9 |
+| A. Decouple the heavy facts from the lower chain | Codex | `codex/caps-decouple` | `docs/CAPS_STATUS.md` (computation split and source stamp) |
 | B. Rows 12–15: why some localised pieces fail, and how to fix them | Claude worker | `work/caps-m` | `docs/CAPS_M_STATUS.md` on that branch |
 | C. Rows 12–15: the Lean pipeline (piece data, range facts, wiring) | Claude worker | `claude/caps-m-pipeline` | `docs/CAPS_M_PIPELINE.md` on that branch |
 
@@ -23,18 +28,45 @@ running where (droplet paths and `job.pid`), and the next step.
 
 ### A. Decoupling
 
-The 15 `CapRowKK` modules import CapRows → CapHull → Reduction → the whole lower proof. So any lower-chain edit forces
-the 4-hour droplet rebuild and invalidates the stamp. The fix:
+Track A isolates the existing 60 `capRangeKK_j` facts for rows 0–11 and
+16–18. The 15 heavy row modules import only `CapRangeDefs` and
+`CapRecipeData`. Computable types, rational row/gate/chord data, numerical
+tables and checker definitions are separate from their soundness proofs.
+`CapRows` and `CapAssembly` remain in the default `Grothe` build; `CapHull`
+is a compatibility import. The 15 unchanged `vertexCapsRowKK` assembly
+proofs now live in `CapNodes`, alongside `CapsRest` and the final theorem.
 
-- **Computation layer:** `rangeOK`, `nodeCheck`, chords, recipes and `rowData`, with no proofs.
-- **Assembly layer:** soundness, `NodeCaps` and `lower_bound_of_capsRest`.
+The stamp boundary is 53 files, down from 140: 48 local computation
+modules plus directly hashed `CapNodes.lean`, `GrotheCaps.lean`,
+`lean-toolchain`, `lake-manifest.json` and `lakefile.toml`. The five extras'
+imports are not traversed. Changes confined to the analytic or lower-proof
+layer outside that set leave the computation hash unchanged. This is a
+source-verification boundary, not a complete dependency or artifact manifest;
+Lake and the default build check ordinary proof dependencies separately.
 
-**Acceptance:**
-- the stamp closure shrinks to the checker and data;
-- a comment-only edit in `Grothe/Lower/RowCheck.lean` keeps `caps_stamp.py --check` green;
-- one new droplet verification and stamp.
+Deliver through `ready/`. A stale source stamp causes CI to dispatch the
+heavy job, which builds both targets and checks both axiom reports before
+committing `docs/CAPS_VERIFIED.txt` onto the ready branch and repeating its
+check. The heavy job checks the final `CapNodes` assembly. A read-only digest
+or unchanged theorem text is not a completed verification record; acceptance
+requires that successful heavy CI run and its recorded stamp.
 
-**Order:** do A before C is wired into `CapNodes`.
+The scratch-branch comment probe in `Grothe/Lower/RowCheck.lean` leaves
+the 53-file digest unchanged. A comment in `CapRangeDefs.lean` changes it;
+the negative-control edit is restored and neither scratch edit is delivered.
+No stamp is written from the probe. The configured default and caps CI checks
+remain the acceptance gate for the merged candidate.
+
+The rows 12–15 localized-piece predicates are separated too:
+`CapCoverDefs` and `CapConstrDefs` contain the rational coverage and
+constrained-node checks, while `CapCover`, `CapConstr` and `CapPieceNodes`
+retain their semantic definitions and soundness proofs. `CapPieceRange`
+has a 32-module computation-only closure; generated coverage/range modules
+add only their own declaration and node data (34 modules).
+Rows 12–15 remain in `CapsRest`; their generated facts are not yet part of
+`GrotheCaps`. Tracks B/C and their data choices remain unchanged.
+
+**Order:** merge A before C is wired into `CapNodes`.
 
 ### B. Why pieces fail (route M)
 
@@ -93,6 +125,9 @@ This does not depend on B's choice of fix. B's choice only changes the data.
   ```sh
   lake build GrotheCaps && lake env lean scratch/AxiomsCaps.lean | python3 scripts/check_axioms.py --caps
   ```
-  Then run `python3 scripts/caps_stamp.py --write "<machine, date, wall time, branch sha>"` and commit
-  `docs/CAPS_VERIFIED.txt`.
-- **Delivery:** through `ready/<agent>-<topic>` (`AGENTS.md` §3). CI skips the caps build and checks the stamp.
+  This runs automatically on the droplet's CI runner (job `heavy`, modes `warm`/`caps`). In `caps` mode,
+  after both targets and reports pass, the runner writes the source stamp with
+  `scripts/caps_stamp.py --write "<run evidence>"`, commits it onto the ready branch and repeats its check.
+  Do not launch a separate manual droplet verification for this delivery.
+- **Delivery:** through `ready/<agent>-<topic>` (`AGENTS.md` §3). A change to the caps closure makes CI dispatch the
+  rebuild to the droplet automatically (hours) and re-check afterwards.
