@@ -89,4 +89,52 @@ lemma chart_integral_le {r : ℝ} (hr : (rhoQ : ℝ) < r)
   rw [e2] at b1
   linarith
 
+/-- **The circle mean** (the input `hmean` of `hardy_of_pair_inputs`), from the four checked parts and holomorphy
+near the circle. -/
+theorem hmean_of_parts {r : ℝ} (hr : (4149 / 4000 : ℝ) < r)
+    (hU : ∀ t ∈ Metric.ball (0 : ℂ) r, ∃ l > 0, KerPos (Rt t) l)
+    (h1 : partsOK false 0 = true) (h2 : partsOK false 1024 = true)
+    (h3 : partsOK true 0 = true) (h4 : partsOK true 1024 = true) :
+    (2 * π)⁻¹ * ∫ θ in (0 : ℝ)..2 * π,
+      ‖HholPair F G (Rt (((4149 / 4000 : ℝ) : ℂ) * Complex.exp (θ * Complex.I)))‖ ^ 2 ≤ 7 / 4 := by
+  have hρ : ((rhoQ : ℚ) : ℝ) = 4149 / 4000 := by norm_num [rhoQ]
+  have hr' : (rhoQ : ℝ) < r := by rw [hρ]; exact hr
+  have hint := gF_intervalIntegrable hFm hGm hF hG hr' hU
+  -- the integrand is the chart function `gF false`
+  have hf : (fun θ : ℝ => ‖HholPair F G (Rt (((4149 / 4000 : ℝ) : ℂ) * Complex.exp (θ * Complex.I)))‖ ^ 2) =
+      gF F G false := by
+    funext θ; simp only [gF, HardyArcSound.sig, Bool.false_eq_true, ↓reduceIte, one_mul, hρ]
+  rw [hf]
+  -- periodicity: shift the window to [−π/2, 3π/2], then split at π/2
+  have hper : Function.Periodic (gF F G false) (2 * π) := by
+    intro θ
+    simp only [gF]
+    congr 4
+    push_cast
+    rw [add_mul, Complex.exp_add, Complex.exp_two_pi_mul_I, mul_one]
+  have hshift : ∫ θ in (0 : ℝ)..2 * π, gF F G false θ = ∫ θ in (-(π / 2))..(-(π / 2) + 2 * π), gF F G false θ := by
+    have := hper.intervalIntegral_add_eq 0 (-(π / 2))
+    simpa using this
+  rw [hshift, ← intervalIntegral.integral_add_adjacent_intervals (hint false _ _) (hint false _ _) (b := π / 2)]
+  -- the second half is the other chart: e^{i(θ+π)} = −e^{iθ}
+  have hsecond : ∫ θ in (π / 2)..(-(π / 2) + 2 * π), gF F G false θ = ∫ θ in (-(π / 2))..(π / 2), gF F G true θ := by
+    have e : ∀ θ : ℝ, gF F G false (θ + π) = gF F G true θ := by
+      intro θ
+      simp only [gF, HardyArcSound.sig, Bool.false_eq_true, ↓reduceIte, one_mul]
+      congr 4
+      push_cast
+      rw [add_mul, Complex.exp_add, Complex.exp_pi_mul_I]
+      ring
+    calc ∫ θ in (π / 2)..(-(π / 2) + 2 * π), gF F G false θ
+        = ∫ θ in (-(π / 2) + π)..(π / 2 + π), gF F G false θ := by congr 1 <;> ring
+      _ = ∫ θ in (-(π / 2))..(π / 2), gF F G false (θ + π) :=
+          (intervalIntegral.integral_comp_add_right (gF F G false) π).symm
+      _ = ∫ θ in (-(π / 2))..(π / 2), gF F G true θ := by simp only [e]
+  rw [hsecond]
+  have c1 := chart_integral_le hFm hGm hF hG hr' hU false h1 h2
+  have c2 := chart_integral_le hFm hGm hF hG hr' hU true h3 h4
+  have hπ := Real.pi_gt_d2
+  rw [inv_mul_le_iff₀ (by positivity)]
+  nlinarith
+
 end Grothe.UpperChaos.HardyArcMean
