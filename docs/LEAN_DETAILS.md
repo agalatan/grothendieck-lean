@@ -254,8 +254,8 @@ headline endpoints are unchanged.
   kernel, and its circle mean bound ≤ 7/4. Holomorphy, continuation,
   Parseval, the decay region and the circle mean are proved:
   `hardy_of_real` (`HardyStep4.lean`) derives the `hardy` statement for every
-  measurable disk-valued pair from the real Gaussian-law identification
-  alone, which remains to be supplied.
+  measurable disk-valued pair from summable real odd coefficients and their
+  Gaussian-law identification; the latter remains to be supplied.
 * **Residual ledger.** The total is 455308278509/(5·10¹⁷), approximately
   9.10617·10⁻⁷. The selected comparison contributes 93.56%, the native finite
   head 3.09%, the Hardy tail 3.35%, and the table error about 0.0015%.
@@ -276,9 +276,10 @@ headline endpoints are unchanged.
 **Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (1404909409/1000000000)`
 (`Grothe/Haagerup/Power.lean`), with no hypothesis. The analysis is in
 `Grothe/Haagerup/`: the shared Gaussian phase and planar laws (`Phase`); the charge-one
-Hermite coefficient, evaluated using odd Gaussian moments and a finite Pochhammer identity
-(`PhaseCoefficients`, `UpperChaos/PhaseMoments`, `UpperChaos/HermiteExpansion`,
-`UpperChaos/PhaseCombinatorics`); its squared normalized value
+Hermite coefficient, determined by odd Gaussian moments and the recurrence
+`M_(k+1) = -(k+1/2) M_k` for `M_k = E[H_(k+1,k) · conj(ph)]`
+(`PhaseCoefficients`, `UpperChaos/PhaseMoments`). The recurrence follows from a
+weighted polynomial moment identity, without differentiating phase. Its squared normalized value
 (π/4)(1/2)_k²/(k!(k+1)!) is `haagCoeff k`. The complex Hermite basis and polynomial Mehler
 formula give the phase correlation on the entire closed unit disk (`PhaseKernel`).
 Four real-orthonormal coordinates of the
@@ -582,7 +583,7 @@ them, and are not yet wired into `CapsRest`.
 | modules | content |
 |---|---|
 | `ComplexMoments`, `ComplexHermite`, `Mehler`, `Completeness`, `HermiteComplete`, `HermiteBasis`, `Charge` | one complex coordinate: E[zᵃz̄ᵇ] = δ a!, Hermite polynomials and orthogonality, Mehler for polynomials, density of polynomials in L²(stdGaussian d), Hilbert basis and Parseval, charge selection |
-| `GaussC2`, `HermiteC2`, `HermiteC2Basis`, `LawY`, `MehlerL2`, `Energy2`, `Kernel2` | two coordinates: ℂ² as ℝ⁴, tensor Hermite basis, law of ρX + √(1−\|ρ\|²)W, Mehler for L² functions, chaos energies by bidegree, the physical kernel of a charge-one function |
+| `ProductComplete`, `HermiteC2`, `HermiteC2Basis`, `LawY`, `MehlerL2`, `Energy2`, `Kernel2` | two coordinates: tensor completeness from one-coordinate completeness by Fubini, Gaussian mixing law by characteristic functions, Mehler for L² functions, chaos energies by bidegree, the physical kernel of a charge-one function |
 | `Realise2`, `Structural` | two-channel rounding with tensor-realised preprocessors (`rounding_diskKernel`); the structural fields (validity, summability, parity) as theorems |
 | `TaylorPhase`, `Rounder` | \|P₃(x)\|² = 1 − x⁴(3 − x²)/36; the concrete rounding G_T from `Grothe/Upper/Data.lean` |
 | `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck0`–`5`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 99/100 everywhere (`phiT_sq_le`, hence `phi_abs_lt_one : |φ| < 1`; `phiBound` is the same bound as the rounding's `PhiBound`): 512 cubes of bisection trees (`phi_cover_check_0`–`5`), analytic far field, headline `fresh_upper_rounder` |
@@ -608,8 +609,8 @@ interval evaluator `GrotheKernel.HardyArc` bounds the Schur value on
 rational boxes, four `native_decide` facts (`hardy_arc_part_0..3`) cover the
 circle `|t| = 4149/4000` with mean `1.659 ≤ 7/4`, and `hardy_region_check`
 proves `KerPos` on the disc of radius `51863/50000`. `hardy_region_and_mean`
-assembles both, and `hardy_of_real` leaves only the real identification
-(`hreal`) as a hypothesis.
+assembles both, and `hardy_of_real` retains coefficient summability (`hs`)
+and the real identification (`hreal`) as explicit inputs.
 
 **`Grothe/LowerAnalytic/Cap*`: the node caps**
 
@@ -629,7 +630,7 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
 The complete registry has 89 native facts: 60 cap ranges, five Hardy facts
-(four arc parts and the region) and 24 others. There are 550 axiom-report entries and 332 required declarations.
+(four arc parts and the region) and 24 others. There are 556 axiom-report entries and 339 required declarations.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`): `Grothe.head_check` (the upper head),

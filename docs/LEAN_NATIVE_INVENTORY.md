@@ -3,7 +3,7 @@
 This inventory covers the named native facts allowed for the supported `Grothe`
 and `GrotheCaps` targets, plus the four anonymous table diagnostics below. The
 current allowlist has **89 named facts: 60 cap ranges, five Hardy facts and 24 others**. The default
-report contains **550 print directives**, with **332 required declarations**.
+report contains **556 print directives**, with **339 required declarations**.
 These are source/registry counts; final verification of the combined delivery is
 its runner build and both strict axiom reports.
 

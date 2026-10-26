@@ -36,8 +36,8 @@ are theorems.  Module map (all in `Grothe/UpperChaos/`):
 |---|---|
 | TaylorPhase | `|P₃(x)|² = 1 − x⁴(3−x²)/36` |
 | ComplexMoments, ComplexHermite, Mehler, Completeness, HermiteComplete, HermiteBasis, Charge | one complex coordinate: moments, Hermite orthogonality, Mehler (polynomials), completeness (`poly_complete`), Hilbert basis, charge selection |
-| GaussC2, HermiteC2, HermiteC2Basis | ℂ²: `gaussC ⊗ gaussC` = image of std Gaussian on ℝ⁴, tensor Hermite basis, Parseval |
-| LawY, MehlerL2 | law of ρX + σW, Mehler for L² functions on ℂ² (`mehler_L2`) |
+| ProductComplete, HermiteC2, HermiteC2Basis | ℂ²: tensor completeness by Fubini and one-coordinate completeness, tensor Hermite basis, Parseval |
+| LawY, MehlerL2 | law of ρX + σW by product characteristic functions, Mehler for L² functions on ℂ² (`mehler_L2`) |
 | Energy2, Kernel2 | energies by bidegree, parity, kernel = `radialKernel (bivarKernel P Q (energy G))` |
 | Realise2, Structural | two-channel Gaussian rounding ⇒ `DiskKernel`; `structural_fields`, `fresh_upper_of_rounding` |
 | Rounder | `vprof`, `F0`, `phiT`, `Tround`, `GT`; measurable, charge one, disk-valued under `PhiBound` |
@@ -143,14 +143,14 @@ Progress (claude/hardy, 26 Oct):
   `51863/50000 > 4149/4000` by a quadtree of complex boxes. The soundness proofs are in `HardyArcSound`, `HardyArcCircle`,
   `HardyArcCover`, `HardyArcMean` and `HardyArcRegion`. `HardyStep4.hardy_region_and_mean` gives both inputs for
   every measurable disk-valued pair, and **`hardy_of_real`** gives the `hardy` statement from the real
-  identification (step 1(b)) alone. Measured on GitHub-hosted runners: 700–1140 s per part alone (about
+  identification (step 1(b)) for summable coefficients. Measured on GitHub-hosted runners: 700–1140 s per part alone (about
   1700 s with all four in parallel on 4 vCPUs) and 9 s for the region.
 - **Remaining:**
   1(b) the real identification: for real `R`, `kHol R` is the density of the Gaussian pair with cross covariance
   `R` (two real copies), and smoothing by `M`, `N` turns `E[conj GT(X) GT(Y)]` (diagonal correlations
   `p(t), −τ(t)`) into `Hhol (Rt t)`; then `Bm_polyKernel` gives the series with `h = kernelCoeff (energy GT)`.
   This needs Gaussian-law identification on `ℝ⁸` (density ↔ covariance, pushforward by linear maps) — the largest
-  remaining piece, and now the only one: `hardy_of_real` takes it as its sole hypothesis `hreal`.
+  remaining analytic identification: `hardy_of_real` takes it as `hreal`, with coefficient summability `hs` explicit.
 
 ## 4. Other open items
 
