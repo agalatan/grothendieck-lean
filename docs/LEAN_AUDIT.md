@@ -85,8 +85,8 @@ bounds the l1 error against the stored table on `n+3m ≤ 501` by
 `X` satisfying all these numerical inputs was supplied or established here.
 
 The concrete rounding, smoothing and disk bound are actual Lean definitions and
-proofs (`Rounder.lean:68–78,132–182`). The proved `PhiBound` is `φ² ≤ 3`, not the
-stronger `|φ| ≤ 1` reserved to #19. No claim is made here to discharge #18 or
+proofs (`Rounder.lean:68–78,132–182`). `PhiBound` is the proved phase cover `φ² ≤ 99/100`
+(#19), which also gives `|φ| < 1` (`phi_abs_lt_one`). No claim is made here to discharge #18 or
 #39–#41.
 
 ## Finite coverage, rounding and parsing
@@ -384,7 +384,6 @@ since been checked; no headline mathematical soundness defect has been found.
   `daf21e9`; both production source files match the verified delivery exactly.
   Combined-master [run 40272617860](https://github.com/agalatan/grothendieck-lean/actions/runs/40272617860)
   is still running at this update, so no completed check is claimed for that newer tree.
-
 
 - [#89](https://github.com/agalatan/grothendieck-lean/issues/89): polynomial
   evaluation reuses the existing coefficient budget, and the paired weighted
