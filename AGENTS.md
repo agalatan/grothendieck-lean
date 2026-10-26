@@ -201,20 +201,24 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
   refuses it). They auto-merge only if the repository secret `MERGE_TOKEN` exists (a fine-grained personal access token
   for this repository with *Contents: read and write* and *Workflows: read and write*); otherwise open a pull request
   and let the user merge it. CI says so explicitly and does not retry.
-- **Build cache (one, owned by master).** All runs restore `.lake/build` from the Actions cache written by the last
-  **warm** run on master; no other run saves a cache (per-branch entries evicted each other in the 10 GB quota). After
-  every auto-merge CI dispatches a warm run on the droplet's self-hosted runner (labels `self-hosted, heavy`): an
-  incremental `lake build Grothe GrotheCaps` in a persistent workspace, both axiom reports, then the cache save. So
-  GitHub-hosted runs start from master's latest build *including* the verified caps modules. Trust: a cached
-  `native_decide` result is not re-executed; only our own runner on master writes the cache, and Lake reuses a file
-  only if its source, dependency and toolchain hashes match; the droplet also records the caps' source hash in the cache
-  (`.lake/build/caps-closure.sha`), and CI builds `GrotheCaps` only when it matches.
+- **Build cache (one, owned by master).** All runs restore `.lake/build` from the master Actions cache (GitHub's cache
+  service, not git). **Every update of master gets one check on master** (a hand merge triggers it by its push; an
+  auto-merge dispatches it): it restores the previous master cache, builds incrementally, runs every check, and **when
+  all are green saves the new master cache**. So GitHub-hosted runs start from master's latest green build *including*
+  the verified caps modules. The droplet (self-hosted runner, labels `self-hosted, heavy`) is needed only when the caps
+  sources change (below). Trust: a cached `native_decide` result is not re-executed; only runs on master (and caps
+  runs for their own branch) write caches, and Lake reuses a file only if its source, dependency and toolchain hashes
+  match; the cache also records the caps' source hash (`.lake/build/caps-closure.sha`), and CI builds `GrotheCaps`
+  only when it matches.
 - **Caps changes.** If a change touches a file in the caps closure, the cached caps no longer match and CI does not try
   the hours-long build (it would time out): it dispatches a **caps** run on the droplet for that branch (for `ready/`:
   the tree merged with master) and fails with a message. The droplet builds `GrotheCaps`, runs both axiom reports, marks
   and saves a cache for that branch, and re-dispatches the check, which then passes. Nothing to do by hand; just wait.
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for stop/remove).
   It shares Mathlib with the other droplet work via `~/grothe-caps/.lake/packages` — do not delete that directory.
+- **Never use `[skip ci]` on a delivery** (`ready/` branches or commits meant for master): the delivery check is
+  what verifies and merges it. **Never cancel another agent's CI run** (`gh run cancel` acts with the user's account);
+  ask its owner or the user.
 - **Superseded runs are cancelled automatically.** Pushing a branch again cancels that branch's older CI run (one
   concurrency group per branch, `cancel-in-progress`); other branches and the droplet's heavy jobs are unaffected. No
   manual `gh run cancel` is needed for re-pushes.
@@ -233,22 +237,22 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
 
 ## 4c. Lean build caches: who writes, who reads, how to bootstrap
 
-There is **one canonical master build**: the GitHub Actions cache written by **warm** runs on master. Those runs execute
-on the droplet's self-hosted runner, whose persistent workspace (`~/actions-runner/_work/…`) produces it. Everything
-else uses a platform-local working build; only the runner publishes the Actions caches.
+There is **one canonical master build**: the GitHub Actions cache written by the **green check of master** after every
+merge (GitHub-hosted), or, when the caps sources changed, by the droplet's **warm** run on master. Everything else
+uses a platform-local working build.
 
 | cache | written only by | read by |
 |---|---|---|
-| GitHub master cache (`lake-build-v2-<toolchain+manifest>-<sha>`) | warm runs on master (droplet runner) | every CI run |
+| GitHub master cache (`lake-build-v2-<toolchain+manifest>-<sha>`) | the green check of master; the droplet warm run when the caps changed | every CI run |
 | GitHub branch cache | caps runs for that branch (droplet runner) | later CI runs of that branch |
 | runner workspace (droplet) | the runner, one job at a time; it records the built commit in `.lake/build/built-commit` | nobody directly; do not copy into it or out of it by hand |
 | main checkout `.lake/master-cache` (laptop) | `scripts/master_build_job.sh`, after a successful clean-master build started by `scripts/sync_master.sh --build` | laptop worktrees, through `scripts/clone_master_build.sh` (§2) |
 
 **Correctness.** Lake reuses a compiled file only if the hashes of its source, its dependencies and the toolchain
 match, so a stale cache costs time, never correctness. The caps marker (`.lake/build/caps-closure.sha`) also ties the
-cached caps to their source files. **Trust.** A cached `native_decide` result is not re-executed, so only the runner,
-and only for master or the branch it was asked to build, may write a shared GitHub Actions cache. Never publish
-a private build to Actions; the separate laptop snapshot follows §2.
+cached caps to their source files. **Trust.** A cached `native_decide` result is not re-executed, so only CI runs of
+this repository write Actions caches: checks of master (after every step passed), and the droplet's caps runs for their
+own branch. Never publish a private build to Actions; the separate laptop snapshot follows §2.
 
 **Bootstrap (every agent, at the start of work):**
 - **Laptop:**
@@ -265,7 +269,8 @@ a private build to Actions; the separate laptop snapshot follows §2.
   (`~/grothe-caps/.lake/packages`).
 - **Never run a separate manual caps verification.** If your change touches the caps closure, push it (a `ready/`
   delivery or a dispatched caps run). CI's caps run builds the caps for exactly the tree that will be merged, saves
-  them as the branch cache, and after the merge the master warm run finds them already built in the same workspace.
+  them as the branch cache, and after the merge the master warm run (dispatched by master's check, since its cached
+  caps no longer match) finds them already built in the same workspace.
   So one build serves the validation, the branch check and the new master cache.
 
 ## 4b. If you find yourself in the main checkout
