@@ -7,7 +7,8 @@ Grothe.Upper). So a delivery never edits the root files by hand: a new module is
     python3 tools/gen_root_imports.py            # rewrite the root files
 and CI runs
     python3 tools/gen_root_imports.py --check    # exit 1 if a root file is not the generated one
-A merge conflict in Grothe.lean or GrotheKernel.lean is resolved by rerunning the generator.
+Without --check it also re-sorts and de-duplicates the union-merged list files (union merge may leave the two
+sides' new lines out of order). So after any merge: rerun it, and a conflict in a root file is resolved too.
 
 --check also checks the list files that git union-merges (.gitattributes): data/root-imports-exclude.txt,
 data/axioms/native.txt, data/axioms/required.txt (sorted, no duplicates) and the `#print axioms` lines of
@@ -71,6 +72,39 @@ def list_problems():
     return problems
 
 
+def normalize_lists():
+    """Sort and de-duplicate the list files in place (comments/header lines first, kept as they are)."""
+    for path in SORTED_LISTS:
+        full = os.path.join(ROOT, path)
+        if not os.path.exists(full):
+            continue
+        with open(full, encoding="utf-8") as f:
+            lines = [l.rstrip("\n") for l in f]
+        head = [l for l in lines if l.strip().startswith("#") or not l.strip()]
+        body = sorted({l.strip() for l in lines if l.strip() and not l.strip().startswith("#")})
+        new = "\n".join([h for h in head if h.strip()] + body) + "\n"
+        if new != "\n".join(lines) + "\n":
+            with open(full, "w", encoding="utf-8") as f:
+                f.write(new)
+            print(f"sorted {path}")
+    for path in AXIOM_REPORTS:
+        full = os.path.join(ROOT, path)
+        with open(full, encoding="utf-8") as f:
+            lines = [l.rstrip("\n") for l in f if l.strip()]
+        imports = sorted({l for l in lines if l.startswith("import ")})
+        prints = sorted({l for l in lines if l.startswith("#print axioms ")})
+        other = [l for l in lines if not l.startswith(("import ", "#print axioms "))]
+        if other:
+            continue  # leave unexpected content for --check to report
+        new = "\n".join(imports) + "\n\n" + "\n".join(prints) + "\n"
+        with open(full, encoding="utf-8") as f:
+            old = f.read()
+        if new != old:
+            with open(full, "w", encoding="utf-8") as f:
+                f.write(new)
+            print(f"sorted {path}")
+
+
 def main():
     check = "--check" in sys.argv[1:]
     if [a for a in sys.argv[1:] if a != "--check"]:
@@ -93,6 +127,8 @@ def main():
                 print(f"wrote {lib}.lean ({want.count('import ')} imports)")
     if check:
         bad += list_problems()
+    else:
+        normalize_lists()
     for b in bad:
         print("FAIL:", b)
     if not bad:
