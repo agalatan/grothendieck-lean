@@ -320,6 +320,8 @@ Grothe.UpperChaos.fresh_upper_of_rounding
 Grothe.UpperChaos.fresh_upper_rounder
 Grothe.UpperChaos.hardy_of_inputs
 Grothe.UpperChaos.hardy_of_pair_inputs
+Grothe.UpperChaos.hardy_of_real
+Grothe.UpperChaos.hardy_region_and_mean
 Grothe.UpperChaos.localized_comparison
 Grothe.UpperChaos.norm_energyBlock_sq
 Grothe.UpperChaos.phi_abs_lt_one

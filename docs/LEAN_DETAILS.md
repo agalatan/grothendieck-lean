@@ -251,9 +251,11 @@ headline endpoints are unchanged.
   for the actual rounding are derived. `HardyHolo.lean` now proves
   `hardy_of_inputs` from positive kernel decay on a disc of radius greater
   than 4149/4000, identification of the real odd series with the continued
-  kernel, and its circle mean bound ≤ 7/4. Holomorphy, continuation and
-  Parseval are proved; the Gaussian-law identification and certified
-  region/circle estimates remain to be supplied.
+  kernel, and its circle mean bound ≤ 7/4. Holomorphy, continuation,
+  Parseval, the decay region and the circle mean are proved:
+  `hardy_of_real` (`HardyStep4.lean`) derives the `hardy` statement for every
+  measurable disk-valued pair from the real Gaussian-law identification
+  alone, which remains to be supplied.
 * **Residual ledger.** The total is 455308278509/(5·10¹⁷), approximately
   9.10617·10⁻⁷. The selected comparison contributes 93.56%, the native finite
   head 3.09%, the Hardy tail 3.35%, and the table error about 0.0015%.
@@ -601,6 +603,13 @@ identification and exact contour inputs remain separate obligations.
 `SchurMain.norm_HholPair_sq_le` proves the Gaussian Schur bound for the same
 response pairs under `j > 0`, `Z ≻ 0` and `T ≻ 0`. These structural theorems
 alone do not discharge `hardy` for a changed rounding or improve an endpoint.
+`HardyArc*` checks the region and circle inputs in Lean: the precompiled
+interval evaluator `GrotheKernel.HardyArc` bounds the Schur value on
+rational boxes, four `native_decide` facts (`hardy_arc_part_0..3`) cover the
+circle `|t| = 4149/4000` with mean `1.659 ≤ 7/4`, and `hardy_region_check`
+proves `KerPos` on the disc of radius `51863/50000`. `hardy_region_and_mean`
+assembles both, and `hardy_of_real` leaves only the real identification
+(`hreal`) as a hypothesis.
 
 **`Grothe/LowerAnalytic/Cap*`: the node caps**
 
@@ -619,8 +628,8 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 `LawNodeLower.certified_rows` and `certified_mixed_batches` assemble those
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
-The complete registry has 84 native facts: 24 outside the separate 60 cap-range
-facts. There are 546 default axiom-report entries and 329 required declarations.
+The complete registry has 89 native facts: 60 cap ranges, five Hardy facts
+(four arc parts and the region) and 24 others. There are 550 axiom-report entries and 332 required declarations.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`): `Grothe.head_check` (the upper head),
