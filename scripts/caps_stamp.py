@@ -11,7 +11,8 @@ On a match the cached caps modules are exactly the verified ones for these sourc
 replays them) and checks its axiom report; on a mismatch, or when the marker is missing, it fails closed and CI
 dispatches a caps run on the droplet instead of building. `--digest` prints the hash and file count.
 
-The hash covers the import closure of the CapRowKK modules, plus CapNodes.lean, GrotheCaps.lean, lean-toolchain,
+The hash covers the import closure of the CapRowKK modules, plus CapNodes.lean, GrotheCaps.lean, GrotheCapsKernel.lean
+(the root of the precompiled cap-checker library, whose shared object every importer loads), lean-toolchain,
 lake-manifest.json and lakefile.toml. Import parsing is strict: an import line naming a project module (Grothe.*,
 GrotheKernel.*) whose file does not exist, or syntax this parser does not understand, is an error, never silently
 skipped. It is a provenance check for the cached caps, not a full reproducibility manifest (it does not cover the
@@ -21,12 +22,12 @@ import argparse, hashlib, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MARK = os.path.join(ROOT, ".lake", "build", "caps-closure.sha")
-PROJECT_PREFIXES = ("Grothe.", "GrotheKernel.")
-PROJECT_ROOTS = ("Grothe", "GrotheKernel", "GrotheCaps")
+PROJECT_PREFIXES = ("Grothe.", "GrotheKernel.", "GrotheCapsKernel.")
+PROJECT_ROOTS = ("Grothe", "GrotheKernel", "GrotheCapsKernel", "GrotheCaps")
 CAP_ROWS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
 TOPS = [f"Grothe.LowerAnalytic.CapRow{k:02d}" for k in CAP_ROWS]
-EXTRA = ["Grothe/LowerAnalytic/CapNodes.lean", "GrotheCaps.lean", "lean-toolchain", "lake-manifest.json",
-         "lakefile.toml"]
+EXTRA = ["Grothe/LowerAnalytic/CapNodes.lean", "GrotheCaps.lean", "GrotheCapsKernel.lean", "lean-toolchain",
+         "lake-manifest.json", "lakefile.toml"]
 IMPORT = re.compile(r"\s*import\s+(.*)$")
 MODULE = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(\.[A-Za-z_][A-Za-z0-9_']*)*$")
 

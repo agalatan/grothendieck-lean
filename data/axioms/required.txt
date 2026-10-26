@@ -264,6 +264,7 @@ Grothe.UpperChaos.fresh_upper_of_rounding
 Grothe.UpperChaos.fresh_upper_rounder
 Grothe.UpperChaos.localized_comparison
 Grothe.UpperChaos.norm_energyBlock_sq
+Grothe.UpperChaos.phi_abs_lt_one
 Grothe.fresh_upper
 Grothe.haagerup_bound
 Grothe.hardy_budget_after_linear

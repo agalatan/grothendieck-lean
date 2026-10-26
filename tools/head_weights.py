@@ -2,7 +2,7 @@
 
 The generated radii are proposals until ComparisonMass checks them natively.
 All operations here enclose coefficient intervals using integer arithmetic;
-there is no floating-point arithmetic. The fixed scale matches GrotheKernel.Basic."""
+there is no floating-point arithmetic. The fixed scale matches GrotheCapsKernel.Basic."""
 from fractions import Fraction as Q
 D=2**128
 Z=(0,0)

@@ -122,6 +122,40 @@ theorem e3_shiftAll (mU mV mW : ℤ) (A : List (List (List ℤ))) (x y z : ℝ) 
   unfold he2
   exact evalG_map _ _ _ (fun a => e1_shift1 mW a z) row _
 
+/-! ### The first-order array -/
+
+lemma e3_add3 (a b : List (List (List ℤ))) (x y z : ℝ) :
+    he3 (add3 a b) x y z = he3 a x y z + he3 b x y z :=
+  evalG_zipAddG _ _ (fun a b => e2_add2 a b y z) a b x
+
+lemma e3_smul3 (m : ℤ) (a : List (List (List ℤ))) (x y z : ℝ) :
+    he3 (smul3 m a) x y z = m * he3 a x y z := by
+  induction a with
+  | nil => simp [smul3, he3]
+  | cons b p ih =>
+    simp only [smul3, he3, List.map_cons, evalG_cons] at ih ⊢
+    rw [ih, e2_smul2]; ring
+
+lemma e3_mulU (B : List (List (List ℤ))) (x y z : ℝ) : he3 (mulU B) x y z = x * he3 B x y z := by
+  simp [mulU, he3, he2]
+
+lemma e3_mulV (B : List (List (List ℤ))) (x y z : ℝ) : he3 (mulV B) x y z = y * he3 B x y z := by
+  unfold mulV he3
+  induction B with
+  | nil => simp
+  | cons r B ih =>
+    simp only [List.map_cons, evalG_cons] at ih ⊢
+    rw [ih]
+    simp [he2, he1]
+    ring
+
+/-- **The first-order array**: `P1(x, y, z) = (20·2^SC − 21 (x + y)) B(x, y, z)`. -/
+theorem e3_firstOrder (B : List (List (List ℤ))) (x y z : ℝ) :
+    he3 (firstOrder B) x y z = (20 * (2 : ℝ) ^ SC - 21 * (x + y)) * he3 B x y z := by
+  rw [firstOrder, e3_add3, e3_smul3, e3_smul3, e3_add3, e3_mulU, e3_mulV]
+  push_cast
+  ring
+
 /-! ### Absolute bounds -/
 
 lemma abs_evalG_le {α : Type} (ev evA : α → ℝ) (hA : ∀ a, |ev a| ≤ evA a) (hA0 : ∀ a, 0 ≤ evA a)

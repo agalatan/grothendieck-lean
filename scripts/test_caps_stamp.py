@@ -31,6 +31,7 @@ class CapsStampTests(unittest.TestCase):
         extra = {
             "Grothe/LowerAnalytic/CapNodes.lean": "-- cap combination fixture\n",
             "GrotheCaps.lean": "-- caps target fixture\n",
+            "GrotheCapsKernel.lean": "-- cap checker library root fixture\n",
             "lean-toolchain": "leanprover/lean4:v4.34.1\n",
             "lake-manifest.json": "{}\n",
             "lakefile.toml": "name = \"fixture\"\n",

@@ -65,7 +65,7 @@ jobs:
         run: |
           # files that affect the Lean build or its checks; everything else (README, docs/, AGENTS.md, tools/, ...)
           # needs no build
-          LEAN_PATHS='^(Grothe/|GrotheKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCaps\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|scratch/AxiomsCaps\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/test_caps_stamp\.py$|\.github/workflows/)'
+          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|GrotheCaps\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|scratch/AxiomsCaps\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/test_caps_stamp\.py$|\.github/workflows/)'
           if [[ "${GITHUB_REF_NAME}" == ready/* ]]; then base=origin/master          # HEAD = master + this branch
           elif [ "${GITHUB_REF_NAME}" = master ]; then base="$BEFORE"                # the previous master
           else base=$(git merge-base origin/master HEAD); fi                         # what the branch adds to master
@@ -117,7 +117,7 @@ jobs:
       - name: No sorry, axiom or unchecked code anywhere
         if: steps.scope.outputs.lean == 'true'
         run: |
-          ! grep -rn --include='*.lean' -E '\bsorry\b|^[[:space:]]*(private[[:space:]]+)?axiom[[:space:]]|implemented_by|@\[extern|\bunsafe\b|debug\.skipKernelTC|Task\.spawn' Grothe GrotheKernel Grothe.lean GrotheKernel.lean
+          ! grep -rn --include='*.lean' -E '\bsorry\b|^[[:space:]]*(private[[:space:]]+)?axiom[[:space:]]|implemented_by|@\[extern|\bunsafe\b|debug\.skipKernelTC|Task\.spawn' Grothe GrotheKernel GrotheCapsKernel Grothe.lean GrotheKernel.lean GrotheCapsKernel.lean
 
       - name: Axiom report
         if: steps.scope.outputs.lean == 'true'
