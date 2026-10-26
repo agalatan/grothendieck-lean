@@ -274,14 +274,37 @@ remain separate obligations. The refined cover has its own complete finite
 checks and retains `NodeCaps`. Their scope
 and exact research replays are indexed in [docs/RESEARCH_AUDIT.md](docs/RESEARCH_AUDIT.md).
 
-Eleven further Lean results address the geometry of phase perturbations.
+Forty-seven further Lean results address the geometry and integration of phase perturbations.
 They prove the exact modulus-weighted support defect, comparison of an entire
 energy spectrum after a common isometry, and invariance when the response and
 correlation operator are transported together. Rotating only the response
 does not preserve an anisotropic kernel. An all-index recurrence also proves
 that the phase spectrum has infinite first degree moment, ruling out that
-unweighted derivative budget. These results introduce no numerical facts and
-change neither endpoint; Gaussian perturbation experiments remain uncertified.
+unweighted derivative budget. A polarized tail certificate bounds the entire
+omitted energy change by the product of two approximation-error norms. Its
+inputs can be enclosed as positive integrals of squared polynomial errors;
+the approximants need not be exact Hermite projections. This avoids a
+subtraction of almost equal moments in a numerical residual Gram matrix.
+Two overlapping coordinate tests handle the actual shared Gaussian phase:
+one keeps its argument uniformly away from zero, while an affine polar chart
+makes its phase the angular coordinate. Lean proves the exact transformed
+Gaussian density, the Bernstein range enclosure used for chart selection,
+and that a symmetry-invariant cutoff preserves a disk-valued response and
+costs at most its omitted mass in squared L2 distance.
+An exact rational phase update is proved to have unit modulus for every real
+phase field, with a cancellation-free increment formula.
+Five radius-jet results prove carry-free coefficient indexing, exact radius
+translation, and a finite polynomial bound on whole complex patches. They
+support preserving radius–angle cancellations before interval evaluation.
+Two transport-ceiling results bound what a homogeneous norm-distance
+comparison can certify; they bound the certificate formula, not a new response's true score.
+The response-update assembly now keeps the signed changes on retained blocks,
+passes the positive-error tail price through a contractive smoothing and the
+actual bivariate kernel, and connects the complete coefficient score to
+the transfer theorem. Its nominal error can be assembled from the inherited
+anchor error and finite weighted retained-data errors, each charged once.
+These results introduce no numerical facts and change neither endpoint;
+the compact response integrals still require certification.
 The argument and the required intertwining condition are written in
 [docs/response-geometry.tex](docs/response-geometry.tex).
 
