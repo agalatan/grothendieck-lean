@@ -1,0 +1,25 @@
+name = "grothe"
+defaultTargets = ["Grothe"]
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+git = "https://github.com/leanprover-community/mathlib4"
+rev = "v4.34.1"
+
+# The cap checker is its own precompiled library. A module that imports a precompiled library depends on that
+# library's whole shared object, built from its root file: with the cap checker inside GrotheKernel, any new or
+# changed checker there invalidated all 15 heavy GrotheCaps modules (about 21 CPU-hours).
+[[lean_lib]]
+name = "GrotheCapsKernel"
+precompileModules = true
+
+[[lean_lib]]
+name = "GrotheKernel"
+precompileModules = true
+
+[[lean_lib]]
+name = "Grothe"
+
+[[lean_lib]]
+name = "GrotheCaps"

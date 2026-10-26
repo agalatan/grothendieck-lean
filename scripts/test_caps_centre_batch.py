@@ -52,6 +52,7 @@ class FakeGuard:
 class BatchTests(unittest.TestCase):
     def setUp(self):
         fixtures.FineTests.setUp(self)
+        (self.root/'lakefile.toml').write_text('name = "fixture"\n\n[[lean_lib]]\nname = "Grothe"\n')
         first = self.nodes[0]
         self.nodes += [dict(copy.deepcopy(first), i=201), dict(copy.deepcopy(first), i=202)]
         batch.sweep.write_json(self.root/batch.sweep.PIECES, self.nodes)
@@ -313,7 +314,7 @@ class BatchTests(unittest.TestCase):
             runner.run(['lake', 'build', 'ignored'], 'raw-export', ['key'])
         popen.assert_not_called()
 
-    def test_runner_records_peak_and_single_thread_environment(self):
+    def test_runner_records_peak_and_separate_scheduler_leaf_threads(self):
         child, captured = FakeChild(), {}
         def popen(argv, **kwargs):
             captured.update(kwargs)
@@ -328,10 +329,73 @@ class BatchTests(unittest.TestCase):
         self.assertEqual(record['peak_aggregate_rss_bytes'], 3*batch.GIB)
         self.assertEqual(record['observed_modules'], ['A.lean', 'B.lean'])
         self.assertTrue(captured['start_new_session'])
-        self.assertEqual(captured['env']['LEAN_NUM_THREADS'], '1')
+        self.assertEqual(captured['env']['LEAN_NUM_THREADS'], '2')
         self.assertEqual(captured['env']['PYTHONDONTWRITEBYTECODE'], '1')
+        self.assertEqual(record['lake_parent_threads'], 2)
+        self.assertEqual(record['lean_child_threads'], 1)
+        self.assertEqual(record['argv'][1:3], ['-f', record['lake_overlay']['path']])
         self.assertFalse((self.root/'handoff/caps-centre/active-child.json').exists())
         self.assertTrue((self.config.run_dir/'batch-child.json').exists())
+
+    def test_overlay_changes_only_package_weak_lean_args(self):
+        original = (self.root/'lakefile.toml').read_bytes()
+        owner = self.new_batch()
+        pin = owner.state['fingerprint']['lake_overlay']
+        rendered = (self.root/pin['path']).read_bytes()
+        parsed = batch.tomllib.loads(rendered.decode())
+        self.assertEqual(parsed.pop('weakLeanArgs'), ['-j1'])
+        self.assertEqual(parsed, batch.tomllib.loads(original.decode()))
+        self.assertEqual((self.root/'lakefile.toml').read_bytes(), original)
+        self.assertEqual(owner.state['fingerprint']['lake_parent_threads'], 2)
+        self.assertEqual(owner.state['fingerprint']['lean_child_threads'], 1)
+
+    def test_overlay_rejects_existing_or_overriding_threads(self):
+        cases = ['name="x"\nweakLeanArgs=[]\n',
+                 'name="x"\nmoreLeanArgs=["-j8"]\n',
+                 'name="x"\n[[lean_lib]]\nname="X"\nweakLeanArgs=["--threads=8"]\n']
+        for source in cases:
+            with self.subTest(source=source), self.assertRaises(ValueError):
+                batch.overlay_bytes(source.encode())
+
+    def test_overlay_mutation_is_preserved_and_blocks_next_group(self):
+        owner = self.new_batch()
+        path = self.root/owner.state['fingerprint']['lake_overlay']['path']
+        path.write_bytes(path.read_bytes()+b'\n# changed\n')
+        with self.assertRaisesRegex(ValueError, 'overlay changed'):
+            owner.check_pause()
+        self.assertTrue(path.read_bytes().endswith(b'# changed\n'))
+
+    def test_optimizer_environment_remains_one_thread(self):
+        captured = {}
+        def popen(argv, **kwargs):
+            captured.update(kwargs)
+            return FakeChild(0)
+        runner = batch.Runner(self.config, lambda **_: None, guard=FakeGuard([{'rss': 0, 'pause_reason': None}]),
+                             popen=popen, sleep=lambda _: None)
+        record = runner.run([sys.executable, 'tools/caps_centre_campaign.py', '_worker'], 'raw-solve', ['a'])
+        self.assertEqual(captured['env']['LEAN_NUM_THREADS'], '1')
+        self.assertIsNone(record['lake_overlay'])
+        self.assertIsNone(record['lake_parent_threads'])
+
+    def test_runner_verifies_overlay_between_groups(self):
+        popen = Mock(side_effect=lambda *a, **k: FakeChild(0))
+        runner = batch.Runner(self.config, lambda **_: None, guard=FakeGuard([{'rss': 0, 'pause_reason': None}]),
+                             popen=popen, sleep=lambda _: None)
+        record = runner.run(['lake', 'build', 'A'], 'raw-export', ['a'])
+        path = self.root/record['lake_overlay']['path']
+        path.write_bytes(path.read_bytes()+b'\n# tampered\n')
+        with self.assertRaisesRegex(ValueError, 'overlay changed'):
+            runner.run(['lake', 'build', 'B'], 'raw-export', ['b'])
+        self.assertEqual(popen.call_count, 1)
+
+    def test_foreign_overlay_or_directory_flags_cannot_bypass_owned_copy(self):
+        runner = batch.Runner(self.config, lambda **_: None, guard=FakeGuard([{'rss': 0, 'pause_reason': None}]),
+                             popen=Mock())
+        for args in [['lake', '-f', 'foreign', 'build', 'A'], ['lake', 'build', 'A', '-fforeign'],
+                     ['lake', 'build', 'A', '--dir=/foreign']]:
+            with self.subTest(args=args), self.assertRaises(ValueError):
+                runner.run(args, 'raw-export', ['a'])
+        runner.popen.assert_not_called()
 
     def test_rss_or_runner_guard_stops_only_fresh_owned_group(self):
         for reason in ['aggregate RSS exceeded', 'busy CI/foreign Lean']:

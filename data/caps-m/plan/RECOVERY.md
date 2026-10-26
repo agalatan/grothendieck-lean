@@ -52,6 +52,20 @@ Both stored and finer-grid modules regenerate byte for byte through
 `tools/caps_centre_portable.py`. Legacy absolute-path scratch sources are retained
 for hash validation only, never rebuilt remotely. No caps, padding or cover changed.
 
+Master now uses one target, `Grothe`, including the cap rows. Its canonical
+lakefile stays unchanged in this public worktree. The existing research evidence
+pins the prior package config; strict old provenance therefore intentionally
+fails in the clean current checkout. Preserve that lineage rather than relabel it:
+`portable/Codex15b7Portable/frozen-research-lakefile.toml` contains the exact old
+bytes, and `research-configuration.json` records both hashes and the narrowly
+allowed difference (the unused `GrotheCaps` library declaration and comment).
+Only in the isolated owned research checkout, before any Lean process, apply
+that hash-verified one-file override and record HEAD plus the dirty diff. Existing
+strict source validators then describe the actual research tree without changes.
+Never call a default/full target there: only `CapExport` and pinned `CapPlanRuns`
+leaf modules. Final wiring and native CI verification use current canonical master,
+its single axiom report and its current 53-file caps fingerprint.
+
 The numerical research prefetcher is `tools/caps_centre_batch.py`. It holds the
 same campaign lock and starts one Lake invocation at a time, initially with at
 most two independent export modules. It guards memory, disk and foreign runner
@@ -59,6 +73,18 @@ activity, uses separate owned journals, preserves partial output, and validates
 exports and exact solutions individually. It does not verify native facts, declare
 a global maximum, or publish a cache. The first remote run is a two-target export
 pilot; inspect its actual concurrency, runtime, RSS and outputs before the full run.
+
+The first two-target droplet pilot finished successfully and both raw exports
+(`12:199:0`, `12:200:0`) were copied and validated locally. It measured one Lean
+process at a time: 436.3 seconds total, 3.66 GiB peak aggregate RSS. No new centre
+was accepted from exports alone. Its source, receipts and isolated scheduler test
+are recorded in `checkpoints/centre-codex-15b7-serial-pilot-and-scheduler-poc.json`.
+The private droplet folder was cleaned after all jobs exited and evidence returned.
+An isolated test demonstrated two concurrent single-threaded Lean processes by
+letting Lake use two scheduler threads and passing `-j1` through a guarded copy
+of the config. The canonical lakefile and all mathematical source bytes remain
+unchanged; use the current tested batcher and a NEW progress path for that setup.
+Never rerun the first two exports merely to benchmark concurrency.
 
 Read current `handoff/caps-centre/STATE.md` and `SPEEDUP.md` for actual remote
 folder, source commit, PID and phase. Never resume the old local worker while a

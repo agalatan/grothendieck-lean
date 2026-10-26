@@ -20,6 +20,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from fractions import Fraction as Q
 import fcntl
+import hashlib
 import importlib.util
 import json
 import os
@@ -30,6 +31,7 @@ import signal
 import subprocess
 import sys
 import time
+import tomllib
 
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -126,12 +128,15 @@ class Config:
     poll_seconds: float = 2.0
     export_only: bool = False
     pilot_limit: int | None = None
+    lake_threads: int = 2
 
     def validate(self):
         if not re.fullmatch(r'(codex|claude)-[0-9a-f]{4}', self.agent_id):
             raise ValueError('A signed agent ID is required')
         if self.batch_size not in (1, 2, 3) or self.initial_batch_size not in (1, 2):
             raise ValueError('Initial group has at most2 targets; configured groups at most3')
+        if type(self.lake_threads) is not int or self.lake_threads not in (1, 2, 3):
+            raise ValueError('Lake scheduler threads must be explicitly1,2 or3; default2')
         if self.rss_limit <= 0 or self.disk_floor < 3*GIB or self.poll_seconds <= 0:
             raise ValueError('RSS/poll must be positive and disk floor at least3GiB')
         if self.pilot_limit is not None and self.pilot_limit < 1:
@@ -144,6 +149,56 @@ class Config:
         if (self.progress.parent != self.root/'data/caps-m/plan'
                 or not self.progress.name.startswith('batch-'+self.agent_id+'-') or self.progress.suffix != '.json'):
             raise ValueError('Use a separate data/caps-m/plan/batch-<agent-id>-...json progress file')
+
+
+def overlay_bytes(source):
+    """Copy the TOML exactly, adding only an untraced package-level -j1.
+
+    Lake4.34.1 LeanConfig.weakLeanArgs is passed to Lean but excluded from
+    module traces. Keeping -j1 here lets Lake's own runtime schedule independent
+    jobs while each export process has one Lean worker. Later strong/library
+    thread flags could override it, so reject them rather than guess precedence.
+    """
+    original = tomllib.loads(source.decode('utf-8'))
+    if 'weakLeanArgs' in original:
+        raise ValueError('Canonical package already defines weakLeanArgs; inspect before adapting')
+    def reject_threads(value):
+        if isinstance(value, dict):
+            for key, item in value.items():
+                if key in ('weakLeanArgs', 'moreLeanArgs'):
+                    if not isinstance(item, list) or any(not isinstance(arg, str) for arg in item):
+                        raise ValueError('Unexpected Lean arguments configuration')
+                    if any(arg.startswith('-j') or arg.startswith('--threads') for arg in item):
+                        raise ValueError('Canonical thread flags could override single-thread Lean')
+                reject_threads(item)
+        elif isinstance(value, list):
+            for item in value:
+                reject_threads(item)
+    reject_threads(original)
+    result = b'weakLeanArgs = ["-j1"]\n'+source
+    parsed = tomllib.loads(result.decode('utf-8'))
+    if parsed.pop('weakLeanArgs') != ['-j1'] or parsed != original:
+        raise ValueError('Overlay changed package configuration beyond weakLeanArgs')
+    return result
+
+
+def overlay_pin(config, *, create=False):
+    source = (config.root/'lakefile.toml').read_bytes()
+    content = overlay_bytes(source)
+    path = config.run_dir/(config.agent_id+'-lake-single-lean.toml')
+    local(config.root, path.relative_to(config.root))
+    if path.exists():
+        if path.read_bytes() != content:
+            raise ValueError('Owned Lake overlay changed; preserving it for inspection')
+    elif create:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open('xb') as stream:
+            stream.write(content)
+    else:
+        raise ValueError('Pinned Lake overlay is missing')
+    return {'path': path.relative_to(config.root).as_posix(),
+            'sha256': hashlib.sha256(content).hexdigest(),
+            'canonical_lakefile_sha256': hashlib.sha256(source).hexdigest()}
 
 
 def process_rows():
@@ -195,6 +250,7 @@ class Runner:
         self.guard, self.popen = guard or Guard(config), popen
         self.killpg, self.sleep, self.clock = killpg, sleep, clock
         self.child, self.sequence = None, 0
+        self.overlay = None
 
     def stop_owned(self):
         child = self.child
@@ -227,6 +283,16 @@ class Runner:
         first = self.guard.observe()
         if first['pause_reason']:
             raise Pause(first['pause_reason'])
+        argv = list(map(str, argv))
+        is_lake = Path(argv[0]).name == 'lake'
+        if is_lake:
+            if len(argv) < 2 or argv[1] != 'build' or any(arg.startswith(('-f', '-d', '--file', '--dir')) for arg in argv[2:]):
+                raise ValueError('Lake child must use the owned build overlay only')
+            current = overlay_pin(self.c, create=self.overlay is None)
+            if self.overlay is not None and current != self.overlay:
+                raise ValueError('Canonical/overlay source changed between child groups')
+            self.overlay = current
+            argv = [argv[0], '-f', current['path'], *argv[1:]]
         self.c.run_dir.mkdir(parents=True, exist_ok=True)
         self.sequence += 1
         stem = f'batch-{os.getpid()}-{self.sequence:05d}-{phase}'
@@ -234,8 +300,11 @@ class Runner:
         journal = self.c.run_dir/'batch-child.json'
         record = {'agent_id': self.c.agent_id, 'phase': phase, 'keys': keys, 'argv': list(map(str, argv)),
                   'log': str(log.relative_to(self.c.root)), 'started_at_utc': utc(),
-                  'controller_pid': os.getpid(), 'controller_pgid': os.getpgrp(), 'state': 'starting'}
-        env = dict(os.environ, LEAN_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1', OMP_NUM_THREADS='1',
+                  'controller_pid': os.getpid(), 'controller_pgid': os.getpgrp(), 'state': 'starting',
+                  'lake_parent_threads': self.c.lake_threads if is_lake else None,
+                  'lean_child_threads': 1 if is_lake else None,
+                  'lake_overlay': self.overlay if is_lake else None}
+        env = dict(os.environ, LEAN_NUM_THREADS=str(self.c.lake_threads) if is_lake else '1', OPENBLAS_NUM_THREADS='1', OMP_NUM_THREADS='1',
                    MKL_NUM_THREADS='1', NUMEXPR_NUM_THREADS='1', PYTHONDONTWRITEBYTECODE='1')
         start, peak, paused, error, code = self.clock(), 0, None, None, None
         observed_modules = set()
@@ -328,7 +397,12 @@ class Batch:
             if local(config.root, fm['entry']['export']).exists():
                 fine.validate(config.root, fm)
             self.fine_manifests[item['key']] = fm
+        canonical = (config.root/'lakefile.toml').read_bytes()
+        overlay = {'path': (config.run_dir/(config.agent_id+'-lake-single-lean.toml')).relative_to(config.root).as_posix(),
+                   'sha256': hashlib.sha256(overlay_bytes(canonical)).hexdigest(),
+                   'canonical_lakefile_sha256': hashlib.sha256(canonical).hexdigest()}
         fingerprint = {'config_sha256': sweep.sha(config.portable), 'driver_sha256': sweep.sha(__file__),
+                       'lake_parent_threads': config.lake_threads, 'lean_child_threads': 1, 'lake_overlay': overlay,
                        'helpers_sha256': {name: sweep.sha(config.root/name) for name in [
                            'tools/caps_centre_campaign.py', 'tools/caps_centre_sweep.py', 'tools/caps_centre_fine.py',
                            'tools/caps_centre_repair.py', 'tools/caps_centre_restore.py', 'tools/caps_lmi.py', 'tools/caps_plan.py']},
@@ -346,6 +420,8 @@ class Batch:
                           'preserved_checkpoint_only': sorted(complete),
                           'centres': {key: {'state': 'pending'} for key in self.pending_keys}}
         previous_jobs(config.root, self.state)
+        if overlay_pin(config, create=True) != overlay:
+            raise ValueError('Overlay generation disagrees with its fingerprint')
         self.stop_requested = False
         self.runner = runner_factory(config, self.update)
 
@@ -376,6 +452,7 @@ class Batch:
         fingerprint = self.state['fingerprint']
         if (sweep.sha(self.c.portable) != fingerprint['config_sha256']
                 or sweep.sha(__file__) != fingerprint['driver_sha256']
+                or overlay_pin(self.c) != fingerprint['lake_overlay']
                 or any(sweep.sha(self.c.root/name) != digest for name, digest in fingerprint['helpers_sha256'].items())):
             raise ValueError('Controller/config/helper source changed during this run')
         # The full portable structural audit ran once at startup. Re-hash its
@@ -506,6 +583,8 @@ def main(argv=None):
     parser.add_argument('--stop-file', type=Path)
     parser.add_argument('--batch-size', type=int, choices=(1, 2, 3), default=2)
     parser.add_argument('--initial-batch-size', type=int, choices=(1, 2), default=2)
+    parser.add_argument('--lake-threads', type=int, choices=(1, 2, 3), default=2,
+                        help='Lake scheduler workers; exported Lean processes always receive-j1 via owned overlay')
     parser.add_argument('--rss-limit-gib', type=int, default=8)
     parser.add_argument('--disk-floor-gib', type=int, default=3)
     parser.add_argument('--poll-seconds', type=float, default=2)
@@ -521,6 +600,7 @@ def main(argv=None):
     config = Config(ROOT, resolve(args.portable_config), resolve(args.progress), run_dir,
                     resolve(args.stop_file) if args.stop_file else run_dir/'STOP_REQUESTED',
                     agent_id=args.agent_id, batch_size=args.batch_size, initial_batch_size=args.initial_batch_size,
+                    lake_threads=args.lake_threads,
                     rss_limit=args.rss_limit_gib*GIB, disk_floor=args.disk_floor_gib*GIB,
                     poll_seconds=args.poll_seconds, export_only=args.export_only, pilot_limit=args.pilot_limit)
     config.validate()
