@@ -59,12 +59,21 @@ git -C /Users/alingalatan/workspaces/grothe worktree add -b codex/<topic> \
 mkdir -p /Users/alingalatan/workspaces/grothe-codex-<topic>/.lake
 ln -s /Users/alingalatan/workspaces/grothe/.lake/packages \
     /Users/alingalatan/workspaces/grothe-codex-<topic>/.lake/packages
+# start from master's compiled build instead of an empty one: an APFS clone (instant, no extra disk until
+# files diverge; `cp -c` is macOS copy-on-write). Then Lake rebuilds only what differs from master.
+cp -c -R /Users/alingalatan/workspaces/grothe/.lake/build \
+    /Users/alingalatan/workspaces/grothe-codex-<topic>/.lake/build
 ```
 
 Resuming an existing worktree: sync first, then bring your branch up to date (§3, step 3) before continuing.
 
-Disk space is tight. Do not copy `.lake/build` wholesale; it is about 1.6 GB per copy. Build only the modules you
-change (`lake build Grothe.X.Y`). Run full builds on the droplet (see §5).
+**The build clone.** The main checkout's `.lake/build` is master's compiled build. It is kept current by
+`scripts/sync_master.sh --build`, which starts a background, niced, incremental build of master there (one at a
+time). Run it after syncing when you are about to create a worktree, or when master moved a lot. Clone it only
+with `cp -c` (APFS copy-on-write): a plain `cp` or `rsync` duplicates about 1.6 GB per worktree, and disk space is
+tight. An existing worktree whose build is far behind can be refreshed the same way: delete its `.lake/build`, then
+clone again. Build only the modules you change (`lake build Grothe.X.Y`), and run full builds on the droplet (see
+§5).
 
 ## 2b. Before EVERY push: start from a fresh master
 
