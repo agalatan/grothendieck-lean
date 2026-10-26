@@ -302,9 +302,13 @@ and the complete infinite remainder at most 0.24/10⁹. The weighted estimate
 concerns a finite polynomial and assumes no analytic continuation.
 The proof uses the inverse defect≤10⁻¹², the short seed norm ‖RP¹⁷‖₁≤249/500,
 and the elementary bound ‖RA‖₁≤2. It needs no fourth-power or gamma estimate.
-`CanonicalData.lean` states the exact parameters, `CanonicalCheck.lean` checks all finite
-arithmetic with `decide +kernel`, and `CanonicalProof.lean` assembles the bound from explicit
-check statements. The public wrapper applies those kernel proofs. The endpoint
+`CanonicalData.lean` states the exact parameters. Generated `CanonicalTrace` modules
+prove literal arithmetic steps with `decide +kernel`, then compose them through the defining
+recurrences and exact input-binding lemmas. `CanonicalCheck.lean` exposes the four
+public check statements, and `CanonicalProof.lean` assembles the bound from them.
+`tools/gen_haagerup_canonical_check.py --check` verifies byte-for-byte reproducibility
+from the rational certificate and `CanonicalData.lean`; generation is separate from
+Lean's proof checking. The public wrapper applies the resulting kernel proofs. The endpoint
 K≤1.404909140 depends only on `propext`, `Classical.choice`, and `Quot.sound`.
 The retained `Grothe.HaagerupPower.check` and its native fact are unchanged and are not
 used by this endpoint. `Upper/ResolventCertificate.lean` proves soundness of the
@@ -647,8 +651,8 @@ and `certRefinedPartition` in `Grothe.Research.RefinedLowerCheck`, together with
 `Grothe.Research.LawNodeCheck.certLawNodes` for the added pure-row batch.
 The separate caps target additionally uses 60 range checks
 `capRangeKK_j`. Every native check is single-threaded (no `Task.spawn`). All
-other finite computations (the polynomial norms, the moment covers) are kernel-checked
-(`decide +kernel`). The report is `lake env lean scratch/Axioms.lean`, checked in CI;
+other finite computations (the polynomial norms, the moment covers) use
+proof-producing kernel reduction (`decide +kernel`). The report is `lake env lean scratch/Axioms.lean`, checked in CI;
 the separate caps report is `scratch/AxiomsCaps.lean`. The generic response, cubic-ceiling
 and quintic-transfer lemmas add no native facts or endpoint hypotheses. No `sorry`,
 no warnings.

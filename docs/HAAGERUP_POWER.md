@@ -6,7 +6,8 @@ The sharper conditional upper bound and lower endpoint are separate.
 
 The Gaussian phase identity, tensor realization, complete finite residual,
 infinite remainder estimate, checker soundness and matrix transfer are all
-in Lean. The finite checks are discharged by kernel proofs. External replay
+in Lean. The finite checks assemble kernel-checked arithmetic steps through
+the defining recurrences and exact input-binding lemmas. External replay
 results are not hypotheses of the theorem.
 
 ## Complete monotonicity and the resolvent expansion
@@ -142,13 +143,26 @@ public bound.
 - `Grothe/Upper/ResolventCertificate.lean`: soundness of the checked finite coefficient prefix.
 - `Grothe/Upper/WeightedTail.lean`: the coefficient-tail bound from a scaled polynomial norm.
 - `GrotheKernel/ResolventCompletion.lean`: outward integer computation of the finite head and correction.
-- `Grothe/Haagerup/CanonicalCheck.lean`: the four kernel checks.
+- `Grothe/Haagerup/CanonicalTrace/`: generated literal arithmetic steps, proved with `decide +kernel`, and their recurrence and input bindings.
+- `Grothe/Haagerup/CanonicalCheck.lean`: the four public check statements, supplied by the trace proofs.
 - `Grothe/Haagerup/CanonicalProof.lean`: complete composition and matrix transfer from those checks.
 - `Grothe/Haagerup/Power.lean`: the public matrix theorem.
 - `docs/research/haagerup-power.tex`: full written proof.
-- `tools/verify_haagerup_canonical.py`: independent rational and directed-ball replay.
+- `tools/gen_haagerup_canonical_check.py`: exact generation and byte-for-byte checking of the trace modules.
+- `tools/verify_haagerup_canonical.py`: independent rational and directed-ball replay, with hashes of the trace sources and generator.
 
-From the repository root, with Python and `python-flint`:
+From the repository root, check the generated trace without changing files:
+
+```sh
+python3 -I tools/gen_haagerup_canonical_check.py --check
+```
+
+The generator uses exact integers and fractions from the tracked certificate and
+`CanonicalData.lean`. Each emitted equality still requires a Lean proof; a
+successful generation check is not proof acceptance. The recurrence and binding
+lemmas connect the literal results to the original checker definitions.
+
+Run the independent replay with Python and `python-flint`:
 
 ```sh
 python3 -I tools/verify_haagerup_canonical.py --out handoff/haagerup-canonical-replay.json

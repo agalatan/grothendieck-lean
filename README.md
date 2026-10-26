@@ -250,7 +250,8 @@ weighted by (3/2)ⁿ bounds all omitted coefficients, without an analytic-contin
 The normalized completed-head residual is at most 9.14·10⁻⁹ and the remaining suffix
 at most 0.24·10⁻⁹, giving a total normalized residual of 9.38·10⁻⁹.
 The coefficient argument, resolvent identity, checker soundness and matrix transfer are all
-proved in Lean. Every finite check in this route uses `decide +kernel`: the public theorem
+proved in Lean. The finite checks assemble kernel-checked arithmetic steps through
+the defining recurrences and exact bindings to the certificate inputs. The public theorem
 uses only the three standard axioms, with **no native-check dependency**.
 The existing polynomial data are reused byte for byte. See
 [the complete proof and replay](docs/HAAGERUP_POWER.md).

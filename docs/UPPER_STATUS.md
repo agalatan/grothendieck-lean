@@ -6,8 +6,9 @@ Its canonical resolvent completion, complete residual and infinite remainder are
 documented in `docs/HAAGERUP_POWER.md`. It combines 64 series terms with six
 correction terms, using complete monotonicity at every difference order. A checked
 170-coefficient prefix and a weighted finite-polynomial tail bound control the
-complete residual. The finite checks use `decide +kernel`; the theorem depends only on the three standard
-axioms and requires none of the analytic inputs listed here.
+complete residual. The finite checks assemble kernel-checked arithmetic steps
+through exact recurrence and input-binding lemmas. The theorem depends only on the
+three standard axioms and requires none of the analytic inputs listed here.
 `tools/verify_haagerup_canonical.py` provides an independent directed replay.
 
 Build only changed modules locally. Run full builds on the droplet (`ssh yo`) or in CI;

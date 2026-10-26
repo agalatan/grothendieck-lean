@@ -118,7 +118,14 @@ def main():
              'Grothe/Haagerup/CanonicalProof.lean', 'Grothe/Haagerup/CompleteMonotone.lean',
              'Grothe/Upper/FiniteDifference.lean', 'Grothe/Upper/ResolventCompletion.lean',
              'Grothe/Upper/ResolventCertificate.lean', 'Grothe/Upper/WeightedTail.lean',
-             'GrotheKernel/ResolventCompletion.lean']
+             'GrotheKernel/ResolventCompletion.lean',
+             'tools/gen_haagerup_canonical_check.py']
+    # Record the exact generated proof sources used by the public bindings.
+    # Reproducibility is checked separately with the generator's --check mode;
+    # source hashes and directed replay do not replace Lean proof checking.
+    trace_sources = sorted((root/'Grothe/Haagerup/CanonicalTrace').glob('*.lean'))
+    assert trace_sources, 'canonical trace sources are missing'
+    names.extend(str(path.relative_to(root)) for path in trace_sources)
     result = dict(status='PASS_DIRECTED_CANONICAL_HAAGERUP', flint_version=__version__,
         precision_bits=ctx.prec, start=k, order=order, degree=completed.degree(), cutoff=cutoff,
         candidate_sha256=hashlib.sha256(data_path.read_bytes()).hexdigest(),
