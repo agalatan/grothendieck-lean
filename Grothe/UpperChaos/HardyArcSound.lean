@@ -487,4 +487,38 @@ theorem memSC_Rbox {t : ℂ} {T : CI} (ht : memC t T) : memSC (Rt t) (Rbox hardy
 
 end covariance
 
+/-! ### The circle chart -/
+
+section chart
+
+/-- The chart point `σ ρ ((1 − s²) + 2 i s)/(1 + s²)` (`σ = −1` when `neg`). -/
+noncomputable def chartPt (rho : ℝ) (neg : Bool) (s : ℝ) : ℂ :=
+  sig neg * (((rho * (1 - s ^ 2) / (1 + s ^ 2) : ℝ) : ℂ) + ((rho * (2 * s) / (1 + s ^ 2) : ℝ) : ℂ) * Complex.I)
+
+lemma memC_circleBox {rho s : ℝ} {rI : Ival} {lo hi : ℤ} (hr : mem rho rI) (hs : mem s ⟨lo, hi⟩)
+    (hpos : posI (addI (intI 1) (mulI ⟨lo, hi⟩ ⟨lo, hi⟩)) = true) (neg : Bool) :
+    memC (chartPt rho neg s) (circleBox rI neg ⟨lo, hi⟩) := by
+  have hden := mem_invPosI (mem_add (mem_intI 1) (mem_mul hs hs)) hpos
+  have hre := mem_mul (mem_mul hr (mem_sub (mem_intI 1) (mem_mul hs hs))) hden
+  have him := mem_mul (mem_mul hr (mem_mul (mem_intI 2) hs)) hden
+  have hz : memC (((rho * (1 - s ^ 2) / (1 + s ^ 2) : ℝ) : ℂ) + ((rho * (2 * s) / (1 + s ^ 2) : ℝ) : ℂ) * Complex.I)
+      ⟨mulI (mulI rI (subI (intI 1) (mulI ⟨lo, hi⟩ ⟨lo, hi⟩))) (invPosI (addI (intI 1) (mulI ⟨lo, hi⟩ ⟨lo, hi⟩))),
+       mulI (mulI rI (mulI (intI 2) ⟨lo, hi⟩)) (invPosI (addI (intI 1) (mulI ⟨lo, hi⟩ ⟨lo, hi⟩)))⟩ := by
+    refine ⟨?_, ?_⟩
+    · have e : ((((rho * (1 - s ^ 2) / (1 + s ^ 2) : ℝ) : ℂ) +
+          ((rho * (2 * s) / (1 + s ^ 2) : ℝ) : ℂ) * Complex.I)).re = rho * (1 - s ^ 2) / (1 + s ^ 2) := by
+        simp only [Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.I_re, Complex.I_im,
+          Complex.ofReal_im]; ring
+      rw [e]; convert hre using 1; push_cast; ring
+    · have e : ((((rho * (1 - s ^ 2) / (1 + s ^ 2) : ℝ) : ℂ) +
+          ((rho * (2 * s) / (1 + s ^ 2) : ℝ) : ℂ) * Complex.I)).im = rho * (2 * s) / (1 + s ^ 2) := by
+        simp only [Complex.add_im, Complex.ofReal_re, Complex.mul_im, Complex.I_re, Complex.I_im,
+          Complex.ofReal_im]; ring
+      rw [e]; convert him using 1; push_cast; ring
+  cases neg
+  · simpa [chartPt, sig, circleBox] using hz
+  · simpa [chartPt, sig, circleBox] using memC_neg hz
+
+end chart
+
 end Grothe.UpperChaos.HardyArcSound
