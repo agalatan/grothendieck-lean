@@ -51,10 +51,13 @@ class FakeGuard:
 
 class BatchTests(unittest.TestCase):
     def setUp(self):
+        self.setup_batch_fixture((201, 202))
+
+    def setup_batch_fixture(self, extra_indices):
         fixtures.FineTests.setUp(self)
         (self.root/'lakefile.toml').write_text('name = "fixture"\n\n[[lean_lib]]\nname = "Grothe"\n')
         first = self.nodes[0]
-        self.nodes += [dict(copy.deepcopy(first), i=201), dict(copy.deepcopy(first), i=202)]
+        self.nodes += [dict(copy.deepcopy(first), i=i) for i in extra_indices]
         batch.sweep.write_json(self.root/batch.sweep.PIECES, self.nodes)
         (self.root/'tools/caps_centre_batch.py').write_bytes((ROOT/'tools/caps_centre_batch.py').read_bytes())
         for name in ['caps_centre_campaign.py', 'caps_centre_restore.py']:
@@ -177,6 +180,38 @@ class BatchTests(unittest.TestCase):
         self.assertFalse(calls2)
         third = owner.pending_keys[2]
         self.assertFalse((self.root/owner.entries[third]['export']).exists())
+
+    def test_explicit_five_export_groups_and_completed_outputs_reused(self):
+        self.setup_batch_fixture(range(201, 208))
+        self.config.batch_size = self.config.lake_threads = 5
+        self.config.export_only = True
+        self.config.validate()
+        owner = self.new_batch()
+        calls = self.fake_runner(owner, lambda _phase, keys:
+                                 [self.export(owner.entries[k]) for k in keys] and 0)
+        self.assertEqual(owner.run(), 0)
+        self.assertEqual([len(keys) for _, _, keys in calls], [2, 5, 1])
+        before = {k: (self.root/e['export']).read_bytes() for k, e in owner.entries.items()}
+        resumed = self.new_batch()
+        calls2 = self.fake_runner(resumed, lambda *_: self.fail('Completed exports must be reused'))
+        self.assertEqual(resumed.run(), 0)
+        self.assertFalse(calls2)
+        self.assertEqual(before, {k: (self.root/e['export']).read_bytes() for k, e in resumed.entries.items()})
+        self.assertEqual(resumed.state['fingerprint']['lake_parent_threads'], 5)
+        self.assertEqual(resumed.state['fingerprint']['lean_child_threads'], 1)
+        self.assertEqual(resumed.state['summary']['raw_exact'], 0)
+
+    def test_five_profile_rejects_six_and_changed_resume_settings(self):
+        for field in ('batch_size', 'lake_threads'):
+            setattr(self.config, field, 6)
+            with self.assertRaises(ValueError):
+                self.config.validate()
+            setattr(self.config, field, 5)
+        owner = self.new_batch(export_only=True)
+        owner.update()
+        self.config.lake_threads = 4
+        with self.assertRaisesRegex(ValueError, 'source/config changed'):
+            self.new_batch()
 
     def test_first_export_group_stays_two_after_prior_solver_receipts(self):
         owner = self.new_batch(batch_size=3)

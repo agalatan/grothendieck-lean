@@ -2,7 +2,7 @@
 """Guarded numerical RESEARCH prefetch, never native verification or cache work.
 
 Consume a caps_centre_portable config. One Lake invocation exports at most two
-initial centres (three only when explicitly configured); serial isolated workers
+initial centres (up to five later when explicitly configured); serial isolated workers
 then solve stored matrices, and only exact positive raw results receive the
 supplied fine export. No module/manifest/data generation occurs here.
 
@@ -133,10 +133,10 @@ class Config:
     def validate(self):
         if not re.fullmatch(r'(codex|claude)-[0-9a-f]{4}', self.agent_id):
             raise ValueError('A signed agent ID is required')
-        if self.batch_size not in (1, 2, 3) or self.initial_batch_size not in (1, 2):
-            raise ValueError('Initial group has at most2 targets; configured groups at most3')
-        if type(self.lake_threads) is not int or self.lake_threads not in (1, 2, 3):
-            raise ValueError('Lake scheduler threads must be explicitly1,2 or3; default2')
+        if self.batch_size not in (1, 2, 3, 4, 5) or self.initial_batch_size not in (1, 2):
+            raise ValueError('Initial group has at most2 targets; configured groups at most5')
+        if type(self.lake_threads) is not int or self.lake_threads not in (1, 2, 3, 4, 5):
+            raise ValueError('Lake scheduler threads must be explicitly1 through5; default2')
         if self.rss_limit <= 0 or self.disk_floor < 3*GIB or self.poll_seconds <= 0:
             raise ValueError('RSS/poll must be positive and disk floor at least3GiB')
         if self.pilot_limit is not None and self.pilot_limit < 1:
@@ -581,9 +581,9 @@ def main(argv=None):
     parser.add_argument('--progress', type=Path, required=True)
     parser.add_argument('--run-dir', type=Path, required=True)
     parser.add_argument('--stop-file', type=Path)
-    parser.add_argument('--batch-size', type=int, choices=(1, 2, 3), default=2)
+    parser.add_argument('--batch-size', type=int, choices=(1, 2, 3, 4, 5), default=2)
     parser.add_argument('--initial-batch-size', type=int, choices=(1, 2), default=2)
-    parser.add_argument('--lake-threads', type=int, choices=(1, 2, 3), default=2,
+    parser.add_argument('--lake-threads', type=int, choices=(1, 2, 3, 4, 5), default=2,
                         help='Lake scheduler workers; exported Lean processes always receive-j1 via owned overlay')
     parser.add_argument('--rss-limit-gib', type=int, default=8)
     parser.add_argument('--disk-floor-gib', type=int, default=3)
