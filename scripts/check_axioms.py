@@ -14,7 +14,7 @@ The lists are data files, one name per line, sorted, union-merged by git (.gitat
 duplicates by `tools/gen_root_imports.py --check`:
 * default report: data/axioms/required.txt, data/axioms/native.txt;
 * audit modes (one flag at most): data/axioms/modes/<mode>.required.txt, and <mode>.native.txt if present
-  (otherwise the default native list). Modes: --caps (scratch/AxiomsCaps.lean, target GrotheCaps), --responses,
+  (otherwise the default native list). Modes: --responses,
   --response-geometry, --phase-response, --haagerup-power, --upper-comparison, --research,
   --hardy-budget, --refined-cover, --law-nodes.
 """
@@ -23,7 +23,7 @@ import argparse, os, re, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AXDIR = os.path.join(ROOT, "data", "axioms")
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
-MODES = ("caps", "responses", "response-geometry", "phase-response", "haagerup-power", "upper-comparison",
+MODES = ("responses", "response-geometry", "phase-response", "haagerup-power", "upper-comparison",
          "research", "hardy-budget", "refined-cover", "law-nodes")
 
 

@@ -2,16 +2,13 @@
 # One module per line, sorted; `#` starts a comment. Union-merged by git (.gitattributes).
 #
 # Header comments only: `tools/gen_root_imports.py` keeps this file sorted. Current entries:
-# * Grothe.LowerAnalytic.CapNodes, CapRow00..CapRow18 — the separate target GrotheCaps (60 native range facts,
-#   hours), built on the droplet runner and replayed by CI from the verified build cache, never in the default target;
 # * Grothe.LowerAnalytic.CapPieces.* — generated piece-node modules of rows 12–15 (native range facts, minutes each),
 #   part of the caps campaign (#15, #16), never in the default target;
 # * Grothe.LowerAnalytic.CapPieces.* — generated per-node modules of the rows 12–15 node caps (route M: data D,
-#   coverage C, native range facts R, node theorem N); like CapRowKK they belong to the caps target, not to CI's
+#   coverage C, native range facts R, node theorem N); not part of a proof yet (rows 12–15 campaign), so not in
 #   default build (tools/gen_cap_pieces.py; adding a node means adding its four modules here);
 # * GrotheKernel.BandMass, GrotheKernel.HeadWeight — kernel modules used only by Grothe.Upper (built through
 #   Grothe.lean, not through the GrotheKernel root).
-Grothe.LowerAnalytic.CapNodes
 Grothe.LowerAnalytic.CapPieces.C14x150
 Grothe.LowerAnalytic.CapPieces.C14x200
 Grothe.LowerAnalytic.CapPieces.D14x150
@@ -31,20 +28,5 @@ Grothe.LowerAnalytic.CapPieces.R14x200_6
 Grothe.LowerAnalytic.CapPieces.R14x200_7
 Grothe.LowerAnalytic.CapPieces.R14x200_8
 Grothe.LowerAnalytic.CapPieces.R14x200_9
-Grothe.LowerAnalytic.CapRow00
-Grothe.LowerAnalytic.CapRow01
-Grothe.LowerAnalytic.CapRow02
-Grothe.LowerAnalytic.CapRow03
-Grothe.LowerAnalytic.CapRow04
-Grothe.LowerAnalytic.CapRow05
-Grothe.LowerAnalytic.CapRow06
-Grothe.LowerAnalytic.CapRow07
-Grothe.LowerAnalytic.CapRow08
-Grothe.LowerAnalytic.CapRow09
-Grothe.LowerAnalytic.CapRow10
-Grothe.LowerAnalytic.CapRow11
-Grothe.LowerAnalytic.CapRow16
-Grothe.LowerAnalytic.CapRow17
-Grothe.LowerAnalytic.CapRow18
 GrotheKernel.BandMass
 GrotheKernel.HeadWeight
