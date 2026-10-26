@@ -40,7 +40,7 @@ theorem fresh_upper_of_rounding (hGm : Measurable G) (hG1 : ∀ u, ‖G u‖ ≤
     (hclose : ∑ p ∈ headIdx 501, |energy (hXL.toLp X) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ))
     (hhardy : ∀ J, ∑ n ∈ Finset.range J, kernelCoeff (energy (hGL.toLp G)) n ^ 2
       * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4) :
-    IsGrothendieckBound (500000000000000000 / 355973696735190991) := by
+    IsGrothendieckBound (500000000000000000 / 355973699864771491) := by
   obtain ⟨hv, hs, hsX, hpX⟩ := structural_fields hGm hG1 hGch hGL hXL hXch
   exact fresh_upper _ _ ⟨hv, hs, hsX, hpX, energy_eq_zero_of_even hGL hGch, hcompare, hclose, hhardy⟩
 

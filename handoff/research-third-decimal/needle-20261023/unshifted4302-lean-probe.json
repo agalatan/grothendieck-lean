@@ -1,0 +1,55 @@
+{
+  "status": "PASS_LEAN_EVAL_CHECKBATCH_TRUE",
+  "lean": "leanprover/lean4:v4.34.1",
+  "warnings_as_errors": true,
+  "stdout": "true",
+  "exit_code": 0,
+  "owned_remote_pid": 1523713,
+  "remote_directory": "/dev/shm/codex-needle-unshifted-lean-20261023",
+  "command": [
+    "lean",
+    "+leanprover/lean4:v4.34.1",
+    "-DwarningAsError=true",
+    "UnshiftedLawNodes.lean"
+  ],
+  "scope": "Standalone #eval compatibility check of the existing Lean checkBatch; no new native theorem, axiom allowlist entry, import or endpoint assertion.",
+  "inputs": {
+    "UnshiftedLawNodes.lean": "d5d9a4cd4bf984de4230d11c1d8c19cf3d5671c26bd3a52b489f7fe5f2bcda7e",
+    "unshifted4302-lo.json": "c67740f8beacb24b133cb208fbf3e32d164fde81d6a24c0a555b6a3ab8bb462a",
+    "unshifted4302-hi.json": "31fd11d52b3ce13dc9aa5b7a9fc03716549bb8115601e6028ed7bbdc732acf9a",
+    "unshifted4302-box.json": "a18410c0059d7f84af324bf7ba5fe8cf6b03cc38b5940292e3d636fff68eb7b3"
+  },
+  "raw_log": {
+    "path": "UNSHIFTED_LEAN_EVAL.log",
+    "sha256": "a17fcf0a2f50e2d495e4f90ce263410edc183add6c62699a2facbccf60410f74"
+  },
+  "lean_version_output": "Lean (version 4.34.1, x86_64-unknown-linux-gnu, commit 5045d0056413266e57c625dcd7c365b10e377c52, Release)",
+  "read_only_import_cache": {
+    "project_root": "/home/agalatan/grothe-caps/.lake/build/lib/lean",
+    "package_root": "/home/agalatan/grothe-caps/.lake/packages",
+    "package_names": [
+      "proofwidgets",
+      "LeanSearchClient",
+      "mathlib",
+      "batteries",
+      "aesop",
+      "importGraph",
+      "plausible",
+      "Qq"
+    ],
+    "entrypoint_olean_sha256": {
+      "Grothe/Lower/RowData.olean": "e0a21e09c6f6467210fd57a56484a9bd6bbe4598fac4e43955e9623f581f7474",
+      "Grothe/Lower/MixedData.olean": "eae856a595a015fea0d2c7734a05659d43274be69be7d4b9f77f69d9b26a4d67"
+    },
+    "lean_toolchain_sha256": "d5edba4e4b8faad9c1baeadb265716d20d03be4d1a2647dc5e35b0c0325bea7b",
+    "lake_manifest_sha256": "26ea8f1f2fc0d041b5897dc66e111d746b97d86e281d4017efbc41f57761d17c"
+  },
+  "build_policy": "Direct standalone Lean evaluation in owned RAM filesystem with read-only imported oleans; no lake build, dependency download, new reflected theorem or default import. All recorded hashes were read after the successful process completed.",
+  "research_tool_sha256": {
+    "needle_rankone_nodes.py": "df553751a1dcef5124299d32ac9c5ac5870d8c28a8625f4ad19b34026ce6e47a",
+    "needle_rankone_reprice.py": "d26381adc6300dd3332dd9355c13c6766f832f6312c8fc616ff89a6bb923ef67",
+    "needle_unshifted_export.py": "bc7d60a79def5f87edf0f61bd832a957a4ac99619b17128a60d0daf52d4af7f9",
+    "needle_unshifted_box.py": "cb39718bf2f1c63c8a2afffb41dd8dcdfe8396bc103f2f8a4967074efb195f3d"
+  },
+  "local_replay_status": "PASS: both exact original-source nodes; deterministic Lean export; exact fixed-box assembly; conditional saved-bank source fixture; all four tools reject optimized Python."
+}

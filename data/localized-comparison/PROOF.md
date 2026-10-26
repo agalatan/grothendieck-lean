@@ -1,8 +1,15 @@
 # Weighted selected-spectrum comparison
 
-The current conditional upper bound is
+The selected-spectrum comparison with the raw contour-tail allowance gives
 
 **K_G^C < 1.404598161566.**
+
+The current Lean assembly also deducts the forced linear coefficient's
+weighted square from the same Hardy budget. This gives
+`K_G^C < 1.404598149218`, with reciprocal score
+`355973699864771491/500000000000000000`. The arithmetic below retains the
+raw tail for replay; the derived assembly is recorded in
+`../upper-preprocess/certificate.json` under `linear_budget_refinement`.
 
 The rounding, polynomial preprocessors, 21,168 stored energies, finite-head cap
 and Hardy certificate are unchanged. The improvement comes from retaining coefficient costs as well as the

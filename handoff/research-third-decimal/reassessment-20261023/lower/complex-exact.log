@@ -1,0 +1,4 @@
+PASS real-only completion accepted, complex completion excluded
+PASS sharp complex radius 3/5, both rational PSD endpoints
+Strict exclusion: 9/10 > 4/5; old screen: 9/10 <= 6/5
+Scope: exact fixture and endpoint checks; general theorem has paper proof

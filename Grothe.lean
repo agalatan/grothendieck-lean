@@ -154,6 +154,9 @@ import Grothe.LowerAnalytic.ProjectionGateCeiling
 import Grothe.LowerAnalytic.QuinticTransferAudit
 import Grothe.LowerAnalytic.ResponseCompression
 import Grothe.LowerAnalytic.ScalarCubicFamilyCeiling
+import Grothe.Research.CoupledMajorizer
+import Grothe.Research.SemiconvexChord
+import Grothe.Research.RefinedCoverResult
 import Grothe.UpperChaos.HardyKernel
 import Grothe.Upper.ResponseGeometry
 import Grothe.Haagerup.PhaseGeometry

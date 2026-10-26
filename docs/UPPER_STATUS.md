@@ -3,17 +3,22 @@
 The sharper conditional upper bound is described below. The independent hypothesis-free
 route now proves `Grothe.haagerup_bound : IsGrothendieckBound (1404909543/1000000000)`.
 Its polynomial resolvent, complete residual and signed infinite tail are documented in
-`/Users/alingalatan/workspaces/grothe-codex-joint-image/docs/HAAGERUP_POWER.md`;
+`docs/HAAGERUP_POWER.md`;
 that theorem does not require any of the analytic inputs listed here.
 
 Build only changed modules locally. Run full builds on the droplet (`ssh yo`) or in CI;
 see `AGENTS.md` for worktree and delivery rules.
 
+The combined tree includes the concrete rounder, the phase cover, the refined
+Hardy tail and the holomorphic-kernel definitions. Use an owned worktree and
+an owned droplet directory for builds; the shared package cache can be read
+without copying it. Use targeted module builds; full builds run on the droplet or in CI.
+
 ## 1. What is proved
 
 Headline `Grothe.UpperChaos.fresh_upper_rounder` (`Grothe/UpperChaos/PhiBound.lean`):
 
-    K_G^ℂ ≤ 500000000000000000/355973696735190991  (< 1.404598161566)
+    K_G^ℂ ≤ 500000000000000000/355973699864771491  (< 1.404598149218)
 
 for the concrete rounding `GT` (smoothed `F₀·P₃(φ)` built from `Grothe/Upper/Data.lean`), assuming only
 
@@ -37,6 +42,19 @@ are theorems.  Module map (all in `Grothe/UpperChaos/`):
 | Realise2, Structural | two-channel Gaussian rounding ⇒ `DiskKernel`; `structural_fields`, `fresh_upper_of_rounding` |
 | Rounder | `vprof`, `F0`, `phiT`, `Tround`, `GT`; measurable, charge one, disk-valued under `PhiBound` |
 | PhiHorner, PhiDense, PhiCover, PhiCoverData, PhiCoverCheck, PhiBound | phase cover `φ² ≤ 3` (checker `GrotheKernel/PhiCheck.lean`, generator `tools/gen_phi_cover.py`) |
+| HardyKernel | holomorphic Gaussian kernel and certificate covariance definitions; no discharge of `hardy` yet |
+
+The sharper tail reserves the linear coefficient's weighted square from the
+same `7/4` budget before Cauchy–Schwarz (`hardy_budget_after_linear`,
+`linear_lower`, `tail_le`). It changes no numerical premise. The complete
+endpoint for the preceding preprocessors passed the full build and axiom audit in
+[run 39901871873](https://github.com/agalatan/grothendieck-lean/actions/runs/39901871873);
+the current degree-41/15 preprocessors come from `data/upper-preprocess/`.
+The current exact arithmetic and generated data replay pass. Full merged-tree
+Lean validation is delegated to branch CI. Earlier targeted receipts were cleared
+before collection and are not current build evidence. The explicit gap and source
+guards are in `data/upper-preprocess/verification/`. `HardyKernel` does not
+discharge the numerical Hardy premise.
 
 ## 2. `|φ| < 1` (input of the inherited coefficient-error argument)
 
@@ -78,12 +96,21 @@ Lean route (detailed in PLAN_UPPER.md §6f):
 3. Gaussian Schur lemma `|H(R)|² ≤ 1/[64 j⁴ |det(I−R²)|² det Z det W]` (operator norm of the kernel on L²).
 4. Precompiled checker over the arcs (rational enclosures of cos/sin, 2×2 matrix arithmetic).
 Progress: `Grothe/UpperChaos/HardyKernel.lean` fixes the definitions (`Sym2C`, `detIm`, `Amat`, `Cmat`,
-`kExp`, `kHol`, `Hhol`, `Rt`); nothing proved about them yet. Next: 1(a) integrability and holomorphy.
+`kExp`, `kHol`, `Hhol`, `Rt`); integrability and holomorphy remain unproved. Next: 1(a).
 
 ## 4. Other open items
 
-* The component-error norm enclosures, identification with the error pieces, and `energy_close` stay external. The selected comparison itself and its 18 finite mass radii are proved in Lean; see `data/localized-comparison/PROOF.md`.
-* Lower bound: unchanged (`lower_bound_of_nodeCaps`, caps work on `work/lower-caps2`).
+* The Gaussian identification and norm bounds in `ComparisonInputs`, and
+  `energy_close`, stay external (verified-quadrature projects). Lean derives
+  the selected energy comparison from those inputs.
+  The second, fourth and sixth phase moments are now exactly reproducible
+  from the Lean phase data; see the continuation's
+  [MOMENTS.md](../handoff/research-third-decimal/needle-20261023/MOMENTS.md).
+  The other Hermite-tail and coefficient inputs are still separate obligations.
+* The refined lower endpoint is `1.401697049825`, conditional on the same
+  `NodeCaps`, through `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`.
+  The separate `GrotheCaps` target now has a matching stamp for its 60 range
+  facts; the four remaining rows still require `CapsRest`.
 
 ## 5. `ComparisonInputs`: formalisation plan
 
@@ -139,8 +166,11 @@ The norm bounds:
 
 ### 5.3 Who carries the residual
 
-The total residual is 458437859009/(5·10¹⁷). The share of each piece is its term 2·A_r·e_r; the quadratic term
-(Σe_r)² is 0.01%.
+The decomposition shares below use the raw weighted-comparison residual
+458437859009/(5·10¹⁷), before the forced linear-coefficient Hardy deduction.
+The active refined residual is 455308278509/(5·10¹⁷); its comparison pieces are
+identical. Each share below is the term 2·A_r·e_r divided by the raw residual;
+the quadratic term (Σe_r)² is 0.01%.
 
 | piece | e_r | A_r | share of residual |
 |---|---|---|---|

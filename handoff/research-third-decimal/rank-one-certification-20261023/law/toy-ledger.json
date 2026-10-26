@@ -1,0 +1,84 @@
+{
+  "corrected_tau_box_max": "49/50",
+  "direct_law_node": {
+    "bernstein_leaves": 3,
+    "intervals": 3,
+    "max_degree": 4
+  },
+  "gain_check": {
+    "bernstein_leaves": 3,
+    "cells": 3
+  },
+  "gain_floor": "97/20000",
+  "minorant_coefficients": [
+    "0",
+    "0",
+    "1/8",
+    "-1/32",
+    "0"
+  ],
+  "scope": "Synthetic source proven algebraically; compatibility and source input checks are separate.",
+  "sharp_nonzero_chord_cost": "1/40000",
+  "source": {
+    "A": "1/4",
+    "nodes": [
+      {
+        "G": "0",
+        "f": "0",
+        "r": "0"
+      },
+      {
+        "G": "0",
+        "f": "1",
+        "r": "1"
+      },
+      {
+        "G": "2",
+        "f": "0",
+        "r": "2"
+      }
+    ],
+    "tail": {
+      "coefficients": [
+        "0",
+        "1"
+      ],
+      "f": "0",
+      "start": "2"
+    }
+  },
+  "source_pieces": [
+    [
+      "0",
+      [
+        "0",
+        "1/4",
+        "-1/4"
+      ]
+    ],
+    [
+      "1",
+      [
+        "-5/2",
+        "11/4",
+        "-1/4"
+      ]
+    ],
+    [
+      "2",
+      [
+        "0",
+        "1"
+      ]
+    ]
+  ],
+  "status": "PASS_EXACT_TOY_SOURCE_AND_LAW",
+  "tau_interval": [
+    "1/5",
+    "21/100"
+  ],
+  "x_interval": [
+    "0",
+    "1"
+  ]
+}

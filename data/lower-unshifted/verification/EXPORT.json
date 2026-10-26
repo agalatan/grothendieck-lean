@@ -1,0 +1,60 @@
+{
+  "status": "PASS_EXACT_ORIGINAL_MAP_NODES_BOXES_AND_PARTITION",
+  "original_boxes": 8756,
+  "boxes": 10762,
+  "partition_tokens": 21523,
+  "chunk_size": 2691,
+  "old_batches": 21,
+  "extra_batches": 2,
+  "extra_nodes": 5,
+  "extra_node_map": {
+    "focus-3": [
+      22,
+      0
+    ],
+    "fused-hi": [
+      22,
+      2
+    ],
+    "fused-lo": [
+      22,
+      1
+    ],
+    "seed4302-hi": [
+      21,
+      1
+    ],
+    "seed4302-lo": [
+      21,
+      0
+    ]
+  },
+  "B": "356710460411/500000000000",
+  "L": "56067881993/40000000000",
+  "actual_upper": "53595747713458774816160475333517656023260599421204859741770416074989873961183751306378685119912469707433400174082517436282954192340563256406123377999202186307019860093/75125001453152514910038803905299204345028691432072058386313861530160341125968182079490047459343075199326522661953642556769839401723628198297600000000000000000000000000",
+  "source_sha256": {
+    "data/lower-unshifted/nodes/focus-3.json": "479fc83a6aa406d62a744a19ac2ab11a62ed83bfe5c6d1062daba53e54934af0",
+    "data/lower-unshifted/nodes/fused-hi.json": "121a4b59618720609780257436b5ffc77fc04b95f93f0c5f1de44781c226a72d",
+    "data/lower-unshifted/nodes/fused-lo.json": "bfc57415c045cd81113cb387c698c73a3ab574eed8a462d3c46048aee450b040",
+    "data/lower-unshifted/nodes/seed4302-hi.json": "c6bc9ffe47760dd8586d8c374be6b9633658c7c2ae9edf321e3f71a2fb135b78",
+    "data/lower-unshifted/nodes/seed4302-lo.json": "cfc0c6b36b4a5d14f4217d9e5cfa789b643b75800b5ed8956f71b4848660bec2",
+    "data/lower-unshifted/cover.json": "8e396894b24ee159fd07fd6265bb65e54bccc180295553c676994e91b88fd62a",
+    "data/lower-unshifted/inputs/inherited.json": "3e7ddd38eb4d7ebeb8db0af1f14f50774c4c93a259fb9c6053c92ec760bdb44e",
+    "data/lower-unshifted/inputs/cover.json": "ac7bc2d09c5cc215bc6cf6f16efbc58b7e55b2fb9095733e65ee57009a504dba",
+    "data/lower-unshifted/inputs/minimal-cover-ledger.json": "93e59d433570d40d35a3b53cb492828b327ec87a572c667f7dbf4d2d53024616",
+    "data/lower-unshifted/inputs/source-manifest.json": "4f7d643212fe2f39a3320aab774e4f61b5d7dbeb8ad4aef54f2af4efea158bac",
+    "Grothe/Lower/MixedData.lean": "a529b61562c93f665403968361aabb292cc72d93c8a47b74037ea474603bf0d0",
+    "tools/needle_unshifted_lean.py": "d7696994b5ccebe30b92a2d6a89cae084012e8a232562b5bd8cb2b89774ad0d5",
+    "tools/needle_unshifted_export.py": "103a58abf8ddb2c9f6eeb51b019a9f7eed580b7da2da49482fffdfaa5c163910",
+    "tools/needle_mixed_nodes.py": "cc5e5ad5dc510638dbdc701f7d8e6d60005d75fed02d3b4a21fcd7265ceaa649",
+    "tools/needle_rankone_nodes.py": "678362fbf653bb92ef59f5add28536624c2ede77e3731ad62e3a64b35a0a85e0",
+    "tools/needle_cover_lean.py": "d0204cd6299f056b730f203196db50c1ecfd0fec819fe0bf66517a024b4a08f4",
+    "tools/needle_cover_refine.py": "1766ce359329ee4983aae07c651fc7eddc2a3099f1e573ee0a15b4f7cc44d35f",
+    "tools/rankone_law.py": "2ddb264ba0e94392a5b43b93b24992d754fb5d0fe1b70592c19c698c890c7132",
+    "tools/rankone_source_paths.py": "97ba6b42e138eb1b6cac41064560a48d42ad6059c3d1a8c2b52eae644e1895cb"
+  },
+  "lean_sha256": {
+    "LawNodeData.lean": "8b3f40a304b8ecdc15b79833ad7ee0ebf9eddd90bc26bb43a5399fbf00b81861",
+    "RefinedCoverData.lean": "99d4aef071bbec8b9f7e800ca63bbee38bd94cd735cc5900250b3f7a56c7323e"
+  }
+}

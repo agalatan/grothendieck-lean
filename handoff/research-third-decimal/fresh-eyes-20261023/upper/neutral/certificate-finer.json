@@ -1,0 +1,72 @@
+{
+  "status": "PASS: rigorous restricted-model operator obstruction",
+  "scope": "Independent ordinary complex z of grade1, charge-one under z rotation alone; auxiliary either any finite/countable neutral Gaussian family Y correlated by t\u00b2I, or ordinary real Gaussian family V correlated by tI with responses globally even in V. Arbitrary joint radial/auxiliary dependence is allowed.",
+  "python_flint_version": "0.9.0",
+  "moments": {
+    "precision_bits": 160,
+    "mesh_denominator": 1500,
+    "radius": 6,
+    "rectangles_per_integral": 9000,
+    "rational_caps": [
+      2,
+      2,
+      1
+    ],
+    "finite_upper_enclosures": [
+      "[1.1585618517751997998424661706885017623699605 +/- 4.85e-44]",
+      "[0.9133296794362495675808182427654660395982914 +/- 2.11e-44]",
+      "[0.78043613392481488935174654397029566106225868 +/- 8.05e-45]"
+    ],
+    "tail_upper_enclosures": [
+      "[3.1054556299278379884603164001275764215774597412e-20 +/- 5.38e-67]",
+      "[2.3248751980340214637936957296666192779926328629e-17 +/- 4.30e-64]",
+      "[6.408513964264176573316606630517134633754688137e-15 +/- 1.05e-61]"
+    ],
+    "zeta_upper_enclosures": [
+      "[1.1585618517751997998735207269877801422545637 +/- 1.25e-44]",
+      "[0.91332967943624959082957022310568067753524871 +/- 7.75e-45]",
+      "[0.78043613392482129786571080814686897766888920 +/- 5.98e-45]"
+    ]
+  },
+  "hankel_certificate": {
+    "status": "PASS: rigorous Arb rectangle and analytic-tail upper bound",
+    "python_flint_version": "0.9.0",
+    "precision_bits": 160,
+    "mesh_denominator": 40,
+    "radius": 6,
+    "rectangles": 57600,
+    "finite_square_upper_enclosure": "[1.6601888422180423424896613392992289409289791 +/- 6.00e-44]",
+    "tail_upper_enclosure": "[0.0006993479551824483180694947068200672362857624377 +/- 5.08e-50]",
+    "HS_squared_upper_enclosure": "[1.6608881901732247908077308340060490081652649 +/- 3.83e-44]",
+    "certified_HS_squared_lt": 2,
+    "scope": "one-coordinate, charge-one, arbitrary complex disk-valued bilinear responses; alternating functional only"
+  },
+  "rho": "7/8",
+  "eps": "1/1000",
+  "t": "1/500",
+  "gamma_enclosure": "[0.71195865977826380151245854880539776772777114411 +/- 5.79e-48]",
+  "phase_energy_enclosures": [
+    "[0.78539816339744830961566084581987572104929234984 +/- 4.44e-48]",
+    "[0.098174770424681038701957605727484465131161543731 +/- 5.32e-49]",
+    "[0.036815538909255389513234102147806674424185578899 +/- 1.50e-49]"
+  ],
+  "alpha_squared_enclosures": [
+    "[1.1031513594371573462054939402837541537099943593 +/- 3.50e-47]",
+    "[0.13789391992964466827568674253546926921374929491 +/- 1.87e-48]",
+    "[0.051710219973616750603382528450800975955155985591 +/- 5.12e-49]"
+  ],
+  "block_bounds": {
+    "j0_upper": "[0.99992462066842673762152880210520646729059782142 +/- 8.29e-48]",
+    "j0_negative_absolute": "[0.87812500000000000000000000000000000000000000000 +/- 3.21e-48]",
+    "j1_negative_absolute": "[0.99958638854739119534252457911090645561901086496 +/- 5.98e-48]",
+    "j1_upper": "[0.87412500000000000000000000000000000000000000000 +/- 1.90e-48]",
+    "j2_upper": "[0.99900000000000000000000000000000000000000000000 +/- 7.03e-49]",
+    "j2_negative_absolute": "[0.88212500000000000000000000000000000000000000000 +/- 3.15e-48]",
+    "j_ge3_norm": "[0.99900000000000000000000000000000000000000000000 +/- 7.03e-49]"
+  },
+  "uniform_operator_norm_rational": "99993/100000",
+  "D_ceiling_enclosure": "[0.71190882267207932304635267670698138988403020013 +/- 8.19e-48]",
+  "contractions": "Separate linear Gaussian contractions preserving z-charge and auxiliary parity/grade classes may be absorbed into responses; no nonlinear final correlation preprocessing",
+  "included_even_images": "Arbitrary even Gaussian images Q(V), including finite quadratic drivers and arbitrary nonlinear dependence on them; radial coupling with |z| is allowed.",
+  "not_claimed": "No Grothendieck endpoint, nonlinear final preprocessing, symmetry-breaking response, or arbitrary correlated driver process without the stated Gaussian representation is covered."
+}

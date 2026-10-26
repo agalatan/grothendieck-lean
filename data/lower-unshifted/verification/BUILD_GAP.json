@@ -1,0 +1,136 @@
+{
+  "status": "TARGETED_BUILD_RECORD_LOST_REQUIRES_FULL_CI",
+  "checked_utc": "2026-10-25T21:10:16.624055+00:00",
+  "scope": "Frozen pre-weighted-master snapshot. This is not a successful Lean build record.",
+  "owned_directory": "/dev/shm/codex-localized-fused-20261023-d4df11f",
+  "controller_pgid": 1670610,
+  "observed_remote_state": "Directory absent and controller process absent on recovery; completed logs and artifacts unavailable.",
+  "fresh_upper_modules": [
+    "Grothe.Upper.Data",
+    "Grothe.Upper.Final",
+    "Grothe.UpperChaos.Kernel2",
+    "Grothe.UpperChaos.Realise2",
+    "GrotheKernel.BandMass",
+    "Grothe.Upper.ComparisonData",
+    "Grothe.Upper.PolynomialBridge",
+    "Grothe.UpperChaos.Structural",
+    "Grothe.UpperChaos.Rounder",
+    "Grothe.UpperChaos.PhiCover",
+    "Grothe.UpperChaos.PhiCoverCheck",
+    "Grothe.UpperChaos.EnergyBlock",
+    "Grothe.Upper.BandComparison",
+    "Grothe.Upper.ComparisonMass",
+    "Grothe.UpperChaos.LocalizedComparison",
+    "Grothe.UpperChaos.PhiBound",
+    "Grothe.UpperChaos.HardyKernel"
+  ],
+  "fresh_lower_modules": [
+    "Grothe.Research.LawNodeData",
+    "Grothe.Research.LawNodeCheck",
+    "Grothe.Research.RefinedCoverData",
+    "Grothe.Research.RefinedCoverParts",
+    "Grothe.Research.RefinedCoverBoxes0",
+    "Grothe.Research.RefinedCoverBoxes1",
+    "Grothe.Research.RefinedCoverBoxes2",
+    "Grothe.Research.RefinedCoverBoxes3",
+    "Grothe.Research.RefinedCoverPartition",
+    "Grothe.Research.RefinedCoverResult"
+  ],
+  "fresh_upper_count": 17,
+  "fresh_lower_count": 10,
+  "expected_axiom_report_count": 47,
+  "actual_axiom_report_available": false,
+  "completed_module_results_recoverable": false,
+  "lean_result": "Not established by these records; requires the full branch CI on the combined tree.",
+  "rerun_policy": "No Lean build was repeated during recovery. Full branch CI will provide coverage.",
+  "B": "356710460411/500000000000",
+  "L": "56067881993/40000000000",
+  "boxes": 10762,
+  "same_NodeCaps": true,
+  "current_upper_differences": {
+    "data/upper-preprocess/certificate.json": {
+      "frozen": "230e3b5892fa2553faa72310c0184cd7d803f73fc8e4b11f8c141ebfe57ccbc3",
+      "current": "7847e2b0ed5c4b2c7cc7bcaa035046c32242e6fc5aff60c3b88886130d85fb7e"
+    },
+    "Grothe/Upper/Bivariate.lean": {
+      "frozen": "8cfe693b452a5f5ce1f86f31a86c67718064235e89706394d803fba9aa338067",
+      "current": "58f431e4b61fe99a907744964e9ac8f3676573d5f5741812c5e02f185c7a2a13"
+    },
+    "Grothe/Upper/Data.lean": {
+      "frozen": "3ae4475c691d45c69fcbe41bb6e095386e0adc7e1faa436458c625ac3d945602",
+      "current": "2642811ff0671452cba21d076dbafd8dec5d7b1484650803a0260ecb43beeca1"
+    },
+    "GrotheKernel/BandMass.lean": {
+      "frozen": "e809366ae256a786d48951dd83d9a0e9a73505624864856f0de878e0760f9f50",
+      "current": "ae732ec043d763a3fe0a79a6156c23ceb8b1f541be8e4f7ae603663506308d72"
+    },
+    "Grothe/Upper/ComparisonData.lean": {
+      "frozen": "ab96fe91f30899c7e07feae517bbccadafec9564ab9b918e4d6f496fa2c83d1b",
+      "current": "43ced6734142ea69bc1c0f254be1c004baae82fef4048c3de2f03683605bf151"
+    },
+    "Grothe/Upper/PolynomialBridge.lean": {
+      "frozen": "e629c298733cf5bf933c058eeec8c3db37b48db9f30094ef451d52f3da8d2142",
+      "current": "d589f76827faf89b7f9a14dc60146e77acd4f7ad393580347f79385f5646fe6d"
+    },
+    "Grothe/UpperChaos/Structural.lean": {
+      "frozen": "cfabc98a68c6b759c2f548c9d56297abe51ac1201b92a2b349e7a647a25cf30c",
+      "current": "f24dea586a58cfc917a254127d43aa7118ad96f6e62a2da63207b0d5c4584221"
+    },
+    "Grothe/UpperChaos/Rounder.lean": {
+      "frozen": "d6c1783107ca93179a25091d0b1d5d0d3805661a4c87037085afafbbccfd098c",
+      "current": "7b67147336631c18f93fc90f3d4487ab090f76f5f0c559fb266a39f63a257de8"
+    },
+    "Grothe/Upper/BandComparison.lean": {
+      "frozen": "e0a98ba9c80586f7384cc0cb16a26a1eb2940cb028ce265f7c812c277c431d91",
+      "current": "819a46d5f2a5dc9eb6b24c58f5b494ffa15cd37ae89097fba52a0c1c5976628e"
+    },
+    "Grothe/Upper/ComparisonMass.lean": {
+      "frozen": "b9cdef6cb080cb63e41839e3736cd30fbac9758f77c8cb6e008a9e40076544c2",
+      "current": "89b20d78bb1f684185960b27c008b2182f3d4592fb113488353037adcdfc62b0"
+    },
+    "Grothe/UpperChaos/LocalizedComparison.lean": {
+      "frozen": "c05cecb706774cd594d850bae83d7ff892d2948ede1ea97491df4e6e84f07ec1",
+      "current": "6073f95d47ccdba4966f3557ce68cff0999ec496d317400a9788ac4b63ad8ee3"
+    },
+    "Grothe/UpperChaos/PhiBound.lean": {
+      "frozen": "e42771e4bebe9d7d9215e83411f46216cd1962718dd7914f7367799ab227b195",
+      "current": "ede7f33d444685bbe721b65051cddde602ebb6552b658c5639a6f920028e3bf7"
+    }
+  },
+  "exact_data_checks": {
+    "export": "PASS; retained exact report with all source and generated-Lean hashes freshly matched",
+    "complete_partition_and_recipes": "PASS; retained exact replay with cover/ledger hashes freshly matched",
+    "negative_controls": "PASS; eight controls freshly rejected during recovery"
+  },
+  "frozen_fresh_source_sha256": {
+    "Grothe.Upper.Data": "3ae4475c691d45c69fcbe41bb6e095386e0adc7e1faa436458c625ac3d945602",
+    "Grothe.Upper.Final": "563c1be37d5724a19e0ca7aa8e87a48434795209608a609ffd1646895060f5e3",
+    "Grothe.UpperChaos.Kernel2": "bd7467632ce1686cbacc2ffd3b226728dcd8009e7a4f237098794fc11587c095",
+    "Grothe.UpperChaos.Realise2": "03113a64cd561856812a24ba0e3e78938a9970095ce047c9b3cbb9566ba7fa9e",
+    "GrotheKernel.BandMass": "e809366ae256a786d48951dd83d9a0e9a73505624864856f0de878e0760f9f50",
+    "Grothe.Upper.ComparisonData": "ab96fe91f30899c7e07feae517bbccadafec9564ab9b918e4d6f496fa2c83d1b",
+    "Grothe.Upper.PolynomialBridge": "e629c298733cf5bf933c058eeec8c3db37b48db9f30094ef451d52f3da8d2142",
+    "Grothe.UpperChaos.Structural": "cfabc98a68c6b759c2f548c9d56297abe51ac1201b92a2b349e7a647a25cf30c",
+    "Grothe.UpperChaos.Rounder": "d6c1783107ca93179a25091d0b1d5d0d3805661a4c87037085afafbbccfd098c",
+    "Grothe.UpperChaos.PhiCover": "fc82cc3951de71c7075d5012eec4efbacfc7210cfc68fed8d56c1625c08cea31",
+    "Grothe.UpperChaos.PhiCoverCheck": "8bbcec7c9e66264ff9f85f47a720ef536286c37cccf7533cccf4c5359f6c08fc",
+    "Grothe.UpperChaos.EnergyBlock": "b60adbe49abaf014df6e7f91e0f67165af955d100be34782341d94ec7b2c2285",
+    "Grothe.Upper.BandComparison": "e0a98ba9c80586f7384cc0cb16a26a1eb2940cb028ce265f7c812c277c431d91",
+    "Grothe.Upper.ComparisonMass": "b9cdef6cb080cb63e41839e3736cd30fbac9758f77c8cb6e008a9e40076544c2",
+    "Grothe.UpperChaos.LocalizedComparison": "c05cecb706774cd594d850bae83d7ff892d2948ede1ea97491df4e6e84f07ec1",
+    "Grothe.UpperChaos.PhiBound": "e42771e4bebe9d7d9215e83411f46216cd1962718dd7914f7367799ab227b195",
+    "Grothe.UpperChaos.HardyKernel": "01eaefd27bd34b98ed84089de99dbbbd8f0484ba9d0db4b245c83f36b3c72598",
+    "Grothe.Research.LawNodeData": "8b3f40a304b8ecdc15b79833ad7ee0ebf9eddd90bc26bb43a5399fbf00b81861",
+    "Grothe.Research.LawNodeCheck": "efb18d56839192712308ceafc36ccd8ea019f9c0dc8e84e89cc29ccb44d3b2b3",
+    "Grothe.Research.RefinedCoverData": "99d4aef071bbec8b9f7e800ca63bbee38bd94cd735cc5900250b3f7a56c7323e",
+    "Grothe.Research.RefinedCoverParts": "c3f020b57f510bc344c6499b9474091d173d0bb1fe6718f116d15b69b5bf739b",
+    "Grothe.Research.RefinedCoverBoxes0": "8377cc62f86088dc095866d0a32f359a9c1003063fdffadf42398e72d4c6a877",
+    "Grothe.Research.RefinedCoverBoxes1": "c006d650fecfcfa0a001e55dbc230ed5549125f5685a4dd60fc3099bb1c974e8",
+    "Grothe.Research.RefinedCoverBoxes2": "ba7ad63ba0a1895be8889aa142d7bf2765649f5176756fee79050a1cd90b2c28",
+    "Grothe.Research.RefinedCoverBoxes3": "36e4b1678579d5e2d348594b9386f9a9da534532a1878748a194cb48bc732f2e",
+    "Grothe.Research.RefinedCoverPartition": "c7a41b37b2afbb2c8ad92c60515850aef125e649f9c4c75a664468e39b44ccef",
+    "Grothe.Research.RefinedCoverResult": "05552501b04e8fdfb389805daef2c36cffda011ef7d149ece308e998d823c11e"
+  },
+  "lower_source_manifest": "data/lower-unshifted/verification/SOURCE_MANIFEST.json",
+  "lower_source_manifest_sha256": "51560217c3dc3d3b13cd68888d3ac6d22785e292ceac3758fe792426933d636c"
+}

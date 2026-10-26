@@ -1,0 +1,965 @@
+'Grothe.fresh_upper' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1]
+'Grothe.upper_value_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.comparison_check' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Upper.comparison_check._native.native_decide.ax_1_1]
+'Grothe.Upper.actual_band_mass' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1,
+ Grothe.Upper.comparison_check._native.native_decide.ax_1_1]
+'Grothe.Upper.BandComparison.compare' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.norm_energyBlock_sq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.localized_comparison' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1,
+ Grothe.Upper.comparison_check._native.native_decide.ax_1_1]
+'Grothe.head_check' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1]
+'Grothe.head_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1]
+'Grothe.tail_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1]
+'Grothe.tail_numeric' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.head_le_of_check' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.memB_bivarT' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.tabPoly_coeff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.head_residual_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.summable_abs_bivarKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.tsum_abs_bivarKernel_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.bivarKernel_sub' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.residual_split' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.hardy_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.transfer' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.cert_check' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes2._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes3._native.native_decide.ax_1_1,
+ Grothe.Lower.certPartition._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Lower.certRows0' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1]
+'Grothe.Lower.certRows1' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1]
+'Grothe.Lower.certRows2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1]
+'Grothe.Lower.certRows3' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1]
+'Grothe.Lower.certRows4' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Lower.certBatches0' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1]
+'Grothe.Lower.certBatches1' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1]
+'Grothe.Lower.certBatches2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1]
+'Grothe.Lower.certBoxes0' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBoxes0._native.native_decide.ax_1_1]
+'Grothe.Lower.certBoxes1' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBoxes1._native.native_decide.ax_1_1]
+'Grothe.Lower.certBoxes2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBoxes2._native.native_decide.ax_1_1]
+'Grothe.Lower.certBoxes3' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBoxes3._native.native_decide.ax_1_1]
+'Grothe.Lower.certPartition' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certPartition._native.native_decide.ax_1_1]
+'Grothe.Lower.lower_bound_data' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes2._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes3._native.native_decide.ax_1_1,
+ Grothe.Lower.certPartition._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Lower.lower_bound_main' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.lower_endpoint' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.rowOf_of_shared' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.cover_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.chainTo_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.RowHolds.mix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.box_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.vslab_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.VHolds.mix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.gateForm_ge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.batch_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.rowTNode_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.capsHold_mix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.partOK_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.rowBound_of_check' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.major_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.posOn_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.cutSum_cell' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.node_fn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.steinCut_of_inputs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.checkJ_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.moment_lemma' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.first_moment_lt_rho' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.scalar_sixth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.cumulant_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.sixth_moment_complex' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.coverOK_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.fluctuation_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.radial_cut' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.gaussian_steinInputs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.gaussian_gramInputs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.gramZ_sq_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.gramT_schatten' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.gramT_symm' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.gramT_gram1a' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.gramT_gram1b' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.tauC_eq_sym' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.Circular.specU2_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.Circular.specV2_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.Circular.specU4_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.Circular.specV4_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.gE_SU' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.N_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.gram_budget_of_scalars' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.coupled_of_gram' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.gspec_of_inputs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.budget_of_bud' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.gram_joint_of_scalars' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.jspec_of_inputs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.tenS_eq_gram' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.tenH_eq_gram' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.joint_scalar' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.Circular.joint_sixth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.budget_w' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.budget_c' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.energy_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.covariance_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.spec_of_inputs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.checkSWit_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.quartic_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.stein_slack' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.stein_energy_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.influence_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.influence_pairing' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.finite_transfer' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.norm_pairVal_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.transfer_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.lower_bound_of_transferL2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.moments_of_three' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.chaos3_fourth_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.gE_radU_sq_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.gaussian_radU_cap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.gE_rotD' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.Chaos3.gE_sq_eq_kernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.sixth_moment_circular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.Circular.gaussian_sixth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.Circular.chaos3_right' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.tenGa_le_half' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.tenTT_le_sixth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.Chaos3.wick4' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.A0nn_circular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.A2nn_circular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.cubicTrace_circular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.sos1_circular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.sos2_circular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.trace4_circular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.trace3_circular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.coupled_circular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.chargeSplit_circular' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.Circular.tensorFacts' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.Chaos3.wick6' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.gaussian_moments' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.sharedReduction_of_gaussian' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.lower_bound_gaussian' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes2._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes3._native.native_decide.ax_1_1,
+ Grothe.Lower.certPartition._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.LowerAnalytic.integral_rad_ge' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.norm_pairVal_witness' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.transferInputs_of_witnessCap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.lower_bound_of_witnessCap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.VOf_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.witnessCap_of_reduction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes2._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes3._native.native_decide.ax_1_1,
+ Grothe.Lower.certPartition._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.LowerAnalytic.lower_bound_of_reduction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes2._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes3._native.native_decide.ax_1_1,
+ Grothe.Lower.certPartition._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.LowerAnalytic.integral_norm_gauss2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.integral_two_linear' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.integral_norm_linL' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.norm_starProjection_H10_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.tOf_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.stein_coordinate_complex' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.integral_conj_zc_mul_wc' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.wickL_mem_H21' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.chaos3_reW' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.rotD_reW' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.exists_wick_repr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.integral_norm_le_rho_of_mem_H21' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.normQk_le_rho' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.lower_bound_of_nodeCaps' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes2._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes3._native.native_decide.ax_1_1,
+ Grothe.Lower.certPartition._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.LowerAnalytic.reductionHyp_of_nodeCaps' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.sharedReduction_frame' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.rowSharedWith_frame' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.kside' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.norm_sq_starProjection_H21_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.fibre_integrated' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.fibreExprC_le_pot' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.capsHold_rowPot' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.exists_Cop_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.integral_abs_normSq_sub_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.fibreGram_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.rowGates_ok' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.rowData_gatesOK' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.reserved_gram_budget' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.joint_reserve_value' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.joint_moment_range' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.reserved_moment_cut' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointSixth.gram_j1' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointSixth.gram_j2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointSixth.gram_j3' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointSixth.s0_eq_tensor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointSixth.h0_eq_tensor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.joint_sixth_budget' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.MPoly.momentLift_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.MPoly.momentLift_J' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.MPoly.momentLift_majorant' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointSixth.gram_j_eta' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointSixth.gram_j2_shifted' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointSixth.shifted_hcoeff_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.joint_eta_budget' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.HaagerupPower.upper' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.HaagerupPower.check._native.native_decide.ax_1_1]
+'Grothe.DominatedKernel.comp_radial' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.DiskKernel.dominated' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.haagerup_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.HaagerupPower.check._native.native_decide.ax_1_1]
+'Grothe.haagerup_dominated' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.MomentCone.gram_weighted' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.MomentCone.gram_node' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.MomentCone.check_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.MomentCone.gram_node_of_check' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.MomentCone.young_eighth_check' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.MomentCone.shifted_half_check' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.MomentCone.Feasible.boundary_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.MomentCone.boundary_attained' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.MomentCone.boundary_node' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.MomentCone.exists_feasible_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.MomentCone.boundaryChecked_node' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.SphericalTransfer.cubic_ratio_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.SphericalTransfer.cubicAmp_recurrence' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.SphericalTransfer.cubicAmp_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.SphericalTransfer.cubicAmp_32_13' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.SphericalTransfer.cubic_tail_32_12' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.SphericalTransfer.infinite_defect' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.SphericalTransfer.global_cap_from_truncation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.UpperChaos.normSq_P3' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.norm_mul_P3_le_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.integral_moment' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.Ef_X0_mul' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.integral_hermite' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.integral_mehler' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.poly_complete' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.hermite_complete' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.hermiteBasis' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.hasSum_energy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.integral_H_charge_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.map_e2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.integral_hermite2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.hermite2_complete' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.hermiteBasis2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.hasSum_energy2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.map_mehlerY' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.integral_H2_XY' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.Bm_eq_integral' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.mehler_L2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.hasSum_energy_bideg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.summable_abs_energy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.hasSum_kernel_real' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.integral_H2_charge_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.energy_eq_zero_of_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.Bm_polyKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.integral_two_channel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.rounding_diskKernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.structural_fields' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.fresh_upper_of_rounding' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1]
+'Grothe.UpperChaos.measurable_GT' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.norm_GT_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.GT_rot2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.memLp_GT' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.fresh_upper_concrete' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1]
+'Grothe.UpperChaos.phi_cover_check' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1]
+'Grothe.UpperChaos.leaf_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.walk_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.far_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.phiBound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1]
+'Grothe.UpperChaos.fresh_upper_rounder' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1,
+ Grothe.Upper.comparison_check._native.native_decide.ax_1_1,
+ Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1]
+'Grothe.LowerAnalytic.nodeCaps_of_vertexCaps' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.LowerAnalytic.capChords_check._native.native_decide.ax_1_1]
+'Grothe.LowerAnalytic.lower_bound_of_vertexCaps' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes2._native.native_decide.ax_1_1,
+ Grothe.Lower.certBoxes3._native.native_decide.ax_1_1,
+ Grothe.Lower.certPartition._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1,
+ Grothe.LowerAnalytic.capChords_check._native.native_decide.ax_1_1]
+'Grothe.LowerAnalytic.rowPot_le_chord' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.anchored_pair_poly' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.young_pair' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.qf_nonneg_of_ldlOK' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.qf_le_loewnerUp' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.pot_le_of_pieceOK' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.Jpot_le_qf' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.fn_eq_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.pot_le_of_nodeOK' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.gridOK_mkGrid' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.tablesOK_mk' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.Tint_grid' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.integral_gaussC_polar' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.nodeCap_of_rangeOK' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.DiffuseCubicObstruction.finite_bridge_lower' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.DiffuseCubicObstruction.above_target' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.DiffuseCubicObstruction.reciprocal_ceiling' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.JointRowRepricing.visible_completion' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointRowRepricing.invQuad_shift' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointRowRepricing.price_shift' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointRowRepricing.dual_constant_is_row' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.JointRowRepricing.forcing_scale' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.coefficient_le_projected_norm' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.preserves_coefficient_of_selfadjoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.gateEnergy_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_norm_sq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.gateEnergy_rankOne' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_preserves_coefficient' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_selfadjoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_contraction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_idempotent' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ProjectionGateCeiling.rankOne_c0' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.diagonal_error_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.diagonal_one_sided_bounds' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.negative_of_error_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.strict_interval_convex_mix' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.signed_step_decreases' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.signed_step_margin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.cramer_three_column_cancellation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.linear_necessary_score_affine_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.linear_necessary_score_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuinticTransferAudit.zero_cubic_necessary_score_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.norm_sq_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.compression_bessel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.compression_block_nonneg' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.three_grade_cut' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.three_grade_cut_unnormalized' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.two_by_two_moment_cut' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.fake_radial_parseval' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.fake_radial_rejected' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.fake_radial_repair_energy' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.fake_radial_repair' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.fake_visible_parseval' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.fake_visible_rejected' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.forced_visible_companion' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.mulResponse_ae' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.mulResponse_contracts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseCompression.bounded_response_compression' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.affine_cancel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.mixed_floor_le_max' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.family_floor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.opposite_slopes' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.rounded_mix_floor' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.floor_positive' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.reciprocal_ceiling' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.ceiling_below_140226' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.spectral_ratio_ceiling' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ScalarCubicFamilyCeiling.pure_cubic_coefficient_above_floor' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.Lower.PrimalAudit.primal_le_dual' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.PrimalAudit.no_dual_below_primal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.gram_qform' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.projection_gram_interval' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.nested_projection_gram_interval' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.reflection_cross_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.orthogonal_projection_cross_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.factored_price_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.moment_support_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.completion_screen' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.no_completion' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.priced_nearmax_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.weighted_alignment' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.regularized_alignment_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.inner_perturbation_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.disk_quadratic_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.disk_quadratic_attained' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ResponseGram.two_disc_price_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.TwoDisc.slack_factorization' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.TwoDisc.support_of_factor' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.TwoDisc.bilinear_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.TwoDisc.independent_interior_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.TwoDisc.coupled_interior_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.TwoDisc.complex_linear_support' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.TwoDisc.sharp_examples_attained' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.QuadraticFeatures.quadratic_mul_linear' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.QuadraticFeatures.probe_projection_closure' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuadraticFeatures.quadratic_remainder_budget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.LowerAnalytic.QuadraticFeatures.affine_quadratic_remainder_budget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.Lower.SteinFusion.perspective_variance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.SteinFusion.perspective_fusion_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.SteinFusion.unit_fusion_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.SteinFusion.specCellG_unit_fusion' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.SteinFusion.unit_fusion_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Lower.SteinFusion.common_kernel_projection' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ReplicaState.firstCoeff_normSq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ReplicaState.firstCoeff_cross' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ReplicaState.residual_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ReplicaState.variance_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ReplicaState.sqrt_variance_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ReplicaState.scalar_surrogate_gap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.LowerAnalytic.ReplicaState.scalar_surrogate_strict' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.KernelScreen.weighted_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.KernelScreen.full_score_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.KernelScreen.priced_score_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.KernelScreen.all_level_price_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.all_level_price_of_front_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.common_tail_price' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.full_score_upper' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.affine_error_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.l1_anchor_price_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.full_score_l1_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.SpectralScreen.finite_mixture_score_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.phase_conditions_unit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.phase_conditions' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.real_polynomial_cap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.trigonometric_square_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.axis_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.axis_le_real_polynomial' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.normalized_complex_cap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.complex_score_cap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.score_le_separator' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.CubicPhaseScreen.full_score_cap_of_low_identity' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.HaagerupPower.norm_fourth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.HaagerupPower.check._native.native_decide.ax_1_1]
+'Grothe.HaagerupPower.composed_tail' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.HaagerupPower.check._native.native_decide.ax_1_1]
+'Grothe.HaagerupPower.finite_residual' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.HaagerupPower.check._native.native_decide.ax_1_1]
+'Grothe.HaagerupPower.residual' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.HaagerupPower.check._native.native_decide.ax_1_1]
+'Grothe.Upper.PowerTail.compTerm_power_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.PowerTail.weighted_composition' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.PowerTail.power_norm_of_check' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.PowerTail.tail_numeric_of_check' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.PowerTail.weighted_tail_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.PowerTail.no_power_saving_of_boundary' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.PowerTail.mem_polyPowI' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.PowerTail.mem_powIval' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.PowerTail.mem_telescope' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.PowerTail.summable_weighted' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.PowerTail.weightedTail_pair' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.PowerTail.eval_neg_one_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.HaagerupPower.check' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.HaagerupPower.check._native.native_decide.ax_1_1]
+'Grothe.HaagerupPower.norm_P' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.HaagerupPower.degree_P' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.HaagerupPower.gamma_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.HaagerupPower.check._native.native_decide.ax_1_1]
+'Grothe.HaagerupPower.summable_R' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.HaagerupPower.R_telescope' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.HaagerupPower.weighted_R_tail' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.HaagerupPower.finite_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.HaagerupPower.exact_upper' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.HaagerupPower.check._native.native_decide.ax_1_1]
+'Grothe.HaagerupPower.value_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.RefinedLower.profile_bound_of_refined_cover' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Research.RefinedLower.witnessCap_of_refined_cover_reduction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Research.RefinedLower.witnessCap_of_refined_cover' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Research.RefinedLower.transferInputs_of_refined_cover' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Research.RefinedLower.lower_bound_of_refined_cover' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Research.RefinedLower.strict_lower_bound_of_refined_cover' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Research.RefinedLowerCheck.certRefinedBoxes0' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes0._native.native_decide.ax_1_1]
+'Grothe.Research.RefinedLowerCheck.certRefinedBoxes1' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes1._native.native_decide.ax_1_1]
+'Grothe.Research.RefinedLowerCheck.certRefinedBoxes2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes2._native.native_decide.ax_1_1]
+'Grothe.Research.RefinedLowerCheck.certRefinedBoxes3' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1]
+'Grothe.Research.RefinedLowerCheck.certRefinedPartition' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1]
+'Grothe.Research.RefinedLowerCheck.refined_cover_checked' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes0._native.native_decide.ax_1_1,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes1._native.native_decide.ax_1_1,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes2._native.native_decide.ax_1_1,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1,
+ Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1]
+'Grothe.Research.RefinedLowerCheck.refined_reciprocal_lower_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1,
+ Grothe.Research.LawNodeCheck.certLawNodes._native.native_decide.ax_1_1,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes0._native.native_decide.ax_1_1,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes1._native.native_decide.ax_1_1,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes2._native.native_decide.ax_1_1,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1,
+ Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1]
+'Grothe.Research.RefinedLowerCheck.refined_endpoint_lt_reciprocal' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1,
+ Grothe.Research.LawNodeCheck.certLawNodes._native.native_decide.ax_1_1,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes0._native.native_decide.ax_1_1,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes1._native.native_decide.ax_1_1,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes2._native.native_decide.ax_1_1,
+ Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1,
+ Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1]
+'Grothe.Research.CoupledMajorizer.complex_norm_majorizer' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.CoupledMajorizer.complex_norm_majorizer_exact' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.Research.CoupledMajorizer.coupled_update_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.CoupledMajorizer.finite_weighted_majorizer' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.CoupledMajorizer.diagonal_step_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.CoupledMajorizer.finite_diagonal_descent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.CoupledMajorizer.finite_diagonal_strict_descent' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.Research.SemiconvexChord.chord_of_lifted' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.SemiconvexChord.profile_square' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.SemiconvexChord.finite_expectation_chord' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.SemiconvexChord.gate_reassembly' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.SemiconvexChord.chord_allowance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.SemiconvexChord.checked_mesh_allowance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.hardy_budget_after_linear' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.head_residual_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1]
+'Grothe.linear_lower' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1]
+'Grothe.upper_value_improves' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.LawNodeLower.certified_rows' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Research.LawNodeLower.certified_mixed_batches' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1]
+'Grothe.Research.LawNodeLower.extended_batches_checked' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1]
+'Grothe.Research.LawNodeLower.profile_bound_of_law_nodes' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Research.LawNodeLower.witnessCap_of_law_nodes_reduction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Research.LawNodeLower.witnessCap_of_law_nodes' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Research.LawNodeLower.transferInputs_of_law_nodes' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Research.LawNodeLower.lower_bound_of_law_nodes' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Research.LawNodeLower.strict_lower_bound_of_law_nodes' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Lower.certBatches0._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches1._native.native_decide.ax_1_1,
+ Grothe.Lower.certBatches2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows0._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows1._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows2._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows3._native.native_decide.ax_1_1,
+ Grothe.Lower.certRows4._native.native_decide.ax_1_1]
+'Grothe.Research.LawNodeCheck.certLawNodes' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.Research.LawNodeCheck.certLawNodes._native.native_decide.ax_1_1]
+'Grothe.Upper.headWeight_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.comparisonWeight_sound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.head_residual_le_weighted' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Upper.BandComparison.weighted_compare' depends on axioms: [propext, Classical.choice, Quot.sound]
+checked 451 theorems; native_decide facts used: 24 of 84

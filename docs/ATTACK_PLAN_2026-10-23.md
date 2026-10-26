@@ -1,10 +1,12 @@
 # Research attack plan — 23 October 2026
 
-Integration baseline: GitHub master `b1e3598`. The initial research baseline
-was `98f61ec`; the bounds are unchanged. This is a research proposal, not a new bound,
-a new theorem, or a claim that the proposed finite relaxation is complete.
+Original plan provenance: GitHub master `b1e3598`, with initial research
+baseline `98f61ec`. The opening execution notes below describe that earlier
+stage. The current continuation and combined endpoints are recorded below;
+individual exploratory proposals are not endpoint theorems or claims that
+a finite relaxation is complete.
 
-Current execution is isolated in
+That original execution was isolated in
 `/Users/alingalatan/workspaces/grothe-codex-joint-image`, branch
 `codex/joint-response-delivery-20261023`. The main checkout is not a working
 directory for this attack. Historical main-checkout paths below record prior
@@ -44,13 +46,56 @@ not more clipping or a finer radial mesh. Neither endpoint has changed.
 
 Fresh reassessment: [the common-kernel and frozen-table audit](COMMON_STEIN_REASSESSMENT_2026-10-23.md) now excludes all four old atomic laws with merges of inherited tests, but law reoptimization largely restores their scores. More decisively, a genuine finite cubic gives a directed floor above `0.71335` for every convex mixture of all nineteen frozen tables at an admissible state. Thus radial constraints alone cannot finish that fixed-table architecture. The next global attack must change the profiles or retain the actual response relation and joint polynomial image fields. This floor is for stored upper tables, not the witness norm.
 
+## Current complete certificate and next attack
+
+The complete lower certificate has cap `0.713420920822` and strict reciprocal
+endpoint `1.401697049825`, under unchanged `NodeCaps`. It uses the two original
+pure-row law nodes and three additional mixed-source Young nodes. The mixed
+source has original-row weights `1-theta,theta` on rows 14 and 15, with
+`theta=177107909/800000000`; its kurtosis range is `0 <= x <= 4/5`.
+Every scale interpolation uses an actual accepted endpoint bracket.
+
+Fusion combines inherited Stein tests on their common 161-knot mesh before
+reoptimizing the majorant. Exact square identities justify the cut. The selected
+nodes pass whole-half-line checks; minimax prices at both kurtosis endpoints
+avoid mistaking a pointwise saving for a rectangle bound. The complete split
+forest keeps valid old recipes on the complement. Nodes that do not contribute
+to the final proof are excluded from the maintained certificate.
+
+The remaining global-cap obstruction is more specific than a mesh issue.
+At the old cap cell 9750, the pure row-15 envelope is exactly optimal among
+convex mixtures of all existing global row caps: the KKT directional gaps are
+nonnegative, with the smallest nonzero gap about `8.83119e-6`. This is a floor
+of that relaxation, not a lower bound for the actual Gaussian witness norm.
+Retaining scale and kurtosis through existing row-15 law nodes lowers this
+entire region to `0.713420920822`; every new subrectangle has a valid recipe.
+Pruning removes unnecessary splits before Lean export.
+
+The accepted gain over `1.401696986171` is only `0.000000063654`.
+The target `0.71342` remains unmet. Thus this closes the local-to-global
+certificate gap but does not settle the third decimal or establish optimality
+of the current law bank. A larger gain needs a stronger bound in the newly
+binding law region or genuinely shared response constraints. Repeating global
+row-cap mixing at the proved KKT floor cannot supply that gain.
+
+The next bounded numerical test should price the complete binding rectangles
+with the actual scale and kurtosis retained, preserving the incumbent as a
+fallback. Any new mixed law price needs an exact budget, whole-half-line proof,
+legal interpolation bracket and a strictly improved complete cover. If these
+local refinements keep returning comparable small gains, prioritize the joint
+response-feasibility route below rather than finer global-cap meshes.
+
+The cap sources, witness multiplier and heavy cap import closure stay fixed.
+Completing rows 12--15 under `CapsRest` remains a separate formalization track;
+see [the caps roadmap](CAPS_ROADMAP.md).
+
 ## Decision
 
 The next stage is complete: a common signed-tail spectral budget replaces the
 independent residual relaxation, and an exact degree-seven separator proves
 that the full Gaussian-phase cubic-preprocessor family, with arbitrary complex
 phases and convex mixtures, has score at most `0.71186`. It cannot beat the
-incumbent `0.711947393470381982`. Leave that architecture rather than optimize
+incumbent `0.711947399729542982`. Leave that architecture rather than optimize
 its scalar parameters again. This does not exclude general finite cubic phases.
 The common-tail screen of the updated twelve-column pool is `0.711605880` at
 midpoints; its error-dependent bounds are still conditional on unproved
@@ -76,37 +121,39 @@ sequence and a tail allowance. A fictitious law admitted by a relaxation does no
 
 ## 1. Baseline and quantitative objectives
 
-The sharp results currently reported by master are
+The combined development after integration of master `4e9f32d` has
 
 \[
- 1.401695322458<K_G^{\mathbb C}<1.404598161566.
+ 1.401697049825<K_G^{\mathbb C}<1.404598149218.
 \]
 
-The interval width is `0.002903312913`. Both sharp bounds have the numerical
+The interval width is `0.002901099393`. Both sharp bounds have the numerical
 input hypotheses documented in the repository. The separate fully formal upper
-bound is \(K_G^{\mathbb C}\le1.40578\).
+bound is \(K_G^{\mathbb C}\le1.404909543\).
 
 The current lower witness is \(P_{1,0}-(149/200)P_{2,1}\), with cap
-\(B_0=0.7134218\). The default target retains `NodeCaps`, the numerical caps
+\(B_0=0.713420920822\), checked on 10,762 boxes. The default target retains `NodeCaps`, the numerical caps
 for the 19 fibre potentials. Master now formalizes the majorant/integration
 checkers and the route `lower_bound_of_capsRest` in the separate heavy target
 `GrotheCaps`. That route retains only the localized central rows after the
-range checks have actually run and been recorded. No verification stamp exists
-at this integration baseline. Completing this work closes a formalization gap;
+range checks have actually run and been recorded. A recorded droplet stamp verifies the 60 range facts for the other rows;
+rows 12–15 remain under `CapsRest`. Completing this work closes a formalization gap;
 it does not change the numerical cap, and this branch leaves all cap sources unchanged.
 
 The current upper certificate has the exact reciprocal denominator
 
 \[
- A_0=\frac{355973696735190991}{500000000000000000}
-     =0.711947393470381982.
+ A_0=\frac{355973699864771491}{500000000000000000}
+     =0.711947399729542982.
 \]
 
 Master's upper theorem `Grothe.UpperChaos.fresh_upper_rounder` now constructs
 the rounding and derives its Hermite, Mehler, charge and boundedness properties
 inside Lean, including the phase cover. The truncation X still has explicit
-L² and charge-one inputs; `compare`, `energy_close` and `hardy` are its numerical
-inputs. The generic `DirectHyps` interface still
+L² and charge-one inputs; `ComparisonInputs`, `energy_close` and `hardy` are its
+explicit inputs. The first specifies the error decomposition, spectral supports
+and Gaussian component norm caps; Lean derives the selected-head comparison.
+The generic `DirectHyps` interface still
 exists, but its structural fields are not additional hypotheses of the
 concrete theorem. This removes duplicated formalization work from the attack.
 
@@ -132,11 +179,11 @@ This would give \(K_G^{\mathbb C}\ge1/0.713260>1.402\). It is a target, not
 an available cap. Changing the witness requires revalidating the entire row
 cover, including the flanks; the master cap at `149/200` cannot be inherited at
 `1891/2500`. The numerical difference between the current master cap and
-`500/701`, about `0.0001550382311`, indicates the scale of the problem, not a
+`500/701`, about `0.0001541590531`, indicates the scale of the problem, not a
 transferable error budget between these two witnesses.
 
 The larger objective requires higher-degree witnesses. The numerical cubic
-ceiling near `1.402258` would remove only about 19.38% of the current interval.
+ceiling near `1.402258` would remove only about 19.34% of the current interval.
 That ceiling is exploratory evidence. The manuscript also has proved degree-five
 and degree-seven barriers. Accordingly, retain degrees 9 and 13 as discovery
 tests; do not assume a longer alternating multiplier is an improvement.
@@ -144,17 +191,16 @@ tests; do not assume a longer alternating multiplier is an improvement.
 ## 2. Diagnosis: the missing constraint is joint realizability
 
 Write \(P_k=P_{k+1,k}\), and let \(c_k\) be the real mixed coefficients of an
-actual response mixture. The manuscript's complex duality states
+actual response mixture. The endpoint arguments use two one-sided transfers:
+a realizable kernel with positive full score gives an upper bound, and a
+witness with a dimension-uniform scalar norm cap gives a lower bound. The
+archived manuscript proposes a global complex minimax equality, but that
+completeness argument is not established by the present development and is
+not an input to either endpoint. Finite-pool LP duality does not establish it.
 
-\[
- \frac1{K_G^{\mathbb C}}
- =\sup_{c\in\mathcal C}\left(c_0-\sum_{k\ge1}|c_k|\right)
- =\inf_{\lambda_0=1,\ |\lambda_k|\le1}N(\lambda).
-\]
-
-There is no intrinsic duality gap. There are two approximation errors: the lower
-proof allows joint data that may not be realizable, while the upper search has
-only a restricted collection of realizable responses. For any candidate pair,
+There are two distinct approximation errors: the lower proof allows joint
+data that may not be realizable, while the upper search has only a restricted
+collection of realizable responses. For any candidate pair,
 
 \[
  N(\lambda)-D(c)
@@ -333,7 +379,7 @@ for the same ineffective inequality.
 
 Keep the current certified rounding as an incumbent. The historical analytic
 chirp pool is not a replacement: its recorded score near `0.711892` was already
-below the present `0.711947393470381982`, even before all remaining tail costs.
+below the present `0.711947399729542982`, even before all remaining tail costs.
 An earlier phase-response pool also suffered inaccurate coefficients hidden by
 stable witness payoffs.
 
@@ -427,7 +473,7 @@ harmonic enumeration is not the primary attack.
 
 Keep closure of the existing `NodeCaps` proof as a separate formalization
 task. On the upper side, improving the external comparison estimate may give
-a useful small gain: it accounts for 92.92% of the current residual allowance.
+a useful small gain: it accounts for 93.56% of the current residual allowance.
 Neither task substitutes for the joint-geometry target or establishes a new
 rounding family.
 
@@ -482,7 +528,7 @@ line-audited every manuscript module again in this planning pass.
 - [Convex joint dual and certified descent](/Users/alingalatan/workspaces/grothe/handoff/research-third-decimal/handoff-2026-10-15/ch25-parts/88-joint-dual-descent.tex).
 - [Original-response target and all-dimensions obligation](/Users/alingalatan/workspaces/grothe/handoff/research-third-decimal/handoff-2026-10-15/lower-bound/obstruction-1402.tex).
 - [Spherical bridge, truncation and obstructions](/Users/alingalatan/workspaces/grothe/docs/SPHERICAL_TRANSFER.md).
-- [Heilman–Jones–Malavolta, Primal/Dual Method, Sections 2–3](https://arxiv.org/html/2610.10477v1): real-case exchange and graded joint compactification; its heuristic oracle does not certify a global norm. The complex duality used above is the manuscript's argument.
+- [Heilman–Jones–Malavolta, Primal/Dual Method, Sections 2–3](https://arxiv.org/html/2610.10477v1): real-case exchange and graded joint compactification; its heuristic oracle does not certify a global norm. A global complex minimax extension needs an independent completeness argument; neither endpoint here assumes it.
 - [Jones, Regularity lemma, Theorems 3.8–3.9 and following remark](https://arxiv.org/html/2610.16180v1): multivariate graded structure and nonconstructive general size bound. No unverified rate is used here.
 - [Herry–Malicet–Poly, Limit distributions for polynomials](https://arxiv.org/html/2412.06749v1): joint polynomial-limit framework; not a quantitative original-response inequality at our target accuracy.
 - [Designolle–Vértesi–Pokutta, Better bounds on finite-order Grothendieck constants](https://arxiv.org/html/2409.03739v3): construction versus global scalar certification, and applicability of the computational framework to complex problems; its reported constants are not imported.

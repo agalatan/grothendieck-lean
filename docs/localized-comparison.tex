@@ -16,8 +16,13 @@ enclosures and the explicit inputs described below,
  <1.404598161566.
 \]
 The rounding function and its preprocessors are unchanged. The improvement
-comes from retaining both the spectral blocks and their coefficient costs
-in the finite kernel head. This is a global bound, not a concentration-region result.
+comes from comparing only the spectral blocks that enter the finite kernel
+head. This is a global bound, not a concentration-region result.
+The current Lean assembly additionally deducts the linear coefficient's forced
+weighted square from the same Hardy budget, yielding
+$K_G^{\mathbb C}<1.404598149218$ with reciprocal score
+$355973699864771491/500000000000000000$; the displayed calculation retains
+the raw contour-tail allowance.
 
 \begin{theorem}[Selected-spectrum comparison]
 Let $G,X$ lie in a Gaussian $L^2$ space with orthogonal chaos blocks $P_p$.

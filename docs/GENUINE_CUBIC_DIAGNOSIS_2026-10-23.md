@@ -11,7 +11,7 @@ norm certificate for this unchanged witness can prove a reciprocal bound
 at or above **`1.401955`**, including the proposed `1.402` target.
 
 Against the previously audited conditional interval
-`1.401695322458 < K_G^C < 1.404598161566`, even the finite obstruction limits
+`1.401697049825 < K_G^C < 1.404598149218`, even the finite obstruction limits
 this unchanged witness's possible lower-end gain to less than `.000260`,
 under nine percent of that interval. This is a restriction on the chosen
 witness, rather than evidence that the true constant is near that ceiling.

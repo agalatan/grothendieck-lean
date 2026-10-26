@@ -21,12 +21,11 @@ NATIVE |= {f"Grothe.LowerAnalytic.capRange{k:02d}_{j}._native.native_decide.ax_1
 # lower: the certificate check in 13 single-threaded chunks (Grothe/Lower/Cert/)
 NATIVE |= {f"Grothe.Lower.{n}._native.native_decide.ax_1_1" for n in
            ['certRows0', 'certRows1', 'certRows2', 'certRows3', 'certRows4', 'certBatches0', 'certBatches1', 'certBatches2', 'certBoxes0', 'certBoxes1', 'certBoxes2', 'certBoxes3', 'certPartition']}
+NATIVE |= {f"Grothe.Research.RefinedLowerCheck.{n}._native.native_decide.ax_1_1" for n in
+           ['certRefinedBoxes0', 'certRefinedBoxes1', 'certRefinedBoxes2',
+            'certRefinedBoxes3', 'certRefinedPartition']}
+NATIVE.add("Grothe.Research.LawNodeCheck.certLawNodes._native.native_decide.ax_1_1")
 REQUIRED = {"Grothe.fresh_upper", "Grothe.Lower.lower_bound_data",
-            "Grothe.Upper.comparison_check", "Grothe.Upper.actual_band_mass",
-            "Grothe.Upper.BandComparison.compare", "Grothe.Upper.BandComparison.weighted_compare",
-            "Grothe.Upper.headWeight_sound", "Grothe.Upper.comparisonWeight_sound",
-            "Grothe.Upper.head_residual_le_weighted", "Grothe.UpperChaos.norm_energyBlock_sq",
-            "Grothe.UpperChaos.localized_comparison",
             "Grothe.Lower.lower_endpoint", "Grothe.Lower.lower_bound_of_transferL2",
             "Grothe.LowerAnalytic.gaussian_steinInputs", "Grothe.LowerAnalytic.lower_bound_gaussian",
             "Grothe.LowerAnalytic.norm_pairVal_witness", "Grothe.LowerAnalytic.transferInputs_of_witnessCap",
@@ -221,15 +220,77 @@ POWER_HAAGERUP = {
     'Grothe.Upper.ResolventTail.tail_numeric_of_check',
 }
 REQUIRED |= POWER_HAAGERUP
+# Coupled-image and semiconvex ingredients: every public fact is audited.
+RESEARCH_CORE = {
+    'Grothe.Research.CoupledMajorizer.complex_norm_majorizer',
+    'Grothe.Research.CoupledMajorizer.complex_norm_majorizer_exact',
+    'Grothe.Research.CoupledMajorizer.coupled_update_bound',
+    'Grothe.Research.CoupledMajorizer.finite_weighted_majorizer',
+    'Grothe.Research.CoupledMajorizer.diagonal_step_identity',
+    'Grothe.Research.CoupledMajorizer.finite_diagonal_descent',
+    'Grothe.Research.CoupledMajorizer.finite_diagonal_strict_descent',
+    'Grothe.Research.SemiconvexChord.chord_of_lifted',
+    'Grothe.Research.SemiconvexChord.profile_square',
+    'Grothe.Research.SemiconvexChord.finite_expectation_chord',
+    'Grothe.Research.SemiconvexChord.gate_reassembly',
+    'Grothe.Research.SemiconvexChord.chord_allowance',
+    'Grothe.Research.SemiconvexChord.checked_mesh_allowance',
+}
+REQUIRED |= RESEARCH_CORE
+
+# The sharper Hardy tail reuses the existing head fact; no native fact is added.
+HARDY_BUDGET = {
+    'Grothe.hardy_budget_after_linear',
+    'Grothe.head_residual_le',
+    'Grothe.linear_lower',
+    'Grothe.tail_numeric',
+    'Grothe.tail_le',
+    'Grothe.upper_value_improves',
+    'Grothe.fresh_upper',
+    'Grothe.UpperChaos.fresh_upper_rounder',
+}
+REQUIRED |= HARDY_BUDGET
+
+REFINED_LOWER = {
+    f'Grothe.Research.RefinedLower.{name}' for name in [
+        'profile_bound_of_refined_cover', 'witnessCap_of_refined_cover_reduction',
+        'witnessCap_of_refined_cover', 'transferInputs_of_refined_cover',
+        'lower_bound_of_refined_cover', 'strict_lower_bound_of_refined_cover']
+} | {
+    f'Grothe.Research.RefinedLowerCheck.{name}' for name in [
+        'certRefinedBoxes0', 'certRefinedBoxes1', 'certRefinedBoxes2',
+        'certRefinedBoxes3', 'certRefinedPartition', 'refined_cover_checked',
+        'refined_reciprocal_lower_bound', 'refined_endpoint_lt_reciprocal',
+        'lower_bound_of_refined_cover_data']
+}
+REFINED_LOWER.add("Grothe.Research.LawNodeCheck.certLawNodes")
+REQUIRED |= REFINED_LOWER
+
+LAW_NODES = {
+    f'Grothe.Research.LawNodeLower.{name}' for name in [
+        'certified_rows', 'certified_mixed_batches', 'extended_batches_checked',
+        'profile_bound_of_law_nodes', 'witnessCap_of_law_nodes_reduction',
+        'witnessCap_of_law_nodes', 'transferInputs_of_law_nodes',
+        'lower_bound_of_law_nodes', 'strict_lower_bound_of_law_nodes']
+}
+REQUIRED |= LAW_NODES
+
+# Selected-band comparison and its concrete Gaussian wrapper.
 UPPER_COMPARISON = {
-    'Grothe.fresh_upper', 'Grothe.upper_value_lt',
-    'Grothe.Upper.comparison_check', 'Grothe.Upper.actual_band_mass',
-    'Grothe.Upper.BandComparison.compare', 'Grothe.Upper.BandComparison.weighted_compare',
-    'Grothe.Upper.headWeight_sound', 'Grothe.Upper.comparisonWeight_sound',
+    'Grothe.Upper.BandComparison.compare',
+    'Grothe.Upper.BandComparison.weighted_compare',
+    'Grothe.Upper.actual_band_mass',
+    'Grothe.Upper.comparisonWeight_sound',
+    'Grothe.Upper.comparison_check',
+    'Grothe.Upper.headWeight_sound',
     'Grothe.Upper.head_residual_le_weighted',
-    'Grothe.UpperChaos.norm_energyBlock_sq', 'Grothe.UpperChaos.localized_comparison',
+    'Grothe.UpperChaos.fresh_upper_concrete',
     'Grothe.UpperChaos.fresh_upper_of_rounding',
-    'Grothe.UpperChaos.fresh_upper_concrete', 'Grothe.UpperChaos.fresh_upper_rounder',
+    'Grothe.UpperChaos.fresh_upper_rounder',
+    'Grothe.UpperChaos.localized_comparison',
+    'Grothe.UpperChaos.norm_energyBlock_sq',
+    'Grothe.fresh_upper',
+    'Grothe.upper_value_lt',
 }
 REQUIRED |= UPPER_COMPARISON
 PHASE_RESPONSE = {
@@ -246,38 +307,43 @@ PHASE_RESPONSE = {
     'Grothe.HaagerupPhaseGeometry.degree_moment_not_summable',
 }
 REQUIRED |= PHASE_RESPONSE
-if '--phase-response' in sys.argv:
-    if any(flag in sys.argv for flag in ('--caps', '--responses', '--response-geometry',
-                                        '--haagerup-power', '--upper-comparison')):
-        sys.exit('choose --phase-response alone')
+NATIVE |= {'Grothe.Upper.comparison_check._native.native_decide.ax_1_1'}
+REQUIRED |= {'Grothe.Upper.actual_band_mass', 'Grothe.UpperChaos.norm_energyBlock_sq', 'Grothe.Upper.BandComparison.compare', 'Grothe.UpperChaos.localized_comparison', 'Grothe.Upper.comparison_check'}
+
+# Select one targeted audit, or require every family for the full report.
+audit_modes = [flag for flag in (
+    "--caps", "--responses", "--response-geometry", "--haagerup-power",
+    "--research", "--hardy-budget", "--refined-cover", "--law-nodes", "--upper-comparison", "--phase-response") if flag in sys.argv]
+if len(audit_modes) > 1:
+    sys.exit("choose one axiom audit mode")
+if "--phase-response" in sys.argv:
     REQUIRED = PHASE_RESPONSE
     NATIVE = set()
-# `--caps`: the report of scratch/AxiomsCaps.lean (separate target GrotheCaps, see README)
-if "--caps" in sys.argv:
+elif "--caps" in sys.argv:
     REQUIRED = {"Grothe.LowerAnalytic.lower_bound_of_capsRest"}
-# Check the combined response proof families without rebuilding the endpoint
-# certificates. These generic theorems must use no numerical native facts.
-if "--responses" in sys.argv:
-    if "--caps" in sys.argv:
-        sys.exit("choose either --caps or --responses")
+elif "--responses" in sys.argv:
     REQUIRED = RESPONSE_GEOMETRY | JOINT_RESPONSE
     NATIVE = set()
 elif "--response-geometry" in sys.argv:
     REQUIRED = RESPONSE_GEOMETRY
     NATIVE = set()
-# The hypothesis-free power route must use its own numerical fact only.
-if "--haagerup-power" in sys.argv:
-    if any(flag in sys.argv for flag in ("--caps", "--responses", "--response-geometry")):
-        sys.exit("choose one axiom audit mode")
+elif "--haagerup-power" in sys.argv:
     REQUIRED = POWER_HAAGERUP
     NATIVE = {"Grothe.HaagerupPower.check._native.native_decide.ax_1_1"}
-if "--upper-comparison" in sys.argv:
-    if any(flag in sys.argv for flag in ("--caps", "--responses", "--response-geometry", "--haagerup-power")):
-        sys.exit("choose one axiom audit mode")
+elif "--upper-comparison" in sys.argv:
     REQUIRED = UPPER_COMPARISON
     NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",
               "Grothe.Upper.comparison_check._native.native_decide.ax_1_1",
               "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1"}
+elif "--research" in sys.argv:
+    REQUIRED = RESEARCH_CORE
+    NATIVE = set()
+elif "--hardy-budget" in sys.argv:
+    REQUIRED = HARDY_BUDGET
+elif "--refined-cover" in sys.argv:
+    REQUIRED = REFINED_LOWER
+elif "--law-nodes" in sys.argv:
+    REQUIRED = LAW_NODES
 text = sys.stdin.read()
 if re.search(r"(^|\n)[^\n]*: error", text):
     sys.exit("the axiom report contains Lean errors")

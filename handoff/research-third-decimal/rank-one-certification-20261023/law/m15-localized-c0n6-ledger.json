@@ -1,0 +1,46 @@
+{
+  "P0_decrement": null,
+  "bernstein_leaves": 998,
+  "input_sha256": "e9d09f9c7a4bddaac02203f283c0356beb2e7b48921347c1354ab96bc21d5e81",
+  "intervals": 990,
+  "max_degree": 10,
+  "moment_bound_saving_polynomial_in_x": [
+    "499877/1000000000000",
+    "0",
+    "239/250000000000",
+    "-9817974651/6250000000000000"
+  ],
+  "new_P": [
+    "1386819444473/1000000000000",
+    "0",
+    "36149965717/1000000000000",
+    "-153976989/500000000000",
+    "1168521/62500000000"
+  ],
+  "node_ref": [
+    15,
+    0,
+    6
+  ],
+  "old_source_exact_negative_witness": {
+    "gap": "-969680105905307616257072790441603076393/2564427299460962660352000000000000000000000000",
+    "gap_display": -3.781273526877258e-07,
+    "physical_r": "686095255732224/7611644474086025",
+    "v": "65/152"
+  },
+  "row": "0.855",
+  "scope": "Exact local law-node improvement with unchanged old Stein cuts and inherited external PAD retained once. Anchor/source Gaussian bounds and the rank-one reduction remain analytic premises. No tau interpolation or full-cover endpoint is asserted.",
+  "source_pad_ledger": {
+    "external_PAD": "1/100000000000",
+    "inequality": "actual selected F <= min(raw inherited table, bank cap) + PAD; the inherited row evaluator retains this single external PAD.",
+    "multiplicity": 1
+  },
+  "status": "PASS_REAL_REUSED_STEIN_NODE_CONDITIONAL_ON_SOURCE_CAPS",
+  "tau": "8022036836253696/38058222370430125",
+  "tau_display": 0.21078327721597767,
+  "uniform_moment_bound_saving": "52124885177972059/104857600000000000000000",
+  "x_interval": [
+    "0",
+    "31/256"
+  ]
+}
