@@ -110,6 +110,81 @@ class RepairTests(unittest.TestCase):
         self.assertEqual(result["cap_up"], "2")
         self.assertTrue(all(child["cap_up"] == "2" for child in result["partition"]["children"]))
 
+    def test_failed_intermediate_search_still_tries_certifiable_grandchildren(self):
+        # N = (7/8)(1-y^2), so zero is valid throughout [-1,1]. The exact
+        # positive root fallback uses lambda=1 and +1/8. Reusing those same
+        # multipliers on either half fails LDL after rebounding. Simulate an
+        # optimizer that also fails on the halves but succeeds on each quarter.
+        a = F(7, 8)
+        N = matrix()
+        N[0][0], N[1][1] = a, -a
+        d = exported([cons(-1, 1, [F(1)] + [F(0)] * 11)], N)
+        baseline = {"status": "cap_up", "cap_up": "1/8", "lm": [["1", "0"]]}
+        calls = []
+        def solver(cell, margin):
+            lo, hi = cell["cons"][0]["lo"], cell["cons"][0]["hi"]
+            calls.append((lo, hi))
+            if (lo, hi) == (F(-1), F(1)):
+                return baseline
+            if hi - lo == 1:
+                return {"status": "fail", "error": "intermediate search failed"}
+            lam = 4*a if lo == -1 or hi == 1 else 2*a
+            return {"status": "fixed", "cap_up": "0", "lm": [[str(lam), "0"]]}
+        attempts = {}
+        result = repair.repair_piece(d, baseline, max_depth=2, max_constraints=1,
+                                     attempts=attempts, solve=solver)
+        self.assertEqual(len(attempts), 7)
+        self.assertIn((F(-1), F(0)), calls)
+        self.assertIn((F(0), F(1)), calls)
+        self.assertEqual(result["cap_up"], "0")
+        self.assertEqual(result["chosen"], "partition")
+        for half in result["partition"]["children"]:
+            self.assertIsNone(half["attempt"]["solution"])
+            self.assertEqual(half["chosen"], "partition")
+            self.assertEqual(half["cap_up"], "0")
+            self.assertTrue(all(q["attempt"]["solution"]["exact_ldl_ok"]
+                                for q in half["partition"]["children"]))
+        def forbidden(cell, margin):
+            raise AssertionError("all completed attempts must resume")
+        self.assertEqual(repair.repair_piece(d, baseline, max_depth=2, max_constraints=1,
+                                            attempts=attempts, solve=forbidden), result)
+
+    def test_one_failed_grandchild_retains_exact_positive_parent_fallback(self):
+        a = F(7, 8)
+        N = matrix()
+        N[0][0], N[1][1] = a, -a
+        d = exported([cons(-1, 1, [F(1)] + [F(0)] * 11)], N)
+        baseline = {"status": "cap_up", "cap_up": "1/8", "lm": [["1", "0"]]}
+        def solver(cell, margin):
+            lo, hi = cell["cons"][0]["lo"], cell["cons"][0]["hi"]
+            if (lo, hi) == (F(-1), F(1)):
+                return baseline
+            if hi - lo == 1 or lo == -1:
+                return {"status": "fail"}
+            lam = 4*a if hi == 1 else 2*a
+            return {"status": "fixed", "cap_up": "0", "lm": [[str(lam), "0"]]}
+        result = repair.repair_piece(d, baseline, max_depth=2, max_constraints=1, solve=solver)
+        self.assertEqual(result["cap_up"], "1/8")
+        self.assertEqual(result["chosen"], "unsplit")
+        self.assertTrue(result["attempt"]["solution"]["exact_ldl_ok"])
+
+    def test_research_grid_requires_exact_positive_explicit_specification(self):
+        d = exported([])
+        d.update(grid=3, grid_spec=[3200, 2048, "1/400"])
+        repair.validate_export(d)
+        self.assertEqual(repair.research_grid_spec(d), [3200, 2048, "1/400"])
+        for spec in [None, [], [3200, 2048], [0, 2048, "1/400"],
+                     [3200, -1, "1/400"], [True, 2048, "1/400"],
+                     [3200.0, 2048, "1/400"], [3200, 2048, 0.0025],
+                     [3200, 2048, True], [3200, 2048, "0"], [3200, 2048, "-1/400"]]:
+            with self.subTest(spec=spec), self.assertRaises((ValueError, TypeError)):
+                repair.validate_export(dict(d, grid_spec=spec))
+        del d["grid_spec"]
+        with self.assertRaisesRegex(ValueError, "grid_spec"):
+            repair.validate_export(d)
+        for grid in (0, 1, 2):
+            repair.validate_export(dict(d, grid=grid))
+
     def test_rejects_negative_multipliers_zero_pivot_coupling_and_wrong_lm_count(self):
         d = exported([cons(-1, 1, [F(1)] + [F(0)] * 11)])
         for lm in [[], [["-1", "0"]], [["0", "-1"]]]:
@@ -179,6 +254,33 @@ class RepairTests(unittest.TestCase):
             with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
                 with self.assertRaises(SystemExit) as raised:
                     repair.main(args[:-1] + ["1"])
+            self.assertEqual(raised.exception.code, 2)
+
+    def test_research_grid_checkpoint_records_spec_and_rejects_changed_input(self):
+        N = matrix()
+        N[0][0] = F(-1)
+        d = exported([], N)
+        d.update(grid=3, grid_spec=[3200, 2048, "1/400"])
+        baseline = {"k": 12, "i": 140, "j": 0, "grid": 3,
+                    "status": "cap_up", "cap_up": "2", "lm": []}
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source, solved, out = root / "export.jsonl", root / "solved.json", root / "depth1v2"
+            source.write_text(json.dumps(d, default=str) + "\n")
+            solved.write_text(json.dumps([baseline]))
+            args = [str(source), str(solved), "--output-dir", str(out),
+                    "--agent-id", "codex-fixture", "--max-depth", "0"]
+            with contextlib.redirect_stdout(io.StringIO()), patch.object(repair.caps_lmi, "solve_piece",
+                                                                        return_value=baseline):
+                repair.main(args)
+            state = json.loads((out / "repair_centre_12x140_j0_g3.json").read_text())
+            self.assertEqual(state["grid_spec"], [3200, 2048, "1/400"])
+            self.assertEqual(state["fingerprint"]["export_sha256"], repair.digest(source))
+            d["grid_spec"][1] = 4096
+            source.write_text(json.dumps(d, default=str) + "\n")
+            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                with self.assertRaises(SystemExit) as raised:
+                    repair.main(args)
             self.assertEqual(raised.exception.code, 2)
 
 

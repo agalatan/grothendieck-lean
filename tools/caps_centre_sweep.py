@@ -62,7 +62,12 @@ def key_string(row):
 
 def centres(nodes):
     out = []
+    seen_nodes = set()
     for node in nodes:
+        node_id = (int(node["k"]), int(node["i"]))
+        if node_id in seen_nodes:
+            raise SweepError(f"duplicate node identity {node_id[0]}:{node_id[1]}")
+        seen_nodes.add(node_id)
         found = [(j, p) for j, p in enumerate(node["pieces"])
                  if Fraction(str(p["slack"])) < Fraction(1, 10**11)]
         if len(found) != 1:
@@ -224,6 +229,8 @@ def export_record(root, manifest, entry):
 
 def prepare(root, manifest, tag, keys=(), limit=None):
     check_manifest(root, manifest)
+    if limit is not None and limit < 1:
+        raise SweepError("prepare limit must be positive")
     if not re.fullmatch(r"[A-Za-z][A-Za-z0-9_]*", tag):
         raise SweepError("tag must be a Lean identifier fragment starting with a letter")
     if manifest.get("campaign_tag", tag) != tag:
@@ -253,9 +260,11 @@ def prepare(root, manifest, tag, keys=(), limit=None):
                f"def centreNode_{name} : Nat × Nat × List String × List String :=",
                f"  ({entry['k']}, {entry['i']}, {json.dumps(node['ds'])}, [",
                ",\n".join("    " + json.dumps(s) for s in pcs) + "])", "",
-               "#eval do", f"  if ← System.FilePath.pathExists {json.dumps(target)} then",
+               f"def run_{name} : IO Unit := do",
+               f"  if ← System.FilePath.pathExists {json.dumps(target)} then",
                '    throw (IO.userError "Export already exists; validate/preserve it before resuming")',
                f"  exportPiecesOn {json.dumps(target)} centreNode_{name} [{entry['j']}] {entry['grid']}", "",
+               f"#eval run_{name}", "",
                "end Grothe.LowerAnalytic", ""]
         (root / module).parent.mkdir(parents=True, exist_ok=True)
         content = "\n".join(src)
@@ -288,15 +297,51 @@ def validate(root, manifest):
     return {"complete_exports": valid, "missing_exports": missing}
 
 
+def validate_solution(export, result, checker):
+    """Replay every successful search certificate, including resumed output.
+
+    Provenance identifies inputs; it does not validate the solved file's contents.
+    Keep failed searches explicitly failed, and require exact feasible multipliers
+    for every result that could contribute to a maximum or close a centre.
+    """
+    if not isinstance(result, dict):
+        raise SweepError("solved result must be a JSON object")
+    try:
+        matching_identity = key(result) == key(export) and result.get("grid") == export["grid"]
+    except (KeyError, TypeError, ValueError) as exc:
+        raise SweepError("solved result has an invalid identity") from exc
+    if not matching_identity:
+        raise SweepError("solved result identity/grid does not match its export")
+    status = result.get("status")
+    if status not in SUCCESS | {"fail"}:
+        raise SweepError(f"unknown solved status {status!r}")
+    if status == "fail":
+        return
+    try:
+        increase = Fraction(result["cap_up"])
+    except (KeyError, TypeError, ValueError, ZeroDivisionError) as exc:
+        raise SweepError("successful solved result lacks an exact rational increase") from exc
+    # The optimizer's cap-minimisation fallback can itself find a zero
+    # increase; accept that exact certificate even if labelled cap_up.
+    if increase < 0 or (status in {"pass", "fixed"} and increase != 0):
+        raise SweepError("solved status/increase is inconsistent or negative")
+    if result.get("encl") is False or result.get("polyOK") is False:
+        raise SweepError("successful solved result has failed guards")
+    if checker(export, result) is None:
+        raise SweepError("solved multipliers fail exact admissibility/LDL replay")
+
+
 def solve(root, manifest):
     check_manifest(root, manifest)
     sys.path.insert(0, str(root / "tools"))
-    import caps_lmi
     import caps_plan
+    from caps_centre_repair import checked_solution, load_exports, validate_export
     summary = Counter()
     for entry in manifest["entries"]:
         if "export" not in entry or export_record(root, manifest, entry) is None:
             continue
+        exported = list(load_exports(root / entry["export"]))[0]
+        validate_export(exported)
         path = root / entry["solved"]
         source_sha = sha(root / entry["export"])
         prov = {"fingerprint": manifest["provenance"]["fingerprint"], "export_sha256": source_sha,
@@ -307,9 +352,11 @@ def solve(root, manifest):
             if (len(rows) != 1 or key(rows[0]) != key(entry) or rows[0].get("grid") != entry["grid"] or
                     rows[0].get("provenance") != prov):
                 raise SweepError(f"existing solved output has stale provenance: {path}")
+            validate_solution(exported, rows[0], checked_solution)
             summary[rows[0]["status"]] += 1
             continue
-        result = caps_plan.verdict(caps_lmi.load(root / entry["export"])[0])
+        result = caps_plan.verdict(exported)
+        validate_solution(exported, result, checked_solution)
         result["provenance"] = prov
         write_json(path, [result])
         summary[result["status"]] += 1
@@ -343,7 +390,14 @@ def main(argv=None):
             if args.command == "prepare":
                 prepare(ROOT, value, args.tag, args.key, args.limit)
                 write_json(args.manifest, value)
-                print("\n".join(e["module"] for e in value["entries"] if "module" in e))
+                # A complete flushed export survives a crash even if its .olean
+                # does not. Never re-run its guarded #eval just to reconstruct
+                # that .olean; only missing exports are work for the next build.
+                missing = set(validate(ROOT, value)["missing_exports"])
+                targets = [e["module"] for e in value["entries"]
+                           if "module" in e and key_string(e) in missing]
+                if targets:
+                    print("\n".join(targets))
             elif args.command == "validate":
                 print(json.dumps(validate(ROOT, value), sort_keys=True))
             else:

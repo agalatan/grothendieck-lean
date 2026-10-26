@@ -6,6 +6,8 @@ finite constraint intervals at their rational midpoints. The recipe, grid,
 enclosure and N matrix stay unchanged. This is search output, not a Lean
 verification or a claim that any returned increase is minimal. A finer grid
 needs a fresh Lean export; this tool never approximates one from old matrices.
+Explicit research grids use index 3 and must record grid_spec = [nP, nQ, step]
+with positive integer dimensions and an exact positive rational step.
 
 Example (one export and its solved results):
   python3 tools/caps_centre_repair.py EXPORT.jsonl SOLVED.json \
@@ -32,7 +34,7 @@ import tempfile
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import caps_lmi
 
-SCHEMA = 1
+SCHEMA = 2
 DIM = 13
 CAUTION = "Research search output; not Lean verification; no minimality claim."
 
@@ -70,11 +72,30 @@ def validate_matrix(m):
         raise ValueError("matrix must be exactly symmetric")
 
 
+def research_grid_spec(d):
+    """Validate/canonicalise an explicitly exported research grid, never infer it."""
+    if d.get("grid") != 3:
+        return None
+    spec = d.get("grid_spec")
+    if not isinstance(spec, list) or len(spec) != 3:
+        raise ValueError("research grid 3 needs grid_spec [nP, nQ, step]")
+    nP, nQ, step = spec
+    if any(type(n) is not int or n <= 0 for n in (nP, nQ)):
+        raise ValueError("research grid dimensions must be positive natural numbers")
+    if isinstance(step, bool) or not isinstance(step, (str, int, F)):
+        raise ValueError("research grid step must be an exact positive rational")
+    step = F(step)
+    if step <= 0:
+        raise ValueError("research grid step must be an exact positive rational")
+    return [nP, nQ, str(step)]
+
+
 def validate_export(d):
     if d.get("encl") is not True or d.get("polyOK") is not True:
         raise ValueError("export enclosure and polynomial checks must both hold")
-    if d.get("grid") not in (0, 1, 2):
+    if type(d.get("grid")) is not int or d["grid"] not in (0, 1, 2, 3):
         raise ValueError("unknown exported grid")
+    research_grid_spec(d)
     F(d["capPad"])
     validate_matrix(d["N"])
     for c in d["cons"]:
@@ -237,17 +258,22 @@ def repair_piece(d, baseline, *, max_depth=1, max_constraints=2, margin=1e-9,
         result = {"path": path, "bounds": bounds(cell), "attempt": attempts[path],
                   "status": "fail" if best is None else best["status"],
                   "cap_up": None if best is None else best["cap_up"], "chosen": "unsplit"}
-        if best is None or F(best["cap_up"]) == 0 or depth == max_depth:
+        if (best is not None and F(best["cap_up"]) == 0) or depth == max_depth:
             return result
         children, metadata = partition(cell, max_constraints)
         if not children:
             return result
-        results = [visit(child, f"{path}/{i}", depth + 1, best)
+        # An inherited multiplier vector need not remain feasible after interval
+        # rebounding. Failure of an intermediate unsplit search must not prune
+        # smaller cells that may have their own exact certificates. An ancestor
+        # fallback is only a source of candidate multipliers: every candidate is
+        # checked again on the actual child's matrices before it can be used.
+        results = [visit(child, f"{path}/{i}", depth + 1, best if best is not None else fallback)
                    for i, child in enumerate(children)]
         result["partition"] = {**metadata, "children": results}
         if all(r["cap_up"] is not None for r in results):
             up = max(F(r["cap_up"]) for r in results)
-            if up < F(best["cap_up"]):
+            if best is None or up < F(best["cap_up"]):
                 result.update(status="fixed" if up == 0 else "cap_up", cap_up=str(up), chosen="partition")
         return result
 
@@ -326,6 +352,11 @@ def main(argv=None):
                 state = {"fingerprint": fingerprint, "agent_id": args.agent_id, "piece": list(key),
                          "capPad_unchanged": d["capPad"], "baseline_cap_up": baseline["cap_up"],
                          "caution": CAUTION, "attempts": {}}
+                if key[3] == 3:
+                    # The complete input (including raw grid_spec and matrices)
+                    # is bound by fingerprint.export_sha256; retain a readable
+                    # exact grid description alongside that full-file digest.
+                    state["grid_spec"] = research_grid_spec(d)
 
             def save(attempts):
                 state.update(state="in_progress", attempts=attempts,

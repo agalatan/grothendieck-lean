@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """Resume correctness tests; these do not run Lean or an SDP solver."""
+import contextlib
 import copy
 import importlib.util
+import io
 import json
 from pathlib import Path
 import shutil
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("centre_sweep", ROOT / "tools/caps_centre_sweep.py")
@@ -28,6 +31,8 @@ class SweepTests(unittest.TestCase):
         for path in ["GrotheCapsKernel.lean", "lean-toolchain", "lakefile.toml", "lake-manifest.json",
                      "tools/caps_plan.py", "tools/caps_lmi.py"]:
             (self.root / path).write_text("fixture\n")
+        for name in ("caps_plan.py", "caps_lmi.py", "caps_centre_repair.py"):
+            shutil.copyfile(ROOT / "tools" / name, self.root / "tools" / name)
         self.nodes = [{"k": 12, "i": 140, "s": "1/5", "cap": "7/5", "ds": ["1,0"],
                        "pieces": [{"nq": 256, "slack": 1e-5, "recipe": "1|1", "cons": []},
                                   {"nq": 1024, "slack": 1e-12, "recipe": "2|1",
@@ -105,12 +110,23 @@ class SweepTests(unittest.TestCase):
         with self.assertRaisesRegex(sweep.SweepError, "incomplete"):
             sweep.check_manifest(self.root, manifest)
 
+    def test_duplicate_node_with_different_centre_index_is_rejected(self):
+        duplicate = copy.deepcopy(self.nodes[0])
+        duplicate["pieces"][0]["slack"] = 1e-12
+        duplicate["pieces"][1]["slack"] = 1e-5
+        with self.assertRaisesRegex(sweep.SweepError, "duplicate node"):
+            sweep.centres([self.nodes[0], duplicate])
+
     def test_prepare_is_idempotent_and_uses_selected_piece(self):
         manifest, entry = self.prepared()
         path = self.root / entry["module_file"]
         before = path.read_bytes()
         self.assertIn(" [1] 2", path.read_text())
         self.assertIn("Export already exists", path.read_text())
+        name = entry["module"].split(".")[-1]
+        self.assertIn(f"def run_{name} : IO Unit := do", path.read_text())
+        self.assertIn(f"#eval run_{name}", path.read_text())
+        self.assertNotIn("#eval do", path.read_text())
         sweep.prepare(self.root, manifest, "codex15b7", limit=1)
         self.assertEqual(path.read_bytes(), before)
 
@@ -121,6 +137,23 @@ class SweepTests(unittest.TestCase):
         sweep.prepare(self.root, manifest, "codex15b7", limit=1)
         self.assertEqual(path.read_bytes(), before)
         self.assertEqual(sweep.validate(self.root, manifest)["complete_exports"], ["12:140:1"])
+
+    def test_prepare_cli_emits_only_missing_export_targets(self):
+        manifest = sweep.inventory(self.root)
+        sweep.prepare(self.root, manifest, "codex15b7")
+        self.fake_export(manifest, manifest["entries"][0])
+        manifest_path = self.root / "manifest.json"
+        sweep.write_json(manifest_path, manifest)
+        output = io.StringIO()
+        with patch.object(sweep, "ROOT", self.root), contextlib.redirect_stdout(output):
+            sweep.main(["prepare", str(manifest_path), "--tag", "codex15b7"])
+        self.assertEqual(output.getvalue().splitlines(), [manifest["entries"][1]["module"]])
+
+    def test_nonpositive_prepare_limit_is_rejected(self):
+        manifest = sweep.inventory(self.root)
+        for limit in (0, -1):
+            with self.assertRaisesRegex(sweep.SweepError, "limit must be positive"):
+                sweep.prepare(self.root, manifest, "codex15b7", limit=limit)
 
     def test_partial_export_is_preserved_but_rejected(self):
         manifest, entry = self.prepared()
@@ -153,6 +186,76 @@ class SweepTests(unittest.TestCase):
         path.write_text(path.read_text().replace("2|1", "999|1"))
         with self.assertRaisesRegex(sweep.SweepError, "scratch module changed"):
             sweep.validate(self.root, manifest)
+
+    def run_search(self, manifest, result):
+        # Only the optimizer is replaced. The normal import, exact rational
+        # matrix loading, admissibility and LDL replay all run unchanged.
+        import sys
+        sys.path.insert(0, str(ROOT / "tools"))
+        import caps_plan
+        with patch.object(caps_plan, "verdict", return_value=result) as verdict, \
+                contextlib.redirect_stdout(io.StringIO()):
+            summary = sweep.solve(self.root, manifest)
+        return summary, verdict.call_count
+
+    def good_result(self, entry, status="fixed", cap_up="0"):
+        return {"k": entry["k"], "i": entry["i"], "j": entry["j"], "grid": entry["grid"],
+                "status": status, "cap_up": cap_up, "lm": [["1/5", "0"]],
+                "encl": True, "polyOK": True}
+
+    def test_fresh_and_resumed_exact_result_pass_without_repeating_search(self):
+        manifest, entry = self.prepared()
+        self.fake_export(manifest, entry)
+        result = self.good_result(entry)
+        self.assertEqual(self.run_search(manifest, result), ({"fixed": 1}, 1))
+        self.assertEqual(self.run_search(manifest, None), ({"fixed": 1}, 0))
+
+    def test_valid_positive_increase_is_exactly_replayed(self):
+        manifest, entry = self.prepared()
+        self.fake_export(manifest, entry)
+        result = self.good_result(entry, status="cap_up", cap_up="1/7")
+        self.assertEqual(self.run_search(manifest, result), ({"cap_up": 1}, 1))
+        self.assertEqual(self.run_search(manifest, None), ({"cap_up": 1}, 0))
+
+    def test_cap_minimisation_fallback_may_find_exact_zero(self):
+        manifest, entry = self.prepared()
+        self.fake_export(manifest, entry)
+        result = self.good_result(entry, status="cap_up", cap_up="0")
+        self.assertEqual(self.run_search(manifest, result), ({"cap_up": 1}, 1))
+
+    def test_invalid_fresh_results_are_not_saved_or_counted(self):
+        manifest, entry = self.prepared()
+        self.fake_export(manifest, entry)
+        original = self.good_result(entry)
+        cases = [{"cap_up": "-1"}, {"cap_up": "1/7"}, {"status": "cap_up", "cap_up": "-1"},
+                 {"status": "unknown"}, {"lm": []}, {"lm": [["-1", "0"]]},
+                 {"lm": [["0", "-1"]]}, {"lm": [["2", "0"]]},
+                 {"encl": False}, {"j": 0}]
+        for changes in cases:
+            with self.subTest(changes=changes), self.assertRaises(sweep.SweepError):
+                self.run_search(manifest, {**original, **changes})
+            self.assertFalse((self.root / entry["solved"]).exists())
+
+    def test_tampered_resumed_result_is_rejected_even_with_current_provenance(self):
+        manifest, entry = self.prepared()
+        self.fake_export(manifest, entry)
+        self.run_search(manifest, self.good_result(entry))
+        path = self.root / entry["solved"]
+        original = json.loads(path.read_text())
+        for changes in [{"cap_up": "-1", "lm": []}, {"lm": [["2", "0"]]},
+                        {"lm": [["-1", "0"]]}, {"status": "unknown"}]:
+            bad = copy.deepcopy(original)
+            bad[0].update(changes)
+            sweep.write_json(path, bad)
+            with self.subTest(changes=changes), self.assertRaises(sweep.SweepError):
+                self.run_search(manifest, None)
+
+    def test_failed_search_remains_explicitly_failed(self):
+        manifest, entry = self.prepared()
+        self.fake_export(manifest, entry)
+        result = {**self.good_result(entry), "status": "fail", "cap_up": None,
+                  "lm": None, "error": "no exact proposal"}
+        self.assertEqual(self.run_search(manifest, result), ({"fail": 1}, 1))
 
 
 if __name__ == "__main__":

@@ -28,17 +28,15 @@ def qmatJson (m : ℕ → ℕ → ℚ) : String :=
   "[" ++ ",".intercalate ((List.range 13).map fun i =>
     "[" ++ ",".intercalate ((List.range 13).map fun j => qStr (m i j)) ++ "]") ++ "]"
 
-/-- The JSON line of piece `j` of a piece node, on grid `gOv` if given, else on its stored grid (the override is for
-planning the campaign: which grid suffices; the certificate always uses the grid stored with the piece). -/
-def pieceExportJsonOn (Ts : List Tables) (x : ℕ × ℕ × List String × List String) (j : ℕ) (gOv : Option ℕ) :
-    String :=
+/-- The checker's exact matrices on an explicit grid, for research only. `gridLabel` is metadata;
+`G` and `T` determine the actual computation. Explicit research grids include `grid_spec` in the JSON.
+The legacy wrapper suppresses that field to preserve its existing JSON format byte for byte. -/
+def pieceExportJsonOnGrid (T : Tables) (x : ℕ × ℕ × List String × List String) (j gridLabel : ℕ)
+    (G : ℕ × ℕ × ℚ) (includeGridSpec : Bool) : String :=
   let k := x.1
   let i := x.2.1
   let ds := parseDirs x.2.2.1
   let p := parsePiece ds (x.2.2.2.getD j "")
-  let g := gOv.getD p.1
-  let G := pieceGrids.getD g (0, 0, 0)
-  let T := Ts.getD g ⟨#[], #[], #[]⟩
   let r := rowData.getD k row01
   let nd := r.nodeList.getD i (0, 0)
   let Mq := mMat r.E (rowR k)
@@ -54,11 +52,24 @@ def pieceExportJsonOn (Ts : List Tables) (x : ℕ × ℕ × List String × List 
     "{\"lo\":" ++ qStr c.lo ++ ",\"hi\":" ++ (match c.hi with | some h => qStr h | none => "null") ++
       ",\"lam\":" ++ qStr c.lam ++ ",\"mu\":" ++ qStr c.mu ++
       ",\"A\":" ++ qmatJson (c1.sMat Mq) ++ ",\"B\":" ++ qmatJson (c2.sMat Mq) ++ "}"
-  "{\"k\":" ++ toString k ++ ",\"i\":" ++ toString i ++ ",\"j\":" ++ toString j ++ ",\"grid\":" ++ toString g ++
+  "{\"k\":" ++ toString k ++ ",\"i\":" ++ toString i ++ ",\"j\":" ++ toString j ++ ",\"grid\":" ++ toString gridLabel ++
+    (if includeGridSpec then ",\"grid_spec\":[" ++ toString G.1 ++ "," ++ toString G.2.1 ++ "," ++ qStr G.2.2 ++ "]"
+      else "") ++
     ",\"s\":" ++ qStr nd.1 ++ ",\"cap\":" ++ qStr nd.2 ++ ",\"capPad\":" ++ qStr capPad ++
     ",\"polyOK\":" ++ toString (polyBoundsOK r.ell r.beta) ++ ",\"encl\":" ++ toString (enclOK lo up 13) ++
     ",\"ok\":" ++ toString (pieceOKc lo up Mq (avOf r) nd.1 cap p.2.2) ++
     ",\"N\":" ++ qmatJson N.at ++ ",\"cons\":[" ++ ",".intercalate consJson ++ "]}"
+
+/-- The JSON line of piece `j` on grid `gOv` if given, else its stored grid. The legacy grid labels
+and JSON bytes are unchanged; this wrapper is used by the stored-grid centre sweep. -/
+def pieceExportJsonOn (Ts : List Tables) (x : ℕ × ℕ × List String × List String) (j : ℕ) (gOv : Option ℕ) :
+    String :=
+  let ds := parseDirs x.2.2.1
+  let p := parsePiece ds (x.2.2.2.getD j "")
+  let g := gOv.getD p.1
+  let G := pieceGrids.getD g (0, 0, 0)
+  let T := Ts.getD g ⟨#[], #[], #[]⟩
+  pieceExportJsonOnGrid T x j g G false
 
 /-- The JSON line of piece `j` of a piece node, on its stored grid. -/
 def pieceExportJson (Ts : List Tables) (x : ℕ × ℕ × List String × List String) (j : ℕ) : String :=
@@ -72,6 +83,17 @@ def exportPiecesOn (path : String) (x : ℕ × ℕ × List String × List String
   let Ts := (List.range pieceGrids.length).map fun g' => if g' == g then T else mkTables 1 1 1
   for j in js do
     h.putStrLn (pieceExportJsonOn Ts x j (some g))
+    h.flush
+
+/-- Export an explicit research grid without adding a certificate grid. Label `3` is reserved here
+for custom-grid exports and is always accompanied by the exact `grid_spec = [Nr, N, h]`.
+The caller must preserve prior output before resuming; the research generator guards against overwrites. -/
+def exportPiecesOnGrid (path : String) (x : ℕ × ℕ × List String × List String) (js : List ℕ)
+    (G : ℕ × ℕ × ℚ) : IO Unit := do
+  let h ← IO.FS.Handle.mk path .append
+  let T := mkTables G.1 G.2.1 G.2.2
+  for j in js do
+    h.putStrLn (pieceExportJsonOnGrid T x j 3 G true)
     h.flush
 
 /-- Write the JSON lines of the pieces `js` of a node to `path` (one line per piece, flushed as it goes; the
