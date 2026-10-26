@@ -189,7 +189,7 @@ The formal contribution in this delivery is the sixteenth-power norm
 certificate, the complete Wiener tail deduction, and exact ledger
 arithmetic/implication in
 [ScalarTailRefinement.lean](../../Grothe/Haagerup/ScalarTailRefinement.lean).
-The finite power check now uses proof-producing `cbv` on the same outward
+The finite power check now uses `decide +kernel` on the same outward
 interval computation. All sixteen scalar-tail results use only standard axioms;
 no numerical data, theorem statement or analytic hypothesis changed.
 The fixed Wallis estimate is derived from the existing formal Haagerup

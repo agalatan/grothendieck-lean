@@ -219,7 +219,7 @@ the general signed suffix inequality and the rational score transfer with the
 published numerical budgets explicit. The phase-tail estimate at index 67 is
 proved by an exact split at 120 and the existing infinite-tail majorant;
 it is no longer an assumption of `refined_score_of_published_budgets`.
-The polynomial power is checked by proof-producing `cbv` using the same outward
+The polynomial power is checked by `decide +kernel` using the same outward
 interval arithmetic. All sixteen scalar-tail results now use only standard
 axioms, with no native evaluation axiom.
 The four pinned public verification stages were replayed

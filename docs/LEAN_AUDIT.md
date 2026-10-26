@@ -495,7 +495,7 @@ is tracked separately in [#88](https://github.com/agalatan/grothendieck-lean/iss
 
 The user's later instruction explicitly authorized removing one native check.
 `Grothe.ScalarTailRefinement.power_check` now proves the same Boolean equality
-with proof-producing `cbv`. Its finite polynomial, outward arithmetic, bound,
+with `decide +kernel`. Its finite polynomial, outward arithmetic, bound,
 all theorem statements and analytic hypotheses are unchanged. The generator
 template is updated with the production module. The corresponding native axiom
 is removed from the allowlist, reducing its size from 90 to 89 relative to
@@ -503,3 +503,11 @@ master `e8736cf`; the theorem remains required and printed. The scalar report
 checker now rejects every native dependency across all sixteen scalar results.
 The cap-source digest remains unchanged. Full delivery CI is left running at
 the user's request; its eventual outcome is separate from local validation.
+
+The warning-as-error production build passed on the droplet in 192.48 seconds
+wall time (whole targeted build, including dependency checks). Its sixteen-result
+report passes the stricter standard-only verifier; the finite power proof itself
+uses only standard axioms. All 39 script tests, generated-source checks and the unchanged
+140-file cap stamp pass. These local checks do not assert that delivery CI has
+finished. Direct kernel reduction was selected after the proof-producing `cbv`
+trial exceeded its step budget; the failed trial is not verification evidence.

@@ -68,7 +68,7 @@ def ratio : ℚ := 581/1000
 
 /-- Kernel-checked outward fixed-point bound for the finite polynomial power. -/
 lemma power_check : powerNormOK pl 16 ratio = true := by
-  set_option cbv.maxSteps 16000000 in cbv
+  decide +kernel
 
 /-- Finite part of the physical phase suffix, before its pi/4 factor. -/
 def wallisChunk : ℚ := ∑ k ∈ range 120, if k < 67 then 0 else haagR k

@@ -33,7 +33,7 @@ The archive contains:
 - `LEAN_BUILD.json` and `production-*.log`: the successful targeted
   production build, source/dependency hashes, and all 16 scalar-tail
   axiom reports. All sixteen results use only standard axioms; the polynomial
-  power is checked by proof-producing `cbv`, without native axioms. The report verifier
+  power is checked by `decide +kernel`, without native axioms. The report verifier
   rejects any scalar-tail native registry entry or native report dependency.
   This is targeted module
   coverage; CI checks the complete root target and full axiom report.

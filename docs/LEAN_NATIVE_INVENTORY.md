@@ -3,7 +3,7 @@
 Static source audit only; no Lean builds or native reruns performed. Named native axiom names are matched against the configured allowlist. Indirect report coverage is source-traced, not a newly executed axiom report. Historical times are module build times and do not measure individual native evaluations.
 
 **2026-10-26 native removal (#100).** `Grothe.ScalarTailRefinement.power_check`
-now uses proof-producing `cbv` for the same scalar sixteenth-power norm check. Its
+now uses `decide +kernel` for the same scalar sixteenth-power norm check. Its
 native axiom is removed from `data/axioms/native.txt` (90 entries become 89);
 the theorem remains required and directly printed in `scratch/Axioms.lean`.
 All 16 scalar-tail reports use only standard axioms. Source and report hashes are recorded under

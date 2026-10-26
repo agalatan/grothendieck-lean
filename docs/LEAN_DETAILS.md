@@ -5,7 +5,7 @@ This file lists, module by module, what the Lean development proves and which in
 **Published scalar-tail refinement.**
 `Grothe/Haagerup/ScalarTailRefinement.lean` proves an arbitrary finite-power
 Wiener composition bound and its signed supported-suffix consequence. Its
-kernel-checked proof (`cbv`) checks the degree-592 polynomial `P₅^16`, with norm at most
+kernel proof (`decide +kernel`) checks the degree-592 polynomial `P₅^16`, with norm at most
 `581/1000`. The omitted outer indices start at 67, so their norms are bounded
 by `(581/1000)^8` times the old estimate. Exact rational arithmetic includes the
 unchanged published slope, prefix, finite-block tail, other tails and selector
