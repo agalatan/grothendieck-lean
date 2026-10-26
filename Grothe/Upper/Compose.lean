@@ -74,13 +74,11 @@ lemma summable_coeff_mul_pow (T : ℝ[X]) (x : ℝ) : Summable fun n => |T.coeff
 
 lemma tsum_abs_coeff_mul_pow_le (T : ℝ[X]) {x : ℝ} (hx0 : 0 ≤ x) (hx : x ≤ 1) :
     ∑' n, |T.coeff n * x ^ n| ≤ l1 T := by
-  rw [tsum_eq_sum (s := range (T.natDegree + 1)) fun n hn => by
-    rw [coeff_eq_zero_of_natDegree_lt (by simpa using hn), zero_mul, abs_zero],
-    l1_eq_sum_range T (Nat.lt_succ_self _)]
-  exact sum_le_sum fun n _ => by
-    rw [abs_mul]
-    exact mul_le_of_le_one_right (abs_nonneg _) (by
-      rw [abs_of_nonneg (pow_nonneg hx0 n)]; exact pow_le_one₀ hx0 hx)
+  apply Real.tsum_le_of_sum_range_le (fun _ => abs_nonneg _)
+  intro N
+  refine (sum_le_sum fun n _ => ?_).trans (sum_abs_coeff_le_l1 T N)
+  rw [abs_mul, abs_of_nonneg (pow_nonneg hx0 n)]
+  exact mul_le_of_le_one_right (abs_nonneg _) (pow_le_one₀ hx0 hx)
 
 /-- **The real composition identity**: for `0 ≤ x ≤ 1`,
 `Σ'_n compCoeff c P n · xⁿ = Σ'_k c_k x^k P(x)^{2k+1}`. -/
@@ -113,12 +111,9 @@ theorem tsum_compCoeff_mul_pow {c : ℕ → ℝ} (hc : Summable fun k => |c k|) 
 
 /-- `‖P(x)‖ ≤ ‖P‖_𝒜 ≤ 1` on `[0, 1]`. -/
 lemma abs_eval_le_l1 (P : ℝ[X]) {x : ℝ} (hx0 : 0 ≤ x) (hx : x ≤ 1) : |P.eval x| ≤ l1 P := by
-  have := tsum_abs_coeff_mul_pow_le P hx0 hx
-  rw [← tsum_coeff_mul_pow]
-  have h2 := norm_tsum_le_tsum_norm (f := fun n => P.coeff n * x ^ n)
-    (by simpa only [Real.norm_eq_abs] using summable_coeff_mul_pow P x)
-  simp only [Real.norm_eq_abs] at h2
-  exact h2.trans this
+  simpa only [Real.norm_eq_abs, tsum_coeff_mul_pow] using
+    (norm_tsum_le_tsum_norm (f := fun n => P.coeff n * x ^ n)
+      (summable_coeff_mul_pow P x)).trans (tsum_abs_coeff_mul_pow_le P hx0 hx)
 
 /-- `radialKernel h z = z · Σ'_n hₙ |z|^{2n}`. -/
 lemma radialKernel_eq_mul (h : ℕ → ℝ) (z : ℂ) :

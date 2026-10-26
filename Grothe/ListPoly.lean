@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Algebra.Polynomial.Degree.Support
+import Mathlib.Analysis.Normed.Group.InfiniteSum
 
 /-!
 # Coefficient `ℓ¹` norm of polynomials
