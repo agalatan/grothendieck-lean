@@ -274,8 +274,9 @@ jobs:
           path: .lake/build
           key: ${{ needs.route.outputs.key }}${{ github.sha }}
 
-      - name: Save the verified cache for this branch (droplet)
-        if: env.LEAN == 'true' && env.DROPLET == 'true' && github.ref_name != 'master'
+      - name: Save the verified cache for this branch (droplet; and ready/, so a re-check after master moved replays it)
+        # deleted with the branch (cancel-merged.yml), so it never outlives the delivery
+        if: env.LEAN == 'true' && github.ref_name != 'master' && (env.DROPLET == 'true' || startsWith(github.ref_name, 'ready/'))
         uses: actions/cache/save@v4
         with:
           path: .lake/build
