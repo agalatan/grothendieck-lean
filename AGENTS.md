@@ -79,31 +79,28 @@ or stop.
 /Users/alingalatan/workspaces/grothe/scripts/sync_master.sh   # or the copy in your worktree
 git -C /Users/alingalatan/workspaces/grothe worktree add -b codex/<topic> \
     /Users/alingalatan/workspaces/grothe-codex-<topic> origin/master
-mkdir -p /Users/alingalatan/workspaces/grothe-codex-<topic>/.lake
-ln -s /Users/alingalatan/workspaces/grothe/.lake/packages \
-    /Users/alingalatan/workspaces/grothe-codex-<topic>/.lake/packages
-# start from master's compiled build instead of an empty one: an APFS clone (instant, no extra disk until
-# files diverge; `cp -c` is macOS copy-on-write). Then Lake rebuilds only what differs from master.
-cp -c -R /Users/alingalatan/workspaces/grothe/.lake/build \
-    /Users/alingalatan/workspaces/grothe-codex-<topic>/.lake/build
+# start from master's compiled build instead of an empty one (links the shared packages, clones the snapshot)
+/Users/alingalatan/workspaces/grothe/scripts/clone_master_build.sh /Users/alingalatan/workspaces/grothe-codex-<topic>
 ```
 
 Resuming an existing worktree: sync first, then bring your branch up to date (§3, step 3) before continuing.
 
-**The local build cache (laptop).** The main checkout's `.lake/build`
-(`/Users/alingalatan/workspaces/grothe/.lake/build`) is master's compiled build, shared by every agent on the laptop.
-Always start a new worktree from it instead of an empty build: it saves the 1–2 hours a full build takes here.
-- **Check it:** `scripts/sync_master.sh --status`. It prints which master commit the cache is complete for
-  (`.lake/build/built-commit`, written only after a successful build) and whether a build is running.
-- **Keep it current:** `scripts/sync_master.sh --build` (after syncing, before creating a worktree, or when master moved
-  a lot). It starts one background, niced, incremental build of master there and never a second one. Syncing while
-  that build runs restarts it, because changing sources under a running build leaves it inconsistent.
-- **Use it:** clone it into your worktree with `cp -c -R` (APFS copy-on-write: instant, no extra disk until files
-  diverge), as in the commands above. A slightly older or still-running cache is fine to clone: Lake rebuilds only
-  what differs from your branch. Never copy it with plain `cp`/`rsync` (about 2 GB per copy).
-- **Refresh an existing worktree** whose build is far behind: delete its `.lake/build`, then clone again.
-- **Never write into it:** do not run `lake build` in the main checkout yourself, and never copy files back into it.
-  Only `sync_master.sh --build` builds there.
+**The local build cache (laptop).** Master's compiled build is shared by every agent on the laptop. Always start a
+worktree from it instead of an empty build: it saves the 1–2 hours a full build takes here.
+- **Where:** `/Users/alingalatan/workspaces/grothe/.lake/master-cache`, a consistent snapshot of a *successful*
+  master build. Its `built-commit` file names the master commit. The live build next to it (`.lake/build` of the main
+  checkout) may be mid-rebuild at any moment: never clone that one.
+- **Use it:** `scripts/clone_master_build.sh <worktree>` (as above). It links the shared packages, clones the snapshot
+  with `cp -c` (APFS copy-on-write: instant, no extra disk until files diverge) and says which master it holds. An
+  older snapshot is fine: Lake rebuilds only what differs from your branch.
+- **Refresh** a worktree whose build is far behind: `scripts/clone_master_build.sh --replace <worktree>`.
+- **Check it:** `scripts/sync_master.sh --status` (which master the snapshot holds; whether a build is running).
+- **Keep it current:** `scripts/sync_master.sh --build`. It starts the one master build job
+  (`scripts/master_build_job.sh`: background, niced, incremental) unless the snapshot is already current or a build is
+  running. That job publishes a new snapshot only after a successful build, and swaps it in by rename. Syncing while
+  a build runs restarts it on the new master.
+- **Never write into the main checkout's `.lake/`:** no `lake build` there, no copying files back, no plain `cp`/`rsync`
+  of a build (about 2 GB per copy).
 - Claude sub-agent worktrees (`.claude/worktrees/<topic>`) use it the same way.
 
 Build only the modules you change (`lake build Grothe.X.Y`), and run full builds on the droplet (§5).
@@ -320,7 +317,7 @@ So every agent cleans up what it created, as soon as it is no longer needed.
    on it.
 
 **Never delete what is not yours:** another agent's worktree, branch or droplet folder, the main checkout's
-`.lake/build` (the shared master build), the runner's workspace (`~/actions-runner`), or the shared Mathlib packages
+`.lake/build` and `.lake/master-cache` (the shared master build), the runner's workspace (`~/actions-runner`), or the shared Mathlib packages
 (`~/grothe-caps/.lake/packages`). If something looks stale but is not yours, list it for the user instead.
 
 **Check periodically:** `git worktree list`, `git branch -vv`, `git branch -r`, `scripts/droplet_status.sh` and
