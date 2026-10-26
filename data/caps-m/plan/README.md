@@ -57,7 +57,7 @@ bound. `tools/caps_centre_retry.py` independently checks the rational witnesses
 and can search for additional exact multiplier certificates without rebuilding a
 grid.
 
-The committed `checkpoint-codex-15b7.json` contains 53 completed centres, including
+The committed `checkpoint-codex-15b7.json` contains 63 completed centres, including
 the 15 adopted historical records. Every completed centre has zero best residual;
 the full 358-centre maximum is still unknown. The 15:155/0 and 15:186/0 finer-grid
 solutions are also saved. Radial refinement also removes the stored-grid increases
@@ -73,7 +73,9 @@ endpoint (`3.07e-13`), separately from the endpoint rounding recipe.
 
 All 38 centres stored on 1600×256 have now been assessed with zero best residual,
 including the radial repairs. The 1600×1024 phase is still in progress; this
-checkpoint contains 15 of its 320 centres, including 14 adopted historical records.
+checkpoint contains 25 of its 320 centres, including 14 adopted historical records.
+It was captured while the worker continued: only evidence belonging to completed
+centres is backed up, and the current incomplete export is excluded.
 
 `tools/caps_rest_inventory.py` independently inventories the full remaining row
 obligations without proving or wiring any cap. Its reproducible output is
