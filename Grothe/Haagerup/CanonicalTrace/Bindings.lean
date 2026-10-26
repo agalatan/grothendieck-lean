@@ -1,14 +1,14 @@
-import Grothe.Haagerup.CanonicalTrace.Chunk17
+import Grothe.Haagerup.CanonicalTrace.Assembly
 import Grothe.Haagerup.CanonicalData
 import Lean.Elab.Command
 
 /-!
 Agent-ID: codex-aa04. Literal checkpoints for the canonical Haagerup bound.
-Checkpoint module 19 of 20.
+Bind the arithmetic literals to the mathematical source definitions.
 Regenerate with tools/gen_haagerup_canonical_check.py.
 
 Each arithmetic step is proved from literal inputs and assembled through
-the defining recurrences. Progress messages identify declarations reached.
+the defining recurrences. Progress identifiers are stable across parallel modules.
 -/
 
 set_option Elab.async false

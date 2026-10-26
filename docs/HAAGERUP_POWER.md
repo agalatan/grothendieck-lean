@@ -165,6 +165,11 @@ The generator uses exact integers and fractions from the tracked certificate and
 successful generation check is not proof acceptance. The recurrence and binding
 lemmas connect the literal results to the original checker definitions.
 
+The generated trace separates shared literal data from 16 independent numerical
+proof modules. Each imports only `Shared`; `Assembly` then combines their
+equalities, followed by `Bindings` and `Checks`. This lets Lake schedule the
+finite kernel checks concurrently without changing their statements or arithmetic.
+
 Run the independent replay with Python and `python-flint`:
 
 ```sh

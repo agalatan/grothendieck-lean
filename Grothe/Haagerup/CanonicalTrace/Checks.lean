@@ -3,11 +3,11 @@ import Lean.Elab.Command
 
 /-!
 Agent-ID: codex-aa04. Literal checkpoints for the canonical Haagerup bound.
-Checkpoint module 20 of 20.
+The four final checks, with every literal tied to the source data.
 Regenerate with tools/gen_haagerup_canonical_check.py.
 
 Each arithmetic step is proved from literal inputs and assembled through
-the defining recurrences. Progress messages identify declarations reached.
+the defining recurrences. Progress identifiers are stable across parallel modules.
 -/
 
 set_option Elab.async false
