@@ -413,6 +413,19 @@ since been checked; no headline mathematical soundness defect has been found.
   automatic retry cancelled the old run. That final race does not invalidate the
   successful primary check of the exact landed tree.
 
+- [#88](https://github.com/agalatan/grothendieck-lean/issues/88): multiplication
+  by a fixed polynomial or function is a linear map, so the span universal
+  property replaces repeated zero/add/scalar induction cases. Coordinate
+  recurrences follow by applying evaluation directly; tensor orthogonality
+  splits its existing indicator cases. Six proof bodies in `HermiteComplete`
+  and `HermiteC2` lose **33 net Lean lines**, preserving all 38 declaration
+  type/axiom fingerprints, seven definition values, and all imports. Both changed
+  modules and their ordinary direct importers build with warnings as errors.
+  All six replacement proofs also pass isolated elaboration. No native input,
+  headline interface, or cap-closure file changes. The static reverse closure has
+  20 modules, including the two aggregate roots; broader local validation and
+  the full default-target CI result are tracked in #88.
+
 The measured production Lean reduction across #54, #55 and #59 is **124 lines**:
 60 proof lines and 64 generated zero-coefficient lines. No module or native fact
 is removed, and no meaningful native runtime improvement is established.
@@ -420,6 +433,8 @@ The additional #80 compaction brings the net total to **151 lines**: 95 proof
 lines and 64 generated coefficient lines removed, with eight explicit import
 lines added. Including #89 brings the net reduction to **157 lines**: 106 proof
 lines and 64 generated coefficient lines removed, with 13 import lines added.
+The #88 compaction raises the branch total to **190 lines**: 139 proof lines plus
+64 generated coefficient lines removed, with 13 explicit import lines added.
 Other gated changes to native facts/inputs, headline interfaces, and caps-closure
 sources remain unapproved. Workflow #48 remains coordinated with reserved PR #44.
 
@@ -460,5 +475,5 @@ Open findings are [#48](https://github.com/agalatan/grothendieck-lean/issues/48)
 #59; its broader proposals remain open. The interval-kernel proposal
 [#53](https://github.com/agalatan/grothendieck-lean/issues/53) was closed without
 implementation: the existing kernel is already shared, and no measured benefit
-justified a change to the native/caps layer. The proof-only Hermite-span proposal
+justified a change to the native/caps layer. The proof-only Hermite-span compaction
 is tracked separately in [#88](https://github.com/agalatan/grothendieck-lean/issues/88).
