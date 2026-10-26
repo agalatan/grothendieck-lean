@@ -134,12 +134,23 @@ Progress (claude/hardy, 26 Oct):
   Tools: `Gauss2` (2-D Gaussian integrals with complex linear term), `SchurTest` (weighted Schur test),
   `LstarL` (the `L*L` identity), `Sym2R` (2×2 forms; the weight inequality by a square-root-free identity),
   `SchurKernel` (exact `‖M₁‖`), `SchurBound` (ℝ⁴ factorization and Schur), `SchurIntegrability`.
+- **4 region and circle mean — proved** (`claude/hardy-arc`). Four interval facts replace the 65,594-arc external
+  certificate. `GrotheKernel/HardyArc.lean` evaluates the Schur bound `schurValue` of step 3 on rational boxes
+  (`gatesOK` checks `Z ≻ 0`, `T ≻ 0`). `HardyArcPart0..3` (`hardy_arc_part_k`, one `native_decide` each, separate
+  modules so Lake checks them in parallel) cover the circle `|t| = 4149/4000` by adaptive arcs in two
+  rational charts. Each part is ≈ 2.606, so the total is 10.427, i.e. a mean of 1.659 ≤ 7/4; the true mean is about 1.592.
+  `HardyArcRegionCheck` (`hardy_region_check`) proves positive kernel decay (`KerPos`) on the disc of radius
+  `51863/50000 > 4149/4000` by a quadtree of complex boxes. The soundness proofs are in `HardyArcSound`, `HardyArcCircle`,
+  `HardyArcCover`, `HardyArcMean` and `HardyArcRegion`. `HardyStep4.hardy_region_and_mean` gives both inputs for
+  every measurable disk-valued pair, and **`hardy_of_real`** gives the `hardy` statement from the real
+  identification (step 1(b)) alone. Measured on GitHub-hosted runners: 700–1140 s per part alone (about
+  1700 s with all four in parallel on 4 vCPUs) and 9 s for the region.
 - **Remaining:**
   1(b) the real identification: for real `R`, `kHol R` is the density of the Gaussian pair with cross covariance
   `R` (two real copies), and smoothing by `M`, `N` turns `E[conj GT(X) GT(Y)]` (diagonal correlations
   `p(t), −τ(t)`) into `Hhol (Rt t)`; then `Bm_polyKernel` gives the series with `h = kernelCoeff (energy GT)`.
   This needs Gaussian-law identification on `ℝ⁸` (density ↔ covariance, pushforward by linear maps) — the largest
-  remaining piece. 4: the region and circle inputs from the certificate — a precompiled exact checker over the 65,594 arcs (`KerPos` per arc via `I ± Re R ≻ 0`).
+  remaining piece, and now the only one: `hardy_of_real` takes it as its sole hypothesis `hreal`.
 
 ## 4. Other open items
 

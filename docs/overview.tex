@@ -231,7 +231,7 @@ nothing: this bound has no hypothesis. The sharper conditional bound above uses 
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}.\par
 The native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}, check the upper head, selected-band masses, the six-part phase cover, Haagerup bound,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
-There are 84 native facts, 60 of them the cap-range checks; the report \path{scratch/Axioms.lean} lists 548 theorems, with 330 required declarations.
+There are 89 native facts: 60 cap-range checks, five Hardy region and circle checks, and 24 others. The report \path{scratch/Axioms.lean} lists 550 theorems, with 332 required declarations.
 No \lean{sorry}; CI builds the single target \lean{Grothe}, cap rows included, and checks its one axiom report.
 The cap-range checks take about 21 CPU-hours cold, so CI replays them from a verified build cache.
 Its provenance hash covers 48 local computation
@@ -250,6 +250,8 @@ Before the tail Cauchy--Schwarz step, the known linear coefficient's weighted sq
 Holomorphy under positive kernel decay, odd-series continuation and circle Parseval are proved.
 The holomorphy and Hardy assembly also cover separate measurable disk-valued left and right responses
 (\lean{HholPair}, \lean{hardy\_of\_pair\_inputs}); the incumbent results are specializations.
+The decay region and the circle mean are checked in Lean by five interval facts. With them, \lean{hardy\_of\_real} reduces \lean{hardy}
+to the real Gaussian identification of the odd series.
 A positive covariance-decay region, summable real odd coefficients, their Gaussian-kernel identification
 and the circle mean bound remain explicit inputs for each pair. This adds no numerical axiom
 and changes neither endpoint nor its remaining hypotheses.

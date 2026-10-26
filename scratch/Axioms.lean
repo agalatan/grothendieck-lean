@@ -489,6 +489,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.fresh_upper_rounder
 #print axioms Grothe.UpperChaos.hardy_of_inputs
 #print axioms Grothe.UpperChaos.hardy_of_pair_inputs
+#print axioms Grothe.UpperChaos.hardy_of_real
+#print axioms Grothe.UpperChaos.hardy_region_and_mean
 #print axioms Grothe.UpperChaos.hasSum_energy
 #print axioms Grothe.UpperChaos.hasSum_energy2
 #print axioms Grothe.UpperChaos.hasSum_energy_bideg
