@@ -36,3 +36,22 @@ replays of the current cover and global-padding endpoint calculations. A per-nod
 is conditional until every affected source certificate and hull/chord dependency has been checked.
 The remaining count, maximum and both alternatives must be reported on #72 for the user's decision
 before wiring the pieces into `CapsRest` (#15).
+
+`tools/caps_centre_campaign.py run --agent-id codex-15b7 --manifest
+data/caps-m/plan/centre-sweep-codex-15b7.json` runs the local search with one owned
+child process at a time (start it in its own process group, per `AGENTS.md`). It
+reuses completed exports, checks exact certificates on resume, and records raw
+coverage separately from completed repair attempts. The progress file is
+`centre-campaign-progress-codex-15b7.json`. A checkpoint pause exits with 75;
+unresolved fine searches are retained while other centres continue. They prevent
+the report from claiming a final remaining maximum.
+
+The tested repair choices differ by stored grid: radial refinement to 3200×256
+removes the increase at 12:280/103; angular refinement to 1600×1152 removes the
+increase at 14:200/0. Both have exact zero-increase certificates in `solved/fine/`.
+Finer grids need not improve a fixed price recipe: the 512- and 1152-angle trials
+for 12:280/103 have exact common-constraint-kernel obstructions, recorded under
+`solved/retry/`. These concern those exported matrices, not the analytic node
+bound. `tools/caps_centre_retry.py` independently checks the rational witnesses
+and can search for additional exact multiplier certificates without rebuilding a
+grid.
