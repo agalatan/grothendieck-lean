@@ -95,8 +95,30 @@ Lean route (detailed in PLAN_UPPER.md §6f):
 2. Parseval on the circle: `Σ |h_j|² r^{2(2j+1)} = (1/2π)∫|H(re^{iθ})|² dθ`.
 3. Gaussian Schur lemma `|H(R)|² ≤ 1/[64 j⁴ |det(I−R²)|² det Z det W]` (operator norm of the kernel on L²).
 4. Precompiled checker over the arcs (rational enclosures of cos/sin, 2×2 matrix arithmetic).
-Progress: `Grothe/UpperChaos/HardyKernel.lean` fixes the definitions (`Sym2C`, `detIm`, `Amat`, `Cmat`,
-`kExp`, `kHol`, `Hhol`, `Rt`); integrability and holomorphy remain unproved. Next: 1(a).
+Progress (claude/hardy, 26 Oct):
+- Definitions: `Grothe/UpperChaos/HardyKernel.lean` (`Sym2C`, `detIm`, `Amat`, `Cmat`, `kExp`, `kHol`, `Hhol`, `Rt`).
+- **1(a) holomorphy — proved.** `HolIntegral.lean`: `differentiableOn_integral_exp` (a parametric integral
+  `∫ c(q) g(t) exp(∑ₖ αₖ(t) mₖ(q))` with holomorphic `g, αₖ`, `‖c‖ ≤ 1`, `|mₖ| ≤ N` and pointwise decay
+  `Re ≤ −λN` is holomorphic). `HardyHolo.lean`: `KerPos R λ` (real part of the 4×4 form
+  `[[A, −C], [−C, A]]` dominates `λ|·|²`), `detIm_ne_zero_of_kerPos`, `kExp_add_eq_sum` (six coefficients ×
+  six real quadratic weights), Gaussian integrability on `ℝ⁸`, and **`differentiableOn_Hhol_Rt`**: on any open set
+  where `KerPos (Rt t) λ` holds for some `λ > 0`, `t ↦ Hhol (Rt t)` is holomorphic.
+- **1(c)–(d) continuation — proved.** `OddSeries.lean`: `hasSum_odd_of_eqOn_real` (holomorphic on the disc of radius
+  `r > 1` and equal to `∑ hⱼ t^{2j+1}` for real `0 < t < 1` ⇒ the series converges to `f` on the whole disc;
+  identity theorem + uniqueness of power series), `summable_abs_of_hasSum_ball`.
+- **2 Parseval — proved.** `OddParseval.lean`: `hasSum_parseval_odd`
+  (`∑ 2π hⱼ² ρ^{2(2j+1)} = ∫₀^{2π} |f(ρe^{iθ})|²`), `sum_sq_le_of_mean_le` (the exact shape of `hardy`).
+- **Assembly:** `hardy_of_inputs` (`HardyHolo.lean`) proves the `hardy` statement from three explicit inputs:
+  (region) `KerPos (Rt t) λ`, `λ > 0`, on a disc of radius `r > 4149/4000`;
+  (real identification, step 1(b)) `HasSum (hⱼ t^{2j+1}) (Hhol (Rt t))` for real `0 < t < 1`;
+  (circle) the mean of `|Hhol (Rt z)|²` over `‖z‖ = 4149/4000` is `≤ 7/4`.
+- **Remaining:**
+  1(b) the real identification: for real `R`, `kHol R` is the density of the Gaussian pair with cross covariance
+  `R` (two real copies), and smoothing by `M`, `N` turns `E[conj GT(X) GT(Y)]` (diagonal correlations
+  `p(t), −τ(t)`) into `Hhol (Rt t)`; then `Bm_polyKernel` gives the series with `h = kernelCoeff (energy GT)`.
+  This needs Gaussian-law identification on `ℝ⁸` (density ↔ covariance, pushforward by linear maps) — the largest
+  remaining piece. 3 + 4: the region and circle inputs from the certificate — the Gaussian Schur bound
+  `|H(R)|² ≤ …` and a precompiled exact checker over the 65,594 arcs (`KerPos` per arc via `I ± Re R ≻ 0`).
 
 ## 4. Other open items
 
