@@ -4,7 +4,9 @@
 # Header comments only: `tools/gen_root_imports.py` keeps this file sorted. Current entries:
 # * Grothe.LowerAnalytic.CapNodes, CapRow00..CapRow18 — the separate target GrotheCaps (60 native range facts,
 #   hours), built on the droplet runner and replayed by CI from the verified build cache, never in the default target;
-# * Grothe.LowerAnalytic.CapPieces.* — explicit piece/range targets, not yet wired into GrotheCaps or its allowlist;
+# * Grothe.LowerAnalytic.CapPieces.* — generated per-node modules of the rows 12–15 node caps (route M: data D,
+#   coverage C, native range facts R, node theorem N); like CapRowKK they belong to the caps target, not to CI's
+#   default build (tools/gen_cap_pieces.py; adding a node means adding its four modules here);
 # * GrotheKernel.BandMass, GrotheKernel.HeadWeight — kernel modules used only by Grothe.Upper (built through
 #   Grothe.lean, not through the GrotheKernel root).
 Grothe.LowerAnalytic.CapNodes
