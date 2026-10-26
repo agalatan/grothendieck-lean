@@ -203,6 +203,7 @@ import Grothe.UpperChaos.HermiteC2Basis
 import Grothe.UpperChaos.HermiteComplete
 import Grothe.UpperChaos.HolIntegral
 import Grothe.UpperChaos.Kernel2
+import Grothe.UpperChaos.KernelStability
 import Grothe.UpperChaos.LawY
 import Grothe.UpperChaos.LocalizedComparison
 import Grothe.UpperChaos.Mehler
@@ -221,6 +222,8 @@ import Grothe.UpperChaos.PhiCoverCheck5
 import Grothe.UpperChaos.PhiCoverData
 import Grothe.UpperChaos.PhiDense
 import Grothe.UpperChaos.PhiHorner
+import Grothe.UpperChaos.RadialCeiling
+import Grothe.UpperChaos.RadialRepair
 import Grothe.UpperChaos.Realise2
 import Grothe.UpperChaos.Rounder
 import Grothe.UpperChaos.Structural

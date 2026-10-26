@@ -150,6 +150,24 @@ p(t) = t·P(t²) (`pList`, degree 41) and −τ(t) = t·Q(t²) (`qList`, degree 
 that both are realised by tensor powers (`Grothe/Upper/Realise.lean`); they do not enter the
 energies, and are chosen to make the kernel nearly linear. The slope is c = 7119483103461/10¹³.
 
+The separate `RadialRepair.lean` proves the exact complement identity
+`(1−q) S₆(q)² = 1−C₆(q)`, with C₆(q) = q⁷ times a polynomial with seven
+positive coefficients. It certifies the polynomial disk map
+`z ↦ z S₆(1−normSq z)` and its degree-39 phase specialization; no new
+`native_decide` fact is used. `radial_gap_sq_le` proves
+`(1−‖P₃(x)‖)² ≤ x⁶/1225` for x² ≤ 1. `KernelStability.lean` proves
+`Σ |E_H−E_G| ≤ (‖H‖₂+‖G‖₂)‖H−G‖₂` and transports this through any
+same feasible P,Q to all physical coefficients of charge-one responses. `RadialCeiling.lean`
+integrates the pointwise gap and proves `radial_kernel_ceiling`, with explicit
+phase-domain, radial-gap, integrability and sixth-moment premises. This theorem
+applies to diagonal response kernels. `HardyHolo` supplies holomorphy and Hardy
+assembly for separate responses along the fixed covariance path `Rt`.
+Applying the energy-coefficient realization to a response pair still needs
+signed cross moments rather than a nonnegative energy table. Retuned
+preprocessors need matching covariance and contour inputs. The concrete
+Gaussian moment and a score for the new rounder are not proved here, and the
+headline endpoints are unchanged.
+
 * Proved from scratch: the complex Gaussian Hermite basis on ℂ², completeness, Parseval,
   the L² Mehler formula, charge selection, energy summability and the energies-to-kernel
   identity (`Grothe/UpperChaos/`); measurability, charge one and disk-valuedness of G_T;
@@ -456,7 +474,20 @@ The four remaining rows still require `CapsRest`.
 | `TaylorPhase`, `Rounder` | \|P₃(x)\|² = 1 − x⁴(3 − x²)/36; the concrete rounding G_T from `Grothe/Upper/Data.lean` |
 | `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck0`–`5`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 99/100 everywhere (`phiT_sq_le`, hence `phi_abs_lt_one : |φ| < 1`; `phiBound` is the same bound as the rounding's `PhiBound`): 512 cubes of bisection trees (`phi_cover_check_0`–`5`), analytic far field, headline `fresh_upper_rounder` |
 | `EnergyBlock`, `LocalizedComparison` | actual Gaussian energies of error blocks; the selected-spectrum comparison |
-| `HardyKernel` | definitions for the Hardy-tail proof (holomorphic Gaussian kernel; issue #18) |
+| `HardyKernel`, `HolIntegral`, `HardyHolo`, `OddSeries`, `OddParseval` | holomorphic Gaussian kernel; dominated parametric integration; holomorphy for separate measurable disk-valued responses (`HholPair`); odd-series continuation and circle Parseval; `hardy_of_pair_inputs` and its incumbent specialization |
+
+The pair interface needs measurability and the pointwise disk bound on both
+responses. Holomorphy uses the same open covariance-decay region (`KerPos`)
+and does not need charge or conjugation symmetry. `hardy_of_pair_inputs`
+additionally requires summable real odd coefficients, their identification
+with the pair kernel for real correlations, and the pair's circle mean bound
+at radius `4149/4000`. It concludes the existing partial weighted-square
+inequality with budget `7/4`. These proofs introduce no numerical axioms.
+The incumbent `differentiableOn_Hhol_Rt` and `hardy_of_inputs` retain their
+statements and specialize the pair results. The Gaussian density/covariance
+identification, Schur bound and exact contour inputs remain separate
+obligations; this interface alone does not discharge `hardy` for a changed
+rounding or improve an endpoint.
 
 **`Grothe/LowerAnalytic/Cap*`: the node caps**
 
