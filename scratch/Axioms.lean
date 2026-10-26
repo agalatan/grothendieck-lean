@@ -2,10 +2,17 @@ import Grothe
 
 #print axioms Grothe.DiskKernel.dominated
 #print axioms Grothe.DominatedKernel.comp_radial
+#print axioms Grothe.HaagerupConvex.delta_eq
+#print axioms Grothe.HaagerupConvex.delta_nonneg
+#print axioms Grothe.HaagerupConvex.delta_succ_le
+#print axioms Grothe.HaagerupConvex.r_nonneg
+#print axioms Grothe.HaagerupConvex.r_succ_le
+#print axioms Grothe.HaagerupConvex.summable_r
+#print axioms Grothe.HaagerupConvex.tendsto_r_zero
 #print axioms Grothe.HaagerupPhaseGeometry.degree_moment_not_summable
 #print axioms Grothe.HaagerupPhaseGeometry.harmonic_lower
 #print axioms Grothe.HaagerupPhaseGeometry.scaled_lower
-#print axioms Grothe.HaagerupPower.R_succ_le
+#print axioms Grothe.HaagerupPower.abel_budget
 #print axioms Grothe.HaagerupPower.check
 #print axioms Grothe.HaagerupPower.composed_tail
 #print axioms Grothe.HaagerupPower.degree_P
@@ -16,6 +23,7 @@ import Grothe
 #print axioms Grothe.HaagerupPower.norm_P
 #print axioms Grothe.HaagerupPower.norm_defect
 #print axioms Grothe.HaagerupPower.norm_fourth
+#print axioms Grothe.HaagerupPower.norm_resolvent_ratio
 #print axioms Grothe.HaagerupPower.norm_seed
 #print axioms Grothe.HaagerupPower.residual
 #print axioms Grothe.HaagerupPower.upper
@@ -398,9 +406,12 @@ import Grothe
 #print axioms Grothe.Upper.RadiusJet.patch_bound
 #print axioms Grothe.Upper.RadiusJet.translate_monomial
 #print axioms Grothe.Upper.RadiusJet.unpack
+#print axioms Grothe.Upper.ResolventTail.compCoeff_tail_eq_sum_coeff
 #print axioms Grothe.Upper.ResolventTail.compTerm_coeff_zero
 #print axioms Grothe.Upper.ResolventTail.compTerm_geometric
 #print axioms Grothe.Upper.ResolventTail.composition_tail_bound
+#print axioms Grothe.Upper.ResolventTail.composition_tail_bound_convex
+#print axioms Grothe.Upper.ResolventTail.convex_weights_bound
 #print axioms Grothe.Upper.ResolventTail.decreasing_weights_bound
 #print axioms Grothe.Upper.ResolventTail.defect_of_check
 #print axioms Grothe.Upper.ResolventTail.geometric_difference
@@ -413,6 +424,7 @@ import Grothe
 #print axioms Grothe.Upper.ResolventTail.seed_of_check
 #print axioms Grothe.Upper.ResolventTail.seed_power_bound
 #print axioms Grothe.Upper.ResolventTail.tail_numeric_of_check
+#print axioms Grothe.Upper.ResolventTail.weighted_geometric_difference
 #print axioms Grothe.Upper.ResponseGeometry.energy_difference
 #print axioms Grothe.Upper.ResponseGeometry.energy_transport
 #print axioms Grothe.Upper.ResponseGeometry.finite_energy_comparison
