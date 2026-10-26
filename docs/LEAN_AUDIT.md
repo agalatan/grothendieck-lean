@@ -341,8 +341,20 @@ since been checked; no headline mathematical soundness defect has been found.
   root check. [PR #78](https://github.com/agalatan/grothendieck-lean/pull/78)
   repaired that root; the current local root check passes. The older run's later
   axiom, forbidden-code and cap-stamp gates were skipped, so it is not a full
-  verification pass. Final integration verification remains tracked in
-  [#46](https://github.com/agalatan/grothendieck-lean/issues/46).
+  verification pass. Full integration evidence is supplied by branch
+  [run 40260600089](https://github.com/agalatan/grothendieck-lean/actions/runs/40260600089)
+  at `15f9e52`, an ancestor of current master containing #59, the later Hardy-budget
+  changes and the root repair. It passed all 9,170 build jobs, generated roots/lists,
+  forbidden-code scan, 493-theorem axiom report (25 of 85 native facts) and the
+  unchanged 140-file cap stamp, without Lean warnings or errors. All four #59
+  source files match that master snapshot exactly. This is successful verification of
+  that integrated branch tree; it predates #80 and the later phase-cover delivery.
+  Subsequently, master `2d1898c` passed full
+  [run 40266983427](https://github.com/agalatan/grothendieck-lean/actions/runs/40266983427):
+  9,176 build jobs, all verification gates, 496 reported theorems (30 of 90 native
+  facts), and the same cap stamp, with no Lean diagnostics. This checks the earlier
+  audit deliveries together with the later phase-cover integration; #80 was not
+  yet merged into that master tree.
 
 - [#80](https://github.com/agalatan/grothendieck-lean/issues/80): the unweighted
   band comparison specializes `weighted_compare` at constant weight one. The
@@ -357,15 +369,44 @@ since been checked; no headline mathematical soundness defect has been found.
   `BandComparison`, and from 8,909 to 2,041 for `ResponseGeometry`. Both actual
   modules build warning-free. Eight additional explicit import lines make the
   net source reduction **27 lines**. This reduces isolated-module dependency
-  loading; no full-build or native runtime improvement is claimed. Delivery
-  and aggregate CI are tracked in #80.
+  loading; no full-build or native runtime improvement is claimed. Full primary
+  [run 40266197230](https://github.com/agalatan/grothendieck-lean/actions/runs/40266197230)
+  passed all 9,170 build jobs and verification gates on `afda7b8`, whose complete
+  tree matches the ready delivery. Ready
+  [run 40266229202](https://github.com/agalatan/grothendieck-lean/actions/runs/40266229202)
+  passed all 9,170 build jobs, including both changed modules and their concrete
+  downstream importers, plus generated roots/lists, forbidden-code scan,
+  the 493-theorem axiom report (25 of 85 native facts) and cap stamp, with no Lean
+  warnings. Its final push lost a race with master; automatic redispatch then
+  cancelled the old run. The cancellation does not negate its completed proof
+  gates. The delivery landed through
+  [PR #92](https://github.com/agalatan/grothendieck-lean/pull/92) at master
+  `daf21e9`; both production source files match the verified delivery exactly.
+  Combined-master [run 40272617860](https://github.com/agalatan/grothendieck-lean/actions/runs/40272617860)
+  is still running at this update, so no completed check is claimed for that newer tree.
+
+- [#89](https://github.com/agalatan/grothendieck-lean/issues/89): polynomial
+  evaluation reuses the existing coefficient budget, and the paired weighted
+  tail specializes the standard finite-sum/tail identity. These changes remove
+  **11 proof lines**. Focused imports in `ListPoly` and `Upper/Bivariate` add five
+  lines, for a **six-line net reduction** across four files. Lake's imported
+  artifacts fall from 8,908 to 1,661 and from 8,909 to 2,314, respectively.
+  All 65 existing declaration type/axiom fingerprints and nine definition values
+  match their baselines. Actual warning-as-error builds pass for all four changed
+  modules, `Upper/ResolventTail` and `Upper/Haagerup`. The full reverse closure on
+  master `daf21e9` contains 27 modules, including the newly added `HardyHolo`;
+  aggregate validation remains the delivery CI's responsibility. The 31 Python
+  tests, generated roots/lists, 19-file native-verification manifest and unchanged
+  140-file cap stamp pass. No native input, headline statement, or definition
+  changes; the import counts do not establish a runtime speedup.
 
 The measured production Lean reduction across #54, #55 and #59 is **124 lines**:
 60 proof lines and 64 generated zero-coefficient lines. No module or native fact
 is removed, and no meaningful native runtime improvement is established.
 The additional #80 compaction brings the net total to **151 lines**: 95 proof
 lines and 64 generated coefficient lines removed, with eight explicit import
-lines added.
+lines added. Including #89 brings the net reduction to **157 lines**: 106 proof
+lines and 64 generated coefficient lines removed, with 13 import lines added.
 Other gated changes to native facts/inputs, headline interfaces, and caps-closure
 sources remain unapproved. Workflow #48 remains coordinated with reserved PR #44.
 
@@ -373,8 +414,8 @@ The original statement and coverage audit is scoped to its named baseline.
 Later master `c38a625` independently strengthens the conditional selected-spectrum
 upper endpoint to `500000000000000000 / 355973699864771491 < 1.404598149218`
 using a deduction from the existing Hardy budget. Its four coefficient-series
-source files are unchanged, and the #59 patch merged cleanly with it; combined
-verification is tracked by the master run above. The new law-node/refined-cover
+source files are unchanged, and the #59 patch merged cleanly with it; the later
+integrated branch run above verifies that combination. The new law-node/refined-cover
 certificates are not presented as part of the earlier baseline audit.
 
 ## Delivery ledger
@@ -393,12 +434,17 @@ checked tree rather than inferred from a later green badge.
 | `axioms` | `f78cb0d` (PR #70) | Conflicts resolved while preserving the incoming phase-response policy; [40251214852](https://github.com/agalatan/grothendieck-lean/actions/runs/40251214852) passed the strict checker. Duplicate PR #65 was closed. |
 | `validation-docs` | `c8dbc97` | [40252827164](https://github.com/agalatan/grothendieck-lean/actions/runs/40252827164): docs-only success. |
 | `coeff-series` | `bf5376b` (PR #74), also `d7521c7` (PR #75) | [40252824585](https://github.com/agalatan/grothendieck-lean/actions/runs/40252824585): full success on the exact delivery tree; later combined-master status is qualified above. |
+| `final-record` | `351b6b0` | [40261239041](https://github.com/agalatan/grothendieck-lean/actions/runs/40261239041): docs-only success. |
+| `band-comparison` | `daf21e9` (PR #92) | [40266197230](https://github.com/agalatan/grothendieck-lean/actions/runs/40266197230): full success on the delivery tree; latest combined-master check remains pending. |
 
 Open findings are [#48](https://github.com/agalatan/grothendieck-lean/issues/48)
 (remaining CI scope gap), [#49](https://github.com/agalatan/grothendieck-lean/issues/49)
 (anonymous native facts), [#51](https://github.com/agalatan/grothendieck-lean/issues/51)
 (unused interface hypothesis), [#52](https://github.com/agalatan/grothendieck-lean/issues/52)
-(remaining projection/Gaussian sharing), [#53](https://github.com/agalatan/grothendieck-lean/issues/53)
-(interval-kernel reuse), and [#56](https://github.com/agalatan/grothendieck-lean/issues/56)
+(remaining projection/Gaussian sharing), and [#56](https://github.com/agalatan/grothendieck-lean/issues/56)
 (partition computation). The coefficient-series portion of #52 is delivered by
-#59; its broader proposals remain open.
+#59; its broader proposals remain open. The interval-kernel proposal
+[#53](https://github.com/agalatan/grothendieck-lean/issues/53) was closed without
+implementation: the existing kernel is already shared, and no measured benefit
+justified a change to the native/caps layer. The proof-only Hermite-span proposal
+is tracked separately in [#88](https://github.com/agalatan/grothendieck-lean/issues/88).

@@ -1,4 +1,8 @@
 import Grothe.ListPoly
+import Mathlib.Algebra.Polynomial.Div
+import Mathlib.Analysis.Normed.Module.FiniteDimension
+import Mathlib.Topology.Algebra.InfiniteSum.Real
+import Mathlib.Tactic.Ring
 
 /-!
 # Two-coordinate kernels
