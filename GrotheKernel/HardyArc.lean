@@ -304,11 +304,7 @@ def discCover (dat : RData) (r2 : Int) : Nat → Int → Int → Int → Int →
         discCover dat r2 d xlo xm ylo ym && discCover dat r2 d xm xhi ylo ym &&
           discCover dat r2 d xlo xm ym yhi && discCover dat r2 d xm xhi ym yhi
 
-/-- The square `[−b, b]²` (scaled `b`) cut into `m × m` initial boxes, each covered. -/
-def discAll (dat : RData) (r2 b : Int) (m depth : Nat) : Bool :=
-  (List.range m).all fun (i : Nat) => (List.range m).all fun (k : Nat) =>
-    let step := 2 * b / Int.ofNat m
-    discCover dat r2 depth (-b + Int.ofNat i * step) (-b + (Int.ofNat i + 1) * step)
-      (-b + Int.ofNat k * step) (-b + (Int.ofNat k + 1) * step)
+/-- The whole check: the square `[−2, 2]²` (which contains the disc), quadtree depth at most 30. -/
+def discCheck (dat : RData) (r2 : Int) : Bool := discCover dat r2 30 (-2 * D) (2 * D) (-2 * D) (2 * D)
 
 end GrotheKernel.HardyArc

@@ -212,9 +212,11 @@ import Grothe.UpperChaos.HardyArcPart1
 import Grothe.UpperChaos.HardyArcPart2
 import Grothe.UpperChaos.HardyArcPart3
 import Grothe.UpperChaos.HardyArcRegion
+import Grothe.UpperChaos.HardyArcRegionCheck
 import Grothe.UpperChaos.HardyArcSound
 import Grothe.UpperChaos.HardyHolo
 import Grothe.UpperChaos.HardyKernel
+import Grothe.UpperChaos.HardyStep4
 import Grothe.UpperChaos.HermiteBasis
 import Grothe.UpperChaos.HermiteC2
 import Grothe.UpperChaos.HermiteC2Basis
