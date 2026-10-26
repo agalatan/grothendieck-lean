@@ -191,8 +191,8 @@ Wick identity; the finite certificate (five row, three original-batch, one added
 \lean{NodeCaps}: the 19 potentials $\Psi_r$ (defined in Lean) lie below their stored rational caps at the tabulated nodes.
 The separate \lean{GrotheCaps} target reduces this to \lean{CapsRest}: the vertex caps of rows 12--15 ($t=0.84$--$0.855$) and any excluded-node caps.
 The 60 range checks for fifteen rows use a computation-only layer.
-CI checks the 53-file source stamp; a changed stamp on a ready delivery
-triggers the heavy build and both axiom audits. Four rows retain external vertex caps.\\\midrule
+CI replays the final assembly when the 54-file cache provenance matches;
+a mismatch triggers the runner build and both axiom audits. Four rows retain external vertex caps.\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error, table-accuracy and Hardy inputs, proves $\KG\le500000000000000000/355973699864771491$.}\\[2pt]
 the concrete disk-valued rounding; Gaussian Hermite completeness, Parseval and Mehler, charge selection, summability;
 the transfer inequality (tensor powers); kernel composition and locality; the head through degree 501 from
@@ -218,11 +218,15 @@ There are 30 native facts outside the separate cap-range target; the report \pat
 No \lean{sorry}; CI builds the default target and checks its axiom report.
 The 60 additional cap-range checks belong to the separate heavy
 \lean{GrotheCaps} target. Its provenance hash covers 48 local computation
-modules and five directly hashed extras (53 files total); the extras' imports
-are not traversed. Ordinary CI checks \path{docs/CAPS_VERIFIED.txt}.
-A changed stamp on a ready delivery dispatches the heavy build and both
-axiom audits on the droplet runner before CI records the verified stamp
-and repeats the check. A digest alone is not verification. The localised-piece checkers
+modules and six directly hashed extras (54 files total); the extras' imports
+are not traversed. The numerical checker has its own precompiled library,
+\lean{GrotheCapsKernel}, whose constants retain the \lean{GrotheKernel} namespace.
+CI checks \path{.lake/build/caps-closure.sha}, then explicitly replays
+\lean{GrotheCaps} and audits its axioms on a match. A missing or mismatched
+marker fails closed and dispatches the runner build and both audits before
+the cache is marked. The same persistent build supplies subsequent CI replay
+and the master warm run; no separate manual droplet verification is needed.
+A digest alone is not verification. The localised-piece checkers
 likewise import only computable definitions and rational data; their campaign
 and final wiring remain separate. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;

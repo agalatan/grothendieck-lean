@@ -40,57 +40,69 @@ These generated piece facts are not yet imported by `GrotheCaps`.
 
 The generated default Lean root excludes the 15 heavy row modules and
 `CapNodes`, using `data/root-imports-exclude.txt`. They belong to the separate
-`GrotheCaps` target. Ordinary CI builds the default target and checks the
-source stamp. Its heavy job builds both targets and audits both axiom
-reports when the stamped sources change on a `ready/` delivery.
-No `Task.spawn` is used inside the native range checks; parallelism is
-between separate Lean processes. The numerical checker remains in
-`GrotheKernel/CapCheck.lean`.
+`GrotheCaps` target. Ordinary CI builds the default target, then explicitly
+replays `GrotheCaps` and checks its axiom report when the cache marker
+matches. No `Task.spawn` is used inside the native range checks;
+parallelism is between separate Lean processes.
 
-## Source-stamp boundary: 53 files
+The numerical checker has its own independent precompiled library,
+`GrotheCapsKernel` (`Basic`, `CapPoly`, `CapCheck`). Its constants retain
+the `GrotheKernel` Lean namespace. Other numerical checkers stay outside
+that library, so their changes do not replace the cap checker's shared
+object. The library root is pinned because every importer loads it.
+
+## Cache provenance: 54 files
 
 `python3 scripts/caps_stamp.py --digest` computes the source hash and file
-count without recording verification. The current boundary contains 48 local
-modules reachable from the 15 heavy row modules, followed by five direct
+count without marking a build. The boundary contains 48 local computation
+modules reachable from the 15 heavy row modules, followed by six direct
 extras: `Grothe/LowerAnalytic/CapNodes.lean`, `GrotheCaps.lean`,
-`lean-toolchain`, `lake-manifest.json`, and `lakefile.toml`.
-The extras' imports are not traversed. The total is 53 files, down from 140
-before the split. `python3 scripts/caps_stamp.py --list` lists the exact paths.
+`GrotheCapsKernel.lean`, `lean-toolchain`, `lake-manifest.json`, and
+`lakefile.toml`. The extras' imports are not traversed. The total is 54
+files, down from 140 before the split. `--list` lists the exact paths.
 
-The stamp records the verified computational source bytes and direct extras.
-It is not a full dependency or reproducibility manifest: it does not hash
-every analytic proof reachable through `CapNodes` or `GrotheCaps`, or the
-workflow and report scripts. Lake checks ordinary build dependencies
-separately. Changes to soundness or the lower certificate outside the stamp
-set therefore leave the heavy-computation hash unchanged. The default build
-checks the proof layer; the heavy separate-target build checks the final
-`CapNodes` assembly.
+The hash identifies the cached computational source bytes and direct
+extras. It is not a full dependency or reproducibility manifest: it does
+not hash every analytic proof reachable through `CapNodes` or `GrotheCaps`,
+or the workflow and report scripts. Lake checks ordinary dependencies
+separately. Soundness and lower-certificate changes outside this set leave
+the computation hash unchanged; CI's explicit `GrotheCaps` replay and
+caps audit still check the final assembly against the current proof layer.
+
+The verified marker is `.lake/build/caps-closure.sha`, saved beside the
+compiled build products. Verification is recorded with that cache, rather
+than in a committed source-stamp file.
 
 ## Verification status and CI sequence
 
-Acceptance of this split requires the `ready/` heavy CI run.
-A successful `GrotheCaps` build and both axiom reports establish verification
-for the checked sources; `docs/CAPS_VERIFIED.txt` records that run. An unchanged theorem statement or a read-only
-digest is not a verification record. The scratch-branch comment probe in
-`RowCheck.lean` leaves the digest unchanged; a comment in `CapRangeDefs.lean`
-changes it. Neither probe writes a verification stamp.
+Acceptance of the combined computation split and CI-cache change requires
+one successful runner `caps` build of the combined candidate, both axiom
+reports, and the repeated ordinary CI check. A read-only digest or unchanged
+theorem statement is not a verification record. The scratch-branch
+`RowCheck.lean` comment probe leaves the computation hash unchanged;
+`CapRangeDefs.lean` is a negative control that changes it. Neither probe
+marks a build cache.
 
-For Lean-relevant checks, the ordinary CI job builds `Grothe`, checks its
-axiom report and calls `python3 scripts/caps_stamp.py --check` (also the
-script's default). That reads the committed `docs/CAPS_VERIFIED.txt`.
-A missing or mismatched stamp fails closed. On a `ready/` delivery, CI
-also dispatches the heavy `caps` job on the droplet runner.
+For Lean-relevant checks, ordinary CI restores `.lake/build` and calls
+`python3 scripts/caps_stamp.py --check-cache` (also the default).
+The default `Grothe` build and axiom report run independently of whether
+the marker matches. On a match, CI explicitly builds `GrotheCaps` and
+checks `scratch/AxiomsCaps.lean` with `scripts/check_axioms.py --caps`.
+This checks `CapNodes` against the current proof layer; Lake reuses cached
+native results only when its dependency hashes permit it.
 
-The heavy job merges the ready branch with current master, builds `Grothe`
-and `GrotheCaps`, and checks `scratch/Axioms.lean` and
-`scratch/AxiomsCaps.lean` with `scripts/check_axioms.py` (the latter with
-`--caps`). Only after these pass does it call
-`scripts/caps_stamp.py --write "<run evidence>"`, commit the resulting
-`docs/CAPS_VERIFIED.txt` onto the ready branch and repeat its check.
-The ordinary CI check then verifies the stamp against its merged candidate.
-After auto-merge, a `warm` run updates the shared master build cache.
-Use this route without a separate manual droplet verification. The actual
-heavy run, repeated ready check and auto-merge remain the acceptance evidence.
+A missing or mismatched marker fails closed and dispatches the runner's
+heavy job: `caps` for a branch, `warm` for master. The heavy job builds
+`Grothe` and `GrotheCaps`, checks both axiom reports, and only then calls
+`scripts/caps_stamp.py --mark-cache`. A `caps` run saves a verified branch
+cache and repeats the check. A `ready/` caps run uses the branch merged
+with current master.
+
+This combined delivery changes the workflow, so it uses a pull request
+after the combined branch is green; the user merges it. The later master
+`warm` run reuses the runner's persistent build and refreshes the canonical
+master cache. One runner build supplies validation, branch replay and the
+subsequent master cache; do not launch an independent droplet verification.
 
 ## Data and remaining rows
 

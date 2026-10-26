@@ -1,3 +1,0 @@
-sha256 fe2ea85d90646c9e01d46fd614051a61b2dd26399c585e39e620ab9d41f16eea
-files 140
-verified droplet yo (8 cores, shared, load ~12), 2026-10-23 02:48-06:48 UTC, lake build GrotheCaps wall 239m41s (CPU 1269m), sources 4304b22 (same stamp as 50eb9cb); scratch/AxiomsCaps.lean | check_axioms.py --caps OK (60 range facts)

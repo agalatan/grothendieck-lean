@@ -1,32 +1,34 @@
 #!/usr/bin/env python3
-"""Stamp of the computation sources behind the separate target GrotheCaps.
+"""Source hash of the separate target GrotheCaps, recorded in its verified build cache.
 
-The 15 heavy CapRowKK modules contain 60 single-threaded native_decide facts. CI checks
-    python3 scripts/caps_stamp.py --check
-against docs/CAPS_VERIFIED.txt. On a changed ready/ delivery, CI dispatches the droplet runner to build GrotheCaps
-and check both axiom reports, then record the successful verification with
-    python3 scripts/caps_stamp.py --write "<machine, date, run>"
-and re-dispatch the ready/ check. With no arguments the script checks the stamp; --digest prints the current hash
-and file count without reading or writing the stamp, and --list also lists the exact hashed files.
+The 15 heavy CapRowKK modules contain 60 single-threaded native_decide facts. The droplet's self-hosted runner
+builds GrotheCaps and checks both axiom reports before recording the sources beside the build products:
+    python3 scripts/caps_stamp.py --mark-cache          # writes .lake/build/caps-closure.sha
+CI restores the cache and calls
+    python3 scripts/caps_stamp.py --check-cache         # (the default) exit 0 iff the verified caps match
+On a match CI builds GrotheCaps (Lake replays the verified facts) and checks its axiom report. On a mismatch or
+missing marker it dispatches a runner caps build instead. --digest prints the hash and file count without reading
+or writing the marker; --list also lists the exact hashed files.
 
 The hash covers the computation import closure of the CapRowKK modules, plus CapNodes.lean, GrotheCaps.lean,
-lean-toolchain, lake-manifest.json and lakefile.toml. These five extras are hashed directly, without traversing
-their imports: lower-bound proof edits require re-checking the assembly, not the heavy numerical facts. The current
-decoupled boundary is 48 local computation modules plus five extras (53). The Lake configuration is pinned because
-it controls compilation of the native checker. Import parsing fails closed on missing project modules (Grothe.*
-and GrotheKernel.*) or unsupported import syntax. This is a verification stamp, not a full build manifest; CI runs
+GrotheCapsKernel.lean, lean-toolchain, lake-manifest.json and lakefile.toml. These six extras are hashed directly,
+without traversing their imports: lower-bound proof edits require re-checking the assembly, not the heavy facts.
+The checker library root is pinned because its whole precompiled shared object is loaded by every importer, and
+the Lake configuration controls native compilation. The current decoupled boundary is 48 computation modules
+plus six extras (54). Import parsing fails closed on missing project modules (Grothe.*, GrotheKernel.* and
+GrotheCapsKernel.*) or unsupported syntax. This is a cache provenance check, not a full build manifest; CI runs
 its workflow and axiom-report checks separately.
 """
 import argparse, hashlib, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-STAMP = os.path.join(ROOT, "docs", "CAPS_VERIFIED.txt")
-PROJECT_PREFIXES = ("Grothe.", "GrotheKernel.")
-PROJECT_ROOTS = ("Grothe", "GrotheKernel", "GrotheCaps")
+MARK = os.path.join(ROOT, ".lake", "build", "caps-closure.sha")
+PROJECT_PREFIXES = ("Grothe.", "GrotheKernel.", "GrotheCapsKernel.")
+PROJECT_ROOTS = ("Grothe", "GrotheKernel", "GrotheCapsKernel", "GrotheCaps")
 CAP_ROWS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
 TOPS = [f"Grothe.LowerAnalytic.CapRow{k:02d}" for k in CAP_ROWS]
-EXTRA = ["Grothe/LowerAnalytic/CapNodes.lean", "GrotheCaps.lean", "lean-toolchain", "lake-manifest.json",
-         "lakefile.toml"]
+EXTRA = ["Grothe/LowerAnalytic/CapNodes.lean", "GrotheCaps.lean", "GrotheCapsKernel.lean", "lean-toolchain",
+         "lake-manifest.json", "lakefile.toml"]
 IMPORT = re.compile(r"\s*(?:public\s+)?(?:meta\s+)?import(?:\s+(.*))?$")
 MODULE = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(\.[A-Za-z_][A-Za-z0-9_']*)*$")
 
@@ -103,7 +105,7 @@ def closure(tops):
 
 
 def source_files():
-    """Sorted computation closure, then the five directly hashed assembly/config files."""
+    """Sorted computation closure, then the six directly hashed assembly/config files."""
     return [os.path.join(*module.split(".")) + ".lean" for module in closure(TOPS)] + EXTRA
 
 
@@ -121,13 +123,13 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     modes = parser.add_mutually_exclusive_group()
-    modes.add_argument("--check", action="store_true", help="check the verification stamp (default)")
+    modes.add_argument("--check-cache", action="store_true",
+                       help="check that the cached GrotheCaps build is verified for these sources (default)")
     modes.add_argument("--digest", action="store_true", help="print the current source hash and file count")
     modes.add_argument("--list", action="store_true", help="list the exact hashed source files, hash and count")
-    modes.add_argument("--write", metavar="NOTE", help="record a successful verification with its provenance")
+    modes.add_argument("--mark-cache", action="store_true",
+                       help="record that the GrotheCaps build in .lake/build was verified for these sources")
     args = parser.parse_args(argv)
-    if args.write is not None and not args.write.strip():
-        parser.error("--write requires a nonempty verification note")
     try:
         d, n = digest()
     except ClosureError as e:
@@ -140,21 +142,21 @@ def main(argv=None):
     if args.digest:
         print(f"sha256 {d}\nfiles {n}")
         return 0
-    if args.write is not None:
-        with open(STAMP, "w") as f:
-            f.write(f"sha256 {d}\nfiles {n}\nverified {args.write}\n")
-        print(f"recorded {d} ({n} files)")
+    if args.mark_cache:
+        os.makedirs(os.path.dirname(MARK), exist_ok=True)
+        with open(MARK, "w") as f:
+            f.write(d + "\n")
+        print(f"marked the cached GrotheCaps build as verified for sources {d} ({n} files)")
         return 0
-    if not os.path.exists(STAMP):
-        print(f"FAIL: GrotheCaps has no verification stamp (current sources {d}, {n} files)")
+    if not os.path.exists(MARK):
+        print(f"FAIL: no verified GrotheCaps build in the cache (current sources {d}, {n} files)")
         return 1
-    with open(STAMP) as stamp:
-        rec = dict(l.split(" ", 1) for l in stamp.read().splitlines() if " " in l)
-    if rec.get("sha256") != d:
-        print(f"FAIL: sources of GrotheCaps changed since the recorded verification ({rec.get('verified', '?')}).")
-        print(f"recorded {rec.get('sha256')}, current {d}. Rebuild GrotheCaps on a large machine and re-stamp.")
+    with open(MARK) as mark:
+        rec = mark.read().strip()
+    if rec != d:
+        print(f"FAIL: the cached GrotheCaps build was verified for sources {rec}; current sources are {d} ({n} files)")
         return 1
-    print(f"GrotheCaps sources unchanged since verification: {rec.get('verified', '?')} ({n} files)")
+    print(f"the cached GrotheCaps build is verified for the current sources {d} ({n} files)")
     return 0
 
 

@@ -8,10 +8,10 @@ The lower bound is `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K
 target `GrotheCaps` (see the README, "Node caps"). `CapsRest` is the vertex caps of **rows 12–15** (t = 0.84, 0.845,
 0.85, 0.855), plus any excluded-node caps of the other rows; the exclusion
 lists are empty. Rows 0–11 and 16–18 have 60 existing native range facts.
-Track A isolates their computation from the analytic proof layer. Ordinary CI
-checks the committed source stamp. A changed stamp on a `ready/` delivery
-automatically dispatches the heavy separate-target build and both axiom
-reports on the droplet runner (`AGENTS.md` §4).
+Track A isolates their computation from the analytic proof layer. The runner
+builds the separate target and checks both axiom reports. Ordinary CI replays
+that verified build when its cache marker matches the current computation
+sources; otherwise it dispatches the heavy runner job (`AGENTS.md` §4).
 Removing `CapsRest` would make the lower bound unconditional, apart from
 the pinned `native_decide` facts.
 
@@ -19,7 +19,7 @@ the pinned `native_decide` facts.
 
 | track | owner (23 Oct) | branch | status file |
 |---|---|---|---|
-| A. Decouple the heavy facts from the lower chain | Codex | `codex/caps-decouple` | `docs/CAPS_STATUS.md` (computation split and source stamp) |
+| A. Decouple the heavy facts from the lower chain | Codex | `codex/caps-decouple` | `docs/CAPS_STATUS.md` (computation split and verified build cache) |
 | B. Rows 12–15: why some localised pieces fail, and how to fix them | Claude worker | `work/caps-m` | `docs/CAPS_M_STATUS.md` on that branch |
 | C. Rows 12–15: the Lean pipeline (piece data, range facts, wiring) | Claude worker | `claude/caps-m-pipeline` | `docs/CAPS_M_PIPELINE.md` on that branch |
 
@@ -36,26 +36,34 @@ tables and checker definitions are separate from their soundness proofs.
 is a compatibility import. The 15 unchanged `vertexCapsRowKK` assembly
 proofs now live in `CapNodes`, alongside `CapsRest` and the final theorem.
 
-The stamp boundary is 53 files, down from 140: 48 local computation
-modules plus directly hashed `CapNodes.lean`, `GrotheCaps.lean`,
-`lean-toolchain`, `lake-manifest.json` and `lakefile.toml`. The five extras'
-imports are not traversed. Changes confined to the analytic or lower-proof
-layer outside that set leave the computation hash unchanged. This is a
-source-verification boundary, not a complete dependency or artifact manifest;
-Lake and the default build check ordinary proof dependencies separately.
+The cache provenance boundary is 54 files, down from 140: 48 local
+computation modules plus directly hashed `CapNodes.lean`, `GrotheCaps.lean`,
+`GrotheCapsKernel.lean`, `lean-toolchain`, `lake-manifest.json` and
+`lakefile.toml`. The six extras' imports are not traversed. Changes confined
+to the analytic or lower-proof layer outside that set leave the computation
+hash unchanged. This is not a complete dependency or artifact manifest;
+Lake checks ordinary proof dependencies, while the explicit `GrotheCaps`
+replay and caps audit check final assembly against the current proof layer.
 
-Deliver through `ready/`. A stale source stamp causes CI to dispatch the
-heavy job, which builds both targets and checks both axiom reports before
-committing `docs/CAPS_VERIFIED.txt` onto the ready branch and repeating its
-check. The heavy job checks the final `CapNodes` assembly. A read-only digest
-or unchanged theorem text is not a completed verification record; acceptance
-requires that successful heavy CI run and its recorded stamp.
+The numerical checker is the independent precompiled `GrotheCapsKernel`
+library, retaining the `GrotheKernel` Lean namespace. Its root is hashed
+because every importer loads the library's shared object. Other checkers
+remain outside that library.
+
+The combined split and workflow change uses one runner `caps` build of
+the combined candidate. The runner builds both targets and checks both
+axiom reports before marking and saving its verified branch cache. Ordinary
+CI then replays that cache. This workflow delivery uses a pull request after
+the combined branch is green; the user merges it. The master `warm` run
+reuses the runner's persistent build and refreshes the canonical master
+cache. Do not run a separate manual droplet verification.
 
 The scratch-branch comment probe in `Grothe/Lower/RowCheck.lean` leaves
-the 53-file digest unchanged. A comment in `CapRangeDefs.lean` changes it;
+the 54-file digest unchanged. A comment in `CapRangeDefs.lean` changes it;
 the negative-control edit is restored and neither scratch edit is delivered.
-No stamp is written from the probe. The configured default and caps CI checks
-remain the acceptance gate for the merged candidate.
+No marker is written from the probe. A read-only digest or unchanged theorem
+text is not verification; successful runner and ordinary CI checks remain
+the acceptance evidence.
 
 The rows 12–15 localized-piece predicates are separated too:
 `CapCoverDefs` and `CapConstrDefs` contain the rational coverage and
@@ -125,9 +133,10 @@ This does not depend on B's choice of fix. B's choice only changes the data.
   ```sh
   lake build GrotheCaps && lake env lean scratch/AxiomsCaps.lean | python3 scripts/check_axioms.py --caps
   ```
-  This runs automatically on the droplet's CI runner (job `heavy`, modes `warm`/`caps`). In `caps` mode,
-  after both targets and reports pass, the runner writes the source stamp with
-  `scripts/caps_stamp.py --write "<run evidence>"`, commits it onto the ready branch and repeats its check.
-  Do not launch a separate manual droplet verification for this delivery.
-- **Delivery:** through `ready/<agent>-<topic>` (`AGENTS.md` §3). A change to the caps closure makes CI dispatch the
-  rebuild to the droplet automatically (hours) and re-check afterwards.
+  This runs automatically on the droplet's CI runner (job `heavy`, modes `warm`/`caps`). After both targets
+  and reports pass, the runner records `.lake/build/caps-closure.sha` with `scripts/caps_stamp.py --mark-cache`
+  and saves the verified build cache. A branch `caps` run repeats its ordinary CI check.
+  Do not launch a separate manual droplet verification.
+- **Delivery:** normally through `ready/<agent>-<topic>` (`AGENTS.md` §3); workflow changes use a pull request
+  after the combined branch is green, merged by the user (§4a). Changed cap sources dispatch the runner rebuild
+  automatically, and later checks and the master warm run reuse that verified build.

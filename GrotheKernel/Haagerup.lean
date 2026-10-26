@@ -1,4 +1,4 @@
-import GrotheKernel.Basic
+import GrotheCapsKernel.Basic
 
 /-!
 # Haagerup's kernel composed with a preprocessor: the computable part

@@ -1,6 +1,6 @@
 import Grothe.Lower.RowDataTypes
 import Grothe.LowerAnalytic.CapPieceDefs
-import GrotheKernel.CapCheck
+import GrotheCapsKernel.CapCheck
 
 /-!
 # Computable row-node cap checks

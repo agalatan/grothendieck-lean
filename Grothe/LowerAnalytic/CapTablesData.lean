@@ -1,6 +1,6 @@
 import Mathlib.Data.Rat.Floor
 import Mathlib.Data.Nat.Choose.Basic
-import GrotheKernel.CapCheck
+import GrotheCapsKernel.CapCheck
 
 /-!
 # Computable shared tables for the node-cap checker

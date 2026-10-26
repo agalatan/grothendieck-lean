@@ -1,5 +1,5 @@
 import Mathlib
-import GrotheKernel.Basic
+import GrotheCapsKernel.Basic
 
 /-!
 # Soundness of the fixed-point interval kernel

@@ -157,7 +157,8 @@ energies, and are chosen to make the kernel nearly linear. The slope is c = 7119
   K ≤ 1/(c − ‖H − c·t‖); the ℓ¹ contraction and linearity of the kernel composition; that the
   head through degree 501 depends only on energies with n + 3m ≤ 501; the evaluation of the
   head of the stored table of the truncation (21,168 exact dyadic entries) by a sound
-  fixed-point interval checker (`GrotheKernel/`; soundness in
+  fixed-point interval checker (`GrotheKernel/`; the cap checker and shared basics have their own
+  precompiled library `GrotheCapsKernel/`; soundness in
   `Grothe/Upper/IntervalSound.lean`); the tail bound by Cauchy–Schwarz from a weighted
   square-sum bound; the assembly of the budgets; and the endpoint arithmetic.
 * The selected comparison is proved in `Grothe/UpperChaos/LocalizedComparison.lean`.
@@ -289,23 +290,29 @@ default `Grothe` target builds that proof layer. `CapNodes` contains the
 15 unchanged row-assembly proofs and final `CapsRest` theorem; it and the
 heavy rows are excluded from the generated default root.
 
-The source-stamp boundary is 53 files: 48 local computation modules,
-plus `CapNodes.lean`, `GrotheCaps.lean`, `lean-toolchain`,
-`lake-manifest.json` and `lakefile.toml`. Those five extras are hashed
-directly, without traversing their imports. This records the verified
-computation sources, not every analytic dependency or compiled artifact.
-Lake checks ordinary dependencies separately. The checker stays in
-`GrotheKernel/CapCheck.lean`.
+The cache provenance boundary is 54 files: 48 local computation modules,
+plus `CapNodes.lean`, `GrotheCaps.lean`, `GrotheCapsKernel.lean`, `lean-toolchain`,
+`lake-manifest.json` and `lakefile.toml`. Those six extras are hashed directly,
+without traversing their imports. This identifies the cached computation
+sources, not every analytic dependency or compiled artifact. Lake checks
+ordinary dependencies separately. The numerical checker is the independent
+precompiled `GrotheCapsKernel` library (`Basic`, `CapPoly`, `CapCheck`);
+its constants retain the `GrotheKernel` namespace. Other kernel checkers
+stay outside that library, whose root is pinned because every importer
+loads its shared object.
 
-Ordinary CI builds the default `Grothe` target and checks the committed
-`docs/CAPS_VERIFIED.txt` with `scripts/caps_stamp.py --check` (the default).
-If a `ready/` delivery changes the stamped sources, CI dispatches the
-heavy job on the droplet runner. It builds `Grothe` and `GrotheCaps` for
-the delivery merged with current master, checks both axiom reports,
-then records the new stamp with `scripts/caps_stamp.py --write "<run evidence>"`
-and repeats the ready check. The heavy job checks the separate `CapNodes`
-assembly; the ordinary job checks its source stamp. Successful builds
-and both reports establish verification; a digest alone does not.
+The runner's heavy CI job builds `Grothe` and `GrotheCaps` and checks both
+axiom reports before recording `.lake/build/caps-closure.sha` with
+`scripts/caps_stamp.py --mark-cache`. Ordinary CI restores that cache and
+calls `--check-cache` (the default). A match permits a `GrotheCaps` replay
+and caps audit, including `CapNodes`; Lake reuses native results only when
+its dependency hashes permit it. A missing or mismatched marker fails
+closed and dispatches the heavy job. A branch `caps` run saves the verified
+branch cache and repeats the check. After merge, a master `warm` run reuses
+the runner's persistent build and refreshes the master cache. One runner
+build supplies the verification and subsequent replay; no independent
+manual droplet verification is required. Builds and both reports establish
+verification; a read-only digest alone does not.
 
 `CapsRest` still comprises the vertex caps of rows 0.84, 0.845, 0.85,
 0.855 and any excluded-node caps of the other rows; the exclusion lists
@@ -501,9 +508,9 @@ yet wired into `GrotheCaps` or `CapsRest`.
 |---|---|
 | `CapCoord`, `CapLinAlg`, `CapMajorant`, `CapPolar` | real coordinates of the fibre variable; exact quadratic-form checks (Loewner bound, LDLᵀ); the anchored-pair majorant of \|L + p\| + \|L − p\|; polar cells of the complex Gaussian |
 | `CapSym`, `CapGrid`, `CapGridT`, `CapGridOK`, `CapTables`, `CapTablesMk` | symbolic polynomials over ℚ(√2); cell prices on uniform polar grids and the exact cell decomposition of the integrated majorant; verified interval tables (`tablesOK_mk`) |
-| `CapPiece`, `CapCheckSound` | node certificate soundness (`pot_le_of_pieceOK`, `pot_le_of_nodeOK`) for the precompiled checker `GrotheKernel/CapCheck.lean` |
+| `CapPiece`, `CapCheckSound` | node certificate soundness (`pot_le_of_pieceOK`, `pot_le_of_nodeOK`) for the precompiled checker `GrotheCapsKernel/CapCheck.lean` |
 | `CapSymmetry`, `CapHull`, `CapChordData` | the symmetries S_c, S_- of the fibre integral; chord nodes from vertex caps by convexity (`capChords_check`, `nodeCaps_of_vertexCaps`) |
-| `CapRangeDefs`, `CapChords`, `CapRecipeData`, `CapRows`, `CapAssembly`, `CapRow00`–`CapRow11`, `CapRow16`–`CapRow18`, `CapNodes` | computation-only definitions and generated rational data; range-check soundness and convexity; 60 separate-target range facts verified by the heavy CI job; final `lower_bound_of_capsRest` assembly |
+| `CapRangeDefs`, `CapChords`, `CapRecipeData`, `CapRows`, `CapAssembly`, `CapRow00`–`CapRow11`, `CapRow16`–`CapRow18`, `CapNodes` | computation-only definitions and generated rational data; range-check soundness and convexity; 60 separate-target range facts verified on the runner and replayed by CI from its cache; final `lower_bound_of_capsRest` assembly |
 | `CapCoverDefs`, `CapConstrDefs`, `CapPieceRange`; `CapCover`, `CapConstr`, `CapPieceNodes` | localised caps of rows 12–15 (route M): computable coverage and constrained-piece checks separated from symmetry, S-lemma and piece-node soundness (issue #12) |
 
 **`Grothe/Lower/Cert/`: the original lower certificate in 13 single-threaded chunks.** `Rows0`–`Rows4`, `Batches0`–`Batches2`,
