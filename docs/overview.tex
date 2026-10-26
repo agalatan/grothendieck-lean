@@ -104,7 +104,7 @@ $\KG\le1/(c-\|r\|_A)$. Haagerup's choice $f=\ph$ gives $1.40491$. Lean proves Ha
 this gives the unconditional bound $\KG\le1.404909543$ (\lean{haagerup\_bound}), which needs no hypothesis. Our sharp rounding is a smoothed two-coordinate phase rounding,
 $F_0=\ph\bigl(z+\sqrt{1+a^2}\,v(|z|^2)\,w\bigr)$ with a twelve-term Laguerre profile $v$, multiplied by the cubic Taylor
 polynomial of a damped polynomial phase $\varphi$: $T=F_0P_3(\varphi)$, $P_3(x)=1+ix-x^2/2-ix^3/6$. The identity
-$|P_3(x)|^2=1-x^4(3-x^2)/36$ and the proved bound $\varphi^2\le99/100$ give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
+$|P_3(x)|^2=1-x^4(3-x^2)/36$ and the proved bound $\varphi^2\le99/100$ (hence $|\varphi|<1$) give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
 Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $41$ and
 $\tau$ of degree $15$ with zero linear coefficient (any odd preprocessors of Wiener norm $\le1$ are realised by tensor
 powers). Compared with $c\,t$, $c=7119483103461/10^{13}$, the residual is at most
@@ -226,7 +226,7 @@ nothing: this bound has no hypothesis. The sharper conditional bound above uses 
 \end{tabular}
 \end{center}
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}.\par
-The native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}, check the upper head, selected-band masses, phase cover, Haagerup bound,
+The native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}, check the upper head, selected-band masses, the six-part phase cover, Haagerup bound,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and both finite covers.
 The native-fact inventory and the report \path{scratch/Axioms.lean} enumerate the checked declarations.
 No \lean{sorry}; CI builds the default target and checks its axiom report. The 60 additional cap-range checks belong to
@@ -319,8 +319,30 @@ most $e$, the complete energy-spectrum discrepancy is at most
 $2\|x\|e+e^2$. A pure symmetry has zero price, including its entire tail.
 The kernel is preserved only when its correlation operator is transported
 too; rotating only the response can change the anisotropic kernel used here.
-These eleven Lean results change neither endpoint. Gaussian applications and
-new numerical searches still require their own certified integrations.
+An additional polarized certificate prices the whole omitted energy change
+by $AB$, where $A,B$ bound the approximation errors of the response difference
+and sum by retained polynomials. These may be certified with positive
+squared-error integrals, avoiding subtraction of nearly equal moments in a
+residual Gram matrix. Two overlapping coordinate tests either keep the phase
+argument away from zero or resolve it by an affine polar chart. Lean checks
+the exact transformed Gaussian density and a Bernstein range enclosure.
+A symmetry-invariant cutoff preserves admissibility and costs at most its
+omitted mass in squared $L^2$ distance. This lets an upper construction use
+compact chart domains with an explicit full-spectrum allowance.
+An exact rational phase update has unit modulus for every real field, with
+a cancellation-free increment formula. A finite radius jet retains the radius
+and angle as independent polynomial variables until cancellations finish.
+Lean checks carry-free coefficient indexing, exact translation, and the
+finite remainder bound on complex patches. A norm-only homogeneous transport
+certificate also has a proved ceiling: its certified score cannot exceed
+$b/N^2$ when the anchor has norm $N$ and score at least $b\le N^2$.
+This limits that certificate formula, not the corrected response's true score.
+The update assembly keeps the signed retained changes, passes the positive
+error price through contractive smoothing and the bivariate kernel, and
+connects the entire score to the transfer theorem. The reference error is
+the inherited anchor error plus finite weighted retained-data errors,
+charged once. These forty-seven Lean results change neither endpoint.
+The compact Gaussian integrals still require certification.
 
 \subsection{Inequalities for cubic Gaussian chaos}
 Throughout, $q$ is a circular cubic Wick polynomial (bidegree $(2,1)$) in any number of complex Gaussian variables,

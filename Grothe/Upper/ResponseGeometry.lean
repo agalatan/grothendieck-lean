@@ -114,5 +114,55 @@ theorem orbit_energy_zero {ι : Type*}
     ∑' i, |‖Q i (U x)‖ ^ 2-‖P i x‖ ^ 2| = 0 := by
   simp_rw [energy_transport U _ _ (htrans _) x, sub_self, abs_zero, tsum_zero]
 
+/-- Polarization keeps the same increment and midpoint, rather than bounding
+two response tails separately. Complex Hilbert spaces may be viewed as real. -/
+theorem energy_difference (x y : H) :
+    ‖y‖ ^ 2 - ‖x‖ ^ 2 = inner ℝ (y-x) (y+x) := by
+  simp only [inner_sub_left, inner_add_right, real_inner_self_eq_norm_sq,
+    real_inner_comm y x]
+  ring
+
+/-- A finite collection of energy differences is bounded by the product of
+the increment and midpoint energy radii. No Gram eigenvalue repair is needed. -/
+theorem finite_polarized_comparison {ι : Type*} (S : Finset ι)
+    (x y : ι → H) (A B : ℝ) (hA : 0 ≤ A) (hB : 0 ≤ B)
+    (ha : ∑ i ∈ S, ‖y i-x i‖^2 ≤ A^2)
+    (hb : ∑ i ∈ S, ‖y i+x i‖^2 ≤ B^2) :
+    ∑ i ∈ S, |‖y i‖^2-‖x i‖^2| ≤ A*B := by
+  calc
+    _ = ∑ i ∈ S, |inner ℝ (y i-x i) (y i+x i)| := by
+      simp_rw [energy_difference]
+    _ ≤ ∑ i ∈ S, ‖y i-x i‖*‖y i+x i‖ :=
+      sum_le_sum fun i _ => abs_real_inner_le_norm _ _
+    _ ≤ A*B := BandComparison.band_cross (V := fun _ : ι => H)
+      S (fun i => y i-x i) (fun i => y i+x i) hA hB ha hb
+
+/-- Positive approximation-error integrals suffice to price the entire
+omitted spectrum. The approximating polynomials vanish in the measured
+blocks; their coefficients need not be exact projections of the responses. -/
+theorem tail_of_approximants {ι : Type*} (P : ι → H →ₗ[ℝ] H)
+    (hbessel : ∀ (S : Finset ι) z, ∑ i ∈ S, ‖P i z‖^2 ≤ ‖z‖^2)
+    (x y p q : H) (hp : ∀ i, P i p = 0) (hq : ∀ i, P i q = 0)
+    (A B : ℝ) (hA : 0 ≤ A) (hB : 0 ≤ B)
+    (ha : ‖(y-x)-p‖ ≤ A) (hb : ‖(y+x)-q‖ ≤ B) :
+    ∑' i, |‖P i y‖^2-‖P i x‖^2| ≤ A*B := by
+  apply Real.tsum_le_of_sum_le (fun i => abs_nonneg _)
+  intro S
+  apply finite_polarized_comparison S (fun i => P i x) (fun i => P i y) A B hA hB
+  · calc
+      _ = ∑ i ∈ S, ‖P i ((y-x)-p)‖^2 := by simp only [map_sub, hp, sub_zero]
+      _ ≤ ‖(y-x)-p‖^2 := hbessel S _
+      _ ≤ A^2 := pow_le_pow_left₀ (norm_nonneg _) ha 2
+  · calc
+      _ = ∑ i ∈ S, ‖P i ((y+x)-q)‖^2 := by
+        simp only [map_sub, map_add, hq, sub_zero]
+      _ ≤ ‖(y+x)-q‖^2 := hbessel S _
+      _ ≤ B^2 := pow_le_pow_left₀ (norm_nonneg _) hb 2
+
+/-- Scalar form of the two-by-two Gram trace-norm formula for one response
+increment. It avoids subtracting the two large terms `4*b^2`. -/
+theorem polarized_gram_identity (a b c : ℝ) :
+    (2*b+c)^2+4*(a*c-b^2) = c*(4*a+4*b+c) := by ring
+
 end
 end Grothe.Upper.ResponseGeometry
