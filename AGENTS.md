@@ -5,8 +5,9 @@ machines (the user's laptop and the droplet). These rules keep them from overwri
 them before doing anything.
 
 **The five rules that matter most:**
-1. Never commit or push to `master`. Work in your own worktree and branch; deliver through `ready/<agent>-<topic>`
-   (§7). Only CI moves `master`.
+1. Never commit or push to `master`. Work in your own worktree and branch; deliver by pushing `ready/<agent>-<topic>`
+   (§7). Only CI moves `master`. **The delivery check is the test:** do not check the same tree beforehand (no
+   cloud check, droplet or full local build, no extra branch push); if it fails, fix and push again.
 2. Before every push, sync with master and combine with it (§6).
 3. Never run a full build (`lake build` or `lake build Grothe`) on the laptop. Build only your modules; full builds
    run in CI (§5, §8).
@@ -141,8 +142,10 @@ especially a re-push after a CI failure or a conflict):
      are union-merged by git (`.gitattributes`); keep them sorted and duplicate-free (CI checks);
    - shared scripts: take master's version and re-apply only your intended change;
    - `README.md` needs a hand merge: describe the combined state.
-5. **Re-check what you touched:** build the changed modules and the modules that import them (never the root, §5),
-   run the script tests (`python3 scripts/test_*.py`) and `python3 tools/gen_root_imports.py --check`. Only then push.
+5. **Quick local checks only (seconds to minutes):** `python3 tools/gen_root_imports.py --check`, the script tests
+   (`python3 scripts/test_*.py`) if you touched scripts, and the Lean modules you are editing anyway while you work.
+   Do not repeat CI's full check before pushing (§7): a red check costs one more push, a duplicate check costs a
+   full build every time.
 
 If master moved again meanwhile, repeat from 1. Report the master commit you combined with.
 
@@ -153,8 +156,8 @@ Deliver when the user says the work should go into master.
 1. **Commit everything** on your branch, so the tree is clean. Research-only files belong in `handoff/`
    (git-ignored), not in the repository.
 2. **Combine with a fresh master** (§6, all five steps).
-3. **Lean coverage:**
-   - no `sorry`, no warnings; every module you added or changed builds, with the modules that import them;
+3. **Lean coverage** (CI checks all of it; get it right, but do not pre-run CI's check):
+   - no `sorry`, no warnings;
    - every headline theorem has a `#print axioms` line in `scratch/Axioms.lean`, and is in
      `data/axioms/required.txt` if it is a main result;
    - every new `native_decide` fact is in `data/axioms/native.txt`;
@@ -162,17 +165,20 @@ Deliver when the user says the work should go into master.
      target, `Grothe`; only generated research modules that no proof uses yet go in `data/root-imports-exclude.txt`.
 4. **Documentation:** if a bound, a hypothesis or the axiom report changed, update `README.md`,
    `docs/overview.tex` + `OVERVIEW.pdf` and `docs/LEAN_DETAILS.md` in the same delivery.
-5. **Push your branch** (`git push -u origin <branch>`). CI checks it (§8); this push merges nothing.
-6. **Deliver:** `git push origin HEAD:ready/<agent>-<topic>` (`<agent>` = `codex` or `claude`), with a new name each
-   time (e.g. `ready/codex-<topic>-2`). A delivery that changes `.github/workflows/` goes through a pull request
-   instead (§9).
+5. **Deliver: push only the `ready/` branch,** `git push origin HEAD:ready/<agent>-<topic>` (`<agent>` = `codex` or
+   `claude`). That one check is the test and the guard. Do not also push your work branch at the same moment, and
+   do not run `scripts/cloud.sh check`, a droplet build or a full local build first: each would check the same
+   tree again. A delivery that changes `.github/workflows/` goes through a pull request instead (§9).
    - CI merges it into the **current** master and checks the **merged** tree. Only if everything is green does it
-     fast-forward `master` to exactly that checked merge and delete the `ready/` branch.
-   - If the check fails, master is untouched: fix, commit, do §6 again, and push a new `ready/` name.
+     fast-forward `master` to exactly that checked merge and delete the `ready/` branch. Then push your work branch
+     too if you keep working on it (§14 otherwise).
+   - If the check fails, master is untouched. Read the log, fix, commit, combine with master again (§6), and push
+     to the **same** `ready/` branch: the new push supersedes the failed run. A red delivery check is normal and
+     cheap; do not be afraid of it.
    - If master moved while CI was checking, CI re-dispatches the delivery against the new master by itself (a
      notice, not a failure). Do nothing.
    - Several `ready/` branches may be checked at the same time; the first green one moves master.
-7. **After the merge:** `scripts/sync_master.sh`, then either continue on the branch (§6 before the next delivery)
+6. **After the merge:** `scripts/sync_master.sh`, then either continue on the branch (§6 before the next delivery)
    or, if you are done, clean up completely (§14).
 
 Report to the user: the `ready/` branch name, the CI run, and the resulting master commit.
@@ -275,7 +281,7 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 - **Results:** `handoff/cloud/<id>/<shard>/` (`log.txt`, `summary.json`, and the files written to `$OUT`); artifacts
   stay on GitHub for 7 days. `cloud.sh` exits 0 iff every shard succeeded.
 - **Trust:** cloud jobs only read the master cache, never write one. A cloud `check` is advice; only the delivery
-  check (§7) merges.
+  check (§7) merges. Never use it as a pre-check before delivering: push the `ready/` branch instead.
 - **Speed:** Lean compiles each module on one thread after its imports, so wall time follows the longest dependency
   chain, not the core count; more cores or shards help only where many modules are independent.
 - **Droplet** (`--runner droplet`): script jobs only, in a throwaway directory, never in the runner's workspace. It
