@@ -65,7 +65,10 @@ import Grothe.Haagerup.Power
 #print axioms Grothe.Upper.PowerTail.weighted_composition
 #print axioms Grothe.Upper.PowerTail.weighted_tail_bound
 #print axioms Grothe.Upper.ResolventCertificate.completedHead_le_of_check
+#print axioms Grothe.Upper.ResolventCertificate.completedPolynomial_eq_hornerWithTail
+#print axioms Grothe.Upper.ResolventCertificate.hornerWithTailP_eq
 #print axioms Grothe.Upper.ResolventCertificate.memB_completedHeadI
+#print axioms Grothe.Upper.ResolventCertificate.memB_hornerWithTailI
 #print axioms Grothe.Upper.ResolventCertificate.natDegree_hornerP_le
 #print axioms Grothe.Upper.ResolventCertificate.polynomial_residual_eq_l1
 #print axioms Grothe.Upper.ResolventCertificate.summable_abs_coeff

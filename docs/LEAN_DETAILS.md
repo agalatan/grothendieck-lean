@@ -625,7 +625,7 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
 The complete registry has 84 native facts: 24 outside the separate 60 cap-range
-facts. There are 578 default axiom-report entries.
+facts. There are 581 default axiom-report entries.
 
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in

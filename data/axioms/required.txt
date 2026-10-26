@@ -277,7 +277,10 @@ Grothe.Upper.RadiusJet.patch_bound
 Grothe.Upper.RadiusJet.translate_monomial
 Grothe.Upper.RadiusJet.unpack
 Grothe.Upper.ResolventCertificate.completedHead_le_of_check
+Grothe.Upper.ResolventCertificate.completedPolynomial_eq_hornerWithTail
+Grothe.Upper.ResolventCertificate.hornerWithTailP_eq
 Grothe.Upper.ResolventCertificate.memB_completedHeadI
+Grothe.Upper.ResolventCertificate.memB_hornerWithTailI
 Grothe.Upper.ResolventCertificate.natDegree_hornerP_le
 Grothe.Upper.ResolventCertificate.polynomial_residual_eq_l1
 Grothe.Upper.ResolventCertificate.summable_abs_coeff

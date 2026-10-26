@@ -154,7 +154,7 @@ lemma completed_norm_of_check
     (hc : completedHeadOK cutoff start pl rl (haagList start) differences HaagerupPower.slope headCap = true) :
     l1 (completed-C (HaagerupPower.slope : ℝ)) ≤ (headCap : ℝ) :=
   completedHead_le_of_check cutoff start pl rl (haagList start) differences HaagerupPower.slope headCap
-    degree_completed hc
+    (by rw [haagList_eq]; simp) degree_completed hc
 
 lemma remainder_bound
     (hcoeff : haagR start ≤ 1/10000 ∧ iterDiff order haagR start ≤ 37/10000000000000) :

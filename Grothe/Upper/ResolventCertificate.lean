@@ -36,6 +36,40 @@ def completedPolynomial (P R : ℝ[X]) (k : ℕ) (rs ds : List ℚ) : ℝ[X] :=
   P * hornerP (X * P ^ 2) rs +
     (R * compTerm P k) * hornerP (-(R * (X * P ^ 2))) ds
 
+/-- Polynomial Horner evaluation with a prescribed final tail. -/
+def hornerWithTailP (Y tail : ℝ[X]) : List ℚ → ℝ[X]
+  | [] => tail
+  | r :: rs => C (r : ℝ) + Y * hornerWithTailP Y tail rs
+
+lemma hornerWithTailP_eq (Y tail : ℝ[X]) (rs : List ℚ) :
+    hornerWithTailP Y tail rs = hornerP Y rs + Y ^ rs.length * tail := by
+  induction rs with
+  | nil => simp [hornerWithTailP, hornerP]
+  | cons r rs ih =>
+    simp only [hornerWithTailP, hornerP, ih, List.length_cons, pow_succ]
+    ring
+
+/-- Outward Horner arithmetic also encloses an arbitrary initial polynomial tail. -/
+theorem memB_hornerWithTailI {N : ℕ} {Y tail : ℝ[X]} {y t : List Ival}
+    (hy : memB N Y y) (ht : memB N tail t) (rs : List ℚ) :
+    memB N (hornerWithTailP Y tail rs) (hornerWithTailI N y t rs) := by
+  induction rs with
+  | nil => exact ht
+  | cons r rs ih =>
+    exact memB_take (memB_add (memB_single (mem_ofRatI r)) (memB_conv hy ih))
+
+/-- Folding the head over its resolvent correction avoids a separate high power. -/
+lemma completedPolynomial_eq_hornerWithTail (P R : ℝ[X]) (k : ℕ) (rs ds : List ℚ)
+    (hlen : rs.length = k) :
+    completedPolynomial P R k rs ds =
+      P * hornerWithTailP (X*P^2) (R*hornerP (-(R*(X*P^2))) ds) rs := by
+  unfold completedPolynomial
+  rw [hornerWithTailP_eq, hlen]
+  have ht : compTerm P k = P*(X*P^2)^k := by
+    simpa [compTerm] using compTerm_geometric P 0 k
+  rw [ht]
+  ring
+
 /-- A coarse degree bound that also covers empty coefficient lists. -/
 lemma natDegree_hornerP_le (Y : ℝ[X]) (rs : List ℚ) :
     (hornerP Y rs).natDegree ≤ rs.length * Y.natDegree := by
@@ -49,7 +83,7 @@ lemma natDegree_hornerP_le (Y : ℝ[X]) (rs : List ℚ) :
     simpa only [Nat.add_mul, Nat.one_mul, Nat.add_comm] using h
 
 /-- Every retained interval encloses the corresponding completed coefficient. -/
-theorem memB_completedHeadI (N k : ℕ) (pl rl rs ds : List ℚ) :
+theorem memB_completedHeadI (N k : ℕ) (pl rl rs ds : List ℚ) (hlen : rs.length = k) :
     memB N (completedPolynomial (ofListQ pl) (ofListQ rl) k rs ds)
       (completedHeadI N k pl rl rs ds) := by
   have hp := memB_ofListQ pl N
@@ -58,23 +92,21 @@ theorem memB_completedHeadI (N k : ℕ) (pl rl rs ds : List ℚ) :
       (zeroI :: convI (pl.map ofRatI) (pl.map ofRatI)) := by
     rw [sq]
     exact memB_mono (memB_X_mul (memB_conv hp hp)) (Nat.le_succ N)
-  have ht : memB N (compTerm (ofListQ pl) k)
-      (List.replicate k zeroI ++ polyPowI (pl.map ofRatI) (2*k+1)) := by
-    simpa only [compTerm, shiftX] using
-      (memB_shiftX (K := N) (k := k) (PowerTail.mem_polyPowI pl (2*k+1) (N-k)))
-  have hh := memB_conv hp (memB_hornerI ha rs)
-  have hc := memB_conv (memB_conv hr ht)
-    (memB_hornerI (memB_neg (memB_conv hr ha)) ds)
-  exact memB_add hh hc
+  have ht := memB_conv hr (memB_hornerI (memB_neg (memB_conv hr ha)) ds)
+  have hh := memB_conv hp (memB_hornerWithTailI ha ht rs)
+  have htake : rs.take k = rs := by rw [← hlen, List.take_length]
+  rw [completedPolynomial_eq_hornerWithTail _ _ _ _ _ hlen]
+  simpa only [completedHeadI, htake] using hh
 
 /-- Acceptance bounds the complete residual when its degree is below `N`. -/
 theorem completedHead_le_of_check (N k : ℕ) (pl rl rs ds : List ℚ) (slope cap : ℚ)
+    (hlen : rs.length = k)
     (hdeg : (completedPolynomial (ofListQ pl) (ofListQ rl) k rs ds -
       C (slope : ℝ)).natDegree < N)
     (hc : completedHeadOK N k pl rl rs ds slope cap = true) :
     l1 (completedPolynomial (ofListQ pl) (ofListQ rl) k rs ds -
       C (slope : ℝ)) ≤ (cap : ℝ) := by
-  have hb := memB_add (memB_completedHeadI N k pl rl rs ds)
+  have hb := memB_add (memB_completedHeadI N k pl rl rs ds hlen)
     (memB_single (N := N) (mem_neg (mem_ofRatI slope)))
   have hs : memB N (completedPolynomial (ofListQ pl) (ofListQ rl) k rs ds -
       C (slope : ℝ))
