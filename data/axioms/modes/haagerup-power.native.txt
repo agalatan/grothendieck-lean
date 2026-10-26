@@ -1,0 +1,2 @@
+# --haagerup-power: the only native_decide facts this audit allows (sorted; empty = none).
+Grothe.HaagerupPower.check._native.native_decide.ax_1_1
