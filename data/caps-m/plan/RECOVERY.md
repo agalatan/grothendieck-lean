@@ -13,6 +13,11 @@ lock and recorded process groups. Exit 75 means a checkpoint pause or unfinished
 repairs, not a completed pass. The previous delivery is owned by another AI.
 The user removed the timer; do not recreate it.
 
+The snapshot has 28 completed centres (15 historical and 13 new), all with zero
+best residual. This is partial coverage, not the final remaining maximum.
+`cover-baseline-codex-15b7.json` records an exact replay of all 10,762 boxes at
+the unchanged padding and cover, including the approximately 4.50e-14 margin.
+
 ## Resume
 
 1. Read current `AGENTS.md`. Reuse the existing worktree and its private build.

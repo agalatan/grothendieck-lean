@@ -1,0 +1,187 @@
+{
+  "format": "caps-cover-sensitivity/v1",
+  "agent_id": "codex-15b7",
+  "scope": "Read-only research sensitivity, not a Lean certificate or delivery.",
+  "baseline": {
+    "boxes": 10762,
+    "actual_upper": {
+      "exact": "53595747713458774816160475333517656023260599421204859741770416074989873961183751306378685119912469707433400174082517436282954192340563256406123377999202186307019860093/75125001453152514910038803905299204345028691432072058386313861530160341125968182079490047459343075199326522661953642556769839401723628198297600000000000000000000000000",
+      "decimal": "0.713420920821955"
+    },
+    "generated_data_binding": {
+      "status": "PASS_EXACT_GENERATED_DATA_BINDING",
+      "module_sha256": {
+        "Grothe/Lower/MixedData.lean": "73b0ff40bc9df24d3458719e257092c89acbb851d8ba0874cf241084098319ab",
+        "Grothe/Research/LawNodeData.lean": "8b3f40a304b8ecdc15b79833ad7ee0ebf9eddd90bc26bb43a5399fbf00b81861"
+      }
+    },
+    "majorant_replay": {
+      "finite_bernstein_depth": 9,
+      "tail": "Nonnegative Taylor coefficients; conservative versus Lean tailOn"
+    },
+    "worst_boxes": [
+      9868
+    ],
+    "target": {
+      "exact": "356710460411/500000000000",
+      "decimal": "0.713420920822"
+    },
+    "lower": {
+      "exact": "56067881993/40000000000",
+      "decimal": "1.401697049825"
+    },
+    "margin": {
+      "exact": "3380465764492640352392025993713018273690015650566420159718530210105449044463338716548608479318817655700862044831043554165146778115226793425013692980139907/75125001453152514910038803905299204345028691432072058386313861530160341125968182079490047459343075199326522661953642556769839401723628198297600000000000000000000000000",
+      "decimal": "4.499787952218114e-14"
+    }
+  },
+  "per_node": {
+    "changes": [],
+    "applied_changes": [],
+    "chord_audit": {
+      "status": "PASS_EXACT_CHORDS",
+      "baseline_chords_checked": 505,
+      "requested_shortfalls": [],
+      "remaining_shortfalls": [],
+      "minimal_interior_increment_plan": [],
+      "propagation_requested": false,
+      "propagated_interior_increments": [],
+      "scope": "Fixed current chord mapping; endpoints are non-chord vertices. No table or chord data is edited. A changed lower-hull regeneration would require its own vertex-obligation audit."
+    },
+    "status": "PASS_EXACT_SOURCE_DEPENDENCIES",
+    "unchanged_outer_upper": {
+      "exact": "53595747713458774816160475333517656023260599421204859741770416074989873961183751306378685119912469707433400174082517436282954192340563256406123377999202186307019860093/75125001453152514910038803905299204345028691432072058386313861530160341125968182079490047459343075199326522661953642556769839401723628198297600000000000000000000000000",
+      "decimal": "0.713420920821955"
+    },
+    "unchanged_outer_margin": {
+      "exact": "3380465764492640352392025993713018273690015650566420159718530210105449044463338716548608479318817655700862044831043554165146778115226793425013692980139907/75125001453152514910038803905299204345028691432072058386313861530160341125968182079490047459343075199326522661953642556769839401723628198297600000000000000000000000000",
+      "decimal": "4.499787952218114e-14"
+    },
+    "warning": "Unchanged outer arithmetic is valid only if the chord audit and all affected source proofs pass. Propagation, if requested, is in memory only.",
+    "source_audit": {
+      "status": "PASS_EXACT_SOURCE_DEPENDENCIES",
+      "chord_audit": {
+        "status": "PASS_EXACT_CHORDS",
+        "baseline_chords_checked": 505,
+        "requested_shortfalls": [],
+        "remaining_shortfalls": [],
+        "minimal_interior_increment_plan": [],
+        "propagation_requested": false,
+        "propagated_interior_increments": [],
+        "scope": "Fixed current chord mapping; endpoints are non-chord vertices. No table or chord data is edited. A changed lower-hull regeneration would require its own vertex-obligation audit."
+      },
+      "applied_changes": [],
+      "checked": {
+        "rectangles": 0,
+        "row_nodes": 0,
+        "law_nodes": 0
+      },
+      "mixed_table_shortfalls": [],
+      "majorant_failures": [],
+      "scope": "Unchanged row-level cap constants, polynomial P, banks/cuts and retained mixed tables. Extra law tables follow changed raw caps. Exact research proof; Lean still required."
+    }
+  },
+  "global": {
+    "old_pad": "1/100000000000",
+    "total_pad": "1/100000000000",
+    "increment": "0",
+    "increment_limits": {
+      "target_bound_inclusive": {
+        "exact": "3380465764492640352392025993713018273690015650566420159718530210105449044463338716548608479318817655700862044831043554165146778115226793425013692980139907/75125001453152514910038803905299204345028691432072058386313861530160341125968182079490047459343075199326522661953642556769839401723628198297600000000000000000000000000",
+        "decimal": "4.499787952218114e-14"
+      },
+      "strict_lower_exclusive": {
+        "exact": "1294432138706355861512918307006705848324157572854319815371153113133252344502192899965601927497790610941457608916003855369802804573673159742199369990410016798305994651/4212099716199308723807228668413183336573861527412626345076451594533172416619408780705585326568417005577564425685457061709474158837402106621957040295116800000000000000000000000000",
+        "decimal": "3.073127954991429e-13"
+      }
+    },
+    "endpoint_recipe": "Round B up and L strictly down on the 1e-12 grid; arithmetic feasibility uses the separate increment limits.",
+    "actual_upper": {
+      "exact": "53595747713458774816160475333517656023260599421204859741770416074989873961183751306378685119912469707433400174082517436282954192340563256406123377999202186307019860093/75125001453152514910038803905299204345028691432072058386313861530160341125968182079490047459343075199326522661953642556769839401723628198297600000000000000000000000000",
+      "decimal": "0.713420920821955"
+    },
+    "rounded_B": {
+      "exact": "356710460411/500000000000",
+      "decimal": "0.713420920822"
+    },
+    "strict_lower": {
+      "exact": "56067881993/40000000000",
+      "decimal": "1.401697049825"
+    },
+    "endpoint_loss": {
+      "exact": "0",
+      "decimal": "0"
+    },
+    "old_target_survives": true,
+    "old_lower_survives": true
+  },
+  "input_sha256": {
+    "data/lower-unshifted/cover.json": "8e396894b24ee159fd07fd6265bb65e54bccc180295553c676994e91b88fd62a",
+    "data/lower-unshifted/cover-ledger.json": "8c433addf514d722ee1899d1a0db179e8629736575356f4e674094876217d035",
+    "data/lower-unshifted/inputs/cover.json": "ac7bc2d09c5cc215bc6cf6f16efbc58b7e55b2fb9095733e65ee57009a504dba",
+    "data/lower-unshifted/inputs/inherited.json": "3e7ddd38eb4d7ebeb8db0af1f14f50774c4c93a259fb9c6053c92ec760bdb44e",
+    "data/lower-mixed/batches.json": "a122ea78b2f2d894c9f5fae7124cc9bc6139fe09d1c23d660c9d5ab8ba392bbc",
+    "Grothe/Lower/RowDataTypes.lean": "24f3a6da9513187141123403ddf442af54060e2bfb8110439ff9a70ab34bd18a",
+    "Grothe/LowerAnalytic/CapChordData.lean": "ce2bf00005f7cbc56a85dd42ad205ed6f1dbeebdd52ab331a7e430ceb952a7bf",
+    "Grothe/LowerAnalytic/CapChords.lean": "3f3808baf79402a315f83a0f273b5e05fc43eef5d2e609acc5a53df7098e8950",
+    "tools/gen_cap_chords.py": "70f43ac89f38a3d701565bd78c102f0a327b7ca9aea700337ce8f4b98f234981",
+    "Grothe/Lower/MixedData.lean": "73b0ff40bc9df24d3458719e257092c89acbb851d8ba0874cf241084098319ab",
+    "Grothe/Research/LawNodeData.lean": "8b3f40a304b8ecdc15b79833ad7ee0ebf9eddd90bc26bb43a5399fbf00b81861",
+    "Grothe/Lower/Sweep.lean": "ba58b9a377b4246446f1ef1e82a397e55a593069e2618f1020553a3c6a3cb32c",
+    "Grothe/Lower/Poly.lean": "63f0d540d9da89e8f6240e4ff781b21373f207628031e7bd2736819d8e037a4b",
+    "Grothe/Lower/Rows.lean": "4f309659fa35d6430b40b3e2620c03ba0772504311872a14af75457e51d6562e",
+    "Grothe/Lower/Mixed.lean": "94d14db1ca573b13d89114e5dd2ba9c32325203250e2bdc1919afb5536bec05a",
+    "Grothe/Lower/Boxes.lean": "18631a3fca0a0bf5794c8f9c1e2f41b2557aef1ec66ad0ea5925ede1906726aa",
+    "data/lower-rows/row01.json": "9ccbdc7d98049d6586b230d0b380242930e93989f4502b6308772a30f80b65c0",
+    "data/lower-rows/row02.json": "5d93ced236e6786093a6d0b89deff9a2c7eb71e9a18ca4be7f1e62c8e495388a",
+    "data/lower-rows/row03.json": "dd245e75889b81aa419a14c64bc8d622bcd2665f67f0975bb7d39a81703ff6ab",
+    "data/lower-rows/row04.json": "33f22c8e62ab92775f6ff27c6a4df7ad3acc6b6c97022962392aaf05cc226dbd",
+    "data/lower-rows/row05.json": "3c90efab2a2083b99ce58ccf3a35d11d755631d0848751649703e804091c090a",
+    "data/lower-rows/row06.json": "b59033ec0b229797b4447ae074379b79fa6601653287add96188c427946c5d59",
+    "data/lower-rows/row07.json": "b24eab23331f50b559029f2ccaee182c520f1b288cf420d04cfd78a5b36eb6cc",
+    "data/lower-rows/row08.json": "34824c21ee5809c04762d09fcb225939e4649faa51746b0dd09fff3484d6a654",
+    "data/lower-rows/row09.json": "32023fb1f9afe73b4d11f1359a9789f9efc081259161db523c96a2134232e6a8",
+    "data/lower-rows/row10.json": "26e1d93f976a6f383db2fbc1aaf8c84f686baf2aefad8714ff2173975f17d11a",
+    "data/lower-rows/row11.json": "d094e0470c2d40be1915397f6597e02afcfd5f2ef703ffc4a8de0b5e487ca60b",
+    "data/lower-rows/row12.json": "07e8d5ba4b854e0266f10190fcd58c3fdf2a8d5dd3930b785ef374b6e6fd3295",
+    "data/lower-rows/row13.json": "253397fbf53c8dd29fd6986f3a2d2e49ac4f263e2291ee06f8e8c5abb31b06fc",
+    "data/lower-rows/row14.json": "20401b943f72ec256411781dcfc108610e9d816db55f13de97550d78e921ab37",
+    "data/lower-rows/row15.json": "dfdba02b2ceaa3dcf1874c5f1f6e358906bbe5e939bac4a8b048c033b1352798",
+    "data/lower-rows/row16.json": "5b946f274d6db33983f2e0d4db54786d8cfa8e7f4bcb6a620abef780f500ea39",
+    "data/lower-rows/row17.json": "5188a1b4458583213dc80eddad6867ab33ea44f995140e186419acd81caeead2",
+    "data/lower-rows/row18.json": "bae8456bea61b311b6e5d94a63332a27e1b887c81198488774f499faa9ef8d24",
+    "data/lower-rows/row19.json": "d62a622031200cf6bdc3ad995ea217f2ac57a967cb0866ac9f29cf89bb5dca75",
+    "Grothe/Lower/RowData01.lean": "d7885708a8e76a0f285e2f115af1fbc01c08b95b5ef3be519c346d47c9839bc9",
+    "Grothe/Lower/RowData02.lean": "63036670cec5b2755dc99b2227b34f4f0ce4c49d0a42060355f89a5c6224906b",
+    "Grothe/Lower/RowData03.lean": "9651a7f247d9559085a85fb8234e11cc9b3794c1343072da6ba06ec522ebb90f",
+    "Grothe/Lower/RowData04.lean": "2d622b3f1887d5283dff01ddc739d5e8ad1d29187d718811bf541ebab9eaea9c",
+    "Grothe/Lower/RowData05.lean": "652da9d96bacfe5c526459122c6388aa8e1ff91f4d0ee2fb2641eb9253940f5b",
+    "Grothe/Lower/RowData06.lean": "2bcd2cdbeda18a8e079d3cb764dd6970a7b3f0ddd14f9f481ea7ef6f8a02698f",
+    "Grothe/Lower/RowData07.lean": "5ffb9f041a282dbb365729a532ff1e3e0130ec3cb9404031575ff962dee389bb",
+    "Grothe/Lower/RowData08.lean": "33ceb40866ae0a411b79cc47241f51eebc6c659f6b47b37ec926db1ac9706cee",
+    "Grothe/Lower/RowData09.lean": "73273e5e6d81ce551dcdfbc8f9786c7d4d2c2396b534320033a8e56a996a15dc",
+    "Grothe/Lower/RowData10.lean": "ac24bda250663435e15e8305cfe6fab3890f77234f61473e1fe133d550daa72b",
+    "Grothe/Lower/RowData11.lean": "ac577168080683e22044ae18282d85fcbb9a69ad48337381415379519c1893af",
+    "Grothe/Lower/RowData12.lean": "a01b32f86267bb46307ef94ef98748de74cb6fb83285a37139164cafb346fe95",
+    "Grothe/Lower/RowData13.lean": "4e9e5d944abd977db9cff9d2cde6f15c29db3e104a6632e48e75572d54f084db",
+    "Grothe/Lower/RowData14.lean": "9445ce1c08ac77ba833d9104cba8bca98aae6175b35b7c43e63932496011618a",
+    "Grothe/Lower/RowData15.lean": "0664a384821a93c696b172e0420b368b968513e4c53449a5aef36d002f299436",
+    "Grothe/Lower/RowData16.lean": "549d1c50d9c2aa3d02b689ccebd77ff758a7c67cfcb6cda7c24a2494852e53cc",
+    "Grothe/Lower/RowData17.lean": "f1df863ac8797e66c58b71a02e27d47b636bb800462c26126e9c41350925d0a3",
+    "Grothe/Lower/RowData18.lean": "2acd7f4568582994a33bcbbb6afe77c65420d848f5ad949122fa1a8c2c31a865",
+    "Grothe/Lower/RowData19.lean": "f3c74b79e482cc16f82a43c0fb49d47f44c004c27c5beda957445b149e55566d",
+    "data/lower-unshifted/nodes/seed4302-lo.json": "cfc0c6b36b4a5d14f4217d9e5cfa789b643b75800b5ed8956f71b4848660bec2",
+    "data/lower-unshifted/nodes/seed4302-hi.json": "c6bc9ffe47760dd8586d8c374be6b9633658c7c2ae9edf321e3f71a2fb135b78",
+    "data/lower-unshifted/nodes/fused-hi.json": "121a4b59618720609780257436b5ffc77fc04b95f93f0c5f1de44781c226a72d",
+    "data/lower-unshifted/nodes/fused-lo.json": "bfc57415c045cd81113cb387c698c73a3ab574eed8a462d3c46048aee450b040",
+    "data/lower-unshifted/nodes/focus-3.json": "479fc83a6aa406d62a744a19ac2ab11a62ed83bfe5c6d1062daba53e54934af0",
+    "tools/caps_cover_sensitivity.py": "6884a3772345ea9a66450c9f4d3ca2aca75b868c006b3d1b8f51640538f1ae94",
+    "tools/rankone_law.py": "2ddb264ba0e94392a5b43b93b24992d754fb5d0fe1b70592c19c698c890c7132",
+    "tools/gen_lower_data.py": "4836070fc673cf90eb50b2bc33191782373556a3607e9905dea779ccf0ee5fba",
+    "tools/gen_lower_mixed.py": "52016dc163413e54a3ce5b2677d0f624bc53098452cf36d792eb2299822b2c22",
+    "tools/needle_cover_refine.py": "1766ce359329ee4983aae07c651fc7eddc2a3099f1e573ee0a15b4f7cc44d35f",
+    "tools/needle_unshifted_lean.py": "d595ae4e6962f477afc1d51d831291bf129c00f1284693b7e66428f476694d44",
+    "tools/needle_unshifted_export.py": "103a58abf8ddb2c9f6eeb51b019a9f7eed580b7da2da49482fffdfaa5c163910",
+    "tools/needle_mixed_nodes.py": "cc5e5ad5dc510638dbdc701f7d8e6d60005d75fed02d3b4a21fcd7265ceaa649"
+  }
+}

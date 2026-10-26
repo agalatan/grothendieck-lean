@@ -4,8 +4,8 @@ Produced by `tools/caps_plan.py` (see `docs/CAPS_M_PIPELINE.md`, "Campaign plan"
 
 * `exports/exp_*.jsonl`: piece matrices exported by Lean (`exportPiecesOn`) on a given grid
   (`g0` = 400×128, `g1` = 1600×256, `g2` = 1600×1024). The `ok` field is the Lean check `pieceOKc` itself.
-* `solved/sol_*.json`: per piece `pass` (stored multipliers), `fixed` (new exact multipliers), `cap_up` (smallest
-  exact cap increase). `sol_overrides14_g2.json`: the row-14 results of #14 (`data/caps-m/overrides.json`).
+* `solved/sol_*.json`: per piece `pass` (stored multipliers), `fixed` (new exact multipliers), `cap_up` (an
+  exact feasible cap increase, without a minimality claim). `sol_overrides14_g2.json`: the row-14 results of #14 (`data/caps-m/overrides.json`).
 * `nodes/<k>x<i>.json`: the plan per node (grid, multipliers, cap increase), sample nodes only so far.
 
 Status 26 Oct: centre pieces of a 12-node sample on their stored grid (max cap increase 4.9e-10; 14:200 piece 0 from
@@ -55,3 +55,15 @@ for 12:280/103 have exact common-constraint-kernel obstructions, recorded under
 bound. `tools/caps_centre_retry.py` independently checks the rational witnesses
 and can search for additional exact multiplier certificates without rebuilding a
 grid.
+
+The committed `checkpoint-codex-15b7.json` contains 28 completed centres, including
+the 15 adopted historical records. Every completed centre has zero best residual;
+the full 358-centre maximum is still unknown. The 15:155/0 and 15:186/0 finer-grid
+solutions are also saved. `cover-baseline-codex-15b7.json` replays all 10,762 current
+boxes with unchanged inputs and records the exact margin and lower endpoint.
+Neither this baseline nor a partial sweep is a final caps verification.
+The sensitivity audit uses Lean's depth-nine finite majorant check and binds
+the generated mixed and law data byte for byte to their canonical JSON. It
+distinguishes the inclusive global increase allowed by the current target
+(`4.50e-14`) from the exclusive arithmetic limit for the current strict lower
+endpoint (`3.07e-13`), separately from the endpoint rounding recipe.
