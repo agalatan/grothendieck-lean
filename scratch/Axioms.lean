@@ -2,6 +2,7 @@ import Grothe
 
 #print axioms Grothe.DiskKernel.dominated
 #print axioms Grothe.DominatedKernel.comp_radial
+#print axioms Grothe.Haag.phaseMoment_weighted
 #print axioms Grothe.HaagerupConvex.delta_eq
 #print axioms Grothe.HaagerupConvex.delta_nonneg
 #print axioms Grothe.HaagerupConvex.delta_succ_le
@@ -473,12 +474,18 @@ import Grothe
 #print axioms Grothe.UpperChaos.Bm_polyKernel
 #print axioms Grothe.UpperChaos.Ef_X0_mul
 #print axioms Grothe.UpperChaos.GT_rot2
+#print axioms Grothe.UpperChaos.ProductComplete.ae_memLp_fibre
+#print axioms Grothe.UpperChaos.ProductComplete.complete_prod
+#print axioms Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
+#print axioms Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
+#print axioms Grothe.UpperChaos.ProductComplete.memLp_prod_mul
 #print axioms Grothe.UpperChaos.RadialRepair.complement_identity
 #print axioms Grothe.UpperChaos.RadialRepair.norm_phaseRepair_le_one
 #print axioms Grothe.UpperChaos.RadialRepair.phaseRepair_change_sq_le
 #print axioms Grothe.UpperChaos.RadialRepair.radial_gap_sq_le
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_le
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
+#print axioms Grothe.UpperChaos.charFunDual_gaussC
 #print axioms Grothe.UpperChaos.differentiableOn_HholPair_Rt
 #print axioms Grothe.UpperChaos.differentiableOn_Hhol_Rt
 #print axioms Grothe.UpperChaos.differentiableOn_integral_exp
@@ -509,7 +516,6 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_two_channel
 #print axioms Grothe.UpperChaos.leaf_sound
 #print axioms Grothe.UpperChaos.localized_comparison
-#print axioms Grothe.UpperChaos.map_e2
 #print axioms Grothe.UpperChaos.map_mehlerY
 #print axioms Grothe.UpperChaos.measurable_GT
 #print axioms Grothe.UpperChaos.mehler_L2
