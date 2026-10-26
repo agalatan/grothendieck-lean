@@ -86,6 +86,7 @@ import Grothe.LowerAnalytic.CapLinAlg
 import Grothe.LowerAnalytic.CapMajorant
 import Grothe.LowerAnalytic.CapPiece
 import Grothe.LowerAnalytic.CapPieceNodes
+import Grothe.LowerAnalytic.CapPieceRange
 import Grothe.LowerAnalytic.CapPolar
 import Grothe.LowerAnalytic.CapRecipeData
 import Grothe.LowerAnalytic.CapRows
