@@ -59,12 +59,21 @@ git -C /Users/alingalatan/workspaces/grothe worktree add -b codex/<topic> \
 mkdir -p /Users/alingalatan/workspaces/grothe-codex-<topic>/.lake
 ln -s /Users/alingalatan/workspaces/grothe/.lake/packages \
     /Users/alingalatan/workspaces/grothe-codex-<topic>/.lake/packages
+# start from master's compiled build instead of an empty one: an APFS clone (instant, no extra disk until
+# files diverge; `cp -c` is macOS copy-on-write). Then Lake rebuilds only what differs from master.
+cp -c -R /Users/alingalatan/workspaces/grothe/.lake/build \
+    /Users/alingalatan/workspaces/grothe-codex-<topic>/.lake/build
 ```
 
 Resuming an existing worktree: sync first, then bring your branch up to date (§3, step 3) before continuing.
 
-Disk space is tight. Do not copy `.lake/build` wholesale; it is about 1.6 GB per copy. Build only the modules you
-change (`lake build Grothe.X.Y`). Run full builds on the droplet (see §5).
+**The build clone.** The main checkout's `.lake/build` is master's compiled build. It is kept current by
+`scripts/sync_master.sh --build`, which starts a background, niced, incremental build of master there (one at a
+time). Run it after syncing when you are about to create a worktree, or when master moved a lot. Clone it only
+with `cp -c` (APFS copy-on-write): a plain `cp` or `rsync` duplicates about 1.6 GB per worktree, and disk space is
+tight. An existing worktree whose build is far behind can be refreshed the same way: delete its `.lake/build`, then
+clone again. Build only the modules you change (`lake build Grothe.X.Y`), and run full builds on the droplet (see
+§5).
 
 ## 2b. Before EVERY push: start from a fresh master
 
@@ -172,6 +181,9 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
   branch and re-dispatches the check. Nothing to do by hand; just wait.
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for stop/remove).
   It shares Mathlib with the other droplet work via `~/grothe-caps/.lake/packages` — do not delete that directory.
+- **Superseded runs are cancelled automatically.** Pushing a branch again cancels that branch's older CI run (one
+  concurrency group per branch, `cancel-in-progress`); other branches and the droplet's heavy jobs are unaffected. No
+  manual `gh run cancel` is needed for re-pushes.
 - **Cost:** every push uses CI minutes, which the private repository pays for. Push work branches when they matter,
   not after every small commit.
 
@@ -220,6 +232,13 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
   disk is small, so check `df -h ~` first and keep at least 3 GB free. The Lean packages in
   `~/grothe-caps/.lake/packages` can be symlinked; do not hardlink into other agents' build
   directories.
+- **Droplet status:** `scripts/droplet_status.sh` (from the laptop, read-only) shows load, memory, disk, the CI runner,
+  every running Lean build by directory (= owner) with its age, orphaned `lean` processes and the biggest build
+  directories. Check it before starting a heavy job: if another agent's heavy build (or the runner's warm/caps job)
+  is running, wait.
+- **Cleanup policy:** when your work is merged or abandoned, delete your own droplet build directory
+  (`~/<your dir>/.lake/build`, or the whole directory). Never delete another agent's directory, the runner's
+  workspace (`~/actions-runner`), or the shared Mathlib packages (`~/grothe-caps/.lake/packages`).
 - **Snapshots:** delete superseded snapshots and zips you created. Keep only the newest.
 
 ## 6. Lean conventions
