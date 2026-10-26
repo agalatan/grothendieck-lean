@@ -1,0 +1,9 @@
+Grothe.Research.LawNodeLower.certified_mixed_batches
+Grothe.Research.LawNodeLower.certified_rows
+Grothe.Research.LawNodeLower.extended_batches_checked
+Grothe.Research.LawNodeLower.lower_bound_of_law_nodes
+Grothe.Research.LawNodeLower.profile_bound_of_law_nodes
+Grothe.Research.LawNodeLower.strict_lower_bound_of_law_nodes
+Grothe.Research.LawNodeLower.transferInputs_of_law_nodes
+Grothe.Research.LawNodeLower.witnessCap_of_law_nodes
+Grothe.Research.LawNodeLower.witnessCap_of_law_nodes_reduction

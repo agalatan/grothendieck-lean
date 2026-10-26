@@ -1,0 +1,13 @@
+Grothe.Research.CoupledMajorizer.complex_norm_majorizer
+Grothe.Research.CoupledMajorizer.complex_norm_majorizer_exact
+Grothe.Research.CoupledMajorizer.coupled_update_bound
+Grothe.Research.CoupledMajorizer.diagonal_step_identity
+Grothe.Research.CoupledMajorizer.finite_diagonal_descent
+Grothe.Research.CoupledMajorizer.finite_diagonal_strict_descent
+Grothe.Research.CoupledMajorizer.finite_weighted_majorizer
+Grothe.Research.SemiconvexChord.checked_mesh_allowance
+Grothe.Research.SemiconvexChord.chord_allowance
+Grothe.Research.SemiconvexChord.chord_of_lifted
+Grothe.Research.SemiconvexChord.finite_expectation_chord
+Grothe.Research.SemiconvexChord.gate_reassembly
+Grothe.Research.SemiconvexChord.profile_square
