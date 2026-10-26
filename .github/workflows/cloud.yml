@@ -1,0 +1,188 @@
+name: Cloud job
+
+# On-demand compute for agents (AGENTS.md section 4d). Dispatched by scripts/cloud.sh, never by a push:
+#   gh workflow run cloud.yml --ref <branch> -f id=<unique id> -f kind=<lean|check|script> -f targets=<...>
+# * lean:   build the given Lean modules of <branch> (incremental from the master cache), e.g. native_decide facts;
+#           with shards = N the modules are dealt round-robin over N parallel jobs.
+# * check:  the full proof check of <branch> (build Grothe, no sorry/axiom, axiom report, GrotheCaps from the
+#           verified cache), without any merge. Useful for scratch branches cloud/**, which the push check skips.
+# * script: run a script committed in <branch>: "<path> [args...]" (.py with python3, .sh with bash, .cpp compiled
+#           with g++ -O2). Every shard gets SHARD, NSHARDS and OUT (a directory for its results).
+# Results: one artifact per shard, cloud-<id>-<shard> (OUT plus logs and summary.json), kept 7 days.
+# Cloud jobs never write a cache. Lean jobs run on GitHub-hosted runners only; the droplet runs script jobs only, in
+# a throwaway directory, so the runner's persistent caps workspace is never touched.
+
+run-name: "cloud ${{ inputs.id }} (${{ inputs.kind }} on ${{ github.ref_name }})"
+
+on:
+  workflow_dispatch:
+    inputs:
+      id:
+        description: "unique job id (scripts/cloud.sh sets it; used to find the run)"
+        required: true
+        type: string
+      kind:
+        description: "lean (build modules), check (full proof check) or script"
+        default: lean
+        type: choice
+        options: [lean, check, script]
+      targets:
+        description: "lean: module names; check: ignored; script: path and arguments"
+        default: ""
+        type: string
+      shards:
+        description: "number of parallel jobs (1-32)"
+        default: "1"
+        type: string
+      runner:
+        description: "hosted (GitHub) or droplet (script jobs only: more memory, no 6-hour limit)"
+        default: hosted
+        type: choice
+        options: [hosted, droplet]
+      timeout:
+        description: "minutes per shard"
+        default: "120"
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    outputs:
+      shards: ${{ steps.p.outputs.shards }}
+    steps:
+      - id: p
+        env:
+          N: ${{ inputs.shards }}
+          KIND: ${{ inputs.kind }}
+          RUNNER: ${{ inputs.runner }}
+          TIMEOUT: ${{ inputs.timeout }}
+        run: |
+          [[ "$N" =~ ^[0-9]+$ ]] && [ "$N" -ge 1 ] && [ "$N" -le 32 ] || { echo "::error::shards must be 1..32"; exit 1; }
+          [[ "$TIMEOUT" =~ ^[0-9]+$ ]] && [ "$TIMEOUT" -ge 1 ] && [ "$TIMEOUT" -le 4320 ] || { echo "::error::timeout must be 1..4320 minutes"; exit 1; }
+          if [ "$RUNNER" = droplet ] && [ "$KIND" != script ]; then
+            echo "::error::the droplet runs script jobs only; Lean jobs use the GitHub-hosted runners and the master cache"; exit 1
+          fi
+          if [ "$KIND" = check ] && [ "$N" != 1 ]; then echo "::error::check runs as one shard"; exit 1; fi
+          echo "shards=$(python3 -c "import json; print(json.dumps(list(range($N))))")" >> "$GITHUB_OUTPUT"
+
+  run:
+    needs: plan
+    name: shard ${{ matrix.shard }}
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.plan.outputs.shards) }}
+    runs-on: ${{ inputs.runner == 'droplet' && fromJSON('["self-hosted","heavy"]') || 'ubuntu-24.04' }}
+    timeout-minutes: ${{ fromJSON(inputs.timeout) }}
+    env:
+      SHARD: ${{ matrix.shard }}
+      NSHARDS: ${{ inputs.shards }}
+      CLOUD_ID: ${{ inputs.id }}
+      KIND: ${{ inputs.kind }}
+      TARGETS: ${{ inputs.targets }}
+      # the droplet works in a throwaway directory beside (never inside the .lake of) the runner's workspace
+      WS: ${{ inputs.runner == 'droplet' && format('cloudjob-{0}-{1}', inputs.id, matrix.shard) || '.' }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          path: ${{ env.WS }}
+          clean: ${{ inputs.runner != 'droplet' }}
+
+      - name: Restore the master build cache (read-only)
+        if: inputs.kind != 'script'
+        uses: actions/cache/restore@v4
+        with:
+          path: .lake/build
+          key: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+
+      - name: Lean toolchain and Mathlib (from the Mathlib cache)
+        if: inputs.kind != 'script'
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: true
+          use-github-cache: false
+          build: false
+
+      - name: Python packages for scripts (tools/cloud-requirements.txt, GitHub-hosted only)
+        if: inputs.kind == 'script' && inputs.runner == 'hosted' && hashFiles('tools/cloud-requirements.txt') != ''
+        run: python3 -m pip install --quiet -r tools/cloud-requirements.txt
+
+      - name: Run the job
+        working-directory: ${{ env.WS }}
+        run: |
+          mkdir -p out
+          export OUT="$PWD/out"
+          start=$(date +%s)
+          status=0
+          {
+            echo "id=$CLOUD_ID kind=$KIND shard=$SHARD/$NSHARDS ref=$GITHUB_REF_NAME sha=$GITHUB_SHA"
+            case "$KIND" in
+              lean)
+                # this shard's modules: targets i with i mod NSHARDS = SHARD
+                mods=$(python3 -c "import os; t=os.environ['TARGETS'].split(); s=int(os.environ['SHARD']); n=int(os.environ['NSHARDS']); print(' '.join(t[s::n]))")
+                if [ -z "$mods" ]; then echo "no module for this shard"; else
+                  echo "lake build $mods"
+                  lake build $mods --log-level=warning || status=$?
+                fi ;;
+              check)
+                lake build Grothe --log-level=warning || status=$?
+                if [ $status = 0 ]; then python3 tools/gen_root_imports.py --check || status=$?; fi
+                if [ $status = 0 ]; then
+                  ! grep -rn --include='*.lean' -E '\bsorry\b|^[[:space:]]*(private[[:space:]]+)?axiom[[:space:]]|implemented_by|@\[extern|\bunsafe\b|debug\.skipKernelTC|Task\.spawn' Grothe GrotheKernel GrotheCapsKernel Grothe.lean GrotheKernel.lean GrotheCapsKernel.lean || status=1
+                fi
+                if [ $status = 0 ]; then
+                  lake env lean scratch/Axioms.lean > "$OUT/axioms.txt" && python3 scripts/check_axioms.py < "$OUT/axioms.txt" || status=1
+                fi
+                if [ $status = 0 ]; then
+                  if python3 scripts/caps_stamp.py --check-cache; then
+                    lake build GrotheCaps --log-level=warning && lake env lean scratch/AxiomsCaps.lean > "$OUT/axioms-caps.txt" \
+                      && python3 scripts/check_axioms.py --caps < "$OUT/axioms-caps.txt" || status=1
+                  else
+                    echo "GrotheCaps not verified for these sources (would need a droplet caps run)"; status=2
+                  fi
+                fi ;;
+              script)
+                set -- $TARGETS
+                path="${1:-}"; shift || true
+                real=$(python3 -c 'import os, sys; print(os.path.realpath(sys.argv[1]))' "$path")
+                root=$(python3 -c 'import os; print(os.path.realpath("."))')
+                case "$real" in "$root"/*) ;; *) echo "::error::$path is not inside the repository"; exit 1 ;; esac
+                [ -f "$real" ] || { echo "::error::$path does not exist in $GITHUB_REF_NAME"; exit 1; }
+                case "$path" in
+                  *.py)  python3 "$path" "$@" || status=$? ;;
+                  *.sh)  bash "$path" "$@" || status=$? ;;
+                  *.cpp) g++ -O2 -std=c++17 -o "$OUT/prog" "$path" && "$OUT/prog" "$@" || status=$? ;;
+                  *) echo "::error::unsupported script type: $path (.py, .sh or .cpp)"; exit 1 ;;
+                esac ;;
+            esac
+            exit $status
+          } 2>&1 | tee "$OUT/log.txt"
+          status=${PIPESTATUS[0]}
+          end=$(date +%s)
+          python3 - "$OUT/summary.json" <<PY
+          import json, os, sys
+          json.dump({"id": os.environ["CLOUD_ID"], "kind": os.environ["KIND"], "shard": int(os.environ["SHARD"]),
+                     "nshards": int(os.environ["NSHARDS"]), "ref": os.environ["GITHUB_REF_NAME"],
+                     "sha": os.environ["GITHUB_SHA"], "status": $status, "seconds": $end - $start,
+                     "run": os.environ["GITHUB_SERVER_URL"] + "/" + os.environ["GITHUB_REPOSITORY"] + "/actions/runs/" + os.environ["GITHUB_RUN_ID"]},
+                    open(sys.argv[1], "w"), indent=1)
+          PY
+          exit $status
+
+      - name: Upload the results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloud-${{ inputs.id }}-${{ matrix.shard }}
+          path: ${{ env.WS }}/out
+          retention-days: 7
+          if-no-files-found: warn
+
+      - name: Remove the throwaway directory (droplet)
+        if: always() && inputs.runner == 'droplet'
+        run: rm -rf "${{ github.workspace }}/${{ env.WS }}"
