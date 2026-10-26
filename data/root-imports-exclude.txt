@@ -6,6 +6,9 @@
 #   hours), built on the droplet runner and replayed by CI from the verified build cache, never in the default target;
 # * Grothe.LowerAnalytic.CapPieces.* — generated piece-node modules of rows 12–15 (native range facts, minutes each),
 #   part of the caps campaign (#15, #16), never in the default target;
+# * Grothe.LowerAnalytic.CapPieces.* — generated per-node modules of the rows 12–15 node caps (route M: data D,
+#   coverage C, native range facts R, node theorem N); like CapRowKK they belong to the caps target, not to CI's
+#   default build (tools/gen_cap_pieces.py; adding a node means adding its four modules here);
 # * GrotheKernel.BandMass, GrotheKernel.HeadWeight — kernel modules used only by Grothe.Upper (built through
 #   Grothe.lean, not through the GrotheKernel root).
 Grothe.LowerAnalytic.CapNodes
