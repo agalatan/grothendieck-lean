@@ -107,14 +107,8 @@ lemma summable_weighted (a : ℕ → ℝ) (ha : Summable a) {q : ℝ}
 lemma weightedTail_pair (a : ℕ → ℝ) (ha : Summable a) {q : ℝ}
     (hq0 : 0 ≤ q) (hq1 : q ≤ 1) (k : ℕ) :
     weightedTail a q k = a k*q^(k/2)+a (k+1)*q^((k+1)/2)+weightedTail a q (k+2) := by
-  have h := (summable_weighted a ha hq0 hq1 k).sum_add_tsum_nat_add 2
-  have he : (∑' i, a (i+2+k)*q^((i+2+k)/2)) = weightedTail a q (k+2) := by
-    apply tsum_congr
-    intro i
-    congr 2 <;> omega
-  simp only [sum_range_succ, sum_range_zero, zero_add] at h
-  rw [he] at h
-  simpa only [weightedTail, Nat.add_comm 1 k] using h.symm
+  simpa [weightedTail, Finset.sum_range_succ, Nat.add_assoc, Nat.add_comm, Nat.add_left_comm]
+    using ((summable_weighted a ha hq0 hq1 k).sum_add_tsum_nat_add 2).symm
 
 /-- A finite weighted telescope dominates the entire infinite suffix. The
 coarse and two-step bounds can come from any nonnegative summable sequence. -/
