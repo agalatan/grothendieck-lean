@@ -143,7 +143,7 @@ lemma Cmat_eq (R : Sym2C) (hp : dpm R 1 ≠ 0) (hm : dpm R (-1) ≠ 0) :
 
 /-! ### Real symmetric identities -/
 
-open Sym2R SchurKernel SchurMain
+open Sym2R SchurKernel SchurMain Grothe.Upper
 
 /-- A general real 2×2 matrix `[[a, b], [c, d]]` (mirrors `GR`). -/
 structure M2 where
@@ -404,5 +404,87 @@ theorem schurValue_sound (hR : memSC R RI) (hj : mem j jI) {v : ℤ}
     rw [one_div]; ring_nf
 
 end main
+
+/-! ### The covariance `R(t)` along the circle -/
+
+section covariance
+
+open Polynomial
+
+lemma aeval_ofListQ (x : ℂ) : ∀ l : List ℚ,
+    Polynomial.aeval x (ofListQ l) = hornerR x (l.map fun q : ℚ => (q : ℝ))
+  | [] => by simp [ofListQ, hornerR]
+  | a :: l => by simp [ofListQ, hornerR, aeval_ofListQ x l]
+
+lemma forall2_ofRatI : ∀ l : List ℚ, List.Forall₂ mem (l.map fun q : ℚ => (q : ℝ)) (l.map ofRatI)
+  | [] => List.Forall₂.nil
+  | a :: l => List.Forall₂.cons (mem_ofRatI a) (forall2_ofRatI l)
+
+/-- `√(4/5)` lies between two rationals. -/
+def sqLo : ℚ := 894427190999915878563669467492 / 10 ^ 30
+def sqHi : ℚ := 894427190999915878563669467493 / 10 ^ 30
+
+lemma sqrt_eta_bounds : (sqLo : ℝ) ≤ √(etaQ : ℝ) ∧ √(etaQ : ℝ) ≤ sqHi := by
+  have he : (etaQ : ℝ) = 4 / 5 := by simp [etaQ]
+  rw [he]
+  constructor
+  · calc (sqLo : ℝ) = √((sqLo : ℝ) ^ 2) := (Real.sqrt_sq (by norm_num [sqLo])).symm
+      _ ≤ √(4 / 5) := Real.sqrt_le_sqrt (by norm_num [sqLo])
+  · calc √(4 / 5 : ℝ) ≤ √((sqHi : ℝ) ^ 2) := Real.sqrt_le_sqrt (by norm_num [sqHi])
+      _ = sqHi := Real.sqrt_sq (by norm_num [sqHi])
+
+/-- The interval of `√η`. -/
+def sqI : Ival := ⟨ofRatLo sqLo, ofRatHi sqHi⟩
+
+lemma mem_sqI : mem (√(etaQ : ℝ)) sqI := by
+  obtain ⟨h1, h2⟩ := sqrt_eta_bounds
+  have hD := D_pos
+  exact ⟨(ofRatLo_le sqLo).trans (by nlinarith), le_trans (by nlinarith) (le_ofRatHi sqHi)⟩
+
+/-- The rational `p_u = 1/(1 + b²)`. -/
+def puQ : ℚ := 1 / (1 + bQ ^ 2)
+
+lemma pu_eq : pu = (puQ : ℝ) := by simp [pu, puQ]
+
+/-- Interval data of `R(t)`: the smoothing entries and the coefficient lists. -/
+def hardyData : RData :=
+  ⟨addI (ofRatI puQ) (mulI sqI (ofRatI (1 - puQ))),
+   subI (ofRatI (puQ * bQ)) (mulI sqI (ofRatI (puQ * bQ))),
+   addI (ofRatI (puQ * bQ ^ 2)) (mulI sqI (ofRatI (1 - puQ * bQ ^ 2))),
+   pList.map ofRatI, qList.map ofRatI⟩
+
+lemma mem_m00 : mem m00 hardyData.m00 := by
+  have := mem_add (mem_ofRatI puQ) (mem_mul mem_sqI (mem_ofRatI (1 - puQ)))
+  convert this using 1 <;> first | rfl | simp [m00, pu_eq]
+
+lemma mem_m01 : mem m01 hardyData.m01 := by
+  have := mem_sub (mem_ofRatI (puQ * bQ)) (mem_mul mem_sqI (mem_ofRatI (puQ * bQ)))
+  convert this using 1 <;> first | rfl | simp [m01, pu_eq]
+
+lemma mem_m11 : mem m11 hardyData.m11 := by
+  have := mem_add (mem_ofRatI (puQ * bQ ^ 2)) (mem_mul mem_sqI (mem_ofRatI (1 - puQ * bQ ^ 2)))
+  convert this using 1 <;> first | rfl | simp [m11, pu_eq]
+
+/-- `R(t)` lies in `Rbox hardyData T` for `t ∈ T`. -/
+theorem memSC_Rbox {t : ℂ} {T : CI} (ht : memC t T) : memSC (Rt t) (Rbox hardyData T) := by
+  have ht2 := memC_mul ht ht
+  have hp : memC (t * Polynomial.aeval (t ^ 2) primaryPoly) (CI.mul T (CI.horner (CI.mul T T) hardyData.P)) := by
+    rw [primaryPoly, aeval_ofListQ, sq]
+    exact memC_mul ht (memC_horner ht2 (forall2_ofRatI pList))
+  have hq : memC (t * Polynomial.aeval (t ^ 2) auxPoly) (CI.mul T (CI.horner (CI.mul T T) hardyData.Q)) := by
+    rw [auxPoly, aeval_ofListQ, sq]
+    exact memC_mul ht (memC_horner ht2 (forall2_ofRatI qList))
+  have h00 := memC_ofR mem_m00
+  have h01 := memC_ofR mem_m01
+  have h11 := memC_ofR mem_m11
+  refine ⟨?_, ?_, ?_⟩
+  · convert memC_add (memC_mul (memC_mul h00 h00) hp) (memC_mul (memC_mul h01 h01) hq) using 1
+    <;> first | rfl | (simp only [Rt]; ring)
+  · convert memC_add (memC_mul (memC_mul h00 h01) hp) (memC_mul (memC_mul h01 h11) hq) using 1
+    <;> rfl
+  · convert memC_add (memC_mul (memC_mul h01 h01) hp) (memC_mul (memC_mul h11 h11) hq) using 1
+    <;> first | rfl | (simp only [Rt]; ring)
+
+end covariance
 
 end Grothe.UpperChaos.HardyArcSound
