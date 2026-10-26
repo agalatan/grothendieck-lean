@@ -85,8 +85,8 @@ bounds the l1 error against the stored table on `n+3m ≤ 501` by
 `X` satisfying all these numerical inputs was supplied or established here.
 
 The concrete rounding, smoothing and disk bound are actual Lean definitions and
-proofs (`Rounder.lean:68–78,132–182`). The proved `PhiBound` is `φ² ≤ 3`, not the
-stronger `|φ| ≤ 1` reserved to #19. No claim is made here to discharge #18 or
+proofs (`Rounder.lean:68–78,132–182`). `PhiBound` is the proved phase cover `φ² ≤ 99/100`
+(#19), which also gives `|φ| < 1` (`phi_abs_lt_one`). No claim is made here to discharge #18 or
 #39–#41.
 
 ## Finite coverage, rounding and parsing
