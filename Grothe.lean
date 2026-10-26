@@ -202,6 +202,7 @@ import Grothe.UpperChaos.ComplexMoments
 import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
+import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussC2
 import Grothe.UpperChaos.HardyHolo
 import Grothe.UpperChaos.HardyKernel
@@ -215,6 +216,7 @@ import Grothe.UpperChaos.Kernel2
 import Grothe.UpperChaos.KernelStability
 import Grothe.UpperChaos.LawY
 import Grothe.UpperChaos.LocalizedComparison
+import Grothe.UpperChaos.LstarL
 import Grothe.UpperChaos.Mehler
 import Grothe.UpperChaos.MehlerL2
 import Grothe.UpperChaos.OddParseval
@@ -237,5 +239,11 @@ import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialRepair
 import Grothe.UpperChaos.Realise2
 import Grothe.UpperChaos.Rounder
+import Grothe.UpperChaos.SchurBound
+import Grothe.UpperChaos.SchurIntegrability
+import Grothe.UpperChaos.SchurKernel
+import Grothe.UpperChaos.SchurMain
+import Grothe.UpperChaos.SchurTest
 import Grothe.UpperChaos.Structural
+import Grothe.UpperChaos.Sym2R
 import Grothe.UpperChaos.TaylorPhase
