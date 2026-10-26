@@ -46,7 +46,7 @@ class CheckAxiomsTests(unittest.TestCase):
             "responses": {"Grothe.LowerAnalytic.ResponseGram.gram_qform",
                           "Grothe.LowerAnalytic.DiffuseCubicObstruction.above_target"},
             "response-geometry": {"Grothe.LowerAnalytic.DiffuseCubicObstruction.above_target"},
-            "haagerup-power": {"Grothe.HaagerupPower.upper"},
+            "haagerup-power": {"Grothe.HaagerupCanonical.upper"},
             "upper-comparison": {"Grothe.fresh_upper"},
             "phase-response": {"Grothe.Upper.ResponseGeometry.full_energy_comparison",
                                "Grothe.HaagerupPhaseGeometry.harmonic_lower"},
@@ -61,7 +61,7 @@ class CheckAxiomsTests(unittest.TestCase):
         self.assertEqual(CHECKER.audit_policy("phase-response")[0], CHECKER.PHASE_RESPONSE)
         self.assertTrue(CHECKER.PHASE_RESPONSE <= CHECKER.audit_policy("default")[0])
         self.assertEqual(CHECKER.audit_policy("haagerup-power")[1],
-                         {"Grothe.HaagerupPower.check._native.native_decide.ax_1_1"})
+                         set())
         self.assertEqual(CHECKER.audit_policy("upper-comparison")[1],
                          {"Grothe.head_check._native.native_decide.ax_1_1",
                           "Grothe.Upper.comparison_check._native.native_decide.ax_1_1",
@@ -160,7 +160,7 @@ class CheckAxiomsTests(unittest.TestCase):
         power = "Grothe.HaagerupPower.check._native.native_decide.ax_1_1"
         for mode, foreign in [("responses", head), ("response-geometry", head),
                               ("phase-response", head), ("research", head),
-                              ("haagerup-power", head), ("upper-comparison", power)]:
+                              ("haagerup-power", head), ("haagerup-power", power), ("upper-comparison", power)]:
             with self.subTest(mode=mode):
                 extra = f"'Test.foreignRoute' depends on axioms: [{foreign}]\n"
                 self.assertEqual(self.run_main([f"--{mode}"], self.report(mode) + extra)[0], 1)
@@ -177,10 +177,10 @@ class CheckAxiomsTests(unittest.TestCase):
                 self.assertEqual(self.run_main([arg], self.report())[0], 2)
 
     def test_saved_multiline_power_report_passes(self):
-        path = ROOT / "docs/verification/haagerup-convex-20261026/axioms.log"
+        path = ROOT / "docs/verification/haagerup-canonical-20261026/axioms.log"
         code, stdout, stderr = self.run_main(["--haagerup-power"], path.read_text())
         self.assertEqual(code, 0, stderr)
-        self.assertIn("checked 55 theorems; native_decide facts used: 1 of 1", stdout)
+        self.assertIn("checked 96 theorems; native_decide facts used: 0 of 0", stdout)
 
     def test_duplicates_apostrophes_quoted_names_and_empty_axioms_pass(self):
         extra = ("'Grothe.foo'' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n"

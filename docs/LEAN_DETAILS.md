@@ -273,8 +273,9 @@ headline endpoints are unchanged.
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
-**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (1404909409/1000000000)`
-(`Grothe/Haagerup/Power.lean`), with no hypothesis. The analysis is in
+**Unconditional upper bound.**
+`Grothe.haagerup_bound : IsGrothendieckBound (1404909140/1000000000)`
+(`Grothe/Haagerup/Power.lean`), with no external hypothesis. The analysis is in
 `Grothe/Haagerup/`: the shared Gaussian phase and planar laws (`Phase`); the charge-one
 Hermite coefficient, determined by odd Gaussian moments and the recurrence
 `M_(k+1) = -(k+1/2) M_k` for `M_k = E[H_(k+1,k) · conj(ph)]`
@@ -288,20 +289,42 @@ two complex Gaussians, the radial identity and the phase rounding as a disk-valu
 (`Identity`: `integral_phase_pair`, `Phi2_radial`, `haagerup_disk`, `haagerup_dominated`). Disk-valued
 roundings are dominated (`Grothe/Upper/Disk.lean`); polynomial preprocessors are realised by tensor powers
 (`Realise.lean`) and composed with radial kernels (`Compose.lean`). The degree-29 preprocessor and degree-64 approximate inverse are
-generated from `data/haagerup-resolvent/certificate.json`. The coefficient norm is exactly one;
-the fourth-power norm is at most 998903/10⁶. A single sequential native check verifies the complete
-1,024-term composition (radial cutoff 29,696), the power norm, inverse defect ≤10⁻¹²,
-combined-seed norm ≤249/500, and the infinite signed-tail budget. The normalized residual caps are
-95/10⁹ for the finite part and 87.7/10⁹ for the entire infinite tail. The second Abel
-estimate uses the decreasing first differences of `haagR` (`Haagerup/Convex.lean`),
-its limit zero, and the kernel-proved norm bound ‖R·XP²‖₁ ≤ 2. It sharpens the
-existing native Abel budget 174/10⁹ without changing the certificate or native fact.
-`Grothe/Upper/ResolventTail.lean` proves the finite inverse-defect estimate, geometric-prefix bound,
-Abel summation and its convex-weight refinement, coefficient-locality passage to the full suffix, seed power bound and checker
-soundness. `Grothe/Upper/PowerTail.lean` supplies the power contraction and coherent-boundary
-obstruction. The phase identity, residual and tensor transfer yield K ≤ 1.404909409 with no external
-inputs. The single numerical fact is `Grothe.HaagerupPower.check._native.native_decide.ax_1_1`.
-
+generated from `data/haagerup-resolvent/certificate.json`. The coefficient norm of P is exactly one.
+`Upper/FiniteDifference.lean` proves closure of completely monotone sequences under products;
+`Haagerup/CompleteMonotone.lean` applies the parameter-shift identity for rising-factorial
+quotients to prove nonnegativity of every Haagerup coefficient difference.
+`Upper/ResolventCompletion.lean` proves the all-order resolvent expansion with its defect
+and vanishing-boundary remainder. The concrete construction combines 64 series terms with
+six resolvent correction terms before taking absolute values. The prefix check proves
+a cap of 9136/10¹² for its first 170 coefficients. `Upper/WeightedTail.lean` bounds
+all omitted coefficients of a polynomial F by ‖F((3/2)X)‖₁/(3/2)^170.
+Exact rational arithmetic gives ‖P((3/2)X)‖₁ ≤ 21/20 and ‖R((3/2)X)‖₁ ≤ 9;
+finite norm estimates then give ‖F((3/2)X)‖₁ ≤ 10¹⁸ and an omitted contribution
+at most 4/10¹². Thus the full normalized finite residual is at most 9.14/10⁹,
+and the complete infinite remainder at most 0.24/10⁹. The weighted estimate
+concerns a finite polynomial and assumes no analytic continuation.
+The proof uses the inverse defect≤10⁻¹², the short seed norm ‖RP¹⁷‖₁≤249/500,
+and the elementary bound ‖RA‖₁≤2. It needs no fourth-power or gamma estimate.
+`CanonicalData.lean` states the exact parameters. The arithmetic definitions are in
+`Grothe/Haagerup/CanonicalArithmetic.lean`, retaining the `GrotheKernel` namespace.
+Large convolutions are proved in continuation blocks of at most five left
+coefficients. The generic `convI_append` identity preserves the original
+outward arithmetic order; recurrence and exact input-binding lemmas recover
+the four checker statements without a new numerical premise.
+`CanonicalCheck.lean` exposes the four public check statements, and
+`CanonicalProof.lean` assembles the bound from them. The generator check
+`tools/gen_haagerup_canonical_check.py --check` verifies byte-for-byte reproducibility;
+generation is separate from Lean proof checking. The public wrapper gives
+K≤1.404909140. The focused audit checks 96 results using only `propext`,
+`Classical.choice`, and `Quot.sound`.
+`PowerData.lean` contains only the six definitions `pl`, `rl`, `seedPower`,
+`seedCap`, `defectCap`, and `slope`. The data module has no numerical theorem;
+all four acceptance proofs come from the canonical trace.
+`Upper/ResolventCertificate.lean` proves prefix-check soundness, and
+`CanonicalProof.lean` adds the weighted finite tail. Independent directed replay
+is provided by `tools/verify_haagerup_canonical.py`. The focused report
+`scratch/AxiomsPower.lean`, checked with `--haagerup-power`, confirms zero native axioms.
+Normal `ready/*` delivery CI builds and audits the combined tree before merging it.
 
 **Lower bound.** `Grothe.Research.LawNodeLower.profile_bound_of_law_nodes`
 proves `V ≤ B` for an admissible scalar profile under the simultaneous
@@ -620,7 +643,7 @@ and the real identification (`hreal`) as explicit inputs.
 | `CapSym`, `CapGrid`, `CapGridT`, `CapGridOK`, `CapTables`, `CapTablesMk` | symbolic polynomials over ℚ(√2); cell prices on uniform polar grids and the exact cell decomposition of the integrated majorant; verified interval tables (`tablesOK_mk`) |
 | `CapPiece`, `CapCheckSound` | node certificate soundness (`pot_le_of_pieceOK`, `pot_le_of_nodeOK`) for the precompiled checker `GrotheCapsKernel/CapCheck.lean` |
 | `CapSymmetry`, `CapHull`, `CapChordData` | the symmetries S_c, S_- of the fibre integral; chord nodes from vertex caps by convexity (`capChords_check`, `nodeCaps_of_vertexCaps`) |
-| `CapRangeDefs`, `CapChords`, `CapRecipeData`, `CapRows`, `CapAssembly`, `CapRow00`–`CapRow11`, `CapRow16`–`CapRow18`, `CapNodes` | computation-only definitions and generated rational data; range-check soundness and convexity; 60 separate-target range facts verified on the runner and replayed by CI from its cache; final `lower_bound_of_capsRest` assembly |
+| `CapRangeDefs`, `CapChords`, `CapRecipeData`, `CapRows`, `CapAssembly`, `CapRow00`–`CapRow11`, `CapRow16`–`CapRow18`, `CapNodes` | computation-only definitions and generated rational data; range-check soundness and convexity; 60 range facts in `Grothe`, verified on the runner and replayed by CI from its cache; final `lower_bound_of_capsRest` assembly |
 | `CapCoverDefs`, `CapConstrDefs`, `CapPieceRange`; `CapCover`, `CapConstr`, `CapPieceNodes` | localised caps of rows 12–15 (route M): computable coverage and constrained-piece checks separated from symmetry, S-lemma and piece-node soundness (issue #12) |
 
 **`Grothe/Lower/Cert/`: the row and mixed-batch certificate in eight single-threaded chunks.**
@@ -629,13 +652,16 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 `LawNodeLower.certified_rows` and `certified_mixed_batches` assemble those
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
-The complete registry has 89 native facts: 60 cap ranges, five Hardy facts
-(four arc parts and the region) and 24 others. There are 556 axiom-report entries and 339 required declarations.
+The complete registry has 88 native facts: 60 cap ranges, five Hardy facts
+(four arc parts and the region) and 23 others. The default report has 597 print
+directives and 380 required declarations. These are source/registry counts;
+delivery CI checks the combined tree.
 
-Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
+The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
+and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`): `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
-`Grothe.HaagerupPower.check` (the finite residual, power norm, inverse defect, combined seed and signed tail of the unconditional upper bound),
+`Grothe.UpperChaos.hardy_arc_part_0`–`3` and `hardy_region_check` (the Hardy circle mean and decay region),
 `Grothe.UpperChaos.phi_cover_check_0`–`5`
 (the phase cover |φ| < 1), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
 and the eight chunks `Grothe.Lower.certRows0`–`4` and
@@ -643,10 +669,11 @@ and the eight chunks `Grothe.Lower.certRows0`–`4` and
 has four box checks `certRefinedBoxes0`–`3`
 and `certRefinedPartition` in `Grothe.Research.RefinedLowerCheck`, together with
 `Grothe.Research.LawNodeCheck.certLawNodes` for the added pure-row batch.
-The separate caps target additionally uses 60 range checks
+The same `Grothe` target also includes 60 range checks
 `capRangeKK_j`. Every native check is single-threaded (no `Task.spawn`). All
-other finite computations (the polynomial norms, the moment covers) are kernel-checked
-(`decide +kernel`). The report is `lake env lean scratch/Axioms.lean`, checked in CI;
+other accepted finite computations (the polynomial norms, the moment covers) use
+proof-producing kernel reduction, including the canonical continuation-block checks.
+The report is `lake env lean scratch/Axioms.lean`, checked in CI;
 the node caps are in the same report. The generic response, cubic-ceiling
 and quintic-transfer lemmas add no native facts or endpoint hypotheses. No `sorry`,
 no warnings.

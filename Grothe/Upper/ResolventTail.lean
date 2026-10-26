@@ -98,45 +98,6 @@ lemma weighted_geometric_difference (a : ℕ → ℝ) (A T : ℝ[X]) (n : ℕ) :
     rw [sum_range_succ, mul_add, ih, sum_range_succ, pow_succ]
     ring
 
-/-- A second Abel step charges the small first difference instead of a second
-copy of the initial coefficient. The remaining endpoint vanishes when `a n → 0`. -/
-theorem convex_weights_bound (a : ℕ → ℝ) (A T R : ℝ[X]) {eta B C : ℝ}
-    (ha : ∀ i, 0 ≤ a i) (hdec : ∀ i, a (i+1) ≤ a i)
-    (hconv : ∀ i, a (i+1)-a (i+2) ≤ a i-a (i+1))
-    (hA : l1 A ≤ 1) (he : eta < 1) (hdef : l1 (1-R*(1-A)) ≤ eta)
-    (hseed : l1 (R*T) ≤ B) (hRA : l1 (R*A) ≤ C) (n : ℕ) :
-    l1 (∑ i ∈ range n, a i • (T*A^i)) ≤
-      (a 0*B + (a 0-a 1)*C*(2*B/(1-eta)) + a n*B)/(1-eta) := by
-  have hb : 0 ≤ B := (l1_nonneg _).trans hseed
-  have hc : 0 ≤ C := (l1_nonneg _).trans hRA
-  have hm : 0 ≤ 2*B/(1-eta) := div_nonneg (by positivity) (by linarith)
-  have hd := decreasing_weights_bound (fun i => a i-a (i+1)) (fun i => T*A^i)
-    (fun i => sub_nonneg.mpr (hdec i)) hconv hm
-    (geometric_prefix_bound A T R hA he hdef hseed) n
-  have hfirst : l1 (a 0 • (R*T)) ≤ a 0*B := by
-    refine (l1_smul_le _ _).trans ?_
-    rw [abs_of_nonneg (ha 0)]
-    exact mul_le_mul_of_nonneg_left hseed (ha 0)
-  have hmiddle : l1 ((R*A)*(∑ i ∈ range n, (a i-a (i+1)) • (T*A^i))) ≤
-      (a 0-a 1)*C*(2*B/(1-eta)) := by
-    exact (l1_mul_le _ _).trans ((mul_le_mul hRA hd (l1_nonneg _) hc).trans_eq (by ring))
-  have hp : l1 (A^n) ≤ 1 := (l1_pow_le _ _).trans (pow_le_one₀ (l1_nonneg A) hA)
-  have hlast : l1 (a n • ((R*T)*A^n)) ≤ a n*B := by
-    refine (l1_smul_le _ _).trans ?_
-    rw [abs_of_nonneg (ha n)]
-    apply mul_le_mul_of_nonneg_left _ (ha n)
-    exact (l1_mul_le _ _).trans ((mul_le_mul hseed hp (l1_nonneg _) hb).trans_eq (mul_one _))
-  apply inverse_defect_bound (1-A) R _ he hdef
-  rw [weighted_geometric_difference]
-  have hid : R*(a 0 • T - A*(∑ i ∈ range n, (a i-a (i+1)) • (T*A^i)) -
-      a n • (T*A^n)) = a 0 • (R*T) -
-      (R*A)*(∑ i ∈ range n, (a i-a (i+1)) • (T*A^i)) - a n • ((R*T)*A^n) := by
-    simp only [smul_eq_C_mul]
-    ring
-  rw [hid]
-  exact (l1_sub_le _ _).trans (add_le_add
-    ((l1_sub_le _ _).trans (add_le_add hfirst hmiddle)) hlast)
-
 lemma compTerm_geometric (P : ℝ[X]) (K i : ℕ) :
     compTerm P (K+i) = compTerm P K*(X*P^2)^i := by
   unfold compTerm
@@ -223,49 +184,6 @@ theorem composition_tail_bound (a : ℕ → ℝ) (P R : ℝ[X]) (K : ℕ)
       exact decreasing_weights_bound (fun i => a (K+i))
         (fun i => compTerm P K*(X*P^2)^i) (fun i => ha _) (fun i => hdec _)
         hm (geometric_prefix_bound _ _ _ hA he hdef hseed) J
-
-/-- Convex decreasing weights permit a sharper complete tail bound. Coefficient
-locality and `a n → 0` remove the finite endpoint; no infinite inverse is needed. -/
-theorem composition_tail_bound_convex (a : ℕ → ℝ) (P R : ℝ[X]) (K : ℕ)
-    (ha : ∀ i, 0 ≤ a i) (hdec : ∀ i, a (i+1) ≤ a i)
-    (hconv : ∀ i, a (i+1)-a (i+2) ≤ a i-a (i+1))
-    (hzero : Tendsto a atTop (𝓝 0)) (hP : l1 P ≤ 1) {eta B C : ℝ}
-    (he : eta < 1) (hdef : l1 (1-R*(1-X*P^2)) ≤ eta)
-    (hseed : l1 (R*compTerm P K) ≤ B) (hRA : l1 (R*(X*P^2)) ≤ C) :
-    ∑' n, |compCoeff (fun k => if k < K then 0 else a k) P n| ≤
-      (a K*B + (a K-a (K+1))*C*(2*B/(1-eta)))/(1-eta) := by
-  have hA : l1 (X*P^2) ≤ 1 := by
-    exact (l1_mul_le _ _).trans ((mul_le_mul
-      (by simp : l1 (X : ℝ[X]) ≤ 1)
-      ((l1_pow_le _ _).trans (pow_le_one₀ (l1_nonneg _) hP))
-      (l1_nonneg _) zero_le_one).trans_eq (one_mul _))
-  apply Real.tsum_le_of_sum_range_le (fun _ => abs_nonneg _)
-  intro J
-  have ht : Tendsto (fun n : ℕ => a (K+(J+n))) atTop (𝓝 0) := by
-    simpa [Function.comp_def, Nat.add_assoc, Nat.add_comm, Nat.add_left_comm] using
-      hzero.comp (tendsto_add_atTop_nat (K+J))
-  have hlim : Tendsto (fun n : ℕ =>
-      (a K*B + (a K-a (K+1))*C*(2*B/(1-eta)) + a (K+(J+n))*B)/(1-eta)) atTop
-      (𝓝 ((a K*B + (a K-a (K+1))*C*(2*B/(1-eta)))/(1-eta))) := by
-    simpa using (tendsto_const_nhds.add (ht.mul_const B)).div_const (1-eta)
-  apply ge_of_tendsto hlim
-  apply Eventually.of_forall
-  intro n
-  let S : ℝ[X] := ∑ i ∈ range (J+n), a (K+i) • compTerm P (K+i)
-  calc
-    _ = ∑ j ∈ range J, |S.coeff j| := by
-      apply sum_congr rfl
-      intro j hj
-      exact congrArg abs (compCoeff_tail_eq_sum_coeff a P K (J+n) j (by
-        have := mem_range.mp hj
-        omega))
-    _ ≤ l1 S := sum_abs_coeff_le_l1 _ _
-    _ ≤ _ := by
-      dsimp only [S]
-      simp_rw [compTerm_geometric P K]
-      exact convex_weights_bound (fun i => a (K+i)) (X*P^2) (compTerm P K) R
-        (fun i => ha _) (fun i => hdec _) (fun i => hconv _)
-        hA he hdef hseed hRA (J+n)
 
 lemma memB_neg {N : ℕ} {S : ℝ[X]} {L : List GrotheKernel.Ival}
     (h : memB N S L) : memB N (-S) (L.map GrotheKernel.negI) := by

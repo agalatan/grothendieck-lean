@@ -27,8 +27,8 @@ partition checker. Its unused straddler scan is absent, making
 [#56](https://github.com/agalatan/grothendieck-lean/issues/56) moot. This is a
 soundness/maintenance change; no speedup is claimed.
 
-Current source registries contain **532 default reports, 315 required declarations
-and 84 named native facts (24 ordinary plus 60 cap ranges)**. The current inventory
+Current source registries contain **597 default reports, 380 required declarations
+and 88 named native facts (60 cap ranges, five Hardy checks and 23 others)**. The current inventory
 is [LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md). The older counts and
 coverage measurements in the baseline review describe that earlier tree only.
 The baseline's retired-cover structural checks are not presented as a verification
@@ -37,10 +37,21 @@ of the refined certificate.
 The cap checker now has an independent precompiled `GrotheCapsKernel` library,
 and heavy range facts import its computation layer. The verified-cache marker
 is `.lake/build/caps-closure.sha`, checked by `--check-cache` and written only after
-a successful runner build and both strict axiom reports. Full caps verification
+a successful runner build and the single strict axiom report. Full caps verification
 and shared-cache publication belong to the runner. The combined delivery's final
 runner evidence is recorded in #13/#85; no new full build is claimed by this source
 review. The CI comment probe uses retained `LowerAnalytic/Bridge.lean`.
+
+The unconditional canonical theorem `Grothe.haagerup_bound` proves
+`IsGrothendieckBound (1404909140/1000000000)`. Its complete finite trace and public
+wrapper passed Lean, and the focused audit passed with 96 results and zero native
+evaluation axioms. The proof uses exact continuation blocks and a generic append
+identity, with no new numerical premise. `PowerData.lean` contains only the six
+rational-data definitions; the four acceptance proofs come from the canonical
+trace. The arithmetic module is `Grothe/Haagerup/CanonicalArithmetic.lean`,
+retaining the `GrotheKernel` namespace. Final merged-tree validation runs through
+normal `ready/*` delivery CI: the single `Grothe` target includes the node caps
+and uses the single report `scratch/Axioms.lean`.
 
 ## Baseline result and limits
 
@@ -195,7 +206,7 @@ provenance but do not substitute for those checks.
 
 The current supported-target inventory, including individual names, source
 locations, report coverage and runtime provenance, is
-[LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md). It contains 84 allowlisted
+[LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md). It contains 83 allowlisted
 native facts and separately identifies four anonymous table diagnostics.
 
 | Facts | Count | Computation |
@@ -209,12 +220,11 @@ native facts and separately identifies four anonymous table diagnostics.
 | `LowerAnalytic.capChords_check` | 1 | Exact chord inequalities, valid independent vertex endpoints. |
 | `head_check` | 1 | Stored upper-table index bounds and interval head residual through degree 501. |
 | `Upper.comparison_check` | 1 | Selected weighted band masses/radii and cross/quadratic comparison budget. |
-| `HaagerupPower.check` | 1 | 1,024-term finite head, fourth-power norm, inverse defect, combined seed and signed resolvent tail. |
 | `UpperChaos.phi_cover_check_0`–`5` | 6 | Sequential phase-term cover chunks and the analytic-far-field numerical inequality. |
 | Anonymous `CapTables` examples | 4 | Nine-entry parser length, sample table validity, rejection of a wrong interval, one radial interval. |
 
-`NATIVE` has 84 entries; `REQUIRED` has 315 declarations. All REQUIRED names are
-present among 532 distinct default-report print directives. The 24 ordinary
+`NATIVE` has 83 entries; `REQUIRED` has 370 declarations. All REQUIRED names are
+present among 586 distinct default-report print directives. The 23 ordinary
 named checks have direct default-report printers; the 60 ranges are covered
 through the separate caps report. The checker rejects unlisted axioms in reported theorems;
 it does **not** establish source-inventory completeness. Add a source-site audit

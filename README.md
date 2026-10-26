@@ -5,10 +5,11 @@ complex Grothendieck constant:
 
 > **1.401697049825 < K_G^ℂ < 1.404598149218**
 >
-> and, with **no hypothesis at all** (every step proved in Lean): **K_G^ℂ ≤ 1.404909409**
+> With **no external hypothesis**: **K_G^ℂ ≤ 1.404909140**, proved in Lean using only the three standard axioms.
 
-The two sharp bounds rest on explicitly stated analytic and computer-assisted inputs;
-the displayed fully formal bound rests on nothing outside Lean (see below).
+The two sharp bounds rest on explicitly stated analytic and computer-assisted inputs.
+The unconditional bound has no external analytic premises. Its 96-result focused
+axiom audit uses zero native evaluation axioms (see below).
 
 A separate **written unconditional refinement gives K_G^ℂ < 1.40489844**,
 using Heilman–Jones–Malavolta's published construction and numerical estimates.
@@ -48,7 +49,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
 | Oct 2026 | **this repository** | **1.401697049825 < K** | **K < 1.404598149218** |
-| Oct 2026 | this repository, fully formal (no hypothesis) | | K ≤ 1.404909409 |
+| Oct 2026 | this repository, fully formal (no hypothesis) | | K ≤ 1.404909140 |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
 proposed as the exact value; it lies inside the interval, 2.22·10⁻⁵ below our upper bound.
@@ -104,7 +105,7 @@ four per row, one module `CapRowKK.lean` per row; no parallel tasks). Hence
 `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697049825 < K`, where **`CapsRest`** comprises the vertex caps
 of the rows 0.84, 0.845, 0.85, 0.855 and any excluded-node caps of the other rows. The exclusion lists are currently empty.
 
-**Node caps: a separate build target, replayed by CI from a verified cache.**
+**Node caps: included in `Grothe`, replayed by CI from a verified cache.**
 The 15 `CapRowKK.lean` modules contain the 60 single-threaded `native_decide`
 range facts for rows 0–11 and 16–18. They import `CapRangeDefs` and
 `CapRecipeData`: the rational row, gate, chord and recipe data and numerical
@@ -239,20 +240,29 @@ are in [`data/localized-comparison/PROOF.md`](data/localized-comparison/PROOF.md
 with a mathematical account in [`docs/localized-comparison.tex`](docs/localized-comparison.tex).
 The native head computation remains part of the proof.
 
-**Fully formal unconditional upper bound** — `Grothe.haagerup_bound : IsGrothendieckBound (1404909409/1000000000)`
-(`Grothe/Haagerup/Power.lean`, with the finite check in `Grothe/Haagerup/PowerCheck.lean`), with **no hypothesis**.
+**Fully formal unconditional upper bound.**
+`Grothe.haagerup_bound : IsGrothendieckBound (1404909140/1000000000)`
+(`Grothe/Haagerup/Power.lean`, assembled in `CanonicalProof.lean` with finite checks in `CanonicalCheck.lean`), with **no external hypothesis**.
 Lean derives Haagerup's identity from the complex Hermite basis and Mehler formula,
 with the Gaussian phase coefficients determined by a polynomial moment recurrence:
 E[conj(phase⟨g,x⟩)·phase⟨g,y⟩] = Σ_k (π/4)(1/2)_k²/(k!(k+1)!) z|z|^{2k} with z = ⟨x,y⟩, and combines it
-with a degree-29 preprocessor and 1,024 exact series terms. A finite polynomial approximate inverse
-retains cancellation across the complete infinite suffix. Its inverse defect and a short combined
-product, followed by a second Abel summation using coefficient convexity, give a normalized
-tail cap of 87.7·10⁻⁹; the complete finite residual cap is 95·10⁻⁹.
-The general signed Abel/resolvent theorem and coefficient-locality argument are proved in
-`Grothe/Upper/ResolventTail.lean`. The Gaussian identity, tensor realization, checker soundness,
-infinite tail and final transfer are all proved in Lean, with one pinned numerical check and no
-external analytic hypotheses. Exact data in `data/haagerup-resolvent/certificate.json` reproduce the
-Lean certificate byte for byte. See [the complete proof and replay](docs/HAAGERUP_POWER.md).
+with a degree-29 preprocessor and 64 exact series terms. All orders of forward differences
+of the normalized Haagerup coefficients are nonnegative, proved from a product of two
+rising-factorial quotients. This gives a canonical resolvent expansion: the finite head
+and six correction terms are combined before taking absolute values.
+The finite check encloses the first 170 coefficients. A polynomial coefficient norm
+weighted by (3/2)ⁿ bounds all omitted coefficients, without an analytic-continuation input.
+The normalized completed-head residual is at most 9.14·10⁻⁹ and the remaining suffix
+at most 0.24·10⁻⁹, giving a total normalized residual of 9.38·10⁻⁹.
+The coefficient argument, resolvent identity, checker soundness and matrix transfer
+are proved in Lean. Large convolutions are proved in continuation blocks of at most five left
+coefficients. The generic `convI_append` identity preserves the original
+outward arithmetic order; recurrence and exact input-binding lemmas recover
+the four checker statements without a new numerical premise.
+The focused audit checks 96 results using only the three standard axioms,
+with **no native-check dependency**.
+The existing polynomial data are reused byte for byte. See
+[the complete proof and replay](docs/HAAGERUP_POWER.md).
 The sharper conditional bound above remains stronger.
 
 **Written unconditional refinement: K_G^ℂ < 1.40489844.** For the unchanged
@@ -275,14 +285,15 @@ The four pinned public verification stages were replayed
 successfully, including directed energy integration and the complete head/tail
 audit; the two accepted coefficient tables were hash-checked, not regenerated.
 This is a written corollary of the published proof, with its new steps checked
-in Lean. The end-to-end unconditional Lean theorem remains `haagerup_bound`.
+in Lean. The separate end-to-end unconditional Lean theorem is `haagerup_bound`.
 Exact inputs, the reproducible generator and all scope details are in
 [`data/scalar-tail-refinement/`](data/scalar-tail-refinement/PROOF.md).
 
-Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in `data/axioms/native.txt` (read by `scripts/check_axioms.py`):
+The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
+and the `native_decide` facts pinned in `data/axioms/native.txt` (read by `scripts/check_axioms.py`):
 `Grothe.head_check` (the upper head), `Grothe.UpperChaos.phi_cover_check_0`–`5` (the phase cover |φ| < 1),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
-`Grothe.HaagerupPower.check` (the residual, power norm, inverse defect, combined seed and signed tail),
+`Grothe.UpperChaos.hardy_arc_part_0`–`3` and `hardy_region_check` (the Hardy circle mean and decay region),
 the eight chunks
 `Grothe.Lower.certRows0`–`4` and `certBatches0`–`2` for the certified rows and mixed batches, the four
 `Grothe.Research.RefinedLowerCheck.certRefinedBoxes0`–`3` chunks and
@@ -290,8 +301,14 @@ the eight chunks
 `Grothe.Research.LawNodeCheck.certLawNodes` for the five added unshifted law nodes,
 `capChords_check` (the chord nodes of the cap tables) and the 60 range checks `capRangeKK_j` of the node caps.
 Every native check is single-threaded code (no `Task.spawn`).
-Everything else is kernel-checked. No `sorry`. The axiom report `scratch/Axioms.lean`
-is verified in CI by `scripts/check_axioms.py`.
+All other proofs, including the canonical finite checks, are kernel-checked.
+No `sorry`. The axiom report `scratch/Axioms.lean`
+is verified in CI by `scripts/check_axioms.py`, including the node caps.
+The report contains 597 print directives, with 380 required declarations and 88
+allowlisted native facts (60 cap ranges, five Hardy checks and 23 others).
+The focused report `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, allows
+no native axioms for its 96 selected unconditional upper-bound results.
+Normal `ready/*` delivery CI builds and audits the combined tree before merging it.
 
 Joint-response proof interfaces retain shared Gram constraints, exact two-disc
 support, quadratic-feature closure and common Stein tests before completing

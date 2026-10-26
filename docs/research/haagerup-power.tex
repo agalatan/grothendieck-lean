@@ -1,130 +1,213 @@
-\section{A global upper bound from a signed resolvent certificate}
+\section{A global upper bound from a canonical resolvent completion}
 For a real polynomial, let $\|P\|_{\mathcal A}$ denote its absolute
 coefficient sum. Haagerup's Gaussian phase kernel is
 \[
  h(z)=\frac\pi4\sum_{k\ge0}r_kz|z|^{2k},\qquad
  r_0=1,\quad r_{k+1}=r_k\frac{(2k+1)^2}{4(k+1)(k+2)}.
 \]
-The Gaussian identity, tensor realization, complete residual estimate, and
-matrix transfer are proved in Lean. The resulting bound has no external
-analytic or numerical premises:
+The Gaussian identity, tensor realization, residual estimate from finite
+certificates, and matrix transfer are proved in Lean. All four finite checks have
+kernel proofs; the focused audit checks 96 results with zero native axioms.
+The resulting bound has no external analytic or numerical premises:
 \[
- \boxed{K_G^{\mathbb C}\le\frac{1404909409}{1000000000}=1.404909409.}
+ \boxed{K_G^{\mathbb C}\le\frac{1404909140}{1000000000}=1.404909140.}
 \]
 
-\subsection{A finite inverse certificate for the entire signed tail}
-Let $A,T,R$ be real polynomials, with $\|A\|_{\mathcal A}\le1$, and suppose
+\subsection{Complete monotonicity of the coefficients}
+Write $(\Delta a)_k=a_k-a_{k+1}$. A sequence is completely monotone when
+$\Delta^j a_k\ge0$ for all $j,k\ge0$. Every difference sequence is then
+nonnegative and decreasing, and
+$0\le\Delta^j a_k\le a_k$. Thus $a_k\to0$ implies
+$\Delta^j a_k\to0$ for every fixed $j$.
+
+For $0\le\alpha\le\beta$ and $\beta>0$, put
 \[
- \|1-R(1-A)\|_{\mathcal A}\le\eta<1,
- \qquad \|RT\|_{\mathcal A}\le B.
+ u(\alpha,\beta)_k=\frac{(\alpha)_k}{(\beta)_k},
+ \qquad (\alpha)_k=\prod_{i<k}(\alpha+i).
 \]
-For every polynomial $S$, the identity
-$S=(1-R(1-A))S+R(1-A)S$ gives
+The recurrence for this quotient gives
+\[
+ \Delta u(\alpha,\beta)
+ =\frac{\beta-\alpha}{\beta}\,u(\alpha,\beta+1).
+\]
+Induction on the difference order proves complete monotonicity.
+The discrete product rule
+\[
+ \Delta(uv)_k=(\Delta u_k)v_k+u_{k+1}\Delta v_k
+\]
+shows that the product of two completely monotone sequences is completely
+monotone: differences, shifts, addition, and multiplication by nonnegative
+constants preserve the property. The Haagerup recurrence identifies
+\[
+ r_k=u(1/2,1)_k\,u(1/2,2)_k,
+\]
+so its coefficients are completely monotone. Their summability also gives
+$r_k\to0$. These arguments hold at every difference order.
+
+\subsection{A finite inverse certificate and a uniform Abel estimate}
+Let $A,T,R$ be real polynomials, with $\|A\|_{\mathcal A}\le1$, and set
+$E=1-R(1-A)$. Suppose
+\[
+ \|E\|_{\mathcal A}\le\eta<1,
+ \qquad \|RT\|_{\mathcal A}\le B,
+ \qquad \|RA\|_{\mathcal A}\le C.
+\]
+For every polynomial $S$, the identity $S=ES+R(1-A)S$ gives
 \[
  (1-\eta)\|S\|_{\mathcal A}\le\|R(1-A)S\|_{\mathcal A}.
 \]
 Apply this to $S_n=\sum_{i<n}TA^i$. Since
 $(1-A)S_n=T-TA^n$, submultiplicativity gives
 \[
- \|S_n\|_{\mathcal A}\le\frac{2B}{1-\eta}.
+ \|S_n\|_{\mathcal A}\le M,\qquad M=\frac{2B}{1-\eta}.
 \]
-If $a_i\ge0$ decreases with $i$, finite summation by parts now yields
+For decreasing nonnegative weights $b_i$, finite summation by parts yields
 \[
- \left\|\sum_{i<n}a_iTA^i\right\|_{\mathcal A}
- \le a_0\frac{2B}{1-\eta}.
+ \left\|\sum_{i<n}b_iTA^i\right\|_{\mathcal A}\le b_0M.
 \]
-Indeed, writing each weighted sum as the last weight times $S_n$ plus
-$\sum_{i<n-1}(a_i-a_{i+1})S_{i+1}$ makes the weights telescope to $a_0$.
-No infinite inverse or analytic continuation is invoked.
+Indeed, express the weighted sum as its last weight times $S_n$ plus
+$\sum_{i<n-1}(b_i-b_{i+1})S_{i+1}$; the scalar weights telescope to $b_0$.
 
-The Haagerup weights have decreasing first differences
-$\Delta r_k=r_k-r_{k+1}\ge0$, since
+\subsection{The canonical completion at every order}
+For a completely monotone sequence $a$, write
 \[
- \Delta r_k=r_k\frac{2k+7/4}{(k+1)(k+2)}
+ W_n(a)=\sum_{i<n}a_{K+i}TA^i,\qquad
+ Q_m(a)=\sum_{j<m}(\Delta^j a)_K(-RA)^jRT.
 \]
-and both factors decrease. Also $r_k\to0$, by summability.
-Writing $W_n(a)=\sum_{i<n}a_{K+i}TA^i$, a second summation by parts gives
+One summation by parts gives
 \[
- (1-A)W_n(r)=r_KT-AW_n(\Delta r)-r_{K+n}TA^n.
+ (1-A)W_n(a)=a_KT-AW_n(\Delta a)-a_{K+n}TA^n.
 \]
-If $\|RA\|_{\mathcal A}\le C$, the preceding Abel estimate on
-$W_n(\Delta r)$ implies
+Multiplication by $R$ and the definition of $E$ give the recurrence
 \[
- \|W_n(r)\|_{\mathcal A}\le
- \frac{B}{1-\eta}\left(r_K+r_{K+n}+
- \frac{2C\Delta r_K}{1-\eta}\right).
+ W_n(a)=a_KRT-RA\,W_n(\Delta a)+E W_n(a)-a_{K+n}RT A^n.
 \]
-For $A=XP^2$ and $T=X^KP^{2K+1}$, each fixed coefficient prefix is
-already determined by finitely many terms. Fix that prefix and let
-$n\to\infty$, so the boundary term $r_{K+n}$ vanishes. Taking the
-supremum over finite absolute coefficient sums yields
-\[
- \left\|\sum_{k\ge K}r_kX^kP^{2k+1}\right\|_{\mathcal A}
- \le\frac{r_KB}{1-\eta}
- \left(1+\frac{2C}{1-\eta}\frac{\Delta r_K}{r_K}\right).
-\]
-This coefficient-local argument requires neither an infinite polynomial
-inverse nor an exchange of two series.
+Induction on $m$ proves the exact finite identity
+\begin{align*}
+ W_n(a)-Q_m(a)
+ ={}&(-RA)^mW_n(\Delta^m a)
+   +E\sum_{j<m}(-RA)^jW_n(\Delta^j a)\\
+ &-\sum_{j<m}(\Delta^j a)_{K+n}(-RA)^jRT A^n.
+\end{align*}
+Applying the uniform Abel estimate at each difference order yields
+\begin{align*}
+ \|W_n(a)-Q_m(a)\|_{\mathcal A}
+ \le{}&M\left[C^m(\Delta^m a)_K+
+       \eta\sum_{j<m}C^j(\Delta^j a)_K\right]\\
+ &+B\sum_{j<m}C^j(\Delta^j a)_{K+n}.
+\end{align*}
 
-\subsection{A short combined seed and exact data}
-When $\|P\|_{\mathcal A}\le1$ and $\|P^4\|_{\mathcal A}\le q$, a short
-combined product suffices to price $B$. If $s\le2K+1$ and
-$\|RP^s\|_{\mathcal A}\le b$, then
+Now take $A=XP^2$ and $T=X^KP^{2K+1}$, with
+$\|P\|_{\mathcal A}\le1$ and $a_k\to0$.
+Each fixed coefficient prefix of the composed series is determined by
+finitely many terms, since the term indexed by $k$ contains $X^k$.
+Fix that prefix and let $n\to\infty$. Every boundary weight vanishes,
+and the bound is independent of the prefix. Taking the supremum over
+finite absolute coefficient sums gives
 \[
- \|RT\|_{\mathcal A}\le bq^{\lfloor(2K+1-s)/4\rfloor}.
+ \left\|\sum_{k\ge K}a_kX^kP^{2k+1}-Q_m(a)\right\|_{\mathcal A}
+ \le\frac{2B}{1-\eta}
+ \left[C^m(\Delta^m a)_K+
+       \eta\sum_{j<m}C^j(\Delta^j a)_K\right].
 \]
-This follows by dividing the remaining exponent by four. The norm of
-$RP^s$ is evaluated as a single polynomial, preserving cancellation between
-$R$ and $P^s$.
+Here the series and its norm are defined coefficientwise. The proof uses
+finite polynomial identities and coefficient locality, without constructing
+an infinite polynomial inverse or interchanging two series.
 
-The repository stores every rational coefficient in
+\subsection{The complete finite polynomial and exact budgets}
+The rational polynomial inputs are stored in
 \texttt{data/haagerup-resolvent/certificate.json}; the Lean data are generated
-byte for byte from that file. Here $\deg P=14$, $\deg R=64$, and
+byte for byte from that file. They satisfy $\deg P=14$, $\deg R=64$, and
+\[
+ a=P(0)=\frac{1020379367568975}{1125899906842624},\qquad
+ \|P\|_{\mathcal A}\le1,\qquad
+ \eta=10^{-12},\qquad \|RP^{17}\|_{\mathcal A}\le\frac{249}{500}.
+\]
+Take $K=64$ and $m=6$. Since $17\le2K+1$, submultiplicativity gives
+$\|RT\|_{\mathcal A}\le249/500\le1/2$, so use $B=1/2$.
+The exact resolvent list also gives $\|R-1\|_{\mathcal A}+\eta\le2$.
+The identity $RA=(R-1)+E$ therefore allows $C=2$.
+
+The completed finite polynomial is
+\[
+ H=P\sum_{k<64}r_k(XP^2)^k+Q_6(r).
+\]
+The head and correction are added before taking absolute values, preserving
+the cancellation between them. Put $F=H-a$. The outward interval check bounds
+the first $N=170$ coefficients:
+\[
+ \sum_{n<170}|F_n|\le\frac{9136}{10^{12}}.
+\]
+The remaining coefficients are controlled by a weighted finite-polynomial
+norm. For any real polynomial $F$ and $\rho\ge1$,
+\[
+ \|F\|_{\mathcal A}\le\sum_{n<N}|F_n|
+       +\frac{\|F(\rho X)\|_{\mathcal A}}{\rho^N}.
+\]
+Indeed, the scaled polynomial has coefficient $\rho^nF_n$, and
+$\rho^n\ge\rho^N$ for every $n\ge N$. Summing this coefficient inequality
+proves the estimate. No analytic-continuation hypothesis is involved.
+
+At $\rho=3/2$, write $P_\rho=P(\rho X)$, $R_\rho=R(\rho X)$, and
+$A_\rho=\rho X P_\rho^2$. The rational coefficients give
 \[
  \begin{gathered}
- K=1024,\qquad s=17,\qquad a=P(0)=
- \frac{1020379367568975}{1125899906842624},\\
- q=\frac{998903}{10^6},\quad b=\frac{249}{500},\quad
- \eta=10^{-12},\quad\gamma=\frac{637}{1000}.
+ \|P_\rho\|_{\mathcal A}\le\frac{21}{20},\qquad
+ \|R_\rho\|_{\mathcal A}\le9,\\
+ \|A_\rho\|_{\mathcal A}\le\frac53,\qquad
+ \|-R_\rho A_\rho\|_{\mathcal A}\le15.
  \end{gathered}
 \]
-Lean proves $\|P\|_{\mathcal A}\le1$ by exact rational arithmetic.
-The native certificate checks the fourth-power, inverse-defect,
-combined-seed, and finite-head budgets by outward integer arithmetic at
-128-bit precision.
-It also checks $r_K(K+1)(2K+1)\le\gamma$. The native Abel budget is
+Complete monotonicity gives $r_k\le1$ and
+$0\le(\Delta^j r)_{64}\le r_{64}\le10^{-4}$. The completed polynomial,
+submultiplicativity, and $|a|\le1$ therefore give
+\begin{align*}
+ \|F((3/2)X)\|_{\mathcal A}
+ &\le \frac{21}{20}\,64\left(\frac53\right)^{63}\\
+ &\quad+9\frac{21}{20}\left(\frac53\right)^{64}
+       \frac1{10^4}\sum_{j<6}15^j+1\\
+ &\le10^{18}.
+\end{align*}
+Consequently the entire coefficient tail from $170$ is bounded by
 \[
- \frac{2b\gamma q^{508}}{(1025)(2049)(1-\eta)}
- <\frac{174}{10^9}.
+ \frac{10^{18}}{(3/2)^{170}}<\frac4{10^{12}},
+ \qquad
+ \|H-a\|_{\mathcal A}\le\frac{9136+4}{10^{12}}
+                         =\frac{914}{10^{11}}.
 \]
-The exact resolvent list also proves $\|R-1\|_{\mathcal A}+\eta\le2$,
-so $\|RA\|_{\mathcal A}\le2$ by $RA=(R-1)+(1-R(1-A))$.
-At $K=1024$, $\Delta r_K/r_K=8199/4206600$. Therefore the second Abel
-estimate bounds the normalized tail by
+The finite prefix, inverse defect, combined seed, and coefficient bounds
 \[
- \frac{174}{10^9}\left(\frac12+
- \frac{2(8199/4206600)}{1-\eta}\right)
- <\frac{877}{10^{10}}.
+ r_{64}\le\frac1{10^4},\qquad
+ (\Delta^6r)_{64}\le\frac{37}{10^{13}}
 \]
-The full finite polynomial
-$P\sum_{k<1024}r_k(XP^2)^k-a$ has degree below $29696$, and all its
-coefficients are checked. Its norm is at most $95/10^9$. Hence
+have kernel proofs. Large convolutions are checked in continuation blocks of at
+most five left coefficients. The generic append identity composes these blocks
+without regrouping outward interval arithmetic. Exact recurrence and input-binding
+lemmas recover the four original checker statements, with no new numerical premise.
+Complete monotonicity gives $(\Delta^j r)_{64}\le r_{64}$, and
+$\sum_{j<6}2^j=63$. The infinite remainder is consequently at most
+\[
+ \frac{64(37/10^{13})+10^{-12}(63/10^4)}{1-10^{-12}}
+ <\frac{24}{10^{11}}.
+\]
+For the radial preprocessor $p(z)=zP(|z|^2)$, the complete residual bound is
 \[
  \|h\circ p-(\pi a/4)\operatorname{id}\|_{\mathcal A}
- \le\frac\pi4\frac{1827}{10^{10}},\qquad p(t)=tP(t^2).
+ \le\frac\pi4\left(\frac{914}{10^{11}}+\frac{24}{10^{11}}\right)
+ =\frac\pi4\frac{938}{10^{11}}.
 \]
-The proved residual transfer and a proved lower enclosure of $\pi$ give
+In this expression, the norm is the absolute sum of the radial series
+coefficients. The proved residual transfer and a proved lower enclosure of
+$\pi$ give
 \[
- K_G^{\mathbb C}\le\frac4{\pi(a-1827/10^{10})}<1.404909409.
+ K_G^{\mathbb C}\le\frac4{\pi(a-938/10^{11})}<1.404909140.
 \]
-An independent directed FLINT replay checks the complete finite polynomial
-and seed; exact rational arithmetic checks the inverse defect and power
-budget. These external replays audit the data; the Lean theorem has no
-hypotheses requiring their results.
-
-The obstruction for simpler preprocessors remains exact: if
-$|P(-1)|=\|P\|_{\mathcal A}=1$, then $\|P^n\|_{\mathcal A}=1$ for every
-$n$, by evaluation at $-1$ and submultiplicativity. Breaking that common
-boundary phase permits a power contraction. The resolvent certificate
-additionally retains cancellation \emph{between} consecutive composed
-powers. The sharper conditional endpoints are separate and unchanged.
+All four finite acceptance facts have kernel proofs. The 96-result focused axiom
+audit confirms only the three standard axioms. Normal delivery CI builds and audits
+the combined tree before merging it.
+The generated data module contains only six rational-data definitions, with no
+native evaluation theorem. An independent directed FLINT replay audits
+the complete polynomial, checked prefix, weighted finite tail, inverse defect,
+seed, coefficient differences, infinite remainder arithmetic, and endpoint. Its results audit the implementation;
+they are not premises of the Lean theorem. The canonical construction does not
+change the conditional endpoints or lower cap computations.

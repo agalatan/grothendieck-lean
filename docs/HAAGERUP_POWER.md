@@ -1,58 +1,75 @@
-# Hypothesis-free upper bound from a signed resolvent
+# Hypothesis-free upper bound from a canonical resolvent completion
 
-`Grothe.haagerup_bound` proves **K_G^ℂ ≤ 1.404909409** for every finite complex
-matrix, with no Gaussian, integration, or numerical-tail hypotheses.
-The sharper conditional upper bound and lower endpoint are separate.
+`Grothe.haagerup_bound` proves **K_G^ℂ ≤ 1.404909140** for every finite complex
+matrix, with no Gaussian, integration, or numerical-tail hypotheses. The focused
+audit checks 96 results with zero native evaluation axioms. The sharper conditional
+upper bound and lower endpoint are separate.
 
 The Gaussian phase identity, tensor realization, complete finite residual,
-infinite signed-tail estimate, checker soundness and matrix transfer are
-all in Lean. One pinned `native_decide` fact accepts five finite checks by
-outward integer arithmetic. External replay results are not hypotheses of
-the theorem.
+infinite remainder estimate, checker soundness and matrix transfer are all in Lean.
+Large convolutions are proved in continuation blocks of at most five left
+coefficients. The generic `convI_append` identity preserves the original
+outward arithmetic order; recurrence and exact input-binding lemmas recover
+the four checker statements without a new numerical premise.
+External replay results are not hypotheses of the theorem.
 
-## Why the tail is smaller
+## Complete monotonicity and the resolvent expansion
 
-Assume ‖P‖₁ ≤ 1, and put A = X P² and T = X^K P^(2K+1).
-Find a rational polynomial R satisfying
+Write Δa_k = a_k − a_(k+1). A sequence is completely monotone when
+Δ^j a_k ≥ 0 for every j and k. In particular, every difference sequence is
+nonnegative and decreasing. If a_k tends to zero, so do all its differences,
+since 0 ≤ Δ^j a_k ≤ a_k.
 
-- ‖1 − R(1 − A)‖₁ ≤ η < 1;
-- ‖R T‖₁ ≤ B.
+The normalized Haagerup coefficients satisfy
 
-The finite identity S = (1 − R(1 − A))S + R(1 − A)S implies
-(1 − η)‖S‖₁ ≤ ‖R(1 − A)S‖₁. Applying it to the geometric prefix gives
+r_0 = 1, r_(k+1) = r_k (2k+1)² / (4(k+1)(k+2)).
 
-‖Σ_(i<n) T A^i‖₁ ≤ 2B/(1 − η).
+Lean proves their complete monotonicity structurally. For the rising-factorial
+quotient u(α,β)_k = (α)_k/(β)_k, with 0 ≤ α ≤ β and β > 0,
 
-Finite Abel summation bounds decreasing nonnegative weights by their initial
-weight times this uniform prefix estimate. The Haagerup coefficients have
-more structure: their differences Δr_k = r_k − r_(k+1) are also nonnegative
-and decreasing, and r_k tends to zero. Writing S_n(a) = Σ_(i<n) a_(K+i) T A^i,
-the exact second summation-by-parts identity is
+Δu(α,β) = ((β−α)/β) u(α,β+1).
 
-(1 − A) S_n(r) = r_K T − A S_n(Δr) − r_(K+n) T A^n.
+Repeated differences therefore remain nonnegative. The discrete product rule
+Δ(uv)_k = (Δu_k)v_k + u_(k+1)Δv_k preserves complete monotonicity, and
+r_k = u(1/2,1)_k u(1/2,2)_k. Summability gives r_k → 0.
 
-If ‖R A‖₁ ≤ C, applying the first Abel estimate to the differences gives
+Put A = X P², T = X^K P^(2K+1), and E = 1 − R(1 − A). Suppose
 
-‖S_n(r)‖₁ ≤ B/(1 − η) · [r_K + r_(K+n) + 2C Δr_K/(1 − η)].
+- ‖P‖₁ ≤ 1;
+- ‖E‖₁ ≤ η < 1;
+- ‖RT‖₁ ≤ B;
+- ‖RA‖₁ ≤ C.
 
-Every fixed coefficient prefix sees only finitely many terms because the
-kth term contains X^k. Hold that prefix fixed and let n grow: the boundary
-term r_(K+n) vanishes. Thus the complete signed suffix costs at most
+The geometric-prefix identity (1−A) Σ_(i<n) T A^i = T−T A^n gives
+‖Σ_(i<n) T A^i‖₁ ≤ 2B/(1−η). Finite Abel summation then bounds a sum
+with decreasing nonnegative weights by its initial weight times this constant.
 
-r_K B/(1 − η) · [1 + 2C (Δr_K/r_K)/(1 − η)].
+Let a be completely monotone, with a_k → 0. For
+W_n(a) = Σ_(i<n) a_(K+i) T A^i, one summation by parts gives the exact
+recurrence
 
-Lean proves coefficient convexity directly from the rational recurrence:
-Δr_k/r_k = (2k + 7/4)/((k+1)(k+2)). Both factors in Δr_k decrease.
-No infinite polynomial inverse or exchange of two infinite sums is needed.
+W_n(a) = a_K RT − RA W_n(Δa) + E W_n(a) − a_(K+n) RT A^n.
 
-The combined product R P^17 is certified before taking absolute values.
-Together with ‖P⁴‖₁ ≤ q, it gives the choice
+Iterating this recurrence defines the canonical completion
 
-B = b q^floor((2K+1−17)/4), where b bounds ‖R P^17‖₁.
+Q_m = Σ_(j<m) (Δ^j a)_K (−RA)^j RT.
 
-This preserves cancellation both between consecutive powers and inside the
-short combined product. The theorem applies to any real polynomials with
-the stated finite norm certificates.
+The remaining terms are (−RA)^m W_n(Δ^m a), an inverse-defect contribution
+E Σ_(j<m) (−RA)^j W_n(Δ^j a), and the boundary
+−Σ_(j<m) (Δ^j a)_(K+n) (−RA)^j RT A^n.
+
+Every fixed coefficient prefix of the composed series sees only finitely
+many terms because the kth term contains X^k. Hold that prefix fixed and
+let n grow: all boundary weights vanish. Abel summation at each difference
+order yields the complete coefficient-norm estimate
+
+‖Σ_(k≥K) a_k X^k P^(2k+1) − Q_m‖₁
+≤ 2B/(1−η) · [C^m (Δ^m a)_K + η Σ_(j<m) C^j (Δ^j a)_K].
+
+This holds at every order m. It uses finite polynomial identities and
+coefficient locality; it does not require an infinite polynomial inverse.
+The finite head and Q_m are added before taking absolute values, preserving
+the cancellation between them.
 
 ## Complete certificate
 
@@ -61,65 +78,112 @@ norm exactly one, and constant coefficient
 1020379367568975/1125899906842624. The resolvent R has degree 64 and is
 stored as its 65 coefficients, without trailing zero padding.
 
-The exact budgets are:
+The exact parameters and verified finite-check bounds are:
 
-- K = 1,024 series terms; radial cutoff 29,696 includes every coefficient;
-- q = 998903/10⁶ for the fourth power;
+- K = 64 series terms and m = 6 correction terms;
+- checked coefficient prefix n < 170, with cap 9136/10¹² = 9.136·10⁻⁹;
+- weighted finite-polynomial tail from n = 170, with cap 4/10¹²;
 - η = 10⁻¹² for the inverse defect;
-- b = 249/500 for ‖R P^17‖₁;
-- γ = 637/1000 for r_K(K+1)(2K+1);
-- finite normalized residual ≤ 95/10⁹;
-- native Abel budget ≤ 174/10⁹;
-- refined infinite normalized residual ≤ 877/10¹⁰ = 87.7/10⁹.
+- ‖R P^17‖₁ ≤ 249/500, giving B = 1/2 using ‖P‖₁ ≤ 1;
+- ‖R−1‖₁ + η ≤ 2, giving C = 2;
+- r_64 ≤ 1/10⁴ and Δ^6 r_64 ≤ 37/10¹³;
+- completed finite residual ≤ 914/10¹¹ = 9.14·10⁻⁹;
+- infinite remainder ≤ 24/10¹¹ = 0.24·10⁻⁹.
 
-The native budget bounds 2 b γ q^508 / ((1025)(2049)(1 − η)).
-The exact resolvent list gives ‖R−1‖₁ + η ≤ 2, hence ‖RA‖₁ ≤ 2.
-At K = 1024 the difference ratio is 8199/4206600, so the refined allowance is
-at most the native budget times
+Complete monotonicity bounds every Δ^j r_64 by r_64. Since
+Σ_(j<6) 2^j = 63, the general remainder estimate is bounded by
 
-1/2 + 2·(8199/4206600)/(1 − η).
+[64·(37/10¹³) + 10⁻¹²·(63/10⁴)] / (1−10⁻¹²) < 24/10¹¹.
 
-This is below 87.7/10⁹. Residual transfer with the total cap 182.7/10⁹ and
-the proved lower enclosure for π gives the public endpoint.
+The completed finite residual polynomial is
 
-Canonical inputs live in
+F = P Σ_(k<64) r_k (XP²)^k + Q_6 − P(0).
+
+The finite check gives an outward interval enclosure of its first 170 coefficients. To
+control every remaining coefficient, use the weighted norm of F(ρX). For
+any real polynomial F and ρ ≥ 1, scaling multiplies coefficient n by ρⁿ, so
+
+‖F‖₁ ≤ Σ_(n<N) |F_n| + ‖F(ρX)‖₁/ρ^N.
+
+At ρ = 3/2, the exact rational data give ‖P(ρX)‖₁ ≤ 21/20 and
+‖R(ρX)‖₁ ≤ 9. Hence ‖ρX P(ρX)²‖₁ ≤ 5/3 and the scaled correction ratio
+has norm at most 15. Complete monotonicity gives r_k ≤ 1 and
+Δ^j r_64 ≤ 1/10⁴. Submultiplicativity and the finite geometric sums yield
+
+‖F((3/2)X)‖₁
+≤ (21/20)·64·(5/3)^63
+  + 9·(21/20)·(5/3)^64·(1/10⁴)·Σ_(j<6) 15^j + 1
+≤ 10¹⁸.
+
+The omitted finite-polynomial coefficients therefore contribute at most
+10¹⁸/(3/2)^170 < 4/10¹². Adding the checked prefix cap gives
+
+‖F‖₁ ≤ (9136+4)/10¹² = 914/10¹¹.
+
+This is a finite polynomial coefficient argument; no analytic continuation
+or infinite-series norm outside the unit disk is assumed.
+
+The total normalized residual is at most 938/10¹¹ = 9.38·10⁻⁹. Residual transfer and the proved lower enclosure for π give
+
+K_G^ℂ ≤ 4/[π(P(0) − 938/10¹¹)] < 1.404909140.
+
+The rational polynomial inputs live in
 `data/haagerup-resolvent/certificate.json`.
-The generator
-`tools/gen_haagerup_power.py`
-reproduces
-`Grothe/Haagerup/PowerCheck.lean`
-byte for byte. Floating searches propose data and play no role in acceptance.
+`tools/gen_haagerup_power.py` reproduces `Grothe/Haagerup/PowerData.lean` byte for byte.
+The canonical completion parameters and differences are defined in
+`Grothe/Haagerup/CanonicalData.lean`. Floating searches propose data and play
+no role in acceptance.
+`PowerData.lean` contains only the six definitions `pl`, `rl`, `seedPower`,
+`seedCap`, `defectCap`, and `slope`. The data module has no numerical theorem;
+all four acceptance proofs come from the canonical trace.
 
 ## Sources and replay
 
-- `Grothe/Upper/ResolventTail.lean`: finite inverse certificate, Abel summation, coefficient locality, short seed and checker soundness.
-- `GrotheKernel/ResolventTail.lean`: finite outward computations at the existing 128-bit scale.
-- `Grothe/Haagerup/Convex.lean`: decreasing coefficient differences and their vanishing boundary.
-- `Grothe/Haagerup/Power.lean`: complete composition and public matrix theorem.
+- `Grothe/Upper/FiniteDifference.lean`: all-order finite differences and complete monotonicity.
+- `Grothe/Haagerup/CompleteMonotone.lean`: the rising-factorial quotient proof for the Haagerup coefficients.
+- `Grothe/Upper/ResolventTail.lean`: the finite inverse certificate, Abel estimate and coefficient locality.
+- `Grothe/Upper/ResolventCompletion.lean`: the all-order completion identity and infinite remainder estimate.
+- `Grothe/Upper/ResolventCertificate.lean`: soundness of the checked finite coefficient prefix.
+- `Grothe/Upper/WeightedTail.lean`: the coefficient-tail bound from a scaled polynomial norm.
+- `Grothe/Haagerup/CanonicalArithmetic.lean`: outward integer computation of the finite head and correction, retaining the `GrotheKernel` namespace.
+- `Grothe/Haagerup/CanonicalTrace/`: kernel-proved literal arithmetic, five-coefficient continuation blocks, the generic append identity, and exact recurrence and input bindings.
+- `Grothe/Haagerup/CanonicalCheck.lean`: the four public check statements, assembled from the kernel proofs.
+- `Grothe/Haagerup/CanonicalProof.lean`: complete composition and matrix transfer from those checks.
+- `Grothe/Haagerup/Power.lean`: the public matrix theorem.
 - `docs/research/haagerup-power.tex`: full written proof.
-- `tools/verify_haagerup_power.py`: independent rational and directed-ball replay.
+- `tools/gen_haagerup_canonical_check.py`: exact generation and byte-for-byte checking of the trace modules.
+- `tools/verify_haagerup_canonical.py`: independent rational and directed-ball replay, with hashes of the trace sources and generator.
 
-From the repository root, with Python and `python-flint`:
+From the repository root, check the generated trace without changing files:
 
 ```sh
-python3 -I tools/verify_haagerup_power.py data/haagerup-resolvent/certificate.json --out handoff/haagerup-resolvent-replay.json
+python3 -I tools/gen_haagerup_canonical_check.py --check
 ```
 
-The replay checks byte-identical generated data, complete finite head and
-seed polynomials, exact rational inverse defect and fourth power, directed
-infinite-tail arithmetic, and the final endpoint. It checks all coefficients,
-not a sample.
+The generator uses exact integers and fractions from the tracked certificate and
+`CanonicalData.lean`. Each emitted equality still requires a Lean proof; a
+successful generation check is not proof acceptance. The recurrence and binding
+lemmas connect the literal results to the original checker definitions.
 
-The focused axiom audit covers 55 selected results in this route and permits
-only `propext`, `Classical.choice`, `Quot.sound` and the certificate's one
-native fact `Grothe.HaagerupPower.check._native.native_decide.ax_1_1`:
+Run the independent replay with Python and `python-flint`:
+
+```sh
+python3 -I tools/verify_haagerup_canonical.py --out handoff/haagerup-canonical-replay.json
+```
+
+The independent replay evaluates the complete finite polynomial as well as
+the checked prefix, weighted finite-tail budget, seed, inverse defect, exact
+coefficient differences, infinite remainder budget, and final endpoint.
+
+The focused axiom audit permits only `propext`, `Classical.choice`, and
+`Quot.sound` for all 96 selected results in the canonical route:
 
 ```sh
 lake env lean scratch/AxiomsPower.lean | python3 scripts/check_axioms.py --haagerup-power
 ```
 
-Run this from the worktree root. The normal CI audit includes the same
-results. The second-Abel replay and source manifest are in
-`docs/verification/haagerup-convex-20261026/`. The underlying certificate and
-its native fact are unchanged.
-The lower node-cap import closure is unchanged.
+Run this from the worktree root. The successful focused audit checks 96 results
+with zero native axioms. Verification records are collected under
+`docs/verification/haagerup-canonical-20261026/`. Normal `ready/*` delivery CI
+builds and audits the combined tree before merging it. Validation is tracked in issue #113.
+The canonical upper-bound construction does not change the lower cap computations.
