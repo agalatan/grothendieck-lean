@@ -104,7 +104,7 @@ $\KG\le1/(c-\|r\|_A)$. Haagerup's choice $f=\ph$ gives $1.40491$. Lean proves Ha
 this gives the unconditional bound $\KG\le1.404909543$ (\lean{haagerup\_bound}), which needs no hypothesis. Our sharp rounding is a smoothed two-coordinate phase rounding,
 $F_0=\ph\bigl(z+\sqrt{1+a^2}\,v(|z|^2)\,w\bigr)$ with a twelve-term Laguerre profile $v$, multiplied by the cubic Taylor
 polynomial of a damped polynomial phase $\varphi$: $T=F_0P_3(\varphi)$, $P_3(x)=1+ix-x^2/2-ix^3/6$. The identity
-$|P_3(x)|^2=1-x^4(3-x^2)/36$ and the proved bound $\varphi^2\le3$ give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
+$|P_3(x)|^2=1-x^4(3-x^2)/36$ and the proved bound $\varphi^2\le99/100$ give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
 Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $41$ and
 $\tau$ of degree $15$ with zero linear coefficient (any odd preprocessors of Wiener norm $\le1$ are realised by tensor
 powers). Compared with $c\,t$, $c=7119483103461/10^{13}$, the residual is at most
@@ -127,6 +127,23 @@ For nonnegative radii $A_r^2\ge\sum_{p\in S\cap B_r}w_p^2E_X(p)$, Lean proves
 All pieces may share coordinates. Lean proves each coefficient cost by outward interval polynomial arithmetic;
 native arithmetic checks eighteen weighted radii from the stored table and its error allowance.
 The Gaussian component-error enclosures and their identification with the pieces remain explicit inputs.
+
+\paragraph{Radial repair has a quantitative ceiling.}
+Lean certifies the polynomial disk map $z\mapsto zS_6(1-|z|^2)$, where
+$S_6(q)=\sum_{j=0}^6\binom{2j}{j}q^j/4^j$:
+the exact defect $1-(1-q)S_6(q)^2$ is $q^7$ times a polynomial with positive
+coefficients. Applied to $P_3(\varphi)$ this is a degree-$39$ factor.
+But Lean also proves $(1-|P_3(x)|)^2\le x^6/1225$ for $x^2\le1$.
+For charge-one responses and any same feasible preprocessors, the full coefficient change obeys
+\[
+ \|K_H-K_G\|_A\le(\|H\|_2+\|G\|_2)\|H-G\|_2.
+\]
+Thus outward radial changes of disk responses cost at most
+$2\sqrt{\E\varphi^6/1225}$ in the full kernel. The integrated Lean theorem
+retains the sixth-moment and radial-gap premises explicitly; it does not
+identify the concrete Gaussian moment or certify a new score. These results
+leave the endpoints unchanged. Preprocessor changes must be compared at the
+same $P,Q$; this ceiling does not bound a separate gain from reoptimising them.
 
 \subsection{Lower bounds: Hermite projection games}
 A lower bound needs an operator $T$ whose \emph{vector} value is close to $1$ while its \emph{scalar} value is small. We use

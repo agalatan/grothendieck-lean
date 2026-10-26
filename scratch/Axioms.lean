@@ -439,6 +439,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.Bm_polyKernel
 #print axioms Grothe.UpperChaos.Ef_X0_mul
 #print axioms Grothe.UpperChaos.GT_rot2
+#print axioms Grothe.UpperChaos.RadialRepair.complement_identity
+#print axioms Grothe.UpperChaos.RadialRepair.norm_phaseRepair_le_one
+#print axioms Grothe.UpperChaos.RadialRepair.phaseRepair_change_sq_le
+#print axioms Grothe.UpperChaos.RadialRepair.radial_gap_sq_le
 #print axioms Grothe.UpperChaos.differentiableOn_Hhol_Rt
 #print axioms Grothe.UpperChaos.differentiableOn_integral_exp
 #print axioms Grothe.UpperChaos.energy_eq_zero_of_even
@@ -481,11 +485,15 @@ import Grothe
 #print axioms Grothe.UpperChaos.phi_abs_lt_one
 #print axioms Grothe.UpperChaos.phi_cubes_ok
 #print axioms Grothe.UpperChaos.poly_complete
+#print axioms Grothe.UpperChaos.radial_distance_le_of_sixth_moment
+#print axioms Grothe.UpperChaos.radial_kernel_ceiling
 #print axioms Grothe.UpperChaos.rounding_diskKernel
 #print axioms Grothe.UpperChaos.splitAll_cover
 #print axioms Grothe.UpperChaos.structural_fields
 #print axioms Grothe.UpperChaos.sum_sq_le_of_mean_le
 #print axioms Grothe.UpperChaos.summable_abs_energy
+#print axioms Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le
+#print axioms Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le_two_mul
 #print axioms Grothe.UpperChaos.walk_sound
 #print axioms Grothe.fresh_upper
 #print axioms Grothe.haagerup_bound

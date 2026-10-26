@@ -150,6 +150,21 @@ p(t) = t·P(t²) (`pList`, degree 41) and −τ(t) = t·Q(t²) (`qList`, degree 
 that both are realised by tensor powers (`Grothe/Upper/Realise.lean`); they do not enter the
 energies, and are chosen to make the kernel nearly linear. The slope is c = 7119483103461/10¹³.
 
+The separate `RadialRepair.lean` proves the exact complement identity
+`(1−q) S₆(q)² = 1−C₆(q)`, with C₆(q) = q⁷ times a polynomial with seven
+positive coefficients. It certifies the polynomial disk map
+`z ↦ z S₆(1−normSq z)` and its degree-39 phase specialization; no new
+`native_decide` fact is used. `radial_gap_sq_le` proves
+`(1−‖P₃(x)‖)² ≤ x⁶/1225` for x² ≤ 1. `KernelStability.lean` proves
+`Σ |E_H−E_G| ≤ (‖H‖₂+‖G‖₂)‖H−G‖₂` and transports this through any
+same feasible P,Q to all physical coefficients of charge-one responses. `RadialCeiling.lean`
+integrates the pointwise gap and proves `radial_kernel_ceiling`, with explicit
+phase-domain, radial-gap, integrability and sixth-moment premises. This theorem
+applies to diagonal response kernels. Distinct responses on the two parties
+need a cross-moment interface; signed cross moments cannot be supplied as
+nonnegative chaos energies. The concrete Gaussian moment and a score for the
+new rounder are not proved here, and the headline endpoints are unchanged.
+
 * Proved from scratch: the complex Gaussian Hermite basis on ℂ², completeness, Parseval,
   the L² Mehler formula, charge selection, energy summability and the energies-to-kernel
   identity (`Grothe/UpperChaos/`); measurability, charge one and disk-valuedness of G_T;
