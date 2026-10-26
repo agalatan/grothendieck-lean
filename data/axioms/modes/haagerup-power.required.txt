@@ -1,5 +1,12 @@
 # --haagerup-power: theorems that must appear in this audit report (sorted; union-merged).
-Grothe.HaagerupPower.R_succ_le
+Grothe.HaagerupConvex.delta_eq
+Grothe.HaagerupConvex.delta_nonneg
+Grothe.HaagerupConvex.delta_succ_le
+Grothe.HaagerupConvex.r_nonneg
+Grothe.HaagerupConvex.r_succ_le
+Grothe.HaagerupConvex.summable_r
+Grothe.HaagerupConvex.tendsto_r_zero
+Grothe.HaagerupPower.abel_budget
 Grothe.HaagerupPower.check
 Grothe.HaagerupPower.composed_tail
 Grothe.HaagerupPower.degree_P
@@ -10,6 +17,7 @@ Grothe.HaagerupPower.gamma_bound
 Grothe.HaagerupPower.norm_P
 Grothe.HaagerupPower.norm_defect
 Grothe.HaagerupPower.norm_fourth
+Grothe.HaagerupPower.norm_resolvent_ratio
 Grothe.HaagerupPower.norm_seed
 Grothe.HaagerupPower.residual
 Grothe.HaagerupPower.upper
@@ -26,9 +34,12 @@ Grothe.Upper.PowerTail.tail_numeric_of_check
 Grothe.Upper.PowerTail.weightedTail_pair
 Grothe.Upper.PowerTail.weighted_composition
 Grothe.Upper.PowerTail.weighted_tail_bound
+Grothe.Upper.ResolventTail.compCoeff_tail_eq_sum_coeff
 Grothe.Upper.ResolventTail.compTerm_coeff_zero
 Grothe.Upper.ResolventTail.compTerm_geometric
 Grothe.Upper.ResolventTail.composition_tail_bound
+Grothe.Upper.ResolventTail.composition_tail_bound_convex
+Grothe.Upper.ResolventTail.convex_weights_bound
 Grothe.Upper.ResolventTail.decreasing_weights_bound
 Grothe.Upper.ResolventTail.defect_of_check
 Grothe.Upper.ResolventTail.geometric_difference
@@ -41,4 +52,5 @@ Grothe.Upper.ResolventTail.memB_neg
 Grothe.Upper.ResolventTail.seed_of_check
 Grothe.Upper.ResolventTail.seed_power_bound
 Grothe.Upper.ResolventTail.tail_numeric_of_check
+Grothe.Upper.ResolventTail.weighted_geometric_difference
 Grothe.haagerup_bound

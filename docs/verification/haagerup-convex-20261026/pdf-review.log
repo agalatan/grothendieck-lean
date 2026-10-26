@@ -1,0 +1,6 @@
+Agent-ID: codex-aa04
+PASS_LAYOUT: merged overview compiled with latexmk/pdfTeX,12pages.
+Visually inspected rendered pages1,2,5,6and12: headline1.404909409, history table, current lower/Schur statements, trust counts and second-Abel formula fit without overlap or clipping.
+Initial cross-reference warnings resolved on final LaTeX pass; no final errors, warning-labelled messages or overfull boxes. One harmless underfull bibliography line remains.
+PDF sha256 28427ea7016fd18e0566660efd49fb5cff9ef87f7cdfd7130a5147cddd8b3e53
+Source docs/overview.tex sha256 af2348ef4ccc3ab2229f9f30e5a8bbf05c0799a44662189e9dd1c869338b7afd

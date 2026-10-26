@@ -271,7 +271,7 @@ headline endpoints are unchanged.
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
-**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (1404909543/1000000000)`
+**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (1404909409/1000000000)`
 (`Grothe/Haagerup/Power.lean`), with no hypothesis. The analysis is in
 `Grothe/Haagerup/`: the shared Gaussian phase and planar laws (`Phase`); the charge-one
 Hermite coefficient, evaluated using odd Gaussian moments and a finite Pochhammer identity
@@ -289,11 +289,14 @@ generated from `data/haagerup-resolvent/certificate.json`. The coefficient norm 
 the fourth-power norm is at most 998903/10⁶. A single sequential native check verifies the complete
 1,024-term composition (radial cutoff 29,696), the power norm, inverse defect ≤10⁻¹²,
 combined-seed norm ≤249/500, and the infinite signed-tail budget. The normalized residual caps are
-95/10⁹ for the finite part and 174/10⁹ for the entire infinite tail.
+95/10⁹ for the finite part and 87.7/10⁹ for the entire infinite tail. The second Abel
+estimate uses the decreasing first differences of `haagR` (`Haagerup/Convex.lean`),
+its limit zero, and the kernel-proved norm bound ‖R·XP²‖₁ ≤ 2. It sharpens the
+existing native Abel budget 174/10⁹ without changing the certificate or native fact.
 `Grothe/Upper/ResolventTail.lean` proves the finite inverse-defect estimate, geometric-prefix bound,
-Abel summation, coefficient-locality passage to the full suffix, seed power bound and checker
+Abel summation and its convex-weight refinement, coefficient-locality passage to the full suffix, seed power bound and checker
 soundness. `Grothe/Upper/PowerTail.lean` supplies the power contraction and coherent-boundary
-obstruction. The phase identity, residual and tensor transfer yield K ≤ 1.404909543 with no external
+obstruction. The phase identity, residual and tensor transfer yield K ≤ 1.404909409 with no external
 inputs. The single numerical fact is `Grothe.HaagerupPower.check._native.native_decide.ax_1_1`.
 
 
@@ -583,6 +586,7 @@ yet wired into `GrotheCaps` or `CapsRest`.
 | `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck0`–`5`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 99/100 everywhere (`phiT_sq_le`, hence `phi_abs_lt_one : |φ| < 1`; `phiBound` is the same bound as the rounding's `PhiBound`): 512 cubes of bisection trees (`phi_cover_check_0`–`5`), analytic far field, headline `fresh_upper_rounder` |
 | `EnergyBlock`, `LocalizedComparison` | actual Gaussian energies of error blocks; the selected-spectrum comparison |
 | `HardyKernel`, `HolIntegral`, `HardyHolo`, `OddSeries`, `OddParseval` | holomorphic Gaussian kernel; dominated parametric integration; holomorphy for separate measurable disk-valued responses (`HholPair`); odd-series continuation and circle Parseval; `hardy_of_pair_inputs` and its incumbent specialization |
+| `Gauss2`, `Sym2R`, `SchurTest`, `LstarL`, `SchurKernel`, `SchurBound`, `SchurIntegrability`, `SchurMain` | Gaussian integrals, weighted Schur test and kernel factorization; the Gaussian Schur bound for every measurable disk-valued response pair under its positive-definiteness gates (`norm_HholPair_sq_le`) |
 
 The pair interface needs measurability and the pointwise disk bound on both
 responses. Holomorphy uses the same open covariance-decay region (`KerPos`)
@@ -593,9 +597,10 @@ at radius `4149/4000`. It concludes the existing partial weighted-square
 inequality with budget `7/4`. These proofs introduce no numerical axioms.
 The incumbent `differentiableOn_Hhol_Rt` and `hardy_of_inputs` retain their
 statements and specialize the pair results. The Gaussian density/covariance
-identification, Schur bound and exact contour inputs remain separate
-obligations; this interface alone does not discharge `hardy` for a changed
-rounding or improve an endpoint.
+identification and exact contour inputs remain separate obligations.
+`SchurMain.norm_HholPair_sq_le` proves the Gaussian Schur bound for the same
+response pairs under `j > 0`, `Z ≻ 0` and `T ≻ 0`. These structural theorems
+alone do not discharge `hardy` for a changed rounding or improve an endpoint.
 
 **`Grothe/LowerAnalytic/Cap*`: the node caps**
 
@@ -615,7 +620,7 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
 The complete registry has 84 native facts: 24 outside the separate 60 cap-range
-facts. There are 532 default axiom-report entries.
+facts. There are 546 default axiom-report entries and 329 required declarations.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`): `Grothe.head_check` (the upper head),
