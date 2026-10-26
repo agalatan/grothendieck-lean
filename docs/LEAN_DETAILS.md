@@ -500,7 +500,20 @@ yet wired into `GrotheCaps` or `CapsRest`.
 | `TaylorPhase`, `Rounder` | \|P₃(x)\|² = 1 − x⁴(3 − x²)/36; the concrete rounding G_T from `Grothe/Upper/Data.lean` |
 | `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck0`–`5`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 99/100 everywhere (`phiT_sq_le`, hence `phi_abs_lt_one : |φ| < 1`; `phiBound` is the same bound as the rounding's `PhiBound`): 512 cubes of bisection trees (`phi_cover_check_0`–`5`), analytic far field, headline `fresh_upper_rounder` |
 | `EnergyBlock`, `LocalizedComparison` | actual Gaussian energies of error blocks; the selected-spectrum comparison |
-| `HardyKernel`, `HolIntegral`, `HardyHolo`, `OddSeries`, `OddParseval` | holomorphic Gaussian kernel; holomorphy under positive kernel decay, odd-series continuation and circle Parseval; `hardy_of_inputs` from region, real-identification and circle-mean inputs (issue #18) |
+| `HardyKernel`, `HolIntegral`, `HardyHolo`, `OddSeries`, `OddParseval` | holomorphic Gaussian kernel; dominated parametric integration; holomorphy for separate measurable disk-valued responses (`HholPair`); odd-series continuation and circle Parseval; `hardy_of_pair_inputs` and its incumbent specialization |
+
+The pair interface needs measurability and the pointwise disk bound on both
+responses. Holomorphy uses the same open covariance-decay region (`KerPos`)
+and does not need charge or conjugation symmetry. `hardy_of_pair_inputs`
+additionally requires summable real odd coefficients, their identification
+with the pair kernel for real correlations, and the pair's circle mean bound
+at radius `4149/4000`. It concludes the existing partial weighted-square
+inequality with budget `7/4`. These proofs introduce no numerical axioms.
+The incumbent `differentiableOn_Hhol_Rt` and `hardy_of_inputs` retain their
+statements and specialize the pair results. The Gaussian density/covariance
+identification, Schur bound and exact contour inputs remain separate
+obligations; this interface alone does not discharge `hardy` for a changed
+rounding or improve an endpoint.
 
 **`Grothe/LowerAnalytic/Cap*`: the node caps**
 
@@ -519,7 +532,7 @@ yet wired into `GrotheCaps` or `CapsRest`.
 The active refined endpoint uses the eight original row/batch facts, one law-node
 fact and five refined-cover facts (14 native inputs). The original cover remains
 in the default development; the complete registry has 30 native facts outside
-the separate 60 cap-range facts. There are 502 axiom-report entries.
+the separate 60 cap-range facts. There are 504 axiom-report entries.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`): `Grothe.head_check` (the upper head),

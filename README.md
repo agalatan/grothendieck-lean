@@ -201,6 +201,13 @@ The head, computed in Lean (`head_check`), is 28153/10¹², 3.09% of the total
 The Hardy tail first deducts the linear coefficient's weighted square,
 forced by this weighted head comparison. This adds no Gaussian input.
 
+`HardyHolo.lean` proves holomorphy and Hardy assembly for separate measurable
+disk-valued left and right responses (`differentiableOn_HholPair_Rt`,
+`hardy_of_pair_inputs`). The covariance decay region is shared; the real
+odd-series identification and circle mean bound remain explicit inputs for
+each pair. The incumbent theorems specialize this interface. Neither bound
+nor its remaining analytic hypotheses changes.
+
 The current parameters and all 21,168 exact energies are in
 `data/upper-preprocess/certificate.json`; `python3 tools/gen_upper_data.py`
 regenerates the Lean data. The directed head and the fresh 65,594-arc Gaussian
