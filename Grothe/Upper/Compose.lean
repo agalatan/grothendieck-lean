@@ -47,23 +47,11 @@ lemma summable_compCoeff_term {c : ℕ → ℝ} (hc : Summable fun k => |c k|) {
 
 lemma sum_abs_compCoeff_le {c : ℕ → ℝ} (hc : Summable fun k => |c k|) {P : ℝ[X]}
     (hP : l1 P ≤ 1) (J : ℕ) : ∑ n ∈ range J, |compCoeff c P n| ≤ ∑' k, |c k| := by
-  have hterm : ∀ n, Summable fun k => |c k| * |(compTerm P k).coeff n| := fun n => by
-    simpa [abs_mul] using (summable_compCoeff_term hc hP n).norm
-  have hk : ∀ n, |compCoeff c P n| ≤ ∑' k, |c k| * |(compTerm P k).coeff n| := fun n => by
-    have := norm_tsum_le_tsum_norm (summable_compCoeff_term hc hP n).norm
-    rw [compCoeff]
-    simpa only [Real.norm_eq_abs, abs_mul] using this
-  calc ∑ n ∈ range J, |compCoeff c P n|
-      ≤ ∑ n ∈ range J, ∑' k, |c k| * |(compTerm P k).coeff n| := sum_le_sum fun n _ => hk n
-    _ = ∑' k, |c k| * ∑ n ∈ range J, |(compTerm P k).coeff n| := by
-        rw [← Summable.tsum_finsetSum fun n _ => hterm n]
-        exact tsum_congr fun k => by rw [mul_sum]
-    _ ≤ ∑' k, |c k| := by
-        have hle : ∀ k, |c k| * ∑ n ∈ range J, |(compTerm P k).coeff n| ≤ |c k| := fun k =>
-          mul_le_of_le_one_right (abs_nonneg _) ((sum_abs_coeff_le_l1 _ _).trans
-            (l1_compTerm_le hP k))
-        exact Summable.tsum_le_tsum hle
-          (Summable.of_nonneg_of_le (fun k => by positivity) hle hc) hc
+  exact sum_abs_tsum_le (range J) (fun k n => c k * (compTerm P k).coeff n)
+    (fun n _ => (summable_compCoeff_term hc hP n).norm) hc fun k => by
+      simp only [abs_mul, ← mul_sum]
+      exact mul_le_of_le_one_right (abs_nonneg _) ((sum_abs_coeff_le_l1 _ _).trans
+        (l1_compTerm_le hP k))
 
 theorem summable_abs_compCoeff {c : ℕ → ℝ} (hc : Summable fun k => |c k|) {P : ℝ[X]}
     (hP : l1 P ≤ 1) : Summable fun n => |compCoeff c P n| :=
