@@ -220,6 +220,11 @@ jobs:
           key: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
           restore-keys: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
 
+      - name: Build the scalar kernel proof before concurrent certificate checks
+        # The measured scalar power proof peaks at 18.8 GB RSS. Finish it before Lake schedules the ordinary
+        # native certificates and cap rows together; its small import closure contains no certificate chunks.
+        run: lake build Grothe.Haagerup.ScalarTailRefinement --log-level=warning
+
       - name: Build Grothe and GrotheCaps (incremental; hours if the caps sources changed)
         run: lake build Grothe GrotheCaps --log-level=warning
 
