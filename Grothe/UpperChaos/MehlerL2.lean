@@ -1,4 +1,5 @@
 import Grothe.UpperChaos.LawY
+import Grothe.UpperChaos.HermiteC2Basis
 import Grothe.UpperChaos.DiagonalPairing
 
 /-!
