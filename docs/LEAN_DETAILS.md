@@ -311,6 +311,9 @@ Large convolutions are proved in continuation blocks of at most five left
 coefficients. The generic `convI_append` identity preserves the original
 outward arithmetic order; recurrence and exact input-binding lemmas recover
 the four checker statements without a new numerical premise.
+Shared literals feed 16 independent numerical proof modules; the recurrence
+assembly and source bindings follow them. Parallel scheduling changes neither
+the arithmetic equalities nor the trust assumptions.
 `CanonicalCheck.lean` exposes the four public check statements, and
 `CanonicalProof.lean` assembles the bound from them. The generator check
 `tools/gen_haagerup_canonical_check.py --check` verifies byte-for-byte reproducibility;

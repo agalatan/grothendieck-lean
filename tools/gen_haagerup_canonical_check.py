@@ -21,6 +21,7 @@ MODULE_PREFIX = "Grothe.Haagerup.CanonicalTrace"
 FINAL_NAMES = ("coefficient_check", "completed_check", "seed_check", "defect_check")
 CONV_BLOCK_SIZE = 5
 CONV_BLOCK_THRESHOLD = 2000
+NUMERIC_MODULES = 16
 D = 2**128
 ZERO = (0, 0)
 
@@ -464,50 +465,79 @@ def render_convolution_module():
 
 
 def render(data, parameters):
-    """Return Core arithmetic chunks, source bindings, and final checks."""
+    """Separate literal data, independent arithmetic proofs, and recurrence assembly.
+
+    A numerical equality uses only the literal definitions and generic interval
+    operations. Its proof does not need any other numerical equality. Keeping
+    these facts in sibling modules lets Lake check them concurrently; the cheap
+    recurrence proofs are assembled after every numerical module is available.
+    """
     sections, expected_progress = render_blocks(data, parameters)
-    bundles, current = [], []
-    progress_in_bundle = 0
+    shared, numeric, assembly = [], [], []
+    previous_owner = shared
     for block in sections["core"]:
         require("Grothe.HaagerupPower" not in block and "Grothe.haagR" not in block and
                 "iterDiff" not in block and "Grothe.HaagerupCanonical." not in block,
                 "arithmetic chunk depends on the analytic layer")
-        current.append(block)
         if block.startswith("run_cmd do\n"):
-            progress_in_bundle += 1
-            if progress_in_bundle == 10:
-                bundles.append((f"Chunk{len(bundles):02d}", "core", current))
-                current, progress_in_bundle = [], 0
-    if current:
-        bundles.append((f"Chunk{len(bundles):02d}", "core", current))
-    bundles.append(("Bindings", "bindings", sections["bindings"]))
-    bundles.append(("Checks", "checks", sections["checks"]))
+            require(previous_owner, "progress marker has no preceding declaration")
+            previous_owner[-1] += block
+            continue
+        if block.startswith("def ") or block.startswith("deriving instance "):
+            previous_owner = shared
+        elif re.search(r" := by\n  decide \+kernel\n", block):
+            previous_owner = numeric
+        else:
+            require(block.startswith("theorem "), "unexpected arithmetic declaration block")
+            previous_owner = assembly
+        previous_owner.append(block)
+
+    theorem_names = set(re.findall(r"^theorem (\w+)\b", "".join(sections["core"]), re.M))
+    for block in numeric:
+        names = re.findall(r"^theorem (\w+)\b", block, re.M)
+        require(len(names) == 1, "a numeric block must contain exactly one theorem")
+        references = set(re.findall(r"\b[A-Za-z_]\w*\b", block)) & theorem_names
+        require(references <= set(names), "numeric proof depends on another proof")
+    for block in shared:
+        if block.startswith("def "):
+            require(not (set(re.findall(r"\b[A-Za-z_]\w*\b", block)) & theorem_names),
+                    "literal definition depends on a proof")
+
+    # Estimate arithmetic work from the literal convolution dimensions. The
+    # partition changes scheduling only: every declaration body is kept intact.
+    lengths = {}
+    for block in shared:
+        literal = re.match(r"def (\w+) : List Ival := \[", block)
+        if literal:
+            lengths[literal.group(1)] = block.count("⟨")
+
+    def work(block):
+        products = re.findall(r"\b(?:convWithTail|convI) (\w+) (\w+)", block)
+        return max([50] + [lengths.get(left, 1) * lengths.get(right, 1)
+                           for left, right in products])
+
+    numeric_groups = [[] for _ in range(NUMERIC_MODULES)]
+    loads = [0] * NUMERIC_MODULES
+    for index in sorted(range(len(numeric)), key=lambda i: (-work(numeric[i]), i)):
+        target = min(range(NUMERIC_MODULES), key=lambda i: (loads[i], i))
+        numeric_groups[target].append((index, numeric[index]))
+        loads[target] += work(numeric[index])
+    require(all(numeric_groups), "empty numerical proof module")
+    numeric_groups = [[block for _, block in sorted(group)] for group in numeric_groups]
 
     output = {RELATIVE_DIR / "Convolution.lean": render_convolution_module()}
-    declarations = []
-    progress_index = 0
-    previous = None
-    for index, (leaf, kind, blocks) in enumerate(bundles):
-        imports = []
-        if previous:
-            imports.append(f"import {previous}")
-        if any("convWithTail " in block for block in blocks):
-            imports.append(f"import {MODULE_PREFIX}.Convolution")
-        if kind == "core":
-            imports.append("import Grothe.Haagerup.CanonicalArithmetic")
-        elif kind == "bindings":
-            imports.append("import Grothe.Haagerup.CanonicalData")
-        imports.append("import Lean.Elab.Command")
-        opened = "open GrotheKernel" + (" Grothe.Upper.FiniteDifference" if kind != "core" else "")
-        header = "\n".join(imports) + f'''
+
+    def module(leaf, role, imports, blocks, analytic=False):
+        opened = "open GrotheKernel" + (" Grothe.Upper.FiniteDifference" if analytic else "")
+        header = "\n".join(f"import {name}" for name in imports + ["Lean.Elab.Command"]) + f'''
 
 /-!
 Agent-ID: codex-aa04. Literal checkpoints for the canonical Haagerup bound.
-Checkpoint module {index + 1} of {len(bundles)}.
+{role}
 Regenerate with tools/gen_haagerup_canonical_check.py.
 
 Each arithmetic step is proved from literal inputs and assembled through
-the defining recurrences. Progress messages identify declarations reached.
+the defining recurrences. Progress identifiers are stable across parallel modules.
 -/
 
 set_option Elab.async false
@@ -519,20 +549,26 @@ namespace {NAMESPACE}
 {opened}
 
 '''
-        normalized = []
-        for block in blocks:
-            if block.startswith("run_cmd do\n"):
-                progress_index += 1
-                block, count = re.subn(r"Canonical trace \d+:",
-                                      f"Canonical trace {progress_index}:", block)
-                require(count == 1, "missing progress marker")
-            normalized.append(block)
-        body = "".join(normalized)
-        declarations.extend(re.findall(r"^(?:def|theorem) (\w+)", body, re.M))
-        output[RELATIVE_DIR / (leaf + ".lean")] = header + body + f"end {NAMESPACE}\n"
-        previous = MODULE_PREFIX + "." + leaf
+        output[RELATIVE_DIR / (leaf + ".lean")] = header + "".join(blocks) + f"end {NAMESPACE}\n"
+
+    module("Shared", "Shared literal definitions and generic recurrence lemmas.",
+           [MODULE_PREFIX + ".Convolution"], shared)
+    for i, blocks in enumerate(numeric_groups):
+        module(f"Numeric{i:02d}", "Independent kernel arithmetic; no other numerical module is imported.",
+               [MODULE_PREFIX + ".Shared"], blocks)
+    module("Assembly", "Assemble the independent equalities using the defining recurrences.",
+           [f"{MODULE_PREFIX}.Numeric{i:02d}" for i in range(NUMERIC_MODULES)], assembly)
+    module("Bindings", "Bind the arithmetic literals to the mathematical source definitions.",
+           [MODULE_PREFIX + ".Assembly", "Grothe.Haagerup.CanonicalData"],
+           sections["bindings"], analytic=True)
+    module("Checks", "The four final checks, with every literal tied to the source data.",
+           [MODULE_PREFIX + ".Bindings"], sections["checks"], analytic=True)
+
+    rendered = "".join(output.values())
+    declarations = re.findall(r"^(?:def|theorem) (\w+)", rendered, re.M)
     require(len(declarations) == len(set(declarations)), "duplicate declaration")
-    require(progress_index == expected_progress, "progress count changed")
+    progress = [int(n) for n in re.findall(r"Canonical trace (\d+):", rendered)]
+    require(sorted(progress) == list(range(1, expected_progress + 1)), "progress identifiers changed")
     require(tuple(name for block in sections["checks"]
                   for name in re.findall(r"^theorem (\w+)", block, re.M)) == FINAL_NAMES,
             "unexpected final checker order")
