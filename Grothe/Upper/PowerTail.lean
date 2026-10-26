@@ -40,22 +40,10 @@ lemma weighted_composition {c : ℕ → ℝ} (hc : Summable fun k => |c k|)
       (fun k => mul_le_of_le_one_right (abs_nonneg _) (hw1 k)) hc
   apply Real.tsum_le_of_sum_range_le (fun _ => abs_nonneg _)
   intro J
-  have ht : ∀ n, Summable fun k => |c k| * |(compTerm P k).coeff n| := fun n => by
-    simpa [abs_mul] using (summable_compCoeff_term hc hP n).norm
-  calc
-    ∑ n ∈ range J, |compCoeff c P n| ≤
-        ∑ n ∈ range J, ∑' k, |c k| * |(compTerm P k).coeff n| := by
-      apply sum_le_sum
-      intro n _
-      simpa only [compCoeff, Real.norm_eq_abs, abs_mul] using
-        norm_tsum_le_tsum_norm (summable_compCoeff_term hc hP n).norm
-    _ = ∑' k, |c k| * ∑ n ∈ range J, |(compTerm P k).coeff n| := by
-      rw [← Summable.tsum_finsetSum fun n _ => ht n]
-      exact tsum_congr fun k => by rw [mul_sum]
-    _ ≤ ∑' k, |c k| * w k := by
-      have hb : ∀ k, |c k| * ∑ n ∈ range J, |(compTerm P k).coeff n| ≤ |c k| * w k :=
-        fun k => mul_le_mul_of_nonneg_left ((sum_abs_coeff_le_l1 _ _).trans (hterm k)) (abs_nonneg _)
-      exact (Summable.of_nonneg_of_le (fun _ => by positivity) hb hsw).tsum_le_tsum hb hsw
+  exact sum_abs_tsum_le (range J) (fun k n => c k * (compTerm P k).coeff n)
+    (fun n _ => (summable_compCoeff_term hc hP n).norm) hsw fun k => by
+      simp only [abs_mul, ← mul_sum]
+      exact mul_le_mul_of_nonneg_left ((sum_abs_coeff_le_l1 _ _).trans (hterm k)) (abs_nonneg _)
 
 def telescope (k : ℕ) (q : ℝ) : ℕ → ℝ
   | 0 => 1 / k
