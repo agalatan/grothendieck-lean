@@ -234,4 +234,5 @@ import Grothe.UpperChaos.Realise2
 import Grothe.UpperChaos.Rounder
 import Grothe.UpperChaos.SchurTest
 import Grothe.UpperChaos.Structural
+import Grothe.UpperChaos.Sym2R
 import Grothe.UpperChaos.TaylorPhase
