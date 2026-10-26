@@ -288,9 +288,13 @@ since been checked; no headline mathematical soundness defect has been found.
   inverse trim has exact equivalence, independent replay, and fresh complete
   native/proof-build evidence from
   [run 40247044009](https://github.com/agalatan/grothendieck-lean/actions/runs/40247044009).
-  Its affected files match the verified inputs. The aggregate report accepted
-  424 declarations and the cap stamp passed. No speedup is established; later
-  merged-tree CI remains pending. See the
+  The later primary-branch
+  [run 40250530009](https://github.com/agalatan/grothendieck-lean/actions/runs/40250530009)
+  and merged-master
+  [run 40251214852](https://github.com/agalatan/grothendieck-lean/actions/runs/40251214852)
+  also passed fresh complete builds, 435-record axiom reports and cap-stamp checks;
+  the affected files are identical across these verified trees. Master also passed
+  its generated-import/list check. No speedup is established. See the
   [verification record](verification/haagerup-trim-20261026/README.md).
 - [#60](https://github.com/agalatan/grothendieck-lean/issues/60): the axiom checker
   rejects unknown/conflicting modes and incomplete or diagnostic-bearing output.
@@ -298,10 +302,15 @@ since been checked; no headline mathematical soundness defect has been found.
   `data/axioms/`; all seven effective policies exactly preserve those checked at
   `1b44a219d553801ee319a993203f773e5646174b`, including the 11 phase-response
   requirements and their empty native allowlist. All 17 Python tests also pass
-  against that current-master checker and data snapshot. The actual 435-record report
+  against that master checker and data snapshot. The actual 435-record report
   from [run 40247087615](https://github.com/agalatan/grothendieck-lean/actions/runs/40247087615)
-  passes the strict checker (18 of 78 native facts); this tests the report input
-  and does not claim that the run's later auto-merge step succeeded.
+  passes the strict checker (18 of 78 native facts). The later successful master
+  run `40251214852` also executed and passed the strict checker on 435 records.
+  Later master `c38a625` adds four explicit audit modes, 44 required declarations
+  and six native facts from the separate law-node/refined-cover delivery. The
+  strict parser and CLI logic are preserved; all 21 tests pass on that snapshot,
+  including all 11 policies and 90 conflicting-mode pairs. These registry additions
+  are separate from this audit's unchanged native-fact count.
 
 - [#59](https://github.com/agalatan/grothendieck-lean/issues/59): one shared
   coefficient-series budget lemma replaces three repeated arguments; two
@@ -320,3 +329,11 @@ The measured production Lean reduction across #54, #55 and #59 is **124 lines**:
 is removed, and no meaningful native runtime improvement is established.
 Other gated changes to native facts/inputs, headline interfaces, and caps-closure
 sources remain unapproved. Workflow #48 remains coordinated with reserved PR #44.
+
+The original statement and coverage audit is scoped to its named baseline.
+Later master `c38a625` independently strengthens the conditional selected-spectrum
+upper endpoint to `500000000000000000 / 355973699864771491 < 1.404598149218`
+using a deduction from the existing Hardy budget. Its four coefficient-series
+source files are unchanged, and the #59 patch merges cleanly with it; full combined
+verification remains with the delivery CI. The new law-node/refined-cover
+certificates are not presented as part of the earlier baseline audit.
