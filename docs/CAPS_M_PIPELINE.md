@@ -106,3 +106,29 @@ The generated modules are `D/C/N14x150` with `R14x150_0..1`, and `D/C/N14x200` w
    fibre modules, which on the current master pull in `RowGates` → `RowReduction` → the whole lower certificate.
    So a build from scratch recompiles the 13 certificate chunks (about 40–75 min each, single-threaded). Track A
    fixes this.
+
+## Campaign plan: cheapest grid and multipliers per piece (#16)
+
+`tools/caps_plan.py` decides, before the expensive native checks run, on which grid each piece is checked and with
+which S-lemma multipliers:
+
+1. `gen-select PIECES.json GRID OUTDIR BATCH centre|all` (optional env `CAPS_NODES="k:i ..."`, `CAPS_TAG`) writes
+   throwaway modules `Grothe/LowerAnalytic/CapPlanRuns/Run_*.lean` (never committed) that export the piece matrices
+   on grid `GRID` with the checker's own functions (`exportPiecesOn`, `CapExport.lean`). Build them with
+   `lake build <module>`: the `#eval` runs at build time with the precompiled kernel.
+2. `solve EXPORT.jsonl OUT.json`: per piece `pass` (stored multipliers), `fixed` (new exact multipliers from
+   `tools/caps_lmi.py`), or `cap_up` (smallest exact cap increase).
+3. `plan PIECES.json SOLVED_DIR OUT_DIR` writes `data/caps-m/plan/<k>x<i>.json` (per piece: chosen grid, multipliers,
+   cap increase) and prints the cost and the cap-increase maximum.
+
+Findings so far (26 Oct):
+* Every node has exactly one piece with slack ≈ 1e-12 (the two-sided centre constraint |τ| ≤ 3/1000). These 358
+  pieces are the only candidates for a cap increase; they must stay on their stored grid (on 1600×256 they need
+  ≈ +3e-6, far above the cover slack 1.77e-8).
+* Non-centre pieces with stored slack ≳ 1e-4 pass on the coarse 400×128 grid even when stored on 1600×1024; pieces
+  with slack ≲ 3e-5 need ≈ 2–5e-5 more cap there and keep a finer grid.
+
+**How the generator should consume the plan:** `tools/gen_cap_pieces.py nodes` already accepts per-node `"grids"`
+(grid index per piece) in `sel.json`; take them from `data/caps-m/plan/<k>x<i>.json`, and replace the multipliers of
+the pieces marked `fixed` in the piece strings (as `tools/caps_lmi.py apply` does). A `cap_up` piece raises nothing
+per node: the global `capPad` (#72) is set to the maximum `cap_up` of the sweep plus a margin.

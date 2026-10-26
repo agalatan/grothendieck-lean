@@ -68,8 +68,11 @@ def cmd_gen_select(pieces_path, grid, outdir, batch, which):
     which = "centre": the one low-slack piece of each node (slack < 1e-11; the two-sided centre constraint), the
     pieces that can need a cap increase."""
     nodes = json.load(open(pieces_path))
+    only = set(os.environ.get("CAPS_NODES", "").split())   # optional "k:i k:i ..." filter
     sel = []
     for n in nodes:
+        if only and f"{n['k']}:{n['i']}" not in only:
+            continue
         js = [j for j, p in enumerate(n["pieces"]) if p["slack"] < 1e-11] if which == "centre" else \
              list(range(len(n["pieces"])))
         if js:
@@ -79,8 +82,8 @@ def cmd_gen_select(pieces_path, grid, outdir, batch, which):
     mods = []
     for b in range(0, len(sel), batch):
         part = sel[b:b + batch]
-        name = f"Run_{which}_g{grid}_{b // batch:03d}"
-        out = os.path.abspath(os.path.join(outdir, f"exp_{which}_g{grid}_{b // batch:03d}.jsonl"))
+        name = f"Run_{which}{os.environ.get('CAPS_TAG', '')}_g{grid}_{b // batch:03d}"
+        out = os.path.abspath(os.path.join(outdir, f"exp_{which}{os.environ.get('CAPS_TAG', '')}_g{grid}_{b // batch:03d}.jsonl"))
         if os.path.exists(out):
             os.remove(out)
         src = ["import Grothe.LowerAnalytic.CapExport", "", "namespace Grothe.LowerAnalytic", "",
