@@ -67,7 +67,7 @@ class CheckAxiomsTests(unittest.TestCase):
         self.assertEqual(CHECKER.audit_policy("upper-comparison")[1],
                          {"Grothe.head_check._native.native_decide.ax_1_1",
                           "Grothe.Upper.comparison_check._native.native_decide.ax_1_1",
-                          "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1"})
+                          *(f"Grothe.UpperChaos.phi_cover_check_{j}._native.native_decide.ax_1_1" for j in range(6))})
 
     def test_topic_policies_preserve_required_families(self):
         for mode, expected in (("research", CHECKER.RESEARCH_CORE),
