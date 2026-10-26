@@ -15,7 +15,7 @@ The user subsequently requested an active 15-minute continuation timer,
 `finish-rows-12-15-caps-and-cache`, and authorized the droplet runner cache
 campaign. Read the latest human scope in `handoff/caps-centre/STATE.md`.
 
-The snapshot has 63 completed centres (15 historical and 48 new), all with zero
+The snapshot has 72 completed centres (15 historical and 57 new), all with zero
 best residual. This is partial coverage, not the final remaining maximum.
 `cover-baseline-codex-15b7.json` records an exact replay of all 10,762 boxes at
 the unchanged padding and cover, including the approximately 4.50e-14 margin.
@@ -26,6 +26,20 @@ This checkpoint was captured from a live worker. Its recorded running status,
 PIDs and null exit code are historical observations; only completed evidence is
 backed up. Inspect actual processes before resuming, and do not infer that the
 job stopped or finished from the committed snapshot.
+
+## Audit and save a live checkpoint
+
+`python3 tools/caps_centre_checkpoint.py` audits one live observation without
+writing. To audit the committed checkpoint, use `audit --checkpoint
+data/caps-m/plan/checkpoint-codex-15b7.json`. It checks source and evidence hashes,
+node/grid identities and both stored/fine provenance dependencies; it does not
+verify feasibility or process liveness.
+
+An explicit `snapshot --replace --handoff-prefix
+handoff/caps-centre/codex-15b7-backup` captures a new owned checkpoint and metadata.
+Review the metadata's file list before staging it. The tool preserves the full
+observed progress but selects artifacts only from completed accepted centres.
+It neither stops the worker nor marks a build cache verified.
 
 ## Resume
 
