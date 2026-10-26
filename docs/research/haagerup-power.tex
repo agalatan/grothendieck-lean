@@ -1,4 +1,4 @@
-\section{A global upper-bound candidate from a canonical resolvent completion}
+\section{A global upper bound from a canonical resolvent completion}
 For a real polynomial, let $\|P\|_{\mathcal A}$ denote its absolute
 coefficient sum. Haagerup's Gaussian phase kernel is
 \[
@@ -6,9 +6,9 @@ coefficient sum. Haagerup's Gaussian phase kernel is
  r_0=1,\quad r_{k+1}=r_k\frac{(2k+1)^2}{4(k+1)(k+2)}.
 \]
 The Gaussian identity, tensor realization, residual estimate from finite
-certificates, and matrix transfer are formalized in Lean. The target has no
-external analytic or numerical premises, but \textbf{kernel acceptance of the
-finite checks and the final axiom audit remain pending}:
+certificates, and matrix transfer are proved in Lean. All four finite checks have
+kernel proofs; the focused audit checks 96 results with zero native axioms.
+The resulting bound has no external analytic or numerical premises:
 \[
  \boxed{K_G^{\mathbb C}\le\frac{1404909140}{1000000000}=1.404909140.}
 \]
@@ -133,7 +133,7 @@ The completed finite polynomial is
  H=P\sum_{k<64}r_k(XP^2)^k+Q_6(r).
 \]
 The head and correction are added before taking absolute values, preserving
-the cancellation between them. Put $F=H-a$. The outward interval check targets
+the cancellation between them. Put $F=H-a$. The outward interval check bounds
 the first $N=170$ coefficients:
 \[
  \sum_{n<170}|F_n|\le\frac{9136}{10^{12}}.
@@ -180,7 +180,10 @@ The finite prefix, inverse defect, combined seed, and coefficient bounds
  r_{64}\le\frac1{10^4},\qquad
  (\Delta^6r)_{64}\le\frac{37}{10^{13}}
 \]
-are finite acceptance obligations whose kernel verification is pending.
+have kernel proofs. Large convolutions are checked in continuation blocks of at
+most five left coefficients. The generic append identity composes these blocks
+without regrouping outward interval arithmetic. Exact recurrence and input-binding
+lemmas recover the four original checker statements, with no new numerical premise.
 Complete monotonicity gives $(\Delta^j r)_{64}\le r_{64}$, and
 $\sum_{j<6}2^j=63$. The infinite remainder is consequently at most
 \[
@@ -199,10 +202,11 @@ $\pi$ give
 \[
  K_G^{\mathbb C}\le\frac4{\pi(a-938/10^{11})}<1.404909140.
 \]
-The endpoint follows once all four finite acceptance facts have kernel proofs;
-the current numerical trace must still pass those checks and the final axiom audit.
-The existing native fact in the generated data module is unchanged and is
-not a dependency of the candidate proof. An independent directed FLINT replay audits
+All four finite acceptance facts have kernel proofs. The 96-result focused axiom
+audit confirms only the three standard axioms. Normal delivery CI builds and audits
+the combined tree before merging it.
+The generated data module contains only six rational-data definitions, with no
+native evaluation theorem. An independent directed FLINT replay audits
 the complete polynomial, checked prefix, weighted finite tail, inverse defect,
 seed, coefficient differences, infinite remainder arithmetic, and endpoint. Its results audit the implementation;
 they are not premises of the Lean theorem. The canonical construction does not

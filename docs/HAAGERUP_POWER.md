@@ -1,16 +1,17 @@
 # Hypothesis-free upper bound from a canonical resolvent completion
 
-The canonical candidate targets **K_G^ℂ ≤ 1.404909140** for every finite complex
-matrix, with no Gaussian, integration, or numerical-tail hypotheses.
-**Finite-check verification and the final axiom audit are pending.**
-The sharper conditional upper bound and lower endpoint are separate.
+`Grothe.haagerup_bound` proves **K_G^ℂ ≤ 1.404909140** for every finite complex
+matrix, with no Gaussian, integration, or numerical-tail hypotheses. The focused
+audit checks 96 results with zero native evaluation axioms. The sharper conditional
+upper bound and lower endpoint are separate.
 
 The Gaussian phase identity, tensor realization, complete finite residual,
-infinite remainder estimate, checker soundness and matrix transfer are all
-in Lean. The finite-check implementation assembles literal arithmetic steps through
-the defining recurrences and exact input-binding lemmas; those arithmetic proofs
-must be accepted by the kernel before the endpoint is verified. External replay
-results do not replace that acceptance or become hypotheses of the theorem.
+infinite remainder estimate, checker soundness and matrix transfer are all in Lean.
+Large convolutions are proved in continuation blocks of at most five left
+coefficients. The generic `convI_append` identity preserves the original
+outward arithmetic order; recurrence and exact input-binding lemmas recover
+the four checker statements without a new numerical premise.
+External replay results are not hypotheses of the theorem.
 
 ## Complete monotonicity and the resolvent expansion
 
@@ -77,7 +78,7 @@ norm exactly one, and constant coefficient
 1020379367568975/1125899906842624. The resolvent R has degree 64 and is
 stored as its 65 coefficients, without trailing zero padding.
 
-The exact parameters and finite-check targets are:
+The exact parameters and verified finite-check bounds are:
 
 - K = 64 series terms and m = 6 correction terms;
 - checked coefficient prefix n < 170, with cap 9136/10¹² = 9.136·10⁻⁹;
@@ -98,7 +99,7 @@ The completed finite residual polynomial is
 
 F = P Σ_(k<64) r_k (XP²)^k + Q_6 − P(0).
 
-The finite check requires an outward interval enclosure of its first 170 coefficients. To
+The finite check gives an outward interval enclosure of its first 170 coefficients. To
 control every remaining coefficient, use the weighted norm of F(ρX). For
 any real polynomial F and ρ ≥ 1, scaling multiplies coefficient n by ρⁿ, so
 
@@ -122,19 +123,19 @@ The omitted finite-polynomial coefficients therefore contribute at most
 This is a finite polynomial coefficient argument; no analytic continuation
 or infinite-series norm outside the unit disk is assumed.
 
-Once the finite checks are accepted, the total normalized residual is at most
-938/10¹¹ = 9.38·10⁻⁹. Residual transfer and the proved lower enclosure for π give
+The total normalized residual is at most 938/10¹¹ = 9.38·10⁻⁹. Residual transfer and the proved lower enclosure for π give
 
 K_G^ℂ ≤ 4/[π(P(0) − 938/10¹¹)] < 1.404909140.
 
 The rational polynomial inputs live in
 `data/haagerup-resolvent/certificate.json`.
-`tools/gen_haagerup_power.py` reproduces
-`Grothe/Haagerup/PowerCheck.lean` byte for byte. The canonical completion
-parameters and differences are defined in `Grothe/Haagerup/CanonicalData.lean`.
-Floating searches propose data and play no role in acceptance. The existing
-native fact in `PowerCheck.lean` is unchanged and is not a dependency of the
-candidate proof.
+`tools/gen_haagerup_power.py` reproduces `Grothe/Haagerup/PowerData.lean` byte for byte.
+The canonical completion parameters and differences are defined in
+`Grothe/Haagerup/CanonicalData.lean`. Floating searches propose data and play
+no role in acceptance.
+`PowerData.lean` contains only the six definitions `pl`, `rl`, `seedPower`,
+`seedCap`, `defectCap`, and `slope`. The data module has no numerical theorem;
+all four acceptance proofs come from the canonical trace.
 
 ## Sources and replay
 
@@ -144,9 +145,9 @@ candidate proof.
 - `Grothe/Upper/ResolventCompletion.lean`: the all-order completion identity and infinite remainder estimate.
 - `Grothe/Upper/ResolventCertificate.lean`: soundness of the checked finite coefficient prefix.
 - `Grothe/Upper/WeightedTail.lean`: the coefficient-tail bound from a scaled polynomial norm.
-- `Grothe/Haagerup/CanonicalArithmetic.lean`: outward integer computation of the finite head and correction.
-- `Grothe/Haagerup/CanonicalTrace/`: generated literal arithmetic steps and their recurrence and input bindings; kernel acceptance is pending.
-- `Grothe/Haagerup/CanonicalCheck.lean`: the four public check statements whose kernel proofs must be completed.
+- `Grothe/Haagerup/CanonicalArithmetic.lean`: outward integer computation of the finite head and correction, retaining the `GrotheKernel` namespace.
+- `Grothe/Haagerup/CanonicalTrace/`: kernel-proved literal arithmetic, five-coefficient continuation blocks, the generic append identity, and exact recurrence and input bindings.
+- `Grothe/Haagerup/CanonicalCheck.lean`: the four public check statements, assembled from the kernel proofs.
 - `Grothe/Haagerup/CanonicalProof.lean`: complete composition and matrix transfer from those checks.
 - `Grothe/Haagerup/Power.lean`: the public matrix theorem.
 - `docs/research/haagerup-power.tex`: full written proof.
@@ -175,14 +176,14 @@ the checked prefix, weighted finite-tail budget, seed, inverse defect, exact
 coefficient differences, infinite remainder budget, and final endpoint.
 
 The focused axiom audit permits only `propext`, `Classical.choice`, and
-`Quot.sound` for the canonical route:
+`Quot.sound` for all 96 selected results in the canonical route:
 
 ```sh
 lake env lean scratch/AxiomsPower.lean | python3 scripts/check_axioms.py --haagerup-power
 ```
 
-Run this from the worktree root. The normal CI audit includes the same
-results. Verification records are collected under
-`docs/verification/haagerup-canonical-20261026/`; their presence alone does not
-establish acceptance of the current finite checks. Validation is tracked in issue #113.
+Run this from the worktree root. The successful focused audit checks 96 results
+with zero native axioms. Verification records are collected under
+`docs/verification/haagerup-canonical-20261026/`. Normal `ready/*` delivery CI
+builds and audits the combined tree before merging it. Validation is tracked in issue #113.
 The canonical upper-bound construction does not change the lower cap computations.

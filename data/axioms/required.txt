@@ -154,6 +154,7 @@ Grothe.LowerAnalytic.TwoDisc.support_of_factor
 Grothe.LowerAnalytic.gaussian_gramInputs
 Grothe.LowerAnalytic.gaussian_steinInputs
 Grothe.LowerAnalytic.joint_eta_budget
+Grothe.LowerAnalytic.lower_bound_of_capsRest
 Grothe.LowerAnalytic.normQk_le_rho
 Grothe.LowerAnalytic.norm_pairVal_witness
 Grothe.LowerAnalytic.transferInputs_of_witnessCap

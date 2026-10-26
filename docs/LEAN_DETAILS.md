@@ -271,7 +271,7 @@ headline endpoints are unchanged.
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
-**Canonical unconditional candidate — finite checks pending.** The target is
+**Unconditional upper bound.**
 `Grothe.haagerup_bound : IsGrothendieckBound (1404909140/1000000000)`
 (`Grothe/Haagerup/Power.lean`), with no external hypothesis. The analysis is in
 `Grothe/Haagerup/`: the shared Gaussian phase and planar laws (`Phase`); the charge-one
@@ -293,7 +293,7 @@ generated from `data/haagerup-resolvent/certificate.json`. The coefficient norm 
 quotients to prove nonnegativity of every Haagerup coefficient difference.
 `Upper/ResolventCompletion.lean` proves the all-order resolvent expansion with its defect
 and vanishing-boundary remainder. The concrete construction combines 64 series terms with
-six resolvent correction terms before taking absolute values. The prefix check requires
+six resolvent correction terms before taking absolute values. The prefix check proves
 a cap of 9136/10¹² for its first 170 coefficients. `Upper/WeightedTail.lean` bounds
 all omitted coefficients of a polynomial F by ‖F((3/2)X)‖₁/(3/2)^170.
 Exact rational arithmetic gives ‖P((3/2)X)‖₁ ≤ 21/20 and ‖R((3/2)X)‖₁ ≤ 9;
@@ -303,21 +303,26 @@ and the complete infinite remainder at most 0.24/10⁹. The weighted estimate
 concerns a finite polynomial and assumes no analytic continuation.
 The proof uses the inverse defect≤10⁻¹², the short seed norm ‖RP¹⁷‖₁≤249/500,
 and the elementary bound ‖RA‖₁≤2. It needs no fourth-power or gamma estimate.
-`CanonicalData.lean` states the exact parameters. Generated `CanonicalTrace` modules
-split the arithmetic into literal steps and compose them through the defining
-recurrences and exact input-binding lemmas. `CanonicalCheck.lean` exposes the four
-public check statements, and `CanonicalProof.lean` assembles the bound from them.
-`tools/gen_haagerup_canonical_check.py --check` verifies byte-for-byte reproducibility
-from the rational certificate and `CanonicalData.lean`; generation is separate from
-Lean's proof checking. Kernel acceptance of the finite checks and the final axiom audit
-remain pending. Once accepted, the public wrapper gives K≤1.404909140 using only
-`propext`, `Classical.choice`, and `Quot.sound`.
-The retained `Grothe.HaagerupPower.check` and its native fact are unchanged and are not
-used by this endpoint. `Upper/ResolventCertificate.lean` proves soundness of the
-coefficient-prefix check, and `CanonicalProof.lean` adds the weighted finite tail.
-Independent directed replay is provided by
-`tools/verify_haagerup_canonical.py`. The focused report `scratch/AxiomsPower.lean`,
-checked with `scripts/check_axioms.py --haagerup-power`, permits no native axioms.
+`CanonicalData.lean` states the exact parameters. The arithmetic definitions are in
+`Grothe/Haagerup/CanonicalArithmetic.lean`, retaining the `GrotheKernel` namespace.
+Large convolutions are proved in continuation blocks of at most five left
+coefficients. The generic `convI_append` identity preserves the original
+outward arithmetic order; recurrence and exact input-binding lemmas recover
+the four checker statements without a new numerical premise.
+`CanonicalCheck.lean` exposes the four public check statements, and
+`CanonicalProof.lean` assembles the bound from them. The generator check
+`tools/gen_haagerup_canonical_check.py --check` verifies byte-for-byte reproducibility;
+generation is separate from Lean proof checking. The public wrapper gives
+K≤1.404909140. The focused audit checks 96 results using only `propext`,
+`Classical.choice`, and `Quot.sound`.
+`PowerData.lean` contains only the six definitions `pl`, `rl`, `seedPower`,
+`seedCap`, `defectCap`, and `slope`. The data module has no numerical theorem;
+all four acceptance proofs come from the canonical trace.
+`Upper/ResolventCertificate.lean` proves prefix-check soundness, and
+`CanonicalProof.lean` adds the weighted finite tail. Independent directed replay
+is provided by `tools/verify_haagerup_canonical.py`. The focused report
+`scratch/AxiomsPower.lean`, checked with `--haagerup-power`, confirms zero native axioms.
+Normal `ready/*` delivery CI builds and audits the combined tree before merging it.
 
 **Lower bound.** `Grothe.Research.LawNodeLower.profile_bound_of_law_nodes`
 proves `V ≤ B` for an admissible scalar profile under the simultaneous
@@ -374,26 +379,25 @@ variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
 `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data :
 NodeCaps → IsGrothendieckBound K → 1.401697049825 < K` composes everything
 through `Grothe/Research/RefinedCoverResult.lean`:
-**the only remaining hypothesis of this default-target theorem is `NodeCaps`**, the node caps
+**the only remaining hypothesis of this theorem is `NodeCaps`**, the node caps
 Ψ_r(r_k) − 10⁻¹¹ ≤ c_k of the 19 certified potentials (exact-arithmetic certificates outside Lean).
 
-The separate `GrotheCaps` target supplies `lower_bound_of_capsRest :
+The same single target `Grothe` also proves `lower_bound_of_capsRest :
 CapsRest → IsGrothendieckBound K → 1.401697049825 < K` (`CapNodes.lean`). Its 15
 `CapRowKK` modules retain the 60 unchanged single-threaded native range facts
 for rows 0–11 and 16–18, importing only the computation layer and recipe data.
 `CapRows` proves range-check soundness, and `CapAssembly` proves the chord
-check and convexity assembly (`CapHull` is a compatibility import). The
-default `Grothe` target builds that proof layer. `CapNodes` contains the
+check and convexity assembly (`CapHull` is a compatibility import). `CapNodes` contains the
 15 unchanged row-assembly proofs and the final `CapsRest` theorem, which
 composes `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and the same
-`lower_bound_of_refined_cover_data` used by the default target. The common
+`lower_bound_of_refined_cover_data`. The common
 `NodeCaps` definition lives in `NodeCaps.lean`, independently of
-`Reduction.lean`. `CapNodes` and the heavy rows are excluded from the
-generated default root.
+`Reduction.lean`. There is one build target and one axiom report: the heavy
+rows and `CapNodes` are part of `Grothe`.
 
-The cache provenance boundary is 54 files: 48 local computation modules,
-plus `CapNodes.lean`, `GrotheCaps.lean`, `GrotheCapsKernel.lean`, `lean-toolchain`,
-`lake-manifest.json` and `lakefile.toml`. Those six extras are hashed directly,
+The cache provenance boundary is 53 files: 48 local computation modules,
+plus `CapNodes.lean`, `GrotheCapsKernel.lean`, `lean-toolchain`,
+`lake-manifest.json` and `lakefile.toml`. Those five extras are hashed directly,
 without traversing their imports. This identifies the cached computation
 sources, not every analytic dependency or compiled artifact. Lake checks
 ordinary dependencies separately. The numerical checker is the independent
@@ -402,17 +406,18 @@ its constants retain the `GrotheKernel` namespace. Other kernel checkers
 stay outside that library, whose root is pinned because every importer
 loads its shared object.
 
-The runner's heavy CI job builds `Grothe` and `GrotheCaps` and checks both
-axiom reports before recording `.lake/build/caps-closure.sha` with
+The runner's heavy CI job builds `Grothe` and checks the
+axiom report before recording `.lake/build/caps-closure.sha` with
 `scripts/caps_stamp.py --mark-cache`. Ordinary CI restores that cache and
-calls `--check-cache` (the default). A match permits a `GrotheCaps` replay
-and caps audit, including `CapNodes`; Lake reuses native results only when
-its dependency hashes permit it. A missing or mismatched marker fails
-closed and dispatches the heavy job. A branch `caps` run saves the verified
-branch cache and repeats the check. After merge, a master `warm` run reuses
-the runner's persistent build and refreshes the master cache. One runner
+calls `--check-cache` (the default). A match permits the build of `Grothe`
+(replaying the heavy facts) and the axiom audit, including `CapNodes`; Lake reuses native results only when
+its dependency hashes permit it. When no verified cache matches the
+caps digest (part of the cache key), CI runs the same check on the droplet's
+runner, which builds, audits, marks and saves the cache; a cache miss delays
+a check but never fails it. After a merge that changed the caps, master's
+check also runs there and finds the build in the runner's workspace. One runner
 build supplies the verification and subsequent replay; no independent
-manual droplet verification is required. Builds and both reports establish
+manual droplet verification is required. The build and the report establish
 verification; a read-only digest alone does not.
 
 `CapsRest` still comprises the vertex caps of rows 0.84, 0.845, 0.85,
@@ -426,8 +431,8 @@ The localized-piece predicates also have a computation-only layer:
 `CapPieceRange` imports these definitions and rational data; the semantic
 regions and unchanged soundness proofs remain in `CapCover`, `CapConstr`
 and `CapPieceNodes`. Generated coverage/range modules therefore avoid the
-lower proof chain. They are excluded from the default root and are not
-yet wired into `GrotheCaps` or `CapsRest`.
+lower proof chain. They are excluded from the root until a proof uses
+them, and are not yet wired into `CapsRest`.
 
 * Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
   (trailing gate block positive definite, κδ² ≤ δ + gatePrice); the Stein cuts (summed, spectral and general spectral) from their analytic inputs, by completions of squares,
@@ -629,7 +634,7 @@ alone do not discharge `hardy` for a changed rounding or improve an endpoint.
 | `CapSym`, `CapGrid`, `CapGridT`, `CapGridOK`, `CapTables`, `CapTablesMk` | symbolic polynomials over ℚ(√2); cell prices on uniform polar grids and the exact cell decomposition of the integrated majorant; verified interval tables (`tablesOK_mk`) |
 | `CapPiece`, `CapCheckSound` | node certificate soundness (`pot_le_of_pieceOK`, `pot_le_of_nodeOK`) for the precompiled checker `GrotheCapsKernel/CapCheck.lean` |
 | `CapSymmetry`, `CapHull`, `CapChordData` | the symmetries S_c, S_- of the fibre integral; chord nodes from vertex caps by convexity (`capChords_check`, `nodeCaps_of_vertexCaps`) |
-| `CapRangeDefs`, `CapChords`, `CapRecipeData`, `CapRows`, `CapAssembly`, `CapRow00`–`CapRow11`, `CapRow16`–`CapRow18`, `CapNodes` | computation-only definitions and generated rational data; range-check soundness and convexity; 60 separate-target range facts verified on the runner and replayed by CI from its cache; final `lower_bound_of_capsRest` assembly |
+| `CapRangeDefs`, `CapChords`, `CapRecipeData`, `CapRows`, `CapAssembly`, `CapRow00`–`CapRow11`, `CapRow16`–`CapRow18`, `CapNodes` | computation-only definitions and generated rational data; range-check soundness and convexity; 60 range facts in `Grothe`, verified on the runner and replayed by CI from its cache; final `lower_bound_of_capsRest` assembly |
 | `CapCoverDefs`, `CapConstrDefs`, `CapPieceRange`; `CapCover`, `CapConstr`, `CapPieceNodes` | localised caps of rows 12–15 (route M): computable coverage and constrained-piece checks separated from symmetry, S-lemma and piece-node soundness (issue #12) |
 
 **`Grothe/Lower/Cert/`: the row and mixed-batch certificate in eight single-threaded chunks.**
@@ -638,15 +643,13 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 `LawNodeLower.certified_rows` and `certified_mixed_batches` assemble those
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
-The complete registry has 84 native facts: 24 outside the separate 60 cap-range
-facts. The default report and required-declaration counts will be refreshed after
-the merged registries are finalized; the current canonical audit is pending.
+The complete registry has 83 native facts: 23 outside the 60 cap-range facts. The default report has 588 print directives and 371 required declarations.
+These are source/registry counts; delivery CI checks the combined tree.
 
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`): `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
-`Grothe.HaagerupPower.check` (the retained finite certificate; unused by `haagerup_bound`),
 `Grothe.UpperChaos.phi_cover_check_0`–`5`
 (the phase cover |φ| < 1), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
 and the eight chunks `Grothe.Lower.certRows0`–`4` and
@@ -654,12 +657,12 @@ and the eight chunks `Grothe.Lower.certRows0`–`4` and
 has four box checks `certRefinedBoxes0`–`3`
 and `certRefinedPartition` in `Grothe.Research.RefinedLowerCheck`, together with
 `Grothe.Research.LawNodeCheck.certLawNodes` for the added pure-row batch.
-The separate caps target additionally uses 60 range checks
+The same `Grothe` target also includes 60 range checks
 `capRangeKK_j`. Every native check is single-threaded (no `Task.spawn`). All
 other accepted finite computations (the polynomial norms, the moment covers) use
-proof-producing kernel reduction. The canonical finite checks remain pending.
+proof-producing kernel reduction, including the canonical continuation-block checks.
 The report is `lake env lean scratch/Axioms.lean`, checked in CI;
-the separate caps report is `scratch/AxiomsCaps.lean`. The generic response, cubic-ceiling
+the node caps are in the same report. The generic response, cubic-ceiling
 and quintic-transfer lemmas add no native facts or endpoint hypotheses. No `sorry`,
 no warnings.
 

@@ -27,7 +27,7 @@ partition checker. Its unused straddler scan is absent, making
 [#56](https://github.com/agalatan/grothendieck-lean/issues/56) moot. This is a
 soundness/maintenance change; no speedup is claimed.
 
-Current source registries contain **586 default reports, 370 required declarations
+Current source registries contain **588 default reports, 371 required declarations
 and 83 named native facts (23 ordinary plus 60 cap ranges)**. The current inventory
 is [LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md). The older counts and
 coverage measurements in the baseline review describe that earlier tree only.
@@ -37,10 +37,21 @@ of the refined certificate.
 The cap checker now has an independent precompiled `GrotheCapsKernel` library,
 and heavy range facts import its computation layer. The verified-cache marker
 is `.lake/build/caps-closure.sha`, checked by `--check-cache` and written only after
-a successful runner build and both strict axiom reports. Full caps verification
+a successful runner build and the single strict axiom report. Full caps verification
 and shared-cache publication belong to the runner. The combined delivery's final
 runner evidence is recorded in #13/#85; no new full build is claimed by this source
 review. The CI comment probe uses retained `LowerAnalytic/Bridge.lean`.
+
+The unconditional canonical theorem `Grothe.haagerup_bound` proves
+`IsGrothendieckBound (1404909140/1000000000)`. Its complete finite trace and public
+wrapper passed Lean, and the focused audit passed with 96 results and zero native
+evaluation axioms. The proof uses exact continuation blocks and a generic append
+identity, with no new numerical premise. `PowerData.lean` contains only the six
+rational-data definitions; the four acceptance proofs come from the canonical
+trace. The arithmetic module is `Grothe/Haagerup/CanonicalArithmetic.lean`,
+retaining the `GrotheKernel` namespace. Final merged-tree validation runs through
+normal `ready/*` delivery CI: the single `Grothe` target includes the node caps
+and uses the single report `scratch/Axioms.lean`.
 
 ## Baseline result and limits
 

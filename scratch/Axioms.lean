@@ -277,6 +277,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.joint_scalar
 #print axioms Grothe.LowerAnalytic.joint_sixth_budget
 #print axioms Grothe.LowerAnalytic.kside
+#print axioms Grothe.LowerAnalytic.lower_bound_of_capsRest
 #print axioms Grothe.LowerAnalytic.moment_lemma
 #print axioms Grothe.LowerAnalytic.moments_of_three
 #print axioms Grothe.LowerAnalytic.nodeCap_of_rangeOK
@@ -315,6 +316,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.trace3_circular
 #print axioms Grothe.LowerAnalytic.trace4_circular
 #print axioms Grothe.LowerAnalytic.transferInputs_of_witnessCap
+#print axioms Grothe.LowerAnalytic.vertexCaps_of_capsRest
 #print axioms Grothe.LowerAnalytic.wickL_mem_H21
 #print axioms Grothe.LowerAnalytic.young_pair
 #print axioms Grothe.Research.CoupledMajorizer.complex_norm_majorizer

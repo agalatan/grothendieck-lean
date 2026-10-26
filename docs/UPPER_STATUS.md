@@ -1,24 +1,28 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
 The sharper conditional upper bound is described below. The independent hypothesis-free
-candidate targets `Grothe.haagerup_bound : IsGrothendieckBound (1404909140/1000000000)`.
-**Finite-check verification and the final axiom audit remain pending.**
-Its canonical resolvent completion, complete residual and infinite remainder are
+route proves `Grothe.haagerup_bound : IsGrothendieckBound (1404909140/1000000000)`.
+Its focused audit checks 96 results and confirms zero native evaluation axioms.
+The canonical resolvent completion, complete residual and infinite remainder are
 documented in `docs/HAAGERUP_POWER.md`. It combines 64 series terms with six
-correction terms, using complete monotonicity at every difference order. A
+correction terms, using complete monotonicity at every difference order. A checked
 170-coefficient prefix and a weighted finite-polynomial tail bound control the
-complete residual. The finite-check implementation assembles literal arithmetic steps
-through exact recurrence and input-binding lemmas. On kernel acceptance, the intended
-proof uses only the three standard axioms and none of the analytic inputs listed here.
+complete residual. Large convolutions are proved in continuation blocks of at most five left
+coefficients. The generic `convI_append` identity preserves the original
+outward arithmetic order; recurrence and exact input-binding lemmas recover
+the four checker statements without a new numerical premise.
+The proof uses only the three standard axioms and none of the analytic inputs listed here.
 `tools/verify_haagerup_canonical.py` provides an independent directed replay.
+Normal `ready/*` delivery CI builds and audits the combined tree before merging it.
 
-Build only changed modules locally. Run full builds on the droplet (`ssh yo`) or in CI;
-see `AGENTS.md` for worktree and delivery rules.
+Build only changed modules locally. Full builds, including all node caps, run
+through the single delivery CI job; see `AGENTS.md` for worktree and delivery rules.
 
 The combined tree includes the concrete rounder, the phase cover, the refined
 Hardy tail and the holomorphic-kernel definitions. Use an owned worktree and
-an owned droplet directory for builds; the shared package cache can be read
-without copying it. Use targeted module builds; full builds run on the droplet or in CI.
+an owned directory for light droplet builds; the shared package cache can be read
+without copying it. CI routes a full build to the droplet runner when no verified
+cache matches the node-cap sources.
 
 ## 1. What is proved
 
@@ -158,8 +162,9 @@ Progress (claude/hardy, 26 Oct):
   The other Hermite-tail and coefficient inputs are still separate obligations.
 * The refined lower endpoint is `1.401697049825`, conditional on the same
   `NodeCaps`, through `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`.
-  The separate `GrotheCaps` target now has a matching stamp for its 60 range
-  facts; the four remaining rows still require `CapsRest`.
+  The single `Grothe` target includes the 60 range facts and their final assembly;
+  CI verifies them or replays a matching verified cache. The four remaining rows
+  still require `CapsRest`.
 
 ## 5. `ComparisonInputs`: formalisation plan
 
