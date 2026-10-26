@@ -115,6 +115,18 @@ Progress (claude/hardy, 26 Oct):
   (region) `KerPos (Rt t) λ`, `λ > 0`, on a disc of radius `r > 4149/4000`;
   (real identification, step 1(b)) `HasSum (hⱼ t^{2j+1}) (Hhol (Rt t))` for real `0 < t < 1`;
   (circle) the mean of `|Hhol (Rt z)|²` over `‖z‖ = 4149/4000` is `≤ 7/4`.
+- **Separate responses:** `HholPair F G R` defines the continued correlation
+  for independent left/right functions. `differentiableOn_HholPair_Rt`
+  proves holomorphy for any measurable disk-valued pair on the same decay
+  region; charge and conjugation symmetry are unnecessary for this step.
+  `hardy_of_pair_inputs` assembles the weighted-square bound from that
+  region, a real odd-series identification for the pair, and its circle
+  mean bound. The incumbent results specialize these proofs without changing
+  their statements. The written Schur inequality in
+  `data/upper-preprocess/inputs/GAUSSIAN_SCHUR_TAIL_PROOF.md` has universal
+  disk-valued pair scope, but its formalization and the Gaussian
+  identification remain open. Reusing a numerical contour cover also
+  requires matching its actual smoothing and preprocessing data.
 - **Remaining:**
   1(b) the real identification: for real `R`, `kHol R` is the density of the Gaussian pair with cross covariance
   `R` (two real copies), and smoothing by `M`, `N` turns `E[conj GT(X) GT(Y)]` (diagonal correlations

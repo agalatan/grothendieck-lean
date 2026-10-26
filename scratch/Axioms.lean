@@ -439,6 +439,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.Bm_polyKernel
 #print axioms Grothe.UpperChaos.Ef_X0_mul
 #print axioms Grothe.UpperChaos.GT_rot2
+#print axioms Grothe.UpperChaos.differentiableOn_HholPair_Rt
 #print axioms Grothe.UpperChaos.differentiableOn_Hhol_Rt
 #print axioms Grothe.UpperChaos.differentiableOn_integral_exp
 #print axioms Grothe.UpperChaos.energy_eq_zero_of_even
@@ -447,6 +448,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.fresh_upper_of_rounding
 #print axioms Grothe.UpperChaos.fresh_upper_rounder
 #print axioms Grothe.UpperChaos.hardy_of_inputs
+#print axioms Grothe.UpperChaos.hardy_of_pair_inputs
 #print axioms Grothe.UpperChaos.hasSum_energy
 #print axioms Grothe.UpperChaos.hasSum_energy2
 #print axioms Grothe.UpperChaos.hasSum_energy_bideg
