@@ -134,4 +134,42 @@ theorem leaf_integral {neg : Bool} {w tol : ℤ} {last : Bool} {lo hi x : ℤ} (
         calc (v : ℝ) / D * ((arcLenUp lo hi : ℝ) / D) * D = (v : ℝ) * arcLenUp lo hi / D := by field_simp
           _ ≤ _ := this
 
+/-- **The recursive cover**: the integral over `[2 arctan(lo/D), 2 arctan(hi/D)]` is at most the kernel's sum. -/
+theorem cover_integral {neg : Bool} {w tol : ℤ}
+    (hint : ∀ a b, IntervalIntegrable (gF F G neg) volume a b) :
+    ∀ (depth : ℕ) (lo hi x : ℤ), lo ≤ hi → (0 ≤ lo ∨ hi ≤ 0) →
+      cover (ofRatI jQ) (ofRatI rhoQ) hardyData neg w tol depth lo hi = some x →
+      ∫ θ in (2 * arctan ((lo : ℝ) / D))..(2 * arctan ((hi : ℝ) / D)), gF F G neg θ ≤ (x : ℝ) / D := by
+  intro depth
+  induction depth with
+  | zero =>
+    intro lo hi x hlh hs h
+    unfold cover at h
+    split at h
+    · rename_i x' hx'
+      obtain rfl : x' = x := Option.some.inj h
+      exact leaf_integral hFm hGm hF hG hlh hs hx' (hint _ _)
+    · exact absurd h (by simp)
+  | succ d ih =>
+    intro lo hi x hlh hs h
+    unfold cover at h
+    split at h
+    · rename_i x' hx'
+      obtain rfl : x' = x := Option.some.inj h
+      exact leaf_integral hFm hGm hF hG hlh hs hx' (hint _ _)
+    · simp only at h
+      split at h
+      · rename_i x1 x2 h1 h2
+        obtain rfl : x1 + x2 = x := Option.some.inj h
+        set mid := (lo + hi) / 2
+        have hm1 : lo ≤ mid := by omega
+        have hm2 : mid ≤ hi := by omega
+        have hs1 : 0 ≤ lo ∨ mid ≤ 0 := by omega
+        have hs2 : 0 ≤ mid ∨ hi ≤ 0 := by omega
+        rw [← intervalIntegral.integral_add_adjacent_intervals (hint _ _) (hint _ _) (b := 2 * arctan ((mid : ℝ) / D))]
+        push_cast
+        rw [add_div]
+        exact add_le_add (ih lo mid x1 hm1 hs1 h1) (ih mid hi x2 hm2 hs2 h2)
+      · exact absurd h (by simp)
+
 end Grothe.UpperChaos.HardyArcCover
