@@ -16,7 +16,8 @@ name: Lean proof check
 
 on:
   push:
-    branches: ['**']
+    # cloud/** are scratch branches for cloud jobs (cloud.yml, AGENTS.md section 4d): no push check
+    branches: ['**', '!cloud/**']
   schedule:
     # weekly: restore (and so keep alive) the master cache; GitHub deletes cache entries unused for 7 days
     - cron: '17 4 * * 1'

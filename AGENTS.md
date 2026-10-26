@@ -273,6 +273,38 @@ own branch. Never publish a private build to Actions; the separate laptop snapsh
   caps no longer match) finds them already built in the same workspace.
   So one build serves the validation, the branch check and the new master cache.
 
+## 4d. Cloud jobs: Lean builds, checks and computations on GitHub Actions
+
+Use GitHub Actions as a compute cloud instead of the laptop (shared by every agent) or the droplet (one heavy job at
+a time). Every job runs a **pushed** commit, so it is reproducible, and its results come back as files.
+
+```sh
+scripts/cloud.sh lean Grothe.UpperChaos.HardyArcPart0 Grothe.UpperChaos.HardyArcPart1   # build modules
+scripts/cloud.sh --shards 4 lean M0 M1 M2 M3                # one module per parallel job (e.g. native_decide facts)
+scripts/cloud.sh check                                      # the full proof check of the branch, without merging
+scripts/cloud.sh --shards 8 script tools/sweep.py --grid 64 # a committed .py/.sh/.cpp, 8 shards (SHARD, NSHARDS)
+scripts/cloud.sh --runner droplet script tools/big.py       # script jobs needing > 7 GB or > 6 h
+scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; download results later
+```
+
+- **What runs:** the commit at the tip of the branch on GitHub (`--ref`, default: your current branch, which must be
+  pushed). For quick experiments push a scratch branch `cloud/<agent-id>-<topic>`: the normal push check skips
+  `cloud/**`. Delete it when done (§7).
+- **Lean jobs** (`lean`, `check`) run on GitHub-hosted runners (2 cores, about 7 GB, at most 6 hours per job) and
+  start from the master build cache, so only what your branch changes is built. `lean` deals the modules
+  round-robin over the shards: split long `native_decide` checks into separate modules and run them in parallel.
+- **Script jobs** run a script committed in the branch (never an inline command): `.py` with `python3` (packages in
+  `tools/cloud-requirements.txt`), `.sh` with `bash`, `.cpp` compiled with `g++ -O2`. Each shard gets `SHARD`,
+  `NSHARDS` and `OUT`; write results to `$OUT`. **Inputs of committed data still live in `data/` (§6).**
+- **Results:** `handoff/cloud/<id>/<shard>/` (`log.txt`, `summary.json`, and the files written to `$OUT`); artifacts
+  stay on GitHub for 7 days. The exit status of `cloud.sh` is 0 iff every shard succeeded.
+- **Trust and caches:** cloud jobs only read the master cache, never write one. A cloud `check` is advice; only the
+  delivery check (§3) merges.
+- **Droplet** (`--runner droplet`): script jobs only, in a throwaway directory, never touching the runner's
+  persistent caps workspace. It queues behind the runner's other jobs.
+- **Cost:** the repository is private, so every job-minute is billed beyond the free quota. Shards multiply minutes.
+  Prefer few, purposeful jobs; never poll in loops that re-dispatch.
+
 ## 4b. If you find yourself in the main checkout
 
 Run `pwd; git rev-parse --show-toplevel; git branch --show-current; git status --short`.
