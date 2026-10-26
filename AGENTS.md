@@ -232,6 +232,13 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
   disk is small, so check `df -h ~` first and keep at least 3 GB free. The Lean packages in
   `~/grothe-caps/.lake/packages` can be symlinked; do not hardlink into other agents' build
   directories.
+- **Droplet status:** `scripts/droplet_status.sh` (from the laptop, read-only) shows load, memory, disk, the CI runner,
+  every running Lean build by directory (= owner) with its age, orphaned `lean` processes and the biggest build
+  directories. Check it before starting a heavy job: if another agent's heavy build (or the runner's warm/caps job)
+  is running, wait.
+- **Cleanup policy:** when your work is merged or abandoned, delete your own droplet build directory
+  (`~/<your dir>/.lake/build`, or the whole directory). Never delete another agent's directory, the runner's
+  workspace (`~/actions-runner`), or the shared Mathlib packages (`~/grothe-caps/.lake/packages`).
 - **Snapshots:** delete superseded snapshots and zips you created. Keep only the newest.
 
 ## 6. Lean conventions
