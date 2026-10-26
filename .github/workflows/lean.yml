@@ -318,4 +318,9 @@ jobs:
         if: inputs.mode == 'caps'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run lean.yml --ref "${GITHUB_REF_NAME}"
+        # the self-hosted runner has no GitHub CLI: call the REST API directly
+        run: |
+          curl --fail-with-body -sS -X POST \
+            -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" \
+            "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/workflows/lean.yml/dispatches" \
+            -d "{\"ref\": \"${GITHUB_REF_NAME}\"}"
