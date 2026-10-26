@@ -9,7 +9,7 @@ The latest committed snapshot is `checkpoint-codex-15b7.json`. Runtime progress
 is `centre-campaign-progress-codex-15b7.json`; the local driver journal and logs
 are in `handoff/caps-centre/`. Read actual process state before restarting. A
 surviving controller or child must not be duplicated; the driver also checks its
-lock and recorded process groups. Exit75 means a checkpoint pause or unfinished
+lock and recorded process groups. Exit 75 means a checkpoint pause or unfinished
 repairs, not a completed pass. The previous delivery is owned by another AI.
 The user removed the timer; do not recreate it.
 
@@ -38,20 +38,20 @@ The user removed the timer; do not recreate it.
 
 The driver rechecks completed evidence, uses one owned child at a time and keeps
 raw coverage separate from completed repairs. Prepared sidecars are not completed
-exports. All358 centres, including15 explicitly adopted historical records, must
+exports. All 358 centres, including 15 explicitly adopted historical records, must
 be accounted for before reporting a final remaining maximum.
 
 ## Scope and decision boundary
 
 Keep `capPad=1e-11`, row caps, the refined cover and `CapsRest` unchanged. For each
 positive increase, first try multiplier, grid or complete interval-split repairs.
-The saved zero-increase examples are14:200/0 on1600×1152 and12:280/103 on3200×256.
-Some other grids for12:280 have exact matrix obstructions; these do not disprove
+The saved zero-increase examples are 14:200/0 on 1600×1152 and 12:280/103 on 3200×256.
+Some other grids for 12:280 have exact matrix obstructions; these do not disprove
 the analytic node bound.
 
 After the full sweep, report the remaining count/maximum and exact alternatives
 on #72: per-node changes with chord and source-majorant checks plus cover replay,
 and global padding with its exact lower endpoint. The current cover margin is
-about4.50e-14;1.77e-8 belongs to the retired cover. Stop for the user's decision
+about 4.50e-14; 1.77e-8 belongs to the retired cover. Stop for the user's decision
 before #15 wiring. Future updates to this published branch merge master; no
 force-push or rewriting of published history is needed.
