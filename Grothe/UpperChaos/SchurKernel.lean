@@ -112,4 +112,82 @@ theorem norm_M1 (hZ : (Z B).PD) (y y' : ℝ × ℝ) :
   field_simp
   ring
 
+lemma q_sand (S N : Sym2R) (y : ℝ × ℝ) : (sand S N).q y = N.q (S.app y) := by
+  simp only [sand, q, bil, app]; ring
+
+lemma adj_PD {S : Sym2R} (h : S.PD) : S.adj.PD := by
+  obtain ⟨ha, hd⟩ := h
+  refine ⟨?_, ?_⟩
+  · simp only [adj, det] at *; nlinarith
+  · simpa [adj, det, mul_comm] using hd
+
+/-- `E ⪰ 0` when `Z ≻ 0`. -/
+lemma E_PSD (hZ : (Z B).PD) : (E B C).PSD := fun y => by
+  have hdi : 0 < (Z B).det⁻¹ := inv_pos.2 hZ.2
+  have hA := adj_PD hZ
+  simp only [E, Kr, Ki]
+  rw [q_smul, q_add, q_smul, q_smul, q_sand, q_sand]
+  have := q_nonneg_of_PD hA ((re C).app y)
+  have := q_nonneg_of_PD hA ((im C).app y)
+  positivity
+
+/-- The per-copy positive kernel `P₁` and Schur weight `w₁`. -/
+noncomputable def P1 (y y' : ℝ × ℝ) : ℝ :=
+  π / √(Z B).det * Real.exp (-(Dr B C).q y / 2 - (Dr B C).q y' / 2 + (E B C).bil y y')
+noncomputable def w1 (y : ℝ × ℝ) : ℝ := Real.exp (-(T B C).q y / 2)
+/-- The per-copy Schur constant `λ₁ = 2π² / (√det Z · √det W)`. -/
+noncomputable def lam1 : ℝ := 2 * π ^ 2 / (√(Z B).det * √(W B C).det)
+
+lemma P1_w1_eq (y : ℝ × ℝ) (y' : ℝ × ℝ) :
+    P1 B C y y' * w1 B C y' = π / √(Z B).det * Real.exp (-(Dr B C).q y / 2) *
+      Gauss2.gR (W B C).a (W B C).b (W B C).c ((E B C).app y).1 ((E B C).app y).2 y' := by
+  simp only [P1, w1, Gauss2.gR, mul_assoc, ← Real.exp_add]
+  congr 2
+  simp only [Dr, W, add, smul, q, bil, app]
+  ring
+
+/-- **The per-copy Schur estimate** `∫ P₁(y, ·) w₁ ≤ λ₁ w₁(y)` (gates `Z ≻ 0`, `T ≻ 0`). -/
+theorem schur_copy (hZ : (Z B).PD) (hT : (T B C).PD) (y : ℝ × ℝ) :
+    ∫ y' : ℝ × ℝ, P1 B C y y' * w1 B C y' ≤ lam1 B C * w1 B C y := by
+  have hW : (W B C).PD := PD_two_add hT (E_PSD B C hZ)
+  simp_rw [P1_w1_eq]
+  rw [integral_const_mul, Gauss2.integral_gR hW.1 hW.2]
+  have hwi := weight_ineq (PSD_of_PD hT) (E_PSD B C hZ) hW.2 y
+  simp only at hwi
+  have hdW : 0 < (W B C).det := hW.2
+  -- the exponent: −Dr.q/2 + uᵀ adj(W) u / (2 det W) ≤ −T.q/2
+  have hexp : -(Dr B C).q y / 2 + ((W B C).c * ((E B C).app y).1 ^ 2
+      - 2 * (W B C).b * ((E B C).app y).1 * ((E B C).app y).2 + (W B C).a * ((E B C).app y).2 ^ 2)
+        / (2 * ((W B C).a * (W B C).c - (W B C).b ^ 2)) ≤ -(T B C).q y / 2 := by
+    have hDr : (Dr B C).q y = (T B C).q y + (E B C).q y := by simp only [Dr]; rw [q_add]
+    have hu : (W B C).c * ((E B C).app y).1 ^ 2 - 2 * (W B C).b * ((E B C).app y).1 * ((E B C).app y).2
+        + (W B C).a * ((E B C).app y).2 ^ 2
+        = ((E B C).app y).1 * ((W B C).adj.app ((E B C).app y)).1
+          + ((E B C).app y).2 * ((W B C).adj.app ((E B C).app y)).2 := by
+      simp only [adj, app]; ring
+    have hd : (W B C).a * (W B C).c - (W B C).b ^ 2 = (W B C).det := rfl
+    rw [hu, hd, hDr]
+    have hX : ((E B C).app y).1 * ((W B C).adj.app ((E B C).app y)).1
+          + ((E B C).app y).2 * ((W B C).adj.app ((E B C).app y)).2
+        ≤ (W B C).det * (E B C).q y := by simpa [W] using hwi
+    have h2 : (((E B C).app y).1 * ((W B C).adj.app ((E B C).app y)).1
+          + ((E B C).app y).2 * ((W B C).adj.app ((E B C).app y)).2) / (2 * (W B C).det)
+        ≤ (E B C).q y / 2 := by
+      rw [div_le_iff₀ (by positivity)]; nlinarith
+    linarith
+  have hZd : 0 < √(Z B).det := Real.sqrt_pos.2 hZ.2
+  have hWd : 0 < √(W B C).det := Real.sqrt_pos.2 hdW
+  calc π / √(Z B).det * Real.exp (-(Dr B C).q y / 2) * (2 * π / √((W B C).a * (W B C).c - (W B C).b ^ 2) *
+        Real.exp (((W B C).c * ((E B C).app y).1 ^ 2 - 2 * (W B C).b * ((E B C).app y).1 * ((E B C).app y).2
+          + (W B C).a * ((E B C).app y).2 ^ 2) / (2 * ((W B C).a * (W B C).c - (W B C).b ^ 2))))
+      = lam1 B C * Real.exp (-(Dr B C).q y / 2 + ((W B C).c * ((E B C).app y).1 ^ 2
+          - 2 * (W B C).b * ((E B C).app y).1 * ((E B C).app y).2 + (W B C).a * ((E B C).app y).2 ^ 2)
+            / (2 * ((W B C).a * (W B C).c - (W B C).b ^ 2))) := by
+        rw [Real.exp_add, lam1, show (W B C).a * (W B C).c - (W B C).b ^ 2 = (W B C).det from rfl]
+        field_simp
+    _ ≤ lam1 B C * w1 B C y := by
+        rw [w1]
+        gcongr
+        · exact (div_pos (by positivity) (mul_pos hZd hWd)).le
+
 end Grothe.UpperChaos.SchurKernel

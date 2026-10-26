@@ -95,6 +95,46 @@ theorem weight_ineq {T E : Sym2R} (hT : T.PSD) (hE : E.PSD) (hδ : 0 < (add (smu
   have h3 : W.det * (u.1 * v.1 + u.2 * v.2) ≤ W.det * (W.det * E.q y) := by nlinarith
   exact le_of_mul_le_mul_left h3 hδ
 
+lemma q_add (S T : Sym2R) (y : ℝ × ℝ) : (add S T).q y = S.q y + T.q y := by
+  simp only [add, q, bil]; ring
+
+lemma q_smul (r : ℝ) (S : Sym2R) (y : ℝ × ℝ) : (smul r S).q y = r * S.q y := by
+  simp only [smul, q, bil]; ring
+
+/-- A positive definite form is positive away from `0`. -/
+lemma q_pos_of_PD {S : Sym2R} (h : S.PD) {y : ℝ × ℝ} (hy : y ≠ 0) : 0 < S.q y := by
+  obtain ⟨ha, hd⟩ := h
+  have hid : S.a * S.q y = (S.a * y.1 + S.b * y.2) ^ 2 + S.det * y.2 ^ 2 := by
+    simp only [q, bil, det]; ring
+  have : 0 < S.a * S.q y := by
+    rw [hid]
+    by_cases h2 : y.2 = 0
+    · have h1 : y.1 ≠ 0 := fun h1 => hy (Prod.ext h1 h2)
+      rw [h2]; simp only [mul_zero, add_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true,
+        zero_pow]; positivity
+    · have : 0 < S.det * y.2 ^ 2 := by positivity
+      positivity
+  exact pos_of_mul_pos_right this ha.le
+
+/-- Positive away from `0` implies positive definite (`q(−b, a) = a · det`). -/
+lemma PD_of_q_pos {S : Sym2R} (h : ∀ y : ℝ × ℝ, y ≠ 0 → 0 < S.q y) : S.PD := by
+  have ha : 0 < S.a := by
+    have := h (1, 0) (by simp)
+    simpa [q, bil] using this
+  refine ⟨ha, ?_⟩
+  have h2 := h (-S.b, S.a) (by intro e; have := congrArg Prod.snd e; simp at this; linarith)
+  have hid : S.q (-S.b, S.a) = S.a * S.det := by simp only [q, bil, det]; ring
+  rw [hid] at h2
+  exact pos_of_mul_pos_right h2 ha.le
+
+/-- `2T + E` is positive definite for `T ≻ 0`, `E ⪰ 0`. -/
+lemma PD_two_add {T E : Sym2R} (hT : T.PD) (hE : E.PSD) : (add (smul 2 T) E).PD :=
+  PD_of_q_pos fun y hy => by
+    rw [q_add, q_smul]
+    have := q_pos_of_PD hT hy
+    have := hE y
+    linarith
+
 end Sym2R
 
 end Grothe.UpperChaos

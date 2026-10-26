@@ -123,4 +123,29 @@ theorem integral_g {a b c : ℝ} (ha : 0 < a) (hdet : 0 < a * c - b ^ 2) (u v : 
   field_simp
   ring
 
+/-- The real integrand (real linear coefficients). -/
+noncomputable def gR (a b c u v : ℝ) (x : ℝ × ℝ) : ℝ :=
+  Real.exp (-(a * x.1 ^ 2 + 2 * b * x.1 * x.2 + c * x.2 ^ 2) / 2 + u * x.1 + v * x.2)
+
+lemma g_ofReal (a b c u v : ℝ) (x : ℝ × ℝ) : g a b c (u : ℂ) (v : ℂ) x = (gR a b c u v x : ℂ) := by
+  simp only [g, gR, Complex.ofReal_exp]; push_cast; ring_nf
+
+lemma integrable_gR {a b c : ℝ} (ha : 0 < a) (hdet : 0 < a * c - b ^ 2) (u v : ℝ) :
+    Integrable (gR a b c u v) (volume : Measure (ℝ × ℝ)) := by
+  have h := (integrable_g ha hdet (u : ℂ) (v : ℂ)).re
+  refine h.congr (Filter.Eventually.of_forall fun x => ?_)
+  simp [g_ofReal]
+
+/-- **The real two-dimensional Gaussian integral.** -/
+theorem integral_gR {a b c : ℝ} (ha : 0 < a) (hdet : 0 < a * c - b ^ 2) (u v : ℝ) :
+    ∫ x : ℝ × ℝ, gR a b c u v x =
+      2 * π / √(a * c - b ^ 2) * Real.exp ((c * u ^ 2 - 2 * b * u * v + a * v ^ 2) / (2 * (a * c - b ^ 2))) := by
+  have h := integral_g ha hdet (u : ℂ) (v : ℂ)
+  simp_rw [g_ofReal, integral_complex_ofReal] at h
+  have h2 := congrArg Complex.re h
+  rw [Complex.ofReal_re] at h2
+  rw [h2, show ((c : ℂ) * (u : ℂ) ^ 2 - 2 * b * u * v + a * v ^ 2) / (2 * (a * c - b ^ 2))
+      = (((c * u ^ 2 - 2 * b * u * v + a * v ^ 2) / (2 * (a * c - b ^ 2)) : ℝ) : ℂ) by push_cast; ring,
+    ← Complex.ofReal_exp, ← Complex.ofReal_mul, Complex.ofReal_re]
+
 end Grothe.UpperChaos.Gauss2
