@@ -1,0 +1,1 @@
+GrotheCaps sources unchanged since verification: droplet yo (8 cores, shared, load ~12), 2026-10-23 02:48-06:48 UTC, lake build GrotheCaps wall 239m41s (CPU 1269m), sources 4304b22 (same stamp as 50eb9cb); scratch/AxiomsCaps.lean | check_axioms.py --caps OK (60 range facts) (140 files)

@@ -179,10 +179,10 @@ class CheckAxiomsTests(unittest.TestCase):
                 self.assertEqual(self.run_main([arg], self.report())[0], 2)
 
     def test_saved_multiline_power_report_passes(self):
-        path = ROOT / "docs/verification/haagerup-resolvent-20261025/axioms.log"
+        path = ROOT / "docs/verification/haagerup-convex-20261026/axioms.log"
         code, stdout, stderr = self.run_main(["--haagerup-power"], path.read_text())
         self.assertEqual(code, 0, stderr)
-        self.assertIn("checked 43 theorems; native_decide facts used: 1 of 1", stdout)
+        self.assertIn("checked 55 theorems; native_decide facts used: 1 of 1", stdout)
 
     def test_duplicates_apostrophes_quoted_names_and_empty_axioms_pass(self):
         extra = ("'Grothe.foo'' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n"

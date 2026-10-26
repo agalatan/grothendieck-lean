@@ -264,7 +264,7 @@ headline endpoints are unchanged.
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
-**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (1404909543/1000000000)`
+**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (1404909409/1000000000)`
 (`Grothe/Haagerup/Power.lean`), with no hypothesis. The analysis is in
 `Grothe/Haagerup/`: the shared Gaussian phase and planar laws (`Phase`); the charge-one
 Hermite coefficient, determined by odd Gaussian moments and the recurrence
@@ -283,11 +283,14 @@ generated from `data/haagerup-resolvent/certificate.json`. The coefficient norm 
 the fourth-power norm is at most 998903/10⁶. A single sequential native check verifies the complete
 1,024-term composition (radial cutoff 29,696), the power norm, inverse defect ≤10⁻¹²,
 combined-seed norm ≤249/500, and the infinite signed-tail budget. The normalized residual caps are
-95/10⁹ for the finite part and 174/10⁹ for the entire infinite tail.
+95/10⁹ for the finite part and 87.7/10⁹ for the entire infinite tail. The second Abel
+estimate uses the decreasing first differences of `haagR` (`Haagerup/Convex.lean`),
+its limit zero, and the kernel-proved norm bound ‖R·XP²‖₁ ≤ 2. It sharpens the
+existing native Abel budget 174/10⁹ without changing the certificate or native fact.
 `Grothe/Upper/ResolventTail.lean` proves the finite inverse-defect estimate, geometric-prefix bound,
-Abel summation, coefficient-locality passage to the full suffix, seed power bound and checker
+Abel summation and its convex-weight refinement, coefficient-locality passage to the full suffix, seed power bound and checker
 soundness. `Grothe/Upper/PowerTail.lean` supplies the power contraction and coherent-boundary
-obstruction. The phase identity, residual and tensor transfer yield K ≤ 1.404909543 with no external
+obstruction. The phase identity, residual and tensor transfer yield K ≤ 1.404909409 with no external
 inputs. The single numerical fact is `Grothe.HaagerupPower.check._native.native_decide.ax_1_1`.
 
 
