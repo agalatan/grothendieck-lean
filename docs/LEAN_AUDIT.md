@@ -422,9 +422,20 @@ since been checked; no headline mathematical soundness defect has been found.
   type/axiom fingerprints, seven definition values, and all imports. Both changed
   modules and their ordinary direct importers build with warnings as errors.
   All six replacement proofs also pass isolated elaboration. No native input,
-  headline interface, or cap-closure file changes. The static reverse closure has
-  20 modules, including the two aggregate roots; broader local validation and
-  the full default-target CI result are tracked in #88.
+  headline interface, or cap-closure file changes. All 17 ordinary affected modules
+  also build warning-free through `HardyHolo` and `LocalizedComparison`; the
+  20-module static reverse closure additionally includes `PhiBound`, `Grothe`,
+  and the separate `GrotheCaps` aggregate. Full
+  [primary run 40278773502](https://github.com/agalatan/grothendieck-lean/actions/runs/40278773502)
+  passed all 9,180 jobs and verification gates: 502 theorem reports, 30 of 90
+  native facts, and the unchanged 140-file cap stamp, with no Lean diagnostics.
+  Primary `2a68d23`, ready `151eba0`, and the
+  [PR #96](https://github.com/agalatan/grothendieck-lean/pull/96) landing `d3ece0f`
+  have identical whole trees. [Ready run 40278864852](https://github.com/agalatan/grothendieck-lean/actions/runs/40278864852)
+  also passed every verification gate before its final push lost a master race.
+  Its overall cancellation and the subsequent successful no-op retry are distinct
+  from the successful full primary verification. Later master `2844901` changes
+  only cache instructions/scripts; the delivered Lean sources remain identical.
 
 The measured production Lean reduction across #54, #55 and #59 is **124 lines**:
 60 proof lines and 64 generated zero-coefficient lines. No module or native fact
@@ -433,7 +444,7 @@ The additional #80 compaction brings the net total to **151 lines**: 95 proof
 lines and 64 generated coefficient lines removed, with eight explicit import
 lines added. Including #89 brings the net reduction to **157 lines**: 106 proof
 lines and 64 generated coefficient lines removed, with 13 import lines added.
-The #88 compaction raises the branch total to **190 lines**: 139 proof lines plus
+The #88 compaction raises the delivered total to **190 lines**: 139 proof lines plus
 64 generated coefficient lines removed, with 13 explicit import lines added.
 Other gated changes to native facts/inputs, headline interfaces, and caps-closure
 sources remain unapproved. Workflow #48 remains coordinated with reserved PR #44.
@@ -465,6 +476,7 @@ checked tree rather than inferred from a later green badge.
 | `final-record` | `351b6b0` | [40261239041](https://github.com/agalatan/grothendieck-lean/actions/runs/40261239041): docs-only success. |
 | `band-comparison` | `daf21e9` (PR #92) | [40266197230](https://github.com/agalatan/grothendieck-lean/actions/runs/40266197230): full success on the delivery tree; [40272617860](https://github.com/agalatan/grothendieck-lean/actions/runs/40272617860) also passed the full combined master. |
 | `series-bounds` | `00f8141` (PR #93) | Changed modules and targeted dependents passed; all 65 type/axiom fingerprints and nine definition values preserved. Full [40273781782](https://github.com/agalatan/grothendieck-lean/actions/runs/40273781782) passed on the exact landed tree. |
+| `hermite-span` | `d3ece0f` (PR #96) | [40278773502](https://github.com/agalatan/grothendieck-lean/actions/runs/40278773502): full success on the exact landed tree; 17 ordinary affected modules also passed local builds, with all 38 type/axiom fingerprints and seven definition values preserved. |
 
 Open findings are [#48](https://github.com/agalatan/grothendieck-lean/issues/48)
 (remaining CI scope gap), [#49](https://github.com/agalatan/grothendieck-lean/issues/49)
