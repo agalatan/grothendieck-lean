@@ -130,13 +130,19 @@ Progress (claude/hardy, 26 Oct):
   disk-valued pair scope, but its formalization and the Gaussian
   identification remain open. Reusing a numerical contour cover also
   requires matching its actual smoothing and preprocessing data.
+- **3 Gaussian Schur bound — proved** (`claude/hardy-2`). `SchurMain.norm_HholPair_sq_le`: for `B = A − jI`
+  (`j > 0`), `Z = Re B`, `T = Z − Cr Z⁻¹ Cr`, `E = (Cr Z⁻¹ Cr + Ci Z⁻¹ Ci)/2`, `W = 2T + E`, under the gates
+  `Z ≻ 0`, `T ≻ 0`: `‖HholPair F G R‖² ≤ 1/(64 j⁴ |det(I − R²)|² det Z det W)` for all measurable `‖F‖, ‖G‖ ≤ 1`
+  (bound (1) of `GAUSSIAN_SCHUR_TAIL_PROOF.md`; the gates `Z ± Cr ≻ 0` there are equivalent to `Z ≻ 0, T ≻ 0`).
+  Tools: `Gauss2` (2-D Gaussian integrals with complex linear term), `SchurTest` (weighted Schur test),
+  `LstarL` (the `L*L` identity), `Sym2R` (2×2 forms; the weight inequality by a square-root-free identity),
+  `SchurKernel` (exact `‖M₁‖`), `SchurBound` (ℝ⁴ factorization and Schur), `SchurIntegrability`.
 - **Remaining:**
   1(b) the real identification: for real `R`, `kHol R` is the density of the Gaussian pair with cross covariance
   `R` (two real copies), and smoothing by `M`, `N` turns `E[conj GT(X) GT(Y)]` (diagonal correlations
   `p(t), −τ(t)`) into `Hhol (Rt t)`; then `Bm_polyKernel` gives the series with `h = kernelCoeff (energy GT)`.
   This needs Gaussian-law identification on `ℝ⁸` (density ↔ covariance, pushforward by linear maps) — the largest
-  remaining piece. 3 + 4: the region and circle inputs from the certificate — the Gaussian Schur bound
-  `|H(R)|² ≤ …` and a precompiled exact checker over the 65,594 arcs (`KerPos` per arc via `I ± Re R ≻ 0`).
+  remaining piece. 4: the region and circle inputs from the certificate — a precompiled exact checker over the 65,594 arcs (`KerPos` per arc via `I ± Re R ≻ 0`).
 
 ## 4. Other open items
 

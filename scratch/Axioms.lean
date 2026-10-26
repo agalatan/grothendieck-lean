@@ -513,6 +513,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.RadialRepair.norm_phaseRepair_le_one
 #print axioms Grothe.UpperChaos.RadialRepair.phaseRepair_change_sq_le
 #print axioms Grothe.UpperChaos.RadialRepair.radial_gap_sq_le
+#print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_le
+#print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
 #print axioms Grothe.UpperChaos.differentiableOn_HholPair_Rt
 #print axioms Grothe.UpperChaos.differentiableOn_Hhol_Rt
 #print axioms Grothe.UpperChaos.differentiableOn_integral_exp
