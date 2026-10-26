@@ -211,10 +211,12 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
   runs for their own branch) write caches, and Lake reuses a file only if its source, dependency and toolchain hashes
   match; the cache also records the caps' source hash (`.lake/build/caps-closure.sha`), and CI builds only when it
   matches.
-- **Caps changes.** If a change touches a file in the caps closure, the cached caps no longer match and CI does not try
-  the hours-long build (it would time out): it dispatches a **caps** run on the droplet for that branch (for `ready/`:
-  the tree merged with master) and fails with a message. The droplet builds `Grothe`, runs the axiom report, marks
-  and saves a cache for that branch, and re-dispatches the check, which then passes. Nothing to do by hand; just wait.
+- **Caps changes.** Every run starts with a short `route` job: it computes the node caps' source digest
+  (`scripts/caps_stamp.py --digest`; it is part of the cache key) and looks for a verified cache with that digest. If
+  there is none (the cap sources or the toolchain changed), the same check job runs **on the droplet** instead of
+  GitHub: it builds the caps (hours if they really changed; minutes if the runner's workspace already has them), checks
+  everything, marks and saves the verified cache. Meanwhile the commit shows "pending", never a failure: a ✗ always
+  means a real failure. Nothing to do by hand; just wait.
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for stop/remove).
   It shares Mathlib with the other droplet work via `~/grothe-caps/.lake/packages` — do not delete that directory.
 - **Never use `[skip ci]` on a delivery** (`ready/` branches or commits meant for master): the delivery check is
@@ -239,13 +241,13 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
 ## 4c. Lean build caches: who writes, who reads, how to bootstrap
 
 There is **one canonical master build**: the GitHub Actions cache written by the **green check of master** after every
-merge (GitHub-hosted), or, when the caps sources changed, by the droplet's **warm** run on master. Everything else
+merge (GitHub-hosted), or, when the caps sources changed, by the same check run on the droplet. Everything else
 uses a platform-local working build.
 
 | cache | written only by | read by |
 |---|---|---|
-| GitHub master cache (`lake-build-v2-<toolchain+manifest>-<sha>`) | the green check of master; the droplet warm run when the caps changed | every CI run |
-| GitHub branch cache | caps runs for that branch (droplet runner) | later CI runs of that branch |
+| GitHub master cache (`lake-build-v3-<toolchain+manifest>-<caps digest>-<sha>`) | the green check of master (on the droplet when the caps changed) | every CI run |
+| GitHub branch cache | droplet checks of that branch | later CI runs of that branch |
 | runner workspace (droplet) | the runner, one job at a time; it records the built commit in `.lake/build/built-commit` | nobody directly; do not copy into it or out of it by hand |
 | main checkout `.lake/master-cache` (laptop) | `scripts/master_build_job.sh`, after a successful clean-master build started by `scripts/sync_master.sh --build` | laptop worktrees, through `scripts/clone_master_build.sh` (§2) |
 
@@ -264,14 +266,14 @@ own branch. Never publish a private build to Actions; the separate laptop snapsh
 
   Lake then rebuilds only what your branch changes.
 - **Droplet:** do not run heavy builds (the node caps, the certificate chunks, full builds) in a private folder.
-  Dispatch them to the runner: `gh workflow run lean.yml --ref <your pushed branch> -f mode=caps`. The runner builds in
+  Push your branch: CI routes it to the droplet when the caps changed (or force it: `gh workflow run lean.yml --ref <your pushed branch> -f mode=caps`). The runner builds in
   its warm workspace, checks the axiom report, and saves a cache for your branch that your next CI runs reuse.
   Light builds (a few modules) may run in a private signed folder (§0b) that links only the shared Mathlib packages
   (`~/grothe-caps/.lake/packages`).
-- **Never run a separate manual caps verification.** If your change touches the caps closure, push it (a `ready/`
-  delivery or a dispatched caps run). CI's caps run builds the caps for exactly the tree that will be merged, saves
-  them as the branch cache, and after the merge the master warm run (dispatched by master's check, since its cached
-  caps no longer match) finds them already built in the same workspace.
+- **Never run a separate manual caps verification.** If your change touches the caps closure, push it. CI's droplet
+  check builds the caps for exactly the tree that will be merged, saves them as the branch cache, and after the merge
+  master's check (also routed to the droplet, since master has no cache for the new caps yet) finds them already
+  built in the same workspace.
   So one build serves the validation, the branch check and the new master cache.
 
 ## 4d. Cloud jobs: Lean builds, checks and computations on GitHub Actions
@@ -346,7 +348,7 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
   directories.
 - **Droplet status:** `scripts/droplet_status.sh` (from the laptop, read-only) shows load, memory, disk, the CI runner,
   every running Lean build by directory (= owner) with its age, orphaned `lean` processes and the biggest build
-  directories. Check it before starting a heavy job: if another agent's heavy build (or the runner's warm/caps job)
+  directories. Check it before starting a heavy job: if another agent's heavy build (or a CI check running on the droplet)
   is running, wait.
 - **Cleanup policy:** when your work is merged or abandoned, delete your own droplet build directory
   (`~/<your dir>/.lake/build`, or the whole directory). Never delete another agent's directory, the runner's
