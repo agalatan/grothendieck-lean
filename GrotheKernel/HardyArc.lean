@@ -218,31 +218,31 @@ def circleBox (rho : Ival) (neg : Bool) (s : Ival) : CI :=
 def arcLenUp (lo hi : Int) : Int :=
   ceilDiv (2 * (hi - lo) * D * D) (D * D + min (lo * lo) (hi * hi))
 
-/-- The recursive cover of `[lo, hi]` (scaled `s`): accept a piece when the gates pass and its width is at most
-`w`, else bisect (at most `depth` more times; pieces never straddle `0`). Returns the scaled sum of
-`value × length`, or `none`. -/
+/-- Try to accept `[lo, hi]` as one piece: width at most `w`, `1 + s² > 0`, the gates pass, and the bound exceeds the
+midpoint value by at most `tol` (scaled) unless `last`. Returns the scaled `value × length`. -/
+def leafAttempt (j rho : Ival) (dat : RData) (neg : Bool) (w tol : Int) (last : Bool) (lo hi : Int) : Option Int :=
+  if hi - lo ≤ w && posI (addI (intI 1) (mulI ⟨lo, hi⟩ ⟨lo, hi⟩)) then
+    match schurValue j (Rbox dat (circleBox rho neg ⟨lo, hi⟩)) with
+    | some v =>
+      let mid := (lo + hi) / 2
+      let tight := match schurValue j (Rbox dat (circleBox rho neg ⟨mid, mid⟩)) with
+        | some vm => decide (v ≤ vm + tol)
+        | none => false
+      if tight || last then some (shUp (v * arcLenUp lo hi)) else none
+    | none => none
+  else none
+
+/-- The recursive cover of `[lo, hi]` (scaled `s`): accept a piece (`leafAttempt`), else bisect (at most `depth` more
+times; pieces never straddle `0`). Returns the scaled sum of `value × length`, or `none`. -/
 def cover (j rho : Ival) (dat : RData) (neg : Bool) (w tol : Int) : Nat → Int → Int → Option Int
   | depth, lo, hi =>
-    let attempt :=
-      if hi - lo ≤ w && posI (addI (intI 1) (mulI ⟨lo, hi⟩ ⟨lo, hi⟩)) then
-        match schurValue j (Rbox dat (circleBox rho neg ⟨lo, hi⟩)) with
-        | some v =>
-          -- accept when the bound exceeds the midpoint value by at most `tol` (scaled), or at the last level
-          let mid := (lo + hi) / 2
-          let tight := match schurValue j (Rbox dat (circleBox rho neg ⟨mid, mid⟩)) with
-            | some vm => decide (v ≤ vm + tol)
-            | none => false
-          if tight || depth == 0 then some (shUp (v * arcLenUp lo hi)) else none
-        | none => none
-      else none
-    match attempt with
+    match leafAttempt j rho dat neg w tol (depth == 0) lo hi with
     | some x => some x
     | none =>
       match depth with
       | 0 => none
       | d + 1 =>
-        let mid := (lo + hi) / 2
-        match cover j rho dat neg w tol d lo mid, cover j rho dat neg w tol d mid hi with
+        match cover j rho dat neg w tol d lo ((lo + hi) / 2), cover j rho dat neg w tol d ((lo + hi) / 2) hi with
         | some x, some y => some (x + y)
         | _, _ => none
 
