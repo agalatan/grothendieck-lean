@@ -97,8 +97,8 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: .lake/build
-          key: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
-          restore-keys: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+          key: lake-build-v3-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: lake-build-v3-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
 
       - name: Lean toolchain and Mathlib (from the Mathlib cache)
         if: inputs.kind != 'script'
