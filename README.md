@@ -5,7 +5,7 @@ complex Grothendieck constant:
 
 > **1.401697049825 < K_G^ℂ < 1.404598149218**
 >
-> and, with **no hypothesis at all** (every step proved in Lean): **K_G^ℂ ≤ 1.404909409**
+> and, with **no hypothesis at all** (every step proved in Lean): **K_G^ℂ ≤ 1.404909140**
 
 The two sharp bounds rest on explicitly stated analytic and computer-assisted inputs;
 the displayed fully formal bound rests on nothing outside Lean (see below).
@@ -48,7 +48,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
 | Oct 2026 | **this repository** | **1.401697049825 < K** | **K < 1.404598149218** |
-| Oct 2026 | this repository, fully formal (no hypothesis) | | K ≤ 1.404909409 |
+| Oct 2026 | this repository, fully formal (no hypothesis) | | K ≤ 1.404909140 |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
 proposed as the exact value; it lies inside the interval, 2.22·10⁻⁵ below our upper bound.
@@ -192,20 +192,22 @@ are in [`data/localized-comparison/PROOF.md`](data/localized-comparison/PROOF.md
 with a mathematical account in [`docs/localized-comparison.tex`](docs/localized-comparison.tex).
 The native head computation remains part of the proof.
 
-**Fully formal unconditional upper bound** — `Grothe.haagerup_bound : IsGrothendieckBound (1404909409/1000000000)`
-(`Grothe/Haagerup/Power.lean`, with the finite check in `Grothe/Haagerup/PowerCheck.lean`), with **no hypothesis**.
+**Fully formal unconditional upper bound** — `Grothe.haagerup_bound : IsGrothendieckBound (1404909140/1000000000)`
+(`Grothe/Haagerup/Power.lean`, assembled in `CanonicalProof.lean` with finite checks in `CanonicalCheck.lean`), with **no hypothesis**.
 Lean derives Haagerup's identity from the complex Hermite basis and Mehler formula,
 with the Gaussian phase coefficients determined by a polynomial moment recurrence:
 E[conj(phase⟨g,x⟩)·phase⟨g,y⟩] = Σ_k (π/4)(1/2)_k²/(k!(k+1)!) z|z|^{2k} with z = ⟨x,y⟩, and combines it
-with a degree-29 preprocessor and 1,024 exact series terms. A finite polynomial approximate inverse
-retains cancellation across the complete infinite suffix. Its inverse defect and a short combined
-product, followed by a second Abel summation using coefficient convexity, give a normalized
-tail cap of 87.7·10⁻⁹; the complete finite residual cap is 95·10⁻⁹.
-The general signed Abel/resolvent theorem and coefficient-locality argument are proved in
-`Grothe/Upper/ResolventTail.lean`. The Gaussian identity, tensor realization, checker soundness,
-infinite tail and final transfer are all proved in Lean, with one pinned numerical check and no
-external analytic hypotheses. Exact data in `data/haagerup-resolvent/certificate.json` reproduce the
-Lean certificate byte for byte. See [the complete proof and replay](docs/HAAGERUP_POWER.md).
+with a degree-29 preprocessor and 64 exact series terms. All orders of forward differences
+of the normalized Haagerup coefficients are nonnegative, proved from a product of two
+rising-factorial quotients. This gives a canonical resolvent expansion: the finite head
+and six correction terms are combined before taking absolute values.
+The normalized completed-head residual is at most 9.14·10⁻⁹ and the remaining suffix
+at most 0.24·10⁻⁹, giving a total normalized residual of 9.38·10⁻⁹.
+The coefficient argument, resolvent identity, checker soundness and matrix transfer are all
+proved in Lean. Every finite check in this route uses `decide +kernel`: the public theorem
+uses only the three standard axioms, with **no native-check dependency**.
+The existing polynomial data are reused byte for byte. See
+[the complete proof and replay](docs/HAAGERUP_POWER.md).
 The sharper conditional bound above remains stronger.
 
 **Written unconditional refinement: K_G^ℂ < 1.40489844.** For the unchanged
@@ -232,10 +234,11 @@ in Lean. The end-to-end unconditional Lean theorem remains `haagerup_bound`.
 Exact inputs, the reproducible generator and all scope details are in
 [`data/scalar-tail-refinement/`](data/scalar-tail-refinement/PROOF.md).
 
-Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in `data/axioms/native.txt` (read by `scripts/check_axioms.py`):
+The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
+and the `native_decide` facts pinned in `data/axioms/native.txt` (read by `scripts/check_axioms.py`):
 `Grothe.head_check` (the upper head), `Grothe.UpperChaos.phi_cover_check_0`–`5` (the phase cover |φ| < 1),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
-`Grothe.HaagerupPower.check` (the residual, power norm, inverse defect, combined seed and signed tail),
+`Grothe.HaagerupPower.check` (the retained finite certificate; unused by `haagerup_bound`),
 the 13 chunks `Grothe.Lower.certRows0`–`4`, `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower
 certificate (assembled into `Grothe.Lower.cert_check`), the four
 `Grothe.Research.RefinedLowerCheck.certRefinedBoxes0`–`3` chunks and
@@ -245,6 +248,8 @@ certificate (assembled into `Grothe.Lower.cert_check`), the four
 Every native check is single-threaded code (no `Task.spawn`).
 Everything else is kernel-checked. No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`; the separate caps report is `scratch/AxiomsCaps.lean`.
+The focused report `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, allows
+no native axioms for the unconditional upper-bound route.
 
 Joint-response proof interfaces retain shared Gram constraints, exact two-disc
 support, quadratic-feature closure and common Stein tests before completing

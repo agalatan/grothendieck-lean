@@ -12,7 +12,9 @@ finite-head coefficient cutoff, and `seed_power` the exponent s in R P^s.
 The remaining fields set the fourth-power norm budget (`q`), inverse-defect
 budget (`defect_cap`), combined-product budget (`seed_cap`), normalized
 Haagerup coefficient majorant (`gamma`), normalized finite and infinite
-residual budgets (`head`, `tail`), and public rational endpoint (`upper`).
+residual budgets (`head`, `tail`), and certificate endpoint (`upper`). The public theorem uses the canonical
+completion parameters in `Grothe/Haagerup/CanonicalData.lean`; it does not
+consume the combined native check or its head/tail endpoint.
 
 From the repository root:
 
@@ -23,7 +25,8 @@ python3 tools/gen_haagerup_power.py --check
 
 The first command reproduces `Grothe/Haagerup/PowerCheck.lean` byte for byte;
 the second rejects any mismatch. The independent directed replay is
-`tools/verify_haagerup_power.py`. The endpoint is also bound to the public
-Lean theorem by that verifier. The complete proof and verification ledger
-are in `docs/HAAGERUP_POWER.md` and
-`docs/verification/haagerup-trim-20261026/`.
+`tools/verify_haagerup_canonical.py`. It checks this generated data binding,
+replays the canonical completed polynomial and remainder, and reads the
+endpoint from the public Lean theorem. The complete proof and verification
+ledger are in `docs/HAAGERUP_POWER.md` and
+`docs/verification/haagerup-canonical-20261026/`.

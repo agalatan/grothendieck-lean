@@ -1,10 +1,13 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
 The sharper conditional upper bound is described below. The independent hypothesis-free
-route now proves `Grothe.haagerup_bound : IsGrothendieckBound (1404909409/1000000000)`.
-Its polynomial resolvent, complete residual and signed infinite tail are documented in
-`docs/HAAGERUP_POWER.md`;
-that theorem does not require any of the analytic inputs listed here.
+route now proves `Grothe.haagerup_bound : IsGrothendieckBound (1404909140/1000000000)`.
+Its canonical resolvent completion, complete residual and infinite remainder are
+documented in `docs/HAAGERUP_POWER.md`. It combines 64 series terms with six
+correction terms, using complete monotonicity at every difference order. The
+finite checks use `decide +kernel`; the theorem depends only on the three standard
+axioms and requires none of the analytic inputs listed here.
+`tools/verify_haagerup_canonical.py` provides an independent directed replay.
 
 Build only changed modules locally. Run full builds on the droplet (`ssh yo`) or in CI;
 see `AGENTS.md` for worktree and delivery rules.

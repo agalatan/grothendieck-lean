@@ -5,5 +5,6 @@ import GrotheKernel.CapPoly
 import GrotheKernel.Haagerup
 import GrotheKernel.PhiCheck
 import GrotheKernel.PowerTail
+import GrotheKernel.ResolventCompletion
 import GrotheKernel.ResolventTail
 import GrotheKernel.Table

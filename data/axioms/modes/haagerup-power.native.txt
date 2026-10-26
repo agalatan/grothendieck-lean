@@ -1,2 +1,1 @@
-# --haagerup-power: the only native_decide facts this audit allows (sorted; empty = none).
-Grothe.HaagerupPower.check._native.native_decide.ax_1_1
+# --haagerup-power: no native axioms are allowed in the canonical upper bound.

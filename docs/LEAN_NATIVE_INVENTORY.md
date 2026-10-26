@@ -10,9 +10,16 @@ All 16 scalar-tail reports use only standard axioms. Source and report hashes ar
 `data/scalar-tail-refinement/verification/`. The table below retains its
 historical baseline scope and timings.
 
+**Canonical upper-bound route (#113).** `Grothe.haagerup_bound` uses the four
+`Grothe.HaagerupCanonical` kernel checks and only the three standard axioms.
+Its focused audit, `scratch/AxiomsPower.lean` with `--haagerup-power`, permits
+no native axioms. The generated `Grothe.HaagerupPower.check` is retained unchanged
+and remains in the global report and allowlist; it is not a dependency of the
+public bound. This change does not remove an entry from the global native registry.
+
 | Fact | Source native site | Allowlist | Report coverage | Runtime evidence |
 |---|---|---|---|---|
-| `Grothe.HaagerupPower.check` | `Grothe/Haagerup/PowerCheck.lean:173` (audited baseline; 109 after #54) | yes | Direct #print axioms in scratch/Axioms.lean | Historical matching-source module build: 522.95 s wall / 509.46 s user CPU; not isolated per-fact timing |
+| `Grothe.HaagerupPower.check` (retained baseline; not used by current `haagerup_bound`) | `Grothe/Haagerup/PowerCheck.lean:109` (173 at the audited baseline) | yes | Direct #print axioms in scratch/Axioms.lean | Historical matching-source module build: 522.95 s wall / 509.46 s user CPU; not isolated per-fact timing |
 | `Grothe.Lower.certBatches0` | `Grothe/Lower/Cert/Batches0.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 337 s; docs/NATIVE_SEQ_STATUS.md:31–42; not isolated native/current-commit measurement |
 | `Grothe.Lower.certBatches1` | `Grothe/Lower/Cert/Batches1.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 344 s; docs/NATIVE_SEQ_STATUS.md:31–42; not isolated native/current-commit measurement |
 | `Grothe.Lower.certBatches2` | `Grothe/Lower/Cert/Batches2.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 395 s; docs/NATIVE_SEQ_STATUS.md:31–42; not isolated native/current-commit measurement |

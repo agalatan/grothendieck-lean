@@ -264,7 +264,7 @@ headline endpoints are unchanged.
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
-**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (1404909409/1000000000)`
+**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (1404909140/1000000000)`
 (`Grothe/Haagerup/Power.lean`), with no hypothesis. The analysis is in
 `Grothe/Haagerup/`: the shared Gaussian phase and planar laws (`Phase`); the charge-one
 Hermite coefficient, determined by odd Gaussian moments and the recurrence
@@ -279,20 +279,26 @@ two complex Gaussians, the radial identity and the phase rounding as a disk-valu
 (`Identity`: `integral_phase_pair`, `Phi2_radial`, `haagerup_disk`, `haagerup_dominated`). Disk-valued
 roundings are dominated (`Grothe/Upper/Disk.lean`); polynomial preprocessors are realised by tensor powers
 (`Realise.lean`) and composed with radial kernels (`Compose.lean`). The degree-29 preprocessor and degree-64 approximate inverse are
-generated from `data/haagerup-resolvent/certificate.json`. The coefficient norm is exactly one;
-the fourth-power norm is at most 998903/10⁶. A single sequential native check verifies the complete
-1,024-term composition (radial cutoff 29,696), the power norm, inverse defect ≤10⁻¹²,
-combined-seed norm ≤249/500, and the infinite signed-tail budget. The normalized residual caps are
-95/10⁹ for the finite part and 87.7/10⁹ for the entire infinite tail. The second Abel
-estimate uses the decreasing first differences of `haagR` (`Haagerup/Convex.lean`),
-its limit zero, and the kernel-proved norm bound ‖R·XP²‖₁ ≤ 2. It sharpens the
-existing native Abel budget 174/10⁹ without changing the certificate or native fact.
-`Grothe/Upper/ResolventTail.lean` proves the finite inverse-defect estimate, geometric-prefix bound,
-Abel summation and its convex-weight refinement, coefficient-locality passage to the full suffix, seed power bound and checker
-soundness. `Grothe/Upper/PowerTail.lean` supplies the power contraction and coherent-boundary
-obstruction. The phase identity, residual and tensor transfer yield K ≤ 1.404909409 with no external
-inputs. The single numerical fact is `Grothe.HaagerupPower.check._native.native_decide.ax_1_1`.
-
+generated from `data/haagerup-resolvent/certificate.json`. The coefficient norm of P is exactly one.
+`Upper/FiniteDifference.lean` proves closure of completely monotone sequences under products;
+`Haagerup/CompleteMonotone.lean` applies the parameter-shift identity for rising-factorial
+quotients to prove nonnegativity of every Haagerup coefficient difference.
+`Upper/ResolventCompletion.lean` proves the all-order resolvent expansion with its defect
+and vanishing-boundary remainder. The concrete construction combines 64 series terms with
+six resolvent correction terms before taking absolute values. Lean proves the completed residual has degree at most 2492, so the coefficient
+cutoff 2500 encloses every coefficient. Its normalized residual
+is at most 9.14/10⁹, and the complete remainder at most 0.24/10⁹.
+The proof uses the inverse defect≤10⁻¹², the short seed norm ‖RP¹⁷‖₁≤249/500,
+and the elementary bound ‖RA‖₁≤2. It needs no fourth-power or gamma estimate.
+`CanonicalData.lean` states the exact parameters, `CanonicalCheck.lean` checks all finite
+arithmetic with `decide +kernel`, and `CanonicalProof.lean` assembles the bound from explicit
+check statements. The public wrapper applies those kernel proofs. The endpoint
+K≤1.404909140 depends only on `propext`, `Classical.choice`, and `Quot.sound`.
+The retained `Grothe.HaagerupPower.check` and its native fact are unchanged and are not
+used by this endpoint. `Upper/ResolventCertificate.lean` proves checker soundness, including
+the full degree bound. Independent directed replay is provided by
+`tools/verify_haagerup_canonical.py`. The focused report `scratch/AxiomsPower.lean`,
+checked with `scripts/check_axioms.py --haagerup-power`, permits no native axioms.
 
 **Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
 value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401692002039/10^12 < K`, and the transfer
@@ -561,10 +567,11 @@ fact and five refined-cover facts (14 native inputs). The original cover remains
 in the default development; the complete registry has 29 native facts outside
 the separate 60 cap-range facts after the scalar power check becomes a kernel proof.
 
-Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
+The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
+and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`): `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
-`Grothe.HaagerupPower.check` (the finite residual, power norm, inverse defect, combined seed and signed tail of the unconditional upper bound),
+`Grothe.HaagerupPower.check` (the retained finite certificate; unused by `haagerup_bound`),
 `Grothe.UpperChaos.phi_cover_check_0`–`5`
 (the phase cover |φ| < 1), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
 and the 13 chunks `Grothe.Lower.certRows0`–`4`,
