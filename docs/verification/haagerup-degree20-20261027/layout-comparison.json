@@ -1,0 +1,101 @@
+{
+  "agent": "codex-aa04",
+  "status": "GENERATOR_ONLY_NOT_LEAN_AUDIT",
+  "before": {
+    "modules": 21,
+    "bytes": 4485639,
+    "lines": 135153,
+    "definitions": 2023,
+    "theorems": 1769,
+    "literal_intervals": 119803,
+    "kernel_decide_proofs": 729,
+    "continuation_steps": 529
+  },
+  "after": {
+    "modules": 21,
+    "bytes": 6308276,
+    "lines": 211022,
+    "definitions": 3018,
+    "theorems": 2472,
+    "literal_intervals": 189244,
+    "kernel_decide_proofs": 1066,
+    "continuation_steps": 847
+  },
+  "numeric_module_loads": {
+    "Numeric00.lean": {
+      "theorems": 67,
+      "estimated_work": 42964
+    },
+    "Numeric01.lean": {
+      "theorems": 65,
+      "estimated_work": 42915
+    },
+    "Numeric10.lean": {
+      "theorems": 67,
+      "estimated_work": 42917
+    },
+    "Numeric06.lean": {
+      "theorems": 67,
+      "estimated_work": 42948
+    },
+    "Numeric07.lean": {
+      "theorems": 66,
+      "estimated_work": 42962
+    },
+    "Numeric11.lean": {
+      "theorems": 66,
+      "estimated_work": 42963
+    },
+    "Numeric04.lean": {
+      "theorems": 65,
+      "estimated_work": 42914
+    },
+    "Numeric12.lean": {
+      "theorems": 65,
+      "estimated_work": 42919
+    },
+    "Numeric08.lean": {
+      "theorems": 67,
+      "estimated_work": 42926
+    },
+    "Numeric09.lean": {
+      "theorems": 67,
+      "estimated_work": 42926
+    },
+    "Numeric13.lean": {
+      "theorems": 67,
+      "estimated_work": 42922
+    },
+    "Numeric05.lean": {
+      "theorems": 66,
+      "estimated_work": 42918
+    },
+    "Numeric02.lean": {
+      "theorems": 66,
+      "estimated_work": 42924
+    },
+    "Numeric14.lean": {
+      "theorems": 66,
+      "estimated_work": 42942
+    },
+    "Numeric15.lean": {
+      "theorems": 66,
+      "estimated_work": 42918
+    },
+    "Numeric03.lean": {
+      "theorems": 67,
+      "estimated_work": 42926
+    }
+  },
+  "canonical_shapes": {
+    "pI": 21,
+    "rI": 65,
+    "ratioA": 42,
+    "ratioY": 106,
+    "completedI": 192,
+    "seedI": 405,
+    "defectI": 106
+  },
+  "convolution_module_byte_identical": true,
+  "generated_file_paths_identical": true
+}

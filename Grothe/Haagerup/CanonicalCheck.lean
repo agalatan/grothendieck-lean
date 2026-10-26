@@ -18,7 +18,7 @@ lemma seed_check : seedNormOK pl rl seedPower seedCap = true :=
   Trace.seed_check
 
 lemma coefficient_check : haagR start ≤ 1/10000 ∧
-    iterDiff order haagR start ≤ 37/10000000000000 :=
+    iterDiff order haagR start ≤ 51/1000000000000000 :=
   Trace.coefficient_check
 
 lemma completed_check :

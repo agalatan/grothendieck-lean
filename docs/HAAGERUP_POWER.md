@@ -1,12 +1,13 @@
 # Hypothesis-free upper bound from a canonical resolvent completion
 
-`Grothe.haagerup_bound` proves **K_G^ℂ ≤ 1.404909140** for every finite complex
-matrix, with no Gaussian, integration, or numerical-tail hypotheses. The focused
-audit checks 96 results with zero native evaluation axioms. The sharper conditional
-upper bound and lower endpoint are separate.
+The current source `Grothe.haagerup_bound` targets **K_G^ℂ ≤ 1.404909133** for
+every finite complex matrix, with no Gaussian, integration, or numerical-tail
+hypotheses. **Delivery CI for the new degree-20 certificate is pending (#129).**
+The focused policy requires 96 results with zero native evaluation axioms.
+The sharper conditional upper bound and lower endpoint are separate.
 
 The Gaussian phase identity, tensor realization, complete finite residual,
-infinite remainder estimate, checker soundness and matrix transfer are all in Lean.
+infinite remainder estimate, checker soundness and matrix transfer are expressed in Lean.
 Large convolutions are proved in continuation blocks of at most five left
 coefficients. The generic `convI_append` identity preserves the original
 outward arithmetic order; recurrence and exact input-binding lemmas recover
@@ -73,33 +74,42 @@ the cancellation between them.
 
 ## Complete certificate
 
-The preprocessor p(t) = t P(t²) has degree 29; P has degree 14, coefficient
-norm exactly one, and constant coefficient
-1020379367568975/1125899906842624. The resolvent R has degree 64 and is
+The preprocessor p(t) = t P(t²) has degree 41; P has degree 20, coefficient
+norm at most one, and constant coefficient
+1044868466934074687/1152921504606846976. The resolvent R has degree 64 and is
 stored as its 65 coefficients, without trailing zero padding.
 
-The exact parameters and verified finite-check bounds are:
+`tools/gen_haagerup_certificate.py` computes the inverse series of t H(t²),
+where H(X) = Σ r_k X^k, over exact rational numbers. It directly checks the
+truncated composition identity. On the 60-bit dyadic grid it chooses the largest
+a with Σ |c_j| a^(2j+1) ≤ 1, then rounds the coefficients c_j a^(2j+1) toward
+zero. This produces P with ‖P‖₁ ≤ 1. The coefficients of 1/(1−XP²) through
+degree 64 are computed by an exact recurrence and rounded to the nearest
+60-bit dyadic, with ties to even. The tracked `recipe.json` fixes every choice;
+the generator is not trusted by the Lean proof.
 
-- K = 64 series terms and m = 6 correction terms;
-- checked coefficient prefix n < 170, with cap 9136/10¹² = 9.136·10⁻⁹;
-- weighted finite-polynomial tail from n = 170, with cap 4/10¹²;
+The exact parameters and finite-check caps awaiting delivery CI are:
+
+- K = 64 series terms and m = 8 correction terms;
+- checked coefficient prefix n < 172, with cap 74/10¹²;
+- weighted finite-polynomial tail from n = 172, with cap 52/10¹²;
 - η = 10⁻¹² for the inverse defect;
 - ‖R P^17‖₁ ≤ 249/500, giving B = 1/2 using ‖P‖₁ ≤ 1;
 - ‖R−1‖₁ + η ≤ 2, giving C = 2;
-- r_64 ≤ 1/10⁴ and Δ^6 r_64 ≤ 37/10¹³;
-- completed finite residual ≤ 914/10¹¹ = 9.14·10⁻⁹;
-- infinite remainder ≤ 24/10¹¹ = 0.24·10⁻⁹.
+- r_64 ≤ 1/10⁴ and Δ^8 r_64 ≤ 51/10¹⁵;
+- completed finite residual ≤ 126/10¹²;
+- infinite remainder ≤ 14/10¹².
 
 Complete monotonicity bounds every Δ^j r_64 by r_64. Since
-Σ_(j<6) 2^j = 63, the general remainder estimate is bounded by
+Σ_(j<8) 2^j = 255, the general remainder estimate is bounded by
 
-[64·(37/10¹³) + 10⁻¹²·(63/10⁴)] / (1−10⁻¹²) < 24/10¹¹.
+[256·(51/10¹⁵) + 10⁻¹²·(255/10⁴)] / (1−10⁻¹²) < 14/10¹².
 
 The completed finite residual polynomial is
 
-F = P Σ_(k<64) r_k (XP²)^k + Q_6 − P(0).
+F = P Σ_(k<64) r_k (XP²)^k + Q_8 − P(0).
 
-The finite check gives an outward interval enclosure of its first 170 coefficients. To
+The finite check requires an outward interval enclosure of its first 172 coefficients. To
 control every remaining coefficient, use the weighted norm of F(ρX). For
 any real polynomial F and ρ ≥ 1, scaling multiplies coefficient n by ρⁿ, so
 
@@ -112,27 +122,27 @@ has norm at most 15. Complete monotonicity gives r_k ≤ 1 and
 
 ‖F((3/2)X)‖₁
 ≤ (21/20)·64·(5/3)^63
-  + 9·(21/20)·(5/3)^64·(1/10⁴)·Σ_(j<6) 15^j + 1
-≤ 10¹⁸.
+  + 9·(21/20)·(5/3)^64·(1/10⁴)·Σ_(j<8) 15^j + 1
+≤ 10²⁰.
 
 The omitted finite-polynomial coefficients therefore contribute at most
-10¹⁸/(3/2)^170 < 4/10¹². Adding the checked prefix cap gives
+10²⁰/(3/2)^172 < 52/10¹². Adding the checked prefix cap gives
 
-‖F‖₁ ≤ (9136+4)/10¹² = 914/10¹¹.
+‖F‖₁ ≤ (74+52)/10¹² = 126/10¹².
 
 This is a finite polynomial coefficient argument; no analytic continuation
 or infinite-series norm outside the unit disk is assumed.
 
-The total normalized residual is at most 938/10¹¹ = 9.38·10⁻⁹. Residual transfer and the proved lower enclosure for π give
+The total normalized residual cap is 140/10¹². Residual transfer and the proved lower enclosure for π give
 
-K_G^ℂ ≤ 4/[π(P(0) − 938/10¹¹)] < 1.404909140.
+K_G^ℂ ≤ 4/[π(P(0) − 140/10¹²)] < 1.404909133.
 
-The rational polynomial inputs live in
-`data/haagerup-resolvent/certificate.json`.
+The exact recipe lives in `data/haagerup-resolvent/recipe.json`;
+`tools/gen_haagerup_certificate.py` reproduces `certificate.json` from it.
 `tools/gen_haagerup_power.py` reproduces `Grothe/Haagerup/PowerData.lean` byte for byte.
 The canonical completion parameters and differences are defined in
-`Grothe/Haagerup/CanonicalData.lean`. Floating searches propose data and play
-no role in acceptance.
+`Grothe/Haagerup/CanonicalData.lean`. Recipe generation uses no floating-point
+arithmetic; generation and independent replay remain separate from Lean acceptance.
 `PowerData.lean` contains only the six definitions `pl`, `rl`, `seedPower`,
 `seedCap`, `defectCap`, and `slope`. The data module has no numerical theorem;
 all four acceptance proofs come from the canonical trace.
@@ -151,12 +161,15 @@ all four acceptance proofs come from the canonical trace.
 - `Grothe/Haagerup/CanonicalProof.lean`: complete composition and matrix transfer from those checks.
 - `Grothe/Haagerup/Power.lean`: the public matrix theorem.
 - `docs/research/haagerup-power.tex`: full written proof.
+- `tools/gen_haagerup_certificate.py`: exact inverse-series and dyadic certificate generation.
 - `tools/gen_haagerup_canonical_check.py`: exact generation and byte-for-byte checking of the trace modules.
 - `tools/verify_haagerup_canonical.py`: independent rational and directed-ball replay, with hashes of the trace sources and generator.
 
 From the repository root, check the generated trace without changing files:
 
 ```sh
+python3 -I tools/gen_haagerup_certificate.py --check
+python3 -I tools/gen_haagerup_power.py --check
 python3 -I tools/gen_haagerup_canonical_check.py --check
 ```
 
@@ -187,8 +200,10 @@ The focused axiom audit permits only `propext`, `Classical.choice`, and
 lake env lean scratch/AxiomsPower.lean | python3 scripts/check_axioms.py --haagerup-power
 ```
 
-Run this from the worktree root. The successful focused audit checks 96 results
-with zero native axioms. Verification records are collected under
-`docs/verification/haagerup-canonical-20261026/`. Normal `ready/*` delivery CI
-builds and audits the combined tree before merging it. Validation is tracked in issue #113.
+Run this from the worktree root. Acceptance requires all 96 results with zero
+native axioms. The regenerated degree-20 certificate is awaiting delivery CI
+under #129. The records in `docs/verification/haagerup-canonical-20261026/` are
+immutable evidence for their older pinned source snapshots; they do not certify
+this new data. Normal `ready/*` delivery CI builds and audits the combined tree
+before merging it.
 The canonical upper-bound construction does not change the lower cap computations.

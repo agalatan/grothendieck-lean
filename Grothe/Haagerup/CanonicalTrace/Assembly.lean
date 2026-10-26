@@ -300,24 +300,323 @@ theorem weights_core :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 72: reached weights_core"
+  out.putStrLn "Canonical trace 74: reached weights_core"
   out.flush
 
 theorem weights_take :
     weights0.take 64 = weights0 := by
   rfl
 
-theorem correctionEq6 :
-    hornerI 170 ratioY correctionWeights6 = correction6 := by
+theorem ratioY_step_conv_suffixEq13 :
+    convI ratioY_step_conv_suffix13 ratioA = ratioY_step_conv_result13 := by
   rfl
 
+theorem ratioY_step_conv_suffixEq12 :
+    convI ratioY_step_conv_suffix12 ratioA = ratioY_step_conv_result12 := by
+  exact convBlockGlue ratioY_step_conv_suffixEq13 ratioY_step_conv_blockStep12
+
+theorem ratioY_step_conv_suffixEq11 :
+    convI ratioY_step_conv_suffix11 ratioA = ratioY_step_conv_result11 := by
+  exact convBlockGlue ratioY_step_conv_suffixEq12 ratioY_step_conv_blockStep11
+
+theorem ratioY_step_conv_suffixEq10 :
+    convI ratioY_step_conv_suffix10 ratioA = ratioY_step_conv_result10 := by
+  exact convBlockGlue ratioY_step_conv_suffixEq11 ratioY_step_conv_blockStep10
+
+theorem ratioY_step_conv_suffixEq9 :
+    convI ratioY_step_conv_suffix9 ratioA = ratioY_step_conv_result9 := by
+  exact convBlockGlue ratioY_step_conv_suffixEq10 ratioY_step_conv_blockStep9
+
+theorem ratioY_step_conv_suffixEq8 :
+    convI ratioY_step_conv_suffix8 ratioA = ratioY_step_conv_result8 := by
+  exact convBlockGlue ratioY_step_conv_suffixEq9 ratioY_step_conv_blockStep8
+
+theorem ratioY_step_conv_suffixEq7 :
+    convI ratioY_step_conv_suffix7 ratioA = ratioY_step_conv_result7 := by
+  exact convBlockGlue ratioY_step_conv_suffixEq8 ratioY_step_conv_blockStep7
+
+theorem ratioY_step_conv_suffixEq6 :
+    convI ratioY_step_conv_suffix6 ratioA = ratioY_step_conv_result6 := by
+  exact convBlockGlue ratioY_step_conv_suffixEq7 ratioY_step_conv_blockStep6
+
+theorem ratioY_step_conv_suffixEq5 :
+    convI ratioY_step_conv_suffix5 ratioA = ratioY_step_conv_result5 := by
+  exact convBlockGlue ratioY_step_conv_suffixEq6 ratioY_step_conv_blockStep5
+
+theorem ratioY_step_conv_suffixEq4 :
+    convI ratioY_step_conv_suffix4 ratioA = ratioY_step_conv_result4 := by
+  exact convBlockGlue ratioY_step_conv_suffixEq5 ratioY_step_conv_blockStep4
+
+theorem ratioY_step_conv_suffixEq3 :
+    convI ratioY_step_conv_suffix3 ratioA = ratioY_step_conv_result3 := by
+  exact convBlockGlue ratioY_step_conv_suffixEq4 ratioY_step_conv_blockStep3
+
+theorem ratioY_step_conv_suffixEq2 :
+    convI ratioY_step_conv_suffix2 ratioA = ratioY_step_conv_result2 := by
+  exact convBlockGlue ratioY_step_conv_suffixEq3 ratioY_step_conv_blockStep2
+
+theorem ratioY_step_conv_suffixEq1 :
+    convI ratioY_step_conv_suffix1 ratioA = ratioY_step_conv_result1 := by
+  exact convBlockGlue ratioY_step_conv_suffixEq2 ratioY_step_conv_blockStep1
+
+theorem ratioY_step_conv_suffixEq0 :
+    convI ratioY_step_conv_suffix0 ratioA = ratioY_step_conv_result0 := by
+  exact convBlockGlue ratioY_step_conv_suffixEq1 ratioY_step_conv_blockStep0
+
+theorem ratioY_step_conv_eq :
+    convI rI ratioA = ratioY_step_conv_result0 := by
+  exact (congrArg (fun left => convI left ratioA) ratioY_step_conv_input).trans ratioY_step_conv_suffixEq0
+
+theorem ratioY_step :
+    (convI rI ratioA).map negI = ratioY := by
+  rw [ratioY_step_conv_eq] <;> decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical trace 87: reached ratioY_step"
+  out.flush
+
+theorem correctionEq8 :
+    hornerI 172 ratioY correctionWeights8 = correction8 := by
+  rfl
+
+theorem correctionEq7 :
+    hornerI 172 ratioY correctionWeights7 = correction7 := by
+  exact correctionGlue correctionEq8 correctionStep7
+
+theorem correctionStep6_conv_suffixEq22 :
+    convI correctionStep6_conv_suffix22 correction7 = correctionStep6_conv_result22 := by
+  rfl
+
+theorem correctionStep6_conv_suffixEq21 :
+    convI correctionStep6_conv_suffix21 correction7 = correctionStep6_conv_result21 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq22 correctionStep6_conv_blockStep21
+
+theorem correctionStep6_conv_suffixEq20 :
+    convI correctionStep6_conv_suffix20 correction7 = correctionStep6_conv_result20 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq21 correctionStep6_conv_blockStep20
+
+theorem correctionStep6_conv_suffixEq19 :
+    convI correctionStep6_conv_suffix19 correction7 = correctionStep6_conv_result19 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq20 correctionStep6_conv_blockStep19
+
+theorem correctionStep6_conv_suffixEq18 :
+    convI correctionStep6_conv_suffix18 correction7 = correctionStep6_conv_result18 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq19 correctionStep6_conv_blockStep18
+
+theorem correctionStep6_conv_suffixEq17 :
+    convI correctionStep6_conv_suffix17 correction7 = correctionStep6_conv_result17 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq18 correctionStep6_conv_blockStep17
+
+theorem correctionStep6_conv_suffixEq16 :
+    convI correctionStep6_conv_suffix16 correction7 = correctionStep6_conv_result16 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq17 correctionStep6_conv_blockStep16
+
+theorem correctionStep6_conv_suffixEq15 :
+    convI correctionStep6_conv_suffix15 correction7 = correctionStep6_conv_result15 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq16 correctionStep6_conv_blockStep15
+
+theorem correctionStep6_conv_suffixEq14 :
+    convI correctionStep6_conv_suffix14 correction7 = correctionStep6_conv_result14 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq15 correctionStep6_conv_blockStep14
+
+theorem correctionStep6_conv_suffixEq13 :
+    convI correctionStep6_conv_suffix13 correction7 = correctionStep6_conv_result13 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq14 correctionStep6_conv_blockStep13
+
+theorem correctionStep6_conv_suffixEq12 :
+    convI correctionStep6_conv_suffix12 correction7 = correctionStep6_conv_result12 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq13 correctionStep6_conv_blockStep12
+
+theorem correctionStep6_conv_suffixEq11 :
+    convI correctionStep6_conv_suffix11 correction7 = correctionStep6_conv_result11 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq12 correctionStep6_conv_blockStep11
+
+theorem correctionStep6_conv_suffixEq10 :
+    convI correctionStep6_conv_suffix10 correction7 = correctionStep6_conv_result10 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq11 correctionStep6_conv_blockStep10
+
+theorem correctionStep6_conv_suffixEq9 :
+    convI correctionStep6_conv_suffix9 correction7 = correctionStep6_conv_result9 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq10 correctionStep6_conv_blockStep9
+
+theorem correctionStep6_conv_suffixEq8 :
+    convI correctionStep6_conv_suffix8 correction7 = correctionStep6_conv_result8 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq9 correctionStep6_conv_blockStep8
+
+theorem correctionStep6_conv_suffixEq7 :
+    convI correctionStep6_conv_suffix7 correction7 = correctionStep6_conv_result7 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq8 correctionStep6_conv_blockStep7
+
+theorem correctionStep6_conv_suffixEq6 :
+    convI correctionStep6_conv_suffix6 correction7 = correctionStep6_conv_result6 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq7 correctionStep6_conv_blockStep6
+
+theorem correctionStep6_conv_suffixEq5 :
+    convI correctionStep6_conv_suffix5 correction7 = correctionStep6_conv_result5 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq6 correctionStep6_conv_blockStep5
+
+theorem correctionStep6_conv_suffixEq4 :
+    convI correctionStep6_conv_suffix4 correction7 = correctionStep6_conv_result4 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq5 correctionStep6_conv_blockStep4
+
+theorem correctionStep6_conv_suffixEq3 :
+    convI correctionStep6_conv_suffix3 correction7 = correctionStep6_conv_result3 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq4 correctionStep6_conv_blockStep3
+
+theorem correctionStep6_conv_suffixEq2 :
+    convI correctionStep6_conv_suffix2 correction7 = correctionStep6_conv_result2 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq3 correctionStep6_conv_blockStep2
+
+theorem correctionStep6_conv_suffixEq1 :
+    convI correctionStep6_conv_suffix1 correction7 = correctionStep6_conv_result1 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq2 correctionStep6_conv_blockStep1
+
+theorem correctionStep6_conv_suffixEq0 :
+    convI correctionStep6_conv_suffix0 correction7 = correctionStep6_conv_result0 := by
+  exact convBlockGlue correctionStep6_conv_suffixEq1 correctionStep6_conv_blockStep0
+
+theorem correctionStep6_conv_eq :
+    convI ratioY correction7 = correctionStep6_conv_result0 := by
+  exact (congrArg (fun left => convI left correction7) correctionStep6_conv_input).trans correctionStep6_conv_suffixEq0
+
+theorem correctionStep6 :
+    (addL [ofRatI d6_64] (convI ratioY correction7)).take 172 = correction6 := by
+  rw [correctionStep6_conv_eq] <;> decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical trace 89: reached correctionStep6"
+  out.flush
+
+theorem correctionEq6 :
+    hornerI 172 ratioY correctionWeights6 = correction6 := by
+  exact correctionGlue correctionEq7 correctionStep6
+
+theorem correctionStep5_conv_suffixEq22 :
+    convI correctionStep5_conv_suffix22 correction6 = correctionStep5_conv_result22 := by
+  rfl
+
+theorem correctionStep5_conv_suffixEq21 :
+    convI correctionStep5_conv_suffix21 correction6 = correctionStep5_conv_result21 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq22 correctionStep5_conv_blockStep21
+
+theorem correctionStep5_conv_suffixEq20 :
+    convI correctionStep5_conv_suffix20 correction6 = correctionStep5_conv_result20 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq21 correctionStep5_conv_blockStep20
+
+theorem correctionStep5_conv_suffixEq19 :
+    convI correctionStep5_conv_suffix19 correction6 = correctionStep5_conv_result19 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq20 correctionStep5_conv_blockStep19
+
+theorem correctionStep5_conv_suffixEq18 :
+    convI correctionStep5_conv_suffix18 correction6 = correctionStep5_conv_result18 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq19 correctionStep5_conv_blockStep18
+
+theorem correctionStep5_conv_suffixEq17 :
+    convI correctionStep5_conv_suffix17 correction6 = correctionStep5_conv_result17 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq18 correctionStep5_conv_blockStep17
+
+theorem correctionStep5_conv_suffixEq16 :
+    convI correctionStep5_conv_suffix16 correction6 = correctionStep5_conv_result16 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq17 correctionStep5_conv_blockStep16
+
+theorem correctionStep5_conv_suffixEq15 :
+    convI correctionStep5_conv_suffix15 correction6 = correctionStep5_conv_result15 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq16 correctionStep5_conv_blockStep15
+
+theorem correctionStep5_conv_suffixEq14 :
+    convI correctionStep5_conv_suffix14 correction6 = correctionStep5_conv_result14 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq15 correctionStep5_conv_blockStep14
+
+theorem correctionStep5_conv_suffixEq13 :
+    convI correctionStep5_conv_suffix13 correction6 = correctionStep5_conv_result13 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq14 correctionStep5_conv_blockStep13
+
+theorem correctionStep5_conv_suffixEq12 :
+    convI correctionStep5_conv_suffix12 correction6 = correctionStep5_conv_result12 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq13 correctionStep5_conv_blockStep12
+
+theorem correctionStep5_conv_suffixEq11 :
+    convI correctionStep5_conv_suffix11 correction6 = correctionStep5_conv_result11 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq12 correctionStep5_conv_blockStep11
+
+theorem correctionStep5_conv_suffixEq10 :
+    convI correctionStep5_conv_suffix10 correction6 = correctionStep5_conv_result10 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq11 correctionStep5_conv_blockStep10
+
+theorem correctionStep5_conv_suffixEq9 :
+    convI correctionStep5_conv_suffix9 correction6 = correctionStep5_conv_result9 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq10 correctionStep5_conv_blockStep9
+
+theorem correctionStep5_conv_suffixEq8 :
+    convI correctionStep5_conv_suffix8 correction6 = correctionStep5_conv_result8 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq9 correctionStep5_conv_blockStep8
+
+theorem correctionStep5_conv_suffixEq7 :
+    convI correctionStep5_conv_suffix7 correction6 = correctionStep5_conv_result7 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq8 correctionStep5_conv_blockStep7
+
+theorem correctionStep5_conv_suffixEq6 :
+    convI correctionStep5_conv_suffix6 correction6 = correctionStep5_conv_result6 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq7 correctionStep5_conv_blockStep6
+
+theorem correctionStep5_conv_suffixEq5 :
+    convI correctionStep5_conv_suffix5 correction6 = correctionStep5_conv_result5 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq6 correctionStep5_conv_blockStep5
+
+theorem correctionStep5_conv_suffixEq4 :
+    convI correctionStep5_conv_suffix4 correction6 = correctionStep5_conv_result4 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq5 correctionStep5_conv_blockStep4
+
+theorem correctionStep5_conv_suffixEq3 :
+    convI correctionStep5_conv_suffix3 correction6 = correctionStep5_conv_result3 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq4 correctionStep5_conv_blockStep3
+
+theorem correctionStep5_conv_suffixEq2 :
+    convI correctionStep5_conv_suffix2 correction6 = correctionStep5_conv_result2 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq3 correctionStep5_conv_blockStep2
+
+theorem correctionStep5_conv_suffixEq1 :
+    convI correctionStep5_conv_suffix1 correction6 = correctionStep5_conv_result1 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq2 correctionStep5_conv_blockStep1
+
+theorem correctionStep5_conv_suffixEq0 :
+    convI correctionStep5_conv_suffix0 correction6 = correctionStep5_conv_result0 := by
+  exact convBlockGlue correctionStep5_conv_suffixEq1 correctionStep5_conv_blockStep0
+
+theorem correctionStep5_conv_eq :
+    convI ratioY correction6 = correctionStep5_conv_result0 := by
+  exact (congrArg (fun left => convI left correction6) correctionStep5_conv_input).trans correctionStep5_conv_suffixEq0
+
+theorem correctionStep5 :
+    (addL [ofRatI d5_64] (convI ratioY correction6)).take 172 = correction5 := by
+  rw [correctionStep5_conv_eq] <;> decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical trace 90: reached correctionStep5"
+  out.flush
+
 theorem correctionEq5 :
-    hornerI 170 ratioY correctionWeights5 = correction5 := by
+    hornerI 172 ratioY correctionWeights5 = correction5 := by
   exact correctionGlue correctionEq6 correctionStep5
+
+theorem correctionStep4_conv_suffixEq22 :
+    convI correctionStep4_conv_suffix22 correction5 = correctionStep4_conv_result22 := by
+  rfl
+
+theorem correctionStep4_conv_suffixEq21 :
+    convI correctionStep4_conv_suffix21 correction5 = correctionStep4_conv_result21 := by
+  exact convBlockGlue correctionStep4_conv_suffixEq22 correctionStep4_conv_blockStep21
+
+theorem correctionStep4_conv_suffixEq20 :
+    convI correctionStep4_conv_suffix20 correction5 = correctionStep4_conv_result20 := by
+  exact convBlockGlue correctionStep4_conv_suffixEq21 correctionStep4_conv_blockStep20
 
 theorem correctionStep4_conv_suffixEq19 :
     convI correctionStep4_conv_suffix19 correction5 = correctionStep4_conv_result19 := by
-  rfl
+  exact convBlockGlue correctionStep4_conv_suffixEq20 correctionStep4_conv_blockStep19
 
 theorem correctionStep4_conv_suffixEq18 :
     convI correctionStep4_conv_suffix18 correction5 = correctionStep4_conv_result18 := by
@@ -400,21 +699,33 @@ theorem correctionStep4_conv_eq :
   exact (congrArg (fun left => convI left correction5) correctionStep4_conv_input).trans correctionStep4_conv_suffixEq0
 
 theorem correctionStep4 :
-    (addL [ofRatI d4_64] (convI ratioY correction5)).take 170 = correction4 := by
+    (addL [ofRatI d4_64] (convI ratioY correction5)).take 172 = correction4 := by
   rw [correctionStep4_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 85: reached correctionStep4"
+  out.putStrLn "Canonical trace 91: reached correctionStep4"
   out.flush
 
 theorem correctionEq4 :
-    hornerI 170 ratioY correctionWeights4 = correction4 := by
+    hornerI 172 ratioY correctionWeights4 = correction4 := by
   exact correctionGlue correctionEq5 correctionStep4
+
+theorem correctionStep3_conv_suffixEq22 :
+    convI correctionStep3_conv_suffix22 correction4 = correctionStep3_conv_result22 := by
+  rfl
+
+theorem correctionStep3_conv_suffixEq21 :
+    convI correctionStep3_conv_suffix21 correction4 = correctionStep3_conv_result21 := by
+  exact convBlockGlue correctionStep3_conv_suffixEq22 correctionStep3_conv_blockStep21
+
+theorem correctionStep3_conv_suffixEq20 :
+    convI correctionStep3_conv_suffix20 correction4 = correctionStep3_conv_result20 := by
+  exact convBlockGlue correctionStep3_conv_suffixEq21 correctionStep3_conv_blockStep20
 
 theorem correctionStep3_conv_suffixEq19 :
     convI correctionStep3_conv_suffix19 correction4 = correctionStep3_conv_result19 := by
-  rfl
+  exact convBlockGlue correctionStep3_conv_suffixEq20 correctionStep3_conv_blockStep19
 
 theorem correctionStep3_conv_suffixEq18 :
     convI correctionStep3_conv_suffix18 correction4 = correctionStep3_conv_result18 := by
@@ -497,21 +808,33 @@ theorem correctionStep3_conv_eq :
   exact (congrArg (fun left => convI left correction4) correctionStep3_conv_input).trans correctionStep3_conv_suffixEq0
 
 theorem correctionStep3 :
-    (addL [ofRatI d3_64] (convI ratioY correction4)).take 170 = correction3 := by
+    (addL [ofRatI d3_64] (convI ratioY correction4)).take 172 = correction3 := by
   rw [correctionStep3_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 86: reached correctionStep3"
+  out.putStrLn "Canonical trace 92: reached correctionStep3"
   out.flush
 
 theorem correctionEq3 :
-    hornerI 170 ratioY correctionWeights3 = correction3 := by
+    hornerI 172 ratioY correctionWeights3 = correction3 := by
   exact correctionGlue correctionEq4 correctionStep3
+
+theorem correctionStep2_conv_suffixEq22 :
+    convI correctionStep2_conv_suffix22 correction3 = correctionStep2_conv_result22 := by
+  rfl
+
+theorem correctionStep2_conv_suffixEq21 :
+    convI correctionStep2_conv_suffix21 correction3 = correctionStep2_conv_result21 := by
+  exact convBlockGlue correctionStep2_conv_suffixEq22 correctionStep2_conv_blockStep21
+
+theorem correctionStep2_conv_suffixEq20 :
+    convI correctionStep2_conv_suffix20 correction3 = correctionStep2_conv_result20 := by
+  exact convBlockGlue correctionStep2_conv_suffixEq21 correctionStep2_conv_blockStep20
 
 theorem correctionStep2_conv_suffixEq19 :
     convI correctionStep2_conv_suffix19 correction3 = correctionStep2_conv_result19 := by
-  rfl
+  exact convBlockGlue correctionStep2_conv_suffixEq20 correctionStep2_conv_blockStep19
 
 theorem correctionStep2_conv_suffixEq18 :
     convI correctionStep2_conv_suffix18 correction3 = correctionStep2_conv_result18 := by
@@ -594,21 +917,33 @@ theorem correctionStep2_conv_eq :
   exact (congrArg (fun left => convI left correction3) correctionStep2_conv_input).trans correctionStep2_conv_suffixEq0
 
 theorem correctionStep2 :
-    (addL [ofRatI d2_64] (convI ratioY correction3)).take 170 = correction2 := by
+    (addL [ofRatI d2_64] (convI ratioY correction3)).take 172 = correction2 := by
   rw [correctionStep2_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 87: reached correctionStep2"
+  out.putStrLn "Canonical trace 93: reached correctionStep2"
   out.flush
 
 theorem correctionEq2 :
-    hornerI 170 ratioY correctionWeights2 = correction2 := by
+    hornerI 172 ratioY correctionWeights2 = correction2 := by
   exact correctionGlue correctionEq3 correctionStep2
+
+theorem correctionStep1_conv_suffixEq22 :
+    convI correctionStep1_conv_suffix22 correction2 = correctionStep1_conv_result22 := by
+  rfl
+
+theorem correctionStep1_conv_suffixEq21 :
+    convI correctionStep1_conv_suffix21 correction2 = correctionStep1_conv_result21 := by
+  exact convBlockGlue correctionStep1_conv_suffixEq22 correctionStep1_conv_blockStep21
+
+theorem correctionStep1_conv_suffixEq20 :
+    convI correctionStep1_conv_suffix20 correction2 = correctionStep1_conv_result20 := by
+  exact convBlockGlue correctionStep1_conv_suffixEq21 correctionStep1_conv_blockStep20
 
 theorem correctionStep1_conv_suffixEq19 :
     convI correctionStep1_conv_suffix19 correction2 = correctionStep1_conv_result19 := by
-  rfl
+  exact convBlockGlue correctionStep1_conv_suffixEq20 correctionStep1_conv_blockStep19
 
 theorem correctionStep1_conv_suffixEq18 :
     convI correctionStep1_conv_suffix18 correction2 = correctionStep1_conv_result18 := by
@@ -691,21 +1026,33 @@ theorem correctionStep1_conv_eq :
   exact (congrArg (fun left => convI left correction2) correctionStep1_conv_input).trans correctionStep1_conv_suffixEq0
 
 theorem correctionStep1 :
-    (addL [ofRatI d1_64] (convI ratioY correction2)).take 170 = correction1 := by
+    (addL [ofRatI d1_64] (convI ratioY correction2)).take 172 = correction1 := by
   rw [correctionStep1_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 88: reached correctionStep1"
+  out.putStrLn "Canonical trace 94: reached correctionStep1"
   out.flush
 
 theorem correctionEq1 :
-    hornerI 170 ratioY correctionWeights1 = correction1 := by
+    hornerI 172 ratioY correctionWeights1 = correction1 := by
   exact correctionGlue correctionEq2 correctionStep1
+
+theorem correctionStep0_conv_suffixEq22 :
+    convI correctionStep0_conv_suffix22 correction1 = correctionStep0_conv_result22 := by
+  rfl
+
+theorem correctionStep0_conv_suffixEq21 :
+    convI correctionStep0_conv_suffix21 correction1 = correctionStep0_conv_result21 := by
+  exact convBlockGlue correctionStep0_conv_suffixEq22 correctionStep0_conv_blockStep21
+
+theorem correctionStep0_conv_suffixEq20 :
+    convI correctionStep0_conv_suffix20 correction1 = correctionStep0_conv_result20 := by
+  exact convBlockGlue correctionStep0_conv_suffixEq21 correctionStep0_conv_blockStep20
 
 theorem correctionStep0_conv_suffixEq19 :
     convI correctionStep0_conv_suffix19 correction1 = correctionStep0_conv_result19 := by
-  rfl
+  exact convBlockGlue correctionStep0_conv_suffixEq20 correctionStep0_conv_blockStep19
 
 theorem correctionStep0_conv_suffixEq18 :
     convI correctionStep0_conv_suffix18 correction1 = correctionStep0_conv_result18 := by
@@ -788,16 +1135,16 @@ theorem correctionStep0_conv_eq :
   exact (congrArg (fun left => convI left correction1) correctionStep0_conv_input).trans correctionStep0_conv_suffixEq0
 
 theorem correctionStep0 :
-    (addL [ofRatI d0_64] (convI ratioY correction1)).take 170 = correction0 := by
+    (addL [ofRatI d0_64] (convI ratioY correction1)).take 172 = correction0 := by
   rw [correctionStep0_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 89: reached correctionStep0"
+  out.putStrLn "Canonical trace 95: reached correctionStep0"
   out.flush
 
 theorem correctionEq0 :
-    hornerI 170 ratioY correctionWeights0 = correction0 := by
+    hornerI 172 ratioY correctionWeights0 = correction0 := by
   exact correctionGlue correctionEq1 correctionStep0
 
 theorem tail_step_conv_suffixEq13 :
@@ -866,16 +1213,28 @@ theorem tail_step :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 90: reached tail_step"
+  out.putStrLn "Canonical trace 96: reached tail_step"
   out.flush
 
 theorem headEq64 :
-    hornerWithTailI 170 ratioA tailI weights64 = head64 := by
+    hornerWithTailI 172 ratioA tailI weights64 = head64 := by
   rfl
+
+theorem headStep63_conv_suffixEq9 :
+    convI headStep63_conv_suffix9 head64 = headStep63_conv_result9 := by
+  rfl
+
+theorem headStep63_conv_suffixEq8 :
+    convI headStep63_conv_suffix8 head64 = headStep63_conv_result8 := by
+  exact convBlockGlue headStep63_conv_suffixEq9 headStep63_conv_blockStep8
+
+theorem headStep63_conv_suffixEq7 :
+    convI headStep63_conv_suffix7 head64 = headStep63_conv_result7 := by
+  exact convBlockGlue headStep63_conv_suffixEq8 headStep63_conv_blockStep7
 
 theorem headStep63_conv_suffixEq6 :
     convI headStep63_conv_suffix6 head64 = headStep63_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep63_conv_suffixEq7 headStep63_conv_blockStep6
 
 theorem headStep63_conv_suffixEq5 :
     convI headStep63_conv_suffix5 head64 = headStep63_conv_result5 := by
@@ -906,21 +1265,33 @@ theorem headStep63_conv_eq :
   exact (congrArg (fun left => convI left head64) headStep63_conv_input).trans headStep63_conv_suffixEq0
 
 theorem headStep63 :
-    (addL [ofRatI c63] (convI ratioA head64)).take 170 = head63 := by
+    (addL [ofRatI c63] (convI ratioA head64)).take 172 = head63 := by
   rw [headStep63_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 91: reached headStep63"
+  out.putStrLn "Canonical trace 97: reached headStep63"
   out.flush
 
 theorem headEq63 :
-    hornerWithTailI 170 ratioA tailI weights63 = head63 := by
+    hornerWithTailI 172 ratioA tailI weights63 = head63 := by
   exact headGlue headEq64 headStep63
+
+theorem headStep62_conv_suffixEq9 :
+    convI headStep62_conv_suffix9 head63 = headStep62_conv_result9 := by
+  rfl
+
+theorem headStep62_conv_suffixEq8 :
+    convI headStep62_conv_suffix8 head63 = headStep62_conv_result8 := by
+  exact convBlockGlue headStep62_conv_suffixEq9 headStep62_conv_blockStep8
+
+theorem headStep62_conv_suffixEq7 :
+    convI headStep62_conv_suffix7 head63 = headStep62_conv_result7 := by
+  exact convBlockGlue headStep62_conv_suffixEq8 headStep62_conv_blockStep7
 
 theorem headStep62_conv_suffixEq6 :
     convI headStep62_conv_suffix6 head63 = headStep62_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep62_conv_suffixEq7 headStep62_conv_blockStep6
 
 theorem headStep62_conv_suffixEq5 :
     convI headStep62_conv_suffix5 head63 = headStep62_conv_result5 := by
@@ -951,21 +1322,33 @@ theorem headStep62_conv_eq :
   exact (congrArg (fun left => convI left head63) headStep62_conv_input).trans headStep62_conv_suffixEq0
 
 theorem headStep62 :
-    (addL [ofRatI c62] (convI ratioA head63)).take 170 = head62 := by
+    (addL [ofRatI c62] (convI ratioA head63)).take 172 = head62 := by
   rw [headStep62_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 92: reached headStep62"
+  out.putStrLn "Canonical trace 98: reached headStep62"
   out.flush
 
 theorem headEq62 :
-    hornerWithTailI 170 ratioA tailI weights62 = head62 := by
+    hornerWithTailI 172 ratioA tailI weights62 = head62 := by
   exact headGlue headEq63 headStep62
+
+theorem headStep61_conv_suffixEq9 :
+    convI headStep61_conv_suffix9 head62 = headStep61_conv_result9 := by
+  rfl
+
+theorem headStep61_conv_suffixEq8 :
+    convI headStep61_conv_suffix8 head62 = headStep61_conv_result8 := by
+  exact convBlockGlue headStep61_conv_suffixEq9 headStep61_conv_blockStep8
+
+theorem headStep61_conv_suffixEq7 :
+    convI headStep61_conv_suffix7 head62 = headStep61_conv_result7 := by
+  exact convBlockGlue headStep61_conv_suffixEq8 headStep61_conv_blockStep7
 
 theorem headStep61_conv_suffixEq6 :
     convI headStep61_conv_suffix6 head62 = headStep61_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep61_conv_suffixEq7 headStep61_conv_blockStep6
 
 theorem headStep61_conv_suffixEq5 :
     convI headStep61_conv_suffix5 head62 = headStep61_conv_result5 := by
@@ -996,21 +1379,33 @@ theorem headStep61_conv_eq :
   exact (congrArg (fun left => convI left head62) headStep61_conv_input).trans headStep61_conv_suffixEq0
 
 theorem headStep61 :
-    (addL [ofRatI c61] (convI ratioA head62)).take 170 = head61 := by
+    (addL [ofRatI c61] (convI ratioA head62)).take 172 = head61 := by
   rw [headStep61_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 93: reached headStep61"
+  out.putStrLn "Canonical trace 99: reached headStep61"
   out.flush
 
 theorem headEq61 :
-    hornerWithTailI 170 ratioA tailI weights61 = head61 := by
+    hornerWithTailI 172 ratioA tailI weights61 = head61 := by
   exact headGlue headEq62 headStep61
+
+theorem headStep60_conv_suffixEq9 :
+    convI headStep60_conv_suffix9 head61 = headStep60_conv_result9 := by
+  rfl
+
+theorem headStep60_conv_suffixEq8 :
+    convI headStep60_conv_suffix8 head61 = headStep60_conv_result8 := by
+  exact convBlockGlue headStep60_conv_suffixEq9 headStep60_conv_blockStep8
+
+theorem headStep60_conv_suffixEq7 :
+    convI headStep60_conv_suffix7 head61 = headStep60_conv_result7 := by
+  exact convBlockGlue headStep60_conv_suffixEq8 headStep60_conv_blockStep7
 
 theorem headStep60_conv_suffixEq6 :
     convI headStep60_conv_suffix6 head61 = headStep60_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep60_conv_suffixEq7 headStep60_conv_blockStep6
 
 theorem headStep60_conv_suffixEq5 :
     convI headStep60_conv_suffix5 head61 = headStep60_conv_result5 := by
@@ -1041,21 +1436,33 @@ theorem headStep60_conv_eq :
   exact (congrArg (fun left => convI left head61) headStep60_conv_input).trans headStep60_conv_suffixEq0
 
 theorem headStep60 :
-    (addL [ofRatI c60] (convI ratioA head61)).take 170 = head60 := by
+    (addL [ofRatI c60] (convI ratioA head61)).take 172 = head60 := by
   rw [headStep60_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 94: reached headStep60"
+  out.putStrLn "Canonical trace 100: reached headStep60"
   out.flush
 
 theorem headEq60 :
-    hornerWithTailI 170 ratioA tailI weights60 = head60 := by
+    hornerWithTailI 172 ratioA tailI weights60 = head60 := by
   exact headGlue headEq61 headStep60
+
+theorem headStep59_conv_suffixEq9 :
+    convI headStep59_conv_suffix9 head60 = headStep59_conv_result9 := by
+  rfl
+
+theorem headStep59_conv_suffixEq8 :
+    convI headStep59_conv_suffix8 head60 = headStep59_conv_result8 := by
+  exact convBlockGlue headStep59_conv_suffixEq9 headStep59_conv_blockStep8
+
+theorem headStep59_conv_suffixEq7 :
+    convI headStep59_conv_suffix7 head60 = headStep59_conv_result7 := by
+  exact convBlockGlue headStep59_conv_suffixEq8 headStep59_conv_blockStep7
 
 theorem headStep59_conv_suffixEq6 :
     convI headStep59_conv_suffix6 head60 = headStep59_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep59_conv_suffixEq7 headStep59_conv_blockStep6
 
 theorem headStep59_conv_suffixEq5 :
     convI headStep59_conv_suffix5 head60 = headStep59_conv_result5 := by
@@ -1086,21 +1493,33 @@ theorem headStep59_conv_eq :
   exact (congrArg (fun left => convI left head60) headStep59_conv_input).trans headStep59_conv_suffixEq0
 
 theorem headStep59 :
-    (addL [ofRatI c59] (convI ratioA head60)).take 170 = head59 := by
+    (addL [ofRatI c59] (convI ratioA head60)).take 172 = head59 := by
   rw [headStep59_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 95: reached headStep59"
+  out.putStrLn "Canonical trace 101: reached headStep59"
   out.flush
 
 theorem headEq59 :
-    hornerWithTailI 170 ratioA tailI weights59 = head59 := by
+    hornerWithTailI 172 ratioA tailI weights59 = head59 := by
   exact headGlue headEq60 headStep59
+
+theorem headStep58_conv_suffixEq9 :
+    convI headStep58_conv_suffix9 head59 = headStep58_conv_result9 := by
+  rfl
+
+theorem headStep58_conv_suffixEq8 :
+    convI headStep58_conv_suffix8 head59 = headStep58_conv_result8 := by
+  exact convBlockGlue headStep58_conv_suffixEq9 headStep58_conv_blockStep8
+
+theorem headStep58_conv_suffixEq7 :
+    convI headStep58_conv_suffix7 head59 = headStep58_conv_result7 := by
+  exact convBlockGlue headStep58_conv_suffixEq8 headStep58_conv_blockStep7
 
 theorem headStep58_conv_suffixEq6 :
     convI headStep58_conv_suffix6 head59 = headStep58_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep58_conv_suffixEq7 headStep58_conv_blockStep6
 
 theorem headStep58_conv_suffixEq5 :
     convI headStep58_conv_suffix5 head59 = headStep58_conv_result5 := by
@@ -1131,21 +1550,33 @@ theorem headStep58_conv_eq :
   exact (congrArg (fun left => convI left head59) headStep58_conv_input).trans headStep58_conv_suffixEq0
 
 theorem headStep58 :
-    (addL [ofRatI c58] (convI ratioA head59)).take 170 = head58 := by
+    (addL [ofRatI c58] (convI ratioA head59)).take 172 = head58 := by
   rw [headStep58_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 96: reached headStep58"
+  out.putStrLn "Canonical trace 102: reached headStep58"
   out.flush
 
 theorem headEq58 :
-    hornerWithTailI 170 ratioA tailI weights58 = head58 := by
+    hornerWithTailI 172 ratioA tailI weights58 = head58 := by
   exact headGlue headEq59 headStep58
+
+theorem headStep57_conv_suffixEq9 :
+    convI headStep57_conv_suffix9 head58 = headStep57_conv_result9 := by
+  rfl
+
+theorem headStep57_conv_suffixEq8 :
+    convI headStep57_conv_suffix8 head58 = headStep57_conv_result8 := by
+  exact convBlockGlue headStep57_conv_suffixEq9 headStep57_conv_blockStep8
+
+theorem headStep57_conv_suffixEq7 :
+    convI headStep57_conv_suffix7 head58 = headStep57_conv_result7 := by
+  exact convBlockGlue headStep57_conv_suffixEq8 headStep57_conv_blockStep7
 
 theorem headStep57_conv_suffixEq6 :
     convI headStep57_conv_suffix6 head58 = headStep57_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep57_conv_suffixEq7 headStep57_conv_blockStep6
 
 theorem headStep57_conv_suffixEq5 :
     convI headStep57_conv_suffix5 head58 = headStep57_conv_result5 := by
@@ -1176,21 +1607,33 @@ theorem headStep57_conv_eq :
   exact (congrArg (fun left => convI left head58) headStep57_conv_input).trans headStep57_conv_suffixEq0
 
 theorem headStep57 :
-    (addL [ofRatI c57] (convI ratioA head58)).take 170 = head57 := by
+    (addL [ofRatI c57] (convI ratioA head58)).take 172 = head57 := by
   rw [headStep57_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 97: reached headStep57"
+  out.putStrLn "Canonical trace 103: reached headStep57"
   out.flush
 
 theorem headEq57 :
-    hornerWithTailI 170 ratioA tailI weights57 = head57 := by
+    hornerWithTailI 172 ratioA tailI weights57 = head57 := by
   exact headGlue headEq58 headStep57
+
+theorem headStep56_conv_suffixEq9 :
+    convI headStep56_conv_suffix9 head57 = headStep56_conv_result9 := by
+  rfl
+
+theorem headStep56_conv_suffixEq8 :
+    convI headStep56_conv_suffix8 head57 = headStep56_conv_result8 := by
+  exact convBlockGlue headStep56_conv_suffixEq9 headStep56_conv_blockStep8
+
+theorem headStep56_conv_suffixEq7 :
+    convI headStep56_conv_suffix7 head57 = headStep56_conv_result7 := by
+  exact convBlockGlue headStep56_conv_suffixEq8 headStep56_conv_blockStep7
 
 theorem headStep56_conv_suffixEq6 :
     convI headStep56_conv_suffix6 head57 = headStep56_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep56_conv_suffixEq7 headStep56_conv_blockStep6
 
 theorem headStep56_conv_suffixEq5 :
     convI headStep56_conv_suffix5 head57 = headStep56_conv_result5 := by
@@ -1221,21 +1664,33 @@ theorem headStep56_conv_eq :
   exact (congrArg (fun left => convI left head57) headStep56_conv_input).trans headStep56_conv_suffixEq0
 
 theorem headStep56 :
-    (addL [ofRatI c56] (convI ratioA head57)).take 170 = head56 := by
+    (addL [ofRatI c56] (convI ratioA head57)).take 172 = head56 := by
   rw [headStep56_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 98: reached headStep56"
+  out.putStrLn "Canonical trace 104: reached headStep56"
   out.flush
 
 theorem headEq56 :
-    hornerWithTailI 170 ratioA tailI weights56 = head56 := by
+    hornerWithTailI 172 ratioA tailI weights56 = head56 := by
   exact headGlue headEq57 headStep56
+
+theorem headStep55_conv_suffixEq9 :
+    convI headStep55_conv_suffix9 head56 = headStep55_conv_result9 := by
+  rfl
+
+theorem headStep55_conv_suffixEq8 :
+    convI headStep55_conv_suffix8 head56 = headStep55_conv_result8 := by
+  exact convBlockGlue headStep55_conv_suffixEq9 headStep55_conv_blockStep8
+
+theorem headStep55_conv_suffixEq7 :
+    convI headStep55_conv_suffix7 head56 = headStep55_conv_result7 := by
+  exact convBlockGlue headStep55_conv_suffixEq8 headStep55_conv_blockStep7
 
 theorem headStep55_conv_suffixEq6 :
     convI headStep55_conv_suffix6 head56 = headStep55_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep55_conv_suffixEq7 headStep55_conv_blockStep6
 
 theorem headStep55_conv_suffixEq5 :
     convI headStep55_conv_suffix5 head56 = headStep55_conv_result5 := by
@@ -1266,21 +1721,33 @@ theorem headStep55_conv_eq :
   exact (congrArg (fun left => convI left head56) headStep55_conv_input).trans headStep55_conv_suffixEq0
 
 theorem headStep55 :
-    (addL [ofRatI c55] (convI ratioA head56)).take 170 = head55 := by
+    (addL [ofRatI c55] (convI ratioA head56)).take 172 = head55 := by
   rw [headStep55_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 99: reached headStep55"
+  out.putStrLn "Canonical trace 105: reached headStep55"
   out.flush
 
 theorem headEq55 :
-    hornerWithTailI 170 ratioA tailI weights55 = head55 := by
+    hornerWithTailI 172 ratioA tailI weights55 = head55 := by
   exact headGlue headEq56 headStep55
+
+theorem headStep54_conv_suffixEq9 :
+    convI headStep54_conv_suffix9 head55 = headStep54_conv_result9 := by
+  rfl
+
+theorem headStep54_conv_suffixEq8 :
+    convI headStep54_conv_suffix8 head55 = headStep54_conv_result8 := by
+  exact convBlockGlue headStep54_conv_suffixEq9 headStep54_conv_blockStep8
+
+theorem headStep54_conv_suffixEq7 :
+    convI headStep54_conv_suffix7 head55 = headStep54_conv_result7 := by
+  exact convBlockGlue headStep54_conv_suffixEq8 headStep54_conv_blockStep7
 
 theorem headStep54_conv_suffixEq6 :
     convI headStep54_conv_suffix6 head55 = headStep54_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep54_conv_suffixEq7 headStep54_conv_blockStep6
 
 theorem headStep54_conv_suffixEq5 :
     convI headStep54_conv_suffix5 head55 = headStep54_conv_result5 := by
@@ -1311,21 +1778,33 @@ theorem headStep54_conv_eq :
   exact (congrArg (fun left => convI left head55) headStep54_conv_input).trans headStep54_conv_suffixEq0
 
 theorem headStep54 :
-    (addL [ofRatI c54] (convI ratioA head55)).take 170 = head54 := by
+    (addL [ofRatI c54] (convI ratioA head55)).take 172 = head54 := by
   rw [headStep54_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 100: reached headStep54"
+  out.putStrLn "Canonical trace 106: reached headStep54"
   out.flush
 
 theorem headEq54 :
-    hornerWithTailI 170 ratioA tailI weights54 = head54 := by
+    hornerWithTailI 172 ratioA tailI weights54 = head54 := by
   exact headGlue headEq55 headStep54
+
+theorem headStep53_conv_suffixEq9 :
+    convI headStep53_conv_suffix9 head54 = headStep53_conv_result9 := by
+  rfl
+
+theorem headStep53_conv_suffixEq8 :
+    convI headStep53_conv_suffix8 head54 = headStep53_conv_result8 := by
+  exact convBlockGlue headStep53_conv_suffixEq9 headStep53_conv_blockStep8
+
+theorem headStep53_conv_suffixEq7 :
+    convI headStep53_conv_suffix7 head54 = headStep53_conv_result7 := by
+  exact convBlockGlue headStep53_conv_suffixEq8 headStep53_conv_blockStep7
 
 theorem headStep53_conv_suffixEq6 :
     convI headStep53_conv_suffix6 head54 = headStep53_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep53_conv_suffixEq7 headStep53_conv_blockStep6
 
 theorem headStep53_conv_suffixEq5 :
     convI headStep53_conv_suffix5 head54 = headStep53_conv_result5 := by
@@ -1356,21 +1835,33 @@ theorem headStep53_conv_eq :
   exact (congrArg (fun left => convI left head54) headStep53_conv_input).trans headStep53_conv_suffixEq0
 
 theorem headStep53 :
-    (addL [ofRatI c53] (convI ratioA head54)).take 170 = head53 := by
+    (addL [ofRatI c53] (convI ratioA head54)).take 172 = head53 := by
   rw [headStep53_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 101: reached headStep53"
+  out.putStrLn "Canonical trace 107: reached headStep53"
   out.flush
 
 theorem headEq53 :
-    hornerWithTailI 170 ratioA tailI weights53 = head53 := by
+    hornerWithTailI 172 ratioA tailI weights53 = head53 := by
   exact headGlue headEq54 headStep53
+
+theorem headStep52_conv_suffixEq9 :
+    convI headStep52_conv_suffix9 head53 = headStep52_conv_result9 := by
+  rfl
+
+theorem headStep52_conv_suffixEq8 :
+    convI headStep52_conv_suffix8 head53 = headStep52_conv_result8 := by
+  exact convBlockGlue headStep52_conv_suffixEq9 headStep52_conv_blockStep8
+
+theorem headStep52_conv_suffixEq7 :
+    convI headStep52_conv_suffix7 head53 = headStep52_conv_result7 := by
+  exact convBlockGlue headStep52_conv_suffixEq8 headStep52_conv_blockStep7
 
 theorem headStep52_conv_suffixEq6 :
     convI headStep52_conv_suffix6 head53 = headStep52_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep52_conv_suffixEq7 headStep52_conv_blockStep6
 
 theorem headStep52_conv_suffixEq5 :
     convI headStep52_conv_suffix5 head53 = headStep52_conv_result5 := by
@@ -1401,21 +1892,33 @@ theorem headStep52_conv_eq :
   exact (congrArg (fun left => convI left head53) headStep52_conv_input).trans headStep52_conv_suffixEq0
 
 theorem headStep52 :
-    (addL [ofRatI c52] (convI ratioA head53)).take 170 = head52 := by
+    (addL [ofRatI c52] (convI ratioA head53)).take 172 = head52 := by
   rw [headStep52_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 102: reached headStep52"
+  out.putStrLn "Canonical trace 108: reached headStep52"
   out.flush
 
 theorem headEq52 :
-    hornerWithTailI 170 ratioA tailI weights52 = head52 := by
+    hornerWithTailI 172 ratioA tailI weights52 = head52 := by
   exact headGlue headEq53 headStep52
+
+theorem headStep51_conv_suffixEq9 :
+    convI headStep51_conv_suffix9 head52 = headStep51_conv_result9 := by
+  rfl
+
+theorem headStep51_conv_suffixEq8 :
+    convI headStep51_conv_suffix8 head52 = headStep51_conv_result8 := by
+  exact convBlockGlue headStep51_conv_suffixEq9 headStep51_conv_blockStep8
+
+theorem headStep51_conv_suffixEq7 :
+    convI headStep51_conv_suffix7 head52 = headStep51_conv_result7 := by
+  exact convBlockGlue headStep51_conv_suffixEq8 headStep51_conv_blockStep7
 
 theorem headStep51_conv_suffixEq6 :
     convI headStep51_conv_suffix6 head52 = headStep51_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep51_conv_suffixEq7 headStep51_conv_blockStep6
 
 theorem headStep51_conv_suffixEq5 :
     convI headStep51_conv_suffix5 head52 = headStep51_conv_result5 := by
@@ -1446,21 +1949,33 @@ theorem headStep51_conv_eq :
   exact (congrArg (fun left => convI left head52) headStep51_conv_input).trans headStep51_conv_suffixEq0
 
 theorem headStep51 :
-    (addL [ofRatI c51] (convI ratioA head52)).take 170 = head51 := by
+    (addL [ofRatI c51] (convI ratioA head52)).take 172 = head51 := by
   rw [headStep51_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 103: reached headStep51"
+  out.putStrLn "Canonical trace 109: reached headStep51"
   out.flush
 
 theorem headEq51 :
-    hornerWithTailI 170 ratioA tailI weights51 = head51 := by
+    hornerWithTailI 172 ratioA tailI weights51 = head51 := by
   exact headGlue headEq52 headStep51
+
+theorem headStep50_conv_suffixEq9 :
+    convI headStep50_conv_suffix9 head51 = headStep50_conv_result9 := by
+  rfl
+
+theorem headStep50_conv_suffixEq8 :
+    convI headStep50_conv_suffix8 head51 = headStep50_conv_result8 := by
+  exact convBlockGlue headStep50_conv_suffixEq9 headStep50_conv_blockStep8
+
+theorem headStep50_conv_suffixEq7 :
+    convI headStep50_conv_suffix7 head51 = headStep50_conv_result7 := by
+  exact convBlockGlue headStep50_conv_suffixEq8 headStep50_conv_blockStep7
 
 theorem headStep50_conv_suffixEq6 :
     convI headStep50_conv_suffix6 head51 = headStep50_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep50_conv_suffixEq7 headStep50_conv_blockStep6
 
 theorem headStep50_conv_suffixEq5 :
     convI headStep50_conv_suffix5 head51 = headStep50_conv_result5 := by
@@ -1491,21 +2006,33 @@ theorem headStep50_conv_eq :
   exact (congrArg (fun left => convI left head51) headStep50_conv_input).trans headStep50_conv_suffixEq0
 
 theorem headStep50 :
-    (addL [ofRatI c50] (convI ratioA head51)).take 170 = head50 := by
+    (addL [ofRatI c50] (convI ratioA head51)).take 172 = head50 := by
   rw [headStep50_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 104: reached headStep50"
+  out.putStrLn "Canonical trace 110: reached headStep50"
   out.flush
 
 theorem headEq50 :
-    hornerWithTailI 170 ratioA tailI weights50 = head50 := by
+    hornerWithTailI 172 ratioA tailI weights50 = head50 := by
   exact headGlue headEq51 headStep50
+
+theorem headStep49_conv_suffixEq9 :
+    convI headStep49_conv_suffix9 head50 = headStep49_conv_result9 := by
+  rfl
+
+theorem headStep49_conv_suffixEq8 :
+    convI headStep49_conv_suffix8 head50 = headStep49_conv_result8 := by
+  exact convBlockGlue headStep49_conv_suffixEq9 headStep49_conv_blockStep8
+
+theorem headStep49_conv_suffixEq7 :
+    convI headStep49_conv_suffix7 head50 = headStep49_conv_result7 := by
+  exact convBlockGlue headStep49_conv_suffixEq8 headStep49_conv_blockStep7
 
 theorem headStep49_conv_suffixEq6 :
     convI headStep49_conv_suffix6 head50 = headStep49_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep49_conv_suffixEq7 headStep49_conv_blockStep6
 
 theorem headStep49_conv_suffixEq5 :
     convI headStep49_conv_suffix5 head50 = headStep49_conv_result5 := by
@@ -1536,21 +2063,33 @@ theorem headStep49_conv_eq :
   exact (congrArg (fun left => convI left head50) headStep49_conv_input).trans headStep49_conv_suffixEq0
 
 theorem headStep49 :
-    (addL [ofRatI c49] (convI ratioA head50)).take 170 = head49 := by
+    (addL [ofRatI c49] (convI ratioA head50)).take 172 = head49 := by
   rw [headStep49_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 105: reached headStep49"
+  out.putStrLn "Canonical trace 111: reached headStep49"
   out.flush
 
 theorem headEq49 :
-    hornerWithTailI 170 ratioA tailI weights49 = head49 := by
+    hornerWithTailI 172 ratioA tailI weights49 = head49 := by
   exact headGlue headEq50 headStep49
+
+theorem headStep48_conv_suffixEq9 :
+    convI headStep48_conv_suffix9 head49 = headStep48_conv_result9 := by
+  rfl
+
+theorem headStep48_conv_suffixEq8 :
+    convI headStep48_conv_suffix8 head49 = headStep48_conv_result8 := by
+  exact convBlockGlue headStep48_conv_suffixEq9 headStep48_conv_blockStep8
+
+theorem headStep48_conv_suffixEq7 :
+    convI headStep48_conv_suffix7 head49 = headStep48_conv_result7 := by
+  exact convBlockGlue headStep48_conv_suffixEq8 headStep48_conv_blockStep7
 
 theorem headStep48_conv_suffixEq6 :
     convI headStep48_conv_suffix6 head49 = headStep48_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep48_conv_suffixEq7 headStep48_conv_blockStep6
 
 theorem headStep48_conv_suffixEq5 :
     convI headStep48_conv_suffix5 head49 = headStep48_conv_result5 := by
@@ -1581,21 +2120,33 @@ theorem headStep48_conv_eq :
   exact (congrArg (fun left => convI left head49) headStep48_conv_input).trans headStep48_conv_suffixEq0
 
 theorem headStep48 :
-    (addL [ofRatI c48] (convI ratioA head49)).take 170 = head48 := by
+    (addL [ofRatI c48] (convI ratioA head49)).take 172 = head48 := by
   rw [headStep48_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 106: reached headStep48"
+  out.putStrLn "Canonical trace 112: reached headStep48"
   out.flush
 
 theorem headEq48 :
-    hornerWithTailI 170 ratioA tailI weights48 = head48 := by
+    hornerWithTailI 172 ratioA tailI weights48 = head48 := by
   exact headGlue headEq49 headStep48
+
+theorem headStep47_conv_suffixEq9 :
+    convI headStep47_conv_suffix9 head48 = headStep47_conv_result9 := by
+  rfl
+
+theorem headStep47_conv_suffixEq8 :
+    convI headStep47_conv_suffix8 head48 = headStep47_conv_result8 := by
+  exact convBlockGlue headStep47_conv_suffixEq9 headStep47_conv_blockStep8
+
+theorem headStep47_conv_suffixEq7 :
+    convI headStep47_conv_suffix7 head48 = headStep47_conv_result7 := by
+  exact convBlockGlue headStep47_conv_suffixEq8 headStep47_conv_blockStep7
 
 theorem headStep47_conv_suffixEq6 :
     convI headStep47_conv_suffix6 head48 = headStep47_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep47_conv_suffixEq7 headStep47_conv_blockStep6
 
 theorem headStep47_conv_suffixEq5 :
     convI headStep47_conv_suffix5 head48 = headStep47_conv_result5 := by
@@ -1626,21 +2177,33 @@ theorem headStep47_conv_eq :
   exact (congrArg (fun left => convI left head48) headStep47_conv_input).trans headStep47_conv_suffixEq0
 
 theorem headStep47 :
-    (addL [ofRatI c47] (convI ratioA head48)).take 170 = head47 := by
+    (addL [ofRatI c47] (convI ratioA head48)).take 172 = head47 := by
   rw [headStep47_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 107: reached headStep47"
+  out.putStrLn "Canonical trace 113: reached headStep47"
   out.flush
 
 theorem headEq47 :
-    hornerWithTailI 170 ratioA tailI weights47 = head47 := by
+    hornerWithTailI 172 ratioA tailI weights47 = head47 := by
   exact headGlue headEq48 headStep47
+
+theorem headStep46_conv_suffixEq9 :
+    convI headStep46_conv_suffix9 head47 = headStep46_conv_result9 := by
+  rfl
+
+theorem headStep46_conv_suffixEq8 :
+    convI headStep46_conv_suffix8 head47 = headStep46_conv_result8 := by
+  exact convBlockGlue headStep46_conv_suffixEq9 headStep46_conv_blockStep8
+
+theorem headStep46_conv_suffixEq7 :
+    convI headStep46_conv_suffix7 head47 = headStep46_conv_result7 := by
+  exact convBlockGlue headStep46_conv_suffixEq8 headStep46_conv_blockStep7
 
 theorem headStep46_conv_suffixEq6 :
     convI headStep46_conv_suffix6 head47 = headStep46_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep46_conv_suffixEq7 headStep46_conv_blockStep6
 
 theorem headStep46_conv_suffixEq5 :
     convI headStep46_conv_suffix5 head47 = headStep46_conv_result5 := by
@@ -1671,21 +2234,33 @@ theorem headStep46_conv_eq :
   exact (congrArg (fun left => convI left head47) headStep46_conv_input).trans headStep46_conv_suffixEq0
 
 theorem headStep46 :
-    (addL [ofRatI c46] (convI ratioA head47)).take 170 = head46 := by
+    (addL [ofRatI c46] (convI ratioA head47)).take 172 = head46 := by
   rw [headStep46_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 108: reached headStep46"
+  out.putStrLn "Canonical trace 114: reached headStep46"
   out.flush
 
 theorem headEq46 :
-    hornerWithTailI 170 ratioA tailI weights46 = head46 := by
+    hornerWithTailI 172 ratioA tailI weights46 = head46 := by
   exact headGlue headEq47 headStep46
+
+theorem headStep45_conv_suffixEq9 :
+    convI headStep45_conv_suffix9 head46 = headStep45_conv_result9 := by
+  rfl
+
+theorem headStep45_conv_suffixEq8 :
+    convI headStep45_conv_suffix8 head46 = headStep45_conv_result8 := by
+  exact convBlockGlue headStep45_conv_suffixEq9 headStep45_conv_blockStep8
+
+theorem headStep45_conv_suffixEq7 :
+    convI headStep45_conv_suffix7 head46 = headStep45_conv_result7 := by
+  exact convBlockGlue headStep45_conv_suffixEq8 headStep45_conv_blockStep7
 
 theorem headStep45_conv_suffixEq6 :
     convI headStep45_conv_suffix6 head46 = headStep45_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep45_conv_suffixEq7 headStep45_conv_blockStep6
 
 theorem headStep45_conv_suffixEq5 :
     convI headStep45_conv_suffix5 head46 = headStep45_conv_result5 := by
@@ -1716,21 +2291,33 @@ theorem headStep45_conv_eq :
   exact (congrArg (fun left => convI left head46) headStep45_conv_input).trans headStep45_conv_suffixEq0
 
 theorem headStep45 :
-    (addL [ofRatI c45] (convI ratioA head46)).take 170 = head45 := by
+    (addL [ofRatI c45] (convI ratioA head46)).take 172 = head45 := by
   rw [headStep45_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 109: reached headStep45"
+  out.putStrLn "Canonical trace 115: reached headStep45"
   out.flush
 
 theorem headEq45 :
-    hornerWithTailI 170 ratioA tailI weights45 = head45 := by
+    hornerWithTailI 172 ratioA tailI weights45 = head45 := by
   exact headGlue headEq46 headStep45
+
+theorem headStep44_conv_suffixEq9 :
+    convI headStep44_conv_suffix9 head45 = headStep44_conv_result9 := by
+  rfl
+
+theorem headStep44_conv_suffixEq8 :
+    convI headStep44_conv_suffix8 head45 = headStep44_conv_result8 := by
+  exact convBlockGlue headStep44_conv_suffixEq9 headStep44_conv_blockStep8
+
+theorem headStep44_conv_suffixEq7 :
+    convI headStep44_conv_suffix7 head45 = headStep44_conv_result7 := by
+  exact convBlockGlue headStep44_conv_suffixEq8 headStep44_conv_blockStep7
 
 theorem headStep44_conv_suffixEq6 :
     convI headStep44_conv_suffix6 head45 = headStep44_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep44_conv_suffixEq7 headStep44_conv_blockStep6
 
 theorem headStep44_conv_suffixEq5 :
     convI headStep44_conv_suffix5 head45 = headStep44_conv_result5 := by
@@ -1761,21 +2348,33 @@ theorem headStep44_conv_eq :
   exact (congrArg (fun left => convI left head45) headStep44_conv_input).trans headStep44_conv_suffixEq0
 
 theorem headStep44 :
-    (addL [ofRatI c44] (convI ratioA head45)).take 170 = head44 := by
+    (addL [ofRatI c44] (convI ratioA head45)).take 172 = head44 := by
   rw [headStep44_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 110: reached headStep44"
+  out.putStrLn "Canonical trace 116: reached headStep44"
   out.flush
 
 theorem headEq44 :
-    hornerWithTailI 170 ratioA tailI weights44 = head44 := by
+    hornerWithTailI 172 ratioA tailI weights44 = head44 := by
   exact headGlue headEq45 headStep44
+
+theorem headStep43_conv_suffixEq9 :
+    convI headStep43_conv_suffix9 head44 = headStep43_conv_result9 := by
+  rfl
+
+theorem headStep43_conv_suffixEq8 :
+    convI headStep43_conv_suffix8 head44 = headStep43_conv_result8 := by
+  exact convBlockGlue headStep43_conv_suffixEq9 headStep43_conv_blockStep8
+
+theorem headStep43_conv_suffixEq7 :
+    convI headStep43_conv_suffix7 head44 = headStep43_conv_result7 := by
+  exact convBlockGlue headStep43_conv_suffixEq8 headStep43_conv_blockStep7
 
 theorem headStep43_conv_suffixEq6 :
     convI headStep43_conv_suffix6 head44 = headStep43_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep43_conv_suffixEq7 headStep43_conv_blockStep6
 
 theorem headStep43_conv_suffixEq5 :
     convI headStep43_conv_suffix5 head44 = headStep43_conv_result5 := by
@@ -1806,21 +2405,33 @@ theorem headStep43_conv_eq :
   exact (congrArg (fun left => convI left head44) headStep43_conv_input).trans headStep43_conv_suffixEq0
 
 theorem headStep43 :
-    (addL [ofRatI c43] (convI ratioA head44)).take 170 = head43 := by
+    (addL [ofRatI c43] (convI ratioA head44)).take 172 = head43 := by
   rw [headStep43_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 111: reached headStep43"
+  out.putStrLn "Canonical trace 117: reached headStep43"
   out.flush
 
 theorem headEq43 :
-    hornerWithTailI 170 ratioA tailI weights43 = head43 := by
+    hornerWithTailI 172 ratioA tailI weights43 = head43 := by
   exact headGlue headEq44 headStep43
+
+theorem headStep42_conv_suffixEq9 :
+    convI headStep42_conv_suffix9 head43 = headStep42_conv_result9 := by
+  rfl
+
+theorem headStep42_conv_suffixEq8 :
+    convI headStep42_conv_suffix8 head43 = headStep42_conv_result8 := by
+  exact convBlockGlue headStep42_conv_suffixEq9 headStep42_conv_blockStep8
+
+theorem headStep42_conv_suffixEq7 :
+    convI headStep42_conv_suffix7 head43 = headStep42_conv_result7 := by
+  exact convBlockGlue headStep42_conv_suffixEq8 headStep42_conv_blockStep7
 
 theorem headStep42_conv_suffixEq6 :
     convI headStep42_conv_suffix6 head43 = headStep42_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep42_conv_suffixEq7 headStep42_conv_blockStep6
 
 theorem headStep42_conv_suffixEq5 :
     convI headStep42_conv_suffix5 head43 = headStep42_conv_result5 := by
@@ -1851,21 +2462,33 @@ theorem headStep42_conv_eq :
   exact (congrArg (fun left => convI left head43) headStep42_conv_input).trans headStep42_conv_suffixEq0
 
 theorem headStep42 :
-    (addL [ofRatI c42] (convI ratioA head43)).take 170 = head42 := by
+    (addL [ofRatI c42] (convI ratioA head43)).take 172 = head42 := by
   rw [headStep42_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 112: reached headStep42"
+  out.putStrLn "Canonical trace 118: reached headStep42"
   out.flush
 
 theorem headEq42 :
-    hornerWithTailI 170 ratioA tailI weights42 = head42 := by
+    hornerWithTailI 172 ratioA tailI weights42 = head42 := by
   exact headGlue headEq43 headStep42
+
+theorem headStep41_conv_suffixEq9 :
+    convI headStep41_conv_suffix9 head42 = headStep41_conv_result9 := by
+  rfl
+
+theorem headStep41_conv_suffixEq8 :
+    convI headStep41_conv_suffix8 head42 = headStep41_conv_result8 := by
+  exact convBlockGlue headStep41_conv_suffixEq9 headStep41_conv_blockStep8
+
+theorem headStep41_conv_suffixEq7 :
+    convI headStep41_conv_suffix7 head42 = headStep41_conv_result7 := by
+  exact convBlockGlue headStep41_conv_suffixEq8 headStep41_conv_blockStep7
 
 theorem headStep41_conv_suffixEq6 :
     convI headStep41_conv_suffix6 head42 = headStep41_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep41_conv_suffixEq7 headStep41_conv_blockStep6
 
 theorem headStep41_conv_suffixEq5 :
     convI headStep41_conv_suffix5 head42 = headStep41_conv_result5 := by
@@ -1896,21 +2519,33 @@ theorem headStep41_conv_eq :
   exact (congrArg (fun left => convI left head42) headStep41_conv_input).trans headStep41_conv_suffixEq0
 
 theorem headStep41 :
-    (addL [ofRatI c41] (convI ratioA head42)).take 170 = head41 := by
+    (addL [ofRatI c41] (convI ratioA head42)).take 172 = head41 := by
   rw [headStep41_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 113: reached headStep41"
+  out.putStrLn "Canonical trace 119: reached headStep41"
   out.flush
 
 theorem headEq41 :
-    hornerWithTailI 170 ratioA tailI weights41 = head41 := by
+    hornerWithTailI 172 ratioA tailI weights41 = head41 := by
   exact headGlue headEq42 headStep41
+
+theorem headStep40_conv_suffixEq9 :
+    convI headStep40_conv_suffix9 head41 = headStep40_conv_result9 := by
+  rfl
+
+theorem headStep40_conv_suffixEq8 :
+    convI headStep40_conv_suffix8 head41 = headStep40_conv_result8 := by
+  exact convBlockGlue headStep40_conv_suffixEq9 headStep40_conv_blockStep8
+
+theorem headStep40_conv_suffixEq7 :
+    convI headStep40_conv_suffix7 head41 = headStep40_conv_result7 := by
+  exact convBlockGlue headStep40_conv_suffixEq8 headStep40_conv_blockStep7
 
 theorem headStep40_conv_suffixEq6 :
     convI headStep40_conv_suffix6 head41 = headStep40_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep40_conv_suffixEq7 headStep40_conv_blockStep6
 
 theorem headStep40_conv_suffixEq5 :
     convI headStep40_conv_suffix5 head41 = headStep40_conv_result5 := by
@@ -1941,21 +2576,33 @@ theorem headStep40_conv_eq :
   exact (congrArg (fun left => convI left head41) headStep40_conv_input).trans headStep40_conv_suffixEq0
 
 theorem headStep40 :
-    (addL [ofRatI c40] (convI ratioA head41)).take 170 = head40 := by
+    (addL [ofRatI c40] (convI ratioA head41)).take 172 = head40 := by
   rw [headStep40_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 114: reached headStep40"
+  out.putStrLn "Canonical trace 120: reached headStep40"
   out.flush
 
 theorem headEq40 :
-    hornerWithTailI 170 ratioA tailI weights40 = head40 := by
+    hornerWithTailI 172 ratioA tailI weights40 = head40 := by
   exact headGlue headEq41 headStep40
+
+theorem headStep39_conv_suffixEq9 :
+    convI headStep39_conv_suffix9 head40 = headStep39_conv_result9 := by
+  rfl
+
+theorem headStep39_conv_suffixEq8 :
+    convI headStep39_conv_suffix8 head40 = headStep39_conv_result8 := by
+  exact convBlockGlue headStep39_conv_suffixEq9 headStep39_conv_blockStep8
+
+theorem headStep39_conv_suffixEq7 :
+    convI headStep39_conv_suffix7 head40 = headStep39_conv_result7 := by
+  exact convBlockGlue headStep39_conv_suffixEq8 headStep39_conv_blockStep7
 
 theorem headStep39_conv_suffixEq6 :
     convI headStep39_conv_suffix6 head40 = headStep39_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep39_conv_suffixEq7 headStep39_conv_blockStep6
 
 theorem headStep39_conv_suffixEq5 :
     convI headStep39_conv_suffix5 head40 = headStep39_conv_result5 := by
@@ -1986,21 +2633,33 @@ theorem headStep39_conv_eq :
   exact (congrArg (fun left => convI left head40) headStep39_conv_input).trans headStep39_conv_suffixEq0
 
 theorem headStep39 :
-    (addL [ofRatI c39] (convI ratioA head40)).take 170 = head39 := by
+    (addL [ofRatI c39] (convI ratioA head40)).take 172 = head39 := by
   rw [headStep39_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 115: reached headStep39"
+  out.putStrLn "Canonical trace 121: reached headStep39"
   out.flush
 
 theorem headEq39 :
-    hornerWithTailI 170 ratioA tailI weights39 = head39 := by
+    hornerWithTailI 172 ratioA tailI weights39 = head39 := by
   exact headGlue headEq40 headStep39
+
+theorem headStep38_conv_suffixEq9 :
+    convI headStep38_conv_suffix9 head39 = headStep38_conv_result9 := by
+  rfl
+
+theorem headStep38_conv_suffixEq8 :
+    convI headStep38_conv_suffix8 head39 = headStep38_conv_result8 := by
+  exact convBlockGlue headStep38_conv_suffixEq9 headStep38_conv_blockStep8
+
+theorem headStep38_conv_suffixEq7 :
+    convI headStep38_conv_suffix7 head39 = headStep38_conv_result7 := by
+  exact convBlockGlue headStep38_conv_suffixEq8 headStep38_conv_blockStep7
 
 theorem headStep38_conv_suffixEq6 :
     convI headStep38_conv_suffix6 head39 = headStep38_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep38_conv_suffixEq7 headStep38_conv_blockStep6
 
 theorem headStep38_conv_suffixEq5 :
     convI headStep38_conv_suffix5 head39 = headStep38_conv_result5 := by
@@ -2031,21 +2690,33 @@ theorem headStep38_conv_eq :
   exact (congrArg (fun left => convI left head39) headStep38_conv_input).trans headStep38_conv_suffixEq0
 
 theorem headStep38 :
-    (addL [ofRatI c38] (convI ratioA head39)).take 170 = head38 := by
+    (addL [ofRatI c38] (convI ratioA head39)).take 172 = head38 := by
   rw [headStep38_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 116: reached headStep38"
+  out.putStrLn "Canonical trace 122: reached headStep38"
   out.flush
 
 theorem headEq38 :
-    hornerWithTailI 170 ratioA tailI weights38 = head38 := by
+    hornerWithTailI 172 ratioA tailI weights38 = head38 := by
   exact headGlue headEq39 headStep38
+
+theorem headStep37_conv_suffixEq9 :
+    convI headStep37_conv_suffix9 head38 = headStep37_conv_result9 := by
+  rfl
+
+theorem headStep37_conv_suffixEq8 :
+    convI headStep37_conv_suffix8 head38 = headStep37_conv_result8 := by
+  exact convBlockGlue headStep37_conv_suffixEq9 headStep37_conv_blockStep8
+
+theorem headStep37_conv_suffixEq7 :
+    convI headStep37_conv_suffix7 head38 = headStep37_conv_result7 := by
+  exact convBlockGlue headStep37_conv_suffixEq8 headStep37_conv_blockStep7
 
 theorem headStep37_conv_suffixEq6 :
     convI headStep37_conv_suffix6 head38 = headStep37_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep37_conv_suffixEq7 headStep37_conv_blockStep6
 
 theorem headStep37_conv_suffixEq5 :
     convI headStep37_conv_suffix5 head38 = headStep37_conv_result5 := by
@@ -2076,21 +2747,33 @@ theorem headStep37_conv_eq :
   exact (congrArg (fun left => convI left head38) headStep37_conv_input).trans headStep37_conv_suffixEq0
 
 theorem headStep37 :
-    (addL [ofRatI c37] (convI ratioA head38)).take 170 = head37 := by
+    (addL [ofRatI c37] (convI ratioA head38)).take 172 = head37 := by
   rw [headStep37_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 117: reached headStep37"
+  out.putStrLn "Canonical trace 123: reached headStep37"
   out.flush
 
 theorem headEq37 :
-    hornerWithTailI 170 ratioA tailI weights37 = head37 := by
+    hornerWithTailI 172 ratioA tailI weights37 = head37 := by
   exact headGlue headEq38 headStep37
+
+theorem headStep36_conv_suffixEq9 :
+    convI headStep36_conv_suffix9 head37 = headStep36_conv_result9 := by
+  rfl
+
+theorem headStep36_conv_suffixEq8 :
+    convI headStep36_conv_suffix8 head37 = headStep36_conv_result8 := by
+  exact convBlockGlue headStep36_conv_suffixEq9 headStep36_conv_blockStep8
+
+theorem headStep36_conv_suffixEq7 :
+    convI headStep36_conv_suffix7 head37 = headStep36_conv_result7 := by
+  exact convBlockGlue headStep36_conv_suffixEq8 headStep36_conv_blockStep7
 
 theorem headStep36_conv_suffixEq6 :
     convI headStep36_conv_suffix6 head37 = headStep36_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep36_conv_suffixEq7 headStep36_conv_blockStep6
 
 theorem headStep36_conv_suffixEq5 :
     convI headStep36_conv_suffix5 head37 = headStep36_conv_result5 := by
@@ -2121,21 +2804,33 @@ theorem headStep36_conv_eq :
   exact (congrArg (fun left => convI left head37) headStep36_conv_input).trans headStep36_conv_suffixEq0
 
 theorem headStep36 :
-    (addL [ofRatI c36] (convI ratioA head37)).take 170 = head36 := by
+    (addL [ofRatI c36] (convI ratioA head37)).take 172 = head36 := by
   rw [headStep36_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 118: reached headStep36"
+  out.putStrLn "Canonical trace 124: reached headStep36"
   out.flush
 
 theorem headEq36 :
-    hornerWithTailI 170 ratioA tailI weights36 = head36 := by
+    hornerWithTailI 172 ratioA tailI weights36 = head36 := by
   exact headGlue headEq37 headStep36
+
+theorem headStep35_conv_suffixEq9 :
+    convI headStep35_conv_suffix9 head36 = headStep35_conv_result9 := by
+  rfl
+
+theorem headStep35_conv_suffixEq8 :
+    convI headStep35_conv_suffix8 head36 = headStep35_conv_result8 := by
+  exact convBlockGlue headStep35_conv_suffixEq9 headStep35_conv_blockStep8
+
+theorem headStep35_conv_suffixEq7 :
+    convI headStep35_conv_suffix7 head36 = headStep35_conv_result7 := by
+  exact convBlockGlue headStep35_conv_suffixEq8 headStep35_conv_blockStep7
 
 theorem headStep35_conv_suffixEq6 :
     convI headStep35_conv_suffix6 head36 = headStep35_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep35_conv_suffixEq7 headStep35_conv_blockStep6
 
 theorem headStep35_conv_suffixEq5 :
     convI headStep35_conv_suffix5 head36 = headStep35_conv_result5 := by
@@ -2166,21 +2861,33 @@ theorem headStep35_conv_eq :
   exact (congrArg (fun left => convI left head36) headStep35_conv_input).trans headStep35_conv_suffixEq0
 
 theorem headStep35 :
-    (addL [ofRatI c35] (convI ratioA head36)).take 170 = head35 := by
+    (addL [ofRatI c35] (convI ratioA head36)).take 172 = head35 := by
   rw [headStep35_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 119: reached headStep35"
+  out.putStrLn "Canonical trace 125: reached headStep35"
   out.flush
 
 theorem headEq35 :
-    hornerWithTailI 170 ratioA tailI weights35 = head35 := by
+    hornerWithTailI 172 ratioA tailI weights35 = head35 := by
   exact headGlue headEq36 headStep35
+
+theorem headStep34_conv_suffixEq9 :
+    convI headStep34_conv_suffix9 head35 = headStep34_conv_result9 := by
+  rfl
+
+theorem headStep34_conv_suffixEq8 :
+    convI headStep34_conv_suffix8 head35 = headStep34_conv_result8 := by
+  exact convBlockGlue headStep34_conv_suffixEq9 headStep34_conv_blockStep8
+
+theorem headStep34_conv_suffixEq7 :
+    convI headStep34_conv_suffix7 head35 = headStep34_conv_result7 := by
+  exact convBlockGlue headStep34_conv_suffixEq8 headStep34_conv_blockStep7
 
 theorem headStep34_conv_suffixEq6 :
     convI headStep34_conv_suffix6 head35 = headStep34_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep34_conv_suffixEq7 headStep34_conv_blockStep6
 
 theorem headStep34_conv_suffixEq5 :
     convI headStep34_conv_suffix5 head35 = headStep34_conv_result5 := by
@@ -2211,21 +2918,33 @@ theorem headStep34_conv_eq :
   exact (congrArg (fun left => convI left head35) headStep34_conv_input).trans headStep34_conv_suffixEq0
 
 theorem headStep34 :
-    (addL [ofRatI c34] (convI ratioA head35)).take 170 = head34 := by
+    (addL [ofRatI c34] (convI ratioA head35)).take 172 = head34 := by
   rw [headStep34_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 120: reached headStep34"
+  out.putStrLn "Canonical trace 126: reached headStep34"
   out.flush
 
 theorem headEq34 :
-    hornerWithTailI 170 ratioA tailI weights34 = head34 := by
+    hornerWithTailI 172 ratioA tailI weights34 = head34 := by
   exact headGlue headEq35 headStep34
+
+theorem headStep33_conv_suffixEq9 :
+    convI headStep33_conv_suffix9 head34 = headStep33_conv_result9 := by
+  rfl
+
+theorem headStep33_conv_suffixEq8 :
+    convI headStep33_conv_suffix8 head34 = headStep33_conv_result8 := by
+  exact convBlockGlue headStep33_conv_suffixEq9 headStep33_conv_blockStep8
+
+theorem headStep33_conv_suffixEq7 :
+    convI headStep33_conv_suffix7 head34 = headStep33_conv_result7 := by
+  exact convBlockGlue headStep33_conv_suffixEq8 headStep33_conv_blockStep7
 
 theorem headStep33_conv_suffixEq6 :
     convI headStep33_conv_suffix6 head34 = headStep33_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep33_conv_suffixEq7 headStep33_conv_blockStep6
 
 theorem headStep33_conv_suffixEq5 :
     convI headStep33_conv_suffix5 head34 = headStep33_conv_result5 := by
@@ -2256,21 +2975,33 @@ theorem headStep33_conv_eq :
   exact (congrArg (fun left => convI left head34) headStep33_conv_input).trans headStep33_conv_suffixEq0
 
 theorem headStep33 :
-    (addL [ofRatI c33] (convI ratioA head34)).take 170 = head33 := by
+    (addL [ofRatI c33] (convI ratioA head34)).take 172 = head33 := by
   rw [headStep33_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 121: reached headStep33"
+  out.putStrLn "Canonical trace 127: reached headStep33"
   out.flush
 
 theorem headEq33 :
-    hornerWithTailI 170 ratioA tailI weights33 = head33 := by
+    hornerWithTailI 172 ratioA tailI weights33 = head33 := by
   exact headGlue headEq34 headStep33
+
+theorem headStep32_conv_suffixEq9 :
+    convI headStep32_conv_suffix9 head33 = headStep32_conv_result9 := by
+  rfl
+
+theorem headStep32_conv_suffixEq8 :
+    convI headStep32_conv_suffix8 head33 = headStep32_conv_result8 := by
+  exact convBlockGlue headStep32_conv_suffixEq9 headStep32_conv_blockStep8
+
+theorem headStep32_conv_suffixEq7 :
+    convI headStep32_conv_suffix7 head33 = headStep32_conv_result7 := by
+  exact convBlockGlue headStep32_conv_suffixEq8 headStep32_conv_blockStep7
 
 theorem headStep32_conv_suffixEq6 :
     convI headStep32_conv_suffix6 head33 = headStep32_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep32_conv_suffixEq7 headStep32_conv_blockStep6
 
 theorem headStep32_conv_suffixEq5 :
     convI headStep32_conv_suffix5 head33 = headStep32_conv_result5 := by
@@ -2301,21 +3032,33 @@ theorem headStep32_conv_eq :
   exact (congrArg (fun left => convI left head33) headStep32_conv_input).trans headStep32_conv_suffixEq0
 
 theorem headStep32 :
-    (addL [ofRatI c32] (convI ratioA head33)).take 170 = head32 := by
+    (addL [ofRatI c32] (convI ratioA head33)).take 172 = head32 := by
   rw [headStep32_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 122: reached headStep32"
+  out.putStrLn "Canonical trace 128: reached headStep32"
   out.flush
 
 theorem headEq32 :
-    hornerWithTailI 170 ratioA tailI weights32 = head32 := by
+    hornerWithTailI 172 ratioA tailI weights32 = head32 := by
   exact headGlue headEq33 headStep32
+
+theorem headStep31_conv_suffixEq9 :
+    convI headStep31_conv_suffix9 head32 = headStep31_conv_result9 := by
+  rfl
+
+theorem headStep31_conv_suffixEq8 :
+    convI headStep31_conv_suffix8 head32 = headStep31_conv_result8 := by
+  exact convBlockGlue headStep31_conv_suffixEq9 headStep31_conv_blockStep8
+
+theorem headStep31_conv_suffixEq7 :
+    convI headStep31_conv_suffix7 head32 = headStep31_conv_result7 := by
+  exact convBlockGlue headStep31_conv_suffixEq8 headStep31_conv_blockStep7
 
 theorem headStep31_conv_suffixEq6 :
     convI headStep31_conv_suffix6 head32 = headStep31_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep31_conv_suffixEq7 headStep31_conv_blockStep6
 
 theorem headStep31_conv_suffixEq5 :
     convI headStep31_conv_suffix5 head32 = headStep31_conv_result5 := by
@@ -2346,21 +3089,33 @@ theorem headStep31_conv_eq :
   exact (congrArg (fun left => convI left head32) headStep31_conv_input).trans headStep31_conv_suffixEq0
 
 theorem headStep31 :
-    (addL [ofRatI c31] (convI ratioA head32)).take 170 = head31 := by
+    (addL [ofRatI c31] (convI ratioA head32)).take 172 = head31 := by
   rw [headStep31_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 123: reached headStep31"
+  out.putStrLn "Canonical trace 129: reached headStep31"
   out.flush
 
 theorem headEq31 :
-    hornerWithTailI 170 ratioA tailI weights31 = head31 := by
+    hornerWithTailI 172 ratioA tailI weights31 = head31 := by
   exact headGlue headEq32 headStep31
+
+theorem headStep30_conv_suffixEq9 :
+    convI headStep30_conv_suffix9 head31 = headStep30_conv_result9 := by
+  rfl
+
+theorem headStep30_conv_suffixEq8 :
+    convI headStep30_conv_suffix8 head31 = headStep30_conv_result8 := by
+  exact convBlockGlue headStep30_conv_suffixEq9 headStep30_conv_blockStep8
+
+theorem headStep30_conv_suffixEq7 :
+    convI headStep30_conv_suffix7 head31 = headStep30_conv_result7 := by
+  exact convBlockGlue headStep30_conv_suffixEq8 headStep30_conv_blockStep7
 
 theorem headStep30_conv_suffixEq6 :
     convI headStep30_conv_suffix6 head31 = headStep30_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep30_conv_suffixEq7 headStep30_conv_blockStep6
 
 theorem headStep30_conv_suffixEq5 :
     convI headStep30_conv_suffix5 head31 = headStep30_conv_result5 := by
@@ -2391,21 +3146,33 @@ theorem headStep30_conv_eq :
   exact (congrArg (fun left => convI left head31) headStep30_conv_input).trans headStep30_conv_suffixEq0
 
 theorem headStep30 :
-    (addL [ofRatI c30] (convI ratioA head31)).take 170 = head30 := by
+    (addL [ofRatI c30] (convI ratioA head31)).take 172 = head30 := by
   rw [headStep30_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 124: reached headStep30"
+  out.putStrLn "Canonical trace 130: reached headStep30"
   out.flush
 
 theorem headEq30 :
-    hornerWithTailI 170 ratioA tailI weights30 = head30 := by
+    hornerWithTailI 172 ratioA tailI weights30 = head30 := by
   exact headGlue headEq31 headStep30
+
+theorem headStep29_conv_suffixEq9 :
+    convI headStep29_conv_suffix9 head30 = headStep29_conv_result9 := by
+  rfl
+
+theorem headStep29_conv_suffixEq8 :
+    convI headStep29_conv_suffix8 head30 = headStep29_conv_result8 := by
+  exact convBlockGlue headStep29_conv_suffixEq9 headStep29_conv_blockStep8
+
+theorem headStep29_conv_suffixEq7 :
+    convI headStep29_conv_suffix7 head30 = headStep29_conv_result7 := by
+  exact convBlockGlue headStep29_conv_suffixEq8 headStep29_conv_blockStep7
 
 theorem headStep29_conv_suffixEq6 :
     convI headStep29_conv_suffix6 head30 = headStep29_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep29_conv_suffixEq7 headStep29_conv_blockStep6
 
 theorem headStep29_conv_suffixEq5 :
     convI headStep29_conv_suffix5 head30 = headStep29_conv_result5 := by
@@ -2436,21 +3203,33 @@ theorem headStep29_conv_eq :
   exact (congrArg (fun left => convI left head30) headStep29_conv_input).trans headStep29_conv_suffixEq0
 
 theorem headStep29 :
-    (addL [ofRatI c29] (convI ratioA head30)).take 170 = head29 := by
+    (addL [ofRatI c29] (convI ratioA head30)).take 172 = head29 := by
   rw [headStep29_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 125: reached headStep29"
+  out.putStrLn "Canonical trace 131: reached headStep29"
   out.flush
 
 theorem headEq29 :
-    hornerWithTailI 170 ratioA tailI weights29 = head29 := by
+    hornerWithTailI 172 ratioA tailI weights29 = head29 := by
   exact headGlue headEq30 headStep29
+
+theorem headStep28_conv_suffixEq9 :
+    convI headStep28_conv_suffix9 head29 = headStep28_conv_result9 := by
+  rfl
+
+theorem headStep28_conv_suffixEq8 :
+    convI headStep28_conv_suffix8 head29 = headStep28_conv_result8 := by
+  exact convBlockGlue headStep28_conv_suffixEq9 headStep28_conv_blockStep8
+
+theorem headStep28_conv_suffixEq7 :
+    convI headStep28_conv_suffix7 head29 = headStep28_conv_result7 := by
+  exact convBlockGlue headStep28_conv_suffixEq8 headStep28_conv_blockStep7
 
 theorem headStep28_conv_suffixEq6 :
     convI headStep28_conv_suffix6 head29 = headStep28_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep28_conv_suffixEq7 headStep28_conv_blockStep6
 
 theorem headStep28_conv_suffixEq5 :
     convI headStep28_conv_suffix5 head29 = headStep28_conv_result5 := by
@@ -2481,21 +3260,33 @@ theorem headStep28_conv_eq :
   exact (congrArg (fun left => convI left head29) headStep28_conv_input).trans headStep28_conv_suffixEq0
 
 theorem headStep28 :
-    (addL [ofRatI c28] (convI ratioA head29)).take 170 = head28 := by
+    (addL [ofRatI c28] (convI ratioA head29)).take 172 = head28 := by
   rw [headStep28_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 126: reached headStep28"
+  out.putStrLn "Canonical trace 132: reached headStep28"
   out.flush
 
 theorem headEq28 :
-    hornerWithTailI 170 ratioA tailI weights28 = head28 := by
+    hornerWithTailI 172 ratioA tailI weights28 = head28 := by
   exact headGlue headEq29 headStep28
+
+theorem headStep27_conv_suffixEq9 :
+    convI headStep27_conv_suffix9 head28 = headStep27_conv_result9 := by
+  rfl
+
+theorem headStep27_conv_suffixEq8 :
+    convI headStep27_conv_suffix8 head28 = headStep27_conv_result8 := by
+  exact convBlockGlue headStep27_conv_suffixEq9 headStep27_conv_blockStep8
+
+theorem headStep27_conv_suffixEq7 :
+    convI headStep27_conv_suffix7 head28 = headStep27_conv_result7 := by
+  exact convBlockGlue headStep27_conv_suffixEq8 headStep27_conv_blockStep7
 
 theorem headStep27_conv_suffixEq6 :
     convI headStep27_conv_suffix6 head28 = headStep27_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep27_conv_suffixEq7 headStep27_conv_blockStep6
 
 theorem headStep27_conv_suffixEq5 :
     convI headStep27_conv_suffix5 head28 = headStep27_conv_result5 := by
@@ -2526,21 +3317,33 @@ theorem headStep27_conv_eq :
   exact (congrArg (fun left => convI left head28) headStep27_conv_input).trans headStep27_conv_suffixEq0
 
 theorem headStep27 :
-    (addL [ofRatI c27] (convI ratioA head28)).take 170 = head27 := by
+    (addL [ofRatI c27] (convI ratioA head28)).take 172 = head27 := by
   rw [headStep27_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 127: reached headStep27"
+  out.putStrLn "Canonical trace 133: reached headStep27"
   out.flush
 
 theorem headEq27 :
-    hornerWithTailI 170 ratioA tailI weights27 = head27 := by
+    hornerWithTailI 172 ratioA tailI weights27 = head27 := by
   exact headGlue headEq28 headStep27
+
+theorem headStep26_conv_suffixEq9 :
+    convI headStep26_conv_suffix9 head27 = headStep26_conv_result9 := by
+  rfl
+
+theorem headStep26_conv_suffixEq8 :
+    convI headStep26_conv_suffix8 head27 = headStep26_conv_result8 := by
+  exact convBlockGlue headStep26_conv_suffixEq9 headStep26_conv_blockStep8
+
+theorem headStep26_conv_suffixEq7 :
+    convI headStep26_conv_suffix7 head27 = headStep26_conv_result7 := by
+  exact convBlockGlue headStep26_conv_suffixEq8 headStep26_conv_blockStep7
 
 theorem headStep26_conv_suffixEq6 :
     convI headStep26_conv_suffix6 head27 = headStep26_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep26_conv_suffixEq7 headStep26_conv_blockStep6
 
 theorem headStep26_conv_suffixEq5 :
     convI headStep26_conv_suffix5 head27 = headStep26_conv_result5 := by
@@ -2571,21 +3374,33 @@ theorem headStep26_conv_eq :
   exact (congrArg (fun left => convI left head27) headStep26_conv_input).trans headStep26_conv_suffixEq0
 
 theorem headStep26 :
-    (addL [ofRatI c26] (convI ratioA head27)).take 170 = head26 := by
+    (addL [ofRatI c26] (convI ratioA head27)).take 172 = head26 := by
   rw [headStep26_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 128: reached headStep26"
+  out.putStrLn "Canonical trace 134: reached headStep26"
   out.flush
 
 theorem headEq26 :
-    hornerWithTailI 170 ratioA tailI weights26 = head26 := by
+    hornerWithTailI 172 ratioA tailI weights26 = head26 := by
   exact headGlue headEq27 headStep26
+
+theorem headStep25_conv_suffixEq9 :
+    convI headStep25_conv_suffix9 head26 = headStep25_conv_result9 := by
+  rfl
+
+theorem headStep25_conv_suffixEq8 :
+    convI headStep25_conv_suffix8 head26 = headStep25_conv_result8 := by
+  exact convBlockGlue headStep25_conv_suffixEq9 headStep25_conv_blockStep8
+
+theorem headStep25_conv_suffixEq7 :
+    convI headStep25_conv_suffix7 head26 = headStep25_conv_result7 := by
+  exact convBlockGlue headStep25_conv_suffixEq8 headStep25_conv_blockStep7
 
 theorem headStep25_conv_suffixEq6 :
     convI headStep25_conv_suffix6 head26 = headStep25_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep25_conv_suffixEq7 headStep25_conv_blockStep6
 
 theorem headStep25_conv_suffixEq5 :
     convI headStep25_conv_suffix5 head26 = headStep25_conv_result5 := by
@@ -2616,21 +3431,33 @@ theorem headStep25_conv_eq :
   exact (congrArg (fun left => convI left head26) headStep25_conv_input).trans headStep25_conv_suffixEq0
 
 theorem headStep25 :
-    (addL [ofRatI c25] (convI ratioA head26)).take 170 = head25 := by
+    (addL [ofRatI c25] (convI ratioA head26)).take 172 = head25 := by
   rw [headStep25_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 129: reached headStep25"
+  out.putStrLn "Canonical trace 135: reached headStep25"
   out.flush
 
 theorem headEq25 :
-    hornerWithTailI 170 ratioA tailI weights25 = head25 := by
+    hornerWithTailI 172 ratioA tailI weights25 = head25 := by
   exact headGlue headEq26 headStep25
+
+theorem headStep24_conv_suffixEq9 :
+    convI headStep24_conv_suffix9 head25 = headStep24_conv_result9 := by
+  rfl
+
+theorem headStep24_conv_suffixEq8 :
+    convI headStep24_conv_suffix8 head25 = headStep24_conv_result8 := by
+  exact convBlockGlue headStep24_conv_suffixEq9 headStep24_conv_blockStep8
+
+theorem headStep24_conv_suffixEq7 :
+    convI headStep24_conv_suffix7 head25 = headStep24_conv_result7 := by
+  exact convBlockGlue headStep24_conv_suffixEq8 headStep24_conv_blockStep7
 
 theorem headStep24_conv_suffixEq6 :
     convI headStep24_conv_suffix6 head25 = headStep24_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep24_conv_suffixEq7 headStep24_conv_blockStep6
 
 theorem headStep24_conv_suffixEq5 :
     convI headStep24_conv_suffix5 head25 = headStep24_conv_result5 := by
@@ -2661,21 +3488,33 @@ theorem headStep24_conv_eq :
   exact (congrArg (fun left => convI left head25) headStep24_conv_input).trans headStep24_conv_suffixEq0
 
 theorem headStep24 :
-    (addL [ofRatI c24] (convI ratioA head25)).take 170 = head24 := by
+    (addL [ofRatI c24] (convI ratioA head25)).take 172 = head24 := by
   rw [headStep24_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 130: reached headStep24"
+  out.putStrLn "Canonical trace 136: reached headStep24"
   out.flush
 
 theorem headEq24 :
-    hornerWithTailI 170 ratioA tailI weights24 = head24 := by
+    hornerWithTailI 172 ratioA tailI weights24 = head24 := by
   exact headGlue headEq25 headStep24
+
+theorem headStep23_conv_suffixEq9 :
+    convI headStep23_conv_suffix9 head24 = headStep23_conv_result9 := by
+  rfl
+
+theorem headStep23_conv_suffixEq8 :
+    convI headStep23_conv_suffix8 head24 = headStep23_conv_result8 := by
+  exact convBlockGlue headStep23_conv_suffixEq9 headStep23_conv_blockStep8
+
+theorem headStep23_conv_suffixEq7 :
+    convI headStep23_conv_suffix7 head24 = headStep23_conv_result7 := by
+  exact convBlockGlue headStep23_conv_suffixEq8 headStep23_conv_blockStep7
 
 theorem headStep23_conv_suffixEq6 :
     convI headStep23_conv_suffix6 head24 = headStep23_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep23_conv_suffixEq7 headStep23_conv_blockStep6
 
 theorem headStep23_conv_suffixEq5 :
     convI headStep23_conv_suffix5 head24 = headStep23_conv_result5 := by
@@ -2706,21 +3545,33 @@ theorem headStep23_conv_eq :
   exact (congrArg (fun left => convI left head24) headStep23_conv_input).trans headStep23_conv_suffixEq0
 
 theorem headStep23 :
-    (addL [ofRatI c23] (convI ratioA head24)).take 170 = head23 := by
+    (addL [ofRatI c23] (convI ratioA head24)).take 172 = head23 := by
   rw [headStep23_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 131: reached headStep23"
+  out.putStrLn "Canonical trace 137: reached headStep23"
   out.flush
 
 theorem headEq23 :
-    hornerWithTailI 170 ratioA tailI weights23 = head23 := by
+    hornerWithTailI 172 ratioA tailI weights23 = head23 := by
   exact headGlue headEq24 headStep23
+
+theorem headStep22_conv_suffixEq9 :
+    convI headStep22_conv_suffix9 head23 = headStep22_conv_result9 := by
+  rfl
+
+theorem headStep22_conv_suffixEq8 :
+    convI headStep22_conv_suffix8 head23 = headStep22_conv_result8 := by
+  exact convBlockGlue headStep22_conv_suffixEq9 headStep22_conv_blockStep8
+
+theorem headStep22_conv_suffixEq7 :
+    convI headStep22_conv_suffix7 head23 = headStep22_conv_result7 := by
+  exact convBlockGlue headStep22_conv_suffixEq8 headStep22_conv_blockStep7
 
 theorem headStep22_conv_suffixEq6 :
     convI headStep22_conv_suffix6 head23 = headStep22_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep22_conv_suffixEq7 headStep22_conv_blockStep6
 
 theorem headStep22_conv_suffixEq5 :
     convI headStep22_conv_suffix5 head23 = headStep22_conv_result5 := by
@@ -2751,21 +3602,33 @@ theorem headStep22_conv_eq :
   exact (congrArg (fun left => convI left head23) headStep22_conv_input).trans headStep22_conv_suffixEq0
 
 theorem headStep22 :
-    (addL [ofRatI c22] (convI ratioA head23)).take 170 = head22 := by
+    (addL [ofRatI c22] (convI ratioA head23)).take 172 = head22 := by
   rw [headStep22_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 132: reached headStep22"
+  out.putStrLn "Canonical trace 138: reached headStep22"
   out.flush
 
 theorem headEq22 :
-    hornerWithTailI 170 ratioA tailI weights22 = head22 := by
+    hornerWithTailI 172 ratioA tailI weights22 = head22 := by
   exact headGlue headEq23 headStep22
+
+theorem headStep21_conv_suffixEq9 :
+    convI headStep21_conv_suffix9 head22 = headStep21_conv_result9 := by
+  rfl
+
+theorem headStep21_conv_suffixEq8 :
+    convI headStep21_conv_suffix8 head22 = headStep21_conv_result8 := by
+  exact convBlockGlue headStep21_conv_suffixEq9 headStep21_conv_blockStep8
+
+theorem headStep21_conv_suffixEq7 :
+    convI headStep21_conv_suffix7 head22 = headStep21_conv_result7 := by
+  exact convBlockGlue headStep21_conv_suffixEq8 headStep21_conv_blockStep7
 
 theorem headStep21_conv_suffixEq6 :
     convI headStep21_conv_suffix6 head22 = headStep21_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep21_conv_suffixEq7 headStep21_conv_blockStep6
 
 theorem headStep21_conv_suffixEq5 :
     convI headStep21_conv_suffix5 head22 = headStep21_conv_result5 := by
@@ -2796,21 +3659,33 @@ theorem headStep21_conv_eq :
   exact (congrArg (fun left => convI left head22) headStep21_conv_input).trans headStep21_conv_suffixEq0
 
 theorem headStep21 :
-    (addL [ofRatI c21] (convI ratioA head22)).take 170 = head21 := by
+    (addL [ofRatI c21] (convI ratioA head22)).take 172 = head21 := by
   rw [headStep21_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 133: reached headStep21"
+  out.putStrLn "Canonical trace 139: reached headStep21"
   out.flush
 
 theorem headEq21 :
-    hornerWithTailI 170 ratioA tailI weights21 = head21 := by
+    hornerWithTailI 172 ratioA tailI weights21 = head21 := by
   exact headGlue headEq22 headStep21
+
+theorem headStep20_conv_suffixEq9 :
+    convI headStep20_conv_suffix9 head21 = headStep20_conv_result9 := by
+  rfl
+
+theorem headStep20_conv_suffixEq8 :
+    convI headStep20_conv_suffix8 head21 = headStep20_conv_result8 := by
+  exact convBlockGlue headStep20_conv_suffixEq9 headStep20_conv_blockStep8
+
+theorem headStep20_conv_suffixEq7 :
+    convI headStep20_conv_suffix7 head21 = headStep20_conv_result7 := by
+  exact convBlockGlue headStep20_conv_suffixEq8 headStep20_conv_blockStep7
 
 theorem headStep20_conv_suffixEq6 :
     convI headStep20_conv_suffix6 head21 = headStep20_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep20_conv_suffixEq7 headStep20_conv_blockStep6
 
 theorem headStep20_conv_suffixEq5 :
     convI headStep20_conv_suffix5 head21 = headStep20_conv_result5 := by
@@ -2841,21 +3716,33 @@ theorem headStep20_conv_eq :
   exact (congrArg (fun left => convI left head21) headStep20_conv_input).trans headStep20_conv_suffixEq0
 
 theorem headStep20 :
-    (addL [ofRatI c20] (convI ratioA head21)).take 170 = head20 := by
+    (addL [ofRatI c20] (convI ratioA head21)).take 172 = head20 := by
   rw [headStep20_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 134: reached headStep20"
+  out.putStrLn "Canonical trace 140: reached headStep20"
   out.flush
 
 theorem headEq20 :
-    hornerWithTailI 170 ratioA tailI weights20 = head20 := by
+    hornerWithTailI 172 ratioA tailI weights20 = head20 := by
   exact headGlue headEq21 headStep20
+
+theorem headStep19_conv_suffixEq9 :
+    convI headStep19_conv_suffix9 head20 = headStep19_conv_result9 := by
+  rfl
+
+theorem headStep19_conv_suffixEq8 :
+    convI headStep19_conv_suffix8 head20 = headStep19_conv_result8 := by
+  exact convBlockGlue headStep19_conv_suffixEq9 headStep19_conv_blockStep8
+
+theorem headStep19_conv_suffixEq7 :
+    convI headStep19_conv_suffix7 head20 = headStep19_conv_result7 := by
+  exact convBlockGlue headStep19_conv_suffixEq8 headStep19_conv_blockStep7
 
 theorem headStep19_conv_suffixEq6 :
     convI headStep19_conv_suffix6 head20 = headStep19_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep19_conv_suffixEq7 headStep19_conv_blockStep6
 
 theorem headStep19_conv_suffixEq5 :
     convI headStep19_conv_suffix5 head20 = headStep19_conv_result5 := by
@@ -2886,21 +3773,33 @@ theorem headStep19_conv_eq :
   exact (congrArg (fun left => convI left head20) headStep19_conv_input).trans headStep19_conv_suffixEq0
 
 theorem headStep19 :
-    (addL [ofRatI c19] (convI ratioA head20)).take 170 = head19 := by
+    (addL [ofRatI c19] (convI ratioA head20)).take 172 = head19 := by
   rw [headStep19_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 135: reached headStep19"
+  out.putStrLn "Canonical trace 141: reached headStep19"
   out.flush
 
 theorem headEq19 :
-    hornerWithTailI 170 ratioA tailI weights19 = head19 := by
+    hornerWithTailI 172 ratioA tailI weights19 = head19 := by
   exact headGlue headEq20 headStep19
+
+theorem headStep18_conv_suffixEq9 :
+    convI headStep18_conv_suffix9 head19 = headStep18_conv_result9 := by
+  rfl
+
+theorem headStep18_conv_suffixEq8 :
+    convI headStep18_conv_suffix8 head19 = headStep18_conv_result8 := by
+  exact convBlockGlue headStep18_conv_suffixEq9 headStep18_conv_blockStep8
+
+theorem headStep18_conv_suffixEq7 :
+    convI headStep18_conv_suffix7 head19 = headStep18_conv_result7 := by
+  exact convBlockGlue headStep18_conv_suffixEq8 headStep18_conv_blockStep7
 
 theorem headStep18_conv_suffixEq6 :
     convI headStep18_conv_suffix6 head19 = headStep18_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep18_conv_suffixEq7 headStep18_conv_blockStep6
 
 theorem headStep18_conv_suffixEq5 :
     convI headStep18_conv_suffix5 head19 = headStep18_conv_result5 := by
@@ -2931,21 +3830,33 @@ theorem headStep18_conv_eq :
   exact (congrArg (fun left => convI left head19) headStep18_conv_input).trans headStep18_conv_suffixEq0
 
 theorem headStep18 :
-    (addL [ofRatI c18] (convI ratioA head19)).take 170 = head18 := by
+    (addL [ofRatI c18] (convI ratioA head19)).take 172 = head18 := by
   rw [headStep18_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 136: reached headStep18"
+  out.putStrLn "Canonical trace 142: reached headStep18"
   out.flush
 
 theorem headEq18 :
-    hornerWithTailI 170 ratioA tailI weights18 = head18 := by
+    hornerWithTailI 172 ratioA tailI weights18 = head18 := by
   exact headGlue headEq19 headStep18
+
+theorem headStep17_conv_suffixEq9 :
+    convI headStep17_conv_suffix9 head18 = headStep17_conv_result9 := by
+  rfl
+
+theorem headStep17_conv_suffixEq8 :
+    convI headStep17_conv_suffix8 head18 = headStep17_conv_result8 := by
+  exact convBlockGlue headStep17_conv_suffixEq9 headStep17_conv_blockStep8
+
+theorem headStep17_conv_suffixEq7 :
+    convI headStep17_conv_suffix7 head18 = headStep17_conv_result7 := by
+  exact convBlockGlue headStep17_conv_suffixEq8 headStep17_conv_blockStep7
 
 theorem headStep17_conv_suffixEq6 :
     convI headStep17_conv_suffix6 head18 = headStep17_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep17_conv_suffixEq7 headStep17_conv_blockStep6
 
 theorem headStep17_conv_suffixEq5 :
     convI headStep17_conv_suffix5 head18 = headStep17_conv_result5 := by
@@ -2976,21 +3887,33 @@ theorem headStep17_conv_eq :
   exact (congrArg (fun left => convI left head18) headStep17_conv_input).trans headStep17_conv_suffixEq0
 
 theorem headStep17 :
-    (addL [ofRatI c17] (convI ratioA head18)).take 170 = head17 := by
+    (addL [ofRatI c17] (convI ratioA head18)).take 172 = head17 := by
   rw [headStep17_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 137: reached headStep17"
+  out.putStrLn "Canonical trace 143: reached headStep17"
   out.flush
 
 theorem headEq17 :
-    hornerWithTailI 170 ratioA tailI weights17 = head17 := by
+    hornerWithTailI 172 ratioA tailI weights17 = head17 := by
   exact headGlue headEq18 headStep17
+
+theorem headStep16_conv_suffixEq9 :
+    convI headStep16_conv_suffix9 head17 = headStep16_conv_result9 := by
+  rfl
+
+theorem headStep16_conv_suffixEq8 :
+    convI headStep16_conv_suffix8 head17 = headStep16_conv_result8 := by
+  exact convBlockGlue headStep16_conv_suffixEq9 headStep16_conv_blockStep8
+
+theorem headStep16_conv_suffixEq7 :
+    convI headStep16_conv_suffix7 head17 = headStep16_conv_result7 := by
+  exact convBlockGlue headStep16_conv_suffixEq8 headStep16_conv_blockStep7
 
 theorem headStep16_conv_suffixEq6 :
     convI headStep16_conv_suffix6 head17 = headStep16_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep16_conv_suffixEq7 headStep16_conv_blockStep6
 
 theorem headStep16_conv_suffixEq5 :
     convI headStep16_conv_suffix5 head17 = headStep16_conv_result5 := by
@@ -3021,21 +3944,33 @@ theorem headStep16_conv_eq :
   exact (congrArg (fun left => convI left head17) headStep16_conv_input).trans headStep16_conv_suffixEq0
 
 theorem headStep16 :
-    (addL [ofRatI c16] (convI ratioA head17)).take 170 = head16 := by
+    (addL [ofRatI c16] (convI ratioA head17)).take 172 = head16 := by
   rw [headStep16_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 138: reached headStep16"
+  out.putStrLn "Canonical trace 144: reached headStep16"
   out.flush
 
 theorem headEq16 :
-    hornerWithTailI 170 ratioA tailI weights16 = head16 := by
+    hornerWithTailI 172 ratioA tailI weights16 = head16 := by
   exact headGlue headEq17 headStep16
+
+theorem headStep15_conv_suffixEq9 :
+    convI headStep15_conv_suffix9 head16 = headStep15_conv_result9 := by
+  rfl
+
+theorem headStep15_conv_suffixEq8 :
+    convI headStep15_conv_suffix8 head16 = headStep15_conv_result8 := by
+  exact convBlockGlue headStep15_conv_suffixEq9 headStep15_conv_blockStep8
+
+theorem headStep15_conv_suffixEq7 :
+    convI headStep15_conv_suffix7 head16 = headStep15_conv_result7 := by
+  exact convBlockGlue headStep15_conv_suffixEq8 headStep15_conv_blockStep7
 
 theorem headStep15_conv_suffixEq6 :
     convI headStep15_conv_suffix6 head16 = headStep15_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep15_conv_suffixEq7 headStep15_conv_blockStep6
 
 theorem headStep15_conv_suffixEq5 :
     convI headStep15_conv_suffix5 head16 = headStep15_conv_result5 := by
@@ -3066,21 +4001,33 @@ theorem headStep15_conv_eq :
   exact (congrArg (fun left => convI left head16) headStep15_conv_input).trans headStep15_conv_suffixEq0
 
 theorem headStep15 :
-    (addL [ofRatI c15] (convI ratioA head16)).take 170 = head15 := by
+    (addL [ofRatI c15] (convI ratioA head16)).take 172 = head15 := by
   rw [headStep15_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 139: reached headStep15"
+  out.putStrLn "Canonical trace 145: reached headStep15"
   out.flush
 
 theorem headEq15 :
-    hornerWithTailI 170 ratioA tailI weights15 = head15 := by
+    hornerWithTailI 172 ratioA tailI weights15 = head15 := by
   exact headGlue headEq16 headStep15
+
+theorem headStep14_conv_suffixEq9 :
+    convI headStep14_conv_suffix9 head15 = headStep14_conv_result9 := by
+  rfl
+
+theorem headStep14_conv_suffixEq8 :
+    convI headStep14_conv_suffix8 head15 = headStep14_conv_result8 := by
+  exact convBlockGlue headStep14_conv_suffixEq9 headStep14_conv_blockStep8
+
+theorem headStep14_conv_suffixEq7 :
+    convI headStep14_conv_suffix7 head15 = headStep14_conv_result7 := by
+  exact convBlockGlue headStep14_conv_suffixEq8 headStep14_conv_blockStep7
 
 theorem headStep14_conv_suffixEq6 :
     convI headStep14_conv_suffix6 head15 = headStep14_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep14_conv_suffixEq7 headStep14_conv_blockStep6
 
 theorem headStep14_conv_suffixEq5 :
     convI headStep14_conv_suffix5 head15 = headStep14_conv_result5 := by
@@ -3111,21 +4058,33 @@ theorem headStep14_conv_eq :
   exact (congrArg (fun left => convI left head15) headStep14_conv_input).trans headStep14_conv_suffixEq0
 
 theorem headStep14 :
-    (addL [ofRatI c14] (convI ratioA head15)).take 170 = head14 := by
+    (addL [ofRatI c14] (convI ratioA head15)).take 172 = head14 := by
   rw [headStep14_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 140: reached headStep14"
+  out.putStrLn "Canonical trace 146: reached headStep14"
   out.flush
 
 theorem headEq14 :
-    hornerWithTailI 170 ratioA tailI weights14 = head14 := by
+    hornerWithTailI 172 ratioA tailI weights14 = head14 := by
   exact headGlue headEq15 headStep14
+
+theorem headStep13_conv_suffixEq9 :
+    convI headStep13_conv_suffix9 head14 = headStep13_conv_result9 := by
+  rfl
+
+theorem headStep13_conv_suffixEq8 :
+    convI headStep13_conv_suffix8 head14 = headStep13_conv_result8 := by
+  exact convBlockGlue headStep13_conv_suffixEq9 headStep13_conv_blockStep8
+
+theorem headStep13_conv_suffixEq7 :
+    convI headStep13_conv_suffix7 head14 = headStep13_conv_result7 := by
+  exact convBlockGlue headStep13_conv_suffixEq8 headStep13_conv_blockStep7
 
 theorem headStep13_conv_suffixEq6 :
     convI headStep13_conv_suffix6 head14 = headStep13_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep13_conv_suffixEq7 headStep13_conv_blockStep6
 
 theorem headStep13_conv_suffixEq5 :
     convI headStep13_conv_suffix5 head14 = headStep13_conv_result5 := by
@@ -3156,21 +4115,33 @@ theorem headStep13_conv_eq :
   exact (congrArg (fun left => convI left head14) headStep13_conv_input).trans headStep13_conv_suffixEq0
 
 theorem headStep13 :
-    (addL [ofRatI c13] (convI ratioA head14)).take 170 = head13 := by
+    (addL [ofRatI c13] (convI ratioA head14)).take 172 = head13 := by
   rw [headStep13_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 141: reached headStep13"
+  out.putStrLn "Canonical trace 147: reached headStep13"
   out.flush
 
 theorem headEq13 :
-    hornerWithTailI 170 ratioA tailI weights13 = head13 := by
+    hornerWithTailI 172 ratioA tailI weights13 = head13 := by
   exact headGlue headEq14 headStep13
+
+theorem headStep12_conv_suffixEq9 :
+    convI headStep12_conv_suffix9 head13 = headStep12_conv_result9 := by
+  rfl
+
+theorem headStep12_conv_suffixEq8 :
+    convI headStep12_conv_suffix8 head13 = headStep12_conv_result8 := by
+  exact convBlockGlue headStep12_conv_suffixEq9 headStep12_conv_blockStep8
+
+theorem headStep12_conv_suffixEq7 :
+    convI headStep12_conv_suffix7 head13 = headStep12_conv_result7 := by
+  exact convBlockGlue headStep12_conv_suffixEq8 headStep12_conv_blockStep7
 
 theorem headStep12_conv_suffixEq6 :
     convI headStep12_conv_suffix6 head13 = headStep12_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep12_conv_suffixEq7 headStep12_conv_blockStep6
 
 theorem headStep12_conv_suffixEq5 :
     convI headStep12_conv_suffix5 head13 = headStep12_conv_result5 := by
@@ -3201,21 +4172,33 @@ theorem headStep12_conv_eq :
   exact (congrArg (fun left => convI left head13) headStep12_conv_input).trans headStep12_conv_suffixEq0
 
 theorem headStep12 :
-    (addL [ofRatI c12] (convI ratioA head13)).take 170 = head12 := by
+    (addL [ofRatI c12] (convI ratioA head13)).take 172 = head12 := by
   rw [headStep12_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 142: reached headStep12"
+  out.putStrLn "Canonical trace 148: reached headStep12"
   out.flush
 
 theorem headEq12 :
-    hornerWithTailI 170 ratioA tailI weights12 = head12 := by
+    hornerWithTailI 172 ratioA tailI weights12 = head12 := by
   exact headGlue headEq13 headStep12
+
+theorem headStep11_conv_suffixEq9 :
+    convI headStep11_conv_suffix9 head12 = headStep11_conv_result9 := by
+  rfl
+
+theorem headStep11_conv_suffixEq8 :
+    convI headStep11_conv_suffix8 head12 = headStep11_conv_result8 := by
+  exact convBlockGlue headStep11_conv_suffixEq9 headStep11_conv_blockStep8
+
+theorem headStep11_conv_suffixEq7 :
+    convI headStep11_conv_suffix7 head12 = headStep11_conv_result7 := by
+  exact convBlockGlue headStep11_conv_suffixEq8 headStep11_conv_blockStep7
 
 theorem headStep11_conv_suffixEq6 :
     convI headStep11_conv_suffix6 head12 = headStep11_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep11_conv_suffixEq7 headStep11_conv_blockStep6
 
 theorem headStep11_conv_suffixEq5 :
     convI headStep11_conv_suffix5 head12 = headStep11_conv_result5 := by
@@ -3246,21 +4229,33 @@ theorem headStep11_conv_eq :
   exact (congrArg (fun left => convI left head12) headStep11_conv_input).trans headStep11_conv_suffixEq0
 
 theorem headStep11 :
-    (addL [ofRatI c11] (convI ratioA head12)).take 170 = head11 := by
+    (addL [ofRatI c11] (convI ratioA head12)).take 172 = head11 := by
   rw [headStep11_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 143: reached headStep11"
+  out.putStrLn "Canonical trace 149: reached headStep11"
   out.flush
 
 theorem headEq11 :
-    hornerWithTailI 170 ratioA tailI weights11 = head11 := by
+    hornerWithTailI 172 ratioA tailI weights11 = head11 := by
   exact headGlue headEq12 headStep11
+
+theorem headStep10_conv_suffixEq9 :
+    convI headStep10_conv_suffix9 head11 = headStep10_conv_result9 := by
+  rfl
+
+theorem headStep10_conv_suffixEq8 :
+    convI headStep10_conv_suffix8 head11 = headStep10_conv_result8 := by
+  exact convBlockGlue headStep10_conv_suffixEq9 headStep10_conv_blockStep8
+
+theorem headStep10_conv_suffixEq7 :
+    convI headStep10_conv_suffix7 head11 = headStep10_conv_result7 := by
+  exact convBlockGlue headStep10_conv_suffixEq8 headStep10_conv_blockStep7
 
 theorem headStep10_conv_suffixEq6 :
     convI headStep10_conv_suffix6 head11 = headStep10_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep10_conv_suffixEq7 headStep10_conv_blockStep6
 
 theorem headStep10_conv_suffixEq5 :
     convI headStep10_conv_suffix5 head11 = headStep10_conv_result5 := by
@@ -3291,21 +4286,33 @@ theorem headStep10_conv_eq :
   exact (congrArg (fun left => convI left head11) headStep10_conv_input).trans headStep10_conv_suffixEq0
 
 theorem headStep10 :
-    (addL [ofRatI c10] (convI ratioA head11)).take 170 = head10 := by
+    (addL [ofRatI c10] (convI ratioA head11)).take 172 = head10 := by
   rw [headStep10_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 144: reached headStep10"
+  out.putStrLn "Canonical trace 150: reached headStep10"
   out.flush
 
 theorem headEq10 :
-    hornerWithTailI 170 ratioA tailI weights10 = head10 := by
+    hornerWithTailI 172 ratioA tailI weights10 = head10 := by
   exact headGlue headEq11 headStep10
+
+theorem headStep9_conv_suffixEq9 :
+    convI headStep9_conv_suffix9 head10 = headStep9_conv_result9 := by
+  rfl
+
+theorem headStep9_conv_suffixEq8 :
+    convI headStep9_conv_suffix8 head10 = headStep9_conv_result8 := by
+  exact convBlockGlue headStep9_conv_suffixEq9 headStep9_conv_blockStep8
+
+theorem headStep9_conv_suffixEq7 :
+    convI headStep9_conv_suffix7 head10 = headStep9_conv_result7 := by
+  exact convBlockGlue headStep9_conv_suffixEq8 headStep9_conv_blockStep7
 
 theorem headStep9_conv_suffixEq6 :
     convI headStep9_conv_suffix6 head10 = headStep9_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep9_conv_suffixEq7 headStep9_conv_blockStep6
 
 theorem headStep9_conv_suffixEq5 :
     convI headStep9_conv_suffix5 head10 = headStep9_conv_result5 := by
@@ -3336,21 +4343,33 @@ theorem headStep9_conv_eq :
   exact (congrArg (fun left => convI left head10) headStep9_conv_input).trans headStep9_conv_suffixEq0
 
 theorem headStep9 :
-    (addL [ofRatI c9] (convI ratioA head10)).take 170 = head9 := by
+    (addL [ofRatI c9] (convI ratioA head10)).take 172 = head9 := by
   rw [headStep9_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 145: reached headStep9"
+  out.putStrLn "Canonical trace 151: reached headStep9"
   out.flush
 
 theorem headEq9 :
-    hornerWithTailI 170 ratioA tailI weights9 = head9 := by
+    hornerWithTailI 172 ratioA tailI weights9 = head9 := by
   exact headGlue headEq10 headStep9
+
+theorem headStep8_conv_suffixEq9 :
+    convI headStep8_conv_suffix9 head9 = headStep8_conv_result9 := by
+  rfl
+
+theorem headStep8_conv_suffixEq8 :
+    convI headStep8_conv_suffix8 head9 = headStep8_conv_result8 := by
+  exact convBlockGlue headStep8_conv_suffixEq9 headStep8_conv_blockStep8
+
+theorem headStep8_conv_suffixEq7 :
+    convI headStep8_conv_suffix7 head9 = headStep8_conv_result7 := by
+  exact convBlockGlue headStep8_conv_suffixEq8 headStep8_conv_blockStep7
 
 theorem headStep8_conv_suffixEq6 :
     convI headStep8_conv_suffix6 head9 = headStep8_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep8_conv_suffixEq7 headStep8_conv_blockStep6
 
 theorem headStep8_conv_suffixEq5 :
     convI headStep8_conv_suffix5 head9 = headStep8_conv_result5 := by
@@ -3381,21 +4400,33 @@ theorem headStep8_conv_eq :
   exact (congrArg (fun left => convI left head9) headStep8_conv_input).trans headStep8_conv_suffixEq0
 
 theorem headStep8 :
-    (addL [ofRatI c8] (convI ratioA head9)).take 170 = head8 := by
+    (addL [ofRatI c8] (convI ratioA head9)).take 172 = head8 := by
   rw [headStep8_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 146: reached headStep8"
+  out.putStrLn "Canonical trace 152: reached headStep8"
   out.flush
 
 theorem headEq8 :
-    hornerWithTailI 170 ratioA tailI weights8 = head8 := by
+    hornerWithTailI 172 ratioA tailI weights8 = head8 := by
   exact headGlue headEq9 headStep8
+
+theorem headStep7_conv_suffixEq9 :
+    convI headStep7_conv_suffix9 head8 = headStep7_conv_result9 := by
+  rfl
+
+theorem headStep7_conv_suffixEq8 :
+    convI headStep7_conv_suffix8 head8 = headStep7_conv_result8 := by
+  exact convBlockGlue headStep7_conv_suffixEq9 headStep7_conv_blockStep8
+
+theorem headStep7_conv_suffixEq7 :
+    convI headStep7_conv_suffix7 head8 = headStep7_conv_result7 := by
+  exact convBlockGlue headStep7_conv_suffixEq8 headStep7_conv_blockStep7
 
 theorem headStep7_conv_suffixEq6 :
     convI headStep7_conv_suffix6 head8 = headStep7_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep7_conv_suffixEq7 headStep7_conv_blockStep6
 
 theorem headStep7_conv_suffixEq5 :
     convI headStep7_conv_suffix5 head8 = headStep7_conv_result5 := by
@@ -3426,21 +4457,33 @@ theorem headStep7_conv_eq :
   exact (congrArg (fun left => convI left head8) headStep7_conv_input).trans headStep7_conv_suffixEq0
 
 theorem headStep7 :
-    (addL [ofRatI c7] (convI ratioA head8)).take 170 = head7 := by
+    (addL [ofRatI c7] (convI ratioA head8)).take 172 = head7 := by
   rw [headStep7_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 147: reached headStep7"
+  out.putStrLn "Canonical trace 153: reached headStep7"
   out.flush
 
 theorem headEq7 :
-    hornerWithTailI 170 ratioA tailI weights7 = head7 := by
+    hornerWithTailI 172 ratioA tailI weights7 = head7 := by
   exact headGlue headEq8 headStep7
+
+theorem headStep6_conv_suffixEq9 :
+    convI headStep6_conv_suffix9 head7 = headStep6_conv_result9 := by
+  rfl
+
+theorem headStep6_conv_suffixEq8 :
+    convI headStep6_conv_suffix8 head7 = headStep6_conv_result8 := by
+  exact convBlockGlue headStep6_conv_suffixEq9 headStep6_conv_blockStep8
+
+theorem headStep6_conv_suffixEq7 :
+    convI headStep6_conv_suffix7 head7 = headStep6_conv_result7 := by
+  exact convBlockGlue headStep6_conv_suffixEq8 headStep6_conv_blockStep7
 
 theorem headStep6_conv_suffixEq6 :
     convI headStep6_conv_suffix6 head7 = headStep6_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep6_conv_suffixEq7 headStep6_conv_blockStep6
 
 theorem headStep6_conv_suffixEq5 :
     convI headStep6_conv_suffix5 head7 = headStep6_conv_result5 := by
@@ -3471,21 +4514,33 @@ theorem headStep6_conv_eq :
   exact (congrArg (fun left => convI left head7) headStep6_conv_input).trans headStep6_conv_suffixEq0
 
 theorem headStep6 :
-    (addL [ofRatI c6] (convI ratioA head7)).take 170 = head6 := by
+    (addL [ofRatI c6] (convI ratioA head7)).take 172 = head6 := by
   rw [headStep6_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 148: reached headStep6"
+  out.putStrLn "Canonical trace 154: reached headStep6"
   out.flush
 
 theorem headEq6 :
-    hornerWithTailI 170 ratioA tailI weights6 = head6 := by
+    hornerWithTailI 172 ratioA tailI weights6 = head6 := by
   exact headGlue headEq7 headStep6
+
+theorem headStep5_conv_suffixEq9 :
+    convI headStep5_conv_suffix9 head6 = headStep5_conv_result9 := by
+  rfl
+
+theorem headStep5_conv_suffixEq8 :
+    convI headStep5_conv_suffix8 head6 = headStep5_conv_result8 := by
+  exact convBlockGlue headStep5_conv_suffixEq9 headStep5_conv_blockStep8
+
+theorem headStep5_conv_suffixEq7 :
+    convI headStep5_conv_suffix7 head6 = headStep5_conv_result7 := by
+  exact convBlockGlue headStep5_conv_suffixEq8 headStep5_conv_blockStep7
 
 theorem headStep5_conv_suffixEq6 :
     convI headStep5_conv_suffix6 head6 = headStep5_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep5_conv_suffixEq7 headStep5_conv_blockStep6
 
 theorem headStep5_conv_suffixEq5 :
     convI headStep5_conv_suffix5 head6 = headStep5_conv_result5 := by
@@ -3516,21 +4571,33 @@ theorem headStep5_conv_eq :
   exact (congrArg (fun left => convI left head6) headStep5_conv_input).trans headStep5_conv_suffixEq0
 
 theorem headStep5 :
-    (addL [ofRatI c5] (convI ratioA head6)).take 170 = head5 := by
+    (addL [ofRatI c5] (convI ratioA head6)).take 172 = head5 := by
   rw [headStep5_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 149: reached headStep5"
+  out.putStrLn "Canonical trace 155: reached headStep5"
   out.flush
 
 theorem headEq5 :
-    hornerWithTailI 170 ratioA tailI weights5 = head5 := by
+    hornerWithTailI 172 ratioA tailI weights5 = head5 := by
   exact headGlue headEq6 headStep5
+
+theorem headStep4_conv_suffixEq9 :
+    convI headStep4_conv_suffix9 head5 = headStep4_conv_result9 := by
+  rfl
+
+theorem headStep4_conv_suffixEq8 :
+    convI headStep4_conv_suffix8 head5 = headStep4_conv_result8 := by
+  exact convBlockGlue headStep4_conv_suffixEq9 headStep4_conv_blockStep8
+
+theorem headStep4_conv_suffixEq7 :
+    convI headStep4_conv_suffix7 head5 = headStep4_conv_result7 := by
+  exact convBlockGlue headStep4_conv_suffixEq8 headStep4_conv_blockStep7
 
 theorem headStep4_conv_suffixEq6 :
     convI headStep4_conv_suffix6 head5 = headStep4_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep4_conv_suffixEq7 headStep4_conv_blockStep6
 
 theorem headStep4_conv_suffixEq5 :
     convI headStep4_conv_suffix5 head5 = headStep4_conv_result5 := by
@@ -3561,21 +4628,33 @@ theorem headStep4_conv_eq :
   exact (congrArg (fun left => convI left head5) headStep4_conv_input).trans headStep4_conv_suffixEq0
 
 theorem headStep4 :
-    (addL [ofRatI c4] (convI ratioA head5)).take 170 = head4 := by
+    (addL [ofRatI c4] (convI ratioA head5)).take 172 = head4 := by
   rw [headStep4_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 150: reached headStep4"
+  out.putStrLn "Canonical trace 156: reached headStep4"
   out.flush
 
 theorem headEq4 :
-    hornerWithTailI 170 ratioA tailI weights4 = head4 := by
+    hornerWithTailI 172 ratioA tailI weights4 = head4 := by
   exact headGlue headEq5 headStep4
+
+theorem headStep3_conv_suffixEq9 :
+    convI headStep3_conv_suffix9 head4 = headStep3_conv_result9 := by
+  rfl
+
+theorem headStep3_conv_suffixEq8 :
+    convI headStep3_conv_suffix8 head4 = headStep3_conv_result8 := by
+  exact convBlockGlue headStep3_conv_suffixEq9 headStep3_conv_blockStep8
+
+theorem headStep3_conv_suffixEq7 :
+    convI headStep3_conv_suffix7 head4 = headStep3_conv_result7 := by
+  exact convBlockGlue headStep3_conv_suffixEq8 headStep3_conv_blockStep7
 
 theorem headStep3_conv_suffixEq6 :
     convI headStep3_conv_suffix6 head4 = headStep3_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep3_conv_suffixEq7 headStep3_conv_blockStep6
 
 theorem headStep3_conv_suffixEq5 :
     convI headStep3_conv_suffix5 head4 = headStep3_conv_result5 := by
@@ -3606,21 +4685,33 @@ theorem headStep3_conv_eq :
   exact (congrArg (fun left => convI left head4) headStep3_conv_input).trans headStep3_conv_suffixEq0
 
 theorem headStep3 :
-    (addL [ofRatI c3] (convI ratioA head4)).take 170 = head3 := by
+    (addL [ofRatI c3] (convI ratioA head4)).take 172 = head3 := by
   rw [headStep3_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 151: reached headStep3"
+  out.putStrLn "Canonical trace 157: reached headStep3"
   out.flush
 
 theorem headEq3 :
-    hornerWithTailI 170 ratioA tailI weights3 = head3 := by
+    hornerWithTailI 172 ratioA tailI weights3 = head3 := by
   exact headGlue headEq4 headStep3
+
+theorem headStep2_conv_suffixEq9 :
+    convI headStep2_conv_suffix9 head3 = headStep2_conv_result9 := by
+  rfl
+
+theorem headStep2_conv_suffixEq8 :
+    convI headStep2_conv_suffix8 head3 = headStep2_conv_result8 := by
+  exact convBlockGlue headStep2_conv_suffixEq9 headStep2_conv_blockStep8
+
+theorem headStep2_conv_suffixEq7 :
+    convI headStep2_conv_suffix7 head3 = headStep2_conv_result7 := by
+  exact convBlockGlue headStep2_conv_suffixEq8 headStep2_conv_blockStep7
 
 theorem headStep2_conv_suffixEq6 :
     convI headStep2_conv_suffix6 head3 = headStep2_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep2_conv_suffixEq7 headStep2_conv_blockStep6
 
 theorem headStep2_conv_suffixEq5 :
     convI headStep2_conv_suffix5 head3 = headStep2_conv_result5 := by
@@ -3651,21 +4742,33 @@ theorem headStep2_conv_eq :
   exact (congrArg (fun left => convI left head3) headStep2_conv_input).trans headStep2_conv_suffixEq0
 
 theorem headStep2 :
-    (addL [ofRatI c2] (convI ratioA head3)).take 170 = head2 := by
+    (addL [ofRatI c2] (convI ratioA head3)).take 172 = head2 := by
   rw [headStep2_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 152: reached headStep2"
+  out.putStrLn "Canonical trace 158: reached headStep2"
   out.flush
 
 theorem headEq2 :
-    hornerWithTailI 170 ratioA tailI weights2 = head2 := by
+    hornerWithTailI 172 ratioA tailI weights2 = head2 := by
   exact headGlue headEq3 headStep2
+
+theorem headStep1_conv_suffixEq9 :
+    convI headStep1_conv_suffix9 head2 = headStep1_conv_result9 := by
+  rfl
+
+theorem headStep1_conv_suffixEq8 :
+    convI headStep1_conv_suffix8 head2 = headStep1_conv_result8 := by
+  exact convBlockGlue headStep1_conv_suffixEq9 headStep1_conv_blockStep8
+
+theorem headStep1_conv_suffixEq7 :
+    convI headStep1_conv_suffix7 head2 = headStep1_conv_result7 := by
+  exact convBlockGlue headStep1_conv_suffixEq8 headStep1_conv_blockStep7
 
 theorem headStep1_conv_suffixEq6 :
     convI headStep1_conv_suffix6 head2 = headStep1_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep1_conv_suffixEq7 headStep1_conv_blockStep6
 
 theorem headStep1_conv_suffixEq5 :
     convI headStep1_conv_suffix5 head2 = headStep1_conv_result5 := by
@@ -3696,21 +4799,33 @@ theorem headStep1_conv_eq :
   exact (congrArg (fun left => convI left head2) headStep1_conv_input).trans headStep1_conv_suffixEq0
 
 theorem headStep1 :
-    (addL [ofRatI c1] (convI ratioA head2)).take 170 = head1 := by
+    (addL [ofRatI c1] (convI ratioA head2)).take 172 = head1 := by
   rw [headStep1_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 153: reached headStep1"
+  out.putStrLn "Canonical trace 159: reached headStep1"
   out.flush
 
 theorem headEq1 :
-    hornerWithTailI 170 ratioA tailI weights1 = head1 := by
+    hornerWithTailI 172 ratioA tailI weights1 = head1 := by
   exact headGlue headEq2 headStep1
+
+theorem headStep0_conv_suffixEq9 :
+    convI headStep0_conv_suffix9 head1 = headStep0_conv_result9 := by
+  rfl
+
+theorem headStep0_conv_suffixEq8 :
+    convI headStep0_conv_suffix8 head1 = headStep0_conv_result8 := by
+  exact convBlockGlue headStep0_conv_suffixEq9 headStep0_conv_blockStep8
+
+theorem headStep0_conv_suffixEq7 :
+    convI headStep0_conv_suffix7 head1 = headStep0_conv_result7 := by
+  exact convBlockGlue headStep0_conv_suffixEq8 headStep0_conv_blockStep7
 
 theorem headStep0_conv_suffixEq6 :
     convI headStep0_conv_suffix6 head1 = headStep0_conv_result6 := by
-  rfl
+  exact convBlockGlue headStep0_conv_suffixEq7 headStep0_conv_blockStep6
 
 theorem headStep0_conv_suffixEq5 :
     convI headStep0_conv_suffix5 head1 = headStep0_conv_result5 := by
@@ -3741,21 +4856,29 @@ theorem headStep0_conv_eq :
   exact (congrArg (fun left => convI left head1) headStep0_conv_input).trans headStep0_conv_suffixEq0
 
 theorem headStep0 :
-    (addL [ofRatI c0] (convI ratioA head1)).take 170 = head0 := by
+    (addL [ofRatI c0] (convI ratioA head1)).take 172 = head0 := by
   rw [headStep0_conv_eq] <;> decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 154: reached headStep0"
+  out.putStrLn "Canonical trace 160: reached headStep0"
   out.flush
 
 theorem headEq0 :
-    hornerWithTailI 170 ratioA tailI weights0 = head0 := by
+    hornerWithTailI 172 ratioA tailI weights0 = head0 := by
   exact headGlue headEq1 headStep0
+
+theorem final_step_conv_suffixEq5 :
+    convI final_step_conv_suffix5 head0 = final_step_conv_result5 := by
+  rfl
+
+theorem final_step_conv_suffixEq4 :
+    convI final_step_conv_suffix4 head0 = final_step_conv_result4 := by
+  exact convBlockGlue final_step_conv_suffixEq5 final_step_conv_blockStep4
 
 theorem final_step_conv_suffixEq3 :
     convI final_step_conv_suffix3 head0 = final_step_conv_result3 := by
-  rfl
+  exact convBlockGlue final_step_conv_suffixEq4 final_step_conv_blockStep3
 
 theorem final_step_conv_suffixEq2 :
     convI final_step_conv_suffix2 head0 = final_step_conv_result2 := by
@@ -3779,7 +4902,7 @@ theorem final_step :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 155: reached final_step"
+  out.putStrLn "Canonical trace 161: reached final_step"
   out.flush
 
 theorem powerEq1 :
@@ -3802,29 +4925,222 @@ theorem powerEq5 :
     polyPowI pI 5 = power5 := by
   exact powerGlue powerEq4 powerStep5
 
+theorem powerStep6_conv_suffixEq5 :
+    convI powerStep6_conv_suffix5 power5 = powerStep6_conv_result5 := by
+  rfl
+
+theorem powerStep6_conv_suffixEq4 :
+    convI powerStep6_conv_suffix4 power5 = powerStep6_conv_result4 := by
+  exact convBlockGlue powerStep6_conv_suffixEq5 powerStep6_conv_blockStep4
+
+theorem powerStep6_conv_suffixEq3 :
+    convI powerStep6_conv_suffix3 power5 = powerStep6_conv_result3 := by
+  exact convBlockGlue powerStep6_conv_suffixEq4 powerStep6_conv_blockStep3
+
+theorem powerStep6_conv_suffixEq2 :
+    convI powerStep6_conv_suffix2 power5 = powerStep6_conv_result2 := by
+  exact convBlockGlue powerStep6_conv_suffixEq3 powerStep6_conv_blockStep2
+
+theorem powerStep6_conv_suffixEq1 :
+    convI powerStep6_conv_suffix1 power5 = powerStep6_conv_result1 := by
+  exact convBlockGlue powerStep6_conv_suffixEq2 powerStep6_conv_blockStep1
+
+theorem powerStep6_conv_suffixEq0 :
+    convI powerStep6_conv_suffix0 power5 = powerStep6_conv_result0 := by
+  exact convBlockGlue powerStep6_conv_suffixEq1 powerStep6_conv_blockStep0
+
+theorem powerStep6_conv_eq :
+    convI pI power5 = powerStep6_conv_result0 := by
+  exact (congrArg (fun left => convI left power5) powerStep6_conv_input).trans powerStep6_conv_suffixEq0
+
+theorem powerStep6 :
+    convI pI power5 = power6 := by
+  rw [powerStep6_conv_eq] <;> decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical trace 169: reached powerStep6"
+  out.flush
+
 theorem powerEq6 :
     polyPowI pI 6 = power6 := by
   exact powerGlue powerEq5 powerStep6
+
+theorem powerStep7_conv_suffixEq5 :
+    convI powerStep7_conv_suffix5 power6 = powerStep7_conv_result5 := by
+  rfl
+
+theorem powerStep7_conv_suffixEq4 :
+    convI powerStep7_conv_suffix4 power6 = powerStep7_conv_result4 := by
+  exact convBlockGlue powerStep7_conv_suffixEq5 powerStep7_conv_blockStep4
+
+theorem powerStep7_conv_suffixEq3 :
+    convI powerStep7_conv_suffix3 power6 = powerStep7_conv_result3 := by
+  exact convBlockGlue powerStep7_conv_suffixEq4 powerStep7_conv_blockStep3
+
+theorem powerStep7_conv_suffixEq2 :
+    convI powerStep7_conv_suffix2 power6 = powerStep7_conv_result2 := by
+  exact convBlockGlue powerStep7_conv_suffixEq3 powerStep7_conv_blockStep2
+
+theorem powerStep7_conv_suffixEq1 :
+    convI powerStep7_conv_suffix1 power6 = powerStep7_conv_result1 := by
+  exact convBlockGlue powerStep7_conv_suffixEq2 powerStep7_conv_blockStep1
+
+theorem powerStep7_conv_suffixEq0 :
+    convI powerStep7_conv_suffix0 power6 = powerStep7_conv_result0 := by
+  exact convBlockGlue powerStep7_conv_suffixEq1 powerStep7_conv_blockStep0
+
+theorem powerStep7_conv_eq :
+    convI pI power6 = powerStep7_conv_result0 := by
+  exact (congrArg (fun left => convI left power6) powerStep7_conv_input).trans powerStep7_conv_suffixEq0
+
+theorem powerStep7 :
+    convI pI power6 = power7 := by
+  rw [powerStep7_conv_eq] <;> decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical trace 170: reached powerStep7"
+  out.flush
 
 theorem powerEq7 :
     polyPowI pI 7 = power7 := by
   exact powerGlue powerEq6 powerStep7
 
+theorem powerStep8_conv_suffixEq5 :
+    convI powerStep8_conv_suffix5 power7 = powerStep8_conv_result5 := by
+  rfl
+
+theorem powerStep8_conv_suffixEq4 :
+    convI powerStep8_conv_suffix4 power7 = powerStep8_conv_result4 := by
+  exact convBlockGlue powerStep8_conv_suffixEq5 powerStep8_conv_blockStep4
+
+theorem powerStep8_conv_suffixEq3 :
+    convI powerStep8_conv_suffix3 power7 = powerStep8_conv_result3 := by
+  exact convBlockGlue powerStep8_conv_suffixEq4 powerStep8_conv_blockStep3
+
+theorem powerStep8_conv_suffixEq2 :
+    convI powerStep8_conv_suffix2 power7 = powerStep8_conv_result2 := by
+  exact convBlockGlue powerStep8_conv_suffixEq3 powerStep8_conv_blockStep2
+
+theorem powerStep8_conv_suffixEq1 :
+    convI powerStep8_conv_suffix1 power7 = powerStep8_conv_result1 := by
+  exact convBlockGlue powerStep8_conv_suffixEq2 powerStep8_conv_blockStep1
+
+theorem powerStep8_conv_suffixEq0 :
+    convI powerStep8_conv_suffix0 power7 = powerStep8_conv_result0 := by
+  exact convBlockGlue powerStep8_conv_suffixEq1 powerStep8_conv_blockStep0
+
+theorem powerStep8_conv_eq :
+    convI pI power7 = powerStep8_conv_result0 := by
+  exact (congrArg (fun left => convI left power7) powerStep8_conv_input).trans powerStep8_conv_suffixEq0
+
+theorem powerStep8 :
+    convI pI power7 = power8 := by
+  rw [powerStep8_conv_eq] <;> decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical trace 171: reached powerStep8"
+  out.flush
+
 theorem powerEq8 :
     polyPowI pI 8 = power8 := by
   exact powerGlue powerEq7 powerStep8
+
+theorem powerStep9_conv_suffixEq5 :
+    convI powerStep9_conv_suffix5 power8 = powerStep9_conv_result5 := by
+  rfl
+
+theorem powerStep9_conv_suffixEq4 :
+    convI powerStep9_conv_suffix4 power8 = powerStep9_conv_result4 := by
+  exact convBlockGlue powerStep9_conv_suffixEq5 powerStep9_conv_blockStep4
+
+theorem powerStep9_conv_suffixEq3 :
+    convI powerStep9_conv_suffix3 power8 = powerStep9_conv_result3 := by
+  exact convBlockGlue powerStep9_conv_suffixEq4 powerStep9_conv_blockStep3
+
+theorem powerStep9_conv_suffixEq2 :
+    convI powerStep9_conv_suffix2 power8 = powerStep9_conv_result2 := by
+  exact convBlockGlue powerStep9_conv_suffixEq3 powerStep9_conv_blockStep2
+
+theorem powerStep9_conv_suffixEq1 :
+    convI powerStep9_conv_suffix1 power8 = powerStep9_conv_result1 := by
+  exact convBlockGlue powerStep9_conv_suffixEq2 powerStep9_conv_blockStep1
+
+theorem powerStep9_conv_suffixEq0 :
+    convI powerStep9_conv_suffix0 power8 = powerStep9_conv_result0 := by
+  exact convBlockGlue powerStep9_conv_suffixEq1 powerStep9_conv_blockStep0
+
+theorem powerStep9_conv_eq :
+    convI pI power8 = powerStep9_conv_result0 := by
+  exact (congrArg (fun left => convI left power8) powerStep9_conv_input).trans powerStep9_conv_suffixEq0
+
+theorem powerStep9 :
+    convI pI power8 = power9 := by
+  rw [powerStep9_conv_eq] <;> decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical trace 172: reached powerStep9"
+  out.flush
 
 theorem powerEq9 :
     polyPowI pI 9 = power9 := by
   exact powerGlue powerEq8 powerStep9
 
+theorem powerStep10_conv_suffixEq5 :
+    convI powerStep10_conv_suffix5 power9 = powerStep10_conv_result5 := by
+  rfl
+
+theorem powerStep10_conv_suffixEq4 :
+    convI powerStep10_conv_suffix4 power9 = powerStep10_conv_result4 := by
+  exact convBlockGlue powerStep10_conv_suffixEq5 powerStep10_conv_blockStep4
+
+theorem powerStep10_conv_suffixEq3 :
+    convI powerStep10_conv_suffix3 power9 = powerStep10_conv_result3 := by
+  exact convBlockGlue powerStep10_conv_suffixEq4 powerStep10_conv_blockStep3
+
+theorem powerStep10_conv_suffixEq2 :
+    convI powerStep10_conv_suffix2 power9 = powerStep10_conv_result2 := by
+  exact convBlockGlue powerStep10_conv_suffixEq3 powerStep10_conv_blockStep2
+
+theorem powerStep10_conv_suffixEq1 :
+    convI powerStep10_conv_suffix1 power9 = powerStep10_conv_result1 := by
+  exact convBlockGlue powerStep10_conv_suffixEq2 powerStep10_conv_blockStep1
+
+theorem powerStep10_conv_suffixEq0 :
+    convI powerStep10_conv_suffix0 power9 = powerStep10_conv_result0 := by
+  exact convBlockGlue powerStep10_conv_suffixEq1 powerStep10_conv_blockStep0
+
+theorem powerStep10_conv_eq :
+    convI pI power9 = powerStep10_conv_result0 := by
+  exact (congrArg (fun left => convI left power9) powerStep10_conv_input).trans powerStep10_conv_suffixEq0
+
+theorem powerStep10 :
+    convI pI power9 = power10 := by
+  rw [powerStep10_conv_eq] <;> decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical trace 173: reached powerStep10"
+  out.flush
+
 theorem powerEq10 :
     polyPowI pI 10 = power10 := by
   exact powerGlue powerEq9 powerStep10
 
+theorem powerStep11_conv_suffixEq5 :
+    convI powerStep11_conv_suffix5 power10 = powerStep11_conv_result5 := by
+  rfl
+
+theorem powerStep11_conv_suffixEq4 :
+    convI powerStep11_conv_suffix4 power10 = powerStep11_conv_result4 := by
+  exact convBlockGlue powerStep11_conv_suffixEq5 powerStep11_conv_blockStep4
+
 theorem powerStep11_conv_suffixEq3 :
     convI powerStep11_conv_suffix3 power10 = powerStep11_conv_result3 := by
-  rfl
+  exact convBlockGlue powerStep11_conv_suffixEq4 powerStep11_conv_blockStep3
 
 theorem powerStep11_conv_suffixEq2 :
     convI powerStep11_conv_suffix2 power10 = powerStep11_conv_result2 := by
@@ -3848,16 +5164,24 @@ theorem powerStep11 :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 168: reached powerStep11"
+  out.putStrLn "Canonical trace 174: reached powerStep11"
   out.flush
 
 theorem powerEq11 :
     polyPowI pI 11 = power11 := by
   exact powerGlue powerEq10 powerStep11
 
+theorem powerStep12_conv_suffixEq5 :
+    convI powerStep12_conv_suffix5 power11 = powerStep12_conv_result5 := by
+  rfl
+
+theorem powerStep12_conv_suffixEq4 :
+    convI powerStep12_conv_suffix4 power11 = powerStep12_conv_result4 := by
+  exact convBlockGlue powerStep12_conv_suffixEq5 powerStep12_conv_blockStep4
+
 theorem powerStep12_conv_suffixEq3 :
     convI powerStep12_conv_suffix3 power11 = powerStep12_conv_result3 := by
-  rfl
+  exact convBlockGlue powerStep12_conv_suffixEq4 powerStep12_conv_blockStep3
 
 theorem powerStep12_conv_suffixEq2 :
     convI powerStep12_conv_suffix2 power11 = powerStep12_conv_result2 := by
@@ -3881,16 +5205,24 @@ theorem powerStep12 :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 169: reached powerStep12"
+  out.putStrLn "Canonical trace 175: reached powerStep12"
   out.flush
 
 theorem powerEq12 :
     polyPowI pI 12 = power12 := by
   exact powerGlue powerEq11 powerStep12
 
+theorem powerStep13_conv_suffixEq5 :
+    convI powerStep13_conv_suffix5 power12 = powerStep13_conv_result5 := by
+  rfl
+
+theorem powerStep13_conv_suffixEq4 :
+    convI powerStep13_conv_suffix4 power12 = powerStep13_conv_result4 := by
+  exact convBlockGlue powerStep13_conv_suffixEq5 powerStep13_conv_blockStep4
+
 theorem powerStep13_conv_suffixEq3 :
     convI powerStep13_conv_suffix3 power12 = powerStep13_conv_result3 := by
-  rfl
+  exact convBlockGlue powerStep13_conv_suffixEq4 powerStep13_conv_blockStep3
 
 theorem powerStep13_conv_suffixEq2 :
     convI powerStep13_conv_suffix2 power12 = powerStep13_conv_result2 := by
@@ -3914,16 +5246,24 @@ theorem powerStep13 :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 170: reached powerStep13"
+  out.putStrLn "Canonical trace 176: reached powerStep13"
   out.flush
 
 theorem powerEq13 :
     polyPowI pI 13 = power13 := by
   exact powerGlue powerEq12 powerStep13
 
+theorem powerStep14_conv_suffixEq5 :
+    convI powerStep14_conv_suffix5 power13 = powerStep14_conv_result5 := by
+  rfl
+
+theorem powerStep14_conv_suffixEq4 :
+    convI powerStep14_conv_suffix4 power13 = powerStep14_conv_result4 := by
+  exact convBlockGlue powerStep14_conv_suffixEq5 powerStep14_conv_blockStep4
+
 theorem powerStep14_conv_suffixEq3 :
     convI powerStep14_conv_suffix3 power13 = powerStep14_conv_result3 := by
-  rfl
+  exact convBlockGlue powerStep14_conv_suffixEq4 powerStep14_conv_blockStep3
 
 theorem powerStep14_conv_suffixEq2 :
     convI powerStep14_conv_suffix2 power13 = powerStep14_conv_result2 := by
@@ -3947,16 +5287,24 @@ theorem powerStep14 :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 171: reached powerStep14"
+  out.putStrLn "Canonical trace 177: reached powerStep14"
   out.flush
 
 theorem powerEq14 :
     polyPowI pI 14 = power14 := by
   exact powerGlue powerEq13 powerStep14
 
+theorem powerStep15_conv_suffixEq5 :
+    convI powerStep15_conv_suffix5 power14 = powerStep15_conv_result5 := by
+  rfl
+
+theorem powerStep15_conv_suffixEq4 :
+    convI powerStep15_conv_suffix4 power14 = powerStep15_conv_result4 := by
+  exact convBlockGlue powerStep15_conv_suffixEq5 powerStep15_conv_blockStep4
+
 theorem powerStep15_conv_suffixEq3 :
     convI powerStep15_conv_suffix3 power14 = powerStep15_conv_result3 := by
-  rfl
+  exact convBlockGlue powerStep15_conv_suffixEq4 powerStep15_conv_blockStep3
 
 theorem powerStep15_conv_suffixEq2 :
     convI powerStep15_conv_suffix2 power14 = powerStep15_conv_result2 := by
@@ -3980,16 +5328,24 @@ theorem powerStep15 :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 172: reached powerStep15"
+  out.putStrLn "Canonical trace 178: reached powerStep15"
   out.flush
 
 theorem powerEq15 :
     polyPowI pI 15 = power15 := by
   exact powerGlue powerEq14 powerStep15
 
+theorem powerStep16_conv_suffixEq5 :
+    convI powerStep16_conv_suffix5 power15 = powerStep16_conv_result5 := by
+  rfl
+
+theorem powerStep16_conv_suffixEq4 :
+    convI powerStep16_conv_suffix4 power15 = powerStep16_conv_result4 := by
+  exact convBlockGlue powerStep16_conv_suffixEq5 powerStep16_conv_blockStep4
+
 theorem powerStep16_conv_suffixEq3 :
     convI powerStep16_conv_suffix3 power15 = powerStep16_conv_result3 := by
-  rfl
+  exact convBlockGlue powerStep16_conv_suffixEq4 powerStep16_conv_blockStep3
 
 theorem powerStep16_conv_suffixEq2 :
     convI powerStep16_conv_suffix2 power15 = powerStep16_conv_result2 := by
@@ -4013,16 +5369,24 @@ theorem powerStep16 :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 173: reached powerStep16"
+  out.putStrLn "Canonical trace 179: reached powerStep16"
   out.flush
 
 theorem powerEq16 :
     polyPowI pI 16 = power16 := by
   exact powerGlue powerEq15 powerStep16
 
+theorem powerStep17_conv_suffixEq5 :
+    convI powerStep17_conv_suffix5 power16 = powerStep17_conv_result5 := by
+  rfl
+
+theorem powerStep17_conv_suffixEq4 :
+    convI powerStep17_conv_suffix4 power16 = powerStep17_conv_result4 := by
+  exact convBlockGlue powerStep17_conv_suffixEq5 powerStep17_conv_blockStep4
+
 theorem powerStep17_conv_suffixEq3 :
     convI powerStep17_conv_suffix3 power16 = powerStep17_conv_result3 := by
-  rfl
+  exact convBlockGlue powerStep17_conv_suffixEq4 powerStep17_conv_blockStep3
 
 theorem powerStep17_conv_suffixEq2 :
     convI powerStep17_conv_suffix2 power16 = powerStep17_conv_result2 := by
@@ -4046,7 +5410,7 @@ theorem powerStep17 :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 174: reached powerStep17"
+  out.putStrLn "Canonical trace 180: reached powerStep17"
   out.flush
 
 theorem powerEq17 :
@@ -4119,7 +5483,76 @@ theorem seed_product_step :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 175: reached seed_product_step"
+  out.putStrLn "Canonical trace 181: reached seed_product_step"
+  out.flush
+
+theorem inverseProduct_step_conv_suffixEq13 :
+    convI inverseProduct_step_conv_suffix13 inverseD = inverseProduct_step_conv_result13 := by
+  rfl
+
+theorem inverseProduct_step_conv_suffixEq12 :
+    convI inverseProduct_step_conv_suffix12 inverseD = inverseProduct_step_conv_result12 := by
+  exact convBlockGlue inverseProduct_step_conv_suffixEq13 inverseProduct_step_conv_blockStep12
+
+theorem inverseProduct_step_conv_suffixEq11 :
+    convI inverseProduct_step_conv_suffix11 inverseD = inverseProduct_step_conv_result11 := by
+  exact convBlockGlue inverseProduct_step_conv_suffixEq12 inverseProduct_step_conv_blockStep11
+
+theorem inverseProduct_step_conv_suffixEq10 :
+    convI inverseProduct_step_conv_suffix10 inverseD = inverseProduct_step_conv_result10 := by
+  exact convBlockGlue inverseProduct_step_conv_suffixEq11 inverseProduct_step_conv_blockStep10
+
+theorem inverseProduct_step_conv_suffixEq9 :
+    convI inverseProduct_step_conv_suffix9 inverseD = inverseProduct_step_conv_result9 := by
+  exact convBlockGlue inverseProduct_step_conv_suffixEq10 inverseProduct_step_conv_blockStep9
+
+theorem inverseProduct_step_conv_suffixEq8 :
+    convI inverseProduct_step_conv_suffix8 inverseD = inverseProduct_step_conv_result8 := by
+  exact convBlockGlue inverseProduct_step_conv_suffixEq9 inverseProduct_step_conv_blockStep8
+
+theorem inverseProduct_step_conv_suffixEq7 :
+    convI inverseProduct_step_conv_suffix7 inverseD = inverseProduct_step_conv_result7 := by
+  exact convBlockGlue inverseProduct_step_conv_suffixEq8 inverseProduct_step_conv_blockStep7
+
+theorem inverseProduct_step_conv_suffixEq6 :
+    convI inverseProduct_step_conv_suffix6 inverseD = inverseProduct_step_conv_result6 := by
+  exact convBlockGlue inverseProduct_step_conv_suffixEq7 inverseProduct_step_conv_blockStep6
+
+theorem inverseProduct_step_conv_suffixEq5 :
+    convI inverseProduct_step_conv_suffix5 inverseD = inverseProduct_step_conv_result5 := by
+  exact convBlockGlue inverseProduct_step_conv_suffixEq6 inverseProduct_step_conv_blockStep5
+
+theorem inverseProduct_step_conv_suffixEq4 :
+    convI inverseProduct_step_conv_suffix4 inverseD = inverseProduct_step_conv_result4 := by
+  exact convBlockGlue inverseProduct_step_conv_suffixEq5 inverseProduct_step_conv_blockStep4
+
+theorem inverseProduct_step_conv_suffixEq3 :
+    convI inverseProduct_step_conv_suffix3 inverseD = inverseProduct_step_conv_result3 := by
+  exact convBlockGlue inverseProduct_step_conv_suffixEq4 inverseProduct_step_conv_blockStep3
+
+theorem inverseProduct_step_conv_suffixEq2 :
+    convI inverseProduct_step_conv_suffix2 inverseD = inverseProduct_step_conv_result2 := by
+  exact convBlockGlue inverseProduct_step_conv_suffixEq3 inverseProduct_step_conv_blockStep2
+
+theorem inverseProduct_step_conv_suffixEq1 :
+    convI inverseProduct_step_conv_suffix1 inverseD = inverseProduct_step_conv_result1 := by
+  exact convBlockGlue inverseProduct_step_conv_suffixEq2 inverseProduct_step_conv_blockStep1
+
+theorem inverseProduct_step_conv_suffixEq0 :
+    convI inverseProduct_step_conv_suffix0 inverseD = inverseProduct_step_conv_result0 := by
+  exact convBlockGlue inverseProduct_step_conv_suffixEq1 inverseProduct_step_conv_blockStep0
+
+theorem inverseProduct_step_conv_eq :
+    convI rI inverseD = inverseProduct_step_conv_result0 := by
+  exact (congrArg (fun left => convI left inverseD) inverseProduct_step_conv_input).trans inverseProduct_step_conv_suffixEq0
+
+theorem inverseProduct_step :
+    convI rI inverseD = inverseProduct := by
+  rw [inverseProduct_step_conv_eq] <;> decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical trace 184: reached inverseProduct_step"
   out.flush
 
 end Grothe.HaagerupCanonical.Trace

@@ -1,17 +1,18 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
 The sharper conditional upper bound is described below. The independent hypothesis-free
-route proves `Grothe.haagerup_bound : IsGrothendieckBound (1404909140/1000000000)`.
-Its focused audit checks 96 results and confirms zero native evaluation axioms.
+route targets `Grothe.haagerup_bound : IsGrothendieckBound (1404909133/1000000000)`.
+The new degree-20 certificate awaits delivery CI (#129). Its focused audit policy
+requires 96 results and permits zero native evaluation axioms.
 The canonical resolvent completion, complete residual and infinite remainder are
-documented in `docs/HAAGERUP_POWER.md`. It combines 64 series terms with six
-correction terms, using complete monotonicity at every difference order. A checked
-170-coefficient prefix and a weighted finite-polynomial tail bound control the
+documented in `docs/HAAGERUP_POWER.md`. It combines 64 series terms with eight
+correction terms, using complete monotonicity at every difference order. A
+172-coefficient prefix and a weighted finite-polynomial tail bound control the
 complete residual. Large convolutions are proved in continuation blocks of at most five left
 coefficients. The generic `convI_append` identity preserves the original
 outward arithmetic order; recurrence and exact input-binding lemmas recover
 the four checker statements without a new numerical premise.
-The proof uses only the three standard axioms and none of the analytic inputs listed here.
+The proof is designed to use only the three standard axioms and none of the analytic inputs listed here.
 `tools/verify_haagerup_canonical.py` provides an independent directed replay.
 Normal `ready/*` delivery CI builds and audits the combined tree before merging it.
 

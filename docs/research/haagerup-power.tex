@@ -6,11 +6,12 @@ coefficient sum. Haagerup's Gaussian phase kernel is
  r_0=1,\quad r_{k+1}=r_k\frac{(2k+1)^2}{4(k+1)(k+2)}.
 \]
 The Gaussian identity, tensor realization, residual estimate from finite
-certificates, and matrix transfer are proved in Lean. All four finite checks have
-kernel proofs; the focused audit checks 96 results with zero native axioms.
-The resulting bound has no external analytic or numerical premises:
+certificates, and matrix transfer are expressed in Lean. The regenerated finite
+checks for the degree-$20$ certificate await delivery CI (issue~129). The focused
+policy requires 96 results with zero native axioms. The current source targets
+the following bound with no external analytic or numerical premises:
 \[
- \boxed{K_G^{\mathbb C}\le\frac{1404909140}{1000000000}=1.404909140.}
+ \boxed{K_G^{\mathbb C}\le\frac{1404909133}{1000000000}=1.404909133.}
 \]
 
 \subsection{Complete monotonicity of the coefficients}
@@ -115,28 +116,35 @@ finite polynomial identities and coefficient locality, without constructing
 an infinite polynomial inverse or interchanging two series.
 
 \subsection{The complete finite polynomial and exact budgets}
-The rational polynomial inputs are stored in
+The tracked \texttt{recipe.json} fixes the polynomial degree, dyadic precision
+and resolvent degree. An exact rational recurrence computes the inverse of
+$tH(t^2)$, where $H(X)=\sum_k r_kX^k$, and directly checks its truncated
+composition identity. The largest
+$60$-bit dyadic $a$ satisfying $\sum_j|c_j|a^{2j+1}\le1$ normalizes the inverse
+coefficients; rounding them toward zero preserves the norm bound. An exact
+reciprocal recurrence for $1/(1-XP^2)$ followed by nearest-dyadic rounding
+(with ties to even) produces $R$. The resulting inputs are stored in
 \texttt{data/haagerup-resolvent/certificate.json}; the Lean data are generated
-byte for byte from that file. They satisfy $\deg P=14$, $\deg R=64$, and
+byte for byte from that file. They have $\deg P=20$, $\deg R=64$, and
 \[
- a=P(0)=\frac{1020379367568975}{1125899906842624},\qquad
+ a=P(0)=\frac{1044868466934074687}{1152921504606846976},\qquad
  \|P\|_{\mathcal A}\le1,\qquad
  \eta=10^{-12},\qquad \|RP^{17}\|_{\mathcal A}\le\frac{249}{500}.
 \]
-Take $K=64$ and $m=6$. Since $17\le2K+1$, submultiplicativity gives
+Take $K=64$ and $m=8$. Since $17\le2K+1$, submultiplicativity gives
 $\|RT\|_{\mathcal A}\le249/500\le1/2$, so use $B=1/2$.
 The exact resolvent list also gives $\|R-1\|_{\mathcal A}+\eta\le2$.
 The identity $RA=(R-1)+E$ therefore allows $C=2$.
 
 The completed finite polynomial is
 \[
- H=P\sum_{k<64}r_k(XP^2)^k+Q_6(r).
+ H=P\sum_{k<64}r_k(XP^2)^k+Q_8(r).
 \]
 The head and correction are added before taking absolute values, preserving
 the cancellation between them. Put $F=H-a$. The outward interval check bounds
-the first $N=170$ coefficients:
+the first $N=172$ coefficients with the required cap:
 \[
- \sum_{n<170}|F_n|\le\frac{9136}{10^{12}}.
+ \sum_{n<172}|F_n|\le\frac{74}{10^{12}}.
 \]
 The remaining coefficients are controlled by a weighted finite-polynomial
 norm. For any real polynomial $F$ and $\rho\ge1$,
@@ -165,46 +173,47 @@ submultiplicativity, and $|a|\le1$ therefore give
  \|F((3/2)X)\|_{\mathcal A}
  &\le \frac{21}{20}\,64\left(\frac53\right)^{63}\\
  &\quad+9\frac{21}{20}\left(\frac53\right)^{64}
-       \frac1{10^4}\sum_{j<6}15^j+1\\
- &\le10^{18}.
+       \frac1{10^4}\sum_{j<8}15^j+1\\
+ &\le10^{20}.
 \end{align*}
-Consequently the entire coefficient tail from $170$ is bounded by
+Consequently the entire coefficient tail from $172$ is bounded by
 \[
- \frac{10^{18}}{(3/2)^{170}}<\frac4{10^{12}},
+ \frac{10^{20}}{(3/2)^{172}}<\frac{52}{10^{12}},
  \qquad
- \|H-a\|_{\mathcal A}\le\frac{9136+4}{10^{12}}
-                         =\frac{914}{10^{11}}.
+ \|H-a\|_{\mathcal A}\le\frac{74+52}{10^{12}}
+                         =\frac{126}{10^{12}}.
 \]
 The finite prefix, inverse defect, combined seed, and coefficient bounds
 \[
  r_{64}\le\frac1{10^4},\qquad
- (\Delta^6r)_{64}\le\frac{37}{10^{13}}
+ (\Delta^8r)_{64}\le\frac{51}{10^{15}}
 \]
-have kernel proofs. Large convolutions are checked in continuation blocks of at
+are the numerical goals of the regenerated kernel proofs. Large convolutions use continuation blocks of at
 most five left coefficients. The generic append identity composes these blocks
 without regrouping outward interval arithmetic. Exact recurrence and input-binding
 lemmas recover the four original checker statements, with no new numerical premise.
 Complete monotonicity gives $(\Delta^j r)_{64}\le r_{64}$, and
-$\sum_{j<6}2^j=63$. The infinite remainder is consequently at most
+$\sum_{j<8}2^j=255$. The infinite remainder is consequently at most
 \[
- \frac{64(37/10^{13})+10^{-12}(63/10^4)}{1-10^{-12}}
- <\frac{24}{10^{11}}.
+ \frac{256(51/10^{15})+10^{-12}(255/10^4)}{1-10^{-12}}
+ <\frac{14}{10^{12}}.
 \]
 For the radial preprocessor $p(z)=zP(|z|^2)$, the complete residual bound is
 \[
  \|h\circ p-(\pi a/4)\operatorname{id}\|_{\mathcal A}
- \le\frac\pi4\left(\frac{914}{10^{11}}+\frac{24}{10^{11}}\right)
- =\frac\pi4\frac{938}{10^{11}}.
+ \le\frac\pi4\left(\frac{126}{10^{12}}+\frac{14}{10^{12}}\right)
+ =\frac\pi4\frac{140}{10^{12}}.
 \]
 In this expression, the norm is the absolute sum of the radial series
 coefficients. The proved residual transfer and a proved lower enclosure of
 $\pi$ give
 \[
- K_G^{\mathbb C}\le\frac4{\pi(a-938/10^{11})}<1.404909140.
+ K_G^{\mathbb C}\le\frac4{\pi(a-140/10^{12})}<1.404909133.
 \]
-All four finite acceptance facts have kernel proofs. The 96-result focused axiom
-audit confirms only the three standard axioms. Normal delivery CI builds and audits
-the combined tree before merging it.
+Each finite acceptance fact has a generated kernel-proof term; the new terms
+await delivery CI. The 96-result focused policy permits only the three standard
+axioms. Normal delivery CI builds and audits the combined tree before merging it;
+older receipts remain evidence only for their recorded source snapshots.
 The generated data module contains only six rational-data definitions, with no
 native evaluation theorem. An independent directed FLINT replay audits
 the complete polynomial, checked prefix, weighted finite tail, inverse defect,

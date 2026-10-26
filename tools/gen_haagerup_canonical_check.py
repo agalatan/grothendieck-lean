@@ -22,6 +22,8 @@ FINAL_NAMES = ("coefficient_check", "completed_check", "seed_check", "defect_che
 CONV_BLOCK_SIZE = 5
 CONV_BLOCK_THRESHOLD = 2000
 NUMERIC_MODULES = 16
+COEFFICIENT_CAP = Q(1, 10000)
+DIFFERENCE_CAP = Q(51, 10**15)
 D = 2**128
 ZERO = (0, 0)
 
@@ -40,7 +42,7 @@ def parse_parameters(source):
 
     values = {name: parameter(name, "ℕ") for name in ("start", "order", "cutoff")}
     values["prefixCap"] = parameter("prefixCap", "ℚ")
-    for name, expected in (("start", 64), ("order", 6), ("cutoff", 170)):
+    for name, expected in (("start", 64), ("order", 8), ("cutoff", 172)):
         require(values[name] == expected,
                 f"generator recipe requires {name}={expected}; found {values[name]}")
     require(values["prefixCap"] > 0, "prefixCap must be positive")
@@ -100,44 +102,48 @@ def norm(intervals):
 def render_blocks(data, parameters):
     """Build declaration blocks with all literal values derived from inputs."""
     require(data["seed_power"] == 17, "generator recipe requires seed_power=17")
+    start, order, cutoff = (int(parameters[name]) for name in ("start", "order", "cutoff"))
+    seed_power = data["seed_power"]
+    last_coefficient = start + order
     pl = [Q(value) for value in data["P"]]
     rl = [Q(value) for value in data["R"]]
     # Match gen_haagerup_power.py's canonical R list exactly.
     while rl and rl[-1] == 0:
         rl.pop()
-    require(len(pl) == 15 and len(rl) == 65,
-            "generator recipe requires the current 15/65 coefficient list lengths")
+    require(len(pl) == 21 and len(rl) == 65,
+            "generator recipe requires the current 21/65 coefficient list lengths")
     p, r = [ofq(q) for q in pl], [ofq(q) for q in rl]
     a = [ZERO] + conv(p, p)
     y = list(map(neg, conv(r, a)))
     coeff = [Q(1)]
-    for k in range(70):
+    for k in range(last_coefficient):
         coeff.append(coeff[-1] * Q((2*k+1)**2, 4*(k+1)*(k+2)))
-    delta = {(0, k): coeff[k] for k in range(64, 71)}
-    for j in range(1, 7):
-        for k in range(64, 71-j):
+    delta = {(0, k): coeff[k] for k in range(start, last_coefficient + 1)}
+    for j in range(1, order + 1):
+        for k in range(start, last_coefficient + 1 - j):
             delta[j, k] = delta[j-1, k] - delta[j-1, k+1]
-    ds = [delta[j, 64] for j in range(7)]
-    corr = {6: []}
-    for j in range(5, -1, -1):
-        corr[j] = add([ofq(ds[j])], conv(y, corr[j+1]))[:170]
-    head = {64: conv(r, corr[0])}
-    for k in range(63, -1, -1):
-        head[k] = add([ofq(coeff[k])], conv(a, head[k+1]))[:170]
+    ds = [delta[j, start] for j in range(order + 1)]
+    corr = {order: []}
+    for j in range(order - 1, -1, -1):
+        corr[j] = add([ofq(ds[j])], conv(y, corr[j+1]))[:cutoff]
+    head = {start: conv(r, corr[0])}
+    for k in range(start - 1, -1, -1):
+        head[k] = add([ofq(coeff[k])], conv(a, head[k+1]))[:cutoff]
     completed = conv(p, head[0])
     power = {0: [ofq(1)]}
-    for n in range(1, 18):
+    for n in range(1, seed_power + 1):
         power[n] = conv(p, power[n-1])
-    seed_product = conv(r, power[17])
+    seed_product = conv(r, power[seed_power])
     inverse_d = add([ofq(1)], list(map(neg, a)))
     inverse_product = conv(r, inverse_d)
     defect = add([ofq(1)], list(map(neg, inverse_product)))
-    require(len(a) == 30 and len(completed) == 184, "unexpected interval-list shape")
+    require(len(a) == 2 * len(p) and len(head[0]) == cutoff and
+            len(completed) == len(p) + cutoff - 1, "unexpected interval-list shape")
     require(norm(add(completed, [neg(ofq(pl[0]))])) <= ofq(parameters["prefixCap"])[0],
             "completed prefix exceeds prefixCap")
     require(norm(seed_product) <= ofq(data["seed_cap"])[0], "seed exceeds seed_cap")
     require(norm(defect) <= ofq(data["defect_cap"])[0], "inverse defect exceeds defect_cap")
-    require(coeff[64] <= Q(1, 10000) and ds[6] <= Q(37, 10**13),
+    require(coeff[start] <= COEFFICIENT_CAP and ds[order] <= DIFFERENCE_CAP,
             "coefficient/difference hypothesis fails")
 
     sections = {"core": [], "bindings": [], "checks": []}
@@ -253,31 +259,32 @@ def render_blocks(data, parameters):
     for k, value in enumerate(coeff):
         rat_def(f"c{k}", value)
     lemma("one_eq_c0", "(1 : Rat) = c0", report=False)
-    for k in range(70):
+    for k in range(last_coefficient):
         lemma(f"coefficientStep{k}",
               f"c{k} * (((2*{k}+1)^2 : Nat) : Rat) / ((4*({k}+1)*({k}+2) : Nat) : Rat) = c{k+1}")
-    emit("def weights64 : List Rat := []")
-    for k in range(63, -1, -1):
+    emit(f"def weights{start} : List Rat := []")
+    for k in range(start - 1, -1, -1):
         emit(f"def weights{k} : List Rat := c{k} :: weights{k+1}")
-    lemma("auxiliaryEq64", "haagAux 0 64 c64 = weights64", "rfl", report=False)
-    for k in range(63, -1, -1):
-        lemma(f"auxiliaryEq{k}", f"haagAux {64-k} {k} c{k} = weights{k}",
+    lemma(f"auxiliaryEq{start}", f"haagAux 0 {start} c{start} = weights{start}", "rfl", report=False)
+    for k in range(start - 1, -1, -1):
+        lemma(f"auxiliaryEq{k}", f"haagAux {start-k} {k} c{k} = weights{k}",
               f"exact auxiliaryGlue coefficientStep{k} auxiliaryEq{k+1}", report=False)
-    lemma("weights_core", "haagList 64 = weights0",
-          "change haagAux 64 0 1 = weights0\n"
-          "exact (congrArg (haagAux 64 0) one_eq_c0).trans auxiliaryEq0")
-    lemma("weights_take", "weights0.take 64 = weights0", "rfl", report=False)
-    for k in range(64, 71):
+    lemma("weights_core", f"haagList {start} = weights0",
+          f"change haagAux {start} 0 1 = weights0\n"
+          f"exact (congrArg (haagAux {start} 0) one_eq_c0).trans auxiliaryEq0")
+    lemma("weights_take", f"weights0.take {start} = weights0", "rfl", report=False)
+    for k in range(start, last_coefficient + 1):
         emit(f"def d0_{k} : Rat := c{k}")
-    for j in range(1, 7):
-        for k in range(64, 71-j):
+    for j in range(1, order + 1):
+        for k in range(start, last_coefficient + 1 - j):
             rat_def(f"d{j}_{k}", delta[j, k])
             lemma(f"differenceStep{j}_{k}", f"d{j-1}_{k} - d{j-1}_{k+1} = d{j}_{k}", report=False)
         progress(f"difference_order_{j}")
-    emit("def correctionWeights6 : List Rat := []")
-    for j in range(5, -1, -1):
-        emit(f"def correctionWeights{j} : List Rat := d{j}_64 :: correctionWeights{j+1}")
-    lemma("coefficient_literal_ok", "c64 ≤ 1/10000 ∧ d6_64 ≤ 37/10000000000000")
+    emit(f"def correctionWeights{order} : List Rat := []")
+    for j in range(order - 1, -1, -1):
+        emit(f"def correctionWeights{j} : List Rat := d{j}_{start} :: correctionWeights{j+1}")
+    lemma("coefficient_literal_ok",
+          f"c{start} ≤ {COEFFICIENT_CAP} ∧ d{order}_{start} ≤ {DIFFERENCE_CAP}")
 
     rat_list_def("plQ", pl)
     rat_list_def("rlQ", rl)
@@ -291,25 +298,27 @@ def render_blocks(data, parameters):
     lemma("r_interval_eq", "rlQ.map ofRatI = rI")
     convolution_lemma("ratioA_step", "zeroI :: convI pI pI = ratioA", "pI", "pI", p, p)
     convolution_lemma("ratioY_step", "(convI rI ratioA).map negI = ratioY", "rI", "ratioA", r, a)
-    interval_def("correction6", corr[6])
-    lemma("correctionEq6", "hornerI 170 ratioY correctionWeights6 = correction6", "rfl", report=False)
-    for j in range(5, -1, -1):
+    interval_def(f"correction{order}", corr[order])
+    lemma(f"correctionEq{order}",
+          f"hornerI {cutoff} ratioY correctionWeights{order} = correction{order}", "rfl", report=False)
+    for j in range(order - 1, -1, -1):
         interval_def(f"correction{j}", corr[j])
         convolution_lemma(f"correctionStep{j}",
-              f"(addL [ofRatI d{j}_64] (convI ratioY correction{j+1})).take 170 = correction{j}",
+              f"(addL [ofRatI d{j}_{start}] (convI ratioY correction{j+1})).take {cutoff} = correction{j}",
               "ratioY", f"correction{j+1}", y, corr[j+1])
-        lemma(f"correctionEq{j}", f"hornerI 170 ratioY correctionWeights{j} = correction{j}",
+        lemma(f"correctionEq{j}", f"hornerI {cutoff} ratioY correctionWeights{j} = correction{j}",
               f"exact correctionGlue correctionEq{j+1} correctionStep{j}", report=False)
-    interval_def("tailI", head[64])
+    interval_def("tailI", head[start])
     convolution_lemma("tail_step", "convI rI correction0 = tailI", "rI", "correction0", r, corr[0])
-    emit("def head64 : List Ival := tailI")
-    lemma("headEq64", "hornerWithTailI 170 ratioA tailI weights64 = head64", "rfl", report=False)
-    for k in range(63, -1, -1):
+    emit(f"def head{start} : List Ival := tailI")
+    lemma(f"headEq{start}",
+          f"hornerWithTailI {cutoff} ratioA tailI weights{start} = head{start}", "rfl", report=False)
+    for k in range(start - 1, -1, -1):
         interval_def(f"head{k}", head[k])
         convolution_lemma(f"headStep{k}",
-              f"(addL [ofRatI c{k}] (convI ratioA head{k+1})).take 170 = head{k}",
+              f"(addL [ofRatI c{k}] (convI ratioA head{k+1})).take {cutoff} = head{k}",
               "ratioA", f"head{k+1}", a, head[k+1])
-        lemma(f"headEq{k}", f"hornerWithTailI 170 ratioA tailI weights{k} = head{k}",
+        lemma(f"headEq{k}", f"hornerWithTailI {cutoff} ratioA tailI weights{k} = head{k}",
               f"exact headGlue headEq{k+1} headStep{k}", report=False)
     interval_def("completedI", completed)
     convolution_lemma("final_step", "convI pI head0 = completedI", "pI", "head0", p, head[0])
@@ -318,14 +327,15 @@ def render_blocks(data, parameters):
 
     interval_def("power0", power[0])
     lemma("powerEq0", "polyPowI pI 0 = power0")
-    for n in range(1, 18):
+    for n in range(1, seed_power + 1):
         interval_def(f"power{n}", power[n])
         convolution_lemma(f"powerStep{n}", f"convI pI power{n-1} = power{n}",
               "pI", f"power{n-1}", p, power[n-1])
         lemma(f"powerEq{n}", f"polyPowI pI {n} = power{n}",
               f"exact powerGlue powerEq{n-1} powerStep{n}", report=False)
     interval_def("seedI", seed_product)
-    convolution_lemma("seed_product_step", "convI rI power17 = seedI", "rI", "power17", r, power[17])
+    convolution_lemma("seed_product_step", f"convI rI power{seed_power} = seedI",
+                      "rI", f"power{seed_power}", r, power[seed_power])
     lemma("seed_literal_ok", "decide (absSum seedI ≤ ofRatLo seedCapQ) = true")
     for name, values in (("inverseD", inverse_d), ("inverseProduct", inverse_product), ("defectI", defect)):
         interval_def(name, values)
@@ -349,23 +359,23 @@ def render_blocks(data, parameters):
       rw [iterDiff_succ_apply, hu, hv, hw]'''))
     progress("source_glue")
     lemma("coefficientEq0", "Grothe.haagR 0 = c0", "exact one_eq_c0", report=False)
-    for k in range(70):
+    for k in range(last_coefficient):
         lemma(f"coefficientEq{k+1}", f"Grothe.haagR {k+1} = c{k+1}",
               f"exact coefficientGlue coefficientEq{k} coefficientStep{k}", report=False)
     progress("coefficient_bindings")
     lemma("weights_binding", "haagList Grothe.HaagerupCanonical.start = weights0",
-          "change haagList 64 = weights0\nexact weights_core")
-    for k in range(64, 71):
+          f"change haagList {start} = weights0\nexact weights_core")
+    for k in range(start, last_coefficient + 1):
         lemma(f"differenceEq0_{k}", f"iterDiff 0 Grothe.haagR {k} = d0_{k}",
               f"exact coefficientEq{k}", report=False)
-    for j in range(1, 7):
-        for k in range(64, 71-j):
+    for j in range(1, order + 1):
+        for k in range(start, last_coefficient + 1 - j):
             lemma(f"differenceEq{j}_{k}", f"iterDiff {j} Grothe.haagR {k} = d{j}_{k}",
                   f"exact differenceGlue differenceEq{j-1}_{k} differenceEq{j-1}_{k+1} differenceStep{j}_{k}",
                   report=False)
     progress("difference_bindings")
-    iter_list = ", ".join(f"iterDiff {j} Grothe.haagR 64" for j in range(6))
-    diff_rules = ", ".join(f"differenceEq{j}_64" for j in range(6))
+    iter_list = ", ".join(f"iterDiff {j} Grothe.haagR {start}" for j in range(order))
+    diff_rules = ", ".join(f"differenceEq{j}_{start}" for j in range(order))
     lemma("differences_binding", "Grothe.HaagerupCanonical.differences = correctionWeights0",
           f"change [{iter_list}] = correctionWeights0\nrw [{diff_rules}]\nrfl")
     lemma("pl_binding", "Grothe.HaagerupPower.pl = plQ")
@@ -383,24 +393,25 @@ def render_blocks(data, parameters):
           "      Grothe.HaagerupPower.pl Grothe.HaagerupPower.rl\n"
           "      (haagList Grothe.HaagerupCanonical.start) Grothe.HaagerupCanonical.differences = completedI",
           "rw [weights_binding, differences_binding]\n"
-          "change completedHeadI 170 64 Grothe.HaagerupPower.pl Grothe.HaagerupPower.rl\n"
+          f"change completedHeadI {cutoff} {start} Grothe.HaagerupPower.pl Grothe.HaagerupPower.rl\n"
           "  weights0 correctionWeights0 = completedI\n"
           "simp only [completedHeadI, p_binding, r_binding, ratioA_step, ratioY_step,\n"
           "  weights_take, correctionEq0, tail_step, headEq0, final_step]")
     lemma("seed_binding",
           "convI (Grothe.HaagerupPower.rl.map ofRatI)\n"
           "      (polyPowI (Grothe.HaagerupPower.pl.map ofRatI) Grothe.HaagerupPower.seedPower) = seedI",
-          "simp only [p_binding, r_binding, Grothe.HaagerupPower.seedPower, powerEq17, seed_product_step]")
+          f"simp only [p_binding, r_binding, Grothe.HaagerupPower.seedPower, powerEq{seed_power}, seed_product_step]")
     lemma("defect_binding", "resolventDefectI Grothe.HaagerupPower.pl Grothe.HaagerupPower.rl = defectI",
           "simp only [resolventDefectI, p_binding, r_binding, ratioA_step, inverseD_step,\n"
           "  inverseProduct_step, defect_step]")
 
     section = "checks"
     lemma("coefficient_check",
-          "Grothe.haagR Grothe.HaagerupCanonical.start ≤ 1/10000 ∧\n"
-          "      iterDiff Grothe.HaagerupCanonical.order Grothe.haagR Grothe.HaagerupCanonical.start ≤ 37/10000000000000",
-          "change Grothe.haagR 64 ≤ 1/10000 ∧ iterDiff 6 Grothe.haagR 64 ≤ 37/10000000000000\n"
-          "rw [coefficientEq64, differenceEq6_64]\nexact coefficient_literal_ok")
+          f"Grothe.haagR Grothe.HaagerupCanonical.start ≤ {COEFFICIENT_CAP} ∧\n"
+          f"      iterDiff Grothe.HaagerupCanonical.order Grothe.haagR Grothe.HaagerupCanonical.start ≤ {DIFFERENCE_CAP}",
+          f"change Grothe.haagR {start} ≤ {COEFFICIENT_CAP} ∧ "
+          f"iterDiff {order} Grothe.haagR {start} ≤ {DIFFERENCE_CAP}\n"
+          f"rw [coefficientEq{start}, differenceEq{order}_{start}]\nexact coefficient_literal_ok")
     emit("#print axioms coefficient_check")
     lemma("completed_check",
           "completedHeadOK Grothe.HaagerupCanonical.cutoff Grothe.HaagerupCanonical.start\n"

@@ -42,10 +42,12 @@ and shared-cache publication belong to the runner. The combined delivery's final
 runner evidence is recorded in #13/#85; no new full build is claimed by this source
 review. The CI comment probe uses retained `LowerAnalytic/Bridge.lean`.
 
-The unconditional canonical theorem `Grothe.haagerup_bound` proves
-`IsGrothendieckBound (1404909140/1000000000)`. Its complete finite trace and public
-wrapper passed Lean, and the focused audit passed with 96 results and zero native
-evaluation axioms. The proof uses exact continuation blocks and a generic append
+The current unconditional source `Grothe.haagerup_bound` targets
+`IsGrothendieckBound (1404909133/1000000000)` using a degree-20 polynomial from
+an exact inverse-series recipe and eight resolvent corrections (#129). Delivery CI
+for this regenerated certificate is pending. The focused policy still requires
+96 results and zero native evaluation axioms. Earlier successful validation
+records describe their pinned source snapshots, not this new certificate. The proof uses exact continuation blocks and a generic append
 identity, with no new numerical premise. `PowerData.lean` contains only the six
 rational-data definitions; the four acceptance proofs come from the canonical
 trace. The arithmetic module is `Grothe/Haagerup/CanonicalArithmetic.lean`,

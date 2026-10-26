@@ -273,8 +273,8 @@ headline endpoints are unchanged.
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
-**Unconditional upper bound.**
-`Grothe.haagerup_bound : IsGrothendieckBound (1404909140/1000000000)`
+**Unconditional upper-bound source (delivery CI pending, #129).**
+`Grothe.haagerup_bound : IsGrothendieckBound (1404909133/1000000000)`
 (`Grothe/Haagerup/Power.lean`), with no external hypothesis. The analysis is in
 `Grothe/Haagerup/`: the shared Gaussian phase and planar laws (`Phase`); the charge-one
 Hermite coefficient, determined by odd Gaussian moments and the recurrence
@@ -288,20 +288,23 @@ standard Gaussian are independent standard Gaussians, by characteristic function
 two complex Gaussians, the radial identity and the phase rounding as a disk-valued rounding
 (`Identity`: `integral_phase_pair`, `Phi2_radial`, `haagerup_disk`, `haagerup_dominated`). Disk-valued
 roundings are dominated (`Grothe/Upper/Disk.lean`); polynomial preprocessors are realised by tensor powers
-(`Realise.lean`) and composed with radial kernels (`Compose.lean`). The degree-29 preprocessor and degree-64 approximate inverse are
-generated from `data/haagerup-resolvent/certificate.json`. The coefficient norm of P is exactly one.
+(`Realise.lean`) and composed with radial kernels (`Compose.lean`). The degree-41 preprocessor uses a degree-20 polynomial P and a degree-64 approximate inverse R.
+`tools/gen_haagerup_certificate.py` reproduces them from `data/haagerup-resolvent/recipe.json`
+using exact inverse-series recurrences and 60-bit dyadic normalization and rounding.
+`tools/gen_haagerup_power.py` then generates the Lean inputs from `certificate.json`.
+The coefficient norm of P is at most one.
 `Upper/FiniteDifference.lean` proves closure of completely monotone sequences under products;
 `Haagerup/CompleteMonotone.lean` applies the parameter-shift identity for rising-factorial
 quotients to prove nonnegativity of every Haagerup coefficient difference.
 `Upper/ResolventCompletion.lean` proves the all-order resolvent expansion with its defect
 and vanishing-boundary remainder. The concrete construction combines 64 series terms with
-six resolvent correction terms before taking absolute values. The prefix check proves
-a cap of 9136/10¹² for its first 170 coefficients. `Upper/WeightedTail.lean` bounds
-all omitted coefficients of a polynomial F by ‖F((3/2)X)‖₁/(3/2)^170.
+eight resolvent correction terms before taking absolute values. The prefix check uses
+a cap of 74/10¹² for its first 172 coefficients. `Upper/WeightedTail.lean` bounds
+all omitted coefficients of a polynomial F by ‖F((3/2)X)‖₁/(3/2)^172.
 Exact rational arithmetic gives ‖P((3/2)X)‖₁ ≤ 21/20 and ‖R((3/2)X)‖₁ ≤ 9;
-finite norm estimates then give ‖F((3/2)X)‖₁ ≤ 10¹⁸ and an omitted contribution
-at most 4/10¹². Thus the full normalized finite residual is at most 9.14/10⁹,
-and the complete infinite remainder at most 0.24/10⁹. The weighted estimate
+finite norm estimates use ‖F((3/2)X)‖₁ ≤ 10²⁰ and an omitted contribution
+at most 52/10¹². The full normalized finite-residual cap is 126/10¹²,
+and the infinite-remainder cap is 14/10¹². The weighted estimate
 concerns a finite polynomial and assumes no analytic continuation.
 The proof uses the inverse defect≤10⁻¹², the short seed norm ‖RP¹⁷‖₁≤249/500,
 and the elementary bound ‖RA‖₁≤2. It needs no fourth-power or gamma estimate.
@@ -318,15 +321,16 @@ the arithmetic equalities nor the trust assumptions.
 `CanonicalProof.lean` assembles the bound from them. The generator check
 `tools/gen_haagerup_canonical_check.py --check` verifies byte-for-byte reproducibility;
 generation is separate from Lean proof checking. The public wrapper gives
-K≤1.404909140. The focused audit checks 96 results using only `propext`,
-`Classical.choice`, and `Quot.sound`.
+the source target K≤1.404909133. The focused policy requires 96 results using only
+`propext`, `Classical.choice`, and `Quot.sound`; acceptance of the regenerated
+numerical trace awaits delivery CI.
 `PowerData.lean` contains only the six definitions `pl`, `rl`, `seedPower`,
 `seedCap`, `defectCap`, and `slope`. The data module has no numerical theorem;
 all four acceptance proofs come from the canonical trace.
 `Upper/ResolventCertificate.lean` proves prefix-check soundness, and
 `CanonicalProof.lean` adds the weighted finite tail. Independent directed replay
 is provided by `tools/verify_haagerup_canonical.py`. The focused report
-`scratch/AxiomsPower.lean`, checked with `--haagerup-power`, confirms zero native axioms.
+`scratch/AxiomsPower.lean`, checked with `--haagerup-power`, permits zero native axioms.
 Normal `ready/*` delivery CI builds and audits the combined tree before merging it.
 
 **Lower bound.** `Grothe.Research.LawNodeLower.profile_bound_of_law_nodes`
