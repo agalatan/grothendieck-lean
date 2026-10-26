@@ -74,7 +74,9 @@ The generated modules are `D/C/N14x150` with `R14x150_0..1`, and `D/C/N14x200` w
 - The test ran on the laptop, not the droplet. The droplet was below the free space needed for a fresh dependency
   build (≥ 3 GB floor), and track B's 14:280 diagnostic was running there.
 - `CapPieceRange` / `CapPieceNodes` are imported by `Grothe.lean`, so CI builds them. The generated
-  `CapPieces/*` modules are not yet imported anywhere: build them explicitly with
+  `CapPieces/*` modules are explicitly listed in `data/root-imports-exclude.txt`, so regenerating
+  the roots keeps their expensive native facts outside the default build.
+  They are not yet wired into `GrotheCaps`: build them explicitly with
   `lake build Grothe.LowerAnalytic.CapPieces.N<k>x<i>`.
 
 ## How to continue

@@ -147,17 +147,19 @@ def cmd_plan(pieces_path, solved_dir, out_dir):
             for g in sorted(GRIDS):
                 if g in v and v[g]["status"] in ("pass", "fixed"):
                     pick = (g, v[g]); break
+            if pick is None and stored in v and v[stored]["status"] == "cap_up":
+                # a cap increase is accepted only on the stored grid (coarser grids lose ~3e-6 .. 6e-5 of cap)
+                r = v[stored]
+                pick = (stored, r)
+                caps.append((k, i, j, stored, r["cap_up_float"]))
             if pick is None:
-                cand = [v[g] for g in sorted(GRIDS, reverse=True) if g in v and v[g]["status"] == "cap_up"]
-                if cand:
-                    best = min(cand, key=lambda r: F(r["cap_up"]))
-                    pick = (best["grid"], best)
-                    caps.append((k, i, j, best["grid"], best["cap_up_float"]))
-            if pick is None:
+                # not decided on a cheaper grid: keep the stored grid (where the stored slack, >= 1e-6 for every
+                # non-centre piece, already certifies it with its stored multipliers)
                 unplanned += 1
                 g = stored
-                rows.append({"j": j, "grid": g, "status": "unplanned", "tested": sorted(v)})
+                rows.append({"j": j, "grid": g, "status": "stored", "tested": sorted(v)})
                 tot_plan += SEC[g]
+                count[g] += 1
                 continue
             g, r = pick
             count[g] += 1
@@ -166,11 +168,12 @@ def cmd_plan(pieces_path, solved_dir, out_dir):
                          "tested": sorted(v)})
         json.dump({"k": k, "i": i, "pieces": rows}, open(os.path.join(out_dir, f"{k}x{i}.json"), "w"), indent=1)
     print(f"pieces per chosen grid: " + ", ".join(f"{GRIDS[g]} {count[g]}" for g in GRIDS) +
-          f", unplanned {unplanned}")
+          f" (of which kept on the stored grid without a cheaper test: {unplanned})")
     print(f"Lean check time, these nodes: stored grids {tot_stored / 3600:.2f} CPU-h -> plan {tot_plan / 3600:.2f} CPU-h")
-    print(f"pieces needing a cap increase: {len(caps)}" +
-          ("" if not caps else f", max {max(c[4] for c in caps):.3g}: " +
-           ", ".join(f"{k}:{i}/{j} g{g} {d:.2g}" for k, i, j, g, d in caps)))
+    mx = max((c[4] for c in caps), default=0)
+    print(f"pieces needing a cap increase (stored grid): {len(caps)}; global maximum {mx:.3g}" +
+          ("" if not caps else " at " + ", ".join(f"{k}:{i}/{j}" for k, i, j, g, d in caps if d == mx) +
+           "; per piece: " + ", ".join(f"{k}:{i}/{j} {d:.2g}" for k, i, j, g, d in caps)))
 
 
 if __name__ == "__main__":
