@@ -143,36 +143,45 @@ def invIm (R : SC) (neg : Bool) : SC × CI :=
   let di := CI.inv d
   (⟨CI.mul m11 di, CI.neg (CI.mul m01 di), CI.mul m00 di⟩, d)
 
+/-- `jI` as a symmetric matrix, negated: `−j I`. -/
+def negjI (j : Ival) : SR := SR.smul (negI (intI 1)) ⟨j, zeroI, j⟩
+/-- `1/2`. -/
+def half : Ival := invPosI (intI 2)
+/-- `G± = Re (I ∓ R)⁻¹ − jI` (`neg = false`: `G₊`). -/
+def gpm (j : Ival) (R : SC) (neg : Bool) : SR := SR.add (SC.re (invIm R neg).1) (negjI j)
+/-- `Z = (G₊ + G₋)/2`. -/
+def zOf (j : Ival) (R : SC) : SR := SR.smul half (SR.add (gpm j R false) (gpm j R true))
+/-- `Cr = (G₊ − G₋)/2`. -/
+def crOf (j : Ival) (R : SC) : SR := SR.smul half (SR.add (gpm j R false) (SR.smul (negI (intI 1)) (gpm j R true)))
+/-- `Ci = Im((I − R)⁻¹ − (I + R)⁻¹)/2`. -/
+def ciOf (R : SC) : SR :=
+  SR.smul half (SR.add (SC.im (invIm R false).1) (SR.smul (negI (intI 1)) (SC.im (invIm R true).1)))
+/-- `Z⁻¹ = adj Z / det Z`. -/
+def ziOf (j : Ival) (R : SC) : SR := SR.smul (invPosI (zOf j R).det) (zOf j R).adj
+/-- `T = G₋ Z⁻¹ G₊`. -/
+def tOf (j : Ival) (R : SC) : SR :=
+  (GR.mul (GR.mul (GR.ofSR (gpm j R true)) (GR.ofSR (ziOf j R))) (GR.ofSR (gpm j R false))).toSR
+/-- `E = (Cr Z⁻¹ Cr + Ci Z⁻¹ Ci)/2`. -/
+def eOf (j : Ival) (R : SC) : SR :=
+  SR.smul half (SR.add (SR.sand (crOf j R) (ziOf j R)) (SR.sand (ciOf R) (ziOf j R)))
+/-- `W = 2T + E`. -/
+def wOf (j : Ival) (R : SC) : SR := SR.add (SR.smul (intI 2) (tOf j R)) (eOf j R)
+/-- `|det(I − R)|² |det(I + R)|²`. -/
+def ndOf (R : SC) : Ival := mulI (CI.normSq (invIm R false).2) (CI.normSq (invIm R true).2)
+/-- `64 j⁴ |det(I − R²)|² det Z det W`. -/
+def denOf (j : Ival) (R : SC) : Ival :=
+  mulI (mulI (mulI (mulI (intI 64) (mulI (mulI j j) (mulI j j))) (ndOf R)) (zOf j R).det) (wOf j R).det
+
+/-- All gates: both determinants nonzero, `Z ≻ 0`, `T ≻ 0`, positive denominator. -/
+def gatesOK (j : Ival) (R : SC) : Bool :=
+  posI (CI.normSq (invIm R false).2) && posI (CI.normSq (invIm R true).2) && (zOf j R).PD && (tOf j R).PD &&
+    posI (denOf j R)
+
 /-- Gates and the scaled upper bound of `1/(64 j⁴ |det(I − R²)|² det Z det W)`; `none` if a gate fails.
-Cancellation-free form: `G± = Re (I ∓ R)⁻¹ − jI = Z ± Cr`, `Z = (G₊ + G₋)/2`, `Cr = (G₊ − G₋)/2`,
-`Ci = Im((I − R)⁻¹ − (I + R)⁻¹)/2`, `T = G₋ Z⁻¹ G₊`, `|det(I − R²)|² = |det(I − R)|² |det(I + R)|²`. -/
+Cancellation-free form: `G± = Re (I ∓ R)⁻¹ − jI = Z ± Cr`, `T = G₋ Z⁻¹ G₊`,
+`|det(I − R²)|² = |det(I − R)|² |det(I + R)|²`. -/
 def schurValue (j : Ival) (R : SC) : Option Int :=
-  let (Ap, dp) := invIm R false
-  let (Am, dm) := invIm R true
-  let ndp := CI.normSq dp
-  let ndm := CI.normSq dm
-  if !(posI ndp && posI ndm) then none else
-  let jI : SR := ⟨j, zeroI, j⟩
-  let negj : SR := SR.smul (negI (intI 1)) jI
-  let Gp := SR.add (SC.re Ap) negj
-  let Gm := SR.add (SC.re Am) negj
-  let half := invPosI (intI 2)
-  let Z := SR.smul half (SR.add Gp Gm)
-  let Cr := SR.smul half (SR.add Gp (SR.smul (negI (intI 1)) Gm))
-  let Ci := SR.smul half (SR.add (SC.im Ap) (SR.smul (negI (intI 1)) (SC.im Am)))
-  if !(Z.PD) then none else
-  let dZ := Z.det
-  let dZi := invPosI dZ
-  let Zi := SR.smul dZi Z.adj
-  let T := (GR.mul (GR.mul (GR.ofSR Gm) (GR.ofSR Zi)) (GR.ofSR Gp)).toSR
-  if !(T.PD) then none else
-  let E := SR.smul half (SR.add (SR.sand Cr Zi) (SR.sand Ci Zi))
-  let W := SR.add (SR.smul (intI 2) T) E
-  let dW := W.det
-  let j4 := mulI (mulI j j) (mulI j j)
-  let den := mulI (mulI (mulI (mulI (intI 64) j4) (mulI ndp ndm)) dZ) dW
-  if !(posI den) then none else
-  some (invPosI den).hi
+  if gatesOK j R then some (invPosI (denOf j R)).hi else none
 
 /-! ### The covariance along the circle -/
 
