@@ -1,0 +1,25 @@
+{
+  "scope": "Rebased tree checks; no discovery searches or Gaussian error enclosures",
+  "checks": [
+    {
+      "check": "fresh-wick",
+      "status": "PASS",
+      "seconds": 0.03987491700172541
+    },
+    {
+      "check": "moment-extension",
+      "status": "PASS",
+      "seconds": 0.07993604099829099
+    },
+    {
+      "check": "moment-negative-controls",
+      "status": "PASS",
+      "seconds": 4.7993275000008
+    },
+    {
+      "check": "incumbent-prefix",
+      "status": "PASS",
+      "seconds": 0.09489654200297082
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "claimed_uniform_saving": "9/20000000",
+  "endpoints": [
+    {
+      "path": "handoff/research-third-decimal/rank-one-certification-20261023/law/m15-box8150-c1n5.json",
+      "sha256": "0883f86fcb7139ce5a442c325bad5dc5945000bfd3ec83a01e56ef3b074d599b"
+    },
+    {
+      "path": "handoff/research-third-decimal/rank-one-certification-20261023/law/m15-box8150-c0n6.json",
+      "sha256": "07ea5d18d31821754882d5001b1958734a8cb1639047947233aea3fb1a01d7ff"
+    }
+  ],
+  "format": "rankone-tau-bridge/v1"
+}

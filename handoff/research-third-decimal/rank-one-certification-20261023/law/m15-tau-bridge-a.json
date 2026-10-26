@@ -1,0 +1,14 @@
+{
+  "claimed_uniform_saving": "1/5000000",
+  "endpoints": [
+    {
+      "path": "handoff/research-third-decimal/rank-one-certification-20261023/law/m15-reused-stein-node.json",
+      "sha256": "cdc3369c037de5dab1e5b216422e892d3d970f6f26f23fca75514e72296330a3"
+    },
+    {
+      "path": "handoff/research-third-decimal/rank-one-certification-20261023/law/m15-reoptimized-c1n5.json",
+      "sha256": "d65ceafbceed07fe632ebc1cba94f586115171aa5a7138cbb90db74608dc285a"
+    }
+  ],
+  "format": "rankone-tau-bridge/v1"
+}

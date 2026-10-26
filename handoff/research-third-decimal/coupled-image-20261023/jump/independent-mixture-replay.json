@@ -1,0 +1,192 @@
+{
+  "status": "EXACT_SEPARABLE_PHASE_NEUTRAL_MIXTURE_CEILING",
+  "scope": "Arbitrary finite/countable convex mixtures of C=phi(p)*K, where p is a real odd scalar Wiener contraction and K is any complex even Wiener series with norm <=1. This includes independent bounded two-map neutral Gaussian responses and separate scalar channel contractions through Hermite coefficient Cauchy-Schwarz. Full residual scores, not just exact inverses, are covered.",
+  "ordinary_degrees_retained": [
+    1,
+    3,
+    5,
+    7
+  ],
+  "lambda3_lambda5_lambda7": [
+    "-303060503/500000000",
+    "-54403099/200000000",
+    "-762296131/1000000000"
+  ],
+  "normalized_polynomial_ceiling": "22661/25000",
+  "normalized_neutral_tail_cap": "2286888393/2560000000",
+  "normalized_neutral_tail_strict_margin": "33598007/2560000000",
+  "neutral_extension_proof": "Split K=k0+E, E even with minimum degree two and |k0|+||E||W<=1. The exact phase-only certificate also bounds the absolute dual price by p->-p symmetry. A nonconstant neutral factor can see only the first three phase powers through degree seven: ||head5 phi(p)||W/(pi/4)<=1+1/8+3/64=75/64. Thus the absolute dual price of phi(p)*E is <=(pi/4)*(75/64)*lambda_max*||E||W, strictly less than the phase-only ceiling times ||E||W. Triangle inequality and convexity finish.",
+  "pi_lower_rational": "3481777204478187906420048138588000041587894366999841623527543937118716/1108284105674768852535081267225855778430670397938229143619537353515625",
+  "pi_upper_rational": "812217595099382956409151475758694338539045009437476833945001089364728/258536890252556764763046128145244800468981338781304657459259033203125",
+  "full_score_upper_rational": "4365669573659183390699189182202982069647366925726437982454380855335413/6132279180563490625309443267202201149643769895192235708236694335937500",
+  "full_score_upper_float": 0.711916311229983,
+  "incumbent_comparison_lower_rational": "711947/1000000",
+  "separation_margin_lower_rational": "3011073687233112287888376829174915809057917535818453081743472836517/98116466889015850004951092275235218394300318323075771331787109375000000",
+  "patches": [
+    {
+      "accepted_leaves": 1,
+      "branch_nodes": 0,
+      "maximum_depth": 0,
+      "smallest_exact_leaf_margin": "150159497/500000000",
+      "sign_a": -1,
+      "sign_b": -1,
+      "sign_remainder": -1,
+      "remainder_coordinate": "c"
+    },
+    {
+      "accepted_leaves": 1,
+      "branch_nodes": 0,
+      "maximum_depth": 0,
+      "smallest_exact_leaf_margin": "150159497/500000000",
+      "sign_a": -1,
+      "sign_b": -1,
+      "sign_remainder": 1,
+      "remainder_coordinate": "c"
+    },
+    {
+      "accepted_leaves": 1,
+      "branch_nodes": 0,
+      "maximum_depth": 0,
+      "smallest_exact_leaf_margin": "144143869/1000000000",
+      "sign_a": -1,
+      "sign_b": -1,
+      "sign_remainder": -1,
+      "remainder_coordinate": "d"
+    },
+    {
+      "accepted_leaves": 1,
+      "branch_nodes": 0,
+      "maximum_depth": 0,
+      "smallest_exact_leaf_margin": "150159497/500000000",
+      "sign_a": -1,
+      "sign_b": -1,
+      "sign_remainder": 1,
+      "remainder_coordinate": "d"
+    },
+    {
+      "accepted_leaves": 1,
+      "branch_nodes": 0,
+      "maximum_depth": 0,
+      "smallest_exact_leaf_margin": "126884901/200000000",
+      "sign_a": -1,
+      "sign_b": 1,
+      "sign_remainder": -1,
+      "remainder_coordinate": "c"
+    },
+    {
+      "accepted_leaves": 1,
+      "branch_nodes": 0,
+      "maximum_depth": 0,
+      "smallest_exact_leaf_margin": "235691099/200000000",
+      "sign_a": -1,
+      "sign_b": 1,
+      "sign_remainder": 1,
+      "remainder_coordinate": "c"
+    },
+    {
+      "accepted_leaves": 1,
+      "branch_nodes": 0,
+      "maximum_depth": 0,
+      "smallest_exact_leaf_margin": "144143869/1000000000",
+      "sign_a": -1,
+      "sign_b": 1,
+      "sign_remainder": -1,
+      "remainder_coordinate": "d"
+    },
+    {
+      "accepted_leaves": 1,
+      "branch_nodes": 0,
+      "maximum_depth": 0,
+      "smallest_exact_leaf_margin": "756280503/500000000",
+      "sign_a": -1,
+      "sign_b": 1,
+      "sign_remainder": 1,
+      "remainder_coordinate": "d"
+    },
+    {
+      "accepted_leaves": 8,
+      "branch_nodes": 7,
+      "maximum_depth": 7,
+      "smallest_exact_leaf_margin": "1927898175049404363/123145302310912000000000",
+      "sign_a": 1,
+      "sign_b": -1,
+      "sign_remainder": -1,
+      "remainder_coordinate": "c"
+    },
+    {
+      "accepted_leaves": 8,
+      "branch_nodes": 7,
+      "maximum_depth": 7,
+      "smallest_exact_leaf_margin": "1927898175049404363/123145302310912000000000",
+      "sign_a": 1,
+      "sign_b": -1,
+      "sign_remainder": 1,
+      "remainder_coordinate": "c"
+    },
+    {
+      "accepted_leaves": 26,
+      "branch_nodes": 25,
+      "maximum_depth": 9,
+      "smallest_exact_leaf_margin": "492137708542753517/788129934789836800000000",
+      "sign_a": 1,
+      "sign_b": -1,
+      "sign_remainder": -1,
+      "remainder_coordinate": "d"
+    },
+    {
+      "accepted_leaves": 8,
+      "branch_nodes": 7,
+      "maximum_depth": 7,
+      "smallest_exact_leaf_margin": "1927898175049404363/123145302310912000000000",
+      "sign_a": 1,
+      "sign_b": -1,
+      "sign_remainder": 1,
+      "remainder_coordinate": "d"
+    },
+    {
+      "accepted_leaves": 1,
+      "branch_nodes": 0,
+      "maximum_depth": 0,
+      "smallest_exact_leaf_margin": "13892195803/1024000000000",
+      "sign_a": 1,
+      "sign_b": 1,
+      "sign_remainder": -1,
+      "remainder_coordinate": "c"
+    },
+    {
+      "accepted_leaves": 1,
+      "branch_nodes": 0,
+      "maximum_depth": 0,
+      "smallest_exact_leaf_margin": "13892195803/1024000000000",
+      "sign_a": 1,
+      "sign_b": 1,
+      "sign_remainder": 1,
+      "remainder_coordinate": "c"
+    },
+    {
+      "accepted_leaves": 6,
+      "branch_nodes": 5,
+      "maximum_depth": 5,
+      "smallest_exact_leaf_margin": "162711913017468231/1202590842880000000000",
+      "sign_a": 1,
+      "sign_b": 1,
+      "sign_remainder": -1,
+      "remainder_coordinate": "d"
+    },
+    {
+      "accepted_leaves": 1,
+      "branch_nodes": 0,
+      "maximum_depth": 0,
+      "smallest_exact_leaf_margin": "13892195803/1024000000000",
+      "sign_a": 1,
+      "sign_b": 1,
+      "sign_remainder": 1,
+      "remainder_coordinate": "d"
+    }
+  ],
+  "total_accepted_leaves": 67,
+  "maximum_depth": 9,
+  "proof": "Every l1-ball preprocessor coefficient quadruple is priced after exact linear elimination of coefficients c,d. Sixteen sign/remainder patches parameterize a=\u00b1u,b=\u00b1(1-u)v and remaining l1 mass in signed c or d. Exact bivariate Bernstein subdivision proves a+lambda3*g3+lambda5*g5+lambda7*g7<=z on all patches. Each dual multiplier lies in [-1,1], so the same affine upper bound controls the full residual score of every convex mixture. Higher coefficients only decrease the full residual score; no tail estimate is assumed.",
+  "not_claimed": "Complex-coefficient charged preprocessors; response factors depending jointly on the phase coordinate modulus and neutral coordinates; a first charged response other than pure phase; arbitrary multichannel or coupled responses; or a global Grothendieck endpoint.",
+  "script_sha256": "88da474417986e5d362685310b49cd2b08dedee9f9070e8c18d23b657ffe836e"
+}

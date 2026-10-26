@@ -1,0 +1,19 @@
+{
+  "status": "PASS_EXACT_SAME_HYPOTHESIS_HARDY_BUDGET",
+  "slope": "1779870886481/2500000000000",
+  "head_residual": "582265595509/500000000000000000",
+  "linear_lower": "355973595030604491/500000000000000000",
+  "linear_weighted_square_decimal": 0.5453338392843297,
+  "remaining_hardy_budget_decimal": 1.2046661607156703,
+  "tail": "19055527/625000000000000",
+  "tail_decimal": 3.04888432e-08,
+  "residual": "597510017109/500000000000000000",
+  "endpoint": "500000000000000000/355973579786182891",
+  "strict_upper": "1.404598623023",
+  "endpoint_decimal": 1.4045986230223244,
+  "old_endpoint": "500000000000000000/355973576656604491",
+  "improvement_decimal": 1.2348673608212466e-08,
+  "new_numerical_hypotheses": false,
+  "new_native_facts": false,
+  "scope": "Exact rational arithmetic. Original compare, energy_close and hardy hypotheses retained; all Gaussian integrations remain inherited."
+}

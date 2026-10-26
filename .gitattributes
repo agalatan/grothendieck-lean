@@ -1,3 +1,17 @@
+# Preserve the recorded SHA-256 of these inherited replay inputs, including
+# their original whitespace. Current research code uses normal whitespace checks.
+handoff/lower-stein/cert-0745d/tools/exactint_base.py whitespace=-blank-at-eof
+handoff/lower-stein/cert-0745e/tools/exactint_base.py whitespace=-blank-at-eof
+handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/review/rebase_support/exact_base.py whitespace=-blank-at-eof
+handoff/lower-stein/cert-0745d/tools/replay_midcaps.py whitespace=-blank-at-eol
+
+# Frozen exact replay tables are reviewed through their manifest and replays.
+handoff/**/*.json linguist-generated=true
+Grothe/Research/RefinedCoverData.lean linguist-generated=true
+
+# Preserve blank timestamped lines in the raw successful GitHub Actions log.
+handoff/research-third-decimal/needle-20261023/FULL_CI.log whitespace=-blank-at-eol linguist-generated=true
+
 # Line lists that concurrent deliveries extend: union-merge (keeps both sides' lines). Order and duplicates are
 # checked by `python3 tools/gen_root_imports.py --check` in CI. Grothe.lean / GrotheKernel.lean are NOT here:
 # they are generated; resolve a conflict there by running `python3 tools/gen_root_imports.py`.

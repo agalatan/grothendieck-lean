@@ -4,22 +4,22 @@ import Grothe.Upper.HeadWeight
 import Grothe.Upper.ComparisonData
 
 /-!
-# Weighted selected-spectrum upper certificate
+# Weighted selected-spectrum upper bound with a linear Hardy-budget deduction
 
 Under the explicit Gaussian inputs,
-`K_G^ℂ ≤ 500000000000000000/355973696735190991 < 1.404598161566`.
+`K_G^ℂ ≤ 500000000000000000/355973699864771491 < 1.404598149218`.
 
-Only the blocks `headIdx 501` can enter the kernel head, and each is priced
-by its retained coefficient cost. Their comparison
+Only the blocks `headIdx 501` can enter the kernel head. Each block retains
+its proved coefficient cost. The resulting comparison
 allowance is `compareQ = 13311891/15625000000000`; the concrete theorem
-obtains it from spectrally supported error pieces in `LocalizedComparison`.
-The finite table head remains checked by `head_check` against the same slope
-and `headCapQ`. Table accuracy and the actual rounding's Hardy tail then give
-residual `458437859009/(5·10¹⁷)`. No comparison of the infinite table tails is
-used in this assembly. The raw rounding and its polynomial preprocessors are
-unchanged. All coefficient costs are proved from the preprocessors. The unchanged inherited
-Gaussian component-error and Hardy inputs are
-identified in `data/localized-comparison/PROOF.md`.
+obtains it from the component-error inputs in `LocalizedComparison`.
+The checked finite head and table accuracy force the linear coefficient to
+be at least `linearLowerQ`. Its weighted square is deducted from the same
+Hardy budget `7/4`, giving tail `30488839/10¹⁵` and total residual
+`455308278509/(5·10¹⁷)`. No comparison of infinite table tails or stronger
+Hardy hypothesis is used. The raw rounding and preprocessors are unchanged.
+The remaining Gaussian inputs are explicit in `DirectHyps` and in the
+concrete `ComparisonInputs` wrapper.
 -/
 
 namespace Grothe
@@ -28,11 +28,22 @@ open Upper GrotheKernel Finset
 
 namespace Upper
 
-/-- The bound for the kernel coefficients of the rounding beyond degree `501`. -/
-def tailQ : ℚ := 36748 / 1000000000000
+/-- The existing comparison and head errors, before the infinite tail. -/
+def headResidualQ : ℚ := compareQ + headCapQ + energyErrQ
 
-/-- The upper inputs for the energy tables of the smoothed rounding and
-the correspondingly smoothed truncation of `F₀ + v`. -/
+/-- The positive linear lower bound derived from the existing head residual. -/
+def linearLowerQ : ℚ := slopeQ - headResidualQ
+
+/-- The Hardy budget after removing the linear coefficient and shifting the radial index. -/
+def shiftedBudgetQ : ℚ :=
+  (7 / 4 - linearLowerQ ^ 2 * (4149 / 4000) ^ 2) / (4149 / 4000) ^ 4
+
+/-- The refined bound for the kernel coefficients beyond degree `501`. -/
+def tailQ : ℚ := 30488839 / 1000000000000000
+
+/-- The analytic and numerical inputs of the upper bound, for the energy tables `E` of the
+rounding `T = F₀ P₃(φ)` and `EX` of its truncation `X = F₀ + v` (`E (n, m)` is the energy of
+primary degree `n` and auxiliary degree `m`). -/
 structure DirectHyps (E EX : ℕ × ℕ → ℝ) : Prop where
   /-- The kernel `z ↦ Σ_j kernelCoeff E j · z|z|^{2j}` is dominated (it is the correlation kernel
   of the rounding). -/
@@ -70,39 +81,11 @@ theorem head_le {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) :
   unfold kernelCoeff
   linarith
 
-/-- The exact comparison `(7/4) · (4000/4149)^{1006} ≤ tailQ² (1 − (4000/4149)⁴)` of the tail. -/
-theorem tail_numeric :
-    (7 / 4 : ℝ) * (4149 / 4000 : ℝ)⁻¹ ^ (2 * (2 * 251 + 1))
-      ≤ (tailQ : ℝ) ^ 2 * (1 - (4149 / 4000 : ℝ)⁻¹ ^ 4) := by
-  have hN : (32410953319981359375000000000000000000 * 4000 ^ 1006 : ℕ)
-      ≤ 3403782714698914680569 * 4149 ^ 1006 := by
-    decide +kernel
-  have hR : (32410953319981359375000000000000000000 * 4000 ^ 1006 : ℝ)
-      ≤ 3403782714698914680569 * 4149 ^ 1006 := by
-    exact_mod_cast hN
-  have hb : (0 : ℝ) < 4149 ^ 1006 := by positivity
-  rw [show 2 * (2 * 251 + 1) = 1006 by norm_num,
-    show (4149 / 4000 : ℝ)⁻¹ = 4000 / 4149 by norm_num, div_pow]
-  generalize (4000 : ℝ) ^ 1006 = a at hR ⊢
-  generalize (4149 : ℝ) ^ 1006 = b at hR hb ⊢
-  rw [show (7 / 4 : ℝ) * (a / b) = 7 * a / (4 * b) by ring, div_le_iff₀ (by positivity)]
-  norm_num [tailQ]
-  linarith
-
-/-- The kernel of the rounding beyond degree `501`. -/
-theorem tail_le {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) :
-    ∑' n, |kernelCoeff E (n + 251)| ≤ (tailQ : ℝ) :=
-  hardy_tail _ _ (by norm_num) _ hE.hardy 251 _ (by norm_num [tailQ]) tail_numeric
-
-/-- The complete upper bound from a weighted finite selected-block comparison. Its
-concrete Gaussian wrapper derives this comparison from the component-error
-inputs and native band-mass check. The other numerical inputs are the stored
-energy-table accuracy and the actual kernel's Hardy bound. The finite head
-is checked natively; all transfer and endpoint arithmetic are proved here. -/
-theorem fresh_upper (E EX : ℕ × ℕ → ℝ) (hE : DirectHyps E EX) :
-    IsGrothendieckBound (500000000000000000 / 355973696735190991) := by
-  have hs := summable_kernelCoeff hE.summable
-  have hloc := head_residual_le_weighted primaryPoly auxPoly auxPoly_coeff_zero
+/-- The same hypotheses used by `fresh_upper` bound the complete finite head. -/
+theorem head_residual_le {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) :
+    ∑ j ∈ range 251, |kernelCoeff E j - if j = 0 then (slopeQ : ℝ) else 0|
+      ≤ (headResidualQ : ℝ) := by
+  have hloc := Upper.head_residual_le_weighted primaryPoly auxPoly auxPoly_coeff_zero
     E EX hE.parity (N := 501) (K := 251) (by norm_num) (slopeQ : ℝ) comparisonWeight
     (fun p _ => comparisonWeight_sound p)
   have heq : (∑ j ∈ range 251,
@@ -115,25 +98,85 @@ theorem fresh_upper (E EX : ℕ × ℕ → ℝ) (hE : DirectHyps E EX) :
       bivarKernel_eq_head primaryPoly auxPoly auxPoly_coeff_zero EX hE.parityX
         (by have := mem_range.1 hj; omega)]
   rw [heq] at hloc
-  have hh : ∑ j ∈ range 251, |kernelCoeff E j - if j = 0 then (slopeQ : ℝ) else 0|
-      ≤ (compareQ : ℝ) + ((headCapQ : ℝ) + energyErrQ) := by
-    have h := hloc.trans (add_le_add (head_le hE) hE.compare)
-    change (∑ j ∈ range 251, |kernelCoeff E j - if j = 0 then (slopeQ : ℝ) else 0|)
-      ≤ (headCapQ : ℝ) + energyErrQ + compareQ at h
-    linarith
+  have h := hloc.trans (add_le_add (Grothe.head_le hE) hE.compare)
+  change (∑ j ∈ range 251, |kernelCoeff E j - if j = 0 then (slopeQ : ℝ) else 0|)
+    ≤ (headCapQ : ℝ) + energyErrQ + compareQ at h
+  calc _ ≤ (headCapQ : ℝ) + energyErrQ + compareQ := h
+    _ = (headResidualQ : ℝ) := by norm_num [headResidualQ]; ring
+
+/-- In particular, the linear coefficient already consumes part of the Hardy budget. -/
+theorem linear_lower {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) :
+    (linearLowerQ : ℝ) ≤ kernelCoeff E 0 := by
+  have hh := head_residual_le hE
+  have hz : |kernelCoeff E 0 - (slopeQ : ℝ)| ≤
+      ∑ j ∈ range 251, |kernelCoeff E j - if j = 0 then (slopeQ : ℝ) else 0| := by
+    simpa using (single_le_sum (fun j (_ : j ∈ range 251) =>
+      abs_nonneg (kernelCoeff E j - if j = 0 then (slopeQ : ℝ) else 0))
+      (show 0 ∈ range 251 by simp))
+  have ha := (abs_le.mp (hz.trans hh)).1
+  norm_num [linearLowerQ] at ⊢
+  linarith
+
+/-- An exact integer check, elaborated into a kernel proof, gives the improved tail cap. -/
+theorem tail_numeric :
+    (shiftedBudgetQ : ℝ) * (4149 / 4000 : ℝ)⁻¹ ^ (2 * (2 * 250 + 1))
+      ≤ (tailQ : ℝ) ^ 2 * (1 - (4149 / 4000 : ℝ)⁻¹ ^ 4) := by
+  have hN : (308394442958532133083118700595891757420014016 * 4000 ^ 1002 : ℕ)
+      ≤ 37488336509491942652785364321 * 4149 ^ 1002 := by
+    decide +kernel
+  have hR : (308394442958532133083118700595891757420014016 * 4000 ^ 1002 : ℝ)
+      ≤ 37488336509491942652785364321 * 4149 ^ 1002 := by
+    exact_mod_cast hN
+  have hb : (0 : ℝ) < 4149 ^ 1002 := by positivity
+  rw [show 2 * (2 * 250 + 1) = 1002 by norm_num,
+    show (4149 / 4000 : ℝ)⁻¹ = 4000 / 4149 by norm_num, div_pow]
+  generalize (4000 : ℝ) ^ 1002 = a at hR ⊢
+  generalize (4149 : ℝ) ^ 1002 = b at hR hb ⊢
+  norm_num [shiftedBudgetQ, linearLowerQ, headResidualQ, compareQ, headCapQ,
+    energyErrQ, slopeQ, tailQ]
+  rw [← mul_div_assoc, div_le_iff₀ hb]
+  linarith
+
+/-- The sharper tail follows from the original Hardy and head hypotheses together. -/
+theorem tail_le {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) :
+    ∑' n, |kernelCoeff E (n + 251)| ≤ (tailQ : ℝ) := by
+  have hs := hardy_budget_after_linear (kernelCoeff E) (4149 / 4000 : ℝ) (7 / 4)
+    (linearLowerQ : ℝ) (by norm_num)
+    (by norm_num [linearLowerQ, headResidualQ, compareQ, headCapQ, energyErrQ, slopeQ])
+    (linear_lower hE) hE.hardy
+  have hb : ∀ J, ∑ n ∈ range J, kernelCoeff E (n + 1) ^ 2 *
+      (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ (shiftedBudgetQ : ℝ) := by
+    intro J
+    simpa only [shiftedBudgetQ, Rat.cast_div, Rat.cast_sub, Rat.cast_pow, Rat.cast_ofNat,
+      Rat.cast_mul] using hs J
+  have ht := hardy_tail (fun n => kernelCoeff E (n + 1)) (4149 / 4000 : ℝ)
+    (by norm_num) (shiftedBudgetQ : ℝ) hb 250 (tailQ : ℝ)
+    (by norm_num [tailQ]) tail_numeric
+  simpa only [Nat.add_assoc, show 250 + 1 = 251 by norm_num] using ht
+
+/-- The selected finite comparison, checked head and linear-budget Hardy tail
+assemble the upper bound under the explicit `DirectHyps` inputs. -/
+theorem fresh_upper (E EX : ℕ × ℕ → ℝ) (hE : DirectHyps E EX) :
+    IsGrothendieckBound (500000000000000000 / 355973699864771491) := by
+  have hs := summable_kernelCoeff hE.summable
   have hr : |kernelCoeff E 0 - (slopeQ : ℝ)| + ∑' n, |kernelCoeff E (n + 1)|
-      ≤ 458437859009 / 500000000000000000 := by
+      ≤ 455308278509 / 500000000000000000 := by
     rw [residual_split (kernelCoeff E) hs (slopeQ : ℝ) 250]
-    have h := add_le_add hh (tail_le hE)
-    have e2 : (compareQ : ℝ) + ((headCapQ : ℝ) + energyErrQ) + tailQ
-        = 458437859009 / 500000000000000000 := by
-      norm_num [compareQ, headCapQ, energyErrQ, tailQ]
+    have h := add_le_add (head_residual_le hE) (tail_le hE)
+    have e : (headResidualQ : ℝ) + tailQ =
+        455308278509 / 500000000000000000 := by
+      norm_num [headResidualQ, compareQ, headCapQ, energyErrQ, tailQ]
     linarith
   refine (transfer (kernelCoeff E) hs hE.valid (by norm_num [slopeQ]) hr).mono (le_of_eq ?_)
   norm_num [slopeQ]
 
-/-- The certified bound is below `1.404598161566`. -/
+/-- The new exact upper endpoint is below the stated decimal. -/
 theorem upper_value_lt :
-    (500000000000000000 / 355973696735190991 : ℝ) < 1.404598161566 := by norm_num
+    (500000000000000000 / 355973699864771491 : ℝ) < 1.404598149218 := by norm_num
+
+/-- This endpoint is strictly smaller than the previous one. -/
+theorem upper_value_improves :
+    (500000000000000000 / 355973699864771491 : ℝ) <
+      500000000000000000 / 355973696735190991 := by norm_num
 
 end Grothe

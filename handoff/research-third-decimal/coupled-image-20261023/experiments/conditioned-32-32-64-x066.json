@@ -1,0 +1,300 @@
+{
+  "status": "DISCOVERY_EXACT_W_CONDITIONING_NO_INTEGRATION_CERTIFICATE",
+  "parameters": {
+    "outer": 32,
+    "remote": 32,
+    "angular": 64,
+    "kappa": 0.31912413098194353,
+    "binding_defect": 0.66,
+    "ell": null,
+    "beta": null,
+    "variance": null,
+    "optimize": "full",
+    "maxiter": 60,
+    "out": "/home/agalatan/apap/codex-coupled-image-20261023/root/conditioned-32-32-64-x066.json"
+  },
+  "contact": {
+    "ell": 0.8565701672802419,
+    "beta": 0.14750207856599754,
+    "variance": 0.0282998738033631,
+    "epsilon": "149/200"
+  },
+  "frozen_fixture_sha256": "15a863df1e06635370165f3fa922ca019bd036a1652869168e10d7c6d4ba7ef0",
+  "source_sha256": "f317d790d7ead37f266d7a9106cf141389ce458da0010f6a2173b4b9c22b6b2c",
+  "scaled_bessel_evaluation": "scipy ive below 1e7; four-term large-positive-argument expansion above 1e7 (floating discovery)",
+  "runtime": {
+    "host": "ubuntu-s-2vcpu-2gb-sfo3-01",
+    "pid": 1494052,
+    "python": "3.12.3",
+    "python_executable": "/home/agalatan/apap/codex-coupled-image-20261023/root/.venv/bin/python",
+    "numpy": "2.3.5",
+    "scipy": "1.17.1",
+    "seconds": 0.983045132830739
+  },
+  "radial_fourth_defect_x": 0.6599999999999999,
+  "initial": {
+    "dual_value": 1.4848404367460841,
+    "fixed_positive_image_outer_trial": 0.7131415774818333,
+    "phase_pair_payoff": 0.7131226246624942,
+    "negative_image_gap_upper": 3.932589283508674e-05,
+    "positive_image_defect": 2.0373073495599044e-05,
+    "gap_identity_error": -4.3012671874752273e-16,
+    "mean_modulus": 0.71321637517668,
+    "closure_gradient_norm": 0.010936164529156996,
+    "negative_coefficients": {
+      "real": [
+        -0.2799992483036987,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "imag": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "coefficient_labels": [
+      "P_u_Z",
+      "Q_u_H21Z",
+      "Q_u_Z_absX2minus1",
+      "Q_u_X2_barZ",
+      "P_v_X",
+      "Q_v_H21X",
+      "Q_v_X_absZ2minus1",
+      "Q_v_Z2_barX",
+      "Q_v_W"
+    ],
+    "projected_coefficients": {
+      "real": [
+        0.8568542304112233,
+        -0.2803941444430329,
+        -0.0063907518919011546,
+        -0.002935854212026893,
+        -0.0015366547446157702,
+        0.06719749561575408,
+        0.0016986324459198686,
+        0.0008254612894437481,
+        0.21415827971994003
+      ],
+      "imag": [
+        -6.472178985863513e-20,
+        7.160389081931654e-20,
+        2.1028454607875831e-19,
+        -4.35801475163935e-18,
+        3.696170469713149e-18,
+        -1.925572939540891e-18,
+        -1.3595841532294184e-18,
+        -9.797910732004602e-19,
+        0.0
+      ]
+    }
+  },
+  "visible_optimizer": {
+    "success": true,
+    "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+    "iterations": 3,
+    "evaluations": 5
+  },
+  "visible_only": {
+    "dual_value": 1.4848403297908217,
+    "fixed_positive_image_outer_trial": 0.7131414705265708,
+    "phase_pair_payoff": 0.7131224380510933,
+    "negative_image_gap_upper": 3.925374789410145e-05,
+    "positive_image_defect": 2.022127241667759e-05,
+    "gap_identity_error": 9.676504389433127e-17,
+    "mean_modulus": 0.7131404376121496,
+    "closure_gradient_norm": 0.010926654115471222,
+    "negative_coefficients": {
+      "real": [
+        -0.2803627912547676,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "imag": [
+        -6.034319219272236e-20,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "coefficient_labels": [
+      "P_u_Z",
+      "Q_u_H21Z",
+      "Q_u_Z_absX2minus1",
+      "Q_u_X2_barZ",
+      "P_v_X",
+      "Q_v_H21X",
+      "Q_v_X_absZ2minus1",
+      "Q_v_Z2_barX",
+      "Q_v_W"
+    ],
+    "projected_coefficients": {
+      "real": [
+        0.856828391487122,
+        -0.28036279125477215,
+        -0.006393985915297907,
+        -0.0029372942301878983,
+        -0.0015389076322858733,
+        0.06722116026543158,
+        0.0017007240901966059,
+        0.0008260336697862922,
+        0.2142480868228314
+      ],
+      "imag": [
+        -2.961852776321612e-19,
+        2.730388597429403e-19,
+        -3.312280854609806e-19,
+        -5.271052360445573e-18,
+        -3.9857432500988336e-19,
+        1.3732990224647464e-19,
+        -2.8633446069357536e-18,
+        -1.325513752124764e-18,
+        0.0
+      ]
+    }
+  },
+  "analytic_diagonal_step": {
+    "eta": 0,
+    "allowance": 0,
+    "sigma": 0.15942963552822692,
+    "reciprocal_modulus_bound": 11.11746787247534,
+    "diagonal_upper": [
+      6.915472605920625,
+      6.915472605920625,
+      6.915472605920625,
+      12.11746787247534
+    ],
+    "predicted_decrement_numerical_gradient": 4.169095411364013e-06,
+    "actual_decrement_quadrature": 7.812555331998539e-06,
+    "scope": "Analytic Rice constants, ordinary phase gradient; remaining gradient quadrature is not enclosed."
+  },
+  "diagonal_updated": {
+    "dual_value": 1.4848325172354897,
+    "fixed_positive_image_outer_trial": 0.7131336579712388,
+    "phase_pair_payoff": 0.7131246556367388,
+    "negative_image_gap_upper": 2.9969546152894577e-05,
+    "positive_image_defect": 2.096721165246891e-05,
+    "gap_identity_error": -3.5118324806342194e-16,
+    "mean_modulus": 0.7131363092302525,
+    "closure_gradient_norm": 0.009542700864369376,
+    "negative_coefficients": {
+      "real": [
+        -0.2803627912547681,
+        -0.000688820530185991,
+        -0.00031643306628335177,
+        -0.00012699910975472696
+      ],
+      "imag": [
+        -2.4428130006021034e-20,
+        -3.568301658185513e-20,
+        -5.678475257309154e-19,
+        -3.2892542336773135e-20
+      ]
+    },
+    "coefficient_labels": [
+      "P_u_Z",
+      "Q_u_H21Z",
+      "Q_u_Z_absX2minus1",
+      "Q_u_X2_barZ",
+      "P_v_X",
+      "Q_v_H21X",
+      "Q_v_X_absZ2minus1",
+      "Q_v_Z2_barX",
+      "Q_v_W"
+    ],
+    "projected_coefficients": {
+      "real": [
+        0.8568372797837109,
+        -0.2803711521802797,
+        -0.006329713473362681,
+        -0.0027862061274122264,
+        -0.0014382970191059291,
+        0.0670921894872786,
+        0.0016389994387719237,
+        0.000784493130310157,
+        0.21425445962676878
+      ],
+      "imag": [
+        -3.761577191763296e-19,
+        3.615466322553513e-19,
+        2.146254572122505e-19,
+        -3.2236556941319787e-18,
+        1.4695150621866176e-19,
+        -1.4570099499314669e-18,
+        7.853186236521558e-19,
+        -3.345540168076226e-18,
+        0.0
+      ]
+    }
+  },
+  "full_optimizer": {
+    "success": true,
+    "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+    "iterations": 8,
+    "evaluations": 12
+  },
+  "full_negative": {
+    "dual_value": 1.4848067647997194,
+    "fixed_positive_image_outer_trial": 0.7131079055354685,
+    "phase_pair_payoff": 0.7131351762983456,
+    "negative_image_gap_upper": 2.601953712989319e-19,
+    "positive_image_defect": 2.727076287649952e-05,
+    "gap_identity_error": -5.082129920890022e-16,
+    "mean_modulus": 0.7130970348796426,
+    "closure_gradient_norm": 9.269231963139266e-10,
+    "negative_coefficients": {
+      "real": [
+        -0.2804202574635582,
+        -0.005850609696695108,
+        -0.001979887596268056,
+        -0.0009003354228034733
+      ],
+      "imag": [
+        -9.796774542429694e-20,
+        1.479528493331843e-19,
+        -2.2390796631867427e-18,
+        -3.030760629309443e-17
+      ]
+    },
+    "coefficient_labels": [
+      "P_u_Z",
+      "Q_u_H21Z",
+      "Q_u_Z_absX2minus1",
+      "Q_u_X2_barZ",
+      "P_v_X",
+      "Q_v_H21X",
+      "Q_v_X_absZ2minus1",
+      "Q_v_Z2_barX",
+      "Q_v_W"
+    ],
+    "projected_coefficients": {
+      "real": [
+        0.8568909051045996,
+        -0.28042025737913057,
+        -0.005850610092131113,
+        -0.001979887870994116,
+        -0.0009003357094411919,
+        0.06619686030181263,
+        0.0012978757825149547,
+        0.0005490482169829262,
+        0.21431883800600587
+      ],
+      "imag": [
+        1.0012746394941505e-20,
+        -2.2150135418612166e-20,
+        -2.7862086569912176e-19,
+        -7.16099589053643e-18,
+        3.928883733942986e-17,
+        9.348490096210308e-19,
+        -2.2229459029982036e-17,
+        1.2314447494400154e-17,
+        0.0
+      ]
+    }
+  },
+  "full_negative_correction": 3.356499110229727e-05,
+  "warning": "W is integrated exactly. Remaining deterministic quadrature has no error enclosure; numerical dual trials need their closure bracket. W is a graded Gaussian model, not a proved finite cubic substitute."
+}

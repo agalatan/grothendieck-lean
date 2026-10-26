@@ -1,0 +1,31 @@
+{
+  "bernstein_leaves": 1596,
+  "cells": 1596,
+  "gain_floor": "-1/1000000000000",
+  "gain_floor_display": -1e-12,
+  "inputs": {
+    "bank_sha256": "f9e995ac8db20f0c3c4f924aefeb7a1f5099f0adf1989174f69e7cd853b3a0aa",
+    "inherited_sha256": "3e7ddd38eb4d7ebeb8db0af1f14f50774c4c93a259fb9c6053c92ec760bdb44e"
+  },
+  "minorant": [
+    "-1/1000000000000",
+    "0",
+    "0",
+    "0",
+    "0"
+  ],
+  "row": "0.855",
+  "row_index": 15,
+  "scope": "Finite source-cap selection and moment-minorant check. A nonpositive floor asserts no positive moment-only saving. Source Gaussian caps are inherited; this is not a whole-cover or endpoint certificate.",
+  "source_cells": 1596,
+  "status": "PASS_SIGNED_MINORANT_NO_POSITIVE_MOMENT_GAIN",
+  "tau_interval": [
+    "1/5",
+    "21/100"
+  ],
+  "used_anchor_records": 131,
+  "x_interval": [
+    "0",
+    "31/256"
+  ]
+}

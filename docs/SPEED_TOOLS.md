@@ -1,7 +1,7 @@
 # Speed tools for the node-cap pieces (route M, rows 12–15)
 
 Issue #42. Tools that make the search for fixes of failing localised pieces fast. They are search tools only:
-every proposal is certified by the Lean checker (`pieceOKc`, the native range facts of the pipeline).
+every proposal must pass the Lean checker (`pieceOKc`, the native range facts of the pipeline).
 
 ## Where the time goes (profiled 25–26 Oct 2026, droplet, shared load ≈ 10)
 
@@ -72,25 +72,33 @@ Per piece:
    is refined by Nelder–Mead on the smallest eigenvalue of S K S, computed with mpmath at 60 digits.
 3. **Exact test:** the multipliers are rounded to rationals and K is tested exactly (Fraction LDLᵀ, the same test
    as `ldlOK`).
-4. **Fallback:** if no multipliers work, compute the smallest certified cap increase `cap_up` (an SDP, then an exact
-   test).
+4. **Fallback:** if the search finds no accepted multipliers at the stored cap, use an SDP to propose a cap increase
+   `cap_up`, then enlarge it as needed until the exact rational test passes. This is a sufficient feasible increase;
+   the tool does not prove it is minimal or that the stored cap is infeasible for every multiplier choice.
+
+The SDP and high-precision eigenvalues guide the search. Only the Fraction LDLᵀ test verifies feasibility of the
+rounded rational matrix for the frozen export; no exact dual certificate or certified optimal value is produced.
+A solver failure means that this search found no accepted witness. The Lean `pieceOKc` re-check also checks
+enclosure sanity and multiplier admissibility on the actual piece data. A node certificate additionally needs
+valid tables, the polynomial checks, all piece checks and `capCoverOK`; individual matrix witnesses do not establish
+the whole node or lower cover.
 
 A cap increase changes the row's stored cap (`rowData`, the lower cover), not the pieces file. `apply` only records
 it.
 
 ## Results (row 14, 26 Oct 2026; data in `data/caps-m-lmi/`)
 
-| node | grid | failing with stored multipliers | fixed with no cap increase | needs a cap increase | Lean re-check (`pieceOKc`) |
+| node | grid | failing with stored multipliers | fixed with no cap increase | feasible cap increase found | Lean re-check (`pieceOKc`) |
 |---|---|---|---|---|---|
 | 14:150 | 1600×1024 | 0 | 0 (λ 0.0701351 → 0.0701396) | — | piece 0: **true** |
-| 14:200 | 1600×1024 | 0–6, 12, 18, 24, 30 | 1–6, 12, 18, 24, 30 (margins 5e-5 … 1e-2) | piece 0: **+2.59e-9** (infeasible for any multipliers) | pieces 1, 6: **true** |
+| 14:200 | 1600×1024 | 0–6, 12, 18, 24, 30 | 1–6, 12, 18, 24, 30 (margins 5e-5 … 1e-2) | piece 0: **+2.59e-9** (no accepted zero-increase witness found) | pieces 1, 6: **true** |
 | 14:280 | 1600×256 | 0, 5, 98, 103 (the other coarse-grid failures pass on the stored grid) | all four (smallest margin 6.6e-8, piece 0) | — | pieces 0, 103: **true** |
 
-Conclusion for #14: almost all failures are float-optimised multipliers that are slightly off for Lean's exact
-prices, not caps that are too tight. Of 16 failing pieces at three nodes, 15 are fixed by new multipliers alone.
-One (14:200 piece 0) needs its node cap raised by 2.6e-9; whether the lower cover tolerates that is a separate
-check. For the campaign (#16): run `exportPieces` on every piece whose check fails, then `caps_lmi.py solve`, then
-`apply`, then regenerate the pieces' Lean data.
+Conclusion for #14: of 16 failing pieces at three nodes, the search found rational matrix witnesses for 15 with
+new multipliers and no cap change. For 14:200 piece 0 it found a witness with a cap increase of 2.6e-9;
+necessity of that increase is unproved, and whether the lower cover tolerates it is a separate check. The listed
+Lean re-checks cover only the named pieces. For the campaign (#16): run `exportPieces` on every piece whose check
+fails, then `caps_lmi.py solve`, then `apply`, then regenerate the pieces' Lean data.
 
 ## Timings
 

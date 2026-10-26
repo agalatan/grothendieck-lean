@@ -1,0 +1,171 @@
+{
+  "format": "fresh-barrier-negative-tests/v1",
+  "all_pass": true,
+  "checks": [
+    {
+      "script": "fresh_barrier_radial_spectral.py",
+      "case": "-O",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_radial_spectral.py",
+      "case": "-OO",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_repair.py",
+      "case": "-O",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_repair.py",
+      "case": "-OO",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_verify_repairs.py",
+      "case": "-O",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_verify_repairs.py",
+      "case": "-OO",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_frozen_countermodel.py",
+      "case": "-O",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_frozen_countermodel.py",
+      "case": "-OO",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_moment_extension.py",
+      "case": "-O",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_moment_extension.py",
+      "case": "-OO",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_negative_tests.py",
+      "case": "-O",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_negative_tests.py",
+      "case": "-OO",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_radial_spectral.py",
+      "case": "degree=-1",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_radial_spectral.py",
+      "case": "degree=0",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_radial_spectral.py",
+      "case": "degree=1",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_verify_repairs.py",
+      "case": "degree=-1",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_verify_repairs.py",
+      "case": "degree=0",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_verify_repairs.py",
+      "case": "degree=1",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_repair.py",
+      "case": "degree=-1",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_repair.py",
+      "case": "degree=0",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_repair.py",
+      "case": "degree=1",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_repair.py",
+      "case": "--vmax=nan",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_repair.py",
+      "case": "--vmax=inf",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_repair.py",
+      "case": "--vmax=0",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_repair.py",
+      "case": "--iterations=0",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_moment_extension.py",
+      "case": "degree=0",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_moment_extension.py",
+      "case": "degree=1",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_moment_extension.py",
+      "case": "degree=2",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_moment_extension.py",
+      "case": "degree=3",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_moment_extension.py",
+      "case": "M3-positive base with invalid M2",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_radial_spectral.py",
+      "case": "malformed/non-symmetric matrix",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_radial_spectral.py",
+      "case": "malformed/non-symmetric matrix",
+      "rejected": true
+    },
+    {
+      "script": "fresh_barrier_radial_spectral.py",
+      "case": "malformed/non-symmetric matrix",
+      "rejected": true
+    }
+  ]
+}

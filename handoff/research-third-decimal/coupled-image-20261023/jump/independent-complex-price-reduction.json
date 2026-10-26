@@ -1,0 +1,20 @@
+{
+  "status": "PASS_INDEPENDENT_EXACT_COMPLEX_PRICE_REDUCTION",
+  "scope": "Squared-gap identity and positivity constants. Combine with real degree-seven Bernstein certificate and written inequalities; no endpoint claim.",
+  "symbolic_variables": [
+    "A",
+    "B",
+    "C",
+    "q",
+    "r",
+    "x"
+  ],
+  "expanded_squared_gap_terms": 15,
+  "factorization": "target^2-|L0|^2=(r+x)*G after y^2=r^2-x^2",
+  "cA": "914302364197/1024000000000",
+  "d": "3374950373/16000000000",
+  "target_positivity_factor": "621580649893/1024000000000",
+  "G_lower_factor": "34254220103996142329/64000000000000000000",
+  "fifth_coefficient_elimination_margin": "327071339/1600000000",
+  "neutral_extension_margin": "33598007/2560000000"
+}

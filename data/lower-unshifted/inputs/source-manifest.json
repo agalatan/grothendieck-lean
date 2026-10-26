@@ -1,0 +1,16 @@
+{
+  "format": "needle-unshifted-inputs/v1",
+  "immutable_inputs": {
+    "handoff/lower-stein/cert-jointmoment-lifted-codex/inherited.json": "3e7ddd38eb4d7ebeb8db0af1f14f50774c4c93a259fb9c6053c92ec760bdb44e",
+    "handoff/lower-stein/cert-jointmoment-lifted-codex/cover.json": "ac7bc2d09c5cc215bc6cf6f16efbc58b7e55b2fb9095733e65ee57009a504dba",
+    "handoff/research-third-decimal/needle-20261023/minimal-cover-ledger.json": "93e59d433570d40d35a3b53cb492828b327ec87a572c667f7dbf4d2d53024616"
+  },
+  "current_cover_sha256": "3c908b45952f09a5b0776977695c7baea6106913418d6e76c64282d0bd2018b5",
+  "source_commit": "1de841d0306716aac9ae84cb0a31620e6cc329f2",
+  "boxes": 9057,
+  "durable_copies": {
+    "data/lower-unshifted/inputs/inherited.json": "3e7ddd38eb4d7ebeb8db0af1f14f50774c4c93a259fb9c6053c92ec760bdb44e",
+    "data/lower-unshifted/inputs/cover.json": "ac7bc2d09c5cc215bc6cf6f16efbc58b7e55b2fb9095733e65ee57009a504dba",
+    "data/lower-unshifted/inputs/minimal-cover-ledger.json": "93e59d433570d40d35a3b53cb492828b327ec87a572c667f7dbf4d2d53024616"
+  }
+}

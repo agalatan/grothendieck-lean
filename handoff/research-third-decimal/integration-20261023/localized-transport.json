@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "scope": "Cross-check a localized bivariate bank against the direct shifted source engine.\n\nNo Gaussian integration is repeated. Hash-pinned raw replayed C/h/H feed the\noriginal piece_quadratic_multi engine with external field b=r*A-v*f. Its result\nmust equal the separately derived bivariate formula for every fixture/piece.\n",
+  "raw": "/Users/alingalatan/Documents/Codex/2026-10-23/important-do-not-peek-in-other/work/research-integration-clean/handoff/research-third-decimal/rank-one-certification-20261023/replay/localized-row0855-s027-fminus003105.json",
+  "raw_sha256": "2d3aa5ca269c9a7239edb47bb1526c38e13aa35788f215a023391d6c89e66c97",
+  "bank": "/Users/alingalatan/Documents/Codex/2026-10-23/important-do-not-peek-in-other/work/research-integration-clean/handoff/research-third-decimal/rank-one-certification-20261023/analytic/localized-m15-r050.json",
+  "bank_sha256": "ac01c01eb43d645d922fe7f985767845e45ffd7efc86b8ece274648db10c0c89",
+  "pieces": 9,
+  "exact_cross_implementation_fixtures": 27,
+  "fixtures": [
+    [
+      "0",
+      "0"
+    ],
+    [
+      "3799912185593856/7611644474086025",
+      "-14947036109/1000000000000"
+    ],
+    [
+      "7/10",
+      "-23/1000"
+    ]
+  ]
+}

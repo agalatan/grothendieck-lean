@@ -1,0 +1,32 @@
+[
+  {
+    "source": "/Users/alingalatan/Downloads/pisier-grothe (1).pdf",
+    "bytes": 986113,
+    "sha256": "653a0a781224a7421fdc2c82e980536208db5d40b6194eae67b0eedf5612b6db",
+    "pages": 87,
+    "coverage": "targeted classical/tensor/constant/rounding sections; not all 87 pages"
+  },
+  {
+    "source": "/Users/alingalatan/Downloads/A new upper bound for the complex Grothendieck constant (6).pdf",
+    "bytes": 672834,
+    "sha256": "99d280d90d9f791904b117cbd17ae7c680ebeff9d9aca722a8d289356896c4c6",
+    "pages": 26,
+    "coverage": "complete extracted text read; printed pages 202 and 203 also visually checked; OCR mathematics not universally validated"
+  },
+  {
+    "source": "/Users/alingalatan/Downloads/Absolutely_Summing_Operators.pdf",
+    "bytes": 285030,
+    "sha256": "b4d2291f761e33171f503431b232e094324cd59a7b02f15855bbcf211167cb25",
+    "pages": 7,
+    "coverage": "all available title/contents material; 7 pages, no body chapters supplied"
+  },
+  {
+    "source": "/Users/alingalatan/Downloads/Gaussian Hilbert Spaces.zip",
+    "bytes": 45986741,
+    "sha256": "f4487cc2a5805dc127688d53146fd5d9cda510f9bfb85fee08122a079bdf3be6",
+    "scanned_images": 352,
+    "ocr_files": 352,
+    "coverage": "all 352 scans OCRed; targeted theorem reading, not all pages read",
+    "ocr_work_directory": "/Users/alingalatan/Documents/Codex/2026-10-23/important-do-not-peek-in-other/work/literature-audit/gaussian-ocr"
+  }
+]

@@ -14,19 +14,19 @@ fifth projection, certified its sign, built a genuine cancellation bank, and
 tested a new oracle that prices a complete-tail constraint. No global
 Grothendieck endpoint changes.
 
-The repository's audited baseline remains:
+The combined repository now reports:
 
-* `1.401695322458 < K_G^C`: the default Lean target proves this under
+* `1.401697049825 < K_G^C`: the refined-cover theorem proves this under
   `NodeCaps`. The separate `GrotheCaps` target reduces the assumption to
   `CapsRest`: the remaining four rows' vertex caps and any excluded-node
-  caps of the other rows. Its full heavy verification has no recorded stamp
-  in the current tree.
-* `K_G^C < 1.404598161566`: `Grothe.UpperChaos.fresh_upper_rounder`
+  caps of the other rows. A recorded droplet stamp verifies the other
+  60 range facts; the remaining four rows are still hypotheses.
+* `K_G^C < 1.404598149218`: `Grothe.UpperChaos.fresh_upper_rounder`
   proves this for the concrete rounding, assuming an L² charge-one
   truncation `X` and the three numerical bounds `compare`, `energy_close`
   and `hardy`. The older table interface `Grothe.fresh_upper`, conditional
   on `DirectHyps E EX`, remains available.
-* `K_G^C <= 1.405364`, the completed unconditional Lean upper theorem.
+* `K_G^C <= 1.404951`, the completed unconditional Lean upper theorem.
 
 Those are distinct proof statuses. The current files and hypotheses take
 precedence over older manuscript endpoints. Stronger archived upper numbers

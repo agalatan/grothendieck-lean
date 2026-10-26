@@ -28,26 +28,24 @@ apply simultaneously; an exact checksum is not an analytic theorem.
 The current main-development interval is
 
 \[
-1.401695322458<K_G^{\mathbb C}<1.404598161566.
+1.401697049825<K_G^{\mathbb C}<1.404598149218.
 \]
 
 More precisely:
 
-- **Lower:** `B=0.7134218=3567109/5000000`. The fully formal implication
-  `NodeCaps → IsGrothendieckBound K → 1.401695322458<K` ends in
-  `Grothe/LowerAnalytic/Reduction.lean`. Its stronger reciprocal is
-  `1/B=1.401695322458607…`. Gaussian-to-finite transfer, the original witness,
-  its vector value, row reduction, circular-cubic tensor/Stein identities,
-  joint sixth-moment budgets and the finite cover are formalized. The remaining
-  `NodeCaps` hypothesis is about the **actual** nineteen fibre potentials at
-  their stored nodes. The separate `GrotheCaps` target reduces it to
-  `CapsRest`, comprising the remaining four rows' vertex caps and any
-  excluded-node caps of the other rows. The exclusion lists are currently
-  empty. The heavy range checks have no recorded verification stamp in the
-  current tree and are not part of default CI.
+- **Lower:** `B=0.713420953220=35671047661/50000000000`. The current
+  implication `NodeCaps → IsGrothendieckBound K → 1.401697049825<K`
+  ends in `Grothe/Research/RefinedCoverResult.lean`. The 10,521-box cover
+  uses the original source bank and two unshifted row-14 law nodes.
+  Gaussian-to-finite transfer, the original witness, its vector value,
+  row reduction and circular-cubic tensor/Stein budgets are formalized.
+  `NodeCaps` still concerns the actual nineteen fibre potentials. The
+  separate `GrotheCaps` route retains `CapsRest` for rows 12–15; its other
+  60 range facts have a recorded droplet verification stamp. Those heavy
+  facts are separate from the default CI build.
 - **Upper:** `Grothe.UpperChaos.fresh_upper_rounder` formally gives
-  `K≤500000000000000000/355973696735190991=1.404598635370998…`, conditional
-  on an L² charge-one truncation `X` and the numerical bounds `compare`,
+  `K≤500000000000000000/355973699864771491=1.404598149217039…`, conditional
+  on an L² charge-one truncation `X` and the component-error input `ComparisonInputs`,
   `energy_close` and `hardy`. The concrete rounding, Gaussian Hermite
   completeness/Parseval/Mehler, charge selection, actual-rounding validity
   and energy summability are formalized, as are kernel transfer, tensor
@@ -56,11 +54,11 @@ More precisely:
   numerical enclosures. The older `Grothe.fresh_upper` table interface
   conditional on `DirectHyps E EX` remains available.
 - **Unconditional formal upper:** `Grothe.haagerup_bound` proves
-  `K≤1.405364` without `NodeCaps`, `DirectHyps`, or any other numerical input
+  `K≤1.404909543` without `NodeCaps`, `DirectHyps`, or any other numerical input
   hypothesis. This is weaker than the sharp external-assisted construction.
 
 The finite native checks are explicitly enumerated in
-`scripts/check_axioms.py`; the lower certificate is assembled from thirteen
+`scripts/check_axioms.py`; the lower certificate is assembled from fourteen
 single-threaded checks. The upper head, unconditional Haagerup check,
 phase cover and cap chords have separate native facts, and the heavy caps
 target has a separate report. The generic research lemmas add no native
@@ -72,8 +70,9 @@ substituted silently for this baseline:
 1. The 15/20/22 October portions of `ch17-crossbound.tex`, `ch4-ceilings.tex`
    and `breakthrough/00-state-of-the-math.md` quote earlier endpoints. For
    current endpoint arithmetic, the actual Lean interfaces and current
-   generated certificate take precedence. Statements that the lower transfer
-   or complex minimax argument is still unwritten are superseded.
+   generated certificate take precedence. The lower transfer is formalized.
+   The archived complex minimax claim remains a separate completeness
+   argument; the endpoints do not assume it.
 2. The archive's matrix-prefix construction assembles `<1.404598428856`.
    The matrix note itself still displays an earlier `<1.404598524179`.
    Both are external-assisted packages, not the present main theorem's
@@ -131,12 +130,13 @@ The binding audit identifies five distinct losses:
 - Moment and finite Stein/Gram cuts constrain the radial law of `|q|²` without
   asserting that this law, all projections and both responses are jointly realizable.
 
-The current exact maximum box cap is between `0.713421798525` and
-`0.713421798526`, only about `1.4745e−9` below `B`. Per-box padding is `1e−11`.
-Removing those allowances is irrelevant to the size of the remaining problem.
+The adaptive cover's exact maximum is approximately `0.713420953219917`,
+below the rounded cap `B=0.713420953220`. Its earlier per-box padding
+is already part of exact recipe evaluation. Removing rounding allowances
+cannot account for the size of the remaining problem.
 
-More decisively, four exact atomic radial laws satisfy the 671 cuts in the
-audited bank and the required moments, with table-objective scores exceeding
+In the original frozen audit, four exact atomic radial laws satisfy the
+671 cuts in that audited bank and the required moments, with table-objective scores exceeding
 `0.713412812507`, `0.713414640742`, `0.713406413945` and `0.713352277645`.
 All four were independently replayed using rational arithmetic. Each exceeds
 `500/701=0.7132667617689…`. Consequently repricing the **same** finite table
@@ -144,6 +144,10 @@ and cut bank cannot reach that target at those points. These are not actual
 cubics, response pairs, or counterexamples to Conjecture K. They establish an
 obstruction to a particular relaxation, not an obstruction to the true norm.
 The bank includes the cuts needed at those points, not every conceivable cut.
+Later merges of inherited Stein tests exclude all four fixed atomic laws;
+reoptimizing the law largely restores their scores. The original four laws
+therefore do not certify an obstruction to the current adaptive bank. See
+`COMMON_STEIN_REASSESSMENT_2026-10-23.md` for that distinction.
 
 The older decomposition into roughly 78% row/gate loss and 22% law loss is
 a floating diagnostic of a dated binding rule, not an exact ledger for every
@@ -176,7 +180,7 @@ cancellation banks cannot beat the incumbent direct rounding score.
 Even perfect cubic certification is limited. The numerical realizable
 adversary model at the best `ε≈0.7564` gives norm about `0.7131355`, reciprocal
 `1.402258`. This is numerical evidence, not a proved exact cubic optimum.
-Used only as a diagnostic, that ceiling leaves about **80.62%** of the current
+Used only as a diagnostic, that ceiling leaves about **80.66%** of the current
 interval above it. At the current `ε=.745`, the model already gives norm
 about `.713288`, so this fixed parameter cannot plausibly reach 1.402.
 Changing ε requires a new complete cover, including its flanks.
@@ -196,13 +200,13 @@ The current slope is
 
 \[
 c=0.7119483103461,
-\qquad A=c-\delta=0.711947393470381982,
-\quad\delta=9.21537950018\cdot10^{-7}.
+\qquad A=c-\delta=0.711947399729542982,
+\quad\delta=9.10616557018\cdot10^{-7}.
 \]
 
-The residual consists of the selected-band comparison `8.51961024e−7` (92.92%), native
-head `2.8153e−8` (3.07%), Hardy tail `3.6748e−8` (4.01%), and table
-error `1.3694018e−11` (about .001%). These are upper allowances, not
+The residual consists of comparison `8.51961024e−7` (93.56%), native
+head `2.8153e−8` (3.09%), Hardy tail `3.0488839e−8` (3.35%), and table
+error `1.3694018e−11` (about .0015%). These are upper allowances, not
 measurements of the actual residual or the proportion of the theorem that
 is mathematically true.
 
@@ -212,8 +216,8 @@ Even removing **all** residual would yield only
 1/c=1.40459635266761\ldots,
 \]
 
-a gain of `1.8180962e−6` in K. Removing the comparison allowance alone gives
-about `1.40459648073723`. None of that can close the `.002902848306`
+a gain of about `1.79655e−6` in K. Removing the comparison allowance alone gives
+about `1.40459646838859`. None of that can close the `.002901099393`
 two-sided interval. The stable archive likewise has a fixed zero-residual
 reciprocal `1.4045937`. Better upper arithmetic matters for trust and for
 millionths; a substantial advance needs a different family or a different
@@ -343,18 +347,14 @@ D(c)=c_0-\sum_{k\ge1}|c_k|,
 \quad\lambda_0=1,\quad\lambda_k\in[-1,1].
 \]
 
-The manuscript's complete analytic argument proves
-
-\[
-\frac1{K_G^{\mathbb C}}=\sup_{c\in C}D(c)=\min_\lambda N(\lambda). (5)
-\]
-
-The proof uses residual rounding transfer, finite-partition matrix transfer
-with the vector test `Z/||Z||`, and Sion minimax on the weak-star compact
-multiplier cube paired with `ℓ¹`. It does not require compactness of the
-response set or an integral kernel. This exact complex equality is a paper
-result here; it is not itself wholly formalized in Lean. Its component
-transfer machinery is much more formalized than old notes imply.
+The archived manuscript proposes the global complex identity
+`1/K = sup D(c) = inf N(lambda)`. The present development does not establish
+its completeness step. Neither endpoint uses that equality: the upper
+endpoint follows from a realizable rounding with a certified full score,
+and the lower endpoint from a dimension-uniform witness norm cap. Finite
+pool duality, Sion minimax on a response body, and the two endpoint transfers
+do not by themselves identify that body's optimum with the full matrix
+constant. Any such identification needs an independent argument.
 
 For every feasible pair, the exact gap is
 
@@ -397,8 +397,8 @@ stable payoffs hid coefficient changes around `1.65e−4`. The large chirp pool
 still scores about `.711892`, below the current `.711947179793…` incumbent,
 even before all remaining family-specific tail obligations.
 
-So the two sides are obstructed by the same response body in the precise
-sense of (5), but **not demonstrably by one missing inequality**. A good
+The two sides can use a common response library, but they are **not
+demonstrably obstructed by one missing inequality**. A good
 common experiment must separately measure improved global separation and
 improved realizable signed cancellation.
 
@@ -411,8 +411,9 @@ their hypotheses matter more here than their numerical constants.
   Sections 2–3: Gaussian Hermite-game minimax and the actual-response exchange
   algorithm. This gives the right discovery loop and the distinction between
   heuristic response search and rigorous global certification. Real sign
-  support identities do not transfer to phases. The complex minimax proof
-  used here is the repository's independent argument in (5).
+  support identities do not transfer to phases. The archived complex minimax
+  extension requires an independent completeness argument; no endpoint here
+  assumes it.
 - [Heilman–Jones–Malavolta, complex bounds](https://arxiv.org/html/2609.25462v1):
   complex Gaussian phase kernels, admissible tensor preprocessing and residual
   repair directly fit this project. Their `1.4<K<1.404898554746` result is an
