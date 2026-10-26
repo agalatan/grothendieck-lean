@@ -185,7 +185,9 @@ Lean proves the complex Gaussian chaos calculus on ℂ² (`Grothe/UpperChaos/`: 
 Parseval, the Mehler formula for L² functions, charge selection, energies → kernel), hence the structural facts
 (validity, summability, parity) for G_T and X; the transfer inequality; the evaluation of the head of the kernel
 through degree 501 from 21,168 stored energies by a verified interval checker; the tail bound and the endpoint
-arithmetic. It also proves a selected-spectrum comparison: the error is split
+arithmetic. Tensor completeness follows from one-coordinate completeness by Fubini and
+fibrewise Cauchy–Schwarz; the Gaussian mixing law follows from product characteristic functions.
+Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
 only with X's energy in its selected band, weighted by the retained coefficient cost; the quadratic error is paid once.
 A native check derives every band radius from the stored table and its accuracy
@@ -210,7 +212,7 @@ disk-valued left and right responses (`differentiableOn_HholPair_Rt`,
 `hardy_of_pair_inputs`). The fixed covariance path `Rt` and its decay region
 are shared. The decay region and the circle mean bound are now proved by five
 interval facts (`HardyArc*`), so `hardy_of_real` derives the `hardy`
-statement for every pair from the real odd-series identification alone. The incumbent theorems specialize this
+statement for every pair from summable real odd coefficients and their Gaussian identification. The incumbent theorems specialize this
 interface. Neither bound nor its remaining analytic hypotheses changes.
 
 **Radial repair and its ceiling.** `UpperChaos/RadialRepair.lean` certifies the
@@ -240,7 +242,7 @@ The native head computation remains part of the proof.
 **Fully formal unconditional upper bound** — `Grothe.haagerup_bound : IsGrothendieckBound (1404909409/1000000000)`
 (`Grothe/Haagerup/Power.lean`, with the finite check in `Grothe/Haagerup/PowerCheck.lean`), with **no hypothesis**.
 Lean derives Haagerup's identity from the complex Hermite basis and Mehler formula,
-with the Gaussian phase coefficients evaluated by a finite Pochhammer identity:
+with the Gaussian phase coefficients determined by a polynomial moment recurrence:
 E[conj(phase⟨g,x⟩)·phase⟨g,y⟩] = Σ_k (π/4)(1/2)_k²/(k!(k+1)!) z|z|^{2k} with z = ⟨x,y⟩, and combines it
 with a degree-29 preprocessor and 1,024 exact series terms. A finite polynomial approximate inverse
 retains cancellation across the complete infinite suffix. Its inverse defect and a short combined

@@ -220,7 +220,6 @@ import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
 import Grothe.UpperChaos.Gauss2
-import Grothe.UpperChaos.GaussC2
 import Grothe.UpperChaos.HardyArcCircle
 import Grothe.UpperChaos.HardyArcCover
 import Grothe.UpperChaos.HardyArcMean
@@ -238,7 +237,6 @@ import Grothe.UpperChaos.HermiteBasis
 import Grothe.UpperChaos.HermiteC2
 import Grothe.UpperChaos.HermiteC2Basis
 import Grothe.UpperChaos.HermiteComplete
-import Grothe.UpperChaos.HermiteExpansion
 import Grothe.UpperChaos.HolIntegral
 import Grothe.UpperChaos.Kernel2
 import Grothe.UpperChaos.KernelStability
@@ -249,7 +247,6 @@ import Grothe.UpperChaos.Mehler
 import Grothe.UpperChaos.MehlerL2
 import Grothe.UpperChaos.OddParseval
 import Grothe.UpperChaos.OddSeries
-import Grothe.UpperChaos.PhaseCombinatorics
 import Grothe.UpperChaos.PhaseMoments
 import Grothe.UpperChaos.PhiBound
 import Grothe.UpperChaos.PhiCover
@@ -263,6 +260,7 @@ import Grothe.UpperChaos.PhiCoverCheck5
 import Grothe.UpperChaos.PhiCoverData
 import Grothe.UpperChaos.PhiDense
 import Grothe.UpperChaos.PhiHorner
+import Grothe.UpperChaos.ProductComplete
 import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialRepair
 import Grothe.UpperChaos.Realise2

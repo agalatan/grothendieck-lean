@@ -211,7 +211,7 @@ The 60 range checks for fifteen rows use a computation-only layer.
 CI replays the final assembly when the 53-file cache provenance matches;
 a mismatch triggers the runner build and the axiom audit. Four rows retain external vertex caps.\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error, table-accuracy and Hardy inputs, proves $\KG\le500000000000000000/355973699864771491$.}\\[2pt]
-the concrete disk-valued rounding; Gaussian Hermite completeness, Parseval and Mehler, charge selection, summability;
+the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussian mixing by characteristic functions, Parseval and Mehler, charge selection, summability;
 the transfer inequality (tensor powers); kernel composition and locality; the head through degree 501 from
 21,168 stored energies by a verified interval evaluator (one \lean{native\_decide}); the tail bound; the endpoint; the selected-block comparison and native band masses
 &
@@ -222,7 +222,7 @@ with tail $30488839/10^{15}$ ($3.35\%$); finite table accuracy $6847009/(5\cdot1
 The native head is $28153/10^{12}$ ($3.09\%$).\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (1404909409/1000000000)}}\\[2pt]
 Haagerup's identity for the phase rounding, $\E[\overline{\ph\langle g,x\rangle}\,\ph\langle g,y\rangle]=\sum_k\frac\pi4\frac{(1/2)_k^2}{k!(k+1)!}z|z|^{2k}$
-(Hermite coefficients from Gaussian radial moments and a finite Pochhammer identity, the Mehler formula, reduction to two complex Gaussians); the transfer through
+(Hermite coefficients from Gaussian radial moments and a polynomial moment recurrence, the Mehler formula, reduction to two complex Gaussians); the transfer through
 a degree-29 preprocessor $p(t)=tP(t^2)$ with $\|P\|_1=1$ and $\|P^4\|_1\le.998903$; $1024$ exact terms, a finite polynomial resolvent and the full signed tail, checked by one \lean{native\_decide}
 &
 nothing: this bound has no hypothesis. The sharper conditional bound above uses a different rounding and retains its explicitly listed Gaussian inputs.\\\bottomrule
@@ -231,7 +231,7 @@ nothing: this bound has no hypothesis. The sharper conditional bound above uses 
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}.\par
 The native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}, check the upper head, selected-band masses, the six-part phase cover, Haagerup bound,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
-There are 89 native facts: 60 cap-range checks, five Hardy region and circle checks, and 24 others. The report \path{scratch/Axioms.lean} lists 550 theorems, with 332 required declarations.
+There are 89 native facts: 60 cap-range checks, five Hardy region and circle checks, and 24 others. The report \path{scratch/Axioms.lean} lists 556 theorems, with 339 required declarations.
 No \lean{sorry}; CI builds the single target \lean{Grothe}, cap rows included, and checks its one axiom report.
 The cap-range checks take about 21 CPU-hours cold, so CI replays them from a verified build cache.
 Its provenance hash covers 48 local computation
@@ -251,10 +251,9 @@ Holomorphy under positive kernel decay, odd-series continuation and circle Parse
 The holomorphy and Hardy assembly also cover separate measurable disk-valued left and right responses
 (\lean{HholPair}, \lean{hardy\_of\_pair\_inputs}); the incumbent results are specializations.
 The decay region and the circle mean are checked in Lean by five interval facts. With them, \lean{hardy\_of\_real} reduces \lean{hardy}
-to the real Gaussian identification of the odd series.
-A positive covariance-decay region, summable real odd coefficients, their Gaussian-kernel identification
-and the circle mean bound remain explicit inputs for each pair. This adds no numerical axiom
-and changes neither endpoint nor its remaining hypotheses.
+to summability and the real Gaussian identification of the odd series.
+These pair-specific inputs remain explicit. The five numerical facts discharge the common decay
+and circle inputs and preserve both endpoints.
 The research modules also prove 13 algebraic facts for coupled complex modulus majorizers, finite descent and semiconvex chord
 assembly, using only the three standard axioms. Their Gaussian integration, response extraction and global-cover
 obligations remain separate; these facts change neither endpoint nor its hypotheses.
