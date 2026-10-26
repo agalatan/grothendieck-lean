@@ -280,4 +280,35 @@ def tubeCover (rho : Ival) (dat : RData) (neg : Bool) : Nat → Int → Int → 
       | 0 => false
       | d + 1 => tubeCover rho dat neg d lo ((lo + hi) / 2) && tubeCover rho dat neg d ((lo + hi) / 2) hi
 
+/-! ### The region of holomorphy: a quadtree cover of the disc -/
+
+/-- The gates `det(I ∓ R) ≠ 0` and `Re (I ∓ R)⁻¹ ≻ 0` on a box of `R` (they give `KerPos`). -/
+def kerGates (R : SC) : Bool :=
+  posI (CI.normSq (invIm R false).2) && posI (CI.normSq (invIm R true).2) &&
+    (SC.re (invIm R false).1).PD && (SC.re (invIm R true).1).PD
+
+/-- The box `[xlo, xhi] + i [ylo, yhi]` (scaled) lies outside the disc `|t|² < r2` (`r2` scaled by `D`). -/
+def outsideDisc (r2 : Int) (x y : Ival) : Bool :=
+  decide (r2 ≤ (addI (mulI x x) (mulI y y)).lo)
+
+/-- Every point of the box is outside the disc, or the gates pass on the box, else split in four (at most `depth`
+more times). -/
+def discCover (dat : RData) (r2 : Int) : Nat → Int → Int → Int → Int → Bool
+  | depth, xlo, xhi, ylo, yhi =>
+    outsideDisc r2 ⟨xlo, xhi⟩ ⟨ylo, yhi⟩ || kerGates (Rbox dat ⟨⟨xlo, xhi⟩, ⟨ylo, yhi⟩⟩) ||
+      match depth with
+      | 0 => false
+      | d + 1 =>
+        let xm := (xlo + xhi) / 2
+        let ym := (ylo + yhi) / 2
+        discCover dat r2 d xlo xm ylo ym && discCover dat r2 d xm xhi ylo ym &&
+          discCover dat r2 d xlo xm ym yhi && discCover dat r2 d xm xhi ym yhi
+
+/-- The square `[−b, b]²` (scaled `b`) cut into `m × m` initial boxes, each covered. -/
+def discAll (dat : RData) (r2 b : Int) (m depth : Nat) : Bool :=
+  (List.range m).all fun (i : Nat) => (List.range m).all fun (k : Nat) =>
+    let step := 2 * b / Int.ofNat m
+    discCover dat r2 depth (-b + Int.ofNat i * step) (-b + (Int.ofNat i + 1) * step)
+      (-b + Int.ofNat k * step) (-b + (Int.ofNat k + 1) * step)
+
 end GrotheKernel.HardyArc
