@@ -20,8 +20,7 @@ with the same `CapsRest` and unchanged shared `NodeCaps` definition. All 60 rang
 facts are retained. The generated localized-piece facts outside these supported
 targets are a separate campaign, not additional allowlisted endpoint inputs.
 
-No Lean builds or native reruns were performed to update this inventory. Indirect
-report coverage is source-traced. Historical times are module build times and do
+Indirect report coverage in the inventory is source-traced. Historical times are module build times and do
 not measure individual native evaluations or the current candidate. The scalar
 sixteenth-power module's earlier verification records are under
 `data/scalar-tail-refinement/verification/`.

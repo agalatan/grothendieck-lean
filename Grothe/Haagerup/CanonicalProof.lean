@@ -167,7 +167,7 @@ lemma remainder_bound
     simpa only [Rat.cast_div, Rat.cast_one, Rat.cast_ofNat] using h
   have hm : iterDiff order (fun k => (haagR k : ℝ)) start ≤ 37/10000000000000 := by
     rw [iterDiff_ratCast]
-    have h : (iterDiff order haagR start : ℝ) ≤ ((37/10000000000000 : ℚ) : ℝ) :=
+    have h : ((iterDiff order haagR start : ℚ) : ℝ) ≤ ((37/10000000000000 : ℚ) : ℝ) :=
       Rat.cast_le.mpr hcoeff.2
     simpa only [Rat.cast_div, Rat.cast_ofNat] using h
   have hj (j : ℕ) : iterDiff j (fun k => (haagR k : ℝ)) start ≤ 1/10000 :=

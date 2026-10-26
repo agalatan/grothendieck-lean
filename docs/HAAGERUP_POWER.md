@@ -40,7 +40,8 @@ The geometric-prefix identity (1−A) Σ_(i<n) T A^i = T−T A^n gives
 ‖Σ_(i<n) T A^i‖₁ ≤ 2B/(1−η). Finite Abel summation then bounds a sum
 with decreasing nonnegative weights by its initial weight times this constant.
 
-For W_n(a) = Σ_(i<n) a_(K+i) T A^i, one summation by parts gives the exact
+Let a be completely monotone, with a_k → 0. For
+W_n(a) = Σ_(i<n) a_(K+i) T A^i, one summation by parts gives the exact
 recurrence
 
 W_n(a) = a_K RT − RA W_n(Δa) + E W_n(a) − a_(K+n) RT A^n.
