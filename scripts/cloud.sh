@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Run a job in the cloud (GitHub Actions, .github/workflows/cloud.yml): Lean builds/checks or committed scripts, with
-# optional sharding. See AGENTS.md section 4d.
+# optional sharding. See AGENTS.md section 11.
 #
 #   scripts/cloud.sh [options] lean   <Module> [<Module> ...]   build Lean modules (e.g. native_decide facts)
 #   scripts/cloud.sh [options] check                            the full proof check of the branch, no merge

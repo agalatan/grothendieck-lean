@@ -271,7 +271,7 @@ headline endpoints are unchanged.
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
-**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (1404909543/1000000000)`
+**Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (1404909409/1000000000)`
 (`Grothe/Haagerup/Power.lean`), with no hypothesis. The analysis is in
 `Grothe/Haagerup/`: the shared Gaussian phase and planar laws (`Phase`); the charge-one
 Hermite coefficient, evaluated using odd Gaussian moments and a finite Pochhammer identity
@@ -289,11 +289,14 @@ generated from `data/haagerup-resolvent/certificate.json`. The coefficient norm 
 the fourth-power norm is at most 998903/10⁶. A single sequential native check verifies the complete
 1,024-term composition (radial cutoff 29,696), the power norm, inverse defect ≤10⁻¹²,
 combined-seed norm ≤249/500, and the infinite signed-tail budget. The normalized residual caps are
-95/10⁹ for the finite part and 174/10⁹ for the entire infinite tail.
+95/10⁹ for the finite part and 87.7/10⁹ for the entire infinite tail. The second Abel
+estimate uses the decreasing first differences of `haagR` (`Haagerup/Convex.lean`),
+its limit zero, and the kernel-proved norm bound ‖R·XP²‖₁ ≤ 2. It sharpens the
+existing native Abel budget 174/10⁹ without changing the certificate or native fact.
 `Grothe/Upper/ResolventTail.lean` proves the finite inverse-defect estimate, geometric-prefix bound,
-Abel summation, coefficient-locality passage to the full suffix, seed power bound and checker
+Abel summation and its convex-weight refinement, coefficient-locality passage to the full suffix, seed power bound and checker
 soundness. `Grothe/Upper/PowerTail.lean` supplies the power contraction and coherent-boundary
-obstruction. The phase identity, residual and tensor transfer yield K ≤ 1.404909543 with no external
+obstruction. The phase identity, residual and tensor transfer yield K ≤ 1.404909409 with no external
 inputs. The single numerical fact is `Grothe.HaagerupPower.check._native.native_decide.ax_1_1`.
 
 
@@ -352,26 +355,25 @@ variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
 `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data :
 NodeCaps → IsGrothendieckBound K → 1.401697049825 < K` composes everything
 through `Grothe/Research/RefinedCoverResult.lean`:
-**the only remaining hypothesis of this default-target theorem is `NodeCaps`**, the node caps
+**the only remaining hypothesis of this theorem is `NodeCaps`**, the node caps
 Ψ_r(r_k) − 10⁻¹¹ ≤ c_k of the 19 certified potentials (exact-arithmetic certificates outside Lean).
 
-The separate `GrotheCaps` target supplies `lower_bound_of_capsRest :
+The same single target `Grothe` also proves `lower_bound_of_capsRest :
 CapsRest → IsGrothendieckBound K → 1.401697049825 < K` (`CapNodes.lean`). Its 15
 `CapRowKK` modules retain the 60 unchanged single-threaded native range facts
 for rows 0–11 and 16–18, importing only the computation layer and recipe data.
 `CapRows` proves range-check soundness, and `CapAssembly` proves the chord
-check and convexity assembly (`CapHull` is a compatibility import). The
-default `Grothe` target builds that proof layer. `CapNodes` contains the
+check and convexity assembly (`CapHull` is a compatibility import). `CapNodes` contains the
 15 unchanged row-assembly proofs and the final `CapsRest` theorem, which
 composes `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and the same
-`lower_bound_of_refined_cover_data` used by the default target. The common
+`lower_bound_of_refined_cover_data`. The common
 `NodeCaps` definition lives in `NodeCaps.lean`, independently of
-`Reduction.lean`. `CapNodes` and the heavy rows are excluded from the
-generated default root.
+`Reduction.lean`. There is one build target and one axiom report: the heavy
+rows and `CapNodes` are part of `Grothe`.
 
-The cache provenance boundary is 54 files: 48 local computation modules,
-plus `CapNodes.lean`, `GrotheCaps.lean`, `GrotheCapsKernel.lean`, `lean-toolchain`,
-`lake-manifest.json` and `lakefile.toml`. Those six extras are hashed directly,
+The cache provenance boundary is 53 files: 48 local computation modules,
+plus `CapNodes.lean`, `GrotheCapsKernel.lean`, `lean-toolchain`,
+`lake-manifest.json` and `lakefile.toml`. Those five extras are hashed directly,
 without traversing their imports. This identifies the cached computation
 sources, not every analytic dependency or compiled artifact. Lake checks
 ordinary dependencies separately. The numerical checker is the independent
@@ -380,17 +382,18 @@ its constants retain the `GrotheKernel` namespace. Other kernel checkers
 stay outside that library, whose root is pinned because every importer
 loads its shared object.
 
-The runner's heavy CI job builds `Grothe` and `GrotheCaps` and checks both
-axiom reports before recording `.lake/build/caps-closure.sha` with
+The runner's heavy CI job builds `Grothe` and checks the
+axiom report before recording `.lake/build/caps-closure.sha` with
 `scripts/caps_stamp.py --mark-cache`. Ordinary CI restores that cache and
-calls `--check-cache` (the default). A match permits a `GrotheCaps` replay
-and caps audit, including `CapNodes`; Lake reuses native results only when
-its dependency hashes permit it. A missing or mismatched marker fails
-closed and dispatches the heavy job. A branch `caps` run saves the verified
-branch cache and repeats the check. After merge, a master `warm` run reuses
-the runner's persistent build and refreshes the master cache. One runner
+calls `--check-cache` (the default). A match permits the build of `Grothe`
+(replaying the heavy facts) and the axiom audit, including `CapNodes`; Lake reuses native results only when
+its dependency hashes permit it. When no verified cache matches the
+caps digest (part of the cache key), CI runs the same check on the droplet's
+runner, which builds, audits, marks and saves the cache; a cache miss delays
+a check but never fails it. After a merge that changed the caps, master's
+check also runs there and finds the build in the runner's workspace. One runner
 build supplies the verification and subsequent replay; no independent
-manual droplet verification is required. Builds and both reports establish
+manual droplet verification is required. The build and the report establish
 verification; a read-only digest alone does not.
 
 `CapsRest` still comprises the vertex caps of rows 0.84, 0.845, 0.85,
@@ -404,8 +407,8 @@ The localized-piece predicates also have a computation-only layer:
 `CapPieceRange` imports these definitions and rational data; the semantic
 regions and unchanged soundness proofs remain in `CapCover`, `CapConstr`
 and `CapPieceNodes`. Generated coverage/range modules therefore avoid the
-lower proof chain. They are excluded from the default root and are not
-yet wired into `GrotheCaps` or `CapsRest`.
+lower proof chain. They are excluded from the root until a proof uses
+them, and are not yet wired into `CapsRest`.
 
 * Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
   (trailing gate block positive definite, κδ² ≤ δ + gatePrice); the Stein cuts (summed, spectral and general spectral) from their analytic inputs, by completions of squares,
@@ -583,6 +586,7 @@ yet wired into `GrotheCaps` or `CapsRest`.
 | `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck0`–`5`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 99/100 everywhere (`phiT_sq_le`, hence `phi_abs_lt_one : |φ| < 1`; `phiBound` is the same bound as the rounding's `PhiBound`): 512 cubes of bisection trees (`phi_cover_check_0`–`5`), analytic far field, headline `fresh_upper_rounder` |
 | `EnergyBlock`, `LocalizedComparison` | actual Gaussian energies of error blocks; the selected-spectrum comparison |
 | `HardyKernel`, `HolIntegral`, `HardyHolo`, `OddSeries`, `OddParseval` | holomorphic Gaussian kernel; dominated parametric integration; holomorphy for separate measurable disk-valued responses (`HholPair`); odd-series continuation and circle Parseval; `hardy_of_pair_inputs` and its incumbent specialization |
+| `Gauss2`, `Sym2R`, `SchurTest`, `LstarL`, `SchurKernel`, `SchurBound`, `SchurIntegrability`, `SchurMain` | Gaussian integrals, weighted Schur test and kernel factorization; the Gaussian Schur bound for every measurable disk-valued response pair under its positive-definiteness gates (`norm_HholPair_sq_le`) |
 
 The pair interface needs measurability and the pointwise disk bound on both
 responses. Holomorphy uses the same open covariance-decay region (`KerPos`)
@@ -593,9 +597,10 @@ at radius `4149/4000`. It concludes the existing partial weighted-square
 inequality with budget `7/4`. These proofs introduce no numerical axioms.
 The incumbent `differentiableOn_Hhol_Rt` and `hardy_of_inputs` retain their
 statements and specialize the pair results. The Gaussian density/covariance
-identification, Schur bound and exact contour inputs remain separate
-obligations; this interface alone does not discharge `hardy` for a changed
-rounding or improve an endpoint.
+identification and exact contour inputs remain separate obligations.
+`SchurMain.norm_HholPair_sq_le` proves the Gaussian Schur bound for the same
+response pairs under `j > 0`, `Z ≻ 0` and `T ≻ 0`. These structural theorems
+alone do not discharge `hardy` for a changed rounding or improve an endpoint.
 
 **`Grothe/LowerAnalytic/Cap*`: the node caps**
 
@@ -615,7 +620,7 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
 The complete registry has 84 native facts: 24 outside the separate 60 cap-range
-facts. There are 532 default axiom-report entries.
+facts. There are 546 default axiom-report entries and 329 required declarations.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`): `Grothe.head_check` (the upper head),
@@ -632,7 +637,7 @@ The separate caps target additionally uses 60 range checks
 `capRangeKK_j`. Every native check is single-threaded (no `Task.spawn`). All
 other finite computations (the polynomial norms, the moment covers) are kernel-checked
 (`decide +kernel`). The report is `lake env lean scratch/Axioms.lean`, checked in CI;
-the separate caps report is `scratch/AxiomsCaps.lean`. The generic response, cubic-ceiling
+the node caps are in the same report. The generic response, cubic-ceiling
 and quintic-transfer lemmas add no native facts or endpoint hypotheses. No `sorry`,
 no warnings.
 

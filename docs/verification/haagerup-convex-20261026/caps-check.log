@@ -1,0 +1,3 @@
+PASS: all54 caps source files, existing certificate, generator and native inventories match master 0effd0330fa5f76d6e68750d6cfa9cbec8510ccf.
+54 files; sha256 3bf3f36f1aa49fe345e655971cd99364aaf736fb0f101b298884703df3a2ef0f
+Source comparison only: no cap-cache verification or marker write.

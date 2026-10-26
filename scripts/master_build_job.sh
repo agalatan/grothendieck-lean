@@ -4,7 +4,9 @@
 # It builds in its own worktree, $BUILDER (detached, never edited by anyone), so that syncing the main checkout never
 # changes sources under a running build. Each round:
 #   1. check out the current origin/master in $BUILDER;
-#   2. `lake build Grothe` there (incremental);
+#   2. build there (incremental) every module of the root Grothe except the node-cap rows CapRowKK and their assembly
+#      CapNodes: those take about 21 CPU-hours cold and are verified by CI (droplet) only; nothing but the root
+#      imports them, so every module an agent builds on the laptop starts warm;
 #   3. on success, record the commit in $BUILDER/.lake/build/built-commit and publish a consistent snapshot
 #      $MAIN/.lake/master-cache: an APFS copy-on-write clone (instant; shares disk blocks until later builds change
 #      files), swapped in by rename. Worktrees clone the snapshot (scripts/clone_master_build.sh).
@@ -30,7 +32,8 @@ while true; do
   git checkout -q --detach "$TARGET"
   rm -f .lake/build/built-commit
   echo "building master $TARGET"
-  lake build Grothe
+  # shellcheck disable=SC2046
+  lake build $(sed -n 's/^import //p' Grothe.lean | grep -vE '^Grothe\.LowerAnalytic\.(CapRow[0-9]+|CapNodes)$')
   echo "$TARGET" > .lake/build/built-commit
   rm -rf "$MAIN/.lake/master-cache.new"
   cp -c -R .lake/build "$MAIN/.lake/master-cache.new"

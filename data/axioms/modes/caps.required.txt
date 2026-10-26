@@ -1,2 +1,0 @@
-# --caps: theorems that must appear in this audit report (sorted; union-merged).
-Grothe.LowerAnalytic.lower_bound_of_capsRest

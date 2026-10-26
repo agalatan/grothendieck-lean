@@ -8,10 +8,9 @@ The lower bound is `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K
 target `GrotheCaps` (see the README, "Node caps"). `CapsRest` is the vertex caps of **rows 12–15** (t = 0.84, 0.845,
 0.85, 0.855), plus any excluded-node caps of the other rows; the exclusion
 lists are empty. Rows 0–11 and 16–18 have 60 existing native range facts.
-Track A isolates their computation from the analytic proof layer. The runner
-builds the separate target and checks both axiom reports. Ordinary CI replays
-that verified build when its cache marker matches the current computation
-sources; otherwise it dispatches the heavy runner job (`AGENTS.md` §4).
+Track A isolates their computation from the analytic proof layer. CI replays
+the verified build when a cache for the current computation sources exists;
+otherwise the check runs on the droplet's runner (`AGENTS.md` §8).
 Removing `CapsRest` would make the lower bound unconditional, apart from
 the pinned `native_decide` facts.
 
@@ -129,18 +128,18 @@ This does not depend on B's choice of fix. B's choice only changes the data.
 - **No `Task.spawn`** inside `native_decide` code; CI rejects it. Parallelise with separate modules.
 - **Droplet:**
   - One heavy build at a time. Check with `uptime` and `pgrep -a lean` first.
-  - Start every job as a process group (`AGENTS.md` §5) and stop it with `kill -- -PGID`.
+  - Start every job as a process group (`AGENTS.md` §12) and stop it with `kill -- -PGID`.
   - Never kill another agent's job.
   - Keep at least 3 GB free.
 - **Generated files** are reproducible from `data/` byte for byte; never hand-edit them.
-- **Verifying `GrotheCaps`:**
+- **Verifying the node caps:**
   ```sh
-  lake build GrotheCaps && lake env lean scratch/AxiomsCaps.lean | python3 scripts/check_axioms.py --caps
+  lake build Grothe && lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py
   ```
-  This runs automatically on the droplet's CI runner (job `heavy`, modes `warm`/`caps`). After both targets
-  and reports pass, the runner records `.lake/build/caps-closure.sha` with `scripts/caps_stamp.py --mark-cache`
-  and saves the verified build cache. A branch `caps` run repeats its ordinary CI check.
+  This runs automatically: when the caps changed, CI runs the check on the droplet's runner. After the build and
+  the report pass, it records `.lake/build/caps-closure.sha` with `scripts/caps_stamp.py --mark-cache` and saves
+  the verified build cache. Never run it on the laptop (about 21 CPU-hours).
   Do not launch a separate manual droplet verification.
-- **Delivery:** normally through `ready/<agent>-<topic>` (`AGENTS.md` §3); workflow changes use a pull request
-  after the combined branch is green, merged by the user (§4a). Changed cap sources dispatch the runner rebuild
-  automatically, and later checks and the master warm run reuse that verified build.
+- **Delivery:** normally through `ready/<agent>-<topic>` (`AGENTS.md` §7); workflow changes use a pull request
+  after the combined branch is green, merged by the user (§9). Changed cap sources route the check to the runner
+  automatically, and later checks, master's included, reuse that verified build.

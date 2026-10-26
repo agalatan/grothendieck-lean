@@ -92,7 +92,7 @@ The generated modules are `D/C/N14x150` with `R14x150_0..1`, and `D/C/N14x200` w
    - Costs are about 4 min per piece on 1600 × 1024, about 1 min on 1600 × 256, and seconds on 400 × 128, all
      single-threaded.
    - Choose `chunk` so that each range fact takes 10–20 min.
-   - Build only on the droplet, as a process group (`AGENTS.md` §5), one heavy build at a time.
+   - Build only on the droplet, as a process group (`AGENTS.md` §12), one heavy build at a time.
 3. **Wiring into `CapsRest` (after track A merges):**
    - Track A splits `CapRows` / `CapHull` / `CapNodes` into a computation layer (`CapRangeDefs`, `CapNodeDefs`,
      `RowGateData`, …) and an assembly layer (`CapAssembly`).
