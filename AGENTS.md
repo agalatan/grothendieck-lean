@@ -152,11 +152,11 @@ Do this when the user says the work should go into master.
      - `Grothe.lean` / `GrotheKernel.lean` are **generated** (every module under `Grothe/`, `GrotheKernel/` except
        `data/root-imports-exclude.txt`): never edit them by hand; after adding a module, and after any merge, run
        `python3 tools/gen_root_imports.py` (CI fails if they are stale);
-     - `scratch/Axioms.lean`, `scratch/AxiomsCaps.lean`, `data/axioms/*.txt` (native facts and required theorems,
+     - `scratch/Axioms.lean`, `data/axioms/*.txt` (native facts and required theorems,
        formerly in `scripts/check_axioms.py`) are sorted one-entry-per-line lists that git union-merges
        (`.gitattributes`); keep them sorted (CI checks order and duplicates);
-     - a module that must not be built by CI (e.g. a new `GrotheCaps`-only module) goes into
-       `data/root-imports-exclude.txt`;
+     - there is one build target, `Grothe`: every module is in it. Only generated research modules that no proof uses
+       yet go into `data/root-imports-exclude.txt`;
      - `README.md` still needs a hand merge: describe the combined state.
 5. **Lean coverage:**
    - Build every module you added or changed, plus the modules that import them (`lake build <Module> ...`).
@@ -188,11 +188,12 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
   - the full Lean build;
   - the grep for `sorry` / `axiom` / `implemented_by` / `extern` / `unsafe` / `Task.spawn`;
   - the axiom report (`scripts/check_axioms.py`);
-  - the caps gate: whether the cached `GrotheCaps` build is verified for the current sources
-    (`scripts/caps_stamp.py --check-cache`); if so, `GrotheCaps` is built (replayed) and its axiom report checked.
+  - first, the caps gate: whether the cached node-cap build is verified for the current sources
+    (`scripts/caps_stamp.py --check-cache`). One target, one build, one axiom report: `lake build Grothe` includes the
+    node caps, replayed from the cache in seconds.
 - **Skipped when nothing Lean-relevant changed:** if a push (for `ready/`: the merge with master) touches only files
   outside `Grothe/`, `GrotheKernel/`, the root `.lean` files, `lakefile.toml`, `lake-manifest.json`, `lean-toolchain`,
-  `scratch/Axioms.lean`, `scratch/AxiomsCaps.lean` (the CI axiom reports; other `scratch/` files are not built by CI), `scripts/check_axioms.py`, `scripts/caps_stamp.py` and `.github/workflows/`, the build and the checks are
+  `scratch/Axioms.lean` (the CI axiom report; other `scratch/` files are not built by CI), `scripts/check_axioms.py`, `scripts/caps_stamp.py` and `.github/workflows/`, the build and the checks are
   skipped and the job succeeds. Documentation-only deliveries still auto-merge.
 - **What differs for `ready/<topic>`:** the merge with master and the auto-merge. A push to master by CI does not start a
   new run (GitHub never triggers workflows from the workflow token); the merged commit is exactly the tree that was
@@ -208,11 +209,11 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
   the verified caps modules. The droplet (self-hosted runner, labels `self-hosted, heavy`) is needed only when the caps
   sources change (below). Trust: a cached `native_decide` result is not re-executed; only runs on master (and caps
   runs for their own branch) write caches, and Lake reuses a file only if its source, dependency and toolchain hashes
-  match; the cache also records the caps' source hash (`.lake/build/caps-closure.sha`), and CI builds `GrotheCaps`
-  only when it matches.
+  match; the cache also records the caps' source hash (`.lake/build/caps-closure.sha`), and CI builds only when it
+  matches.
 - **Caps changes.** If a change touches a file in the caps closure, the cached caps no longer match and CI does not try
   the hours-long build (it would time out): it dispatches a **caps** run on the droplet for that branch (for `ready/`:
-  the tree merged with master) and fails with a message. The droplet builds `GrotheCaps`, runs both axiom reports, marks
+  the tree merged with master) and fails with a message. The droplet builds `Grothe`, runs the axiom report, marks
   and saves a cache for that branch, and re-dispatches the check, which then passes. Nothing to do by hand; just wait.
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for stop/remove).
   It shares Mathlib with the other droplet work via `~/grothe-caps/.lake/packages` — do not delete that directory.
@@ -262,9 +263,9 @@ own branch. Never publish a private build to Actions; the separate laptop snapsh
      It clones the published snapshot, never the live build.
 
   Lake then rebuilds only what your branch changes.
-- **Droplet:** do not run heavy builds (`GrotheCaps`, the certificate chunks, full builds) in a private folder.
+- **Droplet:** do not run heavy builds (the node caps, the certificate chunks, full builds) in a private folder.
   Dispatch them to the runner: `gh workflow run lean.yml --ref <your pushed branch> -f mode=caps`. The runner builds in
-  its warm workspace, checks both axiom reports, and saves a cache for your branch that your next CI runs reuse.
+  its warm workspace, checks the axiom report, and saves a cache for your branch that your next CI runs reuse.
   Light builds (a few modules) may run in a private signed folder (§0b) that links only the shared Mathlib packages
   (`~/grothe-caps/.lake/packages`).
 - **Never run a separate manual caps verification.** If your change touches the caps closure, push it (a `ready/`
@@ -372,7 +373,7 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
   is git-ignored.
 - Bounds and hypotheses are stated in `README.md`, `OVERVIEW.pdf` (source `docs/overview.tex`)
   and `docs/LEAN_DETAILS.md` (see §3, step 6).
-- The node caps (`GrotheCaps`) are built on the droplet runner and replayed by CI from the cache. Changing a file in
+- The node caps (`CapRowKK`, `CapNodes`, part of `Grothe`) are built on the droplet runner and replayed by CI from the cache. Changing a file in
   their import closure triggers a droplet rebuild of hours (§4) — avoid touching that closure casually. The cap checker
   (`GrotheCapsKernel/`) is its own precompiled library on purpose: never import other kernel modules into it.
 

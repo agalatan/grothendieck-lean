@@ -4,8 +4,8 @@ name: Cloud job
 #   gh workflow run cloud.yml --ref <branch> -f id=<unique id> -f kind=<lean|check|script> -f targets=<...>
 # * lean:   build the given Lean modules of <branch> (incremental from the master cache), e.g. native_decide facts;
 #           with shards = N the modules are dealt round-robin over N parallel jobs.
-# * check:  the full proof check of <branch> (build Grothe, no sorry/axiom, axiom report, GrotheCaps from the
-#           verified cache), without any merge. Useful for scratch branches cloud/**, which the push check skips.
+# * check:  the full proof check of <branch> (build Grothe, node caps replayed from the verified cache, no
+#           sorry/axiom, axiom report), without any merge. Useful for scratch branches cloud/**, which the push check skips.
 # * script: run a script committed in <branch>: "<path> [args...]" (.py with python3, .sh with bash, .cpp compiled
 #           with g++ -O2). Every shard gets SHARD, NSHARDS and OUT (a directory for its results).
 # Results: one artifact per shard, cloud-<id>-<shard> (OUT plus logs and summary.json), kept 7 days.
@@ -130,6 +130,10 @@ jobs:
                   lake build $mods --log-level=warning || status=$?
                 fi ;;
               check)
+                if ! python3 scripts/caps_stamp.py --check-cache; then
+                  echo "the node caps are not verified for these sources (a cold cap build needs the droplet: push and let CI's caps run do it)"
+                  exit 2
+                fi
                 lake build Grothe --log-level=warning || status=$?
                 if [ $status = 0 ]; then python3 tools/gen_root_imports.py --check || status=$?; fi
                 if [ $status = 0 ]; then
@@ -137,14 +141,6 @@ jobs:
                 fi
                 if [ $status = 0 ]; then
                   lake env lean scratch/Axioms.lean > "$OUT/axioms.txt" && python3 scripts/check_axioms.py < "$OUT/axioms.txt" || status=1
-                fi
-                if [ $status = 0 ]; then
-                  if python3 scripts/caps_stamp.py --check-cache; then
-                    lake build GrotheCaps --log-level=warning && lake env lean scratch/AxiomsCaps.lean > "$OUT/axioms-caps.txt" \
-                      && python3 scripts/check_axioms.py --caps < "$OUT/axioms-caps.txt" || status=1
-                  else
-                    echo "GrotheCaps not verified for these sources (would need a droplet caps run)"; status=2
-                  fi
                 fi ;;
               script)
                 set -- $TARGETS

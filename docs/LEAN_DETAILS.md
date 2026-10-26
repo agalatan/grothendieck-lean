@@ -355,26 +355,25 @@ variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
 `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data :
 NodeCaps → IsGrothendieckBound K → 1.401697049825 < K` composes everything
 through `Grothe/Research/RefinedCoverResult.lean`:
-**the only remaining hypothesis of this default-target theorem is `NodeCaps`**, the node caps
+**the only remaining hypothesis of this theorem is `NodeCaps`**, the node caps
 Ψ_r(r_k) − 10⁻¹¹ ≤ c_k of the 19 certified potentials (exact-arithmetic certificates outside Lean).
 
-The separate `GrotheCaps` target supplies `lower_bound_of_capsRest :
+The same single target `Grothe` also proves `lower_bound_of_capsRest :
 CapsRest → IsGrothendieckBound K → 1.401697049825 < K` (`CapNodes.lean`). Its 15
 `CapRowKK` modules retain the 60 unchanged single-threaded native range facts
 for rows 0–11 and 16–18, importing only the computation layer and recipe data.
 `CapRows` proves range-check soundness, and `CapAssembly` proves the chord
-check and convexity assembly (`CapHull` is a compatibility import). The
-default `Grothe` target builds that proof layer. `CapNodes` contains the
+check and convexity assembly (`CapHull` is a compatibility import). `CapNodes` contains the
 15 unchanged row-assembly proofs and the final `CapsRest` theorem, which
 composes `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and the same
-`lower_bound_of_refined_cover_data` used by the default target. The common
+`lower_bound_of_refined_cover_data`. The common
 `NodeCaps` definition lives in `NodeCaps.lean`, independently of
-`Reduction.lean`. `CapNodes` and the heavy rows are excluded from the
-generated default root.
+`Reduction.lean`. There is one build target and one axiom report: the heavy
+rows and `CapNodes` are part of `Grothe`.
 
-The cache provenance boundary is 54 files: 48 local computation modules,
-plus `CapNodes.lean`, `GrotheCaps.lean`, `GrotheCapsKernel.lean`, `lean-toolchain`,
-`lake-manifest.json` and `lakefile.toml`. Those six extras are hashed directly,
+The cache provenance boundary is 53 files: 48 local computation modules,
+plus `CapNodes.lean`, `GrotheCapsKernel.lean`, `lean-toolchain`,
+`lake-manifest.json` and `lakefile.toml`. Those five extras are hashed directly,
 without traversing their imports. This identifies the cached computation
 sources, not every analytic dependency or compiled artifact. Lake checks
 ordinary dependencies separately. The numerical checker is the independent
@@ -383,17 +382,17 @@ its constants retain the `GrotheKernel` namespace. Other kernel checkers
 stay outside that library, whose root is pinned because every importer
 loads its shared object.
 
-The runner's heavy CI job builds `Grothe` and `GrotheCaps` and checks both
-axiom reports before recording `.lake/build/caps-closure.sha` with
+The runner's heavy CI job builds `Grothe` and checks the
+axiom report before recording `.lake/build/caps-closure.sha` with
 `scripts/caps_stamp.py --mark-cache`. Ordinary CI restores that cache and
-calls `--check-cache` (the default). A match permits a `GrotheCaps` replay
-and caps audit, including `CapNodes`; Lake reuses native results only when
+calls `--check-cache` (the default). A match permits the build of `Grothe`
+(replaying the heavy facts) and the axiom audit, including `CapNodes`; Lake reuses native results only when
 its dependency hashes permit it. A missing or mismatched marker fails
 closed and dispatches the heavy job. A branch `caps` run saves the verified
 branch cache and repeats the check. After merge, a master `warm` run reuses
 the runner's persistent build and refreshes the master cache. One runner
 build supplies the verification and subsequent replay; no independent
-manual droplet verification is required. Builds and both reports establish
+manual droplet verification is required. The build and the report establish
 verification; a read-only digest alone does not.
 
 `CapsRest` still comprises the vertex caps of rows 0.84, 0.845, 0.85,
@@ -407,8 +406,8 @@ The localized-piece predicates also have a computation-only layer:
 `CapPieceRange` imports these definitions and rational data; the semantic
 regions and unchanged soundness proofs remain in `CapCover`, `CapConstr`
 and `CapPieceNodes`. Generated coverage/range modules therefore avoid the
-lower proof chain. They are excluded from the default root and are not
-yet wired into `GrotheCaps` or `CapsRest`.
+lower proof chain. They are excluded from the root until a proof uses
+them, and are not yet wired into `CapsRest`.
 
 * Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
   (trailing gate block positive definite, κδ² ≤ δ + gatePrice); the Stein cuts (summed, spectral and general spectral) from their analytic inputs, by completions of squares,
@@ -637,7 +636,7 @@ The separate caps target additionally uses 60 range checks
 `capRangeKK_j`. Every native check is single-threaded (no `Task.spawn`). All
 other finite computations (the polynomial norms, the moment covers) are kernel-checked
 (`decide +kernel`). The report is `lake env lean scratch/Axioms.lean`, checked in CI;
-the separate caps report is `scratch/AxiomsCaps.lean`. The generic response, cubic-ceiling
+the node caps are in the same report. The generic response, cubic-ceiling
 and quintic-transfer lemmas add no native facts or endpoint hypotheses. No `sorry`,
 no warnings.
 

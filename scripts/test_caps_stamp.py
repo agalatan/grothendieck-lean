@@ -34,7 +34,6 @@ class CapsStampTests(unittest.TestCase):
         ordered = sorted(sources)
         extra = {
             "Grothe/LowerAnalytic/CapNodes.lean": "-- cap combination fixture\n",
-            "GrotheCaps.lean": "-- caps target fixture\n",
             "GrotheCapsKernel.lean": "-- cap checker library root fixture\n",
             "lean-toolchain": "leanprover/lean4:v4.34.1\n",
             "lake-manifest.json": "{}\n",
@@ -73,7 +72,7 @@ class CapsStampTests(unittest.TestCase):
             with self.subTest(args=args):
                 result = self.run_cli(*args)
                 self.assertEqual(result.returncode, 1)
-                self.assertIn("no verified GrotheCaps build", result.stdout)
+                self.assertIn("no verified node-cap build", result.stdout)
                 self.assertFalse(self.mark.exists())
 
     def test_current_marker_passes_default_and_explicit_check(self):
@@ -159,7 +158,7 @@ class CapsStampTests(unittest.TestCase):
         self.assertFalse(self.mark.exists())
         self.assertEqual(before, sorted(str(path.relative_to(self.root)) for path in self.root.rglob("*")))
 
-    def test_decoupled_48_module_plus_six_extra_boundary(self):
+    def test_decoupled_48_module_plus_five_extra_boundary(self):
         data_names = [f"Grothe.Pure{k:02d}" for k in range(32)]
         (self.root / "Grothe/Shared.lean").write_text("import " + " ".join(data_names) + "\n")
         for name in data_names:
@@ -167,12 +166,11 @@ class CapsStampTests(unittest.TestCase):
             path.write_text("-- synthetic rational data\n")
         # These roots are hashed directly, but their imports are deliberately not traversed.
         (self.root / "Grothe/LowerAnalytic/CapNodes.lean").write_text("import Grothe.ProofOnly\n")
-        (self.root / "GrotheCaps.lean").write_text("import Grothe.AnotherProofOnly\n")
         (self.root / "GrotheCapsKernel.lean").write_text("import Grothe.UntraversedRootImport\n")
         (self.root / "Grothe/ProofOnly.lean").write_text("-- synthetic soundness proof\n")
         (self.root / "Grothe/AnotherProofOnly.lean").write_text("-- synthetic final proof\n")
         (self.root / "Grothe/UntraversedRootImport.lean").write_text("-- synthetic extra-root dependency\n")
-        extra_files = ["Grothe/LowerAnalytic/CapNodes.lean", "GrotheCaps.lean", "GrotheCapsKernel.lean",
+        extra_files = ["Grothe/LowerAnalytic/CapNodes.lean", "GrotheCapsKernel.lean",
                        "lean-toolchain", "lake-manifest.json", "lakefile.toml"]
         computation = sorted([name for name in self.ordered if name.endswith(".lean") and
                               name not in extra_files] +
@@ -187,8 +185,8 @@ class CapsStampTests(unittest.TestCase):
         listed = self.run_cli("--list")
         self.assertEqual(listed.returncode, 0, listed.stdout + listed.stderr)
         self.assertEqual(listed.stdout,
-                         "\n".join(expected_files) + f"\n54 files; sha256 {expected}\n")
-        self.assertEqual(self.run_cli("--digest").stdout, f"sha256 {expected}\nfiles 54\n")
+                         "\n".join(expected_files) + f"\n53 files; sha256 {expected}\n")
+        self.assertEqual(self.run_cli("--digest").stdout, f"sha256 {expected}\nfiles 53\n")
         self.assertEqual(self.run_cli("--mark-cache").returncode, 0)
         for name in ["Grothe/ProofOnly.lean", "Grothe/AnotherProofOnly.lean", "Grothe/UntraversedRootImport.lean"]:
             (self.root / name).write_text("-- changed untraversed proof\n")
@@ -287,10 +285,12 @@ class RepositoryBoundaryTests(unittest.TestCase):
                              or module.startswith("Grothe.Lower.Cert.")]
                 self.assertEqual(forbidden, [])
 
-    def test_default_target_excludes_the_heavy_facts(self):
+    def test_one_target_contains_the_node_caps(self):
+        # one build target: the root Grothe imports the node-cap rows and their assembly (no separate caps target);
+        # the generated rows-12-15 piece modules are not part of a proof yet and stay out
         ordinary = set(self.caps.closure(["Grothe"]))
-        self.assertFalse(ordinary.intersection(self.caps.TOPS))
-        self.assertNotIn("Grothe.LowerAnalytic.CapNodes", ordinary)
+        self.assertTrue(set(self.caps.TOPS) <= ordinary)
+        self.assertIn("Grothe.LowerAnalytic.CapNodes", ordinary)
         self.assertFalse(any(module.startswith("Grothe.LowerAnalytic.CapPieces.") for module in ordinary))
 
     def test_cap_checker_library_is_independent_of_other_project_libraries(self):

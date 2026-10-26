@@ -109,14 +109,13 @@ The 15 `CapRowKK.lean` modules contain the 60 single-threaded `native_decide`
 range facts for rows 0–11 and 16–18. They import `CapRangeDefs` and
 `CapRecipeData`: the rational row, gate, chord and recipe data and numerical
 checker, independently of the Gaussian analysis and lower certificate.
-The default target `Grothe` builds range-check soundness in `CapRows` and
-convexity assembly in `CapAssembly` (`CapHull` is a compatibility import).
-The separate target `GrotheCaps` also builds the heavy facts and `CapNodes`,
-which contains the 15 unchanged row-assembly proofs and
-`lower_bound_of_capsRest`.
+There is one build target, `Grothe`: it builds range-check soundness in
+`CapRows`, convexity assembly in `CapAssembly` (`CapHull` is a compatibility
+import), the heavy facts, and `CapNodes`, which contains the 15 row-assembly
+proofs and `lower_bound_of_capsRest`.
 
-The default target proves
-the lower bound with the hypothesis `NodeCaps` (`lower_bound_of_refined_cover_data`). The additional law nodes
+`lower_bound_of_refined_cover_data` proves
+the lower bound with the hypothesis `NodeCaps`. The additional law nodes
 use the original source caps and existing Stein cuts; they add no Gaussian premise.
 Their inputs are in `data/lower-unshifted/`; `tools/needle_unshifted_lean.py --check`
 replays every new node, every final box, the old canonical reference map and the full partition,
@@ -125,10 +124,10 @@ The current cover uses adaptive binary splits and repriced row mixtures. Its
 forest ledger replays from immutable starting inputs, preserving inherited
 scale interpolation domains; see `data/lower-unshifted/README.md`.
 
-The cache provenance hash covers 54 files: the 48 local computation modules
-reachable from the heavy row modules, plus `CapNodes.lean`, `GrotheCaps.lean`,
+The cache provenance hash covers 53 files: the 48 local computation modules
+reachable from the heavy row modules, plus `CapNodes.lean`,
 `GrotheCapsKernel.lean`, `lean-toolchain`, `lake-manifest.json` and `lakefile.toml`.
-The six extras are hashed directly; their imports are not traversed. This
+The five extras are hashed directly; their imports are not traversed. This
 replaces the former 140-file boundary. Changes confined to analytic soundness
 or the lower certificate outside this set do not invalidate the computation
 hash; Lake still checks ordinary proof dependencies. This hash identifies the
@@ -138,13 +137,13 @@ The numerical checker has its own precompiled library, `GrotheCapsKernel`
 so other kernel checkers do not replace its shared object. Its root is pinned
 because importers load that library's shared object.
 
-The droplet's self-hosted CI runner builds `Grothe` and `GrotheCaps`, runs
-both axiom reports, then records the hash in `.lake/build/caps-closure.sha`
+The droplet's self-hosted CI runner builds `Grothe`, runs
+the axiom report, then records the hash in `.lake/build/caps-closure.sha`
 with `scripts/caps_stamp.py --mark-cache` and saves the build cache.
 For Lean-relevant checks, ordinary CI restores that cache and calls
 `scripts/caps_stamp.py --check-cache` (also the script's default). A match
-permits an explicit `GrotheCaps` replay and caps axiom audit, including the
-final `CapNodes` assembly; cached native results are reused subject to Lake's
+permits the build of `Grothe`, which replays the heavy facts, and the axiom
+audit, including the final `CapNodes` assembly; cached native results are reused subject to Lake's
 dependency checks. A missing or mismatched marker fails closed and dispatches
 a heavy `caps` job for the branch. That run saves a verified branch cache and
 repeats the check; after merge, the master `warm` run reuses the runner's
@@ -153,11 +152,11 @@ supplies verification and later replay; do not run a separate manual droplet
 verification. A read-only digest is not a verification record.
 See `AGENTS.md` §4 and `docs/CAPS_STATUS.md`.
 
-The default lower theorem still assumes `NodeCaps`.
-The separate theorem reduces this to `CapsRest`: the vertex caps of rows
+`lower_bound_of_refined_cover_data` assumes `NodeCaps`.
+`lower_bound_of_capsRest` reduces this to `CapsRest`: the vertex caps of rows
 12–15 (t = 0.84, 0.845, 0.85, 0.855), plus any excluded-node caps of the
 other rows. All exclusion lists are empty. Both lower theorems use the same
-refined cover and endpoint; the separate theorem composes
+refined cover and endpoint; the second composes
 `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and
 `lower_bound_of_refined_cover_data`. `NodeCaps.lean` defines the common cap
 hypothesis without importing the Gaussian reduction. The cap computations,
@@ -165,7 +164,8 @@ recipes and row data are unchanged. The rows 12–15 piece checks likewise impor
 only rational data and computable definitions (`CapCoverDefs`,
 `CapConstrDefs`, `CapPieceRange`); `CapCover`, `CapConstr` and `CapPieceNodes`
 provide their soundness. Their generated facts and final `CapsRest` wiring
-remain a separate campaign, outside the current `GrotheCaps` target.
+remain a separate campaign (generated piece modules are excluded from the
+root until a proof uses them).
 
 **Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder`, for an L² charge-one truncation `X`, proves
 `ComparisonInputs → energy_close → hardy → IsGrothendieckBound (500000000000000000/355973699864771491)`,
@@ -288,7 +288,7 @@ the eight chunks
 `capChords_check` (the chord nodes of the cap tables) and the 60 range checks `capRangeKK_j` of the node caps.
 Every native check is single-threaded code (no `Task.spawn`).
 Everything else is kernel-checked. No `sorry`. The axiom report `scratch/Axioms.lean`
-is verified in CI by `scripts/check_axioms.py`; the separate caps report is `scratch/AxiomsCaps.lean`.
+is verified in CI by `scripts/check_axioms.py`.
 
 Joint-response proof interfaces retain shared Gram constraints, exact two-disc
 support, quadratic-feature closure and common Stein tests before completing
@@ -382,12 +382,12 @@ lake build
 lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py
 ```
 
-`lake build` selects the default target `Grothe`; the heavy cap rows and
-`CapNodes` belong to `GrotheCaps`. For Lean-relevant pushes, CI builds the
-default target, checks the generated roots and axiom report, and forbids
+`lake build` builds the single target `Grothe`, heavy cap rows included
+(about 21 CPU-hours cold; CI replays them from its verified cache). For
+Lean-relevant pushes, CI builds it, checks the generated roots and axiom report, and forbids
 `sorry`, `axiom`, `implemented_by`, `extern`, `unsafe` and `Task.spawn`.
-It gates an explicit `GrotheCaps` replay and caps audit on the verified
-build-cache marker, dispatching a heavy runner build when that marker is
+It gates the build on the verified
+build-cache marker of the cap rows, dispatching a heavy runner build when that marker is
 absent or stale. A `ready/` run checks the branch merged with current master
 before auto-merging; deliveries changing the workflow use a pull request
 (`AGENTS.md` §4a). Documentation-only changes may skip the Lean checks.
