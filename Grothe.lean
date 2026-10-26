@@ -232,6 +232,7 @@ import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialRepair
 import Grothe.UpperChaos.Realise2
 import Grothe.UpperChaos.Rounder
+import Grothe.UpperChaos.SchurBound
 import Grothe.UpperChaos.SchurKernel
 import Grothe.UpperChaos.SchurTest
 import Grothe.UpperChaos.Structural
