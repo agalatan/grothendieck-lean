@@ -184,7 +184,7 @@ standard Gaussian are independent standard Gaussians, by characteristic function
 two complex Gaussians, the radial identity and the phase rounding as a disk-valued rounding
 (`Identity`: `integral_phase_pair`, `Phi2_radial`, `haagerup_disk`, `haagerup_dominated`). Disk-valued
 roundings are dominated (`Grothe/Upper/Disk.lean`); polynomial preprocessors are realised by tensor powers
-(`Realise.lean`) and composed with radial kernels (`Compose.lean`). The degree-29 preprocessor and degree-128 approximate inverse are
+(`Realise.lean`) and composed with radial kernels (`Compose.lean`). The degree-29 preprocessor and degree-64 approximate inverse are
 generated from `data/haagerup-resolvent/certificate.json`. The coefficient norm is exactly one;
 the fourth-power norm is at most 998903/10⁶. A single sequential native check verifies the complete
 1,024-term composition (radial cutoff 29,696), the power norm, inverse defect ≤10⁻¹²,

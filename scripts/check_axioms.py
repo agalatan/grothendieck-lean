@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """Check the axiom report (`lake env lean scratch/Axioms.lean`) read from stdin.
 
+Stdin must be the complete `#print axioms` output: only records and whitespace.
+Diagnostics, malformed or truncated records, and unknown or conflicting modes fail.
+
 Fails unless
 * every listed theorem uses only `propext`, `Classical.choice`, `Quot.sound` and the
   `native_decide` facts named in NATIVE (the finite exact computations documented in README.md),
 * every theorem in REQUIRED (the headline results) appears in the report,
-* the report contains no Lean errors.
+* the complete input consists of well-formed axiom reports and whitespace only.
 """
-import re, sys
+import argparse, re, sys
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
 NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",          # upper: head of the kernel
           "Grothe.Upper.comparison_check._native.native_decide.ax_1_1", # upper: selected-band masses and comparison assembly
@@ -310,54 +313,89 @@ REQUIRED |= PHASE_RESPONSE
 NATIVE |= {'Grothe.Upper.comparison_check._native.native_decide.ax_1_1'}
 REQUIRED |= {'Grothe.Upper.actual_band_mass', 'Grothe.UpperChaos.norm_energyBlock_sq', 'Grothe.Upper.BandComparison.compare', 'Grothe.UpperChaos.localized_comparison', 'Grothe.Upper.comparison_check'}
 
-# Select one targeted audit, or require every family for the full report.
-audit_modes = [flag for flag in (
-    "--caps", "--responses", "--response-geometry", "--haagerup-power",
-    "--research", "--hardy-budget", "--refined-cover", "--law-nodes", "--upper-comparison", "--phase-response") if flag in sys.argv]
-if len(audit_modes) > 1:
-    sys.exit("choose one axiom audit mode")
-if "--phase-response" in sys.argv:
-    REQUIRED = PHASE_RESPONSE
-    NATIVE = set()
-elif "--caps" in sys.argv:
-    REQUIRED = {"Grothe.LowerAnalytic.lower_bound_of_capsRest"}
-elif "--responses" in sys.argv:
-    REQUIRED = RESPONSE_GEOMETRY | JOINT_RESPONSE
-    NATIVE = set()
-elif "--response-geometry" in sys.argv:
-    REQUIRED = RESPONSE_GEOMETRY
-    NATIVE = set()
-elif "--haagerup-power" in sys.argv:
-    REQUIRED = POWER_HAAGERUP
-    NATIVE = {"Grothe.HaagerupPower.check._native.native_decide.ax_1_1"}
-elif "--upper-comparison" in sys.argv:
-    REQUIRED = UPPER_COMPARISON
-    NATIVE = {"Grothe.head_check._native.native_decide.ax_1_1",
-              "Grothe.Upper.comparison_check._native.native_decide.ax_1_1",
-              "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1"}
-elif "--research" in sys.argv:
-    REQUIRED = RESEARCH_CORE
-    NATIVE = set()
-elif "--hardy-budget" in sys.argv:
-    REQUIRED = HARDY_BUDGET
-elif "--refined-cover" in sys.argv:
-    REQUIRED = REFINED_LOWER
-elif "--law-nodes" in sys.argv:
-    REQUIRED = LAW_NODES
-text = sys.stdin.read()
-if re.search(r"(^|\n)[^\n]*: error", text):
-    sys.exit("the axiom report contains Lean errors")
-flat = text.replace("\n", " ")
-reports = re.findall(r"'([^']+)' depends on axioms: \[([^\]]*)\]", flat)
-reports += [(n, "") for n in re.findall(r"'([^']+)' does not depend on any axioms", flat)]
-if not reports:
-    sys.exit("no axiom reports found")
-bad = [(n, a) for n, axs in reports for a in (x.strip() for x in axs.split(",")) if a and a not in STANDARD | NATIVE]
-for n, a in bad:
-    print(f"DISALLOWED AXIOM in {n}: {a}")
-missing = REQUIRED - {n for n, _ in reports}
-for n in sorted(missing):
-    print(f"MISSING from the report: {n}")
-used = {a.strip() for _, axs in reports for a in axs.split(",")} & NATIVE
-print(f"checked {len(reports)} theorems; native_decide facts used: {len(used)} of {len(NATIVE)}")
-sys.exit(1 if bad or missing else 0)
+
+def audit_policy(mode):
+    """Return the existing required results and native allowlist for one mode."""
+    policies = {
+        "default": (REQUIRED, NATIVE),
+        "research": (RESEARCH_CORE, set()),
+        "hardy-budget": (HARDY_BUDGET, NATIVE),
+        "refined-cover": (REFINED_LOWER, NATIVE),
+        "law-nodes": (LAW_NODES, NATIVE),
+        # Separate GrotheCaps target: scratch/AxiomsCaps.lean.
+        "caps": ({"Grothe.LowerAnalytic.lower_bound_of_capsRest"}, NATIVE),
+        # Generic response results must use no numerical native facts.
+        "responses": (RESPONSE_GEOMETRY | JOINT_RESPONSE, set()),
+        "response-geometry": (RESPONSE_GEOMETRY, set()),
+        "phase-response": (PHASE_RESPONSE, set()),
+        "haagerup-power": (POWER_HAAGERUP,
+                           {"Grothe.HaagerupPower.check._native.native_decide.ax_1_1"}),
+        "upper-comparison": (UPPER_COMPARISON,
+                             {"Grothe.head_check._native.native_decide.ax_1_1",
+                              "Grothe.Upper.comparison_check._native.native_decide.ax_1_1",
+                              "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1"}),
+    }
+    required, native = policies[mode]
+    return set(required), set(native)
+
+
+# A name may contain apostrophes; its closing quote precedes the report phrase.
+# Lean pretty-prints long axiom lists over several lines.
+REPORT = re.compile(
+    r"'(?P<name>(?:[^\s«»]|«[^»]*»)+?)'\s+"
+    r"(?:depends\s+on\s+axioms:\s*\[(?P<axioms>[^\[\]]*)\]"
+    r"|does\s+not\s+depend\s+on\s+any\s+axioms)(?=\s|$)"
+)
+
+
+def parse_reports(text):
+    """Consume every input character; diagnostics and partial records are errors."""
+    reports = []
+    pos = 0
+    while pos < len(text):
+        if text[pos].isspace():
+            pos += 1
+            continue
+        match = REPORT.match(text, pos)
+        if match is None:
+            line = text.count("\n", 0, pos) + 1
+            raise ValueError(f"unexpected or malformed output at line {line}: {text[pos:pos + 80]!r}")
+        raw = match.group("axioms")
+        axioms = [] if raw is None or not raw.strip() else [a.strip() for a in raw.split(",")]
+        if any(not a or any(c.isspace() for c in a) for a in axioms):
+            raise ValueError(f"malformed axiom list for {match.group('name')}")
+        reports.append((match.group("name"), axioms))
+        pos = match.end()
+    if not reports:
+        raise ValueError("no axiom reports found")
+    return reports
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
+    modes = parser.add_mutually_exclusive_group()
+    for mode in ("caps", "responses", "response-geometry", "haagerup-power", "upper-comparison",
+                 "phase-response", "research", "hardy-budget", "refined-cover", "law-nodes"):
+        modes.add_argument(f"--{mode}", action="store_const", const=mode, dest="mode",
+                           help=f"check the {mode} report")
+    parser.set_defaults(mode="default")
+    args = parser.parse_args(argv)
+    required, native = audit_policy(args.mode)
+    try:
+        reports = parse_reports(sys.stdin.read())
+    except ValueError as error:
+        print(f"invalid axiom report: {error}", file=sys.stderr)
+        return 1
+    bad = [(n, a) for n, axioms in reports for a in axioms if a not in STANDARD | native]
+    for n, a in bad:
+        print(f"DISALLOWED AXIOM in {n}: {a}")
+    missing = required - {n for n, _ in reports}
+    for n in sorted(missing):
+        print(f"MISSING from the report: {n}")
+    used = {a for _, axioms in reports for a in axioms} & native
+    print(f"checked {len(reports)} theorems; native_decide facts used: {len(used)} of {len(native)}")
+    return 1 if bad or missing else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

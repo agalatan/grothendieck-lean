@@ -1,0 +1,32 @@
+{
+  "method": "five alternating batches, ten calls per batch; compiled kernels explicitly loaded; shared Apple Silicon laptop",
+  "scope": "affected defect and seed kernels only, excluding module import/compile and unchanged full head",
+  "all_200_checks_passed": true,
+  "results": {
+    "defect": {
+      "before": {
+        "median_ms": 3.869829,
+        "min_ms": 3.8477,
+        "max_ms": 4.226566
+      },
+      "after": {
+        "median_ms": 3.82592,
+        "min_ms": 3.743504,
+        "max_ms": 3.940933
+      }
+    },
+    "seed": {
+      "before": {
+        "median_ms": 52.565579,
+        "min_ms": 51.091641,
+        "max_ms": 56.232762
+      },
+      "after": {
+        "median_ms": 52.550825,
+        "min_ms": 50.92965,
+        "max_ms": 52.974008
+      }
+    }
+  },
+  "conclusion": "No meaningful runtime improvement established under shared load."
+}
