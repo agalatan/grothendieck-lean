@@ -74,25 +74,11 @@ lemma summable_kernel_term {P Q : ℝ[X]} (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) {�
 lemma sum_abs_bivarKernel_le (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ : ℕ × ℕ → ℝ)
     (hμ : Summable fun p => |μ p|) (J : ℕ) :
     ∑ j ∈ range J, |bivarKernel P Q μ j| ≤ ∑' p, |μ p| := by
-  have hk : ∀ j, |bivarKernel P Q μ j| ≤ ∑' p, |μ p| * |(termOf P Q p).coeff j| := by
-    intro j
-    unfold bivarKernel
-    have := norm_tsum_le_tsum_norm (f := fun p => μ p * (termOf P Q p).coeff j)
-      (by simpa [Real.norm_eq_abs, abs_mul] using (summable_kernel_term hP hQ hμ j).norm)
-    simpa only [Real.norm_eq_abs, abs_mul] using this
-  have hterm : ∀ j, Summable fun p => |μ p| * |(termOf P Q p).coeff j| := fun j => by
-    simpa [abs_mul] using (summable_kernel_term hP hQ hμ j).norm
-  calc ∑ j ∈ range J, |bivarKernel P Q μ j|
-      ≤ ∑ j ∈ range J, ∑' p, |μ p| * |(termOf P Q p).coeff j| := sum_le_sum fun j _ => hk j
-    _ = ∑' p, |μ p| * ∑ j ∈ range J, |(termOf P Q p).coeff j| := by
-        rw [← Summable.tsum_finsetSum fun j _ => hterm j]
-        exact tsum_congr fun p => by rw [mul_sum]
-    _ ≤ ∑' p, |μ p| := by
-        have hle : ∀ p, |μ p| * ∑ j ∈ range J, |(termOf P Q p).coeff j| ≤ |μ p| := fun p =>
-          mul_le_of_le_one_right (abs_nonneg _) ((sum_abs_coeff_le_l1 _ _).trans
-            (l1_termOf_le_one hP hQ p))
-        exact Summable.tsum_le_tsum hle
-          (Summable.of_nonneg_of_le (fun p => by positivity) hle hμ) hμ
+  exact sum_abs_tsum_le (range J) (fun p j => μ p * (termOf P Q p).coeff j)
+    (fun j _ => (summable_kernel_term hP hQ hμ j).norm) hμ fun p => by
+      simp only [abs_mul, ← mul_sum]
+      exact mul_le_of_le_one_right (abs_nonneg _) ((sum_abs_coeff_le_l1 _ _).trans
+        (l1_termOf_le_one hP hQ p))
 
 /-- The kernel is absolutely summable. -/
 theorem summable_abs_bivarKernel (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ : ℕ × ℕ → ℝ)
@@ -138,25 +124,6 @@ theorem bivarKernel_eq_head (P Q : ℝ[X]) (hQ : Q.coeff 0 = 0) (μ : ℕ × ℕ
   · rw [mem_headIdx] at hp
     rw [coeff_termOf_eq_zero P Q hQ p (by unfold shiftOf; omega), mul_zero]
 
-/-- **`ℓ¹` perturbation of the table.** -/
-theorem head_perturbation (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (S : Finset (ℕ × ℕ))
-    (μ ν : ℕ × ℕ → ℝ) (K : ℕ) :
-    ∑ j ∈ range K, |∑ p ∈ S, μ p * (termOf P Q p).coeff j - ∑ p ∈ S, ν p * (termOf P Q p).coeff j|
-      ≤ ∑ p ∈ S, |μ p - ν p| := by
-  calc ∑ j ∈ range K,
-        |∑ p ∈ S, μ p * (termOf P Q p).coeff j - ∑ p ∈ S, ν p * (termOf P Q p).coeff j|
-      ≤ ∑ j ∈ range K, ∑ p ∈ S, |μ p - ν p| * |(termOf P Q p).coeff j| := by
-        refine sum_le_sum fun j _ => ?_
-        rw [← sum_sub_distrib]
-        refine (abs_sum_le_sum_abs _ _).trans (le_of_eq (sum_congr rfl fun p _ => ?_))
-        rw [← sub_mul, abs_mul]
-    _ = ∑ p ∈ S, |μ p - ν p| * ∑ j ∈ range K, |(termOf P Q p).coeff j| := by
-        rw [sum_comm]
-        exact sum_congr rfl fun p _ => by rw [mul_sum]
-    _ ≤ ∑ p ∈ S, |μ p - ν p| := sum_le_sum fun p _ =>
-        mul_le_of_le_one_right (abs_nonneg _)
-          ((sum_abs_coeff_le_l1 _ _).trans (l1_termOf_le_one hP hQ p))
-
 /-- The coefficient cost of each block can be retained in the perturbation
 bound. The same finite kernel head is used on both sides. -/
 theorem head_perturbation_weighted (P Q : ℝ[X]) (S : Finset (ℕ × ℕ))
@@ -175,6 +142,15 @@ theorem head_perturbation_weighted (P Q : ℝ[X]) (S : Finset (ℕ × ℕ))
       exact sum_congr rfl fun p _ => by rw [sum_mul]; apply sum_congr rfl; intro j _; ring
     _ ≤ _ := sum_le_sum fun p hp =>
       mul_le_mul_of_nonneg_right (hw p hp) (abs_nonneg _)
+
+/-- **`ℓ¹` perturbation of the table.** -/
+theorem head_perturbation (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (S : Finset (ℕ × ℕ))
+    (μ ν : ℕ × ℕ → ℝ) (K : ℕ) :
+    ∑ j ∈ range K, |∑ p ∈ S, μ p * (termOf P Q p).coeff j - ∑ p ∈ S, ν p * (termOf P Q p).coeff j|
+      ≤ ∑ p ∈ S, |μ p - ν p| := by
+  simpa only [one_mul] using
+    head_perturbation_weighted P Q S μ ν K (fun _ => 1)
+      (fun p _ => (sum_abs_coeff_le_l1 _ _).trans (l1_termOf_le_one hP hQ p))
 
 /-- A weighted version of the finite-head residual comparison. -/
 theorem head_residual_le_weighted (P Q : ℝ[X]) (hQ0 : Q.coeff 0 = 0)
@@ -202,14 +178,9 @@ theorem head_residual_le (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (hQ0
     ∑ j ∈ range K, |bivarKernel P Q μ j - if j = 0 then c else 0|
       ≤ ∑ j ∈ range K, |∑ p ∈ headIdx N, ν p * (termOf P Q p).coeff j - if j = 0 then c else 0|
         + ∑ p ∈ headIdx N, |μ p - ν p| := by
-  refine le_trans ?_ (add_le_add le_rfl (head_perturbation P Q hP hQ (headIdx N) μ ν K))
-  rw [← sum_add_distrib]
-  refine sum_le_sum fun j hj => ?_
-  rw [bivarKernel_eq_head P Q hQ0 μ hpar (N := N) (by have := mem_range.1 hj; omega)]
-  have := abs_add_le (∑ p ∈ headIdx N, ν p * (termOf P Q p).coeff j - if j = 0 then c else 0)
-    (∑ p ∈ headIdx N, μ p * (termOf P Q p).coeff j - ∑ p ∈ headIdx N, ν p * (termOf P Q p).coeff j)
-  refine le_trans (le_of_eq ?_) this
-  congr 1; ring
+  simpa only [one_mul] using
+    head_residual_le_weighted P Q hQ0 μ ν hpar hK c (fun _ => 1)
+      (fun p _ => (sum_abs_coeff_le_l1 _ _).trans (l1_termOf_le_one hP hQ p))
 
 end
 

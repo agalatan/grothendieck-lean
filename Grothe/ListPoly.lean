@@ -46,6 +46,19 @@ lemma sum_abs_coeff_le_l1 (p : ℝ[X]) (K : ℕ) : ∑ k ∈ Finset.range K, |p.
   exact Finset.sum_le_sum_of_subset_of_nonneg
     (Finset.range_subset_range.2 (le_max_left _ _)) fun _ _ _ => abs_nonneg _
 
+/-- A summable bound on the rows bounds a finite sum of the coefficient series. -/
+lemma sum_abs_tsum_le {ι κ : Type*} (s : Finset κ) (f : ι → κ → ℝ)
+    (hf : ∀ j ∈ s, Summable fun i => |f i j|)
+    {b : ι → ℝ} (hb : Summable b) (hbound : ∀ i, ∑ j ∈ s, |f i j| ≤ b i) :
+    ∑ j ∈ s, |∑' i, f i j| ≤ ∑' i, b i := by
+  calc
+    _ ≤ ∑ j ∈ s, ∑' i, |f i j| :=
+      Finset.sum_le_sum fun j hj => norm_tsum_le_tsum_norm (f := fun i => f i j) (hf j hj)
+    _ = ∑' i, ∑ j ∈ s, |f i j| := (Summable.tsum_finsetSum hf).symm
+    _ ≤ ∑' i, b i :=
+      (Summable.of_nonneg_of_le (fun _ => Finset.sum_nonneg fun _ _ => abs_nonneg _)
+        hbound hb).tsum_le_tsum hbound hb
+
 lemma l1_add_le (p q : ℝ[X]) : l1 (p + q) ≤ l1 p + l1 q := by
   have h := fun r : ℝ[X] => l1_eq_sum_range r (N := (p + q).natDegree + p.natDegree + q.natDegree + 1)
   rw [h (p + q) (by omega), h p (by omega), h q (by omega), ← Finset.sum_add_distrib]
