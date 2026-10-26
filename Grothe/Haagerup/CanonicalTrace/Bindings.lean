@@ -456,6 +456,7 @@ theorem differences_binding :
     Grothe.HaagerupCanonical.differences = correctionWeights0 := by
   change [iterDiff 0 Grothe.haagR 64, iterDiff 1 Grothe.haagR 64, iterDiff 2 Grothe.haagR 64, iterDiff 3 Grothe.haagR 64, iterDiff 4 Grothe.haagR 64, iterDiff 5 Grothe.haagR 64] = correctionWeights0
   rw [differenceEq0_64, differenceEq1_64, differenceEq2_64, differenceEq3_64, differenceEq4_64, differenceEq5_64]
+  rfl
 
 run_cmd do
   let out ← IO.getStdout

@@ -366,7 +366,7 @@ def render_blocks(data, parameters):
     iter_list = ", ".join(f"iterDiff {j} Grothe.haagR 64" for j in range(6))
     diff_rules = ", ".join(f"differenceEq{j}_64" for j in range(6))
     lemma("differences_binding", "Grothe.HaagerupCanonical.differences = correctionWeights0",
-          f"change [{iter_list}] = correctionWeights0\nrw [{diff_rules}]")
+          f"change [{iter_list}] = correctionWeights0\nrw [{diff_rules}]\nrfl")
     lemma("pl_binding", "Grothe.HaagerupPower.pl = plQ")
     lemma("rl_binding", "Grothe.HaagerupPower.rl = rlQ")
     lemma("p_binding", "Grothe.HaagerupPower.pl.map ofRatI = pI",
