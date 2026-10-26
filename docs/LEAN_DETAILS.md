@@ -13,7 +13,8 @@ mass, and accepts the reciprocal `1.40489844`.
 `wallis_tail_bound` proves the fixed phase-tail estimate at 67, combining
 the exact terms 67--119 with `tsum_haagCoeff_tail_le 120` and π ≤ 355/113.
 Its rational comparison uses proof-producing `decide +kernel`; this adds
-no native axiom. All sixteen scalar-tail results now use only standard axioms. `refined_score_of_published_budgets` therefore needs only
+no native axiom. All sixteen scalar-tail results now use only standard axioms.
+`refined_score_of_published_budgets` therefore needs only
 the published slope, prefix, finite-block, other-tail and selector-mass
 inequalities. Their Gaussian interpretation is not formalized here.
 The theorem concludes a normalized score inequality, not
@@ -221,7 +222,8 @@ headline endpoints are unchanged.
   K ≤ 1/(c − ‖H − c·t‖); the ℓ¹ contraction and linearity of the kernel composition; that the
   head through degree 501 depends only on energies with n + 3m ≤ 501; the evaluation of the
   head of the stored table of the truncation (21,168 exact dyadic entries) by a sound
-  fixed-point interval checker (`GrotheKernel/`, soundness in
+  fixed-point interval checker (`GrotheKernel/`; the cap checker and shared basics have their own
+  precompiled library `GrotheCapsKernel/`; soundness in
   `Grothe/Upper/IntervalSound.lean`); the tail bound by Cauchy–Schwarz from a weighted
   square-sum bound; the assembly of the budgets; and the endpoint arithmetic.
 * The selected comparison is proved in `Grothe/UpperChaos/LocalizedComparison.lean`.
@@ -246,7 +248,12 @@ headline endpoints are unchanged.
   The latter uses the inherited Gaussian Schur analysis and the recorded
   65,594-arc directed contour. The concrete theorem also takes X ∈ L² and
   charge-one equivariance. Validity, summability, parity, and the phase cover
-  for the actual rounding are derived.
+  for the actual rounding are derived. `HardyHolo.lean` now proves
+  `hardy_of_inputs` from positive kernel decay on a disc of radius greater
+  than 4149/4000, identification of the real odd series with the continued
+  kernel, and its circle mean bound ≤ 7/4. Holomorphy, continuation and
+  Parseval are proved; the Gaussian-law identification and certified
+  region/circle estimates remain to be supplied.
 * **Residual ledger.** The total is 455308278509/(5·10¹⁷), approximately
   9.10617·10⁻⁷. The selected comparison contributes 93.56%, the native finite
   head 3.09%, the Hardy tail 3.35%, and the table error about 0.0015%.
@@ -300,12 +307,17 @@ the full degree bound. Independent directed replay is provided by
 `tools/verify_haagerup_canonical.py`. The focused report `scratch/AxiomsPower.lean`,
 checked with `scripts/check_axioms.py --haagerup-power`, permits no native axioms.
 
-**Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
-value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401692002039/10^12 < K`, and the transfer
-`Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 1401692002039/10^12 < K`,
-where `TransferInputsL2 B` asks, for every δ > 0, for a finite measure space with an operator T on L²,
-a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u, v in L² with Σₗ|uₗ|² ≤ 1 and
-Σₗ|vₗ|² ≤ 1 a.e. and ‖Σ⟨uₗ, T vₗ⟩‖ ≥ 1 − δ.
+**Lower bound.** `Grothe.Research.LawNodeLower.profile_bound_of_law_nodes`
+proves `V ≤ B` for an admissible scalar profile under the simultaneous
+Gaussian reduction `SharedReduction`, from checked rows, mixed batches,
+additional law nodes and a complete finite cover. The active certificate in
+`RefinedCoverResult.lean` uses `refinedB = 0.713420920822` and the strict
+endpoint `refinedL = 1.401697049825`. `Grothe.Lower.transfer_lower` gives
+`1/B ≤ K` from `TransferInputsL2 B`; `refined_endpoint_lt_reciprocal` supplies
+the exact strict comparison. `TransferInputsL2 B` asks, for every δ > 0,
+for a finite measure space with an operator T on L², a scalar cap
+‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u, v in L² with
+Σₗ|uₗ|² ≤ 1 and Σₗ|vₗ|² ≤ 1 a.e. and ‖Σ⟨uₗ, T vₗ⟩‖ ≥ 1 − δ.
 
 **How the two halves fit.** The Gaussian witness is now defined in Lean
 (`Grothe/LowerAnalytic/Witness.lean`): on ℂⁿ = ℝ^{n+n} with the standard Gaussian measure,
@@ -320,8 +332,10 @@ ranges), and `transferInputs_of_witnessCap : (∀ n ≥ N, WitnessCap n B) → T
 The **scalar-cap half** is reduced to the certificate (`WitnessCap.lean`): for unimodular f, g
 with h = (f+g)/2, k = (f−g)/2, t = ‖P₁,₀h‖, the polarisation identity `VOf_eq`,
 Re⟨f, Tg⟩ = t² − ε‖P₂,₁h‖² − ‖P₁,₀k‖² + ε‖P₂,₁k‖², is proved, and
-`witnessCap_of_reduction : (∀ unimodular f g with Re⟨f,Tg⟩ ≥ 0, ReductionHyp n f g) → WitnessCap n Bcap`
-applies `lower_bound_data` to V = Re⟨f, Tg⟩ (after a phase) with the bound t ≤ 9/10 proved
+`LawNodeLower.witnessCap_of_law_nodes_reduction` converts the checked
+finite-cover profile bound into `WitnessCap n B` at its supplied cap `B`.
+It applies `profile_bound_of_law_nodes` to V = Re⟨f, Tg⟩ (after a phase),
+with the bound t ≤ 9/10 proved
 (`tOf_le`: P₁,₀h is a complex Gaussian, so ‖P₁,₀h‖² = Re⟨h, P₁,₀h⟩ ≤ E|P₁,₀h| = (√π/2)‖P₁,₀h‖, by the
 rotation invariance of the Gaussian measure and E√(x²+y²) = √(π/2) in `GaussianRadial.lean`) and the
 crude row derived from ‖P₂,₁k‖ ≤ ρ, which is proved (`normQk_le_rho`, L3): P₂,₁k ∈ H₂,₁ is a
@@ -352,14 +366,56 @@ through `Grothe/Research/RefinedCoverResult.lean`:
 Ψ_r(r_k) − 10⁻¹¹ ≤ c_k of the 19 certified potentials (exact-arithmetic certificates outside Lean).
 
 The separate `GrotheCaps` target supplies `lower_bound_of_capsRest :
-CapsRest → IsGrothendieckBound K → Llow < K` (`CapNodes.lean`). It assembles 60 single-threaded
-native range checks for 15 rows, while the chord nodes follow from vertex caps by convexity
-(`CapHull.lean`, `capChords_check`). `CapsRest` comprises the vertex caps of rows
-0.84, 0.845, 0.85, 0.855 and any excluded-node caps of the other rows; the exclusion lists
-are currently empty. This heavy target is not built by default CI. Its source stamp is
-checked separately by `scripts/caps_stamp.py`. The recorded stamp verifies all 60
-range facts on the droplet and matches this branch's unchanged 140-file closure.
-The four remaining rows still require `CapsRest`.
+CapsRest → IsGrothendieckBound K → 1.401697049825 < K` (`CapNodes.lean`). Its 15
+`CapRowKK` modules retain the 60 unchanged single-threaded native range facts
+for rows 0–11 and 16–18, importing only the computation layer and recipe data.
+`CapRows` proves range-check soundness, and `CapAssembly` proves the chord
+check and convexity assembly (`CapHull` is a compatibility import). The
+default `Grothe` target builds that proof layer. `CapNodes` contains the
+15 unchanged row-assembly proofs and the final `CapsRest` theorem, which
+composes `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and the same
+`lower_bound_of_refined_cover_data` used by the default target. The common
+`NodeCaps` definition lives in `NodeCaps.lean`, independently of
+`Reduction.lean`. `CapNodes` and the heavy rows are excluded from the
+generated default root.
+
+The cache provenance boundary is 54 files: 48 local computation modules,
+plus `CapNodes.lean`, `GrotheCaps.lean`, `GrotheCapsKernel.lean`, `lean-toolchain`,
+`lake-manifest.json` and `lakefile.toml`. Those six extras are hashed directly,
+without traversing their imports. This identifies the cached computation
+sources, not every analytic dependency or compiled artifact. Lake checks
+ordinary dependencies separately. The numerical checker is the independent
+precompiled `GrotheCapsKernel` library (`Basic`, `CapPoly`, `CapCheck`);
+its constants retain the `GrotheKernel` namespace. Other kernel checkers
+stay outside that library, whose root is pinned because every importer
+loads its shared object.
+
+The runner's heavy CI job builds `Grothe` and `GrotheCaps` and checks both
+axiom reports before recording `.lake/build/caps-closure.sha` with
+`scripts/caps_stamp.py --mark-cache`. Ordinary CI restores that cache and
+calls `--check-cache` (the default). A match permits a `GrotheCaps` replay
+and caps audit, including `CapNodes`; Lake reuses native results only when
+its dependency hashes permit it. A missing or mismatched marker fails
+closed and dispatches the heavy job. A branch `caps` run saves the verified
+branch cache and repeats the check. After merge, a master `warm` run reuses
+the runner's persistent build and refreshes the master cache. One runner
+build supplies the verification and subsequent replay; no independent
+manual droplet verification is required. Builds and both reports establish
+verification; a read-only digest alone does not.
+
+`CapsRest` still comprises the vertex caps of rows 0.84, 0.845, 0.85,
+0.855 and any excluded-node caps of the other rows; the exclusion lists
+are empty. The rows 12–15 computation campaign and final wiring remain
+separate work.
+
+The localized-piece predicates also have a computation-only layer:
+`CapCoverDefs` holds rational constraints and finite coverage checks, and
+`CapConstrDefs` holds constrained matrices, parsers and node checks.
+`CapPieceRange` imports these definitions and rational data; the semantic
+regions and unchanged soundness proofs remain in `CapCover`, `CapConstr`
+and `CapPieceNodes`. Generated coverage/range modules therefore avoid the
+lower proof chain. They are excluded from the default root and are not
+yet wired into `GrotheCaps` or `CapsRest`.
 
 * Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
   (trailing gate block positive definite, κδ² ≤ δ + gatePrice); the Stein cuts (summed, spectral and general spectral) from their analytic inputs, by completions of squares,
@@ -376,7 +432,9 @@ The four remaining rows still require `CapsRest`.
   The refined partition of [0, 9/10] × [0, ρ] × [0, 31/4] has 10,762 closed boxes.
   It retains the existing certified node potentials and their valid ranges, and adds two
   pure-row law-scale nodes for row 14 using the original unshifted source table and Stein cuts.
-  Their one appended batch passes `LawNodeCheck.certLawNodes`. Adaptive binary
+  Their one appended batch passes `LawNodeCheck.certLawNodes`. The recursive
+  coverage-only checker `treeCoverOK`, with proof `treeCoverOK_sound`, checks
+  the full tree partition. Adaptive binary
   subdivisions and reoptimized row mixtures use the same certified bank. Seventy
   additional reference labels expose existing source-table nodes, without adding
   a law certificate or a source cap. Inherited components retain their original
@@ -392,7 +450,7 @@ The four remaining rows still require `CapsRest`.
   connecting checked extra batches and a complete cover to the same Gaussian reduction
   and transfer. `RefinedLower.lean` specializes the interface to no additional batches;
   `RefinedCoverResult.lean` supplies the current complete certificate.
-* Inputs of the intermediate theorem `lower_bound_data` (all of them are now derived in Lean, except the node caps `NodeCaps`, by the chain ending in `lower_bound_of_refined_cover_data`): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
+* Inputs of the intermediate theorem `LawNodeLower.profile_bound_of_law_nodes` (all of them are now derived in Lean, except the node caps `NodeCaps`, by the chain ending in `lower_bound_of_refined_cover_data`): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
   from ‖Qk‖ ≤ E|Qk/‖Qk‖| ≤ ρ, which uses the moment bounds also for the cubic Qk/‖Qk‖), with ‖v‖² = 2
   and 0 ≤ t ≤ 9/10; the simultaneous Gaussian reduction of the rows (`SharedReduction`): one residual p = Q_w c₁ with scale τ = ‖p‖₂ ≤ ρ and normalised law
   U = |p|²/τ² satisfying the moment bounds and the Stein inputs, one gate variable
@@ -463,8 +521,8 @@ The four remaining rows still require `CapsRest`.
   identity of `GramTensor.lean` up to reindexing); so **every tensor fact of the contraction-Gram
   budget is proved** and `gaussian_gramInputs` has no hypothesis beyond circularity;
   `tools/check_gram_facts.py` checks the identities numerically with the exact Lean definitions.
-  `Grothe.LowerAnalytic.lower_bound_gaussian` instantiates `lower_bound_data` with this law and
-  discharges E U = 1, the integrability conditions, E U² ≥ 2, the cap E U² ≤ 62 ≤ 2 + (31/4)²
+  `Grothe.LowerAnalytic.sharedReduction_of_gaussian` packages this law in
+  `SharedReduction`: it discharges E U = 1, the integrability conditions, E U² ≥ 2, the cap E U² ≤ 62 ≤ 2 + (31/4)²
   (`gaussian_radU_cap`: E F⁴ ≤ 93 (E F²)² for every real third-chaos F, applied to a, b, a ± b),
   E√U ≤ ρ (derived from the other moment fields by `moments_of_three`) and all Stein inputs (including the spectral budgets and the covariance order). The
   residual q = a + ib is required to be *circular* (`Circular J a b`: J a complex structure on ℝ^d
@@ -509,9 +567,10 @@ The four remaining rows still require `CapsRest`.
   (`chargeSplit_circular`: C − θS has no charge four, so Cauchy–Schwarz in the two charge
   sectors against the blocks of S²), all through a real charge calculus (slot operators of J,
   the derivation δ with δf = −g, δg = f for the kernels of a, b, and the tetrahedral
-  contraction); `Circular.chaos3_right` shows that b is a cubic chaos when a is. The remaining inputs of
-  `lower_bound_gaussian` (the gate variable, the per-row reduction `RowShared`, the crude row) are discharged by
-  `reductionHyp_of_nodeCaps` (`Reduction.lean`) from the node caps alone.
+  contraction); `Circular.chaos3_right` shows that b is a cubic chaos when a is.
+  `reductionHyp_of_nodeCaps` (`Reduction.lean`) constructs the gate variable
+  and per-row `RowShared` reduction from the node caps. The crude row follows
+  from the proved bound `normQk_le_rho` in `WitnessCap.lean`.
 * Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma, the
   scalar sixth-moment and first-moment certificates (the sixth-moment one from its tensor and
   cumulant hypotheses), and the exact form of
@@ -554,18 +613,19 @@ rounding or improve an endpoint.
 |---|---|
 | `CapCoord`, `CapLinAlg`, `CapMajorant`, `CapPolar` | real coordinates of the fibre variable; exact quadratic-form checks (Loewner bound, LDLᵀ); the anchored-pair majorant of \|L + p\| + \|L − p\|; polar cells of the complex Gaussian |
 | `CapSym`, `CapGrid`, `CapGridT`, `CapGridOK`, `CapTables`, `CapTablesMk` | symbolic polynomials over ℚ(√2); cell prices on uniform polar grids and the exact cell decomposition of the integrated majorant; verified interval tables (`tablesOK_mk`) |
-| `CapPiece`, `CapCheckSound` | node certificate soundness (`pot_le_of_pieceOK`, `pot_le_of_nodeOK`) for the precompiled checker `GrotheKernel/CapCheck.lean` |
+| `CapPiece`, `CapCheckSound` | node certificate soundness (`pot_le_of_pieceOK`, `pot_le_of_nodeOK`) for the precompiled checker `GrotheCapsKernel/CapCheck.lean` |
 | `CapSymmetry`, `CapHull`, `CapChordData` | the symmetries S_c, S_- of the fibre integral; chord nodes from vertex caps by convexity (`capChords_check`, `nodeCaps_of_vertexCaps`) |
-| `CapRecipeData`, `CapRows`, `CapRow00`–`CapRow18`, `CapNodes` | recipes (generated from `data/cap-recipes/`); `rangeOK` and its soundness; 60 range facts `capRangeKK_j` (target `GrotheCaps`, not built by CI; stamp `docs/CAPS_VERIFIED.txt`); `lower_bound_of_capsRest` |
-| `CapCover`, `CapConstr`, `CapPieceNodes` | localised caps of rows 12–15 (route M): coverage by constrained pieces up to S_c, S_-; the S-lemma bound on a piece; piece-node checks (issue #12) |
+| `CapRangeDefs`, `CapChords`, `CapRecipeData`, `CapRows`, `CapAssembly`, `CapRow00`–`CapRow11`, `CapRow16`–`CapRow18`, `CapNodes` | computation-only definitions and generated rational data; range-check soundness and convexity; 60 separate-target range facts verified on the runner and replayed by CI from its cache; final `lower_bound_of_capsRest` assembly |
+| `CapCoverDefs`, `CapConstrDefs`, `CapPieceRange`; `CapCover`, `CapConstr`, `CapPieceNodes` | localised caps of rows 12–15 (route M): computable coverage and constrained-piece checks separated from symmetry, S-lemma and piece-node soundness (issue #12) |
 
-**`Grothe/Lower/Cert/`: the original lower certificate in 13 single-threaded chunks.** `Rows0`–`Rows4`, `Batches0`–`Batches2`,
-`Boxes0`–`Boxes3` and `Partition` each hold one `native_decide` fact (`certRowsK`, `certBatchesK`, `certBoxesK`,
-`certPartition`); `Parts` holds the shared definitions; `Grothe/Lower/RowCheck.lean` assembles them into `cert_check`.
-The active refined endpoint uses the eight original row/batch facts, one law-node
-fact and five refined-cover facts (14 native inputs). The original cover remains
-in the default development; the complete registry has 29 native facts outside
-the separate 60 cap-range facts after the scalar power check becomes a kernel proof.
+**`Grothe/Lower/Cert/`: the row and mixed-batch certificate in eight single-threaded chunks.**
+`Rows0`–`Rows4` and `Batches0`–`Batches2` each hold one `native_decide`
+fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
+`LawNodeLower.certified_rows` and `certified_mixed_batches` assemble those
+checks independently of a cover. The active endpoint uses these eight facts,
+one additional law-node fact and five refined-cover facts (14 native inputs).
+The complete registry has 84 native facts: 24 outside the separate 60 cap-range
+facts. There are 578 default axiom-report entries.
 
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in
@@ -574,9 +634,9 @@ and the `native_decide` facts pinned in
 `Grothe.HaagerupPower.check` (the retained finite certificate; unused by `haagerup_bound`),
 `Grothe.UpperChaos.phi_cover_check_0`–`5`
 (the phase cover |φ| < 1), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
-and the 13 chunks `Grothe.Lower.certRows0`–`4`,
-`certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower certificate (assembled into
-`Grothe.Lower.cert_check`). The refined cover additionally has four box checks `certRefinedBoxes0`–`3`
+and the eight chunks `Grothe.Lower.certRows0`–`4` and
+`certBatches0`–`2` for the certified rows and mixed batches. The finite cover
+has four box checks `certRefinedBoxes0`–`3`
 and `certRefinedPartition` in `Grothe.Research.RefinedLowerCheck`, together with
 `Grothe.Research.LawNodeCheck.certLawNodes` for the added pure-row batch.
 The separate caps target additionally uses 60 range checks

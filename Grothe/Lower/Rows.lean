@@ -43,25 +43,6 @@ structure XCell where
   bank : List (List ℚ)
   nodes : List SNode
 
-structure Row where
-  ell : ℚ
-  beta : ℚ
-  delta : ℚ
-  kappa : ℚ
-  smax : ℚ
-  cap : ℚ
-  /-- the even block `M_E` -/
-  E : Sym3
-  b1 : ℚ
-  b2 : ℚ
-  b3 : ℚ
-  /-- node caps `r:c;…` -/
-  nodes : String
-  /-- mesh `v₁,v₂,…` -/
-  mesh : String
-  /-- the `x`-cells `xlo|xhi|rects|bank|nodes` -/
-  cells : List String
-
 /-! ### The gate form of a row -/
 
 /-- `N = M_E − diag(ε − δ, 0, 0)`. -/
@@ -76,8 +57,6 @@ def Row.g3 (r : Row) : ℚ := r.delta * r.b3
 def Row.gate (r : Row) (X1 X2 X3 : ℂ) : ℝ := gateForm r.N r.g1 r.g2 r.g3 X1 X2 X3
 
 /-! ### Parsing -/
-
-def splitL (s sep : String) : List String := if s = "" then [] else s.splitOn sep
 
 def parseMPoly (s : String) : MPoly :=
   match parseQs s with
@@ -107,12 +86,6 @@ def parseXCell (s : String) : XCell :=
       (splitL k ";").map (parseInts 10000000), (splitL n ";").map parseSNode⟩
   | _ => ⟨0, 0, [], [], []⟩
 
-def parseCap (s : String) : ℚ × ℚ :=
-  match s.splitOn ":" with
-  | [a, b] => (parseQ a, parseQ b)
-  | _ => (0, 0)
-
-def Row.nodeList (r : Row) : List (ℚ × ℚ) := (splitL r.nodes ";").map parseCap
 def Row.vs (r : Row) : List ℚ := parseQs r.mesh
 def Row.cellList (r : Row) : List XCell := r.cells.map parseXCell
 

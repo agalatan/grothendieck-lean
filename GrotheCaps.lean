@@ -4,9 +4,11 @@ import Grothe.LowerAnalytic.CapNodes
 /-!
 # The node caps certified in Lean (separate build target)
 
-`lake build GrotheCaps` builds the 15 row modules `Grothe/LowerAnalytic/CapRowKK.lean` (60 `native_decide`
-range facts, single-threaded, about 15–30 CPU-hours in total) and `lower_bound_of_capsRest`. They are not part of
-the default target `Grothe` (CI), because they exceed the CI runner's time and memory. They are verified on a
-larger machine; `scripts/caps_stamp.py` records the hash of their sources at that verification, and CI fails if
-those sources change without a new verification (see README, "Node caps").
+`lake build GrotheCaps` builds the default development and `CapNodes`, including the 15 heavy row modules
+(60 single-threaded native range facts) and `lower_bound_of_capsRest`. The default target `Grothe`
+excludes those heavy modules and their final assembly. For Lean-relevant checks, CI replays `GrotheCaps`
+and checks its axiom report when the verified build-cache marker matches the current computation sources.
+A missing or stale marker dispatches the runner's heavy build and both axiom audits before the cache is
+marked and saved (`scripts/caps_stamp.py`, README "Node caps"). Later checks and the master warm run
+reuse that build; no separate manual droplet verification is needed.
 -/

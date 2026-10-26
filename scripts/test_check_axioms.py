@@ -42,7 +42,7 @@ class CheckAxiomsTests(unittest.TestCase):
 
     def test_existing_policy_headlines_and_native_restrictions(self):
         headlines = {
-            "default": {"Grothe.fresh_upper", "Grothe.haagerup_bound", "Grothe.Lower.lower_bound_data"},
+            "default": {"Grothe.fresh_upper", "Grothe.haagerup_bound", "Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data"},
             "responses": {"Grothe.LowerAnalytic.ResponseGram.gram_qform",
                           "Grothe.LowerAnalytic.DiffuseCubicObstruction.above_target"},
             "response-geometry": {"Grothe.LowerAnalytic.DiffuseCubicObstruction.above_target"},

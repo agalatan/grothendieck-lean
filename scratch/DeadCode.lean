@@ -4,7 +4,7 @@ open Lean Meta Elab Command
 /-!
 # Dead-code report (audit tool, not part of the library)
 
-`lake env lean scratch/DeadCode.lean` lists, per module, the declarations of `Grothe`/`GrotheKernel`
+`lake env lean scratch/DeadCode.lean` lists, per module, the declarations of `Grothe`/`GrotheKernel`/`GrotheCapsKernel`
 that are not reachable from the current headline theorems and selected standalone results below
 (auto-generated names filtered). Missing roots are errors.
 
@@ -29,12 +29,11 @@ partial def usedClosure (env : Environment) (roots : List Name) : NameSet := Id.
 
 elab "#deadcode" : command => do
   let env ← getEnv
-  let roots := [`Grothe.LowerAnalytic.lower_bound_of_nodeCaps,
+  let roots := [`Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data,
     `Grothe.UpperChaos.fresh_upper_rounder, `Grothe.haagerup_bound,
-    `Grothe.fresh_upper, `Grothe.Lower.lower_bound_data, `Grothe.Lower.lower_endpoint,
-    `Grothe.Lower.lower_bound_of_transferL2, `Grothe.LowerAnalytic.gaussian_steinInputs,
+    `Grothe.fresh_upper, `Grothe.LowerAnalytic.gaussian_steinInputs,
     `Grothe.LowerAnalytic.sixth_moment_complex, `Grothe.LowerAnalytic.first_moment_lt_rho,
-    `Grothe.LowerAnalytic.fluctuation_bound, `Grothe.LowerAnalytic.lower_bound_gaussian]
+    `Grothe.LowerAnalytic.fluctuation_bound]
   for n in roots do
     if (env.find? n).isNone then
       throwError "dead-code root is missing: {n}"
@@ -44,7 +43,8 @@ elab "#deadcode" : command => do
     if n.isInternal then continue
     let some mod := env.getModuleIdxFor? n | continue
     let modName := env.header.moduleNames[mod.toNat]!
-    if !(`Grothe).isPrefixOf modName && !(`GrotheKernel).isPrefixOf modName then continue
+    if !(`Grothe).isPrefixOf modName && !(`GrotheKernel).isPrefixOf modName &&
+        !(`GrotheCapsKernel).isPrefixOf modName then continue
     if used.contains n then continue
     -- skip auxiliary compiler/equation names
     if n.isInternalDetail || (`_private).isPrefixOf n then continue

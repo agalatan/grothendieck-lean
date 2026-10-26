@@ -1,4 +1,5 @@
 import Grothe.Lower.Law
+import Grothe.Lower.RowDataTypes
 
 /-!
 # The retained gate square and its completion with a fixed first coordinate
@@ -23,19 +24,6 @@ square over `(X₂, X₃)` gives the pointwise lower bound
 open MeasureTheory
 
 namespace Grothe.Lower
-
-/-- A symmetric `3×3` rational matrix (upper triangle). -/
-structure Sym3 where
-  m11 : ℚ
-  m12 : ℚ
-  m13 : ℚ
-  m22 : ℚ
-  m23 : ℚ
-  m33 : ℚ
-
-/-- `M − diag(a, b, c)`. -/
-def Sym3.subDiag (M : Sym3) (a b c : ℚ) : Sym3 :=
-  { M with m11 := M.m11 - a, m22 := M.m22 - b, m33 := M.m33 - c }
 
 /-- `Re(conj a · b)`, the real inner product of two complex numbers. -/
 def hre (a b : ℂ) : ℝ := (starRingEnd ℂ a * b).re

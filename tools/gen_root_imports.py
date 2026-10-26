@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the root import files Grothe.lean and GrotheKernel.lean (one import per line, sorted).
+"""Generate the root import files Grothe.lean, GrotheKernel.lean and GrotheCapsKernel.lean (one import per line, sorted).
 
 Every module file under Grothe/ (resp. GrotheKernel/) is imported, except those listed in
 data/root-imports-exclude.txt (modules of the separate target GrotheCaps, and a few kernel modules built through
@@ -114,11 +114,13 @@ def main():
     excluded = set(entries("data/root-imports-exclude.txt"))
     missing = sorted(m for m in excluded if not os.path.exists(os.path.join(ROOT, *m.split(".")) + ".lean"))
     bad = [f"data/root-imports-exclude.txt: no such module {m}" for m in missing]
-    for lib in ["Grothe", "GrotheKernel"]:
+    for lib in ["Grothe", "GrotheKernel", "GrotheCapsKernel"]:
         path = os.path.join(ROOT, f"{lib}.lean")
         want = generated(lib, excluded)
-        with open(path, encoding="utf-8") as f:
-            have = f.read()
+        have = None
+        if os.path.exists(path):
+            with open(path, encoding="utf-8") as f:
+                have = f.read()
         if have != want:
             if check:
                 bad.append(f"{lib}.lean is not the generated file: run python3 tools/gen_root_imports.py")

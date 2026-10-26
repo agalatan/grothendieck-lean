@@ -1,4 +1,5 @@
 import Grothe.LowerAnalytic.CapTables
+import Grothe.LowerAnalytic.CapTablesData
 import Grothe.LowerAnalytic.CapGridOK
 
 /-!
@@ -13,9 +14,6 @@ open MeasureTheory Real Set Finset GrotheKernel Grothe.Upper
 
 namespace Grothe.LowerAnalytic
 
-/-- A rational interval as a fixed-point interval (outward). -/
-def toIv (p : ℚ × ℚ) : Ival := ⟨ofRatLo p.1, ofRatHi p.2⟩
-
 lemma mem_toIv {x : ℝ} {p : ℚ × ℚ} (h1 : (p.1 : ℝ) ≤ x) (h2 : x ≤ p.2) : mem x (toIv p) := by
   have hD : (0 : ℝ) < (D : ℝ) := D_pos
   constructor
@@ -24,15 +22,6 @@ lemma mem_toIv {x : ℝ} {p : ℚ × ℚ} (h1 : (p.1 : ℝ) ≤ x) (h2 : x ≤ p
 
 lemma toIv_zero : toIv (0, 0) = zeroI := by
   simp [toIv, ofRatLo, ofRatHi, zeroI, Rat.floor]
-
-/-- **The shared tables.** -/
-def mkTables (Nr N : ℕ) (h : ℚ) : Tables :=
-  let ut := CapTab.unitTable N
-  ⟨((List.range Nr).map fun (i : ℕ) =>
-      ((CapTab.radEncList ((i : ℚ) * h) (((i : ℚ) + 1) * h)).map toIv).toArray).toArray,
-   ((List.range 17).map fun m => toIv (CapTab.tailEnc (Nr * h) m)).toArray,
-   ((List.range N).map fun (j : ℕ) => ((List.range 13).map fun (n : ℕ) =>
-      let e := GrotheKernel.angEncWith ut N j (n : ℤ); (toIv e.1, toIv e.2)).toArray).toArray⟩
 
 lemma getD_map_toIv (l : List (ℚ × ℚ)) (m : ℕ) :
     (l.map toIv).toArray.getD m zeroI = toIv (l.getD m (0, 0)) := by

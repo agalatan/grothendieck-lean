@@ -1,71 +1,72 @@
-# Native checks: single-threaded evaluation (status, 23 Oct 2026)
+# Native checks: single-threaded evaluation
 
-## Why
-A parallel node-cap check on `work/lower-caps2` aborted with a malloc double free (SIGABRT) in
-`GrotheKernel` bignum interval multiplication (`mulI`) running inside `Task.spawn` tasks that shared
-data. A double free is memory corruption inside code that `native_decide` trusts; a run that does
-not crash is not thereby known to be uncorrupted. Policy since then: every `native_decide` fact is
-evaluated by single-threaded code (no `Task.spawn`, no shared-state concurrency); parallelism only
-across processes (one fact per module, `lake` builds modules in parallel).
+## Current policy and lower chain
 
-## What changed
-* PR #1 (`c6942a2`, merged as `5bed67f`): `allPar` is `List.all`; `checkCert` and `bivarT`
-  (upper head) are sequential. Master since then has no `Task.spawn` anywhere in `Grothe/` or
-  `GrotheKernel/` (checked with `git grep Task.spawn origin/master`; the newer facts
-  `phi_cover_check`, `capChords_check` and the 60 `capRangeKK_j` are sequential too).
-* This branch (`work/native-split`): the lower certificate check `cert_check`, which takes
-  74 min sequentially, is split into 13 single-threaded `native_decide` chunks in
-  `Grothe/Lower/Cert/` (rows ×5 of 4 rows, batches ×3 of 7, boxes ×4 of 2,200, the partition),
-  reassembled into the unchanged theorem `cert_check` by `all_of_chunk` (`Grothe/Lower/Cert/Parts.lean`).
-  `scripts/check_axioms.py` pins the 13 chunk facts instead of `cert_check`'s native axiom.
+Every `native_decide` computation runs sequentially. Lake may compile different
+modules in separate processes; no checker uses `Task.spawn` over shared data.
+This rule follows a malloc double-free failure in an earlier parallel node-cap
+check: the native runtime and compiler are part of the trust boundary, so a run
+that happens not to crash cannot establish that shared-state evaluation is sound.
+CI screens all three project source trees for forbidden escapes and task spawning.
 
-## Timings (droplet `yo`, 8 cores, shared with two other builds; one core per native module)
-| module | fact | sequential wall time |
-|---|---|---|
-| `Grothe.Upper.Final` | `head_check` | 62 s (module build) |
-| `Grothe.Upper.Haagerup` | `haagerup_check` | 257 s |
-| `Grothe.Lower.RowCheck` (monolithic, PR #1) | `cert_check` | 4,421 s (74 min) |
-| `Grothe/Lower/Cert/*` (this branch) | 13 chunks | 37 min wall for all 13 in parallel (table below) |
+The current allowlist contains **84 named facts: 24 ordinary facts and 60 cap
+ranges**. The default report has **532 entries**, of which **315 declarations**
+are required. [LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md) lists the facts
+and distinguishes earlier module timings from current verification.
+The scalar sixteenth-power check uses `decide +kernel`, so all sixteen
+scalar-tail reports use only standard axioms.
 
-Chunk modules (built together by `lake build Grothe.Lower.RowCheck`, 8 processes on the shared
-droplet; each time is the module build including its single-threaded native check):
-| chunk | time | chunk | time |
-|---|---|---|---|
-| `Partition` | 40 s | `Rows0` | 967 s |
-| `Batches0` | 337 s | `Rows1` | 1,108 s |
-| `Batches1` | 344 s | `Rows2` | 557 s |
-| `Batches2` | 395 s | `Rows3` | 1,220 s |
-| `Boxes0` | 2,199 s | `Rows4` | 392 s |
-| `Boxes1` | 2,172 s | `Boxes2` | 1,534 s |
-| `Boxes3` | 1,809 s | | |
-All 13 return `true`; `RowCheck` (the reassembly, `decide +kernel` for the length bound) builds in
-13 s with no warning; `#print axioms Grothe.Lower.lower_bound_data` shows exactly the standard
-axioms and the 13 chunk facts. The boxes dominate: splitting them into 8 chunks of 1,100 would
-bring the wall time to about 20 min. Not yet run: the full build of this branch with the
-caps/upper-chaos modules of master and `check_axioms.py` on it (expected count: 227 + 13 = 240).
+The default lower theorem is
+`Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`, and the
+separate `lower_bound_of_capsRest` theorem now uses the same refined endpoint
+`1.401697049825`. Both use the unchanged Gaussian `NodeCaps` proposition, defined
+in `LowerAnalytic/NodeCaps.lean`. The finite lower certificate has 14 sequential
+native facts: five row chunks, three mixed-batch chunks, one extra law-node check,
+four refined-box chunks and one refined coverage-tree check.
 
-Full build of PR #1's tree (98f61ec + c6942a2) on the droplet: 87 min wall, EXIT 0, 0 warnings;
-`check_axioms.py`: 186 theorems, 3 native facts — the sequential evaluation reproduces `true` for
-all three facts that were previously computed with `Task.spawn`.
+The old `Lower/Cert/Boxes0–3`, `Lower/Cert/Partition`, `RowCheck` and old-constant
+corollaries are retired. The generic `treeCoverOK`/`treeCoverOK_sound` pair proves
+coverage for the refined certificate. It requires both recursive children and
+includes cut boundaries; it omits the old unused straddler scan. Thus the old
+partition-specific proposal [#56](https://github.com/agalatan/grothendieck-lean/issues/56)
+is moot. No runtime saving has been measured for this change.
 
-## Could the crash mechanism have affected the earlier (parallel) facts?
-1. Lean's runtime marks every object reachable from a closure passed to `Task.spawn` as
-   multi-threaded (`lean_mark_mt`); reference-count updates on MT objects are atomic, so pure code
-   sharing data between tasks is supposed to be race-free.
-2. `GrotheKernel` and the lower checkers contain no `unsafe`, `ptrEq`, `implemented_by`, `@[extern]`,
-   `IO`/`ST`, `Thunk` or arrays with in-place update (checked by grep); `mulI` is four `Int`
-   products plus shifts. So the double free is not caused by unsafe user code.
-3. The likely mechanism is therefore in the runtime/compiler: an object shared across tasks
-   without MT marking (for example a closed term or a value created lazily after the spawn), whose
-   non-atomic reference count races; GMP-backed `Int`s are separate heap objects and are freed when
-   their count reaches zero, hence a double free.
-4. A race of this kind usually crashes; it can also free an object still in use, so another thread
-   may read a reused buffer. A silently wrong `Bool` is improbable (the corrupted value would have to
-   flow into a comparison and flip it without crashing) but cannot be excluded in principle.
-5. The three earlier parallel facts (`head_check`, `cert_check`, `haagerup_check` — the last was
-   never parallel) never crashed in many local, droplet and CI builds.
-6. Decisive evidence: the sequential re-evaluation (PR #1 tree) returns `true` for all of them,
-   with no `Task.spawn` involved. So the bounds on master do not depend on any parallel run.
-7. Recommendation: keep the rule "no `Task.spawn` inside `native_decide`"; parallelise only by
-   modules. CI should forbid `Task.spawn` in `Grothe/` and `GrotheKernel/` (one grep line in
-   `.github/workflows/lean.yml`; not done here).
+The independent precompiled `GrotheCapsKernel` library holds the cap checker.
+The heavy range modules import its computation layer, while soundness and the
+refined lower-cover assembly stay outside that computation closure. Full caps
+verification and shared-cache publication run only through the droplet runner.
+A successful runner build checks both axiom reports, records the source digest in
+its verified cache and saves the branch cache; subsequent CI replays that cache.
+
+## Earlier measurements for retained chunks
+
+These module build timings were recorded on droplet `yo` under shared load on
+23 October 2026. They include elaboration and one sequential native check per
+module; they are not new measurements of the current candidate.
+
+| Chunk | Wall time |
+|---|---:|
+| `Rows0` | 967 s |
+| `Rows1` | 1,108 s |
+| `Rows2` | 557 s |
+| `Rows3` | 1,220 s |
+| `Rows4` | 392 s |
+| `Batches0` | 337 s |
+| `Batches1` | 344 s |
+| `Batches2` | 395 s |
+
+The earlier caps run at `4304b22` took 239 min 41 s wall time across fifteen
+four-range modules. Individual row modules took 2,255–10,377 s. These figures
+motivate reusing a verified cache; they do not predict the combined runner build's
+runtime. No timing for an individual range fact was isolated.
+
+## Why process parallelism is permitted
+
+Lean is intended to mark objects shared with `Task.spawn` as multi-threaded, with
+atomic reference counting. The earlier crash occurred despite pure checker code
+using exact integer arithmetic. A runtime/compiler error in object sharing can
+therefore affect a trusted native computation even without unsafe project code.
+The earlier three parallel-era certificate results were independently reproduced
+by sequential evaluation; the repository now prevents shared-state task spawning
+inside all native checkers. Independent OS processes retain parallel build
+throughput without sharing these runtime objects.

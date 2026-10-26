@@ -1,5 +1,5 @@
-import GrotheKernel.Basic
-import GrotheKernel.CapPoly
+import GrotheCapsKernel.Basic
+import GrotheCapsKernel.CapPoly
 
 /-!
 # The cap checker (Mathlib-free, precompiled)

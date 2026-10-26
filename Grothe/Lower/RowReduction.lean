@@ -1,4 +1,5 @@
 import Grothe.LowerAnalytic.WitnessCap
+import Grothe.Lower.RowDataTypes
 import Grothe.LowerAnalytic.WickCubic
 
 /-!
@@ -74,13 +75,6 @@ lemma Row.gate_eq (r : Row) (X1 X2 X3 : ℂ) :
       + 2 * r.delta * (conj X1 * ((r.b1 : ℂ) * X1 + (r.b2 : ℂ) * X2 + (r.b3 : ℂ) * X3)).re :=
   gateForm_eq_Eform r.E r.delta r.b1 r.b2 r.b3 X1 X2 X3
 
-/-- Exact positive-semidefiniteness check of a symmetric `3×3` rational matrix (LDLᵀ with the
-Schur complement scaled by `m₁₁`): `m₁₁ > 0`, `S₁₁ = m₂₂m₁₁ − m₁₂² > 0`, `det S ≥ 0`. -/
-def Sym3.psdOK (M : Sym3) : Bool :=
-  decide (0 < M.m11) && decide (0 < M.m22 * M.m11 - M.m12 ^ 2) &&
-    decide (0 ≤ (M.m22 * M.m11 - M.m12 ^ 2) * (M.m33 * M.m11 - M.m13 ^ 2)
-      - (M.m23 * M.m11 - M.m12 * M.m13) ^ 2)
-
 /-- The real quadratic form of a checked matrix is nonnegative. -/
 lemma Sym3.realForm_nonneg (M : Sym3) (h : M.psdOK = true) (x1 x2 x3 : ℝ) :
     0 ≤ M.m11 * x1 ^ 2 + 2 * M.m12 * x1 * x2 + 2 * M.m13 * x1 * x3 + M.m22 * x2 ^ 2
@@ -117,22 +111,9 @@ theorem Sym3.form_nonneg_of_psdOK (M : Sym3) (h : M.psdOK = true) (y1 y2 y3 : �
   simp only [Sym3.form, hre_eq]
   nlinarith [hr, hi]
 
-/-- A real symmetric `2×2` rational matrix (upper triangle). -/
-structure Sym2 where
-  m11 : ℚ
-  m12 : ℚ
-  m22 : ℚ
-
-/-- `M − diag(a, b)`. -/
-def Sym2.subDiag (M : Sym2) (a b : ℚ) : Sym2 := { M with m11 := M.m11 - a, m22 := M.m22 - b }
-
 /-- The Hermitian form `y* M y` of a real symmetric `2×2` matrix on `ℂ²`. -/
 def Sym2.form (M : Sym2) (y1 y2 : ℂ) : ℝ :=
   M.m11 * hre y1 y1 + 2 * M.m12 * hre y1 y2 + M.m22 * hre y2 y2
-
-/-- Exact positive-semidefiniteness check of a symmetric `2×2` rational matrix. -/
-def Sym2.psdOK (M : Sym2) : Bool :=
-  decide (0 < M.m11) && decide (0 ≤ M.m11 * M.m22 - M.m12 ^ 2)
 
 lemma Sym2.realForm_nonneg (M : Sym2) (h : M.psdOK = true) (x1 x2 : ℝ) :
     0 ≤ M.m11 * x1 ^ 2 + 2 * M.m12 * x1 * x2 + M.m22 * x2 ^ 2 := by

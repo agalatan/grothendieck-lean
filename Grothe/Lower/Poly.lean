@@ -1,4 +1,5 @@
 import Grothe.Lower.Basic
+import Grothe.Lower.RowDataTypes
 
 /-!
 # List polynomials: arithmetic, adaptive Bernstein positivity, Taylor tails
@@ -13,16 +14,6 @@ origin, and `tailOn` combines both along a doubling sequence (`tailOn_sound`).
 -/
 
 namespace Grothe.Lower
-
-/-- Parse `n` or `n/d`. -/
-def parseQ (s : String) : ℚ :=
-  match s.splitOn "/" with
-  | [n] => (n.toInt! : ℚ)
-  | [n, d] => (n.toInt! : ℚ) / (d.toNat! : ℚ)
-  | _ => 0
-
-/-- Parse a comma-separated list of rationals. -/
-def parseQs (s : String) : List ℚ := if s = "" then [] else (s.splitOn ",").map parseQ
 
 def negL : List ℚ → List ℚ
   | [] => []

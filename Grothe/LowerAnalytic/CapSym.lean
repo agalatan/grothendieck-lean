@@ -1,8 +1,8 @@
-import GrotheKernel.CapPoly
+import GrotheCapsKernel.CapPoly
 import Grothe.LowerAnalytic.CapPiece
 
 /-!
-# Soundness of the symbolic polynomials (`GrotheKernel/CapPoly.lean`)
+# Soundness of the symbolic polynomials (`GrotheCapsKernel/CapPoly.lean`)
 
 `KQ.val x = p + q√2`, `KC.val`, `CP.eval P z = Σ c z^a z̄^b`; the operations are sound
 (`eval_mul`, `eval_conj`, …), the basis and `L` are the fibre functions (`eval_bCP`, `eval_lCP`),
