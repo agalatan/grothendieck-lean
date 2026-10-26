@@ -28,8 +28,8 @@ for the concrete rounding `GT` (smoothed `F₀·P₃(φ)` built from `Grothe/Upp
 
 for some charge-one `X ∈ L²(gaussC ⊗ gaussC)` (the smoothed truncation of `F₀ + v`; its correction vector `v` lives
 in `handoff/upper-residual/global_norm/frozen_taylor_correction_D201.npz`, not in Lean).
-Axioms: standard + `head_check` + `comparison_check` + `phi_cover_check` (native). The structural fields of the old
-`DirectHyps` (`valid`, `summable`, `summableX`, `parityX`) and `|P₃(φ)| ≤ 1` (via `phiBound : φ² ≤ 3`)
+Axioms: standard + `head_check` + `comparison_check` + `phi_cover_check_0`–`5` (native). The structural fields of the old
+`DirectHyps` (`valid`, `summable`, `summableX`, `parityX`) and `|P₃(φ)| ≤ 1` (via `phi_abs_lt_one : |φ| < 1`)
 are theorems.  Module map (all in `Grothe/UpperChaos/`):
 
 | module | content |
@@ -41,7 +41,7 @@ are theorems.  Module map (all in `Grothe/UpperChaos/`):
 | Energy2, Kernel2 | energies by bidegree, parity, kernel = `radialKernel (bivarKernel P Q (energy G))` |
 | Realise2, Structural | two-channel Gaussian rounding ⇒ `DiskKernel`; `structural_fields`, `fresh_upper_of_rounding` |
 | Rounder | `vprof`, `F0`, `phiT`, `Tround`, `GT`; measurable, charge one, disk-valued under `PhiBound` |
-| PhiHorner, PhiDense, PhiCover, PhiCoverData, PhiCoverCheck, PhiBound | phase cover `φ² ≤ 3` (checker `GrotheKernel/PhiCheck.lean`, generator `tools/gen_phi_cover.py`) |
+| PhiHorner, PhiDense, PhiCover, PhiCoverData, PhiCoverCheck0–5, PhiCoverCheck, PhiBound | phase cover `φ² ≤ 99/100`, `|φ| < 1` (checker `GrotheKernel/PhiCheck.lean`, generator `tools/gen_phi_abs_cover.py`, data `data/phi-abs-cover/trees.json`) |
 | HardyKernel | holomorphic Gaussian kernel and certificate covariance definitions; no discharge of `hardy` yet |
 
 The sharper tail reserves the linear coefficient's weighted square from the
@@ -71,11 +71,14 @@ UV − W², arb for exp.
 The script, log and README are in `handoff/upper-residual/phi-cover/` (git-ignored; the main checkout of
 the user's laptop) — the script is reproduced verbatim in `tools/phi_cover_exact.py` on this branch.
 
-Proposed Lean version (not built): same structure as `PhiCheck` with `leafOK` replaced by the
-first-order exponential model; needs a tight rational upper bound of `e^{−x}` at non-integer x (Taylor
-sum lower bound `e^{x} ≥ Σ_{k≤K} x^k/k!` with K ≈ 2x+20, or a table of `e^{−j/64}` enclosures) and of
-`e^{y}` for small y (`e^y ≤ 1/(1−y)`). ~1.5·10⁵ leaves × ~10 ms ⇒ ~25 min native; split by the first 3
-bisection levels into 8 modules / 8 native facts of ~3 min each (no Task.spawn).
+**§2b In Lean (2026-10-26): `phi_abs_lt_one : ∀ u, |phiT u| < 1`** from `phiT_sq_le : φ² ≤ 99/100`.
+Leaf test (`GrotheKernel.leafOK`): either the exponential at the lower corner with `|S| ≤ |B|_r`, or the
+first-order model `e^{−ε h} S = S(1 − ε h) + S R`, `|R| ≤ a²/2 + 2a³/9` (`Real.exp_bound`, n = 3), with the
+exponential at the centre bounded by `(10⁹/2718281828)^n · 720 den⁶/T₆(f)`; `UV − W²` bounded by a corner and
+a centre formula. The root box is split into 512 cubes (`phiSplit`), each with its own tree; 119,077 checked
+leaves; six single-threaded native facts `phi_cover_check_0`–`5` (the cube containing the maximiser holds 76,004
+leaves, ≈ 12 min; the others ≤ 3 min). Far field `U + V ≥ 60`: `|φ| ≤ 1/10` (`far_sound`). This replaces the
+earlier `φ² ≤ 3` cover.
 
 ## 3. `hardy` (N4) — plan and progress
 

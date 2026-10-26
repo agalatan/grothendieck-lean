@@ -455,6 +455,12 @@ theorem splitAll_cover : ∀ (cs : List Char), (∀ c ∈ cs, c = 'U' ∨ c = 'V
     · obtain ⟨b', hb', h'⟩ := splitAll_cover cs hcs' _ h1
       exact ⟨b', by simp [splitAll, hb'], h'⟩
 
+lemma length_splitAll : ∀ (cs : List Char) (b : Box), (splitAll cs b).length = 2 ^ cs.length
+  | [], _ => by simp [splitAll]
+  | c :: cs, b => by
+    simp only [splitAll, List.length_append, length_splitAll cs, List.length_cons, pow_succ]
+    ring
+
 /-! ### The far field -/
 
 /-- `s^n e^{−21 s/20} ≤ 60^n e^{−63}` for `n ≤ 63 ≤ (21/20) s`. -/

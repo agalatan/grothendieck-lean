@@ -64,12 +64,14 @@ theorem phiT_sq_le (u : ℂ × ℂ) : phiT u ^ 2 ≤ 99 / 100 := by
       refine ⟨by positivity, by nlinarith, by positivity, by nlinarith, by nlinarith, by nlinarith⟩
     obtain ⟨b, hb, hin⟩ := splitAll_cover phiSplit (by simp [phiSplit]) rootBox hroot
     obtain ⟨i, hi, rfl⟩ := List.getElem_of_mem hb
-    have hlen : (splitAll phiSplit rootBox).length = 64 := by rfl
-    have hc := hcubes i (hlen ▸ hi)
-    simp only [phiCubeOK, beq_iff_eq, List.getD_eq_getElem?_getD, List.getElem?_eq_getElem hi,
-      Option.getD_some] at hc
+    have hlen : (splitAll phiSplit rootBox).length = 512 := by
+      rw [length_splitAll]; rfl
+    have hc := hcubes i (by rw [hlen] at hi; exact hi)
+    simp only [phiCubeOK, beq_iff_eq] at hc
+    rw [List.getD_eq_getElem _ _ hi] at hc
     have := walk_sound hts 100 _ _ [] hc U V W hin hW2 h60
-    simpa [tN, tD] using this
+    norm_num [tN, tD] at this
+    exact this
   · exact (far_sound hts hfar hU hV hW2 h60).trans (by norm_num)
 
 /-- **`|φ| < 1` everywhere** (the multiplication by `iφ` has norm `< 1`). -/
