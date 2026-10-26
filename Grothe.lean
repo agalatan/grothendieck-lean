@@ -181,13 +181,17 @@ import Grothe.Upper.Head
 import Grothe.Upper.HeadWeight
 import Grothe.Upper.IntervalSound
 import Grothe.Upper.KernelScreen
+import Grothe.Upper.PhaseChart
 import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.PowerTail
+import Grothe.Upper.RadiusJet
 import Grothe.Upper.Realise
 import Grothe.Upper.Residual
 import Grothe.Upper.ResolventTail
 import Grothe.Upper.ResponseGeometry
+import Grothe.Upper.ResponseUpdate
 import Grothe.Upper.SpectralScreen
+import Grothe.Upper.TransportLimit
 import Grothe.UpperChaos.Charge
 import Grothe.UpperChaos.Completeness
 import Grothe.UpperChaos.ComplexHermite

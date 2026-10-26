@@ -74,3 +74,221 @@ new numerical native facts. They exclude a finite first-degree-moment price
 for the phase spectrum; they do not exclude a modulus-weighted phase metric.
 The Gaussian identification of a particular coordinate motion and the
 verification of numerical response integrals are separate application tasks.
+
+\paragraph{A positive-integral certificate for an omitted response increment.}
+Let $P_i$ be linear blocks satisfying the same finite Bessel inequality, and
+let $x,y$ be the old and new responses. Polarization gives the exact identity
+\[
+ \|P_i y\|^2-\|P_i x\|^2
+ =\langle P_i(y-x),P_i(y+x)\rangle.
+\]
+If $p,q$ have zero projection in every measured block and
+\[
+ \|(y-x)-p\|\le A,\qquad \|(y+x)-q\|\le B,\qquad A,B\ge0,
+\]
+then Cauchy--Schwarz and Bessel, first on every finite set, prove
+\[
+ \boxed{\displaystyle
+ \sum_i\big|\|P_i y\|^2-\|P_i x\|^2\big|\le AB.}
+\]
+The approximants need not be exact orthogonal projections. For Gaussian
+responses, $A^2$ and $B^2$ may therefore be certified by directly integrating
+the nonnegative squared errors of frozen finite Hermite polynomials. A
+polynomial supported in the retained total grades has zero projection on
+the omitted grades, also after a degree-preserving contraction. A downstream
+coefficient map of column $\ell^1$ norm at most one preserves this allowance.
+
+This is the same price as the common two-response Gram computation when
+the exact residual Gram is
+$\left(\begin{smallmatrix}a&b\\b&c\end{smallmatrix}\right)$ for $x,y-x$:
+\[
+ (2b+c)^2+4(ac-b^2)=c(4a+4b+c).
+\]
+The right side is the product of the squared residual norms of $y-x$ and
+$y+x$. Its direct-integral formulation avoids subtracting almost equal
+moments or repairing a numerical Gram matrix. Four further Lean statements
+prove polarization, the finite bound, the complete-tail certificate, and the
+scalar identity. A positive quadrature sum alone is still not an enclosure
+of its Gaussian integral, and these results change neither endpoint.
+
+\paragraph{Two conditioned charts for an actual shared Gaussian phase.}
+Write the phase argument as $s+cw$, where $s\ge0$ and $c\in\mathbb R$.
+On $|w|^2\le R$, the test $4Rc^2\le s^2$ implies
+$|s+cw|\ge s/2$. Otherwise $c\ne0$, and for any $A\ge4R$ one has
+$s^2<Ac^2$. Thus the ordinary and centered tests cover every point,
+including zeros of $c$, without separately isolating these zeros.
+In the centered chart put
+\[
+ w=\frac{re^{i\chi}-s}{c},\quad r\ge0.
+\]
+For $r>0$ the normalized phase is exactly $e^{i\chi}$, and
+\[
+ |w|^2=\frac{r^2+s^2-2rs\cos\chi}{c^2},\qquad
+ \frac{e^{-|w|^2}}\pi\,d\Re w\,d\Im w
+ =\frac r{\pi c^2}e^{-\frac{r^2+s^2-2rs\cos\chi}{c^2}}\,dr\,d\chi.
+\]
+The real scale may have either sign. These are identities for the original
+shared coordinates; no Gaussian replacement or independence is introduced.
+The regularizers become $r^2+\kappa$, removing the variable square-root
+branch of the phase from the centered integrand.
+
+The module \texttt{Grothe/Upper/PhaseChart.lean} proves these identities,
+their integral form, the noncentrality bound $(s/c)^2\le A$, and a Bernstein
+range enclosure. If $\beta_i\in[L,U]$ are the Bernstein coefficients on a
+real interval, positivity and partition of unity imply the same range for
+the polynomial. This can be much tighter than interval Horner evaluation.
+The finite numerical choice of chart is distinct from certification of the
+integrals inside each chart.
+
+\paragraph{An admissible cutoff rather than a discontinuous integration boundary.}
+For a measurable set $\Omega$ and measurable $|T|\le1$, let
+$T^\Omega=1_\Omega T$. Lean proves integrability and
+\[
+ \|T-T^\Omega\|_2^2\le\mathbb P(\Omega^c).
+\]
+It also proves that a symmetry-invariant $\Omega$ preserves the disk bound
+and the response's equivariance. Consequently a charge-one cutoff remains
+an actual admissible rounding. If $p=\mathbb P(\Omega^c)$, the entire energy
+spectrum changes by at most $2\sqrt p+p$ by the Bessel comparison above.
+A downstream contraction of coefficient $\ell^1$ norm at most one preserves
+this allowance. Thus the complete reciprocal score has the same error bound.
+
+For $U=|z|^2,V=|w|^2$ and $R>0$, a finite chart union can contain
+$\{U+V\le R\}$. On ordinary cells use $|w|\le\sqrt R$; on centered
+cells use $0\le r\le s+|c|\sqrt R$, where $s=\sqrt U$. The triangle
+inequality proves containment, so $p\le(R+1)e^{-R}$.
+The cutoff response is zero outside that union, hence a polynomial residual
+has only its polynomial tail there. Inside, each integral is over its full
+chart domain, with no discontinuous $U+V\le R$ indicator.
+This construction uses the freedom to choose an upper rounding. It is not
+a restriction on the responses in a universal lower-bound problem.
+The cutoff theorem and coordinate identities do not certify any compact
+numerical integral or change either endpoint.
+
+\paragraph{A rational phase update.}
+For an arbitrary real phase field $\delta$, put
+\[
+ C(\delta)=\frac{1+i\delta/2}{1-i\delta/2},\qquad
+ C(\delta)-1=\frac{i\delta}{1-i\delta/2}.
+\]
+Lean proves $|C(\delta)|=1$ and the displayed increment identity at every
+real $\delta$. Thus $TC(\delta)$ remains disk-valued whenever $T$ is,
+including unbounded fields. This update agrees with $e^{i\delta}$ through
+quadratic order but has a rational continuation in the complicated field,
+rather than its exponential. It changes the actual response; its full score
+and polynomial approximation errors require fresh integration enclosures.
+
+\paragraph{Exact circular profiles before interval evaluation.}
+At fixed $s,c,r$, write $w=ax+b+iay$ with $a=r/c$, $b=-s/c$ and
+$x=\cos\chi,y=\sin\chi$. The identity $x^2+y^2=1$ gives the recurrence
+\[
+ R_{n+1}=(ax+b)R_n-a(1-x^2)I_n,\qquad
+ I_{n+1}=aR_n+(ax+b)I_n,
+\]
+starting at $R_0=1,I_0=0$. Thus $w^n=R_n(x)+iyI_n(x)$.
+The multiplication step is proved in Lean for complex components as well,
+which justifies the same identity under holomorphic continuation.
+Since $|w|^2$ and $s\Re w$ are affine in $x$, a frozen real-coefficient
+Hermite field reduces to two univariate profiles. Performing these exact
+polynomial cancellations before interval evaluation avoids artificial
+imaginary errors from independently enclosing reflected expressions.
+This algebraic identity supplies no numerical integration bound on its own.
+
+\paragraph{Retaining the radius until polynomial cancellation is complete.}
+The same dependency issue occurs if a radial interval is inserted before
+forming the profiles. Keep $r$ and $x=\cos\chi$ as independent polynomial
+indeterminates and encode $r^i x^j$ at univariate index $Li+j$.
+When every intermediate angular degree is below $L$, coefficient indices
+are distinct and convolution adds the correct pair of exponents. The
+module \texttt{Grothe/Upper/RadiusJet.lean} proves decoding, injectivity,
+and compatibility with multiplication. A degree check is required before
+every product; exceeding the stride must fail rather than carry silently.
+
+At a point center $r_0$, exact binomial translation gives
+\[
+ P(r_0+h,x)=\sum_i h^i q_i(x),\qquad
+ q_i(x)=\sum_{a\ge i,j}\binom ai a_{aj}r_0^{a-i}x^j.
+\]
+Lean proves the monomial translation and the finite complex-patch bound
+\[
+ \left|\sum_{i,j} b_{ij}(r-r_0)^i(x-x_0)^j\right|
+ \le\sum_{i,j}|b_{ij}|R^i X^j
+ \quad\text{if }|r-r_0|\le R,\ |x-x_0|\le X.
+\]
+Apply it to the omitted rows of the finite jet. This prices the whole
+patch, with no empirical truncation or assumption about uncomputed
+derivatives. It applies to complex centers and continuations. Rational
+regularizer denominators still require separate exclusion of their poles.
+These algebraic theorems do not prove the implementation or a Gaussian
+integral enclosure. In particular, a useful enclosure on a toy patch does
+not establish the response's compact integral or either endpoint.
+
+\paragraph{An exact limitation of homogeneous norm transport.}
+Suppose a score is quadratic under uniform dilation, and an anchor has
+norm $N$ and score at least $0\le b\le N^2$. A corrected response of norm
+at most one and distance at most $e$ from the dilation $aT$ necessarily
+satisfies $aN\le1+e$. The generic full-energy comparison can then certify
+the lower score
+\[
+ L=a^2b-2aNe-e^2.
+\]
+The module \texttt{Grothe/Upper/TransportLimit.lean} proves
+\[
+ N^2L\le b.
+\]
+Its scalar core is
+$bt^2-M(2te+e^2)\le b$ for $0\le b\le M$, $t,e\ge0$ and $t\le1+e$.
+Indeed $t^2\le1+2te+e^2$ under those conditions; multiply by $b$ and
+use $b\le M$. Substitute $t=aN$ and $M=N^2$.
+Thus a nearly unit-norm anchor leaves very little room for improvement
+through this norm-only price, even if the correcting response is excellent.
+The theorem bounds the certificate formula, not the true score. Retaining
+the signed coefficient changes and pricing only the omitted tail avoids
+this restriction. Quantitative Gaussian norm estimates remain separate.
+
+\paragraph{A complete certificate for a smoothed signed update.}
+Let $S:H\to K$ be a real linear contraction between Hilbert spaces, and
+let $P_i:K\to K$ satisfy the finite Bessel inequalities. Given raw
+responses $x,y$ and retained polynomial approximants $p,q$, suppose
+\[
+ \|(y-x)-p\|\le A,\qquad \|(y+x)-q\|\le B.
+\]
+For a finite retained set $I$, require $P_iSp=P_iSq=0$ outside $I$.
+This is a support condition after smoothing; arbitrary coordinate
+rotations or preservation of every individual block are not assumed.
+Put $E_z(i)=\|P_iSz\|^2$ and
+\[
+ \nu_i=\begin{cases}E_y(i),&i\in I,\\ E_x(i),&i\notin I.\end{cases}
+\]
+Contractivity and the polarized approximation theorem give
+$\sum_i|E_y(i)-\nu_i|\le AB$. Finite Bessel bounds also prove that all
+energy tables here are summable.
+
+For correlation polynomials $P,Q$ of Wiener norm at most one, denote the
+existing bivariate coefficient map by $L$. Its l1 contraction gives
+\[
+ \|LE_y-L\nu\|_1\le AB,\qquad
+ L\nu=L E_x+\sum_{i\in I}(E_y(i)-E_x(i))\,\operatorname{coeff}(\mathrm{term}_i).
+\]
+Thus the retained change is signed and finite before any absolute value
+is taken. If $\widehat c$ approximates $L\nu$ to l1 error at most $\xi$,
+the complete score satisfies
+\[
+ \boxed{\mathcal D(LE_y)\ge\mathcal D(\widehat c)-\xi-AB.}
+\]
+The reference allowance $\xi$ can be assembled from an inherited anchor
+error and the finite retained-data price
+$\sum_{i\in I}w_i|\Delta E_i-\widehat{\Delta E}_i|$, where
+$w_i\ge\|\mathrm{term}_i\|_1$. Each error is charged once, including
+its effect on the linear coefficient. No exact projection of either
+response onto the retained polynomials is needed.
+
+The module \texttt{Grothe/Upper/ResponseUpdate.lean} proves this chain.
+If the actual radial kernel $LE_y$ is dominated and the displayed lower
+score is at least $s>0$, its final theorem applies the existing transfer
+inequality to obtain $K_G^{\mathbb C}\le1/s$. Domination is a
+realizability condition on the actual bounded response, rather than an
+assumed upper norm cap. For a concrete Gaussian application the smoothing,
+block support, reference data, positive-error integrals and realizability
+must still be supplied. This assembly theorem is not an accepted new
+numerical certificate or endpoint.

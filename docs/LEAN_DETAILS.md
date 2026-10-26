@@ -26,7 +26,7 @@ tables were hash-checked, not regenerated. See
 The exact certificate JSON and generator reproduce the module byte for byte.
 
 **Phase errors and transported certificates.**
-`Grothe/Upper/ResponseGeometry.lean` proves eight statements: the exact
+`Grothe/Upper/ResponseGeometry.lean` proves twelve statements: the exact
 disk support-defect identity, normalized-distance and weighted support-loss
 bounds (including zero moduli), kernel and block-energy transport under an
 explicit intertwining hypothesis, finite and countable energy comparisons
@@ -36,9 +36,55 @@ Bessel's inequality for the transported blocks. It does not assume that an
 arbitrary rotation preserves the coordinate bidegrees of the actual kernel.
 `Grothe/Haagerup/PhaseGeometry.lean` proves three all-index statements:
 `4*(n+1)*(n+2)*haagR(n+1)>=1`, the resulting harmonic lower bound, and
-non-summability of `(2*k+1)*haagCoeff k`. These eleven results use only
-standard axioms. The Gaussian phase-orbit differentiation argument and
-numerical response integrals are not formalized by these modules.
+non-summability of `(2*k+1)*haagCoeff k`. These first eleven results use only
+standard axioms. Four further results in `ResponseGeometry` prove exact
+energy polarization, its finite Bessel bound, `tail_of_approximants` for the
+entire omitted spectrum, and `polarized_gram_identity`. The tail bound is
+`A*B` when frozen retained polynomials approximate the increment and the
+sum of the two responses to errors `A,B`. Exact projection coefficients
+are not required; positive squared-error integral enclosures suffice.
+`Grothe/Upper/PhaseChart.lean` adds sixteen results: the overlapping chart
+cover, the ordinary chart's uniform phase gap, reconstruction and phase
+normalization in the centered chart, its exact Gaussian exponent and
+noncentrality bound, a regularizer estimate, affine and affine-polar integral
+identities, the exact transformed Gaussian weight, a Bernstein range bound,
+and two cutoff lemmas. The latter prove integrability and the squared L2
+error bound by omitted mass, and preservation of the disk bound and an
+explicit response symmetry. Two rational-phase lemmas prove unit modulus
+and the cancellation-free increment of `(1+i*t/2)/(1-i*t/2)` for every
+real phase field. The circular-profile multiplication recurrence is also
+proved for complex components, so it applies to the holomorphic continuation.
+The affine-polar identity is for Lebesgue
+Gaussian density; the existing measurable-function identity
+`LowerAnalytic.integral_gaussC_eq_volume` supplies the measure interface.
+`Grothe/Upper/RadiusJet.lean` adds five results: exponent decoding and
+injectivity below a fixed stride, compatibility with polynomial convolution,
+exact binomial radius translation, and a finite centered polynomial bound
+on complex patches. These justify the algebraic enclosure interface; they
+do not formalize the external ball-arithmetic implementation or its integrals.
+`Grothe/Upper/TransportLimit.lean` adds a dimensionless comparison ceiling
+and its norm-transport consequence: under `0 <= b <= N^2`, `a,N,e >= 0`
+and the triangle constraint `a*N <= 1+e`, every certified lower value
+`R <= a^2*b-2*a*N*e-e^2` satisfies `N^2*R <= b`.
+This limits the norm-only certificate formula, not the true score of a
+corrected response. More informative signed-coefficient comparisons are
+not excluded.
+`Grothe/Upper/ResponseUpdate.lean` adds nine results connecting those
+components to the existing upper transfer. A contractive linear smoothing
+preserves the raw positive approximation-error bounds. A hybrid energy
+table uses the new response on retained blocks and the anchor elsewhere;
+its full error is at most `A*B`. Its kernel is exactly the old kernel plus
+the finite signed block update. The nominal kernel error is bounded by
+the inherited anchor error plus the finite weighted retained-data error.
+The bivariate kernel's l1 contraction then gives the entire score, and
+`upper_of_smoothed_update` concludes `IsGrothendieckBound (1/s)` when that
+score budget is at least `s>0` and the actual kernel is dominated.
+All support, Bessel, contraction, realizability and numerical-error
+conditions remain explicit; Gaussian integrals are not inferred from
+quadrature convergence. No exact projection coefficients are assumed.
+All forty-seven results use only standard axioms. The Gaussian phase-orbit
+differentiation argument and numerical compact response integrals are not
+formalized by these modules. A chart cover is not an integral enclosure.
 Neither endpoint nor its hypotheses change.
 The written argument is in [response-geometry.tex](response-geometry.tex).
 
