@@ -245,6 +245,8 @@ with a degree-29 preprocessor and 64 exact series terms. All orders of forward d
 of the normalized Haagerup coefficients are nonnegative, proved from a product of two
 rising-factorial quotients. This gives a canonical resolvent expansion: the finite head
 and six correction terms are combined before taking absolute values.
+The finite checker encloses the first 170 coefficients. A polynomial coefficient norm
+weighted by (3/2)ⁿ bounds all omitted coefficients, without an analytic-continuation input.
 The normalized completed-head residual is at most 9.14·10⁻⁹ and the remaining suffix
 at most 0.24·10⁻⁹, giving a total normalized residual of 9.38·10⁻⁹.
 The coefficient argument, resolvent identity, checker soundness and matrix transfer are all

@@ -6,8 +6,8 @@ import GrotheKernel.ResolventCompletion
 # Soundness of finite resolvent completion certificates
 
 The original finite head and its signed resolvent correction are combined
-before taking the coefficient norm. A degree bound ensures that the interval
-calculation controls every coefficient of the resulting polynomial.
+before taking the coefficient norm. The interval calculation controls a
+coefficient prefix; a degree bound identifies it with the complete norm.
 -/
 
 namespace Grothe.Upper.ResolventCertificate
@@ -98,6 +98,22 @@ theorem memB_completedHeadI (N k : ℕ) (pl rl rs ds : List ℚ) (hlen : rs.leng
   rw [completedPolynomial_eq_hornerWithTail _ _ _ _ _ hlen]
   simpa only [completedHeadI, htake] using hh
 
+/-- The interval check controls its coefficient prefix without a degree premise. -/
+theorem completedPrefix_le_of_check (N k : ℕ) (pl rl rs ds : List ℚ) (slope cap : ℚ)
+    (hlen : rs.length = k)
+    (hc : completedHeadOK N k pl rl rs ds slope cap = true) :
+    (∑ n ∈ range N, |(completedPolynomial (ofListQ pl) (ofListQ rl) k rs ds -
+      C (slope : ℝ)).coeff n|) ≤ (cap : ℝ) := by
+  have hb := memB_add (memB_completedHeadI N k pl rl rs ds hlen)
+    (memB_single (N := N) (mem_neg (mem_ofRatI slope)))
+  have hs : memB N (completedPolynomial (ofListQ pl) (ofListQ rl) k rs ds -
+      C (slope : ℝ))
+      (addL (completedHeadI N k pl rl rs ds) [negI (ofRatI slope)]) := by
+    simpa only [map_neg, sub_eq_add_neg] using hb
+  simp only [completedHeadOK, decide_eq_true_eq] at hc
+  apply le_of_mul_le_mul_right _ D_pos
+  exact (absSum_le hs).trans ((Int.cast_le.mpr hc).trans (ofRatLo_le cap))
+
 /-- Acceptance bounds the complete residual when its degree is below `N`. -/
 theorem completedHead_le_of_check (N k : ℕ) (pl rl rs ds : List ℚ) (slope cap : ℚ)
     (hlen : rs.length = k)
@@ -106,16 +122,8 @@ theorem completedHead_le_of_check (N k : ℕ) (pl rl rs ds : List ℚ) (slope ca
     (hc : completedHeadOK N k pl rl rs ds slope cap = true) :
     l1 (completedPolynomial (ofListQ pl) (ofListQ rl) k rs ds -
       C (slope : ℝ)) ≤ (cap : ℝ) := by
-  have hb := memB_add (memB_completedHeadI N k pl rl rs ds hlen)
-    (memB_single (N := N) (mem_neg (mem_ofRatI slope)))
-  have hs : memB N (completedPolynomial (ofListQ pl) (ofListQ rl) k rs ds -
-      C (slope : ℝ))
-      (addL (completedHeadI N k pl rl rs ds) [negI (ofRatI slope)]) := by
-    simpa only [map_neg, sub_eq_add_neg] using hb
-  simp only [completedHeadOK, decide_eq_true_eq] at hc
   rw [l1_eq_sum_range _ hdeg]
-  apply le_of_mul_le_mul_right _ D_pos
-  exact (absSum_le hs).trans ((Int.cast_le.mpr hc).trans (ofRatLo_le cap))
+  exact completedPrefix_le_of_check N k pl rl rs ds slope cap hlen hc
 
 end
 end Grothe.Upper.ResolventCertificate

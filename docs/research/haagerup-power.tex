@@ -132,15 +132,54 @@ The completed finite polynomial is
  H=P\sum_{k<64}r_k(XP^2)^k+Q_6(r).
 \]
 The head and correction are added before taking absolute values, preserving
-the cancellation between them. A proved degree bound gives
-$\deg(H-a)\le2492<2500$, so the outward interval calculation covers every
-coefficient. Kernel proofs certify
+the cancellation between them. Put $F=H-a$. An outward interval calculation
+bounds the first $N=170$ coefficients:
 \[
- \|H-a\|_{\mathcal A}\le\frac{914}{10^{11}},\qquad
- r_{64}\le\frac1{10^4},\qquad
- (\Delta^6r)_{64}\le\frac{37}{10^{13}},
+ \sum_{n<170}|F_n|\le\frac{9136}{10^{12}}.
 \]
-along with the inverse-defect and combined-seed budgets.
+The remaining coefficients are controlled by a weighted finite-polynomial
+norm. For any real polynomial $F$ and $\rho\ge1$,
+\[
+ \|F\|_{\mathcal A}\le\sum_{n<N}|F_n|
+       +\frac{\|F(\rho X)\|_{\mathcal A}}{\rho^N}.
+\]
+Indeed, the scaled polynomial has coefficient $\rho^nF_n$, and
+$\rho^n\ge\rho^N$ for every $n\ge N$. Summing this coefficient inequality
+proves the estimate. No analytic-continuation hypothesis is involved.
+
+At $\rho=3/2$, write $P_\rho=P(\rho X)$, $R_\rho=R(\rho X)$, and
+$A_\rho=\rho X P_\rho^2$. The rational coefficients give
+\[
+ \begin{gathered}
+ \|P_\rho\|_{\mathcal A}\le\frac{21}{20},\qquad
+ \|R_\rho\|_{\mathcal A}\le9,\\
+ \|A_\rho\|_{\mathcal A}\le\frac53,\qquad
+ \|-R_\rho A_\rho\|_{\mathcal A}\le15.
+ \end{gathered}
+\]
+Complete monotonicity gives $r_k\le1$ and
+$0\le(\Delta^j r)_{64}\le r_{64}\le10^{-4}$. The completed polynomial,
+submultiplicativity, and $|a|\le1$ therefore give
+\begin{align*}
+ \|F((3/2)X)\|_{\mathcal A}
+ &\le \frac{21}{20}\,64\left(\frac53\right)^{63}\\
+ &\quad+9\frac{21}{20}\left(\frac53\right)^{64}
+       \frac1{10^4}\sum_{j<6}15^j+1\\
+ &\le10^{18}.
+\end{align*}
+Consequently the entire coefficient tail from $170$ is bounded by
+\[
+ \frac{10^{18}}{(3/2)^{170}}<\frac4{10^{12}},
+ \qquad
+ \|H-a\|_{\mathcal A}\le\frac{9136+4}{10^{12}}
+                         =\frac{914}{10^{11}}.
+\]
+The finite prefix, inverse defect, combined seed, and coefficient bounds
+\[
+ r_{64}\le\frac1{10^4},\qquad
+ (\Delta^6r)_{64}\le\frac{37}{10^{13}}
+\]
+are certified by kernel proofs.
 Complete monotonicity gives $(\Delta^j r)_{64}\le r_{64}$, and
 $\sum_{j<6}2^j=63$. The infinite remainder is consequently at most
 \[
@@ -162,7 +201,7 @@ $\pi$ give
 All finite acceptance facts used by this theorem have kernel proofs.
 The existing native fact in the generated data module is unchanged and is
 not a dependency of the bound. An independent directed FLINT replay checks
-the complete polynomial, inverse defect, seed, coefficient differences,
-remainder arithmetic, and endpoint. Its results audit the implementation;
-they are not premises of the Lean theorem. The conditional endpoints and
-the lower node-cap import closure are separate and unchanged.
+the complete polynomial, checked prefix, weighted finite tail, inverse defect,
+seed, coefficient differences, infinite remainder arithmetic, and endpoint. Its results audit the implementation;
+they are not premises of the Lean theorem. The canonical construction does not
+change the conditional endpoints or lower cap computations.

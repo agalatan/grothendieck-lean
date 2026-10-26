@@ -9,7 +9,6 @@ import Grothe.Haagerup.Power
 #print axioms Grothe.HaagerupCanonical.defect_check
 #print axioms Grothe.HaagerupCanonical.degree_P
 #print axioms Grothe.HaagerupCanonical.degree_R
-#print axioms Grothe.HaagerupCanonical.degree_completed
 #print axioms Grothe.HaagerupCanonical.degree_ratio
 #print axioms Grothe.HaagerupCanonical.differences_getD
 #print axioms Grothe.HaagerupCanonical.differences_length
@@ -17,6 +16,8 @@ import Grothe.Haagerup.Power
 #print axioms Grothe.HaagerupCanonical.norm_P
 #print axioms Grothe.HaagerupCanonical.norm_defect_of_check
 #print axioms Grothe.HaagerupCanonical.norm_resolvent_ratio
+#print axioms Grothe.HaagerupCanonical.norm_scaledP
+#print axioms Grothe.HaagerupCanonical.norm_scaledR
 #print axioms Grothe.HaagerupCanonical.norm_seed_of_check
 #print axioms Grothe.HaagerupCanonical.norm_tail_seed
 #print axioms Grothe.HaagerupCanonical.remainder_bound
@@ -24,6 +25,7 @@ import Grothe.Haagerup.Power
 #print axioms Grothe.HaagerupCanonical.seed_check
 #print axioms Grothe.HaagerupCanonical.upper
 #print axioms Grothe.HaagerupCanonical.upper_of_checks
+#print axioms Grothe.HaagerupCanonical.weighted_completed_bound
 #print axioms Grothe.HaagerupCompleteMonotone.diff_quotient
 #print axioms Grothe.HaagerupCompleteMonotone.haagR_completelyMonotone
 #print axioms Grothe.HaagerupCompleteMonotone.haagR_eq
@@ -66,6 +68,7 @@ import Grothe.Haagerup.Power
 #print axioms Grothe.Upper.PowerTail.weighted_tail_bound
 #print axioms Grothe.Upper.ResolventCertificate.completedHead_le_of_check
 #print axioms Grothe.Upper.ResolventCertificate.completedPolynomial_eq_hornerWithTail
+#print axioms Grothe.Upper.ResolventCertificate.completedPrefix_le_of_check
 #print axioms Grothe.Upper.ResolventCertificate.hornerWithTailP_eq
 #print axioms Grothe.Upper.ResolventCertificate.memB_completedHeadI
 #print axioms Grothe.Upper.ResolventCertificate.memB_hornerWithTailI
@@ -91,4 +94,5 @@ import Grothe.Haagerup.Power
 #print axioms Grothe.Upper.ResolventTail.seed_power_bound
 #print axioms Grothe.Upper.ResolventTail.tail_numeric_of_check
 #print axioms Grothe.Upper.ResolventTail.weighted_geometric_difference
+#print axioms Grothe.Upper.WeightedTail.l1_le_prefix_add_weighted_tail
 #print axioms Grothe.haagerup_bound

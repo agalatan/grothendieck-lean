@@ -2,6 +2,7 @@ import Grothe.Haagerup.Identity
 import Grothe.Haagerup.CompleteMonotone
 import Grothe.Upper.ResolventCompletion
 import Grothe.Upper.ResolventCertificate
+import Grothe.Upper.WeightedTail
 import Grothe.Haagerup.CanonicalData
 
 /-!
@@ -10,7 +11,8 @@ import Grothe.Haagerup.CanonicalData
 This module proves the mathematical assembly independently of how the four
 finite check hypotheses are discharged. The signed completion is combined
 with the head before taking absolute values, and complete monotonicity bounds
-the remaining infinite tail.
+the remaining infinite tail. A weighted polynomial norm bounds the unchecked
+finite coefficients after a short interval prefix.
 -/
 
 set_option maxRecDepth 100000
@@ -19,7 +21,7 @@ set_option maxHeartbeats 4000000
 namespace Grothe.HaagerupCanonical
 
 open Polynomial Finset GrotheKernel Upper Upper.PowerTail Upper.ResolventTail
-open Upper.FiniteDifference Upper.ResolventCompletion Upper.ResolventCertificate
+open Upper.FiniteDifference Upper.ResolventCompletion Upper.ResolventCertificate Upper.WeightedTail
 open HaagerupPower
 
 noncomputable section
@@ -118,43 +120,158 @@ lemma completion_eq :
   rw [differences_getD j (mem_range.mp hj), iterDiff_ratCast, smul_eq_C_mul]
   ring
 
-lemma degree_completed : (completed-C (HaagerupPower.slope : ℝ)).natDegree < cutoff := by
-  have ht : (compTerm P start).natDegree ≤ 1870 := by
-    unfold compTerm
-    have h1 := natDegree_X_pow_le (R := ℝ) start
-    have h2 := (natDegree_pow_le (p := P) (n := 2*start+1)).trans
-      (Nat.mul_le_mul_left _ degree_P)
-    have h3 := natDegree_mul_le (p := (X : ℝ[X])^start) (q := P^(2*start+1))
-    norm_num [start] at h1 h2 h3 ⊢
-    omega
-  have hrt : (R*compTerm P start).natDegree ≤ 1934 :=
-    natDegree_mul_le.trans (Nat.add_le_add degree_R ht)
-  have hra : (-(R*(X*P^2))).natDegree ≤ 93 := by
-    rw [natDegree_neg]
-    exact natDegree_mul_le.trans (Nat.add_le_add degree_R degree_ratio)
-  have hh : (hornerP (X*P^2) (haagList start)).natDegree ≤ 1856 := by
-    have h := (natDegree_hornerP_le (X*P^2) (haagList start)).trans
-      (Nat.mul_le_mul_left _ degree_ratio)
-    simpa [haagList_eq, start] using h
-  have hc : (hornerP (-(R*(X*P^2))) differences).natDegree ≤ 558 := by
-    have h := (natDegree_hornerP_le (-(R*(X*P^2))) differences).trans
-      (Nat.mul_le_mul_left _ hra)
-    simpa [differences_length, order] using h
-  have hhead : (P*hornerP (X*P^2) (haagList start)).natDegree ≤ 1870 :=
-    natDegree_mul_le.trans (Nat.add_le_add degree_P hh)
-  have hcorr : ((R*compTerm P start)*hornerP (-(R*(X*P^2))) differences).natDegree ≤ 2492 :=
-    natDegree_mul_le.trans (Nat.add_le_add hrt hc)
-  have hfull : completed.natDegree ≤ 2492 := by
-    unfold completed completedPolynomial
-    exact (natDegree_add_le _ _).trans (max_le (hhead.trans (by norm_num)) hcorr)
-  exact lt_of_le_of_lt ((natDegree_sub_le _ _).trans (max_le hfull (by simp)))
-    (by norm_num [cutoff])
+private def scale : ℝ[X] := C (3/2 : ℝ)*X
+private def scaledP : ℝ[X] := P.comp scale
+private def scaledR : ℝ[X] := R.comp scale
+private def ratio : ℝ[X] := scale*scaledP^2
 
+private def majorantQ (rho : ℚ) : List ℚ → ℚ
+  | [] => 0
+  | q :: qs => |q| + rho*majorantQ rho qs
+
+private lemma l1_mul_bound {p q : ℝ[X]} {a b : ℝ} (hp : l1 p ≤ a) (hq : l1 q ≤ b) :
+    l1 (p*q) ≤ a*b :=
+  (l1_mul_le _ _).trans (mul_le_mul hp hq (l1_nonneg _) ((l1_nonneg _).trans hp))
+
+private lemma l1_pow_bound {p : ℝ[X]} {a : ℝ} (hp : l1 p ≤ a) (n : ℕ) :
+    l1 (p^n) ≤ a^n :=
+  (l1_pow_le _ _).trans (pow_le_pow_left₀ (l1_nonneg _) hp n)
+
+private lemma l1_ofListQ_scaled_le (rho : ℚ) (hrho : 0 ≤ rho) (qs : List ℚ) :
+    l1 ((ofListQ qs).comp (C (rho : ℝ)*X)) ≤ (majorantQ rho qs : ℝ) := by
+  have hr : (0 : ℝ) ≤ rho := Rat.cast_nonneg.mpr hrho
+  have hscale : l1 (C (rho : ℝ)*X) ≤ (rho : ℝ) := by
+    apply (l1_mul_le _ _).trans_eq
+    simp [l1_C, l1_X, abs_of_nonneg hr]
+  induction qs with
+  | nil => simp [ofListQ, majorantQ]
+  | cons q qs ih =>
+    simp only [ofListQ, add_comp, C_comp, mul_comp, X_comp, majorantQ,
+      Rat.cast_add, Rat.cast_mul, Rat.cast_abs]
+    exact (l1_add_le _ _).trans (add_le_add (by simp [l1_C]) (l1_mul_bound hscale ih))
+
+/-- A small weighted norm for the fixed preprocessor. -/
+lemma norm_scaledP : l1 (P.comp (C (3/2 : ℝ)*X)) ≤ 21/20 := by
+  have h := l1_ofListQ_scaled_le (3/2) (by norm_num) pl
+  change l1 ((ofListQ pl).comp (C (3/2 : ℝ)*X)) ≤ 21/20
+  norm_num [majorantQ, pl] at h ⊢
+  exact h.trans (by norm_num)
+
+/-- A small weighted norm for the fixed approximate inverse. -/
+lemma norm_scaledR : l1 (R.comp (C (3/2 : ℝ)*X)) ≤ 9 := by
+  have h := l1_ofListQ_scaled_le (3/2) (by norm_num) rl
+  change l1 ((ofListQ rl).comp (C (3/2 : ℝ)*X)) ≤ 9
+  norm_num [majorantQ, rl] at h ⊢
+  exact h.trans (by norm_num)
+
+private lemma norm_scale : l1 scale ≤ 3/2 := by
+  exact (l1_mul_le _ _).trans_eq (by norm_num [l1_C, l1_X])
+
+private lemma norm_ratio : l1 ratio ≤ 5/3 :=
+  (l1_mul_bound norm_scale (l1_pow_bound norm_scaledP 2)).trans (by norm_num)
+
+private lemma norm_negative_resolvent_ratio : l1 (-(scaledR*ratio)) ≤ 15 := by
+  rw [l1_neg]
+  exact (l1_mul_bound norm_scaledR norm_ratio).trans (by norm_num)
+
+private lemma hornerP_comp (Y S : ℝ[X]) (rs : List ℚ) :
+    (hornerP Y rs).comp S = hornerP (Y.comp S) rs := by
+  induction rs with
+  | nil => simp [hornerP]
+  | cons r rs ih => simp only [hornerP, add_comp, C_comp, mul_comp, ih]
+
+private lemma horner_norm_bound (Y : ℝ[X]) (rs : List ℚ) {a b : ℝ}
+    (hY : l1 Y ≤ a)
+    (hcoeff : ∀ j, j < rs.length → |((rs.getD j 0 : ℚ) : ℝ)| ≤ b) :
+    l1 (hornerP Y rs) ≤ b*∑ j ∈ range rs.length, a^j := by
+  rw [hornerP_eq, mul_sum]
+  refine (l1_sum_le _ _).trans (sum_le_sum fun j hj => ?_)
+  apply l1_mul_bound
+  · simpa only [l1_C] using hcoeff j (mem_range.mp hj)
+  · exact l1_pow_bound hY j
+
+private lemma haagR_le_one (k : ℕ) : (haagR k : ℝ) ≤ 1 := by
+  have hm : Antitone (fun j => (haagR j : ℝ)) :=
+    antitone_nat_of_succ_le (HaagerupCompleteMonotone.haagR_completelyMonotone.iterDiff_succ_le 0)
+  simpa [haagR] using hm (Nat.zero_le k)
+
+private lemma norm_head_horner : l1 (hornerP ratio (haagList start)) ≤ 64*(5/3 : ℝ)^63 := by
+  have hlen : (haagList start).length = start := by rw [haagList_eq]; simp
+  have h := horner_norm_bound ratio (haagList start) norm_ratio (by
+    intro j hj
+    rw [hlen] at hj
+    have hget : (haagList start).getD j 0 = haagR j := by
+      rw [haagList_eq, List.getD_eq_getElem?_getD, List.getElem?_map, List.getElem?_range hj]
+      rfl
+    rw [hget, abs_of_nonneg (HaagerupCompleteMonotone.haagR_completelyMonotone.nonneg j)]
+    exact haagR_le_one j)
+  simp only [one_mul, hlen] at h
+  apply h.trans
+  calc
+    _ ≤ ∑ _j ∈ range start, (5/3 : ℝ)^63 := by
+      apply sum_le_sum
+      intro j hj
+      apply pow_le_pow_right₀ (by norm_num)
+      have hj' := mem_range.mp hj
+      norm_num [start] at hj'
+      omega
+    _ = _ := by norm_num [start]
+
+private lemma norm_correction_horner (hcoeff : haagR start ≤ 1/10000) :
+    l1 (hornerP (-(scaledR*ratio)) differences) ≤
+      (1/10000 : ℝ)*∑ j ∈ range 6, (15 : ℝ)^j := by
+  have h0 : (haagR start : ℝ) ≤ 1/10000 := by
+    have h : (haagR start : ℝ) ≤ ((1/10000 : ℚ) : ℝ) := Rat.cast_le.mpr hcoeff
+    simpa only [Rat.cast_div, Rat.cast_one, Rat.cast_ofNat] using h
+  have h := horner_norm_bound (-(scaledR*ratio)) differences norm_negative_resolvent_ratio
+    (b := (1/10000 : ℝ)) (by
+      intro j hj
+      rw [differences_length] at hj
+      rw [differences_getD j hj]
+      have hcast : ((iterDiff j haagR start : ℚ) : ℝ) =
+          iterDiff j (fun k => (haagR k : ℝ)) start := (iterDiff_ratCast j haagR start).symm
+      rw [hcast, abs_of_nonneg (HaagerupCompleteMonotone.haagR_completelyMonotone j start)]
+      exact (HaagerupCompleteMonotone.haagR_completelyMonotone.iterDiff_le_self j start).trans h0)
+  simpa only [differences_length, order] using h
+
+/-- A coarse weighted norm controls all unchecked coefficients of the completion. -/
+lemma weighted_completed_bound (hcoeff : haagR start ≤ 1/10000) :
+    l1 ((completed-C (HaagerupPower.slope : ℝ)).comp (C (3/2 : ℝ)*X)) ≤ 10^18 := by
+  have hterm : compTerm P start = P*(X*P^2)^start := by
+    simpa [compTerm] using compTerm_geometric P 0 start
+  have hshape : (completed-C (HaagerupPower.slope : ℝ)).comp scale =
+      scaledP*hornerP ratio (haagList start) +
+      (scaledR*(scaledP*ratio^start))*hornerP (-(scaledR*ratio)) differences -
+      C (HaagerupPower.slope : ℝ) := by
+    simp only [completed, completedPolynomial, hterm, sub_comp, add_comp, mul_comp,
+      pow_comp, X_comp, C_comp, neg_comp, hornerP_comp, scaledP, scaledR, ratio]
+  have hh := l1_mul_bound norm_scaledP norm_head_horner
+  have ht := l1_mul_bound norm_scaledR (l1_mul_bound norm_scaledP (l1_pow_bound norm_ratio start))
+  have hc := l1_mul_bound ht (norm_correction_horner hcoeff)
+  have hs : l1 (C (HaagerupPower.slope : ℝ)) ≤ 1 := by norm_num [l1_C, HaagerupPower.slope]
+  change l1 ((completed-C (HaagerupPower.slope : ℝ)).comp scale) ≤ 10^18
+  rw [hshape]
+  apply (l1_sub_le _ _).trans
+  apply (add_le_add ((l1_add_le _ _).trans (add_le_add hh hc)) hs).trans
+  norm_num [start, sum_range_succ]
+
+/-- The checked prefix and its weighted polynomial tail recover the full head budget. -/
 lemma completed_norm_of_check
-    (hc : completedHeadOK cutoff start pl rl (haagList start) differences HaagerupPower.slope headCap = true) :
-    l1 (completed-C (HaagerupPower.slope : ℝ)) ≤ (headCap : ℝ) :=
-  completedHead_le_of_check cutoff start pl rl (haagList start) differences HaagerupPower.slope headCap
-    (by rw [haagList_eq]; simp) degree_completed hc
+    (hcoeff : haagR start ≤ 1/10000)
+    (hc : completedHeadOK cutoff start pl rl (haagList start) differences
+      HaagerupPower.slope prefixCap = true) :
+    l1 (completed-C (HaagerupPower.slope : ℝ)) ≤ (headCap : ℝ) := by
+  have hp : (∑ n ∈ range cutoff, |(completed-C (HaagerupPower.slope : ℝ)).coeff n|) ≤
+      (prefixCap : ℝ) :=
+    completedPrefix_le_of_check cutoff start pl rl (haagList start) differences
+      HaagerupPower.slope prefixCap (by rw [haagList_eq]; simp) hc
+  have h := l1_le_prefix_add_weighted_tail (completed-C (HaagerupPower.slope : ℝ))
+    (3/2) cutoff (by norm_num)
+  have ht : l1 ((completed-C (HaagerupPower.slope : ℝ)).comp (C (3/2 : ℝ)*X)) /
+      (3/2 : ℝ)^cutoff ≤ 4/1000000000000 := by
+    apply (div_le_div_of_nonneg_right (weighted_completed_bound hcoeff) (by positivity)).trans
+    norm_num [cutoff]
+  exact h.trans ((add_le_add hp ht).trans (by norm_num [prefixCap, headCap]))
 
 lemma remainder_bound
     (hcoeff : haagR start ≤ 1/10000 ∧ iterDiff order haagR start ≤ 37/10000000000000) :
@@ -248,7 +365,7 @@ lemma residual_of_checks
     (hdef : resolventNormOK pl rl defectCap = true)
     (hseed : seedNormOK pl rl seedPower seedCap = true)
     (hcoeff : haagR start ≤ 1/10000 ∧ iterDiff order haagR start ≤ 37/10000000000000)
-    (hhead : completedHeadOK cutoff start pl rl (haagList start) differences HaagerupPower.slope headCap = true) :
+    (hhead : completedHeadOK cutoff start pl rl (haagList start) differences HaagerupPower.slope prefixCap = true) :
     |compCoeff haagCoeff P 0-Real.pi/4*(HaagerupPower.slope : ℝ)| +
       ∑' n, |compCoeff haagCoeff P (n+1)| ≤ Real.pi/4*((headCap : ℝ)+remainderCap) := by
   let Q : ℝ[X] := C (Real.pi/4)*completed
@@ -273,7 +390,7 @@ lemma residual_of_checks
       _ ≤ l1 (C (Real.pi/4))*l1 (completed-C (HaagerupPower.slope : ℝ)) := l1_mul_le _ _
       _ = Real.pi/4*l1 (completed-C (HaagerupPower.slope : ℝ)) := by
         rw [l1_C, abs_of_nonneg (by positivity : 0 ≤ Real.pi/4)]
-      _ ≤ _ := mul_le_mul_of_nonneg_left (completed_norm_of_check hhead) (by positivity)
+      _ ≤ _ := mul_le_mul_of_nonneg_left (completed_norm_of_check hcoeff.1 hhead) (by positivity)
   have h := residual_perturb' (compCoeff haagCoeff P) Q.coeff hg hd (Real.pi/4*(HaagerupPower.slope : ℝ))
   nlinarith [hpoly, herr]
 
@@ -282,7 +399,7 @@ theorem upper_of_checks
     (hdef : resolventNormOK pl rl defectCap = true)
     (hseed : seedNormOK pl rl seedPower seedCap = true)
     (hcoeff : haagR start ≤ 1/10000 ∧ iterDiff order haagR start ≤ 37/10000000000000)
-    (hhead : completedHeadOK cutoff start pl rl (haagList start) differences HaagerupPower.slope headCap = true) :
+    (hhead : completedHeadOK cutoff start pl rl (haagList start) differences HaagerupPower.slope prefixCap = true) :
     IsGrothendieckBound (1404909140/1000000000) := by
   have he : IsGrothendieckBound
       (1/(Real.pi/4*(HaagerupPower.slope : ℝ)-Real.pi/4*((headCap : ℝ)+remainderCap))) := by

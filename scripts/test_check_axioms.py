@@ -182,7 +182,7 @@ class CheckAxiomsTests(unittest.TestCase):
         path = ROOT / "docs/verification/haagerup-canonical-20261026/axioms.log"
         code, stdout, stderr = self.run_main(["--haagerup-power"], path.read_text())
         self.assertEqual(code, 0, stderr)
-        self.assertIn("checked 92 theorems; native_decide facts used: 0 of 0", stdout)
+        self.assertIn("checked 96 theorems; native_decide facts used: 0 of 0", stdout)
 
     def test_duplicates_apostrophes_quoted_names_and_empty_axioms_pass(self):
         extra = ("'Grothe.foo'' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n"

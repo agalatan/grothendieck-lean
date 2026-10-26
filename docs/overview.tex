@@ -231,7 +231,7 @@ nothing: this bound has no hypothesis. The sharper conditional bound above uses 
 The unconditional upper bound uses only \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound}.\par
 The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover, the retained finite certificate unused by \lean{haagerup\_bound},
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
-There are 84 native facts, with 24 outside the separate cap-range target; the report \path{scratch/Axioms.lean} contains 583 print directives.
+There are 84 native facts, with 24 outside the separate cap-range target; the report \path{scratch/Axioms.lean} contains 587 print directives.
 No \lean{sorry}; CI builds the default target and checks its axiom report.
 The 60 additional cap-range checks belong to the separate heavy
 \lean{GrotheCaps} target. Its provenance hash covers 48 local computation
@@ -282,8 +282,13 @@ $Q_m$ before taking absolute values preserves their cancellation.
 For $K=64$ and $m=6$, the normalized completed-head residual is at most
 $9.14\cdot10^{-9}$ and the full remainder at most $0.24\cdot10^{-9}$.
 The approximate inverse has degree $64$ and defect at most $10^{-12}$.
-The completed residual has proved degree at most $2492$, below the coefficient
-cutoff $2500$. All finite arithmetic is checked in the kernel. The Gaussian phase identity
+For the completed finite residual $F$, the first $170$ coefficients have
+absolute sum at most $9136/10^{12}$. Scaling by $X\mapsto(3/2)X$ gives
+$\|F((3/2)X)\|_1\le10^{18}$ from the exact weighted bounds
+$\|P((3/2)X)\|_1\le21/20$ and $\|R((3/2)X)\|_1\le9$.
+The omitted coefficients cost at most $10^{18}/(3/2)^{170}<4/10^{12}$.
+This is a finite polynomial coefficient estimate, with no analytic-continuation
+hypothesis. All finite arithmetic is checked in the kernel. The Gaussian phase identity
 and tensor transfer prove $\KG\le1.404909140$ using only the three standard
 axioms; the retained native certificate is not a dependency.
 The focused upper-bound axiom audit permits no native facts.

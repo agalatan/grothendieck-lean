@@ -4,8 +4,9 @@ The sharper conditional upper bound is described below. The independent hypothes
 route now proves `Grothe.haagerup_bound : IsGrothendieckBound (1404909140/1000000000)`.
 Its canonical resolvent completion, complete residual and infinite remainder are
 documented in `docs/HAAGERUP_POWER.md`. It combines 64 series terms with six
-correction terms, using complete monotonicity at every difference order. The
-finite checks use `decide +kernel`; the theorem depends only on the three standard
+correction terms, using complete monotonicity at every difference order. A checked
+170-coefficient prefix and a weighted finite-polynomial tail bound control the
+complete residual. The finite checks use `decide +kernel`; the theorem depends only on the three standard
 axioms and requires none of the analytic inputs listed here.
 `tools/verify_haagerup_canonical.py` provides an independent directed replay.
 

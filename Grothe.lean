@@ -202,6 +202,7 @@ import Grothe.Upper.ResponseGeometry
 import Grothe.Upper.ResponseUpdate
 import Grothe.Upper.SpectralScreen
 import Grothe.Upper.TransportLimit
+import Grothe.Upper.WeightedTail
 import Grothe.UpperChaos.Charge
 import Grothe.UpperChaos.Completeness
 import Grothe.UpperChaos.ComplexHermite

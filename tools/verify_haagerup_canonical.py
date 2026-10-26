@@ -23,7 +23,9 @@ def main():
         return Q(values[0].replace(' ', ''))
 
     k, order, cutoff = (int(parameter(n)) for n in ('start', 'order', 'cutoff'))
-    head_cap, remainder_cap = (parameter(n) for n in ('headCap', 'remainderCap'))
+    prefix_cap, head_cap, remainder_cap = (
+        parameter(n) for n in ('prefixCap', 'headCap', 'remainderCap'))
+    assert 0 < prefix_cap < head_cap
     data_path = root / 'data/haagerup-resolvent/certificate.json'
     data = json.loads(data_path.read_text())
     spec = importlib.util.spec_from_file_location('generator', root/'tools/gen_haagerup_power.py')
@@ -72,7 +74,33 @@ def main():
         correction = (-r*a)*correction+ball(q)
     completed = p*head + r*x**k*p**(2*k+1)*correction - ball(pl[0])
     head_norm = norm(completed)
-    assert completed.degree() < cutoff and head_norm < ball(head_cap)
+    assert head_norm < ball(head_cap)
+
+    # Mirror the truncated initialized-Horner calculation, including the
+    # final convolution's extra coefficients beyond the checked prefix.
+    truncated = arb_poly([])
+    for q in reversed(ds[:order]):
+        truncated = (-r*a*truncated+ball(q)).truncate(cutoff)
+    truncated = r*truncated
+    for q in reversed(coeff[:k]):
+        truncated = (a*truncated+ball(q)).truncate(cutoff)
+    truncated = p*truncated-ball(pl[0])
+    prefix_norm = norm(truncated)
+    assert prefix_norm < ball(prefix_cap)
+
+    # The finite polynomial's omitted coefficients are controlled by a
+    # weighted norm, independently of its degree.
+    rho, p_cap, r_cap, a_cap = Q(3, 2), Q(21, 20), Q(9), Q(5, 3)
+    assert sum(abs(c)*rho**i for i, c in enumerate(pl)) <= p_cap
+    assert sum(abs(c)*rho**i for i, c in enumerate(rl)) <= r_cap
+    assert rho*p_cap**2 <= a_cap and r_cap*a_cap == 15
+    assert all(0 <= c <= 1 for c in coeff[:k]) and abs(pl[0]) <= 1
+    assert all(0 <= d <= Q(1, 10000) for d in ds[:order])
+    weighted_bound = (p_cap*k*a_cap**(k-1) +
+                      r_cap*p_cap*a_cap**k*Q(1, 10000)*sum(15**j for j in range(order)) + 1)
+    assert weighted_bound <= 10**18
+    finite_tail = Q(10**18)/rho**cutoff
+    assert finite_tail <= head_cap-prefix_cap
     remainder = (2**order*ds[order] + eta*sum(2**j*ds[j] for j in range(order)))/(1-eta)
     coarse = (2**order*Q(37, 10**13) + eta*(2**order-1)*Q(1, 10000))/(1-eta)
     assert remainder <= coarse <= remainder_cap
@@ -89,7 +117,8 @@ def main():
              'Grothe/Haagerup/CanonicalData.lean', 'Grothe/Haagerup/CanonicalCheck.lean',
              'Grothe/Haagerup/CanonicalProof.lean', 'Grothe/Haagerup/CompleteMonotone.lean',
              'Grothe/Upper/FiniteDifference.lean', 'Grothe/Upper/ResolventCompletion.lean',
-             'Grothe/Upper/ResolventCertificate.lean', 'GrotheKernel/ResolventCompletion.lean']
+             'Grothe/Upper/ResolventCertificate.lean', 'Grothe/Upper/WeightedTail.lean',
+             'GrotheKernel/ResolventCompletion.lean']
     result = dict(status='PASS_DIRECTED_CANONICAL_HAAGERUP', flint_version=__version__,
         precision_bits=ctx.prec, start=k, order=order, degree=completed.degree(), cutoff=cutoff,
         candidate_sha256=hashlib.sha256(data_path.read_bytes()).hexdigest(),
@@ -97,6 +126,10 @@ def main():
         verifier_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         inverse_defect_upper=upper(defect), seed_upper=upper(seed_norm),
         completed_head_upper=upper(head_norm), head_cap=str(head_cap),
+        checked_prefix_upper=upper(prefix_norm), prefix_cap=str(prefix_cap),
+        truncated_output_degree=truncated.degree(), weighted_radius=str(rho),
+        weighted_majorant_upper=str(weighted_bound), weighted_cap=str(10**18),
+        finite_tail_upper=str(finite_tail), finite_tail_cap=str(head_cap-prefix_cap),
         differences=list(map(str, ds)), remainder_upper=str(remainder),
         coarse_remainder_upper=str(coarse), remainder_cap=str(remainder_cap),
         arithmetic_endpoint=str(endpoint), unconditional_upper=str(public),

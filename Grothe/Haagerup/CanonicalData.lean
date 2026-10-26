@@ -10,7 +10,8 @@ open Upper.FiniteDifference
 
 def start : ℕ := 64
 def order : ℕ := 6
-def cutoff : ℕ := 2500
+def cutoff : ℕ := 170
+def prefixCap : ℚ := 9136/1000000000000
 def headCap : ℚ := 914/100000000000
 def remainderCap : ℚ := 24/100000000000
 def differences : List ℚ := (List.range order).map fun j => iterDiff j haagR start

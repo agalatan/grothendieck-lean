@@ -8,7 +8,6 @@ Grothe.HaagerupCanonical.completion_eq
 Grothe.HaagerupCanonical.defect_check
 Grothe.HaagerupCanonical.degree_P
 Grothe.HaagerupCanonical.degree_R
-Grothe.HaagerupCanonical.degree_completed
 Grothe.HaagerupCanonical.degree_ratio
 Grothe.HaagerupCanonical.differences_getD
 Grothe.HaagerupCanonical.differences_length
@@ -16,6 +15,8 @@ Grothe.HaagerupCanonical.finite_identity
 Grothe.HaagerupCanonical.norm_P
 Grothe.HaagerupCanonical.norm_defect_of_check
 Grothe.HaagerupCanonical.norm_resolvent_ratio
+Grothe.HaagerupCanonical.norm_scaledP
+Grothe.HaagerupCanonical.norm_scaledR
 Grothe.HaagerupCanonical.norm_seed_of_check
 Grothe.HaagerupCanonical.norm_tail_seed
 Grothe.HaagerupCanonical.remainder_bound
@@ -23,6 +24,7 @@ Grothe.HaagerupCanonical.residual_of_checks
 Grothe.HaagerupCanonical.seed_check
 Grothe.HaagerupCanonical.upper
 Grothe.HaagerupCanonical.upper_of_checks
+Grothe.HaagerupCanonical.weighted_completed_bound
 Grothe.HaagerupCompleteMonotone.diff_quotient
 Grothe.HaagerupCompleteMonotone.haagR_completelyMonotone
 Grothe.HaagerupCompleteMonotone.haagR_eq
@@ -278,6 +280,7 @@ Grothe.Upper.RadiusJet.translate_monomial
 Grothe.Upper.RadiusJet.unpack
 Grothe.Upper.ResolventCertificate.completedHead_le_of_check
 Grothe.Upper.ResolventCertificate.completedPolynomial_eq_hornerWithTail
+Grothe.Upper.ResolventCertificate.completedPrefix_le_of_check
 Grothe.Upper.ResolventCertificate.hornerWithTailP_eq
 Grothe.Upper.ResolventCertificate.memB_completedHeadI
 Grothe.Upper.ResolventCertificate.memB_hornerWithTailI
@@ -333,6 +336,7 @@ Grothe.Upper.SpectralScreen.full_score_upper
 Grothe.Upper.SpectralScreen.l1_anchor_price_bound
 Grothe.Upper.TransportLimit.comparison_ceiling
 Grothe.Upper.TransportLimit.norm_transport_ceiling
+Grothe.Upper.WeightedTail.l1_le_prefix_add_weighted_tail
 Grothe.Upper.actual_band_mass
 Grothe.Upper.comparisonWeight_sound
 Grothe.Upper.comparison_check

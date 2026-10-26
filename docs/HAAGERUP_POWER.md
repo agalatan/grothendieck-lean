@@ -77,7 +77,8 @@ stored as its 65 coefficients, without trailing zero padding.
 The exact parameters are:
 
 - K = 64 series terms and m = 6 correction terms;
-- coefficient cutoff 2,500; Lean proves the completed residual has degree at most 2,492;
+- checked coefficient prefix n < 170, with cap 9136/10¹² = 9.136·10⁻⁹;
+- weighted finite-polynomial tail from n = 170, with cap 4/10¹²;
 - η = 10⁻¹² for the inverse defect;
 - ‖R P^17‖₁ ≤ 249/500, giving B = 1/2 using ‖P‖₁ ≤ 1;
 - ‖R−1‖₁ + η ≤ 2, giving C = 2;
@@ -90,9 +91,33 @@ Complete monotonicity bounds every Δ^j r_64 by r_64. Since
 
 [64·(37/10¹³) + 10⁻¹²·(63/10⁴)] / (1−10⁻¹²) < 24/10¹¹.
 
-The finite check bounds the full polynomial
+The completed finite residual polynomial is
 
-P Σ_(k<64) r_k (XP²)^k + Q_6 − P(0).
+F = P Σ_(k<64) r_k (XP²)^k + Q_6 − P(0).
+
+Its first 170 coefficients are enclosed by outward interval arithmetic. To
+control every remaining coefficient, use the weighted norm of F(ρX). For
+any real polynomial F and ρ ≥ 1, scaling multiplies coefficient n by ρⁿ, so
+
+‖F‖₁ ≤ Σ_(n<N) |F_n| + ‖F(ρX)‖₁/ρ^N.
+
+At ρ = 3/2, the exact rational data give ‖P(ρX)‖₁ ≤ 21/20 and
+‖R(ρX)‖₁ ≤ 9. Hence ‖ρX P(ρX)²‖₁ ≤ 5/3 and the scaled correction ratio
+has norm at most 15. Complete monotonicity gives r_k ≤ 1 and
+Δ^j r_64 ≤ 1/10⁴. Submultiplicativity and the finite geometric sums yield
+
+‖F((3/2)X)‖₁
+≤ (21/20)·64·(5/3)^63
+  + 9·(21/20)·(5/3)^64·(1/10⁴)·Σ_(j<6) 15^j + 1
+≤ 10¹⁸.
+
+The omitted finite-polynomial coefficients therefore contribute at most
+10¹⁸/(3/2)^170 < 4/10¹². Adding the checked prefix cap gives
+
+‖F‖₁ ≤ (9136+4)/10¹² = 914/10¹¹.
+
+This is a finite polynomial coefficient argument; no analytic continuation
+or infinite-series norm outside the unit disk is assumed.
 
 The total normalized residual is therefore at most 938/10¹¹ = 9.38·10⁻⁹.
 Residual transfer and the proved lower enclosure for π give
@@ -114,7 +139,8 @@ public bound.
 - `Grothe/Haagerup/CompleteMonotone.lean`: the rising-factorial quotient proof for the Haagerup coefficients.
 - `Grothe/Upper/ResolventTail.lean`: the finite inverse certificate, Abel estimate and coefficient locality.
 - `Grothe/Upper/ResolventCompletion.lean`: the all-order completion identity and infinite remainder estimate.
-- `Grothe/Upper/ResolventCertificate.lean`: soundness of the complete finite residual check.
+- `Grothe/Upper/ResolventCertificate.lean`: soundness of the checked finite coefficient prefix.
+- `Grothe/Upper/WeightedTail.lean`: the coefficient-tail bound from a scaled polynomial norm.
 - `GrotheKernel/ResolventCompletion.lean`: outward integer computation of the finite head and correction.
 - `Grothe/Haagerup/CanonicalCheck.lean`: the four kernel checks.
 - `Grothe/Haagerup/CanonicalProof.lean`: complete composition and matrix transfer from those checks.
@@ -128,9 +154,9 @@ From the repository root, with Python and `python-flint`:
 python3 -I tools/verify_haagerup_canonical.py --out handoff/haagerup-canonical-replay.json
 ```
 
-The replay checks the complete finite polynomial, seed and inverse defect,
-exact coefficient differences, the remainder budget, and the final endpoint.
-It checks every coefficient of the completed polynomial.
+The independent replay evaluates the complete finite polynomial as well as
+the checked prefix, weighted finite-tail budget, seed, inverse defect, exact
+coefficient differences, infinite remainder budget, and final endpoint.
 
 The focused axiom audit permits only `propext`, `Classical.choice`, and
 `Quot.sound` for the canonical route:
@@ -143,4 +169,4 @@ Run this from the worktree root. The normal CI audit includes the same
 results. The directed replay and source manifest are in
 `docs/verification/haagerup-canonical-20261026/`. Work-branch validation is
 tracked in issue #113; CI is deferred at the user's request.
-The lower node-cap import closure is unchanged.
+The canonical upper-bound construction does not change the lower cap computations.

@@ -22,7 +22,7 @@ lemma coefficient_check : haagR start ≤ 1/10000 ∧
     iterDiff order haagR start ≤ 37/10000000000000 := by decide +kernel
 
 lemma completed_check :
-    completedHeadOK cutoff start pl rl (haagList start) differences slope headCap = true := by
+    completedHeadOK cutoff start pl rl (haagList start) differences slope prefixCap = true := by
   decide +kernel
 
 end Grothe.HaagerupCanonical

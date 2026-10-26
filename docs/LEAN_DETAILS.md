@@ -292,9 +292,14 @@ generated from `data/haagerup-resolvent/certificate.json`. The coefficient norm 
 quotients to prove nonnegativity of every Haagerup coefficient difference.
 `Upper/ResolventCompletion.lean` proves the all-order resolvent expansion with its defect
 and vanishing-boundary remainder. The concrete construction combines 64 series terms with
-six resolvent correction terms before taking absolute values. Lean proves the completed residual has degree at most 2492, so the coefficient
-cutoff 2500 encloses every coefficient. Its normalized residual
-is at most 9.14/10⁹, and the complete remainder at most 0.24/10⁹.
+six resolvent correction terms before taking absolute values. The checker encloses
+its first 170 coefficients with cap 9136/10¹². `Upper/WeightedTail.lean` bounds
+all omitted coefficients of a polynomial F by ‖F((3/2)X)‖₁/(3/2)^170.
+Exact rational arithmetic gives ‖P((3/2)X)‖₁ ≤ 21/20 and ‖R((3/2)X)‖₁ ≤ 9;
+finite norm estimates then give ‖F((3/2)X)‖₁ ≤ 10¹⁸ and an omitted contribution
+at most 4/10¹². Thus the full normalized finite residual is at most 9.14/10⁹,
+and the complete infinite remainder at most 0.24/10⁹. The weighted estimate
+concerns a finite polynomial and assumes no analytic continuation.
 The proof uses the inverse defect≤10⁻¹², the short seed norm ‖RP¹⁷‖₁≤249/500,
 and the elementary bound ‖RA‖₁≤2. It needs no fourth-power or gamma estimate.
 `CanonicalData.lean` states the exact parameters, `CanonicalCheck.lean` checks all finite
@@ -302,8 +307,9 @@ arithmetic with `decide +kernel`, and `CanonicalProof.lean` assembles the bound 
 check statements. The public wrapper applies those kernel proofs. The endpoint
 K≤1.404909140 depends only on `propext`, `Classical.choice`, and `Quot.sound`.
 The retained `Grothe.HaagerupPower.check` and its native fact are unchanged and are not
-used by this endpoint. `Upper/ResolventCertificate.lean` proves checker soundness, including
-the full degree bound. Independent directed replay is provided by
+used by this endpoint. `Upper/ResolventCertificate.lean` proves soundness of the
+coefficient-prefix check, and `CanonicalProof.lean` adds the weighted finite tail.
+Independent directed replay is provided by
 `tools/verify_haagerup_canonical.py`. The focused report `scratch/AxiomsPower.lean`,
 checked with `scripts/check_axioms.py --haagerup-power`, permits no native axioms.
 
@@ -625,7 +631,7 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
 The complete registry has 84 native facts: 24 outside the separate 60 cap-range
-facts. There are 583 default axiom-report entries.
+facts. There are 587 default axiom-report entries.
 
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in

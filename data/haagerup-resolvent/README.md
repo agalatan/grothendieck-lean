@@ -14,7 +14,11 @@ budget (`defect_cap`), combined-product budget (`seed_cap`), normalized
 Haagerup coefficient majorant (`gamma`), normalized finite and infinite
 residual budgets (`head`, `tail`), and certificate endpoint (`upper`). The public theorem uses the canonical
 completion parameters in `Grothe/Haagerup/CanonicalData.lean`; it does not
-consume the combined native check or its head/tail endpoint.
+consume the combined native check or its head/tail endpoint. The completion uses
+64 series terms and six correction terms. Its checker bounds the coefficient
+prefix below 170 by 9136/10¹². A weighted norm of the finite residual after
+X ↦ (3/2)X bounds the omitted coefficients by 4/10¹², giving the full finite
+residual cap 914/10¹¹. The infinite remainder cap is 24/10¹¹.
 
 From the repository root:
 
@@ -26,7 +30,8 @@ python3 tools/gen_haagerup_power.py --check
 The first command reproduces `Grothe/Haagerup/PowerCheck.lean` byte for byte;
 the second rejects any mismatch. The independent directed replay is
 `tools/verify_haagerup_canonical.py`. It checks this generated data binding,
-replays the canonical completed polynomial and remainder, and reads the
+replays the canonical completed polynomial, prefix and weighted finite tail,
+the infinite remainder, and reads the
 endpoint from the public Lean theorem. The complete proof and verification
 ledger are in `docs/HAAGERUP_POWER.md` and
 `docs/verification/haagerup-canonical-20261026/`.
