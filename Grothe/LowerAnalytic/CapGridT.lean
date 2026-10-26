@@ -1,5 +1,5 @@
 import Grothe.LowerAnalytic.CapGrid
-import GrotheKernel.CapCheck
+import GrotheCapsKernel.CapCheck
 
 /-!
 # Grid prices and the exact cell decomposition of the integrated majorant

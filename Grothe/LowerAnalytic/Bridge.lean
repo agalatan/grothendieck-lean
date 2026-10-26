@@ -1,4 +1,4 @@
-import Grothe.Lower.RowCheck
+import Grothe.Lower.Support
 import Grothe.LowerAnalytic.SixthMoment
 import Grothe.LowerAnalytic.RadialCut
 import Grothe.LowerAnalytic.FourthMoment
@@ -7,14 +7,14 @@ import Grothe.LowerAnalytic.CircularTensor
 import Grothe.LowerAnalytic.GramBudget
 
 /-!
-# From the Gaussian lemmas to the hypotheses of `lower_bound_data`
+# From the Gaussian lemmas to the shared row reduction
 
-`lower_bound_data` is stated for an abstract law `U` packaged in `SharedReduction`, which asks
-for `Moments μ U x` and `GramInputs μ U`.  This file instantiates both for the law of
+The abstract law `U` packaged in `SharedReduction` satisfies
+`Moments μ U x` and `GramInputs μ U`. This file proves both for the law of
 `U = a² + b² = |q|²` under the standard Gaussian measure, `q = a + ib` a normalized circular cubic
 chaos (`Chaos3 a`, `E a² = 1/2`, `Circular J a b`; `Chaos3 b`, `E b² = 1/2` and `E ab = 0`
-follow, by `Circular.chaos3_right`, `Circular.gaussian_sq_eq`, `Circular.gaussian_mul`), and
-states the lower bound with only the genuinely open Gaussian facts left as hypotheses.
+follow by `Circular.chaos3_right`, `Circular.gaussian_sq_eq`, `Circular.gaussian_mul`), and
+assembles the shared reduction from the scale, gate variable and row inequalities.
 
 * `moments_of_three`: `E √U ≤ ρ` and the integrability of `√U` are consequences of the other
   fields of `Moments` (by `first_moment_lt_rho`), so `Moments` follows from three moments.
@@ -30,9 +30,8 @@ states the lower bound with only the genuinely open Gaussian facts left as hypot
   `gaussian_gramInputs` (in `GramBudget.lean`) gives `GramInputs` (the inputs of all Stein cuts,
   including the contraction-Gram budgets cited by the spectral nodes) for every circular cubic,
   from the tensor identities proved in `GramTensor.lean` and `GramSpectral.lean`.
-* `sharedReduction_of_gaussian` and `lower_bound_gaussian`: the finite-layer bound `V ≤ B` for a
-  Gaussian residual.  What remains assumed: the scale `0 ≤ τ ≤ ρ`, the gate variable with `|X₁|² = τ² |q|²`, the row inequalities `RowShared` of the
-  Gaussian reduction, and the crude row.
+* `sharedReduction_of_gaussian`: the shared row reduction for a Gaussian residual from the scale
+  `0 ≤ τ ≤ ρ`, the gate variable with `|X₁|² = τ² |q|²`, and the row inequalities `RowShared`.
 -/
 
 open MeasureTheory MvPolynomial Grothe.Lower
@@ -142,21 +141,5 @@ theorem sharedReduction_of_gaussian (rows : List Row) (V t : ℝ) (Qh v : E)
     X3, τ, _, gaussian_moments a b ha haa hc,
     gaussian_gramInputs a b ha haa hc,
     hτ0, hτ1, hX, hrows⟩
-
-/-- **The finite-layer lower bound for a Gaussian residual**: `lower_bound_data` with the law
-hypotheses of `SharedReduction` discharged by the Gaussian lemmas. -/
-theorem lower_bound_gaussian (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤ t)
-    (ht1 : t ≤ 9 / 10) (hcrude : RowOf crudeRow V t Qh v)
-    (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
-    (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) {J : Fin d → Fin d → ℝ}
-    (hc : Circular J a b)
-    (X1 X2 X3 : (Fin d → ℝ) → ℂ) (τ : ℝ) (hτ0 : 0 ≤ τ) (hτ1 : τ ≤ ρ)
-    (hX : ∀ x, ‖X1 x‖ ^ 2 = τ ^ 2 * eval x (radU a b))
-    (hrows : ∀ r ∈ rowData,
-      RowShared r (stdGaussian d) (fun x => eval x (radU a b)) X1 X2 X3 τ V t Qh v) :
-    V ≤ Bcap :=
-  lower_bound_data V t Qh v hv ht0 ht1 hcrude
-    (sharedReduction_of_gaussian rowData V t Qh v a b ha haa hc X1 X2 X3 τ hτ0 hτ1 hX
-      hrows)
 
 end Grothe.LowerAnalytic

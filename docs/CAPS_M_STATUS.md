@@ -85,7 +85,7 @@ slack only 1e-12 .. 2e-12 at the binding piece (plus capPad 1e-11).
   it was very slow. The result lines start with `node 14:…` (grep `info:`).
   * If the stored-grid run passes at the binding pieces: generate CapPieceData and run.
   * If it fails by ~1e-11 .. 1e-9: the binding pieces need prices closer to exactint's.
-    * Option (a): add a recipe variant to `GrotheKernel/CapCheck.lean` that computes the 2 × 2 point-RMS
+    * Option (a): add a recipe variant to `GrotheCapsKernel/CapCheck.lean` that computes the 2 × 2 point-RMS
       prices exactly as `cert-0745e/tools/exactint.py: ExactSetup.prices`. Floats are allowed:
       prices are search data, and soundness never depends on them.
     * Option (b): re-optimise the multipliers λ, μ of the binding piece in Lean's own price setting.

@@ -1,4 +1,4 @@
-import GrotheKernel.Basic
+import GrotheCapsKernel.Basic
 
 /-!
 # Truncated bivariate (two-coordinate) kernel composition

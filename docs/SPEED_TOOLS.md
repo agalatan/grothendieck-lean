@@ -12,7 +12,7 @@ One piece on the 1600 × 1024 grid, measured inside `lake build` of a module wit
 |---|---|---|
 | tables `mkTables` 400×128 / 1600×256 / 1600×1024 (once per run) | `Grothe/LowerAnalytic/CapTables.lean`, interpreted | 7.6 s / 19.5 s / 20.1 s |
 | coverage `capCoverOK` (one node) | interpreted | 0.04 s |
-| prices + interval enclosure `mkGrid` + `matI` + `loQ`/`hiQ` | `GrotheKernel/CapCheck.lean`, **native** | **≈ 180–190 s** |
+| prices + interval enclosure `mkGrid` + `matI` + `loQ`/`hiQ` | `GrotheCapsKernel/CapCheck.lean`, **native** | **≈ 180–190 s** |
 | exact constrained check `pieceOKc` (13×13 LDLᵀ over ℚ) | `Grothe/LowerAnalytic/CapConstr.lean`, interpreted | ≈ 32–36 s |
 
 Consequences:

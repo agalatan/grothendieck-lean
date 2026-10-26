@@ -1,4 +1,4 @@
-import GrotheKernel.CapCheck
+import GrotheCapsKernel.CapCheck
 
 namespace Grothe.LowerAnalytic
 

@@ -1,6 +1,5 @@
 import Grothe.Lower.Stein
 import Grothe.Lower.Boxes
-import Grothe.Lower.Endpoint
 
 /-!
 # From the Gaussian reduction of the rows to the norm cap
@@ -16,9 +15,8 @@ to `capPad`, convex, `smax`-Lipschitz) and its retained gate square,
 
 (`SharedReduction`, one law and one gate variable for all rows).  Completing the square over
 `(X₂, X₃)` and the certified row cap give the scalar inequality of every row (`rowOf_of_shared`);
-with one potential chosen per row, the boxes of the certificate then bound `V` at every
-`(t, τ, x)` (`box_sound`).  `checkCert` collects all exact checks, and `lower_bound_main`
-combines them into `V ≤ B`.
+with one potential chosen per row, a checked finite cover then bounds `V` at every
+`(t, τ, x)` through `box_sound`.
 -/
 
 open MeasureTheory
@@ -64,48 +62,5 @@ theorem rowOf_of_shared (r : Row) (hr : checkRow r = true) {Ω : Type} [Measurab
   unfold RowOf RowHolds Row.env
   push_cast
   nlinarith [hV, hG, hsq, hbd]
-
-/-- **All exact checks of the certificate**: the rows, the batches of mixed node certificates,
-and the boxes partitioning `[0, 9/10] × [0, ρ] × [0, 31/4]` against the bound `B` (evaluated
-sequentially). -/
-def checkCert (rows : List Row) (batches : List JBatch) (cuts boxes : List String) : Bool :=
-  allPar checkRow rows && allPar (checkBatch rows) batches
-    && checkCover rows batches Bcap cuts boxes
-
-lemma checkCert_eq (rows : List Row) (batches : List JBatch) (cuts boxes : List String) :
-    checkCert rows batches cuts boxes
-      = (rows.all checkRow && batches.all (checkBatch rows)
-        && checkCover rows batches Bcap cuts boxes) := rfl
-
-/-- **Main lower-bound theorem (finite layer).**  Under the retained-square inequality of the
-crude row and the simultaneous Gaussian reduction of the certified rows, every admissible `(V, t)`
-satisfies `V ≤ B`: the point `(t, τ, x)` lies in a box of the cover, and the box bounds `V`; with
-the Gaussian transfer `K_G^ℂ ≥ 1/B` this is `K_G^ℂ > 1.401695322458` (`lower_endpoint`). -/
-theorem lower_bound_main (rows : List Row) (batches : List JBatch) (cuts boxes : List String)
-    (hcert : checkCert rows batches cuts boxes = true)
-    (V t : ℝ) (Qh v : E) (hv : ‖v‖ ^ 2 = 2) (ht0 : 0 ≤ t) (ht1 : t ≤ 9 / 10)
-    (hcrude : RowOf crudeRow V t Qh v) (hred : SharedReduction rows V t Qh v) : V ≤ Bcap := by
-  obtain ⟨Ω, _, μ, _, U, X1, X2, X3, τ, x, hM, hSI, hτ0, hτ1, hX, hshared⟩ := hred
-  have hS : SteinCut μ U := steinCut_of_inputs μ hM hSI
-  simp only [checkCert_eq, Bool.and_eq_true, List.all_eq_true] at hcert
-  obtain ⟨⟨hrows, hbatches⟩, hcover⟩ := hcert
-  have hscal : ∀ k a, envRowAt rows k = some a → RowOf a V t Qh v := by
-    rintro (_ | k) a h
-    · cases h; exact hcrude
-    · obtain ⟨r, hr, rfl⟩ := Option.map_eq_some_iff.1 h
-      have hm := List.mem_of_getElem? hr
-      exact rowOf_of_shared r (hrows r hm) hM hS hτ0 hτ1 hX (hshared r hm)
-  -- one potential per row
-  simp only [RowShared] at hshared
-  choose! Ψ hΨ using hshared
-  obtain ⟨b, hb, h1, h2, h3, h4, h5, h6⟩ :=
-    cover_sound rows batches Bcap cuts boxes hcover t τ x ht0 ht1 hτ0 hτ1 hM.x0 hM.x1
-  unfold boxOK at hb
-  cases hbb : boxBound rows batches b with
-  | none => simp [hbb] at hb
-  | some val =>
-    simp only [hbb, decide_eq_true_eq] at hb
-    exact (box_sound rows batches hrows hbatches b val hbb X1 X2 X3 τ hX hM hS V t Qh v hv Ψ hΨ
-      hscal ⟨h1, h2⟩ ⟨h3, h4⟩ ⟨h5, h6⟩).trans (by exact_mod_cast hb)
 
 end Grothe.Lower

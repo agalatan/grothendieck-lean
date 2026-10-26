@@ -7,7 +7,7 @@ open Grothe.Lower Grothe.Research.RefinedCoverData
 namespace Grothe.Research.RefinedLowerCheck
 
 theorem certRefinedPartition :
-    partOK (treeOf refinedCuts) (0, 9 / 10, 0, ρ, 0, xMax)
+    treeCoverOK (treeOf refinedCuts) (0, 9 / 10, 0, ρ, 0, xMax)
       (refinedBoxList.map Box.dom) = true := by
   native_decide
 

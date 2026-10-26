@@ -2,7 +2,7 @@ import Grothe.LowerAnalytic.CapGridT
 import Grothe.Upper.IntervalSound
 
 /-!
-# Soundness of the cap checker (`GrotheKernel/CapCheck.lean`)
+# Soundness of the cap checker (`GrotheCapsKernel/CapCheck.lean`)
 
 * `TablesOK Nr N h T`: the shared tables enclose the one-dimensional integrals `radI`, `tailI`,
   `angC`, `angS` (the only analytic input; closed by the table enclosures, L-e);
