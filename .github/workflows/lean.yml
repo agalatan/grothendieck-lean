@@ -188,6 +188,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           base=$(git rev-parse origin/master)   # before the push updates origin/master
+          if [ "$(git rev-parse merge-candidate)" = "$base" ]; then
+            # already merged (e.g. by hand through a pull request): master's own check covers it, nothing to push
+            echo "${GITHUB_REF_NAME} is already contained in master: deleting it, no push, no new master check"
+            git push origin --delete "${GITHUB_REF_NAME}" || true
+            exit 0
+          fi
           if git push origin merge-candidate:master; then
             git push origin --delete "${GITHUB_REF_NAME}"
             # the token push does not start a run on master: mark the merged commit as verified by this run
