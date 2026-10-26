@@ -472,9 +472,12 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_energyBlock_sq
 #print axioms Grothe.UpperChaos.norm_mul_P3_le_one
 #print axioms Grothe.UpperChaos.phiBound
-#print axioms Grothe.UpperChaos.phi_cover_check
+#print axioms Grothe.UpperChaos.phiT_sq_le
+#print axioms Grothe.UpperChaos.phi_abs_lt_one
+#print axioms Grothe.UpperChaos.phi_cubes_ok
 #print axioms Grothe.UpperChaos.poly_complete
 #print axioms Grothe.UpperChaos.rounding_diskKernel
+#print axioms Grothe.UpperChaos.splitAll_cover
 #print axioms Grothe.UpperChaos.structural_fields
 #print axioms Grothe.UpperChaos.summable_abs_energy
 #print axioms Grothe.UpperChaos.walk_sound

@@ -1,12 +1,14 @@
 import Grothe.UpperChaos.PhiCover
+import Grothe.UpperChaos.Rounder
 import Grothe.UpperChaos.PhiCoverCheck
 import Grothe.UpperChaos.LocalizedComparison
 
 /-!
-# `φ² ≤ 3` everywhere, and the upper bound with only the numerical comparisons left
+# `|φ| < 1` everywhere, and the upper bound with only the numerical comparisons left
 
-`phiBound : PhiBound` from the cover (`walk_sound`, `phi_cover_check`) on `U + V < 60` and the far
-field (`far_sound`).  `fresh_upper_rounder`: the sharp upper bound for the concrete rounding `G_T`
+`phiT_sq_le : φ² ≤ 99/100` from the cover (`walk_sound` on the 64 cubes, `phi_cubes_ok`) on `U + V < 60`
+and the far field (`far_sound`); hence `phi_abs_lt_one : |φ| < 1` (the input of the comparison argument)
+and `phiBound : PhiBound` (`φ² ≤ 3`).  `fresh_upper_rounder`: the sharp upper bound for the concrete rounding `G_T`
 from component-error inputs, table accuracy and Hardy (for a charge-one `X ∈ L²`).
 -/
 
@@ -36,12 +38,9 @@ lemma phiT_sq (u : ℂ × ℂ) :
   rw [mul_pow, mul_pow, hD, he]
   rfl
 
-/-- **The phase cover**: `φ² ≤ 3` everywhere. -/
-theorem phiBound : PhiBound := by
-  intro u
-  have hc := phi_cover_check
-  simp only [phiCoverOK, Bool.and_eq_true, beq_iff_eq] at hc
-  obtain ⟨⟨hts, hfar⟩, hwalk⟩ := hc
+/-- **The phase cover**: `φ² ≤ 99/100` everywhere. -/
+theorem phiT_sq_le (u : ℂ × ℂ) : phiT u ^ 2 ≤ 99 / 100 := by
+  obtain ⟨hts, hfar, hcubes⟩ := phi_cubes_ok
   rw [phiT_sq]
   set U := ‖u.1‖ ^ 2
   set V := ‖u.2‖ ^ 2
@@ -54,16 +53,33 @@ theorem phiBound : PhiBound := by
       Complex.normSq_eq_norm_sq] at h
     nlinarith [sq_nonneg (conj u.1 * u.2).im]
   rcases lt_or_ge (U + V) 60 with h60 | h60
-  · refine walk_sound hts 64 _ rootBox [] hwalk U V W ?_ hW2 h60
-    have hS : (0 : ℝ) < (2 : ℝ) ^ SC := by positivity
-    have hUV : U * V ≤ 900 := by nlinarith [sq_nonneg (U - V)]
-    have hWs : |W| ≤ 30 := by
-      rw [abs_le]; constructor <;> nlinarith
-    obtain ⟨hW1, hW2'⟩ := abs_le.1 hWs
-    simp only [InBox, rootBox]
-    push_cast
-    refine ⟨by positivity, by nlinarith, by positivity, by nlinarith, by nlinarith, by nlinarith⟩
-  · exact far_sound hts hfar hU hV hW2 h60
+  · have hroot : InBox rootBox U V W := by
+      have hS : (0 : ℝ) < (2 : ℝ) ^ SC := by positivity
+      have hUV : U * V ≤ 900 := by nlinarith [sq_nonneg (U - V)]
+      have hWs : |W| ≤ 30 := by
+        rw [abs_le]; constructor <;> nlinarith
+      obtain ⟨hW1, hW2'⟩ := abs_le.1 hWs
+      simp only [InBox, rootBox]
+      push_cast
+      refine ⟨by positivity, by nlinarith, by positivity, by nlinarith, by nlinarith, by nlinarith⟩
+    obtain ⟨b, hb, hin⟩ := splitAll_cover phiSplit (by simp [phiSplit]) rootBox hroot
+    obtain ⟨i, hi, rfl⟩ := List.getElem_of_mem hb
+    have hlen : (splitAll phiSplit rootBox).length = 64 := by rfl
+    have hc := hcubes i (hlen ▸ hi)
+    simp only [phiCubeOK, beq_iff_eq, List.getD_eq_getElem?_getD, List.getElem?_eq_getElem hi,
+      Option.getD_some] at hc
+    have := walk_sound hts 100 _ _ [] hc U V W hin hW2 h60
+    simpa [tN, tD] using this
+  · exact (far_sound hts hfar hU hV hW2 h60).trans (by norm_num)
+
+/-- **`|φ| < 1` everywhere** (the multiplication by `iφ` has norm `< 1`). -/
+theorem phi_abs_lt_one (u : ℂ × ℂ) : |phiT u| < 1 := by
+  have h := phiT_sq_le u
+  rw [← sq_lt_one_iff_abs_lt_one]
+  linarith
+
+/-- `φ² ≤ 3` everywhere (the form used by the rounding). -/
+theorem phiBound : PhiBound := fun u => (phiT_sq_le u).trans (by norm_num)
 
 /-- **The sharp upper bound for the concrete rounding** from the explicit spectral-error decomposition,
 component norm bounds, table accuracy and Hardy input. -/
