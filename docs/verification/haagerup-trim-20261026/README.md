@@ -29,17 +29,30 @@ The shortening saves 128 zero-branch traversals and 93 interval additions in the
 inverse convolutions, with no reduction in interval multiplications. Defect list
 length is 129 → 94; seed length stays 303. The generated Lean file loses 64 lines.
 
-Full `PowerCheck`/`Power` builds and the aggregate axiom report are delivery-CI
-checks; the external replay and focused benchmark above do not replace them.
-Follow issue #54 for the delivery result. The historical native module build in
+Fresh CI [run 40247044009](https://github.com/agalatan/grothendieck-lean/actions/runs/40247044009)
+passed at `752473bc11444f3869c33953e5219c4ed2d52aa7`. With no project build-cache
+hit, it built `Grothe.Haagerup.PowerCheck` in 438 seconds and `Grothe.Haagerup.Power`
+in 10 seconds, completed the aggregate build and forbidden-code scan, accepted
+424 axiom records (18 of 78 allowed native facts), and passed the unchanged
+140-file caps stamp. Mathlib dependencies were cached; the separate caps target
+was not rebuilt. The five affected files—`Power.lean`, `PowerCheck.lean`, the
+certificate JSON and its README, and `gen_haagerup_power.py`—are byte-identical
+between that run, trim delivery `1f49d089`, and the current verification record.
+These module times are observations, not a before/after performance comparison.
+CI for the later merged tree remains pending at this update; this successful run
+certifies the specified earlier tree. The external replay and focused benchmark
+do not replace Lean build and axiom checks.
+
+The historical native module build in
 `docs/verification/haagerup-resolvent-20261025/native-build.log` took 522.95 seconds
 wall / 509.46 seconds user CPU and matches the pre-trim source hash. That older
 folder's manifest describes the baseline source tree, not the trimmed inputs;
 verify it at commit `b5a23f06f919e11c18acc0dc4e97a7da78771b3f`.
 
-`OVERVIEW.pdf` was rebuilt and visually checked: ten pages, nine pixel-identical,
-only the actual-degree correction on page 5 changed. All bounds/hypotheses remain
-unchanged. Its source retains one pre-existing bibliography underfull-box warning.
+After the phase-geometry documentation merge, the current `OVERVIEW.pdf` was
+regenerated from the merged `docs/overview.tex`; all ten pages were visually
+reviewed. The regeneration preserves the stated bounds and hypotheses. Its source
+retains one pre-existing bibliography underfull-box warning.
 
 From the repository root:
 
