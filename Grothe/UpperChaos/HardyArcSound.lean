@@ -222,4 +222,187 @@ lemma PD_of_gate {S : Sym2R} {I : SR} (hS : memSR S I) (hg : I.PD = true) : S.PD
   simp only [SR.PD, Bool.and_eq_true] at hg
   exact ⟨pos_of_posI hS.1 hg.1, pos_of_posI (mem_det hS) hg.2⟩
 
+/-! ### The real mirror of the kernel pieces and its identification -/
+
+section mirror
+
+variable (R : Sym2C) (j : ℝ)
+
+/-- `G± = Re (I ∓ R)⁻¹ − jI` (`σ = 1`: `G₊`). -/
+noncomputable def gpmR (σ : ℂ) : Sym2R := add (SchurKernel.re (invIm R σ)) (smul (-1) ⟨j, 0, j⟩)
+noncomputable def zR : Sym2R := smul (1 / 2) (add (gpmR R j 1) (gpmR R j (-1)))
+noncomputable def crR : Sym2R := smul (1 / 2) (add (gpmR R j 1) (smul (-1) (gpmR R j (-1))))
+noncomputable def ciR : Sym2R :=
+  smul (1 / 2) (add (SchurKernel.im (invIm R 1)) (smul (-1) (SchurKernel.im (invIm R (-1)))))
+
+variable {R j}
+
+lemma Z_Bj_eq (hp : dpm R 1 ≠ 0) (hm : dpm R (-1) ≠ 0) : Z (Bj R j) = zR R j := by
+  simp only [Z, SchurKernel.re, Bj, zR, gpmR, add, smul]
+  rw [Amat_eq R hp hm]
+  simp only [Complex.sub_re, Complex.div_re, Complex.add_re, Complex.ofReal_re]
+  congr 1 <;> norm_num <;> ring
+
+lemma re_Cmat_eq (hp : dpm R 1 ≠ 0) (hm : dpm R (-1) ≠ 0) : SchurKernel.re R.Cmat = crR R j := by
+  simp only [SchurKernel.re, crR, gpmR, add, smul]
+  rw [Cmat_eq R hp hm]
+  simp only [Complex.sub_re, Complex.div_re]
+  congr 1 <;> norm_num <;> ring
+
+lemma im_Cmat_eq (hp : dpm R 1 ≠ 0) (hm : dpm R (-1) ≠ 0) : SchurKernel.im R.Cmat = ciR R := by
+  simp only [SchurKernel.im, ciR, add, smul]
+  rw [Cmat_eq R hp hm]
+  simp only [Complex.sub_im, Complex.div_im]
+  congr 1 <;> norm_num <;> ring
+
+lemma gpm_plus (R : Sym2C) (j : ℝ) : gpmR R j 1 = add (zR R j) (crR R j) := by
+  simp only [zR, crR, gpmR, add, smul]; congr 1 <;> ring
+
+lemma gpm_minus (R : Sym2C) (j : ℝ) : gpmR R j (-1) = add (zR R j) (smul (-1) (crR R j)) := by
+  simp only [zR, crR, gpmR, add, smul]; congr 1 <;> ring
+
+lemma normSq_detIm (R : Sym2C) : ‖R.detIm‖ ^ 2 = Complex.normSq (dpm R 1) * Complex.normSq (dpm R (-1)) := by
+  rw [detIm_eq, ← Complex.normSq_mul, Complex.normSq_eq_norm_sq]
+
+end mirror
+
+/-! ### Membership of the kernel pieces -/
+
+section pieces
+
+variable {R : Sym2C} {RI : SC}
+
+/-- `σ` of the kernel's `neg` flag. -/
+def sig (neg : Bool) : ℂ := if neg then -1 else 1
+
+lemma memC_dpm (hR : memSC R RI) (neg : Bool) : memC (dpm R (sig neg)) (HardyArc.invIm RI neg).2 := by
+  obtain ⟨ha, hb, hc⟩ := hR
+  cases neg
+  · have h := memC_sub (memC_mul (memC_sub memC_one ha) (memC_sub memC_one hc)) (memC_mul (memC_neg hb) (memC_neg hb))
+    convert h using 1 <;> first | rfl | (simp only [dpm, sig, Bool.false_eq_true, ↓reduceIte]; ring)
+  · have h := memC_sub (memC_mul (memC_sub memC_one (memC_neg ha)) (memC_sub memC_one (memC_neg hc)))
+      (memC_mul (memC_neg (memC_neg hb)) (memC_neg (memC_neg hb)))
+    convert h using 1 <;> first | rfl | (simp only [dpm, sig, ↓reduceIte]; ring)
+
+lemma memSC_invIm (hR : memSC R RI) (neg : Bool) (hpos : posI (CI.normSq (HardyArc.invIm RI neg).2) = true) :
+    memSC (invIm R (sig neg)) (HardyArc.invIm RI neg).1 := by
+  have hd := memC_dpm hR neg
+  have hi := memC_inv hd hpos
+  obtain ⟨ha, hb, hc⟩ := hR
+  cases neg
+  · refine ⟨?_, ?_, ?_⟩
+    · convert memC_mul (memC_sub memC_one hc) hi using 1 <;> first | rfl | (simp only [invIm, sig, div_eq_mul_inv, Bool.false_eq_true, ↓reduceIte]; ring)
+    · convert memC_neg (memC_mul (memC_neg hb) hi) using 1 <;> first | rfl | (simp only [invIm, sig, div_eq_mul_inv, Bool.false_eq_true, ↓reduceIte]; ring)
+    · convert memC_mul (memC_sub memC_one ha) hi using 1 <;> first | rfl | (simp only [invIm, sig, div_eq_mul_inv, Bool.false_eq_true, ↓reduceIte]; ring)
+  · refine ⟨?_, ?_, ?_⟩
+    · convert memC_mul (memC_sub memC_one (memC_neg hc)) hi using 1 <;>
+        first | rfl | (simp only [invIm, sig, div_eq_mul_inv, ↓reduceIte]; ring)
+    · convert memC_neg (memC_mul (memC_neg (memC_neg hb)) hi) using 1 <;>
+        first | rfl | (simp only [invIm, sig, div_eq_mul_inv, ↓reduceIte]; ring)
+    · convert memC_mul (memC_sub memC_one (memC_neg ha)) hi using 1 <;>
+        first | rfl | (simp only [invIm, sig, div_eq_mul_inv, ↓reduceIte]; ring)
+
+end pieces
+
+/-! ### The main soundness theorem of the Schur value -/
+
+section main
+
+variable {R : Sym2C} {RI : SC} {j : ℝ} {jI : Ival}
+
+lemma mem_half : mem (1 / 2 : ℝ) half := by
+  have h := mem_invPosI (mem_intI 2) (by decide)
+  simpa [half, one_div] using h
+
+lemma mem_neg_one : mem (-1 : ℝ) (negI (intI 1)) := by simpa using mem_neg (mem_intI 1)
+
+lemma memSR_re {S : Sym2C} {I : SC} (h : memSC S I) : memSR (SchurKernel.re S) (SC.re I) :=
+  ⟨h.1.1, h.2.1.1, h.2.2.1⟩
+
+lemma memSR_im {S : Sym2C} {I : SC} (h : memSC S I) : memSR (SchurKernel.im S) (SC.im I) :=
+  ⟨h.1.2, h.2.1.2, h.2.2.2⟩
+
+lemma memSR_gpm (hR : memSC R RI) (hj : mem j jI) (neg : Bool)
+    (hpos : posI (CI.normSq (HardyArc.invIm RI neg).2) = true) : memSR (gpmR R j (sig neg)) (gpm jI RI neg) :=
+  memSR_add (memSR_re (memSC_invIm hR neg hpos)) (memSR_smul mem_neg_one ⟨hj, mem_zero, hj⟩)
+
+lemma sig_false : sig false = 1 := by simp [sig]
+lemma sig_true : sig true = -1 := by simp [sig]
+
+theorem schurValue_sound (hR : memSC R RI) (hj : mem j jI) {v : ℤ}
+    (hv : schurValue jI RI = some v) :
+    (Z (Bj R j)).PD ∧ (SchurKernel.T (Bj R j) R.Cmat).PD ∧
+      1 / (64 * j ^ 4 * ‖R.detIm‖ ^ 2 * (Z (Bj R j)).det * (W (Bj R j) R.Cmat).det) ≤ (v : ℝ) / D := by
+  unfold schurValue at hv
+  split_ifs at hv with hg
+  obtain rfl : (invPosI (denOf jI RI)).hi = v := Option.some.inj hv
+  simp only [gatesOK, Bool.and_eq_true] at hg
+  obtain ⟨⟨⟨⟨hp1, hp2⟩, hZg⟩, hTg⟩, hdg⟩ := hg
+  -- the two determinants
+  have hdp := memC_dpm hR false
+  have hdm := memC_dpm hR true
+  rw [sig_false] at hdp
+  rw [sig_true] at hdm
+  have hdp0 : dpm R 1 ≠ 0 := fun h0 => by
+    have := pos_of_posI (mem_normSq hdp) hp1; simp [h0] at this
+  have hdm0 : dpm R (-1) ≠ 0 := fun h0 => by
+    have := pos_of_posI (mem_normSq hdm) hp2; simp [h0] at this
+  -- G±, Z, Cr, Ci
+  have hGp := memSR_gpm hR hj false hp1
+  have hGm := memSR_gpm hR hj true hp2
+  rw [sig_false] at hGp
+  rw [sig_true] at hGm
+  have hZ : memSR (zR R j) (zOf jI RI) := memSR_smul mem_half (memSR_add hGp hGm)
+  have hCr : memSR (crR R j) (crOf jI RI) := memSR_smul mem_half (memSR_add hGp (memSR_smul mem_neg_one hGm))
+  have hIp := memSC_invIm hR false hp1
+  have hIm := memSC_invIm hR true hp2
+  rw [sig_false] at hIp
+  rw [sig_true] at hIm
+  have hCi : memSR (ciR R) (ciOf RI) :=
+    memSR_smul mem_half (memSR_add (memSR_im hIp) (memSR_smul mem_neg_one (memSR_im hIm)))
+  have hZPD : (zR R j).PD := PD_of_gate hZ hZg
+  have hZd : posI (zOf jI RI).det = true := by
+    simp only [SR.PD, Bool.and_eq_true] at hZg; exact hZg.2
+  have hZi : memSR (smul (zR R j).det⁻¹ (zR R j).adj) (ziOf jI RI) :=
+    memSR_smul (mem_invPosI (mem_det hZ) hZd) (memSR_adj hZ)
+  -- T = G₋ Z⁻¹ G₊
+  have hP := memM2_mul (memM2_mul (memM2_ofS hGm) (memM2_ofS hZi)) (memM2_ofS hGp)
+  rw [gpm_minus, gpm_plus] at hP
+  obtain ⟨eA, eB, eD⟩ := prod_eq_T (zR R j) (crR R j) hZPD.2.ne'
+  set Tr := add (zR R j) (smul (-1) (smul (zR R j).det⁻¹ (sand (crR R j) (zR R j).adj))) with hTr
+  have hT : memSR Tr (tOf jI RI) := by
+    refine ⟨?_, ?_, ?_⟩
+    · rw [← eA]; exact hP.1
+    · rw [← eB]; exact hP.2.1
+    · rw [← eD]; exact hP.2.2.2
+  have hTeq : SchurKernel.T (Bj R j) R.Cmat = Tr := by
+    simp only [SchurKernel.T, SchurKernel.Kr]
+    rw [Z_Bj_eq hdp0 hdm0, re_Cmat_eq (j := j) hdp0 hdm0]
+  -- E and W
+  set Er := smul (1 / 2) (add (sand (crR R j) (smul (zR R j).det⁻¹ (zR R j).adj))
+    (sand (ciR R) (smul (zR R j).det⁻¹ (zR R j).adj))) with hEr
+  have hE : memSR Er (eOf jI RI) := memSR_smul mem_half (memSR_add (memSR_sand hCr hZi) (memSR_sand hCi hZi))
+  have hEeq : SchurKernel.E (Bj R j) R.Cmat = Er := by
+    simp only [SchurKernel.E, SchurKernel.Kr, SchurKernel.Ki, hEr, sand_smul]
+    rw [Z_Bj_eq hdp0 hdm0, re_Cmat_eq (j := j) hdp0 hdm0, im_Cmat_eq hdp0 hdm0]
+  have hW : memSR (add (smul 2 Tr) Er) (wOf jI RI) := memSR_add (memSR_smul (mem_intI 2) hT) hE
+  have hWeq : W (Bj R j) R.Cmat = add (smul 2 Tr) Er := by
+    simp only [W]; rw [hTeq, hEeq]
+  -- the denominator
+  have hden : mem (64 * (j * j * (j * j)) * (Complex.normSq (dpm R 1) * Complex.normSq (dpm R (-1))) *
+      (zR R j).det * (add (smul 2 Tr) Er).det) (denOf jI RI) := by
+    have := mem_mul (mem_mul (mem_mul (mem_mul (mem_intI 64) (mem_mul (mem_mul hj hj) (mem_mul hj hj)))
+      (mem_mul (mem_normSq hdp) (mem_normSq hdm))) (mem_det hZ)) (mem_det hW)
+    simpa [denOf, ndOf] using this
+  have hinv := (mem_invPosI hden hdg).2
+  refine ⟨?_, ?_, ?_⟩
+  · rw [Z_Bj_eq hdp0 hdm0]; exact hZPD
+  · rw [hTeq]; exact PD_of_gate hT hTg
+  · rw [Z_Bj_eq hdp0 hdm0, hWeq, normSq_detIm]
+    rw [le_div_iff₀ D_pos]
+    convert hinv using 1
+    rw [one_div]; ring_nf
+
+end main
+
 end Grothe.UpperChaos.HardyArcSound
