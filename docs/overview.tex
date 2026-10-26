@@ -100,7 +100,7 @@ correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
 \]
 If $H(t)=c\,t+r(t)$ with $\|r\|_A=\sum_k|c_k-c\,\delta_{k0}|<c$, a tensor-power argument (Krivine's trick) gives
 $\KG\le1/(c-\|r\|_A)$. Haagerup's choice $f=\ph$ gives $1.40491$. Lean proves Haagerup's identity for $f=\ph$ from scratch
-(Euler and Beta integrals, the law of orthonormal Gaussian coordinates); with a degree-29 preprocessor, $1024$ exact terms and a signed resolvent tail certificate
+(Hermite coefficients, the Mehler formula, and the law of orthonormal Gaussian coordinates); with a degree-29 preprocessor, $1024$ exact terms and a signed resolvent tail certificate
 this gives the unconditional bound $\KG\le1.404909543$ (\lean{haagerup\_bound}), which needs no hypothesis. Our sharp rounding is a smoothed two-coordinate phase rounding,
 $F_0=\ph\bigl(z+\sqrt{1+a^2}\,v(|z|^2)\,w\bigr)$ with a twelve-term Laguerre profile $v$, multiplied by the cubic Taylor
 polynomial of a damped polynomial phase $\varphi$: $T=F_0P_3(\varphi)$, $P_3(x)=1+ix-x^2/2-ix^3/6$. The identity
@@ -222,7 +222,7 @@ with tail $30488839/10^{15}$ ($3.35\%$); finite table accuracy $6847009/(5\cdot1
 The native head is $28153/10^{12}$ ($3.09\%$).\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (1404909543/1000000000)}}\\[2pt]
 Haagerup's identity for the phase rounding, $\E[\overline{\ph\langle g,x\rangle}\,\ph\langle g,y\rangle]=\sum_k\frac\pi4\frac{(1/2)_k^2}{k!(k+1)!}z|z|^{2k}$
-(Euler integral, Gaussian integrals, Beta integrals, reduction to two complex Gaussians); the transfer through
+(Hermite coefficients from Gaussian radial moments and a finite Pochhammer identity, the Mehler formula, reduction to two complex Gaussians); the transfer through
 a degree-29 preprocessor $p(t)=tP(t^2)$ with $\|P\|_1=1$ and $\|P^4\|_1\le.998903$; $1024$ exact terms, a finite polynomial resolvent and the full signed tail, checked by one \lean{native\_decide}
 &
 nothing: this bound has no hypothesis. The sharper conditional bound above uses a different rounding and retains its explicitly listed Gaussian inputs.\\\bottomrule

@@ -1,11 +1,12 @@
-import Grothe.Haagerup.Series
+import Grothe.Haagerup.PhaseCoefficients
+import Grothe.Haagerup.PhaseKernel
 import Grothe.Haagerup.Law
 
 /-!
 # Haagerup's identity and the hypothesis-free bound
 
 * `Phi2_radial`: for `|z| ≤ 1`, `E[conj(phase U) · phase(zU + √(1−|z|²) W)] = Σ_k c_k z|z|^{2k}`
-  (`Phi2_eq`, `Kint_eq`);
+  (`PhaseCoefficients`, `PhaseKernel`);
 * `integral_phase_pair`: for unit `x ⊥ w` in `ℂ^κ` and `g ~ stdGaussian`,
   `E[conj(phase⟪g, x⟫) · phase⟪g, zx + sw⟫] = Φ₂(z, s)` (the real frame `x, −ix, w, −iw`,
   `integral_coords4`);
@@ -27,23 +28,7 @@ noncomputable section
 /-- **Haagerup's radial identity.** -/
 theorem Phi2_radial {z : ℂ} (hz : ‖z‖ ≤ 1) :
     Phi2 z √(1 - ‖z‖ ^ 2) = radialKernel haagCoeff z := by
-  have hR0 : 0 ≤ ‖z‖ ^ 2 := sq_nonneg _
-  have hR1 : ‖z‖ ^ 2 ≤ 1 := pow_le_one₀ (norm_nonneg _) hz
-  have hs : √(1 - ‖z‖ ^ 2) ^ 2 = 1 - ‖z‖ ^ 2 := Real.sq_sqrt (by linarith)
-  rw [Phi2_eq, radialKernel_eq_mul, ← Kint_eq hR0 hR1]
-  have e : ∀ q : ℝ × ℝ, (((q.1 ^ (-(1 / 2 : ℝ)) * q.2 ^ (-(1 / 2 : ℝ))) : ℝ) : ℂ)
-      * (2 * z / ((Delta q.1 q.2 z √(1 - ‖z‖ ^ 2) : ℝ) : ℂ) ^ 2)
-      = 2 * z * ((wq q / Dq (‖z‖ ^ 2) q ^ 2 : ℝ) : ℂ) := fun q => by
-    have hD : Delta q.1 q.2 z √(1 - ‖z‖ ^ 2) = Dq (‖z‖ ^ 2) q := by
-      rw [Delta, Dq, hs]; ring
-    rw [hD, wq]
-    push_cast
-    ring
-  simp_rw [e]
-  rw [integral_const_mul, integral_complex_ofReal, Kint]
-  have hpi : ((π : ℝ) : ℂ) ≠ 0 := by exact_mod_cast Real.pi_pos.ne'
-  push_cast
-  field_simp
+  exact Phi2_radial_of_phase_energy phase_energy hz
 
 /-! ### The reduction to two complex Gaussians -/
 
@@ -84,8 +69,6 @@ lemma inner_g_eq_cx (x w g : EuclideanSpace ℂ κ) :
       inner ℂ g w = cx ((coords4 (frame x w) g).2) := by
   rw [coords4_apply, inner_g_cx x g, inner_g_cx w g]
   exact ⟨rfl, rfl⟩
-
-lemma measurable_ph : Measurable ph := by unfold ph; fun_prop
 
 /-- **The two-variable reduction.** -/
 theorem integral_phase_pair {x w : EuclideanSpace ℂ κ} (hx : ‖x‖ = 1) (hw : ‖w‖ = 1)
