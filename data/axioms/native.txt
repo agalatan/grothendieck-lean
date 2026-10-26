@@ -81,6 +81,7 @@ Grothe.Research.RefinedLowerCheck.certRefinedBoxes1._native.native_decide.ax_1_1
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes2._native.native_decide.ax_1_1
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1
 Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1
+Grothe.ScalarTailRefinement.power_check._native.native_decide.ax_1_1
 Grothe.Upper.comparison_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1
 Grothe.head_check._native.native_decide.ax_1_1

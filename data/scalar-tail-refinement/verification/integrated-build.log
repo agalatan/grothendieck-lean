@@ -1,0 +1,10 @@
+✔ [8923/8925] Built Grothe.ListPoly (9.1s)
+✔ [8924/8929] Built Grothe.Upper.Bivariate (9.7s)
+✔ [8927/8929] Built Grothe.Upper.Realise (10s)
+✔ [8929/8962] Built Grothe.Upper.Compose (9.9s)
+✔ [8959/8962] Built Grothe.Upper.Head (17s)
+✔ [8960/8962] Built Grothe.Upper.Haagerup (35s)
+✔ [8961/8962] Built Grothe.Upper.PowerTail (10s)
+✔ [8962/8962] Built Grothe.Haagerup.ScalarTailRefinement (10s)
+Build completed successfully (8962 jobs).
+PASS integrated module and 13 axiom printers

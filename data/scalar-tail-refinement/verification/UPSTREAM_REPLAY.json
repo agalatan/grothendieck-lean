@@ -1,0 +1,48 @@
+{
+  "status": "PINNED_UPSTREAM_NONREGENERATION_REPLAY",
+  "complete": true,
+  "utc_started": "2026-10-26T01:42:43.355152+00:00",
+  "commit": "7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f",
+  "source_sha256": "6747ab89ca1ebff8713a7bf277ee46e3f9c6bf0cdd9ae9a0b10559b5ee20cc26",
+  "manifest_sha256": "b7ee4f21db3cec6e6a1751f05714780220da2bec48fdc8fdd8f51603d0a82d0c",
+  "versions": {
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "flint": "0.9.0",
+    "numpy": "2.5.4"
+  },
+  "coefficient_tables_regenerated": false,
+  "stages": [
+    {
+      "script": "support_compression_certificate/complex_upper_convex_2e6_polynomial_certificate.py",
+      "source_sha256": "17ec189886b44c3998f5caa3241ad88c517619570930a8fa31bbf4988c790b55",
+      "log": "/home/agalatan/codex-unconditional-scalar-20261026/replay-logs/complex_upper_convex_2e6_polynomial_certificate.log",
+      "returncode": 0,
+      "seconds": 0.46957166120409966,
+      "log_sha256": "069ce077ac7518ed34daa41b15bbfeaec4946fc4eeb6703337bc08402d93e7cd"
+    },
+    {
+      "script": "support_compression_certificate/complex_upper_saha_visible_energy_refinement.py",
+      "source_sha256": "2c98c5a044890fbeafbeecae2dd6c916df8bd2bde829f34f0a4ef921e0e4a3fa",
+      "log": "/home/agalatan/codex-unconditional-scalar-20261026/replay-logs/complex_upper_saha_visible_energy_refinement.log",
+      "returncode": 0,
+      "seconds": 26.967038176953793,
+      "log_sha256": "e1ee4af249f27d56a3df0d486d1490df465d670aaf3fd96bf3987c62214dfffa"
+    },
+    {
+      "script": "audit_sparse6_altgroups.py",
+      "source_sha256": "d554af0d26e218a4fc2f2795e99a9ef39eb5077ceecf55a0daac46909e14dca1",
+      "log": "/home/agalatan/codex-unconditional-scalar-20261026/replay-logs/audit_sparse6_altgroups.log",
+      "returncode": 0,
+      "seconds": 5.485430005937815,
+      "log_sha256": "77371a45822fff27dd7bcdee0afc001ea1d89c4c04cabb0dd7b1da6abf941996"
+    },
+    {
+      "script": "audit_best7_final_arithmetic.py",
+      "source_sha256": "3a29b736a9706536f10445db4fe220e8cb7904cb4dcf343ffbf9db29b7508790",
+      "log": "/home/agalatan/codex-unconditional-scalar-20261026/replay-logs/audit_best7_final_arithmetic.log",
+      "returncode": 0,
+      "seconds": 0.06567659415304661,
+      "log_sha256": "1dfbd0e77b6b7cf5ae78cdc4333b75b0a592dd281372aaec2d9ffb91c0c967c5"
+    }
+  ]
+}

@@ -33,7 +33,8 @@
 \Large $1.401697049825\;<\;\KG\;<\;1.404598149218$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, resting on explicitly stated
 analytic and computer-assisted inputs (Section~\ref{sec:trust}).\\[4pt]
-With \textbf{no hypothesis at all}, every step proved in Lean: $\KG\le1.404909543$.\vspace{4pt}
+With \textbf{no hypothesis at all}, every step proved in Lean: $\KG\le1.404909543$.\\[3pt]
+Written refinement of the published mixed rounding: $\KG<1.40489844$; its new power and tail steps are checked in Lean.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
@@ -208,9 +209,9 @@ nothing: this bound has no hypothesis. The sharper conditional bound above uses 
 \end{tabular}
 \end{center}
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}.\par
-The native facts pinned in \path{scripts/check_axioms.py} check the upper head, selected-band masses, phase cover, Haagerup bound,
-cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and both finite covers.
-There are 24 native facts outside the separate cap-range target; the report \path{scratch/Axioms.lean} lists 477 theorems.
+The native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}, check the upper head, selected-band masses, phase cover, Haagerup bound,
+the scalar sixteenth-power norm, cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and both finite covers.
+There are 25 native facts outside the separate cap-range target; the report \path{scratch/Axioms.lean} lists 490 theorems.
 No \lean{sorry}; CI builds the default target and checks its axiom report. The 60 additional cap-range checks belong to
 the separate heavy \lean{GrotheCaps} target, whose recorded verification stamp CI checks. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
@@ -243,6 +244,22 @@ The simpler obstruction is also exact: if $|P(-1)|=\|P\|_1=1$, then
 $\|P^n\|_1=1$ for every $n$. Breaking that common boundary phase permits
 power contraction; the resolvent additionally retains cancellation
 between successive composed powers.
+
+\paragraph{Published scalar-tail refinement [P,C; Lean components].}
+For the unchanged fifth scalar preprocessor of Heilman--Jones--Malavolta,
+the exact degree-592 calculation gives $\|P_5^{16}\|_1\le581/1000$.
+For every omitted outer index $j\ge67$ this saves a factor at most
+$(581/1000)^8$. Its weighted reserve falls from $6.31935\cdot10^{-8}$
+to $8.20506\cdot10^{-10}$. Keeping the published prefix, complete finite-block
+tail, other tails and exact selector mass gives the written corollary
+$\KG<1.40489844$. All four pinned public non-regeneration verifiers pass,
+including directed energy integration; accepted integral tables are
+hash-checked. Lean proves the new power check, infinite-suffix bound and
+parameterized score arithmetic. The published Gaussian and integration
+inputs remain outside the end-to-end formalization, so this does not replace
+\lean{haagerup\_bound} by a sharper unconditional Lean theorem.
+The deduction and provenance are in
+\path{data/scalar-tail-refinement/PROOF.md}.
 
 \subsection{Common responses, common tails, and an architecture separator}
 \textbf{[P; supporting algebra in Lean]} A symmetry-closed family of actual cubic responses has an exact

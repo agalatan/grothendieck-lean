@@ -1,0 +1,59 @@
+{
+  "status": "PASS_TARGETED_LEAN_BUILD_AND_STRICT_AXIOM_REPORT",
+  "integrated_master_commit": "d7521c75dbc653c3edb8c3bb150f4bfd30ab3cfa",
+  "toolchain": "leanprover/lean4:v4.34.1",
+  "mathlib_revision": "d13f23b723b8a846827a245b89c10fc7d3f11612",
+  "targets": [
+    "Grothe.ListPoly",
+    "Grothe.Upper.Bivariate",
+    "Grothe.Upper.Compose",
+    "Grothe.Upper.PowerTail",
+    "Grothe.Haagerup.ScalarTailRefinement"
+  ],
+  "environment": {
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "LEAN_NUM_THREADS": "1",
+    "LAKE_JOBS": "1",
+    "nice": 19
+  },
+  "source_sha256": {
+    "Grothe/Haagerup/ScalarTailRefinement.lean": "ba35129b76b4263e3b534e4be13330c93407d1c2b28cd49112f7581dd3ba1006",
+    "Grothe/ListPoly.lean": "ed5784bf02298b2e226d9733a7ae8fc680cc41895db6c81b712619fa1fe604b3",
+    "Grothe/Transfer.lean": "ecc7a448ed5d7db3ede34fc1023b5998cd2569db84db133f70827222cc5984ea",
+    "Grothe/Upper/Bivariate.lean": "f2a23dc13444706e2205fe8e2b160eff97cf74a6af4a2f9bc28748204e3317a8",
+    "Grothe/Upper/Compose.lean": "72d196b9120028703bf868875d353dacd3c132c8f33f1163962487415336592c",
+    "Grothe/Upper/Disk.lean": "89d42cb847b3467a92510286042c532c7cea4768c49ddfd065546f05f2059ea9",
+    "Grothe/Upper/Haagerup.lean": "e441685febdcbafd62ba6a21ae1678ea8dd160859ecdf0bd9508ae817ce4095d",
+    "Grothe/Upper/Head.lean": "56290043e1871796eec59d9344e12171c2bf8e8a3f7f8ac2dc7e49ca7f66cba1",
+    "Grothe/Upper/IntervalSound.lean": "a2bc689529d7edc7366e2f3bea5864f2bed21395d2e25003b62771dd7a8bbc38",
+    "Grothe/Upper/PowerTail.lean": "8f7adf2b9133426d5e37cd2cbed0454dabcfe678643d3b3cf91121612b4b9590",
+    "Grothe/Upper/Realise.lean": "1fc9d53238e0b467506897b56312fe8b86df74e232635d50f5bad51288e4785e",
+    "Grothe/Upper/Residual.lean": "46ddf03c1a9b6535abb671045b5799418f0ba209d60096978934a3fe79e9177b",
+    "GrotheKernel/Basic.lean": "d4a738a79075cd3742dada74bf7c51bc7adc6b246f13f2a7fdecf9192a5e9fb5",
+    "GrotheKernel/Haagerup.lean": "4f878618a2c1d661defae7941920b720dc272f4219e0e36a1051524cea1673d5",
+    "GrotheKernel/PowerTail.lean": "d6db307d7ee6a753a6da0edc77c1e716e745b436160a79d5e4b32d3468e433be",
+    "GrotheKernel/Table.lean": "c1a9caccc59b76be38f00a9750ed84f6727ff6844b8be14926049e3430b81953"
+  },
+  "recipe_sha256": "aed2edd167347ee25be7418f8e10716a36f8115d80f7ac3410560488d933646d",
+  "generator_sha256": "8b4240015c15b54c00d158935b89a4832d28869c1f2a6fd8d07aae231254cee6",
+  "template_sha256": "da393b959e8801550ff1e131b0a02122c75dfb9575dec84e6730e4461ff1098c",
+  "logs_sha256": {
+    "production-build.log": "9b14c3c4f14469b9bbf54feec60ed6639c8405c179fa835a4e16bc51b8cb0404",
+    "production-axioms.log": "d9cab81417ebacb500a7a96879460d3a34efb1e67b6c7df93ee3f4dbcb64b884",
+    "integrated-build.log": "f736aaef23097f31a8d453c8a255eff1e679888957f9b0236c19d46730561839",
+    "integrated-axioms.log": "d9cab81417ebacb500a7a96879460d3a34efb1e67b6c7df93ee3f4dbcb64b884"
+  },
+  "strict_report_audit": {
+    "status": "PASS_STRICT_SCALAR_TAIL_LEAN_REPORT",
+    "theorems": 13,
+    "native_facts_observed": [
+      "Grothe.ScalarTailRefinement.power_check._native.native_decide.ax_1_1"
+    ],
+    "required_registry_matches": true,
+    "native_registry_matches": true,
+    "scope": "Existing axiom report and registry consistency only; no Lean compilation performed."
+  },
+  "scope": "Targeted source build and all thirteen new axiom reports. The complete root build and report are checked by CI. Published Gaussian and numerical analytic inputs remain explicit as documented in PROOF.md."
+}

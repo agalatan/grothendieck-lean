@@ -8,7 +8,14 @@ complex Grothendieck constant:
 > and, with **no hypothesis at all** (every step proved in Lean): **K_G^ℂ ≤ 1.404909543**
 
 The two sharp bounds rest on explicitly stated analytic and computer-assisted inputs;
-the unconditional bound rests on nothing outside Lean (see below).
+the displayed fully formal bound rests on nothing outside Lean (see below).
+
+A separate **written unconditional refinement gives K_G^ℂ < 1.40489844**,
+using Heilman–Jones–Malavolta's published construction and numerical estimates.
+The new polynomial power check, infinite-suffix saving and normalized score
+arithmetic are proved in Lean. The published Gaussian construction and directed
+integration facts remain outside this repository's end-to-end formalization.
+See the [proof and verification record](data/scalar-tail-refinement/PROOF.md).
 
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
@@ -164,7 +171,7 @@ are in [`data/localized-comparison/PROOF.md`](data/localized-comparison/PROOF.md
 with a mathematical account in [`docs/localized-comparison.tex`](docs/localized-comparison.tex).
 The native head computation remains part of the proof.
 
-**Unconditional upper bound** — `Grothe.haagerup_bound : IsGrothendieckBound (1404909543/1000000000)`
+**Fully formal unconditional upper bound** — `Grothe.haagerup_bound : IsGrothendieckBound (1404909543/1000000000)`
 (`Grothe/Haagerup/Power.lean`, with the finite check in `Grothe/Haagerup/PowerCheck.lean`), with **no hypothesis**.
 Lean proves Haagerup's identity for the Gaussian phase rounding,
 E[conj(phase⟨g,x⟩)·phase⟨g,y⟩] = Σ_k (π/4)(1/2)_k²/(k!(k+1)!) z|z|^{2k} with z = ⟨x,y⟩, and combines it
@@ -178,10 +185,30 @@ external analytic hypotheses. Exact data in `data/haagerup-resolvent/certificate
 Lean certificate byte for byte. See [the complete proof and replay](docs/HAAGERUP_POWER.md).
 The sharper conditional bound above remains stronger.
 
-Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in `scripts/check_axioms.py`:
+**Written unconditional refinement: K_G^ℂ < 1.40489844.** For the unchanged
+fifth scalar preprocessor in [HJM, Sections 5–6](https://arxiv.org/html/2609.25462v1),
+exact arithmetic gives `||P₅^16||₁ < 581/1000`. Every omitted outer index
+`j ≥ 67` therefore receives a factor at most `(581/1000)^8`. This reduces its
+weighted outer-tail reserve from about `6.31935e-8` to `8.20506e-10`, while
+retaining the published prefix, complete finite-block tail, other tails and
+exact selector mass. The resulting reciprocal is below `1.404898431637415`.
+
+`Grothe/Haagerup/ScalarTailRefinement.lean` proves the finite power certificate,
+the general signed suffix inequality and the rational score transfer with the
+published budgets explicit. Its single numerical fact uses sequential outward
+interval arithmetic. The four pinned public verification stages were replayed
+successfully, including directed energy integration and the complete head/tail
+audit; the two accepted coefficient tables were hash-checked, not regenerated.
+This is a written corollary of the published proof, with its new steps checked
+in Lean. The end-to-end unconditional Lean theorem remains `haagerup_bound`.
+Exact inputs, the reproducible generator and all scope details are in
+[`data/scalar-tail-refinement/`](data/scalar-tail-refinement/PROOF.md).
+
+Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in `data/axioms/native.txt` (read by `scripts/check_axioms.py`):
 `Grothe.head_check` (the upper head), `Grothe.UpperChaos.phi_cover_check` (the phase cover φ² ≤ 3),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
-`Grothe.HaagerupPower.check` (the residual, power norm, inverse defect, combined seed and signed tail), the 13 chunks `Grothe.Lower.certRows0`–`4`, `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower
+`Grothe.HaagerupPower.check` (the residual, power norm, inverse defect, combined seed and signed tail),
+`Grothe.ScalarTailRefinement.power_check` (the scalar sixteenth-power norm), the 13 chunks `Grothe.Lower.certRows0`–`4`, `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower
 certificate (assembled into `Grothe.Lower.cert_check`), the four
 `Grothe.Research.RefinedLowerCheck.certRefinedBoxes0`–`3` chunks and
 `certRefinedPartition` for the refined cover,

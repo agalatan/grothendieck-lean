@@ -1,0 +1,72 @@
+\subsection{A power-contraction refinement of the published mixed rounding}
+
+This is an unconditional written corollary of the construction and certified
+estimates in Heilman--Jones--Malavolta,
+\href{https://arxiv.org/html/2609.25462v1}{Sections 5--6}.
+The new polynomial, suffix and arithmetic statements are also proved in
+\path{Grothe/Haagerup/ScalarTailRefinement.lean}. The published Gaussian
+interpretation and integration facts are explicit inputs to the Lean score
+theorem; the complete Grothendieck conclusion is not yet formalized here.
+
+Let $\rho_5(t)=tP_5(t^2)$ be exactly the degree-75 preprocessor in their
+equation (5.4), with positive raw selector weight
+$w_5=0.0000169358532612748746$. Its 38 rational coefficients are stored in
+\path{data/scalar-tail-refinement/certificate.json}. Exact convolution gives
+\[
+ \|P_5\|_1=\frac{999999999993}{10^{12}}\le1,
+ \qquad \|P_5^{16}\|_1<\frac{581}{1000}=:q.
+\]
+The latter has degree 592 and is checked by one outward-rounded native
+calculation, independently replayed with integer arithmetic.
+
+For every $j$, quotient and remainder give
+\[
+ \|P_5^{2j+1}\|_1\le
+ q^{\lfloor(2j+1)/16\rfloor}.
+\]
+In particular, for $j\ge67$ the exponent is at least 8. Multiplication by
+the monomial in $\rho_5^{2j+1}$ does not change its Wiener norm. Using the
+published Wallis estimate $\sum_{j\ge67}h_j\le1/268$, the entire omitted
+outer part of branch 5 costs at most
+\[
+ \frac{w_5q^8}{268}
+ =8.20505217878206\ldots\,10^{-10}.
+\]
+This replaces only equation (6.20)'s coarse reserve $w_5/268$. All output
+degrees of the first 67 outer blocks remain paid, including their complete
+tail beyond output index 119. The omitted-outer bound may also pay degrees
+inside the retained prefix; this only makes the estimate conservative.
+
+The published lower slope and upper costs, equations (6.2), (6.19) and
+(6.30), give the exact rational sufficient budget
+\begin{align*}
+ a&=0.71179640805640433452,\\
+ R&=1.074829404498064\,10^{-6}
+   +2.699176355797438\,10^{-12}
+   +1.040224125770398\,10^{-7}
+   +\frac{w_5q^8}{268},\\
+ M&=\frac{1250000000000000121997}{1250000000000000000000}.
+\end{align*}
+Here $M$ is the exact selector mass from (6.28); it is not rounded to one.
+Rational arithmetic proves
+\[
+ \frac{a-R}{M}>\frac1{1.40489844},
+ \qquad \frac{M}{a-R}<1.404898431637415.
+\]
+The valid-kernel residual-transfer argument of the cited paper therefore
+yields
+\[
+ \boxed{K_G^{\mathbb C}<1.40489844.}
+\]
+
+All four pinned non-regeneration verifiers were executed successfully with
+python-flint 0.9.0. They check polynomial nonvanishing, directed endpoint-
+subtracted energy integration, the coefficient head and every tail budget,
+and final normalization. The two accepted coefficient tables were checked
+against the published source hashes; they were not regenerated in this run.
+The input provenance, replay logs and exact arithmetic are recorded in
+\path{data/scalar-tail-refinement/PROOF.md} and its verification directory.
+There is no new comparison or Hardy conjecture in this written deduction.
+The repository's separate fully formal unconditional bound remains
+$K_G^{\mathbb C}\le1.404909543$ until the published analytic inputs are
+connected in Lean.
