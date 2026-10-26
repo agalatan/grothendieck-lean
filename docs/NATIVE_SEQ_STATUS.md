@@ -9,10 +9,12 @@ check: the native runtime and compiler are part of the trust boundary, so a run
 that happens not to crash cannot establish that shared-state evaluation is sound.
 CI screens all three project source trees for forbidden escapes and task spawning.
 
-The current allowlist contains **85 named facts: 25 ordinary facts and 60 cap
+The current allowlist contains **84 named facts: 24 ordinary facts and 60 cap
 ranges**. The default report has **532 entries**, of which **315 declarations**
 are required. [LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md) lists the facts
 and distinguishes earlier module timings from current verification.
+The scalar sixteenth-power check uses `decide +kernel`, so all sixteen
+scalar-tail reports use only standard axioms.
 
 The default lower theorem is
 `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`, and the

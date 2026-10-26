@@ -66,9 +66,9 @@ def pl : List ℚ := [94626045381/1000000000000,
 
 def ratio : ℚ := 581/1000
 
-/-- A single outward fixed-point, finite-polynomial check. -/
+/-- Kernel-checked outward fixed-point bound for the finite polynomial power. -/
 lemma power_check : powerNormOK pl 16 ratio = true := by
-  native_decide
+  decide +kernel
 
 /-- Finite part of the physical phase suffix, before its pi/4 factor. -/
 def wallisChunk : ℚ := ∑ k ∈ range 120, if k < 67 then 0 else haagR k

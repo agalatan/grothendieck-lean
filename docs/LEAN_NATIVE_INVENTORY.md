@@ -2,7 +2,7 @@
 
 This inventory covers the named native facts allowed for the supported `Grothe`
 and `GrotheCaps` targets, plus the four anonymous table diagnostics below. The
-current allowlist has **85 named facts: 25 outside the 60 cap ranges**. The default
+current allowlist has **84 named facts: 24 outside the 60 cap ranges**. The default
 report contains **532 print directives**, with **315 required declarations**.
 These are source/registry counts; final verification of the combined delivery is
 its runner build and both strict axiom reports.
@@ -24,6 +24,13 @@ No Lean builds or native reruns were performed to update this inventory. Indirec
 report coverage is source-traced. Historical times are module build times and do
 not measure individual native evaluations or the current candidate. The scalar
 sixteenth-power module's earlier verification records are under
+`data/scalar-tail-refinement/verification/`.
+
+**Scalar power check (#100).** `Grothe.ScalarTailRefinement.power_check` now
+uses `decide +kernel` for the same scalar sixteenth-power norm check. Its native
+axiom is removed from the allowlist; the theorem remains required and directly
+printed in `scratch/Axioms.lean`. All sixteen scalar-tail reports use only
+standard axioms. Source and report hashes are recorded under
 `data/scalar-tail-refinement/verification/`.
 
 | Fact | Source native site | Allowlist | Report coverage | Runtime evidence |
@@ -116,4 +123,3 @@ sixteenth-power module's earlier verification records are under
 | `Grothe.Research.RefinedLowerCheck.certRefinedBoxes2` | `Grothe/Research/RefinedCoverBoxes2.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.Research.RefinedLowerCheck.certRefinedBoxes3` | `Grothe/Research/RefinedCoverBoxes3.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.Research.RefinedLowerCheck.certRefinedPartition` | `Grothe/Research/RefinedCoverPartition.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | Coverage-only treeCoverOK; no new timing established here |
-| `Grothe.ScalarTailRefinement.power_check` | `Grothe/Haagerup/ScalarTailRefinement.lean:71` | yes | Direct #print axioms in scratch/Axioms.lean | Exact production module and 16 scalar-tail axiom printers were checked; records in data/scalar-tail-refinement/verification/ |

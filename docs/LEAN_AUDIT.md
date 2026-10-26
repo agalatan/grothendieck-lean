@@ -28,7 +28,7 @@ partition checker. Its unused straddler scan is absent, making
 soundness/maintenance change; no speedup is claimed.
 
 Current source registries contain **532 default reports, 315 required declarations
-and 85 named native facts (25 ordinary plus 60 cap ranges)**. The current inventory
+and 84 named native facts (24 ordinary plus 60 cap ranges)**. The current inventory
 is [LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md). The older counts and
 coverage measurements in the baseline review describe that earlier tree only.
 The baseline's retired-cover structural checks are not presented as a verification
@@ -195,7 +195,7 @@ provenance but do not substitute for those checks.
 
 The current supported-target inventory, including individual names, source
 locations, report coverage and runtime provenance, is
-[LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md). It contains 85 allowlisted
+[LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md). It contains 84 allowlisted
 native facts and separately identifies four anonymous table diagnostics.
 
 | Facts | Count | Computation |
@@ -211,11 +211,10 @@ native facts and separately identifies four anonymous table diagnostics.
 | `Upper.comparison_check` | 1 | Selected weighted band masses/radii and cross/quadratic comparison budget. |
 | `HaagerupPower.check` | 1 | 1,024-term finite head, fourth-power norm, inverse defect, combined seed and signed resolvent tail. |
 | `UpperChaos.phi_cover_check_0`–`5` | 6 | Sequential phase-term cover chunks and the analytic-far-field numerical inequality. |
-| `ScalarTailRefinement.power_check` | 1 | Scalar sixteenth-power norm. |
 | Anonymous `CapTables` examples | 4 | Nine-entry parser length, sample table validity, rejection of a wrong interval, one radial interval. |
 
-`NATIVE` has 85 entries; `REQUIRED` has 315 declarations. All REQUIRED names are
-present among 532 distinct default-report print directives. The 25 ordinary
+`NATIVE` has 84 entries; `REQUIRED` has 315 declarations. All REQUIRED names are
+present among 532 distinct default-report print directives. The 24 ordinary
 named checks have direct default-report printers; the 60 ranges are covered
 through the separate caps report. The checker rejects unlisted axioms in reported theorems;
 it does **not** establish source-inventory completeness. Add a source-site audit
@@ -479,9 +478,20 @@ since been checked; no headline mathematical soundness defect has been found.
   type/axiom fingerprints, seven definition values, and all imports. Both changed
   modules and their ordinary direct importers build with warnings as errors.
   All six replacement proofs also pass isolated elaboration. No native input,
-  headline interface, or cap-closure file changes. The static reverse closure has
-  20 modules, including the two aggregate roots; broader local validation and
-  the full default-target CI result are tracked in #88.
+  headline interface, or cap-closure file changes. All 17 ordinary affected modules
+  also build warning-free through `HardyHolo` and `LocalizedComparison`; the
+  20-module static reverse closure at the #88 delivery tree additionally includes `PhiBound`, `Grothe`,
+  and the separate `GrotheCaps` aggregate. Full
+  [primary run 40278773502](https://github.com/agalatan/grothendieck-lean/actions/runs/40278773502)
+  passed all 9,180 jobs and verification gates: 502 theorem reports, 30 of 90
+  native facts, and the unchanged 140-file cap stamp, with no Lean diagnostics.
+  Primary `2a68d23`, ready `151eba0`, and the
+  [PR #96](https://github.com/agalatan/grothendieck-lean/pull/96) landing `d3ece0f`
+  have identical whole trees. [Ready run 40278864852](https://github.com/agalatan/grothendieck-lean/actions/runs/40278864852)
+  also passed every verification gate before its final push lost a master race.
+  Its overall cancellation and the subsequent successful no-op retry are distinct
+  from the successful full primary verification. Later master `2844901` changes
+  only cache instructions/scripts; the delivered Lean sources remain identical.
 
 The measured production Lean reduction across #54, #55 and #59 is **124 lines**:
 60 proof lines and 64 generated zero-coefficient lines. No module or native fact
@@ -490,7 +500,7 @@ The additional #80 compaction brings the net total to **151 lines**: 95 proof
 lines and 64 generated coefficient lines removed, with eight explicit import
 lines added. Including #89 brings the net reduction to **157 lines**: 106 proof
 lines and 64 generated coefficient lines removed, with 13 import lines added.
-The #88 compaction raises the branch total to **190 lines**: 139 proof lines plus
+The #88 compaction raises the delivered total to **190 lines**: 139 proof lines plus
 64 generated coefficient lines removed, with 13 explicit import lines added.
 Other gated proposals remain outside this audit's delivered proof compactions.
 The separate user-authorized #13/#44 delivery includes the cache workflow and
@@ -523,6 +533,7 @@ checked tree rather than inferred from a later green badge.
 | `final-record` | `351b6b0` | [40261239041](https://github.com/agalatan/grothendieck-lean/actions/runs/40261239041): docs-only success. |
 | `band-comparison` | `daf21e9` (PR #92) | [40266197230](https://github.com/agalatan/grothendieck-lean/actions/runs/40266197230): full success on the delivery tree; [40272617860](https://github.com/agalatan/grothendieck-lean/actions/runs/40272617860) also passed the full combined master. |
 | `series-bounds` | `00f8141` (PR #93) | Changed modules and targeted dependents passed; all 65 type/axiom fingerprints and nine definition values preserved. Full [40273781782](https://github.com/agalatan/grothendieck-lean/actions/runs/40273781782) passed on the exact landed tree. |
+| `hermite-span` | `d3ece0f` (PR #96) | [40278773502](https://github.com/agalatan/grothendieck-lean/actions/runs/40278773502): full success on the exact landed tree; 17 ordinary affected modules also passed local builds, with all 38 type/axiom fingerprints and seven definition values preserved. |
 
 Open findings are [#48](https://github.com/agalatan/grothendieck-lean/issues/48)
 (remaining CI scope gap), [#49](https://github.com/agalatan/grothendieck-lean/issues/49)
@@ -536,3 +547,25 @@ user-authorized old-cover retirement. The coefficient-series portion of #52 is d
 implementation: the existing kernel is already shared, and no measured benefit
 justified a change to the native/caps layer. The proof-only Hermite-span compaction
 is tracked separately in [#88](https://github.com/agalatan/grothendieck-lean/issues/88).
+
+
+## One native check removed (#100)
+
+The user's later instruction explicitly authorized removing one native check.
+`Grothe.ScalarTailRefinement.power_check` now proves the same Boolean equality
+with `decide +kernel`. Its finite polynomial, outward arithmetic, bound,
+all theorem statements and analytic hypotheses are unchanged. The generator
+template is updated with the production module. The corresponding native axiom
+is removed from the allowlist, reducing its size from 90 to 89 relative to
+master `e8736cf`; the theorem remains required and printed. The scalar report
+checker now rejects every native dependency across all sixteen scalar results.
+The cap-source digest remains unchanged. Full delivery CI is left running at
+the user's request; its eventual outcome is separate from local validation.
+
+The warning-as-error production build passed on the droplet in 192.48 seconds
+wall time (whole targeted build, including dependency checks). Its sixteen-result
+report passes the stricter standard-only verifier; the finite power proof itself
+uses only standard axioms. All 39 script tests, generated-source checks and the unchanged
+140-file cap stamp pass. These local checks do not assert that delivery CI has
+finished. Direct kernel reduction was selected after the proof-producing `cbv`
+trial exceeded its step budget; the failed trial is not verification evidence.
