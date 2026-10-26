@@ -1,0 +1,19 @@
+Agent-ID: codex-aa04
+Review time (UTC): 2026-10-26T22:17:20+00:00
+Repository HEAD at review: f7d9773e036ccdc3a2acf4e441f7ba4dd465d678
+PASS_LAYOUT: visually inspected pages 1, 2, 5, 6, 7 and 12 of the current 12-page OVERVIEW.pdf.
+PDF sha256 4bb588e19d396c9f2cd09faa490a368dd184fe3ca51310747a3aadbcfb097b9b
+Source docs/overview.tex sha256 f5ef0cff11d23e04d1420896722f604edbf32f71c4ae073d968fc7f33756c0cf
+
+Rendering: pdftoppm -f PAGE -l PAGE -singlefile -r 110 -png OVERVIEW.pdf handoff/lean-audit/major-simplification/codex-aa04/canonical-pdf/final-review-XX
+Rendered and viewed final-review-01.png, final-review-02.png, final-review-05.png, final-review-06.png, final-review-07.png and final-review-12.png.
+
+Page 1: title and boxed bounds fit; 1.404909140 is explicitly unconditional and uses only the three standard axioms. The sharper conditional bounds and separate written scalar-tail refinement retain their qualifications.
+Page 2: history table and unconditional-route paragraph fit without clipping; canonical endpoint 1.404909140 is consistent.
+Page 5: theorem/hypothesis table is readable and contained within margins. The canonical row states no external premise and 96 focused results with zero native axioms. The repository inventory states 83 native facts (60 cap ranges, 23 others), 588 print directives and 371 required declarations. The single Grothe target includes cap rows and uses one axiom report.
+Page 6: cache continuation and canonical completion formulas are readable. The 53-file cache boundary, verified-cache routing, 170-coefficient prefix cap 9136/10^12, weighted tail 4/10^12, completed head 9.14e-9 and infinite remainder 0.24e-9 agree with the source. Continuation blocks have at most five left coefficients and introduce no new numerical premise.
+Page 7: continuation confirms the three standard axioms and zero native dependencies. The scalar-tail refinement remains qualified by its external published Gaussian and numerical integral inputs. Section transitions and equations have no overlap.
+Page 12: open-problem continuation, references and final page number are legible; no clipping, missing glyphs or reference overlap found.
+
+Supplemental spacing check: pdftotext -bbox-layout confirms the lowest body-text boxes on dense pages 5, 6 and 7 end at y=777.677185, 775.896199 and 777.641185 points; the footer begins at y=793.383355 points. Body text and page numbers do not overlap.
+No visual defects found on the six inspected pages. No PDF edits or compilation were performed during this review. This is layout and document-consistency evidence only; it does not establish completion of the separate merged-tree Lean/cloud validation.

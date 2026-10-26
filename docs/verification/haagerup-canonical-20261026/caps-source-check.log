@@ -1,0 +1,3 @@
+PASS: all 53 cap-closure source files match master 624e4845bd943c9954d17285d1eb0cee96424389.
+sha256 a0473ebe31b871cc1516046e045f2372935050a099b8e3c7315fab8271fcf604
+Source comparison only; no cap-cache verification or marker write.
