@@ -1,0 +1,69 @@
+{
+ "k": 14,
+ "i": 155,
+ "pieces": [
+  {
+   "j": 0,
+   "grid": 2,
+   "status": "fixed",
+   "lm": [
+    [
+     "5154748457252360726780822023/55452483194276495159738761216",
+     "0"
+    ]
+   ],
+   "cap_up": "0",
+   "tested": [
+    2
+   ]
+  },
+  {
+   "j": 1,
+   "grid": 2,
+   "status": "stored",
+   "tested": []
+  },
+  {
+   "j": 2,
+   "grid": 2,
+   "status": "stored",
+   "tested": []
+  },
+  {
+   "j": 3,
+   "grid": 2,
+   "status": "stored",
+   "tested": []
+  },
+  {
+   "j": 4,
+   "grid": 2,
+   "status": "stored",
+   "tested": []
+  },
+  {
+   "j": 5,
+   "grid": 2,
+   "status": "stored",
+   "tested": []
+  },
+  {
+   "j": 6,
+   "grid": 2,
+   "status": "stored",
+   "tested": []
+  },
+  {
+   "j": 7,
+   "grid": 2,
+   "status": "stored",
+   "tested": []
+  },
+  {
+   "j": 8,
+   "grid": 2,
+   "status": "stored",
+   "tested": []
+  }
+ ]
+}

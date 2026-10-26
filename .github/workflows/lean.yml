@@ -33,9 +33,13 @@ jobs:
     if: github.event_name == 'push' || inputs.mode == 'check' || inputs.mode == ''
     runs-on: ubuntu-24.04
     timeout-minutes: 360
-    # No concurrency group: GitHub keeps only ONE pending run per group and cancels older pending ones, which
-    # silently dropped deliveries. ready/ runs build in parallel; the first green one moves master, and a run whose
-    # final push is rejected because master moved re-dispatches itself.
+    # One group PER BRANCH, cancel-in-progress: a new push (or retry dispatch) of the same branch cancels that
+    # branch's older check run, which is now checking a superseded commit. Different branches never share a group,
+    # so deliveries cannot cancel each other (a shared group once dropped pending deliveries). The droplet job
+    # "heavy" has its own group and is never cancelled by this.
+    concurrency:
+      group: check-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v5
         with:

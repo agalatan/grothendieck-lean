@@ -28,13 +28,15 @@ def qmatJson (m : ℕ → ℕ → ℚ) : String :=
   "[" ++ ",".intercalate ((List.range 13).map fun i =>
     "[" ++ ",".intercalate ((List.range 13).map fun j => qStr (m i j)) ++ "]") ++ "]"
 
-/-- The JSON line of piece `j` of a piece node, on its stored grid. -/
-def pieceExportJson (Ts : List Tables) (x : ℕ × ℕ × List String × List String) (j : ℕ) : String :=
+/-- The JSON line of piece `j` of a piece node, on grid `gOv` if given, else on its stored grid (the override is for
+planning the campaign: which grid suffices; the certificate always uses the grid stored with the piece). -/
+def pieceExportJsonOn (Ts : List Tables) (x : ℕ × ℕ × List String × List String) (j : ℕ) (gOv : Option ℕ) :
+    String :=
   let k := x.1
   let i := x.2.1
   let ds := parseDirs x.2.2.1
   let p := parsePiece ds (x.2.2.2.getD j "")
-  let g := p.1
+  let g := gOv.getD p.1
   let G := pieceGrids.getD g (0, 0, 0)
   let T := Ts.getD g ⟨#[], #[], #[]⟩
   let r := rowData.getD k row01
@@ -57,6 +59,20 @@ def pieceExportJson (Ts : List Tables) (x : ℕ × ℕ × List String × List St
     ",\"polyOK\":" ++ toString (polyBoundsOK r.ell r.beta) ++ ",\"encl\":" ++ toString (enclOK lo up 13) ++
     ",\"ok\":" ++ toString (pieceOKc lo up Mq (avOf r) nd.1 cap p.2.2) ++
     ",\"N\":" ++ qmatJson N.at ++ ",\"cons\":[" ++ ",".intercalate consJson ++ "]}"
+
+/-- The JSON line of piece `j` of a piece node, on its stored grid. -/
+def pieceExportJson (Ts : List Tables) (x : ℕ × ℕ × List String × List String) (j : ℕ) : String :=
+  pieceExportJsonOn Ts x j none
+
+/-- Write the JSON lines of the pieces `js` of a node, all on grid `g`, to `path` (planning tool). -/
+def exportPiecesOn (path : String) (x : ℕ × ℕ × List String × List String) (js : List ℕ) (g : ℕ) : IO Unit := do
+  let h ← IO.FS.Handle.mk path .append
+  let G := pieceGrids.getD g (0, 0, 0)
+  let T := mkTables G.1 G.2.1 G.2.2
+  let Ts := (List.range pieceGrids.length).map fun g' => if g' == g then T else mkTables 1 1 1
+  for j in js do
+    h.putStrLn (pieceExportJsonOn Ts x j (some g))
+    h.flush
 
 /-- Write the JSON lines of the pieces `js` of a node to `path` (one line per piece, flushed as it goes; the
 tables of a grid are built only if a piece uses it). -/

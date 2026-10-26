@@ -8,6 +8,7 @@ import Grothe.Haagerup.Law
 import Grothe.Haagerup.PhaseGeometry
 import Grothe.Haagerup.Power
 import Grothe.Haagerup.PowerCheck
+import Grothe.Haagerup.ScalarTailRefinement
 import Grothe.Haagerup.Series
 import Grothe.ListPoly
 import Grothe.Lower.Basic
@@ -86,6 +87,7 @@ import Grothe.LowerAnalytic.CapLinAlg
 import Grothe.LowerAnalytic.CapMajorant
 import Grothe.LowerAnalytic.CapPiece
 import Grothe.LowerAnalytic.CapPieceNodes
+import Grothe.LowerAnalytic.CapPieceRange
 import Grothe.LowerAnalytic.CapPolar
 import Grothe.LowerAnalytic.CapRecipeData
 import Grothe.LowerAnalytic.CapRows

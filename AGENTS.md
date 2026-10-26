@@ -25,6 +25,29 @@ the side (`side: lower`, `side: upper`), the owner (`owner: codex`, `owner: clau
 - **Attack plans and research ideas are issues too** (`area: research`), with the full reasoning and numbers. Do not
   leave them only in a local file.
 
+## 0b. Agent ID: make yourself identifiable
+
+Many agents run at once, and several Codex conversations start with the same words. So the user cannot tell which
+conversation owns a droplet folder, a branch or a running build. At the start of every session:
+
+1. **Pick an agent ID:** your kind plus four random hex digits, e.g. `codex-7f3a` or `claude-b21e` (for example
+   `printf 'codex-%04x\n' $RANDOM`). Keep it for the whole conversation.
+2. **Make it visible in the conversation.**
+   - Start your first reply with `Agent ID: codex-7f3a`.
+   - If your interface lets you name or rename the conversation, put the ID at the start of the title,
+     e.g. `codex-7f3a — lower refined cover`.
+3. **Sign everything you create with it:**
+   - **droplet folders:** `~/<agent-id>-<topic>`, e.g. `~/codex-7f3a-refined-cover`;
+   - **long-running jobs:** keep the `job.pid` inside that folder (§5);
+   - **commits:** add an `Agent-ID: codex-7f3a` trailer at the end of the commit message body;
+   - **issue comments:** start with `[codex-7f3a]`;
+   - branch names keep the scheme of §1. Put the ID in the body of the delivered commit, not necessarily in the name.
+4. **Write it down when you hand over.** In every status note or hand-over file, give your ID, so the user can find
+   your conversation by searching for it.
+
+`scripts/droplet_status.sh` lists droplet builds by folder, so a signed folder tells the user exactly whom to ask
+or stop.
+
 ## 1. Ground rules
 
 - **Never commit on `master`**, locally or on GitHub, and never push to it. Only CI moves `master`, through the
@@ -59,12 +82,44 @@ git -C /Users/alingalatan/workspaces/grothe worktree add -b codex/<topic> \
 mkdir -p /Users/alingalatan/workspaces/grothe-codex-<topic>/.lake
 ln -s /Users/alingalatan/workspaces/grothe/.lake/packages \
     /Users/alingalatan/workspaces/grothe-codex-<topic>/.lake/packages
+# start from master's compiled build instead of an empty one: an APFS clone (instant, no extra disk until
+# files diverge; `cp -c` is macOS copy-on-write). Then Lake rebuilds only what differs from master.
+cp -c -R /Users/alingalatan/workspaces/grothe/.lake/build \
+    /Users/alingalatan/workspaces/grothe-codex-<topic>/.lake/build
 ```
 
 Resuming an existing worktree: sync first, then bring your branch up to date (§3, step 3) before continuing.
 
-Disk space is tight. Do not copy `.lake/build` wholesale; it is about 1.6 GB per copy. Build only the modules you
-change (`lake build Grothe.X.Y`). Run full builds on the droplet (see §5).
+**The build clone.** The main checkout's `.lake/build` is master's compiled build. It is kept current by
+`scripts/sync_master.sh --build`, which starts a background, niced, incremental build of master there (one at a
+time). Run it after syncing when you are about to create a worktree, or when master moved a lot. Clone it only
+with `cp -c` (APFS copy-on-write): a plain `cp` or `rsync` duplicates about 1.6 GB per worktree, and disk space is
+tight. An existing worktree whose build is far behind can be refreshed the same way: delete its `.lake/build`, then
+clone again. Build only the modules you change (`lake build Grothe.X.Y`), and run full builds on the droplet (see
+§5).
+
+## 2b. Before EVERY push: start from a fresh master
+
+Master moves several times an hour: other agents deliver, and the user merges by hand. A branch pushed on top of an
+old master wastes a full CI build and usually conflicts. So before **every** push — a work branch, a `ready/`
+delivery, and especially a re-push after a CI failure or a conflict — do this:
+
+1. `scripts/sync_master.sh`: fetch, and fast-forward the local `master` to GitHub's.
+2. **Evaluate the delta:** `git log --oneline HEAD..origin/master` and `git diff --stat HEAD...origin/master`. Read
+   what changed and decide whether your work must change because of it: renamed lemmas, a new hypothesis interface,
+   a better bound, duplicated work, changed data, or regenerated files.
+3. **Combine with that fresh master:**
+   - never pushed: `git rebase origin/master`;
+   - already pushed: `git merge origin/master` (no rebase, no force-push).
+4. **Fix every conflict properly.** Resolve each one by understanding both sides; never by taking "ours" or
+   "theirs" blindly.
+   - Regenerate generated files instead of hand-merging them (`python3 tools/gen_root_imports.py`).
+   - Keep the union of sorted list files (`data/axioms/*`, `scratch/Axioms*.lean`).
+   - Take master's version of shared scripts and re-apply only your intended change.
+5. **Re-check what you touched:** build the changed modules and the modules that import them, and run the script
+   tests (`scripts/test_*.py`) and `python3 tools/gen_root_imports.py --check`. Only then push.
+
+If master moved again while you were doing this, repeat from 1. Report the master commit you combined with.
 
 ## 3. Delivering work: the checklist
 
@@ -109,7 +164,8 @@ Do this when the user says the work should go into master.
    each time (e.g. `ready/codex-<topic>-2`).
    - CI merges it into the **current** master, builds and checks the **merged** tree. Only if everything is green does
      it fast-forward `master` and delete the `ready/` branch.
-   - If CI fails, master is untouched: fix, commit, and push a new `ready/` name.
+   - If CI fails, master is untouched: fix, commit, then do §2b again (fresh master, delta, conflicts) before
+     pushing a new `ready/` name.
    - If master moved while CI was building, the run re-dispatches itself automatically: it merges with the new
      master and rebuilds. You will see one failed run ("master moved") followed by a new one. Do nothing.
    - Several `ready/` branches may build at the same time; the first green one moves master.
@@ -151,6 +207,9 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
   and saves a cache for that branch, and re-dispatches the check, which then passes. Nothing to do by hand; just wait.
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for stop/remove).
   It shares Mathlib with the other droplet work via `~/grothe-caps/.lake/packages` — do not delete that directory.
+- **Superseded runs are cancelled automatically.** Pushing a branch again cancels that branch's older CI run (one
+  concurrency group per branch, `cancel-in-progress`); other branches and the droplet's heavy jobs are unaffected. No
+  manual `gh run cancel` is needed for re-pushes.
 - **Cost:** every push uses CI minutes, which the private repository pays for. Push work branches when they matter,
   not after every small commit.
 
@@ -199,6 +258,13 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
   disk is small, so check `df -h ~` first and keep at least 3 GB free. The Lean packages in
   `~/grothe-caps/.lake/packages` can be symlinked; do not hardlink into other agents' build
   directories.
+- **Droplet status:** `scripts/droplet_status.sh` (from the laptop, read-only) shows load, memory, disk, the CI runner,
+  every running Lean build by directory (= owner) with its age, orphaned `lean` processes and the biggest build
+  directories. Check it before starting a heavy job: if another agent's heavy build (or the runner's warm/caps job)
+  is running, wait.
+- **Cleanup policy:** when your work is merged or abandoned, delete your own droplet build directory
+  (`~/<your dir>/.lake/build`, or the whole directory). Never delete another agent's directory, the runner's
+  workspace (`~/actions-runner`), or the shared Mathlib packages (`~/grothe-caps/.lake/packages`).
 - **Snapshots:** delete superseded snapshots and zips you created. Keep only the newest.
 
 ## 6. Lean conventions
