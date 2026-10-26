@@ -2,6 +2,7 @@
 """Small exact arithmetic and source-validity regressions for cap sensitivity."""
 import copy
 from fractions import Fraction as Q
+import json
 from pathlib import Path
 import sys
 import unittest
@@ -12,6 +13,14 @@ import caps_cover_sensitivity as S
 
 
 class SensitivityTests(unittest.TestCase):
+    @staticmethod
+    def flat_chord_fixture():
+        row = {'table': [['0', '1'], ['1', '1'], ['2', '1'], ['3', '1'], ['4', '1']],
+               'delta': '1', 'smax': '0', 'cells': []}
+        rows = [copy.deepcopy(row) for _ in range(16)]
+        chords = [[] for _ in rows]
+        return rows, chords
+
     def test_strict_reciprocal_boundary(self):
         bound, lower = S.endpoint(Q(1, 2), 1000)
         self.assertEqual(bound, Q(1, 2))
@@ -64,8 +73,92 @@ class SensitivityTests(unittest.TestCase):
         row = {'table': [['0', '1'], ['1', '1']], 'delta': '1', 'smax': '0', 'cells': []}
         rows = [copy.deepcopy(row) for _ in range(16)]
         batches = [{'i': 12, 'j': 12, 'theta': '0', 'nodes': '0:2;1:2'}]
-        audit = S.per_node_audit(rows, {(12, 1): Q(1, 10)}, {}, batches)
+        audit = S.per_node_audit(rows, {(12, 1): Q(1, 10)}, {}, batches,
+                                 [[] for _ in rows])
         self.assertEqual(audit['status'], 'PASS_EXACT_SOURCE_DEPENDENCIES')
+
+    def test_unchecked_chords_never_report_source_pass(self):
+        rows, _ = self.flat_chord_fixture()
+        audit = S.per_node_audit(rows, {}, {}, [])
+        self.assertEqual(audit['chord_audit']['status'], 'NOT_CHECKED')
+        self.assertNotEqual(audit['status'], 'PASS_EXACT_SOURCE_DEPENDENCIES')
+        with self.assertRaises(ValueError):
+            S.per_node_audit(rows, {}, {}, [], propagate_chords=True)
+
+    def test_zero_slack_chord_breaks_after_vertex_increase(self):
+        rows, chords = self.flat_chord_fixture()
+        chords[12] = [(1, 0, 2)]
+        audit = S.per_node_audit(rows, {(12, 2): Q(1, 10)}, {}, [], chords)
+        self.assertEqual(audit['status'], 'SOURCE_REPLAY_INCOMPLETE_OR_FAILED')
+        chord = audit['chord_audit']
+        self.assertEqual(chord['status'], 'FAILED_EXACT_CHORDS')
+        self.assertEqual(chord['remaining_shortfalls'][0]['shortfall'], '1/20')
+
+    def test_existing_chord_slack_absorbs_vertex_change(self):
+        rows, chords = self.flat_chord_fixture()
+        rows[12]['table'][1][1] = '6/5'
+        chords[12] = [(1, 0, 2)]
+        audit, expanded = S.chord_audit(rows, {(12, 2): Q(1, 10)}, chords)
+        self.assertEqual(audit['status'], 'PASS_EXACT_CHORDS')
+        self.assertEqual(audit['minimal_interior_increment_plan'], [])
+        self.assertEqual(expanded, {(12, 2): Q(1, 10)})
+
+    def test_minimal_propagation_on_two_adjacent_edges_preserves_inputs(self):
+        rows, chords = self.flat_chord_fixture()
+        chords[12] = [(1, 0, 2), (3, 2, 4)]
+        changes = {(12, 2): Q(1, 7)}
+        before_rows, before_changes = copy.deepcopy(rows), dict(changes)
+        audit, expanded = S.chord_audit(rows, changes, chords, propagate=True)
+        self.assertEqual(expanded, {(12, 2): Q(1, 7), (12, 1): Q(1, 14), (12, 3): Q(1, 14)})
+        self.assertEqual(audit['status'], 'PASS_EXACT_CHORDS')
+        self.assertEqual(len(audit['requested_shortfalls']), 2)
+        self.assertEqual(audit['remaining_shortfalls'], [])
+        self.assertEqual(rows, before_rows)
+        self.assertEqual(changes, before_changes)
+        source = S.per_node_audit(rows, changes, {}, [], chords, propagate_chords=True)
+        self.assertEqual(source['status'], 'PASS_EXACT_SOURCE_DEPENDENCIES')
+        self.assertEqual(source['applied_changes'], S.encoded_changes(expanded))
+
+    def test_multiple_constraints_take_maximum_required_increment(self):
+        rows, chords = self.flat_chord_fixture()
+        chords[12] = [(1, 0, 2), (1, 0, 4)]
+        changes = {(12, 2): Q(1, 5), (12, 4): Q(4, 5)}
+        audit, expanded = S.chord_audit(rows, changes, chords, propagate=True)
+        self.assertEqual(expanded[12, 1], Q(1, 5))
+        self.assertEqual(audit['status'], 'PASS_EXACT_CHORDS')
+        self.assertEqual(audit['remaining_shortfalls'], [])
+
+    def test_invalid_chord_endpoint_cycle_indices_or_reversed_radii_rejected(self):
+        for bad in [[(1, 0, 2), (2, 0, 3)], [(1, 2, 0)], [(1, 0, 99)], [(99, 0, 2)]]:
+            rows, chords = self.flat_chord_fixture()
+            chords[12] = bad
+            with self.assertRaises(ValueError):
+                S.chord_audit(rows, {}, chords)
+
+    def test_bounded_literal_parser_and_exact_generator_binding(self):
+        text = 'def capChords : List (List (ℕ × ℕ × ℕ)) := [[], [(1, 0, 2)]]\n'
+        self.assertEqual(S.parse_chord_data(text), [[], [(1, 0, 2)]])
+        for body in ['[__import__("os")]', '[[[[(1, 0, 2)]]]]', '[[(-1, 0, 2)]]', '[[(1, 0, 2)]']:
+            with self.assertRaises(ValueError):
+                S.parse_chord_data('def capChords := '+body)
+        rows = [{'table': [['0', '1'], ['1', '1'], ['2', '1']]}]
+        S.validate_fixed_chords(rows, [[(1, 0, 2)]], bind_generated=True)
+        with self.assertRaises(ValueError):
+            S.validate_fixed_chords(rows, [[]], bind_generated=True)
+
+    def test_real_505_chords_match_current_exact_generator(self):
+        rows = []
+        for k in range(1, 20):
+            canonical = json.loads((S.ROOT/f'data/lower-rows/row{k:02d}.json').read_text())
+            rows.append({'table': [item.split(':') for item in canonical['nodes'].split(';')]})
+        chords = S.load_verified_chords(rows)
+        self.assertEqual(len(chords), 19)
+        self.assertEqual(sum(map(len, chords)), 505)
+        audit, expanded = S.chord_audit(rows, {(12, 280): Q(1, 10**9)}, chords, propagate=True)
+        self.assertEqual({i: expanded[12, i] for i in [277, 278, 279, 281]},
+                         {277: Q(1, 4*10**9), 278: Q(1, 2*10**9),
+                          279: Q(3, 4*10**9), 281: Q(1, 2*10**9)})
+        self.assertEqual(audit['status'], 'PASS_EXACT_CHORDS')
 
 
 if __name__ == '__main__':

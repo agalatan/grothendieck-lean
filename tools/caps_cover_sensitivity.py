@@ -3,8 +3,9 @@
 
 This is a research replay, not Lean verification. Never edits caps, padding, generated
 modules, source tables or cover inputs. Per-node arithmetic is accepted only when
-the affected row majorants, retained mixed-table domination and extra law-node
-majorants replay. Failed proof replay is inconclusive, not a numerical disproof.
+the fixed vertex chords, affected row majorants, retained mixed-table domination
+and extra law-node majorants replay. Failed proof replay is inconclusive, not a
+numerical disproof. Optional chord propagation changes only an in-memory copy.
 
 Input: {"format":"caps-centre-increments/v1", "increments":[
   {"k":14,"i":200,"increase":"1614413203/623720731237510320"}]}
@@ -12,6 +13,7 @@ The increases are additional node caps, above the existing capPad, with one
 nonnegative exact rational per node. No float input is admitted.
 """
 import argparse
+import ast
 import copy
 from fractions import Fraction as Q
 import hashlib
@@ -30,6 +32,7 @@ from needle_mixed_nodes import FORMAT as MIXED_FORMAT, source_weights
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'data/lower-unshifted'
 OLD_PAD = Q(1, 10**11)
+CHORD_DATA = ROOT / 'Grothe/LowerAnalytic/CapChordData.lean'
 
 
 def exact(value):
@@ -79,6 +82,146 @@ def table_source(row):
     return L.source_from_table(row['table'], row['smax'], exact(row['delta']))
 
 
+def lower_hull_chords(nodes):
+    """Pure copy of gen_cap_chords.chords; importing that generator would write files."""
+    hull = []
+    for i, (radius, cap) in enumerate(nodes):
+        while len(hull) >= 2:
+            a, b = hull[-2:]
+            if ((nodes[b][1]-nodes[a][1])*(radius-nodes[a][0])
+                    >= (cap-nodes[a][1])*(nodes[b][0]-nodes[a][0])):
+                hull.pop()
+            else:
+                break
+        hull.append(i)
+    return [(m, a, b) for a, b in zip(hull, hull[1:]) for m in range(a+1, b)]
+
+
+def parse_chord_data(text):
+    """Read only the bounded numeric list literal, never execute Lean or generator code."""
+    if len(text.encode()) > 1024*1024:
+        raise ValueError('Chord data exceeds the research parser bound')
+    declarations = list(re.finditer(r'^def capChords[^\n]*:=\s*(\[)', text, re.M))
+    if len(declarations) != 1:
+        raise ValueError('Expected one capChords numeric list declaration')
+    start = declarations[0].start(1)
+    depth, end = 0, None
+    for i in range(start, len(text)):
+        if text[i] == '[':
+            depth += 1
+            if depth > 2:
+                raise ValueError('Unexpected chord-list nesting')
+        elif text[i] == ']':
+            depth -= 1
+            if depth == 0:
+                end = i+1
+                break
+    literal = text[start:end] if end is not None else ''
+    if not literal or not re.fullmatch(r'[\s\d,\[\]()]+' , literal):
+        raise ValueError('Chord data is not a closed numeric list literal')
+    try:
+        rows = ast.literal_eval(literal)
+    except (ValueError, SyntaxError, RecursionError) as error:
+        raise ValueError('Malformed chord data literal') from error
+    if not isinstance(rows, list) or len(rows) > 1000:
+        raise ValueError('Invalid chord row list')
+    if any(not isinstance(row, list) for row in rows) or sum(map(len, rows)) > 100000:
+        raise ValueError('Invalid or excessive chord entries')
+    for row in rows:
+        for triple in row:
+            if (not isinstance(triple, tuple) or len(triple) != 3
+                    or any(type(i) is not int or i < 0 for i in triple)):
+                raise ValueError('Chord entries must be triples of natural indices')
+    return rows
+
+
+def validate_fixed_chords(rows, chords, *, bind_generated=False):
+    """Check every baseline chordNodeOK condition and optionally exact generator binding."""
+    if len(chords) != len(rows):
+        raise ValueError('Chord row count does not match source rows')
+    for k, (row, edges) in enumerate(zip(rows, chords)):
+        nodes = [tuple(map(Q, pair)) for pair in row['table']]
+        if (not nodes or any(len(pair) != 2 for pair in nodes)
+                or any(a[0] >= b[0] for a, b in zip(nodes, nodes[1:]))):
+            raise ValueError(f'Row {k}: unordered or malformed source nodes')
+        if not isinstance(edges, list):
+            raise ValueError('Chord rows must be lists')
+        for triple in edges:
+            if (not isinstance(triple, tuple) or len(triple) != 3
+                    or any(type(i) is not int or not 0 <= i < len(nodes) for i in triple)):
+                raise ValueError(f'Row {k}: invalid chord indices')
+        middles = {m for m, _, _ in edges}
+        for m, a, b in edges:
+            if a in middles or b in middles:
+                raise ValueError(f'Row {k}: a chord endpoint is not a vertex')
+            ra, ca = nodes[a]; rm, cm = nodes[m]; rb, cb = nodes[b]
+            if not 0 <= ra < rm < rb:
+                raise ValueError(f'Row {k}: invalid chord radii')
+            if ca+(cb-ca)/(rb-ra)*(rm-ra) > cm:
+                raise ValueError(f'Row {k}: baseline chord cap check fails')
+        if bind_generated and edges != lower_hull_chords(nodes):
+            raise ValueError(f'Row {k}: chord data differs from the exact lower-hull generator')
+
+
+def load_verified_chords(rows, path=CHORD_DATA):
+    chords = parse_chord_data(Path(path).read_text())
+    validate_fixed_chords(rows, chords, bind_generated=True)
+    return chords
+
+
+def encoded_changes(changes):
+    return [{'k': k, 'i': i, 'increase': str(amount)}
+            for (k, i), amount in sorted(changes.items())]
+
+
+def chord_audit(rows, changes, chords, *, propagate=False):
+    """Audit the fixed vertex-to-interior proof edges, optionally propagate minimal caps.
+
+    All endpoints are vertices, so their requested increments are final before
+    visiting any interior node. One exact pass therefore suffices, including
+    taking the maximum if a middle node has more than one proof edge.
+    """
+    validate_fixed_chords(rows, chords)
+    for (k, i), amount in changes.items():
+        if (type(k) is not int or type(i) is not int or not 0 <= k < len(rows)
+                or not 0 <= i < len(rows[k]['table']) or amount < 0):
+            raise ValueError('Invalid source-node increment')
+    requirements, edges = {}, []
+    for k, (row, triples) in enumerate(zip(rows, chords)):
+        nodes = [tuple(map(Q, pair)) for pair in row['table']]
+        for m, a, b in triples:
+            ra, ca = nodes[a]; rm, cm = nodes[m]; rb, cb = nodes[b]
+            t = (rm-ra)/(rb-ra)
+            chord = ((1-t)*(ca+changes.get((k, a), Q(0)))
+                     + t*(cb+changes.get((k, b), Q(0))))
+            need = max(Q(0), chord-cm)
+            requirements[k, m] = max(requirements.get((k, m), Q(0)), need)
+            edges.append((k, m, a, b, t, chord, need))
+    expanded = dict(changes)
+    plan = {key: need for key, need in requirements.items() if need > changes.get(key, Q(0))}
+    if propagate:
+        for key, need in plan.items():
+            expanded[key] = need
+    def shortfalls(applied):
+        return [{'k': k, 'i': m, 'endpoints': [a, b], 'right_weight': str(t),
+                 'new_chord': str(chord), 'required_total_increment': str(need),
+                 'provided_increment': str(applied.get((k, m), Q(0))),
+                 'shortfall': str(need-applied.get((k, m), Q(0)))}
+                for k, m, a, b, t, chord, need in edges if need > applied.get((k, m), Q(0))]
+    before, after = shortfalls(changes), shortfalls(expanded)
+    assert max(expanded.values(), default=Q(0)) <= max(changes.values(), default=Q(0))
+    report = {'status': 'PASS_EXACT_CHORDS' if not after else 'FAILED_EXACT_CHORDS',
+              'baseline_chords_checked': sum(map(len, chords)),
+              'requested_shortfalls': before, 'remaining_shortfalls': after,
+              'minimal_interior_increment_plan': encoded_changes(plan),
+              'propagation_requested': propagate,
+              'propagated_interior_increments': encoded_changes(plan) if propagate else [],
+              'scope': 'Fixed current chord mapping; endpoints are non-chord vertices. '
+                       'No table or chord data is edited. A changed lower-hull regeneration '
+                       'would require its own vertex-obligation audit.'}
+    return report, expanded
+
+
 def mixed_table_failures(rows, batches):
     failures = []
     sources = [table_source(r) for r in rows]
@@ -102,19 +245,28 @@ def check_majorant(source, tau, poly, rv=None, cuts=None):
         return {'status': 'FAILED_EXACT_PROOF_REPLAY', 'reason': str(error)}
 
 
-def per_node_audit(rows, changes, docs, batches):
+def per_node_audit(rows, changes, docs, batches, chords=None, *, propagate_chords=False):
     """Only source-dependent proof inputs change; other checks remain identical.
 
-    Row rectangle and Stein majorants use the changed raw caps. Retained mixed
+    Fixed vertex chords must remain valid, or their interior caps must receive
+    the explicitly requested minimal in-memory propagation. Row rectangle and
+    Stein majorants use those changed raw caps. Retained mixed
     batch tables and their witnesses remain fixed: if domination passes, their
     checkSWit/checkNode inputs are identical. Extra law batches are regenerated
     conceptually from the changed source tables with unchanged P/cuts/budgets;
     all their majorants must replay. No changed certificate is emitted.
     """
+    if chords is None:
+        if propagate_chords:
+            raise ValueError('Cannot propagate without verified chord data')
+        chord_result = {'status': 'NOT_CHECKED', 'scope': 'Chord dependencies were not supplied'}
+        applied_changes = dict(changes)
+    else:
+        chord_result, applied_changes = chord_audit(rows, changes, chords, propagate=propagate_chords)
     altered = copy.deepcopy(rows)
-    for (k, i), amount in changes.items():
+    for (k, i), amount in applied_changes.items():
         altered[k]['table'][i][1] = str(Q(altered[k]['table'][i][1])+amount)
-    affected = {k for (k, _), amount in changes.items() if amount}
+    affected = {k for (k, _), amount in applied_changes.items() if amount}
     failures, checked = [], {'rectangles': 0, 'row_nodes': 0, 'law_nodes': 0}
     for k in sorted(affected):
         row = altered[k]
@@ -154,11 +306,14 @@ def per_node_audit(rows, changes, docs, batches):
         proof = check_majorant(source, Q(node['tau']), list(map(Q, node['P'])), rv, cuts)
         if not proof['status'].startswith('PASS'):
             failures.append(dict(kind='extra_law_node', name=name, **proof))
-    return {'status': ('PASS_EXACT_SOURCE_DEPENDENCIES' if not failures and not dominance
+    return {'status': ('PASS_EXACT_SOURCE_DEPENDENCIES'
+                       if not failures and not dominance and chord_result['status'] == 'PASS_EXACT_CHORDS'
                        else 'SOURCE_REPLAY_INCOMPLETE_OR_FAILED'),
+            'chord_audit': chord_result,
+            'applied_changes': encoded_changes(applied_changes),
             'checked': checked, 'mixed_table_shortfalls': dominance,
             'majorant_failures': failures,
-            'scope': 'Unchanged row caps, polynomial P, banks/cuts and retained mixed tables. '
+            'scope': 'Unchanged row-level cap constants, polynomial P, banks/cuts and retained mixed tables. '
                      'Extra law tables follow changed raw caps. Exact research proof; Lean still required.'}
 
 
@@ -248,6 +403,8 @@ def main():
     parser.add_argument('--global-margin', type=exact, default=Q(0))
     parser.add_argument('--audit-majorants', action='store_true',
                         help='Replay affected source proofs; otherwise per-node result is CONDITIONAL')
+    parser.add_argument('--propagate-chords', action='store_true',
+                        help='In memory only, minimally raise interior caps to preserve the fixed vertex chords')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     if not __debug__:
@@ -256,6 +413,9 @@ def main():
     changes = increments(json.loads(args.increments.read_text()),
                          json.loads((ROOT/'data/caps-m-pieces/pieces.json').read_text())) \
         if args.increments else {}
+    chords = load_verified_chords(campaign.rows)
+    chord_result, applied_changes = chord_audit(campaign.rows, changes, chords,
+                                               propagate=args.propagate_chords)
     assert args.global_margin >= 0
     maximum = max(values)
     old_bound, old_lower = Q(ledger['best_complete_B']), Q(ledger['best_complete_L'])
@@ -274,11 +434,16 @@ def main():
                            'worst_boxes': [i for i, v in enumerate(values) if v == maximum],
                            'target': qdict(old_bound), 'lower': qdict(old_lower),
                            'margin': qdict(old_bound-maximum)},
-              'per_node': {'changes': [{'k': k, 'i': i, 'increase': str(v)} for (k, i), v in sorted(changes.items())],
-                           'status': 'CONDITIONAL_ARITHMETIC_ONLY',
+              'per_node': {'changes': encoded_changes(changes),
+                           'applied_changes': encoded_changes(applied_changes),
+                           'chord_audit': chord_result,
+                           'status': ('CONDITIONAL_ARITHMETIC_ONLY'
+                                      if chord_result['status'] == 'PASS_EXACT_CHORDS'
+                                      else 'SOURCE_REPLAY_INCOMPLETE_OR_FAILED'),
                            'unchanged_outer_upper': qdict(maximum),
                            'unchanged_outer_margin': qdict(old_bound-maximum),
-                           'warning': 'Unchanged outer arithmetic is valid only if all affected source proofs pass.'},
+                           'warning': 'Unchanged outer arithmetic is valid only if the chord audit and all '
+                                      'affected source proofs pass. Propagation, if requested, is in memory only.'},
               'global': {'old_pad': str(OLD_PAD), 'total_pad': str(total_pad), 'increment': str(delta),
                          'actual_upper': qdict(max(shifted)), 'rounded_B': qdict(new_bound),
                          'strict_lower': qdict(new_lower), 'endpoint_loss': qdict(old_lower-new_lower),
@@ -286,12 +451,14 @@ def main():
                          'old_lower_survives': old_lower*max(shifted) < 1}}
     if args.audit_majorants:
         batches = json.loads((ROOT/'data/lower-mixed/batches.json').read_text())['batches']
-        audit = per_node_audit(campaign.rows, changes, docs, batches)
+        audit = per_node_audit(campaign.rows, changes, docs, batches, chords,
+                               propagate_chords=args.propagate_chords)
         result['per_node']['source_audit'] = audit
         result['per_node']['status'] = audit['status']
     pins = [DATA/'cover.json', DATA/'cover-ledger.json', DATA/'inputs/cover.json',
             DATA/'inputs/inherited.json', ROOT/'data/lower-mixed/batches.json',
-            ROOT/'Grothe/Lower/RowDataTypes.lean']
+            ROOT/'Grothe/Lower/RowDataTypes.lean', CHORD_DATA,
+            ROOT/'Grothe/LowerAnalytic/CapChords.lean', ROOT/'tools/gen_cap_chords.py']
     pins += [ROOT/f'data/lower-rows/row{k:02d}.json' for k in range(1, 20)]
     pins += [ROOT/f'Grothe/Lower/RowData{k:02d}.lean' for k in range(1, 20)]
     pins += [ROOT/binding['path'] for binding in campaign.cover['u_nodes'].values()]

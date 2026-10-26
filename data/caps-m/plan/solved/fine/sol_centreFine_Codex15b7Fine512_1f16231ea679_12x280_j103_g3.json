@@ -1,0 +1,32 @@
+[
+  {
+    "cap_up": null,
+    "cap_up_float": 0.0,
+    "encl": true,
+    "error": "Solver 'CLARABEL' failed. Try another solver, or solve with verbose=True for more information.",
+    "grid": 3,
+    "grid_spec": [
+      1600,
+      512,
+      "1/200"
+    ],
+    "i": 280,
+    "j": 103,
+    "k": 12,
+    "lm": null,
+    "polyOK": true,
+    "provenance": {
+      "baseline_capPad": "1/100000000000",
+      "cap_up_convention": "additional to baseline_capPad, not the final capPad",
+      "export_sha256": "44b34a852da77d5449b08a9e3b8de28ede96140ecf1aeaeced2fdc3ab4b69996",
+      "fingerprint": "1f16231ea6796e6cf447769bc61f1410f1b84775593bfa72692ef082d7eac20b",
+      "grid_spec": [
+        1600,
+        512,
+        "1/200"
+      ]
+    },
+    "status": "fail",
+    "t_opt": -0.0014738534759219518
+  }
+]

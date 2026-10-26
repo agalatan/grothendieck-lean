@@ -1,0 +1,89 @@
+[
+  {
+    "attempts": [
+      {
+        "cap_up": null,
+        "exact_feasible": false,
+        "method": "stored_export_multipliers_zero"
+      },
+      {
+        "cap_up": null,
+        "exact_feasible": false,
+        "method": "stored_export_multipliers_exact_schur"
+      },
+      {
+        "cap_up": null,
+        "exact_feasible": false,
+        "method": "seed_sol_centre_Codex15b7R2_6cebd2773f8b_12x280_j103_g1_zero"
+      },
+      {
+        "cap_up": null,
+        "exact_feasible": false,
+        "method": "seed_sol_centre_Codex15b7R2_6cebd2773f8b_12x280_j103_g1_exact_schur"
+      }
+    ],
+    "cap_up": null,
+    "caution": "Research matrix evidence, not Lean verification; no minimality claim.",
+    "completed_at_utc": "2026-10-26T13:33:46.076730+00:00",
+    "encl": true,
+    "grid": 3,
+    "grid_spec": [
+      1600,
+      512,
+      "1/200"
+    ],
+    "i": 280,
+    "j": 103,
+    "k": 12,
+    "lm": null,
+    "method": "exact_common_kernel_obstruction",
+    "obstruction": {
+      "common_kernel_dimension": 9,
+      "meaning": "v[0]=0 and v^T A_c v=v^T B_c v=0 for every constraint, but v^T N v<0. No cap shift or S-lemma multipliers can make this exported matrix PSD.",
+      "negative_quadratic": "-193546105874773835986052712821209081047523799738164455550663109083576292524240522400851264755193508112907031042356665356341986048227272524918897376112031170161846181531/1490729542282099656215480169912583817557421293049618904905103406201933662749129154592165642038742232013100022722249657318768820672544918716520735698258653572186274529280000",
+      "negative_quadratic_float": -0.00012983314570829638,
+      "vector": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "305327/703542",
+        "226878/309781",
+        "-414977/791346",
+        "0",
+        "0",
+        "21522228994800470872281947402042/2679515365225982847674811085586625",
+        "-946/168447",
+        "0",
+        "-1102/69299"
+      ]
+    },
+    "polyOK": true,
+    "provenance": {
+      "baseline_capPad": "1/100000000000",
+      "cap_up_convention": "additional to baseline_capPad, not the final capPad",
+      "export_sha256": "44b34a852da77d5449b08a9e3b8de28ede96140ecf1aeaeced2fdc3ab4b69996",
+      "fingerprint": "1f16231ea6796e6cf447769bc61f1410f1b84775593bfa72692ef082d7eac20b",
+      "grid_spec": [
+        1600,
+        512,
+        "1/200"
+      ]
+    },
+    "retry_provenance": {
+      "agent_id": "codex-15b7",
+      "hashes": {
+        "caps_centre_repair": "daad17d9b12bbbd2f3396152ebafd878fd0fb80fa722ab8cf3f24213caacbf72",
+        "caps_lmi": "5e4052898c40a0bd5b152c1006ced14e81975472f2735a659794cd7cbb444de2",
+        "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_12x280_j103_g1.json": "eb4cbe87dc690a9f26e758796df65affd595f8c64a1edbd1e276c4a56b22b820",
+        "export": "44b34a852da77d5449b08a9e3b8de28ede96140ecf1aeaeced2fdc3ab4b69996",
+        "primary": "df4a594e370798923d72650b407e26c5069eade4977056f419c6eaf736346204",
+        "retry_tool": "5a09a16d4271aab925bf6f048df1bbe26e6f8084002311ac6228a2b8ef5884ea"
+      },
+      "max_solves": 0,
+      "policy": "seed zero checks; exact Schur shifts; common-kernel obstruction; CLARABEL/SCS diagonal-floor,row-norm,uniform congruence scaling",
+      "schema": 1
+    },
+    "status": "fail"
+  }
+]
