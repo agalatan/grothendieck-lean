@@ -176,4 +176,81 @@ lemma integral_norm_Lg_sq_le :
 
 end main
 
+/-- **The Gaussian Schur bound** `‖H(R)‖ ≤ ‖c‖ λ₁` (gates `Z ≻ 0`, `T ≻ 0` for `B = A − jI`). -/
+theorem norm_HholPair_le (hj : 0 < j) (hZ : (Z (Bj R j)).PD) (hT : (T (Bj R j) R.Cmat).PD)
+    {F G : ℂ × ℂ → ℂ} (hFm : Measurable F) (hGm : Measurable G) (hF : ∀ u, ‖F u‖ ≤ 1) (hG : ∀ u, ‖G u‖ ≤ 1) :
+    ‖HholPair F G R‖ ≤ ‖cst R j‖ * lam1 (Bj R j) R.Cmat := by
+  set B := Bj R j
+  set C := R.Cmat
+  set c := cst R j
+  have hl : 0 ≤ lam1 B C := by unfold lam1; positivity
+  have hK : 0 ≤ ‖c‖ ^ 2 * lam1 B C ^ 2 := by positivity
+  have hsq : √(‖c‖ ^ 2 * lam1 B C ^ 2) = ‖c‖ * lam1 B C := by
+    rw [← mul_pow, Real.sqrt_sq (by positivity)]
+  rw [HholPair_eq R j hj, ← hsq]
+  set f := gw j F
+  set g := gw j G
+  have hgm : ∀ {H : ℂ × ℂ → ℂ}, Measurable H → Measurable (gw j H) := fun hH => by
+    unfold gw
+    exact (hH.comp (by unfold toC2; fun_prop : Continuous fun Y : V => toC2 Y.1 Y.2).measurable).mul
+      (Complex.measurable_ofReal.comp (continuous_phih j).measurable)
+  by_cases hint : Integrable (fun q : V × V => conj (f q.1) * (L4 B C c q.1 q.2 * g q.2))
+  swap
+  · rw [integral_undef hint, norm_zero]; positivity
+  rw [Measure.volume_eq_prod] at hint ⊢
+  rw [integral_prod _ hint]
+  simp_rw [integral_const_mul]
+  refine (norm_integral_le_integral_norm _).trans ?_
+  simp_rw [norm_mul, Complex.norm_conj]
+  -- the two square-integrable factors
+  have hf2 : Integrable fun X : V => ‖f X‖ ^ 2 := by
+    refine (integrable_phih_sq j hj).mono' ((hgm hFm).norm.pow_const 2).aestronglyMeasurable
+      (Filter.Eventually.of_forall fun X => ?_)
+    rw [Real.norm_of_nonneg (sq_nonneg _)]
+    exact pow_le_pow_left₀ (norm_nonneg _) (norm_gw_le j hF hj X) 2
+  have hint3 := integrable_tri B C j hZ hT hj hGm hG c
+  have hLg2 : Integrable fun X : V => ‖∫ Y : V, L4 B C c X Y * g Y‖ ^ 2 := by
+    refine (hint3.integral_prod_left.re).congr (Filter.Eventually.of_forall fun X => ?_)
+    simp only [RCLike.re_to_complex]
+    exact (LstarL.norm_integral_sq (fun Y => L4 B C c X Y * g Y)).symm
+  have hA : ∫ X : V, ‖f X‖ ^ 2 ≤ 1 := by
+    rw [← integral_phih_sq j hj]
+    exact integral_mono hf2 (integrable_phih_sq j hj) fun X =>
+      pow_le_pow_left₀ (norm_nonneg _) (norm_gw_le j hF hj X) 2
+  have hB := integral_norm_Lg_sq_le hj hZ hT hGm hG
+  refine le_sqrt_of_amgm hA hB hK fun t ht => ?_
+  calc ∫ X : V, ‖f X‖ * ‖∫ Y : V, L4 B C c X Y * g Y‖
+      ≤ ∫ X : V, (t * ‖f X‖ ^ 2 + ‖∫ Y : V, L4 B C c X Y * g Y‖ ^ 2 / t) / 2 :=
+        integral_mono_of_nonneg (Filter.Eventually.of_forall fun X => by positivity)
+          (((hf2.const_mul t).add (hLg2.div_const t)).div_const 2)
+          (Filter.Eventually.of_forall fun X => mul_le_amgm ht)
+    _ = ((t * ∫ X : V, ‖f X‖ ^ 2) + (∫ X : V, ‖∫ Y : V, L4 B C c X Y * g Y‖ ^ 2) / t) / 2 := by
+        rw [integral_div, integral_add (hf2.const_mul t) (hLg2.div_const t), integral_const_mul, integral_div]
+
+/-- **The Gaussian Schur bound**, in the form (1) of the written proof:
+`‖H(R)‖² ≤ 1 / (64 j⁴ |det(I − R²)|² det Z det W)`. -/
+theorem norm_HholPair_sq_le (hj : 0 < j) (hZ : (Z (Bj R j)).PD) (hT : (T (Bj R j) R.Cmat).PD)
+    {F G : ℂ × ℂ → ℂ} (hFm : Measurable F) (hGm : Measurable G) (hF : ∀ u, ‖F u‖ ≤ 1) (hG : ∀ u, ‖G u‖ ≤ 1) :
+    ‖HholPair F G R‖ ^ 2 ≤
+      1 / (64 * j ^ 4 * ‖R.detIm‖ ^ 2 * (Z (Bj R j)).det * (W (Bj R j) R.Cmat).det) := by
+  have h := norm_HholPair_le R j hj hZ hT hFm hGm hF hG
+  have hW : (W (Bj R j) R.Cmat).PD := PD_two_add hT (E_PSD _ _ hZ)
+  have hzd := hZ.2
+  have hwd := hW.2
+  have hn : ‖cst R j‖ = ((2 * π) ^ 4)⁻¹ * ‖R.detIm‖⁻¹ * (π / j) ^ 2 := by
+    simp only [cst, norm_mul, norm_inv, Complex.norm_of_nonneg (by positivity : (0 : ℝ) ≤ (2 * π) ^ 4),
+      Complex.norm_of_nonneg (by positivity : (0 : ℝ) ≤ (π / j) ^ 2)]
+  have hl : lam1 (Bj R j) R.Cmat ^ 2 = 4 * π ^ 4 / ((Z (Bj R j)).det * (W (Bj R j) R.Cmat).det) := by
+    rw [lam1, div_pow, mul_pow (√_) (√_), Real.sq_sqrt hzd.le, Real.sq_sqrt hwd.le]; ring
+  calc ‖HholPair F G R‖ ^ 2 ≤ (‖cst R j‖ * lam1 (Bj R j) R.Cmat) ^ 2 :=
+        pow_le_pow_left₀ (norm_nonneg _) h 2
+    _ = 1 / (64 * j ^ 4 * ‖R.detIm‖ ^ 2 * (Z (Bj R j)).det * (W (Bj R j) R.Cmat).det) := by
+        rw [mul_pow, hl, hn]
+        rcases eq_or_ne ‖R.detIm‖ 0 with h0 | h0
+        · simp [h0]
+        · have : j ≠ 0 := hj.ne'
+          have : π ≠ 0 := Real.pi_ne_zero
+          field_simp
+          ring
+
 end Grothe.UpperChaos.SchurMain
