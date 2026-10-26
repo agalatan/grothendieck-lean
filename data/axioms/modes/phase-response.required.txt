@@ -1,0 +1,12 @@
+# --phase-response: theorems that must appear in this audit report (sorted; union-merged).
+Grothe.HaagerupPhaseGeometry.degree_moment_not_summable
+Grothe.HaagerupPhaseGeometry.harmonic_lower
+Grothe.HaagerupPhaseGeometry.scaled_lower
+Grothe.Upper.ResponseGeometry.energy_transport
+Grothe.Upper.ResponseGeometry.finite_energy_comparison
+Grothe.Upper.ResponseGeometry.full_energy_comparison
+Grothe.Upper.ResponseGeometry.kernel_transport
+Grothe.Upper.ResponseGeometry.normalized_distance
+Grothe.Upper.ResponseGeometry.orbit_energy_zero
+Grothe.Upper.ResponseGeometry.support_defect
+Grothe.Upper.ResponseGeometry.weighted_support_loss
