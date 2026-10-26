@@ -144,13 +144,13 @@ For Lean-relevant checks, ordinary CI restores that cache and calls
 `scripts/caps_stamp.py --check-cache` (also the script's default). A match
 permits the build of `Grothe`, which replays the heavy facts, and the axiom
 audit, including the final `CapNodes` assembly; cached native results are reused subject to Lake's
-dependency checks. A missing or mismatched marker fails closed and dispatches
-a heavy `caps` job for the branch. That run saves a verified branch cache and
-repeats the check; after merge, the master `warm` run reuses the runner's
-persistent build and refreshes the canonical master cache. One runner build
+dependency checks. A first CI job compares the caps source digest (part of the cache key) with the
+verified caches; when none matches, the same check runs on the droplet's runner,
+which builds, audits, records the marker and saves the cache, so a cache miss
+delays a check but never fails it (`AGENTS.md` §8, §10). One runner build
 supplies verification and later replay; do not run a separate manual droplet
 verification. A read-only digest is not a verification record.
-See `AGENTS.md` §4 and `docs/CAPS_STATUS.md`.
+See `AGENTS.md` §8, §10 and `docs/CAPS_STATUS.md`.
 
 `lower_bound_of_refined_cover_data` assumes `NodeCaps`.
 `lower_bound_of_capsRest` reduces this to `CapsRest`: the vertex caps of rows
@@ -386,11 +386,10 @@ lake env lean scratch/Axioms.lean | python3 scripts/check_axioms.py
 (about 21 CPU-hours cold; CI replays them from its verified cache). For
 Lean-relevant pushes, CI builds it, checks the generated roots and axiom report, and forbids
 `sorry`, `axiom`, `implemented_by`, `extern`, `unsafe` and `Task.spawn`.
-It gates the build on the verified
-build-cache marker of the cap rows, dispatching a heavy runner build when that marker is
-absent or stale. A `ready/` run checks the branch merged with current master
+When no verified cache matches the cap rows'
+sources, the check runs on the droplet's runner instead of failing. A `ready/` run checks the branch merged with current master
 before auto-merging; deliveries changing the workflow use a pull request
-(`AGENTS.md` §4a). Documentation-only changes may skip the Lean checks.
+(`AGENTS.md` §9). Documentation-only changes may skip the Lean checks.
 
 ## How this was made
 

@@ -13,11 +13,11 @@ name: Lean proof check
 # ready/<name>: the branch is merged into the CURRENT master and the MERGED tree is checked; master moves only if green.
 # Master's cache: every update of master gets one check on master (a hand merge by its push; an auto-merge
 # dispatches it); when green, it saves the new master cache. Only master runs and droplet runs write caches.
-# See AGENTS.md section 4c.
+# See AGENTS.md section 10.
 
 on:
   push:
-    # cloud/** are scratch branches for cloud jobs (cloud.yml, AGENTS.md section 4d): no push check
+    # cloud/** are scratch branches for cloud jobs (cloud.yml, AGENTS.md section 11): no push check
     branches: ['**', '!cloud/**']
   schedule:
     # weekly: restore (and so keep alive) the master cache; GitHub deletes cache entries unused for 7 days
@@ -360,11 +360,13 @@ jobs:
           else
             git fetch -q origin master
             if [ "$(git rev-parse origin/master)" != "$base" ]; then
-              echo "master moved during the build: re-dispatching this ready branch against the new master"
+              # not a failure: the delivery is fine, it just has to be checked against the new master
+              echo "::notice::master moved during the check: re-dispatched ${GITHUB_REF_NAME} against the new master"
               gh workflow run lean.yml --ref "${GITHUB_REF_NAME}"
+              exit 0
             elif git diff --name-only "$base" merge-candidate | grep -q '^\.github/workflows/'; then
               echo "::error::The push was refused because this delivery changes .github/workflows and the token may not"
-              echo "::error::update workflows. Add the MERGE_TOKEN secret (see AGENTS.md section 4) or merge it with a PR."
+              echo "::error::update workflows. Add the MERGE_TOKEN secret (see AGENTS.md section 9) or merge it with a PR."
             else
               echo "::error::The push to master was refused for another reason (see above). Not retrying."
             fi

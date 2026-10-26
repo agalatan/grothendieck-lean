@@ -387,10 +387,11 @@ axiom report before recording `.lake/build/caps-closure.sha` with
 `scripts/caps_stamp.py --mark-cache`. Ordinary CI restores that cache and
 calls `--check-cache` (the default). A match permits the build of `Grothe`
 (replaying the heavy facts) and the axiom audit, including `CapNodes`; Lake reuses native results only when
-its dependency hashes permit it. A missing or mismatched marker fails
-closed and dispatches the heavy job. A branch `caps` run saves the verified
-branch cache and repeats the check. After merge, a master `warm` run reuses
-the runner's persistent build and refreshes the master cache. One runner
+its dependency hashes permit it. When no verified cache matches the
+caps digest (part of the cache key), CI runs the same check on the droplet's
+runner, which builds, audits, marks and saves the cache; a cache miss delays
+a check but never fails it. After a merge that changed the caps, master's
+check also runs there and finds the build in the runner's workspace. One runner
 build supplies the verification and subsequent replay; no independent
 manual droplet verification is required. The build and the report establish
 verification; a read-only digest alone does not.
