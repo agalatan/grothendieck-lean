@@ -208,6 +208,12 @@ import Grothe.UpperChaos.MehlerL2
 import Grothe.UpperChaos.PhiBound
 import Grothe.UpperChaos.PhiCover
 import Grothe.UpperChaos.PhiCoverCheck
+import Grothe.UpperChaos.PhiCoverCheck0
+import Grothe.UpperChaos.PhiCoverCheck1
+import Grothe.UpperChaos.PhiCoverCheck2
+import Grothe.UpperChaos.PhiCoverCheck3
+import Grothe.UpperChaos.PhiCoverCheck4
+import Grothe.UpperChaos.PhiCoverCheck5
 import Grothe.UpperChaos.PhiCoverData
 import Grothe.UpperChaos.PhiDense
 import Grothe.UpperChaos.PhiHorner
