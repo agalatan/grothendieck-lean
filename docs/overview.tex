@@ -224,7 +224,7 @@ this an infinite-tail theorem with only finite checks.
 
 For an exact degree-29 preprocessor, the complete $1024$-term normalized
 residual is at most $95\cdot10^{-9}$ and the whole infinite tail at most
-$174\cdot10^{-9}$. The approximate inverse has degree $128$ and defect at
+$174\cdot10^{-9}$. The approximate inverse has degree $64$ and defect at
 most $10^{-12}$; its short product with $P^{17}$ is checked as one polynomial.
 The Gaussian phase identity and tensor transfer prove
 $\KG\le1.404909543$ with no external inputs. The exact data generate the
@@ -261,6 +261,19 @@ The separator is $\Re(c_0-\frac9{25}c_1-c_2-c_3)$; positive polynomial certifica
 Thus optimizing this class further cannot improve the current upper bound. General non-Gaussian cubic
 responses and nonlinear shared image fields are not excluded. The Gaussian-family coefficient extraction
 is a written application of the Gaussian phase identity; it is not yet connected end to end in Lean.
+
+\paragraph{Phase errors and exact symmetries [Lean].}
+Phase alignment has an exact modulus-weighted quadratic defect. An unweighted
+degree-moment budget is unavailable: the phase coefficients satisfy
+$r_k\ge1/(4k(k+1))$ for $k\ge1$, so $\sum_k(2k+1)c_k=\infty$.
+Certificate comparison can instead align an anchor by a common isometry:
+if the measured blocks are transported with it and the remaining error is at
+most $e$, the complete energy-spectrum discrepancy is at most
+$2\|x\|e+e^2$. A pure symmetry has zero price, including its entire tail.
+The kernel is preserved only when its correlation operator is transported
+too; rotating only the response can change the anisotropic kernel used here.
+These eleven Lean results change neither endpoint. Gaussian applications and
+new numerical searches still require their own certified integrations.
 
 \subsection{Inequalities for cubic Gaussian chaos}
 Throughout, $q$ is a circular cubic Wick polynomial (bidegree $(2,1)$) in any number of complex Gaussian variables,

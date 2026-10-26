@@ -5,6 +5,11 @@ import argparse, json
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/'data/haagerup-resolvent/certificate.json'
 OUTPUT=ROOT/'Grothe/Haagerup/PowerCheck.lean'
+def trim_trailing_zeros(xs):
+    """Canonical coefficient list of the same exact rational polynomial."""
+    end=len(xs)
+    while end and Fraction(xs[end-1])==0:end-=1
+    return xs[:end]
 def render(c):
     def rat(x):
         x=Fraction(x)
@@ -21,7 +26,7 @@ namespace Grothe.HaagerupPower
 open GrotheKernel
 
 def pl : List ℚ := [{entries(c['P'])}]
-def rl : List ℚ := [{entries(c['R'])}]
+def rl : List ℚ := [{entries(trim_trailing_zeros(c['R']))}]
 def terms : ℕ := {c['K']}
 def cutoff : ℕ := {c['M']}
 def seedPower : ℕ := {c['seed_power']}
