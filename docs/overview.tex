@@ -219,7 +219,7 @@ with tail $30488839/10^{15}$ ($3.35\%$); finite table accuracy $6847009/(5\cdot1
 The native head is $28153/10^{12}$ ($3.09\%$).\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (1404909543/1000000000)}}\\[2pt]
 Haagerup's identity for the phase rounding, $\E[\overline{\ph\langle g,x\rangle}\,\ph\langle g,y\rangle]=\sum_k\frac\pi4\frac{(1/2)_k^2}{k!(k+1)!}z|z|^{2k}$
-(Hermite coefficients from Gaussian radial moments and a finite Pochhammer identity, the Mehler formula, reduction to two complex Gaussians); the transfer through
+(Hermite coefficients from Gaussian radial moments and a polynomial moment recurrence, the Mehler formula, reduction to two complex Gaussians); the transfer through
 a degree-29 preprocessor $p(t)=tP(t^2)$ with $\|P\|_1=1$ and $\|P^4\|_1\le.998903$; $1024$ exact terms, a finite polynomial resolvent and the full signed tail, checked by one \lean{native\_decide}
 &
 nothing: this bound has no hypothesis. The sharper conditional bound above uses a different rounding and retains its explicitly listed Gaussian inputs.\\\bottomrule

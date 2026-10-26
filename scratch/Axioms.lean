@@ -509,7 +509,6 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_two_channel
 #print axioms Grothe.UpperChaos.leaf_sound
 #print axioms Grothe.UpperChaos.localized_comparison
-#print axioms Grothe.UpperChaos.map_e2
 #print axioms Grothe.UpperChaos.map_mehlerY
 #print axioms Grothe.UpperChaos.measurable_GT
 #print axioms Grothe.UpperChaos.mehler_L2

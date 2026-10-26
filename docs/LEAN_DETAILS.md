@@ -267,9 +267,10 @@ headline endpoints are unchanged.
 **Unconditional upper bound.** `Grothe.haagerup_bound : IsGrothendieckBound (1404909543/1000000000)`
 (`Grothe/Haagerup/Power.lean`), with no hypothesis. The analysis is in
 `Grothe/Haagerup/`: the shared Gaussian phase and planar laws (`Phase`); the charge-one
-Hermite coefficient, evaluated using odd Gaussian moments and a finite Pochhammer identity
-(`PhaseCoefficients`, `UpperChaos/PhaseMoments`, `UpperChaos/HermiteExpansion`,
-`UpperChaos/PhaseCombinatorics`); its squared normalized value
+Hermite coefficient, determined by odd Gaussian moments and the recurrence
+`M_(k+1) = -(k+1/2) M_k` for `M_k = E[H_(k+1,k) · conj(ph)]`
+(`PhaseCoefficients`, `UpperChaos/PhaseMoments`). The recurrence follows from a
+weighted polynomial moment identity, without differentiating phase. Its squared normalized value
 (π/4)(1/2)_k²/(k!(k+1)!) is `haagCoeff k`. The complex Hermite basis and polynomial Mehler
 formula give the phase correlation on the entire closed unit disk (`PhaseKernel`).
 Four real-orthonormal coordinates of the
@@ -518,7 +519,7 @@ The four remaining rows still require `CapsRest`.
 | modules | content |
 |---|---|
 | `ComplexMoments`, `ComplexHermite`, `Mehler`, `Completeness`, `HermiteComplete`, `HermiteBasis`, `Charge` | one complex coordinate: E[zᵃz̄ᵇ] = δ a!, Hermite polynomials and orthogonality, Mehler for polynomials, density of polynomials in L²(stdGaussian d), Hilbert basis and Parseval, charge selection |
-| `GaussC2`, `HermiteC2`, `HermiteC2Basis`, `LawY`, `MehlerL2`, `Energy2`, `Kernel2` | two coordinates: ℂ² as ℝ⁴, tensor Hermite basis, law of ρX + √(1−\|ρ\|²)W, Mehler for L² functions, chaos energies by bidegree, the physical kernel of a charge-one function |
+| `ProductComplete`, `HermiteC2`, `HermiteC2Basis`, `LawY`, `MehlerL2`, `Energy2`, `Kernel2` | two coordinates: tensor completeness from one-coordinate completeness by Fubini, Gaussian mixing law by characteristic functions, Mehler for L² functions, chaos energies by bidegree, the physical kernel of a charge-one function |
 | `Realise2`, `Structural` | two-channel rounding with tensor-realised preprocessors (`rounding_diskKernel`); the structural fields (validity, summability, parity) as theorems |
 | `TaylorPhase`, `Rounder` | \|P₃(x)\|² = 1 − x⁴(3 − x²)/36; the concrete rounding G_T from `Grothe/Upper/Data.lean` |
 | `PhiHorner`, `PhiDense`, `PhiCover`, `PhiCoverData`, `PhiCoverCheck0`–`5`, `PhiCoverCheck`, `PhiBound` | φ² ≤ 99/100 everywhere (`phiT_sq_le`, hence `phi_abs_lt_one : |φ| < 1`; `phiBound` is the same bound as the rounding's `PhiBound`): 512 cubes of bisection trees (`phi_cover_check_0`–`5`), analytic far field, headline `fresh_upper_rounder` |

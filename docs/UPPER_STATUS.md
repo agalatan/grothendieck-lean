@@ -36,8 +36,8 @@ are theorems.  Module map (all in `Grothe/UpperChaos/`):
 |---|---|
 | TaylorPhase | `|P₃(x)|² = 1 − x⁴(3−x²)/36` |
 | ComplexMoments, ComplexHermite, Mehler, Completeness, HermiteComplete, HermiteBasis, Charge | one complex coordinate: moments, Hermite orthogonality, Mehler (polynomials), completeness (`poly_complete`), Hilbert basis, charge selection |
-| GaussC2, HermiteC2, HermiteC2Basis | ℂ²: `gaussC ⊗ gaussC` = image of std Gaussian on ℝ⁴, tensor Hermite basis, Parseval |
-| LawY, MehlerL2 | law of ρX + σW, Mehler for L² functions on ℂ² (`mehler_L2`) |
+| ProductComplete, HermiteC2, HermiteC2Basis | ℂ²: tensor completeness by Fubini and one-coordinate completeness, tensor Hermite basis, Parseval |
+| LawY, MehlerL2 | law of ρX + σW by product characteristic functions, Mehler for L² functions on ℂ² (`mehler_L2`) |
 | Energy2, Kernel2 | energies by bidegree, parity, kernel = `radialKernel (bivarKernel P Q (energy G))` |
 | Realise2, Structural | two-channel Gaussian rounding ⇒ `DiskKernel`; `structural_fields`, `fresh_upper_of_rounding` |
 | Rounder | `vprof`, `F0`, `phiT`, `Tround`, `GT`; measurable, charge one, disk-valued under `PhiBound` |
