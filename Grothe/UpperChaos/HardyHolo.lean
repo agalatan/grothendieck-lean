@@ -4,14 +4,17 @@ import Grothe.UpperChaos.OddSeries
 import Grothe.UpperChaos.OddParseval
 
 /-!
-# Holomorphy of the continued rounding kernel (step 1(a) of the `hardy` plan)
+# Holomorphy of continued kernels for bounded response pairs
 
-`Hhol R` (`HardyKernel.lean`) integrates the bounded rounding `Tround` against the holomorphic Gaussian
-kernel `k_R`. Its exponent is a linear combination of six real quadratic monomials with coefficients
+`HholPair F G R` integrates any measurable disk-valued left/right responses against the holomorphic
+Gaussian kernel `k_R`. Its exponent is a linear combination of six real quadratic monomials with coefficients
 the entries of `A = (I − R²)⁻¹` and `C = R A` (`kExp_add_eq_sum`). Under the decay condition
 `KerPos R λ` (the real part of the 4×4 form `[[A, −C], [−C, A]]` is `≥ λ` on real vectors),
-the integrand is dominated by a Gaussian, and on any open set of `t` where `KerPos (Rt t) λ` holds
-for some `λ > 0`, `t ↦ Hhol (Rt t)` is holomorphic (`differentiableOn_Hhol_Rt`).
+the integrand is dominated by a Gaussian. On any open set of `t` where `KerPos (Rt t) λ` holds
+for some `λ > 0`, `t ↦ HholPair F G (Rt t)` is holomorphic (`differentiableOn_HholPair_Rt`).
+`Hhol R` (`HardyKernel.lean`) is the specialization `F = G = Tround`; its existing holomorphy and
+Hardy assembly theorems specialize the pair results. Real Gaussian identification and the numerical
+circle bound remain explicit inputs, including for a changed response pair.
 
 `KerPos R λ` with `λ > 0` forces `det(I − R²) ≠ 0` (`detIm_ne_zero_of_kerPos`). For a complex
 symmetric `Σ = [[I, R], [R, I]]` it follows from `Re Σ ≻ 0`, i.e. `I ± Re R ≻ 0`, which is what the
@@ -232,31 +235,48 @@ lemma integrable_N8_mul_exp {l : ℝ} (hl : 0 < l) :
       _ ≤ (2 / l) * 1 * Real.exp (-(l / 2 * N8 q)) := by gcongr
       _ = 2 / l * Real.exp (-(l / 2 * N8 q)) := by ring
 
-/-! ### Holomorphy of `t ↦ Hhol (Rt t)` -/
+/-! ### Holomorphy for measurable disk-valued response pairs -/
 
 lemma measurable_toC2 : Measurable fun p : (ℝ × ℝ) × (ℝ × ℝ) => toC2 p.1 p.2 := by
   unfold toC2; fun_prop
 
-lemma Hhol_eq (R : Sym2C) :
-    Hhol R = ∫ q : Pt8, (conj (Tround (toC2 q.1.1 q.1.2)) * Tround (toC2 q.2.1 q.2.2)) *
+/-- The continued correlation of separate left and right responses. No Gaussian-law or
+power-series identification is part of this definition. -/
+def HholPair (F G : ℂ × ℂ → ℂ) (R : Sym2C) : ℂ :=
+  ∫ q : Pt8, conj (F (toC2 q.1.1 q.1.2)) * G (toC2 q.2.1 q.2.2) *
+    kHol R q.1.1 q.1.2 q.2.1 q.2.2
+
+lemma HholPair_Tround (R : Sym2C) : HholPair Tround Tround R = Hhol R := rfl
+
+lemma HholPair_eq (F G : ℂ × ℂ → ℂ) (R : Sym2C) :
+    HholPair F G R = ∫ q : Pt8, (conj (F (toC2 q.1.1 q.1.2)) * G (toC2 q.2.1 q.2.2)) *
       (((((2 * Real.pi) ^ 4 : ℝ) : ℂ)⁻¹ * R.detIm⁻¹) *
         Complex.exp (∑ k, coefK R k * (mK k q : ℂ))) := by
-  unfold Hhol
+  unfold HholPair
   refine integral_congr_ae (Filter.Eventually.of_forall fun q => ?_)
   simp only [kHol, ← kExp_add_eq_sum]
 
-/-- **Step 1(a): holomorphy.** On an open set of `t` where the continued kernel decays
-(`KerPos (Rt t) λ` for some `λ > 0`), `t ↦ Hhol (Rt t)` is holomorphic. -/
-theorem differentiableOn_Hhol_Rt (hφ : PhiBound) {U : Set ℂ} (hU : IsOpen U)
+lemma Hhol_eq (R : Sym2C) :
+    Hhol R = ∫ q : Pt8, (conj (Tround (toC2 q.1.1 q.1.2)) * Tround (toC2 q.2.1 q.2.2)) *
+      (((((2 * Real.pi) ^ 4 : ℝ) : ℂ)⁻¹ * R.detIm⁻¹) *
+        Complex.exp (∑ k, coefK R k * (mK k q : ℂ))) :=
+  HholPair_eq Tround Tround R
+
+/-- The continued kernel of any two measurable disk-valued responses is holomorphic on an
+open set where the Gaussian kernel decays. Charge and conjugation symmetry are not needed here. -/
+theorem differentiableOn_HholPair_Rt {F G : ℂ × ℂ → ℂ}
+    (hF : Measurable F) (hG : Measurable G)
+    (hFb : ∀ u, ‖F u‖ ≤ 1) (hGb : ∀ u, ‖G u‖ ≤ 1)
+    {U : Set ℂ} (hU : IsOpen U)
     (hpos : ∀ t ∈ U, ∃ l > 0, KerPos (Rt t) l) :
-    DifferentiableOn ℂ (fun t => Hhol (Rt t)) U := by
+    DifferentiableOn ℂ (fun t => HholPair F G (Rt t)) U := by
   have hdet : ∀ t ∈ U, (Rt t).detIm ≠ 0 := fun t ht => by
     obtain ⟨l, hl, h⟩ := hpos t ht; exact detIm_ne_zero_of_kerPos hl h
-  have hfun : (fun t => Hhol (Rt t)) = fun t => ∫ q : Pt8,
-      (conj (Tround (toC2 q.1.1 q.1.2)) * Tround (toC2 q.2.1 q.2.2)) *
+  have hfun : (fun t => HholPair F G (Rt t)) = fun t => ∫ q : Pt8,
+      (conj (F (toC2 q.1.1 q.1.2)) * G (toC2 q.2.1 q.2.2)) *
         (((((2 * Real.pi) ^ 4 : ℝ) : ℂ)⁻¹ * (Rt t).detIm⁻¹) *
           Complex.exp (∑ k, coefK (Rt t) k * (mK k q : ℂ))) := by
-    funext t; exact Hhol_eq _
+    funext t; exact HholPair_eq F G _
   rw [hfun]
   refine differentiableOn_integral_exp (n := 6) hU (fun k => differentiableOn_coefK hdet k)
     ?_ (fun k => ?_) ?_ (fun q => ?_) N8_nonneg abs_mK_le (fun t ht => ?_)
@@ -266,14 +286,44 @@ theorem differentiableOn_Hhol_Rt (hφ : PhiBound) {U : Set ℂ} (hU : IsOpen U)
       ((differentiable_detIm_Rt t).inv (hdet t ht))).differentiableWithinAt
   · exact (continuous_mK k).measurable
   · exact (((Complex.continuous_conj.measurable.comp
-      (measurable_Tround.comp (measurable_toC2.comp measurable_fst)))).mul
-      (measurable_Tround.comp (measurable_toC2.comp measurable_snd))).aestronglyMeasurable
+      (hF.comp (measurable_toC2.comp measurable_fst)))).mul
+      (hG.comp (measurable_toC2.comp measurable_snd))).aestronglyMeasurable
   · rw [norm_mul, Complex.norm_conj]
-    have h1 := norm_Tround_le hφ (toC2 q.1.1 q.1.2)
-    have h2 := norm_Tround_le hφ (toC2 q.2.1 q.2.2)
-    nlinarith [norm_nonneg (Tround (toC2 q.1.1 q.1.2)), norm_nonneg (Tround (toC2 q.2.1 q.2.2))]
+    exact (mul_le_mul (hFb _) (hGb _) (norm_nonneg _) zero_le_one).trans_eq (one_mul 1)
   · obtain ⟨l, hl, h⟩ := hpos t ht
     exact ⟨l / 2, half_pos hl, fun q => re_sum_le h q⟩
+
+/-- **Step 1(a): holomorphy.** On an open set of `t` where the continued kernel decays
+(`KerPos (Rt t) λ` for some `λ > 0`), `t ↦ Hhol (Rt t)` is holomorphic. -/
+theorem differentiableOn_Hhol_Rt (hφ : PhiBound) {U : Set ℂ} (hU : IsOpen U)
+    (hpos : ∀ t ∈ U, ∃ l > 0, KerPos (Rt t) l) :
+    DifferentiableOn ℂ (fun t => Hhol (Rt t)) U :=
+  differentiableOn_HholPair_Rt measurable_Tround measurable_Tround
+    (norm_Tround_le hφ) (norm_Tround_le hφ) hU hpos
+
+/-- Hardy assembly for an arbitrary measurable disk-valued response pair. The real odd-series
+identification and circle mean bound must be supplied for this pair; neither is inherited from
+the incumbent rounder by this theorem. -/
+theorem hardy_of_pair_inputs {F G : ℂ × ℂ → ℂ}
+    (hF : Measurable F) (hG : Measurable G)
+    (hFb : ∀ u, ‖F u‖ ≤ 1) (hGb : ∀ u, ‖G u‖ ≤ 1)
+    {r : ℝ} (hr : 4149 / 4000 < r)
+    (hU : ∀ t ∈ Metric.ball (0 : ℂ) r, ∃ l > 0, KerPos (Rt t) l)
+    {h : ℕ → ℝ} (hs : Summable fun j => |h j|)
+    (hreal : ∀ t : ℝ, 0 < t → t < 1 →
+      HasSum (fun j => (h j : ℂ) * (t : ℂ) ^ (2 * j + 1)) (HholPair F G (Rt t)))
+    (hmean : (2 * Real.pi)⁻¹ * ∫ θ in (0 : ℝ)..2 * Real.pi,
+      ‖HholPair F G (Rt (((4149 / 4000 : ℝ) : ℂ) * Complex.exp (θ * Complex.I)))‖ ^ 2 ≤ 7 / 4)
+    (J : ℕ) :
+    ∑ n ∈ Finset.range J, h n ^ 2 * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4 := by
+  have hr1 : 1 < r := by linarith
+  have hdiff := differentiableOn_HholPair_Rt hF hG hFb hGb Metric.isOpen_ball hU
+  have hball := hasSum_odd_of_eqOn_real hr1 hdiff hs hreal
+  refine sum_sq_le_of_mean_le (f := fun t => HholPair F G (Rt t)) (fun θ => hball _ ?_)
+    (summable_abs_of_hasSum_ball (by norm_num) hr hball) hmean J
+  rw [Metric.mem_ball, dist_zero_right, norm_mul, Complex.norm_real, Real.norm_eq_abs,
+    Complex.norm_exp_ofReal_mul_I, mul_one]
+  norm_num; linarith
 
 /-- **`hardy` from three explicit inputs.** Let `h` be absolutely summable real coefficients and
 `ρ = 4149/4000`. Suppose
@@ -290,15 +340,9 @@ theorem hardy_of_inputs (hφ : PhiBound) {r : ℝ} (hr : 4149 / 4000 < r)
     (hmean : (2 * Real.pi)⁻¹ * ∫ θ in (0 : ℝ)..2 * Real.pi,
       ‖Hhol (Rt (((4149 / 4000 : ℝ) : ℂ) * Complex.exp (θ * Complex.I)))‖ ^ 2 ≤ 7 / 4)
     (J : ℕ) :
-    ∑ n ∈ Finset.range J, h n ^ 2 * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4 := by
-  have hr1 : 1 < r := by linarith
-  have hdiff := differentiableOn_Hhol_Rt hφ Metric.isOpen_ball hU
-  have hball := hasSum_odd_of_eqOn_real hr1 hdiff hs hreal
-  refine sum_sq_le_of_mean_le (f := fun t => Hhol (Rt t)) (fun θ => hball _ ?_)
-    (summable_abs_of_hasSum_ball (by norm_num) hr hball) hmean J
-  rw [Metric.mem_ball, dist_zero_right, norm_mul, Complex.norm_real, Real.norm_eq_abs,
-    Complex.norm_exp_ofReal_mul_I, mul_one]
-  norm_num; linarith
+    ∑ n ∈ Finset.range J, h n ^ 2 * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4 :=
+  hardy_of_pair_inputs measurable_Tround measurable_Tround
+    (norm_Tround_le hφ) (norm_Tround_le hφ) hr hU hs hreal hmean J
 
 end
 

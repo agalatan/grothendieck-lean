@@ -228,12 +228,16 @@ nothing: this bound has no hypothesis. The sharper conditional bound above uses 
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}.\par
 The native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}, check the upper head, selected-band masses, phase cover, Haagerup bound,
 the scalar sixteenth-power norm, cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and both finite covers.
-There are 25 native facts outside the separate cap-range target; the report \path{scratch/Axioms.lean} lists 493 theorems.
+The native-fact inventory and the report \path{scratch/Axioms.lean} enumerate the checked declarations.
 No \lean{sorry}; CI builds the default target and checks its axiom report. The 60 additional cap-range checks belong to
 the separate heavy \lean{GrotheCaps} target, whose recorded verification stamp CI checks. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
 the sharp upper bound retains external Gaussian component-error and Hardy inputs. The weaker upper bound $1.404909543$ is fully formal.
 Before the tail Cauchy--Schwarz step, the known linear coefficient's weighted square is deducted from $7/4$; this uses the same numerical hypotheses.
+The holomorphy and Hardy assembly proofs also cover separate measurable disk-valued left and right responses
+(\lean{HholPair}, \lean{hardy\_of\_pair\_inputs}). They share the covariance decay region; real odd-series
+identification and the circle mean bound remain explicit inputs for each pair. The incumbent results are
+specializations. This adds no numerical axiom and changes neither endpoint nor its remaining hypotheses.
 The research modules also prove 13 algebraic facts for coupled complex modulus majorizers, finite descent and semiconvex chord
 assembly, using only the three standard axioms. Their Gaussian integration, response extraction and global-cover
 obligations remain separate; these facts change neither endpoint nor its hypotheses.
