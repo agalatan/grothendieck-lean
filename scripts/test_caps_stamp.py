@@ -271,7 +271,7 @@ class RepositoryBoundaryTests(unittest.TestCase):
 
     def test_heavy_computation_closures_exclude_the_proof_layer(self):
         proof_modules = {
-            "Reduction", "WitnessCap", "Bridge", "RowCheck", "CapRows", "CapAssembly", "CapHull",
+            "NodeCaps", "Reduction", "WitnessCap", "Bridge", "RowCheck", "CapRows", "CapAssembly", "CapHull",
             "CapLinAlg", "CapPiece", "CapCheckSound", "CapGridOK", "CapTablesMk", "CapCover",
             "CapConstr", "CapPieceNodes",
         }

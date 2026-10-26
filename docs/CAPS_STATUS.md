@@ -1,11 +1,10 @@
 # Node caps in Lean: status (26 Oct 2026)
 
-The original default-target lower theorem remains
-`lower_bound_of_nodeCaps : NodeCaps → IsGrothendieckBound K → 1.401695322458 < K`.
-The refined default-target theorem improves this to 1.401697049825 under
-the same `NodeCaps` hypothesis; see the README for its certificate.
-The separate target supplies
-`lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → Llow < K`.
+The default target proves
+`lower_bound_of_refined_cover_data : NodeCaps → IsGrothendieckBound K → 1.401697049825 < K`.
+The separate target proves the same refined endpoint with fewer cap inputs:
+`lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697049825 < K`.
+Both theorems use `RefinedCoverData.refinedL` and the same checked finite cover.
 `CapsRest` consists of the vertex caps of rows 12–15 (t = 0.84, 0.845,
 0.85, 0.855), plus any excluded-node caps of rows 0–11 and 16–18. All
 exclusion lists are currently empty.
@@ -19,15 +18,18 @@ only `CapRangeDefs` and `CapRecipeData`. The computation layer separates
 `RowDataTypes`, `RowGateData`, `CapChords`, `CapLinAlgDefs`, `CapPieceDefs`,
 `CapNodeDefs`, `CapRangeDefs` and `CapTablesData` from analytic soundness.
 Its local closure contains the numerical checker and rational data, without
-`Reduction`, `WitnessCap`, `Bridge`, `RowCheck`, the lower certificate, or
+`Reduction`, `WitnessCap`, `Bridge`, the lower certificate, or
 the checker-soundness and convexity-assembly modules.
 
 `CapRows` retains `VertexCapsRow`, `ExclCaps` and `nodeCap_of_rangeOK`.
-`CapAssembly` retains the chord check `capChords_check`, convexity assembly,
-`nodeCaps_of_vertexCaps` and `lower_bound_of_vertexCaps`; `CapHull` is a
-compatibility import. These proof modules belong to the default `Grothe`
-target. `CapNodes` contains the 15 unchanged `vertexCapsRowKK` proofs,
-`CapsRest`, and the final assembly of `lower_bound_of_capsRest`.
+`CapAssembly` retains the chord check `capChords_check`, convexity assembly
+and `nodeCaps_of_vertexCaps`; `CapHull` is a compatibility import. The common
+`NodeCaps` definition lives in `NodeCaps.lean`, which imports `FibreSup`
+without importing `Reduction`. These proof modules belong to the default
+`Grothe` target. `CapNodes` contains the 15 unchanged `vertexCapsRowKK`
+proofs and `vertexCaps_of_capsRest`. Its final `lower_bound_of_capsRest`
+composes those vertex caps through `nodeCaps_of_vertexCaps` and
+`lower_bound_of_refined_cover_data`, with no new cap premise.
 
 The rows 12–15 piece checks have the same separation. `CapCoverDefs`
 contains `Cons` and the rational coverage predicates; `CapConstrDefs`
@@ -79,7 +81,7 @@ Acceptance of the combined computation split and CI-cache change requires
 one successful runner `caps` build of the combined candidate, both axiom
 reports, and the repeated ordinary CI check. A read-only digest or unchanged
 theorem statement is not a verification record. The scratch-branch
-`RowCheck.lean` comment probe leaves the computation hash unchanged;
+`Grothe/LowerAnalytic/Bridge.lean` comment probe leaves the computation hash unchanged;
 `CapRangeDefs.lean` is a negative control that changes it. Neither probe
 marks a build cache.
 
@@ -115,5 +117,6 @@ recipe can make its cap check fail; it cannot bypass the numerical checker.
 Rows 12–15 remain explicit `CapsRest` inputs. Their localized-piece data,
 computation campaign and final wiring are roadmap Tracks B/C. Track A
 separates both the existing 60 range facts and the localized-piece checks
-from the lower proof chain. It changes no cap, certificate or theorem
-statement, and does not discharge the remaining rows.
+from the lower proof chain. The same 60 range facts support the refined
+endpoint through the shared cover; recipes, row data and cap hypotheses
+are unchanged. The remaining rows are not discharged.

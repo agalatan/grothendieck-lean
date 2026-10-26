@@ -33,7 +33,7 @@ the value is at least `(1+ε) A − ε S` with `A = ∑ₗ ‖P₁,₀ uₗ‖²
 
 **The transfer link** (`transferInputs_of_witnessCap`): if the scalar cap `WitnessCap n B`
 (`‖⟪f, T g⟫‖ ≤ B` for a.e. unimodular `f, g`) holds for all large `n`, then `TransferInputsL2 B`,
-hence `lower_bound_of_witnessCap : (∀ n ≥ N, WitnessCap n Bcap) → IsGrothendieckBound K → Llow < K`.
+and `transfer_lower` gives `1 / B ≤ K` for every Grothendieck bound `K`.
 The scalar cap itself is the subject of `WitnessCap.lean`.
 -/
 
@@ -477,12 +477,6 @@ theorem transferInputs_of_witnessCap {B : ℝ} (N : ℕ) (hcap : ∀ n, N ≤ n 
   exact ⟨Fin (n + n) → ℝ, inferInstance, stdGaussian (n + n), inferInstance, witness n, Fin n,
     inferInstance, uL n, uL n, hcap n hNn, ae_sum_normSq_uL_le n, ae_sum_normSq_uL_le n,
     le_trans (by linarith) (norm_pairVal_witness n hn)⟩
-
-/-- `Llow < K` for every Grothendieck bound `K`, from the scalar caps of the witness. -/
-theorem lower_bound_of_witnessCap {K : ℝ} (N : ℕ) (hcap : ∀ n, N ≤ n → WitnessCap n Bcap)
-    (hK : IsGrothendieckBound K) : (Llow : ℝ) < K :=
-  lower_bound_of_transferL2 (transferInputs_of_witnessCap N hcap) hK
-
 
 end
 

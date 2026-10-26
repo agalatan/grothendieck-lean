@@ -3,7 +3,7 @@
 
 Reads only the durable data/lower-unshifted inputs. Replays every new node
 and every final box, binds the original canonical reference map to all old
-MixedData box strings, and checks the complete guillotine partition. The
+preserved uncompiled source box strings, and checks the complete guillotine partition. The
 old 21 batches and the existing pure-row law batch keep their indices.
 Further Stein or Gram/joint batches are appended by potential and mesh,
 with nodes ordered by exact scale and identifier. No discovery is rerun.
@@ -14,12 +14,12 @@ from fractions import Fraction as Q
 import hashlib
 import json
 from pathlib import Path
-import re
 import sys
 
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from needle_cover_lean import canonical_maps, refined_tokens, serialize
+from needle_cover_lean import (SOURCE_SERIALIZATION, canonical_maps, refined_tokens,
+                               serialize, source_serialization)
 from needle_cover_refine import Campaign, capvalue, mix, value, verify
 from needle_rankone_nodes import verify_unshifted
 from needle_unshifted_export import batch_term, spectral_batch_term
@@ -154,16 +154,10 @@ def original_data(base):
 
 def canonical_old_map(old, inherited):
     im, nm = canonical_maps(old, inherited)
-    text = (ROOT / 'Grothe/Lower/MixedData.lean').read_text()
-    chunks = re.findall(r'def coverBoxes\d+ : List String :=\s*\[([\s\S]*?)\]\s*\n', text)
-    oldstrings = [s for chunk in chunks for s in re.findall(r'"([^"]*)"', chunk)]
+    oldstrings, tokens, batch_count = source_serialization(ROOT)
     assert len(oldstrings) == len(old['boxes'])
     assert serialize(old, inherited, im, nm) == oldstrings, 'Original canonical node map changed'
-    batch_count = len(im) + len({b for b, _ in nm.values()})
-    batch_text = text[text.index('def mixedBatches :'):text.index('def coverBoxes0 :')]
-    assert batch_count == batch_text.count('⟨') == 21, 'Old batch count changed'
-    cuts = re.findall(r'def coverCuts\d+ : String :=\s*"([^"]*)"', text)
-    tokens = [t for s in cuts for t in s.split('|')]
+    assert batch_count == len(im) + len({b for b, _ in nm.values()}), 'Old batch count changed'
     return im, nm, oldstrings, tokens, batch_count
 
 
@@ -257,6 +251,8 @@ def export(cover_path, out_dir, check=False):
         path = base / name
         source_pins[str(path.relative_to(ROOT))] = sha(path)
     source_pins['Grothe/Lower/MixedData.lean'] = sha(ROOT / 'Grothe/Lower/MixedData.lean')
+    source_pins[str(SOURCE_SERIALIZATION)] = sha(ROOT / SOURCE_SERIALIZATION)
+    source_pins['data/lower-mixed/batches.json'] = sha(ROOT / 'data/lower-mixed/batches.json')
     for name in ('needle_unshifted_lean.py', 'needle_unshifted_export.py', 'needle_mixed_nodes.py',
                  'needle_rankone_nodes.py', 'needle_cover_lean.py', 'needle_cover_refine.py',
                  'rankone_law.py', 'rankone_source_paths.py'):

@@ -4,7 +4,7 @@ This is the single entry point for anyone (Codex or Claude) continuing the node 
 
 ## Goal
 
-The lower bound is `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401695322458 < K`, in the separate
+The lower bound is `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697049825 < K`, in the separate
 target `GrotheCaps` (see the README, "Node caps"). `CapsRest` is the vertex caps of **rows 12–15** (t = 0.84, 0.845,
 0.85, 0.855), plus any excluded-node caps of the other rows; the exclusion
 lists are empty. Rows 0–11 and 16–18 have 60 existing native range facts.
@@ -35,6 +35,10 @@ tables and checker definitions are separate from their soundness proofs.
 `CapRows` and `CapAssembly` remain in the default `Grothe` build; `CapHull`
 is a compatibility import. The 15 unchanged `vertexCapsRowKK` assembly
 proofs now live in `CapNodes`, alongside `CapsRest` and the final theorem.
+That theorem composes the same refined-cover result as the default target,
+using `nodeCaps_of_vertexCaps (vertexCaps_of_capsRest h)`; its endpoint is
+`RefinedCoverData.refinedL`. `NodeCaps.lean` holds the common cap definition
+without importing the Gaussian reduction.
 
 The cache provenance boundary is 54 files, down from 140: 48 local
 computation modules plus directly hashed `CapNodes.lean`, `GrotheCaps.lean`,
@@ -58,7 +62,7 @@ the combined branch is green; the user merges it. The master `warm` run
 reuses the runner's persistent build and refreshes the canonical master
 cache. Do not run a separate manual droplet verification.
 
-The scratch-branch comment probe in `Grothe/Lower/RowCheck.lean` leaves
+The scratch-branch comment probe in `Grothe/LowerAnalytic/Bridge.lean` leaves
 the 54-file digest unchanged. A comment in `CapRangeDefs.lean` changes it;
 the negative-control edit is restored and neither scratch edit is delivered.
 No marker is written from the probe. A read-only digest or unchanged theorem

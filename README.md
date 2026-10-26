@@ -101,7 +101,7 @@ polar grid, verified interval enclosures of the integrated coefficient matrix (`
 and an exact LDLᵀ check (`pot_le_of_nodeOK`); the per-node price recipes (`CapRecipeData.lean`) are checked by the
 precompiled kernel `GrotheCapsKernel/CapCheck.lean`, one `native_decide` fact per range of nodes (`capRangeKK_j`,
 four per row, one module `CapRowKK.lean` per row; no parallel tasks). Hence
-`lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → Llow < K`, where **`CapsRest`** comprises the vertex caps
+`lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697049825 < K`, where **`CapsRest`** comprises the vertex caps
 of the rows 0.84, 0.845, 0.85, 0.855 and any excluded-node caps of the other rows. The exclusion lists are currently empty.
 
 **Node caps: a separate build target, replayed by CI from a verified cache.**
@@ -156,8 +156,12 @@ See `AGENTS.md` §4 and `docs/CAPS_STATUS.md`.
 The default lower theorem still assumes `NodeCaps`.
 The separate theorem reduces this to `CapsRest`: the vertex caps of rows
 12–15 (t = 0.84, 0.845, 0.85, 0.855), plus any excluded-node caps of the
-other rows. All exclusion lists are empty. No cap, recipe, row data, bound
-or theorem statement changes. The rows 12–15 piece checks likewise import
+other rows. All exclusion lists are empty. Both lower theorems use the same
+refined cover and endpoint; the separate theorem composes
+`vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and
+`lower_bound_of_refined_cover_data`. `NodeCaps.lean` defines the common cap
+hypothesis without importing the Gaussian reduction. The cap computations,
+recipes and row data are unchanged. The rows 12–15 piece checks likewise import
 only rational data and computable definitions (`CapCoverDefs`,
 `CapConstrDefs`, `CapPieceRange`); `CapCover`, `CapConstr` and `CapPieceNodes`
 provide their soundness. Their generated facts and final `CapsRest` wiring
@@ -203,10 +207,23 @@ forced by this weighted head comparison. This adds no Gaussian input.
 
 `HardyHolo.lean` proves holomorphy and Hardy assembly for separate measurable
 disk-valued left and right responses (`differentiableOn_HholPair_Rt`,
-`hardy_of_pair_inputs`). The covariance decay region is shared; the real
-odd-series identification and circle mean bound remain explicit inputs for
-each pair. The incumbent theorems specialize this interface. Neither bound
-nor its remaining analytic hypotheses changes.
+`hardy_of_pair_inputs`). The fixed covariance path `Rt` and its decay region
+are shared; the real odd-series identification and circle mean bound remain
+explicit inputs for each pair. The incumbent theorems specialize this
+interface. Neither bound nor its remaining analytic hypotheses changes.
+
+**Radial repair and its ceiling.** `UpperChaos/RadialRepair.lean` certifies the
+polynomial disk map `z ↦ z S₆(1−|z|²)`, where S₆ is the degree-six binomial
+truncation of `(1−q)⁻¹ᐟ²`. Its exact squared-modulus defect has nonnegative
+coefficients and starts at q⁷. Applied to P₃, it gives a degree-39 polynomial
+factor. Lean also proves `(1−|P₃(x)|)² ≤ x⁶/1225` for x² ≤ 1.
+`UpperChaos/KernelStability.lean` bounds the **entire** physical coefficient
+change of charge-one responses by `(‖G‖₂+‖H‖₂)‖H−G‖₂` for the same feasible preprocessors.
+`radial_kernel_ceiling` combines these facts with an explicit sixth-moment
+input. Thus restoring the modulus is quantitatively limited; it is not
+automatically beneficial. These results change neither endpoint nor the
+remaining hypotheses of the sharp bound. They do not identify the concrete
+Gaussian phase moment or certify the new response's score.
 
 The current parameters and all 21,168 exact energies are in
 `data/upper-preprocess/certificate.json`; `python3 tools/gen_upper_data.py`
@@ -260,8 +277,8 @@ Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` fa
 `Grothe.head_check` (the upper head), `Grothe.UpperChaos.phi_cover_check_0`–`5` (the phase cover |φ| < 1),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
 `Grothe.HaagerupPower.check` (the residual, power norm, inverse defect, combined seed and signed tail),
-`Grothe.ScalarTailRefinement.power_check` (the scalar sixteenth-power norm), the 13 chunks `Grothe.Lower.certRows0`–`4`, `certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower
-certificate (assembled into `Grothe.Lower.cert_check`), the four
+`Grothe.ScalarTailRefinement.power_check` (the scalar sixteenth-power norm), the eight chunks
+`Grothe.Lower.certRows0`–`4` and `certBatches0`–`2` for the certified rows and mixed batches, the four
 `Grothe.Research.RefinedLowerCheck.certRefinedBoxes0`–`3` chunks and
 `certRefinedPartition` for the refined cover,
 `Grothe.Research.LawNodeCheck.certLawNodes` for the five added unshifted law nodes,
@@ -301,14 +318,37 @@ remain separate obligations. The refined cover has its own complete finite
 checks and retains `NodeCaps`. Their scope
 and exact research replays are indexed in [docs/RESEARCH_AUDIT.md](docs/RESEARCH_AUDIT.md).
 
-Eleven further Lean results address the geometry of phase perturbations.
+Forty-seven further Lean results address the geometry and integration of phase perturbations.
 They prove the exact modulus-weighted support defect, comparison of an entire
 energy spectrum after a common isometry, and invariance when the response and
 correlation operator are transported together. Rotating only the response
 does not preserve an anisotropic kernel. An all-index recurrence also proves
 that the phase spectrum has infinite first degree moment, ruling out that
-unweighted derivative budget. These results introduce no numerical facts and
-change neither endpoint; Gaussian perturbation experiments remain uncertified.
+unweighted derivative budget. A polarized tail certificate bounds the entire
+omitted energy change by the product of two approximation-error norms. Its
+inputs can be enclosed as positive integrals of squared polynomial errors;
+the approximants need not be exact Hermite projections. This avoids a
+subtraction of almost equal moments in a numerical residual Gram matrix.
+Two overlapping coordinate tests handle the actual shared Gaussian phase:
+one keeps its argument uniformly away from zero, while an affine polar chart
+makes its phase the angular coordinate. Lean proves the exact transformed
+Gaussian density, the Bernstein range enclosure used for chart selection,
+and that a symmetry-invariant cutoff preserves a disk-valued response and
+costs at most its omitted mass in squared L2 distance.
+An exact rational phase update is proved to have unit modulus for every real
+phase field, with a cancellation-free increment formula.
+Five radius-jet results prove carry-free coefficient indexing, exact radius
+translation, and a finite polynomial bound on whole complex patches. They
+support preserving radius–angle cancellations before interval evaluation.
+Two transport-ceiling results bound what a homogeneous norm-distance
+comparison can certify; they bound the certificate formula, not a new response's true score.
+The response-update assembly now keeps the signed changes on retained blocks,
+passes the positive-error tail price through a contractive smoothing and the
+actual bivariate kernel, and connects the complete coefficient score to
+the transfer theorem. Its nominal error can be assembled from the inherited
+anchor error and finite weighted retained-data errors, each charged once.
+These results introduce no numerical facts and change neither endpoint;
+the compact response integrals still require certification.
 The argument and the required intertwining condition are written in
 [docs/response-geometry.tex](docs/response-geometry.tex).
 

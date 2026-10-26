@@ -129,6 +129,23 @@ All pieces may share coordinates. Lean proves each coefficient cost by outward i
 native arithmetic checks eighteen weighted radii from the stored table and its error allowance.
 The Gaussian component-error enclosures and their identification with the pieces remain explicit inputs.
 
+\paragraph{Radial repair has a quantitative ceiling.}
+Lean certifies the polynomial disk map $z\mapsto zS_6(1-|z|^2)$, where
+$S_6(q)=\sum_{j=0}^6\binom{2j}{j}q^j/4^j$:
+the exact defect $1-(1-q)S_6(q)^2$ is $q^7$ times a polynomial with positive
+coefficients. Applied to $P_3(\varphi)$ this is a degree-$39$ factor.
+But Lean also proves $(1-|P_3(x)|)^2\le x^6/1225$ for $x^2\le1$.
+For charge-one responses and any same feasible preprocessors, the full coefficient change obeys
+\[
+ \|K_H-K_G\|_A\le(\|H\|_2+\|G\|_2)\|H-G\|_2.
+\]
+Thus outward radial changes of disk responses cost at most
+$2\sqrt{\E\varphi^6/1225}$ in the full kernel. The integrated Lean theorem
+retains the sixth-moment and radial-gap premises explicitly; it does not
+identify the concrete Gaussian moment or certify a new score. These results
+leave the endpoints unchanged. Preprocessor changes must be compared at the
+same $P,Q$; this ceiling does not bound a separate gain from reoptimising them.
+
 \subsection{Lower bounds: Hermite projection games}
 A lower bound needs an operator $T$ whose \emph{vector} value is close to $1$ while its \emph{scalar} value is small. We use
 \[
@@ -189,7 +206,7 @@ gates); all moment, Stein, spectral and contraction-Gram inequalities for every 
 Wick identity; the finite certificate (five row, three original-batch, one added law-batch and five refined-cover native checks)
 &
 \lean{NodeCaps}: the 19 potentials $\Psi_r$ (defined in Lean) lie below their stored rational caps at the tabulated nodes.
-The separate \lean{GrotheCaps} target reduces this to \lean{CapsRest}: the vertex caps of rows 12--15 ($t=0.84$--$0.855$) and any excluded-node caps.
+The separate \lean{GrotheCaps} target proves the same endpoint from \lean{CapsRest}: the vertex caps of rows 12--15 ($t=0.84$--$0.855$) and any excluded-node caps, using the same refined cover.
 The 60 range checks for fifteen rows use a computation-only layer.
 CI replays the final assembly when the 54-file cache provenance matches;
 a mismatch triggers the runner build and both axiom audits. Four rows retain external vertex caps.\\\midrule
@@ -212,9 +229,9 @@ nothing: this bound has no hypothesis. The sharper conditional bound above uses 
 \end{tabular}
 \end{center}
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}.\par
-The native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}, check the upper head, selected-band masses, six phase-cover ranges, Haagerup bound,
-the scalar sixteenth-power norm, cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and both finite covers.
-There are 30 native facts outside the separate cap-range target; the report \path{scratch/Axioms.lean} lists 504 theorems.
+The native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}, check the upper head, selected-band masses, the six-part phase cover, Haagerup bound,
+the scalar sixteenth-power norm, cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
+There are 25 native facts outside the separate cap-range target; the report \path{scratch/Axioms.lean} lists 532 theorems.
 No \lean{sorry}; CI builds the default target and checks its axiom report.
 The 60 additional cap-range checks belong to the separate heavy
 \lean{GrotheCaps} target. Its provenance hash covers 48 local computation
@@ -319,8 +336,30 @@ most $e$, the complete energy-spectrum discrepancy is at most
 $2\|x\|e+e^2$. A pure symmetry has zero price, including its entire tail.
 The kernel is preserved only when its correlation operator is transported
 too; rotating only the response can change the anisotropic kernel used here.
-These eleven Lean results change neither endpoint. Gaussian applications and
-new numerical searches still require their own certified integrations.
+An additional polarized certificate prices the whole omitted energy change
+by $AB$, where $A,B$ bound the approximation errors of the response difference
+and sum by retained polynomials. These may be certified with positive
+squared-error integrals, avoiding subtraction of nearly equal moments in a
+residual Gram matrix. Two overlapping coordinate tests either keep the phase
+argument away from zero or resolve it by an affine polar chart. Lean checks
+the exact transformed Gaussian density and a Bernstein range enclosure.
+A symmetry-invariant cutoff preserves admissibility and costs at most its
+omitted mass in squared $L^2$ distance. This lets an upper construction use
+compact chart domains with an explicit full-spectrum allowance.
+An exact rational phase update has unit modulus for every real field, with
+a cancellation-free increment formula. A finite radius jet retains the radius
+and angle as independent polynomial variables until cancellations finish.
+Lean checks carry-free coefficient indexing, exact translation, and the
+finite remainder bound on complex patches. A norm-only homogeneous transport
+certificate also has a proved ceiling: its certified score cannot exceed
+$b/N^2$ when the anchor has norm $N>0$ and score at least $0\le b\le N^2$.
+This limits that certificate formula, not the corrected response's true score.
+The update assembly keeps the signed retained changes, passes the positive
+error price through contractive smoothing and the bivariate kernel, and
+connects the entire score to the transfer theorem. The reference error is
+the inherited anchor error plus finite weighted retained-data errors,
+charged once. These forty-seven Lean results change neither endpoint.
+The compact Gaussian integrals still require certification.
 
 \subsection{Inequalities for cubic Gaussian chaos}
 Throughout, $q$ is a circular cubic Wick polynomial (bidegree $(2,1)$) in any number of complex Gaussian variables,

@@ -26,7 +26,7 @@ tables were hash-checked, not regenerated. See
 The exact certificate JSON and generator reproduce the module byte for byte.
 
 **Phase errors and transported certificates.**
-`Grothe/Upper/ResponseGeometry.lean` proves eight statements: the exact
+`Grothe/Upper/ResponseGeometry.lean` proves twelve statements: the exact
 disk support-defect identity, normalized-distance and weighted support-loss
 bounds (including zero moduli), kernel and block-energy transport under an
 explicit intertwining hypothesis, finite and countable energy comparisons
@@ -36,9 +36,55 @@ Bessel's inequality for the transported blocks. It does not assume that an
 arbitrary rotation preserves the coordinate bidegrees of the actual kernel.
 `Grothe/Haagerup/PhaseGeometry.lean` proves three all-index statements:
 `4*(n+1)*(n+2)*haagR(n+1)>=1`, the resulting harmonic lower bound, and
-non-summability of `(2*k+1)*haagCoeff k`. These eleven results use only
-standard axioms. The Gaussian phase-orbit differentiation argument and
-numerical response integrals are not formalized by these modules.
+non-summability of `(2*k+1)*haagCoeff k`. These first eleven results use only
+standard axioms. Four further results in `ResponseGeometry` prove exact
+energy polarization, its finite Bessel bound, `tail_of_approximants` for the
+entire omitted spectrum, and `polarized_gram_identity`. The tail bound is
+`A*B` when frozen retained polynomials approximate the increment and the
+sum of the two responses to errors `A,B`. Exact projection coefficients
+are not required; positive squared-error integral enclosures suffice.
+`Grothe/Upper/PhaseChart.lean` adds sixteen results: the overlapping chart
+cover, the ordinary chart's uniform phase gap, reconstruction and phase
+normalization in the centered chart, its exact Gaussian exponent and
+noncentrality bound, a regularizer estimate, affine and affine-polar integral
+identities, the exact transformed Gaussian weight, a Bernstein range bound,
+and two cutoff lemmas. The latter prove integrability and the squared L2
+error bound by omitted mass, and preservation of the disk bound and an
+explicit response symmetry. Two rational-phase lemmas prove unit modulus
+and the cancellation-free increment of `(1+i*t/2)/(1-i*t/2)` for every
+real phase field. The circular-profile multiplication recurrence is also
+proved for complex components, so it applies to the holomorphic continuation.
+The affine-polar identity is for Lebesgue
+Gaussian density; the existing measurable-function identity
+`LowerAnalytic.integral_gaussC_eq_volume` supplies the measure interface.
+`Grothe/Upper/RadiusJet.lean` adds five results: exponent decoding and
+injectivity below a fixed stride, compatibility with polynomial convolution,
+exact binomial radius translation, and a finite centered polynomial bound
+on complex patches. These justify the algebraic enclosure interface; they
+do not formalize the external ball-arithmetic implementation or its integrals.
+`Grothe/Upper/TransportLimit.lean` adds a dimensionless comparison ceiling
+and its norm-transport consequence: under `0 <= b <= N^2`, `a,N,e >= 0`
+and the triangle constraint `a*N <= 1+e`, every certified lower value
+`R <= a^2*b-2*a*N*e-e^2` satisfies `N^2*R <= b`.
+This limits the norm-only certificate formula, not the true score of a
+corrected response. More informative signed-coefficient comparisons are
+not excluded.
+`Grothe/Upper/ResponseUpdate.lean` adds nine results connecting those
+components to the existing upper transfer. A contractive linear smoothing
+preserves the raw positive approximation-error bounds. A hybrid energy
+table uses the new response on retained blocks and the anchor elsewhere;
+its full error is at most `A*B`. Its kernel is exactly the old kernel plus
+the finite signed block update. The nominal kernel error is bounded by
+the inherited anchor error plus the finite weighted retained-data error.
+The bivariate kernel's l1 contraction then gives the entire score, and
+`upper_of_smoothed_update` concludes `IsGrothendieckBound (1/s)` when that
+score budget is at least `s>0` and the actual kernel is dominated.
+All support, Bessel, contraction, realizability and numerical-error
+conditions remain explicit; Gaussian integrals are not inferred from
+quadrature convergence. No exact projection coefficients are assumed.
+All forty-seven results use only standard axioms. The Gaussian phase-orbit
+differentiation argument and numerical compact response integrals are not
+formalized by these modules. A chart cover is not an integral enclosure.
 Neither endpoint nor its hypotheses change.
 The written argument is in [response-geometry.tex](response-geometry.tex).
 
@@ -150,6 +196,24 @@ p(t) = t·P(t²) (`pList`, degree 41) and −τ(t) = t·Q(t²) (`qList`, degree 
 that both are realised by tensor powers (`Grothe/Upper/Realise.lean`); they do not enter the
 energies, and are chosen to make the kernel nearly linear. The slope is c = 7119483103461/10¹³.
 
+The separate `RadialRepair.lean` proves the exact complement identity
+`(1−q) S₆(q)² = 1−C₆(q)`, with C₆(q) = q⁷ times a polynomial with seven
+positive coefficients. It certifies the polynomial disk map
+`z ↦ z S₆(1−normSq z)` and its degree-39 phase specialization; no new
+`native_decide` fact is used. `radial_gap_sq_le` proves
+`(1−‖P₃(x)‖)² ≤ x⁶/1225` for x² ≤ 1. `KernelStability.lean` proves
+`Σ |E_H−E_G| ≤ (‖H‖₂+‖G‖₂)‖H−G‖₂` and transports this through any
+same feasible P,Q to all physical coefficients of charge-one responses. `RadialCeiling.lean`
+integrates the pointwise gap and proves `radial_kernel_ceiling`, with explicit
+phase-domain, radial-gap, integrability and sixth-moment premises. This theorem
+applies to diagonal response kernels. `HardyHolo` supplies holomorphy and Hardy
+assembly for separate responses along the fixed covariance path `Rt`.
+Applying the energy-coefficient realization to a response pair still needs
+signed cross moments rather than a nonnegative energy table. Retuned
+preprocessors need matching covariance and contour inputs. The concrete
+Gaussian moment and a score for the new rounder are not proved here, and the
+headline endpoints are unchanged.
+
 * Proved from scratch: the complex Gaussian Hermite basis on ℂ², completeness, Parseval,
   the L² Mehler formula, charge selection, energy summability and the energies-to-kernel
   identity (`Grothe/UpperChaos/`); measurability, charge one and disk-valuedness of G_T;
@@ -229,12 +293,17 @@ obstruction. The phase identity, residual and tensor transfer yield K ≤ 1.4049
 inputs. The single numerical fact is `Grothe.HaagerupPower.check._native.native_decide.ax_1_1`.
 
 
-**Lower bound.** `Grothe.Lower.lower_bound_data` (V ≤ B for every admissible scalar profile
-value under the simultaneous Gaussian reduction `SharedReduction`), `Grothe.Lower.lower_endpoint : 1/B ≤ K → 1401692002039/10^12 < K`, and the transfer
-`Grothe.Lower.lower_bound_of_transferL2 : TransferInputsL2 B → IsGrothendieckBound K → 1401692002039/10^12 < K`,
-where `TransferInputsL2 B` asks, for every δ > 0, for a finite measure space with an operator T on L²,
-a scalar cap ‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u, v in L² with Σₗ|uₗ|² ≤ 1 and
-Σₗ|vₗ|² ≤ 1 a.e. and ‖Σ⟨uₗ, T vₗ⟩‖ ≥ 1 − δ.
+**Lower bound.** `Grothe.Research.LawNodeLower.profile_bound_of_law_nodes`
+proves `V ≤ B` for an admissible scalar profile under the simultaneous
+Gaussian reduction `SharedReduction`, from checked rows, mixed batches,
+additional law nodes and a complete finite cover. The active certificate in
+`RefinedCoverResult.lean` uses `refinedB = 0.713420920822` and the strict
+endpoint `refinedL = 1.401697049825`. `Grothe.Lower.transfer_lower` gives
+`1/B ≤ K` from `TransferInputsL2 B`; `refined_endpoint_lt_reciprocal` supplies
+the exact strict comparison. `TransferInputsL2 B` asks, for every δ > 0,
+for a finite measure space with an operator T on L², a scalar cap
+‖⟨f, T g⟩‖ ≤ B over a.e. unimodular f, g, and families u, v in L² with
+Σₗ|uₗ|² ≤ 1 and Σₗ|vₗ|² ≤ 1 a.e. and ‖Σ⟨uₗ, T vₗ⟩‖ ≥ 1 − δ.
 
 **How the two halves fit.** The Gaussian witness is now defined in Lean
 (`Grothe/LowerAnalytic/Witness.lean`): on ℂⁿ = ℝ^{n+n} with the standard Gaussian measure,
@@ -249,8 +318,10 @@ ranges), and `transferInputs_of_witnessCap : (∀ n ≥ N, WitnessCap n B) → T
 The **scalar-cap half** is reduced to the certificate (`WitnessCap.lean`): for unimodular f, g
 with h = (f+g)/2, k = (f−g)/2, t = ‖P₁,₀h‖, the polarisation identity `VOf_eq`,
 Re⟨f, Tg⟩ = t² − ε‖P₂,₁h‖² − ‖P₁,₀k‖² + ε‖P₂,₁k‖², is proved, and
-`witnessCap_of_reduction : (∀ unimodular f g with Re⟨f,Tg⟩ ≥ 0, ReductionHyp n f g) → WitnessCap n Bcap`
-applies `lower_bound_data` to V = Re⟨f, Tg⟩ (after a phase) with the bound t ≤ 9/10 proved
+`LawNodeLower.witnessCap_of_law_nodes_reduction` converts the checked
+finite-cover profile bound into `WitnessCap n B` at its supplied cap `B`.
+It applies `profile_bound_of_law_nodes` to V = Re⟨f, Tg⟩ (after a phase),
+with the bound t ≤ 9/10 proved
 (`tOf_le`: P₁,₀h is a complex Gaussian, so ‖P₁,₀h‖² = Re⟨h, P₁,₀h⟩ ≤ E|P₁,₀h| = (√π/2)‖P₁,₀h‖, by the
 rotation invariance of the Gaussian measure and E√(x²+y²) = √(π/2) in `GaussianRadial.lean`) and the
 crude row derived from ‖P₂,₁k‖ ≤ ρ, which is proved (`normQk_le_rho`, L3): P₂,₁k ∈ H₂,₁ is a
@@ -281,14 +352,18 @@ through `Grothe/Research/RefinedCoverResult.lean`:
 Ψ_r(r_k) − 10⁻¹¹ ≤ c_k of the 19 certified potentials (exact-arithmetic certificates outside Lean).
 
 The separate `GrotheCaps` target supplies `lower_bound_of_capsRest :
-CapsRest → IsGrothendieckBound K → Llow < K` (`CapNodes.lean`). Its 15
+CapsRest → IsGrothendieckBound K → 1.401697049825 < K` (`CapNodes.lean`). Its 15
 `CapRowKK` modules retain the 60 unchanged single-threaded native range facts
 for rows 0–11 and 16–18, importing only the computation layer and recipe data.
 `CapRows` proves range-check soundness, and `CapAssembly` proves the chord
 check and convexity assembly (`CapHull` is a compatibility import). The
 default `Grothe` target builds that proof layer. `CapNodes` contains the
-15 unchanged row-assembly proofs and final `CapsRest` theorem; it and the
-heavy rows are excluded from the generated default root.
+15 unchanged row-assembly proofs and the final `CapsRest` theorem, which
+composes `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and the same
+`lower_bound_of_refined_cover_data` used by the default target. The common
+`NodeCaps` definition lives in `NodeCaps.lean`, independently of
+`Reduction.lean`. `CapNodes` and the heavy rows are excluded from the
+generated default root.
 
 The cache provenance boundary is 54 files: 48 local computation modules,
 plus `CapNodes.lean`, `GrotheCaps.lean`, `GrotheCapsKernel.lean`, `lean-toolchain`,
@@ -343,7 +418,9 @@ yet wired into `GrotheCaps` or `CapsRest`.
   The refined partition of [0, 9/10] × [0, ρ] × [0, 31/4] has 10,762 closed boxes.
   It retains the existing certified node potentials and their valid ranges, and adds two
   pure-row law-scale nodes for row 14 using the original unshifted source table and Stein cuts.
-  Their one appended batch passes `LawNodeCheck.certLawNodes`. Adaptive binary
+  Their one appended batch passes `LawNodeCheck.certLawNodes`. The recursive
+  coverage-only checker `treeCoverOK`, with proof `treeCoverOK_sound`, checks
+  the full tree partition. Adaptive binary
   subdivisions and reoptimized row mixtures use the same certified bank. Seventy
   additional reference labels expose existing source-table nodes, without adding
   a law certificate or a source cap. Inherited components retain their original
@@ -359,7 +436,7 @@ yet wired into `GrotheCaps` or `CapsRest`.
   connecting checked extra batches and a complete cover to the same Gaussian reduction
   and transfer. `RefinedLower.lean` specializes the interface to no additional batches;
   `RefinedCoverResult.lean` supplies the current complete certificate.
-* Inputs of the intermediate theorem `lower_bound_data` (all of them are now derived in Lean, except the node caps `NodeCaps`, by the chain ending in `lower_bound_of_refined_cover_data`): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
+* Inputs of the intermediate theorem `LawNodeLower.profile_bound_of_law_nodes` (all of them are now derived in Lean, except the node caps `NodeCaps`, by the chain ending in `lower_bound_of_refined_cover_data`): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
   from ‖Qk‖ ≤ E|Qk/‖Qk‖| ≤ ρ, which uses the moment bounds also for the cubic Qk/‖Qk‖), with ‖v‖² = 2
   and 0 ≤ t ≤ 9/10; the simultaneous Gaussian reduction of the rows (`SharedReduction`): one residual p = Q_w c₁ with scale τ = ‖p‖₂ ≤ ρ and normalised law
   U = |p|²/τ² satisfying the moment bounds and the Stein inputs, one gate variable
@@ -430,8 +507,8 @@ yet wired into `GrotheCaps` or `CapsRest`.
   identity of `GramTensor.lean` up to reindexing); so **every tensor fact of the contraction-Gram
   budget is proved** and `gaussian_gramInputs` has no hypothesis beyond circularity;
   `tools/check_gram_facts.py` checks the identities numerically with the exact Lean definitions.
-  `Grothe.LowerAnalytic.lower_bound_gaussian` instantiates `lower_bound_data` with this law and
-  discharges E U = 1, the integrability conditions, E U² ≥ 2, the cap E U² ≤ 62 ≤ 2 + (31/4)²
+  `Grothe.LowerAnalytic.sharedReduction_of_gaussian` packages this law in
+  `SharedReduction`: it discharges E U = 1, the integrability conditions, E U² ≥ 2, the cap E U² ≤ 62 ≤ 2 + (31/4)²
   (`gaussian_radU_cap`: E F⁴ ≤ 93 (E F²)² for every real third-chaos F, applied to a, b, a ± b),
   E√U ≤ ρ (derived from the other moment fields by `moments_of_three`) and all Stein inputs (including the spectral budgets and the covariance order). The
   residual q = a + ib is required to be *circular* (`Circular J a b`: J a complex structure on ℝ^d
@@ -476,9 +553,10 @@ yet wired into `GrotheCaps` or `CapsRest`.
   (`chargeSplit_circular`: C − θS has no charge four, so Cauchy–Schwarz in the two charge
   sectors against the blocks of S²), all through a real charge calculus (slot operators of J,
   the derivation δ with δf = −g, δg = f for the kernels of a, b, and the tetrahedral
-  contraction); `Circular.chaos3_right` shows that b is a cubic chaos when a is. The remaining inputs of
-  `lower_bound_gaussian` (the gate variable, the per-row reduction `RowShared`, the crude row) are discharged by
-  `reductionHyp_of_nodeCaps` (`Reduction.lean`) from the node caps alone.
+  contraction); `Circular.chaos3_right` shows that b is a cubic chaos when a is.
+  `reductionHyp_of_nodeCaps` (`Reduction.lean`) constructs the gate variable
+  and per-row `RowShared` reduction from the node caps. The crude row follows
+  from the proved bound `normQk_le_rho` in `WitnessCap.lean`.
 * Also proved, as standalone lemmas in `Grothe/LowerAnalytic/`: the three-moment lemma, the
   scalar sixth-moment and first-moment certificates (the sixth-moment one from its tensor and
   cumulant hypotheses), and the exact form of
@@ -526,13 +604,14 @@ rounding or improve an endpoint.
 | `CapRangeDefs`, `CapChords`, `CapRecipeData`, `CapRows`, `CapAssembly`, `CapRow00`–`CapRow11`, `CapRow16`–`CapRow18`, `CapNodes` | computation-only definitions and generated rational data; range-check soundness and convexity; 60 separate-target range facts verified on the runner and replayed by CI from its cache; final `lower_bound_of_capsRest` assembly |
 | `CapCoverDefs`, `CapConstrDefs`, `CapPieceRange`; `CapCover`, `CapConstr`, `CapPieceNodes` | localised caps of rows 12–15 (route M): computable coverage and constrained-piece checks separated from symmetry, S-lemma and piece-node soundness (issue #12) |
 
-**`Grothe/Lower/Cert/`: the original lower certificate in 13 single-threaded chunks.** `Rows0`–`Rows4`, `Batches0`–`Batches2`,
-`Boxes0`–`Boxes3` and `Partition` each hold one `native_decide` fact (`certRowsK`, `certBatchesK`, `certBoxesK`,
-`certPartition`); `Parts` holds the shared definitions; `Grothe/Lower/RowCheck.lean` assembles them into `cert_check`.
-The active refined endpoint uses the eight original row/batch facts, one law-node
-fact and five refined-cover facts (14 native inputs). The original cover remains
-in the default development; the complete registry has 30 native facts outside
-the separate 60 cap-range facts. There are 504 axiom-report entries.
+**`Grothe/Lower/Cert/`: the row and mixed-batch certificate in eight single-threaded chunks.**
+`Rows0`–`Rows4` and `Batches0`–`Batches2` each hold one `native_decide`
+fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
+`LawNodeLower.certified_rows` and `certified_mixed_batches` assemble those
+checks independently of a cover. The active endpoint uses these eight facts,
+one additional law-node fact and five refined-cover facts (14 native inputs).
+The complete registry has 25 native facts outside the separate 60 cap-range
+facts. There are 532 default axiom-report entries.
 
 Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`): `Grothe.head_check` (the upper head),
@@ -540,9 +619,9 @@ Axioms: `propext`, `Classical.choice`, `Quot.sound`, plus the `native_decide` fa
 `Grothe.HaagerupPower.check` (the finite residual, power norm, inverse defect, combined seed and signed tail of the unconditional upper bound),
 `Grothe.ScalarTailRefinement.power_check` (the scalar sixteenth-power norm), `Grothe.UpperChaos.phi_cover_check_0`–`5`
 (the phase cover |φ| < 1), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
-and the 13 chunks `Grothe.Lower.certRows0`–`4`,
-`certBatches0`–`2`, `certBoxes0`–`3`, `certPartition` of the lower certificate (assembled into
-`Grothe.Lower.cert_check`). The refined cover additionally has four box checks `certRefinedBoxes0`–`3`
+and the eight chunks `Grothe.Lower.certRows0`–`4` and
+`certBatches0`–`2` for the certified rows and mixed batches. The finite cover
+has four box checks `certRefinedBoxes0`–`3`
 and `certRefinedPartition` in `Grothe.Research.RefinedLowerCheck`, together with
 `Grothe.Research.LawNodeCheck.certLawNodes` for the added pure-row batch.
 The separate caps target additionally uses 60 range checks

@@ -1,5 +1,4 @@
 import Grothe.Lower.TransferL2
-import Grothe.Lower.Endpoint
 
 /-!
 # The transfer from the Gaussian witness to finite matrices (H5, stage 3)
@@ -11,21 +10,17 @@ bounded operator `T` on `L²(μ)` (the witness `P₁,₀ − ε P₂,₁`) with 
 `u, v : ι → L²(μ)` with `∑ₗ |uₗ|² ≤ 1`, `∑ₗ |vₗ|² ≤ 1` a.e. (the map `z ↦ z/‖z‖`, in dimension
 large enough) whose value `‖∑ₗ ⟪uₗ, T vₗ⟫‖` is at least `1 − δ`.
 
-* `transfer_lower : TransferInputsL2 B → IsGrothendieckBound K → 1 / B ≤ K` (from
-  `norm_pairVal_le`: finite partitions, phase choices on cells, `L²` approximation by ball-valued
-  simple functions, passage to the limit);
-* `lower_bound_of_transferL2 : TransferInputsL2 Bcap → IsGrothendieckBound K → Llow < K`,
-  composing with `lower_endpoint`.
+`transfer_lower : TransferInputsL2 B → IsGrothendieckBound K → 1 / B ≤ K` follows from
+`norm_pairVal_le`: finite partitions, phase choices on cells, `L²` approximation by ball-valued
+simple functions, and passage to the limit.
 
 `TransferInputsL2` does not name the operator: it asks for *some* `T` on some `L²` space.  Its
 instance is the Gaussian witness `T = P₁,₀ − ε P₂,₁` of `Grothe/LowerAnalytic/Witness.lean`:
 `transferInputs_of_witnessCap : (∀ n ≥ N, WitnessCap n B) → TransferInputsL2 B` proves it from
 the scalar caps `WitnessCap n B` (`‖⟪f, T g⟫‖ ≤ B` for a.e. unimodular `f, g` on `L²(γ_n)`), the
 value `‖∑ₗ ⟪uₗ, T uₗ⟫‖ ≥ 1 − (1+ε)/(n+1)` on `u(z) = z/‖z‖` being proved there
-(`norm_pairVal_witness`).  The scalar cap at `Bcap` is reduced in `WitnessCap.lean`
-(`witnessCap_of_reduction`) to `lower_bound_data` through the polarisation identity, with the
-remaining hypotheses `ReductionHyp` (the first-moment bound of the cubic residual and the Gaussian
-reduction of the rows); `lower_bound_of_reduction` composes everything into `Llow < K`.
+(`norm_pairVal_witness`). The scalar-profile identities and Gaussian reduction interface
+`ReductionHyp` are developed in `WitnessCap.lean`; a checked finite cover supplies the cap.
 -/
 
 namespace Grothe.Lower
@@ -52,10 +47,5 @@ theorem transfer_lower {B K : ℝ} (hT : TransferInputsL2 B) (hK : IsGrothendiec
   have hB : 0 < B := pos_of_mul_pos_right (a := K) (by linarith) (by linarith [hK.one_le])
   rw [div_le_iff₀ hB]
   exact h
-
-/-- The strict lower endpoint from the transfer inputs at the certified cap `Bcap`. -/
-theorem lower_bound_of_transferL2 {K : ℝ} (hT : TransferInputsL2 (Bcap : ℝ))
-    (hK : IsGrothendieckBound K) : (Llow : ℝ) < K :=
-  lower_endpoint K (transfer_lower hT hK)
 
 end Grothe.Lower

@@ -9,7 +9,8 @@ name: Lean proof check
 #   both axiom reports, then saves .lake/build as the shared build cache that every run restores.
 # * caps (on a branch whose cached GrotheCaps build does not match its sources): builds GrotheCaps for the tree CI
 #   checks (for ready/: merged with master), marks and saves the cache for that branch, and re-dispatches the check.
-# Cache policy: only "warm" runs on master write the cache; all other runs only read it (see AGENTS.md section 4).
+# Cache policy: runner warm runs publish the master cache; runner caps runs publish a branch cache.
+# GitHub-hosted checks only read these caches (see AGENTS.md section 4c).
 
 on:
   push:
@@ -17,7 +18,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "check (default), warm (master, droplet) or caps (ready/ branch, droplet)"
+        description: "check (default), warm (master, droplet) or caps (branch, droplet)"
         default: check
         type: choice
         options: [check, warm, caps]
@@ -230,7 +231,7 @@ jobs:
       - name: Mark the cached GrotheCaps build as verified for these sources, and record the built commit
         run: |
           python3 scripts/caps_stamp.py --mark-cache
-          # which tree this workspace's build corresponds to (read by consumers that mirror the runner's build)
+          # Record which tree the runner built; consumers restore Actions caches, not this workspace.
           git rev-parse HEAD > .lake/build/built-commit
 
       - name: Lower-proof comment leaves the verified caps cache valid
@@ -245,7 +246,7 @@ jobs:
             echo "Probe branch already exists; refusing to reuse it" >&2
             exit 1
           fi
-          row_file=Grothe/Lower/RowCheck.lean
+          row_file=Grothe/LowerAnalytic/Bridge.lean
           row_backup=$(mktemp)
           cp "$row_file" "$row_backup"
           probe_created=false
@@ -284,7 +285,7 @@ jobs:
           import subprocess
           import sys
 
-          path = Path("Grothe/Lower/RowCheck.lean")
+          path = Path("Grothe/LowerAnalytic/Bridge.lean")
           original = path.read_bytes()
           try:
               path.write_bytes(original + b"\n-- CI scratch probe: lower-proof comments leave caps computation unchanged.\n")

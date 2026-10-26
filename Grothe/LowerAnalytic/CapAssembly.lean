@@ -1,4 +1,4 @@
-import Grothe.LowerAnalytic.Reduction
+import Grothe.LowerAnalytic.NodeCaps
 import Grothe.LowerAnalytic.CapChords
 
 /-!
@@ -98,11 +98,6 @@ theorem nodeCaps_of_vertexCaps (h : VertexCaps) : NodeCaps := by
         * ((ns.getD i (0, 0)).1 - (ns.getD t.2.1 (0, 0)).1) ≤ (ns.getD i (0, 0)).2 := by
       exact_mod_cast hch
     exact (rowPot_le_chord k hk h0' (h1'.trans h2') h1'.le h2'.le ha hb).trans hch'
-
-/-- **The lower bound from the vertex caps**: `Llow < K` for every Grothendieck bound `K`. -/
-theorem lower_bound_of_vertexCaps (h : VertexCaps) {K : ℝ} (hK : IsGrothendieckBound K) :
-    (Llow : ℝ) < K :=
-  lower_bound_of_nodeCaps (nodeCaps_of_vertexCaps h) hK
 
 end
 
