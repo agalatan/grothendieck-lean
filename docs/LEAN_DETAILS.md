@@ -2,6 +2,23 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
+**Phase errors and transported certificates.**
+`Grothe/Upper/ResponseGeometry.lean` proves eight statements: the exact
+disk support-defect identity, normalized-distance and weighted support-loss
+bounds (including zero moduli), kernel and block-energy transport under an
+explicit intertwining hypothesis, finite and countable energy comparisons
+after aligning the anchor, and the zero full-spectrum price of a pure orbit.
+The countable bound is `2*norm(x)*e+e^2` when `norm(y-Ux)<=e`; it assumes
+Bessel's inequality for the transported blocks. It does not assume that an
+arbitrary rotation preserves the coordinate bidegrees of the actual kernel.
+`Grothe/Haagerup/PhaseGeometry.lean` proves three all-index statements:
+`4*(n+1)*(n+2)*haagR(n+1)>=1`, the resulting harmonic lower bound, and
+non-summability of `(2*k+1)*haagCoeff k`. These eleven results use only
+standard axioms. The Gaussian phase-orbit differentiation argument and
+numerical response integrals are not formalized by these modules.
+Neither endpoint nor its hypotheses change.
+The written argument is in [response-geometry.tex](response-geometry.tex).
+
 **Global spherical-dual research interface.** `Grothe/LowerAnalytic/SphericalTransfer.lean`
 proves the signed finite and countable coefficient-defect bound, a positive factorization
 controlling the inverse cubic Jacobi multipliers, their exact binomial recurrence and

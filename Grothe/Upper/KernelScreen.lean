@@ -43,12 +43,7 @@ theorem weighted_tail (a : ℕ → ℝ) (ha : Summable fun n => |a n|)
     intro n
     rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg (pow_nonneg hr _)]
     exact (mul_le_mul_of_nonneg_left (hp n) (abs_nonneg _)).trans_eq (mul_comm _ _)
-  have hs := Summable.of_norm_bounded (ha.mul_left (r ^ 5)) hb
-  calc
-    |∑' n, a n * r ^ (2 * n + 5)| ≤ ∑' n, ‖a n * r ^ (2 * n + 5)‖ :=
-      norm_tsum_le_tsum_norm hs.norm
-    _ ≤ ∑' n, r ^ 5 * |a n| := hs.norm.tsum_le_tsum hb (ha.mul_left _)
-    _ = r ^ 5 * ∑' n, |a n| := tsum_mul_left
+  exact tsum_of_norm_bounded (ha.hasSum.mul_left (r ^ 5)) hb
 
 theorem full_score_upper (a : ℕ → ℝ) (ha : Summable fun n => |a n|)
     {r : ℝ} (hr : 0 < r) (hr1 : r ≤ 1) (c0 c1 K : ℝ)
