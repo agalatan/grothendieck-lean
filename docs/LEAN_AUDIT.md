@@ -383,7 +383,10 @@ since been checked; no headline mathematical soundness defect has been found.
   [PR #92](https://github.com/agalatan/grothendieck-lean/pull/92) at master
   `daf21e9`; both production source files match the verified delivery exactly.
   Combined-master [run 40272617860](https://github.com/agalatan/grothendieck-lean/actions/runs/40272617860)
-  is still running at this update, so no completed check is claimed for that newer tree.
+  subsequently passed all 9,180 build jobs and verification gates on that exact
+  master: 502 reported theorems, 30 of 90 native facts, and the unchanged 140-file
+  cap stamp, with no Lean warnings or errors. This verifies #80 together with the
+  later Hardy assembly and the stronger phase-bound interface.
 
 - [#89](https://github.com/agalatan/grothendieck-lean/issues/89): polynomial
   evaluation reuses the existing coefficient budget, and the paired weighted
@@ -398,7 +401,17 @@ since been checked; no headline mathematical soundness defect has been found.
   aggregate validation remains the delivery CI's responsibility. The 31 Python
   tests, generated roots/lists, 19-file native-verification manifest and unchanged
   140-file cap stamp pass. No native input, headline statement, or definition
-  changes; the import counts do not establish a runtime speedup.
+  changes; the import counts do not establish a runtime speedup. The delivery
+  landed through [PR #93](https://github.com/agalatan/grothendieck-lean/pull/93)
+  at `00f8141`; all four source files also match subsequent master `ebb2fd9`.
+  Full [primary run 40273781782](https://github.com/agalatan/grothendieck-lean/actions/runs/40273781782)
+  passed all 9,180 build jobs and every verification gate, including 502 axiom
+  records (30 of 90 native facts) and the 140-file cap stamp, with no Lean
+  diagnostics. Its whole tree is identical to the ready delivery and master
+  `00f8141`. [Ready run 40273802402](https://github.com/agalatan/grothendieck-lean/actions/runs/40273802402)
+  also passed every proof gate before its final push lost a master race and the
+  automatic retry cancelled the old run. That final race does not invalidate the
+  successful primary check of the exact landed tree.
 
 The measured production Lean reduction across #54, #55 and #59 is **124 lines**:
 60 proof lines and 64 generated zero-coefficient lines. No module or native fact
@@ -435,7 +448,8 @@ checked tree rather than inferred from a later green badge.
 | `validation-docs` | `c8dbc97` | [40252827164](https://github.com/agalatan/grothendieck-lean/actions/runs/40252827164): docs-only success. |
 | `coeff-series` | `bf5376b` (PR #74), also `d7521c7` (PR #75) | [40252824585](https://github.com/agalatan/grothendieck-lean/actions/runs/40252824585): full success on the exact delivery tree; later combined-master status is qualified above. |
 | `final-record` | `351b6b0` | [40261239041](https://github.com/agalatan/grothendieck-lean/actions/runs/40261239041): docs-only success. |
-| `band-comparison` | `daf21e9` (PR #92) | [40266197230](https://github.com/agalatan/grothendieck-lean/actions/runs/40266197230): full success on the delivery tree; latest combined-master check remains pending. |
+| `band-comparison` | `daf21e9` (PR #92) | [40266197230](https://github.com/agalatan/grothendieck-lean/actions/runs/40266197230): full success on the delivery tree; [40272617860](https://github.com/agalatan/grothendieck-lean/actions/runs/40272617860) also passed the full combined master. |
+| `series-bounds` | `00f8141` (PR #93) | Changed modules and targeted dependents passed; all 65 type/axiom fingerprints and nine definition values preserved. Full [40273781782](https://github.com/agalatan/grothendieck-lean/actions/runs/40273781782) passed on the exact landed tree. |
 
 Open findings are [#48](https://github.com/agalatan/grothendieck-lean/issues/48)
 (remaining CI scope gap), [#49](https://github.com/agalatan/grothendieck-lean/issues/49)
