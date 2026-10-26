@@ -158,3 +158,5 @@ import Grothe.Research.CoupledMajorizer
 import Grothe.Research.SemiconvexChord
 import Grothe.Research.RefinedCoverResult
 import Grothe.UpperChaos.HardyKernel
+import Grothe.Upper.ResponseGeometry
+import Grothe.Haagerup.PhaseGeometry

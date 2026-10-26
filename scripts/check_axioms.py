@@ -293,16 +293,33 @@ UPPER_COMPARISON = {
     'Grothe.upper_value_lt',
 }
 REQUIRED |= UPPER_COMPARISON
+PHASE_RESPONSE = {
+    'Grothe.Upper.ResponseGeometry.support_defect',
+    'Grothe.Upper.ResponseGeometry.normalized_distance',
+    'Grothe.Upper.ResponseGeometry.weighted_support_loss',
+    'Grothe.Upper.ResponseGeometry.kernel_transport',
+    'Grothe.Upper.ResponseGeometry.energy_transport',
+    'Grothe.Upper.ResponseGeometry.finite_energy_comparison',
+    'Grothe.Upper.ResponseGeometry.full_energy_comparison',
+    'Grothe.Upper.ResponseGeometry.orbit_energy_zero',
+    'Grothe.HaagerupPhaseGeometry.scaled_lower',
+    'Grothe.HaagerupPhaseGeometry.harmonic_lower',
+    'Grothe.HaagerupPhaseGeometry.degree_moment_not_summable',
+}
+REQUIRED |= PHASE_RESPONSE
 NATIVE |= {'Grothe.Upper.comparison_check._native.native_decide.ax_1_1'}
 REQUIRED |= {'Grothe.Upper.actual_band_mass', 'Grothe.UpperChaos.norm_energyBlock_sq', 'Grothe.Upper.BandComparison.compare', 'Grothe.UpperChaos.localized_comparison', 'Grothe.Upper.comparison_check'}
 
 # Select one targeted audit, or require every family for the full report.
 audit_modes = [flag for flag in (
     "--caps", "--responses", "--response-geometry", "--haagerup-power",
-    "--research", "--hardy-budget", "--refined-cover", "--law-nodes", "--upper-comparison") if flag in sys.argv]
+    "--research", "--hardy-budget", "--refined-cover", "--law-nodes", "--upper-comparison", "--phase-response") if flag in sys.argv]
 if len(audit_modes) > 1:
     sys.exit("choose one axiom audit mode")
-if "--caps" in sys.argv:
+if "--phase-response" in sys.argv:
+    REQUIRED = PHASE_RESPONSE
+    NATIVE = set()
+elif "--caps" in sys.argv:
     REQUIRED = {"Grothe.LowerAnalytic.lower_bound_of_capsRest"}
 elif "--responses" in sys.argv:
     REQUIRED = RESPONSE_GEOMETRY | JOINT_RESPONSE

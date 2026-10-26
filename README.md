@@ -222,6 +222,17 @@ remain separate obligations. The refined cover has its own complete finite
 checks and retains `NodeCaps`. Their scope
 and exact research replays are indexed in [docs/RESEARCH_AUDIT.md](docs/RESEARCH_AUDIT.md).
 
+Eleven further Lean results address the geometry of phase perturbations.
+They prove the exact modulus-weighted support defect, comparison of an entire
+energy spectrum after a common isometry, and invariance when the response and
+correlation operator are transported together. Rotating only the response
+does not preserve an anisotropic kernel. An all-index recurrence also proves
+that the phase spectrum has infinite first degree moment, ruling out that
+unweighted derivative budget. These results introduce no numerical facts and
+change neither endpoint; Gaussian perturbation experiments remain uncertified.
+The argument and the required intertwining condition are written in
+[docs/response-geometry.tex](docs/response-geometry.tex).
+
 The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAILS.md).
 
 ## Layout

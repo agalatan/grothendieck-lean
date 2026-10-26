@@ -210,7 +210,7 @@ nothing: this bound has no hypothesis. The sharper conditional bound above uses 
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}.\par
 The native facts pinned in \path{scripts/check_axioms.py} check the upper head, selected-band masses, phase cover, Haagerup bound,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and both finite covers.
-There are 24 native facts outside the separate cap-range target; the report \path{scratch/Axioms.lean} lists 466 theorems.
+There are 24 native facts outside the separate cap-range target; the report \path{scratch/Axioms.lean} lists 477 theorems.
 No \lean{sorry}; CI builds the default target and checks its axiom report. The 60 additional cap-range checks belong to
 the separate heavy \lean{GrotheCaps} target, whose recorded verification stamp CI checks. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
@@ -270,6 +270,19 @@ The separator is $\Re(c_0-\frac9{25}c_1-c_2-c_3)$; positive polynomial certifica
 Thus optimizing this class further cannot improve the current upper bound. General non-Gaussian cubic
 responses and nonlinear shared image fields are not excluded. The Gaussian-family coefficient extraction
 is a written application of the Gaussian phase identity; it is not yet connected end to end in Lean.
+
+\paragraph{Phase errors and exact symmetries [Lean].}
+Phase alignment has an exact modulus-weighted quadratic defect. An unweighted
+degree-moment budget is unavailable: the phase coefficients satisfy
+$r_k\ge1/(4k(k+1))$ for $k\ge1$, so $\sum_k(2k+1)c_k=\infty$.
+Certificate comparison can instead align an anchor by a common isometry:
+if the measured blocks are transported with it and the remaining error is at
+most $e$, the complete energy-spectrum discrepancy is at most
+$2\|x\|e+e^2$. A pure symmetry has zero price, including its entire tail.
+The kernel is preserved only when its correlation operator is transported
+too; rotating only the response can change the anisotropic kernel used here.
+These eleven Lean results change neither endpoint. Gaussian applications and
+new numerical searches still require their own certified integrations.
 
 \subsection{Inequalities for cubic Gaussian chaos}
 Throughout, $q$ is a circular cubic Wick polynomial (bidegree $(2,1)$) in any number of complex Gaussian variables,
