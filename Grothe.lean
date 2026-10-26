@@ -231,5 +231,6 @@ import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialRepair
 import Grothe.UpperChaos.Realise2
 import Grothe.UpperChaos.Rounder
+import Grothe.UpperChaos.SchurTest
 import Grothe.UpperChaos.Structural
 import Grothe.UpperChaos.TaylorPhase
