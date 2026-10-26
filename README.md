@@ -186,7 +186,9 @@ Lean proves the complex Gaussian chaos calculus on ℂ² (`Grothe/UpperChaos/`: 
 Parseval, the Mehler formula for L² functions, charge selection, energies → kernel), hence the structural facts
 (validity, summability, parity) for G_T and X; the transfer inequality; the evaluation of the head of the kernel
 through degree 501 from 21,168 stored energies by a verified interval checker; the tail bound and the endpoint
-arithmetic. It also proves a selected-spectrum comparison: the error is split
+arithmetic. Tensor completeness follows from one-coordinate completeness by Fubini and
+fibrewise Cauchy–Schwarz; the Gaussian mixing law follows from product characteristic functions.
+Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
 only with X's energy in its selected band, weighted by the retained coefficient cost; the quadratic error is paid once.
 A native check derives every band radius from the stored table and its accuracy
@@ -209,8 +211,9 @@ forced by this weighted head comparison. This adds no Gaussian input.
 `HardyHolo.lean` proves holomorphy and Hardy assembly for separate measurable
 disk-valued left and right responses (`differentiableOn_HholPair_Rt`,
 `hardy_of_pair_inputs`). The fixed covariance path `Rt` and its decay region
-are shared; the real odd-series identification and circle mean bound remain
-explicit inputs for each pair. The incumbent theorems specialize this
+are shared. The decay region and the circle mean bound are now proved by five
+interval facts (`HardyArc*`), so `hardy_of_real` derives the `hardy`
+statement for every pair from summable real odd coefficients and their Gaussian identification. The incumbent theorems specialize this
 interface. Neither bound nor its remaining analytic hypotheses changes.
 
 **Radial repair and its ceiling.** `UpperChaos/RadialRepair.lean` certifies the
@@ -290,6 +293,7 @@ The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sou
 and the `native_decide` facts pinned in `data/axioms/native.txt` (read by `scripts/check_axioms.py`):
 `Grothe.head_check` (the upper head), `Grothe.UpperChaos.phi_cover_check_0`–`5` (the phase cover |φ| < 1),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
+`Grothe.UpperChaos.hardy_arc_part_0`–`3` and `hardy_region_check` (the Hardy circle mean and decay region),
 the eight chunks
 `Grothe.Lower.certRows0`–`4` and `certBatches0`–`2` for the certified rows and mixed batches, the four
 `Grothe.Research.RefinedLowerCheck.certRefinedBoxes0`–`3` chunks and
@@ -300,8 +304,8 @@ Every native check is single-threaded code (no `Task.spawn`).
 All other proofs, including the canonical finite checks, are kernel-checked.
 No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`, including the node caps.
-The report contains 588 print directives, with 371 required declarations and 83
-allowlisted native facts (23 outside the 60 cap ranges).
+The report contains 597 print directives, with 380 required declarations and 88
+allowlisted native facts (60 cap ranges, five Hardy checks and 23 others).
 The focused report `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, allows
 no native axioms for its 96 selected unconditional upper-bound results.
 Normal `ready/*` delivery CI builds and audits the combined tree before merging it.

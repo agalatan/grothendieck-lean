@@ -1,9 +1,9 @@
 # Native source inventory
 
 This inventory covers the named native facts allowed for the single `Grothe`
-target, plus the four anonymous table diagnostics below. The
-current allowlist has **83 named facts: 23 outside the 60 cap ranges**. The default
-report contains **588 print directives**, with **371 required declarations**.
+target, plus the four anonymous table diagnostics below. The current allowlist
+has **88 named facts: 60 cap ranges, five Hardy facts and 23 others**. The default
+report contains **597 print directives**, with **380 required declarations**.
 These are source/registry counts. Normal `ready/*` delivery CI builds and audits
 the combined tree before merging it.
 
@@ -126,6 +126,11 @@ all four acceptance proofs come from the canonical trace.
 | `Grothe.UpperChaos.phi_cover_check_3` | `Grothe/UpperChaos/PhiCoverCheck3.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.UpperChaos.phi_cover_check_4` | `Grothe/UpperChaos/PhiCoverCheck4.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.UpperChaos.phi_cover_check_5` | `Grothe/UpperChaos/PhiCoverCheck5.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
+| `Grothe.UpperChaos.hardy_arc_part_0` | `Grothe/UpperChaos/HardyArcPart0.lean:9` | yes | Indirect via scratch/Axioms.lean hardy_of_real, hardy_region_and_mean | GitHub-hosted module build 699 s alone, about 1700 s with the four parts in parallel (4 vCPUs) |
+| `Grothe.UpperChaos.hardy_arc_part_1` | `Grothe/UpperChaos/HardyArcPart1.lean:9` | yes | Indirect via scratch/Axioms.lean hardy_of_real, hardy_region_and_mean | GitHub-hosted module build 1142 s alone, about 1700 s with the four parts in parallel (4 vCPUs) |
+| `Grothe.UpperChaos.hardy_arc_part_2` | `Grothe/UpperChaos/HardyArcPart2.lean:9` | yes | Indirect via scratch/Axioms.lean hardy_of_real, hardy_region_and_mean | GitHub-hosted module build 800 s alone, about 1700 s with the four parts in parallel (4 vCPUs) |
+| `Grothe.UpperChaos.hardy_arc_part_3` | `Grothe/UpperChaos/HardyArcPart3.lean:9` | yes | Indirect via scratch/Axioms.lean hardy_of_real, hardy_region_and_mean | GitHub-hosted module build 1114 s alone, about 1700 s with the four parts in parallel (4 vCPUs) |
+| `Grothe.UpperChaos.hardy_region_check` | `Grothe/UpperChaos/HardyArcRegionCheck.lean:10` | yes | Indirect via scratch/Axioms.lean hardy_of_real, hardy_region_and_mean | GitHub-hosted module build 8.7 s |
 | `Grothe.Research.LawNodeCheck.certLawNodes` | `Grothe/Research/LawNodeCheck.lean:14` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.Research.RefinedLowerCheck.certRefinedBoxes0` | `Grothe/Research/RefinedCoverBoxes0.lean:11` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.Research.RefinedLowerCheck.certRefinedBoxes1` | `Grothe/Research/RefinedCoverBoxes1.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |

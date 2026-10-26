@@ -1,4 +1,5 @@
 # Theorems that must appear in the default axiom report scratch/Axioms.lean (one per line, sorted; union-merged).
+Grothe.Haag.phaseMoment_weighted
 Grothe.HaagerupCanonical.coefficient_check
 Grothe.HaagerupCanonical.completed_check
 Grothe.HaagerupCanonical.completed_error_identity
@@ -342,18 +343,26 @@ Grothe.Upper.comparisonWeight_sound
 Grothe.Upper.comparison_check
 Grothe.Upper.headWeight_sound
 Grothe.Upper.head_residual_le_weighted
+Grothe.UpperChaos.ProductComplete.ae_memLp_fibre
+Grothe.UpperChaos.ProductComplete.complete_prod
+Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
+Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
+Grothe.UpperChaos.ProductComplete.memLp_prod_mul
 Grothe.UpperChaos.RadialRepair.complement_identity
 Grothe.UpperChaos.RadialRepair.norm_phaseRepair_le_one
 Grothe.UpperChaos.RadialRepair.phaseRepair_change_sq_le
 Grothe.UpperChaos.RadialRepair.radial_gap_sq_le
 Grothe.UpperChaos.SchurMain.norm_HholPair_le
 Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
+Grothe.UpperChaos.charFunDual_gaussC
 Grothe.UpperChaos.differentiableOn_HholPair_Rt
 Grothe.UpperChaos.fresh_upper_concrete
 Grothe.UpperChaos.fresh_upper_of_rounding
 Grothe.UpperChaos.fresh_upper_rounder
 Grothe.UpperChaos.hardy_of_inputs
 Grothe.UpperChaos.hardy_of_pair_inputs
+Grothe.UpperChaos.hardy_of_real
+Grothe.UpperChaos.hardy_region_and_mean
 Grothe.UpperChaos.localized_comparison
 Grothe.UpperChaos.norm_energyBlock_sq
 Grothe.UpperChaos.phi_abs_lt_one

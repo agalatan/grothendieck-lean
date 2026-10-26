@@ -27,8 +27,8 @@ partition checker. Its unused straddler scan is absent, making
 [#56](https://github.com/agalatan/grothendieck-lean/issues/56) moot. This is a
 soundness/maintenance change; no speedup is claimed.
 
-Current source registries contain **588 default reports, 371 required declarations
-and 83 named native facts (23 ordinary plus 60 cap ranges)**. The current inventory
+Current source registries contain **597 default reports, 380 required declarations
+and 88 named native facts (60 cap ranges, five Hardy checks and 23 others)**. The current inventory
 is [LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md). The older counts and
 coverage measurements in the baseline review describe that earlier tree only.
 The baseline's retired-cover structural checks are not presented as a verification

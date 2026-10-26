@@ -237,7 +237,7 @@ Also:
 | cache | written only by | read by |
 |---|---|---|
 | GitHub master cache, key `lake-build-v3-<toolchain+manifest>-<caps digest>-<sha>` | the green check of master (on the droplet when the caps changed) | every CI run, cloud jobs |
-| GitHub branch cache, same key plus `-run<id>` | droplet checks of that branch | later checks of that branch; deleted when it merges |
+| GitHub branch cache, same key plus `-run<id>` | droplet checks of that branch, and green `ready/` checks | later checks of that branch (e.g. a `ready/` re-check after master moved); deleted with the branch |
 | droplet runner workspace (`~/actions-runner/_work`) | the runner only, one job at a time | nobody else; never copy into it or out of it |
 | laptop snapshot `.lake/master-cache` (main checkout) | `scripts/master_build_job.sh` (§5) | laptop worktrees through `scripts/clone_master_build.sh` |
 
@@ -245,7 +245,7 @@ Also:
   match, so a stale cache costs time, never correctness. The caps marker (`.lake/build/caps-closure.sha`) additionally
   ties the cached node caps to their source files; the digest in the cache key lets the route find the right cache.
 - **Trust:** a cached `native_decide` result is not re-executed. So only CI writes GitHub caches: master's green
-  check, and droplet checks for their own branch. Never publish a private build to GitHub.
+  check, droplet checks and green `ready/` checks for their own branch. Never publish a private build to GitHub.
 - **Changing the node caps:** a change in their import closure (`scripts/caps_stamp.py --list`) makes the next check
   run on the droplet; it builds the caps once for exactly the tree that will be merged. After the merge, master's
   check also runs on the droplet (master has no cache for the new caps yet) and finds them already built in the same

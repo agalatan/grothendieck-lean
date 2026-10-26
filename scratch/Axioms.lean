@@ -2,6 +2,7 @@ import Grothe
 
 #print axioms Grothe.DiskKernel.dominated
 #print axioms Grothe.DominatedKernel.comp_radial
+#print axioms Grothe.Haag.phaseMoment_weighted
 #print axioms Grothe.HaagerupCanonical.coefficient_check
 #print axioms Grothe.HaagerupCanonical.completed_check
 #print axioms Grothe.HaagerupCanonical.completed_error_identity
@@ -514,12 +515,18 @@ import Grothe
 #print axioms Grothe.UpperChaos.Bm_polyKernel
 #print axioms Grothe.UpperChaos.Ef_X0_mul
 #print axioms Grothe.UpperChaos.GT_rot2
+#print axioms Grothe.UpperChaos.ProductComplete.ae_memLp_fibre
+#print axioms Grothe.UpperChaos.ProductComplete.complete_prod
+#print axioms Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
+#print axioms Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
+#print axioms Grothe.UpperChaos.ProductComplete.memLp_prod_mul
 #print axioms Grothe.UpperChaos.RadialRepair.complement_identity
 #print axioms Grothe.UpperChaos.RadialRepair.norm_phaseRepair_le_one
 #print axioms Grothe.UpperChaos.RadialRepair.phaseRepair_change_sq_le
 #print axioms Grothe.UpperChaos.RadialRepair.radial_gap_sq_le
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_le
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
+#print axioms Grothe.UpperChaos.charFunDual_gaussC
 #print axioms Grothe.UpperChaos.differentiableOn_HholPair_Rt
 #print axioms Grothe.UpperChaos.differentiableOn_Hhol_Rt
 #print axioms Grothe.UpperChaos.differentiableOn_integral_exp
@@ -530,6 +537,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.fresh_upper_rounder
 #print axioms Grothe.UpperChaos.hardy_of_inputs
 #print axioms Grothe.UpperChaos.hardy_of_pair_inputs
+#print axioms Grothe.UpperChaos.hardy_of_real
+#print axioms Grothe.UpperChaos.hardy_region_and_mean
 #print axioms Grothe.UpperChaos.hasSum_energy
 #print axioms Grothe.UpperChaos.hasSum_energy2
 #print axioms Grothe.UpperChaos.hasSum_energy_bideg

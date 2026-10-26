@@ -1,7 +1,7 @@
 # Canonical Haagerup upper-bound verification
 
 Agent: `codex-aa04`. Work branch: `codex/lean-audit`. Issue: #113.
-Combined master: `624e4845bd943c9954d17285d1eb0cee96424389`.
+Cloud snapshot combined master: `624e4845bd943c9954d17285d1eb0cee96424389`.
 Cloud-checked commit: `f7d9773e036ccdc3a2acf4e441f7ba4dd465d678`.
 Cloud-checked Git tree: `2dea4dbfc59b0978b12fe95e0c9f2ec72788a0b7`.
 Full check: [40410959319](https://github.com/agalatan/grothendieck-lean/actions/runs/40410959319) (completed successfully).
@@ -25,6 +25,22 @@ every generated equality; the generator is not trusted. The obsolete native
 `PowerData.lean` from unchanged certificate JSON. The global native allowlist
 removes exactly that one fact, decreasing from 84 to 83. The new arithmetic
 module is outside the precompiled kernel library, which remains unchanged.
+
+## Integration for delivery
+
+The successful cloud run is immutable evidence for `f7d9773`, over master
+`624e484`; it does not certify later source changes. `integration.json` records
+integration with master `972922c` and the independent Hermite delivery `67a4e47`.
+All existing proof-module bodies, including every canonical arithmetic trace,
+remain byte-for-byte unchanged from the checked snapshot. The added modules are
+master's eleven Hardy modules and its interval kernel; the roots and global audit
+registries also change. The integrated inventory has 597 reports, 380 required
+names, and 88 native facts. The focused 96/0 audit is unchanged.
+
+The ready delivery checks this integrated tree before merging. `SHA256SUMS`
+tracks the delivered files; `cloud-source-snapshot.json` preserves the separate
+hashes of the earlier cloud-checked tree. The original PDF review is in
+`pdf-review.log`; the integrated PDF review is in `integration-pdf-review.log`.
 
 ## Evidence
 
@@ -54,8 +70,8 @@ module is outside the precompiled kernel library, which remains unchanged.
 - `SHA256SUMS`: proof sources, policies, documentation, and these receipts.
 
 ```sh
-scripts/cloud.sh --ref codex/lean-audit check
-python3 scripts/check_axioms.py < docs/verification/haagerup-canonical-20261026/cloud-axioms.txt
+# Run the global checker with scripts and policies from cloud commit f7d9773.
+# Current master has additional required reports; use delivery CI for that tree.
 python3 scripts/check_axioms.py --haagerup-power < docs/verification/haagerup-canonical-20261026/axioms.log
 python3 -I tools/verify_haagerup_canonical.py --out handoff/canonical-replay.json
 python3 -m unittest discover -s scripts -p 'test_*.py'

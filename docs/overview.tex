@@ -211,7 +211,7 @@ The 60 range checks for fifteen rows use a computation-only layer.
 CI replays the final assembly when the 53-file cache provenance matches;
 a mismatch triggers the runner build and the axiom audit. Four rows retain external vertex caps.\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error, table-accuracy and Hardy inputs, proves $\KG\le500000000000000000/355973699864771491$.}\\[2pt]
-the concrete disk-valued rounding; Gaussian Hermite completeness, Parseval and Mehler, charge selection, summability;
+the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussian mixing by characteristic functions, Parseval and Mehler, charge selection, summability;
 the transfer inequality (tensor powers); kernel composition and locality; the head through degree 501 from
 21,168 stored energies by a verified interval evaluator (one \lean{native\_decide}); the tail bound; the endpoint; the selected-block comparison and native band masses
 &
@@ -231,7 +231,7 @@ no external mathematical premise. The focused audit checks 96 results with zero 
 The 96-result focused audit confirms only \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} for the unconditional upper bound.\par
 The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
-There are 83 native facts, 60 of them the cap-range checks (23 outside those ranges); the report \path{scratch/Axioms.lean} contains 588 print directives, with 371 required declarations.
+There are 88 native facts: 60 cap-range checks, five Hardy region and circle checks, and 23 others. The report \path{scratch/Axioms.lean} contains 597 print directives, with 380 required declarations.
 No \lean{sorry}; normal \path{ready/*} delivery CI builds the single target \lean{Grothe}, cap rows included, and checks its one axiom report before merging.
 The cap-range checks take about 21 CPU-hours cold, so CI replays them from a verified build cache.
 Its provenance hash covers 48 local computation
@@ -250,9 +250,10 @@ Before the tail Cauchy--Schwarz step, the known linear coefficient's weighted sq
 Holomorphy under positive kernel decay, odd-series continuation and circle Parseval are proved.
 The holomorphy and Hardy assembly also cover separate measurable disk-valued left and right responses
 (\lean{HholPair}, \lean{hardy\_of\_pair\_inputs}); the incumbent results are specializations.
-A positive covariance-decay region, summable real odd coefficients, their Gaussian-kernel identification
-and the circle mean bound remain explicit inputs for each pair. This adds no numerical axiom
-and changes neither endpoint nor its remaining hypotheses.
+The decay region and the circle mean are checked in Lean by five interval facts. With them, \lean{hardy\_of\_real} reduces \lean{hardy}
+to summability and the real Gaussian identification of the odd series.
+These pair-specific inputs remain explicit. The five numerical facts discharge the common decay
+and circle inputs and preserve both endpoints.
 The research modules also prove 13 algebraic facts for coupled complex modulus majorizers, finite descent and semiconvex chord
 assembly, using only the three standard axioms. Their Gaussian integration, response extraction and global-cover
 obligations remain separate; these facts change neither endpoint nor its hypotheses.
