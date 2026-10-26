@@ -288,9 +288,13 @@ since been checked; no headline mathematical soundness defect has been found.
   inverse trim has exact equivalence, independent replay, and fresh complete
   native/proof-build evidence from
   [run 40247044009](https://github.com/agalatan/grothendieck-lean/actions/runs/40247044009).
-  Its affected files match the verified inputs. The aggregate report accepted
-  424 declarations and the cap stamp passed. No speedup is established; later
-  merged-tree CI remains pending. See the
+  The later primary-branch
+  [run 40250530009](https://github.com/agalatan/grothendieck-lean/actions/runs/40250530009)
+  and merged-master
+  [run 40251214852](https://github.com/agalatan/grothendieck-lean/actions/runs/40251214852)
+  also passed fresh complete builds, 435-record axiom reports and cap-stamp checks;
+  the affected files are identical across these verified trees. Master also passed
+  its generated-import/list check. No speedup is established. See the
   [verification record](verification/haagerup-trim-20261026/README.md).
 - [#60](https://github.com/agalatan/grothendieck-lean/issues/60): the axiom checker
   rejects unknown/conflicting modes and incomplete or diagnostic-bearing output.
@@ -298,10 +302,15 @@ since been checked; no headline mathematical soundness defect has been found.
   `data/axioms/`; all seven effective policies exactly preserve those checked at
   `1b44a219d553801ee319a993203f773e5646174b`, including the 11 phase-response
   requirements and their empty native allowlist. All 17 Python tests also pass
-  against that current-master checker and data snapshot. The actual 435-record report
+  against that master checker and data snapshot. The actual 435-record report
   from [run 40247087615](https://github.com/agalatan/grothendieck-lean/actions/runs/40247087615)
-  passes the strict checker (18 of 78 native facts); this tests the report input
-  and does not claim that the run's later auto-merge step succeeded.
+  passes the strict checker (18 of 78 native facts). The later successful master
+  run `40251214852` also executed and passed the strict checker on 435 records.
+  Later master `c38a625` adds four explicit audit modes, 44 required declarations
+  and six native facts from the separate law-node/refined-cover delivery. The
+  strict parser and CLI logic are preserved; all 21 tests pass on that snapshot,
+  including all 11 policies and 90 conflicting-mode pairs. These registry additions
+  are separate from this audit's unchanged native-fact count.
 
 - [#59](https://github.com/agalatan/grothendieck-lean/issues/59): one shared
   coefficient-series budget lemma replaces three repeated arguments; two
@@ -312,11 +321,59 @@ since been checked; no headline mathematical soundness defect has been found.
   modules. All 64 existing declaration type/axiom fingerprints and nine definition
   value hashes match the baseline. The new lemma uses only `Classical.choice`,
   `Quot.sound` and `propext`; imports, native inputs and the cap digest are unchanged.
-  This evidence covers source commit `7721654`; full aggregate-dependent coverage
-  remains for CI.
+  Full [CI run 40252824585](https://github.com/agalatan/grothendieck-lean/actions/runs/40252824585)
+  passed on `e8fd03e`, whose complete tree matches delivery `0a7a1a3`: all 9,154
+  build jobs, 435 axiom records (18 of 78 native facts), generated lists, forbidden-code
+  scan and cap stamp passed without Lean diagnostic warnings. The ready run
+  `40252925305` also passed every verification gate; only its final push failed
+  because master had advanced. The change landed through
+  [PR #74](https://github.com/agalatan/grothendieck-lean/pull/74) at `bf5376b`;
+  [PR #75](https://github.com/agalatan/grothendieck-lean/pull/75) subsequently merged
+  the same source tree at `d7521c7`. The ready retry was cancelled;
+  combined-master [run 40256701427](https://github.com/agalatan/grothendieck-lean/actions/runs/40256701427)
+  was also cancelled before completion. Neither cancellation is counted as a
+  successful combined-master check. Subsequent green scope-skipped runs do not
+  provide that evidence either. At this update, combined-master
+  [run 40259931326](https://github.com/agalatan/grothendieck-lean/actions/runs/40259931326)
+  on `3a23cdd` is still building; final integration verification remains tracked
+  in [#46](https://github.com/agalatan/grothendieck-lean/issues/46).
 
 The measured production Lean reduction across #54, #55 and #59 is **124 lines**:
 60 proof lines and 64 generated zero-coefficient lines. No module or native fact
 is removed, and no meaningful native runtime improvement is established.
 Other gated changes to native facts/inputs, headline interfaces, and caps-closure
 sources remain unapproved. Workflow #48 remains coordinated with reserved PR #44.
+
+The original statement and coverage audit is scoped to its named baseline.
+Later master `c38a625` independently strengthens the conditional selected-spectrum
+upper endpoint to `500000000000000000 / 355973699864771491 < 1.404598149218`
+using a deduction from the existing Hardy budget. Its four coefficient-series
+source files are unchanged, and the #59 patch merged cleanly with it; combined
+verification is tracked by the master run above. The new law-node/refined-cover
+certificates are not presented as part of the earlier baseline audit.
+
+## Delivery ledger
+
+All branches below use the `ready/codex-lean-audit-` prefix. The listed master
+commits record where each delivery landed; CI evidence is tied to its actual
+checked tree rather than inferred from a later green badge.
+
+| Branch suffix | Resulting master commit | Verification |
+| --- | --- | --- |
+| `report` | `09244a4` | [40244730307](https://github.com/agalatan/grothendieck-lean/actions/runs/40244730307): docs-only success. |
+| `stamp` | `fa00c7b` (PR #57) | Ten isolated regression tests and the real cap digest passed; later full checks include this fix. |
+| `deadcode-2` | `03e7d7e` | [40247074349](https://github.com/agalatan/grothendieck-lean/actions/runs/40247074349): scope-skipped success; separate positive/negative fixtures passed. |
+| `screens` | `ba3bb6c` | [40247076838](https://github.com/agalatan/grothendieck-lean/actions/runs/40247076838): full build and verification passed. |
+| `inverse` | `21485d9` (PR #62), also included in `f78cb0d` | Conflicts resolved and repushed as `beaa195`; [40247044009](https://github.com/agalatan/grothendieck-lean/actions/runs/40247044009), [40250530009](https://github.com/agalatan/grothendieck-lean/actions/runs/40250530009), and [40251214852](https://github.com/agalatan/grothendieck-lean/actions/runs/40251214852) provide full checks on identical affected inputs. |
+| `axioms` | `f78cb0d` (PR #70) | Conflicts resolved while preserving the incoming phase-response policy; [40251214852](https://github.com/agalatan/grothendieck-lean/actions/runs/40251214852) passed the strict checker. Duplicate PR #65 was closed. |
+| `validation-docs` | `c8dbc97` | [40252827164](https://github.com/agalatan/grothendieck-lean/actions/runs/40252827164): docs-only success. |
+| `coeff-series` | `bf5376b` (PR #74), also `d7521c7` (PR #75) | [40252824585](https://github.com/agalatan/grothendieck-lean/actions/runs/40252824585): full success on the exact delivery tree; later combined-master status is qualified above. |
+
+Open findings are [#48](https://github.com/agalatan/grothendieck-lean/issues/48)
+(remaining CI scope gap), [#49](https://github.com/agalatan/grothendieck-lean/issues/49)
+(anonymous native facts), [#51](https://github.com/agalatan/grothendieck-lean/issues/51)
+(unused interface hypothesis), [#52](https://github.com/agalatan/grothendieck-lean/issues/52)
+(remaining projection/Gaussian sharing), [#53](https://github.com/agalatan/grothendieck-lean/issues/53)
+(interval-kernel reuse), and [#56](https://github.com/agalatan/grothendieck-lean/issues/56)
+(partition computation). The coefficient-series portion of #52 is delivered by
+#59; its broader proposals remain open.

@@ -34,14 +34,28 @@ passed at `752473bc11444f3869c33953e5219c4ed2d52aa7`. With no project build-cach
 hit, it built `Grothe.Haagerup.PowerCheck` in 438 seconds and `Grothe.Haagerup.Power`
 in 10 seconds, completed the aggregate build and forbidden-code scan, accepted
 424 axiom records (18 of 78 allowed native facts), and passed the unchanged
-140-file caps stamp. Mathlib dependencies were cached; the separate caps target
-was not rebuilt. The five affected files—`Power.lean`, `PowerCheck.lean`, the
-certificate JSON and its README, and `gen_haagerup_power.py`—are byte-identical
-between that run, trim delivery `1f49d089`, and the current verification record.
-These module times are observations, not a before/after performance comparison.
-CI for the later merged tree remains pending at this update; this successful run
-certifies the specified earlier tree. The external replay and focused benchmark
-do not replace Lean build and axiom checks.
+140-file caps stamp.
+
+Subsequent full validations passed on the primary branch at `a0341d7`
+([run 40250530009](https://github.com/agalatan/grothendieck-lean/actions/runs/40250530009))
+and merged master at `08e55bb`
+([run 40251214852](https://github.com/agalatan/grothendieck-lean/actions/runs/40251214852)).
+Both missed the project build cache and freshly built `PowerCheck` and `Power`:
+372 / 9.8 seconds on the primary branch, 297 / 7.0 seconds on master. Both accepted
+435 axiom records (18 of 78 allowed native facts), passed the forbidden-code scan
+and unchanged caps stamp, and completed the aggregate build. Master additionally
+passed the generated root-import and sorted-list check. Neither run emitted a
+Lean diagnostic warning; each reported two infrastructure deprecations. Mathlib's
+8,908 cache files were downloaded; the separate caps target was not rebuilt.
+
+The five affected files—`Power.lean`, `PowerCheck.lean`, the certificate JSON and
+its README, and `gen_haagerup_power.py`—are byte-identical across all three verified
+trees, trim delivery `1f49d089`, and the current verification record. The fresh
+`PowerCheck` builds execute the complete native certificate check. These module
+times are observations, not a before/after performance comparison. The results
+certify the named trees; validation of subsequent proof changes is recorded
+separately. The external replay and focused benchmark do not replace Lean build
+and axiom checks.
 
 The historical native module build in
 `docs/verification/haagerup-resolvent-20261025/native-build.log` took 522.95 seconds
@@ -49,10 +63,11 @@ wall / 509.46 seconds user CPU and matches the pre-trim source hash. That older
 folder's manifest describes the baseline source tree, not the trimmed inputs;
 verify it at commit `b5a23f06f919e11c18acc0dc4e97a7da78771b3f`.
 
-After the phase-geometry documentation merge, the current `OVERVIEW.pdf` was
-regenerated from the merged `docs/overview.tex`; all ten pages were visually
-reviewed. The regeneration preserves the stated bounds and hypotheses. Its source
-retains one pre-existing bibliography underfull-box warning.
+The `OVERVIEW.pdf` at merge-repair commit
+`beaa19555cd03034f63012185507bff56546efad` was regenerated from the merged
+`docs/overview.tex` after the phase-geometry documentation merge; all ten pages of
+that PDF were visually reviewed. The regeneration preserves the stated bounds and
+hypotheses. That source retains one pre-existing bibliography underfull-box warning.
 
 From the repository root:
 
