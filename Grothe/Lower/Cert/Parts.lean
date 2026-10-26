@@ -5,16 +5,12 @@ import Grothe.Lower.Support
 /-!
 # The certificate check in parts
 
-The exact checks of the certificate are split into consecutive chunks of the rows, the batches and
-the boxes, plus the partition check, so that each chunk is one single-threaded `native_decide` in
-its own module (`Grothe/Lower/Cert/*.lean`) and `lake` runs the chunks in separate processes.
+The retained row and mixed-batch checks and the refined cover use consecutive chunks.
+Each numerical fact is single-threaded; Lake runs separate modules in separate processes.
 `all_of_chunk` reassembles a `List.all` from its chunks.
 -/
 
 namespace Grothe.Lower
-
-/-- The boxes of the cover. -/
-def coverBoxList : List Box := coverBoxes.map parseBox
 
 /-- A chunk `[a, a + k)` of a list passes `f`. -/
 def chunkOK {α : Type*} (f : α → Bool) (l : List α) (a k : ℕ) : Bool :=

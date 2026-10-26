@@ -49,7 +49,10 @@ by hashes. No ignored handoff or generation script is needed for verification.
 The older `certified-start-*` inputs remain intact for their original replay
 chain. The deterministic exporter checks the original canonical node map,
 every new node, every final recipe and the complete guillotine partition before
-reproducing the generated Lean data byte for byte.
+reproducing the generated Lean data byte for byte. The original source box strings
+and cut tokens live only in `inputs/source-cover-serialization.json`, an uncompiled,
+hash-pinned replay input. It also pins the exact retained `mixedBatches` declaration;
+the compiled module no longer contains the old cover or its partition.
 
 ## Lean scope
 

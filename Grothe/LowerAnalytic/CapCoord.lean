@@ -1,5 +1,6 @@
 import Grothe.LowerAnalytic.FibreSup
 import Grothe.LowerAnalytic.CapLinAlg
+import Grothe.LowerAnalytic.CapNodeDefs
 
 /-!
 # Real coordinates of the fibre variable (route Core)
@@ -98,25 +99,6 @@ lemma vec_smul (s : ℝ) (v : Fib) (j : ℕ) : (v.smul s).vec j = s * v.vec j :=
     simp [Fib.vec, Fib.smul]
 
 /-! ### The gate matrix -/
-
-/-- `M = diag(E, E, R, R, ε I₂)` in the coordinates `Fib.vec`. -/
-def mMat (E : Sym3) (R : Sym2) (i j : ℕ) : ℚ :=
-  let e : ℕ → ℕ → ℚ := fun a b =>
-    match a, b with
-    | 0, 0 => E.m11 | 0, 1 => E.m12 | 0, 2 => E.m13
-    | 1, 0 => E.m12 | 1, 1 => E.m22 | 1, 2 => E.m23
-    | 2, 0 => E.m13 | 2, 1 => E.m23 | 2, 2 => E.m33
-    | _, _ => 0
-  let r : ℕ → ℕ → ℚ := fun a b =>
-    match a, b with
-    | 0, 0 => R.m11 | 0, 1 => R.m12 | 1, 0 => R.m12 | 1, 1 => R.m22
-    | _, _ => 0
-  if i < 3 ∧ j < 3 then e i j
-  else if 3 ≤ i ∧ i < 6 ∧ 3 ≤ j ∧ j < 6 then e (i - 3) (j - 3)
-  else if 6 ≤ i ∧ i < 8 ∧ 6 ≤ j ∧ j < 8 then r (i - 6) (j - 6)
-  else if 8 ≤ i ∧ i < 10 ∧ 8 ≤ j ∧ j < 10 then r (i - 8) (j - 8)
-  else if 10 ≤ i ∧ i < 12 ∧ i = j then ε
-  else 0
 
 lemma vec_M (E : Sym3) (R : Sym2) (y : Fib) (j : ℕ) (hj : j < 12) :
     (Fib.M E R y).vec j = ∑ i ∈ range 12, (mMat E R j i : ℝ) * y.vec i := by

@@ -1,4 +1,12 @@
 import Grothe.LowerAnalytic.Reduction
+import Grothe.Lower.Cert.Rows0
+import Grothe.Lower.Cert.Rows1
+import Grothe.Lower.Cert.Rows2
+import Grothe.Lower.Cert.Rows3
+import Grothe.Lower.Cert.Rows4
+import Grothe.Lower.Cert.Batches0
+import Grothe.Lower.Cert.Batches1
+import Grothe.Lower.Cert.Batches2
 
 /-!
 # Extend the checked lower law nodes without changing the Gaussian source hypotheses

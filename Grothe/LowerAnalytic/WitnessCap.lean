@@ -1,7 +1,8 @@
 import Grothe.LowerAnalytic.Witness
 import Grothe.LowerAnalytic.GaussianRadial
 import Grothe.LowerAnalytic.WickChaos
-import Grothe.Lower.RowCheck
+import Grothe.Lower.Support
+import Grothe.Lower.RowData
 
 /-!
 # The scalar cap of the witness: the exact interface to the certificate (L5, cap half)
@@ -13,9 +14,9 @@ For unimodular `f, g ∈ L²(γ_n)` write `h = (f+g)/2`, `k = (f−g)/2` (so `|h
   `Re ⟪f, T g⟫ = ⟪h, T h⟫ − ⟪k, T k⟫ = t² − ε‖Qh‖² − ‖Pk‖² + ε‖Qk‖²`,   `t = ‖Ph‖`.
 
 After a phase (`g ↦ θg`, `|θ| = 1`) the pairing is real and nonnegative, so the scalar cap
-`‖⟪f, T g⟫‖ ≤ Bcap` is the bound `V ≤ Bcap` for the **scalar profile value** `V = Re ⟪f, T g⟫`.
-The certificate (`lower_bound_data`) gives `V ≤ Bcap` from `‖v‖² = 2`, `0 ≤ t ≤ 9/10`, the crude row
-`RowOf crudeRow V t Qh v` and `SharedReduction rowData V t Qh v`.  The bound `t ≤ 9/10` is proved
+`‖⟪f, T g⟫‖ ≤ B` becomes the bound `V ≤ B` for the **scalar profile value** `V = Re ⟪f, T g⟫`.
+A checked finite cover bounds this profile using `‖v‖² = 2`, `0 ≤ t ≤ 9/10`, the crude row
+`RowOf crudeRow V t Qh v` and `SharedReduction rowData V t Qh v`. The bound `t ≤ 9/10` is proved
 (`tOf_le`): `t = ‖Ph‖` with `|h| ≤ 1`, `‖Ph‖² = Re⟪h, Ph⟫ ≤ E|Ph|`, and `Ph = Σₗ cₗ zₗ` is a complex
 Gaussian, so `E|Ph| = (√π/2)‖Ph‖` (`integral_norm_linL`, by the rotation invariance
 `integral_two_linear` and the planar radius `integral_norm_gauss2` of `GaussianRadial.lean`); hence
@@ -33,13 +34,8 @@ Hence the remaining hypothesis of the scalar cap, per admissible pair with `V �
   and `SharedReduction rowData V t Qh v` (L4: the Gaussian reduction of the rows with the shared
   residual, gate variable and potentials).
 
-Here `L²(γ_n)` is the real inner product space `E` of `lower_bound_data` through Mathlib's
+Here `L²(γ_n)` is the real inner product space `E` of `SharedReduction` through Mathlib's
 `InnerProductSpace ℝ (Lp ℂ 2 μ)` (real part of the complex inner product, same norm).
-
-* `witnessCap_of_reduction : (∀ f g unimodular, 0 ≤ VOf f g → ReductionHyp n f g)
-  → WitnessCap n Bcap`;
-* `lower_bound_of_reduction`: the same hypotheses for all `n ≥ N` give `Llow < K` for every
-  Grothendieck bound `K` (through `transferInputs_of_witnessCap` and `lower_bound_of_transferL2`).
 -/
 
 namespace Grothe.LowerAnalytic
@@ -517,32 +513,6 @@ lemma rowOf_crude (f g : L2G n) (hk : ‖QkOf n f g‖ ≤ ρ) (v : L2G n) :
   have h2 := pow_le_pow_left₀ (norm_nonneg _) hk 2
   rw [VOf_eq]
   nlinarith [sq_nonneg ‖PkOf n f g‖]
-
-/-- **The scalar cap from the reduction hypotheses**: `WitnessCap n Bcap`, i.e.
-`‖⟪f, T g⟫‖ ≤ Bcap` for a.e. unimodular `f, g`, from `ReductionHyp` on the pairs with `V ≥ 0`
-(the phase-rotated pairs). -/
-theorem witnessCap_of_reduction
-    (hred : ∀ f g : L2G n, f ∈ Unimod (stdGaussian (n + n)) → g ∈ Unimod (stdGaussian (n + n)) →
-      0 ≤ VOf n f g → ReductionHyp n f g) :
-    WitnessCap n Bcap := by
-  intro f hf g hg
-  obtain ⟨θ, hθ, hθw⟩ := exists_phase (inner ℂ f (witness n g))
-  have hval : VOf n f (θ • g) = ‖inner ℂ f (witness n g)‖ := by
-    rw [VOf, map_smul, inner_smul_right, hθw, Complex.ofReal_re]
-  have hV : 0 ≤ VOf n f (θ • g) := hval ▸ norm_nonneg _
-  have hg' := smul_mem_unimod n hθ hg
-  obtain ⟨v, hv, hshared⟩ := hred f (θ • g) hf hg' hV
-  rw [← hval]
-  exact lower_bound_data _ _ _ v hv (norm_nonneg _) (tOf_le n hf hg')
-    (rowOf_crude n f (θ • g) (normQk_le_rho n hf hg') v) hshared
-
-/-- **The lower bound from the reduction hypotheses**: `Llow < K` for every Grothendieck bound `K`
-if `ReductionHyp` holds for the unimodular pairs with `V ≥ 0` in every dimension `n ≥ N`. -/
-theorem lower_bound_of_reduction {K : ℝ} (N : ℕ)
-    (hred : ∀ n, N ≤ n → ∀ f g : L2G n, f ∈ Unimod (stdGaussian (n + n)) →
-      g ∈ Unimod (stdGaussian (n + n)) → 0 ≤ VOf n f g → ReductionHyp n f g)
-    (hK : IsGrothendieckBound K) : (Llow : ℝ) < K :=
-  lower_bound_of_witnessCap N (fun n hn => witnessCap_of_reduction n (hred n hn)) hK
 
 end
 

@@ -1,5 +1,7 @@
-import Grothe.LowerAnalytic.CapConstr
-import Grothe.LowerAnalytic.CapTablesMk
+import Grothe.Lower.RowData
+import Grothe.Lower.RowGateData
+import Grothe.LowerAnalytic.CapConstrDefs
+import Grothe.LowerAnalytic.CapTablesData
 
 /-!
 # Computable checks of localised node caps (route M of PLAN_CAPS)

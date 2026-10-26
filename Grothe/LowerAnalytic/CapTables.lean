@@ -1,4 +1,5 @@
 import Grothe.LowerAnalytic.CapGrid
+import Grothe.LowerAnalytic.CapTablesData
 
 /-!
 # Rational enclosures of the shared moment tables of the cap certificates (PLAN_CAPS L-e)
@@ -41,20 +42,6 @@ namespace CapTab
 
 /-! ### List polynomials -/
 
-/-- Sum of coefficient lists. -/
-def padd : List ℚ → List ℚ → List ℚ
-  | [], q => q
-  | a :: p, [] => a :: p
-  | a :: p, b :: q => (a + b) :: padd p q
-
-/-- Scalar multiple. -/
-def psmul (c : ℚ) (p : List ℚ) : List ℚ := p.map (c * ·)
-
-/-- Product. -/
-def pmul : List ℚ → List ℚ → List ℚ
-  | [], _ => []
-  | a :: p, q => padd (psmul a q) (0 :: pmul p q)
-
 /-- Horner evaluation at a real point. -/
 noncomputable def pev : List ℚ → ℝ → ℝ
   | [], _ => 0
@@ -84,11 +71,6 @@ lemma continuous_pev : ∀ p : List ℚ, Continuous (pev p)
     show Continuous fun t => (a : ℝ) + t * pev p t
     fun_prop
 
-/-- `∫_α^β t^d p(t) dt`. -/
-def pint : List ℚ → ℕ → ℚ → ℚ → ℚ
-  | [], _, _, _ => 0
-  | a :: p, d, α, β => a * (β ^ (d + 1) - α ^ (d + 1)) / (d + 1) + pint p (d + 1) α β
-
 lemma integral_pev (α β : ℚ) : ∀ (p : List ℚ) (d : ℕ),
     ∫ t in (α : ℝ)..β, t ^ d * pev p t = pint p d α β
   | [], d => by simp [pev, pint]
@@ -101,11 +83,6 @@ lemma integral_pev (α β : ℚ) : ∀ (p : List ℚ) (d : ℕ),
     · simp only [pint]; push_cast; ring
     · exact (continuous_const.mul (continuous_pow d)).intervalIntegrable _ _
     · exact ((continuous_pow (d + 1)).mul (continuous_pev p)).intervalIntegrable _ _
-
-/-- `(Σ_{m<n} u^m/m!, u^n/n!)` as polynomials. -/
-def expPoly (u : List ℚ) : ℕ → List ℚ × List ℚ
-  | 0 => ([], [1])
-  | n + 1 => let r := expPoly u n; (padd r.1 r.2, psmul (1 / (n + 1 : ℚ)) (pmul r.2 u))
 
 lemma pev_expPoly (u : List ℚ) (t : ℝ) : ∀ n : ℕ,
     pev (expPoly u n).1 t = ∑ m ∈ range n, pev u t ^ m / m.factorial ∧
@@ -121,11 +98,6 @@ lemma pev_expPoly (u : List ℚ) (t : ℝ) : ∀ n : ℕ,
       ring
 
 /-! ### Dyadic rounding -/
-
-/-- Round down to the grid `2^{-P}`. -/
-def rdDown (q : ℚ) (P : ℕ) : ℚ := (⌊q * 2 ^ P⌋ : ℚ) / 2 ^ P
-/-- Round up to the grid `2^{-P}`. -/
-def rdUp (q : ℚ) (P : ℕ) : ℚ := (⌈q * 2 ^ P⌉ : ℚ) / 2 ^ P
 
 lemma rdDown_le (q : ℚ) (P : ℕ) : rdDown q P ≤ q := by
   unfold rdDown
@@ -143,15 +115,7 @@ lemma rdDown_le_real {q : ℚ} {x : ℝ} (P : ℕ) (h : (q : ℝ) ≤ x) : (rdDo
 lemma le_rdUp_real {q : ℚ} {x : ℝ} (P : ℕ) (h : x ≤ q) : x ≤ rdUp q P :=
   h.trans (Rat.cast_le.2 (le_rdUp q P))
 
-/-- The working precision. -/
-def prec : ℕ := 260
-
 /-! ### `e^{−x}` -/
-
-/-- `(Σ_{m<n} x^m/m!, x^n/n!)`. -/
-def expTay (x : ℚ) : ℕ → ℚ × ℚ
-  | 0 => (0, 1)
-  | n + 1 => let r := expTay x n; (r.1 + r.2, r.2 * x / (n + 1))
 
 lemma expTay_eq (x : ℚ) : ∀ n : ℕ,
     ((expTay x n).1 : ℝ) = ∑ m ∈ range n, (x : ℝ) ^ m / m.factorial ∧
@@ -165,21 +129,6 @@ lemma expTay_eq (x : ℚ) : ∀ n : ℕ,
       push_cast
       field_simp
       ring
-
-/-- The remainder `|x|^n (n+1)/(n! n)` of `Real.exp_bound`. -/
-def expRem (y : ℚ) (n : ℕ) : ℚ := y ^ n * ((n + 1 : ℚ) / (n.factorial * n))
-
-/-- Squaring of a nonnegative enclosure, `k` times. -/
-def sqIter : ℕ → ℚ × ℚ → ℚ × ℚ
-  | 0, e => e
-  | k + 1, e => let f := sqIter k e; (rdDown (f.1 ^ 2) prec, rdUp (f.2 ^ 2) prec)
-
-/-- An enclosure of `e^{−x}` for `0 ≤ x ≤ 1024`. -/
-def expNegEnc (x : ℚ) : ℚ × ℚ :=
-  let y := x / 2 ^ 10
-  let T := (expTay (-y) 30).1
-  let E := expRem y 30
-  sqIter 10 (max 0 (rdDown (T - E) prec), rdUp (T + E) prec)
 
 lemma sqIter_sound (y : ℝ) : ∀ (k : ℕ) (e : ℚ × ℚ), 0 ≤ e.1 → (e.1 : ℝ) ≤ exp (-y) →
     exp (-y) ≤ e.2 → 0 ≤ (sqIter k e).1 ∧ ((sqIter k e).1 : ℝ) ≤ exp (-(y * 2 ^ k)) ∧
@@ -243,37 +192,7 @@ lemma lsum_range (n : ℕ) (f : ℕ → ℚ) : ((List.range n).map f).sum = ∑ 
   | zero => simp
   | succ n ih => rw [List.range_succ, List.map_append, List.sum_append, Finset.sum_range_succ, ih]; simp
 
-/-- The number of Taylor terms for `|u| ≤ U`. -/
-def radTerms (U : ℚ) : ℕ := if U ≤ 1 / 16 then 16 else if U ≤ 1 / 2 then 30 else 40
-
 lemma radTerms_pos (U : ℚ) : 0 < radTerms U := by unfold radTerms; split_ifs <;> norm_num
-
-/-- The radial enclosure of one `k` from the shared data. -/
-def radOne (a b c E : ℚ) (X : ℚ × ℚ) (Ms : List ℚ) (k : ℕ) : ℚ × ℚ :=
-  let base := 2 * ((List.range (k + 2)).map fun p =>
-    ((k + 1).choose p : ℚ) * c ^ (k + 1 - p) * Ms.getD p 0).sum
-  let rem := E * (2 * (b ^ (k + 2) - a ^ (k + 2)) / (k + 2))
-  let jl := base - rem
-  let jh := base + rem
-  (rdDown (if 0 ≤ jl then X.1 * jl else X.2 * jl) prec,
-    rdUp (if 0 ≤ jh then X.2 * jh else X.1 * jh) prec)
-
-/-- **Enclosures of `∫_a^b 2 r^{k+1} e^{−r²} dr` for `k = 0, …, 16`.** -/
-def radEncList (a b : ℚ) : List (ℚ × ℚ) :=
-  let c := (a + b) / 2
-  let h := (b - a) / 2
-  let U := 2 * c * h + h ^ 2
-  if U ≤ 1 then
-    let n := radTerms U
-    let S := (expPoly [0, -2 * c, -1] n).1
-    let E := expRem U n
-    let X := expNegEnc (c ^ 2)
-    let Ms := (List.range 18).map fun p => pint S p (-h) h
-    (List.range 17).map (radOne a b c E X Ms)
-  else (List.range 17).map fun k => (0, 2 * (b - a) * b ^ (k + 1))
-
-/-- **The enclosure of `∫_a^b 2 r^{k+1} e^{−r²} dr`.** -/
-def radEnc (a b : ℚ) (k : ℕ) : ℚ × ℚ := (radEncList a b).getD k (0, 0)
 
 /-- The integrand. -/
 noncomputable def radF (k : ℕ) (r : ℝ) : ℝ := 2 * r ^ (k + 1) * exp (-r ^ 2)
@@ -485,19 +404,6 @@ theorem radEnc_sound {a b : ℚ} (ha : 0 ≤ a) (hab : a ≤ b) (hb : b ≤ 8) (
 
 /-! ### Gaussian tails -/
 
-/-- Enclosures of `(J(m), J(m+1))`, `J(m) = ∫_R^∞ 2 r^m e^{−r²}`, from an enclosure `X` of `e^{−R²}`. -/
-def tailPair (R : ℚ) (X : ℚ × ℚ) : ℕ → (ℚ × ℚ) × (ℚ × ℚ)
-  | 0 => ((0, X.2 / R), X)
-  | m + 1 =>
-    let p := tailPair R X m
-    (p.2, (R ^ (m + 1) * X.1 + ((m : ℚ) + 1) / 2 * p.1.1,
-      R ^ (m + 1) * X.2 + ((m : ℚ) + 1) / 2 * p.1.2))
-
-/-- **The enclosure of `∫_R^∞ 2 r^{k+1} e^{−r²} dr`.** -/
-def tailEnc (R : ℚ) (k : ℕ) : ℚ × ℚ :=
-  let p := (tailPair R (expNegEnc (R ^ 2)) (k + 1)).1
-  (rdDown p.1 prec, rdUp p.2 prec)
-
 /-- `J(m)`. -/
 noncomputable def tailJ (R : ℝ) (m : ℕ) : ℝ := ∫ r in Ioi R, 2 * r ^ m * exp (-r ^ 2)
 
@@ -604,31 +510,15 @@ theorem tailEnc_sound {R : ℚ} (hR : 1 ≤ R) (hR8 : R ≤ 16) (k : ℕ) (_hk :
 
 /-! ### Angular moments -/
 
-/-- A complex ball: center `re + i·im`, radius `rad`. -/
-structure CBall where
-  re : ℚ
-  im : ℚ
-  rad : ℚ
-
 /-- The center. -/
 noncomputable def CBall.c (B : CBall) : ℂ := ⟨B.re, B.im⟩
 
 /-- Membership. -/
 def CBall.mem (z : ℂ) (B : CBall) : Prop := ‖z - B.c‖ ≤ B.rad
 
-/-- `|re| + |im|`. -/
-def nrm1 (B : CBall) : ℚ := |B.re| + |B.im|
-
 lemma norm_c_le (B : CBall) : ‖B.c‖ ≤ nrm1 B := by
   refine (Complex.norm_le_abs_re_add_abs_im _).trans (le_of_eq ?_)
   simp [CBall.c, nrm1]
-
-/-- The angular precision. -/
-def angP : ℕ := 128
-
-/-- Product of balls. -/
-def cmul (A B : CBall) : CBall :=
-  ⟨A.re * B.re - A.im * B.im, A.re * B.im + A.im * B.re, A.rad * (nrm1 B + B.rad) + B.rad * nrm1 A⟩
 
 lemma mem_cmul {z w : ℂ} {A B : CBall} (hz : CBall.mem z A) (hw : CBall.mem w B) :
     CBall.mem (z * w) (cmul A B) := by
@@ -651,11 +541,6 @@ lemma mem_cmul {z w : ℂ} {A B : CBall} (hz : CBall.mem z A) (hw : CBall.mem w 
   have h2 := mul_le_mul hA hw (norm_nonneg _) ((norm_nonneg _).trans hA)
   linarith
 
-/-- Round the center down to the grid `2^{-angP}`, enlarging the radius. -/
-def cround (B : CBall) : CBall :=
-  ⟨rdDown B.re angP, rdDown B.im angP,
-    rdUp (B.rad + (B.re - rdDown B.re angP) + (B.im - rdDown B.im angP)) angP⟩
-
 lemma mem_cround {z : ℂ} {B : CBall} (h : CBall.mem z B) : CBall.mem z (cround B) := by
   unfold CBall.mem at *
   have h1 : ‖B.c - (cround B).c‖ ≤ (B.re - rdDown B.re angP : ℚ) + (B.im - rdDown B.im angP : ℚ) := by
@@ -671,13 +556,6 @@ lemma mem_cround {z : ℂ} {B : CBall} (h : CBall.mem z B) : CBall.mem z (cround
     simp only [cround]; exact le_rdUp_real angP (by push_cast; linarith)
   rw [e]
   exact (norm_add_le _ _).trans ((add_le_add h h1).trans hr)
-
-/-- `(Σ_{m<n} (iy)^m/m!, (iy)^n/n!)` as pairs `(re, im)`. -/
-def expITay (y : ℚ) : ℕ → (ℚ × ℚ) × (ℚ × ℚ)
-  | 0 => ((0, 0), (1, 0))
-  | n + 1 =>
-    let r := expITay y n
-    ((r.1.1 + r.2.1, r.1.2 + r.2.2), (-r.2.2 * y / (n + 1), r.2.1 * y / (n + 1)))
 
 lemma expITay_eq (y : ℚ) : ∀ n : ℕ,
     (⟨(expITay y n).1.1, (expITay y n).1.2⟩ : ℂ)
@@ -702,11 +580,6 @@ lemma expITay_eq (y : ℚ) : ∀ n : ℕ,
       · simp only [expITay, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
           Complex.I_re, Complex.I_im]
         push_cast; ring
-
-/-- The Taylor ball of `e^{iy}`. -/
-def expIBall (y : ℚ) : CBall :=
-  let r := expITay y 30
-  ⟨r.1.1, r.1.2, expRem |y| 30⟩
 
 lemma mem_expIBall {y : ℚ} (hy : |y| ≤ 1) : CBall.mem (Complex.exp ((y : ℝ) * Complex.I)) (expIBall y) := by
   unfold CBall.mem expIBall CBall.c
@@ -846,26 +719,10 @@ theorem pi_lt_d30 : π < (3141592653589793238462643383280 / 10 ^ 30 : ℝ) := by
     6249999999999999999999999999999976239791680857441670814124176065787752010637853992310559230897415767159972190876427838077703176679405539643/3125000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
     99999999999999999999999999999999904959166723429766683256496704263105844242601891870285504899799622580366914173250794568422105976999105940677/50000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000]
 
-/-- `piLo < π`, 30 digits. -/
-def piLo : ℚ := 3141592653589793238462643383279 / 10 ^ 30
-/-- `π < piHi`, 30 digits. -/
-def piHi : ℚ := 3141592653589793238462643383280 / 10 ^ 30
-
 lemma piLo_lt : (piLo : ℝ) < π := by
   have := pi_gt_d30; unfold piLo; push_cast; exact this
 lemma lt_piHi : π < (piHi : ℝ) := by
   have := pi_lt_d30; unfold piHi; push_cast; exact this
-
-/-- A ball containing `e^{2πim/N}` (`m ≤ N`). -/
-def unitBall (N m : ℕ) : CBall :=
-  let yr : ℚ := 2 * piLo * m / (8 * N)
-  let y0 := rdDown yr angP
-  let δ := (yr - y0) + 2 * (piHi - piLo) * m / (8 * N)
-  let B0 := expIBall y0
-  let B := (⟨B0.re, B0.im, rdUp (B0.rad + δ) angP⟩ : CBall)
-  let B2 := cround (cmul B B)
-  let B4 := cround (cmul B2 B2)
-  cround (cmul B4 B4)
 
 lemma mem_unitBall {N m : ℕ} (hN : 0 < N) (hm : m ≤ N) :
     CBall.mem (Complex.exp (((2 * π * m / N : ℝ)) * Complex.I)) (unitBall N m) := by
@@ -942,11 +799,6 @@ lemma im_mem {z : ℂ} {B : CBall} (h : CBall.mem z B) : (B.im : ℝ) - B.rad �
   simp only [CBall.c, Complex.sub_im] at this
   rw [abs_le] at this; constructor <;> linarith [this.1, this.2]
 
-/-- Interval product. -/
-def mulQ (x y : ℚ × ℚ) : ℚ × ℚ :=
-  (min (min (x.1 * y.1) (x.1 * y.2)) (min (x.2 * y.1) (x.2 * y.2)),
-    max (max (x.1 * y.1) (x.1 * y.2)) (max (x.2 * y.1) (x.2 * y.2)))
-
 lemma mul_bounds {x y a b c d : ℝ} (hx : a ≤ x ∧ x ≤ b) (hy : c ≤ y ∧ y ≤ d) :
     min (min (a * c) (a * d)) (min (b * c) (b * d)) ≤ x * y ∧
       x * y ≤ max (max (a * c) (a * d)) (max (b * c) (b * d)) := by
@@ -969,21 +821,6 @@ lemma mulQ_sound {x y : ℝ} {X Y : ℚ × ℚ} (hx : (X.1 : ℝ) ≤ x ∧ x �
     ((mulQ X Y).1 : ℝ) ≤ x * y ∧ x * y ≤ (mulQ X Y).2 := by
   have := mul_bounds hx hy
   simp only [mulQ]; push_cast; exact this
-
-/-- The angular enclosures from balls `Ba`, `Bb` containing the (shifted) cell ends `e^{2πi(nj mod N)/N}` (see `angEnc`). -/
-def angFrom (n : ℕ) (Ba Bb : CBall) : (ℚ × ℚ) × (ℚ × ℚ) :=
-  let sg : ℚ := (-1) ^ n
-  let dsin : ℚ × ℚ := (Bb.im - Bb.rad - (Ba.im + Ba.rad), Bb.im + Bb.rad - (Ba.im - Ba.rad))
-  let dcos : ℚ × ℚ := (Ba.re - Ba.rad - (Bb.re + Bb.rad), Ba.re + Ba.rad - (Bb.re - Bb.rad))
-  let f : ℚ × ℚ := (1 / (2 * piHi * n), 1 / (2 * piLo * n))
-  let c := mulQ (mulQ (sg, sg) dsin) f
-  let s := mulQ (mulQ (sg, sg) dcos) f
-  ((rdDown c.1 angP, rdUp c.2 angP), (rdDown s.1 angP, rdUp s.2 angP))
-
-/-- **The angular enclosures** `((1/2π)∫cos(nθ), (1/2π)∫sin(nθ))` over `[θⱼ, θⱼ₊₁]`, `n ≥ 0`. -/
-def angEnc (N n j : ℕ) : (ℚ × ℚ) × (ℚ × ℚ) :=
-  if n = 0 then ((1 / N, 1 / N), (0, 0)) else
-  angFrom n (unitBall N (n * j % N)) (unitBall N (n * (j + 1) % N))
 
 lemma trig_mod {N : ℕ} (hN : 0 < N) (p : ℕ) :
     Real.sin (2 * π * p / N) = Real.sin (2 * π * (p % N : ℕ) / N) ∧
@@ -1106,14 +943,6 @@ theorem angEnc_sound {N : ℕ} (hN : 4 ≤ N) (_hN' : N ≤ 4096) {j : ℕ} (_hj
       le_rdUp_real angP kS.2⟩
 /-! ### The shared ball table -/
 
-/-- The balls of `e^{2πim/N}`, `m < N` (shared by all `n`, `j`). -/
-def unitTable (N : ℕ) : Array CBall := ((List.range N).map (unitBall N)).toArray
-
-/-- `angEnc` from a precomputed ball table. -/
-def angEncWith (T : Array CBall) (N n j : ℕ) : (ℚ × ℚ) × (ℚ × ℚ) :=
-  if n = 0 then ((1 / N, 1 / N), (0, 0)) else
-  angFrom n (T.getD (n * j % N) ⟨0, 0, 0⟩) (T.getD (n * (j + 1) % N) ⟨0, 0, 0⟩)
-
 lemma unitTable_getD {N k : ℕ} (hk : k < N) : (unitTable N).getD k ⟨0, 0, 0⟩ = unitBall N k := by
   simp [unitTable, Array.getD, hk]
 
@@ -1131,24 +960,6 @@ end Grothe.LowerAnalytic
 namespace GrotheKernel
 
 open Grothe.LowerAnalytic
-
-/-- **The enclosure of `radI a b m = ∫_a^b 2 r^{m+1} e^{−r²} dr`** (`radEnc_sound`). -/
-def radEnc (a b : ℚ) (m : ℕ) : ℚ × ℚ := CapTab.radEnc a b m
-
-/-- **The enclosure of `tailI R m = ∫_R^∞ 2 r^{m+1} e^{−r²} dr`** (`tailEnc_sound`). -/
-def tailEnc (R : ℚ) (m : ℕ) : ℚ × ℚ := CapTab.tailEnc R m
-
-/-- The sign change of the sine part for `n < 0`. -/
-def angSign (n : ℤ) (e : (ℚ × ℚ) × (ℚ × ℚ)) : (ℚ × ℚ) × (ℚ × ℚ) :=
-  if 0 ≤ n then e else (e.1, (-e.2.2, -e.2.1))
-
-/-- **The enclosures of `(angC, angS)` on the `j`-th angular cell `[thN N j, thN N (j+1)]`**
-(`angEnc_sound`). -/
-def angEnc (N j : ℕ) (n : ℤ) : (ℚ × ℚ) × (ℚ × ℚ) := angSign n (CapTab.angEnc N n.natAbs j)
-
-/-- `angEnc` from the shared ball table `CapTab.unitTable N` (`angEncWith_unitTable`). -/
-def angEncWith (T : Array CapTab.CBall) (N j : ℕ) (n : ℤ) : (ℚ × ℚ) × (ℚ × ℚ) :=
-  angSign n (CapTab.angEncWith T N n.natAbs j)
 
 lemma angEncWith_unitTable {N : ℕ} (hN : 0 < N) (j : ℕ) (n : ℤ) :
     angEncWith (CapTab.unitTable N) N j n = angEnc N j n := by

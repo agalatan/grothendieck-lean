@@ -1,4 +1,5 @@
 import Grothe.LowerAnalytic.CapCheckSound
+import Grothe.LowerAnalytic.CapNodeDefs
 
 /-!
 # Every recipe grid passes the grid check
@@ -152,22 +153,9 @@ noncomputable section
 
 /-! ### The node check -/
 
-/-- The coupling vector `a = (1 + b₁, b₂, b₃, 0, …)` of a row. -/
-def avOf (r : Grothe.Lower.Row) (j : ℕ) : ℚ :=
-  if j = 0 then 1 + r.b1 else if j = 1 then r.b2 else if j = 2 then r.b3 else 0
-
 lemma aFib_vec (r : Grothe.Lower.Row) (j : ℕ) (hj : j < 12) :
     (aFib r.b1 r.b2 r.b3).vec j = avOf r j := by
   interval_cases j <;> simp [Fib.vec, aFib, avOf]
-
-/-- **The node check**: the polynomial degrees fit the tables and the piece check passes at
-`c + capPad` (the grid check holds for every recipe grid, `gridOK_mkGrid`). -/
-def nodeOK (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (s c : ℚ) (rec : Recipe) (Nr N : ℕ)
-    (h : ℚ) (T : Tables) : Bool :=
-  let gd := mkGrid r.ell r.beta rec Nr N h T
-  let M := matI r.ell r.beta gd T
-  polyBoundsOK r.ell r.beta &&
-    pieceOK (loQ M) (hiQ M) (mMat r.E Rg) (avOf r) s (c + Grothe.Lower.capPad)
 
 /-- **Soundness of the node check**: `Ψ(s) − capPad ≤ c` for the potential of the row. -/
 theorem pot_le_of_nodeOK (r : Grothe.Lower.Row) (Rg : Grothe.Lower.Sym2) (s c : ℚ) (rec : Recipe)

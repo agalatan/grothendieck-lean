@@ -105,6 +105,7 @@ this gives the unconditional bound $\KG\le1.404909543$ (\lean{haagerup\_bound}),
 $F_0=\ph\bigl(z+\sqrt{1+a^2}\,v(|z|^2)\,w\bigr)$ with a twelve-term Laguerre profile $v$, multiplied by the cubic Taylor
 polynomial of a damped polynomial phase $\varphi$: $T=F_0P_3(\varphi)$, $P_3(x)=1+ix-x^2/2-ix^3/6$. The identity
 $|P_3(x)|^2=1-x^4(3-x^2)/36$ and the proved bound $\varphi^2\le99/100$ (hence $|\varphi|<1$) give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
+The phase certificate checks 119,077 leaves in 512 cubes through six native range facts, with an analytic far field.
 Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $41$ and
 $\tau$ of degree $15$ with zero linear coefficient (any odd preprocessors of Wiener norm $\le1$ are realised by tensor
 powers). Compared with $c\,t$, $c=7119483103461/10^{13}$, the residual is at most
@@ -205,8 +206,10 @@ gates); all moment, Stein, spectral and contraction-Gram inequalities for every 
 Wick identity; the finite certificate (five row, three original-batch, one added law-batch and five refined-cover native checks)
 &
 \lean{NodeCaps}: the 19 potentials $\Psi_r$ (defined in Lean) lie below their stored rational caps at the tabulated nodes.
-The separate \lean{GrotheCaps} target reduces this to \lean{CapsRest}: the vertex caps of rows 12--15 ($t=0.84$--$0.855$) and any excluded-node caps.
-Its 60 range facts have a recorded verification stamp; the four remaining rows still require \lean{CapsRest}.\\\midrule
+The separate \lean{GrotheCaps} target proves the same endpoint from \lean{CapsRest}: the vertex caps of rows 12--15 ($t=0.84$--$0.855$) and any excluded-node caps, using the same refined cover.
+The 60 range checks for fifteen rows use a computation-only layer.
+CI replays the final assembly when the 54-file cache provenance matches;
+a mismatch triggers the runner build and both axiom audits. Four rows retain external vertex caps.\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error, table-accuracy and Hardy inputs, proves $\KG\le500000000000000000/355973699864771491$.}\\[2pt]
 the concrete disk-valued rounding; Gaussian Hermite completeness, Parseval and Mehler, charge selection, summability;
 the transfer inequality (tensor powers); kernel composition and locality; the head through degree 501 from
@@ -227,17 +230,31 @@ nothing: this bound has no hypothesis. The sharper conditional bound above uses 
 \end{center}
 Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}.\par
 The native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}, check the upper head, selected-band masses, the six-part phase cover, Haagerup bound,
-cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and both finite covers.
-The native-fact inventory and the report \path{scratch/Axioms.lean} enumerate the checked declarations.
-No \lean{sorry}; CI builds the default target and checks its axiom report. The 60 additional cap-range checks belong to
-the separate heavy \lean{GrotheCaps} target, whose recorded verification stamp CI checks. The generic response and
+cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
+There are 84 native facts, with 24 outside the separate cap-range target; the report \path{scratch/Axioms.lean} lists 532 theorems.
+No \lean{sorry}; CI builds the default target and checks its axiom report.
+The 60 additional cap-range checks belong to the separate heavy
+\lean{GrotheCaps} target. Its provenance hash covers 48 local computation
+modules and six directly hashed extras (54 files total); the extras' imports
+are not traversed. The numerical checker has its own precompiled library,
+\lean{GrotheCapsKernel}, whose constants retain the \lean{GrotheKernel} namespace.
+CI checks \path{.lake/build/caps-closure.sha}, then explicitly replays
+\lean{GrotheCaps} and audits its axioms on a match. A missing or mismatched
+marker fails closed and dispatches the runner build and both audits before
+the cache is marked. The same persistent build supplies subsequent CI replay
+and the master warm run; no separate manual droplet verification is needed.
+A digest alone is not verification. The localised-piece checkers
+likewise import only computable definitions and rational data; their campaign
+and final wiring remain separate. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
 the sharp upper bound retains external Gaussian component-error and Hardy inputs. The weaker upper bound $1.404909543$ is fully formal.
 Before the tail Cauchy--Schwarz step, the known linear coefficient's weighted square is deducted from $7/4$; this uses the same numerical hypotheses.
-The holomorphy and Hardy assembly proofs also cover separate measurable disk-valued left and right responses
-(\lean{HholPair}, \lean{hardy\_of\_pair\_inputs}). They share the covariance decay region; real odd-series
-identification and the circle mean bound remain explicit inputs for each pair. The incumbent results are
-specializations. This adds no numerical axiom and changes neither endpoint nor its remaining hypotheses.
+Holomorphy under positive kernel decay, odd-series continuation and circle Parseval are proved.
+The holomorphy and Hardy assembly also cover separate measurable disk-valued left and right responses
+(\lean{HholPair}, \lean{hardy\_of\_pair\_inputs}); the incumbent results are specializations.
+A positive covariance-decay region, summable real odd coefficients, their Gaussian-kernel identification
+and the circle mean bound remain explicit inputs for each pair. This adds no numerical axiom
+and changes neither endpoint nor its remaining hypotheses.
 The research modules also prove 13 algebraic facts for coupled complex modulus majorizers, finite descent and semiconvex chord
 assembly, using only the three standard axioms. Their Gaussian integration, response extraction and global-cover
 obligations remain separate; these facts change neither endpoint nor its hypotheses.
@@ -335,7 +352,7 @@ and angle as independent polynomial variables until cancellations finish.
 Lean checks carry-free coefficient indexing, exact translation, and the
 finite remainder bound on complex patches. A norm-only homogeneous transport
 certificate also has a proved ceiling: its certified score cannot exceed
-$b/N^2$ when the anchor has norm $N$ and score at least $b\le N^2$.
+$b/N^2$ when the anchor has norm $N>0$ and score at least $0\le b\le N^2$.
 This limits that certificate formula, not the corrected response's true score.
 The update assembly keeps the signed retained changes, passes the positive
 error price through contractive smoothing and the bivariate kernel, and

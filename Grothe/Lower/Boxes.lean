@@ -5,7 +5,7 @@ import Grothe.LowerAnalytic.Rows
 # The boxes of the common-law certificate
 
 The domain `[0, 9/10] × [0, ρ] × [0, 31/4]` of `(t, τ, x)` is partitioned into closed *boxes*
-`[t₋,t₊] × [τ₋,τ₊] × [x₋,x₊]`, certified by a tree of axis cuts (`partOK`, `partOK_sound`), and
+`[t₋,t₊] × [τ₋,τ₊] × [x₋,x₊]`, certified by a coverage tree of axis cuts (`treeCoverOK`, `treeCoverOK_sound`), and
 every box is bounded by `B`.  A box is bounded in one of two ways.
 
 * *Cap boxes* use only the certified caps of two rows (`RowBound`): each row, and the crude row
@@ -357,17 +357,16 @@ inductive PTree where
   | leaf
   | cut (k : ℕ) (mid : ℚ) (L R : PTree)
 
-/-- The partition check: at a leaf the boxes are exactly the domain; at a cut no box straddles
-`mid`, and the boxes on each side partition that half of the domain. -/
-def partOK : PTree → Dom → List Dom → Bool
+/-- The coverage check: a leaf equals the domain, and the retained boxes recursively cover
+both halves of every cut. Coverage does not require a separate scan of unused straddling boxes. -/
+def treeCoverOK : PTree → Dom → List Dom → Bool
   | .leaf, d, bs =>
     match bs with
     | [b] => b == d
     | _ => false
   | .cut k mid L R, d, bs =>
-    !(bs.any fun b => decide (b.lo k < mid) && decide (mid < b.hi k)) &&
-    partOK L (d.left k mid) (bs.filter fun b => decide (b.hi k ≤ mid)) &&
-    partOK R (d.right k mid) (bs.filter fun b => decide (mid ≤ b.lo k))
+    treeCoverOK L (d.left k mid) (bs.filter fun b => decide (b.hi k ≤ mid)) &&
+    treeCoverOK R (d.right k mid) (bs.filter fun b => decide (mid ≤ b.lo k))
 
 lemma mem_left_or_right (d : Dom) (k : ℕ) (mid : ℚ) (t τ x : ℝ) (h : d.mem t τ x) :
     (d.left k mid).mem t τ x ∨ (d.right k mid).mem t τ x := by
@@ -386,25 +385,25 @@ lemma mem_left_or_right (d : Dom) (k : ℕ) (mid : ℚ) (t τ x : ℝ) (h : d.me
     · exact Or.inl ⟨h1, h2, h3, h4, h5, ht⟩
     · exact Or.inr ⟨h1, h2, h3, h4, le_of_lt (not_le.1 ht), h6⟩
 
-/-- **Soundness of the partition check**: every point of the domain lies in a box. -/
-theorem partOK_sound : ∀ (T : PTree) (d : Dom) (bs : List Dom), partOK T d bs = true →
+/-- **Soundness of the coverage check**: every point of the domain lies in a retained box. -/
+theorem treeCoverOK_sound : ∀ (T : PTree) (d : Dom) (bs : List Dom), treeCoverOK T d bs = true →
     ∀ t τ x : ℝ, d.mem t τ x → ∃ b ∈ bs, b.mem t τ x
   | .leaf, d, bs, h => by
     intro t τ x hm
     match bs, h with
     | [b], h =>
-      simp only [partOK, beq_iff_eq] at h
+      simp only [treeCoverOK, beq_iff_eq] at h
       exact ⟨b, List.mem_singleton_self b, h ▸ hm⟩
-    | [], h => simp [partOK] at h
-    | _ :: _ :: _, h => simp [partOK] at h
+    | [], h => simp [treeCoverOK] at h
+    | _ :: _ :: _, h => simp [treeCoverOK] at h
   | .cut k mid L R, d, bs, h => by
     intro t τ x hm
-    simp only [partOK, Bool.and_eq_true] at h
-    obtain ⟨⟨-, hL⟩, hR⟩ := h
+    simp only [treeCoverOK, Bool.and_eq_true] at h
+    obtain ⟨hL, hR⟩ := h
     rcases mem_left_or_right d k mid t τ x hm with hl | hr
-    · obtain ⟨b, hb, hbm⟩ := partOK_sound L _ _ hL t τ x hl
+    · obtain ⟨b, hb, hbm⟩ := treeCoverOK_sound L _ _ hL t τ x hl
       exact ⟨b, (List.mem_filter.1 hb).1, hbm⟩
-    · obtain ⟨b, hb, hbm⟩ := partOK_sound R _ _ hR t τ x hr
+    · obtain ⟨b, hb, hbm⟩ := treeCoverOK_sound R _ _ hR t τ x hr
       exact ⟨b, (List.mem_filter.1 hb).1, hbm⟩
 
 /-- Parse a certificate in preorder: a leaf `.`, or a cut `k,mid` followed by its two subtrees. -/
@@ -430,13 +429,13 @@ def treeOf (toks : List String) : PTree :=
   | some (T, []) => T
   | _ => .leaf
 
-/-- The boxes are bounded by `bound` (in parallel) and partition `[0, 9/10] × [0, ρ] × [0, 31/4]`
+/-- The boxes are bounded by `bound` and cover `[0, 9/10] × [0, ρ] × [0, 31/4]`
 according to the certificate `cuts`. -/
 def checkCover (rows : List Row) (batches : List JBatch) (bound : ℚ) (cuts boxes : List String) :
     Bool :=
   let bs := boxes.map parseBox
   allPar (boxOK rows batches bound) bs &&
-    partOK (treeOf cuts) (0, 9 / 10, 0, ρ, 0, xMax) (bs.map Box.dom)
+    treeCoverOK (treeOf cuts) (0, 9 / 10, 0, ρ, 0, xMax) (bs.map Box.dom)
 
 /-- **Soundness of the cover**: every admissible `(t, τ, x)` lies in a checked box. -/
 theorem cover_sound (rows : List Row) (batches : List JBatch) (bound : ℚ)
@@ -445,7 +444,7 @@ theorem cover_sound (rows : List Row) (batches : List JBatch) (bound : ℚ)
     ∃ b : Box, boxOK rows batches bound b = true ∧ (b.tl : ℝ) ≤ t ∧ t ≤ b.tu ∧ (b.sl : ℝ) ≤ τ ∧
       τ ≤ b.su ∧ (b.xl : ℝ) ≤ x ∧ x ≤ b.xu := by
   simp only [checkCover, allPar_eq, Bool.and_eq_true, List.all_eq_true] at h
-  obtain ⟨d, hd, hdm⟩ := partOK_sound _ _ _ h.2 t τ x
+  obtain ⟨d, hd, hdm⟩ := treeCoverOK_sound _ _ _ h.2 t τ x
     ⟨by simpa using ht0, by push_cast; exact ht1, by simpa using hτ0, hτ1, by simpa using hx0, hx1⟩
   obtain ⟨b, hb, rfl⟩ := List.mem_map.1 hd
   exact ⟨b, h.1 b hb, hdm⟩

@@ -1,15 +1,15 @@
 import Grothe.LowerAnalytic.Frame
+import Grothe.LowerAnalytic.NodeCaps
 
 /-!
 # The per-row Gaussian reduction (L4): `ReductionHyp` from the node caps
 
-`NodeCaps`: the node caps of the 19 certified fibre potentials `rowPot k` (`Ψ_k(r) − capPad ≤ c` at
-every stored node `(r, c)` of the row), the data certified outside Lean (anchored quadratics,
-localised S-lemma pieces, convex hull; `handoff/lower-stein/cert-0745e/CAPS_PROVENANCE_e.md`).
+`NodeCaps` is the shared node-cap hypothesis from `NodeCaps.lean`, bounding the same
+19 certified fibre potentials `rowPot k` at every stored node.
 
-* `reductionHyp_of_nodeCaps`: for `n ≥ 2` every unimodular pair satisfies `ReductionHyp n f g`
-  (rotate `P₁,₀h` to the visible coordinate by a unitary frame, then `sharedReduction_frame`);
-* `lower_bound_of_nodeCaps`: `NodeCaps → IsGrothendieckBound K → Llow < K`.
+`reductionHyp_of_nodeCaps`: for `n ≥ 2` every unimodular pair satisfies `ReductionHyp n f g`
+(rotate `P₁,₀h` to the visible coordinate by a unitary frame, then `sharedReduction_frame`).
+The refined finite-cover layer converts this reduction into the lower endpoint.
 -/
 
 open MeasureTheory Grothe.Lower
@@ -17,10 +17,6 @@ open MeasureTheory Grothe.Lower
 namespace Grothe.LowerAnalytic
 
 noncomputable section
-
-/-- **The node caps of the certified potentials** (data certified outside Lean). -/
-def NodeCaps : Prop :=
-  ∀ k, k < rowData.length → ∀ m ∈ (rowData.getD k row01).nodeList, rowPot k m.1 - capPad ≤ m.2
 
 /-- **The per-row Gaussian reduction** (L4): `ReductionHyp` for every unimodular pair in dimension
 `n + 1 ≥ 2`, from the node caps alone. -/
@@ -42,13 +38,6 @@ theorem reductionHyp_of_nodeCaps (hcaps : NodeCaps) {n : ℕ} (hn : 0 < n) (f g 
   congr 1
   rw [map_add, RCLike.real_smul_eq_coe_smul (K := ℂ) c (Cop W.symm (vL (n + 1) 0)), map_smul,
     Cop_Cop_symm, ← RCLike.real_smul_eq_coe_smul (K := ℂ)]
-
-/-- **The lower bound from the node caps**: `Llow < K` for every Grothendieck bound `K`. -/
-theorem lower_bound_of_nodeCaps (hcaps : NodeCaps) {K : ℝ} (hK : IsGrothendieckBound K) :
-    (Llow : ℝ) < K := by
-  refine lower_bound_of_reduction 2 (fun n hn f g hf hg _ => ?_) hK
-  obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
-  exact reductionHyp_of_nodeCaps hcaps (by omega) f g hf hg
 
 end
 

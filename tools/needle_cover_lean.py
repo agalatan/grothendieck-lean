@@ -2,8 +2,8 @@
 """Export only the refined box/partition data, reusing checked mixed batches.
 
 Reconstructs the canonical node-reference map used by gen_lower_mixed.py and
-compares EVERY original box string against committed MixedData.lean before
-emitting any new data. The 43 replacement grids are exactly replayed first.
+compares EVERY original box string against the preserved uncompiled source map
+before emitting any new data. The retained mixed-batch declaration is hash-pinned. The 43 replacement grids are exactly replayed first.
 No canonical data file, Gaussian integration, or law-node proof is changed.
 """
 import argparse
@@ -12,7 +12,6 @@ from fractions import Fraction as Q
 import hashlib
 import json
 from pathlib import Path
-import re
 import sys
 
 sys.path.insert(0,str(Path(__file__).resolve().parent))
@@ -43,6 +42,32 @@ def canonical_maps(cov,inh):
         names.sort(key=lambda name:(Q(cov['newnodes'][name]['tau']),name))
         for k,name in enumerate(names):newmap[name]=(len(inhmap)+bi,k)
     return inhmap,newmap
+
+SOURCE_SERIALIZATION = Path('data/lower-unshifted/inputs/source-cover-serialization.json')
+SOURCE_SERIALIZATION_SHA256 = '64457f16a246b485423cfb5084c03469dc914d5a347e107281cbf2be116a3b65'
+ORIGINAL_MIXED_DATA_SHA256 = 'a529b61562c93f665403968361aabb292cc72d93c8a47b74037ea474603bf0d0'
+MIXED_BATCHES_SHA256 = 'be9e3228975b3b3761f88ddecadb5514c56b4e47badda194cdcd2e6f70f351bd'
+
+
+def source_serialization(repo):
+    """Load the retired cover only as an exact source-reference replay input."""
+    payload = (repo / SOURCE_SERIALIZATION).read_bytes()
+    assert hashlib.sha256(payload).hexdigest() == SOURCE_SERIALIZATION_SHA256, 'Source map changed'
+    source = json.loads(payload)
+    assert source['format'] == 'grothe-source-cover-serialization/v1'
+    assert source['original_mixed_data_sha256'] == ORIGINAL_MIXED_DATA_SHA256
+    assert source['mixed_batches_declaration_sha256'] == MIXED_BATCHES_SHA256
+    text = (repo / 'Grothe/Lower/MixedData.lean').read_text()
+    declaration = 'def mixedBatches :' + text.split('def mixedBatches :', 1)[1].rsplit('end Grothe.Lower', 1)[0].rstrip()
+    assert hashlib.sha256(declaration.encode()).hexdigest() == MIXED_BATCHES_SHA256, \
+        'Retained mixed-node declaration changed'
+    assert declaration.count('⟨') == source['mixed_batches'] == 21
+    assert source['mixed_nodes'] == 351
+    boxes, tokens = source['boxes'], source['cut_tokens']
+    assert len(boxes) == 8756 and len(tokens) == 17511 and tokens.count('.') == len(boxes)
+    assert all(isinstance(s, str) for s in boxes + tokens)
+    return boxes, tokens, source['mixed_batches']
+
 
 def node_string(ref,inhmap,newmap,extra_map=None):
     if ref[0]in['s','z']:return ','.join(map(str,ref))
@@ -137,13 +162,10 @@ def main():
     B=Q(record['target']);L=Q(1401695390488,10**12);assert global_upper<=B and B*L<1
     oldcov=json.loads((base/'cover.json').read_text());inh=json.loads((base/'inherited.json').read_text())
     im,nm=canonical_maps(oldcov,inh)
-    text=(repo/'Grothe/Lower/MixedData.lean').read_text()
-    chunks=re.findall(r'def coverBoxes\d+ : List String :=\s*\[([\s\S]*?)\]\s*\n',text)
-    oldstrings=[s for chunk in chunks for s in re.findall(r'"([^"]*)"',chunk)]
+    oldstrings,oldtokens,batch_count=source_serialization(repo)
     assert len(oldstrings)==len(oldcov['boxes'])
-    assert serialize(oldcov,inh,im,nm)==oldstrings,'Canonical reference map differs from compiled old data'
-    cuts=[s for s in re.findall(r'def coverCuts\d+ : String :=\s*"([^"]*)"',text)]
-    oldtokens=[t for s in cuts for t in s.split('|')]
+    assert serialize(oldcov,inh,im,nm)==oldstrings,'Canonical reference map differs from preserved source map'
+    assert batch_count==len(im)+len({v[0] for v in nm.values()})
     cov=copy.deepcopy(c.cover);byid={r['box']:r for r in record['records']};boxes=[]
     for i,b in enumerate(cov['boxes']):
         if i not in byid:boxes.append(b);continue

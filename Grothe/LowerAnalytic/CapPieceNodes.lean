@@ -1,5 +1,7 @@
 import Grothe.LowerAnalytic.CapPieceRange
 import Grothe.LowerAnalytic.CapRows
+import Grothe.LowerAnalytic.CapConstr
+import Grothe.LowerAnalytic.CapTablesMk
 
 /-!
 # Localised node caps from piece lists (route M of PLAN_CAPS): soundness

@@ -27,9 +27,6 @@ Grothe.Lower.SteinFusion.specCellG_unit_fusion
 Grothe.Lower.SteinFusion.unit_fusion_identity
 Grothe.Lower.SteinFusion.unit_fusion_le
 Grothe.Lower.gram_joint_of_scalars
-Grothe.Lower.lower_bound_data
-Grothe.Lower.lower_bound_of_transferL2
-Grothe.Lower.lower_endpoint
 Grothe.LowerAnalytic.Circular.joint_sixth
 Grothe.LowerAnalytic.DiffuseCubicObstruction.above_target
 Grothe.LowerAnalytic.DiffuseCubicObstruction.finite_bridge_lower
@@ -135,13 +132,9 @@ Grothe.LowerAnalytic.TwoDisc.support_of_factor
 Grothe.LowerAnalytic.gaussian_gramInputs
 Grothe.LowerAnalytic.gaussian_steinInputs
 Grothe.LowerAnalytic.joint_eta_budget
-Grothe.LowerAnalytic.lower_bound_gaussian
-Grothe.LowerAnalytic.lower_bound_of_nodeCaps
-Grothe.LowerAnalytic.lower_bound_of_reduction
 Grothe.LowerAnalytic.normQk_le_rho
 Grothe.LowerAnalytic.norm_pairVal_witness
 Grothe.LowerAnalytic.transferInputs_of_witnessCap
-Grothe.LowerAnalytic.witnessCap_of_reduction
 Grothe.Research.CoupledMajorizer.complex_norm_majorizer
 Grothe.Research.CoupledMajorizer.complex_norm_majorizer_exact
 Grothe.Research.CoupledMajorizer.coupled_update_bound
