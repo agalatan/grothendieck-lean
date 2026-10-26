@@ -227,8 +227,11 @@ jobs:
           lake env lean scratch/Axioms.lean > axioms.txt; python3 scripts/check_axioms.py < axioms.txt
           lake env lean scratch/AxiomsCaps.lean > axioms-caps.txt; python3 scripts/check_axioms.py --caps < axioms-caps.txt
 
-      - name: Mark the cached GrotheCaps build as verified for these sources
-        run: python3 scripts/caps_stamp.py --mark-cache
+      - name: Mark the cached GrotheCaps build as verified for these sources, and record the built commit
+        run: |
+          python3 scripts/caps_stamp.py --mark-cache
+          # which tree this workspace's build corresponds to (read by consumers that mirror the runner's build)
+          git rev-parse HEAD > .lake/build/built-commit
 
       - name: Save the shared build cache (warm on master)
         if: inputs.mode == 'warm' && github.ref_name == 'master'

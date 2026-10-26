@@ -223,6 +223,42 @@ Report to the user: the `ready/` branch name, the CI run, and the resulting mast
   "out-of-date" warning on GitHub) and its latest CI run is green. Then the merged result is the tree CI checked. A
   hand merge is a normal push, so CI also runs on master afterwards.
 
+## 4c. Lean build caches: who writes, who reads, how to bootstrap
+
+There is **one canonical master build**: the GitHub Actions cache written by **warm** runs on master. Those runs execute
+on the droplet's self-hosted runner, whose persistent workspace (`~/actions-runner/_work/…`) produces it. Everything
+else reads from it or mirrors it, and nothing else writes it.
+
+| cache | written only by | read by |
+|---|---|---|
+| GitHub master cache (`lake-build-v2-<toolchain+manifest>-<sha>`) | warm runs on master (droplet runner) | every CI run |
+| GitHub branch cache | caps runs for that branch (droplet runner) | later CI runs of that branch |
+| runner workspace (droplet) | the runner, one job at a time; it records the built commit in `.lake/build/built-commit` | nobody directly; do not copy into it or out of it by hand |
+| main checkout `.lake/build` (laptop) | `scripts/sync_master.sh --build`, on a clean master only | laptop worktrees, as private `cp -c` clones |
+
+**Correctness.** Lake reuses a compiled file only if the hashes of its source, its dependencies and the toolchain
+match, so a stale cache costs time, never correctness. The caps marker (`.lake/build/caps-closure.sha`) also ties the
+cached caps to their source files. **Trust.** A cached `native_decide` result is not re-executed, so only the runner,
+and only for master or the branch it was asked to build, may write a shared cache. Never publish a cache from a
+private build.
+
+**Bootstrap (every agent, at the start of work):**
+- **Laptop:**
+  1. Run `scripts/sync_master.sh --build`.
+  2. Create your worktree.
+  3. `cp -c -R /Users/alingalatan/workspaces/grothe/.lake/build <worktree>/.lake/build` (§2).
+
+  Lake then rebuilds only what your branch changes.
+- **Droplet:** do not run heavy builds (`GrotheCaps`, the certificate chunks, full builds) in a private folder.
+  Dispatch them to the runner: `gh workflow run lean.yml --ref <your pushed branch> -f mode=caps`. The runner builds in
+  its warm workspace, checks both axiom reports, and saves a cache for your branch that your next CI runs reuse.
+  Light builds (a few modules) may run in a private signed folder (§0b) that links only the shared Mathlib packages
+  (`~/grothe-caps/.lake/packages`).
+- **Never run a separate manual caps verification.** If your change touches the caps closure, push it (a `ready/`
+  delivery or a dispatched caps run). CI's caps run builds the caps for exactly the tree that will be merged, saves
+  them as the branch cache, and after the merge the master warm run finds them already built in the same workspace.
+  So one build serves the validation, the branch check and the new master cache.
+
 ## 4b. If you find yourself in the main checkout
 
 Run `pwd; git rev-parse --show-toplevel; git branch --show-current; git status --short`.
