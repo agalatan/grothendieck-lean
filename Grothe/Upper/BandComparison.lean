@@ -1,4 +1,9 @@
-import Mathlib
+import Mathlib.Analysis.Normed.Group.Basic
+import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
 
 /-!+# Localized comparison of squared block norms
 
@@ -36,43 +41,6 @@ lemma band_cross (S : Finset ι) (x d : ∀ i, V i) {A e : ℝ}
   have hb : √(∑ i ∈ S, ‖d i‖ ^ 2) ≤ e := (Real.sqrt_le_left he).2 hd
   exact (Real.sum_mul_le_sqrt_mul_sqrt S (fun i => ‖x i‖) (fun i => ‖d i‖)).trans
     (mul_le_mul ha hb (Real.sqrt_nonneg _) hA)
-
-/-- The same selected blocks and the same error pieces are used throughout.
-The band of each piece may overlap the other bands. -/
-theorem compare [DecidableEq ι] (S : Finset ι) (J : Finset κ) (x y : ∀ i, V i)
-    (d : κ → ∀ i, V i) (B : κ → Finset ι) (A e : κ → ℝ) (E : ℝ)
-    (hdecomp : ∀ i ∈ S, y i - x i = ∑ j ∈ J, d j i)
-    (hsupport : ∀ j ∈ J, ∀ i ∈ S, i ∉ B j → d j i = 0)
-    (hA : ∀ j ∈ J, 0 ≤ A j) (he : ∀ j ∈ J, 0 ≤ e j)
-    (hx : ∀ j ∈ J, ∑ i ∈ S ∩ B j, ‖x i‖ ^ 2 ≤ A j ^ 2)
-    (hd : ∀ j ∈ J, ∑ i ∈ S ∩ B j, ‖d j i‖ ^ 2 ≤ e j ^ 2)
-    (hquad : ∑ i ∈ S, ‖y i - x i‖ ^ 2 ≤ E) :
-    ∑ i ∈ S, |‖y i‖ ^ 2 - ‖x i‖ ^ 2|
-      ≤ 2 * (∑ j ∈ J, A j * e j) + E := by
-  classical
-  have hc : ∑ i ∈ S, ‖x i‖ * ‖y i - x i‖ ≤ ∑ j ∈ J, A j * e j := by
-    calc
-      _ ≤ ∑ i ∈ S, ‖x i‖ * ∑ j ∈ J, ‖d j i‖ := by
-        refine sum_le_sum fun i hi => mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)
-        rw [hdecomp i hi]
-        exact norm_sum_le _ _
-      _ = ∑ j ∈ J, ∑ i ∈ S, ‖x i‖ * ‖d j i‖ := by
-        simp_rw [mul_sum]; rw [sum_comm]
-      _ ≤ ∑ j ∈ J, A j * e j := by
-        refine sum_le_sum fun j hj => ?_
-        have hb := band_cross (S ∩ B j) x (d j) (hA j hj) (he j hj) (hx j hj) (hd j hj)
-        have eq : ∑ i ∈ S, ‖x i‖ * ‖d j i‖ =
-            ∑ i ∈ S ∩ B j, ‖x i‖ * ‖d j i‖ := by
-          symm
-          exact sum_subset inter_subset_left fun i hi hni => by
-            rw [hsupport j hj i hi (by simpa [hi] using hni), norm_zero, mul_zero]
-        rwa [eq]
-  calc
-    _ ≤ ∑ i ∈ S, (2 * ‖x i‖ * ‖y i - x i‖ + ‖y i - x i‖ ^ 2) :=
-      sum_le_sum fun i _ => norm_sq_difference _ _
-    _ = 2 * (∑ i ∈ S, ‖x i‖ * ‖y i - x i‖) + ∑ i ∈ S, ‖y i - x i‖ ^ 2 := by
-      rw [sum_add_distrib, mul_sum]; congr 1; apply sum_congr rfl; intro i _; ring
-    _ ≤ _ := add_le_add (mul_le_mul_of_nonneg_left hc (by norm_num)) hquad
 
 /-- Weighted comparison for a downstream kernel. The cross-term radius uses
 squared coefficient costs, whereas the quadratic error is still paid once.
@@ -125,5 +93,20 @@ theorem weighted_compare [DecidableEq ι] (S : Finset ι) (J : Finset κ)
       refine add_le_add (mul_le_mul_of_nonneg_left hc (by norm_num)) ?_
       exact sum_le_sum fun i hi => mul_le_of_le_one_left (sq_nonneg _) (hw i hi).2
     _ ≤ _ := add_le_add le_rfl hquad
+
+/-- The same selected blocks and the same error pieces are used throughout.
+The band of each piece may overlap the other bands. -/
+theorem compare [DecidableEq ι] (S : Finset ι) (J : Finset κ) (x y : ∀ i, V i)
+    (d : κ → ∀ i, V i) (B : κ → Finset ι) (A e : κ → ℝ) (E : ℝ)
+    (hdecomp : ∀ i ∈ S, y i - x i = ∑ j ∈ J, d j i)
+    (hsupport : ∀ j ∈ J, ∀ i ∈ S, i ∉ B j → d j i = 0)
+    (hA : ∀ j ∈ J, 0 ≤ A j) (he : ∀ j ∈ J, 0 ≤ e j)
+    (hx : ∀ j ∈ J, ∑ i ∈ S ∩ B j, ‖x i‖ ^ 2 ≤ A j ^ 2)
+    (hd : ∀ j ∈ J, ∑ i ∈ S ∩ B j, ‖d j i‖ ^ 2 ≤ e j ^ 2)
+    (hquad : ∑ i ∈ S, ‖y i - x i‖ ^ 2 ≤ E) :
+    ∑ i ∈ S, |‖y i‖ ^ 2 - ‖x i‖ ^ 2|
+      ≤ 2 * (∑ j ∈ J, A j * e j) + E := by
+  simpa only [one_mul] using weighted_compare S J (fun _ => 1) x y d B A e E
+    (by simp) hdecomp hsupport hA he (by simpa only [one_mul] using hx) hd hquad
 
 end Grothe.Upper.BandComparison
