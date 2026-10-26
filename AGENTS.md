@@ -290,7 +290,8 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 - **What runs:** the commit at the tip of the branch on GitHub (`--ref`, default: your current branch, which must be
   pushed). For quick experiments push a scratch branch `cloud/<agent-id>-<topic>`: the normal push check skips
   `cloud/**`. Delete it when done (§7).
-- **Lean jobs** (`lean`, `check`) run on GitHub-hosted runners (2 cores, about 7 GB, at most 6 hours per job) and
+- **Lean jobs** (`lean`, `check`) run on GitHub-hosted runners (measured: 4 vCPUs, AMD EPYC, 15 GB, 85 GB free disk;
+  at most 6 hours per job) and
   start from the master build cache, so only what your branch changes is built. `lean` deals the modules
   round-robin over the shards: split long `native_decide` checks into separate modules and run them in parallel.
 - **Script jobs** run a script committed in the branch (never an inline command): `.py` with `python3` (packages in
@@ -300,6 +301,8 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   stay on GitHub for 7 days. The exit status of `cloud.sh` is 0 iff every shard succeeded.
 - **Trust and caches:** cloud jobs only read the master cache, never write one. A cloud `check` is advice; only the
   delivery check (§3) merges.
+- **Speed:** Lean compiles each module on one thread after its imports, so a build's wall time follows its longest
+  dependency chain, not the core count; more cores (or shards) help only where many modules are independent.
 - **Droplet** (`--runner droplet`): script jobs only, in a throwaway directory, never touching the runner's
   persistent caps workspace. It queues behind the runner's other jobs.
 - **Cost:** the repository is private, so every job-minute is billed beyond the free quota. Shards multiply minutes.
