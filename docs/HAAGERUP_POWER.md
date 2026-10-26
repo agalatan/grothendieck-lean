@@ -43,7 +43,8 @@ the stated finite norm certificates.
 
 The preprocessor p(t) = t P(t²) has degree 29; P has degree 14, coefficient
 norm exactly one, and constant coefficient
-1020379367568975/1125899906842624. The resolvent R has degree 128.
+1020379367568975/1125899906842624. The resolvent R has degree 64 and is
+stored as its 65 coefficients, without trailing zero padding.
 
 The exact budgets are:
 
@@ -60,25 +61,25 @@ The complete signed-tail allowance is
 Residual transfer and the proved lower enclosure for π give the endpoint.
 
 Canonical inputs live in
-`/Users/alingalatan/workspaces/grothe-codex-joint-image/data/haagerup-resolvent/certificate.json`.
+`data/haagerup-resolvent/certificate.json`.
 The generator
-`/Users/alingalatan/workspaces/grothe-codex-joint-image/tools/gen_haagerup_power.py`
+`tools/gen_haagerup_power.py`
 reproduces
-`/Users/alingalatan/workspaces/grothe-codex-joint-image/Grothe/Haagerup/PowerCheck.lean`
+`Grothe/Haagerup/PowerCheck.lean`
 byte for byte. Floating searches propose data and play no role in acceptance.
 
 ## Sources and replay
 
-- `/Users/alingalatan/workspaces/grothe-codex-joint-image/Grothe/Upper/ResolventTail.lean`: finite inverse certificate, Abel summation, coefficient locality, short seed and checker soundness.
-- `/Users/alingalatan/workspaces/grothe-codex-joint-image/GrotheKernel/ResolventTail.lean`: finite outward computations at the existing 128-bit scale.
-- `/Users/alingalatan/workspaces/grothe-codex-joint-image/Grothe/Haagerup/Power.lean`: complete composition and public matrix theorem.
-- `/Users/alingalatan/workspaces/grothe-codex-joint-image/docs/research/haagerup-power.tex`: full written proof.
-- `/Users/alingalatan/workspaces/grothe-codex-joint-image/tools/verify_haagerup_power.py`: independent rational and directed-ball replay.
+- `Grothe/Upper/ResolventTail.lean`: finite inverse certificate, Abel summation, coefficient locality, short seed and checker soundness.
+- `GrotheKernel/ResolventTail.lean`: finite outward computations at the existing 128-bit scale.
+- `Grothe/Haagerup/Power.lean`: complete composition and public matrix theorem.
+- `docs/research/haagerup-power.tex`: full written proof.
+- `tools/verify_haagerup_power.py`: independent rational and directed-ball replay.
 
-From any directory, with Python and `python-flint`:
+From the repository root, with Python and `python-flint`:
 
 ```sh
-python3 -I /Users/alingalatan/workspaces/grothe-codex-joint-image/tools/verify_haagerup_power.py /Users/alingalatan/workspaces/grothe-codex-joint-image/data/haagerup-resolvent/certificate.json --out /tmp/haagerup-resolvent-replay.json
+python3 -I tools/verify_haagerup_power.py data/haagerup-resolvent/certificate.json --out handoff/haagerup-resolvent-replay.json
 ```
 
 The replay checks byte-identical generated data, complete finite head and
@@ -91,10 +92,11 @@ only `propext`, `Classical.choice`, `Quot.sound` and the certificate's one
 native fact `Grothe.HaagerupPower.check._native.native_decide.ax_1_1`:
 
 ```sh
-lake env lean /Users/alingalatan/workspaces/grothe-codex-joint-image/scratch/AxiomsPower.lean | python3 /Users/alingalatan/workspaces/grothe-codex-joint-image/scripts/check_axioms.py --haagerup-power
+lake env lean scratch/AxiomsPower.lean | python3 scripts/check_axioms.py --haagerup-power
 ```
 
 Run this from the worktree root. The normal CI audit includes the same
-results. Fresh logs and their source manifest are in
-`/Users/alingalatan/workspaces/grothe-codex-joint-image/docs/verification/haagerup-resolvent-20261025/`.
+results. Current replay, equivalence evidence and their source manifest are in
+`docs/verification/haagerup-trim-20261026/`; full Lean build status is tracked
+by delivery CI and issue #54.
 The lower node-cap import closure is unchanged.
