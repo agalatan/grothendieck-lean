@@ -25,6 +25,29 @@ the side (`side: lower`, `side: upper`), the owner (`owner: codex`, `owner: clau
 - **Attack plans and research ideas are issues too** (`area: research`), with the full reasoning and numbers. Do not
   leave them only in a local file.
 
+## 0b. Agent ID: make yourself identifiable
+
+Many agents run at once, and several Codex conversations start with the same words. So the user cannot tell which
+conversation owns a droplet folder, a branch or a running build. At the start of every session:
+
+1. **Pick an agent ID:** your kind plus four random hex digits, e.g. `codex-7f3a` or `claude-b21e` (for example
+   `printf 'codex-%04x\n' $RANDOM`). Keep it for the whole conversation.
+2. **Make it visible in the conversation.**
+   - Start your first reply with `Agent ID: codex-7f3a`.
+   - If your interface lets you name or rename the conversation, put the ID at the start of the title,
+     e.g. `codex-7f3a — lower refined cover`.
+3. **Sign everything you create with it:**
+   - **droplet folders:** `~/<agent-id>-<topic>`, e.g. `~/codex-7f3a-refined-cover`;
+   - **long-running jobs:** keep the `job.pid` inside that folder (§5);
+   - **commits:** add an `Agent-ID: codex-7f3a` trailer at the end of the commit message body;
+   - **issue comments:** start with `[codex-7f3a]`;
+   - branch names keep the scheme of §1. Put the ID in the body of the delivered commit, not necessarily in the name.
+4. **Write it down when you hand over.** In every status note or hand-over file, give your ID, so the user can find
+   your conversation by searching for it.
+
+`scripts/droplet_status.sh` lists droplet builds by folder, so a signed folder tells the user exactly whom to ask
+or stop.
+
 ## 1. Ground rules
 
 - **Never commit on `master`**, locally or on GitHub, and never push to it. Only CI moves `master`, through the
