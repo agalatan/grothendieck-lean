@@ -1,0 +1,170 @@
+{
+  "upstream_repository": "https://github.com/sheilman77/grothendieck_cx",
+  "commit": "7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f",
+  "arxiv": "https://arxiv.org/html/2609.25462v1",
+  "source_policy": "Verbatim read-only research snapshot; no upstream scripts executed during preparation.",
+  "license": "No LICENSE/COPYING/NOTICE file occurs in the pinned upstream tree. No explicit code license identified; do not infer a redistribution license from public hosting or the separate arXiv manuscript license.",
+  "excluded": [
+    "check_complex_lower.py (unrelated lower-bound code, 1.44 MB)"
+  ],
+  "minimal_replay_python_files": [
+    "audit_best7_final_arithmetic.py",
+    "audit_best7_full.py",
+    "audit_sparse6_altgroups.py",
+    "support_compression_certificate/complex_radial_phase_polynomial_certificate.py",
+    "support_compression_certificate/complex_upper_convex_2e6_low_certificate.py",
+    "support_compression_certificate/complex_upper_convex_2e6_polynomial_certificate.py",
+    "support_compression_certificate/complex_upper_convex_2e6_radial_coefficients.py",
+    "support_compression_certificate/complex_upper_convex_2e6_scalar_tail_certificate.py",
+    "support_compression_certificate/complex_upper_origin_layer_definitions.py",
+    "support_compression_certificate/complex_upper_origin_layer_energy_certificate.py",
+    "support_compression_certificate/complex_upper_saha_cubic_exacttail_457e8_certificate.py",
+    "support_compression_certificate/complex_upper_saha_visible_energy_refinement.py",
+    "tight_origin_extension.py"
+  ],
+  "minimal_replay_data_files": [
+    "origin_tail_25_36.npz",
+    "support_compression_certificate/complex_upper_origin_layer_coefficients_n120_analytic.npz"
+  ],
+  "supplementary_files": [
+    "README.md",
+    "README_BEST7_RIGOROUS.md",
+    "generate_origin_tail_25_36.py",
+    "support_compression_certificate/complex_upper_origin_layer_coefficients.py"
+  ],
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 11997,
+      "sha256": "494796c259c6e0db1b3ec2408c75e9f13faf80e337e9415f5743f564edac28f7",
+      "git_blob_sha1": "6b0d6378254bdcea1adf88d1b43192e13dbc3180",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/README.md"
+    },
+    {
+      "path": "README_BEST7_RIGOROUS.md",
+      "bytes": 1263,
+      "sha256": "6addc90900c996f3ff9dcca9f6cb102a4891ad978d14373dd0eaba5ab9dd48d6",
+      "git_blob_sha1": "ab0fbc07ed4340de6b6125d63f18eec17f3c8a3e",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/README_BEST7_RIGOROUS.md"
+    },
+    {
+      "path": "audit_best7_final_arithmetic.py",
+      "bytes": 3906,
+      "sha256": "3a29b736a9706536f10445db4fe220e8cb7904cb4dcf343ffbf9db29b7508790",
+      "git_blob_sha1": "236433ec4c6cfde0e25a763c16891c2f629739ed",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/audit_best7_final_arithmetic.py"
+    },
+    {
+      "path": "audit_best7_full.py",
+      "bytes": 1470,
+      "sha256": "f448f0db247915d70ec13b65a51b89dbc54b095f3303b082a958ed1bf67b3db3",
+      "git_blob_sha1": "6434a5b7fa576b158689714056347ff44e4e8011",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/audit_best7_full.py"
+    },
+    {
+      "path": "audit_sparse6_altgroups.py",
+      "bytes": 9181,
+      "sha256": "d554af0d26e218a4fc2f2795e99a9ef39eb5077ceecf55a0daac46909e14dca1",
+      "git_blob_sha1": "a274d9d28c0d398c3f1e752d5a477f8adf421d5a",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/audit_sparse6_altgroups.py"
+    },
+    {
+      "path": "generate_origin_tail_25_36.py",
+      "bytes": 3881,
+      "sha256": "3e139202b0bb839c52ef9fbcf10d0ccb7dc7c666c537712d3f228f8b9de18083",
+      "git_blob_sha1": "aa4dc27da86849811d109d68547292ddcd3ac21b",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/generate_origin_tail_25_36.py"
+    },
+    {
+      "path": "origin_tail_25_36.npz",
+      "bytes": 10836,
+      "sha256": "8bcc654f4fd44881a7b487fe1336a8905aaa2d1b52deca45e622e1c397fb03aa",
+      "git_blob_sha1": "aba6a9d819c365928e2c193c8f4515f661809d7c",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/origin_tail_25_36.npz"
+    },
+    {
+      "path": "support_compression_certificate/complex_radial_phase_polynomial_certificate.py",
+      "bytes": 5470,
+      "sha256": "a4b54442133d24da979a602f428364adb96952b26e62b5cbab60c1f484def625",
+      "git_blob_sha1": "cef81559f61db9572c1abade8bdfd976e3489d8b",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_radial_phase_polynomial_certificate.py"
+    },
+    {
+      "path": "support_compression_certificate/complex_upper_convex_2e6_low_certificate.py",
+      "bytes": 5565,
+      "sha256": "cd7da49361a650b3d9b1d7bdc7e9b1091866ad8374f114d49836f138db8b9361",
+      "git_blob_sha1": "9bafef1146f37c0d5ac40c19460b551c0b0ba951",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_convex_2e6_low_certificate.py"
+    },
+    {
+      "path": "support_compression_certificate/complex_upper_convex_2e6_polynomial_certificate.py",
+      "bytes": 2454,
+      "sha256": "17ec189886b44c3998f5caa3241ad88c517619570930a8fa31bbf4988c790b55",
+      "git_blob_sha1": "439d7c30aedfbb939e2bd12debf904ec75f49855",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_convex_2e6_polynomial_certificate.py"
+    },
+    {
+      "path": "support_compression_certificate/complex_upper_convex_2e6_radial_coefficients.py",
+      "bytes": 3993,
+      "sha256": "68df32deb731f0efb126e784cb3f48a3531e585cd5b14e408585341cc6e185ca",
+      "git_blob_sha1": "ee01873c87588031e3364040c42bbb916dd9e589",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_convex_2e6_radial_coefficients.py"
+    },
+    {
+      "path": "support_compression_certificate/complex_upper_convex_2e6_scalar_tail_certificate.py",
+      "bytes": 4845,
+      "sha256": "acaed3e39038d0cd7368f83321a7e0dc86fd013c6f845fd242cded9bafa0644d",
+      "git_blob_sha1": "4501158a0ffcaa6c868f9c190bf48d2ddf2dfb3c",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_convex_2e6_scalar_tail_certificate.py"
+    },
+    {
+      "path": "support_compression_certificate/complex_upper_origin_layer_coefficients.py",
+      "bytes": 4164,
+      "sha256": "791d4396bcc53faf58f74c89ba35913794ae48a2c6e5ce7de5a7aefa8d2044c8",
+      "git_blob_sha1": "142242e25efe27c74fb1bb9ec0f412f219d86979",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_origin_layer_coefficients.py"
+    },
+    {
+      "path": "support_compression_certificate/complex_upper_origin_layer_coefficients_n120_analytic.npz",
+      "bytes": 10586,
+      "sha256": "fc29fa555fb66c5cd6a2ac53dbd2508207b6058cfe0b339163faadeb85ad54da",
+      "git_blob_sha1": "cb1911aaae9f6d9d1ebbbcf1cd1be82b466a2eb0",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_origin_layer_coefficients_n120_analytic.npz"
+    },
+    {
+      "path": "support_compression_certificate/complex_upper_origin_layer_definitions.py",
+      "bytes": 2334,
+      "sha256": "bf03cd782d8f6671c60533febac4779d311f640e059aae7de1d39224a961a26c",
+      "git_blob_sha1": "5bb9279b84b32e355219502d96d0ee00d706d611",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_origin_layer_definitions.py"
+    },
+    {
+      "path": "support_compression_certificate/complex_upper_origin_layer_energy_certificate.py",
+      "bytes": 3854,
+      "sha256": "b1a795d071f611d7d943d7984c018967990d4c11063e93740b55c9ebbb0000bf",
+      "git_blob_sha1": "bf9dac58fb6d494b921cb062a8de4c89d9bf586b",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_origin_layer_energy_certificate.py"
+    },
+    {
+      "path": "support_compression_certificate/complex_upper_saha_cubic_exacttail_457e8_certificate.py",
+      "bytes": 15110,
+      "sha256": "96ceba930d2ca675a2f082ac11fb05163c828cb2341f36db0f9cc02a7cfda6ca",
+      "git_blob_sha1": "04b73440c584c0ccaca39922af70c8f70c24d6e4",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_saha_cubic_exacttail_457e8_certificate.py"
+    },
+    {
+      "path": "support_compression_certificate/complex_upper_saha_visible_energy_refinement.py",
+      "bytes": 5129,
+      "sha256": "2c98c5a044890fbeafbeecae2dd6c916df8bd2bde829f34f0a4ef921e0e4a3fa",
+      "git_blob_sha1": "d6feef3218c31352acb5f68834c6c65a944dd760",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_saha_visible_energy_refinement.py"
+    },
+    {
+      "path": "tight_origin_extension.py",
+      "bytes": 2191,
+      "sha256": "79f73fb1a59d775a3d00b0a95a9442dc73e2fea0d5f6a70dbf2218537f491c3c",
+      "git_blob_sha1": "48cb096960e0155ec0fe23c99183a5deffbefc81",
+      "url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/tight_origin_extension.py"
+    }
+  ]
+}

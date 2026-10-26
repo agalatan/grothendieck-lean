@@ -1,0 +1,5 @@
+second radial polynomial exact algebra: PASS
+|P(s)| > 3/5 for every s >= 0
+nine disjoint root disks of radius 10^-6 certified
+sup |theta'| < 11.558941258885412 < 12
+sup |theta''| < 29.33010029713033 < 30

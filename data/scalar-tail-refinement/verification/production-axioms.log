@@ -1,0 +1,41 @@
+'Grothe.ScalarTailRefinement.branch5_outer_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.ScalarTailRefinement.power_check._native.native_decide.ax_1_1]
+'Grothe.ScalarTailRefinement.compTerm_arbitrary_power_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.ScalarTailRefinement.degree_P' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.ScalarTailRefinement.ledger_acceptance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.ScalarTailRefinement.norm_P' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.ScalarTailRefinement.norm_power' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.ScalarTailRefinement.power_check._native.native_decide.ax_1_1]
+'Grothe.ScalarTailRefinement.normalized_score_of_published_budgets' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.ScalarTailRefinement.outer_composition_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.ScalarTailRefinement.power_check._native.native_decide.ax_1_1]
+'Grothe.ScalarTailRefinement.outer_composition_saving' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.ScalarTailRefinement.power_check._native.native_decide.ax_1_1]
+'Grothe.ScalarTailRefinement.power_check' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.ScalarTailRefinement.power_check._native.native_decide.ax_1_1]
+'Grothe.ScalarTailRefinement.refined_score_of_published_budgets' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.ScalarTailRefinement.power_check._native.native_decide.ax_1_1]
+'Grothe.ScalarTailRefinement.refined_score_of_published_inputs' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.ScalarTailRefinement.power_check._native.native_decide.ax_1_1]
+'Grothe.ScalarTailRefinement.score_acceptance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.ScalarTailRefinement.supported_composition_arbitrary_power_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.ScalarTailRefinement.wallis_rational_check' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.ScalarTailRefinement.wallis_tail_bound' depends on axioms: [propext, Classical.choice, Quot.sound]

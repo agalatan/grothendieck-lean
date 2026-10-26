@@ -8,6 +8,7 @@ import Grothe.Haagerup.Law
 import Grothe.Haagerup.PhaseGeometry
 import Grothe.Haagerup.Power
 import Grothe.Haagerup.PowerCheck
+import Grothe.Haagerup.ScalarTailRefinement
 import Grothe.Haagerup.Series
 import Grothe.ListPoly
 import Grothe.Lower.Basic
