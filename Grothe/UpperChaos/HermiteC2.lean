@@ -55,15 +55,7 @@ theorem integral_hermite2 (i j : Idx2) :
   rw [integral_prod_mul (f := fun z => conj (ev z (H i.1.1 i.1.2)) * ev z (H j.1.1 j.1.2))
     (g := fun z => conj (ev z (H i.2.1 i.2.2)) * ev z (H j.2.1 j.2.2)),
     integral_hermite, integral_hermite]
-  obtain ⟨⟨p, q⟩, ⟨r, s⟩⟩ := i
-  obtain ⟨⟨p', q'⟩, ⟨r', s'⟩⟩ := j
-  by_cases h1 : p = p' ∧ q = q'
-  · by_cases h2 : r = r' ∧ s = s'
-    · obtain ⟨rfl, rfl⟩ := h1; obtain ⟨rfl, rfl⟩ := h2; simp [fac2]
-    · have : ¬((p, q), (r, s)) = ((p', q'), (r', s')) := fun h => h2 (by simp_all)
-      simp [h2, this]
-  · have : ¬((p, q), (r, s)) = ((p', q'), (r', s')) := fun h => h1 (by simp_all)
-    simp [h1, this]
+  split_ifs <;> simp_all [Prod.ext_iff, fac2]
 
 /-! ### Multiplication by the coordinates -/
 
@@ -71,27 +63,17 @@ lemma ev_X0_mul_H (z : ℂ) (p q : ℕ) :
     z * ev z (H p q) = ev z (H (p + 1) q) + (q : ℂ) * ev z (H p (q - 1)) := by
   have hX : X 0 * H p q = H (p + 1) q + pderiv 1 (H p q) := by
     rw [H_succ_left, A0]; ring
-  have h : ev z (X 0 * H p q) = ev z (H (p + 1) q + pderiv 1 (H p q)) := by rw [hX]
-  rw [show ev z (X 0 * H p q) = z * ev z (H p q) by simp [ev, zv],
-    show ev z (H (p + 1) q + pderiv 1 (H p q)) = ev z (H (p + 1) q) + ev z (pderiv 1 (H p q)) by
-      simp [ev]] at h
-  rw [h]
   cases q with
-  | zero => rw [pderiv1_H_zero]; simp [ev]
-  | succ q => rw [pderiv1_H_succ]; simp [ev, nsmul_eq_mul]
+  | zero => simpa [ev, zv, pderiv1_H_zero] using congrArg (ev z) hX
+  | succ q => simpa [ev, zv, pderiv1_H_succ, nsmul_eq_mul] using congrArg (ev z) hX
 
 lemma ev_X1_mul_H (z : ℂ) (p q : ℕ) :
     conj z * ev z (H p q) = ev z (H p (q + 1)) + (p : ℂ) * ev z (H (p - 1) q) := by
   have hX : X 1 * H p q = H p (q + 1) + pderiv 0 (H p q) := by
     rw [← A1_H, A1]; ring
-  have h : ev z (X 1 * H p q) = ev z (H p (q + 1) + pderiv 0 (H p q)) := by rw [hX]
-  rw [show ev z (X 1 * H p q) = conj z * ev z (H p q) by simp [ev, zv],
-    show ev z (H p (q + 1) + pderiv 0 (H p q)) = ev z (H p (q + 1)) + ev z (pderiv 0 (H p q)) by
-      simp [ev]] at h
-  rw [h]
   cases p with
-  | zero => rw [pderiv0_H_zero]; simp [ev]
-  | succ p => rw [pderiv0_H_succ]; simp [ev, nsmul_eq_mul]
+  | zero => simpa [ev, zv, pderiv0_H_zero] using congrArg (ev z) hX
+  | succ p => simpa [ev, zv, pderiv0_H_succ, nsmul_eq_mul] using congrArg (ev z) hX
 
 /-- The span of the tensor Hermite functions. -/
 def V2 : Submodule ℂ (ℂ × ℂ → ℂ) := Submodule.span ℂ (Set.range H2)
@@ -101,19 +83,8 @@ lemma H2_mem (i : Idx2) : H2 i ∈ V2 := Submodule.subset_span ⟨i, rfl⟩
 /-- `V2` is closed under multiplication by a function `m` once each `m · H2 i` lies in `V2`. -/
 lemma V2_mul_mem (m : ℂ × ℂ → ℂ) (hm : ∀ i, (fun u => m u * H2 i u) ∈ V2) {v : ℂ × ℂ → ℂ}
     (hv : v ∈ V2) : (fun u => m u * v u) ∈ V2 := by
-  induction hv using Submodule.span_induction with
-  | mem v hv => obtain ⟨i, rfl⟩ := hv; exact hm i
-  | zero =>
-    have : (fun x => m x * (0 : ℂ × ℂ → ℂ) x) = 0 := by funext x; simp
-    rw [this]; exact V2.zero_mem
-  | add u v _ _ hu hv =>
-    have : (fun x => m x * (u + v) x) = (fun x => m x * u x) + fun x => m x * v x := by
-      funext x; simp [mul_add]
-    rw [this]; exact V2.add_mem hu hv
-  | smul c v _ hv =>
-    have : (fun x => m x * (c • v) x) = c • fun x => m x * v x := by
-      funext x; simp; ring
-    rw [this]; exact V2.smul_mem c hv
+  exact (Submodule.span_le.2 (Set.range_subset_iff.2 hm) :
+    V2 ≤ V2.comap (LinearMap.mul ℂ _ m)) hv
 
 lemma mul_z1_mem (i : Idx2) : (fun u : ℂ × ℂ => u.1 * H2 i u) ∈ V2 := by
   have : (fun u : ℂ × ℂ => u.1 * H2 i u)
