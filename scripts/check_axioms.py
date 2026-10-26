@@ -232,6 +232,26 @@ UPPER_COMPARISON = {
     'Grothe.UpperChaos.fresh_upper_concrete', 'Grothe.UpperChaos.fresh_upper_rounder',
 }
 REQUIRED |= UPPER_COMPARISON
+PHASE_RESPONSE = {
+    'Grothe.Upper.ResponseGeometry.support_defect',
+    'Grothe.Upper.ResponseGeometry.normalized_distance',
+    'Grothe.Upper.ResponseGeometry.weighted_support_loss',
+    'Grothe.Upper.ResponseGeometry.kernel_transport',
+    'Grothe.Upper.ResponseGeometry.energy_transport',
+    'Grothe.Upper.ResponseGeometry.finite_energy_comparison',
+    'Grothe.Upper.ResponseGeometry.full_energy_comparison',
+    'Grothe.Upper.ResponseGeometry.orbit_energy_zero',
+    'Grothe.HaagerupPhaseGeometry.scaled_lower',
+    'Grothe.HaagerupPhaseGeometry.harmonic_lower',
+    'Grothe.HaagerupPhaseGeometry.degree_moment_not_summable',
+}
+REQUIRED |= PHASE_RESPONSE
+if '--phase-response' in sys.argv:
+    if any(flag in sys.argv for flag in ('--caps', '--responses', '--response-geometry',
+                                        '--haagerup-power', '--upper-comparison')):
+        sys.exit('choose --phase-response alone')
+    REQUIRED = PHASE_RESPONSE
+    NATIVE = set()
 # `--caps`: the report of scratch/AxiomsCaps.lean (separate target GrotheCaps, see README)
 if "--caps" in sys.argv:
     REQUIRED = {"Grothe.LowerAnalytic.lower_bound_of_capsRest"}
