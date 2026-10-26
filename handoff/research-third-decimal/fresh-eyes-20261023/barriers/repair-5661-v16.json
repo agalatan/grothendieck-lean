@@ -1,0 +1,628 @@
+{
+  "scope": "FLOAT discovery: can finite spectral PSD constraints be repaired cheaply?\n\nThe final laws, when requested, are independently checked with exact fractions.\nLP status and finite support limits are not global objective certificates.\n",
+  "source": "/Users/alingalatan/workspaces/grothe/outputs/binding-audit-20261023/radial-complete-5661-exact.json",
+  "index": 5661,
+  "vmax": 16.0,
+  "max_degree": 6,
+  "history": [
+    {
+      "iteration": 0,
+      "potential": 1.4196718513329802,
+      "worst_scaled_eigenvalue": -0.03864594393662453,
+      "new_cuts": 3,
+      "spectral_cuts": 3
+    },
+    {
+      "iteration": 1,
+      "potential": 1.4196717899098892,
+      "worst_scaled_eigenvalue": -0.001806302364639078,
+      "new_cuts": 1,
+      "spectral_cuts": 4
+    },
+    {
+      "iteration": 2,
+      "potential": 1.4196717867340463,
+      "worst_scaled_eigenvalue": -3.5453021899347915e-06,
+      "new_cuts": 1,
+      "spectral_cuts": 5
+    },
+    {
+      "iteration": 3,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 6
+    },
+    {
+      "iteration": 4,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 7
+    },
+    {
+      "iteration": 5,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 8
+    },
+    {
+      "iteration": 6,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 9
+    },
+    {
+      "iteration": 7,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 10
+    },
+    {
+      "iteration": 8,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 11
+    },
+    {
+      "iteration": 9,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 12
+    },
+    {
+      "iteration": 10,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 13
+    },
+    {
+      "iteration": 11,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 14
+    },
+    {
+      "iteration": 12,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 15
+    },
+    {
+      "iteration": 13,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 16
+    },
+    {
+      "iteration": 14,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 17
+    },
+    {
+      "iteration": 15,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 18
+    },
+    {
+      "iteration": 16,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 19
+    },
+    {
+      "iteration": 17,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 20
+    },
+    {
+      "iteration": 18,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 21
+    },
+    {
+      "iteration": 19,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 22
+    },
+    {
+      "iteration": 20,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 23
+    },
+    {
+      "iteration": 21,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 24
+    },
+    {
+      "iteration": 22,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 25
+    },
+    {
+      "iteration": 23,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 26
+    },
+    {
+      "iteration": 24,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 27
+    },
+    {
+      "iteration": 25,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 28
+    },
+    {
+      "iteration": 26,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 29
+    },
+    {
+      "iteration": 27,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 30
+    },
+    {
+      "iteration": 28,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 31
+    },
+    {
+      "iteration": 29,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 32
+    },
+    {
+      "iteration": 30,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 33
+    },
+    {
+      "iteration": 31,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 34
+    },
+    {
+      "iteration": 32,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 35
+    },
+    {
+      "iteration": 33,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 36
+    },
+    {
+      "iteration": 34,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 37
+    },
+    {
+      "iteration": 35,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 38
+    },
+    {
+      "iteration": 36,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 39
+    },
+    {
+      "iteration": 37,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 40
+    },
+    {
+      "iteration": 38,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 41
+    },
+    {
+      "iteration": 39,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 42
+    },
+    {
+      "iteration": 40,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 43
+    },
+    {
+      "iteration": 41,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 44
+    },
+    {
+      "iteration": 42,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 45
+    },
+    {
+      "iteration": 43,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 46
+    },
+    {
+      "iteration": 44,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 47
+    },
+    {
+      "iteration": 45,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 48
+    },
+    {
+      "iteration": 46,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 49
+    },
+    {
+      "iteration": 47,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 50
+    },
+    {
+      "iteration": 48,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 51
+    },
+    {
+      "iteration": 49,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 52
+    },
+    {
+      "iteration": 50,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 53
+    },
+    {
+      "iteration": 51,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 54
+    },
+    {
+      "iteration": 52,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 55
+    },
+    {
+      "iteration": 53,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 56
+    },
+    {
+      "iteration": 54,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 57
+    },
+    {
+      "iteration": 55,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 58
+    },
+    {
+      "iteration": 56,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 59
+    },
+    {
+      "iteration": 57,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 60
+    },
+    {
+      "iteration": 58,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 61
+    },
+    {
+      "iteration": 59,
+      "potential": 1.4196717867260196,
+      "worst_scaled_eigenvalue": 9.999710276517234e-07,
+      "new_cuts": 1,
+      "spectral_cuts": 62
+    }
+  ],
+  "final_potential": 1.4196717867260196,
+  "support": [
+    {
+      "v": 0.00125,
+      "weight": 0.23506735902919382
+    },
+    {
+      "v": 0.447,
+      "weight": 0.11518570512074591
+    },
+    {
+      "v": 1.00875,
+      "weight": 0.21299897754403968
+    },
+    {
+      "v": 1.2075,
+      "weight": 0.3045718105468659
+    },
+    {
+      "v": 1.38375,
+      "weight": 0.07479164556266972
+    },
+    {
+      "v": 1.48,
+      "weight": 0.054861782754466806
+    },
+    {
+      "v": 2.28,
+      "weight": 2.2846730544146764e-07
+    },
+    {
+      "v": 2.366,
+      "weight": 5.551601984851096e-07
+    },
+    {
+      "v": 3.2,
+      "weight": 8.686817683130086e-06
+    },
+    {
+      "v": 4.2,
+      "weight": 0.00041361501442831503
+    },
+    {
+      "v": 4.5,
+      "weight": 0.0011287436997881766
+    },
+    {
+      "v": 4.8,
+      "weight": 0.0009587069615327
+    },
+    {
+      "v": 6.050000000000001,
+      "weight": 1.2182121601442143e-05
+    },
+    {
+      "v": 16.0,
+      "weight": 1.199480743512815e-09
+    }
+  ],
+  "equality_error": 2.26929586233382e-13,
+  "max_scaled_inequality_violation": 2.8972482673106568e-11,
+  "score": 0.7134145761492416,
+  "exact_original_model_verified": true,
+  "exact_original_model_result": {
+    "score": "24632804048859500966603118007297510666017075954576822867366274838216363827492305072997940343629324137734144671076054521476141133439480543094539966159685131002427533509560618554401181180205902961542013964768543400590016162514689301401/34528035832711233374163301136462438065283428727850467781448506377640592087792400516068956489765710149533994876962843708427125643474967509028157572247575738481840331161600000000000000000000000000000000000000000000000000000000000000000",
+    "score_float": 0.7134145761492413,
+    "target": "500/701",
+    "strict_excess": "3577721894893490507135154884335944236255880233118939299505472769374999175905598137077936001301145784637975942892365341212112803592106195193730154151407591781535409401993606635228007324337976040951789302748923813601329922797200282101/24204153118730574595288474096660169083763683538223177914795402970726055053542472761764338499325762814823330408750953439607415076075952223828738458145550592675770072144281600000000000000000000000000000000000000000000000000000000000000000",
+    "cuts": 671,
+    "atoms": 14,
+    "sixth_moment": "1313336318403302024957615117197249390229/50000000000000000000000000000000000000",
+    "sixth_slack": "13140858817937892695302750609771/50000000000000000000000000000000000000",
+    "minimum_cut_slack": "957110836387807464547502316001682290141109099446051889052805190682153409089727367264276362291427326763309491182604498974554807599321579400676369049/15981316447937530171721122790573913521113120205949023553490617829271733532713623125315886676498255489568505856000000000000000000000000000000000000000000000000",
+    "minimum_cut": "old-stein-174"
+  },
+  "exact_spectral_tests": [
+    {
+      "degree": 2,
+      "blocks": [
+        {
+          "parity": 0,
+          "indices": [
+            0,
+            2
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 2
+        },
+        {
+          "parity": 1,
+          "indices": [
+            1
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 1
+        }
+      ]
+    },
+    {
+      "degree": 3,
+      "blocks": [
+        {
+          "parity": 0,
+          "indices": [
+            0,
+            2
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 2
+        },
+        {
+          "parity": 1,
+          "indices": [
+            1,
+            3
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 2
+        }
+      ]
+    },
+    {
+      "degree": 4,
+      "blocks": [
+        {
+          "parity": 0,
+          "indices": [
+            0,
+            2,
+            4
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 3
+        },
+        {
+          "parity": 1,
+          "indices": [
+            1,
+            3
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 2
+        }
+      ]
+    },
+    {
+      "degree": 5,
+      "blocks": [
+        {
+          "parity": 0,
+          "indices": [
+            0,
+            2,
+            4
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 3
+        },
+        {
+          "parity": 1,
+          "indices": [
+            1,
+            3,
+            5
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 3
+        }
+      ]
+    },
+    {
+      "degree": 6,
+      "blocks": [
+        {
+          "parity": 0,
+          "indices": [
+            0,
+            2,
+            4,
+            6
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 4
+        },
+        {
+          "parity": 1,
+          "indices": [
+            1,
+            3,
+            5
+          ],
+          "psd_exact": true,
+          "congruence_rank_before_stop": 3
+        }
+      ]
+    }
+  ],
+  "all_spectral_blocks_psd_exact": true,
+  "exact_law": "handoff/research-third-decimal/fresh-eyes-20261023/barriers/repair-5661-v16-law-exact.json"
+}

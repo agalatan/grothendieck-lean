@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "epsilon": "149/200",
+  "R0": "400/149",
+  "scope": "Standard-library exact replay of the flat-sector variance identity.\n\nThe atomic fixture verifies algebra only; it is not asserted to be a Gaussian\nimage law. The general identity and finite-rank reduction have written proofs.\n",
+  "fixtures": [
+    {
+      "eta": "0",
+      "margin": "0",
+      "variance": "0"
+    },
+    {
+      "eta": "1/1000",
+      "margin": "1250/764772151",
+      "variance": "25/20530796"
+    },
+    {
+      "eta": "1/100",
+      "margin": "307475/2054971048",
+      "variance": "12299/110334016"
+    },
+    {
+      "eta": "1/50",
+      "margin": "307475/565046442",
+      "variance": "12299/30338064"
+    },
+    {
+      "eta": "1/2",
+      "margin": "12299/603450",
+      "variance": "12299/810000"
+    }
+  ],
+  "conditional_Wick_checks": {
+    "global_cubic_factorizations": 18,
+    "exact_remote_Gram_entries": 1250,
+    "basis_size": 25
+  }
+}

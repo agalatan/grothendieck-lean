@@ -241,7 +241,7 @@ Deliver this report first as a docs-only ready branch. Then independently delive
 stamp-checker hardening (#47), current/validated dead-code roots (#50), and the
 safe leaf proof simplifications (#55), with actual validation and savings recorded
 in the respective issues. Every commit uses the repository prefix and issue
-reference; only CI may move master.
+reference; agents deliver through CI and do not move master themselves.
 
 No change to a headline interface, native fact/input, or caps-closure source is
 included without the user's go-ahead. This includes #49, #51, #54, #56 and the
@@ -267,3 +267,56 @@ FLINT replay checks the complete head, seed, tail and endpoint; see
 `docs/verification/haagerup-trim-20261026/`. Lean build/CI status is recorded
 separately from that external replay. The native-fact count and cap digest remain
 unchanged. All other gated proposals remain unapproved.
+
+## Verified follow-ups
+
+The baseline findings above remain the audit record. The following fixes have
+since been checked; no headline mathematical soundness defect has been found.
+
+- [#47](https://github.com/agalatan/grothendieck-lean/issues/47): a missing cap
+  stamp now fails, and explicit exclusive check/digest/write modes reject invalid
+  arguments. Isolated Python regressions pass; the 140-file digest is unchanged.
+- [#50](https://github.com/agalatan/grothendieck-lean/issues/50): the dead-code
+  report includes the current headline roots and rejects missing roots. Its
+  limitations for the separate caps target remain explicit; no declarations were
+  deleted on the strength of the report.
+- [#55](https://github.com/agalatan/grothendieck-lean/issues/55): the screening
+  proofs reuse standard norm bounds with unchanged theorem statements.
+  [CI run 40247076838](https://github.com/agalatan/grothendieck-lean/actions/runs/40247076838)
+  passed the build and verification checks.
+- [#54](https://github.com/agalatan/grothendieck-lean/issues/54): the approved
+  inverse trim has exact equivalence, independent replay, and fresh complete
+  native/proof-build evidence from
+  [run 40247044009](https://github.com/agalatan/grothendieck-lean/actions/runs/40247044009).
+  Its affected files match the verified inputs. The aggregate report accepted
+  424 declarations and the cap stamp passed. No speedup is established; later
+  merged-tree CI remains pending. See the
+  [verification record](verification/haagerup-trim-20261026/README.md).
+- [#60](https://github.com/agalatan/grothendieck-lean/issues/60): the axiom checker
+  rejects unknown/conflicting modes and incomplete or diagnostic-bearing output.
+  Master `08e55bbe028d81fced0671930c0ef453c7d0d919` now loads the policies from
+  `data/axioms/`; all seven effective policies exactly preserve those checked at
+  `1b44a219d553801ee319a993203f773e5646174b`, including the 11 phase-response
+  requirements and their empty native allowlist. All 17 Python tests also pass
+  against that current-master checker and data snapshot. The actual 435-record report
+  from [run 40247087615](https://github.com/agalatan/grothendieck-lean/actions/runs/40247087615)
+  passes the strict checker (18 of 78 native facts); this tests the report input
+  and does not claim that the run's later auto-merge step succeeded.
+
+- [#59](https://github.com/agalatan/grothendieck-lean/issues/59): one shared
+  coefficient-series budget lemma replaces three repeated arguments; two
+  unweighted head estimates specialize their existing weighted counterparts at
+  weight one. This removes **40 net Lean lines** across four files. Serial builds
+  of the 21-module targeted closure passed warning-free, including all changed
+  modules and the dependent upper head, residual, resolvent-tail and Haagerup
+  modules. All 64 existing declaration type/axiom fingerprints and nine definition
+  value hashes match the baseline. The new lemma uses only `Classical.choice`,
+  `Quot.sound` and `propext`; imports, native inputs and the cap digest are unchanged.
+  This evidence covers source commit `7721654`; full aggregate-dependent coverage
+  remains for CI.
+
+The measured production Lean reduction across #54, #55 and #59 is **124 lines**:
+60 proof lines and 64 generated zero-coefficient lines. No module or native fact
+is removed, and no meaningful native runtime improvement is established.
+Other gated changes to native facts/inputs, headline interfaces, and caps-closure
+sources remain unapproved. Workflow #48 remains coordinated with reserved PR #44.

@@ -1,0 +1,37 @@
+{
+  "status": "PASS_STRICT_ONE_COORDINATE_FULL_SCORE_OBSTRUCTION",
+  "scope": "Certify a strict full-score obstruction for one radial charge-one channel.\n\nThe accompanying proof uses a rank-one perturbation of the certified normalized\nHankel operator. Arb encloses the sole integral bound and elementary Gaussian\nmoments. The resulting score ceiling applies to two arbitrary radial maps,\ntheir scalar OU contractions and probability mixtures; it is not a new bound\nfor the full all-dimensional complex Grothendieck constant.\n",
+  "precision_bits": 160,
+  "normalized_Hankel_HS_certificate": {
+    "status": "PASS: rigorous Arb rectangle and analytic-tail upper bound",
+    "python_flint_version": "0.9.0",
+    "precision_bits": 160,
+    "mesh_denominator": 50,
+    "radius": 6,
+    "rectangles": 90000,
+    "finite_square_upper_enclosure": "[1.5930793900541377701776021803957429206285719 +/- 8.38e-44]",
+    "tail_upper_enclosure": "[0.0006993479551824483180694947068200672362857624377 +/- 5.08e-50]",
+    "HS_squared_upper_enclosure": "[1.5937787380093202184956716751025629878648576 +/- 7.29e-44]",
+    "certified_HS_squared_lt": 2,
+    "scope": "one-coordinate, charge-one, arbitrary complex disk-valued bilinear responses; alternating functional only"
+  },
+  "orthogonal_operator_norm_bound": "7/8",
+  "coefficient_feature_norm_squared_upper_enclosure": "[12.46975058104421303886704706012972810535775870 +/- 7.56e-45]",
+  "rational_feature_norm_bound": "25/2",
+  "perturbation_t": "1/400",
+  "multiplier_rule": "lambda_k=(-1)^k, except lambda_2=199/200",
+  "phase_coefficient_energy_k2": "[0.036815538909255389513234102147806674424185578899 +/- 1.50e-49]",
+  "gamma_dagger": "[0.7119586597782638015124585488053977677277711441 +/- 7.89e-47]",
+  "strict_score_loss": "[9.2038847273138473783085255369516686060463947247e-5 +/- 4.35e-52]",
+  "full_score_ceiling": "[0.711866620930990663038675463550028251041710680 +/- 2.33e-46]",
+  "rational_score_ceiling": "711866621/1000000000",
+  "incumbent_reciprocal_score": "[0.71194715331320898200000000000000000000000000000 +/- 7.77e-49]",
+  "separation_below_incumbent": "[8.0532382218318961324536449971748958289320e-5 +/- 2.34e-46]",
+  "restricted_reciprocal_floor": "[1.404757535466663475030357945599464475194321980 +/- 3.46e-46]",
+  "global_Grothendieck_endpoint_changed": false,
+  "paper_proof_obligations": [
+    "Hankel realization, positive normalization and exact eigenfunction from BILINEAR_HANKEL_OBSTRUCTION.md.",
+    "The rank-one perturbation Schur bound for Q-2*t*u*u*, using ||Q on h-perp||<=rho, ||u||\u00b2<=B and 4*t*B<=1-rho.",
+    "The actual class is a single ordinary Gaussian channel, charge-one per response, scalar OU contractions and probability mixtures. Multigrade latent channels, general preprocessing and higher Gaussian dimensions are not covered."
+  ]
+}

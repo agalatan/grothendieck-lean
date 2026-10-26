@@ -19,6 +19,49 @@ def lean_list(qs, per=4):
     lines = [", ".join(items[i:i + per]) for i in range(0, len(items), per)]
     return "[" + ",\n   ".join(lines) + "]"
 
+
+def verify_linear_refinement(d):
+    """Check optional derived assembly metadata against the same Hardy input.
+
+    The frozen contour-tail assembly remains separate. These exact rational
+    checks bind its sharper linear-coefficient deduction to the displayed
+    residual, reciprocal and decimal; no floating estimate is accepted.
+    """
+    if not __debug__:
+        raise ValueError('Reject -O/-OO: exact certificate checks required')
+    if 'linear_budget_refinement' not in d:
+        return None
+    refined = d['linear_budget_refinement']
+    slope, compare, head, error = map(Q, (d['slopeQ'], d['compare'], d['headCapQ'], d['energyErrQ']))
+    radius, square_cap = Q(d['hardy_radius']), Q(d['hardy_square_cap'])
+    assert radius == Q(4149, 4000) and square_cap == Q(7, 4), 'Unsupported canonical Hardy input'
+    head_residual = compare+head+error
+    linear_lower = slope-head_residual
+    assert Q(refined['head_residual']) == head_residual and head_residual >= 0
+    assert Q(refined['linear_lower']) == linear_lower and linear_lower > 0
+    shifted_budget = (square_cap-linear_lower**2*radius**2)/radius**4
+    assert shifted_budget >= 0, 'The shifted square budget is negative'
+    tail = Q(refined['hardy_tail'])
+    assert 0 < tail <= Q(d['hardy_tail']), 'The claimed tail is not a refinement'
+    ratio = shifted_budget/(tail**2*(1-radius**-4))
+    assert ratio.numerator*4000**1002 <= ratio.denominator*4149**1002, \
+        'The linear-budget tail inequality fails'
+    residual = head_residual+tail
+    score = slope-residual
+    assert Q(refined['delta']) == residual and score > 0
+    assert Q(refined['incumbent_score']) == score and Q(refined['exact_bound']) == 1/score
+    headline = Q(refined['headline_decimal'])
+    assert (headline*10**12).denominator == 1 and headline-Q(1, 10**12) <= 1/score < headline, \
+        'The strict decimal endpoint is not the next twelve-place ceiling'
+    if 'headline_upper' in refined:
+        assert Q(refined['headline_upper']) == headline
+    return dict(status='PASS_EXACT_LINEAR_BUDGET_REFINEMENT',
+                head_residual=str(head_residual), linear_lower=str(linear_lower),
+                shifted_budget=str(shifted_budget), hardy_tail=str(tail),
+                tail_integer_left=str(ratio.numerator), tail_integer_right=str(ratio.denominator),
+                delta=str(residual), incumbent_score=str(score), exact_bound=str(1/score),
+                headline_decimal=refined['headline_decimal'])
+
 def head_float(table, P, Qp, K):
     """sum_{j<K} |c_j - c [j = 0]| in binary64, c_j = [X^j] sum E[n,m] X^(n//2 + m//2) P^n Q^m."""
     def mul(a, b):
@@ -49,6 +92,7 @@ def main():
     src=Path(sys.argv[1]) if len(sys.argv)>1 else root/'data/upper-preprocess/certificate.json'
     out=Path(sys.argv[2]) if len(sys.argv)>2 else root/'Grothe/Upper/Data.lean'
     d=json.loads(src.read_text());P=list(map(Q,d['pList']));R=list(map(Q,d['qList']))
+    verify_linear_refinement(d)
     c,cap,err=map(Q,[d['slopeQ'],d['headCapQ'],d['energyErrQ']])
     delta=cap+err+Q(d['compare'])+Q(d['hardy_tail'])
     assert delta==Q(d['delta']) and c-delta==Q(d['incumbent_score'])
@@ -107,7 +151,8 @@ open GrotheKernel
     L.append('def energyRows : List RowQ := energyStrs.map parseRow\n')
     L.append('end Grothe.Upper')
     out.write_text('\n'.join(L)+'\n')
-    print(f'wrote {out}: 21168 entries; upper {d["headline_decimal"]}')
+    print(f'wrote {out}: 21168 entries; unrefined source upper {d["headline_decimal"]}; '
+          'the sharper linear-budget endpoint is assembled in PolynomialBridge.lean')
 
 
 if __name__=='__main__':main()

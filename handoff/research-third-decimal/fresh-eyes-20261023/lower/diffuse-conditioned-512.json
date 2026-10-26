@@ -1,0 +1,63 @@
+{
+  "scope": "Discovery quadrature after exact conditioning of unused Gaussian modes.\n\nFor the diffuse contact, first/cubic basis elements factor into one visible\ncomplex Hermite polynomial and one orthonormal remote Wick mode. All remote\nproducts are integrated symbolically. Image-centered polar quadrature then\nintegrates only visible |Z|^2 and the image L+sqrt(v)W. No random projections\nor unconstrained Gram completions occur. Results are not interval enclosures.\n",
+  "parameters": {
+    "outer": 256,
+    "radial": 512,
+    "angular": 768,
+    "eta": 0.01,
+    "out": "/Users/alingalatan/Documents/Codex/2026-10-23/important-do-not-peek-in-other/work/grothe-rankone/handoff/research-third-decimal/fresh-eyes-20261023/lower/diffuse-conditioned-512.json"
+  },
+  "fixture_sha256": "15a863df1e06635370165f3fa922ca019bd036a1652869168e10d7c6d4ba7ef0",
+  "contact": [
+    0.8565701672801842,
+    0.14750207856597156,
+    0.028299873803404752
+  ],
+  "total_mass": 1.0000000000000355,
+  "R0": 2.6845637583891615,
+  "R0_target": 2.684563758389262,
+  "blocks": [
+    {
+      "parity": "real",
+      "feature_rank": 25,
+      "score_hessian": {
+        "-1": {
+          "raw_min": 6.820931607829662e-05,
+          "whitened_min": 5.671204367707814e-05
+        },
+        "1": {
+          "raw_min": 0.015350721978193402,
+          "whitened_min": 0.0025334557159349116
+        }
+      },
+      "regularized_weighted_operator_eigen_interval": [
+        -0.9252813892761617,
+        0.9863374628052602
+      ],
+      "independent_H21_Y_R": 1.2419884419814253,
+      "independent_H21_Y_D": 1.16794689029514,
+      "independent_H21_Y_score_margin": 0.01875809923363092
+    },
+    {
+      "parity": "imag",
+      "feature_rank": 24,
+      "score_hessian": {
+        "-1": {
+          "raw_min": -8.595791675230118e-17,
+          "whitened_min": 0.0021928078946177364
+        },
+        "1": {
+          "raw_min": 4.857225722958887e-17,
+          "whitened_min": 0.0025334557159349146
+        }
+      },
+      "regularized_weighted_operator_eigen_interval": [
+        -0.9252813892761619,
+        0.9354108162929755
+      ],
+      "independent_H21_Y_R": 1.2419884419814253,
+      "independent_H21_Y_D": 1.16794689029514,
+      "independent_H21_Y_score_margin": 0.01875809923363092
+    }
+  ]
+}

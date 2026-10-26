@@ -1,0 +1,114 @@
+{
+  "normalized_inverse_coefficients_in_ascending_b_powers": [
+    [
+      "1"
+    ],
+    [
+      "-1/8",
+      "-1"
+    ],
+    [
+      "0",
+      "5/8",
+      "2"
+    ],
+    [
+      "-1/1024",
+      "-7/64",
+      "-21/8",
+      "-5"
+    ]
+  ],
+  "symbolic_composition_identity_through_degree": 7,
+  "retained_absolute_inverse_degrees": [
+    1,
+    3,
+    7
+  ],
+  "uniform_b_inequality": "For x=4c/pi and y=x/(1-b), inverse Wiener cost >= y+(b+1/8)y^3+(5b^3+21b^2/8+7b/64+1/1024)y^7 >= x+x^3/8+x^7/1024.",
+  "general_normalized_K_coefficients": "K/kappa=1+r1*t^2+r2*t^4+r3*t^6+...; r1,r2,r3>=0 and r2<=r1^2 suffice.",
+  "general_inverse_degree_seven": "d7=-1/1024-7*r1/64-7*r1^2/2+7*r2/8-12*r1^3+8*r1*r2-r3 <= -1/1024.",
+  "exact_positive_decomposition": "-d7-1/1024=7*r1/64+21*r1^2/8+4*r1^3+r3+(7/8+8*r1)*(r1^2-r2).",
+  "general_degree_seven_negative_polynomial": [
+    [
+      [
+        0,
+        0,
+        0
+      ],
+      "-1/1024"
+    ],
+    [
+      [
+        0,
+        0,
+        1
+      ],
+      "-1"
+    ],
+    [
+      [
+        0,
+        1,
+        0
+      ],
+      "7/8"
+    ],
+    [
+      [
+        1,
+        0,
+        0
+      ],
+      "-7/64"
+    ],
+    [
+      [
+        1,
+        1,
+        0
+      ],
+      "8"
+    ],
+    [
+      [
+        2,
+        0,
+        0
+      ],
+      "-7/2"
+    ],
+    [
+      [
+        3,
+        0,
+        0
+      ],
+      "-12"
+    ]
+  ],
+  "status": "RIGOROUS_RESTRICTED_CLASS_OBSTRUCTION_NOT_A_GLOBAL_ENDPOINT",
+  "python_flint_version": "0.9.0",
+  "precision_bits": 160,
+  "score_ceiling_root_lower_rational": "711900642945/1000000000000",
+  "score_ceiling_root_upper_rational": "711900642946/1000000000000",
+  "prefix_at_lower_root_bracket": "[0.99999999999887420595351432301435691448149011795 +/- 5.82e-48]",
+  "prefix_at_upper_root_bracket": "[1.0000000000005445564047350702325655487537222648 +/- 4.84e-47]",
+  "incumbent_lower_score_rational": "711947/1000000",
+  "inverse_prefix_at_incumbent_lower": "[1.0000774337545212291231035359443457426602455469 +/- 2.30e-47]",
+  "inverse_prefix_excess_at_incumbent_lower": "[7.743375452122912310353594434574266024554692e-5 +/- 5.02e-48]",
+  "local_asymmetric_chirp_prefix_expansion": {
+    "x": "[0.90647907415556486891719590945417186005877953125 +/- 4.63e-48]",
+    "L": "[1.1892387094160756437718357803661671769974299570 +/- 1.76e-47]",
+    "M": "[0.79986534484633493180710278939970645830228997286 +/- 8.62e-48]",
+    "N": "[0.38253302269130203140169966349848817699848712829 +/- 8.64e-48]",
+    "uniform_quadratic_lower_coefficient_on_a_squared_plus_d_squared": "[0.3859531936305213716832163272324744478468135562 +/- 3.06e-47]",
+    "quadratic_coefficient_on_delta_squared": "[0.59461935470803782188591789018308358849871497851 +/- 6.54e-48]",
+    "meaning": "P7(a,d,delta)=P7(0)+L*(a^2+d^2+delta^2)/2+M*a*d+N*abs(a*d)+o(a^2+d^2+delta^2). This is a local obstruction only."
+  },
+  "scope": "C=phi(p)*product_j[1+A_j*(1-q_j^2)]^(-1)*product_l exp[-s_l*(1-R_l)], A_j,s_l>=0, p and q_j arbitrary real odd scalar Wiener contractions, R_l any physically supplied even neutral correlation with R_l(0)=0 and Wiener norm <=1. Independent nonlinear scalar channel preprocessors are included. Each Hermitian quadratic auxiliary block is diagonalized before applying its scalar preprocessor.",
+  "stronger_structural_theorem": "The optimal full residual score for this separable modulation class equals the phase-only scalar preprocessing optimum: exactify the residual kernel with a common real odd Wiener contraction, remove one reciprocal affine factor without decreasing the score, and repeat. Neutral Gaussian exponential factors are Wiener limits of such products.",
+  "secondary_common_preprocessor_scope": "H=phi*K where 0<K(0)<=1 and K/K(0)=1+r1*t^2+r2*t^4+r3*t^6+..., r1,r2,r3>=0, r2<=r1^2. This secondary inverse-prefix proof does not require the resolvent factorization.",
+  "excluded": "Arbitrary coupled responses; Hermitian forms whose off-diagonal couplings join coordinates preprocessed differently and cannot be diagonalized within one covariance block; arbitrary convex mixtures unless their averaged kernel independently satisfies a stated factorization or secondary inverse-prefix condition; global complex Grothendieck endpoints.",
+  "physical_realization": "Independent proper complex z,w; F=G=phase(z)*exp(i*a*|w|^2), b=a^2/(1+a^2). Kernel phi(z)/(1+a^2*(1-|z|^2))."
+}

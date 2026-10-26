@@ -15,14 +15,16 @@ duplicates by `tools/gen_root_imports.py --check`:
 * default report: data/axioms/required.txt, data/axioms/native.txt;
 * audit modes (one flag at most): data/axioms/modes/<mode>.required.txt, and <mode>.native.txt if present
   (otherwise the default native list). Modes: --caps (scratch/AxiomsCaps.lean, target GrotheCaps), --responses,
-  --response-geometry, --phase-response, --haagerup-power, --upper-comparison.
+  --response-geometry, --phase-response, --haagerup-power, --upper-comparison, --research,
+  --hardy-budget, --refined-cover, --law-nodes.
 """
 import argparse, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AXDIR = os.path.join(ROOT, "data", "axioms")
 STANDARD = {"propext", "Classical.choice", "Quot.sound"}
-MODES = ("caps", "responses", "response-geometry", "phase-response", "haagerup-power", "upper-comparison")
+MODES = ("caps", "responses", "response-geometry", "phase-response", "haagerup-power", "upper-comparison",
+         "research", "hardy-budget", "refined-cover", "law-nodes")
 
 
 def names(path):
@@ -46,6 +48,11 @@ RESPONSE_GEOMETRY = audit_policy("response-geometry")[0]
 PHASE_RESPONSE = audit_policy("phase-response")[0]
 POWER_HAAGERUP = audit_policy("haagerup-power")[0]
 UPPER_COMPARISON = audit_policy("upper-comparison")[0]
+RESEARCH_CORE = audit_policy("research")[0]
+HARDY_BUDGET = audit_policy("hardy-budget")[0]
+REFINED_LOWER = audit_policy("refined-cover")[0]
+LAW_NODES = audit_policy("law-nodes")[0]
+JOINT_RESPONSE = audit_policy("responses")[0] - RESPONSE_GEOMETRY
 
 
 # A name may contain apostrophes; its closing quote precedes the report phrase.

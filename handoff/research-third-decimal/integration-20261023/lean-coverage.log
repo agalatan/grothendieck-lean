@@ -1,0 +1,22 @@
+Lean 4.34.1 targeted typechecking on ssh yo, owned /dev/shm/codex-research-young-20261023-coverage.
+Both modules checked with -DwarningAsError=true and no output artifact generation.
+Mathlib and dependency oleans were read from /home/agalatan/grothe-caps/.lake/packages.
+No full project build or complete scratch/Axioms.lean replay was run in this targeted check.
+
+'Grothe.Research.CoupledMajorizer.complex_norm_majorizer' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.CoupledMajorizer.complex_norm_majorizer_exact' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.Research.CoupledMajorizer.coupled_update_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.CoupledMajorizer.finite_weighted_majorizer' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.CoupledMajorizer.diagonal_step_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.CoupledMajorizer.finite_diagonal_descent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.CoupledMajorizer.finite_diagonal_strict_descent' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Grothe.Research.SemiconvexChord.chord_of_lifted' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.SemiconvexChord.profile_square' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.SemiconvexChord.finite_expectation_chord' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.SemiconvexChord.gate_reassembly' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.SemiconvexChord.chord_allowance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.Research.SemiconvexChord.checked_mesh_allowance' depends on axioms: [propext, Classical.choice, Quot.sound]

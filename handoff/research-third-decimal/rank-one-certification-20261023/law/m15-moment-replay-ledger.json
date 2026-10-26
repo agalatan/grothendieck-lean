@@ -1,0 +1,12 @@
+{
+  "bernstein_leaves": 1596,
+  "cells": 1596,
+  "gain_floor": "-1/1000000000000",
+  "input_sha256": "25dc5fd9afe84804c5c816b3eb9b030eca1ee8a277334499f18939682f30f328",
+  "source_proof_obligations": [
+    "The anchor bank quadratic caps are valid for the stated affine rank-one profiles; its archived Gaussian C,h,H integrations are inherited unless individually replayed.",
+    "The original rank-one row reduction and L10 positivity connect these source caps to the same response pair.",
+    "The old source-node and tail caps, law moments, and any reused node cuts retain the existing analytic premises."
+  ],
+  "status": "PASS_SIGNED_MINORANT_NO_POSITIVE_MOMENT_GAIN"
+}

@@ -1,0 +1,16 @@
+{
+  "branch": "codex/research-audit-20261023",
+  "commit": "a12010b",
+  "baseline_commit": "98f61ec",
+  "isolated_worktree": "/Users/alingalatan/Documents/Codex/2026-10-23/important-do-not-peek-in-other/work/grothe-rankone",
+  "reason_for_isolation": "Another process switched the shared checkout during the run; the final research code was copied to its own worktree and committed without changing the other checkout.",
+  "finite_replays": {
+    "both_149_record_banks_and_996_node_tables": "PASS exact independent reconstruction",
+    "both_corrected_tau_bridges": "PASS root replay",
+    "box8150": "PASS root replay and independent mathematical review",
+    "clean_extracted_bundle": "PASS both law bridges, box reconstruction and 427 dependency hashes"
+  },
+  "global_endpoint_changed": false,
+  "new_Lean_endpoint_theorem": false,
+  "archive_status": "Gaussian analytic premises and inherited source integrations remain explicitly documented."
+}

@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "command": "python3 -I handoff/lower-stein/cert-0745e/tools/check_moments.py handoff/lower-stein/cert-0745e/tools",
+  "output": [
+    "moments_1600_256.json: identical to the regenerated enclosures",
+    "moments_1600_1024.json: identical to the regenerated enclosures",
+    "MOMENTS CHECK PASS"
+  ],
+  "same_bytes_in_cert0745d_and_e": true,
+  "sha256": {
+    "moments_1600_256.json": "953e8ddd550ee6393c3384ce52d07e943a69c283050aa612942b6da3685e9df0",
+    "moments_1600_1024.json": "758fcb8c7cbc5c3361d9ff0f3979e2aa58e5df2b05b2b2d579f26e82bf56dde2",
+    "moments_full.py": "46f351003ba9af945487f0e1a1c3656c3ad07f1b861bb35c93293893bdd4dc45",
+    "check_moments.py": "70dbd8c7ed467c7d238058761e85bcdeea6558b9f869f3b2401c3e6dc3c1330c"
+  }
+}

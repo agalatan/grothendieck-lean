@@ -1,0 +1,51 @@
+'Grothe.hardy_budget_after_linear' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.head_residual_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1]
+'Grothe.linear_lower' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1]
+'Grothe.tail_numeric' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.tail_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1]
+'Grothe.fresh_upper' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1]
+'Grothe.upper_value_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.upper_value_improves' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Grothe.UpperChaos.fresh_upper_of_rounding' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1]
+'Grothe.UpperChaos.fresh_upper_concrete' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1]
+'Grothe.UpperChaos.fresh_upper_rounder' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ Grothe.head_check._native.native_decide.ax_1_1,
+ Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1]
+Grothe.UpperChaos.fresh_upper_rounder {X : ℂ × ℂ → ℂ} (hXL : MeasureTheory.MemLp X 2 Grothe.UpperChaos.mu2)
+  (hXch : ∀ (c : ℂ) (u : ℂ × ℂ), ‖c‖ = 1 → X (Grothe.UpperChaos.rot2 c u) = c * X u)
+  (hcompare :
+    ∑' (p : ℕ × ℕ),
+        |Grothe.UpperChaos.energy (MeasureTheory.MemLp.toLp Grothe.UpperChaos.GT ⋯) p -
+            Grothe.UpperChaos.energy (MeasureTheory.MemLp.toLp X hXL) p| ≤
+      ↑Grothe.Upper.compareQ)
+  (hclose :
+    ∑ p ∈ Grothe.Upper.headIdx 501,
+        |Grothe.UpperChaos.energy (MeasureTheory.MemLp.toLp X hXL) p - ↑(Grothe.Upper.energyTable p)| ≤
+      ↑Grothe.Upper.energyErrQ)
+  (hhardy :
+    ∀ (J : ℕ),
+      ∑ n ∈ Finset.range J,
+          Grothe.Upper.kernelCoeff (Grothe.UpperChaos.energy (MeasureTheory.MemLp.toLp Grothe.UpperChaos.GT ⋯)) n ^ 2 *
+            (4149 / 4000) ^ (2 * (2 * n + 1)) ≤
+        7 / 4) :
+  Grothe.IsGrothendieckBound (500000000000000000 / 355973579786182891)

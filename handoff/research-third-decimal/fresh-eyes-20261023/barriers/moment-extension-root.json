@@ -1,0 +1,94 @@
+{
+  "format": "fresh-barrier-moment-extension/v1",
+  "scope": "Exact rational examples for the AMMP/Stieltjes moment-extension lemma.\n\nThis checks finite prefixes of the written induction; it is not a Gaussian\ncubic realizability certificate or a proof of infinite moment growth bounds.\n",
+  "base": [
+    "1",
+    "1",
+    "2",
+    "6"
+  ],
+  "moments": [
+    "1",
+    "1",
+    "2",
+    "6",
+    "25",
+    "136",
+    "908",
+    "7084",
+    "62517",
+    "611791",
+    "6558924"
+  ],
+  "steps": [
+    {
+      "degree": 4,
+      "spectral_threshold": "24",
+      "Stieltjes_threshold": "20",
+      "chosen_moment": "25",
+      "Mk_positive_definite_exact": true,
+      "new_Stieltjes_block_positive_definite_exact": true
+    },
+    {
+      "degree": 5,
+      "spectral_threshold": "22685/168",
+      "Stieltjes_threshold": "241/2",
+      "chosen_moment": "136",
+      "Mk_positive_definite_exact": true,
+      "new_Stieltjes_block_positive_definite_exact": true
+    },
+    {
+      "degree": 6,
+      "spectral_threshold": "26107325/28784",
+      "Stieltjes_threshold": "4289/5",
+      "chosen_moment": "908",
+      "Mk_positive_definite_exact": true,
+      "new_Stieltjes_block_positive_definite_exact": true
+    },
+    {
+      "degree": 7,
+      "spectral_threshold": "10712573179/1512276",
+      "Stieltjes_threshold": "213215/31",
+      "chosen_moment": "7084",
+      "Mk_positive_definite_exact": true,
+      "new_Stieltjes_block_positive_definite_exact": true
+    },
+    {
+      "degree": 8,
+      "spectral_threshold": "659948035922/10556403",
+      "Stieltjes_threshold": "15471127/251",
+      "chosen_moment": "62517",
+      "Mk_positive_definite_exact": true,
+      "new_Stieltjes_block_positive_definite_exact": true
+    },
+    {
+      "degree": 9,
+      "spectral_threshold": "15313122783/25030",
+      "Stieltjes_threshold": "3879772023/6389",
+      "chosen_moment": "611791",
+      "Mk_positive_definite_exact": true,
+      "new_Stieltjes_block_positive_definite_exact": true
+    },
+    {
+      "degree": 10,
+      "spectral_threshold": "9958846614858587712106224/1518366007461574271",
+      "Stieltjes_threshold": "90117603861/13790",
+      "chosen_moment": "6558924",
+      "Mk_positive_definite_exact": true,
+      "new_Stieltjes_block_positive_definite_exact": true
+    }
+  ],
+  "missing_M2_counterexample": {
+    "base": [
+      "1",
+      "1",
+      "3/2",
+      "4"
+    ],
+    "strict_initial_Stieltjes": true,
+    "M3_positive_definite": true,
+    "M2_not_positive_semidefinite": true
+  },
+  "moment_growth_bounds_claimed": false,
+  "objective_preservation_claimed": false
+}

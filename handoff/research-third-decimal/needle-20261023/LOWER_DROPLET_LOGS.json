@@ -1,0 +1,130 @@
+{
+  "lean_version": "Lean (version 4.34.1, x86_64-unknown-linux-gnu, commit 5045d0056413266e57c625dcd7c365b10e377c52, Release)",
+  "source_sha256": {
+    "Grothe/Research/RefinedLower.lean": "32d9a2d01ebd381e3fa49c03e18719c1c84957e207e8c21343b8613856b6703c",
+    "Grothe/Research/RefinedCoverData.lean": "9277b97b50561ea069d2d2a69139546e8b631c8b5cb7d31c2f7643ab9a3f0fe3",
+    "Grothe/Research/RefinedCoverParts.lean": "c3f020b57f510bc344c6499b9474091d173d0bb1fe6718f116d15b69b5bf739b",
+    "Grothe/Research/RefinedCoverBoxes0.lean": "62dac6f5fff4848c183983c07b36a72c4b74bbeb443051f3fe1d88c11a383fe3",
+    "Grothe/Research/RefinedCoverBoxes1.lean": "6cb2d50bfbcc49884bccc1506893eb573ce16a709a5ae9bcc060198b361b260f",
+    "Grothe/Research/RefinedCoverBoxes2.lean": "a487c1fc0604ff49f8e37443f5fb40924a5eaf74201a559c80101899d094169d",
+    "Grothe/Research/RefinedCoverBoxes3.lean": "082c4333625fea4bdcd726e8bca5ad4722f856f6df8a4e81df47eda9d7fc70c1",
+    "Grothe/Research/RefinedCoverPartition.lean": "c7a41b37b2afbb2c8ad92c60515850aef125e649f9c4c75a664468e39b44ccef",
+    "Grothe/Research/RefinedCoverResult.lean": "62062ed8ebb844aff31982926a493d8f40d160e0f344d939a151867159ef96f0"
+  },
+  "stages": {
+    "RefinedLower": {
+      "status": "PASS",
+      "olean_exists": true,
+      "log": "'Grothe.Research.RefinedLower.profile_bound_of_refined_cover' depends on axioms: [propext,\n Classical.choice,\n Quot.sound,\n certBatches0._native.native_decide.ax_1_1,\n certBatches1._native.native_decide.ax_1_1,\n certBatches2._native.native_decide.ax_1_1,\n certRows0._native.native_decide.ax_1_1,\n certRows1._native.native_decide.ax_1_1,\n certRows2._native.native_decide.ax_1_1,\n certRows3._native.native_decide.ax_1_1,\n certRows4._native.native_decide.ax_1_1]\n'Grothe.Research.RefinedLower.witnessCap_of_refined_cover_reduction' depends on axioms: [propext,\n Classical.choice,\n Quot.sound,\n certBatches0._native.native_decide.ax_1_1,\n certBatches1._native.native_decide.ax_1_1,\n certBatches2._native.native_decide.ax_1_1,\n certRows0._native.native_decide.ax_1_1,\n certRows1._native.native_decide.ax_1_1,\n certRows2._native.native_decide.ax_1_1,\n certRows3._native.native_decide.ax_1_1,\n certRows4._native.native_decide.ax_1_1]\n'Grothe.Research.RefinedLower.witnessCap_of_refined_cover' depends on axioms: [propext,\n Classical.choice,\n Quot.sound,\n certBatches0._native.native_decide.ax_1_1,\n certBatches1._native.native_decide.ax_1_1,\n certBatches2._native.native_decide.ax_1_1,\n certRows0._native.native_decide.ax_1_1,\n certRows1._native.native_decide.ax_1_1,\n certRows2._native.native_decide.ax_1_1,\n certRows3._native.native_decide.ax_1_1,\n certRows4._native.native_decide.ax_1_1]\n'Grothe.Research.RefinedLower.transferInputs_of_refined_cover' depends on axioms: [propext,\n Classical.choice,\n Quot.sound,\n certBatches0._native.native_decide.ax_1_1,\n certBatches1._native.native_decide.ax_1_1,\n certBatches2._native.native_decide.ax_1_1,\n certRows0._native.native_decide.ax_1_1,\n certRows1._native.native_decide.ax_1_1,\n certRows2._native.native_decide.ax_1_1,\n certRows3._native.native_decide.ax_1_1,\n certRows4._native.native_decide.ax_1_1]\n'Grothe.Research.RefinedLower.lower_bound_of_refined_cover' depends on axioms: [propext,\n Classical.choice,\n Quot.sound,\n certBatches0._native.native_decide.ax_1_1,\n certBatches1._native.native_decide.ax_1_1,\n certBatches2._native.native_decide.ax_1_1,\n certRows0._native.native_decide.ax_1_1,\n certRows1._native.native_decide.ax_1_1,\n certRows2._native.native_decide.ax_1_1,\n certRows3._native.native_decide.ax_1_1,\n certRows4._native.native_decide.ax_1_1]\n'Grothe.Research.RefinedLower.strict_lower_bound_of_refined_cover' depends on axioms: [propext,\n Classical.choice,\n Quot.sound,\n certBatches0._native.native_decide.ax_1_1,\n certBatches1._native.native_decide.ax_1_1,\n certBatches2._native.native_decide.ax_1_1,\n certRows0._native.native_decide.ax_1_1,\n certRows1._native.native_decide.ax_1_1,\n certRows2._native.native_decide.ax_1_1,\n certRows3._native.native_decide.ax_1_1,\n certRows4._native.native_decide.ax_1_1]\n"
+    },
+    "RefinedCoverData": {
+      "status": "PASS",
+      "olean_exists": true,
+      "log": ""
+    },
+    "RefinedCoverParts": {
+      "status": "PASS",
+      "olean_exists": true,
+      "log": ""
+    },
+    "RefinedCoverBoxes0": {
+      "status": "PASS",
+      "olean_exists": true,
+      "log": ""
+    },
+    "RefinedCoverBoxes1": {
+      "status": "PASS",
+      "olean_exists": true,
+      "log": ""
+    },
+    "RefinedCoverBoxes2": {
+      "status": "PASS",
+      "olean_exists": true,
+      "log": ""
+    },
+    "RefinedCoverBoxes3": {
+      "status": "PASS",
+      "olean_exists": true,
+      "log": ""
+    },
+    "RefinedCoverPartition": {
+      "status": "PASS",
+      "olean_exists": true,
+      "log": ""
+    },
+    "RefinedCoverResult": {
+      "status": "PASS",
+      "olean_exists": true,
+      "log": "'Grothe.Research.RefinedLowerCheck.refined_cover_checked' depends on axioms: [propext,\n Classical.choice,\n Quot.sound,\n certRefinedBoxes0._native.native_decide.ax_1_1,\n certRefinedBoxes1._native.native_decide.ax_1_1,\n certRefinedBoxes2._native.native_decide.ax_1_1,\n certRefinedBoxes3._native.native_decide.ax_1_1,\n certRefinedPartition._native.native_decide.ax_1_1]\n'Grothe.Research.RefinedLowerCheck.refined_reciprocal_lower_bound' depends on axioms: [propext,\n Classical.choice,\n Quot.sound,\n certBatches0._native.native_decide.ax_1_1,\n certBatches1._native.native_decide.ax_1_1,\n certBatches2._native.native_decide.ax_1_1,\n certRows0._native.native_decide.ax_1_1,\n certRows1._native.native_decide.ax_1_1,\n certRows2._native.native_decide.ax_1_1,\n certRows3._native.native_decide.ax_1_1,\n certRows4._native.native_decide.ax_1_1,\n certRefinedBoxes0._native.native_decide.ax_1_1,\n certRefinedBoxes1._native.native_decide.ax_1_1,\n certRefinedBoxes2._native.native_decide.ax_1_1,\n certRefinedBoxes3._native.native_decide.ax_1_1,\n certRefinedPartition._native.native_decide.ax_1_1]\n'Grothe.Research.RefinedLowerCheck.refined_endpoint_lt_reciprocal' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data' depends on axioms: [propext,\n Classical.choice,\n Quot.sound,\n certBatches0._native.native_decide.ax_1_1,\n certBatches1._native.native_decide.ax_1_1,\n certBatches2._native.native_decide.ax_1_1,\n certRows0._native.native_decide.ax_1_1,\n certRows1._native.native_decide.ax_1_1,\n certRows2._native.native_decide.ax_1_1,\n certRows3._native.native_decide.ax_1_1,\n certRows4._native.native_decide.ax_1_1,\n certRefinedBoxes0._native.native_decide.ax_1_1,\n certRefinedBoxes1._native.native_decide.ax_1_1,\n certRefinedBoxes2._native.native_decide.ax_1_1,\n certRefinedBoxes3._native.native_decide.ax_1_1,\n certRefinedPartition._native.native_decide.ax_1_1]\n"
+    }
+  },
+  "resources": [
+    {
+      "pid": 1516069,
+      "args": "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean -j1 -o Grothe/Research/RefinedCoverBoxes0.olean Grothe/Research/RefinedCoverBoxes0.lean ",
+      "first_observed_monotonic": 15445518.41488243,
+      "last_observed_monotonic": 15446585.600177072,
+      "max_rss_kb": 6934168,
+      "sampled_cpu_seconds": 1370.0,
+      "process_start_ticks": 1544521376
+    },
+    {
+      "pid": 1521628,
+      "args": "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean -j1 -o Grothe/Research/RefinedCoverBoxes1.olean Grothe/Research/RefinedCoverBoxes1.lean ",
+      "first_observed_monotonic": 15446586.602804828,
+      "last_observed_monotonic": 15447445.648179647,
+      "max_rss_kb": 6934408,
+      "sampled_cpu_seconds": 859.23,
+      "process_start_ticks": 1544658571
+    },
+    {
+      "pid": 1524365,
+      "args": "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean -j1 -o Grothe/Research/RefinedCoverBoxes2.olean Grothe/Research/RefinedCoverBoxes2.lean ",
+      "first_observed_monotonic": 15447446.649068976,
+      "last_observed_monotonic": 15448252.509132003,
+      "max_rss_kb": 6944716,
+      "sampled_cpu_seconds": 806.51,
+      "process_start_ticks": 1544744566
+    },
+    {
+      "pid": 1526118,
+      "args": "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean -j1 -o Grothe/Research/RefinedCoverBoxes3.olean Grothe/Research/RefinedCoverBoxes3.lean ",
+      "first_observed_monotonic": 15448253.509983264,
+      "last_observed_monotonic": 15448283.56442848,
+      "max_rss_kb": 6933784,
+      "sampled_cpu_seconds": 30.15,
+      "process_start_ticks": 1544825330
+    },
+    {
+      "pid": 1526128,
+      "args": "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean -j1 -o Grothe/Research/RefinedCoverPartition.olean Grothe/Research/RefinedCoverPartition.lean ",
+      "first_observed_monotonic": 15448284.565443749,
+      "last_observed_monotonic": 15448292.574224252,
+      "max_rss_kb": 6936720,
+      "sampled_cpu_seconds": 8.79,
+      "process_start_ticks": 1544828373
+    },
+    {
+      "pid": 1526134,
+      "args": "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean -j1 -o Grothe/Research/RefinedCoverResult.olean Grothe/Research/RefinedCoverResult.lean ",
+      "first_observed_monotonic": 15448293.575054547,
+      "last_observed_monotonic": 15448307.593063751,
+      "max_rss_kb": 7835948,
+      "sampled_cpu_seconds": 14.17,
+      "process_start_ticks": 1544829331
+    }
+  ],
+  "resource_base": {
+    "parent_pid": 1515978,
+    "parent_completed_children_cpu_seconds": 2260.5,
+    "parent_start_ticks": 1544518225,
+    "clock_ticks_per_second": 100,
+    "observation_monotonic": 15448020.654149724,
+    "live_children": [
+      {
+        "pid": 1524365,
+        "args": "/home/agalatan/.elan/toolchains/leanprover--lean4---v4.34.1/bin/lean -j1 -o Grothe/Research/RefinedCoverBoxes2.olean Grothe/Research/RefinedCoverBoxes2.lean "
+      }
+    ]
+  }
+}

@@ -8,6 +8,16 @@ The exact reciprocal score is `355973696735190991/500000000000000000`.
 This is a global upper certificate, not a bound on a selected response region.
 The lower certificate is unaffected.
 
+The current Lean assembly also deducts the linear coefficient's forced weighted
+square from the same Hardy budget. Its tail is `30488839/1000000000000000`,
+residual `455308278509/500000000000000000`, and reciprocal score
+`355973699864771491/500000000000000000`, giving **K_G^C < 1.404598149218**.
+These derived values are checked under `linear_budget_refinement`; the raw
+contour-tail fields above remain unchanged for reproducibility. The weighted
+comparison contributes 93.56% of the refined residual, the head 3.09%, and the
+tail 3.35%. No stronger Gaussian or Hardy input is used.
+
+
 ## Mathematical assembly and trust boundary
 
 Keep the concrete disk-valued, charge-one rounding `G_T` and the truncation `X`
@@ -34,7 +44,7 @@ The already formalized transfer theorem gives
 No additional head-comparison hypothesis is introduced.
 
 The native Lean checker proves the complete finite-head statement over exact
-dyadic energy data and rational polynomial coefficients. It also proves the
+dyadic energy data and rational polynomial coefficients. The Lean development separately proves the
 polynomial l1 constraints, locality, transfer and rational endpoint assembly.
 The concrete theorem `Grothe.UpperChaos.fresh_upper_rounder` still explicitly
 takes `ComparisonInputs`, `energy_close` and `hardy`, for a charge-one L2 truncation `X`.
@@ -87,3 +97,11 @@ The dominant remaining allowance is the selected comparison (92.92% of the
 residual), derived from the inherited Gaussian component-error enclosures. Further gains from a new response must account for its full signed
 kernel and shared tail; a better slope or a truncated mixture score alone
 does not establish an endpoint.
+
+## Validation scope
+
+The current lower data pass exact whole-cover replay and byte-for-byte export.
+Temporary targeted Lean receipts from 23 October were cleared before collection;
+they are not claimed as current validation. The final merged branch is checked
+by full GitHub Lean CI, including the actual axiom report and unchanged heavy
+cap stamp. See `verification/` for source guards and the explicit build-record gap.

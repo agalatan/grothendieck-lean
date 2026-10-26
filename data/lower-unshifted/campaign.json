@@ -1,0 +1,49 @@
+{
+  "format": "fused-law-nodes-complete-cover/v1",
+  "scope": "Original source caps and existing checker; unchanged NodeCaps.",
+  "B": "356710460411/500000000000",
+  "L": "56067881993/40000000000",
+  "boxes": 10762,
+  "nodes": 1315,
+  "groups": 20,
+  "selected_mixed_nodes": [
+    "focus-3",
+    "fused-hi",
+    "fused-lo"
+  ],
+  "baseline_cover": "data/lower-unshifted/inputs/fused-start-cover.json",
+  "baseline_cover_sha256": "3068afebb149a44e8fa6fb092a3084a5d90246fe72a42665984a1beb5677fbd3",
+  "baseline_ledger": "data/lower-unshifted/inputs/fused-start-ledger.json",
+  "baseline_ledger_sha256": "b9cc7b780451c3fc3c2d0b593cd70312fba80555579c46a3a366cc1dec841eec",
+  "inherited_sha256": "3e7ddd38eb4d7ebeb8db0af1f14f50774c4c93a259fb9c6053c92ec760bdb44e",
+  "packet_sha256": {
+    "handoff/research-third-decimal/fused-global-20261023/pruned/cover.json": "a54c5d8c166bf74f9e8bf7522a1daf92824ea9ff0d030bf2a34cf03a14636f85",
+    "handoff/research-third-decimal/fused-global-20261023/pruned/SCAN.json": "5b074a69e566a29af45bc94a6528b612fe93927daa93f23009bbeff1d46ea33a"
+  },
+  "cover_sha256": "8e396894b24ee159fd07fd6265bb65e54bccc180295553c676994e91b88fd62a",
+  "ledger_sha256": "8c433addf514d722ee1899d1a0db179e8629736575356f4e674094876217d035",
+  "node_bindings": {
+    "seed4302-lo": {
+      "path": "data/lower-unshifted/nodes/seed4302-lo.json",
+      "sha256": "cfc0c6b36b4a5d14f4217d9e5cfa789b643b75800b5ed8956f71b4848660bec2"
+    },
+    "seed4302-hi": {
+      "path": "data/lower-unshifted/nodes/seed4302-hi.json",
+      "sha256": "c6bc9ffe47760dd8586d8c374be6b9633658c7c2ae9edf321e3f71a2fb135b78"
+    },
+    "fused-hi": {
+      "path": "data/lower-unshifted/nodes/fused-hi.json",
+      "sha256": "121a4b59618720609780257436b5ffc77fc04b95f93f0c5f1de44781c226a72d"
+    },
+    "fused-lo": {
+      "path": "data/lower-unshifted/nodes/fused-lo.json",
+      "sha256": "bfc57415c045cd81113cb387c698c73a3ab574eed8a462d3c46048aee450b040"
+    },
+    "focus-3": {
+      "path": "data/lower-unshifted/nodes/focus-3.json",
+      "sha256": "479fc83a6aa406d62a744a19ac2ab11a62ed83bfe5c6d1062daba53e54934af0"
+    }
+  },
+  "verification": "Run tools/needle_fused_global.py --verify data/lower-unshifted/cover-ledger.json, then deterministic Lean export and fresh batch/cover checks.",
+  "replay_tool_sha256": "6e22e1bc16f3a444f7cc60ebb2078189172192eb20d5d4f5c72d50ae210a5e2c"
+}

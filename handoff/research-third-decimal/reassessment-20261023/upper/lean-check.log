@@ -1,0 +1,5 @@
+'Grothe.Reassessment20261023.improved_upper' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound,
+ head_check._native.native_decide.ax_1_1]
+'Grothe.Reassessment20261023.improved_value_lt' depends on axioms: [propext, Classical.choice, Quot.sound]

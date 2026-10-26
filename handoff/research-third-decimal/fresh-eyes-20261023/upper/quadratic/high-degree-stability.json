@@ -1,0 +1,500 @@
+{
+  "status": "FLOATING FFT STABILITY ONLY",
+  "degree": 257,
+  "rows": [
+    {
+      "name": "phase-pure",
+      "max_drift": 5.32136131938319e-13,
+      "branches": [
+        {
+          "min_real_a": 1.0,
+          "min_real_d": 1.0,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.9216000000000003,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 7.163839232508117e-14
+        },
+        {
+          "min_real_a": 1.0,
+          "min_real_d": 1.0,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.9604000000000004,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 3.0418615258413746e-16
+        }
+      ]
+    },
+    {
+      "name": "phase-opposed-a027",
+      "max_drift": 1.4411981830267667e-12,
+      "branches": [
+        {
+          "min_real_a": 0.9999999999999999,
+          "min_real_d": 0.9999999999999999,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.9118073886966095,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 7.421577509521129e-14
+        },
+        {
+          "min_real_a": 0.9999999999999999,
+          "min_real_d": 0.9999999999999999,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.9552386780869917,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 2.2089035248152869e-16
+        }
+      ]
+    },
+    {
+      "name": "phase-opposed-a030",
+      "max_drift": 1.2997121564077305e-12,
+      "branches": [
+        {
+          "min_real_a": 0.9999999999999998,
+          "min_real_d": 0.9999999999999998,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.909706858763183,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 5.909179668011934e-14
+        },
+        {
+          "min_real_a": 0.9999999999999998,
+          "min_real_d": 0.9999999999999998,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.9541297803930634,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 2.367061896767941e-16
+        }
+      ]
+    },
+    {
+      "name": "phase-opposed-a032",
+      "max_drift": 9.721196378880676e-13,
+      "branches": [
+        {
+          "min_real_a": 1.0,
+          "min_real_d": 1.0,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.9082258857446688,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 6.635552404794014e-14
+        },
+        {
+          "min_real_a": 1.0,
+          "min_real_d": 1.0,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.9533475729786945,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 2.641794032411029e-16
+        }
+      ]
+    },
+    {
+      "name": "phase-opposed-a034",
+      "max_drift": 6.112244733307001e-13,
+      "branches": [
+        {
+          "min_real_a": 1.0000000000000002,
+          "min_real_d": 1.0000000000000002,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.9066868229260037,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 6.68555183489631e-14
+        },
+        {
+          "min_real_a": 1.0000000000000002,
+          "min_real_d": 1.0000000000000002,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.9525343484567494,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 2.93308259142037e-16
+        }
+      ]
+    },
+    {
+      "name": "symmetric-cross-chirp-008",
+      "max_drift": 6.990127439278101e-13,
+      "branches": [
+        {
+          "min_real_a": 0.9828823644957373,
+          "min_real_d": 0.9828823644957374,
+          "min_abs_det": 1.0019290616540892,
+          "max_abs_hypergeometric_argument": 0.8662986146601922,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 8.30877766473765e-14
+        },
+        {
+          "min_real_a": 0.9819911569471331,
+          "min_real_d": 0.9819911569471332,
+          "min_abs_det": 1.0009938727174847,
+          "max_abs_hypergeometric_argument": 0.9075879842374467,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 5.393182234464624e-16
+        }
+      ]
+    },
+    {
+      "name": "symmetric-cross-chirp-016",
+      "max_drift": 6.22299770886176e-13,
+      "branches": [
+        {
+          "min_real_a": 0.9352534749995973,
+          "min_real_d": 0.9352534749995974,
+          "min_abs_det": 1.0077246180814279,
+          "max_abs_hypergeometric_argument": 0.7760001619702556,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 7.285225692881007e-14
+        },
+        {
+          "min_real_a": 0.9320389789921913,
+          "min_real_d": 0.9320389789921915,
+          "min_abs_det": 1.0039777128557565,
+          "max_abs_hypergeometric_argument": 0.8125105205638026,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 3.680595961826556e-16
+        }
+      ]
+    },
+    {
+      "name": "asym-diagonal",
+      "max_drift": 7.314748727545618e-13,
+      "branches": [
+        {
+          "min_real_a": 0.9645484287615034,
+          "min_real_d": 0.9295857279394364,
+          "min_abs_det": 1.0025141996397529,
+          "max_abs_hypergeometric_argument": 0.8969367536902402,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 7.190021213283585e-14
+        },
+        {
+          "min_real_a": 0.96286285392311,
+          "min_real_d": 0.9264365200944727,
+          "min_abs_det": 1.002133029813131,
+          "max_abs_hypergeometric_argument": 0.9405640547804408,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 3.1346243206735104e-16
+        }
+      ]
+    },
+    {
+      "name": "asym-imaginary-offdiag",
+      "max_drift": 4.1974937904093627e-13,
+      "branches": [
+        {
+          "min_real_a": 0.9765581722131569,
+          "min_real_d": 0.9776992105922085,
+          "min_abs_det": 1.0078859338449766,
+          "max_abs_hypergeometric_argument": 0.8963936461870795,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 5.917532577556274e-14
+        },
+        {
+          "min_real_a": 0.9758205779796401,
+          "min_real_d": 0.9764016619676817,
+          "min_abs_det": 1.007187888976728,
+          "max_abs_hypergeometric_argument": 0.9412192597873184,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 2.6801107389944767e-16
+        }
+      ]
+    },
+    {
+      "name": "asym-real-offdiag",
+      "max_drift": 8.838172056317628e-13,
+      "branches": [
+        {
+          "min_real_a": 0.9644414800075083,
+          "min_real_d": 0.9316388194376349,
+          "min_abs_det": 1.0078859338449766,
+          "max_abs_hypergeometric_argument": 0.919944324239462,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 6.50572906717732e-14
+        },
+        {
+          "min_real_a": 0.962656377306881,
+          "min_real_d": 0.9263273900744675,
+          "min_abs_det": 1.007187888976728,
+          "max_abs_hypergeometric_argument": 0.9684332024598983,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 4.5679556898566e-16
+        }
+      ]
+    },
+    {
+      "name": "asym-general-1",
+      "max_drift": 7.576238285468238e-13,
+      "branches": [
+        {
+          "min_real_a": 0.9517158682776266,
+          "min_real_d": 0.9647283348477369,
+          "min_abs_det": 1.0104246132532517,
+          "max_abs_hypergeometric_argument": 0.9164508698076973,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 9.198727703926703e-14
+        },
+        {
+          "min_real_a": 0.9486426898013801,
+          "min_real_d": 0.9632628844202099,
+          "min_abs_det": 1.0103421229830516,
+          "max_abs_hypergeometric_argument": 0.9640417712332398,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 2.637963643004749e-16
+        }
+      ]
+    },
+    {
+      "name": "asym-general-2",
+      "max_drift": 1.530661827380026e-12,
+      "branches": [
+        {
+          "min_real_a": 0.9494815890982997,
+          "min_real_d": 0.9657460303283304,
+          "min_abs_det": 1.0104246132532517,
+          "max_abs_hypergeometric_argument": 0.8945169560871008,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 7.223555493810639e-14
+        },
+        {
+          "min_real_a": 0.9463279457445947,
+          "min_real_d": 0.9640863925944888,
+          "min_abs_det": 1.0103421229830516,
+          "max_abs_hypergeometric_argument": 0.9394504314034964,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 2.7437293480536393e-16
+        }
+      ]
+    },
+    {
+      "name": "asym-J-h-0.04-a0.346468369143",
+      "max_drift": 1.051860467058285e-12,
+      "branches": [
+        {
+          "min_real_a": 0.9973399697607365,
+          "min_real_d": 0.9974722801514286,
+          "min_abs_det": 1.000872297753481,
+          "max_abs_hypergeometric_argument": 0.9048362592747552,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 4.5936309601278024e-14
+        },
+        {
+          "min_real_a": 0.9972544044790688,
+          "min_real_d": 0.9973219026436941,
+          "min_abs_det": 1.0007944448463713,
+          "max_abs_hypergeometric_argument": 0.9508851351370022,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 2.38068455736952e-16
+        }
+      ]
+    },
+    {
+      "name": "asym-J-h-0.02-a0.333263908385",
+      "max_drift": 1.0852529423379776e-12,
+      "branches": [
+        {
+          "min_real_a": 0.9993336112313684,
+          "min_real_d": 0.9993663995493507,
+          "min_abs_det": 1.0002179826309259,
+          "max_abs_hypergeometric_argument": 0.9068741517300346,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 5.98060444447572e-14
+        },
+        {
+          "min_real_a": 0.9993121567689079,
+          "min_real_d": 0.9993288751701759,
+          "min_abs_det": 1.0001985125042314,
+          "max_abs_hypergeometric_argument": 0.9524650741864592,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 2.1198935150559637e-16
+        }
+      ]
+    },
+    {
+      "name": "asym-J-h-0.01-a0.326864703944",
+      "max_drift": 8.837265633266028e-13,
+      "branches": [
+        {
+          "min_real_a": 0.9998333137481732,
+          "min_real_d": 0.9998414725653998,
+          "min_abs_det": 1.000054489919766,
+          "max_abs_hypergeometric_argument": 0.9076194244702747,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 6.406586226419527e-14
+        },
+        {
+          "min_real_a": 0.9998279473349961,
+          "min_real_d": 0.9998321063379931,
+          "min_abs_det": 1.0000496219568478,
+          "max_abs_hypergeometric_argument": 0.9529850595993903,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 3.0071389015486986e-16
+        }
+      ]
+    },
+    {
+      "name": "asym-J-h+0-a0.320600553961",
+      "max_drift": 1.0575970305673892e-12,
+      "branches": [
+        {
+          "min_real_a": 0.9999999999999999,
+          "min_real_d": 0.9999999999999999,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.908180489680052,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 6.763162253526932e-14
+        },
+        {
+          "min_real_a": 0.9999999999999999,
+          "min_real_d": 0.9999999999999999,
+          "min_abs_det": 1.0,
+          "max_abs_hypergeometric_argument": 0.9533235910801214,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 2.470244230484436e-16
+        }
+      ]
+    },
+    {
+      "name": "asym-J-h+0.01-a0.314470986966",
+      "max_drift": 9.127721019238597e-13,
+      "branches": [
+        {
+          "min_real_a": 0.9998333036683457,
+          "min_real_d": 0.9998413818469551,
+          "min_abs_det": 1.000054489919766,
+          "max_abs_hypergeometric_argument": 0.9085566411916242,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 6.174758929459998e-14
+        },
+        {
+          "min_real_a": 0.999827941922202,
+          "min_real_d": 0.9998320576228487,
+          "min_abs_det": 1.0000496219568478,
+          "max_abs_hypergeometric_argument": 0.9534801737773191,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 2.4723421322163197e-16
+        }
+      ]
+    },
+    {
+      "name": "asym-J-h+0.02-a0.308475331461",
+      "max_drift": 1.5208017931402616e-12,
+      "branches": [
+        {
+          "min_real_a": 0.999333530611496,
+          "min_real_d": 0.9993656739704968,
+          "min_abs_det": 1.0002179826309259,
+          "max_abs_hypergeometric_argument": 0.908747665302691,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 5.881856063397786e-14
+        },
+        {
+          "min_real_a": 0.9993121134772551,
+          "min_real_d": 0.9993284855452985,
+          "min_abs_det": 1.0001985125042314,
+          "max_abs_hypergeometric_argument": 0.9534547980144193,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 2.302414545291639e-16
+        }
+      ]
+    },
+    {
+      "name": "asym-J-h+0.04-a0.296882077792",
+      "max_drift": 1.618051744147277e-12,
+      "branches": [
+        {
+          "min_real_a": 0.9973393254042207,
+          "min_real_d": 0.9974664809427842,
+          "min_abs_det": 1.000872297753481,
+          "max_abs_hypergeometric_argument": 0.9085759259499421,
+          "fft_points": 4096,
+          "radius": 0.96,
+          "degree": 257,
+          "max_even_coefficient": 6.623064389123004e-14
+        },
+        {
+          "min_real_a": 0.9972540584895019,
+          "min_real_d": 0.9973187887375907,
+          "min_abs_det": 1.0007944448463713,
+          "max_abs_hypergeometric_argument": 0.9528605462429581,
+          "fft_points": 8192,
+          "radius": 0.98,
+          "degree": 257,
+          "max_even_coefficient": 2.208125175456665e-16
+        }
+      ]
+    }
+  ]
+}

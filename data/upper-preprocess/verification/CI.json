@@ -1,0 +1,817 @@
+{
+  "archived_artifact_sha256": {
+    "CI_AXIOMS.log": "157a6d9b140e443becc61e384714959aa0bd58da363740c5a9b552cdcb112368",
+    "CI_EXCERPT.log": "45445f231a31633346728b13f102ea6e37b959f5c015b8e109be0977ef2462c7"
+  },
+  "caps_scope": "PASS source stamp only: 140 files unchanged from separately verified caps; this run did not rebuild the 60 range facts.",
+  "ci_completed_utc": "2026-10-25T22:17:32Z",
+  "ci_conclusion": "success",
+  "ci_created_utc": "2026-10-25T21:17:56Z",
+  "combined_current_root_ci": {
+    "reason": "New signed-resolvent modules, changed root imports, workflow and enlarged current axiom report require separate combined-tree CI.",
+    "status": "PENDING_SEPARATE_CI"
+  },
+  "comment_only_exceptions": {
+    "Grothe/Upper/Haagerup.lean": {
+      "current_comment_fragment": "The current preprocessor and its signed resolvent tail certificate are",
+      "lean_code_sha256": "8167b68e5b702559d99d7d361062a4ac65cb47f4296e23d480c9b7cfd95d246e",
+      "scope": "Only a documentation comment changed; both exact byte hashes are pinned.",
+      "tested_comment_fragment": "The current degree-13 preprocessor and its finite-power tail certificate are"
+    }
+  },
+  "current_source_method": "SHA-256 of active Git index blobs, plus git diff --quiet for every pinned source/input. Verifier --direct-reads additionally hashes working files.",
+  "endpoint": {
+    "bound": "500000000000000000/355973699864771491",
+    "premises": "ComparisonInputs, energy table accuracy and Hardy input remain explicit.",
+    "strict_headline": "1.404598149218"
+  },
+  "endpoint_closure_sha256": {
+    "Grothe/Haagerup/BetaJ.lean": {
+      "current": "7bf9b5a4c20475fcb0c64efc897cc5eafeb7422d63e7b5da495fe17ac418a789",
+      "tested": "7bf9b5a4c20475fcb0c64efc897cc5eafeb7422d63e7b5da495fe17ac418a789"
+    },
+    "Grothe/Haagerup/Euler.lean": {
+      "current": "3e249370731c38ea1707e7af1c01ac57bfd07fae9cd6ded6aab21fc3b07cd93f",
+      "tested": "3e249370731c38ea1707e7af1c01ac57bfd07fae9cd6ded6aab21fc3b07cd93f"
+    },
+    "Grothe/Haagerup/Gauss1D.lean": {
+      "current": "304e25b3c870646fa2f1c660bcba4a22b9b6d728f376a86195aab55038bad5a4",
+      "tested": "304e25b3c870646fa2f1c660bcba4a22b9b6d728f376a86195aab55038bad5a4"
+    },
+    "Grothe/Haagerup/GaussG.lean": {
+      "current": "18c08c1a79fb26a38600ca4b8bd52f27f664a6e121e65dce97d2b93af3b713c2",
+      "tested": "18c08c1a79fb26a38600ca4b8bd52f27f664a6e121e65dce97d2b93af3b713c2"
+    },
+    "Grothe/Haagerup/Identity.lean": {
+      "current": "af0289851ec01cb8121dc7651f3cfb0599ac70a56a1457c1a31035730d3394f6",
+      "tested": "af0289851ec01cb8121dc7651f3cfb0599ac70a56a1457c1a31035730d3394f6"
+    },
+    "Grothe/Haagerup/Law.lean": {
+      "current": "eb01dd4aa97ad79eb807cf3322aa72f0ca227d56af7ecabac79e0eeb3bb40286",
+      "tested": "eb01dd4aa97ad79eb807cf3322aa72f0ca227d56af7ecabac79e0eeb3bb40286"
+    },
+    "Grothe/Haagerup/Series.lean": {
+      "current": "6dfbe6d549e3019a6d61d53948937db73b4b6b313bb83f1916efd37116bb3067",
+      "tested": "6dfbe6d549e3019a6d61d53948937db73b4b6b313bb83f1916efd37116bb3067"
+    },
+    "Grothe/ListPoly.lean": {
+      "current": "5fc4077b25c6aed8f9b0332803e62570d0c3a18455f900f288065bad8b4e5a29",
+      "tested": "5fc4077b25c6aed8f9b0332803e62570d0c3a18455f900f288065bad8b4e5a29"
+    },
+    "Grothe/Lower/Basic.lean": {
+      "current": "16a80ec7aaec39929d9c7ca6a7d1d5f448a7193872342a3744d6063a0607d193",
+      "tested": "16a80ec7aaec39929d9c7ca6a7d1d5f448a7193872342a3744d6063a0607d193"
+    },
+    "Grothe/Lower/Boxes.lean": {
+      "current": "d72a1b4f753e5bf95a46a22a933994d371fe54d53be38da7893ce4aa7896ce60",
+      "tested": "d72a1b4f753e5bf95a46a22a933994d371fe54d53be38da7893ce4aa7896ce60"
+    },
+    "Grothe/Lower/Cert/Batches0.lean": {
+      "current": "29f2e555d26cba1204103985b4ec625b1d2f1900e3def952f002adfb18426e37",
+      "tested": "29f2e555d26cba1204103985b4ec625b1d2f1900e3def952f002adfb18426e37"
+    },
+    "Grothe/Lower/Cert/Batches1.lean": {
+      "current": "064a565c92c19e05551f2ad90d6f5c02083c00c7d6757254df943501d47a93e2",
+      "tested": "064a565c92c19e05551f2ad90d6f5c02083c00c7d6757254df943501d47a93e2"
+    },
+    "Grothe/Lower/Cert/Batches2.lean": {
+      "current": "1caca35447018755187aaf4511d8749bc7754ab8ff534ae4f9e361591f1e7cce",
+      "tested": "1caca35447018755187aaf4511d8749bc7754ab8ff534ae4f9e361591f1e7cce"
+    },
+    "Grothe/Lower/Cert/Boxes0.lean": {
+      "current": "0b958f755f3577a324a46ec054417445bbd96279e17a0a14621db5d0c4451696",
+      "tested": "0b958f755f3577a324a46ec054417445bbd96279e17a0a14621db5d0c4451696"
+    },
+    "Grothe/Lower/Cert/Boxes1.lean": {
+      "current": "597f281cdd23911ddf4baee201a19398ef0e6be4448017141aad6b68f13c9665",
+      "tested": "597f281cdd23911ddf4baee201a19398ef0e6be4448017141aad6b68f13c9665"
+    },
+    "Grothe/Lower/Cert/Boxes2.lean": {
+      "current": "f3e3cd78eb6e6e9ae37863d5a56b83991e7c5ed3cf2a2da6822c34489c5e6b4e",
+      "tested": "f3e3cd78eb6e6e9ae37863d5a56b83991e7c5ed3cf2a2da6822c34489c5e6b4e"
+    },
+    "Grothe/Lower/Cert/Boxes3.lean": {
+      "current": "23f328407a034065ef1b8792be43e9a6065b5cfef128244ec80996a800d1e4b2",
+      "tested": "23f328407a034065ef1b8792be43e9a6065b5cfef128244ec80996a800d1e4b2"
+    },
+    "Grothe/Lower/Cert/Partition.lean": {
+      "current": "1ffb58e9a8150e0617b6055efeffb5a58cbf21c4992e18253b3d2b63923b1ac6",
+      "tested": "1ffb58e9a8150e0617b6055efeffb5a58cbf21c4992e18253b3d2b63923b1ac6"
+    },
+    "Grothe/Lower/Cert/Parts.lean": {
+      "current": "f561303ce13a92ec803e7c1ca754f9ce7b5612b6b5e2446ba0ba1cfa86aa88be",
+      "tested": "f561303ce13a92ec803e7c1ca754f9ce7b5612b6b5e2446ba0ba1cfa86aa88be"
+    },
+    "Grothe/Lower/Cert/Rows0.lean": {
+      "current": "192dd9447367d80d01e7b232f004bbc7d3242c4e445e81169e105262c9b0c7fa",
+      "tested": "192dd9447367d80d01e7b232f004bbc7d3242c4e445e81169e105262c9b0c7fa"
+    },
+    "Grothe/Lower/Cert/Rows1.lean": {
+      "current": "b524b9437c25ca494daf7df47032f41bdd4a99a19de4d970114dc60e1055f053",
+      "tested": "b524b9437c25ca494daf7df47032f41bdd4a99a19de4d970114dc60e1055f053"
+    },
+    "Grothe/Lower/Cert/Rows2.lean": {
+      "current": "715d1968afa743874f680a91fbec915cb4672acc0f80dd9ccd46a0645016df86",
+      "tested": "715d1968afa743874f680a91fbec915cb4672acc0f80dd9ccd46a0645016df86"
+    },
+    "Grothe/Lower/Cert/Rows3.lean": {
+      "current": "4f2ceea1df654731f64f6b885d669c70742d82798a97314031a0a8830a100c08",
+      "tested": "4f2ceea1df654731f64f6b885d669c70742d82798a97314031a0a8830a100c08"
+    },
+    "Grothe/Lower/Cert/Rows4.lean": {
+      "current": "60ff7beddb359eb98c92116e392319165e4368642c38f9b9e2383d409a4bd3dd",
+      "tested": "60ff7beddb359eb98c92116e392319165e4368642c38f9b9e2383d409a4bd3dd"
+    },
+    "Grothe/Lower/Cuts.lean": {
+      "current": "69a0b15c924178d297f3c668f6f26328ff7bb2e49c2f63b97d91cd6b3edda199",
+      "tested": "69a0b15c924178d297f3c668f6f26328ff7bb2e49c2f63b97d91cd6b3edda199"
+    },
+    "Grothe/Lower/Endpoint.lean": {
+      "current": "8ccde11cdb6c5632fc7232a47dc3abdf801ec022274d3ed45859d4a0e8736cc0",
+      "tested": "8ccde11cdb6c5632fc7232a47dc3abdf801ec022274d3ed45859d4a0e8736cc0"
+    },
+    "Grothe/Lower/Gate.lean": {
+      "current": "cd59424724624b6c0959c9b1175dffe0fea91aa72df2eda03024ceb89ba9e8da",
+      "tested": "cd59424724624b6c0959c9b1175dffe0fea91aa72df2eda03024ceb89ba9e8da"
+    },
+    "Grothe/Lower/Gram.lean": {
+      "current": "16d654c1a591671f028d7196c2f798c9eb83a1da6f5d21637bf455ceb0c20596",
+      "tested": "16d654c1a591671f028d7196c2f798c9eb83a1da6f5d21637bf455ceb0c20596"
+    },
+    "Grothe/Lower/Law.lean": {
+      "current": "2cb55219eb61e1b7114447a1e66cb758b3313c163fcf65e58901d7d921672536",
+      "tested": "2cb55219eb61e1b7114447a1e66cb758b3313c163fcf65e58901d7d921672536"
+    },
+    "Grothe/Lower/Mixed.lean": {
+      "current": "94d14db1ca573b13d89114e5dd2ba9c32325203250e2bdc1919afb5536bec05a",
+      "tested": "94d14db1ca573b13d89114e5dd2ba9c32325203250e2bdc1919afb5536bec05a"
+    },
+    "Grothe/Lower/MixedData.lean": {
+      "current": "a529b61562c93f665403968361aabb292cc72d93c8a47b74037ea474603bf0d0",
+      "tested": "a529b61562c93f665403968361aabb292cc72d93c8a47b74037ea474603bf0d0"
+    },
+    "Grothe/Lower/Moment.lean": {
+      "current": "98b551c659157a2c2a7b6675bd70d3f6a369813931ddfdeb6bff5f72fed83608",
+      "tested": "98b551c659157a2c2a7b6675bd70d3f6a369813931ddfdeb6bff5f72fed83608"
+    },
+    "Grothe/Lower/Poly.lean": {
+      "current": "5799cdbfd54f88b51a3c4b3223f35da04c6f42de07d13be738d03aef19792cbd",
+      "tested": "5799cdbfd54f88b51a3c4b3223f35da04c6f42de07d13be738d03aef19792cbd"
+    },
+    "Grothe/Lower/RowCheck.lean": {
+      "current": "0765da476913def27fbe9902b98fa92aef8b30f6365e3e89d93a37c400ebc71b",
+      "tested": "0765da476913def27fbe9902b98fa92aef8b30f6365e3e89d93a37c400ebc71b"
+    },
+    "Grothe/Lower/RowData.lean": {
+      "current": "495cd4ac26bf24d4a983acfdf728d244b8257bb24ec28e7ffd8cfb48fafab109",
+      "tested": "495cd4ac26bf24d4a983acfdf728d244b8257bb24ec28e7ffd8cfb48fafab109"
+    },
+    "Grothe/Lower/RowData01.lean": {
+      "current": "9d46241a1793e7c2340442c535f23426af95e233aea4988bda0c560049ff1879",
+      "tested": "9d46241a1793e7c2340442c535f23426af95e233aea4988bda0c560049ff1879"
+    },
+    "Grothe/Lower/RowData02.lean": {
+      "current": "5101f79af1c8d0e6a8eecf8722cc38f7dc27e2e69d7fd99cdc881ef2290e3a3d",
+      "tested": "5101f79af1c8d0e6a8eecf8722cc38f7dc27e2e69d7fd99cdc881ef2290e3a3d"
+    },
+    "Grothe/Lower/RowData03.lean": {
+      "current": "149f13441ecbe7ed2f0f5b0559f1993097557e838dd22eebbf050d45e10cb394",
+      "tested": "149f13441ecbe7ed2f0f5b0559f1993097557e838dd22eebbf050d45e10cb394"
+    },
+    "Grothe/Lower/RowData04.lean": {
+      "current": "114cdb8f4c2f84d588972da5caaf7b0050e9f0e07aa444a6a7f28a8a4a34491f",
+      "tested": "114cdb8f4c2f84d588972da5caaf7b0050e9f0e07aa444a6a7f28a8a4a34491f"
+    },
+    "Grothe/Lower/RowData05.lean": {
+      "current": "2facfac7ae047a2637377b6947c8716e1e2e310ebba299561037d997b6aa180e",
+      "tested": "2facfac7ae047a2637377b6947c8716e1e2e310ebba299561037d997b6aa180e"
+    },
+    "Grothe/Lower/RowData06.lean": {
+      "current": "11f8a96a8b40b5d7f8bcebae8bd51cef2ded385a7b44ea4fb9228c4daa26f0bb",
+      "tested": "11f8a96a8b40b5d7f8bcebae8bd51cef2ded385a7b44ea4fb9228c4daa26f0bb"
+    },
+    "Grothe/Lower/RowData07.lean": {
+      "current": "db0711855f6ae8f3cdae4977f162ecd26e1502ae081f2f0fec50d0281dc1b94d",
+      "tested": "db0711855f6ae8f3cdae4977f162ecd26e1502ae081f2f0fec50d0281dc1b94d"
+    },
+    "Grothe/Lower/RowData08.lean": {
+      "current": "2c350c01059966dba66c2305d7737bed7ac03e9bd6fbe041d8a4f5279815e50d",
+      "tested": "2c350c01059966dba66c2305d7737bed7ac03e9bd6fbe041d8a4f5279815e50d"
+    },
+    "Grothe/Lower/RowData09.lean": {
+      "current": "8bae581679429f4e59b812c35d17b38fe86f11e942453e646d7f9c9e09ea2480",
+      "tested": "8bae581679429f4e59b812c35d17b38fe86f11e942453e646d7f9c9e09ea2480"
+    },
+    "Grothe/Lower/RowData10.lean": {
+      "current": "d7c8c30b723bf591592e882235d7d7823dc2b7c2c6d76dcd582f81944a8f9eb7",
+      "tested": "d7c8c30b723bf591592e882235d7d7823dc2b7c2c6d76dcd582f81944a8f9eb7"
+    },
+    "Grothe/Lower/RowData11.lean": {
+      "current": "bb2435138d336d37881f537cc9e4f4d5781d6d9766e2c219243fb4a46ddaf997",
+      "tested": "bb2435138d336d37881f537cc9e4f4d5781d6d9766e2c219243fb4a46ddaf997"
+    },
+    "Grothe/Lower/RowData12.lean": {
+      "current": "d6cd5e17cace58ed8f56e2f2dd58d154d6de51c70c154c78abaa77e802635b65",
+      "tested": "d6cd5e17cace58ed8f56e2f2dd58d154d6de51c70c154c78abaa77e802635b65"
+    },
+    "Grothe/Lower/RowData13.lean": {
+      "current": "bf19e63f153cd4823eca0451044b2f31b9df0b37e1fe45c16c660a488a03d2ec",
+      "tested": "bf19e63f153cd4823eca0451044b2f31b9df0b37e1fe45c16c660a488a03d2ec"
+    },
+    "Grothe/Lower/RowData14.lean": {
+      "current": "0ce716c669e4e2393ee903839f269c2170748b077b08c3f1cb96c74224d0102e",
+      "tested": "0ce716c669e4e2393ee903839f269c2170748b077b08c3f1cb96c74224d0102e"
+    },
+    "Grothe/Lower/RowData15.lean": {
+      "current": "43b0ec22e7f57946067472527ce781e72f1b5cb1f6c8f9cadde590b4c74bce53",
+      "tested": "43b0ec22e7f57946067472527ce781e72f1b5cb1f6c8f9cadde590b4c74bce53"
+    },
+    "Grothe/Lower/RowData16.lean": {
+      "current": "0dbcab4cfb7d99090088d3c1dcd476c3914d8aa97807cd4b113d7b858aa2c4e0",
+      "tested": "0dbcab4cfb7d99090088d3c1dcd476c3914d8aa97807cd4b113d7b858aa2c4e0"
+    },
+    "Grothe/Lower/RowData17.lean": {
+      "current": "b8a5f34f433ff591876c9243aa560c80fa731d179ab2bdffc9d53ad894573e3e",
+      "tested": "b8a5f34f433ff591876c9243aa560c80fa731d179ab2bdffc9d53ad894573e3e"
+    },
+    "Grothe/Lower/RowData18.lean": {
+      "current": "1a46d02864d40bba2c1e44b9595547af4f8b59ca75a3ff0b6850325e78a6e94a",
+      "tested": "1a46d02864d40bba2c1e44b9595547af4f8b59ca75a3ff0b6850325e78a6e94a"
+    },
+    "Grothe/Lower/RowData19.lean": {
+      "current": "af1cc67e6055a22b83869cd707fbc3c88ebb4b0bd86719effaede80da5c79a80",
+      "tested": "af1cc67e6055a22b83869cd707fbc3c88ebb4b0bd86719effaede80da5c79a80"
+    },
+    "Grothe/Lower/RowGates.lean": {
+      "current": "d5cecc05b09e04a28748ad502644f8364247630e4aea7ac66016b6fae7e249b2",
+      "tested": "d5cecc05b09e04a28748ad502644f8364247630e4aea7ac66016b6fae7e249b2"
+    },
+    "Grothe/Lower/RowReduction.lean": {
+      "current": "92d5e46f1f9f5dccbbfbb158be2d1eea81d2af58b5c7bdbc5df835bf07bc9998",
+      "tested": "92d5e46f1f9f5dccbbfbb158be2d1eea81d2af58b5c7bdbc5df835bf07bc9998"
+    },
+    "Grothe/Lower/Rows.lean": {
+      "current": "e2d50eef34b591d93b640c4b363ff5ecd4d6e990ee7805507bb8ae0f6ff0c31c",
+      "tested": "e2d50eef34b591d93b640c4b363ff5ecd4d6e990ee7805507bb8ae0f6ff0c31c"
+    },
+    "Grothe/Lower/Stein.lean": {
+      "current": "5c21527e9a3873639353b87c358128d57847ba9e770dc4aff2eb575024bc7349",
+      "tested": "5c21527e9a3873639353b87c358128d57847ba9e770dc4aff2eb575024bc7349"
+    },
+    "Grothe/Lower/Support.lean": {
+      "current": "1ce3cdd52eb65b9cca62ffba7a2b7c3f8ae4a7c7f8d667ff8a12d62203424098",
+      "tested": "1ce3cdd52eb65b9cca62ffba7a2b7c3f8ae4a7c7f8d667ff8a12d62203424098"
+    },
+    "Grothe/Lower/Sweep.lean": {
+      "current": "ba58b9a377b4246446f1ef1e82a397e55a593069e2618f1020553a3c6a3cb32c",
+      "tested": "ba58b9a377b4246446f1ef1e82a397e55a593069e2618f1020553a3c6a3cb32c"
+    },
+    "Grothe/Lower/Transfer.lean": {
+      "current": "fa74b42a53f916cdfaceb059037ecfd59e0e443a61c47fd6975d04a50d10b8e0",
+      "tested": "fa74b42a53f916cdfaceb059037ecfd59e0e443a61c47fd6975d04a50d10b8e0"
+    },
+    "Grothe/Lower/TransferFinite.lean": {
+      "current": "a06e00677c1086c2169572e98fd9c605ea7dd02a0eabbb4822eff54245111b96",
+      "tested": "a06e00677c1086c2169572e98fd9c605ea7dd02a0eabbb4822eff54245111b96"
+    },
+    "Grothe/Lower/TransferL2.lean": {
+      "current": "0bfae01b6ddeec669cd1d96dc56d50b3e712dca622896c8aa708814f3e22b81e",
+      "tested": "0bfae01b6ddeec669cd1d96dc56d50b3e712dca622896c8aa708814f3e22b81e"
+    },
+    "Grothe/Lower/TransferLimit.lean": {
+      "current": "e62975104b0dc028d01b3206a84d3724f2c542f2b3d2d256035bb4a8f456d40c",
+      "tested": "e62975104b0dc028d01b3206a84d3724f2c542f2b3d2d256035bb4a8f456d40c"
+    },
+    "Grothe/LowerAnalytic/Bernstein2.lean": {
+      "current": "6d75db0ed243359ac0b64a370e930f01966420fcc55d8b8e345d9bf2a587311b",
+      "tested": "6d75db0ed243359ac0b64a370e930f01966420fcc55d8b8e345d9bf2a587311b"
+    },
+    "Grothe/LowerAnalytic/Bridge.lean": {
+      "current": "959f2d20c5576d40c0d04dac837e32208a92105fe9407a8c89f991d61acd6449",
+      "tested": "959f2d20c5576d40c0d04dac837e32208a92105fe9407a8c89f991d61acd6449"
+    },
+    "Grothe/LowerAnalytic/Circular.lean": {
+      "current": "f2ccadce7313e78fbf9b77d6ae4d73fef081e8a7dd8130f797d94f88af10faba",
+      "tested": "f2ccadce7313e78fbf9b77d6ae4d73fef081e8a7dd8130f797d94f88af10faba"
+    },
+    "Grothe/LowerAnalytic/CircularTensor.lean": {
+      "current": "afcc9ec952e7879386dfb55d90c3def2223190f78d3d4728dd0730776d689c69",
+      "tested": "afcc9ec952e7879386dfb55d90c3def2223190f78d3d4728dd0730776d689c69"
+    },
+    "Grothe/LowerAnalytic/Covariance.lean": {
+      "current": "134294de4d53c941d78b4cb622b55bb8816d03ed055edbf61fd961298d1ed324",
+      "tested": "134294de4d53c941d78b4cb622b55bb8816d03ed055edbf61fd961298d1ed324"
+    },
+    "Grothe/LowerAnalytic/Fibre.lean": {
+      "current": "11b9fc122ae3a1f646ac804b81355e3e3bcf1fd0702aec929283d6aa9f41c0a1",
+      "tested": "11b9fc122ae3a1f646ac804b81355e3e3bcf1fd0702aec929283d6aa9f41c0a1"
+    },
+    "Grothe/LowerAnalytic/FibreHermite.lean": {
+      "current": "43f314a1eba6bd8dbd7034c89f1feb4e7d0ca6b94a684f41f8a2490d7538baaf",
+      "tested": "43f314a1eba6bd8dbd7034c89f1feb4e7d0ca6b94a684f41f8a2490d7538baaf"
+    },
+    "Grothe/LowerAnalytic/FibrePotential.lean": {
+      "current": "804553d8cbe3e31720680a53c0b72800b27b3d5e091a1680667a68cb87db0e93",
+      "tested": "804553d8cbe3e31720680a53c0b72800b27b3d5e091a1680667a68cb87db0e93"
+    },
+    "Grothe/LowerAnalytic/FibreRot.lean": {
+      "current": "8269a59a7e866eff2f8f53cafa96d6ae1807c4a12200e07e264d2bfc9c7b3a76",
+      "tested": "8269a59a7e866eff2f8f53cafa96d6ae1807c4a12200e07e264d2bfc9c7b3a76"
+    },
+    "Grothe/LowerAnalytic/FibreSup.lean": {
+      "current": "f37db09cc7c3042a5f8f67cf4c4e4e78456310f2d9f0f9431b102a42696a580b",
+      "tested": "f37db09cc7c3042a5f8f67cf4c4e4e78456310f2d9f0f9431b102a42696a580b"
+    },
+    "Grothe/LowerAnalytic/Fluctuation.lean": {
+      "current": "b395d4d25ca9abcc60caf814f66f2ea01b482e0ef2142808d349cff43e963fef",
+      "tested": "b395d4d25ca9abcc60caf814f66f2ea01b482e0ef2142808d349cff43e963fef"
+    },
+    "Grothe/LowerAnalytic/FourthMoment.lean": {
+      "current": "ebe614d020c80cd09424461eda1051a3119888e7afd4cb7f9d2623584f9d8706",
+      "tested": "ebe614d020c80cd09424461eda1051a3119888e7afd4cb7f9d2623584f9d8706"
+    },
+    "Grothe/LowerAnalytic/Gaussian.lean": {
+      "current": "76db548ed84c87ad1cef30e2c17a6b5a29e2968bd052b9a4f1cd85579c09dd9b",
+      "tested": "76db548ed84c87ad1cef30e2c17a6b5a29e2968bd052b9a4f1cd85579c09dd9b"
+    },
+    "Grothe/LowerAnalytic/GaussianRadial.lean": {
+      "current": "e5f4476b3daa4f67aeb82b23113c8d768764d0fe9455f35deabcbacd2eadb15a",
+      "tested": "e5f4476b3daa4f67aeb82b23113c8d768764d0fe9455f35deabcbacd2eadb15a"
+    },
+    "Grothe/LowerAnalytic/GramBudget.lean": {
+      "current": "f0e828afe4c8d6bb0914bb0238b6cd48010efd6361e14e0787e3bc1bba622354",
+      "tested": "f0e828afe4c8d6bb0914bb0238b6cd48010efd6361e14e0787e3bc1bba622354"
+    },
+    "Grothe/LowerAnalytic/GramSpectral.lean": {
+      "current": "75aecf0cbaa009b0503b938549a6f03ce1d53339481984a1faf2fe7a5f048011",
+      "tested": "75aecf0cbaa009b0503b938549a6f03ce1d53339481984a1faf2fe7a5f048011"
+    },
+    "Grothe/LowerAnalytic/GramTensor.lean": {
+      "current": "2d83113b9b0c02de7f91409b985b777394698f4ffffe10e89f008276aa53326f",
+      "tested": "2d83113b9b0c02de7f91409b985b777394698f4ffffe10e89f008276aa53326f"
+    },
+    "Grothe/LowerAnalytic/Influence.lean": {
+      "current": "cec2628cd407a908a6ff054c5c854946063d4b4906517e221967b952cff4b19c",
+      "tested": "cec2628cd407a908a6ff054c5c854946063d4b4906517e221967b952cff4b19c"
+    },
+    "Grothe/LowerAnalytic/JointContractions.lean": {
+      "current": "f894c15e8f220dc00747f9f02ea58c6f56b43372fe1670275f484a9d9f826211",
+      "tested": "f894c15e8f220dc00747f9f02ea58c6f56b43372fe1670275f484a9d9f826211"
+    },
+    "Grothe/LowerAnalytic/MomentLemma.lean": {
+      "current": "a26cf3ad726f11dbb1825a2bb1cb225bc17f224306ce95803b2c5f8e740fbfa6",
+      "tested": "a26cf3ad726f11dbb1825a2bb1cb225bc17f224306ce95803b2c5f8e740fbfa6"
+    },
+    "Grothe/LowerAnalytic/Moments.lean": {
+      "current": "942a426a6158cef40f06268884e90ab181025387bc43ddff31d4300da8d8986a",
+      "tested": "942a426a6158cef40f06268884e90ab181025387bc43ddff31d4300da8d8986a"
+    },
+    "Grothe/LowerAnalytic/Potential.lean": {
+      "current": "4925bf6cc786b62dd2a06bd765ce0ccd7ec941bb27c882bc3544937f2a0f3ac7",
+      "tested": "4925bf6cc786b62dd2a06bd765ce0ccd7ec941bb27c882bc3544937f2a0f3ac7"
+    },
+    "Grothe/LowerAnalytic/RadialCut.lean": {
+      "current": "7e656255077bf32eb6ff915ae76c9c2b30c1f6ef6e0b2a3c56adc7b5d5753e06",
+      "tested": "7e656255077bf32eb6ff915ae76c9c2b30c1f6ef6e0b2a3c56adc7b5d5753e06"
+    },
+    "Grothe/LowerAnalytic/RadialParts.lean": {
+      "current": "d707b9879be511e40fa9e2ddfa3a8a92dd57e2cd1308accded329fc27903ce5f",
+      "tested": "d707b9879be511e40fa9e2ddfa3a8a92dd57e2cd1308accded329fc27903ce5f"
+    },
+    "Grothe/LowerAnalytic/Rows.lean": {
+      "current": "2c17078abdb5ee545968d72e5b8329908a59381d840315e798ebdc2c5cccd83f",
+      "tested": "2c17078abdb5ee545968d72e5b8329908a59381d840315e798ebdc2c5cccd83f"
+    },
+    "Grothe/LowerAnalytic/SixthMoment.lean": {
+      "current": "82861c16ba0d5e2c9644cb2f7c17e3e40c5aca07d276287e7655d20285a79423",
+      "tested": "82861c16ba0d5e2c9644cb2f7c17e3e40c5aca07d276287e7655d20285a79423"
+    },
+    "Grothe/LowerAnalytic/SixthMomentData.lean": {
+      "current": "098babc54ae0ef3c9dc7b2455eb14fba87da5c0fd8f8e98aff458425f8cf2eb8",
+      "tested": "098babc54ae0ef3c9dc7b2455eb14fba87da5c0fd8f8e98aff458425f8cf2eb8"
+    },
+    "Grothe/LowerAnalytic/SpectralBudget.lean": {
+      "current": "bf996b0f879de4a99004c5f379f8173b9ae31c53877a03393b005489b0e5d3a1",
+      "tested": "bf996b0f879de4a99004c5f379f8173b9ae31c53877a03393b005489b0e5d3a1"
+    },
+    "Grothe/LowerAnalytic/WickChaos.lean": {
+      "current": "f8b7ca4ca0c8299ba42ad636e286416674132ae610d30ecaa9d37db3248f790e",
+      "tested": "f8b7ca4ca0c8299ba42ad636e286416674132ae610d30ecaa9d37db3248f790e"
+    },
+    "Grothe/LowerAnalytic/WickCubic.lean": {
+      "current": "70e07b0b71fc549fad348080380c592c2bae5594a14253ccc785ba6b661d5372",
+      "tested": "70e07b0b71fc549fad348080380c592c2bae5594a14253ccc785ba6b661d5372"
+    },
+    "Grothe/LowerAnalytic/WickGraph.lean": {
+      "current": "d296c32909501c74c5c982c755c77384f1d0f10e43be399b53a1209a8b68fd60",
+      "tested": "d296c32909501c74c5c982c755c77384f1d0f10e43be399b53a1209a8b68fd60"
+    },
+    "Grothe/LowerAnalytic/WickGraphData.lean": {
+      "current": "7348f7f6c983cabcd646eda31df34f76d06dcafdc69d1a09e099501cda18786e",
+      "tested": "7348f7f6c983cabcd646eda31df34f76d06dcafdc69d1a09e099501cda18786e"
+    },
+    "Grothe/LowerAnalytic/WickSix.lean": {
+      "current": "7dca0e84756401ae8d716112777393c9d4e62d462f37251096cee635e9ad927e",
+      "tested": "7dca0e84756401ae8d716112777393c9d4e62d462f37251096cee635e9ad927e"
+    },
+    "Grothe/LowerAnalytic/Witness.lean": {
+      "current": "8eced1fcb85d73ddafbd714be9942784a016b35e9d367e69bc9d738345dd3302",
+      "tested": "8eced1fcb85d73ddafbd714be9942784a016b35e9d367e69bc9d738345dd3302"
+    },
+    "Grothe/LowerAnalytic/WitnessCap.lean": {
+      "current": "5206e5394adbe2f59174bc89349c9dbf3dc6c8505a652167c97c7531fe8bb157",
+      "tested": "5206e5394adbe2f59174bc89349c9dbf3dc6c8505a652167c97c7531fe8bb157"
+    },
+    "Grothe/Transfer.lean": {
+      "current": "ecc7a448ed5d7db3ede34fc1023b5998cd2569db84db133f70827222cc5984ea",
+      "tested": "ecc7a448ed5d7db3ede34fc1023b5998cd2569db84db133f70827222cc5984ea"
+    },
+    "Grothe/Upper/BandComparison.lean": {
+      "current": "819a46d5f2a5dc9eb6b24c58f5b494ffa15cd37ae89097fba52a0c1c5976628e",
+      "tested": "819a46d5f2a5dc9eb6b24c58f5b494ffa15cd37ae89097fba52a0c1c5976628e"
+    },
+    "Grothe/Upper/Bivariate.lean": {
+      "current": "58f431e4b61fe99a907744964e9ac8f3676573d5f5741812c5e02f185c7a2a13",
+      "tested": "58f431e4b61fe99a907744964e9ac8f3676573d5f5741812c5e02f185c7a2a13"
+    },
+    "Grothe/Upper/ComparisonData.lean": {
+      "current": "43ced6734142ea69bc1c0f254be1c004baae82fef4048c3de2f03683605bf151",
+      "tested": "43ced6734142ea69bc1c0f254be1c004baae82fef4048c3de2f03683605bf151"
+    },
+    "Grothe/Upper/ComparisonMass.lean": {
+      "current": "89b20d78bb1f684185960b27c008b2182f3d4592fb113488353037adcdfc62b0",
+      "tested": "89b20d78bb1f684185960b27c008b2182f3d4592fb113488353037adcdfc62b0"
+    },
+    "Grothe/Upper/Compose.lean": {
+      "current": "7160c423e177fd2dc532e89b83ebc49596b9073612f60d60e35369a974013363",
+      "tested": "7160c423e177fd2dc532e89b83ebc49596b9073612f60d60e35369a974013363"
+    },
+    "Grothe/Upper/Data.lean": {
+      "current": "56286f334f499bdd94a54ef7ea7ab3b02c9953bd67157156b602d280758192f2",
+      "tested": "56286f334f499bdd94a54ef7ea7ab3b02c9953bd67157156b602d280758192f2"
+    },
+    "Grothe/Upper/Disk.lean": {
+      "current": "89d42cb847b3467a92510286042c532c7cea4768c49ddfd065546f05f2059ea9",
+      "tested": "89d42cb847b3467a92510286042c532c7cea4768c49ddfd065546f05f2059ea9"
+    },
+    "Grothe/Upper/Final.lean": {
+      "current": "563c1be37d5724a19e0ca7aa8e87a48434795209608a609ffd1646895060f5e3",
+      "tested": "563c1be37d5724a19e0ca7aa8e87a48434795209608a609ffd1646895060f5e3"
+    },
+    "Grothe/Upper/Haagerup.lean": {
+      "current": "e441685febdcbafd62ba6a21ae1678ea8dd160859ecdf0bd9508ae817ce4095d",
+      "tested": "c83c9f3024bbbc4f76d1e90f5d36aa61f9904094d5df7bac8fd83f9e46393671"
+    },
+    "Grothe/Upper/Head.lean": {
+      "current": "56290043e1871796eec59d9344e12171c2bf8e8a3f7f8ac2dc7e49ca7f66cba1",
+      "tested": "56290043e1871796eec59d9344e12171c2bf8e8a3f7f8ac2dc7e49ca7f66cba1"
+    },
+    "Grothe/Upper/HeadWeight.lean": {
+      "current": "cd3110ba65a333539535a014d9e00a3ee3c2cdc5146f4d642021fa11c31e7c1e",
+      "tested": "cd3110ba65a333539535a014d9e00a3ee3c2cdc5146f4d642021fa11c31e7c1e"
+    },
+    "Grothe/Upper/IntervalSound.lean": {
+      "current": "a2bc689529d7edc7366e2f3bea5864f2bed21395d2e25003b62771dd7a8bbc38",
+      "tested": "a2bc689529d7edc7366e2f3bea5864f2bed21395d2e25003b62771dd7a8bbc38"
+    },
+    "Grothe/Upper/PolynomialBridge.lean": {
+      "current": "d589f76827faf89b7f9a14dc60146e77acd4f7ad393580347f79385f5646fe6d",
+      "tested": "d589f76827faf89b7f9a14dc60146e77acd4f7ad393580347f79385f5646fe6d"
+    },
+    "Grothe/Upper/Realise.lean": {
+      "current": "1fc9d53238e0b467506897b56312fe8b86df74e232635d50f5bad51288e4785e",
+      "tested": "1fc9d53238e0b467506897b56312fe8b86df74e232635d50f5bad51288e4785e"
+    },
+    "Grothe/Upper/Residual.lean": {
+      "current": "46ddf03c1a9b6535abb671045b5799418f0ba209d60096978934a3fe79e9177b",
+      "tested": "46ddf03c1a9b6535abb671045b5799418f0ba209d60096978934a3fe79e9177b"
+    },
+    "Grothe/UpperChaos/Charge.lean": {
+      "current": "b39d36d5eabc95354582f94d6fb50975b41328a391bb775b35fda18b5b3cf850",
+      "tested": "b39d36d5eabc95354582f94d6fb50975b41328a391bb775b35fda18b5b3cf850"
+    },
+    "Grothe/UpperChaos/Completeness.lean": {
+      "current": "39d5614a8916510ecbc431182efddaf50ea4da76ad6ae9abe314ea034ed32d83",
+      "tested": "39d5614a8916510ecbc431182efddaf50ea4da76ad6ae9abe314ea034ed32d83"
+    },
+    "Grothe/UpperChaos/ComplexHermite.lean": {
+      "current": "18d402565a48e2469f1620cf110a81f851ee1a1e200695a27553a1f4b4361da5",
+      "tested": "18d402565a48e2469f1620cf110a81f851ee1a1e200695a27553a1f4b4361da5"
+    },
+    "Grothe/UpperChaos/ComplexMoments.lean": {
+      "current": "8fbc7e348960d2426482b10c884c7c35eb51867f04355172bd71f70cbf164485",
+      "tested": "8fbc7e348960d2426482b10c884c7c35eb51867f04355172bd71f70cbf164485"
+    },
+    "Grothe/UpperChaos/Energy2.lean": {
+      "current": "9cb79c554b4d82eefa013912cc1fed78c06ece8801302f702e15c2f480334a87",
+      "tested": "9cb79c554b4d82eefa013912cc1fed78c06ece8801302f702e15c2f480334a87"
+    },
+    "Grothe/UpperChaos/EnergyBlock.lean": {
+      "current": "b60adbe49abaf014df6e7f91e0f67165af955d100be34782341d94ec7b2c2285",
+      "tested": "b60adbe49abaf014df6e7f91e0f67165af955d100be34782341d94ec7b2c2285"
+    },
+    "Grothe/UpperChaos/GaussC2.lean": {
+      "current": "10e0f0bc9e3f0f6d9b9b9b12b84d4282f44ec40ec06c9b1bfef098655c390970",
+      "tested": "10e0f0bc9e3f0f6d9b9b9b12b84d4282f44ec40ec06c9b1bfef098655c390970"
+    },
+    "Grothe/UpperChaos/HardyKernel.lean": {
+      "current": "01eaefd27bd34b98ed84089de99dbbbd8f0484ba9d0db4b245c83f36b3c72598",
+      "tested": "01eaefd27bd34b98ed84089de99dbbbd8f0484ba9d0db4b245c83f36b3c72598"
+    },
+    "Grothe/UpperChaos/HermiteBasis.lean": {
+      "current": "1d05c9e4eb24c3ee74c8fc0b31d7b8bdf40d36fc8c7099e56ecbf243d8bb803b",
+      "tested": "1d05c9e4eb24c3ee74c8fc0b31d7b8bdf40d36fc8c7099e56ecbf243d8bb803b"
+    },
+    "Grothe/UpperChaos/HermiteC2.lean": {
+      "current": "6cccde0b2d3317f6a3e0dcdb43c91de1119a1b057ab54eafe52a1340947ddf62",
+      "tested": "6cccde0b2d3317f6a3e0dcdb43c91de1119a1b057ab54eafe52a1340947ddf62"
+    },
+    "Grothe/UpperChaos/HermiteC2Basis.lean": {
+      "current": "19eb5b06d9d9404306419725d62921dd58a6bbe31f0ad0a47c125b32f05862c2",
+      "tested": "19eb5b06d9d9404306419725d62921dd58a6bbe31f0ad0a47c125b32f05862c2"
+    },
+    "Grothe/UpperChaos/HermiteComplete.lean": {
+      "current": "25203b4a609abdf445fa8df37ce1af1312cb3eb4d13bc68b3f5a04139c947051",
+      "tested": "25203b4a609abdf445fa8df37ce1af1312cb3eb4d13bc68b3f5a04139c947051"
+    },
+    "Grothe/UpperChaos/Kernel2.lean": {
+      "current": "bd7467632ce1686cbacc2ffd3b226728dcd8009e7a4f237098794fc11587c095",
+      "tested": "bd7467632ce1686cbacc2ffd3b226728dcd8009e7a4f237098794fc11587c095"
+    },
+    "Grothe/UpperChaos/LawY.lean": {
+      "current": "a7c81ad903985bee87a98e4586dcec7029765bd1eca0cc03ce096bdaf9c1bf82",
+      "tested": "a7c81ad903985bee87a98e4586dcec7029765bd1eca0cc03ce096bdaf9c1bf82"
+    },
+    "Grothe/UpperChaos/LocalizedComparison.lean": {
+      "current": "6073f95d47ccdba4966f3557ce68cff0999ec496d317400a9788ac4b63ad8ee3",
+      "tested": "6073f95d47ccdba4966f3557ce68cff0999ec496d317400a9788ac4b63ad8ee3"
+    },
+    "Grothe/UpperChaos/Mehler.lean": {
+      "current": "2079f2797877e549999d904452b19dfeff535bec9ac4369ecf5ef3df1f81730a",
+      "tested": "2079f2797877e549999d904452b19dfeff535bec9ac4369ecf5ef3df1f81730a"
+    },
+    "Grothe/UpperChaos/MehlerL2.lean": {
+      "current": "1df5b3e470128b69c2fd242bd8ed81bb4c6a79883b1fa19d7631ac96168753f1",
+      "tested": "1df5b3e470128b69c2fd242bd8ed81bb4c6a79883b1fa19d7631ac96168753f1"
+    },
+    "Grothe/UpperChaos/PhiBound.lean": {
+      "current": "ede7f33d444685bbe721b65051cddde602ebb6552b658c5639a6f920028e3bf7",
+      "tested": "ede7f33d444685bbe721b65051cddde602ebb6552b658c5639a6f920028e3bf7"
+    },
+    "Grothe/UpperChaos/PhiCover.lean": {
+      "current": "fc82cc3951de71c7075d5012eec4efbacfc7210cfc68fed8d56c1625c08cea31",
+      "tested": "fc82cc3951de71c7075d5012eec4efbacfc7210cfc68fed8d56c1625c08cea31"
+    },
+    "Grothe/UpperChaos/PhiCoverCheck.lean": {
+      "current": "8bbcec7c9e66264ff9f85f47a720ef536286c37cccf7533cccf4c5359f6c08fc",
+      "tested": "8bbcec7c9e66264ff9f85f47a720ef536286c37cccf7533cccf4c5359f6c08fc"
+    },
+    "Grothe/UpperChaos/PhiCoverData.lean": {
+      "current": "aaf236c45dc46dec947b37b1982b61617d632b07d7fde64f1c9b615293d13852",
+      "tested": "aaf236c45dc46dec947b37b1982b61617d632b07d7fde64f1c9b615293d13852"
+    },
+    "Grothe/UpperChaos/PhiDense.lean": {
+      "current": "fa10c82ce66bfe9dbb57948ac3854994fde589203c179eece45f1fda3ebd777a",
+      "tested": "fa10c82ce66bfe9dbb57948ac3854994fde589203c179eece45f1fda3ebd777a"
+    },
+    "Grothe/UpperChaos/PhiHorner.lean": {
+      "current": "7f14b09e4fafefcebdce09979106b00c1e08477d3c6cfe4d3a7e96c1d1b059ce",
+      "tested": "7f14b09e4fafefcebdce09979106b00c1e08477d3c6cfe4d3a7e96c1d1b059ce"
+    },
+    "Grothe/UpperChaos/Realise2.lean": {
+      "current": "03113a64cd561856812a24ba0e3e78938a9970095ce047c9b3cbb9566ba7fa9e",
+      "tested": "03113a64cd561856812a24ba0e3e78938a9970095ce047c9b3cbb9566ba7fa9e"
+    },
+    "Grothe/UpperChaos/Rounder.lean": {
+      "current": "7b67147336631c18f93fc90f3d4487ab090f76f5f0c559fb266a39f63a257de8",
+      "tested": "7b67147336631c18f93fc90f3d4487ab090f76f5f0c559fb266a39f63a257de8"
+    },
+    "Grothe/UpperChaos/Structural.lean": {
+      "current": "f24dea586a58cfc917a254127d43aa7118ad96f6e62a2da63207b0d5c4584221",
+      "tested": "f24dea586a58cfc917a254127d43aa7118ad96f6e62a2da63207b0d5c4584221"
+    },
+    "Grothe/UpperChaos/TaylorPhase.lean": {
+      "current": "b372e75c454e977858fb3c47b7e0cbd9b0a408bc51d06148b23559af0a4af9f2",
+      "tested": "b372e75c454e977858fb3c47b7e0cbd9b0a408bc51d06148b23559af0a4af9f2"
+    },
+    "GrotheKernel/BandMass.lean": {
+      "current": "ae732ec043d763a3fe0a79a6156c23ceb8b1f541be8e4f7ae603663506308d72",
+      "tested": "ae732ec043d763a3fe0a79a6156c23ceb8b1f541be8e4f7ae603663506308d72"
+    },
+    "GrotheKernel/Basic.lean": {
+      "current": "d4a738a79075cd3742dada74bf7c51bc7adc6b246f13f2a7fdecf9192a5e9fb5",
+      "tested": "d4a738a79075cd3742dada74bf7c51bc7adc6b246f13f2a7fdecf9192a5e9fb5"
+    },
+    "GrotheKernel/Haagerup.lean": {
+      "current": "4f878618a2c1d661defae7941920b720dc272f4219e0e36a1051524cea1673d5",
+      "tested": "4f878618a2c1d661defae7941920b720dc272f4219e0e36a1051524cea1673d5"
+    },
+    "GrotheKernel/HeadWeight.lean": {
+      "current": "4953ea7596575228d1f3c577de566cc1e010c9968c3b1c894ec869c46b45eb5e",
+      "tested": "4953ea7596575228d1f3c577de566cc1e010c9968c3b1c894ec869c46b45eb5e"
+    },
+    "GrotheKernel/PhiCheck.lean": {
+      "current": "e1411dde5df9d4f10e233be4f0cb3a6e1ae2a9a2988045e44e372e1682853f2e",
+      "tested": "e1411dde5df9d4f10e233be4f0cb3a6e1ae2a9a2988045e44e372e1682853f2e"
+    },
+    "GrotheKernel/Table.lean": {
+      "current": "c1a9caccc59b76be38f00a9750ed84f6727ff6844b8be14926049e3430b81953",
+      "tested": "c1a9caccc59b76be38f00a9750ed84f6727ff6844b8be14926049e3430b81953"
+    }
+  },
+  "endpoint_local_import_file_count": 148,
+  "endpoint_native_facts": [
+    "Grothe.Upper.comparison_check._native.native_decide.ax_1_1",
+    "Grothe.UpperChaos.phi_cover_check._native.native_decide.ax_1_1",
+    "Grothe.head_check._native.native_decide.ax_1_1"
+  ],
+  "endpoint_roots": [
+    "Grothe.UpperChaos.PhiBound",
+    "Grothe.UpperChaos.HardyKernel"
+  ],
+  "endpoint_theorem": "Grothe.UpperChaos.fresh_upper_rounder",
+  "environment_sha256": {
+    "lake-manifest.json": {
+      "current": "26ea8f1f2fc0d041b5897dc66e111d746b97d86e281d4017efbc41f57761d17c",
+      "tested": "26ea8f1f2fc0d041b5897dc66e111d746b97d86e281d4017efbc41f57761d17c"
+    },
+    "lakefile.toml": {
+      "current": "01b7a9e2b3ba4c8495763e84a8c094dfd9f85097df9665a571a56242bd53b7ba",
+      "tested": "01b7a9e2b3ba4c8495763e84a8c094dfd9f85097df9665a571a56242bd53b7ba"
+    },
+    "lean-toolchain": {
+      "current": "d5edba4e4b8faad9c1baeadb265716d20d03be4d1a2647dc5e35b0c0325bea7b",
+      "tested": "d5edba4e4b8faad9c1baeadb265716d20d03be4d1a2647dc5e35b0c0325bea7b"
+    }
+  },
+  "historical_audit_and_root_files_not_current_coverage": {
+    ".github/workflows/lean.yml": {
+      "observed_index_stages": [
+        "100644 f901b23a894fa1e9e4de21fbe7f54bd6b231a4a6 0\t.github/workflows/lean.yml"
+      ],
+      "tested_sha256": "16c94d838e44137e707663774b6e59fa6a7cfde315a5373dd4daed1eca4d6ac1"
+    },
+    "Grothe.lean": {
+      "observed_index_stages": [
+        "100644 f7abe5f58880db72870984bbffb922bd21171597 0\tGrothe.lean"
+      ],
+      "tested_sha256": "840f3be3e480730f457f0c4baab7bc6c15ec7505aab254bdb6797ff5d1350f9c"
+    },
+    "GrotheKernel.lean": {
+      "observed_index_stages": [
+        "100644 cfbc96a3bbf596e93d8e0e7750d42b1d0b2d88fa 0\tGrotheKernel.lean"
+      ],
+      "tested_sha256": "bcb04b6b496756a2f35d8fc0077b51f403a6d8db99a77af508a21539632e9292"
+    },
+    "scratch/Axioms.lean": {
+      "observed_index_stages": [
+        "100644 200d1ab04bf3bb7bc70bf5557f4414d5eb36db66 0\tscratch/Axioms.lean"
+      ],
+      "tested_sha256": "9885d77a9d0f94d78d300bccb538f44515f0d63ff9781922b7d69c1f3a43c719"
+    },
+    "scripts/check_axioms.py": {
+      "observed_index_stages": [
+        "100644 bcc1331e42a063049b2e726a9bfcc80f3e0be7fe 0\tscripts/check_axioms.py"
+      ],
+      "tested_sha256": "a1217c9ce34d28a9330a3f7908b9d701b0cefb10283515656839f50c7b923d33"
+    }
+  },
+  "historical_full_build": {
+    "allowed_native_facts": 84,
+    "axiom_report_theorems": 451,
+    "jobs": 9161,
+    "no_lean_warnings": true,
+    "target": "Grothe (default target; not GrotheCaps)",
+    "unique_native_facts_used": 24
+  },
+  "historical_targeted_build_gap": {
+    "file": "BUILD_GAP.json",
+    "sha256": "d20b9b272962a6f2af06f39ab64fc6d5ddaef66370a1bd4889ec1655095ffe53",
+    "superseded_for_unchanged_endpoint_by": "This actual successful full CI. Missing targeted logs were not recovered."
+  },
+  "input_sha256": {
+    "data/upper-preprocess/certificate.json": {
+      "current": "7847e2b0ed5c4b2c7cc7bcaa035046c32242e6fc5aff60c3b88886130d85fb7e",
+      "tested": "7847e2b0ed5c4b2c7cc7bcaa035046c32242e6fc5aff60c3b88886130d85fb7e"
+    },
+    "data/upper-preprocess/hardy_result.json": {
+      "current": "767122a6f834c23f3bd7e12d5f9a834ca0faf63b3920c7378fc506ba0ed37d8b",
+      "tested": "767122a6f834c23f3bd7e12d5f9a834ca0faf63b3920c7378fc506ba0ed37d8b"
+    },
+    "data/upper-preprocess/inputs/contour_input.json": {
+      "current": "7f1ed2b12b74bd71f57509a82ad1dbdb99dcbfbda19ecb5f14c5ff2bab4af38b",
+      "tested": "7f1ed2b12b74bd71f57509a82ad1dbdb99dcbfbda19ecb5f14c5ff2bab4af38b"
+    },
+    "data/upper-preprocess/proposal.json": {
+      "current": "ada38fe6d3e51eb4b11a1ad8267f325694be3dc32502c7f41a80e831935efa4c",
+      "tested": "ada38fe6d3e51eb4b11a1ad8267f325694be3dc32502c7f41a80e831935efa4c"
+    },
+    "tools/gen_upper_data.py": {
+      "current": "286cd1073ff2e3891f31616770f9d4439cb2c8813bc8961843a6010c1ca0a17d",
+      "tested": "286cd1073ff2e3891f31616770f9d4439cb2c8813bc8961843a6010c1ca0a17d"
+    }
+  },
+  "job_id": 121294036122,
+  "job_steps": [
+    {
+      "completedAt": "2026-10-25T21:18:00Z",
+      "conclusion": "success",
+      "name": "Set up job",
+      "number": 1,
+      "startedAt": "2026-10-25T21:17:59Z",
+      "status": "completed"
+    },
+    {
+      "completedAt": "2026-10-25T21:18:03Z",
+      "conclusion": "success",
+      "name": "Run actions/checkout@v4",
+      "number": 2,
+      "startedAt": "2026-10-25T21:18:00Z",
+      "status": "completed"
+    },
+    {
+      "completedAt": "2026-10-25T21:18:03Z",
+      "conclusion": "skipped",
+      "name": "Merge the ready branch into the current master",
+      "number": 3,
+      "startedAt": "2026-10-25T21:18:03Z",
+      "status": "completed"
+    },
+    {
+      "completedAt": "2026-10-25T21:18:03Z",
+      "conclusion": "success",
+      "name": "Does this change touch anything Lean builds or checks?",
+      "number": 4,
+      "startedAt": "2026-10-25T21:18:03Z",
+      "status": "completed"
+    },
+    {
+      "completedAt": "2026-10-25T22:17:24Z",
+      "conclusion": "success",
+      "name": "Build the Lean development (Mathlib from cache)",
+      "number": 5,
+      "startedAt": "2026-10-25T21:18:03Z",
+      "status": "completed"
+    },
+    {
+      "completedAt": "2026-10-25T22:17:24Z",
+      "conclusion": "success",
+      "name": "No sorry, axiom or unchecked code anywhere",
+      "number": 6,
+      "startedAt": "2026-10-25T22:17:24Z",
+      "status": "completed"
+    },
+    {
+      "completedAt": "2026-10-25T22:17:29Z",
+      "conclusion": "success",
+      "name": "Axiom report",
+      "number": 7,
+      "startedAt": "2026-10-25T22:17:24Z",
+      "status": "completed"
+    },
+    {
+      "completedAt": "2026-10-25T22:17:29Z",
+      "conclusion": "success",
+      "name": "Node caps (separate target GrotheCaps, verified off CI) unchanged since verification",
+      "number": 8,
+      "startedAt": "2026-10-25T22:17:29Z",
+      "status": "completed"
+    },
+    {
+      "completedAt": "2026-10-25T22:17:29Z",
+      "conclusion": "skipped",
+      "name": "Auto-merge into master (fast-forward to the checked merge), or retry if master moved",
+      "number": 9,
+      "startedAt": "2026-10-25T22:17:29Z",
+      "status": "completed"
+    },
+    {
+      "completedAt": "2026-10-25T22:17:30Z",
+      "conclusion": "success",
+      "name": "Post Run actions/checkout@v4",
+      "number": 18,
+      "startedAt": "2026-10-25T22:17:29Z",
+      "status": "completed"
+    },
+    {
+      "completedAt": "2026-10-25T22:17:30Z",
+      "conclusion": "success",
+      "name": "Complete job",
+      "number": 19,
+      "startedAt": "2026-10-25T22:17:30Z",
+      "status": "completed"
+    }
+  ],
+  "job_url": "https://github.com/agalatan/grothendieck-lean/actions/runs/40234828241/job/121294036122",
+  "new_master_being_integrated": "4e9f32d78a198da551239bbfa9e56e713d765cae",
+  "observed_head_during_master_integration": "f6eeeea8e27ef8e4fb677b731e5c831d5c68c58a",
+  "retrieved_utc": "2026-10-25T23:01:26.933955+00:00",
+  "run_id": 40234828241,
+  "run_url": "https://github.com/agalatan/grothendieck-lean/actions/runs/40234828241",
+  "scope": "Successful full default-target CI at the tested commit; current upper endpoint import closure and certificate inputs guarded separately below.",
+  "scope_verifier": "data/lower-unshifted/verification/verify_ci_scope.py",
+  "scope_verifier_sha256": "e06dccd2459b22af50b2d9671059367ddce97261305ce0d5f5b9a726d0ddeaa7",
+  "source_commit": "5f46810672e97231883db052b614c966399512b1",
+  "status": "PASS_FULL_CI_FOR_PINNED_ENDPOINT_SCOPE",
+  "working_tree_endpoint_closure_hashed_directly": true
+}

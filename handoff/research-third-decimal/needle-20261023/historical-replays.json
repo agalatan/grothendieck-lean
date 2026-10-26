@@ -1,0 +1,74 @@
+{
+  "status": "PASS",
+  "scope": "Replay the saved exact research certificates from a fresh checkout.\n\nStandard-library Python only. Does not launch Lean builds, Gaussian discovery\nsearches or integration regeneration. The written analytic premises of each\ncertificate remain in force. --full also replays the seven frozen scalar\ncountermodels; they are relaxation examples, not Gaussian realizations.\n",
+  "frozen_inputs_checked": 242,
+  "full": true,
+  "checks": [
+    {
+      "check": "real-mixture",
+      "status": "PASS",
+      "seconds": 0.05952420799440006
+    },
+    {
+      "check": "complex-mixture",
+      "status": "PASS",
+      "seconds": 0.06256120799662312
+    },
+    {
+      "check": "independent-complex",
+      "status": "PASS",
+      "seconds": 0.03736524999840185
+    },
+    {
+      "check": "coupled-pair",
+      "status": "PASS",
+      "seconds": 0.08268287499959115
+    },
+    {
+      "check": "finite-jump",
+      "status": "PASS",
+      "seconds": 0.10682462499971734
+    },
+    {
+      "check": "wick-identities",
+      "status": "PASS",
+      "seconds": 0.0342453339981148
+    },
+    {
+      "check": "moment-extension",
+      "status": "PASS",
+      "seconds": 0.05545070800144458
+    },
+    {
+      "check": "moment-negative-controls",
+      "status": "PASS",
+      "seconds": 4.022357791000104
+    },
+    {
+      "check": "incumbent-prefix",
+      "status": "PASS",
+      "seconds": 0.08723904100043
+    },
+    {
+      "check": "rankone-tau-a",
+      "status": "PASS",
+      "seconds": 2.8818777089982177
+    },
+    {
+      "check": "rankone-tau-b",
+      "status": "PASS",
+      "seconds": 2.707163999999466
+    },
+    {
+      "check": "rankone-box",
+      "status": "PASS",
+      "seconds": 0.24386283399508102
+    },
+    {
+      "check": "seven-scalar-countermodels",
+      "status": "PASS",
+      "seconds": 26.50729691599554
+    }
+  ],
+  "not_claimed": "Gaussian integrations, all-dimensional outer covers, full Lean build or a new endpoint."
+}

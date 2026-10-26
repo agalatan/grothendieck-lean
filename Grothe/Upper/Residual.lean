@@ -7,6 +7,7 @@ The residual of a radial coefficient sequence `h` (radial index `n` ↔ odd degr
 the linear kernel `c·z` is `|h₀ − c| + Σ_{n ≥ 1} |hₙ|` (see `Grothe.transfer`).
 
 * `residual_split`: the residual is a finite head plus a tail;
+* `hardy_budget_after_linear`: subtract the energy already forced by the linear coefficient;
 * `hardy_tail`: a weighted square-sum bound `Σ_n hₙ² r^{2(2n+1)} ≤ B` with `r > 1` (the Parseval
   form of a mean-square bound for the analytic continuation of the kernel to the circle of
   radius `r`) bounds the tail `Σ_{n ≥ K} |hₙ|` by Cauchy–Schwarz.
@@ -31,6 +32,35 @@ theorem residual_split (h : ℕ → ℝ) (hs : Summable fun n => |h n|) (c : ℝ
   rw [e1, e2]
   simp only [ite_true]
   ring
+
+/-- Remove a known lower bound on the first coefficient's energy from a Hardy budget.
+The factor `r⁴` accounts for shifting the radial coefficient index by one. -/
+theorem hardy_budget_after_linear (h : ℕ → ℝ) (r B L : ℝ) (hr : 0 < r)
+    (hL : 0 ≤ L) (h0 : L ≤ h 0)
+    (hB : ∀ J, ∑ n ∈ range J, h n ^ 2 * r ^ (2 * (2 * n + 1)) ≤ B) :
+    ∀ J, ∑ n ∈ range J, h (n + 1) ^ 2 * r ^ (2 * (2 * n + 1))
+      ≤ (B - L ^ 2 * r ^ 2) / r ^ 4 := by
+  intro J
+  have hsq : L ^ 2 ≤ h 0 ^ 2 := by nlinarith
+  have he : ∀ n : ℕ, r ^ (2 * (2 * (n + 1) + 1))
+      = r ^ 4 * r ^ (2 * (2 * n + 1)) := by
+    intro n
+    rw [← pow_add]
+    congr 1
+    omega
+  have hb := hB (J + 1)
+  rw [sum_range_succ'] at hb
+  simp only [Nat.mul_zero, zero_add, Nat.mul_one] at hb
+  simp_rw [he] at hb
+  have he' : (∑ n ∈ range J, h (n + 1) ^ 2 *
+      (r ^ 4 * r ^ (2 * (2 * n + 1)))) =
+      r ^ 4 * ∑ n ∈ range J, h (n + 1) ^ 2 * r ^ (2 * (2 * n + 1)) := by
+    rw [mul_sum]
+    exact sum_congr rfl fun n _ => by ring
+  rw [he'] at hb
+  apply (le_div_iff₀ (pow_pos hr 4)).2
+  have hsq' := mul_le_mul_of_nonneg_right hsq (sq_nonneg r)
+  nlinarith only [hb, hsq']
 
 /-- **Hardy tail.**  If `Σ_{n < J} hₙ² r^{2(2n+1)} ≤ B` for all `J`, with `r > 1`, then
 `Σ_{n ≥ K} |hₙ| ≤ T` whenever `B · r^{−2(2K+1)} ≤ T² (1 − r^{−4})`. -/
