@@ -17,6 +17,9 @@ name: Lean proof check
 on:
   push:
     branches: ['**']
+  schedule:
+    # weekly: restore (and so keep alive) the master cache; GitHub deletes cache entries unused for 7 days
+    - cron: '17 4 * * 1'
   workflow_dispatch:
     inputs:
       mode:
@@ -33,7 +36,7 @@ permissions:
 
 jobs:
   build:
-    if: github.event_name == 'push' || inputs.mode == 'check' || inputs.mode == ''
+    if: github.event_name == 'push' || ((github.event_name == 'workflow_dispatch') && (inputs.mode == 'check' || inputs.mode == ''))
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     # One group PER BRANCH, cancel-in-progress: a new push (or retry dispatch) of the same branch cancels that
@@ -135,7 +138,7 @@ jobs:
           lake env lean scratch/AxiomsCaps.lean | tee axioms-caps.txt
           python3 scripts/check_axioms.py --caps < axioms-caps.txt
 
-      - name: GrotheCaps not verified for these sources — rebuild it on the droplet instead of timing out here
+      - name: If GrotheCaps is not verified for these sources, dispatch its rebuild on the droplet
         if: steps.scope.outputs.lean == 'true' && steps.caps.outputs.ok != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -157,6 +160,16 @@ jobs:
         with:
           path: .lake/build
           key: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+
+      - name: Prune superseded master caches (keep the newest two)
+        if: github.ref_name == 'master' && steps.scope.outputs.lean == 'true' && steps.caps.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/actions/caches?ref=refs/heads/master&key=lake-build-v2-&sort=created_at&direction=desc&per_page=100" \
+            --jq '.actions_caches[2:][] | .id' | while read -r id; do
+            gh api -X DELETE "repos/${GITHUB_REPOSITORY}/actions/caches/${id}" >/dev/null && echo "deleted cache ${id}" || true
+          done
 
       - name: Auto-merge into master (fast-forward to the checked merge), or retry if master moved
         if: startsWith(github.ref_name, 'ready/')
@@ -192,6 +205,20 @@ jobs:
             fi
             exit 1
           fi
+
+  keepalive:
+    # the weekly schedule: restoring the master cache counts as a use and resets GitHub's 7-day expiry
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - name: Restore the master cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .lake/build
+          key: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
 
   heavy:
     if: github.event_name == 'workflow_dispatch' && (inputs.mode == 'warm' || inputs.mode == 'caps')
