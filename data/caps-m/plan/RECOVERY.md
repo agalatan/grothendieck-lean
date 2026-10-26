@@ -11,9 +11,11 @@ are in `handoff/caps-centre/`. Read actual process state before restarting. A
 surviving controller or child must not be duplicated; the driver also checks its
 lock and recorded process groups. Exit 75 means a checkpoint pause or unfinished
 repairs, not a completed pass. The previous delivery is owned by another AI.
-The user removed the timer; do not recreate it.
+The user subsequently requested an active 15-minute continuation timer,
+`finish-rows-12-15-caps-and-cache`, and authorized the droplet runner cache
+campaign. Read the latest human scope in `handoff/caps-centre/STATE.md`.
 
-The snapshot has 28 completed centres (15 historical and 13 new), all with zero
+The snapshot has 44 completed centres (15 historical and 29 new), all with zero
 best residual. This is partial coverage, not the final remaining maximum.
 `cover-baseline-codex-15b7.json` records an exact replay of all 10,762 boxes at
 the unchanged padding and cover, including the approximately 4.50e-14 margin.
@@ -57,6 +59,8 @@ the analytic node bound.
 After the full sweep, report the remaining count/maximum and exact alternatives
 on #72: per-node changes with chord and source-majorant checks plus cover replay,
 and global padding with its exact lower endpoint. The current cover margin is
-about 4.50e-14; 1.77e-8 belongs to the retired cover. Stop for the user's decision
-before #15 wiring. Future updates to this published branch merge master; no
+about 4.50e-14; 1.77e-8 belongs to the retired cover. The latest completion request
+authorizes #15 wiring and runner builds when all certificates work at unchanged
+caps, padding and cover. A residual requiring changed mathematics still needs
+the user's decision before dependent changes. Future updates to this published branch merge master; no
 force-push or rewriting of published history is needed.

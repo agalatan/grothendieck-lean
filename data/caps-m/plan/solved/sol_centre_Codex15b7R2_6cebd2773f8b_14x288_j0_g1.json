@@ -1,0 +1,28 @@
+[
+  {
+    "cap_up": "0",
+    "encl": true,
+    "grid": 1,
+    "i": 288,
+    "j": 0,
+    "k": 14,
+    "lm": [
+      [
+        "8707059/1000000000",
+        "0"
+      ],
+      [
+        "1/1000000000",
+        "0"
+      ]
+    ],
+    "polyOK": true,
+    "provenance": {
+      "baseline_capPad": "1/100000000000",
+      "cap_up_convention": "additional to baseline_capPad, not the final capPad",
+      "export_sha256": "098f183e2b74f592ac0e883a1ab9c22ded64f51dcf84e6e7af4891b33301f789",
+      "fingerprint": "6cebd2773f8bd97b2e9f0a5fd30c5dbfedc643a5bcb782f2f87487f24176a922"
+    },
+    "status": "pass"
+  }
+]

@@ -34,8 +34,9 @@ No padding or cover change is made by these tools.
 After the sweep and repair attempts, `tools/caps_cover_sensitivity.py` supports exact research
 replays of the current cover and global-padding endpoint calculations. A per-node arithmetic replay
 is conditional until every affected source certificate and hull/chord dependency has been checked.
-The remaining count, maximum and both alternatives must be reported on #72 for the user's decision
-before wiring the pieces into `CapsRest` (#15).
+The remaining count, maximum and both alternatives must be reported on #72. The user's
+completion request authorizes wiring unchanged-cap certificates into `CapsRest` (#15);
+any residual requiring changed mathematics still needs the user's decision first.
 
 `tools/caps_centre_campaign.py run --agent-id codex-15b7 --manifest
 data/caps-m/plan/centre-sweep-codex-15b7.json` runs the local search with one owned
@@ -56,10 +57,12 @@ bound. `tools/caps_centre_retry.py` independently checks the rational witnesses
 and can search for additional exact multiplier certificates without rebuilding a
 grid.
 
-The committed `checkpoint-codex-15b7.json` contains 28 completed centres, including
+The committed `checkpoint-codex-15b7.json` contains 44 completed centres, including
 the 15 adopted historical records. Every completed centre has zero best residual;
 the full 358-centre maximum is still unknown. The 15:155/0 and 15:186/0 finer-grid
-solutions are also saved. `cover-baseline-codex-15b7.json` replays all 10,762 current
+solutions are also saved. Radial refinement also removes the stored-grid increases
+at 14:274/117 and 14:276/137 (about 2.00e-7 and 6.43e-7 respectively), with exact
+zero-increase solutions on 3200×256. `cover-baseline-codex-15b7.json` replays all 10,762 current
 boxes with unchanged inputs and records the exact margin and lower endpoint.
 Neither this baseline nor a partial sweep is a final caps verification.
 The sensitivity audit uses Lean's depth-nine finite majorant check and binds
