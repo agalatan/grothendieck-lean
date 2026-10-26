@@ -172,4 +172,51 @@ theorem cover_integral {neg : Bool} {w tol : ℤ}
         exact add_le_add (ih lo mid x1 hm1 hs1 h1) (ih mid hi x2 hm2 hs2 h2)
       · exact absurd h (by simp)
 
+omit hFm hGm hF hG in
+lemma pieceLo_succ (n k : ℕ) (hn : n = 1024) : pieceLo n (k + 1) = pieceLo n k + D / 1024 := by
+  subst hn; simp only [pieceLo, Int.ofNat_eq_natCast]; push_cast; ring
+
+/-- **A sum over consecutive pieces of one chart.** -/
+theorem chartSum_integral {neg : Bool} {w tol : ℤ} {depth : ℕ}
+    (hint : ∀ a b, IntervalIntegrable (gF F G neg) volume a b) :
+    ∀ (m k₀ : ℕ) (x : ℤ), (k₀ + m ≤ 1024 ∨ 1024 ≤ k₀) →
+      chartSum (ofRatI jQ) (ofRatI rhoQ) hardyData neg w tol depth 1024 k₀ m = some x →
+      ∫ θ in (2 * arctan ((pieceLo 1024 k₀ : ℝ) / D))..(2 * arctan ((pieceLo 1024 (k₀ + m) : ℝ) / D)),
+        gF F G neg θ ≤ (x : ℝ) / D := by
+  have hDq : D / 1024 = 2 ^ 118 := by simp [D, K]
+  intro m
+  induction m with
+  | zero =>
+    intro k₀ x _ h
+    simp only [chartSum, Option.some.injEq] at h
+    subst h; simp
+  | succ m ih =>
+    intro k₀ x hk h
+    simp only [chartSum] at h
+    split at h
+    · rename_i x1 x2 h1 h2
+      obtain rfl : x1 + x2 = x := Option.some.inj h
+      have hq : (0 : ℤ) < 2 ^ 118 := by positivity
+      have hD' : D = 1024 * 2 ^ 118 := by simp [D, K]
+      have hlh : pieceLo 1024 k₀ ≤ pieceLo 1024 (k₀ + 1) := by
+        rw [pieceLo_succ _ _ rfl, hDq]; linarith
+      have hs : 0 ≤ pieceLo 1024 k₀ ∨ pieceLo 1024 (k₀ + 1) ≤ 0 := by
+        simp only [pieceLo, Int.ofNat_eq_natCast, Nat.cast_ofNat]
+        rw [hDq, hD']
+        rcases hk with hk | hk
+        · right; push_cast
+          have : ((k₀ : ℤ) + 1) ≤ 1024 := by omega
+          nlinarith
+        · left
+          have : (1024 : ℤ) ≤ k₀ := by omega
+          nlinarith
+      have i1 := cover_integral hFm hGm hF hG hint depth _ _ x1 hlh hs h1
+      have i2 := ih (k₀ + 1) x2 (by omega) h2
+      rw [show k₀ + 1 + m = k₀ + (m + 1) by ring] at i2
+      rw [← intervalIntegral.integral_add_adjacent_intervals (hint _ _) (hint _ _)
+        (b := 2 * arctan ((pieceLo 1024 (k₀ + 1) : ℝ) / D))]
+      push_cast; rw [add_div]
+      exact add_le_add i1 i2
+    · exact absurd h (by simp)
+
 end Grothe.UpperChaos.HardyArcCover
