@@ -2,7 +2,7 @@
   "format": "caps-centre-backup/v1",
   "agent_id": "codex-15b7",
   "scope": "partial research checkpoint; not final Lean verification",
-  "created_at_utc": "2026-10-26T14:58:07.275289+00:00",
+  "created_at_utc": "2026-10-26T15:40:33.959846+00:00",
   "integrated_master": "7d9eeb66427701cf52b252748de94d4f34e286b3",
   "branch": "codex/caps-12-15",
   "worktree": "/Users/alingalatan/workspaces/grothe-codex-caps-12-15",
@@ -13,8 +13,31 @@
     "capPad_unchanged": "1/100000000000",
     "centres": {
       "12:140:0": {
+        "best_kind": "stored_grid",
+        "best_residual": "0",
+        "caution": "exact research feasibility; no minimality or native-verification claim",
+        "completed_at_utc": "2026-10-26T15:36:56.122468+00:00",
+        "evidence": [
+          {
+            "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_12x140_j0_g2.json",
+            "sha256": "3e82c2826e3a8872458fd81c5169bfe15411b0422f37a74813ed94907fe9a4a8"
+          }
+        ],
         "origin": "fresh_or_resumed",
-        "status": "pending"
+        "raw_cap_up": "0",
+        "raw_exact_replayed": true,
+        "raw_export": {
+          "path": "data/caps-m/plan/exports/exp_centre_Codex15b7R2_6cebd2773f8b_12x140_j0_g2.jsonl",
+          "sha256": "47557438cbd44d2a55a0c430797cfe2c1e6757fdf2b3019847bb391403f9ad32"
+        },
+        "raw_origin": "fresh_or_resumed_exact_replay",
+        "raw_result": {
+          "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_12x140_j0_g2.json",
+          "sha256": "3e82c2826e3a8872458fd81c5169bfe15411b0422f37a74813ed94907fe9a4a8"
+        },
+        "raw_status": "fixed",
+        "residual_accepted": true,
+        "status": "complete"
       },
       "12:141:0": {
         "origin": "fresh_or_resumed",
@@ -72,7 +95,7 @@
         "best_kind": "historical_adopted",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:03.576448+00:00",
+        "completed_at_utc": "2026-10-26T14:58:29.487679+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centreS_g2_000.json",
@@ -217,7 +240,7 @@
         "best_residual_candidate": "287970789843044328753181/973843044328753181000000000000000",
         "candidate_kind": "historical_adopted",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:05.816825+00:00",
+        "completed_at_utc": "2026-10-26T14:58:30.909757+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centreS_g2_000.json",
@@ -394,7 +417,7 @@
         "best_kind": "historical_adopted",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:06.249865+00:00",
+        "completed_at_utc": "2026-10-26T14:58:31.260693+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centreS_g2_000.json",
@@ -437,7 +460,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:19.570330+00:00",
+        "completed_at_utc": "2026-10-26T14:58:40.925707+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_12x270_j350_g1.json",
@@ -464,7 +487,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:19.934346+00:00",
+        "completed_at_utc": "2026-10-26T14:58:41.224316+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_12x272_j380_g1.json",
@@ -491,7 +514,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:20.363074+00:00",
+        "completed_at_utc": "2026-10-26T14:58:41.559898+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_12x276_j287_g1.json",
@@ -520,7 +543,7 @@
         "best_residual_candidate": "39497694695/925141178294777562",
         "candidate_kind": "stored_grid",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:22.618154+00:00",
+        "completed_at_utc": "2026-10-26T14:58:43.039748+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_12x280_j103_g1.json",
@@ -585,7 +608,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:23.052617+00:00",
+        "completed_at_utc": "2026-10-26T14:58:43.344981+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_12x282_j0_g1.json",
@@ -612,7 +635,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:23.645100+00:00",
+        "completed_at_utc": "2026-10-26T14:58:43.666666+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_12x284_j0_g1.json",
@@ -639,7 +662,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:24.039674+00:00",
+        "completed_at_utc": "2026-10-26T14:58:43.989609+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_12x286_j0_g1.json",
@@ -666,7 +689,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:24.428408+00:00",
+        "completed_at_utc": "2026-10-26T14:58:44.305802+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_12x288_j0_g1.json",
@@ -693,7 +716,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:24.789337+00:00",
+        "completed_at_utc": "2026-10-26T14:58:44.582572+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_12x290_j0_g1.json",
@@ -720,7 +743,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:25.140964+00:00",
+        "completed_at_utc": "2026-10-26T14:58:44.864189+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_12x292_j0_g1.json",
@@ -803,7 +826,7 @@
         "best_kind": "historical_adopted",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:06.669834+00:00",
+        "completed_at_utc": "2026-10-26T14:58:31.612005+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centreS_g2_000.json",
@@ -948,7 +971,7 @@
         "best_residual_candidate": "32346807/118732161244706623",
         "candidate_kind": "historical_adopted",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:08.443878+00:00",
+        "completed_at_utc": "2026-10-26T14:58:33.055918+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centreS_g2_000.json",
@@ -1125,7 +1148,7 @@
         "best_kind": "historical_adopted",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:08.908761+00:00",
+        "completed_at_utc": "2026-10-26T14:58:33.410868+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centreS_g2_000.json",
@@ -1172,7 +1195,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:25.500783+00:00",
+        "completed_at_utc": "2026-10-26T14:58:45.148355+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_13x270_j318_g1.json",
@@ -1199,7 +1222,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:25.883133+00:00",
+        "completed_at_utc": "2026-10-26T14:58:45.436590+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_13x272_j222_g1.json",
@@ -1226,7 +1249,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:26.360563+00:00",
+        "completed_at_utc": "2026-10-26T14:58:45.756944+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_13x274_j0_g1.json",
@@ -1253,7 +1276,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:28:16.936421+00:00",
+        "completed_at_utc": "2026-10-26T14:58:46.153419+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_13x276_j0_g1.json",
@@ -1280,7 +1303,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:30:13.712878+00:00",
+        "completed_at_utc": "2026-10-26T14:58:46.523056+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_13x278_j0_g1.json",
@@ -1307,7 +1330,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:32:08.697715+00:00",
+        "completed_at_utc": "2026-10-26T14:58:46.802032+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_13x280_j0_g1.json",
@@ -1334,7 +1357,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:33:48.958093+00:00",
+        "completed_at_utc": "2026-10-26T14:58:47.080490+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_13x282_j0_g1.json",
@@ -1361,7 +1384,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:35:22.919921+00:00",
+        "completed_at_utc": "2026-10-26T14:58:47.366515+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_13x284_j0_g1.json",
@@ -1388,7 +1411,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:36:48.822072+00:00",
+        "completed_at_utc": "2026-10-26T14:58:47.655160+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_13x286_j0_g1.json",
@@ -1455,7 +1478,7 @@
         "best_kind": "historical_adopted",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:09.435742+00:00",
+        "completed_at_utc": "2026-10-26T14:58:33.804585+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_overrides14_g2.json",
@@ -1495,7 +1518,7 @@
         "best_kind": "historical_adopted",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:10.638605+00:00",
+        "completed_at_utc": "2026-10-26T14:58:34.161424+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centreS_g2_000.json",
@@ -1640,7 +1663,7 @@
         "best_residual_candidate": "183641252/531210245144816359",
         "candidate_kind": "historical_adopted",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:13.069126+00:00",
+        "completed_at_utc": "2026-10-26T14:58:35.632965+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centreS_g2_000.json",
@@ -1763,7 +1786,7 @@
         "best_residual_candidate": "691513023/879076544098007875",
         "candidate_kind": "stored_interval_partition",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:14.996887+00:00",
+        "completed_at_utc": "2026-10-26T14:58:37.072634+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_overrides14_g2.json",
@@ -1884,7 +1907,7 @@
         "best_kind": "historical_adopted",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:15.423465+00:00",
+        "completed_at_utc": "2026-10-26T14:58:37.447400+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centreS_g2_000.json",
@@ -1931,7 +1954,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:38:39.126790+00:00",
+        "completed_at_utc": "2026-10-26T14:58:47.978200+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_14x270_j256_g1.json",
@@ -1960,7 +1983,7 @@
         "best_residual_candidate": "65733581845/329337288574070952",
         "candidate_kind": "stored_interval_partition",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:42:50.829865+00:00",
+        "completed_at_utc": "2026-10-26T14:58:49.491036+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_14x274_j117_g1.json",
@@ -2027,7 +2050,7 @@
         "best_residual_candidate": "615241613719/956919768466960025",
         "candidate_kind": "stored_grid",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:46:51.958162+00:00",
+        "completed_at_utc": "2026-10-26T14:58:51.014747+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_14x276_j137_g1.json",
@@ -2092,7 +2115,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:48:17.632720+00:00",
+        "completed_at_utc": "2026-10-26T14:58:51.333370+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_14x278_j0_g1.json",
@@ -2119,7 +2142,7 @@
         "best_kind": "historical_adopted",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:03.148114+00:00",
+        "completed_at_utc": "2026-10-26T14:58:29.144115+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_overrides14_g2.json",
@@ -2143,7 +2166,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:49:36.999430+00:00",
+        "completed_at_utc": "2026-10-26T14:58:51.614897+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_14x282_j0_g1.json",
@@ -2170,7 +2193,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:50:56.421432+00:00",
+        "completed_at_utc": "2026-10-26T14:58:51.893545+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_14x284_j0_g1.json",
@@ -2197,7 +2220,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:52:17.908727+00:00",
+        "completed_at_utc": "2026-10-26T14:58:52.176381+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_14x286_j0_g1.json",
@@ -2224,7 +2247,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:53:37.345669+00:00",
+        "completed_at_utc": "2026-10-26T14:58:52.457531+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_14x288_j0_g1.json",
@@ -2313,7 +2336,7 @@
         "best_residual_candidate": "32562399/280479004760712701",
         "candidate_kind": "historical_adopted",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:16.921677+00:00",
+        "completed_at_utc": "2026-10-26T14:58:38.808946+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centreS_g2_000.json",
@@ -2500,7 +2523,7 @@
         "best_residual_candidate": "489548757/995397402906782167",
         "candidate_kind": "historical_adopted",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:18.775256+00:00",
+        "completed_at_utc": "2026-10-26T14:58:40.278949+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centreS_g2_000.json",
@@ -2681,7 +2704,7 @@
         "best_kind": "historical_adopted",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:26:19.223830+00:00",
+        "completed_at_utc": "2026-10-26T14:58:40.647223+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centreS_g2_000.json",
@@ -2728,7 +2751,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:55:33.544548+00:00",
+        "completed_at_utc": "2026-10-26T14:58:52.790419+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x270_j381_g1.json",
@@ -2755,7 +2778,7 @@
         "best_kind": "stored_grid",
         "best_residual": "0",
         "caution": "exact research feasibility; no minimality or native-verification claim",
-        "completed_at_utc": "2026-10-26T14:57:23.663793+00:00",
+        "completed_at_utc": "2026-10-26T14:58:53.111774+00:00",
         "evidence": [
           {
             "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x274_j160_g1.json",
@@ -2779,40 +2802,224 @@
         "status": "complete"
       },
       "15:276:0": {
+        "best_kind": "stored_grid",
+        "best_residual": "0",
+        "caution": "exact research feasibility; no minimality or native-verification claim",
+        "completed_at_utc": "2026-10-26T15:00:20.736689+00:00",
+        "evidence": [
+          {
+            "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x276_j0_g1.json",
+            "sha256": "2ca75b1b91b8a5fe532046c6a0e0630843f5460025ef5490376c668c3000bd37"
+          }
+        ],
         "origin": "fresh_or_resumed",
-        "status": "pending"
+        "raw_cap_up": "0",
+        "raw_exact_replayed": true,
+        "raw_export": {
+          "path": "data/caps-m/plan/exports/exp_centre_Codex15b7R2_6cebd2773f8b_15x276_j0_g1.jsonl",
+          "sha256": "3cf7bcd2c7e2c021a5dc7e3900f8476025148f4f44badb0b3c95b6354bebaece"
+        },
+        "raw_origin": "fresh_or_resumed_exact_replay",
+        "raw_result": {
+          "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x276_j0_g1.json",
+          "sha256": "2ca75b1b91b8a5fe532046c6a0e0630843f5460025ef5490376c668c3000bd37"
+        },
+        "raw_status": "fixed",
+        "residual_accepted": true,
+        "status": "complete"
       },
       "15:278:0": {
+        "best_kind": "stored_grid",
+        "best_residual": "0",
+        "caution": "exact research feasibility; no minimality or native-verification claim",
+        "completed_at_utc": "2026-10-26T15:01:48.675771+00:00",
+        "evidence": [
+          {
+            "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x278_j0_g1.json",
+            "sha256": "5959e8c71b8d341c7283becf3e23ce5cb70c94ca6b4ef8a0e14777418eb20741"
+          }
+        ],
         "origin": "fresh_or_resumed",
-        "status": "pending"
+        "raw_cap_up": "0",
+        "raw_exact_replayed": true,
+        "raw_export": {
+          "path": "data/caps-m/plan/exports/exp_centre_Codex15b7R2_6cebd2773f8b_15x278_j0_g1.jsonl",
+          "sha256": "a59143c85e14b352e6c962faa23437899fdc3dad2f9060e1f7f5cb9c9ef2fece"
+        },
+        "raw_origin": "fresh_or_resumed_exact_replay",
+        "raw_result": {
+          "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x278_j0_g1.json",
+          "sha256": "5959e8c71b8d341c7283becf3e23ce5cb70c94ca6b4ef8a0e14777418eb20741"
+        },
+        "raw_status": "fixed",
+        "residual_accepted": true,
+        "status": "complete"
       },
       "15:280:0": {
+        "best_kind": "stored_grid",
+        "best_residual": "0",
+        "caution": "exact research feasibility; no minimality or native-verification claim",
+        "completed_at_utc": "2026-10-26T15:03:22.542468+00:00",
+        "evidence": [
+          {
+            "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x280_j0_g1.json",
+            "sha256": "d86b7085c9ab74e074cbd977679376a803479bf871ed914f77f6bae9ce3aa438"
+          }
+        ],
         "origin": "fresh_or_resumed",
-        "status": "pending"
+        "raw_cap_up": "0",
+        "raw_exact_replayed": true,
+        "raw_export": {
+          "path": "data/caps-m/plan/exports/exp_centre_Codex15b7R2_6cebd2773f8b_15x280_j0_g1.jsonl",
+          "sha256": "67986b02ff9509a6c7c160a6ce24a7b2637c5f22acf8c9962667153183805e37"
+        },
+        "raw_origin": "fresh_or_resumed_exact_replay",
+        "raw_result": {
+          "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x280_j0_g1.json",
+          "sha256": "d86b7085c9ab74e074cbd977679376a803479bf871ed914f77f6bae9ce3aa438"
+        },
+        "raw_status": "fixed",
+        "residual_accepted": true,
+        "status": "complete"
       },
       "15:282:0": {
+        "best_kind": "stored_grid",
+        "best_residual": "0",
+        "caution": "exact research feasibility; no minimality or native-verification claim",
+        "completed_at_utc": "2026-10-26T15:04:54.245223+00:00",
+        "evidence": [
+          {
+            "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x282_j0_g1.json",
+            "sha256": "b7ffe59180edcd1265072eb7ad89f0906872105621e1a7344bc1b13830237f33"
+          }
+        ],
         "origin": "fresh_or_resumed",
-        "status": "pending"
+        "raw_cap_up": "0",
+        "raw_exact_replayed": true,
+        "raw_export": {
+          "path": "data/caps-m/plan/exports/exp_centre_Codex15b7R2_6cebd2773f8b_15x282_j0_g1.jsonl",
+          "sha256": "d55dbac32af5eaa1cf0c6ff0da8fc4a77770e9567ed2e3126c918e8cc7046705"
+        },
+        "raw_origin": "fresh_or_resumed_exact_replay",
+        "raw_result": {
+          "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x282_j0_g1.json",
+          "sha256": "b7ffe59180edcd1265072eb7ad89f0906872105621e1a7344bc1b13830237f33"
+        },
+        "raw_status": "fixed",
+        "residual_accepted": true,
+        "status": "complete"
       },
       "15:284:0": {
+        "best_kind": "stored_grid",
+        "best_residual": "0",
+        "caution": "exact research feasibility; no minimality or native-verification claim",
+        "completed_at_utc": "2026-10-26T15:07:17.834727+00:00",
+        "evidence": [
+          {
+            "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x284_j0_g1.json",
+            "sha256": "046a9fd041027cd4e66836da26a02756fbcda83b809a98aead271e7cb3cbd3be"
+          }
+        ],
         "origin": "fresh_or_resumed",
-        "status": "pending"
+        "raw_cap_up": "0",
+        "raw_exact_replayed": true,
+        "raw_export": {
+          "path": "data/caps-m/plan/exports/exp_centre_Codex15b7R2_6cebd2773f8b_15x284_j0_g1.jsonl",
+          "sha256": "142d5076cf6aab932fae5fefcdcd4f77e2f95de64de22326f6fcb7dd8549eb8c"
+        },
+        "raw_origin": "fresh_or_resumed_exact_replay",
+        "raw_result": {
+          "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x284_j0_g1.json",
+          "sha256": "046a9fd041027cd4e66836da26a02756fbcda83b809a98aead271e7cb3cbd3be"
+        },
+        "raw_status": "fixed",
+        "residual_accepted": true,
+        "status": "complete"
       },
       "15:286:0": {
+        "best_kind": "stored_grid",
+        "best_residual": "0",
+        "caution": "exact research feasibility; no minimality or native-verification claim",
+        "completed_at_utc": "2026-10-26T15:09:47.715317+00:00",
+        "evidence": [
+          {
+            "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x286_j0_g1.json",
+            "sha256": "5bef64843c97cce05f6ea8623d8628be1f53016a2c2eb83fccb1b3c1e75e5dad"
+          }
+        ],
         "origin": "fresh_or_resumed",
-        "status": "pending"
+        "raw_cap_up": "0",
+        "raw_exact_replayed": true,
+        "raw_export": {
+          "path": "data/caps-m/plan/exports/exp_centre_Codex15b7R2_6cebd2773f8b_15x286_j0_g1.jsonl",
+          "sha256": "40c8ae20aa4dbbb77b3703d3e1751a3050641c7225de6309ee5777fb65d12db4"
+        },
+        "raw_origin": "fresh_or_resumed_exact_replay",
+        "raw_result": {
+          "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x286_j0_g1.json",
+          "sha256": "5bef64843c97cce05f6ea8623d8628be1f53016a2c2eb83fccb1b3c1e75e5dad"
+        },
+        "raw_status": "pass",
+        "residual_accepted": true,
+        "status": "complete"
       },
       "15:288:0": {
+        "best_kind": "stored_grid",
+        "best_residual": "0",
+        "caution": "exact research feasibility; no minimality or native-verification claim",
+        "completed_at_utc": "2026-10-26T15:12:15.247794+00:00",
+        "evidence": [
+          {
+            "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x288_j0_g1.json",
+            "sha256": "d764974e326bc15c8c87a106ca8c8578f4fa1c4213f6b288ad898c2f1832f91c"
+          }
+        ],
         "origin": "fresh_or_resumed",
-        "status": "pending"
+        "raw_cap_up": "0",
+        "raw_exact_replayed": true,
+        "raw_export": {
+          "path": "data/caps-m/plan/exports/exp_centre_Codex15b7R2_6cebd2773f8b_15x288_j0_g1.jsonl",
+          "sha256": "374eb4320f7e3ceaf627b984f5f7ded9e93e2445e3d20517c33db8767cf5d604"
+        },
+        "raw_origin": "fresh_or_resumed_exact_replay",
+        "raw_result": {
+          "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x288_j0_g1.json",
+          "sha256": "d764974e326bc15c8c87a106ca8c8578f4fa1c4213f6b288ad898c2f1832f91c"
+        },
+        "raw_status": "pass",
+        "residual_accepted": true,
+        "status": "complete"
       },
       "15:290:0": {
+        "best_kind": "stored_grid",
+        "best_residual": "0",
+        "caution": "exact research feasibility; no minimality or native-verification claim",
+        "completed_at_utc": "2026-10-26T15:14:38.833919+00:00",
+        "evidence": [
+          {
+            "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x290_j0_g1.json",
+            "sha256": "8589aeabe5df16bba507b2ddaf46cc0cee5d194d6a867629ebd70cb89f555b62"
+          }
+        ],
         "origin": "fresh_or_resumed",
-        "status": "pending"
+        "raw_cap_up": "0",
+        "raw_exact_replayed": true,
+        "raw_export": {
+          "path": "data/caps-m/plan/exports/exp_centre_Codex15b7R2_6cebd2773f8b_15x290_j0_g1.jsonl",
+          "sha256": "85a8d8ed6b49d1f6d731505f51fc35f2350b4a0dd4b910e222905bc15c3088b6"
+        },
+        "raw_origin": "fresh_or_resumed_exact_replay",
+        "raw_result": {
+          "path": "data/caps-m/plan/solved/sol_centre_Codex15b7R2_6cebd2773f8b_15x290_j0_g1.json",
+          "sha256": "8589aeabe5df16bba507b2ddaf46cc0cee5d194d6a867629ebd70cb89f555b62"
+        },
+        "raw_status": "pass",
+        "residual_accepted": true,
+        "status": "complete"
       }
     },
     "current_fine_manifest": "/Users/alingalatan/workspaces/grothe-codex-caps-12-15/data/caps-m/plan/fine-campaign/fine-14x276-15e687f0839f.json",
-    "current_piece": "15:274:160",
+    "current_piece": "12:140:0",
     "error": null,
     "fine_grid_spec": [
       3200,
@@ -2857,40 +3064,41 @@
         "--manifest",
         "/Users/alingalatan/workspaces/grothe-codex-caps-12-15/data/caps-m/plan/centre-sweep-codex-15b7.json",
         "--key",
-        "15:274:160"
+        "12:140:0"
       ],
-      "completed_at_utc": "2026-10-26T14:57:23.511053+00:00",
-      "controller_pgid": 85458,
-      "controller_pid": 85458,
+      "completed_at_utc": "2026-10-26T15:36:55.891283+00:00",
+      "controller_pgid": 89934,
+      "controller_pid": 89934,
       "fine_grid": false,
-      "log": "/Users/alingalatan/workspaces/grothe-codex-caps-12-15/handoff/caps-centre/campaign/child-85458-00038-solve-stored-15x274x160.log",
-      "peak_aggregate_rss_bytes": 137854976,
-      "pgid": 89738,
+      "log": "/Users/alingalatan/workspaces/grothe-codex-caps-12-15/handoff/caps-centre/campaign/child-89934-00018-solve-stored-12x140x0.log",
+      "peak_aggregate_rss_bytes": 154697728,
+      "pgid": 92450,
       "phase": "solve-stored",
-      "pid": 89738,
-      "piece": "15:274:160",
-      "started_at_utc": "2026-10-26T14:57:11.268533+00:00",
+      "pid": 92450,
+      "piece": "12:140:0",
+      "started_at_utc": "2026-10-26T15:36:43.628448+00:00",
       "state": "complete"
     },
-    "last_completed_piece": "15:274:160",
+    "last_completed_piece": "12:140:0",
     "owned_child": null,
     "pause_reason": "stop file /Users/alingalatan/workspaces/grothe-codex-caps-12-15/handoff/caps-centre/STOP_REQUESTED",
-    "pgid": 85458,
+    "pgid": 89934,
     "phase": "paused_at_checkpoint",
-    "pid": 85458,
+    "pid": 89934,
     "purpose": "#87 local search; historical adoption is not new verification; final caps verification belongs to CI",
     "schema": 1,
     "started_at_utc": "2026-10-26T13:42:52.805862+00:00",
     "status": "paused",
     "summary": {
-      "completed_centres": 44,
-      "completed_new_centres": 29,
+      "completed_centres": 53,
+      "completed_new_centres": 38,
       "historical_adopted_centres": 15,
       "inconclusive_centres": 0,
       "is_global_maximum": false,
       "is_global_raw_maximum": false,
       "maximum_best_residual_so_far": "0",
       "maximum_nodes": [
+        "12:140:0",
         "12:154:0",
         "12:184:0",
         "12:213:0",
@@ -2934,13 +3142,21 @@
         "15:186:0",
         "15:216:0",
         "15:270:381",
-        "15:274:160"
+        "15:274:160",
+        "15:276:0",
+        "15:278:0",
+        "15:280:0",
+        "15:282:0",
+        "15:284:0",
+        "15:286:0",
+        "15:288:0",
+        "15:290:0"
       ],
       "maximum_raw_increase_so_far": "615241613719/956919768466960025",
       "positive_best_residuals": 0,
-      "raw_checked_centres": 44,
+      "raw_checked_centres": 53,
       "total_centres": 358
     },
-    "updated_at_utc": "2026-10-26T14:57:23.666999+00:00"
+    "updated_at_utc": "2026-10-26T15:36:56.127079+00:00"
   }
 }

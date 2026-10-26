@@ -15,10 +15,13 @@ The user subsequently requested an active 15-minute continuation timer,
 `finish-rows-12-15-caps-and-cache`, and authorized the droplet runner cache
 campaign. Read the latest human scope in `handoff/caps-centre/STATE.md`.
 
-The snapshot has 44 completed centres (15 historical and 29 new), all with zero
+The snapshot has 53 completed centres (15 historical and 38 new), all with zero
 best residual. This is partial coverage, not the final remaining maximum.
 `cover-baseline-codex-15b7.json` records an exact replay of all 10,762 boxes at
 the unchanged padding and cover, including the approximately 4.50e-14 margin.
+All 38 centres stored on 1600×256 are covered; the larger-grid phase continues.
+`rest-inventory-codex-15b7.json` separately inventories the 358 localised nodes
+and 900 unverified anchored candidates needed for the full remaining row caps.
 
 ## Resume
 
