@@ -233,6 +233,67 @@ jobs:
           # which tree this workspace's build corresponds to (read by consumers that mirror the runner's build)
           git rev-parse HEAD > .lake/build/built-commit
 
+      - name: Lower-proof comment leaves the verified caps cache valid
+        run: |
+          set -euo pipefail
+          git diff --quiet
+          git diff --cached --quiet
+          original_head=$(git rev-parse HEAD)
+          original_ref=$(git symbolic-ref -q HEAD || true)
+          probe_branch="codex/caps-comment-probe-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          if git show-ref --verify --quiet "refs/heads/$probe_branch"; then
+            echo "Probe branch already exists; refusing to reuse it" >&2
+            exit 1
+          fi
+          row_file=Grothe/Lower/RowCheck.lean
+          row_backup=$(mktemp)
+          cp "$row_file" "$row_backup"
+          probe_created=false
+          cleanup() {
+            result=$?
+            trap - EXIT
+            # The backup also restores exact bytes if the Python process is interrupted.
+            cp "$row_backup" "$row_file" || result=1
+            if [ "$probe_created" = true ]; then
+              if [ -n "$original_ref" ]; then
+                git switch "${original_ref#refs/heads/}" || result=1
+              else
+                git switch --detach "$original_head" || result=1
+              fi
+              if [ "$(git rev-parse "refs/heads/$probe_branch")" = "$original_head" ]; then
+                git branch -D "$probe_branch" || result=1
+              else
+                echo "Probe branch moved unexpectedly; refusing to delete it" >&2
+                result=1
+              fi
+            fi
+            rm -f "$row_backup" || result=1
+            [ "$(git rev-parse HEAD)" = "$original_head" ] || result=1
+            [ "$(git symbolic-ref -q HEAD || true)" = "$original_ref" ] || result=1
+            git diff --quiet && git diff --cached --quiet || result=1
+            exit "$result"
+          }
+          trap cleanup EXIT
+          trap 'exit 130' INT
+          trap 'exit 143' TERM
+          git switch -c "$probe_branch" "$original_head"
+          probe_created=true
+          # The preceding build and audits supplied the genuine marker. Do not mark again.
+          python3 - <<'PYTHON'
+          from pathlib import Path
+          import subprocess
+          import sys
+
+          path = Path("Grothe/Lower/RowCheck.lean")
+          original = path.read_bytes()
+          try:
+              path.write_bytes(original + b"\n-- CI scratch probe: lower-proof comments leave caps computation unchanged.\n")
+              subprocess.run([sys.executable, "scripts/caps_stamp.py", "--check-cache"], check=True)
+          finally:
+              path.write_bytes(original)
+          PYTHON
+          # EXIT restores HEAD/ref and removes the scratch branch before any cache is saved.
+
       - name: Save the shared build cache (warm on master)
         if: inputs.mode == 'warm' && github.ref_name == 'master'
         uses: actions/cache/save@v4
