@@ -78,7 +78,7 @@ jobs:
             fi
           fi
           # files that affect the Lean build or its checks; everything else (README, docs/, AGENTS.md, ...) needs no build
-          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/test_caps_stamp\.py$|\.github/workflows/)'
+          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/lake_failfast\.sh$|scripts/test_caps_stamp\.py$|\.github/workflows/)'
           if [[ "${GITHUB_REF_NAME}" == ready/* ]]; then base=origin/master          # HEAD = master + this branch
           elif [ "${GITHUB_REF_NAME}" = master ]; then base="$BEFORE"                # the previous master
           else base=$(git merge-base origin/master HEAD); fi                         # what the branch adds to master
@@ -219,7 +219,11 @@ jobs:
 
       - name: Build Grothe (everything, node caps included)
         if: env.LEAN == 'true'
-        run: lake build Grothe --log-level=warning
+        # GitHub-hosted: stop at the first failed module (scripts/lake_failfast.sh). The droplet builds on: its finished
+        # modules stay in the persistent workspace, and a kill would discard cap rows that are mid-way.
+        run: |
+          if [ "$DROPLET" = true ]; then lake build Grothe --log-level=warning
+          else scripts/lake_failfast.sh lake build Grothe --log-level=warning; fi
 
       - name: Root import files generated, list files sorted and duplicate-free
         if: env.LEAN == 'true'
