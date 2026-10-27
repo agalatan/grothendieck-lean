@@ -175,9 +175,9 @@ theorem fresh_upper (E EX : ℕ × ℕ → ℝ) (hE : DirectHyps E EX) :
 theorem upper_value_lt :
     (500000000000000000 / 355973699881431491 : ℝ) < 1.404598149152 := by norm_num
 
-/-- This endpoint is strictly smaller than the previous one. -/
+/-- The linear-budget endpoint is strictly below the raw contour-tail endpoint. -/
 theorem upper_value_improves :
     (500000000000000000 / 355973699881431491 : ℝ) <
-      500000000000000000 / 355973696735190991 := by norm_num
+      500000000000000000 / 355973696751850991 := by norm_num
 
 end Grothe

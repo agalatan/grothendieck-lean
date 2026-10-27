@@ -113,17 +113,29 @@ theorem localized_comparison {G X : Lp ℂ 2 mu2} (h : ComparisonInputs G X)
     rw [sum_comparisonBand (fun b => (b.norm : ℝ) * (b.error : ℝ)), cast_list_sum]
     simp [List.map_map, Function.comp_def]
   have hsum : q = (comparisonQuadraticQ : ℝ) := by
-    dsimp [q, e, overlap, comparisonQuadraticQ]
-    simp_rw [sum_comparisonBand]
-    rw [cast_list_sum]
-    simp only [List.map_map, Function.comp_def]
-    apply congrArg List.sum
-    apply List.map_congr_left
-    intro b hb
-    rw [cast_list_sum]
-    simp [List.map_map]
+    let f : ComparisonBand → ComparisonBand → ℝ := fun b c =>
+      if comparisonOverlap b c then (b.error : ℝ) * (c.error : ℝ) else 0
+    calc
+      q = ∑ j : ComparisonIndex, (comparisonBands.map (f (comparisonBand j))).sum := by
+        apply sum_congr rfl
+        intro j hj
+        exact sum_comparisonBand (f (comparisonBand j))
+      _ = (comparisonBands.map fun b => (comparisonBands.map (f b)).sum).sum :=
+        sum_comparisonBand (fun b => (comparisonBands.map (f b)).sum)
+      _ = (comparisonQuadraticQ : ℝ) := by
+        unfold comparisonQuadraticQ
+        rw [cast_list_sum]
+        simp only [List.map_map, Function.comp_def]
+        apply congrArg List.sum
+        apply List.map_congr_left
+        intro b hb
+        rw [cast_list_sum]
+        simp only [List.map_map, Function.comp_def]
+        apply congrArg List.sum
+        apply List.map_congr_left
+        intro c hc
+        by_cases hbc : comparisonOverlap b c = true <;> simp [f, hbc]
   rw [hcross, hsum]
-
   exact_mod_cast hb
 
 end

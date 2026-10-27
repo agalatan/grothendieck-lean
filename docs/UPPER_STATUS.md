@@ -30,7 +30,7 @@ cache matches the node-cap sources.
 
 Headline `Grothe.UpperChaos.fresh_upper_rounder` (`Grothe/UpperChaos/PhiBound.lean`):
 
-    K_G^ℂ ≤ 500000000000000000/355973699864771491  (< 1.404598149218)
+    K_G^ℂ ≤ 500000000000000000/355973699881431491  (< 1.404598149152)
 
 for the concrete rounding `GT` (smoothed `F₀·P₃(φ)` built from `Grothe/Upper/Data.lean`), assuming only
 
@@ -205,7 +205,7 @@ Lean already proves everything downstream of it:
 - `localized_comparison` (the band inequality, Cauchy–Schwarz per band, quadratic error paid once);
 - the radii `A_r` from the stored table with `energy_close`;
 - the cost weights;
-- the budget `C = 13311891/15625·10⁹`.
+- the budget `C = 106490963/125000·10⁹`.
 
 So the hypothesis is exactly three facts about one explicit decomposition of G_T − X:
 
@@ -238,10 +238,10 @@ The norm bounds:
 ### 5.3 Who carries the residual
 
 The decomposition shares below use the raw weighted-comparison residual
-458437859009/(5·10¹⁷), before the forced linear-coefficient Hardy deduction.
-The active refined residual is 455308278509/(5·10¹⁷); its comparison pieces are
+458421199009/(5·10¹⁷), before the forced linear-coefficient Hardy deduction.
+The active refined residual is 455291618509/(5·10¹⁷); its comparison pieces are
 identical. Each share below is the term 2·A_r·e_r divided by the raw residual;
-the quadratic term (Σe_r)² is 0.01%.
+the quadratic term retains only pairs with overlapping degree bands and is about 0.0094%.
 
 | piece | e_r | A_r | share of residual |
 |---|---|---|---|

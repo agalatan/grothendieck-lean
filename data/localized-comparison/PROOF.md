@@ -2,12 +2,12 @@
 
 The selected-spectrum comparison with the raw contour-tail allowance gives
 
-**K_G^C < 1.404598161566.**
+**K_G^C < 1.404598161500.**
 
 The current Lean assembly also deducts the forced linear coefficient's
 weighted square from the same Hardy budget. This gives
-`K_G^C < 1.404598149218`, with reciprocal score
-`355973699864771491/500000000000000000`. The arithmetic below retains the
+`K_G^C < 1.404598149152`, with reciprocal score
+`355973699881431491/500000000000000000`. The arithmetic below retains the
 raw tail for replay; the derived assembly is recorded in
 `../upper-preprocess/certificate.json` under `linear_budget_refinement`.
 
@@ -25,18 +25,22 @@ specified band `B_r` and `||D_r||_2 <= e_r`. Let coefficient costs satisfy `0 <=
 
 Then
 
-`sum_(p in S) w(p) |energy(G,p)-energy(X,p)| <= 2 sum_r A_r e_r + (sum_r e_r)^2`.
+`sum_(p in S) w(p) |energy(G,p)-energy(X,p)| <= 2 sum_r A_r e_r + sum_(r,s: B_r intersects B_s) e_r e_s`.
 
 The same functions and error components occur throughout; their supports may
 overlap arbitrarily. No independence, new Gaussian coordinate, or signed-tail
-cancellation is assumed. The quadratic error is paid once.
+cancellation is assumed. Disjoint supports eliminate their pairwise quadratic products exactly.
 
 For each bidegree, regard the finitely many Hermite coefficients as a vector.
 The elementary norm inequality gives an error at most
 `w(p) (2 ||X_p|| ||(G-X)_p|| + ||(G-X)_p||^2)`. Expand the linear error into its
 pieces. Support restricts its pairing with `X` to `S intersect B_r`;
-Cauchy–Schwarz bounds that pairing by `A_r e_r`, using the weighted vector `w(p) X_p`. Parseval and the triangle
-inequality, together with `0 <= w(p) <= 1`, bound the sum of quadratic errors by `(sum e_r)^2`.
+Cauchy–Schwarz bounds that pairing by `A_r e_r`, using the weighted vector `w(p) X_p`. For the quadratic term, first bound each block norm by the sum of component
+norms and expand its square. A pair with disjoint degree bands vanishes at
+every block. Finite Cauchy–Schwarz bounds every remaining pair by `e_r e_s`.
+Thus the quadratic cost is the overlap sum above, using the existing support
+and norm inputs. It is `8.5661764934464924011246176e-11`; no new Gaussian or
+covariance premise is introduced.
 
 Lean proves this algebra in `Grothe/Upper/BandComparison.lean`, constructs the
 actual finite Gaussian Hermite blocks in `Grothe/UpperChaos/EnergyBlock.lean`,
@@ -79,22 +83,23 @@ For each band choose an outward rational radius satisfying
 
 This gives the required actual-vector mass bound. `ComparisonMass.lean`
 proves the passage from table accuracy to these radii. Its native fact checks
-every band mass and the final rational budget independently of Python.
+every band mass independently of Python. `ComparisonOverlap.lean` checks the
+finite overlap budget with proof-producing `decide +kernel`; it adds no native fact.
 
 There are 18 error pieces. All exact values, their source roles and the
 reproduction hashes are in `recipe.json`. The resulting allowance is
 
-`C = 13311891/15625000000000 = 0.000000851961024`.
+`C = 106490963/125000000000000 = 0.000000851927704`.
 
 Together with the unchanged head, table error and Hardy allowances:
 
-`delta = 458437859009/500000000000000000`,
+`delta = 458421199009/500000000000000000`,
 
-`c-delta = 355973696735190991/500000000000000000`.
+`c-delta = 355973696751850991/500000000000000000`.
 
 The formal transfer theorem gives
 
-`K_G^C <= 500000000000000000/355973696735190991 < 1.404598161566`.
+`K_G^C <= 500000000000000000/355973696751850991 < 1.404598161500`.
 
 ## Inherited Gaussian inputs: what remains external
 

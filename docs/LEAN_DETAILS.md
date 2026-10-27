@@ -61,6 +61,16 @@ tables were hash-checked, not regenerated. See
 [`data/scalar-tail-refinement/PROOF.md`](../data/scalar-tail-refinement/PROOF.md).
 The exact certificate JSON and generator reproduce the module byte for byte.
 
+**Exact Gaussian phase-moment interfaces.**
+`DampedMoments` proves mixed complex Gaussian moments at every positive radial
+scale. `InvariantMoments` integrates each monomial in the simultaneous-rotation
+invariants by a finite balanced complex-monomial expansion. `PhaseMomentCheck`
+proves exact integer convolution and denominator clearing for the production
+phase term list. `TaylorMoments` and `ComparisonPieces` identify the even phase
+moments with the total energy of every positive Taylor source. These are
+symbolic identities; the numerical moment leaves and their complete connection
+to the comparison enclosures remain separate work.
+
 **Phase errors and transported certificates.**
 `Grothe/Upper/ResponseGeometry.lean` proves twelve statements: the exact
 disk support-defect identity, normalized-distance and weighted support-loss
@@ -216,9 +226,9 @@ steps. No numerical response integral is certified by these modules. See
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
 **Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder` proves
-`IsGrothendieckBound (500000000000000000/355973699864771491)` for the concrete rounding,
+`IsGrothendieckBound (500000000000000000/355973699881431491)` for the concrete rounding,
 given an L² charge-one truncation `X`, component-error inputs and table accuracy (the Hardy input is proved).
-`Grothe.upper_value_lt` shows this is below 1.404598149218 (`Grothe/UpperChaos/PhiBound.lean`).
+`Grothe.upper_value_lt` shows this is below 1.404598149152 (`Grothe/UpperChaos/PhiBound.lean`).
 The older table interface `Grothe.fresh_upper : DirectHyps E EX → IsGrothendieckBound (...)`
 remains in `Grothe/Upper/PolynomialBridge.lean`.
 The actual rounding is G_T, the smoothing of T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6.
@@ -267,7 +277,7 @@ headline endpoints are unchanged.
   enclosures at cutoffs 181, 91, 51, these are the smoothed mixed-Taylor errors
   and frozen-vector rounding error. Their identification with the supplied
   approximation and their Gaussian norm enclosures remain external. Lean proves
-  `Σ_(p in headIdx 501) w(p) |E(p)-EX(p)| ≤ 13311891/(15625·10⁹)` from them, using
+  `Σ_(p in headIdx 501) w(p) |E(p)-EX(p)| ≤ 106490963/(125000·10⁹)` from them, using
   `2 Σ A_r e_r + (Σ e_r)²`, with `A_r²` enclosing `Σ w(p)² EX(p)` on its band.
   `HeadWeight.lean` proves `w(p)` bounds the retained coefficient mass of each
   preprocessed block; all costs lie in `[0,1]`. Its interval extraction reuses
@@ -298,8 +308,8 @@ headline endpoints are unchanged.
   (`HardyRealDensity.integral_pair_eq_kHol`: the explicit Cholesky factor of
   `I − R²`, the substitution `y = Rx + Sw`, and Fubini); `I − R² ≻ 0` since
   `‖M‖ ≤ 1` and `|p|, |q| ≤ t < 1` (`k11_kdet_pos`).
-* **Residual ledger.** The total is 455308278509/(5·10¹⁷), approximately
-  9.10617·10⁻⁷. The selected comparison contributes 93.56%, the native finite
+* **Residual ledger.** The total is 455291618509/(5·10¹⁷), approximately
+  9.10583·10⁻⁷. The selected comparison contributes 93.56%, the native finite
   head 3.09%, the Hardy tail 3.35%, and the table error about 0.0015%.
   These percentages describe allowances, not fractions of the proof left
   unformalized. The Gaussian component-error inputs remain the main numerical
@@ -718,8 +728,8 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
 The complete registry has 88 native facts: 60 cap ranges, five Hardy facts
-(four arc parts and the region) and 23 others. The default report has 620 print
-directives and 391 required declarations. These are source/registry counts;
+(four arc parts and the region) and 23 others. The default report has 636 print
+directives and 407 required declarations. These are source/registry counts;
 delivery CI checks the combined tree.
 
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,

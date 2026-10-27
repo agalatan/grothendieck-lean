@@ -168,7 +168,7 @@ private lemma integral_invariantTerm (a b j m s t : ℕ) {rate : ℚ} (hrate : 0
   by_cases h : 2 * j - s + (m - t) = s + t
   · have ha : a + (2 * j - s) + (m - t) = a + s + t := by omega
     have hb : b + (2 * j - s) + (m - t) = b + s + t := by omega
-    simp only [ha, hb, ite_eq_left rfl, ite_eq_left h]
+    simp only [ha, hb, ite_eq_left h]
     push_cast
     ring
   · have ha : a + (2 * j - s) + (m - t) ≠ a + s + t := by omega
