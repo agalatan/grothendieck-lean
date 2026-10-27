@@ -54,7 +54,7 @@ lemma ascPochhammer_half (n : ℕ) :
 lemma choose_eq_bin (n : ℕ) : Ring.choose ((1 / 2 : ℂ) + n - 1) n = (bin n : ℂ) := by
   rw [← Ring.multichoose_eq]
   have h := Ring.factorial_nsmul_multichoose_eq_ascPochhammer (1 / 2 : ℂ) n
-  rw [ascPochhammer_smeval_eq_eval, ascPochhammer_half, nsmul_eq_mul] at h
+  rw [Polynomial.ascPochhammer_smeval_eq_eval, ascPochhammer_half, nsmul_eq_mul] at h
   exact mul_left_cancel₀ (by exact_mod_cast n.factorial_ne_zero) h
 
 lemma hasSum_inv_sqrt {x : ℂ} (hx : ‖x‖ < 1) :
@@ -83,8 +83,9 @@ lemma integral_cos_sq_sin_pow (n : ℕ) :
       Real.sin θ ^ (2 * n) - Real.sin θ ^ (2 * n + 2) := fun θ => by
     rw [Real.cos_sq']; ring
   simp_rw [e]
-  rw [intervalIntegral.integral_sub (by fun_prop : Continuous fun θ => Real.sin θ ^ (2 * n)).intervalIntegrable
-    (by fun_prop : Continuous fun θ => Real.sin θ ^ (2 * n + 2)).intervalIntegrable]
+  rw [intervalIntegral.integral_sub
+    ((by fun_prop : Continuous fun θ => Real.sin θ ^ (2 * n)).intervalIntegrable _ _)
+    ((by fun_prop : Continuous fun θ => Real.sin θ ^ (2 * n + 2)).intervalIntegrable _ _)]
   change J (2 * n) - J (2 * n + 2) = _
   rw [J_succ_succ]
   push_cast
@@ -130,8 +131,8 @@ theorem hasSum_hOm {w : ℂ} (hw : ‖w‖ < 1) :
       (1 - w ^ 2 * ((Real.sin θ ^ 2 : ℝ) : ℂ)) ^ (-(1 / 2 : ℂ))) := fun θ =>
     (hasSum_inv_sqrt ((hs1 θ).trans_lt hw2)).mul_left _
   have hbound : ∀ n θ, ‖F n θ‖ ≤ (‖w‖ ^ 2) ^ n := fun n θ => by
-    simp only [hF, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs]
-    rw [abs_of_nonneg (sq_nonneg _), abs_of_pos (bin_pos n)]
+    simp only [hF, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_pow, sq_abs,
+      abs_of_pos (bin_pos n)]
     have h1 : Real.cos θ ^ 2 ≤ 1 := Real.cos_sq_le_one θ
     have h2 := bin_le_one n
     have h3 : ‖w ^ 2 * ((Real.sin θ ^ 2 : ℝ) : ℂ)‖ ^ n ≤ (‖w‖ ^ 2) ^ n :=
@@ -181,7 +182,7 @@ theorem differentiableOn_Iom_comp {g : ℂ → ℂ} (hg : Differentiable ℂ g) 
   apply DifferentiableAt.differentiableWithinAt
   obtain ⟨ε, hε, hball⟩ := Metric.isOpen_iff.1 hU z₀ hz₀
   have hK : closedBall z₀ (ε / 2) ⊆ U := (closedBall_subset_ball (by linarith)).trans hball
-  have hg' : Continuous (deriv g) := hg.contDiff.continuous_deriv (by simp)
+  have hg' : Continuous (deriv g) := (hg.contDiff (n := 1)).continuous_deriv le_rfl
   set c : ℝ → ℂ := fun θ => ((Real.cos θ ^ 2 : ℝ) : ℂ) with hc
   set s : ℝ → ℂ := fun θ => ((Real.sin θ ^ 2 : ℝ) : ℂ) with hs
   set F : ℂ → ℝ → ℂ := fun z θ => c θ * (1 - g z ^ 2 * s θ) ^ (-(1 / 2 : ℂ)) with hF
@@ -249,7 +250,7 @@ lemma good_and_norm_of_gate {w : ℂ} (h : Gate w) (s : ℝ) (hs0 : 0 ≤ s) (hs
   have hre : (1 - w ^ 2 * (s : ℂ)).re = 1 - s * a := by
     simp [a, Complex.mul_re]; ring
   have him : (1 - w ^ 2 * (s : ℂ)).im = -(s * b) := by
-    simp [b, Complex.mul_im]
+    simp [b, Complex.mul_im]; ring
   rcases h.2 with h1 | h2
   · have hpos : 1 / 40 ≤ 1 - s * a := by nlinarith [mul_nonneg hs0 (sub_nonneg.2 h1)]
     refine ⟨Complex.mem_slitPlane_iff.2 (Or.inl (by rw [hre]; linarith)), ?_⟩
