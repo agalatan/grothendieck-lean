@@ -23,8 +23,9 @@ def linS (a b c : ℝ) : (ℝ × ℝ) →ₗ[ℝ] (ℝ × ℝ) where
   map_smul' r u := by ext <;> simp [mulS] <;> ring
 
 lemma det_linS : LinearMap.det (linS a b c) = s11 a b * s22 a b c := by
-  rw [← LinearMap.det_toMatrix (Basis.finTwoProd ℝ), Matrix.det_fin_two]
-  simp [LinearMap.toMatrix_apply, linS, mulS]
+  rw [← LinearMap.det_toMatrix (Module.Basis.finTwoProd ℝ), Matrix.det_fin_two]
+  simp [LinearMap.toMatrix_apply, linS, mulS, Module.Basis.finTwoProd_zero, Module.Basis.finTwoProd_one,
+    Module.Basis.finTwoProd, LinearEquiv.finTwoArrow]
 
 lemma measurable_solveS : Measurable (solveS a b c) := by unfold solveS; fun_prop
 
@@ -53,7 +54,7 @@ theorem integral_subst (h : 0 < k11 a b) (hd : 0 < kdet a b c) (x : ℝ × ℝ) 
   congr 1
   rw [← integral_add_right_eq_self (μ := volume) (fun y => (phi2 (solveS a b c (y - mulR a b c x)) : ℂ) * g y)
     (mulR a b c x)]
-  congr 1; ext v; simp only [hG, add_sub_cancel_right, add_comm v]
+  congr 1; ext v; simp only [hG, add_sub_cancel_left]
 
 end
 
