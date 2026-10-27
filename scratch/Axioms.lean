@@ -217,6 +217,11 @@ import Grothe
 #print axioms Grothe.HJM.OriginMoment.signedCellPolynomial_eval
 #print axioms Grothe.HJM.OriginMomentGenerated.rightBlock13
 #print axioms Grothe.HJM.OriginMomentRightWitnessData.rightPolynomial_eq
+#print axioms Grothe.HJM.OriginEnergyIntervalGates.inverseChecked_sound
+#print axioms Grothe.HJM.OriginEnergyIntervalGates.mem_sqrt_of_witness
+#print axioms Grothe.HJM.OriginEnergyIntervalGates.nonzero_of_inverse_normSq
+#print axioms Grothe.HJM.OriginEnergyIntervalGates.sqrtChecked_complex
+#print axioms Grothe.HJM.OriginEnergyIntervalGates.sqrtChecked_sound
 #print axioms Grothe.HJM.OriginEnergyPolynomialRange.mem_evalC_hornerCI
 #print axioms Grothe.HJM.OriginEnergyPolynomialRange.mem_hornerI
 #print axioms Grothe.HJM.OriginEnergyPolynomialRange.mem_leftNormSq

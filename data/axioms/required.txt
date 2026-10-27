@@ -209,6 +209,11 @@ Grothe.HJM.OriginMoment.signedApprox_integral_partition
 Grothe.HJM.OriginMoment.signedCellPolynomial_eval
 Grothe.HJM.OriginMomentGenerated.rightBlock13
 Grothe.HJM.OriginMomentRightWitnessData.rightPolynomial_eq
+Grothe.HJM.OriginEnergyIntervalGates.inverseChecked_sound
+Grothe.HJM.OriginEnergyIntervalGates.mem_sqrt_of_witness
+Grothe.HJM.OriginEnergyIntervalGates.nonzero_of_inverse_normSq
+Grothe.HJM.OriginEnergyIntervalGates.sqrtChecked_complex
+Grothe.HJM.OriginEnergyIntervalGates.sqrtChecked_sound
 Grothe.HJM.OriginEnergyPolynomialRange.mem_evalC_hornerCI
 Grothe.HJM.OriginEnergyPolynomialRange.mem_hornerI
 Grothe.HJM.OriginEnergyPolynomialRange.mem_leftNormSq
