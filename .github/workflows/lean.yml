@@ -298,6 +298,25 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
+      - name: Cancel the checks of older master commits (this green check covers their trees)
+        # only what a viewer of master sees matters: the newest commit's own result. An older commit's check that is
+        # still running is redundant once a newer commit containing it is green.
+        if: github.ref_name == 'master' && needs.route.outputs.lean == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/lean.yml/runs?branch=master&per_page=50" \
+            --jq '.workflow_runs[] | select(.status != "completed") | "\(.id) \(.head_sha)"' |
+          while read -r id sha; do
+            [ "$id" = "${GITHUB_RUN_ID}" ] || [ "$sha" = "${GITHUB_SHA}" ] && continue
+            # older = an ancestor of this commit (needs no checkout: the compare API answers it)
+            status=$(gh api "repos/${GITHUB_REPOSITORY}/compare/${sha}...${GITHUB_SHA}" --jq .status 2>/dev/null || true)
+            if [ "$status" = ahead ]; then
+              gh api -X POST "repos/${GITHUB_REPOSITORY}/actions/runs/${id}/cancel" >/dev/null 2>&1 \
+                && echo "cancelled the check of the older master commit ${sha:0:7} (run ${id})" || true
+            fi
+          done
+
       - name: Prune superseded master caches (keep the newest two)
         if: github.ref_name == 'master' && needs.route.outputs.lean == 'true'
         env:
