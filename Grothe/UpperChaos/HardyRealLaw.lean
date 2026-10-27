@@ -16,7 +16,7 @@ has the same law as `(u, Ru + Sw)`, `u, w ∼ mu2` independent, `R = M diag(p, q
 functions are `exp(−Q/4)` with the same quadratic form `Q` (`cov_eq`).
 -/
 
-open MeasureTheory ProbabilityTheory Complex
+open MeasureTheory ProbabilityTheory Complex Grothe.LowerAnalytic
 
 namespace Grothe.UpperChaos.HardyReal
 
@@ -53,6 +53,7 @@ lemma L_apply (L : StrongDual ℝ ((ℂ × ℂ) × (ℂ × ℂ))) (z : (ℂ × �
   conv_lhs => rw [this]
   simp only [map_add, Lc, ContinuousLinearMap.comp_apply, ContinuousLinearMap.inl_apply,
     ContinuousLinearMap.inr_apply]
+  rfl
 
 /-- The smoothed Mehler pair as a real-linear map of `(ω, (Z, Z'))`. -/
 def mehlerPair (p q : ℝ) : ((ℂ × ℂ) × (ℂ × ℂ)) × ((ℂ × ℂ) × (ℂ × ℂ)) →L[ℝ] (ℂ × ℂ) × (ℂ × ℂ) :=
