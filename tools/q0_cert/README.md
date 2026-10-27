@@ -26,7 +26,10 @@ small-ball and Gaussian-mixture derivations on which the stronger parameters
 rely. These written analytic bridges are not yet Lean-checked. The printed
 intervals do not discharge any Gaussian band error or energy-table premise.
 
-An easy scale has been replayed end-to-end locally, and the interval guards
-and error accounting have had independent static audits. The complete sweep
-and its runtime have not been measured; a previous bounded m=0 attempt did
-not finish. This script deliberately reports that distinction.
+The hosted sweep completed all 456 scales in 2,375 seconds. Its archived
+receipts and exact rational aggregation are in `data/q0_cert/`; replay them
+with `python3 tools/q0_cert/replay_archive.py`. The distance from the stored
+q=0 center, including the written phase approximation and tail budgets, is
+<2.907e-13 and therefore below the 4.9e-13 individual target. This is one
+coefficient, conditional on the written analytic bridges and external Arb
+interval correctness. It is not a Lean theorem or a captured-band bound.

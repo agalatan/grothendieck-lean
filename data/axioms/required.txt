@@ -807,7 +807,6 @@ Grothe.Upper.head_residual_le_weighted
 Grothe.UpperChaos.ExponentialTail.exp_moment_tail
 Grothe.UpperChaos.HardyReal.hardy_GT
 Grothe.UpperChaos.HardyReal.hreal_GT
-Grothe.UpperChaos.LeanCertPilot.unitBaseSlice_integral_enclosure
 Grothe.UpperChaos.PackedDyadic.gradedIntegerSum_eq
 Grothe.UpperChaos.PackedDyadic.isumAcc_eq
 Grothe.UpperChaos.PackedDyadic.sum_coeff_sq

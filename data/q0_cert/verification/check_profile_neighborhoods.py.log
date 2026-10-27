@@ -1,0 +1,9 @@
+outside 0 12 subboxes 3 depth 1
+outside 15 83/4 subboxes 5 depth 2
+outside 522/25 126/5 subboxes 9 depth 4
+outside 2521/100 80 subboxes 43 depth 9
+inside 12 15 subboxes 3 depth 1
+inside 83/4 522/25 subboxes 1 depth 0
+inside 126/5 2521/100 subboxes 1 depth 0
+PASS |κ|>1/1000 outside, |κ|<1/5 inside on [0,80]; seconds 0.0
+No Lean proof; exclusion outside [0,80] is not claimed.

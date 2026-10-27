@@ -294,9 +294,6 @@ Wick sum, with rate `alpha=1+j*phaseEpsQ` and no Taylor factorial inserted.
 auxiliary parameter. `TaylorWickReduction.inner_gradedHermite_hpow_eq_wick`
 then writes the actual inner product as the iterated auxiliary and
 first-coordinate Gaussian integral of this finite evaluator.
-`LeanCertPilot` uses the pinned LeanCert interval integrator in kernel-only
-mode on a unit-parameter phase-kernel slice; it does not yet certify a
-production Gaussian error or remove an upper-bound hypothesis.
 `ShiftedMomentRecurrence` preserves the affine cancellation at every mixed
 degree. `RadialDampedMoments` evaluates real radial powers above exponent
 `-2`, including the locally integrable singularities needed by joint tails.
