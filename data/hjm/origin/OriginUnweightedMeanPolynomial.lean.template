@@ -33,7 +33,7 @@ theorem meanCellPolynomial_eval (part : List ℚ) (p : Panel) (c h : ℚ) (y : �
           evalQ part (((c : ℝ) + (h : ℝ) * y) ^ 2)) := by
   rw [← evalQ_eq_pev]
   simp only [meanCellPolynomial, evalQ_scale, evalQ_mul, evalQ_comp,
-    evalQ_square, evalQ_subpanelCoordinate, evalQ_cons, evalQ_nil,
+    evalQ_subpanelCoordinate, evalQ_cons, evalQ_nil,
     Rat.cast_mul, Rat.cast_ofNat, mul_zero, add_zero]
   ring
 
@@ -59,10 +59,8 @@ theorem meanReal_on_subpanel (re im : List ℚ) {lo hi : ℚ} {ps : List Panel}
     ring
   rw [meanRealIntegrand, hselect, meanCellPolynomial_eval, hcoord]
   simp only [panelApprox, evalC, Complex.mul_re, Complex.add_re, Complex.ofReal_re,
-    Complex.ofReal_im, Complex.I_re, Complex.I_im, zero_mul, mul_zero, one_mul, sub_zero,
-    zero_add, add_zero]
+    Complex.ofReal_im, Complex.I_re, Complex.I_im, zero_mul, mul_zero, sub_zero, add_zero]
   field_simp [hhR.ne']
-  ring
 
 theorem meanImag_on_subpanel (re im : List ℚ) {lo hi : ℚ} {ps : List Panel}
     (hc : covers lo hi ps = true) {p : Panel} (hp : p ∈ ps) {c h : ℚ} (hh : 0 < h)
@@ -80,9 +78,8 @@ theorem meanImag_on_subpanel (re im : List ℚ) {lo hi : ℚ} {ps : List Panel}
     ring
   rw [meanImagIntegrand, hselect, meanCellPolynomial_eval, hcoord]
   simp only [panelApprox, evalC, Complex.mul_im, Complex.add_im, Complex.ofReal_re,
-    Complex.ofReal_im, Complex.I_re, Complex.I_im, zero_mul, mul_zero, one_mul, sub_zero,
+    Complex.ofReal_im, Complex.I_re, Complex.I_im, zero_mul, mul_zero, one_mul,
     zero_add, add_zero]
   field_simp [hhR.ne']
-  ring
 
 end Grothe.HJM.OriginUnweightedMeanPolynomial

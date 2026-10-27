@@ -13,7 +13,7 @@ INPUTS={
  'receipt':('data/hjm/origin/unweighted64-replay.json','f848c959f28899145b032d8c5906615fea21a2f8da0a4e25fee3176e5d9ca526')}
 PILOT=[0,1,2,30,48,70,97]
 MEAN_TEMPLATE=('data/hjm/origin/OriginUnweightedMeanPolynomial.lean.template',
- '850053ab0f0e9ebb89aa1f13af9bd72c2150c84e958c98633c12d0b5c4349f63')
+ '85914e72dd28873db5be02c9887df6784344682e2ad0bc610dc80a68c4f0eeba')
 
 def load():
  d={}

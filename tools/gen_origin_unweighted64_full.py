@@ -321,7 +321,7 @@ def render(d):
 
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--check',action='store_true');a=ap.parse_args()
- if hashlib.sha256(Path(g.__file__).read_bytes()).hexdigest() != '8e2a273601913ad36543008bbc9f2833c00ddddc3e43ce5623242167861ac807':
+ if hashlib.sha256(Path(g.__file__).read_bytes()).hexdigest() != 'd995a31e9c285d01feac210fa977ec51ab0b9aad65bf144ae1f083ac9da2fea7':
   raise ValueError('generator helper hash mismatch')
  files=render(g.load());bad=[]
  for name,body in files.items():
