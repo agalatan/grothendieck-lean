@@ -30,7 +30,7 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.401697049825\;<\;\KG\;<\;1.404598149152$\\[6pt]
+\Large $1.401697049825\;<\;\KG\;<\;1.404598149141$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, resting on explicitly stated
 analytic and computer-assisted inputs (Section~\ref{sec:trust}).\\[4pt]
 Unconditional Lean theorem: $\KG\le1.404909132791$, using only the three standard axioms.\\[3pt]
@@ -77,7 +77,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$ (Gaussian phase rounding)\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct 2026 & \textbf{this work} & $\mathbf{1.401697049825}$ & $\mathbf{1.404598149152}$\\
+Oct 2026 & \textbf{this work} & $\mathbf{1.401697049825}$ & $\mathbf{1.404598149141}$\\
 Oct 2026 & this work (unconditional) & & $1.404909132791$\\\bottomrule
 \end{tabular}
 \end{center}
@@ -112,9 +112,9 @@ The phase certificate checks 119,077 leaves in 512 cubes through six native rang
 Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $41$ and
 $\tau$ of degree $15$ with zero linear coefficient (any odd preprocessors of Wiener norm $\le1$ are realised by tensor
 powers). Compared with $c\,t$, $c=7119483103461/10^{13}$, the residual is at most
-$\delta=455291618509/(5\cdot10^{17})\approx9.10583\cdot10^{-7}$:
+$\delta=455288917009/(5\cdot10^{17})\approx9.10578\cdot10^{-7}$:
 \[
- \KG\le\frac1{c-\delta}=\frac{500000000000000000}{355973699881431491}<1.404598149152 .
+ \KG\le\frac1{c-\delta}=\frac{500000000000000000}{355973699884132991}<1.404598149141 .
 \]
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
@@ -126,8 +126,10 @@ Let $w_p\in[0,1]$ bound the retained absolute coefficient sum of the preprocesse
 For nonnegative radii $A_r^2\ge\sum_{p\in S\cap B_r}w_p^2E_X(p)$, Lean proves
 \[
  \sum_{p\in S}w_p|E_{G_T}(p)-E_X(p)|
- \le2\sum_r A_re_r+\sum_{r,s:\,B_r\cap B_s\ne\varnothing}e_re_s.
+ \le2\sum_r A_re_r+\left(\sum_{g=0}^3\sqrt{\sum_{r\in I_g}e_r^2}\right)^2.
 \]
+Here $I_0$ contains the rounding remainder and $I_1,I_2,I_3$ are the three Taylor orders.
+Their bands are disjoint within each group, so their errors combine in quadrature before the groups are added.
 All pieces may share coordinates. Lean proves each coefficient cost by outward interval polynomial arithmetic;
 native arithmetic checks eighteen weighted radii from the stored table and its error allowance.
 The Gaussian component-error enclosures and their identification with the pieces remain explicit inputs.
@@ -265,13 +267,13 @@ Wick identity; the finite certificate (five row, three original-batch, one added
 The 60 range checks for fifteen rows use a computation-only layer.
 CI replays the final assembly when the 53-file cache provenance matches;
 a mismatch triggers the runner build and the axiom audit. Four rows retain external vertex caps.\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error and table-accuracy inputs, proves $\KG\le500000000000000000/355973699881431491$.}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder\_grouped}, for an $L^2$ charge-one truncation $X$ under component-error and table-accuracy inputs, proves $\KG\le500000000000000000/355973699884132991$.}\\[2pt]
 the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussian mixing by characteristic functions, Parseval and Mehler, charge selection, summability;
 the transfer inequality (tensor powers); kernel composition and locality; the head through degree 501 from
 21,168 stored energies by a verified interval evaluator (one \lean{native\_decide}); the tail bound; the endpoint; the selected-block comparison and native band masses
 &
 \lean{ComparisonInputs}: an exact error decomposition, spectral supports and inherited Gaussian component norm caps.
-Lean derives the selected comparison $106490963/(125000\cdot10^9)$ ($93.56\%$ of the residual allowance).
+Lean derives the selected comparison $851922301/10^{15}$ ($93.56\%$ of the residual allowance).
 The decomposition itself is explicit in Lean (\lean{difference\_pieces}, \lean{fresh\_upper\_pieces}):
 18 band pieces of the smoothed Taylor errors and the rounding remainder, so only their 18 norm bounds remain external.
 Finite table accuracy $6847009/(5\cdot10^{17})$.

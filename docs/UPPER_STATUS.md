@@ -28,18 +28,20 @@ cache matches the node-cap sources.
 
 ## 1. What is proved
 
-Headline `Grothe.UpperChaos.fresh_upper_rounder` (`Grothe/UpperChaos/PhiBound.lean`):
+Headline `Grothe.UpperChaos.fresh_upper_rounder_grouped` (`Grothe/UpperChaos/GroupedRounder.lean`):
 
-    K_G^ℂ ≤ 500000000000000000/355973699881431491  (< 1.404598149152)
+    K_G^ℂ ≤ 500000000000000000/355973699884132991  (< 1.404598149141)
 
 for the concrete rounding `GT` (smoothed `F₀·P₃(φ)` built from `Grothe/Upper/Data.lean`), assuming only
 
 * `ComparisonInputs`: the exact spectrally supported Gaussian error decomposition and inherited component norm caps; Lean derives its weighted selected-head energy comparison (with coefficient costs proved from the preprocessors),
 * `energy_close`: `Σ_{n+3m≤501} |energy X − energyTable| ≤ energyErrQ`,
 
-for some charge-one `X ∈ L²(gaussC ⊗ gaussC)` (the smoothed truncation of `F₀ + v`; its correction vector `v` lives
-in `handoff/upper-residual/global_norm/frozen_taylor_correction_D201.npz`, not in Lean).
-Axioms: standard + `head_check` + `comparison_check` + `phi_cover_check_0`–`5` (native). The structural fields of the old
+for some charge-one `X ∈ L²(gaussC ⊗ gaussC)`. The concrete Taylor version
+`fresh_upper_concrete_taylor_grouped` fixes `X` and takes the same fourteen
+finite-band Gaussian error inequalities and table-accuracy assumption as
+`fresh_upper_concrete_taylor`.
+Axioms: standard + `head_check` + `comparison_check` + `phi_cover_check_0`–`5` (native). Grouping introduces no new native facts. The structural fields of the old
 `DirectHyps` (`valid`, `summable`, `summableX`, `parityX`) and `|P₃(φ)| ≤ 1` (via `phi_abs_lt_one : |φ| < 1`)
 are theorems.  Module map (all in `Grothe/UpperChaos/`):
 
@@ -223,7 +225,8 @@ Lean already proves everything downstream of it:
 - `localized_comparison` (the band inequality, Cauchy–Schwarz per band, quadratic error paid once);
 - the radii `A_r` from the stored table with `energy_close`;
 - the cost weights;
-- the budget `C = 106490963/125000·10⁹`.
+- the earlier overlap budget `C = 106490963/(125000·10⁹)`; grouping disjoint
+  bands within each Taylor order tightens this to `851922301/10¹⁵`.
 
 So the hypothesis is exactly three facts about one explicit decomposition of G_T − X:
 
@@ -263,9 +266,9 @@ concrete approximant norms and integral enclosures remain obligations.
 
 The decomposition shares below use the raw weighted-comparison residual
 458421199009/(5·10¹⁷), before the forced linear-coefficient Hardy deduction.
-The active refined residual is 455291618509/(5·10¹⁷); its comparison pieces are
+The grouped refined residual is 455288917009/(5·10¹⁷); its linear comparison pieces are
 identical. Each share below is the term 2·A_r·e_r divided by the raw residual;
-the quadratic term retains only pairs with overlapping degree bands and is about 0.0094%.
+the grouped quadratic term is about 0.009%.
 
 | piece | e_r | A_r | share of residual |
 |---|---|---|---|

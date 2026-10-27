@@ -489,10 +489,10 @@ steps. No numerical response integral is certified by these modules. See
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
-**Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder` proves
-`IsGrothendieckBound (500000000000000000/355973699881431491)` for the concrete rounding,
+**Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder_grouped` proves
+`IsGrothendieckBound (500000000000000000/355973699884132991)` for the concrete rounding,
 given an L² charge-one truncation `X`, component-error inputs and table accuracy (the Hardy input is proved).
-`Grothe.upper_value_lt` shows this is below 1.404598149152 (`Grothe/UpperChaos/PhiBound.lean`).
+`Grothe.grouped_upper_value_lt` shows this is below 1.404598149141 (`Grothe/UpperChaos/GroupedRounder.lean`).
 The older table interface `Grothe.fresh_upper : DirectHyps E EX → IsGrothendieckBound (...)`
 remains in `Grothe/Upper/PolynomialBridge.lean`.
 The actual rounding is G_T, the smoothing of T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6.
@@ -535,21 +535,25 @@ headline endpoints are unchanged.
   precompiled library `GrotheCapsKernel/`; soundness in
   `Grothe/Upper/IntervalSound.lean`); the tail bound by Cauchy–Schwarz from a weighted
   square-sum bound; the assembly of the budgets; and the endpoint arithmetic.
-* The selected comparison is proved in `Grothe/UpperChaos/LocalizedComparison.lean`.
+* The selected comparison is proved in `Grothe/UpperChaos/GroupedComparison.lean`.
   `ComparisonInputs` records an exact shared-coordinate error decomposition,
   total-chaos supports and component L² norm bounds. From the inherited Gaussian
   enclosures at cutoffs 181, 91, 51, these are the smoothed mixed-Taylor errors
-  and frozen-vector rounding error. Their identification with the supplied
-  approximation and their Gaussian norm enclosures remain external. Lean proves
-  `Σ_(p in headIdx 501) w(p) |E(p)-EX(p)| ≤ 106490963/(125000·10⁹)` from them, using
-  `2 Σ A_r e_r + (Σ e_r)²`, with `A_r²` enclosing `Σ w(p)² EX(p)` on its band.
+  and frozen-vector rounding error. The general interface leaves these inputs
+  abstract; `fresh_upper_concrete_taylor_grouped` uses the fixed Taylor centers
+  and assumes their fourteen finite-band Gaussian error bounds. Lean proves
+  `Σ_(p in headIdx 501) w(p) |E(p)-EX(p)| ≤ 851922301/10¹⁵` from them, using
+  `2 Σ A_r e_r + (Σ_g √(Σ_{r∈I_g} e_r²))²`, with `A_r²` enclosing
+  `Σ w(p)² EX(p)` on its band. The four groups consist of the rounding remainder
+  and the three Taylor orders; bands within each group are disjoint.
+  The generic grouping inequality and its rational budget are kernel checked.
   `HeadWeight.lean` proves `w(p)` bounds the retained coefficient mass of each
   preprocessed block; all costs lie in `[0,1]`. Its interval extraction reuses
   the existing sound power and convolution routines. No Gaussian input is added.
   The finite Hermite blocks are identified with the
   actual Gaussian energies in `EnergyBlock.lean`. The native `comparison_check`
-  proves all 18 band radii from the stored table and `energyErrQ`, and checks the
-  rational comparison budget. Neither a near-linear kernel nor the final head
+  proves all 18 band radii from the stored table and `energyErrQ`; the sharper
+  group budget is checked separately. Neither a near-linear kernel nor the final head
   residual is assumed by this interface.
 * Other explicit input: `energy_close`, the stored energies are within
   6847009/(5·10¹⁷) of EX on `headIdx 501` in ℓ¹. The Hardy input (the
@@ -572,8 +576,8 @@ headline endpoints are unchanged.
   (`HardyRealDensity.integral_pair_eq_kHol`: the explicit Cholesky factor of
   `I − R²`, the substitution `y = Rx + Sw`, and Fubini); `I − R² ≻ 0` since
   `‖M‖ ≤ 1` and `|p|, |q| ≤ t < 1` (`k11_kdet_pos`).
-* **Residual ledger.** The total is 455291618509/(5·10¹⁷), approximately
-  9.10583·10⁻⁷. The selected comparison contributes 93.56%, the native finite
+* **Residual ledger.** The total is 455288917009/(5·10¹⁷), approximately
+  9.10578·10⁻⁷. The selected comparison contributes 93.56%, the native finite
   head 3.09%, the Hardy tail 3.35%, and the table error about 0.0015%.
   These percentages describe allowances, not fractions of the proof left
   unformalized. The Gaussian component-error inputs remain the main numerical

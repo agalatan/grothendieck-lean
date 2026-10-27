@@ -442,6 +442,7 @@ Grothe.ScalarTailRefinement.supported_composition_arbitrary_power_bound
 Grothe.ScalarTailRefinement.wallis_rational_check
 Grothe.ScalarTailRefinement.wallis_tail_bound
 Grothe.Upper.BandComparison.compare
+Grothe.Upper.BandComparison.quadratic_sum_le_grouped
 Grothe.Upper.BandComparison.quadratic_sum_le_overlap
 Grothe.Upper.BandComparison.weighted_compare
 Grothe.Upper.CubicPhaseScreen.axis_le_real_polynomial
@@ -573,6 +574,9 @@ Grothe.Upper.actual_band_mass
 Grothe.Upper.comparisonOverlap_separate
 Grothe.Upper.comparisonWeight_sound
 Grothe.Upper.comparison_check
+Grothe.Upper.comparison_group_radii
+Grothe.Upper.comparison_group_separate
+Grothe.Upper.comparison_grouped_budget
 Grothe.Upper.comparison_overlap_budget
 Grothe.Upper.headWeight_sound
 Grothe.Upper.head_residual_le_weighted
@@ -626,9 +630,11 @@ Grothe.UpperChaos.firstTailModes_eq
 Grothe.UpperChaos.first_captured_tail_budget
 Grothe.UpperChaos.fresh_upper_concrete
 Grothe.UpperChaos.fresh_upper_concrete_taylor
+Grothe.UpperChaos.fresh_upper_concrete_taylor_grouped
 Grothe.UpperChaos.fresh_upper_of_rounding
 Grothe.UpperChaos.fresh_upper_pieces
 Grothe.UpperChaos.fresh_upper_rounder
+Grothe.UpperChaos.fresh_upper_rounder_grouped
 Grothe.UpperChaos.gradedHermiteFn_add
 Grothe.UpperChaos.gradedHermiteFn_const_mul
 Grothe.UpperChaos.gradedHermiteFn_rot2
@@ -679,6 +685,7 @@ Grothe.UpperChaos.integral_shifted_moment_damped
 Grothe.UpperChaos.integral_shifted_moment_damped_double
 Grothe.UpperChaos.invariantMoment_odd
 Grothe.UpperChaos.localized_comparison
+Grothe.UpperChaos.localized_comparison_grouped
 Grothe.UpperChaos.measurable_basePhaseArgument
 Grothe.UpperChaos.measurable_gradedHermiteFn
 Grothe.UpperChaos.measurable_taylorInnerSource
@@ -794,6 +801,10 @@ Grothe.UpperChaos.toLp_thirdCenterFn
 Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le
 Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le_two_mul
 Grothe.fresh_upper
+Grothe.fresh_upper_grouped
+Grothe.grouped_head_residual_le
+Grothe.grouped_upper_value_improves
+Grothe.grouped_upper_value_lt
 Grothe.haagerup_bound
 Grothe.hardy_budget_after_linear
 Grothe.head_residual_le
