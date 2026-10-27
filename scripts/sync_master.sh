@@ -41,14 +41,16 @@ status() {
 # The agent whose branches the audit shows: AGENT_ID (e.g. AGENT_ID=claude-b9ee); empty = every agent.
 AGENT="${AGENT_ID:-}"
 
-owner_of() {  # the Agent-ID line of the newest commit on the branch that is not in master
+owner_of() {  # the ID in the branch name (AGENTS.md §3), else the Agent-ID of its newest commit not in master
   local b=$1 c id
+  if [[ "$b" =~ ^ready/((codex|claude)-[0-9a-f]{4})- ]]; then echo "${BASH_REMATCH[1]}"; return; fi
+  if [[ "$b" =~ ^(codex|claude)/([0-9a-f]{4})- ]]; then echo "${BASH_REMATCH[1]}-${BASH_REMATCH[2]}"; return; fi
   for c in $(git -C "$MAIN" rev-list --max-count=20 "origin/master..origin/$b" 2>/dev/null); do
-    id=$(git -C "$MAIN" log -1 --format=%B "$c" | sed -n 's/^Agent-ID: *\([^ ]*\).*/\1/p' | head -1)
+    id=$(git -C "$MAIN" log -1 --format=%B "$c" | sed -n 's/.*Agent-ID: *\([A-Za-z]*-[0-9a-f]*\).*/\1/p' | head -1)
     [ -n "$id" ] && { echo "$id"; return; }
   done
   # a branch already in master: its tip commit
-  id=$(git -C "$MAIN" log -1 --format=%B "origin/$b" | sed -n 's/^Agent-ID: *\([^ ]*\).*/\1/p' | head -1)
+  id=$(git -C "$MAIN" log -1 --format=%B "origin/$b" | sed -n 's/.*Agent-ID: *\([A-Za-z]*-[0-9a-f]*\).*/\1/p' | head -1)
   echo "${id:-?}"
 }
 
