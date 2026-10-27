@@ -47,66 +47,87 @@ lemma rowMass_split (xs : List ℚ) (n : ℕ) :
   simpa only [List.sum_append, List.drop_drop] using hh.symm
 
 lemma rowMass_chunk_00 : ((headRowMasses.drop 0).take 8).sum ≤ (993861433 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_01 : ((headRowMasses.drop 8).take 8).sum ≤ (3251253 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_02 : ((headRowMasses.drop 16).take 8).sum ≤ (997883 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_03 : ((headRowMasses.drop 24).take 8).sum ≤ (475418 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_04 : ((headRowMasses.drop 32).take 8).sum ≤ (202209 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_05 : ((headRowMasses.drop 40).take 8).sum ≤ (33697 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_06 : ((headRowMasses.drop 48).take 8).sum ≤ (1304 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_07 : ((headRowMasses.drop 56).take 8).sum ≤ (11 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_08 : ((headRowMasses.drop 64).take 8).sum ≤ (1 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_09 : ((headRowMasses.drop 72).take 8).sum ≤ (1 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_10 : ((headRowMasses.drop 80).take 8).sum ≤ (1 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_11 : ((headRowMasses.drop 88).take 8).sum ≤ (1 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_12 : ((headRowMasses.drop 96).take 8).sum ≤ (1 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_13 : ((headRowMasses.drop 104).take 8).sum ≤ (1 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_14 : ((headRowMasses.drop 112).take 8).sum ≤ (1 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_15 : ((headRowMasses.drop 120).take 8).sum ≤ (1 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_16 : ((headRowMasses.drop 128).take 8).sum ≤ (1 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_17 : ((headRowMasses.drop 136).take 8).sum ≤ (1 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_18 : ((headRowMasses.drop 144).take 8).sum ≤ (1 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_19 : ((headRowMasses.drop 152).take 8).sum ≤ (1 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_chunk_20 : ((headRowMasses.drop 160).take 8).sum ≤ (1 / 1000000000 : ℚ) := by
+  unfold headRowMasses energyStrs tableRowMass
   decide +kernel
 
 lemma rowMass_end : (headRowMasses.drop 168).sum = 0 := by
@@ -159,12 +180,13 @@ theorem energyTable_head_mass_rat :
   have hc19 := rowMass_chunk_19
   have hc20 := rowMass_chunk_20
   have hend := rowMass_end
-  simp only [Nat.reduceAdd, List.drop_zero] at hs00 hs01 hs02 hs03 hs04 hs05 hs06 hs07 hs08 hs09 hs10 hs11 hs12 hs13 hs14 hs15 hs16 hs17 hs18 hs19 hs20
+  simp only [Nat.reduceAdd, List.drop_zero] at hs00 hs01 hs02 hs03 hs04 hs05 hs06 hs07 hs08 hs09 hs10 hs11 hs12 hs13 hs14 hs15 hs16 hs17 hs18 hs19 hs20 hc00
   linarith
 
 /-- Cast the rational check to the exact form needed by the L² bridge. -/
 theorem energyTable_head_mass_real :
     (∑ p ∈ headIdx 501, (energyTable p : ℝ)) + (3 / 20000000 : ℝ) ≤ 1 := by
-  exact_mod_cast energyTable_head_mass_rat
+  have h := (Rat.cast_le (K := ℝ)).mpr energyTable_head_mass_rat
+  simpa only [Rat.cast_sum, Rat.cast_add, Rat.cast_div, Rat.cast_ofNat] using h
 
 end Grothe.Upper

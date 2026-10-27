@@ -96,12 +96,13 @@ theorem energyTable_head_mass_rat :
   have hc19 := rowMass_chunk_19
   have hc20 := rowMass_chunk_20
   have hend := rowMass_end
-  simp only [Nat.reduceAdd, List.drop_zero] at hs00 hs01 hs02 hs03 hs04 hs05 hs06 hs07 hs08 hs09 hs10 hs11 hs12 hs13 hs14 hs15 hs16 hs17 hs18 hs19 hs20
+  simp only [Nat.reduceAdd, List.drop_zero] at hs00 hs01 hs02 hs03 hs04 hs05 hs06 hs07 hs08 hs09 hs10 hs11 hs12 hs13 hs14 hs15 hs16 hs17 hs18 hs19 hs20 hc00
   linarith
 
 /-- Cast the rational check to the exact form needed by the L² bridge. -/
 theorem energyTable_head_mass_real :
     (∑ p ∈ headIdx 501, (energyTable p : ℝ)) + (3 / 20000000 : ℝ) ≤ 1 := by
-  exact_mod_cast energyTable_head_mass_rat
+  have h := (Rat.cast_le (K := ℝ)).mpr energyTable_head_mass_rat
+  simpa only [Rat.cast_sum, Rat.cast_add, Rat.cast_div, Rat.cast_ofNat] using h
 
 end Grothe.Upper

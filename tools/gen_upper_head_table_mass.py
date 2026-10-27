@@ -67,6 +67,7 @@ def generate() -> tuple[bytes, bytes]:
         raise ValueError('chunk caps exceed requested budget')
     checks = ''.join(
         f'lemma rowMass_chunk_{i:02} : ((headRowMasses.drop {CHUNK*i}).take {CHUNK}).sum ≤ ({cap} / {SCALE} : ℚ) := by\n'
+        f'  unfold headRowMasses energyStrs tableRowMass\n'
         f'  decide +kernel\n\n'
         for i, cap in enumerate(caps)
     )
