@@ -54,8 +54,9 @@ compare the exact moments with rational targets. `integral_phiT_sq`,
 interpretation; `PhaseMomentNorms` gives the three Taylor-source total energies.
 The second-moment module previously built in 4.8 seconds in
 [run 40468150361](https://github.com/agalatan/grothendieck-lean/actions/runs/40468150361).
-This is whole-module time, not isolated native evaluation. The new fourth- and
-sixth-moment modules await delivery runtime measurements. This addition does
+This is whole-module time, not isolated native evaluation. The fourth- and sixth-moment modules built in 31 s and 175 s respectively in
+[run 40471192509](https://github.com/agalatan/grothendieck-lean/actions/runs/40471192509),
+which passed the full build and axiom audit. This addition does
 not discharge `ComparisonInputs` or `energy_close` and changes no headline bound.
 
 | Fact | Source native site | Allowlist | Report coverage | Runtime evidence |
@@ -135,8 +136,8 @@ not discharge `ComparisonInputs` or `energy_close` and changes no headline bound
 | `anonymous example at Grothe/LowerAnalytic/CapTables.lean:1211` | `Grothe/LowerAnalytic/CapTables.lean:1214` | NO | Not allowlisted or reported; anonymous example, no named endpoint dependency established | Unmeasured per fact at audited commit |
 | `Grothe.Upper.comparison_check` | `Grothe/Upper/ComparisonMass.lean:65` | yes | Direct #print axioms in scratch/Axioms.lean | Unmeasured per fact at audited commit |
 | `Grothe.UpperChaos.phase_moment2_check` | `Grothe/UpperChaos/PhaseMoment2.lean:20` | yes | Direct #print axioms in scratch/Axioms.lean; also used by integral_phiT_sq | [Delivery run 40468150361](https://github.com/agalatan/grothendieck-lean/actions/runs/40468150361): 4.8 s whole-module build, not isolated native evaluation |
-| `Grothe.UpperChaos.phase_moment4_check` | `Grothe/UpperChaos/PhaseMoment4.lean:20` | yes | Direct #print axioms; also used by integral_phiT_pow_four and PhaseMomentNorms | Delivery runtime measurement pending |
-| `Grothe.UpperChaos.phase_moment6_check` | `Grothe/UpperChaos/PhaseMoment6.lean:20` | yes | Direct #print axioms; also used by integral_phiT_pow_six and PhaseMomentNorms | Delivery runtime measurement pending |
+| `Grothe.UpperChaos.phase_moment4_check` | `Grothe/UpperChaos/PhaseMoment4.lean:20` | yes | Direct #print axioms; also used by integral_phiT_pow_four and PhaseMomentNorms | [Run 40471192509](https://github.com/agalatan/grothendieck-lean/actions/runs/40471192509): 31 s whole-module build |
+| `Grothe.UpperChaos.phase_moment6_check` | `Grothe/UpperChaos/PhaseMoment6.lean:20` | yes | Direct #print axioms; also used by integral_phiT_pow_six and PhaseMomentNorms | [Run 40471192509](https://github.com/agalatan/grothendieck-lean/actions/runs/40471192509): 175 s whole-module build |
 | `Grothe.head_check` | `Grothe/Upper/Final.lean:44` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 62 s; docs/NATIVE_SEQ_STATUS.md:25; not isolated native/current-commit measurement |
 | `Grothe.UpperChaos.phi_cover_check_0` | `Grothe/UpperChaos/PhiCoverCheck0.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.UpperChaos.phi_cover_check_1` | `Grothe/UpperChaos/PhiCoverCheck1.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |

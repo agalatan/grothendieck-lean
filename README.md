@@ -219,6 +219,13 @@ energies alone do not discharge `ComparisonInputs` or `energy_close`, and the
 headline bounds are unchanged. Exact targets and reproduction instructions are
 in [`data/phase-moments/`](data/phase-moments/README.md).
 
+`CapturedTail` supplies the orthogonal tail argument: from disjoint captured
+bands, subtract the sum of their separately certified energies
+`max(0, lower_i − error_i)²` from the total moment. `TaylorErrorEnergy` gives
+the alternative whole-error identity using one inner product with the
+approximant. These interfaces retain the required coefficient-norm and
+integral bounds as hypotheses.
+
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
 only with X's energy in its selected band, weighted by the retained coefficient cost. The quadratic error charges only pairs
@@ -323,13 +330,21 @@ The sharper conditional bound above remains stronger.
 
 **Toward a Lean proof of the HJM bound (epic #139).** `Grothe/HJM/Mixture.lean` proves the mixture bound
 `K ≤ M/(q̂₀ − Σ_{k≥1}|q̂_k|)` for a weighted mixture `Σ w_r K_r` of dominated radial kernels with `Σ|w_r| ≤ M`
-(`mixture_bound`; negative weights are free because domination survives absolutely convex combinations).
+(`mixture_bound`; negative weights are free because domination survives absolutely convex combinations). The Cauchy
+tails of the scalar branches 1–4 are proved (`Grothe/HJM/Cauchy*.lean`, `weighted_tails`:
+`Σ_r |w_r| Σ_{n≥120} |k_{r,n}| ≤ 4·10⁻¹⁰`), from Haagerup's kernel continued to the slit plane, a quadtree of
+complex interval boxes for the region, and Parseval on the circle.
 `Grothe/HJM/Origin.lean` defines the asymmetric sixth branch from exact polynomial-phase
 responses and proves domination of its full real radial coefficient series. The proof uses one
 shared Gaussian driver, the charge-one Hermite expansion and conjugate-reflection symmetrization.
 The endpoint cross product is exactly imaginary; its phase-phase term cancels before taking
 absolute values. Bessel bounds the entire spatially omitted coefficient sequence by squared
 energy `exp(-36)`. A rational Bernstein certificate proves `|P(s)|² ≥ 37/100` for all `s ≥ 0`.
+The charge-one Hermite modes have an explicit radial polynomial and Gaussian integral
+formula. A scalar Green identity reduces the energy calculation to derivatives,
+integrability and boundary limits. For numerical enclosure, a nonnegative inverse-modulus
+polynomial residual controls the phase error; uniform spatial error `ε` inside radius
+`R` gives the joint squared coefficient budget `ε² + exp(-R²)` for all modes.
 These structural results introduce no native facts. The pinned 120-entry interval tables are
 provenance data: their integral enclosures and the two numerical energy bounds still require
 Lean proofs before the six-branch numerical bound follows. See [the origin certificate inventory](data/hjm/origin/README.md).
