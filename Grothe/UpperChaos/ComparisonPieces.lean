@@ -220,12 +220,12 @@ def piece (k : ComparisonIndex) : Lp ℂ 2 mu2 := bandProj (comparisonBand k) (s
 /-- The smoothed truncation `X = S(F₀ + v)`. -/
 def Xfun (v : ℂ × ℂ → ℂ) : ℂ × ℂ → ℂ := smoothFn fun u => F0 u + v u
 
-lemma chargeFn_F0v : ChargeFn fun u => F0 u + v u := (chargeFn_F0 hφ).add hv
+lemma chargeFn_F0v (hφ : PhiBound) (hv : ChargeFn v) : ChargeFn fun u => F0 u + v u := (chargeFn_F0 hφ).add hv
 
-lemma memLp_Xfun : MemLp (Xfun v) 2 mu2 :=
+lemma memLp_Xfun (hφ : PhiBound) (hv : ChargeFn v) : MemLp (Xfun v) 2 mu2 :=
   memLp_smoothFn (chargeFn_F0v hφ hv).meas (chargeFn_F0v hφ hv).memLp
 
-lemma Xfun_rot2 : ∀ c u, ‖c‖ = 1 → Xfun v (rot2 c u) = c * Xfun v u :=
+lemma Xfun_rot2 (hφ : PhiBound) (hv : ChargeFn v) : ∀ c u, ‖c‖ = 1 → Xfun v (rot2 c u) = c * Xfun v u :=
   fun _ u hc => smoothFn_rot2 (chargeFn_F0v hφ hv).meas (chargeFn_F0v hφ hv).rot hc u
 
 /-- The sources have no constant mode. -/
@@ -243,7 +243,7 @@ lemma sum_pieces_fiber (p : Fin 4) :
   refine sum_projOn _ (fun k => bandModes (comparisonBand k)) _ (fun i hi => ?_) (fun i k hk l hl hik hil => ?_)
   · have hd : 1 ≤ (bideg i).1 + (bideg i).2 := by
       by_contra h0
-      exact hi (by rw [bideg_eq_idx0 (by omega)]; exact inner_idx0_srcL hφ hv h₁ h₂ h₃ p)
+      exact hi (by rw [bideg_eq_idx0 (i := i) (by omega)]; exact inner_idx0_srcL hφ hv h₁ h₂ h₃ p)
     obtain ⟨hpw, hc⟩ := bandOf_spec p hd
     refine ⟨bandOf p ((bideg i).1 + (bideg i).2), ⟨Finset.mem_filter.2 ⟨Finset.mem_univ _, hpw⟩, hc⟩,
       fun l ⟨hl, hil⟩ => band_unique ((Finset.mem_filter.1 hl).2.trans hpw.symm) hil hc⟩
@@ -295,8 +295,9 @@ end Pieces
 18 norm bounds of the explicit pieces and the table accuracy of `X = S(F₀ + v)`. -/
 theorem fresh_upper_pieces (hv : ChargeFn v) (h₁ : ChargeFn c₁) (h₂ : ChargeFn c₂) (h₃ : ChargeFn c₃)
     (hnorm : ∀ k, ‖piece phiBound hv h₁ h₂ h₃ k‖ ≤ ((comparisonBand k).error : ℝ))
-    (hclose : ∑ p ∈ headIdx 501, |energy ((memLp_Xfun phiBound hv).toLp (Xfun v)) p - (energyTable p : ℝ)|
-      ≤ (energyErrQ : ℝ)) :
+    (hclose : ∑ p ∈ Grothe.Upper.headIdx 501,
+      |energy ((memLp_Xfun phiBound hv).toLp (Xfun v)) p - (Grothe.Upper.energyTable p : ℝ)|
+      ≤ (Grothe.Upper.energyErrQ : ℝ)) :
     IsGrothendieckBound (500000000000000000 / 355973699864771491) :=
   fresh_upper_rounder (memLp_Xfun phiBound hv) (Xfun_rot2 phiBound hv)
     (comparisonInputs_of_norms phiBound hv h₁ h₂ h₃ hnorm) hclose
