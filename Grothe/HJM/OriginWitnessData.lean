@@ -7,6 +7,9 @@ assert any Gaussian integral enclosure. -/
 
 namespace Grothe.HJM.OriginWitnessData
 
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+
 def leftAlpha : List (ℚ × ℚ) := [
   ((-1829990458134949 / 4503599627370496), (2194293362451523 / 4503599627370496)),
   ((822702825742597 / 4503599627370496), (-456720820392473 / 2251799813685248)),
@@ -272,9 +275,6 @@ def weightedMass (xs : List (ℚ × ℚ)) : ℚ :=
   ((List.range 120).map fun n =>
     let a := xs.getD n (0, 0)
     (2 * (n : ℚ) + 1) ^ 2 * (n + 1 : ℚ) * (a.1 ^ 2 + a.2 ^ 2)).sum
-
-set_option maxRecDepth 100000
-set_option maxHeartbeats 16000000
 
 theorem left_mass_check : mass leftAlpha ≤ leftMassCap := by decide +kernel
 theorem left_weighted_mass_check : weightedMass leftAlpha ≤ weightedMassCap := by decide +kernel

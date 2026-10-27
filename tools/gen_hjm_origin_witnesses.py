@@ -53,7 +53,8 @@ def render(doc):
              'Agent-ID: codex-aa04. Input SHA256: '+EXPECTED+'.',
              'The entries are arbitrary exact test vectors; finite checks do not',
              'assert any Gaussian integral enclosure. -/', '',
-             'namespace Grothe.HJM.OriginWitnessData', '']
+             'namespace Grothe.HJM.OriginWitnessData', '',
+             'set_option maxRecDepth 100000', 'set_option maxHeartbeats 16000000', '']
     for side in ('left','right'):
         row=doc['sides'][side]
         lines.append(f'def {side}Alpha : List (ℚ × ℚ) := [')
@@ -72,8 +73,7 @@ def render(doc):
                   'def weightedMass (xs : List (ℚ × ℚ)) : ℚ :=',
                   '  ((List.range 120).map fun n =>',
                   '    let a := xs.getD n (0, 0)',
-                  '    (2 * (n : ℚ) + 1) ^ 2 * (n + 1 : ℚ) * (a.1 ^ 2 + a.2 ^ 2)).sum', '',
-                  'set_option maxRecDepth 100000', 'set_option maxHeartbeats 16000000', ''])
+                  '    (2 * (n : ℚ) + 1) ^ 2 * (n + 1 : ℚ) * (a.1 ^ 2 + a.2 ^ 2)).sum', ''])
     for side in ('left','right'):
         lines.extend([f'theorem {side}_mass_check : mass {side}Alpha ≤ {side}MassCap := by decide +kernel',
                       f'theorem {side}_weighted_mass_check : weightedMass {side}Alpha ≤ weightedMassCap := by decide +kernel',
