@@ -51,9 +51,29 @@ term before norms and proves finite coefficient stability under an actual spatia
 `exp(-36)` beyond radius six. `OriginNonvanishing` uses nine rational Bernstein
 panels on `[0,32]` and positive shifted coefficients beyond 32 to prove
 `|P(s)|² ≥ 37/100`; its finite checks use `decide +kernel`.
-No native facts are introduced. Explicit Laguerre integral identities, the radial
-integration-by-parts energy bound and the numerical integral enclosures remain
-separate obligations. Hash-pinned tables and exact serialization alone do not prove
+The affine factors have nonzero constant imaginary parts, so both actual radial
+numerators are nonvanishing and their phases have unit modulus for `s ≥ 0`.
+
+`OriginRadial` derives the real radial polynomial from the Hermite creation
+operators, proves its Laguerre differential equation, and identifies the actual
+normalized coefficient with a one-dimensional Gaussian integral. `OriginGreen`
+proves the corresponding combined-Wronskian derivative and improper integral
+identity. Its derivative, integrability and boundary-limit hypotheses remain
+explicit; applying it to the concrete differential responses is still required.
+
+`OriginApproximation` proves the zero-safe algebraic bound
+`‖W z - phase(z)‖ ≤ |W² ‖z‖² - 1|` for `W ≥ 0`, with a sharper rational
+denominator variant. `OriginApproximationBudget` transfers a uniform interior
+error `ε`, with a zero approximation outside radius `R`, to squared Gaussian
+`L²` error at most `ε² + exp(-R²)` and hence to all charge-one coefficients
+jointly. Two true responses of `L²` norm at most one, each approximated within
+`δ`, have total coefficient-product `ℓ¹` error at most `2δ + δ²`. The
+approximants need not be disk-valued. These theorems do not themselves certify
+the proposed polynomial panels or their coefficient integrals.
+
+No native facts are introduced. The concrete radial energy identity and the
+numerical integral enclosures remain separate obligations.
+Hash-pinned tables and exact serialization alone do not prove
 any integral enclosure; see [`data/hjm/origin/`](../data/hjm/origin/README.md).
 
 **Published scalar-tail refinement.**
@@ -115,6 +135,21 @@ phase. `python3 tools/gen_phase_moment_data.py --check` verifies source binding
 and reproduces the generated targets without expanding polynomial powers.
 Neither `ComparisonInputs` nor `energy_close` is discharged by total energies
 alone, and no headline bound changes.
+
+`CapturedTail.norm_projOn_residual_sq_le_of_captured_family` subtracts
+`Σ_i max(0, lower_i − error_i)²` from the total source energy. Its hypotheses
+are pairwise disjoint captured mode sets, disjointness from the tail, vanishing
+of the approximant on the tail, captured-norm lower bounds and per-band error
+caps. The finite-family Bessel proof iterates orthogonal Pythagoras; it needs
+neither complete coverage nor a mean-zero hypothesis. The companion
+`norm_projOn_residual_le_of_captured_family` converts a squared-energy budget
+to the norm cap required by the comparison decomposition.
+`TaylorErrorEnergy.norm_hpow_sub_sq` instead expresses the whole approximation
+error as the exact phase moment minus twice the real inner product plus the
+approximant's squared norm. `norm_band_hpow_sq_le_of_inner` bounds any band
+on which the approximant vanishes using those three scalar inputs. These
+results formalize both tail routes, without certifying the remaining Gaussian
+inner-product enclosures or the approximant coefficient data.
 
 **Phase errors and transported certificates.**
 `Grothe/Upper/ResponseGeometry.lean` proves twelve statements: the exact

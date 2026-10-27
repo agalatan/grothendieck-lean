@@ -7,13 +7,17 @@ import Grothe.HJM.CauchyTails
 import Grothe.HJM.Data
 import Grothe.HJM.Mixture
 import Grothe.HJM.Origin
+import Grothe.HJM.OriginApproximation
+import Grothe.HJM.OriginApproximationBudget
 import Grothe.HJM.OriginData
 import Grothe.HJM.OriginEnergy
+import Grothe.HJM.OriginGreen
 import Grothe.HJM.OriginKernel
 import Grothe.HJM.OriginLaguerre
 import Grothe.HJM.OriginMehler
 import Grothe.HJM.OriginNonvanishing
 import Grothe.HJM.OriginNonvanishingData
+import Grothe.HJM.OriginRadial
 import Grothe.HJM.OriginResponse
 import Grothe.HJM.OriginTruncation
 import Grothe.HJM.Preprocessors
@@ -263,6 +267,7 @@ import Grothe.Upper.SpectralScreen
 import Grothe.Upper.TransportLimit
 import Grothe.Upper.WeightedTail
 import Grothe.UpperChaos.BandProj
+import Grothe.UpperChaos.CapturedTail
 import Grothe.UpperChaos.Charge
 import Grothe.UpperChaos.ComparisonPieces
 import Grothe.UpperChaos.Completeness
@@ -347,5 +352,6 @@ import Grothe.UpperChaos.SmoothComm
 import Grothe.UpperChaos.Smoothing
 import Grothe.UpperChaos.Structural
 import Grothe.UpperChaos.Sym2R
+import Grothe.UpperChaos.TaylorErrorEnergy
 import Grothe.UpperChaos.TaylorMoments
 import Grothe.UpperChaos.TaylorPhase

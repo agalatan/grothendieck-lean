@@ -60,8 +60,13 @@ identifies the results with the squared norms of the three positive Taylor sourc
 
 The [second-moment delivery](https://github.com/agalatan/grothendieck-lean/actions/runs/40468150361)
 passed its full build and axiom audit. `PhaseMoment2` built in 4.8 seconds
-(whole-module time, not isolated native evaluation). Fourth- and sixth-moment
-acceptance and timings are checked in their delivery; no measurement is yet recorded here.
+(whole-module time, not isolated native evaluation). The
+[fourth/sixth delivery](https://github.com/agalatan/grothendieck-lean/actions/runs/40471192509)
+also passed its full build and axiom audit.
+`PhaseMoment4`, `PhaseMoment6`, and `PhaseMomentNorms` built in 31 s, 175 s,
+and 3.7 s respectively. The three integral statements each use only their
+own moment native fact beyond the standard axioms. The norm statements also
+use the existing phase-cover facts for their `L²` representatives.
 
 This ingredient alone does not discharge the component-error or stored-energy
 comparison hypotheses of the conditional Grothendieck bound.

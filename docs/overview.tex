@@ -144,6 +144,11 @@ $5.71439509703932\cdot10^{-10}$, and $1.68238736430120\cdot10^{-11}$.
 These equal the squared norms of the three positive Taylor sources.
 Sharp comparison-band errors still need the captured Hermite energy and
 approximation bounds; the total moments alone do not change the upper bound.
+The orthogonal tail interface subtracts the separate captured energies
+$\sum_i\max(0,\ell_i-e_i)^2$ from the total moment, retaining each band's
+error cap. An alternative interface uses one real inner product and the
+approximant norm to bound the whole approximation error. The remaining
+numerical coefficient and integral bounds are explicit hypotheses.
 
 \paragraph{Radial repair has a quantitative ceiling.}
 Lean certifies the polynomial disk map $z\mapsto zS_6(1-|z|^2)$, where
@@ -337,6 +342,15 @@ imaginary, so its phase-phase term cancels before absolute values. Bessel gives
 a joint squared error budget $e^{-36}$ for the coefficient integrals omitted
 beyond radius six. Nine rational Bernstein panels and a positive shifted
 polynomial prove $|P(s)|^2\ge37/100$ on the entire nonnegative half-line.
+The Hermite creation operators give the radial polynomial, its Laguerre
+equation and the coefficient integral. A combined Green boundary term gives
+the energy pairing under explicit derivative, integrability and boundary
+hypotheses. For coefficient enclosure, a nonnegative inverse-modulus
+approximation satisfies
+$\|Wz-\ph(z)\|\le|W^2\|z\|^2-1|$.
+Uniform spatial error $\varepsilon$ inside radius $R$, with zero approximation
+outside, gives one joint squared coefficient budget
+$\varepsilon^2+e^{-R^2}$ for all modes. The approximant need not be disk-valued.
 These proofs add no native facts. The pinned 120-coefficient tables are
 provenance inputs; their integral enclosures and the numerical radial energy
 bounds remain separate Lean obligations. See \path{Grothe/HJM/Origin.lean}

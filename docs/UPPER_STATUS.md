@@ -242,6 +242,12 @@ The norm bounds:
   - `E φ^{2j}` is an exact Gaussian moment of a damped polynomial.
 - **Rounding:** `‖Σ c_j/j! − v‖ ≤ 10⁻¹⁸`, checked against the frozen `v` (degree 201).
 
+`CapturedTail.lean` formalizes the finite-family high-tail inequality, including
+orthogonal Bessel and the separate reverse-triangle estimate for each band.
+`TaylorErrorEnergy.lean` formalizes the whole-error identity and the alternative
+one-inner-product band bound in §5.5. These are structural interfaces; the
+concrete approximant norms and integral enclosures remain obligations.
+
 ### 5.3 Who carries the residual
 
 The decomposition shares below use the raw weighted-comparison residual
