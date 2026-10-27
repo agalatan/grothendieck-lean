@@ -180,7 +180,8 @@ lemma sq_norm_integral_le {α : Type*} [MeasurableSpace α] {μ : Measure α} [I
   have h0 : 0 ≤ ∫ z, (‖g z‖ - m) ^ 2 ∂μ := integral_nonneg fun _ => sq_nonneg _
   have e : ∫ z, (‖g z‖ - m) ^ 2 ∂μ = ∫ z, ‖g z‖ ^ 2 ∂μ - m ^ 2 := by
     have : (fun z => (‖g z‖ - m) ^ 2) = fun z => ‖g z‖ ^ 2 - 2 * m * ‖g z‖ + m ^ 2 := by ext z; ring
-    rw [this, integral_add (hg.sub (hn.const_mul _)) (integrable_const _), integral_sub hg (hn.const_mul _),
+    have i1 : Integrable (fun z => ‖g z‖ ^ 2 - 2 * m * ‖g z‖) μ := hg.sub (hn.const_mul _)
+    rw [this, integral_add i1 (integrable_const _), integral_sub hg (hn.const_mul _),
       integral_const_mul, integral_const, probReal_univ, one_smul]
     ring
   have h1 : ‖∫ z, g z ∂μ‖ ≤ m := norm_integral_le_integral_norm _
