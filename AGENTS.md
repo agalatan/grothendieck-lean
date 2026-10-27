@@ -49,9 +49,11 @@ tell which conversation owns a droplet folder, a branch or a running build. At t
      inside (§12);
    - commits: an `Agent-ID: codex-7f3a` trailer at the end of the commit message body;
    - issue comments: start with `[codex-7f3a]`;
-   - branches: your ID is in every branch name, in a fixed place (§3): `codex/7f3a-<topic>` and
-     `ready/codex-7f3a-<topic>`. Use only the ID you announced in this conversation, never one copied from a prompt,
-     another branch or a commit: the audits and CI's conflict reports read the owner from the name.
+   - branches: **sign every branch with your agent ID**, in a fixed place (§3): `codex/7f3a-<topic>` and
+     `ready/codex-7f3a-<topic>`, where `7f3a` is the four hex digits of *your* ID. Never put any other hex in a
+     branch name: no random or per-branch hash, no suffix at the end (`ready/codex-<topic>-e4b7` is wrong), no ID
+     copied from a prompt, another branch, a worktree name or a commit. The same ID goes in the branch name, the
+     commits' `Agent-ID` and your first reply: the audits and CI's conflict reports read the owner from the name.
 4. **Write it down when you hand over:** give your ID in every status note or hand-over file.
 
 `scripts/droplet_status.sh` lists droplet builds by folder, so a signed folder tells the user whom to ask.
