@@ -482,6 +482,7 @@ import Grothe.UpperChaos.BandedContraction
 import Grothe.UpperChaos.CapturedTail
 import Grothe.UpperChaos.CenterNormBypass
 import Grothe.UpperChaos.Charge
+import Grothe.UpperChaos.ChargeBandApproximation
 import Grothe.UpperChaos.ChargeBandParseval
 import Grothe.UpperChaos.ComparisonPieces
 import Grothe.UpperChaos.Completeness
