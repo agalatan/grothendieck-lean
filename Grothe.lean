@@ -499,6 +499,7 @@ import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.DiagonalSum
 import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
+import Grothe.UpperChaos.ExponentialTail
 import Grothe.UpperChaos.FirstSecondCapturedTail
 import Grothe.UpperChaos.FixedChaosSmoothing
 import Grothe.UpperChaos.GTAliasTail
@@ -580,6 +581,7 @@ import Grothe.UpperChaos.PhiDense
 import Grothe.UpperChaos.PhiHorner
 import Grothe.UpperChaos.ProductComplete
 import Grothe.UpperChaos.RadialCeiling
+import Grothe.UpperChaos.RadialCutoff
 import Grothe.UpperChaos.RadialDampedMoments
 import Grothe.UpperChaos.RadialRepair
 import Grothe.UpperChaos.RealGaussianKernelTail
