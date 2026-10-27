@@ -79,6 +79,7 @@ theorem integrable_phase_radial_mean (v : ℝ → ℂ) (hv : Measurable v)
   change (0 : ℝ) < t at ht
   simp only [zeroedPhaseRadial, ite_eq_right (ne_of_gt ht), Complex.ofReal_mul,
     Complex.ofReal_ofNat]
+  push_cast
   ring
 
 /-- Exact phase inner product for an arbitrary bounded measurable radial
