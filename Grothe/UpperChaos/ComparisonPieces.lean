@@ -2,6 +2,7 @@ import Grothe.UpperChaos.Smoothing
 import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.LocalizedComparison
 import Grothe.UpperChaos.PhiBound
+import Grothe.UpperChaos.SmoothComm
 
 /-!
 # The concrete error decomposition behind `ComparisonInputs` (Comparison step 1)
@@ -293,19 +294,29 @@ def comparisonInputs_of_norms
   ⟨piece hφ hv h₁ h₂ h₃, difference_pieces hφ hv h₁ h₂ h₃, hnorm,
     fun _ p hp => energy_bandProj_eq_zero _ _ p hp⟩
 
+/-- **A piece is bounded by the band of its unsmoothed source** (`S` commutes with band projections and
+contracts). -/
+theorem norm_piece_le (k : ComparisonIndex) :
+    ‖piece hφ hv h₁ h₂ h₃ k‖ ≤ ‖bandProj (comparisonBand k)
+      ((chargeFn_srcP hφ hv h₁ h₂ h₃ (pw k)).memLp.toLp (srcP v c₁ c₂ c₃ (pw k)))‖ :=
+  norm_bandProj_smoothOp_le _ _
+
 end Pieces
 
-/-- **The sharp upper bound from the 18 norm bounds of an explicit decomposition**: for charge-one `L²` functions
+/-- **The sharp upper bound from the 18 band norms of an explicit decomposition**: for charge-one `L²` functions
 `v, c₁, c₂, c₃` (the frozen correction and the Hermite approximants of the certificate), the remaining inputs are the
-18 norm bounds of the explicit pieces and the table accuracy of `X = S(F₀ + v)`. -/
+18 norm bounds `‖P_I srcₖ‖ ≤ εₖ` of the band pieces of the unsmoothed sources (`srcP`: the rounding remainder
+`c₁ + c₂/2 + c₃/6 − v` and the Taylor errors `(hⱼ − cⱼ)/j!`) and the table accuracy of `X = S(F₀ + v)`. -/
 theorem fresh_upper_pieces (hv : ChargeFn v) (h₁ : ChargeFn c₁) (h₂ : ChargeFn c₂) (h₃ : ChargeFn c₃)
-    (hnorm : ∀ k, ‖piece phiBound hv h₁ h₂ h₃ k‖ ≤ ((comparisonBand k).error : ℝ))
+    (hnorm : ∀ k, ‖bandProj (comparisonBand k) ((chargeFn_srcP phiBound hv h₁ h₂ h₃ (pw k)).memLp.toLp
+      (srcP v c₁ c₂ c₃ (pw k)))‖ ≤ ((comparisonBand k).error : ℝ))
     (hclose : ∑ p ∈ Grothe.Upper.headIdx 501,
       |energy ((memLp_Xfun phiBound hv).toLp (Xfun v)) p - (Grothe.Upper.energyTable p : ℝ)|
       ≤ (Grothe.Upper.energyErrQ : ℝ)) :
     IsGrothendieckBound (500000000000000000 / 355973699864771491) :=
   fresh_upper_rounder (memLp_Xfun phiBound hv) (Xfun_rot2 phiBound hv)
-    (comparisonInputs_of_norms phiBound hv h₁ h₂ h₃ hnorm) hclose
+    (comparisonInputs_of_norms phiBound hv h₁ h₂ h₃ fun k =>
+      (norm_piece_le phiBound hv h₁ h₂ h₃ k).trans (hnorm k)) hclose
 
 end
 

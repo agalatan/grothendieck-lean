@@ -300,7 +300,9 @@ the global bound, so the bands still need per-coefficient enclosures. They need 
 `ComparisonPieces.lean` (Taylor split `Tround_eq`, the four sources, the 18 pieces, `difference_pieces`,
 `comparisonInputs_of_norms`, `fresh_upper_pieces`). The pieces are `P_I(S src)` (projection after smoothing), so
 their supports hold by construction. The data `c_j`, `v` enter as charge-one parameters; plugging in the
-certificate's data (and relating `P_I S` to the certificate's `S P_I`: S preserves total degree) is step 2's work.
+certificate's data is the remaining part. `SmoothComm.lean` proves that S preserves the total degree (it commutes
+with the Ornstein–Uhlenbeck smoothing T_ρ, `law_comm`; T_ρ is diagonal with eigenvalue ρ^{|i|}, `OUOp.lean`), so
+`P_I S = S P_I` and the norm hypotheses of `fresh_upper_pieces` are on the unsmoothed sources.
 
 ### 5.6 Ranked plan
 

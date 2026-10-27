@@ -518,6 +518,7 @@ import Grothe
 #print axioms Grothe.Upper.tsum_abs_bivarKernel_le
 #print axioms Grothe.UpperChaos.Bm_eq_integral
 #print axioms Grothe.UpperChaos.Bm_polyKernel
+#print axioms Grothe.UpperChaos.D_le_span_H
 #print axioms Grothe.UpperChaos.Ef_X0_mul
 #print axioms Grothe.UpperChaos.GT_rot2
 #print axioms Grothe.UpperChaos.HardyReal.hardy_GT
@@ -536,6 +537,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.RadialRepair.radial_gap_sq_le
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_le
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
+#print axioms Grothe.UpperChaos.bandProj_smoothOp_comm
 #print axioms Grothe.UpperChaos.charFunDual_gaussC
 #print axioms Grothe.UpperChaos.difference_pieces
 #print axioms Grothe.UpperChaos.differentiableOn_HholPair_Rt
@@ -562,6 +564,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.hermiteBasis
 #print axioms Grothe.UpperChaos.hermiteBasis2
 #print axioms Grothe.UpperChaos.hermite_complete
+#print axioms Grothe.UpperChaos.inner_ouOp
+#print axioms Grothe.UpperChaos.inner_smoothOp_hvec2_eq_zero
 #print axioms Grothe.UpperChaos.integral_H2_XY
 #print axioms Grothe.UpperChaos.integral_H2_charge_one
 #print axioms Grothe.UpperChaos.integral_H_charge_one
@@ -570,6 +574,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_mehler
 #print axioms Grothe.UpperChaos.integral_moment
 #print axioms Grothe.UpperChaos.integral_two_channel
+#print axioms Grothe.UpperChaos.law_comm
 #print axioms Grothe.UpperChaos.leaf_sound
 #print axioms Grothe.UpperChaos.localized_comparison
 #print axioms Grothe.UpperChaos.map_mehlerY
@@ -590,6 +595,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.radial_distance_le_of_sixth_moment
 #print axioms Grothe.UpperChaos.radial_kernel_ceiling
 #print axioms Grothe.UpperChaos.rounding_diskKernel
+#print axioms Grothe.UpperChaos.smoothOp_ouOp_comm
 #print axioms Grothe.UpperChaos.smoothOp_toLp'
 #print axioms Grothe.UpperChaos.splitAll_cover
 #print axioms Grothe.UpperChaos.structural_fields
