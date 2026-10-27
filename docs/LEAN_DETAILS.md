@@ -182,7 +182,7 @@ complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
 **Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder` proves
 `IsGrothendieckBound (500000000000000000/355973699864771491)` for the concrete rounding,
-given an L² charge-one truncation `X` and component-error inputs, table accuracy and Hardy.
+given an L² charge-one truncation `X`, component-error inputs and table accuracy (the Hardy input is proved).
 `Grothe.upper_value_lt` shows this is below 1.404598149218 (`Grothe/UpperChaos/PhiBound.lean`).
 The older table interface `Grothe.fresh_upper : DirectHyps E EX → IsGrothendieckBound (...)`
 remains in `Grothe/Upper/PolynomialBridge.lean`.
@@ -242,20 +242,27 @@ headline endpoints are unchanged.
   proves all 18 band radii from the stored table and `energyErrQ`, and checks the
   rational comparison budget. Neither a near-linear kernel nor the final head
   residual is assumed by this interface.
-* Other explicit inputs: `energy_close`, the stored energies are within
-  6847009/(5·10¹⁷) of EX on `headIdx 501` in ℓ¹; and `hardy`, the weighted
-  square-sum bound 7/4 at radius 4149/4000 for the kernel of G_T itself.
-  The latter uses the inherited Gaussian Schur analysis and the recorded
-  65,594-arc directed contour. The concrete theorem also takes X ∈ L² and
+* Other explicit input: `energy_close`, the stored energies are within
+  6847009/(5·10¹⁷) of EX on `headIdx 501` in ℓ¹. The Hardy input (the
+  weighted square-sum bound 7/4 at radius 4149/4000 for the kernel of G_T) is
+  **proved**: `HardyReal.hardy_GT`. The concrete theorem also takes X ∈ L² and
   charge-one equivariance. Validity, summability, parity, and the phase cover
   for the actual rounding are derived. `HardyHolo.lean` now proves
   `hardy_of_inputs` from positive kernel decay on a disc of radius greater
   than 4149/4000, identification of the real odd series with the continued
   kernel, and its circle mean bound ≤ 7/4. Holomorphy, continuation,
-  Parseval, the decay region and the circle mean are proved:
+  Parseval, the decay region and the circle mean are proved, and
   `hardy_of_real` (`HardyStep4.lean`) derives the `hardy` statement for every
   measurable disk-valued pair from summable real odd coefficients and their
-  Gaussian-law identification; the latter remains to be supplied.
+  Gaussian-law identification. `HardyReal.hreal_GT` supplies that
+  identification for G_T: unfolding the smoothing (`mehler_smoothed`), the
+  Mehler pair `(MX + NZ, MY + NZ')` has the law of `(U, RU + SW)`
+  (`HardyRealLaw.law_swap`: characteristic functions, `M² + N² = I`, and the
+  covariance identity `HardyRealCov.cov_eq`), and its density on ℝ⁸ is
+  `kHol R` at the real cross covariance `R = Rt t`
+  (`HardyRealDensity.integral_pair_eq_kHol`: the explicit Cholesky factor of
+  `I − R²`, the substitution `y = Rx + Sw`, and Fubini); `I − R² ≻ 0` since
+  `‖M‖ ≤ 1` and `|p|, |q| ≤ t < 1` (`k11_kdet_pos`).
 * **Residual ledger.** The total is 455308278509/(5·10¹⁷), approximately
   9.10617·10⁻⁷. The selected comparison contributes 93.56%, the native finite
   head 3.09%, the Hardy tail 3.35%, and the table error about 0.0015%.
@@ -671,8 +678,8 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
 The complete registry has 88 native facts: 60 cap ranges, five Hardy facts
-(four arc parts and the region) and 23 others. The default report has 597 print
-directives and 380 required declarations. These are source/registry counts;
+(four arc parts and the region) and 23 others. The default report has 602 print
+directives and 382 required declarations. These are source/registry counts;
 delivery CI checks the combined tree.
 
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,

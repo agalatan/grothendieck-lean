@@ -515,6 +515,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.Bm_polyKernel
 #print axioms Grothe.UpperChaos.Ef_X0_mul
 #print axioms Grothe.UpperChaos.GT_rot2
+#print axioms Grothe.UpperChaos.HardyReal.hardy_GT
+#print axioms Grothe.UpperChaos.HardyReal.hreal_GT
+#print axioms Grothe.UpperChaos.HardyReal.integral_pair_eq_kHol
+#print axioms Grothe.UpperChaos.HardyReal.law_swap
+#print axioms Grothe.UpperChaos.HardyReal.mehler_eq_HholPair
 #print axioms Grothe.UpperChaos.ProductComplete.ae_memLp_fibre
 #print axioms Grothe.UpperChaos.ProductComplete.complete_prod
 #print axioms Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le

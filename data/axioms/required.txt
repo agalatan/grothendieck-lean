@@ -343,6 +343,8 @@ Grothe.Upper.comparisonWeight_sound
 Grothe.Upper.comparison_check
 Grothe.Upper.headWeight_sound
 Grothe.Upper.head_residual_le_weighted
+Grothe.UpperChaos.HardyReal.hardy_GT
+Grothe.UpperChaos.HardyReal.hreal_GT
 Grothe.UpperChaos.ProductComplete.ae_memLp_fibre
 Grothe.UpperChaos.ProductComplete.complete_prod
 Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
