@@ -46,7 +46,6 @@ theorem inverseChecked_sound {x : ℝ} {I J : Ival} (hx : mem x I)
     have hp : posI I = true := by simpa only [posI, decide_eq_true_eq] using hpos
     subst J
     exact ⟨pos_of_posI hx hp, mem_invPosI hx hp⟩
-  · simp at h
 
 /-- The exact integer inequalities imply that the checked interval contains
 `Real.sqrt x` for every x in the original interval. -/
@@ -58,7 +57,7 @@ theorem mem_sqrt_of_witness {x : ℝ} {I J : Ival} (hx : mem x I)
   have hI : (0 : ℝ) ≤ I.lo := by exact_mod_cast h.1
   have hJlo : (0 : ℝ) ≤ J.lo := by exact_mod_cast h.2.1
   have hJhi : (0 : ℝ) ≤ J.hi := by exact_mod_cast h.2.2.1
-  have hx0 : 0 ≤ x := nonneg_of_mul_nonneg_right (hI.trans hx.1) D_pos
+  have hx0 : 0 ≤ x := (mul_nonneg_iff_of_pos_right D_pos).mp (hI.trans hx.1)
   have hL : (J.lo : ℝ) ^ 2 ≤ x * (D : ℝ) ^ 2 := by
     calc
       _ ≤ (I.lo : ℝ) * D := by exact_mod_cast h.2.2.2.1
@@ -78,13 +77,12 @@ theorem mem_sqrt_of_witness {x : ℝ} {I J : Ival} (hx : mem x I)
 theorem sqrtChecked_sound {x : ℝ} {I J : Ival} (hx : mem x I)
     (h : sqrtChecked I = some J) : mem (Real.sqrt x) J := by
   unfold sqrtChecked at h
+  dsimp only at h
   split_ifs at h with hinput htest
-  · have hJ : (⟨Int.ofNat (Nat.sqrt ((I.lo * D).toNat)),
-        Int.ofNat (Nat.sqrt ((I.hi * D).toNat)) + 1⟩ : Ival) = J := Option.some.inj h
-    subst J
-    exact mem_sqrt_of_witness hx htest
-  · simp at h
-  · simp at h
+  have hJ : (⟨Int.ofNat (Nat.sqrt ((I.lo * D).toNat)),
+      Int.ofNat (Nat.sqrt ((I.hi * D).toNat)) + 1⟩ : Ival) = J := Option.some.inj h
+  subst J
+  exact mem_sqrt_of_witness hx htest
 
 /-- A successful root gate for an enclosed squared modulus contains the
 actual modulus. -/
