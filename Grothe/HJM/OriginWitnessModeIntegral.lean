@@ -49,10 +49,12 @@ theorem sqrt_index_chargeOneCoeff_eq_integral (n : ℕ) (v : ℝ → ℂ)
   have hscale : (Real.sqrt ((n : ℝ) + 1) : ℂ) * ((2 * nrm (n + 1) n : ℝ) : ℂ) =
       ((2 / (n.factorial : ℝ) : ℝ) : ℂ) := by
     have hr : Real.sqrt ((n : ℝ) + 1) * (2 * nrm (n + 1) n) =
-        2 / (n.factorial : ℝ) := by rw [show Real.sqrt ((n : ℝ) + 1) *
-          (2 * nrm (n + 1) n) = 2 * (Real.sqrt ((n : ℝ) + 1) * nrm (n + 1) n) by ring,
-          sqrt_index_mul_nrm]; ring
-    exact_mod_cast hr
+        2 / (n.factorial : ℝ) := by
+      calc
+        _ = 2 * (Real.sqrt ((n : ℝ) + 1) * nrm (n + 1) n) := by ring
+        _ = 2 * (1 / (n.factorial : ℝ)) := by rw [sqrt_index_mul_nrm]
+        _ = 2 / (n.factorial : ℝ) := by ring
+    simpa only [Complex.ofReal_mul] using congrArg (fun x : ℝ => (x : ℂ)) hr
   rw [← mul_assoc, hscale, ← integral_const_mul]
   apply integral_congr_ae
   filter_upwards [] with t

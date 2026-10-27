@@ -19,6 +19,7 @@ theorem sum_cast_getD_eq_list_sum (xs : List ℤ) :
   | cons a xs ih =>
     simp only [List.length_cons, Finset.sum_range_succ', List.getD_cons_zero,
       List.getD_cons_succ, List.sum_cons, Int.cast_add, ih]
+    exact add_comm _ _
 
 /-- Finite endpoint lists on the 10⁻¹⁸ grid are summed exactly. -/
 theorem sum_scaled_entries (xs : List ℤ) (N : ℕ) (hlen : xs.length = N) :
