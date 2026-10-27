@@ -573,6 +573,7 @@ import Grothe.UpperChaos.RadialDampedMoments
 import Grothe.UpperChaos.RadialRepair
 import Grothe.UpperChaos.RealGaussianKernelTail
 import Grothe.UpperChaos.Realise2
+import Grothe.UpperChaos.ReducedGrouped
 import Grothe.UpperChaos.RelaxedGrouped
 import Grothe.UpperChaos.Rounder
 import Grothe.UpperChaos.SchurBound
@@ -609,3 +610,4 @@ import Grothe.UpperChaos.TaylorSecondData
 import Grothe.UpperChaos.TaylorTailData
 import Grothe.UpperChaos.TaylorWickReduction
 import Grothe.UpperChaos.ThirdCapturedTail
+import Grothe.UpperChaos.ThirteenBandUpper
