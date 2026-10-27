@@ -2,6 +2,7 @@ import Grothe.UpperChaos.PhiCover
 import Grothe.UpperChaos.Rounder
 import Grothe.UpperChaos.PhiCoverCheck
 import Grothe.UpperChaos.LocalizedComparison
+import Grothe.UpperChaos.HardyReal
 
 /-!
 # `|φ| < 1` everywhere, and the upper bound with only the numerical comparisons left
@@ -9,7 +10,8 @@ import Grothe.UpperChaos.LocalizedComparison
 `phiT_sq_le : φ² ≤ 99/100` from the cover (`walk_sound` on the 64 cubes, `phi_cubes_ok`) on `U + V < 60`
 and the far field (`far_sound`); hence `phi_abs_lt_one : |φ| < 1` (the input of the comparison argument)
 and `phiBound : PhiBound`.  `fresh_upper_rounder`: the sharp upper bound for the concrete rounding `G_T`
-from component-error inputs, table accuracy and Hardy (for a charge-one `X ∈ L²`).
+from component-error inputs and table accuracy (for a charge-one `X ∈ L²`); its Hardy input is proved
+(`HardyReal.hardy_GT`).
 -/
 
 open GrotheKernel Grothe.Upper
@@ -84,15 +86,14 @@ theorem phi_abs_lt_one (u : ℂ × ℂ) : |phiT u| < 1 := by
 theorem phiBound : PhiBound := phiT_sq_le
 
 /-- **The sharp upper bound for the concrete rounding** from the explicit spectral-error decomposition,
-component norm bounds, table accuracy and Hardy input. -/
+component norm bounds and table accuracy. The Hardy input is proved (`HardyReal.hardy_GT`). -/
 theorem fresh_upper_rounder {X : ℂ × ℂ → ℂ} (hXL : MeasureTheory.MemLp X 2 mu2)
     (hXch : ∀ c u, ‖c‖ = 1 → X (rot2 c u) = c * X u)
     (herrors : ComparisonInputs ((memLp_GT phiBound).toLp GT) (hXL.toLp X))
-    (hclose : ∑ p ∈ headIdx 501, |energy (hXL.toLp X) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ))
-    (hhardy : ∀ J, ∑ n ∈ Finset.range J, kernelCoeff (energy ((memLp_GT phiBound).toLp GT)) n ^ 2
-      * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4) :
+    (hclose : ∑ p ∈ headIdx 501, |energy (hXL.toLp X) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ)) :
     IsGrothendieckBound (500000000000000000 / 355973699864771491) :=
-  fresh_upper_concrete phiBound hXL hXch (localized_comparison herrors hclose) hclose hhardy
+  fresh_upper_concrete phiBound hXL hXch (localized_comparison herrors hclose) hclose
+    (HardyReal.hardy_GT phiBound)
 
 end
 
