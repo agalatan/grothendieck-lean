@@ -41,6 +41,7 @@ lemma pderiv_monomial_mem (i : Fin 2) {n : ℕ} (s : Fin 2 →₀ ℕ) (a : ℂ)
     conv_rhs => rw [← tsub_add_cancel_of_le hle]
     rw [Finsupp.sum_add_index' (h := fun _ e => e) (fun _ => rfl) (fun _ _ _ => rfl)]
     simp
+  have h2 : ((s - Finsupp.single i 1).sum fun _ => id) = (s - Finsupp.single i 1).sum fun _ e => e := rfl
   omega
 
 /-- **Derivatives lower the degree.** -/
@@ -82,8 +83,8 @@ lemma H_sub_monomial_mem (p q : ℕ) (h : 1 ≤ p + q) : H p q - X 0 ^ p * X 1 ^
         rw [zero_add, pow_zero, one_mul] at ih'
         have e : X 1 * H 0 q - (pderiv 0) (H 0 q) - X 1 ^ q * X 1
             = X 1 * (H 0 q - X 1 ^ q) - pderiv 0 (H 0 q) := by ring
-        rw [e, show 0 + (q + 1) - 1 = (q - 1) + 1 by omega]
-        refine Submodule.sub_mem _ (X_mul_mem 1 ih') (D_mono (by omega) (pderiv_mem 0 ?_))
+        rw [e, show q + 1 - 1 = (q - 1) + 1 by omega]
+        refine Submodule.sub_mem _ (X_mul_mem 1 ih') (D_mono (m := q - 1) (by omega) (pderiv_mem 0 ?_))
         rw [show q - 1 + 1 = q by omega]; simpa using H_mem 0 q
   | succ p ih =>
     rw [H_succ_left, A0, pow_succ]
@@ -98,7 +99,7 @@ lemma H_sub_monomial_mem (p q : ℕ) (h : 1 ≤ p + q) : H p q - X 0 ^ p * X 1 ^
       have e : X 0 * H p q - (pderiv 1) (H p q) - X 0 ^ p * X 0 * X 1 ^ q
           = X 0 * (H p q - X 0 ^ p * X 1 ^ q) - pderiv 1 (H p q) := by ring
       rw [e, show p + 1 + q - 1 = (p + q - 1) + 1 by omega]
-      refine Submodule.sub_mem _ (X_mul_mem 0 ih') (D_mono (by omega) (pderiv_mem 1 ?_))
+      refine Submodule.sub_mem _ (X_mul_mem 0 ih') (D_mono (m := p + q - 1) (by omega) (pderiv_mem 1 ?_))
       rw [show p + q - 1 + 1 = p + q by omega]; exact H_mem p q
 
 /-- The span of the Hermite polynomials of degree `≤ n`. -/
