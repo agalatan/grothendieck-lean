@@ -64,6 +64,7 @@ theorem gOp_toLp {f : ℂ × ℂ → ℂ} (hfm : Measurable f) (hfL : MemLp f 2 
   filter_upwards [hgL.coeFn_toLp] with x hx
   rw [hx, RCLike.inner_apply, gFn, integral_const_mul]; ring
 
+include hL in
 /-- **The smoothing along `L` of an `L²` function is in `L²`** (Jensen). -/
 theorem memLp_gFn {f : ℂ × ℂ → ℂ} (hf : Measurable f) (hfL : MemLp f 2 mu2) : MemLp (gFn L f) 2 mu2 := by
   have hm : AEStronglyMeasurable (gFn L f) mu2 :=
@@ -91,13 +92,13 @@ theorem inner_hvec2_of_diag (A : Lp ℂ 2 mu2 →L[ℂ] Lp ℂ 2 mu2) (lam : Idx
   have hc : (fun k => (innerSL ℂ (hvec2 j)) (A (hermiteBasis2.repr g k • hermiteBasis2 k)))
       = fun k => if k = j then lam j * ⟪hvec2 j, g⟫_ℂ else 0 := by
     ext k
-    rw [map_smul, innerSL_apply, inner_smul_right, hermiteBasis2_apply, hA,
+    rw [map_smul, innerSL_apply_apply, inner_smul_right, hermiteBasis2_apply, hA,
       HilbertBasis.repr_apply_apply, hermiteBasis2_apply]
     by_cases hk : k = j
     · subst hk; simp; ring
     · simp [hk, Ne.symm hk]
   rw [hc] at hA'
-  rw [innerSL_apply] at hA'
+  rw [innerSL_apply_apply] at hA'
   exact hA'.unique (hasSum_ite_eq j _)
 
 end
