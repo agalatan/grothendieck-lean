@@ -64,11 +64,58 @@ theorem law_comm {ρ : ℝ} (hρ : |ρ| ≤ 1) :
     pA, pB, ContinuousLinearMap.prod_apply, ContinuousLinearMap.coe_fst', ContinuousLinearMap.coe_snd',
     ouCLM_apply, smoothCLM_apply, smoothArg, Yof, mY, shuffle, hs]
   simp only [L_apply]
-  simp only [Prod.fst_zero, Prod.snd_zero, Prod.mk_add_mk, mul_one, mul_zero, add_zero, zero_add, map_zero,
+  simp only [Prod.fst_zero, Prod.snd_zero, mul_one, mul_zero, add_zero, zero_add, map_zero,
     dual_ofReal_mul, dual_ofReal]
   rw [← add_div, ← add_div, ← neg_add, ← neg_add, ← Complex.ofReal_add, ← Complex.ofReal_add,
     div_left_inj' (show (4 : ℂ) ≠ 0 by norm_num), neg_inj, Complex.ofReal_inj]
   linear_combination e1 + e2
+
+/-! ### Iterated smoothing as one integral -/
+
+lemma measurable_gFn (L : (ℂ × ℂ) × (ℂ × ℂ) →L[ℝ] ℂ × ℂ) {f : ℂ × ℂ → ℂ} (hf : Measurable f) :
+    Measurable (gFn L f) :=
+  ((hf.comp L.continuous.measurable).stronglyMeasurable.integral_prod_right' (ν := mu2)).measurable
+
+/-- `⟪g, S₁ S₂ f⟫` as one integral over the triple product. -/
+theorem inner_gFn_gFn (L₁ L₂ : (ℂ × ℂ) × (ℂ × ℂ) →L[ℝ] ℂ × ℂ)
+    (h₁ : MeasurePreserving L₁ (mu2.prod mu2) mu2) (h₂ : MeasurePreserving L₂ (mu2.prod mu2) mu2)
+    {f : ℂ × ℂ → ℂ} (hf : Measurable f) (hfL : MemLp f 2 mu2) (g : Lp ℂ 2 mu2)
+    (hF : MemLp (gFn L₁ (gFn L₂ f)) 2 mu2) :
+    ⟪g, hF.toLp (gFn L₁ (gFn L₂ f))⟫_ℂ =
+      ∫ v, conj ((g : ℂ × ℂ → ℂ) v.1.1) * f (L₂ (L₁ v.1, v.2)) ∂((mu2.prod mu2).prod mu2) := by
+  have hT : MemLp (gFn L₂ f) 2 mu2 := memLp_gFn L₂ h₂ hf hfL
+  have hTm : Measurable (gFn L₂ f) := measurable_gFn L₂ hf
+  -- the maps into the triple product
+  have hm3 : MeasurePreserving (fun v : ((ℂ × ℂ) × (ℂ × ℂ)) × (ℂ × ℂ) => L₂ (L₁ v.1, v.2))
+      ((mu2.prod mu2).prod mu2) mu2 :=
+    h₂.comp ((h₁.prod (MeasurePreserving.id mu2)))
+  have hf3 : MemLp (fun v : ((ℂ × ℂ) × (ℂ × ℂ)) × (ℂ × ℂ) => f (L₂ (L₁ v.1, v.2))) 2 ((mu2.prod mu2).prod mu2) :=
+    hfL.comp_measurePreserving hm3
+  have hg3 : MemLp (fun v : ((ℂ × ℂ) × (ℂ × ℂ)) × (ℂ × ℂ) => (g : ℂ × ℂ → ℂ) v.1.1) 2 ((mu2.prod mu2).prod mu2) :=
+    ((Lp.memLp g).comp_measurePreserving mp_fst2).comp_measurePreserving
+      (by simpa using (measurePreserving_fst (μ := mu2.prod mu2) (ν := mu2)))
+  have hint3 : Integrable (fun v : ((ℂ × ℂ) × (ℂ × ℂ)) × (ℂ × ℂ) =>
+      conj ((g : ℂ × ℂ → ℂ) v.1.1) * f (L₂ (L₁ v.1, v.2))) ((mu2.prod mu2).prod mu2) := by
+    refine (hg3.norm.integrable_mul hf3.norm).mono'
+      ((Complex.continuous_conj.comp_aestronglyMeasurable hg3.aestronglyMeasurable).mul
+        hf3.aestronglyMeasurable) (Filter.Eventually.of_forall fun v => ?_)
+    simp only [norm_mul, Complex.norm_conj, Pi.mul_apply, le_refl]
+  have hg2 : MemLp (fun v : (ℂ × ℂ) × (ℂ × ℂ) => (g : ℂ × ℂ → ℂ) v.1) 2 (mu2.prod mu2) :=
+    (Lp.memLp g).comp_measurePreserving mp_fst2
+  have hT2 : MemLp (fun v : (ℂ × ℂ) × (ℂ × ℂ) => gFn L₂ f (L₁ v)) 2 (mu2.prod mu2) := hT.comp_measurePreserving h₁
+  have hint2 : Integrable (fun v : (ℂ × ℂ) × (ℂ × ℂ) => conj ((g : ℂ × ℂ → ℂ) v.1) * gFn L₂ f (L₁ v))
+      (mu2.prod mu2) := by
+    refine (hg2.norm.integrable_mul hT2.norm).mono'
+      ((Complex.continuous_conj.comp_aestronglyMeasurable hg2.aestronglyMeasurable).mul
+        hT2.aestronglyMeasurable) (Filter.Eventually.of_forall fun v => ?_)
+    simp only [norm_mul, Complex.norm_conj, Pi.mul_apply, le_refl]
+  rw [integral_prod _ hint3, ← integral_prod _ hint2, integral_prod _ hint2, L2.inner_def]
+  refine integral_congr_ae ?_
+  filter_upwards [hF.coeFn_toLp] with x hx
+  rw [hx, RCLike.inner_apply, gFn, ← integral_const_mul]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun Z => ?_)
+  simp only [gFn]
+  rw [← integral_const_mul]; ring_nf
 
 end
 
