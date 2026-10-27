@@ -44,7 +44,7 @@ theorem testCorrelation_le_sqrt (y : ℕ → ℂ) (R : Lp ℂ 2 gaussC) (N : ℕ
     _ = ∑ n ∈ range N, ‖y n‖ * ((2 * (n : ℝ) + 1) * ‖chargeOneCoeff R n‖) := by
       apply sum_congr rfl
       intro n _hn
-      simp only [norm_mul, norm_conj, Complex.norm_real, Real.norm_eq_abs,
+      simp only [norm_mul, Complex.norm_conj, Complex.norm_real, Real.norm_eq_abs,
         abs_of_nonneg (by positivity : (0 : ℝ) ≤ 2 * (n : ℝ) + 1)]
       ring
     _ ≤ _ := by
@@ -160,8 +160,7 @@ theorem rationalAlpha_testMass (xs : List (ℚ × ℚ)) :
   push_cast
   apply sum_congr rfl
   intro n _hn
-  simp only [rationalAlpha_norm_sq, Rat.cast_add, Rat.cast_mul, Rat.cast_pow,
-    Rat.cast_natCast, Rat.cast_one]
+  simp only [rationalAlpha_norm_sq, Rat.cast_add, Rat.cast_pow]
 
 def leftRationalWitness : ℕ → ℂ := laguerreTest (rationalAlpha OriginWitnessData.leftAlpha)
 def rightRationalWitness : ℕ → ℂ := laguerreTest (rationalAlpha OriginWitnessData.rightAlpha)
@@ -288,7 +287,8 @@ theorem testCorrelation_sub_phase (y : ℕ → ℂ) (V : Lp ℂ 2 gaussC) (u : �
   rw [mul_sum, ← sum_sub_distrib]
   apply sum_congr rfl
   intro n _hn
-  simp only [chargeOneCoeff_sub, chargeOneCoeff, inner_smul_right]
+  rw [chargeOneCoeff_sub]
+  simp only [chargeOneCoeff, inner_smul_right]
   ring
 
 /-- Concrete form consumed by a polynomial Gaussian moment enclosure: only

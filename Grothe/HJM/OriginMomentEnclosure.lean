@@ -39,8 +39,9 @@ theorem approxList_eq_on_open (re im : List ℚ) {lo hi : ℚ} {ps : List Panel}
   | cons q qs ih =>
     simp only [covers, Bool.and_eq_true, decide_eq_true_eq] at hc
     rcases hc with ⟨⟨_hlo, _hpositive⟩, htail⟩
-    rcases List.mem_cons.mp hp with rfl | hp
-    · have hmem : (q.a : ℝ) ≤ t ∧ t ≤ (q.b : ℝ) := ⟨ht.1.le, ht.2.le⟩
+    rcases List.mem_cons.mp hp with heq | hp
+    · subst p
+      have hmem : (q.a : ℝ) ≤ t ∧ t ≤ (q.b : ℝ) := ⟨ht.1.le, ht.2.le⟩
       simp only [approxList, ite_eq_left hmem]
     · have hle : (q.b : ℝ) ≤ p.a := by
         exact_mod_cast (covers_panel_bounds htail p hp).1
@@ -89,15 +90,24 @@ theorem signedCellPolynomial_eval (test : CList) (re im : List ℚ)
   have hw : evalQ (compQ p.w (subpanelCoordinate p c h)) y =
       evalQ p.w (coordinate p ((c : ℝ) + (h : ℝ) * y)) := by
     rw [evalQ_comp, evalQ_subpanelCoordinate]
+  have hRe (q : CList) (s : ℝ) : (evalC q s).re = evalQ q.re s := by
+    simp [evalC]
+  have hIm (q : CList) (s : ℝ) : (evalC q s).im = evalQ q.im s := by
+    simp [evalC]
+  have hreal (x : ℝ) :
+      (conj (evalC test (x ^ 2)) * panelApprox re im p x).re =
+        ((p.k : ℝ) * evalQ p.w (coordinate p x)) *
+          (evalQ test.re (x ^ 2) * evalQ re (x ^ 2) +
+            evalQ test.im (x ^ 2) * evalQ im (x ^ 2)) := by
+    simp only [panelApprox, Complex.mul_re, Complex.conj_re, Complex.conj_im,
+      Complex.ofReal_re, Complex.ofReal_im, hRe, hIm, zero_mul, sub_zero, add_zero,
+      neg_mul, sub_neg_eq_add]
+    ring
+  rw [hreal]
   rw [← evalQ_eq_pev]
   unfold signedCellPolynomial
   simp only [evalQ_scale, evalQ_mul, evalQ_add, hcomp, hw, evalQ_cons,
-    evalQ_nil, Rat.cast_mul, Rat.cast_ofNat, mul_zero, add_zero,
-    panelApprox, evalC, Complex.mul_re,
-    Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im,
-    Complex.add_re, Complex.add_im, Complex.I_re, Complex.I_im,
-    zero_mul, mul_zero, one_mul, mul_one, sub_zero, zero_add, add_zero]
-  push_cast
+    evalQ_nil, Rat.cast_mul, Rat.cast_ofNat, mul_zero, add_zero]
   ring
 
 /-- The real integrand corresponding to a finite signed test polynomial. -/
@@ -122,6 +132,7 @@ theorem signedApproxIntegrand_on_subpanel (test : CList) (re im : List ℚ)
   have hselect := approxList_eq_on_open re im hc hp hpopen
   have hcoord : (c : ℝ) + (h : ℝ) * ((t - (c : ℝ)) / h) = t := by
     field_simp [hhR.ne']
+    ring
   rw [signedApproxIntegrand, hselect, signedCellPolynomial_eval, hcoord]
   field_simp [hhR.ne']
 
@@ -170,13 +181,16 @@ lemma localExp_abs_le {c h : ℚ} (hc : 0 ≤ c) (hh : 0 ≤ h)
   rw [localExp_eval]
   calc
     _ ≤ |-2 * (c : ℝ) * (h : ℝ) * t| + |(h : ℝ) ^ 2 * t ^ 2| :=
-      abs_sub_le _ _
+      abs_sub _ _
     _ = 2 * (c : ℝ) * (h : ℝ) * |t| + (h : ℝ) ^ 2 * t ^ 2 := by
       rw [show -2 * (c : ℝ) * (h : ℝ) * t = -(2 * (c : ℝ) * (h : ℝ) * t) by ring,
         abs_neg, abs_mul, abs_of_nonneg (by positivity : (0 : ℝ) ≤ 2 * c * h),
         abs_of_nonneg (by positivity : (0 : ℝ) ≤ (h : ℝ) ^ 2 * t ^ 2)]
     _ ≤ 2 * (c : ℝ) * (h : ℝ) + (h : ℝ) ^ 2 :=
-      add_le_add (by nlinarith) (by nlinarith [sq_nonneg (h : ℝ)])
+      add_le_add
+        (by simpa only [mul_one] using
+          mul_le_mul_of_nonneg_left ht1 (by positivity : (0 : ℝ) ≤ 2 * (c : ℝ) * (h : ℝ)))
+        (by simpa only [mul_one] using mul_le_mul_of_nonneg_left ht2 (sq_nonneg (h : ℝ)))
     _ = _ := by simp [variation]
 
 /-- A signed polynomial times the local exponential is enclosed on [-1,1]. -/
@@ -207,16 +221,32 @@ theorem local_integral_enclosure (p : List ℚ) {c h : ℚ} (hc : 0 ≤ c) (hh :
       exact mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (abs_nonneg _) hu n) (by positivity)
     have hp := abs_pev_le_coeffNorm p t (abs_le.mpr ⟨by linarith [ht.1], ht.2⟩)
     rw [← mul_sub, abs_mul]
-    exact mul_le_mul hp hE (abs_nonneg _) (by exact_mod_cast coeffNorm_nonneg p)
+    have hA : 0 ≤ A := by
+      dsimp only [A]
+      exact_mod_cast coeffNorm_nonneg p
+    exact mul_le_mul hp hE (abs_nonneg _) hA
   have hJ : (∫ t in (-1 : ℝ)..1, pev p t * S t) = (integralTaylor p c h n : ℝ) := by
-    simpa only [integralTaylor, S, ← pev_pmul, pow_zero, one_mul] using
+    simpa only [integralTaylor, S, ← pev_pmul, pow_zero, one_mul,
+      Rat.cast_neg, Rat.cast_one] using
       integral_pev (-1) 1 (pmul p (taylor c h n)) 0
-  have hlow := intervalIntegral.integral_mono_on (show (-1 : ℝ) ≤ 1 by norm_num)
-    (((hcP.mul hcS).sub continuous_const).intervalIntegrable _ _) (hcF.intervalIntegrable _ _)
-    (fun t ht => by have hh := (abs_le.mp (hpt t ht)).1; linarith)
-  have hhigh := intervalIntegral.integral_mono_on (show (-1 : ℝ) ≤ 1 by norm_num)
-    (hcF.intervalIntegrable _ _) (((hcP.mul hcS).add continuous_const).intervalIntegrable _ _)
-    (fun t ht => by have hh := (abs_le.mp (hpt t ht)).2; linarith)
+  have hlow : (∫ t in (-1 : ℝ)..1, pev p t * S t - A * E) ≤
+      ∫ t in (-1 : ℝ)..1, pev p t * exp (pev (localExp c h) t) := by
+    apply intervalIntegral.integral_mono_on (by norm_num)
+      (((hcP.mul hcS).sub continuous_const).intervalIntegrable _ _)
+      (hcF.intervalIntegrable _ _)
+    intro t ht
+    change pev p t * S t - A * E ≤ pev p t * exp (pev (localExp c h) t)
+    have hh := (abs_le.mp (hpt t ht)).1
+    linarith
+  have hhigh : (∫ t in (-1 : ℝ)..1, pev p t * exp (pev (localExp c h) t)) ≤
+      ∫ t in (-1 : ℝ)..1, pev p t * S t + A * E := by
+    apply intervalIntegral.integral_mono_on (by norm_num)
+      (hcF.intervalIntegrable _ _)
+      (((hcP.mul hcS).add continuous_const).intervalIntegrable _ _)
+    intro t ht
+    change pev p t * exp (pev (localExp c h) t) ≤ pev p t * S t + A * E
+    have hh := (abs_le.mp (hpt t ht)).2
+    linarith
   have hlow' : (integralTaylor p c h n : ℝ) - 2 * A * E ≤
       ∫ t in (-1 : ℝ)..1, pev p t * exp (pev (localExp c h) t) := by
     have he : (∫ t in (-1 : ℝ)..1, pev p t * S t - A * E) =
@@ -290,7 +320,7 @@ theorem gaussian_integral_panel {f : ℝ → ℝ} (p : List ℚ) {c h : ℚ}
   have hpanel : (∫ t in ((c - h : ℚ) : ℝ)..((c + h : ℚ) : ℝ), F t) =
       (h : ℝ) * ∫ t in (-1 : ℝ)..1, F ((c : ℝ) + (h : ℝ) * t) := by
     push_cast
-    simpa only [smul_eq_mul, mul_one, mul_neg, mul_one, add_neg_eq_sub] using hchange.symm
+    simpa only [smul_eq_mul, mul_one, mul_neg, sub_eq_add_neg] using hchange.symm
   have hlocal : (h : ℝ) * ∫ t in (-1 : ℝ)..1, F ((c : ℝ) + (h : ℝ) * t) =
       exp (-(c : ℝ) ^ 2) * ∫ t in (-1 : ℝ)..1,
         pev p t * exp (pev (localExp c h) t) := by
@@ -353,14 +383,16 @@ theorem gaussian_integral_partition {f : ℝ → ℝ} (edges : ℕ → ℚ)
     apply intervalIntegrable_of_cell (by exact_mod_cast (hstep i hi).le)
       (polys i) (panelCenter edges i) (panelRadius edges i)
     exact hpiece i hi
-  have hmono : MonotoneOn edges (Iic N) := by
+  have hmono : MonotoneOn edges (Set.Iic N) := by
     apply monotoneOn_of_le_add_one Set.ordConnected_Iic
     intro i _hi _hmember hnext
-    exact (hstep i (by simp only [mem_Iic] at hnext; omega)).le
+    exact (hstep i (by simp only [Set.mem_Iic] at hnext; omega)).le
   have hedge (i : ℕ) (hi : i < N) : 0 ≤ edges i ∧ edges (i + 1) ≤ 8 := by
     constructor
-    · exact hfirst.trans (hmono (by simp) (by simp; omega) (Nat.zero_le _))
-    · exact (hmono (by simp; omega) (by simp) (by omega)).trans hlast
+    · exact hfirst.trans (hmono (show 0 ∈ Set.Iic N from Nat.zero_le N)
+        (show i ∈ Set.Iic N from Nat.le_of_lt hi) (Nat.zero_le i))
+    · exact (hmono (show i + 1 ∈ Set.Iic N from by omega)
+        (show N ∈ Set.Iic N from le_rfl) (by omega)).trans hlast
   have hcell (i : ℕ) (hi : i < N) :
       (((panelBounds (polys i) (panelCenter edges i) (panelRadius edges i) order).1 : ℚ) : ℝ) ≤
         (∫ t in (edges i : ℝ)..(edges (i + 1) : ℝ), f t) ∧
@@ -459,9 +491,10 @@ theorem signedApprox_integral_partition (test : CList) (re im : List ℚ)
     simpa only [hfirst, hlast, Rat.cast_zero, Rat.cast_ofNat] using hh
   have hzero : ∀ t ∈ Ioi (8 : ℝ), f t = 0 := fun t ht =>
     signedApproxIntegrand_zero_above test re im hc ht
-  have htail : IntegrableOn f (Ioi (8 : ℝ)) := by
-    apply (integrableOn_zero : IntegrableOn (fun _ : ℝ => (0 : ℝ)) (Ioi (8 : ℝ))).congr_fun
-      _ measurableSet_Ioi
+  have htail : IntegrableOn f (Ioi (8 : ℝ)) volume := by
+    have hz : IntegrableOn (fun _ : ℝ => (0 : ℝ)) (Ioi (8 : ℝ)) volume :=
+      integrableOn_zero
+    refine hz.congr_fun ?_ measurableSet_Ioi
     intro t ht
     exact (hzero t ht).symm
   have htailzero : (∫ t in Ioi (8 : ℝ), f t) = 0 :=
