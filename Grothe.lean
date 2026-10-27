@@ -502,6 +502,8 @@ import Grothe.UpperChaos.GTAliasTail
 import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussOp
 import Grothe.UpperChaos.GeometricReciprocal
+import Grothe.UpperChaos.GlobalGaussianMoments
+import Grothe.UpperChaos.GlobalGaussianPolynomial
 import Grothe.UpperChaos.GradedHermite
 import Grothe.UpperChaos.GradedHermiteFn
 import Grothe.UpperChaos.GradedHermiteIntegerEnergy
