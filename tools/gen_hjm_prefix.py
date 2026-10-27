@@ -123,9 +123,11 @@ def generate():
         t.append(f"/-- The interval head of branch {r} (endpoints scaled by `2^128`). -/")
         t.append(f"def headTable{r} : List (Int × Int) := {pairs(h)}")
         t.append("")
-        t.append(f"/-- The Horner accumulators of branch {r} after each chunk of {c} coefficients, last chunk first. -/")
-        t.append(f"def stages{r} : List (List (Int × Int)) := [")
-        t.append(",\n".join("  " + pairs(st) for st in stages) + "]")
+        t.append(f"/-! The Horner accumulators of branch {r}: `stage{r}_i` after the chunks `i, i+1, …` of {c} coefficients. -/")
+        for i, st in enumerate(stages):
+            t.append(f"def stage{r}_{i} : List (Int × Int) := {pairs(st)}")
+        t.append(f"def stages{r} : List (List (Int × Int)) := [" +
+                 ", ".join(f"stage{r}_{i}" for i in range(n + 1)) + "]")
         t.append("")
         checks[r] = (c, n)
     t += ["end Grothe.HJM", ""]
