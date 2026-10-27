@@ -127,7 +127,7 @@ theorem abs_coeff_le (hP : l1 (ofListQ pl) ≤ 1) (h1 : 1 < R₁) (hR : R₁ ^ 2
       (fun j _ => by positivity) (Finset.self_mem_range_succ n)
   have hsq : (|k n| * R ^ (2 * n + 1)) ^ 2 ≤ 10 ^ 2 := by
     rw [mul_pow, sq_abs, ← pow_mul, mul_comm (2 * n + 1) 2]; linarith
-  exact abs_le_of_sq_le_sq' hsq (by norm_num) |>.2.trans' (le_abs_self _)
+  exact (abs_le_of_sq_le_sq' hsq (by norm_num)).2
 
 /-- **The Cauchy tail**: `Σ_{n≥N} |k_n| ≤ 10 R^{−(2N+1)} / (1 − R^{−2})` for `1 < R < R₁`. -/
 theorem cauchy_tail (hP : l1 (ofListQ pl) ≤ 1) (h1 : 1 < R₁) (hR : R₁ ^ 2 < 2) (h : gateCheck pl R₁ = true)
