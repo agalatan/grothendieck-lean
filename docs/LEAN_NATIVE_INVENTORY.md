@@ -2,9 +2,8 @@
 
 This inventory covers the named native facts allowed for the single `Grothe`
 target, plus the four anonymous table diagnostics below. The current allowlist
-has **91 named facts: 60 cap ranges, five Hardy facts and 26 others**. The default
-report contains **701 print directives**, with **469 required declarations**.
-These are source/registry counts. Normal `ready/*` delivery CI builds and audits
+is `data/axioms/native.txt` (cap ranges, Hardy facts and others). The default report is
+`scratch/Axioms.lean`, with its required declarations in `data/axioms/required.txt`. Normal `ready/*` delivery CI builds and audits
 the combined tree before merging it.
 
 The lower chain uses the refined 10,762-box cover. Its finite checks comprise

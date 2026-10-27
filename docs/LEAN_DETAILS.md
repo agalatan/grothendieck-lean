@@ -792,10 +792,9 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 `LawNodeLower.certified_rows` and `certified_mixed_batches` assemble those
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
-The complete registry has 91 native facts: 60 cap ranges, five Hardy facts
-(four arc parts and the region) and 26 others. The default report has 701 print
-directives and 469 required declarations. These are source/registry counts;
-delivery CI checks the combined tree.
+The complete registry of native facts is `data/axioms/native.txt` (cap ranges, Hardy facts — four arc parts and
+the region — and others); the default report is `scratch/Axioms.lean`, with its required declarations in
+`data/axioms/required.txt`. Delivery CI checks the combined tree.
 
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in
