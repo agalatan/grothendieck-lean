@@ -40,7 +40,9 @@ theorem revised_second_tail_piece
   rw [secondTailModes_eq, map_smul, norm_smul]
   have hscale : ‖(1 / 2 : ℂ)‖ = (1 / 2 : ℝ) := by norm_num [norm_div]
   rw [hscale]
-  norm_num [secondResidualCapQ] at herror
+  have hcap : (secondResidualCapQ : ℝ) = (2452 / 1000000000 : ℝ) := by
+    norm_num [secondResidualCapQ]
+  rw [hcap] at herror
   linarith
 
 /-- All 18 revised piece caps from thirteen retained Gaussian bounds. -/
