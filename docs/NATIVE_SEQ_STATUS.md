@@ -9,10 +9,13 @@ check: the native runtime and compiler are part of the trust boundary, so a run
 that happens not to crash cannot establish that shared-state evaluation is sound.
 CI screens all three project source trees for forbidden escapes and task spawning.
 
-The current allowlist contains **88 named facts: 23 ordinary facts, five Hardy
-facts and 60 cap ranges**. The default report has **615 entries**, of which
-**386 declarations** are required. [LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md) lists the facts
-and distinguishes earlier module timings from current verification.
+The activated source allowlist contains **1,395 named facts**: the retained
+88 (23 ordinary, five Hardy and 60 cap ranges) plus 1,307 Row 12 facts
+(88 coverage, 1,194 piece ranges and 25 anchor ranges). The default report has
+**2,016 print directives**, with **1,787 required declarations**.
+[LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md) lists the retained facts
+and the new families. These are source/registry counts; Row 12 native execution,
+the complete CI proof/audit and verified cache upload remain pending.
 The scalar sixteenth-power check uses `decide +kernel`, so all sixteen
 scalar-tail reports use only standard axioms.
 
@@ -34,9 +37,23 @@ is moot. No runtime saving has been measured for this change.
 The independent precompiled `GrotheCapsKernel` library holds the cap checker.
 The heavy range modules import its computation layer, while soundness and the
 refined lower-cover assembly stay outside that computation closure. Full caps
-verification and shared-cache publication run only through the droplet runner.
-A successful runner build checks both axiom reports, records the source digest in
-its verified cache and saves the branch cache; subsequent CI replays that cache.
+verification and Actions-cache publication run through canonical CI on the
+droplet runner. Its bounded preparation plan covers the 15 retained native row
+modules and 1,307 new Row 12 leaves, after 126 pure project prerequisites. At most
+TWO independent leaves run per owned group, each `-j1`, under aggregate RSS 24 GiB
+and disk floor 3 GiB guards. The canonical lakefile remains unchanged; an owned
+trace-neutral `weakLeanArgs` overlay controls each child. Only owned child
+processes may be stopped, and completed Lake outputs support an identical
+incremental resume.
+
+The preparatory builder does not mark or upload a cache. Success requires the
+complete `Grothe` build, ONE combined STRICT native/axiom audit and the existing
+marker/probe checks, followed by a successful Actions upload. A read-only digest
+or leaf receipt is insufficient. A branch cache supports later replay; after
+actual merge the ordinary master check must publish the master cache. There is
+no unconditional second ordinary branch check. Row 12's 88 localized nodes cover
+4,562 pieces; its 223 anchors and every piece check must pass before its row
+assembly is verified. The source leaves only rows 13–15 in `CapsRest`.
 
 ## Earlier measurements for retained chunks
 

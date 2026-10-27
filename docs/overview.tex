@@ -209,10 +209,9 @@ gates); all moment, Stein, spectral and contraction-Gram inequalities for every 
 Wick identity; the finite certificate (five row, three original-batch, one added law-batch and five refined-cover native checks)
 &
 \lean{NodeCaps}: the 19 potentials $\Psi_r$ (defined in Lean) lie below their stored rational caps at the tabulated nodes.
-\lean{lower\_bound\_of\_capsRest} proves the same endpoint from \lean{CapsRest}: the vertex caps of rows 12--15 ($t=0.84$--$0.855$) and any excluded-node caps, using the same refined cover.
-The 60 range checks for fifteen rows use a computation-only layer.
-CI replays the final assembly when the 53-file cache provenance matches;
-a mismatch triggers the runner build and the axiom audit. Four rows retain external vertex caps.\\\midrule
+The activated source of \lean{lower\_bound\_of\_capsRest} uses the same endpoint and refined cover, with vertex caps of rows 13--15 ($t=0.845$--$0.855$) and old excluded-node caps as \lean{CapsRest}.
+Row12 now has a complete source assembly, but its 1,307 new native checks and canonical CI verification are pending.
+The fifteen retained row modules keep their 60 range checks.\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error and table-accuracy inputs, proves $\KG\le500000000000000000/355973699864771491$.}\\[2pt]
 the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussian mixing by characteristic functions, Parseval and Mehler, charge selection, summability;
 the transfer inequality (tensor powers); kernel composition and locality; the head through degree 501 from
@@ -237,19 +236,27 @@ no external mathematical premise. The focused audit policy requires 98 results a
 The 98-result focused audit policy permits only \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} for the unconditional upper bound.\par
 The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
-There are 88 native facts: 60 cap-range checks, five Hardy region and circle checks, and 23 others. The report \path{scratch/Axioms.lean} contains 620 print directives, with 391 required declarations.
-No \lean{sorry}; normal \path{ready/*} delivery CI builds the single target \lean{Grothe}, cap rows included, and checks its one axiom report before merging.
-The cap-range checks take about 21 CPU-hours cold, so CI replays them from a verified build cache.
-Its provenance hash covers 48 local computation
-modules and five directly hashed extras (53 files total); the extras' imports
-are not traversed. The numerical checker has its own precompiled library,
-\lean{GrotheCapsKernel}, whose constants retain the \lean{GrotheKernel} namespace.
-The caps digest is part of the build-cache key: when no verified cache matches, CI runs the same check on
-the self-hosted runner, which builds, audits and marks \path{.lake/build/caps-closure.sha} before saving
-the cache. That persistent build supplies later CI replay; no separate manual droplet verification is needed.
-A digest alone is not verification. The localised-piece checkers
-likewise import only computable definitions and rational data; their campaign
-and final wiring remain separate. The generic response and
+The activated source registry contains 1,395 native facts: the retained 88 (60 cap ranges, five Hardy checks and 23 others), plus 1,307 Row12 checks.
+The report \path{scratch/Axioms.lean} has 2,016 print directives and 1,787 required declarations. These are source counts; Row12 native execution, complete proof/audit and Actions-cache publication are pending.
+Normal \path{ready/*} delivery CI builds ONE target, \lean{Grothe}, and checks ONE combined strict native/axiom report before merging; workflow edits follow the human-merged PR route.
+
+Row12 has 396 nodes: 85 chords, 88 localized vertices with 4,562 constrained pieces, and 223 anchors.
+Its generated inventory contains 1,487 Lean files, including two shared grid/soundness updates.
+All 88 selected centre matrices replay exactly at zero additional cap increase; the other 4,474 pieces and every anchor still need their native checks.
+The new facts are 88 coverage checks, 1,194 piece ranges and 25 anchor ranges, each in a separate sequential module.
+The raw caps, $10^{-11}$ padding, refined cover and endpoint are unchanged.
+
+The explicit computation-root registry expands the caps fingerprint to 1,454 files, including pure computation closures and direct assembly/configuration pins; direct assembly imports are not traversed.
+The stable precompiled \lean{GrotheCapsKernel} retains the \lean{GrotheKernel} namespace.
+The self-hosted CI lane prebuilds 126 pure project prerequisites, then 1,322 independent native modules (15 retained row modules plus the 1,307 Row12 leaves), at most TWO per owned group, each \texttt{-j1}, with aggregate RSS at most 24 GiB and free disk at least 3 GiB.
+Source/profile and actual-concurrency guards apply, and an identical rerun lets Lake reuse completed outputs.
+The rough two--three day estimate at two workers uses the grid census and historical checker costs, not a measured Row12 native pilot.
+
+When no verified cache matches, the SAME pending check runs on the self-hosted runner.
+The bounded preparation is followed by the complete \lean{Grothe} build, the strict audit and existing marker/Bridge checks, then a successful Actions-cache upload.
+A digest, marker alone or partial leaf receipt is not verification. No unconditional second ordinary branch check is required.
+After an actual merge, the ordinary master check must publish the master cache; a branch cache alone is not that evidence.
+Research-only export modules remain outside proof roots. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
 the sharp upper bound retains external Gaussian component-error and table-accuracy inputs. The unconditional theorem proves $\KG\le1.404909132791$ using only the three standard axioms. Its order-$10$ completion retains cancellation within the resolvent seed products.
 Before the tail Cauchy--Schwarz step, the known linear coefficient's weighted square is deducted from $7/4$; this uses the same numerical hypotheses.
@@ -568,8 +575,8 @@ Planned work is tracked as GitHub issues of the repository: epics \#12 (uncondit
 \#22 (better lower bound), \#29 (build infrastructure) and \#34 (research plans).
 \begin{enumerate}
 \item Complete and verify the node caps (\lean{CapsRest}, the remaining vertex-cap hypothesis), which would make the lower bound fully machine-checked.
- The caps of rows 12--15 are localised caps: coverage by constrained pieces is checked in Lean, and most pieces pass; the
- remaining pieces fail the exact positivity check of their S-lemma matrix by about $10^{-5}$ and need re-optimised multipliers.
+ Row12's complete localized-piece and anchor source is activated for canonical CI, with native verification pending.
+ Rows 13--15 still need their numerical repair and complete piece/anchor certificates; a hypothesis-free lower endpoint requires every check.
 \item Discharge the sharp upper rounding's numerical comparison and energy-table error; its Hermite expansion, structural analytic bridge and Hardy tail bound are formalized.
 \item Certify a game of degree $\ge5$ with a \emph{multi-grade fibre}: one bounded function of the visible coordinate and one
  remote direction per degree, so that the cross-degree coupling is kept. This is the route to a lower bound above $1.403$.

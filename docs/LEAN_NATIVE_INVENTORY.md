@@ -1,24 +1,53 @@
 # Native source inventory
 
-This inventory covers the named native facts allowed for the single `Grothe`
-target, plus the four anonymous table diagnostics below. The current allowlist
-has **88 named facts: 60 cap ranges, five Hardy facts and 23 others**. The default
-report contains **620 print directives**, with **391 required declarations**.
-These are source/registry counts. Normal `ready/*` delivery CI builds and audits
-the combined tree before merging it.
+Agent-ID: codex-6 b 2 a. This source inventory covers the named native facts allowed
+for the single `Grothe` target, plus the four anonymous table diagnostics below.
+The activated allowlist has **1,395 named facts**: the retained 88 (60 cap ranges,
+five Hardy facts and 23 others) plus 1,307 Row 12 facts. The default report has
+**2,016 print directives** and **1,787 required declarations**. These are
+source/registry counts. Row 12 native execution, full canonical build/STRICT
+audit and Actions cache publication remain pending.
+
+## New Row 12 families (source registered, CI verification pending)
+
+| Family | Native facts / source modules | Report and source boundary |
+|---|---:|---|
+| `pieceCover_12x<i>` in `CapPieces/C12x<i>.lean` |88 | Each declaration is independently required and printed; checks the complete localized cover. |
+| `pieceRange_12x<i>_<range>` in `CapPieces/R12x<i>_<range>.lean` |1,194 | Each declaration is independently required and printed; checks at most 4 ordered pieces against their exact grid/recipe tuple. |
+| `row12AnchorRange<range>` in `CapRow12/AnchorRange<range>.lean` |25 | Each declaration is independently required and printed; covers all 223 anchored vertices, skipping the own 88 localized exclusions and chord nodes. |
+| **Total new independent native leaves** |**1,307** |88 localized-node theorems and `vertexCapsRow12` are also independently required/printed; those 89 assemblies add no native sites. |
+
+The generated source inventory contains 1,487 Lean files including shared grid
+and soundness updates. Row 12 has 396 nodes: 85 chords, 88 localized vertices
+(4,562 pieces) and 223 anchored vertices. All 88 selected centre matrices replay
+with zero additional cap; that replay does not certify the other 4,474 pieces
+or anchors. No raw cap, capPad = 10⁻¹¹, refined cover or endpoint changes.
+The activated `CapsRest` source keeps only rows 13–15 (0.845–0.855), plus the
+old fifteen rows' excluded-node caps; those old exclusion lists remain empty.
+
+The exact build registry is `data/caps-m/plan/row-certificates/row12-build.json`:
+1,322 native modules (15 original rows plus 1,307 Row 12 leaves), 126 pure
+project prerequisites and 1,453 source/config pins. The caps fingerprint covers
+1,454 files, including the build registry itself and direct assembly/config
+pins. On the self-hosted runner, at most TWO independent leaves run per owned
+group, each `-j1`, aggregate RSS≤24 GiB and free disk≥3 GiB. The stable independent
+precompiled `GrotheCapsKernel` remains unchanged.
+
+The bounded preparatory step must be followed by ONE complete `Grothe` build,
+ONE combined STRICT native/axiom audit, the existing marker/Bridge checks and
+a successful Actions cache upload. No leaf receipt, digest or marker alone is
+that evidence. After actual merge, the ordinary master check publishes the
+master cache; a branch cache alone is not a master cache.
+
+## Retained native facts and verification history
 
 The lower chain uses the refined 10,762-box cover. Its finite checks comprise
 five row chunks, three mixed-batch chunks, one law-node fact and five refined-cover
-facts. The superseded four box chunks and partition fact are removed from both
-the library and allowlist. `certRefinedPartition` checks coverage with
-`treeCoverOK`; it does not assert disjointness. `treeCoverOK_sound` proves the
-coverage property needed by the lower-bound reduction. The retired partition
-checker's unused straddler scan is absent; no runtime improvement is claimed.
-
-`lower_bound_of_capsRest` now reaches `1.401697049825` by the refined-cover theorem,
-with the same `CapsRest` and unchanged shared `NodeCaps` definition. All 60 range
-facts are retained. The generated localized-piece facts outside this supported
-target are a separate campaign, not additional allowlisted endpoint inputs.
+facts. Superseded box/partition facts are absent from the library and allowlist.
+`certRefinedPartition` checks coverage with `treeCoverOK`, not disjointness;
+`treeCoverOK_sound` proves the coverage needed by the lower reduction.
+The original 60 range facts are retained unchanged. Historical timings below
+do not attest Row 12 or the current branch.
 
 Indirect report coverage in the inventory is source-traced. Historical times are module build times and do
 not measure individual native evaluations or the current implementation. The scalar

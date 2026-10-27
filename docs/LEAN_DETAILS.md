@@ -445,57 +445,66 @@ through `Grothe/Research/RefinedCoverResult.lean`:
 **the only remaining hypothesis of this theorem is `NodeCaps`**, the node caps
 Ψ_r(r_k) − 10⁻¹¹ ≤ c_k of the 19 certified potentials (exact-arithmetic certificates outside Lean).
 
-The same single target `Grothe` also proves `lower_bound_of_capsRest :
-CapsRest → IsGrothendieckBound K → 1.401697049825 < K` (`CapNodes.lean`). Its 15
-`CapRowKK` modules retain the 60 unchanged single-threaded native range facts
-for rows 0–11 and 16–18, importing only the computation layer and recipe data.
-`CapRows` proves range-check soundness, and `CapAssembly` proves the chord
-check and convexity assembly (`CapHull` is a compatibility import). `CapNodes` contains the
-15 unchanged row-assembly proofs and the final `CapsRest` theorem, which
-composes `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and the same
-`lower_bound_of_refined_cover_data`. The common
-`NodeCaps` definition lives in `NodeCaps.lean`, independently of
-`Reduction.lean`. There is one build target and one axiom report: the heavy
-rows and `CapNodes` are part of `Grothe`.
+The same single target `Grothe` includes `lower_bound_of_capsRest :
+CapsRest → IsGrothendieckBound K → 1.401697049825 < K` (`CapNodes.lean`). The
+activated source now composes the original fifteen row proofs with Row 12's
+unconditional `vertexCapsRow12` assembly. `CapsRest` contains only rows 13–15
+(t = 0.845, 0.85, 0.855), plus excluded-node caps of the original fifteen rows;
+those old exclusion lists remain empty. This newly activated Row 12 stage still
+awaits native execution, the full canonical Lean build/audit and cache upload.
+It changes neither raw caps, capPad = 10⁻¹¹, the refined cover nor endpoint.
 
-The cache provenance boundary is 53 files: 48 local computation modules,
-plus `CapNodes.lean`, `GrotheCapsKernel.lean`, `lean-toolchain`,
-`lake-manifest.json` and `lakefile.toml`. Those five extras are hashed directly,
-without traversing their imports. This identifies the cached computation
-sources, not every analytic dependency or compiled artifact. Lake checks
-ordinary dependencies separately. The numerical checker is the independent
-precompiled `GrotheCapsKernel` library (`Basic`, `CapPoly`, `CapCheck`);
-its constants retain the `GrotheKernel` namespace. Other kernel checkers
-stay outside that library, whose root is pinned because every importer
-loads its shared object.
+The original 15 `CapRowKK` modules retain all 60 single-threaded native range
+facts for rows 0–11 and 16–18. `CapRows` gives range-check soundness;
+`CapAssembly` gives the chord check and convexity (`CapHull` is a compatibility
+import). The shared `NodeCaps` definition remains independent of `Reduction`.
+There is ONE build target, `Grothe`, and ONE combined strict axiom report.
 
-The runner's heavy CI job builds `Grothe` and checks the
-axiom report before recording `.lake/build/caps-closure.sha` with
-`scripts/caps_stamp.py --mark-cache`. Ordinary CI restores that cache and
-calls `--check-cache` (the default). A match permits the build of `Grothe`
-(replaying the heavy facts) and the axiom audit, including `CapNodes`; Lake reuses native results only when
-its dependency hashes permit it. When no verified cache matches the
-caps digest (part of the cache key), CI runs the same check on the droplet's
-runner, which builds, audits, marks and saves the cache; a cache miss delays
-a check but never fails it. After a merge that changed the caps, master's
-check also runs there and finds the build in the runner's workspace. One runner
-build supplies the verification and subsequent replay; no independent
-manual droplet verification is required. The build and the report establish
-verification; a read-only digest alone does not.
+Row 12 is zero-based and binds `RowData13.lean` / `data/lower-rows/row13.json`
+at nominal 0.84. Its 396 nodes are 85 chords and 311 vertices:88 localized nodes
+with 4,562 pieces plus 223 anchors. All 88 selected centre matrices independently
+replay at zero additional cap; all other 4,474 pieces and every anchor still
+need their exact native checks. The generated stage contains 1,487 Lean files,
+including two shared grid/soundness updates, and 1,307 new independent native
+facts: 88 coverage, 1,194 piece ranges and 25 anchor ranges. Its own 88-index
+exclusion list is discharged by all localized-node proofs. The fixed grid
+catalogue preserves the three legacy indices, appending (1600,1152,1/200) and
+(3200,256,1/400). See `docs/CAPS_ROW12_PREPARATION.md` for reproducible inputs.
 
-`CapsRest` still comprises the vertex caps of rows 0.84, 0.845, 0.85,
-0.855 and any excluded-node caps of the other rows; the exclusion lists
-are empty. The rows 12–15 computation campaign and final wiring remain
-separate work.
+The computation fingerprint now covers 1,454 files, using the explicit heavy
+roots in `data/caps-m/plan/row-certificates/row12-build.json`, their pure
+computation closures and direct assembly/configuration pins. Direct assembly
+imports are not traversed; Lake checks ordinary proof dependencies separately.
+`scripts/caps_stamp.py --digest` and `--list` are read-only inventories, not
+verification records. The numerical checker remains the stable independent
+precompiled `GrotheCapsKernel` (`Basic`, `CapPoly`, `CapCheck`), retaining the
+`GrotheKernel` namespace. Unrelated kernel checkers do not replace its image.
 
-The localized-piece predicates also have a computation-only layer:
-`CapCoverDefs` holds rational constraints and finite coverage checks, and
-`CapConstrDefs` holds constrained matrices, parsers and node checks.
-`CapPieceRange` imports these definitions and rational data; the semantic
-regions and unchanged soundness proofs remain in `CapCover`, `CapConstr`
-and `CapPieceNodes`. Generated coverage/range modules therefore avoid the
-lower proof chain. They are excluded from the root until a proof uses
-them, and are not yet wired into `CapsRest`.
+The self-hosted CI lane prebuilds 126 pure project prerequisites, then 1,322
+independent native modules (15 retained row modules plus 1,307 Row 12 leaves)
+through `scripts/build_caps_batches.py`. At most TWO leaves run in one owned
+group, each `-j1`, under aggregate RSS 24 GiB and disk floor 3 GiB. The source,
+registry and execution helpers are pinned; actual concurrency, foreign work
+and owned STOP guards apply. A trace-neutral `weakLeanArgs` overlay leaves
+the canonical lakefile unchanged. Identical reruns ask Lake to validate and
+reuse completed outputs; receipts never certify a cache.
+
+CI must then finish the full `Grothe` build, the combined STRICT native/axiom
+audit and existing marker/Bridge checks, before recording
+`.lake/build/caps-closure.sha` and successfully uploading the Actions cache.
+A matching verified cache permits hosted replay; otherwise the SAME check
+runs on the droplet. A digest, marker alone or partial leaf log is insufficient.
+No unconditional second ordinary branch check is required. After actual merge,
+observe the ordinary master check and its master-cache upload; a branch cache
+alone is not that evidence. No private native/full build or manual cache
+publication substitutes for canonical CI.
+
+The numerical research run paused cleanly at 173 accepted centres, all zero,
+and its owned remote source/data folder was archived, hash-validated and
+removed before this handoff. Rows 13–15 remain a separate numerical/certificate
+campaign; research-only export modules stay outside proof roots. Their pure
+checks use `CapCoverDefs`, `CapConstrDefs` and `CapPieceRange`, while semantic
+regions and soundness remain in `CapCover`, `CapConstr` and `CapPieceNodes`.
 
 * Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
   (trailing gate block positive definite, κδ² ≤ δ + gatePrice); the Stein cuts (summed, spectral and general spectral) from their analytic inputs, by completions of squares,
@@ -704,8 +713,8 @@ and the real identification (`hreal`) as explicit inputs.
 | `CapSym`, `CapGrid`, `CapGridT`, `CapGridOK`, `CapTables`, `CapTablesMk` | symbolic polynomials over ℚ(√2); cell prices on uniform polar grids and the exact cell decomposition of the integrated majorant; verified interval tables (`tablesOK_mk`) |
 | `CapPiece`, `CapCheckSound` | node certificate soundness (`pot_le_of_pieceOK`, `pot_le_of_nodeOK`) for the precompiled checker `GrotheCapsKernel/CapCheck.lean` |
 | `CapSymmetry`, `CapHull`, `CapChordData` | the symmetries S_c, S_- of the fibre integral; chord nodes from vertex caps by convexity (`capChords_check`, `nodeCaps_of_vertexCaps`) |
-| `CapRangeDefs`, `CapChords`, `CapRecipeData`, `CapRows`, `CapAssembly`, `CapRow00`–`CapRow11`, `CapRow16`–`CapRow18`, `CapNodes` | computation-only definitions and generated rational data; range-check soundness and convexity; 60 range facts in `Grothe`, verified on the runner and replayed by CI from its cache; final `lower_bound_of_capsRest` assembly |
-| `CapCoverDefs`, `CapConstrDefs`, `CapPieceRange`; `CapCover`, `CapConstr`, `CapPieceNodes` | localised caps of rows 12–15 (route M): computable coverage and constrained-piece checks separated from symmetry, S-lemma and piece-node soundness (issue #12) |
+| `CapRangeDefs`, `CapChords`, `CapRecipeData`, `CapRows`, `CapAssembly`, retained `CapRowKK`, `CapNodes` | pure computation data, range soundness and convexity;60 unchanged range facts; assembly now uses Row 12 and leaves rows 13–15 in `CapsRest` (new native verification pending) |
+| `CapCoverDefs`, `CapConstrDefs`, `CapPieceRange`; `CapCover`, `CapConstr`, `CapPieceNodes`; `CapPieces`, `CapRow12/` | localized caps (route M): pure coverage/constrained checks separate from soundness; activated Row 12 has 88 localized nodes/4,562 pieces and 223 anchors in 1,307 native leaves (CI pending) |
 
 **`Grothe/Lower/Cert/`: the row and mixed-batch certificate in eight single-threaded chunks.**
 `Rows0`–`Rows4` and `Batches0`–`Batches2` each hold one `native_decide`
@@ -713,10 +722,10 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 `LawNodeLower.certified_rows` and `certified_mixed_batches` assemble those
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
-The complete registry has 88 native facts: 60 cap ranges, five Hardy facts
-(four arc parts and the region) and 23 others. The default report has 620 print
-directives and 391 required declarations. These are source/registry counts;
-delivery CI checks the combined tree.
+The activated registry has 1,395 native facts: the retained 88 (60 cap ranges,
+five Hardy facts and 23 others) plus 1,307 Row 12 facts. The default report has
+2,016 print directives and 1,787 required declarations. These are source/registry
+counts; Row 12 canonical native/build/audit/cache verification remains pending.
 
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in
@@ -730,8 +739,9 @@ and the eight chunks `Grothe.Lower.certRows0`–`4` and
 has four box checks `certRefinedBoxes0`–`3`
 and `certRefinedPartition` in `Grothe.Research.RefinedLowerCheck`, together with
 `Grothe.Research.LawNodeCheck.certLawNodes` for the added pure-row batch.
-The same `Grothe` target also includes 60 range checks
-`capRangeKK_j`. Every native check is single-threaded (no `Task.spawn`). All
+The same `Grothe` target includes 60 retained range checks `capRangeKK_j` and
+1,307 Row 12 coverage, piece-range and anchor-range checks. Every native check
+is single-threaded (no `Task.spawn`). All
 other accepted finite computations (the polynomial norms, the moment covers) use
 proof-producing kernel reduction, including the canonical continuation-block checks.
 The report is `lake env lean scratch/Axioms.lean`, checked in CI;
