@@ -12,6 +12,7 @@ import unittest
 from unittest.mock import patch
 
 import build_caps_batches as b
+import caps_coexist as c
 VALIDATE = b.validate_registry
 
 
@@ -31,6 +32,7 @@ class Fixture(unittest.TestCase):
             b.DIRECT[0]: "-- directly hashed assembly\n",
             b.DIRECT[1]: "-- directly hashed Row12 assembly\n",
             b.EXECUTION[0]: "# fixture runner source\n", b.EXECUTION[1]: "# fixture stamp source\n",
+            b.EXECUTION[2]: "# fixture coexist source\n",
         }.items():
             self.write(path, text)
         self.registry_path = self.root / b.REGISTRY
@@ -212,6 +214,245 @@ class FakeProcess:
         return self.exit_code
 
 
+class FakeProcFS:
+    def __init__(self):
+        self.rows = {}
+        self.denied = set()
+        self.available = 32 * c.GIB
+
+    def read(self, pid):
+        if pid in self.denied:
+            raise c.CoexistError("fixture process permission denied")
+        return self.rows.get(pid)
+
+    def snapshot(self):
+        return [dict(row) for row in self.rows.values()]
+
+    def mem_available(self):
+        return self.available
+
+
+class CoexistTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name).resolve()
+        self.ci_root, self.num_root = self.root / "ci", self.root / "research"
+        for root, name in ((self.ci_root, c.SCRIPTS["ci"]), (self.num_root, c.SCRIPTS["research"])):
+            path = root / name
+            path.parent.mkdir(parents=True)
+            path.write_text("# pinned fixture controller\n")
+        self.proc = FakeProcFS()
+        self.ident = {"run_id": "40459025380", "sha": "a" * 40, "repository": c.REPOSITORY}
+        self.add(90, 10, self.ci_root, "Runner.Worker", ["Runner.Worker", "spawnclient"])
+        self.add(100, 90, self.ci_root, "python3", ["python3", c.SCRIPTS["ci"]], environ={
+            "GITHUB_RUN_ID": self.ident["run_id"], "GITHUB_SHA": self.ident["sha"],
+            "GITHUB_REPOSITORY": self.ident["repository"], "GITHUB_WORKSPACE": str(self.ci_root)})
+        self.add(200, 20, self.num_root, "python3", ["python3", c.SCRIPTS["research"]])
+        self.proc.denied.add(10)  # valid ancestry must stop at the matching Worker before this system PID
+        self.signals = []
+        self.ci = self.session("ci", 100, self.ci_root)
+        self.num = self.session("research", 200, self.num_root)
+        self.ci.publish()
+        self.num.publish()
+
+    def add(self, pid, ppid, root, comm, args, *, pgid=None, environ=None, rss=0):
+        self.proc.rows[pid] = {"pid": pid, "ppid": ppid, "pgid": pid if pgid is None else pgid,
+            "uid": os.getuid(), "start_ticks": pid * 100, "cwd": str(root), "comm": comm,
+            "args": args, "environ": environ or {}, "rss": rss}
+
+    def session(self, role, pid, root, **kwargs):
+        return c.Coexist(self.root / "share", role=role, root=root,
+            jobs=c.PROFILES[role]["jobs"], rss_limit_gib=c.PROFILES[role]["rss_limit_bytes"] / c.GIB,
+            expected_ci=self.ident, research_root=self.num_root if role == "ci" else None,
+            proc=self.proc, pid=pid, killpg=lambda pgid, sig: self.kill(pgid, sig), **kwargs)
+
+    def kill(self, pgid, sig):
+        self.signals.append((pgid, sig))
+        for pid in [p["pid"] for p in self.proc.snapshot() if p["pgid"] == pgid]:
+            self.proc.rows.pop(pid)
+
+    def mutate_passport(self, role, **changes):
+        path = self.root / "share" / (role + ".json")
+        value = json.loads(path.read_text())
+        value.update(changes)
+        path.write_text(json.dumps(value))
+
+    def test_exact_ci_worker_only_is_authorized(self):
+        self.add(101, 100, self.ci_root, "lake", ["lake"], rss=c.GIB)
+        self.add(102, 101, self.ci_root, "lean", ["lean", "-j1"], pgid=101, rss=c.GIB)
+        self.add(91, 10, self.ci_root, "Runner.Worker", ["Runner.Worker"])
+        self.add(301, 20, self.num_root, "lean", ["lean", "-j1"])
+        self.ci.publish(child_pgid=101)
+        allowed = self.num.authorized_foreign(self.proc.snapshot())
+        self.assertTrue({90, 100, 101, 102} <= allowed)
+        self.assertNotIn(91, allowed)
+        self.assertNotIn(301, allowed)
+
+    def test_ci_only_authorizes_registered_research_tree(self):
+        self.add(201, 200, self.num_root, "lake", ["lake"])
+        self.add(202, 201, self.num_root, "lean", ["lean", "-j1"], pgid=201)
+        self.num.publish(child_pgid=201)
+        self.assertEqual(self.ci.authorized_foreign(self.proc.snapshot()), {200, 201, 202})
+
+    def test_pid_reuse_fails_closed(self):
+        self.proc.rows[100]["start_ticks"] += 1
+        with self.assertRaisesRegex(c.CoexistError, "stale"):
+            self.num.authorized_foreign(self.proc.snapshot())
+
+    def test_wrong_ci_environment_fails_closed(self):
+        self.proc.rows[100]["environ"]["GITHUB_SHA"] = "b" * 40
+        with self.assertRaises(c.CoexistError):
+            self.num.peer()
+
+    def test_python_c_spoof_is_rejected(self):
+        self.proc.rows[100]["args"] = ["python3", "-c", "print('unrelated')", c.SCRIPTS["ci"]]
+        with self.assertRaisesRegex(c.CoexistError, "script position"):
+            self.num.peer()
+
+    def test_wrong_uid_and_profile_fail_closed(self):
+        self.proc.rows[200]["uid"] += 1
+        with self.assertRaises(c.CoexistError):
+            self.ci.peer()
+        self.proc.rows[200]["uid"] = os.getuid()
+        self.mutate_passport("research", profile={"jobs": 7, "rss_limit_bytes": 8 * c.GIB})
+        with self.assertRaises(c.CoexistError):
+            self.ci.peer()
+
+    def test_missing_ancestry_above_worker_is_not_read(self):
+        self.assertEqual(self.num.peer()["runner_worker"]["pid"], 90)
+
+    def test_permission_error_in_required_controller_fails_closed(self):
+        self.proc.denied.add(100)
+        with self.assertRaises(c.CoexistError):
+            self.num.peer()
+
+    def test_source_change_is_rejected(self):
+        (self.ci_root / c.SCRIPTS["ci"]).write_text("# changed\n")
+        with self.assertRaisesRegex(c.CoexistError, "source changed"):
+            self.num.peer()
+
+    def test_own_passport_cannot_relabel_changed_running_source(self):
+        (self.num_root / c.SCRIPTS["research"]).write_text("# changed underneath controller\n")
+        with self.assertRaisesRegex(c.CoexistError, "own coexist execution source changed"):
+            self.num.publish()
+
+    def test_peer_rss_budget_is_checked_before_whitelist(self):
+        self.add(201, 200, self.num_root, "lean", ["lean", "-j1"], rss=9 * c.GIB)
+        self.num.publish(child_pgid=201)
+        with self.assertRaisesRegex(c.CoexistError, "RSS"):
+            self.ci.authorized_foreign(self.proc.snapshot())
+
+    def test_peer_thread_and_process_budget_is_checked(self):
+        self.add(201, 200, self.num_root, "lean", ["lean", "-j8"])
+        self.num.publish(child_pgid=201)
+        with self.assertRaisesRegex(c.CoexistError, "-j1"):
+            self.ci.authorized_foreign(self.proc.snapshot())
+        self.proc.rows[201]["args"] = ["lean", "-j1"]
+        self.add(202, 201, self.num_root, "lean", ["lean", "-j1"], pgid=201)
+        with self.assertRaisesRegex(c.CoexistError, "concurrency"):
+            self.ci.authorized_foreign(self.proc.snapshot())
+
+    def test_insecure_or_symlinked_passport_fails_closed(self):
+        path = self.root / "share/ci.json"
+        path.chmod(0o644)
+        with self.assertRaises(c.CoexistError):
+            self.num.peer()
+        path.chmod(0o600)
+        path.rename(self.root / "copy.json")
+        path.symlink_to(self.root / "copy.json")
+        with self.assertRaises((c.CoexistError, OSError)):
+            self.num.peer()
+
+    def test_stale_child_group_is_not_authorized(self):
+        self.add(201, 200, self.num_root, "lake", ["lake"])
+        self.num.publish(child_pgid=201)
+        self.proc.rows[201]["start_ticks"] += 1
+        with self.assertRaisesRegex(c.CoexistError, "stale"):
+            self.ci.peer()
+
+    def test_dead_controller_cannot_erase_live_old_python_group(self):
+        self.add(201, 200, self.num_root, "python3", ["python3", "solve.py"])
+        self.num.publish(child_pgid=201)
+        self.proc.rows.pop(200)
+        self.add(210, 20, self.num_root, "python3", ["python3", c.SCRIPTS["research"]])
+        replacement = self.session("research", 210, self.num_root)
+        with self.assertRaisesRegex(c.CoexistError, "left a live child"):
+            replacement.publish()
+        self.assertEqual(json.loads((self.root / "share/research.json").read_text())["pid"], 200)
+        self.assertEqual(self.signals, [])
+
+    def test_reused_controller_pid_cannot_erase_live_old_group(self):
+        self.add(201, 200, self.num_root, "python3", ["python3", "solve.py"])
+        self.num.publish(child_pgid=201)
+        self.proc.rows[200]["start_ticks"] += 1
+        with self.assertRaisesRegex(c.CoexistError, "left a live child"):
+            self.num.publish()
+
+    def test_exclusive_phase_prevents_new_research_spawn(self):
+        self.ci.publish(phase="exclusive")
+        with self.assertRaisesRegex(c.CoexistError, "shared phase"):
+            self.num.launch_registered(lambda *_a, **_k: self.fail("spawned after exclusive handoff"), ["python"], start_new_session=True)
+
+    def child_factory(self, *_args, **_kwargs):
+        self.add(201, 200, self.num_root, "lake", ["lake"])
+        outer = self
+        class Child:
+            pid = 201
+            def poll(self):
+                return None if 201 in outer.proc.rows else 0
+            def wait(self, timeout=None):
+                outer.proc.rows.pop(201, None)
+                return 0
+        return Child()
+
+    def test_spawn_and_registration_are_inside_common_lock(self):
+        def factory(*args, **kwargs):
+            path = self.root / "share/coexist.lock"
+            with path.open("r+") as stream:
+                with self.assertRaises(BlockingIOError):
+                    c.fcntl.flock(stream, c.fcntl.LOCK_EX | c.fcntl.LOCK_NB)
+            return self.child_factory(*args, **kwargs)
+        child = self.num.launch_registered(factory, ["lake"], start_new_session=True)
+        self.assertEqual(self.ci.peer()["child"]["pgid"], child.pid)
+        self.assertTrue(self.ci.peer_child_present())
+        child.wait()
+        self.num.clear_child()
+        self.assertFalse(self.ci.peer_child_present())
+
+    def test_failed_registration_stops_only_new_owned_group(self):
+        with patch.object(self.num, "_write", side_effect=c.CoexistError("injected atomic write failure")):
+            with self.assertRaisesRegex(c.CoexistError, "atomic write"):
+                self.num.launch_registered(self.child_factory, ["lake"], start_new_session=True)
+        self.assertEqual(self.signals, [(201, signal.SIGTERM)])
+        self.assertNotIn(201, self.proc.rows)
+        self.assertIn(100, self.proc.rows)
+
+    def test_machine_headroom_prevents_spawn(self):
+        self.proc.available = 2 * c.GIB
+        with self.assertRaisesRegex(c.CoexistError, "headroom"):
+            self.num.launch_registered(lambda *_a, **_k: self.fail("spawned without headroom"), ["lake"], start_new_session=True)
+
+    def test_missing_or_closed_ci_does_not_whitelist_runner(self):
+        self.ci.close()
+        self.proc.rows.pop(100)
+        self.assertEqual(self.num.authorized_foreign(self.proc.snapshot()), set())
+        with self.assertRaisesRegex(c.CoexistError, "unregistered"):
+            self.num.launch_registered(self.child_factory, ["lake"], start_new_session=True)
+        self.proc.rows.pop(90)
+        child = self.num.launch_registered(self.child_factory, ["lake"], start_new_session=True)
+        child.wait()
+        self.num.clear_child()
+        (self.root / "share/ci.json").unlink()
+        self.assertEqual(self.num.authorized_foreign(self.proc.snapshot()), set())
+
+    def test_future_research_root_can_be_absent_before_deployment(self):
+        absent = self.root / "not-deployed-yet/repo"
+        session = c.Coexist(self.root / "share", role="ci", root=self.ci_root, jobs=2, rss_limit_gib=20,
+                            expected_ci=self.ident, research_root=absent, proc=self.proc, pid=100)
+        self.assertEqual(session.research_root, absent)
+
+
 class RunnerTests(Fixture):
     def runner(self, *, exit_code=0, pause=False):
         self.calls, self.signals = [], []
@@ -296,6 +537,22 @@ class RunnerTests(Fixture):
         with self.assertRaisesRegex(b.Pause, "stop signal"):
             runner.run_group("native", ["Grothe.A"], 1)
         self.assertFalse(self.calls)
+
+    def test_exclusive_handoff_waits_for_research_group_absence(self):
+        events = []
+        class Session:
+            def publish(self, **kwargs):
+                events.append(("publish", kwargs))
+            def peer_child_present(self):
+                events.append(("observe", None))
+                return len([e for e in events if e[0] == "observe"]) == 1
+        runner = self.runner()
+        runner.coexist = Session()
+        runner.sleep = lambda _: events.append(("wait", None))
+        with redirect_stdout(io.StringIO()):
+            runner.finish_shared()
+        self.assertEqual(events, [("publish", {"phase": "exclusive", "child_pgid": None}),
+                                  ("observe", None), ("wait", None), ("observe", None)])
 
     def test_plan_and_registry_mutation_are_mutually_exclusive(self):
         with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):

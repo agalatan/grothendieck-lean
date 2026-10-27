@@ -1329,7 +1329,8 @@
     "Grothe/LowerAnalytic/CapRow12/Assembly.lean"
   ],
   "execution_source_sha256": {
-    "scripts/build_caps_batches.py": "804d8c5913e35abc33c9970314fff8e3ea94c97ec39c22b48b7091b4609fe21f",
+    "scripts/build_caps_batches.py": "bc4bece27f4f95bfb73c341f9f51ff0fafb73d41f7bff723ec37e13954731ee6",
+    "scripts/caps_coexist.py": "167f3d4ed2ac152cf9c042334afe146902fd27510ce78c73709591bff7e97d0f",
     "scripts/caps_stamp.py": "0e82f49e150e4f2731120104e5cf9fd0edbfa034a4fe9bb677e9e65808fcc59e"
   },
   "format": "caps-bounded-build-v1",

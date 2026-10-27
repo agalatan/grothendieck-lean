@@ -25,13 +25,14 @@ import time
 import tomllib
 
 from caps_stamp import ClosureError, imports_of, is_project
+import caps_coexist
 
 ROOT = Path(__file__).resolve().parents[1]
 REGISTRY = "data/caps-m/plan/row-certificates/row12-build.json"
 OLD_ROWS = (*range(12), 16, 17, 18)
 DIRECT = ["Grothe/LowerAnalytic/CapNodes.lean", "Grothe/LowerAnalytic/CapRow12/Assembly.lean"]
 CONFIG = ["lakefile.toml", "lake-manifest.json", "lean-toolchain"]
-EXECUTION = ["scripts/build_caps_batches.py", "scripts/caps_stamp.py"]
+EXECUTION = ["scripts/build_caps_batches.py", "scripts/caps_stamp.py", "scripts/caps_coexist.py"]
 FORMAT = "caps-bounded-build-v1"
 
 
@@ -290,12 +291,12 @@ def process_rows() -> list[dict]:
 
 
 def observe(root: Path, pgid: int | None, jobs: int, rss_limit: int, disk_floor: int, stop: Path,
-            rows=None, free=None) -> dict:
+            rows=None, free=None, allowed_pids=()) -> dict:
     rows = process_rows() if rows is None else rows
     own = [row for row in rows if pgid is not None and row["pgid"] == pgid]
     lean = [row for row in own if row["comm"] == "lean"]
     foreign = [row for row in rows if row["comm"] in {"lean", "lake"}
-               and row["pgid"] != pgid and row["pid"] != os.getpid()]
+               and row["pgid"] != pgid and row["pid"] != os.getpid() and row["pid"] not in allowed_pids]
     rss = sum(row["rss"] for row in own)
     disk = shutil.disk_usage(root).free if free is None else free
     reason = None
@@ -344,6 +345,7 @@ class Runner:
         self.popen, self.watch, self.killpg = popen, watch, killpg
         self.clock, self.sleep, self.validate = clock, sleep, validate
         self.child = None
+        self.coexist = getattr(args, "coexist_session", None)
         self.interrupted = False
         self.overlay_data = overlay_bytes((args.root / "lakefile.toml").read_bytes())
         self.overlay = args.run_dir / "lake-single-lean.toml"
@@ -367,9 +369,18 @@ class Runner:
             raise BuildError("owned Lake overlay changed")
         if self.interrupted:
             raise Pause("controller received a stop signal")
-        result = self.watch(self.args.root, pgid, self.args.jobs,
-                            int(self.args.rss_limit_gib * 2**30), int(self.args.disk_floor_gib * 2**30),
-                            self.args.stop_file)
+        if self.coexist is None:
+            result = self.watch(self.args.root, pgid, self.args.jobs,
+                                int(self.args.rss_limit_gib * 2**30), int(self.args.disk_floor_gib * 2**30),
+                                self.args.stop_file)
+        else:
+            rows = process_rows()
+            allowed = self.coexist.authorized_foreign(rows, pgid)
+            result = observe(self.args.root, pgid, self.args.jobs,
+                             int(self.args.rss_limit_gib * 2**30), int(self.args.disk_floor_gib * 2**30),
+                             self.args.stop_file, rows=rows, allowed_pids=allowed)
+            if self.coexist.proc.mem_available() < 3 * 2**30:
+                result["pause_reason"] = "machine memory headroom below3GiB"
         if result["pause_reason"]:
             raise Pause(result["pause_reason"], result)
         return result
@@ -414,8 +425,9 @@ class Runner:
         start, failure = self.clock(), None
         try:
             with log.open("xb") as stream:
-                self.child = self.popen(argv, cwd=self.args.root, env=env, stdout=stream,
-                                        stderr=subprocess.STDOUT, start_new_session=True)
+                launch = self.popen if self.coexist is None else lambda *a, **k: self.coexist.launch_registered(self.popen, *a, **k)
+                self.child = launch(argv, cwd=self.args.root, env=env, stdout=stream,
+                                    stderr=subprocess.STDOUT, start_new_session=True)
                 record.update(state="running", owned_pgid=self.child.pid)
                 atomic_json(receipt, record)
                 while self.child.poll() is None:
@@ -443,12 +455,29 @@ class Runner:
                 self.stop_child()
                 record["exit_code"] = self.child.poll()
         finally:
+            if self.coexist is not None and self.child is not None:
+                self.coexist.clear_child()
             self.child = None
             record.update(finished_at_utc=utc(), elapsed_seconds=self.clock() - start)
             atomic_json(receipt, record)
         if failure:
             raise failure
         return record
+
+    def finish_shared(self):
+        if self.coexist is None:
+            return
+        # The same transaction lock protects research spawn+registration. Once
+        # this write completes no new research child can race the absence check.
+        self.coexist.publish(phase="exclusive", child_pgid=None)
+        deadline = self.clock() + 120
+        while self.coexist.peer_child_present():
+            if self.interrupted or self.args.stop_file.exists():
+                raise Pause("stop requested during exclusive handoff")
+            if self.clock() >= deadline:
+                raise Pause("research child did not yield within exclusive handoff deadline")
+            self.sleep(1)
+        print("Shared caps phase ended; research child group absent. Full Grothe may proceed exclusively.", flush=True)
 
 
 def main(argv=None):
@@ -467,6 +496,8 @@ def main(argv=None):
     parser.add_argument("--stop-file", type=Path, default=Path(".lake/CAPS_BATCH_STOP"))
     parser.add_argument("--lake", default="lake")
     parser.add_argument("--poll-seconds", type=float, default=1)
+    parser.add_argument("--coexist-dir", type=Path, help="optional reviewed CI20/research8 control directory")
+    parser.add_argument("--research-root", type=Path, help="exact registered research checkout for coexist mode")
     args = parser.parse_args(argv)
     try:
         args.root = args.root.resolve()
@@ -512,18 +543,30 @@ def main(argv=None):
             return 0
         if not sys.platform.startswith("linux"):
             raise BuildError("actual bounded builds are supported only on the Linux droplet/CI; use --plan here")
+        args.coexist_session = None
+        if bool(args.coexist_dir) != bool(args.research_root):
+            raise BuildError("coexist mode requires both --coexist-dir and --research-root")
+        if args.coexist_dir:
+            args.coexist_session = caps_coexist.Coexist(args.coexist_dir, role="ci", root=args.root,
+                jobs=args.jobs, rss_limit_gib=args.rss_limit_gib, expected_ci=caps_coexist.github_identity(),
+                research_root=args.research_root)
         runner = Runner(args, registry)
         previous = {}
         for sig in (signal.SIGTERM, signal.SIGINT):
             previous[sig] = signal.signal(sig, lambda *_: setattr(runner, "interrupted", True))
         try:
             with build_lock(args.root / ".lake/caps-batches.lock"):
+                if runner.coexist is not None:
+                    runner.coexist.publish(phase="shared", child_pgid=None)
                 for index, (phase, targets) in enumerate(plan, 1):
                     runner.run_group(phase, targets, index)
                     print(f"Complete group {index}/{len(plan)} ({phase}): {', '.join(targets)}", flush=True)
                     if args.max_batches and index >= args.max_batches and index < len(plan):
                         raise Pause("requested batch boundary reached; later invocations reuse Lake outputs")
+                runner.finish_shared()
         finally:
+            if runner.coexist is not None and runner.coexist.current is not None:
+                runner.coexist.close()
             for sig, handler in previous.items():
                 signal.signal(sig, handler)
         print("Registered leaves built. Full Grothe build, combined strict audit, Bridge probe and cache upload remain required.")
