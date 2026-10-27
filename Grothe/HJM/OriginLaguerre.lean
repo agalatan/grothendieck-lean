@@ -100,7 +100,7 @@ theorem chargeOneCoeff_sum_norm_mul_le (F G : Lp ℂ 2 gaussC) (s : Finset ℕ) 
 /-- Absolute summability of the asymmetric scalar coefficient products. -/
 theorem chargeOneCoeff_summable_norm_mul (F G : Lp ℂ 2 gaussC) :
     Summable fun n => ‖chargeOneCoeff F n‖ * ‖chargeOneCoeff G n‖ :=
-  summable_of_sum_le (fun n => mul_nonneg (norm_nonneg _) (norm_nonneg _))
+  summable_of_sum_le (fun _n => mul_nonneg (norm_nonneg _) (norm_nonneg _))
     (chargeOneCoeff_sum_norm_mul_le F G)
 
 theorem chargeOneCoeff_tsum_norm_mul_le (F G : Lp ℂ 2 gaussC) :

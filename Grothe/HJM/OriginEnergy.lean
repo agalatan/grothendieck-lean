@@ -44,7 +44,7 @@ theorem origin_endpoint_cancellation (α β r t ξ : ℂ)
     _ ≤ ‖conj α * conj ξ * t + conj r * β * ξ + conj r * t‖ :=
       Complex.abs_re_le_norm _
     _ ≤ (‖conj α * conj ξ * t‖ + ‖conj r * β * ξ‖) + ‖conj r * t‖ :=
-      (norm_add_le _ _).trans (add_le_add_right (norm_add_le _ _) _)
+      (norm_add_le _ _).trans (add_le_add (norm_add_le _ _) le_rfl)
     _ = ‖α‖ * ‖ξ‖ * ‖t‖ + ‖r‖ * ‖β‖ * ‖ξ‖ + ‖r‖ * ‖t‖ := by
       simp only [norm_mul, Complex.norm_conj]
     _ ≤ _ := by
@@ -57,41 +57,41 @@ Applied to the spatial truncation at radius squared `36`, Bessel supplies the
 two coefficient-difference budgets with `ε = exp (-18)`. This theorem keeps
 that analytic error separate from numerical integration or interval errors. -/
 theorem origin_coefficients_perturbation {ι : Type*} (s : Finset ι)
-    (a b at bt : ι → ℂ) (ε : ℝ) (hε : 0 ≤ ε)
-    (ha : ∑ n ∈ s, ‖a n - at n‖ ^ 2 ≤ ε ^ 2)
-    (hb : ∑ n ∈ s, ‖b n - bt n‖ ^ 2 ≤ ε ^ 2) :
-    ∑ n ∈ s, ‖conj (a n) * b n - conj (at n) * bt n‖ ≤
-      ε * (√(∑ n ∈ s, ‖at n‖ ^ 2) + √(∑ n ∈ s, ‖bt n‖ ^ 2)) + ε ^ 2 := by
-  have hpoint (n : ι) : ‖conj (a n) * b n - conj (at n) * bt n‖ ≤
-      ‖at n‖ * ‖b n - bt n‖ + ‖a n - at n‖ * ‖bt n‖ +
-        ‖a n - at n‖ * ‖b n - bt n‖ := by
-    have heq : conj (a n) * b n - conj (at n) * bt n =
-        conj (at n) * (b n - bt n) + conj (a n - at n) * bt n +
-          conj (a n - at n) * (b n - bt n) := by
+    (a b aTrunc bTrunc : ι → ℂ) (ε : ℝ) (hε : 0 ≤ ε)
+    (ha : ∑ n ∈ s, ‖a n - aTrunc n‖ ^ 2 ≤ ε ^ 2)
+    (hb : ∑ n ∈ s, ‖b n - bTrunc n‖ ^ 2 ≤ ε ^ 2) :
+    ∑ n ∈ s, ‖conj (a n) * b n - conj (aTrunc n) * bTrunc n‖ ≤
+      ε * (√(∑ n ∈ s, ‖aTrunc n‖ ^ 2) + √(∑ n ∈ s, ‖bTrunc n‖ ^ 2)) + ε ^ 2 := by
+  have hpoint (n : ι) : ‖conj (a n) * b n - conj (aTrunc n) * bTrunc n‖ ≤
+      ‖aTrunc n‖ * ‖b n - bTrunc n‖ + ‖a n - aTrunc n‖ * ‖bTrunc n‖ +
+        ‖a n - aTrunc n‖ * ‖b n - bTrunc n‖ := by
+    have heq : conj (a n) * b n - conj (aTrunc n) * bTrunc n =
+        conj (aTrunc n) * (b n - bTrunc n) + conj (a n - aTrunc n) * bTrunc n +
+          conj (a n - aTrunc n) * (b n - bTrunc n) := by
       simp only [map_sub]
       ring
     rw [heq]
     calc
-      _ ≤ (‖conj (at n) * (b n - bt n)‖ + ‖conj (a n - at n) * bt n‖) +
-          ‖conj (a n - at n) * (b n - bt n)‖ :=
-        (norm_add_le _ _).trans (add_le_add_right (norm_add_le _ _) _)
+      _ ≤ (‖conj (aTrunc n) * (b n - bTrunc n)‖ + ‖conj (a n - aTrunc n) * bTrunc n‖) +
+          ‖conj (a n - aTrunc n) * (b n - bTrunc n)‖ :=
+        (norm_add_le _ _).trans (add_le_add (norm_add_le _ _) le_rfl)
       _ = _ := by simp only [norm_mul, Complex.norm_conj]
-  have hsa : √(∑ n ∈ s, ‖a n - at n‖ ^ 2) ≤ ε := by
+  have hsa : √(∑ n ∈ s, ‖a n - aTrunc n‖ ^ 2) ≤ ε := by
     simpa [Real.sqrt_sq hε] using Real.sqrt_le_sqrt ha
-  have hsb : √(∑ n ∈ s, ‖b n - bt n‖ ^ 2) ≤ ε := by
+  have hsb : √(∑ n ∈ s, ‖b n - bTrunc n‖ ^ 2) ≤ ε := by
     simpa [Real.sqrt_sq hε] using Real.sqrt_le_sqrt hb
   calc
-    _ ≤ ∑ n ∈ s, (‖at n‖ * ‖b n - bt n‖ + ‖a n - at n‖ * ‖bt n‖ +
-          ‖a n - at n‖ * ‖b n - bt n‖) := Finset.sum_le_sum fun n _ => hpoint n
-    _ = (∑ n ∈ s, ‖at n‖ * ‖b n - bt n‖) +
-        (∑ n ∈ s, ‖a n - at n‖ * ‖bt n‖) +
-        ∑ n ∈ s, ‖a n - at n‖ * ‖b n - bt n‖ := by simp only [Finset.sum_add_distrib]
-    _ ≤ √(∑ n ∈ s, ‖at n‖ ^ 2) * √(∑ n ∈ s, ‖b n - bt n‖ ^ 2) +
-        √(∑ n ∈ s, ‖a n - at n‖ ^ 2) * √(∑ n ∈ s, ‖bt n‖ ^ 2) +
-        √(∑ n ∈ s, ‖a n - at n‖ ^ 2) * √(∑ n ∈ s, ‖b n - bt n‖ ^ 2) :=
+    _ ≤ ∑ n ∈ s, (‖aTrunc n‖ * ‖b n - bTrunc n‖ + ‖a n - aTrunc n‖ * ‖bTrunc n‖ +
+          ‖a n - aTrunc n‖ * ‖b n - bTrunc n‖) := Finset.sum_le_sum fun n _ => hpoint n
+    _ = (∑ n ∈ s, ‖aTrunc n‖ * ‖b n - bTrunc n‖) +
+        (∑ n ∈ s, ‖a n - aTrunc n‖ * ‖bTrunc n‖) +
+        ∑ n ∈ s, ‖a n - aTrunc n‖ * ‖b n - bTrunc n‖ := by simp only [Finset.sum_add_distrib]
+    _ ≤ √(∑ n ∈ s, ‖aTrunc n‖ ^ 2) * √(∑ n ∈ s, ‖b n - bTrunc n‖ ^ 2) +
+        √(∑ n ∈ s, ‖a n - aTrunc n‖ ^ 2) * √(∑ n ∈ s, ‖bTrunc n‖ ^ 2) +
+        √(∑ n ∈ s, ‖a n - aTrunc n‖ ^ 2) * √(∑ n ∈ s, ‖b n - bTrunc n‖ ^ 2) :=
       add_le_add (add_le_add (Real.sum_mul_le_sqrt_mul_sqrt s _ _)
         (Real.sum_mul_le_sqrt_mul_sqrt s _ _)) (Real.sum_mul_le_sqrt_mul_sqrt s _ _)
-    _ ≤ √(∑ n ∈ s, ‖at n‖ ^ 2) * ε + ε * √(∑ n ∈ s, ‖bt n‖ ^ 2) + ε * ε :=
+    _ ≤ √(∑ n ∈ s, ‖aTrunc n‖ ^ 2) * ε + ε * √(∑ n ∈ s, ‖bTrunc n‖ ^ 2) + ε * ε :=
       add_le_add (add_le_add
         (mul_le_mul_of_nonneg_left hsb (Real.sqrt_nonneg _))
         (mul_le_mul_of_nonneg_right hsa (Real.sqrt_nonneg _)))

@@ -93,7 +93,10 @@ theorem scalarPairKernel_disk {F G : ℂ → ℂ} (hF : Measurable F) (hG : Meas
   obtain ⟨w, hw, hxw, hyw⟩ := exists_decomp (norm_emb (hx i)) (norm_emb (hy j))
     (norm_eNone ι) (inner_emb_eNone (x i))
   dsimp only
-  rw [hyw, integral_scalar_pair F G hF hG (norm_emb (hx i)) hw hxw, inner_emb]
+  rw [hyw]
+  simpa only [sig, inner_emb] using
+    integral_scalar_pair F G hF hG (norm_emb (hx i)) hw hxw
+      (⟪emb (x i), emb (y j)⟫_ℂ)
 
 /-- Arbitrary measurable disk-valued scalar response pairs give dominated kernels. -/
 theorem scalarPairKernel_dominated {F G : ℂ → ℂ} (hF : Measurable F) (hG : Measurable G)
@@ -174,7 +177,7 @@ theorem symmetrizedPairKernel_dominated {F G : ℂ → ℂ}
     (by norm_num [Fin.sum_univ_two])
   refine hmix.congr fun ρ _ => ?_
   simp only [Fin.sum_univ_two, K, Matrix.cons_val_zero, Matrix.cons_val_one,
-    Matrix.head_cons, symmetrizedPairKernel]
+    symmetrizedPairKernel]
   push_cast
   ring
 

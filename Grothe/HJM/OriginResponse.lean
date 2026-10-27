@@ -28,8 +28,8 @@ noncomputable section
 
 /-- The exact degree-nine polynomial from the origin certificate. -/
 def P (s : ℝ) : ℂ :=
-  ((ofListQ OriginData.pReal).eval s : ℂ) +
-    Complex.I * ((ofListQ OriginData.pImag).eval s : ℂ)
+  (((ofListQ OriginData.pReal).eval s : ℝ) : ℂ) +
+    Complex.I * (((ofListQ OriginData.pImag).eval s : ℝ) : ℂ)
 
 def A : ℂ := (OriginData.aReal : ℂ) + Complex.I * (OriginData.aImag : ℂ)
 
@@ -126,7 +126,7 @@ lemma G_charge (c z : ℂ) (hc : ‖c‖ = 1) : G (c * z) = c * G z := by
 
 /-- Exact rational identity that produces the endpoint cancellation. -/
 lemma rightNumerator_zero : rightNumerator 0 = -Complex.I * leftNumerator 0 := by
-  ext <;> norm_num [rightNumerator, leftNumerator, P, A, B, C, ofListQ,
+  apply Complex.ext <;> norm_num [rightNumerator, leftNumerator, P, A, B, C, ofListQ,
     OriginData.pReal, OriginData.pImag, OriginData.delta, OriginData.aReal,
     OriginData.aImag, OriginData.bReal, OriginData.bImag, OriginData.cReal,
     OriginData.cImag]

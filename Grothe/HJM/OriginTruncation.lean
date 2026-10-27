@@ -25,7 +25,7 @@ theorem integral_gaussian_tailInd {R : ℝ} (hR : 0 < R) :
     ∫ z, tailInd R z ∂gaussC = exp (-R ^ 2) := by
   have h := integral_tail (fun _ : ℝ => (1 : ℝ)) measurable_const 0 hR
   simp only [pow_zero, mul_one, zero_add, pow_one] at h
-  have hangle : ∫ _θ in (-pi)..pi, (1 : ℝ) = 2 * pi := by
+  have hangle : ∫ _θ in (-Real.pi)..Real.pi, (1 : ℝ) = 2 * Real.pi := by
     rw [intervalIntegral.integral_const]
     simp only [smul_eq_mul]
     ring
@@ -84,10 +84,11 @@ theorem spatialTail_norm_sq_le {F : ℂ → ℂ} (hF : Measurable F)
   rw [scalar_norm_toLp_sq, ← integral_gaussian_tailInd hR]
   apply integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => sq_nonneg _) hi
   exact Filter.Eventually.of_forall fun z => by
-    unfold spatialTail tailInd
-    split_ifs
-    · nlinarith [hF1 z, norm_nonneg (F z)]
-    · simp
+    dsimp only
+    by_cases hz : R ≤ ‖z‖
+    · simp only [spatialTail, tailInd, hz, ↓reduceIte]
+      exact pow_le_one₀ (norm_nonneg _) (hF1 z)
+    · simp [spatialTail, tailInd, hz]
 
 /-- Bessel controls all omitted coefficients jointly, not only a finite prefix. -/
 theorem spatialTail_coeff_budget {F : ℂ → ℂ} (hF : Measurable F)
