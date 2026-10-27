@@ -360,8 +360,12 @@ The endpoint cross product is exactly imaginary; its phase-phase term cancels be
 absolute values. Bessel bounds the entire spatially omitted coefficient sequence by squared
 energy `exp(-36)`. A rational Bernstein certificate proves `|P(s)|² ≥ 37/100` for all `s ≥ 0`.
 The charge-one Hermite modes have an explicit radial polynomial and Gaussian integral
-formula. A scalar Green identity reduces the energy calculation to derivatives,
-integrability and boundary limits. For numerical enclosure, a nonnegative inverse-modulus
+formula. The change to squared radius joins the Green identity to weighted
+Parseval with the original chaos multiplier `2n+1`. The actual radial phases are
+smooth through zero and their denominators exceed `1/250`. Exact polynomial
+divided differences give continuous energy amplitudes at zero, integrable on every
+finite panel. Integrability at infinity and the infinite-endpoint Green limit
+remain to be discharged. For numerical enclosure, a nonnegative inverse-modulus
 polynomial residual controls the phase error; uniform spatial error `ε` inside radius
 `R` gives the joint squared coefficient budget `ε² + exp(-R²)` for all modes.
 These structural results introduce no native facts. The pinned 120-entry interval tables are
