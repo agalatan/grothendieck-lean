@@ -175,6 +175,7 @@ import Grothe.HJM.PrefixTable
 import Grothe.HJM.Preprocessors
 import Grothe.HJM.Repriced
 import Grothe.HJM.TailSplit
+import Grothe.HJM.UnweightedRepriced
 import Grothe.Haagerup.CanonicalArithmetic
 import Grothe.Haagerup.CanonicalCheck
 import Grothe.Haagerup.CanonicalData

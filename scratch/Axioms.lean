@@ -326,6 +326,7 @@ import Grothe
 #print axioms Grothe.HJM.origin_symmetric_tail_arithmetic
 #print axioms Grothe.HJM.origin_symmetric_tail_cap_lt_budget
 #print axioms Grothe.HJM.origin_tail_cap_lt_budget
+#print axioms Grothe.HJM.origin_tail_of_strong_unweighted_caps
 #print axioms Grothe.HJM.origin_tail_of_symmetric_energy_caps
 #print axioms Grothe.HJM.origin_tail_of_symmetric_residual_caps
 #print axioms Grothe.HJM.origin_tail_of_unweighted_residual_caps
@@ -354,6 +355,10 @@ import Grothe
 #print axioms Grothe.HJM.symmetric_hjm_bound_of_visible
 #print axioms Grothe.HJM.symmetrizedPairCoeff_dominated
 #print axioms Grothe.HJM.symmetrizedPairKernel_eq_radialKernel
+#print axioms Grothe.HJM.unweightedClaim_eq
+#print axioms Grothe.HJM.unweightedClaim_lt
+#print axioms Grothe.HJM.unweighted_hjm_bound_of_head
+#print axioms Grothe.HJM.unweighted_hjm_decimal_bound_of_head
 #print axioms Grothe.HJM.weights_norm
 #print axioms Grothe.HJM.wt_five
 #print axioms Grothe.Haag.affine_phase_complete_square
