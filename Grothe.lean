@@ -263,6 +263,14 @@ import Grothe.UpperChaos.HardyArcRegionCheck
 import Grothe.UpperChaos.HardyArcSound
 import Grothe.UpperChaos.HardyHolo
 import Grothe.UpperChaos.HardyKernel
+import Grothe.UpperChaos.HardyReal
+import Grothe.UpperChaos.HardyRealAlg
+import Grothe.UpperChaos.HardyRealCov
+import Grothe.UpperChaos.HardyRealDensity
+import Grothe.UpperChaos.HardyRealGauss
+import Grothe.UpperChaos.HardyRealKernel
+import Grothe.UpperChaos.HardyRealLaw
+import Grothe.UpperChaos.HardyRealSubst
 import Grothe.UpperChaos.HardyStep4
 import Grothe.UpperChaos.HermiteBasis
 import Grothe.UpperChaos.HermiteC2

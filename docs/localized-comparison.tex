@@ -105,10 +105,11 @@ endpoint assembly. The concrete theorem takes the explicit decomposition,
 component norm bounds and support as \texttt{ComparisonInputs}; it does not
 assume a near-linear kernel or replace the native head check.
 The source Gaussian integrals and tail enclosures, identification of the
-specified approximation with these pieces, table accuracy, and the analytic
-Schur/Hardy input remain external. This statement therefore does not improve
+specified approximation with these pieces, and table accuracy remain external.
+For the concrete rounding, the Schur/Hardy input is proved by
+\texttt{HardyReal.hardy\_GT}. This statement therefore does not improve
 the separate hypothesis-free Lean upper theorem.
 Exact data and source bindings are in
-\texttt{data/localized-comparison/recipe.json}; the full dependency ledger is
-\texttt{data/localized-comparison/PROOF.md}.
+\path{data/localized-comparison/recipe.json}.
+See \path{data/localized-comparison/PROOF.md} for the full dependency ledger.
 \end{document}

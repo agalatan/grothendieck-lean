@@ -182,7 +182,7 @@ remain a separate campaign (generated piece modules are excluded from the
 root until a proof uses them).
 
 **Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder`, for an L² charge-one truncation `X`, proves
-`ComparisonInputs → energy_close → hardy → IsGrothendieckBound (500000000000000000/355973699864771491)`,
+`ComparisonInputs → energy_close → IsGrothendieckBound (500000000000000000/355973699864771491)`,
 and `Grothe.upper_value_lt` shows this is below 1.404598149218
 (`Grothe/UpperChaos/PhiBound.lean`; the table interface is `Grothe.fresh_upper` in `Grothe/Upper/PolynomialBridge.lean`).
 
@@ -216,21 +216,23 @@ What remains **input**:
 |---|---|---|
 | `ComparisonInputs` | exact error decomposition, spectral supports and inherited Gaussian component norm caps; Lean derives the selected comparison | 93.56% |
 | `energy_close` | the stored energies are within 6847009/(5·10¹⁷) of E(X) | 0.001% |
-| `hardy` | weighted square sum ≤ 7/4 at radius 4149/4000, giving the tail 30488839/10¹⁵ beyond degree 501 | 3.35% |
 
 The head, computed in Lean (`head_check`), is 28153/10¹², 3.09% of the total
-455308278509/(5·10¹⁷).
+455308278509/(5·10¹⁷). The Hardy tail beyond degree 501, 30488839/10¹⁵ (3.35%), is **proved**: the weighted
+square sum is ≤ 7/4 at radius 4149/4000 (`HardyReal.hardy_GT`, below).
 
 The Hardy tail first deducts the linear coefficient's weighted square,
 forced by this weighted head comparison. This adds no Gaussian input.
 
-`HardyHolo.lean` proves holomorphy and Hardy assembly for separate measurable
-disk-valued left and right responses (`differentiableOn_HholPair_Rt`,
-`hardy_of_pair_inputs`). The fixed covariance path `Rt` and its decay region
-are shared. The decay region and the circle mean bound are now proved by five
-interval facts (`HardyArc*`), so `hardy_of_real` derives the `hardy`
-statement for every pair from summable real odd coefficients and their Gaussian identification. The incumbent theorems specialize this
-interface. Neither bound nor its remaining analytic hypotheses changes.
+**The Hardy tail, proved.** The kernel `H(t) = Σ hⱼ t^{2j+1}` of G_T continues holomorphically to a disc of
+radius greater than 4149/4000, and its mean square on that circle is at most 7/4; Parseval then gives the
+weighted square bound. `HardyHolo.lean` proves holomorphy (`differentiableOn_HholPair_Rt`), continuation and
+Parseval; `SchurMain.lean` the Gaussian Schur bound of the continued kernel; five interval facts (`HardyArc*`)
+the decay region and the circle mean (≈ 1.659). `HardyReal.lean` identifies the series for real `t` with the
+continued kernel: unfolding the smoothing, the Mehler pair `(MX + NZ, MY + NZ')` has the law of
+`(U, RU + SW)` (`law_swap`, by characteristic functions), whose density on ℝ⁸ is the holomorphic kernel at the
+real cross covariance `R = Rt t` (`integral_pair_eq_kHol`, by the Cholesky substitution). `hardy_GT` is the
+resulting `hardy` statement for the rounding of the certificate, and `fresh_upper_rounder` no longer assumes it.
 
 **Radial repair and its ceiling.** `UpperChaos/RadialRepair.lean` certifies the
 polynomial disk map `z ↦ z S₆(1−|z|²)`, where S₆ is the degree-six binomial
@@ -248,8 +250,8 @@ Gaussian phase moment or certify the new response's score.
 The current parameters and all 21,168 exact energies are in
 `data/upper-preprocess/certificate.json`; `python3 tools/gen_upper_data.py`
 regenerates the Lean data. The directed head and the fresh 65,594-arc Gaussian
-Schur/Hardy replay are recorded alongside it. The source coefficient-error
-enclosures, table accuracy and Hardy input are inherited. Their identification
+Schur/Hardy replay are recorded alongside it (the Hardy input is now proved in Lean). The source coefficient-error
+enclosures and table accuracy are inherited. Their identification
 with the specified error pieces remains external; Lean proves the selected
 comparison from those pieces. The complete dependency ledger and exact replay
 are in [`data/localized-comparison/PROOF.md`](data/localized-comparison/PROOF.md),
@@ -328,7 +330,7 @@ Every native check is single-threaded code (no `Task.spawn`).
 All other proofs, including the canonical finite checks, are kernel-checked.
 No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`, including the node caps.
-The report contains 600 print directives, with 383 required declarations and 88
+The report contains 605 print directives, with 385 required declarations and 88
 allowlisted native facts (60 cap ranges, five Hardy checks and 23 others).
 The focused report `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, allows
 no native axioms for its 96 selected unconditional upper-bound results.

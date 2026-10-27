@@ -35,7 +35,6 @@ for the concrete rounding `GT` (smoothed `F₀·P₃(φ)` built from `Grothe/Upp
 
 * `ComparisonInputs`: the exact spectrally supported Gaussian error decomposition and inherited component norm caps; Lean derives its weighted selected-head energy comparison (with coefficient costs proved from the preprocessors),
 * `energy_close`: `Σ_{n+3m≤501} |energy X − energyTable| ≤ energyErrQ`,
-* `hardy`: `Σ_{n<J} kernelCoeff(energy GT)_n² (4149/4000)^{2(2n+1)} ≤ 7/4`,
 
 for some charge-one `X ∈ L²(gaussC ⊗ gaussC)` (the smoothed truncation of `F₀ + v`; its correction vector `v` lives
 in `handoff/upper-residual/global_norm/frozen_taylor_correction_D201.npz`, not in Lean).
@@ -156,7 +155,12 @@ Progress (claude/hardy, 26 Oct):
   every measurable disk-valued pair, and **`hardy_of_real`** gives the `hardy` statement from the real
   identification (step 1(b)) for summable coefficients. Measured on GitHub-hosted runners: 700–1140 s per part alone (about
   1700 s with all four in parallel on 4 vCPUs) and 9 s for the region.
-- **Remaining:**
+- **1(b) real identification — proved** (`claude/hardy-real`). `HardyReal.hreal_GT`, hence
+  `HardyReal.hardy_GT`: the `hardy` statement for the rounding, with no hypothesis beyond `PhiBound`.
+  `fresh_upper_rounder` no longer assumes it. Modules: `HardyRealAlg` (exponent identity), `HardyRealKernel`,
+  `HardyRealGauss` (`mu2` in the coordinates of `HholPair`), `HardyRealSubst`, `HardyRealDensity` (density of
+  `(U, RU + SW)` is `kHol R`), `HardyRealCov`, `HardyRealLaw` (law swap), `HardyReal` (assembly).
+- **Former plan of 1(b), for reference:**
   1(b) the real identification: for real `R`, `kHol R` is the density of the Gaussian pair with cross covariance
   `R` (two real copies), and smoothing by `M`, `N` turns `E[conj GT(X) GT(Y)]` (diagonal correlations
   `p(t), −τ(t)`) into `Hhol (Rt t)`; then `Bm_polyKernel` gives the series with `h = kernelCoeff (energy GT)`.
