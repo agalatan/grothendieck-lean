@@ -206,7 +206,7 @@ certificate, the complete Wiener tail deduction, and exact ledger
 arithmetic/implication in
 [ScalarTailRefinement.lean](../../Grothe/Haagerup/ScalarTailRefinement.lean).
 The finite power check uses `decide +kernel` on the same outward
-interval computation. The original power certificate uses only standard axioms. The weighted estimate adds no native fact or analytic premise. The strengthened generic split, weighted suffix and score theorem pass a local Lean check against the unchanged compiled power certificate; the final theorem reports only `propext`, `Classical.choice` and `Quot.sound`. Full compilation of the generated production module is pending. The archived build receipt records the earlier source hashes and does not certify this revision.
+interval computation. The original power certificate uses only standard axioms. The weighted estimate adds no native fact or analytic premise. The strengthened generic split, weighted suffix and score theorem pass a local Lean check against the unchanged compiled power certificate; the final theorem reports only `propext`, `Classical.choice` and `Quot.sound`. Full compilation of the generated production module also passes in [focused CI](https://github.com/agalatan/grothendieck-lean/actions/runs/40457620830), at commit `1cc7f6501e67afe4509c2f87950b183b3de23465`; [WEIGHTED_BUILD.json](verification/WEIGHTED_BUILD.json) binds the result to the source hashes. The archived build receipt records the earlier source hashes and does not certify this revision.
 The fixed Wallis estimate is derived from the existing formal Haagerup
 majorant, using an exact split at 120. If `r_j=4*h_j/pi` and
 `g_j=r_j*(j+1)*(2*j+1)`, then

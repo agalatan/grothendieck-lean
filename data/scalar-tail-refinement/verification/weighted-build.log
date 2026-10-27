@@ -1,0 +1,5 @@
+id=codex-2ca4-20261027055043-26228 kind=lean shard=0/1 ref=cloud/codex-2ca4-scalar-weighted sha=1cc7f6501e67afe4509c2f87950b183b3de23465
+lake build Grothe.Haagerup.ScalarTailRefinement
+✔ [8967/8968] Built Grothe.Upper.PowerTail (10s)
+✔ [8968/8968] Built Grothe.Haagerup.ScalarTailRefinement (111s)
+Build completed successfully (8968 jobs).

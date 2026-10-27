@@ -52,9 +52,9 @@ the published slope, prefix, finite-block, other-tail and selector-mass
 inequalities. Their Gaussian interpretation is not formalized here.
 The theorem concludes a normalized score inequality, not
 `IsGrothendieckBound`. The version accepting an explicit weighted outer-tail estimate remains
-available as `refined_score_of_published_inputs`. Focused compilation of the
-weighted refinement is pending; archived build evidence identifies the earlier
-source revision by hash.
+available as `refined_score_of_published_inputs`. The complete
+weighted production module passes focused compilation. `WEIGHTED_BUILD.json`
+binds that check to its source hashes; the earlier receipt is preserved separately.
 The corresponding written unconditional corollary uses HJM's proved inputs.
 All four pinned public non-regeneration verifiers pass; the accepted integral
 tables were hash-checked, not regenerated. See

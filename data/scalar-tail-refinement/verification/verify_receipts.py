@@ -179,6 +179,13 @@ def main():
     require(provenance['coefficient_source_sha256'] == pins['audit_sparse6_altgroups.py']['sha256'],
             'Production coefficient source hash differs')
 
+    build = load('WEIGHTED_BUILD.json')
+    require(build['exit_code'] == 0 and build['warnings'] == 0, 'Weighted build did not pass cleanly')
+    require(build['target'] == 'Grothe.Haagerup.ScalarTailRefinement', 'Weighted target differs')
+    require(build['log_sha256'] == sha(HERE/'weighted-build.log'), 'Weighted build log binding failed')
+    for relative, expected in build['source_sha256'].items():
+        require(sha(ROOT/relative) == expected, 'Weighted build source differs: '+relative)
+
     result = dict(status='PASS_ARCHIVED_REPLAY_AND_EXACT_POWER16_SCOPE',
         checked_utc=datetime.now(timezone.utc).isoformat(), upstream_commit=COMMIT,
         packaged_files_verified=len(checked), upstream_stage_count=4,
@@ -191,6 +198,7 @@ def main():
         wallis_finite_rational_upper=str(wallis_rational),
         weighted_split=160, weighted_outer_bound=str(weighted_bound),
         weighted_outer_reserve=str(outer), strict_product_margin=str(claim*score-1),
+        verified_weighted_build_run=build['run'],
         lean_compilation_performed=False,
         scope='Archived non-regeneration replay and exact polynomial/ledger arithmetic only. '
               'Published Gaussian and integral claims are cited in PROOF.md; '

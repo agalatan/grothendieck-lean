@@ -35,8 +35,9 @@ The archive contains:
   axiom reports. All sixteen results use only standard axioms; the polynomial
   power is checked by `decide +kernel`, without native axioms. The report verifier
   rejects any scalar-tail native registry entry or native report dependency.
-  This archived receipt does not certify the current weighted-tail source. Its recorded source hashes identify exactly what was built. The changed weighted proofs pass a local check against the unchanged compiled certificate; complete compilation of the generated production module is pending. This is targeted module
+  This archived receipt does not certify the current weighted-tail source. Its recorded source hashes identify exactly what was built. The changed weighted proofs pass a local check against the unchanged compiled certificate; complete compilation of the generated production module passes in the separately recorded weighted build. This is targeted module
   coverage; CI checks the complete root target and full axiom report.
+- `WEIGHTED_BUILD.json` and `weighted-build.log`: the complete generated weighted-tail module passes focused CI at commit `1cc7f65`. This receipt binds the current proof and generator sources by hash and preserves the old receipt separately.
 - `verify_lean_report.py`: consumes the entire archived report through the
   repository's strict parser, checks all 16 names and both registries, and
   rejects any foreign native fact. It checks a report; it does not rebuild.

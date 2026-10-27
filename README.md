@@ -14,8 +14,8 @@ uses bounds on combined resolvent products and exact coefficient locality.
 
 A separate **written unconditional refinement gives K_G^ℂ < 1.4048984303**,
 using Heilman–Jones–Malavolta's published construction and numerical estimates.
-The polynomial power check is proved in Lean; focused compilation of the
-stronger per-index tail estimate and score arithmetic is pending. The published Gaussian construction and directed
+The polynomial power check, stronger per-index tail estimate and score
+arithmetic are proved in Lean; the complete production module passes its focused check. The published Gaussian construction and directed
 integration facts remain outside this repository's end-to-end formalization.
 See the [proof and verification record](data/scalar-tail-refinement/PROOF.md).
 
@@ -320,9 +320,9 @@ axioms, with no native evaluation axiom.
 The four pinned public verification stages were replayed
 successfully, including directed energy integration and the complete head/tail
 audit; the two accepted coefficient tables were hash-checked, not regenerated.
-This is a written corollary of the published proof. Focused Lean compilation
-of the weighted refinement is pending; the archived build receipt covers the
-preceding source revision. The separate end-to-end unconditional Lean theorem is `haagerup_bound`.
+This is a written corollary of the published proof. The complete weighted-tail
+production module passes focused Lean compilation; `WEIGHTED_BUILD.json` binds
+the check to its source hashes. The earlier build receipt is preserved separately. The separate end-to-end unconditional Lean theorem is `haagerup_bound`.
 Exact inputs, the reproducible generator and all scope details are in
 [`data/scalar-tail-refinement/`](data/scalar-tail-refinement/PROOF.md).
 

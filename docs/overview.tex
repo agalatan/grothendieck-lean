@@ -34,7 +34,7 @@
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, resting on explicitly stated
 analytic and computer-assisted inputs (Section~\ref{sec:trust}).\\[4pt]
 Unconditional Lean theorem: $\KG\le1.404909132791$, using only the three standard axioms.\\[3pt]
-Written refinement of the published mixed rounding: $\KG<1.4048984303$; its weighted-tail Lean check is pending.\vspace{4pt}
+Written refinement of the published mixed rounding: $\KG<1.4048984303$; its power, weighted-tail and score steps are checked in Lean.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
@@ -326,9 +326,9 @@ tail, other tails and exact selector mass gives the written corollary
 $\KG<1.4048984303$. Four pinned public verifiers pass; accepted coefficient
 tables are hash-checked. Lean proves the power check with \lean{decide +kernel},
 complete suffix estimate and score arithmetic, all without native axioms.
-It also derives the phase-tail bound by an exact split at 120. The weighted
-refinement is awaiting focused compilation; archived build receipts cover the
-earlier source revision. Published Gaussian and
+It also derives the phase-tail bound by an exact split at 120. The complete weighted
+production module passes focused compilation, with a source-bound receipt;
+the earlier receipt is preserved separately. Published Gaussian and
 numerical integral budgets remain external. The separate unconditional \lean{haagerup\_bound}
 theorem has no external hypotheses and uses only the three standard axioms.
 The deduction and provenance are in
