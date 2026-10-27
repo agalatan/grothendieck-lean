@@ -3,6 +3,7 @@ import Grothe.HJM.CauchyGate
 import Grothe.HJM.CauchyGateCheck
 import Grothe.HJM.CauchyKernel
 import Grothe.HJM.CauchyTail
+import Grothe.HJM.CauchyTails
 import Grothe.HJM.Data
 import Grothe.HJM.Mixture
 import Grothe.HJM.Preprocessors
