@@ -121,6 +121,122 @@ theorem kHol_real (h : 0 < k11 a b) (hd : 0 < kdet a b c) (p s : Pt4) :
   push_cast
   ring
 
+lemma integrable_phi2 : Integrable phi2 := by
+  have h := (integrable_gaussianPDFReal 0 1).mul_prod (integrable_gaussianPDFReal 0 1)
+  rw [← Measure.volume_eq_prod] at h
+  exact h
+
+lemma integrable_psi : Integrable psi := by
+  have h := integrable_phi2.mul_prod integrable_phi2
+  rw [← Measure.volume_eq_prod] at h
+  exact h
+
+lemma solve4_linS4 (h : 0 < k11 a b) (hd : 0 < kdet a b c) (r : Pt4) : solve4 a b c (linS4 a b c r) = r := by
+  simp only [linS4, LinearMap.prodMap_apply, linS, LinearMap.coe_mk, AddHom.coe_mk, solve4, solveS_mulS h hd]
+
+/-- `v ↦ ψ(S⁻¹ v)` is integrable (a linear image of the standard density). -/
+lemma integrable_psi_solve4 (h : 0 < k11 a b) (hd : 0 < kdet a b c) :
+    Integrable fun v => psi (solve4 a b c v) := by
+  have hpos : 0 < (s11 a b * s22 a b c) ^ 2 := pow_pos (mul_pos (s11_pos h) (s22_pos h hd)) 2
+  have hdet : LinearMap.det (linS4 a b c) ≠ 0 := by rw [det_linS4]; exact hpos.ne'
+  have hm : Measurable (linS4 a b c) := (linS4 a b c).continuous_of_finiteDimensional.measurable
+  have h1 : Integrable (fun r => psi (solve4 a b c (linS4 a b c r))) := by
+    simpa only [solve4_linS4 h hd] using integrable_psi
+  have h2 : Integrable (fun v => psi (solve4 a b c v)) (Measure.map (linS4 a b c) volume) :=
+    (integrable_map_measure (measurable_psi.comp measurable_solve4).aestronglyMeasurable
+      hm.aemeasurable).2 h1
+  rw [Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure Pt4) hdet] at h2
+  have hκ : ENNReal.ofReal |(LinearMap.det (linS4 a b c))⁻¹| ≠ 0 := by
+    rw [ne_eq, ENNReal.ofReal_eq_zero, not_le]; exact abs_pos.2 (inv_ne_zero hdet)
+  have := h2.smul_measure (c := (ENNReal.ofReal |(LinearMap.det (linS4 a b c))⁻¹|)⁻¹) (ENNReal.inv_ne_top.2 hκ)
+  rwa [smul_smul, ENNReal.inv_mul_cancel hκ ENNReal.ofReal_ne_top, one_smul] at this
+
+/-- `∫ ψ(S⁻¹(s − R p)) ds = det S² = det K`. -/
+lemma integral_psi_solve4 (h : 0 < k11 a b) (hd : 0 < kdet a b c) (p : Pt4) :
+    ∫ s : Pt4, psi (solve4 a b c (s - mulR4 a b c p)) = (s11 a b * s22 a b c) ^ 2 := by
+  have hpos : 0 < (s11 a b * s22 a b c) ^ 2 := pow_pos (mul_pos (s11_pos h) (s22_pos h hd)) 2
+  have e := integral_subst4 h hd p (g := fun _ => (1 : ℂ)) measurable_const
+  simp only [mul_one, integral_psi] at e
+  have e' : ((∫ s : Pt4, psi (solve4 a b c (s - mulR4 a b c p)) : ℝ) : ℂ) = (((s11 a b * s22 a b c) ^ 2 : ℝ) : ℂ) := by
+    rw [← integral_complex_ofReal]
+    have hk : (((s11 a b * s22 a b c) ^ 2)⁻¹ : ℝ) ≠ 0 := inv_ne_zero hpos.ne'
+    have hk' : ((((s11 a b * s22 a b c) ^ 2)⁻¹ : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hk
+    field_simp at e
+    push_cast at e ⊢
+    linear_combination -e
+  exact_mod_cast e'
+
+/-- The density `D(p, s) = ψ(p) ψ(S⁻¹(s − Rp)) / det S²` on `ℝ⁸`. -/
+def dens (a b c : ℝ) (q : Pt4 × Pt4) : ℝ :=
+  psi q.1 * psi (solve4 a b c (q.2 - mulR4 a b c q.1)) / (s11 a b * s22 a b c) ^ 2
+
+lemma dens_nonneg (q : Pt4 × Pt4) : 0 ≤ dens a b c q :=
+  div_nonneg (mul_nonneg (psi_nonneg _) (psi_nonneg _)) (sq_nonneg _)
+
+@[fun_prop] lemma measurable_dens : Measurable (dens a b c) := by
+  unfold dens
+  exact ((measurable_psi.comp measurable_fst).mul (measurable_psi.comp (measurable_solve4.comp
+    (measurable_snd.sub (measurable_mulR4.comp measurable_fst))))).div_const _
+
+lemma integrable_dens (h : 0 < k11 a b) (hd : 0 < kdet a b c) :
+    Integrable (dens a b c) ((volume : Measure Pt4).prod (volume : Measure Pt4)) := by
+  have hpos : 0 < (s11 a b * s22 a b c) ^ 2 := pow_pos (mul_pos (s11_pos h) (s22_pos h hd)) 2
+  rw [integrable_prod_iff measurable_dens.aestronglyMeasurable]
+  refine ⟨Filter.Eventually.of_forall fun p => ?_, ?_⟩
+  · have := ((integrable_psi_solve4 h hd).comp_sub_right (mulR4 a b c p)).const_mul
+      (psi p / (s11 a b * s22 a b c) ^ 2)
+    refine this.congr (Filter.Eventually.of_forall fun s => ?_)
+    simp only [dens]; ring
+  · refine integrable_psi.congr (Filter.Eventually.of_forall fun p => ?_)
+    simp only [Real.norm_eq_abs, abs_of_nonneg (dens_nonneg _), dens]
+    rw [show (fun s : Pt4 => psi p * psi (solve4 a b c (s - mulR4 a b c p)) / (s11 a b * s22 a b c) ^ 2)
+        = fun s => psi p / (s11 a b * s22 a b c) ^ 2 * psi (solve4 a b c (s - mulR4 a b c p)) by
+          ext s; ring,
+      integral_const_mul, integral_psi_solve4 h hd p]
+    field_simp
+
+/-- **The law of `(U, RU + SW)` has density `kHol R` in the coordinates of `HholPair`.** -/
+theorem integral_pair_eq_kHol (h : 0 < k11 a b) (hd : 0 < kdet a b c)
+    {f : (ℂ × ℂ) × (ℂ × ℂ) → ℂ} (hf : Measurable f) {C : ℝ} (hC : ∀ z, ‖f z‖ ≤ C) :
+    ∫ u, (∫ w, f (u, mulRc a b c u + mulSc a b c w) ∂mu2) ∂mu2 =
+      ∫ q : Pt8, f (toC2 q.1.1 q.1.2, toC2 q.2.1 q.2.2) * kHol (Rre a b c) q.1.1 q.1.2 q.2.1 q.2.2 := by
+  have hRc : Measurable (mulRc a b c) := by unfold mulRc; fun_prop
+  have hSc : Measurable (mulSc a b c) := by unfold mulSc; fun_prop
+  have hF2 : Measurable fun z : (ℂ × ℂ) × (ℂ × ℂ) => f (z.1, mulRc a b c z.1 + mulSc a b c z.2) :=
+    hf.comp (measurable_fst.prodMk ((hRc.comp measurable_fst).add (hSc.comp measurable_snd)))
+  -- the inner integral, for `u = toC2 p`
+  have inner : ∀ p : Pt4, ∫ w, f (toC2 p.1 p.2, mulRc a b c (toC2 p.1 p.2) + mulSc a b c w) ∂mu2 =
+      (((s11 a b * s22 a b c) ^ 2)⁻¹ : ℝ) *
+        ∫ s : Pt4, (psi (solve4 a b c (s - mulR4 a b c p)) : ℂ) * f (toC2 p.1 p.2, toC2 s.1 s.2) := by
+    intro p
+    rw [integral_mu2_eq ((hF2.comp (measurable_const.prodMk measurable_id)).aestronglyMeasurable)]
+    simp only [Function.comp_def, toC2_affine]
+    exact integral_subst4 h hd p (g := fun s => f (toC2 p.1 p.2, toC2 s.1 s.2))
+      (hf.comp (measurable_const.prodMk (by unfold toC2; fun_prop)))
+  have houter : AEStronglyMeasurable (fun u => ∫ w, f (u, mulRc a b c u + mulSc a b c w) ∂mu2) mu2 :=
+    (hF2.stronglyMeasurable.integral_prod_right' (μ := mu2) (ν := mu2)).aestronglyMeasurable
+  rw [integral_mu2_eq houter]
+  -- the right side as an iterated integral of `dens · f`
+  have hmeasF : Measurable fun q : Pt4 × Pt4 => f (toC2 q.1.1 q.1.2, toC2 q.2.1 q.2.2) :=
+    hf.comp (by unfold toC2; fun_prop)
+  have hint : Integrable (fun q : Pt4 × Pt4 => (dens a b c q : ℂ) * f (toC2 q.1.1 q.1.2, toC2 q.2.1 q.2.2))
+      ((volume : Measure Pt4).prod volume) := by
+    refine ((integrable_dens h hd).mul_const C).mono'
+      ((measurable_dens.complex_ofReal.mul hmeasF).aestronglyMeasurable)
+      (Filter.Eventually.of_forall fun q => ?_)
+    rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (dens_nonneg q)]
+    exact mul_le_mul_of_nonneg_left (hC _) (dens_nonneg q)
+  have hR : ∫ q : Pt8, f (toC2 q.1.1 q.1.2, toC2 q.2.1 q.2.2) * kHol (Rre a b c) q.1.1 q.1.2 q.2.1 q.2.2 =
+      ∫ q : Pt4 × Pt4, (dens a b c q : ℂ) * f (toC2 q.1.1 q.1.2, toC2 q.2.1 q.2.2) ∂(volume.prod volume) := by
+    rw [← Measure.volume_eq_prod]
+    congr 1; ext q
+    rw [kHol_real h hd q.1 q.2, dens, mul_comm]
+  rw [hR, integral_prod _ hint]
+  congr 1; ext p
+  rw [inner p, ← mul_assoc, ← integral_const_mul]
+  congr 1; ext s
+  simp only [dens]; push_cast; ring
+
 end
 
 end Grothe.UpperChaos.HardyReal
