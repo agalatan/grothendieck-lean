@@ -323,7 +323,10 @@ The sharper conditional bound above remains stronger.
 
 **Toward a Lean proof of the HJM bound (epic #139).** `Grothe/HJM/Mixture.lean` proves the mixture bound
 `K ≤ M/(q̂₀ − Σ_{k≥1}|q̂_k|)` for a weighted mixture `Σ w_r K_r` of dominated radial kernels with `Σ|w_r| ≤ M`
-(`mixture_bound`; negative weights are free because domination survives absolutely convex combinations).
+(`mixture_bound`; negative weights are free because domination survives absolutely convex combinations). The Cauchy
+tails of the scalar branches 1–4 are proved (`Grothe/HJM/Cauchy*.lean`, `weighted_tails`:
+`Σ_r |w_r| Σ_{n≥120} |k_{r,n}| ≤ 4·10⁻¹⁰`), from Haagerup's kernel continued to the slit plane, a quadtree of
+complex interval boxes for the region, and Parseval on the circle.
 `Grothe/HJM/Origin.lean` defines the asymmetric sixth branch from exact polynomial-phase
 responses and proves domination of its full real radial coefficient series. The proof uses one
 shared Gaussian driver, the charge-one Hermite expansion and conjugate-reflection symmetrization.
