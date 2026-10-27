@@ -1,6 +1,6 @@
 import Grothe.HJM.CauchyKernel
 import Grothe.HJM.Preprocessors
-import Grothe.UpperChaos.HardyArcSound
+import Grothe.UpperChaos.HardyArcRegion
 
 /-!
 # The gate region of a scalar preprocessor (HJM 6.23–6.24)
@@ -14,19 +14,24 @@ turns an accepted check into `Gate (ρ ζ)` on the ball `‖ζ‖ < R`.
 
 namespace Grothe.HJM.Cauchy
 
-open GrotheKernel GrotheKernel.HardyArc Grothe.Upper Grothe.UpperChaos.HardyArcSound Polynomial
+open GrotheKernel GrotheKernel.HardyArc Grothe.Upper Grothe.UpperChaos.HardyArcSound
+  Grothe.UpperChaos.HardyArcRegion Polynomial
 
 noncomputable section
 
+/-- A rational coefficient list as reals. -/
+def realList (pl : List ℚ) : List ℝ := pl.map fun q : ℚ => (q : ℝ)
+
 /-- The continued preprocessor `ρ(ζ) = ζ P(ζ²)` of the coefficient list `pl`. -/
-def rhoC (pl : List ℚ) (ζ : ℂ) : ℂ := ζ * hornerR (ζ ^ 2) (pl.map fun q => (q : ℝ))
+def rhoC (pl : List ℚ) (ζ : ℂ) : ℂ := ζ * hornerR (ζ ^ 2) (realList pl)
 
 lemma hornerR_ofReal (x : ℝ) : ∀ pl : List ℚ,
-    hornerR (x : ℂ) (pl.map fun q => (q : ℝ)) = (((ofListQ pl).eval x : ℝ) : ℂ)
-  | [] => by simp [hornerR, ofListQ]
+    hornerR (x : ℂ) (realList pl) = (((ofListQ pl).eval x : ℝ) : ℂ)
+  | [] => by simp [realList, hornerR, ofListQ]
   | a :: l => by
-    simp only [List.map_cons, hornerR, ofListQ, eval_add, eval_C, eval_mul, eval_X]
-    rw [hornerR_ofReal x l]; push_cast; ring
+    have ih := hornerR_ofReal x l
+    simp only [realList, List.map_cons, hornerR, ofListQ, eval_add, eval_C, eval_mul, eval_X] at ih ⊢
+    rw [ih]; push_cast; ring
 
 /-- On the real line `ρ` is the physical preprocessor `t P(t²)`. -/
 lemma rhoC_ofReal (pl : List ℚ) (t : ℝ) : rhoC pl t = ((t * (ofListQ pl).eval (t ^ 2) : ℝ) : ℂ) := by
@@ -78,14 +83,16 @@ lemma gate_of_gateSq {w : ℂ} (h : GateSq (w ^ 2)) : Gate w := by
   rw [map_pow] at h1
   nlinarith [Complex.normSq_nonneg w]
 
-lemma forall₂_mem_ofRatI : ∀ pl : List ℚ, List.Forall₂ mem (pl.map fun q => (q : ℝ)) (pl.map ofRatI)
+lemma forall₂_mem_ofRatI : ∀ pl : List ℚ, List.Forall₂ mem (realList pl) (pl.map ofRatI)
   | [] => List.Forall₂.nil
-  | a :: l => List.Forall₂.cons (mem_ofRatI a) (forall₂_mem_ofRatI l)
+  | a :: l => by
+    simp only [realList, List.map_cons]
+    exact List.Forall₂.cons (mem_ofRatI a) (forall₂_mem_ofRatI l)
 
 lemma gateSq_of_gateBox {pl : List ℚ} {u : ℂ} {B : CI} (hu : memC u B)
     (h : gateBox (pl.map ofRatI) B = true) :
-    GateSq (u * (hornerR u (pl.map fun q => (q : ℝ)) * hornerR u (pl.map fun q => (q : ℝ)))) := by
-  set s := u * (hornerR u (pl.map fun q => (q : ℝ)) * hornerR u (pl.map fun q => (q : ℝ)))
+    GateSq (u * (hornerR u (realList pl) * hornerR u (realList pl))) := by
+  set s := u * (hornerR u (realList pl) * hornerR u (realList pl))
   have hH := memC_horner hu (forall₂_mem_ofRatI pl)
   have hW : memC s _ := memC_mul hu (memC_mul hH hH)
   simp only [gateBox, Bool.and_eq_true, Bool.or_eq_true, decide_eq_true_eq] at h
@@ -107,7 +114,7 @@ lemma gateSq_of_gateBox {pl : List ℚ} {u : ℂ} {B : CI} (hu : memC u B)
     · right
       have hm := (mem_sub (mem_mul (mem_intI 1500) (mem_mul hW.2 hW.2)) (mem_mul hW.1 hW.1)).1
       have h0 : (0 : ℝ) ≤ ((1500 : ℤ) : ℝ) * (s.im * s.im) - s.re * s.re := by
-        have : (0 : ℝ) ≤ _ * D := (Int.cast_nonneg.2 hg).trans hm
+        have : (0 : ℝ) ≤ _ * D := (by exact_mod_cast hg : (0 : ℝ) ≤ _).trans hm
         exact nonneg_of_mul_nonneg_left this hD
       push_cast at h0; nlinarith
 
@@ -115,7 +122,7 @@ lemma gateSq_of_gateBox {pl : List ℚ} {u : ℂ} {B : CI} (hu : memC u B)
 theorem gateCover_sound {pl : List ℚ} {r2 : ℤ} :
     ∀ (depth : ℕ) (xlo xhi ylo yhi : ℤ), gateCover (pl.map ofRatI) r2 depth xlo xhi ylo yhi = true →
       ∀ u : ℂ, mem u.re ⟨xlo, xhi⟩ → mem u.im ⟨ylo, yhi⟩ → Complex.normSq u < (r2 : ℝ) / D →
-        GateSq (u * (hornerR u (pl.map fun q => (q : ℝ)) * hornerR u (pl.map fun q => (q : ℝ)))) := by
+        GateSq (u * (hornerR u (realList pl) * hornerR u (realList pl))) := by
   intro depth
   induction depth with
   | zero =>
@@ -139,7 +146,7 @@ theorem gateCover_sound {pl : List ℚ} {r2 : ℤ} :
       · exact ih _ _ _ _ h4 u ⟨hxl, hx.2⟩ ⟨hyl, hy.2⟩ hr
 
 /-- **The gate on the ball**: an accepted check gives `Gate (ρ ζ)` for `‖ζ‖ < R`. -/
-theorem gate_rhoC_of_check {pl : List ℚ} {R : ℚ} (hR0 : 0 < R) (hR : R ^ 2 < 2)
+theorem gate_rhoC_of_check {pl : List ℚ} {R : ℚ} (hR : R ^ 2 < 2)
     (h : gateCheck pl R = true) {ζ : ℂ} (hζ : ‖ζ‖ < R) : Gate (rhoC pl ζ) := by
   have hD := D_pos
   set u := ζ ^ 2
@@ -161,7 +168,7 @@ theorem gate_rhoC_of_check {pl : List ℚ} {R : ℚ} (hR0 : 0 < R) (hR : R ^ 2 <
     nlinarith
   have hs := gateCover_sound (pl := pl) 30 _ _ _ _ h u hx hy hr
   apply gate_of_gateSq
-  have e : rhoC pl ζ ^ 2 = u * (hornerR u (pl.map fun q => (q : ℝ)) * hornerR u (pl.map fun q => (q : ℝ))) := by
+  have e : rhoC pl ζ ^ 2 = u * (hornerR u (realList pl) * hornerR u (realList pl)) := by
     simp only [rhoC, u]; ring
   rw [e]; exact hs
 
