@@ -22,8 +22,7 @@ FINAL_NAMES = ("coefficient_check", "completed_check", "seed_check", "defect_che
 CONV_BLOCK_SIZE = 5
 CONV_BLOCK_THRESHOLD = 2000
 NUMERIC_MODULES = 16
-COEFFICIENT_CAP = Q(1, 10000)
-DIFFERENCE_CAP = Q(51, 10**15)
+WEIGHTED_CAP = Q(10**13)
 D = 2**128
 ZERO = (0, 0)
 
@@ -41,8 +40,9 @@ def parse_parameters(source):
         return Q(found[0].replace(" ", ""))
 
     values = {name: parameter(name, "ℕ") for name in ("start", "order", "cutoff")}
-    values["prefixCap"] = parameter("prefixCap", "ℚ")
-    for name, expected in (("start", 64), ("order", 8), ("cutoff", 172)):
+    for name in ("prefixCap", "remainderCap"):
+        values[name] = parameter(name, "ℚ")
+    for name, expected in (("start", 64), ("order", 10), ("cutoff", 165)):
         require(values[name] == expected,
                 f"generator recipe requires {name}={expected}; found {values[name]}")
     require(values["prefixCap"] > 0, "prefixCap must be positive")
@@ -143,8 +143,12 @@ def render_blocks(data, parameters):
             "completed prefix exceeds prefixCap")
     require(norm(seed_product) <= ofq(data["seed_cap"])[0], "seed exceeds seed_cap")
     require(norm(defect) <= ofq(data["defect_cap"])[0], "inverse defect exceeds defect_cap")
-    require(coeff[start] <= COEFFICIENT_CAP and ds[order] <= DIFFERENCE_CAP,
-            "coefficient/difference hypothesis fails")
+    weighted_budget = (Q(21, 20)*sum(abs(c)*Q(5, 3)**j for j, c in enumerate(coeff[:start])) +
+                       9*Q(21, 20)*Q(5, 3)**start*sum(abs(d)*15**j for j, d in enumerate(ds[:order])) + 1)
+    eta = Q(data["defect_cap"])
+    remainder_budget = (2**order*ds[order] + eta*sum(2**j*ds[j] for j in range(order)))/(1-eta)
+    require(weighted_budget <= WEIGHTED_CAP, "weighted completion budget exceeds cap")
+    require(remainder_budget <= parameters["remainderCap"], "alternating remainder budget exceeds cap")
 
     sections = {"core": [], "bindings": [], "checks": []}
     section = "core"
@@ -283,8 +287,19 @@ def render_blocks(data, parameters):
     emit(f"def correctionWeights{order} : List Rat := []")
     for j in range(order - 1, -1, -1):
         emit(f"def correctionWeights{j} : List Rat := d{j}_{start} :: correctionWeights{j+1}")
-    lemma("coefficient_literal_ok",
-          f"c{start} ≤ {COEFFICIENT_CAP} ∧ d{order}_{start} ≤ {DIFFERENCE_CAP}")
+    def horner_majorant(radius, names):
+        result = "0"
+        for name in reversed(names):
+            result = f"(Rat.abs {name} + ({radius})*({result}))"
+        return result
+
+    head_majorant = horner_majorant("5/3", [f"c{k}" for k in range(start)])
+    difference_majorant = horner_majorant("15", [f"d{j}_{start}" for j in range(order)])
+    weighted_literal = (f"(21/20)*{head_majorant} + "
+                        f"(9*((21/20)*(5/3)^{start}))*{difference_majorant} + 1")
+    remainder_sum = " + ".join(f"2^{j}*d{j}_{start}" for j in range(order))
+    remainder_literal = f"(2^{order}*d{order}_{start} + defectCapQ*({remainder_sum}))/(1-defectCapQ)"
+    lemma("weighted_literal_ok", f"{weighted_literal} ≤ 10^13")
 
     rat_list_def("plQ", pl)
     rat_list_def("rlQ", rl)
@@ -292,6 +307,7 @@ def render_blocks(data, parameters):
     rat_def("prefixCapQ", parameters["prefixCap"])
     rat_def("seedCapQ", data["seed_cap"])
     rat_def("defectCapQ", data["defect_cap"])
+    lemma("remainder_literal_ok", f"{remainder_literal} ≤ {parameters['remainderCap']}")
     for name, values in (("pI", p), ("rI", r), ("ratioA", a), ("ratioY", y)):
         interval_def(name, values)
     lemma("p_interval_eq", "plQ.map ofRatI = pI")
@@ -346,6 +362,12 @@ def render_blocks(data, parameters):
 
     section = "bindings"
     emit(dedent('''
+    theorem rat_abs_binding (q : Rat) : |q| = Rat.abs q := by
+      unfold Rat.abs
+      split_ifs with h
+      · exact abs_of_nonneg h
+      · exact abs_of_nonpos (le_of_not_ge h)
+
     theorem coefficientGlue {k : Nat} {r s : Rat}
         (h : Grothe.haagR k = r)
         (hs : r * (((2*k+1)^2 : Nat) : Rat) / ((4*(k+1)*(k+2) : Nat) : Rat) = s) :
@@ -407,11 +429,20 @@ def render_blocks(data, parameters):
 
     section = "checks"
     lemma("coefficient_check",
-          f"Grothe.haagR Grothe.HaagerupCanonical.start ≤ {COEFFICIENT_CAP} ∧\n"
-          f"      iterDiff Grothe.HaagerupCanonical.order Grothe.haagR Grothe.HaagerupCanonical.start ≤ {DIFFERENCE_CAP}",
-          f"change Grothe.haagR {start} ≤ {COEFFICIENT_CAP} ∧ "
-          f"iterDiff {order} Grothe.haagR {start} ≤ {DIFFERENCE_CAP}\n"
-          f"rw [coefficientEq{start}, differenceEq{order}_{start}]\nexact coefficient_literal_ok")
+          "Grothe.HaagerupCanonical.weightedBudget ≤ 10^13 ∧\n"
+          "      Grothe.HaagerupCanonical.remainderBudget ≤ Grothe.HaagerupCanonical.remainderCap",
+          "constructor\n"
+          "· unfold Grothe.HaagerupCanonical.weightedBudget\n"
+          "  rw [weights_binding, differences_binding]\n"
+          "  simpa only [Grothe.HaagerupCanonical.majorantQ, Grothe.HaagerupCanonical.start,\n"
+          "    " + ", ".join([f"weights{k}" for k in range(start+1)] +
+                            [f"correctionWeights{j}" for j in range(order+1)]) +
+          ", rat_abs_binding] using weighted_literal_ok\n"
+          "· unfold Grothe.HaagerupCanonical.remainderBudget\n"
+          "  simp only [Grothe.HaagerupCanonical.order, Grothe.HaagerupCanonical.start,\n"
+          "    Finset.sum_range_succ, Finset.sum_range_zero, zero_add,\n"
+          f"    {diff_rules}, differenceEq{order}_{start}, defectCap_binding]\n"
+          "  exact remainder_literal_ok")
     emit("#print axioms coefficient_check")
     lemma("completed_check",
           "completedHeadOK Grothe.HaagerupCanonical.cutoff Grothe.HaagerupCanonical.start\n"
