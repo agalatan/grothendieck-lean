@@ -184,6 +184,8 @@ Grothe.UpperChaos.FixedChaosSmoothing.energy_smoothOp_zero_one
 Grothe.UpperChaos.FixedChaosSmoothing.inner_linearMode_smoothOp
 Grothe.UpperChaos.HardyReal.hardy_GT
 Grothe.UpperChaos.HardyReal.hreal_GT
+Grothe.UpperChaos.LeanCertPilot.unitBaseSlice_eq_conditional_base
+Grothe.UpperChaos.LeanCertPilot.unitBaseSlice_integral_enclosure
 Grothe.UpperChaos.PackedDyadic.gradedIntegerSum_eq
 Grothe.UpperChaos.PackedDyadic.isumAcc_eq
 Grothe.UpperChaos.PackedDyadic.sum_coeff_sq

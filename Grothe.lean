@@ -277,6 +277,7 @@ import Grothe.UpperChaos.JointSampleLedger
 import Grothe.UpperChaos.Kernel2
 import Grothe.UpperChaos.KernelStability
 import Grothe.UpperChaos.LawY
+import Grothe.UpperChaos.LeanCertPilot
 import Grothe.UpperChaos.LocalizedComparison
 import Grothe.UpperChaos.LstarL
 import Grothe.UpperChaos.Mehler
