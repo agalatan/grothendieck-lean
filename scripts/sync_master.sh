@@ -45,7 +45,7 @@ AGENT="${AGENT_ID:-}"
 owner_of() {  # the ID in the branch name (AGENTS.md §3), else the Agent-ID of its oldest commit not in master
   # (its creator: later commits may be another agent's, e.g. a janitor's merge of master)
   local b=$1 c id
-  if [[ "$b" =~ ^ready/((codex|claude)-[0-9a-f]{4})- ]]; then echo "${BASH_REMATCH[1]}"; return; fi
+  if [[ "$b" =~ ^(ready|work|cloud)/((codex|claude)-[0-9a-f]{4})- ]]; then echo "${BASH_REMATCH[2]}"; return; fi
   if [[ "$b" =~ ^(codex|claude)/([0-9a-f]{4})- ]]; then echo "${BASH_REMATCH[1]}-${BASH_REMATCH[2]}"; return; fi
   for c in $(git -C "$MAIN" rev-list --reverse "origin/master..origin/$b" 2>/dev/null); do
     id=$(git -C "$MAIN" log -1 --format=%B "$c" | sed -n 's/.*Agent-ID: *\([A-Za-z]*-[0-9a-f]*\).*/\1/p' | head -1)
@@ -121,7 +121,7 @@ audit() {
         action="green but NOT merged: open its finish job (gh run view $id); if master moved, CI re-dispatched it; otherwise merge origin/master and push again"
       fi
     elif [[ "$b" != ready/* ]] && [[ "$b" != cloud/* ]] && [ -z "$action" ]; then
-      action="a work branch: deliver it as ready/<agent-id>-<topic> when it is done, or delete it if its work is merged or abandoned"
+      action="a work branch: when the work is finished, deliver it as ready/<agent-id>-<topic>; delete it once its work is merged or abandoned"
     fi
     echo "  $b [$own]: $state, $behind behind master"
     if [ -n "$action" ]; then echo "      -> ACTION: $action"; todo=$((todo + 1)); fi
