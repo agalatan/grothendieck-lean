@@ -304,6 +304,11 @@ import Grothe
 #print axioms Grothe.HJM.OriginPanels.right_checks
 #print axioms Grothe.HJM.OriginPanels.right_cover
 #print axioms Grothe.HJM.OriginPanels.spatial_error_budget
+#print axioms Grothe.HJM.OriginUnweightedCellSum.integrable_halfline_of_zero_tail
+#print axioms Grothe.HJM.OriginUnweightedCellSum.interval_eq_halfline_of_zero_tail
+#print axioms Grothe.HJM.OriginUnweightedCellSum.min_four_products_le
+#print axioms Grothe.HJM.OriginUnweightedCellSum.sum_cast_getD_eq_list_sum
+#print axioms Grothe.HJM.OriginUnweightedCellSum.sum_scaled_entries
 #print axioms Grothe.HJM.OriginUnweightedGuardedGeometry.leftGeometry
 #print axioms Grothe.HJM.OriginUnweightedGuardedGeometry.rightGeometry
 #print axioms Grothe.HJM.OriginUnweightedLeftAggregate.allCombined

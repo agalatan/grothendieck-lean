@@ -159,6 +159,7 @@ import Grothe.HJM.OriginTail
 import Grothe.HJM.OriginTailBudget
 import Grothe.HJM.OriginTruncation
 import Grothe.HJM.OriginUnweighted64Assembly
+import Grothe.HJM.OriginUnweightedCellSum
 import Grothe.HJM.OriginUnweightedErrorTransport
 import Grothe.HJM.OriginUnweightedGuardedGeometry
 import Grothe.HJM.OriginUnweightedLeftAggregate
