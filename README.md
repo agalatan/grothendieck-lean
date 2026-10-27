@@ -259,7 +259,14 @@ a uniform absolute-integral bound, and the affine completion-of-squares identity
 with any integrable source. `TaylorInnerLaplace` applies it to the actual Taylor
 inner products. `ConditionalGaussianPhase` evaluates affine-kernel Gaussian
 monomials by finite shifted Wick sums, retaining their inverse-rate mass.
-Certified numerical integration and its tail budgets remain open.
+`ConditionalGaussianPolynomial` extends the evaluation and integrability
+results to the existing `CPoly` representation by its finite monomial support.
+`ConditionalGaussianBase` preserves the cancellation in the zeroth moment:
+the conditional bracket is exactly `alpha*z/beta^2`. `ConditionalGaussianTail`
+proves an integrated auxiliary tail at `‖z‖ ≥ r₀ > 0`, bounded by
+`4/(3*alpha*r₀^3) * T^(-3/2)`. It is uniform in the real profile coefficient,
+including its zeros. Bounds for the full polynomial-weighted sources, the
+radial endpoint and certified numerical integration remain open.
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs

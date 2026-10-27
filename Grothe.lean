@@ -301,7 +301,10 @@ import Grothe.UpperChaos.ComplexHermite
 import Grothe.UpperChaos.ComplexMoments
 import Grothe.UpperChaos.ConcretePhaseMoments
 import Grothe.UpperChaos.ConcreteTaylorUpper
+import Grothe.UpperChaos.ConditionalGaussianBase
 import Grothe.UpperChaos.ConditionalGaussianPhase
+import Grothe.UpperChaos.ConditionalGaussianPolynomial
+import Grothe.UpperChaos.ConditionalGaussianTail
 import Grothe.UpperChaos.DampedMoments
 import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.DiagonalSum
@@ -378,6 +381,7 @@ import Grothe.UpperChaos.PhiHorner
 import Grothe.UpperChaos.ProductComplete
 import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialRepair
+import Grothe.UpperChaos.RealGaussianKernelTail
 import Grothe.UpperChaos.Realise2
 import Grothe.UpperChaos.Rounder
 import Grothe.UpperChaos.SchurBound

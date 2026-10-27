@@ -304,6 +304,24 @@ scaling are all explicit. Expanding the complete source polynomial into this
 conditional interface, certified auxiliary and radial tails, and numerical
 integration accuracy remain separate obligations.
 
+`ConditionalGaussianPolynomial` evaluates any existing
+`CPoly = MvPolynomial (Fin 2) ℂ` by its finite support and proves its
+integrability against the affine phase kernel. The exact conditional integral
+is the coefficient-weighted finite Wick sum. This uses the same polynomial
+representation as the complex Hermite basis; it introduces no new coefficient
+encoding or numerical integration assumption.
+
+`ConditionalGaussianBase` identifies the first shifted moments and combines
+the zeroth-moment bracket before estimating it: it is exactly
+`alpha*z/beta^2`. For `‖z‖ ≥ r₀ > 0`, `ConditionalGaussianTail` bounds the norm
+of the conditional Gaussian expectation by
+`2/(alpha*r₀^3) * t^(-5/2)`. Its integral above any `T>0` is at most
+`4/(3*alpha*r₀^3) * T^(-3/2)`. The scalar majorant in
+`RealGaussianKernelTail` follows from `y^2*exp(-y) ≤ 2` and works for every
+positive `beta`, so no lower bound on the radial profile is needed. These
+results concern the base moment away from the radial origin; they do not
+certify the full polynomial-weighted Taylor sources or the remaining budgets.
+
 **Phase errors and transported certificates.**
 `Grothe/Upper/ResponseGeometry.lean` proves twelve statements: the exact
 disk support-defect identity, normalized-distance and weighted support-loss
