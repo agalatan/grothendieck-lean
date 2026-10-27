@@ -239,6 +239,8 @@ Also:
 - **Agents open a pull request only for deliveries that change `.github/workflows/`**: GitHub refuses CI's push of
   those unless the repository secret `MERGE_TOKEN` exists (a fine-grained token for this repository with *Contents*
   and *Workflows* read and write); CI says so and does not retry. Every other delivery goes through `ready/` alone.
+- **`ready/` branches are merged by CI only**, never by hand: a `ready/` push may still be work in progress whose
+  check is the test.
 - **Agents never merge a pull request.** The user merges, ideally when the branch is up to date with master and its
   latest check is green; then the merged result is the tree CI checked. A merge is a push to master, so master's
   check runs afterwards.
@@ -297,6 +299,10 @@ scripts/cloud.sh --runner droplet script tools/big.py       # script jobs needin
 scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; download results later
 ```
 
+- **Cloud jobs are for experiments, not for "does my branch build?".** If you want to know whether work you mean to
+  deliver is green, push it as `ready/<agent>-<topic>` instead: that one check builds and checks it, and merges it
+  only if green (a red `ready/` check merges nothing; fix and push again). Use `cloud/` for script jobs, sweeps and
+  builds of unfinished modules that are not meant to land yet.
 - **What runs:** the tip of the branch on GitHub (`--ref`; default: your current branch, which must be pushed and
   up to date). For quick experiments push a scratch branch `cloud/<agent-id>-<topic>`: the proof check skips
   `cloud/**`. Delete it when done (§14).
