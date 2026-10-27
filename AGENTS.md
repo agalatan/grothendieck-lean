@@ -137,6 +137,9 @@ especially a re-push after a CI failure or a conflict):
 3. **Combine:** never pushed: `git rebase origin/master`; already pushed: `git merge origin/master` (no rebase, no
    force-push).
 4. **Resolve every conflict by understanding both sides**, never by taking "ours" or "theirs" blindly:
+   - after **every** merge run `python3 tools/gen_root_imports.py` (not only `--check`): it regenerates the roots
+     and re-sorts the union-merged lists, which a merge can leave unsorted (CI also does this after its own merge
+     of a `ready/` branch);
    - generated files are regenerated, never hand-merged: `python3 tools/gen_root_imports.py` rewrites `Grothe.lean`,
      `GrotheKernel.lean` and `GrotheCapsKernel.lean` (every module under their folders, except those listed in
      `data/root-imports-exclude.txt`);
