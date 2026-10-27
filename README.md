@@ -191,6 +191,11 @@ root until a proof uses them).
 and `Grothe.upper_value_lt` shows this is below 1.404598149141
 (`Grothe/UpperChaos/GroupedRounder.lean`).
 
+A proposed direct route, `Grothe.UpperChaos.DirectSample.upper_of_actual_head`,
+derives the same sharp rational bound from an explicit finite-head estimate for
+the actual kernel. That numerical head estimate remains unproved; the route
+does not by itself establish an unconditional bound.
+
 A second conditional route, `Grothe.UpperChaos.fresh_upper_concrete_taylor_relaxed`,
 allows total energy-table discrepancy at most `5/10^7` and still yields a rational
 bound below `1.404599424`. It retains the fourteen Gaussian band-error hypotheses;

@@ -601,6 +601,11 @@ remaining Gaussian and table-accuracy inputs are not yet proved.
 `IsGrothendieckBound (500000000000000000/355973699884132991)` for the concrete rounding,
 given an L² charge-one truncation `X`, component-error inputs and table accuracy (the Hardy input is proved).
 `Grothe.upper_value_lt` shows this is below 1.404598149141 (`Grothe/UpperChaos/GroupedRounder.lean`).
+The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
+the same rational bound from an explicit finite-head estimate of the actual
+kernel. `upper_of_finite_sample_bounds` reduces that estimate to complex
+coefficient enclosures and a numerical head check. Those enclosures and the
+head check remain hypotheses; this route is not unconditional.
 The table interface `Grothe.fresh_upper` is in `Grothe/Upper/GroupedBridge.lean`;
 it takes `DirectHyps E EX` and the sharper grouped comparison bound.
 The actual rounding is G_T, the smoothing of T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6.
