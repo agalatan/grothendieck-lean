@@ -1019,6 +1019,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.Bm_polyKernel
 #print axioms Grothe.UpperChaos.D_le_span_H
 #print axioms Grothe.UpperChaos.Ef_X0_mul
+#print axioms Grothe.UpperChaos.ExponentialTail.exp_moment_tail
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.finite_saved_matrix_error
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.fixed_shell_action
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.mem_chaosShell_of_degree
