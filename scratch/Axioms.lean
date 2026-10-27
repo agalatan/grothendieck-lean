@@ -4,6 +4,11 @@ import Grothe
 #print axioms Grothe.DominatedKernel.comp_radial
 #print axioms Grothe.DominatedKernel.mixture
 #print axioms Grothe.HJM.dominated_branch
+#print axioms Grothe.HJM.mem_head1
+#print axioms Grothe.HJM.mem_head2
+#print axioms Grothe.HJM.mem_head3
+#print axioms Grothe.HJM.mem_head4
+#print axioms Grothe.HJM.mem_head5
 #print axioms Grothe.HJM.weights_norm
 #print axioms Grothe.Haag.phaseMoment_weighted
 #print axioms Grothe.HaagerupCanonical.coefficient_check
