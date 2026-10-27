@@ -27,7 +27,8 @@ def rat(x):
 
 def render_rat(x):
     q = Q(x)
-    return str(q.numerator) if q.denominator == 1 else f'({q.numerator} / {q.denominator})'
+    # an explicit `ℚ` on the numerator keeps the elaboration of long literal lists fast
+    return f'({q.numerator} : ℚ)' if q.denominator == 1 else f'(({q.numerator} : ℚ) / {q.denominator})'
 
 def validate(doc):
     require(doc['schema_version'] == 1 and doc['count'] == 120, 'bad schema or mode count')
