@@ -11,7 +11,7 @@ The current-state notes and follow-up ledger explicitly identify later changes.
 The combined #13/#44 delivery retires the old lower cover and its constant-specific
 corollaries. The default headline is now
 `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`, proving
-`NodeCaps → IsGrothendieckBound K → 1.401697049825 < K`. The separate
+`NodeCaps → IsGrothendieckBound K → 1.401697117301 < K`. The separate
 `lower_bound_of_capsRest` theorem reaches exactly this endpoint by
 `lower_bound_of_refined_cover_data (nodeCaps_of_vertexCaps (vertexCaps_of_capsRest h))`.
 Its `CapsRest` premise is unchanged. The exact `NodeCaps` definition has moved from
@@ -21,7 +21,7 @@ Its `CapsRest` premise is unchanged. The exact `NodeCaps` definition has moved f
 The old `Lower/Cert/Boxes0–3`, `Lower/Cert/Partition`, `RowCheck`, `Endpoint`,
 `lower_bound_of_nodeCaps` and old-constant corollaries are removed. The retained
 five row and three mixed-batch facts feed `LawNodeLower`; one additional law-node
-fact and five refined-cover facts certify the refined 10,762-box cover. The
+fact and five refined-cover facts certify the refined 10,909-box cover. The
 coverage-only checker `treeCoverOK` and theorem `treeCoverOK_sound` replace the old
 partition checker. Its unused straddler scan is absent, making
 [#56](https://github.com/agalatan/grothendieck-lean/issues/56) moot. This is a
@@ -113,7 +113,7 @@ interface itself is finite-dimensional, as README states.
 
 | Result | Actual interface and checked meaning |
 |---|---|
-| `Research.RefinedLowerCheck.lower_bound_of_refined_cover_data` (`RefinedCoverResult.lean`) | `NodeCaps → IsGrothendieckBound K → 1.401697049825 < K`. `NodeCaps` is the **padded** inequality `rowPot k s − 10⁻¹¹ ≤ c` at every listed node. |
+| `Research.RefinedLowerCheck.lower_bound_of_refined_cover_data` (`RefinedCoverResult.lean`) | `NodeCaps → IsGrothendieckBound K → 1.401697117301 < K`. `NodeCaps` is the **padded** inequality `rowPot k s − 10⁻¹¹ ≤ c` at every listed node. |
 | `LowerAnalytic.lower_bound_of_capsRest` (`CapNodes.lean`) | The same refined endpoint from vertex caps of rows 12–15 plus excluded caps of other rows, through `nodeCaps_of_vertexCaps` and the refined-cover theorem. All exclusion lists are empty, so only those four rows remain. This belongs to separate target `GrotheCaps`. |
 | `UpperChaos.fresh_upper_rounder` (`PhiBound.lean:70–77`) | For `X ∈ L²(mu2)` with charge-one covariance, requires `ComparisonInputs GT X`, finite-head energy closeness and the Hardy partial-sum bound; concludes the exact rational `500000000000000000/355973696735190991`. `upper_value_lt` proves the strict decimal comparison. |
 | `Grothe.haagerup_bound` (`Haagerup/Power.lean:237–239`) | No analytic/certificate hypotheses; concludes `IsGrothendieckBound (1404909543/1000000000)`. Depends on its explicitly pinned native check as well as standard logical axioms. |
@@ -149,7 +149,7 @@ proofs (`Rounder.lean:68–78,132–182`). `PhiBound` is the proved phase cover 
 
 The box/token counts and retired module references in this section describe the
 original cover reviewed at the baseline, not the current refined lower chain.
-The refined certificate has 10,762 boxes and its own complete finite checks.
+The refined certificate has 10,909 boxes and its own complete finite checks.
 
 Independent Python `fractions.Fraction` checks of committed source data gave:
 

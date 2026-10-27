@@ -198,7 +198,7 @@ Progress (claude/hardy, 26 Oct):
   only fourteen finite Gaussian error inequalities and the actual energy-table
   accuracy remain inputs to the conditional endpoint. The omitted-input
   Hilbert–Schmidt estimates are still a separate analytic ingredient.
-* The refined lower endpoint is `1.401697049825`, conditional on the same
+* The refined lower endpoint is `1.401697117301`, conditional on the same
   `NodeCaps`, through `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`.
   The single `Grothe` target includes the 60 range facts and their final assembly;
   CI verifies them or replays a matching verified cache. The four remaining rows

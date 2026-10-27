@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.401697049825 < K_G^ℂ < 1.404598149141**
+> **1.401697117301 < K_G^ℂ < 1.404598149141**
 >
 > **Unconditional Lean theorem: K_G^ℂ ≤ 1.404909132791.** Its proof uses only the three standard axioms.
 
@@ -49,7 +49,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.401697049825 < K** | **K < 1.404598149141** |
+| Oct 2026 | **this repository** | **1.401697117301 < K** | **K < 1.404598149141** |
 | Oct 2026 | this repository, unconditional Lean theorem | | K ≤ 1.404909132791 |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
@@ -62,7 +62,7 @@ complex matrix, with V over all finite-dimensional complex Hilbert spaces. All t
 theorems conclude a statement about the constant itself.
 
 **Lower bound** — `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data :
-NodeCaps → IsGrothendieckBound K → 1.401697049825 < K`
+NodeCaps → IsGrothendieckBound K → 1.401697117301 < K`
 (`Grothe/Research/RefinedCoverResult.lean`).
 
 The witness is the operator T = P₁,₀ − (149/200)·P₂,₁ on L² of the complex Gaussian measure
@@ -72,7 +72,7 @@ reduction of ⟨f, Tg⟩ for every pair of unimodular functions to 19 one-variab
 inequalities; all analytic facts about the law of the cubic residual (moment bounds, Stein and
 spectral cuts, the contraction-Gram budgets, the sixth-moment Wick identity); and the finite
 certificate that combines them (351 existing mixed-node certificates, two additional pure-row law nodes, three mixed-source Young nodes, and a cover of the parameter space by
-10,762 boxes, checked by 14 single-threaded `native_decide` facts). The **only hypothesis**, `NodeCaps`, states that 19 explicit
+10,909 boxes, checked by single-threaded `native_decide` facts). The **only hypothesis**, `NodeCaps`, states that 19 explicit
 one-variable functions Ψ_r (defined in Lean as suprema of finite-dimensional Gaussian
 integrals) lie below stored rational values at their tabulated nodes. Those caps are certified
 by exact-arithmetic computations outside Lean; moving them inside is work in progress.
@@ -87,7 +87,7 @@ assumption on the expectation is needed. For the circular cubic residual,
 `LowerAnalytic/CircularFourth.lean` replaces the previous pair cap of 62 in the
 Gaussian reduction with the sharp bound `E|q|⁴ ≤ 44 (E|q|²)²`, using the existing complex contraction
 identities and Hilbert–Schmidt inequalities. The one-coordinate Wick cubic
-attains 44. The present cover and Grothendieck endpoint are unchanged; see
+attains 44. The fourth-moment improvement alone does not change the Grothendieck endpoint; see
 [`docs/CIRCULAR_FOURTH_MOMENT.md`](docs/CIRCULAR_FOURTH_MOMENT.md) for the
 analytic argument and its consequences. The tensor and scalar estimates for
 both joint sixth-moment bounds are shared in `LowerAnalytic/JointSixthCore.lean`.
@@ -99,7 +99,7 @@ The joint sixth-moment/Stein budgets are also formalized in
 `Grothe/LowerAnalytic/JointBudget.lean`. They retain the shared tensor constraints. The certificate bank contains 44 joint-moment node
 certificates, each checked on its certified kurtosis range and connected to the Gaussian
 cubic by `Grothe/LowerAnalytic/JointContractions.lean`. Five of those nodes use the
-stronger Young budget transported by an exact identity; the cover contains 10,762 boxes.
+stronger Young budget transported by an exact identity; the cover contains 10,909 boxes.
 The strengthened parameter family and exact majorant-transport rule are proved too
 (`JointSixth.gram_j_eta`, `JointSixth.gram_j2_shifted`, `Grothe/Lower/MomentLift.lean`).
 `Grothe/LowerAnalytic/MomentConeBoundary.lean` proves the exact two-branch minimum
@@ -120,7 +120,7 @@ polar grid, verified interval enclosures of the integrated coefficient matrix (`
 and an exact LDLᵀ check (`pot_le_of_nodeOK`); the per-node price recipes (`CapRecipeData.lean`) are checked by the
 precompiled kernel `GrotheCapsKernel/CapCheck.lean`, one `native_decide` fact per range of nodes (`capRangeKK_j`,
 four per row, one module `CapRowKK.lean` per row; no parallel tasks). Hence
-`lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697049825 < K`, where **`CapsRest`** comprises the vertex caps
+`lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697117301 < K`, where **`CapsRest`** comprises the vertex caps
 of the rows 0.84, 0.845, 0.85, 0.855 and any excluded-node caps of the other rows. The exclusion lists are currently empty.
 
 **Node caps: included in `Grothe`, replayed by CI from a verified cache.**

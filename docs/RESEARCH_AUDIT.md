@@ -8,9 +8,9 @@ the subsequent cover and Hardy-budget refinements below improve both endpoints.
 
 ## Current lower continuation: fused law nodes and complete coverage
 
-The strict endpoint is `1.401697049825`, under unchanged `NodeCaps`. The
-complete 10,762-box certificate has cap `356710460411/500000000000`, or
-`0.713420920822`. It retains two pure-row law nodes and adds three mixed-source
+The strict endpoint is `1.401697117301`, under unchanged `NodeCaps`. The
+complete 10,909-box certificate has cap `713420886479/1000000000000`, or
+`0.713420886479`. It retains two pure-row law nodes and adds three mixed-source
 Young nodes. Their single new batch uses original rows 14 and 15 with fixed
 theta `177107909/800000000` and kurtosis range `x <= 4/5`. The source tables,
 witness and heavy cap closure are unchanged.
