@@ -69,7 +69,7 @@ theorem mem_squareI {v : ℝ} {a : Ival} (hv : mem v a) :
 
 theorem mem_normSqI {z : ℂ} {Z : GrotheKernel.HardyArc.CI}
     (hz : memC z Z) : mem (Complex.normSq z) (normSqI Z) := by
-  simpa [normSqI, Complex.normSq_apply] using
+  simpa [normSqI, Complex.normSq_apply, pow_two] using
     mem_add (mem_squareI hz.1) (mem_squareI hz.2)
 
 def left : CList := ⟨OriginData.leftReal, OriginData.leftImag⟩
