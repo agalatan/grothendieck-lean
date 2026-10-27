@@ -106,7 +106,9 @@ theorem globalGaussianV_error (u : ℝ) (hu0 : 0 ≤ u) (hu1 : u ≤ 1) :
     rw [hid, mul_inv]
     norm_num
   rw [hfactor]
-  change |(2 / 3 : ℝ) * (1 + -t)⁻¹ - (2 / 3 : ℝ) * ∑ k ∈ range 31, (-(-t)) ^ k| ≤ _
+  have hV : globalGaussianV u = (2 / 3 : ℝ) * ∑ k ∈ range 31, (-(-t)) ^ k := by
+    simp only [neg_neg, t, globalGaussianV]
+  rw [hV]
   rw [← mul_sub, abs_mul, abs_of_nonneg (show (0 : ℝ) ≤ 2 / 3 by norm_num)]
   calc
     (2 / 3 : ℝ) * |(1 + -t)⁻¹ - ∑ k ∈ range 31, (-(-t)) ^ k| ≤
@@ -142,7 +144,9 @@ theorem gaussian_global_poly_error
   have hLip := expTaylor14_lipschitz (g - 2 / 3) (G - 2 / 3)
     (le_trans harg (by norm_num)) hGarg
   have hL : |expTaylor14 (g - 2 / 3) - expTaylor14 (G - 2 / 3)| ≤ 2 * ε := by
-    have : |(g - 2 / 3) - (G - 2 / 3)| ≤ ε := by convert hnear using 1 <;> ring
+    have : |(g - 2 / 3) - (G - 2 / 3)| ≤ ε := by
+      rw [show (g - 2 / 3) - (G - 2 / 3) = g - G by ring]
+      exact hnear
     exact hLip.trans (mul_le_mul_of_nonneg_left this (by norm_num))
   have hExp := expTaylor14_error (g - 2 / 3) harg
   have h1 : |2 * g ^ 2 * (Real.exp (g - 2 / 3) - expTaylor14 (g - 2 / 3))| ≤
