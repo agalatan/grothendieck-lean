@@ -1028,7 +1028,6 @@ import Grothe
 #print axioms Grothe.UpperChaos.HardyReal.integral_pair_eq_kHol
 #print axioms Grothe.UpperChaos.HardyReal.law_swap
 #print axioms Grothe.UpperChaos.HardyReal.mehler_eq_HholPair
-#print axioms Grothe.UpperChaos.LeanCertPilot.unitBaseSlice_integral_enclosure
 #print axioms Grothe.UpperChaos.PackedDyadic.gradedIntegerSum_eq
 #print axioms Grothe.UpperChaos.PackedDyadic.isumAcc_eq
 #print axioms Grothe.UpperChaos.PackedDyadic.sum_coeff_sq
@@ -1099,6 +1098,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.ev_phaseRealSlice
 #print axioms Grothe.UpperChaos.ev_taylorSourceSlice
 #print axioms Grothe.UpperChaos.far_sound
+#print axioms Grothe.UpperChaos.finiteSoftPhase_logGrid
 #print axioms Grothe.UpperChaos.firstCapturedErrorQ_le_public
 #print axioms Grothe.UpperChaos.firstCenterBandModes_eq_comparison
 #print axioms Grothe.UpperChaos.firstCenterBand_norm_lower
@@ -1182,6 +1182,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_moment
 #print axioms Grothe.UpperChaos.integral_moment_damped
 #print axioms Grothe.UpperChaos.integral_moment_damped_prod
+#print axioms Grothe.UpperChaos.integral_mul_finiteSoftPhase
 #print axioms Grothe.UpperChaos.integral_norm_affine_phaseLaplace_base_tail_le
 #print axioms Grothe.UpperChaos.integral_norm_rpow_damped
 #print axioms Grothe.UpperChaos.integral_phiT_pow_even

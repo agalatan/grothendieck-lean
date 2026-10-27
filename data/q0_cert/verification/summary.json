@@ -1,0 +1,11 @@
+{
+ "id": "codex-cf82-20261027183204-24372",
+ "kind": "script",
+ "shard": 0,
+ "nshards": 1,
+ "ref": "ready/codex-q0-cover-fix-cf82",
+ "sha": "d00f9dab53ea553dac22636fb16387f8f87d4bef",
+ "status": 0,
+ "seconds": 2375,
+ "run": "https://github.com/agalatan/grothendieck-lean/actions/runs/40560868692"
+}

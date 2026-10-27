@@ -1,0 +1,2 @@
+PASS: 259532 records decode, first center -2082728447489861/18446744073709551616 source SHA256 191f975459f71c681ec4b99343f6cf3cf0772daf51bd52c6f74184a2cea57dfb
+Existing Lean theorem taylor_centers_decode_check uses native_decide; this replay is external.
