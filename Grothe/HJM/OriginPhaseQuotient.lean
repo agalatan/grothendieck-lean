@@ -41,7 +41,7 @@ theorem mul_eval_divX (p : Polynomial ℂ) (z : ℂ) :
   have h := congrArg (fun q : Polynomial ℂ => q.eval z) (Polynomial.X_mul_divX_add p)
   simp only [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_X,
     Polynomial.eval_C] at h
-  simpa only [Polynomial.eval_zero] using (eq_sub_iff_add_eq.mpr h)
+  simpa only [← Polynomial.coeff_zero_eq_eval_zero] using (eq_sub_iff_add_eq.mpr h)
 
 lemma eval_divX_eq_div (p : Polynomial ℂ) (z : ℂ) (hz : z ≠ 0) :
     p.divX.eval z = (p.eval z - p.eval 0) / z := by
@@ -123,8 +123,8 @@ theorem phaseQuotient_zero (p : Polynomial ℂ) :
       p.eval 0 * (normSqPolynomial p).coeff 1 / (2 * (‖p.eval 0‖ : ℂ) ^ 3) := by
   have hden : (‖p.eval 0‖ : ℂ) * (‖p.eval 0‖ : ℂ) *
       ((‖p.eval 0‖ : ℂ) + (‖p.eval 0‖ : ℂ)) = 2 * (‖p.eval 0‖ : ℂ) ^ 3 := by ring
-  simp only [phaseQuotient, Complex.ofReal_zero, Polynomial.eval_zero,
-    Polynomial.coeff_divX, zero_add] at hden ⊢
+  simp only [phaseQuotient, Complex.ofReal_zero, ← Polynomial.coeff_zero_eq_eval_zero,
+    Polynomial.coeff_divX] at hden ⊢
   rw [hden]
 
 /-! ## The actual HJM radial numerators -/
@@ -135,7 +135,13 @@ def originPolynomial : Polynomial ℂ :=
     Polynomial.C Complex.I * (ofListQ OriginData.pImag).map (algebraMap ℝ ℂ)
 
 lemma eval_originPolynomial (s : ℝ) : originPolynomial.eval (s : ℂ) = P s := by
-  simp [originPolynomial, P, Polynomial.eval_map, Polynomial.eval₂_at_apply]
+  have heval (q : Polynomial ℝ) :
+      (q.map (algebraMap ℝ ℂ)).eval (s : ℂ) = ((q.eval s : ℝ) : ℂ) := by
+    change (q.map (algebraMap ℝ ℂ)).eval ((algebraMap ℝ ℂ) s) =
+      (algebraMap ℝ ℂ) (q.eval s)
+    exact Polynomial.eval_map_apply s
+  simp only [originPolynomial, Polynomial.eval_add, Polynomial.eval_mul,
+    Polynomial.eval_C, heval, P]
 
 def leftNumeratorPolynomial : Polynomial ℂ :=
   originPolynomial * (Polynomial.X + Polynomial.C ((OriginData.delta : ℂ) * A))
