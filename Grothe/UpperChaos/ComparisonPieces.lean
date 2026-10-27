@@ -136,10 +136,13 @@ lemma band_unique {k l : ComparisonIndex} (hkl : pw k = pw l) {n m : ℕ}
 def bandOf (p : Fin 4) (d : ℕ) : ComparisonIndex :=
   match p with
   | 0 => ⟨0, by decide⟩
-  | 1 => if d ≤ 51 then ⟨1, by decide⟩ else if d ≤ 101 then ⟨2, by decide⟩ else if d ≤ 151 then ⟨3, by decide⟩ else if d ≤ 161 then ⟨4, by decide⟩
+  | 1 => if d ≤ 51 then ⟨1, by decide⟩ else if d ≤ 101 then ⟨2, by decide⟩
+      else if d ≤ 151 then ⟨3, by decide⟩ else if d ≤ 161 then ⟨4, by decide⟩
       else if d ≤ 171 then ⟨5, by decide⟩ else if d ≤ 181 then ⟨6, by decide⟩ else ⟨7, by decide⟩
-  | 2 => if d ≤ 51 then ⟨8, by decide⟩ else if d ≤ 71 then ⟨9, by decide⟩ else if d ≤ 81 then ⟨10, by decide⟩ else if d ≤ 91 then ⟨11, by decide⟩ else ⟨12, by decide⟩
-  | 3 => if d ≤ 11 then ⟨13, by decide⟩ else if d ≤ 21 then ⟨14, by decide⟩ else if d ≤ 31 then ⟨15, by decide⟩ else if d ≤ 51 then ⟨16, by decide⟩ else ⟨17, by decide⟩
+  | 2 => if d ≤ 51 then ⟨8, by decide⟩ else if d ≤ 71 then ⟨9, by decide⟩
+      else if d ≤ 81 then ⟨10, by decide⟩ else if d ≤ 91 then ⟨11, by decide⟩ else ⟨12, by decide⟩
+  | 3 => if d ≤ 11 then ⟨13, by decide⟩ else if d ≤ 21 then ⟨14, by decide⟩
+      else if d ≤ 31 then ⟨15, by decide⟩ else if d ≤ 51 then ⟨16, by decide⟩ else ⟨17, by decide⟩
 
 /-- The lower ends of the comparison bands. -/
 def loT : ℕ → ℕ
@@ -220,12 +223,14 @@ def piece (k : ComparisonIndex) : Lp ℂ 2 mu2 := bandProj (comparisonBand k) (s
 /-- The smoothed truncation `X = S(F₀ + v)`. -/
 def Xfun (v : ℂ × ℂ → ℂ) : ℂ × ℂ → ℂ := smoothFn fun u => F0 u + v u
 
-lemma chargeFn_F0v (hφ : PhiBound) (hv : ChargeFn v) : ChargeFn fun u => F0 u + v u := (chargeFn_F0 hφ).add hv
+lemma chargeFn_F0v (hφ : PhiBound) (hv : ChargeFn v) : ChargeFn fun u => F0 u + v u :=
+  (chargeFn_F0 hφ).add hv
 
 lemma memLp_Xfun (hφ : PhiBound) (hv : ChargeFn v) : MemLp (Xfun v) 2 mu2 :=
   memLp_smoothFn (chargeFn_F0v hφ hv).meas (chargeFn_F0v hφ hv).memLp
 
-lemma Xfun_rot2 (hφ : PhiBound) (hv : ChargeFn v) : ∀ c u, ‖c‖ = 1 → Xfun v (rot2 c u) = c * Xfun v u :=
+lemma Xfun_rot2 (hφ : PhiBound) (hv : ChargeFn v) :
+    ∀ c u, ‖c‖ = 1 → Xfun v (rot2 c u) = c * Xfun v u :=
   fun _ u hc => smoothFn_rot2 (chargeFn_F0v hφ hv).meas (chargeFn_F0v hφ hv).rot hc u
 
 /-- The sources have no constant mode. -/
@@ -286,7 +291,7 @@ def comparisonInputs_of_norms
     (hnorm : ∀ k, ‖piece hφ hv h₁ h₂ h₃ k‖ ≤ ((comparisonBand k).error : ℝ)) :
     ComparisonInputs ((memLp_GT hφ).toLp GT) ((memLp_Xfun hφ hv).toLp (Xfun v)) :=
   ⟨piece hφ hv h₁ h₂ h₃, difference_pieces hφ hv h₁ h₂ h₃, hnorm,
-    fun k p hp => energy_bandProj_eq_zero _ _ p hp⟩
+    fun _ p hp => energy_bandProj_eq_zero _ _ p hp⟩
 
 end Pieces
 
