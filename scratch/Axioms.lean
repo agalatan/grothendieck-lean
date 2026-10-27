@@ -198,6 +198,13 @@ import Grothe
 #print axioms Grothe.HJM.OriginPanels.right_checks
 #print axioms Grothe.HJM.OriginPanels.right_cover
 #print axioms Grothe.HJM.OriginPanels.spatial_error_budget
+#print axioms Grothe.HJM.OriginWitnessData.left_mass_check
+#print axioms Grothe.HJM.OriginWitnessData.left_visible_arithmetic
+#print axioms Grothe.HJM.OriginWitnessData.left_weighted_mass_check
+#print axioms Grothe.HJM.OriginWitnessData.right_mass_check
+#print axioms Grothe.HJM.OriginWitnessData.right_visible_arithmetic
+#print axioms Grothe.HJM.OriginWitnessData.right_weighted_mass_check
+#print axioms Grothe.HJM.OriginWitnessData.spatial_error_arithmetic
 #print axioms Grothe.HJM.branch5_tail
 #print axioms Grothe.HJM.chargeOneCoeff_eq_origin_s_integral
 #print axioms Grothe.HJM.chargeOneCoeff_hasSum_sq

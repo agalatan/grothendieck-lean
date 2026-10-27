@@ -190,6 +190,13 @@ Grothe.HJM.OriginPanels.rightApprox_norm_sq_error
 Grothe.HJM.OriginPanels.right_checks
 Grothe.HJM.OriginPanels.right_cover
 Grothe.HJM.OriginPanels.spatial_error_budget
+Grothe.HJM.OriginWitnessData.left_mass_check
+Grothe.HJM.OriginWitnessData.left_visible_arithmetic
+Grothe.HJM.OriginWitnessData.left_weighted_mass_check
+Grothe.HJM.OriginWitnessData.right_mass_check
+Grothe.HJM.OriginWitnessData.right_visible_arithmetic
+Grothe.HJM.OriginWitnessData.right_weighted_mass_check
+Grothe.HJM.OriginWitnessData.spatial_error_arithmetic
 Grothe.HJM.branch5_tail
 Grothe.HJM.chargeOneCoeff_eq_origin_s_integral
 Grothe.HJM.chargeOneCoeff_hasSum_sq

@@ -131,6 +131,15 @@ once. `tools/gen_hjm_origin_panels.py` reproduces every generated file from
 The Gaussian moments and visible-energy lower bounds remain separate
 certificate obligations.
 
+For the origin visible-energy certificate, `OriginWitnessData` records two
+finite rational test vectors. Its exact checks bound their masses and their
+chaos-degree-weighted masses, and verify the final rational comparison needed
+for an `11.5` visible-energy lower bound. The vectors are proposed witnesses:
+neither their finite arithmetic nor the source-table midpoints used to select
+them assert a Gaussian correlation enclosure. That enclosure still needs its
+own integration and approximation proof. `tools/gen_hjm_origin_witnesses.py`
+reproduces the data and arithmetic checks from the pinned input.
+
 No native facts are introduced. The full concrete radial energy identity is
 proved; the coefficient-table enclosures and two numerical energy bounds
 remain separate obligations.
