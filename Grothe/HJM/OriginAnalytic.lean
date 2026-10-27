@@ -139,7 +139,8 @@ theorem fEnergyAmplitude_polynomialEnvelope : PolynomialEnvelope fEnergyAmplitud
   have hsecond := (((PolynomialEnvelope.const (2 : ℂ)).mul PolynomialEnvelope.real_id).sub
     (PolynomialEnvelope.const (2 : ℂ))).mul deriv_f_polynomialEnvelope
   have hthird := fPhaseQuotient_polynomialEnvelope.mul (PolynomialEnvelope.const ((2 : ℂ)⁻¹))
-  simpa only [fEnergyAmplitude, div_eq_mul_inv] using (hfirst.add hsecond).add hthird
+  unfold fEnergyAmplitude
+  simpa only [div_eq_mul_inv] using (hfirst.add hsecond).add hthird
 
 theorem gEnergyAmplitude_polynomialEnvelope : PolynomialEnvelope gEnergyAmplitude := by
   have hfirst := ((PolynomialEnvelope.const (-2 : ℂ)).mul PolynomialEnvelope.real_id).mul
@@ -147,7 +148,8 @@ theorem gEnergyAmplitude_polynomialEnvelope : PolynomialEnvelope gEnergyAmplitud
   have hsecond := (((PolynomialEnvelope.const (2 : ℂ)).mul PolynomialEnvelope.real_id).sub
     (PolynomialEnvelope.const (2 : ℂ))).mul deriv_g_polynomialEnvelope
   have hthird := gPhaseQuotient_polynomialEnvelope.mul (PolynomialEnvelope.const ((2 : ℂ)⁻¹))
-  simpa only [gEnergyAmplitude, div_eq_mul_inv] using (hfirst.add hsecond).add hthird
+  unfold gEnergyAmplitude
+  simpa only [div_eq_mul_inv] using (hfirst.add hsecond).add hthird
 
 lemma measurable_fResidual : Measurable fResidual := measurable_f.sub measurable_const
 
