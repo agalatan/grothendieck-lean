@@ -129,39 +129,36 @@ lemma branch5Weight_nonneg : (0 : ℝ) ≤ ScalarTailRefinement.branch5Weight :=
     unfold ScalarTailRefinement.branch5Weight; positivity
   exact_mod_cast this
 
-/-- The tail beyond mode 120 splits into the phase coefficients below and from 67. -/
-lemma tail_split :
-    ∑' n, |compCoeff haagCoeff ScalarTailRefinement.P (n + 120)| ≤
-      ∑' n, |compCoeff (cLo 67) ScalarTailRefinement.P (n + 120)| +
-        ∑' n, |compCoeff (cHi 67) ScalarTailRefinement.P (n + 120)| := by
-  have hQ := ScalarTailRefinement.norm_P
-  have hsplit (n : ℕ) : |compCoeff haagCoeff ScalarTailRefinement.P n| ≤
-      |compCoeff (cLo 67) ScalarTailRefinement.P n| + |compCoeff (cHi 67) ScalarTailRefinement.P n| := by
-    have e : compCoeff haagCoeff ScalarTailRefinement.P n =
-        compCoeff (cLo 67) ScalarTailRefinement.P n + compCoeff (cHi 67) ScalarTailRefinement.P n := by
+/-- The tail from mode `N` splits into the phase coefficients below and from `K`. -/
+lemma tail_split {Q : ℝ[X]} (hQ : l1 Q ≤ 1) (K N : ℕ) :
+    ∑' n, |compCoeff haagCoeff Q (n + N)| ≤
+      ∑' n, |compCoeff (cLo K) Q (n + N)| + ∑' n, |compCoeff (cHi K) Q (n + N)| := by
+  have hsplit (n : ℕ) : |compCoeff haagCoeff Q n| ≤ |compCoeff (cLo K) Q n| + |compCoeff (cHi K) Q n| := by
+    have e : compCoeff haagCoeff Q n = compCoeff (cLo K) Q n + compCoeff (cHi K) Q n := by
       rw [← compCoeff_add (summable_cLo _) (summable_cHi _) hQ]
-      exact congrArg (fun c => compCoeff c ScalarTailRefinement.P n)
-        (funext fun k => by unfold cLo cHi; split_ifs <;> ring)
+      exact congrArg (fun c => compCoeff c Q n) (funext fun k => by unfold cLo cHi; split_ifs <;> ring)
     rw [e]; exact abs_add_le _ _
-  have hlo : Summable fun n => |compCoeff (cLo 67) ScalarTailRefinement.P (n + 120)| :=
-    (summable_nat_add_iff 120).2 (summable_abs_compCoeff (summable_cLo _) hQ)
-  have hhi : Summable fun n => |compCoeff (cHi 67) ScalarTailRefinement.P (n + 120)| :=
-    (summable_nat_add_iff 120).2 (summable_abs_compCoeff (summable_cHi 67) hQ)
-  have hk : Summable fun n => |compCoeff haagCoeff ScalarTailRefinement.P (n + 120)| :=
-    (summable_nat_add_iff 120).2 (summable_abs_compCoeff summable_haagCoeff hQ)
+  have hlo : Summable fun n => |compCoeff (cLo K) Q (n + N)| :=
+    (summable_nat_add_iff N).2 (summable_abs_compCoeff (summable_cLo _) hQ)
+  have hhi : Summable fun n => |compCoeff (cHi K) Q (n + N)| :=
+    (summable_nat_add_iff N).2 (summable_abs_compCoeff (summable_cHi K) hQ)
+  have hk : Summable fun n => |compCoeff haagCoeff Q (n + N)| :=
+    (summable_nat_add_iff N).2 (summable_abs_compCoeff summable_haagCoeff hQ)
   rw [← hlo.tsum_add hhi]
-  exact Summable.tsum_le_tsum (fun n => hsplit (n + 120)) hk (hlo.add hhi)
+  exact Summable.tsum_le_tsum (fun n => hsplit (n + N)) hk (hlo.add hhi)
+
+/-- A tail of a nonnegative series is at most the whole series. -/
+lemma tail_le_whole {Q : ℝ[X]} (hQ : l1 Q ≤ 1) (K N : ℕ) :
+    ∑' n, |compCoeff (cHi K) Q (n + N)| ≤ ∑' n, |compCoeff (cHi K) Q n| := by
+  have hhi' := summable_abs_compCoeff (summable_cHi K) hQ
+  rw [← hhi'.sum_add_tsum_nat_add N]
+  exact le_add_of_nonneg_left (Finset.sum_nonneg fun _ _ => abs_nonneg _)
 
 /-- The outer part beyond mode 120 is within the reserve. -/
 lemma outer_tail :
     (ScalarTailRefinement.branch5Weight : ℝ) * ∑' n, |compCoeff (cHi 67) ScalarTailRefinement.P (n + 120)| ≤
-      (ScalarTailRefinement.outerReserve : ℝ) := by
-  have hhi' := summable_abs_compCoeff (summable_cHi 67) ScalarTailRefinement.norm_P
-  have htail : ∑' n, |compCoeff (cHi 67) ScalarTailRefinement.P (n + 120)| ≤
-      ∑' n, |compCoeff (cHi 67) ScalarTailRefinement.P n| := by
-    rw [← hhi'.sum_add_tsum_nat_add 120]
-    exact le_add_of_nonneg_left (Finset.sum_nonneg fun _ _ => abs_nonneg _)
-  exact (mul_le_mul_of_nonneg_left htail branch5Weight_nonneg).trans
+      (ScalarTailRefinement.outerReserve : ℝ) :=
+  (mul_le_mul_of_nonneg_left (tail_le_whole ScalarTailRefinement.norm_P 67 120) branch5Weight_nonneg).trans
     (ScalarTailRefinement.branch5_outer_bound ScalarTailRefinement.outer_composition_bound)
 
 /-- **The whole branch-5 tail beyond mode 120** (HJM 6.14–6.19): the phase coefficients below 67 give
@@ -170,7 +167,8 @@ theorem branch5_tail :
     (ScalarTailRefinement.branch5Weight : ℝ) * ∑' n, |compCoeff haagCoeff (P 4) (n + 120)| ≤
       (ScalarTailRefinement.finite67Upper : ℝ) + (ScalarTailRefinement.outerReserve : ℝ) := by
   rw [← scalarTail_P_eq]
-  refine (mul_le_mul_of_nonneg_left tail_split branch5Weight_nonneg).trans ?_
+  refine (mul_le_mul_of_nonneg_left (tail_split ScalarTailRefinement.norm_P 67 120)
+    branch5Weight_nonneg).trans ?_
   rw [mul_add]
   exact add_le_add finite67_bound outer_tail
 
