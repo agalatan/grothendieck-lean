@@ -61,6 +61,7 @@ not discharge `ComparisonInputs` or `energy_close` and changes no headline bound
 
 | Fact | Source native site | Allowlist | Report coverage | Runtime evidence |
 |---|---|---|---|---|
+| `Grothe.HJM.finite67_check` | `Grothe/HJM/Finite67.lean:36` | yes | Indirect via scratch/Axioms.lean Grothe.HJM.branch5_tail | GitHub-hosted module build 9.6 s (Horner on modes up to 4987 of the HJM branch 5, 67 phase coefficients) |
 | `Grothe.Lower.certBatches0` | `Grothe/Lower/Cert/Batches0.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 337 s; docs/NATIVE_SEQ_STATUS.md; not isolated native/current-commit measurement |
 | `Grothe.Lower.certBatches1` | `Grothe/Lower/Cert/Batches1.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 344 s; docs/NATIVE_SEQ_STATUS.md; not isolated native/current-commit measurement |
 | `Grothe.Lower.certBatches2` | `Grothe/Lower/Cert/Batches2.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 395 s; docs/NATIVE_SEQ_STATUS.md; not isolated native/current-commit measurement |

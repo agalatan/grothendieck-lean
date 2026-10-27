@@ -28,12 +28,14 @@ import Grothe
 #print axioms Grothe.HJM.Origin.phase_error_mul_left_le
 #print axioms Grothe.HJM.Origin.rightNumerator_ne_zero
 #print axioms Grothe.HJM.Origin.right_spatial_tail_budget
+#print axioms Grothe.HJM.branch5_tail
 #print axioms Grothe.HJM.chargeOneCoeff_hasSum_sq
 #print axioms Grothe.HJM.chargeOneCoeff_tsum_norm_mul_le
 #print axioms Grothe.HJM.chargeOneCoeff_tsum_sq_le
 #print axioms Grothe.HJM.chargeOneCoeff_weighted_energy
 #print axioms Grothe.HJM.dominated_branch
 #print axioms Grothe.HJM.ev_H_charge_one_radial
+#print axioms Grothe.HJM.finite67_bound
 #print axioms Grothe.HJM.hasDerivAt_originGreenBoundary
 #print axioms Grothe.HJM.hasDerivAt_originRadialGreenBoundary
 #print axioms Grothe.HJM.hfun_charge_one_laguerre
