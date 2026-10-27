@@ -45,7 +45,9 @@ lemma integral_gauss2_eq_complex (F : ℝ × ℝ → ℂ) :
 
 /-- `gaussC` is the image of the planar Gaussian under `toC'`. -/
 lemma gaussC_eq_map : gaussC = gauss2.map toC' := by
-  rw [gaussC, Grothe.LowerAnalytic.stdGaussian, ← (measurePreserving_finTwoArrow (gaussianReal 0 1)).map_eq,
+  have e : gauss2 = (Measure.pi fun _ : Fin 2 => gaussianReal 0 1).map MeasurableEquiv.finTwoArrow :=
+    (measurePreserving_finTwoArrow (gaussianReal 0 1)).map_eq.symm
+  rw [gaussC, Grothe.LowerAnalytic.stdGaussian, e,
     Measure.map_map measurable_toC' (MeasurableEquiv.finTwoArrow).measurable]
   congr 1; ext x; simp [toC, toC', Function.comp, MeasurableEquiv.finTwoArrow]
 
