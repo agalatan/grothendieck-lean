@@ -643,6 +643,7 @@ import Grothe
 #print axioms Grothe.ScalarTailRefinement.wallis_rational_check
 #print axioms Grothe.ScalarTailRefinement.wallis_tail_bound
 #print axioms Grothe.Upper.BandComparison.compare
+#print axioms Grothe.Upper.BandComparison.quadratic_sum_le_grouped
 #print axioms Grothe.Upper.BandComparison.quadratic_sum_le_overlap
 #print axioms Grothe.Upper.BandComparison.weighted_compare
 #print axioms Grothe.Upper.CubicPhaseScreen.axis_le_real_polynomial
@@ -775,6 +776,9 @@ import Grothe
 #print axioms Grothe.Upper.comparisonOverlap_separate
 #print axioms Grothe.Upper.comparisonWeight_sound
 #print axioms Grothe.Upper.comparison_check
+#print axioms Grothe.Upper.comparison_group_radii
+#print axioms Grothe.Upper.comparison_group_separate
+#print axioms Grothe.Upper.comparison_grouped_budget
 #print axioms Grothe.Upper.comparison_overlap_budget
 #print axioms Grothe.Upper.headWeight_sound
 #print axioms Grothe.Upper.head_le_of_check
@@ -854,9 +858,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.first_captured_tail_budget
 #print axioms Grothe.UpperChaos.fresh_upper_concrete
 #print axioms Grothe.UpperChaos.fresh_upper_concrete_taylor
+#print axioms Grothe.UpperChaos.fresh_upper_concrete_taylor_grouped
 #print axioms Grothe.UpperChaos.fresh_upper_of_rounding
 #print axioms Grothe.UpperChaos.fresh_upper_pieces
 #print axioms Grothe.UpperChaos.fresh_upper_rounder
+#print axioms Grothe.UpperChaos.fresh_upper_rounder_grouped
 #print axioms Grothe.UpperChaos.gradedHermiteFn_add
 #print axioms Grothe.UpperChaos.gradedHermiteFn_const_mul
 #print axioms Grothe.UpperChaos.gradedHermiteFn_rot2
@@ -936,6 +942,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.law_comm
 #print axioms Grothe.UpperChaos.leaf_sound
 #print axioms Grothe.UpperChaos.localized_comparison
+#print axioms Grothe.UpperChaos.localized_comparison_grouped
 #print axioms Grothe.UpperChaos.map_mehlerY
 #print axioms Grothe.UpperChaos.map_smooth
 #print axioms Grothe.UpperChaos.measurable_GT
@@ -1078,6 +1085,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le_two_mul
 #print axioms Grothe.UpperChaos.walk_sound
 #print axioms Grothe.fresh_upper
+#print axioms Grothe.fresh_upper_grouped
+#print axioms Grothe.grouped_head_residual_le
+#print axioms Grothe.grouped_upper_value_improves
+#print axioms Grothe.grouped_upper_value_lt
 #print axioms Grothe.haagerup_bound
 #print axioms Grothe.haagerup_dominated
 #print axioms Grothe.hardy_budget_after_linear

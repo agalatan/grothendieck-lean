@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.401697049825 < K_G^ℂ < 1.404598149152**
+> **1.401697049825 < K_G^ℂ < 1.404598149141**
 >
 > **Unconditional Lean theorem: K_G^ℂ ≤ 1.404909132791.** Its proof uses only the three standard axioms.
 
@@ -49,7 +49,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.401697049825 < K** | **K < 1.404598149152** |
+| Oct 2026 | **this repository** | **1.401697049825 < K** | **K < 1.404598149141** |
 | Oct 2026 | this repository, unconditional Lean theorem | | K ≤ 1.404909132791 |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
@@ -180,10 +180,10 @@ provide their soundness. Their generated facts and final `CapsRest` wiring
 remain a separate campaign (generated piece modules are excluded from the
 root until a proof uses them).
 
-**Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder`, for an L² charge-one truncation `X`, proves
-`ComparisonInputs → energy_close → IsGrothendieckBound (500000000000000000/355973699881431491)`,
-and `Grothe.upper_value_lt` shows this is below 1.404598149152
-(`Grothe/UpperChaos/PhiBound.lean`; the table interface is `Grothe.fresh_upper` in `Grothe/Upper/PolynomialBridge.lean`).
+**Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder_grouped`, for an L² charge-one truncation `X`, proves
+`ComparisonInputs → energy_close → IsGrothendieckBound (500000000000000000/355973699884132991)`,
+and `Grothe.grouped_upper_value_lt` shows this is below 1.404598149141
+(`Grothe/UpperChaos/GroupedRounder.lean`). The previous bound and table interface remain available.
 
 The rounding is the smoothing G_T of T = F₀·P₃(φ): a two-coordinate Gaussian phase rounding F₀ times the
 cubic Taylor polynomial P₃(x) = 1 + ix − x²/2 − ix³/6 of a damped polynomial phase φ. It is **defined in Lean**
@@ -193,7 +193,7 @@ bisection cover of a box in 512 cubes with a first-order expansion of the expone
 native facts `phi_cover_check_0`–`5`). |φ| < 1 is also the input the external comparison argument relies on. Its correlation kernel H(t) = Σ E[n,m] p(t)ⁿ(−τ(t))ᵐ, with the odd
 preprocessors of degrees 41 and 15 (Wiener norms ≤ 1, auxiliary linear coefficient zero), is compared with c·t,
 c = 7119483103461/10¹³, through the kernel of a truncation X, and the bound is 1/(c − ‖H − c·t‖) with residual
-at most 455291618509/(5·10¹⁷).
+at most 455288917009/(5·10¹⁷).
 Lean proves the complex Gaussian chaos calculus on ℂ² (`Grothe/UpperChaos/`: Hermite basis, completeness,
 Parseval, the Mehler formula for L² functions, charge selection, energies → kernel), hence the structural facts
 (validity, summability, parity) for G_T and X; the transfer inequality; the evaluation of the head of the kernel
@@ -245,7 +245,7 @@ remaining captured band norms from the same exact arrays. `FirstSecondCapturedTa
 derives the other two high-tail caps. `TaylorCenterFunctions` gives the concrete
 pointwise functions and discharges the rounding comparison piece.
 
-`fresh_upper_concrete_taylor` instantiates the conditional bound with these fixed
+`fresh_upper_concrete_taylor_grouped` instantiates the improved conditional bound with these fixed
 centers. Its Gaussian inputs are six first-order, four second-order and four
 third-order finite-band error inequalities, with the explicit caps in
 `TaylorTailData`, together with the concrete kernel-energy table accuracy.
@@ -284,12 +284,13 @@ analytic identities change neither numerical endpoint nor its hypotheses.
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
-only with X's energy in its selected band, weighted by the retained coefficient cost. The quadratic error charges only pairs
-of pieces whose degree bands can overlap; disjoint pairs contribute zero.
+only with X's energy in its selected band, weighted by the retained coefficient cost. The quadratic error is
+grouped into the rounding remainder and three Taylor orders: within each group the bands are disjoint, so the
+component norms combine in quadrature before the groups are added by the triangle inequality.
 A native check derives every band radius from the stored table and its accuracy
 allowance. Lean proves every coefficient cost with outward interval polynomial arithmetic.
-A kernel-checked rational overlap ledger assembles the quadratic cost.
-The weighted comparison is at most 106490963/(125000·10⁹).
+A kernel-checked rational ledger assembles the grouped quadratic cost. No new Gaussian input is used.
+The weighted comparison is at most 851922301/10¹⁵.
 The concrete theorem's remaining **inputs** are:
 
 | hypothesis | content | share of the residual |
@@ -298,7 +299,7 @@ The concrete theorem's remaining **inputs** are:
 | `energy_close` | the stored energies are within 6847009/(5·10¹⁷) of E(X) | 0.001% |
 
 The head, computed in Lean (`head_check`), is 28153/10¹², 3.09% of the total
-455291618509/(5·10¹⁷). The Hardy tail beyond degree 501, 30488839/10¹⁵ (3.35%), is **proved**: the weighted
+455288917009/(5·10¹⁷). The Hardy tail beyond degree 501, 30488839/10¹⁵ (3.35%), is **proved**: the weighted
 square sum is ≤ 7/4 at radius 4149/4000 (`HardyReal.hardy_GT`, below).
 
 **The error decomposition is explicit** (`ComparisonPieces.lean`). With `T = F₀ + h₁ + h₂/2 + h₃/6`,
