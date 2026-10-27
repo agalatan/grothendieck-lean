@@ -41,7 +41,7 @@ lemma first_decomposition :
         omega
       have hex : ∃ k : Fin 6, i ∈ firstCenterBandModes k := by
         by_cases h1 : (bideg i).1 + (bideg i).2 ≤ 51
-        · refine ⟨0, ?_⟩; simpa [firstCenterBandModes, firstCenterBandLo, firstCenterBandHi] using ⟨hd.1, h1⟩
+        · refine ⟨0, ?_⟩; simp [firstCenterBandModes, firstCenterBandLo, firstCenterBandHi]; omega
         by_cases h2 : (bideg i).1 + (bideg i).2 ≤ 101
         · refine ⟨1, ?_⟩; simp [firstCenterBandModes, firstCenterBandLo, firstCenterBandHi]; omega
         by_cases h3 : (bideg i).1 + (bideg i).2 ≤ 151
@@ -70,7 +70,7 @@ lemma second_decomposition :
         omega
       have hex : ∃ k : Fin 4, i ∈ secondCenterBandModes k := by
         by_cases h1 : (bideg i).1 + (bideg i).2 ≤ 51
-        · refine ⟨0, ?_⟩; simpa [secondCenterBandModes, secondCenterBandLo, secondCenterBandHi] using ⟨hd.1, h1⟩
+        · refine ⟨0, ?_⟩; simp [secondCenterBandModes, secondCenterBandLo, secondCenterBandHi]; omega
         by_cases h2 : (bideg i).1 + (bideg i).2 ≤ 71
         · refine ⟨1, ?_⟩; simp [secondCenterBandModes, secondCenterBandLo, secondCenterBandHi]; omega
         by_cases h3 : (bideg i).1 + (bideg i).2 ≤ 81
@@ -142,7 +142,8 @@ lemma response_norm :
         (chargeFn_F0 phiBound).memLp.toLp F0 + frozenCorrection := by
       change ((chargeFn_F0 phiBound).memLp.add chargeFn_frozenCorrectionFn.memLp).toLp
         (F0 + frozenCorrectionFn) = _
-      rw [MemLp.toLp_add, toLp_frozenCorrectionFn]
+      rw [MemLp.toLp_add (chargeFn_F0 phiBound).memLp chargeFn_frozenCorrectionFn.memLp,
+        toLp_frozenCorrectionFn]
     have h := (smoothOp_toLp' (chargeFn_F0v phiBound chargeFn_frozenCorrectionFn).meas
       (chargeFn_F0v phiBound chargeFn_frozenCorrectionFn).memLp).symm
     change (memLp_Xfun phiBound chargeFn_frozenCorrectionFn).toLp (Xfun frozenCorrectionFn) =
