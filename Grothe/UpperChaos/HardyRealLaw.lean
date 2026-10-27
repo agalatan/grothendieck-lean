@@ -145,7 +145,7 @@ theorem law_swap {p q : ℝ} (hp : |p| ≤ 1) (hq : |q| ≤ 1) {a b c : ℝ}
   simp only [L_apply]
   simp only [Prod.fst_zero, Prod.snd_zero, Prod.mk_add_mk, mul_one, mul_zero, add_zero, zero_add, map_zero,
     dual_ofReal_mul, dual_ofReal]
-  rw [div_add_div_same, ← neg_add, ← Complex.ofReal_add, div_left_inj' (show (4 : ℂ) ≠ 0 by norm_num), neg_inj,
+  rw [← add_div, ← neg_add, ← Complex.ofReal_add, div_left_inj' (show (4 : ℂ) ≠ 0 by norm_num), neg_inj,
     Complex.ofReal_inj]
   linear_combination e1 + e2
 
