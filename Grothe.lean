@@ -512,6 +512,7 @@ import Grothe.UpperChaos.GradedHermiteFn
 import Grothe.UpperChaos.GradedHermiteIntegerEnergy
 import Grothe.UpperChaos.GradedHermiteLinear
 import Grothe.UpperChaos.GradedHermitePhaseSlice
+import Grothe.UpperChaos.GradedUnitBasis
 import Grothe.UpperChaos.GroupedComparison
 import Grothe.UpperChaos.GroupedRounder
 import Grothe.UpperChaos.HardyArcCircle
