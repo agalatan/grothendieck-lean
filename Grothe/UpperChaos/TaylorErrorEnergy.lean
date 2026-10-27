@@ -28,6 +28,7 @@ theorem norm_hpow_sub_sq {j : ℕ} (hj : 0 < j) (c : Lp ℂ 2 mu2) :
         ‖c‖ ^ 2 := by
   rw [norm_sub_sq (𝕜 := ℂ), norm_hpow_toLp_sq_eq hj, integral_phiT_pow_even,
     inner_re_symm (𝕜 := ℂ) _ c]
+  rfl
 
 /-- Bounds on the total moment, approximant norm and one inner product control the error. -/
 theorem norm_hpow_sub_sq_le {j : ℕ} (hj : 0 < j) (c : Lp ℂ 2 mu2)
