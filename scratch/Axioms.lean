@@ -1028,6 +1028,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.HardyReal.integral_pair_eq_kHol
 #print axioms Grothe.UpperChaos.HardyReal.law_swap
 #print axioms Grothe.UpperChaos.HardyReal.mehler_eq_HholPair
+#print axioms Grothe.UpperChaos.LeanCertPilot.unitBaseSlice_integral_enclosure
 #print axioms Grothe.UpperChaos.PackedDyadic.gradedIntegerSum_eq
 #print axioms Grothe.UpperChaos.PackedDyadic.isumAcc_eq
 #print axioms Grothe.UpperChaos.PackedDyadic.sum_coeff_sq
