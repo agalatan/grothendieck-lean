@@ -233,7 +233,10 @@ expansions with rational sums of coefficient squares. `GradedHermite` provides
 injective charge-one indexing and direct coefficient lookup. `TaylorBandCheck`
 certifies the complete third approximant's 6,552 coefficients through degree 51:
 its total norm, all four captured band norms, and its vanishing degree tail.
-Its distance to the Gaussian Taylor source still needs an integration-error bound.
+`GradedHermiteFn` supplies its continuous, charge-one pointwise representative.
+`ThirdCapturedTail` derives the existing third-order tail cap from four explicit
+finite-band Gaussian error bounds, using the exact sixth phase moment and the
+captured center energies. Those Gaussian error bounds remain hypotheses.
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs

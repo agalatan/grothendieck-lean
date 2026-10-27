@@ -122,6 +122,22 @@ lemma gradedHermiteCoeff_gradedIdx {N : ℕ} (a : ℕ → ℕ → ℕ → ℚ) (
     gradedHermiteCoeff a (gradedIdx i) = a i.1 i.2.1 i.2.2 := by
   unfold gradedHermiteCoeff
   rw [gradedIdx_antidegree]
+  rfl
+
+private lemma sum_fin_graded_eq_range {M : Type*} [AddCommMonoid M]
+    (N : ℕ) (F : ℕ → ℕ → ℕ → M) :
+    (∑ q : Fin N, ∑ c : Fin (q.val + 2), ∑ d : Fin (q.val + 1), F q c d) =
+      ∑ q ∈ Finset.range N, ∑ c ∈ Finset.range (q + 2),
+        ∑ d ∈ Finset.range (q + 1), F q c d := by
+  rw [← Fin.sum_univ_eq_sum_range
+    (fun q => ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1), F q c d) N]
+  apply Finset.sum_congr rfl
+  intro q _
+  rw [← Fin.sum_univ_eq_sum_range
+    (fun c => ∑ d ∈ Finset.range (q.val + 1), F q c d) (q.val + 2)]
+  apply Finset.sum_congr rfl
+  intro c _
+  exact Fin.sum_univ_eq_sum_range (fun d => F q c d) (q.val + 1)
 
 /-- A graded finite expansion with abstract, directly indexed rational coefficients. -/
 noncomputable def gradedHermite (N : ℕ) (a : ℕ → ℕ → ℕ → ℚ) : Lp ℂ 2 mu2 :=
@@ -146,7 +162,7 @@ theorem norm_gradedHermite_sq_cast (N : ℕ) (a : ℕ → ℕ → ℕ → ℚ) :
       gradedHermiteCoeff a (gradedMode q c d) = a q c d :=
     gradedHermiteCoeff_gradedIdx a (⟨q, c, d⟩ : GradedIdx N)
   simp only [hcoeff]
-  simp_rw [Fin.sum_univ_eq_sum_range]
+  exact sum_fin_graded_eq_range N (fun q c d => a q c d ^ 2)
 
 /-- The total norm formula with rational coefficients cast termwise into the reals. -/
 theorem norm_gradedHermite_sq (N : ℕ) (a : ℕ → ℕ → ℕ → ℚ) :
@@ -170,7 +186,8 @@ theorem norm_projOn_gradedHermite_sq_cast (B : Set Idx2) [DecidablePred (· ∈ 
       gradedHermiteCoeff a (gradedMode q c d) = a q c d :=
     gradedHermiteCoeff_gradedIdx a (⟨q, c, d⟩ : GradedIdx N)
   simp only [hcoeff]
-  simp_rw [Fin.sum_univ_eq_sum_range]
+  exact sum_fin_graded_eq_range N
+    (fun q c d => if gradedMode q c d ∈ B then a q c d ^ 2 else 0)
 
 /-- A graded expansion has no coefficient of a charge other than one. -/
 theorem inner_gradedHermite_eq_zero_of_charge (N : ℕ) (a : ℕ → ℕ → ℕ → ℚ) (i : Idx2)

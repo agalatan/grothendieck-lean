@@ -186,7 +186,10 @@ Progress (claude/hardy, 26 Oct):
   supplies the full third-center certificate through degree 51, including all
   four finite bands and exact vanishing on the tail. The first and second
   centers and the rounding norm still need their own finite checks.
-  The other Hermite-tail and coefficient inputs are still separate obligations.
+  `ThirdCapturedTail` derives the existing third tail cap from four slightly
+  tighter finite-band Gaussian error premises, with a concrete pointwise center
+  satisfying `ChargeFn`. Those errors and the other Taylor-source inputs remain
+  separate obligations.
 * The refined lower endpoint is `1.401697049825`, conditional on the same
   `NodeCaps`, through `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`.
   The single `Grothe` target includes the 60 range facts and their final assembly;

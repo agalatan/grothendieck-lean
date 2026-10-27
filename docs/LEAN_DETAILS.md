@@ -168,6 +168,22 @@ charge-one support and the vanishing degree tail follow from generic indexing
 lemmas. The source is unscaled: division by six occurs in the comparison source,
 not in this center. The other two centers, rounding discrepancy and Gaussian
 error enclosures remain open; stored error arrays are not treated as proofs.
+`GradedHermiteFn` constructs continuous finite sums of the normalized Hermite
+polynomials, proves their `MemLp` and `toLp` identities, and proves pointwise
+charge-one rotation. The concrete adapter `thirdCenterFn` therefore satisfies
+`ChargeFn` without a representative-identification assumption.
+
+`ThirdCapturedTail.norm_piece17_thirdCenter_le` derives comparison piece 17's
+existing cap from four explicit unscaled Gaussian band errors bounded by
+`[47629771,353989726,4052571868,150654124859]/10^18`. The scalar inequalities
+`thirdCapturedErrorQ_le_public` and `third_captured_tail_budget` use kernel
+arithmetic; the latter retains the sum of four squared captured norm lower
+bounds after subtracting their individual errors. These slightly tighter
+premises are needed because six times the rounded public finite-band caps
+loses too much precision in this subtraction. The original error allowances
+are recorded in `data/localized-comparison/inputs/taylor_comparison_result.json`;
+their Gaussian validity remains unproved. This theorem removes a separate tail
+hypothesis once these four finite-band error hypotheses are supplied.
 
 **Phase errors and transported certificates.**
 `Grothe/Upper/ResponseGeometry.lean` proves twelve statements: the exact

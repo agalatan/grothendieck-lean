@@ -42,6 +42,15 @@ the factor 1/6 belongs to the later comparison source.
 The charge-one support and exact vanishing on total degrees above 51 follow
 from the general indexing lemmas. No numerical support assertion is assumed.
 
+`GradedHermiteFn` constructs the pointwise normalized polynomial and identifies
+its `toLp` with the exact finite center. `ThirdCapturedTail` derives the existing
+third tail comparison cap from four unscaled finite-band error hypotheses:
+`[47629771,353989726,4052571868,150654124859]/10^18`. These tighter caps fit inside
+six times the public finite-band caps and preserve enough captured energy for
+the tail. The rounded public caps alone lose too much precision. The original
+allowances are preserved in
+`data/localized-comparison/inputs/taylor_comparison_result.json`.
+
 These certificates do not establish the distance to `hpow 3`, the first or
 second centers' norm certificates, the rounding discrepancy, or the stored
 kernel-energy table. The remaining finite checks and Gaussian integral

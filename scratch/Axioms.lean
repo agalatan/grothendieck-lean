@@ -611,6 +611,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
 #print axioms Grothe.UpperChaos.bandProj_smoothOp_comm
 #print axioms Grothe.UpperChaos.charFunDual_gaussC
+#print axioms Grothe.UpperChaos.chargeFn_thirdCenterFn
+#print axioms Grothe.UpperChaos.coeFn_gradedHermite
+#print axioms Grothe.UpperChaos.continuous_gradedHermiteFn
+#print axioms Grothe.UpperChaos.continuous_hfun2
 #print axioms Grothe.UpperChaos.difference_pieces
 #print axioms Grothe.UpperChaos.differentiableOn_HholPair_Rt
 #print axioms Grothe.UpperChaos.differentiableOn_Hhol_Rt
@@ -622,6 +626,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.fresh_upper_of_rounding
 #print axioms Grothe.UpperChaos.fresh_upper_pieces
 #print axioms Grothe.UpperChaos.fresh_upper_rounder
+#print axioms Grothe.UpperChaos.gradedHermiteFn_add
+#print axioms Grothe.UpperChaos.gradedHermiteFn_const_mul
+#print axioms Grothe.UpperChaos.gradedHermiteFn_rot2
 #print axioms Grothe.UpperChaos.gradedIdx_antidegree
 #print axioms Grothe.UpperChaos.gradedIdx_charge
 #print axioms Grothe.UpperChaos.gradedIdx_injective
@@ -641,6 +648,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.hermiteBasis
 #print axioms Grothe.UpperChaos.hermiteBasis2
 #print axioms Grothe.UpperChaos.hermite_complete
+#print axioms Grothe.UpperChaos.hfun2_rot2_of_charge
 #print axioms Grothe.UpperChaos.inner_gradedHermite_eq_zero_of_charge
 #print axioms Grothe.UpperChaos.inner_gradedHermite_eq_zero_of_total_degree
 #print axioms Grothe.UpperChaos.inner_hvec2_gradedHermite
@@ -671,8 +679,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.map_mehlerY
 #print axioms Grothe.UpperChaos.map_smooth
 #print axioms Grothe.UpperChaos.measurable_GT
+#print axioms Grothe.UpperChaos.measurable_gradedHermiteFn
 #print axioms Grothe.UpperChaos.mehler_L2
 #print axioms Grothe.UpperChaos.memLp_GT
+#print axioms Grothe.UpperChaos.memLp_gradedHermiteFn
 #print axioms Grothe.UpperChaos.memLp_smoothFn
 #print axioms Grothe.UpperChaos.mem_gradedSupport_iff
 #print axioms Grothe.UpperChaos.normSq_P3
@@ -691,6 +701,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_hpow_toLp_sq_eq
 #print axioms Grothe.UpperChaos.norm_hpow_two_sq
 #print axioms Grothe.UpperChaos.norm_mul_P3_le_one
+#print axioms Grothe.UpperChaos.norm_piece17_le_of_third_captured
+#print axioms Grothe.UpperChaos.norm_piece17_thirdCenter_le
 #print axioms Grothe.UpperChaos.norm_projOn_gradedHermite_sq_cast
 #print axioms Grothe.UpperChaos.norm_projOn_hermiteFinite_sq
 #print axioms Grothe.UpperChaos.norm_projOn_hermiteFinite_sq_cast
@@ -703,6 +715,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_sq_le_phiT_moment
 #print axioms Grothe.UpperChaos.norm_thirdCenterBand_sq
 #print axioms Grothe.UpperChaos.norm_thirdCenter_sq
+#print axioms Grothe.UpperChaos.norm_thirdCenter_tail_scaled_le
+#print axioms Grothe.UpperChaos.norm_thirdCenter_tail_smoothed_le
+#print axioms Grothe.UpperChaos.norm_third_tail_residual_le_of_captured
 #print axioms Grothe.UpperChaos.norm_toLp_sq_eq_integral
 #print axioms Grothe.UpperChaos.phase_moment2_check
 #print axioms Grothe.UpperChaos.phase_moment4_check
@@ -729,12 +744,18 @@ import Grothe
 #print axioms Grothe.UpperChaos.sum_projOn
 #print axioms Grothe.UpperChaos.sum_sq_le_of_mean_le
 #print axioms Grothe.UpperChaos.summable_abs_energy
+#print axioms Grothe.UpperChaos.thirdCapturedErrorQ_le_public
+#print axioms Grothe.UpperChaos.thirdCenterBandModes_eq_comparison
 #print axioms Grothe.UpperChaos.thirdCenterBand_norm_lower
 #print axioms Grothe.UpperChaos.thirdCenterBand_norm_upper
 #print axioms Grothe.UpperChaos.thirdCenter_charge
 #print axioms Grothe.UpperChaos.thirdCenter_decode_check
 #print axioms Grothe.UpperChaos.thirdCenter_energy_check
 #print axioms Grothe.UpperChaos.thirdCenter_tail_zero
+#print axioms Grothe.UpperChaos.thirdTailModes_eq
+#print axioms Grothe.UpperChaos.third_captured_tail_budget
+#print axioms Grothe.UpperChaos.toLp_gradedHermiteFn
+#print axioms Grothe.UpperChaos.toLp_thirdCenterFn
 #print axioms Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le
 #print axioms Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le_two_mul
 #print axioms Grothe.UpperChaos.walk_sound

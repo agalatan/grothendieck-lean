@@ -288,6 +288,7 @@ import Grothe.UpperChaos.EnergyBlock
 import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussOp
 import Grothe.UpperChaos.GradedHermite
+import Grothe.UpperChaos.GradedHermiteFn
 import Grothe.UpperChaos.HardyArcCircle
 import Grothe.UpperChaos.HardyArcCover
 import Grothe.UpperChaos.HardyArcMean
@@ -367,3 +368,4 @@ import Grothe.UpperChaos.TaylorBandData
 import Grothe.UpperChaos.TaylorErrorEnergy
 import Grothe.UpperChaos.TaylorMoments
 import Grothe.UpperChaos.TaylorPhase
+import Grothe.UpperChaos.ThirdCapturedTail
