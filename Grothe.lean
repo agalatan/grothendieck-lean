@@ -19,6 +19,9 @@ import Grothe.HJM.OriginDenominator
 import Grothe.HJM.OriginEndpoint
 import Grothe.HJM.OriginEnergy
 import Grothe.HJM.OriginEnergyExtension
+import Grothe.HJM.OriginEnergyIntegrability
+import Grothe.HJM.OriginEnergyIntervalGates
+import Grothe.HJM.OriginEnergyPolynomialRange
 import Grothe.HJM.OriginFarTailGrowth
 import Grothe.HJM.OriginGreen
 import Grothe.HJM.OriginKernel
