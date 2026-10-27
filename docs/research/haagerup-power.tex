@@ -6,10 +6,10 @@ coefficient sum. Haagerup's Gaussian phase kernel is
  r_0=1,\quad r_{k+1}=r_k\frac{(2k+1)^2}{4(k+1)(k+2)}.
 \]
 The Gaussian identity, tensor realization, residual estimate from finite
-certificates, and matrix transfer are expressed in Lean. The regenerated finite
-checks for the order-$10$ completion await delivery CI (issue~133). The focused
-policy requires 96 results with zero native axioms. The current source targets
-the following bound with no external analytic or numerical premises:
+certificates, and matrix transfer are proved in Lean. The finite checks for
+the order-$10$ completion passed \href{https://github.com/agalatan/grothendieck-lean/actions/runs/40432615845}{delivery CI}
+(issue~133). The focused policy requires 96 results with zero native axioms.
+The theorem gives the following bound with no external analytic or numerical premises:
 \[
  \boxed{K_G^{\mathbb C}\le\frac{175613641599}{125000000000}=1.404909132792.}
 \]
@@ -208,9 +208,8 @@ $\pi$ give
 \[
  K_G^{\mathbb C}\le\frac4{\pi(a-746992/10^{16})}<1.404909132792.
 \]
-Each finite acceptance fact has a generated kernel-proof term; the new terms
-await delivery CI. The 96-result focused policy permits only the three standard
-axioms. Normal delivery CI builds and audits the combined tree before merging it;
+Each finite acceptance fact has a generated kernel-proof term accepted by
+delivery CI. The 96-result focused policy permits only the three standard axioms. Normal delivery CI builds and audits the combined tree before merging it;
 older receipts remain evidence only for their recorded source snapshots.
 The generated data module contains only six rational-data definitions, with no
 native evaluation theorem. An independent directed FLINT replay audits

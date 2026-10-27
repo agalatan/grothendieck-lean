@@ -1,0 +1,19 @@
+{
+  "agent_id": "codex-aa04",
+  "provenance": "actual records from completed delivery CI; offline extraction, no second Lean run",
+  "ci_run": 40432615845,
+  "ci_log_sha256": "56ed91a35f00908f5b4ef91808b432ae77e75af82c3b68185fe69e0fc739984c",
+  "global_reports": 597,
+  "global_required": 380,
+  "global_native_used": 88,
+  "global_native_allowed": 88,
+  "focused_reports": 96,
+  "focused_native_allowed": 0,
+  "focused_native_used": 0,
+  "headline_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "ci_summary": "checked 597 theorems; native_decide facts used: 88 of 88"
+}

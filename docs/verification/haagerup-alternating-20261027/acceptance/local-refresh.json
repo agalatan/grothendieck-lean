@@ -1,0 +1,28 @@
+{
+  "agent_id": "codex-aa04",
+  "source_commit": "83b926508248916a8cdcc0d7eaca2c4994534c97",
+  "recorded_at_utc": "2026-10-27T01:41:24.930647+00:00",
+  "scope": "targeted local module checks, not a full local build",
+  "status": "PASS",
+  "checks": [
+    {
+      "module": "Grothe/Upper/ResolventCertificate.lean",
+      "exit": 0,
+      "warnings": 0,
+      "source_sha256": "e2b9658f0a854ae1743d8c608f47b28d455ad07b78872dcf8143b86de76cb22b"
+    },
+    {
+      "module": "Grothe/Upper/WeightedTail.lean",
+      "exit": 0,
+      "warnings": 0,
+      "source_sha256": "fc847be6919b015688833b8fa3bdeaf794521292978dac12c302daef264199fa"
+    },
+    {
+      "module": "Grothe/Haagerup/CanonicalProof.lean",
+      "exit": 0,
+      "warnings": 0,
+      "source_sha256": "08a8b8132e2303d4901ff0fa9d6c2c21970d48c99f0c4143cc7d1c0937da6b1e"
+    }
+  ],
+  "cache_note": "The stale imports reported in the earlier repair receipt were refreshed in this worktree only; the current analytic module then checked successfully."
+}
