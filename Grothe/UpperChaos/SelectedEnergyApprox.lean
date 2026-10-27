@@ -117,5 +117,64 @@ theorem concrete_energy_close_five_e_minus_seven
     (1 / 2000000) hB hd htable
   norm_num
 
+/-- The selected projection has exactly the energy in the selected bidegrees. -/
+theorem norm_energyHeadProjection_sq (S : Finset (ℕ × ℕ))
+    (F : Lp ℂ 2 mu2) :
+    ‖projOn (energyHeadModes S) F‖ ^ 2 = ∑ p ∈ S, energy F p := by
+  classical
+  have hz : ∀ p ∉ S, energy (projOn (energyHeadModes S) F) p = 0 := by
+    intro p hp
+    apply energy_projOn_eq_zero
+    intro i hi hmem
+    exact hp (by simpa only [energyHeadModes, Set.mem_setOf_eq, hi] using hmem)
+  have hs : (∑' p, energy (projOn (energyHeadModes S) F) p) =
+      ∑ p ∈ S, energy (projOn (energyHeadModes S) F) p :=
+    tsum_eq_sum hz
+  have he : (∑ p ∈ S, energy (projOn (energyHeadModes S) F) p) =
+      ∑ p ∈ S, energy F p := by
+    apply sum_congr rfl
+    intro p hp
+    exact energy_headProjection S F p hp
+  exact ((hasSum_energy_bideg (projOn (energyHeadModes S) F)).tsum_eq).symm.trans (hs.trans he)
+
+/-- Table mass and its explicit selected energy discrepancy give a unit
+projected norm. No sign hypothesis on the table entries is needed. -/
+theorem norm_energyHeadProjection_le_one_of_table (S : Finset (ℕ × ℕ))
+    (F : Lp ℂ 2 mu2) (T : ℕ × ℕ → ℝ) (ε : ℝ)
+    (htable : (∑ p ∈ S, |energy F p - T p|) ≤ ε)
+    (hmass : (∑ p ∈ S, T p) + ε ≤ 1) :
+    ‖projOn (energyHeadModes S) F‖ ≤ 1 := by
+  have hsum : (∑ p ∈ S, energy F p) ≤
+      (∑ p ∈ S, T p) + ∑ p ∈ S, |energy F p - T p| := by
+    rw [← sum_add_distrib]
+    apply sum_le_sum
+    intro p _hp
+    have h := le_abs_self (energy F p - T p)
+    linarith
+  have hsquare : ‖projOn (energyHeadModes S) F‖ ^ 2 ≤ 1 := by
+    rw [norm_energyHeadProjection_sq]
+    linarith
+  nlinarith [norm_nonneg (projOn (energyHeadModes S) F)]
+
+
+/-- The unit norm premise in the concrete specialization follows from the
+same table discrepancy and an independent exact table-mass bound. -/
+theorem concrete_energy_close_of_table_mass_five_e_minus_seven
+    (Y : Lp ℂ 2 mu2)
+    (hd : ‖projOn (energyHeadModes (headIdx 501))
+      (((memLp_Xfun phiBound chargeFn_frozenCorrectionFn).toLp
+        (Xfun frozenCorrectionFn)) - Y)‖ ≤ (3 / 20000000 : ℝ))
+    (htable : (∑ p ∈ headIdx 501, |energy Y p - (energyTable p : ℝ)|) ≤
+      (3 / 20000000 : ℝ))
+    (hmass : (∑ p ∈ headIdx 501, (energyTable p : ℝ)) +
+      (3 / 20000000 : ℝ) ≤ 1) :
+    (∑ p ∈ headIdx 501,
+      |energy ((memLp_Xfun phiBound chargeFn_frozenCorrectionFn).toLp
+        (Xfun frozenCorrectionFn)) p - (energyTable p : ℝ)|) ≤
+      (1 / 2000000 : ℝ) := by
+  apply concrete_energy_close_five_e_minus_seven Y _ hd htable
+  exact norm_energyHeadProjection_le_one_of_table (headIdx 501) Y
+    (fun p => (energyTable p : ℝ)) (3 / 20000000) htable hmass
+
 end
 end Grothe.UpperChaos
