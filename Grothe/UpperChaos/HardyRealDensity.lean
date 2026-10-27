@@ -156,13 +156,13 @@ lemma integral_psi_solve4 (h : 0 < k11 a b) (hd : 0 < kdet a b c) (p : Pt4) :
     ∫ s : Pt4, psi (solve4 a b c (s - mulR4 a b c p)) = (s11 a b * s22 a b c) ^ 2 := by
   have hpos : 0 < (s11 a b * s22 a b c) ^ 2 := pow_pos (mul_pos (s11_pos h) (s22_pos h hd)) 2
   have e := integral_subst4 h hd p (g := fun _ => (1 : ℂ)) measurable_const
-  simp only [mul_one, integral_psi, integral_complex_ofReal] at e
+  simp only [mul_one] at e
+  rw [integral_psi, integral_complex_ofReal] at e
   have e2 : (1 : ℂ) = ((((s11 a b * s22 a b c) ^ 2)⁻¹ * ∫ s : Pt4, psi (solve4 a b c (s - mulR4 a b c p)) : ℝ) : ℂ) := by
     rw [e]; push_cast; ring
   have e3 : ((s11 a b * s22 a b c) ^ 2)⁻¹ * ∫ s : Pt4, psi (solve4 a b c (s - mulR4 a b c p)) = 1 := by
     exact_mod_cast e2.symm
-  field_simp at e3
-  linarith
+  exact ((inv_mul_eq_one₀ hpos.ne').1 e3).symm
 
 /-- The density `D(p, s) = ψ(p) ψ(S⁻¹(s − Rp)) / det S²` on `ℝ⁸`. -/
 def dens (a b c : ℝ) (q : Pt4 × Pt4) : ℝ :=
@@ -190,8 +190,7 @@ lemma integrable_dens (h : 0 < k11 a b) (hd : 0 < kdet a b c) :
         = fun s => psi p / (s11 a b * s22 a b c) ^ 2 * psi (solve4 a b c (s - mulR4 a b c p)) := by
       ext s; rw [Real.norm_eq_abs, abs_of_nonneg (dens_nonneg _)]; simp only [dens]; ring
     show psi p = ∫ s, ‖dens a b c (p, s)‖
-    rw [e, integral_const_mul, integral_psi_solve4 h hd p]
-    field_simp
+    rw [e, integral_const_mul, integral_psi_solve4 h hd p, div_mul_cancel₀ _ hpos.ne']
 
 /-- **The law of `(U, RU + SW)` has density `kHol R` in the coordinates of `HholPair`.** -/
 theorem integral_pair_eq_kHol (h : 0 < k11 a b) (hd : 0 < kdet a b c)
@@ -209,7 +208,7 @@ theorem integral_pair_eq_kHol (h : 0 < k11 a b) (hd : 0 < kdet a b c)
     intro p
     rw [integral_mu2_eq (g := fun w => f (toC2 p.1 p.2, mulRc a b c (toC2 p.1 p.2) + mulSc a b c w))
       ((hf.comp (measurable_const.prodMk (measurable_const.add hSc))).aestronglyMeasurable)]
-    simp only [Function.comp_def, toC2_affine]
+    simp only [toC2_affine]
     exact integral_subst4 h hd p (g := fun s => f (toC2 p.1 p.2, toC2 s.1 s.2))
       (hf.comp (measurable_const.prodMk (by unfold toC2; fun_prop)))
   have houter : AEStronglyMeasurable (fun u => ∫ w, f (u, mulRc a b c u + mulSc a b c w) ∂mu2) mu2 :=
@@ -234,7 +233,7 @@ theorem integral_pair_eq_kHol (h : 0 < k11 a b) (hd : 0 < kdet a b c)
   congr 1; ext p
   rw [inner p, ← mul_assoc, ← integral_const_mul]
   congr 1; ext s
-  simp only [dens]; push_cast; ring
+  simp only [dens, psi]; push_cast; ring
 
 end
 
