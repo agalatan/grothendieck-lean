@@ -40,10 +40,10 @@ def rc (t : ℝ) : ℝ := m01 ^ 2 * pr t + m11 ^ 2 * qr t
 lemma Rt_real (t : ℝ) : Rt (t : ℂ) = Rre (ra t) (rb t) (rc t) := by
   have e1 : Polynomial.aeval ((t : ℂ) ^ 2) Grothe.Upper.primaryPoly =
       ((Grothe.Upper.primaryPoly.eval (t ^ 2) : ℝ) : ℂ) := by
-    rw [Polynomial.ofReal_eval]; push_cast; rfl
+    rw [← Complex.ofReal_pow]; exact (Polynomial.ofReal_eval (K := ℂ) _ _).symm
   have e2 : Polynomial.aeval ((t : ℂ) ^ 2) Grothe.Upper.auxPoly =
       ((Grothe.Upper.auxPoly.eval (t ^ 2) : ℝ) : ℂ) := by
-    rw [Polynomial.ofReal_eval]; push_cast; rfl
+    rw [← Complex.ofReal_pow]; exact (Polynomial.ofReal_eval (K := ℂ) _ _).symm
   simp only [Rt, Rre, e1, e2, ra, rb, rc, pr, qr]
   push_cast; ring_nf
 
