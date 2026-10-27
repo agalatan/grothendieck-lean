@@ -305,6 +305,10 @@ inverse-series recipe, with 60-bit dyadic normalization and rounding. See
 [historical candidate and repair checks](docs/verification/haagerup-alternating-20261027/README.md).
 The sharper conditional bound above remains stronger.
 
+**Toward a Lean proof of the HJM bound (epic #139).** `Grothe/HJM/Mixture.lean` proves the mixture bound
+`K ≤ M/(q̂₀ − Σ_{k≥1}|q̂_k|)` for a weighted mixture `Σ w_r K_r` of dominated radial kernels with `Σ|w_r| ≤ M`
+(`mixture_bound`; negative weights are free because domination survives absolutely convex combinations).
+
 **Written unconditional refinement: K_G^ℂ < 1.4048984303.** For the unchanged
 fifth scalar preprocessor in [HJM, Sections 5–6](https://arxiv.org/html/2609.25462v1),
 exact arithmetic gives `||P₅^16||₁ < 581/1000`. Every omitted outer index
@@ -347,7 +351,7 @@ Every native check is single-threaded code (no `Task.spawn`).
 All other proofs, including the canonical finite checks, are kernel-checked.
 No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`, including the node caps.
-The report contains 636 print directives, with 407 required declarations and 88
+The report contains 640 print directives, with 408 required declarations and 88
 allowlisted native facts (60 cap ranges, five Hardy checks and 23 others).
 The focused report `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, allows
 no native axioms for its 98 selected unconditional upper-bound results.
