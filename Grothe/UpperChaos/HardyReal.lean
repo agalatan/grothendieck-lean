@@ -40,10 +40,10 @@ def rc (t : ℝ) : ℝ := m01 ^ 2 * pr t + m11 ^ 2 * qr t
 lemma Rt_real (t : ℝ) : Rt (t : ℂ) = Rre (ra t) (rb t) (rc t) := by
   have e1 : Polynomial.aeval ((t : ℂ) ^ 2) Grothe.Upper.primaryPoly =
       ((Grothe.Upper.primaryPoly.eval (t ^ 2) : ℝ) : ℂ) := by
-    rw [RCLike.ofReal_eval]; push_cast; rfl
+    rw [Polynomial.ofReal_eval]; push_cast; rfl
   have e2 : Polynomial.aeval ((t : ℂ) ^ 2) Grothe.Upper.auxPoly =
       ((Grothe.Upper.auxPoly.eval (t ^ 2) : ℝ) : ℂ) := by
-    rw [RCLike.ofReal_eval]; push_cast; rfl
+    rw [Polynomial.ofReal_eval]; push_cast; rfl
   simp only [Rt, Rre, e1, e2, ra, rb, rc, pr, qr]
   push_cast; ring_nf
 
@@ -54,20 +54,22 @@ lemma polyKernel_real (P : Polynomial ℝ) {t : ℝ} (ht : 0 ≤ t) :
 lemma abs_mul_eval_le {P : Polynomial ℝ} (hP : Grothe.l1 P ≤ 1) {t : ℝ} (ht0 : 0 ≤ t) (ht1 : t ≤ 1) :
     |t * P.eval (t ^ 2)| ≤ t := by
   rw [abs_mul, abs_of_nonneg ht0]
-  have := (Grothe.Upper.abs_eval_le_l1 P (sq_nonneg t) (by nlinarith)).trans hP
+  have := (Grothe.abs_eval_le_l1 P (sq_nonneg t) (by nlinarith)).trans hP
   nlinarith
 
 lemma abs_pr_le {t : ℝ} (ht0 : 0 ≤ t) (ht1 : t ≤ 1) : |pr t| ≤ t :=
-  abs_mul_eval_le Grothe.Upper.l1_primaryPoly ht0 ht1
+  abs_mul_eval_le Grothe.l1_primaryPoly ht0 ht1
 
 lemma abs_qr_le {t : ℝ} (ht0 : 0 ≤ t) (ht1 : t ≤ 1) : |qr t| ≤ t :=
-  abs_mul_eval_le Grothe.Upper.l1_auxPoly ht0 ht1
+  abs_mul_eval_le Grothe.l1_auxPoly ht0 ht1
 
 /-! ### `I − R² ≻ 0` -/
 
 /-- `‖My‖ ≤ ‖y‖` (from `M² + N² = I`). -/
 lemma normM_le (y₁ y₂ : ℝ) : (m00 * y₁ + m01 * y₂) ^ 2 + (m01 * y₁ + m11 * y₂) ^ 2 ≤ y₁ ^ 2 + y₂ ^ 2 := by
-  have h00 := mn_00; have h01 := mn_01; have h11 := mn_11
+  have e : (m00 * y₁ + m01 * y₂) ^ 2 + (m01 * y₁ + m11 * y₂) ^ 2 + (n00 * y₁ + n01 * y₂) ^ 2
+      + (n01 * y₁ + n11 * y₂) ^ 2 = y₁ ^ 2 + y₂ ^ 2 := by
+    linear_combination y₁ ^ 2 * mn_00 + 2 * y₁ * y₂ * mn_01 + y₂ ^ 2 * mn_11
   nlinarith [sq_nonneg (n00 * y₁ + n01 * y₂), sq_nonneg (n01 * y₁ + n11 * y₂)]
 
 /-- `‖Rx‖² ≤ t² ‖x‖²` for `R = M diag(p, q) M`, `|p|, |q| ≤ t`. -/
@@ -114,10 +116,10 @@ theorem k11_kdet_pos {t : ℝ} (ht0 : 0 ≤ t) (ht1 : t < 1) :
       + k22 (rb t) (rc t) * k11 (ra t) (rb t) ^ 2 = k11 (ra t) (rb t) * kdet (ra t) (rb t) (rc t) := by
     simp only [kdet]; ring
   rw [e] at h
-  have hpos : 0 < (1 - t ^ 2) * ((-k12 (ra t) (rb t) (rc t)) ^ 2 + k11 (ra t) (rb t) ^ 2) := by positivity
-  by_contra hneg
-  push_neg at hneg
-  nlinarith
+  have hpos : 0 < (1 - t ^ 2) * ((-k12 (ra t) (rb t) (rc t)) ^ 2 + k11 (ra t) (rb t) ^ 2) := by
+    have : 0 < 1 - t ^ 2 := by linarith
+    positivity
+  exact (pos_iff_pos_of_mul_pos (hpos.trans_le h)).1 h11
 
 end
 
