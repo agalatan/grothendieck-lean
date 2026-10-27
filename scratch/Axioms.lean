@@ -346,7 +346,10 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Chaos3.wick4
 #print axioms Grothe.LowerAnalytic.Chaos3.wick6
 #print axioms Grothe.LowerAnalytic.Circular.chaos3_right
+#print axioms Grothe.LowerAnalytic.Circular.fourth_moment_le_variance
+#print axioms Grothe.LowerAnalytic.Circular.gaussian_fourth_moment_le_44
 #print axioms Grothe.LowerAnalytic.Circular.gaussian_sixth
+#print axioms Grothe.LowerAnalytic.Circular.gaussian_x_le_sqrt42
 #print axioms Grothe.LowerAnalytic.Circular.joint_sixth
 #print axioms Grothe.LowerAnalytic.Circular.specU2_eq
 #print axioms Grothe.LowerAnalytic.Circular.specU4_eq
@@ -477,7 +480,6 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.budget_c
 #print axioms Grothe.LowerAnalytic.budget_w
 #print axioms Grothe.LowerAnalytic.capsHold_rowPot
-#print axioms Grothe.LowerAnalytic.chaos3_fourth_le
 #print axioms Grothe.LowerAnalytic.chaos3_reW
 #print axioms Grothe.LowerAnalytic.chargeSplit_circular
 #print axioms Grothe.LowerAnalytic.coupled_circular
@@ -495,11 +497,9 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.fluctuation_bound
 #print axioms Grothe.LowerAnalytic.fn_eq_sum
 #print axioms Grothe.LowerAnalytic.gE_SU
-#print axioms Grothe.LowerAnalytic.gE_radU_sq_le
 #print axioms Grothe.LowerAnalytic.gE_rotD
 #print axioms Grothe.LowerAnalytic.gaussian_gramInputs
 #print axioms Grothe.LowerAnalytic.gaussian_moments
-#print axioms Grothe.LowerAnalytic.gaussian_radU_cap
 #print axioms Grothe.LowerAnalytic.gaussian_steinInputs
 #print axioms Grothe.LowerAnalytic.gramT_gram1a
 #print axioms Grothe.LowerAnalytic.gramT_gram1b
