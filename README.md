@@ -6,7 +6,7 @@ complex Grothendieck constant:
 $$1.401697117301 < K_G^{\mathbb{C}} < 1.404598149141$$
 
 Both bounds rest on explicitly stated analytic and computer-assisted inputs; see
-[what is proved, and under which assumptions](#what-is-proved-and-under-which-assumptions).
+[what is proved](#what-is-proved).
 
 | year | who | lower bound | upper bound |
 |---|---|---|---|
@@ -42,7 +42,7 @@ constant $K_G^{\mathbb{R}}$. The inequality governs tensor norms, absolutely sum
 approximation ratio of semidefinite relaxations of quadratic optimisation, and the gap between
 classical and quantum correlations in two-party Bell experiments (real case).
 
-## What is proved, and under which assumptions
+## What is proved
 
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V over all finite-dimensional complex Hilbert spaces. All three headline
