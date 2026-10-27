@@ -1,0 +1,67 @@
+name: Rebuild OVERVIEW.pdf
+
+# OVERVIEW.pdf is built by CI only: agents edit docs/overview.tex and never commit the PDF (AGENTS.md §13).
+# When docs/overview.tex changes on master, this rebuilds the PDF reproducibly (fixed SOURCE_DATE_EPOCH, so the same
+# source gives the same bytes) and commits it to master if it changed. A hand merge triggers it by its push; CI's
+# auto-merge (whose token push starts no workflow) dispatches it from lean.yml's finish job.
+
+on:
+  push:
+    branches: [master]
+    paths: ['docs/overview.tex']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  statuses: write
+
+concurrency:
+  group: overview-pdf
+  cancel-in-progress: false
+
+jobs:
+  pdf:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+          # MERGE_TOKEN (optional, see AGENTS.md §9) also works when master has workflow changes; the default token suffices otherwise
+          token: ${{ secrets.MERGE_TOKEN || github.token }}
+
+      - name: LaTeX
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends latexmk texlive-latex-base texlive-latex-recommended \
+            texlive-latex-extra texlive-fonts-recommended lmodern > /dev/null
+
+      - name: Build and commit OVERVIEW.pdf (retry if master moves)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_DATE_EPOCH: '1793491200'   # fixed: identical source -> identical PDF bytes
+          FORCE_SOURCE_DATE: '1'
+        run: |
+          git config user.name "grothe-ci"; git config user.email "grothe-ci@users.noreply.github.com"
+          for attempt in 1 2 3 4 5; do
+            git fetch -q origin master
+            git checkout -q -B pdf origin/master
+            (cd docs && latexmk -pdf -interaction=nonstopmode -halt-on-error overview.tex > latexmk.log 2>&1) || {
+              tail -40 docs/latexmk.log; echo "::error::docs/overview.tex does not compile"; exit 1; }
+            cp docs/overview.pdf OVERVIEW.pdf
+            if git diff --quiet -- OVERVIEW.pdf; then echo "OVERVIEW.pdf is current"; exit 0; fi
+            git add OVERVIEW.pdf
+            git commit -q -m "[ci] Rebuild OVERVIEW.pdf from docs/overview.tex"
+            if git push -q origin pdf:master; then
+              sha=$(git rev-parse HEAD)
+              # a documentation-only commit on top of a checked tree: say so where the proof check status is shown
+              gh api -X POST "repos/${GITHUB_REPOSITORY}/statuses/${sha}" -f state=success \
+                -f context="Lean proof check (documentation-only commit)" \
+                -f description="Only OVERVIEW.pdf changed; the proofs are those of the parent commit" \
+                -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >/dev/null || true
+              echo "committed OVERVIEW.pdf as ${sha:0:7}"; exit 0
+            fi
+            echo "master moved: rebuilding on the new master (attempt ${attempt})"
+          done
+          echo "::error::master kept moving; dispatch this workflow again"; exit 1

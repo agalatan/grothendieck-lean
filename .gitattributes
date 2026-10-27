@@ -19,3 +19,8 @@ scratch/Axioms.lean merge=union
 data/axioms/*.txt merge=union
 data/axioms/modes/*.txt merge=union
 data/root-imports-exclude.txt merge=union
+
+# OVERVIEW.pdf is built by CI (.github/workflows/overview.yml) from docs/overview.tex; agents never commit it. Merges
+# keep the current side's copy instead of conflicting (needs `git config merge.ours.driver true`: CI and
+# scripts/sync_master.sh set it).
+OVERVIEW.pdf binary merge=ours
