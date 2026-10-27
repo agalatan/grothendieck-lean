@@ -99,8 +99,17 @@ pD=p.divX and qD=(p*conjugatePolynomial(p)).divX, then for s>0,
 The right-hand side is continuous at0. `OriginEnergyExtension` builds the actual
 continuous energy amplitudes from it and proves finite-panel integrability,
 including panels touching zero. The original totalized operator is identified
-only for s>0. This replaces the apparent division by s without independently
-rounding the endpoint phase. It supplies no numerical enclosure by itself.
+only for s>0. `OriginEndpoint` proves that the extended energy amplitude at0
+is exactly −3/2 times the actual phase derivative. This replaces the apparent
+division by s without independently rounding the endpoint phase.
+
+`OriginPhaseDerivative` supplies the actual real-parameter phase derivative
+formulas. Polynomial growth and the denominator floor give global Gaussian
+L², all scalar pairing integrability conditions and the infinity boundary.
+`OriginAnalytic` and `OriginResidualCoefficients` therefore prove the full
+weighted energy identities for the actual endpoint-subtracted original
+coefficients, without further analytic hypotheses. These qualitative
+identities supply no numerical integral enclosure by themselves.
 
 Alternatively, for `0<s<=epsilon=10^-7`, the fundamental theorem gives `|v(s)-v(0)|<=s*M1`, and hence
 
