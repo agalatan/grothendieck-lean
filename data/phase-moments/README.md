@@ -51,16 +51,17 @@ This lightweight command checks the semantic phase, damping, full common
 denominator, and byte-for-byte generation of `PhaseMomentData.lean`. It does
 not expand the polynomial powers or verify the Gaussian moments.
 
-The first numerical leaf is `PhaseMoment2`: one single-threaded native check
-recomputes the second moment from the actual phase and compares it with its
-target. The [delivery build and axiom audit](https://github.com/agalatan/grothendieck-lean/actions/runs/40468150361)
-passed at commit `ec09e77`: 9,292 build jobs, 645 reported theorems and all
-89 native facts. `PhaseMoment2` built in 4.8 seconds (whole-module time,
-not an isolated native-evaluation measurement). The generic identity uses only
-the standard axioms; `integral_phiT_sq` additionally uses the single
-`phase_moment2_check._native.native_decide.ax_1_1` fact. Fourth- and sixth-moment leaves are not implemented
-and require their own successful native checks before their targets become
-certified moments.
+Three independent numerical leaves (`PhaseMoment2`, `PhaseMoment4`, and
+`PhaseMoment6`) each use one single-threaded native check to recompute a moment
+from the actual phase and compare it with its exact target. The generic identity
+uses only standard axioms; each integral consequence additionally uses its own
+`phase_momentN_check._native.native_decide.ax_1_1` fact. `PhaseMomentNorms`
+identifies the results with the squared norms of the three positive Taylor sources.
+
+The [second-moment delivery](https://github.com/agalatan/grothendieck-lean/actions/runs/40468150361)
+passed its full build and axiom audit. `PhaseMoment2` built in 4.8 seconds
+(whole-module time, not isolated native evaluation). Fourth- and sixth-moment
+acceptance and timings are checked in their delivery; no measurement is yet recorded here.
 
 This ingredient alone does not discharge the component-error or stored-energy
 comparison hypotheses of the conditional Grothendieck bound.
