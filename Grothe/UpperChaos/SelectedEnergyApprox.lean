@@ -61,8 +61,8 @@ theorem energy_headProjection (S : Finset (ℕ × ℕ))
   unfold energy
   refine tsum_congr fun i => ?_
   have hi : bideg i.1 = p := by simpa only [Set.mem_preimage, Set.mem_singleton_iff] using i.2
-  have hm : i.1 ∈ energyHeadModes S := by simpa only [energyHeadModes, Set.mem_setOf_eq, hi] using hp
-  rw [inner_projOn, if_pos hm]
+  have hm : i.1 ∈ energyHeadModes S := by simpa only [energyHeadModes, Set.mem_ofPred_eq, hi] using hp
+  rw [inner_projOn, ite_eq_left hm]
 
 /-- A certificate for the selected projection suffices: the physical response
 may have uncontrolled energy outside S. The table comparison concerns only
@@ -126,7 +126,7 @@ theorem norm_energyHeadProjection_sq (S : Finset (ℕ × ℕ))
     intro p hp
     apply energy_projOn_eq_zero
     intro i hi hmem
-    exact hp (by simpa only [energyHeadModes, Set.mem_setOf_eq, hi] using hmem)
+    exact hp (by simpa only [energyHeadModes, Set.mem_ofPred_eq, hi] using hmem)
   have hs : (∑' p, energy (projOn (energyHeadModes S) F) p) =
       ∑ p ∈ S, energy (projOn (energyHeadModes S) F) p :=
     tsum_eq_sum hz

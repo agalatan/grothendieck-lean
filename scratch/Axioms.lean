@@ -1227,6 +1227,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_projOn_residual_le_of_captured_family
 #print axioms Grothe.UpperChaos.norm_projOn_residual_sq_le_of_captured
 #print axioms Grothe.UpperChaos.norm_projOn_residual_sq_le_of_captured_family
+#print axioms Grothe.UpperChaos.norm_projOn_source_le_of_captured_family
 #print axioms Grothe.UpperChaos.norm_projOn_sq_add_le_of_disjoint
 #print axioms Grothe.UpperChaos.norm_projOn_sq_add_norm_sub_projOn_sq
 #print axioms Grothe.UpperChaos.norm_roundingDifference_le
@@ -1274,7 +1275,14 @@ import Grothe
 #print axioms Grothe.UpperChaos.secondCenter_charge
 #print axioms Grothe.UpperChaos.secondCenter_tail_zero
 #print axioms Grothe.UpperChaos.secondTailModes_eq
+#print axioms Grothe.UpperChaos.secondThree_budget
+#print axioms Grothe.UpperChaos.secondThree_disjoint
+#print axioms Grothe.UpperChaos.secondThree_disjoint_last
+#print axioms Grothe.UpperChaos.secondThree_disjoint_tail
 #print axioms Grothe.UpperChaos.second_captured_tail_budget
+#print axioms Grothe.UpperChaos.second_last_band_error_of_source
+#print axioms Grothe.UpperChaos.second_source_le_of_three_bands
+#print axioms Grothe.UpperChaos.second_tail_error_of_source
 #print axioms Grothe.UpperChaos.selectedEnergy_close_of_l2_approx
 #print axioms Grothe.UpperChaos.selectedEnergy_close_of_projected_l2_approx
 #print axioms Grothe.UpperChaos.shiftedDampedMoment_affine_base
