@@ -821,6 +821,8 @@ Grothe.UpperChaos.ProductComplete.complete_prod
 Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
 Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
 Grothe.UpperChaos.ProductComplete.memLp_prod_mul
+Grothe.UpperChaos.RadialCutoff.gaussC_radial_cutoff
+Grothe.UpperChaos.RadialCutoff.gaussC_radial_exp_tail
 Grothe.UpperChaos.RadialRepair.complement_identity
 Grothe.UpperChaos.RadialRepair.norm_phaseRepair_le_one
 Grothe.UpperChaos.RadialRepair.phaseRepair_change_sq_le

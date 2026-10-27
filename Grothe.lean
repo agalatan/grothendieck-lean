@@ -580,6 +580,7 @@ import Grothe.UpperChaos.PhiDense
 import Grothe.UpperChaos.PhiHorner
 import Grothe.UpperChaos.ProductComplete
 import Grothe.UpperChaos.RadialCeiling
+import Grothe.UpperChaos.RadialCutoff
 import Grothe.UpperChaos.RadialDampedMoments
 import Grothe.UpperChaos.RadialRepair
 import Grothe.UpperChaos.RealGaussianKernelTail
