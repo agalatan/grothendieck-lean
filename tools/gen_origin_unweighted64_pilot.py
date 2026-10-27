@@ -6,7 +6,7 @@ from pathlib import Path
 import gen_origin_unweighted64_full as full
 
 ROOT=Path(__file__).resolve().parents[1]
-FULL_HASH='beee11219670fbb2bada5e9279fe94541ae76eab62e8ec6342243477b7e185aa'
+FULL_HASH='d40ea1ec3835f57bd3e7671142585d966551cad9e1bdfe9a4eeaf9443ff4c01b'
 HELPER_HASH='d995a31e9c285d01feac210fa977ec51ab0b9aad65bf144ae1f083ac9da2fea7'
 FILES=[
  'Grothe/HJM/OriginUnweightedMeanPolynomial.lean',

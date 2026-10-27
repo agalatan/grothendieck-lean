@@ -212,27 +212,22 @@ theorem allGeometry : (List.range 98).all geometryCheck = true := by
   apply List.all_eq_true.mpr
   intro i hi
   have h := (List.all_eq_true.mp allCombined) i hi
-  have h' : geometryCheck i && (signedCheck i && meanCheck i) = true := by
-    simpa only [combinedCheck] using h
-  exact (Bool.and_eq_true.mp h').1
+  simp only [combinedCheck, Bool.and_eq_true] at h
+  exact h.1
 
 theorem allSigned : (List.range 98).all signedCheck = true := by
   apply List.all_eq_true.mpr
   intro i hi
   have h := (List.all_eq_true.mp allCombined) i hi
-  have hfull : geometryCheck i && (signedCheck i && meanCheck i) = true := by
-    simpa only [combinedCheck] using h
-  have h' : signedCheck i && meanCheck i = true := (Bool.and_eq_true.mp hfull).2
-  exact (Bool.and_eq_true.mp h').1
+  simp only [combinedCheck, Bool.and_eq_true] at h
+  exact h.2.1
 
 theorem allMean : (List.range 98).all meanCheck = true := by
   apply List.all_eq_true.mpr
   intro i hi
   have h := (List.all_eq_true.mp allCombined) i hi
-  have hfull : geometryCheck i && (signedCheck i && meanCheck i) = true := by
-    simpa only [combinedCheck] using h
-  have h' : signedCheck i && meanCheck i = true := (Bool.and_eq_true.mp hfull).2
-  exact (Bool.and_eq_true.mp h').2
+  simp only [combinedCheck, Bool.and_eq_true] at h
+  exact h.2.2
 
 {constants}
 def delta : ℚ := (1001 : ℚ) / 10 ^ 15
