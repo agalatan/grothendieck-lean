@@ -424,6 +424,12 @@ Two finite rational test vectors now have exact mass and weighted-mass
 checks, together with the final rational comparison for an $11.5$
 visible-energy lower bound. Their Gaussian correlation enclosures remain
 separate proof obligations.
+For each response, one signed polynomial correlation and the shared Gaussian
+$L^2$ approximation budget imply the visible-energy bound. The signed
+polynomial Gaussian integral has a finite-panel Taylor enclosure. The
+strengthened phase tail means total energies at most $12.7$ and visible
+energies at least $11.5$ suffice for the existing origin-tail ledger; the
+correlation and total-energy numerical checks remain to be supplied.
 These proofs add no native facts. The pinned 120-coefficient tables are
 provenance inputs; their integral enclosures and the numerical radial energy
 bounds remain separate Lean obligations. See \path{Grothe/HJM/Origin.lean}
