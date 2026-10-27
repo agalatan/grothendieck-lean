@@ -61,14 +61,14 @@ lemma comparisonMass_sum {N : ℕ} {rows : List RowQ} (hw : tabWithin N rows = t
 
 /-- The radii enclose all selected-band energies plus the inherited table error;
 the final inequality assembles the cross terms and charges the quadratic error once. -/
-theorem comparison_check : comparisonOK (weightedRows energyRows comparisonWeightQ) comparisonBands energyErrQ compareQ = true := by
+theorem comparison_check : comparisonOK (weightedRows energyRows comparisonWeightQ) comparisonBands energyErrQ comparisonTriangleQ = true := by
   native_decide
 
 lemma comparison_facts :
     (∀ b ∈ comparisonBands, 0 ≤ b.error ∧ 0 ≤ b.norm ∧
       comparisonMass (weightedRows energyRows comparisonWeightQ) b + energyErrQ ≤ b.norm ^ 2) ∧
     2 * (comparisonBands.map fun b => b.norm * b.error).sum +
-      (comparisonBands.map fun b => b.error).sum ^ 2 ≤ compareQ := by
+      (comparisonBands.map fun b => b.error).sum ^ 2 ≤ comparisonTriangleQ := by
   simpa only [comparisonOK, Bool.and_eq_true, List.all_eq_true, decide_eq_true_eq, and_assoc] using comparison_check
 
 lemma energyRows_within : tabWithin 501 energyRows = true := by

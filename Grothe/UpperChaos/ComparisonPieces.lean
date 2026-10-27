@@ -339,7 +339,7 @@ theorem fresh_upper_pieces (hv : ChargeFn v) (h₁ : ChargeFn c₁) (h₂ : Char
     (hclose : ∑ p ∈ Grothe.Upper.headIdx 501,
       |energy ((memLp_Xfun phiBound hv).toLp (Xfun v)) p - (Grothe.Upper.energyTable p : ℝ)|
       ≤ (Grothe.Upper.energyErrQ : ℝ)) :
-    IsGrothendieckBound (500000000000000000 / 355973699864771491) :=
+    IsGrothendieckBound (500000000000000000 / 355973699881431491) :=
   fresh_upper_rounder (memLp_Xfun phiBound hv) (Xfun_rot2 phiBound hv)
     (comparisonInputs_of_norms phiBound hv h₁ h₂ h₃ hnorm) hclose
 

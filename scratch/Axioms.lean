@@ -379,6 +379,7 @@ import Grothe
 #print axioms Grothe.ScalarTailRefinement.wallis_rational_check
 #print axioms Grothe.ScalarTailRefinement.wallis_tail_bound
 #print axioms Grothe.Upper.BandComparison.compare
+#print axioms Grothe.Upper.BandComparison.quadratic_sum_le_overlap
 #print axioms Grothe.Upper.BandComparison.weighted_compare
 #print axioms Grothe.Upper.CubicPhaseScreen.axis_le_real_polynomial
 #print axioms Grothe.Upper.CubicPhaseScreen.axis_nonneg
@@ -507,8 +508,10 @@ import Grothe
 #print axioms Grothe.Upper.WeightedTail.l1_le_prefix_add_weighted_tail
 #print axioms Grothe.Upper.actual_band_mass
 #print axioms Grothe.Upper.bivarKernel_sub
+#print axioms Grothe.Upper.comparisonOverlap_separate
 #print axioms Grothe.Upper.comparisonWeight_sound
 #print axioms Grothe.Upper.comparison_check
+#print axioms Grothe.Upper.comparison_overlap_budget
 #print axioms Grothe.Upper.headWeight_sound
 #print axioms Grothe.Upper.head_le_of_check
 #print axioms Grothe.Upper.head_residual_le

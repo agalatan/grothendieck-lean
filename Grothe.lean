@@ -218,6 +218,7 @@ import Grothe.Upper.BandComparison
 import Grothe.Upper.Bivariate
 import Grothe.Upper.ComparisonData
 import Grothe.Upper.ComparisonMass
+import Grothe.Upper.ComparisonOverlap
 import Grothe.Upper.Compose
 import Grothe.Upper.CubicPhaseScreen
 import Grothe.Upper.Data

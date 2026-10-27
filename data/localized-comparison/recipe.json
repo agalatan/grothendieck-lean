@@ -127,17 +127,19 @@
       "origin": "Taylor power 3, high tail"
     }
   ],
-  "comparison_cap": "13311891/15625000000000",
+  "comparison_cap": "106490963/125000000000000",
   "error_radius": "5453935035799/500000000000000000",
   "cross": "1703684083888711864747/4000000000000000000000000000",
-  "delta": "458437859009/500000000000000000",
-  "score": "355973696735190991/500000000000000000",
-  "bound": "500000000000000000/355973696735190991",
-  "headline": "1.404598161566",
+  "triangle_cap": "13311891/15625000000000",
+  "overlap_quadratic": "2676930154202028875351443/31250000000000000000000000000000000",
+  "delta": "458421199009/500000000000000000",
+  "score": "355973696751850991/500000000000000000",
+  "bound": "500000000000000000/355973696751850991",
+  "headline": "1.404598161500",
   "source_sha256": "5619546626b7588ce64a2229aa58b0d161bde613dbf9a5eaad94a3ef93461915",
   "rounder_source_sha256": "420f677e6cf18e8c74fb7fce89c74b58f64676031f8c788ce36543e116753af7",
   "weight_method": "128-bit outward interval costs, 21 unshifted coefficients; unit cost otherwise",
-  "weight_script_sha256": "5050a4631f3d01eefd2992013af6a8ad29061f7e8ccde0d016706ce6b7ae0d67",
+  "weight_script_sha256": "97335cc3aa1880cdcb8fd7a0e795c468bc0a0a64429b6a1b0d65520d615cff1e",
   "energy_source_sha256": "9214d8877ecbada51c876cffeb9bb06f0202b931d3f791b7f2c61e023e646ac0",
   "scope": "Weighted finite selected-block comparison; unchanged inherited Gaussian component-error inputs."
 }
