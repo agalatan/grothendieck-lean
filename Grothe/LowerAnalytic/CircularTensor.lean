@@ -1,6 +1,6 @@
 import Grothe.LowerAnalytic.Circular
 import Grothe.LowerAnalytic.Covariance
-import Grothe.LowerAnalytic.FourthMoment
+import Grothe.LowerAnalytic.Influence
 import Grothe.LowerAnalytic.WickSix
 
 /-!
@@ -1322,6 +1322,40 @@ lemma sum_C2sq : ∑ a, ∑ b, ∑ c, ∑ d, kerC f a c b d ^ 2 = tenS f :=
 
 lemma sum_C3sq : ∑ a, ∑ b, ∑ c, ∑ d, kerC f a d b c ^ 2 = tenS f :=
   (sum4_cyc' fun a b c d => kerC f a b c d ^ 2).trans (tenS_eq_sum_kerC_sq f).symm
+
+/-- The Hilbert–Schmidt norm of a contraction is at most the squared norm of its tensor. -/
+lemma tenS_le_sq_sum (f : ι → ι → ι → ℝ) :
+    tenS f ≤ (∑ a, ∑ b, ∑ c, f a b c ^ 2) ^ 2 := by
+  calc
+    tenS f = ∑ a, ∑ b, ∑ c, ∑ d, kerC f a b c d ^ 2 := tenS_eq_sum_kerC_sq f
+    _ ≤ ∑ a, ∑ b, ∑ c, ∑ d,
+        (∑ e, f a b e ^ 2) * (∑ e, f c d e ^ 2) := by
+      refine Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun b _ =>
+        Finset.sum_le_sum fun c _ => Finset.sum_le_sum fun d _ => ?_
+      exact Finset.sum_mul_sq_le_sq_mul_sq _ _ _
+    _ = (∑ a, ∑ b, ∑ c, f a b c ^ 2) ^ 2 := by
+      simp only [← Finset.mul_sum, ← Finset.sum_mul]
+      ring
+
+/-- Averaging the three contraction permutations cannot increase their squared norm.
+No symmetry assumption on the original tensor is needed. -/
+lemma tenH_le_tenS (f : ι → ι → ι → ℝ) : tenH f ≤ tenS f := by
+  have hpt : ∀ a b c d, kerS f a b c d ^ 2 ≤
+      (kerC f a b c d ^ 2 + kerC f a c b d ^ 2 + kerC f a d b c ^ 2) / 3 := by
+    intro a b c d
+    unfold kerS
+    nlinarith [sq_nonneg (kerC f a b c d - kerC f a c b d),
+      sq_nonneg (kerC f a b c d - kerC f a d b c),
+      sq_nonneg (kerC f a c b d - kerC f a d b c)]
+  calc
+    tenH f ≤ ∑ a, ∑ b, ∑ c, ∑ d,
+        (kerC f a b c d ^ 2 + kerC f a c b d ^ 2 + kerC f a d b c ^ 2) / 3 :=
+      Finset.sum_le_sum fun a _ => Finset.sum_le_sum fun b _ =>
+        Finset.sum_le_sum fun c _ => Finset.sum_le_sum fun d _ => hpt a b c d
+    _ = tenS f := by
+      simp only [← Finset.sum_div, Finset.sum_add_distrib]
+      rw [← tenS_eq_sum_kerC_sq f, sum_C2sq, sum_C3sq]
+      ring
 
 /-- `3h = s + 2⟨C, C^{(23)}⟩`. -/
 lemma three_tenH (hf : ∀ a b c, f a b c = f b a c) : 3 * tenH f = tenS f + 2 * cQ f := by

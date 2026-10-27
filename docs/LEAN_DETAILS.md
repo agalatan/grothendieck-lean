@@ -17,6 +17,22 @@ nodes. The joint node retains its kurtosis-range premise.
 moment-range and cut-cancellation lemmas. Existing theorem statements and
 certificate definitions are preserved.
 
+`LowerAnalytic/FourthMoment.lean` derives `Chaos3.fourth_le` directly from
+`Chaos3.wick4` and `gE_sq_eq_kernel`: for the cubic kernel, `s ≤ N²` and
+`h ≤ s` imply `E F⁴ ≤ 93 (E F²)²`. The two inequalities
+`tenS_le_sq_sum` and `tenH_le_tenS` in `CircularTensor.lean` hold for arbitrary
+real tensors. The scalar bound needs `IsGaussianExpectation` and `Chaos3`,
+without a separate positivity premise; `chaos3_fourth_le` preserves the
+existing interface. The pair cap `62` and Gaussian endpoint are unchanged.
+
+`LowerAnalytic/JointSixthCore.lean` contains the common Hilbert–Schmidt,
+cubic-trace, completed-square and scalar Young estimates, followed by the
+circular J2/J3 inequalities. `JointContractions.lean` retains the general
+tensor-to-Gram identities and specializes this core for `Circular.joint_sixth`.
+`JointSixth.lean` uses the same identities and core for its invariant adapters
+and capped/η refinements. No positivity of the symmetrized contraction
+operator is assumed.
+
 **Published scalar-tail refinement.**
 `Grothe/Haagerup/ScalarTailRefinement.lean` proves an arbitrary finite-power
 Wiener composition bound and its signed supported-suffix consequence. Its
@@ -675,8 +691,8 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
 The complete registry has 88 native facts: 60 cap ranges, five Hardy facts
-(four arc parts and the region) and 23 others. The default report has 597 print
-directives and 380 required declarations. These are source/registry counts;
+(four arc parts and the region) and 23 others. The default report has 600 print
+directives and 383 required declarations. These are source/registry counts;
 delivery CI checks the combined tree.
 
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,

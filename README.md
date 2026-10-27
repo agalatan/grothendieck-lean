@@ -81,6 +81,13 @@ Lower cut soundness is organized by specialization: ordinary spectral cuts use t
 general shifted-cut theorem, ordinary and joint Gram budgets use the signed-reserve
 theorem, and all node majorants use one admissible-cut integration lemma.
 
+The fourth-moment cap follows directly from the exact Wick identity and two
+general tensor inequalities (`Chaos3.fourth_le`); no separate positivity
+assumption on the expectation is needed. The tensor and scalar estimates for
+both joint sixth-moment bounds are shared in `LowerAnalytic/JointSixthCore.lean`.
+The production cuts and parameterized refinements use the same proof through
+their real-to-complex normalization identities.
+
 The joint sixth-moment/Stein budgets are also formalized in
 `Grothe/LowerAnalytic/JointSixth.lean`, `Grothe/Lower/Reserve.lean` and
 `Grothe/LowerAnalytic/JointBudget.lean`. They retain the shared tensor constraints. The certificate bank contains 44 joint-moment node
@@ -313,7 +320,7 @@ Every native check is single-threaded code (no `Task.spawn`).
 All other proofs, including the canonical finite checks, are kernel-checked.
 No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`, including the node caps.
-The report contains 597 print directives, with 380 required declarations and 88
+The report contains 600 print directives, with 383 required declarations and 88
 allowlisted native facts (60 cap ranges, five Hardy checks and 23 others).
 The focused report `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, allows
 no native axioms for its 96 selected unconditional upper-bound results.

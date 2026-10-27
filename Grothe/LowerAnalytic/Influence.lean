@@ -3,11 +3,11 @@ import Grothe.LowerAnalytic.Fluctuation
 /-!
 # The quartic identity and the influence inequality for circular cubic chaos
 
-Standalone groundwork for Conjecture K, in the framework of `Fluctuation.lean`; nothing here is
-used by the certified bounds.
+Chaos decompositions and orthogonality in the framework of `Fluctuation.lean`, shared by the
+moment and spectral estimates used in the certified bounds and by Conjecture K.
 
 Let `a`, `b` be real polynomials in the third chaos (`Chaos3`) with `E a² = E b² = v/2` and
-`E ab = 0`, so that `q = a + ib` is a circular complex cubic chaos element with `E|q|² = v`.  With
+`E ab = 0`, so that `q = a + ib` is a complex cubic chaos element with `E|q|² = v`. With
 `U = a² + b² = |q|²` (`radU`), `P = a² − b²` and `Q = 2ab` (`radP`, `radQ`; `q² = P + iQ`), the
 polynomials `U − v`, `P`, `Q` lie in the span of the chaoses 2, 4, 6, on which the generator `L`
 acts with eigenvalues `−2, −4, −6`.  The spectral projections are
@@ -307,6 +307,13 @@ section expectation
 
 variable {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ} (hE : IsGaussianExpectation E)
 include hE
+
+/-- `E[P Y] = E Γ(P, Y)` for an eigenfunction `L Y = −Y`. -/
+lemma gE_mul_chaos1 {Y : MvPolynomial ι ℝ} (hY : ouL Y = -Y) (P : MvPolynomial ι ℝ) :
+    E (P * Y) = E (gam P Y) := by
+  have h := gE_mul_ouL hE P Y
+  rw [hY, mul_neg, map_neg] at h
+  linarith
 
 /-- Eigenvectors with distinct eigenvalues are `E`-orthogonal. -/
 lemma gE_eigen_orth {X Y : MvPolynomial ι ℝ} (n m : ℕ) [n.AtLeastTwo] [m.AtLeastTwo]

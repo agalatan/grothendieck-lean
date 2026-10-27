@@ -234,7 +234,7 @@ no external mathematical premise. The focused audit checks 96 results with zero 
 The 96-result focused audit policy permits only \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} for the unconditional upper bound.\par
 The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
-There are 88 native facts: 60 cap-range checks, five Hardy region and circle checks, and 23 others. The report \path{scratch/Axioms.lean} contains 597 print directives, with 380 required declarations.
+There are 88 native facts: 60 cap-range checks, five Hardy region and circle checks, and 23 others. The report \path{scratch/Axioms.lean} contains 600 print directives, with 383 required declarations.
 No \lean{sorry}; normal \path{ready/*} delivery CI builds the single target \lean{Grothe}, cap rows included, and checks its one axiom report before merging.
 The cap-range checks take about 21 CPU-hours cold, so CI replays them from a verified build cache.
 Its provenance hash covers 48 local computation
@@ -388,7 +388,11 @@ Throughout, $q$ is a circular cubic Wick polynomial (bidegree $(2,1)$) in any nu
 normalised by $\E|q|^2=1$, and $U=|q|^2$.
 \begin{itemize}
 \item \textbf{Sharp fourth moment [Lean].} Every real third-chaos variable satisfies $\E F^4\le93\,(\E F^2)^2$, with equality
- for $x^3-3x$. Hence $\E U^2\le62$.
+ for $x^3-3x$. For the cubic kernel, write $N=\sum f^2$, $s=\|f\star f\|^2$ and
+ $h=\|\operatorname{Sym}(f\star f)\|^2$. The Wick identity
+ $\E F^4-3(\E F^2)^2=1296(s+3h/2)$, together with $\E F^2=6N$ and
+ $h\le s\le N^2$, proves the bound directly, without a separate positivity premise
+ on the Gaussian expectation. Hence $\E U^2\le62$.
 \item \textbf{Sixth moment [Lean].} $\E U^3\le9m-12+C_6(m-2)^{3/2}$ with $m=\E U^2$ and $C_6=40.45313$. The Wick monomial mixed
  with Gaussian noise attains $40.295$, so the constant is sharp to $0.4\%$. The inequality is \emph{false} without circularity:
  two real cubics $He_3(x_0)/\sqrt{12}$, $He_3(x_1)/\sqrt{12}$ give $m=47$ and $\E U^3=13506>12622.55$.
@@ -407,6 +411,10 @@ normalised by $\E|q|^2=1$, and $U=|q|^2$.
 \end{itemize}
 
 \paragraph{A common budget for the same tensor.}
+The two joint sixth-moment bounds share one tensor and scalar argument in
+\path{JointSixthCore.lean}: Hilbert--Schmidt and cubic-trace bounds, a completed
+square, and Young's inequality. The production cuts and parameterized refinements
+specialize that argument through the same real-to-complex normalization identities.
 The sixth moment and the Stein fluctuations cannot be optimized independently:
 both depend on the same contraction invariants. We now formalize this connection
 in Lean, including the real/complex normalization and a finite checker that reserves

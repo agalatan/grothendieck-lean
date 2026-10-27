@@ -163,6 +163,7 @@ import Grothe.LowerAnalytic.JointBudget
 import Grothe.LowerAnalytic.JointContractions
 import Grothe.LowerAnalytic.JointRowRepricing
 import Grothe.LowerAnalytic.JointSixth
+import Grothe.LowerAnalytic.JointSixthCore
 import Grothe.LowerAnalytic.KSide
 import Grothe.LowerAnalytic.MixedChaos
 import Grothe.LowerAnalytic.MomentCone
