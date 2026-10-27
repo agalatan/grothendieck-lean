@@ -154,7 +154,7 @@ lemma den_dvd_commonDen {ts : List ((ℕ × ℕ × ℕ) × ℚ)}
         refine ⟨(Nat.dvd_lcm_left a u.2.den).trans ha, ?_⟩
         intro v hv
         rcases List.mem_cons.mp hv with rfl | hv
-        · exact (Nat.dvd_lcm_right a u.2.den).trans ha
+        · exact (Nat.dvd_lcm_right a v.2.den).trans ha
         · exact hu v hv
   exact (hfold ts 1).2 t ht
 
