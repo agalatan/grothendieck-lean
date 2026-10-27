@@ -42,6 +42,41 @@ lemma band_cross (S : Finset ι) (x d : ∀ i, V i) {A e : ℝ}
   exact (Real.sum_mul_le_sqrt_mul_sqrt S (fun i => ‖x i‖) (fun i => ‖d i‖)).trans
     (mul_le_mul ha hb (Real.sqrt_nonneg _) hA)
 
+/-- Only pairs of error pieces with overlapping supports contribute to the quadratic cost.
+The overlap flag may be conservative: every pair it excludes must have disjoint support. -/
+theorem quadratic_sum_le_overlap (S : Finset ι) (J : Finset κ)
+    (d : κ → ∀ i, V i) (e : κ → ℝ) (overlap : κ → κ → Bool)
+    (he : ∀ j ∈ J, 0 ≤ e j)
+    (hd : ∀ j ∈ J, ∑ i ∈ S, ‖d j i‖ ^ 2 ≤ e j ^ 2)
+    (hseparate : ∀ j ∈ J, ∀ k ∈ J, overlap j k = false →
+      ∀ i ∈ S, d j i = 0 ∨ d k i = 0) :
+    ∑ i ∈ S, ‖∑ j ∈ J, d j i‖ ^ 2 ≤
+      ∑ j ∈ J, ∑ k ∈ J, if overlap j k then e j * e k else 0 := by
+  have hpair : ∀ j ∈ J, ∀ k ∈ J,
+      ∑ i ∈ S, ‖d j i‖ * ‖d k i‖ ≤
+        if overlap j k then e j * e k else 0 := by
+    intro j hj k hk
+    cases h : overlap j k with
+    | true =>
+        simpa only [h, ite_true] using band_cross S (d j) (d k)
+          (he j hj) (he k hk) (hd j hj) (hd k hk)
+    | false =>
+        simp only [Bool.false_eq_true, ite_false]
+        apply le_of_eq
+        apply sum_eq_zero
+        intro i hi
+        rcases hseparate j hj k hk h i hi with hz | hz <;> simp [hz]
+  calc
+    ∑ i ∈ S, ‖∑ j ∈ J, d j i‖ ^ 2 ≤ ∑ i ∈ S, (∑ j ∈ J, ‖d j i‖) ^ 2 :=
+      sum_le_sum fun i _ => pow_le_pow_left₀ (norm_nonneg _) (norm_sum_le _ _) 2
+    _ = ∑ j ∈ J, ∑ k ∈ J, ∑ i ∈ S, ‖d j i‖ * ‖d k i‖ := by
+      simp_rw [pow_two, sum_mul, mul_sum]
+      rw [sum_comm]
+      apply sum_congr rfl
+      intro j hj
+      rw [sum_comm]
+    _ ≤ _ := sum_le_sum fun j hj => sum_le_sum fun k hk => hpair j hj k hk
+
 /-- Weighted comparison for a downstream kernel. The cross-term radius uses
 squared coefficient costs, whereas the quadratic error is still paid once.
 This preserves the same error decomposition and all overlapping supports. -/

@@ -3,6 +3,7 @@ import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.LocalizedComparison
 import Grothe.UpperChaos.PhiBound
 import Grothe.UpperChaos.SmoothComm
+import Grothe.UpperChaos.TaylorMoments
 
 /-!
 # The concrete error decomposition behind `ComparisonInputs` (Comparison step 1)
@@ -89,6 +90,41 @@ lemma chargeFn_hpow (hφ : PhiBound) (j : ℕ) : ChargeFn (hpow j) := by
 lemma chargeFn_F0 (hφ : PhiBound) : ChargeFn F0 := by
   have e : hpow 0 = F0 := by ext u; simp [hpow]
   rw [← e]; exact chargeFn_hpow hφ 0
+
+/-- The Taylor source has squared norm bounded by the corresponding even phase power. -/
+lemma norm_hpow_sq_le (j : ℕ) (u : ℂ × ℂ) : ‖hpow j u‖ ^ 2 ≤ phiT u ^ (2 * j) := by
+  have hF : ‖F0 u‖ ^ 2 ≤ 1 := by
+    exact (pow_le_one₀ (norm_nonneg _) (Haag.norm_ph_le _) : ‖F0 u‖ ^ 2 ≤ 1)
+  rw [hpow, norm_mul, norm_pow, norm_mul, norm_I, one_mul,
+    Complex.norm_real, Real.norm_eq_abs, mul_pow]
+  calc
+    (|phiT u| ^ j) ^ 2 * ‖F0 u‖ ^ 2 ≤ (|phiT u| ^ j) ^ 2 * 1 :=
+      mul_le_mul_of_nonneg_left hF (sq_nonneg _)
+    _ = phiT u ^ (2 * j) := by
+      rw [mul_one, ← pow_mul, Nat.mul_comm j 2, pow_mul, sq_abs, ← pow_mul]
+
+/-- Exact phase moments control the `L²` norms used in the comparison decomposition. -/
+theorem norm_hpow_toLp_sq_le (j : ℕ) :
+    ‖(chargeFn_hpow phiBound j).memLp.toLp (hpow j)‖ ^ 2 ≤
+      ∫ u, phiT u ^ (2 * j) ∂mu2 :=
+  norm_sq_le_phiT_moment (chargeFn_hpow phiBound j).memLp j
+    (Filter.Eventually.of_forall (norm_hpow_sq_le j))
+
+/-- Every positive Taylor power has exactly the corresponding pointwise phase energy. -/
+lemma norm_hpow_sq_eq {j : ℕ} (hj : 0 < j) (u : ℂ × ℂ) :
+    ‖hpow j u‖ ^ 2 = phiT u ^ (2 * j) := by
+  rcases norm_F0_eq_one_or_phiT_eq_zero u with hunit | hzero
+  · rw [hpow, norm_mul, norm_pow, norm_mul, norm_I, one_mul,
+      Complex.norm_real, Real.norm_eq_abs, hunit, mul_one]
+    rw [← pow_mul, Nat.mul_comm j 2, pow_mul, sq_abs, ← pow_mul]
+  · simp [hpow, hzero, hj.ne', (Nat.mul_pos (by decide : 0 < 2) hj).ne']
+
+/-- The exact even phase moment is the total energy of each positive Taylor source. -/
+theorem norm_hpow_toLp_sq_eq {j : ℕ} (hj : 0 < j) :
+    ‖(chargeFn_hpow phiBound j).memLp.toLp (hpow j)‖ ^ 2 =
+      ∫ u, phiT u ^ (2 * j) ∂mu2 := by
+  rw [norm_toLp_sq_eq_integral]
+  exact integral_congr_ae (Filter.Eventually.of_forall (norm_hpow_sq_eq hj))
 
 /-! ### The four sources and the 18 pieces -/
 
@@ -313,7 +349,7 @@ theorem fresh_upper_pieces (hv : ChargeFn v) (h₁ : ChargeFn c₁) (h₂ : Char
     (hclose : ∑ p ∈ Grothe.Upper.headIdx 501,
       |energy ((memLp_Xfun phiBound hv).toLp (Xfun v)) p - (Grothe.Upper.energyTable p : ℝ)|
       ≤ (Grothe.Upper.energyErrQ : ℝ)) :
-    IsGrothendieckBound (500000000000000000 / 355973699864771491) :=
+    IsGrothendieckBound (500000000000000000 / 355973699881431491) :=
   fresh_upper_rounder (memLp_Xfun phiBound hv) (Xfun_rot2 phiBound hv)
     (comparisonInputs_of_norms phiBound hv h₁ h₂ h₃ fun k =>
       (norm_piece_le phiBound hv h₁ h₂ h₃ k).trans (hnorm k)) hclose

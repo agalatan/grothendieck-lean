@@ -122,8 +122,7 @@ only two nonzero auxiliary coefficients is imposed.
 with `n+3m ≤ 501`. `energyErrQ` is inherited. The selected-block comparison
 uses the Gaussian component-error inputs and exact finite masses in
 `ComparisonData.lean`. The head and Schur/Hardy contour have independent replays.
-Under the documented Gaussian inputs the bound is
-`1/(c-{delta}) = {d['exact_bound']} < {d['headline_decimal']}`.
+The numerical endpoint is assembled in `PolynomialBridge.lean`.
 -/
 
 namespace Grothe.Upper

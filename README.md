@@ -3,7 +3,7 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.401697049825 < K_G^ℂ < 1.404598149218**
+> **1.401697049825 < K_G^ℂ < 1.404598149152**
 >
 > **Unconditional Lean theorem: K_G^ℂ ≤ 1.404909132791.** Its proof uses only the three standard axioms.
 
@@ -12,10 +12,10 @@ The unconditional theorem has no external analytic premises. Its focused axiom p
 requires 98 results and permits zero native evaluation axioms. The order-10 completion
 uses bounds on combined resolvent products and exact coefficient locality.
 
-A separate **written unconditional refinement gives K_G^ℂ < 1.40489844**,
+A separate **written unconditional refinement gives K_G^ℂ < 1.4048984303**,
 using Heilman–Jones–Malavolta's published construction and numerical estimates.
-The new polynomial power check, infinite-suffix saving and normalized score
-arithmetic are proved in Lean. The published Gaussian construction and directed
+The polynomial power check, stronger per-index tail estimate and score
+arithmetic are proved in Lean; the complete production module passes its focused check. The published Gaussian construction and directed
 integration facts remain outside this repository's end-to-end formalization.
 See the [proof and verification record](data/scalar-tail-refinement/PROOF.md).
 
@@ -49,7 +49,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.401697049825 < K** | **K < 1.404598149218** |
+| Oct 2026 | **this repository** | **1.401697049825 < K** | **K < 1.404598149152** |
 | Oct 2026 | this repository, unconditional Lean theorem | | K ≤ 1.404909132791 |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
@@ -181,8 +181,8 @@ remain a separate campaign (generated piece modules are excluded from the
 root until a proof uses them).
 
 **Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder`, for an L² charge-one truncation `X`, proves
-`ComparisonInputs → energy_close → IsGrothendieckBound (500000000000000000/355973699864771491)`,
-and `Grothe.upper_value_lt` shows this is below 1.404598149218
+`ComparisonInputs → energy_close → IsGrothendieckBound (500000000000000000/355973699881431491)`,
+and `Grothe.upper_value_lt` shows this is below 1.404598149152
 (`Grothe/UpperChaos/PhiBound.lean`; the table interface is `Grothe.fresh_upper` in `Grothe/Upper/PolynomialBridge.lean`).
 
 The rounding is the smoothing G_T of T = F₀·P₃(φ): a two-coordinate Gaussian phase rounding F₀ times the
@@ -193,7 +193,7 @@ bisection cover of a box in 512 cubes with a first-order expansion of the expone
 native facts `phi_cover_check_0`–`5`). |φ| < 1 is also the input the external comparison argument relies on. Its correlation kernel H(t) = Σ E[n,m] p(t)ⁿ(−τ(t))ᵐ, with the odd
 preprocessors of degrees 41 and 15 (Wiener norms ≤ 1, auxiliary linear coefficient zero), is compared with c·t,
 c = 7119483103461/10¹³, through the kernel of a truncation X, and the bound is 1/(c − ‖H − c·t‖) with residual
-at most 455308278509/(5·10¹⁷).
+at most 455291618509/(5·10¹⁷).
 Lean proves the complex Gaussian chaos calculus on ℂ² (`Grothe/UpperChaos/`: Hermite basis, completeness,
 Parseval, the Mehler formula for L² functions, charge selection, energies → kernel), hence the structural facts
 (validity, summability, parity) for G_T and X; the transfer inequality; the evaluation of the head of the kernel
@@ -205,10 +205,12 @@ reduction are shared in `LowerAnalytic/ComplexGaussianCore.lean`. The unconditio
 upper proof imports this foundation independently of the lower row certificates.
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
-only with X's energy in its selected band, weighted by the retained coefficient cost; the quadratic error is paid once.
+only with X's energy in its selected band, weighted by the retained coefficient cost. The quadratic error charges only pairs
+of pieces whose degree bands can overlap; disjoint pairs contribute zero.
 A native check derives every band radius from the stored table and its accuracy
 allowance. Lean proves every coefficient cost with outward interval polynomial arithmetic.
-The weighted comparison is at most 13311891/(15625·10⁹).
+A kernel-checked rational overlap ledger assembles the quadratic cost.
+The weighted comparison is at most 106490963/(125000·10⁹).
 What remains **input**:
 
 | hypothesis | content | share of the residual |
@@ -217,7 +219,7 @@ What remains **input**:
 | `energy_close` | the stored energies are within 6847009/(5·10¹⁷) of E(X) | 0.001% |
 
 The head, computed in Lean (`head_check`), is 28153/10¹², 3.09% of the total
-455308278509/(5·10¹⁷). The Hardy tail beyond degree 501, 30488839/10¹⁵ (3.35%), is **proved**: the weighted
+455291618509/(5·10¹⁷). The Hardy tail beyond degree 501, 30488839/10¹⁵ (3.35%), is **proved**: the weighted
 square sum is ≤ 7/4 at radius 4149/4000 (`HardyReal.hardy_GT`, below).
 
 **The error decomposition is explicit** (`ComparisonPieces.lean`). With `T = F₀ + h₁ + h₂/2 + h₃/6`,
@@ -307,27 +309,30 @@ The sharper conditional bound above remains stronger.
 `K ≤ M/(q̂₀ − Σ_{k≥1}|q̂_k|)` for a weighted mixture `Σ w_r K_r` of dominated radial kernels with `Σ|w_r| ≤ M`
 (`mixture_bound`; negative weights are free because domination survives absolutely convex combinations).
 
-**Written unconditional refinement: K_G^ℂ < 1.40489844.** For the unchanged
+**Written unconditional refinement: K_G^ℂ < 1.4048984303.** For the unchanged
 fifth scalar preprocessor in [HJM, Sections 5–6](https://arxiv.org/html/2609.25462v1),
 exact arithmetic gives `||P₅^16||₁ < 581/1000`. Every omitted outer index
-`j ≥ 67` therefore receives a factor at most `(581/1000)^8`. This reduces its
-weighted outer-tail reserve from about `6.31935e-8` to `8.20506e-10`, while
+`j ≥ 67` receives the factor `(581/1000)^floor((2j+1)/16)`. Retaining these
+weights through index 159 and bounding the remaining suffix at 160 reduces the
+weighted outer-tail reserve to `1.42728e-10`, while
 retaining the published prefix, complete finite-block tail, other tails and
-exact selector mass. The resulting reciprocal is below `1.404898431637415`.
+exact selector mass. The resulting reciprocal is below `1.404898430299659`.
 
 `Grothe/Haagerup/ScalarTailRefinement.lean` proves the finite power certificate,
 the general signed suffix inequality and the rational score transfer with the
 published numerical budgets explicit. The phase-tail estimate at index 67 is
-proved by an exact split at 120 and the existing infinite-tail majorant;
-it is no longer an assumption of `refined_score_of_published_budgets`.
+proved by an exact split at 120 and the existing infinite-tail majorant. The
+weighted estimate uses that majorant at 160, via the general antitone-weight
+`weighted_composition_cut` theorem. The final score transfer has no tail premise.
 The polynomial power is checked by `decide +kernel` using the same outward
 interval arithmetic. All sixteen scalar-tail results now use only standard
 axioms, with no native evaluation axiom.
 The four pinned public verification stages were replayed
 successfully, including directed energy integration and the complete head/tail
 audit; the two accepted coefficient tables were hash-checked, not regenerated.
-This is a written corollary of the published proof, with its new steps checked
-in Lean. The separate end-to-end unconditional Lean theorem is `haagerup_bound`.
+This is a written corollary of the published proof. The complete weighted-tail
+production module passes focused Lean compilation; `WEIGHTED_BUILD.json` binds
+the check to its source hashes. The earlier build receipt is preserved separately. The separate end-to-end unconditional Lean theorem is `haagerup_bound`.
 Exact inputs, the reproducible generator and all scope details are in
 [`data/scalar-tail-refinement/`](data/scalar-tail-refinement/PROOF.md).
 
@@ -346,7 +351,7 @@ Every native check is single-threaded code (no `Task.spawn`).
 All other proofs, including the canonical finite checks, are kernel-checked.
 No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`, including the node caps.
-The report contains 624 print directives, with 392 required declarations and 88
+The report contains 640 print directives, with 408 required declarations and 88
 allowlisted native facts (60 cap ranges, five Hardy checks and 23 others).
 The focused report `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, allows
 no native axioms for its 98 selected unconditional upper-bound results.

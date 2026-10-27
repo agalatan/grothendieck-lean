@@ -221,6 +221,7 @@ import Grothe.Upper.BandComparison
 import Grothe.Upper.Bivariate
 import Grothe.Upper.ComparisonData
 import Grothe.Upper.ComparisonMass
+import Grothe.Upper.ComparisonOverlap
 import Grothe.Upper.Compose
 import Grothe.Upper.CubicPhaseScreen
 import Grothe.Upper.Data
@@ -252,6 +253,7 @@ import Grothe.UpperChaos.ComparisonPieces
 import Grothe.UpperChaos.Completeness
 import Grothe.UpperChaos.ComplexHermite
 import Grothe.UpperChaos.ComplexMoments
+import Grothe.UpperChaos.DampedMoments
 import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
@@ -284,6 +286,7 @@ import Grothe.UpperChaos.HermiteC2Basis
 import Grothe.UpperChaos.HermiteComplete
 import Grothe.UpperChaos.HermiteDegree
 import Grothe.UpperChaos.HolIntegral
+import Grothe.UpperChaos.InvariantMoments
 import Grothe.UpperChaos.Kernel2
 import Grothe.UpperChaos.KernelStability
 import Grothe.UpperChaos.LawY
@@ -294,6 +297,7 @@ import Grothe.UpperChaos.MehlerL2
 import Grothe.UpperChaos.OUOp
 import Grothe.UpperChaos.OddParseval
 import Grothe.UpperChaos.OddSeries
+import Grothe.UpperChaos.PhaseMomentCheck
 import Grothe.UpperChaos.PhaseMoments
 import Grothe.UpperChaos.PhiBound
 import Grothe.UpperChaos.PhiCover
@@ -321,4 +325,5 @@ import Grothe.UpperChaos.SmoothComm
 import Grothe.UpperChaos.Smoothing
 import Grothe.UpperChaos.Structural
 import Grothe.UpperChaos.Sym2R
+import Grothe.UpperChaos.TaylorMoments
 import Grothe.UpperChaos.TaylorPhase
