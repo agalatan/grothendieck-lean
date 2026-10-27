@@ -621,6 +621,15 @@ remaining Gaussian and table-accuracy inputs are not yet proved.
 `IsGrothendieckBound (500000000000000000/355973699884132991)` for the concrete rounding,
 given an L² charge-one truncation `X`, component-error inputs and table accuracy (the Hardy input is proved).
 `Grothe.upper_value_lt` shows this is below 1.404598149141 (`Grothe/UpperChaos/GroupedRounder.lean`).
+The endpoint proof is **work in progress**. The supporting module
+`Grothe/UpperChaos/ProfileFirstGaussianCell.lean` is complete: its
+`profile_first_gaussian_cell_exact` identifies the actual squared `lagHalf 1`
+integral on `[0,1]` with `5/4 - (13/4) * exp(-1)`, and
+`profile_first_gaussian_cell_enclosure` places it between
+`54391816192/10^12` and `54391816194/10^12`. The proof uses an explicit
+antiderivative and `Real.exp_one_near_20`, with no native checker.
+Both theorems are included in the axiom report. This finite cell is one input
+to the remaining profile and Gaussian response estimates.
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual
 kernel. `upper_of_finite_sample_bounds` reduces that estimate to complex

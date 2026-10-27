@@ -178,6 +178,12 @@ root until a proof uses them).
 and `Grothe.upper_value_lt` shows this is below 1.404598149141
 (`Grothe/UpperChaos/GroupedRounder.lean`).
 
+The target `K < 1.404598149141` is **work in progress**. One completed supporting
+calculation is `ProfileFirstGaussianCell`: Lean proves the exact integral of
+the squared degree-one Laguerre component against `exp(-s)` on `[0,1]`, and
+encloses it in `[0.054391816192, 0.054391816194]` using Mathlib's proved
+exponential bounds. The remaining profile and response estimates require further work.
+
 A proposed direct route, `Grothe.UpperChaos.DirectSample.upper_of_actual_head`,
 derives the same sharp rational bound from an explicit finite-head estimate for
 the actual kernel. That numerical head estimate remains unproved; the route
