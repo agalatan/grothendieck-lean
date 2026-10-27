@@ -161,6 +161,7 @@ import Grothe.HJM.OriginTruncation
 import Grothe.HJM.OriginUnweighted64Assembly
 import Grothe.HJM.OriginUnweightedErrorTransport
 import Grothe.HJM.OriginUnweightedMeanPolynomial
+import Grothe.HJM.OriginUnweightedPhaseMeanNorm
 import Grothe.HJM.OriginUnweightedProjection
 import Grothe.HJM.OriginUnweightedRightCells
 import Grothe.HJM.OriginUnweightedRightCheckData
