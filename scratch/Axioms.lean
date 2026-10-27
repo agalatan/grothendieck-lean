@@ -1101,6 +1101,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.differentiableOn_HholPair_Rt
 #print axioms Grothe.UpperChaos.differentiableOn_Hhol_Rt
 #print axioms Grothe.UpperChaos.differentiableOn_integral_exp
+#print axioms Grothe.UpperChaos.disk_response_eLpNorm_indicator_le
 #print axioms Grothe.UpperChaos.energy_bandProj_eq_zero
 #print axioms Grothe.UpperChaos.energy_eq_zero_of_even
 #print axioms Grothe.UpperChaos.energy_headProjection
@@ -1129,6 +1130,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.fresh_upper_rounder
 #print axioms Grothe.UpperChaos.fresh_upper_rounder_relaxed
 #print axioms Grothe.UpperChaos.fresh_upper_rounder_relaxed_direct_bounds
+#print axioms Grothe.UpperChaos.gaussian_affine_small_ball_density_bound
 #print axioms Grothe.UpperChaos.globalGaussianPolynomial_error
 #print axioms Grothe.UpperChaos.globalMoment_succ
 #print axioms Grothe.UpperChaos.gradedHermiteFn_add
@@ -1337,6 +1339,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.smoothOp_toLp'
 #print axioms Grothe.UpperChaos.splitAll_cover
 #print axioms Grothe.UpperChaos.sq_mul_exp_neg_le_two
+#print axioms Grothe.UpperChaos.sqrt_ratio_deficit_le
 #print axioms Grothe.UpperChaos.structural_fields
 #print axioms Grothe.UpperChaos.sum_diagonal_range
 #print axioms Grothe.UpperChaos.sum_gradedSupport

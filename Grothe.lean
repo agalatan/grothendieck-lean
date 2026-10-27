@@ -499,6 +499,7 @@ import Grothe.UpperChaos.ConditionalGaussianTail
 import Grothe.UpperChaos.DampedMoments
 import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.DiagonalSum
+import Grothe.UpperChaos.DiskTail
 import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
 import Grothe.UpperChaos.ExponentialTail
@@ -507,6 +508,7 @@ import Grothe.UpperChaos.FixedChaosSmoothing
 import Grothe.UpperChaos.GTAliasTail
 import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussOp
+import Grothe.UpperChaos.GaussianDensityBounds
 import Grothe.UpperChaos.GeometricReciprocal
 import Grothe.UpperChaos.GlobalGaussianMoments
 import Grothe.UpperChaos.GlobalGaussianPolynomial
