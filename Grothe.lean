@@ -480,6 +480,7 @@ import Grothe.UpperChaos.AffineGaussianSquare
 import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.BandedContraction
 import Grothe.UpperChaos.CapturedTail
+import Grothe.UpperChaos.CenterNormBypass
 import Grothe.UpperChaos.Charge
 import Grothe.UpperChaos.ComparisonPieces
 import Grothe.UpperChaos.Completeness
@@ -547,6 +548,7 @@ import Grothe.UpperChaos.OUOp
 import Grothe.UpperChaos.OddParseval
 import Grothe.UpperChaos.OddSeries
 import Grothe.UpperChaos.OriginalEnergyBudget
+import Grothe.UpperChaos.OriginalEnergyNoMass
 import Grothe.UpperChaos.PackedDyadic
 import Grothe.UpperChaos.PackedDyadicChunks
 import Grothe.UpperChaos.PhaseMoment2
