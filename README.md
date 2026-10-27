@@ -396,6 +396,14 @@ Gaussian L², every-mode pairing integrability and the Green limit at infinity.
 The actual endpoint-subtracted coefficients satisfy the full weighted-energy
 identity with weights `(2n+1)²`, without additional analytic hypotheses; the
 continuous energy amplitude at zero is `−3/2` times the phase derivative.
+The signed Gaussian phase coefficient is `(-1)^n sqrt(haagCoeff n)`.
+`OriginPhaseTail` bounds its inverse-degree-weighted suffix by `1/(48 N³)`.
+`OriginTail` subtracts the visible energy before applying Cauchy–Schwarz and
+gives an origin coefficient tail at mode 120 of at most `0.00025828`, conditional
+on total energies at most `12.671`, `12.674` and visible energies at least
+`11.497`, `11.498`. `OriginTailBudget.origin_tail_of_visible` supplies the
+assembly's origin-tail hypothesis from these four numerical inequalities;
+the exact weighted cap fits the existing budget without relaxing the ledger.
 For numerical enclosure, a nonnegative inverse-modulus
 polynomial residual controls the phase error; uniform spatial error `ε` inside radius
 `R` gives the joint squared coefficient budget `ε² + exp(-R²)` for all modes.
