@@ -51,6 +51,7 @@ private theorem signedPhase_moment_zero :
     (∫ z : ℂ, ev z (X 0 : CPoly) * conj (ph z) ∂gaussC) =
         ∫ z : ℂ, (‖z‖ : ℂ) ∂gaussC := by
       refine integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)
+      change ev z (X 0 : CPoly) * conj (ph z) = (‖z‖ : ℂ)
       have hev : ev z (X 0 : CPoly) = z := by simp [ev, zv]
       rw [hev]
       have hp : conj z * ph z = (‖z‖ : ℂ) := by
