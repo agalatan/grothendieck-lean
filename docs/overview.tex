@@ -243,7 +243,7 @@ paying elsewhere. After a rotation $P_{1,0}h=t\,z_1$, and the cubic part of $k$ 
  the remote residual. One gate variable is shared across rows.
 \item \textbf{The law of the remote cubic.} What remains is a statement about the distribution of $U=|q|^2/\E|q|^2$ for an
  arbitrary cubic Wick polynomial in arbitrarily many variables. We use exact identities and inequalities valid for
- \emph{every} such cubic: the fourth-moment cap $\E U^2\le62$; the sixth-moment bound
+ \emph{every} such cubic: the sharp fourth-moment cap $\E U^2\le44$; the sixth-moment bound
  $\E U^3\le9m-12+40.45313\,(m-2)^{3/2}$, $m=\E U^2$, which rests on thirteen tensor-contraction facts including the Wick
  expansion of the sixth cumulant; a first-moment bound; and families of \emph{Stein cuts}
  $\E\,G(U)\ge0$, obtained by Gaussian integration by parts and completing squares against spectral budgets, a covariance
@@ -527,7 +527,11 @@ normalised by $\E|q|^2=1$, and $U=|q|^2$.
  $h=\|\operatorname{Sym}(f\star f)\|^2$. The Wick identity
  $\E F^4-3(\E F^2)^2=1296(s+3h/2)$, together with $\E F^2=6N$ and
  $h\le s\le N^2$, proves the bound directly, without a separate positivity premise
- on the Gaussian expectation. Hence $\E U^2\le62$.
+ on the Gaussian expectation. For a circular cubic, the complex contraction identities and Hilbert--Schmidt
+ estimates instead give $\E U^2\le44$ at any dimension. Equality is attained by
+ $Z(|Z|^2-2)/\sqrt2$ for a standard complex Gaussian $Z$; the equality calculation
+ is analytic. The Lean theorem is \lean{Circular.fourth\_moment\_le\_variance}.
+ It implies $x\le\sqrt{42}$, while the existing certificate still uses $x\le31/4$.
 \item \textbf{Sixth moment [Lean].} $\E U^3\le9m-12+C_6(m-2)^{3/2}$ with $m=\E U^2$ and $C_6=40.45313$. The Wick monomial mixed
  with Gaussian noise attains $40.295$, so the constant is sharp to $0.4\%$. The inequality is \emph{false} without circularity:
  two real cubics $He_3(x_0)/\sqrt{12}$, $He_3(x_1)/\sqrt{12}$ give $m=47$ and $\E U^3=13506>12622.55$.

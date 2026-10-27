@@ -303,6 +303,7 @@ import Grothe.LowerAnalytic.CapTables
 import Grothe.LowerAnalytic.CapTablesData
 import Grothe.LowerAnalytic.CapTablesMk
 import Grothe.LowerAnalytic.Circular
+import Grothe.LowerAnalytic.CircularFourth
 import Grothe.LowerAnalytic.CircularTensor
 import Grothe.LowerAnalytic.ComplexGaussianCore
 import Grothe.LowerAnalytic.Covariance
