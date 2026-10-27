@@ -34,8 +34,8 @@ theorem integrable_energyDensity_of_envelope {E : ℝ → ℂ}
     rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]
     simpa only [mul_pow, ← pow_mul, Nat.mul_comm] using hsq
   have hi := (PolynomialEnvelope.exp_mul_integrable hcont henv).re
-  simpa only [F, RCLike.mul_re, RCLike.ofReal_re, RCLike.ofReal_im,
-    mul_zero, sub_zero] using hi
+  simpa only [F, RCLike.re_to_complex, Complex.mul_re, Complex.ofReal_re,
+    Complex.ofReal_im, mul_zero, sub_zero] using hi
 
 /-- The actual left origin energy density is integrable on the full radial
 half-line. -/
