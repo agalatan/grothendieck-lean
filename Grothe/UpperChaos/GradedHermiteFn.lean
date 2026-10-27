@@ -59,10 +59,11 @@ theorem coeFn_gradedHermite (N : ℕ) (a : ℕ → ℕ → ℕ → ℚ) :
     change (gradedHermiteCoeff a i : ℂ) * hvec2 i u =
       (gradedHermiteCoeff a i : ℂ) * hfun2 i u
     exact congrArg (fun z => (gradedHermiteCoeff a i : ℂ) * z) hu
-  simp only [gradedHermite, hermiteFinite, gradedHermiteFn]
+  simp only [gradedHermite, hermiteFinite]
   refine (Lp.coeFn_finsetSum _ _).trans ?_
   have hs := eventuallyEq_sum (s := gradedSupport N) (fun i _ => hterm i)
-  simpa only [Finset.sum_apply] using hs
+  filter_upwards [hs] with u hu
+  simpa only [Finset.sum_apply, gradedHermiteFn] using hu
 
 /-- Passing the canonical pointwise function to `Lp` recovers the graded expansion exactly. -/
 theorem toLp_gradedHermiteFn (N : ℕ) (a : ℕ → ℕ → ℕ → ℚ) :
