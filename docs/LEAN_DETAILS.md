@@ -584,6 +584,11 @@ steps. No numerical response integral is certified by these modules. See
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
+The alternative `fresh_upper_concrete_taylor_relaxed` permits total energy-table
+discrepancy at most `5/10^7` and gives a rational bound below `1.404599424`.
+Its fourteen finite Gaussian band-error bounds and the relaxed energy-table
+accuracy are still hypotheses.
+
 **Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder` proves
 `IsGrothendieckBound (500000000000000000/355973699884132991)` for the concrete rounding,
 given an L² charge-one truncation `X`, component-error inputs and table accuracy (the Hardy input is proved).
