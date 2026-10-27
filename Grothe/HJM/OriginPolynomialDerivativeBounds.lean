@@ -74,7 +74,7 @@ theorem ofListQ_derivativeAux (p : List ℚ) (n : ℕ) :
       derivative_X, zero_add, one_mul,
       Rat.cast_mul, Rat.cast_natCast]
     push_cast
-    simp [map_add, map_mul] <;> ring
+    simp [map_add, map_mul]; ring
 
 theorem ofListQ_derivativeQ (p : List ℚ) :
     ofListQ (derivativeQ p) = (ofListQ p).derivative := by
@@ -97,7 +97,7 @@ theorem hasDerivAt_evalC (p : CList) (s : ℝ) :
   have hi := (hasDerivAt_evalQ p.im s).ofReal_comp
   change HasDerivAt (fun t : ℝ => (evalQ p.re t : ℂ) +
     Complex.I * (evalQ p.im t : ℂ)) _ s
-  simpa only [evalC, derivativeC, zero_mul, zero_add] using
+  simpa only [evalC, derivativeC, zero_mul, zero_add, Pi.add_def] using
     hr.add ((hasDerivAt_const s Complex.I).fun_mul hi)
 
 theorem deriv_evalC (p : CList) (s : ℝ) :
