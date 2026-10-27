@@ -503,6 +503,7 @@ import Grothe.UpperChaos.FiniteSampleError
 import Grothe.UpperChaos.FirstSecondCapturedTail
 import Grothe.UpperChaos.FixedChaosSmoothing
 import Grothe.UpperChaos.GTAliasTail
+import Grothe.UpperChaos.GTAnalyticSeries
 import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussOp
 import Grothe.UpperChaos.GeometricReciprocal
