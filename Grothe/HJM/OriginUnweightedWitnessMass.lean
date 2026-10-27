@@ -63,14 +63,20 @@ theorem leftUnweightedWitness_mass :
     unweightedTestMass (unweightedRationalTest OriginWitnessData.leftAlpha) 64 ≤
       (46592860 / 10 ^ 8 : ℝ) := by
   rw [unweightedRationalTest_mass]
-  exact_mod_cast leftUnweightedRationalMassCheck
+  have h : (rationalUnweightedMass OriginWitnessData.leftAlpha 64 : ℝ) ≤
+      ((46592860 / 10 ^ 8 : ℚ) : ℝ) :=
+    Rat.cast_le.mpr leftUnweightedRationalMassCheck
+  simpa only [Rat.cast_div, Rat.cast_ofNat, Rat.cast_pow] using h
 
 /-- The mass target needed by the right 64-mode projection theorem. -/
 theorem rightUnweightedWitness_mass :
     unweightedTestMass (unweightedRationalTest OriginWitnessData.rightAlpha) 64 ≤
       (46577055 / 10 ^ 8 : ℝ) := by
   rw [unweightedRationalTest_mass]
-  exact_mod_cast rightUnweightedRationalMassCheck
+  have h : (rationalUnweightedMass OriginWitnessData.rightAlpha 64 : ℝ) ≤
+      ((46577055 / 10 ^ 8 : ℚ) : ℝ) :=
+    Rat.cast_le.mpr rightUnweightedRationalMassCheck
+  simpa only [Rat.cast_div, Rat.cast_ofNat, Rat.cast_pow] using h
 
 end
 end Grothe.HJM.Origin
