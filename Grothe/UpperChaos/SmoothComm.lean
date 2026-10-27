@@ -109,13 +109,14 @@ theorem inner_gFn_gFn (L₁ L₂ : (ℂ × ℂ) × (ℂ × ℂ) →L[ℝ] ℂ ×
       ((Complex.continuous_conj.comp_aestronglyMeasurable hg2.aestronglyMeasurable).mul
         hT2.aestronglyMeasurable) (Filter.Eventually.of_forall fun v => ?_)
     simp only [norm_mul, Complex.norm_conj, Pi.mul_apply, le_refl]
-  rw [integral_prod _ hint3, ← integral_prod _ hint2, integral_prod _ hint2, L2.inner_def]
+  rw [integral_prod _ hint3]
+  have step : ∀ v : (ℂ × ℂ) × (ℂ × ℂ), ∫ W, conj ((g : ℂ × ℂ → ℂ) v.1) * f (L₂ (L₁ v, W)) ∂mu2
+      = conj ((g : ℂ × ℂ → ℂ) v.1) * gFn L₂ f (L₁ v) := fun v => by rw [integral_const_mul]; rfl
+  simp only [step]
+  rw [integral_prod _ hint2, L2.inner_def]
   refine integral_congr_ae ?_
   filter_upwards [hF.coeFn_toLp] with x hx
-  rw [hx, RCLike.inner_apply, gFn, ← integral_const_mul]
-  refine integral_congr_ae (Filter.Eventually.of_forall fun Z => ?_)
-  simp only [gFn]
-  rw [← integral_const_mul]; ring_nf
+  rw [hx, RCLike.inner_apply, mul_comm, gFn, ← integral_const_mul]
 
 end
 
