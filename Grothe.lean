@@ -249,6 +249,7 @@ import Grothe.UpperChaos.ComparisonPieces
 import Grothe.UpperChaos.Completeness
 import Grothe.UpperChaos.ComplexHermite
 import Grothe.UpperChaos.ComplexMoments
+import Grothe.UpperChaos.DampedMoments
 import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
@@ -279,6 +280,7 @@ import Grothe.UpperChaos.HermiteC2
 import Grothe.UpperChaos.HermiteC2Basis
 import Grothe.UpperChaos.HermiteComplete
 import Grothe.UpperChaos.HolIntegral
+import Grothe.UpperChaos.InvariantMoments
 import Grothe.UpperChaos.Kernel2
 import Grothe.UpperChaos.KernelStability
 import Grothe.UpperChaos.LawY
@@ -288,6 +290,7 @@ import Grothe.UpperChaos.Mehler
 import Grothe.UpperChaos.MehlerL2
 import Grothe.UpperChaos.OddParseval
 import Grothe.UpperChaos.OddSeries
+import Grothe.UpperChaos.PhaseMomentCheck
 import Grothe.UpperChaos.PhaseMoments
 import Grothe.UpperChaos.PhiBound
 import Grothe.UpperChaos.PhiCover
@@ -314,4 +317,5 @@ import Grothe.UpperChaos.SchurTest
 import Grothe.UpperChaos.Smoothing
 import Grothe.UpperChaos.Structural
 import Grothe.UpperChaos.Sym2R
+import Grothe.UpperChaos.TaylorMoments
 import Grothe.UpperChaos.TaylorPhase
