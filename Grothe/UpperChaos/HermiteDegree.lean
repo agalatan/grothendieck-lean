@@ -57,7 +57,7 @@ lemma A0_mem {n : ℕ} {p : CPoly} (hp : p ∈ D n) : A0 p ∈ D (n + 1) :=
 lemma A1_mem {n : ℕ} {p : CPoly} (hp : p ∈ D n) : A1 p ∈ D (n + 1) :=
   Submodule.sub_mem _ (X_mul_mem 1 hp) (D_mono (Nat.le_succ n) (pderiv_mem 0 (D_mono (Nat.le_succ n) hp)))
 
-lemma H_mem (p q : ℕ) : H p q ∈ D (p + q) := by
+lemma H_mem_D (p q : ℕ) : H p q ∈ D (p + q) := by
   induction p with
   | zero =>
     induction q with
@@ -85,7 +85,7 @@ lemma H_sub_monomial_mem (p q : ℕ) (h : 1 ≤ p + q) : H p q - X 0 ^ p * X 1 ^
             = X 1 * (H 0 q - X 1 ^ q) - pderiv 0 (H 0 q) := by ring
         rw [e, show q + 1 - 1 = (q - 1) + 1 by omega]
         refine Submodule.sub_mem _ (X_mul_mem 1 ih') (D_mono (m := q - 1) (by omega) (pderiv_mem 0 ?_))
-        rw [show q - 1 + 1 = q by omega]; simpa using H_mem 0 q
+        rw [show q - 1 + 1 = q by omega]; simpa using H_mem_D 0 q
   | succ p ih =>
     rw [H_succ_left, A0, pow_succ]
     rcases Nat.eq_zero_or_pos (p + q) with hpq | hpq
@@ -100,7 +100,7 @@ lemma H_sub_monomial_mem (p q : ℕ) (h : 1 ≤ p + q) : H p q - X 0 ^ p * X 1 ^
           = X 0 * (H p q - X 0 ^ p * X 1 ^ q) - pderiv 1 (H p q) := by ring
       rw [e, show p + 1 + q - 1 = (p + q - 1) + 1 by omega]
       refine Submodule.sub_mem _ (X_mul_mem 0 ih') (D_mono (m := p + q - 1) (by omega) (pderiv_mem 1 ?_))
-      rw [show p + q - 1 + 1 = p + q by omega]; exact H_mem p q
+      rw [show p + q - 1 + 1 = p + q by omega]; exact H_mem_D p q
 
 /-- The span of the Hermite polynomials of degree `≤ n`. -/
 def Hspan (n : ℕ) : Submodule ℂ CPoly := Submodule.span ℂ {f | ∃ p q, p + q ≤ n ∧ f = H p q}
