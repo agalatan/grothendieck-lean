@@ -482,6 +482,7 @@ import Grothe.UpperChaos.AffineGaussianSquare
 import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.BandedContraction
 import Grothe.UpperChaos.CapturedTail
+import Grothe.UpperChaos.CenterNormBypass
 import Grothe.UpperChaos.Charge
 import Grothe.UpperChaos.ComparisonPieces
 import Grothe.UpperChaos.Completeness
@@ -504,6 +505,8 @@ import Grothe.UpperChaos.GTAliasTail
 import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussOp
 import Grothe.UpperChaos.GeometricReciprocal
+import Grothe.UpperChaos.GlobalGaussianMoments
+import Grothe.UpperChaos.GlobalGaussianPolynomial
 import Grothe.UpperChaos.GradedHermite
 import Grothe.UpperChaos.GradedHermiteFn
 import Grothe.UpperChaos.GradedHermiteIntegerEnergy
@@ -540,6 +543,7 @@ import Grothe.UpperChaos.HermiteDegree
 import Grothe.UpperChaos.HermiteFinite
 import Grothe.UpperChaos.HolIntegral
 import Grothe.UpperChaos.InvariantMoments
+import Grothe.UpperChaos.JointAliasBound
 import Grothe.UpperChaos.Kernel2
 import Grothe.UpperChaos.KernelStability
 import Grothe.UpperChaos.LawY
@@ -553,6 +557,7 @@ import Grothe.UpperChaos.OUOp
 import Grothe.UpperChaos.OddParseval
 import Grothe.UpperChaos.OddSeries
 import Grothe.UpperChaos.OriginalEnergyBudget
+import Grothe.UpperChaos.OriginalEnergyNoMass
 import Grothe.UpperChaos.PackedDyadic
 import Grothe.UpperChaos.PackedDyadicChunks
 import Grothe.UpperChaos.PhaseMoment2
