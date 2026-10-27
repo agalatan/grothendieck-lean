@@ -269,6 +269,7 @@ import Grothe.Transfer
 import Grothe.Upper.BandComparison
 import Grothe.Upper.Bivariate
 import Grothe.Upper.ComparisonData
+import Grothe.Upper.ComparisonGroups
 import Grothe.Upper.ComparisonMass
 import Grothe.Upper.ComparisonOverlap
 import Grothe.Upper.Compose
@@ -277,6 +278,8 @@ import Grothe.Upper.Data
 import Grothe.Upper.Disk
 import Grothe.Upper.Final
 import Grothe.Upper.FiniteDifference
+import Grothe.Upper.GroupedBridge
+import Grothe.Upper.GroupedComparison
 import Grothe.Upper.Haagerup
 import Grothe.Upper.Head
 import Grothe.Upper.HeadWeight
@@ -323,6 +326,8 @@ import Grothe.UpperChaos.GradedHermiteFn
 import Grothe.UpperChaos.GradedHermiteIntegerEnergy
 import Grothe.UpperChaos.GradedHermiteLinear
 import Grothe.UpperChaos.GradedHermitePhaseSlice
+import Grothe.UpperChaos.GroupedComparison
+import Grothe.UpperChaos.GroupedRounder
 import Grothe.UpperChaos.HardyArcCircle
 import Grothe.UpperChaos.HardyArcCover
 import Grothe.UpperChaos.HardyArcMean
