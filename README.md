@@ -226,6 +226,15 @@ the alternative whole-error identity using one inner product with the
 approximant. These interfaces retain the required coefficient-norm and
 integral bounds as hypotheses.
 
+The inherited Taylor coefficient files and frozen correction are preserved in
+[`data/taylor-approximants/`](data/taylor-approximants/README.md), with their
+original hashes. `HermiteFinite` identifies norms of finite normalized Hermite
+expansions with rational sums of coefficient squares. The first concrete band
+certificate, `TaylorBandCheck`, uses the third approximant's 112 coefficients
+through degree 11 and encloses its norm near 2.121377361367546·10⁻⁶. It certifies
+the finite center norm; its distance to the Gaussian Taylor source still needs
+an integration-error bound.
+
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
 only with X's energy in its selected band, weighted by the retained coefficient cost. The quadratic error charges only pairs
