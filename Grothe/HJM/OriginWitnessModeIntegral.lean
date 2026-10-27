@@ -56,11 +56,13 @@ theorem sqrt_index_chargeOneCoeff_eq_integral (n : ℕ) (v : ℝ → ℂ)
   rw [← mul_assoc, hscale, ← integral_const_mul]
   apply integral_congr_ae
   filter_upwards [] with t
-  have hf : (n.factorial : ℝ) ≠ 0 := by exact_mod_cast Nat.factorial_ne_zero n
-  simp only [signedModeIntegrand, signedLaguerreValue]
-  push_cast
-  have hfC : ((n.factorial : ℝ) : ℂ) ≠ 0 := by exact_mod_cast hf
-  field_simp [hfC] <;> ring
+  change ((2 / (n.factorial : ℝ) : ℝ) : ℂ) *
+      (((t ^ 2 * Real.exp (-t ^ 2) *
+        (originRadialPoly n).eval (t ^ 2) : ℝ) : ℂ) * v (t ^ 2)) =
+    (((2 * t ^ 2 * Real.exp (-t ^ 2) *
+      ((originRadialPoly n).eval (t ^ 2) / (n.factorial : ℝ)) : ℝ) : ℂ) * v (t ^ 2))
+  simp only [Complex.ofReal_mul, Complex.ofReal_div, Complex.ofReal_ofNat]
+  ring
 
 
 /-- Gaussian radial polynomials are integrable on the positive half-line. -/
@@ -103,8 +105,8 @@ theorem integrable_signedModeIntegrand (n : ℕ) (v : ℝ → ℂ)
         (((t ^ 2 * Real.exp (-t ^ 2) * (originRadialPoly n).eval (t ^ 2) : ℝ) : ℂ) *
           v (t ^ 2)) := by
     funext t
-    simp only [signedModeIntegrand, signedLaguerreValue]
-    push_cast
+    simp only [signedModeIntegrand, signedLaguerreValue,
+      Complex.ofReal_mul, Complex.ofReal_div, Complex.ofReal_ofNat]
     ring
   rw [he]
   exact h.const_mul _
@@ -130,8 +132,7 @@ theorem witnessPolynomial_correlation_integral
     simp only [map_sum, map_mul, Complex.conj_ofReal, Finset.mul_sum, Finset.sum_mul]
     apply sum_congr rfl
     intro n _hn
-    simp only [F, signedModeIntegrand]
-    push_cast
+    simp only [F, signedModeIntegrand, Complex.ofReal_mul, Complex.ofReal_ofNat]
     ring
   calc
     _ = ∑ n ∈ range N, (((2 * (n : ℝ) + 1 : ℝ) : ℂ) * conj (witnessAlpha xs n)) *
@@ -168,8 +169,7 @@ theorem integrable_witnessPolynomial_integrand
   simp only [map_sum, map_mul, Complex.conj_ofReal, Finset.mul_sum, Finset.sum_mul]
   apply sum_congr rfl
   intro n _hn
-  simp only [F, signedModeIntegrand]
-  push_cast
+  simp only [F, signedModeIntegrand, Complex.ofReal_mul, Complex.ofReal_ofNat]
   ring
 
 
