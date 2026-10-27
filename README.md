@@ -5,12 +5,12 @@ complex Grothendieck constant:
 
 > **1.401697049825 < K_G^ℂ < 1.404598149218**
 >
-> **Unconditional Lean target: K_G^ℂ ≤ 1.404909133.** The new certificate is awaiting delivery CI; its proof uses only the three standard axioms.
+> **Unconditional Lean target: K_G^ℂ ≤ 1.404909132792.** The new certificate is awaiting delivery CI; its proof uses only the three standard axioms.
 
 The two sharp bounds rest on explicitly stated analytic and computer-assisted inputs.
 The unconditional theorem has no external analytic premises. Its focused axiom policy
 requires 96 results and permits zero native evaluation axioms. Validation of the new
-degree-20 certificate is tracked in [#129](https://github.com/agalatan/grothendieck-lean/issues/129).
+order-10 alternating completion is tracked in [#133](https://github.com/agalatan/grothendieck-lean/issues/133); the earlier degree-20 receipt is preserved separately.
 
 A separate **written unconditional refinement gives K_G^ℂ < 1.40489844**,
 using Heilman–Jones–Malavolta's published construction and numerical estimates.
@@ -50,7 +50,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
 | Oct 2026 | **this repository** | **1.401697049825 < K** | **K < 1.404598149218** |
-| Oct 2026 | this repository, unconditional Lean target (delivery CI pending) | | K ≤ 1.404909133 |
+| Oct 2026 | this repository, unconditional Lean target (delivery CI pending) | | K ≤ 1.404909132792 |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
 proposed as the exact value; it lies inside the interval, 2.22·10⁻⁵ below our upper bound.
@@ -242,7 +242,7 @@ with a mathematical account in [`docs/localized-comparison.tex`](docs/localized-
 The native head computation remains part of the proof.
 
 **Unconditional upper-bound source (delivery CI pending).**
-`Grothe.haagerup_bound : IsGrothendieckBound (1404909133/1000000000)`
+`Grothe.haagerup_bound : IsGrothendieckBound (175613641599/125000000000)`
 (`Grothe/Haagerup/Power.lean`, assembled in `CanonicalProof.lean` with finite checks in `CanonicalCheck.lean`), with **no external hypothesis**.
 Lean derives Haagerup's identity from the complex Hermite basis and Mehler formula,
 with the Gaussian phase coefficients determined by a polynomial moment recurrence:
@@ -250,11 +250,15 @@ E[conj(phase⟨g,x⟩)·phase⟨g,y⟩] = Σ_k (π/4)(1/2)_k²/(k!(k+1)!) z|z|^{
 with a degree-41 preprocessor and 64 exact series terms. All orders of forward differences
 of the normalized Haagerup coefficients are nonnegative, proved from a product of two
 rising-factorial quotients. This gives a canonical resolvent expansion: the finite head
-and eight correction terms are combined before taking absolute values.
-The finite check encloses the first 172 coefficients with a cap of 74/10¹². A polynomial coefficient norm
-weighted by (3/2)ⁿ bounds all omitted coefficients, without an analytic-continuation input.
-The weighted finite-tail cap is 52/10¹². The completed-head cap is 126/10¹² and
-the infinite-remainder cap is 14/10¹², giving a total normalized residual cap of 140/10¹².
+and ten correction terms are combined before taking absolute values.
+The finite check encloses the first 165 coefficients with a cap of 368411/(5·10¹⁵).
+A polynomial coefficient norm weighted by (3/2)ⁿ has cap 10¹³ and bounds all omitted
+coefficients by 10⁻¹⁶, without an analytic-continuation input.
+The estimate retains the actual Haagerup coefficients and forward differences
+instead of replacing them all by one common cap.
+The completed-head cap is 736823/10¹⁶ and the infinite-remainder cap is 10169/10¹⁶,
+giving a total normalized residual cap of 746992/10¹⁶. This sharpens the completion
+while retaining the same degree-20 polynomial and degree-64 approximate inverse.
 The coefficient argument, resolvent identity, checker soundness and matrix transfer
 are proved in Lean. Large convolutions are proved in continuation blocks of at most five left
 coefficients. The generic `convI_append` identity preserves the original
@@ -264,7 +268,7 @@ The focused audit policy requires 96 results using only the three standard axiom
 with **no native-check dependency**. The new numerical trace awaits delivery CI.
 The degree-20 polynomial P and degree-64 resolvent R are generated from an exact
 inverse-series recipe, with 60-bit dyadic normalization and rounding. See
-[the complete proof and replay](docs/HAAGERUP_POWER.md).
+[the complete proof and replay](docs/HAAGERUP_POWER.md) and the [pending alternating-completion receipt](docs/verification/haagerup-alternating-20261027/README.md).
 The sharper conditional bound above remains stronger.
 
 **Written unconditional refinement: K_G^ℂ < 1.40489844.** For the unchanged

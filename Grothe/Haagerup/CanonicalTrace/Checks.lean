@@ -19,15 +19,21 @@ namespace Grothe.HaagerupCanonical.Trace
 open GrotheKernel Grothe.Upper.FiniteDifference
 
 theorem coefficient_check :
-    Grothe.haagR Grothe.HaagerupCanonical.start ≤ 1/10000 ∧
-      iterDiff Grothe.HaagerupCanonical.order Grothe.haagR Grothe.HaagerupCanonical.start ≤ 51/1000000000000000 := by
-  change Grothe.haagR 64 ≤ 1/10000 ∧ iterDiff 8 Grothe.haagR 64 ≤ 51/1000000000000000
-  rw [coefficientEq64, differenceEq8_64]
-  exact coefficient_literal_ok
+    Grothe.HaagerupCanonical.weightedBudget ≤ 10^13 ∧
+      Grothe.HaagerupCanonical.remainderBudget ≤ Grothe.HaagerupCanonical.remainderCap := by
+  constructor
+  · unfold Grothe.HaagerupCanonical.weightedBudget
+    rw [weights_binding, differences_binding]
+    exact weighted_literal_ok
+  · unfold Grothe.HaagerupCanonical.remainderBudget
+    simp only [Grothe.HaagerupCanonical.order, Grothe.HaagerupCanonical.start,
+      Finset.sum_range_succ, Finset.sum_range_zero, zero_add,
+      differenceEq0_64, differenceEq1_64, differenceEq2_64, differenceEq3_64, differenceEq4_64, differenceEq5_64, differenceEq6_64, differenceEq7_64, differenceEq8_64, differenceEq9_64, differenceEq10_64, defectCap_binding]
+    exact remainder_literal_ok
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 201: reached coefficient_check"
+  out.putStrLn "Canonical trace 208: reached coefficient_check"
   out.flush
 
 #print axioms coefficient_check
@@ -43,7 +49,7 @@ theorem completed_check :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 202: reached completed_check"
+  out.putStrLn "Canonical trace 209: reached completed_check"
   out.flush
 
 #print axioms completed_check
@@ -57,7 +63,7 @@ theorem seed_check :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 203: reached seed_check"
+  out.putStrLn "Canonical trace 210: reached seed_check"
   out.flush
 
 #print axioms seed_check
@@ -70,7 +76,7 @@ theorem defect_check :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 204: reached defect_check"
+  out.putStrLn "Canonical trace 211: reached defect_check"
   out.flush
 
 #print axioms defect_check
