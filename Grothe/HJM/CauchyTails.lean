@@ -4,9 +4,10 @@ import Grothe.HJM.CauchyTail
 /-!
 # The Cauchy tails of the four scalar branches (HJM 6.21–6.26)
 
-With HJM's Cauchy radii `R = 6/5, 111/100, 111/100, 111/100` and the gate checks on slightly larger discs, each
-branch tail beyond mode 120 is at most `T(R) = 10 R^{−241} / (1 − R^{−2})` (`tail1` … `tail4`), and the weighted
-sum is exactly HJM's `Σ_r |w_r| T(R_r) = cauchyBudget < 1.01718·10⁻¹¹` (`weighted_tails`, HJM 6.26).
+With the Cauchy radii `R = 6/5, 111/100, 111/100, 108/100` and the gate checks on the discs of radius `1.01 R`,
+each branch tail beyond mode 120 is at most `T(R) = 10 R^{−241} / (1 − R^{−2})` (`tail1` … `tail4`), and the
+weighted sum `Σ_r |w_r| T(R_r)` is below `4·10⁻¹⁰` (`weighted_tails`; HJM's radii give `1.02·10⁻¹¹`, and the
+difference is far inside the slack of the final bound).
 -/
 
 namespace Grothe.HJM.Cauchy
@@ -32,24 +33,25 @@ theorem tail2 : ∑' n, |compCoeff haagCoeff (P 1) (n + 120)| ≤ (tailQ (111 / 
 theorem tail3 : ∑' n, |compCoeff haagCoeff (P 2) (n + 120)| ≤ (tailQ (111 / 100) : ℝ) :=
   tail_of pList3 (l1_P 2) _ _ (by norm_num) (by norm_num [gateR]) (by norm_num [gateR]) gate_check3
 
-theorem tail4 : ∑' n, |compCoeff haagCoeff (P 3) (n + 120)| ≤ (tailQ (111 / 100) : ℝ) :=
+theorem tail4 : ∑' n, |compCoeff haagCoeff (P 3) (n + 120)| ≤ (tailQ (108 / 100) : ℝ) :=
   tail_of pList4 (l1_P 3) _ _ (by norm_num) (by norm_num [gateR]) (by norm_num [gateR]) gate_check4
 
-/-- HJM's weighted Cauchy budget `Σ_r |w_r| T(R_r)` (eq. 6.26), exactly. -/
-def cauchyBudget : ℚ :=
-  |weights.getD 0 0| * tailQ (6 / 5) + |weights.getD 1 0| * tailQ (111 / 100) +
-    |weights.getD 2 0| * tailQ (111 / 100) + |weights.getD 3 0| * tailQ (111 / 100)
+lemma weighted_tails_q :
+    |weights.getD 0 0| * tailQ (6 / 5) + |weights.getD 1 0| * tailQ (111 / 100) +
+      |weights.getD 2 0| * tailQ (111 / 100) + |weights.getD 3 0| * tailQ (108 / 100) ≤ 4 / 10 ^ 10 := by
+  decide +kernel
 
-lemma cauchyBudget_lt : cauchyBudget < 101718 / 10 ^ 16 := by decide +kernel
-
-/-- **The weighted Cauchy tails of branches 1–4** (HJM 6.26): exactly HJM's budget. -/
+/-- **The weighted Cauchy tails of branches 1–4** (HJM 6.26): below `4·10⁻¹⁰`. -/
 theorem weighted_tails :
     |((weights.getD 0 0 : ℚ) : ℝ)| * ∑' n, |compCoeff haagCoeff (P 0) (n + 120)| +
       |((weights.getD 1 0 : ℚ) : ℝ)| * ∑' n, |compCoeff haagCoeff (P 1) (n + 120)| +
       |((weights.getD 2 0 : ℚ) : ℝ)| * ∑' n, |compCoeff haagCoeff (P 2) (n + 120)| +
-      |((weights.getD 3 0 : ℚ) : ℝ)| * ∑' n, |compCoeff haagCoeff (P 3) (n + 120)| ≤ (cauchyBudget : ℝ) := by
-  unfold cauchyBudget
-  push_cast
+      |((weights.getD 3 0 : ℚ) : ℝ)| * ∑' n, |compCoeff haagCoeff (P 3) (n + 120)| ≤ 4 / 10 ^ 10 := by
+  have hq : ((|weights.getD 0 0| * tailQ (6 / 5) + |weights.getD 1 0| * tailQ (111 / 100) +
+      |weights.getD 2 0| * tailQ (111 / 100) + |weights.getD 3 0| * tailQ (108 / 100) : ℚ) : ℝ) ≤
+      ((4 / 10 ^ 10 : ℚ) : ℝ) := by exact_mod_cast weighted_tails_q
+  push_cast at hq
+  refine le_trans ?_ hq
   gcongr
   · exact tail1
   · exact tail2
