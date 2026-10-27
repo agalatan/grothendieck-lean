@@ -1,0 +1,62 @@
+{
+  "agent_id": "codex-aa04",
+  "issue": 133,
+  "reviewed_at_utc": "2026-10-27T01:52:57.238365+00:00",
+  "accepted_ci_run": 40432615845,
+  "accepted_master": "c6df6ba4b331c84046cd8ffdeb841f9aab7fece2",
+  "pdfs": {
+    "overview": {
+      "build_path": "handoff/lean-audit/major-simplification/codex-aa04/alternating-20261027/accepted-docs/overview-build/overview.pdf",
+      "sha256": "9efc585814ed78228adbe97a4ad844c254758750ff9fa011308bcdfa67e5ad8b",
+      "pages": 12,
+      "ci_link_verified": "https://github.com/agalatan/grothendieck-lean/actions/runs/40432615845",
+      "visually_reviewed_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "render_dpi": 110
+    },
+    "research": {
+      "build_path": "handoff/lean-audit/major-simplification/codex-aa04/alternating-20261027/accepted-docs/research-build/research-check.pdf",
+      "sha256": "c6002ee2bbfba3a3ebbca2f8d4d314cd54ca3887c62f4213065b001b87d7f721",
+      "pages": 4,
+      "ci_link_verified": "https://github.com/agalatan/grothendieck-lean/actions/runs/40432615845",
+      "visually_reviewed_pages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "render_dpi": 110
+    }
+  },
+  "sources": {
+    "README.md": "0600409f20294eac82da6efe7581809bc61d2877e7d758d911260d6e2c70859b",
+    "docs/LEAN_DETAILS.md": "042a078d3a9d369607f1087c5b416808a1ac88671677313028f5e7c68b567f7d",
+    "docs/HAAGERUP_POWER.md": "6ee3303f4d49762bd3cbe3af2416c87fb187ad9e7589c17d4555b9923429dac5",
+    "docs/overview.tex": "7505b34ccfa9bc01979e2f84b2df8a194a801c8ce108a72a4b3849aa947a381e",
+    "docs/research/haagerup-power.tex": "eb32e83860c786f67b17caa9bc01764640373d68f95e13dbbb2fa0c138415a6b"
+  },
+  "warnings": {
+    "overview": [
+      "One inherited Underfull hbox (badness 1231), bibliography paragraph lines 577-579; visually acceptable."
+    ],
+    "research": []
+  },
+  "no_overfull_boxes": true,
+  "no_unresolved_references": true,
+  "no_visual_defects_observed": true,
+  "exact_rational_endpoint_checked": true,
+  "historical_receipts_modified": false,
+  "lean_build_run": false
+}
