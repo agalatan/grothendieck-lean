@@ -243,7 +243,9 @@ import Grothe.Upper.ResponseUpdate
 import Grothe.Upper.SpectralScreen
 import Grothe.Upper.TransportLimit
 import Grothe.Upper.WeightedTail
+import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.Charge
+import Grothe.UpperChaos.ComparisonPieces
 import Grothe.UpperChaos.Completeness
 import Grothe.UpperChaos.ComplexHermite
 import Grothe.UpperChaos.ComplexMoments
@@ -309,6 +311,7 @@ import Grothe.UpperChaos.SchurIntegrability
 import Grothe.UpperChaos.SchurKernel
 import Grothe.UpperChaos.SchurMain
 import Grothe.UpperChaos.SchurTest
+import Grothe.UpperChaos.Smoothing
 import Grothe.UpperChaos.Structural
 import Grothe.UpperChaos.Sym2R
 import Grothe.UpperChaos.TaylorPhase

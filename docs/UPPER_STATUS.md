@@ -293,6 +293,15 @@ its own error raises 2·A_I·e_I to about 1.3·10⁻⁶ in total for power 1. Th
 the global bound, so the bands still need per-coefficient enclosures. They need only about 10⁻¹¹ (power 1, degrees
 101–181) to 10⁻⁹ precision, on about 150k coefficients.
 
+### 5.5b Step 1 done (`claude/comparison-pieces`)
+
+`Smoothing.lean` (S as an `L²` contraction: `map_smooth`, `norm_smoothOp_le`, `smoothOp_toLp'`, mean preserved),
+`BandProj.lean` (projections onto Hermite modes: coefficients, support, partition sums) and
+`ComparisonPieces.lean` (Taylor split `Tround_eq`, the four sources, the 18 pieces, `difference_pieces`,
+`comparisonInputs_of_norms`, `fresh_upper_pieces`). The pieces are `P_I(S src)` (projection after smoothing), so
+their supports hold by construction. The data `c_j`, `v` enter as charge-one parameters; plugging in the
+certificate's data (and relating `P_I S` to the certificate's `S P_I`: S preserves total degree) is step 2's work.
+
 ### 5.6 Ranked plan
 
 | step | content | turns into Lean | residual made formal |
