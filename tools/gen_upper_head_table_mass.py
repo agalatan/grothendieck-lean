@@ -65,12 +65,18 @@ def generate() -> tuple[bytes, bytes]:
         raise ValueError('template requires 21 chunks')
     if Fraction(sum(caps), SCALE) + Fraction(3, 20000000) > 1:
         raise ValueError('chunk caps exceed requested budget')
-    checks = ''.join(
-        f'lemma rowMass_chunk_{i:02} : ((headRowMasses.drop {CHUNK*i}).take {CHUNK}).sum ≤ ({cap} / {SCALE} : ℚ) := by\n'
-        f'  unfold headRowMasses energyStrs tableRowMass\n'
-        f'  decide +kernel\n\n'
-        for i, cap in enumerate(caps)
-    )
+    checks = ''
+    for i, cap in enumerate(caps):
+        # Row strings contain only ASCII digits and separators, verified above.
+        # Prove they are exactly the selected rows of the tracked Lean data.
+        rows = ',\n    '.join(json.dumps(r, ensure_ascii=True) for r in rowstrings[CHUNK*i:CHUNK*(i+1)])
+        checks += (
+            f'lemma rowMass_chunk_{i:02} : ((headRowMasses.drop {CHUNK*i}).take {CHUNK}).sum ≤ ({cap} / {SCALE} : ℚ) := by\n'
+            f'  have hrows : ((energyStrs.drop {CHUNK*i}).take {CHUNK}) = [\n    {rows}] := by rfl\n'
+            f'  unfold headRowMasses\n'
+            f'  rw [← List.map_drop, ← List.map_take, hrows]\n'
+            f'  decide_cbv\n\n'
+        )
     template = TEMPLATE.read_text(encoding='utf-8')
     if template.count('{{chunk_checks}}') != 1:
         raise ValueError('template must contain one chunk marker')

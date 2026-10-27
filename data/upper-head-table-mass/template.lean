@@ -103,6 +103,6 @@ theorem energyTable_head_mass_rat :
 theorem energyTable_head_mass_real :
     (∑ p ∈ headIdx 501, (energyTable p : ℝ)) + (3 / 20000000 : ℝ) ≤ 1 := by
   have h := (Rat.cast_le (K := ℝ)).mpr energyTable_head_mass_rat
-  simpa only [Rat.cast_sum, Rat.cast_add, Rat.cast_div, Rat.cast_ofNat] using h
+  simpa only [Rat.cast_sum, Rat.cast_add, Rat.cast_div, Rat.cast_ofNat, Rat.cast_one] using h
 
 end Grothe.Upper
