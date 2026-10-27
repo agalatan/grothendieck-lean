@@ -4,15 +4,15 @@ This is the single entry point for anyone (Codex or Claude) continuing the node 
 
 ## Goal
 
-The lower bound is `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697117301 < K`, in the separate
-target `GrotheCaps` (see the README, "Node caps"). `CapsRest` is the vertex caps of **rows 12–15** (t = 0.84, 0.845,
+The lower bound is `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697117301 < K`, in the active `Grothe` build. `CapsRest` is the vertex caps of **rows 12–15** (t = 0.84, 0.845,
 0.85, 0.855), plus any excluded-node caps of the other rows; the exclusion
 lists are empty. Rows 0–11 and 16–18 have 60 existing native range facts.
 Track A isolates their computation from the analytic proof layer. CI replays
 the verified build when a cache for the current computation sources exists;
 otherwise the check runs on the droplet's runner (`AGENTS.md` §8).
-Removing `CapsRest` would make the lower bound unconditional, apart from
-the pinned `native_decide` facts.
+The lower endpoint is work in progress until `CapsRest` is proved in Lean
+and the final assembled tree passes CI. These are our numerical obligations,
+not accepted external inputs.
 
 ## Tracks
 
@@ -39,10 +39,8 @@ using `nodeCaps_of_vertexCaps (vertexCaps_of_capsRest h)`; its endpoint is
 `RefinedCoverData.refinedL`. `NodeCaps.lean` holds the common cap definition
 without importing the Gaussian reduction.
 
-The cache provenance boundary is 54 files, down from 140: 48 local
-computation modules plus directly hashed `CapNodes.lean`, `GrotheCaps.lean`,
-`GrotheCapsKernel.lean`, `lean-toolchain`, `lake-manifest.json` and
-`lakefile.toml`. The six extras' imports are not traversed. Changes confined
+The current cache provenance boundary is computed by `scripts/caps_stamp.py`.
+Its direct extras and computation imports are described in `CAPS_STATUS.md`. Changes confined
 to the analytic or lower-proof layer outside that set leave the computation
 hash unchanged. This is not a complete dependency or artifact manifest;
 Lake checks ordinary proof dependencies, while the explicit `GrotheCaps`

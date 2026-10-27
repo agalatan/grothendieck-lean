@@ -159,7 +159,9 @@ finer grids do not help (the defect is the multipliers, not the enclosure), and 
 
 **Treatment of 14:200 piece 0 (decision).** The cover has `Bcap − max box = 0.7134218 − 0.71342178230 ≈ 1.77e-8` of
 slack, and `capPad` enters every row constant linearly (`Row.env`: `C = 2β²/ε + cap + capPad`), so any uniform
-increase up to ~1.7e-8 keeps `K > 1.401695322458` without touching the cover. Two options:
+increase would change the endpoint ledger and is outside the active target.
+The historical repricing discussion is retained in `miscellaneous/other-bounds/`.
+For the current target, certify the existing caps. Historical options:
 1. raise `capPad` (`Grothe/Lower/Moment.lean`, now 1e-11) to the largest Δcap needed over ALL route-M nodes, with
    margin (e.g. 5e-9 if the full sweep stays ≤ 2.6e-9); one global change, re-checked by `cert_check` (CI) and one
    GrotheCaps rebuild + stamp (capPad is in the caps closure);

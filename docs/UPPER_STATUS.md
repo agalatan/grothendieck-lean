@@ -1,21 +1,14 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-The sharper conditional upper bound is described below. The independent hypothesis-free
-route states `Grothe.haagerup_bound : IsGrothendieckBound (1404909132791/1000000000000)`.
-The degree-20 certificate uses combined resolvent seeds (#138). Its focused audit policy
-requires 98 results and permits zero native evaluation axioms.
-The canonical resolvent completion, complete residual and infinite remainder are
-documented in `docs/HAAGERUP_POWER.md`. It combines 64 series terms with ten
-correction terms, using complete monotonicity at every difference order and exact
-coefficient locality to remove the finite boundary. A
-165-coefficient prefix and a weighted finite-polynomial tail bound control the
-complete residual. Large convolutions are proved in continuation blocks of at most five left
-coefficients. The generic `convI_append` identity preserves the original
-outward arithmetic order; recurrence and exact input-binding lemmas recover
-the four checker statements without a new numerical premise.
-The proof is designed to use only the three standard axioms and none of the analytic inputs listed here.
-`tools/verify_haagerup_canonical.py` provides an independent directed replay.
-Normal `ready/*` delivery CI builds and audits the combined tree before merging it.
+The only active upper target is **K_G^ℂ < 1.404598149141**.
+`fresh_upper_concrete_taylor` remains conditional on fourteen actual Gaussian
+finite-band error inequalities and energy-table discrepancy at most
+`6847009/(5·10^17) = 1.3694018e-11`. Neither family is discharged.
+
+Weaker variants are preserved, with their original proof status and inputs, in
+[the committed archive](../miscellaneous/other-bounds/README.md). They are excluded
+from the active build. Shared Gaussian phase identity and Laplace infrastructure
+remain available to the target proof.
 
 Build only changed modules locally. Full builds, including all node caps, run
 through the single delivery CI job; see `AGENTS.md` for worktree and delivery rules.
@@ -68,7 +61,7 @@ the current degree-41/15 preprocessors come from `data/upper-preprocess/`.
 The current exact arithmetic and generated data replay pass. Full merged-tree
 Lean validation is delegated to branch CI. Earlier targeted receipts were cleared
 before collection and are not current build evidence. The explicit gap and source
-guards are in `data/upper-preprocess/verification/`. `HardyKernel` does not
+guards are in `miscellaneous/other-bounds/tree/data/upper-preprocess/verification/`. `HardyKernel` does not
 discharge the numerical Hardy premise.
 
 ## 2. `|φ| < 1` (input of the inherited coefficient-error argument)
@@ -207,7 +200,7 @@ Progress (claude/hardy, 26 Oct):
 
 *Issue #20. Written from the master sources (`Grothe/UpperChaos/LocalizedComparison.lean`,
 `Grothe/Upper/ComparisonData.lean`, `data/localized-comparison/{recipe.json,PROOF.md}`,
-`docs/localized-comparison.tex`) and the inherited certificate (laptop archive
+`miscellaneous/other-bounds/tree/docs/localized-comparison.tex`) and the inherited certificate (laptop archive
 `handoff/upper-residual/global_norm/`: `MIXED_TAYLOR_CUTOFF_LEMMA.md`, `GAUSSIAN_POLYNOMIAL_NORM.md`,
 `certify_taylor_comparison.py`, `taylor_comparison_result.json`). The error decomposition,
 spectral support and symbolic phase-moment route are implemented; the plan below

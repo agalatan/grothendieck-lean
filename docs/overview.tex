@@ -33,8 +33,8 @@
 \Large $1.401697117301\;<\;\KG\;<\;1.404598149141$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, resting on explicitly stated
 analytic and computer-assisted inputs (Section~\ref{sec:trust}).\\[4pt]
-Unconditional Lean theorem: $\KG\le1.404909132791$, using only the three standard axioms.\\[3pt]
-Written refinement of the published mixed rounding: $\KG<1.4048984303$; its power, weighted-tail and score steps are checked in Lean.\vspace{4pt}
+Only the sharp upper target is active; its fourteen finite-band Gaussian estimates
+and energy-table accuracy remain to be proved.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
@@ -74,11 +74,9 @@ such $K$ is the \emph{complex Grothendieck constant} $\KG$.
 year & who & lower bound & upper bound\\\midrule
 1953 & Grothendieck & & $K<\infty$\\
 1984 & Davie & $1.33807$ & \\
-1987 & Haagerup & & $1.40490913\ldots$ (Gaussian phase rounding)\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
-Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct 2026 & \textbf{this work} & $\mathbf{1.401697117301}$ & $\mathbf{1.404598149141}$\\
-Oct 2026 & this work (unconditional) & & $1.404909132791$\\\bottomrule
+Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & archived\\
+Oct 2026 & \textbf{this work} & $\mathbf{1.401697117301}$ & $\mathbf{1.404598149141}$\\\bottomrule
 \end{tabular}
 \end{center}
 Haagerup's integral
@@ -102,9 +100,7 @@ correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
  \E\bigl[\overline{f(\cdot)}\,g(\cdot)\bigr]=H(t)=\sum_{k\ge0}c_k\,t|t|^{2k}.
 \]
 If $H(t)=c\,t+r(t)$ with $\|r\|_A=\sum_k|c_k-c\,\delta_{k0}|<c$, a tensor-power argument (Krivine's trick) gives
-$\KG\le1/(c-\|r\|_A)$. Haagerup's choice $f=\ph$ gives $1.40491$. Lean proves Haagerup's identity for $f=\ph$ from scratch
-(Hermite coefficients, the Mehler formula, and the law of orthonormal Gaussian coordinates); with a degree-41 preprocessor, $64$ exact terms and a canonical resolvent completion
-it proves $\KG\le1.404909132791$ (\lean{haagerup\_bound}) without external hypotheses or native evaluation axioms. Our sharp rounding is a smoothed two-coordinate phase rounding,
+$\KG\le1/(c-\|r\|_A)$. The shared Gaussian phase identity is proved from the Hermite basis and Mehler formula. Our sharp rounding is a smoothed two-coordinate phase rounding,
 $F_0=\ph\bigl(z+\sqrt{1+a^2}\,v(|z|^2)\,w\bigr)$ with a twelve-term Laguerre profile $v$, multiplied by the cubic Taylor
 polynomial of a damped polynomial phase $\varphi$: $T=F_0P_3(\varphi)$, $P_3(x)=1+ix-x^2/2-ix^3/6$. The identity
 $|P_3(x)|^2=1-x^4(3-x^2)/36$ and the proved bound $\varphi^2\le99/100$ (hence $|\varphi|<1$) give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
@@ -311,23 +307,17 @@ the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussi
 the transfer inequality (tensor powers); kernel composition and locality; the head through degree 501 from
 21,168 stored energies by a verified interval evaluator (one \lean{native\_decide}); the tail bound; the endpoint; the selected-block comparison and native band masses
 &
-\lean{ComparisonInputs}: an exact error decomposition, spectral supports and inherited Gaussian component norm caps. An alternative conditional route allows energy-table discrepancy at most $5\cdot10^{-7}$ and gives a bound below $1.404599424$; the Gaussian band estimates and that discrepancy remain assumptions. Further conditional versions use exact fourth and sixth moments to derive two band bounds, leaving twelve Gaussian band estimates and the same table assumption; the resulting bound is below $1.404599598$.
+\lean{ComparisonInputs}: an exact error decomposition, spectral supports and inherited Gaussian component norm caps. The concrete Taylor specialization leaves fourteen finite Gaussian band-error estimates and the energy-table discrepancy as hypotheses.
 Lean derives the selected comparison $851922301/10^{15}$ ($93.56\%$ of the residual allowance).
 The decomposition itself is explicit in Lean (\lean{difference\_pieces}, \lean{fresh\_upper\_pieces}):
 18 band pieces of the smoothed Taylor errors and the rounding remainder, so only their 18 norm bounds remain external.
 Finite table accuracy $6847009/(5\cdot10^{17})$.
 The Hardy tail $30488839/10^{15}$ ($3.35\%$, weighted square sum $\le 7/4$ at radius $4149/4000$) is proved
 (\lean{HardyReal.hardy\_GT}).
-The native head is $28153/10^{12}$ ($3.09\%$).\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (1404909132791/1000000000000)}}\\[2pt]
-Haagerup's identity for the phase rounding, $\E[\overline{\ph\langle g,x\rangle}\,\ph\langle g,y\rangle]=\sum_k\frac\pi4\frac{(1/2)_k^2}{k!(k+1)!}z|z|^{2k}$
-(Hermite coefficients from Gaussian radial moments and a polynomial moment recurrence, the Mehler formula, reduction to two complex Gaussians); the transfer through
-a degree-41 preprocessor $p(t)=tP(t^2)$ with $\|P\|_1\le1$; $64$ exact terms, ten canonical resolvent corrections and an infinite remainder estimate; the finite arithmetic is kernel-checked
-&
-no external mathematical premise. The focused audit policy requires 98 results and permits zero native axioms. The sharper conditional bound above uses a different rounding and retains its explicitly listed Gaussian inputs.\\\bottomrule
+The native head is $28153/10^{12}$ ($3.09\%$).\\
+\bottomrule
 \end{tabular}
 \end{center}
-The 98-result focused audit policy permits only \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} for the unconditional upper bound.\par
 The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover, the second, fourth and sixth phase moments and the squared radial phase tail,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
 The native facts (cap-range checks, Hardy region and circle checks, and others) are listed in \path{data/axioms/native.txt}; the report is \path{scratch/Axioms.lean}, with its required declarations in \path{data/axioms/required.txt}.
@@ -344,7 +334,7 @@ A digest alone is not verification. The localised-piece checkers
 likewise import only computable definitions and rational data; their campaign
 and final wiring remain separate. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
-the sharp upper bound retains external Gaussian component-error and table-accuracy inputs. The unconditional theorem proves $\KG\le1.404909132791$ using only the three standard axioms. Its order-$10$ completion retains cancellation within the resolvent seed products.
+the sharp upper bound retains external Gaussian component-error and table-accuracy inputs.
 Before the tail Cauchy--Schwarz step, the known linear coefficient's weighted square is deducted from $7/4$; this uses the same numerical hypotheses.
 Holomorphy under positive kernel decay, odd-series continuation and circle Parseval are proved.
 The holomorphy and Hardy assembly also cover separate measurable disk-valued left and right responses
@@ -361,142 +351,9 @@ obligations remain separate; these facts change neither endpoint nor its hypothe
 Status labels: \textbf{[Lean]} machine-checked in this repository; \textbf{[P]} written proof; \textbf{[P,C]} proof with an
 exact or interval-arithmetic certificate replayed independently; \textbf{[F]} floating-point evidence only.
 
-\subsection{Complete monotonicity gives a canonical completion}
-\textbf{[Lean]} The normalized Haagerup coefficients are a product of
-rising-factorial quotients. Taking a forward difference increases a denominator
-parameter and multiplies by a nonnegative scalar. The discrete product rule
-therefore proves that every order of difference is nonnegative.
-
-Assume $\|P\|_1\le1$ and write $A=XP^2$, $T=X^KP^{2K+1}$ and $E=1-R(1-A)$. The canonical completion is
-\[
- Q_m=\sum_{j<m}(\Delta^j r)_K(-RA)^jRT.
-\]
-Writing $S(a)=\sum_{i\ge0}a_{K+i}TA^i$ coefficientwise, its exact remainder
-consists of $(-RA)^mS(\Delta^m r)$ and
-$E\sum_{j<m}(-RA)^jS(\Delta^j r)$. Abel summation bounds both terms;
-the factor $X^J$ removes the finite boundary below index $J$ exactly,
-without a convergence-to-zero hypothesis. Combining the head and
-$Q_m$ before taking absolute values preserves their cancellation.
-
-For $K=64$ and $m=10$, the finite certificate uses a normalized completed-head cap
-$736823/10^{16}$ and an infinite-remainder cap $2/10^{16}$.
-Their sum is $736825/10^{16}$.
-The degree-$20$ polynomial and degree-$64$ approximate inverse come from exact inverse-series
-recurrences, with $60$-bit dyadic normalization and rounding. The defect cap is $10^{-12}$.
-For the completed finite residual $F$, the prefix check requires an absolute
-coefficient-sum cap $368411/(5\cdot10^{15})$ below index $165$. Scaling by
-$X\mapsto(3/2)X$ and using the weighted coefficient estimate gives
-$\|F((3/2)X)\|_1\le10^{13}$.
-This estimate retains the actual coefficients and forward differences in their
-weighted sums, instead of using one common cap.
-The omitted coefficients cost at most $10^{13}/(3/2)^{165}<10^{-16}$.
-The remainder estimate bounds each combined product $(-RA)^jRT$ before splitting
-its factors. Eight copies of the certified seed $RP^{17}$ give a seventh-seed norm
-at most $1/256$; three ratio factors give a tenth-seed norm at most $1/32$.
-This is a finite polynomial coefficient estimate, with no analytic-continuation
-hypothesis. Large convolutions are proved in continuation blocks of at most five
-left coefficients. A generic append identity preserves the original outward arithmetic
-order; recurrence and input-binding lemmas recover the exact checker statements
-without a new numerical premise. The Gaussian phase identity and tensor transfer reduce
-the theorem $\KG\le1.404909132791$ to these kernel-checked facts. The rational data module contains no native theorem.
-The focused upper-bound policy requires 98 results with zero native facts.
-An independent directed replay in \path{tools/verify_haagerup_canonical.py}
-audits the complete polynomial and arithmetic.
-
-The simpler obstruction is also exact: if $|P(-1)|=\|P\|_1=1$, then
-$\|P^n\|_1=1$ for every $n$. Breaking that common boundary phase permits
-power contraction; the resolvent additionally retains cancellation
-between successive composed powers.
-
-\paragraph{The actual HJM origin kernel [P; Lean].}
-The sixth branch is defined from its exact polynomial-phase response pair.
-One shared Gaussian driver proves domination in every finite dimension; the
-charge-one Hermite expansion and conjugate-reflection symmetrization identify
-the full real radial coefficient series. The endpoint cross product is purely
-imaginary, so its phase-phase term cancels before absolute values. Any
-multiplier $|\zeta|\le1$ on the second response gives
-a dominated branch with coefficients $\operatorname{Re}(\zeta a_n)$; $\zeta=1$
-is the original branch. A finite-head mixture theorem accepts weighted branch
-tails directly. Under residual-energy caps $1.174,1.176$, the rotated
-mode-120 origin tail is at most $0.00025828+0.00252|\operatorname{Im}\zeta|$.
-No numerical endpoint for a nontrivial rotation is claimed. Bessel gives
-a joint squared error budget $e^{-36}$ for the coefficient integrals omitted
-beyond radius six. Nine rational Bernstein panels and a positive shifted
-polynomial prove $|P(s)|^2\ge37/100$ on the entire nonnegative half-line.
-The Hermite creation operators give the radial polynomial, its Laguerre
-equation and the coefficient integral. A combined Green boundary term gives
-the energy pairing. The substitution $s=r^2$ joins it to weighted Parseval
-with the original chaos multiplier $2n+1$. Both actual radial phases are smooth
-through zero, with phase denominators greater than $1/250$. Exact polynomial
-divided differences remove the apparent $1/s$ singularity in their energy
-amplitudes. Their values at zero are $-3/2$ times the phase derivatives.
-Explicit phase differentiation and polynomial growth supply global Gaussian
-$L^2$, every-mode pairing integrability and the boundary limit at infinity.
-Thus the actual endpoint-subtracted coefficient sequences satisfy the complete
-weighted-energy identities with weights $(2n+1)^2$, without further analytic
-hypotheses. Their signed Hermite phase coefficients are preserved.
-The phase coefficient itself equals $(-1)^n\sqrt{h_n}$, and its weighted
-suffix satisfies $\sum_{n\ge N}h_n/(2n+1)^2\le1/(48N^3)$ for $N\ge1$.
-Visible-energy subtraction and Cauchy--Schwarz give a mode-120 origin tail
-at most $0.00025828$, conditional on total energies at most $12.671,12.674$
-and visible energies at least $11.497,11.498$. The exact sixth weight times
-this cap fits the assembly's existing origin-tail budget. These four numerical
-energy inequalities remain certificate obligations. Using the smaller cap
-directly in the ledger gives a conditional exact bound below $1.4048984278$;
-the finite-head enclosure and these energy inputs remain to be certified. With
-the newer symmetric targets $12.7$ and $11.5$, the same ledger gives a
-conditional bound below $1.4048984302$.
-The published head hypotheses and both unweighted residual suffix norms at most
-$0.0021$ imply a conditional bound below $1.404898380143$. These suffix bounds
-remain certificate obligations. A looser suffix cap $0.00265$ on each side
-already fits the repriced origin-tail budget.
-For coefficient enclosure, a nonnegative inverse-modulus
-approximation satisfies
-$\|Wz-\ph(z)\|\le|W^2\|z\|^2-1|$.
-Uniform spatial error $\varepsilon$ inside radius $R$, with zero approximation
-outside, gives one joint squared coefficient budget
-$\varepsilon^2+e^{-R^2}$ for all modes. The approximant need not be disk-valued.
-Exact generated panel checks now bind inverse-modulus polynomials to both
-actual numerators on radii $[0,8]$. A measurable piecewise polynomial,
-cut off at radius eight, approximates each actual Gaussian response within
-$1001/10^{15}$ in $L^2$. Bessel charges the square of that allowance once
-for the whole coefficient sequence. The polynomial Gaussian moments and
-visible-energy lower bounds still require numerical certificates.
-Two finite rational test vectors now have exact mass and weighted-mass
-checks, together with the final rational comparison for an $11.5$
-visible-energy lower bound. Their Gaussian correlation enclosures remain
-separate proof obligations.
-For each response, one signed polynomial correlation and the shared Gaussian
-$L^2$ approximation budget imply the visible-energy bound. The signed
-polynomial Gaussian integral has a finite-panel Taylor enclosure. The
-strengthened phase tail means total energies at most $12.7$ and visible
-energies at least $11.5$ suffice for the existing origin-tail ledger; the
-correlation and total-energy numerical checks remain to be supplied.
-These proofs add no native facts. The pinned 120-coefficient tables are
-provenance inputs; their integral enclosures and the numerical radial energy
-bounds remain separate Lean obligations. See \path{Grothe/HJM/Origin.lean}
-and \path{data/hjm/origin/README.md}.
-
-\paragraph{Published scalar-tail refinement [P,C; Lean components].}
-For the unchanged fifth scalar preprocessor of Heilman--Jones--Malavolta,
-the exact degree-592 calculation gives $\|P_5^{16}\|_1\le581/1000$.
-For each omitted outer index $j\ge67$ retain the factor
-$(581/1000)^{\lfloor(2j+1)/16\rfloor}$. A Wallis-product argument proves
-$h_j\le((4j+1)(j+1))^{-1}$ at every index. A telescoping rational majorant
-prices the twelve constant-weight blocks through index 159 and the suffix
-from 160 within the existing weighted reserve $1.42728\cdot10^{-10}$.
-Keeping the published prefix, complete finite-block
-tail, other tails and exact selector mass gives the written corollary
-$\KG<1.4048984303$. Four pinned public verifiers pass; accepted coefficient
-tables are hash-checked. Lean proves the power check with \lean{decide +kernel},
-complete suffix estimate and score arithmetic, all without native axioms.
-The same all-index estimate gives the phase-tail bound at 67 without a finite
-coefficient sum. A focused build receipt records the earlier weighted-tail source
-at its pinned commit. Published Gaussian and
-numerical integral budgets remain external. The separate unconditional \lean{haagerup\_bound}
-theorem has no external hypotheses and uses only the three standard axioms.
-The deduction and provenance are in
-\path{data/scalar-tail-refinement/PROOF.md}.
+Other upper-bound variants and their verification records are preserved outside the active build
+in \path{miscellaneous/other-bounds/}. Shared Gaussian phase identities and Laplace
+representations remain part of the sharp target.
 
 \subsection{Common responses, common tails, and an architecture separator}
 \textbf{[P; supporting algebra in Lean]} A symmetry-closed family of actual cubic responses has an exact
