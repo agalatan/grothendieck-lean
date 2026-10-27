@@ -226,7 +226,11 @@ S is a contraction, `S T = G_T`), Lean defines for any charge-one `v, c₁, c₂
 Hermite approximants) the 18 pieces `bandProj b_k (S srcₖ)` and proves that they sum to `G_T − X`,
 `X = S(F₀ + v)` (`difference_pieces`), each supported in its band. `fresh_upper_pieces` is the sharp bound from
 the 18 explicit norm bounds and the table accuracy of that X: `ComparisonInputs` is no longer an unspecified
-decomposition, only 18 numeric norm statements about explicit `L²` objects (issue #39).
+decomposition, only 18 numeric norm statements about explicit `L²` objects (issue #39). They are stated on the
+**unsmoothed** sources, `‖P_I srcₖ‖ ≤ εₖ`, the form the certificate bounds: S preserves the total degree
+(`inner_smoothOp_hvec2_eq_zero`: S commutes with the Ornstein–Uhlenbeck smoothing, by a law identity, and that
+smoothing has eigenvalue ρ^{|i|} on the mode i), so it commutes with every band projection and
+`‖P_I S g‖ ≤ ‖P_I g‖` (`SmoothComm.lean`).
 
 The Hardy tail first deducts the linear coefficient's weighted square,
 forced by this weighted head comparison. This adds no Gaussian input.
@@ -341,7 +345,7 @@ Every native check is single-threaded code (no `Task.spawn`).
 All other proofs, including the canonical finite checks, are kernel-checked.
 No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`, including the node caps.
-The report contains 614 print directives, with 389 required declarations and 88
+The report contains 620 print directives, with 391 required declarations and 88
 allowlisted native facts (60 cap ranges, five Hardy checks and 23 others).
 The focused report `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, allows
 no native axioms for its 98 selected unconditional upper-bound results.
