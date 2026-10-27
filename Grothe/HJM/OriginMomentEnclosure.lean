@@ -99,7 +99,7 @@ theorem signedCellPolynomial_eval (test : CList) (re im : List ℚ)
         ((p.k : ℝ) * evalQ p.w (coordinate p x)) *
           (evalQ test.re (x ^ 2) * evalQ re (x ^ 2) +
             evalQ test.im (x ^ 2) * evalQ im (x ^ 2)) := by
-    simp only [panelApprox, Complex.mul_re, Complex.conj_re, Complex.conj_im,
+    simp only [panelApprox, Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im,
       Complex.ofReal_re, Complex.ofReal_im, hRe, hIm, zero_mul, sub_zero, add_zero,
       neg_mul, sub_neg_eq_add]
     ring
@@ -251,6 +251,7 @@ theorem local_integral_enclosure (p : List ℚ) {c h : ℚ} (hc : 0 ≤ c) (hh :
       ∫ t in (-1 : ℝ)..1, pev p t * exp (pev (localExp c h) t) := by
     have he : (∫ t in (-1 : ℝ)..1, pev p t * S t - A * E) =
         (integralTaylor p c h n : ℝ) - 2 * A * E := by
+      change (∫ t in (-1 : ℝ)..1, ((pev p * S) - fun _ : ℝ => A * E) t) = _
       rw [intervalIntegral.integral_sub ((hcP.mul hcS).intervalIntegrable (-1) 1)
         intervalIntegrable_const, hJ, intervalIntegral.integral_const]
       simp only [smul_eq_mul]
@@ -260,6 +261,7 @@ theorem local_integral_enclosure (p : List ℚ) {c h : ℚ} (hc : 0 ≤ c) (hh :
       (integralTaylor p c h n : ℝ) + 2 * A * E := by
     have he : (∫ t in (-1 : ℝ)..1, pev p t * S t + A * E) =
         (integralTaylor p c h n : ℝ) + 2 * A * E := by
+      change (∫ t in (-1 : ℝ)..1, ((pev p * S) + fun _ : ℝ => A * E) t) = _
       rw [intervalIntegral.integral_add ((hcP.mul hcS).intervalIntegrable (-1) 1)
         intervalIntegrable_const, hJ, intervalIntegral.integral_const]
       simp only [smul_eq_mul]
@@ -391,8 +393,12 @@ theorem gaussian_integral_partition {f : ℝ → ℝ} (edges : ℕ → ℚ)
     constructor
     · exact hfirst.trans (hmono (show 0 ∈ Set.Iic N from Nat.zero_le N)
         (show i ∈ Set.Iic N from Nat.le_of_lt hi) (Nat.zero_le i))
-    · exact (hmono (show i + 1 ∈ Set.Iic N from by omega)
-        (show N ∈ Set.Iic N from le_rfl) (by omega)).trans hlast
+    · exact (hmono (show i + 1 ∈ Set.Iic N from by
+          change i + 1 ≤ N
+          omega)
+        (show N ∈ Set.Iic N from by
+          change N ≤ N
+          exact le_rfl) (by omega)).trans hlast
   have hcell (i : ℕ) (hi : i < N) :
       (((panelBounds (polys i) (panelCenter edges i) (panelRadius edges i) order).1 : ℚ) : ℝ) ≤
         (∫ t in (edges i : ℝ)..(edges (i + 1) : ℝ), f t) ∧

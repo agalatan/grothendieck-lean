@@ -24,7 +24,7 @@ theorem radial_succ_derivative (n : ℕ) :
       Polynomial.C ((n : ℝ) + 1) * (originRadialPoly n - (originRadialPoly n).derivative) := by
   have h := originRadialPoly_ode n
   simp only [originRadialPoly, derivative_sub, derivative_mul, derivative_X,
-    derivative_natCast, sub_mul, one_mul, zero_mul, mul_zero, sub_zero, C_add,
+    derivative_natCast, sub_mul, one_mul, zero_mul, C_add,
     C_1] at ⊢
   simp only [C_eq_natCast] at h ⊢
   push_cast at h ⊢
@@ -158,8 +158,7 @@ theorem witnessPolynomial_eval (xs : List (ℚ × ℚ)) (N : ℕ) (s : ℝ) :
   rw [Finset.mul_sum, ← Finset.sum_add_distrib]
   apply Finset.sum_congr rfl
   intro n _hn
-  simp only [witnessAlpha, Rat.cast_mul, Rat.cast_add, Rat.cast_natCast, Rat.cast_ofNat]
-  push_cast
+  simp only [witnessAlpha]
   ring
 
 end
