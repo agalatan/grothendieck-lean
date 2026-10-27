@@ -205,6 +205,8 @@ miss only makes the run take longer (it stays "pending"). The workflow runs on e
    `axiom` / `implemented_by` / `extern` / `unsafe` / `Task.spawn`, and the single axiom report
    (`scripts/check_axioms.py`). On the droplet it then marks the caps as verified (`.lake/build/caps-closure.sha`) and
    saves the build as a cache. On master it saves the new master cache (§10).
+   On GitHub the build **fails fast**: at the first failed module (`✖`) it is stopped and the check fails
+   (`scripts/lake_failfast.sh`), so fix that error and push again; the droplet builds on (its work is kept).
 3. **finish** (GitHub-hosted, after a green build): on master it prunes old master caches; on `ready/` it recreates
    the checked merge, verifies that its tree is identical to the checked one, fast-forwards `master`, marks the
    commit with the status "Lean proof check (verified before merge)", closes the `Closes #n` issues and dispatches
@@ -239,6 +241,8 @@ Also:
 - **Agents open a pull request only for deliveries that change `.github/workflows/`**: GitHub refuses CI's push of
   those unless the repository secret `MERGE_TOKEN` exists (a fine-grained token for this repository with *Contents*
   and *Workflows* read and write); CI says so and does not retry. Every other delivery goes through `ready/` alone.
+- **`ready/` branches are merged by CI only**, never by hand: a `ready/` push may still be work in progress whose
+  check is the test.
 - **Agents never merge a pull request.** The user merges, ideally when the branch is up to date with master and its
   latest check is green; then the merged result is the tree CI checked. A merge is a push to master, so master's
   check runs afterwards.
@@ -268,6 +272,18 @@ Also:
   run on the droplet; it builds the caps once for exactly the tree that will be merged. After the merge, master's
   check also runs on the droplet (master has no cache for the new caps yet) and finds them already built in the same
   workspace. Never run a separate manual caps verification, and avoid touching that closure casually.
+- **Step by step, when a delivery changes the node caps** (e.g. a new cap row):
+  1. You push `ready/<agent>-<topic>` (push only that; a work branch pushed first costs one extra droplet run).
+  2. The route finds no GitHub cache for the new caps digest and sends the build job to the **droplet**. It builds
+     only what changed (the new row and what imports it; hours if a row really changed), runs every check, marks the
+     caps as verified, and **uploads `.lake/build` to GitHub's cache itself** (for this branch). The check shows
+     "pending" meanwhile. Nothing is copied by hand.
+  3. When green, CI moves master and dispatches master's check. With the tree handoff that check downloads exactly
+     this build and runs on GitHub in minutes; without it (master moved meanwhile) it goes to the droplet, whose
+     workspace already holds the new caps, so it takes minutes too. Either way it saves the new **master cache**,
+     and every later run is GitHub-hosted again.
+  4. GitHub caches are visible only to their own branch and to master. So a second branch with the same new caps
+     (e.g. `ready/` after a work branch) goes to the droplet once more: minutes, because the workspace is warm.
 - **Retention:** GitHub deletes cache entries unused for 7 days; a weekly job (`keepalive`) restores the master cache
   to keep it alive. Master keeps its newest two caches.
 
@@ -285,6 +301,10 @@ scripts/cloud.sh --runner droplet script tools/big.py       # script jobs needin
 scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; download results later
 ```
 
+- **Cloud jobs are for experiments, not for "does my branch build?".** If you want to know whether work you mean to
+  deliver is green, push it as `ready/<agent>-<topic>` instead: that one check builds and checks it, and merges it
+  only if green (a red `ready/` check merges nothing; fix and push again). Use `cloud/` for script jobs, sweeps and
+  builds of unfinished modules that are not meant to land yet.
 - **What runs:** the tip of the branch on GitHub (`--ref`; default: your current branch, which must be pushed and
   up to date). For quick experiments push a scratch branch `cloud/<agent-id>-<topic>`: the proof check skips
   `cloud/**`. Delete it when done (§14).
