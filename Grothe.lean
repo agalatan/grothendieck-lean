@@ -22,6 +22,7 @@ import Grothe.HJM.OriginEnergyExtension
 import Grothe.HJM.OriginEnergyIntegrability
 import Grothe.HJM.OriginEnergyIntervalGates
 import Grothe.HJM.OriginEnergyPolynomialRange
+import Grothe.HJM.OriginFarTailGrowth
 import Grothe.HJM.OriginGreen
 import Grothe.HJM.OriginKernel
 import Grothe.HJM.OriginLaguerre
@@ -141,9 +142,11 @@ import Grothe.HJM.OriginPanelsChecks
 import Grothe.HJM.OriginPanelsData
 import Grothe.HJM.OriginPhaseCoefficients
 import Grothe.HJM.OriginPhaseDerivative
+import Grothe.HJM.OriginPhaseDerivativeNorm
 import Grothe.HJM.OriginPhaseEnvelope
 import Grothe.HJM.OriginPhaseQuotient
 import Grothe.HJM.OriginPhaseTail
+import Grothe.HJM.OriginPolynomialDerivativeBounds
 import Grothe.HJM.OriginPolynomialEnvelope
 import Grothe.HJM.OriginRadial
 import Grothe.HJM.OriginRadialEnergy
