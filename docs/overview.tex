@@ -91,6 +91,9 @@ Both bounds use the same Gaussian picture. Let $Z=(z_1,\dots,z_n)$ be a standard
 $L^2(\C^n,\gamma)$ into the \emph{Wick chaoses} $H_{p,q}$ (polynomials of bidegree $(p,q)$ in $z,\bar z$, orthogonalised).
 Under the rotation $z\mapsto e^{i\theta}z$ every relevant object has \emph{charge one}, so only the bidegrees
 $(1,0),(2,1),(3,2),\dots$ (degrees $1,3,5,\dots$) appear.
+The standard complex Gaussian measure, its rotation invariance and radial-moment reduction
+form a shared Lean foundation. The upper rounding proof depends on this foundation
+independently of the lower row certificates.
 
 \subsection{Upper bounds: rounding schemes}
 Given unit vectors, project a Gaussian onto them and round: $\varepsilon_i=f(\langle G,x_i\rangle)$ with $|f|\le1$. The
@@ -408,7 +411,10 @@ The sixth moment and the Stein fluctuations cannot be optimized independently:
 both depend on the same contraction invariants. We now formalize this connection
 in Lean, including the real/complex normalization and a finite checker that reserves
 part of the contraction budget before accepting a Stein cut. Signed reserve
-coefficients are retained. The endpoint uses 41 such nodes, with each node restricted
+coefficients are retained. Ordinary and joint Gram budgets specialize one signed-reserve
+soundness theorem. Likewise, ordinary spectral cuts specialize the general shifted-cut
+theorem, and every node uses the same polynomial-majorant integration lemma for an
+arbitrary integrable cut with nonnegative expectation. The endpoint uses 41 such nodes, with each node restricted
 to its proved kurtosis range; the full checker and analytic bridge are in Lean.
 Retaining the upper bound on the negative cumulant contraction yields a stronger
 parameterized moment family. An exact transport identity then upgrades a node's

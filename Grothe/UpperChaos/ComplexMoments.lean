@@ -1,4 +1,4 @@
-import Grothe.LowerAnalytic.FibreHermite
+import Grothe.LowerAnalytic.ComplexGaussianCore
 
 /-!
 # The moments of the standard complex Gaussian (U1 of PLAN_UPPER, analytic input)
@@ -13,7 +13,7 @@ invariance.  Every polynomial in `z, z̄` is integrable (`integrable_monomial`).
 analytic facts the complex Hermite calculus (`ComplexHermite.lean`) needs.
 -/
 
-open MeasureTheory ProbabilityTheory Real Set MvPolynomial Grothe.Lower Grothe.LowerAnalytic
+open MeasureTheory ProbabilityTheory Real Set MvPolynomial Grothe.LowerAnalytic
 open scoped ComplexConjugate
 
 namespace Grothe.UpperChaos

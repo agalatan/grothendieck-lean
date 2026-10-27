@@ -2,6 +2,21 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
+**Shared proof foundations.** `LowerAnalytic/ComplexGaussianCore.lean` contains
+`gaussC`, its planar presentation, rotation invariance and radial-moment reduction.
+The phase and complex Hermite calculations import it without the lower row
+certificates. The lower fibre theory uses the same declarations and normalization.
+
+`Lower/Stein.lean` derives `spec_of_inputs` from `gspec_of_vr` with zero shifts.
+`Lower/Law.lean` proves `node_fn_of_cut` for any integrable cut with nonnegative
+expectation; `TB.of_cut` applies it to Stein, spectral, general spectral and joint
+nodes. The joint node retains its kurtosis-range premise.
+`Lower/Gram.lean` proves `reserved_gram_budget` once for arbitrary signed reserves;
+`gram_budget_of_scalars` and `gram_joint_of_scalars` specialize it through
+`zero_reserve` and `joint_reserve_value`. `Lower/Reserve.lean` supplies the
+moment-range and cut-cancellation lemmas. Existing theorem statements and
+certificate definitions are preserved.
+
 **Published scalar-tail refinement.**
 `Grothe/Haagerup/ScalarTailRefinement.lean` proves an arbitrary finite-power
 Wiener composition bound and its signed supported-suffix consequence. Its
@@ -705,7 +720,7 @@ See [RESEARCH_AUDIT.md](RESEARCH_AUDIT.md) for the external proof and replay sco
 **Joint sixth-moment budgets (formalized).** `Grothe/LowerAnalytic/JointSixth.lean`
 proves the two parameterized bounds J2/J3 for every genuine circular cubic, including the
 normalization of the real cubic kernel and its five complex contraction invariants.
-`Grothe/Lower/Reserve.lean` accepts a signed linear reserve against those same invariants;
+`Grothe/Lower/Gram.lean` accepts a signed linear reserve against those same invariants;
 `Grothe/LowerAnalytic/JointBudget.lean` proves `joint_sixth_budget`, combining the finite
 reserve certificate and J3 with the actual spectral quantities of the cubic on a checked
 kurtosis range. These proofs use only the standard logical axioms. They do not add a

@@ -77,6 +77,10 @@ one-variable functions Ψ_r (defined in Lean as suprema of finite-dimensional Ga
 integrals) lie below stored rational values at their tabulated nodes. Those caps are certified
 by exact-arithmetic computations outside Lean; moving them inside is work in progress.
 
+Lower cut soundness is organized by specialization: ordinary spectral cuts use the
+general shifted-cut theorem, ordinary and joint Gram budgets use the signed-reserve
+theorem, and all node majorants use one admissible-cut integration lemma.
+
 The joint sixth-moment/Stein budgets are also formalized in
 `Grothe/LowerAnalytic/JointSixth.lean`, `Grothe/Lower/Reserve.lean` and
 `Grothe/LowerAnalytic/JointBudget.lean`. They retain the shared tensor constraints. The certificate bank contains 44 joint-moment node
@@ -189,6 +193,9 @@ Parseval, the Mehler formula for L² functions, charge selection, energies → k
 through degree 501 from 21,168 stored energies by a verified interval checker; the tail bound and the endpoint
 arithmetic. Tensor completeness follows from one-coordinate completeness by Fubini and
 fibrewise Cauchy–Schwarz; the Gaussian mixing law follows from product characteristic functions.
+The standard complex Gaussian, planar presentation, rotation invariance and radial-moment
+reduction are shared in `LowerAnalytic/ComplexGaussianCore.lean`. The unconditional
+upper proof imports this foundation independently of the lower row certificates.
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
 only with X's energy in its selected band, weighted by the retained coefficient cost; the quadratic error is paid once.

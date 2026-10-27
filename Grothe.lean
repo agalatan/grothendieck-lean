@@ -141,6 +141,7 @@ import Grothe.LowerAnalytic.CapTablesData
 import Grothe.LowerAnalytic.CapTablesMk
 import Grothe.LowerAnalytic.Circular
 import Grothe.LowerAnalytic.CircularTensor
+import Grothe.LowerAnalytic.ComplexGaussianCore
 import Grothe.LowerAnalytic.Covariance
 import Grothe.LowerAnalytic.DiffuseCubicObstruction
 import Grothe.LowerAnalytic.Fibre

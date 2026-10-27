@@ -20,54 +20,6 @@ namespace Grothe.LowerAnalytic
 
 noncomputable section
 
-lemma toC_eq_F2 (x : Fin 2 → ℝ) : toC x = F2 (x 0, x 1) := rfl
-
-lemma integral_gaussC_eq_gauss2 (f : ℂ → ℝ) (hf : Continuous f) :
-    ∫ z, f z ∂gaussC = ∫ p, f (F2 p) ∂gauss2 := by
-  rw [gaussC_eq_map, integral_map measurable_F2.aemeasurable hf.aestronglyMeasurable]
-
-/-- Rotation invariance for continuous integrands. -/
-lemma integral_rot_continuous (c : ℂ) (hc : ‖c‖ = 1) (f : ℂ → ℝ) (hf : Continuous f) :
-    ∫ z, f (c * z) ∂gaussC = ∫ z, f z ∂gaussC := by
-  have hc2 : c.re ^ 2 + c.im ^ 2 = 1 := by
-    have h0 : Complex.normSq c = 1 := by rw [Complex.normSq_eq_norm_sq, hc, one_pow]
-    rw [Complex.normSq_apply] at h0
-    nlinarith
-  have hF : Continuous fun p : ℝ × ℝ => f (F2 p) := hf.comp (by unfold F2; fun_prop)
-  have h := integral_two_linear (d := 2) le_rfl ![c.re, -c.im] ![c.im, c.re] 1 one_pos
-    (by simp [Fin.sum_univ_two]; linarith) (by simp [Fin.sum_univ_two]; linarith)
-    (by simp [Fin.sum_univ_two]; ring) (fun p => f (F2 p)) hF
-  simp only [one_mul] at h
-  rw [← integral_gaussC_eq_gauss2 f hf] at h
-  rw [integral_gaussC_of_continuous (fun z => f (c * z)) (hf.comp (continuous_const.mul continuous_id)), ← h]
-  congr 1
-  funext x
-  congr 1
-  apply Complex.ext <;>
-    simp [toC, F2, Fin.sum_univ_two, Complex.mul_re, Complex.mul_im, Complex.div_ofReal_re,
-      Complex.div_ofReal_im] <;> ring
-
-/-- **Rotation invariance of the standard complex Gaussian.** -/
-theorem map_rot_gaussC (c : ℂ) (hc : ‖c‖ = 1) : gaussC.map (fun z => c * z) = gaussC := by
-  have hm : Measurable fun z : ℂ => c * z := by fun_prop
-  have : IsFiniteMeasure (gaussC.map fun z => c * z) := Measure.isFiniteMeasure_map _ _
-  refine ext_of_forall_integral_eq_of_IsFiniteMeasure fun f => ?_
-  rw [integral_map hm.aemeasurable f.continuous.aestronglyMeasurable]
-  exact integral_rot_continuous c hc f f.continuous
-
-/-- Rotation invariance of integrals. -/
-theorem integral_rot_gaussC {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (c : ℂ)
-    (hc : ‖c‖ = 1) (f : ℂ → E) : ∫ z, f (c * z) ∂gaussC = ∫ z, f z ∂gaussC := by
-  have hc0 : c ≠ 0 := by rintro rfl; simp at hc
-  let e : ℂ ≃ᵐ ℂ :=
-    { toFun := fun z => c * z, invFun := fun z => c⁻¹ * z,
-      left_inv := fun z => by simp [hc0], right_inv := fun z => by simp [hc0],
-      measurable_toFun := measurable_const.mul measurable_id,
-      measurable_invFun := measurable_const.mul measurable_id }
-  have := integral_map_equiv e f (μ := gaussC)
-  rw [show (⇑e) = fun z => c * z from rfl, map_rot_gaussC c hc] at this
-  exact this.symm
-
 /-! ### The fibre bound with a complex coupling -/
 
 /-- The rotated response `z ↦ conj(c) f(cz)`. -/
