@@ -206,7 +206,7 @@ theorem norm_secondCenter_tail_scaled_le
     second_captured_tail_budget (by decide +kernel)
   have h : ‖bandProj (comparisonBand secondTailIndex) (secondTaylorL2 - secondCenter)‖ ≤
       2 * ((comparisonBand secondTailIndex).error : ℝ) := by
-    simpa only [Rat.cast_mul, Rat.cast_ofNat] using hs
+    simpa only [bandProj, Rat.cast_mul, Rat.cast_ofNat] using hs
   rw [map_smul, norm_smul]
   have hscale : ‖(1 / 2 : ℂ)‖ = (1 / 2 : ℝ) := by norm_num [norm_div]
   rw [hscale]
