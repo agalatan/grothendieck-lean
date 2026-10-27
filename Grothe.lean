@@ -462,6 +462,7 @@ import Grothe.Upper.Head
 import Grothe.Upper.HeadWeight
 import Grothe.Upper.IntervalSound
 import Grothe.Upper.KernelScreen
+import Grothe.Upper.NineBandBudget
 import Grothe.Upper.PhaseChart
 import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.PowerTail
@@ -476,6 +477,7 @@ import Grothe.Upper.ResponseUpdate
 import Grothe.Upper.SpectralScreen
 import Grothe.Upper.TransportLimit
 import Grothe.Upper.WeightedTail
+import Grothe.Upper.WeightedUnion
 import Grothe.UpperChaos.AffineGaussianSquare
 import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.BandedContraction
@@ -553,6 +555,7 @@ import Grothe.UpperChaos.LocalizedComparison
 import Grothe.UpperChaos.LstarL
 import Grothe.UpperChaos.Mehler
 import Grothe.UpperChaos.MehlerL2
+import Grothe.UpperChaos.NineCapturedSources
 import Grothe.UpperChaos.OUOp
 import Grothe.UpperChaos.OddParseval
 import Grothe.UpperChaos.OddSeries
@@ -582,6 +585,7 @@ import Grothe.UpperChaos.PhiDense
 import Grothe.UpperChaos.PhiHorner
 import Grothe.UpperChaos.ProductComplete
 import Grothe.UpperChaos.ProfileRootScreen
+import Grothe.UpperChaos.ProjectionUnion
 import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialCutoff
 import Grothe.UpperChaos.RadialDampedMoments
