@@ -165,7 +165,9 @@ Deliver when the user says the work should go into master.
    - every new `native_decide` fact is in `data/axioms/native.txt`;
    - a new module is imported by the generated root (run `python3 tools/gen_root_imports.py`). There is one build
      target, `Grothe`; only generated research modules that no proof uses yet go in `data/root-imports-exclude.txt`.
-4. **Documentation:** if a bound, a hypothesis or the axiom report changed, update `README.md`,
+4. **Documentation:** never write counts of the axiom report or of native facts into documents (they conflict
+   with every concurrent delivery; the lists in `data/axioms/` and `scratch/Axioms.lean` are the record). If a
+   bound, a hypothesis or the axiom report changed, update `README.md`,
    `docs/overview.tex` and `docs/LEAN_DETAILS.md` in the same delivery. **Never build or commit `OVERVIEW.pdf`:**
    CI rebuilds it from `docs/overview.tex` on master (`.github/workflows/overview.yml`), and merges never conflict on it
    (`merge=ours` in `.gitattributes`).
