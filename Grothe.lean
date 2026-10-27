@@ -181,6 +181,7 @@ import Grothe.HJM.OriginUnweightedLeftCombined13
 import Grothe.HJM.OriginUnweightedLeftGeometry
 import Grothe.HJM.OriginUnweightedLeftWitness
 import Grothe.HJM.OriginUnweightedMeanPolynomial
+import Grothe.HJM.OriginUnweightedPhaseMeanNorm
 import Grothe.HJM.OriginUnweightedProjection
 import Grothe.HJM.OriginUnweightedRightAggregate
 import Grothe.HJM.OriginUnweightedRightCells
