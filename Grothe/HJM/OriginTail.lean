@@ -89,7 +89,7 @@ private theorem finite_phase_residual_cap (s : Finset ℕ) (d x z : ℕ → ℝ)
     _ = ∑ j ∈ s, (d j * x j) * (z j / d j) := by
       apply sum_congr rfl
       intro j _hj
-      field_simp [hd j] <;> ring
+      field_simp [hd j]
     _ ≤ _ := finite_cauchy_cap s (fun j => d j * x j) (fun j => z j / d j) E W
       (by simpa only [mul_pow] using hx) (by simpa only [div_pow] using hz)
 
@@ -155,7 +155,11 @@ theorem coeff_tail_le_of_energy_caps (N : ℕ) (EL ER W : ℝ)
   have hL := finite_phase_residual_cap s d x z EL W hd hx hz
   have hR := finite_phase_residual_cap s d y z ER W hd hy hz
   have hX := finite_residual_product_cap s d x y (2 * (N : ℝ) + 1) EL ER
-    (by positivity) (fun j => by dsimp [d]; push_cast; linarith [Nat.cast_nonneg j])
+    (by positivity) (fun j => by
+      have hj : (0 : ℝ) ≤ (j : ℝ) := Nat.cast_nonneg j
+      dsimp [d]
+      push_cast
+      linarith)
     (fun j => norm_nonneg (chargeOneCoeff fResidualLp (j + N)))
     (fun j => norm_nonneg (chargeOneCoeff gResidualLp (j + N))) hx hy
   calc

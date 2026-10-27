@@ -47,7 +47,11 @@ theorem origin_tail_of_visible
         (abs_nonneg _)
     _ ≤ _ := by
       rw [wt_five]
-      exact_mod_cast origin_tail_cap_lt_budget.le
+      have h : (((397752354801503847 / 10 ^ 21 : ℚ) *
+          (6457 / 25000000) : ℚ) : ℝ) ≤ (originTailBudget : ℝ) :=
+        Rat.cast_le.mpr origin_tail_cap_lt_budget.le
+      norm_num only [Rat.cast_mul, Rat.cast_div, Rat.cast_pow, Rat.cast_ofNat] at h ⊢
+      exact h
 
 end
 
