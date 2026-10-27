@@ -50,7 +50,7 @@ theorem map_smooth : (mu2.prod mu2).map smoothCLM = mu2 := by
   simp only [Q, ContinuousLinearMap.comp_apply, ContinuousLinearMap.inl_apply,
     ContinuousLinearMap.inr_apply, smoothCLM_apply, smoothArg]
   simp only [hL]
-  simp only [Prod.fst_zero, Prod.snd_zero, mul_one, mul_zero, add_zero, zero_add, map_zero, dual_ofReal_mul,
+  simp only [Prod.fst_zero, Prod.snd_zero, mul_one, mul_zero, add_zero, zero_add, dual_ofReal_mul,
     dual_ofReal]
   rw [div_left_inj' (show (4 : ℂ) ≠ 0 by norm_num), neg_inj, Complex.ofReal_inj]
   linear_combination (ℓ₁ 1 ^ 2 + ℓ₁ I ^ 2) * mn_00 + 2 * (ℓ₁ 1 * ℓ₂ 1 + ℓ₁ I * ℓ₂ I) * mn_01
@@ -85,6 +85,37 @@ lemma norm_smoothOp_le (f : Lp ℂ 2 mu2) : ‖smoothOp f‖ ≤ ‖f‖ := by
         (PXs.toContinuousLinearMap).adjoint.le_opNorm _
     _ ≤ 1 * ‖f‖ := by rw [PS.norm_map]; exact mul_le_mul_of_nonneg_right h1 (norm_nonneg _)
     _ = ‖f‖ := one_mul _
+
+/-- **`S` on a bounded function is its smoothing** `x ↦ E_Z f(Mx + NZ)`. -/
+theorem smoothOp_toLp {f : ℂ × ℂ → ℂ} (hfm : Measurable f) {C : ℝ} (hfb : ∀ u, ‖f u‖ ≤ C)
+    (hfL : MemLp f 2 mu2) (hgL : MemLp (fun x => ∫ Z, f (smoothArg x Z) ∂mu2) 2 mu2) :
+    smoothOp (hfL.toLp f) = hgL.toLp (fun x => ∫ Z, f (smoothArg x Z) ∂mu2) := by
+  refine ext_inner_left ℂ fun g => ?_
+  have hF : Measurable fun v : (ℂ × ℂ) × (ℂ × ℂ) => f (smoothArg v.1 v.2) := hfm.comp mp_smooth.measurable
+  have hgi : Integrable (g : ℂ × ℂ → ℂ) mu2 := (Lp.memLp g).integrable one_le_two
+  have hgf : Integrable (fun v : (ℂ × ℂ) × (ℂ × ℂ) => (g : ℂ × ℂ → ℂ) v.1) (mu2.prod mu2) :=
+    (mp_fst2.integrable_comp hgi.aestronglyMeasurable).2 hgi
+  have hint : Integrable (fun v : (ℂ × ℂ) × (ℂ × ℂ) => conj ((g : ℂ × ℂ → ℂ) v.1) * f (smoothArg v.1 v.2))
+      (mu2.prod mu2) := by
+    refine (hgf.norm.mul_const C).mono'
+      ((Complex.continuous_conj.comp_aestronglyMeasurable hgf.aestronglyMeasurable).mul
+        hF.aestronglyMeasurable) (Filter.Eventually.of_forall fun v => ?_)
+    rw [norm_mul, Complex.norm_conj]
+    exact mul_le_mul_of_nonneg_left (hfb _) (norm_nonneg _)
+  have h1 : (fun v : (ℂ × ℂ) × (ℂ × ℂ) => ⟪(PXs g : _ → ℂ) v, (PS (hfL.toLp f) : _ → ℂ) v⟫_ℂ)
+      =ᵐ[mu2.prod mu2] fun v => conj ((g : ℂ × ℂ → ℂ) v.1) * f (smoothArg v.1 v.2) := by
+    filter_upwards [Lp.coeFn_compMeasurePreserving g mp_fst2,
+      Lp.coeFn_compMeasurePreserving (hfL.toLp f) mp_smooth,
+      mp_smooth.quasiMeasurePreserving.ae_eq_comp hfL.coeFn_toLp] with v ha hb hc
+    change ⟪(Lp.compMeasurePreserving Prod.fst mp_fst2 g : _ → ℂ) v,
+      (Lp.compMeasurePreserving _ mp_smooth (hfL.toLp f) : _ → ℂ) v⟫_ℂ = _
+    rw [ha, hb, Function.comp_apply, Function.comp_apply, hc, RCLike.inner_apply]
+    simp
+  rw [inner_smoothOp, L2.inner_def, integral_congr_ae h1, integral_prod _ hint, L2.inner_def]
+  refine integral_congr_ae ?_
+  filter_upwards [hgL.coeFn_toLp] with x hx
+  rw [hx, RCLike.inner_apply, integral_const_mul]
+  simp
 
 end
 
