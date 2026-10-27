@@ -1097,6 +1097,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.ev_phaseRealSlice
 #print axioms Grothe.UpperChaos.ev_taylorSourceSlice
 #print axioms Grothe.UpperChaos.far_sound
+#print axioms Grothe.UpperChaos.finiteSoftPhase_logGrid
 #print axioms Grothe.UpperChaos.firstCapturedErrorQ_le_public
 #print axioms Grothe.UpperChaos.firstCenterBandModes_eq_comparison
 #print axioms Grothe.UpperChaos.firstCenterBand_norm_lower
@@ -1179,6 +1180,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_moment
 #print axioms Grothe.UpperChaos.integral_moment_damped
 #print axioms Grothe.UpperChaos.integral_moment_damped_prod
+#print axioms Grothe.UpperChaos.integral_mul_finiteSoftPhase
 #print axioms Grothe.UpperChaos.integral_norm_affine_phaseLaplace_base_tail_le
 #print axioms Grothe.UpperChaos.integral_norm_rpow_damped
 #print axioms Grothe.UpperChaos.integral_phiT_pow_even
