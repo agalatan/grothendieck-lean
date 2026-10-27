@@ -143,8 +143,9 @@ theorem law_swap {p q : ℝ} (hp : |p| ≤ 1) (hq : |q| ≤ 1) {a b c : ℝ}
     mehlerPair, pairMap, LinearMap.coe_toContinuousLinearMap', LinearMap.coe_mk, AddHom.coe_mk,
     smoothArg, Xof, Yof, mY, mulRc, mulSc, hs₁, hs₂]
   simp only [L_apply]
-  simp only [mul_one, mul_zero, add_zero, zero_add, map_zero, map_add, dual_ofReal_mul, dual_ofReal]
-  rw [div_left_inj' four_ne_zero, neg_inj, Complex.ofReal_inj]
+  simp only [Prod.fst_zero, Prod.snd_zero, mul_one, mul_zero, add_zero, zero_add, map_zero, map_add,
+    dual_ofReal_mul, dual_ofReal]
+  congr 1; congr 1; congr 1
   linear_combination e1 + e2
 
 end
