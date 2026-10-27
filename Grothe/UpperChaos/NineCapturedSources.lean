@@ -1,4 +1,4 @@
-import Grothe.UpperChaos.ThirdBandElimination
+import Grothe.UpperChaos.CapturedSourceBound
 
 /-! # Shared source energy from nine retained bands
 

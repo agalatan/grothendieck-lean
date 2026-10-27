@@ -1,19 +1,12 @@
 # Weighted selected-spectrum comparison
 
-The selected-spectrum comparison with the raw contour-tail allowance gives
-
-**K_G^C < 1.404598161500.**
-
-The current Lean assembly also deducts the forced linear coefficient's
-weighted square from the same Hardy budget. This gives
-`K_G^C < 1.404598149152`, with reciprocal score
-`355973699881431491/500000000000000000`. The arithmetic below retains the
-raw tail for replay; the derived assembly is recorded in
-`../upper-preprocess/certificate.json` under `linear_budget_refinement`.
-
-The rounding, polynomial preprocessors, 21,168 stored energies, finite-head cap
-and Hardy certificate are unchanged. The improvement comes from retaining coefficient costs as well as the
-spectral supports of the inherited Gaussian coefficient-error enclosures.
+This shared comparison inequality is used by the active conditional target
+`K_G^C < 1.404598149141`. The fourteen actual Gaussian finite-band estimates
+and energy-table discrepancy remain unproved inputs. The previous endpoint
+ledger is preserved in `miscellaneous/other-bounds/snapshot/data/localized-comparison/PROOF.md`.
+The pinned recipe and generator remain active because the sharp proof uses
+the same comparison bands and table radii. Their historical endpoint metadata
+is not the current grouped endpoint ledger.
 
 ## The inequality
 
@@ -91,15 +84,10 @@ reproduction hashes are in `recipe.json`. The resulting allowance is
 
 `C = 106490963/125000000000000 = 0.000000851927704`.
 
-Together with the unchanged head, table error and Hardy allowances:
-
-`delta = 458421199009/500000000000000000`,
-
-`c-delta = 355973696751850991/500000000000000000`.
-
-The formal transfer theorem gives
-
-`K_G^C <= 500000000000000000/355973696751850991 < 1.404598161500`.
+The current endpoint assembly uses the grouped comparison budget in
+`Grothe/Upper/GroupedBridge.lean` and the concrete specialization in
+`Grothe/UpperChaos/GroupedRounder.lean`. Historical raw-tail endpoint arithmetic
+is preserved in the archive; the shared comparison above remains active.
 
 ## Inherited Gaussian inputs: what remains external
 
@@ -126,9 +114,7 @@ proves the energy comparison. The raw Gaussian integrations, source tail
 enclosures, the identification of the supplied approximation with that
 decomposition, and table accuracy are still external. For the concrete rounding,
 the analytic Schur/Hardy input is proved by `HardyReal.hardy_GT`.
-The certificate therefore does not improve the hypothesis-free
-Lean upper bound and does not assert that the old global comparison bound
-alone implies the stronger endpoint. It uses more of the structure already
+This comparison does not discharge the actual Gaussian or table-accuracy inputs. It uses more of the structure already
 recorded in the inherited component certificate.
 
 No `head_close` hypothesis replaces the native finite-head computation.
