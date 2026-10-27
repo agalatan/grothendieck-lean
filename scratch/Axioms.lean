@@ -559,6 +559,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.HardyReal.mehler_eq_HholPair
 #print axioms Grothe.UpperChaos.PhaseMomentCheck.e3_integerPhase
 #print axioms Grothe.UpperChaos.PhaseMomentCheck.e3_pow3
+#print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_horner
+#print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_phaseOfTerms_pow
 #print axioms Grothe.UpperChaos.ProductComplete.ae_memLp_fibre
 #print axioms Grothe.UpperChaos.ProductComplete.complete_prod
 #print axioms Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
@@ -611,6 +613,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_moment
 #print axioms Grothe.UpperChaos.integral_moment_damped
 #print axioms Grothe.UpperChaos.integral_moment_damped_prod
+#print axioms Grothe.UpperChaos.integral_phiT_pow_even
+#print axioms Grothe.UpperChaos.integral_phiT_sq
 #print axioms Grothe.UpperChaos.integral_two_channel
 #print axioms Grothe.UpperChaos.invariantMoment_odd
 #print axioms Grothe.UpperChaos.law_comm
@@ -630,6 +634,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_mul_P3_le_one
 #print axioms Grothe.UpperChaos.norm_sq_le_phiT_moment
 #print axioms Grothe.UpperChaos.norm_toLp_sq_eq_integral
+#print axioms Grothe.UpperChaos.phase_moment2_check
 #print axioms Grothe.UpperChaos.phiBound
 #print axioms Grothe.UpperChaos.phiT_sq_le
 #print axioms Grothe.UpperChaos.phi_abs_lt_one
