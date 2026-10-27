@@ -191,6 +191,11 @@ root until a proof uses them).
 and `Grothe.upper_value_lt` shows this is below 1.404598149141
 (`Grothe/UpperChaos/GroupedRounder.lean`).
 
+A second conditional route, `Grothe.UpperChaos.fresh_upper_concrete_taylor_relaxed`,
+allows total energy-table discrepancy at most `5/10^7` and still yields a rational
+bound below `1.404599424`. It retains the fourteen Gaussian band-error hypotheses;
+neither those estimates nor the relaxed energy-table bound is proved yet.
+
 The rounding is the smoothing G_T of T = F₀·P₃(φ): a two-coordinate Gaussian phase rounding F₀ times the
 cubic Taylor polynomial P₃(x) = 1 + ix − x²/2 − ix³/6 of a damped polynomial phase φ. It is **defined in Lean**
 from the stored data (`Grothe/UpperChaos/Rounder.lean`). Lean proves that G_T is measurable, charge one and

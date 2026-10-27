@@ -1041,6 +1041,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.RadialRepair.radial_gap_sq_le
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_le
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
+#print axioms Grothe.UpperChaos.actual_band_mass_relaxed
 #print axioms Grothe.UpperChaos.affine_gaussian_shift_complete_square
 #print axioms Grothe.UpperChaos.affine_gaussian_shift_exp_factor
 #print axioms Grothe.UpperChaos.bandProj_smoothOp_comm
@@ -1084,8 +1085,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.firstTailModes_eq
 #print axioms Grothe.UpperChaos.first_captured_tail_budget
 #print axioms Grothe.UpperChaos.fresh_upper_concrete_taylor
+#print axioms Grothe.UpperChaos.fresh_upper_concrete_taylor_relaxed
 #print axioms Grothe.UpperChaos.fresh_upper_pieces
 #print axioms Grothe.UpperChaos.fresh_upper_rounder
+#print axioms Grothe.UpperChaos.fresh_upper_rounder_relaxed
+#print axioms Grothe.UpperChaos.fresh_upper_rounder_relaxed_direct_bounds
 #print axioms Grothe.UpperChaos.gradedHermiteFn_add
 #print axioms Grothe.UpperChaos.gradedHermiteFn_const_mul
 #print axioms Grothe.UpperChaos.gradedHermiteFn_rot2
@@ -1108,6 +1112,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.hasSum_kernel_real
 #print axioms Grothe.UpperChaos.hasSum_odd_of_eqOn_real
 #print axioms Grothe.UpperChaos.hasSum_parseval_odd
+#print axioms Grothe.UpperChaos.head_of_direct_head
+#print axioms Grothe.UpperChaos.head_of_relaxed_energy_close
 #print axioms Grothe.UpperChaos.hermite2_complete
 #print axioms Grothe.UpperChaos.hermiteBasis
 #print axioms Grothe.UpperChaos.hermiteBasis2
@@ -1166,6 +1172,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.leaf_sound
 #print axioms Grothe.UpperChaos.localized_comparison
 #print axioms Grothe.UpperChaos.localized_comparison_grouped
+#print axioms Grothe.UpperChaos.localized_comparison_of_relaxed_band_bounds
 #print axioms Grothe.UpperChaos.map_mehlerY
 #print axioms Grothe.UpperChaos.map_smooth
 #print axioms Grothe.UpperChaos.measurable_GT
@@ -1249,6 +1256,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.projOn_projOn_eq_zero_of_disjoint
 #print axioms Grothe.UpperChaos.radial_distance_le_of_sixth_moment
 #print axioms Grothe.UpperChaos.radial_kernel_ceiling
+#print axioms Grothe.UpperChaos.relaxed_grouped_budget
+#print axioms Grothe.UpperChaos.relaxed_tail_numeric
+#print axioms Grothe.UpperChaos.relaxed_upper_value_lt
 #print axioms Grothe.UpperChaos.roundingCoeff_eq
 #print axioms Grothe.UpperChaos.roundingDifference_eq
 #print axioms Grothe.UpperChaos.rounding_diskKernel
@@ -1285,6 +1295,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.sum_projOn
 #print axioms Grothe.UpperChaos.sum_sq_le_of_mean_le
 #print axioms Grothe.UpperChaos.summable_abs_energy
+#print axioms Grothe.UpperChaos.tail_of_direct_head
 #print axioms Grothe.UpperChaos.taylorInnerSource_gradedHermite_eq_slice
 #print axioms Grothe.UpperChaos.taylorRounding_error
 #print axioms Grothe.UpperChaos.taylorRounding_source_toLp
