@@ -30,6 +30,9 @@ lemma psi_nonneg (q : Pt4) : 0 ≤ psi q := mul_nonneg (phi2_nonneg _) (phi2_non
 
 @[fun_prop] lemma measurable_psi : Measurable psi := by unfold psi; fun_prop
 
+instance : (volume : Measure Pt4).IsAddHaarMeasure := by
+  rw [Measure.volume_eq_prod]; infer_instance
+
 variable {a b c : ℝ}
 
 /-- `S` and `R` on both real copies, and `S⁻¹`. -/
@@ -88,23 +91,35 @@ def mulSc (a b c : ℝ) (w : ℂ × ℂ) : ℂ × ℂ :=
 lemma toC2_affine (p r : Pt4) :
     mulRc a b c (toC2 p.1 p.2) + mulSc a b c (toC2 r.1 r.2) =
       toC2 (mulR4 a b c p + mulS4 a b c r).1 (mulR4 a b c p + mulS4 a b c r).2 := by
-  simp only [toC2, mulRc, mulSc, mulR4, mulS4, mulR, mulS, Prod.fst_add, Prod.snd_add, Prod.mk_add_mk]
+  simp only [toC2, mulRc, mulSc, mulR4, mulS4, mulR, mulS, Prod.mk_add_mk]
   ext <;> push_cast <;> ring
+
+lemma phi2_eq (u : ℝ × ℝ) : phi2 u = (2 * Real.pi)⁻¹ * Real.exp (-(u.1 ^ 2 + u.2 ^ 2) / 2) :=
+  Grothe.LowerAnalytic.gaussianPDFReal_mul u.1 u.2
 
 /-- **`kHol` at a real cross covariance is the Gaussian density of `(x, ξ, y, η)`.** -/
 theorem kHol_real (h : 0 < k11 a b) (hd : 0 < kdet a b c) (p s : Pt4) :
     kHol (Rre a b c) p.1 p.2 s.1 s.2 =
       ((psi p * psi (solve4 a b c (s - mulR4 a b c p)) / (s11 a b * s22 a b c) ^ 2 : ℝ) : ℂ) := by
-  rw [kHol, detIm_real, kExp_real h hd, kExp_real h hd, detS_sq h hd]
-  simp only [psi, phi2, solve4, mulR4, Prod.fst_sub, Prod.snd_sub, ← Prod.fst_sub, ← Prod.snd_sub]
-  rw [gaussianPDFReal_mul, gaussianPDFReal_mul, gaussianPDFReal_mul, gaussianPDFReal_mul]
+  have key : ((2 * Real.pi) ^ 4)⁻¹ * (kdet a b c)⁻¹ *
+      Real.exp (-(p.1.1 ^ 2 + p.1.2 ^ 2 + (solveS a b c (s.1 - mulR a b c p.1)).1 ^ 2
+          + (solveS a b c (s.1 - mulR a b c p.1)).2 ^ 2) / 2
+        + -(p.2.1 ^ 2 + p.2.2 ^ 2 + (solveS a b c (s.2 - mulR a b c p.2)).1 ^ 2
+          + (solveS a b c (s.2 - mulR a b c p.2)).2 ^ 2) / 2) =
+      psi p * psi (solve4 a b c (s - mulR4 a b c p)) / (s11 a b * s22 a b c) ^ 2 := by
+    rw [detS_sq h hd]
+    simp only [psi, phi2_eq, solve4, mulR4, Prod.fst_sub, Prod.snd_sub]
+    rw [div_eq_mul_inv]
+    have e : ∀ u v w z : ℝ, Real.exp u * Real.exp v * (Real.exp w * Real.exp z) = Real.exp (u + v + (w + z)) := by
+      intro u v w z; rw [Real.exp_add, Real.exp_add, Real.exp_add]
+    calc _ = ((2 * Real.pi) ^ 4)⁻¹ * (kdet a b c)⁻¹ * Real.exp (-(p.1.1 ^ 2 + p.1.2 ^ 2) / 2
+            + -(p.2.1 ^ 2 + p.2.2 ^ 2) / 2 + (-((solveS a b c (s.1 - mulR a b c p.1)).1 ^ 2
+            + (solveS a b c (s.1 - mulR a b c p.1)).2 ^ 2) / 2 + -((solveS a b c (s.2 - mulR a b c p.2)).1 ^ 2
+            + (solveS a b c (s.2 - mulR a b c p.2)).2 ^ 2) / 2)) := by congr 2; ring
+      _ = _ := by rw [← e]; ring
+  rw [kHol, detIm_real, kExp_real h hd, kExp_real h hd, ← key]
   push_cast
-  rw [← Complex.exp_add, ← Complex.ofReal_exp, ← Complex.ofReal_exp, ← Complex.ofReal_exp, ← Complex.ofReal_exp]
-  push_cast
-  rw [← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]
-  have hk : (kdet a b c : ℂ) ≠ 0 := by exact_mod_cast hd.ne'
-  field_simp
-  ring_nf
+  rw [← Complex.exp_add]
 
 end
 
