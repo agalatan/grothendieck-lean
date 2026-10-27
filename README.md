@@ -382,8 +382,12 @@ formula. The change to squared radius joins the Green identity to weighted
 Parseval with the original chaos multiplier `2n+1`. The actual radial phases are
 smooth through zero and their denominators exceed `1/250`. Exact polynomial
 divided differences give continuous energy amplitudes at zero, integrable on every
-finite panel. Integrability at infinity and the infinite-endpoint Green limit
-remain to be discharged. For numerical enclosure, a nonnegative inverse-modulus
+finite panel. Explicit phase derivatives and polynomial growth prove global
+Gaussian L², every-mode pairing integrability and the Green limit at infinity.
+The actual endpoint-subtracted coefficients satisfy the full weighted-energy
+identity with weights `(2n+1)²`, without additional analytic hypotheses; the
+continuous energy amplitude at zero is `−3/2` times the phase derivative.
+For numerical enclosure, a nonnegative inverse-modulus
 polynomial residual controls the phase error; uniform spatial error `ε` inside radius
 `R` gives the joint squared coefficient budget `ε² + exp(-R²)` for all modes.
 These structural results introduce no native facts. The pinned 120-entry interval tables are

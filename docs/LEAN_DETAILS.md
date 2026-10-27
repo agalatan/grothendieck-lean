@@ -80,7 +80,21 @@ The latter expression is continuous at zero. `OriginEnergyExtension` applies
 it to both actual energy amplitudes and proves energy-density integrability
 on every finite closed panel. Equality with the totalized differential
 expression is asserted only for `s > 0`; its arbitrary value at zero is not
-used. Global growth and integrability remain separate obligations.
+used. `OriginEndpoint` identifies each quotient's value at zero with the actual
+phase derivative; the energy amplitude is `−3/2` times that derivative, with
+squared norm `9/4` times its squared norm.
+
+`OriginPhaseDerivative` proves explicit real-parameter first and second phase
+derivatives and their application to polynomial restrictions. `OriginPhaseEnvelope`
+combines the fixed numerator polynomials with the uniform denominator margin.
+`OriginPolynomialEnvelope` turns the resulting polynomial bounds into Gaussian
+`L²`, integrability of every polynomial Green pairing and the limit at infinity.
+`OriginAnalytic` supplies these inputs for both actual responses, so its Green
+and weighted-energy identities have no additional analytic premises.
+`OriginResidualCoefficients` identifies the residual `L²` vectors with
+`FLp − f(0) • phaseLp` and `GLp − g(0) • phaseLp`. Its full weighted sums use
+`a_n − f(0) ξ_n` and `b_n − g(0) ξ_n`, preserving the signed Hermite phase
+coefficient `ξ_n`, and equal the actual continuous energy integrals.
 
 `OriginApproximation` proves the zero-safe algebraic bound
 `‖W z - phase(z)‖ ≤ |W² ‖z‖² - 1|` for `W ≥ 0`, with a sharper rational
@@ -92,8 +106,9 @@ jointly. Two true responses of `L²` norm at most one, each approximated within
 approximants need not be disk-valued. These theorems do not themselves certify
 the proposed polynomial panels or their coefficient integrals.
 
-No native facts are introduced. The concrete radial energy identity and the
-numerical integral enclosures remain separate obligations.
+No native facts are introduced. The full concrete radial energy identity is
+proved; the coefficient-table enclosures and two numerical energy bounds
+remain separate obligations.
 Hash-pinned tables and exact serialization alone do not prove
 any integral enclosure; see [`data/hjm/origin/`](../data/hjm/origin/README.md).
 

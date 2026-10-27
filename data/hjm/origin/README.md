@@ -111,3 +111,12 @@ uses the repository's rational Bernstein/Taylor soundness lemmas. A generated
 JSON receipt alone is not evidence that the Lean module has compiled.
 
 See `NUMERICS_DESIGN.md` for the remaining analytic and integration obligations.
+
+The actual analytic energy bridge is proved in `OriginAnalytic.lean` and
+`OriginResidualCoefficients.lean`: explicit phase derivatives and a uniform
+denominator floor give polynomial growth, global Gaussian L², all polynomial
+pairing integrability and the Green boundary limits. The complete weighted
+sums of the endpoint-subtracted original coefficients equal the actual
+continuous energy integrals, with weights `(2n+1)²`. `OriginEndpoint.lean`
+identifies the amplitude at zero as `−3/2` times the phase derivative. These
+results do not certify the source table or the two sharp energy bounds.
