@@ -36,6 +36,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.coeff_le_residual_products
 #print axioms Grothe.HJM.Origin.coeff_summable
 #print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_of_residual_caps
+#print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_of_unweighted_residual_caps
 #print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_of_visible
 #print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_published
 #print axioms Grothe.HJM.Origin.coeff_tail_le_of_energy_caps
@@ -297,6 +298,7 @@ import Grothe
 #print axioms Grothe.HJM.origin_tail_cap_lt_budget
 #print axioms Grothe.HJM.origin_tail_of_symmetric_energy_caps
 #print axioms Grothe.HJM.origin_tail_of_symmetric_residual_caps
+#print axioms Grothe.HJM.origin_tail_of_unweighted_residual_caps
 #print axioms Grothe.HJM.origin_tail_of_visible
 #print axioms Grothe.HJM.radial_response_norm_sq
 #print axioms Grothe.HJM.repricedClaim_lt
