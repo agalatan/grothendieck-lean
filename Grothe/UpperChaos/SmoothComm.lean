@@ -177,7 +177,7 @@ lemma hasSum_inner_op (A : Lp ℂ 2 mu2 →L[ℂ] Lp ℂ 2 mu2) (j : Idx2) (g : 
     HasSum (fun k => ⟪hvec2 k, g⟫_ℂ * ⟪hvec2 j, A (hvec2 k)⟫_ℂ) ⟪hvec2 j, A g⟫_ℂ := by
   have h := ((hermiteBasis2.hasSum_repr g).mapL A).mapL (innerSL ℂ (hvec2 j))
   simpa only [map_smul, innerSL_apply_apply, inner_smul_right, hermiteBasis2_apply,
-    HilbertBasis.repr_apply_apply] using h
+    HilbertBasis.repr_apply_apply, smul_eq_mul] using h
 
 /-- **`S` has no matrix elements between different total degrees.** -/
 theorem inner_smoothOp_hvec2_eq_zero {i j : Idx2} (h : tdeg i ≠ tdeg j) :
@@ -185,7 +185,6 @@ theorem inner_smoothOp_hvec2_eq_zero {i j : Idx2} (h : tdeg i ≠ tdeg j) :
   have hρ : |(1 / 2 : ℝ)| ≤ 1 := by norm_num [abs_of_pos]
   have hc := congrArg (fun F => ⟪hvec2 j, F⟫_ℂ)
     (smoothOp_ouOp_comm hρ (measurable_hfun2 i) (memLp_hfun2 i))
-  simp only at hc
   change ⟪hvec2 j, smoothOp (ouOp hρ (hvec2 i))⟫_ℂ = ⟪hvec2 j, ouOp hρ (smoothOp (hvec2 i))⟫_ℂ at hc
   rw [ouOp_hvec2, map_smul, inner_smul_right, inner_ouOp] at hc
   have hne : ((1 / 2 : ℝ) : ℂ) ^ tdeg i ≠ ((1 / 2 : ℝ) : ℂ) ^ tdeg j := by
@@ -220,9 +219,9 @@ theorem projOn_smoothOp_comm (B : Set Idx2) [DecidablePred (· ∈ B)]
     · simp [inner_smoothOp_hvec2_eq_zero hk]
   simp only [hterm] at hP
   split_ifs with hj
-  · simp only [hj, if_true] at hP
+  · simp only [hj, ite_true] at hP
     exact hf.unique hP
-  · simp only [hj, if_false] at hP
+  · simp only [hj, ite_false] at hP
     exact (hasSum_zero.unique hP)
 
 lemma tdeg_eq_bideg (i : Idx2) : tdeg i = (bideg i).1 + (bideg i).2 := by
