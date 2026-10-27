@@ -10,11 +10,15 @@ and CI runs
 Without --check it also re-sorts and de-duplicates the union-merged list files (union merge may leave the two
 sides' new lines out of order). So after any merge: rerun it, and a conflict in a root file is resolved too.
 
+Union merges can also revive entries that another delivery removed. Entries naming theorems, native facts or modules
+that exist only under miscellaneous/ (archived, not built) are dropped from the axiom lists and scratch/Axioms.lean,
+and --check reports any that remain.
+
 --check also checks the list files that git union-merges (.gitattributes): data/root-imports-exclude.txt,
 data/axioms/native.txt, data/axioms/required.txt, data/axioms/modes/*.txt (sorted, no duplicates) and the `#print axioms` lines of
 scratch/Axioms.lean (sorted, no duplicates, imports first).
 """
-import glob, os, sys
+import glob, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EXCLUDE = os.path.join(ROOT, "data", "root-imports-exclude.txt")
@@ -45,6 +49,57 @@ def generated(lib, excluded):
     return HEADER.format(lib=lib) + "".join(f"import {m}\n" for m in mods)
 
 
+DECL = re.compile(r"\s*(?:@\[[^\]]*\]\s*)?(?:private\s+|protected\s+|noncomputable\s+)*"
+                  r"(?:theorem|lemma|def|abbrev|instance|structure)\s+([^\s:({\[]+)")
+
+
+def declarations(paths):
+    """Fully qualified names declared in the given Lean files (namespace blocks followed)."""
+    names = set()
+    for path in paths:
+        stack = []
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                m = re.match(r"\s*namespace\s+(\S+)", line)
+                if m:
+                    stack.append(m.group(1))
+                    continue
+                m = re.match(r"\s*end\s+(\S+)\s*$", line)
+                if m and stack and stack[-1] == m.group(1):
+                    stack.pop()
+                    continue
+                m = DECL.match(line)
+                if m:
+                    names.add(".".join(stack + [m.group(1)]))
+    return names
+
+
+def archived():
+    """(names, modules) that exist only under miscellaneous/: archived, not built."""
+    active_files = [p for lib in ("Grothe", "GrotheKernel", "GrotheCapsKernel")
+                    for p in glob.glob(os.path.join(ROOT, lib, "**", "*.lean"), recursive=True)]
+    archive_files = glob.glob(os.path.join(ROOT, "miscellaneous", "**", "*.lean"), recursive=True)
+    active_mods = {os.path.relpath(p, ROOT)[:-5].replace(os.sep, ".") for p in active_files}
+    archive_mods = set()
+    for p in archive_files:
+        rel = os.path.relpath(p, ROOT).split(os.sep)
+        for i, part in enumerate(rel):
+            if part in ("Grothe", "GrotheKernel", "GrotheCapsKernel"):
+                archive_mods.add(".".join(rel[i:])[:-5])
+                break
+    return declarations(archive_files) - declarations(active_files), archive_mods - active_mods
+
+
+def is_archived(entry, names, mods):
+    """An axiom-list entry, a native fact `X._native...`, an `import M` or a `#print axioms X` line."""
+    entry = entry.strip()
+    if entry.startswith("import "):
+        return entry[len("import "):].strip() in mods
+    if entry.startswith("#print axioms "):
+        entry = entry[len("#print axioms "):].strip()
+    return entry.split("._native.", 1)[0] in names
+
+
 def list_problems():
     problems = []
     for path in SORTED_LISTS:
@@ -56,6 +111,13 @@ def list_problems():
             problems.append(f"{path}: duplicate entries {sorted({x for x in e if e.count(x) > 1})}")
         if e != sorted(e):
             problems.append(f"{path}: not sorted")
+    names, mods = archived()
+    for path in SORTED_LISTS + AXIOM_REPORTS:
+        if os.path.exists(os.path.join(ROOT, path)):
+            with open(os.path.join(ROOT, path), encoding="utf-8") as f:
+                stale = [l.strip() for l in f if l.strip() and is_archived(l, names, mods)]
+            if stale:
+                problems.append(f"{path}: archived (only under miscellaneous/) {stale[:3]}")
     for path in AXIOM_REPORTS:
         with open(os.path.join(ROOT, path), encoding="utf-8") as f:
             lines = [l.rstrip("\n") for l in f if l.strip()]
@@ -74,7 +136,9 @@ def list_problems():
 
 
 def normalize_lists():
-    """Sort and de-duplicate the list files in place (comments/header lines first, kept as they are)."""
+    """Sort and de-duplicate the list files in place (comments/header lines first, kept as they are), and drop
+    entries for archived theorems and modules (revived by a union merge)."""
+    names, mods = archived()
     for path in SORTED_LISTS:
         full = os.path.join(ROOT, path)
         if not os.path.exists(full):
@@ -82,7 +146,8 @@ def normalize_lists():
         with open(full, encoding="utf-8") as f:
             lines = [l.rstrip("\n") for l in f]
         head = [l for l in lines if l.strip().startswith("#") or not l.strip()]
-        body = sorted({l.strip() for l in lines if l.strip() and not l.strip().startswith("#")})
+        body = sorted({l.strip() for l in lines if l.strip() and not l.strip().startswith("#")
+                       and not is_archived(l, names, mods)})
         new = "\n".join([h for h in head if h.strip()] + body) + "\n"
         if new != "\n".join(lines) + "\n":
             with open(full, "w", encoding="utf-8") as f:
@@ -92,8 +157,8 @@ def normalize_lists():
         full = os.path.join(ROOT, path)
         with open(full, encoding="utf-8") as f:
             lines = [l.rstrip("\n") for l in f if l.strip()]
-        imports = sorted({l for l in lines if l.startswith("import ")})
-        prints = sorted({l for l in lines if l.startswith("#print axioms ")})
+        imports = sorted({l for l in lines if l.startswith("import ") and not is_archived(l, names, mods)})
+        prints = sorted({l for l in lines if l.startswith("#print axioms ") and not is_archived(l, names, mods)})
         other = [l for l in lines if not l.startswith(("import ", "#print axioms "))]
         if other:
             continue  # leave unexpected content for --check to report
