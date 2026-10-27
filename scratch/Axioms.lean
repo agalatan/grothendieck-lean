@@ -212,6 +212,8 @@ import Grothe
 #print axioms Grothe.HJM.OriginMoment.signedApproxIntegrand_zero_above
 #print axioms Grothe.HJM.OriginMoment.signedApprox_integral_partition
 #print axioms Grothe.HJM.OriginMoment.signedCellPolynomial_eval
+#print axioms Grothe.HJM.OriginMomentGenerated.rightBlock13
+#print axioms Grothe.HJM.OriginMomentRightWitnessData.rightPolynomial_eq
 #print axioms Grothe.HJM.OriginPanel.approxList_uniform_error
 #print axioms Grothe.HJM.OriginPanel.covers_exists
 #print axioms Grothe.HJM.OriginPanel.evalC_approxCoeffs
