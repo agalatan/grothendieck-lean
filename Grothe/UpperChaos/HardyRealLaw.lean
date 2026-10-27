@@ -47,6 +47,12 @@ lemma dual_apply (ℓ : StrongDual ℝ ℂ) (z : ℂ) : ℓ z = z.re * ℓ 1 + z
   rw [map_add, show (z.re : ℂ) = z.re • (1 : ℂ) by simp,
     show (z.im : ℂ) * I = z.im • I by simp, map_smul, map_smul, smul_eq_mul, smul_eq_mul]
 
+lemma dual_ofReal_mul (ℓ : StrongDual ℝ ℂ) (r : ℝ) (z : ℂ) : ℓ ((r : ℂ) * z) = r * ℓ z := by
+  rw [show (r : ℂ) * z = r • z by simp, map_smul, smul_eq_mul]
+
+lemma dual_ofReal (ℓ : StrongDual ℝ ℂ) (r : ℝ) : ℓ (r : ℂ) = r * ℓ 1 := by
+  rw [← dual_ofReal_mul, mul_one]
+
 /-- The four coordinate functionals of `L` on `(ℂ × ℂ) × (ℂ × ℂ)`. -/
 def Lc (L : StrongDual ℝ ((ℂ × ℂ) × (ℂ × ℂ))) (j : Fin 4) : StrongDual ℝ ℂ :=
   match j with
@@ -136,8 +142,8 @@ theorem law_swap {p q : ℝ} (hp : |p| ≤ 1) (hq : |q| ≤ 1) {a b c : ℝ}
   simp only [Q, ContinuousLinearMap.comp_apply, ContinuousLinearMap.inl_apply, ContinuousLinearMap.inr_apply,
     mehlerPair, pairMap, LinearMap.coe_toContinuousLinearMap', LinearMap.coe_mk, AddHom.coe_mk,
     smoothArg, Xof, Yof, mY, mulRc, mulSc, hs₁, hs₂]
-  simp only [L_apply, dual_apply]
-  simp
+  simp only [L_apply]
+  simp only [mul_one, mul_zero, zero_mul, add_zero, zero_add, map_zero, map_add, dual_ofReal_mul, dual_ofReal]
   push_cast
   linear_combination (-(1 : ℂ) / 4) * ((e1 : ℂ) + (e2 : ℂ))
 
