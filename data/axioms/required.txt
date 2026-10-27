@@ -67,8 +67,8 @@ Grothe.HJM.Origin.phase_error_le_residual
 Grothe.HJM.Origin.phase_error_mul_left_le
 Grothe.HJM.Origin.rightNumerator_ne_zero
 Grothe.HJM.Origin.right_spatial_tail_budget
-Grothe.HJM.chargeOneCoeff_eq_origin_s_integral
 Grothe.HJM.branch5_tail
+Grothe.HJM.chargeOneCoeff_eq_origin_s_integral
 Grothe.HJM.chargeOneCoeff_hasSum_sq
 Grothe.HJM.chargeOneCoeff_originRadialDifferential
 Grothe.HJM.chargeOneCoeff_tsum_norm_mul_le

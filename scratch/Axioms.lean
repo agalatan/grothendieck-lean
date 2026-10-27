@@ -75,8 +75,8 @@ import Grothe
 #print axioms Grothe.HJM.Origin.phase_error_mul_left_le
 #print axioms Grothe.HJM.Origin.rightNumerator_ne_zero
 #print axioms Grothe.HJM.Origin.right_spatial_tail_budget
-#print axioms Grothe.HJM.chargeOneCoeff_eq_origin_s_integral
 #print axioms Grothe.HJM.branch5_tail
+#print axioms Grothe.HJM.chargeOneCoeff_eq_origin_s_integral
 #print axioms Grothe.HJM.chargeOneCoeff_hasSum_sq
 #print axioms Grothe.HJM.chargeOneCoeff_originRadialDifferential
 #print axioms Grothe.HJM.chargeOneCoeff_tsum_norm_mul_le
