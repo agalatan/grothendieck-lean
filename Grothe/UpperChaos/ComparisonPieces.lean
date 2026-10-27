@@ -1,0 +1,148 @@
+import Grothe.UpperChaos.Smoothing
+import Grothe.UpperChaos.BandProj
+import Grothe.UpperChaos.LocalizedComparison
+
+/-!
+# The concrete error decomposition behind `ComparisonInputs` (Comparison step 1)
+
+Write `T = F₀·P₃(φ) = F₀ + h₁ + h₂/2 + h₃/6` with `hⱼ = (iφ)ʲF₀` (`Tround_eq`). For charge-one `L²` functions
+`v, c₁, c₂, c₃` (the frozen correction and the Hermite approximants of the certificate), let `X = S(F₀ + v)` and
+
+    G_T − X = S(T − F₀ − v) = S(c₁ + c₂/2 + c₃/6 − v) + S(h₁ − c₁) + S(h₂ − c₂)/2 + S(h₃ − c₃)/6.
+
+Each of the four smoothed sources is split by the comparison bands of its Taylor power (`pw`): the bands of one
+power partition the total degrees `≥ 1`, and the sources have no degree-0 mode (they are charge one, hence of mean
+zero, and `S` preserves the mean). This gives the 18 pieces `bandProj b_k (S src_{pw k})` (`piece`). They sum to
+`G_T − X` (`difference_pieces`) and each is supported in its band (`energy_bandProj_eq_zero`).
+So `ComparisonInputs (G_T) (X)` holds as soon as the 18 explicit norm bounds `‖piece k‖ ≤ error_k` hold
+(`comparisonInputs_of_norms`).
+-/
+
+open MeasureTheory Complex
+open scoped InnerProductSpace
+
+namespace Grothe.UpperChaos
+
+noncomputable section
+
+/-- Charge-one functions in `L²(mu2)`. -/
+structure ChargeFn (f : ℂ × ℂ → ℂ) : Prop where
+  meas : Measurable f
+  memLp : MemLp f 2 mu2
+  rot : ∀ c u, ‖c‖ = 1 → f (rot2 c u) = c * f u
+
+namespace ChargeFn
+
+variable {f g : ℂ × ℂ → ℂ}
+
+lemma add (hf : ChargeFn f) (hg : ChargeFn g) : ChargeFn fun u => f u + g u :=
+  ⟨hf.meas.add hg.meas, hf.memLp.add hg.memLp, fun c u hc => by rw [hf.rot c u hc, hg.rot c u hc]; ring⟩
+
+lemma sub (hf : ChargeFn f) (hg : ChargeFn g) : ChargeFn fun u => f u - g u :=
+  ⟨hf.meas.sub hg.meas, hf.memLp.sub hg.memLp, fun c u hc => by rw [hf.rot c u hc, hg.rot c u hc]; ring⟩
+
+lemma div_const (hf : ChargeFn f) (a : ℂ) : ChargeFn fun u => f u / a :=
+  ⟨hf.meas.div_const a, hf.memLp.div_const a, fun c u hc => by rw [hf.rot c u hc]; ring⟩
+
+/-- **Charge-one functions have mean zero** (rotate by `−1`). -/
+lemma integral_eq_zero (hf : ChargeFn f) : ∫ u, f u ∂mu2 = 0 := by
+  have hc : ‖(-1 : ℂ)‖ = 1 := by simp
+  have hm : AEStronglyMeasurable f (mu2.map (rot2 (-1))) := hf.meas.aestronglyMeasurable
+  have h := integral_map (by unfold rot2; fun_prop : AEMeasurable (rot2 (-1)) mu2) hm
+  rw [map_rot2 hc] at h
+  simp only [hf.rot _ _ hc, neg_one_mul, integral_neg] at h
+  linear_combination h / 2
+
+end ChargeFn
+
+/-! ### The Taylor split of the rounding -/
+
+/-- `hⱼ = (iφ)ʲ F₀`. -/
+def hpow (j : ℕ) (u : ℂ × ℂ) : ℂ := (I * (phiT u : ℂ)) ^ j * F0 u
+
+lemma Tround_eq (u : ℂ × ℂ) : Tround u = F0 u + hpow 1 u + hpow 2 u / 2 + hpow 3 u / 6 := by
+  have h2 : I ^ 2 = -1 := I_sq
+  have h3 : I ^ 3 = -I := by rw [pow_succ, h2]; ring
+  simp only [Tround, P3, hpow, mul_pow, h2, h3, pow_one]
+  ring
+
+lemma chargeFn_hpow (hφ : PhiBound) (j : ℕ) : ChargeFn (hpow j) := by
+  have hb : ∀ u, ‖hpow j u‖ ≤ 1 := by
+    intro u
+    have hφu : |phiT u| ≤ 1 := by
+      have := hφ u; rw [← sq_le_one_iff_abs_le_one]; linarith
+    rw [hpow, norm_mul, norm_pow, norm_mul, norm_I, one_mul, Complex.norm_real, Real.norm_eq_abs]
+    exact mul_le_one₀ (pow_le_one₀ (abs_nonneg _) hφu) (norm_nonneg _) (Haag.norm_ph_le _)
+  have hm : Measurable (hpow j) := by
+    unfold hpow
+    exact ((measurable_const.mul (Complex.measurable_ofReal.comp continuous_phiT.measurable)).pow_const j).mul
+      measurable_F0
+  refine ⟨hm, MemLp.of_bound hm.aestronglyMeasurable 1 (Filter.Eventually.of_forall hb), fun c u hc => ?_⟩
+  simp only [hpow, phiT_rot2 hc, F0_rot2 hc]
+  ring
+
+lemma chargeFn_F0 (hφ : PhiBound) : ChargeFn F0 := by
+  have h := chargeFn_hpow hφ 0
+  simpa [hpow] using h
+
+/-! ### The four sources and the 18 pieces -/
+
+variable {v c₁ c₂ c₃ : ℂ × ℂ → ℂ}
+
+/-- The four sources: the rounding remainder and the three Taylor errors. -/
+def srcP (v c₁ c₂ c₃ : ℂ × ℂ → ℂ) : Fin 4 → ℂ × ℂ → ℂ
+  | 0 => fun u => c₁ u + c₂ u / 2 + c₃ u / 6 - v u
+  | 1 => fun u => hpow 1 u - c₁ u
+  | 2 => fun u => (hpow 2 u - c₂ u) / 2
+  | 3 => fun u => (hpow 3 u - c₃ u) / 6
+
+lemma sum_srcP (u : ℂ × ℂ) : ∑ p, srcP v c₁ c₂ c₃ p u = Tround u - (F0 u + v u) := by
+  simp only [Fin.sum_univ_four, srcP, Tround_eq]
+  ring
+
+lemma chargeFn_srcP (hφ : PhiBound) (hv : ChargeFn v) (h₁ : ChargeFn c₁) (h₂ : ChargeFn c₂)
+    (h₃ : ChargeFn c₃) : ∀ p, ChargeFn (srcP v c₁ c₂ c₃ p)
+  | 0 => ((h₁.add (h₂.div_const 2)).add (h₃.div_const 6)).sub hv
+  | 1 => (chargeFn_hpow hφ 1).sub h₁
+  | 2 => ((chargeFn_hpow hφ 2).sub h₂).div_const 2
+  | 3 => ((chargeFn_hpow hφ 3).sub h₃).div_const 6
+
+/-- The Taylor source refined by each comparison band (the order of `comparisonBands`). -/
+def pw (k : ComparisonIndex) : Fin 4 :=
+  if k.val = 0 then 0 else if k.val ≤ 7 then 1 else if k.val ≤ 12 then 2 else 3
+
+/-! ### The bands of one source partition the degrees `≥ 1` -/
+
+lemma contains_iff (b : GrotheKernel.ComparisonBand) (n m : ℕ) :
+    b.contains n m = true ↔ b.lo < n + m ∧ (b.hi = 0 ∨ n + m ≤ b.hi) := by
+  simp [GrotheKernel.ComparisonBand.contains]
+
+lemma bands_disjoint : ∀ k l : ComparisonIndex, pw k = pw l → k ≠ l →
+    ((comparisonBand k).hi ≠ 0 ∧ (comparisonBand k).hi ≤ (comparisonBand l).lo) ∨
+      ((comparisonBand l).hi ≠ 0 ∧ (comparisonBand l).hi ≤ (comparisonBand k).lo) := by
+  decide
+
+lemma band_unique {k l : ComparisonIndex} (hkl : pw k = pw l) {n m : ℕ}
+    (hk : (comparisonBand k).contains n m = true) (hl : (comparisonBand l).contains n m = true) : k = l := by
+  by_contra hne
+  rw [contains_iff] at hk hl
+  rcases bands_disjoint k l hkl hne with h | h <;> omega
+
+/-- The band of source `p` containing total degree `d ≥ 1`. -/
+def bandOf (p : Fin 4) (d : ℕ) : ComparisonIndex :=
+  match p with
+  | 0 => 0
+  | 1 => if d ≤ 51 then 1 else if d ≤ 101 then 2 else if d ≤ 151 then 3 else if d ≤ 161 then 4
+      else if d ≤ 171 then 5 else if d ≤ 181 then 6 else 7
+  | 2 => if d ≤ 51 then 8 else if d ≤ 71 then 9 else if d ≤ 81 then 10 else if d ≤ 91 then 11 else 12
+  | 3 => if d ≤ 11 then 13 else if d ≤ 21 then 14 else if d ≤ 31 then 15 else if d ≤ 51 then 16 else 17
+
+lemma bandOf_spec (p : Fin 4) {n m : ℕ} (h : 1 ≤ n + m) :
+    pw (bandOf p (n + m)) = p ∧ (comparisonBand (bandOf p (n + m))).contains n m = true := by
+  rw [contains_iff]
+  fin_cases p <;> simp only [bandOf] <;> split_ifs <;>
+    simp [pw, comparisonBand, comparisonBands] <;> omega
+
+end
+
+end Grothe.UpperChaos
