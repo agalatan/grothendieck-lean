@@ -815,6 +815,9 @@ Grothe.UpperChaos.PhaseMomentCheck.e3_integerPhase
 Grothe.UpperChaos.PhaseMomentCheck.e3_pow3
 Grothe.UpperChaos.PhaseMomentCheck.integral_horner
 Grothe.UpperChaos.PhaseMomentCheck.integral_phaseOfTerms_pow
+Grothe.UpperChaos.PhaseMomentCheck.integral_phaseOfTerms_pow_cut
+Grothe.UpperChaos.PhaseMomentCheck.integral_phiT_pow_even_cut
+Grothe.UpperChaos.PhaseMomentCheck.integral_polynomial_cut_damped
 Grothe.UpperChaos.ProductComplete.ae_memLp_fibre
 Grothe.UpperChaos.ProductComplete.complete_prod
 Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
