@@ -1052,6 +1052,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProfileRootScreen.gammaFactor_bounds
 #print axioms Grothe.UpperChaos.ProfileRootScreen.gammaFactor_sq
 #print axioms Grothe.UpperChaos.ProfileRootScreen.positive_factor_between_of_square_bounds
+#print axioms Grothe.UpperChaos.ProfileRootScreen.profile_inner
+#print axioms Grothe.UpperChaos.ProfileRootScreen.profile_outer
 #print axioms Grothe.UpperChaos.ProfileRootScreen.sqrtPi_real_bounds
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_diagonal_exp_tail
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_radial_cutoff
