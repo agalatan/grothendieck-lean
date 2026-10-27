@@ -132,7 +132,7 @@ lemma measurable_hT : Measurable hT :=
 
 lemma norm_hT_le (hφ : PhiBound) (z : (ℂ × ℂ) × (ℂ × ℂ)) : ‖hT z‖ ≤ 1 := by
   rw [hT, norm_mul, Complex.norm_conj]
-  exact mul_le_one₀ (norm_Tround_le hφ _) (norm_nonneg _) (norm_Tround_le hφ _)
+  nlinarith [norm_Tround_le hφ z.1, norm_Tround_le hφ z.2, norm_nonneg (Tround z.1), norm_nonneg (Tround z.2)]
 
 lemma integrable_of_le_one {α : Type*} [MeasurableSpace α] {μ : Measure α} [IsFiniteMeasure μ]
     {f : α → ℂ} (hf : Measurable f) (h : ∀ x, ‖f x‖ ≤ 1) : Integrable f μ :=
@@ -161,8 +161,8 @@ theorem mehler_eq_HholPair (hφ : PhiBound) {t : ℝ} (ht0 : 0 < t) (ht1 : t < 1
   rw [mehler_smoothed hφ, ← integral_map (mehlerPair (pr t) (qr t)).continuous.measurable.aemeasurable
       measurable_hT.aestronglyMeasurable, law_swap hp hq rfl rfl rfl h hd,
     integral_map (pairMap _ _ _).continuous.measurable.aemeasurable measurable_hT.aestronglyMeasurable,
-    integral_prod _ (integrable_of_le_one (measurable_hT.comp (pairMap _ _ _).continuous.measurable)
-      fun v => norm_hT_le hφ _)]
+    integral_prod (fun v => hT (pairMap _ _ _ v))
+      (integrable_of_le_one (measurable_hT.comp (pairMap _ _ _).continuous.measurable) fun v => norm_hT_le hφ _)]
   simp only [pairMap, LinearMap.coe_toContinuousLinearMap', LinearMap.coe_mk, AddHom.coe_mk]
   rw [integral_pair_eq_kHol h hd measurable_hT (norm_hT_le hφ), Rt_real]
   rfl
@@ -170,10 +170,10 @@ theorem mehler_eq_HholPair (hφ : PhiBound) {t : ℝ} (ht0 : 0 < t) (ht1 : t < 1
 /-! ### The real identification and the `hardy` input -/
 
 /-- The kernel coefficients of the rounding of the certificate. -/
-abbrev hGT (hφ : PhiBound) : ℕ → ℝ := kernelCoeff (energy ((memLp_GT hφ).toLp GT))
+abbrev hGT (hφ : PhiBound) : ℕ → ℝ := Grothe.Upper.kernelCoeff (energy ((memLp_GT hφ).toLp GT))
 
 lemma summable_hGT (hφ : PhiBound) : Summable fun j => |hGT hφ j| :=
-  Grothe.Upper.summable_kernelCoeff (summable_abs_energy _)
+  Grothe.summable_kernelCoeff (summable_abs_energy _)
 
 /-- **Step 1(b), the real identification**, for the rounding of the certificate. -/
 theorem hreal_GT (hφ : PhiBound) (t : ℝ) (ht0 : 0 < t) (ht1 : t < 1) :
@@ -196,7 +196,7 @@ theorem hreal_GT (hφ : PhiBound) (t : ℝ) (ht0 : 0 < t) (ht1 : t < 1) :
       (hGT hφ n : ℂ) * (t : ℂ) ^ (2 * n + 1) := by
     intro n
     rw [Complex.norm_real, Real.norm_of_nonneg ht0.le]
-    simp only [hGT, kernelCoeff]; ring
+    simp only [hGT, Grothe.Upper.kernelCoeff]; ring
   simp_rw [e]
   refine (Summable.of_norm_bounded (summable_hGT hφ) fun n => ?_).hasSum
   rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, norm_pow, Complex.norm_real,
@@ -205,7 +205,7 @@ theorem hreal_GT (hφ : PhiBound) (t : ℝ) (ht0 : 0 < t) (ht1 : t < 1) :
 
 /-- **The `hardy` input of the sharp upper bound, proved** for the rounding of the certificate. -/
 theorem hardy_GT (hφ : PhiBound) (J : ℕ) :
-    ∑ n ∈ Finset.range J, kernelCoeff (energy ((memLp_GT hφ).toLp GT)) n ^ 2
+    ∑ n ∈ Finset.range J, Grothe.Upper.kernelCoeff (energy ((memLp_GT hφ).toLp GT)) n ^ 2
       * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4 :=
   hardy_of_real measurable_Tround measurable_Tround (norm_Tround_le hφ) (norm_Tround_le hφ)
     (summable_hGT hφ) (hreal_GT hφ) J
