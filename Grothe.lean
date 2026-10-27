@@ -80,6 +80,7 @@ import Grothe.Haagerup.PhaseCoefficients
 import Grothe.Haagerup.PhaseGeometry
 import Grothe.Haagerup.PhaseKernel
 import Grothe.Haagerup.PhaseLaplace
+import Grothe.Haagerup.PhaseLaplaceBounded
 import Grothe.Haagerup.PhaseLaplaceFubini
 import Grothe.Haagerup.Power
 import Grothe.Haagerup.PowerData
@@ -324,6 +325,7 @@ import Grothe.UpperChaos.GradedHermite
 import Grothe.UpperChaos.GradedHermiteFn
 import Grothe.UpperChaos.GradedHermiteIntegerEnergy
 import Grothe.UpperChaos.GradedHermiteLinear
+import Grothe.UpperChaos.GradedHermitePhaseSlice
 import Grothe.UpperChaos.GroupedComparison
 import Grothe.UpperChaos.GroupedRounder
 import Grothe.UpperChaos.HardyArcCircle
@@ -389,6 +391,7 @@ import Grothe.UpperChaos.PhiDense
 import Grothe.UpperChaos.PhiHorner
 import Grothe.UpperChaos.ProductComplete
 import Grothe.UpperChaos.RadialCeiling
+import Grothe.UpperChaos.RadialDampedMoments
 import Grothe.UpperChaos.RadialRepair
 import Grothe.UpperChaos.RealGaussianKernelTail
 import Grothe.UpperChaos.Realise2
@@ -399,6 +402,7 @@ import Grothe.UpperChaos.SchurKernel
 import Grothe.UpperChaos.SchurMain
 import Grothe.UpperChaos.SchurTest
 import Grothe.UpperChaos.ShiftedDampedMoments
+import Grothe.UpperChaos.ShiftedMomentRecurrence
 import Grothe.UpperChaos.SmoothComm
 import Grothe.UpperChaos.Smoothing
 import Grothe.UpperChaos.Structural
@@ -408,10 +412,12 @@ import Grothe.UpperChaos.TaylorBandData
 import Grothe.UpperChaos.TaylorCenterBandData
 import Grothe.UpperChaos.TaylorCenterFunctions
 import Grothe.UpperChaos.TaylorCenters
+import Grothe.UpperChaos.TaylorConditionalGaussian
 import Grothe.UpperChaos.TaylorErrorEnergy
 import Grothe.UpperChaos.TaylorFirstBandNorms
 import Grothe.UpperChaos.TaylorFirstData
 import Grothe.UpperChaos.TaylorFrozenData
+import Grothe.UpperChaos.TaylorInnerFubini
 import Grothe.UpperChaos.TaylorInnerLaplace
 import Grothe.UpperChaos.TaylorMoments
 import Grothe.UpperChaos.TaylorPhase
@@ -420,4 +426,5 @@ import Grothe.UpperChaos.TaylorRoundingData
 import Grothe.UpperChaos.TaylorSecondBandNorms
 import Grothe.UpperChaos.TaylorSecondData
 import Grothe.UpperChaos.TaylorTailData
+import Grothe.UpperChaos.TaylorWickReduction
 import Grothe.UpperChaos.ThirdCapturedTail

@@ -313,9 +313,8 @@ monomial formula: the scalar factor
 `t^(-1/2)*exp(-alpha*t*normSq(z)/beta)` multiplies
 `z*M(p,q;beta,mu) + a*M(p+1,q;beta,mu)`. The finite moment `M` includes its
 `1/beta` mass. The measure conversion, translation, integrability and factorial
-scaling are all explicit. Expanding the complete source polynomial into this
-conditional interface, certified auxiliary and radial tails, and numerical
-integration accuracy remain separate obligations.
+scaling are all explicit. Certified auxiliary and radial tails for the complete
+sources, and numerical integration accuracy, remain separate obligations.
 
 `ConditionalGaussianPolynomial` evaluates any existing
 `CPoly = MvPolynomial (Fin 2) ℂ` by its finite support and proves its
@@ -323,6 +322,37 @@ integrability against the affine phase kernel. The exact conditional integral
 is the coefficient-weighted finite Wick sum. This uses the same polynomial
 representation as the complex Hermite basis; it introduces no new coefficient
 encoding or numerical integration assumption.
+
+`GradedHermitePhaseSlice` constructs the actual center polynomial in the
+second coordinate by fixing the first coordinate in each normalized tensor
+Hermite mode. The invariant substitutions for `‖w‖²`, `Re(conj(z)*w)` and
+`Im(conj(z)*w)` retain the complete `phaseTerms` list. Its source polynomial is
+`conjP(centerSlice) * (i*D*S)^j`. The exact pointwise identity factors out
+`exp(-j*epsilon*normSq(z))` and leaves the conditional damping
+`exp(-(alpha-1)*normSq(w))`, where `alpha=1+j*epsilon`.
+`TaylorConditionalGaussian` proves integrability and the exact finite Wick
+evaluation of this production conditional integral for every positive auxiliary
+parameter. The source is `(i*phiT)^j`; its Taylor factorial belongs to the later
+linear combination and is not inserted into this identity.
+`PhaseLaplaceBounded` gives a uniform kernel bound at each positive auxiliary
+parameter, so multiplication preserves every integrable source.
+`TaylorInnerFubini` uses it to justify product Fubini for the actual source at
+every such parameter. `inner_gradedHermite_hpow_eq_wick` in
+`TaylorWickReduction` combines these results with the canonical graded-center
+representative and the absolute Laplace identity: the production inner product
+is the iterated auxiliary and first-coordinate Gaussian integral of
+`taylorConditionalWick`. No conditional-integration accuracy premise is used.
+
+`ShiftedMomentRecurrence` proves
+`M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including
+`q=0` and zero mean. Before norms are taken, the affine bracket becomes
+`(alpha*z/beta)*M(p,q)+(a*q/beta)*M(p,q-1)`.
+The base-moment cancellation below is a specialization of this recurrence.
+`RadialDampedMoments` proves the Gamma formula and integrability for
+`norm(z)^q * exp(-(rate-1)*normSq(z))` whenever `q>-2` and `rate>0`.
+This includes negative radial exponents without imposing a positive radial
+cutoff. The full-source tail constants, radial reduction and
+certified quadrature budgets remain open.
 
 `ConditionalGaussianBase` identifies the first shifted moments and combines
 the zeroth-moment bracket before estimating it: it is exactly
