@@ -1049,6 +1049,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.RadialRepair.norm_phaseRepair_le_one
 #print axioms Grothe.UpperChaos.RadialRepair.phaseRepair_change_sq_le
 #print axioms Grothe.UpperChaos.RadialRepair.radial_gap_sq_le
+#print axioms Grothe.UpperChaos.RestrictedWick.integral_cut_balanced
+#print axioms Grothe.UpperChaos.RestrictedWick.integral_cut_invariant
+#print axioms Grothe.UpperChaos.RestrictedWick.integral_cut_unbalanced
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_le
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
 #print axioms Grothe.UpperChaos.Thirteen.fresh_upper_rounder_relaxed
