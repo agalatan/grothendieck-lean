@@ -33,7 +33,7 @@ theorem measurable_radialApprox (re im : List ℚ) (ps : List Panel) :
 
 theorem radialApprox_zero (re im : List ℚ) (ps : List Panel) (z : ℂ) (hz : 8 ≤ ‖z‖) :
     radialApprox re im ps z = 0 := by
-  simp only [radialApprox, if_neg (not_lt_of_ge hz)]
+  simp only [radialApprox, ite_eq_right (not_lt_of_ge hz)]
 
 theorem radialApprox_error (re im : List ℚ) (ps : List Panel)
     (hchecks : ps.all (panelCheck re im epsilon) = true)
@@ -42,7 +42,7 @@ theorem radialApprox_error (re im : List ℚ) (ps : List Panel)
       radialApprox re im ps z‖ ≤ (epsilon : ℝ) := by
   have h := approxList_uniform_error re im epsilon ps hchecks hcover (by norm_num)
     ‖z‖ (by simpa using norm_nonneg z) (by simpa using hz.le)
-  rw [radialApprox, if_pos hz, ← mul_sub, norm_mul]
+  rw [radialApprox, ite_eq_left hz, ← mul_sub, norm_mul]
   have hreverse : ‖Grothe.Haag.ph (evalC ⟨re, im⟩ (‖z‖ ^ 2)) -
       approxList re im ps ‖z‖‖ ≤ (epsilon : ℝ) := by
     rw [norm_sub_rev]

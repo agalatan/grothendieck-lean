@@ -170,8 +170,12 @@ theorem residual_eval (re im : List ℚ) (c h k : ℚ) (w : List ℚ) (y : ℝ) 
     evalQ (residual re im c h k w) y =
       ((k : ℝ) * evalQ w y) ^ 2 *
         Complex.normSq (evalC ⟨re, im⟩ (((c : ℝ) + (h : ℝ) * y) ^ 2)) - 1 := by
+  have hcomp (cs : List ℚ) :
+      evalQ (compQ cs (mulQ [c, h] [c, h])) y =
+        evalQ cs (((c : ℝ) + (h : ℝ) * y) ^ 2) := by
+    rw [evalQ_comp, evalQ_square]
   simp only [residual, normalizedModulus, evalQ_add, evalQ_mul, evalQ_scale,
-    evalQ_comp, evalQ_square, evalQ_cons, evalQ_nil, Rat.cast_neg, Rat.cast_one,
+    hcomp, evalQ_cons, evalQ_nil, Rat.cast_neg, Rat.cast_one,
     mul_zero, add_zero, evalC, Complex.normSq_apply, Complex.add_re,
     Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.ofReal_re,
     Complex.ofReal_im, Complex.I_re, Complex.I_im, zero_mul, one_mul,
@@ -331,7 +335,7 @@ theorem covers_exists {lo hi : ℚ} {ps : List Panel}
     · exact ⟨p, List.mem_cons_self, by simpa only [ha] using htlo, ht⟩
     · have hpb : (p.b : ℝ) < t := lt_of_not_ge ht
       have hlt' : p.b < hi := by exact_mod_cast hpb.trans_le hthi
-      obtain ⟨q, hq, hqa, hqb⟩ := ih htail hlt' hpb.le hthi
+      obtain ⟨q, hq, hqa, hqb⟩ := ih htail hlt' hpb.le
       exact ⟨q, List.mem_cons_of_mem p hq, hqa, hqb⟩
 
 /-- First containing panel; zero outside every panel. Shared endpoints choose the earlier panel. -/
@@ -346,17 +350,17 @@ theorem approxList_error_of_cover (re im : List ℚ) (ε : ℚ) (ps : List Panel
     (t : ℝ) (hcover : ∃ p ∈ ps, (p.a : ℝ) ≤ t ∧ t ≤ (p.b : ℝ)) :
     ‖approxList re im ps t - Grothe.Haag.ph (evalC ⟨re, im⟩ (t ^ 2))‖ ≤ (ε : ℝ) := by
   induction ps with
-  | nil => simpa using hcover
+  | nil => simp at hcover
   | cons p ps ih =>
     simp only [List.all_cons, Bool.and_eq_true] at hchecks
     by_cases ht : (p.a : ℝ) ≤ t ∧ t ≤ (p.b : ℝ)
-    · simpa only [approxList, if_pos ht] using panelCheck_sound re im ε p hchecks.1 t ht.1 ht.2
+    · simpa only [approxList, ite_eq_left ht] using panelCheck_sound re im ε p hchecks.1 t ht.1 ht.2
     · have htail : ∃ q ∈ ps, (q.a : ℝ) ≤ t ∧ t ≤ (q.b : ℝ) := by
         obtain ⟨q, hq, hqa, hqb⟩ := hcover
         rcases List.mem_cons.mp hq with rfl | hq
         · exact (ht ⟨hqa, hqb⟩).elim
         · exact ⟨q, hq, hqa, hqb⟩
-      simpa only [approxList, if_neg ht] using ih hchecks.2 htail
+      simpa only [approxList, ite_eq_right ht] using ih hchecks.2 htail
 
 /-- A finite cover plus finite panel certificates yields one uniform phase bound. -/
 theorem approxList_uniform_error (re im : List ℚ) (ε : ℚ) (ps : List Panel)
@@ -372,7 +376,7 @@ theorem approxList_zero_of_outside (re im : List ℚ) (ps : List Panel) (t : ℝ
   induction ps with
   | nil => rfl
   | cons p ps ih =>
-    rw [approxList, if_neg (hout p List.mem_cons_self)]
+    rw [approxList, ite_eq_right (hout p List.mem_cons_self)]
     exact ih fun q hq => hout q (List.mem_cons_of_mem p hq)
 
 theorem approxList_zero_of_lt (re im : List ℚ) (ps : List Panel) {lo hi : ℚ}
