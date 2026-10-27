@@ -301,6 +301,7 @@ import Grothe.UpperChaos.HermiteC2
 import Grothe.UpperChaos.HermiteC2Basis
 import Grothe.UpperChaos.HermiteComplete
 import Grothe.UpperChaos.HermiteDegree
+import Grothe.UpperChaos.HermiteFinite
 import Grothe.UpperChaos.HolIntegral
 import Grothe.UpperChaos.InvariantMoments
 import Grothe.UpperChaos.Kernel2
@@ -347,6 +348,8 @@ import Grothe.UpperChaos.SmoothComm
 import Grothe.UpperChaos.Smoothing
 import Grothe.UpperChaos.Structural
 import Grothe.UpperChaos.Sym2R
+import Grothe.UpperChaos.TaylorBandCheck
+import Grothe.UpperChaos.TaylorBandData
 import Grothe.UpperChaos.TaylorErrorEnergy
 import Grothe.UpperChaos.TaylorMoments
 import Grothe.UpperChaos.TaylorPhase
