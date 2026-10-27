@@ -77,9 +77,13 @@ theorem integrable_phase_radial_mean (v : ℝ → ℂ) (hv : Measurable v)
   apply h2.congr
   filter_upwards [ae_restrict_mem measurableSet_Ioi] with t ht
   change (0 : ℝ) < t at ht
-  simp only [zeroedPhaseRadial, ite_eq_right (ne_of_gt ht), Complex.ofReal_mul,
-    Complex.ofReal_ofNat]
-  push_cast
+  change (2 : ℂ) * (((t * Real.exp (-t ^ 2) : ℝ) : ℂ) * zeroedPhaseRadial v t) =
+    (((2 * t * Real.exp (-t ^ 2) : ℝ) : ℂ) * v (t ^ 2))
+  rw [show zeroedPhaseRadial v t = v (t ^ 2) by
+    simp only [zeroedPhaseRadial, ite_eq_right (ne_of_gt ht)]]
+  rw [Complex.ofReal_mul t (Real.exp (-t ^ 2)),
+    Complex.ofReal_mul (2 * t) (Real.exp (-t ^ 2)), Complex.ofReal_mul 2 t]
+  simp only [Complex.ofReal_ofNat]
   ring
 
 /-- Exact phase inner product for an arbitrary bounded measurable radial
