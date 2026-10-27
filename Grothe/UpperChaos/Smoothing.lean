@@ -109,13 +109,13 @@ theorem smoothOp_toLp {f : ℂ × ℂ → ℂ} (hfm : Measurable f) {C : ℝ} (h
       mp_smooth.quasiMeasurePreserving.ae_eq_comp hfL.coeFn_toLp] with v ha hb hc
     change ⟪(Lp.compMeasurePreserving Prod.fst mp_fst2 g : _ → ℂ) v,
       (Lp.compMeasurePreserving _ mp_smooth (hfL.toLp f) : _ → ℂ) v⟫_ℂ = _
-    rw [ha, hb, Function.comp_apply, Function.comp_apply, hc, RCLike.inner_apply]
-    simp
+    rw [ha, hb]
+    simp only [Function.comp_apply] at hc ⊢
+    rw [hc, RCLike.inner_apply]
   rw [inner_smoothOp, L2.inner_def, integral_congr_ae h1, integral_prod _ hint, L2.inner_def]
   refine integral_congr_ae ?_
   filter_upwards [hgL.coeFn_toLp] with x hx
   rw [hx, RCLike.inner_apply, integral_const_mul]
-  simp
 
 end
 
