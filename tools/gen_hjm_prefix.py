@@ -134,7 +134,9 @@ def generate():
     files["Grothe/HJM/PrefixTable.lean"] = "\n".join(t)
     for r in range(1, 6):
         c, n = checks[r]
-        L = ["import Grothe.HJM.Prefix", "import Grothe.HJM.PrefixTable", "", HEADER, "",
+        # each check imports the previous one: the five kernel checks run one at a time (bounded memory)
+        prev = [f"import Grothe.HJM.PrefixCheck{r - 1}"] if r > 1 else []
+        L = ["import Grothe.HJM.Prefix", "import Grothe.HJM.PrefixTable"] + prev + ["", HEADER, "",
              "namespace Grothe.HJM", "", "open Grothe.Upper GrotheKernel", ""]
         for i in range(n):
             L += [f"theorem chunk{r}_{i} : chunkOK 120 (Ymk pList{r}) (((haagList 120).drop ({i} * {c})).take {c})",
