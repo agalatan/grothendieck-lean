@@ -1,12 +1,15 @@
-import Grothe.UpperChaos.HermiteFinite
+import Grothe.UpperChaos.GradedHermite
 import Grothe.UpperChaos.TaylorBandData
 
 /-!
-# The third approximant's first captured band
+# Exact band norms of the third Taylor approximant
 
-The coefficients are exact dyadic values from the preserved binary64 centers.
-The finite arithmetic check gives the norm of this concrete Hermite vector.
-It does not assert a bound on its distance to the true Gaussian Taylor source.
+The concrete center uses all 6552 preserved dyadic coefficients through degree
+51. Direct graded lookup avoids searching or deduplicating a coefficient list.
+Orthonormality identifies the finite arithmetic checks with genuine projected
+Hermite norms. Gaussian approximation errors remain separate hypotheses.
+
+Agent-ID: codex-2ca4
 -/
 
 open MeasureTheory
@@ -15,46 +18,76 @@ namespace Grothe.UpperChaos
 
 set_option maxRecDepth 4096
 
-/-- The explicitly listed charge-one modes through total degree eleven. -/
-def thirdBand11Support : Finset Idx2 := (thirdBand11Terms.map Prod.fst).toFinset
+/-- The complete, unscaled, third Taylor approximant. -/
+noncomputable def thirdCenter : Lp ℂ 2 mu2 := gradedHermite 26 thirdCenterCoeff
 
-/-- The coefficient at a listed mode, or zero when it is not listed. -/
-def thirdBand11Coeff (i : Idx2) : ℚ :=
-  ((thirdBand11Terms.find? (fun t => t.1 == i)).map Prod.snd).getD 0
+/-- The four finite comparison bands, expressed by total degree. -/
+def thirdCenterBandModes (k : Fin 4) : Set Idx2 :=
+  {i | thirdCenterBandLo k < (bideg i).1 + (bideg i).2 ∧
+    (bideg i).1 + (bideg i).2 ≤ thirdCenterBandHi k}
 
-/-- The concrete finite Hermite vector of the third approximant's first band. -/
-noncomputable def thirdBand11 : Lp ℂ 2 mu2 :=
-  hermiteFinite thirdBand11Support thirdBand11Coeff
+instance (k : Fin 4) : DecidablePred (· ∈ thirdCenterBandModes k) := fun i =>
+  inferInstanceAs (Decidable (thirdCenterBandLo k < (bideg i).1 + (bideg i).2 ∧
+    (bideg i).1 + (bideg i).2 ≤ thirdCenterBandHi k))
 
-/-- All listed modes have charge one and total degree at most eleven. -/
-theorem thirdBand11_support : ∀ i ∈ thirdBand11Support,
-    i.1.1 + i.2.1 = i.1.2 + i.2.2 + 1 ∧
-      i.1.1 + i.1.2 + i.2.1 + i.2.2 ≤ 11 := by
-  decide +kernel
-
-/-- Exact sum of squares of the coefficients of the concrete band vector. -/
-theorem thirdBand11_energy_check :
-    (∑ i ∈ thirdBand11Support, thirdBand11Coeff i ^ 2) = thirdBand11EnergyQ := by
+/-- Every packed record decodes, and the complete coefficient array has the expected size. -/
+theorem thirdCenter_decode_check :
+    PackedDyadic.parse thirdCenterExponent thirdCenterPacked = some thirdCenterInts ∧
+      thirdCenterInts.size = 6552 := by
   native_decide
 
-/-- The finite arithmetic certificate is the actual squared Hermite norm. -/
-theorem norm_thirdBand11_sq : ‖thirdBand11‖ ^ 2 = (thirdBand11EnergyQ : ℝ) := by
-  rw [thirdBand11, norm_hermiteFinite_sq_cast, thirdBand11_energy_check]
+/-- Exact total energy and all four projected energies, from the actual graded coefficients. -/
+theorem thirdCenter_energy_check :
+    (∑ q ∈ Finset.range 26, ∑ c ∈ Finset.range (q + 2),
+      ∑ d ∈ Finset.range (q + 1), thirdCenterCoeff q c d ^ 2) = thirdCenterEnergyQ ∧
+    ∀ k : Fin 4,
+      (∑ q ∈ Finset.range 26, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
+        if gradedMode q c d ∈ thirdCenterBandModes k then thirdCenterCoeff q c d ^ 2 else 0) =
+          thirdCenterBandEnergyQ k := by
+  native_decide
 
-/-- A rational lower bound on the captured norm, suitable for the tail-energy interface. -/
-theorem thirdBand11_norm_lower : (thirdBand11LowerQ : ℝ) ≤ ‖thirdBand11‖ := by
-  have hq : thirdBand11LowerQ ^ 2 ≤ thirdBand11EnergyQ := by decide +kernel
-  have hr : (thirdBand11LowerQ : ℝ) ^ 2 ≤ (thirdBand11EnergyQ : ℝ) := by
-    exact_mod_cast hq
-  have hnonneg : (0 : ℝ) ≤ thirdBand11LowerQ := by norm_num [thirdBand11LowerQ]
-  nlinarith [norm_thirdBand11_sq, norm_nonneg thirdBand11]
+/-- The total coefficient energy is the actual squared Hermite norm. -/
+theorem norm_thirdCenter_sq : ‖thirdCenter‖ ^ 2 = (thirdCenterEnergyQ : ℝ) := by
+  rw [thirdCenter, norm_gradedHermite_sq_cast, thirdCenter_energy_check.1]
 
-/-- The matching rational upper enclosure of the same captured norm. -/
-theorem thirdBand11_norm_upper : ‖thirdBand11‖ ≤ (thirdBand11UpperQ : ℝ) := by
-  have hq : thirdBand11EnergyQ ≤ thirdBand11UpperQ ^ 2 := by decide +kernel
-  have hr : (thirdBand11EnergyQ : ℝ) ≤ (thirdBand11UpperQ : ℝ) ^ 2 := by
-    exact_mod_cast hq
-  have hnonneg : (0 : ℝ) ≤ thirdBand11UpperQ := by norm_num [thirdBand11UpperQ]
-  nlinarith [norm_thirdBand11_sq, norm_nonneg thirdBand11]
+/-- Each finite coefficient target is the actual projected Hermite energy. -/
+theorem norm_thirdCenterBand_sq (k : Fin 4) :
+    ‖projOn (thirdCenterBandModes k) thirdCenter‖ ^ 2 = (thirdCenterBandEnergyQ k : ℝ) := by
+  rw [thirdCenter, norm_projOn_gradedHermite_sq_cast, thirdCenter_energy_check.2 k]
+
+/-- Lower enclosures preserve captured energy for the tail estimate. -/
+theorem thirdCenterBand_norm_lower (k : Fin 4) :
+    (thirdCenterBandLowerQ k : ℝ) ≤ ‖projOn (thirdCenterBandModes k) thirdCenter‖ := by
+  have hq : ∀ j : Fin 4, thirdCenterBandLowerQ j ^ 2 ≤ thirdCenterBandEnergyQ j := by
+    decide +kernel
+  have hr : (thirdCenterBandLowerQ k : ℝ) ^ 2 ≤ (thirdCenterBandEnergyQ k : ℝ) := by
+    exact_mod_cast hq k
+  have hn : ∀ j : Fin 4, 0 ≤ thirdCenterBandLowerQ j := by decide +kernel
+  have hnonneg : (0 : ℝ) ≤ thirdCenterBandLowerQ k := by exact_mod_cast hn k
+  nlinarith [norm_thirdCenterBand_sq k, norm_nonneg (projOn (thirdCenterBandModes k) thirdCenter)]
+
+/-- Matching upper enclosures of the four finite band norms. -/
+theorem thirdCenterBand_norm_upper (k : Fin 4) :
+    ‖projOn (thirdCenterBandModes k) thirdCenter‖ ≤ (thirdCenterBandUpperQ k : ℝ) := by
+  have hq : ∀ j : Fin 4, thirdCenterBandEnergyQ j ≤ thirdCenterBandUpperQ j ^ 2 := by
+    decide +kernel
+  have hr : (thirdCenterBandEnergyQ k : ℝ) ≤ (thirdCenterBandUpperQ k : ℝ) ^ 2 := by
+    exact_mod_cast hq k
+  have hn : ∀ j : Fin 4, 0 ≤ thirdCenterBandUpperQ j := by decide +kernel
+  have hnonneg : (0 : ℝ) ≤ thirdCenterBandUpperQ k := by exact_mod_cast hn k
+  nlinarith [norm_thirdCenterBand_sq k, norm_nonneg (projOn (thirdCenterBandModes k) thirdCenter)]
+
+/-- The center has no Hermite coefficient of a charge other than one. -/
+theorem thirdCenter_charge (i : Idx2)
+    (hi : i.1.1 + i.2.1 ≠ i.1.2 + i.2.2 + 1) :
+    inner ℂ (hvec2 i) thirdCenter = 0 :=
+  inner_gradedHermite_eq_zero_of_charge 26 thirdCenterCoeff i hi
+
+/-- The exact finite center vanishes on the omitted degree tail. -/
+theorem thirdCenter_tail_zero :
+    projOn {i : Idx2 | 51 < (bideg i).1 + (bideg i).2} thirdCenter = 0 := by
+  apply projOn_gradedHermite_eq_zero_of_total_degree _ 26 thirdCenterCoeff
+  intro i hi
+  exact hi
 
 end Grothe.UpperChaos

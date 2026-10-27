@@ -150,10 +150,19 @@ error cap. An alternative interface uses one real inner product and the
 approximant norm to bound the whole approximation error. The remaining
 numerical coefficient and integral bounds are explicit hypotheses.
 Finite normalized Hermite expansions have exact rational squared norms.
-The preserved coefficient inputs supply a first concrete captured-band check:
-the third approximant through degree 11 has norm approximately
-$2.121377361367546\cdot10^{-6}$. Its Gaussian approximation error remains a
+The preserved coefficient inputs supply a complete finite check for the third
+approximant: all 6,552 coefficients through degree 51, its total norm, and its
+four projected band norms. Injective graded indexing also proves that its
+higher-degree tail vanishes. Its Gaussian approximation error remains a
 separate obligation; the stored error arrays are not treated as proofs.
+A continuous finite-polynomial representative satisfies the charge-one
+function interface. The third-order tail cap follows from four explicit
+finite-band Gaussian error caps by subtracting captured energy from the exact
+sixth moment; the Gaussian caps themselves remain hypotheses.
+The finite rounding difference $c_1+c_2/2+c_3/6-v$ has norm at most $10^{-18}$,
+proved by exact integer squares at a common dyadic denominator. The three
+other preserved center sources and their successful decoding are checked
+separately from Gaussian approximation errors.
 
 \paragraph{Radial repair has a quantitative ceiling.}
 Lean certifies the polynomial disk map $z\mapsto zS_6(1-|z|^2)$, where

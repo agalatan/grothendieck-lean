@@ -21,24 +21,56 @@ The frozen correction extends to degree 201.
 
 `tools/gen_taylor_band_data.py` checks all source hashes and decodes each selected
 binary64 value with `Fraction.from_float`, preserving its exact dyadic value.
-No decimal rounding is used. It generates `TaylorBandData.lean` and
-`third-band11.json` for the third approximant's first band (degrees 1 through 11,
-112 coefficients). Run:
+It generates `TaylorBandData.lean` and `third-center.json` for the complete third
+approximant, with 6,552 coefficients through degree 51. Packed `mantissa:exponent`
+records are decoded strictly in Lean to integers at common denominator 2^105.
+No decimal rounding is used for coefficients. Run:
 
 ```sh
 python3 tools/gen_taylor_band_data.py --check
 ```
 
-`HermiteFinite.lean` proves the finite Hermite coefficient and projection norm
-identities. `TaylorBandCheck.lean` checks the exact sum of squares and identifies
-it with the norm of the concrete vector `thirdBand11`; rational squared
-comparisons give lower and upper norm enclosures around
-`2.121377361367546457321314e-6`. The support certificate is kernel-checked.
-The large coefficient sum is one single-threaded native equality.
+`HermiteFinite.lean` proves the normalized Hermite norm identities.
+`GradedHermite.lean` proves injectivity and exact support of the graded index,
+allowing direct array lookup instead of a search through the coefficient list.
+`TaylorBandCheck.lean` verifies parsing, array size, total energy, and four
+band energies by single-threaded native checks. Rational squared comparisons
+then give lower and upper norm enclosures with width 10^-30 for the bands
+(0,11], (11,21], (21,31], and (31,51]. These use the unscaled third center;
+the factor 1/6 belongs to the later comparison source.
 
-This is a norm certificate for one recovered finite center. It does not certify
-its approximation error to `hpow 3`, the other bands, the rounding discrepancy,
-or the stored kernel-energy table. Completing those steps still requires the
-remaining finite checks and Gaussian integral enclosures.
+The charge-one support and exact vanishing on total degrees above 51 follow
+from the general indexing lemmas. No numerical support assertion is assumed.
+
+`GradedHermiteFn` constructs the pointwise normalized polynomial and identifies
+its `toLp` with the exact finite center. `ThirdCapturedTail` derives the existing
+third tail comparison cap from four unscaled finite-band error hypotheses:
+`[47629771,353989726,4052571868,150654124859]/10^18`. These tighter caps fit inside
+six times the public finite-band caps and preserve enough captured energy for
+the tail. The rounded public caps alone lose too much precision. The original
+allowances are preserved in
+`data/localized-comparison/inputs/taylor_comparison_result.json`.
+
+`tools/gen_taylor_rounding_data.py` uses the standard library to decode all
+pinned NPY inputs exactly and generates `TaylorFirstData`, `TaylorSecondData`,
+`TaylorFrozenData`, `TaylorRoundingData` and `rounding.json`. It retains the
+second center's degree-91 prefix and verifies that all frozen coefficients
+above degree 181 vanish exactly. Run:
+
+```sh
+python3 tools/gen_taylor_rounding_data.py --check
+```
+
+The new data use chunks of at most 1,024 records and common integer scale
+2^206. `TaylorCenters` reuses the third-center integers by multiplying by2^101.
+`TaylorRounding` computes the integer energy of
+`6*A1 + 3*A2 + A3 - 6*V` directly from the graded coefficient lookups, with zero
+extension on the shorter centers. The norm-square denominator is36*2^412.
+The actual rounding norm is proved at most10^-18; its arithmetic receipt is
+approximately8.746217563779476e-20. No rounded residual vector is stored.
+
+These certificates do not establish the distance to `hpow 3`, the first or
+second centers' band norm certificates, or the stored kernel-energy table. The remaining finite checks and Gaussian integral
+enclosures remain explicit obligations.
 
 Agent-ID: codex-2ca4

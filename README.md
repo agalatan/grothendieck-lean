@@ -229,11 +229,19 @@ integral bounds as hypotheses.
 The inherited Taylor coefficient files and frozen correction are preserved in
 [`data/taylor-approximants/`](data/taylor-approximants/README.md), with their
 original hashes. `HermiteFinite` identifies norms of finite normalized Hermite
-expansions with rational sums of coefficient squares. The first concrete band
-certificate, `TaylorBandCheck`, uses the third approximant's 112 coefficients
-through degree 11 and encloses its norm near 2.121377361367546·10⁻⁶. It certifies
-the finite center norm; its distance to the Gaussian Taylor source still needs
-an integration-error bound.
+expansions with rational sums of coefficient squares. `GradedHermite` provides
+injective charge-one indexing and direct coefficient lookup. `TaylorBandCheck`
+certifies the complete third approximant's 6,552 coefficients through degree 51:
+its total norm, all four captured band norms, and its vanishing degree tail.
+`GradedHermiteFn` supplies its continuous, charge-one pointwise representative.
+`ThirdCapturedTail` derives the existing third-order tail cap from four explicit
+finite-band Gaussian error bounds, using the exact sixth phase moment and the
+captured center energies. Those Gaussian error bounds remain hypotheses.
+The first and second centers and frozen correction also have exact dyadic
+representations. `TaylorRounding.norm_roundingDifference_le` proves
+‖c₁+c₂/2+c₃/6−v‖ ≤ 10⁻¹⁸ by recomputing the common-denominator integer energy.
+This discharges the finite rounding-norm ingredient; Gaussian approximation
+errors and the kernel-energy table accuracy remain separate obligations.
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
@@ -341,8 +349,10 @@ The sharper conditional bound above remains stronger.
 `K ≤ M/(q̂₀ − Σ_{k≥1}|q̂_k|)` for a weighted mixture `Σ w_r K_r` of dominated radial kernels with `Σ|w_r| ≤ M`
 (`mixture_bound`; negative weights are free because domination survives absolutely convex combinations). The Cauchy
 tails of the scalar branches 1–4 are proved (`Grothe/HJM/Cauchy*.lean`, `weighted_tails`:
-`Σ_r |w_r| Σ_{n≥120} |k_{r,n}| ≤ 4·10⁻¹⁰`), from Haagerup's kernel continued to the slit plane, a quadtree of
-complex interval boxes for the region, and Parseval on the circle.
+`Σ_r |w_r| Σ_{n≥120} |k_{r,n}|` within HJM's budget `1.01718·10⁻¹¹`, with HJM's radii), from Haagerup's kernel
+continued to the slit plane, a quadtree of complex interval boxes for the region, and Parseval on the circle.
+Branch 5's tail beyond mode 120 is within HJM's published budgets (`branch5_tail`: modes 120–4987 of the phase
+coefficients below 67 by one interval Horner evaluation, `finite67_check`, and the rest by `ScalarTailRefinement`).
 `Grothe/HJM/Origin.lean` defines the asymmetric sixth branch from exact polynomial-phase
 responses and proves domination of its full real radial coefficient series. The proof uses one
 shared Gaussian driver, the charge-one Hermite expansion and conjugate-reflection symmetrization.

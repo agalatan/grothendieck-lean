@@ -183,9 +183,14 @@ Progress (claude/hardy, 26 Oct):
   [data/phase-moments](../data/phase-moments/README.md).
   The original approximant inputs and frozen correction have been recovered
   with matching hashes in `data/taylor-approximants/inputs/`. `TaylorBandCheck`
-  supplies the first finite center-norm certificate (third source, degree ≤11).
-  The remaining finite bands and rounding norm still need their own checks.
-  The other Hermite-tail and coefficient inputs are still separate obligations.
+  supplies the full third-center certificate through degree 51, including all
+  four finite bands and exact vanishing on the tail. `TaylorRounding` also
+  certifies the 10^-18 norm cap for the exact rounding difference. The first
+  and second centers' band norms still need their finite checks.
+  `ThirdCapturedTail` derives the existing third tail cap from four slightly
+  tighter finite-band Gaussian error premises, with a concrete pointwise center
+  satisfying `ChargeFn`. Those errors and the other Taylor-source inputs remain
+  separate obligations.
 * The refined lower endpoint is `1.401697049825`, conditional on the same
   `NodeCaps`, through `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`.
   The single `Grothe` target includes the 60 range facts and their final assembly;
