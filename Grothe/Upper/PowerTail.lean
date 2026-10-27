@@ -45,6 +45,31 @@ lemma weighted_composition {c : ℕ → ℝ} (hc : Summable fun k => |c k|)
       simp only [abs_mul, ← mul_sum]
       exact mul_le_mul_of_nonneg_left ((sum_abs_coeff_le_l1 _ _).trans (hterm k)) (abs_nonneg _)
 
+/-- Keep each weight in a finite prefix; use only the endpoint weight on the remaining tail. -/
+theorem weighted_composition_cut {c : ℕ → ℝ} (hc : Summable fun k => |c k|)
+    {P : ℝ[X]} (hP : l1 P ≤ 1) (w : ℕ → ℝ)
+    (hw0 : ∀ k, 0 ≤ w k) (hw1 : ∀ k, w k ≤ 1) (hmono : Antitone w)
+    (hterm : ∀ k, l1 (compTerm P k) ≤ w k) (J : ℕ) :
+    ∑' n, |compCoeff c P n| ≤
+      (∑ k ∈ range J, |c k| * w k) + w J * ∑' i, |c (i + J)| := by
+  have hs : Summable fun k => |c k| * w k :=
+    Summable.of_nonneg_of_le (fun k => mul_nonneg (abs_nonneg _) (hw0 k))
+      (fun k => mul_le_of_le_one_right (abs_nonneg _) (hw1 k)) hc
+  have ht : Summable fun i => |c (i + J)| := (summable_nat_add_iff J).mpr hc
+  have hst : Summable fun i => |c (i + J)| * w (i + J) :=
+    (summable_nat_add_iff J).mpr hs
+  calc
+    ∑' n, |compCoeff c P n| ≤ ∑' k, |c k| * w k :=
+      weighted_composition hc hP w hw0 hw1 hterm
+    _ = (∑ k ∈ range J, |c k| * w k) + ∑' i, |c (i + J)| * w (i + J) :=
+      (hs.sum_add_tsum_nat_add J).symm
+    _ ≤ (∑ k ∈ range J, |c k| * w k) + ∑' i, |c (i + J)| * w J := by
+      apply add_le_add_left
+      exact hst.tsum_le_tsum
+        (fun i => mul_le_mul_of_nonneg_left (hmono (by omega)) (abs_nonneg _))
+        (ht.mul_right (w J))
+    _ = _ := by rw [tsum_mul_right]; ring
+
 def telescope (k : ℕ) (q : ℝ) : ℕ → ℝ
   | 0 => 1 / k
   | n+1 => (1 / k - 1 / (k+2)) + q * telescope (k+2) q n

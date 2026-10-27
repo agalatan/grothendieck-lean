@@ -155,25 +155,90 @@ theorem supported_composition_arbitrary_power_bound {c : ℕ → ℝ}
       · simp [w, hk, mul_comm]
     _ = q^m * ∑' k, |c k| := tsum_mul_left
 
-/-- The actual omitted outer phase blocks start at index @START@, hence every
-term receives at least ratio^@QUOTIENT@. No Wallis estimate is used yet. -/
-lemma outer_composition_saving :
-    ∑' n, |compCoeff (cHi @START@) P n| ≤
-      (ratio : ℝ)^@QUOTIENT@ * ∑' k, |cHi @START@ k| := by
-  exact supported_composition_arbitrary_power_bound (summable_cHi @START@) norm_P
-    (by norm_num [ratio]) (by norm_num [ratio]) @POWER@ norm_power @START@ @QUOTIENT@ (by norm_num)
-    (fun k hk => by simp [cHi, hk])
+/-- Retain the actual power saving of each explicitly summed outer index. -/
+def weightedChunk : ℚ := ∑ k ∈ range @WEIGHTED_SPLIT@,
+  if k < @START@ then 0 else haagR k * ratio^((2*k+1)/@POWER@)
 
-/-- The paper's Wallis tail estimate is an explicit analytic input. -/
-lemma outer_composition_bound
-    (hWallis : (∑' k, |cHi @START@ k|) ≤ (1 : ℝ)/@WALLIS_DENOMINATOR@) :
-    ∑' n, |compCoeff (cHi @START@) P n| ≤ (ratio : ℝ)^@QUOTIENT@/@WALLIS_DENOMINATOR@ := by
+/-- The remaining tail uses its endpoint weight and the proved Haagerup majorant. -/
+def weightedOuterBound : ℚ := (355/113)/4 *
+  (weightedChunk + ratio^((2*@WEIGHTED_SPLIT@+1)/@POWER@) *
+    haagG @WEIGHTED_SPLIT@ / (2*@WEIGHTED_SPLIT@))
+
+/-- Keep the power contraction at every finite outer index, then bound the infinite suffix. -/
+lemma outer_composition_saving :
+    ∑' n, |compCoeff (cHi @START@) P n| ≤ Real.pi/4 *
+      ((weightedChunk : ℝ) + (ratio : ℝ)^((2*@WEIGHTED_SPLIT@+1)/@POWER@) *
+        (haagG @WEIGHTED_SPLIT@ : ℝ)/(2*@WEIGHTED_SPLIT@)) := by
+  let w : ℕ → ℝ := fun k => (ratio : ℝ)^((2*k+1)/@POWER@)
+  have hq0 : (0 : ℝ) ≤ ratio := by norm_num [ratio]
+  have hq1 : (ratio : ℝ) ≤ 1 := by norm_num [ratio]
+  have hw0 : ∀ k, 0 ≤ w k := fun k => pow_nonneg hq0 _
+  have hw1 : ∀ k, w k ≤ 1 := fun k => pow_le_one₀ hq0 hq1
+  have hm : Antitone w := by
+    intro k l hkl
+    exact pow_le_pow_of_le_one hq0 hq1 (Nat.div_le_div_right (by omega))
+  have hmain := weighted_composition_cut (summable_cHi @START@) norm_P w hw0 hw1 hm
+    (fun k => compTerm_arbitrary_power_bound norm_P hq0 @POWER@ norm_power k) @WEIGHTED_SPLIT@
+  have hfinite : ∑ k ∈ range @WEIGHTED_SPLIT@, |cHi @START@ k| * w k =
+      Real.pi/4 * (weightedChunk : ℝ) := by
+    unfold weightedChunk
+    push_cast
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro k hk
+    by_cases h : k < @START@
+    · simp [cHi, h]
+    · simp only [cHi, ite_eq_right h, abs_of_nonneg (haagCoeff_nonneg k)]
+      dsimp [w, haagCoeff]
+      ring
+  have hshift : ∑' k, |cHi @START@ (k+@WEIGHTED_SPLIT@)| =
+      ∑' k, haagCoeff (k+@WEIGHTED_SPLIT@) := by
+    apply tsum_congr
+    intro k
+    simp [cHi, show ¬ k+@WEIGHTED_SPLIT@ < @START@ by omega,
+      abs_of_nonneg (haagCoeff_nonneg _)]
+  rw [hfinite, hshift] at hmain
   calc
-    ∑' n, |compCoeff (cHi @START@) P n| ≤
-        (ratio : ℝ)^@QUOTIENT@ * ∑' k, |cHi @START@ k| := outer_composition_saving
-    _ ≤ (ratio : ℝ)^@QUOTIENT@ * ((1 : ℝ)/@WALLIS_DENOMINATOR@) :=
-      mul_le_mul_of_nonneg_left hWallis (pow_nonneg (by norm_num [ratio]) @QUOTIENT@)
-    _ = (ratio : ℝ)^@QUOTIENT@/@WALLIS_DENOMINATOR@ := by ring
+    ∑' n, |compCoeff (cHi @START@) P n| ≤ Real.pi/4*(weightedChunk : ℝ) +
+        w @WEIGHTED_SPLIT@ * ∑' k, haagCoeff (k+@WEIGHTED_SPLIT@) := hmain
+    _ ≤ Real.pi/4*(weightedChunk : ℝ) + w @WEIGHTED_SPLIT@ *
+        (Real.pi/4*((haagG @WEIGHTED_SPLIT@ : ℝ)/(2*@WEIGHTED_SPLIT@))) :=
+      add_le_add_left (mul_le_mul_of_nonneg_left
+        (tsum_haagCoeff_tail_le @WEIGHTED_SPLIT@ (by norm_num)) (hw0 _)) _
+    _ = _ := by dsimp [w]; ring
+
+/-- A rational cap for the full composed outer tail, with no analytic tail premise. -/
+lemma outer_composition_bound :
+    ∑' n, |compCoeff (cHi @START@) P n| ≤ (weightedOuterBound : ℝ) := by
+  have hq : (0 : ℚ) ≤ ratio := by norm_num [ratio]
+  have hc : (0 : ℚ) ≤ weightedChunk := Finset.sum_nonneg fun k _ => by
+    split_ifs
+    · exact le_rfl
+    · have hr := haagR_pos k
+      positivity
+  have hG : (0 : ℚ) ≤ haagG @WEIGHTED_SPLIT@ := by
+    have hr := haagR_pos @WEIGHTED_SPLIT@
+    unfold haagG
+    positivity
+  have hc' : (0 : ℝ) ≤ weightedChunk := by exact_mod_cast hc
+  have hG' : (0 : ℝ) ≤ haagG @WEIGHTED_SPLIT@ := by exact_mod_cast hG
+  have hq' : (0 : ℝ) ≤ ratio := by exact_mod_cast hq
+  have hnonneg : (0 : ℝ) ≤ (weightedChunk : ℝ) +
+      (ratio : ℝ)^((2*@WEIGHTED_SPLIT@+1)/@POWER@) *
+        (haagG @WEIGHTED_SPLIT@ : ℝ)/(2*@WEIGHTED_SPLIT@) := by positivity
+  have hpi : Real.pi ≤ (355/113 : ℝ) := by linarith [Real.pi_lt_d20]
+  calc
+    ∑' n, |compCoeff (cHi @START@) P n| ≤ Real.pi/4 *
+        ((weightedChunk : ℝ) + (ratio : ℝ)^((2*@WEIGHTED_SPLIT@+1)/@POWER@) *
+          (haagG @WEIGHTED_SPLIT@ : ℝ)/(2*@WEIGHTED_SPLIT@)) := outer_composition_saving
+    _ ≤ (355/113 : ℝ)/4 *
+        ((weightedChunk : ℝ) + (ratio : ℝ)^((2*@WEIGHTED_SPLIT@+1)/@POWER@) *
+          (haagG @WEIGHTED_SPLIT@ : ℝ)/(2*@WEIGHTED_SPLIT@)) :=
+      mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_right hpi (by norm_num)) hnonneg
+    _ = (weightedOuterBound : ℝ) := by
+      unfold weightedOuterBound
+      push_cast
+      ring
 
 /-! ## Exact rational ledger
 
@@ -189,19 +254,19 @@ def prefixUpper : ℚ := @PREFIX@
 def finite67Upper : ℚ := @FINITE@
 def otherTailsUpper : ℚ := @OTHER@
 def selectorMass : ℚ := @MASS@
-def outerReserve : ℚ := branch5Weight * ratio^@QUOTIENT@/@WALLIS_DENOMINATOR@
+def outerReserve : ℚ := branch5Weight * weightedOuterBound
 def residualUpper : ℚ := prefixUpper + finite67Upper + otherTailsUpper + outerReserve
 def scoreLower : ℚ := (slopeLower-residualUpper)/selectorMass
 def reciprocalClaim : ℚ := @CLAIM@
 
 lemma branch5_outer_bound
-    (hWallis : (∑' k, |cHi @START@ k|) ≤ (1 : ℝ)/@WALLIS_DENOMINATOR@) :
+    (houter : (∑' n, |compCoeff (cHi @START@) P n|) ≤ (weightedOuterBound : ℝ)) :
     (branch5Weight : ℝ) * (∑' n, |compCoeff (cHi @START@) P n|) ≤
       (outerReserve : ℝ) := by
   calc
     (branch5Weight : ℝ) * (∑' n, |compCoeff (cHi @START@) P n|) ≤
-        (branch5Weight : ℝ) * ((ratio : ℝ)^@QUOTIENT@/@WALLIS_DENOMINATOR@) :=
-      mul_le_mul_of_nonneg_left (outer_composition_bound hWallis)
+        (branch5Weight : ℝ) * (weightedOuterBound : ℝ) :=
+      mul_le_mul_of_nonneg_left houter
         (by norm_num [branch5Weight])
     _ = (outerReserve : ℝ) := by
       dsimp [outerReserve]
@@ -211,8 +276,7 @@ lemma branch5_outer_bound
 /-- Exact arithmetic including the selector mass, with a strict margin. -/
 lemma ledger_acceptance :
     (1 : ℚ)/reciprocalClaim * selectorMass < slopeLower-residualUpper := by
-  norm_num [reciprocalClaim, selectorMass, slopeLower, residualUpper,
-    prefixUpper, finite67Upper, otherTailsUpper, outerReserve, branch5Weight, ratio]
+  decide +kernel
 
 lemma score_acceptance : (1 : ℚ)/reciprocalClaim < scoreLower := by
   unfold scoreLower
@@ -258,16 +322,16 @@ theorem refined_score_of_published_inputs
     (hfinite67 : finite67 ≤ (finite67Upper : ℝ))
     (hother : otherTails ≤ (otherTailsUpper : ℝ))
     (hmass : mass = (selectorMass : ℝ))
-    (hWallis : (∑' k, |cHi @START@ k|) ≤ (1 : ℝ)/@WALLIS_DENOMINATOR@) :
+    (houter : (∑' n, |compCoeff (cHi @START@) P n|) ≤ (weightedOuterBound : ℝ)) :
     1/(reciprocalClaim : ℝ) <
       (linear-(prefixCost+finite67+otherTails+
         (branch5Weight : ℝ)*(∑' n, |compCoeff (cHi @START@) P n|)))/mass := by
   exact normalized_score_of_published_budgets linear prefixCost finite67 otherTails
     ((branch5Weight : ℝ)*(∑' n, |compCoeff (cHi @START@) P n|)) mass
-    hlinear hprefix hfinite67 hother (branch5_outer_bound hWallis) hmass
+    hlinear hprefix hfinite67 hother (branch5_outer_bound houter) hmass
 
 /-- The normalized score corollary needs only the published numerical
-budgets: its Wallis input is discharged by wallis_tail_bound. The Gaussian
+budgets: the weighted outer-tail input is proved by outer_composition_bound. The Gaussian
 interpretation of the remaining budgets is not asserted by this theorem. -/
 theorem refined_score_of_published_budgets
     (linear prefixCost finite67 otherTails mass : ℝ)
@@ -280,7 +344,7 @@ theorem refined_score_of_published_budgets
       (linear-(prefixCost+finite67+otherTails+
         (branch5Weight : ℝ)*(∑' n, |compCoeff (cHi @START@) P n|)))/mass := by
   exact refined_score_of_published_inputs linear prefixCost finite67 otherTails mass
-    hlinear hprefix hfinite67 hother hmass wallis_tail_bound
+    hlinear hprefix hfinite67 hother hmass outer_composition_bound
 
 end
 end Grothe.ScalarTailRefinement

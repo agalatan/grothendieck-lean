@@ -277,6 +277,7 @@ Grothe.Upper.PowerTail.summable_weighted
 Grothe.Upper.PowerTail.tail_numeric_of_check
 Grothe.Upper.PowerTail.weightedTail_pair
 Grothe.Upper.PowerTail.weighted_composition
+Grothe.Upper.PowerTail.weighted_composition_cut
 Grothe.Upper.PowerTail.weighted_tail_bound
 Grothe.Upper.RadiusJet.pack_injective
 Grothe.Upper.RadiusJet.pack_product

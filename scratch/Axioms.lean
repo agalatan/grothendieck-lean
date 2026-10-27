@@ -438,6 +438,7 @@ import Grothe
 #print axioms Grothe.Upper.PowerTail.tail_numeric_of_check
 #print axioms Grothe.Upper.PowerTail.weightedTail_pair
 #print axioms Grothe.Upper.PowerTail.weighted_composition
+#print axioms Grothe.Upper.PowerTail.weighted_composition_cut
 #print axioms Grothe.Upper.PowerTail.weighted_tail_bound
 #print axioms Grothe.Upper.RadiusJet.pack_injective
 #print axioms Grothe.Upper.RadiusJet.pack_product
