@@ -23,7 +23,17 @@ certificate definitions are preserved.
 `tenS_le_sq_sum` and `tenH_le_tenS` in `CircularTensor.lean` hold for arbitrary
 real tensors. The scalar bound needs `IsGaussianExpectation` and `Chaos3`,
 without a separate positivity premise; `chaos3_fourth_le` preserves the
-existing interface. The pair cap `62` and Gaussian endpoint are unchanged.
+existing interface. The pair cap `62` remains valid for general orthogonal
+real pairs.
+
+`LowerAnalytic/CircularFourth.lean` proves the stronger, scale-invariant bound
+`E |q|⁴ ≤ 44 (E |q|²)²` for circular third chaos, using the existing complex
+contraction identities and Hilbert–Schmidt inequalities. It also proves the
+sharp fluctuation range `x ≤ √42`. The bound 44 is attained by the normalized
+one-coordinate Wick cubic; the analytic extremizer calculation and an
+all-even-moment extension are in [CIRCULAR_FOURTH_MOMENT.md](CIRCULAR_FOURTH_MOMENT.md).
+Those additional sharpness and higher-moment claims are not Lean theorems.
+The production cover and Gaussian endpoint are unchanged.
 
 `LowerAnalytic/JointSixthCore.lean` contains the common Hilbert–Schmidt,
 cubic-trace, completed-square and scalar Young estimates, followed by the
@@ -880,8 +890,8 @@ them, and are not yet wired into `CapsRest`.
   budget is proved** and `gaussian_gramInputs` has no hypothesis beyond circularity;
   `tools/check_gram_facts.py` checks the identities numerically with the exact Lean definitions.
   `Grothe.LowerAnalytic.sharedReduction_of_gaussian` packages this law in
-  `SharedReduction`: it discharges E U = 1, the integrability conditions, E U² ≥ 2, the cap E U² ≤ 62 ≤ 2 + (31/4)²
-  (`gaussian_radU_cap`: E F⁴ ≤ 93 (E F²)² for every real third-chaos F, applied to a, b, a ± b),
+  `SharedReduction`: it discharges E U = 1, the integrability conditions, E U² ≥ 2, the cap E U² ≤ 44 ≤ 2 + (31/4)²
+  (`Circular.gaussian_fourth_moment_le_44`, using the circular contraction identities),
   E√U ≤ ρ (derived from the other moment fields by `moments_of_three`) and all Stein inputs (including the spectral budgets and the covariance order). The
   residual q = a + ib is required to be *circular* (`Circular J a b`: J a complex structure on ℝ^d
   and D_J a = −b, D_J b = a for the rotation generator D_J = Σ Jⱼᵢ xⱼ∂ᵢ, i.e. D_J q = iq, the

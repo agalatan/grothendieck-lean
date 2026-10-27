@@ -276,6 +276,9 @@ Grothe.Lower.SteinFusion.unit_fusion_identity
 Grothe.Lower.SteinFusion.unit_fusion_le
 Grothe.Lower.gram_joint_of_scalars
 Grothe.LowerAnalytic.Chaos3.fourth_le
+Grothe.LowerAnalytic.Circular.fourth_moment_le_variance
+Grothe.LowerAnalytic.Circular.gaussian_fourth_moment_le_44
+Grothe.LowerAnalytic.Circular.gaussian_x_le_sqrt42
 Grothe.LowerAnalytic.Circular.joint_sixth
 Grothe.LowerAnalytic.DiffuseCubicObstruction.above_target
 Grothe.LowerAnalytic.DiffuseCubicObstruction.finite_bridge_lower

@@ -344,7 +344,10 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.Chaos3.wick4
 #print axioms Grothe.LowerAnalytic.Chaos3.wick6
 #print axioms Grothe.LowerAnalytic.Circular.chaos3_right
+#print axioms Grothe.LowerAnalytic.Circular.fourth_moment_le_variance
+#print axioms Grothe.LowerAnalytic.Circular.gaussian_fourth_moment_le_44
 #print axioms Grothe.LowerAnalytic.Circular.gaussian_sixth
+#print axioms Grothe.LowerAnalytic.Circular.gaussian_x_le_sqrt42
 #print axioms Grothe.LowerAnalytic.Circular.joint_sixth
 #print axioms Grothe.LowerAnalytic.Circular.specU2_eq
 #print axioms Grothe.LowerAnalytic.Circular.specU4_eq

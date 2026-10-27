@@ -83,7 +83,13 @@ theorem, and all Stein and spectral node majorants use one admissible-cut integr
 
 The fourth-moment cap follows directly from the exact Wick identity and two
 general tensor inequalities (`Chaos3.fourth_le`); no separate positivity
-assumption on the expectation is needed. The tensor and scalar estimates for
+assumption on the expectation is needed. For the circular cubic residual,
+`LowerAnalytic/CircularFourth.lean` improves the general pair cap from 62 to
+the sharp bound `E|q|⁴ ≤ 44 (E|q|²)²` using the existing complex contraction
+identities and Hilbert–Schmidt inequalities. The one-coordinate Wick cubic
+attains 44. The present cover and Grothendieck endpoint are unchanged; see
+[`docs/CIRCULAR_FOURTH_MOMENT.md`](docs/CIRCULAR_FOURTH_MOMENT.md) for the
+analytic argument and its consequences. The tensor and scalar estimates for
 both joint sixth-moment bounds are shared in `LowerAnalytic/JointSixthCore.lean`.
 The production cuts and parameterized refinements use the same proof through
 their real-to-complex normalization identities.
