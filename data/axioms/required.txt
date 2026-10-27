@@ -139,6 +139,7 @@ Grothe.HJM.Origin.leftRadialAmplitude_lift
 Grothe.HJM.Origin.leftRadialAmplitude_toLp
 Grothe.HJM.Origin.leftRationalWitness_mass
 Grothe.HJM.Origin.leftTailEnergy_le_of_visible
+Grothe.HJM.Origin.leftUnweightedTail_of_64_targets
 Grothe.HJM.Origin.left_spatial_tail_budget
 Grothe.HJM.Origin.left_testCorrelation_error
 Grothe.HJM.Origin.left_visibleEnergy_of_rationalWitness
@@ -196,6 +197,7 @@ Grothe.HJM.Origin.rightRadialAmplitude_lift
 Grothe.HJM.Origin.rightRadialAmplitude_toLp
 Grothe.HJM.Origin.rightRationalWitness_mass
 Grothe.HJM.Origin.rightTailEnergy_le_of_visible
+Grothe.HJM.Origin.rightUnweightedTail_of_64_targets
 Grothe.HJM.Origin.right_spatial_tail_budget
 Grothe.HJM.Origin.right_testCorrelation_error
 Grothe.HJM.Origin.right_visibleEnergy_of_rationalWitness
@@ -209,6 +211,8 @@ Grothe.HJM.Origin.signedLaguerreValue_three_term
 Grothe.HJM.Origin.sum_haagCoeff_weighted_tail_le_diff
 Grothe.HJM.Origin.tail_cap_of_visible
 Grothe.HJM.Origin.tendsto_green_boundary
+Grothe.HJM.Origin.unweightedTail_le_of_finite_test
+Grothe.HJM.Origin.unweightedTestCorrelation_le_sqrt
 Grothe.HJM.Origin.weightedTest_norm_le_830
 Grothe.HJM.Origin.weightedTest_norm_sq
 Grothe.HJM.Origin.weightedTest_norm_sq_le

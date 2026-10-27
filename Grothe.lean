@@ -157,6 +157,7 @@ import Grothe.HJM.OriginSymmetricTailBudget
 import Grothe.HJM.OriginTail
 import Grothe.HJM.OriginTailBudget
 import Grothe.HJM.OriginTruncation
+import Grothe.HJM.OriginUnweightedProjection
 import Grothe.HJM.OriginUnweightedTail
 import Grothe.HJM.OriginVisibleEnergy
 import Grothe.HJM.OriginWitnessData
