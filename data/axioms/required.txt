@@ -852,6 +852,7 @@ Grothe.UpperChaos.ev_phaseNormSlice
 Grothe.UpperChaos.ev_phasePowerSlice
 Grothe.UpperChaos.ev_phaseRealSlice
 Grothe.UpperChaos.ev_taylorSourceSlice
+Grothe.UpperChaos.finiteSoftPhase_logGrid
 Grothe.UpperChaos.firstCapturedErrorQ_le_public
 Grothe.UpperChaos.firstCenterBandModes_eq_comparison
 Grothe.UpperChaos.firstCenterBand_norm_lower
@@ -911,6 +912,7 @@ Grothe.UpperChaos.integral_gaussC_tilt
 Grothe.UpperChaos.integral_invariant_monomial_damped
 Grothe.UpperChaos.integral_moment_damped
 Grothe.UpperChaos.integral_moment_damped_prod
+Grothe.UpperChaos.integral_mul_finiteSoftPhase
 Grothe.UpperChaos.integral_norm_affine_phaseLaplace_base_tail_le
 Grothe.UpperChaos.integral_norm_rpow_damped
 Grothe.UpperChaos.integral_phiT_pow_even
