@@ -325,9 +325,9 @@ import Grothe.UpperChaos.GradedHermite
 import Grothe.UpperChaos.GradedHermiteFn
 import Grothe.UpperChaos.GradedHermiteIntegerEnergy
 import Grothe.UpperChaos.GradedHermiteLinear
+import Grothe.UpperChaos.GradedHermitePhaseSlice
 import Grothe.UpperChaos.GroupedComparison
 import Grothe.UpperChaos.GroupedRounder
-import Grothe.UpperChaos.GradedHermitePhaseSlice
 import Grothe.UpperChaos.HardyArcCircle
 import Grothe.UpperChaos.HardyArcCover
 import Grothe.UpperChaos.HardyArcMean
