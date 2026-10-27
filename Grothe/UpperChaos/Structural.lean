@@ -8,9 +8,8 @@ For a measurable, disk-valued rounding `G` of charge one on `ℂ²` and a charge
 `X ∈ L²(gaussC ⊗ gaussC)`, the tables `E = energy G`, `EX = energy X` satisfy the structural
 fields of `DirectHyps`: `valid` (the kernel `radialKernel (kernelCoeff E)` is realised by the
 two-channel Gaussian rounding with the preprocessors `primaryPoly`, `auxPoly`, hence dominated),
-`summable`, `summableX` and both parity statements (from charge selection).  Consequently the sharp upper bound
-holds for such `G, X` as soon as the selected comparison, table accuracy and Hardy fields do
-(`fresh_upper_of_rounding`).
+`summable`, `summableX` and both parity statements (from charge selection). The grouped upper-bound assembly
+uses these fields together with the selected comparison, table accuracy and Hardy inputs.
 -/
 
 open MeasureTheory ProbabilityTheory Grothe.LowerAnalytic Grothe.Upper

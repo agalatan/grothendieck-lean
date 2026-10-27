@@ -22,8 +22,17 @@ certificate definitions are preserved.
 `h ≤ s` imply `E F⁴ ≤ 93 (E F²)²`. The two inequalities
 `tenS_le_sq_sum` and `tenH_le_tenS` in `CircularTensor.lean` hold for arbitrary
 real tensors. The scalar bound needs `IsGaussianExpectation` and `Chaos3`,
-without a separate positivity premise; `chaos3_fourth_le` preserves the
-existing interface. The pair cap `62` and Gaussian endpoint are unchanged.
+without a separate positivity premise. This sharp real-chaos theorem is a
+separate result from the circular complex bound below.
+
+`LowerAnalytic/CircularFourth.lean` proves the stronger, scale-invariant bound
+`E |q|⁴ ≤ 44 (E |q|²)²` for circular third chaos, using the existing complex
+contraction identities and Hilbert–Schmidt inequalities. It also proves the
+sharp fluctuation range `x ≤ √42`. The bound 44 is attained by the normalized
+one-coordinate Wick cubic; the analytic extremizer calculation and an
+all-even-moment extension are in [CIRCULAR_FOURTH_MOMENT.md](CIRCULAR_FOURTH_MOMENT.md).
+Those additional sharpness and higher-moment claims are not Lean theorems.
+The production cover and Gaussian endpoint are unchanged.
 
 `LowerAnalytic/JointSixthCore.lean` contains the common Hilbert–Schmidt,
 cubic-trace, completed-square and scalar Young estimates, followed by the
@@ -118,6 +127,27 @@ jointly. Two true responses of `L²` norm at most one, each approximated within
 `δ`, have total coefficient-product `ℓ¹` error at most `2δ + δ²`. The
 approximants need not be disk-valued. These theorems do not themselves certify
 the proposed polynomial panels or their coefficient integrals.
+
+`OriginPanelAlgebra` binds the saved LEFT/RIGHT coefficient lists to the actual
+numerators, proves the inverse-modulus residual implication and finite panel
+coverage, and defines the measurable piecewise polynomial approximant.
+`OriginPanelsChecks` combines independently generated kernel reductions on
+the radius-eight panels. `OriginPanelBudget` cuts off at the outer endpoint
+and proves each actual response is within `1001/10^15` in Gaussian `L²`.
+The complete charge-one coefficient error uses the square of this allowance
+once. `tools/gen_hjm_origin_panels.py` reproduces every generated file from
+`data/hjm/origin/phase-panels-r8.json` and replays the residuals exactly.
+The Gaussian moments and visible-energy lower bounds remain separate
+certificate obligations.
+
+For the origin visible-energy certificate, `OriginWitnessData` records two
+finite rational test vectors. Its exact checks bound their masses and their
+chaos-degree-weighted masses, and verify the final rational comparison needed
+for an `11.5` visible-energy lower bound. The vectors are proposed witnesses:
+neither their finite arithmetic nor the source-table midpoints used to select
+them assert a Gaussian correlation enclosure. That enclosure still needs its
+own integration and approximation proof. `tools/gen_hjm_origin_witnesses.py`
+reproduces the data and arithmetic checks from the pinned input.
 
 No native facts are introduced. The full concrete radial energy identity is
 proved; the coefficient-table enclosures and two numerical energy bounds
@@ -278,7 +308,7 @@ and identifies each Taylor comparison source with the corresponding scaled
 `Lp` residual. It proves comparison piece zero's rounding cap.
 `FirstSecondCapturedTail` derives pieces seven and twelve from their finite
 Gaussian error families; `ThirdCapturedTail` supplies piece seventeen.
-`ConcreteTaylorUpper.fresh_upper_concrete_taylor` assembles all eighteen pieces
+`Grothe.UpperChaos.fresh_upper_concrete_taylor` in `GroupedRounder.lean` assembles all eighteen pieces
 and concludes the existing sharp conditional bound from only `hfirst` (six
 finite errors), `hsecond` (four), `hthird` (four), and `hclose` for the energies
 of the actual `Xfun frozenCorrectionFn`. No separate rounding, tail,
@@ -523,8 +553,8 @@ complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 `IsGrothendieckBound (500000000000000000/355973699884132991)` for the concrete rounding,
 given an L² charge-one truncation `X`, component-error inputs and table accuracy (the Hardy input is proved).
 `Grothe.upper_value_lt` shows this is below 1.404598149141 (`Grothe/UpperChaos/GroupedRounder.lean`).
-The older table interface `Grothe.fresh_upper : DirectHyps E EX → IsGrothendieckBound (...)`
-remains in `Grothe/Upper/PolynomialBridge.lean`.
+The table interface `Grothe.fresh_upper` is in `Grothe/Upper/GroupedBridge.lean`;
+it takes `DirectHyps E EX` and the sharper grouped comparison bound.
 The actual rounding is G_T, the smoothing of T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6.
 It is defined in `Grothe/UpperChaos/Rounder.lean`. Lean proves |φ| < 1 (`phi_abs_lt_one`, from
 `phiT_sq_le : φ² ≤ 99/100`; checker `GrotheKernel/PhiCheck.lean`, soundness `Grothe/UpperChaos/PhiCover.lean`, 512 cubes and
@@ -914,8 +944,8 @@ them, and are not yet wired into `CapsRest`.
   budget is proved** and `gaussian_gramInputs` has no hypothesis beyond circularity;
   `tools/check_gram_facts.py` checks the identities numerically with the exact Lean definitions.
   `Grothe.LowerAnalytic.sharedReduction_of_gaussian` packages this law in
-  `SharedReduction`: it discharges E U = 1, the integrability conditions, E U² ≥ 2, the cap E U² ≤ 62 ≤ 2 + (31/4)²
-  (`gaussian_radU_cap`: E F⁴ ≤ 93 (E F²)² for every real third-chaos F, applied to a, b, a ± b),
+  `SharedReduction`: it discharges E U = 1, the integrability conditions, E U² ≥ 2, the cap E U² ≤ 44 ≤ 2 + (31/4)²
+  (`Circular.gaussian_fourth_moment_le_44`, using the circular contraction identities),
   E√U ≤ ρ (derived from the other moment fields by `moments_of_three`) and all Stein inputs (including the spectral budgets and the covariance order). The
   residual q = a + ib is required to be *circular* (`Circular J a b`: J a complex structure on ℝ^d
   and D_J a = −b, D_J b = a for the rotation generator D_J = Σ Jⱼᵢ xⱼ∂ᵢ, i.e. D_J q = iq, the

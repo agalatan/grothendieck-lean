@@ -16,8 +16,8 @@ From the data of `Grothe/Upper/Data.lean` (`profileQ`, `aQ`, `bQ`, `etaQ`, `phas
   `M = P_u + √η (I − P_u)`, `P_u` the projection on `u = (1, b)` (`GT`).
 
 `G_T` is measurable and of charge one; it is disk-valued under the phase cover `φ² ≤ 99/100`
-(`PhiBound`, proved in `PhiBound.lean`; `|P₃(φ)| ≤ 1` needs only `φ² ≤ 3`).  `fresh_upper_concrete`: the sharp upper bound from `PhiBound`, a charge-one
-`X ∈ L²` and the three numerical fields for `E = energy G_T`, `EX = energy X`.
+(`PhiBound`, proved in `PhiBound.lean`; `|P₃(φ)| ≤ 1` needs only `φ² ≤ 3`).
+The upper-bound assembly is in `GroupedRounder.lean`.
 -/
 
 open MeasureTheory ProbabilityTheory Grothe.LowerAnalytic Grothe.Upper

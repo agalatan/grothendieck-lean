@@ -83,7 +83,13 @@ theorem, and all Stein and spectral node majorants use one admissible-cut integr
 
 The fourth-moment cap follows directly from the exact Wick identity and two
 general tensor inequalities (`Chaos3.fourth_le`); no separate positivity
-assumption on the expectation is needed. The tensor and scalar estimates for
+assumption on the expectation is needed. For the circular cubic residual,
+`LowerAnalytic/CircularFourth.lean` replaces the previous pair cap of 62 in the
+Gaussian reduction with the sharp bound `E|q|⁴ ≤ 44 (E|q|²)²`, using the existing complex contraction
+identities and Hilbert–Schmidt inequalities. The one-coordinate Wick cubic
+attains 44. The present cover and Grothendieck endpoint are unchanged; see
+[`docs/CIRCULAR_FOURTH_MOMENT.md`](docs/CIRCULAR_FOURTH_MOMENT.md) for the
+analytic argument and its consequences. The tensor and scalar estimates for
 both joint sixth-moment bounds are shared in `LowerAnalytic/JointSixthCore.lean`.
 The production cuts and parameterized refinements use the same proof through
 their real-to-complex normalization identities.
@@ -422,6 +428,17 @@ the exact weighted cap fits the existing budget without relaxing the ledger.
 For numerical enclosure, a nonnegative inverse-modulus
 polynomial residual controls the phase error; uniform spatial error `ε` inside radius
 `R` gives the joint squared coefficient budget `ε² + exp(-R²)` for all modes.
+The generated `OriginPanels` certificates bind inverse-modulus polynomials
+to the actual numerators on radii `[0,8]`. `OriginPanelBudget` bounds each
+response's Gaussian `L²` approximation error by `1001/10^15`, pricing the
+entire coefficient sequence jointly. The approximants are piecewise
+polynomials, cut off at radius eight. Their Gaussian moment integrals still
+need enclosures before they provide the origin coefficient table or visible
+energy lower bounds.
+`OriginWitnessData` gives two exact finite test vectors and verifies their
+rational mass and weighted-mass bounds. They are candidates for certifying
+visible energy by a single signed correlation per response; the needed
+Gaussian correlation enclosures remain separate proof obligations.
 These structural results introduce no native facts. The pinned 120-entry interval tables are
 provenance data: their integral enclosures and the two numerical energy bounds still require
 Lean proofs before the six-branch numerical bound follows. See [the origin certificate inventory](data/hjm/origin/README.md).

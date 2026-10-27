@@ -38,10 +38,12 @@ for the concrete rounding `GT` (smoothed `F₀·P₃(φ)` built from `Grothe/Upp
 * `energy_close`: `Σ_{n+3m≤501} |energy X − energyTable| ≤ energyErrQ`,
 
 for some charge-one `X ∈ L²(gaussC ⊗ gaussC)`. The concrete Taylor version
-`fresh_upper_concrete_taylor` fixes `X` and takes the same fourteen
-finite-band Gaussian error inequalities and table-accuracy assumption as
-`fresh_upper_concrete_taylor`.
-Axioms: standard + `head_check` + `comparison_check` + `phi_cover_check_0`–`5` (native). Grouping introduces no new native facts. The structural fields of the old
+`fresh_upper_concrete_taylor` fixes `X` and takes fourteen finite-band Gaussian
+error inequalities and the table-accuracy assumption.
+Axioms: the standard axioms and the existing native head, comparison, Hardy-region,
+Hardy-arc and phase-cover checks. The concrete Taylor specialization also uses
+the existing native phase-moment and center-energy checks. Grouping introduces
+no new native facts. The structural fields of the old
 `DirectHyps` (`valid`, `summable`, `summableX`, `parityX`) and `|P₃(φ)| ≤ 1` (via `phi_abs_lt_one : |φ| < 1`)
 are theorems.  Module map (all in `Grothe/UpperChaos/`):
 

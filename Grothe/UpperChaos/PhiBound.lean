@@ -9,9 +9,8 @@ import Grothe.UpperChaos.HardyReal
 
 `phiT_sq_le : φ² ≤ 99/100` from the cover (`walk_sound` on the 64 cubes, `phi_cubes_ok`) on `U + V < 60`
 and the far field (`far_sound`); hence `phi_abs_lt_one : |φ| < 1` (the input of the comparison argument)
-and `phiBound : PhiBound`.  `fresh_upper_rounder`: the sharp upper bound for the concrete rounding `G_T`
-from component-error inputs and table accuracy (for a charge-one `X ∈ L²`); its Hardy input is proved
-(`HardyReal.hardy_GT`).
+and `phiBound : PhiBound`. The sharp upper bound for the concrete rounding is in
+`GroupedRounder.lean`; its Hardy input is proved (`HardyReal.hardy_GT`).
 -/
 
 open GrotheKernel Grothe.Upper
