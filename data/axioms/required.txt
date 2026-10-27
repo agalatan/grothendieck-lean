@@ -132,12 +132,15 @@ Grothe.HJM.Origin.laguerreTest_correlation
 Grothe.HJM.Origin.laguerreTest_mass
 Grothe.HJM.Origin.laguerreTest_phaseCorrelation
 Grothe.HJM.Origin.leftNumerator_ne_zero
+Grothe.HJM.Origin.leftRadialAmplitude_lift
+Grothe.HJM.Origin.leftRadialAmplitude_toLp
 Grothe.HJM.Origin.leftRationalWitness_mass
 Grothe.HJM.Origin.leftTailEnergy_le_of_visible
 Grothe.HJM.Origin.left_spatial_tail_budget
 Grothe.HJM.Origin.left_testCorrelation_error
 Grothe.HJM.Origin.left_visibleEnergy_of_rationalWitness
 Grothe.HJM.Origin.left_weighted_tail_summable
+Grothe.HJM.Origin.measurable_radialAmplitude
 Grothe.HJM.Origin.memLp_fRadialDifferential
 Grothe.HJM.Origin.memLp_fRadialDifferential_of_envelope
 Grothe.HJM.Origin.memLp_fResidual
@@ -158,6 +161,7 @@ Grothe.HJM.Origin.norm_g_eq_one
 Grothe.HJM.Origin.norm_leftNumerator_lower
 Grothe.HJM.Origin.norm_phaseDerivative_le_two
 Grothe.HJM.Origin.norm_phaseSecondDerivative_le
+Grothe.HJM.Origin.norm_radialAmplitude_le
 Grothe.HJM.Origin.norm_rightNumerator_lower
 Grothe.HJM.Origin.phaseCoeff_sqrt_index
 Grothe.HJM.Origin.phaseDerivative_eq_quotient
@@ -176,6 +180,8 @@ Grothe.HJM.Origin.phase_weighted_tail_le
 Grothe.HJM.Origin.phase_weighted_tail_summable
 Grothe.HJM.Origin.polynomialPhase_deriv_deriv_polynomialEnvelope
 Grothe.HJM.Origin.polynomialPhase_deriv_polynomialEnvelope
+Grothe.HJM.Origin.radialAmplitude_lift
+Grothe.HJM.Origin.radialAmplitude_sq_of_ne
 Grothe.HJM.Origin.radial_analytic_inputs
 Grothe.HJM.Origin.radial_succ_derivative
 Grothe.HJM.Origin.radial_succ_derivative_recurrence
@@ -183,6 +189,8 @@ Grothe.HJM.Origin.radial_three_term
 Grothe.HJM.Origin.rationalAlpha_testMass
 Grothe.HJM.Origin.residual_tail_budget_at_120
 Grothe.HJM.Origin.rightNumerator_ne_zero
+Grothe.HJM.Origin.rightRadialAmplitude_lift
+Grothe.HJM.Origin.rightRadialAmplitude_toLp
 Grothe.HJM.Origin.rightRationalWitness_mass
 Grothe.HJM.Origin.rightTailEnergy_le_of_visible
 Grothe.HJM.Origin.right_spatial_tail_budget

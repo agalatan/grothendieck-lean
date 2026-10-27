@@ -140,12 +140,15 @@ import Grothe
 #print axioms Grothe.HJM.Origin.laguerreTest_mass
 #print axioms Grothe.HJM.Origin.laguerreTest_phaseCorrelation
 #print axioms Grothe.HJM.Origin.leftNumerator_ne_zero
+#print axioms Grothe.HJM.Origin.leftRadialAmplitude_lift
+#print axioms Grothe.HJM.Origin.leftRadialAmplitude_toLp
 #print axioms Grothe.HJM.Origin.leftRationalWitness_mass
 #print axioms Grothe.HJM.Origin.leftTailEnergy_le_of_visible
 #print axioms Grothe.HJM.Origin.left_spatial_tail_budget
 #print axioms Grothe.HJM.Origin.left_testCorrelation_error
 #print axioms Grothe.HJM.Origin.left_visibleEnergy_of_rationalWitness
 #print axioms Grothe.HJM.Origin.left_weighted_tail_summable
+#print axioms Grothe.HJM.Origin.measurable_radialAmplitude
 #print axioms Grothe.HJM.Origin.memLp_fRadialDifferential
 #print axioms Grothe.HJM.Origin.memLp_fRadialDifferential_of_envelope
 #print axioms Grothe.HJM.Origin.memLp_fResidual
@@ -166,6 +169,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.norm_leftNumerator_lower
 #print axioms Grothe.HJM.Origin.norm_phaseDerivative_le_two
 #print axioms Grothe.HJM.Origin.norm_phaseSecondDerivative_le
+#print axioms Grothe.HJM.Origin.norm_radialAmplitude_le
 #print axioms Grothe.HJM.Origin.norm_rightNumerator_lower
 #print axioms Grothe.HJM.Origin.phaseCoeff_sqrt_index
 #print axioms Grothe.HJM.Origin.phaseDerivative_eq_quotient
@@ -184,6 +188,8 @@ import Grothe
 #print axioms Grothe.HJM.Origin.phase_weighted_tail_summable
 #print axioms Grothe.HJM.Origin.polynomialPhase_deriv_deriv_polynomialEnvelope
 #print axioms Grothe.HJM.Origin.polynomialPhase_deriv_polynomialEnvelope
+#print axioms Grothe.HJM.Origin.radialAmplitude_lift
+#print axioms Grothe.HJM.Origin.radialAmplitude_sq_of_ne
 #print axioms Grothe.HJM.Origin.radial_analytic_inputs
 #print axioms Grothe.HJM.Origin.radial_succ_derivative
 #print axioms Grothe.HJM.Origin.radial_succ_derivative_recurrence
@@ -191,6 +197,8 @@ import Grothe
 #print axioms Grothe.HJM.Origin.rationalAlpha_testMass
 #print axioms Grothe.HJM.Origin.residual_tail_budget_at_120
 #print axioms Grothe.HJM.Origin.rightNumerator_ne_zero
+#print axioms Grothe.HJM.Origin.rightRadialAmplitude_lift
+#print axioms Grothe.HJM.Origin.rightRadialAmplitude_toLp
 #print axioms Grothe.HJM.Origin.rightRationalWitness_mass
 #print axioms Grothe.HJM.Origin.rightTailEnergy_le_of_visible
 #print axioms Grothe.HJM.Origin.right_spatial_tail_budget
