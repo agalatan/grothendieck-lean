@@ -47,7 +47,10 @@ low-scale m=-220 process peaked around 49.6 MB RSS, which does not bound
 memory on hard panels. These runs do not determine peak memory, full runtime,
 or whether every remaining panel passes a one-shard timeout.
 
-At the time of this local assessment, no complete 456-scale sum had been
-computed. The numerical phase error <2.9e-13, root cutoff <4.782e-16 and
-scalar coefficient tail <1e-16 rely on written/external-Arb arguments.
-Consult a run's own checkpoint and receipt aggregation for its outcome.
+The subsequent GitHub-hosted run 40560868692 completed all 456 scales in
+2,375 seconds. Exact aggregation of its archived receipts gives a distance
+from the stored q=0 center, including the phase replacement and tail
+budgets, below 2.907e-13. `data/q0_cert/` records the inputs and replay.
+This is an external-Arb result with written analytic inputs; it is not a
+Lean theorem, a full captured-band estimate, or an upper bound on the
+Grothendieck constant.
