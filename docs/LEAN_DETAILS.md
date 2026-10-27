@@ -189,8 +189,8 @@ size; `thirdCenter_energy_check` checks the total and four band energies.
 actual Hermite norms. Rational lower and upper enclosures use kernel arithmetic;
 charge-one support and the vanishing degree tail follow from generic indexing
 lemmas. The source is unscaled: division by six occurs in the comparison source,
-not in this center. The first and second center band norms and Gaussian
-error enclosures remain open; stored error arrays are not treated as proofs.
+not in this center. All three centers now have finite band-norm certificates; Gaussian
+error enclosures remain open, and stored error arrays are not treated as proofs.
 `GradedHermiteFn` constructs continuous finite sums of the normalized Hermite
 polynomials, proves their `MemLp` and `toLp` identities, and proves pointwise
 charge-one rotation. The concrete adapter `thirdCenterFn` therefore satisfies
@@ -226,6 +226,68 @@ successful decoding and sizes. Kernel arithmetic then proves the 10^-18
 rounding cap. Input hashes, exact arithmetic targets and byte-for-byte
 reproduction are recorded under `data/taylor-approximants/`. This certificate
 does not use any Gaussian integration-error premise.
+
+**The concrete comparison interface.** `TaylorCenterBandData` stores integer
+energies and rational norm enclosures for the first center's six bands and the
+second center's four bands. Their two arithmetic leaves evaluate the actual
+integer coefficient lookups through `PackedDyadic.gradedIntegerSum`.
+`GradedHermiteIntegerEnergy` identifies these sums with projected squared norms
+before any numerical enclosure is applied. All norm enclosures have width
+10^-30, and the charge and omitted-degree supports are proved generically.
+
+`TaylorTailData` is generated from the original error allowances and the
+tracked `tail-recipe.json`. The unscaled caps are rounded upward at precisions
+10^-21, 10^-19 and 10^-18 for powers one, two and three. Kernel-checked scalar
+inequalities prove that they fit the public finite comparison caps and that
+the captured-energy subtraction fits all three existing tail caps. The public
+finite caps by themselves lose too much precision for these subtractions.
+`tail-caps.json` records the exact source hashes and positive squared slacks;
+it does not establish the Gaussian error inequalities.
+
+`TaylorCenterFunctions` supplies canonical polynomial functions, `ChargeFn`
+and `toLp` equalities for the first and second centers and frozen correction,
+and identifies each Taylor comparison source with the corresponding scaled
+`Lp` residual. It proves comparison piece zero's rounding cap.
+`FirstSecondCapturedTail` derives pieces seven and twelve from their finite
+Gaussian error families; `ThirdCapturedTail` supplies piece seventeen.
+`ConcreteTaylorUpper.fresh_upper_concrete_taylor` assembles all eighteen pieces
+and concludes the existing sharp conditional bound from only `hfirst` (six
+finite errors), `hsecond` (four), `hthird` (four), and `hclose` for the energies
+of the actual `Xfun frozenCorrectionFn`. No separate rounding, tail,
+representative or charge-one premise remains. These fourteen Gaussian
+inequalities and the energy-table accuracy remain unproved inputs.
+
+**Analytic phase reduction.** `Grothe/Haagerup/PhaseLaplace.lean` proves
+`ph(z) = (sqrt(pi):C)^(-1) * integral_{t>0} t^(-1/2) exp(-‖z‖²t) z dt`
+from the Gamma integral. Keeping `z` inside the integral makes the kernel zero
+at `z=0`. The module proves integrability for every complex argument and an
+absolute integral bounded by `sqrt(pi)`, with equality for nonzero arguments.
+It also proves the denominator-free affine completion of squares for
+`alpha*‖w‖²+t*‖z+a*w‖²`. These standard analytic identities have no native numerical leaf.
+`PhaseLaplaceFubini` proves joint measurability and absolute product
+integrability for any measurable integrable weight and measurable phase
+argument over an arbitrary SFinite measure. It then moves the positive Laplace
+parameter outside the source integral.
+
+`TaylorInnerLaplace.inner_hpow_eq_phaseLaplace` retains the actual `F0` argument
+and `phiT`. Under `PhiBound` and a square-integrable charge-one source it
+identifies the Taylor inner product with the absolutely integrable Laplace
+mixture. Boundedness of the phase power and Holder's inequality establish
+source integrability; no numerical integration premise is used.
+
+`ShiftedDampedMoments` expands a translated mixed complex monomial and proves
+the finite Wick formula at any positive radial rate. Its Gaussian mass is
+`1/rate`, including for rates below one. `AffineGaussianSquare` centers the
+conditional density without dividing by the radial profile. For arbitrary
+complex `z`, real `a`, positive `alpha,t`, put `beta=alpha+a^2*t` and
+`mu=-(a*t/beta)*z`. `ConditionalGaussianPhase` proves the exact conditional
+monomial formula: the scalar factor
+`t^(-1/2)*exp(-alpha*t*normSq(z)/beta)` multiplies
+`z*M(p,q;beta,mu) + a*M(p+1,q;beta,mu)`. The finite moment `M` includes its
+`1/beta` mass. The measure conversion, translation, integrability and factorial
+scaling are all explicit. Expanding the complete source polynomial into this
+conditional interface, certified auxiliary and radial tails, and numerical
+integration accuracy remain separate obligations.
 
 **Phase errors and transported certificates.**
 `Grothe/Upper/ResponseGeometry.lean` proves twelve statements: the exact
