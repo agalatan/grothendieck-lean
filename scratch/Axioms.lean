@@ -36,6 +36,11 @@ import Grothe
 #print axioms Grothe.HJM.inner_charge_one_radial_integral
 #print axioms Grothe.HJM.inner_charge_one_radial_integral_of_integrable
 #print axioms Grothe.HJM.integral_gaussC_radial_polynomial_mul_of_integrable
+#print axioms Grothe.HJM.mem_head1
+#print axioms Grothe.HJM.mem_head2
+#print axioms Grothe.HJM.mem_head3
+#print axioms Grothe.HJM.mem_head4
+#print axioms Grothe.HJM.mem_head5
 #print axioms Grothe.HJM.originGreen_integral
 #print axioms Grothe.HJM.originLaguerrePoly_normalization
 #print axioms Grothe.HJM.originNumberOperator_charge_one
