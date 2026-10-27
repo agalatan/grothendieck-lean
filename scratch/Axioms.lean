@@ -163,8 +163,11 @@ import Grothe
 #print axioms Grothe.HJM.finite67_bound
 #print axioms Grothe.HJM.hasDerivAt_originGreenBoundary
 #print axioms Grothe.HJM.hasDerivAt_originRadialGreenBoundary
+#print axioms Grothe.HJM.head_of_check
 #print axioms Grothe.HJM.hfun_charge_one_laguerre
 #print axioms Grothe.HJM.hfun_charge_one_radial
+#print axioms Grothe.HJM.hjm_bound_of_head
+#print axioms Grothe.HJM.hjm_bound_of_tables
 #print axioms Grothe.HJM.inner_charge_one_radial_integral
 #print axioms Grothe.HJM.inner_charge_one_radial_integral_of_integrable
 #print axioms Grothe.HJM.integrable_origin_radial_pairing
