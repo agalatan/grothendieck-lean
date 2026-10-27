@@ -119,7 +119,7 @@ theorem kHol_real (h : 0 < k11 a b) (hd : 0 < kdet a b c) (p s : Pt4) :
       _ = _ := by rw [← e]; ring
   rw [kHol, detIm_real, kExp_real h hd, kExp_real h hd, ← key]
   push_cast
-  rw [← Complex.exp_add]
+  ring
 
 end
 
