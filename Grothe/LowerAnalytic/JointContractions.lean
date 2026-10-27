@@ -212,13 +212,15 @@ end normalisation
 
 section hs
 
-variable (f : ι → ι → ι → ℝ) (hf : ∀ a b c, f a b c = f b a c)
-include hf
+variable (f : ι → ι → ι → ℝ)
 
 /-- `T₄ = ‖S²‖² ≤ ‖S‖⁴ = h²`. -/
-lemma tenT4_le_sq : tenT4 f ≤ tenH f ^ 2 := by
+lemma tenT4_le_sq (hf : ∀ a b c, f a b c = f b a c) : tenT4 f ≤ tenH f ^ 2 := by
   clear hf
   exact JointSixth.tenT4_le f
+
+variable (hf : ∀ a b c, f a b c = f b a c)
+include hf
 
 /-- `T₃ = ⟨S², S⟩ ≤ ‖S²‖ ‖S‖ ≤ h √h`. -/
 lemma tenT3_le : tenT3 f ≤ tenH f * √(tenH f) := by
