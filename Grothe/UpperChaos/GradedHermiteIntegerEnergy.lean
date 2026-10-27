@@ -29,9 +29,9 @@ theorem norm_projOn_gradedHermite_integer_sq_cast
         ((if gradedMode q c d ∈ B then a q c d ^ 2 else 0 : ℤ) : ℚ) /
           (2 : ℚ)^(2 * E) := by
     by_cases h : gradedMode q c d ∈ B
-    · simp only [h, if_true]
+    · simp only [h, ite_true]
       rw [div_pow, Int.cast_pow, ← pow_mul, Nat.mul_comm E 2]
-    · simp only [h, if_false, Int.cast_zero, zero_div]
+    · simp only [h, ite_false, Int.cast_zero, zero_div]
   simp_rw [hterm]
   simp only [div_eq_mul_inv, ← Finset.sum_mul, ← Int.cast_sum]
 
