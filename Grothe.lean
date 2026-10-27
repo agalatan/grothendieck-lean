@@ -597,6 +597,7 @@ import Grothe.UpperChaos.TaylorCenterBandData
 import Grothe.UpperChaos.TaylorCenterFunctions
 import Grothe.UpperChaos.TaylorCenters
 import Grothe.UpperChaos.TaylorConditionalGaussian
+import Grothe.UpperChaos.TaylorConditionalRadial
 import Grothe.UpperChaos.TaylorErrorEnergy
 import Grothe.UpperChaos.TaylorFirstBandNorms
 import Grothe.UpperChaos.TaylorFirstData
