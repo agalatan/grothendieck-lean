@@ -315,6 +315,20 @@ $\|P^n\|_1=1$ for every $n$. Breaking that common boundary phase permits
 power contraction; the resolvent additionally retains cancellation
 between successive composed powers.
 
+\paragraph{The actual HJM origin kernel [P; Lean].}
+The sixth branch is defined from its exact polynomial-phase response pair.
+One shared Gaussian driver proves domination in every finite dimension; the
+charge-one Hermite expansion and conjugate-reflection symmetrization identify
+the full real radial coefficient series. The endpoint cross product is purely
+imaginary, so its phase-phase term cancels before absolute values. Bessel gives
+a joint squared error budget $e^{-36}$ for the coefficient integrals omitted
+beyond radius six. Nine rational Bernstein panels and a positive shifted
+polynomial prove $|P(s)|^2\ge37/100$ on the entire nonnegative half-line.
+These proofs add no native facts. The pinned 120-coefficient tables are
+provenance inputs; their integral enclosures and the numerical radial energy
+bounds remain separate Lean obligations. See \path{Grothe/HJM/Origin.lean}
+and \path{data/hjm/origin/README.md}.
+
 \paragraph{Published scalar-tail refinement [P,C; Lean components].}
 For the unchanged fifth scalar preprocessor of Heilman--Jones--Malavolta,
 the exact degree-592 calculation gives $\|P_5^{16}\|_1\le581/1000$.
