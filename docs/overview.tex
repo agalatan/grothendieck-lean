@@ -385,7 +385,13 @@ The sixth branch is defined from its exact polynomial-phase response pair.
 One shared Gaussian driver proves domination in every finite dimension; the
 charge-one Hermite expansion and conjugate-reflection symmetrization identify
 the full real radial coefficient series. The endpoint cross product is purely
-imaginary, so its phase-phase term cancels before absolute values. Bessel gives
+imaginary, so its phase-phase term cancels before absolute values. Any
+multiplier $|\zeta|\le1$ on the second response gives
+a dominated branch with coefficients $\operatorname{Re}(\zeta a_n)$; $\zeta=1$
+is the original branch. A finite-head mixture theorem accepts weighted branch
+tails directly. Under residual-energy caps $1.174,1.176$, the rotated
+mode-120 origin tail is at most $0.00025828+0.00252|\operatorname{Im}\zeta|$.
+No numerical endpoint for a nontrivial rotation is claimed. Bessel gives
 a joint squared error budget $e^{-36}$ for the coefficient integrals omitted
 beyond radius six. Nine rational Bernstein panels and a positive shifted
 polynomial prove $|P(s)|^2\ge37/100$ on the entire nonnegative half-line.
@@ -407,7 +413,11 @@ Visible-energy subtraction and Cauchy--Schwarz give a mode-120 origin tail
 at most $0.00025828$, conditional on total energies at most $12.671,12.674$
 and visible energies at least $11.497,11.498$. The exact sixth weight times
 this cap fits the assembly's existing origin-tail budget. These four numerical
-energy inequalities remain certificate obligations.
+energy inequalities remain certificate obligations. Using the smaller cap
+directly in the ledger gives a conditional exact bound below $1.4048984278$;
+the finite-head enclosure and these energy inputs remain to be certified. With
+the newer symmetric targets $12.7$ and $11.5$, the same ledger gives a
+conditional bound below $1.4048984302$.
 For coefficient enclosure, a nonnegative inverse-modulus
 approximation satisfies
 $\|Wz-\ph(z)\|\le|W^2\|z\|^2-1|$.

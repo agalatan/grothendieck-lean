@@ -407,6 +407,12 @@ shared Gaussian driver, the charge-one Hermite expansion and conjugate-reflectio
 The endpoint cross product is exactly imaginary; its phase-phase term cancels before taking
 absolute values. Bessel bounds the entire spatially omitted coefficient sequence by squared
 energy `exp(-36)`. A rational Bernstein certificate proves `|P(s)|² ≥ 37/100` for all `s ≥ 0`.
+`PhaseRotation` keeps the complex cross-coefficients: multiplying the second response by
+any `ζ` with `|ζ| ≤ 1` gives a dominated branch with coefficients `Re(ζ aₙ)`, and `ζ = 1`
+recovers the original mixture. `MixtureHead` converts a finite head and weighted branch-tail
+budget into a bound. Under residual-energy caps `1.174`, `1.176`, `PhaseRotationTail`
+bounds the rotated origin tail from mode 120 by `0.00025828 + 0.00252 |Im ζ|`.
+This is a family of conditional certificates, not a new certified numerical endpoint.
 The charge-one Hermite modes have an explicit radial polynomial and Gaussian integral
 formula. The change to squared radius joins the Green identity to weighted
 Parseval with the original chaos multiplier `2n+1`. The actual radial phases are
@@ -425,6 +431,10 @@ on total energies at most `12.671`, `12.674` and visible energies at least
 `11.497`, `11.498`. `OriginTailBudget.origin_tail_of_visible` supplies the
 assembly's origin-tail hypothesis from these four numerical inequalities;
 the exact weighted cap fits the existing budget without relaxing the ledger.
+`Repriced` uses that smaller cap in the ledger directly: the published head
+hypotheses and these four specific energy inequalities imply an exact bound
+below `1.4048984278`. The head enclosure and energy inequalities remain
+unproved inputs, so this is not an unconditional numerical bound.
 For numerical enclosure, a nonnegative inverse-modulus
 polynomial residual controls the phase error; uniform spatial error `ε` inside radius
 `R` gives the joint squared coefficient budget `ε² + exp(-R²)` for all modes.
@@ -442,7 +452,9 @@ Gaussian correlation enclosures remain separate proof obligations.
 The visible-energy interface uses one signed polynomial correlation per
 response and the Gaussian `L²` approximation budget. The strengthened phase
 tail permits the common numerical targets of total energy at most `12.7` and
-visible energy at least `11.5` for each response. A signed polynomial moment
+visible energy at least `11.5` for each response. With those symmetric targets,
+`Repriced` gives a conditional exact bound below `1.4048984302`; it inherits the
+existing native scalar-tail checks. A signed polynomial moment
 enclosure integrates each complete polynomial before bounding its Taylor
 remainder; its concrete correlation checks and the total-energy enclosures
 remain to be supplied.

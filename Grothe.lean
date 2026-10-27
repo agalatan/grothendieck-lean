@@ -9,6 +9,7 @@ import Grothe.HJM.Data
 import Grothe.HJM.Finite67
 import Grothe.HJM.HeadCheck
 import Grothe.HJM.Mixture
+import Grothe.HJM.MixtureHead
 import Grothe.HJM.Origin
 import Grothe.HJM.OriginAnalytic
 import Grothe.HJM.OriginApproximation
@@ -149,6 +150,8 @@ import Grothe.HJM.OriginTruncation
 import Grothe.HJM.OriginVisibleEnergy
 import Grothe.HJM.OriginWitnessData
 import Grothe.HJM.OriginWitnessLaguerre
+import Grothe.HJM.PhaseRotation
+import Grothe.HJM.PhaseRotationTail
 import Grothe.HJM.Prefix
 import Grothe.HJM.PrefixCheck1
 import Grothe.HJM.PrefixCheck2
@@ -157,6 +160,7 @@ import Grothe.HJM.PrefixCheck4
 import Grothe.HJM.PrefixCheck5
 import Grothe.HJM.PrefixTable
 import Grothe.HJM.Preprocessors
+import Grothe.HJM.Repriced
 import Grothe.HJM.TailSplit
 import Grothe.Haagerup.CanonicalArithmetic
 import Grothe.Haagerup.CanonicalCheck
