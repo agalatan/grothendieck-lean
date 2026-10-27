@@ -1,0 +1,31 @@
+{
+  "agent": "codex-aa04",
+  "issue": 133,
+  "status": "SOURCE_LAYOUT_CHECK_NOT_LEAN_ACCEPTANCE",
+  "baseline_commit": "0e234fb7c5dc66d85edcdd6890d40bc851b8d30b",
+  "modules": 21,
+  "independent_numeric_modules": 16,
+  "total_bytes": 6466824,
+  "total_lines": 216700,
+  "kernel_decide_facts": 1134,
+  "continuation_steps": 891,
+  "unchanged_exact_arithmetic_and_layout_ast": [
+    "require",
+    "ofq",
+    "neg",
+    "add",
+    "mul",
+    "conv",
+    "conv_with_tail",
+    "norm",
+    "render_convolution_module",
+    "render"
+  ],
+  "certificate_sha256": "93516a92223d07ee46593f92688e6a0fd9b5c9a9aeae9ea85d084be92513a63d",
+  "same_P_R_recipe_and_arithmetic_module": true,
+  "global_reports": 597,
+  "required": 380,
+  "native_inventory": 88,
+  "focused_required": 96,
+  "focused_native_inventory": 0
+}

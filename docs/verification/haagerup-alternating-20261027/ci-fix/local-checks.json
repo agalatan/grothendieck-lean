@@ -1,0 +1,32 @@
+{
+  "agent": "codex-aa04",
+  "issue": 133,
+  "status": "PASS_TARGETED_LEAN_CHECKS_NOT_FULL_BUILD",
+  "failed_ci_run": 40426877218,
+  "baseline_commit": "84383b626dcf738a58811504b4ced36c39a30735",
+  "lean_toolchain": "leanprover/lean4:v4.34.1",
+  "expected_parser_failure_reproduced": true,
+  "passed_without_warnings": [
+    "WeightedFixed",
+    "WeightedBinding",
+    "PowerData",
+    "CanonicalArithmetic",
+    "CanonicalData",
+    "CoefficientClosure"
+  ],
+  "coefficient_closure_declarations": 565,
+  "coefficient_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "analytic_module_note": "The initial direct CanonicalProof check hit a stale local import of GrotheKernel.ResolventCompletion. Its dependencies are being refreshed separately; that attempt is not counted as a pass.",
+  "generator_reproduction": "PASS byte-for-byte canonical trace modules (21)",
+  "source_sha256": {
+    "tools/gen_haagerup_canonical_check.py": "a606eca90c36398e3778c902577d4390e7a60ff28d6648528918a81b76c0c919",
+    "Grothe/Haagerup/CanonicalProof.lean": "08a8b8132e2303d4901ff0fa9d6c2c21970d48c99f0c4143cc7d1c0937da6b1e",
+    "Grothe/Haagerup/CanonicalTrace/Numeric03.lean": "9eb429d6f8d4df87847f8840ef8a1415a7120409db78ce34b5379737e4ef6eb8",
+    "Grothe/Haagerup/CanonicalTrace/Bindings.lean": "8feeb9e0378e91eeb44effbeded40795993f64ba7aaa7b8c02e335ebc8a30456",
+    "Grothe/Haagerup/CanonicalTrace/Checks.lean": "0b6d5a427cd360069b6082ee90bfbeb34ad3070bda5a367eae4dbe413d5e89d4"
+  }
+}

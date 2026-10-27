@@ -1,0 +1,30 @@
+Agent-ID: codex-aa04
+Issue: #133
+Status: PDF and source documentation checked; new Lean acceptance pending delivery CI.
+
+Overview PDF: OVERVIEW.pdf
+Overview source: docs/overview.tex
+PDF pages: 12
+PDF SHA256: 9b605c5a8b41461c99b01e1ac6cfb27535b4401f0b931eefdb0b75aeaa003c4a
+TeX SHA256: f28368bb53a96e87fcf703146cbea6427d5213a85d47d6d16bbb39757c2f3da2
+Rendered at 110 DPI and visually inspected final pages: 1, 2, 5, 6, 7, 12.
+Verified headline 1.404909132792, rational 175613641599/125000000000,
+order 10, cutoff 165, exact prefix/head/remainder caps, table layout,
+paragraph boundaries, page numbers, and reference layout.
+No clipped text, overlap, overflow, missing symbols, or broken equations observed.
+Final overview compile: success; no overfull boxes or unresolved references.
+One inherited underfull bibliography line remains visually acceptable.
+
+Detailed research fragment: docs/research/haagerup-power.tex
+Research source SHA256: 0deb9bc2d5c8b526f51c6f28c7d6c8447beece95530a2f5a72f51c9899c86a87
+Compiled through ignored standalone research-check.tex wrapper.
+Research PDF pages: 4
+Research PDF SHA256: a2d3026fde5d5d0b76c1733a52920f6d6ccbc5c6560876449d8c152b6feeb772
+All four research pages rendered and visually inspected, including weighted
+Horner sums, combined remainder formula, and final endpoint arithmetic.
+Research compile: success; no overfull boxes or final unresolved references.
+
+Exact decimal/rational endpoint equality and budget additions checked with Python Fraction.
+No Lean build was run. Historical verification receipts were not modified.
+Ignored build logs, rendered pages, and temporary research PDF are under:
+handoff/lean-audit/major-simplification/codex-aa04/alternating-20261027

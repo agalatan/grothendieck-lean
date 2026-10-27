@@ -1,8 +1,9 @@
 # Hypothesis-free upper bound from a canonical resolvent completion
 
-The current source `Grothe.haagerup_bound` targets **K_G^ℂ ≤ 1.404909133** for
+`Grothe.haagerup_bound` proves **K_G^ℂ ≤ 1.404909132792** for
 every finite complex matrix, with no Gaussian, integration, or numerical-tail
-hypotheses. **Delivery CI for the new degree-20 certificate is pending (#129).**
+hypotheses. The order-10 alternating completion passed
+[delivery CI](https://github.com/agalatan/grothendieck-lean/actions/runs/40432615845) for #133.
 The focused policy requires 96 results with zero native evaluation axioms.
 The sharper conditional upper bound and lower endpoint are separate.
 
@@ -88,54 +89,60 @@ degree 64 are computed by an exact recurrence and rounded to the nearest
 60-bit dyadic, with ties to even. The tracked `recipe.json` fixes every choice;
 the generator is not trusted by the Lean proof.
 
-The exact parameters and finite-check caps awaiting delivery CI are:
+The exact parameters and kernel-checked finite caps are:
 
-- K = 64 series terms and m = 8 correction terms;
-- checked coefficient prefix n < 172, with cap 74/10¹²;
-- weighted finite-polynomial tail from n = 172, with cap 52/10¹²;
+- K = 64 series terms and m = 10 correction terms;
+- checked coefficient prefix n < 165, with cap 368411/(5·10¹⁵);
+- weighted finite-polynomial tail from n = 165, with cap 10⁻¹⁶;
 - η = 10⁻¹² for the inverse defect;
 - ‖R P^17‖₁ ≤ 249/500, giving B = 1/2 using ‖P‖₁ ≤ 1;
 - ‖R−1‖₁ + η ≤ 2, giving C = 2;
-- r_64 ≤ 1/10⁴ and Δ^8 r_64 ≤ 51/10¹⁵;
-- completed finite residual ≤ 126/10¹²;
-- infinite remainder ≤ 14/10¹².
+- completed finite residual ≤ 736823/10¹⁶;
+- infinite remainder ≤ 10169/10¹⁶.
 
-Complete monotonicity bounds every Δ^j r_64 by r_64. Since
-Σ_(j<8) 2^j = 255, the general remainder estimate is bounded by
+The remainder budget retains the actual finite differences:
 
-[256·(51/10¹⁵) + 10⁻¹²·(255/10⁴)] / (1−10⁻¹²) < 14/10¹².
+[2^10 Δ^10 r_64 + 10⁻¹² Σ_(j<10) 2^j Δ^j r_64] / (1−10⁻¹²)
+≤ 10169/10¹⁶.
+
+This rational inequality is checked in Lean's kernel. It avoids replacing every
+difference by the much larger zeroth difference. Complete monotonicity supplies
+the nonnegativity and vanishing tails needed by the analytic remainder theorem.
 
 The completed finite residual polynomial is
 
-F = P Σ_(k<64) r_k (XP²)^k + Q_8 − P(0).
+F = P Σ_(k<64) r_k (XP²)^k + Q_10 − P(0).
 
-The finite check requires an outward interval enclosure of its first 172 coefficients. To
-control every remaining coefficient, use the weighted norm of F(ρX). For
+The finite check requires an outward interval enclosure of its first 165 coefficients.
+To control every remaining coefficient, use the weighted norm of F(ρX). For
 any real polynomial F and ρ ≥ 1, scaling multiplies coefficient n by ρⁿ, so
 
 ‖F‖₁ ≤ Σ_(n<N) |F_n| + ‖F(ρX)‖₁/ρ^N.
 
 At ρ = 3/2, the exact rational data give ‖P(ρX)‖₁ ≤ 21/20 and
 ‖R(ρX)‖₁ ≤ 9. Hence ‖ρX P(ρX)²‖₁ ≤ 5/3 and the scaled correction ratio
-has norm at most 15. Complete monotonicity gives r_k ≤ 1 and
-Δ^j r_64 ≤ 1/10⁴. Submultiplicativity and the finite geometric sums yield
+has norm at most 15. Retaining each nonnegative coefficient in the Horner norm
+estimate gives
 
 ‖F((3/2)X)‖₁
-≤ (21/20)·64·(5/3)^63
-  + 9·(21/20)·(5/3)^64·(1/10⁴)·Σ_(j<8) 15^j + 1
-≤ 10²⁰.
+≤ (21/20)·Σ_(k<64) r_k (5/3)^k
+  + 9·(21/20)·(5/3)^64·Σ_(j<10) (Δ^j r_64) 15^j + 1
+≤ 10¹³.
 
 The omitted finite-polynomial coefficients therefore contribute at most
-10²⁰/(3/2)^172 < 52/10¹². Adding the checked prefix cap gives
+10¹³/(3/2)^165 < 10⁻¹⁶. Adding the checked prefix cap gives
 
-‖F‖₁ ≤ (74+52)/10¹² = 126/10¹².
+‖F‖₁ ≤ 368411/(5·10¹⁵) + 10⁻¹⁶ = 736823/10¹⁶.
 
 This is a finite polynomial coefficient argument; no analytic continuation
-or infinite-series norm outside the unit disk is assumed.
+or infinite-series norm outside the unit disk is assumed. Both the weighted
+finite-tail budget and the combined infinite-remainder budget are exact
+rational conjuncts of `coefficient_check`.
 
-The total normalized residual cap is 140/10¹². Residual transfer and the proved lower enclosure for π give
+The total normalized residual cap is 746992/10¹⁶. Residual transfer and the
+proved lower enclosure for π give
 
-K_G^ℂ ≤ 4/[π(P(0) − 140/10¹²)] < 1.404909133.
+K_G^ℂ ≤ 4/[π(P(0) − 746992/10¹⁶)] < 1.404909132792.
 
 The exact recipe lives in `data/haagerup-resolvent/recipe.json`;
 `tools/gen_haagerup_certificate.py` reproduces `certificate.json` from it.
@@ -200,10 +207,13 @@ The focused axiom audit permits only `propext`, `Classical.choice`, and
 lake env lean scratch/AxiomsPower.lean | python3 scripts/check_axioms.py --haagerup-power
 ```
 
-Run this from the worktree root. Acceptance requires all 96 results with zero
-native axioms. The regenerated degree-20 certificate is awaiting delivery CI
-under #129. The records in `docs/verification/haagerup-canonical-20261026/` are
-immutable evidence for their older pinned source snapshots; they do not certify
-this new data. Normal `ready/*` delivery CI builds and audits the combined tree
-before merging it.
+Run this from the worktree root. The policy requires all 96 results with zero
+native axioms. The regenerated alternating completion passed
+[delivery CI](https://github.com/agalatan/grothendieck-lean/actions/runs/40432615845) under #133.
+The [acceptance receipt](verification/haagerup-alternating-20261027/acceptance/README.md)
+records the successful full delivery check. The
+[candidate and repair receipts](verification/haagerup-alternating-20261027/README.md)
+preserve the checks recorded before acceptance. Earlier verification receipts
+remain immutable evidence for their own pinned source snapshots. Normal
+`ready/*` delivery CI builds and audits the combined tree before merging it.
 The canonical upper-bound construction does not change the lower cap computations.

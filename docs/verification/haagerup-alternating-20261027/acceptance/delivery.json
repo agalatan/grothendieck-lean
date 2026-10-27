@@ -1,0 +1,59 @@
+{
+  "agent_id": "codex-aa04",
+  "recorded_at": "2026-10-27T01:51:18.439597+00:00",
+  "delivery_run_id": 40432615845,
+  "delivery_run_url": "https://github.com/agalatan/grothendieck-lean/actions/runs/40432615845",
+  "conclusion": "success",
+  "head_sha": "83b926508248916a8cdcc0d7eaca2c4994534c97",
+  "base_sha": "7cb1b1784f602ec37cbe0ff4ce03133894437631",
+  "checked_tree_sha": "66a9633c03aac6c78affc17213d757c788f740f4",
+  "merged_commit_sha": "c6df6ba4b331c84046cd8ffdeb841f9aab7fece2",
+  "merged_commit_tree_sha": "66a9633c03aac6c78affc17213d757c788f740f4",
+  "merged_commit_parents": [
+    "7cb1b1784f602ec37cbe0ff4ce03133894437631",
+    "83b926508248916a8cdcc0d7eaca2c4994534c97"
+  ],
+  "head_is_ancestor_of_merged_commit": true,
+  "full_build_jobs": 9263,
+  "ci_script_tests": {
+    "caps_stamp": 26,
+    "check_axioms": 21
+  },
+  "gate_conclusions": {
+    "Build Grothe (everything, node caps included)": "success",
+    "Root import files generated, list files sorted and duplicate-free": "success",
+    "No sorry, axiom or unchecked code anywhere": "success",
+    "Axiom report": "success",
+    "Recreate exactly the checked merge": "success",
+    "Auto-merge into master (fast-forward to the checked merge), or retry if master moved": "success"
+  },
+  "axiom_summary": "checked 597 theorems; native_decide facts used: 88 of 88",
+  "axiom_records": 597,
+  "native_decide_facts_used": 88,
+  "native_decide_allowlist_count": 88,
+  "master_followup_run_id": 40434811897,
+  "master_followup_url": "https://github.com/agalatan/grothendieck-lean/actions/runs/40434811897",
+  "master_followup_status_when_last_observed": "in_progress",
+  "evidence_files": {
+    "ci-40432615845-axioms.txt": {
+      "bytes": 84556,
+      "sha256": "42e4d65006762f340f535deb667e6f22c15ed487d2fd5836c734b407b180dc09"
+    },
+    "ci-40432615845-build.log": {
+      "bytes": 235885,
+      "sha256": "3355acb4f1bad7a5918d87b441f3c61f8ca4d0f4bc2f75f3de9fb70e65b019c4"
+    },
+    "ci-40432615845-full.log": {
+      "bytes": 295628,
+      "sha256": "56ed91a35f00908f5b4ef91808b432ae77e75af82c3b68185fe69e0fc739984c"
+    },
+    "ci-40432615845-master-followups.json": {
+      "bytes": 1301,
+      "sha256": "2d846d83edb77be2ee720e2ea3b9ec26c21042d913a1ef9438b75eddedabd4da"
+    },
+    "ci-40432615845-status.json": {
+      "bytes": 8177,
+      "sha256": "f53d870f832ae286e366b1bf074e644b28e178027719fe4f8c445f66a220a6a3"
+    }
+  }
+}

@@ -17,8 +17,7 @@ lemma defect_check : resolventNormOK pl rl defectCap = true :=
 lemma seed_check : seedNormOK pl rl seedPower seedCap = true :=
   Trace.seed_check
 
-lemma coefficient_check : haagR start ≤ 1/10000 ∧
-    iterDiff order haagR start ≤ 51/1000000000000000 :=
+lemma coefficient_check : weightedBudget ≤ 10^13 ∧ remainderBudget ≤ remainderCap :=
   Trace.coefficient_check
 
 lemma completed_check :

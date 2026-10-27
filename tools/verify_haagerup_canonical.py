@@ -70,7 +70,6 @@ def main():
         ds.append(current[0])
         current = [u-v for u, v in zip(current, current[1:])]
     assert all(v >= 0 for v in ds)
-    assert coeff[k] <= Q(1, 10000) and ds[order] <= Q(51, 10**15)
     head = arb_poly([])
     for q in reversed(coeff[:k]):
         head = a*head+ball(q)
@@ -100,15 +99,13 @@ def main():
     assert sum(abs(c)*rho**i for i, c in enumerate(rl)) <= r_cap
     assert rho*p_cap**2 <= a_cap and r_cap*a_cap == 15
     assert all(0 <= c <= 1 for c in coeff[:k]) and abs(pl[0]) <= 1
-    assert all(0 <= d <= Q(1, 10000) for d in ds[:order])
-    weighted_bound = (p_cap*k*a_cap**(k-1) +
-                      r_cap*p_cap*a_cap**k*Q(1, 10000)*sum(15**j for j in range(order)) + 1)
-    assert weighted_bound <= 10**20
-    finite_tail = Q(10**20)/rho**cutoff
+    weighted_bound = (p_cap*sum(abs(c)*a_cap**j for j, c in enumerate(coeff[:k])) +
+                      r_cap*p_cap*a_cap**k*sum(abs(d)*15**j for j, d in enumerate(ds[:order])) + 1)
+    assert weighted_bound <= 10**13
+    finite_tail = Q(10**13)/rho**cutoff
     assert finite_tail <= head_cap-prefix_cap
     remainder = (2**order*ds[order] + eta*sum(2**j*ds[j] for j in range(order)))/(1-eta)
-    coarse = (2**order*Q(51, 10**15) + eta*(2**order-1)*Q(1, 10000))/(1-eta)
-    assert remainder <= coarse <= remainder_cap
+    assert remainder <= remainder_cap
     assert pl[0]-head_cap-remainder_cap > 0
     endpoint = Q(4)/(Q('3.14159265358979323846')*(pl[0]-head_cap-remainder_cap))
     proof = (root/'Grothe/Haagerup/CanonicalProof.lean').read_text()
@@ -141,10 +138,10 @@ def main():
         completed_head_upper=upper(head_norm), head_cap=str(head_cap),
         checked_prefix_upper=upper(prefix_norm), prefix_cap=str(prefix_cap),
         truncated_output_degree=truncated.degree(), weighted_radius=str(rho),
-        weighted_majorant_upper=str(weighted_bound), weighted_cap=str(10**20),
+        weighted_majorant_upper=str(weighted_bound), weighted_cap=str(10**13),
         finite_tail_upper=str(finite_tail), finite_tail_cap=str(head_cap-prefix_cap),
         differences=list(map(str, ds)), remainder_upper=str(remainder),
-        coarse_remainder_upper=str(coarse), remainder_cap=str(remainder_cap),
+        remainder_cap=str(remainder_cap),
         arithmetic_endpoint=str(endpoint), unconditional_upper=str(public),
         seconds=time.time()-start_time)
     args.out.parent.mkdir(parents=True, exist_ok=True)
