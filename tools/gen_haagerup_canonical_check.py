@@ -290,7 +290,7 @@ def render_blocks(data, parameters):
     def horner_majorant(radius, names):
         result = "0"
         for name in reversed(names):
-            result = f"(|{name}| + ({radius})*({result}))"
+            result = f"(Rat.abs {name} + ({radius})*({result}))"
         return result
 
     head_majorant = horner_majorant("5/3", [f"c{k}" for k in range(start)])
@@ -362,6 +362,12 @@ def render_blocks(data, parameters):
 
     section = "bindings"
     emit(dedent('''
+    theorem rat_abs_binding (q : Rat) : |q| = Rat.abs q := by
+      unfold Rat.abs
+      split_ifs with h
+      · exact abs_of_nonneg h
+      · exact abs_of_nonpos (le_of_not_ge h)
+
     theorem coefficientGlue {k : Nat} {r s : Rat}
         (h : Grothe.haagR k = r)
         (hs : r * (((2*k+1)^2 : Nat) : Rat) / ((4*(k+1)*(k+2) : Nat) : Rat) = s) :
@@ -428,7 +434,10 @@ def render_blocks(data, parameters):
           "constructor\n"
           "· unfold Grothe.HaagerupCanonical.weightedBudget\n"
           "  rw [weights_binding, differences_binding]\n"
-          "  exact weighted_literal_ok\n"
+          "  simpa only [Grothe.HaagerupCanonical.majorantQ, Grothe.HaagerupCanonical.start,\n"
+          "    " + ", ".join([f"weights{k}" for k in range(start+1)] +
+                            [f"correctionWeights{j}" for j in range(order+1)]) +
+          ", rat_abs_binding] using weighted_literal_ok\n"
           "· unfold Grothe.HaagerupCanonical.remainderBudget\n"
           "  simp only [Grothe.HaagerupCanonical.order, Grothe.HaagerupCanonical.start,\n"
           "    Finset.sum_range_succ, Finset.sum_range_zero, zero_add,\n"

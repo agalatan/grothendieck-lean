@@ -19,6 +19,12 @@ namespace Grothe.HaagerupCanonical.Trace
 
 open GrotheKernel Grothe.Upper.FiniteDifference
 
+theorem rat_abs_binding (q : Rat) : |q| = Rat.abs q := by
+  unfold Rat.abs
+  split_ifs with h
+  · exact abs_of_nonneg h
+  · exact abs_of_nonpos (le_of_not_ge h)
+
 theorem coefficientGlue {k : Nat} {r s : Rat}
     (h : Grothe.haagR k = r)
     (hs : r * (((2*k+1)^2 : Nat) : Rat) / ((4*(k+1)*(k+2) : Nat) : Rat) = s) :

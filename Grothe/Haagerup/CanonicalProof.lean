@@ -242,7 +242,7 @@ lemma remainder_bound (hcoeff : remainderBudget ≤ remainderCap) :
     simp only [remainderBudget, Rat.cast_div, Rat.cast_add, Rat.cast_mul, Rat.cast_pow,
       Rat.cast_ofNat, Rat.cast_sub, Rat.cast_one, Rat.cast_sum, iterDiff_ratCast]
   rw [he] at h
-  convert h using 1 <;> ring
+  convert h using 1; ring
 
 lemma completed_tail_bound
     (hdef : resolventNormOK pl rl defectCap = true)

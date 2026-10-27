@@ -24,7 +24,8 @@ theorem coefficient_check :
   constructor
   · unfold Grothe.HaagerupCanonical.weightedBudget
     rw [weights_binding, differences_binding]
-    exact weighted_literal_ok
+    simpa only [Grothe.HaagerupCanonical.majorantQ, Grothe.HaagerupCanonical.start,
+      weights0, weights1, weights2, weights3, weights4, weights5, weights6, weights7, weights8, weights9, weights10, weights11, weights12, weights13, weights14, weights15, weights16, weights17, weights18, weights19, weights20, weights21, weights22, weights23, weights24, weights25, weights26, weights27, weights28, weights29, weights30, weights31, weights32, weights33, weights34, weights35, weights36, weights37, weights38, weights39, weights40, weights41, weights42, weights43, weights44, weights45, weights46, weights47, weights48, weights49, weights50, weights51, weights52, weights53, weights54, weights55, weights56, weights57, weights58, weights59, weights60, weights61, weights62, weights63, weights64, correctionWeights0, correctionWeights1, correctionWeights2, correctionWeights3, correctionWeights4, correctionWeights5, correctionWeights6, correctionWeights7, correctionWeights8, correctionWeights9, correctionWeights10, rat_abs_binding] using weighted_literal_ok
   · unfold Grothe.HaagerupCanonical.remainderBudget
     simp only [Grothe.HaagerupCanonical.order, Grothe.HaagerupCanonical.start,
       Finset.sum_range_succ, Finset.sum_range_zero, zero_add,

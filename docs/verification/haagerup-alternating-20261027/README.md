@@ -64,3 +64,6 @@ The lower-cap source digest is unchanged across 53 files:
 `a0473ebe31b871cc1516046e045f2372935050a099b8e3c7315fab8271fcf604`.
 These source and arithmetic checks do not replace Lean acceptance by the ready
 workflow. No full local/cloud pre-check or manual droplet job was run.
+
+The [CI repair receipt](ci-fix/README.md) records the subsequent generated-notation
+fix and actual targeted Lean checks; the original replay above remains unchanged.
