@@ -27,11 +27,15 @@ private def profileCellPrimitive (s : ℝ) : ℝ :=
 private lemma profileCellPrimitive_deriv (s : ℝ) :
     HasDerivAt profileCellPrimitive ((1 / 2 - s) ^ 2 * Real.exp (-s)) s := by
   have hp : HasDerivAt (fun x : ℝ => -(x ^ 2 + x + 5 / 4)) (-(2 * s + 1)) s := by
-    simpa only [id_eq, pow_one, mul_one] using
-      ((((hasDerivAt_id s).pow 2).add (hasDerivAt_id s)).add_const (5 / 4 : ℝ)).neg
+    convert ((((hasDerivAt_id s).pow 2).add (hasDerivAt_id s)).add_const
+      (5 / 4 : ℝ)).neg using 1
+    · rfl
+    · norm_num
   have he : HasDerivAt (fun x : ℝ => Real.exp (-x)) (-Real.exp (-s)) s := by
     simpa using ((hasDerivAt_id s).neg.exp)
-  convert hp.mul he using 1 <;> ring
+  convert hp.mul he using 1
+  · rfl
+  · ring
 
 /-- Exact source-bound identity for this finite Gaussian cell. -/
 theorem profile_first_gaussian_cell_exact :
