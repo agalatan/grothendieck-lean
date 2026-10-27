@@ -18,8 +18,11 @@ from the contents of this directory.
    Consequently the constant-phase coefficient is
    `q_n=(-1)^n*sqrt(h_n)`, with `h_0=pi/4` and
    `h_(n+1)/h_n=(2n+1)^2/[4(n+1)(n+2)]`.
-   The Laguerre/Hermite basis and Gaussian normalization proof is a separate
-   mathematical dependency, not an imported numerical table.
+   `OriginRadial` derives the radial polynomial and its ODE from Hermite
+   creation operators. `OriginRadialEnergy` proves the exact squared-radius
+   substitution and normalized Green-to-coefficient identity. The displayed
+   constant-phase closed form still needs its separate evaluation; it is not
+   supplied by an imported numerical table.
 3. The L2 mass of a unit radial response omitted after R is `exp(-R)`;
    Bessel bounds the joint coefficient l2 error by `exp(-R/2)`. Hence the
    `[25,36]` extension changes the analytic norm error from `exp(-25/2)` to
@@ -83,9 +86,23 @@ N_v(s) = -2*s*v''(s) + (2*s-2)*v'(s) + (v(s)-v(0))/(2*s).
 E_v = integral_0^infinity exp(-s)*|N_v(s)|^2 ds.
 ```
 
-The quotient has a removable singularity at0. It must not be evaluated as an
-unbounded expression on a panel containing0. For `0<s<=epsilon=10^-7`, the
-fundamental theorem gives `|v(s)-v(0)|<=s*M1`, and hence
+`OriginRegularity` proves actual smoothness through zero and the finite-endpoint
+Green condition. `OriginDenominator` supplies the uniform lower bound1/250 for
+both phase denominators. `OriginPhaseQuotient` removes the apparent singularity
+by an exact polynomial divided difference. If p is either numerator, r=|p|,
+pD=p.divX and qD=(p*conjugatePolynomial(p)).divX, then for s>0,
+
+```
+(v(s)-v(0))/s = pD(s)/r(s) - p(0)*qD(s)/(r(s)*r(0)*(r(s)+r(0))).
+```
+
+The right-hand side is continuous at0. `OriginEnergyExtension` builds the actual
+continuous energy amplitudes from it and proves finite-panel integrability,
+including panels touching zero. The original totalized operator is identified
+only for s>0. This replaces the apparent division by s without independently
+rounding the endpoint phase. It supplies no numerical enclosure by itself.
+
+Alternatively, for `0<s<=epsilon=10^-7`, the fundamental theorem gives `|v(s)-v(0)|<=s*M1`, and hence
 
 ```
 |N_v(s)| <= 2*epsilon*M2 + (2*epsilon+5/2)*M1,

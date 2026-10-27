@@ -58,8 +58,29 @@ numerators are nonvanishing and their phases have unit modulus for `s ≥ 0`.
 operators, proves its Laguerre differential equation, and identifies the actual
 normalized coefficient with a one-dimensional Gaussian integral. `OriginGreen`
 proves the corresponding combined-Wronskian derivative and improper integral
-identity. Its derivative, integrability and boundary-limit hypotheses remain
-explicit; applying it to the concrete differential responses is still required.
+identity. `OriginRadialEnergy` performs the exact `s = r²` substitution, cancels
+the polar Jacobian factor, and derives the coefficient multiplier `2n+1` and
+weighted Parseval equality under explicit square-integrability, coefficient
+integrability and boundary hypotheses.
+
+`OriginRegularity` proves that both actual phases are smooth at every `s ≥ 0`,
+including full neighborhoods of zero. It supplies their first and second
+derivatives and the finite-endpoint Green condition for the endpoint-subtracted
+responses. Their specialized Green pairings retain only the two scalar
+integrability premises and the limit at infinity. `OriginDenominator` gives
+uniform margins `‖leftNumerator(s)‖, ‖rightNumerator(s)‖ > 1/250` and reciprocal
+bounds of 250 on the half-line.
+
+`OriginPhaseQuotient` uses polynomial `divX` to rationalize the phase divided
+difference exactly. For a nonvanishing polynomial `p`, with `r(s) = ‖p(s)‖`,
+`pD = p.divX` and `qD = (p * conjugatePolynomial(p)).divX`, it identifies
+`(phase(p(s)) - phase(p(0)))/s` with
+`pD(s)/r(s) - p(0)*qD(s)/(r(s)*r(0)*(r(s)+r(0)))` for `s ≠ 0`.
+The latter expression is continuous at zero. `OriginEnergyExtension` applies
+it to both actual energy amplitudes and proves energy-density integrability
+on every finite closed panel. Equality with the totalized differential
+expression is asserted only for `s > 0`; its arbitrary value at zero is not
+used. Global growth and integrability remain separate obligations.
 
 `OriginApproximation` proves the zero-safe algebraic bound
 `‖W z - phase(z)‖ ≤ |W² ‖z‖² - 1|` for `W ≥ 0`, with a sharper rational
