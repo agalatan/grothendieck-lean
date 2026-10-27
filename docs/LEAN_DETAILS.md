@@ -288,6 +288,20 @@ integral on `[0,1]` with `5/4 - (13/4) * exp(-1)`, and
 antiderivative and `Real.exp_one_near_20`, with no native checker.
 Both theorems are included in the axiom report. This finite cell is one input
 to the remaining profile and Gaussian response estimates.
+
+`Grothe/UpperChaos/LeanCertPilot.lean` uses LeanCert pinned at
+`7f91b6eb3567437f6cfac03ed279706603ee22f4`, with the existing Lean/Mathlib versions.
+Its `unitBaseSlice_integral_enclosure` proves
+`1 ≤ ∫ u in 0..1, 2*exp(-u²/(1+u²))/(1+u²)² ≤ 5/4`.
+The proof applies `integral_bounds_of_check_dyadic` to an explicit 16-cell
+`checkIntegralBoundsDyadicFull` certificate, checked by `decide +kernel`.
+This checks reciprocal domains as well as interval bounds; continuity proves
+integrability separately. `unitBaseSlice_eq_conditional_base` identifies the
+integrand, for `u > 0`, with `2*u` times the norm of the actual affine Gaussian
+phase-Laplace integral. Both theorems are in the axiom report and introduce
+no native facts. The module imports only `LeanCert.Validity.IntegrationDyadic`
+from LeanCert. The production Gaussian error estimates remain work in progress.
+
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual
 kernel. `upper_of_finite_sample_bounds` reduces that estimate to complex
