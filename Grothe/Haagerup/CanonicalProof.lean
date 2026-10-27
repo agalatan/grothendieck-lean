@@ -300,7 +300,7 @@ lemma remainder_bound (hcoeff : remainderBudget ≤ remainderCap) :
       ((1/16 : ℝ)*iterDiff order (fun k => (haagR k : ℝ)) start +
         (defectCap : ℝ)*∑ j ∈ range order, iterDiff j (fun k => (haagR k : ℝ)) start) /
         (1-defectCap) := by
-    simp only [remainderBudget, Rat.cast_div, Rat.cast_add, Rat.cast_mul, Rat.cast_pow,
+    simp only [remainderBudget, Rat.cast_div, Rat.cast_add, Rat.cast_mul,
       Rat.cast_ofNat, Rat.cast_sub, Rat.cast_one, Rat.cast_sum, iterDiff_ratCast]
   rw [he] at h
   convert h using 1; ring
@@ -312,21 +312,27 @@ lemma completed_tail_bound
     ∑' n, |compCoeff (fun k => if k < start then 0 else (haagR k : ℝ)) P n -
       ((R*compTerm P start)*hornerP (-(R*(X*P^2))) differences).coeff n| ≤
       (remainderCap : ℝ) := by
+  have budget_eq (m : ℕ) (w : ℕ → ℝ) (eta : ℝ) :
+      (2/(1-eta))*((if m = m then (1/32 : ℝ) else 1/2)*w m +
+        eta*∑ j ∈ range m, (if j = m then (1/32 : ℝ) else 1/2)*w j) =
+      (2/(1-eta))*((1/32 : ℝ)*w m + eta*(1/2)*∑ j ∈ range m, w j) := by
+    have hs : (∑ j ∈ range m, (if j = m then (1/32 : ℝ) else 1/2)*w j) =
+        (1/2 : ℝ)*∑ j ∈ range m, w j := by
+      rw [mul_sum]
+      apply sum_congr rfl
+      intro j hj
+      rw [ite_eq_right (Nat.ne_of_lt (mem_range.mp hj))]
+    rw [hs, ite_eq_left rfl]
+    ring
   have h := composition_completion_bound_of_seeds (fun k => (haagR k : ℝ)) P R start order
     HaagerupCompleteMonotone.haagR_completelyMonotone
     (fun j => if j = order then (1/32 : ℝ) else 1/2) norm_P
     (by norm_num [defectCap] : (defectCap : ℝ) < 1) (norm_defect_of_check hdef)
     (norm_completion_seed hdef hseed)
   rw [completion_eq] at h
-  have hs : (∑ j ∈ range order,
-      (if j = order then (1/32 : ℝ) else 1/2)*iterDiff j (fun k => (haagR k : ℝ)) start) =
-      (1/2 : ℝ)*∑ j ∈ range order, iterDiff j (fun k => (haagR k : ℝ)) start := by
-    rw [mul_sum]
-    apply sum_congr rfl
-    intro j hj
-    rw [ite_eq_right (Nat.ne_of_lt (mem_range.mp hj))]
-  rw [hs, ite_eq_left rfl, ← mul_assoc] at h
-  exact h.trans (remainder_bound hcoeff.2)
+  exact (h.trans_eq (budget_eq order
+    (fun j => iterDiff j (fun k => (haagR k : ℝ)) start) defectCap)).trans
+      (remainder_bound hcoeff.2)
 
 lemma finite_identity (n : ℕ) :
     compCoeff (cLo start) P n = Real.pi/4*(P*hornerP (X*P^2) (haagList start)).coeff n := by

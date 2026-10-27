@@ -443,7 +443,8 @@ def render_blocks(data, parameters):
           "  simp only [Grothe.HaagerupCanonical.order, Grothe.HaagerupCanonical.start,\n"
           "    Finset.sum_range_succ, Finset.sum_range_zero, zero_add,\n"
           f"    {diff_rules}, differenceEq{order}_{start}, defectCap_binding]\n"
-          "  exact remainder_literal_ok")
+          "  exact remainder_literal_ok.trans_eq (by\n"
+          "    norm_num [Grothe.HaagerupCanonical.remainderCap])")
     emit("#print axioms coefficient_check")
     lemma("completed_check",
           "completedHeadOK Grothe.HaagerupCanonical.cutoff Grothe.HaagerupCanonical.start\n"
