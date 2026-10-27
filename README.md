@@ -207,6 +207,14 @@ The head, computed in Lean (`head_check`), is 28153/10¹², 3.09% of the total
 455308278509/(5·10¹⁷). The Hardy tail beyond degree 501, 30488839/10¹⁵ (3.35%), is **proved**: the weighted
 square sum is ≤ 7/4 at radius 4149/4000 (`HardyReal.hardy_GT`, below).
 
+**The error decomposition is explicit** (`ComparisonPieces.lean`). With `T = F₀ + h₁ + h₂/2 + h₃/6`,
+`hⱼ = (iφ)ʲF₀`, and the smoothing S as an `L²` contraction (`Smoothing.lean`: `Mx + NZ` is standard,
+S is a contraction, `S T = G_T`), Lean defines for any charge-one `v, c₁, c₂, c₃` (the frozen correction and the
+Hermite approximants) the 18 pieces `bandProj b_k (S srcₖ)` and proves that they sum to `G_T − X`,
+`X = S(F₀ + v)` (`difference_pieces`), each supported in its band. `fresh_upper_pieces` is the sharp bound from
+the 18 explicit norm bounds and the table accuracy of that X: `ComparisonInputs` is no longer an unspecified
+decomposition, only 18 numeric norm statements about explicit `L²` objects (issue #39).
+
 The Hardy tail first deducts the linear coefficient's weighted square,
 forced by this weighted head comparison. This adds no Gaussian input.
 
@@ -316,7 +324,7 @@ Every native check is single-threaded code (no `Task.spawn`).
 All other proofs, including the canonical finite checks, are kernel-checked.
 No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`, including the node caps.
-The report contains 602 print directives, with 382 required declarations and 88
+The report contains 609 print directives, with 384 required declarations and 88
 allowlisted native facts (60 cap ranges, five Hardy checks and 23 others).
 The focused report `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, allows
 no native axioms for its 96 selected unconditional upper-bound results.
