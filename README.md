@@ -194,7 +194,10 @@ and `Grothe.upper_value_lt` shows this is below 1.404598149141
 A second conditional route, `Grothe.UpperChaos.fresh_upper_concrete_taylor_relaxed`,
 allows total energy-table discrepancy at most `5/10^7` and still yields a rational
 bound below `1.404599424`. It retains the fourteen Gaussian band-error hypotheses;
-neither those estimates nor the relaxed energy-table bound is proved yet.
+neither those estimates nor the relaxed energy-table bound is proved yet. An alternative
+`Grothe.UpperChaos.Thirteen.fresh_upper_taylor_thirteen_bands` uses thirteen
+Gaussian band hypotheses with the same relaxed table assumption; its conditional
+rational bound is also below `1.404599424`.
 
 The rounding is the smoothing G_T of T = F₀·P₃(φ): a two-coordinate Gaussian phase rounding F₀ times the
 cubic Taylor polynomial P₃(x) = 1 + ix − x²/2 − ix³/6 of a damped polynomial phase φ. It is **defined in Lean**

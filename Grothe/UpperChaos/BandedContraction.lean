@@ -35,7 +35,7 @@ theorem frobenius_two_sided (S S' : Matrix l m ℝ) (A : Matrix m n ℝ)
 and right truncation errors. All bounds concern Frobenius norms. -/
 theorem frobenius_two_sided_of_caps (S S' : Matrix l m ℝ) (A : Matrix m n ℝ)
     (T T' : Matrix n p ℝ) (dl dr ml mr b : ℝ)
-    (hdl0 : 0 ≤ dl) (hdr0 : 0 ≤ dr) (hml0 : 0 ≤ ml) (hmr0 : 0 ≤ mr) (hb0 : 0 ≤ b)
+    (hdl0 : 0 ≤ dl) (_hdr0 : 0 ≤ dr) (hml0 : 0 ≤ ml) (_hmr0 : 0 ≤ mr) (hb0 : 0 ≤ b)
     (hdl : ‖S - S'‖ ≤ dl) (hdr : ‖T - T'‖ ≤ dr)
     (hml : ‖S'‖ ≤ ml) (hmr : ‖T‖ ≤ mr) (hb : ‖A‖ ≤ b) :
     ‖(S * A) * T - (S' * A) * T'‖ ≤ (dl * mr + ml * dr) * b := by
@@ -48,8 +48,8 @@ theorem frobenius_two_sided_of_caps (S S' : Matrix l m ℝ) (A : Matrix m n ℝ)
 /-- Uniform per-block norm ratios combine in squared norm without multiplying
 by the number of degrees. -/
 theorem sum_sq_error_of_block_ratios {ι : Type*} (s : Finset ι)
-    (u v : ι → ℝ) (r : ℝ) (hr : 0 ≤ r)
-    (hu : ∀ i ∈ s, 0 ≤ u i) (hv : ∀ i ∈ s, 0 ≤ v i)
+    (u v : ι → ℝ) (r : ℝ) (_hr : 0 ≤ r)
+    (hu : ∀ i ∈ s, 0 ≤ u i) (_hv : ∀ i ∈ s, 0 ≤ v i)
     (hbound : ∀ i ∈ s, u i ≤ r * v i) :
     ∑ i ∈ s, (u i) ^ 2 ≤ r ^ 2 * ∑ i ∈ s, (v i) ^ 2 := by
   rw [Finset.mul_sum]
