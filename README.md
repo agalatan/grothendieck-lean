@@ -1,25 +1,20 @@
 # The complex Grothendieck constant, in Lean
 
-Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
-complex Grothendieck constant:
+A Lean 4 + Mathlib development targeting these bounds on the complex
+Grothendieck constant:
 
 $$1.401697117301 < K_G^{\mathbb{C}} < 1.404598149141$$
 
 Both bounds rest on explicitly stated analytic and computer-assisted inputs; see
 [what is proved](#what-is-proved).
 
-| year | who | lower bound | upper bound |
-|---|---|---|---|
-| 1953 | Grothendieck | | $K < \infty$ |
-| 1984 | Davie | $1.33807 < K$ | |
-| 1987 | Haagerup | | $K < 1.40490914$ |
-| Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | $1.35584631827168 < K$ | |
-| Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | $1.4 < K$ | $K < 1.404898554746$ |
-| Oct 2026 | **this repository** | $\mathbf{1.401697117301 < K}$ | $\mathbf{K < 1.404598149141}$ |
-
-Haagerup's integral $1/\gamma^\dagger = 1.4045759\ldots$, where
-$\gamma^\dagger = \int_0^{\pi/2} \cos^2 t \, (1+\sin^2 t)^{-1/2} \, dt$, has been proposed as the exact value;
-it lies inside the interval, $2.22 \cdot 10^{-5}$ below our upper bound.
+**The only active upper-bound target is $K_G^{\mathbb C}<1.404598149141$.**
+Both endpoints are **work in progress**. For the upper endpoint, fourteen actual
+Gaussian finite-band estimates and energy-table discrepancy at most
+`6847009/(5·10^17)` still need Lean proofs. The direct-kernel route instead needs
+a proved numerical head estimate. Our own numerical obligations are not accepted
+external inputs. A bound is **done** only when its complete Lean proof and final
+verification pass. The active work now prioritizes the upper endpoint.
 
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
@@ -45,7 +40,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 ## What is proved
 
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
-complex matrix, with V over all finite-dimensional complex Hilbert spaces. All three headline
+complex matrix, with V over all finite-dimensional complex Hilbert spaces. The headline
 theorems conclude a statement about the constant itself.
 
 **Lower bound** — `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data :
@@ -68,9 +63,7 @@ Lower cut soundness is organized by specialization: ordinary spectral cuts use t
 general shifted-cut theorem, ordinary and joint Gram budgets use the signed-reserve
 theorem, and all Stein and spectral node majorants use one admissible-cut integration lemma.
 
-The fourth-moment cap follows directly from the exact Wick identity and two
-general tensor inequalities (`Chaos3.fourth_le`); no separate positivity
-assumption on the expectation is needed. For the circular cubic residual,
+For the circular cubic residual,
 `LowerAnalytic/CircularFourth.lean` replaces the previous pair cap of 62 in the
 Gaussian reduction with the sharp bound `E|q|⁴ ≤ 44 (E|q|²)²`, using the existing complex contraction
 identities and Hilbert–Schmidt inequalities. The one-coordinate Wick cubic
@@ -80,25 +73,6 @@ analytic argument and its consequences. The tensor and scalar estimates for
 both joint sixth-moment bounds are shared in `LowerAnalytic/JointSixthCore.lean`.
 The production cuts and parameterized refinements use the same proof through
 their real-to-complex normalization identities.
-
-The joint sixth-moment/Stein budgets are also formalized in
-`Grothe/LowerAnalytic/JointSixth.lean`, `Grothe/Lower/Reserve.lean` and
-`Grothe/LowerAnalytic/JointBudget.lean`. They retain the shared tensor constraints. The certificate bank contains 44 joint-moment node
-certificates, each checked on its certified kurtosis range and connected to the Gaussian
-cubic by `Grothe/LowerAnalytic/JointContractions.lean`. Five of those nodes use the
-stronger Young budget transported by an exact identity; the cover contains 10,909 boxes.
-The strengthened parameter family and exact majorant-transport rule are proved too
-(`JointSixth.gram_j_eta`, `JointSixth.gram_j2_shifted`, `Grothe/Lower/MomentLift.lean`).
-`Grothe/LowerAnalytic/MomentConeBoundary.lean` proves the exact two-branch minimum
-moment cost within the conic recipe, with explicit attaining points and its
-application to genuine cubic moments on each node range.
-
-A separate global research interface transfers finite Gaussian Hermite games to compact
-spherical operators while preserving the same bounded response pair. The paper proof and
-its computational limitations are in [docs/SPHERICAL_TRANSFER.md](docs/SPHERICAL_TRANSFER.md).
-`Grothe/LowerAnalytic/SphericalTransfer.lean` proves the exact cubic multiplier tail and
-signed cap assembly. The analytic bridge and a useful spherical norm cap are not formalized;
-this interface changes neither endpoint.
 
 The node-cap proof infrastructure is in Lean (`Grothe/LowerAnalytic/Cap*.lean`):
 the 505 chord nodes follow from the vertex caps by convexity (`nodeCaps_of_vertexCaps`, `capChords_check`);
@@ -184,22 +158,17 @@ the squared degree-one Laguerre component against `exp(-s)` on `[0,1]`, and
 encloses it in `[0.054391816192, 0.054391816194]` using Mathlib's proved
 exponential bounds. The remaining profile and response estimates require further work.
 
+LeanCert is a pinned dependency. `UpperChaos/LeanCertPilot.lean` uses its
+dyadic interval integrator to enclose a conditional Gaussian slice integral
+on `[0,1]` in `[1,5/4]`. The explicit 16-cell certificate uses `decide +kernel`;
+the slice is identified with the actual affine Gaussian phase integral.
+This supporting calculation adds no native checker. The production Gaussian
+error estimates needed for `1.404598149141` remain work in progress.
+
 A proposed direct route, `Grothe.UpperChaos.DirectSample.upper_of_actual_head`,
 derives the same sharp rational bound from an explicit finite-head estimate for
 the actual kernel. That numerical head estimate remains unproved; the route
 does not by itself establish an unconditional bound.
-
-A second conditional route, `Grothe.UpperChaos.fresh_upper_concrete_taylor_relaxed`,
-allows total energy-table discrepancy at most `5/10^7` and still yields a rational
-bound below `1.404599424`. It retains the fourteen Gaussian band-error hypotheses;
-neither those estimates nor the relaxed energy-table bound is proved yet. An alternative
-`Grothe.UpperChaos.Thirteen.fresh_upper_taylor_thirteen_bands` uses thirteen
-Gaussian band hypotheses with the same relaxed table assumption; its conditional
-rational bound is also below `1.404599424`.
-`Grothe.UpperChaos.Twelve.fresh_upper_taylor_twelve_bands` instead uses twelve
-Gaussian band hypotheses and the same table assumption, giving a rational bound
-below `1.404599598`. Its third-source final band is bounded from the first
-three by the exact sixth moment; the remaining inputs are not yet proved.
 
 The rounding is the smoothing G_T of T = F₀·P₃(φ): a two-coordinate Gaussian phase rounding F₀ times the
 cubic Taylor polynomial P₃(x) = 1 + ix − x²/2 − ix³/6 of a damped polynomial phase φ. It is **defined in Lean**
@@ -217,8 +186,7 @@ through degree 501 from 21,168 stored energies by a verified interval checker; t
 arithmetic. Tensor completeness follows from one-coordinate completeness by Fubini and
 fibrewise Cauchy–Schwarz; the Gaussian mixing law follows from product characteristic functions.
 The standard complex Gaussian, planar presentation, rotation invariance and radial-moment
-reduction are shared in `LowerAnalytic/ComplexGaussianCore.lean`. The unconditional
-upper proof imports this foundation independently of the lower row certificates.
+reduction are shared in `LowerAnalytic/ComplexGaussianCore.lean`. The upper proof imports this foundation independently of the lower row certificates.
 
 The exact phase-moment route clears arbitrary rational coefficient denominators,
 multiplies the resulting integer polynomial, and integrates its monomials by
@@ -271,7 +239,7 @@ remaining captured band norms from the same exact arrays. `FirstSecondCapturedTa
 derives the other two high-tail caps. `TaylorCenterFunctions` gives the concrete
 pointwise functions and discharges the rounding comparison piece.
 
-`fresh_upper_concrete_taylor` instantiates the improved conditional bound with these fixed
+`fresh_upper_concrete_taylor` instantiates the target upper-bound implication with these fixed
 centers. Its Gaussian inputs are six first-order, four second-order and four
 third-order finite-band error inequalities, with the explicit caps in
 `TaylorTailData`, together with the concrete kernel-energy table accuracy.
@@ -373,148 +341,15 @@ The current parameters and all 21,168 exact energies are in
 regenerates the Lean data. The directed head and the fresh 65,594-arc Gaussian
 Schur/Hardy replay are recorded alongside it (the Hardy input is now proved in Lean). The source coefficient-error
 enclosures and table accuracy are inherited. Their identification
-with the specified error pieces remains external; Lean proves the selected
+with the specified error pieces remains work in progress; Lean proves the selected
 comparison from those pieces. The complete dependency ledger and exact replay
 are in [`data/localized-comparison/PROOF.md`](data/localized-comparison/PROOF.md),
-with a mathematical account in [`docs/localized-comparison.tex`](docs/localized-comparison.tex).
+with a mathematical account in [`miscellaneous/other-bounds/tree/docs/localized-comparison.tex`](miscellaneous/other-bounds/tree/docs/localized-comparison.tex).
 The native head computation remains part of the proof.
 
-**Unconditional upper bound.**
-`Grothe.haagerup_bound : IsGrothendieckBound (1404909132791/1000000000000)`
-(`Grothe/Haagerup/Power.lean`, assembled in `CanonicalProof.lean` with finite checks in `CanonicalCheck.lean`), with **no external hypothesis**.
-Lean derives Haagerup's identity from the complex Hermite basis and Mehler formula,
-with the Gaussian phase coefficients determined by a polynomial moment recurrence:
-E[conj(phase⟨g,x⟩)·phase⟨g,y⟩] = Σ_k (π/4)(1/2)_k²/(k!(k+1)!) z|z|^{2k} with z = ⟨x,y⟩, and combines it
-with a degree-41 preprocessor and 64 exact series terms. All orders of forward differences
-of the normalized Haagerup coefficients are nonnegative, proved from a product of two
-rising-factorial quotients. This gives a canonical resolvent expansion: the finite head
-and ten correction terms are combined before taking absolute values.
-The finite check encloses the first 165 coefficients with a cap of 368411/(5·10¹⁵).
-A polynomial coefficient norm weighted by (3/2)ⁿ has cap 10¹³ and bounds all omitted
-coefficients by 10⁻¹⁶, without an analytic-continuation input.
-The estimate retains the actual Haagerup coefficients and forward differences
-instead of replacing them all by one common cap.
-The completed-head cap is 736823/10¹⁶ and the infinite-remainder cap is 2/10¹⁶,
-giving a total normalized residual cap of 736825/10¹⁶. The proof factors powers
-of the short seed RP¹⁷ inside the combined resolvent products before taking norms.
-For each coefficient prefix, a power of X makes the finite boundary vanish exactly;
-the general completion theorem needs no convergence-to-zero hypothesis.
-The coefficient argument, resolvent identity, checker soundness and matrix transfer
-are proved in Lean. Large convolutions are proved in continuation blocks of at most five left
-coefficients. The generic `convI_append` identity preserves the original
-outward arithmetic order; recurrence and exact input-binding lemmas recover
-the four checker statements without a new numerical premise.
-The focused audit policy requires 98 results using only the three standard axioms,
-with **no native-check dependency**.
-The degree-20 polynomial P and degree-64 resolvent R are generated from an exact
-inverse-series recipe, with 60-bit dyadic normalization and rounding. See
-[the complete proof and replay](docs/HAAGERUP_POWER.md), the
-[CI acceptance receipt](docs/verification/haagerup-alternating-20261027/acceptance/README.md), and the
-[historical candidate and repair checks](docs/verification/haagerup-alternating-20261027/README.md).
-The sharper conditional bound above remains stronger.
-
-**Toward a Lean proof of the HJM bound (epic #139).** `Grothe/HJM/Mixture.lean` proves the mixture bound
-`K ≤ M/(q̂₀ − Σ_{k≥1}|q̂_k|)` for a weighted mixture `Σ w_r K_r` of dominated radial kernels with `Σ|w_r| ≤ M`
-(`mixture_bound`; negative weights are free because domination survives absolutely convex combinations). The Cauchy
-tails of the scalar branches 1–4 are proved (`Grothe/HJM/Cauchy*.lean`, `weighted_tails`:
-`Σ_r |w_r| Σ_{n≥120} |k_{r,n}|` within HJM's budget `1.01718·10⁻¹¹`, with HJM's radii), from Haagerup's kernel
-continued to the slit plane, a quadtree of complex interval boxes for the region, and Parseval on the circle.
-Branch 5's tail beyond mode 120 is within HJM's published budgets (`branch5_tail`: modes 120–4987 of the phase
-coefficients below 67 by one interval Horner evaluation, `finite67_check`, and the rest by `ScalarTailRefinement`). The assembly `hjm_bound_of_tables` (`Grothe/HJM/Assembly.lean`,
-`HeadCheck.lean`) gives `IsGrothendieckBound 1.4048984303` from the six-branch mixture and the published ledger,
-once the origin branch supplies its 120-coefficient table (`headOK`, #158) and its tail (#159).
-`Grothe/HJM/Origin.lean` defines the asymmetric sixth branch from exact polynomial-phase
-responses and proves domination of its full real radial coefficient series. The proof uses one
-shared Gaussian driver, the charge-one Hermite expansion and conjugate-reflection symmetrization.
-The endpoint cross product is exactly imaginary; its phase-phase term cancels before taking
-absolute values. Bessel bounds the entire spatially omitted coefficient sequence by squared
-energy `exp(-36)`. A rational Bernstein certificate proves `|P(s)|² ≥ 37/100` for all `s ≥ 0`.
-`PhaseRotation` keeps the complex cross-coefficients: multiplying the second response by
-any `ζ` with `|ζ| ≤ 1` gives a dominated branch with coefficients `Re(ζ aₙ)`, and `ζ = 1`
-recovers the original mixture. `MixtureHead` converts a finite head and weighted branch-tail
-budget into a bound. Under residual-energy caps `1.174`, `1.176`, `PhaseRotationTail`
-bounds the rotated origin tail from mode 120 by `0.00025828 + 0.00252 |Im ζ|`.
-This is a family of conditional certificates, not a new certified numerical endpoint.
-The charge-one Hermite modes have an explicit radial polynomial and Gaussian integral
-formula. The change to squared radius joins the Green identity to weighted
-Parseval with the original chaos multiplier `2n+1`. The actual radial phases are
-smooth through zero and their denominators exceed `1/250`. Exact polynomial
-divided differences give continuous energy amplitudes at zero, integrable on every
-finite panel. Explicit phase derivatives and polynomial growth prove global
-Gaussian L², every-mode pairing integrability and the Green limit at infinity.
-The actual endpoint-subtracted coefficients satisfy the full weighted-energy
-identity with weights `(2n+1)²`, without additional analytic hypotheses; the
-continuous energy amplitude at zero is `−3/2` times the phase derivative.
-The signed Gaussian phase coefficient is `(-1)^n sqrt(haagCoeff n)`.
-`OriginPhaseTail` bounds its inverse-degree-weighted suffix by `1/(48 N³)`.
-`OriginTail` subtracts the visible energy before applying Cauchy–Schwarz and
-gives an origin coefficient tail at mode 120 of at most `0.00025828`, conditional
-on total energies at most `12.671`, `12.674` and visible energies at least
-`11.497`, `11.498`. `OriginTailBudget.origin_tail_of_visible` supplies the
-assembly's origin-tail hypothesis from these four numerical inequalities;
-the exact weighted cap fits the existing budget without relaxing the ledger.
-`Repriced` uses that smaller cap in the ledger directly: the published head
-hypotheses and these four specific energy inequalities imply an exact bound
-below `1.4048984278`. The head enclosure and energy inequalities remain
-unproved inputs, so this is not an unconditional numerical bound.
-`UnweightedRepriced` gives a conditional bound below `1.404898380143` from the same published head hypotheses and the two unweighted residual suffix norms at most `0.0021`. Those suffix bounds remain to be certified. The looser cap `0.00265` on each suffix already fits the repriced origin-tail budget.
-For numerical enclosure, a nonnegative inverse-modulus
-polynomial residual controls the phase error; uniform spatial error `ε` inside radius
-`R` gives the joint squared coefficient budget `ε² + exp(-R²)` for all modes.
-The generated `OriginPanels` certificates bind inverse-modulus polynomials
-to the actual numerators on radii `[0,8]`. `OriginPanelBudget` bounds each
-response's Gaussian `L²` approximation error by `1001/10^15`, pricing the
-entire coefficient sequence jointly. The approximants are piecewise
-polynomials, cut off at radius eight. Their Gaussian moment integrals still
-need enclosures before they provide the origin coefficient table or visible
-energy lower bounds.
-`OriginWitnessData` gives two exact finite test vectors and verifies their
-rational mass and weighted-mass bounds. They are candidates for certifying
-visible energy by a single signed correlation per response; the needed
-Gaussian correlation enclosures remain separate proof obligations.
-The visible-energy interface uses one signed polynomial correlation per
-response and the Gaussian `L²` approximation budget. The strengthened phase
-tail permits the common numerical targets of total energy at most `12.7` and
-visible energy at least `11.5` for each response. With those symmetric targets,
-`Repriced` gives a conditional exact bound below `1.4048984302`; it inherits the
-existing native scalar-tail checks. A signed polynomial moment
-enclosure integrates each complete polynomial before bounding its Taylor
-remainder; its concrete correlation checks and the total-energy enclosures
-remain to be supplied.
-These structural results introduce no native facts. The pinned 120-entry interval tables are
-provenance data: their integral enclosures and the two numerical energy bounds still require
-Lean proofs before the six-branch numerical bound follows. See [the origin certificate inventory](data/hjm/origin/README.md).
-
-**Written unconditional refinement: K_G^ℂ < 1.4048984303.** For the unchanged
-fifth scalar preprocessor in [HJM, Sections 5–6](https://arxiv.org/html/2609.25462v1),
-exact arithmetic gives `||P₅^16||₁ < 581/1000`. Every omitted outer index
-`j ≥ 67` receives the factor `(581/1000)^floor((2j+1)/16)`. Retaining these
-weights through index 159 and bounding the remaining suffix at 160 reduces the
-weighted outer-tail reserve to `1.42728e-10`, while
-retaining the published prefix, complete finite-block tail, other tails and
-exact selector mass. The resulting reciprocal is below `1.404898430299659`.
-
-`Grothe/Haagerup/ScalarTailRefinement.lean` proves the finite power certificate,
-the general signed suffix inequality and the rational score transfer with the
-published numerical budgets explicit. `Haagerup/WallisTail.lean` identifies the
-coefficient recurrence with Wallis products and proves the all-index bound
-`h_j ≤ 1/((4j+1)(j+1))`. A rational telescoping majorant bounds every interval
-and gives `Σ_{j≥K} h_j ≤ 1/(4K)` for every positive integer K. The weighted
-estimate prices the twelve constant-weight blocks at
-67–159 and the remaining suffix at 160; their bound is below the unchanged
-exact ledger cap. The final score transfer has no tail premise.
-The polynomial power is checked by `decide +kernel` using the same outward
-interval arithmetic. All sixteen scalar-tail results now use only standard
-axioms, with no native evaluation axiom.
-The four pinned public verification stages were replayed
-successfully, including directed energy integration and the complete head/tail
-audit; the two accepted coefficient tables were hash-checked, not regenerated.
-This is a written corollary of the published proof. `WEIGHTED_BUILD.json` records
-the focused build of the earlier weighted-tail source at its pinned commit; it
-does not certify subsequent revisions. The separate end-to-end unconditional
-Lean theorem is `haagerup_bound`.
-Exact inputs, the reproducible generator and all scope details are in
-[`data/scalar-tail-refinement/`](data/scalar-tail-refinement/PROOF.md).
+The other upper-bound developments are preserved in the committed
+[weaker-bound archive](miscellaneous/other-bounds/README.md), outside the active Lean build.
+Shared Gaussian phase and Laplace lemmas remain active dependencies of the target proof.
 
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in `data/axioms/native.txt` (read by `scripts/check_axioms.py`):
@@ -531,13 +366,11 @@ the eight chunks
 `Grothe.Research.LawNodeCheck.certLawNodes` for the five added unshifted law nodes,
 `capChords_check` (the chord nodes of the cap tables) and the 60 range checks `capRangeKK_j` of the node caps.
 Every native check is single-threaded code (no `Task.spawn`).
-All other proofs, including the canonical finite checks, are kernel-checked.
+All other proofs are kernel-checked.
 No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`, including the node caps.
 The report is `scratch/Axioms.lean`; its required declarations are listed in `data/axioms/required.txt` and the
 allowlisted native facts in `data/axioms/native.txt` (the cap ranges, the Hardy checks and the others).
-The focused report `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, allows
-no native axioms for its 98 selected unconditional upper-bound results.
 Normal `ready/*` delivery CI builds and audits the combined tree before merging it.
 
 Joint-response proof interfaces retain shared Gram constraints, exact two-disc
@@ -562,14 +395,14 @@ low-coefficient interface. An incumbent's coefficient-l1 error is paid once
 for every admissible spectral price; the complete score has the same error
 allowance. The numerical pool screens and phase-perturbation searches remain uncertified;
 none of these research interfaces changes either endpoint.
-See [the separator proof and trust boundary](docs/CUBIC_PHASE_SEPARATOR_2026-10-23.md).
+See [the separator proof and trust boundary](miscellaneous/other-bounds/tree/docs/CUBIC_PHASE_SEPARATOR_2026-10-23.md).
 `Grothe/Research/` adds 13 kernel-checked facts for coupled complex modulus
 majorizers, finite descent and semiconvex chord assembly. They use only the
 three standard axioms above and add no native facts. Gaussian integration,
 response extraction and global covers needed to apply these algebraic facts
 remain separate obligations. The refined cover has its own complete finite
 checks and retains `NodeCaps`. Their scope
-and exact research replays are indexed in [docs/RESEARCH_AUDIT.md](docs/RESEARCH_AUDIT.md).
+and exact research replays are indexed in [docs/RESEARCH_AUDIT.md](miscellaneous/other-bounds/tree/docs/RESEARCH_AUDIT.md).
 
 Forty-seven further Lean results address the geometry and integration of phase perturbations.
 They prove the exact modulus-weighted support defect, comparison of an entire
@@ -612,7 +445,7 @@ The full module-by-module inventory is in [docs/LEAN_DETAILS.md](docs/LEAN_DETAI
 | path | content |
 |---|---|
 | `Grothe/Transfer.lean` | `IsGrothendieckBound`, the transfer inequality in its residual form |
-| `Grothe/Upper/`, `Grothe/Haagerup/`, `GrotheKernel/` | upper bounds: Haagerup's phase-rounding identity, residual algebra, Hardy tail, kernel composition, interval evaluator and its soundness, head check, final theorem |
+| `Grothe/Upper/`, `Grothe/Haagerup/`, `GrotheKernel/` | the target upper bound: shared Gaussian phase identity, residual algebra, Hardy tail, kernel composition, interval evaluator and its soundness, head check, final theorem |
 | `GrotheCapsKernel/` | independent precompiled numerical cap checker and fixed-point basics |
 | `Grothe/Lower/` | lower certificate: positivity checks, Stein cuts and law budgets, rows, mixtures, the box cover, the endpoint, the transfer to finite matrices |
 | `Grothe/LowerAnalytic/` | Gaussian analysis: the witness on L²(γ_n), integration by parts, chaos projections, spectral budgets, circular cubics, the Wick multigraph expansion and sixth cumulant, contraction tensors, the fibre potentials and the per-row reduction |

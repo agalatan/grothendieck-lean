@@ -9,9 +9,9 @@ import GrotheKernel.Haagerup
 The positive coefficients `haagR`, their monotone telescoping majorant and
 summability describe the Gaussian phase kernel. This module also proves the
 soundness of the outward Horner residual checker for any rational polynomial.
-The current preprocessor and its signed resolvent tail certificate are
-assembled in `Grothe.Haagerup.Power`; the Gaussian identity is proved in
-`Grothe.Haagerup.Identity`.
+The Gaussian identity is proved in `Grothe.Haagerup.Identity` and is used by
+the active two-coordinate rounding realization. Endpoint-specific certificates
+are preserved separately in `miscellaneous/other-bounds/`.
 -/
 
 namespace Grothe

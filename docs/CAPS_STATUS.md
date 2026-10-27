@@ -1,13 +1,15 @@
-# Node caps in Lean: status (26 Oct 2026)
+# Lower endpoint: work in progress
 
 `lower_bound_of_refined_cover_data` proves
 `lower_bound_of_refined_cover_data : NodeCaps → IsGrothendieckBound K → 1.401697117301 < K`.
-The separate target proves the same refined endpoint with fewer cap inputs:
+The active `Grothe` build contains the same endpoint reduction with fewer cap inputs:
 `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697117301 < K`.
 Both theorems use `RefinedCoverData.refinedL` and the same checked finite cover.
 `CapsRest` consists of the vertex caps of rows 12–15 (t = 0.84, 0.845,
 0.85, 0.855), plus any excluded-node caps of rows 0–11 and 16–18. All
-exclusion lists are currently empty.
+exclusion lists are currently empty. These remaining cap estimates must be
+proved in Lean; external calculations do not complete this endpoint.
+See [PROOF_STATUS.md](PROOF_STATUS.md) for the completion rule.
 
 ## Computation and proof layers
 
