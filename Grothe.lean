@@ -197,6 +197,7 @@ import Grothe.HJM.OriginUnweightedRightCombined12
 import Grothe.HJM.OriginUnweightedRightCombined13
 import Grothe.HJM.OriginUnweightedRightWitness
 import Grothe.HJM.OriginUnweightedTail
+import Grothe.HJM.OriginUnweightedWitnessMass
 import Grothe.HJM.OriginVisibleEnergy
 import Grothe.HJM.OriginWitnessData
 import Grothe.HJM.OriginWitnessLaguerre
