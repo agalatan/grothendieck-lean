@@ -34,7 +34,7 @@ def main():
             errors.append(f"archived file is active again: {entry['source']}")
         if args.source:
             old = subprocess.run(
-                ["git", "show", f"{manifest['source_commit']}:{entry['source']}"],
+                ["git", "show", f"{entry.get('source_commit', manifest['source_commit'])}:{entry['source']}"],
                 cwd=ROOT, capture_output=True, check=False)
             if old.returncode or old.stdout != content:
                 errors.append(f"archive differs from pinned source: {entry['source']}")

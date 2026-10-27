@@ -2,8 +2,9 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The active upper target is `1.404598149141`; the fourteen finite Gaussian band
-estimates and energy-table accuracy remain explicit hypotheses. Shared Gaussian
+The sole target interval is `1.401697117301 < K < 1.404598149141`.
+Both endpoints are work in progress; [PROOF_STATUS.md](PROOF_STATUS.md) lists
+the remaining project-specific Lean obligations. Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.
 
 **Shared proof foundations.** `LowerAnalytic/ComplexGaussianCore.lean` contains
@@ -47,7 +48,7 @@ and capped/η refinements. No positivity of the symmetrized contraction
 operator is assumed.
 
 Weaker upper-bound variants, their data and their historical verification records
-are preserved in [the committed archive](../archive/weaker-upper-bounds/README.md).
+are preserved in [the committed archive](../miscellaneous/other-bounds/README.md).
 They are outside the active build and current axiom policy.
 
 **Exact Gaussian phase-moment interfaces.**
@@ -194,7 +195,7 @@ and identifies each Taylor comparison source with the corresponding scaled
 `FirstSecondCapturedTail` derives pieces seven and twelve from their finite
 Gaussian error families; `ThirdCapturedTail` supplies piece seventeen.
 `Grothe.UpperChaos.fresh_upper_concrete_taylor` in `GroupedRounder.lean` assembles all eighteen pieces
-and concludes the existing sharp conditional bound from only `hfirst` (six
+and concludes the target upper-bound implication from only `hfirst` (six
 finite errors), `hsecond` (four), `hthird` (four), and `hclose` for the energies
 of the actual `Xfun frozenCorrectionFn`. No separate rounding, tail,
 representative or charge-one premise remains. These fourteen Gaussian
@@ -349,7 +350,7 @@ controlling the inverse cubic Jacobi multipliers, their exact binomial recurrenc
 all-index monotonicity, and the uniform omitted-multiplier allowance
 `cubic_tail_32_12 : 12 < r → cubicAmp 32 r (149/200) < 419/5000000000`.
 The exact value at index 13 is `17513/209010560960`, checked in the kernel without
-`native_decide`. `global_cap_from_truncation` states the conditional cap assembly.
+`native_decide`. `global_cap_from_truncation` states the cap assembly with its remaining inputs.
 The analytic Gaussian random-restriction/spherical harmonic bridge is a paper proof;
 neither that bridge nor a numerical spherical norm cap is proved by this module.
 It introduces no hypothesis into either existing endpoint and changes neither bound.
@@ -360,7 +361,7 @@ primal-versus-dual separation for a fixed table and cut bank: nonnegative atom
 weights satisfying the cuts force every pointwise dual majorant to cost at least
 the primal score. Both theorems are kernel-checked without numerical axioms.
 The four concrete atomic laws in [the binding audit](BINDING_AUDIT_2026-10-23.md)
-are checked externally with exact rational arithmetic; this module does not
+have exact-rational replay evidence, but remain work in progress in Lean; this module does not
 formalize their numerical data, realize them as Gaussian cubics, or change an endpoint.
 
 **Joint response Gram lift.** `Grothe/LowerAnalytic/ResponseGram.lean` proves
@@ -378,7 +379,7 @@ adds the finite Wick decomposition, Hilbert-space probe closure, and two rationa
 remainder budgets for centered and affine quadratic features. All eleven new
 theorems also use only standard axioms. The general SDP rank-one argument,
 Gaussian response application and modified bilinear-operator
-interface are written proofs in [the lift report](JOINT_RESPONSE_LIFT_2026-10-23.md).
+interface are written proofs in [the lift report](../miscellaneous/other-bounds/tree/docs/JOINT_RESPONSE_LIFT_2026-10-23.md).
 The droplet diagnostics are floating-point exploration, not numerical data
 theorems. This module does not establish a uniform lifted norm cap or alter
 either endpoint.
@@ -391,7 +392,7 @@ kernels preserving every retained moment while decreasing both norms.
 The universal merged-cut expectation remains an application of the existing
 `Grothe.Lower.spec_of_inputs`. The finite-feature Schur equivalence and the
 genuine-cubic floor for every convex mixture of the nineteen frozen tables
-are paper proofs with external exact/directed checks, as recorded in
+are work in progress in Lean, with paper and exact/directed replay evidence recorded in
 [the common-kernel reassessment](COMMON_STEIN_REASSESSMENT_2026-10-23.md).
 The table floor is not a lower bound on the original witness norm.
 
@@ -428,7 +429,7 @@ the full-score implication from the explicit low-coefficient identity.
 These results use only standard axioms, without new native facts. The complete
 Gaussian-family application and coefficient extraction remain written analytic
 steps. No numerical response integral is certified by these modules. See
-[the separator report](CUBIC_PHASE_SEPARATOR_2026-10-23.md).
+[the separator report](../miscellaneous/other-bounds/tree/docs/CUBIC_PHASE_SEPARATOR_2026-10-23.md).
 
 
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
@@ -442,7 +443,7 @@ The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual
 kernel. `upper_of_finite_sample_bounds` reduces that estimate to complex
 coefficient enclosures and a numerical head check. Those enclosures and the
-head check remain hypotheses; this route is not unconditional.
+head check remain to be proved; this route is work in progress.
 The table interface `Grothe.fresh_upper` is in `Grothe/Upper/GroupedBridge.lean`;
 it takes `DirectHyps E EX` and the sharper grouped comparison bound.
 The actual rounding is G_T, the smoothing of T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6.
@@ -532,7 +533,7 @@ headline endpoints are unchanged.
   These percentages describe allowances, not fractions of the proof left
   unformalized. The Gaussian component-error inputs remain the main numerical
   limitation. Full scope, source bindings and reproduction commands are in
-  `data/localized-comparison/PROOF.md`; `archive/weaker-upper-bounds/tree/docs/localized-comparison.tex` gives
+  `data/localized-comparison/PROOF.md`; `miscellaneous/other-bounds/tree/docs/localized-comparison.tex` gives
   the mathematical argument.
 * The same weighted head bound forces `h₀ ≥ slopeQ − headResidualQ`.
   `hardy_budget_after_linear` deducts its weighted square from `7/4`;
@@ -910,7 +911,7 @@ report can be checked with `--research`. They use only `propext`,
 `Classical.choice`, `Quot.sound`, with no additional native facts. They do not
 prove Gaussian curvature, response extraction, a saddle exchange or an
 all-dimensional cover. No endpoint or endpoint hypothesis is changed.
-See [RESEARCH_AUDIT.md](RESEARCH_AUDIT.md) for the external proof and replay scope.
+See [RESEARCH_AUDIT.md](../miscellaneous/other-bounds/tree/docs/RESEARCH_AUDIT.md) for the historical proof and replay scope.
 
 
 

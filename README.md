@@ -9,9 +9,12 @@ Both bounds rest on explicitly stated analytic and computer-assisted inputs; see
 [what is proved](#what-is-proved).
 
 **The only active upper-bound target is $K_G^{\mathbb C}<1.404598149141$.**
-The Lean theorem is still conditional on fourteen actual Gaussian finite-band error
-estimates and energy-table discrepancy at most `6847009/(5·10^17)`. Those inputs
-are not yet proved. The lower-bound development retains its separate cap hypotheses.
+Both endpoints are **work in progress**. For the upper endpoint, fourteen actual
+Gaussian finite-band estimates and energy-table discrepancy at most
+`6847009/(5·10^17)` still need Lean proofs. The direct-kernel route instead needs
+a proved numerical head estimate. Our own numerical obligations are not accepted
+external inputs. A bound is **done** only when its complete Lean proof and final
+verification pass. The active work now prioritizes the upper endpoint.
 
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
@@ -190,8 +193,7 @@ through degree 501 from 21,168 stored energies by a verified interval checker; t
 arithmetic. Tensor completeness follows from one-coordinate completeness by Fubini and
 fibrewise Cauchy–Schwarz; the Gaussian mixing law follows from product characteristic functions.
 The standard complex Gaussian, planar presentation, rotation invariance and radial-moment
-reduction are shared in `LowerAnalytic/ComplexGaussianCore.lean`. The unconditional
-upper proof imports this foundation independently of the lower row certificates.
+reduction are shared in `LowerAnalytic/ComplexGaussianCore.lean`. The upper proof imports this foundation independently of the lower row certificates.
 
 The exact phase-moment route clears arbitrary rational coefficient denominators,
 multiplies the resulting integer polynomial, and integrates its monomials by
@@ -244,7 +246,7 @@ remaining captured band norms from the same exact arrays. `FirstSecondCapturedTa
 derives the other two high-tail caps. `TaylorCenterFunctions` gives the concrete
 pointwise functions and discharges the rounding comparison piece.
 
-`fresh_upper_concrete_taylor` instantiates the improved conditional bound with these fixed
+`fresh_upper_concrete_taylor` instantiates the target upper-bound implication with these fixed
 centers. Its Gaussian inputs are six first-order, four second-order and four
 third-order finite-band error inequalities, with the explicit caps in
 `TaylorTailData`, together with the concrete kernel-energy table accuracy.
@@ -346,14 +348,14 @@ The current parameters and all 21,168 exact energies are in
 regenerates the Lean data. The directed head and the fresh 65,594-arc Gaussian
 Schur/Hardy replay are recorded alongside it (the Hardy input is now proved in Lean). The source coefficient-error
 enclosures and table accuracy are inherited. Their identification
-with the specified error pieces remains external; Lean proves the selected
+with the specified error pieces remains work in progress; Lean proves the selected
 comparison from those pieces. The complete dependency ledger and exact replay
 are in [`data/localized-comparison/PROOF.md`](data/localized-comparison/PROOF.md),
-with a mathematical account in [`archive/weaker-upper-bounds/tree/docs/localized-comparison.tex`](archive/weaker-upper-bounds/tree/docs/localized-comparison.tex).
+with a mathematical account in [`miscellaneous/other-bounds/tree/docs/localized-comparison.tex`](miscellaneous/other-bounds/tree/docs/localized-comparison.tex).
 The native head computation remains part of the proof.
 
 The other upper-bound developments are preserved in the committed
-[weaker-bound archive](archive/weaker-upper-bounds/README.md), outside the active Lean build.
+[weaker-bound archive](miscellaneous/other-bounds/README.md), outside the active Lean build.
 Shared Gaussian phase and Laplace lemmas remain active dependencies of the target proof.
 
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
@@ -400,14 +402,14 @@ low-coefficient interface. An incumbent's coefficient-l1 error is paid once
 for every admissible spectral price; the complete score has the same error
 allowance. The numerical pool screens and phase-perturbation searches remain uncertified;
 none of these research interfaces changes either endpoint.
-See [the separator proof and trust boundary](docs/CUBIC_PHASE_SEPARATOR_2026-10-23.md).
+See [the separator proof and trust boundary](miscellaneous/other-bounds/tree/docs/CUBIC_PHASE_SEPARATOR_2026-10-23.md).
 `Grothe/Research/` adds 13 kernel-checked facts for coupled complex modulus
 majorizers, finite descent and semiconvex chord assembly. They use only the
 three standard axioms above and add no native facts. Gaussian integration,
 response extraction and global covers needed to apply these algebraic facts
 remain separate obligations. The refined cover has its own complete finite
 checks and retains `NodeCaps`. Their scope
-and exact research replays are indexed in [docs/RESEARCH_AUDIT.md](docs/RESEARCH_AUDIT.md).
+and exact research replays are indexed in [docs/RESEARCH_AUDIT.md](miscellaneous/other-bounds/tree/docs/RESEARCH_AUDIT.md).
 
 Forty-seven further Lean results address the geometry and integration of phase perturbations.
 They prove the exact modulus-weighted support defect, comparison of an entire

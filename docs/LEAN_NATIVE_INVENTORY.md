@@ -21,7 +21,7 @@ target are a separate campaign, not additional allowlisted endpoint inputs.
 
 The current inventory covers the active target and lower proof. Archived upper
 variants have separate preserved inventories under
-`archive/weaker-upper-bounds/snapshot/data/axioms/`; they are not active permissions.
+`miscellaneous/other-bounds/snapshot/data/axioms/`; they are not active permissions.
 
 **Exact production phase moments (#40(b)).** `PhaseMomentEval` integrates the
 integer polynomial obtained by clearing arbitrary rational denominators.

@@ -7,7 +7,7 @@ finite-head and Hardy certificates used by the conditional target
 The byte-pinned data and generators retain historical intermediate endpoint
 metadata for reproducibility. It is not the active endpoint ledger, which is
 `Grothe/Upper/GroupedBridge.lean`. Previous endpoint documentation is preserved
-in `archive/weaker-upper-bounds/snapshot/data/upper-preprocess/README.md`.
+in `miscellaneous/other-bounds/snapshot/data/upper-preprocess/README.md`.
 
 ## Mathematical assembly and trust boundary
 
@@ -41,7 +41,7 @@ takes `ComparisonInputs`, `energy_close` and `hardy`, for a charge-one L2 trunca
 The first records an exact Gaussian error decomposition, spectral supports and
 component norm bounds. Their source enclosures and identification remain external;
 Lean derives the selected comparison. See `../localized-comparison/PROOF.md`.
-The other endpoint variants are preserved in `archive/weaker-upper-bounds/`.
+The other endpoint variants are preserved in `miscellaneous/other-bounds/`.
 
 For `hardy`, the enclosed Gaussian Schur lemma bounds the holomorphic kernel on
 the circle of radius `4149/4000`. The directed verifier checks its positive
@@ -94,4 +94,4 @@ Temporary targeted Lean receipts from 23 October were cleared before collection;
 they are not claimed as current validation. The final merged branch is checked
 by full GitHub Lean CI, including the actual axiom report and unchanged heavy
 cap stamp. Historical verification receipts are preserved under
-`archive/weaker-upper-bounds/tree/data/upper-preprocess/verification/`; their original scope is unchanged.
+`miscellaneous/other-bounds/tree/data/upper-preprocess/verification/`; their original scope is unchanged.

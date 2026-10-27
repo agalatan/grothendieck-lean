@@ -6,7 +6,7 @@ finite-band error inequalities and energy-table discrepancy at most
 `6847009/(5·10^17) = 1.3694018e-11`. Neither family is discharged.
 
 Weaker variants are preserved, with their original proof status and inputs, in
-[the committed archive](../archive/weaker-upper-bounds/README.md). They are excluded
+[the committed archive](../miscellaneous/other-bounds/README.md). They are excluded
 from the active build. Shared Gaussian phase identity and Laplace infrastructure
 remain available to the target proof.
 
@@ -61,7 +61,7 @@ the current degree-41/15 preprocessors come from `data/upper-preprocess/`.
 The current exact arithmetic and generated data replay pass. Full merged-tree
 Lean validation is delegated to branch CI. Earlier targeted receipts were cleared
 before collection and are not current build evidence. The explicit gap and source
-guards are in `archive/weaker-upper-bounds/tree/data/upper-preprocess/verification/`. `HardyKernel` does not
+guards are in `miscellaneous/other-bounds/tree/data/upper-preprocess/verification/`. `HardyKernel` does not
 discharge the numerical Hardy premise.
 
 ## 2. `|φ| < 1` (input of the inherited coefficient-error argument)
@@ -200,7 +200,7 @@ Progress (claude/hardy, 26 Oct):
 
 *Issue #20. Written from the master sources (`Grothe/UpperChaos/LocalizedComparison.lean`,
 `Grothe/Upper/ComparisonData.lean`, `data/localized-comparison/{recipe.json,PROOF.md}`,
-`archive/weaker-upper-bounds/tree/docs/localized-comparison.tex`) and the inherited certificate (laptop archive
+`miscellaneous/other-bounds/tree/docs/localized-comparison.tex`) and the inherited certificate (laptop archive
 `handoff/upper-residual/global_norm/`: `MIXED_TAYLOR_CUTOFF_LEMMA.md`, `GAUSSIAN_POLYNOMIAL_NORM.md`,
 `certify_taylor_comparison.py`, `taylor_comparison_result.json`). The error decomposition,
 spectral support and symbolic phase-moment route are implemented; the plan below

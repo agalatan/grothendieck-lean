@@ -273,6 +273,14 @@
   "files": [
     {
       "action": "snapshot",
+      "archived": "revisions/691f7621/.gitattributes",
+      "sha256": "e42c94872ea0f6156dd5e1f4cb78e690cf5958ccb92aaa982b92261c26b2921d",
+      "size": 1967,
+      "source": ".gitattributes",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
+    },
+    {
+      "action": "snapshot",
       "archived": "snapshot/.gitattributes",
       "sha256": "b9561e1810c13609c11e0ae34bb1f8d829c907f21384e3d8dbcffac307787c0b",
       "size": 1730,
@@ -284,6 +292,14 @@
       "sha256": "1a9558fa1f6113b02d9842f71f4c9d78c96d8908016685b790f5e1dd29c60faf",
       "size": 28399,
       "source": ".github/workflows/lean.yml"
+    },
+    {
+      "action": "snapshot",
+      "archived": "revisions/691f7621/AGENTS.md",
+      "sha256": "a152cf6ba51c731f9f7bd7fcc23d605b42bb777c848ca0a9badbf93c9d45de50",
+      "size": 35714,
+      "source": "AGENTS.md",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
     },
     {
       "action": "snapshot",
@@ -2079,6 +2095,22 @@
     },
     {
       "action": "snapshot",
+      "archived": "revisions/691f7621/Grothe/LowerAnalytic/NodeCaps.lean",
+      "sha256": "b22f3ec7316ce167dc32ae6fa56c3731be6088e761e6c9f1b10fda3db1351ecb",
+      "size": 571,
+      "source": "Grothe/LowerAnalytic/NodeCaps.lean",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
+    },
+    {
+      "action": "snapshot",
+      "archived": "revisions/691f7621/Grothe/Upper/Haagerup.lean",
+      "sha256": "fdb272bc22fe601cef32926a982828bcb65e1bc7441dd1d6e130ba15017e6b96",
+      "size": 10948,
+      "source": "Grothe/Upper/Haagerup.lean",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
+    },
+    {
+      "action": "snapshot",
       "archived": "snapshot/Grothe/Upper/Haagerup.lean",
       "sha256": "e441685febdcbafd62ba6a21ae1678ea8dd160859ecdf0bd9508ae817ce4095d",
       "size": 10904,
@@ -2195,6 +2227,14 @@
       "sha256": "bf46b65a256ac5f198bc62bf1b576a8fac6fb87504d876951b814829d0857c62",
       "size": 936,
       "source": "GrotheKernel/ResolventTail.lean"
+    },
+    {
+      "action": "snapshot",
+      "archived": "revisions/691f7621/README.md",
+      "sha256": "93245711e997b2b3534d06f597748eed6938e0f108a5c3ea68e83ed9d87fef46",
+      "size": 34722,
+      "source": "README.md",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
     },
     {
       "action": "snapshot",
@@ -2527,6 +2567,14 @@
     },
     {
       "action": "snapshot",
+      "archived": "revisions/691f7621/data/localized-comparison/PROOF.md",
+      "sha256": "215dc811ea4241de64325f74aa300182146d775354d513276ab0e943951b4f82",
+      "size": 7427,
+      "source": "data/localized-comparison/PROOF.md",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
+    },
+    {
+      "action": "snapshot",
       "archived": "snapshot/data/localized-comparison/PROOF.md",
       "sha256": "13c12aba3151d225745bd44e1e17ffb114213bd8e9c2f8fc1c0500a5463d453e",
       "size": 7719,
@@ -2688,6 +2736,14 @@
     },
     {
       "action": "snapshot",
+      "archived": "revisions/691f7621/data/upper-preprocess/README.md",
+      "sha256": "75fb8e84fe39bb7eea257edbe0968c5665aa72363c2fd1259d46641949f7ab56",
+      "size": 6055,
+      "source": "data/upper-preprocess/README.md",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
+    },
+    {
+      "action": "snapshot",
       "archived": "snapshot/data/upper-preprocess/README.md",
       "sha256": "3aa763e786ce6bf1ba55687c1816ce355d35f70754d1a755204f578c06ae3977",
       "size": 6308,
@@ -2764,29 +2820,61 @@
       "source": "data/upper-preprocess/verification/VALIDATION.json"
     },
     {
-      "action": "snapshot",
-      "archived": "snapshot/docs/ATTACK_PLAN_2026-10-23.md",
+      "action": "move",
+      "archived": "tree/docs/ATTACK_PLAN_2026-10-23.md",
       "sha256": "a3e23d72fa178ff14c6c18c8f700f327fd94c58a6e071e3cd45a35d93aba410b",
       "size": 30853,
       "source": "docs/ATTACK_PLAN_2026-10-23.md"
     },
     {
       "action": "snapshot",
-      "archived": "snapshot/docs/CUBIC_FAMILY_CEILING_2026-10-23.md",
+      "archived": "revisions/691f7621/docs/CAPS_M_STATUS.md",
+      "sha256": "59736a526828a1b9b06f44bdfeeeebbd0921794ed7d9f52d662cd0736168fa40",
+      "size": 12690,
+      "source": "docs/CAPS_M_STATUS.md",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
+    },
+    {
+      "action": "snapshot",
+      "archived": "revisions/691f7621/docs/CAPS_ROADMAP.md",
+      "sha256": "d14ab89dafe6cb09ae78b767530bb9aa5c8177c76d5c8f60fd04f3d7ee361b8e",
+      "size": 8223,
+      "source": "docs/CAPS_ROADMAP.md",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
+    },
+    {
+      "action": "snapshot",
+      "archived": "revisions/691f7621/docs/CAPS_STATUS.md",
+      "sha256": "5f22b444f4df67aadd20d87971071f0f9f346fd36b7d604c3479699332ce50dd",
+      "size": 6705,
+      "source": "docs/CAPS_STATUS.md",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
+    },
+    {
+      "action": "snapshot",
+      "archived": "revisions/691f7621/docs/CUBIC_ENDPOINT_TAIL_2026-10-23.md",
+      "sha256": "8ddd4e8e8a1a8d71708c30a2b3f40c8f888f4756616c948c2f9e81ac8ec5f62c",
+      "size": 4835,
+      "source": "docs/CUBIC_ENDPOINT_TAIL_2026-10-23.md",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/CUBIC_FAMILY_CEILING_2026-10-23.md",
       "sha256": "6fc18b1d6235024a4e31389cc808c55899935c7688b7e67d81f5d635f9754a5b",
       "size": 18443,
       "source": "docs/CUBIC_FAMILY_CEILING_2026-10-23.md"
     },
     {
-      "action": "snapshot",
-      "archived": "snapshot/docs/CUBIC_PHASE_SEPARATOR_2026-10-23.md",
+      "action": "move",
+      "archived": "tree/docs/CUBIC_PHASE_SEPARATOR_2026-10-23.md",
       "sha256": "d472c3490583965a068eee6d7e549287d73c5dd23b6cf9547ddad72f933a1664",
       "size": 12630,
       "source": "docs/CUBIC_PHASE_SEPARATOR_2026-10-23.md"
     },
     {
-      "action": "snapshot",
-      "archived": "snapshot/docs/GENUINE_CUBIC_DIAGNOSIS_2026-10-23.md",
+      "action": "move",
+      "archived": "tree/docs/GENUINE_CUBIC_DIAGNOSIS_2026-10-23.md",
       "sha256": "3ec8eff86465845c5c3a4622c0a19c46f74d5254b5913709b958d7218fecf7a8",
       "size": 11966,
       "source": "docs/GENUINE_CUBIC_DIAGNOSIS_2026-10-23.md"
@@ -2799,25 +2887,41 @@
       "source": "docs/HAAGERUP_POWER.md"
     },
     {
-      "action": "snapshot",
-      "archived": "snapshot/docs/JOINT_FIBRE_EXPERIMENT_2026-10-23.md",
+      "action": "move",
+      "archived": "tree/docs/JOINT_FIBRE_EXPERIMENT_2026-10-23.md",
       "sha256": "6025e3d791a9b5a8c3f7186a2c6bc7dbc875aeb13316cbcb0e8bb7d981eef22a",
       "size": 28048,
       "source": "docs/JOINT_FIBRE_EXPERIMENT_2026-10-23.md"
     },
     {
-      "action": "snapshot",
-      "archived": "snapshot/docs/JOINT_RESPONSE_LIFT_2026-10-23.md",
+      "action": "move",
+      "archived": "tree/docs/JOINT_RESPONSE_LIFT_2026-10-23.md",
       "sha256": "235b14ad02577e6523206ac9cc9cd298bc440e04bbf7f08e0ec1dc2eda5aaecc",
       "size": 19330,
       "source": "docs/JOINT_RESPONSE_LIFT_2026-10-23.md"
     },
     {
-      "action": "snapshot",
-      "archived": "snapshot/docs/LEAN_AUDIT.md",
+      "action": "move",
+      "archived": "tree/docs/JOINT_ROW_UNIFORMITY_2026-10-23.md",
+      "sha256": "69ff67eb729c08df398f8dc8bcbf7b721ea44c620cd20077df45a4867cec5e70",
+      "size": 12743,
+      "source": "docs/JOINT_ROW_UNIFORMITY_2026-10-23.md",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/LEAN_AUDIT.md",
       "sha256": "4afa475c4666f88e9fbbbbed8de8562f4df8eb737e0debf850c20c29bc74ce3a",
       "size": 45189,
       "source": "docs/LEAN_AUDIT.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "revisions/691f7621/docs/LEAN_DETAILS.md",
+      "sha256": "6328d77c29d499c250d0189250ce37d55e85a19a1af8d795f54a2a1100ecfcee",
+      "size": 76061,
+      "source": "docs/LEAN_DETAILS.md",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
     },
     {
       "action": "snapshot",
@@ -2828,31 +2932,47 @@
     },
     {
       "action": "snapshot",
+      "archived": "revisions/691f7621/docs/LEAN_NATIVE_INVENTORY.md",
+      "sha256": "042c99d805f45cd1c51de50e1b5518f170824101e43785632e1dd18f9fb28181",
+      "size": 30474,
+      "source": "docs/LEAN_NATIVE_INVENTORY.md",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
+    },
+    {
+      "action": "snapshot",
       "archived": "snapshot/docs/LEAN_NATIVE_INVENTORY.md",
       "sha256": "6521b4797a9f479cf0c8d6e8f5c2eecb85e15fb3588c60f9f105857107721f20",
       "size": 39129,
       "source": "docs/LEAN_NATIVE_INVENTORY.md"
     },
     {
-      "action": "snapshot",
-      "archived": "snapshot/docs/QUINTIC_REASSESSMENT_2026-10-23.md",
+      "action": "move",
+      "archived": "tree/docs/QUINTIC_REASSESSMENT_2026-10-23.md",
       "sha256": "f1cc9b9a4362bbad5c434b3b3852d41304cc4b2b15a7e8c172542e88c34c8634",
       "size": 18209,
       "source": "docs/QUINTIC_REASSESSMENT_2026-10-23.md"
     },
     {
-      "action": "snapshot",
-      "archived": "snapshot/docs/REASSESSMENT_2026-10-23.md",
+      "action": "move",
+      "archived": "tree/docs/REASSESSMENT_2026-10-23.md",
       "sha256": "80c925c7fa2af22397318a552eee6126fb9f47dd836d79e81ffc9768f609fa4c",
       "size": 40438,
       "source": "docs/REASSESSMENT_2026-10-23.md"
     },
     {
-      "action": "snapshot",
-      "archived": "snapshot/docs/RESEARCH_AUDIT.md",
+      "action": "move",
+      "archived": "tree/docs/RESEARCH_AUDIT.md",
       "sha256": "83d57089c1d5cf622fea47b86d29e88ea9723af8dc4b32612be1e54bd1339a03",
       "size": 18642,
       "source": "docs/RESEARCH_AUDIT.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "revisions/691f7621/docs/UPPER_STATUS.md",
+      "sha256": "b2ccc764948e09517e6752e62ace2f71af9d49c5e9d5764d9caeaac9a31185d9",
+      "size": 25915,
+      "source": "docs/UPPER_STATUS.md",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
     },
     {
       "action": "snapshot",
@@ -2867,6 +2987,14 @@
       "sha256": "597459147428497a1553508246d97fd1b800b2cb5d6cca7d52b2b70ce9d1ec39",
       "size": 5244,
       "source": "docs/localized-comparison.tex"
+    },
+    {
+      "action": "snapshot",
+      "archived": "revisions/691f7621/docs/overview.tex",
+      "sha256": "9870ddd388dc25daa1535dcc1d2be8a40a89968d5fa70431f7e8cbc0dc4a716f",
+      "size": 46394,
+      "source": "docs/overview.tex",
+      "source_commit": "691f7621ac87273febafdf7b7a22e8eba95d603f"
     },
     {
       "action": "snapshot",
@@ -3792,5 +3920,10 @@
   },
   "schema": 1,
   "source_commit": "8efcb93e353d08f40335d9c6de2d6098302e61ad",
-  "target": "1.404598149141"
+  "status": "work in progress",
+  "target": "1.404598149141",
+  "target_interval": {
+    "lower": "1.401697117301",
+    "upper": "1.404598149141"
+  }
 }

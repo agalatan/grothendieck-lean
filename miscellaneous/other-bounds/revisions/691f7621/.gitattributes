@@ -1,0 +1,33 @@
+# Preserve the recorded SHA-256 of these inherited replay inputs, including
+# their original whitespace. Current research code uses normal whitespace checks.
+handoff/lower-stein/cert-0745d/tools/exactint_base.py whitespace=-blank-at-eof
+handoff/lower-stein/cert-0745e/tools/exactint_base.py whitespace=-blank-at-eof
+handoff/research-third-decimal/gpt-reviews/rotation-gates-20261015/review/rebase_support/exact_base.py whitespace=-blank-at-eof
+handoff/lower-stein/cert-0745d/tools/replay_midcaps.py whitespace=-blank-at-eol
+
+# Frozen exact replay tables are reviewed through their manifest and replays.
+handoff/**/*.json linguist-generated=true
+Grothe/Research/RefinedCoverData.lean linguist-generated=true
+
+# Preserve blank timestamped lines in the raw successful GitHub Actions log.
+handoff/research-third-decimal/needle-20261023/FULL_CI.log whitespace=-blank-at-eol linguist-generated=true
+
+# Line lists that concurrent deliveries extend: union-merge (keeps both sides' lines). The generated roots are
+# union-merged too, so they never conflict. After every merge run `python3 tools/gen_root_imports.py`: it
+# regenerates the roots and re-sorts the lists (CI does this after its own merge of a ready/ branch).
+Grothe.lean merge=union
+GrotheKernel.lean merge=union
+GrotheCapsKernel.lean merge=union
+scratch/Axioms.lean merge=union
+data/axioms/*.txt merge=union
+data/axioms/modes/*.txt merge=union
+data/root-imports-exclude.txt merge=union
+
+# OVERVIEW.pdf is built by CI (.github/workflows/overview.yml) from docs/overview.tex; agents never commit it. Merges
+# keep the current side's copy instead of conflicting (needs `git config merge.ours.driver true`: CI and
+# scripts/sync_master.sh set it).
+OVERVIEW.pdf binary merge=ours
+
+# User-directed archive: preserve original whitespace and byte-pinned generated inputs.
+archive/weaker-upper-bounds/tree/** -whitespace linguist-generated=true
+archive/weaker-upper-bounds/snapshot/** -whitespace linguist-generated=true

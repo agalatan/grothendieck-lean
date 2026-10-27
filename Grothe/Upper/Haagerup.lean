@@ -11,7 +11,7 @@ summability describe the Gaussian phase kernel. This module also proves the
 soundness of the outward Horner residual checker for any rational polynomial.
 The Gaussian identity is proved in `Grothe.Haagerup.Identity` and is used by
 the active two-coordinate rounding realization. Endpoint-specific certificates
-are preserved separately in `archive/weaker-upper-bounds/`.
+are preserved separately in `miscellaneous/other-bounds/`.
 -/
 
 namespace Grothe

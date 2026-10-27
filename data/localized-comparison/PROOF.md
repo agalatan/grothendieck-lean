@@ -3,7 +3,7 @@
 This shared comparison inequality is used by the active conditional target
 `K_G^C < 1.404598149141`. The fourteen actual Gaussian finite-band estimates
 and energy-table discrepancy remain unproved inputs. The previous endpoint
-ledger is preserved in `archive/weaker-upper-bounds/snapshot/data/localized-comparison/PROOF.md`.
+ledger is preserved in `miscellaneous/other-bounds/snapshot/data/localized-comparison/PROOF.md`.
 The pinned recipe and generator remain active because the sharp proof uses
 the same comparison bands and table radii. Their historical endpoint metadata
 is not the current grouped endpoint ledger.
