@@ -268,6 +268,20 @@ proves an integrated auxiliary tail at `‖z‖ ≥ r₀ > 0`, bounded by
 including its zeros. Bounds for the full polynomial-weighted sources, the
 radial endpoint and certified numerical integration remain open.
 
+`GradedHermitePhaseSlice` expresses each actual Taylor source as a polynomial
+in the conditional coordinate times its exact Gaussian damping.
+`TaylorConditionalGaussian` evaluates that conditional integral by the finite
+Wick sum, with rate `alpha=1+j*phaseEpsQ` and no Taylor factorial inserted.
+`TaylorInnerFubini` justifies the product integration at every positive
+auxiliary parameter. `TaylorWickReduction.inner_gradedHermite_hpow_eq_wick`
+then writes the actual inner product as the iterated auxiliary and
+first-coordinate Gaussian integral of this finite evaluator.
+`ShiftedMomentRecurrence` preserves the affine cancellation at every mixed
+degree. `RadialDampedMoments` evaluates real radial powers above exponent
+`-2`, including the locally integrable singularities needed by joint tails.
+The full-source tail constants and certified quadrature remain open; these
+analytic identities change neither numerical endpoint nor its hypotheses.
+
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
 only with X's energy in its selected band, weighted by the retained coefficient cost. The quadratic error charges only pairs
