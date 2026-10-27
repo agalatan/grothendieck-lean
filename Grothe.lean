@@ -539,6 +539,7 @@ import Grothe.UpperChaos.HermiteBasis
 import Grothe.UpperChaos.HermiteC2
 import Grothe.UpperChaos.HermiteC2Basis
 import Grothe.UpperChaos.HermiteComplete
+import Grothe.UpperChaos.HermiteConjugation
 import Grothe.UpperChaos.HermiteDegree
 import Grothe.UpperChaos.HermiteFinite
 import Grothe.UpperChaos.HolIntegral
