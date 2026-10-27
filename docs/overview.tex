@@ -379,16 +379,18 @@ and \path{data/hjm/origin/README.md}.
 For the unchanged fifth scalar preprocessor of Heilman--Jones--Malavolta,
 the exact degree-592 calculation gives $\|P_5^{16}\|_1\le581/1000$.
 For each omitted outer index $j\ge67$ retain the factor
-$(581/1000)^{\lfloor(2j+1)/16\rfloor}$. Summing through index 159 and
-bounding the suffix from 160 by its endpoint weight and the Haagerup
-majorant gives a weighted reserve $1.42728\cdot10^{-10}$. Keeping the published prefix, complete finite-block
+$(581/1000)^{\lfloor(2j+1)/16\rfloor}$. A Wallis-product argument proves
+$h_j\le((4j+1)(j+1))^{-1}$ at every index. A telescoping rational majorant
+prices the twelve constant-weight blocks through index 159 and the suffix
+from 160 within the existing weighted reserve $1.42728\cdot10^{-10}$.
+Keeping the published prefix, complete finite-block
 tail, other tails and exact selector mass gives the written corollary
 $\KG<1.4048984303$. Four pinned public verifiers pass; accepted coefficient
 tables are hash-checked. Lean proves the power check with \lean{decide +kernel},
 complete suffix estimate and score arithmetic, all without native axioms.
-It also derives the phase-tail bound by an exact split at 120. The complete weighted
-production module passes focused compilation, with a source-bound receipt;
-the earlier receipt is preserved separately. Published Gaussian and
+The same all-index estimate gives the phase-tail bound at 67 without a finite
+coefficient sum. A focused build receipt records the earlier weighted-tail source
+at its pinned commit. Published Gaussian and
 numerical integral budgets remain external. The separate unconditional \lean{haagerup\_bound}
 theorem has no external hypotheses and uses only the three standard axioms.
 The deduction and provenance are in

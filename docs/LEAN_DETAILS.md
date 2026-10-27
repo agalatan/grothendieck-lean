@@ -102,23 +102,25 @@ any integral enclosure; see [`data/hjm/origin/`](../data/hjm/origin/README.md).
 Wiener composition bound and its signed supported-suffix consequence. Its
 kernel proof (`decide +kernel`) checks the degree-592 polynomial `P₅^16`, with norm at most
 `581/1000`. The omitted outer indices start at 67, so their norms are bounded
-by `(581/1000)^floor((2j+1)/16)`. The generic `weighted_composition_cut` theorem
-retains those weights through 159 and uses the endpoint weight and Haagerup
-majorant for the suffix from 160. Exact rational arithmetic includes the
+by `(581/1000)^floor((2j+1)/16)`. `Haagerup/WallisTail.lean` proves the
+coefficient bound `h_j ≤ 1/((4j+1)(j+1))` from the Wallis product, followed
+by a rational telescoping majorant for arbitrary intervals and tails. The
+generic `weighted_composition_cut` theorem and the interval bound price twelve
+constant-weight blocks through 159 and the suffix from 160. The result is
+below the unchanged exact ledger cap. Exact rational arithmetic includes the
 unchanged published slope, prefix, finite-block tail, other tails and selector
 mass, and accepts the reciprocal `1.4048984303`.
-`wallis_tail_bound` proves the fixed phase-tail estimate at 67, combining
-the exact terms 67--119 with `tsum_haagCoeff_tail_le 120` and π ≤ 355/113.
-Its rational comparison uses proof-producing `decide +kernel`; this adds
-no native axiom. All sixteen scalar-tail results now use only standard axioms.
+`wallis_tail_bound` specializes the all-index tail estimate at 67, without a
+finite coefficient sum or numerical π enclosure. The block comparison uses
+proof-producing `decide +kernel`; the new proof adds no native axiom.
 `refined_score_of_published_budgets` therefore needs only
 the published slope, prefix, finite-block, other-tail and selector-mass
 inequalities. Their Gaussian interpretation is not formalized here.
 The theorem concludes a normalized score inequality, not
 `IsGrothendieckBound`. The version accepting an explicit weighted outer-tail estimate remains
-available as `refined_score_of_published_inputs`. The complete
-weighted production module passes focused compilation. `WEIGHTED_BUILD.json`
-binds that check to its source hashes; the earlier receipt is preserved separately.
+available as `refined_score_of_published_inputs`. `WEIGHTED_BUILD.json` binds
+the earlier focused build to its pinned source commit; it does not certify
+subsequent revisions.
 The corresponding written unconditional corollary uses HJM's proved inputs.
 All four pinned public non-regeneration verifiers pass; the accepted integral
 tables were hash-checked, not regenerated. See
