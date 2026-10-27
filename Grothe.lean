@@ -80,6 +80,7 @@ import Grothe.Haagerup.PhaseCoefficients
 import Grothe.Haagerup.PhaseGeometry
 import Grothe.Haagerup.PhaseKernel
 import Grothe.Haagerup.PhaseLaplace
+import Grothe.Haagerup.PhaseLaplaceBounded
 import Grothe.Haagerup.PhaseLaplaceFubini
 import Grothe.Haagerup.Power
 import Grothe.Haagerup.PowerData
@@ -411,6 +412,7 @@ import Grothe.UpperChaos.TaylorErrorEnergy
 import Grothe.UpperChaos.TaylorFirstBandNorms
 import Grothe.UpperChaos.TaylorFirstData
 import Grothe.UpperChaos.TaylorFrozenData
+import Grothe.UpperChaos.TaylorInnerFubini
 import Grothe.UpperChaos.TaylorInnerLaplace
 import Grothe.UpperChaos.TaylorMoments
 import Grothe.UpperChaos.TaylorPhase
@@ -419,4 +421,5 @@ import Grothe.UpperChaos.TaylorRoundingData
 import Grothe.UpperChaos.TaylorSecondBandNorms
 import Grothe.UpperChaos.TaylorSecondData
 import Grothe.UpperChaos.TaylorTailData
+import Grothe.UpperChaos.TaylorWickReduction
 import Grothe.UpperChaos.ThirdCapturedTail

@@ -334,6 +334,14 @@ Hermite mode. The invariant substitutions for `‖w‖²`, `Re(conj(z)*w)` and
 evaluation of this production conditional integral for every positive auxiliary
 parameter. The source is `(i*phiT)^j`; its Taylor factorial belongs to the later
 linear combination and is not inserted into this identity.
+`PhaseLaplaceBounded` gives a uniform kernel bound at each positive auxiliary
+parameter, so multiplication preserves every integrable source.
+`TaylorInnerFubini` uses it to justify product Fubini for the actual source at
+every such parameter. `inner_gradedHermite_hpow_eq_wick` in
+`TaylorWickReduction` combines these results with the canonical graded-center
+representative and the absolute Laplace identity: the production inner product
+is the iterated auxiliary and first-coordinate Gaussian integral of
+`taylorConditionalWick`. No conditional-integration accuracy premise is used.
 
 `ShiftedMomentRecurrence` proves
 `M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including
@@ -343,7 +351,7 @@ The base-moment cancellation below is a specialization of this recurrence.
 `RadialDampedMoments` proves the Gamma formula and integrability for
 `norm(z)^q * exp(-(rate-1)*normSq(z))` whenever `q>-2` and `rate>0`.
 This includes negative radial exponents without imposing a positive radial
-cutoff. The full-source tail constants, outer integration assembly and
+cutoff. The full-source tail constants, radial reduction and
 certified quadrature budgets remain open.
 
 `ConditionalGaussianBase` identifies the first shifted moments and combines

@@ -229,11 +229,13 @@ import Grothe
 #print axioms Grothe.Haag.affine_phase_complete_square
 #print axioms Grothe.Haag.integrableOn_phaseLaplaceKernel
 #print axioms Grothe.Haag.integrable_mul_phaseLaplaceKernel
+#print axioms Grothe.Haag.integrable_mul_phaseLaplaceKernel_at
 #print axioms Grothe.Haag.integral_mul_ph_eq_phaseLaplace
 #print axioms Grothe.Haag.integral_norm_phaseLaplaceKernel
 #print axioms Grothe.Haag.integral_norm_phaseLaplaceKernel_le
 #print axioms Grothe.Haag.integral_phaseLaplace_weight
 #print axioms Grothe.Haag.measurable_phaseLaplaceKernel
+#print axioms Grothe.Haag.norm_phaseLaplaceKernel_le
 #print axioms Grothe.Haag.ph_eq_phaseLaplace
 #print axioms Grothe.Haag.phaseMoment_weighted
 #print axioms Grothe.HaagerupCanonical.coefficient_check
@@ -861,7 +863,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.hfun2_rot2_of_charge
 #print axioms Grothe.UpperChaos.inner_gradedHermite_eq_zero_of_charge
 #print axioms Grothe.UpperChaos.inner_gradedHermite_eq_zero_of_total_degree
+#print axioms Grothe.UpperChaos.inner_gradedHermite_hpow_eq_wick
 #print axioms Grothe.UpperChaos.inner_hpow_eq_phaseLaplace
+#print axioms Grothe.UpperChaos.inner_hpow_eq_phaseLaplace_iterated
 #print axioms Grothe.UpperChaos.inner_hvec2_gradedHermite
 #print axioms Grothe.UpperChaos.inner_hvec2_hermiteFinite
 #print axioms Grothe.UpperChaos.inner_ouOp
@@ -876,6 +880,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.integrable_shifted_monomial_damped
 #print axioms Grothe.UpperChaos.integrable_taylorInnerSource
 #print axioms Grothe.UpperChaos.integrable_taylorInnerSource_conditional
+#print axioms Grothe.UpperChaos.integrable_taylorInnerSource_kernel
 #print axioms Grothe.UpperChaos.integral_H2_XY
 #print axioms Grothe.UpperChaos.integral_H2_charge_one
 #print axioms Grothe.UpperChaos.integral_H_charge_one
@@ -902,6 +907,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_shifted_moment_damped
 #print axioms Grothe.UpperChaos.integral_shifted_moment_damped_double
 #print axioms Grothe.UpperChaos.integral_taylorInnerSource_conditional
+#print axioms Grothe.UpperChaos.integral_taylorInnerSource_kernel_prod
 #print axioms Grothe.UpperChaos.integral_two_channel
 #print axioms Grothe.UpperChaos.invariantMoment_odd
 #print axioms Grothe.UpperChaos.law_comm

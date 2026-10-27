@@ -211,11 +211,13 @@ Grothe.HJM.wt_five
 Grothe.Haag.affine_phase_complete_square
 Grothe.Haag.integrableOn_phaseLaplaceKernel
 Grothe.Haag.integrable_mul_phaseLaplaceKernel
+Grothe.Haag.integrable_mul_phaseLaplaceKernel_at
 Grothe.Haag.integral_mul_ph_eq_phaseLaplace
 Grothe.Haag.integral_norm_phaseLaplaceKernel
 Grothe.Haag.integral_norm_phaseLaplaceKernel_le
 Grothe.Haag.integral_phaseLaplace_weight
 Grothe.Haag.measurable_phaseLaplaceKernel
+Grothe.Haag.norm_phaseLaplaceKernel_le
 Grothe.Haag.ph_eq_phaseLaplace
 Grothe.Haag.phaseMoment_weighted
 Grothe.HaagerupCanonical.coefficient_check
@@ -655,7 +657,9 @@ Grothe.UpperChaos.hardy_region_and_mean
 Grothe.UpperChaos.hfun2_rot2_of_charge
 Grothe.UpperChaos.inner_gradedHermite_eq_zero_of_charge
 Grothe.UpperChaos.inner_gradedHermite_eq_zero_of_total_degree
+Grothe.UpperChaos.inner_gradedHermite_hpow_eq_wick
 Grothe.UpperChaos.inner_hpow_eq_phaseLaplace
+Grothe.UpperChaos.inner_hpow_eq_phaseLaplace_iterated
 Grothe.UpperChaos.inner_hvec2_gradedHermite
 Grothe.UpperChaos.inner_hvec2_hermiteFinite
 Grothe.UpperChaos.inner_smoothOp_hvec2_eq_zero
@@ -669,6 +673,7 @@ Grothe.UpperChaos.integrable_norm_rpow_damped
 Grothe.UpperChaos.integrable_shifted_monomial_damped
 Grothe.UpperChaos.integrable_taylorInnerSource
 Grothe.UpperChaos.integrable_taylorInnerSource_conditional
+Grothe.UpperChaos.integrable_taylorInnerSource_kernel
 Grothe.UpperChaos.integral_affine_phaseLaplace_base
 Grothe.UpperChaos.integral_affine_phaseLaplace_monomial
 Grothe.UpperChaos.integral_affine_phaseLaplace_polynomial
@@ -688,6 +693,7 @@ Grothe.UpperChaos.integral_rpow_neg_five_halves_Ioi
 Grothe.UpperChaos.integral_shifted_moment_damped
 Grothe.UpperChaos.integral_shifted_moment_damped_double
 Grothe.UpperChaos.integral_taylorInnerSource_conditional
+Grothe.UpperChaos.integral_taylorInnerSource_kernel_prod
 Grothe.UpperChaos.invariantMoment_odd
 Grothe.UpperChaos.localized_comparison
 Grothe.UpperChaos.measurable_basePhaseArgument

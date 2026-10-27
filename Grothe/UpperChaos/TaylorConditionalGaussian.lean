@@ -54,23 +54,28 @@ theorem integrable_taylorInnerSource_conditional (j N : ℕ) (a : ℕ → ℕ �
     (Real.sqrt (1 + (Grothe.Upper.aQ : ℝ) ^ 2) * vprof (‖z‖ ^ 2))
     t z (taylor_source_rate_pos j) ht).const_mul _
 
-/-- The production conditional integral is the exact finite shifted Wick sum. -/
-theorem integral_taylorInnerSource_conditional (j N : ℕ) (a : ℕ → ℕ → ℕ → ℚ)
-    (t : ℝ) (z : ℂ) (ht : 0 < t) :
+/-- Finite conditional Wick evaluator for the actual source at a fixed first coordinate. -/
+def taylorConditionalWick (j N : ℕ) (a : ℕ → ℕ → ℕ → ℚ)
+    (t : ℝ) (z : ℂ) : ℂ :=
     let ε : ℝ := Grothe.Upper.phaseEpsQ
     let α : ℝ := 1 + (j : ℝ) * ε
     let κ : ℝ := Real.sqrt (1 + (Grothe.Upper.aQ : ℝ) ^ 2) * vprof (‖z‖ ^ 2)
     let β : ℝ := α + κ ^ 2 * t
     let μ : ℂ := -((κ * t / β : ℝ) : ℂ) * z
     let P : CPoly := taylorSourceSlice phaseTerms j N a z
-    (∫ w : ℂ, taylorInnerSource j (gradedHermiteFn N a) (z, w) *
-      phaseLaplaceKernel (basePhaseArgument (z, w)) t ∂gaussC) =
-        (Real.exp (-(j : ℝ) * ε * Complex.normSq z) : ℂ) *
+    (Real.exp (-(j : ℝ) * ε * Complex.normSq z) : ℂ) *
           (((t ^ (-(1 / 2 : ℝ)) * Real.exp (-(α * t * Complex.normSq z / β)) : ℝ) : ℂ) *
             ∑ s ∈ P.support, P.coeff s *
               (z * shiftedDampedMoment β μ (s 0) (s 1) +
-                (κ : ℂ) * shiftedDampedMoment β μ (s 0 + 1) (s 1))) := by
-  dsimp only
+                (κ : ℂ) * shiftedDampedMoment β μ (s 0 + 1) (s 1)))
+
+/-- The production conditional integral is the exact finite shifted Wick sum. -/
+theorem integral_taylorInnerSource_conditional (j N : ℕ) (a : ℕ → ℕ → ℕ → ℚ)
+    (t : ℝ) (z : ℂ) (ht : 0 < t) :
+    (∫ w : ℂ, taylorInnerSource j (gradedHermiteFn N a) (z, w) *
+      phaseLaplaceKernel (basePhaseArgument (z, w)) t ∂gaussC) =
+        taylorConditionalWick j N a t z := by
+  dsimp only [taylorConditionalWick]
   rw [taylorSource_kernel_eq, integral_const_mul]
   rw [integral_affine_phaseLaplace_polynomial _ _ _ _ _ (taylor_source_rate_pos j) ht]
 
