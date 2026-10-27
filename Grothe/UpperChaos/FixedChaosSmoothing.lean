@@ -19,12 +19,11 @@ def chaosShell (d : ℕ) : Finset Idx2 := (chaosBox d).filter (fun i => tdeg i =
 
 theorem mem_chaosShell_of_degree (i : Idx2) (d : ℕ) (h : tdeg i = d) :
     i ∈ chaosShell d := by
+  rcases i with ⟨⟨a, b⟩, ⟨c, e⟩⟩
   simp only [chaosShell, Finset.mem_filter, chaosBox, Finset.mem_product,
     Finset.mem_range]
-  unfold tdeg at h
-  constructor
-  · exact ⟨⟨by omega, by omega⟩, ⟨by omega, by omega⟩⟩
-  · exact h
+  dsimp only [tdeg] at h ⊢
+  omega
 
 /-- The actual fixed-degree entry, not a saved numerical matrix. -/
 def actualEntry (j i : Idx2) : ℂ := ⟪hvec2 j, smoothOp (hvec2 i)⟫_ℂ
@@ -41,7 +40,9 @@ theorem fixed_shell_action (j : Idx2) (f : Lp ℂ 2 mu2) :
     intro i hi
     have hd : tdeg i ≠ tdeg j := fun he => hi (mem_chaosShell_of_degree i (tdeg j) he)
     simp only [actualEntry, inner_smoothOp_hvec2_eq_zero hd, mul_zero]
-  have hf := hasSum_sum_of_ne_finset_zero hz
+  have hf : HasSum (fun i : Idx2 => ⟪hvec2 i, f⟫_ℂ * actualEntry j i)
+      (∑ i ∈ chaosShell (tdeg j), ⟪hvec2 i, f⟫_ℂ * actualEntry j i) :=
+    hasSum_sum_of_ne_finset_zero hz
   exact hs.unique hf
 
 /-- A candidate numerical matrix may be used only with a certified bound on
