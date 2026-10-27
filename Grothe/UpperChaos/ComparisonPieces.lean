@@ -140,11 +140,56 @@ def bandOf (p : Fin 4) (d : ℕ) : ComparisonIndex :=
   | 2 => if d ≤ 51 then ⟨8, by decide⟩ else if d ≤ 71 then ⟨9, by decide⟩ else if d ≤ 81 then ⟨10, by decide⟩ else if d ≤ 91 then ⟨11, by decide⟩ else ⟨12, by decide⟩
   | 3 => if d ≤ 11 then ⟨13, by decide⟩ else if d ≤ 21 then ⟨14, by decide⟩ else if d ≤ 31 then ⟨15, by decide⟩ else if d ≤ 51 then ⟨16, by decide⟩ else ⟨17, by decide⟩
 
+/-- The lower ends of the comparison bands. -/
+def loT : ℕ → ℕ
+  | 0 => 0
+  | 1 => 0
+  | 2 => 51
+  | 3 => 101
+  | 4 => 151
+  | 5 => 161
+  | 6 => 171
+  | 7 => 181
+  | 8 => 0
+  | 9 => 51
+  | 10 => 71
+  | 11 => 81
+  | 12 => 91
+  | 13 => 0
+  | 14 => 11
+  | 15 => 21
+  | 16 => 31
+  | _ => 51
+
+/-- The upper ends (`0` = no upper end). -/
+def hiT : ℕ → ℕ
+  | 0 => 0
+  | 1 => 51
+  | 2 => 101
+  | 3 => 151
+  | 4 => 161
+  | 5 => 171
+  | 6 => 181
+  | 7 => 0
+  | 8 => 51
+  | 9 => 71
+  | 10 => 81
+  | 11 => 91
+  | 12 => 0
+  | 13 => 11
+  | 14 => 21
+  | 15 => 31
+  | 16 => 51
+  | _ => 0
+
+lemma band_lo : ∀ k : ComparisonIndex, (comparisonBand k).lo = loT k.val := by decide
+
+lemma band_hi : ∀ k : ComparisonIndex, (comparisonBand k).hi = hiT k.val := by decide
+
 lemma bandOf_spec (p : Fin 4) {n m : ℕ} (h : 1 ≤ n + m) :
     pw (bandOf p (n + m)) = p ∧ (comparisonBand (bandOf p (n + m))).contains n m = true := by
-  rw [contains_iff]
-  fin_cases p <;> simp only [bandOf] <;> split_ifs <;>
-    simp [pw, comparisonBand, comparisonBands] <;> omega
+  rw [contains_iff, band_lo, band_hi]
+  fin_cases p <;> simp only [bandOf] <;> (try split_ifs) <;> simp [pw, loT, hiT] <;> omega
 
 end
 
