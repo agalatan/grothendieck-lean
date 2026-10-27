@@ -61,6 +61,8 @@ not discharge `ComparisonInputs` or `energy_close` and changes no headline bound
 
 | Fact | Source native site | Allowlist | Report coverage | Runtime evidence |
 |---|---|---|---|---|
+| `Grothe.HJM.OriginUnweightedRightChecks.combinedBlock00` | `Grothe/HJM/OriginUnweightedRightCombined00.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; guarded signed and phase-mean checks on right cells 0–6 |
+| `Grothe.HJM.OriginUnweightedRightWitness.polynomial_eq` | `Grothe/HJM/OriginUnweightedRightWitness.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact transformed 64-mode witness equality |
 | `Grothe.HJM.OriginMomentRightWitnessData.rightPolynomial_eq` | `Grothe/HJM/OriginMomentRightWitnessData.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact right witness polynomial equality |
 | `Grothe.HJM.OriginMomentGenerated.rightBlock13` | `Grothe/HJM/OriginMomentRightCheck13.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; signed Gaussian moment bounds for right cells 91–97 |
 | `Grothe.HJM.Cauchy.gate_check4` | `Grothe/HJM/CauchyGateCheck.lean:20` | yes | Indirect via scratch/Axioms.lean Grothe.HJM.Cauchy.weighted_tails | GitHub-hosted module build 4.6 s (quadtree of complex interval boxes, branch 4 of HJM at radius 1.112; the kernel evaluation takes over 10 minutes) |
