@@ -7,6 +7,7 @@ import Grothe.HJM.CauchyTail
 import Grothe.HJM.CauchyTails
 import Grothe.HJM.Data
 import Grothe.HJM.Finite67
+import Grothe.HJM.HeadCheck
 import Grothe.HJM.Mixture
 import Grothe.HJM.Origin
 import Grothe.HJM.OriginApproximation
