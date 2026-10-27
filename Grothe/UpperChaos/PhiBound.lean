@@ -91,7 +91,7 @@ theorem fresh_upper_rounder {X : ℂ × ℂ → ℂ} (hXL : MeasureTheory.MemLp 
     (hXch : ∀ c u, ‖c‖ = 1 → X (rot2 c u) = c * X u)
     (herrors : ComparisonInputs ((memLp_GT phiBound).toLp GT) (hXL.toLp X))
     (hclose : ∑ p ∈ headIdx 501, |energy (hXL.toLp X) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ)) :
-    IsGrothendieckBound (500000000000000000 / 355973699864771491) :=
+    IsGrothendieckBound (500000000000000000 / 355973699881431491) :=
   fresh_upper_concrete phiBound hXL hXch (localized_comparison herrors hclose) hclose
     (HardyReal.hardy_GT phiBound)
 

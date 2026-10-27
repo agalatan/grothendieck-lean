@@ -115017,14 +115017,14 @@
       "8701999049242289/1532495540865888858358347027150309183618739122183602176"
     ]
   ],
-  "compare": "13311891/15625000000000",
+  "compare": "106490963/125000000000000",
   "hardy_tail": "9187/250000000000",
-  "incumbent_score": "355973696735190991/500000000000000000",
+  "incumbent_score": "355973696751850991/500000000000000000",
   "scope": "Native finite head and selected-block error comparison, with inherited Gaussian coefficient-error enclosures and Hardy input.",
-  "delta": "458437859009/500000000000000000",
-  "exact_bound": "500000000000000000/355973696735190991",
-  "headline_upper": "702299080783/500000000000",
-  "headline_decimal": "1.404598161566",
+  "delta": "458421199009/500000000000000000",
+  "exact_bound": "500000000000000000/355973696751850991",
+  "headline_upper": "2809196323/2000000000",
+  "headline_decimal": "1.404598161500",
   "hardy_square_cap": "7/4",
   "hardy_radius": "4149/4000",
   "fresh_hardy_sha256": "767122a6f834c23f3bd7e12d5f9a834ca0faf63b3920c7378fc506ba0ed37d8b",
@@ -115034,15 +115034,15 @@
   "baseline_bridge_sha256": "27e4a5b3c0cc30222d9d0d064a7c49ec37ce5d2569303df7d3f4a8a9a6073d04",
   "baseline_source_commit": "1fc68323630674a096e0ffef66a1b740d7f7fec6",
   "comparison_scope": "selected_head",
-  "localized_recipe_sha256": "eee651704b9daa645da548d06b806711d83ea7dc58b2b450b79d1f62ffbda84b",
+  "localized_recipe_sha256": "e42187e415c40782357b8ed7cfec9de282be34b27d0b2cc5d49aac3bda4c9aae",
   "linear_budget_refinement": {
     "hardy_tail": "30488839/1000000000000000",
-    "head_residual": "440063859009/500000000000000000",
-    "linear_lower": "355973715109190991/500000000000000000",
-    "delta": "455308278509/500000000000000000",
-    "incumbent_score": "355973699864771491/500000000000000000",
-    "exact_bound": "500000000000000000/355973699864771491",
-    "headline_decimal": "1.404598149218",
+    "head_residual": "440047199009/500000000000000000",
+    "linear_lower": "355973715125850991/500000000000000000",
+    "delta": "455291618509/500000000000000000",
+    "incumbent_score": "355973699881431491/500000000000000000",
+    "exact_bound": "500000000000000000/355973699881431491",
+    "headline_decimal": "1.404598149152",
     "scope": "Derived from the same weighted selected-head component-error, table-accuracy and Hardy inputs. Frozen contour-tail assembly fields above remain unchanged."
   }
 }

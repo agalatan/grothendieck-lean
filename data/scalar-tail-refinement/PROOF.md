@@ -4,12 +4,12 @@ The published scalar construction of Heilman, Jones and Malavolta admits
 the ordinary mathematical corollary
 
 \[
-K_G^{\mathbb C}<1.40489844
+K_G^{\mathbb C}<1.4048984303
 \]
 
 after tightening one infinite-tail estimate. The kernels, response
 functions, preprocessors, weights, and integral tables are unchanged.
-The new ingredient is the exact norm of a sixteenth polynomial power.
+The new ingredients are the exact norm of a sixteenth polynomial power and a finite weighted sum that retains the contraction at each outer index.
 
 The companion [Lean module](../../Grothe/Haagerup/ScalarTailRefinement.lean)
 proves the polynomial/tail refinement and the implication from the stated
@@ -81,25 +81,41 @@ cap 581/1000.
 
 ## Complete infinite-tail deduction
 
-For any integer j>=67, write `2j+1=16*a+b`, where `0<=b<16`. Then a>=8.
-Submultiplicativity and `||P5||_1<=1` imply
+For every integer j, quotient and remainder give
 
 \[
-\|P5^{2j+1}\|_1
-\le\|P5^{16}\|_1^a\|P5\|_1^b
-\le q^a\le q^8.
+\|P5^{2j+1}\|_1\le q^{\lfloor(2j+1)/16\rfloor}.
 \]
 
 The outer term `rho5(t)^(2j+1)` differs from this polynomial power by a
 monomial factor and the substitution `x=t^2`, which preserve its
-coefficient norm. Consequently, using the published Wallis tail,
+coefficient norm. Keep the decreasing weight
+`w(j)=q^floor((2j+1)/16)` at each index. Let
+`r_j=4*h_j/pi` and `g_j=r_j*(j+1)*(2*j+1)`. The existing Haagerup
+majorant gives, for every positive J,
+
+\[
+\sum_{j\ge J}h_j\le \frac{\pi}{4}\frac{g_J}{2J}.
+\]
+
+Split the omitted series at J=160. Since `w(j)<=w(160)=q^20` for
+j>=160, its full norm is bounded by the exact rational quantity
+
+\[
+B=\frac{355}{452}\left(
+\sum_{j=67}^{159}r_j q^{\lfloor(2j+1)/16\rfloor}
++q^{20}\frac{g_{160}}{320}\right).
+\]
+
+Here pi<=355/113 is paid once, including the physical coefficients' pi/4
+normalization. Thus
 
 \[
 \begin{aligned}
 \tau_{5,\mathrm{outer}}
-&\le |w5|\sum_{j\ge67}h_j\|P5^{2j+1}\|_1\\
-&\le\frac{w5(581/1000)^8}{4\cdot67}
-=8.20505217878206112205019968399\ldots\times10^{-10}.
+&\le w5\sum_{j\ge67}h_j\|P5^{2j+1}\|_1\\
+&\le w5 B
+=1.42727865917729184869023704621\ldots\times10^{-10}.
 \end{aligned}
 \]
 
@@ -120,10 +136,10 @@ Assemble the rational upper bound
 
 \[
 \begin{aligned}
-R_{16}={}&1.074829404498064\cdot10^{-6}
+R={}&1.074829404498064\cdot10^{-6}
 +2.699176355797438\cdot10^{-12}\\
 &+1.040224125770398\cdot10^{-7}
-+\frac{w5(581/1000)^8}{268}.
++w5 B.
 \end{aligned}
 \]
 
@@ -132,28 +148,28 @@ truncation/product errors; those errors must not be added a second time.
 The exact sum is
 
 \[
-R_{16}=0.000001179675021469337803550205019968399048569\ldots.
+R=0.000001178997244117377326622869023704621607332\ldots.
 \]
 
 With the exact raw selector mass, define
 
 \[
-\Gamma_{16}
-=\frac{0.71179640805640433452-R_{16}}{M}
-=0.711795228381382795712690468320134488752\ldots.
+\Gamma
+=\frac{0.71179640805640433452-R}{M}
+=0.711795229059160147673167329506687866831\ldots.
 \]
 
 Exact rational arithmetic proves
 
 \[
-\Gamma_{16}\cdot\frac{35122461}{25000000}>1,
+\Gamma\cdot\frac{14048984303}{10000000000}>1,
 \qquad
-\Gamma_{16}^{-1}
-=1.404898431637414557729724886851106059188\ldots
-<1.40489844.
+\Gamma^{-1}
+=1.404898430299658557275425656370645734273\ldots
+<1.4048984303.
 \]
 
-The conservative reciprocal claim has margin about 8.36258544e-9.
+The conservative reciprocal claim has margin about 3.41442724e-13.
 The exact selector normalization, including its small excess over one,
 has not been dropped. The paper's valid-kernel mixture and residual
 transfer argument therefore give the stated mathematical corollary.
@@ -171,9 +187,9 @@ successful remote stages under Python 3.12.3, python-flint 0.9.0 and NumPy
    certificate.
 
 All return codes are zero. Their source hashes and complete output logs
-are preserved in [verification/](verification/README.md). The new power16
-norm and refined final arithmetic were independently recomputed with
-integer/Fraction operations; they do not rely on a floating optimization.
+are preserved in [verification/](verification/README.md). The power16
+norm and current weighted final arithmetic were independently recomputed with
+integer/Fraction operations; they do not rely on a floating optimization. The archived `POWER16_ARITHMETIC_AUDIT.json` retains its original ledger. `verify_receipts.py` checks that archive, then independently recomputes the current weighted ledger and binds it to `certificate.json`.
 
 The two coefficient tables were **not regenerated**. Their pinned hashes
 were checked and their outward intervals were consumed by the successful
@@ -189,9 +205,8 @@ The formal contribution in this delivery is the sixteenth-power norm
 certificate, the complete Wiener tail deduction, and exact ledger
 arithmetic/implication in
 [ScalarTailRefinement.lean](../../Grothe/Haagerup/ScalarTailRefinement.lean).
-The finite power check now uses `decide +kernel` on the same outward
-interval computation. All sixteen scalar-tail results use only standard axioms;
-no numerical data, theorem statement or analytic hypothesis changed.
+The finite power check uses `decide +kernel` on the same outward
+interval computation. The original power certificate uses only standard axioms. The weighted estimate adds no native fact or analytic premise. The strengthened generic split, weighted suffix and score theorem pass a local Lean check against the unchanged compiled power certificate; the final theorem reports only `propext`, `Classical.choice` and `Quot.sound`. Full compilation of the generated production module also passes in [focused CI](https://github.com/agalatan/grothendieck-lean/actions/runs/40457620830), at commit `1cc7f6501e67afe4509c2f87950b183b3de23465`; [WEIGHTED_BUILD.json](verification/WEIGHTED_BUILD.json) binds the result to the source hashes. The archived build receipt records the earlier source hashes and does not certify this revision.
 The fixed Wallis estimate is derived from the existing formal Haagerup
 majorant, using an exact split at 120. If `r_j=4*h_j/pi` and
 `g_j=r_j*(j+1)*(2*j+1)`, then
@@ -205,8 +220,8 @@ majorant, using an exact split at 120. If `r_j=4*h_j/pi` and
 
 The final rational expression is approximately
 `0.003730857677462347`, below `1/268`. Its finite comparison uses
-proof-producing `decide +kernel`; no native fact is added. The direct
-`refined_score_of_published_budgets` corollary therefore has no Wallis
+proof-producing `decide +kernel`; no native fact is added. The weighted estimate instead splits at 160 and applies the same majorant with its endpoint weight. The generic `weighted_composition_cut` theorem proves the finite-prefix/suffix step for any nonnegative antitone weights bounded by one. The direct
+`refined_score_of_published_budgets` corollary has no Wallis
 hypothesis. It retains the published numerical budget inequalities,
 whose Gaussian interpretation remains outside this formal score theorem.
 

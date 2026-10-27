@@ -144,8 +144,25 @@ def main():
     require(list(map(Q, certificate['P'])) == P, 'Production coefficient list differs')
     for key, expected in {'power':16, 'outer_start':67, 'quotient':8, 'wallis_denominator':268}.items():
         require(certificate[key] == expected, 'Production integer parameter differs: '+key)
-    require(Q(certificate['ratio']) == cap and Q(certificate['reciprocal_claim']) == claim,
-            'Production ratio or reciprocal claim differs')
+    require(certificate['schema_version'] == 2, 'Production schema differs')
+    require(Q(certificate['ratio']) == cap, 'Production power cap differs')
+    require(certificate['weighted_split'] == 160, 'Production weighted split differs')
+
+    # Recompute the current weighted tail independently of the generator.
+    # The archived power audit above retains its original coarser ledger.
+    while len(phase_r) <= 160:
+        k = len(phase_r) - 1
+        phase_r.append(phase_r[-1]*Q((2*k+1)**2, 4*(k+1)*(k+2)))
+    weighted_prefix = sum(phase_r[k]*cap**((2*k+1)//16) for k in range(67, 160))
+    weighted_suffix = cap**20*phase_r[160]*161*321/320
+    weighted_bound = Q(355, 452)*(weighted_prefix+weighted_suffix)
+    outer = paper['branch5_weight']*weighted_bound
+    residual = sum(paper[key] for key in ('nonlinear_prefix_upper',
+        'first_67_complete_outer_tail_upper', 'other_weighted_tails_upper'))+outer
+    score = (paper['q0_lower']-residual)/paper['selector_mass']
+    claim = Q(14048984303, 10000000000)
+    require(Q(certificate['reciprocal_claim']) == claim, 'Production reciprocal claim differs')
+    require(claim*score > 1, 'Weighted reciprocal acceptance margin failed')
     budget_map = {'branch5_weight':'branch5_weight', 'slope_lower':'q0_lower',
         'prefix_upper':'nonlinear_prefix_upper', 'finite67_upper':'first_67_complete_outer_tail_upper',
         'other_tails_upper':'other_weighted_tails_upper', 'selector_mass':'selector_mass'}
@@ -153,13 +170,21 @@ def main():
         require(Q(certificate['paper_budgets'][production]) == paper[audited],
                 'Production paper budget differs: '+production)
     for key, expected in {'P_l1':sum(map(abs, P)), 'power_l1':norm,
-                          'outer_reserve':outer, 'residual_upper':residual, 'score_lower':score}.items():
+                          'weighted_outer_bound':weighted_bound, 'outer_reserve':outer,
+                          'residual_upper':residual, 'score_lower':score}.items():
         require(Q(certificate['exact_arithmetic'][key]) == expected,
                 'Production arithmetic differs: '+key)
     provenance = certificate['provenance']
     require(provenance['upstream_commit'] == COMMIT, 'Production upstream commit differs')
     require(provenance['coefficient_source_sha256'] == pins['audit_sparse6_altgroups.py']['sha256'],
             'Production coefficient source hash differs')
+
+    build = load('WEIGHTED_BUILD.json')
+    require(build['exit_code'] == 0 and build['warnings'] == 0, 'Weighted build did not pass cleanly')
+    require(build['target'] == 'Grothe.Haagerup.ScalarTailRefinement', 'Weighted target differs')
+    require(build['log_sha256'] == sha(HERE/'weighted-build.log'), 'Weighted build log binding failed')
+    for relative, expected in build['source_sha256'].items():
+        require(sha(ROOT/relative) == expected, 'Weighted build source differs: '+relative)
 
     result = dict(status='PASS_ARCHIVED_REPLAY_AND_EXACT_POWER16_SCOPE',
         checked_utc=datetime.now(timezone.utc).isoformat(), upstream_commit=COMMIT,
@@ -171,6 +196,9 @@ def main():
         production_certificate_sha256=sha(args.certificate),
         verified_power_norm=str(norm), power_cap=str(cap), reciprocal_claim=str(claim),
         wallis_finite_rational_upper=str(wallis_rational),
+        weighted_split=160, weighted_outer_bound=str(weighted_bound),
+        weighted_outer_reserve=str(outer), strict_product_margin=str(claim*score-1),
+        verified_weighted_build_run=build['run'],
         lean_compilation_performed=False,
         scope='Archived non-regeneration replay and exact polynomial/ledger arithmetic only. '
               'Published Gaussian and integral claims are cited in PROOF.md; '

@@ -2,18 +2,18 @@
 
 Under the documented Gaussian inputs, the certificate proves
 
-**K_G^C < 1.404598161566.**
+**K_G^C < 1.404598161500.**
 
-The exact reciprocal score is `355973696735190991/500000000000000000`.
+The exact reciprocal score is `355973696751850991/500000000000000000`.
 This is a global upper certificate, not a bound on a selected response region.
 The lower certificate is unaffected.
 
 The current Lean assembly also deducts the linear coefficient's forced weighted
 square from the same Hardy budget. Its tail is `30488839/1000000000000000`,
-residual `455308278509/500000000000000000`, and reciprocal score
-`355973699864771491/500000000000000000`, giving **K_G^C < 1.404598149218**.
+residual `455291618509/500000000000000000`, and reciprocal score
+`355973699881431491/500000000000000000`, giving **K_G^C < 1.404598149152**.
 These derived values are checked under `linear_budget_refinement`; the raw
-contour-tail fields above remain unchanged for reproducibility. The weighted
+contour-tail allowance is also retained for replay. The weighted
 comparison contributes 93.56% of the refined residual, the head 3.09%, and the
 tail 3.35%. No stronger Gaussian or Hardy input is used.
 
@@ -33,14 +33,14 @@ residual about `c t`, with `c = 7119483103461/10000000000000`:
 
 | contribution | exact allowance | status |
 |---|---:|---|
-| weighted selected-block energy comparison | `13311891/15625000000000` | proved from inherited component-error inputs and native finite masses |
+| weighted selected-block energy comparison | `106490963/125000000000000` | proved from the same component norms/supports, native finite masses, and a kernel-checked overlap ledger |
 | finite head through degree 501 | `28153/1000000000000` | freshly checked in Arb and Lean |
 | stored energy-table accuracy | `6847009/500000000000000000` | inherited external Gaussian input |
 | infinite tail after degree 501 | `36748/1000000000000` | fresh contour arithmetic, same analytic Schur input |
 
-Their sum is `delta = 458437859009/500000000000000000`.
+Their sum is `delta = 458421199009/500000000000000000`.
 The already formalized transfer theorem gives
-`K_G^C <= 1/(c-delta) < 1.404598161566`.
+`K_G^C <= 1/(c-delta) < 1.404598161500`.
 No additional head-comparison hypothesis is introduced.
 
 The native Lean checker proves the complete finite-head statement over exact
