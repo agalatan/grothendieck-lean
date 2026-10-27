@@ -57,7 +57,6 @@ theorem phaseDerivative_eq_quotient (z v : ℂ) (hz : z ≠ 0) :
   unfold phaseDerivative
   rw [Complex.ofReal_div]
   field_simp [hr]
-  ring
 
 /-- Phase differentiates at every nonzero value of a real-parameter function. -/
 theorem hasDerivAt_phase {F : ℝ → ℂ} {v : ℂ} {s : ℝ}
@@ -89,7 +88,7 @@ theorem norm_phaseDerivative_le_two (z v : ℂ) (hz : z ≠ 0) :
       simp only [norm_div, norm_mul, norm_pow, Complex.norm_real,
         Real.norm_eq_abs, abs_of_nonneg (norm_nonneg z)]
     _ ≤ ‖v‖ / ‖z‖ + ‖z‖ * (‖z‖ * ‖v‖) / ‖z‖ ^ 3 := by
-      apply add_le_add_left
+      apply add_le_add le_rfl
       exact div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_left ha hr.le)
         (pow_nonneg hr.le 3)
     _ = 2 * ‖v‖ / ‖z‖ := by
