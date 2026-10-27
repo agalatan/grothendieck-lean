@@ -17,7 +17,7 @@ The coarse first-derivative norm bound supports polynomial growth estimates.
 No numerical-energy assertion is made.
 -/
 
-open scoped RealInnerProductSpace Topology
+open scoped InnerProductSpace RealInnerProductSpace Topology
 
 namespace Grothe.HJM.Origin
 

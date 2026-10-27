@@ -17,7 +17,7 @@ one-dimensional energy integral. No numerical enclosure is asserted.
 -/
 
 open MeasureTheory Filter Set Grothe.LowerAnalytic
-open scoped Topology RealInnerProductSpace
+open scoped Topology InnerProductSpace RealInnerProductSpace
 
 namespace Grothe.HJM.Origin
 

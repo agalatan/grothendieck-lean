@@ -14,7 +14,7 @@ the denominator margins already proved for the actual HJM responses therefore
 give actual global polynomial envelopes, including the endpoint.
 -/
 
-open scoped RealInnerProductSpace
+open scoped InnerProductSpace RealInnerProductSpace
 
 namespace Grothe.HJM.Origin
 
