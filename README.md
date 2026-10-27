@@ -80,7 +80,7 @@ by exact-arithmetic computations outside Lean; moving them inside is work in pro
 
 Lower cut soundness is organized by specialization: ordinary spectral cuts use the
 general shifted-cut theorem, ordinary and joint Gram budgets use the signed-reserve
-theorem, and all node majorants use one admissible-cut integration lemma.
+theorem, and all Stein and spectral node majorants use one admissible-cut integration lemma.
 
 The fourth-moment cap follows directly from the exact Wick identity and two
 general tensor inequalities (`Chaos3.fourth_le`); no separate positivity
