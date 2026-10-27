@@ -26,7 +26,6 @@ theorem phase_error_eq_abs (z : ℂ) (w : ℝ) (hz : z ≠ 0) :
     unfold ph
     push_cast
     field_simp [hn]
-    ring
   have hphase : ‖ph z‖ = 1 := by
     rw [ph, norm_div, Complex.norm_real, Real.norm_of_nonneg (norm_nonneg z),
       div_self (norm_ne_zero_iff.mpr hz)]

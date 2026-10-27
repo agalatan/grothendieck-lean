@@ -26,8 +26,8 @@ noncomputable section
 /-- The radial factor of `H (n+1) n`, with real integer coefficients. -/
 def originRadialPoly : ℕ → Polynomial ℝ
   | 0 => 1
-  | n + 1 => (Polynomial.X - Polynomial.C (n + 2)) * originRadialPoly n -
-      Polynomial.X * (originRadialPoly n).derivative
+  | n + 1 => ((Polynomial.X : Polynomial ℝ) - ((n + 2 : ℕ) : Polynomial ℝ)) *
+      originRadialPoly n - Polynomial.X * (originRadialPoly n).derivative
 
 /-- The generalized Laguerre normalization of the radial Hermite polynomial. -/
 def originLaguerrePoly (n : ℕ) : Polynomial ℝ :=
@@ -52,18 +52,13 @@ theorem originRadialPoly_ode (n : ℕ) :
     Polynomial.X * (originRadialPoly n).derivative.derivative +
       (2 - Polynomial.X) * (originRadialPoly n).derivative +
       Polynomial.C (n : ℝ) * originRadialPoly n = 0 := by
+  simp only [Polynomial.C_eq_natCast]
   induction n with
   | zero => simp [originRadialPoly]
   | succ n ih =>
     have hd := congrArg Polynomial.derivative ih
-    simp only [Polynomial.derivative_add, Polynomial.derivative_mul,
-      Polynomial.derivative_sub, Polynomial.derivative_X, Polynomial.derivative_C,
-      Polynomial.derivative_ofNat, Polynomial.derivative_zero, mul_zero, zero_mul, zero_add, add_zero,
-      one_mul] at hd
-    simp only [originRadialPoly, Polynomial.derivative_add, Polynomial.derivative_mul,
-      Polynomial.derivative_sub, Polynomial.derivative_X, Polynomial.derivative_C,
-      Polynomial.derivative_ofNat, Polynomial.derivative_zero, mul_zero, zero_mul, zero_add, add_zero,
-      one_mul]
+    simp at hd
+    simp [originRadialPoly]
     push_cast at ih hd ⊢
     linear_combination (Polynomial.X - (n : Polynomial ℝ) - 3) * ih - Polynomial.X * hd
 
@@ -81,9 +76,11 @@ def originRadialLift : Polynomial ℝ →ₐ[ℝ] CPoly :=
 
 lemma pderiv0_originRadialLift (P : Polynomial ℝ) :
     pderiv 0 (originRadialLift P) = originRadialLift P.derivative * X 1 := by
+  have hx : pderiv (0 : Fin 2) (X 0 * X 1 : CPoly) = X 1 := by
+    simp [Derivation.leibniz, pderiv_X]
   have h := ((pderiv (0 : Fin 2) : Derivation ℂ CPoly CPoly).restrictScalars ℝ).comp_aeval_eq
     (X 0 * X 1) P
-  simpa [originRadialLift, Derivation.leibniz, pderiv_X, smul_eq_mul] using h
+  simpa only [originRadialLift, Derivation.restrictScalars_apply, smul_eq_mul, hx] using h
 
 lemma originRadialLift_C (a : ℝ) : originRadialLift (Polynomial.C a) = C (a : ℂ) := by
   simp [originRadialLift, Polynomial.aeval_C,
@@ -106,21 +103,23 @@ theorem H_charge_one_radial (n : ℕ) :
   | zero => simp [H_succ_left, H_zero_zero, A0, originRadialPoly]
   | succ n ih =>
     rw [show n + 1 + 1 = n + 2 by omega, H_charge_one_step]
-    simp only [ih, Derivation.leibniz, pderiv_X, pderiv0_originRadialLift]
+    simp only [ih, Derivation.leibniz, pderiv_X_self, pderiv0_originRadialLift]
     simp only [originRadialPoly, map_sub, map_mul, originRadialLift_X,
-      originRadialLift_C, smul_eq_mul, nsmul_eq_mul]
+      map_natCast, smul_eq_mul, nsmul_eq_mul]
     push_cast
     ring
 
 lemma ev_originRadialLift (z : ℂ) (P : Polynomial ℝ) :
-    ev z (originRadialLift P) = (P.eval (‖z‖ ^ 2) : ℂ) := by
+    ev z (originRadialLift P) = ((P.eval (‖z‖ ^ 2) : ℝ) : ℂ) := by
   let e : CPoly →ₐ[ℝ] ℂ := (MvPolynomial.aeval (zv z)).restrictScalars ℝ
   have he : e (X 0 * X 1) = ((‖z‖ ^ 2 : ℝ) : ℂ) := by
     simp only [e, AlgHom.restrictScalars_apply, map_mul, MvPolynomial.aeval_X, zv,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+      Matrix.cons_val_zero, Matrix.cons_val_one]
     rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
   have h := Polynomial.aeval_algHom_apply e (X 0 * X 1) P
-  rw [he, Polynomial.aeval_algebraMap_apply_eq_algebraMap_eval] at h
+  rw [he] at h
+  change Polynomial.aeval (algebraMap ℝ ℂ (‖z‖ ^ 2)) P = _ at h
+  rw [Polynomial.aeval_algebraMap_apply_eq_algebraMap_eval] at h
   exact h.symm
 
 /-- Pointwise radial formula with no exception at the Gaussian origin. -/
@@ -150,7 +149,7 @@ private lemma nrm_charge_one_factorial (n : ℕ) :
     push_cast
     ring
   rw [nrm, he, Real.sqrt_mul (by positivity), Real.sqrt_sq (by positivity)]
-  field_simp [hf, hs] <;> ring
+  field_simp [hf, hs]
 
 /-- The normalized Laguerre formula, including the upstream alternating sign. -/
 theorem hfun_charge_one_laguerre (n : ℕ) (z : ℂ) :
@@ -190,27 +189,47 @@ private lemma integrable_gaussC_radial_polynomial (P : Polynomial ℝ) :
     Integrable (fun z : ℂ => ‖z‖ * P.eval (‖z‖ ^ 2)) gaussC := by
   induction P using Polynomial.induction_on' with
   | monomial n a =>
-    convert (integrable_norm_pow (2 * n + 1)).const_mul a using 1
-    funext z
-    simp only [Polynomial.eval_monomial, ← pow_mul, pow_add, pow_one]
-    ring
+    have he : (fun z : ℂ => ‖z‖ * (Polynomial.monomial n a).eval (‖z‖ ^ 2)) =
+        (fun z : ℂ => a * ‖z‖ ^ (2 * n + 1)) := by
+      funext z
+      simp only [Polynomial.eval_monomial, ← pow_mul, pow_add, pow_one]
+      ring
+    rw [he]
+    exact (integrable_norm_pow (2 * n + 1)).const_mul a
   | add P Q hP hQ =>
-    simpa only [Polynomial.eval_add, mul_add] using hP.add hQ
+    have he : (fun z : ℂ => ‖z‖ * (P + Q).eval (‖z‖ ^ 2)) =
+        (fun z : ℂ => ‖z‖ * P.eval (‖z‖ ^ 2)) +
+          (fun z : ℂ => ‖z‖ * Q.eval (‖z‖ ^ 2)) := by
+      funext z
+      simp only [Pi.add_apply, Polynomial.eval_add, mul_add]
+    rw [he]
+    exact hP.add hQ
 
 private lemma integrable_radial_polynomial (P : Polynomial ℝ) :
     IntegrableOn (fun r : ℝ => r ^ 2 * Real.exp (-r ^ 2) * P.eval (r ^ 2)) (Ioi 0) := by
   induction P using Polynomial.induction_on' with
   | monomial n a =>
     have h := integrableOn_rpow_mul_exp_neg_mul_sq (b := 1) one_pos
-      (s := ((2 * n + 2 : ℕ) : ℝ)) (by positivity)
+      (s := ((2 * n + 2 : ℕ) : ℝ))
+      (lt_of_lt_of_le (by norm_num : (-1 : ℝ) < 0) (Nat.cast_nonneg _))
     have hi : IntegrableOn (fun r : ℝ => r ^ (2 * n + 2) * Real.exp (-r ^ 2)) (Ioi 0) := by
       simpa only [Real.rpow_natCast, neg_mul, one_mul] using h
-    convert hi.const_mul a using 1
-    funext r
-    simp only [Polynomial.eval_monomial, ← pow_mul, pow_add, pow_one]
-    ring
+    have he : (fun r : ℝ => r ^ 2 * Real.exp (-r ^ 2) *
+        (Polynomial.monomial n a).eval (r ^ 2)) =
+        (fun r : ℝ => a * (r ^ (2 * n + 2) * Real.exp (-r ^ 2))) := by
+      funext r
+      simp only [Polynomial.eval_monomial, ← pow_mul, pow_add, pow_one]
+      ring
+    rw [he]
+    exact hi.const_mul a
   | add P Q hP hQ =>
-    simpa only [Polynomial.eval_add, mul_add] using hP.add hQ
+    have he : (fun r : ℝ => r ^ 2 * Real.exp (-r ^ 2) * (P + Q).eval (r ^ 2)) =
+        (fun r : ℝ => r ^ 2 * Real.exp (-r ^ 2) * P.eval (r ^ 2)) +
+          (fun r : ℝ => r ^ 2 * Real.exp (-r ^ 2) * Q.eval (r ^ 2)) := by
+      funext r
+      simp only [Pi.add_apply, Polynomial.eval_add, mul_add]
+    rw [he]
+    exact hP.add hQ
 
 /-- The radial polynomial formula for possibly unbounded responses.
 These are ordinary integrability premises, permitting the polynomial-growth
@@ -275,7 +294,7 @@ theorem inner_charge_one_radial_integral_of_integrable (n : ℕ) (v : ℝ → �
       ((2 * nrm (n + 1) n : ℝ) : ℂ) * ∫ r in Ioi (0 : ℝ),
         ((r ^ 2 * Real.exp (-r ^ 2) * (originRadialPoly n).eval (r ^ 2) : ℝ) : ℂ) *
           v (r ^ 2) := by
-  rw [hvec, inner_toLp]
+  rw [hvec, Grothe.UpperChaos.inner_toLp]
   simp_rw [hfun_phase_radial]
   rw [integral_const_mul, integral_gaussC_radial_polynomial_mul_of_integrable _ _ hv hG hR]
   push_cast
@@ -290,7 +309,7 @@ theorem inner_charge_one_radial_integral (n : ℕ) (v : ℝ → ℂ)
       ((2 * nrm (n + 1) n : ℝ) : ℂ) * ∫ r in Ioi (0 : ℝ),
         ((r ^ 2 * Real.exp (-r ^ 2) * (originRadialPoly n).eval (r ^ 2) : ℝ) : ℂ) *
           v (r ^ 2) := by
-  rw [hvec, inner_toLp]
+  rw [hvec, Grothe.UpperChaos.inner_toLp]
   simp_rw [hfun_phase_radial]
   rw [integral_const_mul, integral_gaussC_radial_polynomial_mul _ _ hv hbound]
   push_cast
