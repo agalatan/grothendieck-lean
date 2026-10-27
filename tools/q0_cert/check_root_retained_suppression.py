@@ -5,9 +5,10 @@ if not __debug__:
     raise SystemExit("optimized Python is unsupported: checks must remain enabled")
 from flint import arb,ctx
 from fractions import Fraction as Q
+from pathlib import Path
 import io,contextlib,runpy,sys
 ctx.prec=160
-with contextlib.redirect_stdout(io.StringIO()):m=runpy.run_path('handoff/codex-cf82/check_profile_neighborhoods.py')
+with contextlib.redirect_stdout(io.StringIO()):m=runpy.run_path(str(Path(__file__).with_name('check_profile_neighborhoods.py')))
 P=m['m']['P'];A=m['A']; h=A('3/10');alpha=A('41/20');eta2=A('1/10000000000000000000000000000')
 indices=(range(8,17) if sys.argv[1]=='8..16' else
          range(6,9) if sys.argv[1]=='6..8' else [int(sys.argv[1])])
