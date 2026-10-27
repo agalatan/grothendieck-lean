@@ -601,6 +601,7 @@ import Grothe.UpperChaos.SelectedEnergyApprox
 import Grothe.UpperChaos.ShiftedDampedMoments
 import Grothe.UpperChaos.ShiftedMomentRecurrence
 import Grothe.UpperChaos.SmoothComm
+import Grothe.UpperChaos.SmoothKernelStability
 import Grothe.UpperChaos.Smoothing
 import Grothe.UpperChaos.Structural
 import Grothe.UpperChaos.Sym2R
