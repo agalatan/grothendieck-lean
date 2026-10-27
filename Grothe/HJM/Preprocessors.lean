@@ -11,7 +11,7 @@ kernel with it gives a dominated radial kernel again (`dominated_branch`).
 
 namespace Grothe.HJM
 
-open Polynomial
+open Polynomial Grothe.Upper
 
 noncomputable section
 
