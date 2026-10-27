@@ -178,6 +178,11 @@ root until a proof uses them).
 and `Grothe.upper_value_lt` shows this is below 1.404598149141
 (`Grothe/UpperChaos/GroupedRounder.lean`).
 
+A proposed direct route, `Grothe.UpperChaos.DirectSample.upper_of_actual_head`,
+derives the same sharp rational bound from an explicit finite-head estimate for
+the actual kernel. That numerical head estimate remains unproved; the route
+does not by itself establish an unconditional bound.
+
 A second conditional route, `Grothe.UpperChaos.fresh_upper_concrete_taylor_relaxed`,
 allows total energy-table discrepancy at most `5/10^7` and still yields a rational
 bound below `1.404599424`. It retains the fourteen Gaussian band-error hypotheses;
@@ -223,6 +228,16 @@ and the stored-energy accuracy remain separate obligations: these total
 energies alone do not discharge `ComparisonInputs` or `energy_close`, and the
 headline bounds are unchanged. Exact targets and reproduction instructions are
 in [`data/phase-moments/`](data/phase-moments/README.md).
+
+`PhaseRadialTail` also proves
+`∫_{‖z₁‖² > 50} φ² dγ₂ < (5·10⁻¹⁵)²` for the actual production phase.
+`RestrictedPhaseMoments` expresses this integral as `exp(-155)` times an
+exact rational factor, checked directly from `phaseTerms` by
+`phase_cutoff_factor_check`. A degree-twelve Taylor bound at 5 gives
+`exp(-155) < 148⁻³¹`. `TaylorRadialTail.norm_source_fifty_lt` converts this
+to an `L²(γ₂)` norm below `5·10⁻¹⁵` for every positive Taylor source restricted
+to that event, using `|φ| < 1`. The comparison-band coefficient enclosures
+remain open.
 
 `CapturedTail` supplies the orthogonal tail argument: from disjoint captured
 bands, subtract the sum of their separately certified energies
@@ -501,6 +516,7 @@ and the `native_decide` facts pinned in `data/axioms/native.txt` (read by `scrip
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
 `Grothe.UpperChaos.phase_moment2_check`, `phase_moment4_check`, and
 `phase_moment6_check` (the exact second, fourth and sixth moments of the production phase),
+`Grothe.UpperChaos.phase_cutoff_factor_check` (its squared radial tail beyond radius-squared 50),
 `Grothe.UpperChaos.hardy_arc_part_0`–`3` and `hardy_region_check` (the Hardy circle mean and decay region),
 the eight chunks
 `Grothe.Lower.certRows0`–`4` and `certBatches0`–`2` for the certified rows and mixed batches, the four

@@ -1,0 +1,11 @@
+{
+  "agent_id": "codex-b7f2",
+  "source": "Grothe/UpperChaos/ProfileRootSound.lean",
+  "source_sha256": "e5b50c080035df8e54667008261ea335969eec9f0e4952515e6588d1273a0fa8",
+  "replay_source_sha256": "5053d57dd993309212b1b5f675366cd6238ce72d7fda015a3ebccbbf1e1f3cdf",
+  "lean_toolchain": "leanprover/lean4:v4.34.1",
+  "command": "lake env lean handoff/profile-bridge-finish/ProfileRootBridge.lean",
+  "exit_code": 0,
+  "base_commit": "6fb99e72a7d57d94a5a9ebd04f10489f56f056d3",
+  "note": "Replay contains identical production declarations plus two axiom diagnostic commands."
+}

@@ -119,6 +119,10 @@ $\delta=455288917009/(5\cdot10^{17})\approx9.10578\cdot10^{-7}$:
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
 
+A second conditional route uses a finite-head estimate for the actual kernel
+directly; the coefficient enclosures and numerical head estimate are still
+open, so it does not yet give an unconditional bound.
+
 \paragraph{Selected-spectrum comparison.}
 The finite head only sees $S=\{(n,m):n+3m\le501\}$. Write its approximation error as
 $G_T-X=\sum_r D_r$, where $D_r$ is supported in degree band $B_r$ with $\|D_r\|_2\le e_r$.
@@ -144,6 +148,13 @@ rational values for $\E\varphi^2$, $\E\varphi^4$, and $\E\varphi^6$,
 approximately $2.56852947444587\cdot10^{-6}$,
 $5.71439509703932\cdot10^{-10}$, and $1.68238736430120\cdot10^{-11}$.
 These equal the squared norms of the three positive Taylor sources.
+The same finite evaluator with a restricted Gaussian measure also proves
+$\int_{|z_1|^2>50}\varphi^2\,d\gamma_2<(5\cdot10^{-15})^2$.
+A native check bounds the exact rational factor after extracting $e^{-155}$;
+the Taylor polynomial through degree twelve at $5$ gives $e^5>148$, hence
+$e^{-155}<148^{-31}$. This certifies the radial tail of the production phase.
+Since $|\varphi|<1$, every positive Taylor source restricted to this event
+also has $L^2(\gamma_2)$ norm below $5\cdot10^{-15}$.
 Sharp comparison-band errors still need the captured Hermite energy and
 approximation bounds; the total moments alone do not change the upper bound.
 The orthogonal tail interface subtracts the separate captured energies
@@ -300,7 +311,7 @@ no external mathematical premise. The focused audit policy requires 98 results a
 \end{tabular}
 \end{center}
 The 98-result focused audit policy permits only \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} for the unconditional upper bound.\par
-The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover, the second, fourth and sixth phase moments,
+The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover, the second, fourth and sixth phase moments and the squared radial phase tail,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
 The native facts (cap-range checks, Hardy region and circle checks, and others) are listed in \path{data/axioms/native.txt}; the report is \path{scratch/Axioms.lean}, with its required declarations in \path{data/axioms/required.txt}.
 No \lean{sorry}; normal \path{ready/*} delivery CI builds the single target \lean{Grothe}, cap rows included, and checks its one axiom report before merging.
