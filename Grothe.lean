@@ -157,9 +157,9 @@ import Grothe.HJM.OriginTruncation
 import Grothe.HJM.OriginVisibleEnergy
 import Grothe.HJM.OriginWitnessData
 import Grothe.HJM.OriginWitnessLaguerre
+import Grothe.HJM.OriginWitnessRadialAmplitude
 import Grothe.HJM.PhaseRotation
 import Grothe.HJM.PhaseRotationTail
-import Grothe.HJM.OriginWitnessRadialAmplitude
 import Grothe.HJM.Prefix
 import Grothe.HJM.PrefixCheck1
 import Grothe.HJM.PrefixCheck2
