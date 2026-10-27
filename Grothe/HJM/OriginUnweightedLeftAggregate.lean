@@ -28,27 +28,22 @@ theorem allGeometry : (List.range 98).all geometryCheck = true := by
   apply List.all_eq_true.mpr
   intro i hi
   have h := (List.all_eq_true.mp allCombined) i hi
-  have h' : geometryCheck i && (signedCheck i && meanCheck i) = true := by
-    simpa only [combinedCheck] using h
-  exact (Bool.and_eq_true.mp h').1
+  simp only [combinedCheck, Bool.and_eq_true] at h
+  exact h.1
 
 theorem allSigned : (List.range 98).all signedCheck = true := by
   apply List.all_eq_true.mpr
   intro i hi
   have h := (List.all_eq_true.mp allCombined) i hi
-  have hfull : geometryCheck i && (signedCheck i && meanCheck i) = true := by
-    simpa only [combinedCheck] using h
-  have h' : signedCheck i && meanCheck i = true := (Bool.and_eq_true.mp hfull).2
-  exact (Bool.and_eq_true.mp h').1
+  simp only [combinedCheck, Bool.and_eq_true] at h
+  exact h.2.1
 
 theorem allMean : (List.range 98).all meanCheck = true := by
   apply List.all_eq_true.mpr
   intro i hi
   have h := (List.all_eq_true.mp allCombined) i hi
-  have hfull : geometryCheck i && (signedCheck i && meanCheck i) = true := by
-    simpa only [combinedCheck] using h
-  have h' : signedCheck i && meanCheck i = true := (Bool.and_eq_true.mp hfull).2
-  exact (Bool.and_eq_true.mp h').2
+  simp only [combinedCheck, Bool.and_eq_true] at h
+  exact h.2.2
 
 def rootLo : ℚ := ((2606633911 : ℚ) / 125000000000)
 def rootHi : ℚ := ((20853071289 : ℚ) / 1000000000000)
