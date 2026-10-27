@@ -219,6 +219,13 @@ energies alone do not discharge `ComparisonInputs` or `energy_close`, and the
 headline bounds are unchanged. Exact targets and reproduction instructions are
 in [`data/phase-moments/`](data/phase-moments/README.md).
 
+`CapturedTail` supplies the orthogonal tail argument: from disjoint captured
+bands, subtract the sum of their separately certified energies
+`max(0, lower_i − error_i)²` from the total moment. `TaylorErrorEnergy` gives
+the alternative whole-error identity using one inner product with the
+approximant. These interfaces retain the required coefficient-norm and
+integral bounds as hypotheses.
+
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
 only with X's energy in its selected band, weighted by the retained coefficient cost. The quadratic error charges only pairs

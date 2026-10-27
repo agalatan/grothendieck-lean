@@ -136,6 +136,21 @@ and reproduces the generated targets without expanding polynomial powers.
 Neither `ComparisonInputs` nor `energy_close` is discharged by total energies
 alone, and no headline bound changes.
 
+`CapturedTail.norm_projOn_residual_sq_le_of_captured_family` subtracts
+`Σ_i max(0, lower_i − error_i)²` from the total source energy. Its hypotheses
+are pairwise disjoint captured mode sets, disjointness from the tail, vanishing
+of the approximant on the tail, captured-norm lower bounds and per-band error
+caps. The finite-family Bessel proof iterates orthogonal Pythagoras; it needs
+neither complete coverage nor a mean-zero hypothesis. The companion
+`norm_projOn_residual_le_of_captured_family` converts a squared-energy budget
+to the norm cap required by the comparison decomposition.
+`TaylorErrorEnergy.norm_hpow_sub_sq` instead expresses the whole approximation
+error as the exact phase moment minus twice the real inner product plus the
+approximant's squared norm. `norm_band_hpow_sq_le_of_inner` bounds any band
+on which the approximant vanishes using those three scalar inputs. These
+results formalize both tail routes, without certifying the remaining Gaussian
+inner-product enclosures or the approximant coefficient data.
+
 **Phase errors and transported certificates.**
 `Grothe/Upper/ResponseGeometry.lean` proves twelve statements: the exact
 disk support-defect identity, normalized-distance and weighted support-loss
