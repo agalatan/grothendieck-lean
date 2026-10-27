@@ -131,7 +131,7 @@ theorem isBigO_exp {F : ℝ → ℂ} (hF : PolynomialEnvelope F) {b : ℝ} (hb :
       _ = (C * 2 ^ d) * ‖s ^ d‖ := by
         rw [Real.norm_eq_abs, abs_of_nonneg (pow_nonneg hs0 _), mul_pow]
         ring
-  exact hp.trans (Real.isLittleO_pow_exp_pos_mul_atTop d hb).isBigO
+  exact hp.trans (isLittleO_pow_exp_pos_mul_atTop d hb).isBigO
 
 /-- An actual continuous amplitude with a polynomial envelope is exponentially
 integrable on the full radial half-line. -/
@@ -142,7 +142,7 @@ theorem exp_mul_integrable {F : ℝ → ℂ} (hc : ContinuousOn F (Ici 0))
     integrableOn_exp_neg_smul_of_isBigO_exp
       (hc.locallyIntegrableOn measurableSet_Ici)
       (hF.isBigO_exp (b := (1 : ℝ) / 2) (by norm_num)) (by norm_num)
-  exact integrableOn_Ici_iff_integrableOn_Ioi.mp
+  exact (integrableOn_Ici_iff_integrableOn_Ioi (by finiteness)).mp
     (by simpa only [neg_mul, one_mul, Complex.real_smul] using hi)
 
 /-- Polynomial growth is strictly weaker than the exponential in the Green
@@ -162,7 +162,7 @@ theorem exp_mul_tendsto_zero {F : ℝ → ℂ} (hF : PolynomialEnvelope F) :
   rw [he] at ho
   have hz : Tendsto (fun s : ℝ => Real.exp (-(1 / 2 : ℝ) * s)) atTop (𝓝 0) := by
     simpa only [Real.rpow_zero, one_mul] using
-      Real.tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero 0 (1 / 2) (by norm_num)
+      tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero 0 (1 / 2) (by norm_num)
   simpa only [Complex.real_smul] using ho.trans_tendsto hz
 
 end PolynomialEnvelope
@@ -191,7 +191,8 @@ theorem memLp_radial_of_polynomialEnvelope {F : ℝ → ℂ}
   have hi : Integrable (fun z : ℂ =>
       C ^ 2 * (1 + ‖z‖ ^ 2) ^ (d * 2)) gaussC :=
     (integrable_one_add_norm_sq_pow (d * 2)).const_mul (C ^ 2)
-  refine hi.mono' (by fun_prop) (Filter.Eventually.of_forall fun z => ?_)
+  refine hi.mono' (hm.norm.pow_const (2 : ℕ)).aestronglyMeasurable
+    (Filter.Eventually.of_forall fun z => ?_)
   rw [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]
   have hb : ‖Grothe.Haag.ph z * F (‖z‖ ^ 2)‖ ≤ C * (1 + ‖z‖ ^ 2) ^ d := by
     calc
@@ -213,7 +214,7 @@ theorem integrable_green_pairing (P : Polynomial ℝ) {F : ℝ → ℂ}
     (Complex.continuous_ofReal.comp P.continuous).continuousOn
   have he := PolynomialEnvelope.exp_mul_integrable ((hs.mul hp).mul hc)
     ((PolynomialEnvelope.sqrt.mul (PolynomialEnvelope.real_polynomial P)).mul hF)
-  simpa only [Complex.ofReal_mul, mul_assoc] using he
+  simpa only [Pi.mul_apply, Complex.ofReal_mul, mul_assoc] using he
 
 /-- Green's infinity boundary follows just from growth of v and v1. -/
 theorem tendsto_green_boundary (P : Polynomial ℝ) {v v1 : ℝ → ℂ}
@@ -225,7 +226,10 @@ theorem tendsto_green_boundary (P : Polynomial ℝ) {v v1 : ℝ → ℂ}
   have hbody := PolynomialEnvelope.sqrt.mul
     (((hp.add (htwoX.mul hp1)).mul hv).sub ((htwoX.mul hp).mul hv1))
   have h := hbody.exp_mul_tendsto_zero
-  simpa only [originGreenBoundary, Complex.ofReal_mul, mul_assoc] using h
+  refine h.congr (fun s => ?_)
+  unfold originGreenBoundary
+  push_cast
+  ring
 
 /-- Replace the totalized differential expression by its actual continuous
 extension after Gaussian radial lifting. No value at s=0 is equated. -/
@@ -251,6 +255,8 @@ theorem integrable_green_pairing_of_extension (P : Polynomial ℝ) {D E : ℝ �
       ((P.eval s : ℝ) : ℂ) * D s) (Ioi 0) := by
   apply (integrable_green_pairing P hc hE).congr_fun _ measurableSet_Ioi
   intro s hs
+  change ((Real.exp (-s) * Real.sqrt s : ℝ) : ℂ) * ((P.eval s : ℝ) : ℂ) * E s =
+    ((Real.exp (-s) * Real.sqrt s : ℝ) : ℂ) * ((P.eval s : ℝ) : ℂ) * D s
   rw [heq s hs]
 
 /-- Concrete package of the remaining analytic inputs. Actual envelopes for

@@ -42,12 +42,12 @@ private theorem continuous_right_quotient_value {v q : ℝ → ℂ} {d : ℂ}
 /-- The left rationalized quotient has the correct derivative value at zero. -/
 theorem fPhaseQuotient_zero_eq_deriv : fPhaseQuotient 0 = deriv f 0 :=
   continuous_right_quotient_value (hasDerivAt_f 0 le_rfl)
-    (continuousOn_fPhaseQuotient 0 le_rfl) f_difference_quotient
+    (continuousOn_fPhaseQuotient 0 (by simp)) f_difference_quotient
 
 /-- The right rationalized quotient has the correct derivative value at zero. -/
 theorem gPhaseQuotient_zero_eq_deriv : gPhaseQuotient 0 = deriv g 0 :=
   continuous_right_quotient_value (hasDerivAt_g 0 le_rfl)
-    (continuousOn_gPhaseQuotient 0 le_rfl) g_difference_quotient
+    (continuousOn_gPhaseQuotient 0 (by simp)) g_difference_quotient
 
 /-- Exact endpoint of the continuous left energy amplitude. -/
 theorem fEnergyAmplitude_zero :
