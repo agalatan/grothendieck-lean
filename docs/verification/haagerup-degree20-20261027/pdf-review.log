@@ -1,0 +1,14 @@
+Agent-ID: codex-aa04
+Reviewer: foundation_docs
+Scope: degree-20 canonical candidate, issue #129.
+PASS_LAYOUT: 12-page OVERVIEW.pdf reviewed visually on pages 1, 2, 5, 6, 7 and 12.
+Pages 1 and 2: target 1.404909133 is marked pending delivery CI; history table fits.
+Page 5: degree-41 radial preprocessor, eight corrections and norm at most one agree with new source. Pending trace acceptance is explicit.
+Pages 6 and 7: K=64, m=8, prefix 172/cap74e-12, weighted bound1e20 and finite-tail52e-12; head126e-12 and remainder14e-12. Formulas fit with clear footer separation.
+Page 12: bibliography and final footer fit. No clipping, overlap or missing glyphs observed.
+Final LaTeX log: no overfull boxes or unresolved references; one harmless underfull bibliography box.
+Current counts remain597 reports,380 required declarations,88 native facts; focused policy96/0.
+No historical verification receipts were edited. This is visual/source consistency evidence only; no new Lean or CI acceptance is claimed.
+Review UTC: 2026-10-26T23:23:41.530549+00:00
+OVERVIEW.pdf sha256 bf79b1009037042e8daec5bff1b4fad98764dd4ccadf5ba2fd431c34371f4664
+docs/overview.tex sha256 fc21e1e404bb39d0541a08dab4a43104f6bc44007e3d63510c653ffe7bb57abb

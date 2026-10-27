@@ -1,36 +1,47 @@
 # Exact inputs for the canonical Haagerup bound
 
-`certificate.json` is the canonical generator input. All coefficients and
-budgets are rational strings; no floating-point conversion is used in acceptance.
+`recipe.json` fixes the degree-20 polynomial, degree-64 resolvent and all dyadic
+precisions. `tools/gen_haagerup_certificate.py` reproduces `certificate.json`
+using exact rational arithmetic, with no floating-point coefficient choices.
+This recipe and the new endpoint 1.404909133 await delivery CI (#129).
 
-`P` contains the 15 coefficients of the degree-14 radial polynomial P, and
-`R` a degree-64 approximate inverse to 1 − X P², canonicalized to 65 coefficients.
-Coefficient lists are in ascending degree order. The generator removes
-exact trailing zeros from `R`; interior zeros and all nonzero coefficients
-are preserved. The generated module also reads `seed_power`, `seed_cap`,
-and `defect_cap`; its slope is the constant coefficient of `P`. These six
-definitions are exact inputs, not acceptance claims. The unused `K`, `M`,
-`q`, `gamma`, `head`, `tail`, and `upper` fields are retained provenance
-metadata; they do not set the public endpoint or its numerical budgets.
-The public theorem uses the canonical completion parameters in
-`Grothe/Haagerup/CanonicalData.lean` and kernel-proved finite checks. The completion uses
-64 series terms and six correction terms. Its checker bounds the coefficient
-prefix below 170 by 9136/10¹². A weighted norm of the finite residual after
-X ↦ (3/2)X bounds the omitted coefficients by 4/10¹², giving the full finite
-residual cap 914/10¹¹. The infinite remainder cap is 24/10¹¹.
+For H(X) = Σ r_k X^k, the generator computes the inverse of t H(t²), then directly
+checks its truncated composition identity. It chooses the largest 60-bit dyadic
+a satisfying Σ |c_j| a^(2j+1) ≤ 1. Rounding the coefficients c_j a^(2j+1) toward
+zero gives P with ‖P‖₁ ≤ 1. The reciprocal of 1 − X P² is computed through degree
+64 by an exact recurrence and rounded to the nearest 60-bit dyadic, with ties
+to even, to give R. The radial preprocessor t P(t²) has degree 41.
+
+`certificate.json` contains only five fields: `P`, `R`, `seed_power`, `seed_cap`,
+and `defect_cap`. The polynomial lists contain 21 and 65 rational coefficients
+in ascending degree order. `tools/gen_haagerup_power.py` generates six Lean
+definitions: `pl`, `rl`, `seedPower`, `seedCap`, `defectCap`, and `slope`, where
+`slope` is P(0). These are data, not acceptance facts. No unused legacy metadata
+sets the public endpoint or its budgets.
+
+`Grothe/Haagerup/CanonicalData.lean` specifies 64 series terms, eight correction
+terms, and a coefficient prefix below 172 with cap 74/10¹². A weighted norm
+‖F((3/2)X)‖₁ ≤ 10²⁰ bounds the omitted finite coefficients by 52/10¹², so the
+full finite-residual cap is 126/10¹². The infinite-remainder cap is 14/10¹².
+The four public finite checks require kernel proofs; the generators and
+independent replay are not trusted premises of the theorem.
 
 From the repository root:
 
 ```sh
+python3 tools/gen_haagerup_certificate.py
+python3 tools/gen_haagerup_certificate.py --check
 python3 tools/gen_haagerup_power.py
 python3 tools/gen_haagerup_power.py --check
+python3 tools/gen_haagerup_canonical_check.py
+python3 tools/gen_haagerup_canonical_check.py --check
 ```
 
-The first command reproduces `Grothe/Haagerup/PowerData.lean` byte for byte;
-the second rejects any mismatch. The independent directed replay is
-`tools/verify_haagerup_canonical.py`. It checks this generated data binding,
-replays the canonical completed polynomial, prefix and weighted finite tail,
-the infinite remainder, and reads the
-endpoint from the public Lean theorem. The complete proof and verification
-ledger are in `docs/HAAGERUP_POWER.md` and
-`docs/verification/haagerup-canonical-20261026/`.
+Each generator reproduces its output byte for byte; `--check` rejects a mismatch.
+The independent directed replay, `tools/verify_haagerup_canonical.py`, checks the
+recipe/data binding, complete polynomial, checked prefix, weighted finite tail,
+infinite remainder and endpoint read from the public Lean source. The written
+argument is in `docs/HAAGERUP_POWER.md`. Earlier records in
+`docs/verification/haagerup-canonical-20261026/` remain immutable evidence for
+their pinned inputs; they do not certify this new degree-20 data. Normal
+`ready/*` delivery CI checks the new combined tree before merging it.

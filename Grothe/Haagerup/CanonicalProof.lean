@@ -33,13 +33,13 @@ def completed : ℝ[X] := completedPolynomial P R start (haagList start) differe
 lemma norm_P : l1 P ≤ 1 :=
   (l1_ofListQ_le pl).trans (by norm_num [pl])
 
-lemma degree_P : P.natDegree ≤ 14 := by
+lemma degree_P : P.natDegree ≤ 20 := by
   simpa [P, pl] using natDegree_ofListQ_le pl
 
 lemma degree_R : R.natDegree ≤ 64 := by
   simpa [R, rl] using natDegree_ofListQ_le rl
 
-lemma degree_ratio : (X*P^2).natDegree ≤ 29 := by
+lemma degree_ratio : (X*P^2).natDegree ≤ 41 := by
   have h := natDegree_mul_le (p := (X : ℝ[X])) (q := P^2)
   have h2 := (natDegree_pow_le (p := P) (n := 2)).trans
     (Nat.mul_le_mul_left 2 degree_P)
@@ -48,18 +48,18 @@ lemma degree_ratio : (X*P^2).natDegree ≤ 29 := by
 
 lemma norm_defect_of_check (hc : resolventNormOK pl rl defectCap = true) :
     l1 (1-R*(1-X*P^2)) ≤ (defectCap : ℝ) := by
-  apply defect_of_check pl rl 94 defectCap _ hc
-  change (1-R*(1-X*P^2)).natDegree < 94
-  have hd : (1-X*P^2).natDegree ≤ 29 :=
+  apply defect_of_check pl rl 106 defectCap _ hc
+  change (1-R*(1-X*P^2)).natDegree < 106
+  have hd : (1-X*P^2).natDegree ≤ 41 :=
     (natDegree_sub_le _ _).trans (max_le (by simp) degree_ratio)
-  have hp : (R*(1-X*P^2)).natDegree ≤ 93 :=
+  have hp : (R*(1-X*P^2)).natDegree ≤ 105 :=
     natDegree_mul_le.trans (Nat.add_le_add degree_R hd)
   exact lt_of_le_of_lt ((natDegree_sub_le _ _).trans (max_le (by simp) hp)) (by norm_num)
 
 lemma norm_seed_of_check (hc : seedNormOK pl rl seedPower seedCap = true) :
     l1 (R*P^seedPower) ≤ (seedCap : ℝ) := by
-  apply seed_of_check pl rl seedPower 303 seedCap _ hc
-  change (R*P^seedPower).natDegree < 303
+  apply seed_of_check pl rl seedPower 405 seedCap _ hc
+  change (R*P^seedPower).natDegree < 405
   have h2 := (natDegree_pow_le (p := P) (n := seedPower)).trans
     (Nat.mul_le_mul_left seedPower degree_P)
   have h3 := natDegree_mul_le (p := R) (q := P^seedPower)
@@ -219,7 +219,7 @@ private lemma norm_head_horner : l1 (hornerP ratio (haagList start)) ≤ 64*(5/3
 
 private lemma norm_correction_horner (hcoeff : haagR start ≤ 1/10000) :
     l1 (hornerP (-(scaledR*ratio)) differences) ≤
-      (1/10000 : ℝ)*∑ j ∈ range 6, (15 : ℝ)^j := by
+      (1/10000 : ℝ)*∑ j ∈ range 8, (15 : ℝ)^j := by
   have h0 : (haagR start : ℝ) ≤ 1/10000 := by
     have h : (haagR start : ℝ) ≤ ((1/10000 : ℚ) : ℝ) := Rat.cast_le.mpr hcoeff
     simpa only [Rat.cast_div, Rat.cast_one, Rat.cast_ofNat] using h
@@ -236,7 +236,7 @@ private lemma norm_correction_horner (hcoeff : haagR start ≤ 1/10000) :
 
 /-- A coarse weighted norm controls all unchecked coefficients of the completion. -/
 lemma weighted_completed_bound (hcoeff : haagR start ≤ 1/10000) :
-    l1 ((completed-C (HaagerupPower.slope : ℝ)).comp (C (3/2 : ℝ)*X)) ≤ 10^18 := by
+    l1 ((completed-C (HaagerupPower.slope : ℝ)).comp (C (3/2 : ℝ)*X)) ≤ 10^20 := by
   have hterm : compTerm P start = P*(X*P^2)^start := by
     simpa [compTerm] using compTerm_geometric P 0 start
   have hshape : (completed-C (HaagerupPower.slope : ℝ)).comp scale =
@@ -249,7 +249,7 @@ lemma weighted_completed_bound (hcoeff : haagR start ≤ 1/10000) :
   have ht := l1_mul_bound norm_scaledR (l1_mul_bound norm_scaledP (l1_pow_bound norm_ratio start))
   have hc := l1_mul_bound ht (norm_correction_horner hcoeff)
   have hs : l1 (C (HaagerupPower.slope : ℝ)) ≤ 1 := by norm_num [l1_C, HaagerupPower.slope]
-  change l1 ((completed-C (HaagerupPower.slope : ℝ)).comp scale) ≤ 10^18
+  change l1 ((completed-C (HaagerupPower.slope : ℝ)).comp scale) ≤ 10^20
   rw [hshape]
   apply (l1_sub_le _ _).trans
   apply (add_le_add ((l1_add_le _ _).trans (add_le_add hh hc)) hs).trans
@@ -268,13 +268,13 @@ lemma completed_norm_of_check
   have h := l1_le_prefix_add_weighted_tail (completed-C (HaagerupPower.slope : ℝ))
     (3/2) cutoff (by norm_num)
   have ht : l1 ((completed-C (HaagerupPower.slope : ℝ)).comp (C (3/2 : ℝ)*X)) /
-      (3/2 : ℝ)^cutoff ≤ 4/1000000000000 := by
+      (3/2 : ℝ)^cutoff ≤ 52/1000000000000 := by
     apply (div_le_div_of_nonneg_right (weighted_completed_bound hcoeff) (by positivity)).trans
     norm_num [cutoff]
   exact h.trans ((add_le_add hp ht).trans (by norm_num [prefixCap, headCap]))
 
 lemma remainder_bound
-    (hcoeff : haagR start ≤ 1/10000 ∧ iterDiff order haagR start ≤ 37/10000000000000) :
+    (hcoeff : haagR start ≤ 1/10000 ∧ iterDiff order haagR start ≤ 51/1000000000000000) :
     (2*(1/2 : ℝ)/(1-defectCap))*
       ((2 : ℝ)^order*iterDiff order (fun k => (haagR k : ℝ)) start +
         (defectCap : ℝ)*∑ j ∈ range order, (2 : ℝ)^j*iterDiff j (fun k => (haagR k : ℝ)) start)
@@ -282,15 +282,15 @@ lemma remainder_bound
   have h0 : (haagR start : ℝ) ≤ 1/10000 := by
     have h : (haagR start : ℝ) ≤ ((1/10000 : ℚ) : ℝ) := Rat.cast_le.mpr hcoeff.1
     simpa only [Rat.cast_div, Rat.cast_one, Rat.cast_ofNat] using h
-  have hm : iterDiff order (fun k => (haagR k : ℝ)) start ≤ 37/10000000000000 := by
+  have hm : iterDiff order (fun k => (haagR k : ℝ)) start ≤ 51/1000000000000000 := by
     rw [iterDiff_ratCast]
-    have h : ((iterDiff order haagR start : ℚ) : ℝ) ≤ ((37/10000000000000 : ℚ) : ℝ) :=
+    have h : ((iterDiff order haagR start : ℚ) : ℝ) ≤ ((51/1000000000000000 : ℚ) : ℝ) :=
       Rat.cast_le.mpr hcoeff.2
     simpa only [Rat.cast_div, Rat.cast_ofNat] using h
   have hj (j : ℕ) : iterDiff j (fun k => (haagR k : ℝ)) start ≤ 1/10000 :=
     (HaagerupCompleteMonotone.haagR_completelyMonotone.iterDiff_le_self j start).trans h0
   have hsum : (∑ j ∈ range order, (2 : ℝ)^j*iterDiff j (fun k => (haagR k : ℝ)) start) ≤
-      63/10000 := by
+      255/10000 := by
     calc
       _ ≤ ∑ j ∈ range order, (2 : ℝ)^j*(1/10000) :=
         sum_le_sum fun j _ => mul_le_mul_of_nonneg_left (hj j) (by positivity)
@@ -304,7 +304,7 @@ lemma remainder_bound
 lemma completed_tail_bound
     (hdef : resolventNormOK pl rl defectCap = true)
     (hseed : seedNormOK pl rl seedPower seedCap = true)
-    (hcoeff : haagR start ≤ 1/10000 ∧ iterDiff order haagR start ≤ 37/10000000000000) :
+    (hcoeff : haagR start ≤ 1/10000 ∧ iterDiff order haagR start ≤ 51/1000000000000000) :
     ∑' n, |compCoeff (fun k => if k < start then 0 else (haagR k : ℝ)) P n -
       ((R*compTerm P start)*hornerP (-(R*(X*P^2))) differences).coeff n| ≤
       (remainderCap : ℝ) := by
@@ -364,7 +364,7 @@ lemma completed_error_identity (n : ℕ) :
 lemma residual_of_checks
     (hdef : resolventNormOK pl rl defectCap = true)
     (hseed : seedNormOK pl rl seedPower seedCap = true)
-    (hcoeff : haagR start ≤ 1/10000 ∧ iterDiff order haagR start ≤ 37/10000000000000)
+    (hcoeff : haagR start ≤ 1/10000 ∧ iterDiff order haagR start ≤ 51/1000000000000000)
     (hhead : completedHeadOK cutoff start pl rl (haagList start) differences HaagerupPower.slope prefixCap = true) :
     |compCoeff haagCoeff P 0-Real.pi/4*(HaagerupPower.slope : ℝ)| +
       ∑' n, |compCoeff haagCoeff P (n+1)| ≤ Real.pi/4*((headCap : ℝ)+remainderCap) := by
@@ -398,9 +398,9 @@ lemma residual_of_checks
 theorem upper_of_checks
     (hdef : resolventNormOK pl rl defectCap = true)
     (hseed : seedNormOK pl rl seedPower seedCap = true)
-    (hcoeff : haagR start ≤ 1/10000 ∧ iterDiff order haagR start ≤ 37/10000000000000)
+    (hcoeff : haagR start ≤ 1/10000 ∧ iterDiff order haagR start ≤ 51/1000000000000000)
     (hhead : completedHeadOK cutoff start pl rl (haagList start) differences HaagerupPower.slope prefixCap = true) :
-    IsGrothendieckBound (1404909140/1000000000) := by
+    IsGrothendieckBound (1404909133/1000000000) := by
   have he : IsGrothendieckBound
       (1/(Real.pi/4*(HaagerupPower.slope : ℝ)-Real.pi/4*((headCap : ℝ)+remainderCap))) := by
     apply transfer_comp summable_haagCoeff haagerup_dominated norm_P _

@@ -32,9 +32,10 @@ printed in `scratch/Axioms.lean`. All sixteen scalar-tail reports use only
 standard axioms. Source and report hashes are recorded under
 `data/scalar-tail-refinement/verification/`.
 
-**Canonical upper-bound route (#113).** `Grothe.haagerup_bound` uses four
-`Grothe.HaagerupCanonical` kernel checks. Its focused audit checks 96 results
-and confirms zero native axioms.
+**Canonical upper-bound route (#113/#129).** `Grothe.haagerup_bound` uses four
+`Grothe.HaagerupCanonical` kernel checks. The focused policy requires 96 results
+and permits zero native axioms. The degree-20 certificate targeting 1.404909133
+is awaiting delivery CI; the older verification records retain their pinned inputs.
 Large convolutions are proved in continuation blocks of at most five left
 coefficients. The generic `convI_append` identity preserves the original
 outward arithmetic order; recurrence and exact input-binding lemmas recover

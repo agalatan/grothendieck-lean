@@ -18,6 +18,24 @@ namespace Grothe.HaagerupCanonical.Trace
 
 open GrotheKernel
 
+theorem coefficientStep25 :
+    c25 * (((2*25+1)^2 : Nat) : Rat) / ((4*(25+1)*(25+2) : Nat) : Rat) = c26 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical trace 27: reached coefficientStep25"
+  out.flush
+
+theorem coefficientStep41 :
+    c41 * (((2*41+1)^2 : Nat) : Rat) / ((4*(41+1)*(41+2) : Nat) : Rat) = c42 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical trace 43: reached coefficientStep41"
+  out.flush
+
 theorem coefficientStep57 :
     c57 * (((2*57+1)^2 : Nat) : Rat) / ((4*(57+1)*(57+2) : Nat) : Rat) = c58 := by
   decide +kernel
@@ -27,107 +45,160 @@ run_cmd do
   out.putStrLn "Canonical trace 59: reached coefficientStep57"
   out.flush
 
-theorem differenceStep1_67 :
-    d0_67 - d0_68 = d1_67 := by
+theorem differenceStep1_65 :
+    d0_65 - d0_66 = d1_65 := by
   decide +kernel
 
-theorem differenceStep5_65 :
-    d4_65 - d4_66 = d5_65 := by
+theorem differenceStep3_66 :
+    d2_66 - d2_67 = d3_66 := by
+  decide +kernel
+
+theorem differenceStep7_64 :
+    d6_64 - d6_65 = d7_64 := by
+  decide +kernel
+
+theorem ratioY_step_conv_blockStep11 :
+    convWithTail ratioY_step_conv_block11 ratioA ratioY_step_conv_result12 = ratioY_step_conv_result11 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 77: reached difference_order_5"
+  out.putStrLn "Canonical convolution: reached ratioY_step_conv_blockStep11"
   out.flush
 
-theorem correctionStep4_conv_blockStep3 :
-    convWithTail correctionStep4_conv_block3 correction5 correctionStep4_conv_result4 = correctionStep4_conv_result3 := by
+theorem correctionStep6_conv_blockStep12 :
+    convWithTail correctionStep6_conv_block12 correction7 correctionStep6_conv_result13 = correctionStep6_conv_result12 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached correctionStep4_conv_blockStep3"
+  out.putStrLn "Canonical convolution: reached correctionStep6_conv_blockStep12"
   out.flush
 
-theorem correctionStep3_conv_blockStep3 :
-    convWithTail correctionStep3_conv_block3 correction4 correctionStep3_conv_result4 = correctionStep3_conv_result3 := by
+theorem correctionStep5_conv_blockStep18 :
+    convWithTail correctionStep5_conv_block18 correction6 correctionStep5_conv_result19 = correctionStep5_conv_result18 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached correctionStep3_conv_blockStep3"
+  out.putStrLn "Canonical convolution: reached correctionStep5_conv_blockStep18"
   out.flush
 
-theorem correctionStep2_conv_blockStep5 :
-    convWithTail correctionStep2_conv_block5 correction3 correctionStep2_conv_result6 = correctionStep2_conv_result5 := by
+theorem correctionStep5_conv_blockStep2 :
+    convWithTail correctionStep5_conv_block2 correction6 correctionStep5_conv_result3 = correctionStep5_conv_result2 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached correctionStep2_conv_blockStep5"
+  out.putStrLn "Canonical convolution: reached correctionStep5_conv_blockStep2"
   out.flush
 
-theorem correctionStep1_conv_blockStep7 :
-    convWithTail correctionStep1_conv_block7 correction2 correctionStep1_conv_result8 = correctionStep1_conv_result7 := by
+theorem correctionStep4_conv_blockStep7 :
+    convWithTail correctionStep4_conv_block7 correction5 correctionStep4_conv_result8 = correctionStep4_conv_result7 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached correctionStep1_conv_blockStep7"
+  out.putStrLn "Canonical convolution: reached correctionStep4_conv_blockStep7"
   out.flush
 
-theorem correctionStep0_conv_blockStep18 :
-    convWithTail correctionStep0_conv_block18 correction1 correctionStep0_conv_result19 = correctionStep0_conv_result18 := by
+theorem correctionStep3_conv_blockStep12 :
+    convWithTail correctionStep3_conv_block12 correction4 correctionStep3_conv_result13 = correctionStep3_conv_result12 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached correctionStep0_conv_blockStep18"
+  out.putStrLn "Canonical convolution: reached correctionStep3_conv_blockStep12"
   out.flush
 
-theorem correctionStep0_conv_blockStep9 :
-    convWithTail correctionStep0_conv_block9 correction1 correctionStep0_conv_result10 = correctionStep0_conv_result9 := by
+theorem correctionStep2_conv_blockStep17 :
+    convWithTail correctionStep2_conv_block17 correction3 correctionStep2_conv_result18 = correctionStep2_conv_result17 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached correctionStep0_conv_blockStep9"
+  out.putStrLn "Canonical convolution: reached correctionStep2_conv_blockStep17"
   out.flush
 
-theorem tail_step_conv_blockStep6 :
-    convWithTail tail_step_conv_block6 correction0 tail_step_conv_result7 = tail_step_conv_result6 := by
+theorem correctionStep2_conv_blockStep1 :
+    convWithTail correctionStep2_conv_block1 correction3 correctionStep2_conv_result2 = correctionStep2_conv_result1 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached tail_step_conv_blockStep6"
+  out.putStrLn "Canonical convolution: reached correctionStep2_conv_blockStep1"
   out.flush
 
-theorem headStep63_conv_blockStep1 :
-    convWithTail headStep63_conv_block1 head64 headStep63_conv_result2 = headStep63_conv_result1 := by
+theorem correctionStep1_conv_blockStep6 :
+    convWithTail correctionStep1_conv_block6 correction2 correctionStep1_conv_result7 = correctionStep1_conv_result6 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep63_conv_blockStep1"
+  out.putStrLn "Canonical convolution: reached correctionStep1_conv_blockStep6"
   out.flush
 
-theorem headStep61_conv_blockStep2 :
-    convWithTail headStep61_conv_block2 head62 headStep61_conv_result3 = headStep61_conv_result2 := by
+theorem correctionStep0_conv_blockStep21 :
+    convWithTail correctionStep0_conv_block21 correction1 correctionStep0_conv_result22 = correctionStep0_conv_result21 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep61_conv_blockStep2"
+  out.putStrLn "Canonical convolution: reached correctionStep0_conv_blockStep21"
   out.flush
 
-theorem headStep58_conv_blockStep4 :
-    convWithTail headStep58_conv_block4 head59 headStep58_conv_result5 = headStep58_conv_result4 := by
+theorem correctionStep0_conv_blockStep11 :
+    convWithTail correctionStep0_conv_block11 correction1 correctionStep0_conv_result12 = correctionStep0_conv_result11 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep58_conv_blockStep4"
+  out.putStrLn "Canonical convolution: reached correctionStep0_conv_blockStep11"
+  out.flush
+
+theorem tail_step_conv_blockStep8 :
+    convWithTail tail_step_conv_block8 correction0 tail_step_conv_result9 = tail_step_conv_result8 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached tail_step_conv_blockStep8"
+  out.flush
+
+theorem headStep63_conv_blockStep8 :
+    convWithTail headStep63_conv_block8 head64 headStep63_conv_result9 = headStep63_conv_result8 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached headStep63_conv_blockStep8"
+  out.flush
+
+theorem headStep62_conv_blockStep0 :
+    convWithTail headStep62_conv_block0 head63 headStep62_conv_result1 = headStep62_conv_result0 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached headStep62_conv_blockStep0"
+  out.flush
+
+theorem headStep60_conv_blockStep0 :
+    convWithTail headStep60_conv_block0 head61 headStep60_conv_result1 = headStep60_conv_result0 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached headStep60_conv_blockStep0"
+  out.flush
+
+theorem headStep58_conv_blockStep0 :
+    convWithTail headStep58_conv_block0 head59 headStep58_conv_result1 = headStep58_conv_result0 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached headStep58_conv_blockStep0"
   out.flush
 
 theorem headStep56_conv_blockStep0 :
@@ -139,27 +210,36 @@ run_cmd do
   out.putStrLn "Canonical convolution: reached headStep56_conv_blockStep0"
   out.flush
 
-theorem headStep53_conv_blockStep2 :
-    convWithTail headStep53_conv_block2 head54 headStep53_conv_result3 = headStep53_conv_result2 := by
+theorem headStep56_conv_input :
+    ratioA = headStep56_conv_suffix0 := by
+  decide +kernel
+
+theorem headStep54_conv_blockStep0 :
+    convWithTail headStep54_conv_block0 head55 headStep54_conv_result1 = headStep54_conv_result0 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep53_conv_blockStep2"
+  out.putStrLn "Canonical convolution: reached headStep54_conv_blockStep0"
   out.flush
 
-theorem headStep50_conv_blockStep4 :
-    convWithTail headStep50_conv_block4 head51 headStep50_conv_result5 = headStep50_conv_result4 := by
+theorem headStep52_conv_blockStep0 :
+    convWithTail headStep52_conv_block0 head53 headStep52_conv_result1 = headStep52_conv_result0 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep50_conv_blockStep4"
+  out.putStrLn "Canonical convolution: reached headStep52_conv_blockStep0"
   out.flush
 
-theorem headStep49_conv_input :
-    ratioA = headStep49_conv_suffix0 := by
+theorem headStep50_conv_blockStep0 :
+    convWithTail headStep50_conv_block0 head51 headStep50_conv_result1 = headStep50_conv_result0 := by
   decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached headStep50_conv_blockStep0"
+  out.flush
 
 theorem headStep48_conv_blockStep0 :
     convWithTail headStep48_conv_block0 head49 headStep48_conv_result1 = headStep48_conv_result0 := by
@@ -170,22 +250,40 @@ run_cmd do
   out.putStrLn "Canonical convolution: reached headStep48_conv_blockStep0"
   out.flush
 
-theorem headStep45_conv_blockStep2 :
-    convWithTail headStep45_conv_block2 head46 headStep45_conv_result3 = headStep45_conv_result2 := by
+theorem headStep46_conv_blockStep0 :
+    convWithTail headStep46_conv_block0 head47 headStep46_conv_result1 = headStep46_conv_result0 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep45_conv_blockStep2"
+  out.putStrLn "Canonical convolution: reached headStep46_conv_blockStep0"
   out.flush
 
-theorem headStep42_conv_blockStep4 :
-    convWithTail headStep42_conv_block4 head43 headStep42_conv_result5 = headStep42_conv_result4 := by
+theorem headStep45_conv_blockStep8 :
+    convWithTail headStep45_conv_block8 head46 headStep45_conv_result9 = headStep45_conv_result8 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep42_conv_blockStep4"
+  out.putStrLn "Canonical convolution: reached headStep45_conv_blockStep8"
+  out.flush
+
+theorem headStep44_conv_blockStep0 :
+    convWithTail headStep44_conv_block0 head45 headStep44_conv_result1 = headStep44_conv_result0 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached headStep44_conv_blockStep0"
+  out.flush
+
+theorem headStep42_conv_blockStep0 :
+    convWithTail headStep42_conv_block0 head43 headStep42_conv_result1 = headStep42_conv_result0 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached headStep42_conv_blockStep0"
   out.flush
 
 theorem headStep40_conv_blockStep0 :
@@ -197,27 +295,36 @@ run_cmd do
   out.putStrLn "Canonical convolution: reached headStep40_conv_blockStep0"
   out.flush
 
-theorem headStep37_conv_blockStep2 :
-    convWithTail headStep37_conv_block2 head38 headStep37_conv_result3 = headStep37_conv_result2 := by
+theorem headStep40_conv_input :
+    ratioA = headStep40_conv_suffix0 := by
+  decide +kernel
+
+theorem headStep38_conv_blockStep0 :
+    convWithTail headStep38_conv_block0 head39 headStep38_conv_result1 = headStep38_conv_result0 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep37_conv_blockStep2"
+  out.putStrLn "Canonical convolution: reached headStep38_conv_blockStep0"
   out.flush
 
-theorem headStep34_conv_blockStep4 :
-    convWithTail headStep34_conv_block4 head35 headStep34_conv_result5 = headStep34_conv_result4 := by
+theorem headStep36_conv_blockStep0 :
+    convWithTail headStep36_conv_block0 head37 headStep36_conv_result1 = headStep36_conv_result0 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep34_conv_blockStep4"
+  out.putStrLn "Canonical convolution: reached headStep36_conv_blockStep0"
   out.flush
 
-theorem headStep33_conv_input :
-    ratioA = headStep33_conv_suffix0 := by
+theorem headStep34_conv_blockStep0 :
+    convWithTail headStep34_conv_block0 head35 headStep34_conv_result1 = headStep34_conv_result0 := by
   decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached headStep34_conv_blockStep0"
+  out.flush
 
 theorem headStep32_conv_blockStep0 :
     convWithTail headStep32_conv_block0 head33 headStep32_conv_result1 = headStep32_conv_result0 := by
@@ -228,22 +335,40 @@ run_cmd do
   out.putStrLn "Canonical convolution: reached headStep32_conv_blockStep0"
   out.flush
 
-theorem headStep29_conv_blockStep2 :
-    convWithTail headStep29_conv_block2 head30 headStep29_conv_result3 = headStep29_conv_result2 := by
+theorem headStep30_conv_blockStep0 :
+    convWithTail headStep30_conv_block0 head31 headStep30_conv_result1 = headStep30_conv_result0 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep29_conv_blockStep2"
+  out.putStrLn "Canonical convolution: reached headStep30_conv_blockStep0"
   out.flush
 
-theorem headStep26_conv_blockStep4 :
-    convWithTail headStep26_conv_block4 head27 headStep26_conv_result5 = headStep26_conv_result4 := by
+theorem headStep29_conv_blockStep8 :
+    convWithTail headStep29_conv_block8 head30 headStep29_conv_result9 = headStep29_conv_result8 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep26_conv_blockStep4"
+  out.putStrLn "Canonical convolution: reached headStep29_conv_blockStep8"
+  out.flush
+
+theorem headStep28_conv_blockStep0 :
+    convWithTail headStep28_conv_block0 head29 headStep28_conv_result1 = headStep28_conv_result0 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached headStep28_conv_blockStep0"
+  out.flush
+
+theorem headStep26_conv_blockStep0 :
+    convWithTail headStep26_conv_block0 head27 headStep26_conv_result1 = headStep26_conv_result0 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached headStep26_conv_blockStep0"
   out.flush
 
 theorem headStep24_conv_blockStep0 :
@@ -255,27 +380,36 @@ run_cmd do
   out.putStrLn "Canonical convolution: reached headStep24_conv_blockStep0"
   out.flush
 
-theorem headStep21_conv_blockStep2 :
-    convWithTail headStep21_conv_block2 head22 headStep21_conv_result3 = headStep21_conv_result2 := by
+theorem headStep24_conv_input :
+    ratioA = headStep24_conv_suffix0 := by
+  decide +kernel
+
+theorem headStep22_conv_blockStep0 :
+    convWithTail headStep22_conv_block0 head23 headStep22_conv_result1 = headStep22_conv_result0 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep21_conv_blockStep2"
+  out.putStrLn "Canonical convolution: reached headStep22_conv_blockStep0"
   out.flush
 
-theorem headStep18_conv_blockStep4 :
-    convWithTail headStep18_conv_block4 head19 headStep18_conv_result5 = headStep18_conv_result4 := by
+theorem headStep20_conv_blockStep0 :
+    convWithTail headStep20_conv_block0 head21 headStep20_conv_result1 = headStep20_conv_result0 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep18_conv_blockStep4"
+  out.putStrLn "Canonical convolution: reached headStep20_conv_blockStep0"
   out.flush
 
-theorem headStep17_conv_input :
-    ratioA = headStep17_conv_suffix0 := by
+theorem headStep18_conv_blockStep0 :
+    convWithTail headStep18_conv_block0 head19 headStep18_conv_result1 = headStep18_conv_result0 := by
   decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached headStep18_conv_blockStep0"
+  out.flush
 
 theorem headStep16_conv_blockStep0 :
     convWithTail headStep16_conv_block0 head17 headStep16_conv_result1 = headStep16_conv_result0 := by
@@ -286,22 +420,40 @@ run_cmd do
   out.putStrLn "Canonical convolution: reached headStep16_conv_blockStep0"
   out.flush
 
-theorem headStep13_conv_blockStep2 :
-    convWithTail headStep13_conv_block2 head14 headStep13_conv_result3 = headStep13_conv_result2 := by
+theorem headStep14_conv_blockStep0 :
+    convWithTail headStep14_conv_block0 head15 headStep14_conv_result1 = headStep14_conv_result0 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep13_conv_blockStep2"
+  out.putStrLn "Canonical convolution: reached headStep14_conv_blockStep0"
   out.flush
 
-theorem headStep10_conv_blockStep4 :
-    convWithTail headStep10_conv_block4 head11 headStep10_conv_result5 = headStep10_conv_result4 := by
+theorem headStep13_conv_blockStep8 :
+    convWithTail headStep13_conv_block8 head14 headStep13_conv_result9 = headStep13_conv_result8 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep10_conv_blockStep4"
+  out.putStrLn "Canonical convolution: reached headStep13_conv_blockStep8"
+  out.flush
+
+theorem headStep12_conv_blockStep0 :
+    convWithTail headStep12_conv_block0 head13 headStep12_conv_result1 = headStep12_conv_result0 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached headStep12_conv_blockStep0"
+  out.flush
+
+theorem headStep10_conv_blockStep0 :
+    convWithTail headStep10_conv_block0 head11 headStep10_conv_result1 = headStep10_conv_result0 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached headStep10_conv_blockStep0"
   out.flush
 
 theorem headStep8_conv_blockStep0 :
@@ -313,27 +465,36 @@ run_cmd do
   out.putStrLn "Canonical convolution: reached headStep8_conv_blockStep0"
   out.flush
 
-theorem headStep5_conv_blockStep2 :
-    convWithTail headStep5_conv_block2 head6 headStep5_conv_result3 = headStep5_conv_result2 := by
+theorem headStep8_conv_input :
+    ratioA = headStep8_conv_suffix0 := by
+  decide +kernel
+
+theorem headStep6_conv_blockStep0 :
+    convWithTail headStep6_conv_block0 head7 headStep6_conv_result1 = headStep6_conv_result0 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep5_conv_blockStep2"
+  out.putStrLn "Canonical convolution: reached headStep6_conv_blockStep0"
   out.flush
 
-theorem headStep2_conv_blockStep4 :
-    convWithTail headStep2_conv_block4 head3 headStep2_conv_result5 = headStep2_conv_result4 := by
+theorem headStep4_conv_blockStep0 :
+    convWithTail headStep4_conv_block0 head5 headStep4_conv_result1 = headStep4_conv_result0 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached headStep2_conv_blockStep4"
+  out.putStrLn "Canonical convolution: reached headStep4_conv_blockStep0"
   out.flush
 
-theorem headStep1_conv_input :
-    ratioA = headStep1_conv_suffix0 := by
+theorem headStep2_conv_blockStep0 :
+    convWithTail headStep2_conv_block0 head3 headStep2_conv_result1 = headStep2_conv_result0 := by
   decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached headStep2_conv_blockStep0"
+  out.flush
 
 theorem headStep0_conv_blockStep0 :
     convWithTail headStep0_conv_block0 head1 headStep0_conv_result1 = headStep0_conv_result0 := by
@@ -344,31 +505,62 @@ run_cmd do
   out.putStrLn "Canonical convolution: reached headStep0_conv_blockStep0"
   out.flush
 
-theorem powerStep14_conv_blockStep0 :
-    convWithTail powerStep14_conv_block0 power13 powerStep14_conv_result1 = powerStep14_conv_result0 := by
+theorem powerStep6_conv_blockStep0 :
+    convWithTail powerStep6_conv_block0 power5 powerStep6_conv_result1 = powerStep6_conv_result0 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical convolution: reached powerStep14_conv_blockStep0"
+  out.putStrLn "Canonical convolution: reached powerStep6_conv_blockStep0"
   out.flush
 
-theorem inverseProduct_step :
-    convI rI inverseD = inverseProduct := by
+theorem powerStep9_conv_input :
+    pI = powerStep9_conv_suffix0 := by
+  decide +kernel
+
+theorem powerStep10_conv_blockStep2 :
+    convWithTail powerStep10_conv_block2 power9 powerStep10_conv_result3 = powerStep10_conv_result2 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 178: reached inverseProduct_step"
+  out.putStrLn "Canonical convolution: reached powerStep10_conv_blockStep2"
   out.flush
 
-theorem defect_step :
-    addL [ofRatI 1] (inverseProduct.map negI) = defectI := by
+theorem powerStep15_conv_blockStep4 :
+    convWithTail powerStep15_conv_block4 power14 powerStep15_conv_result5 = powerStep15_conv_result4 := by
   decide +kernel
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 179: reached defect_step"
+  out.putStrLn "Canonical convolution: reached powerStep15_conv_blockStep4"
+  out.flush
+
+theorem powerStep16_conv_blockStep1 :
+    convWithTail powerStep16_conv_block1 power15 powerStep16_conv_result2 = powerStep16_conv_result1 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached powerStep16_conv_blockStep1"
+  out.flush
+
+theorem seed_product_step_conv_blockStep11 :
+    convWithTail seed_product_step_conv_block11 power17 seed_product_step_conv_result12 = seed_product_step_conv_result11 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached seed_product_step_conv_blockStep11"
+  out.flush
+
+theorem inverseProduct_step_conv_blockStep9 :
+    convWithTail inverseProduct_step_conv_block9 inverseD inverseProduct_step_conv_result10 = inverseProduct_step_conv_result9 := by
+  decide +kernel
+
+run_cmd do
+  let out ← IO.getStdout
+  out.putStrLn "Canonical convolution: reached inverseProduct_step_conv_blockStep9"
   out.flush
 
 end Grothe.HaagerupCanonical.Trace

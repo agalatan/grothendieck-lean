@@ -1,0 +1,10 @@
+{
+  "degree": 20,
+  "leading_bits": 60,
+  "coefficient_bits": 60,
+  "resolvent_degree": 64,
+  "resolvent_bits": 60,
+  "seed_power": 17,
+  "seed_cap": "249/500",
+  "defect_cap": "1/1000000000000"
+}
