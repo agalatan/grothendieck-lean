@@ -268,10 +268,11 @@ theorem gram_joint_of_scalars (lam mu : ℚ) (g : GramData) (j : JointData)
     (hH0 : H0 = 8 / 3 * n + 2 / 3 * h + 8 / 3 * b + 24 * y - 16 / 3 * z) :
     (lam : ℝ) * X2 + mu * C2 + j.ze * j.xs * (j.cA * S0 + j.cB * H0) ≤ g.A * P + g.B * Q := by
   have hcert : reserveCert lam mu g (Reserve.joint j.ze j.xs j.cA j.cB) = true := by
-    simp only [jointCert, reserveCert, psd2, Bool.and_eq_true, decide_eq_true_eq,
-      Reserve.joint, JointData.jn, JointData.jh, JointData.jb, JointData.jy, JointData.jz,
-      and_assoc] at hg ⊢
-    exact hg.2.2.2
+    unfold reserveCert
+    apply decide_eq_true
+    simp only [jointCert, psd2, Bool.and_eq_true, decide_eq_true_eq, and_assoc] at hg
+    simpa only [Reserve.joint, JointData.jn, JointData.jh, JointData.jb,
+      JointData.jy, JointData.jz] using hg.2.2.2
   have hbudget := reserved_gram_budget lam mu g _ hcert n h b y z P Q X2 C2
     hn hh hb hy hz hbn hyz hG0 hG1a hG1b hP hQ hX hC
   rw [joint_reserve_value, ← hS0, ← hH0] at hbudget
