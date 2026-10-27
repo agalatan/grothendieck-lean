@@ -578,6 +578,7 @@ import Grothe.UpperChaos.SchurIntegrability
 import Grothe.UpperChaos.SchurKernel
 import Grothe.UpperChaos.SchurMain
 import Grothe.UpperChaos.SchurTest
+import Grothe.UpperChaos.SecondBandElimination
 import Grothe.UpperChaos.SelectedEnergyApprox
 import Grothe.UpperChaos.ShiftedDampedMoments
 import Grothe.UpperChaos.ShiftedMomentRecurrence
