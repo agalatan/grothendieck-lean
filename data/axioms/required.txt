@@ -1015,6 +1015,7 @@ Grothe.UpperChaos.sum_diagonal_range
 Grothe.UpperChaos.sum_gradedSupport
 Grothe.UpperChaos.sum_norm_projOn_sq_add_le_of_disjoint
 Grothe.UpperChaos.sum_norm_projOn_sq_le_of_disjoint
+Grothe.UpperChaos.taylorConditionalWick_eq_norm
 Grothe.UpperChaos.taylorInnerSource_gradedHermite_eq_slice
 Grothe.UpperChaos.taylorRounding_error
 Grothe.UpperChaos.taylorRounding_source_toLp
