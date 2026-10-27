@@ -40,7 +40,9 @@ theorem map_smooth : (mu2.prod mu2).map smoothCLM = mu2 := by
   rw [charFunDual_map, charFunDual_mu2prod, charFunDual_mu2]
   congr 1
   -- `L` on `ℂ × ℂ` through its two coordinate functionals
-  have hL : ∀ z : ℂ × ℂ, L z = L.comp (.inl ℝ ℂ ℂ) z.1 + L.comp (.inr ℝ ℂ ℂ) z.2 := by
+  set ℓ₁ := L.comp (.inl ℝ ℂ ℂ) with hℓ₁
+  set ℓ₂ := L.comp (.inr ℝ ℂ ℂ) with hℓ₂
+  have hL : ∀ z : ℂ × ℂ, L z = ℓ₁ z.1 + ℓ₂ z.2 := by
     intro z
     have : z = (z.1, 0) + (0, z.2) := by ext <;> simp
     conv_lhs => rw [this]
@@ -48,14 +50,11 @@ theorem map_smooth : (mu2.prod mu2).map smoothCLM = mu2 := by
   simp only [Q, ContinuousLinearMap.comp_apply, ContinuousLinearMap.inl_apply,
     ContinuousLinearMap.inr_apply, smoothCLM_apply, smoothArg]
   simp only [hL]
-  simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.inl_apply, ContinuousLinearMap.inr_apply,
-    Prod.fst_zero, Prod.snd_zero, mul_one, mul_zero, add_zero, zero_add, map_zero, dual_ofReal_mul, dual_ofReal]
-  set a₁ := L.comp (.inl ℝ ℂ ℂ) 1
-  set a₂ := L.comp (.inr ℝ ℂ ℂ) 1
-  set b₁ := L.comp (.inl ℝ ℂ ℂ) I
-  set b₂ := L.comp (.inr ℝ ℂ ℂ) I
+  simp only [Prod.fst_zero, Prod.snd_zero, mul_one, mul_zero, add_zero, zero_add, map_zero, dual_ofReal_mul,
+    dual_ofReal]
   rw [div_left_inj' (show (4 : ℂ) ≠ 0 by norm_num), neg_inj, Complex.ofReal_inj]
-  linear_combination (a₁ ^ 2 + b₁ ^ 2) * mn_00 + 2 * (a₁ * a₂ + b₁ * b₂) * mn_01 + (a₂ ^ 2 + b₂ ^ 2) * mn_11
+  linear_combination (ℓ₁ 1 ^ 2 + ℓ₁ I ^ 2) * mn_00 + 2 * (ℓ₁ 1 * ℓ₂ 1 + ℓ₁ I * ℓ₂ I) * mn_01
+    + (ℓ₂ 1 ^ 2 + ℓ₂ I ^ 2) * mn_11
 
 lemma mp_smooth : MeasurePreserving (fun v : (ℂ × ℂ) × (ℂ × ℂ) => smoothArg v.1 v.2) (mu2.prod mu2) mu2 :=
   ⟨smoothCLM.continuous.measurable, map_smooth⟩
