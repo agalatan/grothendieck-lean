@@ -548,6 +548,7 @@ import Grothe.UpperChaos.LocalizedComparison
 import Grothe.UpperChaos.LstarL
 import Grothe.UpperChaos.Mehler
 import Grothe.UpperChaos.MehlerL2
+import Grothe.UpperChaos.NineCapturedSources
 import Grothe.UpperChaos.OUOp
 import Grothe.UpperChaos.OddParseval
 import Grothe.UpperChaos.OddSeries
