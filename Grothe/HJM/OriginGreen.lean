@@ -47,6 +47,7 @@ private lemma hasDerivAt_originGreenWeight {s : ℝ} (hs : 0 < s) :
       (mul_ne_zero two_ne_zero hs.ne')).2
     nlinarith [Real.sq_sqrt hs.le]
   apply (((hasDerivAt_id s).neg.exp).mul (Real.hasDerivAt_sqrt hs.ne')).congr_deriv
+  simp only [Pi.neg_apply, id_eq]
   rw [hi]
   ring
 
@@ -106,8 +107,11 @@ theorem hasDerivAt_originGreenBoundary (P : Polynomial ℝ) (n : ℕ)
       ((((P.eval t : ℝ) : ℂ) + 2 * (t : ℂ) * ((P.derivative.eval t : ℝ) : ℂ)) * v t -
         2 * (t : ℂ) * ((P.eval t : ℝ) : ℂ) * v1 t)) _ s
   apply hd.congr_deriv
-  push_cast
-  linear_combination ((Real.exp (-s) : ℂ) * (Real.sqrt s : ℂ)) * ha
+  simp only [Pi.sub_apply, Pi.mul_apply]
+  have hscaled := congrArg
+    (fun z : ℂ => ((Real.exp (-s) * Real.sqrt s : ℝ) : ℂ) * z) ha
+  push_cast at hscaled ⊢
+  linear_combination hscaled
 
 /-- The actual charge-one radial polynomial satisfies the Green derivative identity. -/
 theorem hasDerivAt_originRadialGreenBoundary (n : ℕ)
@@ -144,6 +148,7 @@ theorem originGreen_integral (P : Polynomial ℝ) (n : ℕ)
         (originRadialDifferential v v1 v2 s - (2 * (n : ℂ) + 1) * v s)) (Ioi 0) := by
     convert hQ.sub (hR.const_mul (2 * (n : ℂ) + 1)) using 1
     ext s
+    simp only [Pi.sub_apply]
     ring
   have h := integral_Ioi_of_hasDerivAt_of_tendsto hzero
     (fun s hs => hasDerivAt_originGreenBoundary P n hs (hv s hs) (hv1 s hs) (hode s hs))

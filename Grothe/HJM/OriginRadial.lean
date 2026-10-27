@@ -59,7 +59,6 @@ theorem originRadialPoly_ode (n : ℕ) :
     have hd := congrArg Polynomial.derivative ih
     simp at hd
     simp [originRadialPoly]
-    push_cast at ih hd ⊢
     linear_combination (Polynomial.X - (n : Polynomial ℝ) - 3) * ih - Polynomial.X * hd
 
 /-- Evaluation form of the polynomial ODE, for the radial integration-by-parts step. -/
@@ -218,7 +217,7 @@ private lemma integrable_radial_polynomial (P : Polynomial ℝ) :
         (Polynomial.monomial n a).eval (r ^ 2)) =
         (fun r : ℝ => a * (r ^ (2 * n + 2) * Real.exp (-r ^ 2))) := by
       funext r
-      simp only [Polynomial.eval_monomial, ← pow_mul, pow_add, pow_one]
+      simp only [Polynomial.eval_monomial, ← pow_mul, pow_add]
       ring
     rw [he]
     exact hi.const_mul a
