@@ -484,6 +484,7 @@ import Grothe.UpperChaos.BandedContraction
 import Grothe.UpperChaos.CapturedTail
 import Grothe.UpperChaos.CenterNormBypass
 import Grothe.UpperChaos.Charge
+import Grothe.UpperChaos.ChargeBandParseval
 import Grothe.UpperChaos.ComparisonPieces
 import Grothe.UpperChaos.Completeness
 import Grothe.UpperChaos.ComplexHermite
@@ -547,7 +548,6 @@ import Grothe.UpperChaos.JointAliasBound
 import Grothe.UpperChaos.Kernel2
 import Grothe.UpperChaos.KernelStability
 import Grothe.UpperChaos.LawY
-import Grothe.UpperChaos.LeanCertPilot
 import Grothe.UpperChaos.LocalizedComparison
 import Grothe.UpperChaos.LstarL
 import Grothe.UpperChaos.Mehler
