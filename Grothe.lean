@@ -495,6 +495,7 @@ import Grothe.UpperChaos.ConditionalGaussianTail
 import Grothe.UpperChaos.DampedMoments
 import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.DiagonalSum
+import Grothe.UpperChaos.DirectSampleUpper
 import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
 import Grothe.UpperChaos.FiniteSampleError
