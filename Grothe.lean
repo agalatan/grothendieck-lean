@@ -462,6 +462,7 @@ import Grothe.Upper.Head
 import Grothe.Upper.HeadWeight
 import Grothe.Upper.IntervalSound
 import Grothe.Upper.KernelScreen
+import Grothe.Upper.NineBandBudget
 import Grothe.Upper.PhaseChart
 import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.PowerTail
@@ -476,6 +477,7 @@ import Grothe.Upper.ResponseUpdate
 import Grothe.Upper.SpectralScreen
 import Grothe.Upper.TransportLimit
 import Grothe.Upper.WeightedTail
+import Grothe.Upper.WeightedUnion
 import Grothe.UpperChaos.AffineGaussianSquare
 import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.BandedContraction
@@ -497,6 +499,7 @@ import Grothe.UpperChaos.ConditionalGaussianTail
 import Grothe.UpperChaos.DampedMoments
 import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.DiagonalSum
+import Grothe.UpperChaos.DiskTail
 import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
 import Grothe.UpperChaos.ExponentialTail
@@ -505,6 +508,7 @@ import Grothe.UpperChaos.FixedChaosSmoothing
 import Grothe.UpperChaos.GTAliasTail
 import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussOp
+import Grothe.UpperChaos.GaussianDensityBounds
 import Grothe.UpperChaos.GeometricReciprocal
 import Grothe.UpperChaos.GlobalGaussianMoments
 import Grothe.UpperChaos.GlobalGaussianPolynomial
@@ -553,6 +557,7 @@ import Grothe.UpperChaos.LocalizedComparison
 import Grothe.UpperChaos.LstarL
 import Grothe.UpperChaos.Mehler
 import Grothe.UpperChaos.MehlerL2
+import Grothe.UpperChaos.NineCapturedSources
 import Grothe.UpperChaos.OUOp
 import Grothe.UpperChaos.OddParseval
 import Grothe.UpperChaos.OddSeries
@@ -583,6 +588,7 @@ import Grothe.UpperChaos.PhiHorner
 import Grothe.UpperChaos.ProductComplete
 import Grothe.UpperChaos.ProfileRootNormalization
 import Grothe.UpperChaos.ProfileRootScreen
+import Grothe.UpperChaos.ProjectionUnion
 import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialCutoff
 import Grothe.UpperChaos.RadialDampedMoments
@@ -591,6 +597,7 @@ import Grothe.UpperChaos.RealGaussianKernelTail
 import Grothe.UpperChaos.Realise2
 import Grothe.UpperChaos.ReducedGrouped
 import Grothe.UpperChaos.RelaxedGrouped
+import Grothe.UpperChaos.RestrictedPhaseMoments
 import Grothe.UpperChaos.RestrictedWick
 import Grothe.UpperChaos.Rounder
 import Grothe.UpperChaos.SchurBound

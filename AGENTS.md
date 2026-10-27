@@ -5,7 +5,7 @@ machines (the user's laptop and the droplet). These rules keep them from overwri
 them before doing anything.
 
 **The six rules that matter most:**
-1. Never commit or push to `master`. Work in your own worktree and branch; deliver by pushing `ready/<agent>-<topic>`
+1. Never commit or push to `master`. Work in your own worktree and branch; deliver by pushing `ready/<agent-id>-<topic>`
    (§7). Only CI moves `master`. **The delivery check is the test:** do not check the same tree beforehand (no
    cloud check, droplet or full local build, no extra branch push); if it fails, fix and push again.
 2. Before every push, sync with master and combine with it (§6).
@@ -49,7 +49,11 @@ tell which conversation owns a droplet folder, a branch or a running build. At t
      inside (§12);
    - commits: an `Agent-ID: codex-7f3a` trailer at the end of the commit message body;
    - issue comments: start with `[codex-7f3a]`;
-   - branches keep the scheme of §3 (the ID goes in the commit body, not necessarily in the name).
+   - branches: **sign every branch with your agent ID**, in a fixed place (§3): `codex/7f3a-<topic>` and
+     `ready/codex-7f3a-<topic>`, where `7f3a` is the four hex digits of *your* ID. Never put any other hex in a
+     branch name: no random or per-branch hash, no suffix at the end (`ready/codex-<topic>-e4b7` is wrong), no ID
+     copied from a prompt, another branch, a worktree name or a commit. The same ID goes in the branch name, the
+     commits' `Agent-ID` and your first reply: the audits and CI's conflict reports read the owner from the name.
 4. **Write it down when you hand over:** give your ID in every status note or hand-over file.
 
 `scripts/droplet_status.sh` lists droplet builds by folder, so a signed folder tells the user whom to ask.
@@ -63,12 +67,14 @@ tell which conversation owns a droplet folder, a branch or a running build. At t
 
   | agent | branch | worktree |
   |---|---|---|
-  | Codex instance | `codex/<topic>` | `/Users/alingalatan/workspaces/grothe-codex-<topic>` |
-  | Claude session | `claude/<topic>` | `/Users/alingalatan/workspaces/grothe-claude-<topic>` |
-  | Claude worker (sub-agent) | `claude/<topic>` | `/Users/alingalatan/workspaces/grothe/.claude/worktrees/<topic>` |
+  | agent (ID) | branch | delivery | worktree |
+  |---|---|---|---|
+  | Codex instance (`codex-7f3a`) | `codex/7f3a-<topic>` | `ready/codex-7f3a-<topic>` | `/Users/alingalatan/workspaces/grothe-codex-7f3a-<topic>` |
+  | Claude session (`claude-b21e`) | `claude/b21e-<topic>` | `ready/claude-b21e-<topic>` | `/Users/alingalatan/workspaces/grothe-claude-b21e-<topic>` |
+  | Claude worker (sub-agent) | `claude/b21e-<topic>` (its session's ID) | `ready/claude-b21e-<topic>` | `/Users/alingalatan/workspaces/grothe/.claude/worktrees/<topic>` |
 
-- **Say who made it:** branches start with `codex/` or `claude/`; delivery branches are `ready/codex-<topic>` or
-  `ready/claude-<topic>`; every commit subject starts with `[codex]` or `[claude]`, e.g.
+- **Say who made it:** branches start with `codex/<hex>-` or `claude/<hex>-` (the four hex digits of your ID);
+  delivery branches are `ready/<agent-id>-<topic>`, e.g. `ready/codex-7f3a-refined-cover`; every commit subject starts with `[codex]` or `[claude]`, e.g.
   `[codex] Lower: joint image compatibility`. CI's merge commits read `Merge ready/<name> (CI auto-merge)`.
 - **Never force-push and never rewrite pushed history.** Never use `git stash` in a shared checkout, and never
   `reset --hard`, `clean` or `checkout --` files you did not create.
@@ -91,10 +97,10 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
 
 ```sh
 /Users/alingalatan/workspaces/grothe/scripts/sync_master.sh --build    # fetch; refresh the local master build
-git -C /Users/alingalatan/workspaces/grothe worktree add -b codex/<topic> \
-    /Users/alingalatan/workspaces/grothe-codex-<topic> origin/master
+git -C /Users/alingalatan/workspaces/grothe worktree add -b codex/7f3a-<topic> \
+    /Users/alingalatan/workspaces/grothe-codex-7f3a-<topic> origin/master
 # give the worktree master's compiled build (links the shared packages, clones the snapshot)
-/Users/alingalatan/workspaces/grothe/scripts/clone_master_build.sh /Users/alingalatan/workspaces/grothe-codex-<topic>
+/Users/alingalatan/workspaces/grothe/scripts/clone_master_build.sh /Users/alingalatan/workspaces/grothe-codex-7f3a-<topic>
 ```
 
 Resuming an existing worktree: sync, then combine your branch with master (§6) before continuing.
@@ -175,8 +181,8 @@ Deliver when the user says the work should go into master.
    `docs/overview.tex` and `docs/LEAN_DETAILS.md` in the same delivery. **Never build or commit `OVERVIEW.pdf`:**
    CI rebuilds it from `docs/overview.tex` on master (`.github/workflows/overview.yml`), and merges never conflict on it
    (`merge=ours` in `.gitattributes`).
-5. **Deliver: push only the `ready/` branch,** `git push origin HEAD:ready/<agent>-<topic>` (`<agent>` = `codex` or
-   `claude`). That one check is the test and the guard. Do not also push your work branch at the same moment, and
+5. **Deliver: push only the `ready/` branch,** `git push origin HEAD:ready/<agent-id>-<topic>`
+   (`<agent-id>` = your ID, e.g. `codex-7f3a`). That one check is the test and the guard. Do not also push your work branch at the same moment, and
    do not run `scripts/cloud.sh check`, a droplet build or a full local build first: each would check the same
    tree again. A delivery that changes `.github/workflows/` goes through a pull request instead (§9).
    - CI merges it into the **current** master and checks the **merged** tree. Only if everything is green does it
@@ -193,10 +199,11 @@ Deliver when the user says the work should go into master.
    with the current master, branches already in master. Deal with every line: a red or conflicting branch is
    merged with `origin/master`, fixed and pushed again (the same name); a green `ready/` branch that does not
    merge has a conflict (fix it the same way) or changes `.github/workflows/` (open a PR); a stale branch is
-   deleted. A delivery is yours until it is on master. When a `ready/` branch does not merge, CI says so on the
-   issues its commits reference (`Refs`/`Closes #n`), naming the conflicting files and the owners.
-   - **The janitor** (an agent the user names; currently `claude-b9ee`) audits all `ready/` branches about once an
-     hour. When one has conflicted with master for over an hour with no new push, it merges `origin/master` into it
+   deleted. A delivery is yours until it is on master. After every move of master, CI checks every `ready/` branch
+   (`.github/workflows/ready-sweep.yml`, seconds) and reports each one that no longer merges on the issues its
+   commits reference (`Refs`/`Closes #n`), naming the conflicting files and the owners; its own check does the same.
+   - **The janitor** (an agent the user names; currently `claude-b9ee`) acts on these reports as soon as they
+     appear: it merges `origin/master` into the conflicting branch
      (never a rebase or force-push), resolves the conflicts that are mechanical (independent changes on both sides,
      generated files, lists, documentation describing both), signs the merge commit with its own `Agent-ID`, and
      pushes the same `ready/` branch; that check is the test, as for any delivery. Conflicts of decisions (one side
@@ -296,7 +303,7 @@ Also:
   check also runs on the droplet (master has no cache for the new caps yet) and finds them already built in the same
   workspace. Never run a separate manual caps verification, and avoid touching that closure casually.
 - **Step by step, when a delivery changes the node caps** (e.g. a new cap row):
-  1. You push `ready/<agent>-<topic>` (push only that; a work branch pushed first costs one extra droplet run).
+  1. You push `ready/<agent-id>-<topic>` (push only that; a work branch pushed first costs one extra droplet run).
   2. The route finds no GitHub cache for the new caps digest and sends the build job to the **droplet**. It builds
      only what changed (the new row and what imports it; hours if a row really changed), runs every check, marks the
      caps as verified, and **uploads `.lake/build` to GitHub's cache itself** (for this branch). The check shows
@@ -325,7 +332,7 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 ```
 
 - **Cloud jobs are for experiments, not for "does my branch build?".** If you want to know whether work you mean to
-  deliver is green, push it as `ready/<agent>-<topic>` instead: that one check builds and checks it, and merges it
+  deliver is green, push it as `ready/<agent-id>-<topic>` instead: that one check builds and checks it, and merges it
   only if green (a red `ready/` check merges nothing; fix and push again). Use `cloud/` for script jobs, sweeps and
   builds of unfinished modules that are not meant to land yet.
 - **What runs:** the tip of the branch on GitHub (`--ref`; default: your current branch, which must be pushed and

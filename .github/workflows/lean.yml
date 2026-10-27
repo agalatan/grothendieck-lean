@@ -473,6 +473,8 @@ jobs:
             gh workflow run lean.yml --ref master || true
             # OVERVIEW.pdf is rebuilt by CI from docs/overview.tex (no-op if unchanged)
             gh workflow run overview.yml --ref master || true
+            # report the ready/ branches this merge left in conflict (seconds; builds nothing)
+            gh workflow run ready-sweep.yml --ref master || true
           else
             git fetch -q origin master
             if [ "$(git rev-parse origin/master)" != "$base" ]; then
