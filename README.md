@@ -10,9 +10,9 @@ Both bounds rest on explicitly stated analytic and computer-assisted inputs; see
 
 | year | who | lower bound | upper bound |
 |---|---|---|---|
-| 1953 | Grothendieck | | $K < \infty$ (the inequality itself) |
+| 1953 | Grothendieck | | $K < \infty$ |
 | 1984 | Davie | $1.33807 < K$ | |
-| 1987 | Haagerup | | $K < 1.40490913\ldots$ (Gaussian phase rounding) |
+| 1987 | Haagerup | | $K < 1.40490914$ |
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | $1.35584631827168 < K$ | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | $1.4 < K$ | $K < 1.404898554746$ |
 | Oct 2026 | **this repository** | $\mathbf{1.401697117301 < K}$ | $\mathbf{K < 1.404598149141}$ |
