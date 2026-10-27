@@ -1,12 +1,15 @@
 import Mathlib
 
 /-!
-# The cubic Taylor phase factor (N0 of PLAN_UPPER)
+# Cubic and quartic Taylor phase factors
 
 `P₃(x) = 1 + ix − x²/2 − ix³/6`, the cubic Taylor polynomial of `e^{ix}`.  For real `x`,
 `|P₃(x)|² = 1 − x⁴(3 − x²)/36` (`normSq_P3`), so `|P₃(x)| ≤ 1` whenever `x² ≤ 3`
 (`norm_P3_le_one`), in particular for `|x| ≤ 1`.  Hence `T = F₀ · P₃(φ)` is disk-valued when
 `|F₀| ≤ 1` and `|φ| ≤ 1`.
+
+The quartic polynomial `P₄` is also disk-valued for `x² ≤ 8`. This allows
+the compact rounding construction to retain one additional Taylor term.
 -/
 
 namespace Grothe.UpperChaos
@@ -43,6 +46,36 @@ theorem norm_mul_P3_le_one {f : ℂ} {x : ℝ} (hf : ‖f‖ ≤ 1) (hx : |x| �
     ‖f * P3 x‖ ≤ 1 := by
   rw [norm_mul]
   calc ‖f‖ * ‖P3 x‖ ≤ 1 * 1 := mul_le_mul hf (norm_P3_le_one_of_abs hx) (norm_nonneg _) zero_le_one
+    _ = 1 := one_mul 1
+
+/-- The fourth-order Taylor polynomial of `e^{ix}`. -/
+noncomputable def P4 (x : ℝ) : ℂ := P3 x + (x : ℂ) ^ 4 / 24
+
+lemma P4_re (x : ℝ) : (P4 x).re = 1 - x ^ 2 / 2 + x ^ 4 / 24 := by
+  simp [P4, P3_re, pow_succ]
+
+lemma P4_im (x : ℝ) : (P4 x).im = x - x ^ 3 / 6 := by
+  simp [P4, P3_im, pow_succ]
+
+/-- The quartic phase remains in the disk for `x² ≤ 8`. -/
+theorem normSq_P4 (x : ℝ) : normSq (P4 x) = 1 - x ^ 6 * (8 - x ^ 2) / 576 := by
+  rw [normSq_apply, P4_re, P4_im]; ring
+
+theorem norm_P4_le_one {x : ℝ} (hx : x ^ 2 ≤ 8) : ‖P4 x‖ ≤ 1 := by
+  have h : normSq (P4 x) ≤ 1 := by
+    rw [normSq_P4]
+    have : 0 ≤ x ^ 6 * (8 - x ^ 2) := mul_nonneg (by positivity) (by linarith)
+    linarith
+  rw [← sq_le_one_iff₀ (norm_nonneg _), ← normSq_eq_norm_sq]; exact h
+
+theorem norm_P4_le_one_of_abs {x : ℝ} (hx : |x| ≤ 1) : ‖P4 x‖ ≤ 1 :=
+  norm_P4_le_one (by nlinarith [sq_abs x, abs_nonneg x])
+
+theorem norm_mul_P4_le_one {f : ℂ} {x : ℝ} (hf : ‖f‖ ≤ 1) (hx : |x| ≤ 1) :
+    ‖f * P4 x‖ ≤ 1 := by
+  rw [norm_mul]
+  calc ‖f‖ * ‖P4 x‖ ≤ 1 * 1 :=
+      mul_le_mul hf (norm_P4_le_one_of_abs hx) (norm_nonneg _) zero_le_one
     _ = 1 := one_mul 1
 
 end Grothe.UpperChaos
