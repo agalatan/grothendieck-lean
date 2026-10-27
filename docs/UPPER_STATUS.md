@@ -184,12 +184,15 @@ Progress (claude/hardy, 26 Oct):
   The original approximant inputs and frozen correction have been recovered
   with matching hashes in `data/taylor-approximants/inputs/`. `TaylorBandCheck`
   supplies the full third-center certificate through degree 51, including all
-  four finite bands and exact vanishing on the tail. The first and second
-  centers and the rounding norm still need their own finite checks.
-  `ThirdCapturedTail` derives the existing third tail cap from four slightly
-  tighter finite-band Gaussian error premises, with a concrete pointwise center
-  satisfying `ChargeFn`. Those errors and the other Taylor-source inputs remain
-  separate obligations.
+  four finite bands and exact vanishing on the tail. `TaylorRounding` also
+  certifies the 10^-18 norm cap for the exact rounding difference. The first
+  and second centers' six and four band norms are certified by their respective
+  `Taylor*BandNorms` modules. All three tail caps follow from the explicit
+  slightly tighter finite-band Gaussian errors in `TaylorTailData`.
+  `fresh_upper_concrete_taylor` fixes every center and pointwise representative:
+  only fourteen finite Gaussian error inequalities and the actual energy-table
+  accuracy remain inputs to the conditional endpoint. The omitted-input
+  Hilbert–Schmidt estimates are still a separate analytic ingredient.
 * The refined lower endpoint is `1.401697049825`, conditional on the same
   `NodeCaps`, through `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`.
   The single `Grothe` target includes the 60 range facts and their final assembly;

@@ -1,3 +1,4 @@
+import Grothe.UpperChaos.TaylorTailData
 import Grothe.UpperChaos.CapturedTail
 import Grothe.UpperChaos.GradedHermiteFn
 import Grothe.UpperChaos.PhaseMomentNorms
@@ -84,13 +85,6 @@ noncomputable def thirdTaylorL2 : Lp ℂ 2 mu2 :=
 /-- The exact scalar energy remaining after separately accounting for four captured bands. -/
 def thirdTailBudgetQ (lower error : Fin 4 → ℚ) : ℚ :=
   phaseMoment6Q - ∑ k, (max 0 (lower k - error k)) ^ 2
-
-/-- The four unscaled error hypotheses, rounded upward from the recovered allowances. -/
-def thirdCapturedErrorQ : Fin 4 → ℚ
-  | 0 => 47629771 / 1000000000000000000
-  | 1 => 353989726 / 1000000000000000000
-  | 2 => 4052571868 / 1000000000000000000
-  | 3 => 150654124859 / 1000000000000000000
 
 /-- These stronger error hypotheses suffice for the original four public comparison caps. -/
 theorem thirdCapturedErrorQ_le_public : ∀ k,

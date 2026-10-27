@@ -237,6 +237,29 @@ its total norm, all four captured band norms, and its vanishing degree tail.
 `ThirdCapturedTail` derives the existing third-order tail cap from four explicit
 finite-band Gaussian error bounds, using the exact sixth phase moment and the
 captured center energies. Those Gaussian error bounds remain hypotheses.
+The first and second centers and frozen correction also have exact dyadic
+representations. `TaylorRounding.norm_roundingDifference_le` proves
+‖c₁+c₂/2+c₃/6−v‖ ≤ 10⁻¹⁸ by recomputing the common-denominator integer energy.
+`TaylorFirstBandNorms` and `TaylorSecondBandNorms` certify the six and four
+remaining captured band norms from the same exact arrays. `FirstSecondCapturedTail`
+derives the other two high-tail caps. `TaylorCenterFunctions` gives the concrete
+pointwise functions and discharges the rounding comparison piece.
+
+`fresh_upper_concrete_taylor` instantiates the conditional bound with these fixed
+centers. Its Gaussian inputs are six first-order, four second-order and four
+third-order finite-band error inequalities, with the explicit caps in
+`TaylorTailData`, together with the concrete kernel-energy table accuracy.
+The rounding and three high-tail caps follow internally. The slightly tighter
+finite-band caps are necessary to preserve precision in the captured-energy
+subtraction; their Gaussian validity remains open.
+`Haagerup/PhaseLaplace` gives an analytic representation of complex phase as a
+Gaussian Laplace mixture, including its value at zero. It proves integrability,
+a uniform absolute-integral bound, and the affine completion-of-squares identity.
+`PhaseLaplaceFubini` proves absolute integration and exchange of the parameter
+with any integrable source. `TaylorInnerLaplace` applies it to the actual Taylor
+inner products. `ConditionalGaussianPhase` evaluates affine-kernel Gaussian
+monomials by finite shifted Wick sums, retaining their inverse-rate mass.
+Certified numerical integration and its tail budgets remain open.
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
@@ -246,11 +269,11 @@ A native check derives every band radius from the stored table and its accuracy
 allowance. Lean proves every coefficient cost with outward interval polynomial arithmetic.
 A kernel-checked rational overlap ledger assembles the quadratic cost.
 The weighted comparison is at most 106490963/(125000·10⁹).
-What remains **input**:
+The concrete theorem's remaining **inputs** are:
 
 | hypothesis | content | share of the residual |
 |---|---|---|
-| `ComparisonInputs` | exact error decomposition, spectral supports and inherited Gaussian component norm caps; Lean derives the selected comparison | 93.56% |
+| `hfirst`, `hsecond`, `hthird` | fourteen finite-band Gaussian error inequalities for the fixed Taylor sources and centers; Lean derives the rounding and three tail caps, decomposition and supports | 93.56% |
 | `energy_close` | the stored energies are within 6847009/(5·10¹⁷) of E(X) | 0.001% |
 
 The head, computed in Lean (`head_check`), is 28153/10¹², 3.09% of the total
@@ -355,8 +378,16 @@ The endpoint cross product is exactly imaginary; its phase-phase term cancels be
 absolute values. Bessel bounds the entire spatially omitted coefficient sequence by squared
 energy `exp(-36)`. A rational Bernstein certificate proves `|P(s)|² ≥ 37/100` for all `s ≥ 0`.
 The charge-one Hermite modes have an explicit radial polynomial and Gaussian integral
-formula. A scalar Green identity reduces the energy calculation to derivatives,
-integrability and boundary limits. For numerical enclosure, a nonnegative inverse-modulus
+formula. The change to squared radius joins the Green identity to weighted
+Parseval with the original chaos multiplier `2n+1`. The actual radial phases are
+smooth through zero and their denominators exceed `1/250`. Exact polynomial
+divided differences give continuous energy amplitudes at zero, integrable on every
+finite panel. Explicit phase derivatives and polynomial growth prove global
+Gaussian L², every-mode pairing integrability and the Green limit at infinity.
+The actual endpoint-subtracted coefficients satisfy the full weighted-energy
+identity with weights `(2n+1)²`, without additional analytic hypotheses; the
+continuous energy amplitude at zero is `−3/2` times the phase derivative.
+For numerical enclosure, a nonnegative inverse-modulus
 polynomial residual controls the phase error; uniform spatial error `ε` inside radius
 `R` gives the joint squared coefficient budget `ε² + exp(-R²)` for all modes.
 These structural results introduce no native facts. The pinned 120-entry interval tables are
@@ -374,19 +405,23 @@ exact selector mass. The resulting reciprocal is below `1.404898430299659`.
 
 `Grothe/Haagerup/ScalarTailRefinement.lean` proves the finite power certificate,
 the general signed suffix inequality and the rational score transfer with the
-published numerical budgets explicit. The phase-tail estimate at index 67 is
-proved by an exact split at 120 and the existing infinite-tail majorant. The
-weighted estimate uses that majorant at 160, via the general antitone-weight
-`weighted_composition_cut` theorem. The final score transfer has no tail premise.
+published numerical budgets explicit. `Haagerup/WallisTail.lean` identifies the
+coefficient recurrence with Wallis products and proves the all-index bound
+`h_j ≤ 1/((4j+1)(j+1))`. A rational telescoping majorant bounds every interval
+and gives `Σ_{j≥K} h_j ≤ 1/(4K)` for every positive integer K. The weighted
+estimate prices the twelve constant-weight blocks at
+67–159 and the remaining suffix at 160; their bound is below the unchanged
+exact ledger cap. The final score transfer has no tail premise.
 The polynomial power is checked by `decide +kernel` using the same outward
 interval arithmetic. All sixteen scalar-tail results now use only standard
 axioms, with no native evaluation axiom.
 The four pinned public verification stages were replayed
 successfully, including directed energy integration and the complete head/tail
 audit; the two accepted coefficient tables were hash-checked, not regenerated.
-This is a written corollary of the published proof. The complete weighted-tail
-production module passes focused Lean compilation; `WEIGHTED_BUILD.json` binds
-the check to its source hashes. The earlier build receipt is preserved separately. The separate end-to-end unconditional Lean theorem is `haagerup_bound`.
+This is a written corollary of the published proof. `WEIGHTED_BUILD.json` records
+the focused build of the earlier weighted-tail source at its pinned commit; it
+does not certify subsequent revisions. The separate end-to-end unconditional
+Lean theorem is `haagerup_bound`.
 Exact inputs, the reproducible generator and all scope details are in
 [`data/scalar-tail-refinement/`](data/scalar-tail-refinement/PROOF.md).
 

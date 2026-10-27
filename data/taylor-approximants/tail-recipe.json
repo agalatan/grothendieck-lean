@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "agent_id": "codex-44c5",
+  "scope": "Round inherited unscaled Gaussian band-error allowances upward; these allowances remain hypotheses",
+  "comparison_source": "data/localized-comparison/inputs/taylor_comparison_result.json",
+  "comparison_source_sha256": "5619546626b7588ce64a2229aa58b0d161bde613dbf9a5eaad94a3ef93461915",
+  "public_comparison_recipe": "data/localized-comparison/recipe.json",
+  "phase_moment_targets": "data/phase-moments/targets.json",
+  "first_second_center_norms": "data/taylor-approximants/center-band-norms.json",
+  "third_center_norms": "data/taylor-approximants/third-center.json",
+  "tails": [
+    {"power": 1, "lean_name": "firstCapturedErrorQ", "decimal_precision": 21, "public_finite_indices": [1, 2, 3, 4, 5, 6], "public_tail_index": 7, "factorial": 1},
+    {"power": 2, "lean_name": "secondCapturedErrorQ", "decimal_precision": 19, "public_finite_indices": [8, 9, 10, 11], "public_tail_index": 12, "factorial": 2},
+    {"power": 3, "lean_name": "thirdCapturedErrorQ", "decimal_precision": 18, "public_finite_indices": [13, 14, 15, 16], "public_tail_index": 17, "factorial": 6}
+  ]
+}

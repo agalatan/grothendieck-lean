@@ -159,6 +159,23 @@ A continuous finite-polynomial representative satisfies the charge-one
 function interface. The third-order tail cap follows from four explicit
 finite-band Gaussian error caps by subtracting captured energy from the exact
 sixth moment; the Gaussian caps themselves remain hypotheses.
+The finite rounding difference $c_1+c_2/2+c_3/6-v$ has norm at most $10^{-18}$,
+proved by exact integer squares at a common dyadic denominator. The three
+other preserved center sources and their successful decoding are checked
+separately from Gaussian approximation errors.
+The first and second centers also have exact certificates for their six and
+four captured bands. The concrete conditional theorem fixes every center and
+its polynomial representative and derives the rounding and all three omitted
+tails internally. Its remaining inputs are fourteen explicit finite-band
+Gaussian error inequalities and the concrete energy-table accuracy. The
+slightly tighter finite error caps are generated from the original allowances;
+their Gaussian validity remains open.
+A Gaussian Laplace representation of complex phase is proved exactly,
+including the zero argument, integrability and a uniform absolute-integral
+bound. Absolute Fubini exchange applies this representation to the actual
+Taylor inner products. Affine completion of squares and translated Gaussian
+Wick sums give exact conditional monomial integrals with the inverse-rate mass.
+No numerical integration enclosure or tail budget is asserted by these identities.
 
 \paragraph{Radial repair has a quantitative ceiling.}
 Lean certifies the polynomial disk map $z\mapsto zS_6(1-|z|^2)$, where
@@ -354,8 +371,17 @@ beyond radius six. Nine rational Bernstein panels and a positive shifted
 polynomial prove $|P(s)|^2\ge37/100$ on the entire nonnegative half-line.
 The Hermite creation operators give the radial polynomial, its Laguerre
 equation and the coefficient integral. A combined Green boundary term gives
-the energy pairing under explicit derivative, integrability and boundary
-hypotheses. For coefficient enclosure, a nonnegative inverse-modulus
+the energy pairing. The substitution $s=r^2$ joins it to weighted Parseval
+with the original chaos multiplier $2n+1$. Both actual radial phases are smooth
+through zero, with phase denominators greater than $1/250$. Exact polynomial
+divided differences remove the apparent $1/s$ singularity in their energy
+amplitudes. Their values at zero are $-3/2$ times the phase derivatives.
+Explicit phase differentiation and polynomial growth supply global Gaussian
+$L^2$, every-mode pairing integrability and the boundary limit at infinity.
+Thus the actual endpoint-subtracted coefficient sequences satisfy the complete
+weighted-energy identities with weights $(2n+1)^2$, without further analytic
+hypotheses. Their signed Hermite phase coefficients are preserved.
+For coefficient enclosure, a nonnegative inverse-modulus
 approximation satisfies
 $\|Wz-\ph(z)\|\le|W^2\|z\|^2-1|$.
 Uniform spatial error $\varepsilon$ inside radius $R$, with zero approximation
@@ -370,16 +396,18 @@ and \path{data/hjm/origin/README.md}.
 For the unchanged fifth scalar preprocessor of Heilman--Jones--Malavolta,
 the exact degree-592 calculation gives $\|P_5^{16}\|_1\le581/1000$.
 For each omitted outer index $j\ge67$ retain the factor
-$(581/1000)^{\lfloor(2j+1)/16\rfloor}$. Summing through index 159 and
-bounding the suffix from 160 by its endpoint weight and the Haagerup
-majorant gives a weighted reserve $1.42728\cdot10^{-10}$. Keeping the published prefix, complete finite-block
+$(581/1000)^{\lfloor(2j+1)/16\rfloor}$. A Wallis-product argument proves
+$h_j\le((4j+1)(j+1))^{-1}$ at every index. A telescoping rational majorant
+prices the twelve constant-weight blocks through index 159 and the suffix
+from 160 within the existing weighted reserve $1.42728\cdot10^{-10}$.
+Keeping the published prefix, complete finite-block
 tail, other tails and exact selector mass gives the written corollary
 $\KG<1.4048984303$. Four pinned public verifiers pass; accepted coefficient
 tables are hash-checked. Lean proves the power check with \lean{decide +kernel},
 complete suffix estimate and score arithmetic, all without native axioms.
-It also derives the phase-tail bound by an exact split at 120. The complete weighted
-production module passes focused compilation, with a source-bound receipt;
-the earlier receipt is preserved separately. Published Gaussian and
+The same all-index estimate gives the phase-tail bound at 67 without a finite
+coefficient sum. A focused build receipt records the earlier weighted-tail source
+at its pinned commit. Published Gaussian and
 numerical integral budgets remain external. The separate unconditional \lean{haagerup\_bound}
 theorem has no external hypotheses and uses only the three standard axioms.
 The deduction and provenance are in

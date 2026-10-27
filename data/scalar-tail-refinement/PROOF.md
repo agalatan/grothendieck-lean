@@ -9,7 +9,8 @@ K_G^{\mathbb C}<1.4048984303
 
 after tightening one infinite-tail estimate. The kernels, response
 functions, preprocessors, weights, and integral tables are unchanged.
-The new ingredients are the exact norm of a sixteenth polynomial power and a finite weighted sum that retains the contraction at each outer index.
+The ingredients are the exact norm of a sixteenth polynomial power and a
+Wallis-product majorant that retains the contraction on each power block.
 
 The companion [Lean module](../../Grothe/Haagerup/ScalarTailRefinement.lean)
 proves the polynomial/tail refinement and the implication from the stated
@@ -98,8 +99,8 @@ majorant gives, for every positive J,
 \sum_{j\ge J}h_j\le \frac{\pi}{4}\frac{g_J}{2J}.
 \]
 
-Split the omitted series at J=160. Since `w(j)<=w(160)=q^20` for
-j>=160, its full norm is bounded by the exact rational quantity
+An independent coefficient-by-coefficient calculation gives the following
+exact rational upper bound by splitting at `J=160`:
 
 \[
 B=\frac{355}{452}\left(
@@ -108,7 +109,8 @@ B=\frac{355}{452}\left(
 \]
 
 Here pi<=355/113 is paid once, including the physical coefficients' pi/4
-normalization. Thus
+normalization. The Lean proof uses the same ledger value `B`, but derives it
+without summing the 93 phase coefficients; the canonical argument is below. Thus
 
 \[
 \begin{aligned}
@@ -206,21 +208,32 @@ certificate, the complete Wiener tail deduction, and exact ledger
 arithmetic/implication in
 [ScalarTailRefinement.lean](../../Grothe/Haagerup/ScalarTailRefinement.lean).
 The finite power check uses `decide +kernel` on the same outward
-interval computation. The original power certificate uses only standard axioms. The weighted estimate adds no native fact or analytic premise. The strengthened generic split, weighted suffix and score theorem pass a local Lean check against the unchanged compiled power certificate; the final theorem reports only `propext`, `Classical.choice` and `Quot.sound`. Full compilation of the generated production module also passes in [focused CI](https://github.com/agalatan/grothendieck-lean/actions/runs/40457620830), at commit `1cc7f6501e67afe4509c2f87950b183b3de23465`; [WEIGHTED_BUILD.json](verification/WEIGHTED_BUILD.json) binds the result to the source hashes. The archived build receipt records the earlier source hashes and does not certify this revision.
-The fixed Wallis estimate is derived from the existing formal Haagerup
-majorant, using an exact split at 120. If `r_j=4*h_j/pi` and
-`g_j=r_j*(j+1)*(2*j+1)`, then
+interval computation. The original power certificate uses only standard axioms.
+The revised weighted estimate adds no native fact or analytic premise. The
+[focused CI receipt](https://github.com/agalatan/grothendieck-lean/actions/runs/40457620830)
+and [WEIGHTED_BUILD.json](verification/WEIGHTED_BUILD.json) identify a successful
+build of the earlier source at commit `1cc7f6501e67afe4509c2f87950b183b3de23465`;
+they do not certify this revision.
+
+For the new all-index estimate, let `r_j=4*h_j/pi`, and let `W_j` be the
+usual finite Wallis product. The recurrence gives
+`W_j*(j+1)*(2j+1)*r_j = 1`. The sequence
+`(4j+1)*(j+1)*r_j` increases to `4/pi`, so
 
 \[
-\sum_{j\ge67}h_j
-\le\frac{\pi}{4}\left(\sum_{j=67}^{119}r_j+\frac{g_{120}}{240}\right)
-\le\frac{355}{452}\left(\sum_{j=67}^{119}r_j+\frac{g_{120}}{240}\right)
-\le\frac1{268}.
+h_j\le\frac1{(4j+1)(j+1)}\le T_j-T_{j+1},\qquad
+T_j=\frac2{8j+1}-\frac{14}{3(8j+1)(8j+9)(8j+17)}.
 \]
 
-The final rational expression is approximately
-`0.003730857677462347`, below `1/268`. Its finite comparison uses
-proof-producing `decide +kernel`; no native fact is added. The weighted estimate instead splits at 160 and applies the same majorant with its endpoint weight. The generic `weighted_composition_cut` theorem proves the finite-prefix/suffix step for any nonnegative antitone weights bounded by one. The direct
+Hence `sum_{j>=67} h_j <= T_67 < 1/268`, with no coefficient sum or numerical
+bound on pi. For the weighted estimate, the power weight is constant on the
+twelve successive blocks `[67,72), [72,80), ..., [152,160)`. Telescoping on
+each block and pricing the suffix by `q^20*T_160` gives a rational bound
+approximately `8.427539644998588e-6`, below the unchanged ledger cap
+`B ≈ 8.427556835538212e-6`. The exact comparison is checked with
+`decide +kernel`. The generic `weighted_composition_cut` theorem proves the
+finite-prefix/suffix step for any nonnegative antitone weights bounded by one.
+The direct
 `refined_score_of_published_budgets` corollary has no Wallis
 hypothesis. It retains the published numerical budget inequalities,
 whose Gaussian interpretation remains outside this formal score theorem.
