@@ -1,7 +1,7 @@
 import Grothe.Lower.Support
 import Grothe.LowerAnalytic.SixthMoment
 import Grothe.LowerAnalytic.RadialCut
-import Grothe.LowerAnalytic.FourthMoment
+import Grothe.LowerAnalytic.CircularFourth
 import Grothe.LowerAnalytic.Circular
 import Grothe.LowerAnalytic.CircularTensor
 import Grothe.LowerAnalytic.GramBudget
@@ -19,7 +19,7 @@ assembles the shared reduction from the scale, gate variable and row inequalitie
 * `moments_of_three`: `E √U ≤ ρ` and the integrability of `√U` are consequences of the other
   fields of `Moments` (by `first_moment_lt_rho`), so `Moments` follows from three moments.
 * `gaussian_moments`: for the Gaussian law, `E U = 1`, `E U² ≥ 2` (from the fluctuation bound),
-  the cap `E U² ≤ 62 ≤ 2 + xMax²` (`gaussian_radU_cap`, in `FourthMoment.lean`) and
+  the sharp cap `E U² ≤ 44 ≤ 2 + xMax²` (`Circular.gaussian_fourth_moment_le_44`) and
   integrability are proved; with `x = √(E U² − 2)`, `Moments` holds with the sixth-moment
   inequality `E U³ ≤ 9m − 12 + C₆ (m − 2)^{3/2}` (`m = E U²`) supplied by
   `Circular.gaussian_sixth` from the tensor facts `TensorFacts` of `Circular.lean`, all proved
@@ -77,7 +77,7 @@ private lemma eval_pow_integrable (P : MvPolynomial (Fin d) ℝ) (k : ℕ) :
 
 /-- **The moments of the Gaussian law.**  For `q = a + ib` a normalized circular cubic chaos, the
 law of `U = |q|²` satisfies `Moments` with `x = √(E U² − 2)`, given the tensor facts of the
-sixth-moment certificate (the cap `E U² ≤ 2 + xMax²` is `gaussian_radU_cap`). -/
+sixth-moment certificate (the cap `E U² ≤ 2 + xMax²` follows from the sharp circular bound). -/
 theorem gaussian_moments (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
     (haa : ∫ x, eval x a ^ 2 ∂(stdGaussian d) = 1 / 2) {J : Fin d → Fin d → ℝ}
     (hc : Circular J a b) :
@@ -103,7 +103,7 @@ theorem gaussian_moments (a b : MvPolynomial (Fin d) ℝ) (ha : Chaos3 a)
     rw [e] at h
     nlinarith [gaussE_mul_self_nonneg (radS a b - 3), gaussE_mul_self_nonneg (radA a b),
       gaussE_mul_self_nonneg (radB a b)]
-  have hcap : m ≤ 62 := gaussian_radU_cap a b ha hb haa hbb hab
+  have hcap : m ≤ 44 := hc.gaussian_fourth_moment_le_44 a b ha haa
   have hx2 : √(m - 2) ^ 2 = m - 2 := Real.sq_sqrt (by linarith)
   refine moments_of_three _ _ _ (fun x => eval_radU_nonneg a b x) (Real.sqrt_nonneg _) ?_
     (integrable_eval _) (eval_pow_integrable _ 2) (eval_pow_integrable _ 3) ?_ (by rw [hx2]; ring)
