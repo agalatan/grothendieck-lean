@@ -125,6 +125,17 @@ $\int_0^1(\tfrac12-s)^2e^{-s}\,ds=\tfrac54-\tfrac{13}4e^{-1}$
 and encloses it in $[0.054391816192,0.054391816194]$ using proved exponential
 bounds. The complete profile and response estimates remain to be proved.
 
+The pinned LeanCert dependency supplies a further completed supporting
+calculation in \texttt{LeanCertPilot}:
+\[
+  1\le\int_0^1\frac{2\exp(-u^2/(1+u^2))}{(1+u^2)^2}\,du\le\frac54.
+\]
+An explicit 16-cell dyadic certificate checks the enclosure and reciprocal
+domains with \texttt{decide +kernel}. A separate identity binds the integrand
+to the actual affine Gaussian phase integral for $u>0$. Both theorems are
+audited without new native facts; the production Gaussian error estimates
+for the target endpoint remain work in progress.
+
 A second conditional route uses a finite-head estimate for the actual kernel
 directly; the coefficient enclosures and numerical head estimate are still
 open, so it does not yet give an unconditional bound.

@@ -184,6 +184,13 @@ the squared degree-one Laguerre component against `exp(-s)` on `[0,1]`, and
 encloses it in `[0.054391816192, 0.054391816194]` using Mathlib's proved
 exponential bounds. The remaining profile and response estimates require further work.
 
+LeanCert is a pinned dependency. `UpperChaos/LeanCertPilot.lean` uses its
+dyadic interval integrator to enclose a conditional Gaussian slice integral
+on `[0,1]` in `[1,5/4]`. The explicit 16-cell certificate uses `decide +kernel`;
+the slice is identified with the actual affine Gaussian phase integral.
+This supporting calculation adds no native checker. The production Gaussian
+error estimates needed for `1.404598149141` remain work in progress.
+
 A proposed direct route, `Grothe.UpperChaos.DirectSample.upper_of_actual_head`,
 derives the same sharp rational bound from an explicit finite-head estimate for
 the actual kernel. That numerical head estimate remains unproved; the route
