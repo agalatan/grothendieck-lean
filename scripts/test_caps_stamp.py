@@ -30,6 +30,8 @@ class CapsStampTests(unittest.TestCase):
         rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
         sources = {f"Grothe/LowerAnalytic/CapRow{k:02d}.lean": "import Mathlib.Tactic Grothe.Shared\n-- body\n"
                    for k in rows}
+        for name in ("C14x150", "R14x150_0", "R14x150_1", "R14x150p0Repair"):
+            sources[f"Grothe/LowerAnalytic/CapPieces/{name}.lean"] = "import Grothe.Shared\n-- piece fact\n"
         sources["Grothe/Shared.lean"] = "-- shared fixture dependency\nimport Mathlib.Data.Real.Basic\n"
         ordered = sorted(sources)
         extra = {
@@ -66,6 +68,12 @@ class CapsStampTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertEqual(result.stdout, f"sha256 {self.digest}\nfiles {self.count}\n")
         self.assertFalse(self.mark.exists())
+
+    def test_piece_native_source_invalidates_marker(self):
+        self.write_marker()
+        path = self.root / "Grothe/LowerAnalytic/CapPieces/R14x150p0Repair.lean"
+        path.write_text(path.read_text() + "-- changed finite certificate\n")
+        self.assertEqual(self.run_cli("--check-cache").returncode, 1)
 
     def test_missing_marker_fails_closed(self):
         for args in [(), ("--check-cache",)]:
@@ -158,7 +166,7 @@ class CapsStampTests(unittest.TestCase):
         self.assertFalse(self.mark.exists())
         self.assertEqual(before, sorted(str(path.relative_to(self.root)) for path in self.root.rglob("*")))
 
-    def test_decoupled_48_module_plus_five_extra_boundary(self):
+    def test_decoupled_computation_plus_five_extra_boundary(self):
         data_names = [f"Grothe.Pure{k:02d}" for k in range(32)]
         (self.root / "Grothe/Shared.lean").write_text("import " + " ".join(data_names) + "\n")
         for name in data_names:
@@ -175,7 +183,7 @@ class CapsStampTests(unittest.TestCase):
         computation = sorted([name for name in self.ordered if name.endswith(".lean") and
                               name not in extra_files] +
                              [str(Path(*name.split(".")).with_suffix(".lean")) for name in data_names])
-        self.assertEqual(len(computation), 48)
+        self.assertEqual(len(computation), 52)
         expected_files = computation + extra_files
         expected_hash = hashlib.sha256()
         for name in expected_files:
@@ -185,8 +193,8 @@ class CapsStampTests(unittest.TestCase):
         listed = self.run_cli("--list")
         self.assertEqual(listed.returncode, 0, listed.stdout + listed.stderr)
         self.assertEqual(listed.stdout,
-                         "\n".join(expected_files) + f"\n53 files; sha256 {expected}\n")
-        self.assertEqual(self.run_cli("--digest").stdout, f"sha256 {expected}\nfiles 53\n")
+                         "\n".join(expected_files) + f"\n57 files; sha256 {expected}\n")
+        self.assertEqual(self.run_cli("--digest").stdout, f"sha256 {expected}\nfiles 57\n")
         self.assertEqual(self.run_cli("--mark-cache").returncode, 0)
         for name in ["Grothe/ProofOnly.lean", "Grothe/AnotherProofOnly.lean", "Grothe/UntraversedRootImport.lean"]:
             (self.root / name).write_text("-- changed untraversed proof\n")
@@ -287,11 +295,15 @@ class RepositoryBoundaryTests(unittest.TestCase):
 
     def test_one_target_contains_the_node_caps(self):
         # one build target: the root Grothe imports the node-cap rows and their assembly (no separate caps target);
-        # the generated rows-12-15 piece modules are not part of a proof yet and stay out
+        # Only the completed row-14/node-150 piece proof enters the active target.
         ordinary = set(self.caps.closure(["Grothe"]))
         self.assertTrue(set(self.caps.TOPS) <= ordinary)
         self.assertIn("Grothe.LowerAnalytic.CapNodes", ordinary)
-        self.assertFalse(any(module.startswith("Grothe.LowerAnalytic.CapPieces.") for module in ordinary))
+        active_pieces = {module.rsplit(".", 1)[-1] for module in ordinary
+                         if module.startswith("Grothe.LowerAnalytic.CapPieces.")}
+        self.assertEqual(active_pieces, {"C14x150", "D14x150", "N14x150", "R14x150_0",
+                                        "R14x150_1", "D14x150p0Repair", "R14x150p0Repair", "Node14x150"})
+        self.assertTrue(set(self.caps.PIECE_TOPS) <= ordinary)
 
     def test_cap_checker_library_is_independent_of_other_project_libraries(self):
         modules = self.caps.closure(["GrotheCapsKernel"])

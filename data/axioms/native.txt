@@ -105,6 +105,10 @@ Grothe.LowerAnalytic.capRange18_0._native.native_decide.ax_1_1
 Grothe.LowerAnalytic.capRange18_1._native.native_decide.ax_1_1
 Grothe.LowerAnalytic.capRange18_2._native.native_decide.ax_1_1
 Grothe.LowerAnalytic.capRange18_3._native.native_decide.ax_1_1
+Grothe.LowerAnalytic.pieceCover_14x150._native.native_decide.ax_1_1
+Grothe.LowerAnalytic.pieceRange_14x150_0._native.native_decide.ax_1_1
+Grothe.LowerAnalytic.pieceRange_14x150_1._native.native_decide.ax_1_1
+Grothe.LowerAnalytic.pieceRepair_14x150p0_check._native.native_decide.ax_1_1
 Grothe.Research.LawNodeCheck.certLawNodes._native.native_decide.ax_1_1
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes0._native.native_decide.ax_1_1
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes1._native.native_decide.ax_1_1

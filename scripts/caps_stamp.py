@@ -10,12 +10,12 @@ On a match CI builds Grothe (Lake replays the verified facts) and checks the axi
 missing marker it dispatches a runner caps build instead. --digest prints the hash and file count without reading
 or writing the marker; --list also lists the exact hashed files.
 
-The hash covers the computation import closure of the CapRowKK modules, plus CapNodes.lean,
+The hash covers the computation import closure of the CapRowKK modules and completed localized-node
+checks, plus CapNodes.lean,
 GrotheCapsKernel.lean, lean-toolchain, lake-manifest.json and lakefile.toml. These five extras are hashed directly,
 without traversing their imports: lower-bound proof edits require re-checking the assembly, not the heavy facts.
 The checker library root is pinned because its whole precompiled shared object is loaded by every importer, and
-the Lake configuration controls native compilation. The current decoupled boundary is 48 computation modules
-plus six extras (54). Import parsing fails closed on missing project modules (Grothe.*, GrotheKernel.* and
+the Lake configuration controls native compilation. The computation boundary excludes analytic soundness imports. Import parsing fails closed on missing project modules (Grothe.*, GrotheKernel.* and
 GrotheCapsKernel.*) or unsupported syntax. This is a cache provenance check, not a full build manifest; CI runs
 its workflow and axiom-report checks separately.
 """
@@ -26,7 +26,11 @@ MARK = os.path.join(ROOT, ".lake", "build", "caps-closure.sha")
 PROJECT_PREFIXES = ("Grothe.", "GrotheKernel.", "GrotheCapsKernel.")
 PROJECT_ROOTS = ("Grothe", "GrotheKernel", "GrotheCapsKernel")
 CAP_ROWS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
-TOPS = [f"Grothe.LowerAnalytic.CapRow{k:02d}" for k in CAP_ROWS]
+# The first completed localized node also has heavy finite checks. Include their
+# computation closure so a cold piece build is routed to the caps runner.
+PIECE_TOPS = [f"Grothe.LowerAnalytic.CapPieces.{name}" for name in
+              ("C14x150", "R14x150_0", "R14x150_1", "R14x150p0Repair")]
+TOPS = [f"Grothe.LowerAnalytic.CapRow{k:02d}" for k in CAP_ROWS] + PIECE_TOPS
 EXTRA = ["Grothe/LowerAnalytic/CapNodes.lean", "GrotheCapsKernel.lean", "lean-toolchain", "lake-manifest.json",
          "lakefile.toml"]
 IMPORT = re.compile(r"\s*(?:public\s+)?(?:meta\s+)?import(?:\s+(.*))?$")
@@ -105,7 +109,7 @@ def closure(tops):
 
 
 def source_files():
-    """Sorted computation closure, then the six directly hashed assembly/config files."""
+    """Sorted computation closure, then the directly hashed assembly/config files."""
     return [os.path.join(*module.split(".")) + ".lean" for module in closure(TOPS)] + EXTRA
 
 

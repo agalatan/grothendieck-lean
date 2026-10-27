@@ -735,6 +735,7 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.cubicTrace_circular
 #print axioms Grothe.LowerAnalytic.cumulant_bound
 #print axioms Grothe.LowerAnalytic.energy_identity
+#print axioms Grothe.LowerAnalytic.exclCaps_capExcl
 #print axioms Grothe.LowerAnalytic.exists_Cop_eq
 #print axioms Grothe.LowerAnalytic.exists_wick_repr
 #print axioms Grothe.LowerAnalytic.fibreExprC_le_pot
@@ -771,12 +772,19 @@ import Grothe
 #print axioms Grothe.LowerAnalytic.lower_bound_of_capsRest
 #print axioms Grothe.LowerAnalytic.moment_lemma
 #print axioms Grothe.LowerAnalytic.moments_of_three
+#print axioms Grothe.LowerAnalytic.nodeCap_14x150_done
 #print axioms Grothe.LowerAnalytic.nodeCap_of_rangeOK
 #print axioms Grothe.LowerAnalytic.nodeCaps_of_vertexCaps
 #print axioms Grothe.LowerAnalytic.normQk_le_rho
 #print axioms Grothe.LowerAnalytic.norm_pairVal_witness
 #print axioms Grothe.LowerAnalytic.norm_sq_starProjection_H21_le
 #print axioms Grothe.LowerAnalytic.norm_starProjection_H10_le
+#print axioms Grothe.LowerAnalytic.pieceCap_of_same_constraints
+#print axioms Grothe.LowerAnalytic.pieceCap_of_same_regionData
+#print axioms Grothe.LowerAnalytic.pieceCover_14x150
+#print axioms Grothe.LowerAnalytic.pieceRange_14x150_0
+#print axioms Grothe.LowerAnalytic.pieceRange_14x150_1
+#print axioms Grothe.LowerAnalytic.pieceRepair_14x150p0_check
 #print axioms Grothe.LowerAnalytic.pot_le_of_nodeOK
 #print axioms Grothe.LowerAnalytic.pot_le_of_pieceOK
 #print axioms Grothe.LowerAnalytic.qf_le_loewnerUp
@@ -1023,8 +1031,14 @@ import Grothe
 #print axioms Grothe.UpperChaos.DirectSample.upper_of_finite_sample_bounds
 #print axioms Grothe.UpperChaos.Ef_X0_mul
 #print axioms Grothe.UpperChaos.ExponentialTail.exp_moment_tail
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.actualEntry_linearMode
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_one_zero
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_zero_one
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_smoothOp_one_zero
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_smoothOp_zero_one
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.finite_saved_matrix_error
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.fixed_shell_action
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.inner_linearMode_smoothOp
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.mem_chaosShell_of_degree
 #print axioms Grothe.UpperChaos.GT_rot2
 #print axioms Grothe.UpperChaos.HardyReal.hardy_GT
@@ -1075,6 +1089,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_fifty_lt
 #print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_fifty_sq_lt
 #print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_sq_eq_integral
+#print axioms Grothe.UpperChaos.TaylorSingularCut.norm_projOn_smooth_source_cutoff_lt
+#print axioms Grothe.UpperChaos.TaylorSingularCut.norm_source_cutoff_lt
 #print axioms Grothe.UpperChaos.Thirteen.fresh_upper_rounder_relaxed
 #print axioms Grothe.UpperChaos.Thirteen.fresh_upper_rounder_relaxed_direct_bounds
 #print axioms Grothe.UpperChaos.Thirteen.fresh_upper_taylor_thirteen_bands
@@ -1094,7 +1110,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.actual_band_mass_relaxed
 #print axioms Grothe.UpperChaos.affine_gaussian_shift_complete_square
 #print axioms Grothe.UpperChaos.affine_gaussian_shift_exp_factor
+#print axioms Grothe.UpperChaos.affine_gaussian_smallBall
+#print axioms Grothe.UpperChaos.affine_gaussian_smallBall_far
 #print axioms Grothe.UpperChaos.bandProj_smoothOp_comm
+#print axioms Grothe.UpperChaos.basePhaseArg_ne_zero_ae
+#print axioms Grothe.UpperChaos.basePhaseArg_smallBall
 #print axioms Grothe.UpperChaos.charFunDual_gaussC
 #print axioms Grothe.UpperChaos.chargeFn_firstCenterFn
 #print axioms Grothe.UpperChaos.chargeFn_frozenCorrectionFn
@@ -1215,6 +1235,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_moment_damped
 #print axioms Grothe.UpperChaos.integral_moment_damped_prod
 #print axioms Grothe.UpperChaos.integral_mul_finiteSoftPhase
+#print axioms Grothe.UpperChaos.integral_norm_F0_sq
 #print axioms Grothe.UpperChaos.integral_norm_affine_phaseLaplace_base_tail_le
 #print axioms Grothe.UpperChaos.integral_norm_rpow_damped
 #print axioms Grothe.UpperChaos.integral_phiT_pow_even
@@ -1225,6 +1246,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_rpow_neg_five_halves_Ioi
 #print axioms Grothe.UpperChaos.integral_shifted_moment_damped
 #print axioms Grothe.UpperChaos.integral_shifted_moment_damped_double
+#print axioms Grothe.UpperChaos.integral_softPhaseError_sq_le
 #print axioms Grothe.UpperChaos.integral_taylorInnerSource_conditional
 #print axioms Grothe.UpperChaos.integral_taylorInnerSource_kernel_prod
 #print axioms Grothe.UpperChaos.integral_two_channel
@@ -1248,6 +1270,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.memLp_taylorPhasePower
 #print axioms Grothe.UpperChaos.mem_gradedSupport_iff
 #print axioms Grothe.UpperChaos.normSq_P3
+#print axioms Grothe.UpperChaos.norm_F0_ae_eq_one
 #print axioms Grothe.UpperChaos.norm_F0_eq_one_or_phiT_eq_zero
 #print axioms Grothe.UpperChaos.norm_GT_le
 #print axioms Grothe.UpperChaos.norm_bandProj_roundingDifference_le
@@ -1295,6 +1318,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_secondCenterBand_sq
 #print axioms Grothe.UpperChaos.norm_secondCenter_tail_scaled_le
 #print axioms Grothe.UpperChaos.norm_secondCenter_tail_smoothed_le
+#print axioms Grothe.UpperChaos.norm_softPhaseError_cutoff_lt
+#print axioms Grothe.UpperChaos.norm_softPhaseError_le
+#print axioms Grothe.UpperChaos.norm_softTaylorError_cutoff_lt
+#print axioms Grothe.UpperChaos.norm_softTaylorError_le
 #print axioms Grothe.UpperChaos.norm_sq_le_phiT_moment
 #print axioms Grothe.UpperChaos.norm_taylorPhasePower_le
 #print axioms Grothe.UpperChaos.norm_thirdCaptured_taylorCenters_le
@@ -1316,6 +1343,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.poly_complete
 #print axioms Grothe.UpperChaos.profile_first_gaussian_cell_enclosure
 #print axioms Grothe.UpperChaos.profile_first_gaussian_cell_exact
+#print axioms Grothe.UpperChaos.profile_unit_bounds
 #print axioms Grothe.UpperChaos.projOn_gradedHermite_eq_zero_of_total_degree
 #print axioms Grothe.UpperChaos.projOn_hermiteFinite
 #print axioms Grothe.UpperChaos.projOn_hermiteFinite_eq_zero
