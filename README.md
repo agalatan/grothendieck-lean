@@ -314,6 +314,11 @@ shared Gaussian driver, the charge-one Hermite expansion and conjugate-reflectio
 The endpoint cross product is exactly imaginary; its phase-phase term cancels before taking
 absolute values. Bessel bounds the entire spatially omitted coefficient sequence by squared
 energy `exp(-36)`. A rational Bernstein certificate proves `|P(s)|² ≥ 37/100` for all `s ≥ 0`.
+The charge-one Hermite modes have an explicit radial polynomial and Gaussian integral
+formula. A scalar Green identity reduces the energy calculation to derivatives,
+integrability and boundary limits. For numerical enclosure, a nonnegative inverse-modulus
+polynomial residual controls the phase error; uniform spatial error `ε` inside radius
+`R` gives the joint squared coefficient budget `ε² + exp(-R²)` for all modes.
 These structural results introduce no native facts. The pinned 120-entry interval tables are
 provenance data: their integral enclosures and the two numerical energy bounds still require
 Lean proofs before the six-branch numerical bound follows. See [the origin certificate inventory](data/hjm/origin/README.md).

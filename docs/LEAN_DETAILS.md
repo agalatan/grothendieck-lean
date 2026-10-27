@@ -51,9 +51,29 @@ term before norms and proves finite coefficient stability under an actual spatia
 `exp(-36)` beyond radius six. `OriginNonvanishing` uses nine rational Bernstein
 panels on `[0,32]` and positive shifted coefficients beyond 32 to prove
 `|P(s)|² ≥ 37/100`; its finite checks use `decide +kernel`.
-No native facts are introduced. Explicit Laguerre integral identities, the radial
-integration-by-parts energy bound and the numerical integral enclosures remain
-separate obligations. Hash-pinned tables and exact serialization alone do not prove
+The affine factors have nonzero constant imaginary parts, so both actual radial
+numerators are nonvanishing and their phases have unit modulus for `s ≥ 0`.
+
+`OriginRadial` derives the real radial polynomial from the Hermite creation
+operators, proves its Laguerre differential equation, and identifies the actual
+normalized coefficient with a one-dimensional Gaussian integral. `OriginGreen`
+proves the corresponding combined-Wronskian derivative and improper integral
+identity. Its derivative, integrability and boundary-limit hypotheses remain
+explicit; applying it to the concrete differential responses is still required.
+
+`OriginApproximation` proves the zero-safe algebraic bound
+`‖W z - phase(z)‖ ≤ |W² ‖z‖² - 1|` for `W ≥ 0`, with a sharper rational
+denominator variant. `OriginApproximationBudget` transfers a uniform interior
+error `ε`, with a zero approximation outside radius `R`, to squared Gaussian
+`L²` error at most `ε² + exp(-R²)` and hence to all charge-one coefficients
+jointly. Two true responses of `L²` norm at most one, each approximated within
+`δ`, have total coefficient-product `ℓ¹` error at most `2δ + δ²`. The
+approximants need not be disk-valued. These theorems do not themselves certify
+the proposed polynomial panels or their coefficient integrals.
+
+No native facts are introduced. The concrete radial energy identity and the
+numerical integral enclosures remain separate obligations.
+Hash-pinned tables and exact serialization alone do not prove
 any integral enclosure; see [`data/hjm/origin/`](../data/hjm/origin/README.md).
 
 **Published scalar-tail refinement.**

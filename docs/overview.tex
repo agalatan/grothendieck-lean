@@ -324,6 +324,15 @@ imaginary, so its phase-phase term cancels before absolute values. Bessel gives
 a joint squared error budget $e^{-36}$ for the coefficient integrals omitted
 beyond radius six. Nine rational Bernstein panels and a positive shifted
 polynomial prove $|P(s)|^2\ge37/100$ on the entire nonnegative half-line.
+The Hermite creation operators give the radial polynomial, its Laguerre
+equation and the coefficient integral. A combined Green boundary term gives
+the energy pairing under explicit derivative, integrability and boundary
+hypotheses. For coefficient enclosure, a nonnegative inverse-modulus
+approximation satisfies
+$\|Wz-\ph(z)\|\le|W^2\|z\|^2-1|$.
+Uniform spatial error $\varepsilon$ inside radius $R$, with zero approximation
+outside, gives one joint squared coefficient budget
+$\varepsilon^2+e^{-R^2}$ for all modes. The approximant need not be disk-valued.
 These proofs add no native facts. The pinned 120-coefficient tables are
 provenance inputs; their integral enclosures and the numerical radial energy
 bounds remain separate Lean obligations. See \path{Grothe/HJM/Origin.lean}
