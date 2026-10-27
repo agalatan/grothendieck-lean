@@ -89,7 +89,7 @@ private theorem gap_eval (s : ℝ) :
       (ofListQ OriginData.pImag).eval s ^ 2 - 37 / 100 := by
   norm_num [OriginNonvanishingData.gap, OriginData.pReal, OriginData.pImag,
     ofListQ, evalL]
-  <;> ring
+  ring
 
 /-- A rational squared-norm margin for every nonnegative radial parameter. -/
 theorem norm_P_sq_lower (s : ℝ) (hs : 0 ≤ s) : (37 : ℝ) / 100 ≤ ‖P s‖ ^ 2 := by
@@ -111,6 +111,6 @@ theorem norm_P_lower (s : ℝ) (hs : 0 ≤ s) : (3 : ℝ) / 5 < ‖P s‖ := by
 theorem P_ne_zero (s : ℝ) (hs : 0 ≤ s) : P s ≠ 0 := by
   intro h
   have hn := norm_P_lower s hs
-  simp [h] at hn
+  norm_num [h] at hn
 
 end Grothe.HJM.Origin
