@@ -3,8 +3,8 @@ import Grothe.Upper.Haagerup
 /-!
 # Splitting a composed tail at a phase index
 
-`compCoeff haagCoeff Q = compCoeff (cLo K) Q + compCoeff (cHi K) Q`, so the tail from any output mode `N` is at
-most the two partial tails (`tail_split`), and a tail of the outer part is at most its whole series
+`compCoeff haagCoeff Q = compCoeff (cLo K) Q + compCoeff (cHi K) Q` (`compCoeff_split`), so the tail from any output
+mode `N` is at most the two partial tails (`tail_split`), and a tail of the outer part is at most its whole series
 (`tail_le_whole`).
 -/
 
@@ -12,25 +12,33 @@ namespace Grothe.HJM
 
 open Polynomial
 
-/-- The tail from mode `N` splits into the phase coefficients below and from `K`. -/
-lemma tail_split {Q : ℝ[X]} (hQ : l1 Q ≤ 1) (K N : ℕ) :
-    ∑' n, |compCoeff haagCoeff Q (n + N)| ≤
-      ∑' n, |compCoeff (cLo K) Q (n + N)| + ∑' n, |compCoeff (cHi K) Q (n + N)| := by
-  have hsplit (n : ℕ) : |compCoeff haagCoeff Q n| ≤ |compCoeff (cLo K) Q n| + |compCoeff (cHi K) Q n| := by
-    have e : compCoeff haagCoeff Q n = compCoeff (cLo K) Q n + compCoeff (cHi K) Q n := by
-      rw [← compCoeff_add (summable_cLo _) (summable_cHi _) hQ]
-      exact congrArg (fun c => compCoeff c Q n) (funext fun k => by unfold cLo cHi; split_ifs <;> ring)
-    rw [e]; exact abs_add_le _ _
-  have hlo : Summable fun n => |compCoeff (cLo K) Q (n + N)| :=
-    (summable_nat_add_iff N).2 (summable_abs_compCoeff (summable_cLo _) hQ)
-  have hhi : Summable fun n => |compCoeff (cHi K) Q (n + N)| :=
-    (summable_nat_add_iff N).2 (summable_abs_compCoeff (summable_cHi K) hQ)
-  have hk : Summable fun n => |compCoeff haagCoeff Q (n + N)| :=
-    (summable_nat_add_iff N).2 (summable_abs_compCoeff summable_haagCoeff hQ)
-  exact (Summable.tsum_le_tsum (fun n => hsplit (n + N)) hk (hlo.add hhi)).trans (le_of_eq (hlo.tsum_add hhi))
+variable {Q : ℝ[X]} (hQ : l1 Q ≤ 1)
+include hQ
 
-/-- A tail of a nonnegative series is at most the whole series. -/
-lemma tail_le_whole {Q : ℝ[X]} (hQ : l1 Q ≤ 1) (K N : ℕ) :
+lemma compCoeff_split (K n : ℕ) :
+    compCoeff haagCoeff Q n = compCoeff (cLo K) Q n + compCoeff (cHi K) Q n := by
+  rw [← compCoeff_add (summable_cLo _) (summable_cHi _) hQ]
+  exact congrArg (fun c => compCoeff c Q n) (funext fun k => by unfold cLo cHi; split_ifs <;> ring)
+
+lemma abs_compCoeff_split (K n : ℕ) :
+    |compCoeff haagCoeff Q n| ≤ |compCoeff (cLo K) Q n| + |compCoeff (cHi K) Q n| := by
+  rw [compCoeff_split hQ K n]; exact abs_add_le _ _
+
+lemma summable_tail (c : ℕ → ℝ) (hc : Summable fun k => |c k|) (N : ℕ) :
+    Summable fun n => |compCoeff c Q (n + N)| :=
+  (summable_nat_add_iff N).2 (summable_abs_compCoeff hc hQ)
+
+/-- The tail from mode `N` is at most the tails of the phase coefficients below and from `K`. -/
+lemma tail_split (K N : ℕ) :
+    ∑' n, |compCoeff haagCoeff Q (n + N)| ≤
+      ∑' n, |compCoeff (cLo K) Q (n + N)| + ∑' n, |compCoeff (cHi K) Q (n + N)| :=
+  (Summable.tsum_le_tsum (fun n => abs_compCoeff_split hQ K (n + N))
+      (summable_tail hQ _ summable_haagCoeff N)
+      ((summable_tail hQ _ (summable_cLo K) N).add (summable_tail hQ _ (summable_cHi K) N))).trans
+    (le_of_eq ((summable_tail hQ _ (summable_cLo K) N).tsum_add (summable_tail hQ _ (summable_cHi K) N)))
+
+/-- A tail of the outer part is at most its whole series. -/
+lemma tail_le_whole (K N : ℕ) :
     ∑' n, |compCoeff (cHi K) Q (n + N)| ≤ ∑' n, |compCoeff (cHi K) Q n| := by
   have hhi' := summable_abs_compCoeff (summable_cHi K) hQ
   rw [← hhi'.sum_add_tsum_nat_add N]
