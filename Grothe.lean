@@ -521,6 +521,7 @@ import Grothe.UpperChaos.GradedHermiteFn
 import Grothe.UpperChaos.GradedHermiteIntegerEnergy
 import Grothe.UpperChaos.GradedHermiteLinear
 import Grothe.UpperChaos.GradedHermitePhaseSlice
+import Grothe.UpperChaos.GradedUnitBasis
 import Grothe.UpperChaos.GroupedComparison
 import Grothe.UpperChaos.GroupedRounder
 import Grothe.UpperChaos.HardyArcCircle
@@ -578,6 +579,8 @@ import Grothe.UpperChaos.PhaseMomentData
 import Grothe.UpperChaos.PhaseMomentEval
 import Grothe.UpperChaos.PhaseMomentNorms
 import Grothe.UpperChaos.PhaseMoments
+import Grothe.UpperChaos.PhaseRadialTail
+import Grothe.UpperChaos.PhaseTailExponential
 import Grothe.UpperChaos.PhiBound
 import Grothe.UpperChaos.PhiCover
 import Grothe.UpperChaos.PhiCoverCheck
@@ -591,6 +594,7 @@ import Grothe.UpperChaos.PhiCoverData
 import Grothe.UpperChaos.PhiDense
 import Grothe.UpperChaos.PhiHorner
 import Grothe.UpperChaos.ProductComplete
+import Grothe.UpperChaos.ProfileRootNormalization
 import Grothe.UpperChaos.ProfileRootScreen
 import Grothe.UpperChaos.ProjectionUnion
 import Grothe.UpperChaos.RadialCeiling
@@ -635,6 +639,7 @@ import Grothe.UpperChaos.TaylorInnerFubini
 import Grothe.UpperChaos.TaylorInnerLaplace
 import Grothe.UpperChaos.TaylorMoments
 import Grothe.UpperChaos.TaylorPhase
+import Grothe.UpperChaos.TaylorRadialTail
 import Grothe.UpperChaos.TaylorRounding
 import Grothe.UpperChaos.TaylorRoundingData
 import Grothe.UpperChaos.TaylorSecondBandNorms

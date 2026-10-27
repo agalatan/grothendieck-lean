@@ -11,7 +11,7 @@ branch=$1; shift
 files=("$@")
 tip=$(git rev-parse --short "origin/$branch")
 master=$(git rev-parse --short origin/master)
-log=$(git log --format=%B "origin/master..origin/$branch")
+log=$(git log --reverse --format=%B "origin/master..origin/$branch")   # oldest first: the creator leads
 owners=$(printf '%s\n' "$log" | sed -nE 's/.*Agent-ID: *([A-Za-z]+-[0-9a-f]+).*/\1/p')
 # the owner named by the branch (AGENTS.md §3: ready/<agent-id>-<topic>) comes first
 [[ "$branch" =~ ^ready/((codex|claude)-[0-9a-f]{4})- ]] && owners="${BASH_REMATCH[1]}

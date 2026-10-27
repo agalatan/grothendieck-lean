@@ -59,8 +59,21 @@ This is whole-module time, not isolated native evaluation. The fourth- and sixth
 which passed the full build and axiom audit. This addition does
 not discharge `ComparisonInputs` or `energy_close` and changes no headline bound.
 
+**Production phase radial tail.** `phase_cutoff_factor_check` evaluates
+`cutPhasePowerMoment phaseTerms phaseEpsQ 50 1` in exact rational arithmetic.
+The restricted Gaussian integration theorem binds this computation directly
+to the actual phase. `integral_phiT_sq_radial_tail_lt` combines it with a
+kernel proof of `exp(-155) < 148⁻³¹`, giving the squared tail bound
+`(5/10^15)^2`. No external radial coefficient table is imported. The numerical
+module and its positive Taylor-source L² consequence passed a focused local
+replay and the full build and axiom audit in
+[delivery run 40581194949](https://github.com/agalatan/grothendieck-lean/actions/runs/40581194949).
+The phase-tail module built in 6.8 seconds; this includes the analytic transfer
+and is not an isolated timing of the native computation.
+
 | Fact | Source native site | Allowlist | Report coverage | Runtime evidence |
 |---|---|---|---|---|
+| `Grothe.UpperChaos.phase_cutoff_factor_check` | `Grothe/UpperChaos/PhaseRadialTail.lean` | yes | Direct #print axioms; also used by integral_phiT_sq_radial_tail_lt | [Run 40581194949](https://github.com/agalatan/grothendieck-lean/actions/runs/40581194949): full build and axiom audit passed; 6.8 s whole-module build |
 | `Grothe.HJM.OriginUnweightedLeftAggregate.rationalFacts` | `Grothe/HJM/OriginUnweightedLeftAggregate.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
 | `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock00` | `Grothe/HJM/OriginUnweightedLeftCombined00.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
 | `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock01` | `Grothe/HJM/OriginUnweightedLeftCombined01.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
