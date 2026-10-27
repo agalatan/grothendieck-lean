@@ -1,0 +1,39 @@
+{
+  "agent_id": "codex-2ca4",
+  "archive_name": "grothendieck-1404599424-lean-handoff.zip",
+  "archive_prefix": "grothendieck-1404599424-lean-handoff/new/",
+  "inputs": [
+    {
+      "path": "inputs/arb_first_phase_D181.npz",
+      "archive_member": "grothendieck-1404599424-lean-handoff/new/certification/arb_first_phase_D181.npz",
+      "sha256": "6d9b2fbe2b60a03600591ab386900d102b38977f9836682cbd80ab818b7d314c",
+      "size_bytes": 4153020,
+      "source_degree": 181,
+      "retained_degree": 181
+    },
+    {
+      "path": "inputs/arb_phase_power2_D151.npz",
+      "archive_member": "grothendieck-1404599424-lean-handoff/new/residual_completion/arb_phase_power2_D151.npz",
+      "sha256": "170a5bc62909cd904bd45e18b9ca1efdf254d1d1ff9c936f7736aab5c5934609",
+      "size_bytes": 2434940,
+      "source_degree": 151,
+      "retained_degree": 91
+    },
+    {
+      "path": "inputs/arb_phase_power3_D51.npz",
+      "archive_member": "grothendieck-1404599424-lean-handoff/new/residual_completion/arb_phase_power3_D51.npz",
+      "sha256": "4f819bafe16fbd36d574f62c5359ca2ac7a98faf1a8438b401cb829e951dd8b1",
+      "size_bytes": 105340,
+      "source_degree": 51,
+      "retained_degree": 51
+    },
+    {
+      "path": "inputs/frozen_taylor_correction_D201.npz",
+      "archive_member": "grothendieck-1404599424-lean-handoff/new/global_norm/frozen_taylor_correction_D201.npz",
+      "sha256": "e8b401a53806fd7e6801906ca531048660f85f102d32b6591fe3f198373de2c1",
+      "size_bytes": 2853658,
+      "source_degree": 201,
+      "retained_degree": 201
+    }
+  ]
+}

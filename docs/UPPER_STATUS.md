@@ -181,7 +181,15 @@ Progress (claude/hardy, 26 Oct):
   still need captured Hermite energy and approximation errors. Exact targets, the integration
   formula and reproduction instructions are in
   [data/phase-moments](../data/phase-moments/README.md).
-  The other Hermite-tail and coefficient inputs are still separate obligations.
+  The original approximant inputs and frozen correction have been recovered
+  with matching hashes in `data/taylor-approximants/inputs/`. `TaylorBandCheck`
+  supplies the full third-center certificate through degree 51, including all
+  four finite bands and exact vanishing on the tail. The first and second
+  centers and the rounding norm still need their own finite checks.
+  `ThirdCapturedTail` derives the existing third tail cap from four slightly
+  tighter finite-band Gaussian error premises, with a concrete pointwise center
+  satisfying `ChargeFn`. Those errors and the other Taylor-source inputs remain
+  separate obligations.
 * The refined lower endpoint is `1.401697049825`, conditional on the same
   `NodeCaps`, through `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`.
   The single `Grothe` target includes the 60 range facts and their final assembly;
