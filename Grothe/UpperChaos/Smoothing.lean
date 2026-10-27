@@ -87,21 +87,22 @@ lemma norm_smoothOp_le (f : Lp ℂ 2 mu2) : ‖smoothOp f‖ ≤ ‖f‖ := by
     _ = ‖f‖ := one_mul _
 
 /-- **`S` on a bounded function is its smoothing** `x ↦ E_Z f(Mx + NZ)`. -/
-theorem smoothOp_toLp {f : ℂ × ℂ → ℂ} (hfm : Measurable f) {C : ℝ} (hfb : ∀ u, ‖f u‖ ≤ C)
+theorem smoothOp_toLp {f : ℂ × ℂ → ℂ} (hfm : Measurable f)
     (hfL : MemLp f 2 mu2) (hgL : MemLp (fun x => ∫ Z, f (smoothArg x Z) ∂mu2) 2 mu2) :
     smoothOp (hfL.toLp f) = hgL.toLp (fun x => ∫ Z, f (smoothArg x Z) ∂mu2) := by
   refine ext_inner_left ℂ fun g => ?_
   have hF : Measurable fun v : (ℂ × ℂ) × (ℂ × ℂ) => f (smoothArg v.1 v.2) := hfm.comp mp_smooth.measurable
-  have hgi : Integrable (g : ℂ × ℂ → ℂ) mu2 := (Lp.memLp g).integrable one_le_two
-  have hgf : Integrable (fun v : (ℂ × ℂ) × (ℂ × ℂ) => (g : ℂ × ℂ → ℂ) v.1) (mu2.prod mu2) :=
-    (mp_fst2.integrable_comp hgi.aestronglyMeasurable).2 hgi
+  have hG2 : MemLp (fun v : (ℂ × ℂ) × (ℂ × ℂ) => (g : ℂ × ℂ → ℂ) v.1) 2 (mu2.prod mu2) :=
+    (Lp.memLp g).comp_measurePreserving mp_fst2
+  have hF2 : MemLp (fun v : (ℂ × ℂ) × (ℂ × ℂ) => f (smoothArg v.1 v.2)) 2 (mu2.prod mu2) :=
+    hfL.comp_measurePreserving mp_smooth
   have hint : Integrable (fun v : (ℂ × ℂ) × (ℂ × ℂ) => conj ((g : ℂ × ℂ → ℂ) v.1) * f (smoothArg v.1 v.2))
       (mu2.prod mu2) := by
-    refine (hgf.norm.mul_const C).mono'
-      ((Complex.continuous_conj.comp_aestronglyMeasurable hgf.aestronglyMeasurable).mul
+    refine (hG2.norm.integrable_mul hF2.norm).mono'
+      ((Complex.continuous_conj.comp_aestronglyMeasurable hG2.aestronglyMeasurable).mul
         hF.aestronglyMeasurable) (Filter.Eventually.of_forall fun v => ?_)
-    rw [norm_mul, Complex.norm_conj]
-    exact mul_le_mul_of_nonneg_left (hfb _) (norm_nonneg _)
+    rw [norm_mul, Complex.norm_conj, Pi.mul_apply, Real.norm_eq_abs, abs_of_nonneg
+      (mul_nonneg (norm_nonneg _) (norm_nonneg _))]
   have h1 : (fun v : (ℂ × ℂ) × (ℂ × ℂ) => ⟪(PXs g : _ → ℂ) v, (PS (hfL.toLp f) : _ → ℂ) v⟫_ℂ)
       =ᵐ[mu2.prod mu2] fun v => conj ((g : ℂ × ℂ → ℂ) v.1) * f (smoothArg v.1 v.2) := by
     filter_upwards [Lp.coeFn_compMeasurePreserving g mp_fst2,
@@ -116,6 +117,36 @@ theorem smoothOp_toLp {f : ℂ × ℂ → ℂ} (hfm : Measurable f) {C : ℝ} (h
   refine integral_congr_ae ?_
   filter_upwards [hgL.coeFn_toLp] with x hx
   rw [hx, RCLike.inner_apply, integral_const_mul]; ring
+
+/-- The constant mode `h_{00,00} = 1`. -/
+abbrev idx0 : Idx2 := ((0, 0), (0, 0))
+
+lemma hfun2_idx0 (u : ℂ × ℂ) : hfun2 idx0 u = 1 := by
+  simp [hfun2, nrm2, fac2, H2, H_zero_zero, ev]
+
+/-- The constant coefficient is the mean. -/
+lemma inner_hvec2_idx0 (g : Lp ℂ 2 mu2) : ⟪hvec2 idx0, g⟫_ℂ = ∫ u, (g : ℂ × ℂ → ℂ) u ∂mu2 := by
+  rw [hvec2, L2.inner_def]
+  refine integral_congr_ae ?_
+  filter_upwards [(memLp_hfun2 idx0).coeFn_toLp] with u hu
+  rw [hu, hfun2_idx0, RCLike.inner_apply, map_one, one_mul]
+
+/-- **`S` preserves the mean** (`Mx + NZ` is standard). -/
+theorem inner_idx0_smoothOp (g : Lp ℂ 2 mu2) : ⟪hvec2 idx0, smoothOp g⟫_ℂ = ⟪hvec2 idx0, g⟫_ℂ := by
+  rw [inner_smoothOp, L2.inner_def, inner_hvec2_idx0]
+  have h : (fun v : (ℂ × ℂ) × (ℂ × ℂ) => ⟪(PXs (hvec2 idx0) : _ → ℂ) v, (PS g : _ → ℂ) v⟫_ℂ)
+      =ᵐ[mu2.prod mu2] fun v => (g : ℂ × ℂ → ℂ) (smoothArg v.1 v.2) := by
+    filter_upwards [Lp.coeFn_compMeasurePreserving (hvec2 idx0) mp_fst2,
+      Lp.coeFn_compMeasurePreserving g mp_smooth,
+      mp_fst2.quasiMeasurePreserving.ae_eq_comp (memLp_hfun2 idx0).coeFn_toLp] with v ha hb hc
+    change ⟪(Lp.compMeasurePreserving Prod.fst mp_fst2 (hvec2 idx0) : _ → ℂ) v,
+      (Lp.compMeasurePreserving _ mp_smooth g : _ → ℂ) v⟫_ℂ = _
+    rw [ha, hb]
+    simp only [Function.comp_apply] at hc ⊢
+    rw [show ((hvec2 idx0 : Lp ℂ 2 mu2) : ℂ × ℂ → ℂ) v.1 = 1 by rw [hvec2, hc, hfun2_idx0],
+      RCLike.inner_apply, map_one, mul_one]
+  rw [integral_congr_ae h]
+  exact mp_smooth.integral_comp' (f := fun v : (ℂ × ℂ) × (ℂ × ℂ) => smoothArg v.1 v.2) _ |>.trans rfl
 
 end
 
