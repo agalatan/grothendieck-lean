@@ -34,29 +34,29 @@ def ouCLM (ρ : ℝ) : (ℂ × ℂ) × (ℂ × ℂ) →L[ℝ] ℂ × ℂ :=
 
 lemma ouCLM_apply (ρ : ℝ) (v : (ℂ × ℂ) × (ℂ × ℂ)) : ouCLM ρ v = Yof ρ ρ (shuffle v) := rfl
 
+lemma mp_shuffle2 : MeasurePreserving (shuffle : (ℂ × ℂ) × (ℂ × ℂ) → _) (mu2.prod mu2) mu4 :=
+  measurePreserving_shuffle_prod Grothe.LowerAnalytic.gaussC
+
+lemma lam_diag (ρ : ℝ) (i : Idx2) : lam (ρ : ℂ) (ρ : ℂ) i = (ρ : ℂ) ^ tdeg i := by
+  simp only [lam, Complex.conj_ofReal, tdeg]; ring
+
 variable {ρ : ℝ} (hρ : |ρ| ≤ 1)
 include hρ
 
 lemma norm_ofReal_le : ‖(ρ : ℂ)‖ ≤ 1 := by rwa [Complex.norm_real, Real.norm_eq_abs]
 
-lemma mp_shuffle2 : MeasurePreserving (shuffle : (ℂ × ℂ) × (ℂ × ℂ) → _) (mu2.prod mu2) mu4 :=
-  measurePreserving_shuffle_prod Grothe.LowerAnalytic.gaussC
-
 /-- `ρx + σW` is standard. -/
 lemma mp_ou : MeasurePreserving (ouCLM ρ) (mu2.prod mu2) mu2 :=
-  (mp_Y (norm_ofReal_le hρ) (norm_ofReal_le hρ)).comp (mp_shuffle2 hρ)
+  (mp_Y (norm_ofReal_le hρ) (norm_ofReal_le hρ)).comp mp_shuffle2
 
 /-- **The Ornstein–Uhlenbeck smoothing.** -/
 def ouOp : Lp ℂ 2 mu2 →L[ℂ] Lp ℂ 2 mu2 := gOp (ouCLM ρ) (mp_ou hρ)
-
-lemma lam_diag (i : Idx2) : lam (ρ : ℂ) (ρ : ℂ) i = (ρ : ℂ) ^ tdeg i := by
-  simp only [lam, Complex.conj_ofReal, tdeg]; ring
 
 /-- **`T_ρ` is diagonal on the Hermite basis**, with eigenvalue `ρ^{|i|}`. -/
 theorem inner_hvec2_ouOp (j k : Idx2) :
     ⟪hvec2 j, ouOp hρ (hvec2 k)⟫_ℂ = if j = k then (ρ : ℂ) ^ tdeg j else 0 := by
   have h₁ := norm_ofReal_le hρ
-  rw [← lam_diag hρ, ← Bm_hvec2 h₁ h₁ j k, Bm_eq_integral, ouOp, inner_gOp, L2.inner_def]
+  rw [← lam_diag ρ, ← Bm_hvec2 h₁ h₁ j k, Bm_eq_integral, ouOp, inner_gOp, L2.inner_def]
   have hj := Lp.aestronglyMeasurable (hvec2 j)
   have hk := Lp.aestronglyMeasurable (hvec2 k)
   -- the integrand on `mu2 ⊗ mu2`, and the Mehler integrand on `mu4` after the shuffle
@@ -74,10 +74,10 @@ theorem inner_hvec2_ouOp (j k : Idx2) :
   rw [integral_congr_ae h1]
   have hG : AEStronglyMeasurable (fun ω => conj ((hvec2 j : ℂ × ℂ → ℂ) (Xof ω)) *
       (hvec2 k : ℂ × ℂ → ℂ) (Yof ρ ρ ω)) (Measure.map shuffle (mu2.prod mu2)) := by
-    rw [(mp_shuffle2 hρ).map_eq]
+    rw [mp_shuffle2.map_eq]
     exact (Complex.continuous_conj.comp_aestronglyMeasurable (hj.comp_measurePreserving mp_X)).mul
       (hk.comp_measurePreserving (mp_Y h₁ h₁))
-  rw [← integral_map (mp_shuffle2 hρ).measurable.aemeasurable hG, (mp_shuffle2 hρ).map_eq]
+  rw [← integral_map mp_shuffle2.measurable.aemeasurable hG, mp_shuffle2.map_eq]
 
 /-- **`T_ρ` acts coefficientwise**: `⟪h_j, T_ρ g⟫ = ρ^{|j|} ⟪h_j, g⟫`. -/
 theorem inner_ouOp (j : Idx2) (g : Lp ℂ 2 mu2) :
