@@ -18,7 +18,7 @@ theorem exp_neg_div_div_le_inv (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
   calc
     Real.exp (-(a / b)) / b = (x * Real.exp (-x)) / a := by
       dsimp [x]
-      field_simp [ne_of_gt ha, ne_of_gt hb]; ring
+      field_simp [ne_of_gt ha, ne_of_gt hb]
     _ ≤ 1 / a := div_le_div_of_nonneg_right hbound ha.le
 
 /-- A point in the affine small-ball event lies in the Gaussian tail. -/
@@ -41,7 +41,9 @@ theorem gaussian_affine_small_ball_density_bound
     have ht0 : 0 ≤ |σ| * ‖w‖ := mul_nonneg (abs_nonneg _) (norm_nonneg _)
     have hp := sq_le_sq₀ hd.le ht0 |>.2 htail
     simpa only [mul_pow, sq_abs] using hp
-  have hfrac : d ^ 2 / σ ^ 2 ≤ ‖w‖ ^ 2 := (div_le_iff₀ hσ2).2 hsq
+  have hfrac : d ^ 2 / σ ^ 2 ≤ ‖w‖ ^ 2 := by
+    apply (div_le_iff₀ hσ2).2
+    simpa only [mul_comm] using hsq
   have hexp : Real.exp (-‖w‖ ^ 2) ≤ Real.exp (-(d ^ 2 / σ ^ 2)) :=
     Real.exp_le_exp.mpr (neg_le_neg hfrac)
   calc

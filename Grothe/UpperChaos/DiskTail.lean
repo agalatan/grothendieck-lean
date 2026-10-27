@@ -1,5 +1,5 @@
 import Mathlib.MeasureTheory.Function.LpSeminorm.Indicator
-import Mathlib.Data.Complex.Basic
+import Mathlib.Basic.Complex.Basic
 import Mathlib.Tactic
 
 /-! An abstract L² tail bound for disk-valued responses.
