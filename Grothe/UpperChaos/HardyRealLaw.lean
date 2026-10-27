@@ -81,26 +81,26 @@ def pairMap (a b c : ℝ) : (ℂ × ℂ) × (ℂ × ℂ) →L[ℝ] (ℂ × ℂ) 
 
 section MN
 
-private lemma sq_sqrt_eta : √(etaQ : ℝ) ^ 2 = etaQ := Real.sq_sqrt (by norm_num [etaQ])
-private lemma sq_sqrt_one_sub_eta : √(1 - (etaQ : ℝ)) ^ 2 = 1 - etaQ := Real.sq_sqrt (by norm_num [etaQ])
-private lemma pu_mul : pu * (1 + (bQ : ℝ) ^ 2) = 1 := by
+private lemma sq_sqrt_eta : √(Grothe.Upper.etaQ : ℝ) ^ 2 = Grothe.Upper.etaQ := Real.sq_sqrt (by norm_num [Grothe.Upper.etaQ])
+private lemma sq_sqrt_one_sub_eta : √(1 - (Grothe.Upper.etaQ : ℝ)) ^ 2 = 1 - Grothe.Upper.etaQ := Real.sq_sqrt (by norm_num [Grothe.Upper.etaQ])
+private lemma pu_mul : pu * (1 + (Grothe.Upper.bQ : ℝ) ^ 2) = 1 := by
   rw [pu]; field_simp
 
 lemma mn_00 : m00 ^ 2 + m01 ^ 2 + n00 ^ 2 + n01 ^ 2 = 1 := by
   have h1 := sq_sqrt_eta; have h2 := sq_sqrt_one_sub_eta; have h3 := pu_mul
   simp only [m00, m01, n00, n01]
-  linear_combination (1 - pu) * h1 + (1 - pu) * h2 + pu * ((1 - √(etaQ : ℝ)) ^ 2 + √(1 - (etaQ : ℝ)) ^ 2) * h3
+  linear_combination (1 - pu) * h1 + (1 - pu) * h2 + pu * ((1 - √(Grothe.Upper.etaQ : ℝ)) ^ 2 + √(1 - (Grothe.Upper.etaQ : ℝ)) ^ 2) * h3
 
 lemma mn_01 : m00 * m01 + m01 * m11 + n00 * n01 + n01 * n11 = 0 := by
   have h1 := sq_sqrt_eta; have h2 := sq_sqrt_one_sub_eta; have h3 := pu_mul
   simp only [m00, m01, m11, n00, n01, n11]
-  linear_combination (-(pu * bQ)) * h1 + (-(pu * bQ)) * h2 + pu * bQ * ((1 - √(etaQ : ℝ)) ^ 2 + √(1 - (etaQ : ℝ)) ^ 2) * h3
+  linear_combination (-(pu * Grothe.Upper.bQ)) * h1 + (-(pu * Grothe.Upper.bQ)) * h2 + pu * Grothe.Upper.bQ * ((1 - √(Grothe.Upper.etaQ : ℝ)) ^ 2 + √(1 - (Grothe.Upper.etaQ : ℝ)) ^ 2) * h3
 
 lemma mn_11 : m01 ^ 2 + m11 ^ 2 + n01 ^ 2 + n11 ^ 2 = 1 := by
   have h1 := sq_sqrt_eta; have h2 := sq_sqrt_one_sub_eta; have h3 := pu_mul
   simp only [m01, m11, n01, n11]
-  linear_combination (1 - pu * bQ ^ 2) * h1 + (1 - pu * bQ ^ 2) * h2
-    + pu * bQ ^ 2 * ((1 - √(etaQ : ℝ)) ^ 2 + √(1 - (etaQ : ℝ)) ^ 2) * h3
+  linear_combination (1 - pu * Grothe.Upper.bQ ^ 2) * h1 + (1 - pu * Grothe.Upper.bQ ^ 2) * h2
+    + pu * Grothe.Upper.bQ ^ 2 * ((1 - √(Grothe.Upper.etaQ : ℝ)) ^ 2 + √(1 - (Grothe.Upper.etaQ : ℝ)) ^ 2) * h3
 
 end MN
 
