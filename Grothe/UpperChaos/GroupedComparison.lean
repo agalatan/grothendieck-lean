@@ -41,12 +41,14 @@ theorem localized_comparison_grouped {G X : Lp ℂ 2 mu2} (h : ComparisonInputs 
     constructor
     · change 0 ≤ (comparisonGroupRadiusQ g : ℝ)
       exact_mod_cast hg.1
-    · have hq : ((∑ j : ComparisonIndex,
+    · change ∑ j ∈ (univ : Finset GroupedComparisonIndex).filter
+          (fun j => comparisonGroup j = g), ((comparisonBands[j].error : ℝ) ^ 2) ≤
+          (comparisonGroupRadiusQ g : ℝ) ^ 2
+      have hq : ((∑ j : GroupedComparisonIndex,
           if comparisonGroup j = g then comparisonBands[j].error ^ 2 else 0 : ℚ) : ℝ) ≤
           ((comparisonGroupRadiusQ g ^ 2 : ℚ) : ℝ) := by exact_mod_cast hg.2
       rw [sum_filter]
-      simpa only [e, r, comparisonBand, Rat.cast_sum, Rat.cast_pow,
-        apply_ite, Rat.cast_zero] using hq
+      simpa only [Rat.cast_sum, Rat.cast_pow, apply_ite, Rat.cast_zero] using hq
   have hquad : ∑ p ∈ S, ‖energyBlock G p - energyBlock X p‖ ^ 2 ≤
       (∑ g : Fin 4, r g) ^ 2 := by
     have hh := BandComparison.quadratic_sum_le_grouped S (univ : Finset ComparisonIndex)
