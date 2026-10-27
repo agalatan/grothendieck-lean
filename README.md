@@ -422,6 +422,13 @@ the exact weighted cap fits the existing budget without relaxing the ledger.
 For numerical enclosure, a nonnegative inverse-modulus
 polynomial residual controls the phase error; uniform spatial error `ε` inside radius
 `R` gives the joint squared coefficient budget `ε² + exp(-R²)` for all modes.
+The generated `OriginPanels` certificates bind inverse-modulus polynomials
+to the actual numerators on radii `[0,8]`. `OriginPanelBudget` bounds each
+response's Gaussian `L²` approximation error by `1001/10^15`, pricing the
+entire coefficient sequence jointly. The approximants are piecewise
+polynomials, cut off at radius eight. Their Gaussian moment integrals still
+need enclosures before they provide the origin coefficient table or visible
+energy lower bounds.
 These structural results introduce no native facts. The pinned 120-entry interval tables are
 provenance data: their integral enclosures and the two numerical energy bounds still require
 Lean proofs before the six-branch numerical bound follows. See [the origin certificate inventory](data/hjm/origin/README.md).

@@ -414,6 +414,12 @@ $\|Wz-\ph(z)\|\le|W^2\|z\|^2-1|$.
 Uniform spatial error $\varepsilon$ inside radius $R$, with zero approximation
 outside, gives one joint squared coefficient budget
 $\varepsilon^2+e^{-R^2}$ for all modes. The approximant need not be disk-valued.
+Exact generated panel checks now bind inverse-modulus polynomials to both
+actual numerators on radii $[0,8]$. A measurable piecewise polynomial,
+cut off at radius eight, approximates each actual Gaussian response within
+$1001/10^{15}$ in $L^2$. Bessel charges the square of that allowance once
+for the whole coefficient sequence. The polynomial Gaussian moments and
+visible-energy lower bounds still require numerical certificates.
 These proofs add no native facts. The pinned 120-coefficient tables are
 provenance inputs; their integral enclosures and the numerical radial energy
 bounds remain separate Lean obligations. See \path{Grothe/HJM/Origin.lean}

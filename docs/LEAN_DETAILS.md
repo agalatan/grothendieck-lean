@@ -119,6 +119,18 @@ jointly. Two true responses of `L²` norm at most one, each approximated within
 approximants need not be disk-valued. These theorems do not themselves certify
 the proposed polynomial panels or their coefficient integrals.
 
+`OriginPanelAlgebra` binds the saved LEFT/RIGHT coefficient lists to the actual
+numerators, proves the inverse-modulus residual implication and finite panel
+coverage, and defines the measurable piecewise polynomial approximant.
+`OriginPanelsChecks` combines independently generated kernel reductions on
+the radius-eight panels. `OriginPanelBudget` cuts off at the outer endpoint
+and proves each actual response is within `1001/10^15` in Gaussian `L²`.
+The complete charge-one coefficient error uses the square of this allowance
+once. `tools/gen_hjm_origin_panels.py` reproduces every generated file from
+`data/hjm/origin/phase-panels-r8.json` and replays the residuals exactly.
+The Gaussian moments and visible-energy lower bounds remain separate
+certificate obligations.
+
 No native facts are introduced. The full concrete radial energy identity is
 proved; the coefficient-table enclosures and two numerical energy bounds
 remain separate obligations.
