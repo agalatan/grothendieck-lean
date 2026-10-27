@@ -29,9 +29,8 @@ theorem geometry_of_combined (hCombined : (List.range 98).all combinedCheck = tr
   apply List.all_eq_true.mpr
   intro i hi
   have h := (List.all_eq_true.mp hCombined) i hi
-  have h' : geometryCheck i && (signedCheck i && meanCheck i) = true := by
-    simpa only [combinedCheck] using h
-  exact (Bool.and_eq_true.mp h').1
+  simp only [combinedCheck, Bool.and_eq_true] at h
+  exact h.1
 
 /-- The global table shape and endpoints are extracted from an actually
 checked cell; this introduces no separate numerical assumption. -/
@@ -43,16 +42,8 @@ theorem checkedShape (hAll : GeometryOK) :
     edges 0 = 0 ∧ edges 98 = 8 ∧ covers 0 8 rightPanels = true := by
   have h0 : geometryCheck 0 = true :=
     (List.all_eq_true.mp hAll) 0 (by decide)
-  have h0' : dataShape && decide (
-      0 < 98 ∧ parentList.getD 0 0 < rightPanels.length ∧
-      edges 0 < edges (0 + 1) ∧ (parent 0).a ≤ edges 0 ∧
-      edges (0 + 1) ≤ (parent 0).b ∧
-      0 ≤ panelCenter edges 0 ∧ 0 < panelRadius edges 0 ∧
-      panelCenter edges 0 ≤ 8 ∧ variation (panelCenter edges 0) (panelRadius edges 0) ≤ 1 ∧
-      entry correlationLower 0 ≤ entry correlationUpper 0 ∧
-      entry JreLower 0 ≤ entry JreUpper 0 ∧ entry JimLower 0 ≤ entry JimUpper 0) = true := by
-    simpa only [geometryCheck] using h0
-  have hs : dataShape = true := (Bool.and_eq_true.mp h0').1
+  simp only [geometryCheck, Bool.and_eq_true] at h0
+  have hs : dataShape = true := h0.1
   simpa only [dataShape, decide_eq_true_eq] using hs
 
 /-- Every local gate is a property of the exact generated tables. -/

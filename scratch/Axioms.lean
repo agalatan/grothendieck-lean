@@ -287,6 +287,8 @@ import Grothe
 #print axioms Grothe.HJM.OriginPanels.right_checks
 #print axioms Grothe.HJM.OriginPanels.right_cover
 #print axioms Grothe.HJM.OriginPanels.spatial_error_budget
+#print axioms Grothe.HJM.OriginUnweightedGuardedGeometry.leftGeometry
+#print axioms Grothe.HJM.OriginUnweightedGuardedGeometry.rightGeometry
 #print axioms Grothe.HJM.OriginUnweightedLeftAggregate.allCombined
 #print axioms Grothe.HJM.OriginUnweightedLeftAggregate.allGeometry
 #print axioms Grothe.HJM.OriginUnweightedLeftAggregate.allMean
