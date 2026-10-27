@@ -121,6 +121,95 @@ theorem k11_kdet_pos {t : ℝ} (ht0 : 0 ≤ t) (ht1 : t < 1) :
     positivity
   exact (pos_iff_pos_of_mul_pos (hpos.trans_le h)).1 h11
 
+/-! ### The smoothed Mehler correlation -/
+
+/-- `conj T(U) · T(V)`. -/
+def hT (z : (ℂ × ℂ) × (ℂ × ℂ)) : ℂ := conj (Tround z.1) * Tround z.2
+
+lemma measurable_hT : Measurable hT :=
+  (Complex.continuous_conj.measurable.comp (measurable_Tround.comp measurable_fst)).mul
+    (measurable_Tround.comp measurable_snd)
+
+lemma norm_hT_le (hφ : PhiBound) (z : (ℂ × ℂ) × (ℂ × ℂ)) : ‖hT z‖ ≤ 1 := by
+  rw [hT, norm_mul, Complex.norm_conj]
+  exact mul_le_one₀ (norm_Tround_le hφ _) (norm_nonneg _) (norm_Tround_le hφ _)
+
+lemma integrable_of_le_one {α : Type*} [MeasurableSpace α] {μ : Measure α} [IsFiniteMeasure μ]
+    {f : α → ℂ} (hf : Measurable f) (h : ∀ x, ‖f x‖ ≤ 1) : Integrable f μ :=
+  (integrable_const (1 : ℝ)).mono' hf.aestronglyMeasurable (Filter.Eventually.of_forall h)
+
+/-- **Unfolding the smoothing** `G_T(x) = E_Z T(Mx + NZ)` (Fubini). -/
+theorem mehler_smoothed (hφ : PhiBound) (p q : ℝ) :
+    ∫ ω, conj (GT (Xof ω)) * GT (Yof p q ω) ∂mu4 =
+      ∫ v, hT (mehlerPair p q v) ∂(mu4.prod (mu2.prod mu2)) := by
+  have hm : Measurable fun v => hT (mehlerPair p q v) :=
+    measurable_hT.comp (mehlerPair p q).continuous.measurable
+  rw [integral_prod _ (integrable_of_le_one hm fun v => norm_hT_le hφ _)]
+  congr 1; ext ω
+  symm
+  simp only [hT, mehlerPair, LinearMap.coe_toContinuousLinearMap', LinearMap.coe_mk, AddHom.coe_mk]
+  rw [integral_prod_mul (fun Z => conj (Tround (smoothArg (Xof ω) Z)))
+    (fun Z => Tround (smoothArg (Yof p q ω) Z)), integral_conj]
+  rfl
+
+/-- **The Mehler correlation of `G_T` is the continued kernel at a real point.** -/
+theorem mehler_eq_HholPair (hφ : PhiBound) {t : ℝ} (ht0 : 0 < t) (ht1 : t < 1) :
+    ∫ ω, conj (GT (Xof ω)) * GT (Yof (pr t) (qr t) ω) ∂mu4 = HholPair Tround Tround (Rt t) := by
+  obtain ⟨h, hd⟩ := k11_kdet_pos ht0.le ht1
+  have hp : |pr t| ≤ 1 := (abs_pr_le ht0.le ht1.le).trans ht1.le
+  have hq : |qr t| ≤ 1 := (abs_qr_le ht0.le ht1.le).trans ht1.le
+  rw [mehler_smoothed hφ, ← integral_map (mehlerPair (pr t) (qr t)).continuous.measurable.aemeasurable
+      measurable_hT.aestronglyMeasurable, law_swap hp hq rfl rfl rfl h hd,
+    integral_map (pairMap _ _ _).continuous.measurable.aemeasurable measurable_hT.aestronglyMeasurable,
+    integral_prod _ (integrable_of_le_one (measurable_hT.comp (pairMap _ _ _).continuous.measurable)
+      fun v => norm_hT_le hφ _)]
+  simp only [pairMap, LinearMap.coe_toContinuousLinearMap', LinearMap.coe_mk, AddHom.coe_mk]
+  rw [integral_pair_eq_kHol h hd measurable_hT (norm_hT_le hφ), Rt_real]
+  rfl
+
+/-! ### The real identification and the `hardy` input -/
+
+/-- The kernel coefficients of the rounding of the certificate. -/
+abbrev hGT (hφ : PhiBound) : ℕ → ℝ := kernelCoeff (energy ((memLp_GT hφ).toLp GT))
+
+lemma summable_hGT (hφ : PhiBound) : Summable fun j => |hGT hφ j| :=
+  Grothe.Upper.summable_kernelCoeff (summable_abs_energy _)
+
+/-- **Step 1(b), the real identification**, for the rounding of the certificate. -/
+theorem hreal_GT (hφ : PhiBound) (t : ℝ) (ht0 : 0 < t) (ht1 : t < 1) :
+    HasSum (fun j => (hGT hφ j : ℂ) * (t : ℂ) ^ (2 * j + 1)) (HholPair Tround Tround (Rt t)) := by
+  have hP : ‖Grothe.polyKernel Grothe.Upper.primaryPoly (t : ℂ)‖ ≤ 1 := by
+    rw [polyKernel_real _ ht0.le, Complex.norm_real, Real.norm_eq_abs]
+    exact (abs_pr_le ht0.le ht1.le).trans ht1.le
+  have hQ : ‖Grothe.polyKernel Grothe.Upper.auxPoly (t : ℂ)‖ ≤ 1 := by
+    rw [polyKernel_real _ ht0.le, Complex.norm_real, Real.norm_eq_abs]
+    exact (abs_qr_le ht0.le ht1.le).trans ht1.le
+  have hz : ‖(t : ℂ)‖ ≤ 1 := by rw [Complex.norm_real, Real.norm_of_nonneg ht0.le]; exact ht1.le
+  have hB := Bm_polyKernel (chargeOne_toLp (memLp_GT hφ) fun c u hc => GT_rot2 hc u)
+    Grothe.l1_primaryPoly Grothe.l1_auxPoly hz hP hQ
+  rw [Bm_toLp (memLp_GT hφ) hP hQ, polyKernel_real _ ht0.le, polyKernel_real _ ht0.le] at hB
+  change ∫ ω, conj (GT (Xof ω)) * GT (Yof (pr t) (qr t) ω) ∂mu4 = _ at hB
+  rw [mehler_eq_HholPair hφ ht0 ht1] at hB
+  rw [hB, radialKernel]
+  have e : ∀ n : ℕ, ((Grothe.Upper.bivarKernel Grothe.Upper.primaryPoly Grothe.Upper.auxPoly
+      (energy ((memLp_GT hφ).toLp GT)) n : ℝ) : ℂ) * ((t : ℂ) * (((‖(t : ℂ)‖ : ℝ) : ℂ)) ^ (2 * n)) =
+      (hGT hφ n : ℂ) * (t : ℂ) ^ (2 * n + 1) := by
+    intro n
+    rw [Complex.norm_real, Real.norm_of_nonneg ht0.le]
+    simp only [hGT, kernelCoeff]; ring
+  simp_rw [e]
+  refine (Summable.of_norm_bounded (summable_hGT hφ) fun n => ?_).hasSum
+  rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, norm_pow, Complex.norm_real,
+    Real.norm_of_nonneg ht0.le]
+  exact mul_le_of_le_one_right (abs_nonneg _) (pow_le_one₀ ht0.le ht1.le)
+
+/-- **The `hardy` input of the sharp upper bound, proved** for the rounding of the certificate. -/
+theorem hardy_GT (hφ : PhiBound) (J : ℕ) :
+    ∑ n ∈ Finset.range J, kernelCoeff (energy ((memLp_GT hφ).toLp GT)) n ^ 2
+      * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4 :=
+  hardy_of_real measurable_Tround measurable_Tround (norm_Tround_le hφ) (norm_Tround_le hφ)
+    (summable_hGT hφ) (hreal_GT hφ) J
+
 end
 
 end Grothe.UpperChaos.HardyReal
