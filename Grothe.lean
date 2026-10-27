@@ -29,6 +29,7 @@ import Grothe.HJM.PrefixCheck4
 import Grothe.HJM.PrefixCheck5
 import Grothe.HJM.PrefixTable
 import Grothe.HJM.Preprocessors
+import Grothe.HJM.TailSplit
 import Grothe.Haagerup.CanonicalArithmetic
 import Grothe.Haagerup.CanonicalCheck
 import Grothe.Haagerup.CanonicalData
