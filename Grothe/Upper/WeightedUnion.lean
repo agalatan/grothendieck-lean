@@ -61,4 +61,30 @@ theorem weighted_compare_of_cross (S : Finset ι)
       exact sum_le_sum fun i hi => mul_le_of_le_one_left (sq_nonneg _) (hw i hi).2
     _ ≤ _ := add_le_add le_rfl hquad
 
+/-- Square-sum triangle inequality for a finite family of band components. -/
+theorem sum_norm_sub_sq_le (S : Finset ι) (f c : ∀ i, V i) (R T : ℝ)
+    (hR : 0 ≤ R) (hT : 0 ≤ T)
+    (hf : ∑ i ∈ S, ‖f i‖ ^ 2 ≤ R ^ 2)
+    (hc : ∑ i ∈ S, ‖c i‖ ^ 2 ≤ T ^ 2) :
+    ∑ i ∈ S, ‖f i - c i‖ ^ 2 ≤ (R + T) ^ 2 := by
+  have hf' : √(∑ i ∈ S, ‖f i‖ ^ 2) ≤ R := (Real.sqrt_le_left hR).2 hf
+  have hc' : √(∑ i ∈ S, ‖c i‖ ^ 2) ≤ T := (Real.sqrt_le_left hT).2 hc
+  have hcross : ∑ i ∈ S, ‖f i‖ * ‖c i‖ ≤ R * T :=
+    (Real.sum_mul_le_sqrt_mul_sqrt S (fun i => ‖f i‖) (fun i => ‖c i‖)).trans
+      (mul_le_mul hf' hc' (Real.sqrt_nonneg _) hR)
+  have hpoint : ∑ i ∈ S, ‖f i - c i‖ ^ 2 ≤
+      ∑ i ∈ S, (‖f i‖ + ‖c i‖) ^ 2 := by
+    apply sum_le_sum
+    intro i hi
+    exact pow_le_pow_left₀ (norm_nonneg _) (norm_sub_le _ _) 2
+  have hexpand : (∑ i ∈ S, (‖f i‖ + ‖c i‖) ^ 2) =
+      (∑ i ∈ S, ‖f i‖ ^ 2) + 2 * (∑ i ∈ S, ‖f i‖ * ‖c i‖) +
+        ∑ i ∈ S, ‖c i‖ ^ 2 := by
+    calc
+      _ = ∑ i ∈ S, (‖f i‖ ^ 2 + 2 * (‖f i‖ * ‖c i‖) + ‖c i‖ ^ 2) := by
+        apply sum_congr rfl; intro i hi; ring
+      _ = _ := by rw [sum_add_distrib, sum_add_distrib, mul_sum]
+  rw [hexpand] at hpoint
+  nlinarith
+
 end Grothe.Upper.BandComparison
