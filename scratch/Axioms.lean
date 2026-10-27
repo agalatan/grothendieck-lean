@@ -1086,9 +1086,14 @@ import Grothe
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
 #print axioms Grothe.UpperChaos.TaylorRadialTail.integral_hpow_sq_cut_fifty_lt
 #print axioms Grothe.UpperChaos.TaylorRadialTail.integral_hpow_sq_cut_le
+#print axioms Grothe.UpperChaos.TaylorRadialTail.measure_cutoffSet
+#print axioms Grothe.UpperChaos.TaylorRadialTail.norm_base_source_sq_eq_exp
+#print axioms Grothe.UpperChaos.TaylorRadialTail.norm_projOn_smooth_source_seventy_lt
 #print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_fifty_lt
 #print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_fifty_sq_lt
+#print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_seventy_lt
 #print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_sq_eq_integral
+#print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_sq_le_exp
 #print axioms Grothe.UpperChaos.TaylorSingularCut.norm_projOn_smooth_source_cutoff_lt
 #print axioms Grothe.UpperChaos.TaylorSingularCut.norm_source_cutoff_lt
 #print axioms Grothe.UpperChaos.Thirteen.fresh_upper_rounder_relaxed
@@ -1201,6 +1206,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.inner_gradedHermite_eq_zero_of_charge
 #print axioms Grothe.UpperChaos.inner_gradedHermite_eq_zero_of_total_degree
 #print axioms Grothe.UpperChaos.inner_gradedHermite_hpow_eq_wick
+#print axioms Grothe.UpperChaos.inner_gradedHermite_softHpow_eq_wick
 #print axioms Grothe.UpperChaos.inner_hpow_eq_phaseLaplace
 #print axioms Grothe.UpperChaos.inner_hpow_eq_phaseLaplace_iterated
 #print axioms Grothe.UpperChaos.inner_hvec2_gradedHermite
@@ -1213,6 +1219,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.integrable_affine_phaseLaplace_monomial
 #print axioms Grothe.UpperChaos.integrable_affine_phaseLaplace_polynomial
 #print axioms Grothe.UpperChaos.integrable_monomial_damped_prod
+#print axioms Grothe.UpperChaos.integrable_mul_softPhaseLaplaceKernel
 #print axioms Grothe.UpperChaos.integrable_norm_rpow_damped
 #print axioms Grothe.UpperChaos.integrable_shifted_monomial_damped
 #print axioms Grothe.UpperChaos.integrable_taylorInnerSource
@@ -1235,9 +1242,12 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_moment_damped
 #print axioms Grothe.UpperChaos.integral_moment_damped_prod
 #print axioms Grothe.UpperChaos.integral_mul_finiteSoftPhase
+#print axioms Grothe.UpperChaos.integral_mul_softPhase_eq_laplace
 #print axioms Grothe.UpperChaos.integral_norm_F0_sq
 #print axioms Grothe.UpperChaos.integral_norm_affine_phaseLaplace_base_tail_le
 #print axioms Grothe.UpperChaos.integral_norm_rpow_damped
+#print axioms Grothe.UpperChaos.integral_norm_softPhaseLaplaceKernel
+#print axioms Grothe.UpperChaos.integral_norm_softPhaseLaplaceKernel_tail_le
 #print axioms Grothe.UpperChaos.integral_phiT_pow_even
 #print axioms Grothe.UpperChaos.integral_phiT_pow_four
 #print axioms Grothe.UpperChaos.integral_phiT_pow_six
@@ -1294,6 +1304,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_hpow_two_sq
 #print axioms Grothe.UpperChaos.norm_integral_affine_phaseLaplace_base
 #print axioms Grothe.UpperChaos.norm_integral_affine_phaseLaplace_base_le
+#print axioms Grothe.UpperChaos.norm_integral_softPhaseLaplace_tail_le
 #print axioms Grothe.UpperChaos.norm_mul_P3_le_one
 #print axioms Grothe.UpperChaos.norm_piece0_taylorCenters_le
 #print axioms Grothe.UpperChaos.norm_piece12_taylorCenters_le
@@ -1305,10 +1316,12 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_projOn_gradedHermite_sq_cast
 #print axioms Grothe.UpperChaos.norm_projOn_hermiteFinite_sq
 #print axioms Grothe.UpperChaos.norm_projOn_hermiteFinite_sq_cast
+#print axioms Grothe.UpperChaos.norm_projOn_hpow_sub_softHpow_cutoff_lt
 #print axioms Grothe.UpperChaos.norm_projOn_residual_le_of_captured
 #print axioms Grothe.UpperChaos.norm_projOn_residual_le_of_captured_family
 #print axioms Grothe.UpperChaos.norm_projOn_residual_sq_le_of_captured
 #print axioms Grothe.UpperChaos.norm_projOn_residual_sq_le_of_captured_family
+#print axioms Grothe.UpperChaos.norm_projOn_smooth_hpow_sub_softHpow_cutoff_lt
 #print axioms Grothe.UpperChaos.norm_projOn_source_le_of_captured_family
 #print axioms Grothe.UpperChaos.norm_projOn_sq_add_le_of_disjoint
 #print axioms Grothe.UpperChaos.norm_projOn_sq_add_norm_sub_projOn_sq
@@ -1386,6 +1399,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.shifted_damped_expansion
 #print axioms Grothe.UpperChaos.smoothOp_ouOp_comm
 #print axioms Grothe.UpperChaos.smoothOp_toLp'
+#print axioms Grothe.UpperChaos.softPhase_eq_laplace
 #print axioms Grothe.UpperChaos.splitAll_cover
 #print axioms Grothe.UpperChaos.sq_mul_exp_neg_le_two
 #print axioms Grothe.UpperChaos.sqrt_ratio_deficit_le

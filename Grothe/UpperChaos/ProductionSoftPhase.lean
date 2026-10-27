@@ -1,4 +1,5 @@
 import Grothe.UpperChaos.ProductionSmallBall
+import Grothe.UpperChaos.SoftPhase
 import Grothe.UpperChaos.ComparisonPieces
 import Mathlib.MeasureTheory.Integral.Layercake
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
@@ -13,10 +14,6 @@ open MeasureTheory Set
 
 namespace Grothe.UpperChaos
 noncomputable section
-
-/-- The phase regularized by a positive squared scale in the denominator. -/
-def softPhase (η : ℝ) (z : ℂ) : ℂ :=
-  z / (Real.sqrt (‖z‖ ^ 2 + η ^ 2) : ℂ)
 
 /-- The softened phase of the actual production argument. -/
 def softF0 (η : ℝ) (u : ℂ × ℂ) : ℂ := softPhase η (basePhaseArg u)

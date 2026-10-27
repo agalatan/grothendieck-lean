@@ -603,6 +603,7 @@ import Grothe.UpperChaos.PhiCoverData
 import Grothe.UpperChaos.PhiDense
 import Grothe.UpperChaos.PhiHorner
 import Grothe.UpperChaos.ProductComplete
+import Grothe.UpperChaos.ProductionRadialTail
 import Grothe.UpperChaos.ProductionSmallBall
 import Grothe.UpperChaos.ProductionSoftPhase
 import Grothe.UpperChaos.ProfileFirstGaussianCell
@@ -635,7 +636,11 @@ import Grothe.UpperChaos.SmoothComm
 import Grothe.UpperChaos.SmoothKernelStability
 import Grothe.UpperChaos.SmoothResponseSeries
 import Grothe.UpperChaos.Smoothing
+import Grothe.UpperChaos.SoftPhase
+import Grothe.UpperChaos.SoftPhaseIntegral
 import Grothe.UpperChaos.SoftPhaseLaplace
+import Grothe.UpperChaos.SoftPhaseLaplaceFubini
+import Grothe.UpperChaos.SoftTaylorWick
 import Grothe.UpperChaos.Structural
 import Grothe.UpperChaos.Sym2R
 import Grothe.UpperChaos.TaylorBandCheck
