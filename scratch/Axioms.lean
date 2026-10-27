@@ -150,8 +150,8 @@ import Grothe
 #print axioms Grothe.HJM.Origin.leftTailEnergy_le_of_visible
 #print axioms Grothe.HJM.Origin.leftUnweightedRationalMassCheck
 #print axioms Grothe.HJM.Origin.leftUnweightedTail_of_64_targets
-#print axioms Grothe.HJM.Origin.left_signedPhaseMean_eq_inner
 #print axioms Grothe.HJM.Origin.leftUnweightedWitness_mass
+#print axioms Grothe.HJM.Origin.left_signedPhaseMean_eq_inner
 #print axioms Grothe.HJM.Origin.left_spatial_tail_budget
 #print axioms Grothe.HJM.Origin.left_testCorrelation_error
 #print axioms Grothe.HJM.Origin.left_visibleEnergy_of_rationalWitness
@@ -212,8 +212,8 @@ import Grothe
 #print axioms Grothe.HJM.Origin.rightTailEnergy_le_of_visible
 #print axioms Grothe.HJM.Origin.rightUnweightedRationalMassCheck
 #print axioms Grothe.HJM.Origin.rightUnweightedTail_of_64_targets
-#print axioms Grothe.HJM.Origin.right_signedPhaseMean_eq_inner
 #print axioms Grothe.HJM.Origin.rightUnweightedWitness_mass
+#print axioms Grothe.HJM.Origin.right_signedPhaseMean_eq_inner
 #print axioms Grothe.HJM.Origin.right_spatial_tail_budget
 #print axioms Grothe.HJM.Origin.right_testCorrelation_error
 #print axioms Grothe.HJM.Origin.right_visibleEnergy_of_rationalWitness
