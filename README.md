@@ -3,21 +3,23 @@
 Machine-checked certificates (Lean 4 + Mathlib) for the best currently known bounds on the
 complex Grothendieck constant:
 
-> **1.401697117301 < K_G^ℂ < 1.404598149141**
->
-> **Unconditional Lean theorem: K_G^ℂ ≤ 1.404909132791.** Its proof uses only the three standard axioms.
+$$1.401697117301 < K_G^{\mathbb{C}} < 1.404598149141$$
 
-The two sharp bounds rest on explicitly stated analytic and computer-assisted inputs.
-The unconditional theorem has no external analytic premises. Its focused axiom policy
-requires 98 results and permits zero native evaluation axioms. The order-10 completion
-uses bounds on combined resolvent products and exact coefficient locality.
+Both bounds rest on explicitly stated analytic and computer-assisted inputs; see
+[what is proved, and under which assumptions](#what-is-proved-and-under-which-assumptions).
 
-A separate **written unconditional refinement gives K_G^ℂ < 1.4048984303**,
-using Heilman–Jones–Malavolta's published construction and numerical estimates.
-The polynomial power check, stronger per-index tail estimate and score
-arithmetic are proved in Lean; the complete production module passes its focused check. The published Gaussian construction and directed
-integration facts remain outside this repository's end-to-end formalization.
-See the [proof and verification record](data/scalar-tail-refinement/PROOF.md).
+| year | who | lower bound | upper bound |
+|---|---|---|---|
+| 1953 | Grothendieck | | $K < \infty$ (the inequality itself) |
+| 1984 | Davie | $1.33807 < K$ | |
+| 1987 | Haagerup | | $K < 1.40490913\ldots$ (Gaussian phase rounding) |
+| Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | $1.35584631827168 < K$ | |
+| Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | $1.4 < K$ | $K < 1.404898554746$ |
+| Oct 2026 | **this repository** | $\mathbf{1.401697117301 < K}$ | $\mathbf{K < 1.404598149141}$ |
+
+Haagerup's integral $1/\gamma^\dagger = 1.4045759\ldots$, where
+$\gamma^\dagger = \int_0^{\pi/2} \cos^2 t \, (1+\sin^2 t)^{-1/2} \, dt$, has been proposed as the exact value;
+it lies inside the interval, $2.22 \cdot 10^{-5}$ below our upper bound.
 
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
@@ -25,35 +27,20 @@ the way, and why the remaining gap is hard.
 
 ## The constant
 
-For a complex matrix A = (a_ij) compare two optimisation problems: over unimodular scalars,
+For a complex matrix $A = (a_{ij})$ compare two optimisation problems: over unimodular scalars,
 
-    C(A) = sup |Σ a_ij · conj(ε_i) · δ_j|        over |ε_i| = |δ_j| = 1,
+$$C(A) = \sup_{|\varepsilon_i| = |\delta_j| = 1} \Big| \sum_{i,j} a_{ij} \, \overline{\varepsilon_i} \, \delta_j \Big|,$$
 
 and over unit vectors in a complex Hilbert space,
 
-    V(A) = sup |Σ a_ij · ⟨x_i, y_j⟩|            over ‖x_i‖ = ‖y_j‖ = 1.
+$$V(A) = \sup_{\lVert x_i \rVert = \lVert y_j \rVert = 1} \Big| \sum_{i,j} a_{ij} \, \langle x_i, y_j \rangle \Big|.$$
 
-Grothendieck's inequality (1953) says that V(A) ≤ K · C(A) for a universal constant K,
-independent of the matrix size and of the Hilbert-space dimension. The smallest such K is the
-complex Grothendieck constant K_G^ℂ. Its exact value is unknown, as is that of the real
-constant K_G^ℝ. The inequality governs tensor norms, absolutely summing operators, the
+Grothendieck's inequality (1953) says that $V(A) \le K \cdot C(A)$ for a universal constant $K$,
+independent of the matrix size and of the Hilbert-space dimension. The smallest such $K$ is the
+complex Grothendieck constant $K_G^{\mathbb{C}}$. Its exact value is unknown, as is that of the real
+constant $K_G^{\mathbb{R}}$. The inequality governs tensor norms, absolutely summing operators, the
 approximation ratio of semidefinite relaxations of quadratic optimisation, and the gap between
 classical and quantum correlations in two-party Bell experiments (real case).
-
-## How the bounds evolved
-
-| year | who | lower bound | upper bound |
-|---|---|---|---|
-| 1953 | Grothendieck | | K < ∞ (the inequality itself) |
-| 1984 | Davie | 1.33807 < K | |
-| 1987 | Haagerup | | K < 1.40490913… (Gaussian phase rounding) |
-| Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
-| Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
-| Oct 2026 | **this repository** | **1.401697117301 < K** | **K < 1.404598149141** |
-| Oct 2026 | this repository, unconditional Lean theorem | | K ≤ 1.404909132791 |
-
-Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
-proposed as the exact value; it lies inside the interval, 2.22·10⁻⁵ below our upper bound.
 
 ## What is proved, and under which assumptions
 
