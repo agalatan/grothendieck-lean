@@ -59,8 +59,17 @@ This is whole-module time, not isolated native evaluation. The fourth- and sixth
 which passed the full build and axiom audit. This addition does
 not discharge `ComparisonInputs` or `energy_close` and changes no headline bound.
 
+**Production phase radial tail.** `phase_cutoff_factor_check` evaluates
+`cutPhasePowerMoment phaseTerms phaseEpsQ 50 1` in exact rational arithmetic.
+The restricted Gaussian integration theorem binds this computation directly
+to the actual phase. `integral_phiT_sq_radial_tail_lt` combines it with a
+kernel proof of `exp(-155) < 148⁻³¹`, giving the squared tail bound
+`(5/10^15)^2`. No external radial coefficient table is imported. Runtime
+evidence for this finite check is pending delivery CI.
+
 | Fact | Source native site | Allowlist | Report coverage | Runtime evidence |
 |---|---|---|---|---|
+| `Grothe.UpperChaos.phase_cutoff_factor_check` | `Grothe/UpperChaos/PhaseRadialTail.lean` | yes | Direct #print axioms; also used by integral_phiT_sq_radial_tail_lt | Pending delivery CI |
 | `Grothe.HJM.OriginUnweightedLeftAggregate.rationalFacts` | `Grothe/HJM/OriginUnweightedLeftAggregate.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
 | `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock00` | `Grothe/HJM/OriginUnweightedLeftCombined00.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
 | `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock01` | `Grothe/HJM/OriginUnweightedLeftCombined01.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |

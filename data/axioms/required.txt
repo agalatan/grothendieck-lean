@@ -869,6 +869,8 @@ Grothe.UpperChaos.ev_phaseNormSlice
 Grothe.UpperChaos.ev_phasePowerSlice
 Grothe.UpperChaos.ev_phaseRealSlice
 Grothe.UpperChaos.ev_taylorSourceSlice
+Grothe.UpperChaos.exp_five_gt_148
+Grothe.UpperChaos.exp_neg_155_lt
 Grothe.UpperChaos.finiteSoftPhase_logGrid
 Grothe.UpperChaos.firstCapturedErrorQ_le_public
 Grothe.UpperChaos.firstCenterBandModes_eq_comparison
@@ -937,6 +939,7 @@ Grothe.UpperChaos.integral_phiT_pow_even
 Grothe.UpperChaos.integral_phiT_pow_four
 Grothe.UpperChaos.integral_phiT_pow_six
 Grothe.UpperChaos.integral_phiT_sq
+Grothe.UpperChaos.integral_phiT_sq_radial_tail_lt
 Grothe.UpperChaos.integral_rpow_neg_five_halves_Ioi
 Grothe.UpperChaos.integral_shifted_moment_damped
 Grothe.UpperChaos.integral_shifted_moment_damped_double
@@ -1003,9 +1006,11 @@ Grothe.UpperChaos.norm_thirdCenter_tail_scaled_le
 Grothe.UpperChaos.norm_thirdCenter_tail_smoothed_le
 Grothe.UpperChaos.norm_third_tail_residual_le_of_captured
 Grothe.UpperChaos.norm_toLp_sq_eq_integral
+Grothe.UpperChaos.phase_cutoff_factor_check
 Grothe.UpperChaos.phase_moment2_check
 Grothe.UpperChaos.phase_moment4_check
 Grothe.UpperChaos.phase_moment6_check
+Grothe.UpperChaos.phase_tail_scalar_bound
 Grothe.UpperChaos.phi_abs_lt_one
 Grothe.UpperChaos.projOn_gradedHermite_eq_zero_of_total_degree
 Grothe.UpperChaos.projOn_hermiteFinite

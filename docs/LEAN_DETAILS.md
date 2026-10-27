@@ -252,6 +252,19 @@ and reproduces the generated targets without expanding polynomial powers.
 Neither `ComparisonInputs` nor `energy_close` is discharged by total energies
 alone, and no headline bound changes.
 
+`RestrictedWick` integrates balanced complex monomials on
+`{(z₁,z₂) : 50 < ‖z₁‖²}`; `RestrictedPhaseMoments` applies the same finite
+Horner evaluator to the production phase. `PhaseRadialTail` checks its exact
+rational factor `B = cutPhasePowerMoment phaseTerms phaseEpsQ 50 1` directly,
+with `0 ≤ B < 148^31 · (5/10^15)^2`. The separate kernel proof in
+`PhaseTailExponential` bounds `exp(-155)` by `148⁻³¹`, using the Taylor
+polynomial through degree twelve at 5. Thus
+`integral_phiT_sq_radial_tail_lt` proves the actual restricted squared
+integral is below `(5/10^15)^2`, without a numerical tail premise. The finite
+factor check uses the registered `native_decide` trust extension; it does
+not use an external radial-coefficient table. This radial tail does not
+certify the remaining finite comparison-band coefficients.
+
 `CapturedTail.norm_projOn_residual_sq_le_of_captured_family` subtracts
 `Σ_i max(0, lower_i − error_i)²` from the total source energy. Its hypotheses
 are pairwise disjoint captured mode sets, disjointness from the tail, vanishing
@@ -1113,6 +1126,7 @@ and the `native_decide` facts pinned in
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
 `Grothe.UpperChaos.phase_moment2_check`, `phase_moment4_check`, and
 `phase_moment6_check` (the exact second, fourth and sixth moments of the production phase),
+`Grothe.UpperChaos.phase_cutoff_factor_check` (the exact factor for its squared radial tail),
 `Grothe.UpperChaos.hardy_arc_part_0`–`3` and `hardy_region_check` (the Hardy circle mean and decay region),
 `Grothe.UpperChaos.phi_cover_check_0`–`5`
 (the phase cover |φ| < 1), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
