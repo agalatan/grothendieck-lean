@@ -1,5 +1,5 @@
 import Grothe.UpperChaos.Rounder
-import LeanCert.Tactic.LeanCert
+import Mathlib.Analysis.Complex.ExponentialBounds
 
 /-!
 # One Gaussian profile cell
@@ -50,10 +50,15 @@ theorem profile_first_gaussian_cell_enclosure :
       (∫ s in (0 : ℝ)..1, lagHalf 1 s ^ 2 * Real.exp (-s)) ∧
     (∫ s in (0 : ℝ)..1, lagHalf 1 s ^ 2 * Real.exp (-s)) ≤
       (54391816194 / 1000000000000 : ℝ) := by
+  have he := abs_le.mp Real.exp_one_near_20
   have hlo : (36787944117144 / 100000000000000 : ℝ) ≤ Real.exp (-1) := by
-    leancert (trust := kernel)
+    rw [Real.exp_neg, inv_eq_one_div]
+    apply (le_div_iff₀ (Real.exp_pos 1)).2
+    linarith [he.2]
   have hhi : Real.exp (-1) ≤ (36787944117145 / 100000000000000 : ℝ) := by
-    leancert (trust := kernel)
+    rw [Real.exp_neg, inv_eq_one_div]
+    apply (div_le_iff₀ (Real.exp_pos 1)).2
+    linarith [he.1]
   rw [profile_first_gaussian_cell_exact]
   constructor <;> linarith
 

@@ -1314,6 +1314,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.phi_abs_lt_one
 #print axioms Grothe.UpperChaos.phi_cubes_ok
 #print axioms Grothe.UpperChaos.poly_complete
+#print axioms Grothe.UpperChaos.profile_first_gaussian_cell_enclosure
+#print axioms Grothe.UpperChaos.profile_first_gaussian_cell_exact
 #print axioms Grothe.UpperChaos.projOn_gradedHermite_eq_zero_of_total_degree
 #print axioms Grothe.UpperChaos.projOn_hermiteFinite
 #print axioms Grothe.UpperChaos.projOn_hermiteFinite_eq_zero

@@ -1026,6 +1026,8 @@ Grothe.UpperChaos.phase_moment4_check
 Grothe.UpperChaos.phase_moment6_check
 Grothe.UpperChaos.phase_tail_scalar_bound
 Grothe.UpperChaos.phi_abs_lt_one
+Grothe.UpperChaos.profile_first_gaussian_cell_enclosure
+Grothe.UpperChaos.profile_first_gaussian_cell_exact
 Grothe.UpperChaos.projOn_gradedHermite_eq_zero_of_total_degree
 Grothe.UpperChaos.projOn_hermiteFinite
 Grothe.UpperChaos.projOn_hermiteFinite_eq_zero
