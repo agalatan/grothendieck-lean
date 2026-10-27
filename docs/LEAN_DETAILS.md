@@ -172,6 +172,19 @@ on which the approximant vanishes using those three scalar inputs. These
 results formalize both tail routes, without certifying the remaining Gaussian
 inner-product enclosures or the approximant coefficient data.
 
+**Finite Taylor centers.** The original three approximant arrays and frozen
+correction are preserved under `data/taylor-approximants/inputs/`, with a
+hash manifest. `HermiteFinite` gives the exact coefficients, total norm and
+projected norms of any finite rational expansion in the normalized tensor
+Hermite basis. `TaylorBandData` decodes the third approximant's degree-11
+prefix as exact binary64 dyadics, indexed by `((q+1-c,q-d),(c,d))` in increasing
+`q` and row-major `c,d` order. `thirdBand11_energy_check` checks the coefficient
+square sum; `norm_thirdBand11_sq` identifies it with the actual vector norm.
+The rational lower and upper enclosures and the charge-one/degree support use
+kernel arithmetic. This certifies one captured center norm, without assuming
+that the stored coefficient-error arrays enclose Gaussian integration errors.
+The remaining bands, rounding discrepancy and error enclosures remain open.
+
 **Phase errors and transported certificates.**
 `Grothe/Upper/ResponseGeometry.lean` proves twelve statements: the exact
 disk support-defect identity, normalized-distance and weighted support-loss

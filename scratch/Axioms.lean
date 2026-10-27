@@ -688,6 +688,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.hermiteBasis
 #print axioms Grothe.UpperChaos.hermiteBasis2
 #print axioms Grothe.UpperChaos.hermite_complete
+#print axioms Grothe.UpperChaos.inner_hvec2_hermiteFinite
 #print axioms Grothe.UpperChaos.inner_ouOp
 #print axioms Grothe.UpperChaos.inner_smoothOp_hvec2_eq_zero
 #print axioms Grothe.UpperChaos.integrable_monomial_damped_prod
@@ -722,6 +723,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_GT_le
 #print axioms Grothe.UpperChaos.norm_band_hpow_sq_le_of_inner
 #print axioms Grothe.UpperChaos.norm_energyBlock_sq
+#print axioms Grothe.UpperChaos.norm_hermiteFinite_sq
+#print axioms Grothe.UpperChaos.norm_hermiteFinite_sq_cast
 #print axioms Grothe.UpperChaos.norm_hpow_one_sq
 #print axioms Grothe.UpperChaos.norm_hpow_sub_sq
 #print axioms Grothe.UpperChaos.norm_hpow_sub_sq_le
@@ -729,6 +732,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_hpow_toLp_sq_eq
 #print axioms Grothe.UpperChaos.norm_hpow_two_sq
 #print axioms Grothe.UpperChaos.norm_mul_P3_le_one
+#print axioms Grothe.UpperChaos.norm_projOn_hermiteFinite_sq
+#print axioms Grothe.UpperChaos.norm_projOn_hermiteFinite_sq_cast
 #print axioms Grothe.UpperChaos.norm_projOn_residual_le_of_captured
 #print axioms Grothe.UpperChaos.norm_projOn_residual_le_of_captured_family
 #print axioms Grothe.UpperChaos.norm_projOn_residual_sq_le_of_captured
@@ -736,6 +741,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_projOn_sq_add_le_of_disjoint
 #print axioms Grothe.UpperChaos.norm_projOn_sq_add_norm_sub_projOn_sq
 #print axioms Grothe.UpperChaos.norm_sq_le_phiT_moment
+#print axioms Grothe.UpperChaos.norm_thirdBand11_sq
 #print axioms Grothe.UpperChaos.norm_toLp_sq_eq_integral
 #print axioms Grothe.UpperChaos.phase_moment2_check
 #print axioms Grothe.UpperChaos.phase_moment4_check
@@ -745,6 +751,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.phi_abs_lt_one
 #print axioms Grothe.UpperChaos.phi_cubes_ok
 #print axioms Grothe.UpperChaos.poly_complete
+#print axioms Grothe.UpperChaos.projOn_hermiteFinite
+#print axioms Grothe.UpperChaos.projOn_hermiteFinite_eq_zero
 #print axioms Grothe.UpperChaos.projOn_projOn_eq_zero_of_disjoint
 #print axioms Grothe.UpperChaos.radial_distance_le_of_sixth_moment
 #print axioms Grothe.UpperChaos.radial_kernel_ceiling
@@ -758,6 +766,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.sum_projOn
 #print axioms Grothe.UpperChaos.sum_sq_le_of_mean_le
 #print axioms Grothe.UpperChaos.summable_abs_energy
+#print axioms Grothe.UpperChaos.thirdBand11_energy_check
+#print axioms Grothe.UpperChaos.thirdBand11_norm_lower
+#print axioms Grothe.UpperChaos.thirdBand11_norm_upper
+#print axioms Grothe.UpperChaos.thirdBand11_support
 #print axioms Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le
 #print axioms Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le_two_mul
 #print axioms Grothe.UpperChaos.walk_sound

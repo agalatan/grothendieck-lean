@@ -149,6 +149,11 @@ $\sum_i\max(0,\ell_i-e_i)^2$ from the total moment, retaining each band's
 error cap. An alternative interface uses one real inner product and the
 approximant norm to bound the whole approximation error. The remaining
 numerical coefficient and integral bounds are explicit hypotheses.
+Finite normalized Hermite expansions have exact rational squared norms.
+The preserved coefficient inputs supply a first concrete captured-band check:
+the third approximant through degree 11 has norm approximately
+$2.121377361367546\cdot10^{-6}$. Its Gaussian approximation error remains a
+separate obligation; the stored error arrays are not treated as proofs.
 
 \paragraph{Radial repair has a quantitative ceiling.}
 Lean certifies the polynomial disk map $z\mapsto zS_6(1-|z|^2)$, where

@@ -1,0 +1,15 @@
+{
+  "source_file": "inputs/arb_phase_power3_D51.npz",
+  "source_sha256": "4f819bafe16fbd36d574f62c5359ca2ac7a98faf1a8438b401cb829e951dd8b1",
+  "source_degree": 51,
+  "band": {
+    "lo": 0,
+    "hi": 11
+  },
+  "coefficient_count": 112,
+  "index_convention": "Cq[c,d] -> ((q+1-c,q-d),(c,d)); q, then c, then d",
+  "basis": "normalized tensor Hermite hvec2",
+  "energy": "107759385294607551260425960875941078430881/23945242826029513411849172299223580994042798784118784",
+  "norm_lower": "1060688680683773228660657/500000000000000000000000000000",
+  "norm_upper": "424275472273509291464263/200000000000000000000000000000"
+}
