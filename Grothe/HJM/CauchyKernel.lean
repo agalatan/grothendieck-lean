@@ -131,7 +131,7 @@ theorem hasSum_hOm {w : ℂ} (hw : ‖w‖ < 1) :
       (1 - w ^ 2 * ((Real.sin θ ^ 2 : ℝ) : ℂ)) ^ (-(1 / 2 : ℂ))) := fun θ =>
     (hasSum_inv_sqrt ((hs1 θ).trans_lt hw2)).mul_left _
   have hbound : ∀ n θ, ‖F n θ‖ ≤ (‖w‖ ^ 2) ^ n := fun n θ => by
-    simp only [hF, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_pow, sq_abs,
+    simp only [hF, norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs,
       abs_of_pos (bin_pos n)]
     have h1 : Real.cos θ ^ 2 ≤ 1 := Real.cos_sq_le_one θ
     have h2 := bin_le_one n
@@ -141,7 +141,7 @@ theorem hasSum_hOm {w : ℂ} (hw : ‖w‖ < 1) :
     calc Real.cos θ ^ 2 * (bin n * (‖w‖ ^ 2 * Real.sin θ ^ 2) ^ n)
         ≤ 1 * (1 * (‖w‖ ^ 2) ^ n) := by
           gcongr
-          · exact (bin_pos n).le
+          · exact mul_nonneg (bin_pos n).le (by positivity)
       _ = (‖w‖ ^ 2) ^ n := by ring
   have hint := intervalIntegral.hasSum_integral_of_dominated_convergence (μ := MeasureTheory.volume)
     (a := 0) (b := Real.pi) (F := F) (fun n _ => (‖w‖ ^ 2) ^ n)
