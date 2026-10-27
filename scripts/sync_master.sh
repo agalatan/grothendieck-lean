@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Bring the local `master` up to date with GitHub (fast-forward only; never commits, never discards).
 # Run it before starting work and before delivering. Safe to run from any worktree, by any agent.
-# It ends with an audit of your remote branches (set AGENT_ID=<your id>; without it, every agent's): stale, red,
-# green-but-unmerged, conflicting with master. Deal with every line about your branches.
+# It ends with an audit of your remote branches (set AGENT_ID=<your id>; without it, every agent's): every branch you
+# pushed, its check (red, green, running for hours), conflicts with master, green ready/ branches that did not merge,
+# branches already in master; each with an ACTION line. Deal with every ACTION line about your branches.
 #   --build   afterwards, start the local master build job (scripts/master_build_job.sh: background, niced,
 #             incremental, in its own worktree) unless it is running or the cache is current. It publishes the
 #             snapshot .lake/master-cache that new worktrees clone (AGENTS.md §5). One job at a time (pid in
@@ -41,11 +42,12 @@ status() {
 # The agent whose branches the audit shows: AGENT_ID (e.g. AGENT_ID=claude-b9ee); empty = every agent.
 AGENT="${AGENT_ID:-}"
 
-owner_of() {  # the ID in the branch name (AGENTS.md §3), else the Agent-ID of its newest commit not in master
+owner_of() {  # the ID in the branch name (AGENTS.md §3), else the Agent-ID of its oldest commit not in master
+  # (its creator: later commits may be another agent's, e.g. a janitor's merge of master)
   local b=$1 c id
   if [[ "$b" =~ ^ready/((codex|claude)-[0-9a-f]{4})- ]]; then echo "${BASH_REMATCH[1]}"; return; fi
   if [[ "$b" =~ ^(codex|claude)/([0-9a-f]{4})- ]]; then echo "${BASH_REMATCH[1]}-${BASH_REMATCH[2]}"; return; fi
-  for c in $(git -C "$MAIN" rev-list --max-count=20 "origin/master..origin/$b" 2>/dev/null); do
+  for c in $(git -C "$MAIN" rev-list --reverse "origin/master..origin/$b" 2>/dev/null); do
     id=$(git -C "$MAIN" log -1 --format=%B "$c" | sed -n 's/.*Agent-ID: *\([A-Za-z]*-[0-9a-f]*\).*/\1/p' | head -1)
     [ -n "$id" ] && { echo "$id"; return; }
   done
@@ -58,55 +60,79 @@ audit() {
   set +e +o pipefail   # a report: never abort the sync on one odd branch
   echo
   echo "================================ YOUR BRANCHES: AUDIT ================================"
-  echo "Watch your branches until they are merged or deleted (AGENTS.md §7, §14):"
-  echo " * red check            -> read the log, merge origin/master, fix, push again (same branch name);"
-  echo " * ready/ green, unmerged -> a conflict with master or a workflow change: merge origin/master, resolve"
-  echo "                           (regenerate generated files and OVERVIEW.pdf), push again; workflows: open a PR;"
-  echo " * already in master    -> delete it: git push origin --delete <branch>;"
-  echo " * abandoned            -> delete it, and say so in its issue."
-  [ -n "$AGENT" ] && echo "Agent: $AGENT (set AGENT_ID=<your id> to see only yours)" ||
-    echo "All agents (set AGENT_ID=<your id> to see only yours)"
+  if [ -n "$AGENT" ]; then
+    echo "Agent: $AGENT. Every branch you pushed is yours until it is on master or deleted (AGENTS.md §7, §14)."
+  else
+    echo "!! AGENT_ID is not set, so this lists EVERY agent's branches. Run it as"
+    echo "!!   AGENT_ID=<your agent id> scripts/sync_master.sh"
+    echo "!! (the ID you announced in your first reply) and act on the lines of YOUR branches."
+  fi
   local runs=""
   command -v gh >/dev/null 2>&1 && runs=$(gh run list --workflow lean.yml --limit 200 \
-    --json headBranch,headSha,conclusion,status,databaseId \
-    --jq 'group_by(.headBranch) | map(max_by(.databaseId)) | .[] | "\(.headBranch) \(.headSha) \(.status) \(if (.conclusion // "") == "" then "-" else .conclusion end) \(.databaseId)"' \
+    --json headBranch,headSha,conclusion,status,databaseId,createdAt \
+    --jq 'group_by(.headBranch) | map(max_by(.databaseId)) | .[] | "\(.headBranch) \(.headSha) \(.status) \(if (.conclusion // "") == "" then "-" else .conclusion end) \(.databaseId) \(.createdAt | fromdateiso8601)"' \
     2>/dev/null || true)
-  local found=0 b own line state behind note sha tip
+  local found=0 todo=0 b own line state behind conflict sha st concl id created tip todo_b action hours
   while read -r b; do
     [ -z "$b" ] && continue
     own=$(owner_of "$b")
     [ -n "$AGENT" ] && [ "$own" != "$AGENT" ] && continue
     found=1
     tip=$(git -C "$MAIN" rev-parse "origin/$b")
-    note=""
     if git -C "$MAIN" merge-base --is-ancestor "$tip" origin/master; then
-      echo "  $b [$own]: already in master -> delete it"; continue
+      echo "  $b [$own]: already in master"
+      echo "      -> ACTION: delete it: git push origin --delete $b (and its local branch and worktree, §14)"
+      todo=$((todo + 1)); continue
     fi
     behind=$(git -C "$MAIN" rev-list --count "$tip..origin/master")
+    conflict=""
+    if ! git -C "$MAIN" -c merge.ours.driver=true merge-tree --write-tree origin/master "$tip" >/dev/null 2>&1; then
+      conflict=$(git -C "$MAIN" -c merge.ours.driver=true merge-tree --write-tree --name-only origin/master "$tip" \
+        2>/dev/null | sed -n '2,/^$/p' | grep -v '^$' | head -6 | tr '\n' ' ')
+    fi
     line=$(echo "$runs" | awk -v b="$b" '$1 == b' | head -1)
-    if [[ "$b" == cloud/* ]]; then state="cloud job branch (no proof check)"
-    elif [ -z "$line" ]; then state="no proof check found"
+    action=""
+    if [[ "$b" == cloud/* ]]; then
+      state="cloud job branch (no proof check)"
+      action="delete it once its cloud jobs are done and their results saved (§11, §14)"
+    elif [ -z "$line" ]; then
+      state="no proof check found"
+      action="a pushed branch should have a check: push again, or delete it if abandoned"
     else
-      read -r _ sha st concl id <<< "$line"
-      if [ "$st" != completed ]; then state="check running (run $id)"
-      elif [ "$concl" = success ]; then state="GREEN (run $id)"
-      else state="RED: $concl (run $id)"; fi
+      read -r _ sha st concl id created <<< "$line"
+      hours=$(( ($(date +%s) - created) / 3600 ))
+      if [ "$st" != completed ]; then
+        state="check running (run $id, started ${hours}h ago)"
+        [ "$hours" -ge 2 ] && action="running or queued for ${hours}h: look at it (gh run view $id); a droplet check may be waiting behind others"
+      elif [ "$concl" = success ]; then
+        state="GREEN (run $id)"
+      else
+        state="RED: $concl (run $id)"
+        action="read the log (gh run view $id --log-failed), merge origin/master, fix, push the same branch again"
+      fi
       [ "$sha" != "$tip" ] && state="$state, for an older commit"
     fi
-    if ! git -C "$MAIN" merge-tree --write-tree origin/master "$tip" >/dev/null 2>&1; then
-      note="; CONFLICTS with master: $(git -C "$MAIN" merge-tree --write-tree --name-only origin/master "$tip" 2>/dev/null |
-        sed -n '2,/^$/p' | grep -v '^$' | head -4 | tr '\n' ' ')"
-    fi
-    if [[ "$b" == ready/* ]] && [[ "$state" == GREEN* ]]; then
+    if [ -n "$conflict" ]; then
+      action="CONFLICT with master in: $conflict-> merge origin/master, resolve by understanding both sides, run python3 tools/gen_root_imports.py, push the same branch"
+    elif [[ "$b" == ready/* ]] && [[ "$state" == GREEN* ]]; then
       if git -C "$MAIN" diff --name-only "origin/master...$tip" | grep -q '^\.github/workflows/'; then
-        note="$note; changes .github/workflows: needs a pull request (the user merges)"
-      elif [ -z "$note" ]; then
-        note="; green but not merged: CI re-dispatches it if master moved; if it stays, look at the run's finish job"
+        action="green but changes .github/workflows: CI cannot merge it; open a pull request (the user merges it)"
+      else
+        action="green but NOT merged: open its finish job (gh run view $id); if master moved, CI re-dispatched it; otherwise merge origin/master and push again"
       fi
+    elif [[ "$b" != ready/* ]] && [[ "$b" != cloud/* ]] && [ -z "$action" ]; then
+      action="a work branch: deliver it as ready/<agent-id>-<topic> when it is done, or delete it if its work is merged or abandoned"
     fi
-    echo "  $b [$own]: $state, $behind behind master$note"
+    echo "  $b [$own]: $state, $behind behind master"
+    if [ -n "$action" ]; then echo "      -> ACTION: $action"; todo=$((todo + 1)); fi
   done < <(git -C "$MAIN" branch -r --format='%(refname:short)' | sed -n 's#^origin/##p' | grep -vE '^(master|HEAD)$')
-  [ "$found" = 0 ] && echo "  (no branches)"
+  if [ "$found" = 0 ]; then
+    echo "  (no branches)"
+  elif [ "$todo" -gt 0 ]; then
+    echo "!! $todo branch(es) above need action. Deal with every ACTION line of your branches before other work."
+  else
+    echo "  Nothing to do: your branches are checking or waiting to merge."
+  fi
   echo "======================================================================================="
 }
 
