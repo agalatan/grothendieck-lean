@@ -69,8 +69,34 @@ extension on the shorter centers. The norm-square denominator is36*2^412.
 The actual rounding norm is proved at most10^-18; its arithmetic receipt is
 approximately8.746217563779476e-20. No rounded residual vector is stored.
 
-These certificates do not establish the distance to `hpow 3`, the first or
-second centers' band norm certificates, or the stored kernel-energy table. The remaining finite checks and Gaussian integral
-enclosures remain explicit obligations.
+`tools/gen_taylor_center_band_data.py` generates the first and second center
+band targets from the same pinned arrays. `GradedHermiteIntegerEnergy` converts
+one integer fold to a projected squared norm. `TaylorFirstBandNorms` and
+`TaylorSecondBandNorms` verify all ten remaining captured-band norms and their
+10^-30 enclosures, charge support and exact omitted-degree vanishing.
+
+`tail-recipe.json` selects upward rounding precisions21,19,18 for the three
+unscaled Gaussian finite-band error families. `tools/gen_taylor_tail_data.py`
+generates `TaylorTailData.lean` and `tail-caps.json`, checking source hashes,
+band endpoints, factorial scaling, containment inside the public finite caps,
+and positive scalar slack for all three high-tail budgets. Run:
+
+```sh
+python3 tools/gen_taylor_center_band_data.py --check
+python3 tools/gen_taylor_tail_data.py --check
+```
+
+The public rounded finite caps alone are too loose for these captured-energy
+subtractions. The stronger scalar caps remain explicit Gaussian hypotheses;
+the receipt certifies arithmetic and provenance only. The Lean tail modules
+check the scalar budgets by kernel arithmetic and derive all omitted tails
+from the actual moments, captured center norms and these error premises.
+
+`TaylorCenterFunctions` supplies every pointwise polynomial and its `ChargeFn`
+and `toLp` identities. `ConcreteTaylorUpper` derives the existing conditional
+upper endpoint from the three finite Gaussian error families and actual
+energy-table accuracy. No independent rounding, omitted-tail or representative
+premise remains. The Gaussian error inequalities, energy-table accuracy and
+omitted-input analytic estimates remain open.
 
 Agent-ID: codex-2ca4

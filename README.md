@@ -240,8 +240,23 @@ captured center energies. Those Gaussian error bounds remain hypotheses.
 The first and second centers and frozen correction also have exact dyadic
 representations. `TaylorRounding.norm_roundingDifference_le` proves
 ‖c₁+c₂/2+c₃/6−v‖ ≤ 10⁻¹⁸ by recomputing the common-denominator integer energy.
-This discharges the finite rounding-norm ingredient; Gaussian approximation
-errors and the kernel-energy table accuracy remain separate obligations.
+`TaylorFirstBandNorms` and `TaylorSecondBandNorms` certify the six and four
+remaining captured band norms from the same exact arrays. `FirstSecondCapturedTail`
+derives the other two high-tail caps. `TaylorCenterFunctions` gives the concrete
+pointwise functions and discharges the rounding comparison piece.
+
+`fresh_upper_concrete_taylor` instantiates the conditional bound with these fixed
+centers. Its Gaussian inputs are six first-order, four second-order and four
+third-order finite-band error inequalities, with the explicit caps in
+`TaylorTailData`, together with the concrete kernel-energy table accuracy.
+The rounding and three high-tail caps follow internally. The slightly tighter
+finite-band caps are necessary to preserve precision in the captured-energy
+subtraction; their Gaussian validity remains open.
+`Haagerup/PhaseLaplace` gives an analytic representation of complex phase as a
+Gaussian Laplace mixture, including its value at zero. It proves integrability,
+a uniform absolute-integral bound, and the affine completion-of-squares identity.
+These support the remaining Gaussian integration work; no numerical enclosure
+is inferred from them.
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
@@ -251,11 +266,11 @@ A native check derives every band radius from the stored table and its accuracy
 allowance. Lean proves every coefficient cost with outward interval polynomial arithmetic.
 A kernel-checked rational overlap ledger assembles the quadratic cost.
 The weighted comparison is at most 106490963/(125000·10⁹).
-What remains **input**:
+The concrete theorem's remaining **inputs** are:
 
 | hypothesis | content | share of the residual |
 |---|---|---|
-| `ComparisonInputs` | exact error decomposition, spectral supports and inherited Gaussian component norm caps; Lean derives the selected comparison | 93.56% |
+| `hfirst`, `hsecond`, `hthird` | fourteen finite-band Gaussian error inequalities for the fixed Taylor sources and centers; Lean derives the rounding and three tail caps, decomposition and supports | 93.56% |
 | `energy_close` | the stored energies are within 6847009/(5·10¹⁷) of E(X) | 0.001% |
 
 The head, computed in Lean (`head_check`), is 28153/10¹², 3.09% of the total

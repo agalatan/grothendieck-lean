@@ -77,6 +77,7 @@ Grothe.Research.RefinedLowerCheck.certRefinedBoxes2._native.native_decide.ax_1_1
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1
 Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1
 Grothe.Upper.comparison_check._native.native_decide.ax_1_1
+Grothe.UpperChaos.firstCenter_band_energy_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.hardy_arc_part_0._native.native_decide.ax_1_1
 Grothe.UpperChaos.hardy_arc_part_1._native.native_decide.ax_1_1
 Grothe.UpperChaos.hardy_arc_part_2._native.native_decide.ax_1_1
@@ -92,6 +93,7 @@ Grothe.UpperChaos.phi_cover_check_3._native.native_decide.ax_1_1
 Grothe.UpperChaos.phi_cover_check_4._native.native_decide.ax_1_1
 Grothe.UpperChaos.phi_cover_check_5._native.native_decide.ax_1_1
 Grothe.UpperChaos.rounding_energy_check._native.native_decide.ax_1_1
+Grothe.UpperChaos.secondCenter_band_energy_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.taylor_centers_decode_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.thirdCenter_decode_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.thirdCenter_energy_check._native.native_decide.ax_1_1
