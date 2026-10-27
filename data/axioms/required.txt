@@ -155,6 +155,7 @@ Grothe.HJM.hasDerivAt_originGreenBoundary
 Grothe.HJM.hasDerivAt_originRadialGreenBoundary
 Grothe.HJM.hfun_charge_one_laguerre
 Grothe.HJM.hfun_charge_one_radial
+Grothe.HJM.hjm_bound_of_tables
 Grothe.HJM.inner_charge_one_radial_integral
 Grothe.HJM.inner_charge_one_radial_integral_of_integrable
 Grothe.HJM.integrable_origin_radial_pairing
