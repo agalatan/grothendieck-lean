@@ -133,6 +133,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.integrable_energyDensity_of_envelope
 #print axioms Grothe.HJM.Origin.integrable_green_pairing
 #print axioms Grothe.HJM.Origin.integrable_green_pairing_of_extension
+#print axioms Grothe.HJM.Origin.integrable_phase_radial_mean
 #print axioms Grothe.HJM.Origin.integral_energy_far_le
 #print axioms Grothe.HJM.Origin.inv_norm_leftNumerator_le
 #print axioms Grothe.HJM.Origin.inv_norm_rightNumerator_le
@@ -148,6 +149,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.leftRationalWitness_mass
 #print axioms Grothe.HJM.Origin.leftTailEnergy_le_of_visible
 #print axioms Grothe.HJM.Origin.leftUnweightedTail_of_64_targets
+#print axioms Grothe.HJM.Origin.left_signedPhaseMean_eq_inner
 #print axioms Grothe.HJM.Origin.left_spatial_tail_budget
 #print axioms Grothe.HJM.Origin.left_testCorrelation_error
 #print axioms Grothe.HJM.Origin.left_visibleEnergy_of_rationalWitness
@@ -188,6 +190,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.phase_error_le_of_rational_bounds
 #print axioms Grothe.HJM.Origin.phase_error_le_residual
 #print axioms Grothe.HJM.Origin.phase_error_mul_left_le
+#print axioms Grothe.HJM.Origin.phase_inner_radial_mean
 #print axioms Grothe.HJM.Origin.phase_weighted_tail_le
 #print axioms Grothe.HJM.Origin.phase_weighted_tail_summable
 #print axioms Grothe.HJM.Origin.polynomialPhase_deriv_deriv_polynomialEnvelope
@@ -206,6 +209,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.rightRationalWitness_mass
 #print axioms Grothe.HJM.Origin.rightTailEnergy_le_of_visible
 #print axioms Grothe.HJM.Origin.rightUnweightedTail_of_64_targets
+#print axioms Grothe.HJM.Origin.right_signedPhaseMean_eq_inner
 #print axioms Grothe.HJM.Origin.right_spatial_tail_budget
 #print axioms Grothe.HJM.Origin.right_testCorrelation_error
 #print axioms Grothe.HJM.Origin.right_visibleEnergy_of_rationalWitness
@@ -216,6 +220,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.signedLaguerreList_sound
 #print axioms Grothe.HJM.Origin.signedLaguerreList_three_term
 #print axioms Grothe.HJM.Origin.signedLaguerreValue_three_term
+#print axioms Grothe.HJM.Origin.signedPhaseMean_eq_inner
 #print axioms Grothe.HJM.Origin.sum_haagCoeff_weighted_tail_le_diff
 #print axioms Grothe.HJM.Origin.tail_cap_of_visible
 #print axioms Grothe.HJM.Origin.tendsto_green_boundary

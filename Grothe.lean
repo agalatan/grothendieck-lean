@@ -144,6 +144,7 @@ import Grothe.HJM.OriginPhaseCoefficients
 import Grothe.HJM.OriginPhaseDerivative
 import Grothe.HJM.OriginPhaseDerivativeNorm
 import Grothe.HJM.OriginPhaseEnvelope
+import Grothe.HJM.OriginPhaseMeanIntegral
 import Grothe.HJM.OriginPhaseQuotient
 import Grothe.HJM.OriginPhaseTail
 import Grothe.HJM.OriginPolynomialDerivativeBounds
