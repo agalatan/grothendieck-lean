@@ -1052,6 +1052,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.coeFn_gradedHermite
 #print axioms Grothe.UpperChaos.comparisonInputs_taylorCenters
 #print axioms Grothe.UpperChaos.concrete_energy_close_five_e_minus_seven
+#print axioms Grothe.UpperChaos.concrete_energy_close_of_table_mass_five_e_minus_seven
 #print axioms Grothe.UpperChaos.conditional_gaussian_laplace_profile_le
 #print axioms Grothe.UpperChaos.conditional_gaussian_laplace_profile_le_uniform
 #print axioms Grothe.UpperChaos.conditional_gaussian_profile_le
@@ -1184,6 +1185,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_bandProj_roundingDifference_le
 #print axioms Grothe.UpperChaos.norm_band_hpow_sq_le_of_inner
 #print axioms Grothe.UpperChaos.norm_energyBlock_sq
+#print axioms Grothe.UpperChaos.norm_energyHeadProjection_le_one_of_table
+#print axioms Grothe.UpperChaos.norm_energyHeadProjection_sq
 #print axioms Grothe.UpperChaos.norm_firstCaptured_taylorCenters_le
 #print axioms Grothe.UpperChaos.norm_firstCenterBand_sq
 #print axioms Grothe.UpperChaos.norm_firstCenter_tail_le
