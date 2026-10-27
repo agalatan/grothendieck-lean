@@ -18,6 +18,7 @@ or new native fact in this proof.
 namespace Grothe.HJM.Origin
 
 open Grothe.Lower Grothe.Upper
+open scoped ComplexConjugate
 
 set_option maxRecDepth 100000
 set_option maxHeartbeats 4000000
@@ -112,5 +113,41 @@ theorem P_ne_zero (s : ℝ) (hs : 0 ≤ s) : P s ≠ 0 := by
   intro h
   have hn := norm_P_lower s hs
   norm_num [h] at hn
+
+private lemma left_affine_ne_zero (s : ℝ) :
+    (s : ℂ) + (OriginData.delta : ℂ) * A ≠ 0 := by
+  intro h
+  have hi := congrArg Complex.im h
+  norm_num [A, OriginData.delta, OriginData.aReal, OriginData.aImag] at hi
+
+private lemma right_affine_ne_zero (s : ℝ) :
+    (s : ℂ) + (OriginData.delta : ℂ) * B ≠ 0 := by
+  intro h
+  have hi := congrArg Complex.im h
+  norm_num [B, OriginData.delta, OriginData.bReal, OriginData.bImag] at hi
+
+/-- The affine factor has a nonzero constant imaginary part, so the
+actual left phase numerator never vanishes on the radial half-line. -/
+theorem leftNumerator_ne_zero (s : ℝ) (hs : 0 ≤ s) : leftNumerator s ≠ 0 :=
+  mul_ne_zero (P_ne_zero s hs) (left_affine_ne_zero s)
+
+/-- The same nonvanishing statement for the actual asymmetric right phase. -/
+theorem rightNumerator_ne_zero (s : ℝ) (hs : 0 ≤ s) : rightNumerator s ≠ 0 := by
+  have hc : C ≠ 0 := by
+    intro h
+    have hn := norm_C
+    simp [h] at hn
+  have hp : conj (P s) ≠ 0 := by
+    intro h
+    have h' := congrArg (fun z : ℂ => conj z) h
+    exact P_ne_zero s hs (by simpa only [Complex.conj_conj, map_zero] using h')
+  exact mul_ne_zero (mul_ne_zero hc hp) (right_affine_ne_zero s)
+
+/-- Both radial responses have unit modulus on their actual domain. -/
+theorem norm_f_eq_one (s : ℝ) (hs : 0 ≤ s) : ‖f s‖ = 1 :=
+  norm_phase (leftNumerator_ne_zero s hs)
+
+theorem norm_g_eq_one (s : ℝ) (hs : 0 ≤ s) : ‖g s‖ = 1 :=
+  norm_phase (rightNumerator_ne_zero s hs)
 
 end Grothe.HJM.Origin
