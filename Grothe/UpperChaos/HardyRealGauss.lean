@@ -49,7 +49,7 @@ lemma gaussC_eq_map : gaussC = gauss2.map toC' := by
     (measurePreserving_finTwoArrow (gaussianReal 0 1)).map_eq.symm
   rw [gaussC, Grothe.LowerAnalytic.stdGaussian, e,
     Measure.map_map measurable_toC' (MeasurableEquiv.finTwoArrow).measurable]
-  congr 1; ext x; simp [toC, toC', Function.comp, MeasurableEquiv.finTwoArrow]
+  congr 1
 
 lemma integral_gaussC_eq (h : ℂ → ℂ) (hm : AEStronglyMeasurable h gaussC) :
     ∫ z, h z ∂gaussC = ∫ p : ℝ × ℝ, (phi2 p : ℂ) * h (toC' p) := by
