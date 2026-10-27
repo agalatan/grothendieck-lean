@@ -149,6 +149,62 @@ theorem inner_idx0_smoothOp (g : Lp ℂ 2 mu2) : ⟪hvec2 idx0, smoothOp g⟫_�
     rw [mp_smooth.map_eq]; exact Lp.aestronglyMeasurable g
   rw [integral_congr_ae h, ← integral_map mp_smooth.measurable.aemeasurable hgm, mp_smooth.map_eq]
 
+/-! ### The smoothing of a function -/
+
+/-- `x ↦ E_Z f(Mx + NZ)`. -/
+def smoothFn (f : ℂ × ℂ → ℂ) (x : ℂ × ℂ) : ℂ := ∫ Z, f (smoothArg x Z) ∂mu2
+
+lemma aestronglyMeasurable_smoothFn {f : ℂ × ℂ → ℂ} (hf : Measurable f) :
+    AEStronglyMeasurable (smoothFn f) mu2 :=
+  ((hf.comp mp_smooth.measurable).stronglyMeasurable.integral_prod_right' (ν := mu2)).aestronglyMeasurable
+
+/-- **Smoothing preserves charge one** (rotation invariance of the noise). -/
+theorem smoothFn_rot2 {f : ℂ × ℂ → ℂ} (hf : Measurable f) (hrot : ∀ c u, ‖c‖ = 1 → f (rot2 c u) = c * f u)
+    {c : ℂ} (hc : ‖c‖ = 1) (x : ℂ × ℂ) : smoothFn f (rot2 c x) = c * smoothFn f x := by
+  have hm : AEStronglyMeasurable (fun Z => f (smoothArg (rot2 c x) Z)) (mu2.map (rot2 c)) :=
+    (hf.comp (measurable_smoothArg.comp (measurable_const.prodMk measurable_id))).aestronglyMeasurable
+  have h := integral_map (by unfold rot2; fun_prop : AEMeasurable (rot2 c) mu2) hm
+  rw [map_rot2 hc] at h
+  rw [smoothFn, h, smoothFn, ← integral_const_mul]
+  refine integral_congr_ae (Filter.Eventually.of_forall fun Z => ?_)
+  simp only
+  rw [smoothArg_rot2, hrot c _ hc]
+
+/-- Jensen: `‖E g‖² ≤ E ‖g‖²` on a probability space. -/
+lemma sq_norm_integral_le {α : Type*} [MeasurableSpace α] {μ : Measure α} [IsProbabilityMeasure μ]
+    {g : α → ℂ} (hgm : AEStronglyMeasurable g μ) (hg : Integrable (fun z => ‖g z‖ ^ 2) μ) :
+    ‖∫ z, g z ∂μ‖ ^ 2 ≤ ∫ z, ‖g z‖ ^ 2 ∂μ := by
+  have hL : MemLp g 2 μ := (memLp_two_iff_integrable_sq_norm hgm).2 hg
+  have hn : Integrable (fun z => ‖g z‖) μ := (hL.integrable one_le_two).norm
+  set m := ∫ z, ‖g z‖ ∂μ
+  have h0 : 0 ≤ ∫ z, (‖g z‖ - m) ^ 2 ∂μ := integral_nonneg fun _ => sq_nonneg _
+  have e : ∫ z, (‖g z‖ - m) ^ 2 ∂μ = ∫ z, ‖g z‖ ^ 2 ∂μ - m ^ 2 := by
+    have : (fun z => (‖g z‖ - m) ^ 2) = fun z => ‖g z‖ ^ 2 - 2 * m * ‖g z‖ + m ^ 2 := by ext z; ring
+    rw [this, integral_add (hg.sub (hn.const_mul _)) (integrable_const _), integral_sub hg (hn.const_mul _),
+      integral_const_mul, integral_const, probReal_univ, one_smul]
+    ring
+  have h1 : ‖∫ z, g z ∂μ‖ ≤ m := norm_integral_le_integral_norm _
+  nlinarith [norm_nonneg (∫ z, g z ∂μ)]
+
+/-- **The smoothing of an `L²` function is in `L²`.** -/
+theorem memLp_smoothFn {f : ℂ × ℂ → ℂ} (hf : Measurable f) (hfL : MemLp f 2 mu2) : MemLp (smoothFn f) 2 mu2 := by
+  have hm := aestronglyMeasurable_smoothFn hf
+  rw [memLp_two_iff_integrable_sq_norm hm]
+  have hF2 : MemLp (fun v : (ℂ × ℂ) × (ℂ × ℂ) => f (smoothArg v.1 v.2)) 2 (mu2.prod mu2) :=
+    hfL.comp_measurePreserving mp_smooth
+  have hsq : Integrable (fun v : (ℂ × ℂ) × (ℂ × ℂ) => ‖f (smoothArg v.1 v.2)‖ ^ 2) (mu2.prod mu2) :=
+    (memLp_two_iff_integrable_sq_norm hF2.aestronglyMeasurable).1 hF2
+  refine hsq.integral_prod_left.mono' (hm.norm.pow 2) ?_
+  filter_upwards [hsq.prod_right_ae] with x hx
+  rw [Real.norm_of_nonneg (sq_nonneg _)]
+  exact sq_norm_integral_le ((hf.comp (measurable_smoothArg.comp (measurable_const.prodMk
+    measurable_id))).aestronglyMeasurable) hx
+
+/-- **`S` on an `L²` function is its smoothing.** -/
+theorem smoothOp_toLp' {f : ℂ × ℂ → ℂ} (hf : Measurable f) (hfL : MemLp f 2 mu2) :
+    smoothOp (hfL.toLp f) = (memLp_smoothFn hf hfL).toLp (smoothFn f) :=
+  smoothOp_toLp hf hfL (memLp_smoothFn hf hfL)
+
 end
 
 end Grothe.UpperChaos
