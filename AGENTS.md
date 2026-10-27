@@ -268,6 +268,18 @@ Also:
   run on the droplet; it builds the caps once for exactly the tree that will be merged. After the merge, master's
   check also runs on the droplet (master has no cache for the new caps yet) and finds them already built in the same
   workspace. Never run a separate manual caps verification, and avoid touching that closure casually.
+- **Step by step, when a delivery changes the node caps** (e.g. a new cap row):
+  1. You push `ready/<agent>-<topic>` (push only that; a work branch pushed first costs one extra droplet run).
+  2. The route finds no GitHub cache for the new caps digest and sends the build job to the **droplet**. It builds
+     only what changed (the new row and what imports it; hours if a row really changed), runs every check, marks the
+     caps as verified, and **uploads `.lake/build` to GitHub's cache itself** (for this branch). The check shows
+     "pending" meanwhile. Nothing is copied by hand.
+  3. When green, CI moves master and dispatches master's check. With the tree handoff that check downloads exactly
+     this build and runs on GitHub in minutes; without it (master moved meanwhile) it goes to the droplet, whose
+     workspace already holds the new caps, so it takes minutes too. Either way it saves the new **master cache**,
+     and every later run is GitHub-hosted again.
+  4. GitHub caches are visible only to their own branch and to master. So a second branch with the same new caps
+     (e.g. `ready/` after a work branch) goes to the droplet once more: minutes, because the workspace is warm.
 - **Retention:** GitHub deletes cache entries unused for 7 days; a weekly job (`keepalive`) restores the master cache
   to keep it alive. Master keeps its newest two caches.
 
