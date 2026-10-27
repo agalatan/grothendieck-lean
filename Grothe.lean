@@ -546,6 +546,7 @@ import Grothe.UpperChaos.HermiteFinite
 import Grothe.UpperChaos.HolIntegral
 import Grothe.UpperChaos.InvariantMoments
 import Grothe.UpperChaos.JointAliasBound
+import Grothe.UpperChaos.JointSampleLedger
 import Grothe.UpperChaos.Kernel2
 import Grothe.UpperChaos.KernelStability
 import Grothe.UpperChaos.LawY

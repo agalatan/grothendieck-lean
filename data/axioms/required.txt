@@ -804,6 +804,7 @@ Grothe.Upper.comparison_grouped_budget
 Grothe.Upper.comparison_overlap_budget
 Grothe.Upper.headWeight_sound
 Grothe.Upper.head_residual_le_weighted
+Grothe.UpperChaos.DirectSample.upper_of_DFT_ledger
 Grothe.UpperChaos.DirectSample.upper_of_actual_head
 Grothe.UpperChaos.DirectSample.upper_of_finite_sample_bounds
 Grothe.UpperChaos.HardyReal.hardy_GT
