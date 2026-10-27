@@ -1,4 +1,4 @@
-import Grothe.LowerAnalytic.Potential
+import Grothe.LowerAnalytic.ComplexGaussianCore
 
 /-!
 # Gaussian phase and its planar laws

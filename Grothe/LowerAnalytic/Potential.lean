@@ -1,5 +1,5 @@
 import Grothe.Lower.RowGates
-import Grothe.LowerAnalytic.GaussianRadial
+import Grothe.LowerAnalytic.ComplexGaussianCore
 
 /-!
 # The standard complex Gaussian on `ℂ` and the fibre potential of a row (L4, S4)
@@ -20,45 +20,6 @@ open scoped ComplexConjugate
 namespace Grothe.LowerAnalytic
 
 noncomputable section
-
-/-! ### The measure -/
-
-/-- `(x₀ + i x₁)/√2`. -/
-def toC (x : Fin 2 → ℝ) : ℂ := ((x 0 : ℂ) + (x 1 : ℂ) * Complex.I) / (√2 : ℝ)
-
-lemma continuous_toC : Continuous toC := by unfold toC; fun_prop
-
-lemma measurable_toC : Measurable toC := continuous_toC.measurable
-
-lemma normSq_toC (x : Fin 2 → ℝ) : Complex.normSq (toC x) = (x 0 ^ 2 + x 1 ^ 2) / 2 := by
-  unfold toC
-  rw [Complex.normSq_div, Complex.normSq_ofReal, Real.mul_self_sqrt (by norm_num)]
-  simp [Complex.normSq_apply]
-  ring
-
-/-- **The standard complex Gaussian** on `ℂ`: the law of `(x₀ + i x₁)/√2`. -/
-def gaussC : Measure ℂ := (stdGaussian 2).map toC
-
-instance : IsProbabilityMeasure gaussC :=
-  ⟨by rw [gaussC, Measure.map_apply measurable_toC MeasurableSet.univ, Set.preimage_univ, measure_univ]⟩
-
-lemma integral_gaussC (F : ℂ → ℝ) (hF : AEStronglyMeasurable F gaussC) :
-    ∫ z, F z ∂gaussC = ∫ x, F (toC x) ∂(stdGaussian 2) :=
-  integral_map measurable_toC.aemeasurable hF
-
-lemma integral_gaussC_of_continuous (F : ℂ → ℝ) (hF : Continuous F) :
-    ∫ z, F z ∂gaussC = ∫ x, F (toC x) ∂(stdGaussian 2) :=
-  integral_gaussC F hF.aestronglyMeasurable
-
-lemma integrable_gaussC_iff (F : ℂ → ℝ) (hF : AEStronglyMeasurable F gaussC) :
-    Integrable F gaussC ↔ Integrable (fun x => F (toC x)) (stdGaussian 2) :=
-  integrable_map_measure hF measurable_toC.aemeasurable
-
-/-- The polynomial `|z|² = (x₀² + x₁²)/2` in the real coordinates. -/
-def Pn : MvPolynomial (Fin 2) ℝ := MvPolynomial.C (1 / 2) * (MvPolynomial.X 0 ^ 2 + MvPolynomial.X 1 ^ 2)
-
-lemma eval_Pn (x : Fin 2 → ℝ) : MvPolynomial.eval x Pn = Complex.normSq (toC x) := by
-  simp [Pn, normSq_toC]; ring
 
 /-- **Integrability** of a continuous function bounded by a cubic polynomial in `|z|²`. -/
 lemma integrable_gaussC_of_bound (F : ℂ → ℝ) (hF : Continuous F) (c0 c1 c2 c3 : ℝ)

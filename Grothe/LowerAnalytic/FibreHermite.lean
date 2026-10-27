@@ -19,15 +19,6 @@ noncomputable section
 
 /-! ### Radial moments -/
 
-lemma integral_normSq_pow (k : ℕ) (P : MvPolynomial (Fin 2) ℝ)
-    (hP : ∀ x, eval x P = (x 0 ^ 2 + x 1 ^ 2) ^ k) :
-    ∫ z, Complex.normSq z ^ k ∂gaussC = gaussE 2 P / 2 ^ k := by
-  rw [integral_gaussC_of_continuous (fun z => Complex.normSq z ^ k) (Complex.continuous_normSq.pow k)]
-  simp_rw [normSq_toC, div_pow]
-  rw [integral_div, gaussE_apply]
-  congr 1
-  exact integral_congr_ae (Filter.Eventually.of_forall fun x => (hP x).symm)
-
 lemma integral_normSq_pow_two : ∫ z, Complex.normSq z ^ 2 ∂gaussC = 2 := by
   rw [integral_normSq_pow 2 ((X 0 ^ 2 + X 1 ^ 2) ^ 2) (fun x => by simp)]
   rw [show ((X 0 ^ 2 + X 1 ^ 2) ^ 2 : MvPolynomial (Fin 2) ℝ)
@@ -51,16 +42,6 @@ lemma integrable_normSq_pow (k : ℕ) (hk : k ≤ 3) :
   have h := Complex.normSq_nonneg z
   rw [abs_of_nonneg (pow_nonneg h k)]
   interval_cases k <;> nlinarith [pow_nonneg h 2, pow_nonneg h 3]
-
-/-! ### Orthogonality of distinct charges -/
-
-/-- If `G(cz) = −G(z)` for some `|c| = 1`, then `E G = 0`. -/
-lemma integral_eq_zero_of_rot (G : ℂ → ℂ) (c : ℂ) (hc : ‖c‖ = 1) (hG : ∀ z, G (c * z) = -G z) :
-    ∫ z, G z ∂gaussC = 0 := by
-  have h := integral_rot_gaussC c hc G
-  simp_rw [hG, integral_neg] at h
-  have : (2 : ℂ) * ∫ z, G z ∂gaussC = 0 := by linear_combination -h
-  exact (mul_eq_zero.1 this).resolve_left two_ne_zero
 
 /-! ### The Gram matrix -/
 

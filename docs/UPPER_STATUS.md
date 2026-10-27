@@ -1,13 +1,14 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
 The sharper conditional upper bound is described below. The independent hypothesis-free
-route targets `Grothe.haagerup_bound : IsGrothendieckBound (1404909133/1000000000)`.
-The new degree-20 certificate awaits delivery CI (#129). Its focused audit policy
-requires 96 results and permits zero native evaluation axioms.
+route states `Grothe.haagerup_bound : IsGrothendieckBound (1404909132791/1000000000000)`.
+The degree-20 certificate uses combined resolvent seeds (#138). Its focused audit policy
+requires 98 results and permits zero native evaluation axioms.
 The canonical resolvent completion, complete residual and infinite remainder are
-documented in `docs/HAAGERUP_POWER.md`. It combines 64 series terms with eight
-correction terms, using complete monotonicity at every difference order. A
-172-coefficient prefix and a weighted finite-polynomial tail bound control the
+documented in `docs/HAAGERUP_POWER.md`. It combines 64 series terms with ten
+correction terms, using complete monotonicity at every difference order and exact
+coefficient locality to remove the finite boundary. A
+165-coefficient prefix and a weighted finite-polynomial tail bound control the
 complete residual. Large convolutions are proved in continuation blocks of at most five left
 coefficients. The generic `convI_append` identity preserves the original
 outward arithmetic order; recurrence and exact input-binding lemmas recover
@@ -52,7 +53,7 @@ are theorems.  Module map (all in `Grothe/UpperChaos/`):
 | Realise2, Structural | two-channel Gaussian rounding ⇒ `DiskKernel`; `structural_fields`, `fresh_upper_of_rounding` |
 | Rounder | `vprof`, `F0`, `phiT`, `Tround`, `GT`; measurable, charge one, disk-valued under `PhiBound` |
 | PhiHorner, PhiDense, PhiCover, PhiCoverData, PhiCoverCheck0–5, PhiCoverCheck, PhiBound | phase cover `φ² ≤ 99/100`, `|φ| < 1` (checker `GrotheKernel/PhiCheck.lean`, generator `tools/gen_phi_abs_cover.py`, data `data/phi-abs-cover/trees.json`) |
-| HardyKernel | holomorphic Gaussian kernel and certificate covariance definitions; no discharge of `hardy` yet |
+| HardyKernel, HardyReal | holomorphic Gaussian kernel and certificate covariance definitions; `HardyReal.hardy_GT` proves the concrete Hardy input |
 
 The sharper tail reserves the linear coefficient's weighted square from the
 same `7/4` budget before Cauchy–Schwarz (`hardy_budget_after_linear`,

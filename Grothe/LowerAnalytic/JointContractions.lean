@@ -1,4 +1,5 @@
 import Grothe.LowerAnalytic.GramSpectral
+import Grothe.LowerAnalytic.JointSixthCore
 
 /-!
 # The joint sixth-moment inequalities
@@ -11,8 +12,8 @@ also enter the contraction-Gram budgets of the Stein cuts.  With
 
 `χ = E U² − 2 = (8/3)s₀ + 4h₀` and `x = √χ`, for every `α > 0`
 
-  `E U³ ≤ 6 + 9χ + x (150α s₀ + (198 + 150/α) h₀)`                  (J2, `joint_triangle`)
-  `E U³ ≤ 6 + 9χ + x ((135/2)α s₀ + (11781/32 + 135/(2α)) h₀)`      (J3, `joint_young`).
+  `E U³ ≤ 6 + 9χ + x (150α s₀ + (198 + 150/α) h₀)`                  (J2, `Circular.joint_sixth false`)
+  `E U³ ≤ 6 + 9χ + x ((135/2)α s₀ + (11781/32 + 135/(2α)) h₀)`      (J3, `Circular.joint_sixth true`).
 
 * **The normalisation** (`tenS_eq_gram`, `tenH_eq_gram`): the contraction norms of the real kernel
   `f = ∂³a/6` are `1296 s = s₀` and `1296 h = h₀`.  For `s = Σ G²`, `G = Σ f f` contracted in two
@@ -23,13 +24,14 @@ also enter the contraction-Gram budgets of the Stein cuts.  With
   `δR = −2M`, `δM = 2R`, so `⟨S₊, R⟩ = 0` and `‖R‖² = ‖M‖²` (`δ` is antisymmetric); then
   `4h = ‖S₊‖² + ‖R‖²` with `‖S₊‖² = (h + 4n + 4b + 16T)/486` (`sum_kerS_sq`) and
   `‖R‖² + ‖M‖² = ‖Sym(τ ⋆ τ)‖² = 4y/81` (`hipV_V`).
-* **Hilbert–Schmidt bounds** (`tenT4_le_sq`, `tenT3_le`, `tenQ_le`, `tenV_le_pow`):
+* **Hilbert–Schmidt bounds** (specializations of `JointSixthCore`):
   `T₄ ≤ h²`, `T₃ ≤ h√h`, `Q ≤ s√h`, `V ≤ s√s`, and `W = ‖U‖² ≤ √s √T₄ ≤ h√s`,
   `⟨D, U⟩ ≤ √V √W` (`Circular.lean`).
 * **The completed square** `−20V + (165/2)√(VW) ≤ (5445/64)W`, and in the sixth-cumulant
   identity `κ₆/46656 = (135/2)T₃ − 20V + (135/2)Q + (165/2)⟨D,U⟩ + 45W` (`TensorFacts.wick6`)
   either `−20V ≤ 0` (J2) or the square (J3); then `√h₀ ≤ x/2`, `√s₀ ≤ 5x/8` and
-  `2√(s₀h₀) ≤ α s₀ + h₀/α` (`joint_scalar`).
+  `2√(s₀h₀) ≤ α s₀ + h₀/α` (`joint_scalar`). The tensor and scalar proof is shared with the downstream
+  refinements through `JointSixthCore`.
 -/
 
 open MvPolynomial ComplexConjugate
@@ -39,6 +41,33 @@ namespace Grothe.LowerAnalytic
 noncomputable section
 
 variable {ι : Type*} [Fintype ι]
+
+namespace JointSixth
+
+/-- `‖Sym(τ ⋆ τ)‖²` as two real squared norms. -/
+lemma hip_sym_tau (f g : ι → ι → ι → ℝ) :
+    (hip (csym4 (ccon (tauC f g) (tauC f g)))
+      (csym4 (ccon (tauC f g) (tauC f g)))).re
+    = ip4 (kerS f - kerS g) (kerS f - kerS g)
+      + ip4 (sym4 (con g f + con f g)) (sym4 (con g f + con f g)) := by
+  have hre : ∀ a b c d,
+      (csym4 (ccon (tauC f g) (tauC f g)) a b c d).re
+        = (kerS f - kerS g) a b c d := by
+    intro a b c d
+    simp only [csym4_re, ccon_tauC_re]
+    change sym4 (con f f - con g g) a b c d = _
+    rw [sym4_sub]; rfl
+  have him : ∀ a b c d,
+      (csym4 (ccon (tauC f g) (tauC f g)) a b c d).im
+        = sym4 (con g f + con f g) a b c d := by
+    intro a b c d
+    simp only [csym4_im, ccon_tauC_im]
+    change sym4 (con f g + con g f) a b c d = _
+    rw [add_comm]
+  simp only [hip, Complex.re_sum, Complex.mul_re, Complex.conj_re, Complex.conj_im, mul_neg, sub_neg_eq_add, hre, him, ip4,
+    ← Finset.sum_add_distrib]
+
+end JointSixth
 
 /-! ### The normalisation: `1296 s = s₀` and `1296 h = h₀` -/
 
@@ -170,19 +199,10 @@ theorem tenH_eq_gram (hf : ∀ a b c, f a b c = f b a c) (hg : ∀ a b c, g a b 
   have hS2 : ip4 Sp Sp = (gramH 𝓽 + 4 * gramN 𝓽 + 4 * gramB 𝓽 + 16 * gramT0 𝓽) / 486 := by
     rw [← sum_kerS_sq hJ f g hsym ht hf hg, hSp]
     simp only [ip4, Pi.add_apply, sq]
-  have hV := hipV_V hJ f g hsym ht
-  rw [hip_self_re] at hV
-  have hre : ∀ a b c d, (csym4 (ccon (tauC f g) (tauC f g)) a b c d).re = R a b c d :=
-    fun a b c d => by
-      rw [csym4_re, hR]
-      simp only [sym4, ccon_tauC_re, Pi.sub_apply, kerS_eq_sym4]; ring
-  have him : ∀ a b c d, (csym4 (ccon (tauC f g) (tauC f g)) a b c d).im = M a b c d :=
-    fun a b c d => by
-      rw [csym4_im, hM]
-      simp only [sym4, ccon_tauC_im, Pi.add_apply]; ring
   have hRM : ip4 R R + ip4 M M = 4 / 81 * gramY 𝓽 := by
-    rw [← hV]
-    simp only [ip4, Complex.normSq_apply, hre, him, ← Finset.sum_add_distrib]
+    have hV := hipV_V hJ f g hsym ht
+    rw [JointSixth.hip_sym_tau] at hV
+    simpa only [← hR, ← hM] using hV
   have hY := gramY_eq ht (t := 𝓽)
   rw [h4, hS2]
   linear_combination 162 * hRR + 162 * hRM - 16 * hY
@@ -192,97 +212,29 @@ end normalisation
 
 section hs
 
-variable (f : ι → ι → ι → ℝ) (hf : ∀ a b c, f a b c = f b a c)
-include hf
+variable (f : ι → ι → ι → ℝ)
 
+-- Preserve the legacy named symmetry parameter; the general bound does not need it.
+set_option linter.unusedVariables false in
 /-- `T₄ = ‖S²‖² ≤ ‖S‖⁴ = h²`. -/
-lemma tenT4_le_sq : tenT4 f ≤ tenH f ^ 2 := by
-  have hcs : ∀ a b c d, kerS2 f a b c d ^ 2
-      ≤ (∑ e, ∑ e', kerS f a b e e' ^ 2) * (∑ e, ∑ e', kerS f c d e e' ^ 2) := by
-    intro a b c d
-    have h := Finset.sum_mul_sq_le_sq_mul_sq (Finset.univ : Finset (ι × ι))
-      (fun p => kerS f a b p.1 p.2) (fun p => kerS f p.1 p.2 c d)
-    simp only [Fintype.sum_prod_type] at h
-    have e : ∀ e e', kerS f e e' c d = kerS f c d e e' := fun e e' => kerS_swap f hf e e' c d
-    simp only [e] at h
-    unfold kerS2
-    simp only [e]
-    exact h
-  calc tenT4 f ≤ ∑ a, ∑ b, ∑ c, ∑ d,
-        (∑ e, ∑ e', kerS f a b e e' ^ 2) * (∑ e, ∑ e', kerS f c d e e' ^ 2) := by
-        unfold tenT4
-        gcongr with a _ b _ c _ d _
-        exact hcs a b c d
-    _ = ∑ a, ∑ b, (∑ e, ∑ e', kerS f a b e e' ^ 2)
-          * (∑ c, ∑ d, ∑ e, ∑ e', kerS f c d e e' ^ 2) := by
-        refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
-        rw [Finset.mul_sum]
-        exact Finset.sum_congr rfl fun c _ => by rw [Finset.mul_sum]
-    _ = tenH f ^ 2 := by
-        rw [sq, tenH, Finset.sum_mul]
-        exact Finset.sum_congr rfl fun a _ => by rw [Finset.sum_mul]
+lemma tenT4_le_sq (hf : ∀ a b c, f a b c = f b a c) : tenT4 f ≤ tenH f ^ 2 := by
+  exact JointSixth.tenT4_le f
+
+variable (hf : ∀ a b c, f a b c = f b a c)
+include hf
 
 /-- `T₃ = ⟨S², S⟩ ≤ ‖S²‖ ‖S‖ ≤ h √h`. -/
 lemma tenT3_le : tenT3 f ≤ tenH f * √(tenH f) := by
-  have h1 : tenT3 f ≤ √(tenT4 f) * √(tenH f) := by
-    refine le_sqrt_mul_sqrt_of_sq_le (tenT4_nonneg f) ?_
-    have e : tenT3 f = ∑ a, ∑ b, ∑ c, ∑ d, kerS2 f a b c d * kerS f a b c d := by
-      unfold tenT3
-      exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ =>
-        Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by
-          rw [kerS_swap f hf c d a b]
-    rw [e, tenT4, tenH, sum4_eq, sum4_eq, sum4_eq]
-    exact Finset.sum_mul_sq_le_sq_mul_sq _ _ _
-  have h2 : √(tenT4 f) ≤ tenH f := by
-    rw [Real.sqrt_le_left (tenH_nonneg f)]
-    exact tenT4_le_sq f hf
-  calc tenT3 f ≤ √(tenT4 f) * √(tenH f) := h1
-    _ ≤ tenH f * √(tenH f) := mul_le_mul_of_nonneg_right h2 (Real.sqrt_nonneg _)
+  exact JointSixth.tenT3_le f hf
 
 /-- `W = ‖U‖² ≤ √s √T₄ ≤ h √s`. -/
 lemma tenU2_le_hs : tenU2 f ≤ tenH f * √(tenS f) := by
-  have h2 : √(tenT4 f) ≤ tenH f := by
-    rw [Real.sqrt_le_left (tenH_nonneg f)]
-    exact tenT4_le_sq f hf
-  calc tenU2 f ≤ √(tenS f) * √(tenT4 f) := tenU2_le f hf
-    _ ≤ √(tenS f) * tenH f := mul_le_mul_of_nonneg_left h2 (Real.sqrt_nonneg _)
-    _ = tenH f * √(tenS f) := mul_comm _ _
+  exact JointSixth.tenU2_le f hf
 
 omit hf in
 /-- `Q = ⟨vec G, S vec G⟩ ≤ ‖S‖ ‖G‖² = s √h`. -/
 lemma tenQ_le : tenQ f ≤ tenS f * √(tenH f) := by
-  obtain ⟨w, hw⟩ : ∃ w : ι → ι → ℝ, w = fun a b => ∑ c, ∑ d, kerS f a b c d * kerG f c d :=
-    ⟨_, rfl⟩
-  have eQ : tenQ f = ∑ a, ∑ b, kerG f a b * w a b := by
-    unfold tenQ
-    rw [hw]
-    exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by
-      simp only [Finset.mul_sum]
-      exact Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring
-  have hw2 : ∑ a, ∑ b, w a b ^ 2 ≤ tenH f * tenS f := by
-    have hcs : ∀ a b, w a b ^ 2 ≤ (∑ c, ∑ d, kerS f a b c d ^ 2) * tenS f := by
-      intro a b
-      have h := Finset.sum_mul_sq_le_sq_mul_sq (Finset.univ : Finset (ι × ι))
-        (fun p => kerS f a b p.1 p.2) (fun p => kerG f p.1 p.2)
-      simp only [Fintype.sum_prod_type] at h
-      rw [hw]
-      exact h
-    calc ∑ a, ∑ b, w a b ^ 2 ≤ ∑ a, ∑ b, (∑ c, ∑ d, kerS f a b c d ^ 2) * tenS f := by
-          gcongr with a _ b _
-          exact hcs a b
-      _ = tenH f * tenS f := by simp only [tenH, ← Finset.sum_mul]
-  have h1 : tenQ f ≤ √(tenS f) * √(tenH f * tenS f) := by
-    refine le_sqrt_mul_sqrt_of_sq_le (tenS_nonneg f) ?_
-    rw [eQ]
-    have h := Finset.sum_mul_sq_le_sq_mul_sq (Finset.univ : Finset (ι × ι))
-      (fun p => kerG f p.1 p.2) (fun p => w p.1 p.2)
-    simp only [Fintype.sum_prod_type] at h
-    refine h.trans ?_
-    exact mul_le_mul_of_nonneg_left hw2 (tenS_nonneg f)
-  calc tenQ f ≤ √(tenS f) * √(tenH f * tenS f) := h1
-    _ = tenS f * √(tenH f) := by
-        rw [Real.sqrt_mul (tenH_nonneg f), mul_comm (√(tenH f)), ← mul_assoc,
-          Real.mul_self_sqrt (tenS_nonneg f)]
+  exact JointSixth.tenQ_le f
 
 end hs
 
@@ -299,43 +251,6 @@ lemma tenV_le_of_trace {V s η : ℝ} (hs : 0 < s) (hη : 0 ≤ η)
       _ ≤ s ^ 3 * 1 := mul_le_mul_of_nonneg_left hq (by positivity)
       _ = s ^ 2 * s := by ring
   exact le_of_sq_le_sq' (by positivity) h2
-
-/-! ### The scalar step: `√h₀ ≤ x/2`, `√s₀ ≤ 5x/8`, `2√(s₀h₀) ≤ α s₀ + h₀/α` -/
-
-/-- For `s₀, h₀ ≥ 0` with `x² = (8/3)s₀ + 4h₀`, `x ≥ 0`, `α > 0` and `c₁, c₂, c₃ ≥ 0`:
-`c₁ h₀√h₀ + c₂ s₀√h₀ + c₃ h₀√s₀ ≤ x ((5c₂/16) α s₀ + (c₁/2 + 5c₂/(16α) + 5c₃/8) h₀)`. -/
-lemma joint_scalar {s0 h0 x al c1 c2 c3 : ℝ} (hs : 0 ≤ s0) (hh : 0 ≤ h0) (hx : 0 ≤ x)
-    (hχ : x ^ 2 = 8 / 3 * s0 + 4 * h0) (hal : 0 < al) (h1 : 0 ≤ c1) (h2 : 0 ≤ c2) (h3 : 0 ≤ c3) :
-    c1 * (h0 * √h0) + c2 * (s0 * √h0) + c3 * (h0 * √s0)
-      ≤ x * (5 * c2 / 16 * al * s0 + (c1 / 2 + 5 * c2 / (16 * al) + 5 * c3 / 8) * h0) := by
-  obtain ⟨p, hp0, rfl⟩ : ∃ p, 0 ≤ p ∧ p ^ 2 = s0 := ⟨√s0, Real.sqrt_nonneg _, Real.sq_sqrt hs⟩
-  obtain ⟨q, hq0, rfl⟩ : ∃ q, 0 ≤ q ∧ q ^ 2 = h0 := ⟨√h0, Real.sqrt_nonneg _, Real.sq_sqrt hh⟩
-  rw [Real.sqrt_sq hp0, Real.sqrt_sq hq0]
-  have hq : q ≤ x / 2 := by nlinarith [sq_nonneg p, sq_nonneg (x / 2 - q)]
-  have hp : p ≤ 5 * x / 8 := by nlinarith [sq_nonneg q, sq_nonneg (5 * x / 8 - p)]
-  have hpq : 2 * (p * q) ≤ al * p ^ 2 + q ^ 2 / al := by
-    have e : al * p ^ 2 + q ^ 2 / al - 2 * (p * q) = (al * p - q) ^ 2 / al := by
-      field_simp; ring
-    have : 0 ≤ (al * p - q) ^ 2 / al := div_nonneg (sq_nonneg _) hal.le
-    linarith
-  have t1 : c1 * (q ^ 2 * q) ≤ c1 * (q ^ 2 * (x / 2)) :=
-    mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hq (sq_nonneg q)) h1
-  have t3 : c3 * (q ^ 2 * p) ≤ c3 * (q ^ 2 * (5 * x / 8)) :=
-    mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hp (sq_nonneg q)) h3
-  have t2 : c2 * (p ^ 2 * q) ≤ c2 * (5 * x / 8 * ((al * p ^ 2 + q ^ 2 / al) / 2)) := by
-    have e : p ^ 2 * q = p * (p * q) := by ring
-    rw [e]
-    refine mul_le_mul_of_nonneg_left ?_ h2
-    calc p * (p * q) ≤ 5 * x / 8 * (p * q) :=
-          mul_le_mul_of_nonneg_right hp (mul_nonneg hp0 hq0)
-      _ ≤ 5 * x / 8 * ((al * p ^ 2 + q ^ 2 / al) / 2) :=
-          mul_le_mul_of_nonneg_left (by linarith) (by linarith)
-  have e : x * (5 * c2 / 16 * al * p ^ 2 + (c1 / 2 + 5 * c2 / (16 * al) + 5 * c3 / 8) * q ^ 2)
-      = c1 * (q ^ 2 * (x / 2)) + c2 * (5 * x / 8 * ((al * p ^ 2 + q ^ 2 / al) / 2))
-        + c3 * (q ^ 2 * (5 * x / 8)) := by
-    field_simp; ring
-  rw [e]
-  linarith
 
 /-! ### The joint inequalities for a circular cubic -/
 
@@ -389,113 +304,12 @@ include hE ha
 theorem Circular.joint_sixth (haa : E (a * a) = 1 / 2) (young : Bool) {al : ℝ} (hal : 0 < al) :
     E (radU a b ^ 3) ≤ 6 + 9 * (E (radU a b ^ 2) - 2) + √(E (radU a b ^ 2) - 2)
       * (jointA young al * jointS0 (gramT J a b) + jointB young al * jointH0 (gramT J a b)) := by
-  have hT := Circular.tensorFacts hE ha hc
-  have hf := cubicKernel_symm12 a
-  have ha2 : E (a ^ 2) = 1 / 2 := by rw [sq]; exact haa
-  have ha4 := hc.gE_pow_four hE
-  have ha6 := hc.gE_pow_six hE
-  have hs : 0 < tenS (cubicKernel a) := by
-    apply tenS_pos
-    have := ha.gE_sq_eq_kernel hE
-    rw [haa] at this
-    linarith
-  obtain ⟨s, hsd⟩ : ∃ s, s = tenS (cubicKernel a) := ⟨_, rfl⟩
-  obtain ⟨h, hhd⟩ : ∃ h, h = tenH (cubicKernel a) := ⟨_, rfl⟩
-  have hh : 0 ≤ h := hhd ▸ tenH_nonneg _
-  rw [← hsd] at hs
-  -- the cumulants
-  have w4 := hT.wick4
-  have w6 := hT.wick6
-  rw [ha4, ha2, ← hsd, ← hhd] at w4
-  rw [ha6, ha4, ha2] at w6
-  -- the tensor bounds
-  have bT3 : tenT3 (cubicKernel a) ≤ h * √h := hhd ▸ tenT3_le _ hf
-  have bQ : tenQ (cubicKernel a) ≤ s * √h := hsd ▸ hhd ▸ tenQ_le _
-  have bW : tenU2 (cubicKernel a) ≤ h * √s := hsd ▸ hhd ▸ tenU2_le_hs _ hf
-  have bV : tenV (cubicKernel a) ≤ s * √s := by
-    have := tenV_le_of_trace (hsd ▸ hs) (tenGa_nonneg _ J) hT.cubicTrace
-    rwa [← hsd] at this
-  have bDU := tenDU_le (cubicKernel a)
-  have hV0 := tenV_nonneg (cubicKernel a)
-  have hW0 := tenU2_nonneg (cubicKernel a)
-  obtain ⟨V, hVd⟩ : ∃ V, V = tenV (cubicKernel a) := ⟨_, rfl⟩
-  obtain ⟨W, hWd⟩ : ∃ W, W = tenU2 (cubicKernel a) := ⟨_, rfl⟩
-  rw [← hVd, ← hWd] at w6 bDU
-  rw [← hVd] at bV hV0
-  rw [← hWd] at bW hW0
-  -- `√V √W ≤ s √h`
-  have hVW : √V * √W ≤ s * √h := by
-    rw [← Real.sqrt_mul hV0]
-    have hp : V * W ≤ (s * √h) ^ 2 := by
-      calc V * W ≤ (s * √s) * (h * √s) := mul_le_mul bV bW hW0 (by positivity)
-        _ = s * h * (√s * √s) := by ring
-        _ = (s * √h) ^ 2 := by rw [Real.mul_self_sqrt hs.le, mul_pow, Real.sq_sqrt hh]; ring
-    calc √(V * W) ≤ √((s * √h) ^ 2) := Real.sqrt_le_sqrt hp
-      _ = s * √h := Real.sqrt_sq (by positivity)
-  -- the completed square `−20V + (165/2)√V√W ≤ (5445/64)W`
-  have hsq : -20 * V + 165 / 2 * (√V * √W) ≤ 5445 / 64 * W := by
-    have h1 := sq_nonneg (√V - 33 / 16 * √W)
-    have h2 := Real.sq_sqrt hV0
-    have h3 := Real.sq_sqrt hW0
-    nlinarith
-  -- the bound on `κ₆` in `s, h`
-  have hk : ∀ c1 c2 c3 : ℝ, (young = true → c1 = 135 / 2 ∧ c2 = 135 / 2 ∧ c3 = 8325 / 64) →
-      (young = false → c1 = 135 / 2 ∧ c2 = 150 ∧ c3 = 45) →
-      (5 / 16 * (E (radU a b ^ 3)) - 15 * (3 / 8 * E (radU a b ^ 2)) * (1 / 2)
-          + 30 * (1 / 2) ^ 3) / 46656
-        ≤ c1 * (h * √h) + c2 * (s * √h) + c3 * (h * √s) := by
-    intro c1 c2 c3 hy hn
-    rw [w6]
-    have hDU : 165 / 2 * tenDU (cubicKernel a) ≤ 165 / 2 * (√V * √W) := by linarith
-    cases young
-    · obtain ⟨rfl, rfl, rfl⟩ := hn rfl
-      nlinarith
-    · obtain ⟨rfl, rfl, rfl⟩ := hy rfl
-      nlinarith
-  -- the normalisation
-  have e0 := hc.jointS0_eq
-  have e1 := hc.jointH0_eq
-  rw [← hsd] at e0
-  rw [← hhd] at e1
-  have hm : E (radU a b ^ 2) - 2 = 8 / 3 * jointS0 (gramT J a b) + 4 * jointH0 (gramT J a b) := by
-    rw [e0, e1]; linarith
-  have hχ0 : 0 ≤ E (radU a b ^ 2) - 2 := by rw [hm, e0, e1]; positivity
-  have sqh : √(jointH0 (gramT J a b)) = 36 * √h := by
-    rw [e1, Real.sqrt_mul (by norm_num), show (1296 : ℝ) = 36 ^ 2 by norm_num,
-      Real.sqrt_sq (by norm_num)]
-  have sqs : √(jointS0 (gramT J a b)) = 36 * √s := by
-    rw [e0, Real.sqrt_mul (by norm_num), show (1296 : ℝ) = 36 ^ 2 by norm_num,
-      Real.sqrt_sq (by norm_num)]
-  have hx : √(E (radU a b ^ 2) - 2) ^ 2 = 8 / 3 * jointS0 (gramT J a b) + 4 * jointH0 (gramT J a b) := by
-    rw [Real.sq_sqrt hχ0, hm]
-  have hm' : 9 * E (radU a b ^ 2) - 12 = 6 + 9 * (E (radU a b ^ 2) - 2) := by ring
+  rw [hc.jointS0_eq, hc.jointH0_eq]
   cases young
-  · have hb := hk (135 / 2) 150 45 (by simp) (fun _ => ⟨rfl, rfl, rfl⟩)
-    have hj := joint_scalar hc.jointS0_nonneg hc.jointH0_nonneg (Real.sqrt_nonneg _) hx hal
-      (c1 := 216) (c2 := 480) (c3 := 144) (by norm_num) (by norm_num) (by norm_num)
-    rw [sqh, sqs, e0, e1] at hj
-    simp only [jointA, jointB, Bool.false_eq_true, ↓reduceIte]
-    rw [e0, e1]
-    have e : 5 * 480 / 16 * al = 150 * al ∧ 216 / 2 + 5 * 480 / (16 * al) + 5 * 144 / 8
-        = 198 + 150 / al := by
-      constructor
-      · ring
-      · field_simp; ring
-    rw [e.1, e.2] at hj
-    linear_combination (46656 * 16 / 5) * hb + hj
-  · have hb := hk (135 / 2) (135 / 2) (8325 / 64) (fun _ => ⟨rfl, rfl, rfl⟩) (by simp)
-    have hj := joint_scalar hc.jointS0_nonneg hc.jointH0_nonneg (Real.sqrt_nonneg _) hx hal
-      (c1 := 216) (c2 := 216) (c3 := 1665 / 4) (by norm_num) (by norm_num) (by norm_num)
-    rw [sqh, sqs, e0, e1] at hj
-    simp only [jointA, jointB, ↓reduceIte]
-    rw [e0, e1]
-    have e : 5 * 216 / 16 * al = 135 / 2 * al ∧ 216 / 2 + 5 * 216 / (16 * al) + 5 * (1665 / 4) / 8
-        = 11781 / 32 + 135 / (2 * al) := by
-      constructor
-      · ring
-      · field_simp; ring
-    rw [e.1, e.2] at hj
-    linear_combination (46656 * 16 / 5) * hb + hj
+  · simpa only [jointA, jointB, Bool.false_eq_true, ↓reduceIte] using
+      JointSixth.circular_j2 hE ha hc haa hal
+  · have h := JointSixth.circular_j3 hE ha hc haa hal
+    simpa only [jointA, jointB, ↓reduceIte, div_mul_eq_mul_div] using h
 
 end circular
 

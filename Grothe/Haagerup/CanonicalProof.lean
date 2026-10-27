@@ -133,6 +133,67 @@ private lemma l1_pow_bound {p : ℝ[X]} {a : ℝ} (hp : l1 p ≤ a) (n : ℕ) :
     l1 (p^n) ≤ a^n :=
   (l1_pow_le _ _).trans (pow_le_pow_left₀ (l1_nonneg _) hp n)
 
+/-- A combined resolvent power can contain several copies of a short certified seed. -/
+private lemma completion_seed_factor (p r : ℝ[X]) (K s j t : ℕ)
+    (he : 2*K+1+2*j = s*(j+1)+t) :
+    (-(r*(X*p^2)))^j*(r*compTerm p K) =
+      (-1)^j*X^(K+j)*(r*p^s)^(j+1)*p^t := by
+  unfold compTerm
+  rw [neg_pow, mul_pow, mul_pow, ← pow_mul]
+  have hp : p^(2*j)*p^(2*K+1) = (p^s)^(j+1)*p^t := by
+    rw [← pow_add, ← pow_mul, ← pow_add]
+    congr 1
+    omega
+  rw [mul_pow r (p^s) (j+1), pow_succ r j, pow_add X K j]
+  calc
+    _ = (-1)^j*(X^K*X^j)*(r^j*r)*(p^(2*j)*p^(2*K+1)) := by ring
+    _ = _ := by rw [hp]; ring
+
+private lemma norm_completion_seed_initial
+    (hseed : seedNormOK pl rl seedPower seedCap = true) (j : ℕ) (hj : j ≤ 7) :
+    l1 ((-(R*(X*P^2)))^j*(R*compTerm P start)) ≤ (1/2 : ℝ)^(j+1) := by
+  have hs : l1 (R*P^seedPower) ≤ (1 : ℝ)/2 :=
+    (norm_seed_of_check hseed).trans (by norm_num [seedCap])
+  have he : 2*start+1+2*j = seedPower*(j+1)+(112-15*j) := by
+    norm_num [start, seedPower]
+    omega
+  rw [completion_seed_factor P R start seedPower j (112-15*j) he]
+  have hu : l1 ((-1 : ℝ[X])^j*X^(start+j)) ≤ 1 := by
+    have h := l1_mul_bound
+      (l1_pow_bound (show l1 (-1 : ℝ[X]) ≤ 1 by simp [l1_neg]) j)
+      (l1_pow_bound (show l1 (X : ℝ[X]) ≤ 1 by simp) (start+j))
+    simpa using h
+  have h := l1_mul_bound (l1_mul_bound hu (l1_pow_bound hs (j+1)))
+    (l1_pow_bound norm_P (112-15*j))
+  simpa using h
+
+/-- Eight copies of the checked short seed control the first eight powers.
+The remaining powers use the existing resolvent-ratio bound, without a new convolution. -/
+lemma norm_completion_seed
+    (hdef : resolventNormOK pl rl defectCap = true)
+    (hseed : seedNormOK pl rl seedPower seedCap = true) (j : ℕ) (hj : j ≤ order) :
+    l1 ((-(R*(X*P^2)))^j*(R*compTerm P start)) ≤
+      if j = order then (1/32 : ℝ) else 1/2 := by
+  have hj10 : j ≤ 10 := by simpa only [order] using hj
+  by_cases hj7 : j ≤ 7
+  · have hpow : (1/2 : ℝ)^(j+1) ≤ 1/2 := by
+      rw [pow_succ]
+      exact mul_le_of_le_one_left (by norm_num)
+        (pow_le_one₀ (by norm_num) (by norm_num))
+    have hne : j ≠ order := by norm_num [order]; omega
+    simpa [hne] using (norm_completion_seed_initial hseed j hj7).trans hpow
+  · have h7 := norm_completion_seed_initial hseed 7 (by norm_num)
+    have hr : l1 (-(R*(X*P^2))) ≤ 2 := by
+      simpa only [l1_neg] using norm_resolvent_ratio hdef
+    have hid : (-(R*(X*P^2)))^j*(R*compTerm P start) =
+        (-(R*(X*P^2)))^(j-7)*((-(R*(X*P^2)))^7*(R*compTerm P start)) := by
+      symm
+      rw [← mul_assoc, ← pow_add, Nat.sub_add_cancel (by omega : 7 ≤ j)]
+    have h := l1_mul_bound (l1_pow_bound hr (j-7)) h7
+    rw [← hid] at h
+    have hj_cases : j = 8 ∨ j = 9 ∨ j = 10 := by omega
+    rcases hj_cases with rfl | rfl | rfl <;> norm_num [order] at h ⊢ <;> linarith
+
 private lemma l1_ofListQ_scaled_le (rho : ℚ) (hrho : 0 ≤ rho) (qs : List ℚ) :
     l1 ((ofListQ qs).comp (C (rho : ℝ)*X)) ≤ (majorantQ rho qs : ℝ) := by
   have hr : (0 : ℝ) ≤ rho := Rat.cast_nonneg.mpr hrho
@@ -230,16 +291,16 @@ lemma completed_norm_of_check
   exact h.trans ((add_le_add hp ht).trans (by norm_num [prefixCap, headCap]))
 
 lemma remainder_bound (hcoeff : remainderBudget ≤ remainderCap) :
-    (2*(1/2 : ℝ)/(1-defectCap))*
-      ((2 : ℝ)^order*iterDiff order (fun k => (haagR k : ℝ)) start +
-        (defectCap : ℝ)*∑ j ∈ range order, (2 : ℝ)^j*iterDiff j (fun k => (haagR k : ℝ)) start)
+    (2 : ℝ)/(1-defectCap)*
+      ((1/32 : ℝ)*iterDiff order (fun k => (haagR k : ℝ)) start +
+        (defectCap : ℝ)*(1/2)*∑ j ∈ range order, iterDiff j (fun k => (haagR k : ℝ)) start)
       ≤ (remainderCap : ℝ) := by
   have h : (remainderBudget : ℝ) ≤ (remainderCap : ℝ) := Rat.cast_le.mpr hcoeff
   have he : (remainderBudget : ℝ) =
-      ((2 : ℝ)^order*iterDiff order (fun k => (haagR k : ℝ)) start +
-        (defectCap : ℝ)*∑ j ∈ range order, (2 : ℝ)^j*iterDiff j (fun k => (haagR k : ℝ)) start) /
+      ((1/16 : ℝ)*iterDiff order (fun k => (haagR k : ℝ)) start +
+        (defectCap : ℝ)*∑ j ∈ range order, iterDiff j (fun k => (haagR k : ℝ)) start) /
         (1-defectCap) := by
-    simp only [remainderBudget, Rat.cast_div, Rat.cast_add, Rat.cast_mul, Rat.cast_pow,
+    simp only [remainderBudget, Rat.cast_div, Rat.cast_add, Rat.cast_mul,
       Rat.cast_ofNat, Rat.cast_sub, Rat.cast_one, Rat.cast_sum, iterDiff_ratCast]
   rw [he] at h
   convert h using 1; ring
@@ -251,13 +312,27 @@ lemma completed_tail_bound
     ∑' n, |compCoeff (fun k => if k < start then 0 else (haagR k : ℝ)) P n -
       ((R*compTerm P start)*hornerP (-(R*(X*P^2))) differences).coeff n| ≤
       (remainderCap : ℝ) := by
-  have h := composition_completion_bound (fun k => (haagR k : ℝ)) P R start order
+  have budget_eq (m : ℕ) (w : ℕ → ℝ) (eta : ℝ) :
+      (2/(1-eta))*((if m = m then (1/32 : ℝ) else 1/2)*w m +
+        eta*∑ j ∈ range m, (if j = m then (1/32 : ℝ) else 1/2)*w j) =
+      (2/(1-eta))*((1/32 : ℝ)*w m + eta*(1/2)*∑ j ∈ range m, w j) := by
+    have hs : (∑ j ∈ range m, (if j = m then (1/32 : ℝ) else 1/2)*w j) =
+        (1/2 : ℝ)*∑ j ∈ range m, w j := by
+      rw [mul_sum]
+      apply sum_congr rfl
+      intro j hj
+      rw [ite_eq_right (Nat.ne_of_lt (mem_range.mp hj))]
+    rw [hs, ite_eq_left rfl]
+    ring
+  have h := composition_completion_bound_of_seeds (fun k => (haagR k : ℝ)) P R start order
     HaagerupCompleteMonotone.haagR_completelyMonotone
-    HaagerupCompleteMonotone.tendsto_haagR_zero norm_P
+    (fun j => if j = order then (1/32 : ℝ) else 1/2) norm_P
     (by norm_num [defectCap] : (defectCap : ℝ) < 1) (norm_defect_of_check hdef)
-    (norm_tail_seed hseed) (norm_resolvent_ratio hdef)
+    (norm_completion_seed hdef hseed)
   rw [completion_eq] at h
-  exact h.trans (remainder_bound hcoeff.2)
+  exact (h.trans_eq (budget_eq order
+    (fun j => iterDiff j (fun k => (haagR k : ℝ)) start) defectCap)).trans
+      (remainder_bound hcoeff.2)
 
 lemma finite_identity (n : ℕ) :
     compCoeff (cLo start) P n = Real.pi/4*(P*hornerP (X*P^2) (haagList start)).coeff n := by
@@ -343,7 +418,7 @@ theorem upper_of_checks
     (hseed : seedNormOK pl rl seedPower seedCap = true)
     (hcoeff : weightedBudget ≤ 10^13 ∧ remainderBudget ≤ remainderCap)
     (hhead : completedHeadOK cutoff start pl rl (haagList start) differences HaagerupPower.slope prefixCap = true) :
-    IsGrothendieckBound (175613641599/125000000000) := by
+    IsGrothendieckBound (1404909132791/1000000000000) := by
   have he : IsGrothendieckBound
       (1/(Real.pi/4*(HaagerupPower.slope : ℝ)-Real.pi/4*((headCap : ℝ)+remainderCap))) := by
     apply transfer_comp summable_haagCoeff haagerup_dominated norm_P _

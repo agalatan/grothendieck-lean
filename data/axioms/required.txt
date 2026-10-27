@@ -14,6 +14,7 @@ Grothe.HaagerupCanonical.differences_getD
 Grothe.HaagerupCanonical.differences_length
 Grothe.HaagerupCanonical.finite_identity
 Grothe.HaagerupCanonical.norm_P
+Grothe.HaagerupCanonical.norm_completion_seed
 Grothe.HaagerupCanonical.norm_defect_of_check
 Grothe.HaagerupCanonical.norm_resolvent_ratio
 Grothe.HaagerupCanonical.norm_scaledP
@@ -50,6 +51,7 @@ Grothe.Lower.SteinFusion.specCellG_unit_fusion
 Grothe.Lower.SteinFusion.unit_fusion_identity
 Grothe.Lower.SteinFusion.unit_fusion_le
 Grothe.Lower.gram_joint_of_scalars
+Grothe.LowerAnalytic.Chaos3.fourth_le
 Grothe.LowerAnalytic.Circular.joint_sixth
 Grothe.LowerAnalytic.DiffuseCubicObstruction.above_target
 Grothe.LowerAnalytic.DiffuseCubicObstruction.finite_bridge_lower
@@ -158,6 +160,8 @@ Grothe.LowerAnalytic.joint_eta_budget
 Grothe.LowerAnalytic.lower_bound_of_capsRest
 Grothe.LowerAnalytic.normQk_le_rho
 Grothe.LowerAnalytic.norm_pairVal_witness
+Grothe.LowerAnalytic.tenH_le_tenS
+Grothe.LowerAnalytic.tenS_le_sq_sum
 Grothe.LowerAnalytic.transferInputs_of_witnessCap
 Grothe.Research.CoupledMajorizer.complex_norm_majorizer
 Grothe.Research.CoupledMajorizer.complex_norm_majorizer_exact
@@ -290,6 +294,7 @@ Grothe.Upper.ResolventCertificate.polynomial_residual_eq_l1
 Grothe.Upper.ResolventCertificate.summable_abs_coeff
 Grothe.Upper.ResolventCertificate.tsum_abs_coeff_eq_l1
 Grothe.Upper.ResolventCompletion.composition_completion_bound
+Grothe.Upper.ResolventCompletion.composition_completion_bound_of_seeds
 Grothe.Upper.ResolventTail.compCoeff_tail_eq_sum_coeff
 Grothe.Upper.ResolventTail.compTerm_coeff_zero
 Grothe.Upper.ResolventTail.compTerm_geometric
