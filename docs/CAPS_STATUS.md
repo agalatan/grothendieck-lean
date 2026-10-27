@@ -1,6 +1,6 @@
 # Node caps in Lean: status (27 Oct 2026)
 
-Agent-ID: codex-6 b 2 a. Row 12 is activated in source for canonical CI. Its native
+Agent-ID: codex-6b2a. Row 12 is activated in source for canonical CI. Its native
 checks, complete Lean build, strict audit and Actions cache upload are pending.
 Source generation and exact replay of research matrices do not establish those
 verification results.

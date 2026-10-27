@@ -724,7 +724,7 @@ checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
 The activated registry has 1,395 native facts: the retained 88 (60 cap ranges,
 five Hardy facts and 23 others) plus 1,307 Row 12 facts. The default report has
-2,016 print directives and 1,787 required declarations. These are source/registry
+2,020 print directives and 1,788 required declarations. These are source/registry
 counts; Row 12 canonical native/build/audit/cache verification remains pending.
 
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,

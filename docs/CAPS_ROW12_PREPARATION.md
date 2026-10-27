@@ -82,7 +82,7 @@ The independent precompiled `GrotheCapsKernel` remains unchanged.
 
 `row12-build.json` inventories 1,322 native modules (15 retained row modules plus
 1,307 Row 12 leaves), 126 pure project prerequisites, 1,453 source/configuration
-pins and two execution-helper pins. The self-hosted preparatory builder finishes
+pins and three execution-helper pins. The self-hosted preparatory builder finishes
 pure prerequisites first, then builds at most TWO native leaves per owned group,
 each `-j1`, with aggregate RSS≤24 GiB and disk free≥3 GiB. It preserves canonical
 Lake configuration, checks actual concurrency and source/profile pins, forwards
@@ -113,3 +113,20 @@ Native anchor and non-centre checks can still fail and require recipe repair;
 preparation never presumes their success or permits an increased cap. The final
 hypothesis-free endpoint still needs rows 13–15 and every remaining anchor/piece
 certificate. The accepted native-free upper endpoint 1.404909132791 is unchanged.
+
+## Shared droplet window
+
+The user authorizes CI (GitHub Actions) and numerical research to share the
+droplet. During the bounded native prebuild, CI keeps two `-j1` leaves under
+20 GiB aggregate RSS; research has one `-j1` leaf under 8 GiB. The numerical
+worker yields below 3 GiB machine memory headroom. Exact same-user PID/start
+time, source, root, profile and GitHub run/source passports permit only these
+two owned workloads. All unrelated jobs retain the foreign-work guard.
+
+A common admission lock covers numerical child creation/registration and CI's
+transition to its exclusive phase. CI waits until the numerical child has
+exited before the full Grothe build and combined audit/cache tail. This
+coordination changes execution only: frozen numerical science and canonical
+Lean checks remain unchanged. The earlier CI run was cancelled during the
+intermediate machine handoff; a new source-bound run is required for this
+shared profile. Previous completed Lake outputs remain reusable.

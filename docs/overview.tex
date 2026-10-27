@@ -237,7 +237,7 @@ The 98-result focused audit policy permits only \lean{propext}, \lean{Classical.
 The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
 The activated source registry contains 1,395 native facts: the retained 88 (60 cap ranges, five Hardy checks and 23 others), plus 1,307 Row12 checks.
-The report \path{scratch/Axioms.lean} has 2,016 print directives and 1,787 required declarations. These are source counts; Row12 native execution, complete proof/audit and Actions-cache publication are pending.
+The report \path{scratch/Axioms.lean} has 2,020 print directives and 1,788 required declarations. These are source counts; Row12 native execution, complete proof/audit and Actions-cache publication are pending.
 Normal \path{ready/*} delivery CI builds ONE target, \lean{Grothe}, and checks ONE combined strict native/axiom report before merging; workflow edits follow the human-merged PR route.
 
 Row12 has 396 nodes: 85 chords, 88 localized vertices with 4,562 constrained pieces, and 223 anchors.
@@ -250,6 +250,7 @@ The explicit computation-root registry expands the caps fingerprint to 1,454 fil
 The stable precompiled \lean{GrotheCapsKernel} retains the \lean{GrotheKernel} namespace.
 The self-hosted CI lane prebuilds 126 pure project prerequisites, then 1,322 independent native modules (15 retained row modules plus the 1,307 Row12 leaves), at most TWO per owned group, each \texttt{-j1}, with aggregate RSS at most 24 GiB and free disk at least 3 GiB.
 Source/profile and actual-concurrency guards apply, and an identical rerun lets Lake reuse completed outputs.
+For the authorized shared-droplet window, CI uses a 20 GiB cap while one numerical research leaf has an 8 GiB cap. Exact process/source passports and an admission lock protect the handoff; research yields before CI starts the complete proof and audit.
 The rough two--three day estimate at two workers uses the grid census and historical checker costs, not a measured Row12 native pilot.
 
 When no verified cache matches, the SAME pending check runs on the self-hosted runner.
