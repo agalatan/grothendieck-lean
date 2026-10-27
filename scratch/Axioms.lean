@@ -1324,6 +1324,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.sum_sq_le_of_mean_le
 #print axioms Grothe.UpperChaos.summable_abs_energy
 #print axioms Grothe.UpperChaos.tail_of_direct_head
+#print axioms Grothe.UpperChaos.taylorConditionalWick_eq_norm
 #print axioms Grothe.UpperChaos.taylorInnerSource_gradedHermite_eq_slice
 #print axioms Grothe.UpperChaos.taylorRounding_error
 #print axioms Grothe.UpperChaos.taylorRounding_source_toLp
