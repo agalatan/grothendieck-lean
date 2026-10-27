@@ -589,6 +589,7 @@ import Grothe.UpperChaos.PhiCoverData
 import Grothe.UpperChaos.PhiDense
 import Grothe.UpperChaos.PhiHorner
 import Grothe.UpperChaos.ProductComplete
+import Grothe.UpperChaos.ProfileRootNormalization
 import Grothe.UpperChaos.ProfileRootScreen
 import Grothe.UpperChaos.ProjectionUnion
 import Grothe.UpperChaos.RadialCeiling
