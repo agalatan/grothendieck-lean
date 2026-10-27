@@ -601,6 +601,7 @@ import Grothe.UpperChaos.ShiftedDampedMoments
 import Grothe.UpperChaos.ShiftedMomentRecurrence
 import Grothe.UpperChaos.SmoothComm
 import Grothe.UpperChaos.Smoothing
+import Grothe.UpperChaos.SoftPhaseLaplace
 import Grothe.UpperChaos.Structural
 import Grothe.UpperChaos.Sym2R
 import Grothe.UpperChaos.TaylorBandCheck
