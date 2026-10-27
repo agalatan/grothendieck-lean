@@ -27,8 +27,7 @@ instance (B : Set Idx2) : CompleteSpace (modeSpace B) :=
   (Submodule.isClosed_topologicalClosure _).completeSpace_coe
 
 /-- **The projection onto the Hermite modes in `B`.** -/
-def projOn (B : Set Idx2) : Lp ℂ 2 mu2 →L[ℂ] Lp ℂ 2 mu2 :=
-  (modeSpace B).subtypeL ∘L (modeSpace B).orthogonalProjection
+def projOn (B : Set Idx2) : Lp ℂ 2 mu2 →L[ℂ] Lp ℂ 2 mu2 := (modeSpace B).starProjection
 
 lemma hvec2_mem_modeSpace {B : Set Idx2} {i : Idx2} (hi : i ∈ B) : hvec2 i ∈ modeSpace B :=
   Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨i, hi, rfl⟩)
@@ -47,8 +46,8 @@ lemma hvec2_mem_orth {B : Set Idx2} {i : Idx2} (hi : i ∉ B) : hvec2 i ∈ (mod
 /-- **The coefficients of the projection.** -/
 theorem inner_projOn (B : Set Idx2) [DecidablePred (· ∈ B)] (i : Idx2) (f : Lp ℂ 2 mu2) :
     ⟪hvec2 i, projOn B f⟫_ℂ = if i ∈ B then ⟪hvec2 i, f⟫_ℂ else 0 := by
-  have hP : projOn B f ∈ modeSpace B := ((modeSpace B).orthogonalProjection f).2
-  have hR : f - projOn B f ∈ (modeSpace B)ᗮ := (modeSpace B).sub_orthogonalProjection_mem_orthogonal f
+  have hP : projOn B f ∈ modeSpace B := (modeSpace B).starProjection_apply_mem f
+  have hR : f - projOn B f ∈ (modeSpace B)ᗮ := (modeSpace B).sub_starProjection_mem_orthogonal f
   split_ifs with hi
   · have h0 := Submodule.inner_right_of_mem_orthogonal (hvec2_mem_modeSpace hi) hR
     rw [inner_sub_right, sub_eq_zero] at h0
@@ -108,7 +107,7 @@ def bandProj (b : GrotheKernel.ComparisonBand) : Lp ℂ 2 mu2 →L[ℂ] Lp ℂ 2
 theorem energy_bandProj_eq_zero (b : GrotheKernel.ComparisonBand) (f : Lp ℂ 2 mu2) (p : ℕ × ℕ)
     (hp : b.contains p.1 p.2 = false) : energy (bandProj b f) p = 0 :=
   energy_projOn_eq_zero _ f fun i hi hmem => by
-    simp only [bandModes, Set.mem_def, hi] at hmem
+    simp only [bandModes, Set.mem_ofPred_eq, hi] at hmem
     rw [hp] at hmem
     exact Bool.false_ne_true hmem
 
