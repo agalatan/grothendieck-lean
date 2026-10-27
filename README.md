@@ -385,8 +385,8 @@ Every native check is single-threaded code (no `Task.spawn`).
 All other proofs, including the canonical finite checks, are kernel-checked.
 No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`, including the node caps.
-The report contains 688 print directives, with 456 required declarations and 91
-allowlisted native facts (60 cap ranges, five Hardy checks and 26 others).
+The report is `scratch/Axioms.lean`; its required declarations are listed in `data/axioms/required.txt` and the
+allowlisted native facts in `data/axioms/native.txt` (the cap ranges, the Hardy checks and the others).
 The focused report `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, allows
 no native axioms for its 98 selected unconditional upper-bound results.
 Normal `ready/*` delivery CI builds and audits the combined tree before merging it.

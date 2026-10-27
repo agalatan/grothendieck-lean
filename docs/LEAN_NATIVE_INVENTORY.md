@@ -2,9 +2,8 @@
 
 This inventory covers the named native facts allowed for the single `Grothe`
 target, plus the four anonymous table diagnostics below. The current allowlist
-has **91 named facts: 60 cap ranges, five Hardy facts and 26 others**. The default
-report contains **688 print directives**, with **456 required declarations**.
-These are source/registry counts. Normal `ready/*` delivery CI builds and audits
+is `data/axioms/native.txt` (cap ranges, Hardy facts and others). The default report is
+`scratch/Axioms.lean`, with its required declarations in `data/axioms/required.txt`. Normal `ready/*` delivery CI builds and audits
 the combined tree before merging it.
 
 The lower chain uses the refined 10,762-box cover. Its finite checks comprise
@@ -57,7 +56,7 @@ The second-moment module previously built in 4.8 seconds in
 [run 40468150361](https://github.com/agalatan/grothendieck-lean/actions/runs/40468150361).
 This is whole-module time, not isolated native evaluation. The fourth- and sixth-moment modules built in 31 s and 175 s respectively in
 [run 40471192509](https://github.com/agalatan/grothendieck-lean/actions/runs/40471192509),
-which passed all 9,305 build jobs and the 676-declaration audit (all 91 native facts). This addition does
+which passed the full build and axiom audit. This addition does
 not discharge `ComparisonInputs` or `energy_close` and changes no headline bound.
 
 | Fact | Source native site | Allowlist | Report coverage | Runtime evidence |

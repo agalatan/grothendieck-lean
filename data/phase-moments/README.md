@@ -62,7 +62,7 @@ The [second-moment delivery](https://github.com/agalatan/grothendieck-lean/actio
 passed its full build and axiom audit. `PhaseMoment2` built in 4.8 seconds
 (whole-module time, not isolated native evaluation). The
 [fourth/sixth delivery](https://github.com/agalatan/grothendieck-lean/actions/runs/40471192509)
-also passed: 9,305 build jobs, 676 audited declarations and all 91 native facts.
+also passed its full build and axiom audit.
 `PhaseMoment4`, `PhaseMoment6`, and `PhaseMomentNorms` built in 31 s, 175 s,
 and 3.7 s respectively. The three integral statements each use only their
 own moment native fact beyond the standard axioms. The norm statements also
