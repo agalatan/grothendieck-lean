@@ -3,6 +3,8 @@
 Grothe.HJM.Cauchy.gate_check4._native.native_decide.ax_1_1
 Grothe.HJM.OriginMomentGenerated.rightBlock13._native.native_decide.ax_1_1
 Grothe.HJM.OriginMomentRightWitnessData.rightPolynomial_eq._native.native_decide.ax_1_1
+Grothe.HJM.OriginUnweightedRightChecks.combinedBlock00._native.native_decide.ax_1_1
+Grothe.HJM.OriginUnweightedRightWitness.polynomial_eq._native.native_decide.ax_1_1
 Grothe.HJM.finite67_check._native.native_decide.ax_1_1
 Grothe.Lower.certBatches0._native.native_decide.ax_1_1
 Grothe.Lower.certBatches1._native.native_decide.ax_1_1
