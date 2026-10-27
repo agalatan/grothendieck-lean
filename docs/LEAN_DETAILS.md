@@ -33,6 +33,29 @@ tensor-to-Gram identities and specializes this core for `Circular.joint_sixth`.
 and capped/η refinements. No positivity of the symmetrized contraction
 operator is assumed.
 
+**HJM origin branch.** `Grothe/HJM/OriginResponse.lean` defines the exact asymmetric
+response pair from reproducibly generated rational parameters. It proves measurability,
+disk bounds, charge-one equivariance and the imaginary endpoint cross product.
+`OriginKernel` realizes any measurable disk-valued scalar pair with one shared Gaussian
+driver in every finite dimension. `OriginMehler` identifies its full Hermite expansion,
+then reflection symmetrization gives the real signed radial coefficients.
+`Origin.kernel_dominated` supplies the actual sixth branch to `mixture_bound`;
+`Origin.coeff_summable` controls all modes. The Hermite convention differs from the
+paper's Laguerre convention by `(-1)^n`, which is already present in the pinned table
+generator and cancels in every cross product.
+
+`OriginLaguerre` proves charge selection, Parseval, Bessel and the polynomial
+number-operator eigenvalue `2*n+1`. `OriginEnergy` removes the endpoint phase-phase
+term before norms and proves finite coefficient stability under an actual spatial
+`L²` error. `OriginTruncation` gives the joint squared coefficient-error budget
+`exp(-36)` beyond radius six. `OriginNonvanishing` uses nine rational Bernstein
+panels on `[0,32]` and positive shifted coefficients beyond 32 to prove
+`|P(s)|² ≥ 37/100`; its finite checks use `decide +kernel`.
+No native facts are introduced. Explicit Laguerre integral identities, the radial
+integration-by-parts energy bound and the numerical integral enclosures remain
+separate obligations. Hash-pinned tables and exact serialization alone do not prove
+any integral enclosure; see [`data/hjm/origin/`](../data/hjm/origin/README.md).
+
 **Published scalar-tail refinement.**
 `Grothe/Haagerup/ScalarTailRefinement.lean` proves an arbitrary finite-power
 Wiener composition bound and its signed supported-suffix consequence. Its
@@ -65,11 +88,33 @@ The exact certificate JSON and generator reproduce the module byte for byte.
 `DampedMoments` proves mixed complex Gaussian moments at every positive radial
 scale. `InvariantMoments` integrates each monomial in the simultaneous-rotation
 invariants by a finite balanced complex-monomial expansion. `PhaseMomentCheck`
-proves exact integer convolution and denominator clearing for the production
-phase term list. `TaylorMoments` and `ComparisonPieces` identify the even phase
-moments with the total energy of every positive Taylor source. These are
-symbolic identities; the numerical moment leaves and their complete connection
-to the comparison enclosures remain separate work.
+proves exact integer convolution and common-denominator clearing for any finite
+rational term list, including coefficients with odd denominators.
+For `φ = D exp(-ε(U+V)) S`, it constructs `A=L*S`, where `L` is the full
+common denominator. `integral_phaseOfTerms_pow` in `PhaseMomentEval` integrates
+`A^(2j)` at rate `1+2jε` and divides by `L^(2j)`; finite Horner integration
+supplies the integrability of every summand.
+`ConcretePhaseMoments` specializes this identity to the actual `phaseTerms`
+and `phaseEpsQ`: `integral_phiT_pow_even` equates every even moment with
+`phaseMomentValue j`, without a phase-cover or external moment premise.
+`TaylorMoments` and `ComparisonPieces` identify the even phase moments with
+the total energy of every positive Taylor source.
+
+`PhaseMoment2`, `PhaseMoment4`, and `PhaseMoment6` contain independent
+single-threaded native equalities with `phaseMoment2Q`, `phaseMoment4Q`, and
+`phaseMoment6Q`. The integral consequences are `integral_phiT_sq`,
+`integral_phiT_pow_four`, and `integral_phiT_pow_six`. Their approximate values
+are `2.56852947444587e-6`, `5.71439509703932e-10`, and `1.68238736430120e-11`.
+`PhaseMomentNorms` combines these with the exact pointwise Taylor-source
+identity to give `norm_hpow_one_sq`, `norm_hpow_two_sq`, and
+`norm_hpow_three_sq`. These are total energies; sharp band-tail estimates also
+need certified captured Hermite energy and approximation errors.
+The targets in `data/phase-moments/targets.json` are expected exact values,
+not integral assumptions: each numerical leaf computes from the production
+phase. `python3 tools/gen_phase_moment_data.py --check` verifies source binding
+and reproduces the generated targets without expanding polynomial powers.
+Neither `ComparisonInputs` nor `energy_close` is discharged by total energies
+alone, and no headline bound changes.
 
 **Phase errors and transported certificates.**
 `Grothe/Upper/ResponseGeometry.lean` proves twelve statements: the exact
@@ -727,15 +772,16 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 `LawNodeLower.certified_rows` and `certified_mixed_batches` assemble those
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
-The complete registry has 88 native facts: 60 cap ranges, five Hardy facts
-(four arc parts and the region) and 23 others. The default report has 640 print
-directives and 408 required declarations. These are source/registry counts;
-delivery CI checks the combined tree.
+The complete registry of native facts is `data/axioms/native.txt` (cap ranges, Hardy facts — four arc parts and
+the region — and others); the default report is `scratch/Axioms.lean`, with its required declarations in
+`data/axioms/required.txt`. Delivery CI checks the combined tree.
 
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`): `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
+`Grothe.UpperChaos.phase_moment2_check`, `phase_moment4_check`, and
+`phase_moment6_check` (the exact second, fourth and sixth moments of the production phase),
 `Grothe.UpperChaos.hardy_arc_part_0`–`3` and `hardy_region_check` (the Hardy circle mean and decay region),
 `Grothe.UpperChaos.phi_cover_check_0`–`5`
 (the phase cover |φ| < 1), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),

@@ -165,8 +165,12 @@ Deliver when the user says the work should go into master.
    - every new `native_decide` fact is in `data/axioms/native.txt`;
    - a new module is imported by the generated root (run `python3 tools/gen_root_imports.py`). There is one build
      target, `Grothe`; only generated research modules that no proof uses yet go in `data/root-imports-exclude.txt`.
-4. **Documentation:** if a bound, a hypothesis or the axiom report changed, update `README.md`,
-   `docs/overview.tex` + `OVERVIEW.pdf` and `docs/LEAN_DETAILS.md` in the same delivery.
+4. **Documentation:** never write counts of the axiom report or of native facts into documents (they conflict
+   with every concurrent delivery; the lists in `data/axioms/` and `scratch/Axioms.lean` are the record). If a
+   bound, a hypothesis or the axiom report changed, update `README.md`,
+   `docs/overview.tex` and `docs/LEAN_DETAILS.md` in the same delivery. **Never build or commit `OVERVIEW.pdf`:**
+   CI rebuilds it from `docs/overview.tex` on master (`.github/workflows/overview.yml`), and merges never conflict on it
+   (`merge=ours` in `.gitattributes`).
 5. **Deliver: push only the `ready/` branch,** `git push origin HEAD:ready/<agent>-<topic>` (`<agent>` = `codex` or
    `claude`). That one check is the test and the guard. Do not also push your work branch at the same moment, and
    do not run `scripts/cloud.sh check`, a droplet build or a full local build first: each would check the same
@@ -180,7 +184,13 @@ Deliver when the user says the work should go into master.
    - If master moved while CI was checking, CI re-dispatches the delivery against the new master by itself (a
      notice, not a failure). Do nothing.
    - Several `ready/` branches may be checked at the same time; the first green one moves master.
-6. **After the merge:** `scripts/sync_master.sh`, then either continue on the branch (§6 before the next delivery)
+6. **Watch your branches until they are merged or deleted.** `AGENT_ID=<your id> scripts/sync_master.sh` ends
+   with an audit of your remote branches: red checks, `ready/` branches that are green but not merged, conflicts
+   with the current master, branches already in master. Deal with every line: a red or conflicting branch is
+   merged with `origin/master`, fixed and pushed again (the same name); a green `ready/` branch that does not
+   merge has a conflict (fix it the same way) or changes `.github/workflows/` (open a PR); a stale branch is
+   deleted. A delivery is yours until it is on master.
+7. **After the merge:** `scripts/sync_master.sh`, then either continue on the branch (§6 before the next delivery)
    or, if you are done, clean up completely (§14).
 
 Report to the user: the `ready/` branch name, the CI run, and the resulting master commit.
@@ -205,6 +215,8 @@ miss only makes the run take longer (it stays "pending"). The workflow runs on e
    `axiom` / `implemented_by` / `extern` / `unsafe` / `Task.spawn`, and the single axiom report
    (`scripts/check_axioms.py`). On the droplet it then marks the caps as verified (`.lake/build/caps-closure.sha`) and
    saves the build as a cache. On master it saves the new master cache (§10).
+   On GitHub the build **fails fast**: at the first failed module (`✖`) it is stopped and the check fails
+   (`scripts/lake_failfast.sh`), so fix that error and push again; the droplet builds on (its work is kept).
 3. **finish** (GitHub-hosted, after a green build): on master it prunes old master caches; on `ready/` it recreates
    the checked merge, verifies that its tree is identical to the checked one, fast-forwards `master`, marks the
    commit with the status "Lean proof check (verified before merge)", closes the `Closes #n` issues and dispatches
@@ -239,6 +251,8 @@ Also:
 - **Agents open a pull request only for deliveries that change `.github/workflows/`**: GitHub refuses CI's push of
   those unless the repository secret `MERGE_TOKEN` exists (a fine-grained token for this repository with *Contents*
   and *Workflows* read and write); CI says so and does not retry. Every other delivery goes through `ready/` alone.
+- **`ready/` branches are merged by CI only**, never by hand: a `ready/` push may still be work in progress whose
+  check is the test.
 - **Agents never merge a pull request.** The user merges, ideally when the branch is up to date with master and its
   latest check is green; then the merged result is the tree CI checked. A merge is a push to master, so master's
   check runs afterwards.
@@ -268,6 +282,18 @@ Also:
   run on the droplet; it builds the caps once for exactly the tree that will be merged. After the merge, master's
   check also runs on the droplet (master has no cache for the new caps yet) and finds them already built in the same
   workspace. Never run a separate manual caps verification, and avoid touching that closure casually.
+- **Step by step, when a delivery changes the node caps** (e.g. a new cap row):
+  1. You push `ready/<agent>-<topic>` (push only that; a work branch pushed first costs one extra droplet run).
+  2. The route finds no GitHub cache for the new caps digest and sends the build job to the **droplet**. It builds
+     only what changed (the new row and what imports it; hours if a row really changed), runs every check, marks the
+     caps as verified, and **uploads `.lake/build` to GitHub's cache itself** (for this branch). The check shows
+     "pending" meanwhile. Nothing is copied by hand.
+  3. When green, CI moves master and dispatches master's check. With the tree handoff that check downloads exactly
+     this build and runs on GitHub in minutes; without it (master moved meanwhile) it goes to the droplet, whose
+     workspace already holds the new caps, so it takes minutes too. Either way it saves the new **master cache**,
+     and every later run is GitHub-hosted again.
+  4. GitHub caches are visible only to their own branch and to master. So a second branch with the same new caps
+     (e.g. `ready/` after a work branch) goes to the droplet once more: minutes, because the workspace is warm.
 - **Retention:** GitHub deletes cache entries unused for 7 days; a weekly job (`keepalive`) restores the master cache
   to keep it alive. Master keeps its newest two caches.
 
@@ -285,6 +311,10 @@ scripts/cloud.sh --runner droplet script tools/big.py       # script jobs needin
 scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; download results later
 ```
 
+- **Cloud jobs are for experiments, not for "does my branch build?".** If you want to know whether work you mean to
+  deliver is green, push it as `ready/<agent>-<topic>` instead: that one check builds and checks it, and merges it
+  only if green (a red `ready/` check merges nothing; fix and push again). Use `cloud/` for script jobs, sweeps and
+  builds of unfinished modules that are not meant to land yet.
 - **What runs:** the tip of the branch on GitHub (`--ref`; default: your current branch, which must be pushed and
   up to date). For quick experiments push a scratch branch `cloud/<agent-id>-<topic>`: the proof check skips
   `cloud/**`. Delete it when done (§14).
@@ -347,7 +377,7 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   `scratch/Axioms.lean`.
 - The repository proves only the current best bounds, written as if designed from the start: no history, no
   superseded certificates, no "v2" naming. Research material goes in `handoff/` (git-ignored).
-- Bounds and hypotheses are stated in `README.md`, `OVERVIEW.pdf` (source `docs/overview.tex`) and
+- Bounds and hypotheses are stated in `README.md`, `docs/overview.tex` (CI builds `OVERVIEW.pdf` from it) and
   `docs/LEAN_DETAILS.md` (§7, step 4).
 - The node caps (`CapRowKK`, `CapNodes`) are part of `Grothe` and verified by CI (§8, §10). The cap checker
   (`GrotheCapsKernel/`) is its own precompiled library on purpose (a change to a precompiled library invalidates every
@@ -381,5 +411,5 @@ build (`.lake/master-cache` in the main checkout, and the worktree `grothe-maste
 the shared Mathlib packages (`~/grothe-caps/.lake/packages`). If something looks stale but is not yours, list it for
 the user.
 
-**Check periodically:** `git worktree list`, `git branch -vv`, `git branch -r`, `scripts/droplet_status.sh` and
+**Check periodically:** `AGENT_ID=<your id> scripts/sync_master.sh` (the branch audit), `git worktree list`, `git branch -vv`, `git branch -r`, `scripts/droplet_status.sh` and
 `df -h`. Leave the machines at least as clean as you found them.
