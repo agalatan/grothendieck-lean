@@ -17,6 +17,8 @@ budget divided by `branch5Weight · π⁺/4` (with `π⁺ = 3.141592653589793238
 25 digits, and the relative gap is `2.7e-17`, against an interval width of `3e-21` relative.
 -/
 
+set_option maxRecDepth 100000
+
 namespace Grothe.HJM
 
 open Grothe.Upper GrotheKernel Polynomial Finset
@@ -123,7 +125,7 @@ theorem finite67_bound_P4 :
   exact finite67_bound
 
 /-- **The whole branch-5 tail beyond mode 120** (HJM 6.14–6.19): the phase coefficients below 67 give
-`finite67Upper` (`finite67_bound`), those from 67 on the Wallis reserve `outerReserve` (`ScalarTailRefinement`). -/
+`finite67Upper` (`finite67_bound`), those from 67 on the reserve `outerReserve` (`ScalarTailRefinement`). -/
 theorem branch5_tail :
     (ScalarTailRefinement.branch5Weight : ℝ) * ∑' n, |compCoeff haagCoeff (P 4) (n + 120)| ≤
       (ScalarTailRefinement.finite67Upper : ℝ) + (ScalarTailRefinement.outerReserve : ℝ) := by
@@ -141,18 +143,20 @@ theorem branch5_tail :
   have htail : ∑' n, |compCoeff (cHi 67) Q (n + 120)| ≤ ∑' n, |compCoeff (cHi 67) Q n| := by
     rw [← hhi'.sum_add_tsum_nat_add 120]
     exact le_add_of_nonneg_left (Finset.sum_nonneg fun _ _ => abs_nonneg _)
+  have hk : Summable fun n => |compCoeff haagCoeff Q (n + 120)| :=
+    (summable_nat_add_iff 120).2 (summable_abs_compCoeff summable_haagCoeff hQ)
+  have hle : ∑' n, |compCoeff haagCoeff Q (n + 120)| ≤
+      ∑' n, (|compCoeff (cLo 67) Q (n + 120)| + |compCoeff (cHi 67) Q (n + 120)|) :=
+    Summable.tsum_le_tsum (fun n => (hsplit (n + 120)).symm ▸ abs_add_le _ _) hk (hlo.add hhi)
+  rw [hlo.tsum_add hhi] at hle
   calc (ScalarTailRefinement.branch5Weight : ℝ) * ∑' n, |compCoeff haagCoeff Q (n + 120)|
       ≤ (ScalarTailRefinement.branch5Weight : ℝ) *
-          (∑' n, |compCoeff (cLo 67) Q (n + 120)| + ∑' n, |compCoeff (cHi 67) Q (n + 120)|) := by
-        refine mul_le_mul_of_nonneg_left ?_ hw
-        rw [← hlo.tsum_add hhi]
-        refine Summable.tsum_le_tsum (fun n => ?_) ?_ (hlo.add hhi)
-        · rw [hsplit]; exact abs_add_le _ _
-        · exact (summable_nat_add_iff 120).2 (summable_abs_compCoeff summable_haagCoeff hQ)
+          (∑' n, |compCoeff (cLo 67) Q (n + 120)| + ∑' n, |compCoeff (cHi 67) Q (n + 120)|) :=
+        mul_le_mul_of_nonneg_left hle hw
     _ = (ScalarTailRefinement.branch5Weight : ℝ) * ∑' n, |compCoeff (cLo 67) Q (n + 120)| +
           (ScalarTailRefinement.branch5Weight : ℝ) * ∑' n, |compCoeff (cHi 67) Q (n + 120)| := mul_add _ _ _
     _ ≤ _ := add_le_add finite67_bound
         ((mul_le_mul_of_nonneg_left htail hw).trans
-          (ScalarTailRefinement.branch5_outer_bound ScalarTailRefinement.wallis_tail_bound))
+          (ScalarTailRefinement.branch5_outer_bound ScalarTailRefinement.outer_composition_bound))
 
 end Grothe.HJM
