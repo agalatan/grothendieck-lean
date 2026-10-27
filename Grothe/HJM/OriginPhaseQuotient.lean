@@ -23,40 +23,40 @@ open Grothe.Haag Grothe.Upper
 noncomputable section
 
 /-- The coefficientwise conjugate product evaluates to the squared norm on the real axis. -/
-def normSqPolynomial (p : ℂ[X]) : ℂ[X] := p * p.map (starRingEnd ℂ)
+def normSqPolynomial (p : Polynomial ℂ) : Polynomial ℂ := p * p.map (starRingEnd ℂ)
 
-lemma eval_conjugatePolynomial (p : ℂ[X]) (s : ℝ) :
+lemma eval_conjugatePolynomial (p : Polynomial ℂ) (s : ℝ) :
     (p.map (starRingEnd ℂ)).eval (s : ℂ) = conj (p.eval (s : ℂ)) := by
   simpa only [Complex.conj_ofReal] using
     (Polynomial.eval_map_apply (p := p) (f := starRingEnd ℂ) (s : ℂ))
 
-lemma eval_normSqPolynomial (p : ℂ[X]) (s : ℝ) :
+lemma eval_normSqPolynomial (p : Polynomial ℂ) (s : ℝ) :
     (normSqPolynomial p).eval (s : ℂ) = ((‖p.eval (s : ℂ)‖ ^ 2 : ℝ) : ℂ) := by
   rw [normSqPolynomial, Polynomial.eval_mul, eval_conjugatePolynomial,
     Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
 /-- Exact polynomial divided difference, before division by the parameter. -/
-theorem mul_eval_divX (p : ℂ[X]) (z : ℂ) :
+theorem mul_eval_divX (p : Polynomial ℂ) (z : ℂ) :
     z * p.divX.eval z = p.eval z - p.eval 0 := by
-  have h := congrArg (fun q : ℂ[X] => q.eval z) (Polynomial.X_mul_divX_add p)
+  have h := congrArg (fun q : Polynomial ℂ => q.eval z) (Polynomial.X_mul_divX_add p)
   simp only [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_X,
     Polynomial.eval_C] at h
   simpa only [Polynomial.eval_zero] using (eq_sub_iff_add_eq.mpr h)
 
-lemma eval_divX_eq_div (p : ℂ[X]) (z : ℂ) (hz : z ≠ 0) :
+lemma eval_divX_eq_div (p : Polynomial ℂ) (z : ℂ) (hz : z ≠ 0) :
     p.divX.eval z = (p.eval z - p.eval 0) / z := by
   apply (eq_div_iff hz).mpr
   simpa only [mul_comm] using mul_eval_divX p z
 
 /-- The rationalized phase divided difference has no explicit `1/s` factor. -/
-def phaseQuotient (p : ℂ[X]) (s : ℝ) : ℂ :=
+def phaseQuotient (p : Polynomial ℂ) (s : ℝ) : ℂ :=
   p.divX.eval (s : ℂ) / (‖p.eval (s : ℂ)‖ : ℂ) -
     p.eval 0 * (normSqPolynomial p).divX.eval (s : ℂ) /
       ((‖p.eval (s : ℂ)‖ : ℂ) * (‖p.eval 0‖ : ℂ) *
         ((‖p.eval (s : ℂ)‖ : ℂ) + (‖p.eval 0‖ : ℂ)))
 
 /-- Exact endpoint rationalization, valid for every nonzero real parameter. -/
-theorem phase_difference_quotient (p : ℂ[X]) (s : ℝ) (hs : s ≠ 0)
+theorem phase_difference_quotient (p : Polynomial ℂ) (s : ℝ) (hs : s ≠ 0)
     (h0 : p.eval 0 ≠ 0) (hp : p.eval (s : ℂ) ≠ 0) :
     (ph (p.eval (s : ℂ)) - ph (p.eval 0)) / (s : ℂ) = phaseQuotient p s := by
   have hsC : (s : ℂ) ≠ 0 := by exact_mod_cast hs
@@ -78,7 +78,7 @@ theorem phase_difference_quotient (p : ℂ[X]) (s : ℝ) (hs : s ≠ 0)
   ring
 
 /-- The rationalized expression is continuous at every nonvanishing point. -/
-theorem continuousAt_phaseQuotient (p : ℂ[X]) (s : ℝ)
+theorem continuousAt_phaseQuotient (p : Polynomial ℂ) (s : ℝ)
     (h0 : p.eval 0 ≠ 0) (hp : p.eval (s : ℂ) ≠ 0) :
     ContinuousAt (phaseQuotient p) s := by
   have hc : Continuous (fun t : ℝ => p.eval (t : ℂ)) :=
@@ -105,12 +105,12 @@ theorem continuousAt_phaseQuotient (p : ℂ[X]) (s : ℝ)
       (mul_ne_zero (mul_ne_zero hr hr0) hsum))
 
 /-- Nonvanishing at the endpoint supplies a genuine continuous extension there. -/
-theorem continuousAt_phaseQuotient_zero (p : ℂ[X]) (h0 : p.eval 0 ≠ 0) :
+theorem continuousAt_phaseQuotient_zero (p : Polynomial ℂ) (h0 : p.eval 0 ≠ 0) :
     ContinuousAt (phaseQuotient p) 0 :=
   continuousAt_phaseQuotient p 0 h0 (by simpa only [Complex.ofReal_zero] using h0)
 
 /-- The extension is continuous on the full radial half-line under nonvanishing there. -/
-theorem continuousOn_phaseQuotient (p : ℂ[X])
+theorem continuousOn_phaseQuotient (p : Polynomial ℂ)
     (hp : ∀ s : ℝ, 0 ≤ s → p.eval (s : ℂ) ≠ 0) :
     ContinuousOn (phaseQuotient p) (Set.Ici 0) := by
   have h0 : p.eval 0 ≠ 0 := by simpa only [Complex.ofReal_zero] using hp 0 le_rfl
@@ -118,7 +118,7 @@ theorem continuousOn_phaseQuotient (p : ℂ[X])
   exact (continuousAt_phaseQuotient p s h0 (hp s hs)).continuousWithinAt
 
 /-- At zero the divided differences become the first polynomial coefficients. -/
-theorem phaseQuotient_zero (p : ℂ[X]) :
+theorem phaseQuotient_zero (p : Polynomial ℂ) :
     phaseQuotient p 0 = p.coeff 1 / (‖p.eval 0‖ : ℂ) -
       p.eval 0 * (normSqPolynomial p).coeff 1 / (2 * (‖p.eval 0‖ : ℂ) ^ 3) := by
   have hden : (‖p.eval 0‖ : ℂ) * (‖p.eval 0‖ : ℂ) *
@@ -130,17 +130,17 @@ theorem phaseQuotient_zero (p : ℂ[X]) :
 /-! ## The actual HJM radial numerators -/
 
 /-- The complex polynomial underlying the exact real-parameter function `P`. -/
-def originPolynomial : ℂ[X] :=
+def originPolynomial : Polynomial ℂ :=
   (ofListQ OriginData.pReal).map (algebraMap ℝ ℂ) +
     Polynomial.C Complex.I * (ofListQ OriginData.pImag).map (algebraMap ℝ ℂ)
 
 lemma eval_originPolynomial (s : ℝ) : originPolynomial.eval (s : ℂ) = P s := by
   simp [originPolynomial, P, Polynomial.eval_map, Polynomial.eval₂_at_apply]
 
-def leftNumeratorPolynomial : ℂ[X] :=
+def leftNumeratorPolynomial : Polynomial ℂ :=
   originPolynomial * (Polynomial.X + Polynomial.C ((OriginData.delta : ℂ) * A))
 
-def rightNumeratorPolynomial : ℂ[X] :=
+def rightNumeratorPolynomial : Polynomial ℂ :=
   Polynomial.C C * originPolynomial.map (starRingEnd ℂ) *
     (Polynomial.X + Polynomial.C ((OriginData.delta : ℂ) * B))
 
