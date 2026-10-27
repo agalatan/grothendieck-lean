@@ -144,10 +144,8 @@ theorem law_swap {p q : ℝ} (hp : |p| ≤ 1) (hq : |q| ≤ 1) {a b c : ℝ}
     smoothArg, Xof, Yof, mY, mulRc, mulSc, hs₁, hs₂]
   simp only [L_apply]
   simp only [mul_one, mul_zero, add_zero, zero_add, map_zero, map_add, dual_ofReal_mul, dual_ofReal]
-  have e1C := congrArg (fun x : ℝ => (x : ℂ)) e1
-  have e2C := congrArg (fun x : ℝ => (x : ℂ)) e2
-  push_cast at e1C e2C ⊢
-  linear_combination (-(1 : ℂ) / 4) * (e1C + e2C)
+  rw [div_left_inj' four_ne_zero, neg_inj, Complex.ofReal_inj]
+  linear_combination e1 + e2
 
 end
 
