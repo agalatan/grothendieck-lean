@@ -150,8 +150,8 @@ theorem signedPhaseMean_eq_inner (u : ℂ) (re im : List ℚ) (ps : List Panel)
   filter_upwards [ae_restrict_mem measurableSet_Ioi,
     (volume.restrict (Ioi (0 : ℝ))).ae_ne (8 : ℝ)] with t ht ht8
   have he := radialAmplitude_sq_of_ne re im hcover ht ht8
-  simp only [v, he, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
-    zero_mul, sub_zero]
+  simp only [v, he, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
+    zero_mul, add_zero, sub_zero]
   ring
 
 /-- Concrete left binding, with the actual endpoint and actual approximation. -/
