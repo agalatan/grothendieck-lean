@@ -111,6 +111,7 @@ audit() {
 if [ "${1:-}" = "--status" ]; then status; exit 0; fi
 
 git -C "$MAIN" fetch --prune origin
+git -C "$MAIN" config merge.ours.driver true   # OVERVIEW.pdf merge=ours (.gitattributes): CI builds the PDF
 # where is master checked out, if anywhere?
 WT=$(git -C "$MAIN" worktree list --porcelain | awk '/^worktree /{w=$2} /^branch refs\/heads\/master$/{print w}')
 if [ -z "$WT" ]; then
