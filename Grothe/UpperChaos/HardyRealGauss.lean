@@ -60,19 +60,54 @@ lemma integral_gaussC_eq (h : ℂ → ℂ) (hm : AEStronglyMeasurable h gaussC) 
 /-- The coordinate shuffle `((a, b), (c, d)) ↦ ((a, c), (b, d))`. -/
 def shuffle {α : Type*} (q : (α × α) × (α × α)) : (α × α) × (α × α) := ((q.1.1, q.2.1), (q.1.2, q.2.2))
 
+lemma measurePreserving_shuffle_prod {α : Type*} [MeasurableSpace α] (μ : Measure α) [SigmaFinite μ] :
+    MeasurePreserving (shuffle : (α × α) × (α × α) → _) ((μ.prod μ).prod (μ.prod μ)) ((μ.prod μ).prod (μ.prod μ)) := by
+  have h1 := measurePreserving_prodAssoc μ μ (μ.prod μ)
+  have h2 := measurePreserving_prodAssoc μ μ μ
+  have hsw := (Measure.measurePreserving_swap (μ := μ) (ν := μ)).prod (MeasurePreserving.id μ)
+  have inner := (h2.comp hsw).comp h2.symm
+  have h3 := (MeasurePreserving.id μ).prod inner
+  have h4 := measurePreserving_prodAssoc μ μ (μ.prod μ)
+  convert (h4.symm.comp h3).comp h1 using 1
+
 lemma measurePreserving_shuffle :
     MeasurePreserving (shuffle : (ℝ × ℝ) × (ℝ × ℝ) → _) volume volume := by
-  have h1 := measurePreserving_prodAssoc (volume : Measure ℝ) (volume : Measure ℝ) (volume : Measure (ℝ × ℝ))
-  have h2 := measurePreserving_prodAssoc (volume : Measure ℝ) (volume : Measure ℝ) (volume : Measure ℝ)
-  have hsw := (Measure.measurePreserving_swap (μ := (volume : Measure ℝ)) (ν := (volume : Measure ℝ))).prod
-    (MeasurePreserving.id (volume : Measure ℝ))
-  have inner := (h2.comp hsw).comp h2.symm
-  have h3 := (MeasurePreserving.id (volume : Measure ℝ)).prod inner
-  have h4 := measurePreserving_prodAssoc (volume : Measure ℝ) (volume : Measure ℝ) (volume : Measure (ℝ × ℝ))
-  have := (h4.symm.comp h3).comp h1
-  simp only [← Measure.volume_eq_prod] at this
-  convert this using 1
-  ext q <;> rfl
+  simpa only [← Measure.volume_eq_prod] using measurePreserving_shuffle_prod (volume : Measure ℝ)
+
+/-- The planar Gaussian as a density measure. -/
+lemma gauss2_eq_withDensity : gauss2 = volume.withDensity fun p => ENNReal.ofReal (phi2 p) := by
+  rw [gauss2, gaussianReal_of_var_ne_zero 0 one_ne_zero,
+    MeasureTheory.prod_withDensity (measurable_gaussianPDF 0 1) (measurable_gaussianPDF 0 1),
+    ← Measure.volume_eq_prod]
+  congr 1; ext p
+  simp only [phi2, gaussianPDF, ENNReal.ofReal_mul (gaussianPDFReal_nonneg _ _ _)]
+
+/-- `toC2` is `toC'` on the shuffled coordinates. -/
+lemma toC2_eq (q : (ℝ × ℝ) × (ℝ × ℝ)) : toC2 q.1 q.2 = Prod.map toC' toC' (shuffle q) := rfl
+
+/-- **`mu2` in the coordinates `(x, ξ)` of `HholPair`**: the image of four independent standard reals. -/
+lemma mu2_eq_map : mu2 = (gauss2.prod gauss2).map fun q => toC2 q.1 q.2 := by
+  have hm : Measurable (Prod.map toC' toC') := measurable_toC'.prodMap measurable_toC'
+  have hs := measurePreserving_shuffle_prod (gaussianReal 0 1)
+  rw [mu2, gaussC_eq_map, Measure.map_prod_map _ _ measurable_toC' measurable_toC']
+  have e : (gauss2.prod gauss2) = (gauss2.prod gauss2).map shuffle := hs.map_eq.symm
+  conv_lhs => rw [e]
+  rw [Measure.map_map hm hs.measurable]
+  rfl
+
+/-- **The integral against `mu2` as a Lebesgue integral on `ℝ⁴`.** -/
+theorem integral_mu2_eq {g : ℂ × ℂ → ℂ} (hg : AEStronglyMeasurable g mu2) :
+    ∫ u, g u ∂mu2 = ∫ q : (ℝ × ℝ) × (ℝ × ℝ), ((phi2 q.1 * phi2 q.2 : ℝ) : ℂ) * g (toC2 q.1 q.2) := by
+  have hmeas : Measurable fun q : (ℝ × ℝ) × (ℝ × ℝ) => toC2 q.1 q.2 := by unfold toC2; fun_prop
+  rw [mu2_eq_map] at hg ⊢
+  rw [integral_map hmeas.aemeasurable hg, gauss2_eq_withDensity,
+    MeasureTheory.prod_withDensity (by unfold phi2; fun_prop) (by unfold phi2; fun_prop),
+    integral_withDensity_eq_integral_toReal_smul (by fun_prop)
+      (Filter.Eventually.of_forall fun p => ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.ofReal_lt_top),
+    ← Measure.volume_eq_prod]
+  congr 1; ext q
+  rw [ENNReal.toReal_mul, ENNReal.toReal_ofReal (phi2_nonneg _), ENNReal.toReal_ofReal (phi2_nonneg _),
+    Complex.real_smul]
 
 end
 
