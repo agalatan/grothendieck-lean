@@ -155,9 +155,11 @@ import Grothe
 #print axioms Grothe.HJM.Origin.leftUnweightedTail_of_64_norm_and_correlation
 #print axioms Grothe.HJM.Origin.leftUnweightedTail_of_64_targets
 #print axioms Grothe.HJM.Origin.leftUnweightedWitness_mass
+#print axioms Grothe.HJM.Origin.left_residual_norm_sq_le_signedPhaseMean
 #print axioms Grothe.HJM.Origin.left_signedPhaseMean_eq_inner
 #print axioms Grothe.HJM.Origin.left_spatial_tail_budget
 #print axioms Grothe.HJM.Origin.left_testCorrelation_error
+#print axioms Grothe.HJM.Origin.left_totalNorm_of_signedPhaseMean
 #print axioms Grothe.HJM.Origin.left_unweighted_corr64_error
 #print axioms Grothe.HJM.Origin.left_unweighted_corr64_of_approx_and_endpoint
 #print axioms Grothe.HJM.Origin.left_visibleEnergy_of_rationalWitness
@@ -185,6 +187,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.norm_phaseSecondDerivative_le
 #print axioms Grothe.HJM.Origin.norm_radialAmplitude_le
 #print axioms Grothe.HJM.Origin.norm_rightNumerator_lower
+#print axioms Grothe.HJM.Origin.norm_toLp_le_one_of_pointwise
 #print axioms Grothe.HJM.Origin.phaseCoeff_sqrt_index
 #print axioms Grothe.HJM.Origin.phaseDerivative_eq_quotient
 #print axioms Grothe.HJM.Origin.phaseEnergyJet_far_growth
@@ -210,6 +213,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.radial_succ_derivative_recurrence
 #print axioms Grothe.HJM.Origin.radial_three_term
 #print axioms Grothe.HJM.Origin.rationalAlpha_testMass
+#print axioms Grothe.HJM.Origin.residual_norm_sq_le_of_approx_phase_mean
 #print axioms Grothe.HJM.Origin.residual_tail_budget_at_120
 #print axioms Grothe.HJM.Origin.rightNumerator_ne_zero
 #print axioms Grothe.HJM.Origin.rightRadialAmplitude_lift
@@ -220,9 +224,11 @@ import Grothe
 #print axioms Grothe.HJM.Origin.rightUnweightedTail_of_64_norm_and_correlation
 #print axioms Grothe.HJM.Origin.rightUnweightedTail_of_64_targets
 #print axioms Grothe.HJM.Origin.rightUnweightedWitness_mass
+#print axioms Grothe.HJM.Origin.right_residual_norm_sq_le_signedPhaseMean
 #print axioms Grothe.HJM.Origin.right_signedPhaseMean_eq_inner
 #print axioms Grothe.HJM.Origin.right_spatial_tail_budget
 #print axioms Grothe.HJM.Origin.right_testCorrelation_error
+#print axioms Grothe.HJM.Origin.right_totalNorm_of_signedPhaseMean
 #print axioms Grothe.HJM.Origin.right_unweighted_corr64_error
 #print axioms Grothe.HJM.Origin.right_unweighted_corr64_of_approx_and_endpoint
 #print axioms Grothe.HJM.Origin.right_visibleEnergy_of_rationalWitness
