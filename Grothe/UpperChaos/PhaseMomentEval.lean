@@ -22,7 +22,7 @@ def indexedSum {α : Type} (term : ℕ → α → ℚ) : ℕ → List α → ℚ
 
 /-- The moment functional on the innermost coefficient list. -/
 def moment1 (rate : ℚ) (j a b k : ℕ) (p : List ℤ) : ℚ :=
-  indexedSum (fun m c => (c : ℚ) * invariantMoment rate a b j m) k p
+  indexedSum (fun m (c : ℤ) => (c : ℚ) * invariantMoment rate a b j m) k p
 
 /-- The moment functional on a bivariate coefficient list. -/
 def moment2 (rate : ℚ) (j a b : ℕ) (p : List (List ℤ)) : ℚ :=
