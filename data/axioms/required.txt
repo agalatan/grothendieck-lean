@@ -865,6 +865,8 @@ Grothe.UpperChaos.first_captured_tail_budget
 Grothe.UpperChaos.fresh_upper_concrete_taylor
 Grothe.UpperChaos.fresh_upper_pieces
 Grothe.UpperChaos.fresh_upper_rounder
+Grothe.UpperChaos.globalGaussianPolynomial_error
+Grothe.UpperChaos.globalMoment_succ
 Grothe.UpperChaos.gradedHermiteFn_add
 Grothe.UpperChaos.gradedHermiteFn_const_mul
 Grothe.UpperChaos.gradedHermiteFn_rot2

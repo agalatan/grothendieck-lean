@@ -1113,6 +1113,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.fresh_upper_rounder
 #print axioms Grothe.UpperChaos.fresh_upper_rounder_relaxed
 #print axioms Grothe.UpperChaos.fresh_upper_rounder_relaxed_direct_bounds
+#print axioms Grothe.UpperChaos.globalGaussianPolynomial_error
+#print axioms Grothe.UpperChaos.globalMoment_succ
 #print axioms Grothe.UpperChaos.gradedHermiteFn_add
 #print axioms Grothe.UpperChaos.gradedHermiteFn_const_mul
 #print axioms Grothe.UpperChaos.gradedHermiteFn_rot2
