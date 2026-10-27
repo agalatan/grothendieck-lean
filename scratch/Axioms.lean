@@ -1051,6 +1051,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.chargeFn_thirdCenterFn
 #print axioms Grothe.UpperChaos.coeFn_gradedHermite
 #print axioms Grothe.UpperChaos.comparisonInputs_taylorCenters
+#print axioms Grothe.UpperChaos.concrete_energy_close_five_e_minus_seven
 #print axioms Grothe.UpperChaos.conditional_gaussian_laplace_profile_le
 #print axioms Grothe.UpperChaos.conditional_gaussian_laplace_profile_le_uniform
 #print axioms Grothe.UpperChaos.conditional_gaussian_profile_le
@@ -1062,6 +1063,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.differentiableOn_integral_exp
 #print axioms Grothe.UpperChaos.energy_bandProj_eq_zero
 #print axioms Grothe.UpperChaos.energy_eq_zero_of_even
+#print axioms Grothe.UpperChaos.energy_headProjection
 #print axioms Grothe.UpperChaos.ev_eq_sum_monomials
 #print axioms Grothe.UpperChaos.ev_gradedHermiteSlice
 #print axioms Grothe.UpperChaos.ev_phaseImagSlice
@@ -1258,6 +1260,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.secondCenter_tail_zero
 #print axioms Grothe.UpperChaos.secondTailModes_eq
 #print axioms Grothe.UpperChaos.second_captured_tail_budget
+#print axioms Grothe.UpperChaos.selectedEnergy_close_of_l2_approx
+#print axioms Grothe.UpperChaos.selectedEnergy_close_of_projected_l2_approx
 #print axioms Grothe.UpperChaos.shiftedDampedMoment_affine_base
 #print axioms Grothe.UpperChaos.shiftedDampedMoment_affine_step
 #print axioms Grothe.UpperChaos.shiftedDampedMoment_one_zero
