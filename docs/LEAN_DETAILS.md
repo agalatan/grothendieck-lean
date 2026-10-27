@@ -100,18 +100,21 @@ and `phaseEpsQ`: `integral_phiT_pow_even` equates every even moment with
 `TaylorMoments` and `ComparisonPieces` identify the even phase moments with
 the total energy of every positive Taylor source.
 
-`phase_moment2_check` in `PhaseMoment2` is one single-threaded native equality
-check against `phaseMoment2Q`; `integral_phiT_sq` states the corresponding
-Gaussian second moment, approximately `2.56852947444587e-6`. The targets in
-`data/phase-moments/targets.json` are expected exact values, not integral
-assumptions: each numerical leaf computes from the production phase.
-`python3 tools/gen_phase_moment_data.py --check` verifies source binding and
-reproduces the generated target file without expanding polynomial powers.
-The [delivery build and axiom audit](https://github.com/agalatan/grothendieck-lean/actions/runs/40468150361) passed;
-`PhaseMoment2` built in 4.8 seconds (whole-module time). Fourth- and sixth-moment numerical
-leaves are not implemented. The connection to all comparison enclosures remains
-open; neither `ComparisonInputs` nor `energy_close` is discharged, and no
-headline bound changes.
+`PhaseMoment2`, `PhaseMoment4`, and `PhaseMoment6` contain independent
+single-threaded native equalities with `phaseMoment2Q`, `phaseMoment4Q`, and
+`phaseMoment6Q`. The integral consequences are `integral_phiT_sq`,
+`integral_phiT_pow_four`, and `integral_phiT_pow_six`. Their approximate values
+are `2.56852947444587e-6`, `5.71439509703932e-10`, and `1.68238736430120e-11`.
+`PhaseMomentNorms` combines these with the exact pointwise Taylor-source
+identity to give `norm_hpow_one_sq`, `norm_hpow_two_sq`, and
+`norm_hpow_three_sq`. These are total energies; sharp band-tail estimates also
+need certified captured Hermite energy and approximation errors.
+The targets in `data/phase-moments/targets.json` are expected exact values,
+not integral assumptions: each numerical leaf computes from the production
+phase. `python3 tools/gen_phase_moment_data.py --check` verifies source binding
+and reproduces the generated targets without expanding polynomial powers.
+Neither `ComparisonInputs` nor `energy_close` is discharged by total energies
+alone, and no headline bound changes.
 
 **Phase errors and transported certificates.**
 `Grothe/Upper/ResponseGeometry.lean` proves twelve statements: the exact
@@ -769,16 +772,17 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 `LawNodeLower.certified_rows` and `certified_mixed_batches` assemble those
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
-The complete registry has 89 native facts: 60 cap ranges, five Hardy facts
-(four arc parts and the region) and 24 others. The default report has 669 print
-directives and 437 required declarations. These are source/registry counts;
+The complete registry has 91 native facts: 60 cap ranges, five Hardy facts
+(four arc parts and the region) and 26 others. The default report has 676 print
+directives and 444 required declarations. These are source/registry counts;
 delivery CI checks the combined tree.
 
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,
 and the `native_decide` facts pinned in
 `data/axioms/native.txt` (read by `scripts/check_axioms.py`): `Grothe.head_check` (the upper head),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
-`Grothe.UpperChaos.phase_moment2_check` (the exact second moment of the production phase),
+`Grothe.UpperChaos.phase_moment2_check`, `phase_moment4_check`, and
+`phase_moment6_check` (the exact second, fourth and sixth moments of the production phase),
 `Grothe.UpperChaos.hardy_arc_part_0`–`3` and `hardy_region_check` (the Hardy circle mean and decay region),
 `Grothe.UpperChaos.phi_cover_check_0`–`5`
 (the phase cover |φ| < 1), `Grothe.LowerAnalytic.capChords_check` (the cap-table chord nodes),
