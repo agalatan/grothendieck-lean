@@ -205,6 +205,8 @@ miss only makes the run take longer (it stays "pending"). The workflow runs on e
    `axiom` / `implemented_by` / `extern` / `unsafe` / `Task.spawn`, and the single axiom report
    (`scripts/check_axioms.py`). On the droplet it then marks the caps as verified (`.lake/build/caps-closure.sha`) and
    saves the build as a cache. On master it saves the new master cache (§10).
+   On GitHub the build **fails fast**: at the first failed module (`✖`) it is stopped and the check fails
+   (`scripts/lake_failfast.sh`), so fix that error and push again; the droplet builds on (its work is kept).
 3. **finish** (GitHub-hosted, after a green build): on master it prunes old master caches; on `ready/` it recreates
    the checked merge, verifies that its tree is identical to the checked one, fast-forwards `master`, marks the
    commit with the status "Lean proof check (verified before merge)", closes the `Closes #n` issues and dispatches
