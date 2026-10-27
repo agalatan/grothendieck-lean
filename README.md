@@ -296,9 +296,6 @@ then writes the actual inner product as the iterated auxiliary and
 first-coordinate Gaussian integral of this finite evaluator.
 `SoftPhaseLaplace` expresses each finite softened Gaussian mixture as the
 existing Laplace kernels, with termwise integrability explicit for integration.
-`LeanCertPilot` uses the pinned LeanCert interval integrator in kernel-only
-mode on a unit-parameter phase-kernel slice; it does not yet certify a
-production Gaussian error or remove an upper-bound hypothesis.
 `ShiftedMomentRecurrence` preserves the affine cancellation at every mixed
 degree. `RadialDampedMoments` evaluates real radial powers above exponent
 `-2`, including the locally integrable singularities needed by joint tails.
