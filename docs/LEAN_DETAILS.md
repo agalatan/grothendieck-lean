@@ -18,19 +18,10 @@ expectation; `TB.of_cut` applies it to Stein, spectral, general spectral and joi
 nodes. The joint node retains its kurtosis-range premise.
 `Lower/Gram.lean` proves `reserved_gram_budget` once for arbitrary signed reserves;
 `gram_budget_of_scalars` and `gram_joint_of_scalars` specialize it through
-`zero_reserve` and `joint_reserve_value`. `Lower/Reserve.lean` supplies the
-moment-range and cut-cancellation lemmas. Existing theorem statements and
+`zero_reserve` and `joint_reserve_value`. Existing theorem statements and
 certificate definitions are preserved.
 
-`LowerAnalytic/FourthMoment.lean` derives `Chaos3.fourth_le` directly from
-`Chaos3.wick4` and `gE_sq_eq_kernel`: for the cubic kernel, `s ≤ N²` and
-`h ≤ s` imply `E F⁴ ≤ 93 (E F²)²`. The two inequalities
-`tenS_le_sq_sum` and `tenH_le_tenS` in `CircularTensor.lean` hold for arbitrary
-real tensors. The scalar bound needs `IsGaussianExpectation` and `Chaos3`,
-without a separate positivity premise. This sharp real-chaos theorem is a
-separate result from the circular complex bound below.
-
-`LowerAnalytic/CircularFourth.lean` proves the stronger, scale-invariant bound
+`LowerAnalytic/CircularFourth.lean` proves the scale-invariant bound
 `E |q|⁴ ≤ 44 (E |q|²)²` for circular third chaos, using the existing complex
 contraction identities and Hilbert–Schmidt inequalities. It also proves the
 sharp fluctuation range `x ≤ √42`. The bound 44 is attained by the normalized
@@ -280,157 +271,6 @@ of the conditional Gaussian expectation by
 positive `beta`, so no lower bound on the radial profile is needed. These
 results concern the base moment away from the radial origin; they do not
 certify the full polynomial-weighted Taylor sources or the remaining budgets.
-
-**Phase errors and transported certificates.**
-`Grothe/Upper/ResponseGeometry.lean` proves twelve statements: the exact
-disk support-defect identity, normalized-distance and weighted support-loss
-bounds (including zero moduli), kernel and block-energy transport under an
-explicit intertwining hypothesis, finite and countable energy comparisons
-after aligning the anchor, and the zero full-spectrum price of a pure orbit.
-The countable bound is `2*norm(x)*e+e^2` when `norm(y-Ux)<=e`; it assumes
-Bessel's inequality for the transported blocks. It does not assume that an
-arbitrary rotation preserves the coordinate bidegrees of the actual kernel.
-`Grothe/Haagerup/PhaseGeometry.lean` proves three all-index statements:
-`4*(n+1)*(n+2)*haagR(n+1)>=1`, the resulting harmonic lower bound, and
-non-summability of `(2*k+1)*haagCoeff k`. These first eleven results use only
-standard axioms. Four further results in `ResponseGeometry` prove exact
-energy polarization, its finite Bessel bound, `tail_of_approximants` for the
-entire omitted spectrum, and `polarized_gram_identity`. The tail bound is
-`A*B` when frozen retained polynomials approximate the increment and the
-sum of the two responses to errors `A,B`. Exact projection coefficients
-are not required; positive squared-error integral enclosures suffice.
-`Grothe/Upper/PhaseChart.lean` adds sixteen results: the overlapping chart
-cover, the ordinary chart's uniform phase gap, reconstruction and phase
-normalization in the centered chart, its exact Gaussian exponent and
-noncentrality bound, a regularizer estimate, affine and affine-polar integral
-identities, the exact transformed Gaussian weight, a Bernstein range bound,
-and two cutoff lemmas. The latter prove integrability and the squared L2
-error bound by omitted mass, and preservation of the disk bound and an
-explicit response symmetry. Two rational-phase lemmas prove unit modulus
-and the cancellation-free increment of `(1+i*t/2)/(1-i*t/2)` for every
-real phase field. The circular-profile multiplication recurrence is also
-proved for complex components, so it applies to the holomorphic continuation.
-The affine-polar identity is for Lebesgue
-Gaussian density; the existing measurable-function identity
-`LowerAnalytic.integral_gaussC_eq_volume` supplies the measure interface.
-`Grothe/Upper/RadiusJet.lean` adds five results: exponent decoding and
-injectivity below a fixed stride, compatibility with polynomial convolution,
-exact binomial radius translation, and a finite centered polynomial bound
-on complex patches. These justify the algebraic enclosure interface; they
-do not formalize the external ball-arithmetic implementation or its integrals.
-`Grothe/Upper/TransportLimit.lean` adds a dimensionless comparison ceiling
-and its norm-transport consequence: under `0 <= b <= N^2`, `a,N,e >= 0`
-and the triangle constraint `a*N <= 1+e`, every certified lower value
-`R <= a^2*b-2*a*N*e-e^2` satisfies `N^2*R <= b`.
-This limits the norm-only certificate formula, not the true score of a
-corrected response. More informative signed-coefficient comparisons are
-not excluded.
-`Grothe/Upper/ResponseUpdate.lean` adds nine results connecting those
-components to the existing upper transfer. A contractive linear smoothing
-preserves the raw positive approximation-error bounds. A hybrid energy
-table uses the new response on retained blocks and the anchor elsewhere;
-its full error is at most `A*B`. Its kernel is exactly the old kernel plus
-the finite signed block update. The nominal kernel error is bounded by
-the inherited anchor error plus the finite weighted retained-data error.
-The bivariate kernel's l1 contraction then gives the entire score, and
-`upper_of_smoothed_update` concludes `IsGrothendieckBound (1/s)` when that
-score budget is at least `s>0` and the actual kernel is dominated.
-All support, Bessel, contraction, realizability and numerical-error
-conditions remain explicit; Gaussian integrals are not inferred from
-quadrature convergence. No exact projection coefficients are assumed.
-All forty-seven results use only standard axioms. The Gaussian phase-orbit
-differentiation argument and numerical compact response integrals are not
-formalized by these modules. A chart cover is not an integral enclosure.
-Neither endpoint nor its hypotheses change.
-The written argument is in [response-geometry.tex](response-geometry.tex).
-
-**Global spherical-dual research interface.** `Grothe/LowerAnalytic/SphericalTransfer.lean`
-proves the signed finite and countable coefficient-defect bound, a positive factorization
-controlling the inverse cubic Jacobi multipliers, their exact binomial recurrence and
-all-index monotonicity, and the uniform omitted-multiplier allowance
-`cubic_tail_32_12 : 12 < r → cubicAmp 32 r (149/200) < 419/5000000000`.
-The exact value at index 13 is `17513/209010560960`, checked in the kernel without
-`native_decide`. `global_cap_from_truncation` states the cap assembly with its remaining inputs.
-The analytic Gaussian random-restriction/spherical harmonic bridge is a paper proof;
-neither that bridge nor a numerical spherical norm cap is proved by this module.
-It introduces no hypothesis into either existing endpoint and changes neither bound.
-
-
-**Binding-relaxation audit.** `Grothe/Lower/PrimalAudit.lean` proves finite
-primal-versus-dual separation for a fixed table and cut bank: nonnegative atom
-weights satisfying the cuts force every pointwise dual majorant to cost at least
-the primal score. Both theorems are kernel-checked without numerical axioms.
-The four concrete atomic laws in [the binding audit](BINDING_AUDIT_2026-10-23.md)
-have exact-rational replay evidence, but remain work in progress in Lean; this module does not
-formalize their numerical data, realize them as Gaussian cubics, or change an endpoint.
-
-**Joint response Gram lift.** `Grothe/LowerAnalytic/ResponseGram.lean` proves
-the shared residual Gram interval for nested orthogonal projections, a sharp
-scalar cross-coefficient interval using an orthogonal reflection, elimination
-of all scalar completions, factored PSD prices, finite moment-support assembly,
-pointwise weighted alignment, a modulus cutoff error, cross-inner-product
-perturbation, exact scalar disc support and attainment, and explicit
-near-maximizer price accounting, and the complex two-disc dual price bound.
-Its sixteen theorems use only standard axioms.
-`Grothe/LowerAnalytic/TwoDisc.lean` adds seven theorems: exact factored-slack
-soundness, the universal factored support bound, four sharp local support
-bounds, and attainment of all four. `Grothe/LowerAnalytic/QuadraticFeatures.lean`
-adds the finite Wick decomposition, Hilbert-space probe closure, and two rational
-remainder budgets for centered and affine quadratic features. All eleven new
-theorems also use only standard axioms. The general SDP rank-one argument,
-Gaussian response application and modified bilinear-operator
-interface are written proofs in [the lift report](../miscellaneous/other-bounds/tree/docs/JOINT_RESPONSE_LIFT_2026-10-23.md).
-The droplet diagnostics are floating-point exploration, not numerical data
-theorems. This module does not establish a uniform lifted norm cap or alter
-either endpoint.
-
-**Common Stein kernels.** `Grothe/Lower/SteinFusion.lean` adds six results:
-the exact perspective variance identity, its fusion inequality, the unit-price
-fusion identity and inequality, the specialization to the existing spectral-cut
-cell formula (including zero), and simultaneous orthogonal projection of both
-kernels preserving every retained moment while decreasing both norms.
-The universal merged-cut expectation remains an application of the existing
-`Grothe.Lower.spec_of_inputs`. The finite-feature Schur equivalence and the
-genuine-cubic floor for every convex mixture of the nineteen frozen tables
-are work in progress in Lean, with paper and exact/directed replay evidence recorded in
-[the common-kernel reassessment](COMMON_STEIN_REASSESSMENT_2026-10-23.md).
-The table floor is not a lower bound on the original witness norm.
-
-**Original-noise replica and full-tail screen.**
-`Grothe/LowerAnalytic/ReplicaState.lean` proves seven results: the two-coordinate
-Gram realization (five identities/inequalities), the exact gap produced by
-giving a distributional Gaussian coordinate the wrong chaos grade, and its
-strictness. `Grothe/Upper/KernelScreen.lean` proves the absolute weighted-tail
-bound, the necessary single-kernel full-score bound, the finite priced
-screen, and the all-index admissibility of its induced witness multipliers.
-The screen is affine in response columns, so common prices can screen
-their mixtures before tail coefficients are recovered. These eleven results use
-only standard axioms. The invariant-space classification, original Gaussian
-conditioning, and extraction of the mixed Hermite coefficients are written
-arguments, not formalized here. Numerical integral values are not Lean inputs
-and no new endpoint follows. See [the replica report](SYMMETRIC_RESPONSE_REPLICAS_2026-10-23.md).
-
-**Common signed-tail prices and cubic Gaussian-phase separator.**
-`Grothe/Upper/SpectralScreen.lean` adds seven results: a finite front/geometric
-tail certificate for all indices, pricing the common signed tail before taking
-absolute values, the resulting full-score inequality, affine enclosure errors,
-assembly over finite response mixtures, the single coefficient-l1 error allowance
-for every admissible price (`l1_anchor_price_bound`), and the 1-Lipschitz lower
-bound for the complete score (`full_score_l1_lower`). This lets an exchange retain
-the incumbent's signed coefficients and pay its error once across all sampled
-correlations. `tools/incumbent_exchange.py` exports those coefficients from the
-committed data and replays their finite polynomial composition using Arb.
-The phase-perturbation oracle in `tools/incumbent_phase_exchange.py` remains
-floating discovery; its kernel integrals and optimizer output are not certificates.
-`Grothe/Upper/CubicPhaseScreen.lean`
-adds ten public results checking the two positive triangle polynomials, the
-complex-phase modulus comparison, a degree-seven scalar polynomial cap, and
-the full-score implication from the explicit low-coefficient identity.
-These results use only standard axioms, without new native facts. The complete
-Gaussian-family application and coefficient extraction remain written analytic
-steps. No numerical response integral is certified by these modules. See
-[the separator report](../miscellaneous/other-bounds/tree/docs/CUBIC_PHASE_SEPARATOR_2026-10-23.md).
-
 
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
@@ -907,75 +747,11 @@ the node caps are in the same report. The generic response, cubic-ceiling
 and quintic-transfer lemmas add no native facts or endpoint hypotheses. No `sorry`,
 no warnings.
 
-**Coupled-image and chord arithmetic.** `Grothe/Research/CoupledMajorizer.lean`
-proves seven public facts: a zero-safe complex Young modulus majorizer and its
-exact-price form, a common two-image update with opposite signs, finite
-weighted assembly, diagonal square completion, finite descent and strict
-descent. `Grothe/Research/SemiconvexChord.lean` proves six public facts: lifted
-chord correction, the profile square identity, same-second-moment expectation
-assembly, gate reassembly, mesh allowance and its checked rational value.
-All 13 declarations are imported by `Grothe.lean`, printed in
-`scratch/Axioms.lean` and required by `scripts/check_axioms.py`; the targeted
-report can be checked with `--research`. They use only `propext`,
-`Classical.choice`, `Quot.sound`, with no additional native facts. They do not
-prove Gaussian curvature, response extraction, a saddle exchange or an
-all-dimensional cover. No endpoint or endpoint hypothesis is changed.
-See [RESEARCH_AUDIT.md](../miscellaneous/other-bounds/tree/docs/RESEARCH_AUDIT.md) for the historical proof and replay scope.
-
-
-
-**Joint sixth-moment budgets (formalized).** `Grothe/LowerAnalytic/JointSixth.lean`
-proves the two parameterized bounds J2/J3 for every genuine circular cubic, including the
-normalization of the real cubic kernel and its five complex contraction invariants.
-`Grothe/Lower/Gram.lean` accepts a signed linear reserve against those same invariants;
-`Grothe/LowerAnalytic/JointBudget.lean` proves `joint_sixth_budget`, combining the finite
-reserve certificate and J3 with the actual spectral quantities of the cubic on a checked
-kurtosis range. These proofs use only the standard logical axioms. They do not add a
-hypothesis to the headline lower theorem. The bank's 41 original joint-moment nodes are verified through the integrated
+The bank's 41 original joint-moment nodes are verified through the integrated
 `JointData`/`jointCert` checker and `Circular.joint_sixth` analytic bridge in
 `JointContractions.lean`. The 306 original spectral witnesses, 45 inherited Stein witnesses,
 two new pure-row Stein witnesses and three new mixed-source Young witnesses
 are combined in a 10,909-box cover. No extra hypothesis is added to `NodeCaps`.
-
-`JointSixth.gram_j_eta` retains both bounds on the negative cumulant contraction;
-`gram_j2_shifted` improves the h₀ coefficient from 198+150/α to
-198+150/(α+4/15) for α≥12/55. `joint_eta_budget` connects this family to the
-same reserved Gram checker and actual spectral quantities, deriving the moment
-bound internally. `Grothe/Lower/MomentLift.lean` proves the pointwise transport
-and exact normalized price change −d C₆ x³ when the moment-cut weight increases
-by d. An increased weight still requires an accepted budget certificate.
-
-`Grothe/LowerAnalytic/MomentCone.lean` gives a homogeneous convex recipe for the
-moment cost: two PSD2 determinant tests and three linear inequalities. It proves
-both the actual cubic moment bound and soundness of an exact rational checker,
-including node range and positive-multiplier checks. The moment parameters can
-therefore be optimized jointly with the contraction-Gram budget, rather than
-searched on an outer grid. This is a sufficient certificate cone, not an exact
-characterization of actual response laws. Its two concrete check examples are
-proved by kernel arithmetic; no native axiom is added.
-
-
-`Grothe/LowerAnalytic/MomentConeBoundary.lean` proves the exact scalar optimum
-inside this sufficient cone. For positive moment weight w and positive s-cost A,
-the least h-cost B is
-
-- 11781w/32 + 18225w²/(4A) when 11A ≤ 360w;
-- 198w + 22500w²/(A+40w) when 11A ≥ 360w.
-
-The two formulas agree at the boundary. `Feasible.boundary_lower` proves necessity;
-`boundary_attained` gives explicit positive-diagonal feasible points achieving it.
-The first branch recovers J3, and the second is the shifted family. Thus searching
-the eta/beta parameters cannot improve on this envelope. This optimality concerns
-the moment-cost recipe; genuine response feasibility remains a stronger condition.
-
-`boundary_moment` and `boundary_node` connect the optimized boundary directly to
-the actual circular cubic and to a moment correction on a checked node range.
-
-`exists_feasible_iff` identifies the boundary epigraph exactly with projection of
-the positive-diagonal cost cone. `boundaryCheck` is a three-rational exact checker;
-`boundaryChecked_node` proves soundness for the actual circular cubic, including
-the positive-multiplier and kurtosis-range conditions. The four auxiliary conic
-variables need not be retained in a moment-cost certificate.
 
 **Reproducible law-scale extension.** `data/lower-unshifted/` contains the original
 source snapshots, two pure-row and three mixed-source law certificates, and the complete

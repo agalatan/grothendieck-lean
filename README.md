@@ -63,9 +63,7 @@ Lower cut soundness is organized by specialization: ordinary spectral cuts use t
 general shifted-cut theorem, ordinary and joint Gram budgets use the signed-reserve
 theorem, and all Stein and spectral node majorants use one admissible-cut integration lemma.
 
-The fourth-moment cap follows directly from the exact Wick identity and two
-general tensor inequalities (`Chaos3.fourth_le`); no separate positivity
-assumption on the expectation is needed. For the circular cubic residual,
+For the circular cubic residual,
 `LowerAnalytic/CircularFourth.lean` replaces the previous pair cap of 62 in the
 Gaussian reduction with the sharp bound `E|q|⁴ ≤ 44 (E|q|²)²`, using the existing complex contraction
 identities and Hilbert–Schmidt inequalities. The one-coordinate Wick cubic
@@ -75,25 +73,6 @@ analytic argument and its consequences. The tensor and scalar estimates for
 both joint sixth-moment bounds are shared in `LowerAnalytic/JointSixthCore.lean`.
 The production cuts and parameterized refinements use the same proof through
 their real-to-complex normalization identities.
-
-The joint sixth-moment/Stein budgets are also formalized in
-`Grothe/LowerAnalytic/JointSixth.lean`, `Grothe/Lower/Reserve.lean` and
-`Grothe/LowerAnalytic/JointBudget.lean`. They retain the shared tensor constraints. The certificate bank contains 44 joint-moment node
-certificates, each checked on its certified kurtosis range and connected to the Gaussian
-cubic by `Grothe/LowerAnalytic/JointContractions.lean`. Five of those nodes use the
-stronger Young budget transported by an exact identity; the cover contains 10,909 boxes.
-The strengthened parameter family and exact majorant-transport rule are proved too
-(`JointSixth.gram_j_eta`, `JointSixth.gram_j2_shifted`, `Grothe/Lower/MomentLift.lean`).
-`Grothe/LowerAnalytic/MomentConeBoundary.lean` proves the exact two-branch minimum
-moment cost within the conic recipe, with explicit attaining points and its
-application to genuine cubic moments on each node range.
-
-A separate global research interface transfers finite Gaussian Hermite games to compact
-spherical operators while preserving the same bounded response pair. The paper proof and
-its computational limitations are in [docs/SPHERICAL_TRANSFER.md](docs/SPHERICAL_TRANSFER.md).
-`Grothe/LowerAnalytic/SphericalTransfer.lean` proves the exact cubic multiplier tail and
-signed cap assembly. The analytic bridge and a useful spherical norm cap are not formalized;
-this interface changes neither endpoint.
 
 The node-cap proof infrastructure is in Lean (`Grothe/LowerAnalytic/Cap*.lean`):
 the 505 chord nodes follow from the vertex caps by convexity (`nodeCaps_of_vertexCaps`, `capChords_check`);
