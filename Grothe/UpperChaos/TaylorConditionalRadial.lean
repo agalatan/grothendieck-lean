@@ -70,9 +70,9 @@ theorem taylorConditionalWick_rot (j N : ℕ) (a : ℕ → ℕ → ℕ → ℚ)
     taylorConditionalWick j N a t (c * z) = taylorConditionalWick j N a t z := by
   rw [← integral_taylorInnerSource_conditional j N a t (c * z) ht,
     ← integral_taylorInnerSource_conditional j N a t z ht]
-  apply integral_taylorInnerSource_kernel_rot
-  exact ⟨measurable_gradedHermiteFn N a, memLp_gradedHermiteFn N a,
-    gradedHermiteFn_rot2 N a⟩
+  exact integral_taylorInnerSource_kernel_rot
+    ⟨measurable_gradedHermiteFn N a, memLp_gradedHermiteFn N a,
+      gradedHermiteFn_rot2 N a⟩ j t c z hc
 
 /-- The Wick evaluator is determined by its values on the nonnegative real axis. -/
 theorem taylorConditionalWick_eq_norm (j N : ℕ) (a : ℕ → ℕ → ℕ → ℚ)
