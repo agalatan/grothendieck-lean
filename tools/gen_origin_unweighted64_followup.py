@@ -7,7 +7,7 @@ import gen_origin_unweighted64_full as full
 import gen_origin_unweighted64_pilot as pilot
 
 ROOT=Path(__file__).resolve().parents[1]
-PILOT_HASH='e1ed5a0d5a99f23617c5b7dcb4f89a6bb5ff9eb4604386af6516a0dbdd775268'
+PILOT_HASH='5545fd5cb3d0c3f3e65435880041ce165f912490073216de0fd7c0a11032883d'
 
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
