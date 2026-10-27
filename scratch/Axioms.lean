@@ -149,6 +149,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.leftRationalWitness_mass
 #print axioms Grothe.HJM.Origin.leftTailEnergy_le_of_visible
 #print axioms Grothe.HJM.Origin.leftUnweightedRationalMassCheck
+#print axioms Grothe.HJM.Origin.leftUnweightedTail_of_64_norm_and_correlation
 #print axioms Grothe.HJM.Origin.leftUnweightedTail_of_64_targets
 #print axioms Grothe.HJM.Origin.leftUnweightedWitness_mass
 #print axioms Grothe.HJM.Origin.left_signedPhaseMean_eq_inner
@@ -211,6 +212,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.rightRationalWitness_mass
 #print axioms Grothe.HJM.Origin.rightTailEnergy_le_of_visible
 #print axioms Grothe.HJM.Origin.rightUnweightedRationalMassCheck
+#print axioms Grothe.HJM.Origin.rightUnweightedTail_of_64_norm_and_correlation
 #print axioms Grothe.HJM.Origin.rightUnweightedTail_of_64_targets
 #print axioms Grothe.HJM.Origin.rightUnweightedWitness_mass
 #print axioms Grothe.HJM.Origin.right_signedPhaseMean_eq_inner
@@ -353,6 +355,7 @@ import Grothe
 #print axioms Grothe.HJM.repriced_hjm_bound_of_residual_caps
 #print axioms Grothe.HJM.repriced_hjm_bound_of_tables_visible
 #print axioms Grothe.HJM.repriced_hjm_bound_of_visible
+#print axioms Grothe.HJM.repriced_origin_tail_of_64_norms_and_correlations
 #print axioms Grothe.HJM.repriced_origin_tail_of_unweighted_residual_caps
 #print axioms Grothe.HJM.rotatedPairCoeff_dominated
 #print axioms Grothe.HJM.rotatedQhat_one

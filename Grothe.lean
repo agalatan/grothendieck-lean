@@ -158,6 +158,7 @@ import Grothe.HJM.OriginSymmetricTailBudget
 import Grothe.HJM.OriginTail
 import Grothe.HJM.OriginTailBudget
 import Grothe.HJM.OriginTruncation
+import Grothe.HJM.OriginUnweighted64Assembly
 import Grothe.HJM.OriginUnweightedMeanPolynomial
 import Grothe.HJM.OriginUnweightedProjection
 import Grothe.HJM.OriginUnweightedRightCells
