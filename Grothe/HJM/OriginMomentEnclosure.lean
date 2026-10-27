@@ -251,21 +251,33 @@ theorem local_integral_enclosure (p : List ℚ) {c h : ℚ} (hc : 0 ≤ c) (hh :
       ∫ t in (-1 : ℝ)..1, pev p t * exp (pev (localExp c h) t) := by
     have he : (∫ t in (-1 : ℝ)..1, pev p t * S t - A * E) =
         (integralTaylor p c h n : ℝ) - 2 * A * E := by
-      change (∫ t in (-1 : ℝ)..1, ((pev p * S) - fun _ : ℝ => A * E) t) = _
-      rw [intervalIntegral.integral_sub ((hcP.mul hcS).intervalIntegrable (-1) 1)
-        intervalIntegrable_const, hJ, intervalIntegral.integral_const]
-      simp only [smul_eq_mul]
-      ring
+      calc
+        (∫ t in (-1 : ℝ)..1, pev p t * S t - A * E) =
+            (∫ t in (-1 : ℝ)..1, pev p t * S t) -
+              ∫ _t in (-1 : ℝ)..1, A * E :=
+          intervalIntegral.integral_sub (f := fun t => pev p t * S t)
+            (g := fun _ : ℝ => A * E)
+            ((hcP.mul hcS).intervalIntegrable (-1) 1) intervalIntegrable_const
+        _ = _ := by
+          rw [hJ, intervalIntegral.integral_const]
+          simp only [smul_eq_mul]
+          ring
     rwa [he] at hlow
   have hhigh' : (∫ t in (-1 : ℝ)..1, pev p t * exp (pev (localExp c h) t)) ≤
       (integralTaylor p c h n : ℝ) + 2 * A * E := by
     have he : (∫ t in (-1 : ℝ)..1, pev p t * S t + A * E) =
         (integralTaylor p c h n : ℝ) + 2 * A * E := by
-      change (∫ t in (-1 : ℝ)..1, ((pev p * S) + fun _ : ℝ => A * E) t) = _
-      rw [intervalIntegral.integral_add ((hcP.mul hcS).intervalIntegrable (-1) 1)
-        intervalIntegrable_const, hJ, intervalIntegral.integral_const]
-      simp only [smul_eq_mul]
-      ring
+      calc
+        (∫ t in (-1 : ℝ)..1, pev p t * S t + A * E) =
+            (∫ t in (-1 : ℝ)..1, pev p t * S t) +
+              ∫ _t in (-1 : ℝ)..1, A * E :=
+          intervalIntegral.integral_add (f := fun t => pev p t * S t)
+            (g := fun _ : ℝ => A * E)
+            ((hcP.mul hcS).intervalIntegrable (-1) 1) intervalIntegrable_const
+        _ = _ := by
+          rw [hJ, intervalIntegral.integral_const]
+          simp only [smul_eq_mul]
+          ring
     rwa [he] at hhigh
   constructor
   · simpa only [error, Rat.cast_sub, Rat.cast_mul, Rat.cast_ofNat, A, E] using hlow'
