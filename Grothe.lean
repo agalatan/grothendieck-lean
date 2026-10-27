@@ -499,8 +499,10 @@ import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
 import Grothe.UpperChaos.FirstSecondCapturedTail
 import Grothe.UpperChaos.FixedChaosSmoothing
+import Grothe.UpperChaos.GTAliasTail
 import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussOp
+import Grothe.UpperChaos.GeometricReciprocal
 import Grothe.UpperChaos.GradedHermite
 import Grothe.UpperChaos.GradedHermiteFn
 import Grothe.UpperChaos.GradedHermiteIntegerEnergy
@@ -614,5 +616,8 @@ import Grothe.UpperChaos.TaylorSecondBandNorms
 import Grothe.UpperChaos.TaylorSecondData
 import Grothe.UpperChaos.TaylorTailData
 import Grothe.UpperChaos.TaylorWickReduction
+import Grothe.UpperChaos.ThirdBandElimination
 import Grothe.UpperChaos.ThirdCapturedTail
 import Grothe.UpperChaos.ThirteenBandUpper
+import Grothe.UpperChaos.TwelveBandUpper
+import Grothe.UpperChaos.TwelveGrouped

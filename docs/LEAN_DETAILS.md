@@ -591,6 +591,11 @@ accuracy are still hypotheses. The alternative
 `Grothe.UpperChaos.Thirteen.fresh_upper_taylor_thirteen_bands` derives one
 second-order band bound from three others and the exact fourth phase moment;
 it requires thirteen Gaussian band hypotheses and the same table assumption.
+`Grothe.UpperChaos.Twelve.fresh_upper_taylor_twelve_bands` similarly bounds
+the third source's last finite band and tail from its first three bands and
+the exact sixth moment. It needs twelve Gaussian band estimates and the same
+table assumption, and its rational endpoint is below `1.404599598`. These
+remaining Gaussian and table-accuracy inputs are not yet proved.
 
 **Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder` proves
 `IsGrothendieckBound (500000000000000000/355973699884132991)` for the concrete rounding,

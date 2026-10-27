@@ -198,6 +198,10 @@ neither those estimates nor the relaxed energy-table bound is proved yet. An alt
 `Grothe.UpperChaos.Thirteen.fresh_upper_taylor_thirteen_bands` uses thirteen
 Gaussian band hypotheses with the same relaxed table assumption; its conditional
 rational bound is also below `1.404599424`.
+`Grothe.UpperChaos.Twelve.fresh_upper_taylor_twelve_bands` instead uses twelve
+Gaussian band hypotheses and the same table assumption, giving a rational bound
+below `1.404599598`. Its third-source final band is bounded from the first
+three by the exact sixth moment; the remaining inputs are not yet proved.
 
 The rounding is the smoothing G_T of T = F₀·P₃(φ): a two-coordinate Gaussian phase rounding F₀ times the
 cubic Taylor polynomial P₃(x) = 1 + ix − x²/2 − ix³/6 of a damped polynomial phase φ. It is **defined in Lean**
