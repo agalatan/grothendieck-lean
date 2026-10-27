@@ -310,7 +310,7 @@ and identifies each Taylor comparison source with the corresponding scaled
 `Lp` residual. It proves comparison piece zero's rounding cap.
 `FirstSecondCapturedTail` derives pieces seven and twelve from their finite
 Gaussian error families; `ThirdCapturedTail` supplies piece seventeen.
-`ConcreteTaylorUpper.fresh_upper_concrete_taylor` assembles all eighteen pieces
+`Grothe.UpperChaos.fresh_upper_concrete_taylor` in `GroupedRounder.lean` assembles all eighteen pieces
 and concludes the existing sharp conditional bound from only `hfirst` (six
 finite errors), `hsecond` (four), `hthird` (four), and `hclose` for the energies
 of the actual `Xfun frozenCorrectionFn`. No separate rounding, tail,
@@ -551,12 +551,12 @@ steps. No numerical response integral is certified by these modules. See
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
-**Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder_grouped` proves
+**Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder` proves
 `IsGrothendieckBound (500000000000000000/355973699884132991)` for the concrete rounding,
 given an L² charge-one truncation `X`, component-error inputs and table accuracy (the Hardy input is proved).
-`Grothe.grouped_upper_value_lt` shows this is below 1.404598149141 (`Grothe/UpperChaos/GroupedRounder.lean`).
-The older table interface `Grothe.fresh_upper : DirectHyps E EX → IsGrothendieckBound (...)`
-remains in `Grothe/Upper/PolynomialBridge.lean`.
+`Grothe.upper_value_lt` shows this is below 1.404598149141 (`Grothe/UpperChaos/GroupedRounder.lean`).
+The table interface `Grothe.fresh_upper` is in `Grothe/Upper/GroupedBridge.lean`;
+it takes `DirectHyps E EX` and the sharper grouped comparison bound.
 The actual rounding is G_T, the smoothing of T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6.
 It is defined in `Grothe/UpperChaos/Rounder.lean`. Lean proves |φ| < 1 (`phi_abs_lt_one`, from
 `phiT_sq_le : φ² ≤ 99/100`; checker `GrotheKernel/PhiCheck.lean`, soundness `Grothe/UpperChaos/PhiCover.lean`, 512 cubes and
@@ -602,7 +602,7 @@ headline endpoints are unchanged.
   total-chaos supports and component L² norm bounds. From the inherited Gaussian
   enclosures at cutoffs 181, 91, 51, these are the smoothed mixed-Taylor errors
   and frozen-vector rounding error. The general interface leaves these inputs
-  abstract; `fresh_upper_concrete_taylor_grouped` uses the fixed Taylor centers
+  abstract; `fresh_upper_concrete_taylor` uses the fixed Taylor centers
   and assumes their fourteen finite-band Gaussian error bounds. Lean proves
   `Σ_(p in headIdx 501) w(p) |E(p)-EX(p)| ≤ 851922301/10¹⁵` from them, using
   `2 Σ A_r e_r + (Σ_g √(Σ_{r∈I_g} e_r²))²`, with `A_r²` enclosing

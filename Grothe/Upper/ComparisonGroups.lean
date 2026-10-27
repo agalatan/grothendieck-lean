@@ -1,4 +1,3 @@
-/- Intended path: Grothe/Upper/ComparisonGroups.lean -/
 import Grothe.Upper.ComparisonOverlap
 import Grothe.Upper.GroupedComparison
 

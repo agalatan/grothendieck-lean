@@ -16,8 +16,8 @@ From the data of `Grothe/Upper/Data.lean` (`profileQ`, `aQ`, `bQ`, `etaQ`, `phas
   `M = P_u + √η (I − P_u)`, `P_u` the projection on `u = (1, b)` (`GT`).
 
 `G_T` is measurable and of charge one; it is disk-valued under the phase cover `φ² ≤ 99/100`
-(`PhiBound`, proved in `PhiBound.lean`; `|P₃(φ)| ≤ 1` needs only `φ² ≤ 3`).  `fresh_upper_concrete`: the sharp upper bound from `PhiBound`, a charge-one
-`X ∈ L²` and the three numerical fields for `E = energy G_T`, `EX = energy X`.
+(`PhiBound`, proved in `PhiBound.lean`; `|P₃(φ)| ≤ 1` needs only `φ² ≤ 3`).
+The upper-bound assembly is in `GroupedRounder.lean`.
 -/
 
 open MeasureTheory ProbabilityTheory Grothe.LowerAnalytic Grothe.Upper
@@ -182,19 +182,6 @@ lemma memLp_GT (hφ : PhiBound) : MemLp GT 2 mu2 :=
 
 /-! ### The headline -/
 
-/-- **The sharp upper bound for the concrete rounding of the certificate**: the remaining
-hypotheses are the phase cover `φ² ≤ 99/100` and the three numerical comparisons between the
-energies of `G_T` and those of a charge-one truncation `X`. -/
-theorem fresh_upper_concrete (hφ : PhiBound) {X : ℂ × ℂ → ℂ} (hXL : MemLp X 2 mu2)
-    (hXch : ∀ c u, ‖c‖ = 1 → X (rot2 c u) = c * X u)
-    (hcompare : ∑ p ∈ headIdx 501, comparisonWeight p * |energy ((memLp_GT hφ).toLp GT) p - energy (hXL.toLp X) p|
-      ≤ (compareQ : ℝ))
-    (hclose : ∑ p ∈ headIdx 501, |energy (hXL.toLp X) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ))
-    (hhardy : ∀ J, ∑ n ∈ Finset.range J, kernelCoeff (energy ((memLp_GT hφ).toLp GT)) n ^ 2
-      * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4) :
-    IsGrothendieckBound (500000000000000000 / 355973699881431491) :=
-  fresh_upper_of_rounding measurable_GT (norm_GT_le hφ) (fun _ u hc => GT_rot2 hc u)
-    (memLp_GT hφ) hXL hXch hcompare hclose hhardy
 
 end
 

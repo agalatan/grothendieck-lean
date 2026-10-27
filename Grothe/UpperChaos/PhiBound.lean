@@ -9,9 +9,8 @@ import Grothe.UpperChaos.HardyReal
 
 `phiT_sq_le : φ² ≤ 99/100` from the cover (`walk_sound` on the 64 cubes, `phi_cubes_ok`) on `U + V < 60`
 and the far field (`far_sound`); hence `phi_abs_lt_one : |φ| < 1` (the input of the comparison argument)
-and `phiBound : PhiBound`.  `fresh_upper_rounder`: the sharp upper bound for the concrete rounding `G_T`
-from component-error inputs and table accuracy (for a charge-one `X ∈ L²`); its Hardy input is proved
-(`HardyReal.hardy_GT`).
+and `phiBound : PhiBound`. The sharp upper bound for the concrete rounding is in
+`GroupedRounder.lean`; its Hardy input is proved (`HardyReal.hardy_GT`).
 -/
 
 open GrotheKernel Grothe.Upper
@@ -85,15 +84,6 @@ theorem phi_abs_lt_one (u : ℂ × ℂ) : |phiT u| < 1 := by
 /-- The phase cover in the form used by the rounding. -/
 theorem phiBound : PhiBound := phiT_sq_le
 
-/-- **The sharp upper bound for the concrete rounding** from the explicit spectral-error decomposition,
-component norm bounds and table accuracy. The Hardy input is proved (`HardyReal.hardy_GT`). -/
-theorem fresh_upper_rounder {X : ℂ × ℂ → ℂ} (hXL : MeasureTheory.MemLp X 2 mu2)
-    (hXch : ∀ c u, ‖c‖ = 1 → X (rot2 c u) = c * X u)
-    (herrors : ComparisonInputs ((memLp_GT phiBound).toLp GT) (hXL.toLp X))
-    (hclose : ∑ p ∈ headIdx 501, |energy (hXL.toLp X) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ)) :
-    IsGrothendieckBound (500000000000000000 / 355973699881431491) :=
-  fresh_upper_concrete phiBound hXL hXch (localized_comparison herrors hclose) hclose
-    (HardyReal.hardy_GT phiBound)
 
 end
 
