@@ -28,11 +28,6 @@ import Grothe
 #print axioms Grothe.HJM.chargeOneCoeff_tsum_sq_le
 #print axioms Grothe.HJM.chargeOneCoeff_weighted_energy
 #print axioms Grothe.HJM.dominated_branch
-#print axioms Grothe.HJM.mem_head1
-#print axioms Grothe.HJM.mem_head2
-#print axioms Grothe.HJM.mem_head3
-#print axioms Grothe.HJM.mem_head4
-#print axioms Grothe.HJM.mem_head5
 #print axioms Grothe.HJM.ev_H_charge_one_radial
 #print axioms Grothe.HJM.hasDerivAt_originGreenBoundary
 #print axioms Grothe.HJM.hasDerivAt_originRadialGreenBoundary
@@ -41,6 +36,11 @@ import Grothe
 #print axioms Grothe.HJM.inner_charge_one_radial_integral
 #print axioms Grothe.HJM.inner_charge_one_radial_integral_of_integrable
 #print axioms Grothe.HJM.integral_gaussC_radial_polynomial_mul_of_integrable
+#print axioms Grothe.HJM.mem_head1
+#print axioms Grothe.HJM.mem_head2
+#print axioms Grothe.HJM.mem_head3
+#print axioms Grothe.HJM.mem_head4
+#print axioms Grothe.HJM.mem_head5
 #print axioms Grothe.HJM.originGreen_integral
 #print axioms Grothe.HJM.originLaguerrePoly_normalization
 #print axioms Grothe.HJM.originNumberOperator_charge_one
