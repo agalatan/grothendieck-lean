@@ -139,17 +139,41 @@ theorem e3_ofTerms (L : ℕ) (ts : List ((ℕ × ℕ × ℕ) × ℚ))
       simp only [Ssum, List.map_cons, List.sum_cons]
       ring
 
-/-- Existing phase admissibility suffices for the unscaled integer source conversion. -/
-theorem e3_integerPhase {ts : List ((ℕ × ℕ × ℕ) × ℚ)} (hts : termsOK ts = true)
-    (x y z : ℝ) :
+/-- The common denominator is divisible by every coefficient denominator. -/
+lemma den_dvd_commonDen {ts : List ((ℕ × ℕ × ℕ) × ℚ)}
+    {t : (ℕ × ℕ × ℕ) × ℚ} (ht : t ∈ ts) : t.2.den ∣ commonDen ts := by
+  have hfold : ∀ (l : List ((ℕ × ℕ × ℕ) × ℚ)) (a : ℕ),
+      a ∣ l.foldl (fun d u => Nat.lcm d u.2.den) a ∧
+        ∀ u ∈ l, u.2.den ∣ l.foldl (fun d u => Nat.lcm d u.2.den) a := by
+    intro l
+    induction l with
+    | nil => intro a; simp
+    | cons u l ih =>
+        intro a
+        obtain ⟨ha, hu⟩ := ih (Nat.lcm a u.2.den)
+        refine ⟨(Nat.dvd_lcm_left a u.2.den).trans ha, ?_⟩
+        intro v hv
+        rcases List.mem_cons.mp hv with rfl | hv
+        · exact (Nat.dvd_lcm_right a u.2.den).trans ha
+        · exact hu v hv
+  exact (hfold ts 1).2 t ht
+
+/-- Clearing the common denominator is integral for every rational term list. -/
+lemma commonDen_clears {ts : List ((ℕ × ℕ × ℕ) × ℚ)}
+    {t : (ℕ × ℕ × ℕ) × ℚ} (ht : t ∈ ts) :
+    (t.2 * (commonDen ts : ℚ)).den = 1 := by
+  obtain ⟨k, hk⟩ := den_dvd_commonDen ht
+  have hd : t.2 * (t.2.den : ℚ) = (t.2.num : ℚ) :=
+    (eq_div_iff (by exact_mod_cast t.2.den_ne_zero)).mp t.2.num_div_den.symm
+  have he : t.2 * (commonDen ts : ℚ) = ((t.2.num * (k : ℤ) : ℤ) : ℚ) := by
+    rw [hk, Nat.cast_mul, ← mul_assoc, hd, Int.cast_mul, Int.cast_natCast]
+  rw [he]
+  exact Rat.den_intCast _
+
+/-- The integer phase evaluates to the original rational phase times its common denominator. -/
+theorem e3_integerPhase (ts : List ((ℕ × ℕ × ℕ) × ℚ)) (x y z : ℝ) :
     he3 (integerPhase ts) x y z = (commonDen ts : ℝ) * Ssum ts x y z := by
-  apply e3_ofTerms
-  intro t ht
-  have h := List.all_eq_true.1 hts t ht
-  have hp : t.1.1 + t.1.2.1 + t.1.2.2 ≤ DEG ∧
-      (t.2 * (commonDen ts : ℚ)).den = 1 := by
-    simpa [termsOK] using h
-  exact hp.2
+  exact e3_ofTerms _ _ (fun _ ht => commonDen_clears ht) x y z
 
 end
 
