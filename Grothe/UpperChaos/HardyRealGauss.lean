@@ -25,7 +25,7 @@ def phi2 (x : ℝ × ℝ) : ℝ := gaussianPDFReal 0 1 x.1 * gaussianPDFReal 0 1
 
 lemma phi2_nonneg (x : ℝ × ℝ) : 0 ≤ phi2 x := mul_nonneg (gaussianPDFReal_nonneg _ _ _) (gaussianPDFReal_nonneg _ _ _)
 
-lemma measurable_phi2 : Measurable phi2 := by unfold phi2; fun_prop
+@[fun_prop] lemma measurable_phi2 : Measurable phi2 := by unfold phi2; fun_prop
 
 /-- `(p₁ + i p₂)/√2`. -/
 def toC' (p : ℝ × ℝ) : ℂ := ((p.1 : ℂ) + (p.2 : ℂ) * I) / ((√2 : ℝ) : ℂ)
@@ -69,6 +69,7 @@ lemma measurePreserving_shuffle_prod {α : Type*} [MeasurableSpace α] (μ : Mea
   have h3 := (MeasurePreserving.id μ).prod inner
   have h4 := measurePreserving_prodAssoc μ μ (μ.prod μ)
   convert (h4.symm.comp h3).comp h1 using 1
+  ext q <;> rfl
 
 lemma measurePreserving_shuffle :
     MeasurePreserving (shuffle : (ℝ × ℝ) × (ℝ × ℝ) → _) volume volume := by
