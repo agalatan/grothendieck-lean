@@ -165,7 +165,8 @@ theorem symmetrizedPairKernel_eq_radialKernel {F G : ℂ → ℂ}
         (ρ * (‖ρ‖ : ℂ)^(2*n)) := by
     let a := scalarPairCoeff (hF.toLp F) (hG.toLp G) n
     have ha : a + conj a = 2 * (a.re : ℂ) := by
-      apply Complex.ext <;> simp <;> ring
+      apply Complex.ext <;> simp
+      ring
     change (a * (ρ * (‖ρ‖ : ℂ)^(2*n)) +
         conj (a * (conj ρ * (‖conj ρ‖ : ℂ)^(2*n)))) / 2 =
       (a.re : ℂ) * (ρ * (‖ρ‖ : ℂ)^(2*n))

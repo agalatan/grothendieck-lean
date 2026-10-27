@@ -33,7 +33,7 @@ theorem integral_gaussian_tailInd {R : ℝ} (hR : 0 < R) :
   calc
     (∫ z, tailInd R z ∂gaussC) = 2 * ∫ r in Ioi R, r * exp (-r ^ 2) := by
       rw [h]
-      field_simp [Real.pi_ne_zero] <;> ring
+      field_simp [Real.pi_ne_zero]
     _ = tailJ R 1 := by
       rw [tailJ, ← integral_const_mul]
       simp only [pow_one, mul_assoc]

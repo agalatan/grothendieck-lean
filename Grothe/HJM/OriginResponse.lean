@@ -129,7 +129,7 @@ lemma rightNumerator_zero : rightNumerator 0 = -Complex.I * leftNumerator 0 := b
   apply Complex.ext <;> norm_num [rightNumerator, leftNumerator, P, A, B, C, ofListQ,
     OriginData.pReal, OriginData.pImag, OriginData.delta, OriginData.aReal,
     OriginData.aImag, OriginData.bReal, OriginData.bImag, OriginData.cReal,
-    OriginData.cImag]
+    OriginData.cImag, Complex.conj_ofNat]
 
 lemma leftNumerator_zero_ne : leftNumerator 0 ≠ 0 := by
   intro h
