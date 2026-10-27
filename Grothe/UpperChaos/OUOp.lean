@@ -40,7 +40,7 @@ include hρ
 lemma norm_ofReal_le : ‖(ρ : ℂ)‖ ≤ 1 := by rwa [Complex.norm_real, Real.norm_eq_abs]
 
 lemma mp_shuffle2 : MeasurePreserving (shuffle : (ℂ × ℂ) × (ℂ × ℂ) → _) (mu2.prod mu2) mu4 :=
-  measurePreserving_shuffle_prod gaussC
+  measurePreserving_shuffle_prod Grothe.LowerAnalytic.gaussC
 
 /-- `ρx + σW` is standard. -/
 lemma mp_ou : MeasurePreserving (ouCLM ρ) (mu2.prod mu2) mu2 :=
@@ -49,14 +49,14 @@ lemma mp_ou : MeasurePreserving (ouCLM ρ) (mu2.prod mu2) mu2 :=
 /-- **The Ornstein–Uhlenbeck smoothing.** -/
 def ouOp : Lp ℂ 2 mu2 →L[ℂ] Lp ℂ 2 mu2 := gOp (ouCLM ρ) (mp_ou hρ)
 
-lemma lam_real (i : Idx2) : lam (ρ : ℂ) (ρ : ℂ) i = (ρ : ℂ) ^ tdeg i := by
+lemma lam_diag (i : Idx2) : lam (ρ : ℂ) (ρ : ℂ) i = (ρ : ℂ) ^ tdeg i := by
   simp only [lam, Complex.conj_ofReal, tdeg]; ring
 
 /-- **`T_ρ` is diagonal on the Hermite basis**, with eigenvalue `ρ^{|i|}`. -/
 theorem inner_hvec2_ouOp (j k : Idx2) :
     ⟪hvec2 j, ouOp hρ (hvec2 k)⟫_ℂ = if j = k then (ρ : ℂ) ^ tdeg j else 0 := by
   have h₁ := norm_ofReal_le hρ
-  rw [← lam_real hρ, ← Bm_hvec2 h₁ h₁ j k, Bm_eq_integral, ouOp, inner_gOp, L2.inner_def]
+  rw [← lam_diag hρ, ← Bm_hvec2 h₁ h₁ j k, Bm_eq_integral, ouOp, inner_gOp, L2.inner_def]
   have hj := Lp.aestronglyMeasurable (hvec2 j)
   have hk := Lp.aestronglyMeasurable (hvec2 k)
   -- the integrand on `mu2 ⊗ mu2`, and the Mehler integrand on `mu4` after the shuffle
