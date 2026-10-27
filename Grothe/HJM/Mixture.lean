@@ -36,14 +36,17 @@ theorem DominatedKernel.mixture (s : Finset ι) (w : ι → ℝ) (K : ι → ℂ
     (hK : ∀ r ∈ s, DominatedKernel (K r)) (hw : ∑ r ∈ s, |w r| ≤ 1) :
     DominatedKernel fun z => ∑ r ∈ s, (w r : ℂ) * K r z := by
   intro m n A κ _ x y hx hy
-  have e : ∑ i, ∑ j, A i j * ∑ r ∈ s, (w r : ℂ) * K r (inner ℂ (x i) (y j)) =
-      ∑ r ∈ s, (w r : ℂ) * ∑ i, ∑ j, A i j * K r (inner ℂ (x i) (y j)) := by
+  have h1 : ∀ i, ∑ j, A i j * ∑ r ∈ s, (w r : ℂ) * K r (inner ℂ (x i) (y j)) =
+      ∑ r ∈ s, (w r : ℂ) * ∑ j, A i j * K r (inner ℂ (x i) (y j)) := by
+    intro i
     simp only [Finset.mul_sum]
     rw [Finset.sum_comm]
-    refine Finset.sum_congr rfl fun i _ => ?_
+    exact Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun j _ => by ring
+  have e : ∑ i, ∑ j, A i j * ∑ r ∈ s, (w r : ℂ) * K r (inner ℂ (x i) (y j)) =
+      ∑ r ∈ s, (w r : ℂ) * ∑ i, ∑ j, A i j * K r (inner ℂ (x i) (y j)) := by
+    simp only [h1]
     rw [Finset.sum_comm]
-    refine Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun j _ => ?_
-    ring
+    simp only [Finset.mul_sum]
   rw [e]
   calc ‖∑ r ∈ s, (w r : ℂ) * ∑ i, ∑ j, A i j * K r (inner ℂ (x i) (y j))‖
       ≤ ∑ r ∈ s, ‖(w r : ℂ) * ∑ i, ∑ j, A i j * K r (inner ℂ (x i) (y j))‖ := norm_sum_le _ _
@@ -73,7 +76,7 @@ lemma radialKernel_mixture (s : Finset ι) (w : ι → ℝ) (h : ι → ℕ → 
   have e : (fun n => ((∑ r ∈ s, w r * h r n : ℝ) : ℂ) * (z * ((‖z‖ : ℝ) : ℂ) ^ (2 * n))) =
       fun n => ∑ r ∈ s, (w r : ℂ) * ((h r n : ℂ) * (z * ((‖z‖ : ℝ) : ℂ) ^ (2 * n))) := by
     ext n; push_cast; rw [Finset.sum_mul]; refine Finset.sum_congr rfl fun r _ => ?_; ring
-  rw [e, tsum_sum (fun r hr => (summable_radial_term (hs r hr) hz).mul_left (w r : ℂ))]
+  rw [e, Summable.tsum_finsetSum (fun r hr => (summable_radial_term (hs r hr) hz).mul_left (w r : ℂ))]
   refine Finset.sum_congr rfl fun r _ => ?_
   rw [tsum_mul_left]
 
