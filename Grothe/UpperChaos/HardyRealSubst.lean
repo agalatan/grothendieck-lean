@@ -53,7 +53,7 @@ theorem integral_subst (h : 0 < k11 a b) (hd : 0 < kdet a b c) (x : ℝ × ℝ) 
   congr 1
   rw [← integral_add_right_eq_self (μ := volume) (fun y => (phi2 (solveS a b c (y - mulR a b c x)) : ℂ) * g y)
     (mulR a b c x)]
-  congr 1; ext v; rw [add_sub_cancel_left]
+  congr 1; ext v; rw [add_sub_cancel_right, add_comm v (mulR a b c x)]
 
 end
 
