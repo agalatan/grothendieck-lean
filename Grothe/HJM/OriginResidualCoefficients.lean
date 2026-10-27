@@ -36,7 +36,12 @@ theorem fResidualLp_eq_sub : fResidualLp = FLp - f 0 • Grothe.Haag.phaseLp := 
         simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, F, fResidual]
         ring
     _ = FLp - f 0 • Grothe.Haag.phaseLp := by
-      simp only [MemLp.toLp_sub, MemLp.toLp_const_smul, FLp, Grothe.Haag.phaseLp]
+      change (memLp_F.sub (Grothe.Haag.memLp_ph.const_smul (f 0))).toLp
+          (F - f 0 • Grothe.Haag.ph) =
+        memLp_F.toLp F - f 0 • Grothe.Haag.memLp_ph.toLp Grothe.Haag.ph
+      exact (MemLp.toLp_sub memLp_F (Grothe.Haag.memLp_ph.const_smul (f 0))).trans
+        (congrArg (fun V : Lp ℂ 2 gaussC => memLp_F.toLp F - V)
+          (MemLp.toLp_const_smul (f 0) Grothe.Haag.memLp_ph))
 
 /-- Equality of the actual right residual and endpoint-subtracted response. -/
 theorem gResidualLp_eq_sub : gResidualLp = GLp - g 0 • Grothe.Haag.phaseLp := by
@@ -49,7 +54,12 @@ theorem gResidualLp_eq_sub : gResidualLp = GLp - g 0 • Grothe.Haag.phaseLp := 
         simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, G, gResidual]
         ring
     _ = GLp - g 0 • Grothe.Haag.phaseLp := by
-      simp only [MemLp.toLp_sub, MemLp.toLp_const_smul, GLp, Grothe.Haag.phaseLp]
+      change (memLp_G.sub (Grothe.Haag.memLp_ph.const_smul (g 0))).toLp
+          (G - g 0 • Grothe.Haag.ph) =
+        memLp_G.toLp G - g 0 • Grothe.Haag.memLp_ph.toLp Grothe.Haag.ph
+      exact (MemLp.toLp_sub memLp_G (Grothe.Haag.memLp_ph.const_smul (g 0))).trans
+        (congrArg (fun V : Lp ℂ 2 gaussC => memLp_G.toLp G - V)
+          (MemLp.toLp_const_smul (g 0) Grothe.Haag.memLp_ph))
 
 /-- The left residual coefficient is the signed original coefficient minus
 the endpoint contribution. The scalar is not conjugated: coefficients are
