@@ -101,8 +101,7 @@ theorem smoothOp_toLp {f : ℂ × ℂ → ℂ} (hfm : Measurable f)
     refine (hG2.norm.integrable_mul hF2.norm).mono'
       ((Complex.continuous_conj.comp_aestronglyMeasurable hG2.aestronglyMeasurable).mul
         hF.aestronglyMeasurable) (Filter.Eventually.of_forall fun v => ?_)
-    rw [norm_mul, Complex.norm_conj, Pi.mul_apply, Real.norm_eq_abs, abs_of_nonneg
-      (mul_nonneg (norm_nonneg _) (norm_nonneg _))]
+    simp only [norm_mul, Complex.norm_conj, Pi.mul_apply, le_refl]
   have h1 : (fun v : (ℂ × ℂ) × (ℂ × ℂ) => ⟪(PXs g : _ → ℂ) v, (PS (hfL.toLp f) : _ → ℂ) v⟫_ℂ)
       =ᵐ[mu2.prod mu2] fun v => conj ((g : ℂ × ℂ → ℂ) v.1) * f (smoothArg v.1 v.2) := by
     filter_upwards [Lp.coeFn_compMeasurePreserving g mp_fst2,
@@ -129,7 +128,7 @@ lemma inner_hvec2_idx0 (g : Lp ℂ 2 mu2) : ⟪hvec2 idx0, g⟫_ℂ = ∫ u, (g 
   rw [hvec2, L2.inner_def]
   refine integral_congr_ae ?_
   filter_upwards [(memLp_hfun2 idx0).coeFn_toLp] with u hu
-  rw [hu, hfun2_idx0, RCLike.inner_apply, map_one, one_mul]
+  rw [hu, hfun2_idx0, RCLike.inner_apply, map_one, mul_one]
 
 /-- **`S` preserves the mean** (`Mx + NZ` is standard). -/
 theorem inner_idx0_smoothOp (g : Lp ℂ 2 mu2) : ⟪hvec2 idx0, smoothOp g⟫_ℂ = ⟪hvec2 idx0, g⟫_ℂ := by
@@ -145,8 +144,10 @@ theorem inner_idx0_smoothOp (g : Lp ℂ 2 mu2) : ⟪hvec2 idx0, smoothOp g⟫_�
     simp only [Function.comp_apply] at hc ⊢
     rw [show ((hvec2 idx0 : Lp ℂ 2 mu2) : ℂ × ℂ → ℂ) v.1 = 1 by rw [hvec2, hc, hfun2_idx0],
       RCLike.inner_apply, map_one, mul_one]
-  rw [integral_congr_ae h]
-  exact mp_smooth.integral_comp' (f := fun v : (ℂ × ℂ) × (ℂ × ℂ) => smoothArg v.1 v.2) _ |>.trans rfl
+  have hgm : AEStronglyMeasurable (g : ℂ × ℂ → ℂ)
+      (Measure.map (fun v : (ℂ × ℂ) × (ℂ × ℂ) => smoothArg v.1 v.2) (mu2.prod mu2)) := by
+    rw [mp_smooth.map_eq]; exact Lp.aestronglyMeasurable g
+  rw [integral_congr_ae h, ← integral_map mp_smooth.measurable.aemeasurable hgm, mp_smooth.map_eq]
 
 end
 
