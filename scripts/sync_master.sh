@@ -36,6 +36,34 @@ status() {
   fi
 }
 
+housekeeping() {
+  echo
+  echo "==================================== HOUSEKEEPING ===================================="
+  echo "CLEAN UP AFTER YOURSELF (AGENTS.md §14). Every agent, at every sync:"
+  echo " * Your remote branches: delete the stale ones (merged, superseded, abandoned): git push origin --delete <b>"
+  echo " * Your CI runs: if one of your branches is red, merge origin/master into it, fix the error, push again."
+  echo " * Your worktrees, droplet folders and background jobs: remove what you no longer need."
+  local merged red
+  merged=$(git -C "$MAIN" branch -r --merged origin/master | sed 's/^ *//' |
+    grep -E '^origin/(claude|codex|work|cloud)/' | sed 's#^origin/##' || true)
+  if [ -n "$merged" ]; then
+    echo "Remote branches already contained in master (delete yours):"
+    echo "$merged" | sed 's/^/   /'
+  fi
+  if command -v gh >/dev/null 2>&1; then
+    # the newest proof check of each branch, red ones only (not master's, which the user watches)
+    red=$(gh run list --workflow lean.yml --limit 100 --json headBranch,conclusion,status,databaseId \
+      --jq 'group_by(.headBranch) | map(max_by(.databaseId)) | .[]
+            | select(.headBranch != "master" and .status == "completed" and .conclusion == "failure")
+            | "\(.headBranch)  (run \(.databaseId))"' 2>/dev/null || true)
+    if [ -n "$red" ]; then
+      echo "Branches whose latest proof check is RED (if yours: fix and push again, or delete the branch):"
+      echo "$red" | sed 's/^/   /'
+    fi
+  fi
+  echo "======================================================================================="
+}
+
 if [ "${1:-}" = "--status" ]; then status; exit 0; fi
 
 git -C "$MAIN" fetch --prune origin
@@ -59,3 +87,4 @@ if [ "${1:-}" = "--build" ]; then
     start_build
   fi
 fi
+housekeeping
