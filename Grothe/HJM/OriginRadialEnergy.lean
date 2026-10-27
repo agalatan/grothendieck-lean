@@ -145,8 +145,9 @@ theorem radial_response_norm_sq (v : ℝ → ℂ) (hv : Measurable v)
         rw [← integral_comp_rpow_Ioi_of_pos (show (0 : ℝ) < 2 by norm_num)]
       rw [← integral_const_mul]
       refine setIntegral_congr_fun measurableSet_Ioi fun r hr => ?_
+      have hr0 : 0 < r := hr
       norm_num only [show (2 : ℝ) - 1 = 1 by norm_num, Real.rpow_one,
-        Real.rpow_two, smul_eq_mul, div_self hr.ne']
+        Real.rpow_two, smul_eq_mul, div_self hr0.ne']
       ring
 
 /-- Exact weighted Parseval for an actual radial differential expression.
@@ -168,11 +169,11 @@ theorem originRadialDifferential_hasSum_energy {v v1 v2 : ℝ → ℂ}
     (hSQ : ∀ n, IntegrableOn (fun s : ℝ => ((Real.exp (-s) * Real.sqrt s : ℝ) : ℂ) *
       (((originRadialPoly n).eval s : ℝ) : ℂ) *
         originRadialDifferential v v1 v2 s) (Ioi 0)) :
-    HasSum (fun n => (2 * (n : ℝ) + 1) ^ 2 *
+    HasSum (fun n : ℕ => (2 * (n : ℝ) + 1) ^ 2 *
       ‖chargeOneCoeff (hV.toLp (fun z : ℂ => Grothe.Haag.ph z * v (‖z‖ ^ 2))) n‖ ^ 2)
       (∫ s in Ioi (0 : ℝ), Real.exp (-s) *
         ‖originRadialDifferential v v1 v2 s‖ ^ 2) := by
-  have heq : (fun n => (2 * (n : ℝ) + 1) ^ 2 *
+  have heq : (fun n : ℕ => (2 * (n : ℝ) + 1) ^ 2 *
       ‖chargeOneCoeff (hV.toLp (fun z : ℂ => Grothe.Haag.ph z * v (‖z‖ ^ 2))) n‖ ^ 2) =
       (fun n => ‖chargeOneCoeff (hQ.toLp (fun z : ℂ =>
         Grothe.Haag.ph z * originRadialDifferential v v1 v2 (‖z‖ ^ 2))) n‖ ^ 2) := by
