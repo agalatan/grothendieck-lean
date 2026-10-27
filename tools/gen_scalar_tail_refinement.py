@@ -73,6 +73,37 @@ def weighted_phase_tail(ratio: Fraction, power: int, start: int, split: int) -> 
     return Fraction(355, 113)/4 * (finite + suffix)
 
 
+def power_block_widths(power: int, start: int, split: int) -> list[int]:
+    """Partition the prefix at changes of floor((2*k+1)/power)."""
+    widths = []
+    left = start
+    while left < split:
+        exponent = (2*left + 1)//power
+        right = left + 1
+        while right < split and (2*right + 1)//power == exponent:
+            right += 1
+        widths.append(right-left)
+        left = right
+    return widths
+
+
+def wallis_tail_majorant(index: int) -> Fraction:
+    x = 8*index + 1
+    return Fraction(2, x) - Fraction(14, 3*x*(x+8)*(x+16))
+
+
+def canonical_phase_tail(ratio: Fraction, power: int, start: int, split: int) -> Fraction:
+    """The interval-majorant ledger proved in Lean, evaluated exactly."""
+    result = Fraction(0)
+    left = start
+    for width in power_block_widths(power, start, split):
+        right = left + width
+        result += ratio**((2*left + 1)//power) * (
+            wallis_tail_majorant(left) - wallis_tail_majorant(right))
+        left = right
+    return result + ratio**((2*split + 1)//power) * wallis_tail_majorant(split)
+
+
 def verify(certificate: dict) -> dict:
     """Fail closed before rendering if any exact arithmetic check fails."""
     expected = {"schema_version", "P", "power", "ratio", "outer_start", "quotient",
@@ -115,6 +146,9 @@ def verify(certificate: dict) -> dict:
     if any(value < 0 for value in budgets.values()) or budgets["selector_mass"] == 0:
         raise ValueError("paper_budgets: nonnegative budgets and positive selector mass required")
     outer_bound = weighted_phase_tail(ratio, power, start, split)
+    canonical_bound = canonical_phase_tail(ratio, power, start, split)
+    if canonical_bound > outer_bound:
+        raise ValueError("canonical_outer_bound: exceeds the frozen weighted ledger cap")
     reserve = budgets["branch5_weight"] * outer_bound
     residual = (budgets["prefix_upper"] + budgets["finite67_upper"]
                 + budgets["other_tails_upper"] + reserve)
@@ -149,6 +183,7 @@ def verify(certificate: dict) -> dict:
             "power_degree": power * (len(coefficients) - 1),
             "power_norm": str(power_norm), "power_cap": str(ratio),
             "outer_start": start, "quotient": quotient, "weighted_split": split,
+            "canonical_outer_bound": str(canonical_bound),
             "weighted_outer_bound": str(outer_bound), "outer_reserve": str(reserve),
             "residual_upper": str(residual), "score_lower": str(score),
             "reciprocal_claim": str(claim), "strict_product_margin": str(claim * score - 1),
@@ -158,6 +193,10 @@ def verify(certificate: dict) -> dict:
 def generate(certificate: dict, template: str) -> tuple[str, dict]:
     receipt = verify(certificate)
     budget = certificate["paper_budgets"]
+    power = certificate["power"]
+    start = certificate["outer_start"]
+    split = certificate["weighted_split"]
+    widths = power_block_widths(power, start, split)
     substitutions = {
         "PL": ",\n  ".join(certificate["P"]), "RATIO": certificate["ratio"],
         "POWER": str(certificate["power"]), "START": str(certificate["outer_start"]),
@@ -168,6 +207,8 @@ def generate(certificate: dict, template: str) -> tuple[str, dict]:
         "PREFIX": budget["prefix_upper"], "FINITE": budget["finite67_upper"],
         "OTHER": budget["other_tails_upper"], "MASS": budget["selector_mass"],
         "CLAIM": certificate["reciprocal_claim"],
+        "BLOCK_WIDTHS": ", ".join(map(str, widths)), "PREFIX_LENGTH": str(split-start),
+        "WEIGHTED_OUTER_BOUND": certificate["exact_arithmetic"]["weighted_outer_bound"],
     }
     markers = set(re.findall(r"@([A-Z_]+)@", template))
     if markers != set(substitutions):
@@ -182,6 +223,14 @@ def generate(certificate: dict, template: str) -> tuple[str, dict]:
 def self_test(certificate: dict) -> dict:
     assert convolve([2, -3], [1, 4]) == [2, 5, -12]
     verify(certificate)
+    ratio = rational(certificate["ratio"], "ratio")
+    power, start, split = (certificate[key] for key in ("power", "outer_start", "weighted_split"))
+    assert power_block_widths(power, start, split) == [5] + [8]*11
+    direct = sum((ratio**((2*k + 1)//power) *
+                  (wallis_tail_majorant(k)-wallis_tail_majorant(k+1))
+                  for k in range(start, split)), Fraction(0))
+    direct += ratio**((2*split + 1)//power) * wallis_tail_majorant(split)
+    assert canonical_phase_tail(ratio, power, start, split) == direct
     for key, value in (("ratio", "1/100"), ("reciprocal_claim", "1"),
                        ("quotient", certificate["quotient"] + 1),
                        ("weighted_split", certificate["outer_start"])):
@@ -193,6 +242,7 @@ def self_test(certificate: dict) -> dict:
             continue
         raise AssertionError(f"negative control accepted invalid {key}")
     return {"status": "PASS", "controls": ["exact_integer_convolution", "canonical_certificate",
+            "power_block_partition", "telescoped_ledger_matches_indexed_ledger",
             "reject_understated_power_cap", "reject_unmet_reciprocal", "reject_wrong_quotient",
             "reject_invalid_weighted_split"]}
 

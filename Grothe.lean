@@ -70,6 +70,7 @@ import Grothe.Haagerup.PhaseKernel
 import Grothe.Haagerup.Power
 import Grothe.Haagerup.PowerData
 import Grothe.Haagerup.ScalarTailRefinement
+import Grothe.Haagerup.WallisTail
 import Grothe.ListPoly
 import Grothe.Lower.Basic
 import Grothe.Lower.Boxes

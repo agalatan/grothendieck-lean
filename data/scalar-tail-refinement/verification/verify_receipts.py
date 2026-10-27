@@ -12,6 +12,7 @@ import hashlib
 import json
 import math
 from pathlib import Path, PurePosixPath
+import subprocess
 
 
 HERE = Path(__file__).resolve().parent
@@ -40,6 +41,15 @@ def require(condition, message):
 
 def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def sha_at_commit(commit, relative):
+    """Bind an archived build to its actual source, even after later edits."""
+    result = subprocess.run(
+        ['git', '-C', str(ROOT), 'show', f'{commit}:{relative}'],
+        check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+    )
+    return hashlib.sha256(result.stdout).hexdigest()
 
 
 def load(name):
@@ -156,6 +166,19 @@ def main():
     weighted_prefix = sum(phase_r[k]*cap**((2*k+1)//16) for k in range(67, 160))
     weighted_suffix = cap**20*phase_r[160]*161*321/320
     weighted_bound = Q(355, 452)*(weighted_prefix+weighted_suffix)
+    # Independently check the rational block majorant used by the revised Lean proof.
+    def tail_majorant(index):
+        x = 8*index + 1
+        return Q(2, x) - Q(14, 3*x*(x+8)*(x+16))
+
+    boundaries = [67] + list(range(72, 161, 8))
+    canonical_bound = cap**20 * tail_majorant(160)
+    for left, right in zip(boundaries, boundaries[1:]):
+        exponent = (2*left+1)//16
+        require(all((2*k+1)//16 == exponent for k in range(left, right)),
+                'Power block contains a change of exponent')
+        canonical_bound += cap**exponent * (tail_majorant(left)-tail_majorant(right))
+    require(canonical_bound <= weighted_bound, 'Canonical block bound exceeds the ledger cap')
     outer = paper['branch5_weight']*weighted_bound
     residual = sum(paper[key] for key in ('nonlinear_prefix_upper',
         'first_67_complete_outer_tail_upper', 'other_weighted_tails_upper'))+outer
@@ -184,7 +207,8 @@ def main():
     require(build['target'] == 'Grothe.Haagerup.ScalarTailRefinement', 'Weighted target differs')
     require(build['log_sha256'] == sha(HERE/'weighted-build.log'), 'Weighted build log binding failed')
     for relative, expected in build['source_sha256'].items():
-        require(sha(ROOT/relative) == expected, 'Weighted build source differs: '+relative)
+        require(sha_at_commit(build['commit'], relative) == expected,
+                'Historical weighted build source differs: '+relative)
 
     result = dict(status='PASS_ARCHIVED_REPLAY_AND_EXACT_POWER16_SCOPE',
         checked_utc=datetime.now(timezone.utc).isoformat(), upstream_commit=COMMIT,
@@ -197,6 +221,7 @@ def main():
         verified_power_norm=str(norm), power_cap=str(cap), reciprocal_claim=str(claim),
         wallis_finite_rational_upper=str(wallis_rational),
         weighted_split=160, weighted_outer_bound=str(weighted_bound),
+        canonical_outer_bound=str(canonical_bound),
         weighted_outer_reserve=str(outer), strict_product_margin=str(claim*score-1),
         verified_weighted_build_run=build['run'],
         lean_compilation_performed=False,

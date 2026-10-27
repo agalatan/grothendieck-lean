@@ -383,19 +383,23 @@ exact selector mass. The resulting reciprocal is below `1.404898430299659`.
 
 `Grothe/Haagerup/ScalarTailRefinement.lean` proves the finite power certificate,
 the general signed suffix inequality and the rational score transfer with the
-published numerical budgets explicit. The phase-tail estimate at index 67 is
-proved by an exact split at 120 and the existing infinite-tail majorant. The
-weighted estimate uses that majorant at 160, via the general antitone-weight
-`weighted_composition_cut` theorem. The final score transfer has no tail premise.
+published numerical budgets explicit. `Haagerup/WallisTail.lean` identifies the
+coefficient recurrence with Wallis products and proves the all-index bound
+`h_j ≤ 1/((4j+1)(j+1))`. A rational telescoping majorant bounds every interval
+and gives `Σ_{j≥K} h_j ≤ 1/(4K)` for every positive integer K. The weighted
+estimate prices the twelve constant-weight blocks at
+67–159 and the remaining suffix at 160; their bound is below the unchanged
+exact ledger cap. The final score transfer has no tail premise.
 The polynomial power is checked by `decide +kernel` using the same outward
 interval arithmetic. All sixteen scalar-tail results now use only standard
 axioms, with no native evaluation axiom.
 The four pinned public verification stages were replayed
 successfully, including directed energy integration and the complete head/tail
 audit; the two accepted coefficient tables were hash-checked, not regenerated.
-This is a written corollary of the published proof. The complete weighted-tail
-production module passes focused Lean compilation; `WEIGHTED_BUILD.json` binds
-the check to its source hashes. The earlier build receipt is preserved separately. The separate end-to-end unconditional Lean theorem is `haagerup_bound`.
+This is a written corollary of the published proof. `WEIGHTED_BUILD.json` records
+the focused build of the earlier weighted-tail source at its pinned commit; it
+does not certify subsequent revisions. The separate end-to-end unconditional
+Lean theorem is `haagerup_bound`.
 Exact inputs, the reproducible generator and all scope details are in
 [`data/scalar-tail-refinement/`](data/scalar-tail-refinement/PROOF.md).
 

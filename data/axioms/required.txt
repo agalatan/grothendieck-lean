@@ -146,6 +146,12 @@ Grothe.HaagerupCompleteMonotone.tendsto_iterDiff_haagR_zero
 Grothe.HaagerupPhaseGeometry.degree_moment_not_summable
 Grothe.HaagerupPhaseGeometry.harmonic_lower
 Grothe.HaagerupPhaseGeometry.scaled_lower
+Grothe.HaagerupWallis.coefficient_le
+Grothe.HaagerupWallis.sum_coeff_le_diff
+Grothe.HaagerupWallis.supported_tail_le
+Grothe.HaagerupWallis.tail_le
+Grothe.HaagerupWallis.tail_le_one_div_four
+Grothe.HaagerupWallis.weighted_blocks
 Grothe.Lower.MPoly.momentLift_majorant
 Grothe.Lower.PrimalAudit.no_dual_below_primal
 Grothe.Lower.PrimalAudit.primal_le_dual

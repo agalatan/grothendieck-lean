@@ -1,5 +1,7 @@
+-- Grothe/Haagerup/ScalarTailRefinement.lean
 import Grothe.Upper.PowerTail
 import Grothe.Upper.Haagerup
+import Grothe.Haagerup.WallisTail
 
 /-!
 # Scalar outer-tail refinement by finite-power cancellation
@@ -23,7 +25,7 @@ set_option maxHeartbeats 4000000
 
 namespace Grothe.ScalarTailRefinement
 
-open GrotheKernel Grothe.Upper Grothe.Upper.PowerTail Polynomial Finset
+open GrotheKernel Grothe.Upper Grothe.Upper.PowerTail Grothe.HaagerupWallis Polynomial Finset
 
 def pl : List ℚ := [94626045381/1000000000000,
   -3344743803/3906250000,
@@ -70,60 +72,19 @@ def ratio : ℚ := 581/1000
 lemma power_check : powerNormOK pl 16 ratio = true := by
   decide +kernel
 
-/-- Finite part of the physical phase suffix, before its pi/4 factor. -/
-def wallisChunk : ℚ := ∑ k ∈ range 120, if k < 67 then 0 else haagR k
-
-/-- A proof-producing rational comparison, with no native evaluation. -/
+/-- A rational comparison for the standard phase-tail cap. -/
 lemma wallis_rational_check :
-    (355 : ℚ)/113/4 * (wallisChunk + haagG 120/240) ≤ 1/268 := by
-  decide +kernel
+    (2 : ℝ)/(8*67+1) ≤ 1/268 := by
+  norm_num
 
 noncomputable section
 
-/-- The entire omitted physical phase suffix is bounded from the existing
-Haagerup recurrence and telescoping lemmas, with no external Wallis input. -/
+/-- The entire omitted phase suffix follows from the all-index Wallis estimate. -/
 lemma wallis_tail_bound : (∑' k, |cHi 67 k|) ≤ (1 : ℝ)/268 := by
-  have hfinite : ∑ k ∈ range 120, |cHi 67 k| = Real.pi/4*(wallisChunk : ℝ) := by
-    unfold wallisChunk
-    push_cast
-    rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro k hk
-    by_cases h : k < 67
-    · simp [cHi, h]
-    · simp only [cHi, ite_eq_right h, abs_of_nonneg (haagCoeff_nonneg k)]
-      rfl
-  have hshift : ∑' k, |cHi 67 (k+120)| = ∑' k, haagCoeff (k+120) := by
-    apply tsum_congr
-    intro k
-    simp [cHi, show ¬ k+120 < 67 by omega, abs_of_nonneg (haagCoeff_nonneg _)]
-  have hpi : Real.pi ≤ (355/113 : ℝ) := by linarith [Real.pi_lt_d20]
-  have hnonneg : (0 : ℝ) ≤ (wallisChunk : ℝ) + (haagG 120 : ℝ)/240 := by
-    have hr := haagR_pos 120
-    have ht : (0 : ℚ) ≤ wallisChunk := Finset.sum_nonneg fun k _ => by
-      split_ifs
-      · exact le_rfl
-      · exact (haagR_pos k).le
-    have ht' : (0 : ℝ) ≤ (wallisChunk : ℝ) := by exact_mod_cast ht
-    unfold haagG
-    push_cast
-    positivity
   calc
-    (∑' k, |cHi 67 k|) = (∑ k ∈ range 120, |cHi 67 k|) +
-        ∑' k, |cHi 67 (k+120)| :=
-      ((summable_cHi 67).sum_add_tsum_nat_add 120).symm
-    _ = Real.pi/4*(wallisChunk : ℝ) + ∑' k, haagCoeff (k+120) := by rw [hfinite, hshift]
-    _ ≤ Real.pi/4*(wallisChunk : ℝ) + Real.pi/4*((haagG 120 : ℝ)/(2*120)) :=
-      add_le_add_right (tsum_haagCoeff_tail_le 120 (by norm_num)) _
-    _ = Real.pi/4*((wallisChunk : ℝ)+(haagG 120 : ℝ)/240) := by ring
-    _ ≤ (355/113 : ℝ)/4*((wallisChunk : ℝ)+(haagG 120 : ℝ)/240) :=
-      mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_right hpi (by norm_num)) hnonneg
-    _ ≤ (1 : ℝ)/268 := by
-      have hc : (((355 : ℚ)/113/4 * (wallisChunk + haagG 120/240) : ℚ) : ℝ) ≤
-          (((1 : ℚ)/268 : ℚ) : ℝ) := by
-        exact_mod_cast wallis_rational_check
-      push_cast at hc
-      exact hc
+    _ ≤ tailMajorant 67 := supported_tail_le 67
+    _ ≤ (2:ℝ)/(8*67+1) := by unfold tailMajorant; apply sub_le_self; positivity
+    _ ≤ (1:ℝ)/268 := wallis_rational_check
 
 def P : ℝ[X] := ofListQ pl
 
@@ -192,20 +153,45 @@ theorem supported_composition_arbitrary_power_bound {c : ℕ → ℝ}
       · simp [w, hk, mul_comm]
     _ = q^m * ∑' k, |c k| := tsum_mul_left
 
-/-- Retain the actual power saving of each explicitly summed outer index. -/
-def weightedChunk : ℚ := ∑ k ∈ range 160,
-  if k < 67 then 0 else haagR k * ratio^((2*k+1)/16)
+/-- The canonical interval majorant, in rational arithmetic. -/
+def rationalTail (n : ℕ) : ℚ :=
+  2/(8*(n:ℚ)+1) - 14/(3*(8*(n:ℚ)+1)*(8*(n:ℚ)+9)*(8*(n:ℚ)+17))
 
-/-- The remaining tail uses its endpoint weight and the proved Haagerup majorant. -/
-def weightedOuterBound : ℚ := (355/113)/4 *
-  (weightedChunk + ratio^((2*160+1)/16) *
-    haagG 160 / (2*160))
+/-- Consecutive blocks are priced once each, at their initial power weight. -/
+def rationalBlocks : ℕ → List ℕ → ℚ
+  | _, [] => 0
+  | K, N :: rest => ratio^((2*K+1)/16) * (rationalTail K - rationalTail (K+N)) +
+      rationalBlocks (K+N) rest
 
-/-- Keep the power contraction at every finite outer index, then bound the infinite suffix. -/
+def blockWidths : List ℕ := [5, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+
+def canonicalOuterBound : ℚ := rationalBlocks 67 blockWidths +
+  ratio^((2*160+1)/16) * rationalTail 160
+
+/-- The unchanged exact ledger cap, now supplied directly by the certificate. -/
+def weightedOuterBound : ℚ := 69518011525712634043299415893022454755718978320311648961371651716170839519172130097030066160979105660865747754611959730256370876531523799731016255947325835362302097734983813661337352512704895638208674217931293553496939641212669441616704468899423714031/8248892636660928955303238263106126715406957141105396354487180072361889502313288714802690362861807490799785295709058688417725178136246791900840811666057763252359606371243359029749836539581859627008000000000000000000000000000000000000000000000000000000000000
+
+private lemma rationalTail_cast (n : ℕ) : (rationalTail n:ℝ) = tailMajorant n := by
+  simp [rationalTail, tailMajorant]
+
+private lemma rationalBlocks_cast (n : ℕ) (ws : List ℕ) :
+    (rationalBlocks n ws:ℝ) =
+      blockBound (fun k => (ratio:ℝ)^((2*k+1)/16)) n ws := by
+  induction ws generalizing n with
+  | nil => simp [rationalBlocks, blockBound]
+  | cons len rest ih =>
+    simp only [rationalBlocks, blockBound, Rat.cast_add, Rat.cast_mul, Rat.cast_pow,
+      Rat.cast_sub, rationalTail_cast, ih]
+
+private lemma canonical_cast :
+    blockBound (fun k => (ratio:ℝ)^((2*k+1)/16)) 67 blockWidths +
+      (ratio:ℝ)^((2*160+1)/16) * tailMajorant 160 =
+        (canonicalOuterBound:ℝ) := by
+  simp [canonicalOuterBound, rationalBlocks_cast, rationalTail_cast]
+
+/-- Twelve block costs replace the coefficient-by-coefficient weighted prefix. -/
 lemma outer_composition_saving :
-    ∑' n, |compCoeff (cHi 67) P n| ≤ Real.pi/4 *
-      ((weightedChunk : ℝ) + (ratio : ℝ)^((2*160+1)/16) *
-        (haagG 160 : ℝ)/(2*160)) := by
+    ∑' n, |compCoeff (cHi 67) P n| ≤ (canonicalOuterBound : ℝ) := by
   let w : ℕ → ℝ := fun k => (ratio : ℝ)^((2*k+1)/16)
   have hq0 : (0 : ℝ) ≤ ratio := by norm_num [ratio]
   have hq1 : (ratio : ℝ) ≤ 1 := by norm_num [ratio]
@@ -216,67 +202,45 @@ lemma outer_composition_saving :
     exact pow_le_pow_of_le_one hq0 hq1 (Nat.div_le_div_right (by omega))
   have hmain := weighted_composition_cut (summable_cHi 67) norm_P w hw0 hw1 hm
     (fun k => compTerm_arbitrary_power_bound norm_P hq0 16 norm_power k) 160
-  have hfinite : ∑ k ∈ range 160, |cHi 67 k| * w k =
-      Real.pi/4 * (weightedChunk : ℝ) := by
-    unfold weightedChunk
-    push_cast
-    rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro k hk
-    by_cases h : k < 67
-    · simp [cHi, h]
-    · simp only [cHi, ite_eq_right h, abs_of_nonneg (haagCoeff_nonneg k)]
-      dsimp [w, haagCoeff]
-      push_cast
-      ring
+  have hz : (∑ k ∈ range 67, |cHi 67 k| * w k) = 0 :=
+    sum_eq_zero fun k hk => by simp [cHi, mem_range.mp hk]
+  have hs : (∑ k ∈ range 160, |cHi 67 k| * w k) =
+      (∑ k ∈ range 67, |cHi 67 k| * w k) +
+        ∑ i ∈ range 93, |cHi 67 (67+i)| * w (67+i) := by
+    simpa using sum_range_add (fun k => |cHi 67 k| * w k) 67 93
+  rw [hz, zero_add] at hs
+  have hfinite : (∑ k ∈ range 160, |cHi 67 k| * w k) ≤
+      blockBound w 67 blockWidths := by
+    rw [hs]
+    have he : (∑ i ∈ range 93, |cHi 67 (67+i)| * w (67+i)) =
+        ∑ i ∈ range 93, haagCoeff (67+i) * w (67+i) := by
+      apply sum_congr rfl
+      intro i _
+      simp [cHi, show ¬ 67+i < 67 by omega, abs_of_nonneg (haagCoeff_nonneg _)]
+    rw [he]
+    have h := weighted_blocks w hw0 hm 67 blockWidths
+    simpa [blockWidths] using h
   have hshift : ∑' k, |cHi 67 (k+160)| =
-      ∑' k, haagCoeff (k+160) := by
+      ∑' k, haagCoeff (160+k) := by
     apply tsum_congr
     intro k
     simp [cHi, show ¬ k+160 < 67 by omega,
-      abs_of_nonneg (haagCoeff_nonneg _)]
-  rw [hfinite, hshift] at hmain
+      Nat.add_comm, abs_of_nonneg (haagCoeff_nonneg _)]
+  rw [hshift] at hmain
   calc
-    ∑' n, |compCoeff (cHi 67) P n| ≤ Real.pi/4*(weightedChunk : ℝ) +
-        w 160 * ∑' k, haagCoeff (k+160) := hmain
-    _ ≤ Real.pi/4*(weightedChunk : ℝ) + w 160 *
-        (Real.pi/4*((haagG 160 : ℝ)/(2*160))) :=
-      add_le_add le_rfl (mul_le_mul_of_nonneg_left
-        (tsum_haagCoeff_tail_le 160 (by norm_num)) (hw0 _))
-    _ = _ := by dsimp [w]; ring
+    _ ≤ (∑ k ∈ range 160, |cHi 67 k| * w k) +
+        w 160 * ∑' k, haagCoeff (160+k) := hmain
+    _ ≤ blockBound w 67 blockWidths + w 160 * tailMajorant 160 :=
+      add_le_add hfinite (mul_le_mul_of_nonneg_left (tail_le 160) (hw0 _))
+    _ = _ := by simpa only [w] using canonical_cast
 
-/-- A rational cap for the full composed outer tail, with no analytic tail premise. -/
+private lemma canonicalOuterBound_le : canonicalOuterBound ≤ weightedOuterBound := by
+  decide +kernel
+
+/-- The existing rational cap follows from the twelve canonical block prices. -/
 lemma outer_composition_bound :
-    ∑' n, |compCoeff (cHi 67) P n| ≤ (weightedOuterBound : ℝ) := by
-  have hq : (0 : ℚ) ≤ ratio := by norm_num [ratio]
-  have hc : (0 : ℚ) ≤ weightedChunk := Finset.sum_nonneg fun k _ => by
-    split_ifs
-    · exact le_rfl
-    · have hr := haagR_pos k
-      positivity
-  have hG : (0 : ℚ) ≤ haagG 160 := by
-    have hr := haagR_pos 160
-    unfold haagG
-    positivity
-  have hc' : (0 : ℝ) ≤ weightedChunk := by exact_mod_cast hc
-  have hG' : (0 : ℝ) ≤ haagG 160 := by exact_mod_cast hG
-  have hq' : (0 : ℝ) ≤ ratio := by exact_mod_cast hq
-  have hnonneg : (0 : ℝ) ≤ (weightedChunk : ℝ) +
-      (ratio : ℝ)^((2*160+1)/16) *
-        (haagG 160 : ℝ)/(2*160) := by positivity
-  have hpi : Real.pi ≤ (355/113 : ℝ) := by linarith [Real.pi_lt_d20]
-  calc
-    ∑' n, |compCoeff (cHi 67) P n| ≤ Real.pi/4 *
-        ((weightedChunk : ℝ) + (ratio : ℝ)^((2*160+1)/16) *
-          (haagG 160 : ℝ)/(2*160)) := outer_composition_saving
-    _ ≤ (355/113 : ℝ)/4 *
-        ((weightedChunk : ℝ) + (ratio : ℝ)^((2*160+1)/16) *
-          (haagG 160 : ℝ)/(2*160)) :=
-      mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_right hpi (by norm_num)) hnonneg
-    _ = (weightedOuterBound : ℝ) := by
-      unfold weightedOuterBound
-      push_cast
-      ring
+    ∑' n, |compCoeff (cHi 67) P n| ≤ (weightedOuterBound : ℝ) :=
+  outer_composition_saving.trans (by exact_mod_cast canonicalOuterBound_le)
 
 /-! ## Exact rational ledger
 
