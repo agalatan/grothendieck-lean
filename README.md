@@ -229,8 +229,10 @@ in [`data/phase-moments/`](data/phase-moments/README.md).
 `RestrictedPhaseMoments` expresses this integral as `exp(-155)` times an
 exact rational factor, checked directly from `phaseTerms` by
 `phase_cutoff_factor_check`. A degree-twelve Taylor bound at 5 gives
-`exp(-155) < 148⁻³¹`. This certifies the first-coordinate radial tail;
-the comparison-band coefficient enclosures remain open.
+`exp(-155) < 148⁻³¹`. `TaylorRadialTail.norm_source_fifty_lt` converts this
+to an `L²(γ₂)` norm below `5·10⁻¹⁵` for every positive Taylor source restricted
+to that event, using `|φ| < 1`. The comparison-band coefficient enclosures
+remain open.
 
 `CapturedTail` supplies the orthogonal tail argument: from disjoint captured
 bands, subtract the sum of their separately certified energies

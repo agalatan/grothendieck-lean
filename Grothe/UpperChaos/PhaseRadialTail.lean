@@ -30,6 +30,7 @@ theorem integral_phiT_sq_radial_tail_lt :
   have h := integral_phiT_pow_even_cut (50 : ℚ) (by norm_num) 1
   have he : -(((1 + 2 * (1 : ℚ) * phaseEpsQ : ℚ) : ℝ) * ((50 : ℚ) : ℝ)) =
       (-155 : ℝ) := by norm_num [phaseEpsQ]
+  simp only [Nat.cast_one] at h
   rw [he] at h
   simp only [Nat.mul_one, Rat.cast_ofNat] at h
   change (∫ u, phiT u ^ 2 ∂(RestrictedWick.muCut 50)) =

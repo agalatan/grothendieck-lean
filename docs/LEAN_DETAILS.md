@@ -265,6 +265,13 @@ factor check uses the registered `native_decide` trust extension; it does
 not use an external radial-coefficient table. This radial tail does not
 certify the remaining finite comparison-band coefficients.
 
+`TaylorRadialTail` uses `‖hpow j‖² = φ^(2j) ≤ φ²` for `j > 0` to transfer
+this bound to all positive Taylor sources. `norm_source_fifty_lt` states
+the resulting norm below `5/10^15` for the event indicator in the original
+`Lp ℂ 2 mu2` space. Thus the existing smoothing and band-projection
+contractions can apply without changing measures. This step uses the proved
+phase cover and introduces no further numerical check.
+
 `CapturedTail.norm_projOn_residual_sq_le_of_captured_family` subtracts
 `Σ_i max(0, lower_i − error_i)²` from the total source energy. Its hypotheses
 are pairwise disjoint captured mode sets, disjointness from the tail, vanishing

@@ -1062,6 +1062,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.RestrictedWick.integral_cut_unbalanced
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_le
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
+#print axioms Grothe.UpperChaos.TaylorRadialTail.integral_hpow_sq_cut_fifty_lt
+#print axioms Grothe.UpperChaos.TaylorRadialTail.integral_hpow_sq_cut_le
+#print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_fifty_lt
+#print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_fifty_sq_lt
+#print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_sq_eq_integral
 #print axioms Grothe.UpperChaos.Thirteen.fresh_upper_rounder_relaxed
 #print axioms Grothe.UpperChaos.Thirteen.fresh_upper_rounder_relaxed_direct_bounds
 #print axioms Grothe.UpperChaos.Thirteen.fresh_upper_taylor_thirteen_bands

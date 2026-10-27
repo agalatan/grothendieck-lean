@@ -630,6 +630,7 @@ import Grothe.UpperChaos.TaylorInnerFubini
 import Grothe.UpperChaos.TaylorInnerLaplace
 import Grothe.UpperChaos.TaylorMoments
 import Grothe.UpperChaos.TaylorPhase
+import Grothe.UpperChaos.TaylorRadialTail
 import Grothe.UpperChaos.TaylorRounding
 import Grothe.UpperChaos.TaylorRoundingData
 import Grothe.UpperChaos.TaylorSecondBandNorms

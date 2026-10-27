@@ -64,8 +64,9 @@ not discharge `ComparisonInputs` or `energy_close` and changes no headline bound
 The restricted Gaussian integration theorem binds this computation directly
 to the actual phase. `integral_phiT_sq_radial_tail_lt` combines it with a
 kernel proof of `exp(-155) < 148⁻³¹`, giving the squared tail bound
-`(5/10^15)^2`. No external radial coefficient table is imported. Runtime
-evidence for this finite check is pending delivery CI.
+`(5/10^15)^2`. No external radial coefficient table is imported. The numerical
+module and its positive Taylor-source L² consequence passed a focused local
+replay; complete delivery CI is pending.
 
 | Fact | Source native site | Allowlist | Report coverage | Runtime evidence |
 |---|---|---|---|---|
