@@ -7,7 +7,19 @@ namespace Grothe.HJM
 
 open Grothe.Upper GrotheKernel
 
+theorem chunk3_0 : chunkOK 120 (Ymk pList3) (((haagList 120).drop (0 * 120)).take 120)
+    (stages3.getD (0 + 1) []) (stages3.getD 0 []) = true := by
+  decide +kernel
+
+theorem horner3 : hornerI 120 (Ymk pList3) (haagList 120) = ofPairs (stages3.getD 0 []) :=
+  hornerI_of_chunks (n := 1) (c := 120) (fun i => stages3.getD i []) (by simp [haagList_eq])
+    (by decide +kernel) fun i hi =>
+      match i, hi with
+      | 0, _ => chunk3_0
+      | _ + 1, h => absurd h (by omega)
+
 theorem headI_check3 : (headI 120 120 pList3).map (fun a => (a.lo, a.hi)) = headTable3 := by
+  rw [headI, horner3]
   decide +kernel
 
 /-- **The first 120 coefficients of branch 3**, enclosed. -/

@@ -7,7 +7,89 @@ namespace Grothe.HJM
 
 open Grothe.Upper GrotheKernel
 
+theorem chunk5_0 : chunkOK 120 (Ymk pList5) (((haagList 120).drop (0 * 8)).take 8)
+    (stages5.getD (0 + 1) []) (stages5.getD 0 []) = true := by
+  decide +kernel
+
+theorem chunk5_1 : chunkOK 120 (Ymk pList5) (((haagList 120).drop (1 * 8)).take 8)
+    (stages5.getD (1 + 1) []) (stages5.getD 1 []) = true := by
+  decide +kernel
+
+theorem chunk5_2 : chunkOK 120 (Ymk pList5) (((haagList 120).drop (2 * 8)).take 8)
+    (stages5.getD (2 + 1) []) (stages5.getD 2 []) = true := by
+  decide +kernel
+
+theorem chunk5_3 : chunkOK 120 (Ymk pList5) (((haagList 120).drop (3 * 8)).take 8)
+    (stages5.getD (3 + 1) []) (stages5.getD 3 []) = true := by
+  decide +kernel
+
+theorem chunk5_4 : chunkOK 120 (Ymk pList5) (((haagList 120).drop (4 * 8)).take 8)
+    (stages5.getD (4 + 1) []) (stages5.getD 4 []) = true := by
+  decide +kernel
+
+theorem chunk5_5 : chunkOK 120 (Ymk pList5) (((haagList 120).drop (5 * 8)).take 8)
+    (stages5.getD (5 + 1) []) (stages5.getD 5 []) = true := by
+  decide +kernel
+
+theorem chunk5_6 : chunkOK 120 (Ymk pList5) (((haagList 120).drop (6 * 8)).take 8)
+    (stages5.getD (6 + 1) []) (stages5.getD 6 []) = true := by
+  decide +kernel
+
+theorem chunk5_7 : chunkOK 120 (Ymk pList5) (((haagList 120).drop (7 * 8)).take 8)
+    (stages5.getD (7 + 1) []) (stages5.getD 7 []) = true := by
+  decide +kernel
+
+theorem chunk5_8 : chunkOK 120 (Ymk pList5) (((haagList 120).drop (8 * 8)).take 8)
+    (stages5.getD (8 + 1) []) (stages5.getD 8 []) = true := by
+  decide +kernel
+
+theorem chunk5_9 : chunkOK 120 (Ymk pList5) (((haagList 120).drop (9 * 8)).take 8)
+    (stages5.getD (9 + 1) []) (stages5.getD 9 []) = true := by
+  decide +kernel
+
+theorem chunk5_10 : chunkOK 120 (Ymk pList5) (((haagList 120).drop (10 * 8)).take 8)
+    (stages5.getD (10 + 1) []) (stages5.getD 10 []) = true := by
+  decide +kernel
+
+theorem chunk5_11 : chunkOK 120 (Ymk pList5) (((haagList 120).drop (11 * 8)).take 8)
+    (stages5.getD (11 + 1) []) (stages5.getD 11 []) = true := by
+  decide +kernel
+
+theorem chunk5_12 : chunkOK 120 (Ymk pList5) (((haagList 120).drop (12 * 8)).take 8)
+    (stages5.getD (12 + 1) []) (stages5.getD 12 []) = true := by
+  decide +kernel
+
+theorem chunk5_13 : chunkOK 120 (Ymk pList5) (((haagList 120).drop (13 * 8)).take 8)
+    (stages5.getD (13 + 1) []) (stages5.getD 13 []) = true := by
+  decide +kernel
+
+theorem chunk5_14 : chunkOK 120 (Ymk pList5) (((haagList 120).drop (14 * 8)).take 8)
+    (stages5.getD (14 + 1) []) (stages5.getD 14 []) = true := by
+  decide +kernel
+
+theorem horner5 : hornerI 120 (Ymk pList5) (haagList 120) = ofPairs (stages5.getD 0 []) :=
+  hornerI_of_chunks (n := 15) (c := 8) (fun i => stages5.getD i []) (by simp [haagList_eq])
+    (by decide +kernel) fun i hi =>
+      match i, hi with
+      | 0, _ => chunk5_0
+      | 1, _ => chunk5_1
+      | 2, _ => chunk5_2
+      | 3, _ => chunk5_3
+      | 4, _ => chunk5_4
+      | 5, _ => chunk5_5
+      | 6, _ => chunk5_6
+      | 7, _ => chunk5_7
+      | 8, _ => chunk5_8
+      | 9, _ => chunk5_9
+      | 10, _ => chunk5_10
+      | 11, _ => chunk5_11
+      | 12, _ => chunk5_12
+      | 13, _ => chunk5_13
+      | 14, _ => chunk5_14
+      | _ + 15, h => absurd h (by omega)
+
 theorem headI_check5 : (headI 120 120 pList5).map (fun a => (a.lo, a.hi)) = headTable5 := by
+  rw [headI, horner5]
   decide +kernel
 
 /-- **The first 120 coefficients of branch 5**, enclosed. -/

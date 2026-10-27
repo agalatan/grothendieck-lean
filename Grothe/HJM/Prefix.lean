@@ -18,15 +18,17 @@ open Grothe.Upper GrotheKernel Polynomial Finset
 
 noncomputable section
 
+/-- `X P²` as an interval list. -/
+def Ymk (pl : List ℚ) : List Ival := zeroI :: convI (pl.map ofRatI) (pl.map ofRatI)
+
 /-- The first `M` coefficients of `P · Σ_{k<K} r_k (X P²)^k`, as outward-rounded intervals. -/
 def headI (M K : ℕ) (pl : List ℚ) : List Ival :=
-  let PI := pl.map ofRatI
-  (convI PI (hornerI M (zeroI :: convI PI PI) (haagList K))).take M
+  (convI (pl.map ofRatI) (hornerI M (Ymk pl) (haagList K))).take M
 
 lemma memB_headI (M K : ℕ) (pl : List ℚ) :
     memB M (ofListQ pl * hornerP (X * ofListQ pl ^ 2) (haagList K)) (headI M K pl) := by
   have hP := memB_ofListQ pl M
-  have hY : memB M (X * ofListQ pl ^ 2) (zeroI :: convI (pl.map ofRatI) (pl.map ofRatI)) := by
+  have hY : memB M (X * ofListQ pl ^ 2) (Ymk pl) := by
     rw [sq]
     exact memB_mono (memB_X_mul (memB_conv hP hP)) (Nat.le_succ M)
   exact memB_take (memB_conv hP (memB_hornerI hY _))
@@ -82,6 +84,61 @@ lemma getD_eq_of_pairs {L : List Ival} {T : List (Int × Int)} (h : L.map (fun a
   subst h
   simp only [ofPairs, List.map_map, List.getD_eq_getElem?_getD, List.getElem?_map]
   cases L[n]? <;> rfl
+
+lemma ofPairs_map (L : List Ival) : ofPairs (L.map fun a => (a.lo, a.hi)) = L := by
+  induction L with
+  | nil => rfl
+  | cons a L ih => simp only [ofPairs, List.map_map] at ih ⊢; rw [List.map_cons]; exact congrArg₂ _ rfl ih
+
+/-! ### Horner's rule in chunks
+
+A long Horner evaluation is checked in chunks: each chunk starts from a tabulated accumulator, and the chunks
+compose (`hornerFrom_append`). This keeps every kernel check small. -/
+
+/-- Horner's rule over `rs`, starting from the accumulator `init` (truncated to `M` coefficients). -/
+def hornerFrom (M : ℕ) (Y : List Ival) (rs : List ℚ) (init : List Ival) : List Ival :=
+  rs.foldr (fun r acc => (addL [ofRatI r] (convI Y acc)).take M) init
+
+lemma hornerI_eq_hornerFrom (M : ℕ) (Y : List Ival) (rs : List ℚ) : hornerI M Y rs = hornerFrom M Y rs [] := by
+  induction rs with
+  | nil => rfl
+  | cons r rs ih => simp only [hornerI, hornerFrom, List.foldr_cons] at ih ⊢; rw [ih]
+
+lemma hornerFrom_append (M : ℕ) (Y : List Ival) (rs₁ rs₂ : List ℚ) (init : List Ival) :
+    hornerFrom M Y (rs₁ ++ rs₂) init = hornerFrom M Y rs₁ (hornerFrom M Y rs₂ init) := by
+  simp [hornerFrom, List.foldr_append]
+
+/-- One chunk: from the accumulator `S` over the coefficients `rs`, the accumulator is `T`. -/
+def chunkOK (M : ℕ) (Y : List Ival) (rs : List ℚ) (S T : List (Int × Int)) : Bool :=
+  decide ((hornerFrom M Y rs (ofPairs S)).map (fun a => (a.lo, a.hi)) = T)
+
+lemma hornerFrom_of_chunkOK {M : ℕ} {Y : List Ival} {rs : List ℚ} {S T : List (Int × Int)}
+    (h : chunkOK M Y rs S T = true) : hornerFrom M Y rs (ofPairs S) = ofPairs T := by
+  simp only [chunkOK, decide_eq_true_eq] at h
+  rw [← h, ofPairs_map]
+
+/-- **Chained chunks**: tables `T 0, …, T n` with `T n = []`, each `T i` obtained from `T (i+1)` over the
+coefficients `rs[i·c, (i+1)·c)`, give the whole Horner evaluation. -/
+theorem hornerI_of_chunks {M c n : ℕ} {Y : List Ival} {rs : List ℚ} (T : ℕ → List (Int × Int))
+    (hlen : rs.length ≤ n * c) (hn : T n = [])
+    (h : ∀ i < n, chunkOK M Y ((rs.drop (i * c)).take c) (T (i + 1)) (T i) = true) :
+    hornerI M Y rs = ofPairs (T 0) := by
+  have key : ∀ j ≤ n, hornerFrom M Y (rs.drop ((n - j) * c)) [] = ofPairs (T (n - j)) := by
+    intro j hj
+    induction j with
+    | zero =>
+      rw [Nat.sub_zero, List.drop_eq_nil_of_le hlen, hn]; rfl
+    | succ j ih =>
+      have hi : n - (j + 1) < n := by omega
+      have e : n - (j + 1) + 1 = n - j := by omega
+      have hs : rs.drop ((n - (j + 1)) * c) =
+          (rs.drop ((n - (j + 1)) * c)).take c ++ rs.drop ((n - j) * c) := by
+        conv_lhs => rw [← List.take_append_drop c (rs.drop ((n - (j + 1)) * c))]
+        rw [List.drop_drop, ← e, Nat.add_mul, one_mul, add_comm]
+      rw [hs, hornerFrom_append, ih (by omega), ← e]
+      exact hornerFrom_of_chunkOK (h _ hi)
+  have := key n le_rfl
+  rwa [Nat.sub_self, zero_mul, List.drop_zero, ← hornerI_eq_hornerFrom] at this
 
 end
 

@@ -7,7 +7,34 @@ namespace Grothe.HJM
 
 open Grothe.Upper GrotheKernel
 
+theorem chunk4_0 : chunkOK 120 (Ymk pList4) (((haagList 120).drop (0 * 30)).take 30)
+    (stages4.getD (0 + 1) []) (stages4.getD 0 []) = true := by
+  decide +kernel
+
+theorem chunk4_1 : chunkOK 120 (Ymk pList4) (((haagList 120).drop (1 * 30)).take 30)
+    (stages4.getD (1 + 1) []) (stages4.getD 1 []) = true := by
+  decide +kernel
+
+theorem chunk4_2 : chunkOK 120 (Ymk pList4) (((haagList 120).drop (2 * 30)).take 30)
+    (stages4.getD (2 + 1) []) (stages4.getD 2 []) = true := by
+  decide +kernel
+
+theorem chunk4_3 : chunkOK 120 (Ymk pList4) (((haagList 120).drop (3 * 30)).take 30)
+    (stages4.getD (3 + 1) []) (stages4.getD 3 []) = true := by
+  decide +kernel
+
+theorem horner4 : hornerI 120 (Ymk pList4) (haagList 120) = ofPairs (stages4.getD 0 []) :=
+  hornerI_of_chunks (n := 4) (c := 30) (fun i => stages4.getD i []) (by simp [haagList_eq])
+    (by decide +kernel) fun i hi =>
+      match i, hi with
+      | 0, _ => chunk4_0
+      | 1, _ => chunk4_1
+      | 2, _ => chunk4_2
+      | 3, _ => chunk4_3
+      | _ + 4, h => absurd h (by omega)
+
 theorem headI_check4 : (headI 120 120 pList4).map (fun a => (a.lo, a.hi)) = headTable4 := by
+  rw [headI, horner4]
   decide +kernel
 
 /-- **The first 120 coefficients of branch 4**, enclosed. -/
