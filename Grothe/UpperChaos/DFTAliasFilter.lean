@@ -55,13 +55,13 @@ This is exact: all omitted aliases remain in the infinite sum. -/
 theorem sampledCoeff_eq_residue_tsum (N : ℕ) [NeZero N] (a : ℕ → ℂ)
     (ha : Summable fun n => ‖a n‖) (j : ZMod N) :
     sampledCoeff N a j =
-      ∑' n, if (n : ZMod N) = j then a n else 0 := by
+      ∑' n : ℕ, if (n : ZMod N) = j then a n else 0 := by
   classical
   have hs (k : ZMod N) : Summable (fun n =>
       a n * ZMod.stdAddChar ((n : ZMod N) * k)) := by
     apply ha.of_norm_bounded
     intro n
-    simp [norm_mul, ZMod.stdAddChar_apply]
+    simp [ZMod.stdAddChar_apply]
   have hs' (k : ZMod N) : Summable (fun n =>
       ZMod.stdAddChar (-(k * j)) * (a n * ZMod.stdAddChar ((n : ZMod N) * k))) :=
     (hs k).mul_left _

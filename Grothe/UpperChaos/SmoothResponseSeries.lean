@@ -44,7 +44,6 @@ private theorem mehler_smoothFn {F : ℂ × ℂ → ℂ} (hFm : Measurable F)
     AddHom.coe_mk, smoothFn]
   rw [integral_prod_mul (fun Z => conj (F (smoothArg (Xof ω) Z)))
     (fun Z => F (smoothArg (Yof p q ω) Z)), integral_conj]
-  rfl
 
 /-- The real Mehler correlation of a smoothed response equals its continued
 Gaussian correlation. -/

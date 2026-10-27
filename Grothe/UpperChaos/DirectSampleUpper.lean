@@ -87,7 +87,7 @@ theorem upper_of_finite_sample_bounds (A : ℕ → ℂ) (ε : ℝ)
     _ = (∑ j ∈ range 251, ‖(actualH j : ℂ) - A j‖) +
       ∑ j ∈ range 251, ‖A j - if j = 0 then ((slopeQ : ℝ) : ℂ) else 0‖ := sum_add_distrib
     _ ≤ ε + ∑ j ∈ range 251,
-      ‖A j - if j = 0 then ((slopeQ : ℝ) : ℂ) else 0‖ := add_le_add_right herror _
+      ‖A j - if j = 0 then ((slopeQ : ℝ) : ℂ) else 0‖ := add_le_add herror le_rfl
     _ ≤ (Grothe.groupedHeadResidualQ : ℝ) := by linarith
 
 end
