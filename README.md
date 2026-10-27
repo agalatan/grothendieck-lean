@@ -203,6 +203,22 @@ fibrewise Cauchy–Schwarz; the Gaussian mixing law follows from product charact
 The standard complex Gaussian, planar presentation, rotation invariance and radial-moment
 reduction are shared in `LowerAnalytic/ComplexGaussianCore.lean`. The unconditional
 upper proof imports this foundation independently of the lower row certificates.
+
+The exact phase-moment route clears arbitrary rational coefficient denominators,
+multiplies the resulting integer polynomial, and integrates its monomials by
+finite Gaussian sums (`PhaseMomentCheck`, `PhaseMomentEval`).
+`integral_phiT_pow_even` in `ConcretePhaseMoments` identifies every even moment with
+this calculation from the actual `phaseTerms` and damping parameter; it needs
+no phase-cover premise. The separate single-threaded checks `PhaseMoment2`,
+`PhaseMoment4`, and `PhaseMoment6` compare the computed moments with exact
+rational targets, approximately 2.56852947444587·10⁻⁶, 5.71439509703932·10⁻¹⁰,
+and 1.68238736430120·10⁻¹¹. `PhaseMomentNorms` identifies these values with the
+squared norms of the three Taylor sources. Individual comparison-band errors
+and the stored-energy accuracy remain separate obligations: these total
+energies alone do not discharge `ComparisonInputs` or `energy_close`, and the
+headline bounds are unchanged. Exact targets and reproduction instructions are
+in [`data/phase-moments/`](data/phase-moments/README.md).
+
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
 only with X's energy in its selected band, weighted by the retained coefficient cost. The quadratic error charges only pairs
@@ -308,6 +324,15 @@ The sharper conditional bound above remains stronger.
 **Toward a Lean proof of the HJM bound (epic #139).** `Grothe/HJM/Mixture.lean` proves the mixture bound
 `K ≤ M/(q̂₀ − Σ_{k≥1}|q̂_k|)` for a weighted mixture `Σ w_r K_r` of dominated radial kernels with `Σ|w_r| ≤ M`
 (`mixture_bound`; negative weights are free because domination survives absolutely convex combinations).
+`Grothe/HJM/Origin.lean` defines the asymmetric sixth branch from exact polynomial-phase
+responses and proves domination of its full real radial coefficient series. The proof uses one
+shared Gaussian driver, the charge-one Hermite expansion and conjugate-reflection symmetrization.
+The endpoint cross product is exactly imaginary; its phase-phase term cancels before taking
+absolute values. Bessel bounds the entire spatially omitted coefficient sequence by squared
+energy `exp(-36)`. A rational Bernstein certificate proves `|P(s)|² ≥ 37/100` for all `s ≥ 0`.
+These structural results introduce no native facts. The pinned 120-entry interval tables are
+provenance data: their integral enclosures and the two numerical energy bounds still require
+Lean proofs before the six-branch numerical bound follows. See [the origin certificate inventory](data/hjm/origin/README.md).
 
 **Written unconditional refinement: K_G^ℂ < 1.4048984303.** For the unchanged
 fifth scalar preprocessor in [HJM, Sections 5–6](https://arxiv.org/html/2609.25462v1),
@@ -340,6 +365,8 @@ The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sou
 and the `native_decide` facts pinned in `data/axioms/native.txt` (read by `scripts/check_axioms.py`):
 `Grothe.head_check` (the upper head), `Grothe.UpperChaos.phi_cover_check_0`–`5` (the phase cover |φ| < 1),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
+`Grothe.UpperChaos.phase_moment2_check`, `phase_moment4_check`, and
+`phase_moment6_check` (the exact second, fourth and sixth moments of the production phase),
 `Grothe.UpperChaos.hardy_arc_part_0`–`3` and `hardy_region_check` (the Hardy circle mean and decay region),
 the eight chunks
 `Grothe.Lower.certRows0`–`4` and `certBatches0`–`2` for the certified rows and mixed batches, the four
@@ -351,8 +378,8 @@ Every native check is single-threaded code (no `Task.spawn`).
 All other proofs, including the canonical finite checks, are kernel-checked.
 No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`, including the node caps.
-The report contains 640 print directives, with 408 required declarations and 88
-allowlisted native facts (60 cap ranges, five Hardy checks and 23 others).
+The report is `scratch/Axioms.lean`; its required declarations are listed in `data/axioms/required.txt` and the
+allowlisted native facts in `data/axioms/native.txt` (the cap ranges, the Hardy checks and the others).
 The focused report `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, allows
 no native axioms for its 98 selected unconditional upper-bound results.
 Normal `ready/*` delivery CI builds and audits the combined tree before merging it.

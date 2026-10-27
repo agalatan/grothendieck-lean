@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "agent_id": "codex-aa04",
+  "repository": "https://github.com/sheilman77/grothendieck_cx",
+  "commit": "7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f",
+  "scope": "Verbatim upstream source artifacts. Hashes establish byte identity only; no integral enclosure is thereby proved.",
+  "files": [
+    {
+      "path": "upstream/generate_origin_tail_25_36.py",
+      "upstream_path": "generate_origin_tail_25_36.py",
+      "bytes": 3881,
+      "sha256": "3e139202b0bb839c52ef9fbcf10d0ccb7dc7c666c537712d3f228f8b9de18083",
+      "source_url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/generate_origin_tail_25_36.py"
+    },
+    {
+      "path": "upstream/origin_tail_25_36.npz",
+      "upstream_path": "origin_tail_25_36.npz",
+      "bytes": 10836,
+      "sha256": "8bcc654f4fd44881a7b487fe1336a8905aaa2d1b52deca45e622e1c397fb03aa",
+      "source_url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/origin_tail_25_36.npz"
+    },
+    {
+      "path": "upstream/support_compression_certificate/complex_radial_phase_polynomial_certificate.py",
+      "upstream_path": "support_compression_certificate/complex_radial_phase_polynomial_certificate.py",
+      "bytes": 5470,
+      "sha256": "a4b54442133d24da979a602f428364adb96952b26e62b5cbab60c1f484def625",
+      "source_url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_radial_phase_polynomial_certificate.py"
+    },
+    {
+      "path": "upstream/support_compression_certificate/complex_upper_convex_2e6_low_certificate.py",
+      "upstream_path": "support_compression_certificate/complex_upper_convex_2e6_low_certificate.py",
+      "bytes": 5565,
+      "sha256": "cd7da49361a650b3d9b1d7bdc7e9b1091866ad8374f114d49836f138db8b9361",
+      "source_url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_convex_2e6_low_certificate.py"
+    },
+    {
+      "path": "upstream/support_compression_certificate/complex_upper_convex_2e6_polynomial_certificate.py",
+      "upstream_path": "support_compression_certificate/complex_upper_convex_2e6_polynomial_certificate.py",
+      "bytes": 2454,
+      "sha256": "17ec189886b44c3998f5caa3241ad88c517619570930a8fa31bbf4988c790b55",
+      "source_url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_convex_2e6_polynomial_certificate.py"
+    },
+    {
+      "path": "upstream/support_compression_certificate/complex_upper_convex_2e6_radial_coefficients.py",
+      "upstream_path": "support_compression_certificate/complex_upper_convex_2e6_radial_coefficients.py",
+      "bytes": 3993,
+      "sha256": "68df32deb731f0efb126e784cb3f48a3531e585cd5b14e408585341cc6e185ca",
+      "source_url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_convex_2e6_radial_coefficients.py"
+    },
+    {
+      "path": "upstream/support_compression_certificate/complex_upper_convex_2e6_scalar_tail_certificate.py",
+      "upstream_path": "support_compression_certificate/complex_upper_convex_2e6_scalar_tail_certificate.py",
+      "bytes": 4845,
+      "sha256": "acaed3e39038d0cd7368f83321a7e0dc86fd013c6f845fd242cded9bafa0644d",
+      "source_url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_convex_2e6_scalar_tail_certificate.py"
+    },
+    {
+      "path": "upstream/support_compression_certificate/complex_upper_origin_layer_coefficients.py",
+      "upstream_path": "support_compression_certificate/complex_upper_origin_layer_coefficients.py",
+      "bytes": 4164,
+      "sha256": "791d4396bcc53faf58f74c89ba35913794ae48a2c6e5ce7de5a7aefa8d2044c8",
+      "source_url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_origin_layer_coefficients.py"
+    },
+    {
+      "path": "upstream/support_compression_certificate/complex_upper_origin_layer_coefficients_n120_analytic.npz",
+      "upstream_path": "support_compression_certificate/complex_upper_origin_layer_coefficients_n120_analytic.npz",
+      "bytes": 10586,
+      "sha256": "fc29fa555fb66c5cd6a2ac53dbd2508207b6058cfe0b339163faadeb85ad54da",
+      "source_url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_origin_layer_coefficients_n120_analytic.npz"
+    },
+    {
+      "path": "upstream/support_compression_certificate/complex_upper_origin_layer_definitions.py",
+      "upstream_path": "support_compression_certificate/complex_upper_origin_layer_definitions.py",
+      "bytes": 2334,
+      "sha256": "bf03cd782d8f6671c60533febac4779d311f640e059aae7de1d39224a961a26c",
+      "source_url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_origin_layer_definitions.py"
+    },
+    {
+      "path": "upstream/support_compression_certificate/complex_upper_origin_layer_energy_certificate.py",
+      "upstream_path": "support_compression_certificate/complex_upper_origin_layer_energy_certificate.py",
+      "bytes": 3854,
+      "sha256": "b1a795d071f611d7d943d7984c018967990d4c11063e93740b55c9ebbb0000bf",
+      "source_url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_origin_layer_energy_certificate.py"
+    },
+    {
+      "path": "upstream/support_compression_certificate/complex_upper_saha_cubic_exacttail_457e8_certificate.py",
+      "upstream_path": "support_compression_certificate/complex_upper_saha_cubic_exacttail_457e8_certificate.py",
+      "bytes": 15110,
+      "sha256": "96ceba930d2ca675a2f082ac11fb05163c828cb2341f36db0f9cc02a7cfda6ca",
+      "source_url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_saha_cubic_exacttail_457e8_certificate.py"
+    },
+    {
+      "path": "upstream/support_compression_certificate/complex_upper_saha_visible_energy_refinement.py",
+      "upstream_path": "support_compression_certificate/complex_upper_saha_visible_energy_refinement.py",
+      "bytes": 5129,
+      "sha256": "2c98c5a044890fbeafbeecae2dd6c916df8bd2bde829f34f0a4ef921e0e4a3fa",
+      "source_url": "https://raw.githubusercontent.com/sheilman77/grothendieck_cx/7139f4cb8d0f30c2eb4c1267c46732a9d5229c3f/support_compression_certificate/complex_upper_saha_visible_energy_refinement.py"
+    }
+  ]
+}
