@@ -134,18 +134,18 @@ theorem deriv_deriv_g_polynomialEnvelope : PolynomialEnvelope (deriv (deriv g)) 
 /-- The exact continuous left energy amplitude has polynomial growth with
 all inputs discharged by the actual numerator and denominator certificate. -/
 theorem fEnergyAmplitude_polynomialEnvelope : PolynomialEnvelope fEnergyAmplitude := by
-  have hfirst := (((PolynomialEnvelope.const (-2 : ℂ)).mul PolynomialEnvelope.real_id)
-    .mul deriv_deriv_f_polynomialEnvelope)
-  have hsecond := (((PolynomialEnvelope.const (2 : ℂ)).mul PolynomialEnvelope.real_id)
-    .sub (PolynomialEnvelope.const (2 : ℂ))).mul deriv_f_polynomialEnvelope
+  have hfirst := ((PolynomialEnvelope.const (-2 : ℂ)).mul PolynomialEnvelope.real_id).mul
+    deriv_deriv_f_polynomialEnvelope
+  have hsecond := (((PolynomialEnvelope.const (2 : ℂ)).mul PolynomialEnvelope.real_id).sub
+    (PolynomialEnvelope.const (2 : ℂ))).mul deriv_f_polynomialEnvelope
   have hthird := fPhaseQuotient_polynomialEnvelope.mul (PolynomialEnvelope.const ((2 : ℂ)⁻¹))
   simpa only [fEnergyAmplitude, div_eq_mul_inv] using (hfirst.add hsecond).add hthird
 
 theorem gEnergyAmplitude_polynomialEnvelope : PolynomialEnvelope gEnergyAmplitude := by
-  have hfirst := (((PolynomialEnvelope.const (-2 : ℂ)).mul PolynomialEnvelope.real_id)
-    .mul deriv_deriv_g_polynomialEnvelope)
-  have hsecond := (((PolynomialEnvelope.const (2 : ℂ)).mul PolynomialEnvelope.real_id)
-    .sub (PolynomialEnvelope.const (2 : ℂ))).mul deriv_g_polynomialEnvelope
+  have hfirst := ((PolynomialEnvelope.const (-2 : ℂ)).mul PolynomialEnvelope.real_id).mul
+    deriv_deriv_g_polynomialEnvelope
+  have hsecond := (((PolynomialEnvelope.const (2 : ℂ)).mul PolynomialEnvelope.real_id).sub
+    (PolynomialEnvelope.const (2 : ℂ))).mul deriv_g_polynomialEnvelope
   have hthird := gPhaseQuotient_polynomialEnvelope.mul (PolynomialEnvelope.const ((2 : ℂ)⁻¹))
   simpa only [gEnergyAmplitude, div_eq_mul_inv] using (hfirst.add hsecond).add hthird
 
