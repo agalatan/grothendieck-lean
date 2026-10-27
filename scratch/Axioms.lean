@@ -131,9 +131,12 @@ import Grothe
 #print axioms Grothe.HJM.Origin.integrableOn_gEnergyDensity
 #print axioms Grothe.HJM.Origin.integrableOn_gEnergyDensity_all
 #print axioms Grothe.HJM.Origin.integrable_energyDensity_of_envelope
+#print axioms Grothe.HJM.Origin.integrable_gaussian_radial_polynomial
 #print axioms Grothe.HJM.Origin.integrable_green_pairing
 #print axioms Grothe.HJM.Origin.integrable_green_pairing_of_extension
 #print axioms Grothe.HJM.Origin.integrable_phase_radial_mean
+#print axioms Grothe.HJM.Origin.integrable_signedModeIntegrand
+#print axioms Grothe.HJM.Origin.integrable_witnessPolynomial_integrand
 #print axioms Grothe.HJM.Origin.integral_energy_far_le
 #print axioms Grothe.HJM.Origin.inv_norm_leftNumerator_le
 #print axioms Grothe.HJM.Origin.inv_norm_rightNumerator_le
@@ -237,6 +240,8 @@ import Grothe
 #print axioms Grothe.HJM.Origin.signedLaguerreList_three_term
 #print axioms Grothe.HJM.Origin.signedLaguerreValue_three_term
 #print axioms Grothe.HJM.Origin.signedPhaseMean_eq_inner
+#print axioms Grothe.HJM.Origin.sqrt_index_chargeOneCoeff_eq_integral
+#print axioms Grothe.HJM.Origin.sqrt_index_mul_nrm
 #print axioms Grothe.HJM.Origin.sum_haagCoeff_weighted_tail_le_diff
 #print axioms Grothe.HJM.Origin.tail_cap_of_visible
 #print axioms Grothe.HJM.Origin.tendsto_green_boundary
@@ -251,6 +256,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.weightedTest_norm_le_830
 #print axioms Grothe.HJM.Origin.weightedTest_norm_sq
 #print axioms Grothe.HJM.Origin.weightedTest_norm_sq_le
+#print axioms Grothe.HJM.Origin.witnessPolynomial_correlation_integral
 #print axioms Grothe.HJM.Origin.witnessPolynomial_eval
 #print axioms Grothe.HJM.OriginEnergyIntervalGates.inverseChecked_sound
 #print axioms Grothe.HJM.OriginEnergyIntervalGates.mem_sqrt_of_witness
@@ -304,6 +310,11 @@ import Grothe
 #print axioms Grothe.HJM.OriginPanels.right_checks
 #print axioms Grothe.HJM.OriginPanels.right_cover
 #print axioms Grothe.HJM.OriginPanels.spatial_error_budget
+#print axioms Grothe.HJM.OriginUnweightedCellSum.integrable_halfline_of_zero_tail
+#print axioms Grothe.HJM.OriginUnweightedCellSum.interval_eq_halfline_of_zero_tail
+#print axioms Grothe.HJM.OriginUnweightedCellSum.min_four_products_le
+#print axioms Grothe.HJM.OriginUnweightedCellSum.sum_cast_getD_eq_list_sum
+#print axioms Grothe.HJM.OriginUnweightedCellSum.sum_scaled_entries
 #print axioms Grothe.HJM.OriginUnweightedGuardedGeometry.leftGeometry
 #print axioms Grothe.HJM.OriginUnweightedGuardedGeometry.rightGeometry
 #print axioms Grothe.HJM.OriginUnweightedLeftAggregate.allCombined

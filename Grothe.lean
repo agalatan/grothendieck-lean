@@ -159,6 +159,7 @@ import Grothe.HJM.OriginTail
 import Grothe.HJM.OriginTailBudget
 import Grothe.HJM.OriginTruncation
 import Grothe.HJM.OriginUnweighted64Assembly
+import Grothe.HJM.OriginUnweightedCellSum
 import Grothe.HJM.OriginUnweightedErrorTransport
 import Grothe.HJM.OriginUnweightedGuardedGeometry
 import Grothe.HJM.OriginUnweightedLeftAggregate
@@ -207,6 +208,7 @@ import Grothe.HJM.OriginUnweightedWitnessMass
 import Grothe.HJM.OriginVisibleEnergy
 import Grothe.HJM.OriginWitnessData
 import Grothe.HJM.OriginWitnessLaguerre
+import Grothe.HJM.OriginWitnessModeIntegral
 import Grothe.HJM.OriginWitnessRadialAmplitude
 import Grothe.HJM.PhaseRotation
 import Grothe.HJM.PhaseRotationTail
