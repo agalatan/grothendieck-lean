@@ -1,0 +1,621 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,array}
+\usepackage[margin=2.4cm]{geometry}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!50!black,citecolor=blue!50!black]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\KG}{K_G^{\C}}
+\newcommand{\ph}{\operatorname{phase}}
+\newtheorem*{theorem*}{Theorem}
+\newcommand{\lean}[1]{\texttt{\small #1}}
+
+\title{\textbf{The complex Grothendieck constant}\\[2pt]
+\large New bounds, machine-checked in Lean}
+\author{Alin Galatan, with several AI research systems\\[2pt]
+\small\url{https://github.com/agalatan/grothendieck-lean}}
+\date{October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
+\Large $1.401697117301\;<\;\KG\;<\;1.404598149141$\\[6pt]
+\normalsize Both bounds are theorems of a Lean~4/Mathlib development, resting on explicitly stated
+analytic and computer-assisted inputs (Section~\ref{sec:trust}).\\[4pt]
+Only the sharp upper target is active; its fourteen finite-band Gaussian estimates
+and energy-table accuracy remain to be proved.\vspace{4pt}
+\end{minipage}}
+\end{center}
+
+\begin{abstract}
+Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
+true optimum. The best constant in the complex case, $\KG$, has been known since 1987 to lie roughly in $[1.338,1.405]$; its
+first two decimals were settled only in September 2026. We improve both bounds, to an interval of width $0.0029$, and verify
+the arguments in Lean. This note explains the problem, the two constructions, exactly what the computer checks, the new inequalities and
+obstructions found along the way, and why the remaining gap is hard: the two sides are dual optimisation problems, and the obstruction on both is the nonlinear (cubic and
+higher) structure of bounded functions of Gaussian vectors.
+\end{abstract}
+
+\section{The question}
+Let $A=(a_{ij})$ be an $m\times n$ complex matrix. Compare
+\[
+ C(A)=\sup_{|\varepsilon_i|=|\delta_j|=1}\Bigl|\sum_{i,j}a_{ij}\,\overline{\varepsilon_i}\,\delta_j\Bigr|,
+ \qquad
+ V(A)=\sup_{\|x_i\|=\|y_j\|=1}\Bigl|\sum_{i,j}a_{ij}\,\langle x_i,y_j\rangle\Bigr|,
+\]
+the first over unimodular scalars, the second over unit vectors in any complex Hilbert space. Clearly $C(A)\le V(A)$.
+Grothendieck proved in 1953 that $V(A)\le K\,C(A)$ for a constant $K$ independent of $m$, $n$ and the dimension. The smallest
+such $K$ is the \emph{complex Grothendieck constant} $\KG$.
+
+\paragraph{Why it matters.}
+\begin{itemize}
+\item \emph{Optimisation.} $V(A)$ is a semidefinite program; $C(A)$ is a hard combinatorial problem. $\KG$ is the best
+ approximation ratio of the semidefinite relaxation, and rounding algorithms for it are exactly upper-bound proofs.
+\item \emph{Functional analysis.} $K_G$ is the norm of the identity between the injective and projective tensor
+ norms on $\ell_\infty\otimes\ell_\infty$, and controls absolutely summing operators (Grothendieck's original setting).
+\item \emph{Quantum information.} The real constant $K_G^{\R}$ is the largest ratio between quantum and classical values of
+ two-player XOR games (Tsirelson); the finite-order constants $K_G(d)$ govern the nonlocality of qubit states.
+\end{itemize}
+
+\paragraph{History.}
+\begin{center}\small
+\begin{tabular}{@{}llll@{}}\toprule
+year & who & lower bound & upper bound\\\midrule
+1953 & Grothendieck & & $K<\infty$\\
+1984 & Davie & $1.33807$ & \\
+Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
+Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & archived\\
+Oct 2026 & \textbf{this work} & $\mathbf{1.401697117301}$ & $\mathbf{1.404598149141}$\\\bottomrule
+\end{tabular}
+\end{center}
+Haagerup's integral
+$1/\gamma^\dagger=1.404575934\ldots$, $\gamma^\dagger=\int_0^{\pi/2}\cos^2t\,(1+\sin^2t)^{-1/2}dt$, has been proposed as the
+exact value. It lies inside our interval, $2.22\cdot10^{-5}$ below the upper bound. For the real constant the corresponding
+recent results are $1.773\le K_G^{\R}\le1.7799$ (Heilman--Jones--Malavolta, October 2026).
+
+\section{Two dual constructions}
+Both bounds use the same Gaussian picture. Let $Z=(z_1,\dots,z_n)$ be a standard complex Gaussian vector and decompose
+$L^2(\C^n,\gamma)$ into the \emph{Wick chaoses} $H_{p,q}$ (polynomials of bidegree $(p,q)$ in $z,\bar z$, orthogonalised).
+Under the rotation $z\mapsto e^{i\theta}z$ every relevant object has \emph{charge one}, so only the bidegrees
+$(1,0),(2,1),(3,2),\dots$ (degrees $1,3,5,\dots$) appear.
+The standard complex Gaussian measure, its rotation invariance and radial-moment reduction
+form a shared Lean foundation. The upper rounding proof depends on this foundation
+independently of the lower row certificates.
+
+\subsection{Upper bounds: rounding schemes}
+Given unit vectors, project a Gaussian onto them and round: $\varepsilon_i=f(\langle G,x_i\rangle)$ with $|f|\le1$. The
+correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
+\[
+ \E\bigl[\overline{f(\cdot)}\,g(\cdot)\bigr]=H(t)=\sum_{k\ge0}c_k\,t|t|^{2k}.
+\]
+If $H(t)=c\,t+r(t)$ with $\|r\|_A=\sum_k|c_k-c\,\delta_{k0}|<c$, a tensor-power argument (Krivine's trick) gives
+$\KG\le1/(c-\|r\|_A)$. The shared Gaussian phase identity is proved from the Hermite basis and Mehler formula. Our sharp rounding is a smoothed two-coordinate phase rounding,
+$F_0=\ph\bigl(z+\sqrt{1+a^2}\,v(|z|^2)\,w\bigr)$ with a twelve-term Laguerre profile $v$, multiplied by the cubic Taylor
+polynomial of a damped polynomial phase $\varphi$: $T=F_0P_3(\varphi)$, $P_3(x)=1+ix-x^2/2-ix^3/6$. The identity
+$|P_3(x)|^2=1-x^4(3-x^2)/36$ and the proved bound $\varphi^2\le99/100$ (hence $|\varphi|<1$) give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
+The phase certificate checks 119,077 leaves in 512 cubes through six native range facts, with an analytic far field.
+Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $41$ and
+$\tau$ of degree $15$ with zero linear coefficient (any odd preprocessors of Wiener norm $\le1$ are realised by tensor
+powers). Compared with $c\,t$, $c=7119483103461/10^{13}$, the residual is at most
+$\delta=455288917009/(5\cdot10^{17})\approx9.10578\cdot10^{-7}$:
+\[
+ \KG\le\frac1{c-\delta}=\frac{500000000000000000}{355973699884132991}<1.404598149141 .
+\]
+The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
+$c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
+
+A second conditional route uses a finite-head estimate for the actual kernel
+directly; the coefficient enclosures and numerical head estimate are still
+open, so it does not yet give an unconditional bound.
+
+\paragraph{Selected-spectrum comparison.}
+The finite head only sees $S=\{(n,m):n+3m\le501\}$. Write its approximation error as
+$G_T-X=\sum_r D_r$, where $D_r$ is supported in degree band $B_r$ with $\|D_r\|_2\le e_r$.
+Let $w_p\in[0,1]$ bound the retained absolute coefficient sum of the preprocessed block $p$.
+For nonnegative radii $A_r^2\ge\sum_{p\in S\cap B_r}w_p^2E_X(p)$, Lean proves
+\[
+ \sum_{p\in S}w_p|E_{G_T}(p)-E_X(p)|
+ \le2\sum_r A_re_r+\left(\sum_{g=0}^3\sqrt{\sum_{r\in I_g}e_r^2}\right)^2.
+\]
+Here $I_0$ contains the rounding remainder and $I_1,I_2,I_3$ are the three Taylor orders.
+Their bands are disjoint within each group, so their errors combine in quadrature before the groups are added.
+All pieces may share coordinates. Lean proves each coefficient cost by outward interval polynomial arithmetic;
+native arithmetic checks eighteen weighted radii from the stored table and its error allowance.
+The Gaussian component-error enclosures and their identification with the pieces remain explicit inputs.
+
+\paragraph{Exact phase moments.}
+For $\varphi=D e^{-\varepsilon(U+V)}S(U,V,W)$, clear the rational coefficients
+as $A=LS$. Each even moment is a finite rational sum over the coefficients of
+$A^{2j}$, divided by $L^{2j}$, at Gaussian rate $1+2j\varepsilon$.
+The integral identity applies directly to the stored phase and does not use
+the numerical phase-cover certificate. Separate native checks give exact
+rational values for $\E\varphi^2$, $\E\varphi^4$, and $\E\varphi^6$,
+approximately $2.56852947444587\cdot10^{-6}$,
+$5.71439509703932\cdot10^{-10}$, and $1.68238736430120\cdot10^{-11}$.
+These equal the squared norms of the three positive Taylor sources.
+The same finite evaluator with a restricted Gaussian measure also proves
+$\int_{|z_1|^2>50}\varphi^2\,d\gamma_2<(5\cdot10^{-15})^2$.
+A native check bounds the exact rational factor after extracting $e^{-155}$;
+the Taylor polynomial through degree twelve at $5$ gives $e^5>148$, hence
+$e^{-155}<148^{-31}$. This certifies the radial tail of the production phase.
+Since $|\varphi|<1$, every positive Taylor source restricted to this event
+also has $L^2(\gamma_2)$ norm below $5\cdot10^{-15}$.
+Sharp comparison-band errors still need the captured Hermite energy and
+approximation bounds; the total moments alone do not change the upper bound.
+The orthogonal tail interface subtracts the separate captured energies
+$\sum_i\max(0,\ell_i-e_i)^2$ from the total moment, retaining each band's
+error cap. An alternative interface uses one real inner product and the
+approximant norm to bound the whole approximation error. The remaining
+numerical coefficient and integral bounds are explicit hypotheses.
+Finite normalized Hermite expansions have exact rational squared norms.
+The preserved coefficient inputs supply a complete finite check for the third
+approximant: all 6,552 coefficients through degree 51, its total norm, and its
+four projected band norms. Injective graded indexing also proves that its
+higher-degree tail vanishes. Its Gaussian approximation error remains a
+separate obligation; the stored error arrays are not treated as proofs.
+A continuous finite-polynomial representative satisfies the charge-one
+function interface. The third-order tail cap follows from four explicit
+finite-band Gaussian error caps by subtracting captured energy from the exact
+sixth moment; the Gaussian caps themselves remain hypotheses.
+The finite rounding difference $c_1+c_2/2+c_3/6-v$ has norm at most $10^{-18}$,
+proved by exact integer squares at a common dyadic denominator. The three
+other preserved center sources and their successful decoding are checked
+separately from Gaussian approximation errors.
+The first and second centers also have exact certificates for their six and
+four captured bands. The concrete conditional theorem fixes every center and
+its polynomial representative and derives the rounding and all three omitted
+tails internally. Its remaining inputs are fourteen explicit finite-band
+Gaussian error inequalities and the concrete energy-table accuracy. The
+slightly tighter finite error caps are generated from the original allowances;
+their Gaussian validity remains open.
+A Gaussian Laplace representation of complex phase is proved exactly,
+including the zero argument, integrability and a uniform absolute-integral
+bound. Absolute Fubini exchange applies this representation to the actual
+Taylor inner products. Affine completion of squares and translated Gaussian
+Wick sums give exact conditional monomial integrals with the inverse-rate mass.
+Finite support extends this evaluation to the same complex polynomials used
+by the Hermite basis, with integrability proved term by term.
+For each finite center, fixing the first coordinate gives its exact polynomial
+slice in the second coordinate. The actual source $\overline c(i\varphi)^j$
+factors into this polynomial and Gaussian damping with conditional rate
+$\alpha=1+j\varepsilon$, giving an exact conditional finite Wick sum.
+Fixed-parameter boundedness justifies Gaussian product Fubini, and the actual
+inner product becomes the auxiliary and first-coordinate Gaussian integral
+of this finite evaluator, with no numerical integration premise.
+The recurrence $M_{p+1,q}=\mu M_{p,q}+(q/\beta)M_{p,q-1}$ preserves the affine
+cancellation for every mixed degree, including zero mean and $q=0$.
+Real radial powers with exponent greater than $-2$ also have their exact
+damped Gamma integrals and integrability proved.
+The zeroth conditional bracket simplifies exactly to $\alpha z/\beta^2$,
+where $\beta=\alpha+a^2t$. For $|z|\ge r_0>0$, its conditional-kernel norm
+has the profile-uniform majorant $2t^{-5/2}/(\alpha r_0^3)$ and an integrated
+tail above $T>0$ bounded by $4T^{-3/2}/(3\alpha r_0^3)$, including when $a=0$.
+The full polynomial-weighted source tails, the radial endpoint and numerical
+integration enclosures remain open.
+
+\paragraph{Radial repair has a quantitative ceiling.}
+Lean certifies the polynomial disk map $z\mapsto zS_6(1-|z|^2)$, where
+$S_6(q)=\sum_{j=0}^6\binom{2j}{j}q^j/4^j$:
+the exact defect $1-(1-q)S_6(q)^2$ is $q^7$ times a polynomial with positive
+coefficients. Applied to $P_3(\varphi)$ this is a degree-$39$ factor.
+But Lean also proves $(1-|P_3(x)|)^2\le x^6/1225$ for $x^2\le1$.
+For charge-one responses and any same feasible preprocessors, the full coefficient change obeys
+\[
+ \|K_H-K_G\|_A\le(\|H\|_2+\|G\|_2)\|H-G\|_2.
+\]
+Thus outward radial changes of disk responses cost at most
+$2\sqrt{\E\varphi^6/1225}$ in the full kernel. The integrated Lean theorem
+retains the sixth-moment and radial-gap premises explicitly; it does not
+identify the concrete Gaussian moment or certify a new score. These results
+leave the endpoints unchanged. Preprocessor changes must be compared at the
+same $P,Q$; this ceiling does not bound a separate gain from reoptimising them.
+
+\subsection{Lower bounds: Hermite projection games}
+A lower bound needs an operator $T$ whose \emph{vector} value is close to $1$ while its \emph{scalar} value is small. We use
+\[
+ T=P_{1,0}-\epsilon\,P_{2,1},\qquad \epsilon=\tfrac{149}{200},
+\]
+the projection onto linear functions minus a multiple of the projection onto the cubic chaos.
+\begin{itemize}
+\item \emph{Vector value.} With $u_\ell=z_\ell/\|z\|$, $\sum_\ell\langle u_\ell,Tu_\ell\rangle\ge1-(1+\epsilon)/(n+1)\to1$.
+\item \emph{Scalar value.} For all $|f|,|g|\le1$, $|\langle f,Tg\rangle|\le B=0.713420886479$.
+\end{itemize}
+A finite-partition transfer turns this into matrices, so $\KG\ge1/B>1.401697117301$.
+The complete cover has 10,909 boxes. Two added pure-row law nodes and three mixed-source Young nodes use the original source caps and
+Stein cuts, so the Gaussian assumptions are unchanged. Their batches, every box and the full partition
+are checked separately. Adaptive binary splits reprice the existing components while preserving
+their scale interpolation domains. All generation inputs are retained in \path{data/lower-unshifted/}.
+
+The scalar cap is the hard part. Writing $h=\tfrac12(f+g)$, $k=\tfrac12(f-g)$,
+\[
+ \Re\langle f,Tg\rangle=t^2-\epsilon\|P_{2,1}h\|^2-\|P_{1,0}k\|^2+\epsilon\|P_{2,1}k\|^2,\qquad t=\|P_{1,0}h\|.
+\]
+Only the last term is positive: we must show that a \emph{bounded} function cannot have too large a cubic part without
+paying elsewhere. After a rotation $P_{1,0}h=t\,z_1$, and the cubic part of $k$ splits into pieces that involve $z_1$
+(\emph{visible} sectors) and a \emph{remote} residual $q\in H_{2,1}$ in the other coordinates. The proof then has three layers.
+\begin{enumerate}
+\item \textbf{Row reduction.} For each of 19 profiles $r$, the contribution of the visible sectors is the supremum of an
+ explicit finite-dimensional Gaussian integral, a convex one-variable \emph{potential} $\Psi_r$, evaluated at the scale of
+ the remote residual. One gate variable is shared across rows.
+\item \textbf{The law of the remote cubic.} What remains is a statement about the distribution of $U=|q|^2/\E|q|^2$ for an
+ arbitrary cubic Wick polynomial in arbitrarily many variables. We use exact identities and inequalities valid for
+ \emph{every} such cubic: the sharp fourth-moment cap $\E U^2\le44$; the sixth-moment bound
+ $\E U^3\le9m-12+40.45313\,(m-2)^{3/2}$, $m=\E U^2$, which rests on thirteen tensor-contraction facts including the Wick
+ expansion of the sixth cumulant; a first-moment bound; and families of \emph{Stein cuts}
+ $\E\,G(U)\ge0$, obtained by Gaussian integration by parts and completing squares against spectral budgets, a covariance
+ order and \emph{contraction-Gram budgets} (positive semidefinite Gram matrices of the coefficient tensor).
+\item \textbf{A finite certificate.} The parameters are covered by $10{,}762$ boxes in $(t,\tau,x)$; on each box a positive
+ combination of rows and node certificates ($351$ existing mixed nodes, two added pure-row law nodes, three added mixed-source Young nodes and $9{,}237$ row nodes, each a polynomial majorant checked in
+ exact rational arithmetic) bounds the scalar value by $B$.
+\end{enumerate}
+
+\subsection{The primal/dual viewpoint}
+For the real constant, Heilman, Jones and Malavolta proved an exact minimax: over rounding schemes $\mu$ with kernel
+coefficients $c_m(\mu)$ and Hermite projection games $Q=\sum_m q_m\Pi_m$,
+\[
+ \frac1{K_G}=\sup_\mu\Bigl[c_1(\mu)-\sum_{m\ge3}|c_m(\mu)|\Bigr]=\inf_Q\ \mathrm{OPT}(Q),
+\]
+The complex programme uses charge-one bidegrees. A global complex minimax identity is not established here;
+the two endpoint proofs use separate one-sided transfer theorems. An upper bound comes from a realizable kernel,
+and a lower bound from a game with a uniform scalar norm cap. Finite-pool duality alone does not certify either global claim.
+
+\section{What exactly the computer checks}\label{sec:trust}
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.47\textwidth}>{\raggedright\arraybackslash}p{0.47\textwidth}@{}}\toprule
+\textbf{Proved in Lean} & \textbf{Assumed (certified outside Lean)}\\\midrule
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Lower bound.}\newline\lean{lower\_bound\_of\_refined\_cover\_data : NodeCaps → IsGrothendieckBound K → 1.401697117301 < K}}\\[2pt]
+the witness $T$ on $L^2$ of the Gaussian measure and its vector value; the transfer to matrices; the polarisation identity;
+the per-row Gaussian reduction of $\langle f,Tg\rangle$ for every unimodular pair (frames, fibre decomposition, Parseval,
+gates); all moment, Stein, spectral and contraction-Gram inequalities for every circular cubic, including the sixth-cumulant
+Wick identity; the finite certificate (five row, three original-batch, one added law-batch and five refined-cover native checks)
+&
+\lean{NodeCaps}: the 19 potentials $\Psi_r$ (defined in Lean) lie below their stored rational caps at the tabulated nodes.
+\lean{lower\_bound\_of\_capsRest} proves the same endpoint from \lean{CapsRest}: the vertex caps of rows 12--15 ($t=0.84$--$0.855$) and any excluded-node caps, using the same refined cover.
+The 60 range checks for fifteen rows use a computation-only layer.
+CI replays the final assembly when the 53-file cache provenance matches;
+a mismatch triggers the runner build and the axiom audit. Four rows retain external vertex caps.\\\midrule
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error and table-accuracy inputs, proves $\KG\le500000000000000000/355973699884132991$.}\\[2pt]
+the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussian mixing by characteristic functions, Parseval and Mehler, charge selection, summability;
+the transfer inequality (tensor powers); kernel composition and locality; the head through degree 501 from
+21,168 stored energies by a verified interval evaluator (one \lean{native\_decide}); the tail bound; the endpoint; the selected-block comparison and native band masses
+&
+\lean{ComparisonInputs}: an exact error decomposition, spectral supports and inherited Gaussian component norm caps. The concrete Taylor specialization leaves fourteen finite Gaussian band-error estimates and the energy-table discrepancy as hypotheses.
+Lean derives the selected comparison $851922301/10^{15}$ ($93.56\%$ of the residual allowance).
+The decomposition itself is explicit in Lean (\lean{difference\_pieces}, \lean{fresh\_upper\_pieces}):
+18 band pieces of the smoothed Taylor errors and the rounding remainder, so only their 18 norm bounds remain external.
+Finite table accuracy $6847009/(5\cdot10^{17})$.
+The Hardy tail $30488839/10^{15}$ ($3.35\%$, weighted square sum $\le 7/4$ at radius $4149/4000$) is proved
+(\lean{HardyReal.hardy\_GT}).
+The native head is $28153/10^{12}$ ($3.09\%$).\\
+\bottomrule
+\end{tabular}
+\end{center}
+The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover, the second, fourth and sixth phase moments and the squared radial phase tail,
+cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
+The native facts (cap-range checks, Hardy region and circle checks, and others) are listed in \path{data/axioms/native.txt}; the report is \path{scratch/Axioms.lean}, with its required declarations in \path{data/axioms/required.txt}.
+No \lean{sorry}; normal \path{ready/*} delivery CI builds the single target \lean{Grothe}, cap rows included, and checks its one axiom report before merging.
+The cap-range checks take about 21 CPU-hours cold, so CI replays them from a verified build cache.
+Its provenance hash covers 48 local computation
+modules and five directly hashed extras (53 files total); the extras' imports
+are not traversed. The numerical checker has its own precompiled library,
+\lean{GrotheCapsKernel}, whose constants retain the \lean{GrotheKernel} namespace.
+The caps digest is part of the build-cache key: when no verified cache matches, CI runs the same check on
+the self-hosted runner, which builds, audits and marks \path{.lake/build/caps-closure.sha} before saving
+the cache. That persistent build supplies later CI replay; no separate manual droplet verification is needed.
+A digest alone is not verification. The localised-piece checkers
+likewise import only computable definitions and rational data; their campaign
+and final wiring remain separate. The generic response and
+quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
+the sharp upper bound retains external Gaussian component-error and table-accuracy inputs.
+Before the tail Cauchy--Schwarz step, the known linear coefficient's weighted square is deducted from $7/4$; this uses the same numerical hypotheses.
+Holomorphy under positive kernel decay, odd-series continuation and circle Parseval are proved.
+The holomorphy and Hardy assembly also cover separate measurable disk-valued left and right responses
+(\lean{HholPair}, \lean{hardy\_of\_pair\_inputs}); the incumbent results are specializations.
+The decay region and the circle mean are checked in Lean by five interval facts. With them, \lean{hardy\_of\_real} reduces \lean{hardy}
+to summability and the real Gaussian identification of the odd series, which \lean{HardyReal.hreal\_GT} proves for $G_T$:
+the smoothed Mehler pair has the law of $(U, RU+SW)$ (characteristic functions), whose density on $\mathbb R^8$ is the
+holomorphic kernel at the real cross covariance (Cholesky substitution). Hence \lean{hardy\_GT}: the Hardy input is proved.
+The research modules also prove 13 algebraic facts for coupled complex modulus majorizers, finite descent and semiconvex chord
+assembly, using only the three standard axioms. Their Gaussian integration, response extraction and global-cover
+obligations remain separate; these facts change neither endpoint nor its hypotheses.
+
+\section{Discoveries along the way}\label{sec:discoveries}
+Status labels: \textbf{[Lean]} machine-checked in this repository; \textbf{[P]} written proof; \textbf{[P,C]} proof with an
+exact or interval-arithmetic certificate replayed independently; \textbf{[F]} floating-point evidence only.
+
+Other upper-bound variants and their verification records are preserved outside the active build
+in \path{archive/weaker-upper-bounds/}. Shared Gaussian phase identities and Laplace
+representations remain part of the sharp target.
+
+\subsection{Common responses, common tails, and an architecture separator}
+\textbf{[P; supporting algebra in Lean]} A symmetry-closed family of actual cubic responses has an exact
+five-mode first/cubic image and a fixed-size original-noise replica representation. It preserves the shared
+quadratic drivers: a scalar Gaussian used to describe a cubic's law must retain third-chaos noise correlation
+$\rho^3$, rather than acquire first-chaos correlation $\rho$.
+
+\textbf{[Lean]} All correlation samples of a response pair use the same signed Hermite coefficients. Prices
+$a_i$ with $|\sum_i a_i\rho_i^{2k+1}|\le1$ for all $k\ge2$ bound the complete omitted absolute tail. A finite
+front and one geometric remainder budget certify every index. The resulting separator is linear in response
+columns, so it bounds whole convex pools, with explicit integration-error costs. Numerical pool screens
+still require certified input integrals; a favorable relaxation value is not an achievable rounding score.
+
+\textbf{[Lean]} An exchange can retain the incumbent's signed coefficients with one error allowance.
+If $\sum_k|c_k-\widehat c_k|\le\xi$, then every admissible spectral price has error at most $\xi$,
+and the full reciprocal score satisfies $D(c)\ge D(\widehat c)-\xi$.
+The same coefficient error must not be charged independently at every sampled correlation.
+The current bounded phase-perturbation searches use this interface for discovery; their Gaussian
+integrals still require certification before they can improve either endpoint.
+
+\textbf{[P,C; polynomial certificate in Lean]} The entire Gaussian-phase cubic-preprocessor family
+$H_{\rm phys}(A\rho+B\rho^3)$, $|A|+|B|\le1$, including arbitrary complex phases and convex mixtures,
+has full reciprocal score at most $0.71186$. This is below the incumbent $0.7119473997\ldots$.
+The separator is $\Re(c_0-\frac9{25}c_1-c_2-c_3)$; positive polynomial certificates handle all complex phases.
+Thus optimizing this class further cannot improve the current upper bound. General non-Gaussian cubic
+responses and nonlinear shared image fields are not excluded. The Gaussian-family coefficient extraction
+is a written application of the Gaussian phase identity; it is not yet connected end to end in Lean.
+
+\paragraph{Phase errors and exact symmetries [Lean].}
+Phase alignment has an exact modulus-weighted quadratic defect. An unweighted
+degree-moment budget is unavailable: the phase coefficients satisfy
+$r_k\ge1/(4k(k+1))$ for $k\ge1$, so $\sum_k(2k+1)c_k=\infty$.
+Certificate comparison can instead align an anchor by a common isometry:
+if the measured blocks are transported with it and the remaining error is at
+most $e$, the complete energy-spectrum discrepancy is at most
+$2\|x\|e+e^2$. A pure symmetry has zero price, including its entire tail.
+The kernel is preserved only when its correlation operator is transported
+too; rotating only the response can change the anisotropic kernel used here.
+An additional polarized certificate prices the whole omitted energy change
+by $AB$, where $A,B$ bound the approximation errors of the response difference
+and sum by retained polynomials. These may be certified with positive
+squared-error integrals, avoiding subtraction of nearly equal moments in a
+residual Gram matrix. Two overlapping coordinate tests either keep the phase
+argument away from zero or resolve it by an affine polar chart. Lean checks
+the exact transformed Gaussian density and a Bernstein range enclosure.
+A symmetry-invariant cutoff preserves admissibility and costs at most its
+omitted mass in squared $L^2$ distance. This lets an upper construction use
+compact chart domains with an explicit full-spectrum allowance.
+An exact rational phase update has unit modulus for every real field, with
+a cancellation-free increment formula. A finite radius jet retains the radius
+and angle as independent polynomial variables until cancellations finish.
+Lean checks carry-free coefficient indexing, exact translation, and the
+finite remainder bound on complex patches. A norm-only homogeneous transport
+certificate also has a proved ceiling: its certified score cannot exceed
+$b/N^2$ when the anchor has norm $N>0$ and score at least $0\le b\le N^2$.
+This limits that certificate formula, not the corrected response's true score.
+The update assembly keeps the signed retained changes, passes the positive
+error price through contractive smoothing and the bivariate kernel, and
+connects the entire score to the transfer theorem. The reference error is
+the inherited anchor error plus finite weighted retained-data errors,
+charged once. These forty-seven Lean results change neither endpoint.
+The compact Gaussian integrals still require certification.
+
+\subsection{Inequalities for cubic Gaussian chaos}
+Throughout, $q$ is a circular cubic Wick polynomial (bidegree $(2,1)$) in any number of complex Gaussian variables,
+normalised by $\E|q|^2=1$, and $U=|q|^2$.
+\begin{itemize}
+\item \textbf{Sharp fourth moment [Lean].} Every real third-chaos variable satisfies $\E F^4\le93\,(\E F^2)^2$, with equality
+ for $x^3-3x$. For the cubic kernel, write $N=\sum f^2$, $s=\|f\star f\|^2$ and
+ $h=\|\operatorname{Sym}(f\star f)\|^2$. The Wick identity
+ $\E F^4-3(\E F^2)^2=1296(s+3h/2)$, together with $\E F^2=6N$ and
+ $h\le s\le N^2$, proves the bound directly, without a separate positivity premise
+ on the Gaussian expectation. For a circular cubic, the complex contraction identities and Hilbert--Schmidt
+ estimates instead give $\E U^2\le44$ at any dimension. Equality is attained by
+ $Z(|Z|^2-2)/\sqrt2$ for a standard complex Gaussian $Z$; the equality calculation
+ is analytic. The Lean theorem is \lean{Circular.fourth\_moment\_le\_variance}.
+ It implies $x\le\sqrt{42}$, while the existing certificate still uses $x\le31/4$.
+\item \textbf{Sixth moment [Lean].} $\E U^3\le9m-12+C_6(m-2)^{3/2}$ with $m=\E U^2$ and $C_6=40.45313$. The Wick monomial mixed
+ with Gaussian noise attains $40.295$, so the constant is sharp to $0.4\%$. The inequality is \emph{false} without circularity:
+ two real cubics $He_3(x_0)/\sqrt{12}$, $He_3(x_1)/\sqrt{12}$ give $m=47$ and $\E U^3=13506>12622.55$.
+\item \textbf{The sixth cumulant as a sum over graphs [Lean].} The Wick identity for $\kappa_6$ of a cubic chaos is proved by
+ expanding $\E F^2,\E F^4,\E F^6$ over closed cubic multigraphs, one Gaussian integration by parts per edge ($69+15+3$
+ certified steps). The disconnected graphs cancel, and the six connected cubic multigraphs on six vertices give the tensor
+ contractions.
+\item \textbf{Contraction-Gram budgets [Lean].} A new family of universal inequalities between the chaos components of $U$
+ and of $q^2$. With $X=\Gamma(q,\bar q)/3-1$, $c=\Gamma(q,q)/3$, $r=\Re(c\bar q^2)/U$, $P=\E[XU]$, $Q=\E[rU]$, for example
+ \[
+  \E X^2+\tfrac1{10}\E r^2\le\tfrac{34}{45}P-\tfrac1{18}Q .
+ \]
+ Each budget is certified by two positive semidefinite $2\times2$ Gram matrices of contractions of the coefficient tensor.
+\item \textbf{First moment [P,C].} $\E|q|\le0.97073$, from a two-plane small-ball estimate (a winding argument on $S^3$ and a
+ horizontal Lipschitz bound). The sharp value $\sqrt\pi/2=0.8862$, which the Gaussian attains, is open.
+\end{itemize}
+
+\paragraph{A common budget for the same tensor.}
+The two joint sixth-moment bounds share one tensor and scalar argument in
+\path{JointSixthCore.lean}: Hilbert--Schmidt and cubic-trace bounds, a completed
+square, and Young's inequality. The production cuts and parameterized refinements
+specialize that argument through the same real-to-complex normalization identities.
+The sixth moment and the Stein fluctuations cannot be optimized independently:
+both depend on the same contraction invariants. We now formalize this connection
+in Lean, including the real/complex normalization and a finite checker that reserves
+part of the contraction budget before accepting a Stein cut. Signed reserve
+coefficients are retained. Ordinary and joint Gram budgets specialize one signed-reserve
+soundness theorem. Likewise, ordinary spectral cuts specialize the general shifted-cut
+theorem, and Stein and spectral nodes use the same polynomial-majorant integration lemma for an
+arbitrary integrable cut with nonnegative expectation. The endpoint uses 41 such nodes, with each node restricted
+to its proved kurtosis range; the full checker and analytic bridge are in Lean.
+Retaining the upper bound on the negative cumulant contraction yields a stronger
+parameterized moment family. An exact transport identity then upgrades a node's
+majorant when its budget permits a larger moment-cut weight, without a new
+half-line search. These two refinements are also formalized in Lean.
+The moment costs also admit a convex formulation with two $2\times2$ PSD blocks
+and linear constraints. An exact rational checker connects each accepted recipe
+to the actual cubic moment inequality, replacing the outer parameter grid.
+Its exact scalar boundary is also proved in Lean. For moment weight $w>0$ and
+$s_0$ cost $A>0$, the minimum $h_0$ cost is
+\[
+ B_{\min}(w,A)=
+ \begin{cases}
+ 11781w/32+18225w^2/(4A),&11A\le360w,\\
+ 198w+22500w^2/(A+40w),&11A\ge360w.
+ \end{cases}
+\]
+Both branches have explicit feasible recipes. A three-rational checker for
+$(w,A,B)$ therefore replaces the auxiliary moment-cost variables, and Lean
+connects its acceptance to the actual cubic on the checked node range. The
+contraction reserve and pointwise majorant still need their own exact checks.
+This is optimality within the certificate family; it does not identify all
+attainable response laws.
+
+
+\subsection{The remote functional}
+Let $L=z_1(a+b|z_1|^2)$ with the constants of the witness, and for a cubic $G$ put
+$\Lambda(G)=\E|L+G|+\E|L-G|-\E|G|^2/\epsilon$ and $S=\sup_v\{2\E|L+\sqrt vU|-v/\epsilon\}$, $U$ a complex Gaussian. The
+conjecture $\Lambda(G)\le S$ for all cubics (``Conjecture~K'') is the analytic heart of the lower bound.
+\begin{itemize}
+\item \textbf{A one-function reformulation [P].} Circular symmetry, $\E|W|=(\pi/2)\E|\Re W|$, and the identity $|a+b|+|a-b|=2\max(|a|,|b|)$ for real $a,b$ give exactly
+ \[
+  \Lambda(G)=2\E|L|+\pi\,\E\bigl(|\Re G|-|\Re L|\bigr)_+-\E|G|^2/\epsilon,
+ \]
+ so $\sup_G\Lambda-2\E|L|=\sup_t\bigl[\tfrac{\pi^2\epsilon}{4}\|P_{2,1}t\|^2-\pi\E(|t|\,|\Re L|)\bigr]$ over real functions
+ $|t|\le1$. All of the gain sits near the hyperplane $\Re z_1=0$.
+\item \textbf{The Gaussian is a strict local maximum [P,C].} At the Gaussian point every direction that involves $z_1$ has
+ negative second variation, certified in interval arithmetic for seven sector coefficients. The Hessian's kernel is the
+ entire $z_1$-independent cubic sector; a negative fourth-order term controls those genuine cubic directions.
+\item \textbf{The independent sector [P,C].} For every cubic $q$ not involving $z_1$, $\Lambda(q)<S+3.6\cdot10^{-7}$. Moment
+ inequalities alone stall about $10^{-5}$ above $S$, because $h(x)=2\E|L+\sqrt x|$ is a Bernstein function and the
+ three-moment relaxation is maximised by a two-point law [P]. Going below that floor needs the Stein and spectral cuts.
+\item \textbf{Two natural shortcuts are false [P,C].} $|q|^2$ does not dominate $\E|q|^2\cdot\mathrm{Exp}(1)$ in convex order,
+ and there is no Gaussian Laplace domination: $Q=X(4(|X|^2-2)+3i(|Y|^2-1))/\sqrt{41}$ has $\E e^{-20|Q|^2}<0.0453<1/21$.
+\end{itemize}
+
+\subsection{Actual responses}
+Instead of bounding $\Lambda$ for all cubics, one can use that the cubic comes from a bounded response. Write $F$ for the
+cubic part of the response and $\mathcal N$ for the value of the witness on it.
+\begin{itemize}
+\item \textbf{Exact support [P].} The paired support $\frac12(\E|A+B|+\E|A-B|)$ is exactly the pointwise support function
+ of the complex response set $\{(h,k)=(e^{i\alpha}\cos\theta,\,ie^{i\alpha}\sin\theta)\}$, because
+ $(|A+B|+|A-B|)^2=4\max_\theta|A\cos\theta-iB\sin\theta|^2$.
+\item \textbf{Concentrated cubics are harmless [P,C].} At $\epsilon=1891/2500$ on the central rows $0.84\le t\le0.851$,
+ $\mathcal N<0.71325<1/1.402$ whenever the cubic part of the response concentrates enough energy on a structured subspace:
+ \begin{itemize}
+ \item $80\%$ on one diagonal Wick direction;
+ \item $90\%$ on one mixed monomial $X^2\bar Y$, or on a whole slice $\{X^2\bar A\}$;
+ \item $93.5\%$, $96.2\%$, $97.6\%$, $99.2\%$ on any cubic in $2,3,4,6$ remote coordinates;
+ \item $95.5\%$ to $99.95\%$ on $H_{2,0}(A)H_{0,1}(B)$ with $\dim A\le24$, via a sharp support theorem whose extremiser has law
+  $R_mG/\sqrt{m(m+1)}$, $R_m\sim\Gamma(m,1)$.
+ \end{itemize}
+ The remainder of the cubic may be arbitrary and fully coupled.
+\item \textbf{The obstruction to covering [P].} $Q_N=X_1(\sum_{j\le N}|X_j|^2-N-1)/\sqrt{N+1}$ keeps an influential direction
+ while its projection onto every fixed-dimensional core tends to zero. So ``small core or Gaussian'' is not an exhaustive
+ dichotomy.
+\item \textbf{How far from the benchmark structured cubics sit [F].} Remote-only payoffs relative to $S$:
+ \begin{center}\small
+ \begin{tabular}{@{}lccccccc@{}}\toprule
+ sum of $N$ slices, $N=$ & 1 & 2 & 4 & 8 & 16 & 24 & $\infty$ (Gaussian)\\\midrule
+ $S-\sup\Lambda$ ($10^{-3}$) & 1.68 & 1.42 & 1.08 & 0.73 & 0.43 & 0.32 & 0\\\bottomrule
+ \end{tabular}
+ \end{center}
+ The tested concentrated cubics leave room of order $10^{-3}$; these diffuse sums approach the benchmark.
+ This evidence does not classify all near-maximizers.
+\end{itemize}
+
+\subsection{Limits of the witness method}
+\begin{itemize}
+\item \textbf{Ceilings [P,C] and [Lean].} Actual finite Gaussian responses give the scalar cubic family a
+ ratio ceiling $<1.4022581233$ when taking suprema over Gaussian dimensions, for every complex multiplier; its generic cancellation arithmetic
+ is in Lean, its Gaussian construction and integral bounds are external. At $\epsilon=149/200$ a genuine response
+ gives norm $>0.71329$, excluding $1.402$ for that witness. Explicit ``chirp'' responses prove that games of
+ degree $\le5$ cannot exceed $1.4036705$, and of degree $\le7$ cannot exceed $1.4044895$ [P,C].
+\item \textbf{Extending the pattern fails [P,C].} The full alternating game $\sum_{k\ge0}(-1)^kP_{k+1,k}$ has
+ $\sup_n\|\cdot\|_{\infty\to1}=1$, attained by explicit unimodular responses (one in complex dimension $308{,}835$ is
+ replayed). So better high-degree games must be re-optimised against new responses, not extrapolated.
+\item \textbf{Certified finite exchange [P].} For a finite response pool truncated at level $D$ with value $v_D$, a
+ global witness norm cap $v_D+\delta$ and a realizable mixture with omitted coefficient tail at most $\tau<v_D$
+ give $1/(v_D+\delta)\le\KG\le1/(v_D-\tau)$ by the two one-sided transfers. The reciprocal interval has width $\delta+\tau$;
+ both the uniform witness cap and the complete mixture tail must actually be certified.
+\item \textbf{A global spherical form, and why it does not certify cheaply [P] and [Lean].} Finite Gaussian Hermite games
+ transfer, in every Gaussian dimension, to compact operators on the sphere with the same bounded responses and the same
+ shared drivers; the numerical bounds are unchanged. The dual operator can then be truncated with a rigorous error: the
+ cubic multiplier tail and the signed cap assembly are proved in Lean (\lean{SphericalTransfer.cubic\_tail\_32\_12},
+ \lean{global\_cap\_from\_truncation}); the analytic bridge is a written proof (\texttt{docs/SPHERICAL\_TRANSFER.md}). But
+ the operator has no square-integrable kernel: its multiplicity-weighted squared coefficients grow like $r^7$. So no
+ Hilbert--Schmidt-type certificate can control it, and direct coefficient optimisation is impractical (about
+ $8\cdot10^{20}$ coefficients in the tested truncation). A useful norm cap must bound the signed action on bounded
+ responses, exploiting the unitary symmetry.
+\end{itemize}
+
+\section{Why the gap is hard}
+\paragraph{The witness class caps the lower bound.} A game supported on degrees $\{1,3\}$ sees only the cubic constraint on
+roundings. Even a perfect evaluation of the norm of $P_{1,0}-\epsilon P_{2,1}$ cannot certify more than $1.4022581233$
+(the certified family ceiling above). Proved obstructions are known for higher degrees: every game of degree $\le5$ is
+capped at $1.4036705$, and every game of degree $\le7$ at $1.4044895$, both below Haagerup's value. Reaching the upper
+end of the interval therefore needs games of degree $\ge9$; in the real case the certified game uses all odd degrees up to
+$21$.
+
+\paragraph{Certifying higher degree is the real bottleneck.} Two different certificate architectures, gated rows and
+support functions, both lose about $2\cdot10^{-2}$ on the best degree-5 game. The reason is structural: a bounded function
+with a large cubic part is forced to have a degree-five part too. Through the visible coordinate, the cubic part sees the
+average of the remote coefficient profile and the quintic part its variation, and boundedness makes the profile vary. A
+certificate that treats the chaos degrees as independent cannot see this coupling.
+The coupling is \emph{driver sharing}: in the dimension-limit model the best degree-5 game has norm $0.712464$
+($1/N=1.40358$) when its degree-5 mixed sectors $(|z_1|^2-1)W$ and $z_1^2\overline W$ are driven by the same remote cubic $W$ as
+the cubic sector, and $0.724753$ when they are driven by independent copies; the optimum then switches the degree-5 part off.
+So a higher-degree certificate must let one remote residual feed several degrees through the visible coordinate. The cubic
+rows already do this for their degree-3 sectors; extending them to the degree-5 companions of the same residual is the
+next construction [F].
+
+\paragraph{Why the complex case is harder than the real one.} For real $\pm1$ responses, $h=\frac12(f+g)$ and
+$k=\frac12(f-g)$ have disjoint supports, so the two sides of a game decouple at every degree. For complex unimodular
+responses $|h|^2+|k|^2=1$ and $\Re(h\bar k)=0$ force $f=e^{i\alpha}e^{i\theta}$, $g=e^{i\alpha}e^{-i\theta}$: one shared
+phase field $\alpha$ drives both sides, and they never separate. The same shared phase is why marginal laws do not
+determine the relevant nonlinear correlations: $(H(X),X)$ and $(H(Y),X)$, with $H(X)=X(|X|^2-2)/\sqrt2$ and $X,Y$
+independent, have identical marginals and covariances, but $\E[\bar r\,q|q|^2]$ equals $8\sqrt2$ in the first case and $0$
+in the second.
+
+\section{Open problems}
+Planned work is tracked as GitHub issues of the repository: epics \#12 (unconditional lower bound), \#17 (upper inputs),
+\#22 (better lower bound), \#29 (build infrastructure) and \#34 (research plans).
+\begin{enumerate}
+\item Complete and verify the node caps (\lean{CapsRest}, the remaining vertex-cap hypothesis), which would make the lower bound fully machine-checked.
+ The caps of rows 12--15 are localised caps: coverage by constrained pieces is checked in Lean, and most pieces pass; the
+ remaining pieces fail the exact positivity check of their S-lemma matrix by about $10^{-5}$ and need re-optimised multipliers.
+\item Discharge the sharp upper rounding's numerical comparison and energy-table error; its Hermite expansion, structural analytic bridge and Hardy tail bound are formalized.
+\item Certify a game of degree $\ge5$ with a \emph{multi-grade fibre}: one bounded function of the visible coordinate and one
+ remote direction per degree, so that the cross-degree coupling is kept. This is the route to a lower bound above $1.403$.
+\item Run a complex primal/dual search, alternating linear programs over games of degree $\le D$ and pools of roundings, to
+ locate $\KG$ to about $10^{-4}$ and to test whether Haagerup's value $1/\gamma^\dagger$ is the answer.
+\item Prove the sharp first-moment bound $\E|q|\le\frac{\sqrt\pi}{2}\|q\|_2$ for cubic Wick polynomials. It is natural, it
+ appears to be open, and it is the largest single lever on the law side.
+\end{enumerate}
+
+\section*{How this was made}
+The constructions and certificates were found by several AI research systems working on a shared manuscript, cross-checking
+each other's packages by independent replay. The endpoint theorems have the explicit Lean hypothesis lists in
+Section~\ref{sec:trust}, and their axioms are audited in CI. The discoveries labelled [P] and [C] also include paper proofs
+and external exact or interval certificates; they are not all formalized in Lean. Selected written proofs and reproducible certificate records accompany the repository; the larger working manuscript is maintained separately.
+
+\clearpage
+\section*{References}
+\small\sloppy
+\begin{itemize}
+\item A.~Grothendieck, \emph{R\'esum\'e de la th\'eorie m\'etrique des produits tensoriels topologiques}, 1953.
+\item U.~Haagerup, \emph{A new upper bound for the complex Grothendieck constant}, Israel J.\ Math.\ 60 (1987).
+\item A.~M.~Davie, \emph{Lower bound for $K_G$}, unpublished note, 1984.
+\item S.~Heilman, C.~Jones, G.~Malavolta, \emph{Sharper bounds for the complex Grothendieck constant},
+ \href{https://arxiv.org/abs/2609.25462}{arXiv:2609.25462}.
+\item S.~Heilman, C.~Jones, G.~Malavolta, \emph{Primal/dual method for the Grothendieck constant},
+ \href{https://arxiv.org/abs/2610.10477}{arXiv:2610.10477}.
+\item Guo, Fang, Lu, \href{https://arxiv.org/abs/2609.07000}{arXiv:2609.07000}.
+\item R.~Saha et al., \emph{New lower and upper bounds for the Grothendieck constant},
+ \href{https://arxiv.org/abs/2608.11158}{arXiv:2608.11158}.
+\item A.~Naor, O.~Regev, \emph{Krivine schemes are optimal}, Proc.\ AMS 142 (2014),
+ \href{https://arxiv.org/abs/1205.6415}{arXiv:1205.6415}.
+\item G.~Pisier, \emph{Grothendieck's theorem, past and present}, Bull.\ AMS 49 (2012),
+ \href{https://arxiv.org/abs/1101.4195}{arXiv:1101.4195}.
+\item N.~Brunner et al., \emph{Bell nonlocality}, Rev.\ Mod.\ Phys.\ 86 (2014),
+ \href{https://arxiv.org/abs/1303.2849}{arXiv:1303.2849}.
+\end{itemize}
+
+\end{document}

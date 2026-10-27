@@ -1,0 +1,145 @@
+{
+  "bands": [
+    {
+      "lo": 0,
+      "hi": 0,
+      "error": "1/1000000000000000000",
+      "norm": "62462505733/62500000000",
+      "origin": "frozen-vector rounding"
+    },
+    {
+      "lo": 0,
+      "hi": 51,
+      "error": "4000001/100000000000000000",
+      "norm": "995201080567/1000000000000",
+      "origin": "Taylor power 1, finite band"
+    },
+    {
+      "lo": 51,
+      "hi": 101,
+      "error": "40021/1000000000000000",
+      "norm": "68397505583/1000000000000",
+      "origin": "Taylor power 1, finite band"
+    },
+    {
+      "lo": 101,
+      "hi": 151,
+      "error": "1247668533/100000000000000000",
+      "norm": "4006792129/100000000000",
+      "origin": "Taylor power 1, finite band"
+    },
+    {
+      "lo": 151,
+      "hi": 161,
+      "error": "36853467327/500000000000000000",
+      "norm": "7112288177/500000000000",
+      "origin": "Taylor power 1, finite band"
+    },
+    {
+      "lo": 161,
+      "hi": 171,
+      "error": "89935790449/250000000000000000",
+      "norm": "13373150801/1000000000000",
+      "origin": "Taylor power 1, finite band"
+    },
+    {
+      "lo": 171,
+      "hi": 181,
+      "error": "1500936719401/1000000000000000000",
+      "norm": "12617927691/1000000000000",
+      "origin": "Taylor power 1, finite band"
+    },
+    {
+      "lo": 181,
+      "hi": 0,
+      "error": "7276265983447/1000000000000000000",
+      "norm": "1575463739/40000000000",
+      "origin": "Taylor power 1, high tail"
+    },
+    {
+      "lo": 0,
+      "hi": 51,
+      "error": "191041827/1000000000000000000",
+      "norm": "995201080567/1000000000000",
+      "origin": "Taylor power 2, finite band"
+    },
+    {
+      "lo": 51,
+      "hi": 71,
+      "error": "626056331/100000000000000000",
+      "norm": "1286531351/25000000000",
+      "origin": "Taylor power 2, finite band"
+    },
+    {
+      "lo": 71,
+      "hi": 81,
+      "error": "28251960111/1000000000000000000",
+      "norm": "29003352069/1000000000000",
+      "origin": "Taylor power 2, finite band"
+    },
+    {
+      "lo": 81,
+      "hi": 91,
+      "error": "110414078119/1000000000000000000",
+      "norm": "25667367649/1000000000000",
+      "origin": "Taylor power 2, finite band"
+    },
+    {
+      "lo": 91,
+      "hi": 0,
+      "error": "231742890319/200000000000000000",
+      "norm": "65016027087/1000000000000",
+      "origin": "Taylor power 2, high tail"
+    },
+    {
+      "lo": 0,
+      "hi": 11,
+      "error": "992287/125000000000000000",
+      "norm": "122425336567/125000000000",
+      "origin": "Taylor power 3, finite band"
+    },
+    {
+      "lo": 11,
+      "hi": 21,
+      "error": "3687393/62500000000000000",
+      "norm": "135283092873/1000000000000",
+      "origin": "Taylor power 3, finite band"
+    },
+    {
+      "lo": 21,
+      "hi": 31,
+      "error": "135085729/200000000000000000",
+      "norm": "41719422639/500000000000",
+      "origin": "Taylor power 3, finite band"
+    },
+    {
+      "lo": 31,
+      "hi": 51,
+      "error": "2510902081/100000000000000000",
+      "norm": "3850974077/50000000000",
+      "origin": "Taylor power 3, finite band"
+    },
+    {
+      "lo": 51,
+      "hi": 0,
+      "error": "177488542479/500000000000000000",
+      "norm": "18303390503/200000000000",
+      "origin": "Taylor power 3, high tail"
+    }
+  ],
+  "comparison_cap": "106490963/125000000000000",
+  "error_radius": "5453935035799/500000000000000000",
+  "cross": "1703684083888711864747/4000000000000000000000000000",
+  "triangle_cap": "13311891/15625000000000",
+  "overlap_quadratic": "2676930154202028875351443/31250000000000000000000000000000000",
+  "delta": "458421199009/500000000000000000",
+  "score": "355973696751850991/500000000000000000",
+  "bound": "500000000000000000/355973696751850991",
+  "headline": "1.404598161500",
+  "source_sha256": "5619546626b7588ce64a2229aa58b0d161bde613dbf9a5eaad94a3ef93461915",
+  "rounder_source_sha256": "420f677e6cf18e8c74fb7fce89c74b58f64676031f8c788ce36543e116753af7",
+  "weight_method": "128-bit outward interval costs, 21 unshifted coefficients; unit cost otherwise",
+  "weight_script_sha256": "97335cc3aa1880cdcb8fd7a0e795c468bc0a0a64429b6a1b0d65520d615cff1e",
+  "energy_source_sha256": "9214d8877ecbada51c876cffeb9bb06f0202b931d3f791b7f2c61e023e646ac0",
+  "scope": "Weighted finite selected-block comparison; unchanged inherited Gaussian component-error inputs."
+}

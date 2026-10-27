@@ -2,6 +2,4 @@
 import GrotheKernel.Haagerup
 import GrotheKernel.HardyArc
 import GrotheKernel.PhiCheck
-import GrotheKernel.PowerTail
-import GrotheKernel.ResolventTail
 import GrotheKernel.Table

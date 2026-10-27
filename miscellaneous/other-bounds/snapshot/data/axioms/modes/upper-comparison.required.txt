@@ -1,0 +1,14 @@
+# --upper-comparison: theorems that must appear in this audit report (sorted; union-merged).
+Grothe.Upper.BandComparison.compare
+Grothe.Upper.BandComparison.weighted_compare
+Grothe.Upper.actual_band_mass
+Grothe.Upper.comparisonWeight_sound
+Grothe.Upper.comparison_check
+Grothe.Upper.headWeight_sound
+Grothe.Upper.head_residual_le_weighted
+Grothe.UpperChaos.fresh_upper_rounder
+Grothe.UpperChaos.localized_comparison
+Grothe.UpperChaos.norm_energyBlock_sq
+Grothe.UpperChaos.phi_abs_lt_one
+Grothe.fresh_upper
+Grothe.upper_value_lt

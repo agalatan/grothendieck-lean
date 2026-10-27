@@ -99,7 +99,7 @@ spectral realization of the Gaussian-limit model. Applying it to the
 finite normalized-G construction requires the separate exact Gaussian-law
 and original-chaos projection identities used in that construction.
 Those are supplied by the companion
-[cubic-family proof](CUBIC_FAMILY_CEILING_2026-10-23.md); no asymptotic
+[cubic-family proof](../miscellaneous/other-bounds/tree/docs/CUBIC_FAMILY_CEILING_2026-10-23.md); no asymptotic
 spectral identification is assumed.
 
 ## Replay

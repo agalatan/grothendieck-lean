@@ -19,30 +19,9 @@ with the same `CapsRest` and unchanged shared `NodeCaps` definition. All 60 rang
 facts are retained. The generated localized-piece facts outside this supported
 target are a separate campaign, not additional allowlisted endpoint inputs.
 
-Indirect report coverage in the inventory is source-traced. Historical times are module build times and do
-not measure individual native evaluations or the current implementation. The scalar
-sixteenth-power module's earlier verification records are under
-`data/scalar-tail-refinement/verification/`.
-
-**Scalar power check (#100).** `Grothe.ScalarTailRefinement.power_check` now
-uses `decide +kernel` for the same scalar sixteenth-power norm check. Its native
-axiom is removed from the allowlist; the theorem remains required and directly
-printed in `scratch/Axioms.lean`. All sixteen scalar-tail reports use only
-standard axioms. Source and report hashes are recorded under
-`data/scalar-tail-refinement/verification/`.
-
-**Canonical upper-bound route (#138).** `Grothe.haagerup_bound` uses four
-`Grothe.HaagerupCanonical` kernel checks. The focused policy requires 98 results
-and permits zero native axioms. The degree-20 certificate and bounds on combined
-resolvent seeds give the endpoint 1.404909132791; verification records apply to
-their pinned inputs.
-Large convolutions are proved in continuation blocks of at most five left
-coefficients. The generic `convI_append` identity preserves the original
-outward arithmetic order; recurrence and exact input-binding lemmas recover
-the four checker statements without a new numerical premise.
-`PowerData.lean` contains only the six definitions `pl`, `rl`, `seedPower`,
-`seedCap`, `defectCap`, and `slope`. The data module has no numerical theorem;
-all four acceptance proofs come from the canonical trace.
+The current inventory covers the active target and lower proof. Archived upper
+variants have separate preserved inventories under
+`miscellaneous/other-bounds/snapshot/data/axioms/`; they are not active permissions.
 
 **Exact production phase moments (#40(b)).** `PhaseMomentEval` integrates the
 integer polynomial obtained by clearing arbitrary rational denominators.
@@ -74,42 +53,6 @@ and is not an isolated timing of the native computation.
 | Fact | Source native site | Allowlist | Report coverage | Runtime evidence |
 |---|---|---|---|---|
 | `Grothe.UpperChaos.phase_cutoff_factor_check` | `Grothe/UpperChaos/PhaseRadialTail.lean` | yes | Direct #print axioms; also used by integral_phiT_sq_radial_tail_lt | [Run 40581194949](https://github.com/agalatan/grothendieck-lean/actions/runs/40581194949): full build and axiom audit passed; 6.8 s whole-module build |
-| `Grothe.HJM.OriginUnweightedLeftAggregate.rationalFacts` | `Grothe/HJM/OriginUnweightedLeftAggregate.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock00` | `Grothe/HJM/OriginUnweightedLeftCombined00.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock01` | `Grothe/HJM/OriginUnweightedLeftCombined01.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock02` | `Grothe/HJM/OriginUnweightedLeftCombined02.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock03` | `Grothe/HJM/OriginUnweightedLeftCombined03.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock04` | `Grothe/HJM/OriginUnweightedLeftCombined04.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock05` | `Grothe/HJM/OriginUnweightedLeftCombined05.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock06` | `Grothe/HJM/OriginUnweightedLeftCombined06.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock07` | `Grothe/HJM/OriginUnweightedLeftCombined07.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock08` | `Grothe/HJM/OriginUnweightedLeftCombined08.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock09` | `Grothe/HJM/OriginUnweightedLeftCombined09.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock10` | `Grothe/HJM/OriginUnweightedLeftCombined10.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock11` | `Grothe/HJM/OriginUnweightedLeftCombined11.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock12` | `Grothe/HJM/OriginUnweightedLeftCombined12.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedLeftChecks.combinedBlock13` | `Grothe/HJM/OriginUnweightedLeftCombined13.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedLeftWitness.polynomial_eq` | `Grothe/HJM/OriginUnweightedLeftWitness.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedRightAggregate.rationalFacts` | `Grothe/HJM/OriginUnweightedRightAggregate.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedRightChecks.combinedBlock01` | `Grothe/HJM/OriginUnweightedRightCombined01.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedRightChecks.combinedBlock02` | `Grothe/HJM/OriginUnweightedRightCombined02.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedRightChecks.combinedBlock03` | `Grothe/HJM/OriginUnweightedRightCombined03.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedRightChecks.combinedBlock04` | `Grothe/HJM/OriginUnweightedRightCombined04.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedRightChecks.combinedBlock05` | `Grothe/HJM/OriginUnweightedRightCombined05.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedRightChecks.combinedBlock06` | `Grothe/HJM/OriginUnweightedRightCombined06.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedRightChecks.combinedBlock07` | `Grothe/HJM/OriginUnweightedRightCombined07.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedRightChecks.combinedBlock08` | `Grothe/HJM/OriginUnweightedRightCombined08.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedRightChecks.combinedBlock09` | `Grothe/HJM/OriginUnweightedRightCombined09.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedRightChecks.combinedBlock10` | `Grothe/HJM/OriginUnweightedRightCombined10.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedRightChecks.combinedBlock11` | `Grothe/HJM/OriginUnweightedRightCombined11.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedRightChecks.combinedBlock12` | `Grothe/HJM/OriginUnweightedRightCombined12.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedRightChecks.combinedBlock13` | `Grothe/HJM/OriginUnweightedRightCombined13.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact guarded unweighted certificate |
-| `Grothe.HJM.OriginUnweightedRightChecks.combinedBlock00` | `Grothe/HJM/OriginUnweightedRightCombined00.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; guarded signed and phase-mean checks on right cells 0–6 |
-| `Grothe.HJM.OriginUnweightedRightWitness.polynomial_eq` | `Grothe/HJM/OriginUnweightedRightWitness.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact transformed 64-mode witness equality |
-| `Grothe.HJM.OriginMomentRightWitnessData.rightPolynomial_eq` | `Grothe/HJM/OriginMomentRightWitnessData.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact right witness polynomial equality |
-| `Grothe.HJM.OriginMomentGenerated.rightBlock13` | `Grothe/HJM/OriginMomentRightCheck13.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; signed Gaussian moment bounds for right cells 91–97 |
-| `Grothe.HJM.Cauchy.gate_check4` | `Grothe/HJM/CauchyGateCheck.lean:20` | yes | Indirect via scratch/Axioms.lean Grothe.HJM.Cauchy.weighted_tails | GitHub-hosted module build 4.6 s (quadtree of complex interval boxes, branch 4 of HJM at radius 1.112; the kernel evaluation takes over 10 minutes) |
-| `Grothe.HJM.finite67_check` | `Grothe/HJM/Finite67.lean:36` | yes | Indirect via scratch/Axioms.lean Grothe.HJM.branch5_tail | GitHub-hosted module build 9.6 s (Horner on modes up to 4987 of the HJM branch 5, 67 phase coefficients) |
 | `Grothe.Lower.certBatches0` | `Grothe/Lower/Cert/Batches0.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 337 s; docs/NATIVE_SEQ_STATUS.md; not isolated native/current-commit measurement |
 | `Grothe.Lower.certBatches1` | `Grothe/Lower/Cert/Batches1.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 344 s; docs/NATIVE_SEQ_STATUS.md; not isolated native/current-commit measurement |
 | `Grothe.Lower.certBatches2` | `Grothe/Lower/Cert/Batches2.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 395 s; docs/NATIVE_SEQ_STATUS.md; not isolated native/current-commit measurement |
