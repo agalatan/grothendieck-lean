@@ -19,6 +19,12 @@ namespace Grothe.HaagerupCanonical.Trace
 
 open GrotheKernel Grothe.Upper.FiniteDifference
 
+theorem rat_abs_binding (q : Rat) : |q| = Rat.abs q := by
+  unfold Rat.abs
+  split_ifs with h
+  · exact abs_of_nonneg h
+  · exact abs_of_nonpos (le_of_not_ge h)
+
 theorem coefficientGlue {k : Nat} {r s : Rat}
     (h : Grothe.haagR k = r)
     (hs : r * (((2*k+1)^2 : Nat) : Rat) / ((4*(k+1)*(k+2) : Nat) : Rat) = s) :
@@ -33,7 +39,7 @@ theorem differenceGlue {m k : Nat} {u v w : Rat}
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 187: reached source_glue"
+  out.putStrLn "Canonical trace 194: reached source_glue"
   out.flush
 
 theorem coefficientEq0 :
@@ -328,9 +334,17 @@ theorem coefficientEq72 :
     Grothe.haagR 72 = c72 := by
   exact coefficientGlue coefficientEq71 coefficientStep71
 
+theorem coefficientEq73 :
+    Grothe.haagR 73 = c73 := by
+  exact coefficientGlue coefficientEq72 coefficientStep72
+
+theorem coefficientEq74 :
+    Grothe.haagR 74 = c74 := by
+  exact coefficientGlue coefficientEq73 coefficientStep73
+
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 188: reached coefficient_bindings"
+  out.putStrLn "Canonical trace 195: reached coefficient_bindings"
   out.flush
 
 theorem weights_binding :
@@ -340,7 +354,7 @@ theorem weights_binding :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 189: reached weights_binding"
+  out.putStrLn "Canonical trace 196: reached weights_binding"
   out.flush
 
 theorem differenceEq0_64 :
@@ -379,6 +393,14 @@ theorem differenceEq0_72 :
     iterDiff 0 Grothe.haagR 72 = d0_72 := by
   exact coefficientEq72
 
+theorem differenceEq0_73 :
+    iterDiff 0 Grothe.haagR 73 = d0_73 := by
+  exact coefficientEq73
+
+theorem differenceEq0_74 :
+    iterDiff 0 Grothe.haagR 74 = d0_74 := by
+  exact coefficientEq74
+
 theorem differenceEq1_64 :
     iterDiff 1 Grothe.haagR 64 = d1_64 := by
   exact differenceGlue differenceEq0_64 differenceEq0_65 differenceStep1_64
@@ -411,6 +433,14 @@ theorem differenceEq1_71 :
     iterDiff 1 Grothe.haagR 71 = d1_71 := by
   exact differenceGlue differenceEq0_71 differenceEq0_72 differenceStep1_71
 
+theorem differenceEq1_72 :
+    iterDiff 1 Grothe.haagR 72 = d1_72 := by
+  exact differenceGlue differenceEq0_72 differenceEq0_73 differenceStep1_72
+
+theorem differenceEq1_73 :
+    iterDiff 1 Grothe.haagR 73 = d1_73 := by
+  exact differenceGlue differenceEq0_73 differenceEq0_74 differenceStep1_73
+
 theorem differenceEq2_64 :
     iterDiff 2 Grothe.haagR 64 = d2_64 := by
   exact differenceGlue differenceEq1_64 differenceEq1_65 differenceStep2_64
@@ -439,6 +469,14 @@ theorem differenceEq2_70 :
     iterDiff 2 Grothe.haagR 70 = d2_70 := by
   exact differenceGlue differenceEq1_70 differenceEq1_71 differenceStep2_70
 
+theorem differenceEq2_71 :
+    iterDiff 2 Grothe.haagR 71 = d2_71 := by
+  exact differenceGlue differenceEq1_71 differenceEq1_72 differenceStep2_71
+
+theorem differenceEq2_72 :
+    iterDiff 2 Grothe.haagR 72 = d2_72 := by
+  exact differenceGlue differenceEq1_72 differenceEq1_73 differenceStep2_72
+
 theorem differenceEq3_64 :
     iterDiff 3 Grothe.haagR 64 = d3_64 := by
   exact differenceGlue differenceEq2_64 differenceEq2_65 differenceStep3_64
@@ -463,6 +501,14 @@ theorem differenceEq3_69 :
     iterDiff 3 Grothe.haagR 69 = d3_69 := by
   exact differenceGlue differenceEq2_69 differenceEq2_70 differenceStep3_69
 
+theorem differenceEq3_70 :
+    iterDiff 3 Grothe.haagR 70 = d3_70 := by
+  exact differenceGlue differenceEq2_70 differenceEq2_71 differenceStep3_70
+
+theorem differenceEq3_71 :
+    iterDiff 3 Grothe.haagR 71 = d3_71 := by
+  exact differenceGlue differenceEq2_71 differenceEq2_72 differenceStep3_71
+
 theorem differenceEq4_64 :
     iterDiff 4 Grothe.haagR 64 = d4_64 := by
   exact differenceGlue differenceEq3_64 differenceEq3_65 differenceStep4_64
@@ -483,6 +529,14 @@ theorem differenceEq4_68 :
     iterDiff 4 Grothe.haagR 68 = d4_68 := by
   exact differenceGlue differenceEq3_68 differenceEq3_69 differenceStep4_68
 
+theorem differenceEq4_69 :
+    iterDiff 4 Grothe.haagR 69 = d4_69 := by
+  exact differenceGlue differenceEq3_69 differenceEq3_70 differenceStep4_69
+
+theorem differenceEq4_70 :
+    iterDiff 4 Grothe.haagR 70 = d4_70 := by
+  exact differenceGlue differenceEq3_70 differenceEq3_71 differenceStep4_70
+
 theorem differenceEq5_64 :
     iterDiff 5 Grothe.haagR 64 = d5_64 := by
   exact differenceGlue differenceEq4_64 differenceEq4_65 differenceStep5_64
@@ -499,6 +553,14 @@ theorem differenceEq5_67 :
     iterDiff 5 Grothe.haagR 67 = d5_67 := by
   exact differenceGlue differenceEq4_67 differenceEq4_68 differenceStep5_67
 
+theorem differenceEq5_68 :
+    iterDiff 5 Grothe.haagR 68 = d5_68 := by
+  exact differenceGlue differenceEq4_68 differenceEq4_69 differenceStep5_68
+
+theorem differenceEq5_69 :
+    iterDiff 5 Grothe.haagR 69 = d5_69 := by
+  exact differenceGlue differenceEq4_69 differenceEq4_70 differenceStep5_69
+
 theorem differenceEq6_64 :
     iterDiff 6 Grothe.haagR 64 = d6_64 := by
   exact differenceGlue differenceEq5_64 differenceEq5_65 differenceStep6_64
@@ -511,6 +573,14 @@ theorem differenceEq6_66 :
     iterDiff 6 Grothe.haagR 66 = d6_66 := by
   exact differenceGlue differenceEq5_66 differenceEq5_67 differenceStep6_66
 
+theorem differenceEq6_67 :
+    iterDiff 6 Grothe.haagR 67 = d6_67 := by
+  exact differenceGlue differenceEq5_67 differenceEq5_68 differenceStep6_67
+
+theorem differenceEq6_68 :
+    iterDiff 6 Grothe.haagR 68 = d6_68 := by
+  exact differenceGlue differenceEq5_68 differenceEq5_69 differenceStep6_68
+
 theorem differenceEq7_64 :
     iterDiff 7 Grothe.haagR 64 = d7_64 := by
   exact differenceGlue differenceEq6_64 differenceEq6_65 differenceStep7_64
@@ -519,24 +589,52 @@ theorem differenceEq7_65 :
     iterDiff 7 Grothe.haagR 65 = d7_65 := by
   exact differenceGlue differenceEq6_65 differenceEq6_66 differenceStep7_65
 
+theorem differenceEq7_66 :
+    iterDiff 7 Grothe.haagR 66 = d7_66 := by
+  exact differenceGlue differenceEq6_66 differenceEq6_67 differenceStep7_66
+
+theorem differenceEq7_67 :
+    iterDiff 7 Grothe.haagR 67 = d7_67 := by
+  exact differenceGlue differenceEq6_67 differenceEq6_68 differenceStep7_67
+
 theorem differenceEq8_64 :
     iterDiff 8 Grothe.haagR 64 = d8_64 := by
   exact differenceGlue differenceEq7_64 differenceEq7_65 differenceStep8_64
 
+theorem differenceEq8_65 :
+    iterDiff 8 Grothe.haagR 65 = d8_65 := by
+  exact differenceGlue differenceEq7_65 differenceEq7_66 differenceStep8_65
+
+theorem differenceEq8_66 :
+    iterDiff 8 Grothe.haagR 66 = d8_66 := by
+  exact differenceGlue differenceEq7_66 differenceEq7_67 differenceStep8_66
+
+theorem differenceEq9_64 :
+    iterDiff 9 Grothe.haagR 64 = d9_64 := by
+  exact differenceGlue differenceEq8_64 differenceEq8_65 differenceStep9_64
+
+theorem differenceEq9_65 :
+    iterDiff 9 Grothe.haagR 65 = d9_65 := by
+  exact differenceGlue differenceEq8_65 differenceEq8_66 differenceStep9_65
+
+theorem differenceEq10_64 :
+    iterDiff 10 Grothe.haagR 64 = d10_64 := by
+  exact differenceGlue differenceEq9_64 differenceEq9_65 differenceStep10_64
+
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 190: reached difference_bindings"
+  out.putStrLn "Canonical trace 197: reached difference_bindings"
   out.flush
 
 theorem differences_binding :
     Grothe.HaagerupCanonical.differences = correctionWeights0 := by
-  change [iterDiff 0 Grothe.haagR 64, iterDiff 1 Grothe.haagR 64, iterDiff 2 Grothe.haagR 64, iterDiff 3 Grothe.haagR 64, iterDiff 4 Grothe.haagR 64, iterDiff 5 Grothe.haagR 64, iterDiff 6 Grothe.haagR 64, iterDiff 7 Grothe.haagR 64] = correctionWeights0
-  rw [differenceEq0_64, differenceEq1_64, differenceEq2_64, differenceEq3_64, differenceEq4_64, differenceEq5_64, differenceEq6_64, differenceEq7_64]
+  change [iterDiff 0 Grothe.haagR 64, iterDiff 1 Grothe.haagR 64, iterDiff 2 Grothe.haagR 64, iterDiff 3 Grothe.haagR 64, iterDiff 4 Grothe.haagR 64, iterDiff 5 Grothe.haagR 64, iterDiff 6 Grothe.haagR 64, iterDiff 7 Grothe.haagR 64, iterDiff 8 Grothe.haagR 64, iterDiff 9 Grothe.haagR 64] = correctionWeights0
+  rw [differenceEq0_64, differenceEq1_64, differenceEq2_64, differenceEq3_64, differenceEq4_64, differenceEq5_64, differenceEq6_64, differenceEq7_64, differenceEq8_64, differenceEq9_64]
   rfl
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 191: reached differences_binding"
+  out.putStrLn "Canonical trace 198: reached differences_binding"
   out.flush
 
 theorem pl_binding :
@@ -545,7 +643,7 @@ theorem pl_binding :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 192: reached pl_binding"
+  out.putStrLn "Canonical trace 199: reached pl_binding"
   out.flush
 
 theorem rl_binding :
@@ -554,7 +652,7 @@ theorem rl_binding :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 193: reached rl_binding"
+  out.putStrLn "Canonical trace 200: reached rl_binding"
   out.flush
 
 theorem p_binding :
@@ -571,7 +669,7 @@ theorem slope_binding :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 194: reached slope_binding"
+  out.putStrLn "Canonical trace 201: reached slope_binding"
   out.flush
 
 theorem prefixCap_binding :
@@ -580,7 +678,7 @@ theorem prefixCap_binding :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 195: reached prefixCap_binding"
+  out.putStrLn "Canonical trace 202: reached prefixCap_binding"
   out.flush
 
 theorem seedCap_binding :
@@ -589,7 +687,7 @@ theorem seedCap_binding :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 196: reached seedCap_binding"
+  out.putStrLn "Canonical trace 203: reached seedCap_binding"
   out.flush
 
 theorem defectCap_binding :
@@ -598,7 +696,7 @@ theorem defectCap_binding :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 197: reached defectCap_binding"
+  out.putStrLn "Canonical trace 204: reached defectCap_binding"
   out.flush
 
 theorem completed_binding :
@@ -606,14 +704,14 @@ theorem completed_binding :
       Grothe.HaagerupPower.pl Grothe.HaagerupPower.rl
       (haagList Grothe.HaagerupCanonical.start) Grothe.HaagerupCanonical.differences = completedI := by
   rw [weights_binding, differences_binding]
-  change completedHeadI 172 64 Grothe.HaagerupPower.pl Grothe.HaagerupPower.rl
+  change completedHeadI 165 64 Grothe.HaagerupPower.pl Grothe.HaagerupPower.rl
     weights0 correctionWeights0 = completedI
   simp only [completedHeadI, p_binding, r_binding, ratioA_step, ratioY_step,
     weights_take, correctionEq0, tail_step, headEq0, final_step]
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 198: reached completed_binding"
+  out.putStrLn "Canonical trace 205: reached completed_binding"
   out.flush
 
 theorem seed_binding :
@@ -623,7 +721,7 @@ theorem seed_binding :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 199: reached seed_binding"
+  out.putStrLn "Canonical trace 206: reached seed_binding"
   out.flush
 
 theorem defect_binding :
@@ -633,7 +731,7 @@ theorem defect_binding :
 
 run_cmd do
   let out ← IO.getStdout
-  out.putStrLn "Canonical trace 200: reached defect_binding"
+  out.putStrLn "Canonical trace 207: reached defect_binding"
   out.flush
 
 end Grothe.HaagerupCanonical.Trace

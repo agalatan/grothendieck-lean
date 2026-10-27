@@ -273,8 +273,8 @@ headline endpoints are unchanged.
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
-**Unconditional upper-bound source (delivery CI pending, #129).**
-`Grothe.haagerup_bound : IsGrothendieckBound (1404909133/1000000000)`
+**Unconditional upper-bound source (delivery CI pending, #133).**
+`Grothe.haagerup_bound : IsGrothendieckBound (175613641599/125000000000)`
 (`Grothe/Haagerup/Power.lean`), with no external hypothesis. The analysis is in
 `Grothe/Haagerup/`: the shared Gaussian phase and planar laws (`Phase`); the charge-one
 Hermite coefficient, determined by odd Gaussian moments and the recurrence
@@ -298,14 +298,17 @@ The coefficient norm of P is at most one.
 quotients to prove nonnegativity of every Haagerup coefficient difference.
 `Upper/ResolventCompletion.lean` proves the all-order resolvent expansion with its defect
 and vanishing-boundary remainder. The concrete construction combines 64 series terms with
-eight resolvent correction terms before taking absolute values. The prefix check uses
-a cap of 74/10¹² for its first 172 coefficients. `Upper/WeightedTail.lean` bounds
-all omitted coefficients of a polynomial F by ‖F((3/2)X)‖₁/(3/2)^172.
-Exact rational arithmetic gives ‖P((3/2)X)‖₁ ≤ 21/20 and ‖R((3/2)X)‖₁ ≤ 9;
-finite norm estimates use ‖F((3/2)X)‖₁ ≤ 10²⁰ and an omitted contribution
-at most 52/10¹². The full normalized finite-residual cap is 126/10¹²,
-and the infinite-remainder cap is 14/10¹². The weighted estimate
+ten resolvent correction terms before taking absolute values. The prefix check uses
+a cap of 368411/(5·10¹⁵) for its first 165 coefficients. `Upper/WeightedTail.lean` bounds
+all omitted coefficients of a polynomial F by ‖F((3/2)X)‖₁/(3/2)^165.
+The weighted coefficient estimate gives ‖F((3/2)X)‖₁ ≤ 10¹³ and an omitted contribution
+at most 10⁻¹⁶. The full normalized finite-residual cap is 736823/10¹⁶,
+and the infinite-remainder cap is 10169/10¹⁶, for a total of 746992/10¹⁶. The weighted estimate
 concerns a finite polynomial and assumes no analytic continuation.
+It uses the actual sums Σ_{k<64} r_k(5/3)^k and
+Σ_{j<10} (Δʲr)₆₄·15ʲ, together with ‖P((3/2)X)‖₁≤21/20 and
+‖R((3/2)X)‖₁≤9; their combined majorant is below 1.075·10¹².
+The infinite-remainder estimate likewise retains the individual forward differences.
 The proof uses the inverse defect≤10⁻¹², the short seed norm ‖RP¹⁷‖₁≤249/500,
 and the elementary bound ‖RA‖₁≤2. It needs no fourth-power or gamma estimate.
 `CanonicalData.lean` states the exact parameters. The arithmetic definitions are in
@@ -318,10 +321,14 @@ Shared literals feed 16 independent numerical proof modules; the recurrence
 assembly and source bindings follow them. Parallel scheduling changes neither
 the arithmetic equalities nor the trust assumptions.
 `CanonicalCheck.lean` exposes the four public check statements, and
-`CanonicalProof.lean` assembles the bound from them. The generator check
+`CanonicalProof.lean` assembles the bound from them. The regenerated
+`coefficient_check` proves two rational budget inequalities: the weighted
+completion is at most 10¹³ and the combined infinite remainder is at most
+10169/10¹⁶. It no longer needs separate caps for r₆₄ and its tenth difference.
+The reproducibility command
 `tools/gen_haagerup_canonical_check.py --check` verifies byte-for-byte reproducibility;
 generation is separate from Lean proof checking. The public wrapper gives
-the source target K≤1.404909133. The focused policy requires 96 results using only
+the source target K≤1.404909132792. The focused policy requires 96 results using only
 `propext`, `Classical.choice`, and `Quot.sound`; acceptance of the regenerated
 numerical trace awaits delivery CI.
 `PowerData.lean` contains only the six definitions `pl`, `rl`, `seedPower`,
@@ -331,6 +338,8 @@ all four acceptance proofs come from the canonical trace.
 `CanonicalProof.lean` adds the weighted finite tail. Independent directed replay
 is provided by `tools/verify_haagerup_canonical.py`. The focused report
 `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, permits zero native axioms.
+The [alternating-completion receipt](verification/haagerup-alternating-20261027/README.md)
+records this layer separately from the historical degree-20 receipt.
 Normal `ready/*` delivery CI builds and audits the combined tree before merging it.
 
 **Lower bound.** `Grothe.Research.LawNodeLower.profile_bound_of_law_nodes`
