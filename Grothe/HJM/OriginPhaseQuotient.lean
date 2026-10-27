@@ -139,7 +139,7 @@ lemma eval_originPolynomial (s : ℝ) : originPolynomial.eval (s : ℂ) = P s :=
       (q.map (algebraMap ℝ ℂ)).eval (s : ℂ) = ((q.eval s : ℝ) : ℂ) := by
     change (q.map (algebraMap ℝ ℂ)).eval ((algebraMap ℝ ℂ) s) =
       (algebraMap ℝ ℂ) (q.eval s)
-    exact Polynomial.eval_map_apply s
+    exact Polynomial.eval_map_apply (algebraMap ℝ ℂ) s
   simp only [originPolynomial, Polynomial.eval_add, Polynomial.eval_mul,
     Polynomial.eval_C, heval, P]
 
