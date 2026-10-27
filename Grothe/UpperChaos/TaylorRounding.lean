@@ -69,7 +69,10 @@ theorem norm_roundingDifference_le : ‖roundingDifference‖ ≤ (1 / 100000000
     decide +kernel
   have hr : (((roundingIntegerEnergy : ℚ) / (6 * (2 : ℚ)^206)^2 : ℚ) : ℝ) ≤
       (1 / 1000000000000000000 : ℝ)^2 := by
-    exact_mod_cast hq
+    have hc := (Rat.cast_le (K := ℝ)).mpr hq
+    have he : (((1 / 1000000000000000000 : ℚ)^2 : ℚ) : ℝ) =
+        (1 / 1000000000000000000 : ℝ)^2 := by norm_num
+    simpa only [he] using hc
   nlinarith [norm_roundingDifference_sq, norm_nonneg roundingDifference]
 
 end Grothe.UpperChaos
