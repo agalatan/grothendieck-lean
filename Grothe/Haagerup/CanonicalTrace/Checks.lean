@@ -30,7 +30,8 @@ theorem coefficient_check :
     simp only [Grothe.HaagerupCanonical.order, Grothe.HaagerupCanonical.start,
       Finset.sum_range_succ, Finset.sum_range_zero, zero_add,
       differenceEq0_64, differenceEq1_64, differenceEq2_64, differenceEq3_64, differenceEq4_64, differenceEq5_64, differenceEq6_64, differenceEq7_64, differenceEq8_64, differenceEq9_64, differenceEq10_64, defectCap_binding]
-    exact remainder_literal_ok
+    exact remainder_literal_ok.trans_eq (by
+      norm_num [Grothe.HaagerupCanonical.remainderCap])
 
 run_cmd do
   let out ← IO.getStdout

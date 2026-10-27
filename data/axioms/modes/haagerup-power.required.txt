@@ -13,6 +13,7 @@ Grothe.HaagerupCanonical.differences_getD
 Grothe.HaagerupCanonical.differences_length
 Grothe.HaagerupCanonical.finite_identity
 Grothe.HaagerupCanonical.norm_P
+Grothe.HaagerupCanonical.norm_completion_seed
 Grothe.HaagerupCanonical.norm_defect_of_check
 Grothe.HaagerupCanonical.norm_resolvent_ratio
 Grothe.HaagerupCanonical.norm_scaledP
@@ -76,6 +77,7 @@ Grothe.Upper.ResolventCertificate.polynomial_residual_eq_l1
 Grothe.Upper.ResolventCertificate.summable_abs_coeff
 Grothe.Upper.ResolventCertificate.tsum_abs_coeff_eq_l1
 Grothe.Upper.ResolventCompletion.composition_completion_bound
+Grothe.Upper.ResolventCompletion.composition_completion_bound_of_seeds
 Grothe.Upper.ResolventTail.compCoeff_tail_eq_sum_coeff
 Grothe.Upper.ResolventTail.compTerm_coeff_zero
 Grothe.Upper.ResolventTail.compTerm_geometric

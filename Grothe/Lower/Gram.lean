@@ -96,6 +96,81 @@ lemma psd_pair {p q r a c s : ℝ} (hp : 0 ≤ p) (hr : 0 ≤ r) (hpr : q ^ 2 �
   rw [abs_of_nonneg h0] at h2
   linarith [neg_abs_le (2 * q * s)]
 
+/-- A rational linear functional on the contraction invariants `(n,h,b,y,z)`. -/
+structure Reserve where
+  n : ℚ
+  h : ℚ
+  b : ℚ
+  y : ℚ
+  z : ℚ
+
+/-- Evaluate the reserve on a tensor's five real invariants. -/
+def Reserve.value (r : Reserve) (n h b y z : ℝ) : ℝ :=
+  r.n * n + r.h * h + r.b * b + r.y * y + r.z * z
+
+/-- The same two PSD multipliers, with a reserve deducted from every remainder. -/
+def reserveCert (lam mu : ℚ) (g : GramData) (r : Reserve) : Bool := decide (
+  0 ≤ lam ∧ 0 ≤ mu ∧
+  0 ≤ g.m00 ∧ 0 ≤ g.m11 ∧ g.m01 ^ 2 ≤ g.m00 * g.m11 ∧
+  0 ≤ g.k00 ∧ 0 ≤ g.k11 ∧ g.k01 ^ 2 ≤ g.k00 * g.k11 ∧
+  0 ≤ g.ga ∧ 0 ≤ g.gb ∧
+  r.n ≤ g.en lam ∧ r.h ≤ g.eh lam ∧ r.b ≤ g.eb lam mu ∧
+  r.y ≤ g.ey lam mu ∧ r.z ≤ g.ez lam)
+
+/-- **Soundness with a signed reserve.** The same Gram proof pays both for the Stein
+fluctuations and the additional linear functional. This prevents counting two incompatible
+savings separately. -/
+theorem reserved_gram_budget (lam mu : ℚ) (g : GramData) (r : Reserve)
+    (hg : reserveCert lam mu g r = true)
+    (n h b y z P Q X2 C2 : ℝ) (hn : 0 ≤ n) (hh : 0 ≤ h) (hb : 0 ≤ b) (hy : 0 ≤ y) (hz : 0 ≤ z)
+    (hbn : b ≤ n) (hyz : y ≤ z) (hG0 : z ^ 2 ≤ n * h) (hG1a : 0 ≤ n + b + (3 * y - z))
+    (hG1b : (3 * y - z) ^ 2 ≤ h * (n + b + (3 * y - z)))
+    (hP : P = 16 * n + 4 * h + 16 / 3 * b + 32 * y) (hQ : Q = 64 / 3 * b + 32 * y)
+    (hX : X2 = (80 * n + 20 * h + 16 * b + 96 * y + 32 * z) / 9)
+    (hC : C2 = (128 * b + 96 * y) / 9) :
+    (lam : ℝ) * X2 + mu * C2 + r.value n h b y z ≤ g.A * P + g.B * Q := by
+  simp only [reserveCert, decide_eq_true_eq] at hg
+  obtain ⟨-, -, h00, h11, h01, k00, k11, k01, hga, hgb, en, eh, eb, ey, ez⟩ := hg
+  have t0 := psd_pair (p := (g.m00 : ℝ)) (q := (g.m01 : ℝ)) (r := (g.m11 : ℝ)) (a := n) (c := h)
+    (s := z) (by exact_mod_cast h00) (by exact_mod_cast h11) (by exact_mod_cast h01) hn hh hG0
+  have t1 := psd_pair (p := (g.k00 : ℝ)) (q := (g.k01 : ℝ)) (r := (g.k11 : ℝ)) (a := h)
+    (c := (n + b + (3 * y - z)) / 4) (s := (3 * y - z) / 2) (by exact_mod_cast k00)
+    (by exact_mod_cast k11) (by exact_mod_cast k01) hh (by linarith) (by nlinarith)
+  have en' : (0 : ℝ) ≤ ((g.en lam - r.n : ℚ) : ℝ) := by exact_mod_cast sub_nonneg.2 en
+  have eh' : (0 : ℝ) ≤ ((g.eh lam - r.h : ℚ) : ℝ) := by exact_mod_cast sub_nonneg.2 eh
+  have eb' : (0 : ℝ) ≤ ((g.eb lam mu - r.b : ℚ) : ℝ) := by exact_mod_cast sub_nonneg.2 eb
+  have ey' : (0 : ℝ) ≤ ((g.ey lam mu - r.y : ℚ) : ℝ) := by exact_mod_cast sub_nonneg.2 ey
+  have ez' : (0 : ℝ) ≤ ((g.ez lam - r.z : ℚ) : ℝ) := by exact_mod_cast sub_nonneg.2 ez
+  simp only [GramData.en, GramData.eh, GramData.eb, GramData.ey, GramData.ez] at en' eh' eb' ey' ez'
+  push_cast at en' eh' eb' ey' ez'
+  have hga' : (0 : ℝ) ≤ g.ga := by exact_mod_cast hga
+  have hgb' : (0 : ℝ) ≤ g.gb := by exact_mod_cast hgb
+  rw [hP, hQ, hX, hC, Reserve.value]
+  nlinarith [mul_nonneg en' hn, mul_nonneg eh' hh, mul_nonneg eb' hb, mul_nonneg ey' hy,
+    mul_nonneg ez' hz, mul_nonneg hga' (sub_nonneg.2 hbn), mul_nonneg hgb' (sub_nonneg.2 hyz)]
+
+/-- A reserve of zero is exactly the existing checker, not a stronger assumption. -/
+theorem zero_reserve (lam mu : ℚ) (g : GramData) :
+    reserveCert lam mu g ⟨0, 0, 0, 0, 0⟩ = true ↔ gramCert lam mu g = true := by
+  simp [reserveCert, gramCert, psd2, and_assoc]
+
+/-- Reserve `weight * xmax * (A s₀ + B h₀)` in the certificate's five coordinates. The
+negative coefficient of `z` is retained. -/
+def Reserve.joint (weight xmax A B : ℚ) : Reserve :=
+  ⟨weight * xmax * (8 * A + 8 / 3 * B),
+   weight * xmax * (2 * A + 2 / 3 * B),
+   weight * xmax * (8 * A + 8 / 3 * B),
+   weight * xmax * (24 * B),
+   weight * xmax * (8 * A - 16 / 3 * B)⟩
+
+theorem joint_reserve_value (weight xmax A B : ℚ) (n h b y z : ℝ) :
+    (Reserve.joint weight xmax A B).value n h b y z =
+      (weight : ℝ) * xmax * ((A : ℝ) * (8 * n + 2 * h + 8 * b + 8 * z)
+        + (B : ℝ) * (8 / 3 * n + 2 / 3 * h + 8 / 3 * b + 24 * y - 16 / 3 * z)) := by
+  simp only [Reserve.joint, Reserve.value]
+  push_cast
+  ring
+
 /-- **Soundness of a contraction-Gram certificate.**  For reals `n, h, b, y, z ≥ 0` with
 `b ≤ n`, `y ≤ z`, `z² ≤ nh` (`G₀ ⪰ 0`), `n + b + 2T ≥ 0` and `4T² ≤ h(n + b + 2T)` (`G₁ ⪰ 0`,
 `T = (3y − z)/2`) and the four formulas for `P, Q, E X², E|c|²`, an accepted certificate gives
@@ -108,35 +183,10 @@ theorem gram_budget_of_scalars (lam mu : ℚ) (g : GramData) (hg : gramCert lam 
     (hX : X2 = (80 * n + 20 * h + 16 * b + 96 * y + 32 * z) / 9)
     (hC : C2 = (128 * b + 96 * y) / 9) :
     (lam : ℝ) * X2 + mu * C2 ≤ g.A * P + g.B * Q := by
-  simp only [gramCert, psd2, Bool.and_eq_true, decide_eq_true_eq, GramData.en, GramData.eh,
-    GramData.eb, GramData.ey, GramData.ez] at hg
-  obtain ⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨-, -⟩, ⟨⟨h00, h11⟩, h01⟩⟩, ⟨⟨k00, k11⟩, k01⟩⟩, hga⟩, hgb⟩, en⟩, eh⟩, eb⟩, ey⟩,
-    ez⟩ := hg
-  replace en := of_decide_eq_true en
-  replace eh := of_decide_eq_true eh
-  replace eb := of_decide_eq_true eb
-  replace ey := of_decide_eq_true ey
-  replace ez := of_decide_eq_true ez
-  have t0 := psd_pair (p := (g.m00 : ℝ)) (q := (g.m01 : ℝ)) (r := (g.m11 : ℝ)) (a := n) (c := h)
-    (s := z) (by exact_mod_cast h00) (by exact_mod_cast h11) (by exact_mod_cast h01) hn hh hG0
-  have t1 := psd_pair (p := (g.k00 : ℝ)) (q := (g.k01 : ℝ)) (r := (g.k11 : ℝ)) (a := h)
-    (c := (n + b + (3 * y - z)) / 4) (s := (3 * y - z) / 2) (by exact_mod_cast k00)
-    (by exact_mod_cast k11) (by exact_mod_cast k01) hh (by linarith) (by nlinarith)
-  have en' : (0 : ℝ) ≤ ((16 * g.A - 80 / 9 * lam - (g.m00 + g.k11 / 4 + g.ga) : ℚ) : ℝ) := by
-    exact_mod_cast en
-  have eh' : (0 : ℝ) ≤ ((4 * g.A - 20 / 9 * lam - (g.m11 + g.k00) : ℚ) : ℝ) := by exact_mod_cast eh
-  have eb' : (0 : ℝ) ≤ ((16 / 3 * g.A + 64 / 3 * g.B - 16 / 9 * lam - 128 / 9 * mu
-      - (g.k11 / 4 - g.ga) : ℚ) : ℝ) := by exact_mod_cast eb
-  have ey' : (0 : ℝ) ≤ ((32 * g.A + 32 * g.B - 96 / 9 * lam - 96 / 9 * mu
-      - (3 * g.k01 + 3 * g.k11 / 4 - g.gb) : ℚ) : ℝ) := by exact_mod_cast ey
-  have ez' : (0 : ℝ) ≤ ((-(32 / 9) * lam - (2 * g.m01 - g.k01 - g.k11 / 4 + g.gb) : ℚ) : ℝ) := by
-    exact_mod_cast ez
-  push_cast at en' eh' eb' ey' ez'
-  have hga' : (0 : ℝ) ≤ g.ga := by exact_mod_cast hga
-  have hgb' : (0 : ℝ) ≤ g.gb := by exact_mod_cast hgb
-  subst hP hQ hX hC
-  nlinarith [mul_nonneg en' hn, mul_nonneg eh' hh, mul_nonneg eb' hb, mul_nonneg ey' hy,
-    mul_nonneg ez' hz, mul_nonneg hga' (sub_nonneg.2 hbn), mul_nonneg hgb' (sub_nonneg.2 hyz)]
+  have hbudget := reserved_gram_budget lam mu g ⟨0, 0, 0, 0, 0⟩
+    ((zero_reserve lam mu g).2 hg) n h b y z P Q X2 C2
+    hn hh hb hy hz hbn hyz hG0 hG1a hG1b hP hQ hX hC
+  simpa only [Reserve.value, Rat.cast_zero, zero_mul, zero_add, add_zero] using hbudget
 
 lemma gramCert_nonneg {lam mu : ℚ} {g : GramData} (h : gramCert lam mu g = true) :
     0 ≤ lam ∧ 0 ≤ mu := by
@@ -217,27 +267,16 @@ theorem gram_joint_of_scalars (lam mu : ℚ) (g : GramData) (j : JointData)
     (hC : C2 = (128 * b + 96 * y) / 9) (hS0 : S0 = 8 * n + 2 * h + 8 * b + 8 * z)
     (hH0 : H0 = 8 / 3 * n + 2 / 3 * h + 8 / 3 * b + 24 * y - 16 / 3 * z) :
     (lam : ℝ) * X2 + mu * C2 + j.ze * j.xs * (j.cA * S0 + j.cB * H0) ≤ g.A * P + g.B * Q := by
-  simp only [jointCert, psd2, Bool.and_eq_true, decide_eq_true_eq] at hg
-  obtain ⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨-, -⟩, -⟩, -⟩, -⟩, ⟨⟨h00, h11⟩, h01⟩⟩, ⟨⟨k00, k11⟩, k01⟩⟩, hga⟩, hgb⟩, en⟩,
-    eh⟩, eb⟩, ey⟩, ez⟩ := hg
-  have t0 := psd_pair (p := (g.m00 : ℝ)) (q := (g.m01 : ℝ)) (r := (g.m11 : ℝ)) (a := n) (c := h)
-    (s := z) (by exact_mod_cast h00) (by exact_mod_cast h11) (by exact_mod_cast h01) hn hh hG0
-  have t1 := psd_pair (p := (g.k00 : ℝ)) (q := (g.k01 : ℝ)) (r := (g.k11 : ℝ)) (a := h)
-    (c := (n + b + (3 * y - z)) / 4) (s := (3 * y - z) / 2) (by exact_mod_cast k00)
-    (by exact_mod_cast k11) (by exact_mod_cast k01) hh (by linarith) (by nlinarith)
-  have en' : (0 : ℝ) ≤ ((g.en lam - j.jn : ℚ) : ℝ) := by exact_mod_cast sub_nonneg.2 en
-  have eh' : (0 : ℝ) ≤ ((g.eh lam - j.jh : ℚ) : ℝ) := by exact_mod_cast sub_nonneg.2 eh
-  have eb' : (0 : ℝ) ≤ ((g.eb lam mu - j.jb : ℚ) : ℝ) := by exact_mod_cast sub_nonneg.2 eb
-  have ey' : (0 : ℝ) ≤ ((g.ey lam mu - j.jy : ℚ) : ℝ) := by exact_mod_cast sub_nonneg.2 ey
-  have ez' : (0 : ℝ) ≤ ((g.ez lam - j.jz : ℚ) : ℝ) := by exact_mod_cast sub_nonneg.2 ez
-  simp only [GramData.en, GramData.eh, GramData.eb, GramData.ey, GramData.ez, JointData.jn,
-    JointData.jh, JointData.jb, JointData.jy, JointData.jz] at en' eh' eb' ey' ez'
-  push_cast at en' eh' eb' ey' ez'
-  have hga' : (0 : ℝ) ≤ g.ga := by exact_mod_cast hga
-  have hgb' : (0 : ℝ) ≤ g.gb := by exact_mod_cast hgb
-  subst hP hQ hX hC hS0 hH0
-  nlinarith [mul_nonneg en' hn, mul_nonneg eh' hh, mul_nonneg eb' hb, mul_nonneg ey' hy,
-    mul_nonneg ez' hz, mul_nonneg hga' (sub_nonneg.2 hbn), mul_nonneg hgb' (sub_nonneg.2 hyz)]
+  have hcert : reserveCert lam mu g (Reserve.joint j.ze j.xs j.cA j.cB) = true := by
+    unfold reserveCert
+    apply decide_eq_true
+    simp only [jointCert, psd2, Bool.and_eq_true, decide_eq_true_eq, and_assoc] at hg
+    simpa only [Reserve.joint, JointData.jn, JointData.jh, JointData.jb,
+      JointData.jy, JointData.jz] using hg.2.2.2
+  have hbudget := reserved_gram_budget lam mu g _ hcert n h b y z P Q X2 C2
+    hn hh hb hy hz hbn hyz hG0 hG1a hG1b hP hQ hX hC
+  rw [joint_reserve_value, ← hS0, ← hH0] at hbudget
+  exact hbudget
 
 /-! ### What a node carries -/
 

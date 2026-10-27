@@ -12,7 +12,7 @@ Every finite check used here is proved by Lean's kernel.
 namespace Grothe.HaagerupCanonical
 
 /-- The rational upper endpoint, with all four finite checks discharged. -/
-theorem upper : IsGrothendieckBound (175613641599/125000000000) :=
+theorem upper : IsGrothendieckBound (1404909132791/1000000000000) :=
   upper_of_checks defect_check seed_check coefficient_check completed_check
 
 end Grothe.HaagerupCanonical
@@ -20,7 +20,7 @@ end Grothe.HaagerupCanonical
 namespace Grothe
 
 /-- The public hypothesis-free upper bound for every finite complex matrix. -/
-theorem haagerup_bound : IsGrothendieckBound (175613641599/125000000000) :=
+theorem haagerup_bound : IsGrothendieckBound (1404909132791/1000000000000) :=
   HaagerupCanonical.upper
 
 end Grothe

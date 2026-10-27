@@ -85,7 +85,7 @@ theorem differenceStep6_64 :
   decide +kernel
 
 theorem remainder_literal_ok :
-    (2^10*d10_64 + defectCapQ*(2^0*d0_64 + 2^1*d1_64 + 2^2*d2_64 + 2^3*d3_64 + 2^4*d4_64 + 2^5*d5_64 + 2^6*d6_64 + 2^7*d7_64 + 2^8*d8_64 + 2^9*d9_64))/(1-defectCapQ) ≤ 10169/10000000000000000 := by
+    ((1/16)*d10_64 + defectCapQ*(d0_64 + d1_64 + d2_64 + d3_64 + d4_64 + d5_64 + d6_64 + d7_64 + d8_64 + d9_64))/(1-defectCapQ) ≤ 1/5000000000000000 := by
   decide +kernel
 
 run_cmd do

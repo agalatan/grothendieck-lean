@@ -1,4 +1,4 @@
-import Grothe.LowerAnalytic.Potential
+import Grothe.LowerAnalytic.ComplexGaussianCore
 
 /-!
 # Polar cells of the complex Gaussian (route Core, integration)

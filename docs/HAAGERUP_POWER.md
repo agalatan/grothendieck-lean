@@ -1,10 +1,9 @@
 # Hypothesis-free upper bound from a canonical resolvent completion
 
-`Grothe.haagerup_bound` proves **K_G^ℂ ≤ 1.404909132792** for
+`Grothe.haagerup_bound` proves **K_G^ℂ ≤ 1.404909132791** for
 every finite complex matrix, with no Gaussian, integration, or numerical-tail
-hypotheses. The order-10 alternating completion passed
-[delivery CI](https://github.com/agalatan/grothendieck-lean/actions/runs/40432615845) for #133.
-The focused policy requires 96 results with zero native evaluation axioms.
+hypotheses. The order-10 completion retains cancellation inside each resolvent seed.
+The focused policy requires 98 results with zero native evaluation axioms.
 The sharper conditional upper bound and lower endpoint are separate.
 
 The Gaussian phase identity, tensor realization, complete finite residual,
@@ -34,6 +33,10 @@ quotient u(α,β)_k = (α)_k/(β)_k, with 0 ≤ α ≤ β and β > 0,
 Repeated differences therefore remain nonnegative. The discrete product rule
 Δ(uv)_k = (Δu_k)v_k + u_(k+1)Δv_k preserves complete monotonicity, and
 r_k = u(1/2,1)_k u(1/2,2)_k. Summability gives r_k → 0.
+The product also has a moment interpretation from two beta laws, consistent with
+the generalized Stieltjes representation in [Karp–Prilepkina, Theorem 2](https://arxiv.org/pdf/1112.5769).
+The Lean proof uses the finite quotient identities directly; the combined-seed
+estimate below is a finite-polynomial deduction.
 
 Put A = X P², T = X^K P^(2K+1), and E = 1 − R(1 − A). Suppose
 
@@ -46,7 +49,7 @@ The geometric-prefix identity (1−A) Σ_(i<n) T A^i = T−T A^n gives
 ‖Σ_(i<n) T A^i‖₁ ≤ 2B/(1−η). Finite Abel summation then bounds a sum
 with decreasing nonnegative weights by its initial weight times this constant.
 
-Let a be completely monotone, with a_k → 0. For
+Let a be completely monotone. For
 W_n(a) = Σ_(i<n) a_(K+i) T A^i, one summation by parts gives the exact
 recurrence
 
@@ -60,13 +63,17 @@ The remaining terms are (−RA)^m W_n(Δ^m a), an inverse-defect contribution
 E Σ_(j<m) (−RA)^j W_n(Δ^j a), and the boundary
 −Σ_(j<m) (Δ^j a)_(K+n) (−RA)^j RT A^n.
 
-Every fixed coefficient prefix of the composed series sees only finitely
-many terms because the kth term contains X^k. Hold that prefix fixed and
-let n grow: all boundary weights vanish. Abel summation at each difference
-order yields the complete coefficient-norm estimate
+For a coefficient prefix of length J, take n = J. Every term of the boundary
+contains A^J = X^J P^(2J), so all its coefficients below J vanish exactly.
+No assumption that a_k tends to zero is needed. If
+‖(−RA)^j RT‖₁ ≤ B_j for j ≤ m, apply the geometric-prefix and Abel estimates
+to the combined seed (−RA)^j T at each order. This yields
 
 ‖Σ_(k≥K) a_k X^k P^(2k+1) − Q_m‖₁
-≤ 2B/(1−η) · [C^m (Δ^m a)_K + η Σ_(j<m) C^j (Δ^j a)_K].
+≤ 2/(1−η) · [B_m (Δ^m a)_K + η Σ_(j<m) B_j (Δ^j a)_K].
+
+Taking B_j = C^j B recovers the uniform scalar estimate. Keeping the combined
+products allows cancellation within them before taking their coefficient norms.
 
 This holds at every order m. It uses finite polynomial identities and
 coefficient locality; it does not require an infinite polynomial inverse.
@@ -98,16 +105,20 @@ The exact parameters and kernel-checked finite caps are:
 - ‖R P^17‖₁ ≤ 249/500, giving B = 1/2 using ‖P‖₁ ≤ 1;
 - ‖R−1‖₁ + η ≤ 2, giving C = 2;
 - completed finite residual ≤ 736823/10¹⁶;
-- infinite remainder ≤ 10169/10¹⁶.
+- infinite remainder ≤ 2/10¹⁶.
 
 The remainder budget retains the actual finite differences:
 
-[2^10 Δ^10 r_64 + 10⁻¹² Σ_(j<10) 2^j Δ^j r_64] / (1−10⁻¹²)
-≤ 10169/10¹⁶.
+[(1/16) Δ^10 r_64 + 10⁻¹² Σ_(j<10) Δ^j r_64] / (1−10⁻¹²)
+≤ 2/10¹⁶.
 
-This rational inequality is checked in Lean's kernel. It avoids replacing every
-difference by the much larger zeroth difference. Complete monotonicity supplies
-the nonnegativity and vanishing tails needed by the analytic remainder theorem.
+For j ≤ 7, the identity
+(−RA)^j RT = (−1)^j X^(64+j) (RP^17)^(j+1) P^(112−15j)
+gives B_j ≤ (1/2)^(j+1). For j = 8, 9, 10, multiply the seventh seed by
+(−RA)^(j−7). The ratio bound gives B_10 ≤ 2³/256 = 1/32 and B_j ≤ 1/2
+for every j < 10. These estimates use the same short seed certificate.
+The displayed rational inequality is checked in Lean's kernel; complete
+monotonicity supplies the nonnegative decreasing weights for Abel summation.
 
 The completed finite residual polynomial is
 
@@ -139,10 +150,10 @@ or infinite-series norm outside the unit disk is assumed. Both the weighted
 finite-tail budget and the combined infinite-remainder budget are exact
 rational conjuncts of `coefficient_check`.
 
-The total normalized residual cap is 746992/10¹⁶. Residual transfer and the
+The total normalized residual cap is 736825/10¹⁶. Residual transfer and the
 proved lower enclosure for π give
 
-K_G^ℂ ≤ 4/[π(P(0) − 746992/10¹⁶)] < 1.404909132792.
+K_G^ℂ ≤ 4/[π(P(0) − 736825/10¹⁶)] < 1.404909132791.
 
 The exact recipe lives in `data/haagerup-resolvent/recipe.json`;
 `tools/gen_haagerup_certificate.py` reproduces `certificate.json` from it.
@@ -201,17 +212,16 @@ the checked prefix, weighted finite-tail budget, seed, inverse defect, exact
 coefficient differences, infinite remainder budget, and final endpoint.
 
 The focused axiom audit permits only `propext`, `Classical.choice`, and
-`Quot.sound` for all 96 selected results in the canonical route:
+`Quot.sound` for all 98 selected results in the canonical route:
 
 ```sh
 lake env lean scratch/AxiomsPower.lean | python3 scripts/check_axioms.py --haagerup-power
 ```
 
-Run this from the worktree root. The policy requires all 96 results with zero
-native axioms. The regenerated alternating completion passed
-[delivery CI](https://github.com/agalatan/grothendieck-lean/actions/runs/40432615845) under #133.
+Run this from the worktree root. The policy requires all 98 results with zero
+native axioms.
 The [acceptance receipt](verification/haagerup-alternating-20261027/acceptance/README.md)
-records the successful full delivery check. The
+records a successful full check of its pinned source snapshot. The
 [candidate and repair receipts](verification/haagerup-alternating-20261027/README.md)
 preserve the checks recorded before acceptance. Earlier verification receipts
 remain immutable evidence for their own pinned source snapshots. Normal

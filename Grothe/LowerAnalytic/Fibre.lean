@@ -118,16 +118,6 @@ def visE : (VisT n → ℝ) ≃ᵐ ℂ where
   measurable_toFun := (continuous_visC n).measurable
   measurable_invFun := (continuous_visU n).measurable
 
-/-- `(x, y) ↦ (x + iy)/√2`. -/
-def F2 (p : ℝ × ℝ) : ℂ := ((p.1 : ℂ) + (p.2 : ℂ) * Complex.I) / (√2 : ℝ)
-
-lemma measurable_F2 : Measurable F2 := by unfold F2; fun_prop
-
-lemma gaussC_eq_map : gaussC = gauss2.map F2 := by
-  have h := pi_map_two (ι := Fin 2) 0 1 (by decide)
-  rw [gaussC, ← h, Measure.map_map measurable_F2 (by fun_prop)]
-  rfl
-
 lemma map_visE : (γP n).map (visE n) = gaussC := by
   have h := pi_map_two (ι := VisT n) (a0 n) (a1 n) (a0_ne_a1 n)
   rw [gaussC_eq_map, ← h, Measure.map_map measurable_F2 (by fun_prop)]
