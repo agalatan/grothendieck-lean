@@ -83,7 +83,9 @@ theorem integral_energy_far_le {E : ℝ → ℂ}
       _ ≤ Real.exp (-s) * ((192043001 : ℝ) ^ 2 *
           ((513 : ℝ) ^ 42 * Real.exp ((s - 512) / 2))) :=
         mul_le_mul_of_nonneg_left hmul (Real.exp_nonneg _)
-      _ = _ := by rw [← he]; ring
+      _ = (192043001 : ℝ) ^ 2 * (513 : ℝ) ^ 42 *
+          (Real.exp (-s) * Real.exp ((s - 512) / 2)) := by ring
+      _ = _ := by rw [he]; ring
   have hi : (∫ s in Ioi (512 : ℝ), f s) ≤ ∫ s in Ioi (512 : ℝ), g s :=
     integral_mono_ae hE hg hfg
   have hInt : (∫ s in Ioi (512 : ℝ), g s) =

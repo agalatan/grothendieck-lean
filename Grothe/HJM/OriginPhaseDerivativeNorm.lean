@@ -24,7 +24,7 @@ theorem norm_phaseSecondDerivative_le (z v w : ℂ) (hz : z ≠ 0) :
   have hw : |⟪z, w⟫_ℝ| ≤ ‖z‖ * ‖w‖ := abs_real_inner_le_norm z w
   have hb : |‖v‖ ^ 2 + ⟪z, w⟫_ℝ| ≤ ‖v‖ ^ 2 + ‖z‖ * ‖w‖ := by
     calc
-      _ ≤ |‖v‖ ^ 2| + |⟪z, w⟫_ℝ| := abs_add _ _
+      _ ≤ |‖v‖ ^ 2| + |⟪z, w⟫_ℝ| := abs_add_le _ _
       _ ≤ _ := by rw [abs_of_nonneg (sq_nonneg _)]; linarith
   have ha2 : |⟪z, v⟫_ℝ| ^ 2 ≤ (‖z‖ * ‖v‖) ^ 2 :=
     (sq_le_sq₀ (abs_nonneg _) (mul_nonneg (norm_nonneg _) (norm_nonneg _))).mpr ha
@@ -44,7 +44,7 @@ theorem norm_phaseSecondDerivative_le (z v w : ℂ) (hz : z ≠ 0) :
         ‖z‖ * |‖v‖ ^ 2 + ⟪z, w⟫_ℝ| / ‖z‖ ^ 3 +
         3 * ‖z‖ * |⟪z, v⟫_ℝ| ^ 2 / ‖z‖ ^ 5 := by
       simp only [A, B, C, D, norm_div, norm_mul, norm_pow, Complex.norm_real,
-        Real.norm_eq_abs, abs_of_nonneg (norm_nonneg z), norm_ofNat]
+        Real.norm_eq_abs, abs_of_nonneg (norm_nonneg z), Complex.norm_ofNat]
     _ ≤ ‖w‖ / ‖z‖ + 2 * ‖v‖ * (‖z‖ * ‖v‖) / ‖z‖ ^ 3 +
         ‖z‖ * (‖v‖ ^ 2 + ‖z‖ * ‖w‖) / ‖z‖ ^ 3 +
         3 * ‖z‖ * (‖z‖ * ‖v‖) ^ 2 / ‖z‖ ^ 5 := by
@@ -84,7 +84,7 @@ theorem phase_jet_growth (s : ℝ) (hs : 0 ≤ s) (z v w : ℂ)
       _ ≤ 2 * ‖w‖ / ‖z‖ + 6 * ‖v‖ ^ 2 / ‖z‖ ^ 2 :=
         norm_phaseSecondDerivative_le z v w hn
       _ ≤ 2 * ‖w‖ * 250 + 6 * ‖v‖ ^ 2 * (250 : ℝ) ^ 2 := by
-        rw [div_eq_mul_inv, div_eq_mul_inv, inv_pow]
+        rw [div_eq_mul_inv, div_eq_mul_inv, ← inv_pow]
         gcongr
       _ ≤ 2 * (27 * (1 + s) ^ 9) * 250 +
           6 * (16 * (1 + s) ^ 10) ^ 2 * (250 : ℝ) ^ 2 := by gcongr
@@ -116,7 +116,7 @@ theorem phaseEnergyJet_far_growth (s : ℝ) (hs : 512 ≤ s) (z v w z0 : ℂ)
     exact h
   have hquot : ‖(Grothe.Haag.ph z - Grothe.Haag.ph z0) / (2 * (s : ℂ))‖ ≤ 1 := by
     rw [norm_div, norm_mul, Complex.norm_real, Real.norm_of_nonneg hs0]
-    norm_num only [norm_ofNat]
+    norm_num only [Complex.norm_ofNat]
     apply (div_le_one (by positivity)).mpr
     nlinarith
   have hfactor : |2 * s - 2| ≤ 2 * (1 + s) := by
@@ -126,11 +126,12 @@ theorem phaseEnergyJet_far_growth (s : ℝ) (hs : 512 ≤ s) (z v w z0 : ℂ)
   let B : ℂ := (2 * (s : ℂ) - 2) * phaseDerivative z v
   let Q : ℂ := (Grothe.Haag.ph z - Grothe.Haag.ph z0) / (2 * (s : ℂ))
   have hA : ‖A‖ ≤ 2 * s * (96013500 * (1 + s) ^ 20) := by
-    simp only [A, norm_mul, norm_neg, Complex.norm_real, Real.norm_of_nonneg hs0, norm_ofNat]
+    simp only [A, norm_mul, norm_neg, Complex.norm_real, Real.norm_of_nonneg hs0, Complex.norm_ofNat]
     exact mul_le_mul_of_nonneg_left hsecond (by positivity)
   have hB : ‖B‖ ≤ 2 * (1 + s) * (8000 * (1 + s) ^ 10) := by
     have he : (2 * (s : ℂ) - 2) = ((2 * s - 2 : ℝ) : ℂ) := by push_cast; ring
-    rw [B, he, norm_mul, Complex.norm_real, Real.norm_eq_abs]
+    dsimp only [B]
+    rw [he, norm_mul, Complex.norm_real, Real.norm_eq_abs]
     exact mul_le_mul hfactor hfirst (norm_nonneg _) (by positivity)
   have hsR : s * (1 + s) ^ 20 ≤ (1 + s) ^ 21 := by
     rw [pow_succ]
@@ -139,8 +140,10 @@ theorem phaseEnergyJet_far_growth (s : ℝ) (hs : 512 ≤ s) (z v w z0 : ℂ)
   have hR11 : (1 + s) ^ 11 ≤ (1 + s) ^ 21 :=
     pow_le_pow_right₀ hR (by norm_num)
   have hR21 : (1 : ℝ) ≤ (1 + s) ^ 21 := one_le_pow₀ hR
-  have hsum := (norm_add_le (A + B) Q).trans
-    (add_le_add_right (norm_add_le A B) ‖Q‖)
+  have hsum : ‖A + B + Q‖ ≤ ‖A‖ + ‖B‖ + ‖Q‖ := by
+    have h1 := norm_add_le (A + B) Q
+    have h2 := norm_add_le A B
+    linarith
   have hfinal : ‖A + B + Q‖ ≤ 192043001 * (1 + s) ^ 21 := by
     have hQ : ‖Q‖ ≤ 1 := hquot
     nlinarith [hsR, hR11, hR21, pow_nonneg hR0 10, pow_nonneg hR0 20]

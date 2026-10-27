@@ -71,19 +71,17 @@ theorem ofListQ_derivativeAux (p : List ℚ) (n : ℕ) :
   | nil => simp [derivativeAux, ofListQ]
   | cons a p ih =>
     simp only [derivativeAux, ofListQ, ih, derivative_add, derivative_C, derivative_mul,
-      derivative_X, zero_add, zero_mul, one_mul, mul_zero, add_zero,
+      derivative_X, zero_add, one_mul,
       Rat.cast_mul, Rat.cast_natCast]
     push_cast
-    ring
+    simp [map_add, map_mul] <;> ring
 
 theorem ofListQ_derivativeQ (p : List ℚ) :
     ofListQ (derivativeQ p) = (ofListQ p).derivative := by
   cases p with
   | nil => simp [derivativeQ, ofListQ]
   | cons a p =>
-    simp only [derivativeQ, ofListQ, ofListQ_derivativeAux, derivative_add,
-      derivative_C, derivative_mul, derivative_X, zero_add, zero_mul, one_mul,
-      C_1, one_mul]
+    simp [derivativeQ, ofListQ, ofListQ_derivativeAux, derivative_add, derivative_mul]
 
 def derivativeC (p : CList) : CList := ⟨derivativeQ p.re, derivativeQ p.im⟩
 
@@ -97,6 +95,8 @@ theorem hasDerivAt_evalC (p : CList) (s : ℝ) :
     HasDerivAt (evalC p) (evalC (derivativeC p) s) s := by
   have hr := (hasDerivAt_evalQ p.re s).ofReal_comp
   have hi := (hasDerivAt_evalQ p.im s).ofReal_comp
+  change HasDerivAt (fun t : ℝ => (evalQ p.re t : ℂ) +
+    Complex.I * (evalQ p.im t : ℂ)) _ s
   simpa only [evalC, derivativeC, zero_mul, zero_add] using
     hr.add ((hasDerivAt_const s Complex.I).fun_mul hi)
 
@@ -124,7 +124,7 @@ theorem left_polynomial_derivatives (s : ℝ) :
     rw [he]
     exact (Origin.hasDerivAt_realAxisPolynomial _ t).deriv
   constructor
-  · simpa only [hd] using (deriv_evalC ⟨OriginData.leftReal, OriginData.leftImag⟩ s).symm
+  · simpa only [hd] using deriv_evalC ⟨OriginData.leftReal, OriginData.leftImag⟩ s
   · have hdd : deriv (deriv (evalC ⟨OriginData.leftReal, OriginData.leftImag⟩)) s =
         Origin.leftNumeratorPolynomial.derivative.derivative.eval (s : ℂ) := by
       rw [hd]
@@ -147,7 +147,7 @@ theorem right_polynomial_derivatives (s : ℝ) :
     rw [he]
     exact (Origin.hasDerivAt_realAxisPolynomial _ t).deriv
   constructor
-  · simpa only [hd] using (deriv_evalC ⟨OriginData.rightReal, OriginData.rightImag⟩ s).symm
+  · simpa only [hd] using deriv_evalC ⟨OriginData.rightReal, OriginData.rightImag⟩ s
   · have hdd : deriv (deriv (evalC ⟨OriginData.rightReal, OriginData.rightImag⟩)) s =
         Origin.rightNumeratorPolynomial.derivative.derivative.eval (s : ℂ) := by
       rw [hd]
