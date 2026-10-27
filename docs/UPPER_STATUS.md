@@ -41,7 +41,10 @@ for some charge-one `X ∈ L²(gaussC ⊗ gaussC)`. The concrete Taylor version
 `fresh_upper_concrete_taylor_grouped` fixes `X` and takes the same fourteen
 finite-band Gaussian error inequalities and table-accuracy assumption as
 `fresh_upper_concrete_taylor`.
-Axioms: standard + `head_check` + `comparison_check` + `phi_cover_check_0`–`5` (native). Grouping introduces no new native facts. The structural fields of the old
+Axioms: the standard axioms and the existing native head, comparison, Hardy-region,
+Hardy-arc and phase-cover checks. The concrete Taylor specialization also uses
+the existing native phase-moment and center-energy checks. Grouping introduces
+no new native facts. The structural fields of the old
 `DirectHyps` (`valid`, `summable`, `summableX`, `parityX`) and `|P₃(φ)| ≤ 1` (via `phi_abs_lt_one : |φ| < 1`)
 are theorems.  Module map (all in `Grothe/UpperChaos/`):
 
