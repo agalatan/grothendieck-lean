@@ -52,6 +52,7 @@ theorem residual_norm_sq_le_of_approx_phase_mean
       _ ≤ ‖u‖ * δ := mul_le_mul hU hclose (norm_nonneg _) (norm_nonneg u)
   have hlower := (abs_le.mp hinner).1
   rw [norm_sub_sq (𝕜 := ℂ), inner_re_symm (𝕜 := ℂ) F (u • P)]
+  simp only [RCLike.re_to_complex]
   nlinarith [mul_nonneg (norm_nonneg u) hδ]
 
 /-- The left actual residual norm is bounded by its actual signed mean of
