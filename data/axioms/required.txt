@@ -833,6 +833,8 @@ Grothe.UpperChaos.ProfileRootScreen.allRowsOK
 Grothe.UpperChaos.ProfileRootScreen.gammaFactor_bounds
 Grothe.UpperChaos.ProfileRootScreen.gammaFactor_sq
 Grothe.UpperChaos.ProfileRootScreen.positive_factor_between_of_square_bounds
+Grothe.UpperChaos.ProfileRootScreen.profile_inner
+Grothe.UpperChaos.ProfileRootScreen.profile_outer
 Grothe.UpperChaos.ProfileRootScreen.sqrtPi_real_bounds
 Grothe.UpperChaos.RadialCutoff.gaussC_diagonal_exp_tail
 Grothe.UpperChaos.RadialCutoff.gaussC_radial_cutoff
