@@ -1,8 +1,9 @@
 # Hypothesis-free upper bound from a canonical resolvent completion
 
-The current source `Grothe.haagerup_bound` targets **K_G^ℂ ≤ 1.404909132792** for
+`Grothe.haagerup_bound` proves **K_G^ℂ ≤ 1.404909132792** for
 every finite complex matrix, with no Gaussian, integration, or numerical-tail
-hypotheses. **Delivery CI for the order-10 alternating completion is pending (#133).**
+hypotheses. The order-10 alternating completion passed
+[delivery CI](https://github.com/agalatan/grothendieck-lean/actions/runs/40432615845) for #133.
 The focused policy requires 96 results with zero native evaluation axioms.
 The sharper conditional upper bound and lower endpoint are separate.
 
@@ -88,7 +89,7 @@ degree 64 are computed by an exact recurrence and rounded to the nearest
 60-bit dyadic, with ties to even. The tracked `recipe.json` fixes every choice;
 the generator is not trusted by the Lean proof.
 
-The exact parameters and finite-check caps awaiting delivery CI are:
+The exact parameters and kernel-checked finite caps are:
 
 - K = 64 series terms and m = 10 correction terms;
 - checked coefficient prefix n < 165, with cap 368411/(5·10¹⁵);
@@ -206,10 +207,13 @@ The focused axiom audit permits only `propext`, `Classical.choice`, and
 lake env lean scratch/AxiomsPower.lean | python3 scripts/check_axioms.py --haagerup-power
 ```
 
-Run this from the worktree root. Acceptance requires all 96 results with zero
-native axioms. The regenerated alternating completion is awaiting delivery CI
-under #133. Its receipt is `docs/verification/haagerup-alternating-20261027/`. The records in `docs/verification/haagerup-canonical-20261026/` are
-immutable evidence for their older pinned source snapshots; they do not certify
-this new data. Normal `ready/*` delivery CI builds and audits the combined tree
-before merging it.
+Run this from the worktree root. The policy requires all 96 results with zero
+native axioms. The regenerated alternating completion passed
+[delivery CI](https://github.com/agalatan/grothendieck-lean/actions/runs/40432615845) under #133.
+The [acceptance receipt](verification/haagerup-alternating-20261027/acceptance/README.md)
+records the successful full delivery check. The
+[candidate and repair receipts](verification/haagerup-alternating-20261027/README.md)
+preserve the checks recorded before acceptance. Earlier verification receipts
+remain immutable evidence for their own pinned source snapshots. Normal
+`ready/*` delivery CI builds and audits the combined tree before merging it.
 The canonical upper-bound construction does not change the lower cap computations.

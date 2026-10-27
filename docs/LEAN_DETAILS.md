@@ -273,7 +273,7 @@ headline endpoints are unchanged.
   to 1.2·10⁻¹⁶ in ℓ¹ under a different linear-algebra library). This is reproduction, not
   formal verification.
 
-**Unconditional upper-bound source (delivery CI pending, #133).**
+**Unconditional upper bound (#133).**
 `Grothe.haagerup_bound : IsGrothendieckBound (175613641599/125000000000)`
 (`Grothe/Haagerup/Power.lean`), with no external hypothesis. The analysis is in
 `Grothe/Haagerup/`: the shared Gaussian phase and planar laws (`Phase`); the charge-one
@@ -328,9 +328,9 @@ completion is at most 10¹³ and the combined infinite remainder is at most
 The reproducibility command
 `tools/gen_haagerup_canonical_check.py --check` verifies byte-for-byte reproducibility;
 generation is separate from Lean proof checking. The public wrapper gives
-the source target K≤1.404909132792. The focused policy requires 96 results using only
-`propext`, `Classical.choice`, and `Quot.sound`; acceptance of the regenerated
-numerical trace awaits delivery CI.
+the theorem K≤1.404909132792. The focused policy requires 96 results using only
+`propext`, `Classical.choice`, and `Quot.sound`. The regenerated numerical trace
+passed [delivery CI](https://github.com/agalatan/grothendieck-lean/actions/runs/40432615845).
 `PowerData.lean` contains only the six definitions `pl`, `rl`, `seedPower`,
 `seedCap`, `defectCap`, and `slope`. The data module has no numerical theorem;
 all four acceptance proofs come from the canonical trace.
@@ -338,8 +338,10 @@ all four acceptance proofs come from the canonical trace.
 `CanonicalProof.lean` adds the weighted finite tail. Independent directed replay
 is provided by `tools/verify_haagerup_canonical.py`. The focused report
 `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, permits zero native axioms.
-The [alternating-completion receipt](verification/haagerup-alternating-20261027/README.md)
-records this layer separately from the historical degree-20 receipt.
+The [acceptance receipt](verification/haagerup-alternating-20261027/acceptance/README.md)
+records the successful full delivery check. The
+[candidate and repair receipts](verification/haagerup-alternating-20261027/README.md)
+preserve the checks recorded before acceptance, separately from the historical degree-20 receipt.
 Normal `ready/*` delivery CI builds and audits the combined tree before merging it.
 
 **Lower bound.** `Grothe.Research.LawNodeLower.profile_bound_of_law_nodes`

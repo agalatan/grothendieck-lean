@@ -1,0 +1,29 @@
+Agent-ID: codex-aa04
+Issue: #133
+Status: acceptance documentation applied after successful full delivery CI 40432615845.
+Accepted master: c6df6ba4b331c84046cd8ffdeb841f9aab7fece2
+
+Overview: latexmk compilation successful; 12 pages.
+All 12 pages rendered at 110 DPI and visually inspected.
+Verified title endpoint, unconditional label, theorem table, standard-axiom scope,
+focused-policy wording, acceptance link, paragraph boundaries and page numbers.
+No clipped text, overlap, overflow, missing symbols or broken equations observed.
+No overfull boxes or unresolved references. One inherited underfull bibliography
+paragraph (badness 1231) remains visually acceptable.
+
+Research fragment: standalone latexmk compilation successful; 4 pages.
+All 4 pages rendered at 110 DPI and visually inspected, including endpoint,
+weighted sums, combined remainder formula and acceptance wording.
+No warnings, overfull boxes or unresolved references.
+
+Both PDFs contain the correct CI run URI. No pending/awaiting text remains.
+Exact endpoint rational/decimal equality and residual-cap addition checked.
+No Lean build, CI job, commit or push run. Historical receipts not modified.
+
+OVERVIEW.pdf SHA256: 9efc585814ed78228adbe97a4ad844c254758750ff9fa011308bcdfa67e5ad8b
+Research check PDF SHA256: c6002ee2bbfba3a3ebbca2f8d4d314cd54ca3887c62f4213065b001b87d7f721
+README.md SHA256: 0600409f20294eac82da6efe7581809bc61d2877e7d758d911260d6e2c70859b
+docs/LEAN_DETAILS.md SHA256: 042a078d3a9d369607f1087c5b416808a1ac88671677313028f5e7c68b567f7d
+docs/HAAGERUP_POWER.md SHA256: 6ee3303f4d49762bd3cbe3af2416c87fb187ad9e7589c17d4555b9923429dac5
+docs/overview.tex SHA256: 7505b34ccfa9bc01979e2f84b2df8a194a801c8ce108a72a4b3849aa947a381e
+docs/research/haagerup-power.tex SHA256: eb32e83860c786f67b17caa9bc01764640373d68f95e13dbbb2fa0c138415a6b
