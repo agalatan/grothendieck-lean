@@ -18,7 +18,8 @@ noncomputable section
 
 /-- The degree-one component used by `vprof`. -/
 lemma lagHalf_one (s : ℝ) : lagHalf 1 s = 1 / 2 - s := by
-  norm_num [lagHalf, binHalf, Finset.sum_range_succ, Finset.prod_range_succ, Nat.factorial] <;> ring
+  norm_num [lagHalf, binHalf, Finset.sum_range_succ, Finset.prod_range_succ, Nat.factorial]
+  ring
 
 private def profileCellPrimitive (s : ℝ) : ℝ :=
   -(s ^ 2 + s + 5 / 4) * Real.exp (-s)
@@ -26,10 +27,11 @@ private def profileCellPrimitive (s : ℝ) : ℝ :=
 private lemma profileCellPrimitive_deriv (s : ℝ) :
     HasDerivAt profileCellPrimitive ((1 / 2 - s) ^ 2 * Real.exp (-s)) s := by
   have hp : HasDerivAt (fun x : ℝ => -(x ^ 2 + x + 5 / 4)) (-(2 * s + 1)) s := by
-    convert ((((hasDerivAt_id s).pow 2).add (hasDerivAt_id s)).add_const (5 / 4)).neg using 1 <;> ring
+    simpa only [id_eq, pow_one, mul_one] using
+      ((((hasDerivAt_id s).pow 2).add (hasDerivAt_id s)).add_const (5 / 4 : ℝ)).neg
   have he : HasDerivAt (fun x : ℝ => Real.exp (-x)) (-Real.exp (-s)) s := by
-    convert ((hasDerivAt_id s).neg.exp) using 1 <;> simp
-  convert hp.mul he using 1 <;> simp only [profileCellPrimitive] <;> ring
+    simpa using ((hasDerivAt_id s).neg.exp)
+  convert hp.mul he using 1 <;> ring
 
 /-- Exact source-bound identity for this finite Gaussian cell. -/
 theorem profile_first_gaussian_cell_exact :
@@ -41,7 +43,7 @@ theorem profile_first_gaussian_cell_exact :
     (fun s _ => profileCellPrimitive_deriv s) hi
   simp only [lagHalf_one]
   rw [hf]
-  simp only [profileCellPrimitive, Real.exp_zero, mul_one]
+  norm_num [profileCellPrimitive]
   ring
 
 /-- A two-sided enclosure of width `2 · 10⁻¹²`, checked in the Lean kernel. -/
