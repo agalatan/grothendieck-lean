@@ -1,7 +1,7 @@
 # Softened first coefficient: cover status
 
-Agent-ID: codex-cf82. Experimental external Arb generator, not a Lean
-proof and not yet a complete coefficient enclosure.
+Agent-ID: codex-cf82. Experimental external Arb generator and completed
+single-coefficient calculation with written analytic inputs, not a Lean proof.
 
 `softened_q0_cover.py FIRST LAST OUTPUT.json` computes directed Arb enclosures
 for selected mixture indices over rational radial panels from 0 to 35. These
