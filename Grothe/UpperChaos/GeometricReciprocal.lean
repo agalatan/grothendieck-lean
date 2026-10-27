@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Field.GeomSum
-import Mathlib.Data.Real.Basic
+import Mathlib.Basic.Real.Basic
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.LinearCombination
@@ -50,9 +50,9 @@ theorem abs_gaussian_reciprocal_perturbation_le
     |(2 * c * δ + δ ^ 2) / (1 + c ^ 2)| ≤ 1 / 16 := by
   have hnum : |2 * c * δ + δ ^ 2| ≤ 2 * c * |δ| + |δ| ^ 2 := by
     calc
-      _ ≤ |2 * c * δ| + |δ ^ 2| := abs_add _ _
+      _ ≤ |2 * c * δ| + |δ ^ 2| := abs_add_le _ _
       _ = _ := by rw [abs_mul, abs_mul, abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 2),
-          abs_of_nonneg hc0, abs_pow]; ring
+          abs_of_nonneg hc0, abs_pow]
   have hmul : c * |δ| ≤ (31 / 32 : ℝ) * (1 / 32 : ℝ) :=
     mul_le_mul hc hδ (abs_nonneg δ) (by norm_num)
   have hsq : |δ| ^ 2 ≤ (1 / 32 : ℝ) ^ 2 :=
@@ -70,7 +70,7 @@ theorem abs_gaussian_reciprocal_perturbation_le
     _ ≤ 1 / 16 := by norm_num
 
 /-- Exact reciprocal polynomial used by the Gaussian slice certificate. -/
-def gaussianReciprocalPoly (c δ : ℝ) : ℝ :=
+noncomputable def gaussianReciprocalPoly (c δ : ℝ) : ℝ :=
   (1 + c ^ 2)⁻¹ * ∑ k ∈ range 12,
     (-( (2 * c * δ + δ ^ 2) / (1 + c ^ 2))) ^ k
 
@@ -90,8 +90,7 @@ theorem abs_gaussian_reciprocal_sub_poly_le
   have hfactor : (1 + (c + δ) ^ 2)⁻¹ = d⁻¹ * (1 + v)⁻¹ := by
     have hid : 1 + (c + δ) ^ 2 = d * (1 + v) := by
       dsimp only [d, v]
-      field_simp [ne_of_gt (show 0 < 1 + c ^ 2 by positivity)]
-      <;> ring
+      field_simp [ne_of_gt (show 0 < 1 + c ^ 2 by positivity)]; ring
     rw [hid, mul_inv]
   have hinv : 0 ≤ d⁻¹ ∧ d⁻¹ ≤ 1 :=
     ⟨inv_nonneg.mpr hdpos.le, (inv_le_one₀ hdpos).2 hd⟩
