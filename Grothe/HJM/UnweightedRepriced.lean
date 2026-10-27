@@ -77,8 +77,10 @@ theorem unweighted_hjm_decimal_bound_of_head
     (hprefix : ∑ n ∈ range 119, |qhat (n + 1)| ≤ (ScalarTailRefinement.prefixUpper : ℝ))
     (hL : Origin.leftUnweightedTail 120 ≤ (21 / 10000 : ℝ) ^ 2)
     (hR : Origin.rightUnweightedTail 120 ≤ (21 / 10000 : ℝ) ^ 2) :
-    IsGrothendieckBound (1404898380143 / 10 ^ 12 : ℝ) :=
-  (unweighted_hjm_bound_of_head hslope hprefix hL hR).mono unweightedClaim_lt.le
+    IsGrothendieckBound (1404898380143 / 10 ^ 12 : ℝ) := by
+  apply (unweighted_hjm_bound_of_head hslope hprefix hL hR).mono
+  have heq : (1.404898380143 : ℝ) = 1404898380143 / 10 ^ 12 := by norm_num
+  simpa only [heq] using unweightedClaim_lt.le
 
 end
 end Grothe.HJM

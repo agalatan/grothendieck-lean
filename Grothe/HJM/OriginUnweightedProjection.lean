@@ -67,7 +67,9 @@ theorem unweightedTail_le_of_finite_test
       Real.sq_sqrt hV] using hsq
   have hvisible : C ^ 2 / B ≤ V := by
     apply (div_le_iff₀ hB).2
-    exact hC2.trans (mul_le_mul_of_nonneg_right hmass hV)
+    have hBV : unweightedTestMass x N * V ≤ V * B := by
+      simpa only [mul_comm B V] using mul_le_mul_of_nonneg_right hmass hV
+    exact hC2.trans hBV
   have hprefix : V ≤ ∑ n ∈ range M, ‖chargeOneCoeff R n‖ ^ 2 := by
     dsimp only [V]
     exact sum_le_sum_of_subset_of_nonneg (range_mono hNM) (fun _ _ _ => sq_nonneg _)
