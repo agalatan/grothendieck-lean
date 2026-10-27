@@ -1042,6 +1042,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_prod_mul
+#print axioms Grothe.UpperChaos.ProfileRootScreen.allCoeffsOK
+#print axioms Grothe.UpperChaos.ProfileRootScreen.allGammaSQOK
+#print axioms Grothe.UpperChaos.ProfileRootScreen.allRegionsOK
+#print axioms Grothe.UpperChaos.ProfileRootScreen.allRowsOK
+#print axioms Grothe.UpperChaos.ProfileRootScreen.sqrtPi_real_bounds
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_diagonal_exp_tail
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_radial_cutoff
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_radial_exp_tail
