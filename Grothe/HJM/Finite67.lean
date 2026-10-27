@@ -130,33 +130,36 @@ theorem branch5_tail :
     (ScalarTailRefinement.branch5Weight : ℝ) * ∑' n, |compCoeff haagCoeff (P 4) (n + 120)| ≤
       (ScalarTailRefinement.finite67Upper : ℝ) + (ScalarTailRefinement.outerReserve : ℝ) := by
   rw [← scalarTail_P_eq]
-  set Q := ScalarTailRefinement.P
   have hQ := ScalarTailRefinement.norm_P
-  have hsplit : ∀ n, compCoeff haagCoeff Q n = compCoeff (cLo 67) Q n + compCoeff (cHi 67) Q n := fun n => by
-    rw [← compCoeff_add (summable_cLo _) (summable_cHi _) hQ]
-    exact congrArg (fun c => compCoeff c Q n) (funext fun k => by unfold cLo cHi; split_ifs <;> ring)
-  have hlo : Summable fun n => |compCoeff (cLo 67) Q (n + 120)| :=
+  have hsplit (n : ℕ) : |compCoeff haagCoeff ScalarTailRefinement.P n| ≤
+      |compCoeff (cLo 67) ScalarTailRefinement.P n| + |compCoeff (cHi 67) ScalarTailRefinement.P n| := by
+    have e : compCoeff haagCoeff ScalarTailRefinement.P n =
+        compCoeff (cLo 67) ScalarTailRefinement.P n + compCoeff (cHi 67) ScalarTailRefinement.P n := by
+      rw [← compCoeff_add (summable_cLo _) (summable_cHi _) hQ]
+      exact congrArg (fun c => compCoeff c ScalarTailRefinement.P n)
+        (funext fun k => by unfold cLo cHi; split_ifs <;> ring)
+    rw [e]; exact abs_add_le _ _
+  have hlo : Summable fun n => |compCoeff (cLo 67) ScalarTailRefinement.P (n + 120)| :=
     (summable_nat_add_iff 120).2 (summable_abs_compCoeff (summable_cLo _) hQ)
   have hhi' := summable_abs_compCoeff (summable_cHi 67) hQ
-  have hhi : Summable fun n => |compCoeff (cHi 67) Q (n + 120)| := (summable_nat_add_iff 120).2 hhi'
-  have hw : (0 : ℝ) ≤ ScalarTailRefinement.branch5Weight := by norm_num [ScalarTailRefinement.branch5Weight]
-  have htail : ∑' n, |compCoeff (cHi 67) Q (n + 120)| ≤ ∑' n, |compCoeff (cHi 67) Q n| := by
+  have hhi : Summable fun n => |compCoeff (cHi 67) ScalarTailRefinement.P (n + 120)| :=
+    (summable_nat_add_iff 120).2 hhi'
+  have hk : Summable fun n => |compCoeff haagCoeff ScalarTailRefinement.P (n + 120)| :=
+    (summable_nat_add_iff 120).2 (summable_abs_compCoeff summable_haagCoeff hQ)
+  have hle := Summable.tsum_le_tsum (fun n => hsplit (n + 120)) hk (hlo.add hhi)
+  rw [hlo.tsum_add hhi] at hle
+  have htail : ∑' n, |compCoeff (cHi 67) ScalarTailRefinement.P (n + 120)| ≤
+      ∑' n, |compCoeff (cHi 67) ScalarTailRefinement.P n| := by
     rw [← hhi'.sum_add_tsum_nat_add 120]
     exact le_add_of_nonneg_left (Finset.sum_nonneg fun _ _ => abs_nonneg _)
-  have hk : Summable fun n => |compCoeff haagCoeff Q (n + 120)| :=
-    (summable_nat_add_iff 120).2 (summable_abs_compCoeff summable_haagCoeff hQ)
-  have hle : ∑' n, |compCoeff haagCoeff Q (n + 120)| ≤
-      ∑' n, (|compCoeff (cLo 67) Q (n + 120)| + |compCoeff (cHi 67) Q (n + 120)|) :=
-    Summable.tsum_le_tsum (fun n => (hsplit (n + 120)).symm ▸ abs_add_le _ _) hk (hlo.add hhi)
-  rw [hlo.tsum_add hhi] at hle
-  calc (ScalarTailRefinement.branch5Weight : ℝ) * ∑' n, |compCoeff haagCoeff Q (n + 120)|
-      ≤ (ScalarTailRefinement.branch5Weight : ℝ) *
-          (∑' n, |compCoeff (cLo 67) Q (n + 120)| + ∑' n, |compCoeff (cHi 67) Q (n + 120)|) :=
-        mul_le_mul_of_nonneg_left hle hw
-    _ = (ScalarTailRefinement.branch5Weight : ℝ) * ∑' n, |compCoeff (cLo 67) Q (n + 120)| +
-          (ScalarTailRefinement.branch5Weight : ℝ) * ∑' n, |compCoeff (cHi 67) Q (n + 120)| := mul_add _ _ _
-    _ ≤ _ := add_le_add finite67_bound
-        ((mul_le_mul_of_nonneg_left htail hw).trans
-          (ScalarTailRefinement.branch5_outer_bound ScalarTailRefinement.outer_composition_bound))
+  have hw : (0 : ℝ) ≤ ScalarTailRefinement.branch5Weight := by
+    have : (0 : ℚ) ≤ ScalarTailRefinement.branch5Weight := by
+      unfold ScalarTailRefinement.branch5Weight; positivity
+    exact_mod_cast this
+  have h1 := mul_le_mul_of_nonneg_left hle hw
+  have h2 := (mul_le_mul_of_nonneg_left htail hw).trans
+    (ScalarTailRefinement.branch5_outer_bound ScalarTailRefinement.outer_composition_bound)
+  rw [mul_add] at h1
+  linarith [finite67_bound]
 
 end Grothe.HJM
