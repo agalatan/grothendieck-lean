@@ -35,7 +35,10 @@ import Grothe
 #print axioms Grothe.HJM.Origin.chargeOneCoeff_gResidualLp
 #print axioms Grothe.HJM.Origin.coeff_le_residual_products
 #print axioms Grothe.HJM.Origin.coeff_summable
+#print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_of_relaxed_unweighted_residual_caps
 #print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_of_residual_caps
+#print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_of_unweighted_norm_cap
+#print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_of_unweighted_residual_caps
 #print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_of_visible
 #print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_published
 #print axioms Grothe.HJM.Origin.coeff_tail_le_of_energy_caps
@@ -297,6 +300,7 @@ import Grothe
 #print axioms Grothe.HJM.origin_tail_cap_lt_budget
 #print axioms Grothe.HJM.origin_tail_of_symmetric_energy_caps
 #print axioms Grothe.HJM.origin_tail_of_symmetric_residual_caps
+#print axioms Grothe.HJM.origin_tail_of_unweighted_residual_caps
 #print axioms Grothe.HJM.origin_tail_of_visible
 #print axioms Grothe.HJM.radial_response_norm_sq
 #print axioms Grothe.HJM.repricedClaim_lt
@@ -305,6 +309,7 @@ import Grothe
 #print axioms Grothe.HJM.repriced_hjm_bound_of_residual_caps
 #print axioms Grothe.HJM.repriced_hjm_bound_of_tables_visible
 #print axioms Grothe.HJM.repriced_hjm_bound_of_visible
+#print axioms Grothe.HJM.repriced_origin_tail_of_unweighted_residual_caps
 #print axioms Grothe.HJM.rotatedPairCoeff_dominated
 #print axioms Grothe.HJM.rotatedQhat_one
 #print axioms Grothe.HJM.rotated_hjm_bound

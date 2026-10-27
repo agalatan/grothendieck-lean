@@ -27,7 +27,10 @@ Grothe.HJM.Origin.chargeOneCoeff_fResidualLp
 Grothe.HJM.Origin.chargeOneCoeff_gResidualLp
 Grothe.HJM.Origin.coeff_le_residual_products
 Grothe.HJM.Origin.coeff_summable
+Grothe.HJM.Origin.coeff_tail_at_120_le_of_relaxed_unweighted_residual_caps
 Grothe.HJM.Origin.coeff_tail_at_120_le_of_residual_caps
+Grothe.HJM.Origin.coeff_tail_at_120_le_of_unweighted_norm_cap
+Grothe.HJM.Origin.coeff_tail_at_120_le_of_unweighted_residual_caps
 Grothe.HJM.Origin.coeff_tail_at_120_le_of_visible
 Grothe.HJM.Origin.coeff_tail_at_120_le_published
 Grothe.HJM.Origin.coeff_tail_le_of_energy_caps
@@ -280,6 +283,7 @@ Grothe.HJM.origin_symmetric_tail_cap_lt_budget
 Grothe.HJM.origin_tail_cap_lt_budget
 Grothe.HJM.origin_tail_of_symmetric_energy_caps
 Grothe.HJM.origin_tail_of_symmetric_residual_caps
+Grothe.HJM.origin_tail_of_unweighted_residual_caps
 Grothe.HJM.origin_tail_of_visible
 Grothe.HJM.radial_response_norm_sq
 Grothe.HJM.repricedClaim_lt
@@ -288,6 +292,7 @@ Grothe.HJM.repriced_hjm_bound_of_head
 Grothe.HJM.repriced_hjm_bound_of_residual_caps
 Grothe.HJM.repriced_hjm_bound_of_tables_visible
 Grothe.HJM.repriced_hjm_bound_of_visible
+Grothe.HJM.repriced_origin_tail_of_unweighted_residual_caps
 Grothe.HJM.rotatedPairCoeff_dominated
 Grothe.HJM.rotatedQhat_one
 Grothe.HJM.rotated_hjm_bound
