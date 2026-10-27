@@ -114,7 +114,10 @@ Grothe.HJM.Origin.hasDerivAt_phaseDerivative
 Grothe.HJM.Origin.hasDerivAt_polynomialPhase
 Grothe.HJM.Origin.hasDerivAt_realAxisPolynomial
 Grothe.HJM.Origin.integrableOn_fEnergyDensity
+Grothe.HJM.Origin.integrableOn_fEnergyDensity_all
 Grothe.HJM.Origin.integrableOn_gEnergyDensity
+Grothe.HJM.Origin.integrableOn_gEnergyDensity_all
+Grothe.HJM.Origin.integrable_energyDensity_of_envelope
 Grothe.HJM.Origin.integrable_green_pairing
 Grothe.HJM.Origin.integrable_green_pairing_of_extension
 Grothe.HJM.Origin.inv_norm_leftNumerator_le

@@ -122,7 +122,10 @@ import Grothe
 #print axioms Grothe.HJM.Origin.hasDerivAt_polynomialPhase
 #print axioms Grothe.HJM.Origin.hasDerivAt_realAxisPolynomial
 #print axioms Grothe.HJM.Origin.integrableOn_fEnergyDensity
+#print axioms Grothe.HJM.Origin.integrableOn_fEnergyDensity_all
 #print axioms Grothe.HJM.Origin.integrableOn_gEnergyDensity
+#print axioms Grothe.HJM.Origin.integrableOn_gEnergyDensity_all
+#print axioms Grothe.HJM.Origin.integrable_energyDensity_of_envelope
 #print axioms Grothe.HJM.Origin.integrable_green_pairing
 #print axioms Grothe.HJM.Origin.integrable_green_pairing_of_extension
 #print axioms Grothe.HJM.Origin.inv_norm_leftNumerator_le
