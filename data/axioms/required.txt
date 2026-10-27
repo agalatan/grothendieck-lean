@@ -707,13 +707,9 @@ Grothe.UpperChaos.firstCenter_charge
 Grothe.UpperChaos.firstCenter_tail_zero
 Grothe.UpperChaos.firstTailModes_eq
 Grothe.UpperChaos.first_captured_tail_budget
-Grothe.UpperChaos.fresh_upper_concrete
 Grothe.UpperChaos.fresh_upper_concrete_taylor
-Grothe.UpperChaos.fresh_upper_concrete_taylor_grouped
-Grothe.UpperChaos.fresh_upper_of_rounding
 Grothe.UpperChaos.fresh_upper_pieces
 Grothe.UpperChaos.fresh_upper_rounder
-Grothe.UpperChaos.fresh_upper_rounder_grouped
 Grothe.UpperChaos.gradedHermiteFn_add
 Grothe.UpperChaos.gradedHermiteFn_const_mul
 Grothe.UpperChaos.gradedHermiteFn_rot2
@@ -893,10 +889,7 @@ Grothe.UpperChaos.toLp_thirdCenterFn
 Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le
 Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le_two_mul
 Grothe.fresh_upper
-Grothe.fresh_upper_grouped
 Grothe.grouped_head_residual_le
-Grothe.grouped_upper_value_improves
-Grothe.grouped_upper_value_lt
 Grothe.haagerup_bound
 Grothe.hardy_budget_after_linear
 Grothe.head_residual_le
@@ -904,5 +897,4 @@ Grothe.linear_lower
 Grothe.mixture_bound
 Grothe.tail_le
 Grothe.tail_numeric
-Grothe.upper_value_improves
 Grothe.upper_value_lt
