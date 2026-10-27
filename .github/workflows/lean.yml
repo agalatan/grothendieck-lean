@@ -13,6 +13,10 @@ name: Lean proof check
 # ready/<name>: the branch is merged into the CURRENT master and the MERGED tree is checked; master moves only if green.
 # Master's cache: every update of master gets one check on master (a hand merge by its push; an auto-merge
 # dispatches it); when green, it saves the new master cache. Only master runs and droplet runs write caches.
+# Tree handoff: a green branch check whose commit contains the current master uploads its build as the artifact
+# lean-build-tree-<tree hash> (caches of a branch are invisible to master; artifacts are not). When master later
+# points at exactly that tree (the CI fast-forward of a ready/ branch, or a hand merge of an up-to-date pull request),
+# master's check downloads it instead of the older master cache, so its build only replays.
 # See AGENTS.md section 10.
 
 on:
@@ -46,6 +50,8 @@ jobs:
       droplet: ${{ steps.where.outputs.droplet }}
       runs_on: ${{ steps.where.outputs.runs_on }}
       key: ${{ steps.where.outputs.key }}
+      handoff_run: ${{ steps.where.outputs.handoff_run }}
+      handoff_name: ${{ steps.where.outputs.handoff_name }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -97,7 +103,23 @@ jobs:
           found=$(gh api "repos/${GITHUB_REPOSITORY}/actions/caches?key=${key}&per_page=100" \
             --jq "[.actions_caches[] | select(.ref == \"refs/heads/master\" or .ref == \"${GITHUB_REF}\")] | length")
           echo "caps digest ${digest}: ${found} verified cache(s) usable by ${GITHUB_REF_NAME}"
-          if [ "${{ steps.scope.outputs.lean }}" = true ] && { [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ]; }; then
+          # master: a green branch check may already have built exactly this tree (the tree handoff)
+          handoff=""
+          if [ "${GITHUB_REF_NAME}" = master ] && [ "${{ steps.scope.outputs.lean }}" = true ] && [ "${{ inputs.mode }}" != caps ]; then
+            name="lean-build-tree-$(git rev-parse 'HEAD^{tree}')"
+            for run in $(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=${name}&per_page=20" \
+                           --jq '.artifacts[] | select(.expired | not) | .workflow_run.id'); do
+              # only builds made by this workflow's checks count
+              if [ "$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run}" --jq .path 2>/dev/null)" = .github/workflows/lean.yml ]; then
+                handoff=$run; break
+              fi
+            done
+            if [ -n "$handoff" ]; then
+              echo "-> master's tree was already built and checked by run ${handoff}: using its build (${name})"
+              echo "handoff_run=${handoff}" >> "$GITHUB_OUTPUT"; echo "handoff_name=${name}" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+          if [ "${{ steps.scope.outputs.lean }}" = true ] && [ -z "$handoff" ] && { [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ]; }; then
             echo "-> the droplet builds and verifies the node caps (this run stays pending meanwhile)"
             echo "droplet=true" >> "$GITHUB_OUTPUT"; echo 'runs_on=["self-hosted","heavy"]' >> "$GITHUB_OUTPUT"
           else
@@ -135,8 +157,24 @@ jobs:
           git log --oneline -3
           printf 'base=%s\ntree=%s\n' "$(git rev-parse origin/master)" "$(git rev-parse 'HEAD^{tree}')" > merge-info
 
+      - name: Download the build of this exact tree (master, tree handoff from a green branch check)
+        if: env.LEAN == 'true' && needs.route.outputs.handoff_run != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.route.outputs.handoff_name }}
+          run-id: ${{ needs.route.outputs.handoff_run }}
+          github-token: ${{ github.token }}
+          path: handoff-build
+
+      - name: Unpack the handed-over build
+        if: env.LEAN == 'true' && needs.route.outputs.handoff_run != ''
+        run: |
+          mkdir -p .lake && rm -rf .lake/build
+          tar -I zstd -xf handoff-build/build.tar.zst -C .lake && rm -rf handoff-build
+          echo "built by run ${{ needs.route.outputs.handoff_run }}: $(cat .lake/build/built-commit 2>/dev/null)"
+
       - name: Restore the verified build cache (GitHub-hosted, or an empty droplet workspace)
-        if: env.LEAN == 'true' && hashFiles('.lake/build/lib/lean/Grothe.olean') == ''
+        if: env.LEAN == 'true' && needs.route.outputs.handoff_run == '' && hashFiles('.lake/build/lib/lean/Grothe.olean') == ''
         uses: actions/cache/restore@v4
         with:
           path: .lake/build
@@ -296,6 +334,31 @@ jobs:
         with:
           path: .lake/build
           key: ${{ needs.route.outputs.key }}${{ github.sha }}-run${{ github.run_id }}
+
+      - name: Pack the build for master's check if master can become exactly this tree (tree handoff)
+        # this commit contains the current master, so a ready/ fast-forward or a hand merge of the pull request gives
+        # master exactly this tree; master's check then downloads this build instead of rebuilding
+        id: handoff
+        if: env.LEAN == 'true' && github.ref_name != 'master'
+        run: |
+          git fetch -q origin master
+          if git merge-base --is-ancestor origin/master HEAD; then
+            git rev-parse HEAD > .lake/build/built-commit
+            tar -I 'zstd -T0 -3' -cf build.tar.zst -C .lake build
+            echo "name=lean-build-tree-$(git rev-parse 'HEAD^{tree}')" >> "$GITHUB_OUTPUT"
+            ls -l build.tar.zst
+          else
+            echo "master moved past this commit's base: no handoff"
+          fi
+
+      - name: Upload the build for master's check (tree handoff)
+        if: steps.handoff.outputs.name != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.handoff.outputs.name }}
+          path: build.tar.zst
+          compression-level: 0
+          retention-days: 1
 
       - name: Hand the checked merge to the finish job
         if: startsWith(github.ref_name, 'ready/')

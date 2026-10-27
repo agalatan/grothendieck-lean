@@ -114,3 +114,10 @@ removed before this CI handoff. It must not restart over a user/CI Row 12 build.
 Rows 13–15 and every remaining anchor/piece certificate are still needed for a
 hypothesis-free lower endpoint. The accepted native-free upper theorem
 `K_G^ℂ ≤ 1.404909132791` and its proof interfaces are unchanged.
+
+A green branch check can also hand its fully checked build to master as the
+short-lived `lean-build-tree-<tree hash>` artifact when the branch contains
+current master. Master's check accepts that artifact only for the exact same
+tree and the canonical workflow, then performs its ordinary checks and saves
+the master cache. This preserves the distinction between a branch cache and
+the master cache while avoiding a second cold droplet build.

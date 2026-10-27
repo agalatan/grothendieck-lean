@@ -60,12 +60,25 @@ def exact_power_norm(coefficients: list[Fraction], power: int) -> Fraction:
     return Fraction(sum(abs(x) for x in result), denominator**power)
 
 
+def weighted_phase_tail(ratio: Fraction, power: int, start: int, split: int) -> Fraction:
+    """Finite indexed power savings followed by the proved Haagerup tail majorant."""
+    coefficient = Fraction(1)
+    finite = Fraction(0)
+    for k in range(split):
+        if k >= start:
+            finite += coefficient * ratio**((2*k + 1)//power)
+        coefficient *= Fraction((2*k + 1)**2, 4*(k + 1)*(k + 2))
+    majorant = coefficient * (split + 1)*(2*split + 1)
+    suffix = ratio**((2*split + 1)//power) * majorant/(2*split)
+    return Fraction(355, 113)/4 * (finite + suffix)
+
+
 def verify(certificate: dict) -> dict:
     """Fail closed before rendering if any exact arithmetic check fails."""
     expected = {"schema_version", "P", "power", "ratio", "outer_start", "quotient",
-                "wallis_denominator", "reciprocal_claim", "paper_budgets",
+                "wallis_denominator", "weighted_split", "reciprocal_claim", "paper_budgets",
                 "exact_arithmetic", "provenance", "scope"}
-    if set(certificate) != expected or certificate["schema_version"] != 1:
+    if set(certificate) != expected or certificate["schema_version"] != 2:
         raise ValueError("unsupported scalar-tail certificate schema")
     raw = certificate["P"]
     if not isinstance(raw, list) or len(raw) != 38:
@@ -77,6 +90,9 @@ def verify(certificate: dict) -> dict:
     start = natural(certificate["outer_start"], "outer_start", positive=True)
     quotient = natural(certificate["quotient"], "quotient")
     wallis = natural(certificate["wallis_denominator"], "wallis_denominator", positive=True)
+    split = natural(certificate["weighted_split"], "weighted_split", positive=True)
+    if split <= start:
+        raise ValueError("weighted_split: must follow the first omitted outer index")
     if quotient != (2 * start + 1) // power:
         raise ValueError("quotient: inconsistent with the first omitted outer power")
     if wallis != 4 * start:
@@ -98,7 +114,8 @@ def verify(certificate: dict) -> dict:
     budgets = {key: rational(value, key) for key, value in certificate["paper_budgets"].items()}
     if any(value < 0 for value in budgets.values()) or budgets["selector_mass"] == 0:
         raise ValueError("paper_budgets: nonnegative budgets and positive selector mass required")
-    reserve = budgets["branch5_weight"] * ratio**quotient / wallis
+    outer_bound = weighted_phase_tail(ratio, power, start, split)
+    reserve = budgets["branch5_weight"] * outer_bound
     residual = (budgets["prefix_upper"] + budgets["finite67_upper"]
                 + budgets["other_tails_upper"] + reserve)
     score = (budgets["slope_lower"] - residual) / budgets["selector_mass"]
@@ -106,6 +123,7 @@ def verify(certificate: dict) -> dict:
     if claim <= 0 or score <= 0 or claim * score <= 1:
         raise ValueError("reciprocal_claim: exact normalized score does not meet the claim")
     arithmetic = {"P_l1": polynomial_norm, "power_l1": power_norm,
+                  "weighted_outer_bound": outer_bound,
                   "outer_reserve": reserve, "residual_upper": residual, "score_lower": score}
     if set(certificate["exact_arithmetic"]) != set(arithmetic):
         raise ValueError("exact_arithmetic: missing or unexpected receipt field")
@@ -130,7 +148,8 @@ def verify(certificate: dict) -> dict:
             "degree": len(coefficients) - 1, "power": power,
             "power_degree": power * (len(coefficients) - 1),
             "power_norm": str(power_norm), "power_cap": str(ratio),
-            "outer_start": start, "quotient": quotient, "outer_reserve": str(reserve),
+            "outer_start": start, "quotient": quotient, "weighted_split": split,
+            "weighted_outer_bound": str(outer_bound), "outer_reserve": str(reserve),
             "residual_upper": str(residual), "score_lower": str(score),
             "reciprocal_claim": str(claim), "strict_product_margin": str(claim * score - 1),
             "scope": "Exact finite arithmetic only; published scalar analytic inputs remain hypotheses."}
@@ -142,7 +161,7 @@ def generate(certificate: dict, template: str) -> tuple[str, dict]:
     substitutions = {
         "PL": ",\n  ".join(certificate["P"]), "RATIO": certificate["ratio"],
         "POWER": str(certificate["power"]), "START": str(certificate["outer_start"]),
-        "QUOTIENT": str(certificate["quotient"]),
+        "WEIGHTED_SPLIT": str(certificate["weighted_split"]),
         "WALLIS_DENOMINATOR": str(certificate["wallis_denominator"]),
         "DEGREE": str(receipt["degree"]), "CUTOFF": str(receipt["power_degree"] + 1),
         "WEIGHT": budget["branch5_weight"], "SLOPE": budget["slope_lower"],
@@ -164,7 +183,8 @@ def self_test(certificate: dict) -> dict:
     assert convolve([2, -3], [1, 4]) == [2, 5, -12]
     verify(certificate)
     for key, value in (("ratio", "1/100"), ("reciprocal_claim", "1"),
-                       ("quotient", certificate["quotient"] + 1)):
+                       ("quotient", certificate["quotient"] + 1),
+                       ("weighted_split", certificate["outer_start"])):
         bad = copy.deepcopy(certificate)
         bad[key] = value
         try:
@@ -173,7 +193,8 @@ def self_test(certificate: dict) -> dict:
             continue
         raise AssertionError(f"negative control accepted invalid {key}")
     return {"status": "PASS", "controls": ["exact_integer_convolution", "canonical_certificate",
-            "reject_understated_power_cap", "reject_unmet_reciprocal", "reject_wrong_quotient"]}
+            "reject_understated_power_cap", "reject_unmet_reciprocal", "reject_wrong_quotient",
+            "reject_invalid_weighted_split"]}
 
 
 def main() -> None:

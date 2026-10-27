@@ -12,7 +12,7 @@ CI screens all three project source trees for forbidden escapes and task spawnin
 The activated source allowlist contains **1,395 named facts**: the retained
 88 (23 ordinary, five Hardy and 60 cap ranges) plus 1,307 Row 12 facts
 (88 coverage, 1,194 piece ranges and 25 anchor ranges). The default report has
-**2,020 print directives**, with **1,788 required declarations**.
+**2,036 print directives**, with **1,804 required declarations**.
 [LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md) lists the retained facts
 and the new families. These are source/registry counts; Row 12 native execution,
 the complete CI proof/audit and verified cache upload remain pending.

@@ -4,7 +4,7 @@ Agent-ID: codex-6b2a. This source inventory covers the named native facts allowe
 for the single `Grothe` target, plus the four anonymous table diagnostics below.
 The activated allowlist has **1,395 named facts**: the retained 88 (60 cap ranges,
 five Hardy facts and 23 others) plus 1,307 Row 12 facts. The default report has
-**2,020 print directives** and **1,788 required declarations**. These are
+**2,036 print directives** and **1,804 required declarations**. These are
 source/registry counts. Row 12 native execution, full canonical build/STRICT
 audit and Actions cache publication remain pending.
 

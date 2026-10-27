@@ -30,11 +30,11 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.401697049825\;<\;\KG\;<\;1.404598149218$\\[6pt]
+\Large $1.401697049825\;<\;\KG\;<\;1.404598149152$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, resting on explicitly stated
 analytic and computer-assisted inputs (Section~\ref{sec:trust}).\\[4pt]
 Unconditional Lean theorem: $\KG\le1.404909132791$, using only the three standard axioms.\\[3pt]
-Written refinement of the published mixed rounding: $\KG<1.40489844$; its new power and tail steps are checked in Lean.\vspace{4pt}
+Written refinement of the published mixed rounding: $\KG<1.4048984303$; its power, weighted-tail and score steps are checked in Lean.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
@@ -77,7 +77,7 @@ year & who & lower bound & upper bound\\\midrule
 1987 & Haagerup & & $1.40490913\ldots$ (Gaussian phase rounding)\\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
-Oct 2026 & \textbf{this work} & $\mathbf{1.401697049825}$ & $\mathbf{1.404598149218}$\\
+Oct 2026 & \textbf{this work} & $\mathbf{1.401697049825}$ & $\mathbf{1.404598149152}$\\
 Oct 2026 & this work (unconditional) & & $1.404909132791$\\\bottomrule
 \end{tabular}
 \end{center}
@@ -112,9 +112,9 @@ The phase certificate checks 119,077 leaves in 512 cubes through six native rang
 Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $41$ and
 $\tau$ of degree $15$ with zero linear coefficient (any odd preprocessors of Wiener norm $\le1$ are realised by tensor
 powers). Compared with $c\,t$, $c=7119483103461/10^{13}$, the residual is at most
-$\delta=455308278509/(5\cdot10^{17})\approx9.10617\cdot10^{-7}$:
+$\delta=455291618509/(5\cdot10^{17})\approx9.10583\cdot10^{-7}$:
 \[
- \KG\le\frac1{c-\delta}=\frac{500000000000000000}{355973699864771491}<1.404598149218 .
+ \KG\le\frac1{c-\delta}=\frac{500000000000000000}{355973699881431491}<1.404598149152 .
 \]
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
@@ -126,7 +126,7 @@ Let $w_p\in[0,1]$ bound the retained absolute coefficient sum of the preprocesse
 For nonnegative radii $A_r^2\ge\sum_{p\in S\cap B_r}w_p^2E_X(p)$, Lean proves
 \[
  \sum_{p\in S}w_p|E_{G_T}(p)-E_X(p)|
- \le2\sum_r A_re_r+\Bigl(\sum_r e_r\Bigr)^2.
+ \le2\sum_r A_re_r+\sum_{r,s:\,B_r\cap B_s\ne\varnothing}e_re_s.
 \]
 All pieces may share coordinates. Lean proves each coefficient cost by outward interval polynomial arithmetic;
 native arithmetic checks eighteen weighted radii from the stored table and its error allowance.
@@ -212,13 +212,13 @@ Wick identity; the finite certificate (five row, three original-batch, one added
 The activated source of \lean{lower\_bound\_of\_capsRest} uses the same endpoint and refined cover, with vertex caps of rows 13--15 ($t=0.845$--$0.855$) and old excluded-node caps as \lean{CapsRest}.
 Row12 now has a complete source assembly, but its 1,307 new native checks and canonical CI verification are pending.
 The fifteen retained row modules keep their 60 range checks.\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error and table-accuracy inputs, proves $\KG\le500000000000000000/355973699864771491$.}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error and table-accuracy inputs, proves $\KG\le500000000000000000/355973699881431491$.}\\[2pt]
 the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussian mixing by characteristic functions, Parseval and Mehler, charge selection, summability;
 the transfer inequality (tensor powers); kernel composition and locality; the head through degree 501 from
 21,168 stored energies by a verified interval evaluator (one \lean{native\_decide}); the tail bound; the endpoint; the selected-block comparison and native band masses
 &
 \lean{ComparisonInputs}: an exact error decomposition, spectral supports and inherited Gaussian component norm caps.
-Lean derives the selected comparison $13311891/(15625\cdot10^9)$ ($93.56\%$ of the residual allowance).
+Lean derives the selected comparison $106490963/(125000\cdot10^9)$ ($93.56\%$ of the residual allowance).
 The decomposition itself is explicit in Lean (\lean{difference\_pieces}, \lean{fresh\_upper\_pieces}):
 18 band pieces of the smoothed Taylor errors and the rounding remainder, so only their 18 norm bounds remain external.
 Finite table accuracy $6847009/(5\cdot10^{17})$.
@@ -237,7 +237,7 @@ The 98-result focused audit policy permits only \lean{propext}, \lean{Classical.
 The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
 The activated source registry contains 1,395 native facts: the retained 88 (60 cap ranges, five Hardy checks and 23 others), plus 1,307 Row12 checks.
-The report \path{scratch/Axioms.lean} has 2,020 print directives and 1,788 required declarations. These are source counts; Row12 native execution, complete proof/audit and Actions-cache publication are pending.
+The report \path{scratch/Axioms.lean} has 2,036 print directives and 1,804 required declarations. These are source counts; Row12 native execution, complete proof/audit and Actions-cache publication are pending.
 Normal \path{ready/*} delivery CI builds ONE target, \lean{Grothe}, and checks ONE combined strict native/axiom report before merging; workflow edits follow the human-merged PR route.
 
 Row12 has 396 nodes: 85 chords, 88 localized vertices with 4,562 constrained pieces, and 223 anchors.
@@ -256,7 +256,7 @@ The rough two--three day estimate at two workers uses the grid census and histor
 When no verified cache matches, the SAME pending check runs on the self-hosted runner.
 The bounded preparation is followed by the complete \lean{Grothe} build, the strict audit and existing marker/Bridge checks, then a successful Actions-cache upload.
 A digest, marker alone or partial leaf receipt is not verification. No unconditional second ordinary branch check is required.
-After an actual merge, the ordinary master check must publish the master cache; a branch cache alone is not that evidence.
+After an actual merge, the ordinary master check must publish the master cache; a branch cache alone is not that evidence. A green branch check may hand over its fully checked build as a one-day artifact keyed by the exact tree; master accepts it only for that same tree and the canonical workflow, then replays and publishes the master cache.
 Research-only export modules remain outside proof roots. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
 the sharp upper bound retains external Gaussian component-error and table-accuracy inputs. The unconditional theorem proves $\KG\le1.404909132791$ using only the three standard axioms. Its order-$10$ completion retains cancellation within the resolvent seed products.
@@ -326,14 +326,17 @@ between successive composed powers.
 \paragraph{Published scalar-tail refinement [P,C; Lean components].}
 For the unchanged fifth scalar preprocessor of Heilman--Jones--Malavolta,
 the exact degree-592 calculation gives $\|P_5^{16}\|_1\le581/1000$.
-For every omitted outer index $j\ge67$ this saves a factor at most
-$(581/1000)^8$. Its weighted reserve falls from $6.31935\cdot10^{-8}$
-to $8.20506\cdot10^{-10}$. Keeping the published prefix, complete finite-block
+For each omitted outer index $j\ge67$ retain the factor
+$(581/1000)^{\lfloor(2j+1)/16\rfloor}$. Summing through index 159 and
+bounding the suffix from 160 by its endpoint weight and the Haagerup
+majorant gives a weighted reserve $1.42728\cdot10^{-10}$. Keeping the published prefix, complete finite-block
 tail, other tails and exact selector mass gives the written corollary
-$\KG<1.40489844$. Four pinned public verifiers pass; accepted coefficient
+$\KG<1.4048984303$. Four pinned public verifiers pass; accepted coefficient
 tables are hash-checked. Lean proves the power check with \lean{decide +kernel},
 complete suffix estimate and score arithmetic, all without native axioms.
-It also derives the phase-tail bound by an exact split at 120. Published Gaussian and
+It also derives the phase-tail bound by an exact split at 120. The complete weighted
+production module passes focused compilation, with a source-bound receipt;
+the earlier receipt is preserved separately. Published Gaussian and
 numerical integral budgets remain external. The separate unconditional \lean{haagerup\_bound}
 theorem has no external hypotheses and uses only the three standard axioms.
 The deduction and provenance are in

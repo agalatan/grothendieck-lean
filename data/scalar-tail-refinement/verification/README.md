@@ -1,8 +1,8 @@
 # Scope and replay of the scalar-tail evidence
 
 The parent [proof](../PROOF.md) derives the ordinary mathematical
-`K_G^C<1.40489844` corollary from explicit published scalar inputs and the
-new exact power16 bound. The companion Lean module proves the refinement
+`K_G^C<1.4048984303` corollary from explicit published scalar inputs and the
+exact power16 bound with per-index tail weights. The companion Lean module proves the refinement
 and numerical-input implication; this evidence does not create a new
 unconditional Lean Grothendieck endpoint.
 
@@ -22,21 +22,22 @@ The archive contains:
 - `SCALAR_BRANCH5.json`: exact polynomial input used by the independent
   power audit, extracted from the canonical source without executing it.
 - `POWER16_ARITHMETIC_AUDIT.json`: independent integer norm and Fraction
-  ledger replay. Its power135 discussion is informational; the checked
+  ledger replay for the earlier uniform-weight estimate. The verifier preserves that archive and separately recomputes the current weighted ledger. Its power135 discussion is informational; the checked
   delivery uses power16 only.
 - `verify_receipts.py`: a standard-library verifier of this archive's
-  hashes, stage scope, exact power16 arithmetic, and correspondence to
+  hashes, stage scope, exact power16 arithmetic, the weighted split at 160, and correspondence to
   the production `certificate.json`. It does not execute upstream code.
-- `SHA256SUMS`: hashes of the immutable packaged evidence and proof.
+- `SHA256SUMS`: hashes of the packaged evidence, current proof and verifiers. The upstream receipts and logs are preserved byte for byte.
   `RECEIPT_CHECK.json` is the resulting verification report and binds the
   production certificate by hash; it is excluded from the input manifest.
 - `LEAN_BUILD.json` and `production-*.log`: the successful targeted
-  production build, source/dependency hashes, and all 16 scalar-tail
+  production build of the earlier source revision, its source/dependency hashes, and all 16 scalar-tail
   axiom reports. All sixteen results use only standard axioms; the polynomial
   power is checked by `decide +kernel`, without native axioms. The report verifier
   rejects any scalar-tail native registry entry or native report dependency.
-  This is targeted module
+  This archived receipt does not certify the current weighted-tail source. Its recorded source hashes identify exactly what was built. The changed weighted proofs pass a local check against the unchanged compiled certificate; complete compilation of the generated production module passes in the separately recorded weighted build. This is targeted module
   coverage; CI checks the complete root target and full axiom report.
+- `WEIGHTED_BUILD.json` and `weighted-build.log`: the complete generated weighted-tail module passes focused CI at commit `1cc7f65`. This receipt binds the current proof and generator sources by hash and preserves the old receipt separately.
 - `verify_lean_report.py`: consumes the entire archived report through the
   repository's strict parser, checks all 16 names and both registries, and
   rejects any foreign native fact. It checks a report; it does not rebuild.

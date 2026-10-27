@@ -13,6 +13,7 @@ from pathlib import Path
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 from head_weights import Weights
+from gen_upper_data import verify_linear_refinement
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -48,11 +49,17 @@ def main(check=False):
         add(row['cutoff'],0,Q(row['tail_cap'])/fac,f'Taylor power {power}, high tail')
     cross=sum(Q(b['norm'])*Q(b['error']) for b in bands)
     radius=sum(Q(b['error']) for b in bands)
-    cap=ceil_grid(2*cross+radius**2,10**15)
+    triangle_cap=ceil_grid(2*cross+radius**2,10**15)
+    def overlap(a,b):
+        return not ((a['hi'] != 0 and a['hi'] <= b['lo']) or
+                    (b['hi'] != 0 and b['hi'] <= a['lo']))
+    quadratic=sum(Q(a['error'])*Q(b['error']) for a in bands for b in bands if overlap(a,b))
+    cap=ceil_grid(2*cross+quadratic,10**15)
     assert cap<Q(1065637497,10**15)
     delta=cap+sum(Q(d[k]) for k in ['headCapQ','energyErrQ','hardy_tail'])
     score=Q(d['slopeQ'])-delta;bound=1/score;headline=ceil_grid(bound,10**12)
     recipe=dict(bands=bands,comparison_cap=str(cap),error_radius=str(radius),cross=str(cross),
+                triangle_cap=str(triangle_cap),overlap_quadratic=str(quadratic),
                 delta=str(delta),score=str(score),bound=str(bound),headline=f'{float(headline):.12f}',
                 source_sha256=hashlib.sha256(src.read_bytes()).hexdigest(),
                 rounder_source_sha256=raw_hash,
@@ -73,6 +80,7 @@ def main(check=False):
            'namespace Grothe.Upper\nopen GrotheKernel\n',
            'def comparisonBands : List ComparisonBand := [']
     lines.append(',\n'.join(f'  ⟨{b["lo"]}, {b["hi"]}, {rat(b["error"])}, {rat(b["norm"])}⟩' for b in bands)+']\n')
+    lines.append(f'def comparisonTriangleQ : ℚ := {rat(triangle_cap)}\n')
     lines.append(f'def compareQ : ℚ := {rat(cap)}\n')
     lines.append('end Grothe.Upper\n')
     lean_path=ROOT/'Grothe/Upper/ComparisonData.lean'
@@ -87,6 +95,17 @@ def main(check=False):
         d.update(compare=str(cap),delta=str(delta),incumbent_score=str(score),
                  exact_bound=str(bound),headline_upper=str(headline),headline_decimal=recipe['headline'],
                  localized_recipe_sha256=hashlib.sha256(recipe_text.encode()).hexdigest())
+        if 'linear_budget_refinement' in d:
+            refined=d['linear_budget_refinement']
+            head_residual=cap+Q(d['headCapQ'])+Q(d['energyErrQ'])
+            linear_lower=Q(d['slopeQ'])-head_residual
+            refined_delta=head_residual+Q(refined['hardy_tail'])
+            refined_score=Q(d['slopeQ'])-refined_delta
+            refined.update(head_residual=str(head_residual),linear_lower=str(linear_lower),
+                delta=str(refined_delta),incumbent_score=str(refined_score),
+                exact_bound=str(1/refined_score),
+                headline_decimal=f'{float(ceil_grid(1/refined_score,10**12)):.12f}')
+            verify_linear_refinement(d)
         p.write_text(json.dumps(d,indent=2)+'\n')
     print('Comparison',float(cap),'pieces',len(bands),'upper',recipe['headline'],flush=True)
     return recipe

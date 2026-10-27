@@ -192,25 +192,91 @@ theorem supported_composition_arbitrary_power_bound {c : ℕ → ℝ}
       · simp [w, hk, mul_comm]
     _ = q^m * ∑' k, |c k| := tsum_mul_left
 
-/-- The actual omitted outer phase blocks start at index 67, hence every
-term receives at least ratio^8. No Wallis estimate is used yet. -/
-lemma outer_composition_saving :
-    ∑' n, |compCoeff (cHi 67) P n| ≤
-      (ratio : ℝ)^8 * ∑' k, |cHi 67 k| := by
-  exact supported_composition_arbitrary_power_bound (summable_cHi 67) norm_P
-    (by norm_num [ratio]) (by norm_num [ratio]) 16 norm_power 67 8 (by norm_num)
-    (fun k hk => by simp [cHi, hk])
+/-- Retain the actual power saving of each explicitly summed outer index. -/
+def weightedChunk : ℚ := ∑ k ∈ range 160,
+  if k < 67 then 0 else haagR k * ratio^((2*k+1)/16)
 
-/-- The paper's Wallis tail estimate is an explicit analytic input. -/
-lemma outer_composition_bound
-    (hWallis : (∑' k, |cHi 67 k|) ≤ (1 : ℝ)/268) :
-    ∑' n, |compCoeff (cHi 67) P n| ≤ (ratio : ℝ)^8/268 := by
+/-- The remaining tail uses its endpoint weight and the proved Haagerup majorant. -/
+def weightedOuterBound : ℚ := (355/113)/4 *
+  (weightedChunk + ratio^((2*160+1)/16) *
+    haagG 160 / (2*160))
+
+/-- Keep the power contraction at every finite outer index, then bound the infinite suffix. -/
+lemma outer_composition_saving :
+    ∑' n, |compCoeff (cHi 67) P n| ≤ Real.pi/4 *
+      ((weightedChunk : ℝ) + (ratio : ℝ)^((2*160+1)/16) *
+        (haagG 160 : ℝ)/(2*160)) := by
+  let w : ℕ → ℝ := fun k => (ratio : ℝ)^((2*k+1)/16)
+  have hq0 : (0 : ℝ) ≤ ratio := by norm_num [ratio]
+  have hq1 : (ratio : ℝ) ≤ 1 := by norm_num [ratio]
+  have hw0 : ∀ k, 0 ≤ w k := fun k => pow_nonneg hq0 _
+  have hw1 : ∀ k, w k ≤ 1 := fun k => pow_le_one₀ hq0 hq1
+  have hm : Antitone w := by
+    intro k l hkl
+    exact pow_le_pow_of_le_one hq0 hq1 (Nat.div_le_div_right (by omega))
+  have hmain := weighted_composition_cut (summable_cHi 67) norm_P w hw0 hw1 hm
+    (fun k => compTerm_arbitrary_power_bound norm_P hq0 16 norm_power k) 160
+  have hfinite : ∑ k ∈ range 160, |cHi 67 k| * w k =
+      Real.pi/4 * (weightedChunk : ℝ) := by
+    unfold weightedChunk
+    push_cast
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro k hk
+    by_cases h : k < 67
+    · simp [cHi, h]
+    · simp only [cHi, ite_eq_right h, abs_of_nonneg (haagCoeff_nonneg k)]
+      dsimp [w, haagCoeff]
+      push_cast
+      ring
+  have hshift : ∑' k, |cHi 67 (k+160)| =
+      ∑' k, haagCoeff (k+160) := by
+    apply tsum_congr
+    intro k
+    simp [cHi, show ¬ k+160 < 67 by omega,
+      abs_of_nonneg (haagCoeff_nonneg _)]
+  rw [hfinite, hshift] at hmain
   calc
-    ∑' n, |compCoeff (cHi 67) P n| ≤
-        (ratio : ℝ)^8 * ∑' k, |cHi 67 k| := outer_composition_saving
-    _ ≤ (ratio : ℝ)^8 * ((1 : ℝ)/268) :=
-      mul_le_mul_of_nonneg_left hWallis (pow_nonneg (by norm_num [ratio]) 8)
-    _ = (ratio : ℝ)^8/268 := by ring
+    ∑' n, |compCoeff (cHi 67) P n| ≤ Real.pi/4*(weightedChunk : ℝ) +
+        w 160 * ∑' k, haagCoeff (k+160) := hmain
+    _ ≤ Real.pi/4*(weightedChunk : ℝ) + w 160 *
+        (Real.pi/4*((haagG 160 : ℝ)/(2*160))) :=
+      add_le_add le_rfl (mul_le_mul_of_nonneg_left
+        (tsum_haagCoeff_tail_le 160 (by norm_num)) (hw0 _))
+    _ = _ := by dsimp [w]; ring
+
+/-- A rational cap for the full composed outer tail, with no analytic tail premise. -/
+lemma outer_composition_bound :
+    ∑' n, |compCoeff (cHi 67) P n| ≤ (weightedOuterBound : ℝ) := by
+  have hq : (0 : ℚ) ≤ ratio := by norm_num [ratio]
+  have hc : (0 : ℚ) ≤ weightedChunk := Finset.sum_nonneg fun k _ => by
+    split_ifs
+    · exact le_rfl
+    · have hr := haagR_pos k
+      positivity
+  have hG : (0 : ℚ) ≤ haagG 160 := by
+    have hr := haagR_pos 160
+    unfold haagG
+    positivity
+  have hc' : (0 : ℝ) ≤ weightedChunk := by exact_mod_cast hc
+  have hG' : (0 : ℝ) ≤ haagG 160 := by exact_mod_cast hG
+  have hq' : (0 : ℝ) ≤ ratio := by exact_mod_cast hq
+  have hnonneg : (0 : ℝ) ≤ (weightedChunk : ℝ) +
+      (ratio : ℝ)^((2*160+1)/16) *
+        (haagG 160 : ℝ)/(2*160) := by positivity
+  have hpi : Real.pi ≤ (355/113 : ℝ) := by linarith [Real.pi_lt_d20]
+  calc
+    ∑' n, |compCoeff (cHi 67) P n| ≤ Real.pi/4 *
+        ((weightedChunk : ℝ) + (ratio : ℝ)^((2*160+1)/16) *
+          (haagG 160 : ℝ)/(2*160)) := outer_composition_saving
+    _ ≤ (355/113 : ℝ)/4 *
+        ((weightedChunk : ℝ) + (ratio : ℝ)^((2*160+1)/16) *
+          (haagG 160 : ℝ)/(2*160)) :=
+      mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_right hpi (by norm_num)) hnonneg
+    _ = (weightedOuterBound : ℝ) := by
+      unfold weightedOuterBound
+      push_cast
+      ring
 
 /-! ## Exact rational ledger
 
@@ -226,19 +292,19 @@ def prefixUpper : ℚ := 67176837781129/62500000000000000000
 def finite67Upper : ℚ := 1349588177898719/500000000000000000000000000
 def otherTailsUpper : ℚ := 520112062885199/5000000000000000000000
 def selectorMass : ℚ := 1250000000000000121997/1250000000000000000000
-def outerReserve : ℚ := branch5Weight * ratio^8/268
+def outerReserve : ℚ := branch5Weight * weightedOuterBound
 def residualUpper : ℚ := prefixUpper + finite67Upper + otherTailsUpper + outerReserve
 def scoreLower : ℚ := (slopeLower-residualUpper)/selectorMass
-def reciprocalClaim : ℚ := 35122461/25000000
+def reciprocalClaim : ℚ := 14048984303/10000000000
 
 lemma branch5_outer_bound
-    (hWallis : (∑' k, |cHi 67 k|) ≤ (1 : ℝ)/268) :
+    (houter : (∑' n, |compCoeff (cHi 67) P n|) ≤ (weightedOuterBound : ℝ)) :
     (branch5Weight : ℝ) * (∑' n, |compCoeff (cHi 67) P n|) ≤
       (outerReserve : ℝ) := by
   calc
     (branch5Weight : ℝ) * (∑' n, |compCoeff (cHi 67) P n|) ≤
-        (branch5Weight : ℝ) * ((ratio : ℝ)^8/268) :=
-      mul_le_mul_of_nonneg_left (outer_composition_bound hWallis)
+        (branch5Weight : ℝ) * (weightedOuterBound : ℝ) :=
+      mul_le_mul_of_nonneg_left houter
         (by norm_num [branch5Weight])
     _ = (outerReserve : ℝ) := by
       dsimp [outerReserve]
@@ -248,8 +314,7 @@ lemma branch5_outer_bound
 /-- Exact arithmetic including the selector mass, with a strict margin. -/
 lemma ledger_acceptance :
     (1 : ℚ)/reciprocalClaim * selectorMass < slopeLower-residualUpper := by
-  norm_num [reciprocalClaim, selectorMass, slopeLower, residualUpper,
-    prefixUpper, finite67Upper, otherTailsUpper, outerReserve, branch5Weight, ratio]
+  decide +kernel
 
 lemma score_acceptance : (1 : ℚ)/reciprocalClaim < scoreLower := by
   unfold scoreLower
@@ -295,16 +360,16 @@ theorem refined_score_of_published_inputs
     (hfinite67 : finite67 ≤ (finite67Upper : ℝ))
     (hother : otherTails ≤ (otherTailsUpper : ℝ))
     (hmass : mass = (selectorMass : ℝ))
-    (hWallis : (∑' k, |cHi 67 k|) ≤ (1 : ℝ)/268) :
+    (houter : (∑' n, |compCoeff (cHi 67) P n|) ≤ (weightedOuterBound : ℝ)) :
     1/(reciprocalClaim : ℝ) <
       (linear-(prefixCost+finite67+otherTails+
         (branch5Weight : ℝ)*(∑' n, |compCoeff (cHi 67) P n|)))/mass := by
   exact normalized_score_of_published_budgets linear prefixCost finite67 otherTails
     ((branch5Weight : ℝ)*(∑' n, |compCoeff (cHi 67) P n|)) mass
-    hlinear hprefix hfinite67 hother (branch5_outer_bound hWallis) hmass
+    hlinear hprefix hfinite67 hother (branch5_outer_bound houter) hmass
 
 /-- The normalized score corollary needs only the published numerical
-budgets: its Wallis input is discharged by wallis_tail_bound. The Gaussian
+budgets: the weighted outer-tail input is proved by outer_composition_bound. The Gaussian
 interpretation of the remaining budgets is not asserted by this theorem. -/
 theorem refined_score_of_published_budgets
     (linear prefixCost finite67 otherTails mass : ℝ)
@@ -317,7 +382,7 @@ theorem refined_score_of_published_budgets
       (linear-(prefixCost+finite67+otherTails+
         (branch5Weight : ℝ)*(∑' n, |compCoeff (cHi 67) P n|)))/mass := by
   exact refined_score_of_published_inputs linear prefixCost finite67 otherTails mass
-    hlinear hprefix hfinite67 hother hmass wallis_tail_bound
+    hlinear hprefix hfinite67 hother hmass outer_composition_bound
 
 end
 end Grothe.ScalarTailRefinement

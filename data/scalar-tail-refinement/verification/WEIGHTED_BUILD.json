@@ -1,0 +1,18 @@
+{
+  "status": "PASS_TARGETED_WEIGHTED_SCALAR_TAIL_BUILD",
+  "commit": "1cc7f6501e67afe4509c2f87950b183b3de23465",
+  "run": "https://github.com/agalatan/grothendieck-lean/actions/runs/40457620830",
+  "target": "Grothe.Haagerup.ScalarTailRefinement",
+  "exit_code": 0,
+  "warnings": 0,
+  "seconds": 126,
+  "source_sha256": {
+    "Grothe/Upper/PowerTail.lean": "f35ec39e825efe0e9255e26989c268b15a9fe482b6aa88fbf3c77fc7ea958ea2",
+    "Grothe/Haagerup/ScalarTailRefinement.lean": "1114bd6af36866c280738c624e862a959b8689aedc09064c7098c47cb8718117",
+    "tools/templates/scalar_tail_refinement.lean.in": "c3b78a4e6b43ddac16ec3f5aa41c7cc3fc5e70c5bde98f20f2c1dd8a2bed840e",
+    "tools/gen_scalar_tail_refinement.py": "69b006521e0053fc2353b3821044a630e3228450d461c07b9223d47973734ab8",
+    "data/scalar-tail-refinement/certificate.json": "517796aa095cb0e6787d617e487222e346d2e92b5b71719416ddc7d5cf14343e"
+  },
+  "log_sha256": "a0cddc849d658ee1bd05b4dd3cf6a7d9c4ced52ab6f9c9c5d836a8cba89a7a17",
+  "scope": "Complete production-module compilation. The separate archived LEAN_BUILD.json and production-axioms.log identify the original unchanged power certificate; they are not a fresh full axiom report for this revision. No end-to-end HJM IsGrothendieckBound is asserted."
+}
