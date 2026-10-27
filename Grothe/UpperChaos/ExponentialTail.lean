@@ -1,4 +1,4 @@
-import Mathlib.Analysis.SumIntegralExpDecay
+import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 
 /-! # Polynomial-exponential tail integrals
 
