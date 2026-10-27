@@ -897,6 +897,7 @@ Grothe.UpperChaos.gradedIdx_charge
 Grothe.UpperChaos.gradedIdx_injective
 Grothe.UpperChaos.gradedIdx_total_degree
 Grothe.UpperChaos.gradedSupport_total_degree_lt
+Grothe.UpperChaos.gradedUnit_taylorInnerSource_swapped
 Grothe.UpperChaos.hardy_of_inputs
 Grothe.UpperChaos.hardy_of_pair_inputs
 Grothe.UpperChaos.hardy_of_real
