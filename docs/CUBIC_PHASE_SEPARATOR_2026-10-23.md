@@ -2,8 +2,8 @@
 
 Worktree: `/Users/alingalatan/workspaces/grothe-codex-joint-image`.
 Branch: `codex/joint-response-delivery-20261023`.
-Baseline endpoints, under the existing documented inputs, remain
-`1.401697049825 < K_G^C < 1.404598149218`.
+The upper focus is the conditional target `1.404598149141`; previous
+endpoint comparisons are in [the preserved upper-bound archive](../archive/weaker-upper-bounds/README.md).
 The integrated baseline is GitHub master `b1e3598`. Its concrete upper-rounding
 theorem and split native checks are preserved. The default lower theorem still
 uses `NodeCaps`; the heavy separate caps route is not reverified by this work.

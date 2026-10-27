@@ -1,22 +1,13 @@
 # Current polynomial preprocessing certificate
 
-Under the documented Gaussian inputs, the certificate proves
+This directory retains the shared rounding source, preprocessors, energy table,
+finite-head and Hardy certificates used by the conditional target
+**K_G^C < 1.404598149141**. The numerical Gaussian inputs remain unproved.
 
-**K_G^C < 1.404598161500.**
-
-The exact reciprocal score is `355973696751850991/500000000000000000`.
-This is a global upper certificate, not a bound on a selected response region.
-The lower certificate is unaffected.
-
-The current Lean assembly also deducts the linear coefficient's forced weighted
-square from the same Hardy budget. Its tail is `30488839/1000000000000000`,
-residual `455291618509/500000000000000000`, and reciprocal score
-`355973699881431491/500000000000000000`, giving **K_G^C < 1.404598149152**.
-These derived values are checked under `linear_budget_refinement`; the raw
-contour-tail allowance is also retained for replay. The weighted
-comparison contributes 93.56% of the refined residual, the head 3.09%, and the
-tail 3.35%. No stronger Gaussian or Hardy input is used.
-
+The byte-pinned data and generators retain historical intermediate endpoint
+metadata for reproducibility. It is not the active endpoint ledger, which is
+`Grothe/Upper/GroupedBridge.lean`. Previous endpoint documentation is preserved
+in `archive/weaker-upper-bounds/snapshot/data/upper-preprocess/README.md`.
 
 ## Mathematical assembly and trust boundary
 
@@ -38,10 +29,9 @@ residual about `c t`, with `c = 7119483103461/10000000000000`:
 | stored energy-table accuracy | `6847009/500000000000000000` | inherited external Gaussian input |
 | infinite tail after degree 501 | `36748/1000000000000` | fresh contour arithmetic, same analytic Schur input |
 
-Their sum is `delta = 458421199009/500000000000000000`.
-The already formalized transfer theorem gives
-`K_G^C <= 1/(c-delta) < 1.404598161500`.
-No additional head-comparison hypothesis is introduced.
+The current grouped comparison and Hardy deduction are assembled in
+`Grothe/Upper/GroupedBridge.lean`; the strict decimal comparison there is
+`1.404598149141`. All actual Gaussian and energy-table hypotheses remain explicit.
 
 The native Lean checker proves the complete finite-head statement over exact
 dyadic energy data and rational polynomial coefficients. The Lean development separately proves the
@@ -51,8 +41,7 @@ takes `ComparisonInputs`, `energy_close` and `hardy`, for a charge-one L2 trunca
 The first records an exact Gaussian error decomposition, spectral supports and
 component norm bounds. Their source enclosures and identification remain external;
 Lean derives the selected comparison. See `../localized-comparison/PROOF.md`.
-Thus this is not a new unconditional Lean endpoint. The unconditional theorem
-`Grothe.haagerup_bound` remains separate.
+The other endpoint variants are preserved in `archive/weaker-upper-bounds/`.
 
 For `hardy`, the enclosed Gaussian Schur lemma bounds the holomorphic kernel on
 the circle of radius `4149/4000`. The directed verifier checks its positive
@@ -104,4 +93,5 @@ The current lower data pass exact whole-cover replay and byte-for-byte export.
 Temporary targeted Lean receipts from 23 October were cleared before collection;
 they are not claimed as current validation. The final merged branch is checked
 by full GitHub Lean CI, including the actual axiom report and unchanged heavy
-cap stamp. See `verification/` for source guards and the explicit build-record gap.
+cap stamp. Historical verification receipts are preserved under
+`archive/weaker-upper-bounds/tree/data/upper-preprocess/verification/`; their original scope is unchanged.

@@ -20,7 +20,7 @@ SPEC.loader.exec_module(CHECKER)
 GENERATOR_SPEC = importlib.util.spec_from_file_location("gen_root_imports", ROOT / "tools/gen_root_imports.py")
 GENERATOR = importlib.util.module_from_spec(GENERATOR_SPEC)
 GENERATOR_SPEC.loader.exec_module(GENERATOR)
-MODES = ("responses", "response-geometry", "haagerup-power", "upper-comparison",
+MODES = ("responses", "response-geometry", "upper-comparison",
          "phase-response", "research", "hardy-budget", "refined-cover", "law-nodes")
 
 
@@ -42,11 +42,10 @@ class CheckAxiomsTests(unittest.TestCase):
 
     def test_existing_policy_headlines_and_native_restrictions(self):
         headlines = {
-            "default": {"Grothe.fresh_upper", "Grothe.haagerup_bound", "Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data"},
+            "default": {"Grothe.fresh_upper", "Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data"},
             "responses": {"Grothe.LowerAnalytic.ResponseGram.gram_qform",
                           "Grothe.LowerAnalytic.DiffuseCubicObstruction.above_target"},
             "response-geometry": {"Grothe.LowerAnalytic.DiffuseCubicObstruction.above_target"},
-            "haagerup-power": {"Grothe.HaagerupCanonical.upper"},
             "upper-comparison": {"Grothe.fresh_upper"},
             "phase-response": {"Grothe.Upper.ResponseGeometry.full_energy_comparison",
                                "Grothe.HaagerupPhaseGeometry.harmonic_lower"},
@@ -60,8 +59,6 @@ class CheckAxiomsTests(unittest.TestCase):
             self.assertEqual(CHECKER.audit_policy(mode)[1], set())
         self.assertEqual(CHECKER.audit_policy("phase-response")[0], CHECKER.PHASE_RESPONSE)
         self.assertTrue(CHECKER.PHASE_RESPONSE <= CHECKER.audit_policy("default")[0])
-        self.assertEqual(CHECKER.audit_policy("haagerup-power")[1],
-                         set())
         self.assertEqual(CHECKER.audit_policy("upper-comparison")[1],
                          {"Grothe.head_check._native.native_decide.ax_1_1",
                           "Grothe.Upper.comparison_check._native.native_decide.ax_1_1",
@@ -162,7 +159,7 @@ class CheckAxiomsTests(unittest.TestCase):
         power = "Grothe.HaagerupPower.check._native.native_decide.ax_1_1"
         for mode, foreign in [("responses", head), ("response-geometry", head),
                               ("phase-response", head), ("research", head),
-                              ("haagerup-power", head), ("haagerup-power", power), ("upper-comparison", power)]:
+                              ("upper-comparison", power)]:
             with self.subTest(mode=mode):
                 extra = f"'Test.foreignRoute' depends on axioms: [{foreign}]\n"
                 self.assertEqual(self.run_main([f"--{mode}"], self.report(mode) + extra)[0], 1)
@@ -178,19 +175,13 @@ class CheckAxiomsTests(unittest.TestCase):
             with self.subTest(arg=arg):
                 self.assertEqual(self.run_main([arg], self.report())[0], 2)
 
-    def test_saved_multiline_power_report_passes(self):
-        path = ROOT / "docs/verification/haagerup-canonical-20261026/axioms.log"
-        text = path.read_text()
-        reports = CHECKER.parse_reports(text)
-        self.assertEqual(len(reports), 96)
-        # Preserve the historical multiline fixture while testing today's policy.
-        required, _ = CHECKER.audit_policy("haagerup-power")
-        missing = required - {name for name, _ in reports}
-        text += "".join(f"'{name}' depends on axioms: [propext, Classical.choice, Quot.sound]\n"
-                        for name in sorted(missing))
-        code, stdout, stderr = self.run_main(["--haagerup-power"], text)
-        self.assertEqual(code, 0, stderr)
-        self.assertIn(f"checked {96 + len(missing)} theorems; native_decide facts used: 0 of 0", stdout)
+    def test_multiline_standard_report_passes(self):
+        text = self.report("research").replace("[propext, Classical.choice, Quot.sound]",
+                                             "[propext,\n Classical.choice,\n Quot.sound]")
+        self.assertEqual(self.run_main(["--research"], text)[0], 0)
+
+    def test_archived_mode_is_not_an_active_policy(self):
+        self.assertEqual(self.run_main(["--haagerup-power"], self.report())[0], 2)
 
     def test_duplicates_apostrophes_quoted_names_and_empty_axioms_pass(self):
         extra = ("'Grothe.foo'' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n"

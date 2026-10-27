@@ -45,46 +45,12 @@ incumbent's nonconstant radial profile. Numerical normalization checks agree,
 but directed integration of the correction moments is still needed. These
 research outputs remain under `handoff/research-third-decimal/`.
 
-## Combined upper continuation and validation
+## Upper focus and historical lower validation
 
-Master `46e2a48` contributes the selected-spectrum comparison: explicit shared
-error pieces, spectral supports and Gaussian norm caps yield the comparison
-`13311891/15625000000000`. The native band-mass check bounds the eighteen
-selected energy radii. This replaces the old global energy-comparison interface
-in the concrete theorem with `ComparisonInputs`. Its identification with the
-Gaussian truncation and norm enclosures remains external, as do energy-table
-accuracy and the Hardy input.
+The active target is `1.404598149141`, conditional on actual Gaussian estimates
+and table accuracy. Earlier upper ledgers and their CI records are in
+[the preserved upper-bound archive](../archive/weaker-upper-bounds/README.md). Shared Gaussian comparison mathematics remains active.
 
-Combining that comparison with the forced linear coefficient's deduction from
-the same Hardy budget gives tail `30488839/1000000000000000`, residual
-`455308278509/500000000000000000`, and upper endpoint
-`500000000000000000/355973699864771491 < 1.404598149218`.
-No stronger Hardy input is used. The raw rounder, energies, preprocessors and
-contour certificate remain fixed. Both the raw contour-tail assembly and this
-derived ledger have exact arithmetic checks. The lower endpoint's premise is
-unaffected. Combined fresh checks and axiom reports are retained in
-`data/upper-preprocess/verification/`.
-
-The prior branch state passed the full default build in
-[CI run 39959562283](https://github.com/agalatan/grothendieck-lean/actions/runs/39959562283).
-That result applies to its frozen sources; the current merged certificate has
-an explicit targeted-build receipt gap and requires its own full branch CI run.
-
-## Earlier upper continuation and validation
-
-
-`Grothe.fresh_upper` now gives the exact bound
-`500000000000000000/355973579786182891 < 1.404598623023` under exactly
-the same `DirectHyps`. The concrete `fresh_upper_rounder` has the same
-three numerical hypotheses and truncation conditions. The existing finite
-head bounds the linear coefficient from below; deducting its known weighted
-square from the Hardy budget reduces the tail cap to `3.04888432e-8`.
-No source integral, energy entry, preprocessor or numerical premise is changed.
-The gain is about `1.235e-8` in the upper endpoint. See
-[the derivation and validation](../handoff/research-third-decimal/needle-20261023/UPPER.md).
-
-The historical frozen incumbent exports retain their original source hashes,
-tail budgets and proof scope. New exports read the smaller canonical tail cap.
 The earlier refined global lower cover had 9,057 boxes and cap `0.713421765375`.
 It retains the certified rows, mixed batches, witness and `NodeCaps`, and
 gave the strict endpoint `1.401695390488`. Only 43 parent boxes need new
@@ -125,26 +91,10 @@ lower endpoint hypotheses or source cap data.
 The new law-node inputs also live in `data/` and reproduce the generated Lean
 files byte for byte. The heavy cap verification stamp still matches.
 
-The preceding rebase was onto GitHub master `9fc3f3d`. Its degree-thirteen
-preprocessor and fourth-power tail proof improve the independent,
-hypothesis-free upper bound to `1.404951`. The combined tree retains that
-result, the new response/Stein/replica and spectral interfaces, and the
-verified cap stamp. At that rebase the sharper conditional endpoints were
-`1.401695390488` and `1.404598623023`, with unchanged hypotheses and unchanged
-endpoint proof sources. The combined axiom registry contains 208 required
-theorems and 82 allowed native facts; the targeted saved reports and their
-union pass the registry checks. Those replays are separate from the fresh
-combined CI build triggered by pushing the rebased branch.
+Historical upper integration records are in the committed archive.
 
 The integrations below record earlier bases; their build logs and numerical
 values retain their historical scope.
-
-The endpoint continuation also merges master `5f4b0f4`. Its degree-seven
-Haagerup preprocessor improves the independent, hypothesis-free bound to
-`1.405364`. The combined README and overview retain that upstream result
-alongside the sharper conditional endpoints; the three numerical hypotheses
-of the sharper upper theorem are unchanged. The other incoming changes are
-CI and collaboration workflow updates.
 
 The final sync additionally includes master `b4b0e55`: holomorphic Gaussian
 kernel definitions in `UpperChaos/HardyKernel.lean` and the external tighter

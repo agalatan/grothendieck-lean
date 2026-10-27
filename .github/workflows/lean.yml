@@ -230,10 +230,6 @@ jobs:
             echo "::error::(evicted meanwhile?). Re-run this workflow: the route will then send it to the droplet."
             exit 1; }
 
-      - name: Build the scalar kernel proof first (droplet; it peaks at 18.8 GB RSS)
-        if: env.LEAN == 'true' && env.DROPLET == 'true'
-        run: lake build Grothe.Haagerup.ScalarTailRefinement --log-level=warning
-
       - name: Build Grothe (everything, node caps included)
         if: env.LEAN == 'true'
         # GitHub-hosted: stop at the first failed module (scripts/lake_failfast.sh). The droplet builds on: its finished

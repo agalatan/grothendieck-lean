@@ -10,10 +10,10 @@ two-response support is exactly a 3-by-3 complex SDP. Rational dual prices
 replace its response mesh with seven principal-minor checks. An independent
 rectangle checker is also supplied.
 
-The exploratory matrix completion still admits the configurations tested. The
-small common-row gains are insufficient. Neither headline bound changes:
-`1.401697049825 < K_G^C < 1.404598149218`, under the inputs documented in
-[/Users/alingalatan/workspaces/grothe/README.md](/Users/alingalatan/workspaces/grothe/README.md).
+The exploratory matrix completion still admits the configurations tested.
+The small common-row gains do not prove a new endpoint. Current hypotheses
+are documented in [README](../README.md); historical endpoint comparisons
+are preserved in [the preserved upper-bound archive](../archive/weaker-upper-bounds/README.md).
 All numerical diagnostics in this report use epsilon `149/200`; they cannot
 be transferred to `1891/2500` without recomputation and a new certificate.
 

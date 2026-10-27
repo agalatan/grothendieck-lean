@@ -1,0 +1,3796 @@
+{
+  "agent_id": "codex-aa04",
+  "archived_modules": [
+    "Grothe.HJM.Assembly",
+    "Grothe.HJM.CauchyGate",
+    "Grothe.HJM.CauchyGateCheck",
+    "Grothe.HJM.CauchyKernel",
+    "Grothe.HJM.CauchyTail",
+    "Grothe.HJM.CauchyTails",
+    "Grothe.HJM.Data",
+    "Grothe.HJM.Finite67",
+    "Grothe.HJM.HeadCheck",
+    "Grothe.HJM.Mixture",
+    "Grothe.HJM.MixtureHead",
+    "Grothe.HJM.Origin",
+    "Grothe.HJM.OriginAnalytic",
+    "Grothe.HJM.OriginApproximation",
+    "Grothe.HJM.OriginApproximationBudget",
+    "Grothe.HJM.OriginData",
+    "Grothe.HJM.OriginDenominator",
+    "Grothe.HJM.OriginEndpoint",
+    "Grothe.HJM.OriginEnergy",
+    "Grothe.HJM.OriginEnergyExtension",
+    "Grothe.HJM.OriginEnergyIntegrability",
+    "Grothe.HJM.OriginEnergyIntervalGates",
+    "Grothe.HJM.OriginEnergyPolynomialRange",
+    "Grothe.HJM.OriginFarTailGrowth",
+    "Grothe.HJM.OriginGreen",
+    "Grothe.HJM.OriginKernel",
+    "Grothe.HJM.OriginLaguerre",
+    "Grothe.HJM.OriginMehler",
+    "Grothe.HJM.OriginMomentEnclosure",
+    "Grothe.HJM.OriginMomentRightCells",
+    "Grothe.HJM.OriginMomentRightCheck13",
+    "Grothe.HJM.OriginMomentRightCheckData",
+    "Grothe.HJM.OriginMomentRightWitnessData",
+    "Grothe.HJM.OriginNonvanishing",
+    "Grothe.HJM.OriginNonvanishingData",
+    "Grothe.HJM.OriginPanelAlgebra",
+    "Grothe.HJM.OriginPanelBudget",
+    "Grothe.HJM.OriginPanels.Left000",
+    "Grothe.HJM.OriginPanels.Left001",
+    "Grothe.HJM.OriginPanels.Left002",
+    "Grothe.HJM.OriginPanels.Left003",
+    "Grothe.HJM.OriginPanels.Left004",
+    "Grothe.HJM.OriginPanels.Left005",
+    "Grothe.HJM.OriginPanels.Left006",
+    "Grothe.HJM.OriginPanels.Left007",
+    "Grothe.HJM.OriginPanels.Left008",
+    "Grothe.HJM.OriginPanels.Left009",
+    "Grothe.HJM.OriginPanels.Left010",
+    "Grothe.HJM.OriginPanels.Left011",
+    "Grothe.HJM.OriginPanels.Left012",
+    "Grothe.HJM.OriginPanels.Left013",
+    "Grothe.HJM.OriginPanels.Left014",
+    "Grothe.HJM.OriginPanels.Left015",
+    "Grothe.HJM.OriginPanels.Left016",
+    "Grothe.HJM.OriginPanels.Left017",
+    "Grothe.HJM.OriginPanels.Left018",
+    "Grothe.HJM.OriginPanels.Left019",
+    "Grothe.HJM.OriginPanels.Left020",
+    "Grothe.HJM.OriginPanels.Left021",
+    "Grothe.HJM.OriginPanels.Left022",
+    "Grothe.HJM.OriginPanels.Left023",
+    "Grothe.HJM.OriginPanels.Left024",
+    "Grothe.HJM.OriginPanels.Left025",
+    "Grothe.HJM.OriginPanels.Left026",
+    "Grothe.HJM.OriginPanels.Left027",
+    "Grothe.HJM.OriginPanels.Left028",
+    "Grothe.HJM.OriginPanels.Left029",
+    "Grothe.HJM.OriginPanels.Left030",
+    "Grothe.HJM.OriginPanels.Left031",
+    "Grothe.HJM.OriginPanels.Left032",
+    "Grothe.HJM.OriginPanels.Left033",
+    "Grothe.HJM.OriginPanels.Left034",
+    "Grothe.HJM.OriginPanels.Left035",
+    "Grothe.HJM.OriginPanels.Left036",
+    "Grothe.HJM.OriginPanels.Left037",
+    "Grothe.HJM.OriginPanels.Left038",
+    "Grothe.HJM.OriginPanels.Left039",
+    "Grothe.HJM.OriginPanels.Left040",
+    "Grothe.HJM.OriginPanels.Left041",
+    "Grothe.HJM.OriginPanels.Left042",
+    "Grothe.HJM.OriginPanels.Left043",
+    "Grothe.HJM.OriginPanels.Left044",
+    "Grothe.HJM.OriginPanels.Left045",
+    "Grothe.HJM.OriginPanels.Left046",
+    "Grothe.HJM.OriginPanels.Left047",
+    "Grothe.HJM.OriginPanels.Left048",
+    "Grothe.HJM.OriginPanels.Left049",
+    "Grothe.HJM.OriginPanels.Left050",
+    "Grothe.HJM.OriginPanels.Right000",
+    "Grothe.HJM.OriginPanels.Right001",
+    "Grothe.HJM.OriginPanels.Right002",
+    "Grothe.HJM.OriginPanels.Right003",
+    "Grothe.HJM.OriginPanels.Right004",
+    "Grothe.HJM.OriginPanels.Right005",
+    "Grothe.HJM.OriginPanels.Right006",
+    "Grothe.HJM.OriginPanels.Right007",
+    "Grothe.HJM.OriginPanels.Right008",
+    "Grothe.HJM.OriginPanels.Right009",
+    "Grothe.HJM.OriginPanels.Right010",
+    "Grothe.HJM.OriginPanels.Right011",
+    "Grothe.HJM.OriginPanels.Right012",
+    "Grothe.HJM.OriginPanels.Right013",
+    "Grothe.HJM.OriginPanels.Right014",
+    "Grothe.HJM.OriginPanels.Right015",
+    "Grothe.HJM.OriginPanels.Right016",
+    "Grothe.HJM.OriginPanels.Right017",
+    "Grothe.HJM.OriginPanels.Right018",
+    "Grothe.HJM.OriginPanels.Right019",
+    "Grothe.HJM.OriginPanels.Right020",
+    "Grothe.HJM.OriginPanels.Right021",
+    "Grothe.HJM.OriginPanels.Right022",
+    "Grothe.HJM.OriginPanels.Right023",
+    "Grothe.HJM.OriginPanels.Right024",
+    "Grothe.HJM.OriginPanels.Right025",
+    "Grothe.HJM.OriginPanels.Right026",
+    "Grothe.HJM.OriginPanels.Right027",
+    "Grothe.HJM.OriginPanels.Right028",
+    "Grothe.HJM.OriginPanels.Right029",
+    "Grothe.HJM.OriginPanels.Right030",
+    "Grothe.HJM.OriginPanels.Right031",
+    "Grothe.HJM.OriginPanels.Right032",
+    "Grothe.HJM.OriginPanels.Right033",
+    "Grothe.HJM.OriginPanels.Right034",
+    "Grothe.HJM.OriginPanels.Right035",
+    "Grothe.HJM.OriginPanels.Right036",
+    "Grothe.HJM.OriginPanels.Right037",
+    "Grothe.HJM.OriginPanels.Right038",
+    "Grothe.HJM.OriginPanels.Right039",
+    "Grothe.HJM.OriginPanels.Right040",
+    "Grothe.HJM.OriginPanels.Right041",
+    "Grothe.HJM.OriginPanels.Right042",
+    "Grothe.HJM.OriginPanels.Right043",
+    "Grothe.HJM.OriginPanels.Right044",
+    "Grothe.HJM.OriginPanels.Right045",
+    "Grothe.HJM.OriginPanels.Right046",
+    "Grothe.HJM.OriginPanels.Right047",
+    "Grothe.HJM.OriginPanels.Right048",
+    "Grothe.HJM.OriginPanels.Right049",
+    "Grothe.HJM.OriginPanels.Right050",
+    "Grothe.HJM.OriginPanelsChecks",
+    "Grothe.HJM.OriginPanelsData",
+    "Grothe.HJM.OriginPhaseCoefficients",
+    "Grothe.HJM.OriginPhaseDerivative",
+    "Grothe.HJM.OriginPhaseDerivativeNorm",
+    "Grothe.HJM.OriginPhaseEnvelope",
+    "Grothe.HJM.OriginPhaseMeanIntegral",
+    "Grothe.HJM.OriginPhaseQuotient",
+    "Grothe.HJM.OriginPhaseTail",
+    "Grothe.HJM.OriginPolynomialDerivativeBounds",
+    "Grothe.HJM.OriginPolynomialEnvelope",
+    "Grothe.HJM.OriginRadial",
+    "Grothe.HJM.OriginRadialEnergy",
+    "Grothe.HJM.OriginRegularity",
+    "Grothe.HJM.OriginResidualCoefficients",
+    "Grothe.HJM.OriginResponse",
+    "Grothe.HJM.OriginSymmetricTailBudget",
+    "Grothe.HJM.OriginTail",
+    "Grothe.HJM.OriginTailBudget",
+    "Grothe.HJM.OriginTruncation",
+    "Grothe.HJM.OriginUnweighted64Assembly",
+    "Grothe.HJM.OriginUnweightedCellSum",
+    "Grothe.HJM.OriginUnweightedErrorTransport",
+    "Grothe.HJM.OriginUnweightedGuardedGeometry",
+    "Grothe.HJM.OriginUnweightedLeftAggregate",
+    "Grothe.HJM.OriginUnweightedLeftCells",
+    "Grothe.HJM.OriginUnweightedLeftCheckData",
+    "Grothe.HJM.OriginUnweightedLeftCombined00",
+    "Grothe.HJM.OriginUnweightedLeftCombined01",
+    "Grothe.HJM.OriginUnweightedLeftCombined02",
+    "Grothe.HJM.OriginUnweightedLeftCombined03",
+    "Grothe.HJM.OriginUnweightedLeftCombined04",
+    "Grothe.HJM.OriginUnweightedLeftCombined05",
+    "Grothe.HJM.OriginUnweightedLeftCombined06",
+    "Grothe.HJM.OriginUnweightedLeftCombined07",
+    "Grothe.HJM.OriginUnweightedLeftCombined08",
+    "Grothe.HJM.OriginUnweightedLeftCombined09",
+    "Grothe.HJM.OriginUnweightedLeftCombined10",
+    "Grothe.HJM.OriginUnweightedLeftCombined11",
+    "Grothe.HJM.OriginUnweightedLeftCombined12",
+    "Grothe.HJM.OriginUnweightedLeftCombined13",
+    "Grothe.HJM.OriginUnweightedLeftGeometry",
+    "Grothe.HJM.OriginUnweightedLeftWitness",
+    "Grothe.HJM.OriginUnweightedMeanPolynomial",
+    "Grothe.HJM.OriginUnweightedPhaseMeanNorm",
+    "Grothe.HJM.OriginUnweightedProjection",
+    "Grothe.HJM.OriginUnweightedRightAggregate",
+    "Grothe.HJM.OriginUnweightedRightCells",
+    "Grothe.HJM.OriginUnweightedRightCheckData",
+    "Grothe.HJM.OriginUnweightedRightCombined00",
+    "Grothe.HJM.OriginUnweightedRightCombined01",
+    "Grothe.HJM.OriginUnweightedRightCombined02",
+    "Grothe.HJM.OriginUnweightedRightCombined03",
+    "Grothe.HJM.OriginUnweightedRightCombined04",
+    "Grothe.HJM.OriginUnweightedRightCombined05",
+    "Grothe.HJM.OriginUnweightedRightCombined06",
+    "Grothe.HJM.OriginUnweightedRightCombined07",
+    "Grothe.HJM.OriginUnweightedRightCombined08",
+    "Grothe.HJM.OriginUnweightedRightCombined09",
+    "Grothe.HJM.OriginUnweightedRightCombined10",
+    "Grothe.HJM.OriginUnweightedRightCombined11",
+    "Grothe.HJM.OriginUnweightedRightCombined12",
+    "Grothe.HJM.OriginUnweightedRightCombined13",
+    "Grothe.HJM.OriginUnweightedRightGeometry",
+    "Grothe.HJM.OriginUnweightedRightWitness",
+    "Grothe.HJM.OriginUnweightedTail",
+    "Grothe.HJM.OriginUnweightedWitnessMass",
+    "Grothe.HJM.OriginVisibleEnergy",
+    "Grothe.HJM.OriginWitnessData",
+    "Grothe.HJM.OriginWitnessLaguerre",
+    "Grothe.HJM.OriginWitnessModeIntegral",
+    "Grothe.HJM.OriginWitnessRadialAmplitude",
+    "Grothe.HJM.PhaseRotation",
+    "Grothe.HJM.PhaseRotationTail",
+    "Grothe.HJM.Prefix",
+    "Grothe.HJM.PrefixCheck1",
+    "Grothe.HJM.PrefixCheck2",
+    "Grothe.HJM.PrefixCheck3",
+    "Grothe.HJM.PrefixCheck4",
+    "Grothe.HJM.PrefixCheck5",
+    "Grothe.HJM.PrefixTable",
+    "Grothe.HJM.Preprocessors",
+    "Grothe.HJM.Repriced",
+    "Grothe.HJM.TailSplit",
+    "Grothe.HJM.UnweightedRepriced",
+    "Grothe.Haagerup.CanonicalArithmetic",
+    "Grothe.Haagerup.CanonicalCheck",
+    "Grothe.Haagerup.CanonicalData",
+    "Grothe.Haagerup.CanonicalProof",
+    "Grothe.Haagerup.CanonicalTrace.Assembly",
+    "Grothe.Haagerup.CanonicalTrace.Bindings",
+    "Grothe.Haagerup.CanonicalTrace.Checks",
+    "Grothe.Haagerup.CanonicalTrace.Convolution",
+    "Grothe.Haagerup.CanonicalTrace.Numeric00",
+    "Grothe.Haagerup.CanonicalTrace.Numeric01",
+    "Grothe.Haagerup.CanonicalTrace.Numeric02",
+    "Grothe.Haagerup.CanonicalTrace.Numeric03",
+    "Grothe.Haagerup.CanonicalTrace.Numeric04",
+    "Grothe.Haagerup.CanonicalTrace.Numeric05",
+    "Grothe.Haagerup.CanonicalTrace.Numeric06",
+    "Grothe.Haagerup.CanonicalTrace.Numeric07",
+    "Grothe.Haagerup.CanonicalTrace.Numeric08",
+    "Grothe.Haagerup.CanonicalTrace.Numeric09",
+    "Grothe.Haagerup.CanonicalTrace.Numeric10",
+    "Grothe.Haagerup.CanonicalTrace.Numeric11",
+    "Grothe.Haagerup.CanonicalTrace.Numeric12",
+    "Grothe.Haagerup.CanonicalTrace.Numeric13",
+    "Grothe.Haagerup.CanonicalTrace.Numeric14",
+    "Grothe.Haagerup.CanonicalTrace.Numeric15",
+    "Grothe.Haagerup.CanonicalTrace.Shared",
+    "Grothe.Haagerup.CompleteMonotone",
+    "Grothe.Haagerup.Power",
+    "Grothe.Haagerup.PowerData",
+    "Grothe.Haagerup.ScalarTailRefinement",
+    "Grothe.Haagerup.WallisTail",
+    "Grothe.Upper.PowerTail",
+    "Grothe.Upper.ResolventCertificate",
+    "Grothe.Upper.ResolventCompletion",
+    "Grothe.Upper.ResolventTail",
+    "Grothe.Upper.WeightedTail",
+    "Grothe.UpperChaos.ReducedGrouped",
+    "Grothe.UpperChaos.RelaxedGrouped",
+    "Grothe.UpperChaos.SecondBandElimination",
+    "Grothe.UpperChaos.ThirdBandElimination",
+    "Grothe.UpperChaos.ThirteenBandUpper",
+    "Grothe.UpperChaos.TwelveBandUpper",
+    "Grothe.UpperChaos.TwelveGrouped",
+    "GrotheKernel.PowerTail",
+    "GrotheKernel.ResolventTail"
+  ],
+  "files": [
+    {
+      "action": "snapshot",
+      "archived": "snapshot/.gitattributes",
+      "sha256": "b9561e1810c13609c11e0ae34bb1f8d829c907f21384e3d8dbcffac307787c0b",
+      "size": 1730,
+      "source": ".gitattributes"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/.github/workflows/lean.yml",
+      "sha256": "1a9558fa1f6113b02d9842f71f4c9d78c96d8908016685b790f5e1dd29c60faf",
+      "size": 28399,
+      "source": ".github/workflows/lean.yml"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/Grothe.lean",
+      "sha256": "f55c8317ed16b5c00b19ec64a0725ef2c1546d3adb3b78f5a39c28dcd327dfca",
+      "size": 24698,
+      "source": "Grothe.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/Assembly.lean",
+      "sha256": "095e30d46457199766bca699625c38aa6814fd65c668fe1e1bd5104b08a502db",
+      "size": 7434,
+      "source": "Grothe/HJM/Assembly.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/CauchyGate.lean",
+      "sha256": "168aa2204a0fb9ad321bf4b631227ddb163b17ec767cc9e0e59057dacb1a8305",
+      "size": 8473,
+      "source": "Grothe/HJM/CauchyGate.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/CauchyGateCheck.lean",
+      "sha256": "06b440c1dbb0cf543dd02816bb605688d47f22b27e7c93bad133fa73eedc7a7d",
+      "size": 995,
+      "source": "Grothe/HJM/CauchyGateCheck.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/CauchyKernel.lean",
+      "sha256": "353289558f1e661b4b4830dd8b9f05d6cc9fd1cb80b14d7ffef97a653a1a84f0",
+      "size": 15571,
+      "source": "Grothe/HJM/CauchyKernel.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/CauchyTail.lean",
+      "sha256": "b8a350405062864b2122fff914310946c538b2b77fcd70b38da7a310c8f3868f",
+      "size": 8746,
+      "source": "Grothe/HJM/CauchyTail.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/CauchyTails.lean",
+      "sha256": "2e86a66d2beffc8441cbe0016562da3d06251fefbb6218bb222ee11ee325c25f",
+      "size": 2841,
+      "source": "Grothe/HJM/CauchyTails.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/Data.lean",
+      "sha256": "4c3e0e78885980643938d5509b0b3b6a1a2458fdca9577d1480144a537366617",
+      "size": 2632,
+      "source": "Grothe/HJM/Data.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/Finite67.lean",
+      "sha256": "b3b1c6b67f37d28270411f4e998dcffdad6fb702e13904011ebedf2ae7e29f50",
+      "size": 7748,
+      "source": "Grothe/HJM/Finite67.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/HeadCheck.lean",
+      "sha256": "376e2d23be61de5d42a2c6c86596b39ff83b39ba0b7ab80f68d1af370c5dab6e",
+      "size": 5514,
+      "source": "Grothe/HJM/HeadCheck.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/Mixture.lean",
+      "sha256": "eb59521e9d47c3e53dae892d33bced9a01879c7071aacb6cc130ec06136e8e6d",
+      "size": 6685,
+      "source": "Grothe/HJM/Mixture.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/MixtureHead.lean",
+      "sha256": "75c21ae2361f43760ae1650f25231e37f5eab31cbf7e8333362afaeda7ab2c29",
+      "size": 3571,
+      "source": "Grothe/HJM/MixtureHead.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/Origin.lean",
+      "sha256": "f483745571afd48ff03ab2d16728717509a3a7199eea2d429ed889eae1536bd6",
+      "size": 3098,
+      "source": "Grothe/HJM/Origin.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginAnalytic.lean",
+      "sha256": "fb19964cf1b7d3da66512a1cdc4dc00fe3515ae93609ee43e6095deb43cd12e7",
+      "size": 13697,
+      "source": "Grothe/HJM/OriginAnalytic.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginApproximation.lean",
+      "sha256": "1a2faddf49922c4962e1fa5775f959c7ee4f3fecaa5ebf7f046180af67ca709a",
+      "size": 5755,
+      "source": "Grothe/HJM/OriginApproximation.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginApproximationBudget.lean",
+      "sha256": "d72a2e2986a656e899b4926f9bc10f20ece55c715b4c93862130ea1992fab03c",
+      "size": 6424,
+      "source": "Grothe/HJM/OriginApproximationBudget.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginData.lean",
+      "sha256": "582e4eb4e69efd285aed44452296244f89cfe7b66a06921a375bd9f6d100239b",
+      "size": 8551,
+      "source": "Grothe/HJM/OriginData.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginDenominator.lean",
+      "sha256": "95e1924329c6de2d47152588141b7f9af22afd8e01b079ff385ecb116c5e4a0b",
+      "size": 2985,
+      "source": "Grothe/HJM/OriginDenominator.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginEndpoint.lean",
+      "sha256": "054f7890ffc035754f90d0c9ac8451acfc100bd5f14ad9caac9d332fa744936d",
+      "size": 3219,
+      "source": "Grothe/HJM/OriginEndpoint.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginEnergy.lean",
+      "sha256": "d749d2a15750947055da29356e4d2b2669b60717a28e331e8ab25a4e1788c5cf",
+      "size": 6236,
+      "source": "Grothe/HJM/OriginEnergy.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginEnergyExtension.lean",
+      "sha256": "68a0e86768723e4961e33e50778b8ed69021025ee069948fa8b391b21a052b2a",
+      "size": 3653,
+      "source": "Grothe/HJM/OriginEnergyExtension.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginEnergyIntegrability.lean",
+      "sha256": "f73d2c2fd74cc6973ea7c1533d99a1d33031d0ef75f285b17eee3612e1c59d15",
+      "size": 2311,
+      "source": "Grothe/HJM/OriginEnergyIntegrability.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginEnergyIntervalGates.lean",
+      "sha256": "e9fe3dc4d9f254c4ba6ac8c35794ee0ba15f7b85d364d5f77aca81ab8583f9ea",
+      "size": 4819,
+      "source": "Grothe/HJM/OriginEnergyIntervalGates.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginEnergyPolynomialRange.lean",
+      "sha256": "231c44c9cd4b33caea08ac089c4f577c20135165ab2abad41664806df5ebdf81",
+      "size": 4012,
+      "source": "Grothe/HJM/OriginEnergyPolynomialRange.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginFarTailGrowth.lean",
+      "sha256": "4b2b6ed3b4761a24799b364484fb45399ca17ca35e8c5a6dd7005630b17ac45e",
+      "size": 6905,
+      "source": "Grothe/HJM/OriginFarTailGrowth.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginGreen.lean",
+      "sha256": "2938a015a53c10523abb8dc32c8f6ce70a65cfcc79426044d3cc98691afda3c3",
+      "size": 8529,
+      "source": "Grothe/HJM/OriginGreen.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginKernel.lean",
+      "sha256": "4f47ab5579bd7775e1fe2ccd568f3872ddcc7175516954d875330a2912b1248b",
+      "size": 9216,
+      "source": "Grothe/HJM/OriginKernel.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginLaguerre.lean",
+      "sha256": "d6e92156f454592b97fb08ee35eac56f3dc7b04973cdfce2b0d44331c39cd2c9",
+      "size": 7290,
+      "source": "Grothe/HJM/OriginLaguerre.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginMehler.lean",
+      "sha256": "06ac0906b4e6e0f8d76e2069f257af3658c5e3ae39faa1d1496361ee8770cea5",
+      "size": 9480,
+      "source": "Grothe/HJM/OriginMehler.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginMomentEnclosure.lean",
+      "sha256": "6b37014ee27200ddf5d132c1c42f18439a633f3d9fa842dd2d1f82b2d31e2fb6",
+      "size": 26551,
+      "source": "Grothe/HJM/OriginMomentEnclosure.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginMomentRightCells.lean",
+      "sha256": "bd5975500872db537812aceb6d2bc19536084e12cd3878bba3fc70db31252885",
+      "size": 2852,
+      "source": "Grothe/HJM/OriginMomentRightCells.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginMomentRightCheck13.lean",
+      "sha256": "d542846cc5513bf03449b7ec5ff1ab4f3481d7d01ca8f99aa73aea9b036d7c03",
+      "size": 345,
+      "source": "Grothe/HJM/OriginMomentRightCheck13.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginMomentRightCheckData.lean",
+      "sha256": "0f2038d6e10a69bd7c097c1c425f8301585c2b1a6ffb204abff821a4a72aa0af",
+      "size": 2414,
+      "source": "Grothe/HJM/OriginMomentRightCheckData.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginMomentRightWitnessData.lean",
+      "sha256": "421e4eafb0480d695815b4454eba2a5793c68fdd4d39890ed1b9325878edd417",
+      "size": 38980,
+      "source": "Grothe/HJM/OriginMomentRightWitnessData.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginNonvanishing.lean",
+      "sha256": "72a4388266014dc66be65f89725923e6c207dc500f2b664400248cf5827d74f6",
+      "size": 5896,
+      "source": "Grothe/HJM/OriginNonvanishing.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginNonvanishingData.lean",
+      "sha256": "131424d3e64951132ffbd6e919e45be11dd09db807187d991de791c20db17d28",
+      "size": 2111,
+      "source": "Grothe/HJM/OriginNonvanishingData.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanelAlgebra.lean",
+      "sha256": "313491016594f56bc2c84290a2be7f17cf6ad386ef8b287e24d2c21939aa00db",
+      "size": 16990,
+      "source": "Grothe/HJM/OriginPanelAlgebra.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanelBudget.lean",
+      "sha256": "a2f115999fdf5e439c73d6baba28566929d23afa5811f085f3313f5c45ca968b",
+      "size": 6073,
+      "source": "Grothe/HJM/OriginPanelBudget.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left000.lean",
+      "sha256": "84afc9cb460852a2ffb4027f22a3e2674def48dfe88bfd7b38f0ba4be75c58e9",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left000.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left001.lean",
+      "sha256": "8b1ab57373aa206e77b7614dd6bb800f56dbe90bfd55a44d4e86175e258e35fa",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left001.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left002.lean",
+      "sha256": "172042df851ed46af9ef008e5c8ab6206674e93198d2921d2118693537b6cc5f",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left002.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left003.lean",
+      "sha256": "389ad7418ddf580f8f3ae1a70839e3940585c5677fa88016c2289eb95047818d",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left003.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left004.lean",
+      "sha256": "08d8770b55a8b90028e11c44848b0a7a55204f8e209aa1c5bb613d90425f7b51",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left004.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left005.lean",
+      "sha256": "83cbed9941686ee05a5073d550f8e7dedeba8e9085287e32e55cd7a8bd76019c",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left005.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left006.lean",
+      "sha256": "422aab573f65127c19bb608df5ea0c519d013267efe3d53cfb340506be37f7e9",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left006.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left007.lean",
+      "sha256": "af486fc547b745762d186016e453f08ee925a676ecbb828ebabc41e8a37a0074",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left007.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left008.lean",
+      "sha256": "ca36ff2abbe40a0037b181075a4ee81fdddc771792430968be2dcfa76f31eb1f",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left008.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left009.lean",
+      "sha256": "097e93aae7cbb2f29247e9dfea453a77de83bef3ba4b43d50dba1ea4c38f0dfc",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left009.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left010.lean",
+      "sha256": "85c5a5338956aa5e957d308f337031ca3d1131d0a63cb1aa87efbf3ad6ef31bb",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left010.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left011.lean",
+      "sha256": "921f195912bd8201e0df96d02c4f4de461470e984c5f06053f8b06734dda70e0",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left011.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left012.lean",
+      "sha256": "f2a118b6af745b679c0ae5930506f97b2bfe551b6238daddc60cc0fa5f74c91e",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left012.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left013.lean",
+      "sha256": "d99eddbead0188a8d104e445341e212fb28cb205a93daac3ac6c6e5a925f4738",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left013.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left014.lean",
+      "sha256": "73fd966fcf01a2de6706be6e7734c1188b3c10036f878335b86ff4a3616ca632",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left014.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left015.lean",
+      "sha256": "937b9811d332ac3cafe97d5d8fa00bc3cd65fdbb109edd575453b40a5abe381d",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left015.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left016.lean",
+      "sha256": "54b76d1de2b18c1a83422e4df6b3f99c29eeffa2deb4dfdeb51c0160c77e8e31",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left016.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left017.lean",
+      "sha256": "90f5609546073e93f3235ee964d6c84d3061614d7f617f0a8f8a880396637abc",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left017.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left018.lean",
+      "sha256": "cbb51a87f578287521d32b4dfdf62053ebc6bed8361ab40daa2a8b5ec6a29e56",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left018.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left019.lean",
+      "sha256": "a3579dd2ef2e1772fec69b998e9c02e1bec976ef737cc7c92b4c4223a6519440",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left019.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left020.lean",
+      "sha256": "bc38277c415b362c5257a360270a39e7d1705903812e622738913f2da9f1e282",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left020.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left021.lean",
+      "sha256": "dbb9539129820108df18da9c9293a590fef39df61d7e69a48f39c6edbe67610b",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left021.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left022.lean",
+      "sha256": "2e8f5dd75b9fa3f9024c200626dceaa0a504ae14db8c5fc98be6432960c2af1a",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left022.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left023.lean",
+      "sha256": "c2f47640e1939f623e55c30059eb21d662c8ccb434c3ced827ff924b163b0133",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left023.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left024.lean",
+      "sha256": "f68de7e2ef1fa8c4a2d604446cec3ee91886a3333ab5435e35864363d4c3b9d9",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left024.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left025.lean",
+      "sha256": "9ea06189d731ba7ad6b8d9683a7e128edbfd340c916cd45719d9ca59bd690e75",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left025.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left026.lean",
+      "sha256": "06e794188de804ae20d40748ccea407d7eba58f8886caf2e979418518927bc35",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left026.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left027.lean",
+      "sha256": "b682958615934100b5f12bd000e8961d19785281ea49cbc31cb059f173893bf4",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left027.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left028.lean",
+      "sha256": "635ca13a6d2a3e8240e97e2549d06d61b916f88d4b4ebdf3876c7330278a28e5",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left028.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left029.lean",
+      "sha256": "75d7b512d64b6d2a4b9539ba4e8e00fb6b0775fd9794e2f86a3a168436fb7d8c",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left029.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left030.lean",
+      "sha256": "2f4164b4c61894bd1227226cccd565e84b06d6256876092a8b0d0df9c8e51998",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left030.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left031.lean",
+      "sha256": "813935636f9e7e626164f7b83c367279515033da78fda1564da3927328dffb4a",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left031.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left032.lean",
+      "sha256": "3f771633cda7962a200ffc5b2980970cb6668b85452bd718a6d8eab7643f9a88",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left032.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left033.lean",
+      "sha256": "c346f2bc3d67dead3cf34133a3425638c0fac542b17b34d0841342b455340c12",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left033.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left034.lean",
+      "sha256": "748e0eda51843fc72f8162a4c0f7187f317eff262ea8ea5cd40a30aba2d86a2c",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left034.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left035.lean",
+      "sha256": "5ddb9effcbd7f371d7ae0a9cd56d09584bb459906a65464d133f6f925103a781",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left035.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left036.lean",
+      "sha256": "d8b3620c4a69cf0257f4a5bc4e3be2dad61654341c2ec03eb3d201b55d6b7e4f",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left036.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left037.lean",
+      "sha256": "a3bb6241575422622cfeb3c4bffa6543eca2d81ed0358f981fb57945d14e7787",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left037.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left038.lean",
+      "sha256": "bf08d4d4bc5f99b80ec5a88077bcd929a5e85b001744eee8fb043d752536fcca",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left038.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left039.lean",
+      "sha256": "3260120074813d05f7317fe7a2ab657f211ff94770a3d5f71b781fbed1d6a801",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left039.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left040.lean",
+      "sha256": "4ca1ce011e928178bcb3de8b4136ee21a7defefe1678195cbd64ea5086d6e177",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left040.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left041.lean",
+      "sha256": "e84b1aa86e51da46c5c55ddef51c5eba7b242d8b81aad3257762189c19909dec",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left041.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left042.lean",
+      "sha256": "30f59a717fcf9bd8ca66e08faf2a6cab38dfc989186a387b8bfe8ffab7dbe8bf",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left042.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left043.lean",
+      "sha256": "30e67e89cad47cd02c8f4c446ffdb356a8ba203b8bdfb71670d87f9c8e0acbb2",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left043.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left044.lean",
+      "sha256": "1f1963deb58452fc84b0f3733bcb36d60a6b7d0c40d9a1802d775c0d1339593a",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left044.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left045.lean",
+      "sha256": "abbb0d636a02ab2add8ac347817570d82a02e27326a648c2f7f1cc886705f09f",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left045.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left046.lean",
+      "sha256": "5976351521484a508d324ef71f92ff498bacb17ba66d25ce748cb6765c7ba452",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left046.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left047.lean",
+      "sha256": "0132f4ae02139a2c4eade3430320f16da01258ba20b0d59d18508fd3b6341700",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left047.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left048.lean",
+      "sha256": "99cb5c9ca9e83b3e27314d9495874f9efa506a669279d1553beec5161d9b59e2",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left048.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left049.lean",
+      "sha256": "210f96a25469811b5466af36c89f2b2e80a83cd544964e5a3cb776f77202e123",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left049.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Left050.lean",
+      "sha256": "7e0667093bb49d44cc375bab663556ebea24a292a1f864ef245f78275d989443",
+      "size": 482,
+      "source": "Grothe/HJM/OriginPanels/Left050.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right000.lean",
+      "sha256": "4c0aede80f9ce5c3a37d2df689816b72e99e802803126ba3126dca707371dd6d",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right000.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right001.lean",
+      "sha256": "0bb149ca608e16b4297345ea8d8166100396e58e82e0f5936ec11bc45033737f",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right001.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right002.lean",
+      "sha256": "a05e1aa72f1c036bdb5263c69b493aa8988f9d54ec582eb451438c447aa769a5",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right002.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right003.lean",
+      "sha256": "c33ccb6e74cfde1327b382499270494ef316d3ba42f18d9b35055c64267f4283",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right003.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right004.lean",
+      "sha256": "fbb222d855631e72446159af1c65e7d1ce0319ea548950d832edd0b433d9175e",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right004.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right005.lean",
+      "sha256": "043bbec0d1556bc6c0bcdc80e381e2d288ceed78b389b274c2da151fbb7bd068",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right005.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right006.lean",
+      "sha256": "d824a447d370a90521d9436a995f59f53fdc14d796bbc01ec6ba4325dc6f5e07",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right006.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right007.lean",
+      "sha256": "fdd5f719ee83bae16c3ac88b0aa41bea2abf8e38a1965f4a0e6c8cc7d55bbe3f",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right007.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right008.lean",
+      "sha256": "690f124e16903061bedac01c5e08f299f03126c7b1d771a8351b2d355529081c",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right008.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right009.lean",
+      "sha256": "89dbbf5a1979e33794114b7771df3b7e51f4e1e729dd7a0cb6012978a7e3643a",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right009.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right010.lean",
+      "sha256": "8977cdea34878841a5a482f281fcfd14dd83649a790e7b0e2e52a5be010f6a79",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right010.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right011.lean",
+      "sha256": "1a10af46e2ca969ca8cf916f8db708581f1cca32fc9e4106988b97349ffd6a82",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right011.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right012.lean",
+      "sha256": "b0a51c1951432b0b40a733f61943316462d67325aee863e353476656ef6318ae",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right012.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right013.lean",
+      "sha256": "e31bae344d84ac29c5b75d60b4117e0080b8066c92fc5f08627cafa96b8db253",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right013.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right014.lean",
+      "sha256": "3cc6ed1a949150bde7dbe60bdcdb70cfa39784a5e5725e81435bf919de2c9ea4",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right014.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right015.lean",
+      "sha256": "75a7ca7ebcca9ce2146e37d8ac938185cc3b302bb31c94651fd9cc5b4dab9a96",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right015.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right016.lean",
+      "sha256": "21b53f212b6ad02d8d312ef411fd80bb1bc5c7536a3f502fce9ea410ffe9e7f9",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right016.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right017.lean",
+      "sha256": "fb44989d6cc8e8017de37044b6bd6e01e5518d157df973052b7e652dd2f9bdf1",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right017.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right018.lean",
+      "sha256": "787963c1a689e97d752eb19ab48ed753008a2dca3bfb085a0aa28e53b6e04bbf",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right018.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right019.lean",
+      "sha256": "a5d7f177e65ef8026a1942df7125cb8ec638602217cd3004c129b286d22cc550",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right019.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right020.lean",
+      "sha256": "a3eabcd806fcd1aeee1f647631ce4bf36031c64cfe46e8c576109cc2fa2e07a9",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right020.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right021.lean",
+      "sha256": "8800b3f099c4795b9c5e47b38a9e989f746684118d081db5c31ac75be595d721",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right021.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right022.lean",
+      "sha256": "8debb429371427c7ad8ae8ed436a21372bf1623c8fbae13bb190cbdad55bff87",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right022.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right023.lean",
+      "sha256": "ff09544bd49d25999cc07427f477c62188e07738a96bda29fb0c785f4ae2cd3d",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right023.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right024.lean",
+      "sha256": "d92bda079f74d113fc61d2b667ad2cba58fe65fb1b93cb79e72957ae38c31a57",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right024.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right025.lean",
+      "sha256": "5c7009ac4a39740a1762f1137095bb79508a1250bf866783e183191db872bda2",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right025.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right026.lean",
+      "sha256": "1f25ef898d98acfe406742f2e72efda720763d1b77daaba09861f0d508d35da9",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right026.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right027.lean",
+      "sha256": "78dfc0bf5efa76a6e1039109117e11960c584de424e4d5b41daf017ec56900f7",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right027.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right028.lean",
+      "sha256": "409ea73e236d34499679ec0e9829221f2b83e59aa517a20259289250f5fb894d",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right028.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right029.lean",
+      "sha256": "6697b2017bff9bbb8aa2df2b53270475de8472aed8f56a85669b4ba9207d461a",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right029.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right030.lean",
+      "sha256": "c46f54e87c2a44a35aae22041002bf9a8155e697385687ba222d6799e47b0826",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right030.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right031.lean",
+      "sha256": "b6f97c0b9702a552552db7c3e4aacf1d45006dfdc11a14e054817b6923a29d44",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right031.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right032.lean",
+      "sha256": "c15897abda857ea2d2fea616dfa7a663daac4cecc58e9667607c0d733e39ca29",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right032.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right033.lean",
+      "sha256": "450c3949bbd4cbc0c72cc0f6d579ef8d562644b8fe2cc1435bdf6fe4a2b6f27f",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right033.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right034.lean",
+      "sha256": "2b65525533aaafc87233dc554390cad5a44a124d757756c9f2f0f9b6835d62c9",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right034.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right035.lean",
+      "sha256": "af8d2e9f7f80ed6a7f10be847f21e31e587a45fd562f134544d69b11de5dec15",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right035.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right036.lean",
+      "sha256": "0fae79976b3a31c995fab703aab1752df6395a9366cbee4941555a1297692781",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right036.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right037.lean",
+      "sha256": "c2b834199e398c3b3c1ca5283f9c04bc3538fd02d66b1a2a072b5f7aa3666293",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right037.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right038.lean",
+      "sha256": "87988906d741904284fea28abc203decd68d7d0e301ff01076f44d7aa79516e5",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right038.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right039.lean",
+      "sha256": "93b2f640f14c7a32b2d89cf7a66a92d30b4bd6056994af3a2b76d651d4205cd9",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right039.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right040.lean",
+      "sha256": "5911144b2222552e382cc147297e2363a8c4742d3f32c85260df345d7a911805",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right040.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right041.lean",
+      "sha256": "276e9357b13e3a2207bfe7ba718a8ed971508580f084566363158e8d060e2d89",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right041.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right042.lean",
+      "sha256": "4ef6c6a66db6cbd3b964c652a192a4183cd50f239ea92afa40a22678690cd747",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right042.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right043.lean",
+      "sha256": "a1c6effbbf60ced78a7c0fa4d4177d79c1a5a3dd4a8f3ef52ea4832367488fff",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right043.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right044.lean",
+      "sha256": "2636d6cc0293e58af05520d474876592b39dfca16b7efd294532c7f9c4ecb3b5",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right044.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right045.lean",
+      "sha256": "ce1dd8f6ef530cf575468d3fc67ea8c9e8f72eb6d01b72b5c97392b1ae56acb1",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right045.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right046.lean",
+      "sha256": "7ea62191e76dd46a5513a8be43541856b5e0d0e5a5d8633732824633faf34d92",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right046.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right047.lean",
+      "sha256": "1047899cfc0378d6747b32248cf8020b12c99fa6ee9ee3f5521d93fff294990a",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right047.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right048.lean",
+      "sha256": "cfca2b7be59a9888fe65e483372358fb5a1649bd60dc96d09cc18ae61baae1cf",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right048.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right049.lean",
+      "sha256": "e88d57277dae7df57f7ee6f469f0624f85024baf6abfd528af40010a35d1cbbe",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right049.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanels/Right050.lean",
+      "sha256": "e8eb043716f05b5ee3ab95d5ec406879e7fa7bdfcfd85c91609cf1f9d7510aed",
+      "size": 487,
+      "source": "Grothe/HJM/OriginPanels/Right050.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanelsChecks.lean",
+      "sha256": "18da60b317caf4e8e75cc64d64c7a61c4bb053a2cbb5b15653a2a3580910c0f5",
+      "size": 6985,
+      "source": "Grothe/HJM/OriginPanelsChecks.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPanelsData.lean",
+      "sha256": "e4b6d336b0fa4d7df4d89f6b3b4ad5178ed1da178bf69111821e4843e164c926",
+      "size": 94136,
+      "source": "Grothe/HJM/OriginPanelsData.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPhaseCoefficients.lean",
+      "sha256": "708b22075fcaac2f548c3870bafaaeb4c42463fecc3434e1a27caf107a0f66ea",
+      "size": 4912,
+      "source": "Grothe/HJM/OriginPhaseCoefficients.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPhaseDerivative.lean",
+      "sha256": "5b5e48af66f59e06563a2afc86c2519311c30308c6a743a04fe5422443fe657b",
+      "size": 8600,
+      "source": "Grothe/HJM/OriginPhaseDerivative.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPhaseDerivativeNorm.lean",
+      "sha256": "c9e132aa6462792f3fb816d76e0109278f11a6c8320c9b9ead07d99cb5239d72",
+      "size": 9397,
+      "source": "Grothe/HJM/OriginPhaseDerivativeNorm.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPhaseEnvelope.lean",
+      "sha256": "f4687c37ec0d0bce767861bacea2b54676f333315c9c4ec0647413e26a87d850",
+      "size": 5897,
+      "source": "Grothe/HJM/OriginPhaseEnvelope.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPhaseMeanIntegral.lean",
+      "sha256": "c4846c3b79a6c2441ad29fd84844fd574e2064b7561a71568b9dfa1ca3a7ba8b",
+      "size": 8745,
+      "source": "Grothe/HJM/OriginPhaseMeanIntegral.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPhaseQuotient.lean",
+      "sha256": "62cd540276685097b6bab04caaab2e395f179f2c3a06afffc8dbb74050186ad8",
+      "size": 10050,
+      "source": "Grothe/HJM/OriginPhaseQuotient.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPhaseTail.lean",
+      "sha256": "22dddbc0082229ca14f69284b921f45f169b1413af195ed619aeb1910d82e88e",
+      "size": 5666,
+      "source": "Grothe/HJM/OriginPhaseTail.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPolynomialDerivativeBounds.lean",
+      "sha256": "0e2c54c1e3c6d22e1893a5d034014d6d7ebdd4a5e64c9732a01a76d197ee510d",
+      "size": 11345,
+      "source": "Grothe/HJM/OriginPolynomialDerivativeBounds.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginPolynomialEnvelope.lean",
+      "sha256": "c23888b3d20e1f4d38621dba15f1e4b02405d4882bf38f5877c09c5ce2986bc0",
+      "size": 16996,
+      "source": "Grothe/HJM/OriginPolynomialEnvelope.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginRadial.lean",
+      "sha256": "9236834efe3027f7d16f41651d4c9da276a007c6965561632d40f20b16d3151c",
+      "size": 15245,
+      "source": "Grothe/HJM/OriginRadial.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginRadialEnergy.lean",
+      "sha256": "91a76ebe5b3b11f50abcc9291f420148f919283de69a1a0c4ae626210d920355",
+      "size": 9949,
+      "source": "Grothe/HJM/OriginRadialEnergy.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginRegularity.lean",
+      "sha256": "194551f71971b759f3be0f4c95f9541dc7777a403a1b1217a52922df603d1790",
+      "size": 8790,
+      "source": "Grothe/HJM/OriginRegularity.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginResidualCoefficients.lean",
+      "sha256": "4fe49bcbff55a2ada488ee406ade5ad3f1da9efd6f92a9c52bca227d978cb3fd",
+      "size": 4546,
+      "source": "Grothe/HJM/OriginResidualCoefficients.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginResponse.lean",
+      "sha256": "672f8019ddc8d96310ab5e999b800f7cbe39be71ddae066bc92bf1d78171811e",
+      "size": 6359,
+      "source": "Grothe/HJM/OriginResponse.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginSymmetricTailBudget.lean",
+      "sha256": "cfd4db59351e2bbeeefb39437dfd70822e2dd0ae465a7a5c94b1144c56a17454",
+      "size": 2947,
+      "source": "Grothe/HJM/OriginSymmetricTailBudget.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginTail.lean",
+      "sha256": "509388eb64427038aaab80f8c92354f1cf7084df16d40f4749f64c8d341a2ca7",
+      "size": 12540,
+      "source": "Grothe/HJM/OriginTail.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginTailBudget.lean",
+      "sha256": "8eb6b7100cf40f0efceb82201357baffb10723257d56bc9616dcd0c943cff950",
+      "size": 2276,
+      "source": "Grothe/HJM/OriginTailBudget.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginTruncation.lean",
+      "sha256": "7dd62c4d889ee1f13416ad2eab282a1ca8c80962f1d2fffe1b8a2ca532bce352",
+      "size": 4603,
+      "source": "Grothe/HJM/OriginTruncation.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweighted64Assembly.lean",
+      "sha256": "1ad682b4beb6a623a620e261e4c3850a54595e489d206976647788a75b547e4b",
+      "size": 2682,
+      "source": "Grothe/HJM/OriginUnweighted64Assembly.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedCellSum.lean",
+      "sha256": "beb50a2db4e542977c2e8a2db37ecefe1b7a013c79dd2a4c3ceb3298fc400b5b",
+      "size": 3381,
+      "source": "Grothe/HJM/OriginUnweightedCellSum.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedErrorTransport.lean",
+      "sha256": "f10c325b35d1d882297986c70bc46e323b0e8b415fd2d467cf8b032c266ba127",
+      "size": 7115,
+      "source": "Grothe/HJM/OriginUnweightedErrorTransport.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedGuardedGeometry.lean",
+      "sha256": "5d1544f887ef70911a41780b6784177d7fc468d04891ea6bd9fec30731bf0f51",
+      "size": 731,
+      "source": "Grothe/HJM/OriginUnweightedGuardedGeometry.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftAggregate.lean",
+      "sha256": "c8f9df591a7b898b622664187082a4f433b69e5dd6c97b2955f1dc6939bc48e6",
+      "size": 6455,
+      "source": "Grothe/HJM/OriginUnweightedLeftAggregate.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCells.lean",
+      "sha256": "cc71bfc529cf8fabcad946b2ad2a11b5dc767272965247feafe9b56d18423e04",
+      "size": 10310,
+      "source": "Grothe/HJM/OriginUnweightedLeftCells.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCheckData.lean",
+      "sha256": "f09834acd90dd554c48be1ced7daf49c22860fa0f048e2ea04f8f16b3116e75d",
+      "size": 2354,
+      "source": "Grothe/HJM/OriginUnweightedLeftCheckData.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCombined00.lean",
+      "sha256": "c9aa49e397e754837095d8ee048cf66115042a318f82326a58b23aceb0880c4d",
+      "size": 278,
+      "source": "Grothe/HJM/OriginUnweightedLeftCombined00.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCombined01.lean",
+      "sha256": "53e07ef891331eab2a99840c6c868a5bfa4700340a4b21bb272d7cbe3b124cd5",
+      "size": 282,
+      "source": "Grothe/HJM/OriginUnweightedLeftCombined01.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCombined02.lean",
+      "sha256": "3b3903d315a8d9b2ceab42295d51dd5c2e223ead8a8e25ca8a7e5750d8609092",
+      "size": 285,
+      "source": "Grothe/HJM/OriginUnweightedLeftCombined02.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCombined03.lean",
+      "sha256": "947264ea9e601ac7eac16bceb1f132776500bcce810324b7e540124bcf30f579",
+      "size": 285,
+      "source": "Grothe/HJM/OriginUnweightedLeftCombined03.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCombined04.lean",
+      "sha256": "7a2ad8834ad6bdae00d128c04ecd407a4464ba31bb0d9ca6470fbba39507426a",
+      "size": 285,
+      "source": "Grothe/HJM/OriginUnweightedLeftCombined04.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCombined05.lean",
+      "sha256": "e6ffbeb34aa1bf9e91134d28eb4df5baa50be13f757c5eb70b1b9bf0121b32bb",
+      "size": 285,
+      "source": "Grothe/HJM/OriginUnweightedLeftCombined05.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCombined06.lean",
+      "sha256": "6200ec8b7f7ca0737a992209fc6c414b28f7fca716b276b44241eefa98bb4a37",
+      "size": 285,
+      "source": "Grothe/HJM/OriginUnweightedLeftCombined06.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCombined07.lean",
+      "sha256": "ecb5c1edbc77fed00022dbcad26a7a3ad5a3ab8175b70d557323602804490d98",
+      "size": 285,
+      "source": "Grothe/HJM/OriginUnweightedLeftCombined07.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCombined08.lean",
+      "sha256": "c1a1eba5e4cf80a4ed70bd1513ea8788ddea7dffec8ee688d435002ef14337cc",
+      "size": 285,
+      "source": "Grothe/HJM/OriginUnweightedLeftCombined08.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCombined09.lean",
+      "sha256": "604ee593284063e8f17fe97f4c1b70609c8587edf603c09a1af9f8bc2877481a",
+      "size": 285,
+      "source": "Grothe/HJM/OriginUnweightedLeftCombined09.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCombined10.lean",
+      "sha256": "85ed9ff0ff87716c264a0195b62ea143c66f99ae8b6822ebf8e33de22506170b",
+      "size": 285,
+      "source": "Grothe/HJM/OriginUnweightedLeftCombined10.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCombined11.lean",
+      "sha256": "10480df0f60d4596a471bede5aa1f3b03dacfa99b0e7f87e9bbfab15d84bdaa3",
+      "size": 285,
+      "source": "Grothe/HJM/OriginUnweightedLeftCombined11.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCombined12.lean",
+      "sha256": "daaa6706a70a64e2ad3c100d91560ceea70bc4abedc07c4b5517882f78f5b918",
+      "size": 285,
+      "source": "Grothe/HJM/OriginUnweightedLeftCombined12.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftCombined13.lean",
+      "sha256": "5fc6afbe1fc08e50f838a126bd881fe1705cc4d472270ee8259a2ba1655d3645",
+      "size": 285,
+      "source": "Grothe/HJM/OriginUnweightedLeftCombined13.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftGeometry.lean",
+      "sha256": "206f749b91cb45bc4c63c557856b15967010b835044e68c4a1751ea8ce4da8df",
+      "size": 13560,
+      "source": "Grothe/HJM/OriginUnweightedLeftGeometry.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedLeftWitness.lean",
+      "sha256": "2a2949579fac0577528d3ba8addfcd79d09feb437456f80273872e431555d65e",
+      "size": 21144,
+      "source": "Grothe/HJM/OriginUnweightedLeftWitness.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedMeanPolynomial.lean",
+      "sha256": "85914e72dd28873db5be02c9887df6784344682e2ad0bc610dc80a68c4f0eeba",
+      "size": 4071,
+      "source": "Grothe/HJM/OriginUnweightedMeanPolynomial.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedPhaseMeanNorm.lean",
+      "sha256": "b8a3403f98e8c75144602799e3eac53c5358c89cf5781c80ca720e74eefb4e56",
+      "size": 5201,
+      "source": "Grothe/HJM/OriginUnweightedPhaseMeanNorm.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedProjection.lean",
+      "sha256": "7bcca0d2a3377630563321f480f5237f95084a833aa3cfa8ce4374fba0c9bd3d",
+      "size": 5856,
+      "source": "Grothe/HJM/OriginUnweightedProjection.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightAggregate.lean",
+      "sha256": "211f6d599219ab4497b54943ccea14222d94fef77a808fab4d6516579da1f3d3",
+      "size": 6472,
+      "source": "Grothe/HJM/OriginUnweightedRightAggregate.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCells.lean",
+      "sha256": "5336159921815e4a779b6bcd1c039e6f6178caa709a4aba0f404ebf9ace99aac",
+      "size": 10286,
+      "source": "Grothe/HJM/OriginUnweightedRightCells.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCheckData.lean",
+      "sha256": "5cdb1a9e889f349cb0d3c4928dee9c7f9b9c44a2d6920f2d8f685ac3688fabec",
+      "size": 2366,
+      "source": "Grothe/HJM/OriginUnweightedRightCheckData.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCombined00.lean",
+      "sha256": "3d69f21990926f7f1818e703df9572d9296022491a2bc28e2c2aad1b266fab60",
+      "size": 281,
+      "source": "Grothe/HJM/OriginUnweightedRightCombined00.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCombined01.lean",
+      "sha256": "2d013de28b541951457c4f89b0cd3adf95d5a60cd7b14db43020f44ec6740352",
+      "size": 285,
+      "source": "Grothe/HJM/OriginUnweightedRightCombined01.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCombined02.lean",
+      "sha256": "a26cd399966efeeaf0ff30b7c6bfed568c9f7197fd833a8c2f30c47e28c2fe75",
+      "size": 288,
+      "source": "Grothe/HJM/OriginUnweightedRightCombined02.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCombined03.lean",
+      "sha256": "2403961608d6d1e9ccc9ec755fd27de4d2cfc1935f08c8409029b6a690a07cc2",
+      "size": 288,
+      "source": "Grothe/HJM/OriginUnweightedRightCombined03.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCombined04.lean",
+      "sha256": "8a7f05e21f6866b3954d84b5975001799053089671b85e12f834c2e7eab91567",
+      "size": 288,
+      "source": "Grothe/HJM/OriginUnweightedRightCombined04.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCombined05.lean",
+      "sha256": "97bafa600c6328dce82b214f0a3f06abaa1c3399918b485882437b1dbd2ff037",
+      "size": 288,
+      "source": "Grothe/HJM/OriginUnweightedRightCombined05.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCombined06.lean",
+      "sha256": "88e93cbfbc74873e83c596c5e092de386d94529daa8511fc2f91a144f946d227",
+      "size": 288,
+      "source": "Grothe/HJM/OriginUnweightedRightCombined06.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCombined07.lean",
+      "sha256": "5332c04b72f49d72ad6d512c47799270b57ff91100f0d69baa1fba273d8dd3a5",
+      "size": 288,
+      "source": "Grothe/HJM/OriginUnweightedRightCombined07.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCombined08.lean",
+      "sha256": "9c8d9043f2ada62d1eb7b660537983102a87db61d88d7318fcf6b5bc7394bf53",
+      "size": 288,
+      "source": "Grothe/HJM/OriginUnweightedRightCombined08.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCombined09.lean",
+      "sha256": "736094633acd0d6cbc537213a111caed30698d3582e6c42894c4574077441b5a",
+      "size": 288,
+      "source": "Grothe/HJM/OriginUnweightedRightCombined09.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCombined10.lean",
+      "sha256": "380474c7f099e27a431e6630e0b9056e41b6066222d05559dff271244865e215",
+      "size": 288,
+      "source": "Grothe/HJM/OriginUnweightedRightCombined10.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCombined11.lean",
+      "sha256": "fbf8753ced6244fa789b24f34db2feb12e60bda7b2ce2a0cdb7009b4750934a0",
+      "size": 288,
+      "source": "Grothe/HJM/OriginUnweightedRightCombined11.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCombined12.lean",
+      "sha256": "b52e9c70b393d986097c6597fc9c1577c9a1d68f3c24a0dd54a53dfd27437c29",
+      "size": 288,
+      "source": "Grothe/HJM/OriginUnweightedRightCombined12.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightCombined13.lean",
+      "sha256": "58e857a5dfb896e10c1c498919fbc817022d27159ac75bc447d4d3b72da040b3",
+      "size": 288,
+      "source": "Grothe/HJM/OriginUnweightedRightCombined13.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightGeometry.lean",
+      "sha256": "03f0fc233bd254f25c3f33aa9fd35865f5f739223058f54783c3775818cd848d",
+      "size": 13631,
+      "source": "Grothe/HJM/OriginUnweightedRightGeometry.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedRightWitness.lean",
+      "sha256": "a134156b619d21edcd37154c2cb1da6f570867888e3f1acfe80550b089be4a19",
+      "size": 21740,
+      "source": "Grothe/HJM/OriginUnweightedRightWitness.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedTail.lean",
+      "sha256": "bf62c010639238202ed4a356b545e8285c034b3e7f7a223959a56989ebbdd168",
+      "size": 7637,
+      "source": "Grothe/HJM/OriginUnweightedTail.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginUnweightedWitnessMass.lean",
+      "sha256": "ada8fc1d69729fbc058f3c8416cbae0dc1da463c29a1e4ec4672e693ba31db92",
+      "size": 3264,
+      "source": "Grothe/HJM/OriginUnweightedWitnessMass.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginVisibleEnergy.lean",
+      "sha256": "d00e4d69bc7a2171df2f5e9d99473b25a0c06f933e2dfd5587c46fcd6cdde698",
+      "size": 20974,
+      "source": "Grothe/HJM/OriginVisibleEnergy.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginWitnessData.lean",
+      "sha256": "a03c30c306413a32a6d1ba4c150e632248e3a09d20bcb13cf3dde7fea0f73197",
+      "size": 24577,
+      "source": "Grothe/HJM/OriginWitnessData.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginWitnessLaguerre.lean",
+      "sha256": "f0f5cff12cbb534b59af2b4bb181371557c800a42e9cbba3b629dc01bb678d99",
+      "size": 6935,
+      "source": "Grothe/HJM/OriginWitnessLaguerre.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginWitnessModeIntegral.lean",
+      "sha256": "36d308fe8b34ae83724d32296deb90cd712d4b8db619e0db148c7615385e30e0",
+      "size": 8371,
+      "source": "Grothe/HJM/OriginWitnessModeIntegral.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/OriginWitnessRadialAmplitude.lean",
+      "sha256": "d9e1bb5e91246417d87f7b76338fbdd9ba8668be2a88e3935f561cfbb04720e2",
+      "size": 4762,
+      "source": "Grothe/HJM/OriginWitnessRadialAmplitude.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/PhaseRotation.lean",
+      "sha256": "e7e5e0ecab822afef8720c2fbe7595349433adfc92eb7862571ed6fc7e3e49d3",
+      "size": 7422,
+      "source": "Grothe/HJM/PhaseRotation.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/PhaseRotationTail.lean",
+      "sha256": "3057de2e91848a31222b6a4f4cff18ed79c636a459a5cee5e1ca41c8cde54ecc",
+      "size": 8882,
+      "source": "Grothe/HJM/PhaseRotationTail.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/Prefix.lean",
+      "sha256": "458ad2db1fc3a6493904699b9667389be390499f23963839823ca4310f0e79b5",
+      "size": 7208,
+      "source": "Grothe/HJM/Prefix.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/PrefixCheck1.lean",
+      "sha256": "235d5ff19d48d66d2f09d0b080048c44d664daf03ba1ff200cba210ba9c93c9a",
+      "size": 1688,
+      "source": "Grothe/HJM/PrefixCheck1.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/PrefixCheck2.lean",
+      "sha256": "9945066e5c101a290f7c90ec13ae45df7c432574a8b0b04f16c402cea63f5abd",
+      "size": 1719,
+      "source": "Grothe/HJM/PrefixCheck2.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/PrefixCheck3.lean",
+      "sha256": "f0d4c938366899b481a8b25995607be840bf7fb53f6cd22e564bbfd2bbf32f2f",
+      "size": 1719,
+      "source": "Grothe/HJM/PrefixCheck3.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/PrefixCheck4.lean",
+      "sha256": "0b63e0e528e17706309d5672e2a67e4797bd44c3fbdf916b95114b3ac9273a54",
+      "size": 1719,
+      "source": "Grothe/HJM/PrefixCheck4.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/PrefixCheck5.lean",
+      "sha256": "60660cbe05475b7ae951ad2a942585816b71cabb98b3deafc2ec41c7ed61c1f8",
+      "size": 6746,
+      "source": "Grothe/HJM/PrefixCheck5.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/PrefixTable.lean",
+      "sha256": "101b1f7a44d03c1f5040114524badbb42d630028819bbb389c8e5b4ab8287b9a",
+      "size": 411658,
+      "source": "Grothe/HJM/PrefixTable.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/Preprocessors.lean",
+      "sha256": "366a395acfad2de4ec533c18fc18173a9b135618905cf85e6ea54c8e17075a8e",
+      "size": 1402,
+      "source": "Grothe/HJM/Preprocessors.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/Repriced.lean",
+      "sha256": "e0e21535db1b8b8c0c90f2544688b61dea455b173147cb9234e3372021caff3b",
+      "size": 13322,
+      "source": "Grothe/HJM/Repriced.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/TailSplit.lean",
+      "sha256": "60670dab518010e3029c8e26534b4a5b6a52805326c3a9906ea0a51add0e6e9d",
+      "size": 2033,
+      "source": "Grothe/HJM/TailSplit.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/HJM/UnweightedRepriced.lean",
+      "sha256": "b6fd2ba3d5792d181be463da58cdcc47dc6f61a7507db05d36999308ca6faa20",
+      "size": 4154,
+      "source": "Grothe/HJM/UnweightedRepriced.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalArithmetic.lean",
+      "sha256": "171c4073fb69aa222873a60056e86034a6dd30b6c074ace12930a9992ddc7bba",
+      "size": 1029,
+      "source": "Grothe/Haagerup/CanonicalArithmetic.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalCheck.lean",
+      "sha256": "20b48924250e589e6ca4be90e4430970acfe4b557f929949b00ff973d9dd3300",
+      "size": 808,
+      "source": "Grothe/Haagerup/CanonicalCheck.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalData.lean",
+      "sha256": "e64a99548330bbbf9e6ed4f377c093e361c03eda46c7e907aae2f18c9c32141f",
+      "size": 1228,
+      "source": "Grothe/Haagerup/CanonicalData.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalProof.lean",
+      "sha256": "d89f228a848ea47c835438fb41aff25693c53411968d3af0401f29884ebb0b7b",
+      "size": 20707,
+      "source": "Grothe/Haagerup/CanonicalProof.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Assembly.lean",
+      "sha256": "7e12528fadcca3d636d404870e1dbb93fa6856e44aaea0d192d156b7767d5f48",
+      "size": 242171,
+      "source": "Grothe/Haagerup/CanonicalTrace/Assembly.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Bindings.lean",
+      "sha256": "8feeb9e0378e91eeb44effbeded40795993f64ba7aaa7b8c02e335ebc8a30456",
+      "size": 23476,
+      "source": "Grothe/Haagerup/CanonicalTrace/Bindings.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Checks.lean",
+      "sha256": "5d8fce4bc55320cb958351b6eea40e94fb6c016c0ed071d35e19c2913d369650",
+      "size": 4000,
+      "source": "Grothe/Haagerup/CanonicalTrace/Checks.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Convolution.lean",
+      "sha256": "c0e13ed116ca70eea2c0430851f2644a46da861586ab7d46d1bc0cf91e8cb6e7",
+      "size": 1159,
+      "source": "Grothe/Haagerup/CanonicalTrace/Convolution.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric00.lean",
+      "sha256": "bcbcb72d7e20cf6257b80491eda111df4a530ad437b307752d6962d6dfcd2d09",
+      "size": 19034,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric00.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric01.lean",
+      "sha256": "808fc399b19f50038c41b5a61c3ead7f282e2117cf0ded485d07c47692b1c594",
+      "size": 19276,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric01.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric02.lean",
+      "sha256": "418814a706fc2f5f0a7070dc2e3d0eb89e8ab4f730f5fec920d2319809d8b029",
+      "size": 19428,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric02.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric03.lean",
+      "sha256": "9eb429d6f8d4df87847f8840ef8a1415a7120409db78ce34b5379737e4ef6eb8",
+      "size": 21038,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric03.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric04.lean",
+      "sha256": "a0cf2f2e511c53a06e52e6f0aa9edfcc8fccda9aaab34cb418e671edfe50c3f2",
+      "size": 19416,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric04.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric05.lean",
+      "sha256": "60aaa40605f4205deda18000777a0e285e20461c0e91e1d408d0b18822f5d9db",
+      "size": 18900,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric05.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric06.lean",
+      "sha256": "e6f74c5fa88993f3e55ea56fdc70e29ac47fb69d147919df025dd7047632da0e",
+      "size": 19287,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric06.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric07.lean",
+      "sha256": "11b116dc7e46cd394f1ab87cfbab094126bb2f5616c40808dcda6d3500b98876",
+      "size": 18823,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric07.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric08.lean",
+      "sha256": "9ca4c2d10de979ec9b913a952e472f88b5f4793feb15c525d113375dd2bd7193",
+      "size": 19058,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric08.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric09.lean",
+      "sha256": "7a7be6594b9a6574b51edcd6eb39b0601ddd5bd758c0881642a3c180e87b507a",
+      "size": 19145,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric09.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric10.lean",
+      "sha256": "cb3b73c07357d9e44d211ced5de280bf58048281d8aec61284ba4f64419e8e33",
+      "size": 19055,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric10.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric11.lean",
+      "sha256": "c3b66690811dba8c9f7d16e60ddd3f04266ad5dccf70d7bec53c5a79f995e1a0",
+      "size": 19085,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric11.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric12.lean",
+      "sha256": "5153cdb6f332a8e59dc71460cea24a854527427e87520c90f7f9fe3b5e79cf39",
+      "size": 18922,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric12.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric13.lean",
+      "sha256": "adce9c09bf1d6ed492381fd5b8c64f7d98ad8e68b7243b36e64b36ba94c845ff",
+      "size": 18778,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric13.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric14.lean",
+      "sha256": "0548c11bb91dd04ecb34ecf3be58af5dd03b7f4649d97634e1c3fa8802433584",
+      "size": 19205,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric14.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Numeric15.lean",
+      "sha256": "139b4761aaa6afaec40ccedf556272382ee4e43e27bb832c9504ab2d00a178c3",
+      "size": 19122,
+      "source": "Grothe/Haagerup/CanonicalTrace/Numeric15.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CanonicalTrace/Shared.lean",
+      "sha256": "9ea3516f7d4ee4517c5a143ff876016d528466485ccfa9b316ea97591c5ceca5",
+      "size": 5890109,
+      "source": "Grothe/Haagerup/CanonicalTrace/Shared.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/CompleteMonotone.lean",
+      "sha256": "fbfafa6de59f2331a236dfe2f3d21de4edc2b1f0745164884f14d4965c9c9bdd",
+      "size": 3945,
+      "source": "Grothe/Haagerup/CompleteMonotone.lean"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/Grothe/Haagerup/Identity.lean",
+      "sha256": "aa237df5536547f1c81f68bb41ef800df4c3d33a7015b963ab56f84aeb64d509",
+      "size": 8553,
+      "source": "Grothe/Haagerup/Identity.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/Power.lean",
+      "sha256": "95381d7b0affe9f4a9560d368df4a8d0196ec2885f4f30d0fcdc67d92cc69903",
+      "size": 866,
+      "source": "Grothe/Haagerup/Power.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/PowerData.lean",
+      "sha256": "987580135fe1232681fbbdc3a7d35c4b2d5b78084e521028d303cfc63800194c",
+      "size": 3295,
+      "source": "Grothe/Haagerup/PowerData.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/ScalarTailRefinement.lean",
+      "sha256": "d873d0cbba8437fb0cd0a3d4866e5fa6e46805a430442568c0f31c37d368986c",
+      "size": 14987,
+      "source": "Grothe/Haagerup/ScalarTailRefinement.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Haagerup/WallisTail.lean",
+      "sha256": "78206fe32525790d3a433bc5f1005a6497d2f40b39cb38faaf4eeff3612f08e8",
+      "size": 8111,
+      "source": "Grothe/Haagerup/WallisTail.lean"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/Grothe/Upper/Haagerup.lean",
+      "sha256": "e441685febdcbafd62ba6a21ae1678ea8dd160859ecdf0bd9508ae817ce4095d",
+      "size": 10904,
+      "source": "Grothe/Upper/Haagerup.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Upper/PowerTail.lean",
+      "sha256": "f35ec39e825efe0e9255e26989c268b15a9fe482b6aa88fbf3c77fc7ea958ea2",
+      "size": 9339,
+      "source": "Grothe/Upper/PowerTail.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Upper/ResolventCertificate.lean",
+      "sha256": "e2b9658f0a854ae1743d8c608f47b28d455ad07b78872dcf8143b86de76cb22b",
+      "size": 5727,
+      "source": "Grothe/Upper/ResolventCertificate.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Upper/ResolventCompletion.lean",
+      "sha256": "b841efcfa7777951bb18863591d02e77b5ced2e7641bef0ac39eddb5afb34e60",
+      "size": 8742,
+      "source": "Grothe/Upper/ResolventCompletion.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Upper/ResolventTail.lean",
+      "sha256": "7839ac1828b2233d568ba0f5d7151ace153141d997258d34fac1d5a749587030",
+      "size": 10863,
+      "source": "Grothe/Upper/ResolventTail.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/Upper/WeightedTail.lean",
+      "sha256": "fc847be6919b015688833b8fa3bdeaf794521292978dac12c302daef264199fa",
+      "size": 2584,
+      "source": "Grothe/Upper/WeightedTail.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/UpperChaos/ReducedGrouped.lean",
+      "sha256": "0e8747591ead76594ae2673ad6b1cca9386acdf41dd0c25ddf1d9c69628d746f",
+      "size": 14326,
+      "source": "Grothe/UpperChaos/ReducedGrouped.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/UpperChaos/RelaxedGrouped.lean",
+      "sha256": "a0f7aaa5c0efb8cb5f16a543d976af72764c5a5d089cacf0744d9c580c62a9c4",
+      "size": 19278,
+      "source": "Grothe/UpperChaos/RelaxedGrouped.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/UpperChaos/SecondBandElimination.lean",
+      "sha256": "9ac5a76b431f905c9b5fda323204ca6c27f6ccf2ee90dbc876389e7f118c141d",
+      "size": 7451,
+      "source": "Grothe/UpperChaos/SecondBandElimination.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/UpperChaos/ThirdBandElimination.lean",
+      "sha256": "17385d9e4e6eaf1cf8687869fe5bcedd0fd41816074e501506e2f6e1d7bb86c7",
+      "size": 5351,
+      "source": "Grothe/UpperChaos/ThirdBandElimination.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/UpperChaos/ThirteenBandUpper.lean",
+      "sha256": "6c6e88bb41c5aa1945fa5db66912069d9109d6a146b28557e858bd0aa7e25324",
+      "size": 7396,
+      "source": "Grothe/UpperChaos/ThirteenBandUpper.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/UpperChaos/TwelveBandUpper.lean",
+      "sha256": "59584b3343d8c53d7bdb6778360040d9e75b2f23117b5bcd8f5df4738622e4b5",
+      "size": 9476,
+      "source": "Grothe/UpperChaos/TwelveBandUpper.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/Grothe/UpperChaos/TwelveGrouped.lean",
+      "sha256": "991b35c57d91c7d080e2b85b684929e52b36e498ccf8448ecfdb7ff5105c1aec",
+      "size": 14477,
+      "source": "Grothe/UpperChaos/TwelveGrouped.lean"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/GrotheCapsKernel.lean",
+      "sha256": "65563ca7cb1a412301bedcb60b670a53b93acf443fa5b284682b9990ff0c1bb6",
+      "size": 189,
+      "source": "GrotheCapsKernel.lean"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/GrotheKernel.lean",
+      "sha256": "5fe6006bc2eeb3733c6b7249a01c205df2ea7217db643cadbef4228d02ed90a7",
+      "size": 267,
+      "source": "GrotheKernel.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/GrotheKernel/PowerTail.lean",
+      "sha256": "d6db307d7ee6a753a6da0edc77c1e716e745b436160a79d5e4b32d3468e433be",
+      "size": 1219,
+      "source": "GrotheKernel/PowerTail.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/GrotheKernel/ResolventTail.lean",
+      "sha256": "bf46b65a256ac5f198bc62bf1b576a8fac6fb87504d876951b814829d0857c62",
+      "size": 936,
+      "source": "GrotheKernel/ResolventTail.lean"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/README.md",
+      "sha256": "390dd0b8a4f883cdfd55d07fe87e40aa1e01ed63f4a4956f7f55fd6de90bc354",
+      "size": 45953,
+      "source": "README.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/axioms/modes/haagerup-power.native.txt",
+      "sha256": "db90d2ce49d2c31439494ef55042d02adfd6c5a5cea1aad71a6f6eed4d6b5f35",
+      "size": 79,
+      "source": "data/axioms/modes/haagerup-power.native.txt"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/axioms/modes/haagerup-power.required.txt",
+      "sha256": "4972dd2677e99ea4c57882274b47b7cfbcdbc10cb745caa2951527d22c4891fc",
+      "size": 4728,
+      "source": "data/axioms/modes/haagerup-power.required.txt"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/axioms/modes/hardy-budget.required.txt",
+      "sha256": "efc37f50c1a5b210f4bb752777d6fa34e4d5b0ba18db2751cc8a78a250357c97",
+      "size": 229,
+      "source": "data/axioms/modes/hardy-budget.required.txt"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/axioms/modes/law-nodes.required.txt",
+      "sha256": "599ed34875d954269bdd0b8803420318bbb0dc16e4926cf04ce58db9fc557c3c",
+      "size": 552,
+      "source": "data/axioms/modes/law-nodes.required.txt"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/axioms/modes/phase-response.native.txt",
+      "sha256": "f3996af874c1ab5a1e8b434c05c028831a304160f30e429914e805def73a9f7f",
+      "size": 91,
+      "source": "data/axioms/modes/phase-response.native.txt"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/axioms/modes/phase-response.required.txt",
+      "sha256": "5856dc9dd12d73ad1c56963defaf0917431c3aa05ab443eb4d08b3f71ae7aa79",
+      "size": 2267,
+      "source": "data/axioms/modes/phase-response.required.txt"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/axioms/modes/refined-cover.required.txt",
+      "sha256": "f6a7235e714c2e74bf55255d105a2e7d83db71f85658ebba82af068b12e8adb0",
+      "size": 988,
+      "source": "data/axioms/modes/refined-cover.required.txt"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/axioms/modes/research.native.txt",
+      "sha256": "0ac73dde77b5b50095c33ce180c40a1e29043211c41c81acd282c9b9020f43b5",
+      "size": 138,
+      "source": "data/axioms/modes/research.native.txt"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/axioms/modes/research.required.txt",
+      "sha256": "df4d57f5f2da4ed19efb09ca1847b8c9bd8772c2d8f0fa710d585b1102ee3e71",
+      "size": 767,
+      "source": "data/axioms/modes/research.required.txt"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/axioms/modes/response-geometry.native.txt",
+      "sha256": "272f55efbaee697aea6e431b6c209de94b07d6ed0f22ce5f0cdeaddf5cf01837",
+      "size": 94,
+      "source": "data/axioms/modes/response-geometry.native.txt"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/axioms/modes/response-geometry.required.txt",
+      "sha256": "b4152e67cee0473d79a047c3de80eec6edde36669ac9f79c23b67058eb4f233f",
+      "size": 3606,
+      "source": "data/axioms/modes/response-geometry.required.txt"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/axioms/modes/responses.native.txt",
+      "sha256": "21ec6aa6847421742b4bb119166be26f52a50b254e2f24f35840c1c2c756186a",
+      "size": 86,
+      "source": "data/axioms/modes/responses.native.txt"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/axioms/modes/responses.required.txt",
+      "sha256": "342bd286153c640d8a4c6d36de3cce95cee51cecfaefd82e5cae15441d396f1c",
+      "size": 6897,
+      "source": "data/axioms/modes/responses.required.txt"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/axioms/modes/upper-comparison.native.txt",
+      "sha256": "7ee70eb8650c2e113269451272b1f3d0ea2dcd79aafe06e067dcf28ad0ad247c",
+      "size": 911,
+      "source": "data/axioms/modes/upper-comparison.native.txt"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/axioms/modes/upper-comparison.required.txt",
+      "sha256": "66f04542f21bd9dfe2d7db1e6cc670826d82ea1121374c8ffb79cbb8d4d3f316",
+      "size": 528,
+      "source": "data/axioms/modes/upper-comparison.required.txt"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/axioms/native.txt",
+      "sha256": "0aa1a61366486f21a631d509dd2c2451f9275c326e541576d684a84f39d50e7a",
+      "size": 9356,
+      "source": "data/axioms/native.txt"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/axioms/required.txt",
+      "sha256": "5bb87fe1d8e986014dad9b75e907d9a71cb2e4b1307eb628c4192e09adc54e5b",
+      "size": 51647,
+      "source": "data/axioms/required.txt"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/haagerup-resolvent/README.md",
+      "sha256": "33f88ec5dd0ed5fdd397cb1596ebe541900b4eae9c906c6a969fdb9322ca81ff",
+      "size": 2665,
+      "source": "data/haagerup-resolvent/README.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/haagerup-resolvent/certificate.json",
+      "sha256": "93516a92223d07ee46593f92688e6a0fd9b5c9a9aeae9ea85d084be92513a63d",
+      "size": 3286,
+      "source": "data/haagerup-resolvent/certificate.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/haagerup-resolvent/recipe.json",
+      "sha256": "f78de12a55fcd9ff12870dd7347fb10f12613ef999ef5ca5ecea59c2227285ba",
+      "size": 197,
+      "source": "data/haagerup-resolvent/recipe.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/audit_sparse6_altgroups.py",
+      "sha256": "d554af0d26e218a4fc2f2795e99a9ef39eb5077ceecf55a0daac46909e14dca1",
+      "size": 9181,
+      "source": "data/hjm/audit_sparse6_altgroups.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/NUMERICS_DESIGN.md",
+      "sha256": "d5682989c64700f23c5c1505a5860e29a022be1f68633eed6e931e8641129606",
+      "size": 10831,
+      "source": "data/hjm/origin/NUMERICS_DESIGN.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/OriginUnweightedMeanPolynomial.lean.template",
+      "sha256": "85914e72dd28873db5be02c9887df6784344682e2ad0bc610dc80a68c4f0eeba",
+      "size": 4071,
+      "source": "data/hjm/origin/OriginUnweightedMeanPolynomial.lean.template"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/README.md",
+      "sha256": "15ce96294c472e139d0d74951880060338cb62ff6d93a9ef32bc0518787cc8bf",
+      "size": 6199,
+      "source": "data/hjm/origin/README.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/certificate.json",
+      "sha256": "7bbfe51ea6e74bac111d6d9e974de6badd0300a6046d89ef08acf6c07786af59",
+      "size": 264419,
+      "source": "data/hjm/origin/certificate.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/manifest.json",
+      "sha256": "d5279d8e2ddb6887f06f6d681e033894e389e64382184f35417fcbbd80042c97",
+      "size": 6971,
+      "source": "data/hjm/origin/manifest.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/nonvanishing-certificate.json",
+      "sha256": "3adc9dad65d03b9988273309c1def841724b8ad5d35374624209af8a0abd348f",
+      "size": 19457,
+      "source": "data/hjm/origin/nonvanishing-certificate.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/phase-derivative-certificate.json",
+      "sha256": "b0940b999c6f573d20dfe49af6852a179ed6240b5913e446cdcde4af5ca499c0",
+      "size": 136618,
+      "source": "data/hjm/origin/phase-derivative-certificate.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/phase-panels-r8.json",
+      "sha256": "76b2d5f3df4dd7c39d3202d12269650f8b9712158026232f6a1dcd80390ff35d",
+      "size": 162356,
+      "source": "data/hjm/origin/phase-panels-r8.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/unweighted64-aggregate-exact.json",
+      "sha256": "31685a9bdb70f97433c8d98d4211b0250028fe44ffbcf32ad1209052ffea3e38",
+      "size": 1644,
+      "source": "data/hjm/origin/unweighted64-aggregate-exact.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/unweighted64-replay.json",
+      "sha256": "f848c959f28899145b032d8c5906615fea21a2f8da0a4e25fee3176e5d9ca526",
+      "size": 61953,
+      "source": "data/hjm/origin/unweighted64-replay.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/upstream/generate_origin_tail_25_36.py",
+      "sha256": "3e139202b0bb839c52ef9fbcf10d0ccb7dc7c666c537712d3f228f8b9de18083",
+      "size": 3881,
+      "source": "data/hjm/origin/upstream/generate_origin_tail_25_36.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/upstream/origin_tail_25_36.npz",
+      "sha256": "8bcc654f4fd44881a7b487fe1336a8905aaa2d1b52deca45e622e1c397fb03aa",
+      "size": 10836,
+      "source": "data/hjm/origin/upstream/origin_tail_25_36.npz"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/upstream/support_compression_certificate/complex_radial_phase_polynomial_certificate.py",
+      "sha256": "a4b54442133d24da979a602f428364adb96952b26e62b5cbab60c1f484def625",
+      "size": 5470,
+      "source": "data/hjm/origin/upstream/support_compression_certificate/complex_radial_phase_polynomial_certificate.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/upstream/support_compression_certificate/complex_upper_convex_2e6_low_certificate.py",
+      "sha256": "cd7da49361a650b3d9b1d7bdc7e9b1091866ad8374f114d49836f138db8b9361",
+      "size": 5565,
+      "source": "data/hjm/origin/upstream/support_compression_certificate/complex_upper_convex_2e6_low_certificate.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/upstream/support_compression_certificate/complex_upper_convex_2e6_polynomial_certificate.py",
+      "sha256": "17ec189886b44c3998f5caa3241ad88c517619570930a8fa31bbf4988c790b55",
+      "size": 2454,
+      "source": "data/hjm/origin/upstream/support_compression_certificate/complex_upper_convex_2e6_polynomial_certificate.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/upstream/support_compression_certificate/complex_upper_convex_2e6_radial_coefficients.py",
+      "sha256": "68df32deb731f0efb126e784cb3f48a3531e585cd5b14e408585341cc6e185ca",
+      "size": 3993,
+      "source": "data/hjm/origin/upstream/support_compression_certificate/complex_upper_convex_2e6_radial_coefficients.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/upstream/support_compression_certificate/complex_upper_convex_2e6_scalar_tail_certificate.py",
+      "sha256": "acaed3e39038d0cd7368f83321a7e0dc86fd013c6f845fd242cded9bafa0644d",
+      "size": 4845,
+      "source": "data/hjm/origin/upstream/support_compression_certificate/complex_upper_convex_2e6_scalar_tail_certificate.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/upstream/support_compression_certificate/complex_upper_origin_layer_coefficients.py",
+      "sha256": "791d4396bcc53faf58f74c89ba35913794ae48a2c6e5ce7de5a7aefa8d2044c8",
+      "size": 4164,
+      "source": "data/hjm/origin/upstream/support_compression_certificate/complex_upper_origin_layer_coefficients.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/upstream/support_compression_certificate/complex_upper_origin_layer_coefficients_n120_analytic.npz",
+      "sha256": "fc29fa555fb66c5cd6a2ac53dbd2508207b6058cfe0b339163faadeb85ad54da",
+      "size": 10586,
+      "source": "data/hjm/origin/upstream/support_compression_certificate/complex_upper_origin_layer_coefficients_n120_analytic.npz"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/upstream/support_compression_certificate/complex_upper_origin_layer_definitions.py",
+      "sha256": "bf03cd782d8f6671c60533febac4779d311f640e059aae7de1d39224a961a26c",
+      "size": 2334,
+      "source": "data/hjm/origin/upstream/support_compression_certificate/complex_upper_origin_layer_definitions.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/upstream/support_compression_certificate/complex_upper_origin_layer_energy_certificate.py",
+      "sha256": "b1a795d071f611d7d943d7984c018967990d4c11063e93740b55c9ebbb0000bf",
+      "size": 3854,
+      "source": "data/hjm/origin/upstream/support_compression_certificate/complex_upper_origin_layer_energy_certificate.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/upstream/support_compression_certificate/complex_upper_saha_cubic_exacttail_457e8_certificate.py",
+      "sha256": "96ceba930d2ca675a2f082ac11fb05163c828cb2341f36db0f9cc02a7cfda6ca",
+      "size": 15110,
+      "source": "data/hjm/origin/upstream/support_compression_certificate/complex_upper_saha_cubic_exacttail_457e8_certificate.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/upstream/support_compression_certificate/complex_upper_saha_visible_energy_refinement.py",
+      "sha256": "2c98c5a044890fbeafbeecae2dd6c916df8bd2bde829f34f0a4ef921e0e4a3fa",
+      "size": 5129,
+      "source": "data/hjm/origin/upstream/support_compression_certificate/complex_upper_saha_visible_energy_refinement.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/visible-moment-certificate.json",
+      "sha256": "b30ab9633b9d83608a2ce455d7ddbc366d48fc233a79a623a868753bd991003c",
+      "size": 31851,
+      "source": "data/hjm/origin/visible-moment-certificate.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/hjm/origin/visible-witnesses.json",
+      "sha256": "d7119d6ef8506506ddb62c0acc31a9045e185fac8778880fb34368783b1500a7",
+      "size": 27082,
+      "source": "data/hjm/origin/visible-witnesses.json"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/localized-comparison/PROOF.md",
+      "sha256": "13c12aba3151d225745bd44e1e17ffb114213bd8e9c2f8fc1c0500a5463d453e",
+      "size": 7719,
+      "source": "data/localized-comparison/PROOF.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/localized-comparison/recipe.json",
+      "sha256": "e42187e415c40782357b8ed7cfec9de282be34b27d0b2cc5d49aac3bda4c9aae",
+      "size": 4329,
+      "source": "data/localized-comparison/recipe.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/PROOF.md",
+      "sha256": "c533cdb7c3a85c5004da68229471f2f006e66bb5e211fd073834205db872a0d6",
+      "size": 10800,
+      "source": "data/scalar-tail-refinement/PROOF.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/certificate.json",
+      "sha256": "517796aa095cb0e6787d617e487222e346d2e92b5b71719416ddc7d5cf14343e",
+      "size": 5170,
+      "source": "data/scalar-tail-refinement/certificate.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/LEAN_BUILD.json",
+      "sha256": "65fc3c5d51e4561365e7d9f7e3b1f001a5c5c9acc31bab8b1834c6ddfdee968d",
+      "size": 3588,
+      "source": "data/scalar-tail-refinement/verification/LEAN_BUILD.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/POWER16_ARITHMETIC_AUDIT.json",
+      "sha256": "4428fe92aaab6488f5bbb03a021d20cef4f4582810c6d44773548e34b58ee92e",
+      "size": 4761,
+      "source": "data/scalar-tail-refinement/verification/POWER16_ARITHMETIC_AUDIT.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/README.md",
+      "sha256": "727fddc235e53f6291f7cf91b9b576bb5daadedf8e60fbc533205f1dd899e3c8",
+      "size": 5577,
+      "source": "data/scalar-tail-refinement/verification/README.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/RECEIPT_CHECK.json",
+      "sha256": "f98ad7192e1a2eb8864e99630814e6e1b09265195ceeba58ad1d7498d6f9f49b",
+      "size": 3645,
+      "source": "data/scalar-tail-refinement/verification/RECEIPT_CHECK.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/REPLAY_DRIVER.py",
+      "sha256": "6747ab89ca1ebff8713a7bf277ee46e3f9c6bf0cdd9ae9a0b10559b5ee20cc26",
+      "size": 3259,
+      "source": "data/scalar-tail-refinement/verification/REPLAY_DRIVER.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/SCALAR_BRANCH5.json",
+      "sha256": "518bc30460301755f952901715b2d25b2a3ea0a1cfd451bf2028f19b86074344",
+      "size": 1493,
+      "source": "data/scalar-tail-refinement/verification/SCALAR_BRANCH5.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/SHA256SUMS",
+      "sha256": "808774e7a8761f120e2396961bef9022db3fd05ddc38995c5588fffe9ff647de",
+      "size": 2400,
+      "source": "data/scalar-tail-refinement/verification/SHA256SUMS"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/UPSTREAM_MANIFEST.json",
+      "sha256": "b7ee4f21db3cec6e6a1751f05714780220da2bec48fdc8fdd8f51603d0a82d0c",
+      "size": 10168,
+      "source": "data/scalar-tail-refinement/verification/UPSTREAM_MANIFEST.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/UPSTREAM_REPLAY.json",
+      "sha256": "73a42296f8527ad9c94137c399cf39d58d1952a3934eecd8f53488e40106b777",
+      "size": 2335,
+      "source": "data/scalar-tail-refinement/verification/UPSTREAM_REPLAY.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/WEIGHTED_BUILD.json",
+      "sha256": "3a8d383a37ca13c5396a515b3458da15e0daca8c4931b5e5eee54239d2d1199f",
+      "size": 1263,
+      "source": "data/scalar-tail-refinement/verification/WEIGHTED_BUILD.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/production-axioms.log",
+      "sha256": "106e619693c784c820ed5d10be6c40126fda4ff28fd4227ae3a095c00d0806d6",
+      "size": 1797,
+      "source": "data/scalar-tail-refinement/verification/production-axioms.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/production-build.log",
+      "sha256": "bbdfad90eeb903af65b0cfe4c0b1d28bf63ff653335571bc8d8608c98ce3326a",
+      "size": 162,
+      "source": "data/scalar-tail-refinement/verification/production-build.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/upstream-logs/audit_best7_final_arithmetic.log",
+      "sha256": "1dfbd0e77b6b7cf5ae78cdc4333b75b0a592dd281372aaec2d9ffb91c0c967c5",
+      "size": 859,
+      "source": "data/scalar-tail-refinement/verification/upstream-logs/audit_best7_final_arithmetic.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/upstream-logs/audit_sparse6_altgroups.log",
+      "sha256": "77371a45822fff27dd7bcdee0afc001ea1d89c4c04cabb0dd7b1da6abf941996",
+      "size": 6155,
+      "source": "data/scalar-tail-refinement/verification/upstream-logs/audit_sparse6_altgroups.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/upstream-logs/complex_upper_convex_2e6_polynomial_certificate.log",
+      "sha256": "069ce077ac7518ed34daa41b15bbfeaec4946fc4eeb6703337bc08402d93e7cd",
+      "size": 204,
+      "source": "data/scalar-tail-refinement/verification/upstream-logs/complex_upper_convex_2e6_polynomial_certificate.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/upstream-logs/complex_upper_saha_visible_energy_refinement.log",
+      "sha256": "e1ee4af249f27d56a3df0d486d1490df465d670aaf3fd96bf3987c62214dfffa",
+      "size": 1136,
+      "source": "data/scalar-tail-refinement/verification/upstream-logs/complex_upper_saha_visible_energy_refinement.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/verify_lean_report.py",
+      "sha256": "0dbbee709bb1ec8b29742cc08911265e23c9b8414780617b2a4b8807938160fb",
+      "size": 3575,
+      "source": "data/scalar-tail-refinement/verification/verify_lean_report.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/verify_receipts.py",
+      "sha256": "8f911f605208020ee5002748a42c101d797937f7a05450fd41d341b834cfe7b1",
+      "size": 12536,
+      "source": "data/scalar-tail-refinement/verification/verify_receipts.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/scalar-tail-refinement/verification/weighted-build.log",
+      "sha256": "a0cddc849d658ee1bd05b4dd3cf6a7d9c4ced52ab6f9c9c5d836a8cba89a7a17",
+      "size": 344,
+      "source": "data/scalar-tail-refinement/verification/weighted-build.log"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/upper-preprocess/README.md",
+      "sha256": "3aa763e786ce6bf1ba55687c1816ce355d35f70754d1a755204f578c06ae3977",
+      "size": 6308,
+      "source": "data/upper-preprocess/README.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/upper-preprocess/certificate.json",
+      "sha256": "bf06469452fb92470dad877803e9fab0a41d6bf7b072eb46d5fc4b4186a17932",
+      "size": 2087218,
+      "source": "data/upper-preprocess/certificate.json"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/data/upper-preprocess/inputs/contour_input.json",
+      "sha256": "7f1ed2b12b74bd71f57509a82ad1dbdb99dcbfbda19ecb5f14c5ff2bab4af38b",
+      "size": 3709,
+      "source": "data/upper-preprocess/inputs/contour_input.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/upper-preprocess/verification/BUILD_GAP.json",
+      "sha256": "d20b9b272962a6f2af06f39ab64fc6d5ddaef66370a1bd4889ec1655095ffe53",
+      "size": 8011,
+      "source": "data/upper-preprocess/verification/BUILD_GAP.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/upper-preprocess/verification/BUILD_VALIDATION.json",
+      "sha256": "e3b6206ba53b6243b27d30ad91055bf059965132a39d9ef045cd8eaf13116113",
+      "size": 1277,
+      "source": "data/upper-preprocess/verification/BUILD_VALIDATION.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/upper-preprocess/verification/CI.json",
+      "sha256": "713ebc63bda9e0acd743693faca587a1059ab8ce3e9fff4ec3b33dceef563c38",
+      "size": 41022,
+      "source": "data/upper-preprocess/verification/CI.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/upper-preprocess/verification/CI_AXIOMS.log",
+      "sha256": "157a6d9b140e443becc61e384714959aa0bd58da363740c5a9b552cdcb112368",
+      "size": 63191,
+      "source": "data/upper-preprocess/verification/CI_AXIOMS.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/upper-preprocess/verification/CI_EXCERPT.log",
+      "sha256": "45445f231a31633346728b13f102ea6e37b959f5c015b8e109be0977ef2462c7",
+      "size": 35300,
+      "source": "data/upper-preprocess/verification/CI_EXCERPT.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/upper-preprocess/verification/COMBINED_ARITHMETIC.json",
+      "sha256": "3f93733e748850ef6a616b98d6840f909317ca426dea9c0c3283722561325b1f",
+      "size": 658,
+      "source": "data/upper-preprocess/verification/COMBINED_ARITHMETIC.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/upper-preprocess/verification/README.md",
+      "sha256": "1ee77d315627cd603f0673932c96723f6474f25330420a07316338ba5adbdf6e",
+      "size": 2203,
+      "source": "data/upper-preprocess/verification/README.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/data/upper-preprocess/verification/VALIDATION.json",
+      "sha256": "e3b6206ba53b6243b27d30ad91055bf059965132a39d9ef045cd8eaf13116113",
+      "size": 1277,
+      "source": "data/upper-preprocess/verification/VALIDATION.json"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/docs/ATTACK_PLAN_2026-10-23.md",
+      "sha256": "a3e23d72fa178ff14c6c18c8f700f327fd94c58a6e071e3cd45a35d93aba410b",
+      "size": 30853,
+      "source": "docs/ATTACK_PLAN_2026-10-23.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/docs/CUBIC_FAMILY_CEILING_2026-10-23.md",
+      "sha256": "6fc18b1d6235024a4e31389cc808c55899935c7688b7e67d81f5d635f9754a5b",
+      "size": 18443,
+      "source": "docs/CUBIC_FAMILY_CEILING_2026-10-23.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/docs/CUBIC_PHASE_SEPARATOR_2026-10-23.md",
+      "sha256": "d472c3490583965a068eee6d7e549287d73c5dd23b6cf9547ddad72f933a1664",
+      "size": 12630,
+      "source": "docs/CUBIC_PHASE_SEPARATOR_2026-10-23.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/docs/GENUINE_CUBIC_DIAGNOSIS_2026-10-23.md",
+      "sha256": "3ec8eff86465845c5c3a4622c0a19c46f74d5254b5913709b958d7218fecf7a8",
+      "size": 11966,
+      "source": "docs/GENUINE_CUBIC_DIAGNOSIS_2026-10-23.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/HAAGERUP_POWER.md",
+      "sha256": "f39646152b2937bf4d03ad3c870a18c8dd8c5e1df1067ffcb464ef8e25339118",
+      "size": 11658,
+      "source": "docs/HAAGERUP_POWER.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/docs/JOINT_FIBRE_EXPERIMENT_2026-10-23.md",
+      "sha256": "6025e3d791a9b5a8c3f7186a2c6bc7dbc875aeb13316cbcb0e8bb7d981eef22a",
+      "size": 28048,
+      "source": "docs/JOINT_FIBRE_EXPERIMENT_2026-10-23.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/docs/JOINT_RESPONSE_LIFT_2026-10-23.md",
+      "sha256": "235b14ad02577e6523206ac9cc9cd298bc440e04bbf7f08e0ec1dc2eda5aaecc",
+      "size": 19330,
+      "source": "docs/JOINT_RESPONSE_LIFT_2026-10-23.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/docs/LEAN_AUDIT.md",
+      "sha256": "4afa475c4666f88e9fbbbbed8de8562f4df8eb737e0debf850c20c29bc74ce3a",
+      "size": 45189,
+      "source": "docs/LEAN_AUDIT.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/docs/LEAN_DETAILS.md",
+      "sha256": "d1e3fd7b6391694cd605fb1c97f87465a462c5d142d564178db3eaa2779a636d",
+      "size": 92936,
+      "source": "docs/LEAN_DETAILS.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/docs/LEAN_NATIVE_INVENTORY.md",
+      "sha256": "6521b4797a9f479cf0c8d6e8f5c2eecb85e15fb3588c60f9f105857107721f20",
+      "size": 39129,
+      "source": "docs/LEAN_NATIVE_INVENTORY.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/docs/QUINTIC_REASSESSMENT_2026-10-23.md",
+      "sha256": "f1cc9b9a4362bbad5c434b3b3852d41304cc4b2b15a7e8c172542e88c34c8634",
+      "size": 18209,
+      "source": "docs/QUINTIC_REASSESSMENT_2026-10-23.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/docs/REASSESSMENT_2026-10-23.md",
+      "sha256": "80c925c7fa2af22397318a552eee6126fb9f47dd836d79e81ffc9768f609fa4c",
+      "size": 40438,
+      "source": "docs/REASSESSMENT_2026-10-23.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/docs/RESEARCH_AUDIT.md",
+      "sha256": "83d57089c1d5cf622fea47b86d29e88ea9723af8dc4b32612be1e54bd1339a03",
+      "size": 18642,
+      "source": "docs/RESEARCH_AUDIT.md"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/docs/UPPER_STATUS.md",
+      "sha256": "748e11f9159c3ac53631f231c0b5bb30b88b1e96f983deef5d47d6cb706933ea",
+      "size": 26562,
+      "source": "docs/UPPER_STATUS.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/localized-comparison.tex",
+      "sha256": "597459147428497a1553508246d97fd1b800b2cb5d6cca7d52b2b70ce9d1ec39",
+      "size": 5244,
+      "source": "docs/localized-comparison.tex"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/docs/overview.tex",
+      "sha256": "bf484d866f30bb1b6a1e91849ef76b34eb5a1ee908d96551a4576fc0fbc4f01c",
+      "size": 56521,
+      "source": "docs/overview.tex"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/research/haagerup-power.tex",
+      "sha256": "3c66e1897ac1c3afa37f78b7d06c43de3d601f439034676672383edeaa68d1c5",
+      "size": 9304,
+      "source": "docs/research/haagerup-power.tex"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/research/scalar-tail-refinement.tex",
+      "sha256": "25d994662217184b81480f77ccbbc7858a73e478fd0e9e296675310762ddb4f2",
+      "size": 3765,
+      "source": "docs/research/scalar-tail-refinement.tex"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/README.md",
+      "sha256": "f6ada8bcc731dbfd8a2abeea363d5a4c0f2234e2f0d06858657aa85b7515a998",
+      "size": 3636,
+      "source": "docs/verification/haagerup-alternating-20261027/README.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/acceptance/README.md",
+      "sha256": "e201998460a973dbaa6eb4d68f820c1605a89817b911f55ff0ce4ca1fd8f4d33",
+      "size": 2753,
+      "source": "docs/verification/haagerup-alternating-20261027/acceptance/README.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/acceptance/axiom-check.json",
+      "sha256": "84a47771c83e9e1437f451a3b9b1909fdf2c382862ab5fcfad861d38c86fcf10",
+      "size": 598,
+      "source": "docs/verification/haagerup-alternating-20261027/acceptance/axiom-check.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/acceptance/delivery.json",
+      "sha256": "1c4b2715d5078dd4602a01b43d521f8123227b50cb6cd5b0ae623f94e201bcda",
+      "size": 2408,
+      "source": "docs/verification/haagerup-alternating-20261027/acceptance/delivery.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/acceptance/global-axioms.txt",
+      "sha256": "42e4d65006762f340f535deb667e6f22c15ed487d2fd5836c734b407b180dc09",
+      "size": 84556,
+      "source": "docs/verification/haagerup-alternating-20261027/acceptance/global-axioms.txt"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/acceptance/haagerup-axioms.txt",
+      "sha256": "2476fd9d3ab250aa08b5f71d73429b0e7fa5eb0fff638b4db70348daed172109",
+      "size": 10211,
+      "source": "docs/verification/haagerup-alternating-20261027/acceptance/haagerup-axioms.txt"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/acceptance/local-refresh.json",
+      "sha256": "b88b850efd213422c72281bf4e1a814f80fc26c319928603a6b1ca472803a16a",
+      "size": 1011,
+      "source": "docs/verification/haagerup-alternating-20261027/acceptance/local-refresh.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/acceptance/pdf-review.json",
+      "sha256": "1357c153f18797d106b74d675db789c7bf518642fc40cee0e0d3bcdf9ddb18fe",
+      "size": 2157,
+      "source": "docs/verification/haagerup-alternating-20261027/acceptance/pdf-review.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/acceptance/pdf-review.log",
+      "sha256": "1289133cc4dea6f997ebcf3325461551808075977547084037a9b4e73441bc65",
+      "size": 1816,
+      "source": "docs/verification/haagerup-alternating-20261027/acceptance/pdf-review.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/ci-fix/README.md",
+      "sha256": "dd1dbe6af44032968124039826cb538a4e381899b7508bdd3a474ab9bf5ca897",
+      "size": 1187,
+      "source": "docs/verification/haagerup-alternating-20261027/ci-fix/README.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/ci-fix/local-checks.json",
+      "sha256": "8b114a5acd365909953e10543a3e83fb309e03b09bddc495a4742245a3a6ebf0",
+      "size": 1497,
+      "source": "docs/verification/haagerup-alternating-20261027/ci-fix/local-checks.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/ci-fix/local-checks.log",
+      "sha256": "d15737e506b28dbf667498fc67c1e9a035d0455d0d14774af1515daec5f89f89",
+      "size": 507,
+      "source": "docs/verification/haagerup-alternating-20261027/ci-fix/local-checks.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/ci-fix/replay.json",
+      "sha256": "ef0ab2a4d7f30c1c4f1176eb820fdc4ce0f7b3f383f8a706c6bb5fbe24b42050",
+      "size": 7989,
+      "source": "docs/verification/haagerup-alternating-20261027/ci-fix/replay.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/ci-fix/replay.log",
+      "sha256": "ef0ab2a4d7f30c1c4f1176eb820fdc4ce0f7b3f383f8a706c6bb5fbe24b42050",
+      "size": 7989,
+      "source": "docs/verification/haagerup-alternating-20261027/ci-fix/replay.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/ci-fix/script-tests.log",
+      "sha256": "74a2bdb2b73de689e3a9a3f2ae208fef977c46db7c16d12df3ff06e8130b3496",
+      "size": 162,
+      "source": "docs/verification/haagerup-alternating-20261027/ci-fix/script-tests.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/generator-regression.json",
+      "sha256": "4f6ead22028b4172cef2bd47510c26b1481de2c79bd09164a5320deeb93e7cea",
+      "size": 3821,
+      "source": "docs/verification/haagerup-alternating-20261027/generator-regression.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/layout-comparison.json",
+      "sha256": "bf823f08d326916e192d198da58c87bb880c4ff3a2d5a3f77ec39a7a26e542eb",
+      "size": 804,
+      "source": "docs/verification/haagerup-alternating-20261027/layout-comparison.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/pdf-review.log",
+      "sha256": "b0dde32c148de6ae482b7a47c89d8742e576159c5fc62645fb17b7057dcfcb90",
+      "size": 1717,
+      "source": "docs/verification/haagerup-alternating-20261027/pdf-review.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/replay.json",
+      "sha256": "145fbfed38ce9d710740a49b3dcdf686f8699b71ce4c4535f3a8b1a6c39a4a3e",
+      "size": 7989,
+      "source": "docs/verification/haagerup-alternating-20261027/replay.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/replay.log",
+      "sha256": "145fbfed38ce9d710740a49b3dcdf686f8699b71ce4c4535f3a8b1a6c39a4a3e",
+      "size": 7989,
+      "source": "docs/verification/haagerup-alternating-20261027/replay.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-alternating-20261027/script-tests.log",
+      "sha256": "f8267fbc413cf675de29d6e8c6f1783cf144b39d8627818d971b1269e2523d21",
+      "size": 162,
+      "source": "docs/verification/haagerup-alternating-20261027/script-tests.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/README.md",
+      "sha256": "747268007be7ed1aaa3217bacb94ab9f7c4f8a128c0ba8487573576d49b645b5",
+      "size": 5685,
+      "source": "docs/verification/haagerup-canonical-20261026/README.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/SHA256SUMS",
+      "sha256": "6aebadcfeaceac38e472a238d83055f1ba84d97f3f9b1752279becfbc9f2037d",
+      "size": 43413,
+      "source": "docs/verification/haagerup-canonical-20261026/SHA256SUMS"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/axioms-check.log",
+      "sha256": "daf734d3e0eba86b70c4e05c3bfb17e9b0c527d5cf572d885edabd4c7535d9a4",
+      "size": 54,
+      "source": "docs/verification/haagerup-canonical-20261026/axioms-check.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/axioms.log",
+      "sha256": "71891f8743a1044137a5833ed1086d398467dfc77bffa509e8a9a776cdb42900",
+      "size": 10247,
+      "source": "docs/verification/haagerup-canonical-20261026/axioms.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/caps-source-check.log",
+      "sha256": "81124deaf8bb38352dccb42a9119d6eb0d46b2474cab29e228a2fbcae7b9eaab",
+      "size": 232,
+      "source": "docs/verification/haagerup-canonical-20261026/caps-source-check.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/cloud-axioms.txt",
+      "sha256": "e0593ed20e24cb13210204ae594822783bd9931fd43a336c97633fd1e44ebba4",
+      "size": 82935,
+      "source": "docs/verification/haagerup-canonical-20261026/cloud-axioms.txt"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/cloud-build.log",
+      "sha256": "f9d1db137197a0523e3ca14f3099479d6b186c7a6742b6fb841c6bd6c1f24c2e",
+      "size": 3975,
+      "source": "docs/verification/haagerup-canonical-20261026/cloud-build.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/cloud-evidence.json",
+      "sha256": "7b03f2baa043e4eff24a87928cb9835ccf32b7d68250fb014c5fa7b02f5fa509",
+      "size": 43501,
+      "source": "docs/verification/haagerup-canonical-20261026/cloud-evidence.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/cloud-run.json",
+      "sha256": "ddfa987dd4a7b3510da3b3ecd29674233ecd38c5b84ae6a2a94e40ccec4508c1",
+      "size": 290,
+      "source": "docs/verification/haagerup-canonical-20261026/cloud-run.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/cloud-source-snapshot.json",
+      "sha256": "5acf840072721d89580120b92b7a6036054552402ae183a293b0967e7ce0a7e3",
+      "size": 41753,
+      "source": "docs/verification/haagerup-canonical-20261026/cloud-source-snapshot.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/cloud-summary.json",
+      "sha256": "aa339516278557a8c187222e52ad30ec08bf68868df5c16b65f46c7719232c0e",
+      "size": 284,
+      "source": "docs/verification/haagerup-canonical-20261026/cloud-summary.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/data-check.log",
+      "sha256": "3ea82813d8c2fda8fbd91d57571938f7862cbad7091e0b46ff0bfd6b73a5cdb6",
+      "size": 39,
+      "source": "docs/verification/haagerup-canonical-20261026/data-check.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/global-axioms-check.log",
+      "sha256": "e9ed4696e9815d4a80355f8a098a45fd642e5fec615015c246da31bee9a870ac",
+      "size": 57,
+      "source": "docs/verification/haagerup-canonical-20261026/global-axioms-check.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/integration-pdf-review.log",
+      "sha256": "8fcbab4b2bcd6d3d7373648506087bc0376047a2c239e4ce0683c42fffd0ff84",
+      "size": 1250,
+      "source": "docs/verification/haagerup-canonical-20261026/integration-pdf-review.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/integration.json",
+      "sha256": "5bdb6d3db0a8292accb84d39d928ae6bcdd4ef53c97bde9735b17cb2f4640bda",
+      "size": 44190,
+      "source": "docs/verification/haagerup-canonical-20261026/integration.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/pdf-review.log",
+      "sha256": "a1cee108e8f9c514898cbc1398b1f7a4cca40f495acdffcba17cc3674ad573cb",
+      "size": 2675,
+      "source": "docs/verification/haagerup-canonical-20261026/pdf-review.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/replay.json",
+      "sha256": "0420ee69292a32bc38b28f4d7535d135917a63b03e011cd415ff2cfb6a9f8c39",
+      "size": 6891,
+      "source": "docs/verification/haagerup-canonical-20261026/replay.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/replay.log",
+      "sha256": "0420ee69292a32bc38b28f4d7535d135917a63b03e011cd415ff2cfb6a9f8c39",
+      "size": 6891,
+      "source": "docs/verification/haagerup-canonical-20261026/replay.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/root-check.log",
+      "sha256": "87f48814011142323480e151f8c7dc8f9776c187c0719618a9597e98d57aa689",
+      "size": 48,
+      "source": "docs/verification/haagerup-canonical-20261026/root-check.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/script-tests.json",
+      "sha256": "4cb88b9a14b779c9292cd0fc1611091460e2a16280eb2ca4a1a0c2b654931dc8",
+      "size": 844,
+      "source": "docs/verification/haagerup-canonical-20261026/script-tests.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/script-tests.log",
+      "sha256": "90f6334fcfaca6a1777ed553c52814305cbf707cf4efc9332e06519a31203c24",
+      "size": 154,
+      "source": "docs/verification/haagerup-canonical-20261026/script-tests.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/trace-data-check.log",
+      "sha256": "cfa1acd384b1056d6ce09e29507fe058c3ebaae01378661e9c642ceaf78f1462",
+      "size": 48,
+      "source": "docs/verification/haagerup-canonical-20261026/trace-data-check.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/trace-generator-regression.json",
+      "sha256": "3f52982ae5346e3a99e2c1a10281806dcabcbdd9b81dde064f0c70002e682b22",
+      "size": 4952,
+      "source": "docs/verification/haagerup-canonical-20261026/trace-generator-regression.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-canonical-20261026/whitespace-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "source": "docs/verification/haagerup-canonical-20261026/whitespace-check.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-convex-20261026/README.md",
+      "sha256": "c6208fc78813228f866989d4d868c2ef2fac04950a83c119127c07a94fc72f5a",
+      "size": 3184,
+      "source": "docs/verification/haagerup-convex-20261026/README.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-convex-20261026/SHA256SUMS",
+      "sha256": "587520ab3261ad63587c7fab7e58c2127f5160c09111400c33e924fca1cb2bd4",
+      "size": 3867,
+      "source": "docs/verification/haagerup-convex-20261026/SHA256SUMS"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-convex-20261026/axioms-check.log",
+      "sha256": "7c8808769a16a8b3e56316472b7e72369c3f01b02e65bb702cbc23324e746c65",
+      "size": 54,
+      "source": "docs/verification/haagerup-convex-20261026/axioms-check.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-convex-20261026/axioms.log",
+      "sha256": "a7d261502af98bb13706ed3b4c5f5f8e056bf8b4a598bbdd192a44ea9cd5379e",
+      "size": 6290,
+      "source": "docs/verification/haagerup-convex-20261026/axioms.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-convex-20261026/build.log",
+      "sha256": "7ec83c520c59c0ab84c96bf4a903f13f2a64f31fc22000627e34aecd7d83cbd6",
+      "size": 1000,
+      "source": "docs/verification/haagerup-convex-20261026/build.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-convex-20261026/caps-check.log",
+      "sha256": "61386ebe698553dee25118f966c19a597e41e1418cd6c670a70de47b37138e99",
+      "size": 290,
+      "source": "docs/verification/haagerup-convex-20261026/caps-check.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-convex-20261026/data-check.log",
+      "sha256": "3ea82813d8c2fda8fbd91d57571938f7862cbad7091e0b46ff0bfd6b73a5cdb6",
+      "size": 39,
+      "source": "docs/verification/haagerup-convex-20261026/data-check.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-convex-20261026/pdf-review.log",
+      "sha256": "8d15c73a7e2e46b69e2a569c8007a1fe8be4bf4471cbe526080123bb0ed04f32",
+      "size": 621,
+      "source": "docs/verification/haagerup-convex-20261026/pdf-review.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-convex-20261026/replay.json",
+      "sha256": "6b6c2d66253d26c85cbf232865caf443bcaedae548611784476b6e27c701777a",
+      "size": 2217,
+      "source": "docs/verification/haagerup-convex-20261026/replay.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-convex-20261026/replay.log",
+      "sha256": "7b9931017150e9b89ae52dd2adffc986e668eff2643bfd333c7350be20480b30",
+      "size": 2898,
+      "source": "docs/verification/haagerup-convex-20261026/replay.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-convex-20261026/root-check.log",
+      "sha256": "87f48814011142323480e151f8c7dc8f9776c187c0719618a9597e98d57aa689",
+      "size": 48,
+      "source": "docs/verification/haagerup-convex-20261026/root-check.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-convex-20261026/script-tests.log",
+      "sha256": "d8b6e1f6410e27bcedfb7a2612b7a63f2dfc5f7550a40c6c0e69a58f48d6252c",
+      "size": 154,
+      "source": "docs/verification/haagerup-convex-20261026/script-tests.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-convex-20261026/whitespace-check.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "source": "docs/verification/haagerup-convex-20261026/whitespace-check.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-degree20-20261027/README.md",
+      "sha256": "7f4849ca7c5181f878dfc822cc925522662f5164a5f661e6a6747e745d1a0d54",
+      "size": 2831,
+      "source": "docs/verification/haagerup-degree20-20261027/README.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-degree20-20261027/generator-regression.json",
+      "sha256": "6a6531723b66b26263a17f63fad006970aae31035531e89c68a9e46039c6cd75",
+      "size": 5458,
+      "source": "docs/verification/haagerup-degree20-20261027/generator-regression.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-degree20-20261027/layout-comparison.json",
+      "sha256": "24389c18466a0774f948c5fa58bb81232a429666e96e3cf28518dd45a400f7f2",
+      "size": 2122,
+      "source": "docs/verification/haagerup-degree20-20261027/layout-comparison.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-degree20-20261027/pdf-review.log",
+      "sha256": "65242de4141f73fb6891ad30c9ef82e077173660b4df84d274296d74125427ad",
+      "size": 1220,
+      "source": "docs/verification/haagerup-degree20-20261027/pdf-review.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-degree20-20261027/replay.json",
+      "sha256": "8553581b80ef25900540a0a7a87259a264d342173e5fe6097d774bdd845754c9",
+      "size": 7506,
+      "source": "docs/verification/haagerup-degree20-20261027/replay.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-degree20-20261027/replay.log",
+      "sha256": "8553581b80ef25900540a0a7a87259a264d342173e5fe6097d774bdd845754c9",
+      "size": 7506,
+      "source": "docs/verification/haagerup-degree20-20261027/replay.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-degree20-20261027/script-tests.log",
+      "sha256": "5698a6ad63d6a960f65f06f431b8e4a1b057e2e6706eb19ef252098bd6e7507d",
+      "size": 162,
+      "source": "docs/verification/haagerup-degree20-20261027/script-tests.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-resolvent-20261025/README.md",
+      "sha256": "8b298d0600193707cf48bd7d2a551f035006e6a6b8066ee7ae068efac7b6e815",
+      "size": 2544,
+      "source": "docs/verification/haagerup-resolvent-20261025/README.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-resolvent-20261025/SHA256SUMS",
+      "sha256": "5d7416408bcffd46edb33d0a98e521ada718f79409bca14ab63e543f41b30010",
+      "size": 2809,
+      "source": "docs/verification/haagerup-resolvent-20261025/SHA256SUMS"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-resolvent-20261025/audit.log",
+      "sha256": "42d146ad95f4dde833a1316dde1dabb6ddb73420b8339ffc0d79d3b45e34033b",
+      "size": 54,
+      "source": "docs/verification/haagerup-resolvent-20261025/audit.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-resolvent-20261025/axioms.log",
+      "sha256": "27d9c5eb0ac550a3669d03c48269273eca64e458f7c92e26bc798821cb158472",
+      "size": 4942,
+      "source": "docs/verification/haagerup-resolvent-20261025/axioms.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-resolvent-20261025/kernel-build.log",
+      "sha256": "cd01ec608abe2270c8c7a69bfd2ed46f867fa2dc760ca7aca423b30a680ef89e",
+      "size": 895,
+      "source": "docs/verification/haagerup-resolvent-20261025/kernel-build.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-resolvent-20261025/lean-build.log",
+      "sha256": "46e612ce1f8c1b413379bf42b87ede40e776053c55bf2046547655c9a89d3145",
+      "size": 1404,
+      "source": "docs/verification/haagerup-resolvent-20261025/lean-build.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-resolvent-20261025/native-build.log",
+      "sha256": "33e2f9bdc91a4bc6b7505eb6a135ef1ac737c112c42085ba752e752937821b02",
+      "size": 1032,
+      "source": "docs/verification/haagerup-resolvent-20261025/native-build.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-resolvent-20261025/negative-audit.log",
+      "sha256": "1132dbe70d29e8894c40b174e87f5fc078b47825a39094ee46a3532d8903c6fb",
+      "size": 114,
+      "source": "docs/verification/haagerup-resolvent-20261025/negative-audit.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-resolvent-20261025/negative-certificate.log",
+      "sha256": "11bd690c7bc80647b2e66c97f85f9de119aad321781929179de9caf976571e7f",
+      "size": 238,
+      "source": "docs/verification/haagerup-resolvent-20261025/negative-certificate.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-resolvent-20261025/public-replay.json",
+      "sha256": "c18841b6a3fb835cd4795979e10b2d581a48ac564ceb3f3e8f5e48ccd479300d",
+      "size": 1569,
+      "source": "docs/verification/haagerup-resolvent-20261025/public-replay.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-resolvent-20261025/public-replay.log",
+      "sha256": "baa77b925ff94c0a27ea2633dfadd7993c41e64acd738127278b84bf7ecfd593",
+      "size": 2130,
+      "source": "docs/verification/haagerup-resolvent-20261025/public-replay.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-trace-parallel-20261027/README.md",
+      "sha256": "4cfe806b06a66473ebcfcf57ca65656dfb3f39e5c26a5815f10031eb49dd1174",
+      "size": 1051,
+      "source": "docs/verification/haagerup-trace-parallel-20261027/README.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-trace-parallel-20261027/generator-regression.json",
+      "sha256": "67a9c416b312d243de480ad93d0553b92483ec0e6d3f411c9a1e92f66de24262",
+      "size": 5082,
+      "source": "docs/verification/haagerup-trace-parallel-20261027/generator-regression.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-trace-parallel-20261027/layout-comparison.json",
+      "sha256": "b80a2aa9cd19b3cbae76c01949cfb14d05306e3366c9040a671447887f4c8e17",
+      "size": 2846,
+      "source": "docs/verification/haagerup-trace-parallel-20261027/layout-comparison.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-trim-20261026/README.md",
+      "sha256": "1c5718d4def91e7121309c7950bf9f19dba5e3222730c3aac9c3f9af70684b33",
+      "size": 5669,
+      "source": "docs/verification/haagerup-trim-20261026/README.md"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-trim-20261026/SHA256SUMS",
+      "sha256": "5a8485ec7847063a86ccae924357036ce11302c788f899a625fe99f2c3a2ac2f",
+      "size": 2082,
+      "source": "docs/verification/haagerup-trim-20261026/SHA256SUMS"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-trim-20261026/check_equivalence.py",
+      "sha256": "8bee0dc70a395977390a1267a07a4b5d655323d9b0fc853e9da95694ded33957",
+      "size": 4766,
+      "source": "docs/verification/haagerup-trim-20261026/check_equivalence.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-trim-20261026/equivalence.json",
+      "sha256": "86cd5e42ffd25e8471faae7640cf6b55ff01a4099a2bfd440b3ad0110cdf343b",
+      "size": 2865,
+      "source": "docs/verification/haagerup-trim-20261026/equivalence.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-trim-20261026/kernel-build.log",
+      "sha256": "8b1c1a45be6aca4b4db3574c7a4310ab487ede8e3fafe35b9223bafb6fede21a",
+      "size": 544,
+      "source": "docs/verification/haagerup-trim-20261026/kernel-build.log"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-trim-20261026/make_benchmark.py",
+      "sha256": "8dd19cb407fcb530ad0b29ecfa9bf0ed520971c4683431b8b88a2b154a3fee79",
+      "size": 4107,
+      "source": "docs/verification/haagerup-trim-20261026/make_benchmark.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-trim-20261026/native-benchmark-summary.json",
+      "sha256": "ad294ea587f0c7b19f058e3fc6ffd5e30cf35e206826f4b1ecb390cb75dd33af",
+      "size": 868,
+      "source": "docs/verification/haagerup-trim-20261026/native-benchmark-summary.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-trim-20261026/native-benchmark.csv",
+      "sha256": "f759b8b19eda4e23986843bc5c4170f6e6b5990a54a1ca5f68bb3fc2b2b50b6f",
+      "size": 914,
+      "source": "docs/verification/haagerup-trim-20261026/native-benchmark.csv"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-trim-20261026/replay.json",
+      "sha256": "230fc24dbf54948820af8867b0e86fb1486a49127846a16c4f39f07376222bd2",
+      "size": 1568,
+      "source": "docs/verification/haagerup-trim-20261026/replay.json"
+    },
+    {
+      "action": "move",
+      "archived": "tree/docs/verification/haagerup-trim-20261026/replay.log",
+      "sha256": "9d82273ec0cb3b18c13e49df4ceaa265fe83347a208527b3e1435e5f03bf3ae4",
+      "size": 2126,
+      "source": "docs/verification/haagerup-trim-20261026/replay.log"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/lake-manifest.json",
+      "sha256": "26ea8f1f2fc0d041b5897dc66e111d746b97d86e281d4017efbc41f57761d17c",
+      "size": 3140,
+      "source": "lake-manifest.json"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/lakefile.toml",
+      "sha256": "65dafa91c2563bd197f2ec8ed9e6c4c186364b9138c3d403c66bd4a96cbf5eeb",
+      "size": 645,
+      "source": "lakefile.toml"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/lean-toolchain",
+      "sha256": "d5edba4e4b8faad9c1baeadb265716d20d03be4d1a2647dc5e35b0c0325bea7b",
+      "size": 25,
+      "source": "lean-toolchain"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/scratch/Axioms.lean",
+      "sha256": "c867af4b8f9d2652bd3205b786243103ef68233c0589e7893b25f7ee8221df4b",
+      "size": 83135,
+      "source": "scratch/Axioms.lean"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/scratch/AxiomsJointResponse.lean",
+      "sha256": "9e8bbc49d5edc549ce3a0cd71646bfea573be6edf884f1c5088108f212e55b2c",
+      "size": 4389,
+      "source": "scratch/AxiomsJointResponse.lean"
+    },
+    {
+      "action": "move",
+      "archived": "tree/scratch/AxiomsPower.lean",
+      "sha256": "3f2f64558ac5b8ccc5a0458d2b7295a72d41afe33dfa1613f9358aff9c859723",
+      "size": 6039,
+      "source": "scratch/AxiomsPower.lean"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/scratch/AxiomsReplica.lean",
+      "sha256": "5f8062e4137915d77ddfdc46411fccb9edbb55c27785ab69febe227f7a2c2e01",
+      "size": 779,
+      "source": "scratch/AxiomsReplica.lean"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/scratch/AxiomsResponseIntegration.lean",
+      "sha256": "8aebcb4493861ee365883c77aef2063dcbb68d45a88e68ed0327089a4bf6ab1f",
+      "size": 8969,
+      "source": "scratch/AxiomsResponseIntegration.lean"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/scratch/AxiomsSpectral.lean",
+      "sha256": "e7f72593a38c50853761320d099c3fef82808d7bdd2acf7baa3cf155c51bfdca",
+      "size": 1011,
+      "source": "scratch/AxiomsSpectral.lean"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/scratch/AxiomsUpperComparison.lean",
+      "sha256": "12af8da1bb301783f9318dec012196ee41d9f612ac337ddb83298df2fe22735e",
+      "size": 606,
+      "source": "scratch/AxiomsUpperComparison.lean"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/scratch/DeadCode.lean",
+      "sha256": "d54ce80f0d100663c10b9c55f5489068dd610eead065002ff51ef5559d95a26b",
+      "size": 2824,
+      "source": "scratch/DeadCode.lean"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/scripts/check_axioms.py",
+      "sha256": "00e3a8d30b86e502e850cf45cd0937090f905b545b6af4ca46be67a2e33d3654",
+      "size": 5284,
+      "source": "scripts/check_axioms.py"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/scripts/test_check_axioms.py",
+      "sha256": "bcb5cd45bf401de886caa253222f08429f86d6c9bcf9f1a35b5222a73b9a1f41",
+      "size": 15747,
+      "source": "scripts/test_check_axioms.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/scripts/test_haagerup_certificate.py",
+      "sha256": "7a609d33a8846fc59080058d87e7662087865ce27200a7070c1e7ac8ebfb80cd",
+      "size": 3062,
+      "source": "scripts/test_haagerup_certificate.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/scripts/test_scalar_tail_report.py",
+      "sha256": "11dba0a13bae2bfb2093eb2a6bf931e1a52132adbdcd773d0dbc4d0a9f742592",
+      "size": 5113,
+      "source": "scripts/test_scalar_tail_report.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/gen_haagerup_canonical_check.py",
+      "sha256": "c7c1cce35efb24eadc377065285dc5cfebbb7d03a58b1d0c6aecc09e99674a39",
+      "size": 32269,
+      "source": "tools/gen_haagerup_canonical_check.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/gen_haagerup_certificate.py",
+      "sha256": "90f6cd45b446072d0ac61e93bdb59f2736e933c17a651e5ba92055469161131a",
+      "size": 5749,
+      "source": "tools/gen_haagerup_certificate.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/gen_haagerup_power.py",
+      "sha256": "5decac31576c2fc4a1f62048b51a99aaa7f66fc00c0f091a633d7955e2454592",
+      "size": 1618,
+      "source": "tools/gen_haagerup_power.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/gen_hjm_data.py",
+      "sha256": "ca1f981536cca3d64853ef72d84bf28034912e9b33e672607a21c827061e2360",
+      "size": 3178,
+      "source": "tools/gen_hjm_data.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/gen_hjm_origin_data.py",
+      "sha256": "b195b69400698d677526c20db7a39e0b56539b327ce8334180b0375d98fe9f6b",
+      "size": 25664,
+      "source": "tools/gen_hjm_origin_data.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/gen_hjm_origin_panels.py",
+      "sha256": "613ea2674cb939feb9d0a7eaf6603add6c5af43dedcf4fa7e793c1217ec56681",
+      "size": 6816,
+      "source": "tools/gen_hjm_origin_panels.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/gen_hjm_origin_visible_pilot.py",
+      "sha256": "6bba2c88fe6f2b77bbfb4917ea2dbf41686a7d5521b228bd660a08c457dbb35c",
+      "size": 9150,
+      "source": "tools/gen_hjm_origin_visible_pilot.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/gen_hjm_origin_witnesses.py",
+      "sha256": "d04d97236e90ac5bc27be8f8539e2fa4aa1b9c79d0e5eb4232dd36246fad2a2a",
+      "size": 5995,
+      "source": "tools/gen_hjm_origin_witnesses.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/gen_hjm_prefix.py",
+      "sha256": "58c159645dc8d2b657fcd51a1d8da7760a2749fe206bb32c8da52ce566b91b4f",
+      "size": 6293,
+      "source": "tools/gen_hjm_prefix.py"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/tools/gen_localized_comparison.py",
+      "sha256": "5e442d6bbc71e6a5551069903d95cd27f717a4b7c6bd219db9c8fc4ba4fcd809",
+      "size": 6830,
+      "source": "tools/gen_localized_comparison.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/gen_origin_unweighted64_followup.py",
+      "sha256": "5b046dd3ab0a83d077931e1703b9ca639b7c380d5d676e220e079e862d70d0a8",
+      "size": 2430,
+      "source": "tools/gen_origin_unweighted64_followup.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/gen_origin_unweighted64_full.py",
+      "sha256": "d40ea1ec3835f57bd3e7671142585d966551cad9e1bdfe9a4eeaf9443ff4c01b",
+      "size": 15122,
+      "source": "tools/gen_origin_unweighted64_full.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/gen_origin_unweighted64_helper.py",
+      "sha256": "d995a31e9c285d01feac210fa977ec51ab0b9aad65bf144ae1f083ac9da2fea7",
+      "size": 3827,
+      "source": "tools/gen_origin_unweighted64_helper.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/gen_origin_unweighted64_pilot.py",
+      "sha256": "5545fd5cb3d0c3f3e65435880041ce165f912490073216de0fd7c0a11032883d",
+      "size": 2087,
+      "source": "tools/gen_origin_unweighted64_pilot.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/gen_scalar_tail_refinement.py",
+      "sha256": "381b7f476a579f714e5c0be627ce6f216562242626dfaece00965ef59f75ff2d",
+      "size": 14023,
+      "source": "tools/gen_scalar_tail_refinement.py"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/tools/gen_upper_data.py",
+      "sha256": "24a283a1da3385031b52ae20c20c81f2c4c5abe22ce4d817d8d2fd70aed82fd7",
+      "size": 7931,
+      "source": "tools/gen_upper_data.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/reassessment_comparison_upper.py",
+      "sha256": "97ee48bb53c073cdf309215cf10269eecf9684109673d8bf1dc5a24f050c3811",
+      "size": 11744,
+      "source": "tools/reassessment_comparison_upper.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/reassessment_conservative_upper.py",
+      "sha256": "e798185601885888b2dd76adf267b82defdc99e16d9a56424df2d18f6d091d2a",
+      "size": 3401,
+      "source": "tools/reassessment_conservative_upper.py"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/templates/scalar_tail_refinement.lean.in",
+      "sha256": "a9e0749c55cb660f348bc2d91cb2296ecba6c3fdcc754c9238cbefbca2b037ff",
+      "size": 14274,
+      "source": "tools/templates/scalar_tail_refinement.lean.in"
+    },
+    {
+      "action": "move",
+      "archived": "tree/tools/verify_haagerup_canonical.py",
+      "sha256": "e01338ac93ae5a05f925ee78c662e9d544313f947f28be793f32f2a62f886da6",
+      "size": 7816,
+      "source": "tools/verify_haagerup_canonical.py"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/tools/verify_upper_hardy.py",
+      "sha256": "b2bc19948080612cd69f2137343b69ca1b4158b33a848e9f5d090114973a8454",
+      "size": 5122,
+      "source": "tools/verify_upper_hardy.py"
+    },
+    {
+      "action": "snapshot",
+      "archived": "snapshot/tools/verify_upper_preprocess.py",
+      "sha256": "62aff9cd565ff365b63c38537e1b34ab649f54faa50ea176fcf9935e10992a05",
+      "size": 5939,
+      "source": "tools/verify_upper_preprocess.py"
+    }
+  ],
+  "issue": 202,
+  "retained_shared_declarations": {
+    "Grothe.UpperChaos.norm_projOn_source_le_of_captured_family": {
+      "module": "Grothe.UpperChaos.CapturedSourceBound",
+      "original_module": "Grothe.UpperChaos.SecondBandElimination",
+      "reason": "Fresh master NineCapturedSources uses the generic source-projection bound, without the weaker endpoint assembly."
+    }
+  },
+  "retained_shared_modules": {
+    "Grothe.Haagerup.Identity": "Grothe.UpperChaos.Realise2",
+    "Grothe.Haagerup.Law": "Grothe.Haagerup.Identity",
+    "Grothe.Haagerup.Phase": "Grothe.Haagerup.PhaseLaplace",
+    "Grothe.Haagerup.PhaseCoefficients": "Grothe.Haagerup.Identity",
+    "Grothe.Haagerup.PhaseKernel": "Grothe.Haagerup.Identity",
+    "Grothe.Haagerup.PhaseLaplace": "Grothe.Haagerup.PhaseLaplaceFubini",
+    "Grothe.Haagerup.PhaseLaplaceBounded": "Grothe.UpperChaos.TaylorInnerFubini",
+    "Grothe.Haagerup.PhaseLaplaceFubini": "Grothe.UpperChaos.TaylorInnerLaplace"
+  },
+  "schema": 1,
+  "source_commit": "8efcb93e353d08f40335d9c6de2d6098302e61ad",
+  "target": "1.404598149141"
+}

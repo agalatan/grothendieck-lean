@@ -95,7 +95,7 @@ The next stage is complete: a common signed-tail spectral budget replaces the
 independent residual relaxation, and an exact degree-seven separator proves
 that the full Gaussian-phase cubic-preprocessor family, with arbitrary complex
 phases and convex mixtures, has score at most `0.71186`. It cannot beat the
-incumbent `0.711947399729542982`. Leave that architecture rather than optimize
+incumbent `0.711947399768265982`. Leave that architecture rather than optimize
 its scalar parameters again. This does not exclude general finite cubic phases.
 The common-tail screen of the updated twelve-column pool is `0.711605880` at
 midpoints; its error-dependent bounds are still conditional on unproved
@@ -121,15 +121,9 @@ sequence and a tail allowance. A fictitious law admitted by a relaxation does no
 
 ## 1. Baseline and quantitative objectives
 
-The combined development after integration of master `4e9f32d` has
-
-\[
- 1.401697049825<K_G^{\mathbb C}<1.404598149218.
-\]
-
-The interval width is `0.002901099393`. Both sharp bounds have the numerical
-input hypotheses documented in the repository. The separate fully formal upper
-bound is \(K_G^{\mathbb C}\le1.404909543\).
+The current conditional target is `K_G^C < 1.404598149141`. The earlier
+upper endpoints and their exact ledgers are in [the preserved upper-bound archive](../archive/weaker-upper-bounds/README.md).
+The lower-witness analysis below retains its original numerical baseline.
 
 The current lower witness is \(P_{1,0}-(149/200)P_{2,1}\), with cap
 \(B_0=0.713420920822\), checked on 10,762 boxes. The default target retains `NodeCaps`, the numerical caps
@@ -140,11 +134,11 @@ range checks have actually run and been recorded. A recorded droplet stamp verif
 rows 12–15 remain under `CapsRest`. Completing this work closes a formalization gap;
 it does not change the numerical cap, and this branch leaves all cap sources unchanged.
 
-The current upper certificate has the exact reciprocal denominator
+The target upper certificate has the exact reciprocal score
 
 \[
- A_0=\frac{355973699864771491}{500000000000000000}
-     =0.711947399729542982.
+ A_0=\frac{355973699884132991}{500000000000000000}
+     =0.711947399768265982.
 \]
 
 Master's upper theorem `Grothe.UpperChaos.fresh_upper_rounder` now constructs
@@ -379,7 +373,7 @@ for the same ineffective inequality.
 
 Keep the current certified rounding as an incumbent. The historical analytic
 chirp pool is not a replacement: its recorded score near `0.711892` was already
-below the present `0.711947399729542982`, even before all remaining tail costs.
+below the present `0.711947399768265982`, even before all remaining tail costs.
 An earlier phase-response pool also suffered inaccurate coefficients hidden by
 stable witness payoffs.
 

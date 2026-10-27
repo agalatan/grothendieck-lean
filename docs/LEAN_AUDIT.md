@@ -27,8 +27,7 @@ partition checker. Its unused straddler scan is absent, making
 [#56](https://github.com/agalatan/grothendieck-lean/issues/56) moot. This is a
 soundness/maintenance change; no speedup is claimed.
 
-Current source registries contain **597 default reports, 380 required declarations
-and 88 named native facts (60 cap ranges, five Hardy checks and 23 others)**. The current inventory
+The current inventory
 is [LEAN_NATIVE_INVENTORY.md](LEAN_NATIVE_INVENTORY.md). The older counts and
 coverage measurements in the baseline review describe that earlier tree only.
 The baseline's retired-cover structural checks are not presented as a verification
@@ -42,18 +41,9 @@ and shared-cache publication belong to the runner. The combined delivery's final
 runner evidence is recorded in #13/#85; no new full build is claimed by this source
 review. The CI comment probe uses retained `LowerAnalytic/Bridge.lean`.
 
-The current unconditional source `Grothe.haagerup_bound` targets
-`IsGrothendieckBound (1404909133/1000000000)` using a degree-20 polynomial from
-an exact inverse-series recipe and eight resolvent corrections (#129). Delivery CI
-for this regenerated certificate is pending. The focused policy still requires
-96 results and zero native evaluation axioms. Earlier successful validation
-records describe their pinned source snapshots, not this new certificate. The proof uses exact continuation blocks and a generic append
-identity, with no new numerical premise. `PowerData.lean` contains only the six
-rational-data definitions; the four acceptance proofs come from the canonical
-trace. The arithmetic module is `Grothe/Haagerup/CanonicalArithmetic.lean`,
-retaining the `GrotheKernel` namespace. Final merged-tree validation runs through
-normal `ready/*` delivery CI: the single `Grothe` target includes the node caps
-and uses the single report `scratch/Axioms.lean`.
+Upper endpoint variants and their historical proof receipts are preserved in
+[the preserved upper-bound archive](../archive/weaker-upper-bounds/README.md). The active target `1.404598149141` still
+requires its Gaussian estimates and energy-table accuracy.
 
 ## Baseline result and limits
 
@@ -62,11 +52,6 @@ this review.** The sharp endpoints remain conditional, exactly as the explicit
 Lean hypotheses require. This is source review plus independent exact-rational
 coverage checks, not a fresh replay of every proof or expensive native computation.
 The largest confirmed problems concern verification coverage and maintenance tools.
-
-The baseline already proves the stronger hypothesis-free bound
-`IsGrothendieckBound (1404909543/1000000000)`; the task's older `1404951/1000000`
-snapshot is superseded. README, LEAN_DETAILS, the overview TeX and extracted PDF
-agree on `1.404909543`.
 
 The review used this audit's worktree, committed repository sources/data, project
 issues and CI metadata. No other conversations or other agents' worktree contents
@@ -79,9 +64,8 @@ were accessed. Reserved cap/phase/Hardy/tool/workflow work was not edited.
 | P1 | **Missing cap verification stamp succeeds.** `scripts/caps_stamp.py:60–62` returns success when `docs/CAPS_VERIFIED.txt` is absent, including under `--check`; CI interprets this as verified. Reproduced with a nonexistent fixture path, without removing the real stamp. | Fail closed; explicit check/digest/write modes and isolated regression checks. [#47](https://github.com/agalatan/grothendieck-lean/issues/47). |
 | P1 | **Stamp-only changes bypass the CI check.** `.github/workflows/lean.yml:65` omits `docs/CAPS_VERIFIED.txt` and `scratch/AxiomsCaps.lean` from the relevant-file scope. Deleting/editing the stamp alone can take the docs-only auto-merge path. | Add trust metadata and CI-used report files to scope; coordinate with reserved PR #44. Fixing #47 alone does not fix this. [#48](https://github.com/agalatan/grothendieck-lean/issues/48). |
 | P2 | **Four native examples are unlisted.** `CapTables.lean:1392,1394,1397,1403` uses native evaluation in anonymous examples. There are 82 source evaluation sites, versus 78 named allowlisted facts. No endpoint dependency on the examples was found. | Prefer kernel checks for cheap examples or separately audited tests; do not add unused facts to endpoint trust merely to balance counts. Native/closure change requires approval. [#49](https://github.com/agalatan/grothendieck-lean/issues/49). |
-| P2 | **Dead-code roots are obsolete.** `scratch/DeadCode.lean:31–35` omits `lower_bound_of_nodeCaps`, `fresh_upper_rounder`, and `haagerup_bound`; the walker silently tolerates missing roots. | Add/validate current roots and document separate-cap limitations before deleting any declaration. [#50](https://github.com/agalatan/grothendieck-lean/issues/50). |
+| P2 | **Dead-code roots are obsolete.** `scratch/DeadCode.lean:31–35` omits `lower_bound_of_nodeCaps`, `fresh_upper_rounder`; the walker silently tolerates missing roots. | Add/validate current roots and document separate-cap limitations before deleting any declaration. [#50](https://github.com/agalatan/grothendieck-lean/issues/50). |
 | P3 | **An unused public hypothesis remains.** `Upper/PolynomialBridge.lean:42–43` declares `DirectHyps.summableX`; constructors supply it, but no theorem consumes it. | Remove the field and adjust constructors, strengthening the table interface. Await approval for the headline-interface change. [#51](https://github.com/agalatan/grothendieck-lean/issues/51). |
-| P3 | **Certificate zero padding.** `Haagerup/PowerCheck.lean:26–154` stores 129 inverse coefficients; the last nonzero index is 64. | Regenerate a 65-entry inverse and shorten affected products; 64 source lines removable, speedup unmeasured. Native input change requires approval. [#54](https://github.com/agalatan/grothendieck-lean/issues/54). |
 
 These baseline findings did not establish that the then-current cap stamp was
 invalid or that an anonymous example compromised an endpoint. That baseline
@@ -116,7 +100,6 @@ interface itself is finite-dimensional, as README states.
 | `Research.RefinedLowerCheck.lower_bound_of_refined_cover_data` (`RefinedCoverResult.lean`) | `NodeCaps → IsGrothendieckBound K → 1.401697117301 < K`. `NodeCaps` is the **padded** inequality `rowPot k s − 10⁻¹¹ ≤ c` at every listed node. |
 | `LowerAnalytic.lower_bound_of_capsRest` (`CapNodes.lean`) | The same refined endpoint from vertex caps of rows 12–15 plus excluded caps of other rows, through `nodeCaps_of_vertexCaps` and the refined-cover theorem. All exclusion lists are empty, so only those four rows remain. This belongs to separate target `GrotheCaps`. |
 | `UpperChaos.fresh_upper_rounder` (`PhiBound.lean:70–77`) | For `X ∈ L²(mu2)` with charge-one covariance, requires `ComparisonInputs GT X`, finite-head energy closeness and the Hardy partial-sum bound; concludes the exact rational `500000000000000000/355973696735190991`. `upper_value_lt` proves the strict decimal comparison. |
-| `Grothe.haagerup_bound` (`Haagerup/Power.lean:237–239`) | No analytic/certificate hypotheses; concludes `IsGrothendieckBound (1404909543/1000000000)`. Depends on its explicitly pinned native check as well as standard logical axioms. |
 
 The lower witness is the bounded operator `P₁,₀ − (149/200)P₂,₁`
 (`Witness.lean:311,432–448`). Polarization and phase rotation establish a norm
@@ -248,13 +231,7 @@ Runtime figures are deliberately distinguished:
   (`CAPS_STATUS.md`). These are historical measurements, not a current cache check.
 - Historical upper-head module: 62 s. Phase source comment: approximately
   1.5 min, not a fresh benchmark.
-- Historical Haagerup `PowerCheck.lean` build: **522.95 s wall / 509.46 s user CPU**,
-  from `docs/verification/haagerup-resolvent-20261025/native-build.log`. Its source
-  hash matches the audited baseline. This includes elaboration and native execution,
-  not an isolated per-fact timer or a fresh audit measurement.
-- Current per-fact times for comparison, chords, individual
-  cap ranges and anonymous examples are **unmeasured**. The old 257 s
-  `haagerup_check` timing concerns a superseded fact and is not reused.
+- Current per-fact timings not backed by a scoped receipt are unmeasured.
 
 This audit did not launch multi-hour reruns on the already-busy shared machines.
 Do not merge chunk facts merely to reduce the number of axiom names: it removes
@@ -279,12 +256,11 @@ handwritten split is stale, and a header heuristic is not a reliable replacement
 | Proposal | Quantified scope / expected effect | Constraint |
 |---|---|---|
 | Reuse `tsum_of_norm_bounded`, exponent monotonicity and sum distributivity in KernelScreen/SpectralScreen | About 20 proof lines removable; 0 native facts, 0 modules, unchanged theorem types. [#55](https://github.com/agalatan/grothendieck-lean/issues/55). | Safe leaf delivery; build both and CubicPhaseScreen, then CI aggregate importers. |
-| One index-polymorphic coefficient-l1 lemma | Compose:47–69, Bivariate:73–95, PowerTail:33–58 contain about 72 repeated lines; estimated net saving 30–40 plus useful shared API. [#52](https://github.com/agalatan/grothendieck-lean/issues/52). | Outside caps; wider upper rebuild fanout. Estimate, not measured reduction. |
+| One index-polymorphic coefficient-l1 lemma | Compose:47–69, Bivariate:73–95 and the archived power-tail proof contain about 72 repeated lines; estimated net saving 30–40 plus useful shared API. [#52](https://github.com/agalatan/grothendieck-lean/issues/52). | Outside caps; wider upper rebuild fanout. Estimate, not measured reduction. |
 | Abstract projection/first-moment lemma | WitnessCap:445–482 + RowGaussian:267–297: 69 current lines; estimated saving 25–40. [#52](https://github.com/agalatan/grothendieck-lean/issues/52). | Caps closure; after #13 and approval. |
 | Shared row-gate extraction / range assembly | 36 repeated gate lines in three files; 105 repeated index-assembly lines in fifteen cap-row files. Potential net savings 15–20 / 60–75 respectively. | Generated/protected cap code; change generators, one approved closure batch. |
 | Complex Gaussian foundation below fibre-specific Gram proofs | Lower radial specializations: 26 lines; ~75 lines of repeated upper monomial IBP inductions; six-vector Gram proof in FibreHermite:83–350 is a larger candidate. | Already substantial reuse exists: upper moments import lower foundations. Preserve variance/dimension adapters; no net saving established. [#52](https://github.com/agalatan/grothendieck-lean/issues/52). |
 | Retire the old partition checker | The old cover and checker are removed; the refined certificate uses coverage-only `treeCoverOK`. The unused straddler scan is absent. [#56](https://github.com/agalatan/grothendieck-lean/issues/56) is moot. | User-authorized in the combined #13/#44 delivery; no runtime saving is claimed. |
-| Trim the inverse polynomial | 64 generated zero lines; fewer zero-list operations, preserving the polynomial. The checker already skips zero multiplications. [#54](https://github.com/agalatan/grothendieck-lean/issues/54). | Native-input approval and reproducible regeneration. |
 
 A wholesale interval-library merger would overstate duplication: `Basic.lean`
 (77 lines) and `IntervalSound.lean` (212) already serve Table, Haagerup and
@@ -317,25 +293,6 @@ delivery. The user also explicitly authorized the refined-cover retargeting and
 old-cover retirement described above. Wider estimates remain proposals, not
 claimed delivered improvements.
 
-## Approved follow-up: inverse-list trim (#54)
-
-The user approved #54 only among the gated changes. The canonical inverse now
-contains 65 coefficients (actual degree 64); 64 trailing zeros and 64 generated
-Lean lines are removed. All other certificate fields and public theorem statements
-are unchanged. The degree bounds used internally in the defect and seed proofs
-are tightened to 94 and 303 coefficient slots. The documentation and overview PDF
-now state the actual polynomial degree.
-
-Exact rational comparison and an independent integer mirror give identical
-zero-extended interval coefficients and acceptance results. The defect array
-shrinks from 129 to 94 entries; the seed array remains 303 entries. The affected
-convolutions save 128 zero-branch traversals and 93 interval additions, but no
-interval multiplications. No full-certificate speedup is claimed. A fresh 192-bit
-FLINT replay checks the complete head, seed, tail and endpoint; see
-`docs/verification/haagerup-trim-20261026/`. Lean build/CI status is recorded
-separately from that external replay. The native-fact count and cap digest remain
-unchanged. All other gated proposals remain unapproved.
-
 ## Verified follow-ups
 
 The baseline findings above remain the audit record. The following fixes have
@@ -352,18 +309,6 @@ since been checked; no headline mathematical soundness defect has been found.
   proofs reuse standard norm bounds with unchanged theorem statements.
   [CI run 40247076838](https://github.com/agalatan/grothendieck-lean/actions/runs/40247076838)
   passed the build and verification checks.
-- [#54](https://github.com/agalatan/grothendieck-lean/issues/54): the approved
-  inverse trim has exact equivalence, independent replay, and fresh complete
-  native/proof-build evidence from
-  [run 40247044009](https://github.com/agalatan/grothendieck-lean/actions/runs/40247044009).
-  The later primary-branch
-  [run 40250530009](https://github.com/agalatan/grothendieck-lean/actions/runs/40250530009)
-  and merged-master
-  [run 40251214852](https://github.com/agalatan/grothendieck-lean/actions/runs/40251214852)
-  also passed fresh complete builds, 435-record axiom reports and cap-stamp checks;
-  the affected files are identical across these verified trees. Master also passed
-  its generated-import/list check. No speedup is established. See the
-  [verification record](verification/haagerup-trim-20261026/README.md).
 - [#60](https://github.com/agalatan/grothendieck-lean/issues/60): the axiom checker
   rejects unknown/conflicting modes and incomplete or diagnostic-bearing output.
   Master `08e55bbe028d81fced0671930c0ef453c7d0d919` now loads the policies from
@@ -518,13 +463,8 @@ Other gated proposals remain outside this audit's delivered proof compactions.
 The separate user-authorized #13/#44 delivery includes the cache workflow and
 refined lower-chain retirement described at the top of this document.
 
-The original statement and coverage audit is scoped to its named baseline.
-Later master `c38a625` independently strengthens the conditional selected-spectrum
-upper endpoint to `500000000000000000 / 355973699864771491 < 1.404598149218`
-using a deduction from the existing Hardy budget. Its four coefficient-series
-source files are unchanged, and the #59 patch merged cleanly with it; the later
-integrated branch run above verifies that combination. The new law-node/refined-cover
-certificates are not presented as part of the earlier baseline audit.
+The original statement and coverage audit is scoped to its named baseline;
+its older upper endpoint ledger is preserved in the archive.
 
 ## Delivery ledger
 
@@ -538,7 +478,6 @@ checked tree rather than inferred from a later green badge.
 | `stamp` | `fa00c7b` (PR #57) | Ten isolated regression tests and the real cap digest passed; later full checks include this fix. |
 | `deadcode-2` | `03e7d7e` | [40247074349](https://github.com/agalatan/grothendieck-lean/actions/runs/40247074349): scope-skipped success; separate positive/negative fixtures passed. |
 | `screens` | `ba3bb6c` | [40247076838](https://github.com/agalatan/grothendieck-lean/actions/runs/40247076838): full build and verification passed. |
-| `inverse` | `21485d9` (PR #62), also included in `f78cb0d` | Conflicts resolved and repushed as `beaa195`; [40247044009](https://github.com/agalatan/grothendieck-lean/actions/runs/40247044009), [40250530009](https://github.com/agalatan/grothendieck-lean/actions/runs/40250530009), and [40251214852](https://github.com/agalatan/grothendieck-lean/actions/runs/40251214852) provide full checks on identical affected inputs. |
 | `axioms` | `f78cb0d` (PR #70) | Conflicts resolved while preserving the incoming phase-response policy; [40251214852](https://github.com/agalatan/grothendieck-lean/actions/runs/40251214852) passed the strict checker. Duplicate PR #65 was closed. |
 | `validation-docs` | `c8dbc97` | [40252827164](https://github.com/agalatan/grothendieck-lean/actions/runs/40252827164): docs-only success. |
 | `coeff-series` | `bf5376b` (PR #74), also `d7521c7` (PR #75) | [40252824585](https://github.com/agalatan/grothendieck-lean/actions/runs/40252824585): full success on the exact delivery tree; later combined-master status is qualified above. |
@@ -561,23 +500,7 @@ justified a change to the native/caps layer. The proof-only Hermite-span compact
 is tracked separately in [#88](https://github.com/agalatan/grothendieck-lean/issues/88).
 
 
-## One native check removed (#100)
+## Archived upper checker history
 
-The user's later instruction explicitly authorized removing one native check.
-`Grothe.ScalarTailRefinement.power_check` now proves the same Boolean equality
-with `decide +kernel`. Its finite polynomial, outward arithmetic, bound,
-all theorem statements and analytic hypotheses are unchanged. The generator
-template is updated with the production module. The corresponding native axiom
-is removed from the allowlist, reducing its size from 90 to 89 relative to
-master `e8736cf`; the theorem remains required and printed. The scalar report
-checker now rejects every native dependency across all sixteen scalar results.
-The cap-source digest remains unchanged. Full delivery CI is left running at
-the user's request; its eventual outcome is separate from local validation.
-
-The warning-as-error production build passed on the droplet in 192.48 seconds
-wall time (whole targeted build, including dependency checks). Its sixteen-result
-report passes the stricter standard-only verifier; the finite power proof itself
-uses only standard axioms. All 39 script tests, generated-source checks and the unchanged
-140-file cap stamp pass. These local checks do not assert that delivery CI has
-finished. Direct kernel reduction was selected after the proof-producing `cbv`
-trial exceeded its step budget; the failed trial is not verification evidence.
+The scalar native-check retirement and historical build receipts are preserved
+in the original audit in the archive.

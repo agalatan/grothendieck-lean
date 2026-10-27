@@ -252,14 +252,10 @@ not certified, and the invariant family need not contain the global
 adversary. Coarse discovery itself overestimates some frozen values;
 the holdout distinction matters.
 
-Relative to the audited conditional interval
-`1.401697049825 < K_G^C < 1.404598149218`, the scalar `P10-z P21` architecture
-has room for less than `.000562801`, about **19.385%** of that interval.
-At least **80.615%** remains above its ceiling. This is a restriction on
-the method, not evidence that the true constant equals its ceiling.
-These research results change neither endpoint nor the remaining cap and
-numerical comparison obligations described in README. The unconditional
-completed Lean upper bound is `1.405364`.
+The scalar `P10-z P21` architecture has room for less than `.000563`
+above the lower baseline. This restricts the method; it does not identify
+the constant or complete the upper proof. The original comparison with
+older upper endpoints is preserved in [the preserved upper-bound archive](../archive/weaker-upper-bounds/README.md).
 
 ### A certified failure of automatic upper conversion
 

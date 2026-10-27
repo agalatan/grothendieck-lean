@@ -16,88 +16,16 @@ The most important quantitative fact is that the cubic witness has far too
 little demonstrated room to close most of the interval. Improving its
 certificate is a useful controlled problem, not the whole research strategy.
 
-## 1. Current statements, their status, and apparent discrepancies
+## 1. Current proof boundary
 
-I distinguish: **analytic** (an arbitrary-dimensional argument on paper),
-**exact certificate** (a finite rational/interval computation under its analytic
-interpretation), **Lean** (the stated implication is formalized),
-**conditional** (some inputs remain hypotheses), and **numerical** (search or
-ordinary quadrature without a rigorous error enclosure). These labels can
-apply simultaneously; an exact checksum is not an analytic theorem.
+The active upper target is `K_G^C < 1.404598149141`. The concrete theorem
+requires fourteen actual Gaussian finite-band error estimates and energy-table
+discrepancy at most `6847009/(5·10^17)`; these remain unproved. The lower
+endpoint retains its cap hypotheses.
 
-The current main-development interval is
-
-\[
-1.401697049825<K_G^{\mathbb C}<1.404598149218.
-\]
-
-More precisely:
-
-- **Lower:** `B=0.713420953220=35671047661/50000000000`. The current
-  implication `NodeCaps → IsGrothendieckBound K → 1.401697049825<K`
-  ends in `Grothe/Research/RefinedCoverResult.lean`. The 10,521-box cover
-  uses the original source bank and two unshifted row-14 law nodes.
-  Gaussian-to-finite transfer, the original witness, its vector value,
-  row reduction and circular-cubic tensor/Stein budgets are formalized.
-  `NodeCaps` still concerns the actual nineteen fibre potentials. The
-  separate `GrotheCaps` route retains `CapsRest` for rows 12–15; its other
-  60 range facts have a recorded droplet verification stamp. Those heavy
-  facts are separate from the default CI build.
-- **Upper:** `Grothe.UpperChaos.fresh_upper_rounder` formally gives
-  `K≤500000000000000000/355973699864771491=1.404598149217039…`, conditional
-  on an L² charge-one truncation `X` and the component-error input `ComparisonInputs`,
-  `energy_close` and `hardy`. The concrete rounding, Gaussian Hermite
-  completeness/Parseval/Mehler, charge selection, actual-rounding validity
-  and energy summability are formalized, as are kernel transfer, tensor
-  preprocessing, the interval evaluator, head assembly and endpoint
-  arithmetic. The three numerical bounds involve external analysis and
-  numerical enclosures. The older `Grothe.fresh_upper` table interface
-  conditional on `DirectHyps E EX` remains available.
-- **Unconditional formal upper:** `Grothe.haagerup_bound` proves
-  `K≤1.404909543` without `NodeCaps`, `DirectHyps`, or any other numerical input
-  hypothesis. This is weaker than the sharp external-assisted construction.
-
-The finite native checks are explicitly enumerated in
-`scripts/check_axioms.py`; the lower certificate is assembled from fourteen
-single-threaded checks. The upper head, unconditional Haagerup check,
-phase cover and cap chords have separate native facts, and the heavy caps
-target has a separate report. The generic research lemmas add no native
-facts or headline assumptions.
-
-Several archival numbers are legitimate historical statements, but cannot be
-substituted silently for this baseline:
-
-1. The 15/20/22 October portions of `ch17-crossbound.tex`, `ch4-ceilings.tex`
-   and `breakthrough/00-state-of-the-math.md` quote earlier endpoints. For
-   current endpoint arithmetic, the actual Lean interfaces and current
-   generated certificate take precedence. The lower transfer is formalized.
-   The archived complex minimax claim remains a separate completeness
-   argument; the endpoints do not assume it.
-2. The archive's matrix-prefix construction assembles `<1.404598428856`.
-   The matrix note itself still displays an earlier `<1.404598524179`.
-   Both are external-assisted packages, not the present main theorem's
-   native computation from its energy table.
-3. `work/upper-stable` reports `<1.404596071666` for an extra phase controller
-   and matrix covariance. Inspection of that branch confirms an additional
-   `head_close` hypothesis: it checks 251 stored head values instead of deriving
-   that head by the main bivariate Gaussian-kernel checker. Two shipped replay
-   scripts also require an input absent from this archive. It is a stronger
-   conditional numerical construction with a different formal boundary,
-   not a stronger unconditional theorem that master forgot to state.
-4. The archived universal ceiling near `1.404592` was corrected later: its
-   argument applies to a restricted diagonal preprocessing class. Noncommuting
-   matrix preprocessing is already present in the repository. It is not a
-   new proposal, and its full family ceiling is not established there.
-5. The `[P,C]` first-moment cap `E|q|≤0.97073` is a separate external-assisted
-   result. The formal lower pipeline uses its own derived radius near
-   `0.973612157`. The smaller number must not be described as already used
-   in the headline Lean proof.
-
-I also corrected a wording defect in `docs/overview.tex`: the identity
-`|a+b|+|a−b|=2 max(|a|,|b|)` is a **real** scalar identity. Its application
-to circular complex variables is valid after using
-`E|W|=(π/2)E|Re W|`. It is false pointwise for general complex `a,b`.
-The detailed manuscript makes this distinction correctly.
+The original endpoint comparison, source audit and weaker numerical ledgers
+are preserved in [the preserved upper-bound archive](../archive/weaker-upper-bounds/README.md). The mathematical analysis below is
+retained as research context, not as proof of any new numerical endpoint.
 
 ## 2. Where the lower proof loses
 

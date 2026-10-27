@@ -3,7 +3,7 @@ import Grothe.Haagerup.PhaseKernel
 import Grothe.Haagerup.Law
 
 /-!
-# Haagerup's identity and the hypothesis-free bound
+# The shared Gaussian phase identity
 
 * `Phi2_radial`: for `|z| ≤ 1`, `E[conj(phase U) · phase(zU + √(1−|z|²) W)] = Σ_k c_k z|z|^{2k}`
   (`PhaseCoefficients`, `PhaseKernel`);
@@ -13,7 +13,7 @@ import Grothe.Haagerup.Law
 * `haagerup_disk`: Haagerup's phase rounding `ε = phase⟪g, x⟫` (on `ℂ^{ι ⊕ 1}`, so that an
   orthogonal unit vector always exists) realises `radialKernel haagCoeff`;
 * `Grothe.haagerup_dominated`: the Gaussian phase kernel is dominated, without hypotheses.
-  The unconditional endpoint is assembled in `Grothe.Haagerup.Power`.
+  This identity is also used by the active two-coordinate rounding realization.
 -/
 
 namespace Grothe.Haag

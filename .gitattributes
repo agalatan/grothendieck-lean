@@ -27,3 +27,7 @@ data/root-imports-exclude.txt merge=union
 # keep the current side's copy instead of conflicting (needs `git config merge.ours.driver true`: CI and
 # scripts/sync_master.sh set it).
 OVERVIEW.pdf binary merge=ours
+
+# User-directed archive: preserve original whitespace and byte-pinned generated inputs.
+archive/weaker-upper-bounds/tree/** -whitespace linguist-generated=true
+archive/weaker-upper-bounds/snapshot/** -whitespace linguist-generated=true
