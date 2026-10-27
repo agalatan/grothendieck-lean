@@ -804,6 +804,7 @@ Grothe.Upper.comparison_grouped_budget
 Grothe.Upper.comparison_overlap_budget
 Grothe.Upper.headWeight_sound
 Grothe.Upper.head_residual_le_weighted
+Grothe.UpperChaos.ExponentialTail.exp_moment_tail
 Grothe.UpperChaos.HardyReal.hardy_GT
 Grothe.UpperChaos.HardyReal.hreal_GT
 Grothe.UpperChaos.PackedDyadic.gradedIntegerSum_eq
@@ -819,6 +820,9 @@ Grothe.UpperChaos.ProductComplete.complete_prod
 Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
 Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
 Grothe.UpperChaos.ProductComplete.memLp_prod_mul
+Grothe.UpperChaos.RadialCutoff.gaussC_diagonal_exp_tail
+Grothe.UpperChaos.RadialCutoff.gaussC_radial_cutoff
+Grothe.UpperChaos.RadialCutoff.gaussC_radial_exp_tail
 Grothe.UpperChaos.RadialRepair.complement_identity
 Grothe.UpperChaos.RadialRepair.norm_phaseRepair_le_one
 Grothe.UpperChaos.RadialRepair.phaseRepair_change_sq_le
