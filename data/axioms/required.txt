@@ -825,6 +825,7 @@ Grothe.UpperChaos.RadialRepair.phaseRepair_change_sq_le
 Grothe.UpperChaos.RadialRepair.radial_gap_sq_le
 Grothe.UpperChaos.SchurMain.norm_HholPair_le
 Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
+Grothe.UpperChaos.Twelve.fresh_upper_taylor_twelve_bands
 Grothe.UpperChaos.affine_gaussian_shift_complete_square
 Grothe.UpperChaos.affine_gaussian_shift_exp_factor
 Grothe.UpperChaos.bandProj_smoothOp_comm

@@ -1061,6 +1061,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.Thirteen.revised_second_tail_piece
 #print axioms Grothe.UpperChaos.Thirteen.revised_taylor_piece_bounds
 #print axioms Grothe.UpperChaos.Thirteen.tail_of_direct_head
+#print axioms Grothe.UpperChaos.Twelve.fresh_upper_taylor_twelve_bands
 #print axioms Grothe.UpperChaos.actual_band_mass_relaxed
 #print axioms Grothe.UpperChaos.affine_gaussian_shift_complete_square
 #print axioms Grothe.UpperChaos.affine_gaussian_shift_exp_factor
