@@ -155,8 +155,11 @@ theorem coeff_tail_le_of_energy_caps (N : ℕ) (EL ER W : ℝ)
   have hL := finite_phase_residual_cap s d x z EL W hd hx hz
   have hR := finite_phase_residual_cap s d y z ER W hd hy hz
   have hX := finite_residual_product_cap s d x y (2 * (N : ℝ) + 1) EL ER
-    (by positivity) (fun j => by dsimp [d]; push_cast
-      linarith [show (0 : ℝ) ≤ (j : ℝ) from Nat.cast_nonneg j])
+    (by positivity) (fun j => by
+      have hj : (0 : ℝ) ≤ (j : ℝ) := Nat.cast_nonneg j
+      dsimp [d]
+      push_cast
+      linarith)
     (fun j => norm_nonneg (chargeOneCoeff fResidualLp (j + N)))
     (fun j => norm_nonneg (chargeOneCoeff gResidualLp (j + N))) hx hy
   calc
