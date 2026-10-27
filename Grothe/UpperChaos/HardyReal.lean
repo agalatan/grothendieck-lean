@@ -159,7 +159,7 @@ theorem mehler_eq_HholPair (hφ : PhiBound) {t : ℝ} (ht0 : 0 < t) (ht1 : t < 1
   have hp : |pr t| ≤ 1 := (abs_pr_le ht0.le ht1.le).trans ht1.le
   have hq : |qr t| ≤ 1 := (abs_qr_le ht0.le ht1.le).trans ht1.le
   rw [mehler_smoothed hφ, ← integral_map (mehlerPair (pr t) (qr t)).continuous.measurable.aemeasurable
-      measurable_hT.aestronglyMeasurable, law_swap hp hq rfl rfl rfl h hd,
+      measurable_hT.aestronglyMeasurable, law_swap (a := ra t) (b := rb t) (c := rc t) hp hq rfl rfl rfl h hd,
     integral_map (pairMap _ _ _).continuous.measurable.aemeasurable measurable_hT.aestronglyMeasurable,
     integral_prod (fun v => hT (pairMap _ _ _ v))
       (integrable_of_le_one (measurable_hT.comp (pairMap _ _ _).continuous.measurable) fun v => norm_hT_le hφ _)]
