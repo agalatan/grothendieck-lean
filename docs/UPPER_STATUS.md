@@ -173,9 +173,12 @@ Progress (claude/hardy, 26 Oct):
 * The Gaussian identification and norm bounds in `ComparisonInputs`, and
   `energy_close`, stay external (verified-quadrature projects). Lean derives
   the selected energy comparison from those inputs.
-  The second, fourth and sixth phase moments are now exactly reproducible
-  from the Lean phase data; see the continuation's
-  [MOMENTS.md](../handoff/research-third-decimal/needle-20261023/MOMENTS.md).
+  Every even phase moment is identified with a finite rational calculation on
+  the production phase (`Grothe.UpperChaos.integral_phiT_pow_even` in
+  `ConcretePhaseMoments.lean`). The first numerical leaf is `PhaseMoment2`;
+  fourth- and sixth-moment checks remain open. Exact targets, the integration
+  formula and reproduction instructions are in
+  [data/phase-moments](../data/phase-moments/README.md).
   The other Hermite-tail and coefficient inputs are still separate obligations.
 * The refined lower endpoint is `1.401697049825`, conditional on the same
   `NodeCaps`, through `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`.
@@ -189,7 +192,9 @@ Progress (claude/hardy, 26 Oct):
 `Grothe/Upper/ComparisonData.lean`, `data/localized-comparison/{recipe.json,PROOF.md}`,
 `docs/localized-comparison.tex`) and the inherited certificate (laptop archive
 `handoff/upper-residual/global_norm/`: `MIXED_TAYLOR_CUTOFF_LEMMA.md`, `GAUSSIAN_POLYNOMIAL_NORM.md`,
-`certify_taylor_comparison.py`, `taylor_comparison_result.json`). It is a plan; nothing below is implemented.*
+`certify_taylor_comparison.py`, `taylor_comparison_result.json`). The error decomposition,
+spectral support and symbolic phase-moment route are implemented; the plan below
+also describes numerical enclosures that remain open.*
 
 ### 5.1 What the hypothesis says
 

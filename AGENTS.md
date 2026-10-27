@@ -166,7 +166,9 @@ Deliver when the user says the work should go into master.
    - a new module is imported by the generated root (run `python3 tools/gen_root_imports.py`). There is one build
      target, `Grothe`; only generated research modules that no proof uses yet go in `data/root-imports-exclude.txt`.
 4. **Documentation:** if a bound, a hypothesis or the axiom report changed, update `README.md`,
-   `docs/overview.tex` + `OVERVIEW.pdf` and `docs/LEAN_DETAILS.md` in the same delivery.
+   `docs/overview.tex` and `docs/LEAN_DETAILS.md` in the same delivery. **Never build or commit `OVERVIEW.pdf`:**
+   CI rebuilds it from `docs/overview.tex` on master (`.github/workflows/overview.yml`), and merges never conflict on it
+   (`merge=ours` in `.gitattributes`).
 5. **Deliver: push only the `ready/` branch,** `git push origin HEAD:ready/<agent>-<topic>` (`<agent>` = `codex` or
    `claude`). That one check is the test and the guard. Do not also push your work branch at the same moment, and
    do not run `scripts/cloud.sh check`, a droplet build or a full local build first: each would check the same
@@ -180,7 +182,13 @@ Deliver when the user says the work should go into master.
    - If master moved while CI was checking, CI re-dispatches the delivery against the new master by itself (a
      notice, not a failure). Do nothing.
    - Several `ready/` branches may be checked at the same time; the first green one moves master.
-6. **After the merge:** `scripts/sync_master.sh`, then either continue on the branch (§6 before the next delivery)
+6. **Watch your branches until they are merged or deleted.** `AGENT_ID=<your id> scripts/sync_master.sh` ends
+   with an audit of your remote branches: red checks, `ready/` branches that are green but not merged, conflicts
+   with the current master, branches already in master. Deal with every line: a red or conflicting branch is
+   merged with `origin/master`, fixed and pushed again (the same name); a green `ready/` branch that does not
+   merge has a conflict (fix it the same way) or changes `.github/workflows/` (open a PR); a stale branch is
+   deleted. A delivery is yours until it is on master.
+7. **After the merge:** `scripts/sync_master.sh`, then either continue on the branch (§6 before the next delivery)
    or, if you are done, clean up completely (§14).
 
 Report to the user: the `ready/` branch name, the CI run, and the resulting master commit.
@@ -367,7 +375,7 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   `scratch/Axioms.lean`.
 - The repository proves only the current best bounds, written as if designed from the start: no history, no
   superseded certificates, no "v2" naming. Research material goes in `handoff/` (git-ignored).
-- Bounds and hypotheses are stated in `README.md`, `OVERVIEW.pdf` (source `docs/overview.tex`) and
+- Bounds and hypotheses are stated in `README.md`, `docs/overview.tex` (CI builds `OVERVIEW.pdf` from it) and
   `docs/LEAN_DETAILS.md` (§7, step 4).
 - The node caps (`CapRowKK`, `CapNodes`) are part of `Grothe` and verified by CI (§8, §10). The cap checker
   (`GrotheCapsKernel/`) is its own precompiled library on purpose (a change to a precompiled library invalidates every
@@ -401,5 +409,5 @@ build (`.lake/master-cache` in the main checkout, and the worktree `grothe-maste
 the shared Mathlib packages (`~/grothe-caps/.lake/packages`). If something looks stale but is not yours, list it for
 the user.
 
-**Check periodically:** `git worktree list`, `git branch -vv`, `git branch -r`, `scripts/droplet_status.sh` and
+**Check periodically:** `AGENT_ID=<your id> scripts/sync_master.sh` (the branch audit), `git worktree list`, `git branch -vv`, `git branch -r`, `scripts/droplet_status.sh` and
 `df -h`. Leave the machines at least as clean as you found them.

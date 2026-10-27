@@ -203,6 +203,20 @@ fibrewise Cauchy–Schwarz; the Gaussian mixing law follows from product charact
 The standard complex Gaussian, planar presentation, rotation invariance and radial-moment
 reduction are shared in `LowerAnalytic/ComplexGaussianCore.lean`. The unconditional
 upper proof imports this foundation independently of the lower row certificates.
+
+The exact phase-moment route clears arbitrary rational coefficient denominators,
+multiplies the resulting integer polynomial, and integrates its monomials by
+finite Gaussian sums (`PhaseMomentCheck`, `PhaseMomentEval`).
+`integral_phiT_pow_even` in `ConcretePhaseMoments` identifies every even moment with
+this calculation from the actual `phaseTerms` and damping parameter; it needs
+no phase-cover premise. `PhaseMoment2` adds one native equality check and
+`integral_phiT_sq`, with target E[φ²] ≈ 2.56852947444587·10⁻⁶.
+The [delivery build and axiom audit](https://github.com/agalatan/grothendieck-lean/actions/runs/40468150361) passed;
+`PhaseMoment2` built in 4.8 seconds (whole-module time). Fourth- and sixth-moment numerical
+leaves remain open; this route does not discharge `ComparisonInputs` or
+`energy_close`, and the headline bounds are unchanged. Exact targets and
+reproduction instructions are in [`data/phase-moments/`](data/phase-moments/README.md).
+
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
 only with X's energy in its selected band, weighted by the retained coefficient cost. The quadratic error charges only pairs
@@ -354,6 +368,7 @@ The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sou
 and the `native_decide` facts pinned in `data/axioms/native.txt` (read by `scripts/check_axioms.py`):
 `Grothe.head_check` (the upper head), `Grothe.UpperChaos.phi_cover_check_0`–`5` (the phase cover |φ| < 1),
 `Grothe.Upper.comparison_check` (the selected-band masses and comparison budget),
+`Grothe.UpperChaos.phase_moment2_check` (the exact second moment of the production phase),
 `Grothe.UpperChaos.hardy_arc_part_0`–`3` and `hardy_region_check` (the Hardy circle mean and decay region),
 the eight chunks
 `Grothe.Lower.certRows0`–`4` and `certBatches0`–`2` for the certified rows and mixed batches, the four
@@ -365,8 +380,8 @@ Every native check is single-threaded code (no `Task.spawn`).
 All other proofs, including the canonical finite checks, are kernel-checked.
 No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`, including the node caps.
-The report contains 640 print directives, with 408 required declarations and 88
-allowlisted native facts (60 cap ranges, five Hardy checks and 23 others).
+The report contains 669 print directives, with 437 required declarations and 89
+allowlisted native facts (60 cap ranges, five Hardy checks and 24 others).
 The focused report `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, allows
 no native axioms for its 98 selected unconditional upper-bound results.
 Normal `ready/*` delivery CI builds and audits the combined tree before merging it.

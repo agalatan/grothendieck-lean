@@ -405,6 +405,8 @@ Grothe.UpperChaos.HardyReal.hardy_GT
 Grothe.UpperChaos.HardyReal.hreal_GT
 Grothe.UpperChaos.PhaseMomentCheck.e3_integerPhase
 Grothe.UpperChaos.PhaseMomentCheck.e3_pow3
+Grothe.UpperChaos.PhaseMomentCheck.integral_horner
+Grothe.UpperChaos.PhaseMomentCheck.integral_phaseOfTerms_pow
 Grothe.UpperChaos.ProductComplete.ae_memLp_fibre
 Grothe.UpperChaos.ProductComplete.complete_prod
 Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
@@ -434,6 +436,8 @@ Grothe.UpperChaos.integral_gaussC_tilt
 Grothe.UpperChaos.integral_invariant_monomial_damped
 Grothe.UpperChaos.integral_moment_damped
 Grothe.UpperChaos.integral_moment_damped_prod
+Grothe.UpperChaos.integral_phiT_pow_even
+Grothe.UpperChaos.integral_phiT_sq
 Grothe.UpperChaos.invariantMoment_odd
 Grothe.UpperChaos.localized_comparison
 Grothe.UpperChaos.norm_F0_eq_one_or_phiT_eq_zero
@@ -441,6 +445,7 @@ Grothe.UpperChaos.norm_energyBlock_sq
 Grothe.UpperChaos.norm_hpow_toLp_sq_eq
 Grothe.UpperChaos.norm_sq_le_phiT_moment
 Grothe.UpperChaos.norm_toLp_sq_eq_integral
+Grothe.UpperChaos.phase_moment2_check
 Grothe.UpperChaos.phi_abs_lt_one
 Grothe.UpperChaos.radial_distance_le_of_sixth_moment
 Grothe.UpperChaos.radial_kernel_ceiling

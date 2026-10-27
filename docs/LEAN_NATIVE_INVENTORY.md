@@ -2,8 +2,8 @@
 
 This inventory covers the named native facts allowed for the single `Grothe`
 target, plus the four anonymous table diagnostics below. The current allowlist
-has **88 named facts: 60 cap ranges, five Hardy facts and 23 others**. The default
-report contains **640 print directives**, with **408 required declarations**.
+has **89 named facts: 60 cap ranges, five Hardy facts and 24 others**. The default
+report contains **669 print directives**, with **437 required declarations**.
 These are source/registry counts. Normal `ready/*` delivery CI builds and audits
 the combined tree before merging it.
 
@@ -44,6 +44,18 @@ the four checker statements without a new numerical premise.
 `PowerData.lean` contains only the six definitions `pl`, `rl`, `seedPower`,
 `seedCap`, `defectCap`, and `slope`. The data module has no numerical theorem;
 all four acceptance proofs come from the canonical trace.
+
+**Exact production phase moments (#40(b)).** `PhaseMomentEval` integrates the
+integer polynomial obtained by clearing arbitrary rational denominators.
+`integral_phiT_pow_even` in `ConcretePhaseMoments` binds the result to the actual
+phase for every even power, with no phase-cover premise. One native leaf,
+`Grothe.UpperChaos.phase_moment2_check`, compares the exact second moment with
+the target approximately `2.56852947444587e-6`; `integral_phiT_sq` is its
+analytic consequence. The [delivery build and axiom audit](https://github.com/agalatan/grothendieck-lean/actions/runs/40468150361)
+passed with 645 reported theorems and all 89 native facts; `PhaseMoment2`
+built in 4.8 seconds. This is whole-module time, not isolated native evaluation. Fourth- and sixth-moment numerical
+leaves are not implemented. This addition does not discharge `ComparisonInputs`
+or `energy_close` and does not change either headline bound.
 
 | Fact | Source native site | Allowlist | Report coverage | Runtime evidence |
 |---|---|---|---|---|
@@ -121,6 +133,7 @@ all four acceptance proofs come from the canonical trace.
 | `anonymous example at Grothe/LowerAnalytic/CapTables.lean:1208` | `Grothe/LowerAnalytic/CapTables.lean:1208` | NO | Not allowlisted or reported; anonymous example, no named endpoint dependency established | Unmeasured per fact at audited commit |
 | `anonymous example at Grothe/LowerAnalytic/CapTables.lean:1211` | `Grothe/LowerAnalytic/CapTables.lean:1214` | NO | Not allowlisted or reported; anonymous example, no named endpoint dependency established | Unmeasured per fact at audited commit |
 | `Grothe.Upper.comparison_check` | `Grothe/Upper/ComparisonMass.lean:65` | yes | Direct #print axioms in scratch/Axioms.lean | Unmeasured per fact at audited commit |
+| `Grothe.UpperChaos.phase_moment2_check` | `Grothe/UpperChaos/PhaseMoment2.lean:20` | yes | Direct #print axioms in scratch/Axioms.lean; also used by integral_phiT_sq | [Delivery run 40468150361](https://github.com/agalatan/grothendieck-lean/actions/runs/40468150361): 4.8 s whole-module build, not isolated native evaluation |
 | `Grothe.head_check` | `Grothe/Upper/Final.lean:44` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 62 s; docs/NATIVE_SEQ_STATUS.md:25; not isolated native/current-commit measurement |
 | `Grothe.UpperChaos.phi_cover_check_0` | `Grothe/UpperChaos/PhiCoverCheck0.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
 | `Grothe.UpperChaos.phi_cover_check_1` | `Grothe/UpperChaos/PhiCoverCheck1.lean:12` | yes | Direct #print axioms in scratch/Axioms.lean | No new per-fact timing established here |
