@@ -863,13 +863,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.firstCenter_tail_zero
 #print axioms Grothe.UpperChaos.firstTailModes_eq
 #print axioms Grothe.UpperChaos.first_captured_tail_budget
-#print axioms Grothe.UpperChaos.fresh_upper_concrete
 #print axioms Grothe.UpperChaos.fresh_upper_concrete_taylor
-#print axioms Grothe.UpperChaos.fresh_upper_concrete_taylor_grouped
-#print axioms Grothe.UpperChaos.fresh_upper_of_rounding
 #print axioms Grothe.UpperChaos.fresh_upper_pieces
 #print axioms Grothe.UpperChaos.fresh_upper_rounder
-#print axioms Grothe.UpperChaos.fresh_upper_rounder_grouped
 #print axioms Grothe.UpperChaos.gradedHermiteFn_add
 #print axioms Grothe.UpperChaos.gradedHermiteFn_const_mul
 #print axioms Grothe.UpperChaos.gradedHermiteFn_rot2
@@ -1092,10 +1088,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le_two_mul
 #print axioms Grothe.UpperChaos.walk_sound
 #print axioms Grothe.fresh_upper
-#print axioms Grothe.fresh_upper_grouped
 #print axioms Grothe.grouped_head_residual_le
-#print axioms Grothe.grouped_upper_value_improves
-#print axioms Grothe.grouped_upper_value_lt
 #print axioms Grothe.haagerup_bound
 #print axioms Grothe.haagerup_dominated
 #print axioms Grothe.hardy_budget_after_linear
@@ -1109,5 +1102,4 @@ import Grothe
 #print axioms Grothe.tail_le
 #print axioms Grothe.tail_numeric
 #print axioms Grothe.transfer
-#print axioms Grothe.upper_value_improves
 #print axioms Grothe.upper_value_lt

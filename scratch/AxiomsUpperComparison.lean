@@ -7,8 +7,6 @@ import Grothe.UpperChaos.PhiBound
 #print axioms Grothe.Upper.BandComparison.compare
 #print axioms Grothe.UpperChaos.norm_energyBlock_sq
 #print axioms Grothe.UpperChaos.localized_comparison
-#print axioms Grothe.UpperChaos.fresh_upper_of_rounding
-#print axioms Grothe.UpperChaos.fresh_upper_concrete
 #print axioms Grothe.UpperChaos.fresh_upper_rounder
 
 #print axioms Grothe.Upper.headWeight_sound

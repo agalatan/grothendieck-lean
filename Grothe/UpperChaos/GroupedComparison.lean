@@ -1,4 +1,3 @@
-/- Intended path: Grothe/UpperChaos/GroupedComparison.lean -/
 import Grothe.UpperChaos.LocalizedComparison
 import Grothe.Upper.ComparisonGroups
 

@@ -6,8 +6,8 @@ import Grothe.Upper.ComparisonData
 /-!
 # Weighted selected-spectrum upper bound with a linear Hardy-budget deduction
 
-Under the explicit Gaussian inputs,
-`K_G^ℂ ≤ 500000000000000000/355973699881431491 < 1.404598149152`.
+The head residual and the tail of the sharp upper bound under the explicit Gaussian inputs (the bound itself, with
+the grouped comparison, is `fresh_upper` in `GroupedBridge.lean`).
 
 Only the blocks `headIdx 501` can enter the kernel head. Each block retains
 its proved coefficient cost. The resulting comparison
@@ -155,29 +155,5 @@ theorem tail_le {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) :
     (by norm_num [tailQ]) tail_numeric
   simpa only [Nat.add_assoc, show 250 + 1 = 251 by norm_num] using ht
 
-/-- The selected finite comparison, checked head and linear-budget Hardy tail
-assemble the upper bound under the explicit `DirectHyps` inputs. -/
-theorem fresh_upper (E EX : ℕ × ℕ → ℝ) (hE : DirectHyps E EX) :
-    IsGrothendieckBound (500000000000000000 / 355973699881431491) := by
-  have hs := summable_kernelCoeff hE.summable
-  have hr : |kernelCoeff E 0 - (slopeQ : ℝ)| + ∑' n, |kernelCoeff E (n + 1)|
-      ≤ 455291618509 / 500000000000000000 := by
-    rw [residual_split (kernelCoeff E) hs (slopeQ : ℝ) 250]
-    have h := add_le_add (head_residual_le hE) (tail_le hE)
-    have e : (headResidualQ : ℝ) + tailQ =
-        455291618509 / 500000000000000000 := by
-      norm_num [headResidualQ, compareQ, headCapQ, energyErrQ, tailQ]
-    linarith
-  refine (transfer (kernelCoeff E) hs hE.valid (by norm_num [slopeQ]) hr).mono (le_of_eq ?_)
-  norm_num [slopeQ]
-
-/-- The new exact upper endpoint is below the stated decimal. -/
-theorem upper_value_lt :
-    (500000000000000000 / 355973699881431491 : ℝ) < 1.404598149152 := by norm_num
-
-/-- The linear-budget endpoint is strictly below the raw contour-tail endpoint. -/
-theorem upper_value_improves :
-    (500000000000000000 / 355973699881431491 : ℝ) <
-      500000000000000000 / 355973696751850991 := by norm_num
 
 end Grothe

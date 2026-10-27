@@ -1,4 +1,3 @@
-/- Intended path: Grothe/Upper/GroupedComparison.lean -/
 import Grothe.Upper.BandComparison
 
 /-!
