@@ -44,7 +44,7 @@ lemma pieceList_cons (Ts Ts' : List Tables) (ds : List (List ℚ)) (pcs : List S
 lemma pieceGrids_adm : ∀ G ∈ pieceGrids, gridAdm G = true := by
   intro G hG
   simp only [pieceGrids, List.mem_cons, List.not_mem_nil, or_false] at hG
-  rcases hG with rfl | rfl | rfl <;> simp [gridAdm] <;> norm_num
+  rcases hG with rfl | rfl | rfl | rfl | rfl <;> simp [gridAdm] <;> norm_num
 
 noncomputable section
 

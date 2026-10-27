@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Source hash of the node-cap modules (CapRowKK, CapNodes), recorded in the verified build cache.
 
-The 15 heavy CapRowKK modules contain 60 single-threaded native_decide facts. The droplet's self-hosted runner
+The 15 original CapRowKK modules contain 60 single-threaded native_decide facts. Activated row12 adds
+1307 separate computation leaves, listed by the bounded-build registry. The droplet's self-hosted runner
 builds Grothe (node caps included) and checks the axiom report before recording the sources beside the build products:
     python3 scripts/caps_stamp.py --mark-cache          # writes .lake/build/caps-closure.sha
 CI restores the cache and calls
@@ -10,16 +11,18 @@ On a match CI builds Grothe (Lake replays the verified facts) and checks the axi
 missing marker it dispatches a runner caps build instead. --digest prints the hash and file count without reading
 or writing the marker; --list also lists the exact hashed files.
 
-The hash covers the computation import closure of the CapRowKK modules, plus CapNodes.lean,
-GrotheCapsKernel.lean, lean-toolchain, lake-manifest.json and lakefile.toml. These five extras are hashed directly,
+The hash covers the computation import closure of the CapRowKK modules and every activated computation leaf,
+plus CapNodes.lean, GrotheCapsKernel.lean, lean-toolchain, lake-manifest.json and lakefile.toml. Extras and
+the activated row assembly and build registry are hashed directly,
 without traversing their imports: lower-bound proof edits require re-checking the assembly, not the heavy facts.
 The checker library root is pinned because its whole precompiled shared object is loaded by every importer, and
-the Lake configuration controls native compilation. The current decoupled boundary is 48 computation modules
-plus six extras (54). Import parsing fails closed on missing project modules (Grothe.*, GrotheKernel.* and
+the Lake configuration controls native compilation. Analytic assembly imports are not traversed, so unrelated
+proof-layer edits do not invalidate computation provenance. Import parsing fails closed on missing project modules (Grothe.*, GrotheKernel.* and
 GrotheCapsKernel.*) or unsupported syntax. This is a cache provenance check, not a full build manifest; CI runs
 its workflow and axiom-report checks separately.
+Agent-ID: codex-0e12.
 """
-import argparse, hashlib, os, re, sys
+import argparse, hashlib, json, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MARK = os.path.join(ROOT, ".lake", "build", "caps-closure.sha")
@@ -29,6 +32,8 @@ CAP_ROWS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
 TOPS = [f"Grothe.LowerAnalytic.CapRow{k:02d}" for k in CAP_ROWS]
 EXTRA = ["Grothe/LowerAnalytic/CapNodes.lean", "GrotheCapsKernel.lean", "lean-toolchain", "lake-manifest.json",
          "lakefile.toml"]
+BUILD_REGISTRY = "data/caps-m/plan/row-certificates/row12-build.json"
+ROW_ASSEMBLY = "Grothe/LowerAnalytic/CapRow12/Assembly.lean"
 IMPORT = re.compile(r"\s*(?:public\s+)?(?:meta\s+)?import(?:\s+(.*))?$")
 MODULE = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(\.[A-Za-z_][A-Za-z0-9_']*)*$")
 
@@ -104,9 +109,56 @@ def closure(tops):
     return sorted(seen)
 
 
+def registry_module(path):
+    """Require a normalized in-repository project Lean source path."""
+    if not isinstance(path, str) or not path.endswith(".lean") or "\\" in path:
+        raise ClosureError(f"invalid computation registry source path: {path!r}")
+    parts = path.split("/")
+    module = path[:-5].replace("/", ".")
+    if any(part in {"", ".", ".."} for part in parts) or not MODULE.fullmatch(module) or not is_project(module):
+        raise ClosureError(f"invalid computation registry project path: {path!r}")
+    resolved = os.path.realpath(os.path.join(ROOT, path))
+    if os.path.commonpath((os.path.realpath(ROOT), resolved)) != os.path.realpath(ROOT):
+        raise ClosureError(f"computation registry path escapes the repository: {path}")
+    return module
+
+
+def activated_sources():
+    """Read activated compute roots; never recurse into their analytic assembly."""
+    path = os.path.join(ROOT, BUILD_REGISTRY)
+    if not os.path.exists(path):
+        if os.path.exists(os.path.join(ROOT, ROW_ASSEMBLY)):
+            raise ClosureError(f"activated row12 assembly requires {BUILD_REGISTRY}")
+        return [], []
+    try:
+        with open(path, encoding="utf-8") as stream:
+            registry = json.load(stream)
+    except (ValueError, OSError) as error:
+        raise ClosureError(f"cannot read {BUILD_REGISTRY}: {error}") from error
+    if not isinstance(registry, dict) or registry.get("format") != "caps-bounded-build-v1" or registry.get("row") != 12:
+        raise ClosureError(f"unsupported activated computation registry: {BUILD_REGISTRY}")
+    roots, direct = registry.get("compute_roots"), registry.get("direct_hash_roots")
+    if not isinstance(roots, list) or not roots or not isinstance(direct, list):
+        raise ClosureError("activated registry must list compute_roots and direct_hash_roots")
+    modules = [registry_module(name) for name in roots]
+    direct_modules = [registry_module(name) for name in direct]
+    if len(modules) != len(set(modules)) or len(direct_modules) != len(set(direct_modules)):
+        raise ClosureError("duplicate activated computation registry roots")
+    if not set(TOPS) <= set(modules):
+        raise ClosureError("activated registry omits an original cap-row computation root")
+    if set(direct) != {EXTRA[0], ROW_ASSEMBLY}:
+        raise ClosureError("activated direct hash roots must be CapNodes and the row12 assembly")
+    if registry.get("compute_count") != len(roots) or registry.get("row12_compute_count") != len(set(modules) - set(TOPS)):
+        raise ClosureError("activated computation registry census differs from its roots")
+    return modules, direct
+
+
 def source_files():
-    """Sorted computation closure, then the six directly hashed assembly/config files."""
-    return [os.path.join(*module.split(".")) + ".lean" for module in closure(TOPS)] + EXTRA
+    """Sorted computation closure, followed by directly hashed assembly/config files."""
+    roots, direct = activated_sources()
+    files = [os.path.join(*module.split(".")) + ".lean" for module in closure(TOPS + roots)]
+    extra = EXTRA + direct + ([BUILD_REGISTRY] if roots else [])
+    return files + list(dict.fromkeys(name for name in extra if name not in files))
 
 
 def digest():

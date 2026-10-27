@@ -72,7 +72,7 @@ jobs:
             fi
           fi
           # files that affect the Lean build or its checks; everything else (README, docs/, AGENTS.md, ...) needs no build
-          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/test_caps_stamp\.py$|\.github/workflows/)'
+          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|data/axioms/|data/root-imports-exclude\.txt$|data/caps-m/plan/row-certificates/row12-build\.json$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/test_caps_stamp\.py$|scripts/build_caps_batches\.py$|scripts/test_build_caps_batches\.py$|\.github/workflows/)'
           if [[ "${GITHUB_REF_NAME}" == ready/* ]]; then base=origin/master          # HEAD = master + this branch
           elif [ "${GITHUB_REF_NAME}" = master ]; then base="$BEFORE"                # the previous master
           else base=$(git merge-base origin/master HEAD); fi                         # what the branch adds to master
@@ -161,10 +161,11 @@ jobs:
           [ -e .lake/packages ] || ln -s /home/agalatan/grothe-caps/.lake/packages .lake/packages
           "$HOME/.elan/bin/lake" --version; df -h . | tail -1
 
-      - name: Unit tests of the verification scripts (caps hash, axiom reports)
+      - name: Unit tests of the verification scripts (caps hash, bounded builds, axiom reports)
         if: env.LEAN == 'true'
         run: |
           python3 scripts/test_caps_stamp.py
+          python3 scripts/test_build_caps_batches.py
           python3 scripts/test_check_axioms.py
 
       - name: The restored node caps are verified for these sources (GitHub-hosted)
@@ -178,6 +179,12 @@ jobs:
       - name: Build the scalar kernel proof first (droplet; it peaks at 18.8 GB RSS)
         if: env.LEAN == 'true' && env.DROPLET == 'true'
         run: lake build Grothe.Haagerup.ScalarTailRefinement --log-level=warning
+
+      - name: Build the caps prerequisites in bounded single-threaded groups (droplet)
+        if: env.LEAN == 'true' && env.DROPLET == 'true'
+        # Completed Lake outputs persist if this long cold build is interrupted. This preparatory
+        # step never marks or uploads a cache: the full build and all checks below still decide success.
+        run: python3 scripts/build_caps_batches.py --jobs 2 --rss-limit-gib 24 --disk-floor-gib 3
 
       - name: Build Grothe (everything, node caps included)
         if: env.LEAN == 'true'

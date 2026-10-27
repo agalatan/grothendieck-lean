@@ -91,9 +91,23 @@ class Reader:
         self.root = Path(root).resolve(strict=True)
         self.bytes = {}
         self.files = {}
+        self.paths = {}
+
+    def path(self, name, expected):
+        try:
+            return local(self.root, name)
+        except FileNotFoundError:
+            # Preserve the historical logical module name in the lineage, while
+            # shipping exporter bytes as inert data outside Lean's source roots.
+            require(name.startswith('Grothe/LowerAnalytic/CapPlanRuns/') and
+                    name.endswith('.lean') and isinstance(expected, str) and
+                    re.fullmatch('[0-9a-f]{64}', expected),
+                    'Missing evidence has no permitted source archive: '+name)
+            return local(self.root, 'data/caps-m/plan/row-certificates/research-source-archive/'+name+'.txt')
 
     def read(self, name, expected=None):
-        payload = local(self.root, name).read_bytes()
+        path = self.path(name, expected)
+        payload = path.read_bytes()
         actual = digest(payload)
         if expected is not None:
             require(isinstance(expected, str) and re.fullmatch('[0-9a-f]{64}', expected),
@@ -102,6 +116,9 @@ class Reader:
         require(name not in self.bytes or self.bytes[name] == payload, 'Input changed during conversion: '+name)
         self.bytes[name] = payload
         self.files[name] = actual
+        require(name not in self.paths or self.paths[name] == path,
+                'Input resolution changed during conversion: '+name)
+        self.paths[name] = path
         return payload
 
     def json(self, name, expected=None):
@@ -116,7 +133,9 @@ class Reader:
 
     def unchanged(self):
         for name, payload in self.bytes.items():
-            require(local(self.root, name).read_bytes() == payload, 'Input changed before output publication: '+name)
+            path = self.path(name, self.files[name])
+            require(path == self.paths[name], 'Input resolution changed before output publication: '+name)
+            require(path.read_bytes() == payload, 'Input changed before output publication: '+name)
 
 
 def constraint_fields(value):

@@ -23,8 +23,8 @@ open GrotheKernel Grothe.Lower
 
 namespace Grothe.LowerAnalytic
 
-/-- The grids of the pieces: `400 × 128`, `1600 × 256`, `1600 × 1024` on `[0, 8]`. -/
-def pieceGrids : List (ℕ × ℕ × ℚ) := [(400, 128, 1 / 50), (1600, 256, 1 / 200), (1600, 1024, 1 / 200)]
+/-- Stable certificate grids on `[0, 8]`, including both exact research refinements. -/
+def pieceGrids : List (ℕ × ℕ × ℚ) := [(400, 128, 1 / 50), (1600, 256, 1 / 200), (1600, 1024, 1 / 200), (1600, 1152, 1 / 200), (3200, 256, 1 / 400)]
 
 /-- The tables of the piece grids. -/
 def pieceTables : List Tables := pieceGrids.map fun G => mkTables G.1 G.2.1 G.2.2

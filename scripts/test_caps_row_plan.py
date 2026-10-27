@@ -18,6 +18,47 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'tools'))
 import caps_row_plan as R
 
 
+class ArchivedSourceTests(unittest.TestCase):
+    def test_archived_source_keeps_exact_historical_lineage(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)
+            name='Grothe/LowerAnalytic/CapPlanRuns/Historical.lean'
+            payload=b'-- historical numerical exporter\n'
+            archive=root/('data/caps-m/plan/row-certificates/research-source-archive/'+name+'.txt')
+            archive.parent.mkdir(parents=True);archive.write_bytes(payload)
+            reader=R.Reader(root)
+            self.assertEqual(reader.read(name,R.digest(payload)),payload)
+            self.assertEqual(reader.files,{name:R.digest(payload)})
+            reader.unchanged()
+            archive.write_bytes(b'changed')
+            with self.assertRaises(R.PlanError):reader.unchanged()
+
+    def test_archive_requires_expected_hash_and_exporter_path(self):
+        with tempfile.TemporaryDirectory() as d:
+            reader=R.Reader(Path(d))
+            with self.assertRaises(R.PlanError):
+                reader.read('Grothe/LowerAnalytic/CapPlanRuns/Missing.lean')
+            with self.assertRaises(R.PlanError):
+                reader.read('Grothe/Lower/Unrelated.lean','0'*64)
+
+    def test_new_original_source_after_archive_read_fails_publication(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d);name='Grothe/LowerAnalytic/CapPlanRuns/Historical.lean'
+            archive=root/('data/caps-m/plan/row-certificates/research-source-archive/'+name+'.txt')
+            archive.parent.mkdir(parents=True);archive.write_bytes(b'good')
+            reader=R.Reader(root);reader.read(name,R.digest(b'good'))
+            source=root/name;source.parent.mkdir(parents=True);source.write_bytes(b'changed')
+            with self.assertRaises(R.PlanError):reader.unchanged()
+
+    def test_mismatched_live_source_never_falls_back_to_good_archive(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d);name='Grothe/LowerAnalytic/CapPlanRuns/Historical.lean'
+            source=root/name;source.parent.mkdir(parents=True);source.write_bytes(b'changed')
+            archive=root/('data/caps-m/plan/row-certificates/research-source-archive/'+name+'.txt')
+            archive.parent.mkdir(parents=True);archive.write_bytes(b'good')
+            with self.assertRaises(R.PlanError):R.Reader(root).read(name,R.digest(b'good'))
+
+
 class Fixture:
     def __init__(self, root):
         self.root=Path(root);self.nodes=[];self.entries=[];self.records={}

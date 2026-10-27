@@ -2,11 +2,9 @@
 # One module per line, sorted; `#` starts a comment. Union-merged by git (.gitattributes).
 #
 # Header comments only: `tools/gen_root_imports.py` keeps this file sorted. Current entries:
-# * Grothe.LowerAnalytic.CapPieces.* — generated piece-node modules of rows 12–15 (native range facts, minutes each),
-#   part of the caps campaign (#15, #16), never in the default target;
-# * Grothe.LowerAnalytic.CapPieces.* — generated per-node modules of the rows 12–15 node caps (route M: data D,
-#   coverage C, native range facts R, node theorem N); not part of a proof yet (rows 12–15 campaign), so not in
-#   default build (tools/gen_cap_pieces.py; adding a node means adding its four modules here);
+# * Grothe.LowerAnalytic.CapPieces.* — remaining research-only per-node modules of rows 13–15 (route M:
+#   data D, coverage C, native range facts R, node theorem N); not used by an activated row assembly yet.
+#   Row12's complete piece and anchor assembly is active in Grothe, so its modules are absent from this list.
 # * GrotheKernel.BandMass, GrotheKernel.HeadWeight — kernel modules used only by Grothe.Upper (built through
 #   Grothe.lean, not through the GrotheKernel root).
 Grothe.LowerAnalytic.CapPieces.C14x150
