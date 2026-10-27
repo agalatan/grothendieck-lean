@@ -4,10 +4,24 @@ Several agents (Codex instances and Claude sessions) work on this repository at 
 machines (the user's laptop and the droplet). These rules keep them from overwriting each other's work. Read all of
 them before doing anything.
 
+**Three kinds of branch** (`<agent-id>` is your own ID, e.g. `codex-7f3a`, §2):
+
+| branch | what it holds | CI | reaches master? |
+|---|---|---|---|
+| `work/<agent-id>-<topic>` | **work in progress**: unfinished proofs, partial modules, experiments, anything you are still changing | proof check of the branch when you push it (advice only) | **never** |
+| `ready/<agent-id>-<topic>` | **a finished delivery**: complete, every module you changed builds locally, docs and axiom lists updated (§7) | checks the branch merged into the current master | **yes**: CI merges it when green and deletes the branch |
+| `cloud/<agent-id>-<topic>` | inputs of cloud jobs (§11) | none | never |
+
+**`ready/` means finished.** Never push unfinished work to `ready/`: CI merges whatever turns green, and every red
+`ready/` check costs a full CI run and tells everyone a delivery is broken. If a `ready/` check fails on an oversight,
+fix it and push the same branch again; if the work turns out not to be finished, delete the `ready/` branch and go
+on in `work/`.
+
 **The six rules that matter most:**
-1. Never commit or push to `master`. Work in your own worktree and branch; deliver by pushing `ready/<agent-id>-<topic>`
-   (§7). Only CI moves `master`. **The delivery check is the test:** do not check the same tree beforehand (no
-   cloud check, droplet or full local build, no extra branch push); if it fails, fix and push again.
+1. Never commit or push to `master`. Work in your own worktree on `work/<agent-id>-<topic>`; deliver finished work
+   by pushing `ready/<agent-id>-<topic>` (§7). Only CI moves `master`. **The delivery check is the test:** do not
+   check the same tree beforehand (no cloud check, droplet or full local build, no extra branch push), but do build
+   the modules you changed locally (§7); if the delivery check fails, fix and push again.
 2. Before every push, sync with master and combine with it (§6).
 3. Never run a full build (`lake build` or `lake build Grothe`) on the laptop. Build only your modules; full builds
    run in CI (§5, §8).
@@ -49,8 +63,8 @@ tell which conversation owns a droplet folder, a branch or a running build. At t
      inside (§12);
    - commits: an `Agent-ID: codex-7f3a` trailer at the end of the commit message body;
    - issue comments: start with `[codex-7f3a]`;
-   - branches: **sign every branch with your agent ID**, in a fixed place (§3): `codex/7f3a-<topic>` and
-     `ready/codex-7f3a-<topic>`, where `7f3a` is the four hex digits of *your* ID. Never put any other hex in a
+   - branches: **sign every branch with your agent ID**, in a fixed place (§3): `work/codex-7f3a-<topic>` and
+     `ready/codex-7f3a-<topic>`, where `codex-7f3a` is *your* ID. Never put any other hex in a
      branch name: no random or per-branch hash, no suffix at the end (`ready/codex-<topic>-e4b7` is wrong), no ID
      copied from a prompt, another branch, a worktree name or a commit. The same ID goes in the branch name, the
      commits' `Agent-ID` and your first reply: the audits and CI's conflict reports read the owner from the name.
@@ -65,16 +79,17 @@ tell which conversation owns a droplet folder, a branch or a running build. At t
 - **Never work in the main checkout** `/Users/alingalatan/workspaces/grothe`. It stays on `master`, clean, and is only
   fast-forwarded (if you find yourself there, see §4). Every agent works in its own worktree, on its own branch:
 
-  | agent | branch | worktree |
-  |---|---|---|
-  | agent (ID) | branch | delivery | worktree |
+  | agent (ID) | work branch | delivery | worktree |
   |---|---|---|---|
-  | Codex instance (`codex-7f3a`) | `codex/7f3a-<topic>` | `ready/codex-7f3a-<topic>` | `/Users/alingalatan/workspaces/grothe-codex-7f3a-<topic>` |
-  | Claude session (`claude-b21e`) | `claude/b21e-<topic>` | `ready/claude-b21e-<topic>` | `/Users/alingalatan/workspaces/grothe-claude-b21e-<topic>` |
-  | Claude worker (sub-agent) | `claude/b21e-<topic>` (its session's ID) | `ready/claude-b21e-<topic>` | `/Users/alingalatan/workspaces/grothe/.claude/worktrees/<topic>` |
+  | Codex instance (`codex-7f3a`) | `work/codex-7f3a-<topic>` | `ready/codex-7f3a-<topic>` | `/Users/alingalatan/workspaces/grothe-codex-7f3a-<topic>` |
+  | Claude session (`claude-b21e`) | `work/claude-b21e-<topic>` | `ready/claude-b21e-<topic>` | `/Users/alingalatan/workspaces/grothe-claude-b21e-<topic>` |
+  | Claude worker (sub-agent) | `work/claude-b21e-<topic>` (its session's ID) | `ready/claude-b21e-<topic>` | `/Users/alingalatan/workspaces/grothe/.claude/worktrees/<topic>` |
 
-- **Say who made it:** branches start with `codex/<hex>-` or `claude/<hex>-` (the four hex digits of your ID);
-  delivery branches are `ready/<agent-id>-<topic>`, e.g. `ready/codex-7f3a-refined-cover`; every commit subject starts with `[codex]` or `[claude]`, e.g.
+  Older branches named `codex/…` or `claude/…` may finish under their names; create new ones as `work/…`.
+
+- **Say who made it:** every branch is `work/`, `ready/` or `cloud/` followed by your ID, e.g.
+  `work/codex-7f3a-refined-cover` and `ready/codex-7f3a-refined-cover`; every commit subject starts with `[codex]` or
+  `[claude]`, e.g.
   `[codex] Lower: joint image compatibility`. CI's merge commits read `Merge ready/<name> (CI auto-merge)`.
 - **Never force-push and never rewrite pushed history.** Never use `git stash` in a shared checkout, and never
   `reset --hard`, `clean` or `checkout --` files you did not create.
@@ -97,7 +112,7 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
 
 ```sh
 /Users/alingalatan/workspaces/grothe/scripts/sync_master.sh --build    # fetch; refresh the local master build
-git -C /Users/alingalatan/workspaces/grothe worktree add -b codex/7f3a-<topic> \
+git -C /Users/alingalatan/workspaces/grothe worktree add -b work/codex-7f3a-<topic> \
     /Users/alingalatan/workspaces/grothe-codex-7f3a-<topic> origin/master
 # give the worktree master's compiled build (links the shared packages, clones the snapshot)
 /Users/alingalatan/workspaces/grothe/scripts/clone_master_build.sh /Users/alingalatan/workspaces/grothe-codex-7f3a-<topic>
@@ -163,12 +178,16 @@ If master moved again meanwhile, repeat from 1. Report the master commit you com
 
 ## 7. Delivering work: the checklist
 
-Deliver when the user says the work should go into master.
+Deliver when the work is **finished** and the user wants it in master. Until then it lives on `work/` (see the table
+at the top).
 
 1. **Commit everything** on your branch, so the tree is clean. Research-only files belong in `handoff/`
    (git-ignored), not in the repository.
 2. **Combine with a fresh master** (§6, all five steps).
-3. **Lean coverage** (CI checks all of it; get it right, but do not pre-run CI's check):
+3. **Lean coverage** (CI checks all of it; get it right, but do not pre-run CI's full check):
+   - **every module you added or changed builds locally** without errors or warnings:
+     `lake build Grothe.X.Y Grothe.X.Z` (those modules only, never the whole of `Grothe`). A delivery whose own
+     modules do not compile is not finished: it belongs on `work/`;
    - no `sorry`, no warnings;
    - every headline theorem has a `#print axioms` line in `scratch/Axioms.lean`, and is in
      `data/axioms/required.txt` if it is a main result;
@@ -189,8 +208,9 @@ Deliver when the user says the work should go into master.
      fast-forward `master` to exactly that checked merge and delete the `ready/` branch. Then push your work branch
      too if you keep working on it (§14 otherwise).
    - If the check fails, master is untouched. Read the log, fix, commit, combine with master again (§6), and push
-     to the **same** `ready/` branch: the new push supersedes the failed run. A red delivery check is normal and
-     cheap; do not be afraid of it.
+     to the **same** `ready/` branch: the new push supersedes the failed run. A red check from an oversight (an
+     interaction with other modules, a lint) is normal and cheap. If the work is not finished after all, delete the
+     `ready/` branch (`git push origin --delete ready/<agent-id>-<topic>`) and continue on `work/`.
    - If master moved while CI was checking, CI re-dispatches the delivery against the new master by itself (a
      notice, not a failure). Do nothing.
    - Several `ready/` branches may be checked at the same time; the first green one moves master.
@@ -271,8 +291,8 @@ Also:
 - **Agents open a pull request only for deliveries that change `.github/workflows/`**: GitHub refuses CI's push of
   those unless the repository secret `MERGE_TOKEN` exists (a fine-grained token for this repository with *Contents*
   and *Workflows* read and write); CI says so and does not retry. Every other delivery goes through `ready/` alone.
-- **`ready/` branches are merged by CI only**, never by hand: a `ready/` push may still be work in progress whose
-  check is the test.
+- **`ready/` branches are merged by CI only**, never by hand through a pull request: CI merges exactly the tree it
+  checked against the current master, a hand merge skips that check.
 - **Agents never merge a pull request.** The user merges, ideally when the branch is up to date with master and its
   latest check is green; then the merged result is the tree CI checked. A merge is a push to master, so master's
   check runs afterwards.

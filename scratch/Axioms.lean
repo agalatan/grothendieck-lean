@@ -481,6 +481,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProfileRootScreen.gammaFactor_bounds
 #print axioms Grothe.UpperChaos.ProfileRootScreen.gammaFactor_sq
 #print axioms Grothe.UpperChaos.ProfileRootScreen.positive_factor_between_of_square_bounds
+#print axioms Grothe.UpperChaos.ProfileRootScreen.profile_inner
+#print axioms Grothe.UpperChaos.ProfileRootScreen.profile_outer
 #print axioms Grothe.UpperChaos.ProfileRootScreen.sqrtPi_real_bounds
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_diagonal_exp_tail
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_radial_cutoff
@@ -716,6 +718,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.phi_abs_lt_one
 #print axioms Grothe.UpperChaos.phi_cubes_ok
 #print axioms Grothe.UpperChaos.poly_complete
+#print axioms Grothe.UpperChaos.profile_first_gaussian_cell_enclosure
+#print axioms Grothe.UpperChaos.profile_first_gaussian_cell_exact
 #print axioms Grothe.UpperChaos.projOn_gradedHermite_eq_zero_of_total_degree
 #print axioms Grothe.UpperChaos.projOn_hermiteFinite
 #print axioms Grothe.UpperChaos.projOn_hermiteFinite_eq_zero

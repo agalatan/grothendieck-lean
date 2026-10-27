@@ -115,6 +115,12 @@ $\delta=455288917009/(5\cdot10^{17})\approx9.10578\cdot10^{-7}$:
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
 
+The endpoint proof is \emph{work in progress}. One completed supporting
+calculation, \texttt{ProfileFirstGaussianCell}, proves
+$\int_0^1(\tfrac12-s)^2e^{-s}\,ds=\tfrac54-\tfrac{13}4e^{-1}$
+and encloses it in $[0.054391816192,0.054391816194]$ using proved exponential
+bounds. The complete profile and response estimates remain to be proved.
+
 A second conditional route uses a finite-head estimate for the actual kernel
 directly; the coefficient enclosures and numerical head estimate are still
 open, so it does not yet give an unconditional bound.
