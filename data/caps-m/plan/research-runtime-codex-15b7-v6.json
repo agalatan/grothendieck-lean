@@ -1,0 +1,136 @@
+{
+  "actual_source_head": "f0506b9884df242a07d5ea8c4015f8505a8f952d",
+  "actual_tracked_dirty_diff": "diff --git a/lakefile.toml b/lakefile.toml\nindex aafd56a..77c425d 100644\n--- a/lakefile.toml\n+++ b/lakefile.toml\n@@ -9,7 +9,7 @@ rev = \"v4.34.1\"\n \n # The cap checker is its own precompiled library. A module that imports a precompiled library depends on that\n # library's whole shared object, built from its root file: with the cap checker inside GrotheKernel, any new or\n-# changed checker there invalidated all 15 heavy node-cap modules (about 21 CPU-hours).\n+# changed checker there invalidated all 15 heavy GrotheCaps modules (about 21 CPU-hours).\n [[lean_lib]]\n name = \"GrotheCapsKernel\"\n precompileModules = true\n@@ -21,3 +21,5 @@ precompileModules = true\n [[lean_lib]]\n name = \"Grothe\"\n \n+[[lean_lib]]\n+name = \"GrotheCaps\"\ndiff --git a/tools/caps_centre_batch.py b/tools/caps_centre_batch.py\nindex 97aefda..8c1f105 100644\n--- a/tools/caps_centre_batch.py\n+++ b/tools/caps_centre_batch.py\n@@ -1,8 +1,9 @@\n #!/usr/bin/env python3\n \"\"\"Guarded numerical RESEARCH prefetch, never native verification or cache work.\n \n-Consume a caps_centre_portable config. One Lake invocation exports at most two\n-initial centres (three only when explicitly configured); serial isolated workers\n+Consume a caps_centre_portable config. One Lake invocation defaults to two\n+initial centres, with up to seven when explicitly configured. A warm initial\n+group above two is permitted only for export-only research. Serial isolated workers\n then solve stored matrices, and only exact positive raw results receive the\n supplied fine export. No module/manifest/data generation occurs here.\n \n@@ -133,10 +134,12 @@ class Config:\n     def validate(self):\n         if not re.fullmatch(r'(codex|claude)-[0-9a-f]{4}', self.agent_id):\n             raise ValueError('A signed agent ID is required')\n-        if self.batch_size not in (1, 2, 3) or self.initial_batch_size not in (1, 2):\n-            raise ValueError('Initial group has at most2 targets; configured groups at most3')\n-        if type(self.lake_threads) is not int or self.lake_threads not in (1, 2, 3):\n-            raise ValueError('Lake scheduler threads must be explicitly1,2 or3; default2')\n+        if self.batch_size not in range(1, 8) or self.initial_batch_size not in range(1, 8):\n+            raise ValueError('Initial and configured groups must have1 through7 targets')\n+        if self.initial_batch_size > 2 and not self.export_only:\n+            raise ValueError('An initial group above2 requires explicit export-only research')\n+        if type(self.lake_threads) is not int or self.lake_threads not in range(1, 8):\n+            raise ValueError('Lake scheduler threads must be explicitly1 through7; default2')\n         if self.rss_limit <= 0 or self.disk_floor < 3*GIB or self.poll_seconds <= 0:\n             raise ValueError('RSS/poll must be positive and disk floor at least3GiB')\n         if self.pilot_limit is not None and self.pilot_limit < 1:\n@@ -581,9 +584,10 @@ def main(argv=None):\n     parser.add_argument('--progress', type=Path, required=True)\n     parser.add_argument('--run-dir', type=Path, required=True)\n     parser.add_argument('--stop-file', type=Path)\n-    parser.add_argument('--batch-size', type=int, choices=(1, 2, 3), default=2)\n-    parser.add_argument('--initial-batch-size', type=int, choices=(1, 2), default=2)\n-    parser.add_argument('--lake-threads', type=int, choices=(1, 2, 3), default=2,\n+    parser.add_argument('--batch-size', type=int, choices=range(1, 8), default=2)\n+    parser.add_argument('--initial-batch-size', type=int, choices=range(1, 8), default=2,\n+                        help='Default pair; larger initial groups require export-only and warmed prerequisites')\n+    parser.add_argument('--lake-threads', type=int, choices=range(1, 8), default=2,\n                         help='Lake scheduler workers; exported Lean processes always receive-j1 via owned overlay')\n     parser.add_argument('--rss-limit-gib', type=int, default=8)\n     parser.add_argument('--disk-floor-gib', type=int, default=3)\n",
+  "actual_tracked_dirty_paths": [
+    "lakefile.toml",
+    "tools/caps_centre_batch.py"
+  ],
+  "agent_id": "codex-15b7",
+  "argv": [
+    "/home/agalatan/grothe-cx/venv/bin/python3",
+    "tools/caps_centre_paired.py",
+    "--portable-config",
+    "data/caps-m/plan/portable/Codex15b7Portable/portable-config.json",
+    "--agent-id",
+    "codex-15b7",
+    "--progress",
+    "data/caps-m/plan/guarded-campaign-codex-15b7-paired-continue1.json",
+    "--run-dir",
+    "handoff/caps-centre/codex-15b7-guarded-paired-continue1",
+    "--serial-rss-limit-gib",
+    "12",
+    "--pair-rss-limit-gib",
+    "24",
+    "--pair-export-limit",
+    "0"
+  ],
+  "batcher_sha256": "b101dd378f3970845d451308fbadff0f5f33d25e430b23722a7e36d6e4ee762c",
+  "caution": "Effective frozen research tree, not cleanHEAD/canonical/native/cache-equivalent. Measured two-leaf pilot reviewed before this NEW unlimited2 profile; retain serial12GiB/pair24GiB guards.",
+  "frozen_toml_sha256": "e61806b57bac499f082cc0faf96b6176be4beafa0816d6e5ab70a0c7b7da3c65",
+  "guard_before": {
+    "free_disk": 5980110848,
+    "lean_count": 0,
+    "modules": [],
+    "pause_reason": null,
+    "rss": 0
+  },
+  "launcher_sha256": "f2af80125c58b7d49e545c3d01a5b7ae0371df8ce29ff22cc3b67aa182bd0eaa",
+  "local_reviewed_source_commit": "6aa384661934d7a16a6c4d4ff672be2560a9729b",
+  "new_untracked_execution_sources": {
+    "tools/caps_centre_guarded.py": {
+      "sha256": "c39bed98f2f0a3b6a226ae200667857cf333422b6532acf815c74e515cbd2bd6"
+    },
+    "tools/caps_centre_paired.py": {
+      "sha256": "cb5728f5bd1e23aa2bb459fe26f873f57e694ffa468d2008ce7cc08091a9ac48"
+    }
+  },
+  "purpose": "Guarded numerical two-worker continuation after reviewed pilot; no native/cache claim",
+  "readiness_sha256": "076a03e4cc5063123d567aa097363ac8f41b4d27b127726fb213c203161cc8c8",
+  "recorded_at_utc": "2026-10-27T02:26:54.813858+00:00",
+  "reviewed_pilot": {
+    "accepted_centres": 111,
+    "agent_id": "codex-15b7",
+    "all_accepted_best_residual_zero": true,
+    "checkpoint": "data/caps-m/plan/checkpoints/centre-codex-15b7-paired-pilot1.json",
+    "checkpoint_sha256": "048110bf8b5dd4ca30ac67aee96725a391a297c928c259f9a0349dba0f0464bf",
+    "exact_saved_fine_checks": [
+      {
+        "cap_up": "0",
+        "export": "data/caps-m/plan/exports/fine/exp_centreFine_Codex15b7PortableFine_9b343beffdf6_12x199_j0_g3.jsonl",
+        "export_sha256": "30b4e44669acc794790e34c8ce4161b3d1b8ebd41be9228f74e8fd8503a18051",
+        "fine_manifest": "data/caps-m/plan/fine-campaign/fine-Codex15b7PortableFine-12x199-9b343beffdf6.json",
+        "fine_manifest_sha256": "40d4727a8d0512132ded3c415c5ef2095261d83d5f007db613dc233e6b67e5ac",
+        "grid_spec": [
+          1600,
+          1152,
+          "1/200"
+        ],
+        "key": "12:199:0",
+        "solved": "data/caps-m/plan/solved/fine/sol_centreFine_Codex15b7PortableFine_9b343beffdf6_12x199_j0_g3.json",
+        "solved_sha256": "834fc5aba57c4d3cb9838365700c94d8c6df368aa8beb28819e4da0a6ca22844"
+      },
+      {
+        "cap_up": "0",
+        "export": "data/caps-m/plan/exports/fine/exp_centreFine_Codex15b7PortableFine_9b343beffdf6_12x200_j0_g3.jsonl",
+        "export_sha256": "50fdc8dacfa2226c521dd3fa21b90d7758e1cb42e8cca762172463b4f008bf95",
+        "fine_manifest": "data/caps-m/plan/fine-campaign/fine-Codex15b7PortableFine-12x200-9b343beffdf6.json",
+        "fine_manifest_sha256": "b2aa71f010db64bd63cf98474527a24c06db0215ec00d20c5ef565d45b2921b7",
+        "grid_spec": [
+          1600,
+          1152,
+          "1/200"
+        ],
+        "key": "12:200:0",
+        "solved": "data/caps-m/plan/solved/fine/sol_centreFine_Codex15b7PortableFine_9b343beffdf6_12x200_j0_g3.json",
+        "solved_sha256": "4307f1ca75376002f5132caceb586679f73fffef2b4db5d03ac8a4fdb4ba14e3"
+      }
+    ],
+    "fine_group": {
+      "actual_exit": 0,
+      "agent_id": "codex-15b7",
+      "argv": [
+        "lake",
+        "-f",
+        "handoff/caps-centre/codex-15b7-guarded-paired-pilot1/codex-15b7-batch-pair-prefetch/codex-15b7-lake-single-lean.toml",
+        "build",
+        "Grothe.LowerAnalytic.CapPlanRuns.Run_centreFine_Codex15b7PortableFine_9b343beffdf6_12x199_j0_g3",
+        "Grothe.LowerAnalytic.CapPlanRuns.Run_centreFine_Codex15b7PortableFine_9b343beffdf6_12x200_j0_g3",
+        "--wfail"
+      ],
+      "completed_at_utc": "2026-10-27T02:04:23.153429+00:00",
+      "controller_pgid": 2011389,
+      "controller_pid": 2011389,
+      "error": null,
+      "keys": [
+        "12:199:0",
+        "12:200:0"
+      ],
+      "lake_overlay": {
+        "canonical_lakefile_sha256": "e61806b57bac499f082cc0faf96b6176be4beafa0816d6e5ab70a0c7b7da3c65",
+        "path": "handoff/caps-centre/codex-15b7-guarded-paired-pilot1/codex-15b7-batch-pair-prefetch/codex-15b7-lake-single-lean.toml",
+        "sha256": "e7c9b0e8ba9149c6c3ded8a89d3a2d2231de6bff157fc3be8757b69beef0dde2"
+      },
+      "lake_parent_threads": 2,
+      "lean_child_threads": 1,
+      "log": "handoff/caps-centre/codex-15b7-guarded-paired-pilot1/codex-15b7-batch-pair-prefetch/batch-2011389-00001-fine-export.log",
+      "observed_modules": [
+        "Run_centreFine_Codex15b7PortableFine_9b343beffdf6_12x199_j0_g3.lean",
+        "Run_centreFine_Codex15b7PortableFine_9b343beffdf6_12x200_j0_g3.lean"
+      ],
+      "pause_reason": null,
+      "peak_aggregate_rss_bytes": 7313739776,
+      "peak_concurrent_lean": 2,
+      "pgid": 2013676,
+      "phase": "fine-export",
+      "pid": 2013676,
+      "runtime_seconds": 264.8934367932379,
+      "started_at_utc": "2026-10-27T01:59:58.259922+00:00",
+      "state": "complete"
+    },
+    "fine_group_receipt": "handoff/caps-centre/codex-15b7-guarded-paired-pilot1/codex-15b7-batch-pair-prefetch/batch-2011389-00001-fine-export.json",
+    "fine_group_receipt_sha256": "872d3e70c18e1491bf9b2c26cec083e5af5014c7ecf6402f096aa127dab5e3f1",
+    "pilot_complete_expected_exit": 75,
+    "reviewed_at_utc": "2026-10-27T02:24:14.719421+00:00",
+    "scope": "Closed numerical pilot review only, no native/cache or final-maximum claim"
+  }
+}

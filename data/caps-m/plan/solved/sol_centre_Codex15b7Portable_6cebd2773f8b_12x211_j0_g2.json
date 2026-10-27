@@ -1,0 +1,31 @@
+[
+  {
+    "cap_up": "1291649679/728731225907634346",
+    "cap_up_float": 1.772463746686923e-09,
+    "encl": true,
+    "error": null,
+    "grid": 2,
+    "i": 211,
+    "j": 0,
+    "k": 12,
+    "lm": [
+      [
+        "119155690330547/721062103977481",
+        "90158402/952443297544601"
+      ],
+      [
+        "75862092264679/240697958815954",
+        "11996770/129120721046989"
+      ]
+    ],
+    "polyOK": true,
+    "provenance": {
+      "baseline_capPad": "1/100000000000",
+      "cap_up_convention": "additional to baseline_capPad, not the final capPad",
+      "export_sha256": "ea4ca84eebe39067b94f2d9d0df2cdce5f4141c185c91b740fa38491d7a7637f",
+      "fingerprint": "6cebd2773f8bd97b2e9f0a5fd30c5dbfedc643a5bcb782f2f87487f24176a922"
+    },
+    "status": "cap_up",
+    "t_opt": -4.6023744845532845e-09
+  }
+]
