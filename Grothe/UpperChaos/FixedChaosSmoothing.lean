@@ -20,13 +20,14 @@ def chaosShell (d : ℕ) : Finset Idx2 := (chaosBox d).filter (fun i => tdeg i =
 theorem mem_chaosShell_of_degree (i : Idx2) (d : ℕ) (h : tdeg i = d) :
     i ∈ chaosShell d := by
   rcases i with ⟨⟨a, b⟩, ⟨c, e⟩⟩
+  have hd : a + b + c + e = d := h
   refine Finset.mem_filter.mpr ⟨?_, h⟩
   change ((a, b), (c, e)) ∈
     ((range (d + 1)).product (range (d + 1))).product
       ((range (d + 1)).product (range (d + 1)))
   apply Finset.mem_product.mpr
   constructor <;> apply Finset.mem_product.mpr <;> constructor <;>
-    apply Finset.mem_range.mpr <;> dsimp only [tdeg] at h <;> omega
+    apply Finset.mem_range.mpr <;> dsimp <;> omega
 
 /-- The actual fixed-degree entry, not a saved numerical matrix. -/
 def actualEntry (j i : Idx2) : ℂ := ⟪hvec2 j, smoothOp (hvec2 i)⟫_ℂ
