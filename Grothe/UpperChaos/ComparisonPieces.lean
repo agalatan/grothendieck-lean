@@ -42,7 +42,8 @@ lemma sub (hf : ChargeFn f) (hg : ChargeFn g) : ChargeFn fun u => f u - g u :=
   ⟨hf.meas.sub hg.meas, hf.memLp.sub hg.memLp, fun c u hc => by rw [hf.rot c u hc, hg.rot c u hc]; ring⟩
 
 lemma div_const (hf : ChargeFn f) (a : ℂ) : ChargeFn fun u => f u / a :=
-  ⟨hf.meas.div_const a, hf.memLp.div_const a, fun c u hc => by rw [hf.rot c u hc]; ring⟩
+  ⟨hf.meas.div_const a, by simpa [div_eq_mul_inv, mul_comm] using hf.memLp.const_mul a⁻¹,
+    fun c u hc => by rw [hf.rot c u hc]; ring⟩
 
 /-- **Charge-one functions have mean zero** (rotate by `−1`). -/
 lemma integral_eq_zero (hf : ChargeFn f) : ∫ u, f u ∂mu2 = 0 := by
@@ -72,7 +73,9 @@ lemma chargeFn_hpow (hφ : PhiBound) (j : ℕ) : ChargeFn (hpow j) := by
     have hφu : |phiT u| ≤ 1 := by
       have := hφ u; rw [← sq_le_one_iff_abs_le_one]; linarith
     rw [hpow, norm_mul, norm_pow, norm_mul, norm_I, one_mul, Complex.norm_real, Real.norm_eq_abs]
-    exact mul_le_one₀ (pow_le_one₀ (abs_nonneg _) hφu) (norm_nonneg _) (Haag.norm_ph_le _)
+    calc |phiT u| ^ j * ‖F0 u‖ ≤ 1 * 1 :=
+          mul_le_mul (pow_le_one₀ (abs_nonneg _) hφu) (Haag.norm_ph_le _) (norm_nonneg _) zero_le_one
+      _ = 1 := one_mul 1
   have hm : Measurable (hpow j) := by
     unfold hpow
     exact ((measurable_const.mul (Complex.measurable_ofReal.comp continuous_phiT.measurable)).pow_const j).mul
@@ -82,8 +85,8 @@ lemma chargeFn_hpow (hφ : PhiBound) (j : ℕ) : ChargeFn (hpow j) := by
   ring
 
 lemma chargeFn_F0 (hφ : PhiBound) : ChargeFn F0 := by
-  have h := chargeFn_hpow hφ 0
-  simpa [hpow] using h
+  have e : hpow 0 = F0 := by ext u; simp [hpow]
+  rw [← e]; exact chargeFn_hpow hφ 0
 
 /-! ### The four sources and the 18 pieces -/
 
@@ -131,11 +134,11 @@ lemma band_unique {k l : ComparisonIndex} (hkl : pw k = pw l) {n m : ℕ}
 /-- The band of source `p` containing total degree `d ≥ 1`. -/
 def bandOf (p : Fin 4) (d : ℕ) : ComparisonIndex :=
   match p with
-  | 0 => 0
-  | 1 => if d ≤ 51 then 1 else if d ≤ 101 then 2 else if d ≤ 151 then 3 else if d ≤ 161 then 4
-      else if d ≤ 171 then 5 else if d ≤ 181 then 6 else 7
-  | 2 => if d ≤ 51 then 8 else if d ≤ 71 then 9 else if d ≤ 81 then 10 else if d ≤ 91 then 11 else 12
-  | 3 => if d ≤ 11 then 13 else if d ≤ 21 then 14 else if d ≤ 31 then 15 else if d ≤ 51 then 16 else 17
+  | 0 => ⟨0, by decide⟩
+  | 1 => if d ≤ 51 then ⟨1, by decide⟩ else if d ≤ 101 then ⟨2, by decide⟩ else if d ≤ 151 then ⟨3, by decide⟩ else if d ≤ 161 then ⟨4, by decide⟩
+      else if d ≤ 171 then ⟨5, by decide⟩ else if d ≤ 181 then ⟨6, by decide⟩ else ⟨7, by decide⟩
+  | 2 => if d ≤ 51 then ⟨8, by decide⟩ else if d ≤ 71 then ⟨9, by decide⟩ else if d ≤ 81 then ⟨10, by decide⟩ else if d ≤ 91 then ⟨11, by decide⟩ else ⟨12, by decide⟩
+  | 3 => if d ≤ 11 then ⟨13, by decide⟩ else if d ≤ 21 then ⟨14, by decide⟩ else if d ≤ 31 then ⟨15, by decide⟩ else if d ≤ 51 then ⟨16, by decide⟩ else ⟨17, by decide⟩
 
 lemma bandOf_spec (p : Fin 4) {n m : ℕ} (h : 1 ≤ n + m) :
     pw (bandOf p (n + m)) = p ∧ (comparisonBand (bandOf p (n + m))).contains n m = true := by
