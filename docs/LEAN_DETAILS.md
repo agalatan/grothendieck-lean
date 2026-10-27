@@ -263,10 +263,31 @@ from the Gamma integral. Keeping `z` inside the integral makes the kernel zero
 at `z=0`. The module proves integrability for every complex argument and an
 absolute integral bounded by `sqrt(pi)`, with equality for nonzero arguments.
 It also proves the denominator-free affine completion of squares for
-`alpha*‖w‖²+t*‖z+a*w‖²`. These standard analytic identities justify the next
-Gaussian reduction steps without a native numerical leaf. Conditional Gaussian
-Wick evaluation, interchange with the source polynomial, auxiliary-parameter
-tail bounds and numerical integration accuracy remain separate obligations.
+`alpha*‖w‖²+t*‖z+a*w‖²`. These standard analytic identities have no native numerical leaf.
+`PhaseLaplaceFubini` proves joint measurability and absolute product
+integrability for any measurable integrable weight and measurable phase
+argument over an arbitrary SFinite measure. It then moves the positive Laplace
+parameter outside the source integral.
+
+`TaylorInnerLaplace.inner_hpow_eq_phaseLaplace` retains the actual `F0` argument
+and `phiT`. Under `PhiBound` and a square-integrable charge-one source it
+identifies the Taylor inner product with the absolutely integrable Laplace
+mixture. Boundedness of the phase power and Holder's inequality establish
+source integrability; no numerical integration premise is used.
+
+`ShiftedDampedMoments` expands a translated mixed complex monomial and proves
+the finite Wick formula at any positive radial rate. Its Gaussian mass is
+`1/rate`, including for rates below one. `AffineGaussianSquare` centers the
+conditional density without dividing by the radial profile. For arbitrary
+complex `z`, real `a`, positive `alpha,t`, put `beta=alpha+a^2*t` and
+`mu=-(a*t/beta)*z`. `ConditionalGaussianPhase` proves the exact conditional
+monomial formula: the scalar factor
+`t^(-1/2)*exp(-alpha*t*normSq(z)/beta)` multiplies
+`z*M(p,q;beta,mu) + a*M(p+1,q;beta,mu)`. The finite moment `M` includes its
+`1/beta` mass. The measure conversion, translation, integrability and factorial
+scaling are all explicit. Expanding the complete source polynomial into this
+conditional interface, certified auxiliary and radial tails, and numerical
+integration accuracy remain separate obligations.
 
 **Phase errors and transported certificates.**
 `Grothe/Upper/ResponseGeometry.lean` proves twelve statements: the exact

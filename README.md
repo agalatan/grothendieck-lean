@@ -255,8 +255,11 @@ subtraction; their Gaussian validity remains open.
 `Haagerup/PhaseLaplace` gives an analytic representation of complex phase as a
 Gaussian Laplace mixture, including its value at zero. It proves integrability,
 a uniform absolute-integral bound, and the affine completion-of-squares identity.
-These support the remaining Gaussian integration work; no numerical enclosure
-is inferred from them.
+`PhaseLaplaceFubini` proves absolute integration and exchange of the parameter
+with any integrable source. `TaylorInnerLaplace` applies it to the actual Taylor
+inner products. `ConditionalGaussianPhase` evaluates affine-kernel Gaussian
+monomials by finite shifted Wick sums, retaining their inverse-rate mass.
+Certified numerical integration and its tail budgets remain open.
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs

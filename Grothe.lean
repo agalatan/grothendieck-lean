@@ -68,6 +68,7 @@ import Grothe.Haagerup.PhaseCoefficients
 import Grothe.Haagerup.PhaseGeometry
 import Grothe.Haagerup.PhaseKernel
 import Grothe.Haagerup.PhaseLaplace
+import Grothe.Haagerup.PhaseLaplaceFubini
 import Grothe.Haagerup.Power
 import Grothe.Haagerup.PowerData
 import Grothe.Haagerup.ScalarTailRefinement
@@ -282,6 +283,7 @@ import Grothe.Upper.ResponseUpdate
 import Grothe.Upper.SpectralScreen
 import Grothe.Upper.TransportLimit
 import Grothe.Upper.WeightedTail
+import Grothe.UpperChaos.AffineGaussianSquare
 import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.CapturedTail
 import Grothe.UpperChaos.Charge
@@ -291,8 +293,10 @@ import Grothe.UpperChaos.ComplexHermite
 import Grothe.UpperChaos.ComplexMoments
 import Grothe.UpperChaos.ConcretePhaseMoments
 import Grothe.UpperChaos.ConcreteTaylorUpper
+import Grothe.UpperChaos.ConditionalGaussianPhase
 import Grothe.UpperChaos.DampedMoments
 import Grothe.UpperChaos.DiagonalPairing
+import Grothe.UpperChaos.DiagonalSum
 import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
 import Grothe.UpperChaos.FirstSecondCapturedTail
@@ -373,6 +377,7 @@ import Grothe.UpperChaos.SchurIntegrability
 import Grothe.UpperChaos.SchurKernel
 import Grothe.UpperChaos.SchurMain
 import Grothe.UpperChaos.SchurTest
+import Grothe.UpperChaos.ShiftedDampedMoments
 import Grothe.UpperChaos.SmoothComm
 import Grothe.UpperChaos.Smoothing
 import Grothe.UpperChaos.Structural
@@ -386,6 +391,7 @@ import Grothe.UpperChaos.TaylorErrorEnergy
 import Grothe.UpperChaos.TaylorFirstBandNorms
 import Grothe.UpperChaos.TaylorFirstData
 import Grothe.UpperChaos.TaylorFrozenData
+import Grothe.UpperChaos.TaylorInnerLaplace
 import Grothe.UpperChaos.TaylorMoments
 import Grothe.UpperChaos.TaylorPhase
 import Grothe.UpperChaos.TaylorRounding
