@@ -29,7 +29,8 @@ theorem one_add_pow_42_le_tail_exp (s : ℝ) (hs : 512 ≤ s) :
   have hp : (1 + (s - 512) / 513) ^ 42 ≤ Real.exp ((s - 512) / 2) := by
     calc
       _ ≤ Real.exp ((s - 512) / 513) ^ 42 := pow_le_pow_left₀ hb hbase 42
-      _ = Real.exp (42 * ((s - 512) / 513)) := by rw [Real.exp_nat_mul]; norm_num
+      _ = Real.exp (42 * ((s - 512) / 513)) := by
+        simpa only [Nat.cast_ofNat] using (Real.exp_nat_mul ((s - 512) / 513) 42).symm
       _ ≤ _ := Real.exp_le_exp.mpr (by nlinarith)
   have he : (1 + s) ^ 42 = (513 : ℝ) ^ 42 *
       (1 + (s - 512) / 513) ^ 42 := by
@@ -95,7 +96,8 @@ theorem integral_energy_far_le {E : ℝ → ℂ}
     have he : Real.exp (-256) * Real.exp (-256) = Real.exp (-512) := by
       rw [← Real.exp_add]
       norm_num
-    rw [← he]
+    have harg : -(1 / 2 : ℝ) * 512 = -256 := by norm_num
+    rw [harg, ← he]
     ring
   calc
     _ = ∫ s in Ioi (512 : ℝ), f s := rfl
