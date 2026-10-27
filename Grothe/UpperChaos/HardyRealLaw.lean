@@ -31,6 +31,16 @@ lemma charFunDual_mu2 (L : StrongDual ℝ (ℂ × ℂ)) :
     ← Complex.exp_add, Q, Q]
   congr 1; push_cast; ring
 
+/-- Two independent standard pairs. -/
+lemma charFunDual_mu2prod (L : StrongDual ℝ ((ℂ × ℂ) × (ℂ × ℂ))) :
+    charFunDual (mu2.prod mu2) L = Complex.exp (-((
+      Q ((L.comp (.inl ℝ (ℂ × ℂ) (ℂ × ℂ))).comp (.inl ℝ ℂ ℂ)) +
+      Q ((L.comp (.inl ℝ (ℂ × ℂ) (ℂ × ℂ))).comp (.inr ℝ ℂ ℂ)) +
+      Q ((L.comp (.inr ℝ (ℂ × ℂ) (ℂ × ℂ))).comp (.inl ℝ ℂ ℂ)) +
+      Q ((L.comp (.inr ℝ (ℂ × ℂ) (ℂ × ℂ))).comp (.inr ℝ ℂ ℂ)) : ℝ) : ℂ) / 4) := by
+  rw [charFunDual_prod (μ := mu2) (ν := mu2), charFunDual_mu2, charFunDual_mu2, ← Complex.exp_add]
+  congr 1; push_cast; ring
+
 /-- A real-linear functional on `ℂ`: `ℓ(z) = Re z · ℓ(1) + Im z · ℓ(i)`. -/
 lemma dual_apply (ℓ : StrongDual ℝ ℂ) (z : ℂ) : ℓ z = z.re * ℓ 1 + z.im * ℓ I := by
   conv_lhs => rw [← Complex.re_add_im z]
@@ -115,9 +125,9 @@ theorem law_swap {p q : ℝ} (hp : |p| ≤ 1) (hq : |q| ≤ 1) {a b c : ℝ}
   have hs₂ : sig (q : ℂ) = ((√(1 - q ^ 2) : ℝ) : ℂ) := by simp [sig, Complex.norm_real, sq_abs]
   apply Measure.ext_of_charFunDual
   ext L
-  rw [charFunDual_map, charFunDual_map, show mu4 = mu2.prod mu2 from rfl, charFunDual_prod, charFunDual_prod,
-    charFunDual_prod, charFunDual_mu2, charFunDual_mu2, charFunDual_mu2, charFunDual_mu2, charFunDual_mu2,
-    charFunDual_mu2, ← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]
+  rw [charFunDual_map, charFunDual_map, charFunDual_mu2prod (L.comp (pairMap a b c)),
+    charFunDual_prod (μ := mu4) (ν := mu2.prod mu2), show mu4 = mu2.prod mu2 from rfl,
+    charFunDual_mu2prod, charFunDual_mu2prod, ← Complex.exp_add]
   have e1 := cov_eq mn_00 mn_01 mn_11 hσ₁ hσ₂ ha hb hc h hd ![Lc L 0 1, Lc L 1 1, Lc L 2 1, Lc L 3 1]
   have e2 := cov_eq mn_00 mn_01 mn_11 hσ₁ hσ₂ ha hb hc h hd ![Lc L 0 I, Lc L 1 I, Lc L 2 I, Lc L 3 I]
   simp only [covMehler, covPair, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
