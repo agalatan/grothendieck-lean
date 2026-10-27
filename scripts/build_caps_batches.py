@@ -279,23 +279,28 @@ def groups(registry: dict, jobs: int):
 
 
 def process_rows() -> list[dict]:
-    result = subprocess.run(["ps", "-eo", "pid=,pgid=,rss=,comm=,args="], check=True,
+    result = subprocess.run(["ps", "-eo", "pid=,pgid=,rss=,stat=,comm=,args="], check=True,
                             text=True, stdout=subprocess.PIPE).stdout
     rows = []
     for line in result.splitlines():
-        fields = line.split(None, 4)
-        if len(fields) >= 4:
+        fields = line.split(None, 5)
+        if len(fields) >= 5:
+            if fields[3].startswith(("Z", "X")):
+                continue
             rows.append({"pid": int(fields[0]), "pgid": int(fields[1]), "rss": int(fields[2]) * 1024,
-                         "comm": Path(fields[3]).name, "args": fields[4] if len(fields) == 5 else ""})
+                         "state": fields[3], "comm": Path(fields[4]).name, "args": fields[5] if len(fields) == 6 else ""})
     return rows
 
 
 def observe(root: Path, pgid: int | None, jobs: int, rss_limit: int, disk_floor: int, stop: Path,
             rows=None, free=None, allowed_pids=()) -> dict:
     rows = process_rows() if rows is None else rows
-    own = [row for row in rows if pgid is not None and row["pgid"] == pgid]
+    # A zombie has already closed its files and address space. The Popen parent
+    # is reaped separately; an orphaned zombie must not impersonate live work.
+    live = [row for row in rows if not row.get("state", "").startswith(("Z", "X"))]
+    own = [row for row in live if pgid is not None and row["pgid"] == pgid]
     lean = [row for row in own if row["comm"] == "lean"]
-    foreign = [row for row in rows if row["comm"] in {"lean", "lake"}
+    foreign = [row for row in live if row["comm"] in {"lean", "lake"}
                and row["pgid"] != pgid and row["pid"] != os.getpid() and row["pid"] not in allowed_pids]
     rss = sum(row["rss"] for row in own)
     disk = shutil.disk_usage(root).free if free is None else free
@@ -312,8 +317,39 @@ def observe(root: Path, pgid: int | None, jobs: int, rss_limit: int, disk_floor:
         reason = "actual Lean concurrency exceeds explicit target budget"
     elif any("-j1" not in row["args"].split() for row in lean):
         reason = "actual Lean child lacks -j1"
+    rejected = foreign if foreign else lean if reason and ("concurrency" in reason or "-j1" in reason) else []
+    details = [{"pid": row["pid"], "pgid": row["pgid"], "state": row.get("state", "unknown"),
+                "comm": row["comm"], "thread_flags": [arg for arg in row.get("args", "").split()
+                    if re.fullmatch(r"-j(?:\d+)?|--threads(?:=\d+)?", arg)]} for row in rejected]
     return {"rss_bytes": rss, "disk_free_bytes": disk, "lean_processes": len(lean),
-            "owned_pids": [row["pid"] for row in own], "pause_reason": reason}
+            "owned_pids": [row["pid"] for row in own],
+            "owned_zombie_pids": [row["pid"] for row in rows if pgid is not None and row["pgid"] == pgid
+                                   and row.get("state", "").startswith(("Z", "X"))],
+            "rejected_processes": details, "pause_reason": reason}
+
+
+def failure_diagnostics(record, log, *, max_bytes=16384, max_lines=40):
+    """Expose the original failure and bounded real child output, even if cleanup also failed."""
+    print(f"FAILED caps group {record.get('group_index')} ({record['phase']}): {', '.join(record['targets'])}", flush=True)
+    print(f"Original failure: {record.get('reason', 'unknown')}", flush=True)
+    if record.get("cleanup_error"):
+        print(f"Additional owned-cleanup failure: {record['cleanup_error']}", flush=True)
+    if record.get("receipt_error"):
+        print(f"Additional receipt failure: {record['receipt_error']}", flush=True)
+    if record.get("guard_observation"):
+        print("Guard observation: " + json.dumps(record["guard_observation"], sort_keys=True), flush=True)
+    print(f"Child log tail ({log}; at most {max_bytes} bytes/{max_lines} lines):", flush=True)
+    try:
+        with log.open("rb") as stream:
+            size = stream.seek(0, os.SEEK_END)
+            stream.seek(max(0, size - max_bytes))
+            lines = stream.read(max_bytes).decode("utf-8", errors="replace").splitlines()[-max_lines:]
+        for line in lines:
+            print("| " + line, flush=True)
+        if not lines:
+            print("| (child log is empty)", flush=True)
+    except OSError as error:
+        print(f"| (cannot read child log: {type(error).__name__}: {error})", flush=True)
 
 
 def atomic_json(path: Path, value: dict):
@@ -389,20 +425,30 @@ class Runner:
         if self.child is None:
             return
         # The group is the start_new_session child we just spawned, never a PID read from disk.
+        def live_members():
+            # poll() calls waitpid(WNOHANG), so the direct child cannot remain a
+            # zombie solely because this cleanup loop forgot to reap it.
+            self.child.poll()
+            return self.watch(self.args.root, self.child.pid, self.args.jobs,
+                              2**63, 0, self.args.stop_file)["owned_pids"]
+
+        remaining = live_members()
+        if not remaining:
+            self.child.wait(timeout=1)
+            return
         for sig in (signal.SIGTERM, signal.SIGKILL):
             try:
                 self.killpg(self.child.pid, sig)
             except ProcessLookupError:
-                return
+                pass
             deadline = self.clock() + (10 if sig == signal.SIGTERM else 5)
             while self.clock() < deadline:
-                remaining = self.watch(self.args.root, self.child.pid, self.args.jobs,
-                                       2**63, 0, self.args.stop_file)["owned_pids"]
+                remaining = live_members()
                 if not remaining:
-                    self.child.wait()
+                    self.child.wait(timeout=1)
                     return
                 self.sleep(0.2)
-        raise BuildError("owned child group did not exit after termination")
+        raise BuildError(f"owned child group did not exit after termination; live pids {remaining}")
 
     def run_group(self, phase, targets, index):
         if self.child is not None:
@@ -414,7 +460,7 @@ class Runner:
         argv = [self.args.lake, "-f", str(self.overlay.relative_to(self.args.root)), "build", *targets]
         stem = f"{os.getpid()}-{index:05d}-{phase}"
         log, receipt = self.args.run_dir / (stem + ".log"), self.args.run_dir / (stem + ".json")
-        record = {"phase": phase, "targets": targets, "argv": argv, "started_at_utc": utc(),
+        record = {"group_index": index, "phase": phase, "targets": targets, "argv": argv, "started_at_utc": utc(),
                   "controller_pid": os.getpid(), "state": "starting", "peak_rss_bytes": 0,
                   "peak_lean_processes": 0, "registry_sha256": self.args.registry_sha256,
                   "overlay_sha256": sha(self.overlay_data), "lake_parent_threads": self.args.jobs,
@@ -449,17 +495,35 @@ class Runner:
             record.update(state="paused" if isinstance(error, Pause) else "failed", reason=str(error))
             if isinstance(error, Pause) and error.observation:
                 observation = error.observation
+                record["guard_observation"] = observation
                 record["peak_rss_bytes"] = max(record["peak_rss_bytes"], observation["rss_bytes"])
                 record["peak_lean_processes"] = max(record["peak_lean_processes"], observation["lean_processes"])
             if self.child is not None:
-                self.stop_child()
+                try:
+                    self.stop_child()
+                except BaseException as cleanup_error:
+                    record["cleanup_error"] = str(cleanup_error)
+                    record["state"] = "failed"
+                    failure = BuildError(f"{error}; owned cleanup also failed: {cleanup_error}")
                 record["exit_code"] = self.child.poll()
         finally:
             if self.coexist is not None and self.child is not None:
-                self.coexist.clear_child()
+                try:
+                    self.coexist.clear_child()
+                except BaseException as cleanup_error:
+                    record["cleanup_error"] = (record.get("cleanup_error", "") + "; " + str(cleanup_error)).lstrip("; ")
+                    record["state"] = "failed"
+                    failure = BuildError(f"{record.get('reason', 'coexist handoff failed')}; {record['cleanup_error']}")
             self.child = None
             record.update(finished_at_utc=utc(), elapsed_seconds=self.clock() - start)
-            atomic_json(receipt, record)
+            try:
+                atomic_json(receipt, record)
+            except BaseException as receipt_error:
+                record["receipt_error"] = str(receipt_error)
+                failure = failure or BuildError("could not write closed group receipt: " + str(receipt_error))
+            if failure:
+                record.setdefault("reason", str(failure))
+                failure_diagnostics(record, log)
         if failure:
             raise failure
         return record

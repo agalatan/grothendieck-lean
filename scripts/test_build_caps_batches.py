@@ -177,6 +177,31 @@ class GuardTests(Fixture):
     def test_missing_child_j1_pauses(self):
         self.assertIn("lacks -j1", self.observation([self.row(101, args="lean -j8")])["pause_reason"])
 
+    def test_defunct_lean_is_not_an_active_thread_or_foreign_worker(self):
+        rows = [dict(self.row(101, rss=0, args="[lean] <defunct>"), state="Z"),
+                dict(self.row(102, pgid=999, rss=0, args="[lean] <defunct>"), state="X")]
+        observed = self.observation(rows)
+        self.assertIsNone(observed["pause_reason"])
+        self.assertEqual(observed["lean_processes"], 0)
+        self.assertEqual(observed["owned_pids"], [])
+
+    def test_live_zero_rss_still_requires_j1_and_has_safe_rejection_details(self):
+        row = dict(self.row(101, rss=0, args="lean -j8 private-sensitive-argument"), state="R")
+        observed = self.observation([row])
+        self.assertIn("lacks -j1", observed["pause_reason"])
+        self.assertEqual(observed["owned_pids"], [101])
+        self.assertEqual(observed["rejected_processes"], [{"pid": 101, "pgid": 100, "state": "R",
+                                                         "comm": "lean", "thread_flags": ["-j8"]}])
+        self.assertNotIn("private-sensitive", json.dumps(observed))
+
+    def test_ps_parser_filters_z_and_x_but_retains_live_zero_rss(self):
+        output = "101 100 0 Z lean [lean] <defunct>\n102 100 0 X lean [lean] <defunct>\n103 100 0 S lean lean -j1\n"
+        fake = argparse.Namespace(stdout=output)
+        with patch.object(b.subprocess, "run", return_value=fake):
+            rows = b.process_rows()
+        self.assertEqual([r["pid"] for r in rows], [103])
+        self.assertEqual(rows[0]["rss"], 0)
+
     def test_aggregate_memory_and_disk_pause(self):
         self.assertIn("RSS", self.observation([self.row(101, rss=25 * 2**30)])["pause_reason"])
         self.assertIn("disk", self.observation(free=2 * 2**30)["pause_reason"])
@@ -199,17 +224,18 @@ class GuardTests(Fixture):
 class FakeProcess:
     pid = 4312
 
-    def __init__(self, exit_code=0):
+    def __init__(self, exit_code=0, exit_after_poll=2):
         self.exit_code, self.polls, self.alive = exit_code, 0, True
+        self.exit_after_poll = exit_after_poll
 
     def poll(self):
         self.polls += 1
-        if self.polls == 1 and self.alive:
+        if self.polls < self.exit_after_poll and self.alive:
             return None
         self.alive = False
         return self.exit_code
 
-    def wait(self):
+    def wait(self, timeout=None):
         self.alive = False
         return self.exit_code
 
@@ -452,11 +478,26 @@ class CoexistTests(unittest.TestCase):
                             expected_ci=self.ident, research_root=absent, proc=self.proc, pid=100)
         self.assertEqual(session.research_root, absent)
 
+    def test_shared_proc_inventory_ignores_z_and_x_before_argv_or_memory_checks(self):
+        base = self.root / "proc-fixture"
+        for pid, state in ((1, "Z"), (2, "X"), (3, "S")):
+            directory = base / str(pid)
+            directory.mkdir(parents=True)
+            fields = [state, "200", str(pid), *("0" for _ in range(17))]
+            fields[19] = "12345"
+            (directory / "stat").write_text(f"{pid} (lean) " + " ".join(fields))
+        real_path = c.Path
+        with patch.object(c, "Path", side_effect=lambda value: base if str(value) == "/proc" else real_path(value)):
+            rows = c.ProcFS().snapshot()
+            self.assertIsNone(c.ProcFS().read(1))
+            self.assertIsNone(c.ProcFS().read(2))
+        self.assertEqual([r["pid"] for r in rows], [3])
+
 
 class RunnerTests(Fixture):
     def runner(self, *, exit_code=0, pause=False):
         self.calls, self.signals = [], []
-        process = FakeProcess(exit_code)
+        process = FakeProcess(exit_code, exit_after_poll=100 if pause else 2)
 
         def popen(argv, **kwargs):
             self.calls.append((argv, kwargs))
@@ -488,13 +529,13 @@ class RunnerTests(Fixture):
         self.assertEqual(self.signals, [])
 
     def test_nonzero_child_is_failure(self):
-        with self.assertRaisesRegex(b.BuildError, "exit 7"):
+        with redirect_stdout(io.StringIO()), self.assertRaisesRegex(b.BuildError, "exit 7"):
             self.runner(exit_code=7).run_group("native", ["Grothe.A"], 1)
         receipt = next(self.args.run_dir.glob("*.json"))
         self.assertEqual(json.loads(receipt.read_text())["state"], "failed")
 
     def test_guard_pause_signals_only_owned_new_group(self):
-        with self.assertRaisesRegex(b.Pause, "foreign work"):
+        with redirect_stdout(io.StringIO()), self.assertRaisesRegex(b.Pause, "foreign work"):
             self.runner(pause=True).run_group("native", ["Grothe.A"], 1)
         self.assertEqual(self.signals, [(4312, signal.SIGTERM)])
         record = json.loads(next(self.args.run_dir.glob("*.json")).read_text())
@@ -553,6 +594,61 @@ class RunnerTests(Fixture):
             runner.finish_shared()
         self.assertEqual(events, [("publish", {"phase": "exclusive", "child_pgid": None}),
                                   ("observe", None), ("wait", None), ("observe", None)])
+
+    def test_cleanup_polls_and_reaps_parent_before_testing_group_absence(self):
+        runner = self.runner()
+        events = []
+        class Parent:
+            pid, zombie, reaped = 4312, False, False
+            def poll(self):
+                events.append("poll")
+                if self.zombie:
+                    self.reaped = True
+                    return -15
+                return None
+            def wait(self, timeout=None):
+                self.reaped = True
+                events.append("wait")
+                return -15
+        parent = Parent()
+        runner.child = parent
+        runner.watch = lambda *_: {"owned_pids": [] if parent.reaped else [parent.pid], "rss_bytes": 0}
+        def kill(pgid, sig):
+            self.assertEqual(pgid, 4312)
+            self.assertEqual(sig, signal.SIGTERM)
+            events.append("term")
+            parent.zombie = True
+        runner.killpg = kill
+        runner.stop_child()
+        self.assertEqual(events, ["poll", "term", "poll", "wait"])
+        self.assertTrue(parent.reaped)
+
+    def test_cleanup_failure_preserves_original_reason_and_real_log_tail(self):
+        runner = self.runner(exit_code=7)
+        original_popen = runner.popen
+        def popen(argv, **kwargs):
+            kwargs["stdout"].write(b"error: C12x167 exact coverage check failed\n")
+            return original_popen(argv, **kwargs)
+        runner.popen = popen
+        with patch.object(runner, "stop_child", side_effect=b.BuildError("injected cleanup failure")), \
+                redirect_stdout(io.StringIO()) as output, self.assertRaisesRegex(b.BuildError, "exit 7.*cleanup"):
+            runner.run_group("native", ["Grothe.A"], 85)
+        self.assertIn("Original failure: native Lake group failed with exit 7", output.getvalue())
+        self.assertIn("Additional owned-cleanup failure: injected cleanup failure", output.getvalue())
+        self.assertIn("| error: C12x167 exact coverage check failed", output.getvalue())
+        record = json.loads(next(self.args.run_dir.glob("*.json")).read_text())
+        self.assertIn("exit 7", record["reason"])
+        self.assertEqual(record["cleanup_error"], "injected cleanup failure")
+
+    def test_failure_tail_is_bounded_real_output(self):
+        path = self.root / "large-child.log"
+        path.write_text("first-line-must-not-appear\n" + "middle\n" * 10000 + "last-real-line\n")
+        record = {"group_index": 85, "phase": "native", "targets": ["Grothe.A"], "reason": "actual pause"}
+        with redirect_stdout(io.StringIO()) as output:
+            b.failure_diagnostics(record, path, max_bytes=128, max_lines=3)
+        self.assertNotIn("first-line-must-not-appear", output.getvalue())
+        self.assertIn("last-real-line", output.getvalue())
+        self.assertLessEqual(sum(line.startswith("| ") for line in output.getvalue().splitlines()), 3)
 
     def test_plan_and_registry_mutation_are_mutually_exclusive(self):
         with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):

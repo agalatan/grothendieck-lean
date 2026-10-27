@@ -56,6 +56,8 @@ class ProcFS:
             raw = (base / "stat").read_text()
             end = raw.rfind(")")
             fields = raw[end + 2:].split()
+            if fields[0] in {"Z", "X"}:
+                return None
             uid = next(line for line in (base / "status").read_text().splitlines() if line.startswith("Uid:"))
             env = {}
             for item in (base / "environ").read_bytes().split(b"\0"):
@@ -83,8 +85,10 @@ class ProcFS:
                 raw = (base / "stat").read_text()
                 end = raw.rfind(")")
                 fields = raw[end + 2:].split()
+                if fields[0] in {"Z", "X"}:
+                    continue  # no open files/address space; direct parents reap separately
                 rows.append({"pid": int(base.name), "ppid": int(fields[1]), "pgid": int(fields[2]),
-                             "start_ticks": int(fields[19]), "comm": raw[raw.index("(") + 1:end]})
+                             "start_ticks": int(fields[19]), "state": fields[0], "comm": raw[raw.index("(") + 1:end]})
             except FileNotFoundError:
                 continue
             except (OSError, ValueError) as error:
