@@ -386,6 +386,10 @@ jobs:
             --jq '.workflow_runs[] | select(.status != "completed") | "\(.id) \(.head_sha)"' |
           while read -r id sha; do
             [ "$id" = "${GITHUB_RUN_ID}" ] || [ "$sha" = "${GITHUB_SHA}" ] && continue
+            # never cancel a droplet build: a killed build leaves orphaned lean processes (AGENTS.md §8)
+            ondroplet=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${id}/jobs" \
+              --jq '[.jobs[] | select(.labels | index("self-hosted"))] | length' 2>/dev/null || echo 1)
+            if [ "${ondroplet:-1}" != 0 ]; then echo "kept the droplet check of ${sha:0:7} (run ${id})"; continue; fi
             # older = an ancestor of this commit (needs no checkout: the compare API answers it)
             status=$(gh api "repos/${GITHUB_REPOSITORY}/compare/${sha}...${GITHUB_SHA}" --jq .status 2>/dev/null || true)
             if [ "$status" = ahead ]; then

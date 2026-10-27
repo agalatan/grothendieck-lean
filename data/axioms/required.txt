@@ -141,6 +141,7 @@ Grothe.HJM.Origin.leftRadialAmplitude_toLp
 Grothe.HJM.Origin.leftRationalWitness_mass
 Grothe.HJM.Origin.leftTailEnergy_le_of_visible
 Grothe.HJM.Origin.leftUnweightedRationalMassCheck
+Grothe.HJM.Origin.leftUnweightedTail_of_64_norm_and_correlation
 Grothe.HJM.Origin.leftUnweightedTail_of_64_targets
 Grothe.HJM.Origin.leftUnweightedWitness_mass
 Grothe.HJM.Origin.left_signedPhaseMean_eq_inner
@@ -203,6 +204,7 @@ Grothe.HJM.Origin.rightRadialAmplitude_toLp
 Grothe.HJM.Origin.rightRationalWitness_mass
 Grothe.HJM.Origin.rightTailEnergy_le_of_visible
 Grothe.HJM.Origin.rightUnweightedRationalMassCheck
+Grothe.HJM.Origin.rightUnweightedTail_of_64_norm_and_correlation
 Grothe.HJM.Origin.rightUnweightedTail_of_64_targets
 Grothe.HJM.Origin.rightUnweightedWitness_mass
 Grothe.HJM.Origin.right_signedPhaseMean_eq_inner
@@ -402,6 +404,7 @@ Grothe.HJM.repriced_hjm_bound_of_head
 Grothe.HJM.repriced_hjm_bound_of_residual_caps
 Grothe.HJM.repriced_hjm_bound_of_tables_visible
 Grothe.HJM.repriced_hjm_bound_of_visible
+Grothe.HJM.repriced_origin_tail_of_64_norms_and_correlations
 Grothe.HJM.repriced_origin_tail_of_unweighted_residual_caps
 Grothe.HJM.rotatedPairCoeff_dominated
 Grothe.HJM.rotatedQhat_one
