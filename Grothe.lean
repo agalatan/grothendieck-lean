@@ -5,6 +5,7 @@ import Grothe.HJM.CauchyKernel
 import Grothe.HJM.CauchyTail
 import Grothe.HJM.CauchyTails
 import Grothe.HJM.Data
+import Grothe.HJM.Finite67
 import Grothe.HJM.Mixture
 import Grothe.HJM.Origin
 import Grothe.HJM.OriginApproximation
@@ -28,6 +29,7 @@ import Grothe.HJM.PrefixCheck4
 import Grothe.HJM.PrefixCheck5
 import Grothe.HJM.PrefixTable
 import Grothe.HJM.Preprocessors
+import Grothe.HJM.TailSplit
 import Grothe.Haagerup.CanonicalArithmetic
 import Grothe.Haagerup.CanonicalCheck
 import Grothe.Haagerup.CanonicalData
