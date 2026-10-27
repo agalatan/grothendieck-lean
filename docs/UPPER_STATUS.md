@@ -184,8 +184,9 @@ Progress (claude/hardy, 26 Oct):
   The original approximant inputs and frozen correction have been recovered
   with matching hashes in `data/taylor-approximants/inputs/`. `TaylorBandCheck`
   supplies the full third-center certificate through degree 51, including all
-  four finite bands and exact vanishing on the tail. The first and second
-  centers and the rounding norm still need their own finite checks.
+  four finite bands and exact vanishing on the tail. `TaylorRounding` also
+  certifies the 10^-18 norm cap for the exact rounding difference. The first
+  and second centers' band norms still need their finite checks.
   `ThirdCapturedTail` derives the existing third tail cap from four slightly
   tighter finite-band Gaussian error premises, with a concrete pointwise center
   satisfying `ChargeFn`. Those errors and the other Taylor-source inputs remain

@@ -592,6 +592,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.HardyReal.integral_pair_eq_kHol
 #print axioms Grothe.UpperChaos.HardyReal.law_swap
 #print axioms Grothe.UpperChaos.HardyReal.mehler_eq_HholPair
+#print axioms Grothe.UpperChaos.PackedDyadic.gradedIntegerSum_eq
+#print axioms Grothe.UpperChaos.PackedDyadic.isumAcc_eq
 #print axioms Grothe.UpperChaos.PackedDyadic.sum_coeff_sq
 #print axioms Grothe.UpperChaos.PackedDyadic.sum_div_sq
 #print axioms Grothe.UpperChaos.PhaseMomentCheck.e3_integerPhase
@@ -629,6 +631,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.gradedHermiteFn_add
 #print axioms Grothe.UpperChaos.gradedHermiteFn_const_mul
 #print axioms Grothe.UpperChaos.gradedHermiteFn_rot2
+#print axioms Grothe.UpperChaos.gradedHermite_add
+#print axioms Grothe.UpperChaos.gradedHermite_extend
+#print axioms Grothe.UpperChaos.gradedHermite_rat_mul
+#print axioms Grothe.UpperChaos.gradedHermite_sub
 #print axioms Grothe.UpperChaos.gradedIdx_antidegree
 #print axioms Grothe.UpperChaos.gradedIdx_charge
 #print axioms Grothe.UpperChaos.gradedIdx_injective
@@ -712,6 +718,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_projOn_residual_sq_le_of_captured_family
 #print axioms Grothe.UpperChaos.norm_projOn_sq_add_le_of_disjoint
 #print axioms Grothe.UpperChaos.norm_projOn_sq_add_norm_sub_projOn_sq
+#print axioms Grothe.UpperChaos.norm_roundingDifference_le
+#print axioms Grothe.UpperChaos.norm_roundingDifference_sq
 #print axioms Grothe.UpperChaos.norm_sq_le_phiT_moment
 #print axioms Grothe.UpperChaos.norm_thirdCenterBand_sq
 #print axioms Grothe.UpperChaos.norm_thirdCenter_sq
@@ -733,7 +741,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.projOn_projOn_eq_zero_of_disjoint
 #print axioms Grothe.UpperChaos.radial_distance_le_of_sixth_moment
 #print axioms Grothe.UpperChaos.radial_kernel_ceiling
+#print axioms Grothe.UpperChaos.roundingCoeff_eq
+#print axioms Grothe.UpperChaos.roundingDifference_eq
 #print axioms Grothe.UpperChaos.rounding_diskKernel
+#print axioms Grothe.UpperChaos.rounding_energy_check
 #print axioms Grothe.UpperChaos.smoothOp_ouOp_comm
 #print axioms Grothe.UpperChaos.smoothOp_toLp'
 #print axioms Grothe.UpperChaos.splitAll_cover
@@ -744,6 +755,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.sum_projOn
 #print axioms Grothe.UpperChaos.sum_sq_le_of_mean_le
 #print axioms Grothe.UpperChaos.summable_abs_energy
+#print axioms Grothe.UpperChaos.taylor_centers_decode_check
 #print axioms Grothe.UpperChaos.thirdCapturedErrorQ_le_public
 #print axioms Grothe.UpperChaos.thirdCenterBandModes_eq_comparison
 #print axioms Grothe.UpperChaos.thirdCenterBand_norm_lower

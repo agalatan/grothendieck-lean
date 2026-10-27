@@ -289,6 +289,7 @@ import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussOp
 import Grothe.UpperChaos.GradedHermite
 import Grothe.UpperChaos.GradedHermiteFn
+import Grothe.UpperChaos.GradedHermiteLinear
 import Grothe.UpperChaos.HardyArcCircle
 import Grothe.UpperChaos.HardyArcCover
 import Grothe.UpperChaos.HardyArcMean
@@ -329,6 +330,7 @@ import Grothe.UpperChaos.OUOp
 import Grothe.UpperChaos.OddParseval
 import Grothe.UpperChaos.OddSeries
 import Grothe.UpperChaos.PackedDyadic
+import Grothe.UpperChaos.PackedDyadicChunks
 import Grothe.UpperChaos.PhaseMoment2
 import Grothe.UpperChaos.PhaseMoment4
 import Grothe.UpperChaos.PhaseMoment6
@@ -365,7 +367,13 @@ import Grothe.UpperChaos.Structural
 import Grothe.UpperChaos.Sym2R
 import Grothe.UpperChaos.TaylorBandCheck
 import Grothe.UpperChaos.TaylorBandData
+import Grothe.UpperChaos.TaylorCenters
 import Grothe.UpperChaos.TaylorErrorEnergy
+import Grothe.UpperChaos.TaylorFirstData
+import Grothe.UpperChaos.TaylorFrozenData
 import Grothe.UpperChaos.TaylorMoments
 import Grothe.UpperChaos.TaylorPhase
+import Grothe.UpperChaos.TaylorRounding
+import Grothe.UpperChaos.TaylorRoundingData
+import Grothe.UpperChaos.TaylorSecondData
 import Grothe.UpperChaos.ThirdCapturedTail

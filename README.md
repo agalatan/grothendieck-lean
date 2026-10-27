@@ -237,6 +237,11 @@ its total norm, all four captured band norms, and its vanishing degree tail.
 `ThirdCapturedTail` derives the existing third-order tail cap from four explicit
 finite-band Gaussian error bounds, using the exact sixth phase moment and the
 captured center energies. Those Gaussian error bounds remain hypotheses.
+The first and second centers and frozen correction also have exact dyadic
+representations. `TaylorRounding.norm_roundingDifference_le` proves
+‖c₁+c₂/2+c₃/6−v‖ ≤ 10⁻¹⁸ by recomputing the common-denominator integer energy.
+This discharges the finite rounding-norm ingredient; Gaussian approximation
+errors and the kernel-energy table accuracy remain separate obligations.
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs

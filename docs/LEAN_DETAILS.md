@@ -166,7 +166,7 @@ size; `thirdCenter_energy_check` checks the total and four band energies.
 actual Hermite norms. Rational lower and upper enclosures use kernel arithmetic;
 charge-one support and the vanishing degree tail follow from generic indexing
 lemmas. The source is unscaled: division by six occurs in the comparison source,
-not in this center. The other two centers, rounding discrepancy and Gaussian
+not in this center. The first and second center band norms and Gaussian
 error enclosures remain open; stored error arrays are not treated as proofs.
 `GradedHermiteFn` constructs continuous finite sums of the normalized Hermite
 polynomials, proves their `MemLp` and `toLp` identities, and proves pointwise
@@ -184,6 +184,25 @@ loses too much precision in this subtraction. The original error allowances
 are recorded in `data/localized-comparison/inputs/taylor_comparison_result.json`;
 their Gaussian validity remains unproved. This theorem removes a separate tail
 hypothesis once these four finite-band error hypotheses are supplied.
+
+**Exact Taylor rounding.** `TaylorFirstData`, `TaylorSecondData` and
+`TaylorFrozenData` preserve the first center through degree 181, the second
+center through degree 91 and the frozen correction through degree 181. The
+original frozen input's coefficients above degree 181 are exactly zero; the
+source generator checks them before retaining the shorter vector. The third
+center reuses `TaylorBandData` without duplicating its coefficients.
+`PackedDyadicChunks` parses bounded chunks strictly and supplies a proved
+integer fold. `GradedHermiteLinear` proves coefficient linearity and zero
+extension between graded supports. `TaylorCenters` defines the actual centers
+and their rounding difference. At common scale 2^206, the numerator is
+`6*A1 + 3*A2 + A3 - 6*V`, with explicit grade restrictions for the shorter
+centers and third integers rescaled by 2^101. `TaylorRounding` identifies its
+integer sum of squares with the actual squared Hermite norm. Its arithmetic
+leaf recomputes that sum from the source lookups; a separate leaf verifies
+successful decoding and sizes. Kernel arithmetic then proves the 10^-18
+rounding cap. Input hashes, exact arithmetic targets and byte-for-byte
+reproduction are recorded under `data/taylor-approximants/`. This certificate
+does not use any Gaussian integration-error premise.
 
 **Phase errors and transported certificates.**
 `Grothe/Upper/ResponseGeometry.lean` proves twelve statements: the exact
