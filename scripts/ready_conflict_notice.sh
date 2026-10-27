@@ -12,7 +12,11 @@ files=("$@")
 tip=$(git rev-parse --short "origin/$branch")
 master=$(git rev-parse --short origin/master)
 log=$(git log --format=%B "origin/master..origin/$branch")
-owners=$(printf '%s\n' "$log" | sed -nE 's/^Agent-ID: *([A-Za-z0-9-]+).*/\1/p' | sort -u | paste -sd ' ' -)
+owners=$(printf '%s\n' "$log" | sed -nE 's/.*Agent-ID: *([A-Za-z]+-[0-9a-f]+).*/\1/p')
+# the owner named by the branch (AGENTS.md §3: ready/<agent-id>-<topic>) comes first
+[[ "$branch" =~ ^ready/((codex|claude)-[0-9a-f]{4})- ]] && owners="${BASH_REMATCH[1]}
+$owners"
+owners=$(printf '%s\n' "$owners" | awk 'NF && !seen[$0]++' | paste -sd ' ' -)
 issues=$(printf '%s\n' "$log" | grep -oiE '(refs|close[sd]?|fix(e[sd])?|resolve[sd]?) +#[0-9]+' \
          | grep -oE '[0-9]+' | sort -un)
 marker="<!-- ready-conflict:$branch:$tip -->"
