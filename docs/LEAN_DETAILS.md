@@ -104,6 +104,8 @@ used. `OriginEndpoint` identifies each quotient's value at zero with the actual
 phase derivative; the energy amplitude is `−3/2` times that derivative, with
 squared norm `9/4` times its squared norm.
 
+The origin far-tail modules derive polynomial growth bounds and reduce the energy integral beyond radius 512 to an explicit integrability hypothesis; the finite energy enclosure remains separate.
+
 `OriginPhaseDerivative` proves explicit real-parameter first and second phase
 derivatives and their application to polynomial restrictions. `OriginPhaseEnvelope`
 combines the fixed numerator polynomials with the uniform denominator margin.

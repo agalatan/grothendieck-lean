@@ -78,6 +78,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.endpoint_subtracted_coeff_bound
 #print axioms Grothe.HJM.Origin.fEnergyAmplitude_polynomialEnvelope
 #print axioms Grothe.HJM.Origin.fEnergyAmplitude_zero
+#print axioms Grothe.HJM.Origin.fEnergy_far_tail
 #print axioms Grothe.HJM.Origin.fPhaseQuotient_polynomialEnvelope
 #print axioms Grothe.HJM.Origin.fPhaseQuotient_zero_eq_deriv
 #print axioms Grothe.HJM.Origin.fResidualLp_eq_sub
@@ -92,6 +93,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.f_radialDifferential_eq
 #print axioms Grothe.HJM.Origin.gEnergyAmplitude_polynomialEnvelope
 #print axioms Grothe.HJM.Origin.gEnergyAmplitude_zero
+#print axioms Grothe.HJM.Origin.gEnergy_far_tail
 #print axioms Grothe.HJM.Origin.gPhaseQuotient_polynomialEnvelope
 #print axioms Grothe.HJM.Origin.gPhaseQuotient_zero_eq_deriv
 #print axioms Grothe.HJM.Origin.gResidualLp_eq_sub
@@ -125,6 +127,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.integrableOn_gEnergyDensity
 #print axioms Grothe.HJM.Origin.integrable_green_pairing
 #print axioms Grothe.HJM.Origin.integrable_green_pairing_of_extension
+#print axioms Grothe.HJM.Origin.integral_energy_far_le
 #print axioms Grothe.HJM.Origin.inv_norm_leftNumerator_le
 #print axioms Grothe.HJM.Origin.inv_norm_rightNumerator_le
 #print axioms Grothe.HJM.Origin.kernel_dominated
@@ -159,9 +162,11 @@ import Grothe
 #print axioms Grothe.HJM.Origin.norm_g_eq_one
 #print axioms Grothe.HJM.Origin.norm_leftNumerator_lower
 #print axioms Grothe.HJM.Origin.norm_phaseDerivative_le_two
+#print axioms Grothe.HJM.Origin.norm_phaseSecondDerivative_le
 #print axioms Grothe.HJM.Origin.norm_rightNumerator_lower
 #print axioms Grothe.HJM.Origin.phaseCoeff_sqrt_index
 #print axioms Grothe.HJM.Origin.phaseDerivative_eq_quotient
+#print axioms Grothe.HJM.Origin.phaseEnergyJet_far_growth
 #print axioms Grothe.HJM.Origin.phaseQuotient_polynomialEnvelope
 #print axioms Grothe.HJM.Origin.phaseQuotient_zero
 #print axioms Grothe.HJM.Origin.phaseWeightedMajorant_nonneg
@@ -202,6 +207,10 @@ import Grothe
 #print axioms Grothe.HJM.Origin.weightedTest_norm_sq
 #print axioms Grothe.HJM.Origin.weightedTest_norm_sq_le
 #print axioms Grothe.HJM.Origin.witnessPolynomial_eval
+#print axioms Grothe.HJM.OriginGrowth.left_first_derivative_bound
+#print axioms Grothe.HJM.OriginGrowth.left_second_derivative_bound
+#print axioms Grothe.HJM.OriginGrowth.right_first_derivative_bound
+#print axioms Grothe.HJM.OriginGrowth.right_second_derivative_bound
 #print axioms Grothe.HJM.OriginMoment.approxList_eq_on_open
 #print axioms Grothe.HJM.OriginMoment.gaussian_integral_panel
 #print axioms Grothe.HJM.OriginMoment.gaussian_integral_partition
