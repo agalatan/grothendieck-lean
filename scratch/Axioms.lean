@@ -35,7 +35,9 @@ import Grothe
 #print axioms Grothe.HJM.Origin.chargeOneCoeff_gResidualLp
 #print axioms Grothe.HJM.Origin.coeff_le_residual_products
 #print axioms Grothe.HJM.Origin.coeff_summable
+#print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_of_relaxed_unweighted_residual_caps
 #print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_of_residual_caps
+#print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_of_unweighted_norm_cap
 #print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_of_unweighted_residual_caps
 #print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_of_visible
 #print axioms Grothe.HJM.Origin.coeff_tail_at_120_le_published
@@ -307,6 +309,7 @@ import Grothe
 #print axioms Grothe.HJM.repriced_hjm_bound_of_residual_caps
 #print axioms Grothe.HJM.repriced_hjm_bound_of_tables_visible
 #print axioms Grothe.HJM.repriced_hjm_bound_of_visible
+#print axioms Grothe.HJM.repriced_origin_tail_of_unweighted_residual_caps
 #print axioms Grothe.HJM.rotatedPairCoeff_dominated
 #print axioms Grothe.HJM.rotatedQhat_one
 #print axioms Grothe.HJM.rotated_hjm_bound
