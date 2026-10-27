@@ -45,11 +45,12 @@ theorem Chaos3.fourth_le {F : MvPolynomial ι ℝ} (hF : Chaos3 F) :
   rw [h2] at h4 ⊢
   nlinarith [tenS_le_sq_sum (cubicKernel F), tenH_le_tenS (cubicKernel F)]
 
+-- Preserve the legacy named positivity parameter; the canonical bound does not need it.
+set_option linter.unusedVariables false in
 /-- **The fourth moment of the third chaos**: `E F⁴ ≤ 93 (E F²)²`. -/
 theorem chaos3_fourth_le (hpos : ∀ P : MvPolynomial ι ℝ, 0 ≤ E (P * P))
     {F : MvPolynomial ι ℝ} (hF : Chaos3 F) :
     E (F * F * (F * F)) ≤ 93 * E (F * F) ^ 2 := by
-  clear hpos
   simpa only [pow_succ, pow_zero, one_mul, mul_one, mul_assoc] using hF.fourth_le hE
 
 variable (hpos : ∀ P : MvPolynomial ι ℝ, 0 ≤ E (P * P))

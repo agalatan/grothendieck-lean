@@ -214,9 +214,10 @@ section hs
 
 variable (f : ι → ι → ι → ℝ)
 
+-- Preserve the legacy named symmetry parameter; the general bound does not need it.
+set_option linter.unusedVariables false in
 /-- `T₄ = ‖S²‖² ≤ ‖S‖⁴ = h²`. -/
 lemma tenT4_le_sq (hf : ∀ a b c, f a b c = f b a c) : tenT4 f ≤ tenH f ^ 2 := by
-  clear hf
   exact JointSixth.tenT4_le f
 
 variable (hf : ∀ a b c, f a b c = f b a c)

@@ -41,6 +41,8 @@ lemma gram_chi [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
     E (radU a b ^ 2) - 2 = _ := h
     _ = _ := by unfold jointS0 jointH0; ring
 
+-- Preserve the legacy named Gaussian hypotheses; the tensor identity needs only circularity.
+set_option linter.unusedVariables false in
 /-- The Gram certificate's `s₀` in the normalization of `cubicKernel a`. -/
 theorem gram_s0 [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
     (hE : IsGaussianExpectation E) {J : ι → ι → ℝ} {a b : MvPolynomial ι ℝ}
@@ -48,7 +50,6 @@ theorem gram_s0 [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
     1296 * tenS (cubicKernel a)
       = 8 * gramN (gramT J a b) + 2 * gramH (gramT J a b)
         + 8 * gramB (gramT J a b) + 8 * gramZ (gramT J a b) := by
-  clear hE ha haa
   simpa only [jointS0] using hc.jointS0_eq.symm
 
 /-- The certificate's first joint invariant, in coordinate order `(n,h,b,y,z)`. -/
