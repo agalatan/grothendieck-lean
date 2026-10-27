@@ -42,11 +42,10 @@ lemma integral_gauss2_eq_complex (F : ℝ × ℝ → ℂ) :
     ← Measure.volume_eq_prod]
   congr 1; ext p
   rw [ENNReal.toReal_mul, toReal_gaussianPDF, toReal_gaussianPDF, Complex.real_smul, phi2]
-  push_cast; ring
 
 /-- `gaussC` is the image of the planar Gaussian under `toC'`. -/
 lemma gaussC_eq_map : gaussC = gauss2.map toC' := by
-  rw [gaussC, stdGaussian, ← (measurePreserving_finTwoArrow (gaussianReal 0 1)).map_eq,
+  rw [gaussC, Grothe.LowerAnalytic.stdGaussian, ← (measurePreserving_finTwoArrow (gaussianReal 0 1)).map_eq,
     Measure.map_map measurable_toC' (MeasurableEquiv.finTwoArrow).measurable]
   congr 1; ext x; simp [toC, toC', Function.comp, MeasurableEquiv.finTwoArrow]
 
