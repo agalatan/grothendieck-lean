@@ -1019,6 +1019,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.Bm_polyKernel
 #print axioms Grothe.UpperChaos.D_le_span_H
 #print axioms Grothe.UpperChaos.Ef_X0_mul
+#print axioms Grothe.UpperChaos.ExponentialTail.exp_moment_tail
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.finite_saved_matrix_error
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.fixed_shell_action
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.mem_chaosShell_of_degree
@@ -1041,6 +1042,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_prod_mul
+#print axioms Grothe.UpperChaos.RadialCutoff.gaussC_diagonal_exp_tail
+#print axioms Grothe.UpperChaos.RadialCutoff.gaussC_radial_cutoff
+#print axioms Grothe.UpperChaos.RadialCutoff.gaussC_radial_exp_tail
 #print axioms Grothe.UpperChaos.RadialRepair.complement_identity
 #print axioms Grothe.UpperChaos.RadialRepair.norm_phaseRepair_le_one
 #print axioms Grothe.UpperChaos.RadialRepair.phaseRepair_change_sq_le
