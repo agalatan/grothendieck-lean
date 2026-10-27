@@ -186,7 +186,7 @@ theorem head_of_relaxed_energy_close {EX : ℕ × ℕ → ℝ}
     (hclose : ∑ p ∈ headIdx 501, |EX p - (energyTable p : ℝ)| ≤ (relaxedEnergyErrQ : ℝ)) :
     ∑ j ∈ range 251, |kernelCoeff EX j - if j = 0 then (slopeQ : ℝ) else 0| ≤
       (headCapQ : ℝ) + relaxedEnergyErrQ := by
-  have h1 := head_residual_le primaryPoly auxPoly l1_primaryPoly l1_auxPoly auxPoly_coeff_zero EX
+  have h1 := Upper.head_residual_le primaryPoly auxPoly l1_primaryPoly l1_auxPoly auxPoly_coeff_zero EX
     (fun p => (energyTable p : ℝ)) hparX (N := 501) (K := 251) (by norm_num) (slopeQ : ℝ)
   have h2 : ∑ j ∈ range 251, |∑ p ∈ headIdx 501,
       (energyTable p : ℝ) * (termOf primaryPoly auxPoly p).coeff j
