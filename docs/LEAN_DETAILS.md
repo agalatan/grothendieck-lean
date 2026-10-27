@@ -33,6 +33,29 @@ tensor-to-Gram identities and specializes this core for `Circular.joint_sixth`.
 and capped/η refinements. No positivity of the symmetrized contraction
 operator is assumed.
 
+**HJM origin branch.** `Grothe/HJM/OriginResponse.lean` defines the exact asymmetric
+response pair from reproducibly generated rational parameters. It proves measurability,
+disk bounds, charge-one equivariance and the imaginary endpoint cross product.
+`OriginKernel` realizes any measurable disk-valued scalar pair with one shared Gaussian
+driver in every finite dimension. `OriginMehler` identifies its full Hermite expansion,
+then reflection symmetrization gives the real signed radial coefficients.
+`Origin.kernel_dominated` supplies the actual sixth branch to `mixture_bound`;
+`Origin.coeff_summable` controls all modes. The Hermite convention differs from the
+paper's Laguerre convention by `(-1)^n`, which is already present in the pinned table
+generator and cancels in every cross product.
+
+`OriginLaguerre` proves charge selection, Parseval, Bessel and the polynomial
+number-operator eigenvalue `2*n+1`. `OriginEnergy` removes the endpoint phase-phase
+term before norms and proves finite coefficient stability under an actual spatial
+`L²` error. `OriginTruncation` gives the joint squared coefficient-error budget
+`exp(-36)` beyond radius six. `OriginNonvanishing` uses nine rational Bernstein
+panels on `[0,32]` and positive shifted coefficients beyond 32 to prove
+`|P(s)|² ≥ 37/100`; its finite checks use `decide +kernel`.
+No native facts are introduced. Explicit Laguerre integral identities, the radial
+integration-by-parts energy bound and the numerical integral enclosures remain
+separate obligations. Hash-pinned tables and exact serialization alone do not prove
+any integral enclosure; see [`data/hjm/origin/`](../data/hjm/origin/README.md).
+
 **Published scalar-tail refinement.**
 `Grothe/Haagerup/ScalarTailRefinement.lean` proves an arbitrary finite-power
 Wiener composition bound and its signed supported-suffix consequence. Its
