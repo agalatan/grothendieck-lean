@@ -122,4 +122,37 @@ theorem finite67_bound_P4 :
   rw [← scalarTail_P_eq]
   exact finite67_bound
 
+/-- **The whole branch-5 tail beyond mode 120** (HJM 6.14–6.19): the phase coefficients below 67 give
+`finite67Upper` (`finite67_bound`), those from 67 on the Wallis reserve `outerReserve` (`ScalarTailRefinement`). -/
+theorem branch5_tail :
+    (ScalarTailRefinement.branch5Weight : ℝ) * ∑' n, |compCoeff haagCoeff (P 4) (n + 120)| ≤
+      (ScalarTailRefinement.finite67Upper : ℝ) + (ScalarTailRefinement.outerReserve : ℝ) := by
+  rw [← scalarTail_P_eq]
+  set Q := ScalarTailRefinement.P
+  have hQ := ScalarTailRefinement.norm_P
+  have hsplit : ∀ n, compCoeff haagCoeff Q n = compCoeff (cLo 67) Q n + compCoeff (cHi 67) Q n := fun n => by
+    rw [← compCoeff_add (summable_cLo _) (summable_cHi _) hQ]
+    exact congrArg (fun c => compCoeff c Q n) (funext fun k => by unfold cLo cHi; split_ifs <;> ring)
+  have hlo : Summable fun n => |compCoeff (cLo 67) Q (n + 120)| :=
+    (summable_nat_add_iff 120).2 (summable_abs_compCoeff (summable_cLo _) hQ)
+  have hhi' := summable_abs_compCoeff (summable_cHi 67) hQ
+  have hhi : Summable fun n => |compCoeff (cHi 67) Q (n + 120)| := (summable_nat_add_iff 120).2 hhi'
+  have hw : (0 : ℝ) ≤ ScalarTailRefinement.branch5Weight := by norm_num [ScalarTailRefinement.branch5Weight]
+  have htail : ∑' n, |compCoeff (cHi 67) Q (n + 120)| ≤ ∑' n, |compCoeff (cHi 67) Q n| := by
+    rw [← hhi'.sum_add_tsum_nat_add 120]
+    exact le_add_of_nonneg_left (Finset.sum_nonneg fun _ _ => abs_nonneg _)
+  calc (ScalarTailRefinement.branch5Weight : ℝ) * ∑' n, |compCoeff haagCoeff Q (n + 120)|
+      ≤ (ScalarTailRefinement.branch5Weight : ℝ) *
+          (∑' n, |compCoeff (cLo 67) Q (n + 120)| + ∑' n, |compCoeff (cHi 67) Q (n + 120)|) := by
+        refine mul_le_mul_of_nonneg_left ?_ hw
+        rw [← hlo.tsum_add hhi]
+        refine Summable.tsum_le_tsum (fun n => ?_) ?_ (hlo.add hhi)
+        · rw [hsplit]; exact abs_add_le _ _
+        · exact (summable_nat_add_iff 120).2 (summable_abs_compCoeff summable_haagCoeff hQ)
+    _ = (ScalarTailRefinement.branch5Weight : ℝ) * ∑' n, |compCoeff (cLo 67) Q (n + 120)| +
+          (ScalarTailRefinement.branch5Weight : ℝ) * ∑' n, |compCoeff (cHi 67) Q (n + 120)| := mul_add _ _ _
+    _ ≤ _ := add_le_add finite67_bound
+        ((mul_le_mul_of_nonneg_left htail hw).trans
+          (ScalarTailRefinement.branch5_outer_bound ScalarTailRefinement.wallis_tail_bound))
+
 end Grothe.HJM
