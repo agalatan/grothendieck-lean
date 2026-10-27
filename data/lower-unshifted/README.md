@@ -1,15 +1,14 @@
 # Complete cover with pure-row and mixed-source law nodes
 
-The complete certificate has **10,762 boxes**, with
+The complete certificate has **10,909 boxes**, with
 
 ```
-B = 356710460411/500000000000 = 0.713420920822
-L = 56067881993/40000000000   = 1.401697049825
+B = 713420886479/1000000000000 = 0.713420886479
+L = 1401697117301/1000000000000   = 1.401697117301
 ```
 
 Every box is at most B and L < 1/B. The exact maximum is approximately
-`0.713420920821955`. The gain over `1.401696986171` is
-`0.000000063654`. The mathematical premise remains exactly **NodeCaps**;
+`0.713420886478006`. The mathematical premise remains exactly **NodeCaps**;
 the witness, original source tables and heavy cap import closure are unchanged.
 
 The node bank contains two pure-row law nodes and three mixed-source Young
@@ -21,9 +20,10 @@ acceptance. The original pure-row batch is preserved at index 21, and the
 mixed nodes form one appended batch at index 22.
 
 The forest starts from the immutable 10,521-box input in
-`inputs/fused-start-cover.json`. Its 241 binary splits and
-280 same-domain repricings produce the complete final cover.
-Old recipes remain valid fallbacks. Restricted components retain their original
+`inputs/fused-start-cover.json`. Its 388 binary splits and
+1,072 same-domain repricings produce the complete final cover.
+The recipes mix existing source potentials and their checked law nodes; original
+recipes remain valid fallbacks. Restricted components retain their original
 scale interpolation domains. The original 1,261-reference and 19-group prefixes
 are pinned; 51 further references expose existing source Stein or zero
 nodes, and three references name the new mixed nodes. No source cap is added.
@@ -57,19 +57,16 @@ the compiled module no longer contains the old cover or its partition.
 ## Lean scope
 
 The new law batch and all four box chunks are reflected separately, with a
-partition fact. Chunk width is 2,691; the kernel checks its extent against the
+partition fact. Chunk width is 2,728; the kernel checks its extent against the
 actual box-list length. Python replay and Lean reflection are separate checks.
 The required Lean coverage includes `LawNodeData`, `LawNodeCheck`, the eight cover
-modules and their generic bridges. Temporary targeted build receipts were lost
-before collection; the final merged tree requires full GitHub Lean CI. Exact
-Python replay is recorded separately and is not a replacement for reflection.
-The lower endpoint still uses 14 native facts plus the three standard axioms.
-Raw logs, the actual endpoint axiom list and build records live in `verification/`.
-The full default build is separate branch CI.
+modules and their generic bridges. Exact Python replay does not replace Lean
+reflection; the delivery CI checks the generated cover. The records in
+`verification/` describe the earlier cover and its CI run.
 
 ## Remaining obstruction
 
-The search cap `0.71342` is not cleared: 939 final boxes exceed it.
+The search cap `0.71342` is not cleared: 340 final boxes exceed it.
 The accepted B above has zero failures. A whole-region subdivision of the old
 cap cell 9750 retains scale and kurtosis information through existing row-15
 law nodes. A KKT floor for mixing the uniform global row caps therefore does

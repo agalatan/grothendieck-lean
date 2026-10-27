@@ -4,7 +4,7 @@ This is the single entry point for anyone (Codex or Claude) continuing the node 
 
 ## Goal
 
-The lower bound is `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697049825 < K`, in the separate
+The lower bound is `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697117301 < K`, in the separate
 target `GrotheCaps` (see the README, "Node caps"). `CapsRest` is the vertex caps of **rows 12–15** (t = 0.84, 0.845,
 0.85, 0.855), plus any excluded-node caps of the other rows; the exclusion
 lists are empty. Rows 0–11 and 16–18 have 60 existing native range facts.

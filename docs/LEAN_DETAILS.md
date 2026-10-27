@@ -764,8 +764,8 @@ Normal `ready/*` delivery CI builds and audits the combined tree before merging 
 proves `V ≤ B` for an admissible scalar profile under the simultaneous
 Gaussian reduction `SharedReduction`, from checked rows, mixed batches,
 additional law nodes and a complete finite cover. The active certificate in
-`RefinedCoverResult.lean` uses `refinedB = 0.713420920822` and the strict
-endpoint `refinedL = 1.401697049825`. `Grothe.Lower.transfer_lower` gives
+`RefinedCoverResult.lean` uses `refinedB = 0.713420886479` and the strict
+endpoint `refinedL = 1.401697117301`. `Grothe.Lower.transfer_lower` gives
 `1/B ≤ K` from `TransferInputsL2 B`; `refined_endpoint_lt_reciprocal` supplies
 the exact strict comparison. `TransferInputsL2 B` asks, for every δ > 0,
 for a finite measure space with an operator T on L², a scalar cap
@@ -813,13 +813,13 @@ and the gates E ⪰ 0, E ⪰ diag(−1,ε,ε), R ⪰ diag(−1,ε), R ⪰ diag(�
 inequality give each row inequality with the residual p = Π_{H₂,₁}c₀, its circular law and the gate
 variable X = Π_{H₂,₁}(c₀, c₁, conj c₂) (`sharedReduction_frame`).
 `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data :
-NodeCaps → IsGrothendieckBound K → 1.401697049825 < K` composes everything
+NodeCaps → IsGrothendieckBound K → 1.401697117301 < K` composes everything
 through `Grothe/Research/RefinedCoverResult.lean`:
 **the only remaining hypothesis of this theorem is `NodeCaps`**, the node caps
 Ψ_r(r_k) − 10⁻¹¹ ≤ c_k of the 19 certified potentials (exact-arithmetic certificates outside Lean).
 
 The same single target `Grothe` also proves `lower_bound_of_capsRest :
-CapsRest → IsGrothendieckBound K → 1.401697049825 < K` (`CapNodes.lean`). Its 15
+CapsRest → IsGrothendieckBound K → 1.401697117301 < K` (`CapNodes.lean`). Its 15
 `CapRowKK` modules retain the 60 unchanged single-threaded native range facts
 for rows 0–11 and 16–18, importing only the computation layer and recipe data.
 `CapRows` proves range-check soundness, and `CapAssembly` proves the chord
@@ -882,7 +882,7 @@ them, and are not yet wired into `CapsRest`.
   budget. The finite checker verifies each signed reserve and both positive semidefinite
   2×2 matrices; the analytic bridge derives that same budget for the actual cubic.
   Joint nodes are restricted to their checked kurtosis range throughout the cover.
-  The refined partition of [0, 9/10] × [0, ρ] × [0, 31/4] has 10,762 closed boxes.
+  The refined partition of [0, 9/10] × [0, ρ] × [0, 31/4] has 10,909 closed boxes.
   It retains the existing certified node potentials and their valid ranges, and adds two
   pure-row law-scale nodes for row 14 using the original unshifted source table and Stein cuts.
   Their one appended batch passes `LawNodeCheck.certLawNodes`. The recursive
@@ -1141,7 +1141,7 @@ hypothesis to the headline lower theorem. The bank's 41 original joint-moment no
 `JointData`/`jointCert` checker and `Circular.joint_sixth` analytic bridge in
 `JointContractions.lean`. The 306 original spectral witnesses, 45 inherited Stein witnesses,
 two new pure-row Stein witnesses and three new mixed-source Young witnesses
-are combined in a 10,762-box cover. No extra hypothesis is added to `NodeCaps`.
+are combined in a 10,909-box cover. No extra hypothesis is added to `NodeCaps`.
 
 `JointSixth.gram_j_eta` retains both bounds on the negative cumulant contraction;
 `gram_j2_shifted` improves the h₀ coefficient from 198+150/α to
@@ -1185,8 +1185,8 @@ variables need not be retained in a moment-cost certificate.
 
 **Reproducible law-scale extension.** `data/lower-unshifted/` contains the original
 source snapshots, two pure-row and three mixed-source law certificates, and the complete
-10,762-box cover. `tools/needle_fused_global.py --verify` replays its 241 binary
-splits and 280 same-domain repricings from the immutable 10,521-box baseline.
+10,909-box cover. `tools/needle_fused_global.py --verify` replays its 388 binary
+splits and 1,072 same-domain repricings from the immutable 10,521-box baseline.
 The original node/group prefix is pinned. Added source references name existing
 Stein or zero nodes; they introduce no new source cap.
 

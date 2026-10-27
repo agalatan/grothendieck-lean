@@ -6,7 +6,7 @@ is `data/axioms/native.txt` (cap ranges, Hardy facts and others). The default re
 `scratch/Axioms.lean`, with its required declarations in `data/axioms/required.txt`. Normal `ready/*` delivery CI builds and audits
 the combined tree before merging it.
 
-The lower chain uses the refined 10,762-box cover. Its finite checks comprise
+The lower chain uses the refined 10,909-box cover. Its finite checks comprise
 five row chunks, three mixed-batch chunks, one law-node fact and five refined-cover
 facts. The superseded four box chunks and partition fact are removed from both
 the library and allowlist. `certRefinedPartition` checks coverage with
@@ -14,7 +14,7 @@ the library and allowlist. `certRefinedPartition` checks coverage with
 coverage property needed by the lower-bound reduction. The retired partition
 checker's unused straddler scan is absent; no runtime improvement is claimed.
 
-`lower_bound_of_capsRest` now reaches `1.401697049825` by the refined-cover theorem,
+`lower_bound_of_capsRest` now reaches `1.401697117301` by the refined-cover theorem,
 with the same `CapsRest` and unchanged shared `NodeCaps` definition. All 60 range
 facts are retained. The generated localized-piece facts outside this supported
 target are a separate campaign, not additional allowlisted endpoint inputs.

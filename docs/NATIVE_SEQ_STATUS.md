@@ -19,7 +19,7 @@ scalar-tail reports use only standard axioms.
 The default lower theorem is
 `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`, and the
 separate `lower_bound_of_capsRest` theorem now uses the same refined endpoint
-`1.401697049825`. Both use the unchanged Gaussian `NodeCaps` proposition, defined
+`1.401697117301`. Both use the unchanged Gaussian `NodeCaps` proposition, defined
 in `LowerAnalytic/NodeCaps.lean`. The finite lower certificate has 14 sequential
 native facts: five row chunks, three mixed-batch chunks, one extra law-node check,
 four refined-box chunks and one refined coverage-tree check.
