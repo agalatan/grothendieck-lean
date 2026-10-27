@@ -3,12 +3,11 @@
 This is an unconditional written corollary of the construction and certified
 estimates in Heilman--Jones--Malavolta,
 \href{https://arxiv.org/html/2609.25462v1}{Sections 5--6}.
-The new polynomial, suffix and arithmetic statements are also proved in
+The polynomial, weighted suffix and arithmetic statements are formalized in
 \path{Grothe/Haagerup/ScalarTailRefinement.lean}. The published Gaussian
 interpretation and integration facts are explicit inputs to the Lean score
 theorem; the complete Grothendieck conclusion is not yet formalized here.
-The fixed phase-tail estimate used below is independently derived in Lean,
-so it is not an extra hypothesis of the final score corollary.
+The final score corollary assumes no extra phase-tail estimate. Focused compilation of the weighted refinement is pending; the archived Lean receipt refers to the preceding source revision.
 
 Let $\rho_5(t)=tP_5(t^2)$ be exactly the degree-75 preprocessor in their
 equation (5.4), with positive raw selector weight
@@ -18,7 +17,7 @@ $w_5=0.0000169358532612748746$. Its 38 rational coefficients are stored in
  \|P_5\|_1=\frac{999999999993}{10^{12}}\le1,
  \qquad \|P_5^{16}\|_1<\frac{581}{1000}=:q.
 \]
-The latter has degree 592 and is checked by one outward-rounded native
+The latter has degree 592 and is checked by one outward-rounded, kernel-checked
 calculation, independently replayed with integer arithmetic.
 
 For every $j$, quotient and remainder give
@@ -26,24 +25,20 @@ For every $j$, quotient and remainder give
  \|P_5^{2j+1}\|_1\le
  q^{\lfloor(2j+1)/16\rfloor}.
 \]
-In particular, for $j\ge67$ the exponent is at least 8. Multiplication by
-the monomial in $\rho_5^{2j+1}$ does not change its Wiener norm. Using the
-published Wallis estimate $\sum_{j\ge67}h_j\le1/268$, the entire omitted
-outer part of branch 5 costs at most
+Multiplication by the monomial in $\rho_5^{2j+1}$ preserves its Wiener norm.
+Retain the weight at each index and split at $J=160$. Write
+$r_j=4h_j/\pi$ and $g_j=r_j(j+1)(2j+1)$. The existing telescoping
+majorant gives $\sum_{j\ge J}h_j\le(\pi/4)g_J/(2J)$, so
 \[
- \frac{w_5q^8}{268}
- =8.20505217878206\ldots\,10^{-10}.
+ B=\frac{355}{452}\left(
+ \sum_{j=67}^{159}r_jq^{\lfloor(2j+1)/16\rfloor}
+ +q^{20}\frac{g_{160}}{320}\right)
 \]
-For the formal fixed phase-tail estimate, let $r_j=4h_j/\pi$ and
-$g_j=r_j(j+1)(2j+1)$. The existing telescoping majorant and an exact
-rational check give
+bounds the norm of the complete omitted outer series. Its weighted cost is
 \[
- \sum_{j\ge67}h_j\le\frac{\pi}{4}
- \left(\sum_{j=67}^{119}r_j+\frac{g_{120}}{240}\right)
- \le\frac{355}{452}
- \left(\sum_{j=67}^{119}r_j+\frac{g_{120}}{240}\right)
- \le\frac1{268}.
+ w_5 B=1.42727865917729184869\ldots\,10^{-10}.
 \]
+The rational factor $355/452$ bounds the physical normalization $\pi/4$.
 The finite comparison is kernel-checked, with no additional native fact.
 This replaces only equation (6.20)'s coarse reserve $w_5/268$. All output
 degrees of the first 67 outer blocks remain paid, including their complete
@@ -57,19 +52,19 @@ The published lower slope and upper costs, equations (6.2), (6.19) and
  R&=1.074829404498064\,10^{-6}
    +2.699176355797438\,10^{-12}
    +1.040224125770398\,10^{-7}
-   +\frac{w_5q^8}{268},\\
+   +w_5 B,\\
  M&=\frac{1250000000000000121997}{1250000000000000000000}.
 \end{align*}
 Here $M$ is the exact selector mass from (6.28); it is not rounded to one.
 Rational arithmetic proves
 \[
- \frac{a-R}{M}>\frac1{1.40489844},
- \qquad \frac{M}{a-R}<1.404898431637415.
+ \frac{a-R}{M}>\frac1{1.4048984303},
+ \qquad \frac{M}{a-R}<1.404898430299659.
 \]
 The valid-kernel residual-transfer argument of the cited paper therefore
 yields
 \[
- \boxed{K_G^{\mathbb C}<1.40489844.}
+ \boxed{K_G^{\mathbb C}<1.4048984303.}
 \]
 
 All four pinned non-regeneration verifiers were executed successfully with
@@ -81,5 +76,5 @@ The input provenance, replay logs and exact arithmetic are recorded in
 \path{data/scalar-tail-refinement/PROOF.md} and its verification directory.
 There is no new comparison or Hardy conjecture in this written deduction.
 The repository's separate unconditional Lean source targets
-$K_G^{\mathbb C}\le1.404909133$; delivery CI for its new certificate is pending.
+$K_G^{\mathbb C}\le1.404909132791$; its current master CI is pending.
 The published analytic inputs used here remain to be connected in Lean.

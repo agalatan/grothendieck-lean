@@ -64,10 +64,9 @@ theorem weighted_composition_cut {c : ℕ → ℝ} (hc : Summable fun k => |c k|
     _ = (∑ k ∈ range J, |c k| * w k) + ∑' i, |c (i + J)| * w (i + J) :=
       (hs.sum_add_tsum_nat_add J).symm
     _ ≤ (∑ k ∈ range J, |c k| * w k) + ∑' i, |c (i + J)| * w J := by
-      apply add_le_add_left
-      exact hst.tsum_le_tsum
+      exact add_le_add le_rfl (hst.tsum_le_tsum
         (fun i => mul_le_mul_of_nonneg_left (hmono (by omega)) (abs_nonneg _))
-        (ht.mul_right (w J))
+        (ht.mul_right (w J)))
     _ = _ := by rw [tsum_mul_right]; ring
 
 def telescope (k : ℕ) (q : ℝ) : ℕ → ℝ

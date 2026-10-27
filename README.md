@@ -12,10 +12,10 @@ The unconditional theorem has no external analytic premises. Its focused axiom p
 requires 98 results and permits zero native evaluation axioms. The order-10 completion
 uses bounds on combined resolvent products and exact coefficient locality.
 
-A separate **written unconditional refinement gives K_G^ℂ < 1.40489844**,
+A separate **written unconditional refinement gives K_G^ℂ < 1.4048984303**,
 using Heilman–Jones–Malavolta's published construction and numerical estimates.
-The new polynomial power check, infinite-suffix saving and normalized score
-arithmetic are proved in Lean. The published Gaussian construction and directed
+The polynomial power check is proved in Lean; focused compilation of the
+stronger per-index tail estimate and score arithmetic is pending. The published Gaussian construction and directed
 integration facts remain outside this repository's end-to-end formalization.
 See the [proof and verification record](data/scalar-tail-refinement/PROOF.md).
 
@@ -299,27 +299,30 @@ inverse-series recipe, with 60-bit dyadic normalization and rounding. See
 [historical candidate and repair checks](docs/verification/haagerup-alternating-20261027/README.md).
 The sharper conditional bound above remains stronger.
 
-**Written unconditional refinement: K_G^ℂ < 1.40489844.** For the unchanged
+**Written unconditional refinement: K_G^ℂ < 1.4048984303.** For the unchanged
 fifth scalar preprocessor in [HJM, Sections 5–6](https://arxiv.org/html/2609.25462v1),
 exact arithmetic gives `||P₅^16||₁ < 581/1000`. Every omitted outer index
-`j ≥ 67` therefore receives a factor at most `(581/1000)^8`. This reduces its
-weighted outer-tail reserve from about `6.31935e-8` to `8.20506e-10`, while
+`j ≥ 67` receives the factor `(581/1000)^floor((2j+1)/16)`. Retaining these
+weights through index 159 and bounding the remaining suffix at 160 reduces the
+weighted outer-tail reserve to `1.42728e-10`, while
 retaining the published prefix, complete finite-block tail, other tails and
-exact selector mass. The resulting reciprocal is below `1.404898431637415`.
+exact selector mass. The resulting reciprocal is below `1.404898430299659`.
 
 `Grothe/Haagerup/ScalarTailRefinement.lean` proves the finite power certificate,
 the general signed suffix inequality and the rational score transfer with the
 published numerical budgets explicit. The phase-tail estimate at index 67 is
-proved by an exact split at 120 and the existing infinite-tail majorant;
-it is no longer an assumption of `refined_score_of_published_budgets`.
+proved by an exact split at 120 and the existing infinite-tail majorant. The
+weighted estimate uses that majorant at 160, via the general antitone-weight
+`weighted_composition_cut` theorem. The final score transfer has no tail premise.
 The polynomial power is checked by `decide +kernel` using the same outward
 interval arithmetic. All sixteen scalar-tail results now use only standard
 axioms, with no native evaluation axiom.
 The four pinned public verification stages were replayed
 successfully, including directed energy integration and the complete head/tail
 audit; the two accepted coefficient tables were hash-checked, not regenerated.
-This is a written corollary of the published proof, with its new steps checked
-in Lean. The separate end-to-end unconditional Lean theorem is `haagerup_bound`.
+This is a written corollary of the published proof. Focused Lean compilation
+of the weighted refinement is pending; the archived build receipt covers the
+preceding source revision. The separate end-to-end unconditional Lean theorem is `haagerup_bound`.
 Exact inputs, the reproducible generator and all scope details are in
 [`data/scalar-tail-refinement/`](data/scalar-tail-refinement/PROOF.md).
 

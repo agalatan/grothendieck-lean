@@ -190,6 +190,7 @@ lemma outer_composition_saving :
     · simp [cHi, h]
     · simp only [cHi, ite_eq_right h, abs_of_nonneg (haagCoeff_nonneg k)]
       dsimp [w, haagCoeff]
+      push_cast
       ring
   have hshift : ∑' k, |cHi @START@ (k+@WEIGHTED_SPLIT@)| =
       ∑' k, haagCoeff (k+@WEIGHTED_SPLIT@) := by
@@ -203,8 +204,8 @@ lemma outer_composition_saving :
         w @WEIGHTED_SPLIT@ * ∑' k, haagCoeff (k+@WEIGHTED_SPLIT@) := hmain
     _ ≤ Real.pi/4*(weightedChunk : ℝ) + w @WEIGHTED_SPLIT@ *
         (Real.pi/4*((haagG @WEIGHTED_SPLIT@ : ℝ)/(2*@WEIGHTED_SPLIT@))) :=
-      add_le_add_left (mul_le_mul_of_nonneg_left
-        (tsum_haagCoeff_tail_le @WEIGHTED_SPLIT@ (by norm_num)) (hw0 _)) _
+      add_le_add le_rfl (mul_le_mul_of_nonneg_left
+        (tsum_haagCoeff_tail_le @WEIGHTED_SPLIT@ (by norm_num)) (hw0 _))
     _ = _ := by dsimp [w]; ring
 
 /-- A rational cap for the full composed outer tail, with no analytic tail premise. -/

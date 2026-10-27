@@ -34,7 +34,7 @@
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, resting on explicitly stated
 analytic and computer-assisted inputs (Section~\ref{sec:trust}).\\[4pt]
 Unconditional Lean theorem: $\KG\le1.404909132791$, using only the three standard axioms.\\[3pt]
-Written refinement of the published mixed rounding: $\KG<1.40489844$; its new power and tail steps are checked in Lean.\vspace{4pt}
+Written refinement of the published mixed rounding: $\KG<1.4048984303$; its weighted-tail Lean check is pending.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
@@ -318,14 +318,17 @@ between successive composed powers.
 \paragraph{Published scalar-tail refinement [P,C; Lean components].}
 For the unchanged fifth scalar preprocessor of Heilman--Jones--Malavolta,
 the exact degree-592 calculation gives $\|P_5^{16}\|_1\le581/1000$.
-For every omitted outer index $j\ge67$ this saves a factor at most
-$(581/1000)^8$. Its weighted reserve falls from $6.31935\cdot10^{-8}$
-to $8.20506\cdot10^{-10}$. Keeping the published prefix, complete finite-block
+For each omitted outer index $j\ge67$ retain the factor
+$(581/1000)^{\lfloor(2j+1)/16\rfloor}$. Summing through index 159 and
+bounding the suffix from 160 by its endpoint weight and the Haagerup
+majorant gives a weighted reserve $1.42728\cdot10^{-10}$. Keeping the published prefix, complete finite-block
 tail, other tails and exact selector mass gives the written corollary
-$\KG<1.40489844$. Four pinned public verifiers pass; accepted coefficient
+$\KG<1.4048984303$. Four pinned public verifiers pass; accepted coefficient
 tables are hash-checked. Lean proves the power check with \lean{decide +kernel},
 complete suffix estimate and score arithmetic, all without native axioms.
-It also derives the phase-tail bound by an exact split at 120. Published Gaussian and
+It also derives the phase-tail bound by an exact split at 120. The weighted
+refinement is awaiting focused compilation; archived build receipts cover the
+earlier source revision. Published Gaussian and
 numerical integral budgets remain external. The separate unconditional \lean{haagerup\_bound}
 theorem has no external hypotheses and uses only the three standard axioms.
 The deduction and provenance are in
