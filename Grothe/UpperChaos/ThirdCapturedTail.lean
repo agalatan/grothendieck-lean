@@ -56,8 +56,12 @@ theorem thirdCenterBandModes_eq_comparison (k : Fin 4) :
 
 theorem thirdTailModes_eq : bandModes (comparisonBand thirdTailIndex) =
     {i : Idx2 | 51 < (bideg i).1 + (bideg i).2} := by
+  have hlo : (comparisonBand thirdTailIndex).lo = 51 := by decide +kernel
+  have hhi : (comparisonBand thirdTailIndex).hi = 0 := by decide +kernel
   ext i
-  simp [bandModes, contains_iff, thirdTailIndex, comparisonBand, Grothe.Upper.comparisonBands]
+  change (comparisonBand thirdTailIndex).contains (bideg i).1 (bideg i).2 = true ↔ _
+  rw [contains_iff, hlo, hhi]
+  simp
 
 private lemma thirdCaptured_disjoint {i j : Fin 4} (hij : i ≠ j) :
     Disjoint (thirdCenterBandModes i) (thirdCenterBandModes j) := by
@@ -162,11 +166,7 @@ private lemma third_srcP_toLp {v c₁ c₂ c₃ : ℂ × ℂ → ℂ}
       exact Filter.Eventually.of_forall (fun u => by
         simp only [srcP, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]
         ring)
-    _ = (1 / 6 : ℂ) • (thirdTaylorL2 - h₃.memLp.toLp c₃) := by
-      change (((chargeFn_hpow phiBound 3).memLp.sub h₃.memLp).const_smul (1 / 6 : ℂ)).toLp
-        ((1 / 6 : ℂ) • (hpow 3 - c₃)) =
-          (1 / 6 : ℂ) • ((chargeFn_hpow phiBound 3).memLp.toLp (hpow 3) - h₃.memLp.toLp c₃)
-      rw [MemLp.toLp_const_smul, MemLp.toLp_sub]
+    _ = (1 / 6 : ℂ) • (thirdTaylorL2 - h₃.memLp.toLp c₃) := by rfl
 
 /-- The comparison piece at index 17, retaining the L² center-identification premise. -/
 theorem norm_piece17_le_of_third_captured {v c₁ c₂ c₃ : ℂ × ℂ → ℂ}
@@ -176,7 +176,7 @@ theorem norm_piece17_le_of_third_captured {v c₁ c₂ c₃ : ℂ × ℂ → ℂ
       (thirdCapturedErrorQ k : ℝ)) :
     ‖piece phiBound hv h₁ h₂ h₃ thirdTailIndex‖ ≤ ((comparisonBand thirdTailIndex).error : ℝ) := by
   refine (norm_piece_le phiBound hv h₁ h₂ h₃ thirdTailIndex).trans ?_
-  rw [thirdTail_pw, third_srcP_toLp, hc₃]
+  rw [thirdTail_pw, third_srcP_toLp hv h₁ h₂ h₃, hc₃]
   exact norm_thirdCenter_tail_scaled_le herror
 
 /-- The canonical pointwise polynomial for the complete third Taylor center. -/
