@@ -497,6 +497,7 @@ import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.DiagonalSum
 import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
+import Grothe.UpperChaos.FiniteSampleError
 import Grothe.UpperChaos.FirstSecondCapturedTail
 import Grothe.UpperChaos.FixedChaosSmoothing
 import Grothe.UpperChaos.GTAliasTail
