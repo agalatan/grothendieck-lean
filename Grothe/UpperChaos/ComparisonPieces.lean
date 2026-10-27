@@ -1,6 +1,7 @@
 import Grothe.UpperChaos.Smoothing
 import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.LocalizedComparison
+import Grothe.UpperChaos.PhiBound
 
 /-!
 # The concrete error decomposition behind `ComparisonInputs` (Comparison step 1)
@@ -190,6 +191,115 @@ lemma bandOf_spec (p : Fin 4) {n m : ℕ} (h : 1 ≤ n + m) :
     pw (bandOf p (n + m)) = p ∧ (comparisonBand (bandOf p (n + m))).contains n m = true := by
   rw [contains_iff, band_lo, band_hi]
   fin_cases p <;> simp only [bandOf] <;> (try split_ifs) <;> simp [pw, loT, hiT] <;> omega
+
+/-! ### The pieces and the decomposition -/
+
+lemma memLp_Tround (hφ : PhiBound) : MemLp Tround 2 mu2 :=
+  MemLp.of_bound measurable_Tround.aestronglyMeasurable 1 (Filter.Eventually.of_forall (norm_Tround_le hφ))
+
+lemma bideg_eq_idx0 {i : Idx2} (h : (bideg i).1 + (bideg i).2 = 0) : i = idx0 := by
+  obtain ⟨⟨a, b⟩, ⟨c, d⟩⟩ := i
+  simp only [bideg] at h
+  have ha : a = 0 := by omega
+  have hb : b = 0 := by omega
+  have hc : c = 0 := by omega
+  have hd : d = 0 := by omega
+  subst ha hb hc hd; rfl
+
+section Pieces
+
+variable (hφ : PhiBound) (hv : ChargeFn v) (h₁ : ChargeFn c₁) (h₂ : ChargeFn c₂) (h₃ : ChargeFn c₃)
+
+/-- The four smoothed sources in `L²`. -/
+def srcL (p : Fin 4) : Lp ℂ 2 mu2 :=
+  smoothOp ((chargeFn_srcP hφ hv h₁ h₂ h₃ p).memLp.toLp (srcP v c₁ c₂ c₃ p))
+
+/-- **The 18 pieces**: the band of comparison index `k` cut out of the smoothed source it refines. -/
+def piece (k : ComparisonIndex) : Lp ℂ 2 mu2 := bandProj (comparisonBand k) (srcL hφ hv h₁ h₂ h₃ (pw k))
+
+/-- The smoothed truncation `X = S(F₀ + v)`. -/
+def Xfun (v : ℂ × ℂ → ℂ) : ℂ × ℂ → ℂ := smoothFn fun u => F0 u + v u
+
+lemma chargeFn_F0v : ChargeFn fun u => F0 u + v u := (chargeFn_F0 hφ).add hv
+
+lemma memLp_Xfun : MemLp (Xfun v) 2 mu2 :=
+  memLp_smoothFn (chargeFn_F0v hφ hv).meas (chargeFn_F0v hφ hv).memLp
+
+lemma Xfun_rot2 : ∀ c u, ‖c‖ = 1 → Xfun v (rot2 c u) = c * Xfun v u :=
+  fun _ u hc => smoothFn_rot2 (chargeFn_F0v hφ hv).meas (chargeFn_F0v hφ hv).rot hc u
+
+/-- The sources have no constant mode. -/
+lemma inner_idx0_srcL (p : Fin 4) : ⟪hvec2 idx0, srcL hφ hv h₁ h₂ h₃ p⟫_ℂ = 0 := by
+  rw [srcL, inner_idx0_smoothOp, inner_hvec2_idx0]
+  rw [integral_congr_ae (chargeFn_srcP hφ hv h₁ h₂ h₃ p).memLp.coeFn_toLp]
+  exact (chargeFn_srcP hφ hv h₁ h₂ h₃ p).integral_eq_zero
+
+/-- **The bands of one source sum to it.** -/
+lemma sum_pieces_fiber (p : Fin 4) :
+    ∑ k ∈ Finset.univ.filter (fun k => pw k = p), piece hφ hv h₁ h₂ h₃ k = srcL hφ hv h₁ h₂ h₃ p := by
+  classical
+  rw [Finset.sum_congr rfl (g := fun k => projOn (bandModes (comparisonBand k)) (srcL hφ hv h₁ h₂ h₃ p))
+    (fun k hk => by rw [piece, (Finset.mem_filter.1 hk).2]; rfl)]
+  refine sum_projOn _ (fun k => bandModes (comparisonBand k)) _ (fun i hi => ?_) (fun i k hk l hl hik hil => ?_)
+  · have hd : 1 ≤ (bideg i).1 + (bideg i).2 := by
+      by_contra h0
+      exact hi (by rw [bideg_eq_idx0 (by omega)]; exact inner_idx0_srcL hφ hv h₁ h₂ h₃ p)
+    obtain ⟨hpw, hc⟩ := bandOf_spec p hd
+    refine ⟨bandOf p ((bideg i).1 + (bideg i).2), ⟨Finset.mem_filter.2 ⟨Finset.mem_univ _, hpw⟩, hc⟩,
+      fun l ⟨hl, hil⟩ => band_unique ((Finset.mem_filter.1 hl).2.trans hpw.symm) hil hc⟩
+  · exact band_unique ((Finset.mem_filter.1 hk).2.trans (Finset.mem_filter.1 hl).2.symm) hik hil
+
+/-- **`G_T − X` is the sum of the 18 pieces.** -/
+theorem difference_pieces :
+    (memLp_GT hφ).toLp GT - (memLp_Xfun hφ hv).toLp (Xfun v) = ∑ k, piece hφ hv h₁ h₂ h₃ k := by
+  classical
+  rw [← Finset.sum_fiberwise Finset.univ pw (piece hφ hv h₁ h₂ h₃)]
+  simp only [sum_pieces_fiber]
+  have hG : (memLp_GT hφ).toLp GT = smoothOp ((memLp_Tround hφ).toLp Tround) :=
+    (smoothOp_toLp' measurable_Tround (memLp_Tround hφ)).symm
+  have hX : (memLp_Xfun hφ hv).toLp (Xfun v) =
+      smoothOp ((chargeFn_F0v hφ hv).memLp.toLp fun u => F0 u + v u) :=
+    (smoothOp_toLp' (chargeFn_F0v hφ hv).meas (chargeFn_F0v hφ hv).memLp).symm
+  rw [hG, hX, ← map_sub]
+  simp only [srcL, ← map_sum]
+  congr 1
+  refine Lp.ext ?_
+  filter_upwards [(memLp_Tround hφ).coeFn_toLp, (chargeFn_F0v hφ hv).memLp.coeFn_toLp,
+    Lp.coeFn_sub ((memLp_Tround hφ).toLp Tround) ((chargeFn_F0v hφ hv).memLp.toLp fun u => F0 u + v u),
+    Lp.coeFn_add ((chargeFn_srcP hφ hv h₁ h₂ h₃ 0).memLp.toLp (srcP v c₁ c₂ c₃ 0))
+      ((chargeFn_srcP hφ hv h₁ h₂ h₃ 1).memLp.toLp (srcP v c₁ c₂ c₃ 1)),
+    Lp.coeFn_add ((chargeFn_srcP hφ hv h₁ h₂ h₃ 0).memLp.toLp (srcP v c₁ c₂ c₃ 0) +
+      (chargeFn_srcP hφ hv h₁ h₂ h₃ 1).memLp.toLp (srcP v c₁ c₂ c₃ 1))
+      ((chargeFn_srcP hφ hv h₁ h₂ h₃ 2).memLp.toLp (srcP v c₁ c₂ c₃ 2)),
+    Lp.coeFn_add ((chargeFn_srcP hφ hv h₁ h₂ h₃ 0).memLp.toLp (srcP v c₁ c₂ c₃ 0) +
+      (chargeFn_srcP hφ hv h₁ h₂ h₃ 1).memLp.toLp (srcP v c₁ c₂ c₃ 1) +
+      (chargeFn_srcP hφ hv h₁ h₂ h₃ 2).memLp.toLp (srcP v c₁ c₂ c₃ 2))
+      ((chargeFn_srcP hφ hv h₁ h₂ h₃ 3).memLp.toLp (srcP v c₁ c₂ c₃ 3)),
+    (chargeFn_srcP hφ hv h₁ h₂ h₃ 0).memLp.coeFn_toLp, (chargeFn_srcP hφ hv h₁ h₂ h₃ 1).memLp.coeFn_toLp,
+    (chargeFn_srcP hφ hv h₁ h₂ h₃ 2).memLp.coeFn_toLp, (chargeFn_srcP hφ hv h₁ h₂ h₃ 3).memLp.coeFn_toLp]
+    with u hT hF hsub ha1 ha2 ha3 h0 h1 h2 h3
+  rw [Fin.sum_univ_four, hsub, Pi.sub_apply, hT, hF, ha3, Pi.add_apply, ha2, Pi.add_apply, ha1, Pi.add_apply,
+    h0, h1, h2, h3, ← sum_srcP (v := v) (c₁ := c₁) (c₂ := c₂) (c₃ := c₃) u, Fin.sum_univ_four]
+
+/-- **`ComparisonInputs` from the 18 explicit norm bounds.** -/
+theorem comparisonInputs_of_norms
+    (hnorm : ∀ k, ‖piece hφ hv h₁ h₂ h₃ k‖ ≤ ((comparisonBand k).error : ℝ)) :
+    ComparisonInputs ((memLp_GT hφ).toLp GT) ((memLp_Xfun hφ hv).toLp (Xfun v)) :=
+  ⟨piece hφ hv h₁ h₂ h₃, difference_pieces hφ hv h₁ h₂ h₃, hnorm,
+    fun k p hp => energy_bandProj_eq_zero _ _ p hp⟩
+
+end Pieces
+
+/-- **The sharp upper bound from the 18 norm bounds of an explicit decomposition**: for charge-one `L²` functions
+`v, c₁, c₂, c₃` (the frozen correction and the Hermite approximants of the certificate), the remaining inputs are the
+18 norm bounds of the explicit pieces and the table accuracy of `X = S(F₀ + v)`. -/
+theorem fresh_upper_pieces (hv : ChargeFn v) (h₁ : ChargeFn c₁) (h₂ : ChargeFn c₂) (h₃ : ChargeFn c₃)
+    (hnorm : ∀ k, ‖piece phiBound hv h₁ h₂ h₃ k‖ ≤ ((comparisonBand k).error : ℝ))
+    (hclose : ∑ p ∈ headIdx 501, |energy ((memLp_Xfun phiBound hv).toLp (Xfun v)) p - (energyTable p : ℝ)|
+      ≤ (energyErrQ : ℝ)) :
+    IsGrothendieckBound (500000000000000000 / 355973699864771491) :=
+  fresh_upper_rounder (memLp_Xfun phiBound hv) (Xfun_rot2 phiBound hv)
+    (comparisonInputs_of_norms phiBound hv h₁ h₂ h₃ hnorm) hclose
 
 end
 
