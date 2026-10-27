@@ -53,6 +53,17 @@ then reflection symmetrization gives the real signed radial coefficients.
 paper's Laguerre convention by `(-1)^n`, which is already present in the pinned table
 generator and cancels in every cross product.
 
+`PhaseRotation` proves that multiplying the second response by any complex `ζ`
+in the closed unit disk gives a dominated radial branch with coefficients
+`Re(ζ aₙ)`, where `aₙ` is the actual complex cross-coefficient; `ζ = 1` recovers
+the original six-branch mixture. `MixtureHead` is a general finite-head,
+weighted-branch-tail interface for the mixture bound. `PhaseRotationTail`
+shows that, under the existing mode-120 residual-energy caps `1.174` and
+`1.176`, the rotated origin tail is at most `0.00025828 + 0.00252 |Im ζ|`.
+The proof applies the phase tail and the existing finite coefficient
+perturbation theorem to the complex cross-coefficients. A numerical bound for
+a nontrivial rotation still needs its finite-head and energy certificates.
+
 `OriginLaguerre` proves charge selection, Parseval, Bessel and the polynomial
 number-operator eigenvalue `2*n+1`. `OriginEnergy` removes the endpoint phase-phase
 term before norms and proves finite coefficient stability under an actual spatial
@@ -117,6 +128,14 @@ rational tail cap `6457/25000000 = 0.00025828`. `origin_tail_of_visible` in
 `OriginTailBudget` converts these four still-explicit numerical inputs into
 exactly the origin-tail hypothesis of the accepted HJM assembly. Its exact
 weighted cap is strictly below the current `originTailBudget`.
+`Repriced` feeds that smaller cap into the finite-head mixture theorem. The
+published head hypotheses together with the four specific energy inequalities
+above imply `IsGrothendieckBound repricedClaim`, with the exact rational
+`repricedClaim < 1.4048984278`. The table enclosure and energy inequalities
+are still explicit inputs. With the newer symmetric total-energy caps `12.7`
+and visible-energy lower bounds `11.5`, the same head hypotheses imply the
+conditional `symmetricClaim < 1.4048984302`. These bound theorems inherit the
+existing native scalar-tail checks.
 
 `OriginApproximation` proves the zero-safe algebraic bound
 `‖W z - phase(z)‖ ≤ |W² ‖z‖² - 1|` for `W ≥ 0`, with a sharper rational
