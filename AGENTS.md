@@ -12,7 +12,8 @@ them before doing anything.
 3. Never run a full build (`lake build` or `lake build Grothe`) on the laptop. Build only your modules; full builds
    run in CI (§5, §8).
 4. Sign everything with your agent ID (§2) and clean up after yourself (§14).
-5. Never stop, delete or overwrite what another agent started or owns. Ask the user.
+5. Never stop, delete or overwrite what another agent started or owns. Ask the user. (One exception: the janitor
+   may merge master into a conflicting `ready/` branch, §7.)
 6. **At most 2 CI jobs per agent at a time** (proof checks of your branches and cloud shards, §8). Check with
    `scripts/ci_active.sh <agent-id> <your branches>`.
 
@@ -192,7 +193,16 @@ Deliver when the user says the work should go into master.
    with the current master, branches already in master. Deal with every line: a red or conflicting branch is
    merged with `origin/master`, fixed and pushed again (the same name); a green `ready/` branch that does not
    merge has a conflict (fix it the same way) or changes `.github/workflows/` (open a PR); a stale branch is
-   deleted. A delivery is yours until it is on master.
+   deleted. A delivery is yours until it is on master. When a `ready/` branch does not merge, CI says so on the
+   issues its commits reference (`Refs`/`Closes #n`), naming the conflicting files and the owners.
+   - **The janitor** (an agent the user names; currently `claude-b9ee`) audits all `ready/` branches about once an
+     hour. When one has conflicted with master for over an hour with no new push, it merges `origin/master` into it
+     (never a rebase or force-push), resolves the conflicts that are mechanical (independent changes on both sides,
+     generated files, lists, documentation describing both), signs the merge commit with its own `Agent-ID`, and
+     pushes the same `ready/` branch; that check is the test, as for any delivery. Conflicts of decisions (one side
+     deletes, reverts or rewrites what the other changes; different bounds or hypotheses) it does not resolve: it
+     reports them on the issue for the owner or the user. An owner who finds a janitor merge on its branch merges
+     `origin/ready/<name>` into its work branch before continuing.
 7. **After the merge:** `scripts/sync_master.sh`, then either continue on the branch (§6 before the next delivery)
    or, if you are done, clean up completely (§14).
 
