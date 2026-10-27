@@ -54,7 +54,7 @@ lemma conj_phase_mul_radial (v : ℝ → ℂ) (z : ℂ) :
       rw [← Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_norm_sq,
         norm_phase hz]
       norm_num
-    simp only [zeroedPhaseRadial, if_neg (norm_ne_zero_iff.mpr hz)]
+    simp only [zeroedPhaseRadial, ite_eq_right (norm_ne_zero_iff.mpr hz)]
     rw [← mul_assoc, hph, one_mul]
 
 /-- The scalar Gaussian radial weight is integrable on the positive line. -/
@@ -76,8 +76,9 @@ theorem integrable_phase_radial_mean (v : ℝ → ℂ) (hv : Measurable v)
   have h2 := hR.const_mul (2 : ℂ)
   apply h2.congr
   filter_upwards [ae_restrict_mem measurableSet_Ioi] with t ht
-  simp only [zeroedPhaseRadial, if_neg (ne_of_gt ht)]
-  push_cast
+  change (0 : ℝ) < t at ht
+  simp only [zeroedPhaseRadial, ite_eq_right (ne_of_gt ht), Complex.ofReal_mul,
+    Complex.ofReal_ofNat]
   ring
 
 /-- Exact phase inner product for an arbitrary bounded measurable radial
@@ -110,8 +111,9 @@ theorem phase_inner_radial_mean (v : ℝ → ℂ) (hv : Measurable v)
     _ = _ := by
       apply integral_congr_ae
       filter_upwards [ae_restrict_mem measurableSet_Ioi] with t ht
-      simp only [zeroedPhaseRadial, if_neg (ne_of_gt ht)]
-      push_cast
+      change (0 : ℝ) < t at ht
+      simp only [zeroedPhaseRadial, ite_eq_right (ne_of_gt ht), Complex.ofReal_mul,
+        Complex.ofReal_ofNat]
       ring
 
 /-- The actual panel approximation's signed radial mean is exactly its
@@ -136,7 +138,13 @@ theorem signedPhaseMean_eq_inner (u : ℂ) (re im : List ℚ) (ps : List Panel)
         (((2 * t * Real.exp (-t ^ 2) : ℝ) : ℂ) * v (t ^ 2)) := by
     rw [inner_smul_left, phase_inner_radial_mean v hv hb hV]
     exact (integral_const_mul (conj u) _).symm
-  rw [hinner, ← integral_re hu]
+  rw [hinner]
+  have hre : (∫ t in Ioi (0 : ℝ), conj u *
+      (((2 * t * Real.exp (-t ^ 2) : ℝ) : ℂ) * v (t ^ 2))).re =
+      ∫ t in Ioi (0 : ℝ), (conj u *
+        (((2 * t * Real.exp (-t ^ 2) : ℝ) : ℂ) * v (t ^ 2))).re := by
+    simpa only [RCLike.re_to_complex] using (integral_re hu).symm
+  rw [hre]
   unfold signedPhaseMean
   apply integral_congr_ae
   filter_upwards [ae_restrict_mem measurableSet_Ioi,
@@ -153,7 +161,9 @@ theorem left_signedPhaseMean_eq_inner :
   have h := signedPhaseMean_eq_inner (f 0) OriginData.leftReal OriginData.leftImag
     OriginPanels.leftPanels OriginPanels.left_checks OriginPanels.left_cover
     memLp_leftRadialAmplitude
-  simpa only [leftRadialAmplitude_toLp] using h
+  have hlp := leftRadialAmplitude_toLp
+  unfold leftRadialAmplitude at hlp
+  simpa only [hlp] using h
 
 /-- Concrete right binding, with the actual endpoint and actual approximation. -/
 theorem right_signedPhaseMean_eq_inner :
@@ -162,7 +172,9 @@ theorem right_signedPhaseMean_eq_inner :
   have h := signedPhaseMean_eq_inner (g 0) OriginData.rightReal OriginData.rightImag
     OriginPanels.rightPanels OriginPanels.right_checks OriginPanels.right_cover
     memLp_rightRadialAmplitude
-  simpa only [rightRadialAmplitude_toLp] using h
+  have hlp := rightRadialAmplitude_toLp
+  unfold rightRadialAmplitude at hlp
+  simpa only [hlp] using h
 
 end
 end Grothe.HJM.Origin
