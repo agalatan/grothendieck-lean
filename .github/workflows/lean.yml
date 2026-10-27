@@ -65,6 +65,10 @@ jobs:
           git fetch -q origin master
           git checkout -q -B merge-candidate origin/master
           git merge -q --no-ff --no-edit "origin/${GITHUB_REF_NAME}" -m "Merge ${GITHUB_REF_NAME} (CI auto-merge)"
+          # union-merged lists may come out unsorted and the generated roots stale: regenerate them (deterministic,
+          # so the finish job recreates exactly this tree)
+          python3 tools/gen_root_imports.py > /dev/null
+          git diff --quiet || git commit -q -a -m "Regenerate root imports and sorted lists after merging ${GITHUB_REF_NAME} (CI)"
 
       - name: Does this change touch anything Lean builds or checks?
         id: scope
@@ -156,6 +160,10 @@ jobs:
           git fetch origin master
           git checkout -B merge-candidate origin/master
           git merge --no-ff --no-edit "origin/${GITHUB_REF_NAME}" -m "Merge ${GITHUB_REF_NAME} (CI auto-merge)"
+          # union-merged lists may come out unsorted and the generated roots stale: regenerate them (deterministic,
+          # so the finish job recreates exactly this tree)
+          python3 tools/gen_root_imports.py > /dev/null
+          git diff --quiet || git commit -q -a -m "Regenerate root imports and sorted lists after merging ${GITHUB_REF_NAME} (CI)"
           git log --oneline -3
           printf 'base=%s\ntree=%s\n' "$(git rev-parse origin/master)" "$(git rev-parse 'HEAD^{tree}')" > merge-info
 
@@ -418,6 +426,10 @@ jobs:
           git fetch -q origin master
           git checkout -q -B merge-candidate "$base"
           git merge -q --no-ff --no-edit "origin/${GITHUB_REF_NAME}" -m "Merge ${GITHUB_REF_NAME} (CI auto-merge)"
+          # union-merged lists may come out unsorted and the generated roots stale: regenerate them (deterministic,
+          # so the finish job recreates exactly this tree)
+          python3 tools/gen_root_imports.py > /dev/null
+          git diff --quiet || git commit -q -a -m "Regenerate root imports and sorted lists after merging ${GITHUB_REF_NAME} (CI)"
           [ "$(git rev-parse 'HEAD^{tree}')" = "$tree" ] || { echo "::error::the recreated merge differs from the checked tree"; exit 1; }
           echo "CHECKED_BASE=$base" >> "$GITHUB_ENV"
 
