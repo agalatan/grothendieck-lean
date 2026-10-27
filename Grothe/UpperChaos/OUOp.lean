@@ -9,10 +9,12 @@ For real `|ρ| ≤ 1` and `σ = √(1 − ρ²)`, `T_ρ f(x) = E_W f(ρx + σW)`
 Hermite basis with eigenvalue `ρ^{|i|}`, `|i|` the total degree (`inner_hvec2_ouOp`, `inner_ouOp`).
 -/
 
-open MeasureTheory Complex HardyReal
+open MeasureTheory Complex
 open scoped ComplexConjugate InnerProductSpace
 
 namespace Grothe.UpperChaos
+
+open HardyReal
 
 noncomputable section
 
