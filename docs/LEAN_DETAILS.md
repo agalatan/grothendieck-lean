@@ -587,7 +587,10 @@ complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 The alternative `fresh_upper_concrete_taylor_relaxed` permits total energy-table
 discrepancy at most `5/10^7` and gives a rational bound below `1.404599424`.
 Its fourteen finite Gaussian band-error bounds and the relaxed energy-table
-accuracy are still hypotheses.
+accuracy are still hypotheses. The alternative
+`Grothe.UpperChaos.Thirteen.fresh_upper_taylor_thirteen_bands` derives one
+second-order band bound from three others and the exact fourth phase moment;
+it requires thirteen Gaussian band hypotheses and the same table assumption.
 
 **Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder` proves
 `IsGrothendieckBound (500000000000000000/355973699884132991)` for the concrete rounding,
