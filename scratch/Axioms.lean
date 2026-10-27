@@ -287,6 +287,11 @@ import Grothe
 #print axioms Grothe.HJM.OriginPanels.right_checks
 #print axioms Grothe.HJM.OriginPanels.right_cover
 #print axioms Grothe.HJM.OriginPanels.spatial_error_budget
+#print axioms Grothe.HJM.OriginUnweightedMeanPolynomial.meanCellPolynomial_eval
+#print axioms Grothe.HJM.OriginUnweightedMeanPolynomial.meanImag_on_subpanel
+#print axioms Grothe.HJM.OriginUnweightedMeanPolynomial.meanReal_on_subpanel
+#print axioms Grothe.HJM.OriginUnweightedRightChecks.combinedBlock00
+#print axioms Grothe.HJM.OriginUnweightedRightWitness.polynomial_eq
 #print axioms Grothe.HJM.OriginWitnessData.left_mass_check
 #print axioms Grothe.HJM.OriginWitnessData.left_visible_arithmetic
 #print axioms Grothe.HJM.OriginWitnessData.left_weighted_mass_check
