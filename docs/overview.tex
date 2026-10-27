@@ -420,6 +420,10 @@ cut off at radius eight, approximates each actual Gaussian response within
 $1001/10^{15}$ in $L^2$. Bessel charges the square of that allowance once
 for the whole coefficient sequence. The polynomial Gaussian moments and
 visible-energy lower bounds still require numerical certificates.
+Two finite rational test vectors now have exact mass and weighted-mass
+checks, together with the final rational comparison for an $11.5$
+visible-energy lower bound. Their Gaussian correlation enclosures remain
+separate proof obligations.
 These proofs add no native facts. The pinned 120-coefficient tables are
 provenance inputs; their integral enclosures and the numerical radial energy
 bounds remain separate Lean obligations. See \path{Grothe/HJM/Origin.lean}

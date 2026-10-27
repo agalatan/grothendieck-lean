@@ -429,6 +429,10 @@ entire coefficient sequence jointly. The approximants are piecewise
 polynomials, cut off at radius eight. Their Gaussian moment integrals still
 need enclosures before they provide the origin coefficient table or visible
 energy lower bounds.
+`OriginWitnessData` gives two exact finite test vectors and verifies their
+rational mass and weighted-mass bounds. They are candidates for certifying
+visible energy by a single signed correlation per response; the needed
+Gaussian correlation enclosures remain separate proof obligations.
 These structural results introduce no native facts. The pinned 120-entry interval tables are
 provenance data: their integral enclosures and the two numerical energy bounds still require
 Lean proofs before the six-branch numerical bound follows. See [the origin certificate inventory](data/hjm/origin/README.md).

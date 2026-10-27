@@ -41,7 +41,7 @@ theorem radialApprox_error (re im : List ℚ) (ps : List Panel)
     ‖Grothe.Haag.ph z * Grothe.Haag.ph (evalC ⟨re, im⟩ (‖z‖ ^ 2)) -
       radialApprox re im ps z‖ ≤ (epsilon : ℝ) := by
   have h := approxList_uniform_error re im epsilon ps hchecks hcover (by norm_num)
-    ‖z‖ (by simpa using norm_nonneg z) (by simpa using hz.le)
+    ‖z‖ (by simp) (by simpa using hz.le)
   rw [radialApprox, ite_eq_left hz, ← mul_sub, norm_mul]
   have hreverse : ‖Grothe.Haag.ph (evalC ⟨re, im⟩ (‖z‖ ^ 2)) -
       approxList re im ps ‖z‖‖ ≤ (epsilon : ℝ) := by

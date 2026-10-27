@@ -144,6 +144,7 @@ import Grothe.HJM.OriginResponse
 import Grothe.HJM.OriginTail
 import Grothe.HJM.OriginTailBudget
 import Grothe.HJM.OriginTruncation
+import Grothe.HJM.OriginWitnessData
 import Grothe.HJM.Prefix
 import Grothe.HJM.PrefixCheck1
 import Grothe.HJM.PrefixCheck2
