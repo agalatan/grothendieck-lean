@@ -51,9 +51,26 @@ the tail. The rounded public caps alone lose too much precision. The original
 allowances are preserved in
 `data/localized-comparison/inputs/taylor_comparison_result.json`.
 
+`tools/gen_taylor_rounding_data.py` uses the standard library to decode all
+pinned NPY inputs exactly and generates `TaylorFirstData`, `TaylorSecondData`,
+`TaylorFrozenData`, `TaylorRoundingData` and `rounding.json`. It retains the
+second center's degree-91 prefix and verifies that all frozen coefficients
+above degree 181 vanish exactly. Run:
+
+```sh
+python3 tools/gen_taylor_rounding_data.py --check
+```
+
+The new data use chunks of at most 1,024 records and common integer scale
+2^206. `TaylorCenters` reuses the third-center integers by multiplying by2^101.
+`TaylorRounding` computes the integer energy of
+`6*A1 + 3*A2 + A3 - 6*V` directly from the graded coefficient lookups, with zero
+extension on the shorter centers. The norm-square denominator is36*2^412.
+The actual rounding norm is proved at most10^-18; its arithmetic receipt is
+approximately8.746217563779476e-20. No rounded residual vector is stored.
+
 These certificates do not establish the distance to `hpow 3`, the first or
-second centers' norm certificates, the rounding discrepancy, or the stored
-kernel-energy table. The remaining finite checks and Gaussian integral
+second centers' band norm certificates, or the stored kernel-energy table. The remaining finite checks and Gaussian integral
 enclosures remain explicit obligations.
 
 Agent-ID: codex-2ca4

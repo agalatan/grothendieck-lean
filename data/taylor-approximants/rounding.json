@@ -1,0 +1,80 @@
+{
+  "agent_id": "codex-2ca4",
+  "scope": "Exact source arithmetic receipt; the Lean certificate checks the same concrete coefficient function",
+  "common_exponent": 206,
+  "logical_source_counts": {
+    "c1": 259532,
+    "c2": 34592,
+    "c3": 6552,
+    "v": 353702
+  },
+  "retained_level_counts": {
+    "c1": 91,
+    "c2": 46,
+    "c3": 26,
+    "v": 91
+  },
+  "frozen_zero_coefficients_above_181": 94170,
+  "source3_reused": {
+    "path": "inputs/arb_phase_power3_D51.npz",
+    "archive_member": "grothendieck-1404599424-lean-handoff/new/residual_completion/arb_phase_power3_D51.npz",
+    "sha256": "4f819bafe16fbd36d574f62c5359ca2ac7a98faf1a8438b401cb829e951dd8b1",
+    "size_bytes": 105340,
+    "source_degree": 51,
+    "retained_degree": 51
+  },
+  "source3_production_literal_matches": true,
+  "integer_residual": "6*A1[k] + 3*A2[k] + A3[k] - 6*V[k], all A at scale 2^206; zero beyond each retained support",
+  "residual_integer_sum_squares": "2912736961866936745722158885638602271779253955312120153018333792384496318561260683657216",
+  "rounding_energy": "7971902014934124457989299298532448279089/1042128803135845758812138865078191170679429861990765076355118256071218166759424",
+  "rounding_norm_decimal_for_orientation": 8.746217563779476e-20,
+  "integer_check": "sumSquares * 10^36 <= 36 * 2^412",
+  "integer_check_passed": true,
+  "integer_check_slack": "377855501061316256250581058541237516669381843432113862154939372285673239433554074511651769213276004072212538126413454383251456",
+  "new_data_modules": {
+    "firstCenter": {
+      "source_file": "inputs/arb_first_phase_D181.npz",
+      "source_sha256": "6d9b2fbe2b60a03600591ab386900d102b38977f9836682cbd80ab818b7d314c",
+      "source_coefficient_count": 259532,
+      "retained_coefficient_count": 259532,
+      "retained_degree": 181,
+      "source_max_denominator_exponent": 206,
+      "common_denominator_exponent": 206,
+      "chunk_count": 254,
+      "chunk_size": 1024,
+      "last_chunk_count": 460,
+      "lean_bytes": 5323692,
+      "lean_sha256": "191f975459f71c681ec4b99343f6cf3cf0772daf51bd52c6f74184a2cea57dfb"
+    },
+    "secondCenter": {
+      "source_file": "inputs/arb_phase_power2_D151.npz",
+      "source_sha256": "170a5bc62909cd904bd45e18b9ca1efdf254d1d1ff9c936f7736aab5c5934609",
+      "source_coefficient_count": 152152,
+      "retained_coefficient_count": 34592,
+      "retained_degree": 91,
+      "source_max_denominator_exponent": 127,
+      "common_denominator_exponent": 206,
+      "chunk_count": 34,
+      "chunk_size": 1024,
+      "last_chunk_count": 800,
+      "lean_bytes": 706248,
+      "lean_sha256": "34400f4c8a0376b6e18d50a5766a212a8d2d91c08ca2c755d36ca4285981de92"
+    },
+    "frozenCorrection": {
+      "source_file": "inputs/frozen_taylor_correction_D201.npz",
+      "source_sha256": "e8b401a53806fd7e6801906ca531048660f85f102d32b6591fe3f198373de2c1",
+      "source_coefficient_count": 353702,
+      "retained_coefficient_count": 259532,
+      "retained_degree": 181,
+      "source_max_denominator_exponent": 206,
+      "common_denominator_exponent": 206,
+      "chunk_count": 254,
+      "chunk_size": 1024,
+      "last_chunk_count": 460,
+      "lean_bytes": 5322838,
+      "lean_sha256": "bfefc81d1b25b7a72831cd8138f001b9cce5f655726e1973d561ff9b360dd0ab"
+    }
+  },
+  "no_duplicate_residual_coefficients": true,
+  "no_duplicate_c3_coefficients": true
+}
