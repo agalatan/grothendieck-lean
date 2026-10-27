@@ -45,6 +45,31 @@ lemma cov_comm {ρ σ : ℝ} (hσ : σ ^ 2 = 1 - ρ ^ 2) (α : Fin 4 → ℝ) :
   linear_combination (α 2 ^ 2 + α 3 ^ 2 - (m00 * α 2 + m01 * α 3) ^ 2 - (m01 * α 2 + m11 * α 3) ^ 2) * hσ
     - (1 - ρ ^ 2) * e
 
+/-- **`(x, ρ(Mx + NZ) + σW)` and `(x, M(ρx + σW) + NZ)` have the same law.** -/
+theorem law_comm {ρ : ℝ} (hρ : |ρ| ≤ 1) :
+    ((mu2.prod mu2).prod mu2).map (pA ρ) = ((mu2.prod mu2).prod mu2).map (pB ρ) := by
+  have hσ : √(1 - ρ ^ 2) ^ 2 = 1 - ρ ^ 2 := Real.sq_sqrt (by nlinarith [abs_le.1 hρ, sq_abs ρ])
+  have hs : sig (ρ : ℂ) = ((√(1 - ρ ^ 2) : ℝ) : ℂ) := by simp [sig, Complex.norm_real, sq_abs]
+  apply Measure.ext_of_charFunDual
+  ext L
+  rw [charFunDual_map, charFunDual_map, charFunDual_prod (μ := mu2.prod mu2) (ν := mu2),
+    charFunDual_prod (μ := mu2.prod mu2) (ν := mu2), charFunDual_mu2prod, charFunDual_mu2prod,
+    charFunDual_mu2, charFunDual_mu2, ← Complex.exp_add, ← Complex.exp_add]
+  have e1 := cov_comm hσ ![Lc L 0 1, Lc L 1 1, Lc L 2 1, Lc L 3 1]
+  have e2 := cov_comm hσ ![Lc L 0 I, Lc L 1 I, Lc L 2 I, Lc L 3 I]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three,
+    Matrix.head_cons, Matrix.tail_cons] at e1 e2
+  congr 1
+  simp only [Q, ContinuousLinearMap.comp_apply, ContinuousLinearMap.inl_apply, ContinuousLinearMap.inr_apply,
+    pA, pB, ContinuousLinearMap.prod_apply, ContinuousLinearMap.coe_fst', ContinuousLinearMap.coe_snd',
+    ouCLM_apply, smoothCLM_apply, smoothArg, Yof, mY, shuffle, hs]
+  simp only [L_apply]
+  simp only [Prod.fst_zero, Prod.snd_zero, Prod.mk_add_mk, mul_one, mul_zero, add_zero, zero_add, map_zero,
+    dual_ofReal_mul, dual_ofReal]
+  rw [← add_div, ← add_div, ← neg_add, ← neg_add, ← Complex.ofReal_add, ← Complex.ofReal_add,
+    div_left_inj' (show (4 : ℂ) ≠ 0 by norm_num), neg_inj, Complex.ofReal_inj]
+  linear_combination e1 + e2
+
 end
 
 end Grothe.UpperChaos
