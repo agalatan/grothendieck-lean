@@ -844,6 +844,7 @@ Grothe.UpperChaos.comparisonInputs_taylorCenters
 Grothe.UpperChaos.conditional_gaussian_laplace_profile_le
 Grothe.UpperChaos.conditional_gaussian_laplace_profile_le_uniform
 Grothe.UpperChaos.conditional_gaussian_profile_le
+Grothe.UpperChaos.conj_ev_H_swap
 Grothe.UpperChaos.continuous_gradedHermiteFn
 Grothe.UpperChaos.continuous_hfun2
 Grothe.UpperChaos.difference_pieces
