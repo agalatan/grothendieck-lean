@@ -7,6 +7,11 @@ scope = "leanprover-community"
 git = "https://github.com/leanprover-community/mathlib4"
 rev = "v4.34.1"
 
+[[require]]
+name = "leancert"
+git = "https://github.com/alerad/leancert"
+rev = "7f91b6eb3567437f6cfac03ed279706603ee22f4"
+
 # The cap checker is its own precompiled library. A module that imports a precompiled library depends on that
 # library's whole shared object, built from its root file: with the cap checker inside GrotheKernel, any new or
 # changed checker there invalidated all 15 heavy node-cap modules (about 21 CPU-hours).
