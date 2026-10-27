@@ -1004,8 +1004,6 @@ import Grothe
 #print axioms Grothe.Upper.comparison_group_separate
 #print axioms Grothe.Upper.comparison_grouped_budget
 #print axioms Grothe.Upper.comparison_overlap_budget
-#print axioms Grothe.Upper.energyTable_head_mass_rat
-#print axioms Grothe.Upper.energyTable_head_mass_real
 #print axioms Grothe.Upper.headWeight_sound
 #print axioms Grothe.Upper.head_le_of_check
 #print axioms Grothe.Upper.head_residual_le

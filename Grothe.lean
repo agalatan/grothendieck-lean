@@ -459,7 +459,6 @@ import Grothe.Upper.GroupedBridge
 import Grothe.Upper.GroupedComparison
 import Grothe.Upper.Haagerup
 import Grothe.Upper.Head
-import Grothe.Upper.HeadTableMass
 import Grothe.Upper.HeadWeight
 import Grothe.Upper.IntervalSound
 import Grothe.Upper.KernelScreen
