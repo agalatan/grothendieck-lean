@@ -212,8 +212,9 @@ miss only makes the run take longer (it stays "pending"). The workflow runs on e
 
 Also:
 - **Superseded runs are cancelled automatically:** a new push to a branch cancels that branch's older GitHub-hosted
-  check (one concurrency group per branch). Master's checks are never cancelled: each master commit gets its own
-  check. Droplet checks are never cancelled either (a killed build leaves orphaned processes); they queue on the
+  check (one concurrency group per branch). Master's checks are never cancelled by a newer one starting (a long first
+  build would be lost); instead, when a master check goes green it cancels the still-running checks of older master
+  commits, whose trees it contains. What counts is the newest master commit's own result. Droplet checks are never cancelled either (a killed build leaves orphaned processes); they queue on the
   single runner.
 - **Merged branches are cleaned automatically** (`.github/workflows/cancel-merged.yml`): when a pull request is merged
   or a branch is deleted, its running checks are cancelled and its build caches deleted. Merged pull-request branches
