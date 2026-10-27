@@ -214,6 +214,14 @@ import Grothe
 #print axioms Grothe.HJM.OriginMoment.signedCellPolynomial_eval
 #print axioms Grothe.HJM.OriginMomentGenerated.rightBlock13
 #print axioms Grothe.HJM.OriginMomentRightWitnessData.rightPolynomial_eq
+#print axioms Grothe.HJM.OriginEnergyPolynomialRange.mem_evalC_hornerCI
+#print axioms Grothe.HJM.OriginEnergyPolynomialRange.mem_hornerI
+#print axioms Grothe.HJM.OriginEnergyPolynomialRange.mem_leftNormSq
+#print axioms Grothe.HJM.OriginEnergyPolynomialRange.mem_leftNumerator
+#print axioms Grothe.HJM.OriginEnergyPolynomialRange.mem_normSqI
+#print axioms Grothe.HJM.OriginEnergyPolynomialRange.mem_rightNormSq
+#print axioms Grothe.HJM.OriginEnergyPolynomialRange.mem_rightNumerator
+#print axioms Grothe.HJM.OriginEnergyPolynomialRange.mem_squareI
 #print axioms Grothe.HJM.OriginPanel.approxList_uniform_error
 #print axioms Grothe.HJM.OriginPanel.covers_exists
 #print axioms Grothe.HJM.OriginPanel.evalC_approxCoeffs
