@@ -1,4 +1,5 @@
 import Grothe.Haagerup.Phase
+import Grothe.UpperChaos.Charge
 import Grothe.UpperChaos.LawY
 import Grothe.UpperChaos.DiagonalPairing
 import Grothe.Upper.Haagerup

@@ -1,24 +1,23 @@
 name: Lean proof check
 
-# Runs on every pushed branch (mode "check", GitHub-hosted runner).
-# * master, claude/*, codex/*, ...: build and checks only.
-# * ready/<name>: the branch is merged into the CURRENT master, the MERGED tree is built and checked, and on
-#   success master is fast-forwarded to that merge (auto-merge). On failure master is untouched.
-# The master cache: every update of master gets one check on master (a hand merge triggers it by its push; an
-# auto-merge dispatches it). That check restores the previous master cache, builds incrementally, runs every check, and
-# when all are green and the caps came verified from the cache, saves .lake/build as the new master cache.
-# One target: `lake build Grothe` builds everything, the node-cap rows included (replayed from the verified cache).
-# Heavy work runs on the droplet (self-hosted runner, labels: self-hosted, heavy), only when the node-cap sources change
-# (a cold build of the cap rows takes hours, beyond a GitHub-hosted job):
-# * caps (on a branch whose cached cap build does not match its sources): builds Grothe for the tree CI checks
-#   (for ready/: merged with master), marks and saves the cache for that branch, and re-dispatches the check.
-# * warm (on master, dispatched by the master check when its cached caps do not match): the same for master, then
-#   saves the master cache; the runner workspace usually holds that build already (from the branch's caps run).
-# See AGENTS.md section 4c.
+# Runs on every pushed branch. Every run gives ONE result for its commit: green iff the proofs check.
+# * route (GitHub-hosted, seconds): what changed, and whether a verified build cache exists for exactly these
+#   node-cap sources (the cache key carries the caps digest, scripts/caps_stamp.py).
+# * check: the build and every check, on the runner the route chose:
+#   - GitHub-hosted (usual): restores the verified cache; `lake build Grothe` replays the node caps in seconds;
+#   - the droplet (self-hosted, labels self-hosted+heavy), when no verified cache matches (the node-cap sources
+#     changed, or a new toolchain): a cold cap build takes hours, beyond a GitHub job. It builds in its persistent
+#     workspace, checks, marks the caps (caps-closure.sha) and saves the verified cache. While it runs the commit
+#     shows "pending"; a cache miss never shows as a failure.
+# * finish (GitHub-hosted): master: prune old master caches; ready/<name>: fast-forward master to the checked merge.
+# ready/<name>: the branch is merged into the CURRENT master and the MERGED tree is checked; master moves only if green.
+# Master's cache: every update of master gets one check on master (a hand merge by its push; an auto-merge
+# dispatches it); when green, it saves the new master cache. Only master runs and droplet runs write caches.
+# See AGENTS.md section 10.
 
 on:
   push:
-    # cloud/** are scratch branches for cloud jobs (cloud.yml, AGENTS.md section 4d): no push check
+    # cloud/** are scratch branches for cloud jobs (cloud.yml, AGENTS.md section 11): no push check
     branches: ['**', '!cloud/**']
   schedule:
     # weekly: restore (and so keep alive) the master cache; GitHub deletes cache entries unused for 7 days
@@ -26,10 +25,10 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "check (default), warm (master, droplet) or caps (branch, droplet)"
+        description: "check (default: the route picks the runner) or caps (force the droplet build)"
         default: check
         type: choice
-        options: [check, warm, caps]
+        options: [check, caps]
 
 permissions:
   contents: write
@@ -38,262 +37,173 @@ permissions:
   statuses: write
 
 jobs:
-  build:
-    if: github.event_name == 'push' || ((github.event_name == 'workflow_dispatch') && (inputs.mode == 'check' || inputs.mode == ''))
+  route:
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-24.04
-    timeout-minutes: 360
-    # One group PER BRANCH, cancel-in-progress: a new push (or retry dispatch) of the same branch cancels that
-    # branch's older check run, which is now checking a superseded commit. Different branches never share a group,
-    # so deliveries cannot cancel each other (a shared group once dropped pending deliveries). The droplet job
-    # "heavy" has its own group and is never cancelled by this.
-    concurrency:
-      group: check-${{ github.ref }}
-      cancel-in-progress: true
+    timeout-minutes: 15
+    outputs:
+      lean: ${{ steps.scope.outputs.lean }}
+      droplet: ${{ steps.where.outputs.droplet }}
+      runs_on: ${{ steps.where.outputs.runs_on }}
+      key: ${{ steps.where.outputs.key }}
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-          # MERGE_TOKEN (optional repository secret, fine-grained PAT with contents + workflows write) lets the
-          # auto-merge push deliveries that change .github/workflows; the default token is refused for those
-          token: ${{ secrets.MERGE_TOKEN || github.token }}
 
       - name: Merge the ready branch into the current master
         if: startsWith(github.ref_name, 'ready/')
         run: |
-          git config user.name "grothe-ci"
-          git config user.email "grothe-ci@users.noreply.github.com"
-          git fetch origin master
-          git checkout -B merge-candidate origin/master
-          git merge --no-ff --no-edit "origin/${GITHUB_REF_NAME}" -m "Merge ${GITHUB_REF_NAME} (CI auto-merge)"
-          git log --oneline -3
-
-      - name: "Is this commit already in master? (then master's own check covers it)"
-        id: merged
-        if: github.ref_name != 'master' && !startsWith(github.ref_name, 'ready/')
-        run: |
+          git config user.name "grothe-ci"; git config user.email "grothe-ci@users.noreply.github.com"
           git fetch -q origin master
-          if git merge-base --is-ancestor HEAD origin/master; then
-            echo "already contained in master: skipping this branch check"; echo "skip=true" >> "$GITHUB_OUTPUT"
-          fi
+          git checkout -q -B merge-candidate origin/master
+          git merge -q --no-ff --no-edit "origin/${GITHUB_REF_NAME}" -m "Merge ${GITHUB_REF_NAME} (CI auto-merge)"
 
       - name: Does this change touch anything Lean builds or checks?
         id: scope
         env:
           BEFORE: ${{ github.event.before }}
         run: |
-          # files that affect the Lean build or its checks; everything else (README, docs/, AGENTS.md, tools/, ...)
-          # needs no build
+          # a branch commit already contained in master: master's own check covers it
+          if [ "${GITHUB_REF_NAME}" != master ] && [[ "${GITHUB_REF_NAME}" != ready/* ]]; then
+            git fetch -q origin master
+            if git merge-base --is-ancestor HEAD origin/master; then
+              echo "already contained in master: skipping this branch check"; echo "lean=false" >> "$GITHUB_OUTPUT"; exit 0
+            fi
+          fi
+          # files that affect the Lean build or its checks; everything else (README, docs/, AGENTS.md, ...) needs no build
           LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/test_caps_stamp\.py$|\.github/workflows/)'
           if [[ "${GITHUB_REF_NAME}" == ready/* ]]; then base=origin/master          # HEAD = master + this branch
           elif [ "${GITHUB_REF_NAME}" = master ]; then base="$BEFORE"                # the previous master
           else base=$(git merge-base origin/master HEAD); fi                         # what the branch adds to master
-          if [ "${{ steps.merged.outputs.skip }}" = true ]; then echo "lean=false" >> "$GITHUB_OUTPUT"; exit 0; fi
-          if [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
-            echo "no comparison base: full check"; echo "lean=true" >> "$GITHUB_OUTPUT"; exit 0
+          if [ "${{ inputs.mode }}" = caps ] || [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
+            echo "full check"; echo "lean=true" >> "$GITHUB_OUTPUT"; exit 0
           fi
           changed=$(git diff --name-only "$base" HEAD)
           echo "changed files:"; echo "$changed"
           if echo "$changed" | grep -qE "$LEAN_PATHS"; then echo "lean=true" >> "$GITHUB_OUTPUT"
           else echo "no Lean-relevant file changed: skipping the build and the checks"; echo "lean=false" >> "$GITHUB_OUTPUT"; fi
 
-      - name: Restore the build cache (master's, or this branch's caps cache)
-        if: steps.scope.outputs.lean == 'true'
+      - name: Is there a verified build cache for these node-cap sources? (no -> the droplet builds them)
+        id: where
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TOOLCHAIN: ${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+        run: |
+          digest=$(python3 scripts/caps_stamp.py --digest | awk '/^sha256/ {print $2}')
+          key="lake-build-v3-${TOOLCHAIN}-${digest}-"
+          echo "key=${key}" >> "$GITHUB_OUTPUT"
+          # a run can restore caches of its own branch and of master
+          found=$(gh api "repos/${GITHUB_REPOSITORY}/actions/caches?key=${key}&per_page=100" \
+            --jq "[.actions_caches[] | select(.ref == \"refs/heads/master\" or .ref == \"${GITHUB_REF}\")] | length")
+          echo "caps digest ${digest}: ${found} verified cache(s) usable by ${GITHUB_REF_NAME}"
+          if [ "${{ steps.scope.outputs.lean }}" = true ] && { [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ]; }; then
+            echo "-> the droplet builds and verifies the node caps (this run stays pending meanwhile)"
+            echo "droplet=true" >> "$GITHUB_OUTPUT"; echo 'runs_on=["self-hosted","heavy"]' >> "$GITHUB_OUTPUT"
+          else
+            echo "droplet=false" >> "$GITHUB_OUTPUT"; echo 'runs_on="ubuntu-24.04"' >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    needs: route
+    runs-on: ${{ fromJSON(needs.route.outputs.runs_on) }}
+    timeout-minutes: ${{ needs.route.outputs.droplet == 'true' && 4320 || 360 }}
+    # Branches (GitHub-hosted): one group PER BRANCH, cancel-in-progress (a new push supersedes the older check).
+    # Master: never cancelled; every master commit gets its own check (a cancelled run marks its commit with a cross,
+    # and a long first build would be lost), so its group is per commit. The droplet has one runner, so its jobs queue
+    # by themselves and are never cancelled (a killed build leaves orphaned lean processes).
+    concurrency:
+      group: ${{ needs.route.outputs.droplet == 'true' && format('droplet-{0}', github.run_id) || (github.ref_name == 'master' && format('check-master-{0}', github.sha) || format('check-{0}', github.ref)) }}
+      cancel-in-progress: ${{ needs.route.outputs.droplet != 'true' && github.ref_name != 'master' }}
+    env:
+      LEAN: ${{ needs.route.outputs.lean }}
+      DROPLET: ${{ needs.route.outputs.droplet }}
+      KEY: ${{ needs.route.outputs.key }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          clean: ${{ needs.route.outputs.droplet != 'true' }}   # the droplet keeps its persistent .lake
+
+      - name: Merge the ready branch into the current master
+        if: startsWith(github.ref_name, 'ready/')
+        run: |
+          git config user.name "grothe-ci"; git config user.email "grothe-ci@users.noreply.github.com"
+          git fetch origin master
+          git checkout -B merge-candidate origin/master
+          git merge --no-ff --no-edit "origin/${GITHUB_REF_NAME}" -m "Merge ${GITHUB_REF_NAME} (CI auto-merge)"
+          git log --oneline -3
+          printf 'base=%s\ntree=%s\n' "$(git rev-parse origin/master)" "$(git rev-parse 'HEAD^{tree}')" > merge-info
+
+      - name: Restore the verified build cache (GitHub-hosted, or an empty droplet workspace)
+        if: env.LEAN == 'true' && hashFiles('.lake/build/lib/lean/Grothe.olean') == ''
         uses: actions/cache/restore@v4
         with:
           path: .lake/build
-          key: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
-          restore-keys: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+          key: ${{ needs.route.outputs.key }}${{ github.sha }}
+          restore-keys: |
+            ${{ needs.route.outputs.key }}
+            lake-build-v3-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
 
-      - name: Lean toolchain and Mathlib (from the Mathlib cache)
-        if: steps.scope.outputs.lean == 'true'
+      - name: Lean toolchain and Mathlib (GitHub-hosted, from the Mathlib cache)
+        if: env.LEAN == 'true' && env.DROPLET != 'true'
         uses: leanprover/lean-action@v1
         with:
           use-mathlib-cache: true
           use-github-cache: false     # no per-branch cache entries: they evict each other in the 10 GB quota
           build: false
 
+      - name: Lean toolchain and the shared Mathlib packages (droplet)
+        if: env.LEAN == 'true' && env.DROPLET == 'true'
+        run: |
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          mkdir -p .lake
+          [ -e .lake/packages ] || ln -s /home/agalatan/grothe-caps/.lake/packages .lake/packages
+          "$HOME/.elan/bin/lake" --version; df -h . | tail -1
+
       - name: Unit tests of the verification scripts (caps hash, axiom reports)
-        if: steps.scope.outputs.lean == 'true'
+        if: env.LEAN == 'true'
         run: |
           python3 scripts/test_caps_stamp.py
           python3 scripts/test_check_axioms.py
 
-      - name: Are the cached node caps verified for these sources?
-        if: steps.scope.outputs.lean == 'true'
-        id: caps
+      - name: The restored node caps are verified for these sources (GitHub-hosted)
+        if: env.LEAN == 'true' && env.DROPLET != 'true'
         run: |
-          if python3 scripts/caps_stamp.py --check-cache; then echo "ok=true" >> "$GITHUB_OUTPUT"
-          else echo "ok=false" >> "$GITHUB_OUTPUT"; fi
+          python3 scripts/caps_stamp.py --check-cache || {
+            echo "::error::The route found a verified cache for these sources, but the restored build does not match"
+            echo "::error::(evicted meanwhile?). Re-run this workflow: the route will then send it to the droplet."
+            exit 1; }
 
-      - name: If the node caps are not verified for these sources, dispatch their rebuild on the droplet
-        # before building: a cold build of the cap rows takes hours, beyond a GitHub-hosted job
-        if: steps.scope.outputs.lean == 'true' && steps.caps.outputs.ok != 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          if [ "${GITHUB_REF_NAME}" = master ]; then mode=warm; else mode=caps; fi
-          echo "::error::The node-cap sources differ from the verified cached build (or there is no cache yet). Dispatched"
-          echo "::error::a ${mode} run on the droplet; it builds Grothe and re-dispatches this check. Nothing to do by hand."
-          gh workflow run lean.yml --ref "${GITHUB_REF_NAME}" -f mode=${mode}
-          exit 1
+      - name: Build the scalar kernel proof first (droplet; it peaks at 18.8 GB RSS)
+        if: env.LEAN == 'true' && env.DROPLET == 'true'
+        run: lake build Grothe.Haagerup.ScalarTailRefinement --log-level=warning
 
       - name: Build Grothe (everything, node caps included)
-        if: steps.scope.outputs.lean == 'true'
+        if: env.LEAN == 'true'
         run: lake build Grothe --log-level=warning
 
       - name: Root import files generated, list files sorted and duplicate-free
-        if: steps.scope.outputs.lean == 'true'
+        if: env.LEAN == 'true'
         run: python3 tools/gen_root_imports.py --check
 
       - name: No sorry, axiom or unchecked code anywhere
-        if: steps.scope.outputs.lean == 'true'
+        if: env.LEAN == 'true'
         run: |
           ! grep -rn --include='*.lean' -E '\bsorry\b|^[[:space:]]*(private[[:space:]]+)?axiom[[:space:]]|implemented_by|@\[extern|\bunsafe\b|debug\.skipKernelTC|Task\.spawn' Grothe GrotheKernel GrotheCapsKernel Grothe.lean GrotheKernel.lean GrotheCapsKernel.lean
 
       - name: Axiom report
-        if: steps.scope.outputs.lean == 'true'
+        if: env.LEAN == 'true'
         run: |
           lake env lean scratch/Axioms.lean | tee axioms.txt
           python3 scripts/check_axioms.py < axioms.txt
 
-      - name: Save the master cache (green check of master)
-        # every step above passed (a failed step stops the job), the caps were replayed from the verified cache
-        if: github.ref_name == 'master' && steps.scope.outputs.lean == 'true' && steps.caps.outputs.ok == 'true'
-        run: git rev-parse HEAD > .lake/build/built-commit
-
-      - name: Save the master cache (upload)
-        if: github.ref_name == 'master' && steps.scope.outputs.lean == 'true' && steps.caps.outputs.ok == 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: .lake/build
-          key: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
-
-      - name: Prune superseded master caches (keep the newest two)
-        if: github.ref_name == 'master' && steps.scope.outputs.lean == 'true' && steps.caps.outputs.ok == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh api "repos/${GITHUB_REPOSITORY}/actions/caches?ref=refs/heads/master&key=lake-build-v2-&sort=created_at&direction=desc&per_page=100" \
-            --jq '.actions_caches[2:][] | .id' | while read -r id; do
-            gh api -X DELETE "repos/${GITHUB_REPOSITORY}/actions/caches/${id}" >/dev/null && echo "deleted cache ${id}" || true
-          done
-
-      - name: Auto-merge into master (fast-forward to the checked merge), or retry if master moved
-        if: startsWith(github.ref_name, 'ready/')
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          base=$(git rev-parse origin/master)   # before the push updates origin/master
-          if [ "$(git rev-parse merge-candidate)" = "$base" ]; then
-            # already merged (e.g. by hand through a pull request): master's own check covers it, nothing to push
-            echo "${GITHUB_REF_NAME} is already contained in master: deleting it, no push, no new master check"
-            git push origin --delete "${GITHUB_REF_NAME}" || true
-            exit 0
-          fi
-          if git push origin merge-candidate:master; then
-            git push origin --delete "${GITHUB_REF_NAME}"
-            # the token push does not start a run on master: mark the merged commit as verified by this run
-            gh api -X POST "repos/${GITHUB_REPOSITORY}/statuses/$(git rev-parse merge-candidate)" \
-              -f state=success -f context="Lean proof check (verified before merge)" \
-              -f description="Built and checked as ${GITHUB_REF_NAME} merged into master" \
-              -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >/dev/null || true
-            # a push by the workflow token does not trigger GitHub's "Closes #n" handling: close them here
-            for n in $(git log --format=%B "$base"..merge-candidate \
-                       | grep -oiE '(close[sd]?|fix(e[sd])?|resolve[sd]?) +#[0-9]+' | grep -oE '[0-9]+' | sort -u); do
-              gh issue close "$n" --comment "Closed by ${GITHUB_REF_NAME} (CI auto-merge, $(git rev-parse --short merge-candidate))" || true
-            done
-            # the workflow-token push starts no run on master: dispatch master's check, which saves the master cache
-            # (or, if the caps changed, dispatches the droplet warm run itself)
-            gh workflow run lean.yml --ref master || true
-          else
-            git fetch -q origin master
-            if [ "$(git rev-parse origin/master)" != "$base" ]; then
-              echo "master moved during the build: re-dispatching this ready branch against the new master"
-              gh workflow run lean.yml --ref "${GITHUB_REF_NAME}"
-            elif git diff --name-only "$base" merge-candidate | grep -q '^\.github/workflows/'; then
-              echo "::error::The push was refused because this delivery changes .github/workflows and the token may not"
-              echo "::error::update workflows. Add the MERGE_TOKEN secret (see AGENTS.md section 4) or merge it with a PR."
-            else
-              echo "::error::The push to master was refused for another reason (see above). Not retrying."
-            fi
-            exit 1
-          fi
-
-  keepalive:
-    # the weekly schedule: restoring the master cache counts as a use and resets GitHub's 7-day expiry
-    if: github.event_name == 'schedule'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v5
-      - name: Restore the master cache
-        uses: actions/cache/restore@v4
-        with:
-          path: .lake/build
-          key: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
-          restore-keys: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
-
-  heavy:
-    if: github.event_name == 'workflow_dispatch' && (inputs.mode == 'warm' || inputs.mode == 'caps')
-    runs-on: [self-hosted, heavy]
-    timeout-minutes: 4320
-    # one heavy job at a time on the droplet; a newer pending warm run supersedes an older one
-    concurrency:
-      group: droplet-heavy
-      cancel-in-progress: false
-    env:
-      SHARED_PACKAGES: /home/agalatan/grothe-caps/.lake/packages   # shared Mathlib packages on the droplet
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-          clean: false                  # keep the persistent .lake between runs (incremental builds)
-
-      - name: Merge the ready branch into the current master (caps mode on ready/)
-        if: inputs.mode == 'caps' && startsWith(github.ref_name, 'ready/')
-        run: |
-          git config user.name "grothe-ci"
-          git config user.email "grothe-ci@users.noreply.github.com"
-          git fetch origin master
-          git checkout -B merge-candidate origin/master
-          git merge --no-ff --no-edit "origin/${GITHUB_REF_NAME}" -m "Merge ${GITHUB_REF_NAME} (caps check)"
-
-      - name: Lean toolchain and shared Mathlib packages
-        run: |
-          export PATH="$HOME/.elan/bin:$PATH"
-          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
-          mkdir -p .lake
-          if [ ! -e .lake/packages ]; then ln -s "$SHARED_PACKAGES" .lake/packages; fi
-          lake --version
-          df -h . | tail -1
-
-      - name: Restore the shared build cache if the workspace is empty
-        if: hashFiles('.lake/build/lib/lean/Grothe.olean') == ''
-        uses: actions/cache/restore@v4
-        with:
-          path: .lake/build
-          key: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
-          restore-keys: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
-
-      - name: Build the scalar kernel proof before concurrent certificate checks
-        # The measured scalar power proof peaks at 18.8 GB RSS. Finish it before Lake schedules the ordinary
-        # native certificates and cap rows together; its small import closure contains no certificate chunks.
-        run: lake build Grothe.Haagerup.ScalarTailRefinement --log-level=warning
-
-      - name: Build Grothe (everything; hours if the node-cap sources changed)
-        run: lake build Grothe --log-level=warning
-
-      - name: Axiom report
-        run: |
-          lake env lean scratch/Axioms.lean > axioms.txt; python3 scripts/check_axioms.py < axioms.txt
-
-      - name: Mark the cached node caps as verified for these sources, and record the built commit
-        run: |
-          python3 scripts/caps_stamp.py --mark-cache
-          # Record which tree the runner built; consumers restore Actions caches, not this workspace.
-          git rev-parse HEAD > .lake/build/built-commit
+      - name: Mark the node caps as verified for these sources (droplet, after the build and the report)
+        if: env.LEAN == 'true' && env.DROPLET == 'true'
+        run: python3 scripts/caps_stamp.py --mark-cache
 
       - name: Lower-proof comment leaves the verified caps cache valid
+        if: needs.route.outputs.droplet == 'true' && needs.route.outputs.lean == 'true'
         run: |
           set -euo pipefail
           git diff --quiet
@@ -354,27 +264,147 @@ jobs:
           PYTHON
           # EXIT restores HEAD/ref and removes the scratch branch before any cache is saved.
 
-      - name: Save the shared build cache (warm on master)
-        if: inputs.mode == 'warm' && github.ref_name == 'master'
+      - name: Record the built commit
+        if: env.LEAN == 'true' && (github.ref_name == 'master' || env.DROPLET == 'true')
+        run: git rev-parse HEAD > .lake/build/built-commit
+
+      - name: Save the master cache (green check of master)
+        if: env.LEAN == 'true' && github.ref_name == 'master'
         uses: actions/cache/save@v4
         with:
           path: .lake/build
-          key: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+          key: ${{ needs.route.outputs.key }}${{ github.sha }}
 
-      - name: Save the build cache for this branch (caps)
-        if: inputs.mode == 'caps'
+      - name: Save the verified cache for this branch (droplet; and ready/, so a re-check after master moved replays it)
+        # deleted with the branch (cancel-merged.yml), so it never outlives the delivery
+        if: env.LEAN == 'true' && github.ref_name != 'master' && (env.DROPLET == 'true' || startsWith(github.ref_name, 'ready/'))
         uses: actions/cache/save@v4
         with:
           path: .lake/build
-          key: lake-build-v2-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}-caps-${{ github.run_id }}
+          key: ${{ needs.route.outputs.key }}${{ github.sha }}-run${{ github.run_id }}
 
-      - name: Re-dispatch the check of this branch (caps)
-        if: inputs.mode == 'caps'
+      - name: Hand the checked merge to the finish job
+        if: startsWith(github.ref_name, 'ready/')
+        uses: actions/upload-artifact@v4
+        with:
+          name: merge-info
+          path: merge-info
+          retention-days: 1
+
+  finish:
+    # GitHub-hosted (has the GitHub CLI): after a green check
+    needs: [route, build]
+    if: github.ref_name == 'master' || startsWith(github.ref_name, 'ready/')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Cancel the checks of older master commits (this green check covers their trees)
+        # only what a viewer of master sees matters: the newest commit's own result. An older commit's check that is
+        # still running is redundant once a newer commit containing it is green.
+        if: github.ref_name == 'master' && needs.route.outputs.lean == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        # the self-hosted runner has no GitHub CLI: call the REST API directly
         run: |
-          curl --fail-with-body -sS -X POST \
-            -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" \
-            "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/workflows/lean.yml/dispatches" \
-            -d "{\"ref\": \"${GITHUB_REF_NAME}\"}"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/lean.yml/runs?branch=master&per_page=50" \
+            --jq '.workflow_runs[] | select(.status != "completed") | "\(.id) \(.head_sha)"' |
+          while read -r id sha; do
+            [ "$id" = "${GITHUB_RUN_ID}" ] || [ "$sha" = "${GITHUB_SHA}" ] && continue
+            # older = an ancestor of this commit (needs no checkout: the compare API answers it)
+            status=$(gh api "repos/${GITHUB_REPOSITORY}/compare/${sha}...${GITHUB_SHA}" --jq .status 2>/dev/null || true)
+            if [ "$status" = ahead ]; then
+              gh api -X POST "repos/${GITHUB_REPOSITORY}/actions/runs/${id}/cancel" >/dev/null 2>&1 \
+                && echo "cancelled the check of the older master commit ${sha:0:7} (run ${id})" || true
+            fi
+          done
+
+      - name: Prune superseded master caches (keep the newest two)
+        if: github.ref_name == 'master' && needs.route.outputs.lean == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${GITHUB_REPOSITORY}/actions/caches?ref=refs/heads/master&key=lake-build-&sort=created_at&direction=desc&per_page=100" \
+            --jq '.actions_caches[2:][] | .id' | while read -r id; do
+            gh api -X DELETE "repos/${GITHUB_REPOSITORY}/actions/caches/${id}" >/dev/null && echo "deleted cache ${id}" || true
+          done
+
+      - uses: actions/checkout@v5
+        if: startsWith(github.ref_name, 'ready/')
+        with:
+          fetch-depth: 0
+          # MERGE_TOKEN (optional repository secret, fine-grained PAT with contents + workflows write) lets the
+          # auto-merge push deliveries that change .github/workflows; the default token is refused for those
+          token: ${{ secrets.MERGE_TOKEN || github.token }}
+
+      - uses: actions/download-artifact@v4
+        if: startsWith(github.ref_name, 'ready/')
+        with:
+          name: merge-info
+
+      - name: Recreate exactly the checked merge
+        if: startsWith(github.ref_name, 'ready/')
+        run: |
+          git config user.name "grothe-ci"; git config user.email "grothe-ci@users.noreply.github.com"
+          . ./merge-info; rm merge-info
+          git fetch -q origin master
+          git checkout -q -B merge-candidate "$base"
+          git merge -q --no-ff --no-edit "origin/${GITHUB_REF_NAME}" -m "Merge ${GITHUB_REF_NAME} (CI auto-merge)"
+          [ "$(git rev-parse 'HEAD^{tree}')" = "$tree" ] || { echo "::error::the recreated merge differs from the checked tree"; exit 1; }
+          echo "CHECKED_BASE=$base" >> "$GITHUB_ENV"
+
+      - name: Auto-merge into master (fast-forward to the checked merge), or retry if master moved
+        if: startsWith(github.ref_name, 'ready/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          base="$CHECKED_BASE"   # the master the check merged with; the push below fails unless master is still there
+          if [ "$(git rev-parse merge-candidate)" = "$base" ]; then
+            # already merged (e.g. by hand through a pull request): master's own check covers it, nothing to push
+            echo "${GITHUB_REF_NAME} is already contained in master: deleting it, no push, no new master check"
+            git push origin --delete "${GITHUB_REF_NAME}" || true
+            exit 0
+          fi
+          if git push origin merge-candidate:master; then
+            git push origin --delete "${GITHUB_REF_NAME}"
+            # the token push does not start a run on master: mark the merged commit as verified by this run
+            gh api -X POST "repos/${GITHUB_REPOSITORY}/statuses/$(git rev-parse merge-candidate)" \
+              -f state=success -f context="Lean proof check (verified before merge)" \
+              -f description="Built and checked as ${GITHUB_REF_NAME} merged into master" \
+              -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >/dev/null || true
+            # a push by the workflow token does not trigger GitHub's "Closes #n" handling: close them here
+            for n in $(git log --format=%B "$base"..merge-candidate \
+                       | grep -oiE '(close[sd]?|fix(e[sd])?|resolve[sd]?) +#[0-9]+' | grep -oE '[0-9]+' | sort -u); do
+              gh issue close "$n" --comment "Closed by ${GITHUB_REF_NAME} (CI auto-merge, $(git rev-parse --short merge-candidate))" || true
+            done
+            # the workflow-token push starts no run on master: dispatch master's check, which saves the master cache
+            # (the route sends it to the droplet if the node caps changed)
+            gh workflow run lean.yml --ref master || true
+          else
+            git fetch -q origin master
+            if [ "$(git rev-parse origin/master)" != "$base" ]; then
+              # not a failure: the delivery is fine, it just has to be checked against the new master
+              echo "::notice::master moved during the check: re-dispatched ${GITHUB_REF_NAME} against the new master"
+              gh workflow run lean.yml --ref "${GITHUB_REF_NAME}"
+              exit 0
+            elif git diff --name-only "$base" merge-candidate | grep -q '^\.github/workflows/'; then
+              echo "::error::The push was refused because this delivery changes .github/workflows and the token may not"
+              echo "::error::update workflows. Add the MERGE_TOKEN secret (see AGENTS.md section 9) or merge it with a PR."
+            else
+              echo "::error::The push to master was refused for another reason (see above). Not retrying."
+            fi
+            exit 1
+          fi
+
+
+  keepalive:
+    # the weekly schedule: restoring the master cache counts as a use and resets GitHub's 7-day expiry
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - name: Restore the master cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .lake/build
+          key: lake-build-v3-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: lake-build-v3-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-

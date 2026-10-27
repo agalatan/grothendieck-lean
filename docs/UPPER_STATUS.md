@@ -1,18 +1,30 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
 The sharper conditional upper bound is described below. The independent hypothesis-free
-route now proves `Grothe.haagerup_bound : IsGrothendieckBound (1404909409/1000000000)`.
-Its polynomial resolvent, complete residual and signed infinite tail are documented in
-`docs/HAAGERUP_POWER.md`;
-that theorem does not require any of the analytic inputs listed here.
+route states `Grothe.haagerup_bound : IsGrothendieckBound (1404909132791/1000000000000)`.
+The degree-20 certificate uses combined resolvent seeds (#138). Its focused audit policy
+requires 98 results and permits zero native evaluation axioms.
+The canonical resolvent completion, complete residual and infinite remainder are
+documented in `docs/HAAGERUP_POWER.md`. It combines 64 series terms with ten
+correction terms, using complete monotonicity at every difference order and exact
+coefficient locality to remove the finite boundary. A
+165-coefficient prefix and a weighted finite-polynomial tail bound control the
+complete residual. Large convolutions are proved in continuation blocks of at most five left
+coefficients. The generic `convI_append` identity preserves the original
+outward arithmetic order; recurrence and exact input-binding lemmas recover
+the four checker statements without a new numerical premise.
+The proof is designed to use only the three standard axioms and none of the analytic inputs listed here.
+`tools/verify_haagerup_canonical.py` provides an independent directed replay.
+Normal `ready/*` delivery CI builds and audits the combined tree before merging it.
 
-Build only changed modules locally. Run full builds on the droplet (`ssh yo`) or in CI;
-see `AGENTS.md` for worktree and delivery rules.
+Build only changed modules locally. Full builds, including all node caps, run
+through the single delivery CI job; see `AGENTS.md` for worktree and delivery rules.
 
 The combined tree includes the concrete rounder, the phase cover, the refined
 Hardy tail and the holomorphic-kernel definitions. Use an owned worktree and
-an owned droplet directory for builds; the shared package cache can be read
-without copying it. Use targeted module builds; full builds run on the droplet or in CI.
+an owned directory for light droplet builds; the shared package cache can be read
+without copying it. CI routes a full build to the droplet runner when no verified
+cache matches the node-cap sources.
 
 ## 1. What is proved
 
@@ -24,7 +36,6 @@ for the concrete rounding `GT` (smoothed `F₀·P₃(φ)` built from `Grothe/Upp
 
 * `ComparisonInputs`: the exact spectrally supported Gaussian error decomposition and inherited component norm caps; Lean derives its weighted selected-head energy comparison (with coefficient costs proved from the preprocessors),
 * `energy_close`: `Σ_{n+3m≤501} |energy X − energyTable| ≤ energyErrQ`,
-* `hardy`: `Σ_{n<J} kernelCoeff(energy GT)_n² (4149/4000)^{2(2n+1)} ≤ 7/4`,
 
 for some charge-one `X ∈ L²(gaussC ⊗ gaussC)` (the smoothed truncation of `F₀ + v`; its correction vector `v` lives
 in `handoff/upper-residual/global_norm/frozen_taylor_correction_D201.npz`, not in Lean).
@@ -36,13 +47,13 @@ are theorems.  Module map (all in `Grothe/UpperChaos/`):
 |---|---|
 | TaylorPhase | `|P₃(x)|² = 1 − x⁴(3−x²)/36` |
 | ComplexMoments, ComplexHermite, Mehler, Completeness, HermiteComplete, HermiteBasis, Charge | one complex coordinate: moments, Hermite orthogonality, Mehler (polynomials), completeness (`poly_complete`), Hilbert basis, charge selection |
-| GaussC2, HermiteC2, HermiteC2Basis | ℂ²: `gaussC ⊗ gaussC` = image of std Gaussian on ℝ⁴, tensor Hermite basis, Parseval |
-| LawY, MehlerL2 | law of ρX + σW, Mehler for L² functions on ℂ² (`mehler_L2`) |
+| ProductComplete, HermiteC2, HermiteC2Basis | ℂ²: tensor completeness by Fubini and one-coordinate completeness, tensor Hermite basis, Parseval |
+| LawY, MehlerL2 | law of ρX + σW by product characteristic functions, Mehler for L² functions on ℂ² (`mehler_L2`) |
 | Energy2, Kernel2 | energies by bidegree, parity, kernel = `radialKernel (bivarKernel P Q (energy G))` |
 | Realise2, Structural | two-channel Gaussian rounding ⇒ `DiskKernel`; `structural_fields`, `fresh_upper_of_rounding` |
 | Rounder | `vprof`, `F0`, `phiT`, `Tround`, `GT`; measurable, charge one, disk-valued under `PhiBound` |
 | PhiHorner, PhiDense, PhiCover, PhiCoverData, PhiCoverCheck0–5, PhiCoverCheck, PhiBound | phase cover `φ² ≤ 99/100`, `|φ| < 1` (checker `GrotheKernel/PhiCheck.lean`, generator `tools/gen_phi_abs_cover.py`, data `data/phi-abs-cover/trees.json`) |
-| HardyKernel | holomorphic Gaussian kernel and certificate covariance definitions; no discharge of `hardy` yet |
+| HardyKernel, HardyReal | holomorphic Gaussian kernel and certificate covariance definitions; `HardyReal.hardy_GT` proves the concrete Hardy input |
 
 The sharper tail reserves the linear coefficient's weighted square from the
 same `7/4` budget before Cauchy–Schwarz (`hardy_budget_after_linear`,
@@ -134,12 +145,28 @@ Progress (claude/hardy, 26 Oct):
   Tools: `Gauss2` (2-D Gaussian integrals with complex linear term), `SchurTest` (weighted Schur test),
   `LstarL` (the `L*L` identity), `Sym2R` (2×2 forms; the weight inequality by a square-root-free identity),
   `SchurKernel` (exact `‖M₁‖`), `SchurBound` (ℝ⁴ factorization and Schur), `SchurIntegrability`.
-- **Remaining:**
+- **4 region and circle mean — proved** (`claude/hardy-arc`). Four interval facts replace the 65,594-arc external
+  certificate. `GrotheKernel/HardyArc.lean` evaluates the Schur bound `schurValue` of step 3 on rational boxes
+  (`gatesOK` checks `Z ≻ 0`, `T ≻ 0`). `HardyArcPart0..3` (`hardy_arc_part_k`, one `native_decide` each, separate
+  modules so Lake checks them in parallel) cover the circle `|t| = 4149/4000` by adaptive arcs in two
+  rational charts. Each part is ≈ 2.606, so the total is 10.427, i.e. a mean of 1.659 ≤ 7/4; the true mean is about 1.592.
+  `HardyArcRegionCheck` (`hardy_region_check`) proves positive kernel decay (`KerPos`) on the disc of radius
+  `51863/50000 > 4149/4000` by a quadtree of complex boxes. The soundness proofs are in `HardyArcSound`, `HardyArcCircle`,
+  `HardyArcCover`, `HardyArcMean` and `HardyArcRegion`. `HardyStep4.hardy_region_and_mean` gives both inputs for
+  every measurable disk-valued pair, and **`hardy_of_real`** gives the `hardy` statement from the real
+  identification (step 1(b)) for summable coefficients. Measured on GitHub-hosted runners: 700–1140 s per part alone (about
+  1700 s with all four in parallel on 4 vCPUs) and 9 s for the region.
+- **1(b) real identification — proved** (`claude/hardy-real`). `HardyReal.hreal_GT`, hence
+  `HardyReal.hardy_GT`: the `hardy` statement for the rounding, with no hypothesis beyond `PhiBound`.
+  `fresh_upper_rounder` no longer assumes it. Modules: `HardyRealAlg` (exponent identity), `HardyRealKernel`,
+  `HardyRealGauss` (`mu2` in the coordinates of `HholPair`), `HardyRealSubst`, `HardyRealDensity` (density of
+  `(U, RU + SW)` is `kHol R`), `HardyRealCov`, `HardyRealLaw` (law swap), `HardyReal` (assembly).
+- **Former plan of 1(b), for reference:**
   1(b) the real identification: for real `R`, `kHol R` is the density of the Gaussian pair with cross covariance
   `R` (two real copies), and smoothing by `M`, `N` turns `E[conj GT(X) GT(Y)]` (diagonal correlations
   `p(t), −τ(t)`) into `Hhol (Rt t)`; then `Bm_polyKernel` gives the series with `h = kernelCoeff (energy GT)`.
   This needs Gaussian-law identification on `ℝ⁸` (density ↔ covariance, pushforward by linear maps) — the largest
-  remaining piece. 4: the region and circle inputs from the certificate — a precompiled exact checker over the 65,594 arcs (`KerPos` per arc via `I ± Re R ≻ 0`).
+  remaining analytic identification: `hardy_of_real` takes it as `hreal`, with coefficient summability `hs` explicit.
 
 ## 4. Other open items
 
@@ -152,8 +179,9 @@ Progress (claude/hardy, 26 Oct):
   The other Hermite-tail and coefficient inputs are still separate obligations.
 * The refined lower endpoint is `1.401697049825`, conditional on the same
   `NodeCaps`, through `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data`.
-  The separate `GrotheCaps` target now has a matching stamp for its 60 range
-  facts; the four remaining rows still require `CapsRest`.
+  The single `Grothe` target includes the 60 range facts and their final assembly;
+  CI verifies them or replays a matching verified cache. The four remaining rows
+  still require `CapsRest`.
 
 ## 5. `ComparisonInputs`: formalisation plan
 
@@ -264,6 +292,17 @@ t_j ≤ ‖B^jF₀ − c_j‖,   ‖B^jF₀ − c_j‖² = E φ^{2j} − 2 Re⟨
 its own error raises 2·A_I·e_I to about 1.3·10⁻⁶ in total for power 1. That would undo the comparison's gain over
 the global bound, so the bands still need per-coefficient enclosures. They need only about 10⁻¹¹ (power 1, degrees
 101–181) to 10⁻⁹ precision, on about 150k coefficients.
+
+### 5.5b Step 1 done (`claude/comparison-pieces`)
+
+`Smoothing.lean` (S as an `L²` contraction: `map_smooth`, `norm_smoothOp_le`, `smoothOp_toLp'`, mean preserved),
+`BandProj.lean` (projections onto Hermite modes: coefficients, support, partition sums) and
+`ComparisonPieces.lean` (Taylor split `Tround_eq`, the four sources, the 18 pieces, `difference_pieces`,
+`comparisonInputs_of_norms`, `fresh_upper_pieces`). The pieces are `P_I(S src)` (projection after smoothing), so
+their supports hold by construction. The data `c_j`, `v` enter as charge-one parameters; plugging in the
+certificate's data is the remaining part. `SmoothComm.lean` proves that S preserves the total degree (it commutes
+with the Ornstein–Uhlenbeck smoothing T_ρ, `law_comm`; T_ρ is diagonal with eigenvalue ρ^{|i|}, `OUOp.lean`), so
+`P_I S = S P_I` and the norm hypotheses of `fresh_upper_pieces` are on the unsmoothed sources.
 
 ### 5.6 Ranked plan
 

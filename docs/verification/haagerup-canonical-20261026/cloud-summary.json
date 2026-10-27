@@ -1,0 +1,11 @@
+{
+ "id": "codex-aa04-20261026221500-12852",
+ "kind": "check",
+ "shard": 0,
+ "nshards": 1,
+ "ref": "codex/lean-audit",
+ "sha": "f7d9773e036ccdc3a2acf4e441f7ba4dd465d678",
+ "status": 0,
+ "seconds": 1398,
+ "run": "https://github.com/agalatan/grothendieck-lean/actions/runs/40410959319"
+}

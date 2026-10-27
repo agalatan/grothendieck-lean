@@ -113,12 +113,12 @@ lemma cutSum_integral (hS : SteinCut μ U) (vs : List ℚ) (hvs : meshOK 0 vs = 
     rw [integral_add (hi.const_mul _) hri, integral_const_mul]
     positivity
 
-/-- A node function `maj(√U) − Σ μⱼ Gⱼ(U)` is integrable with integral at most `J(1, x)`. -/
-lemma node_fn (hM : Moments μ U x) (hS : SteinCut μ U) (vs : List ℚ) (hvs : meshOK 0 vs = true)
-    (y : MPoly) (h1 : 0 ≤ y.a1) (h6 : 0 ≤ y.a6) (cs : List (ℚ × List ℚ))
-    (hcs : ∀ c ∈ cs, 0 ≤ c.1) :
-    Integrable (fun ω => evalL (y.list.map ((↑) : ℚ → ℝ)) (√(U ω)) - cutSum vs cs (√(U ω))) μ ∧
-    ∫ ω, (evalL (y.list.map ((↑) : ℚ → ℝ)) (√(U ω)) - cutSum vs cs (√(U ω))) ∂μ
+/-- Integrate a polynomial majorant minus any integrable cut with nonnegative expectation. -/
+lemma node_fn_of_cut (hM : Moments μ U x) (y : MPoly) (h1 : 0 ≤ y.a1) (h6 : 0 ≤ y.a6)
+    (G : ℝ → ℝ) (hC : Integrable (fun ω => G (√(U ω))) μ)
+    (hCi : 0 ≤ ∫ ω, G (√(U ω)) ∂μ) :
+    Integrable (fun ω => evalL (y.list.map ((↑) : ℚ → ℝ)) (√(U ω)) - G (√(U ω))) μ ∧
+    ∫ ω, (evalL (y.list.map ((↑) : ℚ → ℝ)) (√(U ω)) - G (√(U ω))) ∂μ
       ≤ y.J 0 1 x := by
   have key : ∀ ω, evalL (y.list.map ((↑) : ℚ → ℝ)) (√(U ω))
       = y.a0 + y.a1 * √(U ω) + y.a2 * U ω + y.a4 * U ω ^ 2 + y.a6 * U ω ^ 3 := by
@@ -128,10 +128,9 @@ lemma node_fn (hM : Moments μ U x) (hS : SteinCut μ U) (vs : List ℚ) (hvs : 
     rw [this]; ring
   obtain ⟨hP, hPi⟩ := moment_poly μ hM y.a0 y.a1 y.a2 y.a4 y.a6 (by exact_mod_cast h1)
     (by exact_mod_cast h6)
-  obtain ⟨hC, hCi⟩ := cutSum_integral μ hS vs hvs cs hcs
-  have e : (fun ω => evalL (y.list.map ((↑) : ℚ → ℝ)) (√(U ω)) - cutSum vs cs (√(U ω)))
+  have e : (fun ω => evalL (y.list.map ((↑) : ℚ → ℝ)) (√(U ω)) - G (√(U ω)))
       = fun ω => (y.a0 + y.a1 * √(U ω) + y.a2 * U ω + y.a4 * U ω ^ 2 + y.a6 * U ω ^ 3)
-          - cutSum vs cs (√(U ω)) := funext fun ω => by rw [key]
+          - G (√(U ω)) := funext fun ω => by rw [key]
   rw [e]
   refine ⟨hP.sub hC, ?_⟩
   rw [integral_sub hP hC]
@@ -140,6 +139,16 @@ lemma node_fn (hM : Moments μ U x) (hS : SteinCut μ U) (vs : List ℚ) (hvs : 
     simp only [MPoly.J]; push_cast; ring
   rw [eJ]
   linarith
+
+/-- A node function `maj(√U) − Σ μⱼ Gⱼ(U)` is integrable with integral at most `J(1, x)`. -/
+lemma node_fn (hM : Moments μ U x) (hS : SteinCut μ U) (vs : List ℚ) (hvs : meshOK 0 vs = true)
+    (y : MPoly) (h1 : 0 ≤ y.a1) (h6 : 0 ≤ y.a6) (cs : List (ℚ × List ℚ))
+    (hcs : ∀ c ∈ cs, 0 ≤ c.1) :
+    Integrable (fun ω => evalL (y.list.map ((↑) : ℚ → ℝ)) (√(U ω)) - cutSum vs cs (√(U ω))) μ ∧
+    ∫ ω, (evalL (y.list.map ((↑) : ℚ → ℝ)) (√(U ω)) - cutSum vs cs (√(U ω))) ∂μ
+      ≤ y.J 0 1 x := by
+  obtain ⟨hC, hCi⟩ := cutSum_integral μ hS vs hvs cs hcs
+  exact node_fn_of_cut μ hM y h1 h6 (cutSum vs cs) hC hCi
 
 /-- Integration of a pointwise polynomial majorant at scale `σ`. -/
 lemma rect_integral (hM : Moments μ U x) (P : MPoly) (h1 : 0 ≤ P.a1) (h6 : 0 ≤ P.a6) (kap : ℚ)
@@ -186,14 +195,23 @@ lemma TB.zero {Φ : ℝ → ℝ} (c : ℝ) (h : Φ 0 ≤ c) : TB μ U Φ 0 c :=
   ⟨fun _ => c, integrable_const c, fun ω => by simpa using h, by
     rw [integral_const, probReal_univ, one_smul]⟩
 
+/-- A polynomial majorant plus any admissible cut gives a bound at the chosen scale. -/
+lemma TB.of_cut {Φ : ℝ → ℝ} (hM : Moments μ U x) (y : MPoly)
+    (h1 : 0 ≤ y.a1) (h6 : 0 ≤ y.a6) (τ : ℝ) (G : ℝ → ℝ)
+    (hC : Integrable (fun ω => G (√(U ω))) μ) (hCi : 0 ≤ ∫ ω, G (√(U ω)) ∂μ)
+    (hpt : ∀ v : ℝ, 0 ≤ v → Φ (τ * v) + G v ≤ evalL (y.list.map ((↑) : ℚ → ℝ)) v) :
+    TB μ U Φ τ (y.J 0 1 x) := by
+  obtain ⟨hi, hv⟩ := node_fn_of_cut μ hM y h1 h6 G hC hCi
+  exact ⟨_, hi, fun ω => by have := hpt _ (Real.sqrt_nonneg (U ω)); linarith, hv⟩
+
 /-- A Stein node: a polynomial majorant of `Φ(τ v)` plus a nonnegative combination of cuts. -/
 lemma TB.node {Φ : ℝ → ℝ} (hM : Moments μ U x) (hS : SteinCut μ U) (vs : List ℚ)
     (hvs : meshOK 0 vs = true) (cs : List (ℚ × List ℚ)) (hcs : ∀ c ∈ cs, 0 ≤ c.1) (y : MPoly)
     (h1 : 0 ≤ y.a1) (h6 : 0 ≤ y.a6) (τ : ℝ)
     (hpt : ∀ v : ℝ, 0 ≤ v → Φ (τ * v) + cutSum vs cs v ≤ evalL (y.list.map ((↑) : ℚ → ℝ)) v) :
     TB μ U Φ τ (y.J 0 1 x) := by
-  obtain ⟨hi, hv⟩ := node_fn μ hM hS vs hvs y h1 h6 cs hcs
-  exact ⟨_, hi, fun ω => by have := hpt _ (Real.sqrt_nonneg (U ω)); linarith, hv⟩
+  obtain ⟨hC, hCi⟩ := cutSum_integral μ hS vs hvs cs hcs
+  exact TB.of_cut hM y h1 h6 τ (cutSum vs cs) hC hCi hpt
 
 /-- A spectral node: a polynomial majorant of `Φ(τ v)` plus one spectral cut. -/
 lemma TB.specNode {Φ : ℝ → ℝ} (hM : Moments μ U x) (hS : SteinCut μ U) (vs z : List ℚ)
@@ -204,22 +222,7 @@ lemma TB.specNode {Φ : ℝ → ℝ} (hM : Moments μ U x) (hS : SteinCut μ U) 
       Φ (τ * v) + specG vs z lam mu t be nu v ≤ evalL (y.list.map ((↑) : ℚ → ℝ)) v) :
     TB μ U Φ τ (y.J 0 1 x) := by
   obtain ⟨hC, hCi⟩ := hS.spec vs z lam mu t be nu hvs hlam hmu hnu
-  obtain ⟨hP, hPi⟩ := moment_poly μ hM y.a0 y.a1 y.a2 y.a4 y.a6 (by exact_mod_cast h1)
-    (by exact_mod_cast h6)
-  refine ⟨fun ω => (y.a0 + y.a1 * √(U ω) + y.a2 * U ω + y.a4 * U ω ^ 2 + y.a6 * U ω ^ 3)
-    - specG vs z lam mu t be nu (√(U ω)), hP.sub hC, fun ω => ?_, ?_⟩
-  · have key := mpoly_at y 1 (√(U ω)) (U ω) (Real.sq_sqrt (hM.nonneg ω))
-    rw [one_mul] at key
-    have := hpt _ (Real.sqrt_nonneg (U ω))
-    rw [key] at this
-    simp only [one_pow, mul_one] at this
-    linarith
-  · rw [integral_sub hP hC]
-    have eJ : y.J 0 1 x = y.a0 + y.a1 * ρ + y.a2 + y.a4 * (2 + x ^ 2)
-        + y.a6 * (6 + 9 * x ^ 2 + C6 * x ^ 3) := by
-      simp only [MPoly.J]; push_cast; ring
-    rw [eJ]
-    linarith
+  exact TB.of_cut hM y h1 h6 τ (specG vs z lam mu t be nu) hC hCi hpt
 
 /-- A general spectral node: a polynomial majorant of `Φ(τ v)` plus one general spectral cut
 of a node citing the budget `bud`. -/
@@ -232,22 +235,7 @@ lemma TB.gspecNode {Φ : ℝ → ℝ} (hM : Moments μ U x) (hS : SteinCut μ U)
         ≤ evalL (y.list.map ((↑) : ℚ → ℝ)) v) :
     TB μ U Φ τ (y.J 0 1 x) := by
   obtain ⟨hC, hCi⟩ := hS.gspec vs z lam mu t be nu bud hvs hlam hmu hnu hok
-  obtain ⟨hP, hPi⟩ := moment_poly μ hM y.a0 y.a1 y.a2 y.a4 y.a6 (by exact_mod_cast h1)
-    (by exact_mod_cast h6)
-  refine ⟨fun ω => (y.a0 + y.a1 * √(U ω) + y.a2 * U ω + y.a4 * U ω ^ 2 + y.a6 * U ω ^ 3)
-    - gspecG vs z lam mu t be nu (bud.af lam) (bud.ag mu) (√(U ω)), hP.sub hC, fun ω => ?_, ?_⟩
-  · have key := mpoly_at y 1 (√(U ω)) (U ω) (Real.sq_sqrt (hM.nonneg ω))
-    rw [one_mul] at key
-    have := hpt _ (Real.sqrt_nonneg (U ω))
-    rw [key] at this
-    simp only [one_pow, mul_one] at this
-    linarith
-  · rw [integral_sub hP hC]
-    have eJ : y.J 0 1 x = y.a0 + y.a1 * ρ + y.a2 + y.a4 * (2 + x ^ 2)
-        + y.a6 * (6 + 9 * x ^ 2 + C6 * x ^ 3) := by
-      simp only [MPoly.J]; push_cast; ring
-    rw [eJ]
-    linarith
+  exact TB.of_cut hM y h1 h6 τ (gspecG vs z lam mu t be nu (bud.af lam) (bud.ag mu)) hC hCi hpt
 
 /-- A joint node: a polynomial majorant of `Φ(τ v)` plus one joint cut of a node citing the joint
 certificate `(g, j)`, for `x ≤ x_*`. -/
@@ -263,23 +251,9 @@ lemma TB.jspecNode {Φ : ℝ → ℝ} (hM : Moments μ U x) (hS : SteinCut μ U)
     rw [hM.m2]
     nlinarith [hM.x0]
   obtain ⟨hC, hCi⟩ := hS.jspec vs z lam mu t be nu g j hvs hlam hmu hnu hok hU2
-  obtain ⟨hP, hPi⟩ := moment_poly μ hM y.a0 y.a1 y.a2 y.a4 y.a6 (by exact_mod_cast h1)
-    (by exact_mod_cast h6)
-  refine ⟨fun ω => (y.a0 + y.a1 * √(U ω) + y.a2 * U ω + y.a4 * U ω ^ 2 + y.a6 * U ω ^ 3)
-    - jspecG vs z lam mu t be nu ((GBud.joint g j).af lam) ((GBud.joint g j).ag mu) j.ze
-      (√(U ω)), hP.sub hC, fun ω => ?_, ?_⟩
-  · have key := mpoly_at y 1 (√(U ω)) (U ω) (Real.sq_sqrt (hM.nonneg ω))
-    rw [one_mul] at key
-    have := hpt _ (Real.sqrt_nonneg (U ω))
-    rw [key] at this
-    simp only [one_pow, mul_one] at this
-    linarith
-  · rw [integral_sub hP hC]
-    have eJ : y.J 0 1 x = y.a0 + y.a1 * ρ + y.a2 + y.a4 * (2 + x ^ 2)
-        + y.a6 * (6 + 9 * x ^ 2 + C6 * x ^ 3) := by
-      simp only [MPoly.J]; push_cast; ring
-    rw [eJ]
-    linarith
+  exact TB.of_cut hM y h1 h6 τ
+    (jspecG vs z lam mu t be nu ((GBud.joint g j).af lam) ((GBud.joint g j).ag mu) j.ze)
+    hC hCi hpt
 
 omit [IsProbabilityMeasure μ] in
 /-- Convexity in `τ`: the chord of two node bounds. -/

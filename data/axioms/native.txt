@@ -1,6 +1,5 @@
 # native_decide facts allowed in the default axiom report (one per line, sorted; union-merged by git).
 # Each is a documented finite exact computation (README.md, docs/LEAN_NATIVE_INVENTORY.md).
-Grothe.HaagerupPower.check._native.native_decide.ax_1_1
 Grothe.Lower.certBatches0._native.native_decide.ax_1_1
 Grothe.Lower.certBatches1._native.native_decide.ax_1_1
 Grothe.Lower.certBatches2._native.native_decide.ax_1_1
@@ -77,6 +76,11 @@ Grothe.Research.RefinedLowerCheck.certRefinedBoxes2._native.native_decide.ax_1_1
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes3._native.native_decide.ax_1_1
 Grothe.Research.RefinedLowerCheck.certRefinedPartition._native.native_decide.ax_1_1
 Grothe.Upper.comparison_check._native.native_decide.ax_1_1
+Grothe.UpperChaos.hardy_arc_part_0._native.native_decide.ax_1_1
+Grothe.UpperChaos.hardy_arc_part_1._native.native_decide.ax_1_1
+Grothe.UpperChaos.hardy_arc_part_2._native.native_decide.ax_1_1
+Grothe.UpperChaos.hardy_arc_part_3._native.native_decide.ax_1_1
+Grothe.UpperChaos.hardy_region_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.phi_cover_check_0._native.native_decide.ax_1_1
 Grothe.UpperChaos.phi_cover_check_1._native.native_decide.ax_1_1
 Grothe.UpperChaos.phi_cover_check_2._native.native_decide.ax_1_1

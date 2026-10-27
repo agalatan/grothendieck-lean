@@ -1,0 +1,17 @@
+Agent-ID: codex-aa04. Targeted Lean checks; no full local build.
+
+WeightedOriginal: exit 1
+handoff/lean-audit/major-simplification/codex-aa04/alternating-20261027/ci-fix/WeightedOriginal.lean:160:13: error: unexpected token '|'; expected ')' or term
+
+WeightedFixed: exit 0
+
+WeightedBinding: exit 0
+
+PowerData: exit 0
+
+CanonicalArithmetic: exit 0
+
+CanonicalData: exit 0
+
+CoefficientClosure: exit 0
+'Grothe.HaagerupCanonical.Trace.coefficient_check' depends on axioms: [propext, Classical.choice, Quot.sound]

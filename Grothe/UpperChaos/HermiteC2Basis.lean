@@ -16,71 +16,14 @@ noncomputable section
 
 variable {F : ℂ × ℂ → ℂ}
 
-/-- Orthogonality to the `H2 i` extends to the whole span (and the span lies in `L²`). -/
-lemma V2_orth (hF : MemLp F 2 mu2) (h : ∀ i, ∫ u, conj (H2 i u) * F u ∂mu2 = 0)
-    {v : ℂ × ℂ → ℂ} (hv : v ∈ V2) : MemLp v 2 mu2 ∧ ∫ u, conj (v u) * F u ∂mu2 = 0 := by
-  induction hv using Submodule.span_induction with
-  | mem v hv => obtain ⟨i, rfl⟩ := hv; exact ⟨memLp_H2 i, h i⟩
-  | zero => exact ⟨MemLp.zero, by simp⟩
-  | add u v _ _ hu hv =>
-    refine ⟨hu.1.add hv.1, ?_⟩
-    have iu : Integrable (fun x => conj (u x) * F x) mu2 :=
-      (hu.1.star.integrable_mul hF).congr (Filter.Eventually.of_forall fun x => rfl)
-    have iv : Integrable (fun x => conj (v x) * F x) mu2 :=
-      (hv.1.star.integrable_mul hF).congr (Filter.Eventually.of_forall fun x => rfl)
-    have e : (fun x => conj ((u + v) x) * F x) = fun x => conj (u x) * F x + conj (v x) * F x := by
-      funext x; simp [add_mul]
-    rw [e, integral_add iu iv, hu.2, hv.2, add_zero]
-  | smul c v _ hv =>
-    refine ⟨hv.1.const_smul c, ?_⟩
-    have e : (fun x => conj ((c • v) x) * F x) = fun x => conj c * (conj (v x) * F x) := by
-      funext x; simp [mul_assoc]
-    rw [e, integral_const_mul, hv.2, mul_zero]
-
 /-- **Completeness of the tensor Hermite functions on `ℂ²`.** -/
 theorem hermite2_complete (hF : MemLp F 2 mu2) (h : ∀ i, ∫ u, conj (H2 i u) * F u ∂mu2 = 0) :
     F =ᵐ[mu2] 0 := by
-  set G : (Fin 4 → ℝ) → ℂ := F ∘ e2 with hG_def
-  have hFm : AEStronglyMeasurable F ((stdGaussian 4).map e2) := by rw [map_e2]; exact hF.aestronglyMeasurable
-  have hG : MemLp G 2 (stdGaussian 4) := by
-    have hF' : MemLp F 2 ((stdGaussian 4).map e2) := by rw [map_e2]; exact hF
-    exact (memLp_map_measure_iff hFm measurable_e2.aemeasurable).1 hF'
-  have horth : ∀ P : MvPolynomial (Fin 4) ℝ,
-      ∫ x, ((eval x P : ℝ) : ℂ) * G x ∂(stdGaussian 4) = 0 := fun P => by
-    have h0 := (V2_orth hF h (mem_V2_realPoly P)).2
-    have hm : AEStronglyMeasurable
-        (fun u => conj (((eval (fromC2 u) P : ℝ) : ℂ)) * F u) ((stdGaussian 4).map e2) := by
-      rw [map_e2]
-      exact ((Complex.continuous_conj.comp (Complex.continuous_ofReal.comp
-        ((MvPolynomial.continuous_eval P).comp (by unfold fromC2 fromC; fun_prop)))).aestronglyMeasurable).mul
-        hF.aestronglyMeasurable
-    rw [← map_e2, integral_map measurable_e2.aemeasurable hm] at h0
-    rw [← h0]
-    refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
-    simp only [hG_def, Function.comp, fromC2_e2, Complex.conj_ofReal]
-  have hint : ∀ P : MvPolynomial (Fin 4) ℝ,
-      Integrable (fun x => ((eval x P : ℝ) : ℂ) * G x) (stdGaussian 4) := fun P =>
-    ((Complex.ofRealCLM.comp_memLp' (memLp_eval P)).integrable_mul hG).congr
-      (Filter.Eventually.of_forall fun x => by simp)
-  have hre : (fun x => (G x).re) =ᵐ[stdGaussian 4] 0 := by
-    refine poly_complete (by simpa using hG.re) fun P => ?_
-    have := congrArg Complex.re (horth P)
-    have e := integral_re (hint P)
-    simp only [RCLike.re_to_complex] at e
-    rw [← e] at this
-    simpa [Complex.mul_re, mul_comm] using this
-  have him : (fun x => (G x).im) =ᵐ[stdGaussian 4] 0 := by
-    refine poly_complete (by simpa using hG.im) fun P => ?_
-    have := congrArg Complex.im (horth P)
-    have e := integral_im (hint P)
-    simp only [RCLike.im_to_complex] at e
-    rw [← e] at this
-    simpa [Complex.mul_im, mul_comm] using this
-  have hG0 : ∀ᵐ x ∂(stdGaussian 4), F (e2 x) = 0 := by
-    filter_upwards [hre, him] with x h1 h2
-    exact Complex.ext h1 h2
-  rw [← map_e2]
-  exact (measurableEmbedding_e2.ae_map_iff).2 hG0
+  let b (i : ℕ × ℕ) (z : ℂ) := ev z (H i.1 i.2)
+  exact ProductComplete.complete_prod b b (fun _ => memLp_ev _) (fun _ => memLp_ev _)
+    (fun hf hi => hermite_complete hf fun p q => hi (p, q))
+    (fun hf hi => hermite_complete hf fun p q => hi (p, q)) hF
+    (fun i j => h (i, j))
 
 /-! ### Hilbert basis and Parseval -/
 

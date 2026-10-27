@@ -33,7 +33,7 @@
 \Large $1.401697049825\;<\;\KG\;<\;1.404598149218$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, resting on explicitly stated
 analytic and computer-assisted inputs (Section~\ref{sec:trust}).\\[4pt]
-With \textbf{no hypothesis at all}, every step proved in Lean: $\KG\le1.404909409$.\\[3pt]
+Unconditional Lean theorem: $\KG\le1.404909132791$, using only the three standard axioms.\\[3pt]
 Written refinement of the published mixed rounding: $\KG<1.40489844$; its new power and tail steps are checked in Lean.\vspace{4pt}
 \end{minipage}}
 \end{center}
@@ -78,7 +78,7 @@ year & who & lower bound & upper bound\\\midrule
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
 Oct 2026 & \textbf{this work} & $\mathbf{1.401697049825}$ & $\mathbf{1.404598149218}$\\
-Oct 2026 & this work, fully formal & & $1.404909409$ (no hypothesis)\\\bottomrule
+Oct 2026 & this work (unconditional) & & $1.404909132791$\\\bottomrule
 \end{tabular}
 \end{center}
 Haagerup's integral
@@ -91,6 +91,9 @@ Both bounds use the same Gaussian picture. Let $Z=(z_1,\dots,z_n)$ be a standard
 $L^2(\C^n,\gamma)$ into the \emph{Wick chaoses} $H_{p,q}$ (polynomials of bidegree $(p,q)$ in $z,\bar z$, orthogonalised).
 Under the rotation $z\mapsto e^{i\theta}z$ every relevant object has \emph{charge one}, so only the bidegrees
 $(1,0),(2,1),(3,2),\dots$ (degrees $1,3,5,\dots$) appear.
+The standard complex Gaussian measure, its rotation invariance and radial-moment reduction
+form a shared Lean foundation. The upper rounding proof depends on this foundation
+independently of the lower row certificates.
 
 \subsection{Upper bounds: rounding schemes}
 Given unit vectors, project a Gaussian onto them and round: $\varepsilon_i=f(\langle G,x_i\rangle)$ with $|f|\le1$. The
@@ -100,8 +103,8 @@ correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
 \]
 If $H(t)=c\,t+r(t)$ with $\|r\|_A=\sum_k|c_k-c\,\delta_{k0}|<c$, a tensor-power argument (Krivine's trick) gives
 $\KG\le1/(c-\|r\|_A)$. Haagerup's choice $f=\ph$ gives $1.40491$. Lean proves Haagerup's identity for $f=\ph$ from scratch
-(Hermite coefficients, the Mehler formula, and the law of orthonormal Gaussian coordinates); with a degree-29 preprocessor, $1024$ exact terms and a signed resolvent tail certificate
-this gives the unconditional bound $\KG\le1.404909409$ (\lean{haagerup\_bound}), which needs no hypothesis. Our sharp rounding is a smoothed two-coordinate phase rounding,
+(Hermite coefficients, the Mehler formula, and the law of orthonormal Gaussian coordinates); with a degree-41 preprocessor, $64$ exact terms and a canonical resolvent completion
+it proves $\KG\le1.404909132791$ (\lean{haagerup\_bound}) without external hypotheses or native evaluation axioms. Our sharp rounding is a smoothed two-coordinate phase rounding,
 $F_0=\ph\bigl(z+\sqrt{1+a^2}\,v(|z|^2)\,w\bigr)$ with a twelve-term Laguerre profile $v$, multiplied by the cubic Taylor
 polynomial of a damped polynomial phase $\varphi$: $T=F_0P_3(\varphi)$, $P_3(x)=1+ix-x^2/2-ix^3/6$. The identity
 $|P_3(x)|^2=1-x^4(3-x^2)/36$ and the proved bound $\varphi^2\le99/100$ (hence $|\varphi|<1$) give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
@@ -210,50 +213,53 @@ Wick identity; the finite certificate (five row, three original-batch, one added
 The 60 range checks for fifteen rows use a computation-only layer.
 CI replays the final assembly when the 53-file cache provenance matches;
 a mismatch triggers the runner build and the axiom audit. Four rows retain external vertex caps.\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error, table-accuracy and Hardy inputs, proves $\KG\le500000000000000000/355973699864771491$.}\\[2pt]
-the concrete disk-valued rounding; Gaussian Hermite completeness, Parseval and Mehler, charge selection, summability;
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error and table-accuracy inputs, proves $\KG\le500000000000000000/355973699864771491$.}\\[2pt]
+the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussian mixing by characteristic functions, Parseval and Mehler, charge selection, summability;
 the transfer inequality (tensor powers); kernel composition and locality; the head through degree 501 from
 21,168 stored energies by a verified interval evaluator (one \lean{native\_decide}); the tail bound; the endpoint; the selected-block comparison and native band masses
 &
 \lean{ComparisonInputs}: an exact error decomposition, spectral supports and inherited Gaussian component norm caps.
 Lean derives the selected comparison $13311891/(15625\cdot10^9)$ ($93.56\%$ of the residual allowance).
-The input identification remains external. \lean{hardy}: weighted square sum $7/4$ at radius $4149/4000$,
-with tail $30488839/10^{15}$ ($3.35\%$); finite table accuracy $6847009/(5\cdot10^{17})$.
+The decomposition itself is explicit in Lean (\lean{difference\_pieces}, \lean{fresh\_upper\_pieces}):
+18 band pieces of the smoothed Taylor errors and the rounding remainder, so only their 18 norm bounds remain external.
+Finite table accuracy $6847009/(5\cdot10^{17})$.
+The Hardy tail $30488839/10^{15}$ ($3.35\%$, weighted square sum $\le 7/4$ at radius $4149/4000$) is proved
+(\lean{HardyReal.hardy\_GT}).
 The native head is $28153/10^{12}$ ($3.09\%$).\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (1404909409/1000000000)}}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (1404909132791/1000000000000)}}\\[2pt]
 Haagerup's identity for the phase rounding, $\E[\overline{\ph\langle g,x\rangle}\,\ph\langle g,y\rangle]=\sum_k\frac\pi4\frac{(1/2)_k^2}{k!(k+1)!}z|z|^{2k}$
-(Hermite coefficients from Gaussian radial moments and a finite Pochhammer identity, the Mehler formula, reduction to two complex Gaussians); the transfer through
-a degree-29 preprocessor $p(t)=tP(t^2)$ with $\|P\|_1=1$ and $\|P^4\|_1\le.998903$; $1024$ exact terms, a finite polynomial resolvent and the full signed tail, checked by one \lean{native\_decide}
+(Hermite coefficients from Gaussian radial moments and a polynomial moment recurrence, the Mehler formula, reduction to two complex Gaussians); the transfer through
+a degree-41 preprocessor $p(t)=tP(t^2)$ with $\|P\|_1\le1$; $64$ exact terms, ten canonical resolvent corrections and an infinite remainder estimate; the finite arithmetic is kernel-checked
 &
-nothing: this bound has no hypothesis. The sharper conditional bound above uses a different rounding and retains its explicitly listed Gaussian inputs.\\\bottomrule
+no external mathematical premise. The focused audit policy requires 98 results and permits zero native axioms. The sharper conditional bound above uses a different rounding and retains its explicitly listed Gaussian inputs.\\\bottomrule
 \end{tabular}
 \end{center}
-Axioms: \lean{propext}, \lean{Classical.choice}, \lean{Quot.sound}.\par
-The native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}, check the upper head, selected-band masses, the six-part phase cover, Haagerup bound,
+The 98-result focused audit policy permits only \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} for the unconditional upper bound.\par
+The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
-There are 84 native facts, 60 of them the cap-range checks; the report \path{scratch/Axioms.lean} lists 548 theorems, with 330 required declarations.
-No \lean{sorry}; CI builds the single target \lean{Grothe}, cap rows included, and checks its one axiom report.
+There are 88 native facts: 60 cap-range checks, five Hardy region and circle checks, and 23 others. The report \path{scratch/Axioms.lean} contains 620 print directives, with 391 required declarations.
+No \lean{sorry}; normal \path{ready/*} delivery CI builds the single target \lean{Grothe}, cap rows included, and checks its one axiom report before merging.
 The cap-range checks take about 21 CPU-hours cold, so CI replays them from a verified build cache.
 Its provenance hash covers 48 local computation
 modules and five directly hashed extras (53 files total); the extras' imports
 are not traversed. The numerical checker has its own precompiled library,
 \lean{GrotheCapsKernel}, whose constants retain the \lean{GrotheKernel} namespace.
-CI checks \path{.lake/build/caps-closure.sha} before building. A missing or mismatched
-marker fails closed and dispatches the runner build and the audit before
-the cache is marked. The same persistent build supplies subsequent CI replay
-and the master warm run; no separate manual droplet verification is needed.
+The caps digest is part of the build-cache key: when no verified cache matches, CI runs the same check on
+the self-hosted runner, which builds, audits and marks \path{.lake/build/caps-closure.sha} before saving
+the cache. That persistent build supplies later CI replay; no separate manual droplet verification is needed.
 A digest alone is not verification. The localised-piece checkers
 likewise import only computable definitions and rational data; their campaign
 and final wiring remain separate. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
-the sharp upper bound retains external Gaussian component-error and Hardy inputs. The weaker upper bound $1.404909409$ is fully formal.
+the sharp upper bound retains external Gaussian component-error and table-accuracy inputs. The unconditional theorem proves $\KG\le1.404909132791$ using only the three standard axioms. Its order-$10$ completion retains cancellation within the resolvent seed products.
 Before the tail Cauchy--Schwarz step, the known linear coefficient's weighted square is deducted from $7/4$; this uses the same numerical hypotheses.
 Holomorphy under positive kernel decay, odd-series continuation and circle Parseval are proved.
 The holomorphy and Hardy assembly also cover separate measurable disk-valued left and right responses
 (\lean{HholPair}, \lean{hardy\_of\_pair\_inputs}); the incumbent results are specializations.
-A positive covariance-decay region, summable real odd coefficients, their Gaussian-kernel identification
-and the circle mean bound remain explicit inputs for each pair. This adds no numerical axiom
-and changes neither endpoint nor its remaining hypotheses.
+The decay region and the circle mean are checked in Lean by five interval facts. With them, \lean{hardy\_of\_real} reduces \lean{hardy}
+to summability and the real Gaussian identification of the odd series, which \lean{HardyReal.hreal\_GT} proves for $G_T$:
+the smoothed Mehler pair has the law of $(U, RU+SW)$ (characteristic functions), whose density on $\mathbb R^8$ is the
+holomorphic kernel at the real cross covariance (Cholesky substitution). Hence \lean{hardy\_GT}: the Hardy input is proved.
 The research modules also prove 13 algebraic facts for coupled complex modulus majorizers, finite descent and semiconvex chord
 assembly, using only the three standard axioms. Their Gaussian integration, response extraction and global-cover
 obligations remain separate; these facts change neither endpoint nor its hypotheses.
@@ -262,21 +268,47 @@ obligations remain separate; these facts change neither endpoint nor its hypothe
 Status labels: \textbf{[Lean]} machine-checked in this repository; \textbf{[P]} written proof; \textbf{[P,C]} proof with an
 exact or interval-arithmetic certificate replayed independently; \textbf{[F]} floating-point evidence only.
 
-\subsection{Signed cancellation gives a sharper fully formal bound}
-\textbf{[Lean]} Assume $\|P\|_1\le1$ and write $A=XP^2$. A finite polynomial $R$ with
-$\|1-R(1-A)\|_1\le\eta<1$ bounds every geometric prefix by
-$2\|RT\|_1/(1-\eta)$. Abel summation then bounds the full decreasing-weight
-series while retaining signed cancellation. A second summation by parts
-uses decreasing coefficient differences; the terminal term tends to zero.
-Coefficient locality gives the infinite-tail bound with finite checks.
+\subsection{Complete monotonicity gives a canonical completion}
+\textbf{[Lean]} The normalized Haagerup coefficients are a product of
+rising-factorial quotients. Taking a forward difference increases a denominator
+parameter and multiplies by a nonnegative scalar. The discrete product rule
+therefore proves that every order of difference is nonnegative.
 
-For an exact degree-29 preprocessor, the complete $1024$-term normalized
-residual is at most $95\cdot10^{-9}$ and the whole infinite tail at most
-$87.7\cdot10^{-9}$. The approximate inverse has degree $64$ and defect at
-most $10^{-12}$; its short product with $P^{17}$ is checked as one polynomial.
-The Gaussian phase identity and tensor transfer prove
-$\KG\le1.404909409$ with no external inputs. The exact data generate the
-Lean certificate reproducibly; an independent directed replay audits it.
+Assume $\|P\|_1\le1$ and write $A=XP^2$, $T=X^KP^{2K+1}$ and $E=1-R(1-A)$. The canonical completion is
+\[
+ Q_m=\sum_{j<m}(\Delta^j r)_K(-RA)^jRT.
+\]
+Writing $S(a)=\sum_{i\ge0}a_{K+i}TA^i$ coefficientwise, its exact remainder
+consists of $(-RA)^mS(\Delta^m r)$ and
+$E\sum_{j<m}(-RA)^jS(\Delta^j r)$. Abel summation bounds both terms;
+the factor $X^J$ removes the finite boundary below index $J$ exactly,
+without a convergence-to-zero hypothesis. Combining the head and
+$Q_m$ before taking absolute values preserves their cancellation.
+
+For $K=64$ and $m=10$, the finite certificate uses a normalized completed-head cap
+$736823/10^{16}$ and an infinite-remainder cap $2/10^{16}$.
+Their sum is $736825/10^{16}$.
+The degree-$20$ polynomial and degree-$64$ approximate inverse come from exact inverse-series
+recurrences, with $60$-bit dyadic normalization and rounding. The defect cap is $10^{-12}$.
+For the completed finite residual $F$, the prefix check requires an absolute
+coefficient-sum cap $368411/(5\cdot10^{15})$ below index $165$. Scaling by
+$X\mapsto(3/2)X$ and using the weighted coefficient estimate gives
+$\|F((3/2)X)\|_1\le10^{13}$.
+This estimate retains the actual coefficients and forward differences in their
+weighted sums, instead of using one common cap.
+The omitted coefficients cost at most $10^{13}/(3/2)^{165}<10^{-16}$.
+The remainder estimate bounds each combined product $(-RA)^jRT$ before splitting
+its factors. Eight copies of the certified seed $RP^{17}$ give a seventh-seed norm
+at most $1/256$; three ratio factors give a tenth-seed norm at most $1/32$.
+This is a finite polynomial coefficient estimate, with no analytic-continuation
+hypothesis. Large convolutions are proved in continuation blocks of at most five
+left coefficients. A generic append identity preserves the original outward arithmetic
+order; recurrence and input-binding lemmas recover the exact checker statements
+without a new numerical premise. The Gaussian phase identity and tensor transfer reduce
+the theorem $\KG\le1.404909132791$ to these kernel-checked facts. The rational data module contains no native theorem.
+The focused upper-bound policy requires 98 results with zero native facts.
+An independent directed replay in \path{tools/verify_haagerup_canonical.py}
+audits the complete polynomial and arithmetic.
 
 The simpler obstruction is also exact: if $|P(-1)|=\|P\|_1=1$, then
 $\|P^n\|_1=1$ for every $n$. Breaking that common boundary phase permits
@@ -294,8 +326,8 @@ $\KG<1.40489844$. Four pinned public verifiers pass; accepted coefficient
 tables are hash-checked. Lean proves the power check with \lean{decide +kernel},
 complete suffix estimate and score arithmetic, all without native axioms.
 It also derives the phase-tail bound by an exact split at 120. Published Gaussian and
-numerical integral budgets remain external; the fully formal endpoint
-\lean{haagerup\_bound} is unchanged.
+numerical integral budgets remain external. The separate unconditional \lean{haagerup\_bound}
+theorem has no external hypotheses and uses only the three standard axioms.
 The deduction and provenance are in
 \path{data/scalar-tail-refinement/PROOF.md}.
 
@@ -366,7 +398,11 @@ Throughout, $q$ is a circular cubic Wick polynomial (bidegree $(2,1)$) in any nu
 normalised by $\E|q|^2=1$, and $U=|q|^2$.
 \begin{itemize}
 \item \textbf{Sharp fourth moment [Lean].} Every real third-chaos variable satisfies $\E F^4\le93\,(\E F^2)^2$, with equality
- for $x^3-3x$. Hence $\E U^2\le62$.
+ for $x^3-3x$. For the cubic kernel, write $N=\sum f^2$, $s=\|f\star f\|^2$ and
+ $h=\|\operatorname{Sym}(f\star f)\|^2$. The Wick identity
+ $\E F^4-3(\E F^2)^2=1296(s+3h/2)$, together with $\E F^2=6N$ and
+ $h\le s\le N^2$, proves the bound directly, without a separate positivity premise
+ on the Gaussian expectation. Hence $\E U^2\le62$.
 \item \textbf{Sixth moment [Lean].} $\E U^3\le9m-12+C_6(m-2)^{3/2}$ with $m=\E U^2$ and $C_6=40.45313$. The Wick monomial mixed
  with Gaussian noise attains $40.295$, so the constant is sharp to $0.4\%$. The inequality is \emph{false} without circularity:
  two real cubics $He_3(x_0)/\sqrt{12}$, $He_3(x_1)/\sqrt{12}$ give $m=47$ and $\E U^3=13506>12622.55$.
@@ -385,11 +421,18 @@ normalised by $\E|q|^2=1$, and $U=|q|^2$.
 \end{itemize}
 
 \paragraph{A common budget for the same tensor.}
+The two joint sixth-moment bounds share one tensor and scalar argument in
+\path{JointSixthCore.lean}: Hilbert--Schmidt and cubic-trace bounds, a completed
+square, and Young's inequality. The production cuts and parameterized refinements
+specialize that argument through the same real-to-complex normalization identities.
 The sixth moment and the Stein fluctuations cannot be optimized independently:
 both depend on the same contraction invariants. We now formalize this connection
 in Lean, including the real/complex normalization and a finite checker that reserves
 part of the contraction budget before accepting a Stein cut. Signed reserve
-coefficients are retained. The endpoint uses 41 such nodes, with each node restricted
+coefficients are retained. Ordinary and joint Gram budgets specialize one signed-reserve
+soundness theorem. Likewise, ordinary spectral cuts specialize the general shifted-cut
+theorem, and Stein and spectral nodes use the same polynomial-majorant integration lemma for an
+arbitrary integrable cut with nonnegative expectation. The endpoint uses 41 such nodes, with each node restricted
 to its proved kurtosis range; the full checker and analytic bridge are in Lean.
 Retaining the upper bound on the negative cumulant contraction yields a stronger
 parameterized moment family. An exact transport identity then upgrades a node's
@@ -524,10 +567,10 @@ in the second.
 Planned work is tracked as GitHub issues of the repository: epics \#12 (unconditional lower bound), \#17 (upper inputs),
 \#22 (better lower bound), \#29 (build infrastructure) and \#34 (research plans).
 \begin{enumerate}
-\item Complete and verify the node caps (\lean{CapsRest} in the separate target), which would make the lower bound fully machine-checked.
+\item Complete and verify the node caps (\lean{CapsRest}, the remaining vertex-cap hypothesis), which would make the lower bound fully machine-checked.
  The caps of rows 12--15 are localised caps: coverage by constrained pieces is checked in Lean, and most pieces pass; the
  remaining pieces fail the exact positivity check of their S-lemma matrix by about $10^{-5}$ and need re-optimised multipliers.
-\item Discharge the sharp upper rounding's numerical comparison, energy-table error and contour tail bounds; its Hermite expansion and structural analytic bridge are formalized.
+\item Discharge the sharp upper rounding's numerical comparison and energy-table error; its Hermite expansion, structural analytic bridge and Hardy tail bound are formalized.
 \item Certify a game of degree $\ge5$ with a \emph{multi-grade fibre}: one bounded function of the visible coordinate and one
  remote direction per degree, so that the cross-degree coupling is kept. This is the route to a lower bound above $1.403$.
 \item Run a complex primal/dual search, alternating linear programs over games of degree $\le D$ and pools of roundings, to
@@ -542,6 +585,7 @@ each other's packages by independent replay. The endpoint theorems have the expl
 Section~\ref{sec:trust}, and their axioms are audited in CI. The discoveries labelled [P] and [C] also include paper proofs
 and external exact or interval certificates; they are not all formalized in Lean. Selected written proofs and reproducible certificate records accompany the repository; the larger working manuscript is maintained separately.
 
+\clearpage
 \section*{References}
 \small\sloppy
 \begin{itemize}

@@ -1,0 +1,21 @@
+{
+  "command": [
+    "/Library/Frameworks/Python.framework/Versions/3.12/bin/python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "scripts",
+    "-p",
+    "test_*.py"
+  ],
+  "exit_code": 0,
+  "focused_fixture_sha256": "71891f8743a1044137a5833ed1086d398467dfc77bffa509e8a9a776cdb42900",
+  "script_source_sha256": {
+    "scripts/caps_stamp.py": "ed65ea14ac93eb5cf7f2026a34ba2279d0d58ee7b5f20497d14d7eb3b88171d3",
+    "scripts/check_axioms.py": "00e3a8d30b86e502e850cf45cd0937090f905b545b6af4ca46be67a2e33d3654",
+    "scripts/test_caps_stamp.py": "085662b4f935fd2c0e4769c32f83b632cabf7a8481d0187d6890923068476e0f",
+    "scripts/test_check_axioms.py": "05f734d8d83dddb78f32921b2aa3c989012cc7db37e538dc968e2efd5f756fe9",
+    "scripts/test_scalar_tail_report.py": "11dba0a13bae2bfb2093eb2a6bf931e1a52132adbdcd773d0dbc4d0a9f742592"
+  }
+}

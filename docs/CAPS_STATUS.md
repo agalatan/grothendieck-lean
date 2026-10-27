@@ -86,21 +86,17 @@ marks a build cache.
 For Lean-relevant checks, ordinary CI restores `.lake/build` and calls
 `python3 scripts/caps_stamp.py --check-cache` (also the default).
 On a match, CI builds `Grothe` and checks `scratch/Axioms.lean` with
-`scripts/check_axioms.py`; on a mismatch it builds nothing (a cold cap build
-takes hours).
+`scripts/check_axioms.py`; a GitHub-hosted check only runs when a cache with the
+current caps digest exists.
 This checks `CapNodes` against the current proof layer; Lake reuses cached
 native results only when its dependency hashes permit it.
 
-A missing or mismatched marker fails closed and dispatches the runner's
-heavy job: `caps` for a branch, `warm` for master. The heavy job builds
+When no verified cache matches the caps digest (part of the cache key),
+CI's route job sends the same check to the droplet's runner, which builds
 `Grothe`, checks the axiom report, and only then calls
-`scripts/caps_stamp.py --mark-cache`. A `caps` run saves a verified branch
-cache and repeats the check. A `ready/` caps run uses the branch merged
-with current master.
-
-This combined delivery changes the workflow, so it uses a pull request
-after the combined branch is green; the user merges it. The later master
-`warm` run reuses the runner's persistent build and refreshes the canonical
+`scripts/caps_stamp.py --mark-cache` and saves the cache. A `ready/` check
+uses the branch merged with current master. After the merge, master's check
+also runs on the droplet and reuses the runner's persistent build, refreshing the canonical
 master cache. One runner build supplies validation, branch replay and the
 subsequent master cache; do not launch an independent droplet verification.
 

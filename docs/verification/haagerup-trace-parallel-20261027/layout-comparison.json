@@ -1,0 +1,159 @@
+{
+  "agent": "codex-aa04",
+  "change": "parallel scheduling only; arithmetic literals and named declarations unchanged",
+  "old_trace_depth": 20,
+  "new_trace_depth": 6,
+  "old_files": 21,
+  "new_files": 21,
+  "old_bytes": 4485165,
+  "new_bytes": 4485639,
+  "old_lines": 135165,
+  "new_lines": 135153,
+  "numeric_modules": {
+    "Numeric00": {
+      "facts": 42,
+      "estimated_products": 29115
+    },
+    "Numeric01": {
+      "facts": 42,
+      "estimated_products": 29115
+    },
+    "Numeric02": {
+      "facts": 43,
+      "estimated_products": 29120
+    },
+    "Numeric03": {
+      "facts": 45,
+      "estimated_products": 29080
+    },
+    "Numeric04": {
+      "facts": 49,
+      "estimated_products": 29095
+    },
+    "Numeric05": {
+      "facts": 47,
+      "estimated_products": 29100
+    },
+    "Numeric06": {
+      "facts": 49,
+      "estimated_products": 29085
+    },
+    "Numeric07": {
+      "facts": 47,
+      "estimated_products": 29090
+    },
+    "Numeric08": {
+      "facts": 42,
+      "estimated_products": 29085
+    },
+    "Numeric09": {
+      "facts": 49,
+      "estimated_products": 29085
+    },
+    "Numeric10": {
+      "facts": 42,
+      "estimated_products": 29085
+    },
+    "Numeric11": {
+      "facts": 42,
+      "estimated_products": 29085
+    },
+    "Numeric12": {
+      "facts": 47,
+      "estimated_products": 29100
+    },
+    "Numeric13": {
+      "facts": 50,
+      "estimated_products": 29075
+    },
+    "Numeric14": {
+      "facts": 43,
+      "estimated_products": 29105
+    },
+    "Numeric15": {
+      "facts": 44,
+      "estimated_products": 29096
+    }
+  },
+  "imports": {
+    "Checks": [
+      "Bindings"
+    ],
+    "Numeric00": [
+      "Shared"
+    ],
+    "Numeric01": [
+      "Shared"
+    ],
+    "Convolution": [],
+    "Numeric10": [
+      "Shared"
+    ],
+    "Numeric06": [
+      "Shared"
+    ],
+    "Numeric07": [
+      "Shared"
+    ],
+    "Numeric11": [
+      "Shared"
+    ],
+    "Numeric04": [
+      "Shared"
+    ],
+    "Numeric12": [
+      "Shared"
+    ],
+    "Assembly": [
+      "Numeric00",
+      "Numeric01",
+      "Numeric02",
+      "Numeric03",
+      "Numeric04",
+      "Numeric05",
+      "Numeric06",
+      "Numeric07",
+      "Numeric08",
+      "Numeric09",
+      "Numeric10",
+      "Numeric11",
+      "Numeric12",
+      "Numeric13",
+      "Numeric14",
+      "Numeric15"
+    ],
+    "Numeric08": [
+      "Shared"
+    ],
+    "Bindings": [
+      "Assembly"
+    ],
+    "Numeric09": [
+      "Shared"
+    ],
+    "Numeric13": [
+      "Shared"
+    ],
+    "Numeric05": [
+      "Shared"
+    ],
+    "Numeric02": [
+      "Shared"
+    ],
+    "Numeric14": [
+      "Shared"
+    ],
+    "Numeric15": [
+      "Shared"
+    ],
+    "Numeric03": [
+      "Shared"
+    ],
+    "Shared": [
+      "Convolution"
+    ]
+  },
+  "baseline_trace_seconds": 1372.248,
+  "runtime_effect_measured": false,
+  "lean_build_run": false
+}

@@ -119,8 +119,9 @@ The Lean concrete theorem accepts these facts as `ComparisonInputs`: an exact
 error decomposition, the component norm bounds, and spectral support. It then
 proves the energy comparison. The raw Gaussian integrations, source tail
 enclosures, the identification of the supplied approximation with that
-decomposition, table accuracy, and the analytic Schur/Hardy input are still
-external. The certificate therefore does not improve the hypothesis-free
+decomposition, and table accuracy are still external. For the concrete rounding,
+the analytic Schur/Hardy input is proved by `HardyReal.hardy_GT`.
+The certificate therefore does not improve the hypothesis-free
 Lean upper bound and does not assert that the old global comparison bound
 alone implies the stronger endpoint. It uses more of the structure already
 recorded in the inherited component certificate.
