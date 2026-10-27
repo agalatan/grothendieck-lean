@@ -8,6 +8,8 @@ namespace Grothe.Upper
 
 set_option maxRecDepth 16384
 set_option maxHeartbeats 0
+-- Bound each generated string-parser CBV check; default 100000 is insufficient.
+set_option cbv.maxSteps 10000000
 
 /-- Sum a raw row, retaining all entries, including any zero index. -/
 def tableRowMass (r : RowQ) : ℚ := (r.2.map fun e => e.2).sum
