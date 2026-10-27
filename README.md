@@ -294,6 +294,8 @@ Wick sum, with rate `alpha=1+j*phaseEpsQ` and no Taylor factorial inserted.
 auxiliary parameter. `TaylorWickReduction.inner_gradedHermite_hpow_eq_wick`
 then writes the actual inner product as the iterated auxiliary and
 first-coordinate Gaussian integral of this finite evaluator.
+`SoftPhaseLaplace` expresses each finite softened Gaussian mixture as the
+existing Laplace kernels, with termwise integrability explicit for integration.
 `LeanCertPilot` uses the pinned LeanCert interval integrator in kernel-only
 mode on a unit-parameter phase-kernel slice; it does not yet certify a
 production Gaussian error or remove an upper-bound hypothesis.
