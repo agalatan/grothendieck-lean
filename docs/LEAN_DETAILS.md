@@ -96,6 +96,19 @@ and weighted-energy identities have no additional analytic premises.
 `a_n − f(0) ξ_n` and `b_n − g(0) ξ_n`, preserving the signed Hermite phase
 coefficient `ξ_n`, and equal the actual continuous energy integrals.
 
+`OriginPhaseCoefficients` identifies `ξ_n = (-1)^n sqrt(haagCoeff n)` from
+the public Hermite recurrence and the existing phase-energy identity.
+`OriginPhaseTail` proves the full weighted suffix
+`Σ_{n≥N} |ξ_n|²/(2n+1)² ≤ 1/(48 N³)` for `N≥1` by Wallis comparison and
+finite telescoping. `OriginTail` subtracts a visible prefix from the actual
+weighted energy, retains signed endpoint cancellation, and applies finite
+Cauchy–Schwarz before passing to the complete tail. At mode 120, total caps
+`12.671`, `12.674` and visible lower bounds `11.497`, `11.498` imply the
+rational tail cap `6457/25000000 = 0.00025828`. `origin_tail_of_visible` in
+`OriginTailBudget` converts these four still-explicit numerical inputs into
+exactly the origin-tail hypothesis of the accepted HJM assembly. Its exact
+weighted cap is strictly below the current `originTailBudget`.
+
 `OriginApproximation` proves the zero-safe algebraic bound
 `‖W z - phase(z)‖ ≤ |W² ‖z‖² - 1|` for `W ≥ 0`, with a sharper rational
 denominator variant. `OriginApproximationBudget` transfers a uniform interior
