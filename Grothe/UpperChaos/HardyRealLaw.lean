@@ -104,6 +104,33 @@ lemma mn_11 : m01 ^ 2 + m11 ^ 2 + n01 ^ 2 + n11 ^ 2 = 1 := by
 
 end MN
 
+/-- **The law swap**: the smoothed Mehler pair has the law of `(u, Ru + Sw)`. -/
+theorem law_swap {p q : ℝ} (hp : |p| ≤ 1) (hq : |q| ≤ 1) {a b c : ℝ}
+    (ha : a = m00 ^ 2 * p + m01 ^ 2 * q) (hb : b = m00 * m01 * p + m01 * m11 * q)
+    (hc : c = m01 ^ 2 * p + m11 ^ 2 * q) (h : 0 < k11 a b) (hd : 0 < kdet a b c) :
+    (mu4.prod (mu2.prod mu2)).map (mehlerPair p q) = (mu2.prod mu2).map (pairMap a b c) := by
+  have hσ₁ : √(1 - p ^ 2) ^ 2 = 1 - p ^ 2 := Real.sq_sqrt (by nlinarith [abs_le.1 hp, sq_abs p])
+  have hσ₂ : √(1 - q ^ 2) ^ 2 = 1 - q ^ 2 := Real.sq_sqrt (by nlinarith [abs_le.1 hq, sq_abs q])
+  have hs₁ : sig (p : ℂ) = ((√(1 - p ^ 2) : ℝ) : ℂ) := by simp [sig, Complex.norm_real, sq_abs]
+  have hs₂ : sig (q : ℂ) = ((√(1 - q ^ 2) : ℝ) : ℂ) := by simp [sig, Complex.norm_real, sq_abs]
+  apply Measure.ext_of_charFunDual
+  ext L
+  rw [charFunDual_map, charFunDual_map, show mu4 = mu2.prod mu2 from rfl, charFunDual_prod, charFunDual_prod,
+    charFunDual_prod, charFunDual_mu2, charFunDual_mu2, charFunDual_mu2, charFunDual_mu2, charFunDual_mu2,
+    charFunDual_mu2, ← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]
+  have e1 := cov_eq mn_00 mn_01 mn_11 hσ₁ hσ₂ ha hb hc h hd ![Lc L 0 1, Lc L 1 1, Lc L 2 1, Lc L 3 1]
+  have e2 := cov_eq mn_00 mn_01 mn_11 hσ₁ hσ₂ ha hb hc h hd ![Lc L 0 I, Lc L 1 I, Lc L 2 I, Lc L 3 I]
+  simp only [covMehler, covPair, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+    Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons] at e1 e2
+  congr 1
+  simp only [Q, ContinuousLinearMap.comp_apply, ContinuousLinearMap.inl_apply, ContinuousLinearMap.inr_apply,
+    mehlerPair, pairMap, LinearMap.coe_toContinuousLinearMap', LinearMap.coe_mk, AddHom.coe_mk,
+    smoothArg, Xof, Yof, mY, mulRc, mulSc, hs₁, hs₂]
+  simp only [L_apply, dual_apply]
+  simp
+  push_cast
+  linear_combination (-(1 : ℂ) / 4) * ((e1 : ℂ) + (e2 : ℂ))
+
 end
 
 end Grothe.UpperChaos.HardyReal
