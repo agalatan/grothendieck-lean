@@ -75,7 +75,7 @@ theorem moment1_spec {rate : ℚ} (hrate : 0 < rate) (j a b k : ℕ) (p : List �
       (∫ u, momentWeight rate j a b k u * he1 p (conj u.1 * u.2).re
         ∂gaussC.prod gaussC) = (moment1 rate j a b k p : ℝ) := by
   have hp : (0 : ℝ) < rate := by exact_mod_cast hrate
-  refine integral_horner (gaussC.prod gaussC) (fun u => (conj u.1 * u.2).re)
+  refine integral_horner (α := ℤ) (gaussC.prod gaussC) (fun u => (conj u.1 * u.2).re)
     (fun n => momentWeight rate j a b n) (fun c _ => (c : ℝ))
     (fun n c => (c : ℚ) * invariantMoment rate a b j n) ?_ ?_ ?_ p k
   · intro n u
