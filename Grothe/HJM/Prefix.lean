@@ -59,7 +59,7 @@ lemma compCoeff_cHi_eq_zero (P : ℝ[X]) {K n : ℕ} (hn : n < K) : compCoeff (c
   refine (tsum_congr fun k => ?_).trans tsum_zero
   by_cases hk : k < K
   · simp [cHi, hk]
-  · rw [compTerm, coeff_X_pow_mul', if_neg (by omega), mul_zero]
+  · rw [compTerm, coeff_X_pow_mul', ite_eq_right_iff.mpr fun h => absurd h (by omega), mul_zero]
 
 theorem compCoeff_haag_eq_head {P : ℝ[X]} (hP : l1 P ≤ 1) {K n : ℕ} (hn : n < K) :
     compCoeff haagCoeff P n = Real.pi / 4 * (P * hornerP (X * P ^ 2) (haagList K)).coeff n := by
