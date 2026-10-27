@@ -52,7 +52,7 @@ include hpos
 theorem chaos3_fourth_le {F : MvPolynomial ι ℝ} (hF : Chaos3 F) :
     E (F * F * (F * F)) ≤ 93 * E (F * F) ^ 2 := by
   clear hpos
-  simpa only [pow_succ, pow_zero, mul_one, mul_assoc] using hF.fourth_le hE
+  simpa only [pow_succ, pow_zero, one_mul, mul_one, mul_assoc] using hF.fourth_le hE
 
 /-- **The fourth-moment cap** for a normalized pair in the third chaos: `E U² ≤ 62`. -/
 theorem gE_radU_sq_le {a b : MvPolynomial ι ℝ} (ha : Chaos3 a) (hb : Chaos3 b)

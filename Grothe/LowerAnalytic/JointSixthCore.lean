@@ -215,7 +215,7 @@ lemma j2_of_j5 {s h x m : ℝ} (hs : 0 ≤ s) (hh : 0 ≤ h) (hx : 0 ≤ x)
   have hj := joint_scalar hs hh hx hchi ht
     (c1 := 216) (c2 := 480) (c3 := 144) (by norm_num) (by norm_num) (by norm_num)
   apply hm.trans
-  convert hj using 1 <;> field_simp <;> ring
+  convert hj using 1 <;> (field_simp; ring)
 
 /-- The scalar passage from J6 to J3. -/
 lemma j3_of_j6 {s h x m : ℝ} (hs : 0 ≤ s) (hh : 0 ≤ h) (hx : 0 ≤ x)
@@ -226,7 +226,7 @@ lemma j3_of_j6 {s h x m : ℝ} (hs : 0 ≤ s) (hh : 0 ≤ h) (hx : 0 ≤ x)
   have hj := joint_scalar hs hh hx hchi ht
     (c1 := 216) (c2 := 216) (c3 := 1665 / 4) (by norm_num) (by norm_num) (by norm_num)
   apply hm.trans
-  convert hj using 1 <;> field_simp <;> ring
+  convert hj using 1 <;> (field_simp; ring)
 
 /-- Fourth cumulant in the real-kernel normalization. -/
 lemma circular_j1 [DecidableEq ι] {E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
