@@ -2,6 +2,7 @@ import Grothe
 
 #print axioms Grothe.DiskKernel.dominated
 #print axioms Grothe.DominatedKernel.comp_radial
+#print axioms Grothe.DominatedKernel.mixture
 #print axioms Grothe.Haag.phaseMoment_weighted
 #print axioms Grothe.HaagerupCanonical.coefficient_check
 #print axioms Grothe.HaagerupCanonical.completed_check
@@ -614,6 +615,7 @@ import Grothe
 #print axioms Grothe.head_le
 #print axioms Grothe.head_residual_le
 #print axioms Grothe.linear_lower
+#print axioms Grothe.mixture_bound
 #print axioms Grothe.residual_split
 #print axioms Grothe.tail_le
 #print axioms Grothe.tail_numeric
