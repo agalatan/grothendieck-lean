@@ -433,6 +433,13 @@ energy lower bounds.
 rational mass and weighted-mass bounds. They are candidates for certifying
 visible energy by a single signed correlation per response; the needed
 Gaussian correlation enclosures remain separate proof obligations.
+The visible-energy interface uses one signed polynomial correlation per
+response and the Gaussian `L²` approximation budget. The strengthened phase
+tail permits the common numerical targets of total energy at most `12.7` and
+visible energy at least `11.5` for each response. A signed polynomial moment
+enclosure integrates each complete polynomial before bounding its Taylor
+remainder; its concrete correlation checks and the total-energy enclosures
+remain to be supplied.
 These structural results introduce no native facts. The pinned 120-entry interval tables are
 provenance data: their integral enclosures and the two numerical energy bounds still require
 Lean proofs before the six-branch numerical bound follows. See [the origin certificate inventory](data/hjm/origin/README.md).

@@ -140,6 +140,18 @@ them assert a Gaussian correlation enclosure. That enclosure still needs its
 own integration and approximation proof. `tools/gen_hjm_origin_witnesses.py`
 reproduces the data and arithmetic checks from the pinned input.
 
+`OriginVisibleEnergy` bounds a visible prefix from one finite signed test
+correlation, accounts for the common Gaussian `L²` approximation, and derives
+the signed endpoint phase moment from the Haagerup recurrence.
+`OriginWitnessLaguerre` identifies the witness list recurrence with the actual
+factorial-normalized Hermite radial polynomial. `OriginMomentEnclosure`
+integrates a whole signed polynomial on each phase subpanel, with exact
+Taylor-remainder and exponential enclosures. These interfaces retain the
+concrete finite correlation and energy checks as hypotheses.
+`origin_tail_of_symmetric_energy_caps` in `OriginSymmetricTailBudget` gives
+the assembly's existing tail hypothesis if each total energy is at most
+`12.7` and each visible energy is at least `11.5`.
+
 No native facts are introduced. The full concrete radial energy identity is
 proved; the coefficient-table enclosures and two numerical energy bounds
 remain separate obligations.
