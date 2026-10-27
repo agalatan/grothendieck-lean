@@ -125,7 +125,10 @@ theorem second_last_band_error_of_source
   have hq : secondResidualCapQ + secondCenterBandUpperQ 3 ≤ 3474 / 1000000000 := by
     decide +kernel
   have hr : (secondResidualCapQ : ℝ) + (secondCenterBandUpperQ 3 : ℝ) ≤
-      (3474 / 1000000000 : ℝ) := by exact_mod_cast hq
+      (3474 / 1000000000 : ℝ) := by
+    have hcast : ((secondResidualCapQ + secondCenterBandUpperQ 3 : ℚ) : ℝ) ≤
+        ((3474 / 1000000000 : ℚ) : ℝ) := Rat.cast_le.mpr hq
+    simpa only [Rat.cast_add, Rat.cast_div, Rat.cast_ofNat] using hcast
   rw [map_sub]
   exact (norm_sub_le _ _).trans (add_le_add hsource hc |>.trans hr)
 
