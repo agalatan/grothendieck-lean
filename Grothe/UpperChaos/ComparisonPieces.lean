@@ -282,7 +282,7 @@ theorem difference_pieces :
     h0, h1, h2, h3, ← sum_srcP (v := v) (c₁ := c₁) (c₂ := c₂) (c₃ := c₃) u, Fin.sum_univ_four]
 
 /-- **`ComparisonInputs` from the 18 explicit norm bounds.** -/
-theorem comparisonInputs_of_norms
+def comparisonInputs_of_norms
     (hnorm : ∀ k, ‖piece hφ hv h₁ h₂ h₃ k‖ ≤ ((comparisonBand k).error : ℝ)) :
     ComparisonInputs ((memLp_GT hφ).toLp GT) ((memLp_Xfun hφ hv).toLp (Xfun v)) :=
   ⟨piece hφ hv h₁ h₂ h₃, difference_pieces hφ hv h₁ h₂ h₃, hnorm,
