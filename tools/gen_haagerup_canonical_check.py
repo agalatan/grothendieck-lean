@@ -103,6 +103,7 @@ def render_blocks(data, parameters):
     """Build declaration blocks with all literal values derived from inputs."""
     require(data["seed_power"] == 17, "generator recipe requires seed_power=17")
     start, order, cutoff = (int(parameters[name]) for name in ("start", "order", "cutoff"))
+    require(start == 64 and order == 10, "combined-seed budget requires start=64 and order=10")
     seed_power = data["seed_power"]
     last_coefficient = start + order
     pl = [Q(value) for value in data["P"]]
@@ -146,7 +147,7 @@ def render_blocks(data, parameters):
     weighted_budget = (Q(21, 20)*sum(abs(c)*Q(5, 3)**j for j, c in enumerate(coeff[:start])) +
                        9*Q(21, 20)*Q(5, 3)**start*sum(abs(d)*15**j for j, d in enumerate(ds[:order])) + 1)
     eta = Q(data["defect_cap"])
-    remainder_budget = (2**order*ds[order] + eta*sum(2**j*ds[j] for j in range(order)))/(1-eta)
+    remainder_budget = (Q(1,16)*ds[order] + eta*sum(ds[:order]))/(1-eta)
     require(weighted_budget <= WEIGHTED_CAP, "weighted completion budget exceeds cap")
     require(remainder_budget <= parameters["remainderCap"], "alternating remainder budget exceeds cap")
 
@@ -297,8 +298,8 @@ def render_blocks(data, parameters):
     difference_majorant = horner_majorant("15", [f"d{j}_{start}" for j in range(order)])
     weighted_literal = (f"(21/20)*{head_majorant} + "
                         f"(9*((21/20)*(5/3)^{start}))*{difference_majorant} + 1")
-    remainder_sum = " + ".join(f"2^{j}*d{j}_{start}" for j in range(order))
-    remainder_literal = f"(2^{order}*d{order}_{start} + defectCapQ*({remainder_sum}))/(1-defectCapQ)"
+    remainder_sum = " + ".join(f"d{j}_{start}" for j in range(order))
+    remainder_literal = f"((1/16)*d{order}_{start} + defectCapQ*({remainder_sum}))/(1-defectCapQ)"
     lemma("weighted_literal_ok", f"{weighted_literal} ≤ 10^13")
 
     rat_list_def("plQ", pl)

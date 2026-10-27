@@ -3,7 +3,7 @@
 This inventory covers the named native facts allowed for the single `Grothe`
 target, plus the four anonymous table diagnostics below. The current allowlist
 has **88 named facts: 60 cap ranges, five Hardy facts and 23 others**. The default
-report contains **605 print directives**, with **385 required declarations**.
+report contains **607 print directives**, with **387 required declarations**.
 These are source/registry counts. Normal `ready/*` delivery CI builds and audits
 the combined tree before merging it.
 
@@ -32,10 +32,11 @@ printed in `scratch/Axioms.lean`. All sixteen scalar-tail reports use only
 standard axioms. Source and report hashes are recorded under
 `data/scalar-tail-refinement/verification/`.
 
-**Canonical upper-bound route (#113/#129).** `Grothe.haagerup_bound` uses four
-`Grothe.HaagerupCanonical` kernel checks. The focused policy requires 96 results
-and permits zero native axioms. The degree-20 certificate targeting 1.404909133
-is awaiting delivery CI; the older verification records retain their pinned inputs.
+**Canonical upper-bound route (#138).** `Grothe.haagerup_bound` uses four
+`Grothe.HaagerupCanonical` kernel checks. The focused policy requires 98 results
+and permits zero native axioms. The degree-20 certificate and bounds on combined
+resolvent seeds give the endpoint 1.404909132791; verification records apply to
+their pinned inputs.
 Large convolutions are proved in continuation blocks of at most five left
 coefficients. The generic `convI_append` identity preserves the original
 outward arithmetic order; recurrence and exact input-binding lemmas recover

@@ -17,6 +17,7 @@ import Grothe
 #print axioms Grothe.HaagerupCanonical.differences_length
 #print axioms Grothe.HaagerupCanonical.finite_identity
 #print axioms Grothe.HaagerupCanonical.norm_P
+#print axioms Grothe.HaagerupCanonical.norm_completion_seed
 #print axioms Grothe.HaagerupCanonical.norm_defect_of_check
 #print axioms Grothe.HaagerupCanonical.norm_resolvent_ratio
 #print axioms Grothe.HaagerupCanonical.norm_scaledP
@@ -454,6 +455,7 @@ import Grothe
 #print axioms Grothe.Upper.ResolventCertificate.summable_abs_coeff
 #print axioms Grothe.Upper.ResolventCertificate.tsum_abs_coeff_eq_l1
 #print axioms Grothe.Upper.ResolventCompletion.composition_completion_bound
+#print axioms Grothe.Upper.ResolventCompletion.composition_completion_bound_of_seeds
 #print axioms Grothe.Upper.ResolventTail.compCoeff_tail_eq_sum_coeff
 #print axioms Grothe.Upper.ResolventTail.compTerm_coeff_zero
 #print axioms Grothe.Upper.ResolventTail.compTerm_geometric

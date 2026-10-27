@@ -104,7 +104,12 @@ def main():
     assert weighted_bound <= 10**13
     finite_tail = Q(10**13)/rho**cutoff
     assert finite_tail <= head_cap-prefix_cap
-    remainder = (2**order*ds[order] + eta*sum(2**j*ds[j] for j in range(order)))/(1-eta)
+    # At j=7, eight copies of RP^17 fit inside the combined seed.
+    # Three further copies of RA cost at most 2^3, yielding B_10 <= 1/32.
+    assert k == 64 and order == 10 and seed == 17
+    assert 8*seed <= 2*k+1+2*7
+    assert Q(1,2)**8*2**3 == Q(1,32)
+    remainder = (Q(1,16)*ds[order] + eta*sum(ds[:order]))/(1-eta)
     assert remainder <= remainder_cap
     assert pl[0]-head_cap-remainder_cap > 0
     endpoint = Q(4)/(Q('3.14159265358979323846')*(pl[0]-head_cap-remainder_cap))

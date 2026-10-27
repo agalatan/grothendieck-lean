@@ -312,7 +312,7 @@ headline endpoints are unchanged.
   formal verification.
 
 **Unconditional upper bound (#133).**
-`Grothe.haagerup_bound : IsGrothendieckBound (175613641599/125000000000)`
+`Grothe.haagerup_bound : IsGrothendieckBound (1404909132791/1000000000000)`
 (`Grothe/Haagerup/Power.lean`), with no external hypothesis. The analysis is in
 `Grothe/Haagerup/`: the shared Gaussian phase and planar laws (`Phase`); the charge-one
 Hermite coefficient, determined by odd Gaussian moments and the recurrence
@@ -335,18 +335,24 @@ The coefficient norm of P is at most one.
 `Haagerup/CompleteMonotone.lean` applies the parameter-shift identity for rising-factorial
 quotients to prove nonnegativity of every Haagerup coefficient difference.
 `Upper/ResolventCompletion.lean` proves the all-order resolvent expansion with its defect
-and vanishing-boundary remainder. The concrete construction combines 64 series terms with
+and a remainder bounded by the combined seed norms ‖(−RA)ʲRT‖₁. A factor Xᴶ
+makes the finite boundary vanish below index J; the theorem requires no limit hypothesis.
+The concrete construction combines 64 series terms with
 ten resolvent correction terms before taking absolute values. The prefix check uses
 a cap of 368411/(5·10¹⁵) for its first 165 coefficients. `Upper/WeightedTail.lean` bounds
 all omitted coefficients of a polynomial F by ‖F((3/2)X)‖₁/(3/2)^165.
 The weighted coefficient estimate gives ‖F((3/2)X)‖₁ ≤ 10¹³ and an omitted contribution
 at most 10⁻¹⁶. The full normalized finite-residual cap is 736823/10¹⁶,
-and the infinite-remainder cap is 10169/10¹⁶, for a total of 746992/10¹⁶. The weighted estimate
+and the infinite-remainder cap is 2/10¹⁶, for a total of 736825/10¹⁶. The weighted estimate
 concerns a finite polynomial and assumes no analytic continuation.
 It uses the actual sums Σ_{k<64} r_k(5/3)^k and
 Σ_{j<10} (Δʲr)₆₄·15ʲ, together with ‖P((3/2)X)‖₁≤21/20 and
 ‖R((3/2)X)‖₁≤9; their combined majorant is below 1.075·10¹².
-The infinite-remainder estimate likewise retains the individual forward differences.
+The infinite-remainder estimate retains the individual forward differences and
+cancellation within each combined seed. Eight copies of RP¹⁷ give the seventh seed
+norm at most 1/256; three further ratio factors give the tenth seed norm at most 1/32.
+Every earlier seed norm is at most 1/2. The resulting rational budget is
+[(1/16)Δ¹⁰r₆₄ + 10⁻¹²Σ_{j<10}Δʲr₆₄]/(1−10⁻¹²).
 The proof uses the inverse defect≤10⁻¹², the short seed norm ‖RP¹⁷‖₁≤249/500,
 and the elementary bound ‖RA‖₁≤2. It needs no fourth-power or gamma estimate.
 `CanonicalData.lean` states the exact parameters. The arithmetic definitions are in
@@ -362,13 +368,12 @@ the arithmetic equalities nor the trust assumptions.
 `CanonicalProof.lean` assembles the bound from them. The regenerated
 `coefficient_check` proves two rational budget inequalities: the weighted
 completion is at most 10¹³ and the combined infinite remainder is at most
-10169/10¹⁶. It no longer needs separate caps for r₆₄ and its tenth difference.
+2/10¹⁶. It no longer needs separate caps for r₆₄ and its tenth difference.
 The reproducibility command
 `tools/gen_haagerup_canonical_check.py --check` verifies byte-for-byte reproducibility;
 generation is separate from Lean proof checking. The public wrapper gives
-the theorem K≤1.404909132792. The focused policy requires 96 results using only
-`propext`, `Classical.choice`, and `Quot.sound`. The regenerated numerical trace
-passed [delivery CI](https://github.com/agalatan/grothendieck-lean/actions/runs/40432615845).
+the theorem K≤1.404909132791. The focused policy requires 98 results using only
+`propext`, `Classical.choice`, and `Quot.sound`.
 `PowerData.lean` contains only the six definitions `pl`, `rl`, `seedPower`,
 `seedCap`, `defectCap`, and `slope`. The data module has no numerical theorem;
 all four acceptance proofs come from the canonical trace.
@@ -709,8 +714,8 @@ fact (`certRowsK`, `certBatchesK`); `Parts` holds the shared chunk definitions.
 checks independently of a cover. The active endpoint uses these eight facts,
 one additional law-node fact and five refined-cover facts (14 native inputs).
 The complete registry has 88 native facts: 60 cap ranges, five Hardy facts
-(four arc parts and the region) and 23 others. The default report has 605 print
-directives and 385 required declarations. These are source/registry counts;
+(four arc parts and the region) and 23 others. The default report has 607 print
+directives and 387 required declarations. These are source/registry counts;
 delivery CI checks the combined tree.
 
 The repository-wide axiom audit permits `propext`, `Classical.choice`, `Quot.sound`,

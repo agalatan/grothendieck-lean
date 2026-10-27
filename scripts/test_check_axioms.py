@@ -180,9 +180,17 @@ class CheckAxiomsTests(unittest.TestCase):
 
     def test_saved_multiline_power_report_passes(self):
         path = ROOT / "docs/verification/haagerup-canonical-20261026/axioms.log"
-        code, stdout, stderr = self.run_main(["--haagerup-power"], path.read_text())
+        text = path.read_text()
+        reports = CHECKER.parse_reports(text)
+        self.assertEqual(len(reports), 96)
+        # Preserve the historical multiline fixture while testing today's policy.
+        required, _ = CHECKER.audit_policy("haagerup-power")
+        missing = required - {name for name, _ in reports}
+        text += "".join(f"'{name}' depends on axioms: [propext, Classical.choice, Quot.sound]\n"
+                        for name in sorted(missing))
+        code, stdout, stderr = self.run_main(["--haagerup-power"], text)
         self.assertEqual(code, 0, stderr)
-        self.assertIn("checked 96 theorems; native_decide facts used: 0 of 0", stdout)
+        self.assertIn(f"checked {96 + len(missing)} theorems; native_decide facts used: 0 of 0", stdout)
 
     def test_duplicates_apostrophes_quoted_names_and_empty_axioms_pass(self):
         extra = ("'Grothe.foo'' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n"

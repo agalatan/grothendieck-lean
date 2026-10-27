@@ -33,7 +33,7 @@
 \Large $1.401697049825\;<\;\KG\;<\;1.404598149218$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, resting on explicitly stated
 analytic and computer-assisted inputs (Section~\ref{sec:trust}).\\[4pt]
-Unconditional Lean theorem: $\KG\le1.404909132792$, using only the three standard axioms.\\[3pt]
+Unconditional Lean theorem: $\KG\le1.404909132791$, using only the three standard axioms.\\[3pt]
 Written refinement of the published mixed rounding: $\KG<1.40489844$; its new power and tail steps are checked in Lean.\vspace{4pt}
 \end{minipage}}
 \end{center}
@@ -78,7 +78,7 @@ year & who & lower bound & upper bound\\\midrule
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & $1.404898554746$\\
 Oct 2026 & \textbf{this work} & $\mathbf{1.401697049825}$ & $\mathbf{1.404598149218}$\\
-Oct 2026 & this work (unconditional) & & $1.404909132792$\\\bottomrule
+Oct 2026 & this work (unconditional) & & $1.404909132791$\\\bottomrule
 \end{tabular}
 \end{center}
 Haagerup's integral
@@ -104,7 +104,7 @@ correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
 If $H(t)=c\,t+r(t)$ with $\|r\|_A=\sum_k|c_k-c\,\delta_{k0}|<c$, a tensor-power argument (Krivine's trick) gives
 $\KG\le1/(c-\|r\|_A)$. Haagerup's choice $f=\ph$ gives $1.40491$. Lean proves Haagerup's identity for $f=\ph$ from scratch
 (Hermite coefficients, the Mehler formula, and the law of orthonormal Gaussian coordinates); with a degree-41 preprocessor, $64$ exact terms and a canonical resolvent completion
-it proves $\KG\le1.404909132792$ (\lean{haagerup\_bound}) without external hypotheses or native evaluation axioms. Our sharp rounding is a smoothed two-coordinate phase rounding,
+it proves $\KG\le1.404909132791$ (\lean{haagerup\_bound}) without external hypotheses or native evaluation axioms. Our sharp rounding is a smoothed two-coordinate phase rounding,
 $F_0=\ph\bigl(z+\sqrt{1+a^2}\,v(|z|^2)\,w\bigr)$ with a twelve-term Laguerre profile $v$, multiplied by the cubic Taylor
 polynomial of a damped polynomial phase $\varphi$: $T=F_0P_3(\varphi)$, $P_3(x)=1+ix-x^2/2-ix^3/6$. The identity
 $|P_3(x)|^2=1-x^4(3-x^2)/36$ and the proved bound $\varphi^2\le99/100$ (hence $|\varphi|<1$) give $|T|\le1$, and a disk-valued rounding is as good as a unimodular one.
@@ -224,18 +224,18 @@ The input identification remains external. Finite table accuracy $6847009/(5\cdo
 The Hardy tail $30488839/10^{15}$ ($3.35\%$, weighted square sum $\le 7/4$ at radius $4149/4000$) is proved
 (\lean{HardyReal.hardy\_GT}).
 The native head is $28153/10^{12}$ ($3.09\%$).\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (175613641599/125000000000)}}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Unconditional upper bound.}\newline\lean{haagerup\_bound : IsGrothendieckBound (1404909132791/1000000000000)}}\\[2pt]
 Haagerup's identity for the phase rounding, $\E[\overline{\ph\langle g,x\rangle}\,\ph\langle g,y\rangle]=\sum_k\frac\pi4\frac{(1/2)_k^2}{k!(k+1)!}z|z|^{2k}$
 (Hermite coefficients from Gaussian radial moments and a polynomial moment recurrence, the Mehler formula, reduction to two complex Gaussians); the transfer through
 a degree-41 preprocessor $p(t)=tP(t^2)$ with $\|P\|_1\le1$; $64$ exact terms, ten canonical resolvent corrections and an infinite remainder estimate; the finite arithmetic is kernel-checked
 &
-no external mathematical premise. The focused audit policy requires 96 results and permits zero native axioms. The sharper conditional bound above uses a different rounding and retains its explicitly listed Gaussian inputs.\\\bottomrule
+no external mathematical premise. The focused audit policy requires 98 results and permits zero native axioms. The sharper conditional bound above uses a different rounding and retains its explicitly listed Gaussian inputs.\\\bottomrule
 \end{tabular}
 \end{center}
-The 96-result focused audit policy permits only \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} for the unconditional upper bound.\par
+The 98-result focused audit policy permits only \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} for the unconditional upper bound.\par
 The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
-There are 88 native facts: 60 cap-range checks, five Hardy region and circle checks, and 23 others. The report \path{scratch/Axioms.lean} contains 605 print directives, with 385 required declarations.
+There are 88 native facts: 60 cap-range checks, five Hardy region and circle checks, and 23 others. The report \path{scratch/Axioms.lean} contains 607 print directives, with 387 required declarations.
 No \lean{sorry}; normal \path{ready/*} delivery CI builds the single target \lean{Grothe}, cap rows included, and checks its one axiom report before merging.
 The cap-range checks take about 21 CPU-hours cold, so CI replays them from a verified build cache.
 Its provenance hash covers 48 local computation
@@ -249,7 +249,7 @@ A digest alone is not verification. The localised-piece checkers
 likewise import only computable definitions and rational data; their campaign
 and final wiring remain separate. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
-the sharp upper bound retains external Gaussian component-error and table-accuracy inputs. The unconditional theorem proves $\KG\le1.404909132792$ using only the three standard axioms. Its order-$10$ completion passed \href{https://github.com/agalatan/grothendieck-lean/actions/runs/40432615845}{delivery CI}.
+the sharp upper bound retains external Gaussian component-error and table-accuracy inputs. The unconditional theorem proves $\KG\le1.404909132791$ using only the three standard axioms. Its order-$10$ completion retains cancellation within the resolvent seed products.
 Before the tail Cauchy--Schwarz step, the known linear coefficient's weighted square is deducted from $7/4$; this uses the same numerical hypotheses.
 Holomorphy under positive kernel decay, odd-series continuation and circle Parseval are proved.
 The holomorphy and Hardy assembly also cover separate measurable disk-valued left and right responses
@@ -279,12 +279,13 @@ Assume $\|P\|_1\le1$ and write $A=XP^2$, $T=X^KP^{2K+1}$ and $E=1-R(1-A)$. The c
 Writing $S(a)=\sum_{i\ge0}a_{K+i}TA^i$ coefficientwise, its exact remainder
 consists of $(-RA)^mS(\Delta^m r)$ and
 $E\sum_{j<m}(-RA)^jS(\Delta^j r)$. Abel summation bounds both terms;
-coefficient locality removes the finite boundary. Combining the head and
+the factor $X^J$ removes the finite boundary below index $J$ exactly,
+without a convergence-to-zero hypothesis. Combining the head and
 $Q_m$ before taking absolute values preserves their cancellation.
 
 For $K=64$ and $m=10$, the finite certificate uses a normalized completed-head cap
-$736823/10^{16}$ and an infinite-remainder cap $10169/10^{16}$.
-Their sum is $746992/10^{16}$.
+$736823/10^{16}$ and an infinite-remainder cap $2/10^{16}$.
+Their sum is $736825/10^{16}$.
 The degree-$20$ polynomial and degree-$64$ approximate inverse come from exact inverse-series
 recurrences, with $60$-bit dyadic normalization and rounding. The defect cap is $10^{-12}$.
 For the completed finite residual $F$, the prefix check requires an absolute
@@ -294,15 +295,16 @@ $\|F((3/2)X)\|_1\le10^{13}$.
 This estimate retains the actual coefficients and forward differences in their
 weighted sums, instead of using one common cap.
 The omitted coefficients cost at most $10^{13}/(3/2)^{165}<10^{-16}$.
-The polynomial data stay unchanged; the improvement comes from two further
-resolvent corrections and a sharper finite-tail estimate.
+The remainder estimate bounds each combined product $(-RA)^jRT$ before splitting
+its factors. Eight copies of the certified seed $RP^{17}$ give a seventh-seed norm
+at most $1/256$; three ratio factors give a tenth-seed norm at most $1/32$.
 This is a finite polynomial coefficient estimate, with no analytic-continuation
 hypothesis. Large convolutions are proved in continuation blocks of at most five
 left coefficients. A generic append identity preserves the original outward arithmetic
 order; recurrence and input-binding lemmas recover the exact checker statements
 without a new numerical premise. The Gaussian phase identity and tensor transfer reduce
-the theorem $\KG\le1.404909132792$ to these kernel-checked facts. The rational data module contains no native theorem.
-The focused upper-bound policy requires 96 results with zero native facts.
+the theorem $\KG\le1.404909132791$ to these kernel-checked facts. The rational data module contains no native theorem.
+The focused upper-bound policy requires 98 results with zero native facts.
 An independent directed replay in \path{tools/verify_haagerup_canonical.py}
 audits the complete polynomial and arithmetic.
 

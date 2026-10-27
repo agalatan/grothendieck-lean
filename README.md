@@ -5,13 +5,12 @@ complex Grothendieck constant:
 
 > **1.401697049825 < K_G^ℂ < 1.404598149218**
 >
-> **Unconditional Lean theorem: K_G^ℂ ≤ 1.404909132792.** Its proof uses only the three standard axioms.
+> **Unconditional Lean theorem: K_G^ℂ ≤ 1.404909132791.** Its proof uses only the three standard axioms.
 
 The two sharp bounds rest on explicitly stated analytic and computer-assisted inputs.
 The unconditional theorem has no external analytic premises. Its focused axiom policy
-requires 96 results and permits zero native evaluation axioms. The order-10 alternating
-completion passed [delivery CI](https://github.com/agalatan/grothendieck-lean/actions/runs/40432615845) for
-[#133](https://github.com/agalatan/grothendieck-lean/issues/133); the earlier degree-20 receipt is preserved separately.
+requires 98 results and permits zero native evaluation axioms. The order-10 completion
+uses bounds on combined resolvent products and exact coefficient locality.
 
 A separate **written unconditional refinement gives K_G^ℂ < 1.40489844**,
 using Heilman–Jones–Malavolta's published construction and numerical estimates.
@@ -51,7 +50,7 @@ classical and quantum correlations in two-party Bell experiments (real case).
 | Sept 2026 | Guo, Fang, Lu ([arXiv:2609.07000](https://arxiv.org/abs/2609.07000)) | 1.35584631827168 < K | |
 | Sept 2026 | Heilman, Jones, Malavolta ([arXiv:2609.25462](https://arxiv.org/abs/2609.25462)) | 1.4 < K | K < 1.404898554746 |
 | Oct 2026 | **this repository** | **1.401697049825 < K** | **K < 1.404598149218** |
-| Oct 2026 | this repository, unconditional Lean theorem | | K ≤ 1.404909132792 |
+| Oct 2026 | this repository, unconditional Lean theorem | | K ≤ 1.404909132791 |
 
 Haagerup's integral 1/γ† = 1.4045759…, γ† = ∫₀^{π/2} cos²t (1+sin²t)^{−1/2} dt, has been
 proposed as the exact value; it lies inside the interval, 2.22·10⁻⁵ below our upper bound.
@@ -259,7 +258,7 @@ with a mathematical account in [`docs/localized-comparison.tex`](docs/localized-
 The native head computation remains part of the proof.
 
 **Unconditional upper bound.**
-`Grothe.haagerup_bound : IsGrothendieckBound (175613641599/125000000000)`
+`Grothe.haagerup_bound : IsGrothendieckBound (1404909132791/1000000000000)`
 (`Grothe/Haagerup/Power.lean`, assembled in `CanonicalProof.lean` with finite checks in `CanonicalCheck.lean`), with **no external hypothesis**.
 Lean derives Haagerup's identity from the complex Hermite basis and Mehler formula,
 with the Gaussian phase coefficients determined by a polynomial moment recurrence:
@@ -273,17 +272,18 @@ A polynomial coefficient norm weighted by (3/2)ⁿ has cap 10¹³ and bounds all
 coefficients by 10⁻¹⁶, without an analytic-continuation input.
 The estimate retains the actual Haagerup coefficients and forward differences
 instead of replacing them all by one common cap.
-The completed-head cap is 736823/10¹⁶ and the infinite-remainder cap is 10169/10¹⁶,
-giving a total normalized residual cap of 746992/10¹⁶. This sharpens the completion
-while retaining the same degree-20 polynomial and degree-64 approximate inverse.
+The completed-head cap is 736823/10¹⁶ and the infinite-remainder cap is 2/10¹⁶,
+giving a total normalized residual cap of 736825/10¹⁶. The proof factors powers
+of the short seed RP¹⁷ inside the combined resolvent products before taking norms.
+For each coefficient prefix, a power of X makes the finite boundary vanish exactly;
+the general completion theorem needs no convergence-to-zero hypothesis.
 The coefficient argument, resolvent identity, checker soundness and matrix transfer
 are proved in Lean. Large convolutions are proved in continuation blocks of at most five left
 coefficients. The generic `convI_append` identity preserves the original
 outward arithmetic order; recurrence and exact input-binding lemmas recover
 the four checker statements without a new numerical premise.
-The focused audit policy requires 96 results using only the three standard axioms,
-with **no native-check dependency**. The numerical trace passed
-[delivery CI](https://github.com/agalatan/grothendieck-lean/actions/runs/40432615845).
+The focused audit policy requires 98 results using only the three standard axioms,
+with **no native-check dependency**.
 The degree-20 polynomial P and degree-64 resolvent R are generated from an exact
 inverse-series recipe, with 60-bit dyadic normalization and rounding. See
 [the complete proof and replay](docs/HAAGERUP_POWER.md), the
@@ -330,10 +330,10 @@ Every native check is single-threaded code (no `Task.spawn`).
 All other proofs, including the canonical finite checks, are kernel-checked.
 No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`, including the node caps.
-The report contains 605 print directives, with 385 required declarations and 88
+The report contains 607 print directives, with 387 required declarations and 88
 allowlisted native facts (60 cap ranges, five Hardy checks and 23 others).
 The focused report `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, allows
-no native axioms for its 96 selected unconditional upper-bound results.
+no native axioms for its 98 selected unconditional upper-bound results.
 Normal `ready/*` delivery CI builds and audits the combined tree before merging it.
 
 Joint-response proof interfaces retain shared Gram constraints, exact two-disc
