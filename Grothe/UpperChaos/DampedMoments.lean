@@ -128,6 +128,7 @@ theorem integral_moment_damped (a b : ℕ) {rate : ℝ} (hrate : 0 < rate) :
     have hp : rate⁻¹ * (√rate)⁻¹ ^ (a + a) = (rate ^ (a + 1))⁻¹ := by
       rw [← two_mul a, pow_mul, inv_pow, hs, pow_succ]
       field_simp [hrate.ne']
+      rw [← mul_pow, one_div, inv_mul_cancel₀ hrate.ne', one_pow]
     rw [hp, Complex.real_smul, Complex.ofReal_inv, Complex.ofReal_pow]
     ring
   · simp
@@ -151,7 +152,10 @@ theorem integrable_normSq_pow_damped (n : ℕ) {rate : ℝ} (hrate : 0 < rate) :
     rw [← mul_pow, Complex.mul_conj]
     push_cast
     rfl
-  simpa only [hp, RCLike.ofReal_re] using hi.re
+  have hi' := hi.re
+  change Integrable (fun z : ℂ => (z ^ n * conj z ^ n *
+    (exp (-(rate - 1) * Complex.normSq z) : ℂ)).re) gaussC at hi'
+  simpa only [hp, Complex.ofReal_re] using hi'
 
 /-- Every mixed monomial is integrable after a positive Gaussian tilt. -/
 theorem integrable_monomial_damped (a b : ℕ) {rate : ℝ} (hrate : 0 < rate) :

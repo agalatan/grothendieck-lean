@@ -150,7 +150,11 @@ theorem integrable_invariant_monomial_damped (a b j m : ℕ) {rate : ℝ} (hrate
       integrable_finsetSum _ fun t _ => integrable_invariantTerm hrate a b j m s t
   have he := funext (invariant_damped_expansion rate a b j m)
   rw [← he] at hi
-  simpa only [RCLike.ofReal_re] using hi.re
+  have hi' := hi.re
+  change Integrable (fun u : ℂ × ℂ => ((invariantMonomial a b j m u *
+    Real.exp (-(rate - 1) * (Complex.normSq u.1 + Complex.normSq u.2)) : ℝ) : ℂ).re)
+    (gaussC.prod gaussC) at hi'
+  simpa only [Complex.ofReal_re] using hi'
 
 private lemma integral_invariantTerm (a b j m s t : ℕ) {rate : ℚ} (hrate : 0 < rate) :
     (∫ u, invariantTerm (rate : ℝ) a b j m s t u ∂gaussC.prod gaussC) =
@@ -159,7 +163,8 @@ private lemma integral_invariantTerm (a b j m s t : ℕ) {rate : ℚ} (hrate : 0
           ((b + s + t).factorial : ℚ) / rate ^ (b + s + t + 1)
       else 0 : ℚ) : ℂ) := by
   have hp : (0 : ℝ) < rate := by exact_mod_cast hrate
-  rw [invariantTerm, integral_const_mul, integral_moment_damped_prod _ _ _ _ hp hp]
+  simp only [invariantTerm]
+  rw [integral_const_mul, integral_moment_damped_prod _ _ _ _ hp hp]
   by_cases h : 2 * j - s + (m - t) = s + t
   · have ha : a + (2 * j - s) + (m - t) = a + s + t := by omega
     have hb : b + (2 * j - s) + (m - t) = b + s + t := by omega

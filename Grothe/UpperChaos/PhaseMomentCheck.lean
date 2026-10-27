@@ -68,6 +68,7 @@ theorem evalG_convolve {α : Type} (ev : α → ℝ) (add mul : α → α → α
   | nil => simp [convolve]
   | cons a p ih =>
     have hmap : evalG ev (q.map (mul a)) x = ev a * evalG ev q x := by
+      clear ih
       induction q with
       | nil => simp
       | cons b q ih =>
@@ -83,13 +84,13 @@ theorem e1_mul1 (p q : List ℤ) (x : ℝ) : he1 (mul1 p q) x = he1 p x * he1 q 
 theorem e2_mul2 (p q : List (List ℤ)) (x y : ℝ) :
     he2 (mul2 p q) x y = he2 p x y * he2 q x y :=
   evalG_convolve _ _ _ _ (fun a b => e1_add1 a b y)
-    (fun a b => e1_mul1 a b y) (by simp [he1]) p q x
+    (fun a b => e1_mul1 a b y) (by simp) p q x
 
 /-- The exact trivariate product has the expected pointwise value. -/
 theorem e3_mul3 (p q : List (List (List ℤ))) (x y z : ℝ) :
     he3 (mul3 p q) x y z = he3 p x y z * he3 q x y z :=
   evalG_convolve _ _ _ _ (fun a b => e2_add2 a b y z)
-    (fun a b => e2_mul2 a b y z) (by simp [he2]) p q x
+    (fun a b => e2_mul2 a b y z) (by simp) p q x
 
 /-- Repeated integer convolution evaluates to the ordinary power. -/
 theorem e3_pow3 (p : List (List (List ℤ))) (n : ℕ) (x y z : ℝ) :
