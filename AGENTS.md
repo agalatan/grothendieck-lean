@@ -180,7 +180,13 @@ Deliver when the user says the work should go into master.
    - If master moved while CI was checking, CI re-dispatches the delivery against the new master by itself (a
      notice, not a failure). Do nothing.
    - Several `ready/` branches may be checked at the same time; the first green one moves master.
-6. **After the merge:** `scripts/sync_master.sh`, then either continue on the branch (§6 before the next delivery)
+6. **Watch your branches until they are merged or deleted.** `AGENT_ID=<your id> scripts/sync_master.sh` ends
+   with an audit of your remote branches: red checks, `ready/` branches that are green but not merged, conflicts
+   with the current master, branches already in master. Deal with every line: a red or conflicting branch is
+   merged with `origin/master`, fixed and pushed again (the same name); a green `ready/` branch that does not
+   merge has a conflict (fix it the same way) or changes `.github/workflows/` (open a PR); a stale branch is
+   deleted. A delivery is yours until it is on master.
+7. **After the merge:** `scripts/sync_master.sh`, then either continue on the branch (§6 before the next delivery)
    or, if you are done, clean up completely (§14).
 
 Report to the user: the `ready/` branch name, the CI run, and the resulting master commit.
@@ -401,5 +407,5 @@ build (`.lake/master-cache` in the main checkout, and the worktree `grothe-maste
 the shared Mathlib packages (`~/grothe-caps/.lake/packages`). If something looks stale but is not yours, list it for
 the user.
 
-**Check periodically:** `git worktree list`, `git branch -vv`, `git branch -r`, `scripts/droplet_status.sh` and
+**Check periodically:** `AGENT_ID=<your id> scripts/sync_master.sh` (the branch audit), `git worktree list`, `git branch -vv`, `git branch -r`, `scripts/droplet_status.sh` and
 `df -h`. Leave the machines at least as clean as you found them.
