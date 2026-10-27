@@ -478,6 +478,7 @@ import Grothe.Upper.TransportLimit
 import Grothe.Upper.WeightedTail
 import Grothe.UpperChaos.AffineGaussianSquare
 import Grothe.UpperChaos.BandProj
+import Grothe.UpperChaos.BandedContraction
 import Grothe.UpperChaos.CapturedTail
 import Grothe.UpperChaos.Charge
 import Grothe.UpperChaos.ComparisonPieces
