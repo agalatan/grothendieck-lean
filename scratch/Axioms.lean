@@ -3,6 +3,11 @@ import Grothe
 #print axioms Grothe.DiskKernel.dominated
 #print axioms Grothe.DominatedKernel.comp_radial
 #print axioms Grothe.DominatedKernel.mixture
+#print axioms Grothe.HJM.Cauchy.cauchy_tail
+#print axioms Grothe.HJM.Cauchy.gate_rhoC_of_check
+#print axioms Grothe.HJM.Cauchy.hasSum_hOm
+#print axioms Grothe.HJM.Cauchy.norm_hOm_le_of_gate
+#print axioms Grothe.HJM.Cauchy.weighted_tails
 #print axioms Grothe.HJM.H_charge_one_radial
 #print axioms Grothe.HJM.Origin.P_ne_zero
 #print axioms Grothe.HJM.Origin.coeff_summable
