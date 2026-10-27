@@ -155,6 +155,8 @@ import Grothe
 #print axioms Grothe.HJM.Origin.left_signedPhaseMean_eq_inner
 #print axioms Grothe.HJM.Origin.left_spatial_tail_budget
 #print axioms Grothe.HJM.Origin.left_testCorrelation_error
+#print axioms Grothe.HJM.Origin.left_unweighted_corr64_error
+#print axioms Grothe.HJM.Origin.left_unweighted_corr64_of_approx_and_endpoint
 #print axioms Grothe.HJM.Origin.left_visibleEnergy_of_rationalWitness
 #print axioms Grothe.HJM.Origin.left_weighted_tail_summable
 #print axioms Grothe.HJM.Origin.measurable_radialAmplitude
@@ -218,6 +220,8 @@ import Grothe
 #print axioms Grothe.HJM.Origin.right_signedPhaseMean_eq_inner
 #print axioms Grothe.HJM.Origin.right_spatial_tail_budget
 #print axioms Grothe.HJM.Origin.right_testCorrelation_error
+#print axioms Grothe.HJM.Origin.right_unweighted_corr64_error
+#print axioms Grothe.HJM.Origin.right_unweighted_corr64_of_approx_and_endpoint
 #print axioms Grothe.HJM.Origin.right_visibleEnergy_of_rationalWitness
 #print axioms Grothe.HJM.Origin.right_weighted_tail_summable
 #print axioms Grothe.HJM.Origin.rotatedCoeff_dominated
@@ -232,7 +236,12 @@ import Grothe
 #print axioms Grothe.HJM.Origin.tendsto_green_boundary
 #print axioms Grothe.HJM.Origin.unweightedRationalTest_mass
 #print axioms Grothe.HJM.Origin.unweightedTail_le_of_finite_test
+#print axioms Grothe.HJM.Origin.unweightedTestCorrelation_eq_inner
+#print axioms Grothe.HJM.Origin.unweightedTestCorrelation_error
+#print axioms Grothe.HJM.Origin.unweightedTestCorrelation_error_of_mass_le_one
 #print axioms Grothe.HJM.Origin.unweightedTestCorrelation_le_sqrt
+#print axioms Grothe.HJM.Origin.unweightedTestCorrelation_sub_phase
+#print axioms Grothe.HJM.Origin.unweightedTestVector_norm_sq
 #print axioms Grothe.HJM.Origin.weightedTest_norm_le_830
 #print axioms Grothe.HJM.Origin.weightedTest_norm_sq
 #print axioms Grothe.HJM.Origin.weightedTest_norm_sq_le
