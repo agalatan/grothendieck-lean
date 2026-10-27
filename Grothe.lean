@@ -578,6 +578,7 @@ import Grothe.UpperChaos.PhiCoverData
 import Grothe.UpperChaos.PhiDense
 import Grothe.UpperChaos.PhiHorner
 import Grothe.UpperChaos.ProductComplete
+import Grothe.UpperChaos.ProfileFirstGaussianCell
 import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialDampedMoments
 import Grothe.UpperChaos.RadialRepair
