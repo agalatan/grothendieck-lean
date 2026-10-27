@@ -200,6 +200,8 @@ Grothe.HJM.OriginMoment.signedApproxIntegrand_on_subpanel
 Grothe.HJM.OriginMoment.signedApproxIntegrand_zero_above
 Grothe.HJM.OriginMoment.signedApprox_integral_partition
 Grothe.HJM.OriginMoment.signedCellPolynomial_eval
+Grothe.HJM.OriginMomentGenerated.rightBlock13
+Grothe.HJM.OriginMomentRightWitnessData.rightPolynomial_eq
 Grothe.HJM.OriginPanel.approxList_uniform_error
 Grothe.HJM.OriginPanel.covers_exists
 Grothe.HJM.OriginPanel.evalC_approxCoeffs

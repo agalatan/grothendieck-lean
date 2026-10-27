@@ -61,6 +61,8 @@ not discharge `ComparisonInputs` or `energy_close` and changes no headline bound
 
 | Fact | Source native site | Allowlist | Report coverage | Runtime evidence |
 |---|---|---|---|---|
+| `Grothe.HJM.OriginMomentRightWitnessData.rightPolynomial_eq` | `Grothe/HJM/OriginMomentRightWitnessData.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; exact right witness polynomial equality |
+| `Grothe.HJM.OriginMomentGenerated.rightBlock13` | `Grothe/HJM/OriginMomentRightCheck13.lean` | yes | Direct #print axioms in scratch/Axioms.lean | Runtime pending delivery CI; signed Gaussian moment bounds for right cells 91–97 |
 | `Grothe.HJM.Cauchy.gate_check4` | `Grothe/HJM/CauchyGateCheck.lean:20` | yes | Indirect via scratch/Axioms.lean Grothe.HJM.Cauchy.weighted_tails | GitHub-hosted module build 4.6 s (quadtree of complex interval boxes, branch 4 of HJM at radius 1.112; the kernel evaluation takes over 10 minutes) |
 | `Grothe.HJM.finite67_check` | `Grothe/HJM/Finite67.lean:36` | yes | Indirect via scratch/Axioms.lean Grothe.HJM.branch5_tail | GitHub-hosted module build 9.6 s (Horner on modes up to 4987 of the HJM branch 5, 67 phase coefficients) |
 | `Grothe.Lower.certBatches0` | `Grothe/Lower/Cert/Batches0.lean:7` | yes | Direct #print axioms in scratch/Axioms.lean | Historical module build 337 s; docs/NATIVE_SEQ_STATUS.md; not isolated native/current-commit measurement |
