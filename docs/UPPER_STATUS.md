@@ -175,8 +175,10 @@ Progress (claude/hardy, 26 Oct):
   the selected energy comparison from those inputs.
   Every even phase moment is identified with a finite rational calculation on
   the production phase (`Grothe.UpperChaos.integral_phiT_pow_even` in
-  `ConcretePhaseMoments.lean`). The first numerical leaf is `PhaseMoment2`;
-  fourth- and sixth-moment checks remain open. Exact targets, the integration
+  `ConcretePhaseMoments.lean`). Separate `PhaseMoment2`, `PhaseMoment4`, and
+  `PhaseMoment6` checks compute the three needed moments; `PhaseMomentNorms`
+  identifies them with the Taylor-source total energies. Sharp band estimates
+  still need captured Hermite energy and approximation errors. Exact targets, the integration
   formula and reproduction instructions are in
   [data/phase-moments](../data/phase-moments/README.md).
   The other Hermite-tail and coefficient inputs are still separate obligations.
