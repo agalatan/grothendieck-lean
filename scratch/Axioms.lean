@@ -1037,6 +1037,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.PhaseMomentCheck.e3_pow3
 #print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_horner
 #print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_phaseOfTerms_pow
+#print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_phaseOfTerms_pow_cut
+#print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_phiT_pow_even_cut
+#print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_polynomial_cut_damped
 #print axioms Grothe.UpperChaos.ProductComplete.ae_memLp_fibre
 #print axioms Grothe.UpperChaos.ProductComplete.complete_prod
 #print axioms Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le

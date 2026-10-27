@@ -594,6 +594,7 @@ import Grothe.UpperChaos.RealGaussianKernelTail
 import Grothe.UpperChaos.Realise2
 import Grothe.UpperChaos.ReducedGrouped
 import Grothe.UpperChaos.RelaxedGrouped
+import Grothe.UpperChaos.RestrictedPhaseMoments
 import Grothe.UpperChaos.RestrictedWick
 import Grothe.UpperChaos.Rounder
 import Grothe.UpperChaos.SchurBound
