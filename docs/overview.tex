@@ -144,6 +144,11 @@ $5.71439509703932\cdot10^{-10}$, and $1.68238736430120\cdot10^{-11}$.
 These equal the squared norms of the three positive Taylor sources.
 Sharp comparison-band errors still need the captured Hermite energy and
 approximation bounds; the total moments alone do not change the upper bound.
+The orthogonal tail interface subtracts the separate captured energies
+$\sum_i\max(0,\ell_i-e_i)^2$ from the total moment, retaining each band's
+error cap. An alternative interface uses one real inner product and the
+approximant norm to bound the whole approximation error. The remaining
+numerical coefficient and integral bounds are explicit hypotheses.
 
 \paragraph{Radial repair has a quantitative ceiling.}
 Lean certifies the polynomial disk map $z\mapsto zS_6(1-|z|^2)$, where
@@ -250,7 +255,7 @@ no external mathematical premise. The focused audit policy requires 98 results a
 The 98-result focused audit policy permits only \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} for the unconditional upper bound.\par
 The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover, the second, fourth and sixth phase moments,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
-There are 91 native facts: 60 cap-range checks, five Hardy region and circle checks, and 26 others. The report \path{scratch/Axioms.lean} contains 676 print directives, with 444 required declarations.
+There are 91 native facts: 60 cap-range checks, five Hardy region and circle checks, and 26 others. The report \path{scratch/Axioms.lean} contains 688 print directives, with 456 required declarations.
 No \lean{sorry}; normal \path{ready/*} delivery CI builds the single target \lean{Grothe}, cap rows included, and checks its one axiom report before merging.
 The cap-range checks take about 21 CPU-hours cold, so CI replays them from a verified build cache.
 Its provenance hash covers 48 local computation
