@@ -11,6 +11,7 @@ Agent-ID: codex-239c -/
 
 namespace Grothe.UpperChaos.RadialCutoff
 open MeasureTheory Real Set Grothe.LowerAnalytic Grothe.UpperChaos
+open scoped ComplexConjugate
 noncomputable section
 
 /-- Cut off the squared radius of a standard complex Gaussian. -/
@@ -65,6 +66,24 @@ theorem gaussC_radial_exp_tail (n : ℕ) (L a : ℝ) (hL : 0 ≤ L) (ha : 0 < a)
       _ = s ^ n * (exp (-s) * exp (-(a - 1) * s)) := by ring
       _ = _ := by rw [← exp_add]; congr 2; ring
   rw [h, htilt, Grothe.UpperChaos.ExponentialTail.exp_moment_tail n L ha]
+
+
+/-- The radial cutoff of a balanced complex monomial is the same exact
+positive-rate tail sum. -/
+theorem gaussC_diagonal_exp_tail (n : ℕ) (L a : ℝ) (hL : 0 ≤ L) (ha : 0 < a) :
+    (∫ z : ℂ in {z | L < ‖z‖ ^ 2}, z ^ n * conj z ^ n *
+      ((exp (-(a - 1) * ‖z‖ ^ 2) : ℝ) : ℂ) ∂gaussC) =
+      ((exp (-(a * L)) * ∑ k ∈ Finset.range (n + 1),
+        ((n.choose k : ℝ) * L ^ (n - k)) * ((k.factorial : ℝ) / a ^ (k + 1)) : ℝ) : ℂ) := by
+  have hp : ∀ z : ℂ, z ^ n * conj z ^ n *
+      ((exp (-(a - 1) * ‖z‖ ^ 2) : ℝ) : ℂ) =
+      ((‖z‖ ^ (2 * n) * exp (-(a - 1) * ‖z‖ ^ 2) : ℝ) : ℂ) := by
+    intro z
+    rw [← mul_pow, Complex.mul_conj, Complex.normSq_eq_norm_sq]
+    push_cast
+    simp only [← pow_mul]
+  simp_rw [hp, integral_complex_ofReal]
+  rw [gaussC_radial_exp_tail n L a hL ha]
 
 end
 
