@@ -1018,6 +1018,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.Bm_eq_integral
 #print axioms Grothe.UpperChaos.Bm_polyKernel
 #print axioms Grothe.UpperChaos.D_le_span_H
+#print axioms Grothe.UpperChaos.DirectSample.upper_of_DFT_ledger
+#print axioms Grothe.UpperChaos.DirectSample.upper_of_actual_head
+#print axioms Grothe.UpperChaos.DirectSample.upper_of_finite_sample_bounds
 #print axioms Grothe.UpperChaos.Ef_X0_mul
 #print axioms Grothe.UpperChaos.ExponentialTail.exp_moment_tail
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.finite_saved_matrix_error

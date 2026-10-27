@@ -496,16 +496,20 @@ import Grothe.UpperChaos.ConditionalGaussianBase
 import Grothe.UpperChaos.ConditionalGaussianPhase
 import Grothe.UpperChaos.ConditionalGaussianPolynomial
 import Grothe.UpperChaos.ConditionalGaussianTail
+import Grothe.UpperChaos.DFTAliasFilter
 import Grothe.UpperChaos.DampedMoments
 import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.DiagonalSum
+import Grothe.UpperChaos.DirectSampleUpper
 import Grothe.UpperChaos.DiskTail
 import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
 import Grothe.UpperChaos.ExponentialTail
+import Grothe.UpperChaos.FiniteSampleError
 import Grothe.UpperChaos.FirstSecondCapturedTail
 import Grothe.UpperChaos.FixedChaosSmoothing
 import Grothe.UpperChaos.GTAliasTail
+import Grothe.UpperChaos.GTAnalyticSeries
 import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussOp
 import Grothe.UpperChaos.GaussianDensityBounds
@@ -551,6 +555,7 @@ import Grothe.UpperChaos.HermiteFinite
 import Grothe.UpperChaos.HolIntegral
 import Grothe.UpperChaos.InvariantMoments
 import Grothe.UpperChaos.JointAliasBound
+import Grothe.UpperChaos.JointSampleLedger
 import Grothe.UpperChaos.Kernel2
 import Grothe.UpperChaos.KernelStability
 import Grothe.UpperChaos.LawY
@@ -613,6 +618,8 @@ import Grothe.UpperChaos.SelectedEnergyApprox
 import Grothe.UpperChaos.ShiftedDampedMoments
 import Grothe.UpperChaos.ShiftedMomentRecurrence
 import Grothe.UpperChaos.SmoothComm
+import Grothe.UpperChaos.SmoothKernelStability
+import Grothe.UpperChaos.SmoothResponseSeries
 import Grothe.UpperChaos.Smoothing
 import Grothe.UpperChaos.SoftPhaseLaplace
 import Grothe.UpperChaos.Structural
