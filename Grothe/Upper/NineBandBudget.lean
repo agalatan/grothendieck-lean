@@ -12,9 +12,11 @@ namespace Grothe.Upper.NineBandBudget
 
 open Finset
 
-def Index := Fin comparisonBands.length
+abbrev Index := Fin 18
 
-def band (j : Index) := comparisonBands[j]
+def band (j : Index) := comparisonBands[j.val]'(by
+  change j.val < 18
+  exact j.isLt)
 def weight (j : Index) : ℚ := (band j).norm + 71 / 100000
 
 def retained : Finset Index := {0, 1, 2, 3, 4, 5, 8, 9, 13, 14}
