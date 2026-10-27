@@ -118,6 +118,57 @@ theorem inner_gFn_gFn (L₁ L₂ : (ℂ × ℂ) × (ℂ × ℂ) →L[ℝ] ℂ ×
   filter_upwards [hF.coeFn_toLp] with x hx
   rw [hx, RCLike.inner_apply, mul_comm, gFn, ← integral_const_mul]
 
+/-! ### `S` commutes with `T_ρ` -/
+
+lemma mp_fstfst :
+    MeasurePreserving (fun v : ((ℂ × ℂ) × (ℂ × ℂ)) × (ℂ × ℂ) => v.1.1) ((mu2.prod mu2).prod mu2) mu2 :=
+  mp_fst2.comp (by simpa using (measurePreserving_fst (μ := mu2.prod mu2) (ν := mu2)))
+
+/-- Integrals over the triple product through `pA`/`pB` are integrals against the joint law. -/
+lemma integral_triple_map {ρ : ℝ} (P : ((ℂ × ℂ) × (ℂ × ℂ)) × (ℂ × ℂ) →L[ℝ] (ℂ × ℂ) × (ℂ × ℂ))
+    (hP1 : ∀ v, (P v).1 = v.1.1) (hP2 : MeasurePreserving (fun v => (P v).2) ((mu2.prod mu2).prod mu2) mu2)
+    (g : Lp ℂ 2 mu2) {f : ℂ × ℂ → ℂ} (hf : Measurable f) :
+    ∫ v, conj ((g : ℂ × ℂ → ℂ) v.1.1) * f (P v).2 ∂((mu2.prod mu2).prod mu2) =
+      ∫ w, conj ((g : ℂ × ℂ → ℂ) w.1) * f w.2 ∂(((mu2.prod mu2).prod mu2).map P) := by
+  have hfst : MeasurePreserving Prod.fst (((mu2.prod mu2).prod mu2).map P) mu2 := by
+    refine ⟨measurable_fst, ?_⟩
+    rw [Measure.map_map measurable_fst P.continuous.measurable]
+    have : (Prod.fst ∘ P) = fun v : ((ℂ × ℂ) × (ℂ × ℂ)) × (ℂ × ℂ) => v.1.1 := funext hP1
+    rw [this]; exact mp_fstfst.map_eq
+  have hG : AEStronglyMeasurable (fun w : (ℂ × ℂ) × (ℂ × ℂ) => conj ((g : ℂ × ℂ → ℂ) w.1) * f w.2)
+      (((mu2.prod mu2).prod mu2).map P) :=
+    (Complex.continuous_conj.comp_aestronglyMeasurable
+      ((Lp.aestronglyMeasurable g).comp_measurePreserving hfst)).mul (hf.comp measurable_snd).aestronglyMeasurable
+  rw [integral_map P.continuous.measurable.aemeasurable hG]
+  simp only [hP1]
+
+/-- **The smoothing commutes with the Ornstein–Uhlenbeck smoothing.** -/
+theorem smoothOp_ouOp_comm {ρ : ℝ} (hρ : |ρ| ≤ 1) {f : ℂ × ℂ → ℂ} (hf : Measurable f) (hfL : MemLp f 2 mu2) :
+    smoothOp (ouOp hρ (hfL.toLp f)) = ouOp hρ (smoothOp (hfL.toLp f)) := by
+  have hTf := memLp_gFn (ouCLM ρ) (mp_ou hρ) hf hfL
+  have hSf := memLp_gFn smoothCLM mp_smooth hf hfL
+  rw [ouOp, gOp_toLp' (ouCLM ρ) (mp_ou hρ) hf hfL, smoothOp_eq_gOp,
+    gOp_toLp' smoothCLM mp_smooth (measurable_gFn _ hf) hTf,
+    gOp_toLp' smoothCLM mp_smooth hf hfL, gOp_toLp' (ouCLM ρ) (mp_ou hρ) (measurable_gFn _ hf) hSf]
+  refine ext_inner_left ℂ fun g => ?_
+  rw [inner_gFn_gFn smoothCLM (ouCLM ρ) mp_smooth (mp_ou hρ) hf hfL g,
+    inner_gFn_gFn (ouCLM ρ) smoothCLM (mp_ou hρ) mp_smooth hf hfL g]
+  have hA2 : MeasurePreserving (fun v => (pA ρ v).2) ((mu2.prod mu2).prod mu2) mu2 :=
+    (mp_ou hρ).comp (mp_smooth.prod (MeasurePreserving.id mu2))
+  have hB2 : MeasurePreserving (fun v => (pB ρ v).2) ((mu2.prod mu2).prod mu2) mu2 :=
+    mp_smooth.comp ((mp_ou hρ).prod (MeasurePreserving.id mu2))
+  have eA := integral_triple_map (ρ := ρ) (pA ρ) (fun _ => rfl) hA2 g hf
+  have eB := integral_triple_map (ρ := ρ) (pB ρ) (fun _ => rfl) hB2 g hf
+  rw [law_comm hρ, ← eB] at eA
+  exact eA
+
+/-! ### `S` preserves the total degree -/
+
+lemma measurable_hfun2 (i : Idx2) : Measurable (hfun2 i) := by
+  unfold hfun2 H2
+  exact (continuous_const.mul (((continuous_ev _).comp continuous_fst).mul
+    ((continuous_ev _).comp continuous_snd))).measurable
+
 end
 
 end Grothe.UpperChaos
