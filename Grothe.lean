@@ -157,6 +157,7 @@ import Grothe.HJM.OriginSymmetricTailBudget
 import Grothe.HJM.OriginTail
 import Grothe.HJM.OriginTailBudget
 import Grothe.HJM.OriginTruncation
+import Grothe.HJM.OriginUnweightedProjection
 import Grothe.HJM.OriginUnweightedTail
 import Grothe.HJM.OriginVisibleEnergy
 import Grothe.HJM.OriginWitnessData
@@ -174,6 +175,7 @@ import Grothe.HJM.PrefixTable
 import Grothe.HJM.Preprocessors
 import Grothe.HJM.Repriced
 import Grothe.HJM.TailSplit
+import Grothe.HJM.UnweightedRepriced
 import Grothe.Haagerup.CanonicalArithmetic
 import Grothe.Haagerup.CanonicalCheck
 import Grothe.Haagerup.CanonicalData

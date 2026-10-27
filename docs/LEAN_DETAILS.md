@@ -139,6 +139,8 @@ and visible-energy lower bounds `11.5`, the same head hypotheses imply the
 conditional `symmetricClaim < 1.4048984302`. These bound theorems inherit the
 existing native scalar-tail checks.
 
+`UnweightedRepriced` gives a conditional bound below `1.404898380143` under the published head hypotheses and two actual unweighted residual suffix norms at most `0.0021`. `OriginUnweightedProjection` reduces suffix bounds to explicit total norm, finite test mass and signed correlation hypotheses; these numerical inputs remain to be certified. A looser `0.00265` suffix cap fits the repriced origin-tail budget.
+
 `OriginApproximation` proves the zero-safe algebraic bound
 `‖W z - phase(z)‖ ≤ |W² ‖z‖² - 1|` for `W ≥ 0`, with a sharper rational
 denominator variant. `OriginApproximationBudget` transfers a uniform interior

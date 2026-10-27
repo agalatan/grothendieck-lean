@@ -435,6 +435,7 @@ the exact weighted cap fits the existing budget without relaxing the ledger.
 hypotheses and these four specific energy inequalities imply an exact bound
 below `1.4048984278`. The head enclosure and energy inequalities remain
 unproved inputs, so this is not an unconditional numerical bound.
+`UnweightedRepriced` gives a conditional bound below `1.404898380143` from the same published head hypotheses and the two unweighted residual suffix norms at most `0.0021`. Those suffix bounds remain to be certified. The looser cap `0.00265` on each suffix already fits the repriced origin-tail budget.
 For numerical enclosure, a nonnegative inverse-modulus
 polynomial residual controls the phase error; uniform spatial error `ε` inside radius
 `R` gives the joint squared coefficient budget `ε² + exp(-R²)` for all modes.

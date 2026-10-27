@@ -147,6 +147,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.leftRadialAmplitude_toLp
 #print axioms Grothe.HJM.Origin.leftRationalWitness_mass
 #print axioms Grothe.HJM.Origin.leftTailEnergy_le_of_visible
+#print axioms Grothe.HJM.Origin.leftUnweightedTail_of_64_targets
 #print axioms Grothe.HJM.Origin.left_spatial_tail_budget
 #print axioms Grothe.HJM.Origin.left_testCorrelation_error
 #print axioms Grothe.HJM.Origin.left_visibleEnergy_of_rationalWitness
@@ -204,6 +205,7 @@ import Grothe
 #print axioms Grothe.HJM.Origin.rightRadialAmplitude_toLp
 #print axioms Grothe.HJM.Origin.rightRationalWitness_mass
 #print axioms Grothe.HJM.Origin.rightTailEnergy_le_of_visible
+#print axioms Grothe.HJM.Origin.rightUnweightedTail_of_64_targets
 #print axioms Grothe.HJM.Origin.right_spatial_tail_budget
 #print axioms Grothe.HJM.Origin.right_testCorrelation_error
 #print axioms Grothe.HJM.Origin.right_visibleEnergy_of_rationalWitness
@@ -217,6 +219,8 @@ import Grothe
 #print axioms Grothe.HJM.Origin.sum_haagCoeff_weighted_tail_le_diff
 #print axioms Grothe.HJM.Origin.tail_cap_of_visible
 #print axioms Grothe.HJM.Origin.tendsto_green_boundary
+#print axioms Grothe.HJM.Origin.unweightedTail_le_of_finite_test
+#print axioms Grothe.HJM.Origin.unweightedTestCorrelation_le_sqrt
 #print axioms Grothe.HJM.Origin.weightedTest_norm_le_830
 #print axioms Grothe.HJM.Origin.weightedTest_norm_sq
 #print axioms Grothe.HJM.Origin.weightedTest_norm_sq_le
@@ -322,6 +326,7 @@ import Grothe
 #print axioms Grothe.HJM.origin_symmetric_tail_arithmetic
 #print axioms Grothe.HJM.origin_symmetric_tail_cap_lt_budget
 #print axioms Grothe.HJM.origin_tail_cap_lt_budget
+#print axioms Grothe.HJM.origin_tail_of_strong_unweighted_caps
 #print axioms Grothe.HJM.origin_tail_of_symmetric_energy_caps
 #print axioms Grothe.HJM.origin_tail_of_symmetric_residual_caps
 #print axioms Grothe.HJM.origin_tail_of_unweighted_residual_caps
@@ -350,6 +355,10 @@ import Grothe
 #print axioms Grothe.HJM.symmetric_hjm_bound_of_visible
 #print axioms Grothe.HJM.symmetrizedPairCoeff_dominated
 #print axioms Grothe.HJM.symmetrizedPairKernel_eq_radialKernel
+#print axioms Grothe.HJM.unweightedClaim_eq
+#print axioms Grothe.HJM.unweightedClaim_lt
+#print axioms Grothe.HJM.unweighted_hjm_bound_of_head
+#print axioms Grothe.HJM.unweighted_hjm_decimal_bound_of_head
 #print axioms Grothe.HJM.weights_norm
 #print axioms Grothe.HJM.wt_five
 #print axioms Grothe.Haag.affine_phase_complete_square
