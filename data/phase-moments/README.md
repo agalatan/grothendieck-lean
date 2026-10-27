@@ -53,9 +53,12 @@ not expand the polynomial powers or verify the Gaussian moments.
 
 The first numerical leaf is `PhaseMoment2`: one single-threaded native check
 recomputes the second moment from the actual phase and compares it with its
-target. **No numerical leaf has yet passed.** Acceptance requires successful
-compilation and axiom verification of this second-moment leaf first; its runtime
-will guide the larger checks. Fourth- and sixth-moment leaves are not implemented
+target. The [delivery build and axiom audit](https://github.com/agalatan/grothendieck-lean/actions/runs/40468150361)
+passed at commit `ec09e77`: 9,292 build jobs, 645 reported theorems and all
+89 native facts. `PhaseMoment2` built in 4.8 seconds (whole-module time,
+not an isolated native-evaluation measurement). The generic identity uses only
+the standard axioms; `integral_phiT_sq` additionally uses the single
+`phase_moment2_check._native.native_decide.ax_1_1` fact. Fourth- and sixth-moment leaves are not implemented
 and require their own successful native checks before their targets become
 certified moments.
 
