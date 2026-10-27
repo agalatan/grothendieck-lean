@@ -827,6 +827,9 @@ Grothe.UpperChaos.RadialRepair.complement_identity
 Grothe.UpperChaos.RadialRepair.norm_phaseRepair_le_one
 Grothe.UpperChaos.RadialRepair.phaseRepair_change_sq_le
 Grothe.UpperChaos.RadialRepair.radial_gap_sq_le
+Grothe.UpperChaos.RestrictedWick.integral_cut_balanced
+Grothe.UpperChaos.RestrictedWick.integral_cut_invariant
+Grothe.UpperChaos.RestrictedWick.integral_cut_unbalanced
 Grothe.UpperChaos.SchurMain.norm_HholPair_le
 Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
 Grothe.UpperChaos.Twelve.fresh_upper_taylor_twelve_bands
