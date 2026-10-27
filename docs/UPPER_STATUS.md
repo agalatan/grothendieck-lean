@@ -28,7 +28,7 @@ cache matches the node-cap sources.
 
 ## 1. What is proved
 
-Headline `Grothe.UpperChaos.fresh_upper_rounder_grouped` (`Grothe/UpperChaos/GroupedRounder.lean`):
+Headline `Grothe.UpperChaos.fresh_upper_rounder` (`Grothe/UpperChaos/GroupedRounder.lean`):
 
     K_G^ℂ ≤ 500000000000000000/355973699884132991  (< 1.404598149141)
 
@@ -38,7 +38,7 @@ for the concrete rounding `GT` (smoothed `F₀·P₃(φ)` built from `Grothe/Upp
 * `energy_close`: `Σ_{n+3m≤501} |energy X − energyTable| ≤ energyErrQ`,
 
 for some charge-one `X ∈ L²(gaussC ⊗ gaussC)`. The concrete Taylor version
-`fresh_upper_concrete_taylor_grouped` fixes `X` and takes the same fourteen
+`fresh_upper_concrete_taylor` fixes `X` and takes the same fourteen
 finite-band Gaussian error inequalities and table-accuracy assumption as
 `fresh_upper_concrete_taylor`.
 Axioms: standard + `head_check` + `comparison_check` + `phi_cover_check_0`–`5` (native). Grouping introduces no new native facts. The structural fields of the old
@@ -52,7 +52,7 @@ are theorems.  Module map (all in `Grothe/UpperChaos/`):
 | ProductComplete, HermiteC2, HermiteC2Basis | ℂ²: tensor completeness by Fubini and one-coordinate completeness, tensor Hermite basis, Parseval |
 | LawY, MehlerL2 | law of ρX + σW by product characteristic functions, Mehler for L² functions on ℂ² (`mehler_L2`) |
 | Energy2, Kernel2 | energies by bidegree, parity, kernel = `radialKernel (bivarKernel P Q (energy G))` |
-| Realise2, Structural | two-channel Gaussian rounding ⇒ `DiskKernel`; `structural_fields`, `fresh_upper_of_rounding` |
+| Realise2, Structural | two-channel Gaussian rounding ⇒ `DiskKernel`; `structural_fields` |
 | Rounder | `vprof`, `F0`, `phiT`, `Tround`, `GT`; measurable, charge one, disk-valued under `PhiBound` |
 | PhiHorner, PhiDense, PhiCover, PhiCoverData, PhiCoverCheck0–5, PhiCoverCheck, PhiBound | phase cover `φ² ≤ 99/100`, `|φ| < 1` (checker `GrotheKernel/PhiCheck.lean`, generator `tools/gen_phi_abs_cover.py`, data `data/phi-abs-cover/trees.json`) |
 | HardyKernel, HardyReal | holomorphic Gaussian kernel and certificate covariance definitions; `HardyReal.hardy_GT` proves the concrete Hardy input |

@@ -1,9 +1,13 @@
-/- Intended path: Grothe/Upper/GroupedBridge.lean -/
 import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.ComparisonGroups
 
-/-! The grouped quadratic comparison improves the upper endpoint without
-changing the numerical inputs or the existing Hardy-tail bound. -/
+/-!
+# The sharp upper bound from the grouped comparison
+
+Under the explicit Gaussian inputs, `K_G^ℂ ≤ 500000000000000000/355973699884132991 < 1.404598149141` (`fresh_upper`,
+`upper_value_lt`). The quadratic comparison error is grouped by Taylor order: within a group the bands are
+disjoint, so the component norms combine in quadrature (`groupedCompareQ`).
+-/
 
 namespace Grothe
 
@@ -38,8 +42,8 @@ theorem grouped_head_residual_le {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E 
   calc _ ≤ (headCapQ : ℝ) + energyErrQ + groupedCompareQ := h
     _ = (groupedHeadResidualQ : ℝ) := by norm_num [groupedHeadResidualQ]; ring
 
-/-- The same structural inputs and the grouped comparison give the new bound. -/
-theorem fresh_upper_grouped (E EX : ℕ × ℕ → ℝ) (hE : DirectHyps E EX)
+/-- **The sharp upper bound** from the structural inputs and the grouped comparison. -/
+theorem fresh_upper (E EX : ℕ × ℕ → ℝ) (hE : DirectHyps E EX)
     (hcompare : ∑ p ∈ headIdx 501, comparisonWeight p * |E p - EX p| ≤
       (groupedCompareQ : ℝ)) :
     IsGrothendieckBound (500000000000000000 / 355973699884132991) := by
@@ -55,12 +59,10 @@ theorem fresh_upper_grouped (E EX : ℕ × ℕ → ℝ) (hE : DirectHyps E EX)
   refine (transfer (kernelCoeff E) hs hE.valid (by norm_num [slopeQ]) hr).mono (le_of_eq ?_)
   norm_num [slopeQ]
 
-theorem grouped_upper_value_lt :
+/-- The exact upper endpoint is below the stated decimal. -/
+theorem upper_value_lt :
     (500000000000000000 / 355973699884132991 : ℝ) < 1.404598149141 := by norm_num
 
-theorem grouped_upper_value_improves :
-    (500000000000000000 / 355973699884132991 : ℝ) <
-      500000000000000000 / 355973699881431491 := by norm_num
 
 end
 end Grothe

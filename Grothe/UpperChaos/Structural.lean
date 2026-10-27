@@ -32,17 +32,6 @@ theorem structural_fields (hGm : Measurable G) (hG1 : ∀ u, ‖G u‖ ≤ 1)
   ⟨(rounding_diskKernel hGm hG1 hGch hGL l1_primaryPoly l1_auxPoly).dominated,
     summable_abs_energy _, summable_abs_energy _, energy_eq_zero_of_even hXL hXch⟩
 
-/-- **The sharp upper bound from a concrete rounding**: only the numerical fields remain. -/
-theorem fresh_upper_of_rounding (hGm : Measurable G) (hG1 : ∀ u, ‖G u‖ ≤ 1)
-    (hGch : ∀ c u, ‖c‖ = 1 → G (rot2 c u) = c * G u) (hGL : MemLp G 2 mu2)
-    (hXL : MemLp X 2 mu2) (hXch : ∀ c u, ‖c‖ = 1 → X (rot2 c u) = c * X u)
-    (hcompare : ∑ p ∈ headIdx 501, comparisonWeight p * |energy (hGL.toLp G) p - energy (hXL.toLp X) p| ≤ (compareQ : ℝ))
-    (hclose : ∑ p ∈ headIdx 501, |energy (hXL.toLp X) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ))
-    (hhardy : ∀ J, ∑ n ∈ Finset.range J, kernelCoeff (energy (hGL.toLp G)) n ^ 2
-      * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4) :
-    IsGrothendieckBound (500000000000000000 / 355973699881431491) := by
-  obtain ⟨hv, hs, hsX, hpX⟩ := structural_fields hGm hG1 hGch hGL hXL hXch
-  exact fresh_upper _ _ ⟨hv, hs, hsX, hpX, energy_eq_zero_of_even hGL hGch, hcompare, hclose, hhardy⟩
 
 end
 

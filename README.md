@@ -180,10 +180,10 @@ provide their soundness. Their generated facts and final `CapsRest` wiring
 remain a separate campaign (generated piece modules are excluded from the
 root until a proof uses them).
 
-**Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder_grouped`, for an L² charge-one truncation `X`, proves
+**Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder`, for an L² charge-one truncation `X`, proves
 `ComparisonInputs → energy_close → IsGrothendieckBound (500000000000000000/355973699884132991)`,
-and `Grothe.grouped_upper_value_lt` shows this is below 1.404598149141
-(`Grothe/UpperChaos/GroupedRounder.lean`). The previous bound and table interface remain available.
+and `Grothe.upper_value_lt` shows this is below 1.404598149141
+(`Grothe/UpperChaos/GroupedRounder.lean`).
 
 The rounding is the smoothing G_T of T = F₀·P₃(φ): a two-coordinate Gaussian phase rounding F₀ times the
 cubic Taylor polynomial P₃(x) = 1 + ix − x²/2 − ix³/6 of a damped polynomial phase φ. It is **defined in Lean**
@@ -245,7 +245,7 @@ remaining captured band norms from the same exact arrays. `FirstSecondCapturedTa
 derives the other two high-tail caps. `TaylorCenterFunctions` gives the concrete
 pointwise functions and discharges the rounding comparison piece.
 
-`fresh_upper_concrete_taylor_grouped` instantiates the improved conditional bound with these fixed
+`fresh_upper_concrete_taylor` instantiates the improved conditional bound with these fixed
 centers. Its Gaussian inputs are six first-order, four second-order and four
 third-order finite-band error inequalities, with the explicit caps in
 `TaylorTailData`, together with the concrete kernel-energy table accuracy.

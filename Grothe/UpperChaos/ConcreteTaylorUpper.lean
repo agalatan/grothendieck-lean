@@ -131,17 +131,6 @@ def comparisonInputs_taylorCenters :
   comparisonInputs_of_norms phiBound chargeFn_frozenCorrectionFn chargeFn_firstCenterFn
     chargeFn_secondCenterFn chargeFn_thirdCenterFn (norm_pieces_taylorCenters_le hfirst hsecond hthird)
 
-/-- The existing sharp conditional upper bound for the fully specified Taylor centers.
-Only the three finite Gaussian error families and concrete energy-table accuracy remain assumptions. -/
-theorem fresh_upper_concrete_taylor
-    (hclose : ∑ p ∈ Grothe.Upper.headIdx 501,
-      |energy ((memLp_Xfun phiBound chargeFn_frozenCorrectionFn).toLp
-        (Xfun frozenCorrectionFn)) p - (Grothe.Upper.energyTable p : ℝ)| ≤
-      (Grothe.Upper.energyErrQ : ℝ)) :
-    IsGrothendieckBound (500000000000000000 / 355973699881431491) :=
-  fresh_upper_rounder (memLp_Xfun phiBound chargeFn_frozenCorrectionFn)
-    (Xfun_rot2 phiBound chargeFn_frozenCorrectionFn)
-    (comparisonInputs_taylorCenters hfirst hsecond hthird) hclose
 
 end GaussianInputs
 
