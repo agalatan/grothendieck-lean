@@ -308,6 +308,15 @@ The sharper conditional bound above remains stronger.
 **Toward a Lean proof of the HJM bound (epic #139).** `Grothe/HJM/Mixture.lean` proves the mixture bound
 `K ≤ M/(q̂₀ − Σ_{k≥1}|q̂_k|)` for a weighted mixture `Σ w_r K_r` of dominated radial kernels with `Σ|w_r| ≤ M`
 (`mixture_bound`; negative weights are free because domination survives absolutely convex combinations).
+`Grothe/HJM/Origin.lean` defines the asymmetric sixth branch from exact polynomial-phase
+responses and proves domination of its full real radial coefficient series. The proof uses one
+shared Gaussian driver, the charge-one Hermite expansion and conjugate-reflection symmetrization.
+The endpoint cross product is exactly imaginary; its phase-phase term cancels before taking
+absolute values. Bessel bounds the entire spatially omitted coefficient sequence by squared
+energy `exp(-36)`. A rational Bernstein certificate proves `|P(s)|² ≥ 37/100` for all `s ≥ 0`.
+These structural results introduce no native facts. The pinned 120-entry interval tables are
+provenance data: their integral enclosures and the two numerical energy bounds still require
+Lean proofs before the six-branch numerical bound follows. See [the origin certificate inventory](data/hjm/origin/README.md).
 
 **Written unconditional refinement: K_G^ℂ < 1.4048984303.** For the unchanged
 fifth scalar preprocessor in [HJM, Sections 5–6](https://arxiv.org/html/2609.25462v1),
@@ -351,7 +360,7 @@ Every native check is single-threaded code (no `Task.spawn`).
 All other proofs, including the canonical finite checks, are kernel-checked.
 No `sorry`. The axiom report `scratch/Axioms.lean`
 is verified in CI by `scripts/check_axioms.py`, including the node caps.
-The report contains 645 print directives, with 408 required declarations and 88
+The report contains 669 print directives, with 408 required declarations and 88
 allowlisted native facts (60 cap ranges, five Hardy checks and 23 others).
 The focused report `scratch/AxiomsPower.lean`, checked with `--haagerup-power`, allows
 no native axioms for its 98 selected unconditional upper-bound results.

@@ -237,7 +237,7 @@ no external mathematical premise. The focused audit policy requires 98 results a
 The 98-result focused audit policy permits only \lean{propext}, \lean{Classical.choice}, and \lean{Quot.sound} for the unconditional upper bound.\par
 The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
-There are 88 native facts: 60 cap-range checks, five Hardy region and circle checks, and 23 others. The report \path{scratch/Axioms.lean} contains 645 print directives, with 408 required declarations.
+There are 88 native facts: 60 cap-range checks, five Hardy region and circle checks, and 23 others. The report \path{scratch/Axioms.lean} contains 669 print directives, with 408 required declarations.
 No \lean{sorry}; normal \path{ready/*} delivery CI builds the single target \lean{Grothe}, cap rows included, and checks its one axiom report before merging.
 The cap-range checks take about 21 CPU-hours cold, so CI replays them from a verified build cache.
 Its provenance hash covers 48 local computation
@@ -314,6 +314,20 @@ The simpler obstruction is also exact: if $|P(-1)|=\|P\|_1=1$, then
 $\|P^n\|_1=1$ for every $n$. Breaking that common boundary phase permits
 power contraction; the resolvent additionally retains cancellation
 between successive composed powers.
+
+\paragraph{The actual HJM origin kernel [P; Lean].}
+The sixth branch is defined from its exact polynomial-phase response pair.
+One shared Gaussian driver proves domination in every finite dimension; the
+charge-one Hermite expansion and conjugate-reflection symmetrization identify
+the full real radial coefficient series. The endpoint cross product is purely
+imaginary, so its phase-phase term cancels before absolute values. Bessel gives
+a joint squared error budget $e^{-36}$ for the coefficient integrals omitted
+beyond radius six. Nine rational Bernstein panels and a positive shifted
+polynomial prove $|P(s)|^2\ge37/100$ on the entire nonnegative half-line.
+These proofs add no native facts. The pinned 120-coefficient tables are
+provenance inputs; their integral enclosures and the numerical radial energy
+bounds remain separate Lean obligations. See \path{Grothe/HJM/Origin.lean}
+and \path{data/hjm/origin/README.md}.
 
 \paragraph{Published scalar-tail refinement [P,C; Lean components].}
 For the unchanged fifth scalar preprocessor of Heilman--Jones--Malavolta,
