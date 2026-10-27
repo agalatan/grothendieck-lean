@@ -7,16 +7,31 @@ namespace Grothe.HJM
 
 open Grothe.Upper GrotheKernel
 
-theorem chunk2_0 : chunkOK 120 (Ymk pList2) (((haagList 120).drop (0 * 120)).take 120)
+theorem chunk2_0 : chunkOK 120 (Ymk pList2) (((haagList 120).drop (0 * 30)).take 30)
     (stages2.getD (0 + 1) []) (stages2.getD 0 []) = true := by
   decide +kernel
 
+theorem chunk2_1 : chunkOK 120 (Ymk pList2) (((haagList 120).drop (1 * 30)).take 30)
+    (stages2.getD (1 + 1) []) (stages2.getD 1 []) = true := by
+  decide +kernel
+
+theorem chunk2_2 : chunkOK 120 (Ymk pList2) (((haagList 120).drop (2 * 30)).take 30)
+    (stages2.getD (2 + 1) []) (stages2.getD 2 []) = true := by
+  decide +kernel
+
+theorem chunk2_3 : chunkOK 120 (Ymk pList2) (((haagList 120).drop (3 * 30)).take 30)
+    (stages2.getD (3 + 1) []) (stages2.getD 3 []) = true := by
+  decide +kernel
+
 theorem horner2 : hornerI 120 (Ymk pList2) (haagList 120) = ofPairs (stages2.getD 0 []) :=
-  hornerI_of_chunks (n := 1) (c := 120) (fun i => stages2.getD i []) (by simp [haagList_eq])
+  hornerI_of_chunks (n := 4) (c := 30) (fun i => stages2.getD i []) (by simp [haagList_eq])
     (by decide +kernel) fun i hi =>
       match i, hi with
       | 0, _ => chunk2_0
-      | _ + 1, h => absurd h (by omega)
+      | 1, _ => chunk2_1
+      | 2, _ => chunk2_2
+      | 3, _ => chunk2_3
+      | _ + 4, h => absurd h (by omega)
 
 theorem headI_check2 : (headI 120 120 pList2).map (fun a => (a.lo, a.hi)) = headTable2 := by
   rw [headI, horner2]
