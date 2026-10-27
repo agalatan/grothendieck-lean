@@ -1014,6 +1014,9 @@ import Grothe
 #print axioms Grothe.Upper.summable_abs_bivarKernel
 #print axioms Grothe.Upper.tabPoly_coeff
 #print axioms Grothe.Upper.tsum_abs_bivarKernel_le
+#print axioms Grothe.UpperChaos.BandedContraction.frobenius_two_sided
+#print axioms Grothe.UpperChaos.BandedContraction.frobenius_two_sided_of_caps
+#print axioms Grothe.UpperChaos.BandedContraction.sum_sq_error_of_block_ratios
 #print axioms Grothe.UpperChaos.Bm_eq_integral
 #print axioms Grothe.UpperChaos.Bm_polyKernel
 #print axioms Grothe.UpperChaos.D_le_span_H
