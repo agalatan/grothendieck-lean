@@ -125,9 +125,8 @@ lemma mp_fstfst :
   mp_fst2.comp (by simpa using (measurePreserving_fst (μ := mu2.prod mu2) (ν := mu2)))
 
 /-- Integrals over the triple product through `pA`/`pB` are integrals against the joint law. -/
-lemma integral_triple_map {ρ : ℝ} (P : ((ℂ × ℂ) × (ℂ × ℂ)) × (ℂ × ℂ) →L[ℝ] (ℂ × ℂ) × (ℂ × ℂ))
-    (hP1 : ∀ v, (P v).1 = v.1.1) (hP2 : MeasurePreserving (fun v => (P v).2) ((mu2.prod mu2).prod mu2) mu2)
-    (g : Lp ℂ 2 mu2) {f : ℂ × ℂ → ℂ} (hf : Measurable f) :
+lemma integral_triple_map (P : ((ℂ × ℂ) × (ℂ × ℂ)) × (ℂ × ℂ) →L[ℝ] (ℂ × ℂ) × (ℂ × ℂ))
+    (hP1 : ∀ v, (P v).1 = v.1.1) (g : Lp ℂ 2 mu2) {f : ℂ × ℂ → ℂ} (hf : Measurable f) :
     ∫ v, conj ((g : ℂ × ℂ → ℂ) v.1.1) * f (P v).2 ∂((mu2.prod mu2).prod mu2) =
       ∫ w, conj ((g : ℂ × ℂ → ℂ) w.1) * f w.2 ∂(((mu2.prod mu2).prod mu2).map P) := by
   have hfst : MeasurePreserving Prod.fst (((mu2.prod mu2).prod mu2).map P) mu2 := by
@@ -153,12 +152,8 @@ theorem smoothOp_ouOp_comm {ρ : ℝ} (hρ : |ρ| ≤ 1) {f : ℂ × ℂ → ℂ
   refine ext_inner_left ℂ fun g => ?_
   rw [inner_gFn_gFn smoothCLM (ouCLM ρ) mp_smooth (mp_ou hρ) hf hfL g,
     inner_gFn_gFn (ouCLM ρ) smoothCLM (mp_ou hρ) mp_smooth hf hfL g]
-  have hA2 : MeasurePreserving (fun v => (pA ρ v).2) ((mu2.prod mu2).prod mu2) mu2 :=
-    (mp_ou hρ).comp (mp_smooth.prod (MeasurePreserving.id mu2))
-  have hB2 : MeasurePreserving (fun v => (pB ρ v).2) ((mu2.prod mu2).prod mu2) mu2 :=
-    mp_smooth.comp ((mp_ou hρ).prod (MeasurePreserving.id mu2))
-  have eA := integral_triple_map (ρ := ρ) (pA ρ) (fun _ => rfl) hA2 g hf
-  have eB := integral_triple_map (ρ := ρ) (pB ρ) (fun _ => rfl) hB2 g hf
+  have eA := integral_triple_map (pA ρ) (fun _ => rfl) g hf
+  have eB := integral_triple_map (pB ρ) (fun _ => rfl) g hf
   rw [law_comm hρ, ← eB] at eA
   exact eA
 
@@ -168,6 +163,83 @@ lemma measurable_hfun2 (i : Idx2) : Measurable (hfun2 i) := by
   unfold hfun2 H2
   exact (continuous_const.mul (((continuous_ev _).comp continuous_fst).mul
     ((continuous_ev _).comp continuous_snd))).measurable
+
+/-- `T_ρ h_i = ρ^{|i|} h_i`. -/
+lemma ouOp_hvec2 {ρ : ℝ} (hρ : |ρ| ≤ 1) (i : Idx2) : ouOp hρ (hvec2 i) = ((ρ : ℂ) ^ tdeg i) • hvec2 i := by
+  refine eq_of_inner_hvec2 fun k => ?_
+  rw [inner_ouOp, inner_smul_right, inner_hvec2]
+  split_ifs with h
+  · subst h; ring
+  · simp
+
+/-- The expansion `⟪h_j, A g⟫ = Σ_k ⟪h_k, g⟫ ⟪h_j, A h_k⟫`. -/
+lemma hasSum_inner_op (A : Lp ℂ 2 mu2 →L[ℂ] Lp ℂ 2 mu2) (j : Idx2) (g : Lp ℂ 2 mu2) :
+    HasSum (fun k => ⟪hvec2 k, g⟫_ℂ * ⟪hvec2 j, A (hvec2 k)⟫_ℂ) ⟪hvec2 j, A g⟫_ℂ := by
+  have h := ((hermiteBasis2.hasSum_repr g).mapL A).mapL (innerSL ℂ (hvec2 j))
+  simpa only [map_smul, innerSL_apply_apply, inner_smul_right, hermiteBasis2_apply,
+    HilbertBasis.repr_apply_apply] using h
+
+/-- **`S` has no matrix elements between different total degrees.** -/
+theorem inner_smoothOp_hvec2_eq_zero {i j : Idx2} (h : tdeg i ≠ tdeg j) :
+    ⟪hvec2 j, smoothOp (hvec2 i)⟫_ℂ = 0 := by
+  have hρ : |(1 / 2 : ℝ)| ≤ 1 := by norm_num [abs_of_pos]
+  have hc := congrArg (fun F => ⟪hvec2 j, F⟫_ℂ)
+    (smoothOp_ouOp_comm hρ (measurable_hfun2 i) (memLp_hfun2 i))
+  simp only at hc
+  change ⟪hvec2 j, smoothOp (ouOp hρ (hvec2 i))⟫_ℂ = ⟪hvec2 j, ouOp hρ (smoothOp (hvec2 i))⟫_ℂ at hc
+  rw [ouOp_hvec2, map_smul, inner_smul_right, inner_ouOp] at hc
+  have hne : ((1 / 2 : ℝ) : ℂ) ^ tdeg i ≠ ((1 / 2 : ℝ) : ℂ) ^ tdeg j := by
+    intro he
+    apply h
+    have he' : (1 / 2 : ℝ) ^ tdeg i = (1 / 2 : ℝ) ^ tdeg j := by exact_mod_cast he
+    exact pow_right_injective₀ (by norm_num) (by norm_num) he'
+  have : (((1 / 2 : ℝ) : ℂ) ^ tdeg i - ((1 / 2 : ℝ) : ℂ) ^ tdeg j) * ⟪hvec2 j, smoothOp (hvec2 i)⟫_ℂ = 0 := by
+    linear_combination hc
+  rcases mul_eq_zero.1 this with h0 | h0
+  · exact absurd (sub_eq_zero.1 h0) hne
+  · exact h0
+
+/-- **`S` commutes with every projection onto a set of total degrees.** -/
+theorem projOn_smoothOp_comm (B : Set Idx2) [DecidablePred (· ∈ B)]
+    (hB : ∀ i j, tdeg i = tdeg j → (i ∈ B ↔ j ∈ B)) (f : Lp ℂ 2 mu2) :
+    projOn B (smoothOp f) = smoothOp (projOn B f) := by
+  refine eq_of_inner_hvec2 fun j => ?_
+  rw [inner_projOn]
+  have hP := hasSum_inner_op smoothOp j (projOn B f)
+  have hf := hasSum_inner_op smoothOp j f
+  have hterm : ∀ k, ⟪hvec2 k, projOn B f⟫_ℂ * ⟪hvec2 j, smoothOp (hvec2 k)⟫_ℂ
+      = if j ∈ B then ⟪hvec2 k, f⟫_ℂ * ⟪hvec2 j, smoothOp (hvec2 k)⟫_ℂ else 0 := by
+    intro k
+    rw [inner_projOn]
+    by_cases hk : tdeg k = tdeg j
+    · have := hB k j hk
+      by_cases hj : j ∈ B
+      · simp [hj, this.2 hj]
+      · have hk' : k ∉ B := fun h => hj (this.1 h)
+        simp [hj, hk']
+    · simp [inner_smoothOp_hvec2_eq_zero hk]
+  simp only [hterm] at hP
+  split_ifs with hj
+  · simp only [hj, if_true] at hP
+    exact hf.unique hP
+  · simp only [hj, if_false] at hP
+    exact (hasSum_zero.unique hP)
+
+lemma tdeg_eq_bideg (i : Idx2) : tdeg i = (bideg i).1 + (bideg i).2 := by
+  simp [tdeg, bideg]; ring
+
+/-- **Band projections commute with the smoothing.** -/
+theorem bandProj_smoothOp_comm (b : GrotheKernel.ComparisonBand) (f : Lp ℂ 2 mu2) :
+    bandProj b (smoothOp f) = smoothOp (bandProj b f) := by
+  refine projOn_smoothOp_comm _ (fun i j hij => ?_) f
+  simp only [bandModes, Set.mem_ofPred_eq, GrotheKernel.ComparisonBand.contains]
+  rw [tdeg_eq_bideg, tdeg_eq_bideg] at hij
+  rw [hij]
+
+/-- **`‖P_I S g‖ ≤ ‖P_I g‖`.** -/
+theorem norm_bandProj_smoothOp_le (b : GrotheKernel.ComparisonBand) (f : Lp ℂ 2 mu2) :
+    ‖bandProj b (smoothOp f)‖ ≤ ‖bandProj b f‖ := by
+  rw [bandProj_smoothOp_comm]; exact norm_smoothOp_le _
 
 end
 
