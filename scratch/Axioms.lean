@@ -783,6 +783,13 @@ import Grothe
 #print axioms Grothe.UpperChaos.energy_bandProj_eq_zero
 #print axioms Grothe.UpperChaos.energy_eq_zero_of_even
 #print axioms Grothe.UpperChaos.ev_eq_sum_monomials
+#print axioms Grothe.UpperChaos.ev_gradedHermiteSlice
+#print axioms Grothe.UpperChaos.ev_phaseImagSlice
+#print axioms Grothe.UpperChaos.ev_phaseInvariantSlice
+#print axioms Grothe.UpperChaos.ev_phaseNormSlice
+#print axioms Grothe.UpperChaos.ev_phasePowerSlice
+#print axioms Grothe.UpperChaos.ev_phaseRealSlice
+#print axioms Grothe.UpperChaos.ev_taylorSourceSlice
 #print axioms Grothe.UpperChaos.far_sound
 #print axioms Grothe.UpperChaos.firstCapturedErrorQ_le_public
 #print axioms Grothe.UpperChaos.firstCenterBandModes_eq_comparison
@@ -838,8 +845,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.integrable_affine_phaseLaplace_monomial
 #print axioms Grothe.UpperChaos.integrable_affine_phaseLaplace_polynomial
 #print axioms Grothe.UpperChaos.integrable_monomial_damped_prod
+#print axioms Grothe.UpperChaos.integrable_norm_rpow_damped
 #print axioms Grothe.UpperChaos.integrable_shifted_monomial_damped
 #print axioms Grothe.UpperChaos.integrable_taylorInnerSource
+#print axioms Grothe.UpperChaos.integrable_taylorInnerSource_conditional
 #print axioms Grothe.UpperChaos.integral_H2_XY
 #print axioms Grothe.UpperChaos.integral_H2_charge_one
 #print axioms Grothe.UpperChaos.integral_H_charge_one
@@ -857,6 +866,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_moment_damped
 #print axioms Grothe.UpperChaos.integral_moment_damped_prod
 #print axioms Grothe.UpperChaos.integral_norm_affine_phaseLaplace_base_tail_le
+#print axioms Grothe.UpperChaos.integral_norm_rpow_damped
 #print axioms Grothe.UpperChaos.integral_phiT_pow_even
 #print axioms Grothe.UpperChaos.integral_phiT_pow_four
 #print axioms Grothe.UpperChaos.integral_phiT_pow_six
@@ -864,6 +874,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_rpow_neg_five_halves_Ioi
 #print axioms Grothe.UpperChaos.integral_shifted_moment_damped
 #print axioms Grothe.UpperChaos.integral_shifted_moment_damped_double
+#print axioms Grothe.UpperChaos.integral_taylorInnerSource_conditional
 #print axioms Grothe.UpperChaos.integral_two_channel
 #print axioms Grothe.UpperChaos.invariantMoment_odd
 #print axioms Grothe.UpperChaos.law_comm
@@ -965,7 +976,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.secondTailModes_eq
 #print axioms Grothe.UpperChaos.second_captured_tail_budget
 #print axioms Grothe.UpperChaos.shiftedDampedMoment_affine_base
+#print axioms Grothe.UpperChaos.shiftedDampedMoment_affine_step
 #print axioms Grothe.UpperChaos.shiftedDampedMoment_one_zero
+#print axioms Grothe.UpperChaos.shiftedDampedMoment_succ_left
+#print axioms Grothe.UpperChaos.shiftedDampedMoment_sum_range_right
 #print axioms Grothe.UpperChaos.shiftedDampedMoment_zero_one
 #print axioms Grothe.UpperChaos.shiftedDampedMoment_zero_zero
 #print axioms Grothe.UpperChaos.shifted_damped_expansion
@@ -981,9 +995,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.sum_projOn
 #print axioms Grothe.UpperChaos.sum_sq_le_of_mean_le
 #print axioms Grothe.UpperChaos.summable_abs_energy
+#print axioms Grothe.UpperChaos.taylorInnerSource_gradedHermite_eq_slice
 #print axioms Grothe.UpperChaos.taylorRounding_error
 #print axioms Grothe.UpperChaos.taylorRounding_source_toLp
 #print axioms Grothe.UpperChaos.taylor_centers_decode_check
+#print axioms Grothe.UpperChaos.taylor_source_eq_slice
 #print axioms Grothe.UpperChaos.thirdCapturedErrorQ_le_public
 #print axioms Grothe.UpperChaos.thirdCenterBandModes_eq_comparison
 #print axioms Grothe.UpperChaos.thirdCenterBand_norm_lower

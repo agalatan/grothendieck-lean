@@ -1,4 +1,5 @@
 import Grothe.UpperChaos.ConditionalGaussianPhase
+import Grothe.UpperChaos.ShiftedMomentRecurrence
 
 /-!
 # The exact zeroth conditional Gaussian phase moment
@@ -38,14 +39,13 @@ theorem shiftedDampedMoment_affine_base (α a t : ℝ) (z : ℂ)
   let μ : ℂ := -((a * t / β : ℝ) : ℂ) * z
   change z * shiftedDampedMoment β μ 0 0 +
     (a : ℂ) * shiftedDampedMoment β μ 1 0 = (α : ℂ) * z / (β : ℂ)^2
-  have hβ : 0 < β := add_pos_of_pos_of_nonneg hα (mul_nonneg (sq_nonneg a) ht.le)
-  have hβC : (β : ℂ) ≠ 0 := by exact_mod_cast hβ.ne'
-  rw [shiftedDampedMoment_zero_zero, shiftedDampedMoment_one_zero]
-  dsimp only [μ]
-  push_cast
-  field_simp [hβC]
+  have h := shiftedDampedMoment_affine_step α a t z 0 0 hα ht
+  dsimp only at h
+  simp only [Nat.cast_zero, mul_zero, zero_div, zero_mul, add_zero,
+    shiftedDampedMoment_zero_zero] at h
+  rw [shiftedDampedMoment_zero_zero, h]
   dsimp only [β]
-  push_cast
+  simp only [div_eq_mul_inv, pow_two]
   ring
 
 /-- Exact conditional expectation of the affine phase kernel, including its cancellation. -/
