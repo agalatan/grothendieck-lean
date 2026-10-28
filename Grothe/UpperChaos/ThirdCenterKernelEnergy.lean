@@ -4,7 +4,7 @@ import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
 /-! Source-bound exact third-center size and energy, with strict transitive
-axiom checks. These finite identities do not establish Gaussian error estimates
+dependency checks. These finite identities do not establish Gaussian error estimates
 or close the other endpoint obligations. Agent-ID: codex-8c4d. -/
 namespace Grothe.UpperChaos.ThirdCenterKernelEnergy
 
