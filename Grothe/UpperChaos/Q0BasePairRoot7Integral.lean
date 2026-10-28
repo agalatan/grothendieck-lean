@@ -97,13 +97,25 @@ theorem first_integral_mem :
     root.integral (reciprocalFirst (1 / 1000000000000000)) ∈ firstInterval := by
   apply assemble _ continuous_pair.1
   · rw [leaf0_eq]
-    simpa only [AnalyticEnvelopeCell002.firstKernel, reciprocalFirst] using
+    have hk : AnalyticEnvelopeCell002.firstKernel (1 / 1000000000000000) =
+        reciprocalFirst (1 / 1000000000000000) := by
+      funext s u
+      rfl
+    simpa only [hk] using
       AnalyticEnvelopeCell002.first_integral_mem (1 / 1000000000000000)
   · rw [leaf10_eq]
-    simpa only [AnalyticEnvelopeCell003.firstKernel, reciprocalFirst] using
+    have hk : AnalyticEnvelopeCell003.firstKernel (1 / 1000000000000000) =
+        reciprocalFirst (1 / 1000000000000000) := by
+      funext s u
+      rfl
+    simpa only [hk] using
       AnalyticEnvelopeCell003.first_integral_mem (1 / 1000000000000000)
   · rw [leaf110_eq]
-    simpa only [AnalyticEnvelopeCell009.firstKernel, reciprocalFirst] using
+    have hk : AnalyticEnvelopeCell009.firstKernel (1 / 1000000000000000) =
+        reciprocalFirst (1 / 1000000000000000) := by
+      funext s u
+      rfl
+    simpa only [hk] using
       AnalyticEnvelopeCell009.first_integral_mem (1 / 1000000000000000)
   · rw [leaf111_eq]
     simpa only [Rect.integral, Rat.cast_div, Rat.cast_one, Rat.cast_ofNat, div_one] using
@@ -115,13 +127,25 @@ theorem companion_integral_mem :
       companionInterval := by
   apply assemble _ continuous_pair.2
   · rw [leaf0_eq]
-    simpa only [AnalyticEnvelopeCell002.companionKernel, reciprocalCompanion] using
+    have hk : AnalyticEnvelopeCell002.companionKernel (1 / 1000000000000000) =
+        reciprocalCompanion (1 / 1000000000000000) := by
+      funext s u
+      rfl
+    simpa only [hk] using
       AnalyticEnvelopeCell002.companion_integral_mem (1 / 1000000000000000)
   · rw [leaf10_eq]
-    simpa only [AnalyticEnvelopeCell003.companionKernel, reciprocalCompanion] using
+    have hk : AnalyticEnvelopeCell003.companionKernel (1 / 1000000000000000) =
+        reciprocalCompanion (1 / 1000000000000000) := by
+      funext s u
+      rfl
+    simpa only [hk] using
       AnalyticEnvelopeCell003.companion_integral_mem (1 / 1000000000000000)
   · rw [leaf110_eq]
-    simpa only [AnalyticEnvelopeCell009.companionKernel, reciprocalCompanion] using
+    have hk : AnalyticEnvelopeCell009.companionKernel (1 / 1000000000000000) =
+        reciprocalCompanion (1 / 1000000000000000) := by
+      funext s u
+      rfl
+    simpa only [hk] using
       AnalyticEnvelopeCell009.companion_integral_mem (1 / 1000000000000000)
   · rw [leaf111_eq]
     simpa only [Rect.integral, Rat.cast_div, Rat.cast_one, Rat.cast_ofNat, div_one] using
