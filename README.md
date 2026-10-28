@@ -157,6 +157,11 @@ comparison and energy-table inputs are unchanged. This stronger conditional
 arithmetic provides margin toward the existing target; the Gaussian inputs
 still require proofs.
 
+The actual phase-source common denominator is checked from its parsed rational
+coefficients in bounded chunks, with exact value
+`302002543697172916153771578242367488000`. This source arithmetic supports
+future certificates; it does not establish the phase cover or the upper bound.
+
 The target `K < 1.404598149141` is **work in progress**. One completed supporting
 calculation is `ProfileFirstGaussianCell`: Lean proves the exact integral of
 the squared degree-one Laguerre component against `exp(-s)` on `[0,1]`, and

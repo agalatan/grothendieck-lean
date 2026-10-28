@@ -71,6 +71,7 @@ Grothe.Upper.comparison_grouped_budget
 Grothe.Upper.comparison_overlap_budget
 Grothe.Upper.headWeight_sound
 Grothe.Upper.head_residual_le_weighted
+Grothe.UpperChaos.CommonDenAppend.commonDen_append
 Grothe.UpperChaos.DirectSample.upper_of_DFT_ledger
 Grothe.UpperChaos.DirectSample.upper_of_actual_head
 Grothe.UpperChaos.DirectSample.upper_of_finite_sample_bounds
@@ -97,6 +98,10 @@ Grothe.UpperChaos.PhaseMomentCheck.integral_phaseOfTerms_pow
 Grothe.UpperChaos.PhaseMomentCheck.integral_phaseOfTerms_pow_cut
 Grothe.UpperChaos.PhaseMomentCheck.integral_phiT_pow_even_cut
 Grothe.UpperChaos.PhaseMomentCheck.integral_polynomial_cut_damped
+Grothe.UpperChaos.PhiDegreeChunksDraft.splitLengths_eq_offsetChunks
+Grothe.UpperChaos.PhiSourceDenBinding.source_chunk_denominators
+Grothe.UpperChaos.PhiSourceDenBinding.source_common_den
+Grothe.UpperChaos.PhiSourceDenChunks.phase_source_commonDen_of_checked_chunks
 Grothe.UpperChaos.ProductComplete.ae_memLp_fibre
 Grothe.UpperChaos.ProductComplete.complete_prod
 Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
