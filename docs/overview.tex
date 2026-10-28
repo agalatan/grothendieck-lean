@@ -157,6 +157,20 @@ is assumed. A strict transitive audit allows only the standard logical axioms.
 The inverse-rate factor already included in the literal is retained. Numerical
 cell certificates and the full upper-bound inputs remain separate obligations.
 
+For the retained head through degree $501$,
+\texttt{ProductionSmoothingApprox.production\_smoothing\_error} proves a
+relative $L^2$ error at most $4\cdot10^{-15}$ for the concrete rational
+smoothing matrices. The exact action in grade $q$ is
+$S_{q+1}C_qS_q^{\mathsf T}$; orthogonality aggregates all $251$ grades
+without multiplying the error allowance by their number. The entry rounding
+uses an integer square-root floor and only the standard logical axioms.
+The actual retained Gaussian coefficient enclosures and their complete
+energy-table comparison remain work in progress.
+\texttt{CanonicalReconstructionNorm} also proves the original $10/7$
+reconstruction allowance for the whole retained head: reflected modes use
+distinct canonical partners with multipliers at most one, so reconstruction
+increases squared norm by at most a factor of two.
+
 The actual Taylor sources also admit a proved finite auxiliary reduction in
 \texttt{ProductionFiniteLaplace}. With softening $\eta=10^{-15}$ and cutoff
 $T=(2^{53})^2$, softening plus truncation costs less than $5\cdot10^{-15}$

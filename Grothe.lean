@@ -573,6 +573,7 @@ import Grothe.UpperChaos.ArraySquareEnergy
 import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.BandedContraction
 import Grothe.UpperChaos.BasePairIntegralAudit
+import Grothe.UpperChaos.CanonicalReconstructionNorm
 import Grothe.UpperChaos.CapturedSourceBound
 import Grothe.UpperChaos.CapturedTail
 import Grothe.UpperChaos.CenterNormBypass
@@ -608,8 +609,21 @@ import Grothe.UpperChaos.ExponentialHorner
 import Grothe.UpperChaos.ExponentialTail
 import Grothe.UpperChaos.FiniteSampleError
 import Grothe.UpperChaos.FirstSecondCapturedTail
+import Grothe.UpperChaos.FixedChaosGradedAction
 import Grothe.UpperChaos.FixedChaosLinear
+import Grothe.UpperChaos.FixedChaosMatrix
+import Grothe.UpperChaos.FixedChaosMatrixBounds
+import Grothe.UpperChaos.FixedChaosMatrixFactorization
+import Grothe.UpperChaos.FixedChaosMomentCoefficients
+import Grothe.UpperChaos.FixedChaosMomentScaling
+import Grothe.UpperChaos.FixedChaosMomentSum
+import Grothe.UpperChaos.FixedChaosPolynomial
+import Grothe.UpperChaos.FixedChaosRecurrence
+import Grothe.UpperChaos.FixedChaosRelativeBounds
+import Grothe.UpperChaos.FixedChaosRoundedEntries
 import Grothe.UpperChaos.FixedChaosSmoothing
+import Grothe.UpperChaos.FixedChaosSymmetricBounds
+import Grothe.UpperChaos.FixedChaosSymmetricPower
 import Grothe.UpperChaos.FrozenSource.Grade000Check
 import Grothe.UpperChaos.FrozenSource.Grade000Data
 import Grothe.UpperChaos.FrozenSource.Grade000Production
@@ -1074,6 +1088,8 @@ import Grothe.UpperChaos.ProductionMeshEnclosure
 import Grothe.UpperChaos.ProductionRadialTail
 import Grothe.UpperChaos.ProductionRectangleAssembly
 import Grothe.UpperChaos.ProductionSmallBall
+import Grothe.UpperChaos.ProductionSmoothingApprox
+import Grothe.UpperChaos.ProductionSmoothingRounding
 import Grothe.UpperChaos.ProductionSoftPhase
 import Grothe.UpperChaos.ProfileAdaptiveSource
 import Grothe.UpperChaos.ProfileFirstGaussianCell
@@ -1536,6 +1552,7 @@ import Grothe.UpperChaos.RationalComplexHermite
 import Grothe.UpperChaos.RationalPhaseImaginary
 import Grothe.UpperChaos.RationalPhaseInvariant
 import Grothe.UpperChaos.RationalSourceParity
+import Grothe.UpperChaos.RationalSqrtFloor
 import Grothe.UpperChaos.RationalSquaredRadius
 import Grothe.UpperChaos.RationalUnitProductionCell
 import Grothe.UpperChaos.RationalUnitQuadrature

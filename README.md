@@ -183,6 +183,19 @@ the squared degree-one Laguerre component against `exp(-s)` on `[0,1]`, and
 encloses it in `[0.054391816192, 0.054391816194]` using Mathlib's proved
 exponential bounds. The remaining profile and response estimates require further work.
 
+`ProductionSmoothingApprox.production_smoothing_error` proves that the concrete
+rational matrix calculation approximates the actual smoothing operator with
+relative Gaussian L² error at most `4·10⁻¹⁵` for every retained head through
+degree 501. The proof identifies the full grade action with
+`S_(q+1) C_q S_qᵀ` and sums squared errors across grades, so the allowance
+is charged once for the complete vector. Its integer square-root rounding
+and error proof use only the standard logical axioms. The retained Gaussian
+coefficient enclosures and full energy-table agreement remain work in progress.
+`CanonicalReconstructionNorm.full_head_reconstruction_norm_le` also proves
+the original `10/7` reconstruction allowance for all 251 grades together:
+the reflected triangular coordinates select distinct canonical partners and
+have square-root multipliers at most one.
+
 LeanCert is a pinned dependency. `UpperChaos/LeanCertPilot.lean` uses its
 dyadic interval integrator to enclose a conditional Gaussian slice integral
 on `[0,1]` in `[1,5/4]`. The explicit 16-cell certificate uses `decide +kernel`;
