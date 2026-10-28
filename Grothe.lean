@@ -201,6 +201,7 @@ import Grothe.UpperChaos.CenterNormBypass
 import Grothe.UpperChaos.Charge
 import Grothe.UpperChaos.ChargeBandApproximation
 import Grothe.UpperChaos.ChargeBandParseval
+import Grothe.UpperChaos.CompactTaylorQuadrature
 import Grothe.UpperChaos.ComparisonPieces
 import Grothe.UpperChaos.Completeness
 import Grothe.UpperChaos.ComplexHermite
