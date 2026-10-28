@@ -87,6 +87,7 @@ theorem integral_mul_finiteLaplacePhase {Ω : Type*} [MeasurableSpace Ω]
       rw [← integral_const_mul]
       apply integral_congr_ae
       refine Filter.Eventually.of_forall fun u => ?_
+      dsimp only
       rw [integral_const_mul]
       ring
     _ = _ := congrArg (fun z : ℂ => (Real.sqrt Real.pi : ℂ)⁻¹ * z)
@@ -162,7 +163,10 @@ lemma finiteLaplaceError_memLp (η T : ℝ) (hη : 0 < η) (hT : 0 ≤ T) (j : �
 theorem norm_finiteLaplaceError_le (η T : ℝ) (hη : 0 < η) (hT : 0 ≤ T) (j : ℕ) :
     ‖(finiteLaplaceError_memLp η T hη hT j).toLp (finiteLaplaceError η T j)‖ ≤
       (10 / 3 : ℝ) * η + Real.exp (-(η ^ 2 * T)) := by
-  rw [finiteLaplaceError_eq_add, MemLp.toLp_add]
+  have heq := (finiteLaplaceError_memLp η T hη hT j).toLp_congr
+    ((softTaylorError_memLp η hη j).add (finiteLaplaceTailError_memLp η T hη hT j))
+    (Filter.Eventually.of_forall fun u => congrFun (finiteLaplaceError_eq_add η T j) u)
+  rw [heq, MemLp.toLp_add]
   exact (norm_add_le _ _).trans (add_le_add (norm_softTaylorError_le η hη j)
     (norm_finiteLaplaceTailError_le η T hη hT j))
 
