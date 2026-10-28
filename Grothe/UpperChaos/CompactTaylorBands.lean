@@ -113,6 +113,7 @@ theorem norm_projOn_compactTaylor_sub_graded_sq (B : Set Idx2)
         exact ⟨by simpa only [gradedIdx_antidegree] using h, gradedIdx_charge i⟩
     simp only [inner_hvec2_gradedHermite, hcond]
     rw [gradedIdx_antidegree]
+    rfl
   simp only [inner_sub_right, inner_hvec2_compactTaylorL2, hc]
 
 /-- The actual Gaussian band inherits the finite rectangle's error, with the
