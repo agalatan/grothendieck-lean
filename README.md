@@ -288,14 +288,6 @@ allowance. Lean proves every coefficient cost with outward interval polynomial a
 A kernel-checked rational ledger assembles the grouped quadratic cost. No new Gaussian input is used.
 The weighted comparison is at most 851922301/10¹⁵.
 
-`Upper/DirectionalComparison.lean` provides a second finite-head certificate
-interface. It retains the signed linear correction
-`L_j = 2 Σ_p a_jp Re ⟨X_p, G_p − X_p⟩` through the kernel coefficient map.
-A certified approximation `c` to `L` can be added to the reference head before
-taking its absolute coefficient sum; only the quadratic remainder is bounded
-by `Σ_p w_p ‖G_p − X_p‖²`, where `w_p ≥ Σ_j |a_jp|`.
-The directional pairings still need numerical enclosures. This theorem does
-not discharge the current Gaussian inputs or improve the endpoint by itself.
 The concrete theorem's remaining **inputs** are:
 
 | hypothesis | content | share of the residual |

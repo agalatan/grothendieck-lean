@@ -7,18 +7,6 @@ Both endpoints are work in progress; [PROOF_STATUS.md](PROOF_STATUS.md) lists
 the remaining project-specific Lean obligations. Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.
 
-**Directional finite-head comparison.** `Upper/DirectionalComparison.lean`
-defines `energyHead` for a finite real coefficient matrix and `linearHead`
-for its signed first-order energy change. `quadratic_remainder` is an exact
-Hilbert-space identity. `quadratic_remainder_le` bounds its coefficient
-absolute sum using the matrix's column costs. `corrected_head_le` allows an
-approximate linear correction table, charging its total enclosure error once
-and retaining cancellation with the reference head. It needs neither
-orthogonality between blocks nor stable coefficient signs. These are ordinary
-Lean proofs with no numerical facts. The actual directional Gaussian pairings
-are not enclosed here; the finite-head theorem does not supply admissibility,
-the omitted tail, or a new endpoint.
-
 **Shared proof foundations.** `LowerAnalytic/ComplexGaussianCore.lean` contains
 `gaussC`, its planar presentation, rotation invariance and radial-moment reduction.
 The phase and complex Hermite calculations import it without the lower row
