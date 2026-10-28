@@ -148,7 +148,9 @@ Grothe.UpperChaos.chargeFn_firstCenterFn
 Grothe.UpperChaos.chargeFn_frozenCorrectionFn
 Grothe.UpperChaos.chargeFn_secondCenterFn
 Grothe.UpperChaos.chargeFn_thirdCenterFn
+Grothe.UpperChaos.chargeOne_compactTaylorL2
 Grothe.UpperChaos.coeFn_gradedHermite
+Grothe.UpperChaos.compactLaplaceHpow_rot
 Grothe.UpperChaos.compactTaylorRegion_eq
 Grothe.UpperChaos.comparisonInputs_taylorCenters
 Grothe.UpperChaos.conditional_gaussian_laplace_profile_le
@@ -170,6 +172,7 @@ Grothe.UpperChaos.ev_phaseRealSlice
 Grothe.UpperChaos.ev_taylorSourceSlice
 Grothe.UpperChaos.exp_five_gt_148
 Grothe.UpperChaos.exp_neg_155_lt
+Grothe.UpperChaos.finiteLaplacePhase_mul_unit
 Grothe.UpperChaos.finiteSoftPhase_logGrid
 Grothe.UpperChaos.firstCapturedErrorQ_le_public
 Grothe.UpperChaos.firstCenterBandModes_eq_comparison
@@ -193,6 +196,7 @@ Grothe.UpperChaos.gradedHermite_add
 Grothe.UpperChaos.gradedHermite_extend
 Grothe.UpperChaos.gradedHermite_rat_mul
 Grothe.UpperChaos.gradedHermite_sub
+Grothe.UpperChaos.gradedHermite_unit
 Grothe.UpperChaos.gradedIdx_antidegree
 Grothe.UpperChaos.gradedIdx_charge
 Grothe.UpperChaos.gradedIdx_injective
@@ -214,6 +218,7 @@ Grothe.UpperChaos.inner_gradedHermite_softHpow_eq_regular
 Grothe.UpperChaos.inner_gradedHermite_softHpow_eq_wick
 Grothe.UpperChaos.inner_hpow_eq_phaseLaplace
 Grothe.UpperChaos.inner_hpow_eq_phaseLaplace_iterated
+Grothe.UpperChaos.inner_hvec2_compactTaylorL2
 Grothe.UpperChaos.inner_hvec2_gradedHermite
 Grothe.UpperChaos.inner_hvec2_hermiteFinite
 Grothe.UpperChaos.inner_smoothOp_hvec2_eq_zero
@@ -295,7 +300,9 @@ Grothe.UpperChaos.norm_gradedHermite_sq
 Grothe.UpperChaos.norm_gradedHermite_sq_cast
 Grothe.UpperChaos.norm_hermiteFinite_sq
 Grothe.UpperChaos.norm_hermiteFinite_sq_cast
+Grothe.UpperChaos.norm_hpow_band_sub_graded_le_compact
 Grothe.UpperChaos.norm_hpow_one_sq
+Grothe.UpperChaos.norm_hpow_sub_compactTaylorL2_lt
 Grothe.UpperChaos.norm_hpow_sub_sq
 Grothe.UpperChaos.norm_hpow_sub_sq_le
 Grothe.UpperChaos.norm_hpow_three_sq
@@ -312,6 +319,7 @@ Grothe.UpperChaos.norm_piece17_le_of_third_captured
 Grothe.UpperChaos.norm_piece17_thirdCenter_le
 Grothe.UpperChaos.norm_piece7_taylorCenters_le
 Grothe.UpperChaos.norm_pieces_taylorCenters_le
+Grothe.UpperChaos.norm_projOn_compactTaylor_sub_graded_sq
 Grothe.UpperChaos.norm_projOn_gradedHermite_integer_sq_cast
 Grothe.UpperChaos.norm_projOn_gradedHermite_sq_cast
 Grothe.UpperChaos.norm_projOn_hermiteFinite_sq

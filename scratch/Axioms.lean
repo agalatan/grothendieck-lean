@@ -308,7 +308,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.chargeFn_frozenCorrectionFn
 #print axioms Grothe.UpperChaos.chargeFn_secondCenterFn
 #print axioms Grothe.UpperChaos.chargeFn_thirdCenterFn
+#print axioms Grothe.UpperChaos.chargeOne_compactTaylorL2
 #print axioms Grothe.UpperChaos.coeFn_gradedHermite
+#print axioms Grothe.UpperChaos.compactLaplaceHpow_rot
 #print axioms Grothe.UpperChaos.compactTaylorRegion_eq
 #print axioms Grothe.UpperChaos.comparisonInputs_taylorCenters
 #print axioms Grothe.UpperChaos.concrete_energy_close_five_e_minus_seven
@@ -339,6 +341,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.exp_neg_155_lt
 #print axioms Grothe.UpperChaos.exp_neg_forty_le
 #print axioms Grothe.UpperChaos.far_sound
+#print axioms Grothe.UpperChaos.finiteLaplacePhase_mul_unit
 #print axioms Grothe.UpperChaos.finiteSoftPhase_logGrid
 #print axioms Grothe.UpperChaos.firstCapturedErrorQ_le_public
 #print axioms Grothe.UpperChaos.firstCenterBandModes_eq_comparison
@@ -362,6 +365,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.gradedHermite_extend
 #print axioms Grothe.UpperChaos.gradedHermite_rat_mul
 #print axioms Grothe.UpperChaos.gradedHermite_sub
+#print axioms Grothe.UpperChaos.gradedHermite_unit
 #print axioms Grothe.UpperChaos.gradedIdx_antidegree
 #print axioms Grothe.UpperChaos.gradedIdx_charge
 #print axioms Grothe.UpperChaos.gradedIdx_injective
@@ -393,6 +397,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.inner_gradedHermite_softHpow_eq_wick
 #print axioms Grothe.UpperChaos.inner_hpow_eq_phaseLaplace
 #print axioms Grothe.UpperChaos.inner_hpow_eq_phaseLaplace_iterated
+#print axioms Grothe.UpperChaos.inner_hvec2_compactTaylorL2
 #print axioms Grothe.UpperChaos.inner_hvec2_gradedHermite
 #print axioms Grothe.UpperChaos.inner_hvec2_hermiteFinite
 #print axioms Grothe.UpperChaos.inner_ouOp
@@ -501,7 +506,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_gradedHermite_sq_cast
 #print axioms Grothe.UpperChaos.norm_hermiteFinite_sq
 #print axioms Grothe.UpperChaos.norm_hermiteFinite_sq_cast
+#print axioms Grothe.UpperChaos.norm_hpow_band_sub_graded_le_compact
 #print axioms Grothe.UpperChaos.norm_hpow_one_sq
+#print axioms Grothe.UpperChaos.norm_hpow_sub_compactTaylorL2_lt
 #print axioms Grothe.UpperChaos.norm_hpow_sub_sq
 #print axioms Grothe.UpperChaos.norm_hpow_sub_sq_le
 #print axioms Grothe.UpperChaos.norm_hpow_three_sq
@@ -519,6 +526,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_piece17_thirdCenter_le
 #print axioms Grothe.UpperChaos.norm_piece7_taylorCenters_le
 #print axioms Grothe.UpperChaos.norm_pieces_taylorCenters_le
+#print axioms Grothe.UpperChaos.norm_projOn_compactTaylor_sub_graded_sq
 #print axioms Grothe.UpperChaos.norm_projOn_gradedHermite_integer_sq_cast
 #print axioms Grothe.UpperChaos.norm_projOn_gradedHermite_sq_cast
 #print axioms Grothe.UpperChaos.norm_projOn_hermiteFinite_sq
