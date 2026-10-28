@@ -1,0 +1,32 @@
+import Grothe.UpperChaos.Q0WickChunking
+import Grothe.UpperChaos.Q0LiteralSourceData
+import Mathlib.Tactic
+
+/-! Untrusted generated data; Lean checks this exact chunk by `cbv`.
+Source Data.lean SHA256: cec1bb15c67969c215a82264bee9c31e116554e33c6821b189ce527d9e442cc7
+Offset 480, count 4; no full-table claim.
+Agent-ID: codex-8c4d. -/
+
+namespace Grothe.UpperChaos.Q0Chunk_o480_n4
+
+open Grothe.UpperChaos.Q0WickChunking
+open Grothe.UpperChaos.Q0LiteralSourceData
+
+set_option maxRecDepth 65536 in
+def literal : DenseWick := [[],[],[],[],[],[],[[],[],[],[],[],[0,-10304077216817834095309797338401996800000],[-4164826301379007914885940088281497600000]],[[],[],[],[],[0,0,0,-18547338990272101371557635209123594240000],[0,0,-30819714630204658570155956653283082240000],[0,-590399683245028709961878074923417600000],[-717188730756453253787183672308531200000]],[[],[],[],[0,0,0,0,0,-6594609418763413820998270296577277952000],[0,0,0,0,-28320818849377253821224392600314183680000],[0,0,0,-1475999208112571774904695187308544000000],[0,0,-6813292942186305910978244886931046400000]],[[],[],[0,0,0,0,0,0,0,-549550784896951151749855858048106496000],[0,0,0,0,0,0,-6885846151613293085944754279292076032000],[0,0,0,0,0,-826559556543040193946629304892784640000],[0,0,0,0,-8606264769077439045446204067702374400000]],[[],[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,-444248138813760844254500276083359744000],[0,0,0,0,0,0,0,-146194207279721394847703142361989120000],[0,0,0,0,0,0,-3251255579429254750501899314465341440000]],[[],[0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,-7497138834857507428087340633948160000],[0,0,0,0,0,0,0,0,-437143607318219126117902428835676160000]],[[],[0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,-18214316971592463588245934534819840000]],[[],[0,0,0,0,0,0,0,0,0,0,0,0,0]]]
+
+set_option maxRecDepth 65536 in
+set_option maxHeartbeats 8000000 in
+set_option cbv.maxSteps 1000000 in
+theorem check_source_strings :
+    sourceChunkDense sourceDen
+      (((Grothe.Upper.phaseStrs.drop 480).take 4).map GrotheKernel.parseTerm) =
+        literal := by
+  cbv
+
+theorem check_phaseTerms :
+    sourceChunkDense sourceDen ((phaseTerms.drop 480).take 4) = literal := by
+  rw [phaseTerms, ← List.map_drop, ← List.map_take]
+  exact check_source_strings
+
+end Grothe.UpperChaos.Q0Chunk_o480_n4
