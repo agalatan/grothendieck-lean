@@ -71,10 +71,10 @@ if len(libs) != 1:
 out = pathlib.Path(os.environ.get('OUT', 'handoff/hardy-benchmark'))
 out.mkdir(parents=True, exist_ok=True)
 setup = json.loads(subprocess.check_output(['lake', 'setup-file', 'tools/benchmark_hardy.lean'], text=True))
-setup['dynlibs'].append(str(libs[0].resolve()))
+setup['plugins'].append({'path': str(libs[0].resolve())})
 setup_file = out / 'benchmark.setup.json'
 setup_file.write_text(json.dumps(setup))
-print('Native libraries in dependency order:', setup['dynlibs'], flush=True)
+print('Native plugins in dependency order:', setup['plugins'], flush=True)
 cmd = ['lake', 'env', 'lean', '--setup=' + str(setup_file.resolve()), '--run', 'tools/benchmark_hardy.lean']
 with (out / 'benchmark.txt').open('w') as log:
     result = subprocess.run(cmd, stdout=log, stderr=subprocess.STDOUT, timeout=1200)
