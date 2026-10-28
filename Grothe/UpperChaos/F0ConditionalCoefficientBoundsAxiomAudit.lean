@@ -1,10 +1,16 @@
 import Grothe.UpperChaos.F0ConditionalCoefficientBounds
+import Grothe.UpperChaos.F0ConditionalReality
 import Grothe.UpperChaos.OneSidedHermiteSeedAxiomAudit
 
-/-! Strict transitive audit of the coefficient and raising-sum norm bounds.
+/-! Strict transitive audit of coefficient reality and the raising-sum bounds.
 Agent-ID: codex-8c4d. -/
 
 assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.norm_canonicalCoefficient_le_one
 assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.norm_canonicalRaisingSum_le
 assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.storage_raising_constant_lt
 assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.norm_canonicalRaisingSum_lt
+assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.canonicalCoefficient_conj
+assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.canonicalCoefficient_im_eq_zero
+assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.norm_canonicalCoefficient_sub_real
+assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.coefficient_im_eq_zero
+assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.norm_coefficient_sub_real

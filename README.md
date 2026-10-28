@@ -360,6 +360,10 @@ production step and its factorial normalization.
 by one using its Gaussian Hilbert-space inner product. It bounds the two-term
 raising sum by `sqrt(c+1)+sqrt(d+1) < 35` over the stored index rectangle.
 The parameter derivative identity and its midpoint error transfer remain open.
+`F0ConditionalReality` uses Gaussian conjugation symmetry and the rational
+Hermite coefficients to show that every canonical coefficient is real.
+It identifies the complex distance from a real stored center with the absolute
+real-part error, including for the signed production coefficient.
 Concrete numerical node enclosures and the complete upper bound remain open.
 
 `ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`

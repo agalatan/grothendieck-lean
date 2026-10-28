@@ -381,6 +381,13 @@ Cauchy--Schwarz with the normalized Hermite basis to bound its norm by one.
 The actual raising sum is bounded by `sqrt(c+1)+sqrt(d+1)`, which is strictly
 below `35` when `c ≤ 266` and `d ≤ 265`. This does not establish the parameter
 derivative formula or the single midpoint error allowance; those remain open.
+`F0ConditionalReality` obtains conjugation covariance of each normalized Hermite
+function from its rational polynomial representation. The existing
+`gaussC_map_conj` then proves that every actual canonical coefficient has zero
+imaginary part. For nonnegative source nodes with nonzero profile, the signed
+production coefficient is real as well. The complex distance to any real
+stored center is exactly the absolute real-part error; no numerical enclosure
+is assumed in these identities.
 Concrete numerical node bounds and the full upper bound remain unproved.
 
 `ShiftedMomentRecurrence` proves
