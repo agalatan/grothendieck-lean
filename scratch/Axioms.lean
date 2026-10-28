@@ -370,6 +370,14 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProfileRootScreen.profile_inner
 #print axioms Grothe.UpperChaos.ProfileRootScreen.profile_outer
 #print axioms Grothe.UpperChaos.ProfileRootScreen.sqrtPi_real_bounds
+#print axioms Grothe.UpperChaos.Q0BinaryLiteralAssemblyBridge.combined_literals_eq
+#print axioms Grothe.UpperChaos.Q0BinaryLiteralAssemblyBridge.copied_literals_eq
+#print axioms Grothe.UpperChaos.Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal
+#print axioms Grothe.UpperChaos.Q0LiteralBinaryFold.fold_eq_literal
+#print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_chunk_denominators
+#print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_chunk_tables
+#print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_cover
+#print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_denominator_lcm
 #print axioms Grothe.UpperChaos.QuadraturePartition.integral_auxiliary_reciprocal
 #print axioms Grothe.UpperChaos.QuadraturePartition.monotone_dyadicAuxiliaryCut
 #print axioms Grothe.UpperChaos.QuadraturePartition.norm_rectangleIntegral_reciprocal_sub_sum_le

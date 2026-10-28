@@ -50,6 +50,27 @@ from `Upper/Data.lean`; the generated candidates are linked to the actual
 source by Lean proofs. The result is independent of the phase-cover numerical
 leaves and does not discharge the remaining upper-bound inputs.
 
+**q0 source-to-literal identity.**
+`Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real
+`s`, `b`, and `v`, that `Ssum q0RawWickEntries s b v` equals
+`he3 sourceCoefficients s b v / sourceDen`. Its source-table equality is a
+proved conclusion, rather than a hypothesis. Here `sourceDen` is exactly
+`604005087394345832307543156484734976000`, distinct from the phase denominator
+above. The coordinates are squared radius, inverse damping rate, and shifted
+argument, in that order. The inverse-rate factor already present in the
+literal is preserved.
+
+`Q0SourceChunkAssembly` combines the actual source partition, chunk tables and
+denominators; `Q0LiteralBinaryFold` checks the finite literal recombination.
+`Q0SourceBindingAxiomAudit` rejects any transitive axiom outside `propext`,
+`Classical.choice`, and `Quot.sound` for these concrete facts and the final
+identity. The `gen_q0_literal_data.py`, `gen_q0_source_chunks.py`,
+`gen_q0_chunk_assembly.py --module-name Q0SourceChunkAssembly`, and
+`gen_q0_literal_fold.py` tools reproduce the candidate files with `--check`;
+their Python calculations do not replace Lean's proof checks. This identity
+supplies a source binding for numerical models; it does not certify all cells,
+Taylor-band errors, the frozen-response energy discrepancy, or the final bound.
+
 **Exact Gaussian phase-moment interfaces.**
 `DampedMoments` proves mixed complex Gaussian moments at every positive radial
 scale. `InvariantMoments` integrates each monomial in the simultaneous-rotation
