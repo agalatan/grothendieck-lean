@@ -276,9 +276,9 @@ certify the full polynomial-weighted Taylor sources or the remaining budgets.
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
 **Upper bound.** `Grothe.UpperChaos.fresh_upper_rounder` proves
-`IsGrothendieckBound (500000000000000000/355973699884132991)` for the concrete rounding,
+`IsGrothendieckBound (500000000000000000/355973699960428191)` for the concrete rounding,
 given an L² charge-one truncation `X`, component-error inputs and table accuracy (the Hardy input is proved).
-`Grothe.upper_value_lt` shows this is below 1.404598149141 (`Grothe/UpperChaos/GroupedRounder.lean`).
+`Grothe.upper_value_lt` shows this is below 1.404598148840 (`Grothe/UpperChaos/GroupedRounder.lean`).
 The endpoint proof is **work in progress**. The supporting module
 `Grothe/UpperChaos/ProfileFirstGaussianCell.lean` is complete: its
 `profile_first_gaussian_cell_exact` identifies the actual squared `lagHalf 1`
@@ -334,6 +334,9 @@ coefficient enclosures and a numerical head check. Those enclosures and the
 head check remain to be proved; this route is work in progress.
 The table interface `Grothe.fresh_upper` is in `Grothe/Upper/GroupedBridge.lean`;
 it takes `DirectHyps E EX` and the sharper grouped comparison bound.
+Its Hardy field uses the `1737972/1000000` budget, proved for the concrete
+rounding by the existing arc certificates and `Real.pi_gt_d20`; the concrete
+Gaussian comparison and table-accuracy hypotheses are unchanged.
 The actual rounding is G_T, the smoothing of T = F₀·P₃(φ), P₃(x) = 1 + ix − x²/2 − ix³/6.
 It is defined in `Grothe/UpperChaos/Rounder.lean`. Lean proves |φ| < 1 (`phi_abs_lt_one`, from
 `phiT_sq_le : φ² ≤ 99/100`; checker `GrotheKernel/PhiCheck.lean`, soundness `Grothe/UpperChaos/PhiCover.lean`, 512 cubes and
@@ -396,8 +399,8 @@ headline endpoints are unchanged.
   residual is assumed by this interface.
 * Other explicit input: `energy_close`, the stored energies are within
   6847009/(5·10¹⁷) of EX on `headIdx 501` in ℓ¹. The Hardy input (the
-  weighted square-sum bound 7/4 at radius 4149/4000 for the kernel of G_T) is
-  **proved**: `HardyReal.hardy_GT`. The concrete theorem also takes X ∈ L² and
+  weighted square-sum bound 1737972/1000000 at radius 4149/4000 for the kernel of G_T) is
+  **proved**: `HardyReal.hardy_GT_tight`. The concrete theorem also takes X ∈ L² and
   charge-one equivariance. Validity, summability, parity, and the phase cover
   for the actual rounding are derived. `HardyHolo.lean` now proves
   `hardy_of_inputs` from positive kernel decay on a disc of radius greater
@@ -415,17 +418,17 @@ headline endpoints are unchanged.
   (`HardyRealDensity.integral_pair_eq_kHol`: the explicit Cholesky factor of
   `I − R²`, the substitution `y = Rx + Sw`, and Fubini); `I − R² ≻ 0` since
   `‖M‖ ≤ 1` and `|p|, |q| ≤ t < 1` (`k11_kdet_pos`).
-* **Residual ledger.** The total is 455288917009/(5·10¹⁷), approximately
-  9.10578·10⁻⁷. The selected comparison contributes 93.56%, the native finite
-  head 3.09%, the Hardy tail 3.35%, and the table error about 0.0015%.
+* **Residual ledger.** The total is 455212621809/(5·10¹⁷), approximately
+  9.10425·10⁻⁷. The selected comparison contributes 93.57%, the native finite
+  head 3.09%, the Hardy tail 3.33%, and the table error about 0.0015%.
   These percentages describe allowances, not fractions of the proof left
   unformalized. The Gaussian component-error inputs remain the main numerical
   limitation. Full scope, source bindings and reproduction commands are in
   `data/localized-comparison/PROOF.md`; `miscellaneous/other-bounds/tree/docs/localized-comparison.tex` gives
   the mathematical argument.
 * The same weighted head bound forces `h₀ ≥ slopeQ − headResidualQ`.
-  `hardy_budget_after_linear` deducts its weighted square from `7/4`;
-  exact kernel arithmetic proves tail `30488839/10¹⁵`.
+  `hardy_budget_after_linear` deducts its weighted square from `1737972/1000000`;
+  exact kernel arithmetic proves tail `303362486/10¹⁶`.
 * **Independent replay.** The source computations were replayed on a different machine: the
   nodal table and the Taylor centre arrays were regenerated bit for bit, and the kernel head,
   contour tail, comparison and endpoint pass on the regenerated data (energy table reproduced
@@ -736,7 +739,7 @@ alone do not discharge `hardy` for a changed rounding or improve an endpoint.
 `HardyArc*` checks the region and circle inputs in Lean: the precompiled
 interval evaluator `GrotheKernel.HardyArc` bounds the Schur value on
 rational boxes, four `native_decide` facts (`hardy_arc_part_0..3`) cover the
-circle `|t| = 4149/4000` with mean `1.659 ≤ 7/4`, and `hardy_region_check`
+circle `|t| = 4149/4000` with mean at most `1737972/1000000`, and `hardy_region_check`
 proves `KerPos` on the disc of radius `51863/50000`. `hardy_region_and_mean`
 assembles both, and `hardy_of_real` retains coefficient summability (`hs`)
 and the real identification (`hreal`) as explicit inputs.

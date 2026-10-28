@@ -91,12 +91,12 @@ lemma chart_integral_le {r : ℝ} (hr : (rhoQ : ℝ) < r)
 
 /-- **The circle mean** (the input `hmean` of `hardy_of_pair_inputs`), from the four checked parts and holomorphy
 near the circle. -/
-theorem hmean_of_parts {r : ℝ} (hr : (4149 / 4000 : ℝ) < r)
+theorem hmean_of_parts_sharp {r : ℝ} (hr : (4149 / 4000 : ℝ) < r)
     (hU : ∀ t ∈ Metric.ball (0 : ℂ) r, ∃ l > 0, KerPos (Rt t) l)
     (h1 : partsOK false 0 = true) (h2 : partsOK false 1024 = true)
     (h3 : partsOK true 0 = true) (h4 : partsOK true 1024 = true) :
     (2 * π)⁻¹ * ∫ θ in (0 : ℝ)..2 * π,
-      ‖HholPair F G (Rt (((4149 / 4000 : ℝ) : ℂ) * Complex.exp (θ * Complex.I)))‖ ^ 2 ≤ 7 / 4 := by
+      ‖HholPair F G (Rt (((4149 / 4000 : ℝ) : ℂ) * Complex.exp (θ * Complex.I)))‖ ^ 2 ≤ 1737972 / 1000000 := by
   have hρ : ((rhoQ : ℚ) : ℝ) = 4149 / 4000 := by norm_num [rhoQ]
   have hr' : (rhoQ : ℝ) < r := by rw [hρ]; exact hr
   have hint := gF_intervalIntegrable hFm hGm hF hG hr' hU
@@ -133,8 +133,17 @@ theorem hmean_of_parts {r : ℝ} (hr : (4149 / 4000 : ℝ) < r)
   rw [hsecond]
   have c1 := chart_integral_le hFm hGm hF hG hr' hU false h1 h2
   have c2 := chart_integral_le hFm hGm hF hG hr' hU true h3 h4
-  have hπ := Real.pi_gt_d2
+  have hπ := Real.pi_gt_d20
   rw [inv_mul_le_iff₀ (by positivity)]
   nlinarith
+
+/-- A circle-mean bound at budget `7/4`. -/
+theorem hmean_of_parts {r : ℝ} (hr : (4149 / 4000 : ℝ) < r)
+    (hU : ∀ t ∈ Metric.ball (0 : ℂ) r, ∃ l > 0, KerPos (Rt t) l)
+    (h1 : partsOK false 0 = true) (h2 : partsOK false 1024 = true)
+    (h3 : partsOK true 0 = true) (h4 : partsOK true 1024 = true) :
+    (2 * π)⁻¹ * ∫ θ in (0 : ℝ)..2 * π,
+      ‖HholPair F G (Rt (((4149 / 4000 : ℝ) : ℂ) * Complex.exp (θ * Complex.I)))‖ ^ 2 ≤ 7 / 4 :=
+  (hmean_of_parts_sharp hFm hGm hF hG hr hU h1 h2 h3 h4).trans (by norm_num)
 
 end Grothe.UpperChaos.HardyArcMean
