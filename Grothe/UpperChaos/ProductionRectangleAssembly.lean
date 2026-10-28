@@ -24,14 +24,18 @@ noncomputable section
 def unitRectangleKernel {N : ℕ} (i : GradedIdx N) (j : ℕ) (η u s : ℝ) : ℂ :=
   (unitRealKernel i j η s u : ℂ)
 
-theorem continuous_unitRectangleKernel {N : ℕ} (i : GradedIdx N) (j : ℕ) (η : ℝ) :
-    Continuous (unitRectangleKernel i j η).uncurry := by
+private theorem continuous_ofReal_swap (f : ℝ → ℝ → ℝ)
+    (hf : Continuous f.uncurry) :
+    Continuous (fun p : ℝ × ℝ => (f p.2 p.1 : ℂ)) := by
   have hswap : Continuous (fun p : ℝ × ℝ => (p.2, p.1)) :=
     continuous_snd.prodMk continuous_fst
-  have hreal : Continuous (fun p : ℝ × ℝ => unitRealKernel i j η p.2 p.1) :=
-    (continuous_unitRealKernel i j η).comp hswap
-  change Continuous (fun p : ℝ × ℝ => (unitRealKernel i j η p.2 p.1 : ℂ))
+  have hreal : Continuous (fun p : ℝ × ℝ => f p.2 p.1) := hf.comp hswap
   exact Complex.continuous_ofReal.comp hreal
+
+theorem continuous_unitRectangleKernel {N : ℕ} (i : GradedIdx N) (j : ℕ) (η : ℝ) :
+    Continuous (unitRectangleKernel i j η).uncurry := by
+  change Continuous (fun p : ℝ × ℝ => (unitRealKernel i j η p.2 p.1 : ℂ))
+  exact continuous_ofReal_swap (unitRealKernel i j η) (continuous_unitRealKernel i j η)
 
 /-- No endpoint identity at auxiliary zero is needed to identify the actual cell. -/
 theorem rectangleIntegral_unit_eq_continuous {N : ℕ} (i : GradedIdx N) (j : ℕ)
