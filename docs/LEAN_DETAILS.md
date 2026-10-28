@@ -50,6 +50,13 @@ from `Upper/Data.lean`; the generated candidates are linked to the actual
 source by Lean proofs. The result is independent of the phase-cover numerical
 leaves and does not discharge the remaining upper-bound inputs.
 
+**Conditional-pair ranks.** `Q0ConditionalPairRankAll` checks the finite rank
+formula and uniqueness for the original degree-531 canonical pair literals.
+`tools/q0_quadrature/gen_conditional_pair_ranks.py --check` reproduces those
+files from the hash-pinned pair input. The input hash records provenance; the
+certificate does not decode the full node-value payload or establish Gaussian
+coefficient enclosures.
+
 **q0 source-to-literal identity.**
 `Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real
 `s`, `b`, and `v`, that `Ssum q0RawWickEntries s b v` equals

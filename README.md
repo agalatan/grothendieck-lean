@@ -16,6 +16,10 @@ a proved numerical head estimate. Our own numerical obligations are not accepted
 external inputs. A bound is **done** only when its complete Lean proof and final
 verification pass. The active work now prioritizes the upper endpoint.
 
+The original degree-531 conditional pair table has a kernel-checked finite
+rank and uniqueness certificate. The Gaussian values stored at those ranks
+still need their numerical enclosures in Lean.
+
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
 the way, and why the remaining gap is hard.
