@@ -271,6 +271,30 @@ reciprocal coordinate `x`, `ReciprocalRate` uses
 factor and Jacobian-weighted squared inverse rate; `kappa` may be zero. These
 are exact identities, not numerical cell or source-error certificates.
 
+`PositiveMomentTheta` defines the smooth angular moments
+`M_h(x) = ∫₀^(π/2) sin(θ)^(2h) cos(θ)^2 exp(-x sin(θ)^2) dθ`, proves
+they are positive, and bounds each consecutive ratio in `(0,1]`.
+`PositiveMomentRecurrence` proves the three-term identity
+`(h+1/2) M_h - (h+2+x) M_(h+1) + x M_(h+2) = 0` by integration by
+parts. For `x ≥ 0`, `PositiveMomentRatio` expresses the consecutive ratio
+as the `PositiveRatio.next` update, whose monotone finite backward interval
+propagation is proved for a terminal interval in `[0,1]`.
+`PositiveMomentBackward` identifies each angular ratio with a finite iteration
+from its terminal ratio and encloses it using terminal bounds zero and one.
+`OriginalMomentIntegrable` proves interval integrability of the original
+integrand `t^(h-1/2) * sqrt(1-t) * exp(-x*t)` on `[0,1]`, including `h=0`.
+`OriginalMomentSubstitutionLemmas` proves that this integrand is continuous
+on the positive half-line and that `sin²` has the expected derivative and
+maps the angular interval into `[0,1]`, with its interior mapped into `(0,1)`.
+`OriginalMomentPullback` proves that the original integrand composed with
+`sin²`, multiplied by its Jacobian, equals twice the angular density on the
+open angular interval. `OriginalMomentSubstitution` handles the endpoints by
+almost-everywhere equality and proves `J_h(x) = (4/π) * M_h(x)` for every
+order and real parameter. `OriginalMomentRatios` transfers positivity and the
+three-term recurrence to `J_h`; for `x ≥ 0`, its ratio satisfies the exact
+continued-fraction update and finite backward enclosure from terminal `[0,1]`.
+Seed formulas and concrete numerical node bounds remain unproved.
+
 `ShiftedMomentRecurrence` proves
 `M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including
 `q=0` and zero mean. Before norms are taken, the affine bracket becomes
