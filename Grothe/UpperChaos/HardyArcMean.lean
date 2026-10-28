@@ -15,7 +15,6 @@ namespace Grothe.UpperChaos.HardyArcMean
 
 open GrotheKernel GrotheKernel.HardyArc Grothe.Upper HardyArcSound HardyArcCircle HardyArcCover
 
-
 /-- What a passed part means (all arguments abstract, so nothing is evaluated during elaboration). -/
 lemma partOK_spec {j rho : Ival} {dat : RData} {neg : Bool} {w tol : ℤ} {depth n k₀ m : ℕ} {cap : ℤ}
     (h : partOK j rho dat neg w tol depth n k₀ m cap = true) :

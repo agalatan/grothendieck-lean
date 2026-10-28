@@ -334,7 +334,7 @@ theorem schurValue_sound (hR : memSC R RI) (hj : mem j jI) {v : ℤ}
     (hv : schurValue jI RI = some v) :
     (Z (Bj R j)).PD ∧ (SchurKernel.T (Bj R j) R.Cmat).PD ∧
       1 / (64 * j ^ 4 * ‖R.detIm‖ ^ 2 * (Z (Bj R j)).det * (W (Bj R j) R.Cmat).det) ≤ (v : ℝ) / D := by
-  unfold schurValue at hv
+  rw [schurValue_eq_spec] at hv
   split_ifs at hv with hg
   obtain rfl : (invPosI (denOf jI RI)).hi = v := Option.some.inj hv
   simp only [gatesOK, Bool.and_eq_true] at hg
