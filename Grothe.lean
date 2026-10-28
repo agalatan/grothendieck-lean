@@ -297,6 +297,7 @@ import Grothe.UpperChaos.OddParseval
 import Grothe.UpperChaos.OddSeries
 import Grothe.UpperChaos.OriginalEnergyBudget
 import Grothe.UpperChaos.OriginalEnergyNoMass
+import Grothe.UpperChaos.OriginalMomentIntegrable
 import Grothe.UpperChaos.PackedDyadic
 import Grothe.UpperChaos.PackedDyadicChunks
 import Grothe.UpperChaos.PhaseAuxiliaryDecay

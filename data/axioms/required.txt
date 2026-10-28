@@ -89,6 +89,7 @@ Grothe.UpperChaos.HardyReal.hardy_GT_tight
 Grothe.UpperChaos.HardyReal.hreal_GT
 Grothe.UpperChaos.LeanCertPilot.unitBaseSlice_eq_conditional_base
 Grothe.UpperChaos.LeanCertPilot.unitBaseSlice_integral_enclosure
+Grothe.UpperChaos.OriginalPositiveMoment.integrand_intervalIntegrable
 Grothe.UpperChaos.PackedDyadic.gradedIntegerSum_eq
 Grothe.UpperChaos.PackedDyadic.isumAcc_eq
 Grothe.UpperChaos.PackedDyadic.sum_coeff_sq

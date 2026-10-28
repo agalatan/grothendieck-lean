@@ -281,8 +281,10 @@ as the `PositiveRatio.next` update, whose monotone finite backward interval
 propagation is proved for a terminal interval in `[0,1]`.
 `PositiveMomentBackward` identifies each angular ratio with a finite iteration
 from its terminal ratio and encloses it using terminal bounds zero and one.
-The change of variables relating these angular moments to the original moment integral and
-any concrete numerical node bounds remain unproved.
+`OriginalMomentIntegrable` proves interval integrability of the original
+integrand `t^(h-1/2) * sqrt(1-t) * exp(-x*t)` on `[0,1]`, including `h=0`.
+The change of variables relating this integral to the angular moments and any
+concrete numerical node bounds remain unproved.
 
 `ShiftedMomentRecurrence` proves
 `M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including

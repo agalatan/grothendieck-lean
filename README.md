@@ -315,8 +315,9 @@ for nonnegative parameters with `PositiveRatio.next`. The latter also proves
 monotone finite interval propagation for any terminal interval in `[0,1]`.
 `PositiveMomentBackward` applies it to enclose the angular ratios from the
 full terminal interval `[0,1]` at any finite depth.
-The change of variables to the original moment integral and any numerical node
-enclosure remain open.
+`OriginalMomentIntegrable` proves the original moment integrand is integrable,
+including at order zero. The change of variables between the two moment forms
+and any numerical node enclosure remain open.
 
 `ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`
 on any certified radial region with `s ≥ 1/16` and `|κ(s)| ≤ 1/100`.
