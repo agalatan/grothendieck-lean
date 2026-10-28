@@ -393,6 +393,14 @@ the numerical leaf and energy certificates remain work in progress.
 Certified subtrees can also be combined directly at each midpoint split,
 then passed as fourteen root intervals without expanding one large leaf list.
 
+`Q0BasePairRoot11Integral` closes both explicit base-pair integrals on the
+entire reciprocal root of radial strip 5, using the original rational
+candidate intervals. The profile polynomial, scalar exponential and
+area-weighted endpoint comparisons are checked in Lean. The first integral
+keeps its nonnegative lower endpoint. This supplies one complete root;
+the remaining roots, production-kernel identification and band energies
+still have to be assembled before the upper endpoint is done.
+
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs

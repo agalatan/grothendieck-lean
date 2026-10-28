@@ -502,6 +502,20 @@ local parent continuity using the exact midpoint integral identity. The
 intervals, allowing separately checked subtrees and reuse without a
 monolithic leaf-membership proof.
 
+`AdaptiveRectangleEnvelope` preserves one-sided nonnegative envelopes and
+signed absolute envelopes under integration over the exact rational cell
+area. `Q0BasePairRoot11Integral.integrals_mem` applies these theorems to both
+explicit base-pair kernels on the entire reciprocal root of strip 5, for
+every damping parameter. It has no numerical premises: the actual profile
+is enclosed by a checked Horner trace, the scalar exponential by LeanCert's
+dyadic checker, and the area-weighted comparisons by kernel reduction.
+The original stored intervals are preserved, with zero as the first lower
+endpoint. No source reserve or normalization allowance is added here.
+The generator and its pinned certificate are in
+`tools/gen_analytic_envelope_root11.py` and `data/analytic-envelope-cells/`.
+The full production-kernel binding, other roots and final band energies
+remain work in progress.
+
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual

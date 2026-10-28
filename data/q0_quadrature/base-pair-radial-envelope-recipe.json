@@ -1,0 +1,9 @@
+{
+  "agent": "codex-aa04",
+  "profile_input": "data/q0_quadrature/source-polynomial.json",
+  "s": ["72", "80"],
+  "degree": 10,
+  "bits": 160,
+  "exp_upper": "1/1000000000000000000000000000000",
+  "status": "proposed radial envelope; all arithmetic and scalar bounds require Lean replay"
+}
