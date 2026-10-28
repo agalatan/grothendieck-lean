@@ -130,7 +130,9 @@ end {BASE}.{module}
             assembled += (f"  sourcePair_step {n - 2} p{n - 2:02} p{n - 1:02} p{n:02}\n"
                           f"    source{n - 1:02} Q0GaussPolynomialOrder{n:02}.recurrence_checked\n\n")
         assembled += theorem_statement(n, f"exactness{n:02}")
-        assembled += (f"  exact actual_exactness_of_check {n - 1} p{n - 1:02} p{n:02} w{n:02} r{n:02}\n"
+        # Real's literal one and the natural cast of one need an explicit bridge.
+        proof = "simpa only [Nat.cast_one] using" if n == 1 else "exact"
+        assembled += (f"  {proof} actual_exactness_of_check {n - 1} p{n - 1:02} p{n:02} w{n:02} r{n:02}\n"
                       f"    source{n:02} Q0GaussPolynomialOrder{n:02}.identities_checked\n"
                       "    node hinj hroot f hf\n\n")
     assembled += """/-- Every order used by the production rule, with finite polynomial inputs discharged. -/
@@ -144,7 +146,9 @@ theorem exactness (k : Fin 64)
           ((Q0LegendreInteger.realPair (node i) k.val).1) ^ 2)) * f.eval (node i) := by
   fin_cases k
 """
-    assembled += "".join(f"  · exact exactness{n:02} node hinj hroot f hf\n" for n in ORDERS)
+    for n in ORDERS:
+        proof = "simpa only [Nat.cast_one] using" if n == 1 else "exact"
+        assembled += f"  · {proof} exactness{n:02} node hinj hroot f hf\n"
     assembled += f"\nend {BASE}.Q0GaussPolynomialCertificates\n"
     result[OUT / "Q0GaussPolynomialCertificates.lean"] = assembled
 
