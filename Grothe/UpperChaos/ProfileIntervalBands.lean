@@ -46,7 +46,7 @@ theorem chargeOne_profileIntervalL2 {ι : Type*} (I : Finset ι) (a b : ι → �
   apply chargeOne_toLp
   apply profileRetainedHpow_rot
   intro c u hc
-  simp [profileIntervalUnion, profileRadialRegion, rot2, norm_mul, hc]
+  simp [profileIntervalUnion, profileRadialRegion, rot2, hc]
 
 /-- The finite residual energy uses exactly the retained rectangle coefficients. -/
 def profileIntervalBandEnergy {ι : Type*} (I : Finset ι) (a b : ι → ℝ)
