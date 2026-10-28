@@ -34,11 +34,15 @@ theorem integral_gaussC_radial_complex (f : ℝ → ℂ) (hf : Measurable f) :
         ((π⁻¹ : ℝ) : ℂ) * ((p.1 * exp (-p.1 ^ 2) : ℂ) * f p.1) * 1 := by
     intro p hp
     rw [Complex.normSq_eq_norm_sq, norm_polarCoord_symm_of_mem hp]
-    simp only [smul_smul, Complex.real_smul]
+    simp only [Complex.real_smul]
     push_cast
     ring
   rw [setIntegral_congr_fun (measurableSet_Ioi.prod measurableSet_Ioo) hp,
-    Measure.volume_eq_prod, setIntegral_prod_mul, integral_const_mul]
+    Measure.volume_eq_prod,
+    setIntegral_prod_mul
+      (fun r : ℝ => ((π⁻¹ : ℝ) : ℂ) * ((r * exp (-r ^ 2) : ℂ) * f r))
+      (fun _ : ℝ => (1 : ℂ)) (Ioi 0) (Ioo (-π) π),
+    integral_const_mul]
   have hangle : (∫ _θ in Ioo (-π) π, (1 : ℂ)) = ((2 * π : ℝ) : ℂ) := by
     have hr : (∫ _θ in Ioo (-π) π, (1 : ℝ)) = 2 * π := by
       simp only [integral_const, smul_eq_mul, mul_one, Measure.real,
