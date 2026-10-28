@@ -43,6 +43,22 @@ theorem canonicalIntegrand_conj (A : ℝ) (i : ℕ × ℕ) (w : ℂ) :
   rw [he, phase_conj, hfun_conj_argument]
   simp only [map_mul, Complex.conj_conj]
 
+private theorem integral_conj_of_symmetric {f : ℂ → ℂ} (hf : Integrable f gaussC)
+    (hconj : ∀ w, f (conj w) = conj (f w)) :
+    conj (∫ w, f w ∂gaussC) = ∫ w, f w ∂gaussC := by
+  have hfm : AEStronglyMeasurable f (gaussC.map (fun z : ℂ => conj z)) := by
+    rw [gaussC_map_conj]
+    exact hf.aestronglyMeasurable
+  have hmap := integral_map (μ := gaussC)
+    Complex.continuous_conj.measurable.aemeasurable hfm
+  rw [gaussC_map_conj] at hmap
+  rw [← integral_conj]
+  calc
+    (∫ w, conj (f w) ∂gaussC) = ∫ w, f (conj w) ∂gaussC := by
+      apply integral_congr_ae
+      exact Filter.Eventually.of_forall fun w => (hconj w).symm
+    _ = ∫ w, f w ∂gaussC := hmap.symm
+
 theorem canonicalCoefficient_conj (A : ℝ) (i : ℕ × ℕ) :
     conj (canonicalCoefficient A i) = canonicalCoefficient A i := by
   let f : ℂ → ℂ := fun w => conj (hfun i w) * Haag.ph ((A : ℂ) + w)
@@ -50,19 +66,7 @@ theorem canonicalCoefficient_conj (A : ℝ) (i : ℕ × ℕ) :
     simpa only [f, canonicalPhase, hfun, map_mul, Complex.conj_ofReal, mul_assoc] using
       (integrable_conj_ev_mul (canonicalPhase_memLp A) (H i.1 i.2)).const_mul
         (nrm i.1 i.2 : ℂ)
-  have hfm : AEStronglyMeasurable f (gaussC.map (fun z : ℂ => conj z)) := by
-    rw [gaussC_map_conj]
-    exact hf.aestronglyMeasurable
-  have hmap := integral_map (μ := gaussC)
-    Complex.continuous_conj.measurable.aemeasurable hfm
-  rw [gaussC_map_conj] at hmap
-  change conj (∫ w, f w ∂gaussC) = ∫ w, f w ∂gaussC
-  rw [← integral_conj]
-  calc
-    (∫ w, conj (f w) ∂gaussC) = ∫ w, f (conj w) ∂gaussC := by
-      apply integral_congr_ae
-      exact Filter.Eventually.of_forall fun w => (canonicalIntegrand_conj A i w).symm
-    _ = ∫ w, f w ∂gaussC := hmap.symm
+  exact integral_conj_of_symmetric hf (canonicalIntegrand_conj A i)
 
 theorem canonicalCoefficient_im_eq_zero (A : ℝ) (i : ℕ × ℕ) :
     (canonicalCoefficient A i).im = 0 := by
@@ -81,12 +85,34 @@ theorem norm_canonicalCoefficient_sub_real (A r : ℝ) (i : ℕ × ℕ) :
   rw [canonicalCoefficient_eq_ofReal_re A i, ← Complex.ofReal_sub,
     Complex.norm_real, Real.norm_eq_abs]
 
-theorem coefficient_im_eq_zero (s : ℝ) (hs : 0 ≤ s) (hv : vprof s ≠ 0)
-    (i : ℕ × ℕ) : (F0ConditionalNode.coefficient s i).im = 0 := by
-  rw [coefficient_eq_signed s hs hv i, ← Complex.ofReal_pow]
-  simp [Complex.mul_im, canonicalCoefficient_im_eq_zero]
+theorem phaseSlice_conj (s : ℝ) (w : ℂ) :
+    F0ConditionalNode.phaseSlice s (conj w) = conj (F0ConditionalNode.phaseSlice s w) := by
+  unfold F0ConditionalNode.phaseSlice F0
+  rw [← phase_conj]
+  congr 1
+  simp only [map_add, map_mul, Complex.conj_ofReal]
 
-theorem norm_coefficient_sub_real (s r : ℝ) (hs : 0 ≤ s) (hv : vprof s ≠ 0)
+theorem coefficient_conj (s : ℝ) (i : ℕ × ℕ) :
+    conj (F0ConditionalNode.coefficient s i) = F0ConditionalNode.coefficient s i := by
+  let f : ℂ → ℂ := fun w => conj (hfun i w) * F0ConditionalNode.phaseSlice s w
+  have hf : Integrable f gaussC := by
+    simpa only [f, hfun, map_mul, Complex.conj_ofReal, mul_assoc] using
+      (integrable_conj_ev_mul (F0ConditionalNode.phaseSlice_memLp s) (H i.1 i.2)).const_mul
+        (nrm i.1 i.2 : ℂ)
+  rw [F0ConditionalNode.coefficient_eq_integral]
+  apply integral_conj_of_symmetric hf
+  intro w
+  dsimp only [f]
+  rw [hfun_conj_argument, phaseSlice_conj]
+  simp only [map_mul, Complex.conj_conj]
+
+theorem coefficient_im_eq_zero (s : ℝ)
+    (i : ℕ × ℕ) : (F0ConditionalNode.coefficient s i).im = 0 := by
+  have h := congrArg Complex.im (coefficient_conj s i)
+  simp only [Complex.conj_im] at h
+  linarith
+
+theorem norm_coefficient_sub_real (s r : ℝ)
     (i : ℕ × ℕ) :
     ‖F0ConditionalNode.coefficient s i - (r : ℂ)‖ =
       |(F0ConditionalNode.coefficient s i).re - r| := by
@@ -94,7 +120,7 @@ theorem norm_coefficient_sub_real (s r : ℝ) (hs : 0 ≤ s) (hv : vprof s ≠ 0
       ((F0ConditionalNode.coefficient s i).re : ℂ) := by
     apply Complex.ext
     · simp
-    · simp [coefficient_im_eq_zero s hs hv i]
+    · simp [coefficient_im_eq_zero s i]
   rw [he, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs]
 
 end

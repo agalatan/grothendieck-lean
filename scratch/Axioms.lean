@@ -657,6 +657,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.ExponentialTail.exp_moment_tail
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.canonicalCoefficient_conj
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.canonicalCoefficient_im_eq_zero
+#print axioms Grothe.UpperChaos.F0ConditionalEvaluator.coefficient_conj
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.coefficient_eq_signed
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.coefficient_im_eq_zero
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.norm_canonicalCoefficient_le_one
