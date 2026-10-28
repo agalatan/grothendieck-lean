@@ -192,7 +192,10 @@ import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.Realise
 import Grothe.Upper.Residual
 import Grothe.Upper.WeightedUnion
+import Grothe.UpperChaos.AdaptiveRectangleComposition
+import Grothe.UpperChaos.AdaptiveRectangleEnclosure
 import Grothe.UpperChaos.AdaptiveRectanglePartition
+import Grothe.UpperChaos.AdaptiveRetainedCoefficient
 import Grothe.UpperChaos.AffineGaussianSquare
 import Grothe.UpperChaos.AffineSquareIntegralBounds
 import Grothe.UpperChaos.BandProj
@@ -237,6 +240,7 @@ import Grothe.UpperChaos.GTAnalyticSeries
 import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussOp
 import Grothe.UpperChaos.GaussianDensityBounds
+import Grothe.UpperChaos.GaussianNormalizationInterval
 import Grothe.UpperChaos.GaussianSmallBall
 import Grothe.UpperChaos.GeometricReciprocal
 import Grothe.UpperChaos.GlobalGaussianMoments

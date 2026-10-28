@@ -463,6 +463,29 @@ under `ContinuousOn` on the closed root. The proof extends the integrand
 once by coordinate clamping and uses adjacent-interval additivity at every
 split. Numerical enclosures for the actual leaves remain separate inputs.
 
+`AdaptiveRectangleEnclosure` folds the complete ordered leaf list with
+exact rational interval addition. Its `integral_mem_enclosureSum` and
+`abs_integral_sub_center_le` connect certified leaf integrals to the root
+integral and a rational center/radius pair. `Rect.abs_integral_le_area_mul`
+turns a pointwise analytic envelope into a finite-area integral bound,
+including degenerate cells. It applies only to the finite rectangle being
+integrated and introduces no extra source approximation allowance.
+
+`GaussianNormalizationInterval` encloses the reciprocal square root of pi
+by reversing and inverting the existing certified endpoints.
+`AdaptiveRetainedCoefficient` fixes all fourteen roots of the actual
+seven-strip mesh. It proves regular and reciprocal continuity on each closed
+root, includes the reciprocal Jacobian, and identifies their normalized
+real integral sum with `retainedReciprocalMeshValue`. Its `coefficient_mem`
+and `coefficient_abs_sub_le` consume the complete leaf certificates and
+rational endpoint checks. Gaussian normalization is included by interval
+multiplication; the separate source reserve is still charged only by the
+band transfer. The actual leaf certificates and energy checks remain open.
+`AdaptiveRectangleComposition` combines certified child intervals under
+local parent continuity using the exact midpoint integral identity. The
+`coefficient_mem_of_roots` consumer accepts the resulting fourteen root
+intervals, allowing separately checked subtrees and reuse without a
+monolithic leaf-membership proof.
 
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
