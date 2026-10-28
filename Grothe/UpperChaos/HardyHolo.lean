@@ -304,6 +304,28 @@ theorem differentiableOn_Hhol_Rt (hφ : PhiBound) {U : Set ℂ} (hU : IsOpen U)
 /-- Hardy assembly for an arbitrary measurable disk-valued response pair. The real odd-series
 identification and circle mean bound must be supplied for this pair; neither is inherited from
 the incumbent rounder by this theorem. -/
+theorem hardy_of_pair_inputs_budget {F G : ℂ × ℂ → ℂ}
+    (hF : Measurable F) (hG : Measurable G)
+    (hFb : ∀ u, ‖F u‖ ≤ 1) (hGb : ∀ u, ‖G u‖ ≤ 1)
+    {r : ℝ} (hr : 4149 / 4000 < r)
+    (hU : ∀ t ∈ Metric.ball (0 : ℂ) r, ∃ l > 0, KerPos (Rt t) l)
+    {h : ℕ → ℝ} (hs : Summable fun j => |h j|)
+    (hreal : ∀ t : ℝ, 0 < t → t < 1 →
+      HasSum (fun j => (h j : ℂ) * (t : ℂ) ^ (2 * j + 1)) (HholPair F G (Rt t)))
+    {B : ℝ} (hmean : (2 * Real.pi)⁻¹ * ∫ θ in (0 : ℝ)..2 * Real.pi,
+      ‖HholPair F G (Rt (((4149 / 4000 : ℝ) : ℂ) * Complex.exp (θ * Complex.I)))‖ ^ 2 ≤ B)
+    (J : ℕ) :
+    ∑ n ∈ Finset.range J, h n ^ 2 * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ B := by
+  have hr1 : 1 < r := by linarith
+  have hdiff := differentiableOn_HholPair_Rt hF hG hFb hGb Metric.isOpen_ball hU
+  have hball := hasSum_odd_of_eqOn_real hr1 hdiff hs hreal
+  refine sum_sq_le_of_mean_le (f := fun t => HholPair F G (Rt t)) (fun θ => hball _ ?_)
+    (summable_abs_of_hasSum_ball (by norm_num) hr hball) hmean J
+  rw [Metric.mem_ball, dist_zero_right, norm_mul, Complex.norm_real, Real.norm_eq_abs,
+    Complex.norm_exp_ofReal_mul_I, mul_one]
+  norm_num; linarith
+
+/-- Hardy assembly at budget `7/4`. -/
 theorem hardy_of_pair_inputs {F G : ℂ × ℂ → ℂ}
     (hF : Measurable F) (hG : Measurable G)
     (hFb : ∀ u, ‖F u‖ ≤ 1) (hGb : ∀ u, ‖G u‖ ≤ 1)
@@ -315,15 +337,8 @@ theorem hardy_of_pair_inputs {F G : ℂ × ℂ → ℂ}
     (hmean : (2 * Real.pi)⁻¹ * ∫ θ in (0 : ℝ)..2 * Real.pi,
       ‖HholPair F G (Rt (((4149 / 4000 : ℝ) : ℂ) * Complex.exp (θ * Complex.I)))‖ ^ 2 ≤ 7 / 4)
     (J : ℕ) :
-    ∑ n ∈ Finset.range J, h n ^ 2 * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4 := by
-  have hr1 : 1 < r := by linarith
-  have hdiff := differentiableOn_HholPair_Rt hF hG hFb hGb Metric.isOpen_ball hU
-  have hball := hasSum_odd_of_eqOn_real hr1 hdiff hs hreal
-  refine sum_sq_le_of_mean_le (f := fun t => HholPair F G (Rt t)) (fun θ => hball _ ?_)
-    (summable_abs_of_hasSum_ball (by norm_num) hr hball) hmean J
-  rw [Metric.mem_ball, dist_zero_right, norm_mul, Complex.norm_real, Real.norm_eq_abs,
-    Complex.norm_exp_ofReal_mul_I, mul_one]
-  norm_num; linarith
+    ∑ n ∈ Finset.range J, h n ^ 2 * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4 :=
+  hardy_of_pair_inputs_budget hF hG hFb hGb hr hU hs hreal hmean J
 
 /-- **`hardy` from three explicit inputs.** Let `h` be absolutely summable real coefficients and
 `ρ = 4149/4000`. Suppose

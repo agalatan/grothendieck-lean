@@ -15,9 +15,9 @@ allowance is `compareQ = 106490963/125000000000000`; the concrete theorem
 obtains it from the component-error inputs in `LocalizedComparison`.
 The checked finite head and table accuracy force the linear coefficient to
 be at least `linearLowerQ`. Its weighted square is deducted from the same
-Hardy budget `7/4`, giving tail `30488839/10¹⁵` and total residual
-`455291618509/(5·10¹⁷)`. No comparison of infinite table tails or stronger
-Hardy hypothesis is used. The raw rounding and preprocessors are unchanged.
+Hardy budget `1737972/1000000`, giving tail `303362486/10¹⁶` and total residual
+`455215323309/(5·10¹⁷)`. No comparison of infinite table tails is used.
+The raw rounding and preprocessors are unchanged.
 The remaining Gaussian inputs are explicit in `DirectHyps` and in the
 concrete `ComparisonInputs` wrapper.
 -/
@@ -36,10 +36,10 @@ def linearLowerQ : ℚ := slopeQ - headResidualQ
 
 /-- The Hardy budget after removing the linear coefficient and shifting the radial index. -/
 def shiftedBudgetQ : ℚ :=
-  (7 / 4 - linearLowerQ ^ 2 * (4149 / 4000) ^ 2) / (4149 / 4000) ^ 4
+  (1737972 / 1000000 - linearLowerQ ^ 2 * (4149 / 4000) ^ 2) / (4149 / 4000) ^ 4
 
 /-- The refined bound for the kernel coefficients beyond degree `501`. -/
-def tailQ : ℚ := 30488839 / 1000000000000000
+def tailQ : ℚ := 303362486 / 10000000000000000
 
 /-- The analytic and numerical inputs of the upper bound, for the energy tables `E` of the
 rounding `T = F₀ P₃(φ)` and `EX` of its truncation `X = F₀ + v` (`E (n, m)` is the energy of
@@ -62,8 +62,8 @@ structure DirectHyps (E EX : ℕ × ℕ → ℝ) : Prop where
   ones, in `ℓ¹`. -/
   energy_close : ∑ p ∈ headIdx 501, |EX p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ)
   /-- The weighted square sum of the kernel coefficients of the rounding at radius `4149/4000`
-  is at most `7/4`. -/
-  hardy : ∀ J, ∑ n ∈ range J, kernelCoeff E n ^ 2 * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4
+  is at most `1737972/1000000`. -/
+  hardy : ∀ J, ∑ n ∈ range J, kernelCoeff E n ^ 2 * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 1737972 / 1000000
 
 end Upper
 
@@ -121,11 +121,11 @@ theorem linear_lower {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) :
 theorem tail_numeric :
     (shiftedBudgetQ : ℝ) * (4149 / 4000 : ℝ)⁻¹ ^ (2 * (2 * 250 + 1))
       ≤ (tailQ : ℝ) ^ 2 * (1 - (4149 / 4000 : ℝ)⁻¹ ^ 4) := by
-  have hN : (308394442958532133083118700595891757420014016 * 4000 ^ 1002 : ℕ)
-      ≤ 37488336509491942652785364321 * 4149 ^ 1002 := by
+  have hN : (7632881873636617889130413111547487336908350400 * 4000 ^ 1002 : ℕ)
+      ≤ 927850815278335893503475376649 * 4149 ^ 1002 := by
     decide +kernel
-  have hR : (308394442958532133083118700595891757420014016 * 4000 ^ 1002 : ℝ)
-      ≤ 37488336509491942652785364321 * 4149 ^ 1002 := by
+  have hR : (7632881873636617889130413111547487336908350400 * 4000 ^ 1002 : ℝ)
+      ≤ 927850815278335893503475376649 * 4149 ^ 1002 := by
     exact_mod_cast hN
   have ha : (0 : ℝ) ≤ 4000 ^ 1002 := by positivity
   have hb : (0 : ℝ) < 4149 ^ 1002 := by positivity
@@ -141,7 +141,7 @@ theorem tail_numeric :
 /-- The sharper tail follows from the original Hardy and head hypotheses together. -/
 theorem tail_le {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) :
     ∑' n, |kernelCoeff E (n + 251)| ≤ (tailQ : ℝ) := by
-  have hs := hardy_budget_after_linear (kernelCoeff E) (4149 / 4000 : ℝ) (7 / 4)
+  have hs := hardy_budget_after_linear (kernelCoeff E) (4149 / 4000 : ℝ) (1737972 / 1000000)
     (linearLowerQ : ℝ) (by norm_num)
     (by norm_num [linearLowerQ, headResidualQ, compareQ, headCapQ, energyErrQ, slopeQ])
     (linear_lower hE) hE.hardy

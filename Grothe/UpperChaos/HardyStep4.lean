@@ -27,6 +27,17 @@ theorem hardy_region_and_mean {F G : ℂ × ℂ → ℂ} (hFm : Measurable F) (h
   exact ⟨hU, HardyArcMean.hmean_of_parts hFm hGm hF hG (by norm_num [regionR]) hU
     hardy_arc_part_0 hardy_arc_part_1 hardy_arc_part_2 hardy_arc_part_3⟩
 
+/-- The same checked arcs imply the sharper circle-mean budget `1737972/1000000`. -/
+theorem hardy_region_and_mean_sharp {F G : ℂ × ℂ → ℂ} (hFm : Measurable F) (hGm : Measurable G)
+    (hF : ∀ u, ‖F u‖ ≤ 1) (hG : ∀ u, ‖G u‖ ≤ 1) :
+    (∀ t ∈ Metric.ball (0 : ℂ) (regionR : ℝ), ∃ l > 0, KerPos (Rt t) l) ∧
+      (2 * Real.pi)⁻¹ * ∫ θ in (0 : ℝ)..2 * Real.pi,
+        ‖HholPair F G (Rt (((4149 / 4000 : ℝ) : ℂ) * Complex.exp (θ * Complex.I)))‖ ^ 2 ≤
+          1737972 / 1000000 := by
+  have hU := kerPos_on_ball hardy_region_check
+  exact ⟨hU, HardyArcMean.hmean_of_parts_sharp hFm hGm hF hG (by norm_num [regionR]) hU
+    hardy_arc_part_0 hardy_arc_part_1 hardy_arc_part_2 hardy_arc_part_3⟩
+
 /-- **The Hardy tail from the real identification alone** (step 1(b) is the only remaining input). -/
 theorem hardy_of_real {F G : ℂ × ℂ → ℂ} (hFm : Measurable F) (hGm : Measurable G)
     (hF : ∀ u, ‖F u‖ ≤ 1) (hG : ∀ u, ‖G u‖ ≤ 1)
@@ -37,5 +48,16 @@ theorem hardy_of_real {F G : ℂ × ℂ → ℂ} (hFm : Measurable F) (hGm : Mea
     ∑ n ∈ Finset.range J, h n ^ 2 * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 7 / 4 := by
   obtain ⟨hU, hmean⟩ := hardy_region_and_mean hFm hGm hF hG
   exact hardy_of_pair_inputs hFm hGm hF hG (by norm_num [regionR]) hU hs hreal hmean J
+
+/-- The stronger Hardy budget follows from the same real-series identification. -/
+theorem hardy_of_real_sharp {F G : ℂ × ℂ → ℂ} (hFm : Measurable F) (hGm : Measurable G)
+    (hF : ∀ u, ‖F u‖ ≤ 1) (hG : ∀ u, ‖G u‖ ≤ 1)
+    {h : ℕ → ℝ} (hs : Summable fun j => |h j|)
+    (hreal : ∀ t : ℝ, 0 < t → t < 1 →
+      HasSum (fun j => (h j : ℂ) * (t : ℂ) ^ (2 * j + 1)) (HholPair F G (Rt t)))
+    (J : ℕ) :
+    ∑ n ∈ Finset.range J, h n ^ 2 * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 1737972 / 1000000 := by
+  obtain ⟨hU, hmean⟩ := hardy_region_and_mean_sharp hFm hGm hF hG
+  exact hardy_of_pair_inputs_budget hFm hGm hF hG (by norm_num [regionR]) hU hs hreal hmean J
 
 end Grothe.UpperChaos

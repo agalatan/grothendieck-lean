@@ -23,7 +23,7 @@ cache matches the node-cap sources.
 
 Headline `Grothe.UpperChaos.fresh_upper_rounder` (`Grothe/UpperChaos/GroupedRounder.lean`):
 
-    K_G^ℂ ≤ 500000000000000000/355973699884132991  (< 1.404598149141)
+    K_G^ℂ ≤ 500000000000000000/355973699960428191  (< 1.404598148840)
 
 for the concrete rounding `GT` (smoothed `F₀·P₃(φ)` built from `Grothe/Upper/Data.lean`), assuming only
 
@@ -50,10 +50,10 @@ are theorems.  Module map (all in `Grothe/UpperChaos/`):
 | Realise2, Structural | two-channel Gaussian rounding ⇒ `DiskKernel`; `structural_fields` |
 | Rounder | `vprof`, `F0`, `phiT`, `Tround`, `GT`; measurable, charge one, disk-valued under `PhiBound` |
 | PhiHorner, PhiDense, PhiCover, PhiCoverData, PhiCoverCheck0–5, PhiCoverCheck, PhiBound | phase cover `φ² ≤ 99/100`, `|φ| < 1` (checker `GrotheKernel/PhiCheck.lean`, generator `tools/gen_phi_abs_cover.py`, data `data/phi-abs-cover/trees.json`) |
-| HardyKernel, HardyReal | holomorphic Gaussian kernel and certificate covariance definitions; `HardyReal.hardy_GT` proves the concrete Hardy input |
+| HardyKernel, HardyReal | holomorphic Gaussian kernel and certificate covariance definitions; `HardyReal.hardy_GT_tight` proves the concrete Hardy input |
 
 The sharper tail reserves the linear coefficient's weighted square from the
-same `7/4` budget before Cauchy–Schwarz (`hardy_budget_after_linear`,
+proved `1737972/1000000` budget before Cauchy–Schwarz (`hardy_budget_after_linear`,
 `linear_lower`, `tail_le`). It changes no numerical premise. The complete
 endpoint for the preceding preprocessors passed the full build and axiom audit in
 [run 39901871873](https://github.com/agalatan/grothendieck-lean/actions/runs/39901871873);
@@ -122,7 +122,7 @@ Progress (claude/hardy, 26 Oct):
 - **Assembly:** `hardy_of_inputs` (`HardyHolo.lean`) proves the `hardy` statement from three explicit inputs:
   (region) `KerPos (Rt t) λ`, `λ > 0`, on a disc of radius `r > 4149/4000`;
   (real identification, step 1(b)) `HasSum (hⱼ t^{2j+1}) (Hhol (Rt t))` for real `0 < t < 1`;
-  (circle) the mean of `|Hhol (Rt z)|²` over `‖z‖ = 4149/4000` is `≤ 7/4`.
+  (circle) the mean of `|Hhol (Rt z)|²` over `‖z‖ = 4149/4000` is `≤ 7/4`; the proved tighter budget `1737972/1000000` suffices.
 - **Separate responses:** `HholPair F G R` defines the continued correlation
   for independent left/right functions. `differentiableOn_HholPair_Rt`
   proves holomorphy for any measurable disk-valued pair on the same decay
@@ -146,7 +146,7 @@ Progress (claude/hardy, 26 Oct):
   certificate. `GrotheKernel/HardyArc.lean` evaluates the Schur bound `schurValue` of step 3 on rational boxes
   (`gatesOK` checks `Z ≻ 0`, `T ≻ 0`). `HardyArcPart0..3` (`hardy_arc_part_k`, one `native_decide` each, separate
   modules so Lake checks them in parallel) cover the circle `|t| = 4149/4000` by adaptive arcs in two
-  rational charts. Each part is ≈ 2.606, so the total is 10.427, i.e. a mean of 1.659 ≤ 7/4; the true mean is about 1.592.
+  rational charts. Each checked part is at most 273/100, so the total is at most 10.92. The proved lower bound on π yields the stated circle-mean bound.
   `HardyArcRegionCheck` (`hardy_region_check`) proves positive kernel decay (`KerPos`) on the disc of radius
   `51863/50000 > 4149/4000` by a quadtree of complex boxes. The soundness proofs are in `HardyArcSound`, `HardyArcCircle`,
   `HardyArcCover`, `HardyArcMean` and `HardyArcRegion`. `HardyStep4.hardy_region_and_mean` gives both inputs for
@@ -261,7 +261,7 @@ concrete approximant norms and integral enclosures remain obligations.
 
 The decomposition shares below use the raw weighted-comparison residual
 458421199009/(5·10¹⁷), before the forced linear-coefficient Hardy deduction.
-The grouped refined residual is 455288917009/(5·10¹⁷); its linear comparison pieces are
+The grouped refined residual is 455212621809/(5·10¹⁷); its linear comparison pieces are
 identical. Each share below is the term 2·A_r·e_r divided by the raw residual;
 the grouped quadratic term is about 0.009%.
 

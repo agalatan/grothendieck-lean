@@ -2,7 +2,7 @@
 
 This directory retains the shared rounding source, preprocessors, energy table,
 finite-head and Hardy certificates used by the conditional target
-**K_G^C < 1.404598149141**. The numerical Gaussian inputs remain unproved.
+**K_G^C < 1.404598148840**. The numerical Gaussian inputs remain unproved.
 
 The byte-pinned data and generators retain historical intermediate endpoint
 metadata for reproducibility. It is not the active endpoint ledger, which is
@@ -31,13 +31,13 @@ residual about `c t`, with `c = 7119483103461/10000000000000`:
 
 The current grouped comparison and Hardy deduction are assembled in
 `Grothe/Upper/GroupedBridge.lean`; the strict decimal comparison there is
-`1.404598149141`. All actual Gaussian and energy-table hypotheses remain explicit.
+`1.404598148840`. All actual Gaussian and energy-table hypotheses remain explicit.
 
 The native Lean checker proves the complete finite-head statement over exact
 dyadic energy data and rational polynomial coefficients. The Lean development separately proves the
 polynomial l1 constraints, locality, transfer and rational endpoint assembly.
 The concrete theorem `Grothe.UpperChaos.fresh_upper_rounder` still explicitly
-takes `ComparisonInputs`, `energy_close` and `hardy`, for a charge-one L2 truncation `X`.
+takes `ComparisonInputs` and `energy_close` for a charge-one L2 truncation `X`; the Hardy bound is proved.
 The first records an exact Gaussian error decomposition, spectral supports and
 component norm bounds. Their source enclosures and identification remain external;
 Lean derives the selected comparison. See `../localized-comparison/PROOF.md`.

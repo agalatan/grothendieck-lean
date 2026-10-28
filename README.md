@@ -148,9 +148,14 @@ remain a separate campaign (generated piece modules are excluded from the
 root until a proof uses them).
 
 **Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder`, for an L² charge-one truncation `X`, proves
-`ComparisonInputs → energy_close → IsGrothendieckBound (500000000000000000/355973699884132991)`,
-and `Grothe.upper_value_lt` shows this is below 1.404598149141
+`ComparisonInputs → energy_close → IsGrothendieckBound (500000000000000000/355973699960428191)`,
+and `Grothe.upper_value_lt` shows this is below 1.404598148840
 (`Grothe/UpperChaos/GroupedRounder.lean`).
+The abstract `DirectHyps` interface uses the sharper Hardy budget below; the
+concrete rounding proves it from the existing arc checks, so its Gaussian
+comparison and energy-table inputs are unchanged. This stronger conditional
+arithmetic provides margin toward the existing target; the Gaussian inputs
+still require proofs.
 
 The target `K < 1.404598149141` is **work in progress**. One completed supporting
 calculation is `ProfileFirstGaussianCell`: Lean proves the exact integral of
@@ -188,7 +193,7 @@ bisection cover of a box in 512 cubes with a first-order expansion of the expone
 native facts `phi_cover_check_0`–`5`). |φ| < 1 is also the input the external comparison argument relies on. Its correlation kernel H(t) = Σ E[n,m] p(t)ⁿ(−τ(t))ᵐ, with the odd
 preprocessors of degrees 41 and 15 (Wiener norms ≤ 1, auxiliary linear coefficient zero), is compared with c·t,
 c = 7119483103461/10¹³, through the kernel of a truncation X, and the bound is 1/(c − ‖H − c·t‖) with residual
-at most 455288917009/(5·10¹⁷).
+at most 455212621809/(5·10¹⁷).
 Lean proves the complex Gaussian chaos calculus on ℂ² (`Grothe/UpperChaos/`: Hermite basis, completeness,
 Parseval, the Mehler formula for L² functions, charge selection, energies → kernel), hence the structural facts
 (validity, summability, parity) for G_T and X; the transfer inequality; the evaluation of the head of the kernel
@@ -301,12 +306,12 @@ The concrete theorem's remaining **inputs** are:
 
 | hypothesis | content | share of the residual |
 |---|---|---|
-| `hfirst`, `hsecond`, `hthird` | fourteen finite-band Gaussian error inequalities for the fixed Taylor sources and centers; Lean derives the rounding and three tail caps, decomposition and supports | 93.56% |
+| `hfirst`, `hsecond`, `hthird` | fourteen finite-band Gaussian error inequalities for the fixed Taylor sources and centers; Lean derives the rounding and three tail caps, decomposition and supports | 93.57% |
 | `energy_close` | the stored energies are within 6847009/(5·10¹⁷) of E(X) | 0.001% |
 
 The head, computed in Lean (`head_check`), is 28153/10¹², 3.09% of the total
-455288917009/(5·10¹⁷). The Hardy tail beyond degree 501, 30488839/10¹⁵ (3.35%), is **proved**: the weighted
-square sum is ≤ 7/4 at radius 4149/4000 (`HardyReal.hardy_GT`, below).
+455212621809/(5·10¹⁷). The Hardy tail beyond degree 501, 303362486/10¹⁶ (3.33%), is **proved**: the weighted
+square sum is ≤ 1737972/1000000 at radius 4149/4000 (`HardyReal.hardy_GT_tight`, below).
 
 **The error decomposition is explicit** (`ComparisonPieces.lean`). With `T = F₀ + h₁ + h₂/2 + h₃/6`,
 `hⱼ = (iφ)ʲF₀`, and the smoothing S as an `L²` contraction (`Smoothing.lean`: `Mx + NZ` is standard,
@@ -324,13 +329,13 @@ The Hardy tail first deducts the linear coefficient's weighted square,
 forced by this weighted head comparison. This adds no Gaussian input.
 
 **The Hardy tail, proved.** The kernel `H(t) = Σ hⱼ t^{2j+1}` of G_T continues holomorphically to a disc of
-radius greater than 4149/4000, and its mean square on that circle is at most 7/4; Parseval then gives the
+radius greater than 4149/4000, and its mean square on that circle is at most 1737972/1000000; Parseval then gives the
 weighted square bound. `HardyHolo.lean` proves holomorphy (`differentiableOn_HholPair_Rt`), continuation and
 Parseval; `SchurMain.lean` the Gaussian Schur bound of the continued kernel; five interval facts (`HardyArc*`)
-the decay region and the circle mean (≈ 1.659). `HardyReal.lean` identifies the series for real `t` with the
+the decay region and the circle-mean bound. `HardyReal.lean` identifies the series for real `t` with the
 continued kernel: unfolding the smoothing, the Mehler pair `(MX + NZ, MY + NZ')` has the law of
 `(U, RU + SW)` (`law_swap`, by characteristic functions), whose density on ℝ⁸ is the holomorphic kernel at the
-real cross covariance `R = Rt t` (`integral_pair_eq_kHol`, by the Cholesky substitution). `hardy_GT` is the
+real cross covariance `R = Rt t` (`integral_pair_eq_kHol`, by the Cholesky substitution). `hardy_GT_tight` is the
 resulting `hardy` statement for the rounding of the certificate, and `fresh_upper_rounder` no longer assumes it.
 
 **Radial repair and its ceiling.** `UpperChaos/RadialRepair.lean` certifies the

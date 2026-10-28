@@ -4,7 +4,7 @@ import Grothe.Upper.ComparisonGroups
 /-!
 # The sharp upper bound from the grouped comparison
 
-Under the explicit Gaussian inputs, `K_G^ℂ ≤ 500000000000000000/355973699884132991 < 1.404598149141` (`fresh_upper`,
+Under the explicit Gaussian inputs, `K_G^ℂ ≤ 500000000000000000/355973699960428191 < 1.404598148840` (`fresh_upper`,
 `upper_value_lt`). The quadratic comparison error is grouped by Taylor order: within a group the bands are
 disjoint, so the component norms combine in quadrature (`groupedCompareQ`).
 -/
@@ -46,14 +46,14 @@ theorem grouped_head_residual_le {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E 
 theorem fresh_upper (E EX : ℕ × ℕ → ℝ) (hE : DirectHyps E EX)
     (hcompare : ∑ p ∈ headIdx 501, comparisonWeight p * |E p - EX p| ≤
       (groupedCompareQ : ℝ)) :
-    IsGrothendieckBound (500000000000000000 / 355973699884132991) := by
+    IsGrothendieckBound (500000000000000000 / 355973699960428191) := by
   have hs := summable_kernelCoeff hE.summable
   have hr : |kernelCoeff E 0 - (slopeQ : ℝ)| + ∑' n, |kernelCoeff E (n + 1)|
-      ≤ 455288917009 / 500000000000000000 := by
+      ≤ 455212621809 / 500000000000000000 := by
     rw [residual_split (kernelCoeff E) hs (slopeQ : ℝ) 250]
     have h := add_le_add (grouped_head_residual_le hE hcompare) (tail_le hE)
     have e : (groupedHeadResidualQ : ℝ) + tailQ =
-        455288917009 / 500000000000000000 := by
+        455212621809 / 500000000000000000 := by
       norm_num [groupedHeadResidualQ, groupedCompareQ, headCapQ, energyErrQ, tailQ]
     linarith
   refine (transfer (kernelCoeff E) hs hE.valid (by norm_num [slopeQ]) hr).mono (le_of_eq ?_)
@@ -61,7 +61,7 @@ theorem fresh_upper (E EX : ℕ × ℕ → ℝ) (hE : DirectHyps E EX)
 
 /-- The exact upper endpoint is below the stated decimal. -/
 theorem upper_value_lt :
-    (500000000000000000 / 355973699884132991 : ℝ) < 1.404598149141 := by norm_num
+    (500000000000000000 / 355973699960428191 : ℝ) < 1.404598148840 := by norm_num
 
 
 end
