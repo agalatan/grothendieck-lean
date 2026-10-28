@@ -47,7 +47,7 @@ theorem inner_gradedHermite_softHpow_eq_quadrature (η : ℝ) (hη : 0 < η)
     (j N : ℕ) (a : ℕ → ℕ → ℕ → ℚ) :
     ⟪gradedHermite N a, (softHpow_memLp η hη j).toLp (softHpow η j)⟫_ℂ =
       taylorQuadratureValue η j N a := by
-  rw [inner_gradedHermite_softHpow_eq_regular]
+  rw [inner_gradedHermite_softHpow_eq_regular η hη j N a]
   unfold taylorQuadratureValue
   congr 1
   apply setIntegral_congr_fun measurableSet_Ioi

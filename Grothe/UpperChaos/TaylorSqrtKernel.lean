@@ -80,7 +80,7 @@ theorem inner_gradedHermite_softHpow_eq_regular (η : ℝ) (hη : 0 < η)
       (Real.sqrt Real.pi : ℂ)⁻¹ * ∫ u : ℝ in Ioi 0,
         (Real.exp (-(η ^ 2 * u ^ 2)) : ℂ) *
           ∫ z, taylorRegularWick j N a u z ∂gaussC := by
-  rw [inner_gradedHermite_softHpow_eq_wick, integral_auxiliary_square]
+  rw [inner_gradedHermite_softHpow_eq_wick η hη j N a, integral_auxiliary_square]
   congr 1
   apply setIntegral_congr_fun measurableSet_Ioi
   intro u hu

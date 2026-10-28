@@ -25,7 +25,8 @@ noncomputable section
 theorem integral_gaussC_radial_complex (f : ℝ → ℂ) (hf : Measurable f) :
     (∫ z, f ‖z‖ ∂gaussC) =
       2 * ∫ r in Ioi (0 : ℝ), (r * exp (-r ^ 2) : ℂ) * f r := by
-  rw [integral_gaussC_eq_volume_complex _ (hf.comp measurable_norm),
+  rw [integral_gaussC_eq_volume_complex (fun z : ℂ => f ‖z‖)
+      (hf.comp measurable_norm),
     ← Complex.integral_comp_polarCoord_symm, polarCoord_target]
   have hp : ∀ p ∈ Ioi (0 : ℝ) ×ˢ Ioo (-π) π,
       p.1 • ((π⁻¹ * exp (-Complex.normSq (Complex.polarCoord.symm p))) •
@@ -118,7 +119,7 @@ theorem integral_taylorConditionalWick_eq_sq_radial (j N : ℕ) (a : ℕ → ℕ
       ∫ s in Ioi (0 : ℝ), (exp (-s) : ℂ) *
         taylorConditionalWick j N a t (sqrt s : ℂ) := by
   have hm := (measurable_taylorConditionalWick j N a t ht).comp
-    (Complex.measurable_ofReal.comp measurable_sqrt)
+    (Complex.measurable_ofReal.comp continuous_sqrt.measurable)
   calc
     _ = ∫ z, taylorConditionalWick j N a t (sqrt (‖z‖ ^ 2) : ℂ) ∂gaussC := by
       apply integral_congr_ae
