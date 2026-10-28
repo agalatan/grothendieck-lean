@@ -326,6 +326,10 @@ normalization. The shared source reserve remains outside this cell sum.
 Kernel-reduced Horner checks prove the actual profile condition on its three
 selected rational intervals, discharging that premise of the retained-source
 estimate. The exact cuts are recorded in `data/small-profile-mesh/certificate.json`.
+`SmallProfileSeparation` connects eight complementary interval checks to the
+existing profile cover, giving `|κ(s)| > 1/1000` on all four remaining strips.
+Thus their reciprocal Gaussian denominator exceeds `10⁻⁶` uniformly, including
+for very small positive reciprocal coordinates.
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs

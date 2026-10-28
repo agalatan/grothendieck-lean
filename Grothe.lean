@@ -384,6 +384,8 @@ import Grothe.UpperChaos.ShiftedMomentRecurrence
 import Grothe.UpperChaos.SmallProfileAuxiliaryTail
 import Grothe.UpperChaos.SmallProfileMesh
 import Grothe.UpperChaos.SmallProfileMeshData
+import Grothe.UpperChaos.SmallProfileSeparation
+import Grothe.UpperChaos.SmallProfileSeparationData
 import Grothe.UpperChaos.SmoothComm
 import Grothe.UpperChaos.SmoothKernelStability
 import Grothe.UpperChaos.SmoothResponseSeries

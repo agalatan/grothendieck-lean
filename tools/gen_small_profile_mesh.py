@@ -46,12 +46,50 @@ lines.extend([
 ])
 rendered = "\n".join(lines)
 target = root / "Grothe/UpperChaos/SmallProfileMeshData.lean"
+gaps = [list(map(Fraction, xs)) for xs in data["separation_cuts"]]
+expected_gaps = [(Fraction(12), cuts[1]), (cuts[2], Fraction(15)),
+                 (Fraction(83, 4), cuts[3]), (cuts[4], Fraction(522, 25)),
+                 (Fraction(126, 5), cuts[5]), (cuts[6], Fraction(2521, 100))]
+if len(gaps) != 6:
+    raise SystemExit("expected six complementary gaps")
+for xs, (lo, hi) in zip(gaps, expected_gaps):
+    if len(xs) < 2 or xs[0] != lo or xs[-1] != hi:
+        raise SystemExit("gap endpoints must match the retained mesh")
+    if not all(a < b for a, b in zip(xs, xs[1:])):
+        raise SystemExit("gap cuts must be strictly increasing")
+sep_lines = [
+    "import Grothe.UpperChaos.SmallProfileMeshData",
+    "import Grothe.UpperChaos.ProfileRootScreen",
+    "import Mathlib.Data.Fin.VecNotation",
+    "",
+    "/-! Generated complementary gap data from data/small-profile-mesh/certificate.json",
+    "by tools/gen_small_profile_mesh.py. Agent-ID: codex-2ca4. -/",
+    "",
+    "namespace Grothe.UpperChaos.SmallProfileMesh",
+    "open ProfileRootScreen",
+    "",
+    "def gapLoQ (i : Fin 6) : ℚ := ![12, cutQ 2, 83 / 4, cutQ 4, 126 / 5, cutQ 6] i",
+    "def gapHiQ (i : Fin 6) : ℚ := ![cutQ 1, 15, cutQ 3, 522 / 25, cutQ 5, 2521 / 100] i",
+    "",
+    "/-- Adjacent rows cover each gap between the old and new profile intervals. -/",
+    "def gapRows (i : Fin 6) : List Row :=",
+    "  match i.val with",
+]
+for i, xs in enumerate(gaps):
+    pattern = str(i) if i < 5 else "_"
+    rows = ", ".join(f"⟨{lean_rat(a)}, {lean_rat(b)}, false⟩" for a, b in zip(xs, xs[1:]))
+    sep_lines.append(f"  | {pattern} => [{rows}]")
+sep_lines += ["", "end Grothe.UpperChaos.SmallProfileMesh", ""]
+outputs = {target: rendered,
+           root / "Grothe/UpperChaos/SmallProfileSeparationData.lean": "\n".join(sep_lines)}
 if sys.argv[1:] == ["--check"]:
-    if not target.exists() or target.read_text() != rendered:
-        raise SystemExit("SmallProfileMeshData.lean is not current")
+    for path, text in outputs.items():
+        if not path.exists() or path.read_text() != text:
+            raise SystemExit(f"{path.name} is not current")
     print("small-profile mesh data is current")
 elif not sys.argv[1:]:
-    target.write_text(rendered)
-    print("wrote SmallProfileMeshData.lean")
+    for path, text in outputs.items():
+        path.write_text(text)
+        print(f"wrote {path.name}")
 else:
     raise SystemExit("usage: gen_small_profile_mesh.py [--check]")

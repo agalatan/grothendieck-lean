@@ -328,11 +328,17 @@ import Grothe
 #print axioms Grothe.UpperChaos.RestrictedWick.integral_cut_unbalanced
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_le
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
+#print axioms Grothe.UpperChaos.SmallProfileMesh.gaps_checked
 #print axioms Grothe.UpperChaos.SmallProfileMesh.inner_source_eq_reciprocalMesh
 #print axioms Grothe.UpperChaos.SmallProfileMesh.monotone_cut
 #print axioms Grothe.UpperChaos.SmallProfileMesh.norm_band_error_le
 #print axioms Grothe.UpperChaos.SmallProfileMesh.norm_hpow_sub_source_lt
+#print axioms Grothe.UpperChaos.SmallProfileMesh.profile_on_gap
+#print axioms Grothe.UpperChaos.SmallProfileMesh.profile_on_nonselected
 #print axioms Grothe.UpperChaos.SmallProfileMesh.profile_on_selected
+#print axioms Grothe.UpperChaos.SmallProfileMesh.profile_separated_of_row
+#print axioms Grothe.UpperChaos.SmallProfileMesh.profile_separated_of_sides
+#print axioms Grothe.UpperChaos.SmallProfileMesh.reciprocal_denominator_lower
 #print axioms Grothe.UpperChaos.SmallProfileMesh.region_subset_smallProfile
 #print axioms Grothe.UpperChaos.SmallProfileMesh.selected_rows_checked
 #print axioms Grothe.UpperChaos.SmallProfileMesh.strips_disjoint
