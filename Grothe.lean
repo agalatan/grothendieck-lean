@@ -327,6 +327,7 @@ import Grothe.UpperChaos.ProfileRootScreen
 import Grothe.UpperChaos.ProfileRootSound
 import Grothe.UpperChaos.ProfileUnitBounds
 import Grothe.UpperChaos.ProjectionUnion
+import Grothe.UpperChaos.QuadraturePartition
 import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialCutoff
 import Grothe.UpperChaos.RadialDampedMoments

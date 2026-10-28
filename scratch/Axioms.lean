@@ -272,6 +272,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProfileRootScreen.profile_inner
 #print axioms Grothe.UpperChaos.ProfileRootScreen.profile_outer
 #print axioms Grothe.UpperChaos.ProfileRootScreen.sqrtPi_real_bounds
+#print axioms Grothe.UpperChaos.QuadraturePartition.norm_rectangleIntegral_sub_sum_le
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_eq_sum
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_diagonal_exp_tail
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_radial_cutoff
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_radial_exp_tail

@@ -112,6 +112,8 @@ Grothe.UpperChaos.ProfileRootScreen.positive_factor_between_of_square_bounds
 Grothe.UpperChaos.ProfileRootScreen.profile_inner
 Grothe.UpperChaos.ProfileRootScreen.profile_outer
 Grothe.UpperChaos.ProfileRootScreen.sqrtPi_real_bounds
+Grothe.UpperChaos.QuadraturePartition.norm_rectangleIntegral_sub_sum_le
+Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_eq_sum
 Grothe.UpperChaos.RadialCutoff.gaussC_diagonal_exp_tail
 Grothe.UpperChaos.RadialCutoff.gaussC_radial_cutoff
 Grothe.UpperChaos.RadialCutoff.gaussC_radial_exp_tail
