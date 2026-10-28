@@ -294,6 +294,13 @@ degree. `RadialDampedMoments` evaluates real radial powers above exponent
 `-2`, including the locally integrable singularities needed by joint tails.
 The full-source tail constants and certified quadrature remain open; these
 analytic identities change neither numerical endpoint nor its hypotheses.
+`RationalUnitQuadrature` compiles each unit Hermite mode’s production kernel
+into an exact rational Wick polynomial; `UnitSquaredQuadrature` expresses it
+using squared radius. `RationalUnitProductionCell` turns a proved pointwise
+polynomial enclosure on a normalized square into a bound on the real part of
+the corresponding production cell integral, whose imaginary part is zero.
+The pointwise enclosure is a hypothesis; no numerical cell certificate or
+improper-integral bound is asserted.
 
 `ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`
 on any certified radial region with `s ≥ 1/16` and `|κ(s)| ≤ 1/100`.

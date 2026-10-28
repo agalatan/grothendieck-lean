@@ -309,6 +309,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.RationalSquaredRadius.eval_squareRadiusQ
 #print axioms Grothe.UpperChaos.RationalSquaredRadius.eval_unitWickQ_sq
 #print axioms Grothe.UpperChaos.RationalSquaredRadius.eval_unitWickQ_sqrt
+#print axioms Grothe.UpperChaos.RationalUnitProductionCell.unit_production_cell_mem_of_model
 #print axioms Grothe.UpperChaos.RationalUnitTaylorSource.eval_firstHermiteQ
 #print axioms Grothe.UpperChaos.RationalUnitTaylorSource.eval_rename_ratH
 #print axioms Grothe.UpperChaos.RationalUnitTaylorSource.eval_secondHermiteQ
@@ -335,6 +336,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_sq_le_exp
 #print axioms Grothe.UpperChaos.TaylorSingularCut.norm_projOn_smooth_source_cutoff_lt
 #print axioms Grothe.UpperChaos.TaylorSingularCut.norm_source_cutoff_lt
+#print axioms Grothe.UpperChaos.UnitSquaredQuadrature.taylorQuadratureKernel_unit_eq_squared
 #print axioms Grothe.UpperChaos.abs_gaussian_reciprocal_sub_poly_le
 #print axioms Grothe.UpperChaos.affine_gaussian_shift_complete_square
 #print axioms Grothe.UpperChaos.affine_gaussian_shift_exp_factor

@@ -250,6 +250,16 @@ representative and the absolute Laplace identity: the production inner product
 is the iterated auxiliary and first-coordinate Gaussian integral of
 `taylorConditionalWick`. No conditional-integration accuracy premise is used.
 
+`RationalUnitWickProduction` and `RationalUnitQuadrature` compile the actual
+unit-mode source and its Gaussian Wick evaluation into rational polynomials.
+`UnitSquaredQuadrature.taylorQuadratureKernel_unit_eq_squared` removes the
+radius square root from that polynomial form. For nonnegative cells,
+`RationalUnitProductionCell.unit_production_cell_mem_of_model` transfers a
+pointwise normalized-square polynomial enclosure to the production cell
+integral, proving its imaginary part zero. The model enclosure is an explicit
+hypothesis and the cell integral excludes the outer `1 / sqrt(pi)` factor;
+no numerical cell certificate or improper-integral bound is claimed.
+
 `ShiftedMomentRecurrence` proves
 `M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including
 `q=0` and zero mean. Before norms are taken, the affine bracket becomes
