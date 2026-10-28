@@ -638,6 +638,20 @@ and the analytic remainder are separate obligations; Python witnesses do
 not discharge these inputs. `Q0GaussExactnessAudit` permits only the standard
 Lean axioms in the shared algebra proof.
 
+`Q0GaussQPoly` interprets LeanCert's executable `QPoly` operations in the
+real polynomial argument. It proves soundness of the finite identity
+checks, transports the coefficient recurrence to the actual `polyPair`
+source, and closes the order-one pilot. `Q0GaussQPolyAudit` checks the
+transitive dependencies against the standard Lean axioms.
+The exact input in `data/gauss-polynomial-certificates/certificate.json`
+and `tools/gen_gauss_polynomial_certificates.py` reproduce the 64 order
+modules and their aggregate consumer. Every finite arithmetic obligation
+uses `decide +kernel`; the generated audit also covers the squared norms
+and exact leading coefficients. This complete finite family is still
+work in progress, excluded from the main root pending its focused Lean
+check. Even successful polynomial certificates leave the original selected
+node/weight bindings, interval transport, and analytic remainder to prove.
+
 `F0ConditionalNode` defines the actual radial slice of `F0` and its normalized
 Hermite coefficients, proving Bessel's bound before aggregation over modes.
 `ConditionalNodeIndices` identifies the contraction's selected pair set and

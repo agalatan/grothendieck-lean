@@ -280,6 +280,11 @@ formula and exactness below twice the rule order from finite polynomial
 identities, using integrated root quotients, Lagrange interpolation and
 polynomial division. Instantiating those identities for the original rules,
 the numerical weight bindings and analytic remainder remain work in progress.
+The semantic bridge now uses LeanCert's exact polynomial operations.
+Generated certificates for all $64$ orders include the recurrence,
+orthogonality, derivative and Bezout identities, squared norms, and leading
+coefficients. Their full Lean replay remains work in progress; they are
+excluded from the main root until checked.
 
 A second route uses a finite-head estimate for the actual kernel directly;
 its coefficient enclosures and numerical head estimate remain work in progress.

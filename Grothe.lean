@@ -1515,6 +1515,8 @@ import Grothe.UpperChaos.Q0ConditionalWickReal
 import Grothe.UpperChaos.Q0FoldBatchedAlgebra
 import Grothe.UpperChaos.Q0GaussExactness
 import Grothe.UpperChaos.Q0GaussExactnessAudit
+import Grothe.UpperChaos.Q0GaussQPoly
+import Grothe.UpperChaos.Q0GaussQPolyAudit
 import Grothe.UpperChaos.Q0GaussianReality
 import Grothe.UpperChaos.Q0ImaginaryWick
 import Grothe.UpperChaos.Q0LegendreInteger

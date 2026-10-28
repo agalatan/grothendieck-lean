@@ -935,6 +935,14 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_base_conditional_wick
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_base_quadrature_kernel
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_pointwise
+#print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.actual_exactness_of_check
+#print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.checkEq_sound
+#print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.check_order_one
+#print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.integralPoly_real
+#print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.order_one_exactness
+#print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.secondKindCheck_sound
+#print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.secondKind_coeff
+#print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.sourcePair_step
 #print axioms Grothe.UpperChaos.Q0GaussExactness.actual_recurrence_gauss_exactness
 #print axioms Grothe.UpperChaos.Q0GaussExactness.cardinal_eq_lagrange
 #print axioms Grothe.UpperChaos.Q0GaussExactness.exactness_of_cardinal_integrals

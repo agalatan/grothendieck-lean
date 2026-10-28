@@ -456,6 +456,11 @@ polynomial identities imply the original Legendre weight formula and
 integration of every polynomial of degree below twice the rule order.
 Discharging those identities for the original finite rule family remains
 work in progress; polynomial exactness alone does not bound the analytic remainder.
+`Q0GaussQPoly` supplies the checked semantic bridge from LeanCert's exact
+polynomial operations to that quadrature theorem. The generated certificates
+for all 64 orders are work in progress and excluded from the main root until
+their focused Lean check succeeds. They include recurrence, orthogonality,
+derivative and Bezout identities, squared norms, and leading coefficients.
 
 
 Lean also proves a selected-spectrum comparison: the error is split
