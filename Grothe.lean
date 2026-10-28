@@ -354,6 +354,7 @@ import Grothe.UpperChaos.SchurTest
 import Grothe.UpperChaos.SelectedEnergyApprox
 import Grothe.UpperChaos.ShiftedDampedMoments
 import Grothe.UpperChaos.ShiftedMomentRecurrence
+import Grothe.UpperChaos.SmallProfileAuxiliaryTail
 import Grothe.UpperChaos.SmoothComm
 import Grothe.UpperChaos.SmoothKernelStability
 import Grothe.UpperChaos.SmoothResponseSeries
