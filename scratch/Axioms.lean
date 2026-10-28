@@ -383,7 +383,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.hfun2_rot2_of_charge
 #print axioms Grothe.UpperChaos.inner_gradedHermite_eq_zero_of_charge
 #print axioms Grothe.UpperChaos.inner_gradedHermite_eq_zero_of_total_degree
+#print axioms Grothe.UpperChaos.inner_gradedHermite_hpow_eq_sq_radial
 #print axioms Grothe.UpperChaos.inner_gradedHermite_hpow_eq_wick
+#print axioms Grothe.UpperChaos.inner_gradedHermite_softHpow_eq_quadrature
+#print axioms Grothe.UpperChaos.inner_gradedHermite_softHpow_eq_regular
 #print axioms Grothe.UpperChaos.inner_gradedHermite_softHpow_eq_wick
 #print axioms Grothe.UpperChaos.inner_hpow_eq_phaseLaplace
 #print axioms Grothe.UpperChaos.inner_hpow_eq_phaseLaplace_iterated
@@ -400,6 +403,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.integrable_mul_softPhaseLaplaceKernel
 #print axioms Grothe.UpperChaos.integrable_norm_rpow_damped
 #print axioms Grothe.UpperChaos.integrable_shifted_monomial_damped
+#print axioms Grothe.UpperChaos.integrable_taylorConditionalWick
 #print axioms Grothe.UpperChaos.integrable_taylorInnerSource
 #print axioms Grothe.UpperChaos.integrable_taylorInnerSource_conditional
 #print axioms Grothe.UpperChaos.integrable_taylorInnerSource_kernel
@@ -410,7 +414,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_affine_phaseLaplace_monomial
 #print axioms Grothe.UpperChaos.integral_affine_phaseLaplace_polynomial
 #print axioms Grothe.UpperChaos.integral_affine_phaseLaplace_tilt
+#print axioms Grothe.UpperChaos.integral_auxiliary_square
 #print axioms Grothe.UpperChaos.integral_conditional_gaussian_laplace_profile_tail_le
+#print axioms Grothe.UpperChaos.integral_gaussC_norm_sq_complex
+#print axioms Grothe.UpperChaos.integral_gaussC_radial_complex
 #print axioms Grothe.UpperChaos.integral_gaussC_tilt
 #print axioms Grothe.UpperChaos.integral_hermite
 #print axioms Grothe.UpperChaos.integral_hermite2
@@ -435,8 +442,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_shifted_moment_damped
 #print axioms Grothe.UpperChaos.integral_shifted_moment_damped_double
 #print axioms Grothe.UpperChaos.integral_softPhaseError_sq_le
+#print axioms Grothe.UpperChaos.integral_taylorConditionalWick_eq_radial
+#print axioms Grothe.UpperChaos.integral_taylorConditionalWick_eq_sq_radial
 #print axioms Grothe.UpperChaos.integral_taylorInnerSource_conditional
 #print axioms Grothe.UpperChaos.integral_taylorInnerSource_kernel_prod
+#print axioms Grothe.UpperChaos.integral_taylorRegularWick_eq_sq_radial
 #print axioms Grothe.UpperChaos.integral_two_channel
 #print axioms Grothe.UpperChaos.invariantMoment_odd
 #print axioms Grothe.UpperChaos.law_comm
@@ -448,6 +458,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.measurable_GT
 #print axioms Grothe.UpperChaos.measurable_basePhaseArgument
 #print axioms Grothe.UpperChaos.measurable_gradedHermiteFn
+#print axioms Grothe.UpperChaos.measurable_taylorConditionalWick
 #print axioms Grothe.UpperChaos.measurable_taylorInnerSource
 #print axioms Grothe.UpperChaos.measurable_taylorPhasePower
 #print axioms Grothe.UpperChaos.mehler_L2
@@ -479,6 +490,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_hpow_three_sq
 #print axioms Grothe.UpperChaos.norm_hpow_toLp_sq_eq
 #print axioms Grothe.UpperChaos.norm_hpow_two_sq
+#print axioms Grothe.UpperChaos.norm_inner_hpow_sub_quadrature_le
 #print axioms Grothe.UpperChaos.norm_integral_affine_phaseLaplace_base
 #print axioms Grothe.UpperChaos.norm_integral_affine_phaseLaplace_base_le
 #print axioms Grothe.UpperChaos.norm_integral_softPhaseLaplace_tail_le
@@ -580,6 +592,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.summable_abs_energy
 #print axioms Grothe.UpperChaos.taylorConditionalWick_eq_norm
 #print axioms Grothe.UpperChaos.taylorInnerSource_gradedHermite_eq_slice
+#print axioms Grothe.UpperChaos.taylorRegularWick_eq
+#print axioms Grothe.UpperChaos.taylorRegularWick_rate_ge_one
 #print axioms Grothe.UpperChaos.taylorRounding_error
 #print axioms Grothe.UpperChaos.taylorRounding_source_toLp
 #print axioms Grothe.UpperChaos.taylor_centers_decode_check
