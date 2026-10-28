@@ -39,7 +39,7 @@ def render(data):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
-    p.add_argument('--source-json', type=Path, default=Path('data/q0_quadrature/source-polynomial.json'))
+    p.add_argument('--source-json', type=Path, default=Path('data/q0-source-binding/source-polynomial.json'))
     p.add_argument('--check', action='store_true')
     a = p.parse_args()
     source_json = a.source_json if a.source_json.is_absolute() else a.root / a.source_json

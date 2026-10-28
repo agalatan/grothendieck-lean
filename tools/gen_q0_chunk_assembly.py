@@ -178,7 +178,7 @@ def main():
     parser.add_argument('--root', type=Path, default=DEFAULT_ROOT,
                         help='repository root (default: parent of tracked tools/)')
     parser.add_argument('--source-json', type=Path,
-                        default=Path('data/q0_quadrature/source-polynomial.json'),
+                        default=Path('data/q0-source-binding/source-polynomial.json'),
                         help='canonical source JSON, absolute or root-relative')
     parser.add_argument('--module-name', required=True,
                         help='stable capitalized Lean module name')

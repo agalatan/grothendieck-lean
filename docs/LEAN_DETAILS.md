@@ -67,8 +67,12 @@ denominators; `Q0LiteralBinaryFold` checks the finite literal recombination.
 identity. The `gen_q0_literal_data.py`, `gen_q0_source_chunks.py`,
 `gen_q0_chunk_assembly.py --module-name Q0SourceChunkAssembly`, and
 `gen_q0_literal_fold.py` tools reproduce the candidate files with `--check`;
-their Python calculations do not replace Lean's proof checks. This identity
-supplies a source binding for numerical models; it does not certify all cells,
+their Python calculations do not replace Lean's proof checks. The binding
+generators use `data/q0-source-binding/source-polynomial.json`;
+the production rectangle generators retain their profile-enriched input under
+`data/q0_quadrature/`. The shared source fields agree in both inputs.
+This identity supplies a source binding for numerical models; it does not
+certify all cells,
 Taylor-band errors, the frozen-response energy discrepancy, or the final bound.
 
 **Exact Gaussian phase-moment interfaces.**
@@ -522,6 +526,20 @@ local parent continuity using the exact midpoint integral identity. The
 `coefficient_mem_of_roots` consumer accepts the resulting fourteen root
 intervals, allowing separately checked subtrees and reuse without a
 monolithic leaf-membership proof.
+
+`AdaptiveRectangleEnvelope` preserves one-sided nonnegative envelopes and
+signed absolute envelopes under integration over the exact rational cell
+area. `Q0BasePairRoot11Integral.integrals_mem` applies these theorems to both
+explicit base-pair kernels on the entire reciprocal root of strip 5, for
+every damping parameter. It has no numerical premises: the actual profile
+is enclosed by a checked Horner trace, the scalar exponential by LeanCert's
+dyadic checker, and the area-weighted comparisons by kernel reduction.
+The original stored intervals are preserved, with zero as the first lower
+endpoint. No source reserve or normalization allowance is added here.
+The generator and its pinned certificate are in
+`tools/gen_analytic_envelope_root11.py` and `data/analytic-envelope-cells/`.
+The full production-kernel binding, other roots and final band energies
+remain work in progress.
 
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives

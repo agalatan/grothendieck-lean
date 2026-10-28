@@ -93,7 +93,7 @@ def main():
     parser.add_argument('--root', type=Path, default=DEFAULT_ROOT,
                         help='repository root (default: parent of tracked tools/)')
     parser.add_argument('--source-json', type=Path,
-                        default=Path('data/q0_quadrature/source-polynomial.json'),
+                        default=Path('data/q0-source-binding/source-polynomial.json'),
                         help='canonical candidate source JSON, absolute or relative to root')
     parser.add_argument('--check', action='store_true',
                         help='compare expected bytes without modifying files')
