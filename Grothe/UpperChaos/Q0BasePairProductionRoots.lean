@@ -61,6 +61,16 @@ theorem root11_integrals_mem :
   rw [h.1, h.2]
   have hi := Q0BasePairRoot11Integral.integrals_mem finiteLaplaceEta
   rw [Q0BasePairRoot11Integral.root_eq_fixed] at hi
-  simpa only [reciprocalFirst, reciprocalCompanion] using hi
+  have hfirst :
+      (fun s x => Q0BasePairKernel.reciprocalFirst finiteLaplaceEta s
+        (LeanCertProductionProfile.q0Kappa s) x) = reciprocalFirst finiteLaplaceEta := by
+    funext s x
+    rfl
+  have hcompanion :
+      (fun s x => Q0BasePairKernel.reciprocalCompanion finiteLaplaceEta s
+        (LeanCertProductionProfile.q0Kappa s) x) = reciprocalCompanion finiteLaplaceEta := by
+    funext s x
+    rfl
+  simpa only [hfirst, hcompanion] using hi
 
 end Grothe.UpperChaos.Q0BasePairProductionRoots
