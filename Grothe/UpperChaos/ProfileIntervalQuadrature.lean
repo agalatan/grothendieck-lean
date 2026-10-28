@@ -79,7 +79,7 @@ theorem profileAuxiliaryCorrection_union_eq_sum {ι : Type*} (I : Finset ι)
   have hd : (I : Set ι).PairwiseDisjoint
       (fun i => profileRadialRegion (Ioc (a i) (b i))) := by
     intro i hi k hk hik
-    exact Set.Disjoint.preimage (fun u : ℂ × ℂ => ‖u.1‖ ^ 2) (hdisj hi hk hik)
+    exact Disjoint.preimage (fun u : ℂ × ℂ => ‖u.1‖ ^ 2) (hdisj hi hk hik)
   funext u
   simpa only [profileAuxiliaryCorrection, profileIntervalUnion, Finset.sum_apply] using
     Finset.indicator_biUnion_apply I
@@ -96,7 +96,7 @@ private theorem toLp_finsetSum {ι : Type*} (I : Finset ι) (f : ι → ℂ × �
   | empty => simp
   | @insert i I hi ih =>
       simp only [Finset.sum_insert hi]
-      rw [MemLp.toLp_add, ih]
+      rw [MemLp.toLp_add (hf i) (memLp_finsetSum' I (fun k _ => hf k)), ih]
 
 /-- The exact quadrature value of the part removed on one radial interval. -/
 def profileIntervalCorrectionValue (a b : ℝ) (j N : ℕ) (c : ℕ → ℕ → ℕ → ℚ) : ℂ :=
@@ -118,7 +118,9 @@ theorem inner_profileAuxiliaryCorrection_interval (a b : ℝ) (ha : 0 ≤ a)
     finiteLaplaceEta_pos (by norm_num) j
   rw [MemLp.toLp_congr _ (((hg b).sub (hg a)).sub ((hs b).sub (hs a)))
     (Filter.Eventually.of_forall (congrFun (profileAuxiliaryCorrection_interval_eq a b hab j)))]
-  simp only [MemLp.toLp_sub, inner_sub_right]
+  rw [MemLp.toLp_sub ((hg b).sub (hg a)) ((hs b).sub (hs a)),
+    MemLp.toLp_sub (hg b) (hg a), MemLp.toLp_sub (hs b) (hs a)]
+  simp only [inner_sub_right]
   rw [inner_gradedHermite_compactLaplace_eq_quadrature _ _ _ finiteLaplaceEta_pos
       finiteLaplaceCutoff_nonneg (ha.trans hab),
     inner_gradedHermite_compactLaplace_eq_quadrature _ _ _ finiteLaplaceEta_pos
@@ -166,7 +168,10 @@ theorem inner_profileRetained_eq_intervalQuadrature {ι : Type*} (I : Finset ι)
   rw [MemLp.toLp_congr _
     ((compactLaplaceHpow_memLp _ _ _ finiteLaplaceEta_pos finiteLaplaceCutoff_nonneg j).sub
       (memLp_finsetSum' I (fun i _ => hf i)))
-    (Filter.Eventually.of_forall (congrFun hfun)), MemLp.toLp_sub, toLp_finsetSum,
+    (Filter.Eventually.of_forall (congrFun hfun)),
+    MemLp.toLp_sub
+      (compactLaplaceHpow_memLp _ _ _ finiteLaplaceEta_pos finiteLaplaceCutoff_nonneg j)
+      (memLp_finsetSum' I (fun i _ => hf i)), toLp_finsetSum I _ hf,
     inner_sub_right, inner_sum,
     inner_gradedHermite_compactLaplace_eq_quadrature _ _ _ finiteLaplaceEta_pos
       finiteLaplaceCutoff_nonneg (by norm_num : (0 : ℝ) ≤ 80)]

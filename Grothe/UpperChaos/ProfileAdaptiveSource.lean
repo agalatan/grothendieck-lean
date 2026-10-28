@@ -91,7 +91,6 @@ theorem profileRetainedHpow_eq (S : Set (ℂ × ℂ)) (j : ℕ) (u : ℂ × ℂ)
   · by_cases hs : u ∈ S
     · simp [profileRetainedHpow, compactLaplaceHpow, profileAuxiliaryCorrection,
         finiteLaplaceTailError, hu, hs]
-      all_goals abel
     · simp [profileRetainedHpow, compactLaplaceHpow, profileAuxiliaryCorrection, hu, hs]
 
 lemma profileRetainedHpow_memLp (S : Set (ℂ × ℂ)) (hS : MeasurableSet S) (j : ℕ) :
