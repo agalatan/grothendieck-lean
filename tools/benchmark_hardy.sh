@@ -27,7 +27,7 @@ rm "$HARDY_ARCHIVE"
 export PATH="$HARDY_TOOLCHAIN/bin:$PATH"
 lean --version
 lake --version
-lake exe cache get
+lake exe cache get Mathlib.Data.Rat.Init
 git diff --exit-code -- lean-toolchain lake-manifest.json
 python3 - <<'PY'
 import json, pathlib, subprocess
@@ -42,13 +42,18 @@ print('All dependency revisions match the committed manifest.')
 PY
 lake build Grothe.UpperChaos.HardyArcEval:dynlib Grothe.UpperChaos.HardyArcData --log-level=warning
 python3 - <<'INNER'
-import os, pathlib, subprocess
+import json, os, pathlib, subprocess
 libs = list(pathlib.Path('.lake/build/lib/lean').glob('*HardyArcEval*.so'))
 if len(libs) != 1:
     raise SystemExit('Expected exactly one native HardyArcEval library: ' + repr(libs))
 out = pathlib.Path(os.environ.get('OUT', 'handoff/hardy-benchmark'))
 out.mkdir(parents=True, exist_ok=True)
-cmd = ['lake', 'env', 'lean', '--load-dynlib=' + str(libs[0].resolve()), '--run', 'tools/benchmark_hardy.lean']
+setup = json.loads(subprocess.check_output(['lake', 'setup-file', 'tools/benchmark_hardy.lean'], text=True))
+setup['dynlibs'].append(str(libs[0].resolve()))
+setup_file = out / 'benchmark.setup.json'
+setup_file.write_text(json.dumps(setup))
+print('Native libraries in dependency order:', setup['dynlibs'], flush=True)
+cmd = ['lake', 'env', 'lean', '--setup=' + str(setup_file.resolve()), '--run', 'tools/benchmark_hardy.lean']
 with (out / 'benchmark.txt').open('w') as log:
     result = subprocess.run(cmd, stdout=log, stderr=subprocess.STDOUT, timeout=1200)
 print((out / 'benchmark.txt').read_text())
