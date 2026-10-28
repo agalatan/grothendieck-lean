@@ -49,7 +49,8 @@ theorem integral_norm_softPhaseLaplaceKernel_tail_phase_le (η : ℝ) (z : ℂ)
   let C : ℝ := 2 * Real.exp (-((3 / 4 : ℝ) * ‖z‖ ^ 2 * T))
   have hC : 0 ≤ C := by dsimp [C]; positivity
   have hsub : Ioi T ⊆ Ioi (0 : ℝ) := Ioi_subset_Ioi hT
-  have hi := (integrableOn_phaseLaplaceKernel (z / 2)).norm
+  have hi : IntegrableOn (fun t : ℝ => ‖phaseLaplaceKernel (z / 2) t‖) (Ioi 0) :=
+    (integrableOn_phaseLaplaceKernel (z / 2)).norm
   have hb : (∫ t : ℝ in Ioi T, ‖phaseLaplaceKernel (z / 2) t‖) ≤
       Real.sqrt Real.pi :=
     (setIntegral_mono_set hi (Filter.Eventually.of_forall fun _ => norm_nonneg _)
