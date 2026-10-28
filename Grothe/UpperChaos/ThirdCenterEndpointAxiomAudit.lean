@@ -3,8 +3,7 @@ import Grothe.UpperChaos.ThirdCenterKernelEnergy
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
-/-! Proposed actual endpoint audit after the complete third-center replacement.
-Draft/unverified: this module must be checked with all source and grade proofs.
+/-! Actual endpoint dependency audit after the complete third-center replacement.
 The endpoint still has other finite native leaves and analytic hypotheses.
 Agent-ID: codex-8c4d. -/
 open Lean Elab Command

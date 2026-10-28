@@ -2,7 +2,7 @@ import Grothe.UpperChaos.TaylorBandData
 import Grothe.UpperChaos.TaylorThirdIntegerData
 
 /-! Direct binding to the authoritative third-center integer arrays.
-No text parser or native calculation is used. This draft requires Lean checking.
+No text parser or native calculation is used.
 Agent-ID: codex-8c4d. -/
 namespace Grothe.UpperChaos
 

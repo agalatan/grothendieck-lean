@@ -1,7 +1,7 @@
 import Grothe.UpperChaos.ThirdGradeLengths
 import Grothe.UpperChaos.ThirdFoldRectangle
 
-/-! Draft source-bound grade 8; must be checked by Lean. -/
+/-! Exact source-bound integer sum for grade 8. -/
 namespace Grothe.UpperChaos.ThirdArrayGrade08
 open ThirdGradeCandidateNumerics
 set_option maxRecDepth 16384

@@ -30,8 +30,8 @@ import Grothe.UpperChaos.ThirdGradeActualTargetNumerics
 import Grothe.UpperChaos.TaylorCenterIndex
 import Mathlib.Tactic
 
-/-! Draft: integer grade sums bound to the direct authoritative integer source.
-All generated modules must be kernel checked; no native check is used.
+/-! Exact integer grade lengths bound to the authoritative integer source.
+The source-grade facts are checked by Lean without a native leaf.
 Agent-ID: codex-8c4d. -/
 namespace Grothe.UpperChaos.ThirdGradeLengths
 set_option maxRecDepth 16384

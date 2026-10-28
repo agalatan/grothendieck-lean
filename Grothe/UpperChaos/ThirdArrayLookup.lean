@@ -1,8 +1,8 @@
 import Grothe.UpperChaos.PackedDyadic
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
-/-! Source-array lookup from a fully checked decoded prefix, grade and suffix.
-The actual parser equality and all offsets remain explicit. -/
+/-! Source-array lookup from a complete integer prefix, grade and suffix.
+The source-array equality and exact offsets remain explicit. -/
 namespace Grothe.UpperChaos.ThirdArrayLookup
 
 theorem middle_get (pre mid suffix : List ℤ) (k : ℕ) (hk : k < mid.length) :

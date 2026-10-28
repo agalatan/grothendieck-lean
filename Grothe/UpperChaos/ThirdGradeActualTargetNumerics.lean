@@ -4,8 +4,9 @@ import Grothe.UpperChaos.TaylorBandData
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
-/-! Concrete arithmetic on candidate grade values. No source binding asserted;
-these checks are independent of parser and coefficient identities.
+/-! Exact rational arithmetic for the integer grade-energy targets.
+`ThirdArrayGrades` supplies their agreement with the authoritative source;
+this module isolates the target arithmetic.
 Agent-ID: codex-8c4d. -/
 namespace Grothe.UpperChaos.ThirdGradeCandidateNumerics
 

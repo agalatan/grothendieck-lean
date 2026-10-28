@@ -26,7 +26,7 @@ import Grothe.UpperChaos.ThirdArrayGrade24
 import Grothe.UpperChaos.ThirdArrayGrade25
 import Mathlib.Tactic.FinCases
 
-/-! Draft aggregate of all 26 source-bound grade sums; check all imports. -/
+/-! Complete aggregate of the 26 source-bound integer grade sums. -/
 namespace Grothe.UpperChaos.ThirdArrayGrades
 open ThirdGradeCandidateNumerics
 set_option maxRecDepth 16384

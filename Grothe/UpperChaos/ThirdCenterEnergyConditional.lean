@@ -7,9 +7,9 @@ import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
 /-! Exact third-center energy from 26 source-bound integer-grade equalities.
-Draft: this wrapper has not yet been Lean-checked. The grade equalities are
-explicit hypotheses, and the native check cannot be replaced until those
-equalities are proved from the actual authoritative integer arrays.
+The grade equalities are explicit premises of this algebraic helper.
+`ThirdArrayGrades.all_grade_sums` discharges them from the actual authoritative
+integer arrays in `ThirdCenterKernelEnergy.energy_check`.
 Agent-ID: codex-8c4d. -/
 open Grothe.UpperChaos
 namespace Grothe.UpperChaos.ThirdCenterEnergyConditional

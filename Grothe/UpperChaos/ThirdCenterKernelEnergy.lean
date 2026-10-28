@@ -3,9 +3,9 @@ import Grothe.UpperChaos.ThirdCenterEnergyConditional
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
-/-! Draft source-bound exact third-center energy and strict transitive axiom
-check. This is not certified until all grade modules and this module have
-passed Lean. Agent-ID: codex-8c4d. -/
+/-! Source-bound exact third-center size and energy, with strict transitive
+axiom checks. These finite identities do not establish Gaussian error estimates
+or close the other endpoint obligations. Agent-ID: codex-8c4d. -/
 namespace Grothe.UpperChaos.ThirdCenterKernelEnergy
 
 /-- The direct authoritative integer source contains exactly 6,552 values. -/

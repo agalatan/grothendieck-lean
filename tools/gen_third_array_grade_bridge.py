@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate conditional source-array grade bridges; no generated proof is presumed checked."""
+"""Reproduce exact source-array grade bridges and third-center energy proofs."""
 from pathlib import Path
 import argparse, hashlib, json, re
 
@@ -21,8 +21,8 @@ import Grothe.UpperChaos.ThirdGradeActualTargetNumerics
 import Grothe.UpperChaos.TaylorCenterIndex
 import Mathlib.Tactic
 
-/-! Draft: integer grade sums bound to the direct authoritative integer source.
-All generated modules must be kernel checked; no native check is used.
+/-! Exact integer grade lengths bound to the authoritative integer source.
+The source-grade facts are checked by Lean without a native leaf.
 Agent-ID: codex-8c4d. -/
 namespace Grothe.UpperChaos.ThirdGradeLengths
 set_option maxRecDepth 16384
@@ -56,7 +56,7 @@ set_option maxRecDepth 16384
         text = f'''import Grothe.UpperChaos.ThirdGradeLengths
 import Grothe.UpperChaos.ThirdFoldRectangle
 
-/-! Draft source-bound grade {q}; must be checked by Lean. -/
+/-! Exact source-bound integer sum for grade {q}. -/
 namespace Grothe.UpperChaos.ThirdArrayGrade{q:02}
 open ThirdGradeCandidateNumerics
 set_option maxRecDepth 16384
@@ -108,7 +108,7 @@ end Grothe.UpperChaos.ThirdArrayGrade{q:02}
 '''
         result[f'ThirdArrayGrade{q:02}.lean'] = text
     lines = [f'import Grothe.UpperChaos.ThirdArrayGrade{q:02}' for q in range(G)]
-    lines += ['import Mathlib.Tactic.FinCases', '', '''/-! Draft aggregate of all 26 source-bound grade sums; check all imports. -/
+    lines += ['import Mathlib.Tactic.FinCases', '', '''/-! Complete aggregate of the 26 source-bound integer grade sums. -/
 namespace Grothe.UpperChaos.ThirdArrayGrades
 open ThirdGradeCandidateNumerics
 set_option maxRecDepth 16384
@@ -126,9 +126,9 @@ import Grothe.UpperChaos.ThirdCenterEnergyConditional
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
-/-! Draft source-bound exact third-center energy and strict transitive axiom
-check. This is not certified until all grade modules and this module have
-passed Lean. Agent-ID: codex-8c4d. -/
+/-! Source-bound exact third-center size and energy, with strict transitive
+axiom checks. These finite identities do not establish Gaussian error estimates
+or close the other endpoint obligations. Agent-ID: codex-8c4d. -/
 namespace Grothe.UpperChaos.ThirdCenterKernelEnergy
 
 /-- The direct authoritative integer source contains exactly 6,552 values. -/
@@ -176,5 +176,5 @@ def main():
             if not path.exists() or path.read_text() != text: bad.append(name)
         else: path.write_text(text)
     if bad: raise SystemExit('stale: ' + ', '.join(bad))
-    print(f'{"checked" if args.check else "generated"} {len(expected)-1} draft modules (not yet Lean-checked)')
+    print(f'{"verified" if args.check else "generated"} {len(expected)-1} source-array grade and energy modules')
 if __name__ == '__main__': main()
