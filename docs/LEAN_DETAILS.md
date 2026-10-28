@@ -158,15 +158,25 @@ center through degree 91 and the frozen correction through degree 181. The
 original frozen input's coefficients above degree 181 are exactly zero; the
 source generator checks them before retaining the shorter vector. The third
 center reuses `TaylorBandData` without duplicating its coefficients.
-`PackedDyadicChunks` parses bounded chunks strictly and supplies a proved
-integer fold. `GradedHermiteLinear` proves coefficient linearity and zero
+`PackedDyadicChunks` parses the first and second centers strictly and supplies a
+proved integer fold. The frozen witness uses named typed integer grades at scale
+2^206, subdivided into at most 64 integers per array. `TaylorFrozenCoefficients`
+defines the production lookups independently of Gaussian and Hermite proofs.
+`FrozenSource.Sizes` proves the complete 259,532-entry size from all 91 grades;
+`FrozenSourceBinding` proves the two actual degree-one coefficient values.
+`FrozenSource.Grade000Production.coefficient_energy` and its grade-90 counterpart
+identify the complete rectangular sums of production coefficient squares with
+exact rationals, using only standard axioms. These are frozen component energies;
+the mixed Gaussian energy-table comparison remains open.
+`GradedHermiteLinear` proves coefficient linearity and zero
 extension between graded supports. `TaylorCenters` defines the actual centers
 and their rounding difference. At common scale 2^206, the numerator is
 `6*A1 + 3*A2 + A3 - 6*V`, with explicit grade restrictions for the shorter
 centers and third integers rescaled by 2^101. `TaylorRounding` identifies its
 integer sum of squares with the actual squared Hermite norm. Its arithmetic
 leaf recomputes that sum from the source lookups; a separate leaf verifies
-successful decoding and sizes. Kernel arithmetic then proves the 10^-18
+successful decoding of the packed centers; the frozen size uses the standard
+source-size proof. Kernel arithmetic then proves the 10^-18
 rounding cap. Input hashes, exact arithmetic targets and byte-for-byte
 reproduction are recorded under `data/taylor-approximants/`. This certificate
 does not use any Gaussian integration-error premise.

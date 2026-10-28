@@ -5,8 +5,8 @@ Writes reproducible Lean coefficient data and an exact arithmetic receipt. Reads
 standard library, never executing pickle or numpy object data. Source binary64
 centers are preserved exactly. Gaussian integration errors are outside scope.
 
-Three new packed-data modules are emitted. The third center is reused from the
-production TaylorBandData module, rather than copied into another large vector.
+Two packed-data modules and the typed frozen integer grades are emitted. The
+third center is reused from production rather than copied into another vector.
 """
 
 import argparse
@@ -179,13 +179,21 @@ def generated(repo):
 
     outputs = {}
     module_info = {}
+    from gen_frozen_integer_data import generate as generate_frozen_integers
+    frozen_outputs, frozen_info, frozen_grades = generate_frozen_integers(repo)
+    if [value for grade in frozen_grades for value in grade] != frozen_ints:
+        raise ValueError("independent typed frozen generator disagrees with rounding source")
     for name, filename, values, source_name, source_count, degree in [
         ("firstCenter", "TaylorFirstData.lean", centers[1], "arb_first_phase_D181.npz", original_counts[1], 181),
         ("secondCenter", "TaylorSecondData.lean", centers[2], "arb_phase_power2_D151.npz", original_counts[2], 91),
         ("frozenCorrection", "TaylorFrozenData.lean", frozen_retained, vf, len(frozen), 181),
     ]:
-        outputs[filename], module_info[name] = data_module(
-            name, values, sources[source_name], source_count, degree)
+        if name == "frozenCorrection":
+            outputs.update(frozen_outputs)
+            module_info[name] = frozen_info
+        else:
+            outputs[filename], module_info[name] = data_module(
+                name, values, sources[source_name], source_count, degree)
     receipt = {
         "agent_id": "codex-2ca4", "scope": "Exact source arithmetic receipt; the Lean certificate checks the same concrete coefficient function",
         "common_exponent": COMMON_EXPONENT,
@@ -214,6 +222,7 @@ def generated(repo):
         "end Grothe.UpperChaos", "",
     ])
     outputs["rounding-audit.json"] = json.dumps(receipt, indent=2) + "\n"
+    outputs["frozen-integers.json"] = json.dumps(frozen_info, indent=2) + "\n"
     return outputs, receipt
 
 
@@ -227,13 +236,16 @@ def main():
     if not args.check:
         args.output.mkdir(parents=True, exist_ok=True)
     for name, wanted in outputs.items():
-        path = (args.repo / "data/taylor-approximants/rounding.json"
-                if name == "rounding-audit.json" and args.output == DEFAULT_OUTPUT
-                else args.output / name)
+        if name in ("rounding-audit.json", "frozen-integers.json") and args.output == DEFAULT_OUTPUT:
+            path = args.repo / "data/taylor-approximants" / (
+                "rounding.json" if name == "rounding-audit.json" else name)
+        else:
+            path = args.output / name
         if args.check:
             if not path.exists() or path.read_text() != wanted:
                 raise SystemExit(f"stale generated rounding data: {path}")
         else:
+            path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(wanted)
     print(json.dumps({"agent_id": "codex-2ca4", "output": str(args.output),
                       "rounding_norm": receipt["rounding_norm_decimal_for_orientation"],

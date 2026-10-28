@@ -1,5 +1,6 @@
 import Grothe.UpperChaos.TaylorCenters
 import Grothe.UpperChaos.TaylorRoundingData
+import Grothe.UpperChaos.FrozenSourceBinding
 
 /-! The exact finite Taylor rounding norm. Agent-ID: codex-2ca4. -/
 open MeasureTheory
@@ -43,15 +44,21 @@ theorem rounding_energy_check :
       roundingIntegerEnergy := by
   native_decide
 
-/-- All three new sources parse successfully at the complete retained sizes. -/
+/-- Both packed centers parse successfully, and all three retained sizes agree.
+The frozen witness is an authoritative typed integer array. -/
 theorem taylor_centers_decode_check :
     (PackedDyadic.parseChunks 206 firstCenterPackedChunks = some firstCenterInts ∧
       firstCenterInts.size = 259532) ∧
     (PackedDyadic.parseChunks 206 secondCenterPackedChunks = some secondCenterInts ∧
       secondCenterInts.size = 34592) ∧
-    (PackedDyadic.parseChunks 206 frozenCorrectionPackedChunks = some frozenCorrectionInts ∧
-      frozenCorrectionInts.size = 259532) := by
-  native_decide
+    frozenCorrectionInts.size = 259532 := by
+  have h :
+      (PackedDyadic.parseChunks 206 firstCenterPackedChunks = some firstCenterInts ∧
+        firstCenterInts.size = 259532) ∧
+      (PackedDyadic.parseChunks 206 secondCenterPackedChunks = some secondCenterInts ∧
+        secondCenterInts.size = 34592) := by
+    native_decide
+  exact ⟨h.1, h.2, FrozenSourceBinding.source_size⟩
 
 /-- The integer fold gives the exact squared norm of the actual rounding source. -/
 theorem norm_roundingDifference_sq : ‖roundingDifference‖ ^ 2 =
