@@ -322,8 +322,10 @@ positive-domain continuity and the derivative and range of `sin²`.
 angular interval. `OriginalMomentSubstitution` handles the endpoints and proves
 that the original moment is `4/π` times the angular moment.
 `OriginalMomentRatios` transfers positivity, the recurrence, the exact ratio
-update and finite backward enclosures to the original moments. Seed formulas
-and concrete numerical node enclosures remain open.
+update and finite backward enclosures to the original moments. The `Mobius`
+modules prove the real half-line seed kernel is integrable and its integral
+equals `(π/2) * J_h(x)` for every order and real parameter. Identifying it
+with a Gaussian coefficient and concrete numerical node enclosures remain open.
 
 `ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`
 on any certified radial region with `s ≥ 1/16` and `|κ(s)| ≤ 1/100`.
