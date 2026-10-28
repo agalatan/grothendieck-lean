@@ -132,6 +132,17 @@ to the actual affine Gaussian phase integral for $u>0$. Both theorems are
 audited without new native facts; the production Gaussian error estimates
 for the target endpoint remain work in progress.
 
+The actual Taylor sources also admit a proved finite auxiliary reduction in
+\texttt{ProductionFiniteLaplace}. With softening $\eta=10^{-15}$ and cutoff
+$T=40\cdot10^{30}$, softening plus truncation costs less than $5\cdot10^{-15}$
+in the full Gaussian $L^2$ norm. Smoothing and every Hermite-band projection
+preserve this bound. A LeanCert certificate proves $e^{-40}\le10^{-17}$ by
+kernel reduction. The finite Fubini identity binds the truncated response to
+the coefficient integrals; their numerical quadrature remains work in progress.
+\texttt{ProductionCompactLaplace} also restricts the first squared Gaussian
+radius to $[0,80]$. Its radial error is at most $10^{-17}$, and the combined
+softening and both truncation errors still fit the same $5\cdot10^{-15}$ reserve.
+
 A second conditional route uses a finite-head estimate for the actual kernel
 directly; the coefficient enclosures and numerical head estimate are still
 open, so it does not yet give an unconditional bound.
