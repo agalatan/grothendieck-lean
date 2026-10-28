@@ -329,6 +329,23 @@ by finite cells, using the continuous original kernel at inverse boundaries.
 `ProductionMeshEnclosure` sums the regular and reciprocal cell errors into
 an enclosure of the actual retained Gaussian coefficient, including its
 normalization. The shared source reserve remains outside this cell sum.
+`SmallProfileMesh` supplies a concrete seven-strip partition of `[0,80]`.
+Kernel-reduced Horner checks prove the actual profile condition on its three
+selected rational intervals, discharging that premise of the retained-source
+estimate. The exact cuts are recorded in `data/small-profile-mesh/certificate.json`.
+`SmallProfileSeparation` connects eight complementary interval checks to the
+existing profile cover, giving `|κ(s)| > 1/1000` on all four remaining strips.
+Thus their reciprocal Gaussian denominator exceeds `10⁻⁶` uniformly, including
+for very small positive reciprocal coordinates.
+
+`LocalAffineSquareIntegralBounds` requires continuity only on the closed cell,
+so reciprocal certificates do not need an extension through zero.
+`RetainedMeshReality` proves that the normalized retained coefficients are real.
+`SmallProfileBandEnclosure` transfers real rational coefficient enclosures to
+a rational sum of squared residual radii and then to the original band norm,
+adding the shared `5e-15` reserve once. The complete numerical certificates
+and final endpoint remain work in progress.
+
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs

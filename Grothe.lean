@@ -201,6 +201,7 @@ import Grothe.UpperChaos.CapturedTail
 import Grothe.UpperChaos.CenterNormBypass
 import Grothe.UpperChaos.Charge
 import Grothe.UpperChaos.ChargeBandApproximation
+import Grothe.UpperChaos.ChargeBandEnclosure
 import Grothe.UpperChaos.ChargeBandParseval
 import Grothe.UpperChaos.CompactTaylorBands
 import Grothe.UpperChaos.CompactTaylorQuadrature
@@ -285,6 +286,7 @@ import Grothe.UpperChaos.LawY
 import Grothe.UpperChaos.LeanCertAuxiliaryCutoff
 import Grothe.UpperChaos.LeanCertPilot
 import Grothe.UpperChaos.LeanCertProductionPanel
+import Grothe.UpperChaos.LocalAffineSquareIntegralBounds
 import Grothe.UpperChaos.LocalizedComparison
 import Grothe.UpperChaos.LstarL
 import Grothe.UpperChaos.Mehler
@@ -372,6 +374,7 @@ import Grothe.UpperChaos.RectangleListPolynomialIntegral
 import Grothe.UpperChaos.RectangleMonomialIntegral
 import Grothe.UpperChaos.RestrictedPhaseMoments
 import Grothe.UpperChaos.RestrictedWick
+import Grothe.UpperChaos.RetainedMeshReality
 import Grothe.UpperChaos.RetainedQuadraturePartition
 import Grothe.UpperChaos.Rounder
 import Grothe.UpperChaos.SchurBound
@@ -386,6 +389,11 @@ import Grothe.UpperChaos.ShiftedDampedMoments
 import Grothe.UpperChaos.ShiftedMomentFactor
 import Grothe.UpperChaos.ShiftedMomentRecurrence
 import Grothe.UpperChaos.SmallProfileAuxiliaryTail
+import Grothe.UpperChaos.SmallProfileBandEnclosure
+import Grothe.UpperChaos.SmallProfileMesh
+import Grothe.UpperChaos.SmallProfileMeshData
+import Grothe.UpperChaos.SmallProfileSeparation
+import Grothe.UpperChaos.SmallProfileSeparationData
 import Grothe.UpperChaos.SmoothComm
 import Grothe.UpperChaos.SmoothKernelStability
 import Grothe.UpperChaos.SmoothResponseSeries
