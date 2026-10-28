@@ -359,8 +359,18 @@ the substitution `v = t/(1+t)` and its pointwise integrand identity.
 `MobiusEndpoint`, `MobiusImproperIntegrable`, and `MobiusImproperLimit` justify
 the passage to the half-line. `MobiusSeedImproper` proves integrability and
 `∫_(0,∞) (t/(1+t))^h * t^(-1/2) * exp(-x*t/(1+t))/(1+t)^2 dt = (π/2) J_h(x)`
-for every order and real parameter. This real kernel identity does not identify
-a Gaussian coefficient. Concrete numerical node bounds remain unproved.
+for every order and real parameter. `OneSidedSeedFubini` combines the exact
+affine Gaussian inner integral with absolute Fubini, and
+`OneSidedSeedIntegral` evaluates the resulting half-line integral.
+`OneSidedHermiteSeed.phase_hermite_zero_row` discharges the shifted-Wick
+premise and supplies the normalized Gaussian coefficient
+`(sqrt(π)/2) * A * (-A)^d * J_d(A²) / sqrt(d!)` for every real `A`.
+`F0ConditionalSeed` identifies it with the actual canonical evaluator and
+uses `F0ConditionalEvaluator.coefficient_eq_signed` for the production
+coefficient at `s ≥ 0` with `vprof(s) ≠ 0`. The sign exponent is `d` and
+vanishes at `d=0`; there is no second Hermite normalization. A transitive
+guard rejects dependencies beyond the standard three Lean axioms.
+Concrete numerical node bounds and the full upper bound remain unproved.
 
 `ShiftedMomentRecurrence` proves
 `M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including

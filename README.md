@@ -347,8 +347,13 @@ that the original moment is `4/π` times the angular moment.
 `OriginalMomentRatios` transfers positivity, the recurrence, the exact ratio
 update and finite backward enclosures to the original moments. The `Mobius`
 modules prove the real half-line seed kernel is integrable and its integral
-equals `(π/2) * J_h(x)` for every order and real parameter. Identifying it
-with a Gaussian coefficient and concrete numerical node enclosures remain open.
+equals `(π/2) * J_h(x)` for every order and real parameter.
+`OneSidedHermiteSeed` identifies the normalized Gaussian zero-row coefficient
+with `(sqrt(π)/2) * A * (-A)^d * J_d(A²) / sqrt(d!)`.
+`F0ConditionalSeed` connects this identity to the actual canonical evaluator
+and the production F0 coefficient, preserving the profile sign; at `d=0`
+the sign factor is one. These identities use only the standard Lean axioms.
+Concrete numerical node enclosures and the complete upper bound remain open.
 
 `ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`
 on any certified radial region with `s ≥ 1/16` and `|κ(s)| ≤ 1/100`.

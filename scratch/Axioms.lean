@@ -655,6 +655,13 @@ import Grothe
 #print axioms Grothe.UpperChaos.DirectSample.upper_of_finite_sample_bounds
 #print axioms Grothe.UpperChaos.Ef_X0_mul
 #print axioms Grothe.UpperChaos.ExponentialTail.exp_moment_tail
+#print axioms Grothe.UpperChaos.F0ConditionalEvaluator.coefficient_eq_signed
+#print axioms Grothe.UpperChaos.F0ConditionalNode.coefficient_eq_integral
+#print axioms Grothe.UpperChaos.F0ConditionalNode.sum_sq_coefficient_le_one
+#print axioms Grothe.UpperChaos.F0ConditionalSeed.canonicalCoefficient_zero_row
+#print axioms Grothe.UpperChaos.F0ConditionalSeed.canonicalCoefficient_zero_zero
+#print axioms Grothe.UpperChaos.F0ConditionalSeed.coefficient_zero_row
+#print axioms Grothe.UpperChaos.F0ConditionalSeed.coefficient_zero_zero
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.actualEntry_linearMode
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_one_zero
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_zero_one
@@ -694,6 +701,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.HardyReal.integral_pair_eq_kHol
 #print axioms Grothe.UpperChaos.HardyReal.law_swap
 #print axioms Grothe.UpperChaos.HardyReal.mehler_eq_HholPair
+#print axioms Grothe.UpperChaos.HermiteZeroRow.conj_hfun_zero
 #print axioms Grothe.UpperChaos.LeanCertPilot.unitBaseSlice_eq_conditional_base
 #print axioms Grothe.UpperChaos.LeanCertPilot.unitBaseSlice_integral_enclosure
 #print axioms Grothe.UpperChaos.LeanCertProductionProfile.q0Beta_eq_wick_rate
@@ -713,6 +721,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.MobiusSeedImproper.kernel_integrable
 #print axioms Grothe.UpperChaos.MobiusSeedImproper.kernel_integral_eq
 #print axioms Grothe.UpperChaos.MobiusSeedPullback.source_integrand_pullback
+#print axioms Grothe.UpperChaos.OneSidedHermiteSeed.phase_hermite_zero_row
+#print axioms Grothe.UpperChaos.OneSidedSeedFubini.phaseLaplace_inner
+#print axioms Grothe.UpperChaos.OneSidedSeedFubini.phase_fubini
+#print axioms Grothe.UpperChaos.OneSidedSeedIntegral.phase_seed_of_wick
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.integral_eq_two_angular
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.integrand_continuousOn_pos
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.integrand_intervalIntegrable
@@ -1183,6 +1195,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_rpow_neg_five_halves_Ioi
 #print axioms Grothe.UpperChaos.integral_shifted_moment_damped
 #print axioms Grothe.UpperChaos.integral_shifted_moment_damped_double
+#print axioms Grothe.UpperChaos.integral_shifted_moment_damped_zero_right
 #print axioms Grothe.UpperChaos.integral_softPhaseError_sq_le
 #print axioms Grothe.UpperChaos.integral_taylorConditionalWick_compact_eq_radial
 #print axioms Grothe.UpperChaos.integral_taylorConditionalWick_eq_radial
@@ -1363,6 +1376,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.shiftedDampedMoment_succ_left
 #print axioms Grothe.UpperChaos.shiftedDampedMoment_sum_range_right
 #print axioms Grothe.UpperChaos.shiftedDampedMoment_zero_one
+#print axioms Grothe.UpperChaos.shiftedDampedMoment_zero_right
 #print axioms Grothe.UpperChaos.shiftedDampedMoment_zero_zero
 #print axioms Grothe.UpperChaos.shifted_damped_expansion
 #print axioms Grothe.UpperChaos.smoothOp_ouOp_comm
