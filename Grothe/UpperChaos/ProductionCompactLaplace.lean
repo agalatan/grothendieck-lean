@@ -45,7 +45,7 @@ lemma compactLaplaceError_memLp (η T L : ℝ) (hη : 0 < η) (hT : 0 ≤ T) (j 
     ((finiteLaplaceError_memLp η T hη hT j).indicator
       (TaylorRadialTail.measurableSet_cutoffSet L).compl)
 
-private lemma norm_toLp_indicator_le {f : ℂ × ℂ → ℂ} (hf : MemLp f 2 mu2)
+lemma norm_toLp_indicator_le {f : ℂ × ℂ → ℂ} (hf : MemLp f 2 mu2)
     {S : Set (ℂ × ℂ)} (hS : MeasurableSet S) :
     ‖(hf.indicator hS).toLp (S.indicator f)‖ ≤ ‖hf.toLp f‖ := by
   rw [Lp.norm_toLp, Lp.norm_toLp]

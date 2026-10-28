@@ -295,6 +295,17 @@ degree. `RadialDampedMoments` evaluates real radial powers above exponent
 The full-source tail constants and certified quadrature remain open; these
 analytic identities change neither numerical endpoint nor its hypotheses.
 
+`ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`
+on any certified radial region with `s ≥ 1/16` and `|κ(s)| ≤ 1/100`.
+The retained response uses endpoint `2⁵³` elsewhere. The combined Gaussian
+source error, including all selected regions, remains below `5·10⁻¹⁵` and
+is charged once per band. Numerical certification of the retained cells
+and the complete endpoint remain work in progress.
+`ProfileIntervalQuadrature` identifies the retained Gaussian pairing for a
+disjoint finite radial union with its exact rectangle integrals.
+`ProfileIntervalBands` uses this identity and charge-one Parseval to transfer
+the retained coefficient energy to the original fourteen band obligations.
+
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
 only with X's energy in its selected band, weighted by the retained coefficient cost. The quadratic error is

@@ -331,6 +331,24 @@ and auxiliary truncation together cost less than `5·10⁻¹⁵` for every Taylo
 order, with no new numerical premise. Its smoothed band-projection corollary
 retains the original Gaussian measure and all omitted modes.
 
+`ProfileAdaptiveSource.norm_profileRetainedError_lt` permits an auxiliary
+endpoint of `100` on any measurable subset of the small-profile region,
+while retaining `2⁵³` elsewhere. The extra removed source has L² norm at
+most `3·10⁻¹⁷`; softening, radial truncation and both auxiliary omissions
+jointly remain below `5·10⁻¹⁵`. `profileRadialRegion_subset_smallProfile`
+accepts squared-radius certificates `s ≥ 1/16` and `|κ(s)| ≤ 1/100`, so a
+finite union of certified rational intervals needs no exact root locations.
+The same reserve controls all pairings and smoothed band projections. These
+results introduce no native facts and inherit the existing phase-cover leaves.
+`ProfileIntervalQuadrature.inner_profileRetained_eq_intervalQuadrature`
+binds a finite disjoint union of half-open radial intervals to the actual
+Gaussian pairing, by subtracting their compact-source corrections.
+`ProfileIntervalBands` proves charge one for this source and identifies its
+finite coefficient residual with the exact band energy. Its final transfer
+adds the source reserve once per band, using the common
+`norm_projOn_chargeOne_sub_graded_sq` identity also used by the full compact
+rectangle. The numerical retained-energy certificates remain to be supplied.
+
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual
 kernel. `upper_of_finite_sample_bounds` reduces that estimate to complex

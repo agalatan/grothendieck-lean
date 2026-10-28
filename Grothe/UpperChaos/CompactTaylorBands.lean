@@ -85,20 +85,23 @@ def compactTaylorBandEnergy (B : Set Idx2) [DecidablePred (· ∈ B)]
     ‖compactTaylorCoefficient j i -
       (if i.1.val < M then (a i.1 i.2.1 i.2.2 : ℂ) else 0)‖ ^ 2 else 0
 
-/-- The finite numerical sum is exactly the compact source's band error. -/
-theorem norm_projOn_compactTaylor_sub_graded_sq (B : Set Idx2)
-    [DecidablePred (· ∈ B)] (j N M : ℕ) (a : ℕ → ℕ → ℕ → ℚ)
+/-- Parseval for any charge-one source against a stored graded center. -/
+theorem norm_projOn_chargeOne_sub_graded_sq (B : Set Idx2)
+    [DecidablePred (· ∈ B)] (F : Lp ℂ 2 mu2) (hF : ChargeOne F)
+    (N M : ℕ) (a : ℕ → ℕ → ℕ → ℚ)
     (hdegree : ∀ i ∈ B, (bideg i).1 + (bideg i).2 < 2 * N) :
-    ‖projOn B (compactTaylorL2 j - gradedHermite M a)‖ ^ 2 =
-      compactTaylorBandEnergy B j N M a := by
-  have hcharge : ChargeOne (compactTaylorL2 j - gradedHermite M a) := by
+    ‖projOn B (F - gradedHermite M a)‖ ^ 2 =
+      ∑ i : GradedIdx N, if gradedIdx i ∈ B then
+        ‖⟪hvec2 (gradedIdx i), F⟫_ℂ -
+          (if i.1.val < M then (a i.1 i.2.1 i.2.2 : ℂ) else 0)‖ ^ 2 else 0 := by
+  have hcharge : ChargeOne (F - gradedHermite M a) := by
     intro i hi
-    rw [inner_sub_right, chargeOne_compactTaylorL2 j i hi,
+    rw [inner_sub_right, hF i hi,
       inner_gradedHermite_eq_zero_of_charge M a i hi, sub_self]
   rw [norm_projOn_chargeOne_sq_coefficients B N _ hcharge hdegree,
     Finset.sum_filter, gradedSupport, Finset.sum_map]
   change (∑ i : GradedIdx N, if gradedIdx i ∈ B then
-    ‖⟪hvec2 (gradedIdx i), compactTaylorL2 j - gradedHermite M a⟫_ℂ‖ ^ 2 else 0) = _
+    ‖⟪hvec2 (gradedIdx i), F - gradedHermite M a⟫_ℂ‖ ^ 2 else 0) = _
   apply Finset.sum_congr rfl
   intro i _hi
   have hc : ⟪hvec2 (gradedIdx i), gradedHermite M a⟫_ℂ =
@@ -114,7 +117,17 @@ theorem norm_projOn_compactTaylor_sub_graded_sq (B : Set Idx2)
     simp only [inner_hvec2_gradedHermite, hcond]
     rw [gradedIdx_antidegree]
     rfl
-  simp only [inner_sub_right, inner_hvec2_compactTaylorL2, hc]
+  simp only [inner_sub_right, hc]
+
+/-- The finite numerical sum is exactly the compact source's band error. -/
+theorem norm_projOn_compactTaylor_sub_graded_sq (B : Set Idx2)
+    [DecidablePred (· ∈ B)] (j N M : ℕ) (a : ℕ → ℕ → ℕ → ℚ)
+    (hdegree : ∀ i ∈ B, (bideg i).1 + (bideg i).2 < 2 * N) :
+    ‖projOn B (compactTaylorL2 j - gradedHermite M a)‖ ^ 2 =
+      compactTaylorBandEnergy B j N M a := by
+  simpa only [compactTaylorBandEnergy, inner_hvec2_compactTaylorL2] using
+    norm_projOn_chargeOne_sub_graded_sq B (compactTaylorL2 j)
+      (chargeOne_compactTaylorL2 j) N M a hdegree
 
 /-- The actual Gaussian band inherits the finite rectangle's error, with the
 combined source reserve charged only once, independently of the number of modes. -/
