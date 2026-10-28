@@ -365,12 +365,15 @@ import Grothe.UpperChaos.TaylorInnerFubini
 import Grothe.UpperChaos.TaylorInnerLaplace
 import Grothe.UpperChaos.TaylorMoments
 import Grothe.UpperChaos.TaylorPhase
+import Grothe.UpperChaos.TaylorQuadrature
+import Grothe.UpperChaos.TaylorRadialIntegral
 import Grothe.UpperChaos.TaylorRadialTail
 import Grothe.UpperChaos.TaylorRounding
 import Grothe.UpperChaos.TaylorRoundingData
 import Grothe.UpperChaos.TaylorSecondBandNorms
 import Grothe.UpperChaos.TaylorSecondData
 import Grothe.UpperChaos.TaylorSingularCut
+import Grothe.UpperChaos.TaylorSqrtKernel
 import Grothe.UpperChaos.TaylorTailData
 import Grothe.UpperChaos.TaylorWickReduction
 import Grothe.UpperChaos.ThirdCapturedTail
