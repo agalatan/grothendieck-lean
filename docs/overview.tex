@@ -94,6 +94,14 @@ form a shared Lean foundation. The upper rounding proof depends on this foundati
 independently of the lower row certificates.
 
 \subsection{Upper bounds: rounding schemes}
+
+The formal quadrature development includes exact polynomial identities for
+each original Gauss order from $1$ to $64$.  Rational polynomial certificates,
+interpreted through LeanCert, prove orthogonality and the weight identity;
+these give exact integration for polynomials of degree below $2n$ at order $n$.
+The certificates use kernel reduction and are part of the main Lean build.
+The selected numerical nodes and the analytic remainder require separate
+proofs; this algebraic result alone does not finish the upper endpoint.
 Given unit vectors, project a Gaussian onto them and round: $\varepsilon_i=f(\langle G,x_i\rangle)$ with $|f|\le1$. The
 correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
 \[
