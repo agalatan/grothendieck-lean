@@ -97,7 +97,8 @@ theorem norm_smallProfileAuxiliaryTail_le (η : ℝ) (hη : 0 < η) (j : ℕ) :
       · rw [indicator_of_mem hb]
         have h := norm_finiteLaplaceTailError_pointwise_le η 10000 hη (by norm_num) j u
         have he : Real.exp (-(η ^ 2 * 10000)) ≤ 1 :=
-          Real.exp_le_one_iff.mpr (by positivity)
+          Real.exp_le_one_iff.mpr
+            (neg_nonpos.mpr (mul_nonneg (sq_nonneg η) (by norm_num)))
         nlinarith [norm_nonneg (finiteLaplaceTailError η 10000 j u)]
       · rw [indicator_of_notMem hb, add_zero]
         have hw : ‖u.2‖ ≤ 10 := by
@@ -110,13 +111,14 @@ theorem norm_smallProfileAuxiliaryTail_le (η : ℝ) (hη : 0 < η) (j : ℕ) :
       exact add_nonneg (sq_nonneg _) (indicator_nonneg (fun _ _ => by norm_num) _)
   apply (sq_le_sq₀ (norm_nonneg _) (by positivity : (0 : ℝ) ≤ 2 / 10 ^ 17)).mp
   rw [norm_toLp_sq_eq_integral]
+  have hI : (∫ u : ℂ × ℂ, B.indicator (fun _ => (1 : ℝ)) u ∂mu2) = mu2.real B :=
+    integral_indicator_one hB
   calc
     _ ≤ ∫ u : ℂ × ℂ, (1 / 10 ^ 17 : ℝ) ^ 2 + B.indicator (fun _ => (1 : ℝ)) u ∂mu2 :=
       integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => sq_nonneg _)
         hmajor (Filter.Eventually.of_forall hpoint)
     _ = (1 / 10 ^ 17 : ℝ) ^ 2 + Real.exp (-100) := by
-      rw [integral_add (integrable_const _) ((integrable_const _).indicator hB),
-        integral_indicator_one hB, hmass]
+      rw [integral_add (integrable_const _) ((integrable_const _).indicator hB), hI, hmass]
       simp
     _ ≤ _ := by
       have h100 : Real.exp (-100) ≤ (1 / 10 ^ 17 : ℝ) ^ 2 :=
