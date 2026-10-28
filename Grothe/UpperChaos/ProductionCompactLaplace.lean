@@ -61,7 +61,9 @@ theorem norm_compactLaplaceError_le (η T L : ℝ) (hη : 0 < η) (hT : 0 ≤ T)
       ((finiteLaplaceError_memLp η T hη hT j).indicator
         (TaylorRadialTail.measurableSet_cutoffSet L).compl))
     (Filter.Eventually.of_forall fun u => congrFun (compactLaplaceError_eq η T L j) u)
-  rw [heq, MemLp.toLp_add]
+  rw [heq, MemLp.toLp_add (TaylorRadialTail.source_memLp L j)
+    ((finiteLaplaceError_memLp η T hη hT j).indicator
+      (TaylorRadialTail.measurableSet_cutoffSet L).compl)]
   refine (norm_add_le _ _).trans (add_le_add_left ?_ _)
   exact (norm_toLp_indicator_le (finiteLaplaceError_memLp η T hη hT j)
     (TaylorRadialTail.measurableSet_cutoffSet L).compl).trans

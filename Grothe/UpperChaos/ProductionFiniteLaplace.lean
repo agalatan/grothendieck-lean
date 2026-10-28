@@ -166,7 +166,8 @@ theorem norm_finiteLaplaceError_le (η T : ℝ) (hη : 0 < η) (hT : 0 ≤ T) (j
   have heq := (finiteLaplaceError_memLp η T hη hT j).toLp_congr
     ((softTaylorError_memLp η hη j).add (finiteLaplaceTailError_memLp η T hη hT j))
     (Filter.Eventually.of_forall fun u => congrFun (finiteLaplaceError_eq_add η T j) u)
-  rw [heq, MemLp.toLp_add]
+  rw [heq, MemLp.toLp_add (softTaylorError_memLp η hη j)
+    (finiteLaplaceTailError_memLp η T hη hT j)]
   exact (norm_add_le _ _).trans (add_le_add (norm_softTaylorError_le η hη j)
     (norm_finiteLaplaceTailError_le η T hη hT j))
 
