@@ -149,6 +149,11 @@ $|\kappa(s)|\le1/100$. It retains $2^{53}$ elsewhere and proves that the
 combined source error for all selected regions still fits the original
 $5\cdot10^{-15}$ reserve, including after smoothing and band projection.
 The retained-cell certificates remain work in progress.
+The finite-union Gaussian pairing is identified with its rectangle integrals
+in \texttt{ProfileIntervalQuadrature}. Charge-one Parseval in
+\texttt{ProfileIntervalBands} then transfers retained coefficient-energy
+certificates to the original bands, without repeating the source reserve
+for each interval or coefficient.
 
 A second conditional route uses a finite-head estimate for the actual kernel
 directly; the coefficient enclosures and numerical head estimate are still

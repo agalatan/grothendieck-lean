@@ -343,6 +343,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.chargeFn_secondCenterFn
 #print axioms Grothe.UpperChaos.chargeFn_thirdCenterFn
 #print axioms Grothe.UpperChaos.chargeOne_compactTaylorL2
+#print axioms Grothe.UpperChaos.chargeOne_profileIntervalL2
 #print axioms Grothe.UpperChaos.coeFn_gradedHermite
 #print axioms Grothe.UpperChaos.compactLaplaceHpow_rot
 #print axioms Grothe.UpperChaos.compactTaylorQuadratureValue_eq_dyadic
@@ -551,6 +552,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_hermiteFinite_sq
 #print axioms Grothe.UpperChaos.norm_hermiteFinite_sq_cast
 #print axioms Grothe.UpperChaos.norm_hpow_band_sub_graded_le_compact
+#print axioms Grothe.UpperChaos.norm_hpow_band_sub_graded_le_profileIntervals
 #print axioms Grothe.UpperChaos.norm_hpow_one_sq
 #print axioms Grothe.UpperChaos.norm_hpow_sub_compactTaylorL2_lt
 #print axioms Grothe.UpperChaos.norm_hpow_sub_profileRetainedL2_lt
@@ -575,12 +577,14 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_pieces_taylorCenters_le
 #print axioms Grothe.UpperChaos.norm_profileAuxiliaryCorrection_le
 #print axioms Grothe.UpperChaos.norm_profileRetainedError_lt
+#print axioms Grothe.UpperChaos.norm_projOn_chargeOne_sub_graded_sq
 #print axioms Grothe.UpperChaos.norm_projOn_compactTaylor_sub_graded_sq
 #print axioms Grothe.UpperChaos.norm_projOn_gradedHermite_integer_sq_cast
 #print axioms Grothe.UpperChaos.norm_projOn_gradedHermite_sq_cast
 #print axioms Grothe.UpperChaos.norm_projOn_hermiteFinite_sq
 #print axioms Grothe.UpperChaos.norm_projOn_hermiteFinite_sq_cast
 #print axioms Grothe.UpperChaos.norm_projOn_hpow_sub_softHpow_cutoff_lt
+#print axioms Grothe.UpperChaos.norm_projOn_profileInterval_sub_graded_sq
 #print axioms Grothe.UpperChaos.norm_projOn_residual_le_of_captured
 #print axioms Grothe.UpperChaos.norm_projOn_residual_le_of_captured_family
 #print axioms Grothe.UpperChaos.norm_projOn_residual_sq_le_of_captured
@@ -631,6 +635,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.profileIntervalUnion_subset_smallProfile
 #print axioms Grothe.UpperChaos.profileRadialRegion_subset_smallProfile
 #print axioms Grothe.UpperChaos.profileRetainedHpow_eq
+#print axioms Grothe.UpperChaos.profileRetainedHpow_rot
 #print axioms Grothe.UpperChaos.profile_first_gaussian_cell_enclosure
 #print axioms Grothe.UpperChaos.profile_first_gaussian_cell_exact
 #print axioms Grothe.UpperChaos.profile_unit_bounds

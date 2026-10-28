@@ -324,6 +324,7 @@ import Grothe.UpperChaos.ProductionSmallBall
 import Grothe.UpperChaos.ProductionSoftPhase
 import Grothe.UpperChaos.ProfileAdaptiveSource
 import Grothe.UpperChaos.ProfileFirstGaussianCell
+import Grothe.UpperChaos.ProfileIntervalBands
 import Grothe.UpperChaos.ProfileIntervalQuadrature
 import Grothe.UpperChaos.ProfileRootNormalization
 import Grothe.UpperChaos.ProfileRootScreen
