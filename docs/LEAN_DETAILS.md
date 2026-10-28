@@ -429,6 +429,16 @@ error-family transfers need only complete retained coefficient enclosures
 and their rational energy checks. They leave factorial scaling to the
 existing comparison decomposition.
 
+`AdaptiveRectanglePartition.Rect` stores rational radial and auxiliary
+endpoints. `SplitTree` has `leaf`, `splitS`, and `splitAux` constructors;
+each split derives its children by exact rational midpoint. Its ordered
+`leaves` list preserves multiplicities. `leaf_valid_and_subset` proves every
+leaf is valid and contained in the root. `integral_eq_sum` identifies the
+outer-auxiliary, inner-radial integral with the sum of all leaf integrals
+under `ContinuousOn` on the closed root. The proof extends the integrand
+once by coordinate clamping and uses adjacent-interval additivity at every
+split. Numerical enclosures for the actual leaves remain separate inputs.
+
 
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
