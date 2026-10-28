@@ -301,6 +301,13 @@ polynomial enclosure on a normalized square into a bound on the real part of
 the corresponding production cell integral, whose imaginary part is zero.
 The pointwise enclosure is a hypothesis; no numerical cell certificate or
 improper-integral bound is asserted.
+`SharedWickMomentRecurrence` connects the positive-rate shifted Gaussian
+moments to the rational Wick compiler, while `SharedMomentTable` proves that a
+supplied finite table agrees with a recurrence only after its base and step
+equations are established. `ShiftedMomentFactor` extracts inverse-rate factors
+from the real moments and affine cancellation. `ReciprocalRate` proves the
+corresponding reciprocal-variable rate identities, including zero profile.
+These identities do not certify a numerical cell or the upper bound.
 
 `ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`
 on any certified radial region with `s ≥ 1/16` and `|κ(s)| ≤ 1/100`.

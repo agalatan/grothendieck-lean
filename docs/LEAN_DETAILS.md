@@ -260,6 +260,17 @@ integral, proving its imaginary part zero. The model enclosure is an explicit
 hypothesis and the cell integral excludes the outer `1 / sqrt(pi)` factor;
 no numerical cell certificate or improper-integral bound is claimed.
 
+`SharedWickMomentRecurrence` identifies the compiler's moments with a real
+recurrence when inverse rate is positive. `SharedMomentTable` permits a finite
+supplied table to stand for that recurrence after its base and successor
+equations have been proved over the required rectangle; no table is assumed
+correct. `ShiftedMomentFactor` extracts one inverse rate from each real moment
+and two from the completed-square affine combination. For positive `alpha` and
+reciprocal coordinate `x`, `ReciprocalRate` uses
+`D = alpha*x^2 + kappa^2` to express the inverse Gaussian rate, shifted center
+factor and Jacobian-weighted squared inverse rate; `kappa` may be zero. These
+are exact identities, not numerical cell or source-error certificates.
+
 `ShiftedMomentRecurrence` proves
 `M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including
 `q=0` and zero mean. Before norms are taken, the affine bracket becomes

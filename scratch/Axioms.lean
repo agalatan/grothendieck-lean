@@ -335,6 +335,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.RationalWickParity.radiusParity_wickCompileQ
 #print axioms Grothe.UpperChaos.RationalWickParity.radiusParity_wickMomentQ
 #print axioms Grothe.UpperChaos.RationalWickParity.two_dvd_radius_exponent
+#print axioms Grothe.UpperChaos.ReciprocalRate.inverse_rate
+#print axioms Grothe.UpperChaos.ReciprocalRate.jacobian_inverse_rate_sq
+#print axioms Grothe.UpperChaos.ReciprocalRate.scaled_shift
 #print axioms Grothe.UpperChaos.RestrictedWick.integral_cut_balanced
 #print axioms Grothe.UpperChaos.RestrictedWick.integral_cut_invariant
 #print axioms Grothe.UpperChaos.RestrictedWick.integral_cut_unbalanced
@@ -344,6 +347,14 @@ import Grothe
 #print axioms Grothe.UpperChaos.RetainedMeshReality.retainedReciprocalMeshValue_im
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_le
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
+#print axioms Grothe.UpperChaos.SharedMomentTable.eq_momentRec_of_bounded_equations
+#print axioms Grothe.UpperChaos.SharedMomentTable.eq_of_bounded_equations
+#print axioms Grothe.UpperChaos.SharedMomentTable.eq_recTable_of_bounded_equations
+#print axioms Grothe.UpperChaos.SharedWickMomentRecurrence.eval_wickMomentQ_eq_shifted
+#print axioms Grothe.UpperChaos.SharedWickMomentRecurrence.momentRec_eq_shifted
+#print axioms Grothe.UpperChaos.SharedWickMomentRecurrence.momentRec_eq_wickMomentQ
+#print axioms Grothe.UpperChaos.ShiftedMomentFactor.realShiftedMoment_eq_inv_mul
+#print axioms Grothe.UpperChaos.ShiftedMomentFactor.real_affine_eq_inv_sq
 #print axioms Grothe.UpperChaos.SmallProfileMesh.chargeOne_source
 #print axioms Grothe.UpperChaos.SmallProfileMesh.gaps_checked
 #print axioms Grothe.UpperChaos.SmallProfileMesh.inner_source_eq_reciprocalMesh
