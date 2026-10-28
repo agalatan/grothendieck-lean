@@ -777,6 +777,13 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0BasePairKernel.reciprocal_first_error_uniform
 #print axioms Grothe.UpperChaos.Q0BasePairKernelContinuity.continuousOn_reciprocal_pair
 #print axioms Grothe.UpperChaos.Q0BasePairKernelContinuity.continuous_direct_pair
+#print axioms Grothe.UpperChaos.Q0BasePairProductionBridge.direct_integral_pair
+#print axioms Grothe.UpperChaos.Q0BasePairProductionBridge.direct_pair
+#print axioms Grothe.UpperChaos.Q0BasePairProductionBridge.reciprocal_integral_pair
+#print axioms Grothe.UpperChaos.Q0BasePairProductionBridge.reciprocal_pair
+#print axioms Grothe.UpperChaos.Q0BasePairProductionRoots.root10_integrals_mem
+#print axioms Grothe.UpperChaos.Q0BasePairProductionRoots.root11_integrals_mem
+#print axioms Grothe.UpperChaos.Q0BasePairProductionRoots.root7_integrals_mem
 #print axioms Grothe.UpperChaos.Q0BasePairReciprocalEnvelope.companion_bound
 #print axioms Grothe.UpperChaos.Q0BasePairReciprocalEnvelope.companion_small
 #print axioms Grothe.UpperChaos.Q0BasePairReciprocalEnvelope.exp_upper

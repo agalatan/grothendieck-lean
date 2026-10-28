@@ -898,6 +898,9 @@ import Grothe.UpperChaos.Q0BasePairEnvelope
 import Grothe.UpperChaos.Q0BasePairKernel
 import Grothe.UpperChaos.Q0BasePairKernelContinuity
 import Grothe.UpperChaos.Q0BasePairModelAssembly
+import Grothe.UpperChaos.Q0BasePairProductionBridge
+import Grothe.UpperChaos.Q0BasePairProductionBridgeAudit
+import Grothe.UpperChaos.Q0BasePairProductionRoots
 import Grothe.UpperChaos.Q0BasePairReciprocalEnvelope
 import Grothe.UpperChaos.Q0BasePairRoot10Audit
 import Grothe.UpperChaos.Q0BasePairRoot10Integral

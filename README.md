@@ -397,9 +397,7 @@ then passed as fourteen root intervals without expanding one large leaf list.
 entire reciprocal root of radial strip 5, using the original rational
 candidate intervals. The profile polynomial, scalar exponential and
 area-weighted endpoint comparisons are checked in Lean. The first integral
-keeps its nonnegative lower endpoint. This supplies one complete root;
-the remaining roots, production-kernel identification and band energies
-still have to be assembled before the upper endpoint is done.
+keeps its nonnegative lower endpoint.
 
 The generated `AnalyticEnvelopeCell` family supplies both explicit integral
 enclosures for every analytic-envelope leaf of the fixed base-pair mesh.
@@ -408,9 +406,12 @@ original rational intervals. `Q0BasePairRoot7Integral` combines three such
 leaves with an algebraic cell certificate on the complete reciprocal root
 of strip 3. `Q0BasePairRoot10Integral` combines all twelve algebraic leaves
 on the direct root of strip 5. Both preserve exact midpoint geometry and
-prove both explicit integrals without leaf or numerical premises. The
-remaining algebraic leaves and complete root-to-band assembly remain work
-in progress.
+prove both explicit integrals without leaf or numerical premises.
+`Q0BasePairProductionBridge` identifies these explicit integrands with the
+actual two production kernels at Taylor index zero, including the reciprocal
+Jacobian. `Q0BasePairProductionRoots` transfers the three complete-root
+enclosures to those production kernels at the fixed damping. The remaining
+algebraic leaves and complete root-to-band assembly remain work in progress.
 
 
 Lean also proves a selected-spectrum comparison: the error is split

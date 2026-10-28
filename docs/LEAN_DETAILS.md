@@ -513,8 +513,7 @@ The original stored intervals are preserved, with zero as the first lower
 endpoint. No source reserve or normalization allowance is added here.
 The generator and its pinned certificate are in
 `tools/gen_analytic_envelope_root11.py` and `data/analytic-envelope-cells/`.
-The full production-kernel binding, other roots and final band energies
-remain work in progress.
+The other roots and final band energies remain work in progress.
 
 
 `tools/gen_analytic_envelope_cells.py` renders every analytic-envelope leaf
@@ -540,8 +539,15 @@ committed recipe by `tools/gen_base_pair_root10_integral.py --check`.
 `BasePairIntegralAudit` checks the transitive dependencies of every analytic
 cell integral and all complete-root results against the standard Lean axioms;
 it rejects missing theorems and any additional axiom dependency.
-The remaining algebraic leaves, production-kernel binding and final band
-energy checks remain separate obligations.
+`Q0BasePairProductionBridge` identifies the explicit first and companion
+integrands with `regularKernel` and `reciprocalRealKernel` at Taylor index
+zero, including the reciprocal Jacobian. Its integral identities require
+only the rectangle geometry. `Q0BasePairProductionRoots` combines them with
+the complete root results for reciprocal strips 3 and 5 and direct strip 5
+at `finiteLaplaceEta`, without source identities or numerical hypotheses.
+The strict integral audit includes these production-root consumers.
+The remaining algebraic leaves, other roots and final band energy checks
+remain separate obligations.
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual
