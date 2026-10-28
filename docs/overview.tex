@@ -154,6 +154,17 @@ in \texttt{ProfileIntervalQuadrature}. Charge-one Parseval in
 \texttt{ProfileIntervalBands} then transfers retained coefficient-energy
 certificates to the original bands, without repeating the source reserve
 for each interval or coefficient.
+\texttt{ProductionRectangleAssembly} identifies those coefficients with a
+sum of retained nonoverlapping rectangles of the continuous unit-mode
+evaluator. An exact substitution $x=1/u$ maps each auxiliary tail to a bounded
+interval with positive rational lower endpoint, including the Jacobian
+$x^{-2}$. No extra truncation or endpoint-zero premise is used.
+Finite partitions of these positive reciprocal intervals follow by mapping
+their boundaries back to the original coordinate.
+\texttt{ProductionMeshEnclosure} sums the certified regular and reciprocal
+cell radii, with the Gaussian normalization, into an enclosure of the actual
+retained coefficient. The common source reserve is applied afterward at
+the band level. The numerical cell and energy certificates remain open.
 
 A second conditional route uses a finite-head estimate for the actual kernel
 directly; the coefficient enclosures and numerical head estimate are still
@@ -233,6 +244,11 @@ $\alpha=1+j\varepsilon$, giving an exact conditional finite Wick sum.
 Fixed-parameter boundedness justifies Gaussian product Fubini, and the actual
 inner product becomes the auxiliary and first-coordinate Gaussian integral
 of this finite evaluator, with no numerical integration premise.
+For each unit Hermite mode, a rational Wick polynomial gives the exact regular
+quadrature kernel in squared-radius form. A pointwise polynomial enclosure on
+a normalized square implies a bound for the real production cell integral and
+shows its imaginary part vanishes. The enclosure is an explicit hypothesis;
+no numerical cell certificate or improper-integral bound is claimed.
 The recurrence $M_{p+1,q}=\mu M_{p,q}+(q/\beta)M_{p,q-1}$ preserves the affine
 cancellation for every mixed degree, including zero mean and $q=0$.
 Real radial powers with exponent greater than $-2$ also have their exact

@@ -1,6 +1,7 @@
 import Grothe.UpperChaos.Structural
 import Grothe.UpperChaos.TaylorPhase
 import GrotheKernel.PhiCheck
+import Grothe.UpperChaos.PhaseTermsDefs
 
 /-!
 # The concrete rounding of the upper certificate
@@ -28,9 +29,6 @@ namespace Grothe.UpperChaos
 noncomputable section
 
 /-! ### The phase polynomial -/
-
-/-- The monomials of the phase polynomial `S`. -/
-def phaseTerms : List ((ℕ × ℕ × ℕ) × ℚ) := phaseStrs.map GrotheKernel.parseTerm
 
 /-- `S(U, V, W) = Σ c U^i V^j W^k`. -/
 def Sphase (U V W : ℝ) : ℝ :=

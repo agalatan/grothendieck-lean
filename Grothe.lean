@@ -193,6 +193,7 @@ import Grothe.Upper.Realise
 import Grothe.Upper.Residual
 import Grothe.Upper.WeightedUnion
 import Grothe.UpperChaos.AffineGaussianSquare
+import Grothe.UpperChaos.AffineSquareIntegralBounds
 import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.BandedContraction
 import Grothe.UpperChaos.CapturedSourceBound
@@ -207,6 +208,7 @@ import Grothe.UpperChaos.ComparisonPieces
 import Grothe.UpperChaos.Completeness
 import Grothe.UpperChaos.ComplexHermite
 import Grothe.UpperChaos.ComplexMoments
+import Grothe.UpperChaos.ComplexRealCellIntegral
 import Grothe.UpperChaos.ConcreteLinearEnergy
 import Grothe.UpperChaos.ConcretePhaseMoments
 import Grothe.UpperChaos.ConcreteTaylorUpper
@@ -273,6 +275,7 @@ import Grothe.UpperChaos.HermiteConjugation
 import Grothe.UpperChaos.HermiteDegree
 import Grothe.UpperChaos.HermiteFinite
 import Grothe.UpperChaos.HolIntegral
+import Grothe.UpperChaos.IntervalIntegralBounds
 import Grothe.UpperChaos.InvariantMoments
 import Grothe.UpperChaos.JointAliasBound
 import Grothe.UpperChaos.JointSampleLedger
@@ -281,6 +284,7 @@ import Grothe.UpperChaos.KernelStability
 import Grothe.UpperChaos.LawY
 import Grothe.UpperChaos.LeanCertAuxiliaryCutoff
 import Grothe.UpperChaos.LeanCertPilot
+import Grothe.UpperChaos.LeanCertProductionPanel
 import Grothe.UpperChaos.LocalizedComparison
 import Grothe.UpperChaos.LstarL
 import Grothe.UpperChaos.Mehler
@@ -304,6 +308,7 @@ import Grothe.UpperChaos.PhaseMomentNorms
 import Grothe.UpperChaos.PhaseMoments
 import Grothe.UpperChaos.PhaseRadialTail
 import Grothe.UpperChaos.PhaseTailExponential
+import Grothe.UpperChaos.PhaseTermsDefs
 import Grothe.UpperChaos.PhiBound
 import Grothe.UpperChaos.PhiCover
 import Grothe.UpperChaos.PhiCoverCheck
@@ -319,7 +324,9 @@ import Grothe.UpperChaos.PhiHorner
 import Grothe.UpperChaos.ProductComplete
 import Grothe.UpperChaos.ProductionCompactLaplace
 import Grothe.UpperChaos.ProductionFiniteLaplace
+import Grothe.UpperChaos.ProductionMeshEnclosure
 import Grothe.UpperChaos.ProductionRadialTail
+import Grothe.UpperChaos.ProductionRectangleAssembly
 import Grothe.UpperChaos.ProductionSmallBall
 import Grothe.UpperChaos.ProductionSoftPhase
 import Grothe.UpperChaos.ProfileAdaptiveSource
@@ -331,6 +338,10 @@ import Grothe.UpperChaos.ProfileRootScreen
 import Grothe.UpperChaos.ProfileRootSound
 import Grothe.UpperChaos.ProfileUnitBounds
 import Grothe.UpperChaos.ProjectionUnion
+import Grothe.UpperChaos.Q0AffineCancellation
+import Grothe.UpperChaos.Q0ImaginaryWick
+import Grothe.UpperChaos.Q0PhaseWickBridge
+import Grothe.UpperChaos.Q0RealShiftMoments
 import Grothe.UpperChaos.QuadraturePartition
 import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialCutoff
@@ -341,13 +352,26 @@ import Grothe.UpperChaos.RationalPhaseImaginary
 import Grothe.UpperChaos.RationalPhaseInvariant
 import Grothe.UpperChaos.RationalSourceParity
 import Grothe.UpperChaos.RationalSquaredRadius
+import Grothe.UpperChaos.RationalUnitProductionCell
+import Grothe.UpperChaos.RationalUnitQuadrature
+import Grothe.UpperChaos.RationalUnitRealKernelContinuity
 import Grothe.UpperChaos.RationalUnitTaylorSource
+import Grothe.UpperChaos.RationalUnitWickProduction
+import Grothe.UpperChaos.RationalWickCompiler
 import Grothe.UpperChaos.RationalWickDefs
+import Grothe.UpperChaos.RationalWickIntegralBridge
+import Grothe.UpperChaos.RationalWickMonomial
 import Grothe.UpperChaos.RationalWickParity
 import Grothe.UpperChaos.RealGaussianKernelTail
 import Grothe.UpperChaos.Realise2
+import Grothe.UpperChaos.ReciprocalQuadrature
+import Grothe.UpperChaos.ReciprocalQuadraturePartition
+import Grothe.UpperChaos.RectangleIntegralBounds
+import Grothe.UpperChaos.RectangleListPolynomialIntegral
+import Grothe.UpperChaos.RectangleMonomialIntegral
 import Grothe.UpperChaos.RestrictedPhaseMoments
 import Grothe.UpperChaos.RestrictedWick
+import Grothe.UpperChaos.RetainedQuadraturePartition
 import Grothe.UpperChaos.Rounder
 import Grothe.UpperChaos.SchurBound
 import Grothe.UpperChaos.SchurIntegrability
@@ -394,5 +418,9 @@ import Grothe.UpperChaos.TaylorSecondData
 import Grothe.UpperChaos.TaylorSingularCut
 import Grothe.UpperChaos.TaylorSqrtKernel
 import Grothe.UpperChaos.TaylorTailData
+import Grothe.UpperChaos.TaylorWickRadial
 import Grothe.UpperChaos.TaylorWickReduction
 import Grothe.UpperChaos.ThirdCapturedTail
+import Grothe.UpperChaos.UnitSquaredQuadrature
+import Grothe.UpperChaos.UnitSquaredQuadratureConditional
+import Grothe.UpperChaos.UnitSquaredRadiusProfile

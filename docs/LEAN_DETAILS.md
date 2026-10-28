@@ -250,6 +250,16 @@ representative and the absolute Laplace identity: the production inner product
 is the iterated auxiliary and first-coordinate Gaussian integral of
 `taylorConditionalWick`. No conditional-integration accuracy premise is used.
 
+`RationalUnitWickProduction` and `RationalUnitQuadrature` compile the actual
+unit-mode source and its Gaussian Wick evaluation into rational polynomials.
+`UnitSquaredQuadrature.taylorQuadratureKernel_unit_eq_squared` removes the
+radius square root from that polynomial form. For nonnegative cells,
+`RationalUnitProductionCell.unit_production_cell_mem_of_model` transfers a
+pointwise normalized-square polynomial enclosure to the production cell
+integral, proving its imaginary part zero. The model enclosure is an explicit
+hypothesis and the cell integral excludes the outer `1 / sqrt(pi)` factor;
+no numerical cell certificate or improper-integral bound is claimed.
+
 `ShiftedMomentRecurrence` proves
 `M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including
 `q=0` and zero mean. Before norms are taken, the affine bracket becomes
@@ -348,6 +358,26 @@ finite coefficient residual with the exact band energy. Its final transfer
 adds the source reserve once per band, using the common
 `norm_projOn_chargeOne_sub_graded_sq` identity also used by the full compact
 rectangle. The numerical retained-energy certificates remain to be supplied.
+`ProductionRectangleAssembly.inner_profileRetained_eq_mesh` combines these
+identities with the checked continuous unit-mode evaluator: the coefficient
+is a sum of retained radial-strip rectangles, with endpoint `100` on selected
+strips and `2⁵³` elsewhere. `inner_profileRetained_eq_reciprocalMesh` splits
+each auxiliary interval at one and rewrites its tail with `x=1/u` and Jacobian
+`x⁻²`. `ReciprocalQuadrature` proves the substitution for arbitrary complex
+integrands on positive finite intervals. The reciprocal endpoints are
+`1/100` and `2⁻⁵³`, so no value or regularity assertion at zero is needed.
+The actual production kernel is identified with the continuous evaluator on
+rectangle interiors; the auxiliary-zero boundary contributes no extra term.
+`ReciprocalQuadraturePartition.rectangleIntegral_reciprocal_eq_sum` proves
+complete finite cell coverage at positive reciprocal boundaries by applying
+the original-kernel partition to their inverses. It requires no extension
+of the reciprocal kernel through zero. Its norm theorem sums certified
+cell radii over the entire rectangle.
+`ProductionMeshEnclosure.norm_inner_profileRetained_sub_meshCenters_le`
+then combines regular and reciprocal strip enclosures with the Gaussian
+normalization to bound the actual retained pairing. The source approximation
+reserve is still applied only at the band-transfer stage. Numerical cell
+and band-energy estimates remain to be supplied.
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual

@@ -272,10 +272,20 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProfileRootScreen.profile_inner
 #print axioms Grothe.UpperChaos.ProfileRootScreen.profile_outer
 #print axioms Grothe.UpperChaos.ProfileRootScreen.sqrtPi_real_bounds
+#print axioms Grothe.UpperChaos.QuadraturePartition.integral_auxiliary_reciprocal
 #print axioms Grothe.UpperChaos.QuadraturePartition.monotone_dyadicAuxiliaryCut
+#print axioms Grothe.UpperChaos.QuadraturePartition.norm_rectangleIntegral_reciprocal_sub_sum_le
 #print axioms Grothe.UpperChaos.QuadraturePartition.norm_rectangleIntegral_sub_sum_le
 #print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_dyadic_eq_sum
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_eq_initial_add_reciprocal
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_eq_reciprocal
 #print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_eq_sum
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_eq_sum_radial
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_production_tail_eq_reciprocal
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_radial_prefix_sub
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_reciprocal_eq_neg
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_reciprocal_eq_sum
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_sub_selected_eq_retained
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_diagonal_exp_tail
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_radial_cutoff
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_radial_exp_tail
@@ -303,6 +313,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.RationalSquaredRadius.eval_squareRadiusQ
 #print axioms Grothe.UpperChaos.RationalSquaredRadius.eval_unitWickQ_sq
 #print axioms Grothe.UpperChaos.RationalSquaredRadius.eval_unitWickQ_sqrt
+#print axioms Grothe.UpperChaos.RationalUnitProductionCell.unit_production_cell_mem_of_model
 #print axioms Grothe.UpperChaos.RationalUnitTaylorSource.eval_firstHermiteQ
 #print axioms Grothe.UpperChaos.RationalUnitTaylorSource.eval_rename_ratH
 #print axioms Grothe.UpperChaos.RationalUnitTaylorSource.eval_secondHermiteQ
@@ -329,6 +340,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_sq_le_exp
 #print axioms Grothe.UpperChaos.TaylorSingularCut.norm_projOn_smooth_source_cutoff_lt
 #print axioms Grothe.UpperChaos.TaylorSingularCut.norm_source_cutoff_lt
+#print axioms Grothe.UpperChaos.UnitSquaredQuadrature.taylorQuadratureKernel_unit_eq_squared
 #print axioms Grothe.UpperChaos.abs_gaussian_reciprocal_sub_poly_le
 #print axioms Grothe.UpperChaos.affine_gaussian_shift_complete_square
 #print axioms Grothe.UpperChaos.affine_gaussian_shift_exp_factor
@@ -347,6 +359,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.coeFn_gradedHermite
 #print axioms Grothe.UpperChaos.compactLaplaceHpow_rot
 #print axioms Grothe.UpperChaos.compactTaylorQuadratureValue_eq_dyadic
+#print axioms Grothe.UpperChaos.compactTaylorQuadratureValue_unit_eq_rectangle
+#print axioms Grothe.UpperChaos.compactTaylorQuadratureValue_unit_sub
 #print axioms Grothe.UpperChaos.compactTaylorRegion_eq
 #print axioms Grothe.UpperChaos.comparisonInputs_taylorCenters
 #print axioms Grothe.UpperChaos.concrete_energy_close_five_e_minus_seven
@@ -357,6 +371,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.conj_ev_H_swap
 #print axioms Grothe.UpperChaos.continuous_gradedHermiteFn
 #print axioms Grothe.UpperChaos.continuous_hfun2
+#print axioms Grothe.UpperChaos.continuous_unitRectangleKernel
 #print axioms Grothe.UpperChaos.difference_pieces
 #print axioms Grothe.UpperChaos.differentiableOn_HholPair_Rt
 #print axioms Grothe.UpperChaos.differentiableOn_Hhol_Rt
@@ -442,6 +457,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.inner_ouOp
 #print axioms Grothe.UpperChaos.inner_profileAuxiliaryCorrection_interval
 #print axioms Grothe.UpperChaos.inner_profileRetained_eq_intervalQuadrature
+#print axioms Grothe.UpperChaos.inner_profileRetained_eq_mesh
+#print axioms Grothe.UpperChaos.inner_profileRetained_eq_reciprocalMesh
 #print axioms Grothe.UpperChaos.inner_smoothOp_hvec2_eq_zero
 #print axioms Grothe.UpperChaos.integrableOn_conditional_gaussian_laplace_profile
 #print axioms Grothe.UpperChaos.integrableOn_norm_affine_phaseLaplace_base_tail
@@ -564,6 +581,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_inner_hpow_sub_compactQuadrature_cutoff_le
 #print axioms Grothe.UpperChaos.norm_inner_hpow_sub_profileRetained_le
 #print axioms Grothe.UpperChaos.norm_inner_hpow_sub_quadrature_le
+#print axioms Grothe.UpperChaos.norm_inner_profileRetained_sub_meshCenters_le
 #print axioms Grothe.UpperChaos.norm_integral_affine_phaseLaplace_base
 #print axioms Grothe.UpperChaos.norm_integral_affine_phaseLaplace_base_le
 #print axioms Grothe.UpperChaos.norm_integral_softPhaseLaplace_tail_le
@@ -596,6 +614,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_projOn_source_le_of_captured_family
 #print axioms Grothe.UpperChaos.norm_projOn_sq_add_le_of_disjoint
 #print axioms Grothe.UpperChaos.norm_projOn_sq_add_norm_sub_projOn_sq
+#print axioms Grothe.UpperChaos.norm_retainedReciprocalMeshValue_sub_sum_le
 #print axioms Grothe.UpperChaos.norm_roundingDifference_le
 #print axioms Grothe.UpperChaos.norm_roundingDifference_sq
 #print axioms Grothe.UpperChaos.norm_secondCaptured_taylorCenters_le
@@ -632,6 +651,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.poly_complete
 #print axioms Grothe.UpperChaos.profileAuxiliaryCorrection_interval_eq
 #print axioms Grothe.UpperChaos.profileAuxiliaryCorrection_union_eq_sum
+#print axioms Grothe.UpperChaos.profileIntervalCorrectionValue_unit_eq_rectangles
+#print axioms Grothe.UpperChaos.profileIntervalQuadratureValue_mesh_eq_retained
+#print axioms Grothe.UpperChaos.profileIntervalQuadratureValue_unit_eq_rectangles
 #print axioms Grothe.UpperChaos.profileIntervalUnion_subset_smallProfile
 #print axioms Grothe.UpperChaos.profileRadialRegion_subset_smallProfile
 #print axioms Grothe.UpperChaos.profileRetainedHpow_eq
@@ -645,6 +667,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.projOn_projOn_eq_zero_of_disjoint
 #print axioms Grothe.UpperChaos.radial_distance_le_of_sixth_moment
 #print axioms Grothe.UpperChaos.radial_kernel_ceiling
+#print axioms Grothe.UpperChaos.rectangleIntegral_unit_eq_continuous
+#print axioms Grothe.UpperChaos.retainedMeshValue_eq_reciprocal
 #print axioms Grothe.UpperChaos.roundingCoeff_eq
 #print axioms Grothe.UpperChaos.roundingDifference_eq
 #print axioms Grothe.UpperChaos.rounding_diskKernel
