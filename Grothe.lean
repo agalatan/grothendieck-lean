@@ -180,6 +180,7 @@ import Grothe.Upper.ComparisonMass
 import Grothe.Upper.ComparisonOverlap
 import Grothe.Upper.Compose
 import Grothe.Upper.Data
+import Grothe.Upper.DirectionalComparison
 import Grothe.Upper.Disk
 import Grothe.Upper.Final
 import Grothe.Upper.GroupedBridge

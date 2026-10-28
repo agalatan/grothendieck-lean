@@ -151,6 +151,21 @@ All pieces may share coordinates. Lean proves each coefficient cost by outward i
 native arithmetic checks eighteen weighted radii from the stored table and its error allowance.
 The Gaussian component-error enclosures and their identification with the pieces remain explicit inputs.
 
+There is also a directional finite-head certificate. For a real coefficient
+map $a_{jp}$, put $H_j(X)=\sum_{p\in S}a_{jp}\|X_p\|^2$ and
+$L_j=2\sum_{p\in S}a_{jp}\operatorname{Re}\langle X_p,G_p-X_p\rangle$.
+If $\sum_j|L_j-c_j|\le\eta$ and $\sum_j|a_{jp}|\le w_p$, then
+\[
+ \sum_j|H_j(G)-b_j|
+ \le \sum_j|H_j(X)+c_j-b_j|+\eta+
+       \sum_{p\in S}w_p\|G_p-X_p\|^2.
+\]
+The exact quadratic expansion proves this in
+\texttt{Upper/DirectionalComparison}; no coefficient sign-stability premise
+is needed. The statement concerns the finite head only. The directional
+pairings, omitted tail and admissible rounding still need their respective
+certificates, so this interface alone gives no numerical improvement.
+
 \paragraph{Exact phase moments.}
 For $\varphi=D e^{-\varepsilon(U+V)}S(U,V,W)$, clear the rational coefficients
 as $A=LS$. Each even moment is a finite rational sum over the coefficients of

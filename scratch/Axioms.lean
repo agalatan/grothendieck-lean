@@ -200,6 +200,9 @@ import Grothe
 #print axioms Grothe.Upper.BandComparison.quadratic_sum_le_grouped
 #print axioms Grothe.Upper.BandComparison.quadratic_sum_le_overlap
 #print axioms Grothe.Upper.BandComparison.weighted_compare
+#print axioms Grothe.Upper.DirectionalComparison.corrected_head_le
+#print axioms Grothe.Upper.DirectionalComparison.quadratic_remainder
+#print axioms Grothe.Upper.DirectionalComparison.quadratic_remainder_le
 #print axioms Grothe.Upper.actual_band_mass
 #print axioms Grothe.Upper.bivarKernel_sub
 #print axioms Grothe.Upper.comparisonOverlap_separate

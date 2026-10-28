@@ -61,6 +61,9 @@ Grothe.Upper.BandComparison.compare
 Grothe.Upper.BandComparison.quadratic_sum_le_grouped
 Grothe.Upper.BandComparison.quadratic_sum_le_overlap
 Grothe.Upper.BandComparison.weighted_compare
+Grothe.Upper.DirectionalComparison.corrected_head_le
+Grothe.Upper.DirectionalComparison.quadratic_remainder
+Grothe.Upper.DirectionalComparison.quadratic_remainder_le
 Grothe.Upper.actual_band_mass
 Grothe.Upper.comparisonOverlap_separate
 Grothe.Upper.comparisonWeight_sound
