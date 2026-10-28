@@ -305,13 +305,15 @@ Also:
 | GitHub branch cache, same key plus `-run<id>` | droplet checks of that branch, and green `ready/` checks | later checks of that branch (e.g. a `ready/` re-check after master moved); deleted with the branch |
 | droplet runner workspace (`~/actions-runner/_work`) | the runner only, one job at a time | nobody else; never copy into it or out of it |
 | laptop snapshot `.lake/master-cache` (main checkout) | `scripts/master_build_job.sh` (§5) | laptop worktrees through `scripts/clone_master_build.sh` |
-| tree handoff: artifact `lean-build-tree-<tree hash>`, kept 1 day | a green check of a branch (work or `ready/`) whose checked commit contains the current master | master's check, when master's tree is exactly that tree |
+| tree handoff: artifact `lean-build-tree-<tree hash>`, kept 1 day | a green `ready/` check whose checked commit contains the current master | master's check, when master's tree is exactly that tree |
 
-- **Tree handoff:** a branch's caches are invisible to master's runs, so a green branch check whose commit contains
+- **Tree handoff:** a branch's caches are invisible to master's runs, so a green `ready/` check whose commit contains
   the current master also uploads its build as an artifact named after its tree. When master then becomes exactly
-  that tree (CI's fast-forward of a `ready/` delivery, or a hand merge of an up-to-date pull request), master's check
-  downloads that build instead of the older master cache: its `lake build` only replays, also when the node caps
-  changed (no second droplet run). Only artifacts of `lean.yml` runs are accepted.
+  that tree (CI's fast-forward of a `ready/` delivery, or a hand merge of an up-to-date pull request from a `ready/`
+  branch), master's check downloads that build instead of the older master cache: its `lake build` only replays,
+  also when the node caps changed (no second droplet run). Work branches upload no handoff (each is a 0.4-3.5 GB
+  artifact); a hand-merged pull request from a work branch is rebuilt from the master cache. Only artifacts of
+  `lean.yml` runs are accepted.
 
 - **Correctness:** Lake reuses a compiled file only if the hashes of its source, its dependencies and the toolchain
   match, so a stale cache costs time, never correctness. The caps marker (`.lake/build/caps-closure.sha`) additionally

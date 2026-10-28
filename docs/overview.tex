@@ -141,6 +141,22 @@ to the actual affine Gaussian phase integral for $u>0$. Both theorems are
 audited without new native facts; the production Gaussian error estimates
 for the target endpoint remain work in progress.
 
+
+The literal polynomial used in the q0 Wick calculation is linked to its
+actual parsed source by
+\texttt{Q0BinaryLiteralAssemblyBridge.sourceSum\_eq\_literal}:
+\[
+ \operatorname{Ssum}(\mathrm{q0RawWickEntries};s,b,v)
+ =\frac{\operatorname{he3}(\mathrm{sourceCoefficients};s,b,v)}
+ {604005087394345832307543156484734976000}.
+\]
+This identity holds for all real $s,b,v$, ordered as squared radius, inverse
+damping rate and shifted argument. The source partition, chunk denominators,
+literal tables and recombination are checked in Lean; no source-table equality
+is assumed. A strict transitive audit allows only the standard logical axioms.
+The inverse-rate factor already included in the literal is retained. Numerical
+cell certificates and the full upper-bound inputs remain separate obligations.
+
 The actual Taylor sources also admit a proved finite auxiliary reduction in
 \texttt{ProductionFiniteLaplace}. With softening $\eta=10^{-15}$ and cutoff
 $T=(2^{53})^2$, softening plus truncation costs less than $5\cdot10^{-15}$

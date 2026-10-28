@@ -13,7 +13,7 @@ name: Lean proof check
 # ready/<name>: the branch is merged into the CURRENT master and the MERGED tree is checked; master moves only if green.
 # Master's cache: every update of master gets one check on master (a hand merge by its push; an auto-merge
 # dispatches it); when green, it saves the new master cache. Only master runs and droplet runs write caches.
-# Tree handoff: a green branch check whose commit contains the current master uploads its build as the artifact
+# Tree handoff: a green ready/ check whose commit contains the current master uploads its build as the artifact
 # lean-build-tree-<tree hash> (caches of a branch are invisible to master; artifacts are not). When master later
 # points at exactly that tree (the CI fast-forward of a ready/ branch, or a hand merge of an up-to-date pull request),
 # master's check downloads it instead of the older master cache, so its build only replays.
@@ -340,9 +340,10 @@ jobs:
 
       - name: Pack the build for master's check if master can become exactly this tree (tree handoff)
         # this commit contains the current master, so a ready/ fast-forward or a hand merge of the pull request gives
-        # master exactly this tree; master's check then downloads this build instead of rebuilding
+        # master exactly this tree; master's check then downloads this build instead of rebuilding. Only ready/ checks
+        # upload it: work branches rarely become master's exact tree, and each upload is a 0.4-3.5 GB artifact
         id: handoff
-        if: env.LEAN == 'true' && github.ref_name != 'master'
+        if: env.LEAN == 'true' && startsWith(github.ref_name, 'ready/')
         run: |
           git fetch -q origin master
           if git merge-base --is-ancestor origin/master HEAD; then

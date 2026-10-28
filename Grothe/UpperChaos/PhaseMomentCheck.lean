@@ -1,4 +1,5 @@
 import Grothe.UpperChaos.PhiDense
+import Grothe.UpperChaos.PhaseMomentDefs
 
 /-!
 # Exact integer polynomials for the finite phase moments
@@ -38,23 +39,6 @@ def mul3 (p q : List (List (List ℤ))) : List (List (List ℤ)) :=
 def pow3 (p : List (List (List ℤ))) : ℕ → List (List (List ℤ))
   | 0 => [[[1]]]
   | n + 1 => mul3 p (pow3 p n)
-
-/-- One monomial in a coefficient list. -/
-def monomialG {α : Type} (zero a : α) (n : ℕ) : List α :=
-  List.replicate n zero ++ [a]
-
-/-- The integer monomial `c U^a V^b W^d`. -/
-def monomial3 (a b d : ℕ) (c : ℤ) : List (List (List ℤ)) :=
-  monomialG [] (monomialG [] (monomialG 0 c d) b) a
-
-/-- Clear a specified denominator and sum the resulting integer monomials. -/
-def ofTerms (L : ℕ) (ts : List ((ℕ × ℕ × ℕ) × ℚ)) : List (List (List ℤ)) :=
-  ts.foldr (fun t p =>
-    add3 (monomial3 t.1.1 t.1.2.1 t.1.2.2 (t.2 * (L : ℚ)).num) p) []
-
-/-- The unscaled integer phase polynomial; unlike `denseA0`, no grid factors are inserted. -/
-def integerPhase (ts : List ((ℕ × ℕ × ℕ) × ℚ)) : List (List (List ℤ)) :=
-  ofTerms (commonDen ts) ts
 
 noncomputable section
 

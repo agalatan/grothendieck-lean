@@ -162,6 +162,13 @@ coefficients in bounded chunks, with exact value
 `302002543697172916153771578242367488000`. This source arithmetic supports
 future certificates; it does not establish the phase cover or the upper bound.
 
+The q0 Wick source sum is also bound to its literal polynomial by
+`Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal`, with no assumed table
+equality. The proof preserves the separate exact denominator
+`604005087394345832307543156484734976000` and the order of squared radius,
+inverse rate and shifted argument. Generated Python data are checked by Lean;
+the numerical quadrature cells and the upper-bound inputs remain to be proved.
+
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of
 scaled integers regenerated from the same pinned binary64 input.

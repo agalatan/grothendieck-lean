@@ -1,0 +1,32 @@
+import Grothe.UpperChaos.Q0WickChunking
+import Grothe.UpperChaos.Q0LiteralSourceData
+import Mathlib.Tactic
+
+/-! Untrusted generated data; Lean checks this exact chunk by `cbv`.
+Source Data.lean SHA256: cec1bb15c67969c215a82264bee9c31e116554e33c6821b189ce527d9e442cc7
+Offset 776, count 8; no full-table claim.
+Agent-ID: codex-8c4d. -/
+
+namespace Grothe.UpperChaos.Q0Chunk_o776_n8
+
+open Grothe.UpperChaos.Q0WickChunking
+open Grothe.UpperChaos.Q0LiteralSourceData
+
+set_option maxRecDepth 65536 in
+def literal : DenseWick := [[],[],[],[],[],[],[[],[],[3050485127975786272311685813134321254400]],[[],[0,0,0],[0,-2066238158722356861856171996230765772800],[1644646859608138924490981737260436684800]],[[],[0,0,0,0],[0,0,3289293719216277848981963474520873369600],[0,-1186710246893113350548356419627987763200],[179320204817272439795196682841043763200]],[[],[0,0,0,0,0],[0,0,0,-791140164595408900365570946418658508800],[0,0,717280819269089759180786731364175052800],[0,-359769639511769484940368892196290560000],[43975590115727766855306561580302336000]],[[],[0,0,0,0,0,0],[0,0,0,0,239093606423029919726928910454725017600],[0,0,0,-479692852682359313253825189595054080000],[0,0,263853540694366601131839369481814016000],[0,-27241826976682602490197539443703808000]],[[],[0,0,0,0,0,0,0],[0,0,0,0,0,-95938570536471862650765037919010816000],[0,0,0,0,175902360462911067421226246321209344000],[0,0,0,-54483653953365204980395078887407616000]],[[],[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,23453648061721475656163499509494579200],[0,0,0,0,0,-21793461581346081992158031554963046400]],[[],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,-2075567769652007808776955386186956800]],[[],[0,0,0,0,0,0,0,0,0,0]]]
+
+set_option maxRecDepth 65536 in
+set_option maxHeartbeats 8000000 in
+set_option cbv.maxSteps 1000000 in
+theorem check_source_strings :
+    sourceChunkDense sourceDen
+      (((Grothe.Upper.phaseStrs.drop 776).take 8).map GrotheKernel.parseTerm) =
+        literal := by
+  cbv
+
+theorem check_phaseTerms :
+    sourceChunkDense sourceDen ((phaseTerms.drop 776).take 8) = literal := by
+  rw [phaseTerms, ← List.map_drop, ← List.map_take]
+  exact check_source_strings
+
+end Grothe.UpperChaos.Q0Chunk_o776_n8
