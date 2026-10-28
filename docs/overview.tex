@@ -143,6 +143,12 @@ the coefficient integrals; their numerical quadrature remains work in progress.
 \texttt{ProductionCompactLaplace} also restricts the first squared Gaussian
 radius to $[0,80]$. Its radial error is at most $10^{-17}$, and the combined
 softening and both truncation errors still fit the same $5\cdot10^{-15}$ reserve.
+\texttt{ProfileAdaptiveSource} permits the shorter regular auxiliary endpoint
+$100$ on any certified radial region with $s\ge1/16$ and
+$|\kappa(s)|\le1/100$. It retains $2^{53}$ elsewhere and proves that the
+combined source error for all selected regions still fits the original
+$5\cdot10^{-15}$ reserve, including after smoothing and band projection.
+The retained-cell certificates remain work in progress.
 
 A second conditional route uses a finite-head estimate for the actual kernel
 directly; the coefficient enclosures and numerical head estimate are still

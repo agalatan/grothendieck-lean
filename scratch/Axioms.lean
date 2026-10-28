@@ -550,12 +550,14 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_hpow_band_sub_graded_le_compact
 #print axioms Grothe.UpperChaos.norm_hpow_one_sq
 #print axioms Grothe.UpperChaos.norm_hpow_sub_compactTaylorL2_lt
+#print axioms Grothe.UpperChaos.norm_hpow_sub_profileRetainedL2_lt
 #print axioms Grothe.UpperChaos.norm_hpow_sub_sq
 #print axioms Grothe.UpperChaos.norm_hpow_sub_sq_le
 #print axioms Grothe.UpperChaos.norm_hpow_three_sq
 #print axioms Grothe.UpperChaos.norm_hpow_toLp_sq_eq
 #print axioms Grothe.UpperChaos.norm_hpow_two_sq
 #print axioms Grothe.UpperChaos.norm_inner_hpow_sub_compactQuadrature_cutoff_le
+#print axioms Grothe.UpperChaos.norm_inner_hpow_sub_profileRetained_le
 #print axioms Grothe.UpperChaos.norm_inner_hpow_sub_quadrature_le
 #print axioms Grothe.UpperChaos.norm_integral_affine_phaseLaplace_base
 #print axioms Grothe.UpperChaos.norm_integral_affine_phaseLaplace_base_le
@@ -568,6 +570,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_piece17_thirdCenter_le
 #print axioms Grothe.UpperChaos.norm_piece7_taylorCenters_le
 #print axioms Grothe.UpperChaos.norm_pieces_taylorCenters_le
+#print axioms Grothe.UpperChaos.norm_profileAuxiliaryCorrection_le
+#print axioms Grothe.UpperChaos.norm_profileRetainedError_lt
 #print axioms Grothe.UpperChaos.norm_projOn_compactTaylor_sub_graded_sq
 #print axioms Grothe.UpperChaos.norm_projOn_gradedHermite_integer_sq_cast
 #print axioms Grothe.UpperChaos.norm_projOn_gradedHermite_sq_cast
@@ -581,6 +585,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_projOn_smooth_compactLaplaceError_cutoff_lt
 #print axioms Grothe.UpperChaos.norm_projOn_smooth_finiteLaplaceError_cutoff_lt
 #print axioms Grothe.UpperChaos.norm_projOn_smooth_hpow_sub_softHpow_cutoff_lt
+#print axioms Grothe.UpperChaos.norm_projOn_smooth_profileRetainedError_lt
 #print axioms Grothe.UpperChaos.norm_projOn_source_le_of_captured_family
 #print axioms Grothe.UpperChaos.norm_projOn_sq_add_le_of_disjoint
 #print axioms Grothe.UpperChaos.norm_projOn_sq_add_norm_sub_projOn_sq
@@ -591,6 +596,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_secondCenter_tail_scaled_le
 #print axioms Grothe.UpperChaos.norm_secondCenter_tail_smoothed_le
 #print axioms Grothe.UpperChaos.norm_smallProfileAuxiliaryTail_le
+#print axioms Grothe.UpperChaos.norm_smallProfile_subset_tail_le
 #print axioms Grothe.UpperChaos.norm_softPhaseError_cutoff_lt
 #print axioms Grothe.UpperChaos.norm_softPhaseError_le
 #print axioms Grothe.UpperChaos.norm_softPhase_sub_finiteLaplacePhase_le
@@ -617,6 +623,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.phi_abs_lt_one
 #print axioms Grothe.UpperChaos.phi_cubes_ok
 #print axioms Grothe.UpperChaos.poly_complete
+#print axioms Grothe.UpperChaos.profileRadialRegion_subset_smallProfile
+#print axioms Grothe.UpperChaos.profileRetainedHpow_eq
 #print axioms Grothe.UpperChaos.profile_first_gaussian_cell_enclosure
 #print axioms Grothe.UpperChaos.profile_first_gaussian_cell_exact
 #print axioms Grothe.UpperChaos.profile_unit_bounds
