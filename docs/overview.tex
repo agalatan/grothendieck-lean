@@ -314,9 +314,15 @@ the continuity, derivative, range and open-interval pullback identity for
 the angular substitution are proved. The integral change of variables gives
 $J_h(x)=(4/\pi)M_h(x)$, with endpoint equality handled almost everywhere.
 The original moments inherit positivity, the recurrence, and finite backward
-ratio enclosures for $x\ge0$. Seed formulas and numerical node certificates
+ratio enclosures for $x\ge0$. The substitution $v=t/(1+t)$ gives the
+integrable real half-line kernel identity
+\[
+ \int_0^\infty \left(\frac{t}{1+t}\right)^h t^{-1/2}
+ \frac{e^{-xt/(1+t)}}{(1+t)^2}\,dt=\frac{\pi}{2}J_h(x).
+\]
+Its identification with a Gaussian coefficient and numerical node certificates
 remain open. The cell enclosure is an explicit hypothesis;
-no numerical cell certificate or improper-integral bound is claimed.
+no numerical cell certificate or numerical improper-integral bound is claimed.
 The recurrence $M_{p+1,q}=\mu M_{p,q}+(q/\beta)M_{p,q-1}$ preserves the affine
 cancellation for every mixed degree, including zero mean and $q=0$.
 Real radial powers with exponent greater than $-2$ also have their exact

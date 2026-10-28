@@ -293,7 +293,14 @@ almost-everywhere equality and proves `J_h(x) = (4/π) * M_h(x)` for every
 order and real parameter. `OriginalMomentRatios` transfers positivity and the
 three-term recurrence to `J_h`; for `x ≥ 0`, its ratio satisfies the exact
 continued-fraction update and finite backward enclosure from terminal `[0,1]`.
-Seed formulas and concrete numerical node bounds remain unproved.
+`MobiusGeometry`, `MobiusPowerAlgebra`, and `MobiusSeedPullback` establish
+the substitution `v = t/(1+t)` and its pointwise integrand identity.
+`MobiusFiniteSubstitution` proves the corresponding finite integral equality;
+`MobiusEndpoint`, `MobiusImproperIntegrable`, and `MobiusImproperLimit` justify
+the passage to the half-line. `MobiusSeedImproper` proves integrability and
+`∫_(0,∞) (t/(1+t))^h * t^(-1/2) * exp(-x*t/(1+t))/(1+t)^2 dt = (π/2) J_h(x)`
+for every order and real parameter. This real kernel identity does not identify
+a Gaussian coefficient. Concrete numerical node bounds remain unproved.
 
 `ShiftedMomentRecurrence` proves
 `M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including
