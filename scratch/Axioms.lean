@@ -424,6 +424,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.hermiteBasis2
 #print axioms Grothe.UpperChaos.hermite_complete
 #print axioms Grothe.UpperChaos.hfun2_rot2_of_charge
+#print axioms Grothe.UpperChaos.indicator_radialInterval_finiteLaplace
 #print axioms Grothe.UpperChaos.inner_gradedHermite_compactLaplace_eq_quadrature
 #print axioms Grothe.UpperChaos.inner_gradedHermite_eq_zero_of_charge
 #print axioms Grothe.UpperChaos.inner_gradedHermite_eq_zero_of_total_degree
@@ -438,6 +439,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.inner_hvec2_gradedHermite
 #print axioms Grothe.UpperChaos.inner_hvec2_hermiteFinite
 #print axioms Grothe.UpperChaos.inner_ouOp
+#print axioms Grothe.UpperChaos.inner_profileAuxiliaryCorrection_interval
+#print axioms Grothe.UpperChaos.inner_profileRetained_eq_intervalQuadrature
 #print axioms Grothe.UpperChaos.inner_smoothOp_hvec2_eq_zero
 #print axioms Grothe.UpperChaos.integrableOn_conditional_gaussian_laplace_profile
 #print axioms Grothe.UpperChaos.integrableOn_norm_affine_phaseLaplace_base_tail
@@ -623,6 +626,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.phi_abs_lt_one
 #print axioms Grothe.UpperChaos.phi_cubes_ok
 #print axioms Grothe.UpperChaos.poly_complete
+#print axioms Grothe.UpperChaos.profileAuxiliaryCorrection_interval_eq
+#print axioms Grothe.UpperChaos.profileAuxiliaryCorrection_union_eq_sum
+#print axioms Grothe.UpperChaos.profileIntervalUnion_subset_smallProfile
 #print axioms Grothe.UpperChaos.profileRadialRegion_subset_smallProfile
 #print axioms Grothe.UpperChaos.profileRetainedHpow_eq
 #print axioms Grothe.UpperChaos.profile_first_gaussian_cell_enclosure

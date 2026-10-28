@@ -32,12 +32,11 @@ theorem norm_smallProfile_subset_tail_le (S : Set (ℂ × ℂ)) (hS : Measurable
     by_cases hu : u ∈ S
     · simp [hu, smallProfileAuxiliaryTail, hsub hu]
     · simp [hu]
-  rw [MemLp.toLp_congr _
-    ((smallProfileAuxiliaryTail_memLp finiteLaplaceEta finiteLaplaceEta_pos j).indicator hS)
-    (Filter.Eventually.of_forall (congrFun he))]
-  exact (norm_toLp_indicator_le
+  rw [Lp.norm_toLp, he]
+  have h := (norm_toLp_indicator_le
     (smallProfileAuxiliaryTail_memLp finiteLaplaceEta finiteLaplaceEta_pos j) hS).trans
     (norm_smallProfileAuxiliaryTail_le finiteLaplaceEta finiteLaplaceEta_pos j)
+  simpa only [Lp.norm_toLp] using h
 
 /-- The part removed from the full finite auxiliary source. -/
 def profileAuxiliaryCorrection (S : Set (ℂ × ℂ)) (j : ℕ) : ℂ × ℂ → ℂ :=
@@ -80,6 +79,7 @@ def profileRetainedHpow (S : Set (ℂ × ℂ)) (j : ℕ) : ℂ × ℂ → ℂ :=
   compactLaplaceHpow finiteLaplaceEta finiteLaplaceCutoff 80 j -
     ((TaylorRadialTail.cutoffSet 80)ᶜ).indicator (profileAuxiliaryCorrection S j)
 
+open Classical in
 /-- The actual retained response uses the shorter auxiliary cutoff exactly on S. -/
 theorem profileRetainedHpow_eq (S : Set (ℂ × ℂ)) (j : ℕ) (u : ℂ × ℂ) :
     profileRetainedHpow S j u =
@@ -167,8 +167,11 @@ theorem norm_hpow_sub_profileRetainedL2_lt (S : Set (ℂ × ℂ)) (hS : Measurab
     (hsub : S ⊆ smallProfileRegion) (j : ℕ) :
     ‖(chargeFn_hpow phiBound j).memLp.toLp (hpow j) - profileRetainedL2 S hS j‖ <
       (5 / 10 ^ 15 : ℝ) := by
-  simpa only [profileRetainedL2, profileRetainedError, MemLp.toLp_sub] using
-    norm_profileRetainedError_lt S hS hsub j
+  have he : (profileRetainedError_memLp S hS j).toLp (profileRetainedError S j) =
+      (chargeFn_hpow phiBound j).memLp.toLp (hpow j) - profileRetainedL2 S hS j :=
+    MemLp.toLp_sub (chargeFn_hpow phiBound j).memLp (profileRetainedHpow_memLp S hS j)
+  rw [← he]
+  exact norm_profileRetainedError_lt S hS hsub j
 
 /-- Projection and the actual smoothing operator preserve the single source reserve. -/
 theorem norm_projOn_smooth_profileRetainedError_lt (B : Set Idx2)
