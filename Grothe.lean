@@ -368,6 +368,7 @@ import Grothe.UpperChaos.RealGaussianKernelTail
 import Grothe.UpperChaos.Realise2
 import Grothe.UpperChaos.ReciprocalQuadrature
 import Grothe.UpperChaos.ReciprocalQuadraturePartition
+import Grothe.UpperChaos.ReciprocalRate
 import Grothe.UpperChaos.RectangleIntegralBounds
 import Grothe.UpperChaos.RectangleListPolynomialIntegral
 import Grothe.UpperChaos.RectangleMonomialIntegral
@@ -382,7 +383,10 @@ import Grothe.UpperChaos.SchurKernel
 import Grothe.UpperChaos.SchurMain
 import Grothe.UpperChaos.SchurTest
 import Grothe.UpperChaos.SelectedEnergyApprox
+import Grothe.UpperChaos.SharedMomentTable
+import Grothe.UpperChaos.SharedWickMomentRecurrence
 import Grothe.UpperChaos.ShiftedDampedMoments
+import Grothe.UpperChaos.ShiftedMomentFactor
 import Grothe.UpperChaos.ShiftedMomentRecurrence
 import Grothe.UpperChaos.SmallProfileAuxiliaryTail
 import Grothe.UpperChaos.SmallProfileBandEnclosure
