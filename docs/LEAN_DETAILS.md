@@ -283,8 +283,11 @@ propagation is proved for a terminal interval in `[0,1]`.
 from its terminal ratio and encloses it using terminal bounds zero and one.
 `OriginalMomentIntegrable` proves interval integrability of the original
 integrand `t^(h-1/2) * sqrt(1-t) * exp(-x*t)` on `[0,1]`, including `h=0`.
-The change of variables relating this integral to the angular moments and any
-concrete numerical node bounds remain unproved.
+`OriginalMomentSubstitutionLemmas` proves that this integrand is continuous
+on the positive half-line and that `sin²` has the expected derivative and
+maps the angular interval into `[0,1]`, with its interior mapped into `(0,1)`.
+The change of variables relating the two integrals and any concrete numerical
+node bounds remain unproved.
 
 `ShiftedMomentRecurrence` proves
 `M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including
