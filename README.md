@@ -320,8 +320,10 @@ including at order zero. `OriginalMomentSubstitutionLemmas` establishes the
 positive-domain continuity and the derivative and range of `sin²`.
 `OriginalMomentPullback` proves the pointwise pullback identity in the open
 angular interval. `OriginalMomentSubstitution` handles the endpoints and proves
-that the original moment is `4/π` times the angular moment. Transfer of the
-ratio bounds to the original moments and numerical node enclosures remain open.
+that the original moment is `4/π` times the angular moment.
+`OriginalMomentRatios` transfers positivity, the recurrence, the exact ratio
+update and finite backward enclosures to the original moments. Seed formulas
+and concrete numerical node enclosures remain open.
 
 `ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`
 on any certified radial region with `s ≥ 1/16` and `|κ(s)| ≤ 1/100`.

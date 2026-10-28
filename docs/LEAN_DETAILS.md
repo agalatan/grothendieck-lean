@@ -290,8 +290,10 @@ maps the angular interval into `[0,1]`, with its interior mapped into `(0,1)`.
 `sin²`, multiplied by its Jacobian, equals twice the angular density on the
 open angular interval. `OriginalMomentSubstitution` handles the endpoints by
 almost-everywhere equality and proves `J_h(x) = (4/π) * M_h(x)` for every
-order and real parameter. The formal transfer of the ratio bounds to `J_h`
-and concrete numerical node bounds remain unproved.
+order and real parameter. `OriginalMomentRatios` transfers positivity and the
+three-term recurrence to `J_h`; for `x ≥ 0`, its ratio satisfies the exact
+continued-fraction update and finite backward enclosure from terminal `[0,1]`.
+Seed formulas and concrete numerical node bounds remain unproved.
 
 `ShiftedMomentRecurrence` proves
 `M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including

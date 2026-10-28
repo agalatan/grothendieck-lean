@@ -253,7 +253,13 @@ import Grothe
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.integrand_continuousOn_pos
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.integrand_intervalIntegrable
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.moment_eq_angular
+#print axioms Grothe.UpperChaos.OriginalPositiveMoment.moment_pos
+#print axioms Grothe.UpperChaos.OriginalPositiveMoment.moment_recurrence
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.pullback_interior
+#print axioms Grothe.UpperChaos.OriginalPositiveMoment.ratio_backward_enclosure
+#print axioms Grothe.UpperChaos.OriginalPositiveMoment.ratio_eq_angular
+#print axioms Grothe.UpperChaos.OriginalPositiveMoment.ratio_eq_next
+#print axioms Grothe.UpperChaos.OriginalPositiveMoment.ratio_mem_unit
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.sinSq_hasDerivAt
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.sinSq_mem_Icc
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.sinSq_mem_Ioo
