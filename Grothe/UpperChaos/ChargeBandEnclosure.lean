@@ -45,9 +45,9 @@ theorem norm_sub_bandTarget_le {N : ℕ} (M : ℕ) (c : ℕ → ℕ → ℕ → 
   calc
     ‖w - (bandTargetQ M c i : ℂ)‖ ≤
         ‖w - (center i : ℂ)‖ + ‖(center i : ℂ) - (bandTargetQ M c i : ℂ)‖ :=
-      norm_sub_le _ _ _
+      norm_sub_le_norm_sub_add_norm_sub w (center i : ℂ) (bandTargetQ M c i : ℂ)
     _ ≤ (radius i : ℝ) + ‖(center i : ℂ) - (bandTargetQ M c i : ℂ)‖ :=
-      add_le_add_right h _
+      add_le_add h le_rfl
     _ = (bandResidualRadiusQ M c center radius i : ℝ) := by
       rw [← Rat.cast_sub, Complex.norm_ratCast]
       simp only [bandResidualRadiusQ, Rat.cast_add, Rat.cast_abs]

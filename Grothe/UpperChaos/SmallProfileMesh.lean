@@ -58,7 +58,8 @@ theorem profile_on_selected (k : ℕ) (hk : selected k) (s : ℝ)
   rcases hcheck with ⟨hleft, _horder, _hright, hlo, hhi⟩
   have hmin : (1 / 16 : ℝ) ≤ cut k := by
     change (1 / 16 : ℝ) ≤ (cutQ k : ℝ)
-    exact_mod_cast hleft
+    simpa only [Rat.cast_div, Rat.cast_one, Rat.cast_ofNat] using
+      (Rat.cast_le.mpr hleft : ((1 / 16 : ℚ) : ℝ) ≤ (cutQ k : ℝ))
   refine ⟨hmin.trans hs.1.le, ?_⟩
   let y : ℝ := Real.sqrt (1 + (Grothe.Upper.aQ : ℝ) ^ 2) * vprof s
   have hm : Grothe.Upper.mem y (evalRow (row k)) := by
