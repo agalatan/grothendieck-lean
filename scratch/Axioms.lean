@@ -792,6 +792,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0ProfileRectangleModel.actual_profile_model
 #print axioms Grothe.UpperChaos.Q0ProfileRectangleModel.coordinate_contains
 #print axioms Grothe.UpperChaos.Q0ProfileRectangleModel.profile_of_trace
+#print axioms Grothe.UpperChaos.Q0BasePairCellIntegral.direct_pair_integral_mem
+#print axioms Grothe.UpperChaos.Q0BasePairCellIntegral.reciprocal_pair_integral_mem
+#print axioms Grothe.UpperChaos.Q0BasePairRoot7Leaf.integrals_mem
 #print axioms Grothe.UpperChaos.QuadraturePartition.integral_auxiliary_reciprocal
 #print axioms Grothe.UpperChaos.QuadraturePartition.monotone_dyadicAuxiliaryCut
 #print axioms Grothe.UpperChaos.QuadraturePartition.norm_rectangleIntegral_reciprocal_sub_sum_le

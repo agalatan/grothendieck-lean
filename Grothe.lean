@@ -602,6 +602,7 @@ import Grothe.UpperChaos.DirectSampleUpper
 import Grothe.UpperChaos.DiskTail
 import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
+import Grothe.UpperChaos.ExponentialHorner
 import Grothe.UpperChaos.ExponentialTail
 import Grothe.UpperChaos.FiniteSampleError
 import Grothe.UpperChaos.FirstSecondCapturedTail
@@ -866,6 +867,7 @@ import Grothe.UpperChaos.PhiSourceDenChunk_o992_n8
 import Grothe.UpperChaos.PhiSourceDenChunks
 import Grothe.UpperChaos.PhiSourceDenLiteralAssembly
 import Grothe.UpperChaos.PointwiseGeometricEnclosure
+import Grothe.UpperChaos.PointwiseCenteredExpEnclosure
 import Grothe.UpperChaos.PositiveMomentBackward
 import Grothe.UpperChaos.PositiveMomentRatio
 import Grothe.UpperChaos.PositiveMomentRecurrence
@@ -895,6 +897,12 @@ import Grothe.UpperChaos.Q0BasePairReciprocalEnvelope
 import Grothe.UpperChaos.Q0BasePairRoot11Integral
 import Grothe.UpperChaos.Q0BaseQuadrature
 import Grothe.UpperChaos.Q0CompanionBaseQuadrature
+import Grothe.UpperChaos.Q0BasePairCellIntegral
+import Grothe.UpperChaos.Q0BasePairCommonModel
+import Grothe.UpperChaos.Q0BasePairKernelContinuity
+import Grothe.UpperChaos.Q0BasePairModelAssembly
+import Grothe.UpperChaos.Q0BasePairRoot7Leaf
+import Grothe.UpperChaos.Q0BasePairRoot7LeafScalars
 import Grothe.UpperChaos.Q0ImaginaryWick
 import Grothe.UpperChaos.Q0PhaseWickBridge
 import Grothe.UpperChaos.Q0ProfileRectangleModel
@@ -928,10 +936,14 @@ import Grothe.UpperChaos.ReciprocalRate
 import Grothe.UpperChaos.RectangleCoefficientArithmetic
 import Grothe.UpperChaos.RectangleCoordinates
 import Grothe.UpperChaos.RectangleHornerTrace
+import Grothe.UpperChaos.RectangleExpCertificate
+import Grothe.UpperChaos.RectangleExpModel
 import Grothe.UpperChaos.RectangleIntegralBounds
 import Grothe.UpperChaos.RectangleListPolynomialIntegral
 import Grothe.UpperChaos.RectangleModelCheck
 import Grothe.UpperChaos.RectangleMonomialIntegral
+import Grothe.UpperChaos.RectanglePerturbation
+import Grothe.UpperChaos.RectangleReciprocalCertificate
 import Grothe.UpperChaos.RestrictedPhaseMoments
 import Grothe.UpperChaos.RestrictedWick
 import Grothe.UpperChaos.RetainedMeshReality
