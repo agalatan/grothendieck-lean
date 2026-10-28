@@ -30,11 +30,10 @@ theorem rectangleIntegral_radial_prefix_sub (f : ℝ → ℝ → ℂ)
     rectangleIntegral f u v c b - rectangleIntegral f u v c a =
       rectangleIntegral f u v a b := by
   unfold rectangleIntegral
+  have hFb := intervalIntegral.continuous_parametric_intervalIntegral_of_continuous' hf c b
+  have hFa := intervalIntegral.continuous_parametric_intervalIntegral_of_continuous' hf c a
   rw [← intervalIntegral.integral_sub
-    ((intervalIntegral.continuous_parametric_intervalIntegral_of_continuous' hf c b).
-      intervalIntegrable u v)
-    ((intervalIntegral.continuous_parametric_intervalIntegral_of_continuous' hf c a).
-      intervalIntegrable u v)]
+    (hFb.intervalIntegrable u v) (hFa.intervalIntegrable u v)]
   apply intervalIntegral.integral_congr
   intro x _hx
   exact intervalIntegral.integral_interval_sub_left
