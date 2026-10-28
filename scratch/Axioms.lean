@@ -225,6 +225,15 @@ import Grothe
 #print axioms Grothe.UpperChaos.BandedContraction.sum_sq_error_of_block_ratios
 #print axioms Grothe.UpperChaos.Bm_eq_integral
 #print axioms Grothe.UpperChaos.Bm_polyKernel
+#print axioms Grothe.UpperChaos.ConcreteRetainedBands.first_degree
+#print axioms Grothe.UpperChaos.ConcreteRetainedBands.first_error
+#print axioms Grothe.UpperChaos.ConcreteRetainedBands.first_reserve
+#print axioms Grothe.UpperChaos.ConcreteRetainedBands.second_degree
+#print axioms Grothe.UpperChaos.ConcreteRetainedBands.second_error
+#print axioms Grothe.UpperChaos.ConcreteRetainedBands.second_reserve
+#print axioms Grothe.UpperChaos.ConcreteRetainedBands.third_degree
+#print axioms Grothe.UpperChaos.ConcreteRetainedBands.third_error
+#print axioms Grothe.UpperChaos.ConcreteRetainedBands.third_reserve
 #print axioms Grothe.UpperChaos.D_le_span_H
 #print axioms Grothe.UpperChaos.DirectSample.upper_of_DFT_ledger
 #print axioms Grothe.UpperChaos.DirectSample.upper_of_actual_head

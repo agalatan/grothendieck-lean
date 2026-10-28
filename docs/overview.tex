@@ -183,6 +183,13 @@ sum of squared residual radii, which bounds the retained band by Parseval.
 The original source reserve is added once after this sum. The actual
 numerical enclosures and the endpoint remain work in progress.
 
+The retained transfer is specialized to the fourteen actual captured bands.
+Their finite degree cutoffs and reserve inequalities are checked by kernel
+reduction. The source powers, stored centers and original caps are fixed;
+the remaining inputs are the numerical coefficient enclosures and their
+rational residual-energy checks.
+
+
 
 A second conditional route uses a finite-head estimate for the actual kernel
 directly; the coefficient enclosures and numerical head estimate are still

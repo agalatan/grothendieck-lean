@@ -410,6 +410,15 @@ the original rational cap. The actual coefficient enclosures and numerical
 energy inequality still need
 to be supplied for each of the fourteen original band tolerances.
 
+`ConcreteRetainedBands` fixes the actual first-, second-, and third-order
+sources and their stored center lengths 91, 46, and 26. The finite coefficient
+cutoff for each band is `(bandHi+1)/2`; kernel reduction checks its degree
+coverage and that the original cap exceeds the shared reserve. The three
+error-family transfers need only complete retained coefficient enclosures
+and their rational energy checks. They leave factorial scaling to the
+existing comparison decomposition.
+
+
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual
