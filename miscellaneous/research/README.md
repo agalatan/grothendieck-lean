@@ -8,7 +8,10 @@ unchanged (paths mirror the repository) and are not built: nothing in `Grothe/` 
   `Grothe/Haagerup/PhaseGeometry.lean`;
 - `scratch/`: their focused axiom-report files;
 - `data/axioms/modes/`: the audit modes `responses`, `response-geometry`, `phase-response` and `research`;
-- `docs/SPHERICAL_TRANSFER.md`.
+- `docs/`: `SPHERICAL_TRANSFER.md`, the dated research reports of 23 Oct 2026, `response-geometry.tex` and
+  the replay records in `docs/research/`;
+- `research/`: inputs of the quintic-projection and response-geometry studies;
+- `tools/`: three replay scripts used only by those studies.
 
 To use one again, move it back under `Grothe/` with its imports, run `python3 tools/gen_root_imports.py`, and add its
 theorems to `scratch/Axioms.lean` and `data/axioms/required.txt`.
