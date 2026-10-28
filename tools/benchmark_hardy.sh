@@ -27,7 +27,11 @@ rm "$HARDY_ARCHIVE"
 export PATH="$HARDY_TOOLCHAIN/bin:$PATH"
 lean --version
 lake --version
-lake exe cache get Mathlib.Data.Rat.Init
+if [ "${1:-}" = profile ]; then
+  lake exe cache get Mathlib
+else
+  lake exe cache get Mathlib.Data.Rat.Init
+fi
 git diff --exit-code -- lean-toolchain lake-manifest.json
 python3 - <<'PY'
 import json, pathlib, subprocess
@@ -40,6 +44,24 @@ for package in json.loads(pathlib.Path('lake-manifest.json').read_text())['packa
         raise SystemExit('Dependency revision differs: ' + package['name'])
 print('All dependency revisions match the committed manifest.')
 PY
+if [ "${1:-}" = profile ]; then
+  python3 - <<'PY'
+import json, os, pathlib, subprocess
+target = 'Grothe/UpperChaos/HardyArcSound.lean'
+out = pathlib.Path(os.environ.get('OUT', 'handoff/hardy-profile'))
+out.mkdir(parents=True, exist_ok=True)
+setup = subprocess.check_output(['lake', 'setup-file', target], text=True)
+json.loads(setup)
+setup_file = out / 'profile.setup.json'
+setup_file.write_text(setup)
+cmd = ['lake', 'env', 'lean', '--setup=' + str(setup_file.resolve()), '--profile', target]
+with (out / 'profile.txt').open('w') as log:
+    result = subprocess.run(cmd, stdout=log, stderr=subprocess.STDOUT, timeout=1800)
+print((out / 'profile.txt').read_text())
+raise SystemExit(result.returncode)
+PY
+  exit
+fi
 lake build Grothe.UpperChaos.HardyArcEval:dynlib Grothe.UpperChaos.HardyArcData --log-level=warning
 python3 - <<'INNER'
 import json, os, pathlib, subprocess

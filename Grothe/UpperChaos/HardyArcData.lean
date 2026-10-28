@@ -2,12 +2,12 @@ import GrotheKernel.HardyArc
 import Grothe.Upper.Data
 
 /-!
-# The data of the Hardy arc check
+# The data of the Hardy arc and region checks
 
-Everything the four native parts `HardyArcPart0–3` evaluate: the interval data of `R(t)` and the parameters of
-`partOK`. It imports only the checker and the stored coefficient lists, so the parts (20–40 minutes each) are rebuilt
-only when the checker or this data changes, not when the analytic modules that use their results change. The
-soundness of these definitions is proved in `HardyArcSound`, `HardyArcCover` and `HardyArcMean`.
+The interval data of `R(t)`, the parameters of `partOK`, and the region radius.
+The numerical facts `HardyArcPart0–3` and `HardyArcRegionCheck` import this module
+without the analytic proof chain. Their input definitions retain their existing
+names; soundness is proved in the analytic arc and region modules.
 -/
 
 namespace Grothe.UpperChaos.HardyArcSound
