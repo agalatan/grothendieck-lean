@@ -150,6 +150,13 @@ def compactTaylorQuadratureValue (η T L : ℝ) (j N : ℕ)
   (Real.sqrt Real.pi : ℂ)⁻¹ * ∫ u in (0 : ℝ)..Real.sqrt T,
     ∫ s in (0 : ℝ)..L, taylorQuadratureKernel η j N a u s
 
+/-- The production rectangle has rational endpoints in both integration variables. -/
+theorem compactTaylorQuadratureValue_eq_dyadic (j N : ℕ) (a : ℕ → ℕ → ℕ → ℚ) :
+    compactTaylorQuadratureValue finiteLaplaceEta finiteLaplaceCutoff 80 j N a =
+      (Real.sqrt Real.pi : ℂ)⁻¹ * ∫ u in (0 : ℝ)..(2 ^ 53 : ℝ),
+        ∫ s in (0 : ℝ)..80, taylorQuadratureKernel finiteLaplaceEta j N a u s := by
+  rw [compactTaylorQuadratureValue, sqrt_finiteLaplaceCutoff, finiteLaplaceEndpoint]
+
 /-- The finite-rectangle evaluator is exactly the compact production coefficient. -/
 theorem integral_gradedHermite_compactLaplace_eq_quadrature (η T L : ℝ)
     (hT : 0 ≤ T) (hL : 0 ≤ L) (j N : ℕ) (a : ℕ → ℕ → ℕ → ℚ) :

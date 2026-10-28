@@ -310,10 +310,14 @@ The finite Fubini identity `integral_mul_finiteLaplacePhase` connects this
 response to the outer integral used by coefficient quadrature.
 
 For the actual Taylor sources, `norm_finiteLaplaceError_le` gives the full
-Gaussian L² error `(10/3)η + exp(-η²T)`. With `η=10⁻¹⁵` and `T=40·10³⁰`,
+Gaussian L² error `(10/3)η + exp(-η²T)`. With `η=10⁻¹⁵` and `T=(2⁵³)²`,
 `norm_finiteLaplaceError_cutoff_lt` proves this is below `5·10⁻¹⁵`, uniformly
 in the Taylor order. `norm_projOn_smooth_finiteLaplaceError_cutoff_lt` transfers
 the bound through actual smoothing and every Hermite-band projection.
+`sqrt_finiteLaplaceCutoff` and `forty_le_scaled_finiteLaplaceCutoff` give the
+rational regular-auxiliary endpoint `2⁵³` and preserve the exponential reserve.
+`compactTaylorQuadratureValue_eq_dyadic` identifies the full production
+rectangle as `[0,2⁵³] × [0,80]` with no irrational terminal cell.
 `LeanCertAuxiliaryCutoff.exp_neg_forty_le` supplies the numerical tail bound
 using the pinned checked dyadic evaluator at precision `-100`, Taylor depth
 `20`, and `decide +kernel`; no native fact is introduced. This cutoff is a

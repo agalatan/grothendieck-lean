@@ -171,14 +171,31 @@ theorem norm_finiteLaplaceError_le (η T : ℝ) (hη : 0 < η) (hT : 0 ≤ T) (j
   exact (norm_add_le _ _).trans (add_le_add (norm_softTaylorError_le η hη j)
     (norm_finiteLaplaceTailError_le η T hη hT j))
 
-/-- Production choices: softening `10⁻¹⁵`, with `η²T = 40`. -/
+/-- Production softening is `10⁻¹⁵`. -/
 def finiteLaplaceEta : ℝ := 1 / 10 ^ 15
 
-def finiteLaplaceCutoff : ℝ := 40 * 10 ^ 30
+/-- A dyadic auxiliary endpoint makes the entire quadrature rectangle rational. -/
+def finiteLaplaceEndpoint : ℝ := 2 ^ 53
+
+def finiteLaplaceCutoff : ℝ := finiteLaplaceEndpoint ^ 2
 
 lemma finiteLaplaceEta_pos : 0 < finiteLaplaceEta := by norm_num [finiteLaplaceEta]
 
-lemma finiteLaplaceCutoff_nonneg : 0 ≤ finiteLaplaceCutoff := by norm_num [finiteLaplaceCutoff]
+lemma finiteLaplaceEndpoint_nonneg : 0 ≤ finiteLaplaceEndpoint := by
+  norm_num [finiteLaplaceEndpoint]
+
+lemma finiteLaplaceCutoff_nonneg : 0 ≤ finiteLaplaceCutoff := sq_nonneg _
+
+theorem sqrt_finiteLaplaceCutoff : Real.sqrt finiteLaplaceCutoff = finiteLaplaceEndpoint :=
+  Real.sqrt_sq finiteLaplaceEndpoint_nonneg
+
+/-- The rational endpoint retains the original exponential tail reserve. -/
+theorem forty_le_scaled_finiteLaplaceCutoff : 40 ≤ finiteLaplaceEta ^ 2 * finiteLaplaceCutoff := by
+  norm_num [finiteLaplaceEta, finiteLaplaceCutoff, finiteLaplaceEndpoint]
+
+theorem exp_neg_scaled_finiteLaplaceCutoff_le :
+    Real.exp (-(finiteLaplaceEta ^ 2 * finiteLaplaceCutoff)) ≤ (1 / 10 ^ 17 : ℝ) :=
+  (Real.exp_le_exp.mpr (neg_le_neg forty_le_scaled_finiteLaplaceCutoff)).trans exp_neg_forty_le
 
 /-- The fixed finite integral meets the entire softening-plus-truncation reserve. -/
 theorem norm_finiteLaplaceError_cutoff_lt (j : ℕ) :
@@ -187,10 +204,8 @@ theorem norm_finiteLaplaceError_cutoff_lt (j : ℕ) :
       (finiteLaplaceError finiteLaplaceEta finiteLaplaceCutoff j)‖ < (5 / 10 ^ 15 : ℝ) := by
   have h := norm_finiteLaplaceError_le finiteLaplaceEta finiteLaplaceCutoff
     finiteLaplaceEta_pos finiteLaplaceCutoff_nonneg j
-  have he : finiteLaplaceEta ^ 2 * finiteLaplaceCutoff = 40 := by
-    norm_num [finiteLaplaceEta, finiteLaplaceCutoff]
-  rw [he] at h
-  exact h.trans_lt (by have := exp_neg_forty_le; norm_num [finiteLaplaceEta] at *; linarith)
+  exact h.trans_lt ((add_le_add le_rfl exp_neg_scaled_finiteLaplaceCutoff_le).trans_lt
+    (by norm_num [finiteLaplaceEta]))
 
 /-- Every retained Hermite band inherits the same bound after production smoothing. -/
 theorem norm_projOn_smooth_finiteLaplaceError_cutoff_lt (B : Set Idx2) (j : ℕ) :

@@ -335,7 +335,10 @@ import Grothe.UpperChaos.RationalComplexHermite
 import Grothe.UpperChaos.RationalPhaseImaginary
 import Grothe.UpperChaos.RationalPhaseInvariant
 import Grothe.UpperChaos.RationalSourceParity
+import Grothe.UpperChaos.RationalSquaredRadius
 import Grothe.UpperChaos.RationalUnitTaylorSource
+import Grothe.UpperChaos.RationalWickDefs
+import Grothe.UpperChaos.RationalWickParity
 import Grothe.UpperChaos.RealGaussianKernelTail
 import Grothe.UpperChaos.Realise2
 import Grothe.UpperChaos.RestrictedPhaseMoments
