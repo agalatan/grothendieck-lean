@@ -99,6 +99,4 @@ Grothe.UpperChaos.phi_cover_check_5._native.native_decide.ax_1_1
 Grothe.UpperChaos.rounding_energy_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.secondCenter_band_energy_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.taylor_centers_decode_check._native.native_decide.ax_1_1
-Grothe.UpperChaos.thirdCenter_decode_check._native.native_decide.ax_1_1
-Grothe.UpperChaos.thirdCenter_energy_check._native.native_decide.ax_1_1
 Grothe.head_check._native.native_decide.ax_1_1

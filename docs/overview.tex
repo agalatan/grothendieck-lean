@@ -115,6 +115,15 @@ $\delta=455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$:
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
 
+The complete stored third Taylor center also has exact total and
+comparison-band energies checked by the Lean kernel. The proof assembles every
+grade's integer sum and divides by $2^{210}$, then identifies the rational
+targets. The authoritative witness consists of ordered scaled-integer grade
+arrays regenerated from the same pinned binary64 input, preserving every
+coefficient. Its public energy and source-size theorems add no native axiom.
+The actual endpoint receives a fresh transitive audit after this replacement;
+the finite energies do not establish its Gaussian error hypotheses.
+
 The endpoint proof is \emph{work in progress}. One completed supporting
 calculation, \texttt{ProfileFirstGaussianCell}, proves
 $\int_0^1(\tfrac12-s)^2e^{-s}\,ds=\tfrac54-\tfrac{13}4e^{-1}$

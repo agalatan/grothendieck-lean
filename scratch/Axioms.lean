@@ -560,6 +560,12 @@ import Grothe
 #print axioms Grothe.UpperChaos.TaylorRadialTail.norm_source_sq_le_exp
 #print axioms Grothe.UpperChaos.TaylorSingularCut.norm_projOn_smooth_source_cutoff_lt
 #print axioms Grothe.UpperChaos.TaylorSingularCut.norm_source_cutoff_lt
+#print axioms Grothe.UpperChaos.ThirdArrayGrades.all_grade_sums
+#print axioms Grothe.UpperChaos.ThirdCenterEnergyConditional.energy_check_of_grade_sums
+#print axioms Grothe.UpperChaos.ThirdCenterKernelEnergy.energy_check
+#print axioms Grothe.UpperChaos.ThirdCenterKernelEnergy.size_check
+#print axioms Grothe.UpperChaos.ThirdIntegerSourceBinding.source_array
+#print axioms Grothe.UpperChaos.ThirdIntegerSourceBinding.source_values
 #print axioms Grothe.UpperChaos.UnitSquaredQuadrature.taylorQuadratureKernel_unit_eq_squared
 #print axioms Grothe.UpperChaos.abs_gaussian_reciprocal_sub_poly_le
 #print axioms Grothe.UpperChaos.abs_inv_sub_inverseAround_le
@@ -945,8 +951,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.thirdCenterBand_norm_lower
 #print axioms Grothe.UpperChaos.thirdCenterBand_norm_upper
 #print axioms Grothe.UpperChaos.thirdCenter_charge
-#print axioms Grothe.UpperChaos.thirdCenter_decode_check
 #print axioms Grothe.UpperChaos.thirdCenter_energy_check
+#print axioms Grothe.UpperChaos.thirdCenter_source_check
 #print axioms Grothe.UpperChaos.thirdCenter_tail_zero
 #print axioms Grothe.UpperChaos.thirdTailModes_eq
 #print axioms Grothe.UpperChaos.third_captured_tail_budget

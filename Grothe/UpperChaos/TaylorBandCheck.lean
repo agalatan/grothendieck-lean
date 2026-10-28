@@ -1,5 +1,5 @@
-import Grothe.UpperChaos.GradedHermite
-import Grothe.UpperChaos.TaylorBandData
+import Grothe.UpperChaos.TaylorBandDefs
+import Grothe.UpperChaos.ThirdCenterKernelEnergy
 
 /-!
 # Exact band norms of the third Taylor approximant
@@ -18,23 +18,9 @@ namespace Grothe.UpperChaos
 
 set_option maxRecDepth 4096
 
-/-- The complete, unscaled, third Taylor approximant. -/
-noncomputable def thirdCenter : Lp ℂ 2 mu2 := gradedHermite 26 thirdCenterCoeff
-
-/-- The four finite comparison bands, expressed by total degree. -/
-def thirdCenterBandModes (k : Fin 4) : Set Idx2 :=
-  {i | thirdCenterBandLo k < (bideg i).1 + (bideg i).2 ∧
-    (bideg i).1 + (bideg i).2 ≤ thirdCenterBandHi k}
-
-instance (k : Fin 4) : DecidablePred (· ∈ thirdCenterBandModes k) := fun i =>
-  inferInstanceAs (Decidable (thirdCenterBandLo k < (bideg i).1 + (bideg i).2 ∧
-    (bideg i).1 + (bideg i).2 ≤ thirdCenterBandHi k))
-
-/-- Every packed record decodes, and the complete coefficient array has the expected size. -/
-theorem thirdCenter_decode_check :
-    PackedDyadic.parse thirdCenterExponent thirdCenterPacked = some thirdCenterInts ∧
-      thirdCenterInts.size = 6552 := by
-  native_decide
+/-- The authoritative third-center integer source has the exact coefficient count. -/
+theorem thirdCenter_source_check : thirdCenterInts.size = 6552 :=
+  ThirdCenterKernelEnergy.size_check
 
 /-- Exact total energy and all four projected energies, from the actual graded coefficients. -/
 theorem thirdCenter_energy_check :
@@ -43,8 +29,8 @@ theorem thirdCenter_energy_check :
     ∀ k : Fin 4,
       (∑ q ∈ Finset.range 26, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
         if gradedMode q c d ∈ thirdCenterBandModes k then thirdCenterCoeff q c d ^ 2 else 0) =
-          thirdCenterBandEnergyQ k := by
-  native_decide
+          thirdCenterBandEnergyQ k :=
+  ThirdCenterKernelEnergy.energy_check
 
 /-- The total coefficient energy is the actual squared Hermite norm. -/
 theorem norm_thirdCenter_sq : ‖thirdCenter‖ ^ 2 = (thirdCenterEnergyQ : ℝ) := by
