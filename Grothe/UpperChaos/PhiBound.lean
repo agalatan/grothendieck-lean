@@ -2,7 +2,6 @@ import Grothe.UpperChaos.PhiCover
 import Grothe.UpperChaos.Rounder
 import Grothe.UpperChaos.PhiCoverCheck
 import Grothe.UpperChaos.LocalizedComparison
-import Grothe.UpperChaos.HardyReal
 
 /-!
 # `|φ| < 1` everywhere, and the upper bound with only the numerical comparisons left

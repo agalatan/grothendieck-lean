@@ -1,4 +1,5 @@
 import Grothe.UpperChaos.PhiBound
+import Grothe.UpperChaos.HardyReal
 import Grothe.UpperChaos.GroupedComparison
 import Grothe.UpperChaos.ConcreteTaylorUpper
 import Grothe.Upper.GroupedBridge
