@@ -19,7 +19,7 @@ run_cmd do
   for target in targets do
     let axioms ← Lean.collectAxioms target
     let ordered := axioms.qsort Name.lt |>.map MessageData.ofConstName |>.toList
-    logWarning m!"Axiom audit {target}: {ordered}"
+    logInfo m!"Axiom audit {target}: {ordered}"
     for ax in axioms do
       unless allowed.contains ax do
         throwError m!"{target} uses unexpected axiom {ax}"
