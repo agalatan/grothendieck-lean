@@ -1,6 +1,6 @@
 # Upper bound: formalisation status and next steps (cold-start notes)
 
-The only active upper target is **K_G^ℂ < 1.404598148840**.
+The only active upper target is **K_G^ℂ < 1.404598149141**.
 `fresh_upper_concrete_taylor` remains conditional on fourteen actual Gaussian
 finite-band error inequalities and energy-table discrepancy at most
 `6847009/(5·10^17) = 1.3694018e-11`. Neither family is discharged.

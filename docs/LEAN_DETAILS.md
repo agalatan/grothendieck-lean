@@ -2,7 +2,7 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The sole target interval is `1.401697117301 < K < 1.404598148840`.
+The sole target interval is `1.401697117301 < K < 1.404598149141`.
 Both endpoints are work in progress; [PROOF_STATUS.md](PROOF_STATUS.md) lists
 the remaining project-specific Lean obligations. Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.

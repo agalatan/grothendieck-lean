@@ -3,12 +3,12 @@
 A Lean 4 + Mathlib development targeting these bounds on the complex
 Grothendieck constant:
 
-$$1.401697117301 < K_G^{\mathbb{C}} < 1.404598148840$$
+$$1.401697117301 < K_G^{\mathbb{C}} < 1.404598149141$$
 
 Both bounds rest on explicitly stated analytic and computer-assisted inputs; see
 [what is proved](#what-is-proved).
 
-**The only active upper-bound target is $K_G^{\mathbb C}<1.404598148840$.**
+**The only active upper-bound target is $K_G^{\mathbb C}<1.404598149141$.**
 Both endpoints are **work in progress**. For the upper endpoint, fourteen actual
 Gaussian finite-band estimates and energy-table discrepancy at most
 `6847009/(5·10^17)` still need Lean proofs. The direct-kernel route instead needs
@@ -153,9 +153,11 @@ and `Grothe.upper_value_lt` shows this is below 1.404598148840
 (`Grothe/UpperChaos/GroupedRounder.lean`).
 The abstract `DirectHyps` interface uses the sharper Hardy budget below; the
 concrete rounding proves it from the existing arc checks, so its Gaussian
-comparison and energy-table inputs are unchanged.
+comparison and energy-table inputs are unchanged. This stronger conditional
+arithmetic provides margin toward the existing target; the Gaussian inputs
+still require proofs.
 
-The target `K < 1.404598148840` is **work in progress**. One completed supporting
+The target `K < 1.404598149141` is **work in progress**. One completed supporting
 calculation is `ProfileFirstGaussianCell`: Lean proves the exact integral of
 the squared degree-one Laguerre component against `exp(-s)` on `[0,1]`, and
 encloses it in `[0.054391816192, 0.054391816194]` using Mathlib's proved
@@ -166,7 +168,7 @@ dyadic interval integrator to enclose a conditional Gaussian slice integral
 on `[0,1]` in `[1,5/4]`. The explicit 16-cell certificate uses `decide +kernel`;
 the slice is identified with the actual affine Gaussian phase integral.
 This supporting calculation adds no native checker. The production Gaussian
-error estimates needed for `1.404598148840` remain work in progress.
+error estimates needed for `1.404598149141` remain work in progress.
 
 A proposed direct route, `Grothe.UpperChaos.DirectSample.upper_of_actual_head`,
 derives the same sharp rational bound from an explicit finite-head estimate for
