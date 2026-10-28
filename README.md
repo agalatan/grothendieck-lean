@@ -308,6 +308,15 @@ equations are established. `ShiftedMomentFactor` extracts inverse-rate factors
 from the real moments and affine cancellation. `ReciprocalRate` proves the
 corresponding reciprocal-variable rate identities, including zero profile.
 These identities do not certify a numerical cell or the upper bound.
+`PositiveMomentTheta` proves positivity of smooth angular moments and bounds
+consecutive ratios by one. `PositiveMomentRecurrence` proves their exact
+three-term relation, while `PositiveMomentRatio` identifies its ratio update
+for nonnegative parameters with `PositiveRatio.next`. The latter also proves
+monotone finite interval propagation for any terminal interval in `[0,1]`.
+`PositiveMomentBackward` applies it to enclose the angular ratios from the
+full terminal interval `[0,1]` at any finite depth.
+The change of variables to the original moment integral and any numerical node
+enclosure remain open.
 
 `ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`
 on any certified radial region with `s ≥ 1/16` and `|κ(s)| ≤ 1/100`.

@@ -271,6 +271,19 @@ reciprocal coordinate `x`, `ReciprocalRate` uses
 factor and Jacobian-weighted squared inverse rate; `kappa` may be zero. These
 are exact identities, not numerical cell or source-error certificates.
 
+`PositiveMomentTheta` defines the smooth angular moments
+`M_h(x) = ∫₀^(π/2) sin(θ)^(2h) cos(θ)^2 exp(-x sin(θ)^2) dθ`, proves
+they are positive, and bounds each consecutive ratio in `(0,1]`.
+`PositiveMomentRecurrence` proves the three-term identity
+`(h+1/2) M_h - (h+2+x) M_(h+1) + x M_(h+2) = 0` by integration by
+parts. For `x ≥ 0`, `PositiveMomentRatio` expresses the consecutive ratio
+as the `PositiveRatio.next` update, whose monotone finite backward interval
+propagation is proved for a terminal interval in `[0,1]`.
+`PositiveMomentBackward` identifies each angular ratio with a finite iteration
+from its terminal ratio and encloses it using terminal bounds zero and one.
+The change of variables relating these angular moments to the original moment integral and
+any concrete numerical node bounds remain unproved.
+
 `ShiftedMomentRecurrence` proves
 `M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including
 `q=0` and zero mean. Before norms are taken, the affine bracket becomes
