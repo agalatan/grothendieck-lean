@@ -611,6 +611,8 @@ import Grothe.UpperChaos.F0ConditionalEvaluator
 import Grothe.UpperChaos.F0ConditionalNode
 import Grothe.UpperChaos.F0ConditionalSeed
 import Grothe.UpperChaos.F0ConditionalSeedAxiomAudit
+import Grothe.UpperChaos.F0ConditionalSeedRecurrence
+import Grothe.UpperChaos.F0ConditionalSeedRecurrenceAxiomAudit
 import Grothe.UpperChaos.FiniteSampleError
 import Grothe.UpperChaos.FirstSecondCapturedTail
 import Grothe.UpperChaos.FixedChaosLinear
