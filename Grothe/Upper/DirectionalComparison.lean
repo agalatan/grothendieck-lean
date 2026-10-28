@@ -61,8 +61,13 @@ theorem quadratic_remainder_le (S : Finset ι) (J : Finset κ)
     _ ≤ ∑ j ∈ J, ∑ i ∈ S, |a j i| * ‖y i - x i‖ ^ 2 := by
       apply sum_le_sum
       intro j _
-      simpa only [abs_mul, abs_pow, abs_norm] using
-        abs_sum_le_sum_abs (fun i => a j i * ‖y i - x i‖ ^ 2) S
+      calc
+        _ ≤ ∑ i ∈ S, |a j i * ‖y i - x i‖ ^ 2| :=
+          abs_sum_le_sum_abs (fun i => a j i * ‖y i - x i‖ ^ 2) S
+        _ = _ := by
+          apply sum_congr rfl
+          intro i _
+          rw [abs_mul, abs_of_nonneg (sq_nonneg ‖y i - x i‖)]
     _ = ∑ i ∈ S, (∑ j ∈ J, |a j i|) * ‖y i - x i‖ ^ 2 := by
       rw [sum_comm]
       simp_rw [sum_mul]
@@ -80,6 +85,8 @@ theorem corrected_head_le (S : Finset ι) (J : Finset κ)
     ∑ j ∈ J, |energyHead S a y j - b j| ≤
       (∑ j ∈ J, |energyHead S a x j + c j - b j|) + η + Q := by
   have hrem := (quadratic_remainder_le S J a w x y hw).trans hquad
+  have htri (u v z : ℝ) : |u + v + z| ≤ |u| + |v| + |z| :=
+    (abs_add_le (u + v) z).trans (add_le_add (abs_add_le u v) le_rfl)
   calc
     _ ≤ ∑ j ∈ J, (|energyHead S a x j + c j - b j| +
         |linearHead S a x y j - c j| +
@@ -91,7 +98,7 @@ theorem corrected_head_le (S : Finset ι) (J : Finset κ)
             (energyHead S a y j - energyHead S a x j - linearHead S a x y j)| := by
           congr 1
           ring
-        _ ≤ _ := (abs_add_le _ _).trans (add_le_add_right (abs_add_le _ _) _)
+        _ ≤ _ := htri _ _ _
     _ = (∑ j ∈ J, |energyHead S a x j + c j - b j|) +
         (∑ j ∈ J, |linearHead S a x y j - c j|) +
         ∑ j ∈ J, |energyHead S a y j - energyHead S a x j - linearHead S a x y j| := by
