@@ -1,0 +1,42 @@
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group000Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group001Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group002Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group003Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group004Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group005Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group006Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group007Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group008Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group009Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group010Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group011Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group012Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group013Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group014Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group015Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Group016Check
+import Lean.Util.CollectAxioms
+import Lean.Elab.Command
+/-! Exact source grade size and integer square energy from bounded parts.
+No Gaussian error asserted. Agent-ID: codex-8c4d. -/
+namespace Grothe.UpperChaos.TaylorFirstIntegerGrade090Check
+open ArraySquareEnergy
+
+theorem grade_length : firstCenterIntegerGrade090.size = 8372 := by
+  simp only [firstCenterIntegerGrade090, Array.size_append, TaylorFirstIntegerGrade090Group000Check.group_length, TaylorFirstIntegerGrade090Group001Check.group_length, TaylorFirstIntegerGrade090Group002Check.group_length, TaylorFirstIntegerGrade090Group003Check.group_length, TaylorFirstIntegerGrade090Group004Check.group_length, TaylorFirstIntegerGrade090Group005Check.group_length, TaylorFirstIntegerGrade090Group006Check.group_length, TaylorFirstIntegerGrade090Group007Check.group_length, TaylorFirstIntegerGrade090Group008Check.group_length, TaylorFirstIntegerGrade090Group009Check.group_length, TaylorFirstIntegerGrade090Group010Check.group_length, TaylorFirstIntegerGrade090Group011Check.group_length, TaylorFirstIntegerGrade090Group012Check.group_length, TaylorFirstIntegerGrade090Group013Check.group_length, TaylorFirstIntegerGrade090Group014Check.group_length, TaylorFirstIntegerGrade090Group015Check.group_length, TaylorFirstIntegerGrade090Group016Check.group_length]
+
+theorem grade_energy : firstCenterIntegerGrade090.foldl (fun acc x => acc + x ^ 2) (0 : ℤ) =
+    22221535119488958800600926925197171942657848806305182227598599550342397631505760081589377519365602660488761590945 := by
+  change energy firstCenterIntegerGrade090 = _
+  simp only [firstCenterIntegerGrade090, energy_append, TaylorFirstIntegerGrade090Group000Check.group_energy, TaylorFirstIntegerGrade090Group001Check.group_energy, TaylorFirstIntegerGrade090Group002Check.group_energy, TaylorFirstIntegerGrade090Group003Check.group_energy, TaylorFirstIntegerGrade090Group004Check.group_energy, TaylorFirstIntegerGrade090Group005Check.group_energy, TaylorFirstIntegerGrade090Group006Check.group_energy, TaylorFirstIntegerGrade090Group007Check.group_energy, TaylorFirstIntegerGrade090Group008Check.group_energy, TaylorFirstIntegerGrade090Group009Check.group_energy, TaylorFirstIntegerGrade090Group010Check.group_energy, TaylorFirstIntegerGrade090Group011Check.group_energy, TaylorFirstIntegerGrade090Group012Check.group_energy, TaylorFirstIntegerGrade090Group013Check.group_energy, TaylorFirstIntegerGrade090Group014Check.group_energy, TaylorFirstIntegerGrade090Group015Check.group_energy, TaylorFirstIntegerGrade090Group016Check.group_energy]
+  decide +kernel
+
+end Grothe.UpperChaos.TaylorFirstIntegerGrade090Check
+open Lean Elab Command
+run_cmd do
+  for target in #[``Grothe.UpperChaos.TaylorFirstIntegerGrade090Check.grade_length,
+      ``Grothe.UpperChaos.TaylorFirstIntegerGrade090Check.grade_energy] do
+    for ax in ← Lean.collectAxioms target do
+      unless #[`propext, `Classical.choice, `Quot.sound].contains ax do
+        throwError m!"{target} has forbidden axiom {ax}"

@@ -2,6 +2,7 @@ import Grothe.UpperChaos.GradedHermiteLinear
 import Grothe.UpperChaos.PackedDyadicChunks
 import Grothe.UpperChaos.TaylorBandCheck
 import Grothe.UpperChaos.TaylorCenterIndex
+import Grothe.UpperChaos.TaylorFirstSecondSource
 import Grothe.UpperChaos.TaylorFirstData
 import Grothe.UpperChaos.TaylorSecondData
 import Grothe.UpperChaos.TaylorFrozenData
@@ -10,15 +11,9 @@ import Grothe.UpperChaos.TaylorFrozenData
 open MeasureTheory
 namespace Grothe.UpperChaos
 
-def firstCenterInts : Array ℤ :=
-  (PackedDyadic.parseChunks 206 firstCenterPackedChunks).getD #[]
-def secondCenterInts : Array ℤ :=
-  (PackedDyadic.parseChunks 206 secondCenterPackedChunks).getD #[]
 def frozenCorrectionInts : Array ℤ :=
   (PackedDyadic.parseChunks 206 frozenCorrectionPackedChunks).getD #[]
 
-def firstCenterAt (q c d : ℕ) : ℤ := firstCenterInts[gradedFlatIndex q c d]?.getD 0
-def secondCenterAt (q c d : ℕ) : ℤ := secondCenterInts[gradedFlatIndex q c d]?.getD 0
 def frozenCorrectionAt (q c d : ℕ) : ℤ := frozenCorrectionInts[gradedFlatIndex q c d]?.getD 0
 
 def firstCenterCoeff (q c d : ℕ) : ℚ := (firstCenterAt q c d : ℚ) / (2 : ℚ)^206

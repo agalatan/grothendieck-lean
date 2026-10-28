@@ -1,0 +1,8 @@
+import Grothe.UpperChaos.TaylorFirstIntegerGrade038Group000Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade038Group001Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade038Group002Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade038Group003Data
+
+namespace Grothe.UpperChaos
+def firstCenterIntegerGrade038 : Array ℤ := firstCenterIntegerGrade038Group000 ++ firstCenterIntegerGrade038Group001 ++ firstCenterIntegerGrade038Group002 ++ firstCenterIntegerGrade038Group003
+end Grothe.UpperChaos

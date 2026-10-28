@@ -1,0 +1,7 @@
+import Grothe.UpperChaos.TaylorSecondIntegerGrade033Group000Data
+import Grothe.UpperChaos.TaylorSecondIntegerGrade033Group001Data
+import Grothe.UpperChaos.TaylorSecondIntegerGrade033Group002Data
+
+namespace Grothe.UpperChaos
+def secondCenterIntegerGrade033 : Array ℤ := secondCenterIntegerGrade033Group000 ++ secondCenterIntegerGrade033Group001 ++ secondCenterIntegerGrade033Group002
+end Grothe.UpperChaos

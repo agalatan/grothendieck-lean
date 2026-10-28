@@ -1,0 +1,187 @@
+import Grothe.UpperChaos.TaylorFirstIntegerGrade000Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade001Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade002Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade003Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade004Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade005Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade006Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade007Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade008Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade009Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade010Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade011Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade012Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade013Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade014Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade015Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade016Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade017Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade018Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade019Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade020Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade021Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade022Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade023Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade024Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade025Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade026Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade027Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade028Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade029Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade030Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade031Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade032Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade033Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade034Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade035Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade036Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade037Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade038Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade039Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade040Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade041Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade042Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade043Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade044Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade045Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade046Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade047Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade048Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade049Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade050Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade051Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade052Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade053Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade054Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade055Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade056Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade057Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade058Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade059Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade060Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade061Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade062Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade063Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade064Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade065Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade066Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade067Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade068Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade069Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade070Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade071Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade072Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade073Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade074Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade075Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade076Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade077Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade078Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade079Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade080Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade081Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade082Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade083Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade085Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade086Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade087Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade088Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade089Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade090Data
+
+/-! Exact retained integer coefficients in grade-major order. -/
+namespace Grothe.UpperChaos
+def firstCenterIntegerValues : List ℤ :=
+  firstCenterIntegerGrade000.toList ++
+  firstCenterIntegerGrade001.toList ++
+  firstCenterIntegerGrade002.toList ++
+  firstCenterIntegerGrade003.toList ++
+  firstCenterIntegerGrade004.toList ++
+  firstCenterIntegerGrade005.toList ++
+  firstCenterIntegerGrade006.toList ++
+  firstCenterIntegerGrade007.toList ++
+  firstCenterIntegerGrade008.toList ++
+  firstCenterIntegerGrade009.toList ++
+  firstCenterIntegerGrade010.toList ++
+  firstCenterIntegerGrade011.toList ++
+  firstCenterIntegerGrade012.toList ++
+  firstCenterIntegerGrade013.toList ++
+  firstCenterIntegerGrade014.toList ++
+  firstCenterIntegerGrade015.toList ++
+  firstCenterIntegerGrade016.toList ++
+  firstCenterIntegerGrade017.toList ++
+  firstCenterIntegerGrade018.toList ++
+  firstCenterIntegerGrade019.toList ++
+  firstCenterIntegerGrade020.toList ++
+  firstCenterIntegerGrade021.toList ++
+  firstCenterIntegerGrade022.toList ++
+  firstCenterIntegerGrade023.toList ++
+  firstCenterIntegerGrade024.toList ++
+  firstCenterIntegerGrade025.toList ++
+  firstCenterIntegerGrade026.toList ++
+  firstCenterIntegerGrade027.toList ++
+  firstCenterIntegerGrade028.toList ++
+  firstCenterIntegerGrade029.toList ++
+  firstCenterIntegerGrade030.toList ++
+  firstCenterIntegerGrade031.toList ++
+  firstCenterIntegerGrade032.toList ++
+  firstCenterIntegerGrade033.toList ++
+  firstCenterIntegerGrade034.toList ++
+  firstCenterIntegerGrade035.toList ++
+  firstCenterIntegerGrade036.toList ++
+  firstCenterIntegerGrade037.toList ++
+  firstCenterIntegerGrade038.toList ++
+  firstCenterIntegerGrade039.toList ++
+  firstCenterIntegerGrade040.toList ++
+  firstCenterIntegerGrade041.toList ++
+  firstCenterIntegerGrade042.toList ++
+  firstCenterIntegerGrade043.toList ++
+  firstCenterIntegerGrade044.toList ++
+  firstCenterIntegerGrade045.toList ++
+  firstCenterIntegerGrade046.toList ++
+  firstCenterIntegerGrade047.toList ++
+  firstCenterIntegerGrade048.toList ++
+  firstCenterIntegerGrade049.toList ++
+  firstCenterIntegerGrade050.toList ++
+  firstCenterIntegerGrade051.toList ++
+  firstCenterIntegerGrade052.toList ++
+  firstCenterIntegerGrade053.toList ++
+  firstCenterIntegerGrade054.toList ++
+  firstCenterIntegerGrade055.toList ++
+  firstCenterIntegerGrade056.toList ++
+  firstCenterIntegerGrade057.toList ++
+  firstCenterIntegerGrade058.toList ++
+  firstCenterIntegerGrade059.toList ++
+  firstCenterIntegerGrade060.toList ++
+  firstCenterIntegerGrade061.toList ++
+  firstCenterIntegerGrade062.toList ++
+  firstCenterIntegerGrade063.toList ++
+  firstCenterIntegerGrade064.toList ++
+  firstCenterIntegerGrade065.toList ++
+  firstCenterIntegerGrade066.toList ++
+  firstCenterIntegerGrade067.toList ++
+  firstCenterIntegerGrade068.toList ++
+  firstCenterIntegerGrade069.toList ++
+  firstCenterIntegerGrade070.toList ++
+  firstCenterIntegerGrade071.toList ++
+  firstCenterIntegerGrade072.toList ++
+  firstCenterIntegerGrade073.toList ++
+  firstCenterIntegerGrade074.toList ++
+  firstCenterIntegerGrade075.toList ++
+  firstCenterIntegerGrade076.toList ++
+  firstCenterIntegerGrade077.toList ++
+  firstCenterIntegerGrade078.toList ++
+  firstCenterIntegerGrade079.toList ++
+  firstCenterIntegerGrade080.toList ++
+  firstCenterIntegerGrade081.toList ++
+  firstCenterIntegerGrade082.toList ++
+  firstCenterIntegerGrade083.toList ++
+  firstCenterIntegerGrade084.toList ++
+  firstCenterIntegerGrade085.toList ++
+  firstCenterIntegerGrade086.toList ++
+  firstCenterIntegerGrade087.toList ++
+  firstCenterIntegerGrade088.toList ++
+  firstCenterIntegerGrade089.toList ++
+  firstCenterIntegerGrade090.toList
+end Grothe.UpperChaos

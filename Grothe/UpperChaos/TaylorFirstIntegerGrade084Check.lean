@@ -1,0 +1,40 @@
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Group000Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Group001Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Group002Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Group003Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Group004Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Group005Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Group006Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Group007Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Group008Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Group009Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Group010Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Group011Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Group012Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Group013Check
+import Grothe.UpperChaos.TaylorFirstIntegerGrade084Group014Check
+import Lean.Util.CollectAxioms
+import Lean.Elab.Command
+/-! Exact source grade size and integer square energy from bounded parts.
+No Gaussian error asserted. Agent-ID: codex-8c4d. -/
+namespace Grothe.UpperChaos.TaylorFirstIntegerGrade084Check
+open ArraySquareEnergy
+
+theorem grade_length : firstCenterIntegerGrade084.size = 7310 := by
+  simp only [firstCenterIntegerGrade084, Array.size_append, TaylorFirstIntegerGrade084Group000Check.group_length, TaylorFirstIntegerGrade084Group001Check.group_length, TaylorFirstIntegerGrade084Group002Check.group_length, TaylorFirstIntegerGrade084Group003Check.group_length, TaylorFirstIntegerGrade084Group004Check.group_length, TaylorFirstIntegerGrade084Group005Check.group_length, TaylorFirstIntegerGrade084Group006Check.group_length, TaylorFirstIntegerGrade084Group007Check.group_length, TaylorFirstIntegerGrade084Group008Check.group_length, TaylorFirstIntegerGrade084Group009Check.group_length, TaylorFirstIntegerGrade084Group010Check.group_length, TaylorFirstIntegerGrade084Group011Check.group_length, TaylorFirstIntegerGrade084Group012Check.group_length, TaylorFirstIntegerGrade084Group013Check.group_length, TaylorFirstIntegerGrade084Group014Check.group_length]
+
+theorem grade_energy : firstCenterIntegerGrade084.foldl (fun acc x => acc + x ^ 2) (0 : ℤ) =
+    33337555888284183047247182521890631145679474054976447609361917734808863449324899523713625631919358739712386793472 := by
+  change energy firstCenterIntegerGrade084 = _
+  simp only [firstCenterIntegerGrade084, energy_append, TaylorFirstIntegerGrade084Group000Check.group_energy, TaylorFirstIntegerGrade084Group001Check.group_energy, TaylorFirstIntegerGrade084Group002Check.group_energy, TaylorFirstIntegerGrade084Group003Check.group_energy, TaylorFirstIntegerGrade084Group004Check.group_energy, TaylorFirstIntegerGrade084Group005Check.group_energy, TaylorFirstIntegerGrade084Group006Check.group_energy, TaylorFirstIntegerGrade084Group007Check.group_energy, TaylorFirstIntegerGrade084Group008Check.group_energy, TaylorFirstIntegerGrade084Group009Check.group_energy, TaylorFirstIntegerGrade084Group010Check.group_energy, TaylorFirstIntegerGrade084Group011Check.group_energy, TaylorFirstIntegerGrade084Group012Check.group_energy, TaylorFirstIntegerGrade084Group013Check.group_energy, TaylorFirstIntegerGrade084Group014Check.group_energy]
+  decide +kernel
+
+end Grothe.UpperChaos.TaylorFirstIntegerGrade084Check
+open Lean Elab Command
+run_cmd do
+  for target in #[``Grothe.UpperChaos.TaylorFirstIntegerGrade084Check.grade_length,
+      ``Grothe.UpperChaos.TaylorFirstIntegerGrade084Check.grade_energy] do
+    for ax in ← Lean.collectAxioms target do
+      unless #[`propext, `Classical.choice, `Quot.sound].contains ax do
+        throwError m!"{target} has forbidden axiom {ax}"

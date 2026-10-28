@@ -1,0 +1,13 @@
+import Grothe.UpperChaos.TaylorFirstIntegerGrade066Group000Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade066Group001Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade066Group002Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade066Group003Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade066Group004Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade066Group005Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade066Group006Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade066Group007Data
+import Grothe.UpperChaos.TaylorFirstIntegerGrade066Group008Data
+
+namespace Grothe.UpperChaos
+def firstCenterIntegerGrade066 : Array ℤ := firstCenterIntegerGrade066Group000 ++ firstCenterIntegerGrade066Group001 ++ firstCenterIntegerGrade066Group002 ++ firstCenterIntegerGrade066Group003 ++ firstCenterIntegerGrade066Group004 ++ firstCenterIntegerGrade066Group005 ++ firstCenterIntegerGrade066Group006 ++ firstCenterIntegerGrade066Group007 ++ firstCenterIntegerGrade066Group008
+end Grothe.UpperChaos

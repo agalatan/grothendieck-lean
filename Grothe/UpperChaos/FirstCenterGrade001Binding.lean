@@ -1,0 +1,55 @@
+import Grothe.UpperChaos.FirstCenterGrade000Length
+import Grothe.UpperChaos.FirstCenterGrade001Length
+import Grothe.UpperChaos.ThirdArrayLookup
+import Grothe.UpperChaos.ThirdFoldRectangle
+import Grothe.UpperChaos.FirstSecondGradeEnergyTargets
+import Mathlib.Tactic
+
+/-! Draft actual first center grade 1 lookup and energy; no native check. -/
+namespace Grothe.UpperChaos.FirstCenterGrade001Binding
+open FirstSecondGradeEnergyTargets
+set_option maxRecDepth 16384
+set_option maxHeartbeats 0
+
+def before : List ℤ := FirstCenterGrade000.values
+def suffix : List ℤ := FirstCenterGrade002.values ++ FirstCenterGrade003.values ++ FirstCenterGrade004.values ++ FirstCenterGrade005.values ++ FirstCenterGrade006.values ++ FirstCenterGrade007.values ++ FirstCenterGrade008.values ++ FirstCenterGrade009.values ++ FirstCenterGrade010.values ++ FirstCenterGrade011.values ++ FirstCenterGrade012.values ++ FirstCenterGrade013.values ++ FirstCenterGrade014.values ++ FirstCenterGrade015.values ++ FirstCenterGrade016.values ++ FirstCenterGrade017.values ++ FirstCenterGrade018.values ++ FirstCenterGrade019.values ++ FirstCenterGrade020.values ++ FirstCenterGrade021.values ++ FirstCenterGrade022.values ++ FirstCenterGrade023.values ++ FirstCenterGrade024.values ++ FirstCenterGrade025.values ++ FirstCenterGrade026.values ++ FirstCenterGrade027.values ++ FirstCenterGrade028.values ++ FirstCenterGrade029.values ++ FirstCenterGrade030.values ++ FirstCenterGrade031.values ++ FirstCenterGrade032.values ++ FirstCenterGrade033.values ++ FirstCenterGrade034.values ++ FirstCenterGrade035.values ++ FirstCenterGrade036.values ++ FirstCenterGrade037.values ++ FirstCenterGrade038.values ++ FirstCenterGrade039.values ++ FirstCenterGrade040.values ++ FirstCenterGrade041.values ++ FirstCenterGrade042.values ++ FirstCenterGrade043.values ++ FirstCenterGrade044.values ++ FirstCenterGrade045.values ++ FirstCenterGrade046.values ++ FirstCenterGrade047.values ++ FirstCenterGrade048.values ++ FirstCenterGrade049.values ++ FirstCenterGrade050.values ++ FirstCenterGrade051.values ++ FirstCenterGrade052.values ++ FirstCenterGrade053.values ++ FirstCenterGrade054.values ++ FirstCenterGrade055.values ++ FirstCenterGrade056.values ++ FirstCenterGrade057.values ++ FirstCenterGrade058.values ++ FirstCenterGrade059.values ++ FirstCenterGrade060.values ++ FirstCenterGrade061.values ++ FirstCenterGrade062.values ++ FirstCenterGrade063.values ++ FirstCenterGrade064.values ++ FirstCenterGrade065.values ++ FirstCenterGrade066.values ++ FirstCenterGrade067.values ++ FirstCenterGrade068.values ++ FirstCenterGrade069.values ++ FirstCenterGrade070.values ++ FirstCenterGrade071.values ++ FirstCenterGrade072.values ++ FirstCenterGrade073.values ++ FirstCenterGrade074.values ++ FirstCenterGrade075.values ++ FirstCenterGrade076.values ++ FirstCenterGrade077.values ++ FirstCenterGrade078.values ++ FirstCenterGrade079.values ++ FirstCenterGrade080.values ++ FirstCenterGrade081.values ++ FirstCenterGrade082.values ++ FirstCenterGrade083.values ++ FirstCenterGrade084.values ++ FirstCenterGrade085.values ++ FirstCenterGrade086.values ++ FirstCenterGrade087.values ++ FirstCenterGrade088.values ++ FirstCenterGrade089.values ++ FirstCenterGrade090.values
+
+theorem source_split : FirstSecondIntegerBinding.firstAllValues =
+    before ++ FirstCenterGrade001.values ++ suffix := by
+  simp only [FirstSecondIntegerBinding.firstAllValues,
+    FirstSecondIntegerBinding.first_source_values, before, suffix,
+    List.append_assoc]
+
+theorem before_length : before.length = 2 := by
+  simp only [before, FirstCenterGrade000Length.length]
+
+theorem lookup (c d : ℕ) (hc : c < 3) (hd : d < 2) :
+    firstCenterAt 1 c d = FirstCenterGrade001.values[c * 2 + d]?.getD 0 := by
+  have hk : c * 2 + d < FirstCenterGrade001.values.length := by
+    rw [FirstCenterGrade001Length.length]
+    omega
+  change firstCenterInts[gradedFlatIndex 1 c d]?.getD 0 = _
+  rw [FirstSecondIntegerBinding.first_source_array, source_split]
+  have h := ThirdArrayLookup.middle_get before FirstCenterGrade001.values suffix (c * 2 + d) hk
+  simpa only [gradedFlatIndex, Nat.reduceAdd, Nat.reduceMul, Nat.reduceDiv,
+    Nat.add_assoc, before_length] using h
+
+theorem grade_sum :
+    (∑ c ∈ Finset.range (1 + 2), ∑ d ∈ Finset.range (1 + 1),
+      firstCenterAt 1 c d ^ 2) = firstGradeEnergy 1 := by
+  calc
+    _ = ∑ c ∈ Finset.range 3, ∑ d ∈ Finset.range 2,
+        (FirstCenterGrade001.values[c * 2 + d]?.getD 0) ^ 2 := by
+          apply Finset.sum_congr rfl
+          intro c hc
+          apply Finset.sum_congr rfl
+          intro d hd
+          rw [lookup c d (Finset.mem_range.mp hc) (Finset.mem_range.mp hd)]
+    _ = firstCenterIntegerGrade001.foldl (fun a x => a + x ^ 2) (0 : ℤ) := by
+          simpa only [FirstCenterGrade001.values, Array.getElem?_toList] using
+            (ThirdFoldRectangle.grade_rectangle_fold firstCenterIntegerGrade001 3 2
+              TaylorFirstIntegerGrade001Check.grade_length)
+    _ = firstGradeEnergy 1 := by
+          rw [TaylorFirstIntegerGrade001Check.grade_energy]
+          decide +kernel
+end Grothe.UpperChaos.FirstCenterGrade001Binding

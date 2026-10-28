@@ -1,4 +1,5 @@
 import Grothe.UpperChaos.TaylorCenters
+import Grothe.UpperChaos.TaylorFirstSecondBandDefs
 import Grothe.UpperChaos.TaylorCenterBandData
 import Grothe.UpperChaos.GradedHermiteIntegerEnergy
 
@@ -12,15 +13,6 @@ approximation errors are separate obligations.
 open MeasureTheory
 namespace Grothe.UpperChaos
 set_option maxRecDepth 4096
-
-/-- The first center's six finite bands in the actual tensor Hermite degree. -/
-def firstCenterBandModes (k : Fin 6) : Set Idx2 :=
-  {i | firstCenterBandLo k < (bideg i).1 + (bideg i).2 ∧
-    (bideg i).1 + (bideg i).2 ≤ firstCenterBandHi k}
-
-instance (k : Fin 6) : DecidablePred (· ∈ firstCenterBandModes k) := fun i =>
-  inferInstanceAs (Decidable (firstCenterBandLo k < (bideg i).1 + (bideg i).2 ∧
-    (bideg i).1 + (bideg i).2 ≤ firstCenterBandHi k))
 
 /-- Exact integer sums over the same coordinates used by `firstCenterCoeff`. -/
 theorem firstCenter_band_energy_check : ∀ k : Fin 6,
