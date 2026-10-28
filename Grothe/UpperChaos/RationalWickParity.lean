@@ -47,7 +47,7 @@ theorem radiusParity_wickMomentQ (p q : ℕ) :
     (p + q - 2 * k)).C_mul
     ((p.choose k : ℚ) * (q.choose k : ℚ) * (k.factorial : ℚ))).mul
     ((radiusParity_X 1).pow (k + 1))
-  simpa only [radiusWeight, Matrix.cons_val_zero, Matrix.cons_val_one,
+  simpa only [RadiusParity, radiusWeight, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.cons_val, zero_add, nsmul_one, nsmul_zero, add_zero, he'] using h
 
 /-- The affine numerator adds one to total source-degree parity. -/
@@ -56,14 +56,14 @@ theorem radiusParity_wickAffineMonomialQ (A B p q : ℕ) :
       (((A + B + p + q + 1 : ℕ) : ZMod 2)) := by
   have hl : RadiusParity (X 0 * wickMomentQ p q)
       (((p + q : ℕ) : ZMod 2) + 1) := by
-    simpa only [radiusWeight, Matrix.cons_val_zero, add_comm] using
+    simpa only [RadiusParity, radiusWeight, Matrix.cons_val_zero, add_comm] using
       (radiusParity_X 0).mul (radiusParity_wickMomentQ p q)
   have hr : RadiusParity (X 3 * wickMomentQ (p + 1) q)
       (((p + q : ℕ) : ZMod 2) + 1) := by
-    simpa [radiusWeight, Nat.cast_add, add_assoc, add_comm, add_left_comm] using
+    simpa [RadiusParity, radiusWeight, Nat.cast_add, add_assoc, add_comm, add_left_comm] using
       (radiusParity_X 3).mul (radiusParity_wickMomentQ (p + 1) q)
   have h := ((radiusParity_X 0).pow (A + B)).mul (hl.add hr)
-  simpa [wickAffineMonomialQ, radiusWeight, Nat.cast_add, add_assoc] using h
+  simpa [RadiusParity, wickAffineMonomialQ, radiusWeight, Nat.cast_add, add_assoc] using h
 
 /-- Compiling any odd rational source produces only even powers of the radius. -/
 theorem radiusParity_wickCompileQ {P : MvPolynomial (Fin 4) ℚ}
