@@ -356,6 +356,11 @@ equals the sum of its ordered leaf integrals, with auxiliary integration
 outside radial integration and continuity needed only on the closed root.
 The actual leaf certificates remain to be supplied.
 
+`AdaptiveRectangleEnclosure` adds certified leaf intervals in that exact
+order and converts the sum to a rational center/radius bound. Pointwise
+analytic envelopes give integral bounds using each cell's rational area.
+These finite-cell operations do not spend the separate source reserve.
+
 
 
 Lean also proves a selected-spectrum comparison: the error is split

@@ -217,6 +217,8 @@ import Grothe
 #print axioms Grothe.Upper.summable_abs_bivarKernel
 #print axioms Grothe.Upper.tabPoly_coeff
 #print axioms Grothe.Upper.tsum_abs_bivarKernel_le
+#print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.abs_integral_le_area_mul
+#print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.area_nonneg
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.auxMid_bounds
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.integral_congr
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.integral_splitAux
@@ -230,9 +232,12 @@ import Grothe
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.rightS_domain_subset
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.rightS_valid
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.sMid_bounds
+#print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.SplitTree.abs_integral_sub_center_le
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.SplitTree.integral_eq_sum
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.SplitTree.integral_eq_sum_of_continuous
+#print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.SplitTree.integral_mem_enclosureSum
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.SplitTree.leaf_valid_and_subset
+#print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.sum_mem_enclosureSum
 #print axioms Grothe.UpperChaos.AffineSquareIntegralBounds.exists_continuous_rectangle_extension
 #print axioms Grothe.UpperChaos.AffineSquareIntegralBounds.integral_mem_affine_square_model_of_continuousOn
 #print axioms Grothe.UpperChaos.AffineSquareIntegralBounds.integral_mem_affine_square_model_swapped_of_continuousOn
