@@ -302,6 +302,31 @@ phase-Laplace integral. Both theorems are in the axiom report and introduce
 no native facts. The module imports only `LeanCert.Validity.IntegrationDyadic`
 from LeanCert. The production Gaussian error estimates remain work in progress.
 
+`ProductionFiniteLaplace` defines `finiteLaplacePhase η T z` by integrating the
+actual softened phase kernel over `[0,T]`, including the `1/sqrt π` factor.
+It proves the exact omitted-tail identity and the uniform error
+`‖softPhase η z - finiteLaplacePhase η T z‖ ≤ exp(-η²T)` for all complex `z`.
+The finite Fubini identity `integral_mul_finiteLaplacePhase` connects this
+response to the outer integral used by coefficient quadrature.
+
+For the actual Taylor sources, `norm_finiteLaplaceError_le` gives the full
+Gaussian L² error `(10/3)η + exp(-η²T)`. With `η=10⁻¹⁵` and `T=40·10³⁰`,
+`norm_finiteLaplaceError_cutoff_lt` proves this is below `5·10⁻¹⁵`, uniformly
+in the Taylor order. `norm_projOn_smooth_finiteLaplaceError_cutoff_lt` transfers
+the bound through actual smoothing and every Hermite-band projection.
+`LeanCertAuxiliaryCutoff.exp_neg_forty_le` supplies the numerical tail bound
+using the pinned checked dyadic evaluator at precision `-100`, Taylor depth
+`20`, and `decide +kernel`; no native fact is introduced. This cutoff is a
+proved finite-domain reduction, not a certificate for the remaining quadrature.
+
+`ProductionCompactLaplace` includes the radial restriction `‖u.1‖² ≤ 80`.
+The existing exact Gaussian tail theorem and `exp(-80)=exp(-40)²` give radial
+L² error at most `10⁻¹⁷`, reusing the same LeanCert certificate.
+`norm_compactLaplaceError_cutoff_lt` proves that softening, radial truncation
+and auxiliary truncation together cost less than `5·10⁻¹⁵` for every Taylor
+order, with no new numerical premise. Its smoothed band-projection corollary
+retains the original Gaussian measure and all omitted modes.
+
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual
 kernel. `upper_of_finite_sample_bounds` reduces that estimate to complex
