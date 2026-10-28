@@ -384,6 +384,21 @@ positive `beta`, so no lower bound on the radial profile is needed. These
 results concern the base moment away from the radial origin; they do not
 certify the full polynomial-weighted Taylor sources or the remaining budgets.
 
+`F0ConditionalNode.coefficient_eq_integral` and its Bessel bound refer to the
+actual conditional phase. `F0ConditionalEvaluator.coefficient_eq_signed`
+identifies its historical parameter as
+`A = sqrt(s)/(sqrt(1+aQ²)*abs(vprof s))`, with the explicit assumptions
+`s ≥ 0` and `vprof s ≠ 0`. `ConditionalNodeIndices.image_rows` and
+`card_modes` select exactly 31,877 distinct degree-501 pairs from the larger
+35,777-pair storage; a prefix substitution is not justified.
+`ConditionalMomentReflection.integral_phase_H_reflection` proves the actual
+unnormalized Gaussian identity by finite Stein/Ward recurrences and absolute
+Fubini. `ConditionalCoefficientReflection.production_reflected_coefficient`
+then proves the production lookup factor `sqrt((d+1)/c)` for `d+1<c` and a
+nonzero profile. The normalized canonical identity holds at every real shift.
+These results have standard-three-axiom audits. They supply no numerical
+coefficient enclosure, root-gap estimate or floating reflection error.
+
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 

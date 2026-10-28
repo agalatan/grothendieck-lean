@@ -302,6 +302,15 @@ proves an integrated auxiliary tail at `‖z‖ ≥ r₀ > 0`, bounded by
 including its zeros. Bounds for the full polynomial-weighted sources, the
 radial endpoint and certified numerical integration remain open.
 
+`F0ConditionalNode` defines the actual conditional Gaussian coefficients and
+proves their coupled Bessel bound. `F0ConditionalEvaluator` identifies them
+with the historical signed-shift integral for nonnegative radius and nonzero
+profile. `ConditionalNodeIndices` proves the exact selection of 31,877 modes;
+these require explicit lookup in the 35,777-pair storage. The actual integral
+reflection in `ConditionalCoefficientReflection` supplies the production
+factor `sqrt((d+1)/c) ≤ 1` on the reflected half. These identities use only the
+standard logical axioms; numerical node enclosures remain to be proved.
+
 `GradedHermitePhaseSlice` expresses each actual Taylor source as a polynomial
 in the conditional coordinate times its exact Gaussian damping.
 `TaylorConditionalGaussian` evaluates that conditional integral by the finite
