@@ -169,6 +169,14 @@ equality. The proof preserves the separate exact denominator
 inverse rate and shifted argument. Generated Python data are checked by Lean;
 the numerical quadrature cells and the upper-bound inputs remain to be proved.
 
+The complete stored third Taylor center has kernel-checked exact total and
+comparison-band energies. Its authoritative witness is the ordered array of
+scaled integers regenerated from the same pinned binary64 input.
+`ThirdCenterKernelEnergy` combines all grade sums with the exact rational
+targets; its source-size and energy theorems use only the standard logical
+axioms. The Gaussian approximation-error and frozen-response accuracy inputs
+remain open.
+
 The target `K < 1.404598149141` is **work in progress**. One completed supporting
 calculation is `ProfileFirstGaussianCell`: Lean proves the exact integral of
 the squared degree-one Laguerre component against `exp(-s)` on `[0,1]`, and
