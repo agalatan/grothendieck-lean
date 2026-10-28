@@ -165,6 +165,38 @@ their boundaries back to the original coordinate.
 cell radii, with the Gaussian normalization, into an enclosure of the actual
 retained coefficient. The common source reserve is applied afterward at
 the band level. The numerical cell and energy certificates remain open.
+The concrete partition in \texttt{SmallProfileMesh} uses seven radial strips.
+Kernel-reduced centered Horner checks establish the actual small-profile
+condition on three selected rational intervals. Thus its retained-source
+bound has no remaining profile-region premise; the numerical retained-energy
+certificates remain to be completed.
+Eight complementary centered-Horner rows in \texttt{SmallProfileSeparation}
+combine with the existing profile cover to give $|\kappa(s)|>1/1000$ on the
+four other strips. Hence $\alpha x^2+\kappa(s)^2>10^{-6}$ for $\alpha\ge0$,
+uniformly even when the reciprocal coordinate is small.
+
+The local affine-cell enclosure only requires continuity on the closed
+positive-coordinate rectangle. Coordinate clamping gives a continuous
+extension with the same integral. The complete normalized retained
+coefficients are real. Rational coefficient centers and radii give a finite
+sum of squared residual radii, which bounds the retained band by Parseval.
+The original source reserve is added once after this sum. The actual
+numerical enclosures and the endpoint remain work in progress.
+
+The retained transfer is specialized to the fourteen actual captured bands.
+Their finite degree cutoffs and reserve inequalities are checked by kernel
+reduction. The source powers, stored centers and original caps are fixed;
+the remaining inputs are the numerical coefficient enclosures and their
+rational residual-energy checks.
+
+Adaptive rectangular quadrature uses a binary tree of exact rational
+midpoint splits. Each leaf lies in the original closed rectangle, and the
+original iterated integral equals the sum of the ordered leaf integrals.
+The auxiliary coordinate remains outside the radial coordinate; continuity
+is required only on the closed root. Actual numerical certificates for
+the complete leaf lists still have to be supplied.
+
+
 
 A second conditional route uses a finite-head estimate for the actual kernel
 directly; the coefficient enclosures and numerical head estimate are still
@@ -253,7 +285,28 @@ of this finite evaluator, with no numerical integration premise.
 For each unit Hermite mode, a rational Wick polynomial gives the exact regular
 quadrature kernel in squared-radius form. A pointwise polynomial enclosure on
 a normalized square implies a bound for the real production cell integral and
-shows its imaginary part vanishes. The enclosure is an explicit hypothesis;
+shows its imaginary part vanishes. Shared moment recurrences agree with the
+rational Wick compiler for positive inverse rate; finite table reuse requires
+proved base and successor equations. The real moments and their affine
+combination admit inverse-rate factorizations, and reciprocal-variable rate
+identities remain valid when the profile vanishes. These identities provide
+no numerical enclosure. Smooth angular moments
+\[
+ M_h(x)=\int_0^{\pi/2}\sin^{2h}\!\theta\,\cos^2\!\theta\,
+         e^{-x\sin^2\!\theta}\,d\theta
+\]
+are positive, have consecutive ratios in $(0,1]$, and satisfy the exact
+three-term recurrence. For $x\ge0$ their ratio update equals a monotone
+abstract update, for which finite backward interval propagation is proved
+from a terminal interval in $[0,1]$. The angular ratio is bounded by the
+iterations with terminal values zero and one.
+The original moment integrand is interval integrable even at order zero, and
+the continuity, derivative, range and open-interval pullback identity for
+the angular substitution are proved. The integral change of variables gives
+$J_h(x)=(4/\pi)M_h(x)$, with endpoint equality handled almost everywhere.
+The original moments inherit positivity, the recurrence, and finite backward
+ratio enclosures for $x\ge0$. Seed formulas and numerical node certificates
+remain open. The cell enclosure is an explicit hypothesis;
 no numerical cell certificate or improper-integral bound is claimed.
 The recurrence $M_{p+1,q}=\mu M_{p,q}+(q/\beta)M_{p,q-1}$ preserves the affine
 cancellation for every mixed degree, including zero mean and $q=0$.

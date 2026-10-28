@@ -306,6 +306,29 @@ polynomial enclosure on a normalized square into a bound on the real part of
 the corresponding production cell integral, whose imaginary part is zero.
 The pointwise enclosure is a hypothesis; no numerical cell certificate or
 improper-integral bound is asserted.
+`SharedWickMomentRecurrence` connects the positive-rate shifted Gaussian
+moments to the rational Wick compiler, while `SharedMomentTable` proves that a
+supplied finite table agrees with a recurrence only after its base and step
+equations are established. `ShiftedMomentFactor` extracts inverse-rate factors
+from the real moments and affine cancellation. `ReciprocalRate` proves the
+corresponding reciprocal-variable rate identities, including zero profile.
+These identities do not certify a numerical cell or the upper bound.
+`PositiveMomentTheta` proves positivity of smooth angular moments and bounds
+consecutive ratios by one. `PositiveMomentRecurrence` proves their exact
+three-term relation, while `PositiveMomentRatio` identifies its ratio update
+for nonnegative parameters with `PositiveRatio.next`. The latter also proves
+monotone finite interval propagation for any terminal interval in `[0,1]`.
+`PositiveMomentBackward` applies it to enclose the angular ratios from the
+full terminal interval `[0,1]` at any finite depth.
+`OriginalMomentIntegrable` proves the original moment integrand is integrable,
+including at order zero. `OriginalMomentSubstitutionLemmas` establishes the
+positive-domain continuity and the derivative and range of `sin²`.
+`OriginalMomentPullback` proves the pointwise pullback identity in the open
+angular interval. `OriginalMomentSubstitution` handles the endpoints and proves
+that the original moment is `4/π` times the angular moment.
+`OriginalMomentRatios` transfers positivity, the recurrence, the exact ratio
+update and finite backward enclosures to the original moments. Seed formulas
+and concrete numerical node enclosures remain open.
 
 `ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`
 on any certified radial region with `s ≥ 1/16` and `|κ(s)| ≤ 1/100`.
@@ -327,6 +350,34 @@ by finite cells, using the continuous original kernel at inverse boundaries.
 `ProductionMeshEnclosure` sums the regular and reciprocal cell errors into
 an enclosure of the actual retained Gaussian coefficient, including its
 normalization. The shared source reserve remains outside this cell sum.
+`SmallProfileMesh` supplies a concrete seven-strip partition of `[0,80]`.
+Kernel-reduced Horner checks prove the actual profile condition on its three
+selected rational intervals, discharging that premise of the retained-source
+estimate. The exact cuts are recorded in `data/small-profile-mesh/certificate.json`.
+`SmallProfileSeparation` connects eight complementary interval checks to the
+existing profile cover, giving `|κ(s)| > 1/1000` on all four remaining strips.
+Thus their reciprocal Gaussian denominator exceeds `10⁻⁶` uniformly, including
+for very small positive reciprocal coordinates.
+
+`LocalAffineSquareIntegralBounds` requires continuity only on the closed cell,
+so reciprocal certificates do not need an extension through zero.
+`RetainedMeshReality` proves that the normalized retained coefficients are real.
+`SmallProfileBandEnclosure` transfers real rational coefficient enclosures to
+a rational sum of squared residual radii and then to the original band norm,
+adding the shared `5e-15` reserve once. The complete numerical certificates
+and final endpoint remain work in progress.
+
+`ConcreteRetainedBands` specializes this transfer to all fourteen captured
+bands, checking the actual degree cutoffs and reserve inequalities. The
+coefficient enclosures and rational residual-energy checks remain to be filled.
+
+`AdaptiveRectanglePartition` represents each retained root by a rational
+rectangle and a binary midpoint tree. It proves that the original integral
+equals the sum of its ordered leaf integrals, with auxiliary integration
+outside radial integration and continuity needed only on the closed root.
+The actual leaf certificates remain to be supplied.
+
+
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
