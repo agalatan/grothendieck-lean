@@ -262,7 +262,10 @@ its total norm, all four captured band norms, and its vanishing degree tail.
 finite-band Gaussian error bounds, using the exact sixth phase moment and the
 captured center energies. Those Gaussian error bounds remain hypotheses.
 The first and second centers and frozen correction also have exact dyadic
-representations. `TaylorRounding.norm_roundingDifference_le` proves
+representations. The frozen witness uses typed integer arrays at scale 2^206.
+Standard-axiom proofs establish all 91 grade sizes, the production coefficient
+lookups, and the complete coefficient-square sums for grades 0 and 90.
+`TaylorRounding.norm_roundingDifference_le` proves
 ‖c₁+c₂/2+c₃/6−v‖ ≤ 10⁻¹⁸ by recomputing the common-denominator integer energy.
 `TaylorFirstBandNorms` and `TaylorSecondBandNorms` certify the six and four
 remaining captured band norms from the same exact arrays. `FirstSecondCapturedTail`
