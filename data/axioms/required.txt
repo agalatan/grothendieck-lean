@@ -181,6 +181,7 @@ Grothe.UpperChaos.chargeFn_thirdCenterFn
 Grothe.UpperChaos.chargeOne_compactTaylorL2
 Grothe.UpperChaos.coeFn_gradedHermite
 Grothe.UpperChaos.compactLaplaceHpow_rot
+Grothe.UpperChaos.compactTaylorQuadratureValue_eq_dyadic
 Grothe.UpperChaos.compactTaylorRegion_eq
 Grothe.UpperChaos.comparisonInputs_taylorCenters
 Grothe.UpperChaos.conditional_gaussian_laplace_profile_le
@@ -202,6 +203,7 @@ Grothe.UpperChaos.ev_phaseRealSlice
 Grothe.UpperChaos.ev_taylorSourceSlice
 Grothe.UpperChaos.exp_five_gt_148
 Grothe.UpperChaos.exp_neg_155_lt
+Grothe.UpperChaos.exp_neg_scaled_finiteLaplaceCutoff_le
 Grothe.UpperChaos.finiteLaplacePhase_mul_unit
 Grothe.UpperChaos.finiteSoftPhase_logGrid
 Grothe.UpperChaos.firstCapturedErrorQ_le_public
@@ -213,6 +215,7 @@ Grothe.UpperChaos.firstCenter_charge
 Grothe.UpperChaos.firstCenter_tail_zero
 Grothe.UpperChaos.firstTailModes_eq
 Grothe.UpperChaos.first_captured_tail_budget
+Grothe.UpperChaos.forty_le_scaled_finiteLaplaceCutoff
 Grothe.UpperChaos.fresh_upper_concrete_taylor
 Grothe.UpperChaos.fresh_upper_pieces
 Grothe.UpperChaos.fresh_upper_rounder
@@ -419,6 +422,7 @@ Grothe.UpperChaos.shiftedDampedMoment_zero_zero
 Grothe.UpperChaos.shifted_damped_expansion
 Grothe.UpperChaos.softPhase_eq_laplace
 Grothe.UpperChaos.sq_mul_exp_neg_le_two
+Grothe.UpperChaos.sqrt_finiteLaplaceCutoff
 Grothe.UpperChaos.sqrt_ratio_deficit_le
 Grothe.UpperChaos.sum_diagonal_range
 Grothe.UpperChaos.sum_gradedSupport
