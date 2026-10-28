@@ -295,10 +295,19 @@ import Grothe
 #print axioms Grothe.UpperChaos.RationalSourceParity.totalParity_rename
 #print axioms Grothe.UpperChaos.RationalSourceParity.totalParity_unitSourceQ
 #print axioms Grothe.UpperChaos.RationalSourceParity.totalParity_unitSourceQ_mul_X
+#print axioms Grothe.UpperChaos.RationalSquaredRadius.evalWickQ_monomial
+#print axioms Grothe.UpperChaos.RationalSquaredRadius.eval_squareRadiusQ
+#print axioms Grothe.UpperChaos.RationalSquaredRadius.eval_unitWickQ_sq
+#print axioms Grothe.UpperChaos.RationalSquaredRadius.eval_unitWickQ_sqrt
 #print axioms Grothe.UpperChaos.RationalUnitTaylorSource.eval_firstHermiteQ
 #print axioms Grothe.UpperChaos.RationalUnitTaylorSource.eval_rename_ratH
 #print axioms Grothe.UpperChaos.RationalUnitTaylorSource.eval_secondHermiteQ
 #print axioms Grothe.UpperChaos.RationalUnitTaylorSource.eval_unitSourceQ_eq_slice
+#print axioms Grothe.UpperChaos.RationalWickParity.radiusParity_unitWickQ
+#print axioms Grothe.UpperChaos.RationalWickParity.radiusParity_wickAffineMonomialQ
+#print axioms Grothe.UpperChaos.RationalWickParity.radiusParity_wickCompileQ
+#print axioms Grothe.UpperChaos.RationalWickParity.radiusParity_wickMomentQ
+#print axioms Grothe.UpperChaos.RationalWickParity.two_dvd_radius_exponent
 #print axioms Grothe.UpperChaos.RestrictedWick.integral_cut_balanced
 #print axioms Grothe.UpperChaos.RestrictedWick.integral_cut_invariant
 #print axioms Grothe.UpperChaos.RestrictedWick.integral_cut_unbalanced
@@ -332,6 +341,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.chargeOne_compactTaylorL2
 #print axioms Grothe.UpperChaos.coeFn_gradedHermite
 #print axioms Grothe.UpperChaos.compactLaplaceHpow_rot
+#print axioms Grothe.UpperChaos.compactTaylorQuadratureValue_eq_dyadic
 #print axioms Grothe.UpperChaos.compactTaylorRegion_eq
 #print axioms Grothe.UpperChaos.comparisonInputs_taylorCenters
 #print axioms Grothe.UpperChaos.concrete_energy_close_five_e_minus_seven
@@ -361,6 +371,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.exp_five_gt_148
 #print axioms Grothe.UpperChaos.exp_neg_155_lt
 #print axioms Grothe.UpperChaos.exp_neg_forty_le
+#print axioms Grothe.UpperChaos.exp_neg_scaled_finiteLaplaceCutoff_le
 #print axioms Grothe.UpperChaos.far_sound
 #print axioms Grothe.UpperChaos.finiteLaplacePhase_mul_unit
 #print axioms Grothe.UpperChaos.finiteSoftPhase_logGrid
@@ -373,6 +384,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.firstCenter_tail_zero
 #print axioms Grothe.UpperChaos.firstTailModes_eq
 #print axioms Grothe.UpperChaos.first_captured_tail_budget
+#print axioms Grothe.UpperChaos.forty_le_scaled_finiteLaplaceCutoff
 #print axioms Grothe.UpperChaos.fresh_upper_concrete_taylor
 #print axioms Grothe.UpperChaos.fresh_upper_pieces
 #print axioms Grothe.UpperChaos.fresh_upper_rounder
@@ -633,6 +645,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.softPhase_sub_finiteLaplacePhase
 #print axioms Grothe.UpperChaos.splitAll_cover
 #print axioms Grothe.UpperChaos.sq_mul_exp_neg_le_two
+#print axioms Grothe.UpperChaos.sqrt_finiteLaplaceCutoff
 #print axioms Grothe.UpperChaos.sqrt_ratio_deficit_le
 #print axioms Grothe.UpperChaos.structural_fields
 #print axioms Grothe.UpperChaos.sum_diagonal_range

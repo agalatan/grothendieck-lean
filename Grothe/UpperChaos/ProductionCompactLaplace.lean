@@ -77,11 +77,8 @@ theorem norm_compactLaplaceError_cutoff_lt (j : ℕ) :
       (compactLaplaceError finiteLaplaceEta finiteLaplaceCutoff 80 j)‖ < (5 / 10 ^ 15 : ℝ) := by
   have h := norm_compactLaplaceError_le finiteLaplaceEta finiteLaplaceCutoff 80
     finiteLaplaceEta_pos finiteLaplaceCutoff_nonneg j
-  have he : finiteLaplaceEta ^ 2 * finiteLaplaceCutoff = 40 := by
-    norm_num [finiteLaplaceEta, finiteLaplaceCutoff]
-  rw [he] at h
   have hr := norm_source_eighty_le j
-  have ht := exp_neg_forty_le
+  have ht := exp_neg_scaled_finiteLaplaceCutoff_le
   exact h.trans_lt ((add_le_add hr (add_le_add le_rfl ht)).trans_lt
     (by norm_num [finiteLaplaceEta]))
 

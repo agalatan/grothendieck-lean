@@ -172,8 +172,10 @@ error estimates needed for `1.404598149141` remain work in progress.
 
 `ProductionFiniteLaplace` replaces the infinite auxiliary integral by a finite
 one for every actual Taylor source. At softening scale `η = 10⁻¹⁵` and cutoff
-`T = 40·10³⁰`, its full Gaussian L² error, including softening, is below
+`T = (2⁵³)²`, its full Gaussian L² error, including softening, is below
 `5·10⁻¹⁵`; smoothing and Hermite-band projection preserve this bound.
+The regular auxiliary variable therefore runs over the rational interval
+`[0,2⁵³]`, and `η²T ≥ 40` preserves the exponential tail estimate.
 `LeanCertAuxiliaryCutoff` checks `exp(-40) ≤ 10⁻¹⁷` with `decide +kernel`.
 The finite-integral identity is also proved for every integrable source.
 `ProductionCompactLaplace` also cuts off the first Gaussian squared radius at

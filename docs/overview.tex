@@ -134,9 +134,10 @@ for the target endpoint remain work in progress.
 
 The actual Taylor sources also admit a proved finite auxiliary reduction in
 \texttt{ProductionFiniteLaplace}. With softening $\eta=10^{-15}$ and cutoff
-$T=40\cdot10^{30}$, softening plus truncation costs less than $5\cdot10^{-15}$
+$T=(2^{53})^2$, softening plus truncation costs less than $5\cdot10^{-15}$
 in the full Gaussian $L^2$ norm. Smoothing and every Hermite-band projection
-preserve this bound. A LeanCert certificate proves $e^{-40}\le10^{-17}$ by
+preserve this bound. The regular auxiliary interval is $[0,2^{53}]$, with
+$\eta^2T\ge40$. A LeanCert certificate proves $e^{-40}\le10^{-17}$ by
 kernel reduction. The finite Fubini identity binds the truncated response to
 the coefficient integrals; their numerical quadrature remains work in progress.
 \texttt{ProductionCompactLaplace} also restricts the first squared Gaussian
