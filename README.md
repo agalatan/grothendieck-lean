@@ -427,6 +427,12 @@ Jacobian. `Q0BasePairProductionRoots` transfers the five complete-root
 enclosures to those production kernels at the fixed damping. The remaining
 algebraic leaves and complete root-to-band assembly remain work in progress.
 
+`Q0GaussianReality` proves that both full Gaussian base coefficients and
+their rationally corrected production coefficients are real, using
+conjugation invariance of the actual Gaussian source and response.
+Their complex distances from rational targets therefore equal the real
+absolute errors; no numerical or retained-domain premise is required.
+
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs

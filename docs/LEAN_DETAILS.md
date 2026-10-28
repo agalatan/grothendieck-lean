@@ -581,6 +581,13 @@ only the rectangle geometry. `Q0BasePairProductionRoots` combines them with
 the complete root results for reciprocal strips 3 and 5 and direct strips 1, 3 and 5
 at `finiteLaplaceEta`, without source identities or numerical hypotheses.
 The strict integral audit includes these production-root consumers.
+`Q0GaussianReality` separately proves reality of the full original first
+and second Gaussian coefficients by simultaneous conjugation of both
+inputs. Its Gaussian measure and phase identities use the actual `mu2`
+and `F0`. It transfers real interval errors to complex norm errors and
+also proves reality of `productionLinearFirst` and `productionLinearSecond`,
+including the rational frozen corrections. Its transitive audit permits
+only the standard Lean axioms; no numerical or truncation premise is used.
 The remaining algebraic leaves, other roots and final band energy checks
 remain separate obligations.
 

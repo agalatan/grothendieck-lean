@@ -1162,6 +1162,7 @@ import Grothe.UpperChaos.Q0BasePairRoot7Leaf
 import Grothe.UpperChaos.Q0BasePairRoot7LeafScalars
 import Grothe.UpperChaos.Q0BaseQuadrature
 import Grothe.UpperChaos.Q0CompanionBaseQuadrature
+import Grothe.UpperChaos.Q0GaussianReality
 import Grothe.UpperChaos.Q0ImaginaryWick
 import Grothe.UpperChaos.Q0PhaseWickBridge
 import Grothe.UpperChaos.Q0ProfileRectangleModel

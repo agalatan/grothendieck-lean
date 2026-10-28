@@ -909,6 +909,16 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_base_conditional_wick
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_base_quadrature_kernel
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_pointwise
+#print axioms Grothe.UpperChaos.Q0GaussianReality.firstGaussianCoefficient_im
+#print axioms Grothe.UpperChaos.Q0GaussianReality.norm_firstGaussianCoefficient_sub_rat
+#print axioms Grothe.UpperChaos.Q0GaussianReality.norm_first_gaussian_integral_sub_rat
+#print axioms Grothe.UpperChaos.Q0GaussianReality.norm_productionLinearFirst_sub_rat
+#print axioms Grothe.UpperChaos.Q0GaussianReality.norm_productionLinearSecond_sub_rat
+#print axioms Grothe.UpperChaos.Q0GaussianReality.norm_secondGaussianCoefficient_sub_rat
+#print axioms Grothe.UpperChaos.Q0GaussianReality.norm_second_gaussian_integral_sub_rat
+#print axioms Grothe.UpperChaos.Q0GaussianReality.productionLinearFirst_im
+#print axioms Grothe.UpperChaos.Q0GaussianReality.productionLinearSecond_im
+#print axioms Grothe.UpperChaos.Q0GaussianReality.secondGaussianCoefficient_im
 #print axioms Grothe.UpperChaos.Q0ProfileRectangleModel.actual_profile_model
 #print axioms Grothe.UpperChaos.Q0ProfileRectangleModel.coordinate_contains
 #print axioms Grothe.UpperChaos.Q0ProfileRectangleModel.profile_of_trace
