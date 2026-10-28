@@ -331,6 +331,15 @@ existing profile cover, giving `|κ(s)| > 1/1000` on all four remaining strips.
 Thus their reciprocal Gaussian denominator exceeds `10⁻⁶` uniformly, including
 for very small positive reciprocal coordinates.
 
+`LocalAffineSquareIntegralBounds` requires continuity only on the closed cell,
+so reciprocal certificates do not need an extension through zero.
+`RetainedMeshReality` proves that the normalized retained coefficients are real.
+`SmallProfileBandEnclosure` transfers real rational coefficient enclosures to
+a rational sum of squared residual radii and then to the original band norm,
+adding the shared `5e-15` reserve once. The complete numerical certificates
+and final endpoint remain work in progress.
+
+
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
 only with X's energy in its selected band, weighted by the retained coefficient cost. The quadratic error is

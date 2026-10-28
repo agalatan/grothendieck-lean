@@ -396,6 +396,21 @@ theorem gives `|κ(s)| > 1/1000` on every closed nonselected strip. Consequently
 The gap data share the same tracked input and generator as the radial cuts;
 the checker uses kernel reduction and introduces no native facts.
 
+`LocalAffineSquareIntegralBounds` supplies both affine integration orders with
+`ContinuousOn` restricted to the actual closed cell. Coordinate clamping
+extends the integrand continuously without changing any cell integral.
+`RetainedMeshReality` proves the imaginary parts of the complete normalized
+mesh coefficients vanish, so real enclosures control their complex norm.
+`ChargeBandEnclosure` subtracts the stored Hermite center, forms the rational
+residual radius `|center-target|+radius`, and bounds the selected Parseval sum.
+`SmallProfileBandEnclosure.norm_band_error_le_real_enclosure` applies this
+finite rational energy to the concrete source, adding `5e-15` once per band.
+`norm_band_error_le_cap` reserves this amount before squaring, preserving
+the original rational cap. The actual coefficient enclosures and numerical
+energy inequality still need
+to be supplied for each of the fourteen original band tolerances.
+
+
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual
 kernel. `upper_of_finite_sample_bounds` reduces that estimate to complex
