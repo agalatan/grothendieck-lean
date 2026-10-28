@@ -64,7 +64,7 @@ theorem norm_compactLaplaceError_le (η T L : ℝ) (hη : 0 < η) (hT : 0 ≤ T)
   rw [heq, MemLp.toLp_add (TaylorRadialTail.source_memLp L j)
     ((finiteLaplaceError_memLp η T hη hT j).indicator
       (TaylorRadialTail.measurableSet_cutoffSet L).compl)]
-  refine (norm_add_le _ _).trans (add_le_add_left ?_ _)
+  refine (norm_add_le _ _).trans (add_le_add le_rfl ?_)
   exact (norm_toLp_indicator_le (finiteLaplaceError_memLp η T hη hT j)
     (TaylorRadialTail.measurableSet_cutoffSet L).compl).trans
       (norm_finiteLaplaceError_le η T hη hT j)
@@ -82,8 +82,8 @@ theorem norm_compactLaplaceError_cutoff_lt (j : ℕ) :
   rw [he] at h
   have hr := norm_source_eighty_le j
   have ht := exp_neg_forty_le
-  norm_num [finiteLaplaceEta] at h
-  linarith
+  exact h.trans_lt ((add_le_add hr (add_le_add le_rfl ht)).trans_lt
+    (by norm_num [finiteLaplaceEta]))
 
 /-- The compact-domain reduction controls every band after actual smoothing. -/
 theorem norm_projOn_smooth_compactLaplaceError_cutoff_lt (B : Set Idx2) (j : ℕ) :
