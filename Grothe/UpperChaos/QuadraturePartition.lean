@@ -19,6 +19,24 @@ noncomputable section
 def rectangleIntegral (f : ℝ → ℝ → ℂ) (a b c d : ℝ) : ℂ :=
   ∫ u in a..b, ∫ s in c..d, f u s
 
+/-- The complete auxiliary range is split at `0, 1, 2, 4, ..., 2^53`. -/
+def dyadicAuxiliaryCut (k : ℕ) : ℝ := if k = 0 then 0 else 2 ^ (k - 1)
+
+theorem dyadicAuxiliaryCut_zero : dyadicAuxiliaryCut 0 = 0 := by
+  simp [dyadicAuxiliaryCut]
+
+theorem dyadicAuxiliaryCut_succ (k : ℕ) : dyadicAuxiliaryCut (k + 1) = 2 ^ k := by
+  simp [dyadicAuxiliaryCut]
+
+theorem monotone_dyadicAuxiliaryCut : Monotone dyadicAuxiliaryCut := by
+  apply monotone_nat_of_le_succ
+  intro k
+  cases k with
+  | zero => norm_num [dyadicAuxiliaryCut]
+  | succ k =>
+      rw [dyadicAuxiliaryCut_succ, dyadicAuxiliaryCut_succ]
+      exact pow_le_pow_right₀ (by norm_num : (1 : ℝ) ≤ 2) (Nat.le_succ k)
+
 /-- A complete strip partition may have a different radial mesh in each strip. -/
 theorem rectangleIntegral_eq_sum (f : ℝ → ℝ → ℂ)
     (hf : Continuous f.uncurry) (a : ℕ → ℝ) (m : ℕ)
@@ -45,6 +63,20 @@ theorem rectangleIntegral_eq_sum (f : ℝ → ℝ → ℂ)
   intro k _hk
   exact (intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'
     hf (b i k) (b i (k + 1))).intervalIntegrable (a i) (a (i + 1))
+
+/-- The production rectangle is covered by all dyadic strips, with arbitrary
+complete radial subdivisions inside each strip. -/
+theorem rectangleIntegral_dyadic_eq_sum (f : ℝ → ℝ → ℂ)
+    (hf : Continuous f.uncurry) (b : ℕ → ℕ → ℝ) (n : ℕ → ℕ)
+    (hleft : ∀ i < 54, b i 0 = 0) (hright : ∀ i < 54, b i (n i) = 80) :
+    rectangleIntegral f 0 (2 ^ 53) 0 80 =
+      ∑ i ∈ Finset.range 54, ∑ k ∈ Finset.range (n i),
+        rectangleIntegral f (dyadicAuxiliaryCut i) (dyadicAuxiliaryCut (i + 1))
+          (b i k) (b i (k + 1)) := by
+  have hend : dyadicAuxiliaryCut 54 = (2 : ℝ) ^ 53 := by
+    simpa using dyadicAuxiliaryCut_succ 53
+  simpa only [dyadicAuxiliaryCut_zero, hend] using
+    rectangleIntegral_eq_sum f hf dyadicAuxiliaryCut 54 b n 0 80 hleft hright
 
 /-- Certified cell errors add to a rigorous error for the whole rectangle. -/
 theorem norm_rectangleIntegral_sub_sum_le (f : ℝ → ℝ → ℂ)
