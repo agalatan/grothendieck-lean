@@ -70,13 +70,19 @@ end Grothe.UpperChaos.{PROFILE}
     scalars = scalars.replace('Q0BasePairLeafScalars', SCALARS)
     outputs = {PROFILE + '.lean': profile, SCALARS + '.lean': scalars}
     namespaces = []
+    previous = None
     for cell, leaf in zip(cells, recipe['leaves'], strict=True):
         assert cell['cell'] == leaf['cell']
         namespace = 'Q0BasePairRoot10Leaf' + leaf['path']
         namespaces.append(namespace)
         _, text = render_cell(data, cell, digest, indices, shared_profile=PROFILE)
         text = text.replace('Q0BasePairDirectLeaf', namespace).replace('Q0BasePairLeafScalars', SCALARS)
+        # Each file performs substantial kernel reduction. A dependency chain
+        # bounds simultaneous leaf elaborations without changing their proofs.
+        if previous is not None:
+            text = 'import Grothe.UpperChaos.' + previous + '\n' + text
         outputs[namespace + '.lean'] = text
+        previous = namespace
     imports = '\n'.join('import Grothe.UpperChaos.' + ns for ns in namespaces)
     targets = ',\n    '.join('``Grothe.UpperChaos.' + ns + '.integrals_mem' for ns in namespaces)
     outputs['Q0BasePairRoot10Audit.lean'] = f'''{imports}
