@@ -1,4 +1,4 @@
-import Grothe.UpperChaos.HardyArcMean
+import Grothe.UpperChaos.HardyArcData
 
 /-! Part 0 of the Hardy arc cover (−1 ≤ s ≤ 0, chart +): one single-threaded `native_decide`; the four parts are separate modules
 so that Lake checks them in parallel. -/
