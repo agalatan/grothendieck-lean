@@ -383,6 +383,8 @@ includes the reciprocal Jacobian, and encloses the normalization using the
 existing rational bounds for the square root of pi. Complete leaf intervals
 then give the rational coefficient bounds required by the band transfer;
 the numerical leaf and energy certificates remain work in progress.
+Certified subtrees can also be combined directly at each midpoint split,
+then passed as fourteen root intervals without expanding one large leaf list.
 
 
 Lean also proves a selected-spectrum comparison: the error is split

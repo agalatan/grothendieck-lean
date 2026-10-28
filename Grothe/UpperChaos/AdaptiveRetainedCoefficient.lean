@@ -122,14 +122,44 @@ theorem retainedRealValue_eq_re {N : ℕ} (i : GradedIdx N) (j : ℕ) :
 def rootInterval (t : SplitTree) (r : Rect) (bound : Rect → IntervalRat) : IntervalRat :=
   enclosureSum ((t.leaves r).map bound)
 
+/-- Sum and normalize the fourteen certified root intervals. -/
+def normalizedRootInterval (regularBounds reciprocalBounds : ℕ → IntervalRat) : IntervalRat :=
+  IntervalRat.mul GaussianNormalizationInterval.normalization
+    (enclosureSum ((List.range 7).map (fun k => IntervalRat.add
+      (regularBounds k) (reciprocalBounds k))))
+
+/-- Root certificates may be assembled in separate checked subtrees; their
+normalization does not require expanding a monolithic list of leaves. -/
+theorem coefficient_mem_of_roots {N : ℕ} (i : GradedIdx N) (j : ℕ)
+    (regularBounds reciprocalBounds : ℕ → IntervalRat)
+    (hregular : ∀ k < 7, (regularRoot k).integral (regularKernel i j) ∈ regularBounds k)
+    (hreciprocal : ∀ k < 7,
+      (reciprocalRoot k).integral (reciprocalRealKernel i j) ∈ reciprocalBounds k) :
+    (retainedReciprocalMeshValue i j cut 7 selected).re ∈
+      normalizedRootInterval regularBounds reciprocalBounds := by
+  rw [← retainedRealValue_eq_re]
+  apply GaussianNormalizationInterval.normalized_mem
+  have hsum := sum_mem_enclosureSum (List.range 7)
+    (fun k => (regularRoot k).integral (regularKernel i j) +
+      (reciprocalRoot k).integral (reciprocalRealKernel i j))
+    (fun k => IntervalRat.add (regularBounds k) (reciprocalBounds k))
+    (fun k hk => IntervalRat.mem_add
+      (hregular k (List.mem_range.mp hk)) (hreciprocal k (List.mem_range.mp hk)))
+  have hsumEq := List.sum_toFinset
+    (fun k => (regularRoot k).integral (regularKernel i j) +
+      (reciprocalRoot k).integral (reciprocalRealKernel i j))
+    (List.nodup_range (n := 7))
+  rw [List.toFinset_range] at hsumEq
+  rw [hsumEq]
+  exact hsum
+
 /-- The complete fourteen-root enclosure includes the certified Gaussian
 normalization interval. It contains no source-omission reserve. -/
 def coefficientInterval (regularTrees reciprocalTrees : ℕ → SplitTree)
     (regularBounds reciprocalBounds : ℕ → Rect → IntervalRat) : IntervalRat :=
-  IntervalRat.mul GaussianNormalizationInterval.normalization
-    (enclosureSum ((List.range 7).map (fun k => IntervalRat.add
-      (rootInterval (regularTrees k) (regularRoot k) (regularBounds k))
-      (rootInterval (reciprocalTrees k) (reciprocalRoot k) (reciprocalBounds k)))))
+  normalizedRootInterval
+    (fun k => rootInterval (regularTrees k) (regularRoot k) (regularBounds k))
+    (fun k => rootInterval (reciprocalTrees k) (reciprocalRoot k) (reciprocalBounds k))
 
 /-- Complete leaf certificates for all fixed roots enclose the actual
 retained coefficient; the domain and normalization facts are discharged. -/
@@ -142,29 +172,18 @@ theorem coefficient_mem {N : ℕ} (i : GradedIdx N) (j : ℕ)
       q.integral (reciprocalRealKernel i j) ∈ reciprocalBounds k q) :
     (retainedReciprocalMeshValue i j cut 7 selected).re ∈
       coefficientInterval regularTrees reciprocalTrees regularBounds reciprocalBounds := by
-  rw [← retainedRealValue_eq_re]
-  apply GaussianNormalizationInterval.normalized_mem
-  have hsum := sum_mem_enclosureSum (List.range 7)
-    (fun k => (regularRoot k).integral (regularKernel i j) +
-      (reciprocalRoot k).integral (reciprocalRealKernel i j))
-    (fun k => IntervalRat.add
-      (rootInterval (regularTrees k) (regularRoot k) (regularBounds k))
-      (rootInterval (reciprocalTrees k) (reciprocalRoot k) (reciprocalBounds k)))
-    (fun k hk => IntervalRat.mem_add
-      (SplitTree.integral_mem_enclosureSum (regularTrees k) (regularRoot k)
-        (regularRoot_valid k) (regularKernel i j) (continuousOn_regularKernel i j k)
-        (regularBounds k) (hregular k (List.mem_range.mp hk)))
-      (SplitTree.integral_mem_enclosureSum (reciprocalTrees k) (reciprocalRoot k)
-        (reciprocalRoot_valid k) (reciprocalRealKernel i j)
-        (continuousOn_reciprocalRealKernel i j k)
-        (reciprocalBounds k) (hreciprocal k (List.mem_range.mp hk))))
-  have hsumEq := List.sum_toFinset
-    (fun k => (regularRoot k).integral (regularKernel i j) +
-      (reciprocalRoot k).integral (reciprocalRealKernel i j))
-    (List.nodup_range (n := 7))
-  rw [List.toFinset_range] at hsumEq
-  rw [hsumEq]
-  exact hsum
+  apply coefficient_mem_of_roots i j
+    (fun k => rootInterval (regularTrees k) (regularRoot k) (regularBounds k))
+    (fun k => rootInterval (reciprocalTrees k) (reciprocalRoot k) (reciprocalBounds k))
+  · intro k hk
+    exact SplitTree.integral_mem_enclosureSum (regularTrees k) (regularRoot k)
+      (regularRoot_valid k) (regularKernel i j) (continuousOn_regularKernel i j k)
+      (regularBounds k) (hregular k hk)
+  · intro k hk
+    exact SplitTree.integral_mem_enclosureSum (reciprocalTrees k) (reciprocalRoot k)
+      (reciprocalRoot_valid k) (reciprocalRealKernel i j)
+      (continuousOn_reciprocalRealKernel i j k)
+      (reciprocalBounds k) (hreciprocal k hk)
 
 /-- Rational endpoint checks turn the complete normalized enclosure into
 the actual coefficient bound consumed by the original band budgets. -/

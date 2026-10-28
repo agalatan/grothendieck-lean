@@ -192,6 +192,7 @@ import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.Realise
 import Grothe.Upper.Residual
 import Grothe.Upper.WeightedUnion
+import Grothe.UpperChaos.AdaptiveRectangleComposition
 import Grothe.UpperChaos.AdaptiveRectangleEnclosure
 import Grothe.UpperChaos.AdaptiveRectanglePartition
 import Grothe.UpperChaos.AdaptiveRetainedCoefficient

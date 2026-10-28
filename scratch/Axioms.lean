@@ -221,8 +221,12 @@ import Grothe
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.area_nonneg
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.auxMid_bounds
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.integral_congr
+#print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.integral_mem_add_splitAux
+#print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.integral_mem_add_splitS
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.integral_splitAux
+#print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.integral_splitAux_of_continuousOn
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.integral_splitS
+#print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.integral_splitS_of_continuousOn
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.leftAux_domain_subset
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.leftAux_valid
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.leftS_domain_subset
@@ -241,6 +245,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.sum_mem_enclosureSum
 #print axioms Grothe.UpperChaos.AdaptiveRetainedCoefficient.coefficient_abs_sub_le
 #print axioms Grothe.UpperChaos.AdaptiveRetainedCoefficient.coefficient_mem
+#print axioms Grothe.UpperChaos.AdaptiveRetainedCoefficient.coefficient_mem_of_roots
 #print axioms Grothe.UpperChaos.AdaptiveRetainedCoefficient.continuousOn_reciprocalRealKernel
 #print axioms Grothe.UpperChaos.AdaptiveRetainedCoefficient.continuousOn_regularKernel
 #print axioms Grothe.UpperChaos.AdaptiveRetainedCoefficient.reciprocalLo_cast

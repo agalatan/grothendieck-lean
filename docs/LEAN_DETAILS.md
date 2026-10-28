@@ -481,6 +481,11 @@ and `coefficient_abs_sub_le` consume the complete leaf certificates and
 rational endpoint checks. Gaussian normalization is included by interval
 multiplication; the separate source reserve is still charged only by the
 band transfer. The actual leaf certificates and energy checks remain open.
+`AdaptiveRectangleComposition` combines certified child intervals under
+local parent continuity using the exact midpoint integral identity. The
+`coefficient_mem_of_roots` consumer accepts the resulting fourteen root
+intervals, allowing separately checked subtrees and reuse without a
+monolithic leaf-membership proof.
 
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
