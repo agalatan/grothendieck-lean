@@ -517,6 +517,20 @@ The full production-kernel binding, other roots and final band energies
 remain work in progress.
 
 
+`tools/gen_analytic_envelope_cells.py` renders every analytic-envelope leaf
+of the fixed base-pair mesh from the pinned certificate. Shared
+`AnalyticEnvelopeProfiles` theorems check the actual profile through rounded
+Horner traces. Shared `AnalyticEnvelopeExponentials` theorems use LeanCert's
+dyadic checker with kernel reduction. Each `AnalyticEnvelopeCell` theorem
+then proves both actual iterated integral memberships, for arbitrary damping,
+by exact finite-area bounds. It retains the original first lower endpoint
+and signed companion interval; it spends no extra source reserve.
+Four dependency lanes bound parallel certificate evaluation. The numerical
+witnesses and the exact exponential algorithm are also replayed by the
+generator, but only the Lean theorems establish their mathematical validity.
+The algebraic leaf certificates, exact whole-root assembly and final band
+energy checks remain separate obligations.
+
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual
 kernel. `upper_of_finite_sample_bounds` reduces that estimate to complex

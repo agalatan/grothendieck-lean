@@ -401,6 +401,12 @@ keeps its nonnegative lower endpoint. This supplies one complete root;
 the remaining roots, production-kernel identification and band energies
 still have to be assembled before the upper endpoint is done.
 
+The generated `AnalyticEnvelopeCell` family supplies both explicit integral
+enclosures for every analytic-envelope leaf of the fixed base-pair mesh.
+The cells reuse checked profile and exponential bounds and retain their
+original rational intervals. The algebraic leaves and complete root-to-band
+assembly remain work in progress.
+
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
