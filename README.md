@@ -356,6 +356,10 @@ the sign factor is one. These identities use only the standard Lean axioms.
 `F0ConditionalSeedRecurrence` derives the exact zero-row step of the actual
 evaluator from the original positive-moment ratio, including the signed
 production step and its factorial normalization.
+`F0ConditionalCoefficientBounds` bounds every actual canonical coefficient
+by one using its Gaussian Hilbert-space inner product. It bounds the two-term
+raising sum by `sqrt(c+1)+sqrt(d+1) < 35` over the stored index rectangle.
+The parameter derivative identity and its midpoint error transfer remain open.
 Concrete numerical node enclosures and the complete upper bound remain open.
 
 `ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`

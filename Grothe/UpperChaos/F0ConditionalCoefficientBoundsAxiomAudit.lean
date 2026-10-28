@@ -1,0 +1,10 @@
+import Grothe.UpperChaos.F0ConditionalCoefficientBounds
+import Grothe.UpperChaos.OneSidedHermiteSeedAxiomAudit
+
+/-! Strict transitive audit of the coefficient and raising-sum norm bounds.
+Agent-ID: codex-8c4d. -/
+
+assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.norm_canonicalCoefficient_le_one
+assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.norm_canonicalRaisingSum_le
+assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.storage_raising_constant_lt
+assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.norm_canonicalRaisingSum_lt

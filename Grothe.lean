@@ -607,6 +607,8 @@ import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
 import Grothe.UpperChaos.ExponentialHorner
 import Grothe.UpperChaos.ExponentialTail
+import Grothe.UpperChaos.F0ConditionalCoefficientBounds
+import Grothe.UpperChaos.F0ConditionalCoefficientBoundsAxiomAudit
 import Grothe.UpperChaos.F0ConditionalEvaluator
 import Grothe.UpperChaos.F0ConditionalNode
 import Grothe.UpperChaos.F0ConditionalSeed

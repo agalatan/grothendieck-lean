@@ -375,6 +375,12 @@ guard rejects dependencies beyond the standard three Lean axioms.
 for the actual canonical Gaussian integral, with positivity of `J_d`
 discharged internally. It also proves the signed production recurrence and
 that each canonical zero-row coefficient has zero imaginary part.
+`F0ConditionalCoefficientBounds` represents the actual canonical coefficient
+as an inner product against the bounded phase in `L²(gaussC)` and applies
+Cauchy--Schwarz with the normalized Hermite basis to bound its norm by one.
+The actual raising sum is bounded by `sqrt(c+1)+sqrt(d+1)`, which is strictly
+below `35` when `c ≤ 266` and `d ≤ 265`. This does not establish the parameter
+derivative formula or the single midpoint error allowance; those remain open.
 Concrete numerical node bounds and the full upper bound remain unproved.
 
 `ShiftedMomentRecurrence` proves
