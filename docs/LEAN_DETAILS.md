@@ -528,7 +528,16 @@ and signed companion interval; it spends no extra source reserve.
 Four dependency lanes bound parallel certificate evaluation. The numerical
 witnesses and the exact exponential algorithm are also replayed by the
 generator, but only the Lean theorems establish their mathematical validity.
-The algebraic leaf certificates, exact whole-root assembly and final band
+`Q0BasePairRoot7Integral.fixed_root_integrals_mem` combines the three
+analytic-envelope leaves and the algebraic leaf on the complete reciprocal
+root of strip 3. `Q0BasePairRoot10Integral.fixed_root_integrals_mem` combines
+the twelve algebraic leaves on the direct root of strip 5. Each theorem
+checks the exact midpoint geometry and discharges every leaf membership at
+the fixed damping `1/10^15`. Continuity justifies the exact adjacent-integral
+identities. The result intervals are the ordered sums of the proved leaf
+intervals, without another source reserve. Root 10 is generated from its
+committed recipe by `tools/gen_base_pair_root10_integral.py --check`.
+The remaining algebraic leaves, production-kernel binding and final band
 energy checks remain separate obligations.
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives

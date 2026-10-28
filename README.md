@@ -404,8 +404,13 @@ still have to be assembled before the upper endpoint is done.
 The generated `AnalyticEnvelopeCell` family supplies both explicit integral
 enclosures for every analytic-envelope leaf of the fixed base-pair mesh.
 The cells reuse checked profile and exponential bounds and retain their
-original rational intervals. The algebraic leaves and complete root-to-band
-assembly remain work in progress.
+original rational intervals. `Q0BasePairRoot7Integral` combines three such
+leaves with an algebraic cell certificate on the complete reciprocal root
+of strip 3. `Q0BasePairRoot10Integral` combines all twelve algebraic leaves
+on the direct root of strip 5. Both preserve exact midpoint geometry and
+prove both explicit integrals without leaf or numerical premises. The
+remaining algebraic leaves and complete root-to-band assembly remain work
+in progress.
 
 
 Lean also proves a selected-spectrum comparison: the error is split
