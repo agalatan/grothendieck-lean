@@ -362,6 +362,17 @@ a rational sum of squared residual radii and then to the original band norm,
 adding the shared `5e-15` reserve once. The complete numerical certificates
 and final endpoint remain work in progress.
 
+`ConcreteRetainedBands` specializes this transfer to all fourteen captured
+bands, checking the actual degree cutoffs and reserve inequalities. The
+coefficient enclosures and rational residual-energy checks remain to be filled.
+
+`AdaptiveRectanglePartition` represents each retained root by a rational
+rectangle and a binary midpoint tree. It proves that the original integral
+equals the sum of its ordered leaf integrals, with auxiliary integration
+outside radial integration and continuity needed only on the closed root.
+The actual leaf certificates remain to be supplied.
+
+
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs

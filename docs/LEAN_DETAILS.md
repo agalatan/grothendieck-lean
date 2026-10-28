@@ -445,6 +445,25 @@ the original rational cap. The actual coefficient enclosures and numerical
 energy inequality still need
 to be supplied for each of the fourteen original band tolerances.
 
+`ConcreteRetainedBands` fixes the actual first-, second-, and third-order
+sources and their stored center lengths 91, 46, and 26. The finite coefficient
+cutoff for each band is `(bandHi+1)/2`; kernel reduction checks its degree
+coverage and that the original cap exceeds the shared reserve. The three
+error-family transfers need only complete retained coefficient enclosures
+and their rational energy checks. They leave factorial scaling to the
+existing comparison decomposition.
+
+`AdaptiveRectanglePartition.Rect` stores rational radial and auxiliary
+endpoints. `SplitTree` has `leaf`, `splitS`, and `splitAux` constructors;
+each split derives its children by exact rational midpoint. Its ordered
+`leaves` list preserves multiplicities. `leaf_valid_and_subset` proves every
+leaf is valid and contained in the root. `integral_eq_sum` identifies the
+outer-auxiliary, inner-radial integral with the sum of all leaf integrals
+under `ContinuousOn` on the closed root. The proof extends the integrand
+once by coordinate clamping and uses adjacent-interval additivity at every
+split. Numerical enclosures for the actual leaves remain separate inputs.
+
+
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual
