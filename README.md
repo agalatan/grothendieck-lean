@@ -317,6 +317,11 @@ sum of nonoverlapping rectangles of the checked continuous evaluator. Its
 reciprocal form uses `x=1/u` on the auxiliary tail, with exact Jacobian and
 positive rational endpoints. These identities preserve the existing budgets;
 the numerical retained-energy certificates remain work in progress.
+`ReciprocalQuadraturePartition` covers each positive reciprocal rectangle
+by finite cells, using the continuous original kernel at inverse boundaries.
+`ProductionMeshEnclosure` sums the regular and reciprocal cell errors into
+an enclosure of the actual retained Gaussian coefficient, including its
+normalization. The shared source reserve remains outside this cell sum.
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs

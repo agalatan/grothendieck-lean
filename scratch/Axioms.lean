@@ -274,6 +274,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProfileRootScreen.sqrtPi_real_bounds
 #print axioms Grothe.UpperChaos.QuadraturePartition.integral_auxiliary_reciprocal
 #print axioms Grothe.UpperChaos.QuadraturePartition.monotone_dyadicAuxiliaryCut
+#print axioms Grothe.UpperChaos.QuadraturePartition.norm_rectangleIntegral_reciprocal_sub_sum_le
 #print axioms Grothe.UpperChaos.QuadraturePartition.norm_rectangleIntegral_sub_sum_le
 #print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_dyadic_eq_sum
 #print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_eq_initial_add_reciprocal
@@ -282,6 +283,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_eq_sum_radial
 #print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_production_tail_eq_reciprocal
 #print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_radial_prefix_sub
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_reciprocal_eq_neg
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_reciprocal_eq_sum
 #print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_sub_selected_eq_retained
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_diagonal_exp_tail
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_radial_cutoff
@@ -578,6 +581,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_inner_hpow_sub_compactQuadrature_cutoff_le
 #print axioms Grothe.UpperChaos.norm_inner_hpow_sub_profileRetained_le
 #print axioms Grothe.UpperChaos.norm_inner_hpow_sub_quadrature_le
+#print axioms Grothe.UpperChaos.norm_inner_profileRetained_sub_meshCenters_le
 #print axioms Grothe.UpperChaos.norm_integral_affine_phaseLaplace_base
 #print axioms Grothe.UpperChaos.norm_integral_affine_phaseLaplace_base_le
 #print axioms Grothe.UpperChaos.norm_integral_softPhaseLaplace_tail_le
@@ -610,6 +614,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_projOn_source_le_of_captured_family
 #print axioms Grothe.UpperChaos.norm_projOn_sq_add_le_of_disjoint
 #print axioms Grothe.UpperChaos.norm_projOn_sq_add_norm_sub_projOn_sq
+#print axioms Grothe.UpperChaos.norm_retainedReciprocalMeshValue_sub_sum_le
 #print axioms Grothe.UpperChaos.norm_roundingDifference_le
 #print axioms Grothe.UpperChaos.norm_roundingDifference_sq
 #print axioms Grothe.UpperChaos.norm_secondCaptured_taylorCenters_le

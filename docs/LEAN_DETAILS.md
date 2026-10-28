@@ -368,6 +368,16 @@ integrands on positive finite intervals. The reciprocal endpoints are
 `1/100` and `2⁻⁵³`, so no value or regularity assertion at zero is needed.
 The actual production kernel is identified with the continuous evaluator on
 rectangle interiors; the auxiliary-zero boundary contributes no extra term.
+`ReciprocalQuadraturePartition.rectangleIntegral_reciprocal_eq_sum` proves
+complete finite cell coverage at positive reciprocal boundaries by applying
+the original-kernel partition to their inverses. It requires no extension
+of the reciprocal kernel through zero. Its norm theorem sums certified
+cell radii over the entire rectangle.
+`ProductionMeshEnclosure.norm_inner_profileRetained_sub_meshCenters_le`
+then combines regular and reciprocal strip enclosures with the Gaussian
+normalization to bound the actual retained pairing. The source approximation
+reserve is still applied only at the band-transfer stage. Numerical cell
+and band-energy estimates remain to be supplied.
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual

@@ -159,6 +159,12 @@ sum of retained nonoverlapping rectangles of the continuous unit-mode
 evaluator. An exact substitution $x=1/u$ maps each auxiliary tail to a bounded
 interval with positive rational lower endpoint, including the Jacobian
 $x^{-2}$. No extra truncation or endpoint-zero premise is used.
+Finite partitions of these positive reciprocal intervals follow by mapping
+their boundaries back to the original coordinate.
+\texttt{ProductionMeshEnclosure} sums the certified regular and reciprocal
+cell radii, with the Gaussian normalization, into an enclosure of the actual
+retained coefficient. The common source reserve is applied afterward at
+the band level. The numerical cell and energy certificates remain open.
 
 A second conditional route uses a finite-head estimate for the actual kernel
 directly; the coefficient enclosures and numerical head estimate are still

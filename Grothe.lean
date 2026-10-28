@@ -324,6 +324,7 @@ import Grothe.UpperChaos.PhiHorner
 import Grothe.UpperChaos.ProductComplete
 import Grothe.UpperChaos.ProductionCompactLaplace
 import Grothe.UpperChaos.ProductionFiniteLaplace
+import Grothe.UpperChaos.ProductionMeshEnclosure
 import Grothe.UpperChaos.ProductionRadialTail
 import Grothe.UpperChaos.ProductionRectangleAssembly
 import Grothe.UpperChaos.ProductionSmallBall
@@ -364,6 +365,7 @@ import Grothe.UpperChaos.RationalWickParity
 import Grothe.UpperChaos.RealGaussianKernelTail
 import Grothe.UpperChaos.Realise2
 import Grothe.UpperChaos.ReciprocalQuadrature
+import Grothe.UpperChaos.ReciprocalQuadraturePartition
 import Grothe.UpperChaos.RectangleIntegralBounds
 import Grothe.UpperChaos.RectangleListPolynomialIntegral
 import Grothe.UpperChaos.RectangleMonomialIntegral
