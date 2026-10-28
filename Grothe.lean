@@ -346,8 +346,10 @@ import Grothe.UpperChaos.RationalWickDefs
 import Grothe.UpperChaos.RationalWickParity
 import Grothe.UpperChaos.RealGaussianKernelTail
 import Grothe.UpperChaos.Realise2
+import Grothe.UpperChaos.ReciprocalQuadrature
 import Grothe.UpperChaos.RestrictedPhaseMoments
 import Grothe.UpperChaos.RestrictedWick
+import Grothe.UpperChaos.RetainedQuadraturePartition
 import Grothe.UpperChaos.Rounder
 import Grothe.UpperChaos.SchurBound
 import Grothe.UpperChaos.SchurIntegrability

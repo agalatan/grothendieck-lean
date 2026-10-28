@@ -272,10 +272,16 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProfileRootScreen.profile_inner
 #print axioms Grothe.UpperChaos.ProfileRootScreen.profile_outer
 #print axioms Grothe.UpperChaos.ProfileRootScreen.sqrtPi_real_bounds
+#print axioms Grothe.UpperChaos.QuadraturePartition.integral_auxiliary_reciprocal
 #print axioms Grothe.UpperChaos.QuadraturePartition.monotone_dyadicAuxiliaryCut
 #print axioms Grothe.UpperChaos.QuadraturePartition.norm_rectangleIntegral_sub_sum_le
 #print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_dyadic_eq_sum
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_eq_reciprocal
 #print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_eq_sum
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_eq_sum_radial
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_production_tail_eq_reciprocal
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_radial_prefix_sub
+#print axioms Grothe.UpperChaos.QuadraturePartition.rectangleIntegral_sub_selected_eq_retained
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_diagonal_exp_tail
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_radial_cutoff
 #print axioms Grothe.UpperChaos.RadialCutoff.gaussC_radial_exp_tail
