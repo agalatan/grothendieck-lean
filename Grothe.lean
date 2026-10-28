@@ -325,6 +325,7 @@ import Grothe.UpperChaos.ProductComplete
 import Grothe.UpperChaos.ProductionCompactLaplace
 import Grothe.UpperChaos.ProductionFiniteLaplace
 import Grothe.UpperChaos.ProductionRadialTail
+import Grothe.UpperChaos.ProductionRectangleAssembly
 import Grothe.UpperChaos.ProductionSmallBall
 import Grothe.UpperChaos.ProductionSoftPhase
 import Grothe.UpperChaos.ProfileAdaptiveSource

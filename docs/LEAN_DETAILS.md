@@ -358,6 +358,16 @@ finite coefficient residual with the exact band energy. Its final transfer
 adds the source reserve once per band, using the common
 `norm_projOn_chargeOne_sub_graded_sq` identity also used by the full compact
 rectangle. The numerical retained-energy certificates remain to be supplied.
+`ProductionRectangleAssembly.inner_profileRetained_eq_mesh` combines these
+identities with the checked continuous unit-mode evaluator: the coefficient
+is a sum of retained radial-strip rectangles, with endpoint `100` on selected
+strips and `2⁵³` elsewhere. `inner_profileRetained_eq_reciprocalMesh` splits
+each auxiliary interval at one and rewrites its tail with `x=1/u` and Jacobian
+`x⁻²`. `ReciprocalQuadrature` proves the substitution for arbitrary complex
+integrands on positive finite intervals. The reciprocal endpoints are
+`1/100` and `2⁻⁵³`, so no value or regularity assertion at zero is needed.
+The actual production kernel is identified with the continuous evaluator on
+rectangle interiors; the auxiliary-zero boundary contributes no extra term.
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual

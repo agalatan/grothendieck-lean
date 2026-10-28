@@ -36,7 +36,7 @@ theorem rectangleIntegral_radial_prefix_sub (f : ℝ → ℝ → ℂ)
     ((intervalIntegral.continuous_parametric_intervalIntegral_of_continuous' hf c a).
       intervalIntegrable u v)]
   apply intervalIntegral.integral_congr
-  intro x
+  intro x _hx
   exact intervalIntegral.integral_interval_sub_left
     ((hf.uncurry_left x).intervalIntegrable c b)
     ((hf.uncurry_left x).intervalIntegrable c a)

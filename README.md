@@ -312,6 +312,11 @@ and the complete endpoint remain work in progress.
 disjoint finite radial union with its exact rectangle integrals.
 `ProfileIntervalBands` uses this identity and charge-one Parseval to transfer
 the retained coefficient energy to the original fourteen band obligations.
+`ProductionRectangleAssembly` identifies each retained coefficient with a
+sum of nonoverlapping rectangles of the checked continuous evaluator. Its
+reciprocal form uses `x=1/u` on the auxiliary tail, with exact Jacobian and
+positive rational endpoints. These identities preserve the existing budgets;
+the numerical retained-energy certificates remain work in progress.
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs

@@ -55,7 +55,7 @@ theorem rectangleIntegral_eq_reciprocal (f : ℝ → ℝ → ℂ) (a b c d : ℝ
   unfold rectangleIntegral
   rw [integral_auxiliary_reciprocal _ a b ha hb]
   apply intervalIntegral.integral_congr
-  intro x
+  intro x _hx
   simp only [reciprocalKernel, intervalIntegral.integral_smul]
 
 /-- The complete production tail from auxiliary one to `2^53` has rational
@@ -65,6 +65,20 @@ theorem rectangleIntegral_production_tail_eq_reciprocal (f : ℝ → ℝ → ℂ
       rectangleIntegral (reciprocalKernel f) ((2 : ℝ) ^ 53)⁻¹ 1 c d := by
   simpa only [inv_one] using rectangleIntegral_eq_reciprocal f 1 (2 ^ 53) c d
     (by norm_num) (by positivity)
+
+/-- Split at auxiliary one and transform the entire remaining finite interval. -/
+theorem rectangleIntegral_eq_initial_add_reciprocal (f : ℝ → ℝ → ℂ)
+    (hf : Continuous f.uncurry) (v c d : ℝ) (hv : 0 < v) :
+    rectangleIntegral f 0 v c d = rectangleIntegral f 0 1 c d +
+      rectangleIntegral (reciprocalKernel f) v⁻¹ 1 c d := by
+  have hF : Continuous (fun u => ∫ s in c..d, f u s) :=
+    intervalIntegral.continuous_parametric_intervalIntegral_of_continuous' hf c d
+  calc
+    _ = rectangleIntegral f 0 1 c d + rectangleIntegral f 1 v c d := by
+      exact (intervalIntegral.integral_add_adjacent_intervals
+        (hF.intervalIntegrable 0 1) (hF.intervalIntegrable 1 v)).symm
+    _ = _ := by
+      rw [rectangleIntegral_eq_reciprocal f 1 v c d (by norm_num) hv, inv_one]
 
 end
 end Grothe.UpperChaos.QuadraturePartition
