@@ -299,6 +299,7 @@ import Grothe.UpperChaos.OriginalEnergyBudget
 import Grothe.UpperChaos.OriginalEnergyNoMass
 import Grothe.UpperChaos.OriginalMomentIntegrable
 import Grothe.UpperChaos.OriginalMomentPullback
+import Grothe.UpperChaos.OriginalMomentSubstitution
 import Grothe.UpperChaos.OriginalMomentSubstitutionLemmas
 import Grothe.UpperChaos.PackedDyadic
 import Grothe.UpperChaos.PackedDyadicChunks

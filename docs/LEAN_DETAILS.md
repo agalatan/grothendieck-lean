@@ -288,8 +288,10 @@ on the positive half-line and that `sin²` has the expected derivative and
 maps the angular interval into `[0,1]`, with its interior mapped into `(0,1)`.
 `OriginalMomentPullback` proves that the original integrand composed with
 `sin²`, multiplied by its Jacobian, equals twice the angular density on the
-open angular interval. The integral change of variables, endpoint handling,
-and any concrete numerical node bounds remain unproved.
+open angular interval. `OriginalMomentSubstitution` handles the endpoints by
+almost-everywhere equality and proves `J_h(x) = (4/π) * M_h(x)` for every
+order and real parameter. The formal transfer of the ratio bounds to `J_h`
+and concrete numerical node bounds remain unproved.
 
 `ShiftedMomentRecurrence` proves
 `M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including

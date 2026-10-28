@@ -319,8 +319,9 @@ full terminal interval `[0,1]` at any finite depth.
 including at order zero. `OriginalMomentSubstitutionLemmas` establishes the
 positive-domain continuity and the derivative and range of `sin²`.
 `OriginalMomentPullback` proves the pointwise pullback identity in the open
-angular interval. The integral change of variables and numerical node
-enclosures remain open.
+angular interval. `OriginalMomentSubstitution` handles the endpoints and proves
+that the original moment is `4/π` times the angular moment. Transfer of the
+ratio bounds to the original moments and numerical node enclosures remain open.
 
 `ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`
 on any certified radial region with `s ≥ 1/16` and `|κ(s)| ≤ 1/100`.

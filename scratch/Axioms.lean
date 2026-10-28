@@ -249,8 +249,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.HardyReal.mehler_eq_HholPair
 #print axioms Grothe.UpperChaos.LeanCertPilot.unitBaseSlice_eq_conditional_base
 #print axioms Grothe.UpperChaos.LeanCertPilot.unitBaseSlice_integral_enclosure
+#print axioms Grothe.UpperChaos.OriginalPositiveMoment.integral_eq_two_angular
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.integrand_continuousOn_pos
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.integrand_intervalIntegrable
+#print axioms Grothe.UpperChaos.OriginalPositiveMoment.moment_eq_angular
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.pullback_interior
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.sinSq_hasDerivAt
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.sinSq_mem_Icc
