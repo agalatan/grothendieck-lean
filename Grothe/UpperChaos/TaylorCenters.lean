@@ -5,20 +5,14 @@ import Grothe.UpperChaos.TaylorCenterIndex
 import Grothe.UpperChaos.TaylorFirstSecondSource
 import Grothe.UpperChaos.TaylorFirstData
 import Grothe.UpperChaos.TaylorSecondData
-import Grothe.UpperChaos.TaylorFrozenData
+import Grothe.UpperChaos.TaylorFrozenCoefficients
 
 /-! Complete finite Taylor centers at a common dyadic scale. Agent-ID: codex-2ca4. -/
 open MeasureTheory
 namespace Grothe.UpperChaos
 
-def frozenCorrectionInts : Array ℤ :=
-  (PackedDyadic.parseChunks 206 frozenCorrectionPackedChunks).getD #[]
-
-def frozenCorrectionAt (q c d : ℕ) : ℤ := frozenCorrectionInts[gradedFlatIndex q c d]?.getD 0
-
 def firstCenterCoeff (q c d : ℕ) : ℚ := (firstCenterAt q c d : ℚ) / (2 : ℚ)^206
 def secondCenterCoeff (q c d : ℕ) : ℚ := (secondCenterAt q c d : ℚ) / (2 : ℚ)^206
-def frozenCorrectionCoeff (q c d : ℕ) : ℚ := (frozenCorrectionAt q c d : ℚ) / (2 : ℚ)^206
 
 noncomputable def firstCenter : Lp ℂ 2 mu2 := gradedHermite 91 firstCenterCoeff
 noncomputable def secondCenter : Lp ℂ 2 mu2 := gradedHermite 46 secondCenterCoeff
