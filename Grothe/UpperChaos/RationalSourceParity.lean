@@ -40,13 +40,13 @@ private theorem totalParity_pderiv {σ : Type*} {P : MvPolynomial σ ℚ}
 
 private theorem totalParity_ratA0 {P : RatPoly} {d : ZMod 2}
     (hP : TotalParity P d) : TotalParity (ratA0 P) (d + 1) := by
-  have hm := (isWeightedHomogeneous_X (fun _ : Fin 2 => (1 : ZMod 2)) 0).mul hP
+  have hm := (isWeightedHomogeneous_X ℚ (fun _ : Fin 2 => (1 : ZMod 2)) 0).mul hP
   rw [add_comm] at hm
   exact hm.sub (totalParity_pderiv hP 1)
 
 private theorem totalParity_ratA1 {P : RatPoly} {d : ZMod 2}
     (hP : TotalParity P d) : TotalParity (ratA1 P) (d + 1) := by
-  have hm := (isWeightedHomogeneous_X (fun _ : Fin 2 => (1 : ZMod 2)) 1).mul hP
+  have hm := (isWeightedHomogeneous_X ℚ (fun _ : Fin 2 => (1 : ZMod 2)) 1).mul hP
   rw [add_comm] at hm
   exact hm.sub (totalParity_pderiv hP 0)
 
@@ -92,10 +92,10 @@ theorem totalParity_rename {σ τ : Type*} (f : σ → τ) {P : MvPolynomial σ 
 
 private theorem totalParity_pair (i k : Fin 4) :
     TotalParity (X i * X k : RatPoly4) 0 := by
-  have h := (isWeightedHomogeneous_X (fun _ : Fin 4 => (1 : ZMod 2)) i).mul
+  have h := (isWeightedHomogeneous_X ℚ (fun _ : Fin 4 => (1 : ZMod 2)) i).mul
     (isWeightedHomogeneous_X (R := ℚ) (fun _ : Fin 4 => (1 : ZMod 2)) k)
-  norm_num at h
-  exact h
+  have htwo : (1 : ZMod 2) + 1 = 0 := by decide +kernel
+  simpa only [htwo] using h
 
 private theorem totalParity_phaseTermQ (t : (ℕ × ℕ × ℕ) × ℚ) :
     TotalParity (phaseTermQ t) 0 := by
@@ -136,7 +136,8 @@ theorem totalParity_unitSourceQ (ts : List ((ℕ × ℕ × ℕ) × ℚ)) {N : �
       ((i.2.2.val + i.2.1.val : ℕ) : ZMod 2)) = 1 := by
     rw [← Nat.cast_add, htotal]
     push_cast
-    norm_num
+    have htwo : (2 : ZMod 2) = 0 := by decide +kernel
+    rw [htwo, zero_mul, zero_add]
   simpa only [unitSourceQ, firstHermiteQ, secondHermiteQ, hdegree, add_zero] using
     (hfirst.mul hsecond).mul hphase
 
@@ -145,8 +146,8 @@ theorem totalParity_unitSourceQ_mul_X (ts : List ((ℕ × ℕ × ℕ) × ℚ)) {
     (i : GradedIdx N) (j : ℕ) (k : Fin 4) : TotalParity (unitSourceQ ts i j * X k) 0 := by
   have h := (totalParity_unitSourceQ ts i j).mul
     (isWeightedHomogeneous_X (R := ℚ) (fun _ : Fin 4 => (1 : ZMod 2)) k)
-  norm_num at h
-  exact h
+  have htwo : (1 : ZMod 2) + 1 = 0 := by decide +kernel
+  simpa only [htwo] using h
 
 end
 end Grothe.UpperChaos.RationalSourceParity
