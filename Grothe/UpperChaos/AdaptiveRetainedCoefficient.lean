@@ -45,7 +45,9 @@ theorem reciprocalLo_cast (k : ℕ) :
   split_ifs <;> simp only [Rat.cast_inv, Rat.cast_pow, Rat.cast_ofNat]
 
 theorem regularRoot_valid (k : ℕ) : (regularRoot k).Valid :=
-  ⟨monotone_cutQ (Nat.le_succ k), by norm_num⟩
+  ⟨monotone_cutQ (Nat.le_succ k), by
+    change (0 : ℚ) ≤ 1
+    exact zero_le_one⟩
 
 theorem reciprocalRoot_valid (k : ℕ) : (reciprocalRoot k).Valid :=
   ⟨monotone_cutQ (Nat.le_succ k), reciprocalLo_le_one k⟩
