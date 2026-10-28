@@ -162,6 +162,14 @@ coefficients in bounded chunks, with exact value
 `302002543697172916153771578242367488000`. This source arithmetic supports
 future certificates; it does not establish the phase cover or the upper bound.
 
+The complete stored third Taylor center has kernel-checked exact total and
+comparison-band energies. Its authoritative witness is the ordered array of
+scaled integers regenerated from the same pinned binary64 input.
+`ThirdCenterKernelEnergy` combines all grade sums with the exact rational
+targets; its source-size and energy theorems use only the standard logical
+axioms. The Gaussian approximation-error and frozen-response accuracy inputs
+remain open.
+
 The target `K < 1.404598149141` is **work in progress**. One completed supporting
 calculation is `ProfileFirstGaussianCell`: Lean proves the exact integral of
 the squared degree-one Laguerre component against `exp(-s)` on `[0,1]`, and
