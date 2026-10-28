@@ -249,6 +249,7 @@ import Grothe.UpperChaos.GroupedComparison
 import Grothe.UpperChaos.GroupedRounder
 import Grothe.UpperChaos.HardyArcCircle
 import Grothe.UpperChaos.HardyArcCover
+import Grothe.UpperChaos.HardyArcData
 import Grothe.UpperChaos.HardyArcMean
 import Grothe.UpperChaos.HardyArcPart0
 import Grothe.UpperChaos.HardyArcPart1

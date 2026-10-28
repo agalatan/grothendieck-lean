@@ -15,10 +15,6 @@ namespace Grothe.UpperChaos.HardyArcMean
 
 open GrotheKernel GrotheKernel.HardyArc Grothe.Upper HardyArcSound HardyArcCircle HardyArcCover
 
-/-- The kernel parameters of the four parts: leaf width `D/1024`, tolerance `D/10`, depth `26`, `1024` pieces per
-half, budget `2.73` each (scaled). -/
-def partsOK (neg : Bool) (k₀ : ℕ) : Bool :=
-  partOK (ofRatI jQ) (ofRatI rhoQ) hardyData neg (D / 1024) (D / 10) 26 1024 k₀ 1024 (273 * D / 100)
 
 /-- What a passed part means (all arguments abstract, so nothing is evaluated during elaboration). -/
 lemma partOK_spec {j rho : Ival} {dat : RData} {neg : Bool} {w tol : ℤ} {depth n k₀ m : ℕ} {cap : ℤ}
