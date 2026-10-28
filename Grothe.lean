@@ -1508,6 +1508,9 @@ import Grothe.UpperChaos.Q0Chunk_o984_n8
 import Grothe.UpperChaos.Q0Chunk_o992_n8
 import Grothe.UpperChaos.Q0CommonMomentSum
 import Grothe.UpperChaos.Q0CompanionBaseQuadrature
+import Grothe.UpperChaos.Q0ConditionalShift
+import Grothe.UpperChaos.Q0ConditionalWickReal
+import Grothe.UpperChaos.Q0FoldBatchedAlgebra
 import Grothe.UpperChaos.Q0GaussianReality
 import Grothe.UpperChaos.Q0ImaginaryWick
 import Grothe.UpperChaos.Q0LegendreInteger
@@ -1580,10 +1583,6 @@ import Grothe.UpperChaos.Q0LegendreRule63
 import Grothe.UpperChaos.Q0LegendreRule64
 import Grothe.UpperChaos.Q0LegendreRuleBase
 import Grothe.UpperChaos.Q0LegendreRulesAudit
-import Grothe.UpperChaos.Q0ConditionalShift
-import Grothe.UpperChaos.Q0ConditionalWickReal
-import Grothe.UpperChaos.Q0FoldBatchedAlgebra
-import Grothe.UpperChaos.Q0ImaginaryWick
 import Grothe.UpperChaos.Q0LiteralBinaryFold
 import Grothe.UpperChaos.Q0LiteralBinaryMerge_000
 import Grothe.UpperChaos.Q0LiteralBinaryMerge_001
