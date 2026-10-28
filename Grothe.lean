@@ -331,6 +331,11 @@ import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialCutoff
 import Grothe.UpperChaos.RadialDampedMoments
 import Grothe.UpperChaos.RadialRepair
+import Grothe.UpperChaos.RationalComplexHermite
+import Grothe.UpperChaos.RationalPhaseImaginary
+import Grothe.UpperChaos.RationalPhaseInvariant
+import Grothe.UpperChaos.RationalSourceParity
+import Grothe.UpperChaos.RationalUnitTaylorSource
 import Grothe.UpperChaos.RealGaussianKernelTail
 import Grothe.UpperChaos.Realise2
 import Grothe.UpperChaos.RestrictedPhaseMoments
