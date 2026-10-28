@@ -1165,6 +1165,8 @@ import Grothe.UpperChaos.Q0BasePairRoot7Leaf
 import Grothe.UpperChaos.Q0BasePairRoot7LeafScalars
 import Grothe.UpperChaos.Q0BaseQuadrature
 import Grothe.UpperChaos.Q0CompanionBaseQuadrature
+import Grothe.UpperChaos.Q0GaussExactness
+import Grothe.UpperChaos.Q0GaussExactnessAudit
 import Grothe.UpperChaos.Q0GaussianReality
 import Grothe.UpperChaos.Q0ImaginaryWick
 import Grothe.UpperChaos.Q0LegendreInteger

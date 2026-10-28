@@ -598,7 +598,20 @@ the intermediate value theorem and degree exhaustion prove one unique root
 in each bracket. `Q0LegendreRulesAudit` restricts their transitive dependencies
 to the standard Lean axioms. The committed original rule data and
 `tools/q0_quadrature/gen_legendre_rules.py --check` reproduce these sources.
-This proves the roots, not yet the associated quadrature weights or exactness.
+This proves the roots; the associated weights and complete quadrature rules
+remain work in progress.
+
+`Q0GaussExactness.actual_recurrence_gauss_exactness` proves the shared
+quadrature algebra for the same `polyPair` and `realPair` recurrence.
+The proof integrates monomials and linear polynomial quotients, identifies
+the root quotients with Mathlib's Lagrange basis, derives the original
+weight formula from exact derivative and Bezout identities, and uses
+polynomial division and orthogonality to prove exactness below twice the
+rule order. The finite polynomial identities and actual selected roots
+are explicit inputs. Their finite-family replay, affine interval transport
+and the analytic remainder are separate obligations; Python witnesses do
+not discharge these inputs. `Q0GaussExactnessAudit` permits only the standard
+Lean axioms in the shared algebra proof.
 
 `F0ConditionalNode` defines the actual radial slice of `F0` and its normalized
 Hermite coefficients, proving Bessel's bound before aggregation over modes.

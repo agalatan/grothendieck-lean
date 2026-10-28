@@ -929,6 +929,12 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_base_conditional_wick
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_base_quadrature_kernel
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_pointwise
+#print axioms Grothe.UpperChaos.Q0GaussExactness.actual_recurrence_gauss_exactness
+#print axioms Grothe.UpperChaos.Q0GaussExactness.cardinal_eq_lagrange
+#print axioms Grothe.UpperChaos.Q0GaussExactness.exactness_of_cardinal_integrals
+#print axioms Grothe.UpperChaos.Q0GaussExactness.integralPoly_cardinal_weight
+#print axioms Grothe.UpperChaos.Q0GaussExactness.integralPoly_divByMonic
+#print axioms Grothe.UpperChaos.Q0GaussExactness.integralPoly_eq_moment_sum
 #print axioms Grothe.UpperChaos.Q0GaussianReality.firstGaussianCoefficient_im
 #print axioms Grothe.UpperChaos.Q0GaussianReality.norm_firstGaussianCoefficient_sub_rat
 #print axioms Grothe.UpperChaos.Q0GaussianReality.norm_first_gaussian_integral_sub_rat

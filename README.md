@@ -439,8 +439,12 @@ integer sign certificates and Lean proofs of root existence and uniqueness.
 and proves their joint Bessel bound. `ConditionalNodeIndices` identifies the
 selected contraction modes, while `F0ConditionalEvaluator` proves the
 profile sign and shift formula in that same index order. Quadrature weights,
-polynomial exactness, remainder estimates and their numerical source bindings
-remain work in progress.
+remainder estimates and their numerical source bindings remain work in progress.
+`Q0GaussExactness` proves the shared quadrature argument: exact finite
+polynomial identities imply the original Legendre weight formula and
+integration of every polynomial of degree below twice the rule order.
+Discharging those identities for the original finite rule family remains
+work in progress; polynomial exactness alone does not bound the analytic remainder.
 
 
 Lean also proves a selected-spectrum comparison: the error is split
