@@ -433,6 +433,15 @@ conjugation invariance of the actual Gaussian source and response.
 Their complex distances from rational targets therefore equal the real
 absolute errors; no numerical or retained-domain premise is required.
 
+The original Legendre brackets for orders 1 through 64 now have exact
+integer sign certificates and Lean proofs of root existence and uniqueness.
+`F0ConditionalNode` identifies the actual conditional Gaussian coefficients
+and proves their joint Bessel bound. `ConditionalNodeIndices` identifies the
+selected contraction modes, while `F0ConditionalEvaluator` proves the
+profile sign and shift formula in that same index order. Quadrature weights,
+polynomial exactness, remainder estimates and their numerical source bindings
+remain work in progress.
+
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs

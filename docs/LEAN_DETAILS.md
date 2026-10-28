@@ -591,6 +591,25 @@ only the standard Lean axioms; no numerical or truncation premise is used.
 The remaining algebraic leaves, other roots and final band energy checks
 remain separate obligations.
 
+`Q0LegendreInteger` evaluates the standard Legendre recurrence by scaled
+integer arithmetic. The `Q0LegendreRule01` through `Q0LegendreRule64`
+modules check the original rational brackets, endpoint signs and ordering;
+the intermediate value theorem and degree exhaustion prove one unique root
+in each bracket. `Q0LegendreRulesAudit` restricts their transitive dependencies
+to the standard Lean axioms. The committed original rule data and
+`tools/q0_quadrature/gen_legendre_rules.py --check` reproduce these sources.
+This proves the roots, not yet the associated quadrature weights or exactness.
+
+`F0ConditionalNode` defines the actual radial slice of `F0` and its normalized
+Hermite coefficients, proving Bessel's bound before aggregation over modes.
+`ConditionalNodeIndices` identifies the contraction's selected pair set and
+its injective charge-row lookup; the selection is not a prefix of the larger
+stored table. `F0ConditionalEvaluator.coefficient_eq_signed` proves the actual
+profile sign exponent `c+d` and positive-scale shift. Its production-index
+theorems connect both canonical and reflected indices to that selected set.
+The reflected coefficient identity and numerical reconstruction error remain
+separate obligations, as do the actual quadrature mass and remainder.
+
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual
 kernel. `upper_of_finite_sample_bounds` reduces that estimate to complex
