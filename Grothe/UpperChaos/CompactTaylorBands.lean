@@ -37,7 +37,7 @@ theorem compactLaplaceHpow_rot (η T L : ℝ) (j : ℕ) (c : ℂ) (u : ℂ × �
     simp only [finiteLaplaceHpow, phiT_rot2 hc, ha, finiteLaplacePhase_mul_unit η T c _ hc]
     ring
   have hm : rot2 c u ∈ TaylorRadialTail.cutoffSet L ↔ u ∈ TaylorRadialTail.cutoffSet L := by
-    simp only [TaylorRadialTail.cutoffSet, mem_prod, mem_setOf_eq, mem_univ, and_true,
+    simp only [TaylorRadialTail.cutoffSet, mem_prod, mem_ofPred_eq, mem_univ, and_true,
       rot2, norm_mul, hc, one_mul]
   by_cases hu : u ∈ TaylorRadialTail.cutoffSet L <;>
     simp [compactLaplaceHpow, hm, hu, hf]
@@ -62,9 +62,10 @@ theorem norm_hpow_sub_compactTaylorL2_lt (j : ℕ) :
 theorem gradedHermite_unit {N : ℕ} (i : GradedIdx N) :
     gradedHermite N (gradedUnitCoeff i) = hvec2 (gradedIdx i) := by
   apply Lp.ext
+  have hf : gradedHermiteFn N (gradedUnitCoeff i) =ᵐ[mu2] hfun2 (gradedIdx i) :=
+    Filter.Eventually.of_forall (congrFun (gradedHermiteFn_unit i))
   exact (coeFn_gradedHermite N (gradedUnitCoeff i)).trans
-    ((Filter.Eventually.of_forall (congrFun (gradedHermiteFn_unit i))).trans
-      (memLp_hfun2 (gradedIdx i)).coeFn_toLp.symm)
+    (hf.trans (memLp_hfun2 (gradedIdx i)).coeFn_toLp.symm)
 
 /-- One normalized coefficient, defined by the complete finite rectangle. -/
 def compactTaylorCoefficient (j : ℕ) {N : ℕ} (i : GradedIdx N) : ℂ :=
@@ -102,9 +103,15 @@ theorem norm_projOn_compactTaylor_sub_graded_sq (B : Set Idx2)
   intro i _hi
   have hc : ⟪hvec2 (gradedIdx i), gradedHermite M a⟫_ℂ =
       if i.1.val < M then (a i.1 i.2.1 i.2.2 : ℂ) else 0 := by
-    rw [inner_hvec2_gradedHermite, gradedIdx_antidegree]
-    simp only [gradedIdx_charge, and_true]
-    rfl
+    have hcond : ((gradedIdx i).1.2 + (gradedIdx i).2.2 < M ∧
+        (gradedIdx i).1.1 + (gradedIdx i).2.1 =
+          (gradedIdx i).1.2 + (gradedIdx i).2.2 + 1) ↔ i.1.val < M := by
+      constructor
+      · intro h
+        simpa only [gradedIdx_antidegree] using h.1
+      · intro h
+        exact ⟨by simpa only [gradedIdx_antidegree] using h, gradedIdx_charge i⟩
+    simp only [inner_hvec2_gradedHermite, hcond, gradedIdx_antidegree]
   simp only [inner_sub_right, inner_hvec2_compactTaylorL2, hc]
 
 /-- The actual Gaussian band inherits the finite rectangle's error, with the
