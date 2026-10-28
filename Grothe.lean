@@ -571,6 +571,7 @@ import Grothe.UpperChaos.AnalyticEnvelopeProfiles102
 import Grothe.UpperChaos.AnalyticEnvelopeProfiles103
 import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.BandedContraction
+import Grothe.UpperChaos.BasePairIntegralAudit
 import Grothe.UpperChaos.CapturedSourceBound
 import Grothe.UpperChaos.CapturedTail
 import Grothe.UpperChaos.CenterNormBypass
