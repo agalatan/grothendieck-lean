@@ -99,12 +99,13 @@ theorem coefficient_conj (s : ℝ) (i : ℕ × ℕ) :
     simpa only [f, hfun, map_mul, Complex.conj_ofReal, mul_assoc] using
       (integrable_conj_ev_mul (F0ConditionalNode.phaseSlice_memLp s) (H i.1 i.2)).const_mul
         (nrm i.1 i.2 : ℂ)
-  rw [F0ConditionalNode.coefficient_eq_integral]
-  apply integral_conj_of_symmetric hf
-  intro w
-  dsimp only [f]
-  rw [hfun_conj_argument, phaseSlice_conj]
-  simp only [map_mul, Complex.conj_conj]
+  have hsym : ∀ w, f (conj w) = conj (f w) := by
+    intro w
+    dsimp only [f]
+    rw [hfun_conj_argument, phaseSlice_conj]
+    simp only [map_mul, Complex.conj_conj]
+  simpa only [F0ConditionalNode.coefficient_eq_integral, f] using
+    integral_conj_of_symmetric hf hsym
 
 theorem coefficient_im_eq_zero (s : ℝ)
     (i : ℕ × ℕ) : (F0ConditionalNode.coefficient s i).im = 0 := by
