@@ -293,6 +293,7 @@ import Grothe.UpperChaos.OriginalEnergyBudget
 import Grothe.UpperChaos.OriginalEnergyNoMass
 import Grothe.UpperChaos.PackedDyadic
 import Grothe.UpperChaos.PackedDyadicChunks
+import Grothe.UpperChaos.PhaseAuxiliaryDecay
 import Grothe.UpperChaos.PhaseMoment2
 import Grothe.UpperChaos.PhaseMoment4
 import Grothe.UpperChaos.PhaseMoment6
