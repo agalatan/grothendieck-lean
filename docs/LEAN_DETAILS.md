@@ -447,6 +447,16 @@ turns a pointwise analytic envelope into a finite-area integral bound,
 including degenerate cells. It applies only to the finite rectangle being
 integrated and introduces no extra source approximation allowance.
 
+`GaussianNormalizationInterval` encloses the reciprocal square root of pi
+by reversing and inverting the existing certified endpoints.
+`AdaptiveRetainedCoefficient` fixes all fourteen roots of the actual
+seven-strip mesh. It proves regular and reciprocal continuity on each closed
+root, includes the reciprocal Jacobian, and identifies their normalized
+real integral sum with `retainedReciprocalMeshValue`. Its `coefficient_mem`
+and `coefficient_abs_sub_le` consume the complete leaf certificates and
+rational endpoint checks. Gaussian normalization is included by interval
+multiplication; the separate source reserve is still charged only by the
+band transfer. The actual leaf certificates and energy checks remain open.
 
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives

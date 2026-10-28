@@ -37,6 +37,19 @@ theorem sum_mem_enclosureSum {α : Type*} (items : List α)
       simpa only [List.map_cons, List.sum_cons, enclosureSum] using
         IntervalRat.mem_add hx hxs
 
+/-- Rational endpoint inclusion gives a real center/radius bound. -/
+theorem abs_sub_le_of_mem {x : ℝ} {I : IntervalRat} (hx : x ∈ I)
+    (center radius : ℚ) (hlo : center - radius ≤ I.lo) (hhi : I.hi ≤ center + radius) :
+    |x - (center : ℝ)| ≤ (radius : ℝ) := by
+  rw [IntervalRat.mem_def] at hx
+  have hloR : (center : ℝ) - radius ≤ (I.lo : ℝ) := by
+    simpa only [Rat.cast_sub] using (Rat.cast_le.mpr hlo :
+      ((center - radius : ℚ) : ℝ) ≤ (I.lo : ℝ))
+  have hhiR : (I.hi : ℝ) ≤ (center : ℝ) + radius := by
+    simpa only [Rat.cast_add] using (Rat.cast_le.mpr hhi :
+      (I.hi : ℝ) ≤ ((center + radius : ℚ) : ℝ))
+  exact abs_le.mpr ⟨by linarith [hx.1], by linarith [hx.2]⟩
+
 namespace Rect
 
 def area (r : Rect) : ℚ := (r.sHi - r.sLo) * (r.auxHi - r.auxLo)
@@ -100,17 +113,8 @@ theorem abs_integral_sub_center_le (t : SplitTree) (r : Rect) (hr : r.Valid)
     (hlo : center - radius ≤ (enclosureSum ((t.leaves r).map bound)).lo)
     (hhi : (enclosureSum ((t.leaves r).map bound)).hi ≤ center + radius) :
     |r.integral f - (center : ℝ)| ≤ (radius : ℝ) := by
-  have hm := integral_mem_enclosureSum t r hr f hf bound hcell
-  rw [IntervalRat.mem_def] at hm
-  have hloR : (center : ℝ) - radius ≤
-      ((enclosureSum ((t.leaves r).map bound)).lo : ℝ) := by
-    simpa only [Rat.cast_sub] using (Rat.cast_le.mpr hlo :
-      ((center - radius : ℚ) : ℝ) ≤ (enclosureSum ((t.leaves r).map bound)).lo)
-  have hhiR : ((enclosureSum ((t.leaves r).map bound)).hi : ℝ) ≤
-      (center : ℝ) + radius := by
-    simpa only [Rat.cast_add] using (Rat.cast_le.mpr hhi :
-      ((enclosureSum ((t.leaves r).map bound)).hi : ℝ) ≤ ((center + radius : ℚ) : ℝ))
-  exact abs_le.mpr ⟨by linarith [hm.1], by linarith [hm.2]⟩
+  exact abs_sub_le_of_mem (integral_mem_enclosureSum t r hr f hf bound hcell)
+    center radius hlo hhi
 
 end SplitTree
 end Grothe.UpperChaos.AdaptiveRectanglePartition

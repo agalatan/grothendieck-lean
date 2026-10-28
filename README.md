@@ -361,6 +361,12 @@ order and converts the sum to a rational center/radius bound. Pointwise
 analytic envelopes give integral bounds using each cell's rational area.
 These finite-cell operations do not spend the separate source reserve.
 
+`AdaptiveRetainedCoefficient` binds the seven regular and seven reciprocal
+roots to the actual retained Gaussian coefficient. It proves their continuity,
+includes the reciprocal Jacobian, and encloses the normalization using the
+existing rational bounds for the square root of pi. Complete leaf intervals
+then give the rational coefficient bounds required by the band transfer;
+the numerical leaf and energy certificates remain work in progress.
 
 
 Lean also proves a selected-spectrum comparison: the error is split
