@@ -18,7 +18,7 @@ theorem first251_l1_le_sixteen (f : ℕ → ℂ) (e : ℝ) (he : 0 ≤ e)
   have hnonneg : 0 ≤ ∑ j ∈ range 251, ‖f j‖ := sum_nonneg fun _ _ => norm_nonneg _
   nlinarith [sq_nonneg (e * 16 - ∑ j ∈ range 251, ‖f j‖)]
 
-/-- The exact original upper endpoint from finite DFT estimates. `D` is the
+/-- The upper endpoint from finite DFT estimates. `D` is the
 exact DFT of actual samples; `A` is the certified numerical transform. The
 joint alias, finite Parseval/sample-error and numerical head bounds
 must be established separately. -/
@@ -29,7 +29,7 @@ theorem upper_of_DFT_ledger (D A : ℕ → ℂ)
     (hfiniteHead : ∑ j ∈ range 251,
       ‖A j - if j = 0 then ((slopeQ : ℝ) : ℂ) else 0‖ ≤
       (440036497409 / 500000000000000000 : ℝ)) :
-    IsGrothendieckBound (500000000000000000 / 355973699884132991) := by
+    IsGrothendieckBound (500000000000000000 / 355973699960428191) := by
   have hsample := first251_l1_le_sixteen (fun j => D j - A j)
     (1 / 1000000000000 : ℝ) (by norm_num) hsampleSq
   have herr : ∑ j ∈ range 251, ‖(actualH j : ℂ) - A j‖ ≤

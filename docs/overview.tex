@@ -30,7 +30,7 @@
 
 \begin{center}
 \fbox{\begin{minipage}{0.86\textwidth}\centering\vspace{4pt}
-\Large $1.401697117301\;<\;\KG\;<\;1.404598149141$\\[6pt]
+\Large $1.401697117301\;<\;\KG\;<\;1.404598148840$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, resting on explicitly stated
 analytic and computer-assisted inputs (Section~\ref{sec:trust}).\\[4pt]
 Only the sharp upper target is active; its fourteen finite-band Gaussian estimates
@@ -76,7 +76,7 @@ year & who & lower bound & upper bound\\\midrule
 1984 & Davie & $1.33807$ & \\
 Sep 2026 & Guo, Fang, Lu & $1.35584631827$ & \\
 Sep 2026 & Heilman, Jones, Malavolta & $1.4$ & archived\\
-Oct 2026 & \textbf{this work} & $\mathbf{1.401697117301}$ & $\mathbf{1.404598149141}$\\\bottomrule
+Oct 2026 & \textbf{this work} & $\mathbf{1.401697117301}$ & $\mathbf{1.404598148840}$\\\bottomrule
 \end{tabular}
 \end{center}
 Haagerup's integral
@@ -108,9 +108,9 @@ The phase certificate checks 119,077 leaves in 512 cubes through six native rang
 Its kernel is $H(t)=\sum E[n,m]\,p(t)^n(-\tau(t))^m$ with an odd polynomial $p$ of degree $41$ and
 $\tau$ of degree $15$ with zero linear coefficient (any odd preprocessors of Wiener norm $\le1$ are realised by tensor
 powers). Compared with $c\,t$, $c=7119483103461/10^{13}$, the residual is at most
-$\delta=455288917009/(5\cdot10^{17})\approx9.10578\cdot10^{-7}$:
+$\delta=455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$:
 \[
- \KG\le\frac1{c-\delta}=\frac{500000000000000000}{355973699884132991}<1.404598149141 .
+ \KG\le\frac1{c-\delta}=\frac{500000000000000000}{355973699960428191}<1.404598148840 .
 \]
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
@@ -302,18 +302,18 @@ Wick identity; the finite certificate (five row, three original-batch, one added
 The 60 range checks for fifteen rows use a computation-only layer.
 CI replays the final assembly when the 53-file cache provenance matches;
 a mismatch triggers the runner build and the axiom audit. Four rows retain external vertex caps.\\\midrule
-\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error and table-accuracy inputs, proves $\KG\le500000000000000000/355973699884132991$.}\\[2pt]
+\multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error and table-accuracy inputs, proves $\KG\le500000000000000000/355973699960428191$.}\\[2pt]
 the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussian mixing by characteristic functions, Parseval and Mehler, charge selection, summability;
 the transfer inequality (tensor powers); kernel composition and locality; the head through degree 501 from
 21,168 stored energies by a verified interval evaluator (one \lean{native\_decide}); the tail bound; the endpoint; the selected-block comparison and native band masses
 &
 \lean{ComparisonInputs}: an exact error decomposition, spectral supports and inherited Gaussian component norm caps. The concrete Taylor specialization leaves fourteen finite Gaussian band-error estimates and the energy-table discrepancy as hypotheses.
-Lean derives the selected comparison $851922301/10^{15}$ ($93.56\%$ of the residual allowance).
+Lean derives the selected comparison $851922301/10^{15}$ ($93.57\%$ of the residual allowance).
 The decomposition itself is explicit in Lean (\lean{difference\_pieces}, \lean{fresh\_upper\_pieces}):
 18 band pieces of the smoothed Taylor errors and the rounding remainder, so only their 18 norm bounds remain external.
 Finite table accuracy $6847009/(5\cdot10^{17})$.
-The Hardy tail $30488839/10^{15}$ ($3.35\%$, weighted square sum $\le 7/4$ at radius $4149/4000$) is proved
-(\lean{HardyReal.hardy\_GT}).
+The Hardy tail $303362486/10^{16}$ ($3.33\%$, weighted square sum $\le 1737972/1000000$ at radius $4149/4000$) is proved
+(\lean{HardyReal.hardy\_GT\_tight}).
 The native head is $28153/10^{12}$ ($3.09\%$).\\
 \bottomrule
 \end{tabular}
@@ -335,7 +335,7 @@ likewise import only computable definitions and rational data; their campaign
 and final wiring remain separate. The generic response and
 quintic-transfer lemmas add no native facts or endpoint assumptions. The lower bound still needs numerical caps;
 the sharp upper bound retains external Gaussian component-error and table-accuracy inputs.
-Before the tail Cauchy--Schwarz step, the known linear coefficient's weighted square is deducted from $7/4$; this uses the same numerical hypotheses.
+The four existing arc checks each give at most $273/100$; the proved bound on $\pi$ turns their sum into the circle-mean budget $1737972/1000000$. Before the tail Cauchy--Schwarz step, the known linear coefficient's weighted square is deducted from that budget. The abstract table interface uses this sharper Hardy input; the concrete rounding proves it without new Gaussian hypotheses.
 Holomorphy under positive kernel decay, odd-series continuation and circle Parseval are proved.
 The holomorphy and Hardy assembly also cover separate measurable disk-valued left and right responses
 (\lean{HholPair}, \lean{hardy\_of\_pair\_inputs}); the incumbent results are specializations.

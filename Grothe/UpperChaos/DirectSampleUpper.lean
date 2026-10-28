@@ -12,12 +12,12 @@ noncomputable section
 /-- The actual GT coefficient sequence, not the stored truncation energies. -/
 abbrev actualH : ℕ → ℝ := HardyReal.hGT phiBound
 
-/-- A direct head bound alone restores the original sharp upper endpoint.
+/-- A direct head bound suffices for the sharp upper endpoint.
 The Hardy tail and its linear deduction are proved for the actual GT kernel. -/
 theorem upper_of_actual_head
     (hhead : ∑ j ∈ range 251, |actualH j - if j = 0 then (slopeQ : ℝ) else 0| ≤
       (Grothe.groupedHeadResidualQ : ℝ)) :
-    IsGrothendieckBound (500000000000000000 / 355973699884132991) := by
+    IsGrothendieckBound (500000000000000000 / 355973699960428191) := by
   have hs := HardyReal.summable_hGT phiBound
   have hv : DominatedKernel (radialKernel actualH) := by
     exact (rounding_diskKernel measurable_GT (norm_GT_le phiBound)
@@ -36,8 +36,8 @@ theorem upper_of_actual_head
     have hh := (abs_le.mp (hz.trans (hhead.trans hless))).1
     norm_num [linearLowerQ] at ⊢
     linarith
-  have hhardy := HardyReal.hardy_GT phiBound
-  have hb := hardy_budget_after_linear actualH (4149 / 4000 : ℝ) (7 / 4)
+  have hhardy := HardyReal.hardy_GT_tight phiBound
+  have hb := hardy_budget_after_linear actualH (4149 / 4000 : ℝ) (1737972 / 1000000)
     (linearLowerQ : ℝ) (by norm_num)
     (by norm_num [linearLowerQ, headResidualQ, compareQ, headCapQ, energyErrQ, slopeQ])
     hlinear hhardy
@@ -52,11 +52,11 @@ theorem upper_of_actual_head
       (by norm_num [tailQ]) tail_numeric
     simpa only [Nat.add_assoc, show 250 + 1 = 251 by norm_num] using h
   have hres : |actualH 0 - (slopeQ : ℝ)| + ∑' n, |actualH (n + 1)| ≤
-      455288917009 / 500000000000000000 := by
+      455212621809 / 500000000000000000 := by
     rw [residual_split actualH hs (slopeQ : ℝ) 250]
     have h := add_le_add hhead htail
     have he : (Grothe.groupedHeadResidualQ : ℝ) + tailQ =
-        455288917009 / 500000000000000000 := by
+        455212621809 / 500000000000000000 := by
       norm_num [Grothe.groupedHeadResidualQ, groupedCompareQ, headCapQ, energyErrQ, tailQ]
     linarith
   refine (transfer actualH hs hv (by norm_num [slopeQ]) hres).mono (le_of_eq ?_)
@@ -69,7 +69,7 @@ theorem upper_of_finite_sample_bounds (A : ℕ → ℂ) (ε : ℝ)
     (hledger : (∑ j ∈ range 251,
       ‖A j - if j = 0 then ((slopeQ : ℝ) : ℂ) else 0‖) + ε ≤
         (Grothe.groupedHeadResidualQ : ℝ)) :
-    IsGrothendieckBound (500000000000000000 / 355973699884132991) := by
+    IsGrothendieckBound (500000000000000000 / 355973699960428191) := by
   apply upper_of_actual_head
   calc
     _ ≤ ∑ j ∈ range 251, (‖(actualH j : ℂ) - A j‖ +

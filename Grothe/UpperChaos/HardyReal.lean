@@ -210,6 +210,13 @@ theorem hardy_GT (hφ : PhiBound) (J : ℕ) :
   hardy_of_real measurable_Tround measurable_Tround (norm_Tround_le hφ) (norm_Tround_le hφ)
     (summable_hGT hφ) (hreal_GT hφ) J
 
+/-- The same verified arc cover gives a stronger budget for the production rounding. -/
+theorem hardy_GT_tight (hφ : PhiBound) (J : ℕ) :
+    ∑ n ∈ Finset.range J, Grothe.Upper.kernelCoeff (energy ((memLp_GT hφ).toLp GT)) n ^ 2
+      * (4149 / 4000 : ℝ) ^ (2 * (2 * n + 1)) ≤ 1737972 / 1000000 :=
+  hardy_of_real_sharp measurable_Tround measurable_Tround (norm_Tround_le hφ) (norm_Tround_le hφ)
+    (summable_hGT hφ) (hreal_GT hφ) J
+
 end
 
 end Grothe.UpperChaos.HardyReal
