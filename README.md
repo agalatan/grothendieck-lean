@@ -445,7 +445,11 @@ integer sign certificates and Lean proofs of root existence and uniqueness.
 `F0ConditionalNode` identifies the actual conditional Gaussian coefficients
 and proves their joint Bessel bound. `ConditionalNodeIndices` identifies the
 selected contraction modes, while `F0ConditionalEvaluator` proves the
-profile sign and shift formula in that same index order. Quadrature weights,
+profile sign and shift formula in that same index order.
+`ConditionalMomentReflection` proves reflection of the actual phase integrals;
+`ConditionalCoefficientReflection` transfers it to the normalized production
+coefficients with the exact square-root factor. That factor is at most one
+on the reflected lookup domain. Numerical reconstruction errors, quadrature weights,
 remainder estimates and their numerical source bindings remain work in progress.
 `Q0GaussExactness` proves the shared quadrature argument: exact finite
 polynomial identities imply the original Legendre weight formula and

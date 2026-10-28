@@ -271,7 +271,11 @@ The original Legendre brackets for orders $1$ through $64$ have exact
 integer sign certificates and Lean proofs of root existence and uniqueness.
 The actual conditional Gaussian coefficients satisfy a joint Bessel bound;
 their selected contraction indices and profile sign exponent $c+d$ are
-identified in Lean. A shared quadrature theorem derives the original weight
+identified in Lean. Reflection is proved for the actual phase integrals and
+their normalized production coefficients, with the exact factor
+$\sqrt{(d+1)/c}$ for the lookup $(c,d)\mapsto(d+1,c-1)$ when $d+1<c$.
+This factor is at most one; numerical reconstruction errors remain to be checked.
+A shared quadrature theorem derives the original weight
 formula and exactness below twice the rule order from finite polynomial
 identities, using integrated root quotients, Lagrange interpolation and
 polynomial division. Instantiating those identities for the original rules,

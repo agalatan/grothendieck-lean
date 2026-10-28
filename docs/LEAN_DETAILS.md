@@ -645,8 +645,16 @@ its injective charge-row lookup; the selection is not a prefix of the larger
 stored table. `F0ConditionalEvaluator.coefficient_eq_signed` proves the actual
 profile sign exponent `c+d` and positive-scale shift. Its production-index
 theorems connect both canonical and reflected indices to that selected set.
-The reflected coefficient identity and numerical reconstruction error remain
-separate obligations, as do the actual quadrature mass and remainder.
+`ConditionalMomentReflection.integral_phase_H_reflection` proves reflection
+for the actual unnormalized phase integrals through the Gaussian moment
+recurrences and the existing Laplace integral identity.
+`F0ConditionalEvaluator.canonicalCoefficient_reflection` includes the Hermite
+normalizers, and `production_reflected_coefficient` identifies the exact
+production lookup: for `d + 1 < c`, the coefficient at `(c,d)` equals the
+coefficient at `(d+1,c-1)` times `sqrt((d+1)/c)`. The latter theorem assumes
+`s ≥ 0` and `vprof s ≠ 0`; the factor is at most one. Inline axiom guards
+permit only the standard Lean axioms. Errors from numerical reflection,
+the actual quadrature mass and the remainder remain separate obligations.
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual

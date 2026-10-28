@@ -592,10 +592,12 @@ import Grothe.UpperChaos.ConcreteLinearEnergy
 import Grothe.UpperChaos.ConcretePhaseMoments
 import Grothe.UpperChaos.ConcreteRetainedBands
 import Grothe.UpperChaos.ConcreteTaylorUpper
+import Grothe.UpperChaos.ConditionalCoefficientReflection
 import Grothe.UpperChaos.ConditionalGaussianBase
 import Grothe.UpperChaos.ConditionalGaussianPhase
 import Grothe.UpperChaos.ConditionalGaussianPolynomial
 import Grothe.UpperChaos.ConditionalGaussianTail
+import Grothe.UpperChaos.ConditionalMomentReflection
 import Grothe.UpperChaos.ConditionalNodeIndices
 import Grothe.UpperChaos.DFTAliasFilter
 import Grothe.UpperChaos.DampedMoments
