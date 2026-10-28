@@ -42,6 +42,14 @@ Weaker upper-bound variants, their data and their historical verification record
 are preserved in [the committed archive](../miscellaneous/other-bounds/README.md).
 They are outside the active build and current axiom policy.
 
+**Phase-source denominator.** `PhiSourceDenBinding.source_common_den` proves
+by bounded source-chunk computation that the parsed production phase has
+common denominator `302002543697172916153771578242367488000`.
+`tools/gen_phi_source_den_chunks.py --check` reproduces the chunk modules
+from `Upper/Data.lean`; the generated candidates are linked to the actual
+source by Lean proofs. The result is independent of the phase-cover numerical
+leaves and does not discharge the remaining upper-bound inputs.
+
 **Exact Gaussian phase-moment interfaces.**
 `DampedMoments` proves mixed complex Gaussian moments at every positive radial
 scale. `InvariantMoments` integrates each monomial in the simultaneous-rotation
