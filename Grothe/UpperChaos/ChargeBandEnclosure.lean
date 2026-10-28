@@ -69,10 +69,10 @@ theorem norm_projOn_sub_graded_sq_le_enclosure (B : Set Idx2)
   apply Finset.sum_le_sum
   intro i _hi
   by_cases hi : gradedIdx i ∈ B
-  · simp only [hi, if_true, Rat.cast_pow]
+  · simp only [hi, ite_true, Rat.cast_pow]
     have h := norm_sub_bandTarget_le M c center radius i _ (hcoeff i hi)
     exact (sq_le_sq₀ (norm_nonneg _) ((norm_nonneg _).trans h)).2 h
-  · simp only [hi, if_false, Rat.cast_zero, le_refl]
+  · simp only [hi, ite_false, Rat.cast_zero, le_refl]
 
 end
 end Grothe.UpperChaos
