@@ -353,6 +353,9 @@ with `(sqrt(π)/2) * A * (-A)^d * J_d(A²) / sqrt(d!)`.
 `F0ConditionalSeed` connects this identity to the actual canonical evaluator
 and the production F0 coefficient, preserving the profile sign; at `d=0`
 the sign factor is one. These identities use only the standard Lean axioms.
+`F0ConditionalSeedRecurrence` derives the exact zero-row step of the actual
+evaluator from the original positive-moment ratio, including the signed
+production step and its factorial normalization.
 Concrete numerical node enclosures and the complete upper bound remain open.
 
 `ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`

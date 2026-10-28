@@ -370,6 +370,11 @@ uses `F0ConditionalEvaluator.coefficient_eq_signed` for the production
 coefficient at `s ≥ 0` with `vprof(s) ≠ 0`. The sign exponent is `d` and
 vanishes at `d=0`; there is no second Hermite normalization. A transitive
 guard rejects dependencies beyond the standard three Lean axioms.
+`F0ConditionalSeedRecurrence` derives
+`I_(0,d+1)(A) = (-A) * ratio d (A²) / sqrt(d+1) * I_(0,d)(A)`
+for the actual canonical Gaussian integral, with positivity of `J_d`
+discharged internally. It also proves the signed production recurrence and
+that each canonical zero-row coefficient has zero imaginary part.
 Concrete numerical node bounds and the full upper bound remain unproved.
 
 `ShiftedMomentRecurrence` proves
