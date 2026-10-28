@@ -2,9 +2,9 @@ import Grothe.UpperChaos.OneSidedSeedFubini
 import Grothe.UpperChaos.SeedPiNormalization
 import Mathlib.Tactic.LinearCombination
 
-/-! Draft combination of absolute Fubini, the positive-parameter inner
-identity, and the checked Möbius seed integral. This file has not been
-Lean-checked. The shifted-Wick identity remains an explicit premise.
+/-! Combination of absolute Fubini, the positive-parameter inner identity,
+and the Möbius seed integral. The shifted-Wick identity is explicit here
+and discharged by `OneSidedHermiteSeed`.
 Agent-ID: codex-8c4d. -/
 
 open MeasureTheory Set Grothe.LowerAnalytic

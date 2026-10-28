@@ -2,9 +2,9 @@ import Grothe.UpperChaos.OneSidedSeedIntegral
 import Grothe.UpperChaos.ShiftedMomentZeroRight
 import Grothe.UpperChaos.HermiteZeroRow
 
-/-! Draft normalized Gaussian zero-row seed. This source, its shifted-Wick
-and Hermite dependencies, and the complete seed formula are not yet
-Lean-checked. The statement is not an upper bound. Agent-ID: codex-8c4d. -/
+/-! Normalized Gaussian zero-row seed from the original positive moments.
+The shifted-Wick identity and Hermite normalization are proved internally.
+Numerical node bounds are separate obligations. Agent-ID: codex-8c4d. -/
 
 open MeasureTheory Set Grothe.LowerAnalytic
 open scoped ComplexConjugate
@@ -17,7 +17,7 @@ theorem factorial_sqrt_pos (d : ℕ) : 0 < Real.sqrt (d.factorial : ℝ) := by
   exact_mod_cast Nat.factorial_pos d
 
 /-- The Gaussian coefficient of the phase against the normalized zero-row
-Hermite function. This uses the staged one-sided shifted-Wick identity. -/
+Hermite function, with the one-sided shifted-Wick identity discharged. -/
 theorem phase_hermite_zero_row (A : ℝ) (d : ℕ) :
     (∫ w : ℂ, Haag.ph ((A : ℂ) + w) * conj (hfun (0, d) w) ∂gaussC) =
       (((Real.sqrt Real.pi / 2) * A * (-A) ^ d *

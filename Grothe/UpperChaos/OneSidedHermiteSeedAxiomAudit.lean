@@ -2,9 +2,9 @@ import Grothe.UpperChaos.OneSidedHermiteSeed
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
-/-! Strict transitive axiom audit for the normalized zero-row seed. This
-module is a draft until built: it rejects sorryAx and every axiom outside
-Lean's standard three. Agent-ID: codex-8c4d. -/
+/-! Strict transitive axiom audit for the normalized zero-row seed.
+It rejects every dependency outside Lean's standard three axioms.
+Agent-ID: codex-8c4d. -/
 
 open Lean Elab Command
 elab "assert_seed_standard_axioms " n:ident : command => do

@@ -7,9 +7,9 @@ import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Positivity
 import Mathlib.Tactic.Ring
 
-/-! Draft source-to-seed proof. This module has not been Lean-checked. The
-one-sided shifted-Wick evaluation is an explicit hypothesis. It does not
-claim a Hermite normalization, numerical enclosure, or upper bound.
+/-! Absolute Fubini and the positive-parameter Gaussian seed integrand.
+The one-sided shifted-Wick evaluation is explicit here and discharged in
+`OneSidedHermiteSeed`. Numerical enclosures are separate obligations.
 Agent-ID: codex-8c4d. -/
 
 open MeasureTheory Set Grothe.LowerAnalytic
