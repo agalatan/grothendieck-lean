@@ -96,8 +96,75 @@ theorem coverShared_eq (j rho : Ival) (dat : RData) (neg : Bool) (w tol : Int)
       simp only [coverShared, cover, leafAttemptShared_eq, ih]
       rfl
 
+/-- The same finite chart sum, using the shared evaluator. -/
+def chartSumShared (j rho : Ival) (dat : RData) (neg : Bool) (w tol : Int)
+    (depth n : Nat) : Nat → Nat → Option Int
+  | _, 0 => some 0
+  | k, count + 1 =>
+      match coverShared j rho dat neg w tol depth (pieceLo n k) (pieceLo n (k + 1)),
+          chartSumShared j rho dat neg w tol depth n (k + 1) count with
+      | some x, some y => some (x + y)
+      | _, _ => none
+
+theorem chartSumShared_eq (j rho : Ival) (dat : RData) (neg : Bool) (w tol : Int)
+    (depth n k count : Nat) :
+    chartSumShared j rho dat neg w tol depth n k count =
+      chartSum j rho dat neg w tol depth n k count := by
+  induction count generalizing k with
+  | zero => rfl
+  | succ count ih =>
+      simp only [chartSumShared, chartSum, coverShared_eq, ih]
+      rfl
+
+def partOKShared (j rho : Ival) (dat : RData) (neg : Bool) (w tol : Int)
+    (depth n k count : Nat) (cap : Int) : Bool :=
+  match chartSumShared j rho dat neg w tol depth n k count with
+  | some x => decide (x ≤ cap)
+  | none => false
+
+theorem partOKShared_eq (j rho : Ival) (dat : RData) (neg : Bool) (w tol : Int)
+    (depth n k count : Nat) (cap : Int) :
+    partOKShared j rho dat neg w tol depth n k count cap =
+      partOK j rho dat neg w tol depth n k count cap := by
+  unfold partOKShared partOK
+  rw [chartSumShared_eq]
+  rfl
+
+/-- The original region quadtree, using shared inverse matrices at each box. -/
+def discCoverShared (dat : RData) (r2 : Int) : Nat → Int → Int → Int → Int → Bool
+  | depth, xlo, xhi, ylo, yhi =>
+    outsideDisc r2 ⟨xlo, xhi⟩ ⟨ylo, yhi⟩ ||
+      kerGatesShared (Rbox dat ⟨⟨xlo, xhi⟩, ⟨ylo, yhi⟩⟩) ||
+      match depth with
+      | 0 => false
+      | d + 1 =>
+        let xm := (xlo + xhi) / 2
+        let ym := (ylo + yhi) / 2
+        discCoverShared dat r2 d xlo xm ylo ym && discCoverShared dat r2 d xm xhi ylo ym &&
+          discCoverShared dat r2 d xlo xm ym yhi && discCoverShared dat r2 d xm xhi ym yhi
+
+theorem discCoverShared_eq (dat : RData) (r2 : Int) (depth : Nat) (xlo xhi ylo yhi : Int) :
+    discCoverShared dat r2 depth xlo xhi ylo yhi = discCover dat r2 depth xlo xhi ylo yhi := by
+  induction depth generalizing xlo xhi ylo yhi with
+  | zero => rfl
+  | succ depth ih => simp only [discCoverShared, discCover, kerGatesShared_eq, ih]
+
+def discCheckShared (dat : RData) (r2 : Int) : Bool :=
+  discCoverShared dat r2 30 (-2 * D) (2 * D) (-2 * D) (2 * D)
+
+theorem discCheckShared_eq (dat : RData) (r2 : Int) :
+    discCheckShared dat r2 = discCheck dat r2 := discCoverShared_eq dat r2 30 _ _ _ _
+
 end Grothe.UpperChaos.HardyArcEval
 
 /-- info: 'Grothe.UpperChaos.HardyArcEval.coverShared_eq' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
 #print axioms Grothe.UpperChaos.HardyArcEval.coverShared_eq
+
+/-- info: 'Grothe.UpperChaos.HardyArcEval.partOKShared_eq' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Grothe.UpperChaos.HardyArcEval.partOKShared_eq
+
+/-- info: 'Grothe.UpperChaos.HardyArcEval.discCheckShared_eq' depends on axioms: [propext] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Grothe.UpperChaos.HardyArcEval.discCheckShared_eq

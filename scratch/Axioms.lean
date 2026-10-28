@@ -241,6 +241,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.inner_linearMode_smoothOp
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.mem_chaosShell_of_degree
 #print axioms Grothe.UpperChaos.GT_rot2
+#print axioms Grothe.UpperChaos.HardyArcEval.discCheckShared_eq
+#print axioms Grothe.UpperChaos.HardyArcEval.partOKShared_eq
 #print axioms Grothe.UpperChaos.HardyReal.hardy_GT
 #print axioms Grothe.UpperChaos.HardyReal.hardy_GT_tight
 #print axioms Grothe.UpperChaos.HardyReal.hreal_GT

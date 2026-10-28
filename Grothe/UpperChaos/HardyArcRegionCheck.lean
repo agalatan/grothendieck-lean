@@ -1,4 +1,4 @@
-import Grothe.UpperChaos.HardyArcRegion
+import Grothe.UpperChaos.HardyArcData
 
 /-! The region of holomorphy for the Hardy tail: one single-threaded `native_decide` (a quadtree over complex boxes of
 `t` covering the square `[−2, 2]²`; every box lies outside the disc `|t| < 51863/50000` or passes the gates

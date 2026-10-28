@@ -51,3 +51,10 @@ def partsOK (neg : Bool) (k₀ : ℕ) : Bool :=
   partOK (ofRatI jQ) (ofRatI rhoQ) hardyData neg (D / 1024) (D / 10) 26 1024 k₀ 1024 (273 * D / 100)
 
 end Grothe.UpperChaos.HardyArcMean
+
+namespace Grothe.UpperChaos.HardyArcRegion
+
+/-- The radius certified by the numerical region check. -/
+def regionR : ℚ := 51863 / 50000
+
+end Grothe.UpperChaos.HardyArcRegion
