@@ -355,12 +355,12 @@ import Grothe
 #print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_phaseOfTerms_pow_cut
 #print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_phiT_pow_even_cut
 #print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_polynomial_cut_damped
-#print axioms Grothe.UpperChaos.PointwiseGeometricEnclosure.encloses_inflate
-#print axioms Grothe.UpperChaos.PointwiseGeometricEnclosure.encloses_inv_of_geometric
 #print axioms Grothe.UpperChaos.PhiDegreeChunksDraft.splitLengths_eq_offsetChunks
 #print axioms Grothe.UpperChaos.PhiSourceDenBinding.source_chunk_denominators
 #print axioms Grothe.UpperChaos.PhiSourceDenBinding.source_common_den
 #print axioms Grothe.UpperChaos.PhiSourceDenChunks.phase_source_commonDen_of_checked_chunks
+#print axioms Grothe.UpperChaos.PointwiseGeometricEnclosure.encloses_inflate
+#print axioms Grothe.UpperChaos.PointwiseGeometricEnclosure.encloses_inv_of_geometric
 #print axioms Grothe.UpperChaos.PositiveMomentTheta.moment_pos
 #print axioms Grothe.UpperChaos.PositiveMomentTheta.moment_ratio_mem_unit
 #print axioms Grothe.UpperChaos.PositiveMomentTheta.moment_recurrence

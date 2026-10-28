@@ -349,7 +349,6 @@ import Grothe.UpperChaos.PhiCoverData
 import Grothe.UpperChaos.PhiDegreeChunksDraft
 import Grothe.UpperChaos.PhiDense
 import Grothe.UpperChaos.PhiHorner
-import Grothe.UpperChaos.PointwiseGeometricEnclosure
 import Grothe.UpperChaos.PhiSourceDenBinding
 import Grothe.UpperChaos.PhiSourceDenChunk_o0_n8
 import Grothe.UpperChaos.PhiSourceDenChunk_o1000_n8
@@ -496,6 +495,7 @@ import Grothe.UpperChaos.PhiSourceDenChunk_o984_n8
 import Grothe.UpperChaos.PhiSourceDenChunk_o992_n8
 import Grothe.UpperChaos.PhiSourceDenChunks
 import Grothe.UpperChaos.PhiSourceDenLiteralAssembly
+import Grothe.UpperChaos.PointwiseGeometricEnclosure
 import Grothe.UpperChaos.PositiveMomentBackward
 import Grothe.UpperChaos.PositiveMomentRatio
 import Grothe.UpperChaos.PositiveMomentRecurrence
