@@ -26,6 +26,9 @@ namespace Rect
 
 def Valid (r : Rect) : Prop := r.sLo ≤ r.sHi ∧ r.auxLo ≤ r.auxHi
 
+instance (r : Rect) : Decidable r.Valid :=
+  inferInstanceAs (Decidable (r.sLo ≤ r.sHi ∧ r.auxLo ≤ r.auxHi))
+
 def domain (r : Rect) : Set (ℝ × ℝ) :=
   Icc (r.sLo : ℝ) r.sHi ×ˢ Icc (r.auxLo : ℝ) r.auxHi
 

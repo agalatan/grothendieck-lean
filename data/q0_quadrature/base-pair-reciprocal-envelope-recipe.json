@@ -1,0 +1,15 @@
+{
+  "agent": "codex-aa04",
+  "profile_input": "data/q0_quadrature/source-polynomial.json",
+  "s": [
+    "25203679/1000000",
+    "25204191/1000000"
+  ],
+  "degree": 10,
+  "bits": 160,
+  "exp_upper": "1/10000000000",
+  "profile_rounding_den": 1000000000,
+  "power": 23,
+  "aux_abs_upper": "1",
+  "status": "proposed whole retained reciprocal strip; all arithmetic and scalar bounds require Lean replay"
+}
