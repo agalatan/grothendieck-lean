@@ -1,5 +1,6 @@
 import Grothe.Upper.IntervalSound
 import GrotheKernel.HardyArc
+import Grothe.UpperChaos.HardyArcData
 import Grothe.UpperChaos.SchurMain
 
 /-!
@@ -333,7 +334,7 @@ theorem schurValue_sound (hR : memSC R RI) (hj : mem j jI) {v : ℤ}
     (hv : schurValue jI RI = some v) :
     (Z (Bj R j)).PD ∧ (SchurKernel.T (Bj R j) R.Cmat).PD ∧
       1 / (64 * j ^ 4 * ‖R.detIm‖ ^ 2 * (Z (Bj R j)).det * (W (Bj R j) R.Cmat).det) ≤ (v : ℝ) / D := by
-  unfold schurValue at hv
+  rw [schurValue_eq_spec] at hv
   split_ifs at hv with hg
   obtain rfl : (invPosI (denOf jI RI)).hi = v := Option.some.inj hv
   simp only [gatesOK, Bool.and_eq_true] at hg
@@ -420,10 +421,6 @@ lemma forall2_ofRatI : ∀ l : List ℚ, List.Forall₂ mem (l.map fun q : ℚ =
   | [] => List.Forall₂.nil
   | a :: l => List.Forall₂.cons (mem_ofRatI a) (forall2_ofRatI l)
 
-/-- `√(4/5)` lies between two rationals. -/
-def sqLo : ℚ := 894427190999915878563669467492 / 10 ^ 30
-def sqHi : ℚ := 894427190999915878563669467493 / 10 ^ 30
-
 lemma sqrt_eta_bounds : (sqLo : ℝ) ≤ √(etaQ : ℝ) ∧ √(etaQ : ℝ) ≤ sqHi := by
   have he : (etaQ : ℝ) = 4 / 5 := by simp [etaQ]
   rw [he]
@@ -433,25 +430,12 @@ lemma sqrt_eta_bounds : (sqLo : ℝ) ≤ √(etaQ : ℝ) ∧ √(etaQ : ℝ) ≤
   · calc √(4 / 5 : ℝ) ≤ √((sqHi : ℝ) ^ 2) := Real.sqrt_le_sqrt (by norm_num [sqHi])
       _ = sqHi := Real.sqrt_sq (by norm_num [sqHi])
 
-/-- The interval of `√η`. -/
-def sqI : Ival := ⟨ofRatLo sqLo, ofRatHi sqHi⟩
-
 lemma mem_sqI : mem (√(etaQ : ℝ)) sqI := by
   obtain ⟨h1, h2⟩ := sqrt_eta_bounds
   have hD := D_pos
   exact ⟨(ofRatLo_le sqLo).trans (by nlinarith), le_trans (by nlinarith) (le_ofRatHi sqHi)⟩
 
-/-- The rational `p_u = 1/(1 + b²)`. -/
-def puQ : ℚ := 1 / (1 + bQ ^ 2)
-
 lemma pu_eq : pu = (puQ : ℝ) := by simp [pu, puQ]
-
-/-- Interval data of `R(t)`: the smoothing entries and the coefficient lists. -/
-def hardyData : RData :=
-  ⟨addI (ofRatI puQ) (mulI sqI (ofRatI (1 - puQ))),
-   subI (ofRatI (puQ * bQ)) (mulI sqI (ofRatI (puQ * bQ))),
-   addI (ofRatI (puQ * bQ ^ 2)) (mulI sqI (ofRatI (1 - puQ * bQ ^ 2))),
-   pList.map ofRatI, qList.map ofRatI⟩
 
 lemma mem_m00 : mem m00 hardyData.m00 := by
   have := mem_add (mem_ofRatI puQ) (mem_mul mem_sqI (mem_ofRatI (1 - puQ)))

@@ -882,3 +882,4 @@ import Grothe
 #print axioms Grothe.tail_numeric
 #print axioms Grothe.transfer
 #print axioms Grothe.upper_value_lt
+#print axioms GrotheKernel.HardyArc.schurValue_eq_spec

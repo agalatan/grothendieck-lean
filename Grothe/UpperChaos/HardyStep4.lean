@@ -1,4 +1,5 @@
 import Grothe.UpperChaos.HardyArcMean
+import Grothe.UpperChaos.HardyArcRegion
 import Grothe.UpperChaos.HardyArcRegionCheck
 import Grothe.UpperChaos.HardyArcPart0
 import Grothe.UpperChaos.HardyArcPart1

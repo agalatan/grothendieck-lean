@@ -121,9 +121,6 @@ theorem discCover_sound {r2 : ℤ} :
       · exact ih _ _ _ _ h2 t ⟨hxl, hx.2⟩ ⟨hy.1, hyl⟩ hr
       · exact ih _ _ _ _ h4 t ⟨hxl, hx.2⟩ ⟨hyl, hy.2⟩ hr
 
-/-- The radius of the region. -/
-def regionR : ℚ := 51863 / 50000
-
 /-- **The region of holomorphy** from the disc check: `KerPos (R(t))` on the open disc of radius `51863/50000`. -/
 theorem kerPos_on_ball (h : discCheck hardyData (ofRatHi (regionR ^ 2)) = true) :
     ∀ t ∈ Metric.ball (0 : ℂ) (regionR : ℝ), ∃ l > 0, KerPos (Rt t) l := by

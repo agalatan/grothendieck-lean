@@ -17,10 +17,6 @@ namespace Grothe.UpperChaos.HardyArcCover
 
 open GrotheKernel GrotheKernel.HardyArc Grothe.Upper HardyArcSound HardyArcCircle SchurMain SchurKernel
 
-/-- The radius and the reference precision. -/
-def rhoQ : ℚ := 4149 / 4000
-def jQ : ℚ := 9 / 20
-
 /-- The squared correlation along a chart. -/
 noncomputable def gF (F G : ℂ × ℂ → ℂ) (neg : Bool) (θ : ℝ) : ℝ :=
   ‖HholPair F G (Rt (HardyArcSound.sig neg * ((rhoQ : ℝ) : ℂ) * Complex.exp (θ * Complex.I)))‖ ^ 2
