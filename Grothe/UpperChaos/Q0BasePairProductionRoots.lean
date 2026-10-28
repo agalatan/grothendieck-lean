@@ -1,10 +1,12 @@
 import Grothe.UpperChaos.Q0BasePairProductionBridge
+import Grothe.UpperChaos.Q0BasePairRoot2Integral
+import Grothe.UpperChaos.Q0BasePairRoot6Integral
 import Grothe.UpperChaos.Q0BasePairRoot7Integral
 import Grothe.UpperChaos.Q0BasePairRoot10Integral
 import Grothe.UpperChaos.Q0BasePairRoot11Integral
 
 /-!
-# Production-kernel enclosures on three complete retained roots
+# Production-kernel enclosures on five complete retained roots
 
 Agent-ID: codex-2ca4.
 
@@ -24,6 +26,30 @@ open LeanCertProductionPanel Q0CompanionBaseQuadrature
 private theorem finiteLaplaceEta_eq :
     finiteLaplaceEta = (1 / 1000000000000000 : ℝ) := by
   norm_num [finiteLaplaceEta]
+
+/-- Both production kernel integrals on the whole direct root of strip 1. -/
+theorem root2_integrals_mem :
+    (regularRoot 1).integral (regularKernel q0Index 0) ∈
+        Q0BasePairRoot2Integral.firstInterval ∧
+      (regularRoot 1).integral (regularKernel companionIndex 0) ∈
+        Q0BasePairRoot2Integral.companionInterval := by
+  have h := Q0BasePairProductionBridge.direct_integral_pair
+    (regularRoot 1) (regularRoot_valid 1)
+    (by decide +kernel) (by decide +kernel)
+  rw [h.1, h.2, finiteLaplaceEta_eq]
+  exact Q0BasePairRoot2Integral.fixed_root_integrals_mem
+
+/-- Both production kernel integrals on the whole direct root of strip 3. -/
+theorem root6_integrals_mem :
+    (regularRoot 3).integral (regularKernel q0Index 0) ∈
+        Q0BasePairRoot6Integral.firstInterval ∧
+      (regularRoot 3).integral (regularKernel companionIndex 0) ∈
+        Q0BasePairRoot6Integral.companionInterval := by
+  have h := Q0BasePairProductionBridge.direct_integral_pair
+    (regularRoot 3) (regularRoot_valid 3)
+    (by decide +kernel) (by decide +kernel)
+  rw [h.1, h.2, finiteLaplaceEta_eq]
+  exact Q0BasePairRoot6Integral.fixed_root_integrals_mem
 
 /-- Both production kernel integrals on the whole reciprocal root of strip 3. -/
 theorem root7_integrals_mem :

@@ -415,9 +415,12 @@ leaves with an algebraic cell certificate on the complete reciprocal root
 of strip 3. `Q0BasePairRoot10Integral` combines all twelve algebraic leaves
 on the direct root of strip 5. Both preserve exact midpoint geometry and
 prove both explicit integrals without leaf or numerical premises.
+`Q0BasePairRoot2Integral` and `Q0BasePairRoot6Integral` similarly combine
+the complete direct roots of strips 1 and 3 from their twenty-four and
+fifteen checked algebraic leaves, respectively.
 `Q0BasePairProductionBridge` identifies these explicit integrands with the
 actual two production kernels at Taylor index zero, including the reciprocal
-Jacobian. `Q0BasePairProductionRoots` transfers the three complete-root
+Jacobian. `Q0BasePairProductionRoots` transfers the five complete-root
 enclosures to those production kernels at the fixed damping. The remaining
 algebraic leaves and complete root-to-band assembly remain work in progress.
 

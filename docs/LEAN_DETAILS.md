@@ -556,6 +556,11 @@ committed recipe by `tools/gen_base_pair_root10_integral.py --check`.
 That entrypoint delegates to `tools/gen_base_pair_root_integral.py`, whose
 fixed-root specifications validate the complete midpoint tree and canonical
 radial endpoints before rendering the integral assembly.
+The same generator with `--root 2` or `--root 6` renders the complete
+direct roots of strips 1 and 3. Their twenty-four and fifteen algebraic
+leaf certificates, respectively, retain the original physical rectangles
+and model-integral intervals. Each complete-root theorem and its production
+kernel consumer has no leaf-enclosure or numerical premise.
 `BasePairIntegralAudit` checks the transitive dependencies of every analytic
 cell integral and all complete-root results against the standard Lean axioms;
 it rejects missing theorems and any additional axiom dependency.
@@ -563,7 +568,7 @@ it rejects missing theorems and any additional axiom dependency.
 integrands with `regularKernel` and `reciprocalRealKernel` at Taylor index
 zero, including the reciprocal Jacobian. Its integral identities require
 only the rectangle geometry. `Q0BasePairProductionRoots` combines them with
-the complete root results for reciprocal strips 3 and 5 and direct strip 5
+the complete root results for reciprocal strips 3 and 5 and direct strips 1, 3 and 5
 at `finiteLaplaceEta`, without source identities or numerical hypotheses.
 The strict integral audit includes these production-root consumers.
 The remaining algebraic leaves, other roots and final band energy checks
