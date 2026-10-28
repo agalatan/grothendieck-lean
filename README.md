@@ -165,6 +165,16 @@ the slice is identified with the actual affine Gaussian phase integral.
 This supporting calculation adds no native checker. The production Gaussian
 error estimates needed for `1.404598149141` remain work in progress.
 
+`ProductionFiniteLaplace` replaces the infinite auxiliary integral by a finite
+one for every actual Taylor source. At softening scale `η = 10⁻¹⁵` and cutoff
+`T = 40·10³⁰`, its full Gaussian L² error, including softening, is below
+`5·10⁻¹⁵`; smoothing and Hermite-band projection preserve this bound.
+`LeanCertAuxiliaryCutoff` checks `exp(-40) ≤ 10⁻¹⁷` with `decide +kernel`.
+The finite-integral identity is also proved for every integrable source.
+`ProductionCompactLaplace` also cuts off the first Gaussian squared radius at
+`80`: softening and both truncations together still cost less than `5·10⁻¹⁵`.
+Certified quadrature of that finite domain remains work in progress.
+
 A proposed direct route, `Grothe.UpperChaos.DirectSample.upper_of_actual_head`,
 derives the same sharp rational bound from an explicit finite-head estimate for
 the actual kernel. That numerical head estimate remains unproved; the route

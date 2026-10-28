@@ -336,6 +336,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.ev_taylorSourceSlice
 #print axioms Grothe.UpperChaos.exp_five_gt_148
 #print axioms Grothe.UpperChaos.exp_neg_155_lt
+#print axioms Grothe.UpperChaos.exp_neg_forty_le
 #print axioms Grothe.UpperChaos.far_sound
 #print axioms Grothe.UpperChaos.finiteSoftPhase_logGrid
 #print axioms Grothe.UpperChaos.firstCapturedErrorQ_le_public
@@ -419,6 +420,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.integral_moment
 #print axioms Grothe.UpperChaos.integral_moment_damped
 #print axioms Grothe.UpperChaos.integral_moment_damped_prod
+#print axioms Grothe.UpperChaos.integral_mul_finiteLaplacePhase
 #print axioms Grothe.UpperChaos.integral_mul_finiteSoftPhase
 #print axioms Grothe.UpperChaos.integral_mul_softPhase_eq_laplace
 #print axioms Grothe.UpperChaos.integral_norm_F0_sq
@@ -462,9 +464,16 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_GT_le
 #print axioms Grothe.UpperChaos.norm_bandProj_roundingDifference_le
 #print axioms Grothe.UpperChaos.norm_band_hpow_sq_le_of_inner
+#print axioms Grothe.UpperChaos.norm_compactLaplaceError_cutoff_lt
+#print axioms Grothe.UpperChaos.norm_compactLaplaceError_le
 #print axioms Grothe.UpperChaos.norm_energyBlock_sq
 #print axioms Grothe.UpperChaos.norm_energyHeadProjection_le_one_of_table
 #print axioms Grothe.UpperChaos.norm_energyHeadProjection_sq
+#print axioms Grothe.UpperChaos.norm_finiteLaplaceError_cutoff_lt
+#print axioms Grothe.UpperChaos.norm_finiteLaplaceError_le
+#print axioms Grothe.UpperChaos.norm_finiteLaplacePhase_le_one
+#print axioms Grothe.UpperChaos.norm_finiteLaplaceTailError_le
+#print axioms Grothe.UpperChaos.norm_finiteLaplaceTailError_pointwise_le
 #print axioms Grothe.UpperChaos.norm_firstCaptured_taylorCenters_le
 #print axioms Grothe.UpperChaos.norm_firstCenterBand_sq
 #print axioms Grothe.UpperChaos.norm_firstCenter_tail_le
@@ -498,6 +507,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_projOn_residual_le_of_captured_family
 #print axioms Grothe.UpperChaos.norm_projOn_residual_sq_le_of_captured
 #print axioms Grothe.UpperChaos.norm_projOn_residual_sq_le_of_captured_family
+#print axioms Grothe.UpperChaos.norm_projOn_smooth_compactLaplaceError_cutoff_lt
+#print axioms Grothe.UpperChaos.norm_projOn_smooth_finiteLaplaceError_cutoff_lt
 #print axioms Grothe.UpperChaos.norm_projOn_smooth_hpow_sub_softHpow_cutoff_lt
 #print axioms Grothe.UpperChaos.norm_projOn_source_le_of_captured_family
 #print axioms Grothe.UpperChaos.norm_projOn_sq_add_le_of_disjoint
@@ -510,8 +521,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_secondCenter_tail_smoothed_le
 #print axioms Grothe.UpperChaos.norm_softPhaseError_cutoff_lt
 #print axioms Grothe.UpperChaos.norm_softPhaseError_le
+#print axioms Grothe.UpperChaos.norm_softPhase_sub_finiteLaplacePhase_le
 #print axioms Grothe.UpperChaos.norm_softTaylorError_cutoff_lt
 #print axioms Grothe.UpperChaos.norm_softTaylorError_le
+#print axioms Grothe.UpperChaos.norm_source_eighty_le
 #print axioms Grothe.UpperChaos.norm_sq_le_phiT_moment
 #print axioms Grothe.UpperChaos.norm_taylorPhasePower_le
 #print axioms Grothe.UpperChaos.norm_thirdCaptured_taylorCenters_le
@@ -567,6 +580,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.smoothOp_ouOp_comm
 #print axioms Grothe.UpperChaos.smoothOp_toLp'
 #print axioms Grothe.UpperChaos.softPhase_eq_laplace
+#print axioms Grothe.UpperChaos.softPhase_sub_finiteLaplacePhase
 #print axioms Grothe.UpperChaos.splitAll_cover
 #print axioms Grothe.UpperChaos.sq_mul_exp_neg_le_two
 #print axioms Grothe.UpperChaos.sqrt_ratio_deficit_le

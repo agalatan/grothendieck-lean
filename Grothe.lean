@@ -277,6 +277,7 @@ import Grothe.UpperChaos.JointSampleLedger
 import Grothe.UpperChaos.Kernel2
 import Grothe.UpperChaos.KernelStability
 import Grothe.UpperChaos.LawY
+import Grothe.UpperChaos.LeanCertAuxiliaryCutoff
 import Grothe.UpperChaos.LeanCertPilot
 import Grothe.UpperChaos.LocalizedComparison
 import Grothe.UpperChaos.LstarL
@@ -313,6 +314,8 @@ import Grothe.UpperChaos.PhiCoverData
 import Grothe.UpperChaos.PhiDense
 import Grothe.UpperChaos.PhiHorner
 import Grothe.UpperChaos.ProductComplete
+import Grothe.UpperChaos.ProductionCompactLaplace
+import Grothe.UpperChaos.ProductionFiniteLaplace
 import Grothe.UpperChaos.ProductionRadialTail
 import Grothe.UpperChaos.ProductionSmallBall
 import Grothe.UpperChaos.ProductionSoftPhase
