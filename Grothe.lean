@@ -192,6 +192,7 @@ import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.Realise
 import Grothe.Upper.Residual
 import Grothe.Upper.WeightedUnion
+import Grothe.UpperChaos.AdaptiveRectanglePartition
 import Grothe.UpperChaos.AffineGaussianSquare
 import Grothe.UpperChaos.AffineSquareIntegralBounds
 import Grothe.UpperChaos.BandProj
@@ -212,6 +213,7 @@ import Grothe.UpperChaos.ComplexMoments
 import Grothe.UpperChaos.ComplexRealCellIntegral
 import Grothe.UpperChaos.ConcreteLinearEnergy
 import Grothe.UpperChaos.ConcretePhaseMoments
+import Grothe.UpperChaos.ConcreteRetainedBands
 import Grothe.UpperChaos.ConcreteTaylorUpper
 import Grothe.UpperChaos.ConditionalGaussianBase
 import Grothe.UpperChaos.ConditionalGaussianPhase
