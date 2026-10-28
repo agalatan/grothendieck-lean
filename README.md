@@ -322,6 +322,10 @@ by finite cells, using the continuous original kernel at inverse boundaries.
 `ProductionMeshEnclosure` sums the regular and reciprocal cell errors into
 an enclosure of the actual retained Gaussian coefficient, including its
 normalization. The shared source reserve remains outside this cell sum.
+`SmallProfileMesh` supplies a concrete seven-strip partition of `[0,80]`.
+Kernel-reduced Horner checks prove the actual profile condition on its three
+selected rational intervals, discharging that premise of the retained-source
+estimate. The exact cuts are recorded in `data/small-profile-mesh/certificate.json`.
 
 Lean also proves a selected-spectrum comparison: the error is split
 into 18 pieces with specified degree supports and norm caps. Each piece pairs
