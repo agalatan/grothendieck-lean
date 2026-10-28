@@ -293,6 +293,7 @@ import Grothe.UpperChaos.OriginalEnergyBudget
 import Grothe.UpperChaos.OriginalEnergyNoMass
 import Grothe.UpperChaos.PackedDyadic
 import Grothe.UpperChaos.PackedDyadicChunks
+import Grothe.UpperChaos.PhaseAuxiliaryDecay
 import Grothe.UpperChaos.PhaseMoment2
 import Grothe.UpperChaos.PhaseMoment4
 import Grothe.UpperChaos.PhaseMoment6
@@ -327,6 +328,7 @@ import Grothe.UpperChaos.ProfileRootScreen
 import Grothe.UpperChaos.ProfileRootSound
 import Grothe.UpperChaos.ProfileUnitBounds
 import Grothe.UpperChaos.ProjectionUnion
+import Grothe.UpperChaos.QuadraturePartition
 import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialCutoff
 import Grothe.UpperChaos.RadialDampedMoments
@@ -352,6 +354,7 @@ import Grothe.UpperChaos.SchurTest
 import Grothe.UpperChaos.SelectedEnergyApprox
 import Grothe.UpperChaos.ShiftedDampedMoments
 import Grothe.UpperChaos.ShiftedMomentRecurrence
+import Grothe.UpperChaos.SmallProfileAuxiliaryTail
 import Grothe.UpperChaos.SmoothComm
 import Grothe.UpperChaos.SmoothKernelStability
 import Grothe.UpperChaos.SmoothResponseSeries
