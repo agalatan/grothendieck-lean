@@ -536,6 +536,9 @@ the fixed damping `1/10^15`. Continuity justifies the exact adjacent-integral
 identities. The result intervals are the ordered sums of the proved leaf
 intervals, without another source reserve. Root 10 is generated from its
 committed recipe by `tools/gen_base_pair_root10_integral.py --check`.
+That entrypoint delegates to `tools/gen_base_pair_root_integral.py`, whose
+fixed-root specifications validate the complete midpoint tree and canonical
+radial endpoints before rendering the integral assembly.
 `BasePairIntegralAudit` checks the transitive dependencies of every analytic
 cell integral and all complete-root results against the standard Lean axioms;
 it rejects missing theorems and any additional axiom dependency.
