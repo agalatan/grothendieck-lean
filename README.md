@@ -39,6 +39,14 @@ classical and quantum correlations in two-party Bell experiments (real case).
 
 ## What is proved
 
+**The statement** is [`Grothe/Statement.lean`](Grothe/Statement.lean). It imports only Mathlib and holds only
+definitions: C(A), V(A), Grothendieck bounds, the constant $K_G^{\mathbb C}$ as their infimum, and the two targets
+`UpperTarget` ($K_G^{\mathbb C} < 1.404598149141$) and `LowerTarget` ($1.401697117301 < K_G^{\mathbb C}$). A
+compiled theorem whose type is one of these targets and whose axiom report is clean proves exactly that claim.
+`Grothe/UpperTarget.lean` connects the proof to it: `Grothe.Statement.upper_target_of_inputs` proves `UpperTarget`
+from the inputs not yet proved in Lean, listed as its hypotheses (the finite-band Gaussian error estimates of the
+three Taylor centers and the energy-table accuracy).
+
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V over all finite-dimensional complex Hilbert spaces. The headline
 theorems conclude a statement about the constant itself.
