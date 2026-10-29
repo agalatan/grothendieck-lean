@@ -379,6 +379,14 @@ existing profile cover, giving `|κ(s)| > 1/1000` on all four remaining strips.
 Thus their reciprocal Gaussian denominator exceeds `10⁻⁶` uniformly, including
 for very small positive reciprocal coordinates.
 
+`ProfilePiFactor` provides rational enclosures of `π`, `sqrt(π)`, and
+`sqrt(sqrt(π))` of width at most `2⁻⁵¹²` for the actual profile normalization.
+Mathlib's proved nested-square-root bounds certify the π witnesses; exact
+rational inequalities certify the remaining factors. The input recipe and
+generator are tracked in `data/profile-pi-factor/` and
+`tools/gen_profile_pi_factor.py`. Full transformed node-shift enclosures remain
+separate obligations.
+
 `LocalAffineSquareIntegralBounds` requires continuity only on the closed cell,
 so reciprocal certificates do not need an extension through zero.
 `RetainedMeshReality` proves that the normalized retained coefficients are real.
