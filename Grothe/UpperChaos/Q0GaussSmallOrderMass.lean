@@ -51,7 +51,7 @@ private theorem reference_weight_sum01 (node : Fin 1 → ℝ)
   have h := actual_exactness_of_check 0 p00 p01 w01 r01
     source01 Q0GaussPolynomialOrder01.identities_checked
     node hinj hroot (1 : ℝ[X]) (by norm_num)
-  simpa [Q0LegendreInteger.weight] using h.symm
+  simpa [Q0LegendreInteger.weight, one_add_one_eq_two] using h.symm
 
 private theorem reference_weight_sum02 (node : Fin 2 → ℝ)
     (hinj : Function.Injective node)
@@ -60,7 +60,7 @@ private theorem reference_weight_sum02 (node : Fin 2 → ℝ)
   have h := actual_exactness_of_check 1 p01 p02 w02 r02
     source02 Q0GaussPolynomialOrder02.identities_checked
     node hinj hroot (1 : ℝ[X]) (by norm_num)
-  simpa [Q0LegendreInteger.weight] using h.symm
+  simpa [Q0LegendreInteger.weight, one_add_one_eq_two] using h.symm
 
 private theorem reference_weight_sum03 (node : Fin 3 → ℝ)
     (hinj : Function.Injective node)
@@ -69,7 +69,7 @@ private theorem reference_weight_sum03 (node : Fin 3 → ℝ)
   have h := actual_exactness_of_check 2 p02 p03 w03 r03
     source03 Q0GaussPolynomialOrder03.identities_checked
     node hinj hroot (1 : ℝ[X]) (by norm_num)
-  simpa [Q0LegendreInteger.weight] using h.symm
+  simpa [Q0LegendreInteger.weight, one_add_one_eq_two] using h.symm
 
 private theorem reference_weight_sum04 (node : Fin 4 → ℝ)
     (hinj : Function.Injective node)
@@ -78,7 +78,7 @@ private theorem reference_weight_sum04 (node : Fin 4 → ℝ)
   have h := actual_exactness_of_check 3 p03 p04 w04 r04
     source04 Q0GaussPolynomialOrder04.identities_checked
     node hinj hroot (1 : ℝ[X]) (by norm_num)
-  simpa [Q0LegendreInteger.weight] using h.symm
+  simpa [Q0LegendreInteger.weight, one_add_one_eq_two] using h.symm
 
 /-- The existing recurrence weights sum to two for any complete injective
 root family of an order from one to four. -/

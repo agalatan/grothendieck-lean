@@ -5,7 +5,7 @@
     "canonical_pairs_PR233": "80639eb0ccac3a033e9933937bc16a54bcb9c691",
     "polynomial_exactness_PR234": "4689a89330905c5bad18fa881b1e471c58f91a39",
     "saved_rows_PR242": "58ee58839183fe99ed40124832bd0307053149d1",
-    "actual_reconstruction_PR246": "192e161e6fc764507c9fd64c279f15b261bb7aab"
+    "actual_reconstruction_PR246": "b7829f67b50b5021d4f608a06d01639b5b2d0743"
   },
   "authorized_small_order_sources": {
     "Grothe/UpperChaos/Q0GaussSmallOrderMass.lean": "c900b57bb743129e1b97b1e9bbde87f1e0e1d9628c9504c660109f22f050f303",
@@ -24,5 +24,9 @@
     "data/q0_quadrature/conditional_source/exception-centers.json": "d5256c931c6df31bf0b4baf9e46964dc81c942235e57fb6f8962fa6bbcadeb67",
     "data/q0_quadrature/conditional_source/exception-ledger.jsonl": "08d55747fbe0ab60b613226e64fcebeb97e7db1712ee319f6b88d01faec52f66",
     "data/q0_quadrature/conditional_source/exception-ledger-index.json": "1da7e699cc6c26adf0916616f514af628d50992c976b61ce34c2d9b3af8a269a"
+  },
+  "delivered_small_order_sources": {
+    "Grothe/UpperChaos/Q0GaussSmallOrderMass.lean": "82c64e9ddfabda091fc54c5fa6682a10471bc044abc85078f28b2dc6f38c9c2c",
+    "Grothe/UpperChaos/Q0GaussSourcePanelMass.lean": "fff3bead205e05adc7ccce6679e61a6a9f3dbe9123f97c04c957b6753ecc6815"
   }
 }
