@@ -876,6 +876,10 @@ model remain inputs; discrete Bessel and omitted-domain estimates are separate.
 Keeping the actual phase inside the Gaussian model removes the phase-error
 term exactly. The remaining saved-model discrepancy is one normalized
 conditional Gaussian integral of model energy, saved energy and their cross
-term. Its numerical evaluation and the outer radial weights remain separate.
+term. Separate energy upper bounds $U,V$ and a real cross lower bound $L$
+give the squared-discrepancy budget $U+V-2L$. A complex cross enclosure
+with center $c$ and radius $r$ gives $U+V-2\operatorname{Re}(c)+2r$.
+These numerical receipts, the saved-source binding and outer radial weights
+remain separate obligations.
 
 \end{document}

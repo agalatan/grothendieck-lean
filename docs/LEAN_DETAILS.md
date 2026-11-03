@@ -641,6 +641,13 @@ An eventual bound of this integral by a nonnegative `epsilon²` implies actual
 source error at most `5ρ²+epsilon`. The slice-wide actual phase bound, positive
 radial parameter, saved-function binding and numerical integral certificate
 remain explicit; a selected leaf does not provide whole-slice coverage.
+The model and model/saved cross integrands are integrable by their actual L²
+representatives. Separate receipts `modelEnergy ≤ U`, `savedEnergy ≤ V` and
+`Re(modelSavedCross) ≥ L` give the squared discrepancy bound `U+V-2L`. A complex
+cross enclosure `‖modelSavedCross-c‖ ≤ r` instead gives `U+V-2 Re(c)+2r`.
+Either budget bounded by `epsilon²`, with `epsilon ≥ 0`, implies the same
+actual source estimate. This consumer does not manufacture any of the numerical
+receipts or bind an arbitrary saved function to the stored center data.
 
 `LocalAffineSquareIntegralBounds` supplies both affine integration orders with
 `ContinuousOn` restricted to the actual closed cell. Coordinate clamping

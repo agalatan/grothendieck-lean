@@ -438,8 +438,10 @@ the global cover or upper endpoint.
 `ProductionPhaseModelIntegral` can retain the actual phase in the Gaussian model,
 eliminating its separate phase-error term exactly. It expresses the remaining
 saved-model squared discrepancy as one conditional Gaussian integral of explicit
-model energy, saved energy and their cross term. It supplies no numerical bound
-for this integral or identification of the saved bytes.
+model energy, saved energy and their cross term. Separate upper energy bounds
+and a lower cross bound imply the source estimate directly. A complex cross
+enclosure with radius `r` costs `2r` in the squared-discrepancy budget. The
+actual integral bounds and identification of saved bytes remain inputs.
 
 `ProductionPhaseL2Error` transfers the source comparison to the whole
 conditional Gaussian space: the actual rounding error is at most `5ρ²` plus
