@@ -265,36 +265,10 @@ lemma cbound_zero : cbound 0 = 1 := by
 include hfm hgm hfb hgb in
 /-- **`τ = ‖p‖ ≤ ρ`**, from `‖p‖² = ⟪c₀, p⟫ ≤ E|p|` (`|c₀| ≤ 1`) and the first-moment bound. -/
 theorem norm_pres_le_rho : ‖pres hfm hgm hfb hgb‖ ≤ ρ := by
-  set p := pres hfm hgm hfb hgb with hp
-  set c := cK hfm hgm hfb hgb 0 with hc
-  have hρ : (0 : ℝ) ≤ ρ := by unfold ρ; norm_num
-  have h1 : ‖p‖ ^ 2 = (inner ℂ c p).re := (re_inner_starProjection _ c).symm
-  have hcb : ∀ᵐ y ∂(stdGaussian (n + n)), ‖c y‖ ≤ 1 := by
-    filter_upwards [cfL_ae (measurable_kt hfm hgm) (norm_kt_le hfb hgb) 0] with y hy
-    rw [hc, cK, hy, ← cbound_zero]
-    exact norm_cf_le (norm_kt_le hfb hgb) 0 y
-  have hpi : Integrable (fun y => ‖p y‖) (stdGaussian (n + n)) :=
-    ((Lp.memLp p).integrable one_le_two).norm
-  have h2 : (inner ℂ c p).re ≤ ∫ y, ‖p y‖ ∂(stdGaussian (n + n)) := by
-    rw [re_inner_eq_integral]
-    refine integral_mono_ae (integrable_hre c p) hpi ?_
-    filter_upwards [hcb] with y hy
-    exact (le_abs_self _).trans ((abs_hre_le _ _).trans
-      (by nlinarith [norm_nonneg (p y), norm_nonneg (c y)]))
-  rcases (norm_nonneg p).eq_or_lt with h0 | h0
-  · rw [← h0]; exact hρ
-  have hu : ‖((‖p‖ : ℂ))⁻¹ • p‖ = 1 := by
-    rw [norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_norm, inv_mul_cancel₀ h0.ne']
-  have h3 := integral_norm_le_rho_of_mem_H21 n
-    (Submodule.smul_mem _ ((‖p‖ : ℂ)⁻¹) (pres_mem hfm hgm hfb hgb)) hu
-  have h4 : ∫ y, ‖(((‖p‖ : ℂ))⁻¹ • p : L2G n) y‖ ∂(stdGaussian (n + n))
-      = ‖p‖⁻¹ * ∫ y, ‖p y‖ ∂(stdGaussian (n + n)) := by
-    rw [← integral_const_mul]
-    refine integral_congr_ae ?_
-    filter_upwards [Lp.coeFn_smul ((‖p‖ : ℂ)⁻¹) p] with y hy
-    rw [hy, Pi.smul_apply, norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_norm]
-  rw [h4, inv_mul_le_iff₀ h0] at h3
-  nlinarith
+  refine norm_starProjection_H21_le_rho n ?_
+  filter_upwards [cfL_ae (measurable_kt hfm hgm) (norm_kt_le hfb hgb) 0] with y hy
+  rw [cK, hy, ← cbound_zero]
+  exact norm_cf_le (norm_kt_le hfb hgb) 0 y
 
 end shared
 

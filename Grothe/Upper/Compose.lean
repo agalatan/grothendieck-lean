@@ -40,18 +40,11 @@ def compCoeff (c : ℕ → ℝ) (P : ℝ[X]) (n : ℕ) : ℝ := ∑' k, c k * (c
 
 lemma summable_compCoeff_term {c : ℕ → ℝ} (hc : Summable fun k => |c k|) {P : ℝ[X]}
     (hP : l1 P ≤ 1) (n : ℕ) : Summable fun k => c k * (compTerm P k).coeff n :=
-  Summable.of_norm_bounded hc fun k => by
-    rw [Real.norm_eq_abs, abs_mul]
-    exact mul_le_of_le_one_right (abs_nonneg _)
-      ((abs_coeff_le_l1 _ n).trans (l1_compTerm_le hP k))
+  summable_mul_coeff (l1_compTerm_le hP) hc n
 
 lemma sum_abs_compCoeff_le {c : ℕ → ℝ} (hc : Summable fun k => |c k|) {P : ℝ[X]}
-    (hP : l1 P ≤ 1) (J : ℕ) : ∑ n ∈ range J, |compCoeff c P n| ≤ ∑' k, |c k| := by
-  exact sum_abs_tsum_le (range J) (fun k n => c k * (compTerm P k).coeff n)
-    (fun n _ => (summable_compCoeff_term hc hP n).norm) hc fun k => by
-      simp only [abs_mul, ← mul_sum]
-      exact mul_le_of_le_one_right (abs_nonneg _) ((sum_abs_coeff_le_l1 _ _).trans
-        (l1_compTerm_le hP k))
+    (hP : l1 P ≤ 1) (J : ℕ) : ∑ n ∈ range J, |compCoeff c P n| ≤ ∑' k, |c k| :=
+  sum_abs_tsum_mul_coeff_le (l1_compTerm_le hP) hc J
 
 theorem summable_abs_compCoeff {c : ℕ → ℝ} (hc : Summable fun k => |c k|) {P : ℝ[X]}
     (hP : l1 P ≤ 1) : Summable fun n => |compCoeff c P n| :=

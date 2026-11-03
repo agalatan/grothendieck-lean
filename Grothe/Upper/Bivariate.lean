@@ -69,20 +69,14 @@ lemma coeff_termOf_eq_zero (P Q : ℝ[X]) (hQ : Q.coeff 0 = 0) (p : ℕ × ℕ) 
 def bivarKernel (P Q : ℝ[X]) (μ : ℕ × ℕ → ℝ) (j : ℕ) : ℝ := ∑' p, μ p * (termOf P Q p).coeff j
 
 lemma summable_kernel_term {P Q : ℝ[X]} (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) {μ : ℕ × ℕ → ℝ}
-    (hμ : Summable fun p => |μ p|) (j : ℕ) : Summable fun p => μ p * (termOf P Q p).coeff j := by
-  refine Summable.of_norm_bounded hμ fun p => ?_
-  rw [Real.norm_eq_abs, abs_mul]
-  exact mul_le_of_le_one_right (abs_nonneg _) (abs_coeff_termOf_le hP hQ p j)
+    (hμ : Summable fun p => |μ p|) (j : ℕ) : Summable fun p => μ p * (termOf P Q p).coeff j :=
+  summable_mul_coeff (l1_termOf_le_one hP hQ) hμ j
 
 /-- The partial sums of the kernel are at most `Σ|μ|`. -/
 lemma sum_abs_bivarKernel_le (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ : ℕ × ℕ → ℝ)
     (hμ : Summable fun p => |μ p|) (J : ℕ) :
-    ∑ j ∈ range J, |bivarKernel P Q μ j| ≤ ∑' p, |μ p| := by
-  exact sum_abs_tsum_le (range J) (fun p j => μ p * (termOf P Q p).coeff j)
-    (fun j _ => (summable_kernel_term hP hQ hμ j).norm) hμ fun p => by
-      simp only [abs_mul, ← mul_sum]
-      exact mul_le_of_le_one_right (abs_nonneg _) ((sum_abs_coeff_le_l1 _ _).trans
-        (l1_termOf_le_one hP hQ p))
+    ∑ j ∈ range J, |bivarKernel P Q μ j| ≤ ∑' p, |μ p| :=
+  sum_abs_tsum_mul_coeff_le (l1_termOf_le_one hP hQ) hμ J
 
 /-- The kernel is absolutely summable. -/
 theorem summable_abs_bivarKernel (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (μ : ℕ × ℕ → ℝ)

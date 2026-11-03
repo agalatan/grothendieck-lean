@@ -37,7 +37,7 @@ Axioms: the standard axioms and the existing native head, comparison, Hardy-regi
 Hardy-arc and phase-cover checks. The concrete Taylor specialization also uses
 the existing native phase-moment and center-energy checks. Grouping introduces
 no new native facts. The structural fields of the old
-`DirectHyps` (`valid`, `summable`, `summableX`, `parityX`) and `|P₃(φ)| ≤ 1` (via `phi_abs_lt_one : |φ| < 1`)
+`DirectHyps` (`valid`, `summable`, `parityX`) and `|P₃(φ)| ≤ 1` (via `phi_abs_lt_one : |φ| < 1`)
 are theorems.  Module map (all in `Grothe/UpperChaos/`):
 
 | module | content |

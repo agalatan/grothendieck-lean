@@ -94,8 +94,7 @@ range facts for rows 0–11 and 16–18. They import `CapRangeDefs` and
 `CapRecipeData`: the rational row, gate, chord and recipe data and numerical
 checker, independently of the Gaussian analysis and lower certificate.
 There is one build target, `Grothe`: it builds range-check soundness in
-`CapRows`, convexity assembly in `CapAssembly` (`CapHull` is a compatibility
-import), the heavy facts, and `CapNodes`, which contains the 15 row-assembly
+`CapRows`, convexity assembly in `CapAssembly`, the heavy facts, and `CapNodes`, which contains the 15 row-assembly
 proofs and `lower_bound_of_capsRest`.
 
 `lower_bound_of_refined_cover_data` proves
@@ -305,6 +304,14 @@ proves an integrated auxiliary tail at `‖z‖ ≥ r₀ > 0`, bounded by
 `4/(3*alpha*r₀^3) * T^(-3/2)`. It is uniform in the real profile coefficient,
 including its zeros. Bounds for the full polynomial-weighted sources, the
 radial endpoint and certified numerical integration remain open.
+
+`LinearTiltedMoments` evaluates finite polynomials in `z` and `conj z` under
+`exp(-(rate-1)*normSq z + 2*Re(a*z))` for every positive `rate` and fixed complex
+source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
+Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
+A half-rate majorant proves integrability of every such polynomial insertion.
+Joint integrability when the source depends on another integration variable
+remains a separate obligation before Fubini can be applied.
 
 `GradedHermitePhaseSlice` expresses each actual Taylor source as a polynomial
 in the conditional coordinate times its exact Gaussian damping.
