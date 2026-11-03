@@ -39,6 +39,9 @@ sub-issues. Labels give the area (`area: lean`, `area: docs`, `area: infra`, `ar
 the side (`side: lower`, `side: upper`), the owner (`owner: codex`, `owner: claude`) and the status
 (`status: in progress`, `status: blocked`, `status: needs decision`).
 
+- **Every PR serves a task issue.** The PR description names at least one **open issue labelled `type: task`**
+  (`Closes #n` or `Refs #n`). An epic alone does not count: create the task first, with its area/side/owner labels
+  and the context. CI refuses to land a PR without one (`scripts/land_ready.sh`, a notice like a missing review).
 - **Before starting:** find the issue (`gh issue list`, `gh issue view <n>`); if none exists, create one with full
   context. Comment that you are starting, with your branch and worktree. Set the `owner:` and `status: in progress`
   labels.
@@ -308,6 +311,7 @@ Also:
 
 ## 9. Pull requests
 
+- **A PR names its task issue** (`Closes #n`/`Refs #n`, an open `type: task` issue, §1); CI does not land it otherwise.
 - **A PR means "intended to land".** Labels: `RFC` (not finished; comments on the approach wanted) and `WIP` (still
   being worked on; visible for early feedback). Neither can land until the label is removed.
 - **The author lands its own PR** with `/land <agent-id>` (§7). Nobody presses GitHub's merge button for an
