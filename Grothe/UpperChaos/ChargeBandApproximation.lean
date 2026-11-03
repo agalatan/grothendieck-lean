@@ -27,21 +27,5 @@ namespace Grothe.UpperChaos
 noncomputable section
 open scoped InnerProductSpace
 
-/-- An L² approximation and a finite coefficient-energy bound imply the
-band estimate. All numerical and charge-one premises remain explicit. -/
-theorem norm_band_error_le_shared_coefficients (B : Set Idx2)
-    [DecidablePred (· ∈ B)] (N : ℕ) (F Y C : Lp ℂ 2 mu2) (ε δ : ℝ)
-    (happrox : ‖F - Y‖ ≤ ε) (hδ : 0 ≤ δ)
-    (hcharge : ChargeOne (Y - C))
-    (hdegree : ∀ i ∈ B, (bideg i).1 + (bideg i).2 < 2 * N)
-    (hsum : (∑ i ∈ (gradedSupport N).filter (· ∈ B),
-      ‖⟪hvec2 i, Y - C⟫_ℂ‖ ^ 2) ≤ δ ^ 2) :
-    ‖projOn B (F - C)‖ ≤ ε + δ := by
-  apply norm_band_error_le_shared_approx B F Y C ε δ happrox
-  have hs := norm_projOn_chargeOne_sq_coefficients B N (Y - C) hcharge hdegree
-  have hnonneg := norm_nonneg (projOn B (Y - C))
-  rw [← hs] at hsum
-  nlinarith
-
 end
 end Grothe.UpperChaos

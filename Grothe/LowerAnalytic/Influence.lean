@@ -103,9 +103,6 @@ def gam3c (a b : MvPolynomial ι ℝ) : MvPolynomial ι ℝ :=
 
 lemma gam2c_self (F : MvPolynomial ι ℝ) : gam2c F F = gam2 F := rfl
 
-lemma gam2c_comm (a b : MvPolynomial ι ℝ) : gam2c a b = gam2c b a :=
-  Finset.sum_congr rfl fun _ _ => gam_comm _ _
-
 lemma gam2c_add_self (a b : MvPolynomial ι ℝ) :
     gam2c (a + b) (a + b) = gam2c a a + 2 * gam2c a b + gam2c b b := by
   unfold gam2c
@@ -220,11 +217,6 @@ def radP (a b : MvPolynomial ι ℝ) : MvPolynomial ι ℝ := a * a - b * b
 
 /-- `Q = 2ab`, the imaginary part of `q²`. -/
 def radQ (a b : MvPolynomial ι ℝ) : MvPolynomial ι ℝ := 2 * (a * b)
-
-omit [Fintype ι] in
-lemma radP_sq_add_radQ_sq (a b : MvPolynomial ι ℝ) :
-    radP a b * radP a b + radQ a b * radQ a b = radU a b * radU a b := by
-  unfold radP radQ radU; ring
 
 /-- The second-chaos component of `ab`, for `a`, `b` in the third chaos. -/
 def comp2 (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (a b : MvPolynomial ι ℝ) : MvPolynomial ι ℝ :=
