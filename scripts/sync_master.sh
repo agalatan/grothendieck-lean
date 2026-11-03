@@ -2,8 +2,8 @@
 # Bring the local `master` up to date with GitHub (fast-forward only; never commits, never discards).
 # Run it before starting work and before delivering. Safe to run from any worktree, by any agent.
 # It ends with an audit of your remote branches (set AGENT_ID=<your id>; without it, every agent's): every branch you
-# pushed, its check (red, green, running for hours), conflicts with master, green ready/ branches that did not merge,
-# branches already in master; each with an ACTION line. Deal with every ACTION line about your branches.
+# pushed, its check (red, green, running for hours), conflicts with master, its pull request (open, RFC/WIP, reviewed,
+# green but not landed), branches already in master; each with an ACTION line. Deal with every ACTION line about your branches.
 #   --build   afterwards, start the local master build job (scripts/master_build_job.sh: background, niced,
 #             incremental, in its own worktree) unless it is running or the cache is current. It publishes the
 #             snapshot .lake/master-cache that new worktrees clone (AGENTS.md §5). One job at a time (pid in
@@ -45,6 +45,7 @@ AGENT="${AGENT_ID:-}"
 owner_of() {  # the ID in the branch name (AGENTS.md §3), else the Agent-ID of its oldest commit not in master
   # (its creator: later commits may be another agent's, e.g. a janitor's merge of master)
   local b=$1 c id
+  if [[ "$b" =~ ^((codex|claude)-[0-9a-f]{4})/ ]]; then echo "${BASH_REMATCH[1]}"; return; fi
   if [[ "$b" =~ ^(ready|work|cloud)/((codex|claude)-[0-9a-f]{4})- ]]; then echo "${BASH_REMATCH[2]}"; return; fi
   if [[ "$b" =~ ^(codex|claude)/([0-9a-f]{4})- ]]; then echo "${BASH_REMATCH[1]}-${BASH_REMATCH[2]}"; return; fi
   for c in $(git -C "$MAIN" rev-list --reverse "origin/master..origin/$b" 2>/dev/null); do
@@ -72,7 +73,12 @@ audit() {
     --json headBranch,headSha,conclusion,status,databaseId,createdAt \
     --jq 'group_by(.headBranch) | map(max_by(.databaseId)) | .[] | "\(.headBranch) \(.headSha) \(.status) \(if (.conclusion // "") == "" then "-" else .conclusion end) \(.databaseId) \(.createdAt | fromdateiso8601)"' \
     2>/dev/null || true)
-  local found=0 todo=0 b own line state behind conflict sha st concl id created tip todo_b action hours
+  local prs=""
+  command -v gh >/dev/null 2>&1 && prs=$(gh pr list --state open --limit 200 \
+    --json number,headRefName,isDraft,labels,headRefOid \
+    --jq '.[] | "\(.headRefName) \(.number) \(.isDraft) \([.labels[].name] | join(",") | if . == "" then "-" else . end) \(.headRefOid)"' \
+    2>/dev/null || true)
+  local found=0 todo=0 b own line state behind conflict sha st concl id created tip todo_b action hours pr prn prd prl prsha rev
   while read -r b; do
     [ -z "$b" ] && continue
     own=$(owner_of "$b")
@@ -92,6 +98,8 @@ audit() {
     fi
     line=$(echo "$runs" | awk -v b="$b" '$1 == b' | head -1)
     action=""
+    pr=$(echo "$prs" | awk -v b="$b" '$1 == b' | head -1); prn=""
+    [ -n "$pr" ] && read -r _ prn prd prl prsha <<< "$pr"
     if [[ "$b" == cloud/* ]]; then
       state="cloud job branch (no proof check)"
       action="delete it once its cloud jobs are done and their results saved (§11, §14)"
@@ -114,14 +122,23 @@ audit() {
     fi
     if [ -n "$conflict" ]; then
       action="CONFLICT with master in: $conflict-> merge origin/master, resolve by understanding both sides, run python3 tools/gen_root_imports.py, push the same branch"
-    elif [[ "$b" == ready/* ]] && [[ "$state" == GREEN* ]]; then
-      if git -C "$MAIN" diff --name-only "origin/master...$tip" | grep -q '^\.github/workflows/'; then
-        action="green but changes .github/workflows: CI cannot merge it; open a pull request (the user merges it)"
-      else
-        action="green but NOT merged: open its finish job (gh run view $id); if master moved, CI re-dispatched it; otherwise merge origin/master and push again"
+    elif [[ "$b" == ready/* ]] || [[ "$b" == work/* ]]; then
+      action="old-style branch name: rename it to ${own:-<agent-id>}/<topic> and open a pull request to land it (AGENTS.md §3, §7)"
+    elif [ -n "$prn" ]; then
+      rev=$(gh api "repos/{owner}/{repo}/commits/${prsha}/statuses?per_page=100" \
+        --jq '[.[] | select(.context == "Independent review")] | first | "\(.state) \(.description)" // "none"' 2>/dev/null || echo none)
+      state="$state; PR #$prn${prl:+ [$prl]}; review: ${rev:0:60}"
+      if [[ ",$prl," == *,RFC,* ]] || [[ ",$prl," == *,WIP,* ]] || [ "$prd" = true ]; then
+        [ -z "$action" ] && action="PR #$prn is RFC/WIP/draft: answer its review comments; remove the label when it is ready to land"
+      elif [[ "$rev" == success* ]] && [[ "$state" == GREEN* ]]; then
+        action="PR #$prn is green and approved: land it with a comment '/land ${own}' (AGENTS.md §7)"
+      elif [[ "$rev" == failure* ]]; then
+        action="PR #$prn is blocked by review: answer every comment, fix, push, ask for a new review"
+      elif [ -z "$action" ]; then
+        action="PR #$prn waits for a review by the other side (AGENTS.md §7a); answer any comments"
       fi
-    elif [[ "$b" != ready/* ]] && [[ "$b" != cloud/* ]] && [ -z "$action" ]; then
-      action="a work branch: when the work is finished, deliver it as ready/<agent-id>-<topic>; delete it once its work is merged or abandoned"
+    elif [ -z "$action" ]; then
+      action="no pull request: open one to land it (RFC/WIP labels if not finished), or delete the branch once it has served its purpose (§14)"
     fi
     echo "  $b [$own]: $state, $behind behind master"
     if [ -n "$action" ]; then echo "      -> ACTION: $action"; todo=$((todo + 1)); fi
