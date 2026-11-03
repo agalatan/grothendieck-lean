@@ -1539,7 +1539,6 @@ Grothe.UpperChaos.Q0LegendreRule64.bounded
 Grothe.UpperChaos.Q0LegendreRule64.count
 Grothe.UpperChaos.Q0LegendreRule64.exists_each
 Grothe.UpperChaos.Q0LegendreRule64.ordered
-Grothe.UpperChaos.Q0LiteralBinaryFold.fold_eq_literal
 Grothe.UpperChaos.Q0NearZeroSource.actual_error_sq_lt
 Grothe.UpperChaos.Q0NearZeroSource.finite_completed_error_sq_le
 Grothe.UpperChaos.Q0NearZeroSource.finite_error_sq_lt

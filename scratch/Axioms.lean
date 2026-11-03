@@ -1726,7 +1726,6 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0LegendreRule64.count
 #print axioms Grothe.UpperChaos.Q0LegendreRule64.exists_each
 #print axioms Grothe.UpperChaos.Q0LegendreRule64.ordered
-#print axioms Grothe.UpperChaos.Q0LiteralBinaryFold.fold_eq_literal
 #print axioms Grothe.UpperChaos.Q0NearZeroSource.actual_error_sq_lt
 #print axioms Grothe.UpperChaos.Q0NearZeroSource.finite_completed_error_sq_le
 #print axioms Grothe.UpperChaos.Q0NearZeroSource.finite_error_sq_lt
