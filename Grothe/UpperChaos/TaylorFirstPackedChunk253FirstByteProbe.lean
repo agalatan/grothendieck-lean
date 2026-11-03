@@ -252,9 +252,13 @@ private def sourceLiteral : String := "2885903186414673:86,-3854422876346929:87,
 private theorem source_lookup : (firstCenterPackedChunks[253]?.getD "") = sourceLiteral := by
   rfl
 
+private theorem source_first_byte :
+    ((sourceLiteral.toByteArray.data.toList.take 1) == ([50] : List UInt8)) = true := by
+  decide +kernel
+
 open Lean Elab Command
 run_cmd do
-  for target in #[``joined000, ``source_lookup] do
+  for target in #[``joined000, ``source_lookup, ``source_first_byte] do
     for ax in ← Lean.collectAxioms target do
       unless #[`propext, `Classical.choice, `Quot.sound].contains ax do
         throwError m!"{target} has forbidden axiom {ax}"
