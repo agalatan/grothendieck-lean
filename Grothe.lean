@@ -179,6 +179,8 @@ import Grothe.Upper.ComparisonGroups
 import Grothe.Upper.ComparisonMass
 import Grothe.Upper.ComparisonOverlap
 import Grothe.Upper.Compose
+import Grothe.Upper.CompositeComparisonData
+import Grothe.Upper.CompositeComparisonMass
 import Grothe.Upper.Data
 import Grothe.Upper.Disk
 import Grothe.Upper.Final
