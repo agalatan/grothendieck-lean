@@ -205,82 +205,9 @@ unresolved nodes occupy 381 panels; panel closure selects exactly 417 rows
 The committed [selection inputs and rule](data/q0_quadrature/conditional_source/exception-selection.json)
 reproduce this choice. `Q0SourceExceptionCentersAll` checks scalar magnitude
 at most one, squared row norm at most `121/100`, and source ordinal coverage.
-The source-error assembly consumes these decoded rows through their finite
-source-address and cutoff binding; production basis/sign normalization and
-actual approximation-error estimates remain separate obligations.
-
-The actual source-error stage uses the same selected Gauss roots and physical
-weights throughout. Exceptional panels have orders one through four, so
-`Q0SourceExceptionMassClosure.exceptional_panel_normalization` removes the
-panel-weight-sum premise. Under a `1e-12` enclosure for the actual regular
-coefficients, `actual_source_error_sharp` gives selected-vector error at most
-`2.53e-10`. `Q0ConditionalSourceReconstruction.reflected_error_le` then applies
-exact reconstruction with factor `10/7`, preserving the production phase and
-counting Gaussian density once. This is not an endpoint or floating-point-table
-certificate: regular evaluator, normalization, contraction, omitted-domain and
-tail estimates remain work in progress.
-
-The near-zero regular-node path keeps the Gaussian error as one vector.
-`Q0ConditionalLinearError` uses Bessel to bound the selected analytic remainder
-by `5ρ²`, without multiplying by the number of modes. Its parameter error has
-vector radius `|ρ-r|`; the saved-model discrepancy requires its own coupled
-squared-norm certificate. `Q0ConditionalSourceVector` combines these bounds
-on selected regular nodes with separate budgets on all other regular nodes,
-using the original physical Gaussian weights. Actual parameter and saved-row
-certificates remain inputs; this path does not finish the upper bound.
-
-For exceptional rows, `Q0SourceSavedLinearModel` connects the decoded source
-payload to this coupled comparison. It reduces the model discrepancy over all
-selected modes to an exact rational calculation on five coordinates. The
-least-squares parameter is the difference of the two stored linear coefficients.
-Only the model and stored approximation vanish outside those coordinates; the
-actual Gaussian coefficients remain in the analytic error. Per-chunk kernel
-checks certify every decoded exceptional row's model residual below `1e-31`
-and fitted parameter magnitude below `1e-15`. `Q0SourceExceptionProfile` adds
-three centered interval checks on the original exceptional panel blocks.
-The existing profile identity and source-node geometry turn them into bounds
-on both actual phase parameters. Its final statement bounds the full selected
-Gaussian-to-saved vector error below `3e-15` at every exceptional source row,
-with no numerical enclosure premise. `Q0SourceExceptionalWeightedError` carries
-this estimate through the original discrete Gaussian weights and derives an
-exceptional weighted error radius at most `2e-25`, for any subset of the selected
-modes. Its full-source adapter keeps the regular squared error explicit and adds
-only `(2e-25)^2`. This new proof family is work in progress until its Lean CI
-check passes. Regular-node errors, quadrature and the remaining upper-bound
-obligations are separate.
-
-The fixed-node finite-integral path uses `Q0ConditionalFiniteLaplace` and
-`Q0ConditionalSoftening`. For every nonnegative source node, the actual base
-F0 response has softening error at most `(10/3)η`; truncating its auxiliary
-integral adds at most `exp(-η²T)`. Bessel transfers that response error to any
-finite Hermite coefficient vector without a mode-count factor. The fixed
-parameters give coefficient-vector radius at most `5e-15`.
-`Q0ConditionalFiniteLaplaceSource` combines this with an explicit coupled
-finite-integral-to-saved error at each regular source node, using the original
-weights, and adds the separate exceptional error. The finite-integral numerical
-certificate and full `phiT/P3` response binding still have to be supplied.
-A sufficient regular-row certificate has coupled radius at most `1.9e-10`;
-the actual source-mass bound then places it inside the existing source-error
-budget. This is a whole-vector requirement, including completed zero entries.
-This new proof unit is work in progress until Lean CI accepts it.
-
-`Q0RegularSourceRow` supplies a concrete regular-row certificate for original
-ordinal 3818 (panel 135, order-six rule index 2). Its original three binary64
-entries have exactly zero residual from the fitted sparse linear model.
-A centered interval check on the actual panel bounds the physical profile;
-the analytic model then bounds the entire selected Gaussian-to-saved vector
-by radius `2e-15`, including omitted modes. The finite-Laplace-to-saved radius
-is below `7e-15`, discharging the `1.9e-10` premise at this address. This one-row
-proof is awaiting Lean CI.
-
-`Q0NearZeroSource` extends the same argument to original ordinals 3469–4456,
-10710–11238 and 17223–17542: 1,837 rows, including 1,420 regular rows. The
-compact original payload and ledger hashes determine their exact saved values.
-Batched kernel checks bound the fitted parameter by `2e-11` and the coupled
-model residual by `2e-22`. Three whole-panel profile checks then give both
-actual-to-saved and finite-Laplace-to-saved radii below `6e-11`, including all
-selected modes. The generated checks and analytic consumer await Lean
-acceptance; the remaining rows and final upper bound remain work in progress.
+No Gaussian coefficient estimate or upper-bound assembly currently consumes
+this certificate; source-address, basis-normalization and approximation-error
+proofs remain separate.
 
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of
@@ -429,14 +356,6 @@ radial endpoint and certified numerical integration remain open.
 source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
 Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
 A half-rate majorant proves integrability of every such polynomial insertion.
-`IndependentSourceMoments` extends absolute integrability to arbitrary
-independent complex sources `a,b` in `exp(-(rate-1)*normSq z+a*z+b*conj z)`.
-Its majorant is uniform on bounded source sets, so complex differentiation
-in either source inserts `z` or `conj z`. `IndependentSourcePolynomial`
-evaluates every finite polynomial insertion by a polynomial recurrence,
-retaining the factor `exp(a*b/rate)/rate` and the means `b/rate`, `a/rate`.
-These source formulas do not identify the actual multiplier or the weighted
-Fock operator, and supply no numerical Hilbert--Schmidt caps.
 For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
 `QuadraticPolynomialIntegrability` proves genuine joint polynomial
 integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate
@@ -471,6 +390,40 @@ completion of the selected 31,877-mode vector has weighted error at most
 `10/7` times the canonical error at the same nodes and weights. The canonical
 error, physical weights, primary contraction, floating operations and final
 energy-table agreement still need their own certificates.
+`LinearTiltedMoments` evaluates finite polynomials in `z` and `conj z` under
+`exp(-(rate-1)*normSq z + 2*Re(a*z))` for every positive `rate` and fixed complex
+source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
+Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
+A half-rate majorant proves integrability of every such polynomial insertion.
+`IndependentSourceMoments` extends absolute integrability to arbitrary
+independent complex sources `a,b` in `exp(-(rate-1)*normSq z+a*z+b*conj z)`.
+Its majorant is uniform on bounded source sets, so complex differentiation
+in either source inserts `z` or `conj z`. `IndependentSourcePolynomial`
+evaluates every finite polynomial insertion by a polynomial recurrence,
+retaining the factor `exp(a*b/rate)/rate` and the means `b/rate`, `a/rate`.
+These source formulas do not identify the actual multiplier or the weighted
+Fock operator, and supply no numerical Hilbert--Schmidt caps.
+For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
+`QuadraticPolynomialIntegrability` proves genuine joint polynomial
+integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate
+is `(A*C-B²)/(A+C)`. `QuadraticPolynomialMoments` then applies Fubini and
+reduces every finite mixed polynomial integral to a finite Wick sum at the
+remaining rate `(A*C-B²)/A`; its zeroth mass is `1/(A*C-B²)`.
+The historical operator identity and polynomial insertion into the full
+bipartite kernel remain separate obligations.
+
+The weighted Gaussian kernel has exact mass formulas. A common `gateOK`
+certificate supplies the real covariance conditions for either physical pair.
+`OriginalHSGaussianMass.integral_gateWeight` gives pair mass `ν²/δ`, and
+`OriginalHSGaussianTensor.integral_tensorWeight` gives the product mass
+`ν⁴/(δ₀δ₁)`, with genuine integrability proved before Fubini.
+The parameter table covers the fourteen selected finite bands and four
+coordinate exclusions. Its checks prove positivity, not the numerical tail
+bounds recorded in the input files. The defined kernel is not yet identified
+with `HS_{j,I}` in `docs/UPPER_STATUS.md`; polynomial insertion, the Fock
+coefficient identity and numerical Hilbert--Schmidt bounds remain separate.
+Joint integrability when the source depends on another integration variable
+remains a separate obligation before Fubini can be applied.
 
 `GradedHermitePhaseSlice` expresses each actual Taylor source as a polynomial
 in the conditional coordinate times its exact Gaussian damping.
