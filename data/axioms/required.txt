@@ -596,6 +596,7 @@ Grothe.UpperChaos.FixedChaosSmoothing.raw_error_of_dyadicTensorReference
 Grothe.UpperChaos.FixedChaosSmoothing.reconstruct_actual_tensor
 Grothe.UpperChaos.FixedChaosSmoothing.retainedProduction_eq
 Grothe.UpperChaos.FixedChaosSmoothing.retainedSmoothed_projected_error_of_raw
+Grothe.UpperChaos.FixedChaosSmoothing.selected_energy_close_of_raw_error
 Grothe.UpperChaos.FixedChaosSmoothing.tensorCompletionDefectNorm_sq
 Grothe.UpperChaos.FrozenSource.Grade000.grade_energy
 Grothe.UpperChaos.FrozenSource.Grade000Production.at_eq
@@ -1844,6 +1845,7 @@ Grothe.UpperChaos.invariantMoment_odd
 Grothe.UpperChaos.localized_comparison
 Grothe.UpperChaos.localized_comparison_grouped
 Grothe.UpperChaos.localized_comparison_grouped_relaxed
+Grothe.UpperChaos.localized_comparison_with_errors
 Grothe.UpperChaos.measurable_basePhaseArgument
 Grothe.UpperChaos.measurable_gradedHermiteFn
 Grothe.UpperChaos.measurable_taylorConditionalWick

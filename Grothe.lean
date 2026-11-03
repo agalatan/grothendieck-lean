@@ -586,6 +586,7 @@ import Grothe.UpperChaos.CommonDenAppend
 import Grothe.UpperChaos.CompactTaylorBands
 import Grothe.UpperChaos.CompactTaylorQuadrature
 import Grothe.UpperChaos.ComparisonPieces
+import Grothe.UpperChaos.ComparisonTolerance
 import Grothe.UpperChaos.Completeness
 import Grothe.UpperChaos.ComplexHermite
 import Grothe.UpperChaos.ComplexMoments

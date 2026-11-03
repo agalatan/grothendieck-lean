@@ -47,6 +47,37 @@ theorem retainedSmoothed_projected_error_of_raw {δ : ℝ}
   exact (projected_response_error a0).trans
     (add_le_add hs (mul_le_mul_of_nonneg_left hn (by positivity)))
 
+/-- Propagate arbitrary source, smoothing and same-output table allowances.
+The projected error is an L2 norm; the conclusion is selected l1 ENERGY
+error. This keeps the numerical ledger separate from the analytic argument. -/
+theorem selected_energy_close_of_raw_error {δ Δ ε τ : ℝ}
+    (a0 : ℕ → ℕ → ℕ → ℚ)
+    (hraw : ‖productionF0Head - gradedHermite 251 a0‖ ≤ δ)
+    (htable : ∑ p ∈ headIdx 501,
+      |energy (retainedSmoothed a0) p - (energyTable p : ℝ)| ≤ ε)
+    (hsmoothing : δ + (4 / 10 ^ 15 : ℝ) * ((501 / 500 : ℝ) + δ) ≤ Δ)
+    (hbudget : (2 * (501 / 500 : ℝ) + 3 * Δ) * Δ + ε ≤ τ) :
+    ∑ p ∈ headIdx 501,
+      |energy ((memLp_Xfun phiBound chargeFn_frozenCorrectionFn).toLp
+        (Xfun frozenCorrectionFn)) p - (energyTable p : ℝ)| ≤ τ := by
+  let X := (memLp_Xfun phiBound chargeFn_frozenCorrectionFn).toLp
+    (Xfun frozenCorrectionFn)
+  let Y := retainedSmoothed a0
+  let P := projOn (energyHeadModes (headIdx 501))
+  have hd : ‖P (X - Y)‖ ≤ Δ :=
+    (retainedSmoothed_projected_error_of_raw a0 hraw).trans hsmoothing
+  have hX : ‖P X‖ ≤ (501 / 500 : ℝ) :=
+    ((modeSpace (energyHeadModes (headIdx 501))).norm_starProjection_apply_le X).trans
+      CenterNormBypass.response_norm
+  have hd' : ‖P X - P Y‖ ≤ Δ := by simpa only [map_sub] using hd
+  have hY : ‖P Y‖ ≤ (501 / 500 : ℝ) + Δ := by
+    have hn := norm_sub_le (P X) (P X - P Y)
+    simp only [sub_sub_cancel] at hn
+    linarith
+  apply selectedEnergy_close_of_projected_l2_approx (headIdx 501) X Y
+    (fun p => (energyTable p : ℝ)) ((501 / 500 : ℝ) + Δ) Δ ε τ hY hd htable
+  nlinarith only [hbudget]
+
 /-- The smoothing-vector norm follows from the actual F0 source norm and
 its approximation error. It does not follow from quadrature node mass. -/
 theorem retainedProduction_norm_le
@@ -102,7 +133,7 @@ end Grothe.UpperChaos.FixedChaosSmoothing
 The existing phi/rounding leaves below are not a Gaussian error certificate. -/
 run_cmd do
   let allowed : Array Lean.Name := #[`propext, `Classical.choice, `Quot.sound, `Grothe.UpperChaos.phi_cover_check_0._native.native_decide.ax_1_1, `Grothe.UpperChaos.phi_cover_check_1._native.native_decide.ax_1_1, `Grothe.UpperChaos.phi_cover_check_2._native.native_decide.ax_1_1, `Grothe.UpperChaos.phi_cover_check_3._native.native_decide.ax_1_1, `Grothe.UpperChaos.phi_cover_check_4._native.native_decide.ax_1_1, `Grothe.UpperChaos.phi_cover_check_5._native.native_decide.ax_1_1, `Grothe.UpperChaos.firstCenter_band_energy_check._native.native_decide.ax_1_1, `Grothe.UpperChaos.secondCenter_band_energy_check._native.native_decide.ax_1_1, `Grothe.UpperChaos.rounding_energy_check._native.native_decide.ax_1_1]
-  for target in #[``Grothe.UpperChaos.FixedChaosSmoothing.retainedProduction_norm_of_raw_error, ``Grothe.UpperChaos.FixedChaosSmoothing.retainedSmoothed_projected_error_of_raw, ``Grothe.UpperChaos.FixedChaosSmoothing.retainedProduction_norm_le, ``Grothe.UpperChaos.FixedChaosSmoothing.retainedSmoothed_projected_error, ``Grothe.UpperChaos.FixedChaosSmoothing.original_energy_of_retained_source] do
+  for target in #[``Grothe.UpperChaos.FixedChaosSmoothing.retainedProduction_norm_of_raw_error, ``Grothe.UpperChaos.FixedChaosSmoothing.retainedSmoothed_projected_error_of_raw, ``Grothe.UpperChaos.FixedChaosSmoothing.selected_energy_close_of_raw_error, ``Grothe.UpperChaos.FixedChaosSmoothing.retainedProduction_norm_le, ``Grothe.UpperChaos.FixedChaosSmoothing.retainedSmoothed_projected_error, ``Grothe.UpperChaos.FixedChaosSmoothing.original_energy_of_retained_source] do
     let dependencies ← Lean.collectAxioms target
     Lean.logInfo m!"Production source audit {target}: {dependencies}"
     let unexpected := dependencies.filter fun n => !allowed.contains n

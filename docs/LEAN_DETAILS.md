@@ -241,6 +241,15 @@ raw source error, same-output table fit and tail remain explicit inputs.
 This alternative and its transitive axiom report require full acceptance;
 the final completed façade remains separate.
 
+`localized_comparison_with_errors` keeps those same eighteen supports but
+accepts an arbitrary actual piece-norm error family and selected energy
+tolerance. Its conservative quadratic term is the square of the sum of the
+supplied errors, so it does not reuse old group radii after enlarging Gaussian
+caps. `selected_energy_close_of_raw_error` separately propagates arbitrary
+raw, projected and same-output table allowances. These interfaces preserve
+the original concrete contracts; changing a ledger still requires every
+new captured-tail and scalar arithmetic certificate.
+
 `ProductionF0RationalCompletion` constructs the reflected half from the
 canonical rational centers using the existing `RationalSqrtFloor` at
 denominator `2⁵⁴` and exact rational multiplication. Injectivity of the partner

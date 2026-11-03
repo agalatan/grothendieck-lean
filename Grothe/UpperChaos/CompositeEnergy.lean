@@ -27,37 +27,10 @@ theorem energy_close_of_raw_source (a0 : ℕ → ℕ → ℕ → ℚ)
         (CompositeComparisonData.tableCapQ : ℝ)) :
     ∑ p ∈ headIdx 501, |energy response p - (energyTable p : ℝ)| ≤
       (CompositeComparisonData.energyErrorQ : ℝ) := by
-  let Y := FixedChaosSmoothing.retainedSmoothed a0
-  let P := projOn (energyHeadModes (headIdx 501))
-  have hd : ‖P (response - Y)‖ ≤ (CompositeComparisonData.projectedCapQ : ℝ) := by
-    have hs := FixedChaosSmoothing.retainedSmoothed_projected_error_of_raw a0 hraw
-    have hb : (CompositeComparisonData.rawCapQ : ℝ) +
-        (4 / 1000000000000000 : ℝ) *
-          ((501 / 500 : ℝ) + (CompositeComparisonData.rawCapQ : ℝ)) ≤
-        (CompositeComparisonData.projectedCapQ : ℝ) := by
-      exact_mod_cast CompositeComparisonData.raw_to_projected_budget
-    exact hs.trans hb
-  have hX : ‖P response‖ ≤ (501 / 500 : ℝ) := by
-    have hn := (modeSpace (energyHeadModes (headIdx 501))).norm_starProjection_apply_le response
-    exact hn.trans CenterNormBypass.response_norm
-  have hd' : ‖P response - P Y‖ ≤ (CompositeComparisonData.projectedCapQ : ℝ) := by
-    simpa only [map_sub] using hd
-  have hY : ‖P Y‖ ≤ (501 / 500 : ℝ) +
-      (CompositeComparisonData.projectedCapQ : ℝ) := by
-    have hn := norm_sub_le (P response) (P response - P Y)
-    simp only [sub_sub_cancel] at hn
-    linarith
-  apply selectedEnergy_close_of_projected_l2_approx (headIdx 501) response Y
-    (fun p => (energyTable p : ℝ))
-    ((501 / 500 : ℝ) + (CompositeComparisonData.projectedCapQ : ℝ))
-    (CompositeComparisonData.projectedCapQ : ℝ) (CompositeComparisonData.tableCapQ : ℝ)
-    (CompositeComparisonData.energyErrorQ : ℝ) hY hd htable
-  have hb : (2 * (501 / 500 : ℝ) +
-      3 * (CompositeComparisonData.projectedCapQ : ℝ)) *
-      (CompositeComparisonData.projectedCapQ : ℝ) + (CompositeComparisonData.tableCapQ : ℝ) ≤
-        (CompositeComparisonData.energyErrorQ : ℝ) := by
-    exact_mod_cast CompositeComparisonData.projected_energy_budget
-  nlinarith only [hb]
+  apply FixedChaosSmoothing.selected_energy_close_of_raw_error a0 hraw htable
+    (Δ := (CompositeComparisonData.projectedCapQ : ℝ))
+  · exact_mod_cast CompositeComparisonData.raw_to_projected_budget
+  · exact_mod_cast CompositeComparisonData.projected_energy_budget
 
 theorem weighted_comparison_of_raw_source (h : Inputs) (a0 : ℕ → ℕ → ℕ → ℚ)
     (hraw : ‖FixedChaosSmoothing.productionF0Head - gradedHermite 251 a0‖ ≤

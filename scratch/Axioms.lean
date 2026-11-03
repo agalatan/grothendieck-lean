@@ -753,6 +753,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.reconstruct_actual_tensor
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.retainedProduction_eq
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.retainedSmoothed_projected_error_of_raw
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.selected_energy_close_of_raw_error
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.tensorCompletionDefectNorm_sq
 #print axioms Grothe.UpperChaos.FrozenSource.Grade000.grade_energy
 #print axioms Grothe.UpperChaos.FrozenSource.Grade000Production.at_eq
@@ -2036,6 +2037,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.localized_comparison
 #print axioms Grothe.UpperChaos.localized_comparison_grouped
 #print axioms Grothe.UpperChaos.localized_comparison_grouped_relaxed
+#print axioms Grothe.UpperChaos.localized_comparison_with_errors
 #print axioms Grothe.UpperChaos.map_mehlerY
 #print axioms Grothe.UpperChaos.map_smooth
 #print axioms Grothe.UpperChaos.measurable_GT
