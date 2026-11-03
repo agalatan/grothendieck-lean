@@ -6,6 +6,9 @@ Agent-ID: codex-8c4d. -/
 open Real
 namespace Grothe.UpperChaos.ProfilePiFactor
 
+-- The finite witnesses use powers beyond Lean's default exponent limit.
+set_option exponentiation.threshold 4096
+
 def piLo : ℚ := 42121870893450636219446821484559388105255997313489254605594685088103805782276098919793885372247726346443771296916333485327292916625599161542353774203832599 / 2^512
 
 set_option maxRecDepth 65536 in

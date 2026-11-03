@@ -84,6 +84,8 @@ def generated_sources(cfg, digest):
         rows = ",\n".join(f"    {n} / 2^{grid_bits}" for n in series)
         text = ("import Mathlib.Analysis.Real.Pi.Bounds\n\n" + header +
                 f"\nopen Real\nnamespace {NS}\n\n"
+                "-- The finite witnesses use powers beyond Lean's default exponent limit.\n"
+                "set_option exponentiation.threshold 4096\n\n"
                 f"def {const} : ℚ := {units} / 2^{bits}\n\n"
                 "set_option maxRecDepth 65536 in\n"
                 "set_option maxHeartbeats 16000000 in\n"
@@ -99,6 +101,9 @@ import Lean.Elab.Command
 
 {header}
 namespace {NS}
+
+-- Exact evaluation of the finite 512-bit certificate constants.
+set_option exponentiation.threshold 4096
 
 def sqrtPiLo : ℚ := {sqrt_lo} / 2^{bits}
 def sqrtPiHi : ℚ := {sqrt_hi} / 2^{bits}
