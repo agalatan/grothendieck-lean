@@ -200,6 +200,16 @@ import Grothe
 #print axioms Grothe.Research.RefinedLowerCheck.refined_cover_checked
 #print axioms Grothe.Research.RefinedLowerCheck.refined_endpoint_lt_reciprocal
 #print axioms Grothe.Research.RefinedLowerCheck.refined_reciprocal_lower_bound
+#print axioms Grothe.Statement.bounds_bddBelow
+#print axioms Grothe.Statement.constant_isBound
+#print axioms Grothe.Statement.constant_lt_of_upperBelow
+#print axioms Grothe.Statement.isClosed_bounds
+#print axioms Grothe.Statement.le_constant_of_lowerAbove
+#print axioms Grothe.Statement.lowerTarget_of_nodeCaps
+#print axioms Grothe.Statement.lt_constant_of_lowerAbove
+#print axioms Grothe.Statement.upperBelow_of_bound
+#print axioms Grothe.Statement.upperBelow_of_constant_lt
+#print axioms Grothe.Statement.upper_target_of_inputs
 #print axioms Grothe.Upper.BandComparison.compare
 #print axioms Grothe.Upper.BandComparison.quadratic_sum_le_grouped
 #print axioms Grothe.Upper.BandComparison.quadratic_sum_le_overlap
