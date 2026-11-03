@@ -58,7 +58,7 @@ theorem map_varianceWickQ (T a b : ℚ) (u v : ℕ) :
   simp only [varianceWickQ, varianceShiftedMomentPolynomial,
     linearQ, conjugateLinearQ, linearPolynomial, conjugateLinearPolynomial,
     map_sum, map_add, map_mul, map_pow, MvPolynomial.map_C, MvPolynomial.map_X,
-    Rat.coe_castHom, Rat.cast_mul, Rat.cast_natCast, Complex.ofReal_ratCast]
+    Rat.coe_castHom, Rat.cast_natCast, Complex.ofReal_ratCast]
 
 theorem map_outerQ (e f : PairPowers) :
     MvPolynomial.map (Rat.castHom ℂ) (outerQ e f) = outerPolynomial e f := by

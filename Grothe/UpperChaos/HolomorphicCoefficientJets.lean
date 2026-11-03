@@ -37,11 +37,11 @@ theorem iteratedDeriv_monomial_mul_zero (p q : ℕ) {F : ℂ → ℂ}
   rw [iteratedDeriv_fun_mul (by fun_prop) hF]
   simp only [iteratedDeriv_fun_pow_zero]
   rw [Finset.sum_eq_single p]
-  · simp only [if_pos rfl]
+  · simp only [ite_true]
     rw [Nat.descFactorial_eq_factorial_mul_choose, Nat.cast_mul]
     ring
   · intro i hi hip
-    simp only [if_neg hip, mul_zero, zero_mul]
+    simp only [ite_eq_right hip, Nat.cast_zero, mul_zero, zero_mul]
   · intro hp
     have hqp : q < p := lt_of_lt_of_le (Nat.lt_succ_self q)
       (by simpa only [Finset.mem_range, not_lt] using hp)

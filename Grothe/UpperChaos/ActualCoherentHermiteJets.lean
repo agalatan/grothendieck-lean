@@ -41,9 +41,9 @@ private theorem hasDerivAt_eval_shift (P : CPoly) (a b x : ℂ) :
   | mul_X P i hP =>
       fin_cases i
       · convert hP.fun_mul (hasDerivAt_const x a) using 1 <;>
-          simp [pderiv_mul, pderiv_X, mul_comm]
+          simp [pderiv_X, mul_comm]
       · convert hP.fun_mul ((hasDerivAt_id' x).const_sub b) using 1 <;>
-          simp [pderiv_mul, pderiv_X] <;> ring
+          (simp [pderiv_X]; ring)
 
 /-- The physical Hermite polynomial after the two source translations. -/
 def shiftedHermite (z x y : ℂ) (p q : ℕ) : ℂ :=
@@ -79,8 +79,8 @@ private theorem hasDerivAt_shiftedHermite_outgoing (z x y : ℂ) (p q : ℕ) :
   have h := (hasDerivAt_eval_shift (H p q) (conj z - y) z x).fun_mul
     (hasDerivAt_outgoing_x z x y)
   convert h using 1 <;>
-    simp only [shiftedHermite, H_succ_left, A0, map_sub, map_mul, eval_X,
-      Matrix.cons_val_zero, outgoing] <;> ring
+    (simp only [shiftedHermite, H_succ_left, A0, map_sub, map_mul, eval_X,
+      Matrix.cons_val_zero, outgoing]; ring)
 
 private theorem iteratedDeriv_outgoing_y (z x : ℂ) (q : ℕ) (y : ℂ) :
     iteratedDeriv q (fun t => outgoing z x t) y =
@@ -175,7 +175,8 @@ the two production Hermite normalization factors. -/
 theorem gate_normalization_eq (m n : Idx2) :
     normalization4 (gateMatrixIndexEquiv (m, n)).1 *
       normalization4 (gateMatrixIndexEquiv (m, n)).2 = nrm2 m * nrm2 n := by
-  simp only [gateMatrixIndexEquiv, normalization4, nrm2, sqrt_fac2, mul_inv_rev]
+  simp only [gateMatrixIndexEquiv, Equiv.coe_fn_mk, normalization4, nrm2,
+    sqrt_fac2, mul_inv_rev]
   ring
 
 /-- Integrability concerns the actual finite derivative after its pointwise
@@ -184,6 +185,8 @@ theorem integrable_actual_physical_jet (j : ℕ) (m n : Idx2) :
     Integrable (fun zw => taylorPhasePower j zw * normalizedPhysicalJet m n zw) mu2 := by
   refine (integrable_matrixEntry j m n).congr
     (Filter.Eventually.of_forall fun zw => ?_)
+  change conj (hfun2 m zw) * taylorPhasePower j zw * hfun2 n zw =
+    taylorPhasePower j zw * normalizedPhysicalJet m n zw
   rw [normalizedPhysicalJet_eq]
   ring
 
@@ -195,6 +198,8 @@ theorem integral_actual_physical_jet (j : ℕ) (m n : Idx2) :
   unfold matrixEntry
   apply integral_congr_ae
   refine Filter.Eventually.of_forall fun zw => ?_
+  change taylorPhasePower j zw * normalizedPhysicalJet m n zw =
+    conj (hfun2 m zw) * taylorPhasePower j zw * hfun2 n zw
   rw [normalizedPhysicalJet_eq]
   ring
 

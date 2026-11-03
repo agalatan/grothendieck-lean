@@ -122,18 +122,24 @@ theorem matrixEntry_eq_finite_moments (j : ℕ) (m n : Idx2) :
   rw [← integral_physical_polynomial (physicalMatrixPolynomial j m n) (rate_pos j)]
   apply integral_congr_ae
   refine Filter.Eventually.of_forall fun zw => ?_
+  rcases zw with ⟨z, w⟩
+  change conj (H2 m (z, w)) * taylorPhasePower j (z, w) * H2 n (z, w) =
+    ev4 (z, w) (physicalMatrixPolynomial j m n) *
+      Complex.exp (-((rate j - 1 : ℝ) : ℂ) * (Complex.normSq z : ℂ)) *
+      Complex.exp (-((rate j - 1 : ℝ) : ℂ) * (Complex.normSq w : ℂ))
   rw [taylorPhasePower_eq_polynomial]
   simp only [physicalMatrixPolynomial, ev4, map_mul]
-  change conj (H2 m zw) *
-    (ev4 zw (multiplierPolynomial j) * _ * _) * H2 n zw =
-      (ev4 zw (hermiteInsertion m n) * ev4 zw (multiplierPolynomial j)) * _ * _
+  change conj (H2 m (z, w)) *
+    (ev4 (z, w) (multiplierPolynomial j) * _ * _) * H2 n (z, w) =
+      (ev4 (z, w) (hermiteInsertion m n) * ev4 (z, w) (multiplierPolynomial j)) * _ * _
   rw [ev4_hermiteInsertion]
   ring
 
 private theorem integral_pure_power (k : ℕ) :
     (∫ z : ℂ, z ^ k ∂gaussC) = (0 : ℂ) ^ k := by
-  have h := integral_moment k 0
-  cases k <;> simpa using h
+  cases k with
+  | zero => simp
+  | succ k => simpa using integral_moment (k + 1) 0
 
 private theorem zero_descFactorial_cast (k : ℕ) :
     ((0 : ℕ).descFactorial k : ℂ) = (0 : ℂ) ^ k := by
@@ -148,9 +154,13 @@ private theorem residual_ground (p q r s : ℝ) (e : PairPowers) :
         ((0 : ℕ).descFactorial e.1.2 : ℂ) * (w.1 ^ e.2.1 * w.2 ^ e.2.2) := by
     simp [ev4, residualPolynomial, wv, mul_assoc]
   simp_rw [hp]
-  rw [integral_const_mul, integral_prod_mul, integral_pure_power, integral_pure_power,
+  change _ = (0 : ℂ) ^ e.1.1 * (0 : ℂ) ^ e.1.2 *
+    ((0 : ℂ) ^ e.2.1 * (0 : ℂ) ^ e.2.2)
+  rw [integral_const_mul,
+    integral_prod_mul (μ := gaussC) (ν := gaussC)
+      (fun z : ℂ => z ^ e.2.1) (fun w : ℂ => w ^ e.2.2),
+    integral_pure_power, integral_pure_power,
     zero_descFactorial_cast, zero_descFactorial_cast]
-  rfl
 
 theorem gatePairValue_ground (g : Gate) (side : Fin 2) (e : PairPowers) :
     gatePairValue g side 0 e =
@@ -167,7 +177,13 @@ theorem coefficient8_tensor_polynomial_ground {ι : Type*} (t : Finset ι)
       tensorKernel g zw) 0 =
       (∑ i ∈ t, d i * tensorMonomial (e i) 0) * tensorKernel g 0 := by
   rw [coefficient8_tensor_polynomial t d e g hg]
-  simp only [gatePairValue_ground, Finset.sum_mul, tensorMonomial, tensorKernel]
+  change (∑ i ∈ t, d i *
+      (gatePairValue g 0 0 (e i).1 * gatePairValue g 1 0 (e i).2)) =
+    (∑ i ∈ t, d i *
+      (BipartitePolynomialL2.monomial (e i).1 0 *
+        BipartitePolynomialL2.monomial (e i).2 0)) *
+      (gateKernel g 0 0 * gateKernel g 1 0)
+  simp only [gatePairValue_ground, Finset.sum_mul]
   apply Finset.sum_congr rfl
   intro i hi
   ring

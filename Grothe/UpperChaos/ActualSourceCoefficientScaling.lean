@@ -87,7 +87,7 @@ theorem coeff_scaleHom (g : Gate) (P : RationalSourcePolynomial)
       rw [Finset.sum_eq_single e]
       · simp
       · intro d hd hde
-        simp only [MvPolynomial.coeff_monomial, if_neg hde]
+        simp only [MvPolynomial.coeff_monomial, ite_eq_right hde]
       · intro he
         have hzero : P.coeff e = 0 := MvPolynomial.notMem_support_iff.mp he
         simp [hzero]
@@ -95,7 +95,7 @@ theorem coeff_scaleHom (g : Gate) (P : RationalSourcePolynomial)
 theorem sourceScale_pos (g : Gate) (hg : gateOK g = true) (i : Fin 8) :
     0 < sourceScale g i := by
   fin_cases i <;>
-    simp only [sourceScale, Matrix.cons_val_zero, Matrix.cons_val_succ]
+    simp only [sourceScale]
   all_goals first
     | exact Real.sqrt_pos.2 (radial_pos g hg)
     | exact Real.sqrt_pos.2 (axisWeight_pos g hg _)
@@ -113,7 +113,11 @@ theorem support_scaleHom (g : Gate) (hg : gateOK g = true)
   classical
   ext e
   simp only [MvPolynomial.mem_support_iff, coeff_scaleHom, mul_ne_zero_iff,
-    coefficientScale_ne_zero g hg, and_true, Rat.cast_ne_zero]
+    Rat.cast_ne_zero]
+  constructor
+  · exact fun h => h.1
+  · intro h
+    exact ⟨h, coefficientScale_ne_zero g hg e⟩
 
 /-- Actual coefficients, including exactly their diagonal square-root factors. -/
 theorem actualSourcePolynomial_coeff (g : Gate) (e : Fin 8 →₀ ℕ) :
