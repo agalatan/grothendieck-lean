@@ -85,7 +85,7 @@ theorem exactness01
       ∑ i, (2 * (1 - node i ^ 2) /
         ((1 : ℝ) ^ 2 * ((Q0LegendreInteger.realPair (node i) 0).1) ^ 2)) *
         f.eval (node i) := by
-  simpa only [Nat.cast_one] using actual_exactness_of_check 0 p00 p01 w01 r01
+  simpa only [Nat.zero_add, Nat.cast_one] using actual_exactness_of_check 0 p00 p01 w01 r01
     source01 Q0GaussPolynomialOrder01.identities_checked
     node hinj hroot f hf
 
@@ -1107,7 +1107,7 @@ theorem exactness (k : Fin 64)
         (((k.val + 1 : ℕ) : ℝ) ^ 2 *
           ((Q0LegendreInteger.realPair (node i) k.val).1) ^ 2)) * f.eval (node i) := by
   fin_cases k
-  · simpa only [Nat.cast_one] using exactness01 node hinj hroot f hf
+  · simpa only [Nat.zero_add, Nat.cast_one] using exactness01 node hinj hroot f hf
   · exact exactness02 node hinj hroot f hf
   · exact exactness03 node hinj hroot f hf
   · exact exactness04 node hinj hroot f hf
