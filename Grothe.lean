@@ -158,6 +158,7 @@ import Grothe.LowerAnalytic.WickGraphData
 import Grothe.LowerAnalytic.WickSix
 import Grothe.LowerAnalytic.Witness
 import Grothe.LowerAnalytic.WitnessCap
+import Grothe.LowerTarget
 import Grothe.Research.LawNodeCheck
 import Grothe.Research.LawNodeData
 import Grothe.Research.LawNodeLower
@@ -170,6 +171,8 @@ import Grothe.Research.RefinedCoverPartition
 import Grothe.Research.RefinedCoverParts
 import Grothe.Research.RefinedCoverResult
 import Grothe.Research.RefinedLower
+import Grothe.Statement
+import Grothe.StatementBridges
 import Grothe.Transfer
 import Grothe.Upper.BandComparison
 import Grothe.Upper.Bivariate
@@ -2044,3 +2047,4 @@ import Grothe.UpperChaos.ThirdIntegerSourceBinding
 import Grothe.UpperChaos.UnitSquaredQuadrature
 import Grothe.UpperChaos.UnitSquaredQuadratureConditional
 import Grothe.UpperChaos.UnitSquaredRadiusProfile
+import Grothe.UpperTarget
