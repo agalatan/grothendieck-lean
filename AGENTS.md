@@ -285,11 +285,20 @@ containing `[skip ci]` skips it) and as the **landing check** of a PR (`/land`, 
    and dispatches master's own check (which saves the master cache).
 
 Also:
-- **Superseded runs are cancelled automatically:** a new push to a branch cancels that branch's older GitHub-hosted
-  check (one concurrency group per branch). Master's checks are never cancelled by a newer one starting (a long first
-  build would be lost); instead, when a master check goes green it cancels the still-running checks of older master
-  commits, whose trees it contains. What counts is the newest master commit's own result. Droplet checks are never cancelled either (a killed build leaves orphaned processes); they queue on the
-  single runner.
+- **Superseded runs are cancelled automatically:** a new push to a branch cancels that branch's older check, queued
+  or running, on GitHub-hosted and heavy runners alike (one concurrency group per branch; the build runs in its own
+  process group, which the step kills whole on cancellation, so nothing is orphaned). So a branch has **at most one
+  check at a time, of its newest commit**: push once per milestone, not after every commit. Master's checks are never
+  cancelled by a newer one starting (a long first build would be lost); instead, when a master check goes green it
+  cancels the still-running checks of older master commits, whose trees it contains. What counts is the newest master
+  commit's own result. Runs that really build the node caps (no verified cache, or `-f mode=caps`) are never cancelled
+  either: hours of work.
+- **Where a check runs:** GitHub-hosted (4 vCPUs, 16 GB) unless it needs the heavy runners (`self-hosted, heavy`:
+  the droplet and the temporary big droplet): the node caps must be built (no verified cache), `-f mode=caps`, the
+  change **modifies or deletes** existing files under the kernel-heavy trees (`Grothe/UpperChaos/`, `Grothe/Upper/`,
+  `GrotheKernel/`, `GrotheCapsKernel/`, the lake files: rebuilding the big kernel-checked modules kills a 16 GB VM),
+  or the repository variable `FORCE_HEAVY` is `true` (emergency switch: everything heavy). A change that only adds
+  modules runs hosted: the restored cache replays everything else. Keep the heavy slots for what needs them.
 - **Merged branches are cleaned automatically** (`.github/workflows/cancel-merged.yml`): when a pull request is merged
   or a branch is deleted, its running checks are cancelled and its build caches deleted. Merged pull-request branches
   are deleted automatically (repository setting).
@@ -299,6 +308,10 @@ Also:
   single runner for hours if the caps really changed; do it on purpose only).
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for
   stop/remove). It shares Mathlib with other droplet work through `~/grothe-caps/.lake/packages`; never delete that.
+- **At most one checked WIP branch per agent.** Of an agent's branches with an open `WIP`/draft PR, only one may
+  have a proof check queued or running; a push to a second one is not checked (CI says so in a warning) until the
+  first check ends. Push the others with `[skip ci]`: there is no bound on those. Landable PRs are not capped by
+  this rule (only by the next one).
 - **At most 2 CI jobs per agent at a time.** An agent (one agent ID) may have at most two jobs queued or running in
   GitHub Actions: the proof checks of its own branches (pushes and landing checks) and its cloud jobs,
   each cloud shard counting as one. Before you push a branch or start a cloud job, run
