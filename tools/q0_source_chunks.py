@@ -55,10 +55,10 @@ def emit_chunk(terms, source_denominator, offset, count, source_hash):
 import Grothe.UpperChaos.Q0LiteralSourceData
 import Mathlib.Tactic
 
-/-! Untrusted generated data; Lean checks this exact chunk by `cbv`.
+/-! Untrusted generated data; the kernel checks this exact chunk (`decide +kernel`).
 Source Data.lean SHA256: {source_hash}
 Offset {offset}, count {count}; no full-table claim.
-Agent-ID: codex-8c4d. -/
+Agent-ID: codex-8c4d (generator), claude-b9ee (kernel-checked form). -/
 
 namespace Grothe.UpperChaos.{label}
 
@@ -68,14 +68,12 @@ open Grothe.UpperChaos.Q0LiteralSourceData
 set_option maxRecDepth 65536 in
 def literal : DenseWick := {literal}
 
-set_option maxRecDepth 65536 in
-set_option maxHeartbeats 8000000 in
-set_option cbv.maxSteps 1000000 in
+set_option maxRecDepth 100000 in
 theorem check_source_strings :
     sourceChunkDense sourceDen
       (((Grothe.Upper.phaseStrs.drop {offset}).take {count}).map GrotheKernel.parseTerm) =
         literal := by
-  cbv
+  decide +kernel
 
 theorem check_phaseTerms :
     sourceChunkDense sourceDen ((phaseTerms.drop {offset}).take {count}) = literal := by
@@ -88,22 +86,20 @@ end Grothe.UpperChaos.{label}
     den_module = f'''import Grothe.UpperChaos.Q0RawWickDefs
 import Mathlib.Tactic
 
-/-! Untrusted candidate checked against actual parsed source via `cbv`.
+/-! Untrusted candidate checked against the actual parsed source by the kernel (`decide +kernel`).
 Source Data.lean SHA256: {source_hash}
 Offset {offset}, count {count}; no full-denominator claim.
-Agent-ID: codex-8c4d. -/
+Agent-ID: codex-8c4d (generator), claude-b9ee (kernel-checked form). -/
 
 namespace Grothe.UpperChaos.{den_label}
 
-set_option maxRecDepth 65536 in
-set_option maxHeartbeats 8000000 in
-set_option cbv.maxSteps 1000000 in
+set_option maxRecDepth 100000 in
 theorem raw_chunk_commonDen :
     GrotheKernel.commonDen
       (Grothe.UpperChaos.Q0RawWickTerms.rawWickEntries
         (((Grothe.Upper.phaseStrs.drop {offset}).take {count}).map GrotheKernel.parseTerm)) =
       {raw_denominator} := by
-  cbv
+  decide +kernel
 
 theorem raw_phaseTerms_commonDen :
     GrotheKernel.commonDen

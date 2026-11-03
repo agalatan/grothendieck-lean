@@ -18,21 +18,48 @@ the root box is first split into 512 cubes (`phiSplit`), one tree each.
 
 namespace GrotheKernel
 
-/-! ### Parsing -/
+/-! ### Parsing
 
-/-- A rational `p/q` from a string. -/
-def parseQ (s : String) : Rat :=
-  match s.splitOn "/" with
-  | [a] => ((a.toInt?).getD 0 : Rat)
-  | [a, b] => ((a.toInt?).getD 0 : Rat) / ((b.toNat?).getD 1 : Rat)
+Structural recursion on the character list, so that the kernel can evaluate the parser: facts about the parsed data
+(`commonDen`, the dense tables) are then proved by `decide +kernel`, with proof terms of a few kilobytes, instead of
+`cbv`, which stores its whole evaluation trace (tens of megabytes per 8 terms) because `String.splitOn` and
+`String.toNat?` use well-founded recursion that the kernel cannot unfold. The data is well-formed (`i,j,k:p/q`), so
+no error handling is needed; malformed input parses to some value, never fails. -/
+
+/-- Split a character list at every `sep`; the result is never empty (like `String.splitOn`). -/
+def splitChars (sep : Char) : List Char → List (List Char)
+  | [] => [[]]
+  | c :: cs =>
+    match splitChars sep cs with
+    | [] => [[]]
+    | h :: t => if c = sep then [] :: h :: t else (c :: h) :: t
+
+/-- Decimal digits (most significant first) to a number. -/
+def digitsToNat : List Char → Nat → Nat
+  | [], acc => acc
+  | c :: cs, acc => digitsToNat cs (acc * 10 + (c.toNat - '0'.toNat))
+
+/-- A natural number from its decimal digits. -/
+def natOfChars (cs : List Char) : Nat := digitsToNat cs 0
+
+/-- An integer from its decimal digits with an optional leading `-`. -/
+def intOfChars : List Char → Int
+  | '-' :: cs => -(natOfChars cs : Int)
+  | cs => natOfChars cs
+
+/-- A rational `p/q` (or an integer `p`) from the characters of a string. -/
+def parseQ (cs : List Char) : Rat :=
+  match splitChars '/' cs with
+  | [a] => (intOfChars a : Rat)
+  | [a, b] => (intOfChars a : Rat) / (natOfChars b : Rat)
   | _ => 0
 
 /-- A monomial `i,j,k:c`. -/
 def parseTerm (s : String) : (Nat × Nat × Nat) × Rat :=
-  match s.splitOn ":" with
+  match splitChars ':' s.toList with
   | [p, c] =>
-    match p.splitOn "," with
-    | [i, j, k] => (((i.toNat?).getD 0, (j.toNat?).getD 0, (k.toNat?).getD 0), parseQ c)
+    match splitChars ',' p with
+    | [i, j, k] => ((natOfChars i, natOfChars j, natOfChars k), parseQ c)
     | _ => ((0, 0, 0), 0)
   | _ => ((0, 0, 0), 0)
 
