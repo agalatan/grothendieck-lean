@@ -48,7 +48,7 @@ theorem retained_iff_cutoff (r : Row) (m : Q0ConditionalMetadataCheck.Row)
   have hs := matchesMetadata_sound r m hmatch
   have hv := Q0ConditionalMetadataCheck.valid_sound m hm
   have hlen : r.words.length =
-      Q0ConditionalMetadataCheck.prefix (min m.cutoff 531 + 1) := by
+      Q0ConditionalMetadataCheck.pairPrefix (min m.cutoff 531 + 1) := by
     omega
   rw [hlen, hs.2.2.2]
   exact Q0ConditionalRetention.retained_iff_degree_le_cutoff c d m.cutoff

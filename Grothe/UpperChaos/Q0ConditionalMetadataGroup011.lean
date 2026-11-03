@@ -1129,7 +1129,7 @@ theorem count : rows.length = 1024 := by
   simp only [rows, List.length_append, count0, count1, count2, count3, count4, count5, count6, count7]
 
 theorem chain : rows.IsChain adjacent := by
-  simp [rows, List.isChain_append, adjacent, chain0, chain1, chain2, chain3, chain4, chain5, chain6, chain7, first0, first1, first2, first3, first4, first5, first6, first7, last0, last1, last2, last3, last4, last5, last6, last7]
+  simp [rows, List.isChain_append, adjacent, chain0, chain1, chain2, chain3, chain4, chain5, chain6, chain7, first1, first2, first3, first4, first5, first6, first7, last0, last1, last2, last3, last4, last5, last6]
 
 theorem first : rows.head? = some ⟨11264, 185508625, 185508633, 3⟩ := by
   simp [rows, first0]
