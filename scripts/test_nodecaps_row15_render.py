@@ -7,9 +7,18 @@ import nodecaps_row15_render as m
 class Gates(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
-  cls.plan=json.loads((ROOT/(m.BASE+'row15.json')).read_bytes());cls.anchor=json.loads((ROOT/(m.BASE+'row15-anchors.json')).read_bytes());cls.nodes=json.loads((ROOT/(m.BASE+'row15-pieces.json')).read_bytes());cls.selection=json.loads((ROOT/(m.BASE+'row15-selection.json')).read_bytes());cls.binding=json.loads((ROOT/(m.BASE+'row15-binding.json')).read_bytes())
+  cls.snapshot=None
+  if (ROOT/(m.BASE+'row15-repaired-source-binding.json')).exists():
+   import nodecaps_row15_repaired_render as repaired
+   cls.snapshot,_=repaired.capture_baseline(ROOT)
+  read=lambda n:cls.snapshot[n] if cls.snapshot is not None else (ROOT/n).read_bytes()
+  cls.plan=json.loads(read(m.BASE+'row15.json'));cls.anchor=json.loads(read(m.BASE+'row15-anchors.json'));cls.nodes=json.loads(read(m.BASE+'row15-pieces.json'));cls.selection=json.loads(read(m.BASE+'row15-selection.json'));cls.binding=json.loads(read(m.BASE+'row15-binding.json'))
  def inputs(self):return [copy.deepcopy(x) for x in (self.plan,self.anchor,self.nodes,self.selection)]
- def validate(self,values):m.validate_plan(*values,m.STAMP._ActiveReads(ROOT))
+ def validate(self,values):
+  snapshot=self.snapshot
+  class OriginalReads(m.STAMP._ActiveReads):
+   def read(self,name,**kwargs):return snapshot[name] if snapshot is not None and name in snapshot else super().read(name,**kwargs)
+  m.validate_plan(*values,OriginalReads(ROOT))
  def test_complete92_gate(self):self.validate(self.inputs())
  def test_missing_centre(self):
   v=self.inputs();v[0]['centres'].pop()

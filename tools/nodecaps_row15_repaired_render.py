@@ -25,6 +25,20 @@ require, sha, decode = repair.require, repair.sha, repair.decode
 def capture_baseline(root):
     """Read an original, unrepaired sealed source view; never modify it."""
     root = Path(root).resolve()
+    if (root / BINDING).exists():
+        reads = shared.Reads(root)
+        top = decode(reads.read(BINDING)); mapping = top['baseline_files']
+        original = decode(reads.bound(mapping[ORIGINAL]))
+        aliases = set(original['tools_sha256']) | {ORIGINAL, BASE+'row15-pieces.json'}
+        snapshot = {}
+        for name, reference in mapping.items():
+            repair.path(name); actual, _ = repair.ref(reference)
+            require(actual == name or name in aliases, 'unreviewed Row15 baseline alias: '+name)
+            snapshot[name] = reads.bound(reference)
+        require(reads.read(ORIGINAL) == snapshot[ORIGINAL], 'historical Row15 binding rewritten')
+        outputs = original_outputs(snapshot)
+        reads.unchanged()
+        return snapshot, outputs
     module = shared.load_module('_capture_sealed_row15', root/'tools/nodecaps_row15_render.py')
     original_reads = module.STAMP._ActiveReads
     snapshot = {}

@@ -120,7 +120,10 @@ def main(argv=None):
                 require(not (ROOT / BASE / 'row14.json').exists() and
                         not (ROOT / 'Grothe/LowerAnalytic/CapRow14/Assembly.lean').exists(),
                         'Row14 inputs/assembly require an explicit complete source binding')
-        if (ROOT / BASE / 'row15-binding.json').exists():
+        if (ROOT / BASE / 'row15-repaired-source-binding.json').exists():
+            from nodecaps_row15_repaired_render import render_sealed
+            outputs.update(render_sealed(ROOT))
+        elif (ROOT / BASE / 'row15-binding.json').exists():
             from nodecaps_row15_render import render_sealed
             outputs.update(render_sealed(ROOT))
         else:

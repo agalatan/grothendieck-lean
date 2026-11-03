@@ -53,6 +53,9 @@ class RenderTests(unittest.TestCase):
           'effective':{'path':B+'row15-pieces.json','sha256':r.sha(enc(effective))},
           'source_sha256':{evidence:r.sha(files[evidence])}})
         mapping={n:ref(n) for n in self.snapshot};mapping[B+'row15-pieces.json']=ref(archive)
+        for name in r.decode(self.snapshot[r.ORIGINAL])['tools_sha256']:
+            stored='data/synthetic-row15/original-tools/'+r.sha(self.snapshot[name])+'/'+name
+            files[stored]=self.snapshot[name];mapping[name]=ref(stored)
         files[B+'row15-pieces.json']=enc(effective)
         for name in r.CURRENT_TOOLS:files[name]=(ROOT/name).read_bytes()
         with tempfile.TemporaryDirectory() as directory:
@@ -74,6 +77,15 @@ class RenderTests(unittest.TestCase):
 
     def test_original_sealed_reproduction_byte_exact(self):
         self.assertEqual(r.original_outputs(self.snapshot),self.outputs)
+
+    def test_capture_original_after_repair_activation(self):
+        files,top,_=self.fixture();files[r.BINDING]=r.repair.encoded(top)
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory).resolve()
+            for name,data in files.items():
+                p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data)
+            snapshot,outputs=r.capture_baseline(root)
+        self.assertEqual(snapshot,self.snapshot);self.assertEqual(outputs,self.outputs)
 
     def test_only_named_D15_changes_and_anchors_preserved(self):
         files,top,D=self.fixture();outputs,receipt=self.run_render(files,top)
