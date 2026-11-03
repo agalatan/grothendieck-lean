@@ -1,5 +1,6 @@
 import Grothe.UpperChaos.BipartiteKernelGramMoments
 import Grothe.UpperChaos.Mehler
+import Lean.Elab.Tactic.Omega
 
 /-!
 # Finite polynomial evaluation of the bipartite kernel Gram moments
@@ -50,6 +51,86 @@ def shiftedMomentPolynomial (a b : ℝ) (u v : ℕ) : P4 :=
     MvPolynomial.C ((u.choose k : ℂ) * (v.choose k : ℂ) * (k.factorial : ℂ)) *
       conjugateLinearPolynomial a b ^ (u - k) * linearPolynomial a b ^ (v - k)
 
+/-- The same finite Wick polynomial with its conditional variance explicit. -/
+def varianceShiftedMomentPolynomial (variance a b : ℝ) (u v : ℕ) : P4 :=
+  ∑ k ∈ Finset.range (min u v + 1),
+    MvPolynomial.C ((u.choose k : ℂ) * (v.choose k : ℂ) * (k.factorial : ℂ)) *
+      MvPolynomial.C (variance : ℂ) ^ k *
+      conjugateLinearPolynomial a b ^ (u - k) * linearPolynomial a b ^ (v - k)
+
+theorem linearPolynomial_scale (s a b : ℝ) :
+    linearPolynomial (s * a) (s * b) =
+      MvPolynomial.C (s : ℂ) * linearPolynomial a b := by
+  simp only [linearPolynomial, Complex.ofReal_mul, map_mul]
+  ring
+
+theorem conjugateLinearPolynomial_scale (s a b : ℝ) :
+    conjugateLinearPolynomial (s * a) (s * b) =
+      MvPolynomial.C (s : ℂ) * conjugateLinearPolynomial a b := by
+  simp only [conjugateLinearPolynomial, Complex.ofReal_mul, map_mul]
+  ring
+
+/-- Scaling both the mean and its standard deviation gives the exact source
+degree factor. This finite identity retains every contraction term, including
+the variance power, and also holds at zero scale without division. -/
+theorem varianceShiftedMomentPolynomial_scale (s a b : ℝ) (u v : ℕ) :
+    varianceShiftedMomentPolynomial (s ^ 2) (s * a) (s * b) u v =
+      MvPolynomial.C (s : ℂ) ^ (u + v) * shiftedMomentPolynomial a b u v := by
+  classical
+  unfold varianceShiftedMomentPolynomial shiftedMomentPolynomial
+  rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro k hk
+  have hkmin : k < min u v + 1 := Finset.mem_range.mp hk
+  have he : 2 * k + (u - k) + (v - k) = u + v := by omega
+  simp only [linearPolynomial_scale, conjugateLinearPolynomial_scale,
+    Complex.ofReal_pow, map_pow]
+  calc
+    _ = MvPolynomial.C
+          ((u.choose k : ℂ) * (v.choose k : ℂ) * (k.factorial : ℂ)) *
+        MvPolynomial.C (s : ℂ) ^ (2 * k + (u - k) + (v - k)) *
+        conjugateLinearPolynomial a b ^ (u - k) *
+        linearPolynomial a b ^ (v - k) := by
+      simp only [pow_add, pow_mul, mul_pow]
+      ring
+    _ = _ := by
+      rw [he]
+      ring
+
+/-- Forward substitution of the two outer complex coordinates and their
+conjugates. The same real scale is used on each conjugate pair. -/
+def outerScaleHom (x z : ℝ) : P4 →+* P4 :=
+  MvPolynomial.eval₂Hom MvPolynomial.C
+    ![MvPolynomial.C (x : ℂ) * X 0, MvPolynomial.C (x : ℂ) * X 1,
+      MvPolynomial.C (z : ℂ) * X 2, MvPolynomial.C (z : ℂ) * X 3]
+
+theorem outerScaleHom_C (x z : ℝ) (c : ℂ) :
+    outerScaleHom x z (MvPolynomial.C c) = MvPolynomial.C c := by
+  simp [outerScaleHom]
+
+theorem outerScaleHom_linearPolynomial (x z a b : ℝ) :
+    outerScaleHom x z (linearPolynomial a b) =
+      linearPolynomial (a * x) (b * z) := by
+  simp only [linearPolynomial, map_add, map_mul, outerScaleHom_C]
+  simp [outerScaleHom, Complex.ofReal_mul, map_mul, mul_assoc]
+
+theorem outerScaleHom_conjugateLinearPolynomial (x z a b : ℝ) :
+    outerScaleHom x z (conjugateLinearPolynomial a b) =
+      conjugateLinearPolynomial (a * x) (b * z) := by
+  simp only [conjugateLinearPolynomial, map_add, map_mul, outerScaleHom_C]
+  simp [outerScaleHom, Complex.ofReal_mul, map_mul, mul_assoc]
+
+/-- Substitution preserves the contraction variance and changes only the
+mean. This is the forward substitution used to cancel source square roots. -/
+theorem outerScaleHom_varianceShiftedMomentPolynomial
+    (x z variance a b : ℝ) (u v : ℕ) :
+    outerScaleHom x z (varianceShiftedMomentPolynomial variance a b u v) =
+      varianceShiftedMomentPolynomial variance (a * x) (b * z) u v := by
+  classical
+  simp only [varianceShiftedMomentPolynomial, map_sum, map_mul, map_pow,
+    outerScaleHom_C, outerScaleHom_conjugateLinearPolynomial,
+    outerScaleHom_linearPolynomial]
+
 theorem ev4_shiftedMomentPolynomial (a b : ℝ) (u v : ℕ) (w : ℂ × ℂ) :
     ev4 w (shiftedMomentPolynomial a b u v) =
       shiftedDampedMoment 1 (conj ((a : ℂ) * w.1 + (b : ℂ) * w.2)) u v := by
@@ -71,6 +152,13 @@ theorem ev4_shiftedMomentPolynomial (a b : ℝ) (u v : ℕ) (w : ℂ × ℂ) :
 /-- The original outer powers, with f holomorphic and e antiholomorphic. -/
 def outerPolynomial (e f : PairPowers) : P4 :=
   (X 0 ^ f.2.1 * X 1 ^ e.2.1) * (X 2 ^ f.2.2 * X 3 ^ e.2.2)
+
+theorem outerScaleHom_outerPolynomial (x z : ℝ) (e f : PairPowers) :
+    outerScaleHom x z (outerPolynomial e f) =
+      (MvPolynomial.C (x : ℂ) ^ (e.2.1 + f.2.1) *
+        MvPolynomial.C (z : ℂ) ^ (e.2.2 + f.2.2)) * outerPolynomial e f := by
+  simp [outerPolynomial, outerScaleHom, mul_pow, pow_add]
+  <;> ring
 
 theorem ev4_outerPolynomial (e f : PairPowers) (w : ℂ × ℂ) :
     ev4 w (outerPolynomial e f) = outerMonomial e f w := by

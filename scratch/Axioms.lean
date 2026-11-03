@@ -799,6 +799,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.BipartiteCoefficientJets.integral_holEval_eq_outerJet
 #print axioms Grothe.UpperChaos.BipartiteCoefficientJets.integral_source_pair_eq_jet
 #print axioms Grothe.UpperChaos.BipartiteCoefficientJets.pairJet_monomial_kernel
+#print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.conjugateLinearPolynomial_scale
 #print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.ev4_conditionalP4
 #print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.ev4_conjugateLinearPolynomial
 #print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.ev4_linearPolynomial
@@ -807,6 +808,13 @@ import Grothe
 #print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.integral_ev4_quadraticWeight
 #print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.integral_gramIntegrand_eq_value
 #print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.integral_pairing_eq_value
+#print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.linearPolynomial_scale
+#print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.outerScaleHom_C
+#print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.outerScaleHom_conjugateLinearPolynomial
+#print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.outerScaleHom_linearPolynomial
+#print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.outerScaleHom_outerPolynomial
+#print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.outerScaleHom_varianceShiftedMomentPolynomial
+#print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.varianceShiftedMomentPolynomial_scale
 #print axioms Grothe.UpperChaos.BipartiteKernelGramMoments.exp_image_sq_eq_quadraticWeight
 #print axioms Grothe.UpperChaos.BipartiteKernelGramMoments.gramIntegrand_eq_pairing
 #print axioms Grothe.UpperChaos.BipartiteKernelGramMoments.gramIntegrand_factor
