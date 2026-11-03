@@ -1,6 +1,7 @@
 import Grothe.Upper.Final
 import Grothe.UpperChaos.LegacySingleCharacterSplit
 import Init.Data.List.SplitOn.Lemmas
+import Init.Data.String.Lemmas.Pattern.TakeDrop.String
 import Std.Data.String.ToNat
 import Lean.Util.CollectAxioms
 
@@ -77,7 +78,8 @@ private theorem mapM_correct {α β : Type} (f : α → Option β) (g : α → �
     (hf : ∀ x y, f x = some y → g x = y) (xs : List α) (ys : List β)
     (h : xs.mapM f = some ys) : xs.map g = ys := by
   induction xs generalizing ys with
-  | nil => simpa only [List.mapM_nil, Option.pure_def, Option.some.injEq] using h
+  | nil =>
+    simpa only [List.map_nil, List.mapM_nil, Option.pure_def, Option.some.injEq] using h
   | cons x xs ih =>
     cases hx : f x with
     | none => simp [List.mapM_cons, hx] at h
@@ -177,6 +179,33 @@ private theorem rowValue_correct (s : String) (n m : ℕ) (v : ℚ)
         simpa only [GrotheKernel.parseRow, hsplit, rowValue, hm, he, ite_false] using hv
   next _ => simp at h
 
+/-- A nonmatching header contributes zero even if the remaining source is
+malformed: the original parser then returns its empty default row. Thus the
+certificate need inspect only the short header, without discarding any row. -/
+private theorem rowValue_zero_of_prefix (s : String) (n m mi : ℕ) (ms : List Char)
+    (hp : s.startsWith (String.ofList (ms ++ [':'])) = true)
+    (hd : decimal? ms = some mi) (hc : ':' ∉ ms) (hm : mi ≠ m) :
+    rowValue n m (GrotheKernel.parseRow s) = 0 := by
+  have hprefix := String.startsWith_string_iff.mp hp
+  rw [String.toList_ofList] at hprefix
+  obtain ⟨tail, htail⟩ := hprefix
+  have hsplit : splitChars ':' s.toList = ms :: tail.splitOn ':' := by
+    rw [splitChars_eq, ← htail]
+    simpa only [List.append_assoc, List.singleton_append] using
+      List.splitOn_append_cons_self_of_not_mem hc tail
+  have hstrings : s.splitOn ":" =
+      String.ofList ms :: (tail.splitOn ':').map String.ofList := by
+    rw [show ":" = String.ofList [':'] from rfl, split_strings, hsplit]
+    rfl
+  have hmi := decimal_correct (String.ofList ms) mi
+    (by simpa only [String.toList_ofList] using hd)
+  cases ht : tail.splitOn ':' with
+  | nil => simp [GrotheKernel.parseRow, hstrings, ht, rowValue]
+  | cons body rest =>
+    cases rest with
+    | nil => simp [GrotheKernel.parseRow, hstrings, ht, rowValue, hmi, hm]
+    | cons extra rest => simp [GrotheKernel.parseRow, hstrings, ht, rowValue]
+
 /-- Preserve every row and every matching entry, including duplicates.
 This changes only evaluation order, so nonmatching rows need no entry decoding. -/
 private theorem tabVal_rows (rows : List GrotheKernel.RowQ) (n m : ℕ) :
@@ -197,33 +226,9 @@ private theorem tabVal_rows (rows : List GrotheKernel.RowQ) (n m : ℕ) :
         rw [hr, ih]
         rfl
 
-private def tableValue? (n m : ℕ) : Option ℚ := do
-  let rows ← energyStrs.mapM (fun s => rowValue? n m s.toList)
-  pure rows.sum
+@ROW_CERTIFICATES@
 
-private theorem tableValue_correct (n m : ℕ) (v : ℚ) (h : tableValue? n m = some v) :
-    energyTable (n, m) = v := by
-  unfold tableValue? at h
-  cases hrows : energyStrs.mapM (fun s => rowValue? n m s.toList) with
-  | none => simp [hrows] at h
-  | some values =>
-    have hv : values.sum = v := by simpa [hrows] using h
-    have hmap := mapM_correct (fun s => rowValue? n m s.toList)
-      (fun s => rowValue n m (GrotheKernel.parseRow s))
-      (fun s value hs => rowValue_correct s n m value hs) energyStrs values hrows
-    unfold energyTable
-    rw [tabVal_rows]
-    simpa only [energyRows, List.map_map, Function.comp_def, hmap] using hv
-
-theorem one_zero : energyTable (1, 0) =
-    (@FIRST@ : ℚ) := by
-  apply tableValue_correct
-  decide +kernel
-
-theorem zero_one : energyTable (0, 1) =
-    (@SECOND@ : ℚ) := by
-  apply tableValue_correct
-  decide +kernel
+@TABLE_CERTIFICATES@
 
 end Grothe.Upper.EnergyDegreeOneLookup
 
