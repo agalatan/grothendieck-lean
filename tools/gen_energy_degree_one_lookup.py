@@ -74,8 +74,11 @@ def matching_tree(lines, row_index, n, entries):
         q = rational(value)
         lines.extend([
             f'private def {name} : String := {json.dumps(text)}',
-            f'private theorem {name}_join : {name} = {left} ++ ";" ++ {right} := by',
-            '  apply sameBytes_sound; decide +kernel',
+            'set_option maxRecDepth 65536 in',
+            f'private theorem {name}_bytes : sameBytes {name} ({left} ++ ";" ++ {right}) = true := by',
+            '  decide +kernel',
+            f'private theorem {name}_join : {name} = {left} ++ ";" ++ {right} :=',
+            f'  sameBytes_sound {name}_bytes',
             f'private theorem {name}_noColon : \':\' ∉ {name}.toList := by',
             f'  rw [{name}_join]',
             f'  exact noColon_join {left} {right} {left}_noColon {right}_noColon',
@@ -94,7 +97,8 @@ def certificates(rows, values):
     No source row or duplicate entry is omitted. The literal-list equality is
     proved by rfl against actual energyStrs, not assumed by this generator.
     Byte-list Boolean reflection never reifies a complete row as List Char.
-    Every source/numeric proof uses ordinary compiler limits and strict guards.
+    Only private byte-binding witnesses use the proposed fixed recursion ceiling.
+    Numeric and public proofs retain ordinary limits and strict guards.
     """
     lines = []
     names = []
@@ -109,9 +113,12 @@ def certificates(rows, values):
         remainder = row.split(':', 1)[1]
         prefix = json.dumps(header + ':')
         lines += [f'private def {name} : String := {json.dumps(row)}',
+                  'set_option maxRecDepth 65536 in',
+                  f'private theorem prefix{i:03d}_bytes :',
+                  f'    sameBytes {name} ({prefix} ++ {json.dumps(remainder)}) = true := by decide +kernel',
                   f'private theorem prefix{i:03d} : {name}.startsWith {prefix} = true := by',
-                  f'  have hs : {name} = {prefix} ++ {json.dumps(remainder)} := by',
-                  '    apply sameBytes_sound; decide +kernel',
+                  f'  have hs : {name} = {prefix} ++ {json.dumps(remainder)} :=',
+                  f'    sameBytes_sound prefix{i:03d}_bytes',
                   f'  exact Eq.mpr (congrArg (fun s : String => s.startsWith {prefix} = true) hs)',
                   '    (startsWith_append _ _)', '']
         for (n, m), value in values.items():
@@ -126,10 +133,13 @@ def certificates(rows, values):
                 if total != expected:
                     raise ValueError('actual matching row differs from target')
                 row_totals[n, m].append(total)
-                lines += [f'private theorem {fact} :',
+                lines += ['set_option maxRecDepth 65536 in',
+                          f'private theorem {fact}_bytes :',
+                          f'    sameBytes {name} ({json.dumps(header)} ++ ":" ++ {root}) = true := by decide +kernel',
+                          f'private theorem {fact} :',
                           f'    rowValue {n} {m} (GrotheKernel.parseRow {name}) = ({value} : ℚ) := by',
-                          f'  have hs : {name} = {json.dumps(header)} ++ ":" ++ {root} := by',
-                          '    apply sameBytes_sound; decide +kernel',
+                          f'  have hs : {name} = {json.dumps(header)} ++ ":" ++ {root} :=',
+                          f'    sameBytes_sound {fact}_bytes',
                           f'  rw [rowValue_of_body {name} {json.dumps(header)} {root} {n} {m} hs',
                           f'    (by cbv) (by decide +kernel) {root}_noColon]',
                           f'  exact {root}_value', '']
