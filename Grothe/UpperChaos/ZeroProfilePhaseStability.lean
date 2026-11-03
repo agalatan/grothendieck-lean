@@ -5,9 +5,49 @@ import Grothe.UpperChaos.F0ConditionalNode
 No sign or nonzero-profile hypothesis is needed. Agent-ID: codex-8c4d. -/
 
 open MeasureTheory Grothe.LowerAnalytic
-open scoped InnerProductSpace
+open scoped InnerProductSpace ComplexConjugate
 
 namespace Grothe.UpperChaos.ZeroProfilePhaseStability
+
+/-- Signed physical perturbation, which stays defined at a profile zero. -/
+noncomputable def signedProfileRatio (s : ℝ) : ℝ :=
+  Real.sqrt (1 + (Upper.aQ : ℝ) ^ 2) * vprof s / Real.sqrt s
+
+/-- The constant and linear Gaussian terms of the actual phase slice. -/
+noncomputable def linearSlice (s : ℝ) (w : ℂ) : ℂ :=
+  1 + ((signedProfileRatio s / 2 : ℝ) : ℂ) * (w - conj w)
+
+/-- Actual production phase linearization, without a profile-sign or nonzero
+profile condition. The remaining Gaussian L2 transfer is separate. -/
+theorem phaseSlice_sub_linear_bound (s : ℝ) (hs : 0 < s) (w : ℂ) :
+    ‖F0ConditionalNode.phaseSlice s w - linearSlice s w‖ ≤
+      (5 / 2 : ℝ) * signedProfileRatio s ^ 2 * ‖w‖ ^ 2 := by
+  let κ : ℝ := Real.sqrt (1 + (Upper.aQ : ℝ) ^ 2) * vprof s
+  have himag (z : ℂ) : z - (z.re : ℂ) = (z - conj z) / 2 := by
+    apply Complex.ext <;> simp [Complex.div_re, Complex.div_im] <;> ring
+  have hlin :
+      ((κ : ℂ) * w - (((κ : ℂ) * w).re : ℂ)) / (Real.sqrt s : ℂ) =
+        ((signedProfileRatio s / 2 : ℝ) : ℂ) * (w - conj w) := by
+    rw [himag, map_mul, Complex.conj_ofReal]
+    dsimp only [signedProfileRatio, κ]
+    push_cast
+    ring
+  have h := Haag.norm_ph_real_add_sub_linear (Real.sqrt s) (Real.sqrt_pos.2 hs)
+    ((κ : ℂ) * w)
+  calc
+    _ = ‖Haag.ph ((Real.sqrt s : ℂ) + (κ : ℂ) * w) - 1 -
+        ((signedProfileRatio s / 2 : ℝ) : ℂ) * (w - conj w)‖ := by
+      rw [F0ConditionalNode.phaseSlice_eq s hs.le]
+      dsimp only [linearSlice, κ]
+      congr 1
+      ring
+    _ ≤ (5 / 2 : ℝ) * ‖(κ : ℂ) * w‖ ^ 2 / Real.sqrt s ^ 2 := by
+      simpa only [hlin] using h
+    _ = _ := by
+      rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, mul_pow, sq_abs]
+      dsimp only [signedProfileRatio, κ]
+      rw [div_pow]
+      ring
 
 private theorem hfun_zero_zero (w : ℂ) : hfun (0, 0) w = 1 := by
   simp [hfun, nrm, H_zero_zero, ev]
