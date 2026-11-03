@@ -1702,6 +1702,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_chunk_tables
 #print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_cover
 #print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_denominator_lcm
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCenters.validRow_normSq_real
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCentersAll.all_valid
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCentersAll.each_scalar
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCentersAll.ordinals
 #print axioms Grothe.UpperChaos.QuadraticPolynomialIntegrability.integrable_finite_mixed_polynomial
 #print axioms Grothe.UpperChaos.QuadraticPolynomialIntegrability.quadraticForm_lower_bound
 #print axioms Grothe.UpperChaos.QuadraticPolynomialMoments.integral_finite_mixed_polynomial
@@ -2167,12 +2171,14 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_thirdCenter_tail_smoothed_le
 #print axioms Grothe.UpperChaos.norm_third_tail_residual_le_of_captured
 #print axioms Grothe.UpperChaos.norm_toLp_sq_eq_integral
+#print axioms Grothe.UpperChaos.phaseEps_eq
 #print axioms Grothe.UpperChaos.phase_cutoff_factor_check
 #print axioms Grothe.UpperChaos.phase_moment2_check
 #print axioms Grothe.UpperChaos.phase_moment4_check
 #print axioms Grothe.UpperChaos.phase_moment6_check
 #print axioms Grothe.UpperChaos.phase_tail_scalar_bound
 #print axioms Grothe.UpperChaos.phiBound
+#print axioms Grothe.UpperChaos.phiT_sq
 #print axioms Grothe.UpperChaos.phiT_sq_le
 #print axioms Grothe.UpperChaos.phi_abs_lt_one
 #print axioms Grothe.UpperChaos.phi_cubes_ok

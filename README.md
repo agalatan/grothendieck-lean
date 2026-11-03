@@ -194,6 +194,21 @@ equality. The proof preserves the separate exact denominator
 inverse rate and shifted argument. Generated Python data are checked by Lean;
 the numerical quadrature cells and the upper-bound inputs remain to be proved.
 
+The conditional-node table has 21,577 rows of binary64 approximations to
+conditional Hermite coefficients. Row i follows the degree-531 canonical pairs
+`0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1`, in `(c+d,c)` order, retaining
+`c+d ≤ cutoff_i`: a full row has 35,777 entries, cutoff 1 has three and cutoff 2
+has five. This certificate selects every node in a panel where the outward
+128-bit profile interval Horner screen contains zero at some node. Its 413
+unresolved nodes occupy 381 panels; panel closure selects exactly 417 rows
+(3872–4036, 10910–11037 and 17321–17444), independently of the cutoffs.
+The committed [selection inputs and rule](data/q0_quadrature/conditional_source/exception-selection.json)
+reproduce this choice. `Q0SourceExceptionCentersAll` checks scalar magnitude
+at most one, squared row norm at most `121/100`, and source ordinal coverage.
+No Gaussian coefficient estimate or upper-bound assembly currently consumes
+this certificate; source-address, basis-normalization and approximation-error
+proofs remain separate.
+
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of
 scaled integers regenerated from the same pinned binary64 input.
@@ -335,6 +350,20 @@ proves an integrated auxiliary tail at `‖z‖ ≥ r₀ > 0`, bounded by
 `4/(3*alpha*r₀^3) * T^(-3/2)`. It is uniform in the real profile coefficient,
 including its zeros. Bounds for the full polynomial-weighted sources, the
 radial endpoint and certified numerical integration remain open.
+
+`LinearTiltedMoments` evaluates finite polynomials in `z` and `conj z` under
+`exp(-(rate-1)*normSq z + 2*Re(a*z))` for every positive `rate` and fixed complex
+source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
+Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
+A half-rate majorant proves integrability of every such polynomial insertion.
+For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
+`QuadraticPolynomialIntegrability` proves genuine joint polynomial
+integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate
+is `(A*C-B²)/(A+C)`. `QuadraticPolynomialMoments` then applies Fubini and
+reduces every finite mixed polynomial integral to a finite Wick sum at the
+remaining rate `(A*C-B²)/A`; its zeroth mass is `1/(A*C-B²)`.
+The historical operator identity and polynomial insertion into the full
+bipartite kernel remain separate obligations.
 
 The weighted Gaussian kernel has exact mass formulas. A common `gateOK`
 certificate supplies the real covariance conditions for either physical pair.
@@ -505,6 +534,10 @@ estimate. The exact cuts are recorded in `data/small-profile-mesh/certificate.js
 existing profile cover, giving `|κ(s)| > 1/1000` on all four remaining strips.
 Thus their reciprocal Gaussian denominator exceeds `10⁻⁶` uniformly, including
 for very small positive reciprocal coordinates.
+
+`PhiProductionIdentity` relates the actual rounding phase to its Gram-coordinate
+polynomial without importing the numerical phase cover. Concrete leaf proofs
+can use this exact identity before the global cover is assembled.
 
 `ProfilePiFactor` provides rational enclosures of `π`, `sqrt(π)`, and
 `sqrt(sqrt(π))` of width at most `2⁻⁵¹²` for the actual profile normalization.
