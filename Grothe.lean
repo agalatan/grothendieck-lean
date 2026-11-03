@@ -2249,6 +2249,9 @@ import Grothe.UpperChaos.Q0SourceSavedLinearCheckCore
 import Grothe.UpperChaos.Q0SourceSavedLinearChecks
 import Grothe.UpperChaos.Q0SourceSavedLinearModel
 import Grothe.UpperChaos.Q0WickChunking
+import Grothe.UpperChaos.QuadraticPolynomialIntegrability
+import Grothe.UpperChaos.QuadraticPolynomialMoments
+import Grothe.UpperChaos.QuadraticPolynomialMomentsAudit
 import Grothe.UpperChaos.QuadraturePartition
 import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialCutoff

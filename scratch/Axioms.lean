@@ -1772,6 +1772,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0SourceSavedLinearModel.source_actual_error_sq_le
 #print axioms Grothe.UpperChaos.Q0SourceSavedLinearModel.source_linearRowBounds
 #print axioms Grothe.UpperChaos.Q0SourceSavedLinearModel.source_model_error_eq
+#print axioms Grothe.UpperChaos.QuadraticPolynomialIntegrability.integrable_finite_mixed_polynomial
+#print axioms Grothe.UpperChaos.QuadraticPolynomialIntegrability.quadraticForm_lower_bound
+#print axioms Grothe.UpperChaos.QuadraticPolynomialMoments.integral_finite_mixed_polynomial
+#print axioms Grothe.UpperChaos.QuadraticPolynomialMoments.integral_mixed_monomial
+#print axioms Grothe.UpperChaos.QuadraticPolynomialMoments.momentValue_zero
 #print axioms Grothe.UpperChaos.QuadraturePartition.integral_auxiliary_reciprocal
 #print axioms Grothe.UpperChaos.QuadraturePartition.monotone_dyadicAuxiliaryCut
 #print axioms Grothe.UpperChaos.QuadraturePartition.norm_rectangleIntegral_reciprocal_sub_sum_le
