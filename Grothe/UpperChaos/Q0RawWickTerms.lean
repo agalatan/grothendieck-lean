@@ -23,27 +23,4 @@ theorem imSqBinomialFactorQ_cast (p q j : ℕ) :
   push_cast
   rfl
 
-/-- The radius exponent has exactly the parity required by the common moment
-range. This explicitly guards natural-number subtraction. -/
-theorem rawWickEntry_radius_degree (a b c : ℕ) (d : ℚ) (k j : ℕ)
-    (hj : 2 * j ≤ 2 * b + c + 2) :
-    2 * (rawWickEntry a b c d k j).1.1 =
-      2 * a + c + (rawWickEntry a b c d k j).1.2.2 := by
-  simp only [rawWickEntry]
-  omega
-
-/-- Concatenating source-derived entries preserves their `Ssum` evaluation
-term by term, independently of the eventual Wick-source bridge. -/
-theorem Ssum_rawWickEntries (ts : List ((ℕ × ℕ × ℕ) × ℚ)) (S Z V : ℝ) :
-    Ssum (rawWickEntries ts) S Z V =
-      (ts.map fun t => Ssum (rawWickEntriesOfTerm t) S Z V).sum := by
-  have hAppend (xs ys : List ((ℕ × ℕ × ℕ) × ℚ)) :
-      Ssum (xs ++ ys) S Z V = Ssum xs S Z V + Ssum ys S Z V := by
-    simp [Ssum]
-  induction ts with
-  | nil => simp [rawWickEntries, Ssum]
-  | cons t ts ih =>
-      simp only [rawWickEntries, List.map_cons, List.sum_cons]
-      rw [hAppend, ih]
-
 end Grothe.UpperChaos.Q0RawWickTerms

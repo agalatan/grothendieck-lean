@@ -603,6 +603,11 @@ Grothe.UpperChaos.ProductComplete.complete_prod
 Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
 Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
 Grothe.UpperChaos.ProductComplete.memLp_prod_mul
+Grothe.UpperChaos.ProfilePiFactor.pi_lo_lt
+Grothe.UpperChaos.ProfilePiFactor.pi_lt_hi
+Grothe.UpperChaos.ProfilePiFactor.pi_quarter_bounds
+Grothe.UpperChaos.ProfilePiFactor.pi_quarter_width
+Grothe.UpperChaos.ProfilePiFactor.sqrt_pi_bounds
 Grothe.UpperChaos.ProfileRootScreen.allCoeffsOK
 Grothe.UpperChaos.ProfileRootScreen.allGammaSQOK
 Grothe.UpperChaos.ProfileRootScreen.allRegionsOK
@@ -700,6 +705,8 @@ Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_base_conditional_wick
 Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_base_quadrature_kernel
 Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_pointwise
 Grothe.UpperChaos.Q0LiteralBinaryFold.fold_eq_literal
+Grothe.UpperChaos.Q0NodeMassLedgerSharp.real_error_lt_cap
+Grothe.UpperChaos.Q0NodeMassLedgerSharp.sqrt_mass_lt_norm
 Grothe.UpperChaos.Q0ProfileRectangleModel.actual_profile_model
 Grothe.UpperChaos.Q0ProfileRectangleModel.coordinate_contains
 Grothe.UpperChaos.Q0ProfileRectangleModel.profile_of_trace
