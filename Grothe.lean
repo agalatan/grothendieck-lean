@@ -1078,6 +1078,7 @@ import Grothe.UpperChaos.Q0BasePairKernel
 import Grothe.UpperChaos.Q0BasePairKernelContinuity
 import Grothe.UpperChaos.Q0BasePairModelAssembly
 import Grothe.UpperChaos.Q0BasePairProductionBridge
+import Grothe.UpperChaos.Q0BasePairProductionBridgeAudit
 import Grothe.UpperChaos.Q0BasePairProductionRoots
 import Grothe.UpperChaos.Q0BasePairReciprocalEnvelope
 import Grothe.UpperChaos.Q0BasePairRoot10Audit
@@ -1502,6 +1503,7 @@ import Grothe.UpperChaos.Q0RealPhaseSourceSum
 import Grothe.UpperChaos.Q0RealPhaseTerm
 import Grothe.UpperChaos.Q0RealShiftMoments
 import Grothe.UpperChaos.Q0RealTermPowers
+import Grothe.UpperChaos.Q0SourceBindingAxiomAudit
 import Grothe.UpperChaos.Q0SourceChunkAssembly
 import Grothe.UpperChaos.Q0WickChunking
 import Grothe.UpperChaos.QuadraturePartition
