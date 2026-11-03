@@ -201,6 +201,15 @@ the squared degree-one Laguerre component against `exp(-s)` on `[0,1]`, and
 encloses it in `[0.054391816192, 0.054391816194]` using Mathlib's proved
 exponential bounds. The remaining profile and response estimates require further work.
 
+`ProductionSmoothingApprox.production_smoothing_error` proves that the concrete
+rational matrix calculation approximates the actual smoothing operator with
+relative Gaussian L² error at most `4·10⁻¹⁵` for every retained head through
+degree 501. The proof identifies the full grade action with
+`S_(q+1) C_q S_qᵀ` and sums squared errors across grades, so the allowance
+is charged once for the complete vector. Its integer square-root rounding
+and error proof use only the standard logical axioms. The retained Gaussian
+coefficient enclosures and full energy-table agreement remain work in progress.
+
 LeanCert is a pinned dependency. `UpperChaos/LeanCertPilot.lean` uses its
 dyadic interval integrator to enclose a conditional Gaussian slice integral
 on `[0,1]` in `[1,5/4]`. The explicit 16-cell certificate uses `decide +kernel`;
@@ -319,6 +328,22 @@ proves an integrated auxiliary tail at `‖z‖ ≥ r₀ > 0`, bounded by
 `4/(3*alpha*r₀^3) * T^(-3/2)`. It is uniform in the real profile coefficient,
 including its zeros. Bounds for the full polynomial-weighted sources, the
 radial endpoint and certified numerical integration remain open.
+
+`F0ConditionalNode` defines the actual conditional Gaussian coefficients and
+proves their coupled Bessel bound. `F0ConditionalEvaluator` identifies them
+with the historical signed-shift integral for nonnegative radius and nonzero
+profile. `ConditionalNodeIndices` proves the exact selection of 31,877 modes;
+these require explicit lookup in the 35,777-pair storage. The actual integral
+reflection in `ConditionalCoefficientReflection` supplies the production
+factor `sqrt((d+1)/c) ≤ 1` on the reflected half. These identities use only the
+standard logical axioms; numerical node enclosures remain to be proved.
+
+`ConditionalReconstruction` extends reflection across zero profiles by proving
+that every nonconstant conditional coefficient vanishes there. Its exact
+completion of the selected 31,877-mode vector has weighted error at most
+`10/7` times the canonical error at the same nodes and weights. The canonical
+error, physical weights, primary contraction, floating operations and final
+energy-table agreement still need their own certificates.
 
 `GradedHermitePhaseSlice` expresses each actual Taylor source as a polynomial
 in the conditional coordinate times its exact Gaussian damping.

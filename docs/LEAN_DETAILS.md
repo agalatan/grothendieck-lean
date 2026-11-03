@@ -189,6 +189,25 @@ the resulting norm below `5/10^15` for the event indicator in the original
 contractions can apply without changing measures. This step uses the proved
 phase cover and introduces no further numerical check.
 
+The concrete smoothing calculation is covered in all retained grades by
+`FixedChaosSymmetricPower.actualEntry_gradedMode` and
+`FixedChaosGradedAction.actualGradeMatrix_eq`: each grade uses the two-sided
+matrix action `S_(q+1) C_q S_qᵀ`. `ProductionSmoothingRounding` constructs
+rational entries by an integer square-root floor with a `10⁻²²` grid and
+proves their error against the actual fixed smoothing parameters.
+`ProductionSmoothingApprox.production_smoothing_error` then gives
+`‖smoothOp A − savedOutput A‖ ≤ 4·10⁻¹⁵ ‖A‖` for `N ≤ 251`, using
+orthogonality to aggregate all grades before taking the norm. These theorems
+use only `propext`, `Classical.choice` and `Quot.sound`. They do not supply
+the actual retained F₀ coefficient enclosures or the stored energy-table
+comparison; those remain separate proof obligations.
+`CanonicalReconstructionNorm.full_head_reconstruction_norm_le` is a standalone
+combinatorial bound for an abstract canonical/reflected index split: its
+injective partner map and multipliers at most one give squared-norm growth
+at most two, hence a norm factor below `10/7`. `ConditionalReconstruction`
+applies that split to the actual conditional Gaussian coefficients and their
+exact reflected completion; numerical reconstruction remains separate.
+
 `CapturedTail.norm_projOn_residual_sq_le_of_captured_family` subtracts
 `Σ_i max(0, lower_i − error_i)²` from the total source energy. Its hypotheses
 are pairwise disjoint captured mode sets, disjointness from the tail, vanishing
@@ -445,6 +464,35 @@ of the conditional Gaussian expectation by
 positive `beta`, so no lower bound on the radial profile is needed. These
 results concern the base moment away from the radial origin; they do not
 certify the full polynomial-weighted Taylor sources or the remaining budgets.
+
+`F0ConditionalNode.coefficient_eq_integral` and its Bessel bound refer to the
+actual conditional phase. `F0ConditionalEvaluator.coefficient_eq_signed`
+identifies its historical parameter as
+`A = sqrt(s)/(sqrt(1+aQ²)*abs(vprof s))`, with the explicit assumptions
+`s ≥ 0` and `vprof s ≠ 0`. `ConditionalNodeIndices.image_rows` and
+`card_modes` select exactly 31,877 distinct degree-501 pairs from the larger
+35,777-pair storage; a prefix substitution is not justified.
+`ConditionalMomentReflection.integral_phase_H_reflection` proves the actual
+unnormalized Gaussian identity by finite Stein/Ward recurrences and absolute
+Fubini. `ConditionalCoefficientReflection.production_reflected_coefficient`
+then proves the production lookup factor `sqrt((d+1)/c)` for `d+1<c` and a
+nonzero profile. The normalized canonical identity holds at every real shift.
+These results have standard-three-axiom audits. They supply no numerical
+coefficient enclosure, root-gap estimate or floating reflection error.
+
+`F0ConditionalEvaluator.coefficient_zero_of_profile_zero` retains the constant
+phase `ph(sqrt(s))` when `vprof s = 0` and proves that all modes other than
+`(0,0)` vanish, including at `s = 0`. Thus the actual reflection identity
+extends to every nonnegative radius without a nonzero-profile premise.
+`ConditionalReconstruction.reconstruct_actual` identifies the exact reflected
+completion with the actual coefficient vector. Its `canonical_top_eq_modes`
+identifies the canonical half of the top rectangle with the existing 31,877
+mathematical modes, preserving explicit lookup in the larger storage.
+`weighted_top_norm_le_of_canonical_error` consumes a coupled canonical error
+bound at explicit nonnegative nodes and weights and bounds the full exact
+completion error by `10/7` times that bound. The caller must still prove the
+canonical error and the physical node/weight certificates. Primary contraction,
+floating reconstruction and final table agreement are separate obligations.
 
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
