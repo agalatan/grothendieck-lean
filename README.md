@@ -421,6 +421,14 @@ radial endpoint and certified numerical integration remain open.
 source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
 Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
 A half-rate majorant proves integrability of every such polynomial insertion.
+`IndependentSourceMoments` extends absolute integrability to arbitrary
+independent complex sources `a,b` in `exp(-(rate-1)*normSq z+a*z+b*conj z)`.
+Its majorant is uniform on bounded source sets, so complex differentiation
+in either source inserts `z` or `conj z`. `IndependentSourcePolynomial`
+evaluates every finite polynomial insertion by a polynomial recurrence,
+retaining the factor `exp(a*b/rate)/rate` and the means `b/rate`, `a/rate`.
+These source formulas do not identify the actual multiplier or the weighted
+Fock operator, and supply no numerical Hilbert--Schmidt caps.
 For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
 `QuadraticPolynomialIntegrability` proves genuine joint polynomial
 integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate
