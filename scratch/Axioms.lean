@@ -806,6 +806,13 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProductionPhaseModel.norm_roundingSlice_sub_model_of_leaf
 #print axioms Grothe.UpperChaos.ProductionPhaseModel.norm_roundingSlice_sub_saved_of_leaf
 #print axioms Grothe.UpperChaos.ProductionPhaseModel.roundingSlice_at_profile_zero
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.norm_exactModel_sq
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.norm_linearSlice_sq
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.norm_roundingSliceLp_sub_saved
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.norm_roundingSliceLp_sub_saved_of_integral
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.phaseDifferenceLp_self
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.saved_model_norm_sq
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.saved_model_norm_sq_expanded
 #print axioms Grothe.UpperChaos.ProfilePiFactor.pi_lo_lt
 #print axioms Grothe.UpperChaos.ProfilePiFactor.pi_lt_hi
 #print axioms Grothe.UpperChaos.ProfilePiFactor.pi_quarter_bounds

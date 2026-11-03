@@ -1084,6 +1084,7 @@ import Grothe.UpperChaos.ProductionMeshEnclosure
 import Grothe.UpperChaos.ProductionPhaseL2Error
 import Grothe.UpperChaos.ProductionPhaseLeaf
 import Grothe.UpperChaos.ProductionPhaseModel
+import Grothe.UpperChaos.ProductionPhaseModelIntegral
 import Grothe.UpperChaos.ProductionRadialTail
 import Grothe.UpperChaos.ProductionRectangleAssembly
 import Grothe.UpperChaos.ProductionSmallBall

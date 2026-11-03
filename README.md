@@ -427,6 +427,12 @@ model-to-saved-center discrepancy. The finite source checks and numerical
 comparison inputs still need to be certified; these interfaces do not complete
 the global cover or upper endpoint.
 
+`ProductionPhaseModelIntegral` can retain the actual phase in the Gaussian model,
+eliminating its separate phase-error term exactly. It expresses the remaining
+saved-model squared discrepancy as one conditional Gaussian integral of explicit
+model energy, saved energy and their cross term. It supplies no numerical bound
+for this integral or identification of the saved bytes.
+
 `ProductionPhaseL2Error` transfers the source comparison to the whole
 conditional Gaussian space: the actual rounding error is at most `5ρ²` plus
 `5/2` times the actual phase-model L² error and the explicit saved-model L²

@@ -617,6 +617,16 @@ no discrete coefficient count or omitted-domain estimate. The original
 linear-slice almost-everywhere representative identity is exposed for this
 consumer without changing its statement or proof.
 
+`ProductionPhaseModelIntegral` selects the actual slice phase as the phase model,
+so its phase-difference L² element is exactly zero. The remaining model energy is
+`(1+ρ² Im(w)²) (1-φ⁴(3-φ²)/36)`. The saved-model squared discrepancy is one
+integral against `gaussC` of this expression plus the saved energy minus twice
+the real model/saved cross term. No extra Gaussian or radial density is inserted.
+An eventual bound of this integral by a nonnegative `epsilon²` implies actual
+source error at most `5ρ²+epsilon`. The slice-wide actual phase bound, positive
+radial parameter, saved-function binding and numerical integral certificate
+remain explicit; a selected leaf does not provide whole-slice coverage.
+
 `LocalAffineSquareIntegralBounds` supplies both affine integration orders with
 `ContinuousOn` restricted to the actual closed cell. Coordinate clamping
 extends the integrand continuously without changing any cell integral.
