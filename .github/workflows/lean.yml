@@ -105,11 +105,37 @@ jobs:
           python3 tools/gen_root_imports.py > /dev/null
           git diff --quiet || git commit -q -a -m "Regenerate root imports and sorted lists after merging ${GITHUB_REF_NAME} (CI)"
 
+      - name: At most one checked WIP branch per agent (push with [skip ci] for the others)
+        id: wipcap
+        if: github.event_name == 'push' && github.ref_name != 'master'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # An agent (the <agent-id>/ prefix of the branch) may have at most ONE WIP branch (open PR that is a draft or
+          # labelled WIP) with a proof check queued or running. A push to a second WIP branch is not checked; its
+          # author pushes with [skip ci] (no bound on those) or waits. Landable PRs and plain branches are not capped.
+          agent=${GITHUB_REF_NAME%%/*}
+          wip() { gh pr list --head "$1" --state open --json isDraft,labels \
+                    --jq 'any(.[]; .isDraft or (.labels | any(.name == "WIP")))' 2>/dev/null; }
+          [ "$(wip "$GITHUB_REF_NAME")" = true ] || { echo "skip=false" >> "$GITHUB_OUTPUT"; exit 0; }
+          other=""
+          for status in queued in_progress; do
+            for b in $(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/lean.yml/runs?status=${status}&per_page=100" \
+                        --jq ".workflow_runs[] | select(.id != ${GITHUB_RUN_ID} and .event == \"push\" and (.head_branch | startswith(\"${agent}/\")) and .head_branch != \"${GITHUB_REF_NAME}\") | .head_branch" | sort -u); do
+              [ "$(wip "$b")" = true ] && other="$b"
+            done
+          done
+          if [ -n "$other" ]; then
+            echo "::warning::not checked: ${agent} already has a WIP branch being checked (${other}). One checked WIP branch per agent: push this one with [skip ci], or wait for that check (AGENTS.md section 8)."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else echo "skip=false" >> "$GITHUB_OUTPUT"; fi
+
       - name: Does this change touch anything Lean builds or checks?
         id: scope
         env:
           BEFORE: ${{ github.event.before }}
         run: |
+          if [ "${{ steps.wipcap.outputs.skip }}" = true ]; then echo "lean=false" >> "$GITHUB_OUTPUT"; exit 0; fi
           # a branch commit already contained in master: master's own check covers it
           if [ "${GITHUB_REF_NAME}" != master ] && [ "${{ inputs.land }}" != true ]; then
             git fetch -q origin master
