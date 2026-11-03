@@ -773,6 +773,14 @@ import Grothe
 #print axioms Grothe.UpperChaos.HardyReal.law_swap
 #print axioms Grothe.UpperChaos.HardyReal.mehler_eq_HholPair
 #print axioms Grothe.UpperChaos.HermiteZeroRow.conj_hfun_zero
+#print axioms Grothe.UpperChaos.IndependentSourceMoments.hasDerivAt_integral_a
+#print axioms Grothe.UpperChaos.IndependentSourceMoments.hasDerivAt_integral_b
+#print axioms Grothe.UpperChaos.IndependentSourceMoments.integrable_integrand
+#print axioms Grothe.UpperChaos.IndependentSourceMoments.integral_zero
+#print axioms Grothe.UpperChaos.IndependentSourceMoments.norm_integrand_le_envelope
+#print axioms Grothe.UpperChaos.IndependentSourcePolynomial.integral_eq_polynomial
+#print axioms Grothe.UpperChaos.IndependentSourcePolynomial.integral_finite_mixed_polynomial
+#print axioms Grothe.UpperChaos.IndependentSourcePolynomial.integral_finite_polynomial
 #print axioms Grothe.UpperChaos.LeanCertPilot.unitBaseSlice_eq_conditional_base
 #print axioms Grothe.UpperChaos.LeanCertPilot.unitBaseSlice_integral_enclosure
 #print axioms Grothe.UpperChaos.LeanCertProductionProfile.q0Beta_eq_wick_rate

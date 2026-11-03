@@ -444,6 +444,21 @@ $\overline a/r$ evaluates finite polynomials in $z$ and $\overline z$ under
 the tilt $\exp(-(r-1)|z|^2+2\operatorname{Re}(az))$ through shifted Wick sums.
 The factor $\exp(|a|^2/r)$ and the Gaussian mass $1/r$ are retained.
 A half-rate majorant proves integrability of these polynomial insertions.
+For arbitrary independent complex sources $a,b$, a half-rate majorant is
+uniform on bounded source sets for
+$\exp(-(r-1)|z|^2+az+b\overline z)$. It proves absolute integrability of every
+mixed monomial and justifies complex differentiation under the integral.
+Differentiation in $a$ inserts $z$, and differentiation in $b$ inserts
+$\overline z$. For fixed $r,b$, define the finite polynomial recurrence
+\[
+ P_{0,q}(X)=r^{-q}X^q,\qquad
+ P_{p+1,q}(X)=P_{p,q}'(X)+(b/r)P_{p,q}(X).
+\]
+The exact $(p,q)$ moment is $r^{-1}e^{ab/r}P_{p,q}(a)$, and finite
+linearity evaluates every finite polynomial insertion. The mass and means
+are respectively $r^{-1}e^{ab/r}$, $b/r$, and $a/r$. These identities do
+not identify the actual multiplier or the weighted Fock operator and do
+not supply numerical Hilbert--Schmidt caps.
 For the correlated form
 $Q=A|z|^2+2B\operatorname{Re}(z\overline w)+C|w|^2$, the exact conditions
 $A>0$ and $AC-B^2>0$ give the positive coercive rate

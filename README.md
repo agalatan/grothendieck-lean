@@ -395,6 +395,33 @@ energy-table agreement still need their own certificates.
 source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
 Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
 A half-rate majorant proves integrability of every such polynomial insertion.
+`IndependentSourceMoments` extends absolute integrability to arbitrary
+independent complex sources `a,b` in `exp(-(rate-1)*normSq z+a*z+b*conj z)`.
+Its majorant is uniform on bounded source sets, so complex differentiation
+in either source inserts `z` or `conj z`. `IndependentSourcePolynomial`
+evaluates every finite polynomial insertion by a polynomial recurrence,
+retaining the factor `exp(a*b/rate)/rate` and the means `b/rate`, `a/rate`.
+These source formulas do not identify the actual multiplier or the weighted
+Fock operator, and supply no numerical Hilbert--Schmidt caps.
+For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
+`QuadraticPolynomialIntegrability` proves genuine joint polynomial
+integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate
+is `(A*C-B²)/(A+C)`. `QuadraticPolynomialMoments` then applies Fubini and
+reduces every finite mixed polynomial integral to a finite Wick sum at the
+remaining rate `(A*C-B²)/A`; its zeroth mass is `1/(A*C-B²)`.
+The historical operator identity and polynomial insertion into the full
+bipartite kernel remain separate obligations.
+
+The weighted Gaussian kernel has exact mass formulas. A common `gateOK`
+certificate supplies the real covariance conditions for either physical pair.
+`OriginalHSGaussianMass.integral_gateWeight` gives pair mass `ν²/δ`, and
+`OriginalHSGaussianTensor.integral_tensorWeight` gives the product mass
+`ν⁴/(δ₀δ₁)`, with genuine integrability proved before Fubini.
+The parameter table covers the fourteen selected finite bands and four
+coordinate exclusions. Its checks prove positivity, not the numerical tail
+bounds recorded in the input files. The defined kernel is not yet identified
+with `HS_{j,I}` in `docs/UPPER_STATUS.md`; polynomial insertion, the Fock
+coefficient identity and numerical Hilbert--Schmidt bounds remain separate.
 Joint integrability when the source depends on another integration variable
 remains a separate obligation before Fubini can be applied.
 
