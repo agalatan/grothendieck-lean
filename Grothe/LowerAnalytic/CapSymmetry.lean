@@ -227,13 +227,6 @@ theorem pot_le_sup'_of_cover {ι : Type*} [Fintype ι] [Nonempty ι] (P : ι →
   obtain ⟨i, hi⟩ := mem_iUnion.1 this
   exact ⟨i, Finset.mem_univ i, hi⟩
 
-/-- The row form: `a = aFib b₁ b₂ b₃` is fixed by both symmetries. -/
-theorem pot_aFib_le_sup'_of_cover (b1 b2 b3 : ℝ) {ι : Type*} [Fintype ι] [Nonempty ι]
-    (P : ι → Set Fib) (q : ι → ℝ) (s : ℝ) (hcov : ⋃ i, symOrbit (P i) = univ)
-    (hb : ∀ i, ∀ y ∈ P i, Jpot E R ℓ β (aFib b1 b2 b3) y s ≤ q i) :
-    pot E R ℓ β (aFib b1 b2 b3) s ≤ Finset.univ.sup' Finset.univ_nonempty q :=
-  pot_le_sup'_of_cover E R ℓ β _ P q s (aFib_cj b1 b2 b3) (aFib_ng b1 b2 b3) hcov hb
-
 end
 
 end Grothe.LowerAnalytic
