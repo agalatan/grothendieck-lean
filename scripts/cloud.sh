@@ -89,7 +89,7 @@ fi
 
 # at most 2 CI jobs per agent at a time (AGENTS.md section 8): your cloud shards and the checks of this branch
 agent="${AGENT_ID:-$(whoami)}"
-if ! CI_NEED="$shards" "$TOP/scripts/ci_active.sh" "$agent" "$ref" "ready/${ref#*/}"; then
+if ! CI_NEED="$shards" "$TOP/scripts/ci_active.sh" "$agent" "$ref"; then
   die "this job ($shards shard(s)) would exceed the limit of 2 CI jobs per agent; wait for one to finish (AGENT_ID=$agent)"
 fi
 id="$agent-$(date -u +%Y%m%d%H%M%S)-$RANDOM"
