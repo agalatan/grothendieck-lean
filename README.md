@@ -340,12 +340,15 @@ derives the other two high-tail caps. `TaylorCenterFunctions` gives the concrete
 pointwise functions and discharges the rounding comparison piece.
 
 The WIP first/second integer-energy certificates retain the public packed inputs.
-`PackedDyadicStructural` develops exact strict token semantics and separates the
-legacy delimiter-equivalence obligation. Four generated pilots check decoding
-and byte reassembly for the first and last source chunk of each center, in
-32-record pieces. These new proofs await Lean verification; the excluded family
-requires the explicit 281-target check, complete source identities, and public
-consumer integration before it can replace the existing native band checks.
+`PackedDyadicStructural` supplies strict numeric-token semantics. The WIP
+`PackedDyadicLegacyDelimiter` bridge transfers the unchanged legacy parser to
+that reader through a singleton-separator identity. Four generated pilots
+assemble separately compiled pieces of at most 32 records and bind their
+characters to the first and last actual source chunk of each center. Complete
+source identities, warning-free verification of the excluded family, and public
+consumer integration remain required before replacing native band checks.
+`tools/check_first_second_energy.sh --plan` lists the complete check; the scoped
+source pilot checks only the delimiter bridge and one actual chunk.
 
 `fresh_upper_concrete_taylor` instantiates the target upper-bound implication with these fixed
 centers. Its Gaussian inputs are six first-order, four second-order and four

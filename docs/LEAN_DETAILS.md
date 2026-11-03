@@ -1487,18 +1487,25 @@ source-equality premise. Kernel certificates must discharge it before acceptance
 The existing public native band checks remain in place. Gaussian response errors
 are separate from these finite integer identities.
 
-`PackedDyadicStructural` adds a strict character-list token reader with proposed
+`PackedDyadicStructural` adds a strict character-list token reader with
 equalities to `String.toNat?` and `String.toInt?` on all inputs, including interior
 underscores and negative zero. The numeric-stage transfer retains exponent and
-mantissa range checks. The row transfer explicitly requires the legacy
-`String.splitOn` delimiter identities; compatibility with modern `String.split`
-alone does not close that obligation. These new proofs are unverified.
+mantissa range checks. `LegacySingleCharacterSplit` compares the legacy
+single-character scanner with the standard predicate scanner. The WIP
+`PackedDyadicLegacyDelimiter.parse_eq_row_unconditional` then supplies the row
+transfer without delimiter hypotheses; compatibility with modern `String.split`
+alone is not used as a substitute for this legacy identity.
 `tools/gen_first_second_packed_pilot.py` rechecks the pinned NPZ inputs and emits
-four actual-source chunk pilots, each split into at most 32 records per proof.
+four actual-source chunk pilots, each split into separately compiled modules
+of at most 32 records per proof, with transitive standard-axiom guards.
 Their character-reassembly statements refer directly to the preserved packed
 arrays. `PackedDyadicSourceAssembly` develops composition of successful chunk
-checks for the unchanged public parser. The complete explicit plan has 281
-targets: parser regressions, source assembly, these four pilots, 274 grade
-targets, and the final strict audit. A default-root green
+checks for the unchanged public parser. The complete explicit plan is listed by
+`tools/check_first_second_energy.sh --plan`: parser regressions, source
+assembly, bounded probes, the four pilots, every grade target, and the final
+strict audit. The separate `tools/check_first_second_source_pilot.sh` stops at
+the first failure and records resource use for the delimiter bridge and one
+complete source chunk; its success does not certify the whole family.
+A default-root green
 check supplies no verdict for these excluded modules or the remaining source
 equivalence and public consumer gates.
