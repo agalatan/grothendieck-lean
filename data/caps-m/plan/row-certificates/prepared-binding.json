@@ -1,0 +1,36 @@
+{
+  "added_functions": [
+    "write_repairs"
+  ],
+  "agent_id": "codex-15b7",
+  "canonical_base": "5f2074a4afbdba91541be213d063eb649bdd332e",
+  "format": "nodecaps-prepared-source-binding/v1",
+  "historical_source_manifests_unchanged": true,
+  "historical_writer_sha256": "c14a7fdd199e34e4eb8f488c275c9a308c7762bd4f551e04ffa65144a72034fe",
+  "native_verified": false,
+  "rows": [
+    12,
+    13
+  ],
+  "source_manifests_sha256": {
+    "row12-source.json": "61be956d3349e7dc02ab2426ee20aa7baae457660c4d86d6ba618db331a33df6",
+    "row13-source.json": "6eca7c176dde5af8e90f260c20f92e52f60faaf82b3487cbdd81dc911fb68554"
+  },
+  "unchanged_historical_functions": [
+    "chords",
+    "collect",
+    "cons_of",
+    "dirs_of",
+    "enc_cons",
+    "enc_recipe",
+    "nn",
+    "node_strings",
+    "pf",
+    "qs",
+    "ranges_of",
+    "write_lean",
+    "write_nodes"
+  ],
+  "writer_path": "tools/gen_cap_pieces.py",
+  "writer_sha256": "7e5e55b6463a5458b4bc283500d3e8b1da08df182ba312658674093707f53aed"
+}

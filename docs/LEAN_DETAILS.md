@@ -780,10 +780,11 @@ composes `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and the same
 `Reduction.lean`. There is one build target and one axiom report: the heavy
 rows and `CapNodes` are part of `Grothe`.
 
-The cache provenance boundary is 53 files: 48 local computation modules,
-plus `CapNodes.lean`, `GrotheCapsKernel.lean`, `lean-toolchain`,
-`lake-manifest.json` and `lakefile.toml`. Those five extras are hashed directly,
-without traversing their imports. This identifies the cached computation
+The cache provenance boundary is derived from the shared active-row registry:
+legacy ranges, selected Row12/13 finite leaves and the retained independent
+Row14 repair checks. The computation closure is hashed together with direct
+assembly/configuration roots and mathematical input projections.
+This identifies the cached computation
 sources, not every analytic dependency or compiled artifact. Lake checks
 ordinary dependencies separately. The numerical checker is the independent
 precompiled `GrotheCapsKernel` library (`Basic`, `CapPoly`, `CapCheck`);
@@ -805,10 +806,13 @@ build supplies the verification and subsequent replay; no independent
 manual droplet verification is required. The build and the report establish
 verification; a read-only digest alone does not.
 
-`CapsRest` still comprises the vertex caps of rows 0.84, 0.845, 0.85,
-0.855 and any excluded-node caps of the other rows; the exclusion lists
-are empty. The rows 12–15 computation campaign and final wiring remain
-separate work.
+On this test branch, `CapsRest` comprises the vertex caps of rows 0.85 and
+0.855 and any excluded-node caps of the original range-checked rows; those
+exclusion lists are empty. Rows12 and13 have complete localized-piece and
+anchor source assemblies, with canonical CI verification pending. Their
+inputs retain the unchanged cap pad and exact rational grids. The independent
+`nodeCap_14x150_done` proof and its repair closure are preserved; it does not
+discharge the whole Row14 hypothesis.
 
 The localized-piece predicates also have a computation-only layer:
 `CapCoverDefs` holds rational constraints and finite coverage checks, and
@@ -817,7 +821,11 @@ The localized-piece predicates also have a computation-only layer:
 regions and unchanged soundness proofs remain in `CapCover`, `CapConstr`
 and `CapPieceNodes`. Generated coverage/range modules therefore avoid the
 lower proof chain. They are excluded from the root until a proof uses
-them, and are not yet wired into `CapsRest`.
+them. Row12/13 sources now feed `CapsRest` through their whole-row assemblies.
+The shared active-row registry derives the computation closure, native facts
+and proof imports from the selected inputs. CI first builds the finite leaves
+in bounded single-threaded groups, then builds the full root and performs the
+strict audit. Source reproduction is not a native verification receipt.
 
 * Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
   (trailing gate block positive definite, κδ² ≤ δ + gatePrice); the Stein cuts (summed, spectral and general spectral) from their analytic inputs, by completions of squares,

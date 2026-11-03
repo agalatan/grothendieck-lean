@@ -5,8 +5,9 @@
 The active `Grothe` build contains the same endpoint reduction with fewer cap inputs:
 `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697117301 < K`.
 Both theorems use `RefinedCoverData.refinedL` and the same checked finite cover.
-`CapsRest` consists of the vertex caps of rows 12–15 (t = 0.84, 0.845,
-0.85, 0.855), plus any excluded-node caps of rows 0–11 and 16–18. All
+On this test branch, `CapsRest` consists of the vertex caps of rows 14–15
+(t = 0.85, 0.855), plus any excluded-node caps of rows 0–11 and 16–18.
+Rows12 and13 have complete source assemblies awaiting canonical CI verification. All
 exclusion lists are currently empty. These remaining cap estimates must be
 proved in Lean; external calculations do not complete this endpoint.
 See [PROOF_STATUS.md](PROOF_STATUS.md) for the completion rule.
@@ -40,7 +41,8 @@ imports these pure definitions, row/gate data and `CapTablesData`.
 Its local import closure has 32 modules; generated coverage/range modules
 for one node have 34, including their data. Semantic regions and all
 soundness proofs remain in `CapCover`, `CapConstr` and `CapPieceNodes`.
-These generated piece facts are not yet imported by any proof.
+The prepared Row12/13 piece facts feed their whole-row assemblies. The independent
+master `nodeCap_14x150_done` proof and its repair remain intact.
 
 There is one build target, `Grothe`: the generated root imports the 15 heavy
 row modules and `CapNodes` like every other module. CI builds it, replaying
@@ -53,15 +55,14 @@ the `GrotheKernel` Lean namespace. Other numerical checkers stay outside
 that library, so their changes do not replace the cap checker's shared
 object. The library root is pinned because every importer loads it.
 
-## Cache provenance: 53 files
+## Cache provenance
 
 `python3 scripts/caps_stamp.py --digest` computes the source hash and file
-count without marking a build. The boundary contains 48 local computation
-modules reachable from the 15 heavy row modules, followed by five direct
-extras: `Grothe/LowerAnalytic/CapNodes.lean`,
-`GrotheCapsKernel.lean`, `lean-toolchain`, `lake-manifest.json`, and
-`lakefile.toml`. The extras' imports are not traversed. The total is 53
-files. `--list` lists the exact paths.
+count without marking a build. The shared active registry includes the original
+range checks, all selected Row12/13 finite leaves, and the independent Row14
+repair checks. It derives their computation import closure and records the
+assembly/configuration boundary separately. `--list` lists the exact paths.
+The registry records source provenance, not completed native verification.
 
 The hash identifies the cached computational source bytes and direct
 extras. It is not a full dependency or reproducibility manifest: it does
@@ -79,7 +80,7 @@ than in a committed source-stamp file.
 
 Acceptance of the combined computation split and CI-cache change requires
 one successful runner `caps` build of the combined candidate, the axiom
-report, and the repeated ordinary CI check. A read-only digest or unchanged
+report, the Bridge comment probe, and an actual successful cache upload. A read-only digest or unchanged
 theorem statement is not a verification record. The scratch-branch
 `Grothe/LowerAnalytic/Bridge.lean` comment probe leaves the computation hash unchanged;
 `CapRangeDefs.lean` is a negative control that changes it. Neither probe

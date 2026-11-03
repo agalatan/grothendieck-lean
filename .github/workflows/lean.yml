@@ -116,7 +116,7 @@ jobs:
             fi
           fi
           # files that affect the Lean build or its checks; everything else (README, docs/, AGENTS.md, ...) needs no build
-          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/lake_failfast\.sh$|scripts/test_caps_stamp\.py$|\.github/workflows/)'
+          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/lake_failfast\.sh$|scripts/test_caps_stamp\.py$|data/caps-m/plan/row-certificates/|scripts/(build_caps_batches|caps_coexist|test_caps_active_registry|test_caps_active_builder|test_caps_active_nodes|test_build_caps_batches)\.py$|tools/(gen_cap_prepared_rows|nodecaps_prepared_renderers|gen_cap_nodes)\.py$|\.github/workflows/)'
           if [ "${{ inputs.land }}" = true ]; then base="${{ steps.merge.outputs.base }}"  # HEAD = base + this commit
           elif [ "${GITHUB_REF_NAME}" = master ]; then base="$BEFORE"                # the previous master
           else base=$(git merge-base origin/master HEAD); fi                         # what the branch adds to master
@@ -264,7 +264,18 @@ jobs:
         if: env.LEAN == 'true'
         run: |
           python3 scripts/test_caps_stamp.py
+          python3 scripts/test_caps_active_registry.py
+          python3 scripts/test_caps_active_builder.py
+          python3 scripts/test_caps_active_nodes.py
+          python3 scripts/test_build_caps_batches.py
           python3 scripts/test_check_axioms.py
+
+      - name: Prepared Row12 and Row13 sources and build inventory reproduce
+        if: env.LEAN == 'true'
+        run: |
+          python3 tools/gen_cap_prepared_rows.py --check
+          python3 tools/gen_cap_nodes.py --check $(cat data/cap-nodes/rows.txt)
+          python3 scripts/build_caps_batches.py --plan > caps-build-plan.json
 
       - name: The restored node caps are verified for these sources (GitHub-hosted)
         if: env.LEAN == 'true' && env.DROPLET != 'true'
@@ -273,6 +284,12 @@ jobs:
             echo "::error::The route found a verified cache for these sources, but the restored build does not match"
             echo "::error::(evicted meanwhile?). Re-run this workflow: the route will then send it to the droplet."
             exit 1; }
+
+      - name: Build caps prerequisites in bounded single-threaded groups (droplet)
+        if: env.LEAN == 'true' && env.DROPLET == 'true'
+        # Source preparation only. The complete Grothe build, strict audit,
+        # Bridge probe and successful cache upload below decide verification.
+        run: python3 scripts/build_caps_batches.py --jobs 2 --rss-limit-gib 24 --disk-floor-gib 3
 
       - name: Build Grothe (everything, node caps included)
         if: env.LEAN == 'true'

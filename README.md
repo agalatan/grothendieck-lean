@@ -134,8 +134,10 @@ See `AGENTS.md` §8, §10 and `docs/CAPS_STATUS.md`.
 
 `lower_bound_of_refined_cover_data` assumes `NodeCaps`.
 `lower_bound_of_capsRest` reduces this to `CapsRest`: the vertex caps of rows
-12–15 (t = 0.84, 0.845, 0.85, 0.855), plus any excluded-node caps of the
-other rows. All exclusion lists are empty. Both lower theorems use the same
+14–15 (t = 0.85, 0.855), plus any excluded-node caps of the original
+range-checked rows. All those exclusion lists are empty. This test branch adds
+the complete localized-piece and anchor assemblies for Rows12 and13;
+their generated finite checks still require canonical CI verification. Both lower theorems use the same
 refined cover and endpoint; the second composes
 `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and
 `lower_bound_of_refined_cover_data`. `NodeCaps.lean` defines the common cap
@@ -143,9 +145,13 @@ hypothesis without importing the Gaussian reduction. The cap computations,
 recipes and row data are unchanged. The rows 12–15 piece checks likewise import
 only rational data and computable definitions (`CapCoverDefs`,
 `CapConstrDefs`, `CapPieceRange`); `CapCover`, `CapConstr` and `CapPieceNodes`
-provide their soundness. Their generated facts and final `CapsRest` wiring
-remain a separate campaign (generated piece modules are excluded from the
-root until a proof uses them).
+provide their soundness. The Row12/13 modules are imported by the root and
+registered in the strict axiom audit. The independent `nodeCap_14x150_done`
+proof remains intact; the rest of Row14 and all of Row15 remain a separate
+campaign. `tools/gen_cap_prepared_rows.py --check` reproduces the prepared
+sources with an explicit current-writer binding, preserving the historical
+input and source seals. The bounded caps builder limits expensive finite
+checks to two single-threaded leaves before CI builds the complete root.
 
 **Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder`, for an L² charge-one truncation `X`, proves
 `ComparisonInputs → energy_close → IsGrothendieckBound (500000000000000000/355973699960428191)`,
