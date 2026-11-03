@@ -46,6 +46,21 @@ classical and quantum correlations in two-party Bell experiments (real case).
 
 ## What is proved
 
+**The statement** is [`Grothe/Statement.lean`](Grothe/Statement.lean). It imports only Mathlib and holds only
+definitions: C(A), V(A), Grothendieck bounds, the constant $K_G^{\mathbb C}$ as their infimum, `UpperBelow c`
+(some bound is below $c$), `LowerAbove c` (every bound is above $c$), and the two targets at the current thresholds,
+`UpperTarget = UpperBelow 1.404598149141` and `LowerTarget = LowerAbove 1.401697117301`. A compiled theorem whose
+type is one of these targets and whose axiom report is clean proves exactly that claim.
+[`Grothe/StatementBridges.lean`](Grothe/StatementBridges.lean) proves what the targets say about the constant:
+`UpperBelow c` gives $K_G^{\mathbb C} < c$; `LowerAbove c` gives $c \le K_G^{\mathbb C}$ and, because the set of bounds
+is closed, $c < K_G^{\mathbb C}$, both once some bound exists (an unconditional bound is not yet proved in Lean, so
+that existence stays a hypothesis). [`Grothe/LowerTarget.lean`](Grothe/LowerTarget.lean) proves `LowerTarget` from
+`NodeCaps` (`Grothe.Statement.lowerTarget_of_nodeCaps`; `lower_bound_of_capsRest` reduces `NodeCaps` to the
+rows CI certifies).
+[`Grothe/UpperTarget.lean`](Grothe/UpperTarget.lean) proves `UpperTarget` from the inputs not yet proved in Lean,
+listed as the hypotheses of `Grothe.Statement.upper_target_of_inputs` (the finite-band Gaussian error estimates of
+the three Taylor centers and the energy-table accuracy).
+
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V over all finite-dimensional complex Hilbert spaces. The headline
 theorems conclude a statement about the constant itself.
@@ -193,6 +208,15 @@ the squared degree-one Laguerre component against `exp(-s)` on `[0,1]`, and
 encloses it in `[0.054391816192, 0.054391816194]` using Mathlib's proved
 exponential bounds. The remaining profile and response estimates require further work.
 
+`ProductionSmoothingApprox.production_smoothing_error` proves that the concrete
+rational matrix calculation approximates the actual smoothing operator with
+relative Gaussian L² error at most `4·10⁻¹⁵` for every retained head through
+degree 501. The proof identifies the full grade action with
+`S_(q+1) C_q S_qᵀ` and sums squared errors across grades, so the allowance
+is charged once for the complete vector. Its integer square-root rounding
+and error proof use only the standard logical axioms. The retained Gaussian
+coefficient enclosures and full energy-table agreement remain work in progress.
+
 LeanCert is a pinned dependency. `UpperChaos/LeanCertPilot.lean` uses its
 dyadic interval integrator to enclose a conditional Gaussian slice integral
 on `[0,1]` in `[1,5/4]`. The explicit 16-cell certificate uses `decide +kernel`;
@@ -312,6 +336,21 @@ proves an integrated auxiliary tail at `‖z‖ ≥ r₀ > 0`, bounded by
 including its zeros. Bounds for the full polynomial-weighted sources, the
 radial endpoint and certified numerical integration remain open.
 
+`F0ConditionalNode` defines the actual conditional Gaussian coefficients and
+proves their coupled Bessel bound. `F0ConditionalEvaluator` identifies them
+with the historical signed-shift integral for nonnegative radius and nonzero
+profile. `ConditionalNodeIndices` proves the exact selection of 31,877 modes;
+these require explicit lookup in the 35,777-pair storage. The actual integral
+reflection in `ConditionalCoefficientReflection` supplies the production
+factor `sqrt((d+1)/c) ≤ 1` on the reflected half. These identities use only the
+standard logical axioms; numerical node enclosures remain to be proved.
+
+`ConditionalReconstruction` extends reflection across zero profiles by proving
+that every nonconstant conditional coefficient vanishes there. Its exact
+completion of the selected 31,877-mode vector has weighted error at most
+`10/7` times the canonical error at the same nodes and weights. The canonical
+error, physical weights, primary contraction, floating operations and final
+energy-table agreement still need their own certificates.
 `LinearTiltedMoments` evaluates finite polynomials in `z` and `conj z` under
 `exp(-(rate-1)*normSq z + 2*Re(a*z))` for every positive `rate` and fixed complex
 source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
