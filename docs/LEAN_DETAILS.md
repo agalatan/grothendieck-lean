@@ -155,10 +155,11 @@ orthogonality to aggregate all grades before taking the norm. These theorems
 use only `propext`, `Classical.choice` and `Quot.sound`. They do not supply
 the actual retained F₀ coefficient enclosures or the stored energy-table
 comparison; those remain separate proof obligations.
-`CanonicalReconstructionNorm.full_head_reconstruction_norm_le` supplies the
-original `10/7` allowance for the canonical/reflected reconstruction across
-all 251 grades. The reflected partner map is injective and each multiplier
-is at most one, so the total squared norm grows by at most a factor of two.
+`CanonicalReconstructionNorm.full_head_reconstruction_norm_le` is a standalone
+combinatorial bound for an abstract canonical/reflected index split: its
+injective partner map and multipliers at most one give squared-norm growth
+at most two, hence a norm factor below `10/7`; it is not yet connected to a
+Lean production reconstruction operator.
 
 `CapturedTail.norm_projOn_residual_sq_le_of_captured_family` subtracts
 `Σ_i max(0, lower_i − error_i)²` from the total source energy. Its hypotheses

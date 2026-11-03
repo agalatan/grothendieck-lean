@@ -118,8 +118,8 @@ theorem norm_gradedHermite_eq_sum_grade_sq (N : ℕ) (a : ℕ → ℕ → ℕ �
     gradedHermiteCoeff_gradedIdx a (⟨q, c, d⟩ : GradedIdx N)]
   rfl
 
-/-- A concrete relative L² error for the entire smoothed finite response.
-The error is not multiplied by the number of grades or coefficients. -/
+/-- Relative L² error for a finite graded expansion `gradedHermite N a`,
+with `N ≤ 251`. The error is not multiplied by the grade or coefficient count. -/
 theorem production_smoothing_error (N : ℕ) (hN : N ≤ 251)
     (a : ℕ → ℕ → ℕ → ℚ) :
     ‖smoothOp (gradedHermite N a) - gradedHermite N (productionSmoothedCoeff a)‖ ≤

@@ -2,10 +2,11 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Tactic
 
-/-! The actual triangular coordinate selection used by the degree-501
-canonical reconstruction duplicates each eligible source coordinate at
-most once, and every exact reflection factor is at most one. This proves
-the 10/7 reconstruction allowance without counting grades or modes.
+/-! An abstract triangular coordinate split with an injective partner map
+and square-root multipliers at most one. Its two output halves have total
+squared norm at most twice the input squared norm, giving a 10/7 norm bound.
+Connecting these definitions to a Lean production reconstruction operator is
+still a separate obligation.
 Agent-ID: codex-7c2e. -/
 
 set_option warningAsError true
@@ -13,7 +14,7 @@ open Finset
 namespace Grothe.UpperChaos.CanonicalReconstructionNorm
 noncomputable section
 
-/-- Production coordinates in one complete charge-one grade. -/
+/-- Rectangular coordinates for the abstract split at index `q`. -/
 def grade (q : ℕ) : Finset (ℕ × ℕ) := range (q + 2) ×ˢ range (q + 1)
 
 def canonical (q : ℕ) : Finset (ℕ × ℕ) :=
@@ -22,7 +23,7 @@ def canonical (q : ℕ) : Finset (ℕ × ℕ) :=
 def reflected (q : ℕ) : Finset (ℕ × ℕ) :=
   (grade q).filter fun i => i.2 + 1 < i.1
 
-/-- The same partner used by the actual production reflection identity. -/
+/-- Partner map for the abstract reflected half. -/
 def partner (i : ℕ × ℕ) : ℕ × ℕ := (i.2 + 1, i.1 - 1)
 
 lemma mem_reflected {q : ℕ} {i : ℕ × ℕ} :
@@ -90,15 +91,14 @@ theorem reflected_energy_le (q : ℕ) (e : ℕ × ℕ → ℂ) :
       · intro i _ _
         exact sq_nonneg _
 
-/-- Squared reconstruction norm: the canonical and reflected branches are
-disjoint output coordinates, so their energies add. -/
+/-- Abstract squared-norm bound for the two disjoint output halves. -/
 theorem reconstruction_energy_le (q : ℕ) (e : ℕ × ℕ → ℂ) :
     (∑ i ∈ canonical q, ‖e i‖ ^ 2) +
       (∑ i ∈ reflected q, ‖(factor i : ℂ) * e (partner i)‖ ^ 2) ≤
         2 * ∑ i ∈ canonical q, ‖e i‖ ^ 2 := by
   linarith [reflected_energy_le q e]
 
-/-- The inherited 10/7 allowance exceeds sqrt(2). -/
+/-- The rational multiplier 10/7 exceeds sqrt(2). -/
 theorem reconstruction_norm_le (q : ℕ) (e : ℕ × ℕ → ℂ) :
     Real.sqrt ((∑ i ∈ canonical q, ‖e i‖ ^ 2) +
       (∑ i ∈ reflected q, ‖(factor i : ℂ) * e (partner i)‖ ^ 2)) ≤
@@ -111,8 +111,7 @@ theorem reconstruction_norm_le (q : ℕ) (e : ℕ × ℕ → ℂ) :
   rw [mul_pow, Real.sq_sqrt (add_nonneg ha hb), Real.sq_sqrt ha]
   nlinarith [reconstruction_energy_le q e]
 
-/-- The same allowance holds for all 251 orthogonal grades together.
-No factor equal to the number of grades is introduced. -/
+/-- Aggregating the abstract split over `q < 251` preserves the 10/7 factor. -/
 theorem full_head_reconstruction_norm_le (e : ℕ → ℕ × ℕ → ℂ) :
     Real.sqrt (∑ q ∈ range 251,
       ((∑ i ∈ canonical q, ‖e q i‖ ^ 2) +

@@ -640,8 +640,6 @@ import Grothe
 #print axioms Grothe.UpperChaos.Bm_eq_integral
 #print axioms Grothe.UpperChaos.Bm_polyKernel
 #print axioms Grothe.UpperChaos.CanonicalReconstructionNorm.full_head_reconstruction_norm_le
-#print axioms Grothe.UpperChaos.CanonicalReconstructionNorm.reconstruction_norm_le
-#print axioms Grothe.UpperChaos.CanonicalReconstructionNorm.reflected_energy_le
 #print axioms Grothe.UpperChaos.CommonDenAppend.commonDen_append
 #print axioms Grothe.UpperChaos.ConcreteRetainedBands.first_degree
 #print axioms Grothe.UpperChaos.ConcreteRetainedBands.first_error

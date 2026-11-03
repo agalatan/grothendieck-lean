@@ -195,10 +195,6 @@ degree 501. The proof identifies the full grade action with
 is charged once for the complete vector. Its integer square-root rounding
 and error proof use only the standard logical axioms. The retained Gaussian
 coefficient enclosures and full energy-table agreement remain work in progress.
-`CanonicalReconstructionNorm.full_head_reconstruction_norm_le` also proves
-the original `10/7` reconstruction allowance for all 251 grades together:
-the reflected triangular coordinates select distinct canonical partners and
-have square-root multipliers at most one.
 
 LeanCert is a pinned dependency. `UpperChaos/LeanCertPilot.lean` uses its
 dyadic interval integrator to enclose a conditional Gaussian slice integral
