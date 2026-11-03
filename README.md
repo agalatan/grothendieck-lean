@@ -427,6 +427,12 @@ model-to-saved-center discrepancy. The finite source checks and numerical
 comparison inputs still need to be certified; these interfaces do not complete
 the global cover or upper endpoint.
 
+`ProductionPhaseL2Error` transfers the source comparison to the whole
+conditional Gaussian space: the actual rounding error is at most `5ρ²` plus
+`5/2` times the actual phase-model L² error and the explicit saved-model L²
+discrepancy. Its measurable bounded phase model and actual phase bound remain
+inputs. It does not turn the error into a separate bound for every coefficient.
+
 `ProfilePiFactor` provides rational enclosures of `π`, `sqrt(π)`, and
 `sqrt(sqrt(π))` of width at most `2⁻⁵¹²` for the actual profile normalization.
 Mathlib's proved nested-square-root bounds certify the π witnesses; exact

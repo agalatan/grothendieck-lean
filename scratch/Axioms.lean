@@ -792,6 +792,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_prod_mul
+#print axioms Grothe.UpperChaos.ProductionPhaseL2Error.modelSlice_memLp
+#print axioms Grothe.UpperChaos.ProductionPhaseL2Error.norm_roundingSliceLp_sub_model
+#print axioms Grothe.UpperChaos.ProductionPhaseL2Error.norm_roundingSliceLp_sub_saved
+#print axioms Grothe.UpperChaos.ProductionPhaseL2Error.phaseDifference_memLp
+#print axioms Grothe.UpperChaos.ProductionPhaseL2Error.roundingSlice_memLp
 #print axioms Grothe.UpperChaos.ProductionPhaseLeaf.abs_phase_lt_one_of_leaf
 #print axioms Grothe.UpperChaos.ProductionPhaseLeaf.gram_constraint
 #print axioms Grothe.UpperChaos.ProductionPhaseLeaf.norm_phase_factor_le_one_of_leaf
@@ -1061,6 +1066,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.actual_saved_error_lt
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.linearCoefficient_eq_inner
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.linearCoefficient_parameter_error
+#print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.linearSliceLp_coe
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_constant
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_linear
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_linear_small

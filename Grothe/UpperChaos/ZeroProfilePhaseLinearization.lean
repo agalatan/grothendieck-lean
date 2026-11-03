@@ -32,7 +32,7 @@ def linearCoefficient (s : ℝ) (i : ℕ × ℕ) : ℂ :=
     ((signedProfileRatio s / 2 : ℝ) : ℂ) *
       ((if i = (1, 0) then 1 else 0) - (if i = (0, 1) then 1 else 0))
 
-private theorem linearSliceLp_coe (s : ℝ) :
+theorem linearSliceLp_coe (s : ℝ) :
     ∀ᵐ w ∂gaussC, linearSliceLp s w = linearSlice s w := by
   filter_upwards [Lp.coeFn_add (hvec (0, 0))
       (((signedProfileRatio s / 2 : ℝ) : ℂ) • (hvec (1, 0) - hvec (0, 1))),

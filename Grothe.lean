@@ -1081,6 +1081,7 @@ import Grothe.UpperChaos.ProductComplete
 import Grothe.UpperChaos.ProductionCompactLaplace
 import Grothe.UpperChaos.ProductionFiniteLaplace
 import Grothe.UpperChaos.ProductionMeshEnclosure
+import Grothe.UpperChaos.ProductionPhaseL2Error
 import Grothe.UpperChaos.ProductionPhaseLeaf
 import Grothe.UpperChaos.ProductionPhaseModel
 import Grothe.UpperChaos.ProductionRadialTail

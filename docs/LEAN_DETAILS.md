@@ -605,6 +605,18 @@ radial parameter zero. All new headline proofs have strict transitive guards;
 finite source certificates, saved-byte comparisons and integral instantiations
 remain separate obligations.
 
+`ProductionPhaseL2Error` constructs L² representatives of the actual fixed-radial
+production rounding, its explicit linear-base/cubic-phase model, and the actual
+phase-model difference. For positive radial parameter, a measurable phase model
+bounded by one and an actual phase bounded by one, its saved-center error is at
+most `5ρ² + (5/2) ‖phaseDifferenceLp‖ + ‖modelSliceLp - saved‖`.
+The proof uses scalar norm representatives and the L² triangle inequality, so
+the Gaussian base remainder is charged once. It leaves the saved-model norm
+unchanged, requires no disk bound on the linear Gaussian base model, and adds
+no discrete coefficient count or omitted-domain estimate. The original
+linear-slice almost-everywhere representative identity is exposed for this
+consumer without changing its statement or proof.
+
 `LocalAffineSquareIntegralBounds` supplies both affine integration orders with
 `ContinuousOn` restricted to the actual closed cell. Coordinate clamping
 extends the integrand continuously without changing any cell integral.
