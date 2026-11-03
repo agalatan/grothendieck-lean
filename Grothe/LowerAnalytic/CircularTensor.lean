@@ -2167,15 +2167,9 @@ omit [Fintype ι] in
 lemma sw24_eq (X : T4 ι) : sw24 X = sw12 (sw14 (sw12 X)) := rfl
 
 omit [Fintype ι] in
-lemma sw12_sw12 (X : T4 ι) : sw12 (sw12 X) = X := rfl
-omit [Fintype ι] in
 lemma sw23_sw23 (X : T4 ι) : sw23 (sw23 X) = X := rfl
 omit [Fintype ι] in
-lemma sw34_sw34 (X : T4 ι) : sw34 (sw34 X) = X := rfl
-omit [Fintype ι] in
 lemma sw14_sw14 (X : T4 ι) : sw14 (sw14 X) = X := rfl
-omit [Fintype ι] in
-lemma sw24_sw24 (X : T4 ι) : sw24 (sw24 X) = X := rfl
 omit [Fintype ι] in
 lemma swP_swP (X : T4 ι) : swP (swP X) = X := rfl
 
@@ -2191,8 +2185,6 @@ lemma sw12_add (X Y : T4 ι) : sw12 (X + Y) = sw12 X + sw12 Y := rfl
 omit [Fintype ι] in
 lemma sw12_sub (X Y : T4 ι) : sw12 (X - Y) = sw12 X - sw12 Y := rfl
 omit [Fintype ι] in
-lemma sw12_neg (X : T4 ι) : sw12 (-X) = -sw12 X := rfl
-omit [Fintype ι] in
 lemma sw12_smul (r : ℝ) (X : T4 ι) : sw12 (r • X) = r • sw12 X := rfl
 omit [Fintype ι] in
 lemma sw23_sub (X Y : T4 ι) : sw23 (X - Y) = sw23 X - sw23 Y := rfl
@@ -2203,31 +2195,19 @@ lemma sw34_add (X Y : T4 ι) : sw34 (X + Y) = sw34 X + sw34 Y := rfl
 omit [Fintype ι] in
 lemma sw34_sub (X Y : T4 ι) : sw34 (X - Y) = sw34 X - sw34 Y := rfl
 omit [Fintype ι] in
-lemma sw34_neg (X : T4 ι) : sw34 (-X) = -sw34 X := rfl
-omit [Fintype ι] in
 lemma sw34_smul (r : ℝ) (X : T4 ι) : sw34 (r • X) = r • sw34 X := rfl
 omit [Fintype ι] in
 lemma sw14_add (X Y : T4 ι) : sw14 (X + Y) = sw14 X + sw14 Y := rfl
 omit [Fintype ι] in
-lemma sw14_sub (X Y : T4 ι) : sw14 (X - Y) = sw14 X - sw14 Y := rfl
-omit [Fintype ι] in
-lemma sw14_neg (X : T4 ι) : sw14 (-X) = -sw14 X := rfl
-omit [Fintype ι] in
 lemma sw14_smul (r : ℝ) (X : T4 ι) : sw14 (r • X) = r • sw14 X := rfl
 omit [Fintype ι] in
 lemma sw24_add (X Y : T4 ι) : sw24 (X + Y) = sw24 X + sw24 Y := rfl
-omit [Fintype ι] in
-lemma sw24_sub (X Y : T4 ι) : sw24 (X - Y) = sw24 X - sw24 Y := rfl
-omit [Fintype ι] in
-lemma sw24_neg (X : T4 ι) : sw24 (-X) = -sw24 X := rfl
 omit [Fintype ι] in
 lemma sw24_smul (r : ℝ) (X : T4 ι) : sw24 (r • X) = r • sw24 X := rfl
 omit [Fintype ι] in
 lemma swP_add (X Y : T4 ι) : swP (X + Y) = swP X + swP Y := rfl
 omit [Fintype ι] in
 lemma swP_sub (X Y : T4 ι) : swP (X - Y) = swP X - swP Y := rfl
-omit [Fintype ι] in
-lemma swP_neg (X : T4 ι) : swP (-X) = -swP X := rfl
 omit [Fintype ι] in
 lemma swP_smul (r : ℝ) (X : T4 ι) : swP (r • X) = r • swP X := rfl
 
@@ -2280,12 +2260,6 @@ omit hJ in
 lemma om4_swP (X : T4 ι) : om4 J (swP X) = swP (om4 J X) := by
   simp only [om4_apply, swP_sq₁, swP_sq₂, swP_sq₃, swP_sq₄]; rw [K12_K34]
 omit hJ in
-lemma om4_sw14 (X : T4 ι) : om4 J (sw14 X) = sw14 (om4 J X) := by
-  rw [sw14_eq, sw14_eq, om4_sw23, om4_sw12, om4_sw34, om4_swP]
-omit hJ in
-lemma om4_sw24 (X : T4 ι) : om4 J (sw24 X) = sw24 (om4 J X) := by
-  rw [sw24_eq, sw24_eq, om4_sw12, om4_sw14, om4_sw12]
-omit hJ in
 lemma om4_sq₁ (X : T4 ι) : om4 J (sq₁ J X) = sq₁ J (om4 J X) := by
   simp only [om4_apply]; rw [← sq_comm14, ← sq_comm13, ← sq_comm12]
 omit hJ in
@@ -2319,11 +2293,6 @@ lemma ip4_K13 (T T' : T4 ι) : ip4 (sq₁ J (sq₃ J T)) T' = ip4 T (sq₁ J (sq
   rw [ip4_sq₁ hJ, ip4_sq₃ hJ, neg_neg, sq_comm13]
 lemma ip4_K14 (T T' : T4 ι) : ip4 (sq₁ J (sq₄ J T)) T' = ip4 T (sq₁ J (sq₄ J T')) := by
   rw [ip4_sq₁ hJ, ip4_sq₄ hJ, neg_neg, sq_comm14]
-lemma ip4_K23 (T T' : T4 ι) : ip4 (sq₂ J (sq₃ J T)) T' = ip4 T (sq₂ J (sq₃ J T')) := by
-  rw [ip4_sq₂ hJ, ip4_sq₃ hJ, neg_neg, sq_comm23]
-lemma ip4_K24 (T T' : T4 ι) : ip4 (sq₂ J (sq₄ J T)) T' = ip4 T (sq₂ J (sq₄ J T')) := by
-  rw [ip4_sq₂ hJ, ip4_sq₄ hJ, neg_neg, sq_comm24]
-
 /-! ### Charge-zero tensors: `Ω T = T`, `δ T = 0` -/
 
 /-- `K₃₄ T = K₁₂ T` for `Ω T = T`. -/
@@ -2424,9 +2393,6 @@ lemma ch0_der4 (X : T4 ι) : ch0 J (der4 J X) = der4 J (ch0 J X) := by
   unfold ch0; rw [map_smul, map_add, der4_apply, der4_apply, map_add, map_add, map_add, om4_sq₁,
     om4_sq₂, om4_sq₃, om4_sq₄]
 omit hJ in
-lemma ch0_add (X Y : T4 ι) : ch0 J (X + Y) = ch0 J X + ch0 J Y := by
-  unfold ch0; rw [map_add]; module
-omit hJ in
 lemma ch0_sub (X Y : T4 ι) : ch0 J (X - Y) = ch0 J X - ch0 J Y := by
   unfold ch0; rw [map_sub]; module
 omit hJ in
@@ -2450,11 +2416,6 @@ omit [Fintype ι] in
 lemma con_sub_left (T₁ T₂ T' : ι → ι → ι → ℝ) [Fintype ι] :
     con (T₁ - T₂) T' = con T₁ T' - con T₂ T' := by
   funext a b c d; simp only [con, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
-omit [Fintype ι] in
-lemma con_sub_right (T T₁ T₂ : ι → ι → ι → ℝ) [Fintype ι] :
-    con T (T₁ - T₂) = con T T₁ - con T T₂ := by
-  funext a b c d; simp only [con, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
-
 lemma der3_sl₃ (T : ι → ι → ι → ℝ) : der3 J (sl₃ J T) = sl₃ J (der3 J T) := by
   simp only [der3_apply', map_add, sl_comm13, sl_comm23]
 
@@ -2495,17 +2456,6 @@ lemma K12_C : sq₁ J (sq₂ J (con f f)) = con f f - sq₁ J (tenB J f) - sq₂
   have e : sl₁ J (sl₂ J f) = f - sl₁ J (sl₃ J f) - sl₂ J (sl₃ J f) := by
     rw [sub_sub, eq_sub_iff_add_eq, ← add_assoc]; exact e2
   rw [sq₂_con, sq₁_con, e, con_sub_left, con_sub_left, tenB, sq₁_con, sq₂_con]
-
-include hf in
-lemma K34_C : sq₃ J (sq₄ J (con f f)) = con f f + sq₃ J (tenB J f) + sq₄ J (tenB J f) := by
-  have hff : der3 J (der3 J f) = -f := by rw [hdf, map_neg, hdg]
-  have e2 := charge_one_e2 hJ hff
-  have e : sl₁ J (sl₂ J f) = f - sl₁ J (sl₃ J f) - sl₂ J (sl₃ J f) := by
-    rw [sub_sub, eq_sub_iff_add_eq, ← add_assoc]; exact e2
-  rw [sq₄_con, sq₃_con, e, con_sub_right, con_sub_right, tenB, sq₃_con, sq₄_con, sl_comm13,
-    sl_comm23, eq_neg_of_add_eq_zero_right (con_sl₃ hJ f (sl₁ J f)),
-    eq_neg_of_add_eq_zero_right (con_sl₃ hJ f (sl₂ J f))]
-  abel
 
 lemma der4_B : der4 J (tenB J f) = sq₃ J (sq₄ J (con f f)) - sq₁ J (sq₂ J (con f f)) := by
   rw [tenB, der4_con hJ, der3_sl₃, hdf, map_neg, con_neg_left, con_neg_right, sq₂_con, sq₁_con,
@@ -3112,9 +3062,6 @@ local notation "yy" => ch0 J (con f f) - sq₁ J (sq₂ J (ch0 J (con f f)))
 
 lemma om4_w : om4 J ww = ww := by
   rw [map_add, om4_sq₄, om4_a hJ hf hdf hdg, om4_b hJ hf hdf hdg]
-lemma om4_z : om4 J zz = zz := by
-  rw [map_sub, om4_sq₁, om4_a hJ hf hdf hdg, om4_b hJ hf hdf hdg]
-
 lemma K13_sq₁b : sq₁ J (sq₃ J (sq₁ J bB)) = -sq₃ J bB := by rw [← sq_comm13, sq_sq1 hJ]
 lemma K13_sq₂b : sq₁ J (sq₃ J (sq₂ J bB)) = -sq₄ J bB := by
   rw [← K24_of_om hJ (sq₂ J bB) (by rw [om4_sq₂, om4_b hJ hf hdf hdg]), sq_comm24, sq_sq2 hJ, map_neg]
@@ -3647,11 +3594,6 @@ lemma ip2_smul_left (r : ℝ) (v w : T2 ι) : ip2 (r • v) w = r * ip2 v w := b
   simp only [ip2, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 lemma ip2_smul_right (r : ℝ) (v w : T2 ι) : ip2 v (r • w) = r * ip2 v w := by
   rw [ip2_comm, ip2_smul_left, ip2_comm]
-lemma ip2_neg_left (v w : T2 ι) : ip2 (-v) w = -ip2 v w := by
-  simp only [ip2, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]
-lemma ip2_neg_right (v w : T2 ι) : ip2 v (-w) = -ip2 v w := by
-  simp only [ip2, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]
-
 lemma ap4_add (X Y : T4 ι) (v : T2 ι) : ap4 (X + Y) v = ap4 X v + ap4 Y v := by
   funext a b; simp only [ap4, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 lemma ap4_sub (X Y : T4 ι) (v : T2 ι) : ap4 (X - Y) v = ap4 X v - ap4 Y v := by
@@ -3676,8 +3618,6 @@ lemma comp_smul_left (r : ℝ) (X Y : T4 ι) : comp (r • X) Y = r • comp X Y
 lemma comp_smul_right (r : ℝ) (X Y : T4 ι) : comp X (r • Y) = r • comp X Y := by
   funext a b c d; simp only [comp, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
-lemma comp_neg_left (X Y : T4 ι) : comp (-X) Y = -comp X Y := by
-  funext a b c d; simp only [comp, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]
 lemma comp_neg_right (X Y : T4 ι) : comp X (-Y) = -comp X Y := by
   funext a b c d; simp only [comp, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib]
 
@@ -3686,14 +3626,6 @@ lemma sum3_rot (F : ι → ι → ι → ℝ) : ∑ c, ∑ d, ∑ p, F c d p = �
 lemma sum3_pswap13 (F : ι → ι → ι → ℝ) : ∑ c, ∑ d, ∑ p, F c d p = ∑ p, ∑ d, ∑ c, F c d p :=
   ((Finset.sum_congr rfl fun _ _ => Finset.sum_comm).trans Finset.sum_comm).trans
     (Finset.sum_congr rfl fun _ _ => Finset.sum_comm)
-
-/-- `(X ∘ Y)` applied to `v` is `X (Y v)`. -/
-lemma ap4_comp (X Y : T4 ι) (v : T2 ι) : ap4 (comp X Y) v = ap4 X (ap4 Y v) := by
-  funext a b
-  simp only [ap4, comp, Finset.sum_mul, Finset.mul_sum]
-  rw [swap4 (fun c d e f => X a b e f * Y e f c d * v c d)]
-  exact Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun f _ =>
-    Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring
 
 /-- The columns of `X ∘ Y` are `X` applied to the columns of `Y`. -/
 lemma col_comp (X Y : T4 ι) (c d : ι) : col (comp X Y) c d = ap4 X (col Y c d) := rfl
@@ -3744,11 +3676,6 @@ lemma ip4_sq_le (X Y : T4 ι) : ip4 X Y ^ 2 ≤ ip4 X X * ip4 Y Y := by
     (fun p => X p.1 p.2.1 p.2.2.1 p.2.2.2) (fun p => Y p.1 p.2.1 p.2.2.1 p.2.2.2)
   simp only [ip4, Fintype.sum_prod_type, sq] at this ⊢
   exact this
-
-/-- The HS pairing with a composition: `⟨Z, X ∘ Y⟩ = Σ_{cd} ⟨col Z, X (col Y)⟩`. -/
-lemma ip4_comp_eq_sum_col (Z X Y : T4 ι) :
-    ip4 Z (comp X Y) = ∑ c, ∑ d, ip2 (col Z c d) (ap4 X (col Y c d)) := by
-  rw [ip4_eq_sum_col]; rfl
 
 /-! The complex structure `𝒥 = J ⊗ 1` on pairs. -/
 
@@ -4190,9 +4117,6 @@ lemma block_comp (X Y : T4 ι) (Pa : T4 ι → T4 ι) (Qc : T4 ι → T4 ι)
 /-! Transposes of blocks. -/
 
 omit hJ in
-lemma swP_P0 (X : T4 ι) : swP (P0 J X) = Q0 J (swP X) := by
-  unfold P0 Q0; rw [swP_smul, swP_add, swP_sq₁, swP_sq₂]
-omit hJ in
 lemma swP_P2 (X : T4 ι) : swP (P2 J X) = Q2 J (swP X) := by
   unfold P2 Q2; rw [swP_smul, swP_sub, swP_sq₁, swP_sq₂]
 omit hJ in
@@ -4201,19 +4125,6 @@ lemma swP_Q0 (X : T4 ι) : swP (Q0 J X) = P0 J (swP X) := by
 omit hJ in
 lemma swP_Q2 (X : T4 ι) : swP (Q2 J X) = P2 J (swP X) := by
   unfold P2 Q2; rw [swP_smul, swP_sub, swP_sq₃, swP_sq₄]
-omit hJ in
-lemma sw34_P0 (X : T4 ι) : sw34 (P0 J X) = P0 J (sw34 X) := by
-  unfold P0; rw [sw34_smul, sw34_add, sw34_sq₁, sw34_sq₂]
-omit hJ in
-lemma sw34_P2 (X : T4 ι) : sw34 (P2 J X) = P2 J (sw34 X) := by
-  unfold P2; rw [sw34_smul, sw34_sub, sw34_sq₁, sw34_sq₂]
-omit hJ in
-lemma sw34_Q2 (X : T4 ι) : sw34 (Q2 J X) = Q2 J (sw34 X) := by
-  unfold Q2; rw [sw34_smul, sw34_sub, sw34_sq₃, sw34_sq₄, sq_comm34]
-omit hJ in
-lemma sw34_Q0 (X : T4 ι) : sw34 (Q0 J X) = Q0 J (sw34 X) := by
-  unfold Q0; rw [sw34_smul, sw34_add, sw34_sq₃, sw34_sq₄, sq_comm34]
-
 omit hJ in
 lemma K12_Q0 (X : T4 ι) : sq₁ J (sq₂ J (Q0 J X)) = Q0 J (sq₁ J (sq₂ J X)) := by
   unfold Q0; simp only [map_smul, map_add]; rw [K12_K34]

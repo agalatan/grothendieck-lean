@@ -59,8 +59,6 @@ def cw (F : MvPolynomial ι ℝ) (w : List ι) : ℝ := constantCoeff (dw F w)
 lemma cw_perm (F : MvPolynomial ι ℝ) {w w' : List ι} (h : w.Perm w') : cw F w = cw F w' := by
   unfold cw; rw [dw_perm F h]
 
-lemma cw_three (F : MvPolynomial ι ℝ) (a b c : ι) : cw F [a, b, c] = kern F a b c := rfl
-
 /-- The constant term of an iterated derivative as a function of the multiset of directions. -/
 def cwm (F : MvPolynomial ι ℝ) : Multiset ι → ℝ := Quot.lift (cw F) (fun _ _ h => cw_perm F h)
 
@@ -296,10 +294,6 @@ def gval (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (F : MvPolynomial ι ℝ) (es
 lemma gval_empty (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (F : MvPolynomial ι ℝ) :
     gval E F ([] : List (Fin N × Fin N)) = E (F ^ N) := by
   simp [gval, phiE]
-
-lemma gval_iso (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (F : MvPolynomial ι ℝ) {π : Fin N → Fin N}
-    {es es' : List (Fin N × Fin N)} (h : isoOK π es es') : gval E F es = gval E F es' :=
-  gsum_iso (phiE_permInv E F) (phiE_relabel E F) h
 
 section step
 

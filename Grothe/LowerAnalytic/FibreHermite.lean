@@ -51,9 +51,6 @@ def fibreB : Fin 6 → ℂ → ℂ := ![fun _ => 1, fB1, fB2, fun z => z, fB4, f
 /-- `⟪B_i, B_j⟫ = ∫ conj(B_i) B_j`. -/
 def fibreGram (i j : Fin 6) : ℂ := ∫ z, conj (fibreB i z) * fibreB j z ∂gaussC
 
-lemma I_normSq (z : ℂ) : Complex.normSq (Complex.I * z) = Complex.normSq z := by
-  rw [map_mul, Complex.normSq_I, one_mul]
-
 lemma sqrt2_sq_C : ((√2 : ℝ) : ℂ) ^ 2 = 2 := by
   rw [← Complex.ofReal_pow, Real.sq_sqrt (by norm_num)]; norm_num
 

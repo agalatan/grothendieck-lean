@@ -145,7 +145,6 @@ lemma integrable_qw : Integrable qw gaussC :=
 
 lemma integrable_fB1 : Integrable fB1 gaussC := integrable_of_le_qw fB1 continuous_fB1 1 (by simpa using norm_fB1_le)
 lemma integrable_fB2 : Integrable fB2 gaussC := integrable_of_le_qw fB2 continuous_fB2 1 (by simpa using norm_fB2_le)
-lemma integrable_fB4 : Integrable fB4 gaussC := integrable_of_le_qw fB4 continuous_fB4 2 norm_fB4_le
 lemma integrable_id : Integrable (fun z : ℂ => z) gaussC :=
   integrable_of_le_qw _ continuous_id 1 (by simpa using norm_le_qw)
 lemma integrable_conj : Integrable (fun z : ℂ => conj z) gaussC :=

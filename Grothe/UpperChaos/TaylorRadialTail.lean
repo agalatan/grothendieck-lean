@@ -44,12 +44,6 @@ lemma phiT_even_pow_le_sq {j : ℕ} (hj : 0 < j) (u : ℂ × ℂ) :
   rw [pow_mul]
   exact pow_le_of_le_one (sq_nonneg _) hunit hj.ne'
 
-/-- Exact pointwise phase energy remains exact after a radial restriction. -/
-lemma integral_hpow_sq_cut_eq {j : ℕ} (hj : 0 < j) (L : ℝ) :
-    (∫ u, ‖hpow j u‖ ^ 2 ∂(RestrictedWick.muCut L)) =
-      ∫ u, phiT u ^ (2 * j) ∂(RestrictedWick.muCut L) := by
-  exact integral_congr_ae (Filter.Eventually.of_forall (norm_hpow_sq_eq hj))
-
 /-- One radial phase-energy estimate controls every positive Taylor source. -/
 lemma integral_hpow_sq_cut_le {j : ℕ} (hj : 0 < j) (L : ℝ) :
     (∫ u, ‖hpow j u‖ ^ 2 ∂(RestrictedWick.muCut L)) ≤

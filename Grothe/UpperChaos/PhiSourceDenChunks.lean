@@ -32,13 +32,6 @@ theorem commonDen_flatten (chunks : List (List SourceTerm)) :
       simp only [List.foldl_cons, Nat.lcm_one_left]
       rw [foldl_lcm_seed, ← ih]
 
-/-- Two adjacent prefixes compose without any assumption about their contents. -/
-theorem commonDen_parse_take_add (xs : List String) (a b : Nat) :
-    commonDen ((xs.take (a + b)).map parseTerm) =
-      Nat.lcm (commonDen ((xs.take a).map parseTerm))
-        (commonDen (((xs.drop a).take b).map parseTerm)) := by
-  rw [List.take_add, List.map_append, commonDen_append]
-
 /-- Once coverage and each denominator are checked, their checked LCM is the
 common denominator of the actual parsed phase-source list. -/
 theorem phase_source_commonDen_of_checked_chunks
