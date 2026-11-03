@@ -46,7 +46,8 @@ open Grothe.UpperChaos.Q0GaussAddress
 itself well-formed. The last conjunct makes the relation transitive. -/
 def follows (p q : Panel) : Prop := p.hi ≤ q.lo ∧ q.lo ≤ q.hi
 
-instance : DecidableRel follows := fun _ _ => inferInstance
+instance : DecidableRel follows := fun p q =>
+  inferInstanceAs (Decidable (p.hi ≤ q.lo ∧ q.lo ≤ q.hi))
 
 instance : Trans follows follows follows where
   trans := by
@@ -60,8 +61,8 @@ theorem chain_append_known (xs ys : List Panel) (p q : Panel)
     (hpq : follows p q) : (xs ++ ys).IsChain follows := by
   apply List.IsChain.append hx hy
   intro x hxmem y hymem
-  have hxp' : x = p := by simpa [hxp] using hxmem
-  have hyq' : y = q := by simpa [hyq] using hymem
+  have hxp' : p = x := by simpa [hxp] using hxmem
+  have hyq' : q = y := by simpa [hyq] using hymem
   subst x
   subst y
   exact hpq

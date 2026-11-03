@@ -1001,6 +1001,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0ConditionalSourceVector.regular_error_eq_sum
 #print axioms Grothe.UpperChaos.Q0ConditionalSourceVector.regular_error_sq_le
 #print axioms Grothe.UpperChaos.Q0ConditionalSourceVector.source_error_le
+#print axioms Grothe.UpperChaos.Q0FiniteVectorError.finite_orthonormal_sample_error
+#print axioms Grothe.UpperChaos.Q0FiniteVectorError.sum_norm_sub_sq_le
 #print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.actual_exactness_of_check
 #print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.checkEq_sound
 #print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.check_order_one

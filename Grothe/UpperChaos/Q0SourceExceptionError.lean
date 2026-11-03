@@ -1,7 +1,7 @@
 import Grothe.UpperChaos.Q0SourceExceptionPayload
 import Grothe.UpperChaos.Q0SourceExceptionMass
 import Grothe.UpperChaos.F0ConditionalNode
-import Grothe.Upper.WeightedUnion
+import Grothe.UpperChaos.Q0FiniteVectorError
 
 /-! Error of the actual Gaussian coefficient vector against the recovered
 exceptional source rows. Bessel bounds the true vector, including all selected
@@ -29,7 +29,7 @@ theorem source_error_sq_le (a : Address) (ha : exceptionalPanel a.1.val)
     simpa only [one_pow] using sum_sq_coefficient_le_one (sourceNode a) S
   have hc : (∑ p ∈ S, ‖sourceCenter a ha p‖ ^ 2) ≤ (5 / 2 : ℝ) ^ 2 :=
     (Real.sqrt_le_iff.mp (sourceCenter_norm a ha S hdom)).2
-  have h := Grothe.Upper.BandComparison.sum_norm_sub_sq_le S
+  have h := Q0FiniteVectorError.sum_norm_sub_sq_le S
     (fun p => coefficient (sourceNode a) p) (sourceCenter a ha)
     (1 : ℝ) (5 / 2 : ℝ) (by norm_num) (by norm_num) hf hc
   simpa only [show (1 : ℝ) + 5 / 2 = 7 / 2 by norm_num] using h
