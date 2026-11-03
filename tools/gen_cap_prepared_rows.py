@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reproduce the complete prepared Row12/13 Lean source, without running Lean.
+"""Reproduce complete prepared row sources, without running Lean.
 
 Agent-ID: codex-15b7. The immutable historical source seals and exact-centre
 input plans are retained. A separate binding names today's canonical piece
@@ -107,6 +107,14 @@ def main(argv=None):
         outputs = {}
         for row in (12, 13):
             outputs.update(render(ROOT, row))
+        row14_binding = ROOT / BASE / 'row14-binding.json'
+        if row14_binding.exists():
+            from nodecaps_row14_render import render_sealed
+            outputs.update(render_sealed(ROOT))
+        else:
+            require(not (ROOT / BASE / 'row14.json').exists() and
+                    not (ROOT / 'Grothe/LowerAnalytic/CapRow14/Assembly.lean').exists(),
+                    'Row14 inputs/assembly require an explicit complete source binding')
         for name, data in outputs.items():
             path = ROOT / name
             require(not path.is_symlink(), 'refusing source symlink: ' + name)
@@ -115,7 +123,7 @@ def main(argv=None):
             else:
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_bytes(data)
-        print(f'{len(outputs)} prepared Row12/13 files reproduced; native verification pending canonical CI')
+        print(f'{len(outputs)} prepared row files reproduced; native verification pending canonical CI')
     except (ValueError, KeyError, OSError) as error:
         parser.exit(1, 'FAIL: ' + str(error) + '\n')
 
