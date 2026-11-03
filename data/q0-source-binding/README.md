@@ -15,8 +15,11 @@ Reproduce the source-binding files with:
 python3 tools/gen_q0_literal_data.py --check
 python3 tools/gen_q0_source_chunks.py --check
 python3 tools/gen_q0_chunk_assembly.py --module-name Q0SourceChunkAssembly --check
-python3 tools/gen_q0_literal_fold.py --check
 ```
+
+The recombination of the chunk tables into the literal source coefficients is not
+generated: `Grothe.UpperChaos.Q0BinaryLiteralAssemblyBridge.combined_literals_eq` has
+the kernel fold the chunk tables and compare with `Q0LiteralSourceData.sourceCoefficients`.
 
 The literal already contains its inverse-rate factor. This input does not
 certify all quadrature cells, Gaussian comparison bands or the final bound.
