@@ -83,18 +83,6 @@ theorem storedModeCenter_completion (r : Row) (m : Q0ConditionalMetadataCheck.Ro
       fun h => hcut (hi.mp h)
     simp [Q0ExceptionSupport.completed, storedModeCenter, hcut, hr]
 
-/-- The five retained modes use five distinct original payload offsets. -/
-theorem lowModes_rank_injective :
-    Set.InjOn (fun p : ℕ × ℕ => Q0ConditionalPairRankCheck.rank p.1 p.2)
-      (Q0ExceptionSupport.lowModes : Set (ℕ × ℕ)) := by
-  intro p hp q hq heq
-  have hp' : p ∈ Q0ExceptionSupport.lowModes := hp
-  have hq' : q ∈ Q0ExceptionSupport.lowModes := hq
-  simp only [Q0ExceptionSupport.lowModes, Finset.mem_insert, Finset.mem_singleton] at hp' hq'
-  rcases hp' with rfl | rfl | rfl | rfl | rfl <;>
-    rcases hq' with rfl | rfl | rfl | rfl | rfl <;>
-    norm_num [Q0ConditionalPairRankCheck.rank] at heq ⊢
-
 /-- The selected source payload, with its real cutoff and zero completion,
 has norm at most 5/2 on any subset of the original canonical domain. -/
 theorem storedModeCenter_vector_norm (r : Row) (m : Q0ConditionalMetadataCheck.Row)
