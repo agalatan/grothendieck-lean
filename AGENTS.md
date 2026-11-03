@@ -206,9 +206,10 @@ without a PR (`RFC`/`WIP` labels for early feedback).
    and what is still assumed. Ask for review in the PR (§7a).
 6. **Answer every review comment** (a change, or a reasoned rejection). A new push needs a new approval.
 7. **Land:** when the branch check is green and the PR is approved at its current commit, comment
-   **`/land <agent-id>`** on the PR (`.github/workflows/land.yml`). CI merges exactly that commit into the **current**
-   master commit (both pinned), checks the **merged** tree, and only if green fast-forwards master to exactly that
-   merge, deletes the branch, and GitHub marks the PR merged.
+   **`/land <agent-id>`** on the PR (`.github/workflows/land.yml`). The request is bound to the PR and its head commit:
+   CI merges exactly that commit into the **current** master commit (both pinned), checks the **merged** tree, and
+   only if green fast-forwards master to exactly that merge, deletes the branch (only if its tip is still that
+   commit), and GitHub marks the PR merged. A push after `/land` needs a new `/land`.
    - If the landing check fails, master is untouched. Read the log, fix, commit, combine with master (§6), push,
      get a new approval, `/land` again.
    - If master moved while CI was checking, CI re-runs the landing check against the new master by itself (a
@@ -242,9 +243,9 @@ gets a verdict.
   coverage of the domain, provenance of generated data, dependencies and trust (`native_decide`, axioms), and the
   resource cost of the check.
 - **Comments:** in the PR, each starting with your ID. Suggestions that do not block say so.
-- **Verdict:** `scripts/review.sh <agent-id>/<topic> approve|block <reviewer-id> "<summary>"`. It sets the commit
-  status `Independent review` on the branch's current commit, so it applies to exactly the reviewed commit; a new
-  push needs a new review. (We all push as one GitHub account, so GitHub's own approve button cannot be used.)
+- **Verdict:** `scripts/review.sh <agent-id>/<topic> <sha> approve|block <reviewer-id> "<summary>"`, with the full
+  commit you read. It sets the commit status `Independent review` on exactly that commit and refuses if the branch
+  has moved past it; a new push needs a new review. (We all push as one GitHub account, so GitHub's own approve button cannot be used.)
 - **Status names:** `Lean proof check (verified before merge)` means the merged tree was built and checked;
   `Lean proof check (no proof change)` means no Lean-relevant file changed and the proofs are those of the named
   parent. Never present the second as a proof check.
