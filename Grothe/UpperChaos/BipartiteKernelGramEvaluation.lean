@@ -137,10 +137,15 @@ theorem outerScaleHom_monomial (x z : ℝ) (e : Fin 4 →₀ ℕ) (c : ℂ) :
       MvPolynomial.monomial e
         (c * ((x : ℂ) ^ (e 0 + e 1) * (z : ℂ) ^ (e 2 + e 3))) := by
   classical
-  simp only [outerScaleHom, MvPolynomial.eval₂Hom_monomial,
-    MvPolynomial.monomial_eq, Finsupp.prod_pow, Fin.prod_univ_four]
-  simp only [Matrix.cons_val_zero, Matrix.cons_val_succ, mul_pow, pow_add,
-    map_mul, map_pow]
+  simp only [outerScaleHom, MvPolynomial.monomial_eq,
+    Finsupp.prod_pow, Fin.prod_univ_four]
+  simp only [map_mul, map_pow, MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂Hom_X']
+  change (MvPolynomial.C c : P4) *
+    ((MvPolynomial.C (x : ℂ) * X 0) ^ e 0 *
+      (MvPolynomial.C (x : ℂ) * X 1) ^ e 1 *
+      (MvPolynomial.C (z : ℂ) * X 2) ^ e 2 *
+      (MvPolynomial.C (z : ℂ) * X 3) ^ e 3) = _
+  simp only [mul_pow, pow_add]
   ring
 
 theorem ev4_shiftedMomentPolynomial (a b : ℝ) (u v : ℕ) (w : ℂ × ℂ) :
@@ -170,7 +175,7 @@ theorem outerScaleHom_outerPolynomial (x z : ℝ) (e f : PairPowers) :
       (MvPolynomial.C (x : ℂ) ^ (e.2.1 + f.2.1) *
         MvPolynomial.C (z : ℂ) ^ (e.2.2 + f.2.2)) * outerPolynomial e f := by
   simp [outerPolynomial, outerScaleHom, mul_pow, pow_add]
-  <;> ring
+  ring
 
 theorem ev4_outerPolynomial (e f : PairPowers) (w : ℂ × ℂ) :
     ev4 w (outerPolynomial e f) = outerMonomial e f w := by

@@ -40,8 +40,11 @@ private theorem eval_monomial_coordinates (zw : TensorSources)
     MvPolynomial.eval (coordinates zw) (MvPolynomial.monomial s c) =
       c * tensorMonomial (powers s) zw := by
   simp only [MvPolynomial.eval_monomial, Finsupp.prod_pow, Fin.prod_univ_eight]
-  simp only [coordinates, Matrix.cons_val_zero, Matrix.cons_val_succ,
-    tensorMonomial, BipartitePolynomialL2.monomial, powers]
+  change c *
+      (zw.1.1.1 ^ s 0 * zw.1.1.2 ^ s 1 * zw.1.2.1 ^ s 2 * zw.1.2.2 ^ s 3 *
+        zw.2.1.1 ^ s 4 * zw.2.1.2 ^ s 5 * zw.2.2.1 ^ s 6 * zw.2.2.2 ^ s 7) =
+    c * tensorMonomial (powers s) zw
+  simp only [tensorMonomial, BipartitePolynomialL2.monomial, powers]
   ring
 
 theorem eval_eq_support (P : SourcePolynomial) (zw : TensorSources) :

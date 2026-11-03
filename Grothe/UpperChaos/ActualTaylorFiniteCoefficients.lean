@@ -57,6 +57,9 @@ theorem integrable_polynomial_multiplier (Q : P4) (j : ℕ) :
       (by unfold damping; fun_prop)
       (Filter.Eventually.of_forall fun zw : ℂ × ℂ => norm_damping_le_one j zw.2)
   refine h.congr (Filter.Eventually.of_forall fun zw => ?_)
+  rcases zw with ⟨z, w⟩
+  change ev4 (z, w) (Q * multiplierPolynomial j) * damping j z * damping j w =
+    ev4 (z, w) Q * taylorPhasePower j (z, w)
   rw [taylorPhasePower_eq_polynomial]
   simp only [ev4, map_mul, damping]
   ring
@@ -95,6 +98,8 @@ theorem integrable_matrixEntry (j : ℕ) (m n : Idx2) :
       mu2 := by
   refine (integrable_polynomial_multiplier (matrixPolynomial m n) j).congr
     (Filter.Eventually.of_forall fun zw => ?_)
+  change ev4 zw (matrixPolynomial m n) * taylorPhasePower j zw =
+    conj (hfun2 m zw) * taylorPhasePower j zw * hfun2 n zw
   rw [ev4_matrixPolynomial]
   ring
 
