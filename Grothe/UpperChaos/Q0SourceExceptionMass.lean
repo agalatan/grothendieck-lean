@@ -8,6 +8,9 @@ thirteen supplies the Gaussian decay. Continuous measure is not substituted
 for a discrete weight sum. Agent-ID: codex-aa04. -/
 namespace Grothe.UpperChaos.Q0SourceExceptionMass
 
+-- The concrete source index type contains the full panel list.
+set_option maxRecDepth 8192
+
 open Grothe.UpperChaos.Q0GaussAddressScan
 open Grothe.UpperChaos.Q0GaussOrdinalEquiv
 open Grothe.UpperChaos.Q0GaussProductionMass
@@ -20,20 +23,20 @@ def indices : List (Fin sourcePanels.length) :=
     ((List.finRange sourcePanels.length).drop 557).take 128 ++
     ((List.finRange sourcePanels.length).drop 964).take 124
 
-private theorem mem_index_slice (start count : ℕ) (i : Fin sourcePanels.length) :
-    i ∈ ((List.finRange sourcePanels.length).drop start).take count ↔
+private theorem mem_index_slice {n : ℕ} (start count : ℕ) (i : Fin n) :
+    i ∈ ((List.finRange n).drop start).take count ↔
       start ≤ i.val ∧ i.val < start + count := by
   rw [mem_slice]
   constructor
   · rintro ⟨j, hl, hu, he⟩
     have hv : j.val = i.val := by
       have hh := congrArg Fin.val he
-      simpa only [List.get_eq_getElem, List.getElem_finRange, Fin.coe_cast] using hh
+      simpa only [List.get_eq_getElem, List.getElem_finRange, Fin.val_cast] using hh
     omega
   · rintro ⟨hl, hu⟩
     refine ⟨⟨i.val, by simpa only [List.length_finRange] using i.isLt⟩, hl, hu, ?_⟩
     apply Fin.ext
-    simp only [List.get_eq_getElem, List.getElem_finRange, Fin.coe_cast]
+    simp only [List.get_eq_getElem, List.getElem_finRange, Fin.val_cast]
 
 theorem mem_indices (i : Fin sourcePanels.length) :
     i ∈ indices ↔ exceptionalPanel i.val := by
@@ -56,7 +59,7 @@ private theorem sum_toFinset_le {α : Type*} [DecidableEq α]
     · simpa only [List.toFinset_cons, Finset.insert_eq_of_mem hm,
         List.map_cons, List.sum_cons] using (ih ht).trans (le_add_of_nonneg_left ha)
     · simpa only [List.toFinset_cons, Finset.sum_insert hm,
-        List.map_cons, List.sum_cons] using add_le_add_left (ih ht) (f a)
+        List.map_cons, List.sum_cons] using _root_.add_le_add (le_refl (f a)) (ih ht)
 
 theorem indexed_width_sum :
     (indices.map fun i => ((sourcePanels.get i).hi : ℝ) -
@@ -64,7 +67,7 @@ theorem indexed_width_sum :
   have hr : (indices.map fun i => (sourcePanels.get i).hi -
       (sourcePanels.get i).lo).sum = totalWidth := by
     rw [← panels_width]
-    unfold width
+    unfold width panels
     rw [← panels_eq_map]
     simp only [List.map_map, Function.comp_def]
   have hc := congrArg (fun q : ℚ => (q : ℝ)) hr
@@ -91,11 +94,14 @@ theorem exceptionMass_eq_source : exceptionMass =
 
 theorem exceptionMass_eq : exceptionMass = ∑ p ∈ indices.toFinset, panelMass p := by
   classical
+  have hindices :
+      Finset.univ.filter (fun p : Fin sourcePanels.length => exceptionalPanel p.val) =
+        indices.toFinset := by
+    apply Finset.ext
+    intro p
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, List.mem_toFinset, mem_indices]
   unfold exceptionMass
-  rw [← Finset.sum_filter]
-  congr 1
-  ext p
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and, List.mem_toFinset, mem_indices]
+  rw [← Finset.sum_filter, hindices]
 
 /-- This is where normalization of the actual selected physical weights is
 needed; it cannot be inferred from the continuous interval measure alone. -/
@@ -106,8 +112,8 @@ theorem unweighted_sum_le
     (∑ p ∈ indices.toFinset, ∑ j : Fin (sourcePanels.get p).order, sourceWeight ⟨p, j⟩) ≤
       (totalWidth : ℝ) := by
   calc
-    _ = ∑ p ∈ indices.toFinset, ((sourcePanels.get p).hi : ℝ) -
-        ((sourcePanels.get p).lo : ℝ) := by
+    _ = ∑ p ∈ indices.toFinset, (((sourcePanels.get p).hi : ℝ) -
+        ((sourcePanels.get p).lo : ℝ)) := by
       apply Finset.sum_congr rfl
       intro p hp
       exact hpanel p ((mem_indices p).mp (List.mem_toFinset.mp hp))
@@ -148,7 +154,9 @@ theorem exceptionMass_le_of_density (C : ℝ) (hC : 0 ≤ C)
       mul_le_mul_of_nonneg_right (unweighted_sum_le hpanel) hC
     _ ≤ (8 / 10^16 : ℝ) * C := by
       apply mul_le_mul_of_nonneg_right _ hC
-      exact_mod_cast Q0SourceExceptionWidthAll.total_width_lt.le
+      have hcast : (totalWidth : ℝ) ≤ ((8 / 10^16 : ℚ) : ℝ) :=
+        Rat.cast_le.mpr Q0SourceExceptionWidthAll.total_width_lt.le
+      simpa only [Rat.cast_div, Rat.cast_pow, Rat.cast_ofNat] using hcast
 
 /-- Compatibility with callers supplying the earlier coarse density. -/
 theorem exceptionMass_le

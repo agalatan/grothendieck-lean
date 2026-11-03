@@ -125,7 +125,7 @@ theorem norm_fibreError_le (η : ℝ) (hη : 0 < η) (z : ℂ) :
     ‖(fibreError_memLp η hη z).toLp (fibreError η z)‖ ≤ (10 / 3 : ℝ) * η := by
   have h : ‖(fibreError_memLp η hη z).toLp (fibreError η z)‖ ^ 2 ≤
       (100 / 9 : ℝ) * η ^ 2 := by
-    rw [norm_fibre_toLp_sq]
+    rw [norm_fibre_toLp_sq η hη z]
     exact integral_fibreError_sq_le η hη z
   apply (sq_le_sq₀ (norm_nonneg _) (by positivity : 0 ≤ (10 / 3 : ℝ) * η)).mp
   convert h using 1
@@ -217,7 +217,8 @@ theorem actual_saved_error_sq_le_fixed
   have hnum : (10 / 3 : ℝ) * finiteLaplaceEta +
       Real.exp (-(finiteLaplaceEta ^ 2 * finiteLaplaceCutoff)) ≤ 5 / 10 ^ 15 := by
     exact (add_le_add le_rfl htail).trans (by norm_num [finiteLaplaceEta])
-  exact h.trans ((sq_le_sq₀ (by positivity) (by positivity)).2 (add_le_add_right hnum ε))
+  exact h.trans ((sq_le_sq₀ (by positivity) (by positivity)).2
+    (add_le_add hnum (le_refl ε)))
 
 end
 end Grothe.UpperChaos.Q0ConditionalSoftening

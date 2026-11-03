@@ -81,7 +81,10 @@ theorem sourceCenter_completion (a : Address) (ha : exceptionalPanel a.1.val)
   have h := storedModeCenter_completion (rowAt a ha) (Q0ConditionalMetadataAll.rowAt a)
     (original_metadata_valid a) (rowAt_matches a ha) c d hc hd hcd htotal
   have hcut := (matchesMetadata_sound _ _ (rowAt_matches a ha)).2.2.2
-  simpa only [hcut, sourceCenter] using h
+  change Q0ExceptionSupport.completed (Q0ConditionalMetadataAll.rowAt a).cutoff
+    (storedModeCenter (rowAt a ha)) (c, d) =
+      storedModeCenter (rowAt a ha) (c, d)
+  simpa only [hcut] using h
 
 end Grothe.UpperChaos.Q0SourceExceptionPayload
 
