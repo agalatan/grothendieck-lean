@@ -162,6 +162,16 @@ is assumed. A strict transitive audit allows only the standard logical axioms.
 The inverse-rate factor already included in the literal is retained. Numerical
 cell certificates and the full upper-bound inputs remain separate obligations.
 
+For the retained head through degree $501$,
+\texttt{ProductionSmoothingApprox.production\_smoothing\_error} proves a
+relative $L^2$ error at most $4\cdot10^{-15}$ for the concrete rational
+smoothing matrices. The exact action in grade $q$ is
+$S_{q+1}C_qS_q^{\mathsf T}$; orthogonality aggregates all $251$ grades
+without multiplying the error allowance by their number. The entry rounding
+uses an integer square-root floor and only the standard logical axioms.
+The actual retained Gaussian coefficient enclosures and their complete
+energy-table comparison remain work in progress.
+
 The actual Taylor sources also admit a proved finite auxiliary reduction in
 \texttt{ProductionFiniteLaplace}. With softening $\eta=10^{-15}$ and cutoff
 $T=(2^{53})^2$, softening plus truncation costs less than $5\cdot10^{-15}$
@@ -294,6 +304,27 @@ The parsed production phase has common denominator
 $302002543697172916153771578242367488000$, proved by bounded source-chunk
 computations and their assembly in Lean. This is source arithmetic; the
 phase cover and upper-bound Gaussian estimates remain separate obligations.
+
+The conditional coefficients of the actual phase are defined in
+\texttt{F0ConditionalNode} and satisfy a coupled Bessel bound.
+For nonnegative radius and nonzero profile, \texttt{F0ConditionalEvaluator}
+identifies them with the signed historical shifted integral.
+\texttt{ConditionalNodeIndices} proves the exact selection of $31{,}877$
+distinct pairs from the larger $35{,}777$-pair storage.
+The actual Gaussian integral reflection, proved by finite Stein/Ward
+recurrences and absolute Fubini, yields the production multiplier
+$\sqrt{(d+1)/c}\le1$ when $d+1<c$. All these identities use only the
+standard logical axioms. Numerical node enclosures and floating arithmetic
+errors remain separate obligations.
+
+\texttt{ConditionalReconstruction} proves that nonconstant coefficients vanish
+at a zero profile, retaining the constant phase $\operatorname{ph}(\sqrt{s})$.
+Reflection therefore extends to all nonnegative radii. The exact completion
+of the selected $31{,}877$ mathematical modes has weighted error at most
+$10/7$ times the coupled canonical error at the same nodes and weights.
+This consumes explicit canonical error and nonnegative-weight premises;
+physical quadrature, primary contraction, floating operations and table
+agreement remain separate obligations.
 
 \paragraph{Exact phase moments.}
 For $\varphi=D e^{-\varepsilon(U+V)}S(U,V,W)$, clear the rational coefficients
