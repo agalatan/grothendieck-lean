@@ -50,3 +50,20 @@ The human chooses the AI and powerful host for this batch. The host owner must f
 The selector checks fixed SHA-256 values for `row12.json`, `row12-pieces.json` and `row12-selection.json`, verifies their plan binding, and matches every selected node's D-module directions and full encoded piece list against those inputs. The manifest records those input hashes, every D-module hash, the copied canonical exporter-body hash, the source hash and actual grid of each job, and both exclusion lists. The original recipe, ordered constraints, multipliers, grid, cap and padding remain unchanged. A changed input or mismatching D module is rejected for inspection.
 
 Return only closed outputs with their generated sources, manifest, exact commands, source revision, logs, real exits, elapsed time and peak RSS. Preserve partial and failed output separately; an infrastructure failure or incomplete export is inconclusive. Exporting successfully does not prove a piece passes. No solver run, certificate rewrite, broader row sweep, canonical CI dispatch or cache publication is requested. Subsequent exact analysis and any repair are separate work.
+
+The 304-neighbour batch has been returned and checked. All 304 original constrained matrices fail exact LDL while their polynomial and enclosure flags are true. **Do not repeat that batch.** Multiplier repairs are being staged separately; this result does not establish the status of other rows or pieces.
+
+## Node 14×280: candidates from failed range slices
+
+The native re-check of PR #262 at `3b9d4b5632b35828725c367f475de3746394d1ca` reports 16 failing range slices of node 14×280. The following generator selects the 64 pieces in those exact four-piece intervals. These are candidates: a false range does not say which of its four pieces failed. The three already repaired pieces (5, 98 and 103) and the centre are excluded.
+
+```sh
+python3 experiments/grid3-diagnostics/generate_failed_ranges.py /absolute/own/new/row14-neighbours
+lake build Grothe.LowerAnalytic.CapPieceRange Grothe.LowerAnalytic.CapPieces.D14x280 --wfail
+# One bounded, single-thread process per source listed in manifest.json:
+lake lean /absolute/own/new/row14-neighbours/Export14x280Piece8.lean -- -j1
+```
+
+The source and scope hashes bind the 64 original pieces to the checked tree, the range statements, row plan, selection, directions and ordered constraints. The computation closure and toolchain/Lake files are pinned. The unchanged canonical exporter computes `N`; the subsequent Python analysis reconstructs constraint matrices `A` and `B`, not the cell-price matrix `N`.
+
+The human-designated host owner chooses concurrency after checking available resources and competing work. This is a focused export request, not a request to launch full caps CI, rerun completed diagnostics, optimize, or rewrite certificates. Return the manifest, generated sources, JSONL, full command/time logs, actual per-job exits and summary only after closure. Also record the actual execution working directory, checkout commit and dirty tracked-file hashes, toolchain version, and prerequisite build command/result. An absolute source path binds the input file but does not attest the imported compiled libraries or checkout. Keep incomplete outputs separate. No claim of proof or cache completion follows from a successful export.
