@@ -50,12 +50,1053 @@
       "scope": "auxiliary literal reader checks; full public source equality remains open"
     }
   ],
+  "modular_leaves": [
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf000",
+      "chunk": 0,
+      "side": "first",
+      "part": 0,
+      "records": 32,
+      "source_utf8_sha256": "df9eb22c78881c9b2b44e5e75bdbe9ce1671fc2d1bd75fa5b0a8d37ce71da360",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf001",
+      "chunk": 0,
+      "side": "first",
+      "part": 1,
+      "records": 32,
+      "source_utf8_sha256": "670c88f59770a83f4203e5b641aa322443befa17a24a2fe452dca45885364469",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf002",
+      "chunk": 0,
+      "side": "first",
+      "part": 2,
+      "records": 32,
+      "source_utf8_sha256": "4e2ea17d042153e7c4ce0b5fd2d3224ea3b4f97e7940229daf558398ec48c9a9",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf003",
+      "chunk": 0,
+      "side": "first",
+      "part": 3,
+      "records": 32,
+      "source_utf8_sha256": "1e384dcb268147872491cfa92cb47e93d459a629471fce76b15ab7d30d79c3cb",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf004",
+      "chunk": 0,
+      "side": "first",
+      "part": 4,
+      "records": 32,
+      "source_utf8_sha256": "61e820b0b1508e2962681797dee9f936be51c2a90062c5710d0b13abccfd4b26",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf005",
+      "chunk": 0,
+      "side": "first",
+      "part": 5,
+      "records": 32,
+      "source_utf8_sha256": "6b664753abd16be8f240e756c78277942661cc41fc9ab7ccba20cbc1e21b997e",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf006",
+      "chunk": 0,
+      "side": "first",
+      "part": 6,
+      "records": 32,
+      "source_utf8_sha256": "1959473f8e6633d47689da80e3f7634a78556afdc5c4e251af88a975231bcc0e",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf007",
+      "chunk": 0,
+      "side": "first",
+      "part": 7,
+      "records": 32,
+      "source_utf8_sha256": "93c5006b41b834803a1bc6dedea51d0d102f6ab2bddbb8186798ab689837343e",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf008",
+      "chunk": 0,
+      "side": "first",
+      "part": 8,
+      "records": 32,
+      "source_utf8_sha256": "a0137004579bb28c21bd7b9fe5166c97444c37f30d9c1e1d130e446fd9c4761d",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf009",
+      "chunk": 0,
+      "side": "first",
+      "part": 9,
+      "records": 32,
+      "source_utf8_sha256": "d68c6fe1cd036f00234a7524ebdbdada256a1ea2dbd5ffe1938ad729c4ff27d2",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf010",
+      "chunk": 0,
+      "side": "first",
+      "part": 10,
+      "records": 32,
+      "source_utf8_sha256": "713b150117530278e0667f26ee1fa2b047e920071342b86fdde256e7d4353792",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf011",
+      "chunk": 0,
+      "side": "first",
+      "part": 11,
+      "records": 32,
+      "source_utf8_sha256": "3030c022c922c0e26a3d5b616d8393cca8702ea8097b64de128f20bc58ba0b8e",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf012",
+      "chunk": 0,
+      "side": "first",
+      "part": 12,
+      "records": 32,
+      "source_utf8_sha256": "814860c8ad97dc730a5d2c0fc2bea0ea90e7f161bafb0b2c34684a1be90ed81a",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf013",
+      "chunk": 0,
+      "side": "first",
+      "part": 13,
+      "records": 32,
+      "source_utf8_sha256": "6f7ccd7e3eaabddd75be2307c7c90a1064ed855ececfbc48653e06e156b9b704",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf014",
+      "chunk": 0,
+      "side": "first",
+      "part": 14,
+      "records": 32,
+      "source_utf8_sha256": "a8e93984fc9212dcfe14a519782a3f14ba7cf277ed8159617bcb80b84c9de3fe",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf015",
+      "chunk": 0,
+      "side": "first",
+      "part": 15,
+      "records": 32,
+      "source_utf8_sha256": "509252b2c7bb656d3413d4560448c3c9b71217c0be4ad7c66222019c9585375e",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf016",
+      "chunk": 0,
+      "side": "first",
+      "part": 16,
+      "records": 32,
+      "source_utf8_sha256": "cc496f08ce7c3cc7159034f2730e943b8b337be889799f4be9eff9f2931ed185",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf017",
+      "chunk": 0,
+      "side": "first",
+      "part": 17,
+      "records": 32,
+      "source_utf8_sha256": "1916a7e7c90e26643355cf85c0a9c1beab693519224479c55b119d8e477f6d41",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf018",
+      "chunk": 0,
+      "side": "first",
+      "part": 18,
+      "records": 32,
+      "source_utf8_sha256": "7877884d94cd50d331f5ec2b5717fc63eeccab3725ad5bcd7e672f9fe8e8d924",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf019",
+      "chunk": 0,
+      "side": "first",
+      "part": 19,
+      "records": 32,
+      "source_utf8_sha256": "4f355b4419e0a9d9ebb08b0b7d96367f7d1c2a0f7efd73d35fcf4b71b5e00da1",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf020",
+      "chunk": 0,
+      "side": "first",
+      "part": 20,
+      "records": 32,
+      "source_utf8_sha256": "de57c056238e278a94843da6ee924c2733439440b81e10520ddc0867503fa5b7",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf021",
+      "chunk": 0,
+      "side": "first",
+      "part": 21,
+      "records": 32,
+      "source_utf8_sha256": "a879c927a9ee9fc41d0ff829d42889ae87b437b5e581a8a98bbf372c4a1c5754",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf022",
+      "chunk": 0,
+      "side": "first",
+      "part": 22,
+      "records": 32,
+      "source_utf8_sha256": "eabfead6faf6a0312bb455c51102d45630e2b064e8ac7c5d9edf6a1cdedb27be",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf023",
+      "chunk": 0,
+      "side": "first",
+      "part": 23,
+      "records": 32,
+      "source_utf8_sha256": "ceca80e0de2c56ddbb9d2f94a7469dd264c1db912c25428d8034fe9c66bec92c",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf024",
+      "chunk": 0,
+      "side": "first",
+      "part": 24,
+      "records": 32,
+      "source_utf8_sha256": "f2af350b07e52a9a4c17d6f3fd1cc35ae27b3af4f3b65ce50ba6f5f3e78c4257",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf025",
+      "chunk": 0,
+      "side": "first",
+      "part": 25,
+      "records": 32,
+      "source_utf8_sha256": "394317e969c30f180950a50b3eab2172b0f73ce2450b43a08fcfc394ab859daf",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf026",
+      "chunk": 0,
+      "side": "first",
+      "part": 26,
+      "records": 32,
+      "source_utf8_sha256": "341a900db0341ce358076739ece0c14a78178579e081c83449440a57a7e27bc8",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf027",
+      "chunk": 0,
+      "side": "first",
+      "part": 27,
+      "records": 32,
+      "source_utf8_sha256": "9f29a739e3bf135a2b1b1067eca233ff86340e9bdbf334e94048c3e47e03890b",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf028",
+      "chunk": 0,
+      "side": "first",
+      "part": 28,
+      "records": 32,
+      "source_utf8_sha256": "8718842dd07e700b79f09023237e43f98a8252da1814d54c6f207b57c745911f",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf029",
+      "chunk": 0,
+      "side": "first",
+      "part": 29,
+      "records": 32,
+      "source_utf8_sha256": "5d63a0988d52a77b33a3bf86c547fe9b3ea4cce134d5d4c3efb7b6bccaf66b81",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf030",
+      "chunk": 0,
+      "side": "first",
+      "part": 30,
+      "records": 32,
+      "source_utf8_sha256": "c46e44f9ca94a07e45f318eb4bcd8eb15e1f2170be98d6598a87f03d263980d6",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk000PilotLeaf031",
+      "chunk": 0,
+      "side": "first",
+      "part": 31,
+      "records": 32,
+      "source_utf8_sha256": "f92ca2472d72ad74f9d65cd724cd8d6c342f2a4d80d0ae95f6af1ac393e8d064",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk253StructuralLeaf000",
+      "chunk": 253,
+      "side": "first",
+      "part": 0,
+      "records": 32,
+      "source_utf8_sha256": "19e4ea27690d53c0d887a272500c5eea33c6206b489f2f487b0c88132dd6549b",
+      "reuses_accepted_auxiliary_leaf": true
+    },
+    {
+      "module": "TaylorFirstPackedChunk253PilotLeaf001",
+      "chunk": 253,
+      "side": "first",
+      "part": 1,
+      "records": 32,
+      "source_utf8_sha256": "12d41a4886af218619bfba7408263b8ee47fb17631d4210192acaba4e753bc2b",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk253PilotLeaf002",
+      "chunk": 253,
+      "side": "first",
+      "part": 2,
+      "records": 32,
+      "source_utf8_sha256": "df3ca2e9056865fb5b9b081e7cb5d4f1b655a9bdde73c7f5107bd4b3343a3fb5",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk253PilotLeaf003",
+      "chunk": 253,
+      "side": "first",
+      "part": 3,
+      "records": 32,
+      "source_utf8_sha256": "9a52878d70dedc43fb167d775a4c9435ef2fe05ab5a91c86ee108dd0fa202921",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk253PilotLeaf004",
+      "chunk": 253,
+      "side": "first",
+      "part": 4,
+      "records": 32,
+      "source_utf8_sha256": "f7d28e932adec74d51552d850fcfcaa47a4d522b37fd5d3ac4aeb0252d7705ef",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk253PilotLeaf005",
+      "chunk": 253,
+      "side": "first",
+      "part": 5,
+      "records": 32,
+      "source_utf8_sha256": "d892434dac8c4ab1a90043e4ea076d895f5b318cac98886cde8cf6e802ad0682",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk253PilotLeaf006",
+      "chunk": 253,
+      "side": "first",
+      "part": 6,
+      "records": 32,
+      "source_utf8_sha256": "d89e112f02dfb2f206b5409e337d7f06b3dcabcd42c9771de881790148fefbe7",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk253PilotLeaf007",
+      "chunk": 253,
+      "side": "first",
+      "part": 7,
+      "records": 32,
+      "source_utf8_sha256": "94648bebf2ad032e542dfaa4489246ad71df6b9d2a86dfb03a51b7a2f00468d5",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk253PilotLeaf008",
+      "chunk": 253,
+      "side": "first",
+      "part": 8,
+      "records": 32,
+      "source_utf8_sha256": "e5b2cf274c06d7dc5bc3a16b609318f10cc86ad0187eca998609ab76607f103b",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk253PilotLeaf009",
+      "chunk": 253,
+      "side": "first",
+      "part": 9,
+      "records": 32,
+      "source_utf8_sha256": "425c1845439053bc05c9c54943ebdf43a5a5e2f922db0414c7d8e6926f295f7b",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk253PilotLeaf010",
+      "chunk": 253,
+      "side": "first",
+      "part": 10,
+      "records": 32,
+      "source_utf8_sha256": "48da476313f2a223d5513fcfb912623b419e24116eb5b0c39c7ed787fb2ff2aa",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk253PilotLeaf011",
+      "chunk": 253,
+      "side": "first",
+      "part": 11,
+      "records": 32,
+      "source_utf8_sha256": "4017b441d3a77eb4c5c5748cd42dbe1bdcb80e078403fba392b532cf8ea5f942",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk253PilotLeaf012",
+      "chunk": 253,
+      "side": "first",
+      "part": 12,
+      "records": 32,
+      "source_utf8_sha256": "be501d2caab38510e0f7cde7983a74871a40059bb5c2e4a757f815ca15e3debb",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk253PilotLeaf013",
+      "chunk": 253,
+      "side": "first",
+      "part": 13,
+      "records": 32,
+      "source_utf8_sha256": "b5bd15024536004923f5c3cdd5726ea8b5f320d3ea75ea876f40bac2de5ab5c7",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorFirstPackedChunk253PilotLeaf014",
+      "chunk": 253,
+      "side": "first",
+      "part": 14,
+      "records": 12,
+      "source_utf8_sha256": "242ca6734efab9be347a576dbb2669f9213ea1aa9bcf71e97abf7b6b2ebd8620",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf000",
+      "chunk": 0,
+      "side": "second",
+      "part": 0,
+      "records": 32,
+      "source_utf8_sha256": "1d295708a92aa74bd7dddc15101f41c8339fb6ce9dfd084ae2bbebdb0571681f",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf001",
+      "chunk": 0,
+      "side": "second",
+      "part": 1,
+      "records": 32,
+      "source_utf8_sha256": "66c264f59255b36d6fe2e006beefcda7088a0890540bf185aeed3b586c609932",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf002",
+      "chunk": 0,
+      "side": "second",
+      "part": 2,
+      "records": 32,
+      "source_utf8_sha256": "f15d70a53607d7661857b753e0422d7e86b3ff55a08b8637a9ed6c6b1d19f8e8",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf003",
+      "chunk": 0,
+      "side": "second",
+      "part": 3,
+      "records": 32,
+      "source_utf8_sha256": "4c7acb87e6bb6f971e07fd53e252b0e61690af5e804e4f6e117155021fff4e84",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf004",
+      "chunk": 0,
+      "side": "second",
+      "part": 4,
+      "records": 32,
+      "source_utf8_sha256": "1f78d98c59d603b9f24723e2c6b5c9d94f7481e4c59766a56a5f2c9d71da4df5",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf005",
+      "chunk": 0,
+      "side": "second",
+      "part": 5,
+      "records": 32,
+      "source_utf8_sha256": "e33a86486532eef49970c5eb80bf9eefeab6392b2b8e7eb6613ea361e5ea53c4",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf006",
+      "chunk": 0,
+      "side": "second",
+      "part": 6,
+      "records": 32,
+      "source_utf8_sha256": "bc8ee181c7d02ccce97b1ba7aadb951b5ded4afe03dfaba391e92e8bdfeec3a3",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf007",
+      "chunk": 0,
+      "side": "second",
+      "part": 7,
+      "records": 32,
+      "source_utf8_sha256": "f15144ae8f9b82efa92bab64091d8f9980a1e083036e655a1fbc0e2b74f4c708",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf008",
+      "chunk": 0,
+      "side": "second",
+      "part": 8,
+      "records": 32,
+      "source_utf8_sha256": "f2c0a50d3acd73258de1b709facd7a51daccb3983571c8df1ff78f1b5ae772b3",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf009",
+      "chunk": 0,
+      "side": "second",
+      "part": 9,
+      "records": 32,
+      "source_utf8_sha256": "9bb69ec4ae98defc11607b5dbde45e8c74bc397d0d59dbc0599ff392984798c0",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf010",
+      "chunk": 0,
+      "side": "second",
+      "part": 10,
+      "records": 32,
+      "source_utf8_sha256": "5fc7ffb48c4313e9ca1cd456ea6ab998162fe62de5cd24e5cff849ee2102aa95",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf011",
+      "chunk": 0,
+      "side": "second",
+      "part": 11,
+      "records": 32,
+      "source_utf8_sha256": "c49665ade140d782e4380c26f494dbd5363d129ca9d7d7d50b4f123bdb897943",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf012",
+      "chunk": 0,
+      "side": "second",
+      "part": 12,
+      "records": 32,
+      "source_utf8_sha256": "fe91f4ddef14d184d100dfc58dc7e2cc66fc63963d5e705043311494690d131c",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf013",
+      "chunk": 0,
+      "side": "second",
+      "part": 13,
+      "records": 32,
+      "source_utf8_sha256": "8d14cdf190ec8357cc0ebed2b51536e3a83f89accbd6b8ada6763db5d088a62b",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf014",
+      "chunk": 0,
+      "side": "second",
+      "part": 14,
+      "records": 32,
+      "source_utf8_sha256": "7698d8c5c1a01fbca753e6065fa754b8746ae61a065cbcd1b69604047cce1816",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf015",
+      "chunk": 0,
+      "side": "second",
+      "part": 15,
+      "records": 32,
+      "source_utf8_sha256": "7ccd9e94092cc8bff44dbdfca5419d660a9b025028d0a2f68f9f9639e3b9167d",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf016",
+      "chunk": 0,
+      "side": "second",
+      "part": 16,
+      "records": 32,
+      "source_utf8_sha256": "03359472ba42256876fb05cf33919ef446faaae4b7040384009702004bf54e23",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf017",
+      "chunk": 0,
+      "side": "second",
+      "part": 17,
+      "records": 32,
+      "source_utf8_sha256": "ba02140e277b7d879464f0b3b7511d19a43533993a11047eb9c1d8700f17a9a9",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf018",
+      "chunk": 0,
+      "side": "second",
+      "part": 18,
+      "records": 32,
+      "source_utf8_sha256": "0b55375d5b7ad2d1951a1b81295f2240e53292219bd67ae043cad744e555bdd7",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf019",
+      "chunk": 0,
+      "side": "second",
+      "part": 19,
+      "records": 32,
+      "source_utf8_sha256": "1c0265f5780d4bb8c946f1cc00976d8b2a0850abd698f2db3360f5b1088fde82",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf020",
+      "chunk": 0,
+      "side": "second",
+      "part": 20,
+      "records": 32,
+      "source_utf8_sha256": "8a881c3628b1bdf17acd7efdeee4621266fa418db9ca95af32e6172fdadeadd6",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf021",
+      "chunk": 0,
+      "side": "second",
+      "part": 21,
+      "records": 32,
+      "source_utf8_sha256": "1b3760d0efa944a0cea928dba803a6222ccfad5960193d09358af3983f481ccf",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf022",
+      "chunk": 0,
+      "side": "second",
+      "part": 22,
+      "records": 32,
+      "source_utf8_sha256": "f86d48958e35410b0bf7afa5cb098b49bd8eedddb51e758608ac5aa80f048148",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf023",
+      "chunk": 0,
+      "side": "second",
+      "part": 23,
+      "records": 32,
+      "source_utf8_sha256": "f743abca4185b234627fffb2455ed4793f89c26742f51bf5c2bc1e7ef40de932",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf024",
+      "chunk": 0,
+      "side": "second",
+      "part": 24,
+      "records": 32,
+      "source_utf8_sha256": "748b0dc976112c6d831f2c87d55d4d0108d8f9a22d397c23a41d11e51f10e03b",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf025",
+      "chunk": 0,
+      "side": "second",
+      "part": 25,
+      "records": 32,
+      "source_utf8_sha256": "a1ff023a136bd92d4f8673509360f98a0e55eaade928bc7386fef341f562339a",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf026",
+      "chunk": 0,
+      "side": "second",
+      "part": 26,
+      "records": 32,
+      "source_utf8_sha256": "8bcfec5818e123f35cd6e97be3f243fc0f92caf47525f2768dd0c15f228ea167",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf027",
+      "chunk": 0,
+      "side": "second",
+      "part": 27,
+      "records": 32,
+      "source_utf8_sha256": "27a199af5e050bb0bfcae3402548f107119a9c6dfa22774aac64044df505a14d",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf028",
+      "chunk": 0,
+      "side": "second",
+      "part": 28,
+      "records": 32,
+      "source_utf8_sha256": "6221f7a2f8f45f6f41ac297fe4831fffcf2993312fe3849ef9de551e1389bfa6",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf029",
+      "chunk": 0,
+      "side": "second",
+      "part": 29,
+      "records": 32,
+      "source_utf8_sha256": "560ff76bd412b9cd4fada31455a07aba4e11a587f7b5339713efb2a81263c3d3",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf030",
+      "chunk": 0,
+      "side": "second",
+      "part": 30,
+      "records": 32,
+      "source_utf8_sha256": "f150f78fc484398140a055d07c09d94e4f1bff0482744d2dca6682bceccad2ca",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk000PilotLeaf031",
+      "chunk": 0,
+      "side": "second",
+      "part": 31,
+      "records": 32,
+      "source_utf8_sha256": "04958fc21c6b64c703221940a17a7a553a5db1c1394ecf8271d095b55704fa50",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf000",
+      "chunk": 33,
+      "side": "second",
+      "part": 0,
+      "records": 32,
+      "source_utf8_sha256": "303b8de158a0ea1aaf415b8582ef0e84309573f45ff5856ad15c5e0949adc9e8",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf001",
+      "chunk": 33,
+      "side": "second",
+      "part": 1,
+      "records": 32,
+      "source_utf8_sha256": "84bbb91aebc8585cf78e7d1119c3118cb0c6a121f1684050f64de4111973e7ad",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf002",
+      "chunk": 33,
+      "side": "second",
+      "part": 2,
+      "records": 32,
+      "source_utf8_sha256": "0c7ab5be0e7d75736e52ea256424796510dd16d92663122d90c1f1a58ed278df",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf003",
+      "chunk": 33,
+      "side": "second",
+      "part": 3,
+      "records": 32,
+      "source_utf8_sha256": "b104a6544b8e7f5dc857e7f80c2abd21b1c80e47f3cde6f4dae28ca7d8786d32",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf004",
+      "chunk": 33,
+      "side": "second",
+      "part": 4,
+      "records": 32,
+      "source_utf8_sha256": "ddbd692c32ab6ca9f3fced66d5bb2ef768538be42e1a1a304adcb6505f95b007",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf005",
+      "chunk": 33,
+      "side": "second",
+      "part": 5,
+      "records": 32,
+      "source_utf8_sha256": "e6224139b8022f563bf0bcb13e8f78ab902e49fe6af6f5b3d66cd5be44513c2a",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf006",
+      "chunk": 33,
+      "side": "second",
+      "part": 6,
+      "records": 32,
+      "source_utf8_sha256": "7c71c83a83e06406d518c3e2a76f782bdb735110d3279fcfde6bbad0676a1931",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf007",
+      "chunk": 33,
+      "side": "second",
+      "part": 7,
+      "records": 32,
+      "source_utf8_sha256": "023e7bc80035b9d28888bd0a02e2f745ab2ea9cf1498a11e76100f77e17ab363",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf008",
+      "chunk": 33,
+      "side": "second",
+      "part": 8,
+      "records": 32,
+      "source_utf8_sha256": "d05609ac48e569115bfac2c93f26cffd6caafb1987c92831f38f6e1f0590ad86",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf009",
+      "chunk": 33,
+      "side": "second",
+      "part": 9,
+      "records": 32,
+      "source_utf8_sha256": "2734ea57e6d617328b16fa8c1e5cd7499a11b69a51956bb2f9b3163ce4bbfd0d",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf010",
+      "chunk": 33,
+      "side": "second",
+      "part": 10,
+      "records": 32,
+      "source_utf8_sha256": "052100fbf629789fc001dbc6cc517fa69c8dc2f40ba786ff2478b4c41d9cf8e5",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf011",
+      "chunk": 33,
+      "side": "second",
+      "part": 11,
+      "records": 32,
+      "source_utf8_sha256": "d05ad42da94cbd09b47e19528971152f61e672645dc6710779bff9ffd8ac0c5a",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf012",
+      "chunk": 33,
+      "side": "second",
+      "part": 12,
+      "records": 32,
+      "source_utf8_sha256": "515c924c23fc8558c7ecc642ff4ba3f9f82384c7537250302c60e74acfd5fa00",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf013",
+      "chunk": 33,
+      "side": "second",
+      "part": 13,
+      "records": 32,
+      "source_utf8_sha256": "938aa4684acc0bb7b9e5e9405a55f82e95bf6789fe5415feec323dd52e3aadb7",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf014",
+      "chunk": 33,
+      "side": "second",
+      "part": 14,
+      "records": 32,
+      "source_utf8_sha256": "c511733bd8dc22a947c61da64b9b93ab19284bc3ddce0fa2f643b381e2fd1b3e",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf015",
+      "chunk": 33,
+      "side": "second",
+      "part": 15,
+      "records": 32,
+      "source_utf8_sha256": "8bfaed040441ea8c297674869d84b0d2a564f5f02dfc0693d273fbbd5cfd0229",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf016",
+      "chunk": 33,
+      "side": "second",
+      "part": 16,
+      "records": 32,
+      "source_utf8_sha256": "107c9bc1c20b83a1d1a324576fc46295ba91c7379f710125a508b7825cadd959",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf017",
+      "chunk": 33,
+      "side": "second",
+      "part": 17,
+      "records": 32,
+      "source_utf8_sha256": "dd71d89186600d5cba585830e37e1c1662b3f6c1bb913fed970d8053cf64a2d1",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf018",
+      "chunk": 33,
+      "side": "second",
+      "part": 18,
+      "records": 32,
+      "source_utf8_sha256": "c57c6f618f90aa8670747b1d1e4559a4adff963bb4575093eb75f950ee14a4d1",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf019",
+      "chunk": 33,
+      "side": "second",
+      "part": 19,
+      "records": 32,
+      "source_utf8_sha256": "181f4152dbe475195b28c9c8736a3810f19850ca0d6e37ffd829e6183023953b",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf020",
+      "chunk": 33,
+      "side": "second",
+      "part": 20,
+      "records": 32,
+      "source_utf8_sha256": "601ce507355fda4f9039e4c1647c5d79ebbddebd44318e009545675f5aabc883",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf021",
+      "chunk": 33,
+      "side": "second",
+      "part": 21,
+      "records": 32,
+      "source_utf8_sha256": "8febc94f5ab5c735ff05997e5b347f2638b7047a8c2406ee3ae2d0d7f7388e72",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf022",
+      "chunk": 33,
+      "side": "second",
+      "part": 22,
+      "records": 32,
+      "source_utf8_sha256": "18312caa692f118c998c2835847f2e52efbeed5d72f8a3d395c974cfb56fac51",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf023",
+      "chunk": 33,
+      "side": "second",
+      "part": 23,
+      "records": 32,
+      "source_utf8_sha256": "4d60265b68da4c6b3fdd42c44ec1b0fa800129920b667c4a2eefc03e4f889f04",
+      "reuses_accepted_auxiliary_leaf": false
+    },
+    {
+      "module": "TaylorSecondPackedChunk033PilotLeaf024",
+      "chunk": 33,
+      "side": "second",
+      "part": 24,
+      "records": 32,
+      "source_utf8_sha256": "ac840718f7ab9e02e5ef7df84c97049ade7132d239a92e02aa7cefffdda7322c",
+      "reuses_accepted_auxiliary_leaf": false
+    }
+  ],
   "generated_sha256": {
-    "Grothe/UpperChaos/TaylorFirstPackedChunk000Pilot.lean": "da31948a873b50cdba139d3d5ad717b5ef3fc948cf4afe27b9446112d3fd237d",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf000.lean": "c4304546108ffd23b3046f7b6c0cea3c9528e010268222d39c137d76286bdf61",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf001.lean": "c1d17c9e763195674765df644b8e8ce223978a3f4a2fcfc1486c0ef1f9ee0c8d",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf002.lean": "d31c639f85bad4a472b42101bf9bf0d99e21bb160baae3f1e10780f641ee82f2",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf003.lean": "e92a73a4ea8d0605a70f386db4ebdbe8525ec96c0f4dab95b1f6a37dcbdfc4aa",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf004.lean": "980adf4dd994abede7ed01b0eebdb7dbe39f49000d7f2804e3b4340c65329e2a",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf005.lean": "2cd86d38ec1dc55e8972626703d13f75a7e6a9838d827189e5e5826623885143",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf006.lean": "c7e7ae9e30054b72d072536be3abd82559b9c8f0dcd78012f1062f63f7325ec2",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf007.lean": "cceae81d7cf3d11b1d891b29cc82c8059392c5f73b88a7d7c8fecf976f4bc4ad",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf008.lean": "f02879b68b479172dfd4e5ff22dbedcee414aa78e71d99b5ed22a7f150c5cf9b",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf009.lean": "a059113b680d10565fbc07981e6bb0712e5c0342a9fe315c8b7a76a0fe29aa28",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf010.lean": "c5728833068f53fb59e67b9ef6e8886f009e3f7c5d471d13d78620b7ab2ed5c5",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf011.lean": "f8e9652cdbd06e4960b67bb91acaaea30d29af1a8dff8ea5845cb7cd821bd180",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf012.lean": "9331e7be2c823bbb0822d1aab58dc14448fb94606ade4f44f5dfd5893c785631",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf013.lean": "c1e6e6f7d2d300840bc17649aee4e03e1b309d87268b4172ce3992cc1f2abb6c",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf014.lean": "9bd3dd8a61589a8804bd357a67aea496c81e4d6c6d40559efeb2c0840d41b36f",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf015.lean": "aec60fdf6b08d3d30b3760a20f87ce0549f9822f61dee10a0f580915825e853f",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf016.lean": "c4e488aed41c514a18f453de593ec0298b45a646abb1b16665a342483210c8b7",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf017.lean": "8fcec8f5a5b71791c0de20b8cea0517f49ebe9afb2d4a75716e14e406ec2e79e",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf018.lean": "173488c77431a01ed0488e0f910638544c63949425a6a39df690437d95fedb75",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf019.lean": "170c593e7266365f9da992968e42d813eae985a746c331a84b2ed18d252470da",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf020.lean": "b3357c616ba66e18026d5036497b6a18fec2ed6649df1e5886e87133e07c0cef",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf021.lean": "eccf406a920d19885fe8af5d2c80ec34bfc16fe23846461eda058ad51a226d0e",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf022.lean": "13cdac57c5f7220b4988b55777edcc233e7946c78d719388b36a421fccefe099",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf023.lean": "8ad6befe1dacf6c95258a3c5175c4017a5746ee62281e322288305b393884fdc",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf024.lean": "b96adba26d1f8c1ad0355302806335981677a6e99a6abd3270a35232800b6758",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf025.lean": "aab5bd62584ee52de17998e014416249407fa3ac142100408deb373e9474220d",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf026.lean": "26b3e52ced09d297674d347afce58c07620fa2cfae30c9efc6bd027e73f95b5b",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf027.lean": "c8f7dd623991e9ef8f998bc568fc7cdb885d4ebf14d5cb44e9cb7285e17e244e",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf028.lean": "90dc24142f079b364225e18ce3749e30daf922ef8410827b5ac69cefd3d3ed60",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf029.lean": "5664977b5daa4d7efde4f749ed8ee0b0c8bfc529f2752d6a298532cdae1d0847",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf030.lean": "704d63f52d12a0ecfaa4d3998bf2a83337e01beb19383eb05aad220eccdae924",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000PilotLeaf031.lean": "107aa76d7585adb94e3e1fe8cb384fcee3f17cedcc23791423935ab4bc787925",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000Pilot.lean": "a5bd605899f0cec1b1f6a7a00417d2bda073304ab1837ff2ba1c8dbd40605fb3",
     "Grothe/UpperChaos/TaylorFirstPackedChunk253StructuralLeaf000.lean": "141f95ea0d8d2b47af3c2f257765bcf7f1dca96dc286ed36154c4882f6ce5311",
     "Grothe/UpperChaos/TaylorFirstPackedChunk253LegacyLeaf000.lean": "4c46fc07259a8c4cb451edd4fe30c016cd479327999b21870df63303624c5625",
-    "Grothe/UpperChaos/TaylorFirstPackedChunk253Pilot.lean": "f6df9a0cd4eecc136af249e5e5d7f6f6cf5d19dde2d9d39b419c3df3ab15dc38",
-    "Grothe/UpperChaos/TaylorSecondPackedChunk000Pilot.lean": "34d81ea2d1ac241ee8b83088146b285f3ac0c5fae9e6f45d89a9de4c7c74ac90",
-    "Grothe/UpperChaos/TaylorSecondPackedChunk033Pilot.lean": "1b4029853761c0802e52d0cc7ecd67ddffaf874f5f7da5b77c8c7aa3e5fe4857"
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253PilotLeaf001.lean": "1a16872389a7e648282d863c24f990f4327aa1a5c3d26e171f30f670be9717fd",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253PilotLeaf002.lean": "5be2a176b14b9e225a4e17ae411f25eeb8676fd493d310fa7bac599fc03a193a",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253PilotLeaf003.lean": "d272164cc7c0a77b38ab4a083ebad4433f7198fce8df996a8934312fb67401d7",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253PilotLeaf004.lean": "725eefa8507a1294766829b8af58f029967062f1b143ec64bc2200e50caf86c5",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253PilotLeaf005.lean": "f6fe9d1303603cf91b25337bffa258ad77cf712b0c266e22e74e0c1c0f484b8d",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253PilotLeaf006.lean": "9ac47b592df112536a0070afe15c8d75d6d54c3c00d121f6b58b112eec6754ad",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253PilotLeaf007.lean": "42aa90829737050c8853792be1b8152b85459fc3a0499c55243405518d9c11ed",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253PilotLeaf008.lean": "87221b0b57aae6a055e808a41d697dcd5a047a2c46076da7f7724af07f5e5241",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253PilotLeaf009.lean": "38b8cdbdaed3f9d41aa9200bb252d86235c8ac5b21cff61af72a3d3258daa864",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253PilotLeaf010.lean": "ec3fb4cb0027fdfe7744522f08a34a32c0e871fbc81220aa22108601504edbfa",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253PilotLeaf011.lean": "143654578e5ada834f30e01da128e55c42bec0c8e327eaf5e6be051f29190f0c",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253PilotLeaf012.lean": "c4ec684aa899b6a268a6014500ba950ab90e3e8d91b00d002d3f073216f42e1f",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253PilotLeaf013.lean": "a91075a8f151209841809abf2974b85f5cd656a0617c7be8fededd97e9aa9e07",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253PilotLeaf014.lean": "f6b70345e5a27cfbef96d508ed83020995db8d84db44c787a2e00ecc785b5619",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253Pilot.lean": "81e8c97ea7b8608428607cf66a156147bb796e2af905c5d86d242357c43bf39d",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf000.lean": "eed7284590128fbe409f184db688b745aadfcd8353d31313863279e7564a6c3f",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf001.lean": "c5e485946e4bf08fba47a0171a865754c851a25fb4b985ddc251f68e44ec30a6",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf002.lean": "b98be9384613d1919a94a44014fab210d2525fdf2adad40c3d14a94bfd294ace",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf003.lean": "1f2005a5d8eba5b3ef73aa6ad1ee021ebb33ed0e589103da3501687c8ac602eb",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf004.lean": "b84a685d0cbc280036d43fb0ff806fa9ae2ef89edfa881e614100c528cc0eab8",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf005.lean": "9bf861ab8c367a038b568b74e3a511005af1488e5fac5aba34cafd9c7b1691c6",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf006.lean": "b67c780e76876cc9bc7fc7b31e87e453781f6ab5250fa2419035747fc48d1eec",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf007.lean": "f08669493dc1cb39689d00dd65878f7a1fb453a641bdc32d90246716e978c2b0",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf008.lean": "24d777bc908840e08608a41987abc989339fa616157077116c7dbb7dda2e0843",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf009.lean": "067b04389f5068ca811a5875f65528a1a375f3a4fa710965fc2448bac55d3bde",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf010.lean": "65d1bf889922c45e364d20063fd358f12bdf061b7b0cc58b2f3e77300513fc33",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf011.lean": "90d6442ca8b6f1621ecdccc562bfa14684398e2f96cd76c8082c382d463f89d2",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf012.lean": "0f795cca83358ac36742b3a1917465f969ec90e31da1fc865c8b154cb8ad6685",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf013.lean": "78df91172908c35a27183b5b70ef21cf8428e1718b7cb7e7ed0cefc61d57459f",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf014.lean": "7939b49cf2b39ba3720bec9890f1ebc5f9c71fd5dc93f6bf8a421fc3d554479c",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf015.lean": "95f43b73aea0359a0d492d19630bc7da821446ff04088d0f7087359a82e1597c",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf016.lean": "e9da5afd540bb0428e9f5363fd36004a7d4aa6cc4db39684db2550d0df7b4035",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf017.lean": "564d89c197cf48878e0c4a24ed248b2b219b21401745b43ba84755f5e1be54e9",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf018.lean": "46bf37732bea5d636042398dc3577b3fdaf338c23dfb9dea74e41be82c1bc91d",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf019.lean": "0f16749e5a5a6bc219a257cf29f6333c92febc396614d91acd1b31068863cc36",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf020.lean": "0086b0c874375e9191fa0a92239bb7185301023a2952913293308e17ac2b7b46",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf021.lean": "720c9313934c481bd58dde0b10bf09fdf16c64c8463f256ec2b96e1a8cea9999",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf022.lean": "cef4f80d990f7143bfd49b9c23510e8b8c5ba375dfc2a2a2095181b980247131",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf023.lean": "8f6fd42babb97a68af8e9c4e3cd684e8ba7bec2371c76f65261ba614995916f4",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf024.lean": "dbf2700c129b90fb60bc96dbc9b608cfdc9dac71ef63845c2f84fb3ecc653830",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf025.lean": "b040f1eaa2ea656acf948e26b4485b43f846dc98c3b4ccdb29899f46471ca405",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf026.lean": "8a3db6ba70df6401c45737cc39bd138d09e3929fce96aefc89673230691c9b17",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf027.lean": "c78b75a7ddf1ec036179835d65eebfa3a33e6cb680751faaa9fa8bebd3afa3a7",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf028.lean": "803be6cbd16b325624bcc2006e4575a5077c7c183bd46838daf637b4ac3fdf2d",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf029.lean": "4376593aeae47683812522a64a02e301a920a4d3f9bcc59b0766d9cd3161d2a9",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf030.lean": "4ac548340237d8c999a408df07caf0920a198dc94862442622a6d28688418de8",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000PilotLeaf031.lean": "454d0f223bda105c090f7369f1c10b3241e03c22cd51f635c5212765a599280f",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000Pilot.lean": "076401cfa2817e0ee7e958d69571c9e4330f83bf792f2187c6cd23632d17ec32",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf000.lean": "a4d220255d995b1cf03dc26171f52b3df1a443e97e0b7df02625d536a2f5dbb6",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf001.lean": "d147b17a6ebdd2bd3cb4aac6bf28af515a56fd145cfec0962f32e85ae639809e",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf002.lean": "9828b9e2375fecd9803141d6b5da11e984c016832cf0935f8dfe69bf412bc958",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf003.lean": "271272cf95c991ed7ea386c75953a86fcd7b77ca2ea45518b2d8240d1dabccf0",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf004.lean": "7556166462dea4a20ef3d07d5742dcd076cae2bbae6f7e4bb50481e0ab1e6a85",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf005.lean": "42dc84f2947418b41e8b058bfe7ae96a624f464f4215a90578691772fcb62d3e",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf006.lean": "2f8f64ee97f59aaa108c8e3f64da53b85de67af3eaece7ce4b8d78fd49beca4c",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf007.lean": "6442fb8d057d034c23bd742aa6eca3c0234df97ca0d5ad2bdc44f9398de9df9d",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf008.lean": "604a9b0c7d4331ad33670e861ed423ff7ab69080bda3e29c03babd1f916c94a9",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf009.lean": "aa6a5a4fb23b4baffb52a929e660c1bc239724fb806e41b0daff9426d05cb261",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf010.lean": "7983adc5baa097977b9634edf24ef7cbdc4320245b7dc59b94eadcd4111dc230",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf011.lean": "a7cddb945c538d26b0b40e4ce5353626a21c13a7094e4b5012fc90a920a1e9ea",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf012.lean": "a502beee3baae9b044da0550d3add929c65fb93b2a5f30d05b7e13b477008e90",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf013.lean": "d8133f12b0634be6d985208965b3ac856b2b90fe499ed0ca89b6a3bbc482829b",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf014.lean": "7cf65eb397824aa46ee3d904feb44fa0d6fedec28ef56da4b5d0329a40ffe94f",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf015.lean": "34270d54174c5f85004b5312dcfdcf1b0a603e5165851662f9f9eea5ef51e765",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf016.lean": "fc9dce3ec82d7146d94925d3e4f3c2055c757ecf852d5e02b7fcd1b3b65f7148",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf017.lean": "7d6964c5391b64e8655192f549c7b881e90aed81921a6d1bc4f370f05ca92206",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf018.lean": "ecfa93be80577a54a7440762671e2d8e1da5fc4039738e1a4895c877fd981f0c",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf019.lean": "fc487bfc6635f5b3703dba4486a8d45b39cfe9987fe763060b6a8b182684f843",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf020.lean": "f6752009c2f660ef79196a380f40805e74fc22e7b5998391fb344b2a1c24312f",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf021.lean": "55b34694c69fe7627dbca8882cf83ca08f6e5fbef7aa292ddf05030fa36a2226",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf022.lean": "9f3b37a1389e03d784061ff7d35dd80b22ed475ad4be2b87e38b59d245a8f64c",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf023.lean": "f02cc7b9a0ca25b75283316d7e28fc95fe2ae97490544eccce49fe4c6f79bd0f",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033PilotLeaf024.lean": "cf1ce236023e387bfc9bbc5e436ed6fa54bdcdbc78b790085a95705a225e6e27",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033Pilot.lean": "a349a80040a07f80850771939ee32f974be6ac3e3948d61010792eb818a952ff"
   }
 }
