@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "agent_id": "codex-2ca4",
+  "scope": "All 52 original rational parameter gates; no Hilbert-Schmidt mass cap or Gaussian identity is asserted.",
+  "phase_source_sha256": "04d581fa45e1d879623a0f233315dcfed39e0aa91c6684d554d0524ac8a71617",
+  "coordinate_order": [
+    "p_z",
+    "q_z",
+    "p_w",
+    "q_w"
+  ],
+  "cutoffs": [
+    500,
+    500,
+    251,
+    250
+  ],
+  "inputs": [
+    {
+      "power": 1,
+      "file": "inputs/power1_hs_result.json",
+      "sha256": "533b2804cb94a178992b7357e4780130f6aea831ca411e4beeacda055d0c29ba",
+      "decomposition_sha256": "383e41c6e2c0889ae931e093312500744fb13a30571ee958a151c8fb4912ae60",
+      "decomposition_rows": 1140,
+      "epsilon": "21/20",
+      "lambda_scale": "31/10",
+      "rows": 16
+    },
+    {
+      "power": 2,
+      "file": "inputs/power2_hs_result.json",
+      "sha256": "29b39797f65bffa9776004e3bc8760c86d56c9a392fc0f766f27bdc3a884f271",
+      "decomposition_sha256": "355a97d755a3aab7e17324190368bce9182a49c91fd17e3bfc4382f9372e5d07",
+      "decomposition_rows": 9135,
+      "epsilon": "21/10",
+      "lambda_scale": "26/5",
+      "rows": 20
+    },
+    {
+      "power": 3,
+      "file": "inputs/power3_hs_result.json",
+      "sha256": "f69c8c153ebecb927fd2b9fd2542d221cae8b14dba5ed4f05abb87b56ff9e6fd",
+      "decomposition_sha256": "b084f307dba1e7b908e8c5a3f251565e70224d2d125528a8c2007cdff0d32d22",
+      "decomposition_rows": 27716,
+      "epsilon": "63/20",
+      "lambda_scale": "73/10",
+      "rows": 16
+    }
+  ]
+}

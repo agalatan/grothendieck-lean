@@ -75,6 +75,39 @@ This identity supplies a source binding for numerical models; it does not
 certify all cells,
 Taylor-band errors, the frozen-response energy discrepancy, or the final bound.
 
+**Original weighted Hilbert--Schmidt Gaussian mass (work in progress).**
+`OriginalHSCovariance` supplies the real block algebra.
+`OriginalHSParameterGates` records the later 52 rational parameter gates;
+`OriginalHSParameterSoundness` and `OriginalHSQuadraticForms` turn their exact
+certificates into positivity of the physical quadratic forms and their Schur
+complements. `DampedCoherentKernel` and `DampedQuadraticKernel` develop genuine
+Gaussian integrability and integral formulas. For membership in that table,
+`OriginalHSGaussianMass.integrable_gateWeight` and `integral_gateWeight` give
+the physical-pair mass `ν²/δ`. `OriginalHSGaussianTensor.integrable_tensorWeight`
+and `integral_tensorWeight` use the product measure for the two pairs and give
+the uninserted mass `ν⁴/(δ₀δ₁)`.
+
+`OriginalHSFirstPowerParameters` separately recovers the twelve historical
+first-power gates for `D = 51, 101, 151`.
+`OriginalHSCheckedForms.first_power_pair_positive`,
+`first_power_schurRate_pos`, and `first_power_quadratic_positive` consume their
+actual `gateOK` certificates. They do not assume membership in the later
+52-gate table. The shared pinned inputs and exact rational replay receipts are
+under `data/original-hs-parameters`. Run
+`python3 tools/gen_original_hs_parameters.py --check` and
+`python3 tools/gen_original_hs_first_power.py --check` to check their byte-exact
+reproduction; Python replay does not replace Lean proof checking.
+
+The eight component modules through `OriginalHSGaussianMass` have focused local
+Lean passes at the source bytes copied from `8a959fe59d575202893431d189fe666ce5f78b25`.
+The tensor repair, the newly included checked-form bridge, and the combined
+delivery tree have not been compiled. `OriginalHSGaussianAudit` is an uncompiled
+aggregate check that rejects transitive axioms other than `propext`,
+`Classical.choice`, and `Quot.sound`; it grants no native-computation allowance.
+Polynomial insertion, a Fock coefficient identity, identification with the full
+historical operator, and the numerical Hilbert--Schmidt tail estimates remain
+open. This Gaussian mass layer does not discharge a numerical upper-bound input.
+
 **Exact Gaussian phase-moment interfaces.**
 `DampedMoments` proves mixed complex Gaussian moments at every positive radial
 scale. `InvariantMoments` integrates each monomial in the simultaneous-rotation

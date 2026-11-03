@@ -597,7 +597,9 @@ import Grothe.UpperChaos.ConditionalGaussianPhase
 import Grothe.UpperChaos.ConditionalGaussianPolynomial
 import Grothe.UpperChaos.ConditionalGaussianTail
 import Grothe.UpperChaos.DFTAliasFilter
+import Grothe.UpperChaos.DampedCoherentKernel
 import Grothe.UpperChaos.DampedMoments
+import Grothe.UpperChaos.DampedQuadraticKernel
 import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.DiagonalSum
 import Grothe.UpperChaos.DirectSampleUpper
@@ -881,6 +883,15 @@ import Grothe.UpperChaos.OddParseval
 import Grothe.UpperChaos.OddSeries
 import Grothe.UpperChaos.OriginalEnergyBudget
 import Grothe.UpperChaos.OriginalEnergyNoMass
+import Grothe.UpperChaos.OriginalHSCheckedForms
+import Grothe.UpperChaos.OriginalHSCovariance
+import Grothe.UpperChaos.OriginalHSFirstPowerParameters
+import Grothe.UpperChaos.OriginalHSGaussianAudit
+import Grothe.UpperChaos.OriginalHSGaussianMass
+import Grothe.UpperChaos.OriginalHSGaussianTensor
+import Grothe.UpperChaos.OriginalHSParameterGates
+import Grothe.UpperChaos.OriginalHSParameterSoundness
+import Grothe.UpperChaos.OriginalHSQuadraticForms
 import Grothe.UpperChaos.OriginalMomentIntegrable
 import Grothe.UpperChaos.OriginalMomentPullback
 import Grothe.UpperChaos.OriginalMomentRatios

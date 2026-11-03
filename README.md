@@ -302,6 +302,22 @@ proves an integrated auxiliary tail at `‖z‖ ≥ r₀ > 0`, bounded by
 including its zeros. Bounds for the full polynomial-weighted sources, the
 radial endpoint and certified numerical integration remain open.
 
+The original weighted Hilbert--Schmidt calculation has a separate Gaussian
+mass work in progress. Exact rational certificates for the later 52-gate table
+feed real covariance and Schur-complement positivity. `DampedCoherentKernel`
+and `DampedQuadraticKernel` supply Gaussian integration lemmas;
+`OriginalHSGaussianMass.integral_gateWeight` gives the uninserted physical-pair
+mass `ν²/δ`, and `OriginalHSGaussianTensor.integral_tensorWeight` combines the
+two pairs into `ν⁴/(δ₀δ₁)`. The recovered twelve first-power gates form a
+different table: `OriginalHSCheckedForms` derives their physical-form and
+Schur positivity directly from their checked certificates.
+The eight component modules through `OriginalHSGaussianMass` have focused local
+Lean passes at the delivered source bytes. The tensor repair, checked-form
+bridge, strict aggregate axiom audit, and combined tree remain unverified.
+This delivery supplies no polynomial insertion, Fock coefficient identity,
+binding to the full historical operator, numerical Hilbert--Schmidt tail cap,
+or new upper-bound conclusion.
+
 `GradedHermitePhaseSlice` expresses each actual Taylor source as a polynomial
 in the conditional coordinate times its exact Gaussian damping.
 `TaylorConditionalGaussian` evaluates that conditional integral by the finite
