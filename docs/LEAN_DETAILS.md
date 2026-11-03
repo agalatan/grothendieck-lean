@@ -50,8 +50,9 @@ from `Upper/Data.lean`; the generated candidates are linked to the actual
 source by Lean proofs. The result is independent of the phase-cover numerical
 leaves and does not discharge the remaining upper-bound inputs.
 
-**Conditional-pair ranks.** `Q0ConditionalPairRankAll` checks the finite rank
-formula and uniqueness for the original degree-531 canonical pair literals.
+**Conditional-pair ranks (verification pending).** `Q0ConditionalPairRankAll`
+contains the finite rank and uniqueness certificate for the original
+degree-531 canonical pair literals; its Lean check has not completed.
 `tools/q0_quadrature/gen_conditional_pair_ranks.py --check` reproduces those
 files from the hash-pinned pair input. The input hash records provenance; the
 certificate does not decode the full node-value payload or establish Gaussian
