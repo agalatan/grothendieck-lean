@@ -25,11 +25,11 @@ theorem fresh_upper_rounder {X : ℂ × ℂ → ℂ} (hXL : MeasureTheory.MemLp 
     (hclose : ∑ p ∈ headIdx 501, |energy (hXL.toLp X) p - (energyTable p : ℝ)| ≤ (energyErrQ : ℝ)) :
     IsGrothendieckBound (500000000000000000 / 355973699960428191) := by
   have hcompare := localized_comparison_grouped herrors hclose
-  obtain ⟨hv, hs, hsX, hpX⟩ := structural_fields measurable_GT (norm_GT_le phiBound)
+  obtain ⟨hv, hs, hpX⟩ := structural_fields measurable_GT (norm_GT_le phiBound)
     (fun _ u hc => GT_rot2 hc u) (memLp_GT phiBound) hXL hXch
   have hc : (groupedCompareQ : ℝ) ≤ compareQ := by exact_mod_cast groupedCompareQ_le_compareQ
   have hE : DirectHyps (energy ((memLp_GT phiBound).toLp GT)) (energy (hXL.toLp X)) :=
-    ⟨hv, hs, hsX, hpX, energy_eq_zero_of_even (memLp_GT phiBound)
+    ⟨hv, hs, hpX, energy_eq_zero_of_even (memLp_GT phiBound)
       (fun _ u hc => GT_rot2 hc u), hcompare.trans hc, hclose, HardyReal.hardy_GT_tight phiBound⟩
   exact fresh_upper _ _ hE hcompare
 
