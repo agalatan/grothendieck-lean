@@ -650,6 +650,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.ConcreteRetainedBands.third_degree
 #print axioms Grothe.UpperChaos.ConcreteRetainedBands.third_error
 #print axioms Grothe.UpperChaos.ConcreteRetainedBands.third_reserve
+#print axioms Grothe.UpperChaos.ConditionalMomentReflection.integral_phase_H_reflection
+#print axioms Grothe.UpperChaos.ConditionalNodeIndices.card_modes
+#print axioms Grothe.UpperChaos.ConditionalNodeIndices.image_rows
+#print axioms Grothe.UpperChaos.ConditionalNodeIndices.mode_injective
+#print axioms Grothe.UpperChaos.ConditionalNodeIndices.storage_bounds
 #print axioms Grothe.UpperChaos.D_le_span_H
 #print axioms Grothe.UpperChaos.DirectSample.upper_of_DFT_ledger
 #print axioms Grothe.UpperChaos.DirectSample.upper_of_actual_head
@@ -675,6 +680,15 @@ import Grothe
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.production_smoothing_error
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.smoothing_lower_scalars_relative
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.symmetricEntry_savedEntryQ_error
+#print axioms Grothe.UpperChaos.F0ConditionalEvaluator.canonicalCoefficient_reflection
+#print axioms Grothe.UpperChaos.F0ConditionalEvaluator.coefficient_eq_signed
+#print axioms Grothe.UpperChaos.F0ConditionalEvaluator.production_canonical_indices
+#print axioms Grothe.UpperChaos.F0ConditionalEvaluator.production_reflected_coefficient
+#print axioms Grothe.UpperChaos.F0ConditionalEvaluator.production_reflected_indices
+#print axioms Grothe.UpperChaos.F0ConditionalEvaluator.production_reflection_factor_le_one
+#print axioms Grothe.UpperChaos.F0ConditionalNode.coefficient_eq_integral
+#print axioms Grothe.UpperChaos.F0ConditionalNode.sum_sq_coefficient_le_one
+#print axioms Grothe.UpperChaos.F0ConditionalNode.weighted_sum_sq_le_mass
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.actualEntry_linearMode
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_one_zero
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_zero_one
