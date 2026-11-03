@@ -249,6 +249,21 @@ only `(2e-25)^2`. This new proof family is work in progress until its Lean CI
 check passes. Regular-node errors, quadrature and the remaining upper-bound
 obligations are separate.
 
+The fixed-node finite-integral path uses `Q0ConditionalFiniteLaplace` and
+`Q0ConditionalSoftening`. For every nonnegative source node, the actual base
+F0 response has softening error at most `(10/3)η`; truncating its auxiliary
+integral adds at most `exp(-η²T)`. Bessel transfers that response error to any
+finite Hermite coefficient vector without a mode-count factor. The fixed
+parameters give coefficient-vector radius at most `5e-15`.
+`Q0ConditionalFiniteLaplaceSource` combines this with an explicit coupled
+finite-integral-to-saved error at each regular source node, using the original
+weights, and adds the separate exceptional error. The finite-integral numerical
+certificate and full `phiT/P3` response binding still have to be supplied.
+A sufficient regular-row certificate has coupled radius at most `1.9e-10`;
+the actual source-mass bound then places it inside the existing source-error
+budget. This is a whole-vector requirement, including completed zero entries.
+This new proof unit is work in progress until Lean CI accepts it.
+
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of
 scaled integers regenerated from the same pinned binary64 input.

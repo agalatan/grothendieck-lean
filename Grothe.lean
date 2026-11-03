@@ -1546,6 +1546,8 @@ import Grothe.UpperChaos.Q0Chunk_o984_n8
 import Grothe.UpperChaos.Q0Chunk_o992_n8
 import Grothe.UpperChaos.Q0CommonMomentSum
 import Grothe.UpperChaos.Q0CompanionBaseQuadrature
+import Grothe.UpperChaos.Q0ConditionalFiniteLaplace
+import Grothe.UpperChaos.Q0ConditionalFiniteLaplaceSource
 import Grothe.UpperChaos.Q0ConditionalLinearError
 import Grothe.UpperChaos.Q0ConditionalMetadataAll
 import Grothe.UpperChaos.Q0ConditionalMetadataCheck
@@ -1613,6 +1615,7 @@ import Grothe.UpperChaos.Q0ConditionalRegularError
 import Grothe.UpperChaos.Q0ConditionalRetainedError
 import Grothe.UpperChaos.Q0ConditionalRetainedModes
 import Grothe.UpperChaos.Q0ConditionalRetention
+import Grothe.UpperChaos.Q0ConditionalSoftening
 import Grothe.UpperChaos.Q0ConditionalSourceAssembly
 import Grothe.UpperChaos.Q0ConditionalSourceError
 import Grothe.UpperChaos.Q0ConditionalSourceReconstruction

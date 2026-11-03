@@ -186,6 +186,23 @@ root-gap omission is separate. This proof family remains work in progress until
 Lean CI accepts it. The regular nodes, quadrature and remaining upper-bound
 obligations are separate.
 
+For each nonnegative squared radial node, the finite auxiliary-integral
+response has the actual affine argument of the base $F_0$ phase. Its Hermite
+coefficient equals the normalized Gaussian integral and, by absolute Fubini,
+the finite auxiliary integral of that kernel. Both approximations are disk-valued.
+The small-ball estimate on every fixed fibre and layer cake give softening
+$L^2$ error at most $(10/3)\eta$; truncation adds at most $e^{-\eta^2T}$.
+Bessel transfers this error to any finite coefficient vector without a
+mode-count loss. The fixed parameters give radius at most $5\cdot10^{-15}$.
+The regular source budget still requires a coupled finite-integral-to-saved
+error $\varepsilon_a$ at every address, weighted by the original Gaussian
+weights as $(5\cdot10^{-15}+\varepsilon_a)^2$. The exceptional squared term
+is added separately. A common coupled row radius $19/10^{11}$ suffices:
+the proved source mass is below $107/100$, so the existing regular and full
+source-error budgets follow by rational inequalities. No row certificate
+is inferred from this sufficient tolerance. Numerical certificates and full
+$\phi_T/P_3$ response binding remain open; this proof unit awaits Lean CI.
+
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every
 grade's integer sum and divides by $2^{210}$, then identifies the rational

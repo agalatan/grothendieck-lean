@@ -243,6 +243,37 @@ budget `R^2`, giving `R^2 + (2/10^25)^2`; the square-root and additive-radius
 forms retain that same regular premise. No regular evaluator or ledger
 allowance is inferred from this result. The module awaits Lean CI acceptance.
 
+**Fixed-node finite auxiliary integral.** `Q0ConditionalFiniteLaplace` defines
+one disk-valued Gaussian response at each nonnegative squared radial node,
+using the actual affine argument of `F0ConditionalNode`. Its Hermite
+coefficient is identified both with the Gaussian integral and, by absolute
+Fubini, with the finite auxiliary integral of the Gaussian kernel. The
+softened and truncated responses remain in the unit disk.
+
+`Q0ConditionalSoftening` uses the existing small-ball bound for every fixed
+Gaussian fibre and layer cake to prove softening L² error at most `(10/3)η`.
+The auxiliary tail contributes at most `exp(-η²T)`. Bessel charges their sum
+once over any finite Hermite family. With the existing `finiteLaplaceEta` and
+`finiteLaplaceCutoff`, the resulting vector radius is at most `5/10^15`.
+The argument includes profile zeros; it does not specialize an almost-everywhere
+product-measure statement to an isolated quadrature node.
+
+`Q0ConditionalFiniteLaplaceSource` applies this to the original `sourceNode`
+and keeps a coupled finite-integral-to-completed-center squared error `ε_a²`
+as an explicit numerical premise. Its regular budget is the sum of
+`sourceWeight * exp(-sourceNode) * (5/10^15 + ε_a)^2` over regular addresses.
+The source adapter adds the separately established exceptional squared term
+`(2/10^25)^2`. The full `phiT/P3` response binding, finite-integral certificates,
+continuous quadrature, contraction and energy-table accuracy remain open.
+The concrete uniform consumer needs only coupled finite-integral-to-saved
+radius `19/10^11` at every regular row. The existing actual mass bound
+`sourceMass < 107/100` proves the regular budget is at most `(1969/10^13)^2`;
+adding the exceptional term stays within the existing `253/10^12` source
+radius. This replaces a separate weighted-budget premise, without certifying
+any row or changing the ledger. It is not a per-coordinate tolerance.
+All new headlines have strict standard-axiom guards and audit registration;
+this unit remains unverified pending Lean CI.
+
 **q0 source-to-literal identity.**
 `Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real
 `s`, `b`, and `v`, that `Ssum q0RawWickEntries s b v` equals
