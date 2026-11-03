@@ -31,8 +31,10 @@ class Row14Fixture:
         self.json('data/lower-rows/row15.json', {'nodes': ';'.join(f'{i}:2' for i in range(396))})
         nodes = [{'k': 14, 'i': i, 's': str(i), 'cap': '2', 'ds': [DIRECTION]*3,
                   'pieces': [{'nq': 1024, 'recipe': RECIPE, 'cons': ['0,+,0,1,0,0']} for _ in
-                             range(129 if i == 200 else 1)]} for i in indices]
-        selection = {f'14:{n["i"]}': {'chunk': 4, 'excl': [], 'grids': [3]+[2]*(len(n['pieces'])-1)} for n in nodes}
+                             range(129 if i == 200 else (3 if i == 226 else 1))]} for i in indices]
+        centres = {i: (2 if i == 226 else 0) for i in indices}
+        selection = {f'14:{n["i"]}': {'chunk': 4, 'excl': [],
+                     'grids': [3 if j == centres[n['i']] else 2 for j in range(len(n['pieces']))]} for n in nodes}
         self.json(render.BASE+'row14-pieces.json', nodes)
         self.json(render.BASE+'row14-selection.json', selection)
         self.json(render.BASE+'row14-generation.json', {'format': 'caps-row-generation-config/v1', 'row': 14,
@@ -58,9 +60,9 @@ class Row14Fixture:
             'outputs': {k: {'file': f'row14-{k}.json',
                            'sha256': render.sha((root / render.BASE / f'row14-{k}.json').read_bytes())}
                         for k in ('pieces', 'selection')},
-            'centres': [{'key': f'14:{n["i"]}:0', 'exact_matrix_replayed': True,
+            'centres': [{'key': f'14:{n["i"]}:{centres[n["i"]]}', 'exact_matrix_replayed': True,
                          'native_verified': False, 'unchanged_bounds_and_recipe': True,
-                         'original_piece_index': 0, 'output_piece_index': 0,
+                         'original_piece_index': centres[n['i']], 'output_piece_index': centres[n['i']],
                          'piece_count': len(n['pieces']), 'certificate_grid_index': 3,
                          'certificate_grid_spec': stamp.ACTIVE_GRIDS[3], 'best_kind': 'fine_grid'} for n in nodes]})
         self.json('data/caps-m-pieces/pieces.json', nodes)
@@ -175,6 +177,21 @@ class Row14RenderTests(unittest.TestCase):
                 sha256=render.sha((self.root/name).read_bytes())))
             with self.assertRaisesRegex(ValueError, 'noncentre pieces changed|constraint regions/order changed'): self.render()
             self.f.json(name, original)
+
+    def test_nonzero_centre_piece_is_used_and_other_pieces_are_preserved(self):
+        name = render.BASE+'row14-pieces.json'
+        nodes = self.f.value(name); node = next(n for n in nodes if n['i'] == 226)
+        node['pieces'][2]['cons'][0] = '0,+,0,1,3/2,0'
+        self.f.json(name, nodes)
+        self.mutate(render.BASE+'row14.json', lambda p: p['outputs']['pieces'].update(
+            sha256=render.sha((self.root/name).read_bytes())))
+        outputs, _ = self.render()
+        self.assertIn('3;'+RECIPE+';0,+,0,1,3/2,0', outputs[render.CPP+'D14x226.lean'].decode())
+        node['pieces'][0]['cons'][0] = '0,+,0,1,1,0'
+        self.f.json(name, nodes)
+        self.mutate(render.BASE+'row14.json', lambda p: p['outputs']['pieces'].update(
+            sha256=render.sha((self.root/name).read_bytes())))
+        with self.assertRaisesRegex(ValueError, 'noncentre pieces changed'): self.render()
 
     def test_false_native_and_exact_grid_claims_are_rejected(self):
         for update in ({'native_verified': True}, {'certificate_grid_spec': [1600, 1024, '1/200']},

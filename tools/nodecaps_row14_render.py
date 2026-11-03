@@ -10,6 +10,7 @@ import hashlib
 import importlib.util
 import io
 from pathlib import Path
+import re
 import sys
 import tempfile
 import warnings
@@ -96,22 +97,25 @@ def validate_plan(plan, anchor, nodes, selection, reads):
             'Row14 needs all90 localized nodes, including150')
     centres = plan.get('centres')
     require(isinstance(centres, list) and len(centres) == 90 and
-            all(isinstance(c, dict) for c in centres) and
-            {c.get('key') for c in centres} == {f'14:{i}:0' for i in indices},
+            all(isinstance(c, dict) and type(c.get('key')) is str and
+                re.fullmatch(r'14:(0|[1-9][0-9]*):(0|[1-9][0-9]*)', c['key']) for c in centres) and
+            {int(c['key'].split(':')[1]) for c in centres} == set(indices),
             'missing or duplicate exact centre input')
     for centre in centres:
+        _, i, j = map(int, centre['key'].split(':'))
+        node = next(n for n in nodes if n['i'] == i)
         require(centre.get('exact_matrix_replayed') is True and
                 centre.get('native_verified') is False and
                 centre.get('unchanged_bounds_and_recipe') is True and
-                type(centre.get('original_piece_index')) is int and centre['original_piece_index'] == 0 and
-                type(centre.get('output_piece_index')) is int and centre['output_piece_index'] == 0,
+                type(centre.get('original_piece_index')) is int and centre['original_piece_index'] == j and
+                type(centre.get('output_piece_index')) is int and centre['output_piece_index'] == j and
+                0 <= j < len(node['pieces']),
                 'unreplayed centre or unsupported selected interval conversion')
         require(centre.get('best_kind') in {'stored_grid', 'fine_grid', 'historical_adopted'},
                 'unsupported selected interval result')
-        i = int(centre['key'].split(':')[1]); node = next(n for n in nodes if n['i'] == i)
         require(type(centre.get('piece_count')) is int and centre['piece_count'] == len(node['pieces']) and
                 type(centre.get('certificate_grid_index')) is int and
-                centre['certificate_grid_index'] == selection[f'14:{i}']['grids'][0],
+                centre['certificate_grid_index'] == selection[f'14:{i}']['grids'][j],
                 'selected centre inventory/grid differs')
         require(centre.get('certificate_grid_spec') == STAMP.ACTIVE_GRIDS[centre['certificate_grid_index']],
                 'selected centre grid tuple differs')
@@ -126,27 +130,33 @@ def validate_plan(plan, anchor, nodes, selection, reads):
             'unsupported anchor grid template')
 
 
-def validate_unchanged_pieces(nodes, selection, reads):
+def validate_unchanged_pieces(nodes, selection, centres, reads):
     original = reads.value('data/caps-m-pieces/pieces.json')
     require(isinstance(original, list), 'original piece catalogue missing')
     original = [n for n in original if n.get('k') == 14]
     require([n['i'] for n in nodes] == [n['i'] for n in original],
             'localized inventory differs from original complete row')
+    centre_indices = {int(c['key'].split(':')[1]): c['original_piece_index'] for c in centres}
     for node, before in zip(nodes, original):
         require(encoded({k: v for k, v in node.items() if k != 'pieces'}) ==
                 encoded({k: v for k, v in before.items() if k != 'pieces'}),
                 'node location/cap/directions changed')
         pieces, prior = node['pieces'], before['pieces']
-        require(len(pieces) == len(prior) and encoded(pieces[1:]) == encoded(prior[1:]),
+        centre = centre_indices[node['i']]
+        require(len(pieces) == len(prior) and
+                encoded([p for j, p in enumerate(pieces) if j != centre]) ==
+                encoded([p for j, p in enumerate(prior) if j != centre]),
                 'noncentre pieces changed')
-        require(encoded({k: v for k, v in pieces[0].items() if k != 'cons'}) ==
-                encoded({k: v for k, v in prior[0].items() if k != 'cons'}),
+        require(encoded({k: v for k, v in pieces[centre].items() if k != 'cons'}) ==
+                encoded({k: v for k, v in prior[centre].items() if k != 'cons'}),
                 'centre recipe or metadata changed')
-        require([c.split(',')[:4] for c in pieces[0]['cons']] ==
-                [c.split(',')[:4] for c in prior[0]['cons']],
+        require([c.split(',')[:4] for c in pieces[centre]['cons']] ==
+                [c.split(',')[:4] for c in prior[centre]['cons']],
                 'centre constraint regions/order changed')
         grids = selection[f'14:{node["i"]}']['grids']
-        for piece, grid in zip(prior[1:], grids[1:]):
+        for j, (piece, grid) in enumerate(zip(prior, grids)):
+            if j == centre:
+                continue
             require(piece['nq'] in (128, 256, 1024) and grid == {128: 0, 256: 1, 1024: 2}[piece['nq']],
                     'noncentre grid changed')
 
@@ -171,7 +181,7 @@ def render(root, binding):
     # padding and retained-node checks are shared with the actual build reader.
     view = stamp.derive_active_registry(root, declaration(stamp), require_materialized=False)
     validate_plan(plan, anchor, nodes, selection, reads)
-    validate_unchanged_pieces(nodes, selection, reads)
+    validate_unchanged_pieces(nodes, selection, plan['centres'], reads)
     check_pins(reads, anchor.get('source_sha256'), set())
     require(set(anchor['source_sha256']) <= set(binding['inputs_sha256']), 'unbound anchor source')
     closure = set(stamp._active_graph(reads, [RETAINED[:-5].replace('/', '.')]))
