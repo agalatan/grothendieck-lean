@@ -423,9 +423,188 @@ The exact mixed moment is `exp(a*b/rate)/rate * P(p,q).eval a`; finite
 linearity extends it to arbitrary finite complex polynomial insertions.
 `IndependentSourcePolynomialAudit` enforces the standard-three trust
 boundary for the majorant, integrability, both derivative identities,
-normalization, and finite evaluator. Identification with the actual
-multiplier, the weighted Fock operator identity, and numerical
-Hilbert--Schmidt caps remain open.
+normalization, and finite evaluator.
+
+`ActualTaylorCoherent.taylorPhasePower_eq_polynomial` identifies the production
+multiplier `taylorPhasePower j`, excluding `F0`, with its rational polynomial
+and exact Gaussian damping. The polynomial is the complex coefficient map of
+`(imaginaryFactorQ * phaseInvariantQ phaseTerms)^j` in physical order
+`(z, conj z, w, conj w)`; `imaginaryFactorQ` already includes the factor `I`.
+For each physical coordinate the coherent factor is
+`exp(x*conj z+y*z-x*y) * exp(u*z+v*conj z-u*v)`.
+The independent-source evaluator receives `(y+u, x+v)` and has total radial
+rate `r = 1 + j*phaseEpsQ`.
+`integrable_coherentIntegrand` proves absolute integrability for all eight
+complex sources. `integral_coherentIntegrand_eq_moments` evaluates the actual
+transform by a finite support sum of products of `momentValue`.
+`integral_coherentIntegrand` factors this sum into the finite transformed
+polynomial and one Gaussian factor per coordinate:
+`r^-1 * exp(-(1-r^-1)*(x*y+u*v) + r^-1*(x*u+y*v))`.
+Thus normalized `mu2` retains total mass factor `r^-2`, with no extra factor of
+pi. `ActualTaylorCoherentAudit` enforces the same standard-three boundary for
+the production identification, integrability and both integral formulas.
+`GaussianFockBessel` constructs the
+eight-coordinate normalized holomorphic monomials from Hermite orthogonality.
+Their coefficient energies are summable and satisfy Bessel's inequality for
+any Gaussian L² function; completeness of the holomorphic subspace is not
+assumed.
+
+`BipartitePolynomialL2` handles a real coupling matrix `M` under the existing
+positive-definiteness gate for `I - MᵀM`. Completion of squares and the
+positive rate `epsilon = min(1/2, coerciveRate/3)` dominate every finite
+polynomial times the kernel by an integrable Gaussian. Tensoring both physical
+coordinates gives source-space L² for any finite polynomial in eight variables.
+`ScaledActualCoherentL2` lifts the independent-source moment recurrence to
+polynomial coefficients, constructs the production multiplier's transformed
+polynomial, and proves its evaluation and exact source scaling. Its
+`memLp_scaledTransform` requires only `gateOK g = true`.
+
+`GateFockCoefficients` keeps source order `((y,u),(x,v))` explicit. For each
+physical coordinate, outgoing/incoming Hermite indices `(m,n)` map to
+`((m.q,n.p),(m.p,n.q))`. This is a proved equivalence, with a pointwise
+normalized-monomial transport theorem. Applying Bessel to the actual scaled
+transform gives coefficient summability and a norm upper bound in that order.
+`ActualCoherentBesselAudit` registers transitive standard-three checks for
+these interfaces.
+The normalized weighted Hermite matrix identification is supplied by the
+gate-jet extension below. Exact equality with the historical
+producer's Laguerre polynomial and numerical Hilbert--Schmidt caps remain open.
+
+`ActualTaylorFiniteCoefficients` defines actual normalized Hermite matrix
+entries of `taylorPhasePower j` and proves absolute integrability through
+polynomial growth and nonnegative damping. Taylor power zero yields the
+identity matrix, fixing normalization. A finite physical Hermite generating
+block integrates to a finite source polynomial whose Gaussian coefficients
+are exactly the retained matrix entries, and zero outside that block.
+This finite block is not assumed equal to the full exponential transform.
+
+`ActualSourceCoefficientExtraction` evaluates that full transform's
+coefficients directly. The unit-rate, zero-second-source moment recurrence
+is ordinary differentiation, giving
+`momentValue 1 a 0 p q = q.descFactorial p * a^(q-p)`.
+After integrating the `(y,u)` source pair, a finite polynomial remains in
+`(x,v)` and their conjugates; ordinary Gaussian moments evaluate it.
+The preceding L² theorem justifies source-space Fubini. Tensoring the two
+physical pairs and finite linearity gives `coefficient8_scaledTransform`
+for every source index under the sole gate hypothesis.
+
+`ActualMatrixFiniteComparison.matrixEntry_eq_finite_moments` separately
+evaluates every physical matrix entry using the exact damped moment
+`if p = q then p! / rate^(p+1) else 0`, retaining both Hermite normalization
+factors and both Gaussian masses. At ground index, source extraction reduces
+to evaluation at zero, and
+`coefficient8_scaledTransform_ground_matrixEntry` identifies the full
+transform coefficient with the actual ground matrix entry.
+`ActualCoherentCoefficientAudit` adds standard-three transitive guards for
+these interfaces. The gate-jet extension
+below provides complete source proofs of the comparison for all weighted
+Hermite indices. Numerical Hilbert--Schmidt caps and the historical Laguerre
+binding remain OPEN. No physical/source Fubini or unproved coefficient
+identity is assumed in this batch.
+
+`HermiteFallingFactorial` derives the finite production Hermite
+expansion from commuting creation operators. `HolomorphicCoefficientJets`
+identifies finite Gaussian extraction with derivatives at zero, and
+`BipartiteCoefficientJets` applies it in the gate source order
+`((y,u),(x,v))`. Derivatives are taken in the fixed order `u,y,v,x` from
+innermost to outermost; no commutation of mixed derivatives is assumed.
+`IndependentMomentJets` derives every required moment derivative and its
+smoothness from the existing dominated independent-source integral theorem.
+`PhysicalGateJets` then proves that each full finite jet equals the actual
+outgoing/incoming physical Hermite moment, including both negative coherent
+normalization terms.
+
+`PairJetPolynomialOperations` proves finite-sum linearity and independent
+source scaling. `ActualPairMomentCoefficients` specializes the finite
+polynomial and positive Gaussian gate to the actual pair scales, retaining
+mass `1/rate`. `ActualTensorMomentCoefficients` gives the explicit bijective
+index permutation, tensors the independent physical coordinates, and proves
+the source coefficient equals its physical moment with exact common
+normalization and scale factors. Finally,
+`ActualProductionMomentCoefficients.coefficient8_scaledTransform_eq_physical`
+uses exactly the support and coefficients of `multiplierPolynomial g.power`
+to identify every actual transform coefficient with a finite sum of physical
+Hermite moments. These steps use only source-space Gaussian integration and
+finite algebra; they do not exchange source and physical integration.
+
+`ActualCoherentHermiteJets` separately proves the finite generating identity
+for the physical coherent pair and the equality of its Gaussian and Hermite
+normalizations. `ActualGateMatrixWeights` proves that squaring the source
+scale gives the original real energy weight. `ActualGateCoefficientWeights`
+identifies `tensorNormalization` with the two physical `nrm2` factors and
+`tensorSourceWeight` with the exact gate source weight. These are unconditional
+algebraic identities, preserving the incoming axis order.
+
+`ActualGateMatrixCoefficients` proves absolute integrability of each physical
+monomial with its outgoing/incoming Hermite factors and integrates the exact
+finite multiplier polynomial. Its
+`coefficient8_scaledTransform_eq_weightedMatrixEntry` then identifies every
+actual transform coefficient with the normalized weighted actual matrix entry
+under the sole premise `gateOK g = true`. `summable_weightedMatrixEntry_sq`
+proves summability of the complete weighted energy. The full and finite
+energy inequalities bound the original real `energyWeight` times matrix-entry
+norm squares by `∫ Z, ‖scaledTransform g Z‖² ∂sourceMeasure8`.
+`ActualGateMomentJetsAudit` enforces strict standard-three guards. Numerical bounds for
+the actual source integral, Hilbert--Schmidt caps, the historical Laguerre
+binding, and the final upper endpoint remain OPEN.
+
+`ActualSourceNormGram` expands the squared norm of `actualSourcePolynomial`
+into its finite support quadratic form, preserving every off-diagonal term.
+Source-space L² justifies termwise integration; independence factors each
+Gram entry over the two physical pairs. `BipartiteKernelGramMoments` integrates
+the first source pair with conjugate shifted means. Its residual density is
+exactly the correlated form `I - Bᵀ B`, with the original Schur hypotheses and
+the scalar kernel mass retained.
+
+`BipartiteKernelGramEvaluation` represents the remaining conditional moments
+as finite `P4` polynomials and applies `QuadraticPolynomialMoments` to their
+actual support and coefficients. `ActualSourceNormEvaluation` substitutes the
+original gate parameters and the actual production polynomial, proving
+`integral_scaledTransform_sq_eq_value` and
+`tsum_actual_matrix_energy_le_value` under `gateOK g = true`.
+The value is real and nonnegative. `ActualSourceNormAudit` guards the complete
+transitive dependencies with the standard three axioms. A
+reproducible numerical enclosure of `sourceNormValue`, the numerical caps and
+the final upper endpoint remain OPEN; this finite evaluator is not a numerical
+certificate or a substituted source-norm assumption.
+
+`ActualMatrixCutoffTail` proves the lower weight `R^D*T^(L+1)` for actual
+outgoing degree at most `D` and one incoming coordinate strictly above `L`.
+`ActualMatrixBandTail` uses the existing `bandModes` and excludes `hi = 0`,
+which denotes an unbounded band. `ActualMatrixRectangleTail` covers the
+complement of the inclusive input rectangle `(500, 500, 251, 250)` by four
+coordinate exclusions and preserves their exact matrix entries and source
+norms in the union bound.
+
+`ActualSelectedBandTails` selects exactly comparison indices 1–6, 8–11 and
+13–16. Kernel-reduction metadata proofs bind these fourteen finite,
+nonzero-power bands to consecutive quartets of the original 56-gate table;
+`parameters_checked` supplies the existing covariance conditions.
+`selectedBand_rectangleEnergy_le` gives each actual summable rectangle-tail
+energy at most the sum of its four finite source-norm expressions divided by
+their cutoff weights. `ActualMatrixTailAudit` guards all public theorems
+transitively with the standard three axioms.
+
+`ActualFiniteRectangleOperator` uses finite complex Cauchy--Schwarz to bound
+every selected-band matrix action by the same four source norms times the
+input coefficient energy. Its filters enforce the comparison band and the
+true rectangle complement, retaining every boundary index. No mode count is charged.
+`ActualRectangleCoefficientAction` constructs the finite normalized Hermite
+input, proves integrability of each output coefficient, and identifies its
+actual Gaussian integral with that matrix action by finite integral exchange.
+`ActualTaylorMultiplierOperator` uses the explicit `PhiBound` to place the
+actual multiplier in L-infinity and applies `ContinuousLinearMap.holderL` to
+construct multiplication on physical L². Its matrix entries are identified
+with the actual Gaussian integrals, and the complete Hermite basis gives
+convergence of the filtered finite actions to the multiplier of `rectangleTail`.
+`ActualInfiniteRectangleOperator` combines this convergence with finite Bessel,
+then applies output Parseval. For every physical L² input, the squared norm of
+its selected-band rectangle-tail output is bounded by `sourceBound` times the
+squared input norm. `sourceBound` is exactly the original four source-norm
+expressions divided by their cutoff weights; no extra tolerance is added.
+Reproducible numerical source-norm enclosures and the final closed upper
+endpoint remain open.
+
 `QuadraticPolynomialIntegrability` proves a separable Gaussian majorant for
 `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²` under exactly `A>0` and
 `A*C-B²>0`. The rate `(A*C-B²)/(A+C)` follows from an exact trace identity
@@ -436,8 +615,9 @@ polynomials are genuinely integrable before applying product Fubini.
 `momentValue`. The first-coordinate mean is `-(B/A)*w`, the outer rate is
 `(A*C-B²)/A`, and `momentValue_zero` retains mass `1/(A*C-B²)`.
 `QuadraticPolynomialMomentsAudit` enforces the same standard-three trust
-boundary. The historical Fock/operator identity, polynomial insertion into
-the full bipartite kernel and numerical Hilbert--Schmidt caps remain open.
+boundary. Polynomial insertion into the full bipartite kernel is supplied
+by the source-space batch above; the historical Fock/operator identity
+and numerical Hilbert--Schmidt caps remain open.
 
 `AffineGaussianSquare` centers the
 conditional density without dividing by the radial profile. For arbitrary
@@ -1422,3 +1602,18 @@ checks every law certificate, the original canonical reference map, every final
 box and the guillotine partition. `--check` reproduces `LawNodeData.lean` and
 `RefinedCoverData.lean` byte for byte. The original pure-row batch stays at index
 21; the three mixed nodes form batch 22. No checker-core or heavy cap source changes.
+
+
+The rational source continuation constructs the literal multiplier polynomial
+before diagonal gate scaling, proves its exact coefficients and support after
+scaling, and reifies the finite correlated-moment evaluator over rationals.
+The finite moment-scaling identity retains both complex Gaussian Jacobian
+factors. Actual conditional-polynomial scaling and both pair evaluations now
+combine with all eight source coefficient factors in
+`ActualSourceNormEvaluation.rationalSourceNormValue`. The sum retains the full
+rational support, conjugation and every cross term; each pair includes exactly
+`nu^2/(R*Q)`. Complete source proofs identify the actual coherent norm with this
+rational value and bound the full infinite weighted matrix energy by it under
+`gateOK g = true`. Numerical source
+bounds and the final endpoint remain open; historical estimates are not proof
+inputs.
