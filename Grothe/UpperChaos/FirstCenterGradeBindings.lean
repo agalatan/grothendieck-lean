@@ -91,106 +91,108 @@ import Grothe.UpperChaos.FirstCenterGrade089Binding
 import Grothe.UpperChaos.FirstCenterGrade090Binding
 import Mathlib.Tactic.FinCases
 
-/-! Draft all actual-source first grade sums; check all imports. -/
+/-! Actual-source first grade sums conditional on packed-to-literal equality; check all imports. -/
 namespace Grothe.UpperChaos.FirstCenterGradeBindings
 open FirstSecondGradeEnergyTargets
 set_option maxRecDepth 16384
 set_option maxHeartbeats 0
 
-theorem all_grade_sums : ∀ q < 91,
+theorem all_grade_sums
+    (hsource : firstCenterInts = FirstSecondIntegerBinding.firstAllValues.toArray) :
+    ∀ q < 91,
     (∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
       firstCenterAt q c d ^ 2) = firstGradeEnergy q := by
   intro q hq
   interval_cases q
-  · exact FirstCenterGrade000Binding.grade_sum
-  · exact FirstCenterGrade001Binding.grade_sum
-  · exact FirstCenterGrade002Binding.grade_sum
-  · exact FirstCenterGrade003Binding.grade_sum
-  · exact FirstCenterGrade004Binding.grade_sum
-  · exact FirstCenterGrade005Binding.grade_sum
-  · exact FirstCenterGrade006Binding.grade_sum
-  · exact FirstCenterGrade007Binding.grade_sum
-  · exact FirstCenterGrade008Binding.grade_sum
-  · exact FirstCenterGrade009Binding.grade_sum
-  · exact FirstCenterGrade010Binding.grade_sum
-  · exact FirstCenterGrade011Binding.grade_sum
-  · exact FirstCenterGrade012Binding.grade_sum
-  · exact FirstCenterGrade013Binding.grade_sum
-  · exact FirstCenterGrade014Binding.grade_sum
-  · exact FirstCenterGrade015Binding.grade_sum
-  · exact FirstCenterGrade016Binding.grade_sum
-  · exact FirstCenterGrade017Binding.grade_sum
-  · exact FirstCenterGrade018Binding.grade_sum
-  · exact FirstCenterGrade019Binding.grade_sum
-  · exact FirstCenterGrade020Binding.grade_sum
-  · exact FirstCenterGrade021Binding.grade_sum
-  · exact FirstCenterGrade022Binding.grade_sum
-  · exact FirstCenterGrade023Binding.grade_sum
-  · exact FirstCenterGrade024Binding.grade_sum
-  · exact FirstCenterGrade025Binding.grade_sum
-  · exact FirstCenterGrade026Binding.grade_sum
-  · exact FirstCenterGrade027Binding.grade_sum
-  · exact FirstCenterGrade028Binding.grade_sum
-  · exact FirstCenterGrade029Binding.grade_sum
-  · exact FirstCenterGrade030Binding.grade_sum
-  · exact FirstCenterGrade031Binding.grade_sum
-  · exact FirstCenterGrade032Binding.grade_sum
-  · exact FirstCenterGrade033Binding.grade_sum
-  · exact FirstCenterGrade034Binding.grade_sum
-  · exact FirstCenterGrade035Binding.grade_sum
-  · exact FirstCenterGrade036Binding.grade_sum
-  · exact FirstCenterGrade037Binding.grade_sum
-  · exact FirstCenterGrade038Binding.grade_sum
-  · exact FirstCenterGrade039Binding.grade_sum
-  · exact FirstCenterGrade040Binding.grade_sum
-  · exact FirstCenterGrade041Binding.grade_sum
-  · exact FirstCenterGrade042Binding.grade_sum
-  · exact FirstCenterGrade043Binding.grade_sum
-  · exact FirstCenterGrade044Binding.grade_sum
-  · exact FirstCenterGrade045Binding.grade_sum
-  · exact FirstCenterGrade046Binding.grade_sum
-  · exact FirstCenterGrade047Binding.grade_sum
-  · exact FirstCenterGrade048Binding.grade_sum
-  · exact FirstCenterGrade049Binding.grade_sum
-  · exact FirstCenterGrade050Binding.grade_sum
-  · exact FirstCenterGrade051Binding.grade_sum
-  · exact FirstCenterGrade052Binding.grade_sum
-  · exact FirstCenterGrade053Binding.grade_sum
-  · exact FirstCenterGrade054Binding.grade_sum
-  · exact FirstCenterGrade055Binding.grade_sum
-  · exact FirstCenterGrade056Binding.grade_sum
-  · exact FirstCenterGrade057Binding.grade_sum
-  · exact FirstCenterGrade058Binding.grade_sum
-  · exact FirstCenterGrade059Binding.grade_sum
-  · exact FirstCenterGrade060Binding.grade_sum
-  · exact FirstCenterGrade061Binding.grade_sum
-  · exact FirstCenterGrade062Binding.grade_sum
-  · exact FirstCenterGrade063Binding.grade_sum
-  · exact FirstCenterGrade064Binding.grade_sum
-  · exact FirstCenterGrade065Binding.grade_sum
-  · exact FirstCenterGrade066Binding.grade_sum
-  · exact FirstCenterGrade067Binding.grade_sum
-  · exact FirstCenterGrade068Binding.grade_sum
-  · exact FirstCenterGrade069Binding.grade_sum
-  · exact FirstCenterGrade070Binding.grade_sum
-  · exact FirstCenterGrade071Binding.grade_sum
-  · exact FirstCenterGrade072Binding.grade_sum
-  · exact FirstCenterGrade073Binding.grade_sum
-  · exact FirstCenterGrade074Binding.grade_sum
-  · exact FirstCenterGrade075Binding.grade_sum
-  · exact FirstCenterGrade076Binding.grade_sum
-  · exact FirstCenterGrade077Binding.grade_sum
-  · exact FirstCenterGrade078Binding.grade_sum
-  · exact FirstCenterGrade079Binding.grade_sum
-  · exact FirstCenterGrade080Binding.grade_sum
-  · exact FirstCenterGrade081Binding.grade_sum
-  · exact FirstCenterGrade082Binding.grade_sum
-  · exact FirstCenterGrade083Binding.grade_sum
-  · exact FirstCenterGrade084Binding.grade_sum
-  · exact FirstCenterGrade085Binding.grade_sum
-  · exact FirstCenterGrade086Binding.grade_sum
-  · exact FirstCenterGrade087Binding.grade_sum
-  · exact FirstCenterGrade088Binding.grade_sum
-  · exact FirstCenterGrade089Binding.grade_sum
-  · exact FirstCenterGrade090Binding.grade_sum
+  · exact FirstCenterGrade000Binding.grade_sum hsource
+  · exact FirstCenterGrade001Binding.grade_sum hsource
+  · exact FirstCenterGrade002Binding.grade_sum hsource
+  · exact FirstCenterGrade003Binding.grade_sum hsource
+  · exact FirstCenterGrade004Binding.grade_sum hsource
+  · exact FirstCenterGrade005Binding.grade_sum hsource
+  · exact FirstCenterGrade006Binding.grade_sum hsource
+  · exact FirstCenterGrade007Binding.grade_sum hsource
+  · exact FirstCenterGrade008Binding.grade_sum hsource
+  · exact FirstCenterGrade009Binding.grade_sum hsource
+  · exact FirstCenterGrade010Binding.grade_sum hsource
+  · exact FirstCenterGrade011Binding.grade_sum hsource
+  · exact FirstCenterGrade012Binding.grade_sum hsource
+  · exact FirstCenterGrade013Binding.grade_sum hsource
+  · exact FirstCenterGrade014Binding.grade_sum hsource
+  · exact FirstCenterGrade015Binding.grade_sum hsource
+  · exact FirstCenterGrade016Binding.grade_sum hsource
+  · exact FirstCenterGrade017Binding.grade_sum hsource
+  · exact FirstCenterGrade018Binding.grade_sum hsource
+  · exact FirstCenterGrade019Binding.grade_sum hsource
+  · exact FirstCenterGrade020Binding.grade_sum hsource
+  · exact FirstCenterGrade021Binding.grade_sum hsource
+  · exact FirstCenterGrade022Binding.grade_sum hsource
+  · exact FirstCenterGrade023Binding.grade_sum hsource
+  · exact FirstCenterGrade024Binding.grade_sum hsource
+  · exact FirstCenterGrade025Binding.grade_sum hsource
+  · exact FirstCenterGrade026Binding.grade_sum hsource
+  · exact FirstCenterGrade027Binding.grade_sum hsource
+  · exact FirstCenterGrade028Binding.grade_sum hsource
+  · exact FirstCenterGrade029Binding.grade_sum hsource
+  · exact FirstCenterGrade030Binding.grade_sum hsource
+  · exact FirstCenterGrade031Binding.grade_sum hsource
+  · exact FirstCenterGrade032Binding.grade_sum hsource
+  · exact FirstCenterGrade033Binding.grade_sum hsource
+  · exact FirstCenterGrade034Binding.grade_sum hsource
+  · exact FirstCenterGrade035Binding.grade_sum hsource
+  · exact FirstCenterGrade036Binding.grade_sum hsource
+  · exact FirstCenterGrade037Binding.grade_sum hsource
+  · exact FirstCenterGrade038Binding.grade_sum hsource
+  · exact FirstCenterGrade039Binding.grade_sum hsource
+  · exact FirstCenterGrade040Binding.grade_sum hsource
+  · exact FirstCenterGrade041Binding.grade_sum hsource
+  · exact FirstCenterGrade042Binding.grade_sum hsource
+  · exact FirstCenterGrade043Binding.grade_sum hsource
+  · exact FirstCenterGrade044Binding.grade_sum hsource
+  · exact FirstCenterGrade045Binding.grade_sum hsource
+  · exact FirstCenterGrade046Binding.grade_sum hsource
+  · exact FirstCenterGrade047Binding.grade_sum hsource
+  · exact FirstCenterGrade048Binding.grade_sum hsource
+  · exact FirstCenterGrade049Binding.grade_sum hsource
+  · exact FirstCenterGrade050Binding.grade_sum hsource
+  · exact FirstCenterGrade051Binding.grade_sum hsource
+  · exact FirstCenterGrade052Binding.grade_sum hsource
+  · exact FirstCenterGrade053Binding.grade_sum hsource
+  · exact FirstCenterGrade054Binding.grade_sum hsource
+  · exact FirstCenterGrade055Binding.grade_sum hsource
+  · exact FirstCenterGrade056Binding.grade_sum hsource
+  · exact FirstCenterGrade057Binding.grade_sum hsource
+  · exact FirstCenterGrade058Binding.grade_sum hsource
+  · exact FirstCenterGrade059Binding.grade_sum hsource
+  · exact FirstCenterGrade060Binding.grade_sum hsource
+  · exact FirstCenterGrade061Binding.grade_sum hsource
+  · exact FirstCenterGrade062Binding.grade_sum hsource
+  · exact FirstCenterGrade063Binding.grade_sum hsource
+  · exact FirstCenterGrade064Binding.grade_sum hsource
+  · exact FirstCenterGrade065Binding.grade_sum hsource
+  · exact FirstCenterGrade066Binding.grade_sum hsource
+  · exact FirstCenterGrade067Binding.grade_sum hsource
+  · exact FirstCenterGrade068Binding.grade_sum hsource
+  · exact FirstCenterGrade069Binding.grade_sum hsource
+  · exact FirstCenterGrade070Binding.grade_sum hsource
+  · exact FirstCenterGrade071Binding.grade_sum hsource
+  · exact FirstCenterGrade072Binding.grade_sum hsource
+  · exact FirstCenterGrade073Binding.grade_sum hsource
+  · exact FirstCenterGrade074Binding.grade_sum hsource
+  · exact FirstCenterGrade075Binding.grade_sum hsource
+  · exact FirstCenterGrade076Binding.grade_sum hsource
+  · exact FirstCenterGrade077Binding.grade_sum hsource
+  · exact FirstCenterGrade078Binding.grade_sum hsource
+  · exact FirstCenterGrade079Binding.grade_sum hsource
+  · exact FirstCenterGrade080Binding.grade_sum hsource
+  · exact FirstCenterGrade081Binding.grade_sum hsource
+  · exact FirstCenterGrade082Binding.grade_sum hsource
+  · exact FirstCenterGrade083Binding.grade_sum hsource
+  · exact FirstCenterGrade084Binding.grade_sum hsource
+  · exact FirstCenterGrade085Binding.grade_sum hsource
+  · exact FirstCenterGrade086Binding.grade_sum hsource
+  · exact FirstCenterGrade087Binding.grade_sum hsource
+  · exact FirstCenterGrade088Binding.grade_sum hsource
+  · exact FirstCenterGrade089Binding.grade_sum hsource
+  · exact FirstCenterGrade090Binding.grade_sum hsource
 end Grothe.UpperChaos.FirstCenterGradeBindings

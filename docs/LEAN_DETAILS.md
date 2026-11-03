@@ -1088,7 +1088,8 @@ First/second-center kernel certificate draft: the committed generators reproduce
 137 retained integer grades from the original pinned NPZ inputs and independently
 replay the original packed source order and ten band-energy targets. The proposed
 `FirstSecondKernelBandEnergy` facts are registered for a standard-axiom audit.
-The full generated family remains unverified, and the literal source definitions
-must be reconciled formally with the retained packed definitions before acceptance.
+The original public packed definitions remain unchanged. The full generated family
+is unverified, and actual grade/band facts take an explicit packed-to-literal
+source-equality premise. Kernel certificates must discharge it before acceptance.
 The existing public native band checks remain in place. Gaussian response errors
 are separate from these finite integer identities.

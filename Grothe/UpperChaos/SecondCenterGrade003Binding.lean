@@ -25,18 +25,21 @@ theorem source_split : FirstSecondIntegerBinding.secondAllValues =
 theorem before_length : before.length = 20 := by
   simp only [before, List.length_append, SecondCenterGrade000Length.length, SecondCenterGrade001Length.length, SecondCenterGrade002Length.length, Nat.reduceAdd]
 
-theorem lookup (c d : ℕ) (hc : c < 5) (hd : d < 4) :
+theorem lookup
+    (hsource : secondCenterInts = FirstSecondIntegerBinding.secondAllValues.toArray)
+    (c d : ℕ) (hc : c < 5) (hd : d < 4) :
     secondCenterAt 3 c d = SecondCenterGrade003.values[c * 4 + d]?.getD 0 := by
   have hk : c * 4 + d < SecondCenterGrade003.values.length := by
     rw [SecondCenterGrade003Length.length]
     omega
   change secondCenterInts[gradedFlatIndex 3 c d]?.getD 0 = _
-  rw [FirstSecondIntegerBinding.second_source_array, source_split]
+  rw [hsource, source_split]
   have h := ThirdArrayLookup.middle_get before SecondCenterGrade003.values suffix (c * 4 + d) hk
   simpa only [gradedFlatIndex, Nat.reduceAdd, Nat.reduceMul, Nat.reduceDiv,
     Nat.add_assoc, before_length] using h
 
-theorem grade_sum :
+theorem grade_sum
+    (hsource : secondCenterInts = FirstSecondIntegerBinding.secondAllValues.toArray) :
     (∑ c ∈ Finset.range (3 + 2), ∑ d ∈ Finset.range (3 + 1),
       secondCenterAt 3 c d ^ 2) = secondGradeEnergy 3 := by
   calc
@@ -46,7 +49,7 @@ theorem grade_sum :
           intro c hc
           apply Finset.sum_congr rfl
           intro d hd
-          rw [lookup c d (Finset.mem_range.mp hc) (Finset.mem_range.mp hd)]
+          rw [lookup hsource c d (Finset.mem_range.mp hc) (Finset.mem_range.mp hd)]
     _ = secondCenterIntegerGrade003.foldl (fun a x => a + x ^ 2) (0 : ℤ) := by
           simpa only [SecondCenterGrade003.values, Array.getElem?_toList] using
             (ThirdFoldRectangle.grade_rectangle_fold secondCenterIntegerGrade003 5 4

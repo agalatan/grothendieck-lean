@@ -37,18 +37,21 @@ theorem source_split : FirstSecondIntegerBinding.firstAllValues =
 theorem before_length : before.length = 1360 := by
   simp only [before, List.length_append, FirstCenterGrade000Length.length, FirstCenterGrade001Length.length, FirstCenterGrade002Length.length, FirstCenterGrade003Length.length, FirstCenterGrade004Length.length, FirstCenterGrade005Length.length, FirstCenterGrade006Length.length, FirstCenterGrade007Length.length, FirstCenterGrade008Length.length, FirstCenterGrade009Length.length, FirstCenterGrade010Length.length, FirstCenterGrade011Length.length, FirstCenterGrade012Length.length, FirstCenterGrade013Length.length, FirstCenterGrade014Length.length, Nat.reduceAdd]
 
-theorem lookup (c d : ℕ) (hc : c < 17) (hd : d < 16) :
+theorem lookup
+    (hsource : firstCenterInts = FirstSecondIntegerBinding.firstAllValues.toArray)
+    (c d : ℕ) (hc : c < 17) (hd : d < 16) :
     firstCenterAt 15 c d = FirstCenterGrade015.values[c * 16 + d]?.getD 0 := by
   have hk : c * 16 + d < FirstCenterGrade015.values.length := by
     rw [FirstCenterGrade015Length.length]
     omega
   change firstCenterInts[gradedFlatIndex 15 c d]?.getD 0 = _
-  rw [FirstSecondIntegerBinding.first_source_array, source_split]
+  rw [hsource, source_split]
   have h := ThirdArrayLookup.middle_get before FirstCenterGrade015.values suffix (c * 16 + d) hk
   simpa only [gradedFlatIndex, Nat.reduceAdd, Nat.reduceMul, Nat.reduceDiv,
     Nat.add_assoc, before_length] using h
 
-theorem grade_sum :
+theorem grade_sum
+    (hsource : firstCenterInts = FirstSecondIntegerBinding.firstAllValues.toArray) :
     (∑ c ∈ Finset.range (15 + 2), ∑ d ∈ Finset.range (15 + 1),
       firstCenterAt 15 c d ^ 2) = firstGradeEnergy 15 := by
   calc
@@ -58,7 +61,7 @@ theorem grade_sum :
           intro c hc
           apply Finset.sum_congr rfl
           intro d hd
-          rw [lookup c d (Finset.mem_range.mp hc) (Finset.mem_range.mp hd)]
+          rw [lookup hsource c d (Finset.mem_range.mp hc) (Finset.mem_range.mp hd)]
     _ = firstCenterIntegerGrade015.foldl (fun a x => a + x ^ 2) (0 : ℤ) := by
           simpa only [FirstCenterGrade015.values, Array.getElem?_toList] using
             (ThirdFoldRectangle.grade_rectangle_fold firstCenterIntegerGrade015 17 16

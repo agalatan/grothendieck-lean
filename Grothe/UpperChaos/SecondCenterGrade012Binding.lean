@@ -34,18 +34,21 @@ theorem source_split : FirstSecondIntegerBinding.secondAllValues =
 theorem before_length : before.length = 728 := by
   simp only [before, List.length_append, SecondCenterGrade000Length.length, SecondCenterGrade001Length.length, SecondCenterGrade002Length.length, SecondCenterGrade003Length.length, SecondCenterGrade004Length.length, SecondCenterGrade005Length.length, SecondCenterGrade006Length.length, SecondCenterGrade007Length.length, SecondCenterGrade008Length.length, SecondCenterGrade009Length.length, SecondCenterGrade010Length.length, SecondCenterGrade011Length.length, Nat.reduceAdd]
 
-theorem lookup (c d : ℕ) (hc : c < 14) (hd : d < 13) :
+theorem lookup
+    (hsource : secondCenterInts = FirstSecondIntegerBinding.secondAllValues.toArray)
+    (c d : ℕ) (hc : c < 14) (hd : d < 13) :
     secondCenterAt 12 c d = SecondCenterGrade012.values[c * 13 + d]?.getD 0 := by
   have hk : c * 13 + d < SecondCenterGrade012.values.length := by
     rw [SecondCenterGrade012Length.length]
     omega
   change secondCenterInts[gradedFlatIndex 12 c d]?.getD 0 = _
-  rw [FirstSecondIntegerBinding.second_source_array, source_split]
+  rw [hsource, source_split]
   have h := ThirdArrayLookup.middle_get before SecondCenterGrade012.values suffix (c * 13 + d) hk
   simpa only [gradedFlatIndex, Nat.reduceAdd, Nat.reduceMul, Nat.reduceDiv,
     Nat.add_assoc, before_length] using h
 
-theorem grade_sum :
+theorem grade_sum
+    (hsource : secondCenterInts = FirstSecondIntegerBinding.secondAllValues.toArray) :
     (∑ c ∈ Finset.range (12 + 2), ∑ d ∈ Finset.range (12 + 1),
       secondCenterAt 12 c d ^ 2) = secondGradeEnergy 12 := by
   calc
@@ -55,7 +58,7 @@ theorem grade_sum :
           intro c hc
           apply Finset.sum_congr rfl
           intro d hd
-          rw [lookup c d (Finset.mem_range.mp hc) (Finset.mem_range.mp hd)]
+          rw [lookup hsource c d (Finset.mem_range.mp hc) (Finset.mem_range.mp hd)]
     _ = secondCenterIntegerGrade012.foldl (fun a x => a + x ^ 2) (0 : ℤ) := by
           simpa only [SecondCenterGrade012.values, Array.getElem?_toList] using
             (ThirdFoldRectangle.grade_rectangle_fold secondCenterIntegerGrade012 14 13

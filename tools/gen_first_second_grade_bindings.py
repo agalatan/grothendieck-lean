@@ -17,9 +17,12 @@ def cat(side,lo,hi): return ' ++ '.join(values(side,q) for q in range(lo,hi)) or
 
 def generate():
     files={}
-    binding=['import Grothe.UpperChaos.TaylorFirstSecondSource','',
-      '/-! Direct aliases of the actual first/second center integer arrays.',
-      'No copied witness or numerical bound is asserted. Draft until Lean checked.',
+    binding=['import Grothe.UpperChaos.TaylorFirstSecondSource',
+      'import Grothe.UpperChaos.TaylorFirstIntegerData',
+      'import Grothe.UpperChaos.TaylorSecondIntegerData','',
+      '/-! Auxiliary literal witnesses for the preserved packed center arrays.',
+      'The actual packed-to-literal equality is an explicit undischarged premise.',
+      'No unconditional source equality or Gaussian bound is asserted.',
       'Agent-ID: codex-8c4d. -/', 'namespace Grothe.UpperChaos','']
     for side,low,count in SIDES:
         for q in range(count):
@@ -31,7 +34,8 @@ def generate():
         binding += [f'def {low}AllValues : List ℤ := {low}CenterIntegerValues',
           f'theorem {low}_source_values : {low}CenterIntegerValues =',
           f'    {names(side,count)} := by rfl',
-          f'theorem {low}_source_array : {low}CenterInts = {low}AllValues.toArray := by rfl','']
+          f'theorem {low}_source_array (hsource : {low}CenterInts = {low}CenterIntegerValues.toArray) :',
+          f'    {low}CenterInts = {low}AllValues.toArray := hsource','']
     binding += ['end FirstSecondIntegerBinding','end Grothe.UpperChaos','']
     files['FirstSecondIntegerBinding.lean']='\n'.join(binding)
 
@@ -82,18 +86,21 @@ theorem source_split : FirstSecondIntegerBinding.{low}AllValues =
 theorem before_length : before.length = {offset(q)} := by
   simp only [{lengthrules}]
 
-theorem lookup (c d : ℕ) (hc : c < {q+2}) (hd : d < {q+1}) :
+theorem lookup
+    (hsource : {low}CenterInts = FirstSecondIntegerBinding.{low}AllValues.toArray)
+    (c d : ℕ) (hc : c < {q+2}) (hd : d < {q+1}) :
     {low}CenterAt {q} c d = {values(side,q)}[c * {q+1} + d]?.getD 0 := by
   have hk : c * {q+1} + d < {values(side,q)}.length := by
     rw [{side}CenterGrade{tag}Length.length]
     omega
   change {low}CenterInts[gradedFlatIndex {q} c d]?.getD 0 = _
-  rw [FirstSecondIntegerBinding.{low}_source_array, source_split]
+  rw [hsource, source_split]
   have h := ThirdArrayLookup.middle_get before {values(side,q)} suffix (c * {q+1} + d) hk
   simpa only [gradedFlatIndex, Nat.reduceAdd, Nat.reduceMul, Nat.reduceDiv,
     Nat.add_assoc, before_length] using h
 
-theorem grade_sum :
+theorem grade_sum
+    (hsource : {low}CenterInts = FirstSecondIntegerBinding.{low}AllValues.toArray) :
     (∑ c ∈ Finset.range ({q} + 2), ∑ d ∈ Finset.range ({q} + 1),
       {low}CenterAt {q} c d ^ 2) = {low}GradeEnergy {q} := by
   calc
@@ -103,7 +110,7 @@ theorem grade_sum :
           intro c hc
           apply Finset.sum_congr rfl
           intro d hd
-          rw [lookup c d (Finset.mem_range.mp hc) (Finset.mem_range.mp hd)]
+          rw [lookup hsource c d (Finset.mem_range.mp hc) (Finset.mem_range.mp hd)]
     _ = {low}CenterIntegerGrade{tag}.foldl (fun a x => a + x ^ 2) (0 : ℤ) := by
           simpa only [{values(side,q)}, Array.getElem?_toList] using
             (ThirdFoldRectangle.grade_rectangle_fold {low}CenterIntegerGrade{tag} {q+2} {q+1}
@@ -115,14 +122,16 @@ end Grothe.UpperChaos.{side}CenterGrade{tag}Binding
 '''
       agg=[*(f'import Grothe.UpperChaos.{side}CenterGrade{q:03}Binding' for q in range(count)),
            'import Mathlib.Tactic.FinCases','',
-           f'/-! Draft all actual-source {low} grade sums; check all imports. -/',
+           f'/-! Actual-source {low} grade sums conditional on packed-to-literal equality; check all imports. -/',
            f'namespace Grothe.UpperChaos.{side}CenterGradeBindings',
            'open FirstSecondGradeEnergyTargets','set_option maxRecDepth 16384','set_option maxHeartbeats 0','',
-           f'theorem all_grade_sums : ∀ q < {count},',
+           f'theorem all_grade_sums',
+           f'    (hsource : {low}CenterInts = FirstSecondIntegerBinding.{low}AllValues.toArray) :',
+           f'    ∀ q < {count},',
            f'    (∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),',
            f'      {low}CenterAt q c d ^ 2) = {low}GradeEnergy q := by',
            '  intro q hq','  interval_cases q']
-      agg += [f'  · exact {side}CenterGrade{q:03}Binding.grade_sum' for q in range(count)]
+      agg += [f'  · exact {side}CenterGrade{q:03}Binding.grade_sum hsource' for q in range(count)]
       agg += [f'end Grothe.UpperChaos.{side}CenterGradeBindings','']
       files[f'{side}CenterGradeBindings.lean']='\n'.join(agg)
     return files

@@ -63,18 +63,21 @@ theorem source_split : FirstSecondIntegerBinding.firstAllValues =
 theorem before_length : before.length = 24682 := by
   simp only [before, List.length_append, FirstCenterGrade000Length.length, FirstCenterGrade001Length.length, FirstCenterGrade002Length.length, FirstCenterGrade003Length.length, FirstCenterGrade004Length.length, FirstCenterGrade005Length.length, FirstCenterGrade006Length.length, FirstCenterGrade007Length.length, FirstCenterGrade008Length.length, FirstCenterGrade009Length.length, FirstCenterGrade010Length.length, FirstCenterGrade011Length.length, FirstCenterGrade012Length.length, FirstCenterGrade013Length.length, FirstCenterGrade014Length.length, FirstCenterGrade015Length.length, FirstCenterGrade016Length.length, FirstCenterGrade017Length.length, FirstCenterGrade018Length.length, FirstCenterGrade019Length.length, FirstCenterGrade020Length.length, FirstCenterGrade021Length.length, FirstCenterGrade022Length.length, FirstCenterGrade023Length.length, FirstCenterGrade024Length.length, FirstCenterGrade025Length.length, FirstCenterGrade026Length.length, FirstCenterGrade027Length.length, FirstCenterGrade028Length.length, FirstCenterGrade029Length.length, FirstCenterGrade030Length.length, FirstCenterGrade031Length.length, FirstCenterGrade032Length.length, FirstCenterGrade033Length.length, FirstCenterGrade034Length.length, FirstCenterGrade035Length.length, FirstCenterGrade036Length.length, FirstCenterGrade037Length.length, FirstCenterGrade038Length.length, FirstCenterGrade039Length.length, FirstCenterGrade040Length.length, Nat.reduceAdd]
 
-theorem lookup (c d : ℕ) (hc : c < 43) (hd : d < 42) :
+theorem lookup
+    (hsource : firstCenterInts = FirstSecondIntegerBinding.firstAllValues.toArray)
+    (c d : ℕ) (hc : c < 43) (hd : d < 42) :
     firstCenterAt 41 c d = FirstCenterGrade041.values[c * 42 + d]?.getD 0 := by
   have hk : c * 42 + d < FirstCenterGrade041.values.length := by
     rw [FirstCenterGrade041Length.length]
     omega
   change firstCenterInts[gradedFlatIndex 41 c d]?.getD 0 = _
-  rw [FirstSecondIntegerBinding.first_source_array, source_split]
+  rw [hsource, source_split]
   have h := ThirdArrayLookup.middle_get before FirstCenterGrade041.values suffix (c * 42 + d) hk
   simpa only [gradedFlatIndex, Nat.reduceAdd, Nat.reduceMul, Nat.reduceDiv,
     Nat.add_assoc, before_length] using h
 
-theorem grade_sum :
+theorem grade_sum
+    (hsource : firstCenterInts = FirstSecondIntegerBinding.firstAllValues.toArray) :
     (∑ c ∈ Finset.range (41 + 2), ∑ d ∈ Finset.range (41 + 1),
       firstCenterAt 41 c d ^ 2) = firstGradeEnergy 41 := by
   calc
@@ -84,7 +87,7 @@ theorem grade_sum :
           intro c hc
           apply Finset.sum_congr rfl
           intro d hd
-          rw [lookup c d (Finset.mem_range.mp hc) (Finset.mem_range.mp hd)]
+          rw [lookup hsource c d (Finset.mem_range.mp hc) (Finset.mem_range.mp hd)]
     _ = firstCenterIntegerGrade041.foldl (fun a x => a + x ^ 2) (0 : ℤ) := by
           simpa only [FirstCenterGrade041.values, Array.getElem?_toList] using
             (ThirdFoldRectangle.grade_rectangle_fold firstCenterIntegerGrade041 43 42

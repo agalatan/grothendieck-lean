@@ -23,7 +23,8 @@ the way, and why the remaining gap is hard.
 First/second-center kernel certificate work is in progress: the generated
 integer-grade family targets the existing six first-center and four second-center
 band energies. Exact external replays match the pinned binary64 archives and
-packed data. The full Lean family, the packed-to-literal source equivalence and
+packed data. The original public packed definitions are unchanged. The full Lean family,
+the explicitly assumed packed-to-literal source equivalence and
 replacement of the two existing native band leaves remain acceptance gates.
 This work does not establish Gaussian approximation errors or an upper endpoint.
 

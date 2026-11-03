@@ -1,15 +1,17 @@
 import Grothe.UpperChaos.GradedFlatIndex
-import Grothe.UpperChaos.TaylorFirstIntegerData
-import Grothe.UpperChaos.TaylorSecondIntegerData
+import Grothe.UpperChaos.PackedDyadicChunks
+import Grothe.UpperChaos.TaylorFirstData
+import Grothe.UpperChaos.TaylorSecondData
 
-/-! Exact first and second center integer sources and lookups. This module
-states no energy bound. Agent-ID: codex-8c4d. -/
+/-! The original packed first and second center sources, preserved verbatim.
+Auxiliary literal witnesses and source-equality obligations live separately.
+Agent-ID: codex-8c4d. -/
 namespace Grothe.UpperChaos
 
 def firstCenterInts : Array ℤ :=
-  firstCenterIntegerValues.toArray
+  (PackedDyadic.parseChunks 206 firstCenterPackedChunks).getD #[]
 def secondCenterInts : Array ℤ :=
-  secondCenterIntegerValues.toArray
+  (PackedDyadic.parseChunks 206 secondCenterPackedChunks).getD #[]
 
 def firstCenterAt (q c d : ℕ) : ℤ := firstCenterInts[gradedFlatIndex q c d]?.getD 0
 def secondCenterAt (q c d : ℕ) : ℤ := secondCenterInts[gradedFlatIndex q c d]?.getD 0

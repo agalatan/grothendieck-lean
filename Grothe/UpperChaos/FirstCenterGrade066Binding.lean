@@ -88,18 +88,21 @@ theorem source_split : FirstSecondIntegerBinding.firstAllValues =
 theorem before_length : before.length = 100232 := by
   simp only [before, List.length_append, FirstCenterGrade000Length.length, FirstCenterGrade001Length.length, FirstCenterGrade002Length.length, FirstCenterGrade003Length.length, FirstCenterGrade004Length.length, FirstCenterGrade005Length.length, FirstCenterGrade006Length.length, FirstCenterGrade007Length.length, FirstCenterGrade008Length.length, FirstCenterGrade009Length.length, FirstCenterGrade010Length.length, FirstCenterGrade011Length.length, FirstCenterGrade012Length.length, FirstCenterGrade013Length.length, FirstCenterGrade014Length.length, FirstCenterGrade015Length.length, FirstCenterGrade016Length.length, FirstCenterGrade017Length.length, FirstCenterGrade018Length.length, FirstCenterGrade019Length.length, FirstCenterGrade020Length.length, FirstCenterGrade021Length.length, FirstCenterGrade022Length.length, FirstCenterGrade023Length.length, FirstCenterGrade024Length.length, FirstCenterGrade025Length.length, FirstCenterGrade026Length.length, FirstCenterGrade027Length.length, FirstCenterGrade028Length.length, FirstCenterGrade029Length.length, FirstCenterGrade030Length.length, FirstCenterGrade031Length.length, FirstCenterGrade032Length.length, FirstCenterGrade033Length.length, FirstCenterGrade034Length.length, FirstCenterGrade035Length.length, FirstCenterGrade036Length.length, FirstCenterGrade037Length.length, FirstCenterGrade038Length.length, FirstCenterGrade039Length.length, FirstCenterGrade040Length.length, FirstCenterGrade041Length.length, FirstCenterGrade042Length.length, FirstCenterGrade043Length.length, FirstCenterGrade044Length.length, FirstCenterGrade045Length.length, FirstCenterGrade046Length.length, FirstCenterGrade047Length.length, FirstCenterGrade048Length.length, FirstCenterGrade049Length.length, FirstCenterGrade050Length.length, FirstCenterGrade051Length.length, FirstCenterGrade052Length.length, FirstCenterGrade053Length.length, FirstCenterGrade054Length.length, FirstCenterGrade055Length.length, FirstCenterGrade056Length.length, FirstCenterGrade057Length.length, FirstCenterGrade058Length.length, FirstCenterGrade059Length.length, FirstCenterGrade060Length.length, FirstCenterGrade061Length.length, FirstCenterGrade062Length.length, FirstCenterGrade063Length.length, FirstCenterGrade064Length.length, FirstCenterGrade065Length.length, Nat.reduceAdd]
 
-theorem lookup (c d : ℕ) (hc : c < 68) (hd : d < 67) :
+theorem lookup
+    (hsource : firstCenterInts = FirstSecondIntegerBinding.firstAllValues.toArray)
+    (c d : ℕ) (hc : c < 68) (hd : d < 67) :
     firstCenterAt 66 c d = FirstCenterGrade066.values[c * 67 + d]?.getD 0 := by
   have hk : c * 67 + d < FirstCenterGrade066.values.length := by
     rw [FirstCenterGrade066Length.length]
     omega
   change firstCenterInts[gradedFlatIndex 66 c d]?.getD 0 = _
-  rw [FirstSecondIntegerBinding.first_source_array, source_split]
+  rw [hsource, source_split]
   have h := ThirdArrayLookup.middle_get before FirstCenterGrade066.values suffix (c * 67 + d) hk
   simpa only [gradedFlatIndex, Nat.reduceAdd, Nat.reduceMul, Nat.reduceDiv,
     Nat.add_assoc, before_length] using h
 
-theorem grade_sum :
+theorem grade_sum
+    (hsource : firstCenterInts = FirstSecondIntegerBinding.firstAllValues.toArray) :
     (∑ c ∈ Finset.range (66 + 2), ∑ d ∈ Finset.range (66 + 1),
       firstCenterAt 66 c d ^ 2) = firstGradeEnergy 66 := by
   calc
@@ -109,7 +112,7 @@ theorem grade_sum :
           intro c hc
           apply Finset.sum_congr rfl
           intro d hd
-          rw [lookup c d (Finset.mem_range.mp hc) (Finset.mem_range.mp hd)]
+          rw [lookup hsource c d (Finset.mem_range.mp hc) (Finset.mem_range.mp hd)]
     _ = firstCenterIntegerGrade066.foldl (fun a x => a + x ^ 2) (0 : ℤ) := by
           simpa only [FirstCenterGrade066.values, Array.getElem?_toList] using
             (ThirdFoldRectangle.grade_rectangle_fold firstCenterIntegerGrade066 68 67
