@@ -16,6 +16,10 @@ a proved numerical head estimate. Our own numerical obligations are not accepted
 external inputs. A bound is **done** only when its complete Lean proof and final
 verification pass. The active work now prioritizes the upper endpoint.
 
+The source-node error ledger proves the exact rational budget for the raw
+and smoothing errors. Applying it to the stored Gaussian coefficients still
+requires proofs of the actual input estimates and operation-error model.
+
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
 the way, and why the remaining gap is hard.
