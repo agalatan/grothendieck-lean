@@ -30,65 +30,149 @@ def actual_rows():
     return [json.loads(s) for s in re.findall(r'"(?:[^"\\]|\\.)*"', source)]
 
 
+def rational(q):
+    return str(q.numerator) if q.denominator == 1 else f'{q.numerator} / {q.denominator}'
+
+
+def matching_tree(lines, row_index, n, entries):
+    """Balanced exact legacy-split assembly, never full-row toList reduction.
+
+    Each <=26-character entry has its own numeric/separator proof. Literal
+    String.append cbv certificates bind every internal node to both children;
+    generic legacy split/sum transport combines the opaque child facts. The
+    source representation follows the pinned Lean cbv append simproc, identified
+    in codex-2ca4's bounded source review.
+    """
+    serial = 0
+
+    def build(first, last):
+        nonlocal serial
+        name = f'body{row_index:03d}_{serial:03d}'
+        serial += 1
+        text = ';'.join(entries[first:last])
+        if last == first + 1:
+            ns, aa, ks = entries[first].split(',')
+            value = Fraction(int(aa), 2 ** int(ks)) if int(ns) == n else Fraction()
+            q = rational(value)
+            lines.extend([
+                f'private def {name} : String := {json.dumps(text)}',
+                f'private theorem {name}_separators :',
+                f"    ':' ∉ {name}.toList ∧ ';' ∉ {name}.toList := by cbv",
+                f'private theorem {name}_certificate :',
+                f'    entryValue? {n} {name}.toList = some ({q} : ℚ) := by cbv',
+                f'private theorem {name}_noColon : \':\' ∉ {name}.toList :=',
+                f'  {name}_separators.1',
+                f'private theorem {name}_value : bodyValue {n} {name} = ({q} : ℚ) :=',
+                f'  bodyValue_single {name} {n} _ {name}_separators.2 {name}_certificate',
+                '',
+            ])
+            return name, value
+        middle = (first + last) // 2
+        left, lv = build(first, middle)
+        right, rv = build(middle, last)
+        value = lv + rv
+        q = rational(value)
+        lines.extend([
+            f'private def {name} : String := {json.dumps(text)}',
+            f'private theorem {name}_join : {name} = {left} ++ ";" ++ {right} := by cbv',
+            f'private theorem {name}_noColon : \':\' ∉ {name}.toList := by',
+            f'  rw [{name}_join]',
+            f'  exact noColon_join {left} {right} {left}_noColon {right}_noColon',
+            f'private theorem {name}_value : bodyValue {n} {name} = ({q} : ℚ) := by',
+            f'  norm_num only [{name}_join, bodyValue_join, {left}_value, {right}_value]',
+            '',
+        ])
+        return name, value
+
+    return build(0, len(entries))
+
+
 def certificates(rows, values):
-    """Inspect only short nonmatching headers; certify both whole matching rows.
+    """Inspect short nonmatching headers; assemble all matching entries.
 
     No source row or duplicate entry is omitted. The literal-list equality is
     proved by rfl against actual energyStrs, not assumed by this generator.
-    Only the two relevant rows require full structural decoding; their cbv
-    proof terms are kernel-checked, with the ordinary compiler limits.
+    Literal append equalities never reify a complete row as List Char. Every
+    source/numeric proof uses the ordinary compiler limits and strict guards.
     """
     lines = []
     names = []
     row_facts = {key: [] for key in values}
+    row_totals = {key: [] for key in values}
     for i, row in enumerate(rows):
         name = f'source{i:03d}'
         names.append(name)
         header = row.split(':', 1)[0]
         mi = int(header)
         chars = char_list(header)
+        remainder = row.split(':', 1)[1]
+        prefix = json.dumps(header + ':')
         lines += [f'private def {name} : String := {json.dumps(row)}',
-                  f'private theorem prefix{i:03d} : {name}.startsWith '
-                  f'{json.dumps(header + ":")} = true := by cbv', '']
+                  f'private theorem prefix{i:03d} : {name}.startsWith {prefix} = true := by',
+                  f'  have hs : {name} = {prefix} ++ {json.dumps(remainder)} := by cbv',
+                  f'  exact Eq.mpr (congrArg (fun s : String => s.startsWith {prefix} = true) hs)',
+                  '    (startsWith_append _ _)', '']
         for (n, m), value in values.items():
             fact = f'row{i:03d}_{n}_{m}'
             row_facts[n, m].append(fact)
             if mi == m:
-                # This is a proof against the original source, not a selected
-                # entry lookup: rowValue? preserves every duplicate contribution.
                 entries = row.split(':')
                 if len(entries) != 2:
                     raise ValueError('matching energy row is malformed')
-                total = sum((Fraction(int(a), 2 ** int(k))
-                             for ns, a, k in (s.split(',') for s in entries[1].split(';'))
-                             if int(ns) == n), Fraction())
+                root, total = matching_tree(lines, i, n, entries[1].split(';'))
                 expected = Fraction(value.replace(' ', ''))
                 if total != expected:
                     raise ValueError('actual matching row differs from target')
-                lines += [f'private theorem certificate{i:03d}_{n}_{m} :',
-                          f'    rowValue? {n} {m} {name}.toList = some ({value} : ℚ) := by',
-                          '  cbv',
-                          f'private theorem {fact} :',
-                          f'    rowValue {n} {m} (GrotheKernel.parseRow {name}) = ({value} : ℚ) :=',
-                          f'  rowValue_correct {name} {n} {m} _ certificate{i:03d}_{n}_{m}', '']
+                row_totals[n, m].append(total)
+                lines += [f'private theorem {fact} :',
+                          f'    rowValue {n} {m} (GrotheKernel.parseRow {name}) = ({value} : ℚ) := by',
+                          f'  have hs : {name} = {json.dumps(header)} ++ ":" ++ {root} := by cbv',
+                          f'  rw [rowValue_of_body {name} {json.dumps(header)} {root} {n} {m} hs',
+                          f'    (by cbv) (by cbv) {root}_noColon]',
+                          f'  exact {root}_value', '']
             else:
+                row_totals[n, m].append(Fraction())
                 lines += [f'private theorem {fact} :',
                           f'    rowValue {n} {m} (GrotheKernel.parseRow {name}) = 0 := by',
                           f'  exact rowValue_zero_of_prefix {name} {n} {m} {mi} {chars}',
                           f'    prefix{i:03d} (by decide +kernel) (by decide +kernel) (by decide +kernel)', '']
-    lines += ['private theorem source_rows : energyStrs =',
-              '    [' + ', '.join(names) + '] := by rfl']
+    block_names = []
+    block_facts = {key: [] for key in values}
+    for offset in range(0, len(names), 16):
+        block = f'sourceBlock{offset // 16:03d}'
+        block_names.append(block)
+        lines += [f'private def {block} : List String :=',
+                  '    [' + ', '.join(names[offset:offset + 16]) + ']', '']
+        for n, m in values:
+            fact = f'{block}_{n}_{m}'
+            block_facts[n, m].append(fact)
+            q = rational(sum(row_totals[n, m][offset:offset + 16], Fraction()))
+            lines += [f'private theorem {fact} :',
+                      f'    tabVal ({block}.map GrotheKernel.parseRow) ({n}, {m}) = ({q} : ℚ) := by',
+                      '  rw [tabVal_rows, List.map_map]',
+                      '  change ([' + ', '.join(f'rowValue {n} {m} (GrotheKernel.parseRow {name})'
+                                              for name in names[offset:offset + 16]) + '] : List ℚ).sum = _',
+                      '  simp only [List.sum_cons, List.sum_nil,']
+            for start in range(offset, min(offset + 16, len(names)), 4):
+                lines.append('    ' + ', '.join(row_facts[n, m][start:min(start + 4, offset + 16)]) + ',')
+            totals = row_totals[n, m][offset:offset + 16]
+            leading_zero = any(v == 0 and any(w != 0 for w in totals[j + 1:])
+                               for j, v in enumerate(totals))
+            lines += ['    add_zero' + (', zero_add' if leading_zero else '') + ']', '']
+    assembly = '[]'
+    for block in reversed(block_names):
+        assembly = f'{block} ++ ({assembly})'
+    lines += ['private theorem source_rows : energyStrs =', f'    {assembly} := by rfl']
     tables = []
     for (n, m), value in values.items():
         headline = 'one_zero' if (n, m) == (1, 0) else 'zero_one'
         tables += [f'theorem {headline} : energyTable ({n}, {m}) = ({value} : ℚ) := by',
                    f'  change tabVal (energyStrs.map GrotheKernel.parseRow) ({n}, {m}) = _',
-                   '  rw [source_rows, tabVal_rows]',
-                   '  simp only [List.map_map, Function.comp_def, List.map_cons, List.map_nil,',
-                   '    List.sum_cons, List.sum_nil,']
-        for start in range(0, len(row_facts[n, m]), 6):
-            tables.append('    ' + ', '.join(row_facts[n, m][start:start + 6]) + ',')
-        tables += ['    add_zero, zero_add]', '']
+                   '  rw [source_rows]',
+                   '  simp only [List.map_append, List.map_nil, tabVal_append, tabVal_nil,']
+        for start in range(0, len(block_facts[n, m]), 4):
+            tables.append('    ' + ', '.join(block_facts[n, m][start:start + 4]) + ',')
+        tables += ['    add_zero]', '']
     return '\n'.join(lines), '\n'.join(tables)
 
 

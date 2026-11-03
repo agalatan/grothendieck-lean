@@ -74,22 +74,6 @@ private theorem decimal_correct (s : String) (n : ℕ)
     exact h
   next _ => simp at h
 
-private theorem mapM_correct {α β : Type} (f : α → Option β) (g : α → β)
-    (hf : ∀ x y, f x = some y → g x = y) (xs : List α) (ys : List β)
-    (h : xs.mapM f = some ys) : xs.map g = ys := by
-  induction xs generalizing ys with
-  | nil =>
-    simpa only [List.map_nil, List.mapM_nil, Option.pure_def, Option.some.injEq] using h
-  | cons x xs ih =>
-    cases hx : f x with
-    | none => simp [List.mapM_cons, hx] at h
-    | some y =>
-      cases hs : xs.mapM f with
-      | none => simp [List.mapM_cons, hx, hs] at h
-      | some zs =>
-        have hy : y :: zs = ys := by simpa [List.mapM_cons, hx, hs] using h
-        rw [← hy, List.map_cons, hf x y hx, ih zs hs]
-
 private def entryValue? (n : ℕ) (cs : List Char) : Option ℚ :=
   match splitChars ',' cs with
   | [ns, aa, ks] => do
@@ -135,49 +119,66 @@ private def rowValue (n m : ℕ) (row : GrotheKernel.RowQ) : ℚ :=
     (row.2.map fun entry => if entry.1 = n then entry.2 else 0).sum
   else 0
 
-private def rowValue? (n m : ℕ) (cs : List Char) : Option ℚ :=
-  match splitChars ':' cs with
-  | [ms, es] => do
-    let mi ← decimal? ms
-    if mi = m then
-      let values ← (splitChars ';' es).mapM (entryValue? n)
-      pure values.sum
-    else pure 0
-  | _ => none
+private theorem startsWith_append (prefix tail : String) :
+    (prefix ++ tail).startsWith prefix = true := by
+  apply String.startsWith_string_iff.mpr
+  rw [String.toList_append]
+  exact ⟨tail.toList, rfl⟩
 
-/-- This one-sided certificate refers to the unchanged parser. Every source
-row is checked, and all duplicate matching entries still contribute. -/
-private theorem rowValue_correct (s : String) (n m : ℕ) (v : ℚ)
-    (h : rowValue? n m s.toList = some v) : rowValue n m (GrotheKernel.parseRow s) = v := by
-  unfold rowValue? at h
-  split at h
-  next ms es hfields =>
-    have hsplit : s.splitOn ":" = [String.ofList ms, String.ofList es] := by
-      rw [show ":" = String.ofList [':'] from rfl, split_strings, hfields]
-      rfl
-    cases hms : decimal? ms with
-    | none => simp [hms] at h
-    | some mi =>
-      have hm := decimal_correct (String.ofList ms) mi (by simpa using hms)
-      by_cases he : mi = m
-      · cases hvalues : (splitChars ';' es).mapM (entryValue? n) with
-        | none => simp [hms, he, hvalues] at h
-        | some vs =>
-          have hv : vs.sum = v := by simpa [hms, he, hvalues] using h
-          have hmap := mapM_correct (entryValue? n)
-            (fun cs => if (GrotheKernel.parseEntry (String.ofList cs)).1 = n then
-              (GrotheKernel.parseEntry (String.ofList cs)).2 else 0)
-            (fun cs value hc => entryValue_correct (String.ofList cs) n value
-              (by simpa only [String.toList_ofList] using hc))
-            (splitChars ';' es) vs hvalues
-          have hentries : (String.ofList es).splitOn ";" =
-              (splitChars ';' es).map String.ofList := by
-            simpa only [String.toList_ofList] using split_strings (String.ofList es) ';'
-          simpa only [GrotheKernel.parseRow, hsplit, rowValue, hm, he, ite_true,
-            hentries, List.map_map, Function.comp_def, hmap] using hv
-      · have hv : (0 : ℚ) = v := by simpa [hms, he] using h
-        simpa only [GrotheKernel.parseRow, hsplit, rowValue, hm, he, ite_false] using hv
-  next _ => simp at h
+private theorem split_single (s : String) (sep : Char) (h : sep ∉ s.toList) :
+    s.splitOn (String.ofList [sep]) = [s] := by
+  rw [split_strings, splitChars_eq, List.splitOn_eq_singleton h]
+  simp only [List.map_cons, List.map_nil, String.ofList_toList]
+
+/-- Composition is through the original legacy splitter. No complete source
+string is converted to a character list by a generated closed computation. -/
+private theorem split_join (left right : String) (sep : Char) :
+    (left ++ String.ofList [sep] ++ right).splitOn (String.ofList [sep]) =
+      left.splitOn (String.ofList [sep]) ++ right.splitOn (String.ofList [sep]) := by
+  calc
+    _ = (((left.toList ++ [sep]) ++ right.toList).splitOn sep).map String.ofList := by
+      simp only [split_strings, splitChars_eq, String.toList_append, String.toList_ofList]
+    _ = (left.toList.splitOn sep ++ right.toList.splitOn sep).map String.ofList := by
+      rw [List.append_assoc, List.singleton_append, List.splitOn_append_cons_self]
+    _ = _ := by simp only [List.map_append, split_strings, splitChars_eq]
+
+private def bodyValue (n : ℕ) (s : String) : ℚ :=
+  ((s.splitOn ";").map fun entry =>
+    if (GrotheKernel.parseEntry entry).1 = n then (GrotheKernel.parseEntry entry).2 else 0).sum
+
+private theorem bodyValue_single (s : String) (n : ℕ) (v : ℚ)
+    (hsep : ';' ∉ s.toList) (h : entryValue? n s.toList = some v) :
+    bodyValue n s = v := by
+  have hs : s.splitOn ";" = [s] := split_single s ';' hsep
+  simpa only [bodyValue, hs, List.map_cons, List.map_nil, List.sum_cons,
+    List.sum_nil, add_zero] using entryValue_correct s n v h
+
+private theorem bodyValue_join (left right : String) (n : ℕ) :
+    bodyValue n (left ++ ";" ++ right) = bodyValue n left + bodyValue n right := by
+  unfold bodyValue
+  rw [show ";" = String.ofList [';'] from rfl, split_join]
+  simp only [List.map_append, List.sum_append]
+
+private theorem noColon_join (left right : String)
+    (hl : ':' ∉ left.toList) (hr : ':' ∉ right.toList) :
+    ':' ∉ (left ++ ";" ++ right).toList := by
+  have hs : ':' ∉ ";".toList := by decide +kernel
+  simpa only [String.toList_append, List.mem_append, not_or] using
+    And.intro (And.intro hl hs) hr
+
+private theorem rowValue_of_body (s header body : String) (n m : ℕ)
+    (hs : s = header ++ ":" ++ body)
+    (hd : decimal? header.toList = some m)
+    (hc : ':' ∉ header.toList) (hb : ':' ∉ body.toList) :
+    rowValue n m (GrotheKernel.parseRow s) = bodyValue n body := by
+  have hm := decimal_correct header m hd
+  have hh : header.splitOn ":" = [header] := split_single header ':' hc
+  have ht : body.splitOn ":" = [body] := split_single body ':' hb
+  have hsplit : (header ++ ":" ++ body).splitOn ":" = [header, body] := by
+    rw [show ":" = String.ofList [':'] from rfl, split_join, hh, ht]
+    rfl
+  rw [hs]
+  simp [GrotheKernel.parseRow, hsplit, rowValue, hm, bodyValue]
 
 /-- A nonmatching header contributes zero even if the remaining source is
 malformed: the original parser then returns its empty default row. Thus the
@@ -225,6 +226,12 @@ private theorem tabVal_rows (rows : List GrotheKernel.RowQ) (n m : ℕ) :
       _ = ((row :: rows).map (rowValue n m)).sum := by
         rw [hr, ih]
         rfl
+
+private theorem tabVal_append (left right : List GrotheKernel.RowQ) (n m : ℕ) :
+    tabVal (left ++ right) (n, m) = tabVal left (n, m) + tabVal right (n, m) := by
+  simp only [tabVal_rows, List.map_append, List.sum_append]
+
+private theorem tabVal_nil (n m : ℕ) : tabVal [] (n, m) = 0 := rfl
 
 @ROW_CERTIFICATES@
 
