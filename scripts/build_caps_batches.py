@@ -393,7 +393,7 @@ def overlay_bytes(source: bytes) -> bytes:
     return result
 
 
-GIB_PER_LEAF = 5          # peak RSS of one single-threaded leaf (measured at most 4.1 GiB), with margin
+GIB_PER_LEAF = 3.5        # peak RSS of one single-threaded leaf (measured: range pieces 3.0 GiB), with margin
 RSS_HEADROOM_GIB = 6      # memory left to the OS, the runner and Lake itself
 
 
@@ -403,7 +403,7 @@ def machine_jobs() -> int:
         cpus = len(os.sched_getaffinity(0))
     except AttributeError:
         cpus = os.cpu_count() or 1
-    return max(1, min(cpus, (machine_memory_gib() - RSS_HEADROOM_GIB) // GIB_PER_LEAF))
+    return max(1, min(cpus, int((machine_memory_gib() - RSS_HEADROOM_GIB) // GIB_PER_LEAF)))
 
 
 def machine_memory_gib() -> int:
@@ -417,10 +417,47 @@ def machine_memory_gib() -> int:
     return 24 + RSS_HEADROOM_GIB   # unknown platform: the original 24 GiB budget
 
 
-def groups(registry: dict, jobs: int):
+GRID_POINTS = {1: 400 * 128, 2: 1600 * 256, 3: 1600 * 1024, 4: 1600 * 1152, 5: 3200 * 256}
+PIECE_RE = re.compile(r"CapPieces/([CR])(\d+)x(\d+)(?:_(\d+))?\.lean$")
+
+
+def leaf_cost(root: Path, selections: dict) -> float:
+    """Relative cost of a compute leaf, from the certificate grids of its pieces (`rowKK-selection.json`).
+
+    A range module `R<row>x<node>_<k>` checks pieces `[4k, 4k+4)` of its node on their grids; a coverage
+    slice costs about its share of the node's pieces; a coverage assembly costs nothing. Unknown leaves
+    cost 1. Lake builds a group's leaves in parallel, so a group of equally expensive leaves keeps every
+    slot busy; the plan therefore sorts leaves by this cost, heaviest first."""
+    m = PIECE_RE.search(str(root))
+    if not m:
+        return 1.0
+    kind, row, node, k = m.group(1), m.group(2), m.group(3), m.group(4)
+    grids = selections.get(row, {}).get(f"{row}:{node}", {}).get("grids", [])
+    if kind == "R":
+        pieces = grids[4 * int(k):4 * int(k) + 4] if k is not None else grids
+        return sum(GRID_POINTS.get(g, GRID_POINTS[2]) for g in pieces) / GRID_POINTS[2] + 0.5
+    if k is None:
+        return 0.0 if len(grids) >= 128 else 0.2 + 0.5 * len(grids) / 64
+    return 0.2 + 0.5 * min(len(grids), 64) / 64
+
+
+def load_selections(root: Path) -> dict:
+    out = {}
+    for path in sorted(root.glob("data/caps-m/plan/row-certificates/row*-selection.json")):
+        row = path.name[len("row"):-len("-selection.json")]
+        try:
+            out[row] = json.loads(path.read_text())
+        except (OSError, ValueError):
+            pass
+    return out
+
+
+def groups(registry: dict, jobs: int, selections: dict | None = None):
     if type(jobs) is not int or jobs < 1:
         raise BuildError("jobs must be a positive integer")
     for phase, roots in (("pure", registry["pure_roots"]), ("native", registry["compute_roots"])):
+        if phase == "native" and selections:
+            roots = sorted(roots, key=lambda r: -leaf_cost(Path(r), selections))
         for i in range(0, len(roots), jobs):
             yield phase, list(map(module, roots[i:i + jobs]))
 
@@ -823,7 +860,7 @@ def main(argv=None):
         registry = active_registry._active_json(data)
         args.registry_sha256 = sha(data)
         validate_registry(args.root, registry)
-        plan = list(groups(registry, args.jobs))
+        plan = list(groups(registry, args.jobs, load_selections(args.root)))
         if args.plan:
             print(json.dumps({"compute_roots": len(registry["compute_roots"]),
                               "pure_roots": len(registry["pure_roots"]), "groups": plan,

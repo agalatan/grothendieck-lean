@@ -124,6 +124,22 @@ class GraphTests(Fixture):
         with self.assertRaises(Exception):
             self.regenerate()
 
+    def test_native_plan_sorts_leaves_by_piece_cost_heaviest_first(self):
+        selections = {"12": {"12:140": {"grids": [3, 3, 3, 3, 1, 1, 1, 1] + [1] * 200},
+                             "12:270": {"grids": [1] * 130}}}
+        R = b.Path("Grothe/LowerAnalytic/CapPieces/")
+        heavy, light = R / "R12x140_0.lean", R / "R12x140_1.lean"
+        slice_, assembly, plain = R / "C12x270_0.lean", R / "C12x270.lean", b.Path("Grothe/Other.lean")
+        self.assertGreater(b.leaf_cost(heavy, selections), b.leaf_cost(light, selections))
+        self.assertGreater(b.leaf_cost(light, selections), b.leaf_cost(slice_, selections))
+        self.assertEqual(b.leaf_cost(assembly, selections), 0.0)
+        self.assertEqual(b.leaf_cost(plain, selections), 1.0)
+        registry = dict(self.registry, compute_roots=[str(assembly), str(light), str(slice_), str(heavy)])
+        plan = [t for phase, ts in b.groups(registry, 1, selections) if phase == "native" for t in ts]
+        self.assertEqual(plan, [b.module(str(heavy)), b.module(str(light)), b.module(str(slice_)), b.module(str(assembly))])
+        unsorted = [t for phase, ts in b.groups(registry, 1) if phase == "native" for t in ts]
+        self.assertEqual(unsorted, [b.module(str(assembly)), b.module(str(light)), b.module(str(slice_)), b.module(str(heavy))])
+
     def test_groups_are_at_most_jobs_and_pure_first(self):
         plan = list(b.groups(self.registry, 2))
         self.assertEqual([phase for phase, _ in plan], ["pure", "pure", "native"])
