@@ -105,7 +105,9 @@ theorem norm_roundingSliceLp_sub_model (s : ℝ) (hs : 0 < s) (p : ℂ → ℝ)
     simp only [Pi.smul_apply] at hsmul
     have hb : base w = F0ConditionalNode.phaseSlice s w - linearSlice s w := by
       change (F0ConditionalNode.phaseSliceLp s - linearSliceLp s) w = _
-      rw [hbase, hphasecoe, hlinear]
+      rw [hbase]
+      change ((F0ConditionalNode.phaseSlice_memLp s).toLp _) w - linearSliceLp s w = _
+      rw [hphasecoe, hlinear]
     have he : ‖e w‖ = |slicePhase s w - p w| := by
       change ‖((phaseDifference_memLp s p hp hphase hpb).toLp _) w‖ = _
       rw [herr]
@@ -115,10 +117,11 @@ theorem norm_roundingSliceLp_sub_model (s : ℝ) (hs : 0 < s) (p : ℂ → ℝ)
         ‖F0ConditionalNode.phaseSlice s w - linearSlice s w‖ +
           (5 / 2 : ℝ) * |slicePhase s w - p w| := by
       change (B + (5 / 2 : ℝ) • E) w = _
-      rw [hsum, hsmul, hB, hE, hb, he]
+      rw [hsum, hsmul, hB, hE, hb, he, smul_eq_mul]
     have hnonneg : 0 ≤ majorant w := by rw [hmajor]; positivity
     rw [hsub]
-    change ‖f w - g w‖ ≤ _
+    change ‖((roundingSlice_memLp s hphase).toLp _) w -
+      ((modelSlice_memLp s p hp hpb).toLp _) w‖ ≤ _
     rw [hsrc, hmodel, Real.norm_eq_abs, abs_of_nonneg hnonneg, hmajor]
     exact PhasePolynomialStability.norm_base_mul_P3_sub
       (F0ConditionalNode.norm_phaseSlice_le_one s w) (hphase w) (hpb w)
