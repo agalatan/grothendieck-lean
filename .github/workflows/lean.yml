@@ -68,6 +68,7 @@ jobs:
       handoff_run: ${{ steps.where.outputs.handoff_run }}
       handoff_name: ${{ steps.where.outputs.handoff_name }}
       needs_droplet: ${{ steps.where.outputs.needs_droplet }}
+      caps_build: ${{ steps.where.outputs.caps_build }}
       base: ${{ steps.merge.outputs.base }}
     steps:
       - uses: actions/checkout@v5
@@ -171,6 +172,10 @@ jobs:
           if [ "${{ steps.scope.outputs.lean }}" = true ] && [ -z "$handoff" ] && { [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ] || [ "${{ vars.FORCE_HEAVY }}" = true ]; }; then
             echo "-> the heavy runners build this (mode=caps, no verified cache, or FORCE_HEAVY); this run stays pending meanwhile"
             echo "droplet=true" >> "$GITHUB_OUTPUT"; echo 'runs_on=["self-hosted","heavy"]' >> "$GITHUB_OUTPUT"
+            # a run that really builds the node caps (no verified cache, or mode=caps) is never cancelled (hours of work);
+            # a FORCE_HEAVY run that only replays the cache is an ordinary check and may be superseded by a newer push
+            if [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ]; then echo "caps_build=true" >> "$GITHUB_OUTPUT"
+            else echo "caps_build=false" >> "$GITHUB_OUTPUT"; fi
           else
             echo "droplet=false" >> "$GITHUB_OUTPUT"; echo 'runs_on="ubuntu-24.04"' >> "$GITHUB_OUTPUT"
           fi
@@ -179,13 +184,15 @@ jobs:
     needs: route
     runs-on: ${{ fromJSON(needs.route.outputs.runs_on) }}
     timeout-minutes: ${{ needs.route.outputs.droplet == 'true' && 4320 || 360 }}
-    # Branches (GitHub-hosted): one group PER BRANCH, cancel-in-progress (a new push supersedes the older check).
-    # Master: never cancelled; every master commit gets its own check (a cancelled run marks its commit with a cross,
-    # and a long first build would be lost), so its group is per commit. The droplet has one runner, so its jobs queue
-    # by themselves and are never cancelled (a killed build leaves orphaned lean processes).
+    # Branches: one group PER BRANCH (checks and landings separately), cancel-in-progress: a new push supersedes the
+    # older check of the same branch, on GitHub-hosted and heavy runners alike (the build runs in its own process
+    # group, killed whole on cancellation, so nothing is orphaned). Master: never cancelled; every master commit gets
+    # its own check (a cancelled run marks its commit with a cross, and a long first build would be lost), so its
+    # group is per commit. Runs that really build the node caps (no verified cache, or mode=caps) are per run too:
+    # hours of work that a push must not throw away.
     concurrency:
-      group: ${{ needs.route.outputs.droplet == 'true' && format('droplet-{0}', github.run_id) || (github.ref_name == 'master' && format('check-master-{0}', github.sha) || format('{0}-{1}', inputs.land && 'land' || 'check', github.ref)) }}
-      cancel-in-progress: ${{ needs.route.outputs.droplet != 'true' && github.ref_name != 'master' }}
+      group: ${{ needs.route.outputs.caps_build == 'true' && format('caps-{0}', github.run_id) || (github.ref_name == 'master' && format('check-master-{0}', github.sha) || format('{0}-{1}', inputs.land && 'land' || 'check', github.ref)) }}
+      cancel-in-progress: ${{ needs.route.outputs.caps_build != 'true' && github.ref_name != 'master' }}
     env:
       LEAN: ${{ needs.route.outputs.lean }}
       DROPLET: ${{ needs.route.outputs.droplet }}
@@ -281,9 +288,14 @@ jobs:
         if: env.LEAN == 'true'
         # GitHub-hosted: stop at the first failed module (scripts/lake_failfast.sh). The droplet builds on: its finished
         # modules stay in the persistent workspace, and a kill would discard cap rows that are mid-way.
+        # The build runs in its own session (setsid): on cancellation the step kills that whole process group, so a
+        # cancelled heavy check leaves no orphaned lean processes behind (which is what makes cancellation safe).
         run: |
-          if [ "$DROPLET" = true ]; then lake build Grothe --log-level=warning
-          else scripts/lake_failfast.sh lake build Grothe --log-level=warning; fi
+          grouped() { setsid "$@" & pid=$!
+            trap 'echo "::notice::cancelled: stopping the build process group"; kill -- "-$pid" 2>/dev/null; wait "$pid" 2>/dev/null; exit 130' INT TERM
+            wait "$pid"; }
+          if [ "$DROPLET" = true ]; then grouped lake build Grothe --log-level=warning
+          else grouped scripts/lake_failfast.sh lake build Grothe --log-level=warning; fi
 
       - name: Root import files generated, list files sorted and duplicate-free
         if: env.LEAN == 'true'
