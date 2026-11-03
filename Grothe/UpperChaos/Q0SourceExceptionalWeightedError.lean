@@ -77,7 +77,7 @@ theorem actual_source_error_sq_le_mass
       retainedErrorSq regularModes (completedCenter center) +
         (3 / 10 ^ 15 : ℝ) ^ 2 * exceptionMass := by
   rw [all_error_sq_eq]
-  exact add_le_add_left (error_sq_le_mass modes (fun _ hp => hp)) _
+  exact add_le_add le_rfl (error_sq_le_mass modes (fun _ hp => hp))
 
 /-- Orthogonal source-family assembly with an explicit regular squared budget.
 No numerical regular evaluator enclosure is asserted here. -/
