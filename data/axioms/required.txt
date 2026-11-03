@@ -608,6 +608,11 @@ Grothe.UpperChaos.ProductComplete.complete_prod
 Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
 Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
 Grothe.UpperChaos.ProductComplete.memLp_prod_mul
+Grothe.UpperChaos.ProfilePiFactor.pi_lo_lt
+Grothe.UpperChaos.ProfilePiFactor.pi_lt_hi
+Grothe.UpperChaos.ProfilePiFactor.pi_quarter_bounds
+Grothe.UpperChaos.ProfilePiFactor.pi_quarter_width
+Grothe.UpperChaos.ProfilePiFactor.sqrt_pi_bounds
 Grothe.UpperChaos.ProfileRootScreen.allCoeffsOK
 Grothe.UpperChaos.ProfileRootScreen.allGammaSQOK
 Grothe.UpperChaos.ProfileRootScreen.allRegionsOK

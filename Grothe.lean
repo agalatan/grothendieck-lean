@@ -1081,6 +1081,9 @@ import Grothe.UpperChaos.ProfileAdaptiveSource
 import Grothe.UpperChaos.ProfileFirstGaussianCell
 import Grothe.UpperChaos.ProfileIntervalBands
 import Grothe.UpperChaos.ProfileIntervalQuadrature
+import Grothe.UpperChaos.ProfilePiFactor
+import Grothe.UpperChaos.ProfilePiFactorLower
+import Grothe.UpperChaos.ProfilePiFactorUpper
 import Grothe.UpperChaos.ProfileRootNormalization
 import Grothe.UpperChaos.ProfileRootScreen
 import Grothe.UpperChaos.ProfileRootSound
