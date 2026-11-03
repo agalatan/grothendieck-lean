@@ -182,9 +182,8 @@ Gaussian weights then give exceptional squared error at most
 $(3\cdot10^{-15})^2\cdot2\cdot10^{-21}\le(2\cdot10^{-25})^2$,
 for every finite subset of the selected modes. The full-source adapter adds
 $(2\cdot10^{-25})^2$ to an explicit regular squared-error budget; continuous
-root-gap omission is separate. This proof family remains work in progress until
-Lean CI accepts it. The regular nodes, quadrature and remaining upper-bound
-obligations are separate.
+root-gap omission is separate. The regular nodes, quadrature and remaining
+upper-bound obligations are separate.
 
 For each nonnegative squared radial node, the finite auxiliary-integral
 response has the actual affine argument of the base $F_0$ phase. Its Hermite
@@ -201,7 +200,7 @@ is added separately. A common coupled row radius $19/10^{11}$ suffices:
 the proved source mass is below $107/100$, so the existing regular and full
 source-error budgets follow by rational inequalities. No row certificate
 is inferred from this sufficient tolerance. Numerical certificates and full
-$\phi_T/P_3$ response binding remain open; this proof unit awaits Lean CI.
+$\phi_T/P_3$ response binding remain open.
 
 The concrete regular-row certificate \texttt{Q0RegularSourceRow} fixes original
 ordinal 3818, panel 135 and the third node of its order-six rule. Its three
@@ -211,7 +210,6 @@ whole-selected-vector Gaussian-to-saved radius below $2\cdot10^{-15}$, with
 omitted coefficients retained. Adding the finite auxiliary approximation
 gives radius below $7\cdot10^{-15}$ and meets the regular-row tolerance at
 this address. The byte slice, source metadata and row hash are pinned.
-Lean CI acceptance is pending.
 
 The near-zero source extension selects original ordinals 3469--4456,
 10710--11238 and 17223--17542, containing 1,837 rows and 1,420 regular rows.
@@ -221,8 +219,10 @@ coupled model residual by $2\cdot10^{-22}$. Three actual panel blocks have
 scaled profile at most $10^{-10}$. The shared analytic argument yields
 actual-to-saved and finite-to-saved radii below $6\cdot10^{-11}$ over the
 entire selected coefficient vector, inside the existing row allowance.
-These generated checks and their actual-address consumer await Lean acceptance;
-the remaining rows and final upper bound remain work in progress.
+The source-error, exceptional-profile, finite-Laplace and concrete row modules
+passed focused Lean CI at commit \texttt{a00103c2}, run \texttt{41725462291}.
+Repository-wide gates and independent review are separate delivery checks.
+The remaining rows and final upper bound remain work in progress.
 
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every

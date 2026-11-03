@@ -12,8 +12,9 @@ with `sqrt(1+aQ^2) * vprof(s)` on the whole interval.
 algorithm, with pinned inputs and a common cap `1/(2*10^14)`. It is provenance
 and reproducibility evidence, not a Lean proof or a replacement coefficient
 table. The Lean module `Q0SourceExceptionProfile` performs its own three
-`decide +kernel` checks and proves actual-node coverage. CI acceptance of the
-new modules remains pending.
+`decide +kernel` checks and proves actual-node coverage. These modules passed
+[focused Lean CI](https://github.com/agalatan/grothendieck-lean/actions/runs/41725462291)
+at commit `a00103c2`; full delivery gates remain separate.
 
 Reproduce or compare the external replay:
 

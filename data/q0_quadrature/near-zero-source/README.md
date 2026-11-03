@@ -31,7 +31,8 @@ throughout the actual panel blocks 102–318, 521–720 and 933–1118. The anal
 comparison then gives actual and finite-Laplace radii below `6/10^11`. True
 coefficients beyond the saved cutoff remain in the analytic error sum.
 
-Exact external replay has passed. The generated checks and Lean consumer are
-work in progress pending compiler acceptance. This packet does not by itself
-supply all regular rows, continuous quadrature, response binding, or the final
-upper-bound proof.
+Exact external replay has passed. The generated checks and actual-address Lean
+consumer passed [focused Lean CI](https://github.com/agalatan/grothendieck-lean/actions/runs/41725462291)
+at commit `a00103c2`; full delivery gates remain separate. This packet does not
+by itself supply all regular rows, continuous quadrature, response binding, or
+the final upper-bound proof.

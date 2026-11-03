@@ -22,6 +22,8 @@ python3 tools/q0_quadrature/gen_regular_source_row.py --check
 metadata, proves cutoff completion, checks the real profile on the whole panel,
 and bounds every selected coefficient against the saved approximation. The
 true coefficients outside the stored cutoff remain in the analytic error.
-The targets are actual-to-saved radius<2e-15 and finite-Laplace-to-saved
-radius<7e-15. Exact external replay has passed; Lean acceptance is pending.
+The Lean bounds are actual-to-saved radius<2e-15 and finite-Laplace-to-saved
+radius<7e-15. Exact external replay has passed. The module passed
+[focused Lean CI](https://github.com/agalatan/grothendieck-lean/actions/runs/41725462291)
+at commit `a00103c2`; full delivery gates remain separate.
 This is one actual regular row, not an all-row or final upper-bound certificate.

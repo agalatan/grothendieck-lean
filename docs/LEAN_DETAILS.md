@@ -225,9 +225,8 @@ with the decoded model error gives radius
 `5*(B/3)^2 + B/3 + 1/10^15 + 1/10^31 < 3/10^15`.
 The final `source_actual_error_sq_lt` statement has only the source address
 and exceptional-panel membership as inputs; both physical estimates and the
-saved-data estimate are discharged. These new modules remain unverified until
-normal CI passes. The three finite checks use kernel reduction and strict
-standard-axiom guards. Their exact external replay is reproducible with
+saved-data estimate are discharged. The three finite checks use kernel
+reduction and strict standard-axiom guards. Their exact external replay is reproducible with
 `tools/q0_quadrature/gen_source_profile_ratio.py --check`; the JSON records
 provenance and does not replace Lean's checks. No regular-node, quadrature,
 primary-contraction or energy-table obligation is discharged by this result.
@@ -241,7 +240,7 @@ The same-root panel normalization bounds the discrete exceptional mass by
 `actual_source_error_sq_le` combines this with any explicit regular squared
 budget `R^2`, giving `R^2 + (2/10^25)^2`; the square-root and additive-radius
 forms retain that same regular premise. No regular evaluator or ledger
-allowance is inferred from this result. The module awaits Lean CI acceptance.
+allowance is inferred from this result.
 
 **Fixed-node finite auxiliary integral.** `Q0ConditionalFiniteLaplace` defines
 one disk-valued Gaussian response at each nonnegative squared radial node,
@@ -271,8 +270,7 @@ radius `19/10^11` at every regular row. The existing actual mass bound
 adding the exceptional term stays within the existing `253/10^12` source
 radius. This replaces a separate weighted-budget premise, without certifying
 any row or changing the ledger. It is not a per-coordinate tolerance.
-All new headlines have strict standard-axiom guards and audit registration;
-this unit remains unverified pending Lean CI.
+All new headlines have strict standard-axiom guards and audit registration.
 
 
 **One actual regular source row.** `Q0RegularSourceRow` fixes the original
@@ -289,9 +287,8 @@ bounds all selected actual Gaussian coefficients against these centers by
 radius strictly below `2e-15`. The coupled triangle inequality adds the fixed
 `5e-15` finite-Laplace approximation cost, giving radius below `7e-15` and an
 explicit instance of the regular-source `19/10^11` premise. True omitted
-coefficients remain in the error sum. This concrete proof candidate awaits
-Lean CI and certifies only this address; it supplies no all-row or final-bound
-claim.
+coefficients remain in the error sum. This concrete proof certifies only this
+address; it supplies no all-row or final-bound claim.
 
 **Actual source rows near profile zeros.** `Q0NearZeroSource` selects exactly
 ordinals 3469–4456, 10710–11238 and 17223–17542. The compact input in
@@ -311,9 +308,16 @@ true coefficients outside the saved cutoff. Its actual radius is at most
 `2400000000259/45000000000000000000000`; adding `5/10^15` bounds the finite
 radius strictly below `6/10^11`, hence below the existing `19/10^11` allowance.
 The actual-address consumer has no numerical premises beyond membership in
-the certified ordinal ranges. These modules await targeted Lean checking;
-other rows, production response binding, quadrature and final table accuracy
-remain open.
+the certified ordinal ranges. Other rows, production response binding,
+quadrature and final table accuracy remain open.
+
+The source-error, exceptional-profile, finite-Laplace, regular-row and near-zero
+modules above passed the focused Lean check
+[41725462291](https://github.com/agalatan/grothendieck-lean/actions/runs/41725462291)
+at `a00103c2a6c93d722ae7ee4192a4a145999012bb`. Its three targets were
+`Q0NearZeroSource`, `Q0RegularSourceRow` and `Q0ConditionalSourceReconstruction`.
+This is module acceptance; repository-wide proof gates and independent review
+are tracked separately on PR #263. It does not complete the upper-bound proof.
 
 **q0 source-to-literal identity.**
 `Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real

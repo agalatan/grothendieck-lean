@@ -49,9 +49,11 @@ remainder.
 `decide +kernel` checks: the fitted parameter has magnitude below `1/10^15`,
 and the full model discrepancy has squared norm below `(1/10^31)^2`.
 The final actual-source theorem discharges that saved-model premise; only
-actual physical-ratio and ratio-to-fit enclosures remain. These are proof
-candidates until the delivery's Lean check passes; exact Python replay alone
-is not acceptance evidence.
+actual physical-ratio and ratio-to-fit enclosures remain. The source-vector,
+saved-row, profile and weighted-error modules passed
+[focused Lean CI](https://github.com/agalatan/grothendieck-lean/actions/runs/41725462291)
+at commit `a00103c2`; full delivery gates remain separate. Exact Python replay
+alone is not acceptance evidence.
 
 Regenerate or compare the check modules using:
 
@@ -69,8 +71,8 @@ address. Three centered interval checks use endpoints from the original panel
 list, and the existing actual-profile identity proves their soundness. With
 `B=1/(2*10^14)` and `s>=13`, the ratio and fit-error bounds give radius
 `5*(B/3)^2 + B/3 + 1/10^15 + 1/10^31 < 3/10^15`.
-This statement still awaits Lean CI acceptance. It does not apply the model to
-all regular nodes or close the continuous quadrature and energy-table inputs.
+This statement does not apply the model to all regular nodes or close the
+continuous quadrature and energy-table inputs.
 See `../source-profile-ratio/README.md` for the exact three-block replay.
 
 `Q0SourceExceptionalWeightedError` propagates the actual per-node estimate to
@@ -79,4 +81,4 @@ and one Gaussian density factor. The proved discrete mass cap `2e-21` gives
 an exceptional weighted radius at most `2e-25`. Its full-source assembly keeps
 an arbitrary regular squared budget `R^2` and adds `(2e-25)^2`, without assuming
 any regular evaluator accuracy or changing the ledger. Continuous root-gap
-omission remains separate. This successor is also pending Lean CI acceptance.
+omission remains separate.

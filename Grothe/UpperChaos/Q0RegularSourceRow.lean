@@ -8,7 +8,7 @@ import Lean.Elab.Command
 All selected Gaussian coefficients are included, also beyond the stored cutoff.
 The exact sparse fit, actual profile enclosure, and original-address binding
 leave no numerical premises in the two error conclusions.
-Uncompiled proof draft; Agent-ID: codex-aa04. -/
+Agent-ID: codex-aa04. -/
 
 namespace Grothe.UpperChaos.Q0RegularSourceRow
 
