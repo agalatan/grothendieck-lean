@@ -33,10 +33,10 @@ theorem fold_append (xs ys : Array (Array ℤ)) :
 
 /-- Parsing combined source arrays is equivalent to checking both arrays first. -/
 theorem parseChunks_append (E : ℕ) (xs ys : Array String) :
-    parseChunks E (xs ++ ys) = do
+    parseChunks E (xs ++ ys) = (do
       let a ← parseChunks E xs
       let b ← parseChunks E ys
-      pure (a ++ b) := by
+      pure (a ++ b)) := by
   simp only [parseChunks, Array.mapM_append]
   cases hx : xs.mapM (parse E) <;> cases hy : ys.mapM (parse E) <;>
     simp [hx, hy, fold_append]
@@ -44,8 +44,7 @@ theorem parseChunks_append (E : ℕ) (xs ys : Array String) :
 theorem parseChunks_append_of_eq (E : ℕ) (xs ys : Array String) (a b : Array ℤ)
     (hx : parseChunks E xs = some a) (hy : parseChunks E ys = some b) :
     parseChunks E (xs ++ ys) = some (a ++ b) := by
-  rw [parseChunks_append, hx, hy]
-  rfl
+  simpa [hx, hy] using parseChunks_append E xs ys
 
 theorem parseChunks_singleton (E : ℕ) (s : String) :
     parseChunks E #[s] = parse E s := by

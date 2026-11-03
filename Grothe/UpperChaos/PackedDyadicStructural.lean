@@ -42,22 +42,24 @@ def natToken? (cs : List Char) : Option ℕ :=
 
 theorem natSyntax_iff (s : String) : NatSyntax s.toList ↔ s.isNat = true := by
   rw [String.isNat_iff]
-  simp only [NatSyntax, String.toList_eq_nil_iff]
+  simp only [NatSyntax, ne_eq, String.toList_eq_nil_iff]
 
 /-- This equality covers invalid input as well as successful decoding. -/
 theorem natToken?_eq (s : String) : natToken? s.toList = s.toNat? := by
   by_cases h : s.isNat = true
-  · rw [natToken?, if_pos ((natSyntax_iff s).mpr h),
+  · rw [natToken?, ite_eq_left ((natSyntax_iff s).mpr h),
       String.toNat?_eq_some_ofDigitChars h]
   · have hf : s.isNat = false := by cases hs : s.isNat <;> simp_all
-    rw [natToken?, if_neg (by simpa only [natSyntax_iff] using h),
+    rw [natToken?, ite_eq_right (by simpa only [natSyntax_iff] using h),
       String.toNat?_eq_none hf]
 
 /-- Only a leading minus is a sign; plus and embedded signs are rejected. -/
 def intToken? (cs : List Char) : Option ℤ :=
   match cs with
-  | '-' :: rest => (natToken? rest).map (fun n => -(n : ℤ))
-  | _ => (natToken? cs).map (fun n => (n : ℤ))
+  | [] => (natToken? []).map (fun n : ℕ => (n : ℤ))
+  | c :: rest =>
+      if c = '-' then (natToken? rest).map (fun n : ℕ => -(n : ℤ))
+      else (natToken? cs).map (fun n : ℕ => (n : ℤ))
 
 theorem intToken?_ofList (cs : List Char) :
     intToken? cs = (String.ofList cs).toInt? := by
@@ -70,12 +72,12 @@ theorem intToken?_ofList (cs : List Char) :
   | cons c cs =>
       by_cases hc : c = '-'
       · subst c
-        simp only [intToken?, String.ofList_cons, String.reduceSingleton,
+        simp only [intToken?, ite_eq_left rfl, String.ofList_cons, String.reduceSingleton,
           String.toInt?_minus_append, hn]
       · have hstart : (String.ofList (c :: cs)).startsWith '-' = false := by
           simp [String.startsWith_char_eq_head?, hc]
         rw [String.toInt?_eq_toNat?_of_startsWith_eq_false hstart]
-        simpa only [intToken?, hc] using
+        simpa only [intToken?, ite_eq_right hc] using
           congrArg (Option.map (fun n : ℕ => (n : ℤ))) (hn (c :: cs))
 
 theorem intToken?_eq (s : String) : intToken? s.toList = s.toInt? := by
@@ -114,7 +116,7 @@ theorem modern_split_tokens (s : String) (c : Char) :
     ((s.split c).toList.map String.Slice.copy).map String.toList =
       s.toList.splitOn c := by
   rw [String.toList_split_char]
-  simp only [List.map_map, Function.comp_def, String.toList_ofList, List.map_id_fun']
+  simp only [List.map_map, Function.comp_def, String.toList_ofList, List.map_id_fun', id_eq]
 
 /-- The remaining legacy delimiter obligation is stated separately. -/
 theorem parseRecord_eq_record (E : ℕ) (s : String)
@@ -129,20 +131,19 @@ def row? (E : ℕ) (cs : List Char) : Option (List ℤ) :=
 
 /-- Nonempty source fragments can be checked separately and joined at a comma. -/
 theorem row?_append (E : ℕ) (xs ys : List Char) (hx : xs ≠ []) (hy : ys ≠ []) :
-    row? E (xs ++ ',' :: ys) = do
+    row? E (xs ++ ',' :: ys) = (do
       let a ← row? E xs
       let b ← row? E ys
-      pure (a ++ b) := by
+      pure (a ++ b)) := by
   have hxy : xs ++ ',' :: ys ≠ [] := by simp
-  rw [row?, if_neg hxy, List.splitOn_append_cons_self, List.mapM_append]
-  simp only [row?, if_neg hx, if_neg hy]
+  rw [row?, ite_eq_right hxy, List.splitOn_append_cons_self, List.mapM_append]
+  simp only [row?, ite_eq_right hx, ite_eq_right hy]
 
 theorem row?_append_of_eq (E : ℕ) (xs ys : List Char) (a b : List ℤ)
     (hx : xs ≠ []) (hy : ys ≠ [])
     (ha : row? E xs = some a) (hb : row? E ys = some b) :
     row? E (xs ++ ',' :: ys) = some (a ++ b) := by
-  rw [row?_append E xs ys hx hy, ha, hb]
-  rfl
+  simpa [ha, hb] using row?_append E xs ys hx hy
 
 /-- A row certificate needs only delimiter compatibility, not numeric assumptions. -/
 theorem parse_eq_row (E : ℕ) (s : String)
@@ -153,7 +154,8 @@ theorem parse_eq_row (E : ℕ) (s : String)
   by_cases hs : s = ""
   · subst s
     rfl
-  · have hn : s.toList ≠ [] := by simpa only [String.toList_eq_nil_iff] using hs
+  · have hn : s.toList ≠ [] := by
+      simpa only [ne_eq, String.toList_eq_nil_iff] using hs
     simp only [parse, beq_iff_eq, hs, ↓reduceIte, row?, hn]
     rw [← hrows, List.mapM_map]
     congr 1
