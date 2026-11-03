@@ -116,8 +116,9 @@ theorem scaled_profile_abs_le :
     |Real.sqrt (1 + (Upper.aQ : ℝ) ^ 2) * vprof (sourceNode address)| ≤
       (1 / 10 ^ 15 : ℝ) := by
   have hn := source_node_mem_panel address
-  exact row_scaled_profile_abs_le profileRow (sourceNode address) (1 / 10 ^ 15)
-    hn.1 hn.2 profile_checked
+  simpa only [Rat.cast_div, Rat.cast_one, Rat.cast_pow, Rat.cast_ofNat] using
+    row_scaled_profile_abs_le profileRow (sourceNode address) (1 / 10 ^ 15)
+      hn.1 hn.2 profile_checked
 
 theorem ratio_abs_le :
     |signedProfileRatio (sourceNode address)| ≤ (1 / (3 * 10 ^ 15) : ℝ) := by

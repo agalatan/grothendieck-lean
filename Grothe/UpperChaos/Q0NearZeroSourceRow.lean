@@ -112,6 +112,8 @@ variable (a : Address) (row : Row) (metadata : Q0ConditionalMetadataCheck.Row)
     (hfit : |fitParameter row| ≤ (2 / 10 ^ 11 : ℚ))
     (hmodel : modelErrorSq row (fitParameter row) ≤ (2 / 10 ^ 22 : ℚ) ^ 2)
 
+include metadata hmetadata hvalid hmatch hsource hprofile hfit hmodel
+
 /-- The analytic remainder is charged once for the full selected vector. -/
 theorem actual_error_sq_le_budget :
     (∑ p ∈ modes,
