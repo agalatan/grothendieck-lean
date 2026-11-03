@@ -42,6 +42,22 @@ Weaker upper-bound variants, their data and their historical verification record
 are preserved in [the committed archive](../miscellaneous/other-bounds/README.md).
 They are outside the active build and current axiom policy.
 
+**Source-node error ledger.** `Q0NodeMassLedger` holds only the shared scalar
+inputs; `Q0NodeMassLedgerSharp` is the single norm-dependent ledger, at `26/25`.
+`Q0NodeMassLedgerSharp.real_error_lt_cap`
+transfers the exact rational ledger to a real error bound below `48/10^13`,
+given the raw-error estimate, smoothing estimate and smoothing-vector norm.
+The separate `sqrt_mass_lt_norm` lemma converts squared mass below `107/100`
+to norm below `26/25`. These are arithmetic implications; they do not supply
+the actual Gaussian input estimates or a floating-point operation model.
+`Q0NodeMassLedgerSharpAudit` rejects dependencies beyond Lean's standard axioms.
+The definitions document the operation-path budget `749 = 2*32+10+675`,
+the node/pair/raw-coordinate square-root allowances `147`, `179`, `2310`,
+the primary block/family norm caps `18`, `197`, the reflection factor `10/7`,
+and the separately allocated integration, omission and smoothing tolerances.
+Their source-model and analytic justification must be supplied by the consumers;
+these comments do not turn the historical numerical computation into a Lean input.
+
 **Phase-source denominator.** `PhiSourceDenBinding.source_common_den` proves
 by bounded source-chunk computation that the parsed production phase has
 common denominator `302002543697172916153771578242367488000`.
@@ -495,6 +511,16 @@ their complete coverage of the gaps between the original profile neighborhoods
 and the selected tubes. Combining these checks with the existing outer-profile
 theorem gives `|κ(s)| > 1/1000` on every closed nonselected strip. Consequently
 `α x² + κ(s)² > 10⁻⁶` for `α ≥ 0`, uniformly in the reciprocal coordinate.
+
+`ProfilePiFactorLower` and `ProfilePiFactorUpper` certify rational bounds for π
+from 272 nested-square-root steps, using Mathlib's proved `pi_lower_bound` and
+`pi_upper_bound` tactics. The recipe uses a 1152-bit witness grid and 512-bit
+output endpoints. `ProfilePiFactor` derives bounds for `sqrt(π)` and
+`sqrt(sqrt(π))` by exact rational square and fourth-power checks. Each interval
+has width at most `2⁻⁵¹²`; the transitive guard permits only the standard three
+Lean axioms. These are actual normalization constants, with no numerical bound
+assumed. The complete actual-node profile and shifted-parameter intervals
+remain to be certified.
 The gap data share the same tracked input and generator as the radial cuts;
 the checker uses kernel reduction and introduces no native facts.
 

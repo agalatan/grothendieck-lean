@@ -38,6 +38,11 @@ and energy-table accuracy remain to be proved.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
+The source-node rounding ledger verifies its exact rational arithmetic and
+transfers a squared-mass cap to a norm cap. Its application to the actual
+Gaussian coefficient table still requires the input estimates and the
+operation-error model; it does not complete the upper endpoint.
+
 \begin{abstract}
 Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
 true optimum. The best constant in the complex case, $\KG$, has been known since 1987 to lie roughly in $[1.338,1.405]$; its
@@ -233,6 +238,11 @@ interval multiplication accounts for normalization. Complete leaf
 certificates and rational endpoint checks then imply the coefficient bounds
 consumed by the original bands. The numerical leaf and energy certificates
 remain work in progress.
+
+Separate rational intervals enclose $\pi$, $\sqrt{\pi}$ and
+$\sqrt{\sqrt{\pi}}$ with width at most $2^{-512}$ for profile normalization.
+The certificates use proved nested-square-root bounds for $\pi$ and exact
+rational inequalities. Complete transformed node-shift intervals remain open.
 
 Exact midpoint identities also combine already certified subtree intervals.
 The normalized coefficient can be assembled from the fourteen resulting
