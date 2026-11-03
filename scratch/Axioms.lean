@@ -643,6 +643,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.BandedContraction.sum_sq_error_of_block_ratios
 #print axioms Grothe.UpperChaos.Bm_eq_integral
 #print axioms Grothe.UpperChaos.Bm_polyKernel
+#print axioms Grothe.UpperChaos.CanonicalReconstructionNorm.full_head_reconstruction_norm_le
 #print axioms Grothe.UpperChaos.CommonDenAppend.commonDen_append
 #print axioms Grothe.UpperChaos.ConcreteRetainedBands.first_degree
 #print axioms Grothe.UpperChaos.ConcreteRetainedBands.first_error
@@ -660,6 +661,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.ConditionalNodeIndices.mem_rows
 #print axioms Grothe.UpperChaos.ConditionalNodeIndices.mode_injective
 #print axioms Grothe.UpperChaos.ConditionalNodeIndices.storage_bounds
+#print axioms Grothe.UpperChaos.ConditionalReconstruction.reconstruct_actual
+#print axioms Grothe.UpperChaos.ConditionalReconstruction.weighted_top_norm_le_of_canonical_error
 #print axioms Grothe.UpperChaos.D_le_span_H
 #print axioms Grothe.UpperChaos.DirectSample.upper_of_DFT_ledger
 #print axioms Grothe.UpperChaos.DirectSample.upper_of_actual_head
@@ -672,6 +675,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.coefficient_conj
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.coefficient_eq_signed
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.coefficient_im_eq_zero
+#print axioms Grothe.UpperChaos.F0ConditionalEvaluator.coefficient_zero_of_profile_zero
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.hfun_neg
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.norm_canonicalCoefficient_le_one
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.norm_canonicalCoefficient_sub_real
@@ -682,6 +686,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.production_canonical_indices
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.production_reflected_coefficient
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.production_reflected_indices
+#print axioms Grothe.UpperChaos.F0ConditionalEvaluator.production_reflection_factor_le_one
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.profileScale_pos
 #print axioms Grothe.UpperChaos.F0ConditionalEvaluator.storage_raising_constant_lt
 #print axioms Grothe.UpperChaos.F0ConditionalNode.coefficient_eq_integral
@@ -699,6 +704,25 @@ import Grothe
 #print axioms Grothe.UpperChaos.F0ConditionalSeed.coefficient_zero_row
 #print axioms Grothe.UpperChaos.F0ConditionalSeed.coefficient_zero_row_step
 #print axioms Grothe.UpperChaos.F0ConditionalSeed.coefficient_zero_zero
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.actualEntry_eq_finiteMoment
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.actualEntry_eq_matrixMoment2
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.actualEntry_eq_matrixRecurrence
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.actualEntry_gradedMode
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.actualGradeMatrix_approx_error
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.actualGradeMatrix_eq
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.actualGradeMatrix_error_of_entries
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.inner_smooth_gradedHermite_eq_matrix
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.matrixMoment2_common_denominator
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.matrixMoment2_eq_coefficient
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.matrixMoment2_eq_sum
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.moment_creation_mul
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.normalizedEntryAt_relative_error
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.production_grade_error
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.production_matrix_interval
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.production_saved_entry_error
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.production_smoothing_error
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.smoothing_lower_scalars_relative
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.symmetricEntry_savedEntryQ_error
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.actualEntry_linearMode
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_one_zero
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_zero_one
@@ -1708,6 +1732,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.RationalSourceParity.totalParity_rename
 #print axioms Grothe.UpperChaos.RationalSourceParity.totalParity_unitSourceQ
 #print axioms Grothe.UpperChaos.RationalSourceParity.totalParity_unitSourceQ_mul_X
+#print axioms Grothe.UpperChaos.RationalSqrtFloor.norm_sub_sqrtFloor_le
 #print axioms Grothe.UpperChaos.RationalSquaredRadius.evalWickQ_monomial
 #print axioms Grothe.UpperChaos.RationalSquaredRadius.eval_squareRadiusQ
 #print axioms Grothe.UpperChaos.RationalSquaredRadius.eval_unitWickQ_sq
