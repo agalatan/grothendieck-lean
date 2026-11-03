@@ -420,6 +420,15 @@ of the actual scaled source norm and an upper bound for the full weighted
 matrix energy. Its arithmetic enclosure, Hilbert--Schmidt caps, historical
 Laguerre binding and the final endpoint remain open.
 
+The rational source continuation constructs the literal multiplier polynomial
+before diagonal gate scaling, proves its exact coefficients and support after
+scaling, and reifies the finite correlated-moment evaluator over rationals.
+The finite moment-scaling identity retains both complex Gaussian Jacobian
+factors. These are WIP proof bodies awaiting compilation. The remaining
+variance-scaled Gram binding and arithmetic enclosures are not assumed or
+claimed by these results; historical numerical files are not proof inputs.
+
+
 For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
 `QuadraticPolynomialIntegrability` proves genuine joint polynomial
 integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate

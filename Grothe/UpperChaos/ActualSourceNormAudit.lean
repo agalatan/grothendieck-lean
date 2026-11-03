@@ -1,3 +1,7 @@
+import Grothe.UpperChaos.ActualRationalSourcePolynomial
+import Grothe.UpperChaos.ActualSourceCoefficientScaling
+import Grothe.UpperChaos.QuadraticMomentScaling
+import Grothe.UpperChaos.RationalQuadraticMoments
 import Grothe.UpperChaos.ActualSourceNormEvaluation
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
@@ -17,6 +21,26 @@ open Lean Elab Command
 run_cmd do
   let allowed : Array Name := #[`propext, `Classical.choice, `Quot.sound]
   let targets : Array Name := #[
+    ``Grothe.UpperChaos.ActualRationalSourcePolynomial.rateQ_cast,
+    ``Grothe.UpperChaos.ActualRationalSourcePolynomial.scaleHom_C,
+    ``Grothe.UpperChaos.ActualRationalSourcePolynomial.scaleHom_X,
+    ``Grothe.UpperChaos.ActualRationalSourcePolynomial.map_liftedMomentQ,
+    ``Grothe.UpperChaos.ActualRationalSourcePolynomial.map_insertedPolynomialQ,
+    ``Grothe.UpperChaos.ActualRationalSourcePolynomial.multiplierPolynomial_support,
+    ``Grothe.UpperChaos.ActualRationalSourcePolynomial.scaleHom_rationalSourcePolynomial,
+    ``Grothe.UpperChaos.ActualSourceCoefficientScaling.scaleHom_monomial,
+    ``Grothe.UpperChaos.ActualSourceCoefficientScaling.coeff_scaleHom,
+    ``Grothe.UpperChaos.ActualSourceCoefficientScaling.sourceScale_pos,
+    ``Grothe.UpperChaos.ActualSourceCoefficientScaling.coefficientScale_ne_zero,
+    ``Grothe.UpperChaos.ActualSourceCoefficientScaling.support_scaleHom,
+    ``Grothe.UpperChaos.ActualSourceCoefficientScaling.actualSourcePolynomial_coeff,
+    ``Grothe.UpperChaos.ActualSourceCoefficientScaling.actualSourcePolynomial_support,
+    ``Grothe.UpperChaos.QuadraticMomentScaling.momentValue_scale_mul,
+    ``Grothe.UpperChaos.QuadraticMomentScaling.momentValue_scale,
+    ``Grothe.UpperChaos.QuadraticMomentScaling.momentValue_sqrt_scale,
+    ``Grothe.UpperChaos.RationalQuadraticMoments.cast_wickCoeff,
+    ``Grothe.UpperChaos.RationalQuadraticMoments.cast_momentValue,
+
     ``Grothe.UpperChaos.ActualSourceNormEvaluation.gramValue_actual_eq_sourceNormValue,
     ``Grothe.UpperChaos.ActualSourceNormEvaluation.integral_scaledTransform_sq_eq_value,
     ``Grothe.UpperChaos.ActualSourceNormEvaluation.pairGram_eq_gatePairValue,

@@ -1568,3 +1568,12 @@ checks every law certificate, the original canonical reference map, every final
 box and the guillotine partition. `--check` reproduces `LawNodeData.lean` and
 `RefinedCoverData.lean` byte for byte. The original pure-row batch stays at index
 21; the three mixed nodes form batch 22. No checker-core or heavy cap source changes.
+
+
+The rational source continuation constructs the literal multiplier polynomial
+before diagonal gate scaling, proves its exact coefficients and support after
+scaling, and reifies the finite correlated-moment evaluator over rationals.
+The finite moment-scaling identity retains both complex Gaussian Jacobian
+factors. These are WIP proof bodies awaiting compilation. The remaining
+variance-scaled Gram binding and arithmetic enclosures are not assumed or
+claimed by these results; historical numerical files are not proof inputs.
