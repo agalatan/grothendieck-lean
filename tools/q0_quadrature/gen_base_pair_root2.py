@@ -29,6 +29,7 @@ def main():
                 raise SystemExit('root 2 trace is not reproducible')
         else:
             TRACE.write_text(raw)
+    outputs = {}
     for name, text in shared.generate(TRACE.read_bytes(), recipe).items():
         name = name.replace('Q0BasePairRoot10', 'Q0BasePairRoot2')
         text = (text.replace('Q0BasePairRoot10', 'Q0BasePairRoot2')
@@ -37,6 +38,9 @@ def main():
                              'All twenty-four actual cell integrals of root 2')
                     .replace('Root 10 integral audit', 'Root 2 integral audit')
                     .replace('gen_base_pair_root10.py', 'gen_base_pair_root2.py'))
+        outputs[name] = text
+    shared.check_output_inventory(ROOT / 'Grothe/UpperChaos', outputs)
+    for name, text in outputs.items():
         path = ROOT / 'Grothe/UpperChaos' / name
         if args.check:
             if not path.exists() or path.read_text() != text:

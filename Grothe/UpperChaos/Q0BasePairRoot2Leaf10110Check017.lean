@@ -1,0 +1,39 @@
+import Grothe.UpperChaos.Q0BasePairRoot2Leaf10110Check016
+
+/-! Generated bounded arithmetic block (4 closed operations, maximum 4).
+tools/q0_quadrature/gen_base_pair_checks.py; Agent-ID: codex-aa04. -/
+namespace Grothe.UpperChaos.Q0BasePairRoot2Leaf10110
+open LeanCert.Core RectangleCoefficientArithmetic RectangleModelCheck RectangleHornerTrace
+set_option maxRecDepth 100000
+set_option maxHeartbeats 0
+theorem gaussianHorner5_mul_checked :
+    mulOK gaussianTail6.output gaussianCertificate.delta gaussianproduct5 (965153484022728479597821340844026667 / 91343852333181432387730302044767688728495783936) = true := by
+  decide +kernel
+
+theorem gaussianHorner5_add_checked :
+    addOK gaussianproduct5 (constant (30240 / 1)) gaussianresult5 (0 / 1) = true := by
+  decide +kernel
+
+theorem gaussianHorner5_checked :
+    gaussianTail5.check gaussianCertificate.delta [constant (30240 / 1), constant (5040 / 1), constant (720 / 1), constant (90 / 1), constant (10 / 1), constant (1 / 1)] = true := by
+  exact Trace.check_cons gaussianCertificate.delta (constant (30240 / 1))
+    [constant (5040 / 1), constant (720 / 1), constant (90 / 1), constant (10 / 1), constant (1 / 1)]
+    gaussianproduct5 gaussianresult5 (965153484022728479597821340844026667 / 91343852333181432387730302044767688728495783936) (0 / 1) gaussianTail6
+    gaussianHorner6_checked gaussianHorner5_mul_checked gaussianHorner5_add_checked
+
+theorem gaussianHorner4_mul_checked :
+    mulOK gaussianTail5.output gaussianCertificate.delta gaussianproduct4 (139112409356607331955346952386706350567 / 730750818665451459101842416358141509827966271488) = true := by
+  decide +kernel
+
+theorem gaussianHorner4_add_checked :
+    addOK gaussianproduct4 (constant (151200 / 1)) gaussianresult4 (0 / 1) = true := by
+  decide +kernel
+
+theorem gaussianHorner4_checked :
+    gaussianTail4.check gaussianCertificate.delta [constant (151200 / 1), constant (30240 / 1), constant (5040 / 1), constant (720 / 1), constant (90 / 1), constant (10 / 1), constant (1 / 1)] = true := by
+  exact Trace.check_cons gaussianCertificate.delta (constant (151200 / 1))
+    [constant (30240 / 1), constant (5040 / 1), constant (720 / 1), constant (90 / 1), constant (10 / 1), constant (1 / 1)]
+    gaussianproduct4 gaussianresult4 (139112409356607331955346952386706350567 / 730750818665451459101842416358141509827966271488) (0 / 1) gaussianTail5
+    gaussianHorner5_checked gaussianHorner4_mul_checked gaussianHorner4_add_checked
+
+end Grothe.UpperChaos.Q0BasePairRoot2Leaf10110

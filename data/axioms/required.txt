@@ -1574,6 +1574,7 @@ Grothe.UpperChaos.RectangleCoefficientArithmetic.product_model_sound
 Grothe.UpperChaos.RectangleCoefficientArithmetic.rowNorm_nonneg
 Grothe.UpperChaos.RectangleCoordinates.x_sound
 Grothe.UpperChaos.RectangleCoordinates.y_sound
+Grothe.UpperChaos.RectangleHornerTrace.Trace.check_cons
 Grothe.UpperChaos.RectangleHornerTrace.Trace.rational_sound
 Grothe.UpperChaos.RectangleHornerTrace.Trace.sound
 Grothe.UpperChaos.RectangleModelCheck.add_sound
