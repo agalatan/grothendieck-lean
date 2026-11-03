@@ -51,9 +51,10 @@ theorem bandExcludedEnergyTerm_le (g : Gate) (b : GrotheKernel.ComparisonBand)
   by_cases h : mn.1 ∈ bandModes b ∧ g.cutoff < coordinateExponent mn.2 g.coordinate
   · have hm : outputDegree mn.1 ≤ g.degree :=
       (outputDegree_le_of_mem_bandModes b hhi mn.1 h.1).trans hD
-    simp only [bandExcludedEnergyTerm, if_pos h, excludedEnergyTerm, if_pos ⟨hm, h.2⟩]
+    simp only [bandExcludedEnergyTerm, ite_eq_left h, excludedEnergyTerm,
+      ite_eq_left (And.intro hm h.2)]
     exact le_rfl
-  · simpa only [bandExcludedEnergyTerm, if_neg h] using excludedEnergyTerm_nonneg g mn
+  · simpa only [bandExcludedEnergyTerm, ite_eq_right h] using excludedEnergyTerm_nonneg g mn
 
 /-- Actual finite-band matrix energy obeys the same coordinate-tail budget. -/
 theorem finite_bandExcludedEnergy_le (g : Gate) (hg : gateOK g = true)

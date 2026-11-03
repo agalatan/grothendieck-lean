@@ -75,7 +75,8 @@ theorem finite_selectedBand_entryEnergy_le (b : Fin 14)
       intro m hm
       apply Finset.sum_congr rfl
       intro n hn
-      simp only [bandRectangleExcludedEnergyTerm, if_pos ⟨hout m hm, hin n hn⟩]
+      simp only [bandRectangleExcludedEnergyTerm,
+        ite_eq_left (And.intro (hout m hm) (hin n hn))]
     _ ≤ _ := finite_bandRectangleExcludedEnergy_le (selectedQuartet b)
       (comparisonBand (selectedBand b)) (selectedBand_hi_ne_zero b) le_rfl
       (outputs ×ˢ inputs)

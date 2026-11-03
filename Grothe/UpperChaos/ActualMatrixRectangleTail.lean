@@ -92,12 +92,12 @@ theorem rectangleExcludedEnergyTerm_le_sum (G : GateQuartet power degree)
       simpa only [G.cutoff_eq i, G.coordinate_eq i] using hi
     have he : rectangleExcludedEnergyTerm power degree mn =
         excludedEnergyTerm (G.gate i) mn := by
-      simp only [rectangleExcludedEnergyTerm, if_pos h, excludedEnergyTerm,
-        if_pos ⟨hm, hn⟩, G.power_eq i]
+      simp only [rectangleExcludedEnergyTerm, ite_eq_left h, excludedEnergyTerm,
+        ite_eq_left (And.intro hm hn), G.power_eq i]
     rw [he]
     exact Finset.single_le_sum (fun j _ => excludedEnergyTerm_nonneg (G.gate j) mn)
       (Finset.mem_univ i)
-  · rw [rectangleExcludedEnergyTerm, if_neg h]
+  · rw [rectangleExcludedEnergyTerm, ite_eq_right h]
     exact Finset.sum_nonneg fun i _ => excludedEnergyTerm_nonneg (G.gate i) mn
 
 /-- Every finite rectangle-complement block is bounded by four exact source norms. -/
@@ -152,10 +152,10 @@ theorem bandRectangleExcludedEnergyTerm_le (power degree : ℕ)
   by_cases h : mn.1 ∈ bandModes b ∧ ¬ inputRectangle mn.2
   · have hm : outputDegree mn.1 ≤ degree :=
       (outputDegree_le_of_mem_bandModes b hhi mn.1 h.1).trans hD
-    simp only [bandRectangleExcludedEnergyTerm, if_pos h, rectangleExcludedEnergyTerm,
-      if_pos ⟨hm, h.2⟩]
+    simp only [bandRectangleExcludedEnergyTerm, ite_eq_left h, rectangleExcludedEnergyTerm,
+      ite_eq_left (And.intro hm h.2)]
     exact le_rfl
-  · simpa only [bandRectangleExcludedEnergyTerm, if_neg h] using
+  · simpa only [bandRectangleExcludedEnergyTerm, ite_eq_right h] using
       rectangleExcludedEnergyTerm_nonneg power degree mn
 
 theorem finite_bandRectangleExcludedEnergy_le (G : GateQuartet power degree)
