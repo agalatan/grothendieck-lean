@@ -232,60 +232,6 @@ is charged once for the complete vector. Its integer square-root rounding
 and error proof use only the standard logical axioms. The retained Gaussian
 coefficient enclosures and full energy-table agreement remain work in progress.
 
-The actual-source consumer projects F₀ to total degree 501, identifies its
-complete coefficient-error norm, inserts the frozen correction once, and then
-applies the proved smoothing error. `CompositeComparison` splits the actual
-response difference into seven pieces and charges the quadratic error using
-the four whole residuals. It derives the relaxed selected-head budget from
-explicit raw-F₀ error `9.5·10⁻⁹`, rational-output table fit `10⁻⁸`, three low-band
-Gaussian estimates and three whole-source inner-product bounds. Those
-numerical and Gaussian premises remain open; this is a conditional head theorem.
-An alternative conditional consumer, `RelaxedComparison`, retains the original
-fourteen Gaussian finite-band estimates and all eighteen comparison pieces.
-It absorbs the same `3·10⁻⁸` energy-table discrepancy by increasing only the
-response band-mass norm radii by `1/5000`, giving comparison cost `9·10⁻⁷`.
-With a separate actual Hardy tail of `3.6748·10⁻⁸`, its scalar ledger supports
-the candidate upper bound `1.4045984`. The Gaussian, source, same-output table
-and tail certificates remain required; this is not a completed endpoint.
-The constructive dyadic reference completes canonical coefficients using
-integer square-root floors at denominator `2⁵⁴` and exact rational products.
-Its coupled completion error follows from the actual source norm; table
-agreement must be certified for that exact output family.
-`CommonSourceTolerance` also consumes a total canonical tensor norm error
-`9.7·10⁻⁸`, a separately bounded dyadic completion defect, and same-output
-table error `10⁻⁷`, to give selected energy error `4·10⁻⁷`. The raw and
-projected L² allowances are `1.4·10⁻⁷` and `1.45·10⁻⁷`; the existing relative
-smoothing reserve is charged once. `CommonGaussianTailTolerance` recomputes
-all three captured tails when each original unscaled finite Gaussian radius
-is increased by `2·10⁻⁸`. These conditional interfaces preserve the original
-contracts and leave the actual source, table and Gaussian estimates open.
-The work-in-progress degree-one table slice uses both pinned binary64 source
-words, the frozen correction once and the exact production rational matrix.
-Its proposed `retained_table_residual` compares both actual retained-output
-energies with the current parsed table within `10⁻¹⁵`, leaving higher source
-grades unrestricted. The current-source parser certificate preserves duplicate
-contributions and uses the shared single-character delimiter theorem. This
-slice still needs Lean acceptance; it supplies no Gaussian source-accuracy
-certificate.
-
-`ProductionF0Radial` removes the remaining Gaussian angle from every retained
-tensor coefficient by exact charge cancellation. It expresses the full source
-error using the actual conditional coefficients at `sqrt(s)` with density
-`exp(-s)` once, without dividing by the profile or assuming a quadrature rule.
-The continuous omission route uses one indicator for all three supplied root
-gaps together with `s > 100`. With total gap width at most `8·10⁻¹⁶` beyond
-`s = 13`, their mass plus `exp(-100)` fits the same `45·10⁻¹²` L² reserve.
-The regular-source input must approximate the entire complementary source;
-selected quadrature panels alone do not establish that input. This argument
-concerns F₀ and supplies no Taylor-source or Hardy tail estimate.
-
-`ProductionF0Reconstruction` carries the triangular reflection through the
-actual primary radial contraction. The full Gaussian source error is at most
-`10/7` times its coupled canonical tensor error plus the norm of the discrepancy
-between exact square-root completion and the stored rational coefficients.
-That discrepancy requires its own numerical certificate; it is not assumed zero.
-These two actual error quantities also feed the selected-energy and head consumers.
-
 LeanCert is a pinned dependency. `UpperChaos/LeanCertPilot.lean` uses its
 dyadic interval integrator to enclose a conditional Gaussian slice integral
 on `[0,1]` in `[1,5/4]`. The explicit 16-cell certificate uses `decide +kernel`;
@@ -444,12 +390,38 @@ completion of the selected 31,877-mode vector has weighted error at most
 `10/7` times the canonical error at the same nodes and weights. The canonical
 error, physical weights, primary contraction, floating operations and final
 energy-table agreement still need their own certificates.
-
 `LinearTiltedMoments` evaluates finite polynomials in `z` and `conj z` under
 `exp(-(rate-1)*normSq z + 2*Re(a*z))` for every positive `rate` and fixed complex
 source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
 Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
 A half-rate majorant proves integrability of every such polynomial insertion.
+`IndependentSourceMoments` extends absolute integrability to arbitrary
+independent complex sources `a,b` in `exp(-(rate-1)*normSq z+a*z+b*conj z)`.
+Its majorant is uniform on bounded source sets, so complex differentiation
+in either source inserts `z` or `conj z`. `IndependentSourcePolynomial`
+evaluates every finite polynomial insertion by a polynomial recurrence,
+retaining the factor `exp(a*b/rate)/rate` and the means `b/rate`, `a/rate`.
+These source formulas do not identify the actual multiplier or the weighted
+Fock operator, and supply no numerical Hilbert--Schmidt caps.
+For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
+`QuadraticPolynomialIntegrability` proves genuine joint polynomial
+integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate
+is `(A*C-B²)/(A+C)`. `QuadraticPolynomialMoments` then applies Fubini and
+reduces every finite mixed polynomial integral to a finite Wick sum at the
+remaining rate `(A*C-B²)/A`; its zeroth mass is `1/(A*C-B²)`.
+The historical operator identity and polynomial insertion into the full
+bipartite kernel remain separate obligations.
+
+The weighted Gaussian kernel has exact mass formulas. A common `gateOK`
+certificate supplies the real covariance conditions for either physical pair.
+`OriginalHSGaussianMass.integral_gateWeight` gives pair mass `ν²/δ`, and
+`OriginalHSGaussianTensor.integral_tensorWeight` gives the product mass
+`ν⁴/(δ₀δ₁)`, with genuine integrability proved before Fubini.
+The parameter table covers the fourteen selected finite bands and four
+coordinate exclusions. Its checks prove positivity, not the numerical tail
+bounds recorded in the input files. The defined kernel is not yet identified
+with `HS_{j,I}` in `docs/UPPER_STATUS.md`; polynomial insertion, the Fock
+coefficient identity and numerical Hilbert--Schmidt bounds remain separate.
 Joint integrability when the source depends on another integration variable
 remains a separate obligation before Fubini can be applied.
 
