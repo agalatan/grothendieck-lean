@@ -1,6 +1,5 @@
 import Grothe.UpperChaos.ZeroProfileSavedCenter
-import Grothe.UpperChaos.FiniteSampleError
-import Grothe.Upper.WeightedUnion
+import Grothe.UpperChaos.Q0FiniteVectorError
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
@@ -30,7 +29,7 @@ theorem coefficient_linear_error_sq_le
     (s : ℝ) (hs : 0 < s) (S : Finset (ℕ × ℕ)) :
     (∑ i ∈ S, ‖coefficient s i - linearCoefficient s i‖ ^ 2) ≤
       (5 * signedProfileRatio s ^ 2) ^ 2 := by
-  apply DirectSample.finite_orthonormal_sample_error hvec orthonormal_hvec
+  apply Q0FiniteVectorError.finite_orthonormal_sample_error hvec orthonormal_hvec
     (phaseSliceLp s - linearSliceLp s) S
     (fun i => coefficient s i - linearCoefficient s i)
     (5 * signedProfileRatio s ^ 2) (by positivity)
@@ -61,7 +60,7 @@ theorem linear_parameter_error_sq_le
       _ = |signedProfileRatio s - r| := by
         rw [orthonormal_hvec.norm_eq_one (1, 0), orthonormal_hvec.norm_eq_one (0, 1)]
         ring
-  apply DirectSample.finite_orthonormal_sample_error hvec orthonormal_hvec x S
+  apply Q0FiniteVectorError.finite_orthonormal_sample_error hvec orthonormal_hvec x S
     (fun i => linearCoefficient s i - linearCenter r i)
     |signedProfileRatio s - r| (abs_nonneg _) hx
   intro i _
@@ -79,7 +78,7 @@ private theorem coefficient_model_error_sq_le
       (∑ i ∈ S, ‖linearCenter r i - linearCoefficient s i‖ ^ 2) ≤
         |signedProfileRatio s - r| ^ 2 := by
     simpa only [norm_sub_rev] using linear_parameter_error_sq_le s r S
-  have h := Grothe.Upper.BandComparison.sum_norm_sub_sq_le S
+  have h := Q0FiniteVectorError.sum_norm_sub_sq_le S
     (fun i => coefficient s i - linearCoefficient s i)
     (fun i => linearCenter r i - linearCoefficient s i)
     (5 * signedProfileRatio s ^ 2) |signedProfileRatio s - r|
@@ -99,7 +98,7 @@ theorem actual_saved_error_sq_le
       (5 * signedProfileRatio s ^ 2 + |signedProfileRatio s - r| + ε) ^ 2 := by
   have hcenter' : (∑ i ∈ S, ‖center i - linearCenter r i‖ ^ 2) ≤ ε ^ 2 := by
     simpa only [norm_sub_rev] using hcenter
-  have h := Grothe.Upper.BandComparison.sum_norm_sub_sq_le S
+  have h := Q0FiniteVectorError.sum_norm_sub_sq_le S
     (fun i => coefficient s i - linearCenter r i)
     (fun i => center i - linearCenter r i)
     (5 * signedProfileRatio s ^ 2 + |signedProfileRatio s - r|) ε
