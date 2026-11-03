@@ -61,13 +61,14 @@ argument, in that order. The inverse-rate factor already present in the
 literal is preserved.
 
 `Q0SourceChunkAssembly` combines the actual source partition, chunk tables and
-denominators; `Q0LiteralBinaryFold` checks the finite literal recombination.
+denominators; `Q0BinaryLiteralAssemblyBridge.combined_literals_eq` has the kernel fold the chunk
+tables into the literal source coefficients directly.
 `Q0SourceBindingAxiomAudit` rejects any transitive axiom outside `propext`,
 `Classical.choice`, and `Quot.sound` for these concrete facts and the final
-identity. The `gen_q0_literal_data.py`, `gen_q0_source_chunks.py`,
-`gen_q0_chunk_assembly.py --module-name Q0SourceChunkAssembly`, and
-`gen_q0_literal_fold.py` tools reproduce the candidate files with `--check`;
-their Python calculations do not replace Lean's proof checks. The binding
+identity. The `gen_q0_literal_data.py`, `gen_q0_source_chunks.py` and
+`gen_q0_chunk_assembly.py --module-name Q0SourceChunkAssembly` tools reproduce
+the candidate files with `--check`; their Python calculations do not replace
+Lean's proof checks. The binding
 generators use `data/q0-source-binding/source-polynomial.json`;
 the production rectangle generators retain their profile-enriched input under
 `data/q0_quadrature/`. The shared source fields agree in both inputs.

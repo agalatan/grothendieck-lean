@@ -8,10 +8,8 @@ open Lean Elab Command
 run_cmd do
   let allowed : Array Name := #[`propext, `Classical.choice, `Quot.sound]
   let targets : Array Name := #[
-    ``Grothe.UpperChaos.Q0BinaryLiteralAssemblyBridge.copied_literals_eq,
     ``Grothe.UpperChaos.Q0BinaryLiteralAssemblyBridge.combined_literals_eq,
     ``Grothe.UpperChaos.Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal,
-    ``Grothe.UpperChaos.Q0LiteralBinaryFold.fold_eq_literal,
     ``Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_cover,
     ``Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_chunk_denominators,
     ``Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_denominator_lcm,
