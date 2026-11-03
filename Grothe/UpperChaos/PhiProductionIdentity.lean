@@ -1,4 +1,8 @@
-import Grothe.UpperChaos.Rounder
+import Grothe.UpperChaos.PhiProductionDefs
+import Grothe.UpperChaos.PhiCover
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.NormNum
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
