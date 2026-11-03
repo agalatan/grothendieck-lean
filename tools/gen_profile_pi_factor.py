@@ -160,7 +160,9 @@ theorem pi_quarter_bounds :
 
 theorem pi_quarter_width :
     (piQuarterHi : ℝ) - (piQuarterLo : ℝ) ≤ (1 : ℝ) / 2^{bits} := by
-  exact_mod_cast width_checks.2.2
+  have h := (Rat.cast_le (K := ℝ)).mpr width_checks.2.2
+  simpa only [Rat.cast_sub, Rat.cast_div, Rat.cast_one, Rat.cast_pow,
+    Rat.cast_ofNat] using h
 
 open Lean Elab Command
 run_cmd do
