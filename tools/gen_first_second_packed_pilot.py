@@ -160,16 +160,22 @@ def generate() -> dict[Path, str]:
                         f'namespace Grothe.UpperChaos.{leaf}',
                         'set_option maxRecDepth 65536',
                         'set_option maxHeartbeats 2000000', '',
+                        f'def text : String := {json.dumps(text)}',
                         f'def chars : List Char := {lean_chars(text)}',
                         f'def values : List ℤ := [{value_text}]', '',
+                        'theorem source_string : text = String.ofList chars := by decide +kernel', '',
+                        'theorem source_chars : text.toList = chars := by',
+                        '  rw [source_string, String.toList_ofList]', '',
                         'theorem nonempty : chars ≠ [] := by decide +kernel',
                         'theorem decoded : PackedDyadic.Structural.row? 206 chars = some values := by',
                         '  decide +kernel', '',
                         f'end Grothe.UpperChaos.{leaf}', '',
                         'open Lean Elab Command', 'run_cmd do',
-                        f'  for ax in ← Lean.collectAxioms ``Grothe.UpperChaos.{leaf}.decoded do',
-                        '    unless #[`propext, `Classical.choice, `Quot.sound].contains ax do',
-                        '      throwError m!"packed source leaf has forbidden axiom {ax}"', '']
+                        f'  for target in #[``Grothe.UpperChaos.{leaf}.source_chars,',
+                        f'      ``Grothe.UpperChaos.{leaf}.decoded] do',
+                        '    for ax in ← Lean.collectAxioms target do',
+                        '      unless #[`propext, `Classical.choice, `Quot.sound].contains ax do',
+                        '        throwError m!"{target} has forbidden axiom {ax}"', '']
                     files[LEAN / f'{leaf}.lean'] = '\n'.join(leaf_lines)
                 lines += [f'private def text{tag} : List Char := {leaf}.chars',
                           f'private def values{tag} : List ℤ := {leaf}.values']
@@ -206,14 +212,18 @@ def generate() -> dict[Path, str]:
                 lines += ['']
             texts = joined(text_names, "',' :: ")
             vals = joined(value_names, '')
+            source_texts = joined([f'{leaf}.text' for leaf in leaf_imports], '\",\" ++ ')
+            source_rules = ',\n      '.join(f'{leaf}.source_chars' for leaf in leaf_imports)
             actual_string = f'({name}CenterPackedChunks[{index}]?.getD "")'
             actual = f'{actual_string}.toList'
             lines += [f'def values : List ℤ := {vals}', '',
                       f'private theorem source_string : {actual_string} =',
-                      f'    String.ofList ({texts}) := by',
+                      f'    {source_texts} := by',
                       '  decide +kernel', '',
+                      'private theorem comma_chars : ",".toList = [\',\'] := by decide +kernel', '',
                       f'theorem source_chars : {actual} =', f'    {texts} := by',
-                      '  rw [source_string, String.toList_ofList]', '',
+                      '  simpa only [String.toList_append, comma_chars,',
+                      f'      {source_rules}] using congrArg String.toList source_string', '',
                       f'theorem decoded : row? 206 {actual} = some values := by',
                       '  rw [source_chars]', '  exact joined000', '']
             lines += ['/-- The public decoder on these actual bytes, via the delimiter theorem. -/',

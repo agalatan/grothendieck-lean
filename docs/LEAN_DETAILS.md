@@ -1501,7 +1501,10 @@ therefore transfers the unchanged public parser without delimiter hypotheses.
 public parser's result on the complete last first-center chunk: 460 records
 from `firstCenterPackedChunks[253]?.getD ""`. Its source equality refers to
 that original array. Fifteen bounded character-list certificates assemble the
-integer values, and transitive guards allow only the standard three axioms.
+integer values. Each bounded leaf certifies its literal string encoding;
+`String.toList_append` composes these into the complete original source,
+without encoding one monolithic character list. Transitive guards allow only
+the standard three axioms.
 `tools/gen_first_second_packed_pilot.py` reproduces the certificate from the
 pinned source-file and chunk bytes; `tools/check_packed_source_chunk.sh` checks
 the retained parser regressions, chunk composition and actual source theorem

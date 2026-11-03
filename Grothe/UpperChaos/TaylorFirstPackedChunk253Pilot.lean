@@ -235,12 +235,29 @@ private theorem joined000 : row? 206 (text000 ++ ',' :: (text001 ++ ',' :: (text
 def values : List ℤ := values000 ++ (values001 ++ (values002 ++ (values003 ++ (values004 ++ (values005 ++ (values006 ++ (values007 ++ (values008 ++ (values009 ++ (values010 ++ (values011 ++ (values012 ++ (values013 ++ (values014))))))))))))))
 
 private theorem source_string : (firstCenterPackedChunks[253]?.getD "") =
-    String.ofList (text000 ++ ',' :: (text001 ++ ',' :: (text002 ++ ',' :: (text003 ++ ',' :: (text004 ++ ',' :: (text005 ++ ',' :: (text006 ++ ',' :: (text007 ++ ',' :: (text008 ++ ',' :: (text009 ++ ',' :: (text010 ++ ',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014))))))))))))))) := by
+    TaylorFirstPackedChunk253StructuralLeaf000.text ++ "," ++ (TaylorFirstPackedChunk253PilotLeaf001.text ++ "," ++ (TaylorFirstPackedChunk253PilotLeaf002.text ++ "," ++ (TaylorFirstPackedChunk253PilotLeaf003.text ++ "," ++ (TaylorFirstPackedChunk253PilotLeaf004.text ++ "," ++ (TaylorFirstPackedChunk253PilotLeaf005.text ++ "," ++ (TaylorFirstPackedChunk253PilotLeaf006.text ++ "," ++ (TaylorFirstPackedChunk253PilotLeaf007.text ++ "," ++ (TaylorFirstPackedChunk253PilotLeaf008.text ++ "," ++ (TaylorFirstPackedChunk253PilotLeaf009.text ++ "," ++ (TaylorFirstPackedChunk253PilotLeaf010.text ++ "," ++ (TaylorFirstPackedChunk253PilotLeaf011.text ++ "," ++ (TaylorFirstPackedChunk253PilotLeaf012.text ++ "," ++ (TaylorFirstPackedChunk253PilotLeaf013.text ++ "," ++ (TaylorFirstPackedChunk253PilotLeaf014.text)))))))))))))) := by
   decide +kernel
+
+private theorem comma_chars : ",".toList = [','] := by decide +kernel
 
 theorem source_chars : (firstCenterPackedChunks[253]?.getD "").toList =
     text000 ++ ',' :: (text001 ++ ',' :: (text002 ++ ',' :: (text003 ++ ',' :: (text004 ++ ',' :: (text005 ++ ',' :: (text006 ++ ',' :: (text007 ++ ',' :: (text008 ++ ',' :: (text009 ++ ',' :: (text010 ++ ',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014)))))))))))))) := by
-  rw [source_string, String.toList_ofList]
+  simpa only [String.toList_append, comma_chars,
+      TaylorFirstPackedChunk253StructuralLeaf000.source_chars,
+      TaylorFirstPackedChunk253PilotLeaf001.source_chars,
+      TaylorFirstPackedChunk253PilotLeaf002.source_chars,
+      TaylorFirstPackedChunk253PilotLeaf003.source_chars,
+      TaylorFirstPackedChunk253PilotLeaf004.source_chars,
+      TaylorFirstPackedChunk253PilotLeaf005.source_chars,
+      TaylorFirstPackedChunk253PilotLeaf006.source_chars,
+      TaylorFirstPackedChunk253PilotLeaf007.source_chars,
+      TaylorFirstPackedChunk253PilotLeaf008.source_chars,
+      TaylorFirstPackedChunk253PilotLeaf009.source_chars,
+      TaylorFirstPackedChunk253PilotLeaf010.source_chars,
+      TaylorFirstPackedChunk253PilotLeaf011.source_chars,
+      TaylorFirstPackedChunk253PilotLeaf012.source_chars,
+      TaylorFirstPackedChunk253PilotLeaf013.source_chars,
+      TaylorFirstPackedChunk253PilotLeaf014.source_chars] using congrArg String.toList source_string
 
 theorem decoded : row? 206 (firstCenterPackedChunks[253]?.getD "").toList = some values := by
   rw [source_chars]
