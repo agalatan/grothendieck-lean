@@ -184,16 +184,6 @@ lemma tensor_j5 (f : ι → ι → ι → ℝ) (hf : ∀ a b c, f a b c = f b a 
   have hV0 := tenV_nonneg f
   linarith
 
-/-- The square root bounds from J1, including the zero case. -/
-lemma roots_le {s h x : ℝ} (hs : 0 ≤ s) (hh : 0 ≤ h) (hx : 0 ≤ x)
-    (hchi : x ^ 2 = 8 / 3 * s + 4 * h) :
-    Real.sqrt s ≤ 5 * x / 8 ∧ Real.sqrt h ≤ x / 2 := by
-  constructor
-  · have := Real.sq_sqrt hs
-    nlinarith [Real.sqrt_nonneg s]
-  · have := Real.sq_sqrt hh
-    nlinarith [Real.sqrt_nonneg h]
-
 /-- Weighted Young inequality with square roots. -/
 lemma young {s h t : ℝ} (hs : 0 ≤ s) (hh : 0 ≤ h) (ht : 0 < t) :
     2 * Real.sqrt s * Real.sqrt h ≤ t * s + h / t := by
