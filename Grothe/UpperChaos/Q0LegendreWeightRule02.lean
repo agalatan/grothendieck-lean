@@ -1,0 +1,34 @@
+import Grothe.UpperChaos.Q0LegendreWeightRule01
+
+/-! Generated LeanCert formula-weight enclosures.
+Actual Gauss rule and original fine weight intervals remain separate.
+Agent-ID: codex-aa04. -/
+open LeanCert.Core
+
+namespace Grothe.UpperChaos.Q0LegendreWeightRule02
+
+open Grothe.UpperChaos.Q0LegendreInteger
+
+def r00Input : IntervalRat :=
+  ⟨(-2634126318745856839997195949293142617849391950757203542140175216826044454514540482628082004863627892501137147615156536666192191119171239897926204508390627729618705351029392030489144103755791634 : ℚ) / 2^640, (-2634126318745856839997195949293142617849391950757203542140175216826044454514540482628082004863627892501137147615156536666192191119171239897926204508390627729618705351029392030489144103755791631 : ℚ) / 2^640, by decide +kernel⟩
+def r00Interval : IntervalDyadic := IntervalDyadic.ofIntervalRat r00Input (-256)
+def r00Upper : ℚ := 1000000000000000000000000000001 / 10^30
+
+theorem r00Lower : r00Interval.lo.toRat = (-66852593891193673711592939029082256448473667859554229807338111371513529404663 : ℚ) / 2^256 := by decide +kernel
+theorem r00Checked : weightCheck 1 r00Interval r00Upper = true := by decide +kernel
+theorem r00Bound {x : ℝ} (hx : x ∈ r00Input) : weight 1 x ≤ (r00Upper : ℝ) := by
+  exact weightCheck_sound 1 r00Interval r00Upper r00Checked
+    (IntervalDyadic.mem_ofIntervalRat hx (-256) (by decide))
+
+def r01Input : IntervalRat :=
+  ⟨(2634126318745856839997195949293142617849391950757203542140175216826044454514540482628082004863627892501137147615156536666192191119171239897926204508390627729618705351029392030489144103755791631 : ℚ) / 2^640, (2634126318745856839997195949293142617849391950757203542140175216826044454514540482628082004863627892501137147615156536666192191119171239897926204508390627729618705351029392030489144103755791634 : ℚ) / 2^640, by decide +kernel⟩
+def r01Interval : IntervalDyadic := IntervalDyadic.ofIntervalRat r01Input (-256)
+def r01Upper : ℚ := 1000000000000000000000000000001 / 10^30
+
+theorem r01Lower : r01Interval.lo.toRat = (66852593891193673711592939029082256448473667859554229807338111371513529404662 : ℚ) / 2^256 := by decide +kernel
+theorem r01Checked : weightCheck 1 r01Interval r01Upper = true := by decide +kernel
+theorem r01Bound {x : ℝ} (hx : x ∈ r01Input) : weight 1 x ≤ (r01Upper : ℝ) := by
+  exact weightCheck_sound 1 r01Interval r01Upper r01Checked
+    (IntervalDyadic.mem_ofIntervalRat hx (-256) (by decide))
+
+end Grothe.UpperChaos.Q0LegendreWeightRule02
