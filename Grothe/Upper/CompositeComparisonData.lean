@@ -62,13 +62,16 @@ theorem low_contains (g : Fin 3) (n m : ℕ) :
   fin_cases g <;>
     norm_num [lowBand, lowIndex, oldBand, highGroup, cutoff, comparisonBands,
       ComparisonBand.contains, Bool.and_eq_true, Bool.or_eq_true,
-      decide_eq_true_eq, beq_iff_eq] <;> omega
+      decide_eq_true_eq, beq_iff_eq]
 
 theorem high_contains (g : Fin 3) (n m : ℕ) :
     (highBand g).contains n m = true ↔ cutoff g < n + m := by
-  simp only [highBand, ComparisonBand.contains, Bool.and_eq_true,
-    Bool.or_eq_true, decide_eq_true_eq, beq_iff_eq]
-  simp
+  change (decide (cutoff g < n + m) && true) = true ↔ cutoff g < n + m
+  constructor
+  · intro h
+    exact of_decide_eq_true (Bool.and_eq_true.mp h).1
+  · intro h
+    exact Bool.and_eq_true.mpr ⟨decide_eq_true h, rfl⟩
 
 theorem cutoff_pos (g : Fin 3) : 0 < cutoff g := by
   fin_cases g <;> decide +kernel
