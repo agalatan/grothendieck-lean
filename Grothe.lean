@@ -603,7 +603,9 @@ import Grothe.UpperChaos.ConditionalGaussianTail
 import Grothe.UpperChaos.ConditionalMomentReflection
 import Grothe.UpperChaos.ConditionalNodeIndices
 import Grothe.UpperChaos.ConditionalReconstruction
+import Grothe.UpperChaos.DampedCoherentKernel
 import Grothe.UpperChaos.DampedMoments
+import Grothe.UpperChaos.DampedQuadraticKernel
 import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.DiagonalSum
 import Grothe.UpperChaos.DirectSampleUpper
@@ -910,6 +912,13 @@ import Grothe.UpperChaos.OneSidedSeedFubini
 import Grothe.UpperChaos.OneSidedSeedIntegral
 import Grothe.UpperChaos.OneSidedShiftAlgebra
 import Grothe.UpperChaos.OriginalEnergyNoMass
+import Grothe.UpperChaos.OriginalHSCovariance
+import Grothe.UpperChaos.OriginalHSGaussianAudit
+import Grothe.UpperChaos.OriginalHSGaussianMass
+import Grothe.UpperChaos.OriginalHSGaussianTensor
+import Grothe.UpperChaos.OriginalHSParameterGates
+import Grothe.UpperChaos.OriginalHSParameterSoundness
+import Grothe.UpperChaos.OriginalHSQuadraticForms
 import Grothe.UpperChaos.OriginalMomentIntegrable
 import Grothe.UpperChaos.OriginalMomentPullback
 import Grothe.UpperChaos.OriginalMomentRatios

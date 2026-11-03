@@ -803,6 +803,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.OneSidedSeedFubini.phaseLaplace_inner
 #print axioms Grothe.UpperChaos.OneSidedSeedFubini.phase_fubini
 #print axioms Grothe.UpperChaos.OneSidedSeedIntegral.phase_seed_of_wick
+#print axioms Grothe.UpperChaos.OriginalHSGaussianMass.integrable_gateWeight
+#print axioms Grothe.UpperChaos.OriginalHSGaussianMass.integral_gateWeight
+#print axioms Grothe.UpperChaos.OriginalHSGaussianTensor.integrable_tensorWeight
+#print axioms Grothe.UpperChaos.OriginalHSGaussianTensor.integral_tensorWeight
+#print axioms Grothe.UpperChaos.OriginalHSParameterGates.parameters_checked
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.integral_eq_two_angular
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.integrand_continuousOn_pos
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.integrand_intervalIntegrable

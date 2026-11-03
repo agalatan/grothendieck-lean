@@ -124,6 +124,41 @@ This identity supplies a source binding for numerical models; it does not
 certify all cells,
 Taylor-band errors, the frozen-response energy discrepancy, or the final bound.
 
+**Weighted Gaussian kernel mass.**
+A single checked predicate, `OriginalHSParameterGates.gateOK`, supplies
+positivity of the real covariance forms for any parameter record.
+`OriginalHSGaussianMass.integrable_gateWeight` and `integral_gateWeight`
+prove convergence and the physical-pair mass `ν²/δ` under that predicate.
+`OriginalHSGaussianTensor.integrable_tensorWeight` and `integral_tensorWeight`
+combine the independent pairs and give mass `ν⁴/(δ₀δ₁)`.
+The proofs establish integrability before applying Fubini. The determinant
+power is minus one for each pair of complex coordinates; no square-root or
+pi normalization is omitted.
+
+`OriginalHSParameterGates.parameters_checked` checks one parameter table
+for the fourteen selected output degrees and four coordinate exclusions.
+The manifest in `data/original-hs-parameters` records each selected source:
+first-power degrees 51 and 101 use the rectangular input, later first-power
+degrees use the power-one input, and powers two and three use their selected
+finite-band degrees. All input files remain hash-pinned and byte-identical.
+Run `python3 tools/gen_original_hs_parameters.py --check` to reproduce the
+Lean table. Exact Python replays are diagnostics stored in ignored `handoff/`;
+Lean's kernel checks the parameter facts independently.
+
+The manifest identifies the numerical producer programs and explains the
+recorded Arb `bound` and its rational upper endpoint `upper_rational`.
+Neither is used as an assumed Hilbert--Schmidt bound. The decomposition
+hashes refer to uncommitted historical decomposition files and do not prove
+an operator identity. The absolute path in the immutable rectangular input
+is historical metadata, never a generator dependency.
+
+`OriginalHSGaussianAudit` enforces standard-three-only transitive dependencies
+for the aggregate parameter certificate and the generic pair/tensor
+integrability and mass theorems. This is stricter than the repository-wide
+native allowlist. The defined Gaussian matrix and kernel are not yet identified
+with `HS_{j,I}` in `UPPER_STATUS.md`. Polynomial insertion, a Fock coefficient
+identity, that operator binding and numerical tail bounds remain open.
+
 **Exact Gaussian phase-moment interfaces.**
 `DampedMoments` proves mixed complex Gaussian moments at every positive radial
 scale. `InvariantMoments` integrates each monomial in the simultaneous-rotation
