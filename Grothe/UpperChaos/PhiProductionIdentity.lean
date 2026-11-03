@@ -15,6 +15,20 @@ open scoped ComplexConjugate
 namespace Grothe.UpperChaos
 noncomputable section
 
+/-- The real and imaginary Gram coordinates share the same squared modulus. -/
+lemma phase_gram_sq_sum (u : ℂ × ℂ) :
+    (conj u.1 * u.2).re ^ 2 + (conj u.1 * u.2).im ^ 2 =
+      ‖u.1‖ ^ 2 * ‖u.2‖ ^ 2 := by
+  have h := Complex.normSq_apply (conj u.1 * u.2)
+  rw [Complex.normSq_mul, Complex.normSq_conj, Complex.normSq_eq_norm_sq,
+    Complex.normSq_eq_norm_sq] at h
+  nlinarith [h]
+
+/-- The physical real Gram coordinate lies in the checker's semialgebraic domain. -/
+lemma phase_gram_re_sq_le (u : ℂ × ℂ) :
+    (conj u.1 * u.2).re ^ 2 ≤ ‖u.1‖ ^ 2 * ‖u.2‖ ^ 2 := by
+  nlinarith [phase_gram_sq_sum u, sq_nonneg (conj u.1 * u.2).im]
+
 lemma phaseEps_eq : ((phaseEpsQ : ℚ) : ℝ) = 21 / 20 := by
   simp [phaseEpsQ]
 
@@ -22,10 +36,7 @@ lemma phaseEps_eq : ((phaseEpsQ : ℚ) : ℝ) = 21 / 20 := by
 lemma phiT_sq (u : ℂ × ℂ) :
     phiT u ^ 2 = gphi phaseTerms (‖u.1‖ ^ 2) (‖u.2‖ ^ 2) (conj u.1 * u.2).re := by
   have hD : (conj u.1 * u.2).im ^ 2 = ‖u.1‖ ^ 2 * ‖u.2‖ ^ 2 - (conj u.1 * u.2).re ^ 2 := by
-    have h := Complex.normSq_apply (conj u.1 * u.2)
-    rw [Complex.normSq_mul, Complex.normSq_conj, Complex.normSq_eq_norm_sq,
-      Complex.normSq_eq_norm_sq] at h
-    nlinarith [h]
+    nlinarith [phase_gram_sq_sum u]
   unfold phiT gphi
   rw [phaseEps_eq]
   have he : Real.exp (-(21 / 20) * (‖u.1‖ ^ 2 + ‖u.2‖ ^ 2)) ^ 2
@@ -40,7 +51,9 @@ end Grothe.UpperChaos
 open Lean Elab Command
 run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
-  for target in #[``Grothe.UpperChaos.phaseEps_eq, ``Grothe.UpperChaos.phiT_sq] do
+  for target in #[``Grothe.UpperChaos.phase_gram_sq_sum,
+      ``Grothe.UpperChaos.phase_gram_re_sq_le,
+      ``Grothe.UpperChaos.phaseEps_eq, ``Grothe.UpperChaos.phiT_sq] do
     for dependency in (← Lean.collectAxioms target) do
       unless allowed.contains dependency do
         throwError m!"{target} depends on nonstandard axiom {dependency}"

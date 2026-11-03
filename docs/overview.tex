@@ -128,6 +128,21 @@ $\delta=455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$:
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
 
+The conditional-node table has 21,577 rows of binary64 conditional Hermite
+approximations. Row $i$ uses the degree-531 canonical pairs $0\le c\le266$,
+$0\le d\le265$, $c\le d+1$, in $(c+d,c)$ order, retaining
+$c+d\le\mathrm{cutoff}_i$. A full row has 35,777 entries; cutoffs 1 and 2
+retain three and five. This certificate selects every node in a panel where
+the outward 128-bit profile interval Horner screen contains zero at some node.
+The 413 unresolved nodes occupy 381 panels; panel closure gives exactly the
+417 ordinals 3872--4036, 10910--11037 and 17321--17444, independently of cutoff.
+The rule and its exact inputs are committed in
+\path{data/q0_quadrature/conditional_source/exception-selection.json}.
+Lean checks scalar magnitude at most one, squared row norm at most $121/100$,
+and source ordinal coverage. No Gaussian coefficient estimate or upper-bound
+assembly currently consumes this certificate; source-address, basis-normalization
+and approximation-error proofs remain separate.
+
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every
 grade's integer sum and divides by $2^{210}$, then identifies the rational
@@ -942,13 +957,15 @@ available independently of the numerical phase cover. This lets local source
 certificates use the actual rounding polynomial before cover assembly.
 
 \paragraph{Production source error propagation.}
-An actual-source integer leaf check bounds the production phase at every
-physical point in that leaf. On $[-1,1]$ the cubic phase factor is
-$5/2$-Lipschitz. The actual rounding error can consequently be split into the
-proved quadratic Gaussian-base remainder, the phase approximation error, and
-an explicit comparison of the resulting model with the saved center.
-The exact profile-zero reduction uses a positive radial parameter; source,
-saved-byte and integral certificates still have to instantiate these bounds.
+A supplied integer leaf check bounds the production phase on that leaf;
+no concrete leaf check is supplied here. The existing native cover already
+bounds the phase globally. A shared Gram-coordinate identity supplies the
+domain constraint for both routes. On $[-1,1]$ the cubic phase factor is
+$5/2$-Lipschitz. For positive radial parameter, the rounding-slice error is
+bounded by the quadratic Gaussian-base remainder plus the phase approximation
+error. Its phase bound remains an explicit premise to preserve independence
+from the native cover. Numerical source comparisons and integral certificates
+still have to instantiate these analytic bounds.
 
 The conditional Gaussian $L^2$ triangle inequality on one unsmoothed radial
 slice charges the base remainder once, giving $5\rho^2$ plus $5/2$ times the
