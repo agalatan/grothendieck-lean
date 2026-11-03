@@ -3,8 +3,8 @@ import Mathlib.Data.Rat.BigOperators
 import Lean.Util.CollectAxioms
 
 /-! Exact little-endian IEEE754 binary64 normal-value decoding for the
-small saved exception slices. The source-byte and index bindings are supplied
-by generated records. Agent-ID: codex-aa04. -/
+saved exception slices. Generated records carry byte offsets and row ordinals;
+their binding to selected Gaussian source nodes is a separate obligation. Agent-ID: codex-aa04. -/
 namespace Grothe.UpperChaos.Q0SourceExceptionCenters
 
 /-- The IEEE binary64 biased exponent and fraction. -/
@@ -35,7 +35,7 @@ structure Row where
 real source values, prior to any later basis or smoothing transform. -/
 def normSq (r : Row) : ℚ := (r.words.map fun w => value w ^ 2).sum
 
-/-- Original `.npy` little-endian payload starts after its 128-byte header. -/
+/-- The source `.npy` little-endian payload starts after its 128-byte header. -/
 def firstByte (r : Row) : ℕ := 128 + 8 * r.sourceStart
 
 def validRow (r : Row) : Bool :=
@@ -62,7 +62,7 @@ theorem validRow_normSq (r : Row) (h : validRow r = true) : normSq r ≤ 121 / 1
     of_decide_eq_true h.1
   exact hc.2.2
 
-/-- The saved cutoff is the original degree cutoff, not a mode count. -/
+/-- The saved cutoff is the source degree cutoff, not a mode count. -/
 theorem validRow_cutoff (r : Row) (h : validRow r = true) :
     (r.cutoff = 1 ∧ r.words.length = 3) ∨
       (r.cutoff = 2 ∧ r.words.length = 5) := by
@@ -92,7 +92,7 @@ theorem center_abs_le_eleven_tenths (r : Row) (h : validRow r = true)
   have hr : |((center r i : ℚ) : ℝ)| ≤ 1 := by exact_mod_cast hq
   linarith
 
-/-- The same saved scalar interpreted as a complex Hermite coefficient. -/
+/-- The same decoded scalar cast to ℂ. -/
 theorem center_norm_le_eleven_tenths (r : Row) (h : validRow r = true)
     (i : Fin r.words.length) : ‖(center r i : ℂ)‖ ≤ (11 / 10 : ℝ) := by
   rw [Complex.norm_ratCast]
@@ -109,7 +109,7 @@ theorem validRow_normSq_real (r : Row) (h : validRow r = true) :
   simpa only [List.map_map, Function.comp_def, Rat.cast_pow, Rat.cast_div,
     Rat.cast_ofNat] using hr
 
-/-- Every decoded row has a valid byte span inside the original NPY file. -/
+/-- Every decoded row has a valid byte span inside the source NPY file. -/
 theorem validRow_byteBound (r : Row) (h : validRow r = true) :
     firstByte r + 8 * r.words.length ≤ 3373613072 := by
   simp only [validRow, Bool.and_eq_true] at h

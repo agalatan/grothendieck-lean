@@ -39,11 +39,6 @@ classical and quantum correlations in two-party Bell experiments (real case).
 
 ## What is proved
 
-The saved exceptional conditional-row certificate decodes the original 417
-rows and checks their exact scalar and row-norm bounds in rational arithmetic.
-`Q0SourceExceptionCentersAll` records their original ordinal coverage. The
-Gaussian coefficient enclosures and source-address assembly remain separate.
-
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V over all finite-dimensional complex Hilbert spaces. The headline
 theorems conclude a statement about the constant itself.
@@ -177,6 +172,13 @@ equality. The proof preserves the separate exact denominator
 `604005087394345832307543156484734976000` and the order of squared radius,
 inverse rate and shifted argument. Generated Python data are checked by Lean;
 the numerical quadrature cells and the upper-bound inputs remain to be proved.
+
+The conditional-node table stores finite vectors of binary64 approximations
+to conditional Hermite coefficients. For 417 selected rows,
+`Q0SourceExceptionCentersAll` checks scalar magnitude at most one, squared row
+norm at most `121/100`, and source ordinal coverage. No Gaussian coefficient
+estimate or upper-bound assembly currently consumes this certificate;
+source-address, basis-normalization and approximation-error proofs remain separate.
 
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of
@@ -387,6 +389,14 @@ estimate. The exact cuts are recorded in `data/small-profile-mesh/certificate.js
 existing profile cover, giving `|κ(s)| > 1/1000` on all four remaining strips.
 Thus their reciprocal Gaussian denominator exceeds `10⁻⁶` uniformly, including
 for very small positive reciprocal coordinates.
+
+`ProfilePiFactor` provides rational enclosures of `π`, `sqrt(π)`, and
+`sqrt(sqrt(π))` of width at most `2⁻⁵¹²` for the actual profile normalization.
+Mathlib's proved nested-square-root bounds certify the π witnesses; exact
+rational inequalities certify the remaining factors. The input recipe and
+generator are tracked in `data/profile-pi-factor/` and
+`tools/gen_profile_pi_factor.py`. Full transformed node-shift enclosures remain
+separate obligations.
 
 `LocalAffineSquareIntegralBounds` requires continuity only on the closed cell,
 so reciprocal certificates do not need an extension through zero.

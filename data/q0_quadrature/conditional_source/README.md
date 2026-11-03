@@ -2,20 +2,28 @@
 
 Agent-ID: codex-aa04.
 
-This certificate decodes 1,263 original little-endian binary64 words from
-417 saved rows. Original ordinals are 3872–4036, 10910–11037 and 17321–17444.
+This certificate decodes 1,263 source little-endian binary64 words from
+417 saved rows. Source ordinals are 3872–4036, 10910–11037 and 17321–17444.
 The degree cutoff is 1 for 411 rows and 2 for six rows; the corresponding
 stored row lengths are three and five. These are saved approximations, not
 claims that omitted true Gaussian coefficients vanish.
 
 `exception-centers.bin` is the byte-exact concatenation of those slices.
 `exception-centers.json` records source offsets and slice hashes.
-`conditional_offsets.npy` is the original 21,578-entry offset array.
-`exception-ledger.jsonl` contains the original per-row records, including their
+`conditional_offsets.npy` is the source 21,578-entry offset array.
+`exception-ledger.jsonl` contains the source per-row records, including their
 hashes and cutoffs; `exception-ledger-index.json` records extraction provenance.
-`conditionalnodes_header.bin` preserves the original NPY header. The historical
-full 3.37 GB table hash is recorded but was not rechecked during this recovery.
-No full-table hash is used as a mathematical premise.
+`conditionalnodes_header.bin` preserves the source NPY header. The full-table
+digest is provenance metadata; this generator checks the committed slices,
+offsets and per-row ledger. Neither the full table nor its digest is a Lean premise.
+
+The common-head conditional-node pipeline's `build_conditional_nodes.py`
+produced `conditionalnodes.npy`, `conditional_offsets.npy` and
+`conditional_node_ledger.jsonl`. The committed slices and selected ledger records
+come from those files; their byte positions and hashes are recorded here.
+The ledger also contains numerical error claims such as `center_error_upper`.
+This certificate uses the selected indices, cutoffs and byte hashes; it neither
+consumes nor validates those analytic error claims.
 
 Reproduce only this independent delivery with:
 

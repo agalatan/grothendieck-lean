@@ -43,11 +43,6 @@ transfers a squared-mass cap to a norm cap. Its application to the actual
 Gaussian coefficient table still requires the input estimates and the
 operation-error model; it does not complete the upper endpoint.
 
-The saved exceptional conditional-row certificate checks exact binary64
-literals for 417 original rows, including their scalar and row-norm bounds
-and ordinal coverage. Gaussian coefficient enclosures and source-address
-alignment remain separate obligations.
-
 \begin{abstract}
 Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
 true optimum. The best constant in the complex case, $\KG$, has been known since 1987 to lie roughly in $[1.338,1.405]$; its
@@ -124,6 +119,13 @@ $\delta=455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$:
 \]
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
+
+The conditional-node table stores finite vectors of binary64 approximations
+to conditional Hermite coefficients. Lean checks scalar magnitude at most one,
+squared row norm at most $121/100$, and source ordinal coverage for 417 selected
+rows. No Gaussian coefficient estimate or upper-bound assembly currently
+consumes this certificate; source-address, basis-normalization and approximation-error
+proofs remain separate.
 
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every
@@ -243,6 +245,11 @@ interval multiplication accounts for normalization. Complete leaf
 certificates and rational endpoint checks then imply the coefficient bounds
 consumed by the original bands. The numerical leaf and energy certificates
 remain work in progress.
+
+Separate rational intervals enclose $\pi$, $\sqrt{\pi}$ and
+$\sqrt{\sqrt{\pi}}$ with width at most $2^{-512}$ for profile normalization.
+The certificates use proved nested-square-root bounds for $\pi$ and exact
+rational inequalities. Complete transformed node-shift intervals remain open.
 
 Exact midpoint identities also combine already certified subtree intervals.
 The normalized coefficient can be assembled from the fourteen resulting

@@ -67,14 +67,17 @@ source by Lean proofs. The result is independent of the phase-cover numerical
 leaves and does not discharge the remaining upper-bound inputs.
 
 **Saved exceptional rows.** `Q0SourceExceptionCentersAll` combines exact
-binary64 decoding checks for 417 original saved rows. Each scalar has magnitude
+binary64 decoding checks for 417 saved source rows. Each scalar has magnitude
 at most one, and each complete row has squared norm at most 121/100. The
-original ordinal ranges, cutoff counts and source byte spans are explicit.
+source ordinal ranges, cutoff counts and source byte spans are explicit.
 `gen_source_exception_centers.py --centers-only --check` reproduces the
 certificate from pinned slice, offset and per-row ledger files. The strict
 audit adds no native facts. This certifies the saved values; their alignment
-with selected source nodes and enclosures of actual Gaussian coefficients are
-separate obligations.
+with selected source nodes, basis normalization and enclosures of actual Gaussian
+coefficients are separate obligations. No Gaussian estimate or endpoint assembly
+currently consumes this certificate. Source provenance and the limits of the
+checked ledger fields are documented in
+[`conditional_source/README.md`](../data/q0_quadrature/conditional_source/README.md).
 
 **q0 source-to-literal identity.**
 `Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real
@@ -521,6 +524,16 @@ their complete coverage of the gaps between the original profile neighborhoods
 and the selected tubes. Combining these checks with the existing outer-profile
 theorem gives `|κ(s)| > 1/1000` on every closed nonselected strip. Consequently
 `α x² + κ(s)² > 10⁻⁶` for `α ≥ 0`, uniformly in the reciprocal coordinate.
+
+`ProfilePiFactorLower` and `ProfilePiFactorUpper` certify rational bounds for π
+from 272 nested-square-root steps, using Mathlib's proved `pi_lower_bound` and
+`pi_upper_bound` tactics. The recipe uses a 1152-bit witness grid and 512-bit
+output endpoints. `ProfilePiFactor` derives bounds for `sqrt(π)` and
+`sqrt(sqrt(π))` by exact rational square and fourth-power checks. Each interval
+has width at most `2⁻⁵¹²`; the transitive guard permits only the standard three
+Lean axioms. These are actual normalization constants, with no numerical bound
+assumed. The complete actual-node profile and shifted-parameter intervals
+remain to be certified.
 The gap data share the same tracked input and generator as the radial cuts;
 the checker uses kernel reduction and introduces no native facts.
 
