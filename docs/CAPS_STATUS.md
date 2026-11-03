@@ -45,8 +45,8 @@ the possible pieces before the next coordinate is checked. For large nodes,
 classes of the first sample index. A pure assembly combines every slice
 into the original `pieceCover_…` theorem; a positive slice count is required.
 The active registry derives every slice and its exact checker proposition
-from that policy and the piece count. Range checks and certificate data are
-unchanged. Semantic regions and all
+from that policy and the piece count. Coverage slicing does not alter the
+range predicates or certificate data. Semantic regions and all
 soundness proofs remain in `CapCover`, `CapConstr` and `CapPieceNodes`.
 The prepared Row12–14 piece facts feed their whole-row assemblies. Row14
 uses `nodeCap_14x150_done` for node 150 and preserves its complete proof and
@@ -57,6 +57,16 @@ dependency. All 90 localized inputs and 225 anchors participate in its complete
 no bound exported matrices: node 150 uses the retained proof and node 280 is
 recomputed by its canonical range check. This distinction remains explicit in
 the input plan; source generation does not establish native verification.
+
+Noncentre multiplier repairs use the explicit `noncentre-source-binding.json`
+layer. It reproduces the sealed input sources before applying hash-bound,
+zero-additional-cap changes to the ordered constraint multipliers. It preserves
+recipes, grids, constraint regions, piece order, centres and the retained node
+150 proof. Only the named D modules may change; coverage, range and assembly
+modules must reproduce identically. Stored exact-matrix LDL replay checks the
+repair data; current `pieceOneOK` native checks remain necessary. A positive
+cap Schur residual is insufficient when the cap-free principal block is
+indefinite, and increasing the cap cannot repair that block.
 
 There is one build target, `Grothe`: the generated root imports the 15 heavy
 row modules and `CapNodes` like every other module. CI builds it, replaying
@@ -125,9 +135,9 @@ hand-editing `CapRecipeData.lean`. Lower-row and gate inputs are similarly
 kept in `data/`; generated modules must reproduce byte for byte. A failed
 recipe can make its cap check fail; it cannot bypass the numerical checker.
 
-Rows 14–15 remain explicit `CapsRest` inputs (rows 12–13 are certified). Their localized-piece data,
-computation campaign and final wiring are roadmap Tracks B/C. Track A
-separates both the existing 60 range facts and the localized-piece checks
-from the lower proof chain. The same 60 range facts support the refined
-endpoint through the shared cover; recipes, row data and cap hypotheses
-are unchanged. The remaining rows are not discharged.
+Row 15 remains an explicit `CapsRest` input. Rows 12–14 have generated
+assemblies, but their source reproduction and numerical repair records do not
+establish successful native verification. The range checks must pass before
+those assemblies can discharge their cap inputs. The existing range facts
+and localized-piece checks share the computation layer and support the refined
+endpoint through the checked cover.

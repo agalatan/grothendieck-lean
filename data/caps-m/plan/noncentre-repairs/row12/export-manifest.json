@@ -1,0 +1,74 @@
+{
+  "agent_id": "codex-15b7",
+  "scope": "diagnostic exact matrices only",
+  "canonical_export_sha256": "0a819b817e0898892d8df4d79a917607dd0a226ddf126b6cba9dd4be3e8897e9",
+  "canonical_export_body_sha256": "48b74e4dc145bf0fb6214549b477cdd55327cc1b33c3cb5ae437958a664ddde0",
+  "jobs": [
+    {
+      "node": 186,
+      "piece": 1,
+      "grid": 2,
+      "source": "Export186Piece1.lean",
+      "output": "/home/agalatan/claude-b9ee-perf/matrices/Export186Piece1.jsonl",
+      "source_sha256": "df4036358ef3c7c244f28e8935b72ee5560f0bd1013bec662966ab42eb31498d",
+      "data_path": "Grothe/LowerAnalytic/CapPieces/D12x186.lean",
+      "data_sha256": "8f66e15a7fe8d8b00c9523d7c86f2ecfe22b264372962cd803fc934ead8212ed",
+      "piece_encoding_sha256": "81febc71c9d831e3a7977eb5aa4dae71377e014f4c4b2205bd36bc0b0273bc26"
+    },
+    {
+      "node": 186,
+      "piece": 2,
+      "grid": 2,
+      "source": "Export186Piece2.lean",
+      "output": "/home/agalatan/claude-b9ee-perf/matrices/Export186Piece2.jsonl",
+      "source_sha256": "10729737dc80bc92e01bfefe833cfc1620db7c1d1ce6bf6f1bf3b51962077c2d",
+      "data_path": "Grothe/LowerAnalytic/CapPieces/D12x186.lean",
+      "data_sha256": "8f66e15a7fe8d8b00c9523d7c86f2ecfe22b264372962cd803fc934ead8212ed",
+      "piece_encoding_sha256": "05009d41e472c8a21303d9ac7cd257b6d01ec65bad004fce0302c21f7beee579"
+    },
+    {
+      "node": 186,
+      "piece": 3,
+      "grid": 2,
+      "source": "Export186Piece3.lean",
+      "output": "/home/agalatan/claude-b9ee-perf/matrices/Export186Piece3.jsonl",
+      "source_sha256": "6072fbba1b688ca8a4d15204fb36152802a19b7e1f2b312c72b9536a373f4796",
+      "data_path": "Grothe/LowerAnalytic/CapPieces/D12x186.lean",
+      "data_sha256": "8f66e15a7fe8d8b00c9523d7c86f2ecfe22b264372962cd803fc934ead8212ed",
+      "piece_encoding_sha256": "3458b1373fe1e62521f99d01be05d9000dce3088f98d0836db32b826b395b856"
+    },
+    {
+      "node": 204,
+      "piece": 1,
+      "grid": 2,
+      "source": "Export204Piece1.lean",
+      "output": "/home/agalatan/claude-b9ee-perf/matrices/Export204Piece1.jsonl",
+      "source_sha256": "4ed1fc1035077932886d693c4b55045447872d34ec566279e9982202bc233a02",
+      "data_path": "Grothe/LowerAnalytic/CapPieces/D12x204.lean",
+      "data_sha256": "a8f436ae678a8a7822ce768b0207a175496cfbffc58f69f952b2fc5f248f55d0",
+      "piece_encoding_sha256": "990d70fdd50f67ec1c50b3726610ed6d363c98a9576b7174d9f6148f0037f890"
+    },
+    {
+      "node": 204,
+      "piece": 2,
+      "grid": 2,
+      "source": "Export204Piece2.lean",
+      "output": "/home/agalatan/claude-b9ee-perf/matrices/Export204Piece2.jsonl",
+      "source_sha256": "bbcfa7aca5c12fe2b4586f53e1e8a0d55a74cb7b60700c2f4b2799f2fa275eab",
+      "data_path": "Grothe/LowerAnalytic/CapPieces/D12x204.lean",
+      "data_sha256": "a8f436ae678a8a7822ce768b0207a175496cfbffc58f69f952b2fc5f248f55d0",
+      "piece_encoding_sha256": "57acbdbe02cb913f933610011baf26b47d3ae1cd7b90baee97b128fe0c73fedb"
+    },
+    {
+      "node": 204,
+      "piece": 3,
+      "grid": 2,
+      "source": "Export204Piece3.lean",
+      "output": "/home/agalatan/claude-b9ee-perf/matrices/Export204Piece3.jsonl",
+      "source_sha256": "e0f67ececfde0a2b896b9e073ecf1ae15bc91b761f9364fae31cd9396dbb698a",
+      "data_path": "Grothe/LowerAnalytic/CapPieces/D12x204.lean",
+      "data_sha256": "a8f436ae678a8a7822ce768b0207a175496cfbffc58f69f952b2fc5f248f55d0",
+      "piece_encoding_sha256": "af474e57a255bbf41cc60978bee678472bac4f00229f05d6e29bca23c84404f4"
+    }
+  ]
+}

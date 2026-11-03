@@ -1,0 +1,75 @@
+{
+  "baseline_archive": {
+    "path": "data/caps-m/plan/noncentre-repairs/baseline/row12-pieces.json",
+    "sha256": "f3956d00e65917f2c1cc895d9fc283c02403d3234c30d5ed2376bf51d22e42e8"
+  },
+  "centre_plan": {
+    "path": "data/caps-m/plan/row-certificates/row12.json",
+    "sha256": "ec298c5a67a3a5809a45c45f2d2217024f30d5eb2bf59139febcf63a12de13f4"
+  },
+  "effective": {
+    "path": "data/caps-m/plan/row-certificates/row12-pieces.json",
+    "sha256": "ef8eb76f82384e394758ef2a5a1b9e39215b21c837544d82ec250dfbe08a79a3"
+  },
+  "format": "nodecaps-noncentre-repair-binding/v1",
+  "historical_provenance": {
+    "path": "data/caps-m/plan/row-certificates/row12-source.json",
+    "sha256": "61be956d3349e7dc02ab2426ee20aa7baae457660c4d86d6ba618db331a33df6"
+  },
+  "historical_seal": {
+    "path": "data/caps-m/plan/row-certificates/row12-source.json",
+    "sha256": "61be956d3349e7dc02ab2426ee20aa7baae457660c4d86d6ba618db331a33df6"
+  },
+  "patches": {
+    "path": "data/caps-m/plan/noncentre-repairs/row12-patches.json",
+    "sha256": "f33b13abf0d27f8b57af9d412e0dc9029de8e6a68eb38c3e744828f6f89745b2"
+  },
+  "row": 12,
+  "selection": {
+    "path": "data/caps-m/plan/row-certificates/row12-selection.json",
+    "sha256": "fee1d8784d19b7761f9522a558d1e48d49a704bd56c8878157f02d0570c48f76"
+  },
+  "source_sha256": {
+    "Grothe/Lower/RowData.lean": "495cd4ac26bf24d4a983acfdf728d244b8257bb24ec28e7ffd8cfb48fafab109",
+    "Grothe/Lower/RowData13.lean": "4e9e5d944abd977db9cff9d2cde6f15c29db3e104a6632e48e75572d54f084db",
+    "Grothe/Lower/RowDataTypes.lean": "24f3a6da9513187141123403ddf442af54060e2bfb8110439ff9a70ab34bd18a",
+    "Grothe/Lower/RowGateData.lean": "149133ffd187a363ff1a0ac2421b9ecf43b8474a65b0ca5dd5af0b999d78c54a",
+    "Grothe/LowerAnalytic/CapConstrDefs.lean": "6ec17260b473d677a537a1d53e4b5ee11d7d08bf16e497434cf57b487caa33a1",
+    "Grothe/LowerAnalytic/CapExport.lean": "0a819b817e0898892d8df4d79a917607dd0a226ddf126b6cba9dd4be3e8897e9",
+    "Grothe/LowerAnalytic/CapLinAlgDefs.lean": "009fa86c53f8411599abb2a3b4d700a491977742c7558015c45f1be928365611",
+    "Grothe/LowerAnalytic/CapNodeDefs.lean": "251b834865f0b585800f69797cb49927ff84bf027967b8d88cb13e2ee39d3fb2",
+    "Grothe/LowerAnalytic/CapPieceDefs.lean": "d8233831bca1b71baca8941cad5104f22bcec55803d8c018cfb7097be9a88ee9",
+    "Grothe/LowerAnalytic/CapPieceRange.lean": "0d8e155d54e807ace43edb915aafde7d59addcbba6a920e2d01d05f56d77e790",
+    "Grothe/LowerAnalytic/CapTablesData.lean": "32b46fe51a736d6bd1e669654999c46dd03bbde8e1a0f2014d5486c6827b2ea3",
+    "GrotheCapsKernel/Basic.lean": "d4a738a79075cd3742dada74bf7c51bc7adc6b246f13f2a7fdecf9192a5e9fb5",
+    "GrotheCapsKernel/CapCheck.lean": "45d2828fda72980caad084e10c236dceacf027e10a3fcdfaaadb4752eaffdc38",
+    "GrotheCapsKernel/CapPoly.lean": "026a78b5b55c2de547ff7be2ada1bc6ca1726674e198de371ea580a624a18d62",
+    "data/caps-m-pieces/pieces.json": "b94033be8e7828eff26b0bc9852190bcaf15aeb4fbfd7b5ea3e0b4fb01012274",
+    "data/caps-m/plan/noncentre-repairs/baseline/D12x186.lean.txt": "8f66e15a7fe8d8b00c9523d7c86f2ecfe22b264372962cd803fc934ead8212ed",
+    "data/caps-m/plan/noncentre-repairs/baseline/D12x204.lean.txt": "a8f436ae678a8a7822ce768b0207a175496cfbffc58f69f952b2fc5f248f55d0",
+    "data/caps-m/plan/noncentre-repairs/baseline/row12-pieces.json": "f3956d00e65917f2c1cc895d9fc283c02403d3234c30d5ed2376bf51d22e42e8",
+    "data/caps-m/plan/noncentre-repairs/evidence/fresh_replay.json": "9b862aca5e8f43bb7ee5e013afe78e06ce870cbb9c2a33811fce01ff05015485",
+    "data/caps-m/plan/noncentre-repairs/evidence/fresh_source.json": "2bb26d5a19e9ebc4fd3e4039458f53e08ec504ea48fa849ebe74ce23a60d1601",
+    "data/caps-m/plan/noncentre-repairs/row12/Export186Piece1.jsonl": "9f378a7d78c5cfa6610678a7356494324f58c2db3f540a3bc7bfded40035fd09",
+    "data/caps-m/plan/noncentre-repairs/row12/Export186Piece1.lean.txt": "df4036358ef3c7c244f28e8935b72ee5560f0bd1013bec662966ab42eb31498d",
+    "data/caps-m/plan/noncentre-repairs/row12/Export186Piece2.jsonl": "0a172126abf1af0ec902756db033130088b0f40147e8a91264441d0c84061cc7",
+    "data/caps-m/plan/noncentre-repairs/row12/Export186Piece2.lean.txt": "10729737dc80bc92e01bfefe833cfc1620db7c1d1ce6bf6f1bf3b51962077c2d",
+    "data/caps-m/plan/noncentre-repairs/row12/Export186Piece3.jsonl": "f5a1c4f101aac6440626bbe6b1f3076172a5e4ddc9feb1358c05bd925460dfbd",
+    "data/caps-m/plan/noncentre-repairs/row12/Export186Piece3.lean.txt": "6072fbba1b688ca8a4d15204fb36152802a19b7e1f2b312c72b9536a373f4796",
+    "data/caps-m/plan/noncentre-repairs/row12/Export204Piece1.jsonl": "149a4f65cad89588aa0ba54770a4fa3086eadbc7729b53af7f8c8e8b22e0410f",
+    "data/caps-m/plan/noncentre-repairs/row12/Export204Piece1.lean.txt": "4ed1fc1035077932886d693c4b55045447872d34ec566279e9982202bc233a02",
+    "data/caps-m/plan/noncentre-repairs/row12/Export204Piece2.jsonl": "b3df4411a8d0495e0cf5d840eb3d82473157ee7b3d6a698e7cec386e5be9f58e",
+    "data/caps-m/plan/noncentre-repairs/row12/Export204Piece2.lean.txt": "bbcfa7aca5c12fe2b4586f53e1e8a0d55a74cb7b60700c2f4b2799f2fa275eab",
+    "data/caps-m/plan/noncentre-repairs/row12/Export204Piece3.jsonl": "e3a8879702e3238321c8dca2a9849c65c2d267d89ca77825749a414197b7abb9",
+    "data/caps-m/plan/noncentre-repairs/row12/Export204Piece3.lean.txt": "e0f67ececfde0a2b896b9e073ecf1ae15bc91b761f9364fae31cd9396dbb698a",
+    "data/caps-m/plan/noncentre-repairs/row12/export-manifest.json": "ba204afd87520f44a8c229158c6887f9031341debbe86456ec30ac9ee15d8cbe",
+    "data/caps-m/plan/noncentre-repairs/row12/solution_12x186_j1.json": "9b1436dd020bfab0d5acf74b7d23c50756ffe7179fc2f4647ca5058734d0f130",
+    "data/caps-m/plan/noncentre-repairs/row12/solution_12x186_j2.json": "aa31020cb83d4ebad7dc37978fbd18363001edb88443203076b28c715d9d6a57",
+    "data/caps-m/plan/noncentre-repairs/row12/solution_12x186_j3.json": "2f2aca5f8797de04c95579a6188c45ad125d290470e585663814599993425e47",
+    "data/caps-m/plan/noncentre-repairs/row12/solution_12x204_j1.json": "a290b0260d52708547eda312582ecc3926b07ac4c8783e5e0faad20318418cd4",
+    "data/caps-m/plan/noncentre-repairs/row12/solution_12x204_j2.json": "124cc6c0647c60b75dc375384187d64fa8a0226eda86558f3bcbc039f5473b75",
+    "data/caps-m/plan/noncentre-repairs/row12/solution_12x204_j3.json": "9354c3f442263743ce22f7f80de0af9966ce0f56fe89365b080de1dfa8264574",
+    "data/caps-m/plan/row-certificates/row12-selection.json": "fee1d8784d19b7761f9522a558d1e48d49a704bd56c8878157f02d0570c48f76",
+    "tools/caps_lmi.py": "5e4052898c40a0bd5b152c1006ced14e81975472f2735a659794cd7cbb444de2"
+  }
+}

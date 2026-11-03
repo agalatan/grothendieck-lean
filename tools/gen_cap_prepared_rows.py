@@ -104,17 +104,22 @@ def main(argv=None):
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args(argv)
     try:
-        outputs = {}
-        for row in (12, 13):
-            outputs.update(render(ROOT, row))
-        row14_binding = ROOT / BASE / 'row14-binding.json'
-        if row14_binding.exists():
-            from nodecaps_row14_render import render_sealed
-            outputs.update(render_sealed(ROOT))
+        repaired_binding = ROOT / BASE / 'noncentre-source-binding.json'
+        if repaired_binding.exists():
+            from nodecaps_repaired_render import render_sealed
+            outputs = render_sealed(ROOT)
         else:
-            require(not (ROOT / BASE / 'row14.json').exists() and
-                    not (ROOT / 'Grothe/LowerAnalytic/CapRow14/Assembly.lean').exists(),
-                    'Row14 inputs/assembly require an explicit complete source binding')
+            outputs = {}
+            for row in (12, 13):
+                outputs.update(render(ROOT, row))
+            row14_binding = ROOT / BASE / 'row14-binding.json'
+            if row14_binding.exists():
+                from nodecaps_row14_render import render_sealed
+                outputs.update(render_sealed(ROOT))
+            else:
+                require(not (ROOT / BASE / 'row14.json').exists() and
+                        not (ROOT / 'Grothe/LowerAnalytic/CapRow14/Assembly.lean').exists(),
+                        'Row14 inputs/assembly require an explicit complete source binding')
         for name, data in outputs.items():
             path = ROOT / name
             require(not path.is_symlink(), 'refusing source symlink: ' + name)

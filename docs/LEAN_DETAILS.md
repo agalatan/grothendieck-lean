@@ -1004,8 +1004,17 @@ localized-piece and anchor assemblies for canonical CI verification. Their
 inputs retain the unchanged cap pad and exact rational grids. Row14 uses the
 independent `nodeCap_14x150_done` proof and its full repair closure at node 150,
 and the generated proofs for its other localized nodes and anchors. The
-source renderer checks every input and preserves all noncentre pieces; its
-complete source seal is reproduced by `gen_cap_prepared_rows.py --check`.
+source renderer checks every input. `gen_cap_prepared_rows.py --check`
+reproduces the complete sealed sources and applies the explicit
+`noncentre-source-binding.json` layer for hash-bound multiplier repairs.
+This layer permits only ordered noncentre lambda/mu changes at zero additional
+cap, with exact stored-matrix LDL replay. It preserves the recipes, grids,
+constraint regions, piece order, all planned centres and the retained node
+150 proof. Only named D modules may differ; coverage, range and assembly
+sources must reproduce identically. Current native range checks are required
+in addition to the stored-matrix replay. Because the cap affects only matrix
+entry (0,0), a negative pivot in the cap-free principal block requires a repair
+of that block; a larger cap alone cannot make the matrix positive semidefinite.
 
 The localized-piece predicates also have a computation-only layer:
 `CapCoverDefs` holds rational constraints and finite coverage checks, and
@@ -1018,8 +1027,8 @@ coverage modules use the policy in
 `data/caps-m/plan/row-certificates/coverage-slicing.json`: large nodes have
 one independently compiled native fact per slice and a pure coverage assembly.
 Small nodes use the equivalent filtered check directly. The public
-`pieceCover_…` propositions, range checks, grids, multipliers and soundness
-theorems remain unchanged. Every slice is registered as a computation leaf;
+`pieceCover_…` propositions, range checks and soundness theorems remain
+unchanged by slicing, which does not modify grids or multipliers. Every slice is registered as a computation leaf;
 the bounded builder parallelizes modules, never threads inside a native check.
 `CapPieceRange` imports these definitions and rational data; the semantic
 regions and unchanged soundness proofs remain in `CapCover`, `CapConstr`
