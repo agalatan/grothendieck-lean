@@ -89,7 +89,7 @@ def rationalTensorCompletion (S : ℕ) (g : ℕ → ℕ → ℕ → ℚ) (q c d 
 theorem canonical_error_rationalTensorCompletion (S : ℕ) (g : ℕ → ℕ → ℕ → ℚ) :
     canonicalTensorErrorNorm (rationalTensorCompletion S g) = canonicalTensorErrorNorm g := by
   unfold canonicalTensorErrorNorm
-  congr 1
+  apply congrArg Real.sqrt
   apply sum_congr rfl
   intro q _
   apply sum_congr rfl
@@ -117,6 +117,7 @@ private theorem partner_center_energy_le (g : ℕ → ℕ → ℕ → ℚ) (q : 
     _ = ∑ i ∈ (CanonicalReconstructionNorm.reflected q).image
         CanonicalReconstructionNorm.partner, (g q i.1 i.2 : ℝ) ^ 2 := by
       rw [sum_image (CanonicalReconstructionNorm.partner_injective_on_reflected q)]
+      simp only [CanonicalReconstructionNorm.partner]
     _ ≤ _ := by
       apply sum_le_sum_of_subset_of_nonneg
       · intro i hi
@@ -185,15 +186,27 @@ theorem raw_error_of_dyadicTensorReference (g : ℕ → ℕ → ℕ → ℚ)
     (hcanonical : canonicalTensorErrorNorm g ≤ (66 / 10 ^ 10 : ℝ)) :
     ‖productionF0Head - gradedHermite 251 (dyadicTensorReference g)‖ ≤
       (Grothe.Upper.CompositeComparisonData.rawCapQ : ℝ) := by
+  have hc : canonicalTensorErrorNorm (dyadicTensorReference g) =
+      canonicalTensorErrorNorm g := canonical_error_rationalTensorCompletion (2 ^ 54) g
   have h := norm_productionF0Head_sub_le_canonical (dyadicTensorReference g)
-  have hd := rationalTensorCompletion_defect_le (2 ^ 54) (by positivity) g
-  rw [dyadicTensorReference, canonical_error_rationalTensorCompletion] at h
+  rw [hc] at h
+  have hd : tensorCompletionDefectNorm (dyadicTensorReference g) ≤
+      (1 / ((2 : ℝ) ^ 54)) * (1 + canonicalTensorErrorNorm g) := by
+    simpa only [dyadicTensorReference, Nat.cast_pow, Nat.cast_ofNat] using
+      rationalTensorCompletion_defect_le (2 ^ 54) (by positivity) g
   have hb : (10 / 7 : ℝ) * (66 / 10 ^ 10 : ℝ) +
       (1 / ((2 : ℝ) ^ 54)) * (1 + (66 / 10 ^ 10 : ℝ)) ≤
         (Grothe.Upper.CompositeComparisonData.rawCapQ : ℝ) := by
     norm_num [Grothe.Upper.CompositeComparisonData.rawCapQ]
-  norm_num only [Nat.cast_pow, Nat.cast_ofNat] at hd
-  linarith
+  have hcan : (10 / 7 : ℝ) * canonicalTensorErrorNorm g ≤
+      (10 / 7 : ℝ) * (66 / 10 ^ 10 : ℝ) :=
+    mul_le_mul_of_nonneg_left hcanonical (by norm_num)
+  have hone : 1 + canonicalTensorErrorNorm g ≤ 1 + (66 / 10 ^ 10 : ℝ) :=
+    add_le_add le_rfl hcanonical
+  have hdBound : tensorCompletionDefectNorm (dyadicTensorReference g) ≤
+      (1 / ((2 : ℝ) ^ 54)) * (1 + (66 / 10 ^ 10 : ℝ)) :=
+    hd.trans (mul_le_mul_of_nonneg_left hone (by positivity))
+  exact h.trans ((add_le_add hcan hdBound).trans hb)
 
 end
 end Grothe.UpperChaos.FixedChaosSmoothing

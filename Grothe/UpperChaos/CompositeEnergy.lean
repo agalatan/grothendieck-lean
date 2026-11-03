@@ -29,8 +29,12 @@ theorem energy_close_of_raw_source (a0 : ℕ → ℕ → ℕ → ℚ)
       (CompositeComparisonData.energyErrorQ : ℝ) := by
   apply FixedChaosSmoothing.selected_energy_close_of_raw_error a0 hraw htable
     (Δ := (CompositeComparisonData.projectedCapQ : ℝ))
-  · exact_mod_cast CompositeComparisonData.raw_to_projected_budget
-  · exact_mod_cast CompositeComparisonData.projected_energy_budget
+  · have hreal := (Rat.cast_le (K := ℝ)).2 CompositeComparisonData.raw_to_projected_budget
+    simpa only [Rat.cast_add, Rat.cast_mul, Rat.cast_div, Rat.cast_pow, Rat.cast_ofNat]
+      using hreal
+  · have hreal := (Rat.cast_le (K := ℝ)).2 CompositeComparisonData.projected_energy_budget
+    simpa only [Rat.cast_add, Rat.cast_mul, Rat.cast_div, Rat.cast_ofNat]
+      using hreal
 
 theorem weighted_comparison_of_raw_source (h : Inputs) (a0 : ℕ → ℕ → ℕ → ℚ)
     (hraw : ‖FixedChaosSmoothing.productionF0Head - gradedHermite 251 a0‖ ≤
