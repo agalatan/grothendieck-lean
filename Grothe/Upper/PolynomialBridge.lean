@@ -50,8 +50,6 @@ structure DirectHyps (E EX : ℕ × ℕ → ℝ) : Prop where
   valid : DominatedKernel (radialKernel (kernelCoeff E))
   /-- The energies of the rounding are summable. -/
   summable : Summable fun p => |E p|
-  /-- The energies of the truncation are summable. -/
-  summableX : Summable fun p => |EX p|
   /-- Only odd total degrees occur in the truncation. -/
   parityX : ∀ p : ℕ × ℕ, (p.1 + p.2) % 2 = 0 → EX p = 0
   /-- Even total degrees vanish in the actual rounding. -/

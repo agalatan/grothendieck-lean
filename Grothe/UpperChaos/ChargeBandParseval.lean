@@ -26,7 +26,7 @@ theorem norm_projOn_chargeOne_sq_coefficients (B : Set Idx2)
     intro i hi
     rw [inner_projOn]
     by_cases hb : i ∈ B
-    · simp only [hb, if_true]
+    · simp only [hb, ite_true]
       by_cases hc : i.1.1 + i.2.1 = i.1.2 + i.2.2 + 1
       · exfalso
         apply hi
@@ -46,7 +46,7 @@ theorem norm_projOn_chargeOne_sq_coefficients (B : Set Idx2)
       apply Finset.sum_congr rfl
       intro i hi
       have hb : i ∈ B := (Finset.mem_filter.mp hi).2
-      rw [inner_projOn, if_pos hb]
+      rw [inner_projOn, ite_eq_left hb]
 
 
 end
