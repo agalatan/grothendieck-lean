@@ -528,8 +528,35 @@ Thus their reciprocal Gaussian denominator exceeds `10⁻⁶` uniformly, includi
 for very small positive reciprocal coordinates.
 
 `PhiProductionIdentity` relates the actual rounding phase to its Gram-coordinate
-polynomial without importing the numerical phase cover. Concrete leaf proofs
-can use this exact identity before the global cover is assembled.
+polynomial without importing the numerical phase cover. Its shared Gram identity
+supplies both the phase-square formula and the domain constraint used by the
+global cover and local leaf soundness.
+
+`ProductionPhaseLeaf` turns a supplied integer leaf check into a squared phase
+bound on that box; no concrete leaf check is provided here. The native global
+cover already bounds the phase everywhere. `PhasePolynomialStability` bounds
+the cubic factor's change by `5/2` times the phase change, and
+`ProductionPhaseModel` combines this with the zero-safe Gaussian base remainder.
+Its phase bound stays explicit to keep the analytic estimate independent of
+the native cover. Numerical source comparisons and the upper endpoint remain open.
+
+`ProductionPhaseL2Error` proves a triangle inequality in conditional Gaussian
+L² on one radial slice of the unsmoothed rounding: the error is at most `5ρ²`
+plus `5/2` times the phase-model L² error and the model-to-comparison L² error.
+The actual phase bound follows from `phi_abs_lt_one`; keeping it as a premise
+avoids importing the native cover into this theorem. The comparison phase
+must be measurable and bounded by one. Choosing the actual phase makes its
+phase error zero, while the model-to-comparison norm still needs a certified
+Gaussian integral. The arbitrary comparison function has no stored-byte
+binding here. Radial integration, smoothing and band projection remain separate.
+
+`ProductionPhaseModelIntegral` can retain the actual phase in the Gaussian model,
+eliminating its separate phase-error term exactly. It expresses the remaining
+saved-model squared discrepancy as one conditional Gaussian integral of explicit
+model energy, saved energy and their cross term. Separate upper energy bounds
+and a lower cross bound imply the source estimate directly. A complex cross
+enclosure with radius `r` costs `2r` in the squared-discrepancy budget. The
+actual integral bounds and identification of saved bytes remain inputs.
 
 `ProfilePiFactor` provides rational enclosures of `π`, `sqrt(π)`, and
 `sqrt(sqrt(π))` of width at most `2⁻⁵¹²` for the actual profile normalization.

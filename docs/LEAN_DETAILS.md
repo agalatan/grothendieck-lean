@@ -749,6 +749,73 @@ imports these definitions and the generic Gram-expression soundness module,
 then audits both identities against the standard three
 axioms, independently of the global phase-cover computation. The existing
 `PhiBound` proof imports this identity and retains its numerical cover.
+The shared `phase_gram_sq_sum` identity gives both the imaginary-square
+substitution in `phiT_sq` and the derived `phase_gram_re_sq_le` constraint.
+The latter is used by `PhiBound` and local leaf soundness, so the Gram
+calculation is no longer repeated in those consumers.
+
+`ProductionPhaseLeaf` instantiates generic leaf soundness on the actual
+`phaseTerms` and the Gram coordinates of the actual complex input. Its inputs
+are the finite `termsOK` and `leafOK` checks and physical box membership; it
+does not call the global numerical cover theorem. It derives only the local
+squared phase cap. No concrete `leafOK` fact is proved here, and a single box
+does not give whole-slice coverage. The existing native cover already supplies
+the global `phi_abs_lt_one` and disk-valuedness through `norm_Tround_le`.
+
+`PhasePolynomialStability` proves the cubic factor is `5/2`-Lipschitz on
+`[-1,1]`. Its product estimate needs only the actual base to have norm at most
+one; the Gaussian linear base model need not be disk-valued.
+`ProductionPhaseModel.norm_roundingSlice_sub_model` bounds the actual
+rounding-slice discrepancy by the proved quadratic base remainder and `5/2`
+times the phase error, for positive radial parameter. Its actual phase bound
+can be supplied by `phi_abs_lt_one`; keeping that premise explicit preserves
+the analytic estimate's standard transitive axiom set. The comparison phase
+must also lie in `[-1,1]`. All retained lemmas have strict transitive guards
+and scratch axiom reports. Concrete leaf checks, numerical source comparisons
+and integral bounds remain separate obligations.
+
+`ProductionPhaseL2Error` constructs L² representatives of the unsmoothed
+rounding on a fixed radial slice, its linear-base/cubic-phase model, and the
+phase-model difference. For positive radial parameter and a measurable
+comparison phase bounded by one, its error against an arbitrary `saved : Lp ℂ 2 gaussC`
+is at most `5ρ² + (5/2) ‖phaseDifferenceLp‖ + ‖modelSliceLp - saved‖`.
+The actual phase premise is supplied by `phi_abs_lt_one`, a consequence of the
+native cover's `phiT_sq_le`. It stays explicit to keep the theorem's own
+transitive axiom set standard. A single `leafOK` certificate does not give
+this whole-slice premise.
+
+The intended bounded comparison phase can be `p = slicePhase s` itself;
+then the phase difference vanishes. This leaves the Gaussian integral of
+`‖linearSlice s w * P3 (slicePhase s w) - saved w‖²` to certify, with one
+normalized `gaussC` measure. No nonconstant polynomial bounded by one on the
+entire plane is assumed. The proof uses scalar norm representatives and the
+L² triangle inequality, charging the base remainder once; `linearSliceLp_coe`
+identifies the base representative. It imports the cubic stability estimate
+directly, without the unused pointwise `ProductionPhaseModel` interface.
+
+The argument `saved` is not identified with stored coefficient bytes here.
+The theorem does not yet give the smoothed band errors consumed by
+`fresh_upper_concrete_taylor`: radial integration, smoothing, band projection,
+numerical integral certificates and the stored-source binding remain to be
+supplied. No discrete coefficient count or omitted-domain estimate is added.
+
+`ProductionPhaseModelIntegral` selects the actual slice phase as the phase model,
+so its phase-difference L² element is exactly zero. The remaining model energy is
+`(1+ρ² Im(w)²) (1-φ⁴(3-φ²)/36)`. The saved-model squared discrepancy is one
+integral against `gaussC` of this expression plus the saved energy minus twice
+the real model/saved cross term. No extra Gaussian or radial density is inserted.
+An eventual bound of this integral by a nonnegative `epsilon²` implies actual
+source error at most `5ρ²+epsilon`. The whole-slice phase premise can be supplied by the existing native cover;
+it remains explicit to preserve the analytic theorem's standard axiom set.
+Positive radial parameter, comparison-function binding and numerical integral
+certificates remain explicit; a selected leaf does not provide whole-slice coverage.
+The model and model/saved cross integrands are integrable by their actual L²
+representatives. Separate receipts `modelEnergy ≤ U`, `savedEnergy ≤ V` and
+`Re(modelSavedCross) ≥ L` give the squared discrepancy bound `U+V-2L`. A complex
+cross enclosure `‖modelSavedCross-c‖ ≤ r` instead gives `U+V-2 Re(c)+2r`.
+Either budget bounded by `epsilon²`, with `epsilon ≥ 0`, implies the same
+actual source estimate. This consumer does not manufacture any of the numerical
+receipts or bind an arbitrary saved function to the stored center data.
 
 `LocalAffineSquareIntegralBounds` supplies both affine integration orders with
 `ContinuousOn` restricted to the actual closed cell. Coordinate clamping

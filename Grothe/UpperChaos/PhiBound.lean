@@ -29,11 +29,7 @@ theorem phiT_sq_le (u : ℂ × ℂ) : phiT u ^ 2 ≤ 99 / 100 := by
   set W := (conj u.1 * u.2).re
   have hU : 0 ≤ U := by positivity
   have hV : 0 ≤ V := by positivity
-  have hW2 : W ^ 2 ≤ U * V := by
-    have h := Complex.normSq_apply (conj u.1 * u.2)
-    rw [Complex.normSq_mul, Complex.normSq_conj, Complex.normSq_eq_norm_sq,
-      Complex.normSq_eq_norm_sq] at h
-    nlinarith [sq_nonneg (conj u.1 * u.2).im]
+  have hW2 : W ^ 2 ≤ U * V := phase_gram_re_sq_le u
   rcases lt_or_ge (U + V) 60 with h60 | h60
   · have hroot : InBox rootBox U V W := by
       have hS : (0 : ℝ) < (2 : ℝ) ^ SC := by positivity
