@@ -22,7 +22,7 @@ separate obligations.
 -/
 
 open MeasureTheory Grothe.LowerAnalytic
-open scoped BigOperators ComplexConjugate InnerProductSpace
+open scoped BigOperators ComplexConjugate InnerProductSpace ENNReal
 
 namespace Grothe.UpperChaos.ActualTaylorMultiplierOperator
 
@@ -117,7 +117,7 @@ theorem tendsto_rectangle_matrixAction (hφ : PhiBound) (power : ℕ) (m : Idx2)
       (nhds ⟪hvec2 m, multiplier hφ power (rectangleTail f)⟫_ℂ) := by
   classical
   have h := hasSum_rectangleTail hφ power m f
-  simpa only [HasSum, matrixAction, rectangleComplementInputs,
+  simpa only [HasSum, SummationFilter.unconditional_filter, matrixAction, rectangleComplementInputs,
     Finset.sum_filter, mul_comm] using h
 
 end
