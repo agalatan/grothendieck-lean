@@ -836,9 +836,9 @@ def main(argv=None):
                 for index, (phase, targets) in enumerate(plan, 1):
                     runner.run_group(phase, targets, index)
                     print(f"Complete group {index}/{len(plan)} ({phase}): {', '.join(targets)}", flush=True)
-                runner.check(full=True)
                     if args.max_batches and index >= args.max_batches and index < len(plan):
                         raise Pause("requested batch boundary reached; later invocations reuse Lake outputs")
+                runner.check(full=True)
                 runner.finish_shared()
         finally:
             if runner.coexist is not None and runner.coexist.current is not None:
