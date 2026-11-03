@@ -221,9 +221,15 @@ def generate() -> dict[Path, str]:
             actual_string = f'({name}CenterPackedChunks[{index}]?.getD "")'
             actual = f'{actual_string}.toList'
             lines += [f'def values : List ℤ := {vals}', '',
-                      f'private theorem source_string : {actual_string} =',
+                      f'private def sourceLiteral : String := {json.dumps(chunk)}', '',
+                      f'private theorem source_lookup : {actual_string} = sourceLiteral := by',
+                      '  rfl', '',
+                      'private theorem source_concat : sourceLiteral =',
                       f'    {source_texts} := by',
                       '  decide +kernel', '',
+                      f'private theorem source_string : {actual_string} =',
+                      f'    {source_texts} := by',
+                      '  exact source_lookup.trans source_concat', '',
                       'private theorem comma_chars : ",".toList = [\',\'] := by decide +kernel', '',
                       f'theorem source_chars : {actual} =', f'    {texts} := by',
                       '  simpa only [String.toList_append, comma_chars,',
