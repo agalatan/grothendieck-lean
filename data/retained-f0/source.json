@@ -1,0 +1,20 @@
+{
+  "agent_id": "codex-7c2e",
+  "source_file": "raw_canonical_blocks.npy",
+  "sha256": "5992d33a5c6d38669a659e16612f18e732b047553fb2fcf084afb2764b8d55bd",
+  "size_bytes": 42925144,
+  "npy_header": {
+    "descr": "<f8",
+    "fortran_order": false,
+    "shape": [
+      5365627
+    ]
+  },
+  "payload_offset": 128,
+  "max_total_degree": 501,
+  "max_grade": 250,
+  "block_count": 252,
+  "record_count": 5365627,
+  "historical_origin": "/Users/alingalatan/Documents/Codex/2026-10-08/read-online-everything-about-grothendieck-s/outputs/grothendieck-140462-common-head/raw_canonical_blocks.npy",
+  "status": "Exact binary64 candidates; Gaussian source accuracy and full energy-table comparison are separate unproved obligations."
+}

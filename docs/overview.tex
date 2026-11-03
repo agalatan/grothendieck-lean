@@ -214,6 +214,14 @@ With a separate actual Hardy tail $3.6748\cdot10^{-8}$, the total residual
 is $994901/10^{12}$ and the conditional scalar transfer is below $1.4045984$.
 The actual Gaussian, source, same-output table and tail certificates and
 the full acceptance and trust checks are still required.
+A concrete degree-one table-fit slice is also being checked. It uses both
+pinned binary64 source words, adds the frozen correction once, and applies
+the production rational smoothing matrix. The proposed bound compares the
+two actual retained-output energies with the current parsed table to within
+$10^{-15}$; higher source grades remain arbitrary. Exact source parsing,
+matrix arithmetic and the consumer require Lean acceptance, while Gaussian
+accuracy of the source inputs remains a separate obligation.
+
 The common-tolerance source consumer instead allows total canonical tensor
 norm error $9.7\cdot10^{-8}$, charges its dyadic completion defect separately,
 and propagates raw and projected errors $1.4\cdot10^{-7}$ and

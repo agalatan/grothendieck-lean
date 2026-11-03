@@ -186,6 +186,7 @@ import Grothe.Upper.CompositeComparisonData
 import Grothe.Upper.CompositeComparisonMass
 import Grothe.Upper.Data
 import Grothe.Upper.Disk
+import Grothe.Upper.EnergyDegreeOneLookup
 import Grothe.Upper.Final
 import Grothe.Upper.GroupedBridge
 import Grothe.Upper.GroupedComparison
@@ -578,6 +579,7 @@ import Grothe.UpperChaos.ArraySquareEnergy
 import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.BandedContraction
 import Grothe.UpperChaos.BasePairIntegralAudit
+import Grothe.UpperChaos.Binary64Center
 import Grothe.UpperChaos.CanonicalReconstructionNorm
 import Grothe.UpperChaos.CapturedSourceBound
 import Grothe.UpperChaos.CapturedTail
@@ -896,6 +898,7 @@ import Grothe.UpperChaos.LeanCertAuxiliaryCutoff
 import Grothe.UpperChaos.LeanCertPilot
 import Grothe.UpperChaos.LeanCertProductionPanel
 import Grothe.UpperChaos.LeanCertProductionProfile
+import Grothe.UpperChaos.LegacySingleCharacterSplit
 import Grothe.UpperChaos.LinearTiltedMoments
 import Grothe.UpperChaos.LinearTiltedMomentsAudit
 import Grothe.UpperChaos.LocalAffineSquareIntegralBounds
@@ -1117,6 +1120,8 @@ import Grothe.UpperChaos.PositiveMomentTheta
 import Grothe.UpperChaos.PositiveRatio
 import Grothe.UpperChaos.ProductComplete
 import Grothe.UpperChaos.ProductionCompactLaplace
+import Grothe.UpperChaos.ProductionDegreeOneMatrix
+import Grothe.UpperChaos.ProductionDegreeOneTable
 import Grothe.UpperChaos.ProductionF0Conditional
 import Grothe.UpperChaos.ProductionF0Head
 import Grothe.UpperChaos.ProductionF0Omission

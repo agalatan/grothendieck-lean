@@ -259,6 +259,15 @@ smoothing reserve is charged once. `CommonGaussianTailTolerance` recomputes
 all three captured tails when each original unscaled finite Gaussian radius
 is increased by `2·10⁻⁸`. These conditional interfaces preserve the original
 contracts and leave the actual source, table and Gaussian estimates open.
+The work-in-progress degree-one table slice uses both pinned binary64 source
+words, the frozen correction once and the exact production rational matrix.
+Its proposed `retained_table_residual` compares both actual retained-output
+energies with the current parsed table within `10⁻¹⁵`, leaving higher source
+grades unrestricted. The current-source parser certificate preserves duplicate
+contributions and uses the shared single-character delimiter theorem. This
+slice still needs Lean acceptance; it supplies no Gaussian source-accuracy
+certificate.
+
 `ProductionF0Radial` removes the remaining Gaussian angle from every retained
 tensor coefficient by exact charge cancellation. It expresses the full source
 error using the actual conditional coefficients at `sqrt(s)` with density

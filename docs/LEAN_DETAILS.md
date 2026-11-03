@@ -334,6 +334,22 @@ contract. `RelaxedRationalReference` uses the resulting same-reference table
 premise and fourteen Gaussian estimates. The archived floating family is
 separate; its table certificate is not transferred to this new reference.
 
+`ProductionDegreeOneMatrix` and `ProductionDegreeOneTable` are a WIP
+concrete table-fit slice. The generator validates the pinned full raw archive
+`5992d33a…`, reads both grade-zero words at offsets indexed by `251²` and `0`,
+and inserts the actual frozen correction once before production rational
+smoothing. Natural square-root inequalities certify the proposed matrix
+entries. The actual `retainedSmoothed` energy identities use arbitrary higher
+grades, and the dyadic reference leaves both canonical grade-zero coordinates
+unchanged. The proposed two-energy table residual is `≤ 10⁻¹⁵`.
+`EnergyDegreeOneLookup` proves against the current `parseRow`, `parseEntry` and
+`tabVal`; one-sided character certificates can succeed only when their result
+is the value of those unchanged definitions. Every row and duplicate matching
+entry contributes. The pure delimiter helper is reused byte-identically from
+8c4d commit `34c12029…`; no retired prefix or source-lookup axiom is imported.
+All new source/matrix/table consumers await actual Lean acceptance. This
+arithmetic certificate does not establish accuracy of the Gaussian F₀ input.
+
 `ProductionF0Omission` partitions the actual phase by one measurable union of
 three explicit root-gap sets and `s > 100`. The continuous Gaussian tail mass
 is exactly `exp(-100)`. Gaps beyond `s = 13` with total width at most `8·10⁻¹⁶`
