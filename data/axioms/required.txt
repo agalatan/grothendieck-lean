@@ -1541,6 +1541,14 @@ Grothe.UpperChaos.Q0LegendreRule64.count
 Grothe.UpperChaos.Q0LegendreRule64.exists_each
 Grothe.UpperChaos.Q0LegendreRule64.ordered
 Grothe.UpperChaos.Q0LiteralBinaryFold.fold_eq_literal
+Grothe.UpperChaos.Q0NearZeroSource.actual_error_sq_lt
+Grothe.UpperChaos.Q0NearZeroSource.finite_completed_error_sq_le
+Grothe.UpperChaos.Q0NearZeroSource.finite_error_sq_lt
+Grothe.UpperChaos.Q0NearZeroSource.rowAt_matches
+Grothe.UpperChaos.Q0NearZeroSource.savedCenter_completion
+Grothe.UpperChaos.Q0NearZeroSource.source_panel_selected
+Grothe.UpperChaos.Q0NearZeroSourceData.each_row_source
+Grothe.UpperChaos.Q0NearZeroSourceData.ordinals
 Grothe.UpperChaos.Q0NodeMassLedgerSharp.real_error_lt_cap
 Grothe.UpperChaos.Q0NodeMassLedgerSharp.sqrt_mass_lt_norm
 Grothe.UpperChaos.Q0ProfileRectangleModel.actual_profile_model

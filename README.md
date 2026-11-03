@@ -271,8 +271,16 @@ A centered interval check on the actual panel bounds the physical profile;
 the analytic model then bounds the entire selected Gaussian-to-saved vector
 by radius `2e-15`, including omitted modes. The finite-Laplace-to-saved radius
 is below `7e-15`, discharging the `1.9e-10` premise at this address. This one-row
-proof is awaiting Lean CI; the other regular rows and the final upper bound
-remain work in progress.
+proof is awaiting Lean CI.
+
+`Q0NearZeroSource` extends the same argument to original ordinals 3469–4456,
+10710–11238 and 17223–17542: 1,837 rows, including 1,420 regular rows. The
+compact original payload and ledger hashes determine their exact saved values.
+Batched kernel checks bound the fitted parameter by `2e-11` and the coupled
+model residual by `2e-22`. Three whole-panel profile checks then give both
+actual-to-saved and finite-Laplace-to-saved radii below `6e-11`, including all
+selected modes. The generated checks and analytic consumer await Lean
+acceptance; the remaining rows and final upper bound remain work in progress.
 
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of

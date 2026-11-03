@@ -211,8 +211,18 @@ whole-selected-vector Gaussian-to-saved radius below $2\cdot10^{-15}$, with
 omitted coefficients retained. Adding the finite auxiliary approximation
 gives radius below $7\cdot10^{-15}$ and meets the regular-row tolerance at
 this address. The byte slice, source metadata and row hash are pinned.
-Lean CI acceptance is pending; all other regular rows and the final upper
-bound remain work in progress.
+Lean CI acceptance is pending.
+
+The near-zero source extension selects original ordinals 3469--4456,
+10710--11238 and 17223--17542, containing 1,837 rows and 1,420 regular rows.
+Its compact payload preserves the original bytes and ledger hashes. Batched
+rational checks bound the fitted parameter by $2\cdot10^{-11}$ and the
+coupled model residual by $2\cdot10^{-22}$. Three actual panel blocks have
+scaled profile at most $10^{-10}$. The shared analytic argument yields
+actual-to-saved and finite-to-saved radii below $6\cdot10^{-11}$ over the
+entire selected coefficient vector, inside the existing row allowance.
+These generated checks and their actual-address consumer await Lean acceptance;
+the remaining rows and final upper bound remain work in progress.
 
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every

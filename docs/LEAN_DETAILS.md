@@ -293,6 +293,28 @@ coefficients remain in the error sum. This concrete proof candidate awaits
 Lean CI and certifies only this address; it supplies no all-row or final-bound
 claim.
 
+**Actual source rows near profile zeros.** `Q0NearZeroSource` selects exactly
+ordinals 3469–4456, 10710–11238 and 17223–17542. The compact input in
+`data/q0_quadrature/near-zero-source/` contains 65,032 original payload bytes
+and their verbatim ledger lines; regeneration reads only these bytes and the
+already pinned source offsets, cutoffs and panel schedule. Historical ledger
+error estimates are not proof premises. The selection contains 1,837 rows,
+including 1,420 regular rows, and matches every original cutoff at most two
+in the external replay.
+
+Each generated chunk checks exact rational decoding, original metadata
+alignment, `|fitParameter| ≤ 2/10^11` and squared model residual at most
+`(2/10^22)^2`. `Q0NearZeroSourceProfile` checks the entire actual panel blocks
+102–318, 521–720 and 933–1118 at scaled-profile cap `1/10^10`. The shared
+analytic row theorem bounds every selected Gaussian coefficient, including
+true coefficients outside the saved cutoff. Its actual radius is at most
+`2400000000259/45000000000000000000000`; adding `5/10^15` bounds the finite
+radius strictly below `6/10^11`, hence below the existing `19/10^11` allowance.
+The actual-address consumer has no numerical premises beyond membership in
+the certified ordinal ranges. These modules await targeted Lean checking;
+other rows, production response binding, quadrature and final table accuracy
+remain open.
+
 **q0 source-to-literal identity.**
 `Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real
 `s`, `b`, and `v`, that `Ssum q0RawWickEntries s b v` equals
