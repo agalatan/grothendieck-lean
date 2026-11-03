@@ -317,8 +317,15 @@ Its majorant is uniform on bounded source sets, so complex differentiation
 in either source inserts `z` or `conj z`. `IndependentSourcePolynomial`
 evaluates every finite polynomial insertion by a polynomial recurrence,
 retaining the factor `exp(a*b/rate)/rate` and the means `b/rate`, `a/rate`.
-These source formulas do not identify the actual multiplier or the weighted
-Fock operator, and supply no numerical Hilbert--Schmidt caps.
+`ActualTaylorCoherent` applies that recurrence to the production multiplier
+`taylorPhasePower j`, excluding `F0`. Its rational polynomial uses the actual
+`phaseTerms` in physical order `(z, conj z, w, conj w)`, with exact radial rate
+`r = 1 + j*phaseEpsQ`. For eight independent coherent sources, it proves
+absolute integrability and evaluates the transform as two Gaussian factors
+times a finite polynomial, retaining total normalization `r^-2`.
+The normalized Hermite coefficient identity, weighted Fock bound and exact
+binding to the historical Laguerre polynomial remain open; these formulas
+supply no numerical Hilbert--Schmidt caps.
 For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
 `QuadraticPolynomialIntegrability` proves genuine joint polynomial
 integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate

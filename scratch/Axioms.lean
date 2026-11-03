@@ -217,6 +217,10 @@ import Grothe
 #print axioms Grothe.Upper.summable_abs_bivarKernel
 #print axioms Grothe.Upper.tabPoly_coeff
 #print axioms Grothe.Upper.tsum_abs_bivarKernel_le
+#print axioms Grothe.UpperChaos.ActualTaylorCoherent.integrable_coherentIntegrand
+#print axioms Grothe.UpperChaos.ActualTaylorCoherent.integral_coherentIntegrand
+#print axioms Grothe.UpperChaos.ActualTaylorCoherent.integral_coherentIntegrand_eq_moments
+#print axioms Grothe.UpperChaos.ActualTaylorCoherent.taylorPhasePower_eq_polynomial
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.abs_integral_le_area_mul
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.area_nonneg
 #print axioms Grothe.UpperChaos.AdaptiveRectanglePartition.Rect.auxMid_bounds

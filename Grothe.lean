@@ -192,6 +192,8 @@ import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.Realise
 import Grothe.Upper.Residual
 import Grothe.Upper.WeightedUnion
+import Grothe.UpperChaos.ActualTaylorCoherent
+import Grothe.UpperChaos.ActualTaylorCoherentAudit
 import Grothe.UpperChaos.AdaptiveRectangleComposition
 import Grothe.UpperChaos.AdaptiveRectangleEnclosure
 import Grothe.UpperChaos.AdaptiveRectangleEnvelope

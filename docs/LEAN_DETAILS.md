@@ -347,9 +347,30 @@ The exact mixed moment is `exp(a*b/rate)/rate * P(p,q).eval a`; finite
 linearity extends it to arbitrary finite complex polynomial insertions.
 `IndependentSourcePolynomialAudit` enforces the standard-three trust
 boundary for the majorant, integrability, both derivative identities,
-normalization, and finite evaluator. Identification with the actual
-multiplier, the weighted Fock operator identity, and numerical
-Hilbert--Schmidt caps remain open.
+normalization, and finite evaluator.
+
+`ActualTaylorCoherent.taylorPhasePower_eq_polynomial` identifies the production
+multiplier `taylorPhasePower j`, excluding `F0`, with its rational polynomial
+and exact Gaussian damping. The polynomial is the complex coefficient map of
+`(imaginaryFactorQ * phaseInvariantQ phaseTerms)^j` in physical order
+`(z, conj z, w, conj w)`; `imaginaryFactorQ` already includes the factor `I`.
+For each physical coordinate the coherent factor is
+`exp(x*conj z+y*z-x*y) * exp(u*z+v*conj z-u*v)`.
+The independent-source evaluator receives `(y+u, x+v)` and has total radial
+rate `r = 1 + j*phaseEpsQ`.
+`integrable_coherentIntegrand` proves absolute integrability for all eight
+complex sources. `integral_coherentIntegrand_eq_moments` evaluates the actual
+transform by a finite support sum of products of `momentValue`.
+`integral_coherentIntegrand` factors this sum into the finite transformed
+polynomial and one Gaussian factor per coordinate:
+`r^-1 * exp(-(1-r^-1)*(x*y+u*v) + r^-1*(x*u+y*v))`.
+Thus normalized `mu2` retains total mass factor `r^-2`, with no extra factor of
+pi. `ActualTaylorCoherentAudit` enforces the same standard-three boundary for
+the production identification, integrability and both integral formulas.
+Identification of its coefficients with the normalized Hermite matrix entries,
+the weighted Fock bound, and exact equality with the historical producer's
+Laguerre polynomial remain open. No numerical Hilbert--Schmidt cap follows yet.
+
 `QuadraticPolynomialIntegrability` proves a separable Gaussian majorant for
 `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²` under exactly `A>0` and
 `A*C-B²>0`. The rate `(A*C-B²)/(A+C)` follows from an exact trace identity

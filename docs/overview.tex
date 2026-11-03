@@ -376,9 +376,23 @@ $\overline z$. For fixed $r,b$, define the finite polynomial recurrence
 \]
 The exact $(p,q)$ moment is $r^{-1}e^{ab/r}P_{p,q}(a)$, and finite
 linearity evaluates every finite polynomial insertion. The mass and means
-are respectively $r^{-1}e^{ab/r}$, $b/r$, and $a/r$. These identities do
-not identify the actual multiplier or the weighted Fock operator and do
-not supply numerical Hilbert--Schmidt caps.
+are respectively $r^{-1}e^{ab/r}$, $b/r$, and $a/r$.
+Applying this recurrence to the actual multiplier $(i\varphi)^j$, excluding
+$F_0$, gives its coherent transform with no source-identity hypothesis.
+The rational phase polynomial uses the production term list in physical
+order $(z,\overline z,w,\overline w)$, and the radial rate is $r=1+j\varepsilon$.
+For each physical coordinate, outgoing sources $(x,y)$ and incoming sources
+$(u,v)$ have factor
+$\exp(x\overline z+yz-xy)\exp(uz+v\overline z-uv)$.
+All eight independent sources admit absolute integrability, and the transform
+is a finite polynomial times the product of two factors
+\[
+ r^{-1}\exp\bigl(-(1-r^{-1})(xy+uv)+r^{-1}(xu+yv)\bigr).
+\]
+The total normalization is $r^{-2}$ under the normalized Gaussian product
+measure. The normalized Hermite coefficient identity, weighted Fock bound
+and exact binding to the historical Laguerre polynomial remain open;
+no numerical Hilbert--Schmidt cap is asserted.
 For the correlated form
 $Q=A|z|^2+2B\operatorname{Re}(z\overline w)+C|w|^2$, the exact conditions
 $A>0$ and $AC-B^2>0$ give the positive coercive rate
