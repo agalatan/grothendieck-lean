@@ -245,10 +245,17 @@ private theorem joined000 : row? 206 (text000 ++ ',' :: (text001 ++ ',' :: (text
   · exact decoded000
   · exact joined001
 
+def values : List ℤ := values000 ++ (values001 ++ (values002 ++ (values003 ++ (values004 ++ (values005 ++ (values006 ++ (values007 ++ (values008 ++ (values009 ++ (values010 ++ (values011 ++ (values012 ++ (values013 ++ (values014))))))))))))))
+
+private theorem source_string : (firstCenterPackedChunks[253]?.getD "") =
+    TaylorFirstPackedChunk253StructuralLeaf000.text ++ ("," ++ (TaylorFirstPackedChunk253PilotLeaf001.text ++ ("," ++ (TaylorFirstPackedChunk253PilotLeaf002.text ++ ("," ++ (TaylorFirstPackedChunk253PilotLeaf003.text ++ ("," ++ (TaylorFirstPackedChunk253PilotLeaf004.text ++ ("," ++ (TaylorFirstPackedChunk253PilotLeaf005.text ++ ("," ++ (TaylorFirstPackedChunk253PilotLeaf006.text ++ ("," ++ (TaylorFirstPackedChunk253PilotLeaf007.text ++ ("," ++ (TaylorFirstPackedChunk253PilotLeaf008.text ++ ("," ++ (TaylorFirstPackedChunk253PilotLeaf009.text ++ ("," ++ (TaylorFirstPackedChunk253PilotLeaf010.text ++ ("," ++ (TaylorFirstPackedChunk253PilotLeaf011.text ++ ("," ++ (TaylorFirstPackedChunk253PilotLeaf012.text ++ ("," ++ (TaylorFirstPackedChunk253PilotLeaf013.text ++ ("," ++ (TaylorFirstPackedChunk253PilotLeaf014.text)))))))))))))))))))))))))))) := by
+  decide +kernel
+
 open Lean Elab Command
 run_cmd do
-  for ax in ← Lean.collectAxioms ``joined000 do
-    unless #[`propext, `Classical.choice, `Quot.sound].contains ax do
-      throwError m!"joined000 has forbidden axiom {ax}"
+  for target in #[``joined000, ``source_string] do
+    for ax in ← Lean.collectAxioms target do
+      unless #[`propext, `Classical.choice, `Quot.sound].contains ax do
+        throwError m!"{target} has forbidden axiom {ax}"
 
 end Grothe.UpperChaos.TaylorFirstPackedChunk253Pilot
