@@ -66,8 +66,7 @@ theorem integral_zero_right (q : ℕ) {rate : ℝ} (hrate : 0 < rate) (a b : ℂ
     rw [he] at hd
     have harg : HasDerivAt (fun t : ℂ => a * t / (rate : ℂ))
         (a / (rate : ℂ)) b := by
-      simpa only [mul_one] using
-        (HasDerivAt.const_mul a (hasDerivAt_id b)).div_const (rate : ℂ)
+      exact (hasDerivAt_const_mul (x := b) a).div_const (rate : ℂ)
     have hformula := (HasDerivAt.const_mul (rate : ℂ)⁻¹ harg.cexp).mul_const
       ((a / (rate : ℂ)) ^ q)
     calc
@@ -95,7 +94,7 @@ theorem integral_eq_polynomial (p q : ℕ) {rate : ℝ}
     rw [he] at hd
     have harg : HasDerivAt (fun t : ℂ => t * b / (rate : ℂ))
         (b / (rate : ℂ)) a := by
-      simpa only [one_mul] using ((hasDerivAt_id a).mul_const b).div_const (rate : ℂ)
+      exact (hasDerivAt_mul_const (x := a) b).div_const (rate : ℂ)
     have hformula := (HasDerivAt.const_mul (rate : ℂ)⁻¹ harg.cexp).mul
       ((momentPolynomial rate b p q).hasDerivAt a)
     calc

@@ -57,8 +57,13 @@ theorem norm_integrand_le_envelope (p q : ℕ) {rate : ℝ}
       Real.exp (-(rate - 1) * Complex.normSq z + M * ‖z‖) ≤
         Real.exp ((M / 2) ^ 2 / (rate / 2)) *
           Real.exp (-((rate / 2) - 1) * Complex.normSq z) := by
-    simpa only [Complex.normSq_ofReal, Complex.mul_re, Complex.ofReal_re,
-      Complex.ofReal_im, mul_zero, sub_zero, Complex.normSq_eq_norm_sq, pow_two,
+    have hz : Complex.normSq ((‖z‖ : ℝ) : ℂ) = Complex.normSq z := by
+      simpa only [Complex.normSq_ofReal, pow_two] using (Complex.sq_norm z)
+    have hM : Complex.normSq ((M / 2 : ℝ) : ℂ) = (M / 2) ^ 2 := by
+      simp only [Complex.normSq_ofReal, pow_two]
+    simp only [hz, hM] at hhalf
+    simpa only [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
+      mul_zero, sub_zero,
       show (2 : ℝ) * (M / 2 * ‖z‖) = M * ‖z‖ by ring] using hhalf
   have hkernel :
       ‖Complex.exp (-((rate - 1 : ℝ) : ℂ) * (Complex.normSq z : ℂ) +
@@ -105,11 +110,8 @@ private theorem hasDerivAt_integrand_a (p q : ℕ) (rate : ℝ) (a b z : ℂ) :
       (integrand rate a b (p + 1) q z) a := by
   have harg : HasDerivAt (fun t : ℂ =>
       -((rate - 1 : ℝ) : ℂ) * (Complex.normSq z : ℂ) + t * z + b * conj z) z a := by
-    simpa only [zero_add, one_mul, add_zero] using
-      ((hasDerivAt_const a
-        (-((rate - 1 : ℝ) : ℂ) * (Complex.normSq z : ℂ))).add
-          ((hasDerivAt_id a).mul_const z)).add
-            (hasDerivAt_const a (b * conj z))
+    exact ((hasDerivAt_mul_const (x := a) z).const_add
+      (-((rate - 1 : ℝ) : ℂ) * (Complex.normSq z : ℂ))).add_const (b * conj z)
   convert HasDerivAt.const_mul (z ^ p * conj z ^ q) harg.cexp using 1 <;>
     simp only [integrand, pow_succ] <;> ring
 
@@ -119,10 +121,8 @@ private theorem hasDerivAt_integrand_b (p q : ℕ) (rate : ℝ) (a b z : ℂ) :
   have harg : HasDerivAt (fun t : ℂ =>
       -((rate - 1 : ℝ) : ℂ) * (Complex.normSq z : ℂ) + a * z + t * conj z)
       (conj z) b := by
-    simpa only [zero_add, one_mul, add_zero] using
-      (hasDerivAt_const b
-        (-((rate - 1 : ℝ) : ℂ) * (Complex.normSq z : ℂ) + a * z)).add
-          ((hasDerivAt_id b).mul_const (conj z))
+    exact (hasDerivAt_mul_const (x := b) (conj z)).const_add
+      (-((rate - 1 : ℝ) : ℂ) * (Complex.normSq z : ℂ) + a * z)
   convert HasDerivAt.const_mul (z ^ p * conj z ^ q) harg.cexp using 1 <;>
     simp only [integrand, pow_succ] <;> ring
 
@@ -152,8 +152,9 @@ theorem hasDerivAt_integral_a (p q : ℕ) {rate : ℝ}
     (integrable_envelope (p + 1) q hrate _)
     (Filter.Eventually.of_forall fun z t _ =>
       hasDerivAt_integrand_a p q rate t b z)).2
-  exact norm_integrand_le_envelope (p + 1) q hrate
-    (add_le_add_right (norm_le_ball_bound ht) _) z
+  have ht_norm : ‖t‖ ≤ ‖a‖ + 1 := norm_le_ball_bound ht
+  have hM : ‖t‖ + ‖b‖ ≤ ‖a‖ + 1 + ‖b‖ := by linarith only [ht_norm]
+  exact norm_integrand_le_envelope (p + 1) q hrate (a := t) (b := b) hM z
 
 /-- Complex differentiation in the second independent source inserts conjugate z. -/
 theorem hasDerivAt_integral_b (p q : ℕ) {rate : ℝ}
@@ -172,8 +173,9 @@ theorem hasDerivAt_integral_b (p q : ℕ) {rate : ℝ}
     (integrable_envelope p (q + 1) hrate _)
     (Filter.Eventually.of_forall fun z t _ =>
       hasDerivAt_integrand_b p q rate a t z)).2
-  exact norm_integrand_le_envelope p (q + 1) hrate
-    (add_le_add_left (norm_le_ball_bound ht) _) z
+  have ht_norm : ‖t‖ ≤ ‖b‖ + 1 := norm_le_ball_bound ht
+  have hM : ‖a‖ + ‖t‖ ≤ ‖a‖ + (‖b‖ + 1) := by linarith only [ht_norm]
+  exact norm_integrand_le_envelope p (q + 1) hrate (a := a) (b := t) hM z
 
 /-- The independent-source zeroth moment retains the normalization already
 proved in DampedCoherentKernel. -/
@@ -193,7 +195,7 @@ theorem integral_one_zero {rate : ℝ} (hrate : 0 < rate) (a b : ℂ) :
     funext fun t => integral_zero hrate t b
   rw [he] at hd
   have harg : HasDerivAt (fun t : ℂ => t * b / (rate : ℂ)) (b / (rate : ℂ)) a := by
-    simpa only [one_mul] using ((hasDerivAt_id a).mul_const b).div_const (rate : ℂ)
+    exact (hasDerivAt_mul_const (x := a) b).div_const (rate : ℂ)
   exact hd.unique (HasDerivAt.const_mul (rate : ℂ)⁻¹ harg.cexp)
 
 /-- One actual conjugate-z insertion has mean a/rate, independently of b. -/
@@ -206,8 +208,7 @@ theorem integral_zero_one {rate : ℝ} (hrate : 0 < rate) (a b : ℂ) :
     funext fun t => integral_zero hrate a t
   rw [he] at hd
   have harg : HasDerivAt (fun t : ℂ => a * t / (rate : ℂ)) (a / (rate : ℂ)) b := by
-    simpa only [mul_one] using
-      (HasDerivAt.const_mul a (hasDerivAt_id b)).div_const (rate : ℂ)
+    exact (hasDerivAt_const_mul (x := b) a).div_const (rate : ℂ)
   exact hd.unique (HasDerivAt.const_mul (rate : ℂ)⁻¹ harg.cexp)
 
 end
