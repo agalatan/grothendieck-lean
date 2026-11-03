@@ -128,6 +128,21 @@ $\delta=455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$:
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
 
+The conditional-node table has 21,577 rows of binary64 conditional Hermite
+approximations. Row $i$ uses the degree-531 canonical pairs $0\le c\le266$,
+$0\le d\le265$, $c\le d+1$, in $(c+d,c)$ order, retaining
+$c+d\le\mathrm{cutoff}_i$. A full row has 35,777 entries; cutoffs 1 and 2
+retain three and five. This certificate selects every node in a panel where
+the outward 128-bit profile interval Horner screen contains zero at some node.
+The 413 unresolved nodes occupy 381 panels; panel closure gives exactly the
+417 ordinals 3872--4036, 10910--11037 and 17321--17444, independently of cutoff.
+The rule and its exact inputs are committed in
+\path{data/q0_quadrature/conditional_source/exception-selection.json}.
+Lean checks scalar magnitude at most one, squared row norm at most $121/100$,
+and source ordinal coverage. No Gaussian coefficient estimate or upper-bound
+assembly currently consumes this certificate; source-address, basis-normalization
+and approximation-error proofs remain separate.
+
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every
 grade's integer sum and divides by $2^{210}$, then identifies the rational
@@ -562,8 +577,40 @@ integrable real half-line kernel identity
  \int_0^\infty \left(\frac{t}{1+t}\right)^h t^{-1/2}
  \frac{e^{-xt/(1+t)}}{(1+t)^2}\,dt=\frac{\pi}{2}J_h(x).
 \]
-Its identification with a Gaussian coefficient and numerical node certificates
-remain open. The cell enclosure is an explicit hypothesis;
+Absolute Fubini and the exact shifted Gaussian moment identify the normalized
+zero-row coefficient with
+\[
+ I_{0,d}(A)=\frac{\sqrt{\pi}}{2}\,
+ \frac{A(-A)^d J_d(A^2)}{\sqrt{d!}}.
+\]
+This is connected to the actual canonical evaluator and production coefficient,
+including the profile sign to power $d$. At $d=0$ that factor is one.
+These identities use only Lean's standard axioms. The exact zero-row recurrence
+$I_{0,d+1}(A)=-A r_d(A^2)I_{0,d}(A)/\sqrt{d+1}$, which is proved for the
+actual Gaussian coefficient and transferred to the signed production value.
+The canonical coefficient has norm at most one by Cauchy--Schwarz in Gaussian
+$L^2$. Its two-term raising sum has norm at most
+$\sqrt{c+1}+\sqrt{d+1}<35$ on the stored index rectangle. The parameter
+derivative identity and midpoint transfer still require proof.
+Conjugation invariance of the Gaussian and rational Hermite coefficients prove
+reality of every canonical coefficient and the corresponding signed production
+coefficient. Their complex distance to a real stored center equals the absolute
+real-part error.
+The saved-center interface adds half the physical-parameter interval error and
+the explicit model-to-saved error to $5\rho^2$; the displayed rational budget
+fits below $10^{-12}$. Actual node and byte certificates are still required.
+The corresponding actual Gaussian approximation has $L^2$ and all-mode
+coefficient error at most $5\rho^2$, where
+$\rho=\sqrt{1+a^2}v(s)/\sqrt{s}$ for $s>0$. Saved-entry enclosures remain separate.
+The constant-plus-linear phase approximation has pointwise error at most
+$\frac52\|h\|^2/r^2$ at reference radius $r>0$, also when $r+h=0$.
+Its actual Gaussian coefficient and node-data instantiation remains separate.
+The zero-safe inequality $\|\operatorname{phase}(r+h)-1\|\le2\|h\|/r$ for
+$r>0$ bounds the actual conditional phase and coefficient error by
+$2\sqrt{1+a^2}|v(s)|/\sqrt{s}$ in Gaussian $L^2$, including at profile zeros.
+Its use in a final node and energy ledger remains to be proved.
+Numerical node certificates and the complete upper bound remain open.
+The cell enclosure is an explicit hypothesis;
 no numerical cell certificate or numerical improper-integral bound is claimed.
 The recurrence $M_{p+1,q}=\mu M_{p,q}+(q/\beta)M_{p,q-1}$ preserves the affine
 cancellation for every mixed degree, including zero mean and $q=0$.
@@ -997,5 +1044,11 @@ and external exact or interval certificates; they are not all formalized in Lean
 \item N.~Brunner et al., \emph{Bell nonlocality}, Rev.\ Mod.\ Phys.\ 86 (2014),
  \href{https://arxiv.org/abs/1303.2849}{arXiv:1303.2849}.
 \end{itemize}
+
+% Exact phase-source identity; Agent-ID: codex-8c4d.
+\paragraph{Phase source identity.}
+The identity expressing the squared production phase in Gram coordinates is
+available independently of the numerical phase cover. This lets local source
+certificates use the actual rounding polynomial before cover assembly.
 
 \end{document}
