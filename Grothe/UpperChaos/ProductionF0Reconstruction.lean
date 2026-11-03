@@ -16,6 +16,9 @@ open scoped ComplexConjugate
 namespace Grothe.UpperChaos.FixedChaosSmoothing
 noncomputable section
 
+private theorem add_right_real (x y z : ℝ) (h : x ≤ y) : x + z ≤ y + z :=
+  add_le_add_right h z
+
 private theorem ev_swap_ofReal (r : ℝ) (P : CPoly) :
     ev (r : ℂ) (ConditionalMomentReflection.swap P) = ev (r : ℂ) P := by
   induction P using MvPolynomial.induction_on with
@@ -273,7 +276,9 @@ theorem norm_productionF0Head_sub_le_canonical (a0 : ℕ → ℕ → ℕ → ℚ
         ‖tensorVector (fun q i => exactA q i - a q i)‖ ≤
       (10 / 7 : ℝ) * canonicalTensorErrorNorm a0 +
         ‖tensorVector (fun q i => exactA q i - a q i)‖ :=
-    add_le_add_right hrec ‖tensorVector (fun q i => exactA q i - a q i)‖
+    add_right_real ‖tensorVector (fun q i => trueA q i - exactA q i)‖
+      ((10 / 7 : ℝ) * canonicalTensorErrorNorm a0)
+      ‖tensorVector (fun q i => exactA q i - a q i)‖ hrec
   exact le_trans hadd hright
 
 end

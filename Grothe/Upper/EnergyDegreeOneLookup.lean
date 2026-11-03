@@ -254,7 +254,7 @@ private theorem prefix000 : source000.startsWith "0:" = true := by
 
 private def body000_007 : String := "1,3234302541425105,52"
 private theorem body000_007_separators :
-    ':' ∉ body000_007.toList ∧ ';' ∉ body000_007.toList := by cbv; decide +kernel
+    ':' ∉ body000_007.toList ∧ ';' ∉ body000_007.toList := by decide +kernel
 private theorem body000_007_certificate :
     entryValue? 1 body000_007.toList = some (3234302541425105 / 4503599627370496 : ℚ) := by cbv
 private theorem body000_007_noColon : ':' ∉ body000_007.toList :=
@@ -264,7 +264,7 @@ private theorem body000_007_value : bodyValue 1 body000_007 = (3234302541425105 
 
 private def body000_009 : String := "3,337651126216733,52"
 private theorem body000_009_separators :
-    ':' ∉ body000_009.toList ∧ ';' ∉ body000_009.toList := by cbv; decide +kernel
+    ':' ∉ body000_009.toList ∧ ';' ∉ body000_009.toList := by decide +kernel
 private theorem body000_009_certificate :
     entryValue? 1 body000_009.toList = some (0 : ℚ) := by cbv
 private theorem body000_009_noColon : ':' ∉ body000_009.toList :=
@@ -274,7 +274,7 @@ private theorem body000_009_value : bodyValue 1 body000_009 = (0 : ℚ) :=
 
 private def body000_010 : String := "5,6749347797960523,58"
 private theorem body000_010_separators :
-    ':' ∉ body000_010.toList ∧ ';' ∉ body000_010.toList := by cbv; decide +kernel
+    ':' ∉ body000_010.toList ∧ ';' ∉ body000_010.toList := by decide +kernel
 private theorem body000_010_certificate :
     entryValue? 1 body000_010.toList = some (0 : ℚ) := by cbv
 private theorem body000_010_noColon : ':' ∉ body000_010.toList :=
@@ -302,7 +302,7 @@ private theorem body000_006_value : bodyValue 1 body000_006 = (3234302541425105 
 
 private def body000_013 : String := "7,5850326775092615,59"
 private theorem body000_013_separators :
-    ':' ∉ body000_013.toList ∧ ';' ∉ body000_013.toList := by cbv; decide +kernel
+    ':' ∉ body000_013.toList ∧ ';' ∉ body000_013.toList := by decide +kernel
 private theorem body000_013_certificate :
     entryValue? 1 body000_013.toList = some (0 : ℚ) := by cbv
 private theorem body000_013_noColon : ':' ∉ body000_013.toList :=
@@ -312,7 +312,7 @@ private theorem body000_013_value : bodyValue 1 body000_013 = (0 : ℚ) :=
 
 private def body000_014 : String := "9,745603432836449,57"
 private theorem body000_014_separators :
-    ':' ∉ body000_014.toList ∧ ';' ∉ body000_014.toList := by cbv; decide +kernel
+    ':' ∉ body000_014.toList ∧ ';' ∉ body000_014.toList := by decide +kernel
 private theorem body000_014_certificate :
     entryValue? 1 body000_014.toList = some (0 : ℚ) := by cbv
 private theorem body000_014_noColon : ':' ∉ body000_014.toList :=
@@ -331,7 +331,7 @@ private theorem body000_012_value : bodyValue 1 body000_012 = (0 : ℚ) := by
 
 private def body000_016 : String := "11,6705438846892011,61"
 private theorem body000_016_separators :
-    ':' ∉ body000_016.toList ∧ ';' ∉ body000_016.toList := by cbv; decide +kernel
+    ':' ∉ body000_016.toList ∧ ';' ∉ body000_016.toList := by decide +kernel
 private theorem body000_016_certificate :
     entryValue? 1 body000_016.toList = some (0 : ℚ) := by cbv
 private theorem body000_016_noColon : ':' ∉ body000_016.toList :=
@@ -341,7 +341,7 @@ private theorem body000_016_value : bodyValue 1 body000_016 = (0 : ℚ) :=
 
 private def body000_017 : String := "13,4020564483917527,61"
 private theorem body000_017_separators :
-    ':' ∉ body000_017.toList ∧ ';' ∉ body000_017.toList := by cbv; decide +kernel
+    ':' ∉ body000_017.toList ∧ ';' ∉ body000_017.toList := by decide +kernel
 private theorem body000_017_certificate :
     entryValue? 1 body000_017.toList = some (0 : ℚ) := by cbv
 private theorem body000_017_noColon : ':' ∉ body000_017.toList :=
@@ -378,7 +378,7 @@ private theorem body000_005_value : bodyValue 1 body000_005 = (3234302541425105 
 
 private def body000_021 : String := "15,2526847819796633,61"
 private theorem body000_021_separators :
-    ':' ∉ body000_021.toList ∧ ';' ∉ body000_021.toList := by cbv; decide +kernel
+    ':' ∉ body000_021.toList ∧ ';' ∉ body000_021.toList := by decide +kernel
 private theorem body000_021_certificate :
     entryValue? 1 body000_021.toList = some (0 : ℚ) := by cbv
 private theorem body000_021_noColon : ':' ∉ body000_021.toList :=
@@ -388,7 +388,7 @@ private theorem body000_021_value : bodyValue 1 body000_021 = (0 : ℚ) :=
 
 private def body000_022 : String := "17,3287320993986653,62"
 private theorem body000_022_separators :
-    ':' ∉ body000_022.toList ∧ ';' ∉ body000_022.toList := by cbv; decide +kernel
+    ':' ∉ body000_022.toList ∧ ';' ∉ body000_022.toList := by decide +kernel
 private theorem body000_022_certificate :
     entryValue? 1 body000_022.toList = some (0 : ℚ) := by cbv
 private theorem body000_022_noColon : ':' ∉ body000_022.toList :=
@@ -407,7 +407,7 @@ private theorem body000_020_value : bodyValue 1 body000_020 = (0 : ℚ) := by
 
 private def body000_024 : String := "19,8786749588977441,64"
 private theorem body000_024_separators :
-    ':' ∉ body000_024.toList ∧ ';' ∉ body000_024.toList := by cbv; decide +kernel
+    ':' ∉ body000_024.toList ∧ ';' ∉ body000_024.toList := by decide +kernel
 private theorem body000_024_certificate :
     entryValue? 1 body000_024.toList = some (0 : ℚ) := by cbv
 private theorem body000_024_noColon : ':' ∉ body000_024.toList :=
@@ -417,7 +417,7 @@ private theorem body000_024_value : bodyValue 1 body000_024 = (0 : ℚ) :=
 
 private def body000_025 : String := "21,6001456457598193,64"
 private theorem body000_025_separators :
-    ':' ∉ body000_025.toList ∧ ';' ∉ body000_025.toList := by cbv; decide +kernel
+    ':' ∉ body000_025.toList ∧ ';' ∉ body000_025.toList := by decide +kernel
 private theorem body000_025_certificate :
     entryValue? 1 body000_025.toList = some (0 : ℚ) := by cbv
 private theorem body000_025_noColon : ':' ∉ body000_025.toList :=
@@ -445,7 +445,7 @@ private theorem body000_019_value : bodyValue 1 body000_019 = (0 : ℚ) := by
 
 private def body000_028 : String := "23,8343891105370071,65"
 private theorem body000_028_separators :
-    ':' ∉ body000_028.toList ∧ ';' ∉ body000_028.toList := by cbv; decide +kernel
+    ':' ∉ body000_028.toList ∧ ';' ∉ body000_028.toList := by decide +kernel
 private theorem body000_028_certificate :
     entryValue? 1 body000_028.toList = some (0 : ℚ) := by cbv
 private theorem body000_028_noColon : ':' ∉ body000_028.toList :=
@@ -455,7 +455,7 @@ private theorem body000_028_value : bodyValue 1 body000_028 = (0 : ℚ) :=
 
 private def body000_029 : String := "25,5885307586550159,65"
 private theorem body000_029_separators :
-    ':' ∉ body000_029.toList ∧ ';' ∉ body000_029.toList := by cbv; decide +kernel
+    ':' ∉ body000_029.toList ∧ ';' ∉ body000_029.toList := by decide +kernel
 private theorem body000_029_certificate :
     entryValue? 1 body000_029.toList = some (0 : ℚ) := by cbv
 private theorem body000_029_noColon : ':' ∉ body000_029.toList :=
@@ -474,7 +474,7 @@ private theorem body000_027_value : bodyValue 1 body000_027 = (0 : ℚ) := by
 
 private def body000_031 : String := "27,8407249915540735,66"
 private theorem body000_031_separators :
-    ':' ∉ body000_031.toList ∧ ';' ∉ body000_031.toList := by cbv; decide +kernel
+    ':' ∉ body000_031.toList ∧ ';' ∉ body000_031.toList := by decide +kernel
 private theorem body000_031_certificate :
     entryValue? 1 body000_031.toList = some (0 : ℚ) := by cbv
 private theorem body000_031_noColon : ':' ∉ body000_031.toList :=
@@ -484,7 +484,7 @@ private theorem body000_031_value : bodyValue 1 body000_031 = (0 : ℚ) :=
 
 private def body000_032 : String := "29,3035449561666697,65"
 private theorem body000_032_separators :
-    ':' ∉ body000_032.toList ∧ ';' ∉ body000_032.toList := by cbv; decide +kernel
+    ':' ∉ body000_032.toList ∧ ';' ∉ body000_032.toList := by decide +kernel
 private theorem body000_032_certificate :
     entryValue? 1 body000_032.toList = some (0 : ℚ) := by cbv
 private theorem body000_032_noColon : ':' ∉ body000_032.toList :=
@@ -530,7 +530,7 @@ private theorem body000_004_value : bodyValue 1 body000_004 = (3234302541425105 
 
 private def body000_037 : String := "31,4424934873349325,66"
 private theorem body000_037_separators :
-    ':' ∉ body000_037.toList ∧ ';' ∉ body000_037.toList := by cbv; decide +kernel
+    ':' ∉ body000_037.toList ∧ ';' ∉ body000_037.toList := by decide +kernel
 private theorem body000_037_certificate :
     entryValue? 1 body000_037.toList = some (0 : ℚ) := by cbv
 private theorem body000_037_noColon : ':' ∉ body000_037.toList :=
@@ -540,7 +540,7 @@ private theorem body000_037_value : bodyValue 1 body000_037 = (0 : ℚ) :=
 
 private def body000_038 : String := "33,6502186684202547,67"
 private theorem body000_038_separators :
-    ':' ∉ body000_038.toList ∧ ';' ∉ body000_038.toList := by cbv; decide +kernel
+    ':' ∉ body000_038.toList ∧ ';' ∉ body000_038.toList := by decide +kernel
 private theorem body000_038_certificate :
     entryValue? 1 body000_038.toList = some (0 : ℚ) := by cbv
 private theorem body000_038_noColon : ':' ∉ body000_038.toList :=
@@ -559,7 +559,7 @@ private theorem body000_036_value : bodyValue 1 body000_036 = (0 : ℚ) := by
 
 private def body000_040 : String := "35,2405494872398451,66"
 private theorem body000_040_separators :
-    ':' ∉ body000_040.toList ∧ ';' ∉ body000_040.toList := by cbv; decide +kernel
+    ':' ∉ body000_040.toList ∧ ';' ∉ body000_040.toList := by decide +kernel
 private theorem body000_040_certificate :
     entryValue? 1 body000_040.toList = some (0 : ℚ) := by cbv
 private theorem body000_040_noColon : ':' ∉ body000_040.toList :=
@@ -569,7 +569,7 @@ private theorem body000_040_value : bodyValue 1 body000_040 = (0 : ℚ) :=
 
 private def body000_041 : String := "37,7164741759732431,68"
 private theorem body000_041_separators :
-    ':' ∉ body000_041.toList ∧ ';' ∉ body000_041.toList := by cbv; decide +kernel
+    ':' ∉ body000_041.toList ∧ ';' ∉ body000_041.toList := by decide +kernel
 private theorem body000_041_certificate :
     entryValue? 1 body000_041.toList = some (0 : ℚ) := by cbv
 private theorem body000_041_noColon : ':' ∉ body000_041.toList :=
@@ -597,7 +597,7 @@ private theorem body000_035_value : bodyValue 1 body000_035 = (0 : ℚ) := by
 
 private def body000_044 : String := "39,2682971914034869,67"
 private theorem body000_044_separators :
-    ':' ∉ body000_044.toList ∧ ';' ∉ body000_044.toList := by cbv; decide +kernel
+    ':' ∉ body000_044.toList ∧ ';' ∉ body000_044.toList := by decide +kernel
 private theorem body000_044_certificate :
     entryValue? 1 body000_044.toList = some (0 : ℚ) := by cbv
 private theorem body000_044_noColon : ':' ∉ body000_044.toList :=
@@ -607,7 +607,7 @@ private theorem body000_044_value : bodyValue 1 body000_044 = (0 : ℚ) :=
 
 private def body000_045 : String := "41,8079270579564811,69"
 private theorem body000_045_separators :
-    ':' ∉ body000_045.toList ∧ ';' ∉ body000_045.toList := by cbv; decide +kernel
+    ':' ∉ body000_045.toList ∧ ';' ∉ body000_045.toList := by decide +kernel
 private theorem body000_045_certificate :
     entryValue? 1 body000_045.toList = some (0 : ℚ) := by cbv
 private theorem body000_045_noColon : ':' ∉ body000_045.toList :=
@@ -626,7 +626,7 @@ private theorem body000_043_value : bodyValue 1 body000_043 = (0 : ℚ) := by
 
 private def body000_047 : String := "43,3055118304606349,68"
 private theorem body000_047_separators :
-    ':' ∉ body000_047.toList ∧ ';' ∉ body000_047.toList := by cbv; decide +kernel
+    ':' ∉ body000_047.toList ∧ ';' ∉ body000_047.toList := by decide +kernel
 private theorem body000_047_certificate :
     entryValue? 1 body000_047.toList = some (0 : ℚ) := by cbv
 private theorem body000_047_noColon : ':' ∉ body000_047.toList :=
@@ -636,7 +636,7 @@ private theorem body000_047_value : bodyValue 1 body000_047 = (0 : ℚ) :=
 
 private def body000_048 : String := "45,4639879222831333,69"
 private theorem body000_048_separators :
-    ':' ∉ body000_048.toList ∧ ';' ∉ body000_048.toList := by cbv; decide +kernel
+    ':' ∉ body000_048.toList ∧ ';' ∉ body000_048.toList := by decide +kernel
 private theorem body000_048_certificate :
     entryValue? 1 body000_048.toList = some (0 : ℚ) := by cbv
 private theorem body000_048_noColon : ':' ∉ body000_048.toList :=
@@ -673,7 +673,7 @@ private theorem body000_034_value : bodyValue 1 body000_034 = (0 : ℚ) := by
 
 private def body000_052 : String := "47,7072755794171711,70"
 private theorem body000_052_separators :
-    ':' ∉ body000_052.toList ∧ ';' ∉ body000_052.toList := by cbv; decide +kernel
+    ':' ∉ body000_052.toList ∧ ';' ∉ body000_052.toList := by decide +kernel
 private theorem body000_052_certificate :
     entryValue? 1 body000_052.toList = some (0 : ℚ) := by cbv
 private theorem body000_052_noColon : ':' ∉ body000_052.toList :=
@@ -683,7 +683,7 @@ private theorem body000_052_value : bodyValue 1 body000_052 = (0 : ℚ) :=
 
 private def body000_053 : String := "49,5409501046671929,70"
 private theorem body000_053_separators :
-    ':' ∉ body000_053.toList ∧ ';' ∉ body000_053.toList := by cbv; decide +kernel
+    ':' ∉ body000_053.toList ∧ ';' ∉ body000_053.toList := by decide +kernel
 private theorem body000_053_certificate :
     entryValue? 1 body000_053.toList = some (0 : ℚ) := by cbv
 private theorem body000_053_noColon : ':' ∉ body000_053.toList :=
@@ -702,7 +702,7 @@ private theorem body000_051_value : bodyValue 1 body000_051 = (0 : ℚ) := by
 
 private def body000_055 : String := "51,4151362355858159,70"
 private theorem body000_055_separators :
-    ':' ∉ body000_055.toList ∧ ';' ∉ body000_055.toList := by cbv; decide +kernel
+    ':' ∉ body000_055.toList ∧ ';' ∉ body000_055.toList := by decide +kernel
 private theorem body000_055_certificate :
     entryValue? 1 body000_055.toList = some (0 : ℚ) := by cbv
 private theorem body000_055_noColon : ':' ∉ body000_055.toList :=
@@ -712,7 +712,7 @@ private theorem body000_055_value : bodyValue 1 body000_055 = (0 : ℚ) :=
 
 private def body000_056 : String := "53,6392001835251163,71"
 private theorem body000_056_separators :
-    ':' ∉ body000_056.toList ∧ ';' ∉ body000_056.toList := by cbv; decide +kernel
+    ':' ∉ body000_056.toList ∧ ';' ∉ body000_056.toList := by decide +kernel
 private theorem body000_056_certificate :
     entryValue? 1 body000_056.toList = some (0 : ℚ) := by cbv
 private theorem body000_056_noColon : ':' ∉ body000_056.toList :=
@@ -740,7 +740,7 @@ private theorem body000_050_value : bodyValue 1 body000_050 = (0 : ℚ) := by
 
 private def body000_059 : String := "55,308440877229305,67"
 private theorem body000_059_separators :
-    ':' ∉ body000_059.toList ∧ ';' ∉ body000_059.toList := by cbv; decide +kernel
+    ':' ∉ body000_059.toList ∧ ';' ∉ body000_059.toList := by decide +kernel
 private theorem body000_059_certificate :
     entryValue? 1 body000_059.toList = some (0 : ℚ) := by cbv
 private theorem body000_059_noColon : ':' ∉ body000_059.toList :=
@@ -750,7 +750,7 @@ private theorem body000_059_value : bodyValue 1 body000_059 = (0 : ℚ) :=
 
 private def body000_060 : String := "57,7638842423621485,72"
 private theorem body000_060_separators :
-    ':' ∉ body000_060.toList ∧ ';' ∉ body000_060.toList := by cbv; decide +kernel
+    ':' ∉ body000_060.toList ∧ ';' ∉ body000_060.toList := by decide +kernel
 private theorem body000_060_certificate :
     entryValue? 1 body000_060.toList = some (0 : ℚ) := by cbv
 private theorem body000_060_noColon : ':' ∉ body000_060.toList :=
@@ -769,7 +769,7 @@ private theorem body000_058_value : bodyValue 1 body000_058 = (0 : ℚ) := by
 
 private def body000_062 : String := "59,5923972123780887,72"
 private theorem body000_062_separators :
-    ':' ∉ body000_062.toList ∧ ';' ∉ body000_062.toList := by cbv; decide +kernel
+    ':' ∉ body000_062.toList ∧ ';' ∉ body000_062.toList := by decide +kernel
 private theorem body000_062_certificate :
     entryValue? 1 body000_062.toList = some (0 : ℚ) := by cbv
 private theorem body000_062_noColon : ':' ∉ body000_062.toList :=
@@ -779,7 +779,7 @@ private theorem body000_062_value : bodyValue 1 body000_062 = (0 : ℚ) :=
 
 private def body000_063 : String := "61,4602595915423543,72"
 private theorem body000_063_separators :
-    ':' ∉ body000_063.toList ∧ ';' ∉ body000_063.toList := by cbv; decide +kernel
+    ':' ∉ body000_063.toList ∧ ';' ∉ body000_063.toList := by decide +kernel
 private theorem body000_063_certificate :
     entryValue? 1 body000_063.toList = some (0 : ℚ) := by cbv
 private theorem body000_063_noColon : ':' ∉ body000_063.toList :=
@@ -834,7 +834,7 @@ private theorem body000_003_value : bodyValue 1 body000_003 = (3234302541425105 
 
 private def body000_068 : String := "63,7165819603684339,73"
 private theorem body000_068_separators :
-    ':' ∉ body000_068.toList ∧ ';' ∉ body000_068.toList := by cbv; decide +kernel
+    ':' ∉ body000_068.toList ∧ ';' ∉ body000_068.toList := by decide +kernel
 private theorem body000_068_certificate :
     entryValue? 1 body000_068.toList = some (0 : ℚ) := by cbv
 private theorem body000_068_noColon : ':' ∉ body000_068.toList :=
@@ -844,7 +844,7 @@ private theorem body000_068_value : bodyValue 1 body000_068 = (0 : ℚ) :=
 
 private def body000_070 : String := "65,1397569601123551,71"
 private theorem body000_070_separators :
-    ':' ∉ body000_070.toList ∧ ';' ∉ body000_070.toList := by cbv; decide +kernel
+    ':' ∉ body000_070.toList ∧ ';' ∉ body000_070.toList := by decide +kernel
 private theorem body000_070_certificate :
     entryValue? 1 body000_070.toList = some (0 : ℚ) := by cbv
 private theorem body000_070_noColon : ':' ∉ body000_070.toList :=
@@ -854,7 +854,7 @@ private theorem body000_070_value : bodyValue 1 body000_070 = (0 : ℚ) :=
 
 private def body000_071 : String := "67,8741863697963523,74"
 private theorem body000_071_separators :
-    ':' ∉ body000_071.toList ∧ ';' ∉ body000_071.toList := by cbv; decide +kernel
+    ':' ∉ body000_071.toList ∧ ';' ∉ body000_071.toList := by decide +kernel
 private theorem body000_071_certificate :
     entryValue? 1 body000_071.toList = some (0 : ℚ) := by cbv
 private theorem body000_071_noColon : ':' ∉ body000_071.toList :=
@@ -882,7 +882,7 @@ private theorem body000_067_value : bodyValue 1 body000_067 = (0 : ℚ) := by
 
 private def body000_074 : String := "69,1712256115664101,72"
 private theorem body000_074_separators :
-    ':' ∉ body000_074.toList ∧ ';' ∉ body000_074.toList := by cbv; decide +kernel
+    ':' ∉ body000_074.toList ∧ ';' ∉ body000_074.toList := by decide +kernel
 private theorem body000_074_certificate :
     entryValue? 1 body000_074.toList = some (0 : ℚ) := by cbv
 private theorem body000_074_noColon : ':' ∉ body000_074.toList :=
@@ -892,7 +892,7 @@ private theorem body000_074_value : bodyValue 1 body000_074 = (0 : ℚ) :=
 
 private def body000_075 : String := "71,2687237387354685,73"
 private theorem body000_075_separators :
-    ':' ∉ body000_075.toList ∧ ';' ∉ body000_075.toList := by cbv; decide +kernel
+    ':' ∉ body000_075.toList ∧ ';' ∉ body000_075.toList := by decide +kernel
 private theorem body000_075_certificate :
     entryValue? 1 body000_075.toList = some (0 : ℚ) := by cbv
 private theorem body000_075_noColon : ':' ∉ body000_075.toList :=
@@ -911,7 +911,7 @@ private theorem body000_073_value : bodyValue 1 body000_073 = (0 : ℚ) := by
 
 private def body000_077 : String := "73,8443924571212419,75"
 private theorem body000_077_separators :
-    ':' ∉ body000_077.toList ∧ ';' ∉ body000_077.toList := by cbv; decide +kernel
+    ':' ∉ body000_077.toList ∧ ';' ∉ body000_077.toList := by decide +kernel
 private theorem body000_077_certificate :
     entryValue? 1 body000_077.toList = some (0 : ℚ) := by cbv
 private theorem body000_077_noColon : ':' ∉ body000_077.toList :=
@@ -921,7 +921,7 @@ private theorem body000_077_value : bodyValue 1 body000_077 = (0 : ℚ) :=
 
 private def body000_078 : String := "75,1659728475373739,73"
 private theorem body000_078_separators :
-    ':' ∉ body000_078.toList ∧ ';' ∉ body000_078.toList := by cbv; decide +kernel
+    ':' ∉ body000_078.toList ∧ ';' ∉ body000_078.toList := by decide +kernel
 private theorem body000_078_certificate :
     entryValue? 1 body000_078.toList = some (0 : ℚ) := by cbv
 private theorem body000_078_noColon : ':' ∉ body000_078.toList :=
@@ -958,7 +958,7 @@ private theorem body000_066_value : bodyValue 1 body000_066 = (0 : ℚ) := by
 
 private def body000_082 : String := "77,5225224701232455,75"
 private theorem body000_082_separators :
-    ':' ∉ body000_082.toList ∧ ';' ∉ body000_082.toList := by cbv; decide +kernel
+    ':' ∉ body000_082.toList ∧ ';' ∉ body000_082.toList := by decide +kernel
 private theorem body000_082_certificate :
     entryValue? 1 body000_082.toList = some (0 : ℚ) := by cbv
 private theorem body000_082_noColon : ':' ∉ body000_082.toList :=
@@ -968,7 +968,7 @@ private theorem body000_082_value : bodyValue 1 body000_082 = (0 : ℚ) :=
 
 private def body000_083 : String := "79,8237707816262047,76"
 private theorem body000_083_separators :
-    ':' ∉ body000_083.toList ∧ ';' ∉ body000_083.toList := by cbv; decide +kernel
+    ':' ∉ body000_083.toList ∧ ';' ∉ body000_083.toList := by decide +kernel
 private theorem body000_083_certificate :
     entryValue? 1 body000_083.toList = some (0 : ℚ) := by cbv
 private theorem body000_083_noColon : ':' ∉ body000_083.toList :=
@@ -987,7 +987,7 @@ private theorem body000_081_value : bodyValue 1 body000_081 = (0 : ℚ) := by
 
 private def body000_085 : String := "81,6506291322117125,76"
 private theorem body000_085_separators :
-    ':' ∉ body000_085.toList ∧ ';' ∉ body000_085.toList := by cbv; decide +kernel
+    ':' ∉ body000_085.toList ∧ ';' ∉ body000_085.toList := by decide +kernel
 private theorem body000_085_certificate :
     entryValue? 1 body000_085.toList = some (0 : ℚ) := by cbv
 private theorem body000_085_noColon : ':' ∉ body000_085.toList :=
@@ -997,7 +997,7 @@ private theorem body000_085_value : bodyValue 1 body000_085 = (0 : ℚ) :=
 
 private def body000_086 : String := "83,5149172488562835,76"
 private theorem body000_086_separators :
-    ':' ∉ body000_086.toList ∧ ';' ∉ body000_086.toList := by cbv; decide +kernel
+    ':' ∉ body000_086.toList ∧ ';' ∉ body000_086.toList := by decide +kernel
 private theorem body000_086_certificate :
     entryValue? 1 body000_086.toList = some (0 : ℚ) := by cbv
 private theorem body000_086_noColon : ':' ∉ body000_086.toList :=
@@ -1025,7 +1025,7 @@ private theorem body000_080_value : bodyValue 1 body000_080 = (0 : ℚ) := by
 
 private def body000_089 : String := "85,8162600397689211,77"
 private theorem body000_089_separators :
-    ':' ∉ body000_089.toList ∧ ';' ∉ body000_089.toList := by cbv; decide +kernel
+    ':' ∉ body000_089.toList ∧ ';' ∉ body000_089.toList := by decide +kernel
 private theorem body000_089_certificate :
     entryValue? 1 body000_089.toList = some (0 : ℚ) := by cbv
 private theorem body000_089_noColon : ':' ∉ body000_089.toList :=
@@ -1035,7 +1035,7 @@ private theorem body000_089_value : bodyValue 1 body000_089 = (0 : ℚ) :=
 
 private def body000_090 : String := "87,6473741565425053,77"
 private theorem body000_090_separators :
-    ':' ∉ body000_090.toList ∧ ';' ∉ body000_090.toList := by cbv; decide +kernel
+    ':' ∉ body000_090.toList ∧ ';' ∉ body000_090.toList := by decide +kernel
 private theorem body000_090_certificate :
     entryValue? 1 body000_090.toList = some (0 : ℚ) := by cbv
 private theorem body000_090_noColon : ':' ∉ body000_090.toList :=
@@ -1054,7 +1054,7 @@ private theorem body000_088_value : bodyValue 1 body000_088 = (0 : ℚ) := by
 
 private def body000_092 : String := "89,5132942106019023,77"
 private theorem body000_092_separators :
-    ':' ∉ body000_092.toList ∧ ';' ∉ body000_092.toList := by cbv; decide +kernel
+    ':' ∉ body000_092.toList ∧ ';' ∉ body000_092.toList := by decide +kernel
 private theorem body000_092_certificate :
     entryValue? 1 body000_092.toList = some (0 : ℚ) := by cbv
 private theorem body000_092_noColon : ':' ∉ body000_092.toList :=
@@ -1064,7 +1064,7 @@ private theorem body000_092_value : bodyValue 1 body000_092 = (0 : ℚ) :=
 
 private def body000_093 : String := "91,2033583977287211,76"
 private theorem body000_093_separators :
-    ':' ∉ body000_093.toList ∧ ';' ∉ body000_093.toList := by cbv; decide +kernel
+    ':' ∉ body000_093.toList ∧ ';' ∉ body000_093.toList := by decide +kernel
 private theorem body000_093_certificate :
     entryValue? 1 body000_093.toList = some (0 : ℚ) := by cbv
 private theorem body000_093_noColon : ':' ∉ body000_093.toList :=
@@ -1110,7 +1110,7 @@ private theorem body000_065_value : bodyValue 1 body000_065 = (0 : ℚ) := by
 
 private def body000_098 : String := "93,1610198400721205,76"
 private theorem body000_098_separators :
-    ':' ∉ body000_098.toList ∧ ';' ∉ body000_098.toList := by cbv; decide +kernel
+    ':' ∉ body000_098.toList ∧ ';' ∉ body000_098.toList := by decide +kernel
 private theorem body000_098_certificate :
     entryValue? 1 body000_098.toList = some (0 : ℚ) := by cbv
 private theorem body000_098_noColon : ':' ∉ body000_098.toList :=
@@ -1120,7 +1120,7 @@ private theorem body000_098_value : bodyValue 1 body000_098 = (0 : ℚ) :=
 
 private def body000_099 : String := "95,2552649360467811,77"
 private theorem body000_099_separators :
-    ':' ∉ body000_099.toList ∧ ';' ∉ body000_099.toList := by cbv; decide +kernel
+    ':' ∉ body000_099.toList ∧ ';' ∉ body000_099.toList := by decide +kernel
 private theorem body000_099_certificate :
     entryValue? 1 body000_099.toList = some (0 : ℚ) := by cbv
 private theorem body000_099_noColon : ':' ∉ body000_099.toList :=
@@ -1139,7 +1139,7 @@ private theorem body000_097_value : bodyValue 1 body000_097 = (0 : ℚ) := by
 
 private def body000_101 : String := "97,8110844116297155,79"
 private theorem body000_101_separators :
-    ':' ∉ body000_101.toList ∧ ';' ∉ body000_101.toList := by cbv; decide +kernel
+    ':' ∉ body000_101.toList ∧ ';' ∉ body000_101.toList := by decide +kernel
 private theorem body000_101_certificate :
     entryValue? 1 body000_101.toList = some (0 : ℚ) := by cbv
 private theorem body000_101_noColon : ':' ∉ body000_101.toList :=
@@ -1149,7 +1149,7 @@ private theorem body000_101_value : bodyValue 1 body000_101 = (0 : ℚ) :=
 
 private def body000_102 : String := "99,3230755163109087,78"
 private theorem body000_102_separators :
-    ':' ∉ body000_102.toList ∧ ';' ∉ body000_102.toList := by cbv; decide +kernel
+    ':' ∉ body000_102.toList ∧ ';' ∉ body000_102.toList := by decide +kernel
 private theorem body000_102_certificate :
     entryValue? 1 body000_102.toList = some (0 : ℚ) := by cbv
 private theorem body000_102_noColon : ':' ∉ body000_102.toList :=
@@ -1177,7 +1177,7 @@ private theorem body000_096_value : bodyValue 1 body000_096 = (0 : ℚ) := by
 
 private def body000_105 : String := "101,5161193002790963,79"
 private theorem body000_105_separators :
-    ':' ∉ body000_105.toList ∧ ';' ∉ body000_105.toList := by cbv; decide +kernel
+    ':' ∉ body000_105.toList ∧ ';' ∉ body000_105.toList := by decide +kernel
 private theorem body000_105_certificate :
     entryValue? 1 body000_105.toList = some (0 : ℚ) := by cbv
 private theorem body000_105_noColon : ':' ∉ body000_105.toList :=
@@ -1187,7 +1187,7 @@ private theorem body000_105_value : bodyValue 1 body000_105 = (0 : ℚ) :=
 
 private def body000_106 : String := "103,1032088977508227,77"
 private theorem body000_106_separators :
-    ':' ∉ body000_106.toList ∧ ';' ∉ body000_106.toList := by cbv; decide +kernel
+    ':' ∉ body000_106.toList ∧ ';' ∉ body000_106.toList := by decide +kernel
 private theorem body000_106_certificate :
     entryValue? 1 body000_106.toList = some (0 : ℚ) := by cbv
 private theorem body000_106_noColon : ':' ∉ body000_106.toList :=
@@ -1206,7 +1206,7 @@ private theorem body000_104_value : bodyValue 1 body000_104 = (0 : ℚ) := by
 
 private def body000_108 : String := "105,6602069970468385,80"
 private theorem body000_108_separators :
-    ':' ∉ body000_108.toList ∧ ';' ∉ body000_108.toList := by cbv; decide +kernel
+    ':' ∉ body000_108.toList ∧ ';' ∉ body000_108.toList := by decide +kernel
 private theorem body000_108_certificate :
     entryValue? 1 body000_108.toList = some (0 : ℚ) := by cbv
 private theorem body000_108_noColon : ':' ∉ body000_108.toList :=
@@ -1216,7 +1216,7 @@ private theorem body000_108_value : bodyValue 1 body000_108 = (0 : ℚ) :=
 
 private def body000_109 : String := "107,329319695243673,76"
 private theorem body000_109_separators :
-    ':' ∉ body000_109.toList ∧ ';' ∉ body000_109.toList := by cbv; decide +kernel
+    ':' ∉ body000_109.toList ∧ ';' ∉ body000_109.toList := by decide +kernel
 private theorem body000_109_certificate :
     entryValue? 1 body000_109.toList = some (0 : ℚ) := by cbv
 private theorem body000_109_noColon : ':' ∉ body000_109.toList :=
@@ -1253,7 +1253,7 @@ private theorem body000_095_value : bodyValue 1 body000_095 = (0 : ℚ) := by
 
 private def body000_113 : String := "109,8390100997098259,81"
 private theorem body000_113_separators :
-    ':' ∉ body000_113.toList ∧ ';' ∉ body000_113.toList := by cbv; decide +kernel
+    ':' ∉ body000_113.toList ∧ ';' ∉ body000_113.toList := by decide +kernel
 private theorem body000_113_certificate :
     entryValue? 1 body000_113.toList = some (0 : ℚ) := by cbv
 private theorem body000_113_noColon : ':' ∉ body000_113.toList :=
@@ -1263,7 +1263,7 @@ private theorem body000_113_value : bodyValue 1 body000_113 = (0 : ℚ) :=
 
 private def body000_114 : String := "111,6668764112896973,81"
 private theorem body000_114_separators :
-    ':' ∉ body000_114.toList ∧ ';' ∉ body000_114.toList := by cbv; decide +kernel
+    ':' ∉ body000_114.toList ∧ ';' ∉ body000_114.toList := by decide +kernel
 private theorem body000_114_certificate :
     entryValue? 1 body000_114.toList = some (0 : ℚ) := by cbv
 private theorem body000_114_noColon : ':' ∉ body000_114.toList :=
@@ -1282,7 +1282,7 @@ private theorem body000_112_value : bodyValue 1 body000_112 = (0 : ℚ) := by
 
 private def body000_116 : String := "113,1325509804970383,79"
 private theorem body000_116_separators :
-    ':' ∉ body000_116.toList ∧ ';' ∉ body000_116.toList := by cbv; decide +kernel
+    ':' ∉ body000_116.toList ∧ ';' ∉ body000_116.toList := by decide +kernel
 private theorem body000_116_certificate :
     entryValue? 1 body000_116.toList = some (0 : ℚ) := by cbv
 private theorem body000_116_noColon : ':' ∉ body000_116.toList :=
@@ -1292,7 +1292,7 @@ private theorem body000_116_value : bodyValue 1 body000_116 = (0 : ℚ) :=
 
 private def body000_117 : String := "115,4226671015154613,81"
 private theorem body000_117_separators :
-    ':' ∉ body000_117.toList ∧ ';' ∉ body000_117.toList := by cbv; decide +kernel
+    ':' ∉ body000_117.toList ∧ ';' ∉ body000_117.toList := by decide +kernel
 private theorem body000_117_certificate :
     entryValue? 1 body000_117.toList = some (0 : ℚ) := by cbv
 private theorem body000_117_noColon : ':' ∉ body000_117.toList :=
@@ -1320,7 +1320,7 @@ private theorem body000_111_value : bodyValue 1 body000_111 = (0 : ℚ) := by
 
 private def body000_120 : String := "117,1692321203565577,80"
 private theorem body000_120_separators :
-    ':' ∉ body000_120.toList ∧ ';' ∉ body000_120.toList := by cbv; decide +kernel
+    ':' ∉ body000_120.toList ∧ ';' ∉ body000_120.toList := by decide +kernel
 private theorem body000_120_certificate :
     entryValue? 1 body000_120.toList = some (0 : ℚ) := by cbv
 private theorem body000_120_noColon : ':' ∉ body000_120.toList :=
@@ -1330,7 +1330,7 @@ private theorem body000_120_value : bodyValue 1 body000_120 = (0 : ℚ) :=
 
 private def body000_121 : String := "119,5447433084348417,82"
 private theorem body000_121_separators :
-    ':' ∉ body000_121.toList ∧ ';' ∉ body000_121.toList := by cbv; decide +kernel
+    ':' ∉ body000_121.toList ∧ ';' ∉ body000_121.toList := by decide +kernel
 private theorem body000_121_certificate :
     entryValue? 1 body000_121.toList = some (0 : ℚ) := by cbv
 private theorem body000_121_noColon : ':' ∉ body000_121.toList :=
@@ -1349,7 +1349,7 @@ private theorem body000_119_value : bodyValue 1 body000_119 = (0 : ℚ) := by
 
 private def body000_123 : String := "121,4399151874447733,82"
 private theorem body000_123_separators :
-    ':' ∉ body000_123.toList ∧ ';' ∉ body000_123.toList := by cbv; decide +kernel
+    ':' ∉ body000_123.toList ∧ ';' ∉ body000_123.toList := by decide +kernel
 private theorem body000_123_certificate :
     entryValue? 1 body000_123.toList = some (0 : ℚ) := by cbv
 private theorem body000_123_noColon : ':' ∉ body000_123.toList :=
@@ -1359,7 +1359,7 @@ private theorem body000_123_value : bodyValue 1 body000_123 = (0 : ℚ) :=
 
 private def body000_124 : String := "123,7110104751617567,83"
 private theorem body000_124_separators :
-    ':' ∉ body000_124.toList ∧ ';' ∉ body000_124.toList := by cbv; decide +kernel
+    ':' ∉ body000_124.toList ∧ ';' ∉ body000_124.toList := by decide +kernel
 private theorem body000_124_certificate :
     entryValue? 1 body000_124.toList = some (0 : ℚ) := by cbv
 private theorem body000_124_noColon : ':' ∉ body000_124.toList :=
@@ -1423,7 +1423,7 @@ private theorem body000_002_value : bodyValue 1 body000_002 = (3234302541425105 
 
 private def body000_130 : String := "125,5731005349630553,83"
 private theorem body000_130_separators :
-    ':' ∉ body000_130.toList ∧ ';' ∉ body000_130.toList := by cbv; decide +kernel
+    ':' ∉ body000_130.toList ∧ ';' ∉ body000_130.toList := by decide +kernel
 private theorem body000_130_certificate :
     entryValue? 1 body000_130.toList = some (0 : ℚ) := by cbv
 private theorem body000_130_noColon : ':' ∉ body000_130.toList :=
@@ -1433,7 +1433,7 @@ private theorem body000_130_value : bodyValue 1 body000_130 = (0 : ℚ) :=
 
 private def body000_132 : String := "127,2297971076301975,82"
 private theorem body000_132_separators :
-    ':' ∉ body000_132.toList ∧ ';' ∉ body000_132.toList := by cbv; decide +kernel
+    ':' ∉ body000_132.toList ∧ ';' ∉ body000_132.toList := by decide +kernel
 private theorem body000_132_certificate :
     entryValue? 1 body000_132.toList = some (0 : ℚ) := by cbv
 private theorem body000_132_noColon : ':' ∉ body000_132.toList :=
@@ -1443,7 +1443,7 @@ private theorem body000_132_value : bodyValue 1 body000_132 = (0 : ℚ) :=
 
 private def body000_133 : String := "129,7328602557598585,84"
 private theorem body000_133_separators :
-    ':' ∉ body000_133.toList ∧ ';' ∉ body000_133.toList := by cbv; decide +kernel
+    ':' ∉ body000_133.toList ∧ ';' ∉ body000_133.toList := by decide +kernel
 private theorem body000_133_certificate :
     entryValue? 1 body000_133.toList = some (0 : ℚ) := by cbv
 private theorem body000_133_noColon : ':' ∉ body000_133.toList :=
@@ -1471,7 +1471,7 @@ private theorem body000_129_value : bodyValue 1 body000_129 = (0 : ℚ) := by
 
 private def body000_136 : String := "131,1454488875388759,82"
 private theorem body000_136_separators :
-    ':' ∉ body000_136.toList ∧ ';' ∉ body000_136.toList := by cbv; decide +kernel
+    ':' ∉ body000_136.toList ∧ ';' ∉ body000_136.toList := by decide +kernel
 private theorem body000_136_certificate :
     entryValue? 1 body000_136.toList = some (0 : ℚ) := by cbv
 private theorem body000_136_noColon : ':' ∉ body000_136.toList :=
@@ -1481,7 +1481,7 @@ private theorem body000_136_value : bodyValue 1 body000_136 = (0 : ℚ) :=
 
 private def body000_137 : String := "133,4614984089797401,84"
 private theorem body000_137_separators :
-    ':' ∉ body000_137.toList ∧ ';' ∉ body000_137.toList := by cbv; decide +kernel
+    ':' ∉ body000_137.toList ∧ ';' ∉ body000_137.toList := by decide +kernel
 private theorem body000_137_certificate :
     entryValue? 1 body000_137.toList = some (0 : ℚ) := by cbv
 private theorem body000_137_noColon : ':' ∉ body000_137.toList :=
@@ -1500,7 +1500,7 @@ private theorem body000_135_value : bodyValue 1 body000_135 = (0 : ℚ) := by
 
 private def body000_139 : String := "135,7348212453631915,85"
 private theorem body000_139_separators :
-    ':' ∉ body000_139.toList ∧ ';' ∉ body000_139.toList := by cbv; decide +kernel
+    ':' ∉ body000_139.toList ∧ ';' ∉ body000_139.toList := by decide +kernel
 private theorem body000_139_certificate :
     entryValue? 1 body000_139.toList = some (0 : ℚ) := by cbv
 private theorem body000_139_noColon : ':' ∉ body000_139.toList :=
@@ -1510,7 +1510,7 @@ private theorem body000_139_value : bodyValue 1 body000_139 = (0 : ℚ) :=
 
 private def body000_140 : String := "137,2947044278556569,84"
 private theorem body000_140_separators :
-    ':' ∉ body000_140.toList ∧ ';' ∉ body000_140.toList := by cbv; decide +kernel
+    ':' ∉ body000_140.toList ∧ ';' ∉ body000_140.toList := by decide +kernel
 private theorem body000_140_certificate :
     entryValue? 1 body000_140.toList = some (0 : ℚ) := by cbv
 private theorem body000_140_noColon : ':' ∉ body000_140.toList :=
@@ -1547,7 +1547,7 @@ private theorem body000_128_value : bodyValue 1 body000_128 = (0 : ℚ) := by
 
 private def body000_144 : String := "139,4771376209172417,85"
 private theorem body000_144_separators :
-    ':' ∉ body000_144.toList ∧ ';' ∉ body000_144.toList := by cbv; decide +kernel
+    ':' ∉ body000_144.toList ∧ ';' ∉ body000_144.toList := by decide +kernel
 private theorem body000_144_certificate :
     entryValue? 1 body000_144.toList = some (0 : ℚ) := by cbv
 private theorem body000_144_noColon : ':' ∉ body000_144.toList :=
@@ -1557,7 +1557,7 @@ private theorem body000_144_value : bodyValue 1 body000_144 = (0 : ℚ) :=
 
 private def body000_145 : String := "141,3892965450541501,85"
 private theorem body000_145_separators :
-    ':' ∉ body000_145.toList ∧ ';' ∉ body000_145.toList := by cbv; decide +kernel
+    ':' ∉ body000_145.toList ∧ ';' ∉ body000_145.toList := by decide +kernel
 private theorem body000_145_certificate :
     entryValue? 1 body000_145.toList = some (0 : ℚ) := by cbv
 private theorem body000_145_noColon : ':' ∉ body000_145.toList :=
@@ -1576,7 +1576,7 @@ private theorem body000_143_value : bodyValue 1 body000_143 = (0 : ℚ) := by
 
 private def body000_147 : String := "143,1593998466434349,84"
 private theorem body000_147_separators :
-    ':' ∉ body000_147.toList ∧ ';' ∉ body000_147.toList := by cbv; decide +kernel
+    ':' ∉ body000_147.toList ∧ ';' ∉ body000_147.toList := by decide +kernel
 private theorem body000_147_certificate :
     entryValue? 1 body000_147.toList = some (0 : ℚ) := by cbv
 private theorem body000_147_noColon : ':' ∉ body000_147.toList :=
@@ -1586,7 +1586,7 @@ private theorem body000_147_value : bodyValue 1 body000_147 = (0 : ℚ) :=
 
 private def body000_148 : String := "145,5210721218083149,86"
 private theorem body000_148_separators :
-    ':' ∉ body000_148.toList ∧ ';' ∉ body000_148.toList := by cbv; decide +kernel
+    ':' ∉ body000_148.toList ∧ ';' ∉ body000_148.toList := by decide +kernel
 private theorem body000_148_certificate :
     entryValue? 1 body000_148.toList = some (0 : ℚ) := by cbv
 private theorem body000_148_noColon : ':' ∉ body000_148.toList :=
@@ -1614,7 +1614,7 @@ private theorem body000_142_value : bodyValue 1 body000_142 = (0 : ℚ) := by
 
 private def body000_151 : String := "147,1056617421313887,84"
 private theorem body000_151_separators :
-    ':' ∉ body000_151.toList ∧ ';' ∉ body000_151.toList := by cbv; decide +kernel
+    ':' ∉ body000_151.toList ∧ ';' ∉ body000_151.toList := by decide +kernel
 private theorem body000_151_certificate :
     entryValue? 1 body000_151.toList = some (0 : ℚ) := by cbv
 private theorem body000_151_noColon : ':' ∉ body000_151.toList :=
@@ -1624,7 +1624,7 @@ private theorem body000_151_value : bodyValue 1 body000_151 = (0 : ℚ) :=
 
 private def body000_152 : String := "149,6780971806481455,87"
 private theorem body000_152_separators :
-    ':' ∉ body000_152.toList ∧ ';' ∉ body000_152.toList := by cbv; decide +kernel
+    ':' ∉ body000_152.toList ∧ ';' ∉ body000_152.toList := by decide +kernel
 private theorem body000_152_certificate :
     entryValue? 1 body000_152.toList = some (0 : ℚ) := by cbv
 private theorem body000_152_noColon : ':' ∉ body000_152.toList :=
@@ -1643,7 +1643,7 @@ private theorem body000_150_value : bodyValue 1 body000_150 = (0 : ℚ) := by
 
 private def body000_154 : String := "151,5378220031437149,87"
 private theorem body000_154_separators :
-    ':' ∉ body000_154.toList ∧ ';' ∉ body000_154.toList := by cbv; decide +kernel
+    ':' ∉ body000_154.toList ∧ ';' ∉ body000_154.toList := by decide +kernel
 private theorem body000_154_certificate :
     entryValue? 1 body000_154.toList = some (0 : ℚ) := by cbv
 private theorem body000_154_noColon : ':' ∉ body000_154.toList :=
@@ -1653,7 +1653,7 @@ private theorem body000_154_value : bodyValue 1 body000_154 = (0 : ℚ) :=
 
 private def body000_155 : String := "153,2115690807008471,86"
 private theorem body000_155_separators :
-    ':' ∉ body000_155.toList ∧ ';' ∉ body000_155.toList := by cbv; decide +kernel
+    ':' ∉ body000_155.toList ∧ ';' ∉ body000_155.toList := by decide +kernel
 private theorem body000_155_certificate :
     entryValue? 1 body000_155.toList = some (0 : ℚ) := by cbv
 private theorem body000_155_noColon : ':' ∉ body000_155.toList :=
@@ -1699,7 +1699,7 @@ private theorem body000_127_value : bodyValue 1 body000_127 = (0 : ℚ) := by
 
 private def body000_160 : String := "155,6647299931100627,88"
 private theorem body000_160_separators :
-    ':' ∉ body000_160.toList ∧ ';' ∉ body000_160.toList := by cbv; decide +kernel
+    ':' ∉ body000_160.toList ∧ ';' ∉ body000_160.toList := by decide +kernel
 private theorem body000_160_certificate :
     entryValue? 1 body000_160.toList = some (0 : ℚ) := by cbv
 private theorem body000_160_noColon : ':' ∉ body000_160.toList :=
@@ -1709,7 +1709,7 @@ private theorem body000_160_value : bodyValue 1 body000_160 = (0 : ℚ) :=
 
 private def body000_161 : String := "157,5254606480911893,88"
 private theorem body000_161_separators :
-    ':' ∉ body000_161.toList ∧ ';' ∉ body000_161.toList := by cbv; decide +kernel
+    ':' ∉ body000_161.toList ∧ ';' ∉ body000_161.toList := by decide +kernel
 private theorem body000_161_certificate :
     entryValue? 1 body000_161.toList = some (0 : ℚ) := by cbv
 private theorem body000_161_noColon : ':' ∉ body000_161.toList :=
@@ -1728,7 +1728,7 @@ private theorem body000_159_value : bodyValue 1 body000_159 = (0 : ℚ) := by
 
 private def body000_163 : String := "159,8420024435284589,89"
 private theorem body000_163_separators :
-    ':' ∉ body000_163.toList ∧ ';' ∉ body000_163.toList := by cbv; decide +kernel
+    ':' ∉ body000_163.toList ∧ ';' ∉ body000_163.toList := by decide +kernel
 private theorem body000_163_certificate :
     entryValue? 1 body000_163.toList = some (0 : ℚ) := by cbv
 private theorem body000_163_noColon : ':' ∉ body000_163.toList :=
@@ -1738,7 +1738,7 @@ private theorem body000_163_value : bodyValue 1 body000_163 = (0 : ℚ) :=
 
 private def body000_164 : String := "161,857768149600017,86"
 private theorem body000_164_separators :
-    ':' ∉ body000_164.toList ∧ ';' ∉ body000_164.toList := by cbv; decide +kernel
+    ':' ∉ body000_164.toList ∧ ';' ∉ body000_164.toList := by decide +kernel
 private theorem body000_164_certificate :
     entryValue? 1 body000_164.toList = some (0 : ℚ) := by cbv
 private theorem body000_164_noColon : ':' ∉ body000_164.toList :=
@@ -1766,7 +1766,7 @@ private theorem body000_158_value : bodyValue 1 body000_158 = (0 : ℚ) := by
 
 private def body000_167 : String := "163,1419867006990673,87"
 private theorem body000_167_separators :
-    ':' ∉ body000_167.toList ∧ ';' ∉ body000_167.toList := by cbv; decide +kernel
+    ':' ∉ body000_167.toList ∧ ';' ∉ body000_167.toList := by decide +kernel
 private theorem body000_167_certificate :
     entryValue? 1 body000_167.toList = some (0 : ℚ) := by cbv
 private theorem body000_167_noColon : ':' ∉ body000_167.toList :=
@@ -1776,7 +1776,7 @@ private theorem body000_167_value : bodyValue 1 body000_167 = (0 : ℚ) :=
 
 private def body000_168 : String := "165,4742164645368595,89"
 private theorem body000_168_separators :
-    ':' ∉ body000_168.toList ∧ ';' ∉ body000_168.toList := by cbv; decide +kernel
+    ':' ∉ body000_168.toList ∧ ';' ∉ body000_168.toList := by decide +kernel
 private theorem body000_168_certificate :
     entryValue? 1 body000_168.toList = some (0 : ℚ) := by cbv
 private theorem body000_168_noColon : ':' ∉ body000_168.toList :=
@@ -1795,7 +1795,7 @@ private theorem body000_166_value : bodyValue 1 body000_166 = (0 : ℚ) := by
 
 private def body000_170 : String := "167,7912088308165913,90"
 private theorem body000_170_separators :
-    ':' ∉ body000_170.toList ∧ ';' ∉ body000_170.toList := by cbv; decide +kernel
+    ':' ∉ body000_170.toList ∧ ';' ∉ body000_170.toList := by decide +kernel
 private theorem body000_170_certificate :
     entryValue? 1 body000_170.toList = some (0 : ℚ) := by cbv
 private theorem body000_170_noColon : ':' ∉ body000_170.toList :=
@@ -1805,7 +1805,7 @@ private theorem body000_170_value : bodyValue 1 body000_170 = (0 : ℚ) :=
 
 private def body000_171 : String := "169,6529408175689077,90"
 private theorem body000_171_separators :
-    ':' ∉ body000_171.toList ∧ ';' ∉ body000_171.toList := by cbv; decide +kernel
+    ':' ∉ body000_171.toList ∧ ';' ∉ body000_171.toList := by decide +kernel
 private theorem body000_171_certificate :
     entryValue? 1 body000_171.toList = some (0 : ℚ) := by cbv
 private theorem body000_171_noColon : ':' ∉ body000_171.toList :=
@@ -1842,7 +1842,7 @@ private theorem body000_157_value : bodyValue 1 body000_157 = (0 : ℚ) := by
 
 private def body000_175 : String := "171,1322497030931397,88"
 private theorem body000_175_separators :
-    ':' ∉ body000_175.toList ∧ ';' ∉ body000_175.toList := by cbv; decide +kernel
+    ':' ∉ body000_175.toList ∧ ';' ∉ body000_175.toList := by decide +kernel
 private theorem body000_175_certificate :
     entryValue? 1 body000_175.toList = some (0 : ℚ) := by cbv
 private theorem body000_175_noColon : ':' ∉ body000_175.toList :=
@@ -1852,7 +1852,7 @@ private theorem body000_175_value : bodyValue 1 body000_175 = (0 : ℚ) :=
 
 private def body000_176 : String := "173,8386841388183833,91"
 private theorem body000_176_separators :
-    ':' ∉ body000_176.toList ∧ ';' ∉ body000_176.toList := by cbv; decide +kernel
+    ':' ∉ body000_176.toList ∧ ';' ∉ body000_176.toList := by decide +kernel
 private theorem body000_176_certificate :
     entryValue? 1 body000_176.toList = some (0 : ℚ) := by cbv
 private theorem body000_176_noColon : ':' ∉ body000_176.toList :=
@@ -1871,7 +1871,7 @@ private theorem body000_174_value : bodyValue 1 body000_174 = (0 : ℚ) := by
 
 private def body000_178 : String := "175,6517642252937793,91"
 private theorem body000_178_separators :
-    ':' ∉ body000_178.toList ∧ ';' ∉ body000_178.toList := by cbv; decide +kernel
+    ':' ∉ body000_178.toList ∧ ';' ∉ body000_178.toList := by decide +kernel
 private theorem body000_178_certificate :
     entryValue? 1 body000_178.toList = some (0 : ℚ) := by cbv
 private theorem body000_178_noColon : ':' ∉ body000_178.toList :=
@@ -1881,7 +1881,7 @@ private theorem body000_178_value : bodyValue 1 body000_178 = (0 : ℚ) :=
 
 private def body000_179 : String := "177,1250775600845341,89"
 private theorem body000_179_separators :
-    ':' ∉ body000_179.toList ∧ ';' ∉ body000_179.toList := by cbv; decide +kernel
+    ':' ∉ body000_179.toList ∧ ';' ∉ body000_179.toList := by decide +kernel
 private theorem body000_179_certificate :
     entryValue? 1 body000_179.toList = some (0 : ℚ) := by cbv
 private theorem body000_179_noColon : ':' ∉ body000_179.toList :=
@@ -1909,7 +1909,7 @@ private theorem body000_173_value : bodyValue 1 body000_173 = (0 : ℚ) := by
 
 private def body000_182 : String := "179,3840468361521701,91"
 private theorem body000_182_separators :
-    ':' ∉ body000_182.toList ∧ ';' ∉ body000_182.toList := by cbv; decide +kernel
+    ':' ∉ body000_182.toList ∧ ';' ∉ body000_182.toList := by decide +kernel
 private theorem body000_182_certificate :
     entryValue? 1 body000_182.toList = some (0 : ℚ) := by cbv
 private theorem body000_182_noColon : ':' ∉ body000_182.toList :=
@@ -1919,7 +1919,7 @@ private theorem body000_182_value : bodyValue 1 body000_182 = (0 : ℚ) :=
 
 private def body000_183 : String := "181,747760063025335,89"
 private theorem body000_183_separators :
-    ':' ∉ body000_183.toList ∧ ';' ∉ body000_183.toList := by cbv; decide +kernel
+    ':' ∉ body000_183.toList ∧ ';' ∉ body000_183.toList := by decide +kernel
 private theorem body000_183_certificate :
     entryValue? 1 body000_183.toList = some (0 : ℚ) := by cbv
 private theorem body000_183_noColon : ':' ∉ body000_183.toList :=
@@ -1938,7 +1938,7 @@ private theorem body000_181_value : bodyValue 1 body000_181 = (0 : ℚ) := by
 
 private def body000_185 : String := "183,5110948022945703,92"
 private theorem body000_185_separators :
-    ':' ∉ body000_185.toList ∧ ';' ∉ body000_185.toList := by cbv; decide +kernel
+    ':' ∉ body000_185.toList ∧ ';' ∉ body000_185.toList := by decide +kernel
 private theorem body000_185_certificate :
     entryValue? 1 body000_185.toList = some (0 : ℚ) := by cbv
 private theorem body000_185_noColon : ':' ∉ body000_185.toList :=
@@ -1948,7 +1948,7 @@ private theorem body000_185_value : bodyValue 1 body000_185 = (0 : ℚ) :=
 
 private def body000_186 : String := "185,8409018862804977,93"
 private theorem body000_186_separators :
-    ':' ∉ body000_186.toList ∧ ';' ∉ body000_186.toList := by cbv; decide +kernel
+    ':' ∉ body000_186.toList ∧ ';' ∉ body000_186.toList := by decide +kernel
 private theorem body000_186_certificate :
     entryValue? 1 body000_186.toList = some (0 : ℚ) := by cbv
 private theorem body000_186_noColon : ':' ∉ body000_186.toList :=
@@ -2003,7 +2003,7 @@ private theorem body000_126_value : bodyValue 1 body000_126 = (0 : ℚ) := by
 
 private def body000_192 : String := "187,7096423428337045,93"
 private theorem body000_192_separators :
-    ':' ∉ body000_192.toList ∧ ';' ∉ body000_192.toList := by cbv; decide +kernel
+    ':' ∉ body000_192.toList ∧ ';' ∉ body000_192.toList := by decide +kernel
 private theorem body000_192_certificate :
     entryValue? 1 body000_192.toList = some (0 : ℚ) := by cbv
 private theorem body000_192_noColon : ':' ∉ body000_192.toList :=
@@ -2013,7 +2013,7 @@ private theorem body000_192_value : bodyValue 1 body000_192 = (0 : ℚ) :=
 
 private def body000_193 : String := "189,6083815167714861,93"
 private theorem body000_193_separators :
-    ':' ∉ body000_193.toList ∧ ';' ∉ body000_193.toList := by cbv; decide +kernel
+    ':' ∉ body000_193.toList ∧ ';' ∉ body000_193.toList := by decide +kernel
 private theorem body000_193_certificate :
     entryValue? 1 body000_193.toList = some (0 : ℚ) := by cbv
 private theorem body000_193_noColon : ':' ∉ body000_193.toList :=
@@ -2032,7 +2032,7 @@ private theorem body000_191_value : bodyValue 1 body000_191 = (0 : ℚ) := by
 
 private def body000_195 : String := "191,2612707947125613,92"
 private theorem body000_195_separators :
-    ':' ∉ body000_195.toList ∧ ';' ∉ body000_195.toList := by cbv; decide +kernel
+    ':' ∉ body000_195.toList ∧ ';' ∉ body000_195.toList := by decide +kernel
 private theorem body000_195_certificate :
     entryValue? 1 body000_195.toList = some (0 : ℚ) := by cbv
 private theorem body000_195_noColon : ':' ∉ body000_195.toList :=
@@ -2042,7 +2042,7 @@ private theorem body000_195_value : bodyValue 1 body000_195 = (0 : ℚ) :=
 
 private def body000_196 : String := "193,2216829653829397,92"
 private theorem body000_196_separators :
-    ':' ∉ body000_196.toList ∧ ';' ∉ body000_196.toList := by cbv; decide +kernel
+    ':' ∉ body000_196.toList ∧ ';' ∉ body000_196.toList := by decide +kernel
 private theorem body000_196_certificate :
     entryValue? 1 body000_196.toList = some (0 : ℚ) := by cbv
 private theorem body000_196_noColon : ':' ∉ body000_196.toList :=
@@ -2070,7 +2070,7 @@ private theorem body000_190_value : bodyValue 1 body000_190 = (0 : ℚ) := by
 
 private def body000_199 : String := "195,7350380895927021,94"
 private theorem body000_199_separators :
-    ':' ∉ body000_199.toList ∧ ';' ∉ body000_199.toList := by cbv; decide +kernel
+    ':' ∉ body000_199.toList ∧ ';' ∉ body000_199.toList := by decide +kernel
 private theorem body000_199_certificate :
     entryValue? 1 body000_199.toList = some (0 : ℚ) := by cbv
 private theorem body000_199_noColon : ':' ∉ body000_199.toList :=
@@ -2080,7 +2080,7 @@ private theorem body000_199_value : bodyValue 1 body000_199 = (0 : ℚ) :=
 
 private def body000_200 : String := "197,1478888904614761,92"
 private theorem body000_200_separators :
-    ':' ∉ body000_200.toList ∧ ';' ∉ body000_200.toList := by cbv; decide +kernel
+    ':' ∉ body000_200.toList ∧ ';' ∉ body000_200.toList := by decide +kernel
 private theorem body000_200_certificate :
     entryValue? 1 body000_200.toList = some (0 : ℚ) := by cbv
 private theorem body000_200_noColon : ':' ∉ body000_200.toList :=
@@ -2099,7 +2099,7 @@ private theorem body000_198_value : bodyValue 1 body000_198 = (0 : ℚ) := by
 
 private def body000_202 : String := "199,2310166605923813,93"
 private theorem body000_202_separators :
-    ':' ∉ body000_202.toList ∧ ';' ∉ body000_202.toList := by cbv; decide +kernel
+    ':' ∉ body000_202.toList ∧ ';' ∉ body000_202.toList := by decide +kernel
 private theorem body000_202_certificate :
     entryValue? 1 body000_202.toList = some (0 : ℚ) := by cbv
 private theorem body000_202_noColon : ':' ∉ body000_202.toList :=
@@ -2109,7 +2109,7 @@ private theorem body000_202_value : bodyValue 1 body000_202 = (0 : ℚ) :=
 
 private def body000_203 : String := "201,7045590950977409,95"
 private theorem body000_203_separators :
-    ':' ∉ body000_203.toList ∧ ';' ∉ body000_203.toList := by cbv; decide +kernel
+    ':' ∉ body000_203.toList ∧ ';' ∉ body000_203.toList := by decide +kernel
 private theorem body000_203_certificate :
     entryValue? 1 body000_203.toList = some (0 : ℚ) := by cbv
 private theorem body000_203_noColon : ':' ∉ body000_203.toList :=
@@ -2146,7 +2146,7 @@ private theorem body000_189_value : bodyValue 1 body000_189 = (0 : ℚ) := by
 
 private def body000_207 : String := "203,5307268187594649,95"
 private theorem body000_207_separators :
-    ':' ∉ body000_207.toList ∧ ';' ∉ body000_207.toList := by cbv; decide +kernel
+    ':' ∉ body000_207.toList ∧ ';' ∉ body000_207.toList := by decide +kernel
 private theorem body000_207_certificate :
     entryValue? 1 body000_207.toList = some (0 : ℚ) := by cbv
 private theorem body000_207_noColon : ':' ∉ body000_207.toList :=
@@ -2156,7 +2156,7 @@ private theorem body000_207_value : bodyValue 1 body000_207 = (0 : ℚ) :=
 
 private def body000_208 : String := "205,8032849004904717,96"
 private theorem body000_208_separators :
-    ':' ∉ body000_208.toList ∧ ';' ∉ body000_208.toList := by cbv; decide +kernel
+    ':' ∉ body000_208.toList ∧ ';' ∉ body000_208.toList := by decide +kernel
 private theorem body000_208_certificate :
     entryValue? 1 body000_208.toList = some (0 : ℚ) := by cbv
 private theorem body000_208_noColon : ':' ∉ body000_208.toList :=
@@ -2175,7 +2175,7 @@ private theorem body000_206_value : bodyValue 1 body000_206 = (0 : ℚ) := by
 
 private def body000_210 : String := "207,3109485823974843,95"
 private theorem body000_210_separators :
-    ':' ∉ body000_210.toList ∧ ';' ∉ body000_210.toList := by cbv; decide +kernel
+    ':' ∉ body000_210.toList ∧ ';' ∉ body000_210.toList := by decide +kernel
 private theorem body000_210_certificate :
     entryValue? 1 body000_210.toList = some (0 : ℚ) := by cbv
 private theorem body000_210_noColon : ':' ∉ body000_210.toList :=
@@ -2185,7 +2185,7 @@ private theorem body000_210_value : bodyValue 1 body000_210 = (0 : ℚ) :=
 
 private def body000_211 : String := "209,1248749268527275,94"
 private theorem body000_211_separators :
-    ':' ∉ body000_211.toList ∧ ';' ∉ body000_211.toList := by cbv; decide +kernel
+    ':' ∉ body000_211.toList ∧ ';' ∉ body000_211.toList := by decide +kernel
 private theorem body000_211_certificate :
     entryValue? 1 body000_211.toList = some (0 : ℚ) := by cbv
 private theorem body000_211_noColon : ':' ∉ body000_211.toList :=
@@ -2213,7 +2213,7 @@ private theorem body000_205_value : bodyValue 1 body000_205 = (0 : ℚ) := by
 
 private def body000_214 : String := "211,8361870679659905,97"
 private theorem body000_214_separators :
-    ':' ∉ body000_214.toList ∧ ';' ∉ body000_214.toList := by cbv; decide +kernel
+    ':' ∉ body000_214.toList ∧ ';' ∉ body000_214.toList := by decide +kernel
 private theorem body000_214_certificate :
     entryValue? 1 body000_214.toList = some (0 : ℚ) := by cbv
 private theorem body000_214_noColon : ':' ∉ body000_214.toList :=
@@ -2223,7 +2223,7 @@ private theorem body000_214_value : bodyValue 1 body000_214 = (0 : ℚ) :=
 
 private def body000_215 : String := "213,7242490900220229,97"
 private theorem body000_215_separators :
-    ':' ∉ body000_215.toList ∧ ';' ∉ body000_215.toList := by cbv; decide +kernel
+    ':' ∉ body000_215.toList ∧ ';' ∉ body000_215.toList := by decide +kernel
 private theorem body000_215_certificate :
     entryValue? 1 body000_215.toList = some (0 : ℚ) := by cbv
 private theorem body000_215_noColon : ':' ∉ body000_215.toList :=
@@ -2242,7 +2242,7 @@ private theorem body000_213_value : bodyValue 1 body000_213 = (0 : ℚ) := by
 
 private def body000_217 : String := "215,6388910466275471,97"
 private theorem body000_217_separators :
-    ':' ∉ body000_217.toList ∧ ';' ∉ body000_217.toList := by cbv; decide +kernel
+    ':' ∉ body000_217.toList ∧ ';' ∉ body000_217.toList := by decide +kernel
 private theorem body000_217_certificate :
     entryValue? 1 body000_217.toList = some (0 : ℚ) := by cbv
 private theorem body000_217_noColon : ':' ∉ body000_217.toList :=
@@ -2252,7 +2252,7 @@ private theorem body000_217_value : bodyValue 1 body000_217 = (0 : ℚ) :=
 
 private def body000_218 : String := "217,5631919882201001,97"
 private theorem body000_218_separators :
-    ':' ∉ body000_218.toList ∧ ';' ∉ body000_218.toList := by cbv; decide +kernel
+    ':' ∉ body000_218.toList ∧ ';' ∉ body000_218.toList := by decide +kernel
 private theorem body000_218_certificate :
     entryValue? 1 body000_218.toList = some (0 : ℚ) := by cbv
 private theorem body000_218_noColon : ':' ∉ body000_218.toList :=
@@ -2298,7 +2298,7 @@ private theorem body000_188_value : bodyValue 1 body000_188 = (0 : ℚ) := by
 
 private def body000_223 : String := "219,4877428645976451,97"
 private theorem body000_223_separators :
-    ':' ∉ body000_223.toList ∧ ';' ∉ body000_223.toList := by cbv; decide +kernel
+    ':' ∉ body000_223.toList ∧ ';' ∉ body000_223.toList := by decide +kernel
 private theorem body000_223_certificate :
     entryValue? 1 body000_223.toList = some (0 : ℚ) := by cbv
 private theorem body000_223_noColon : ':' ∉ body000_223.toList :=
@@ -2308,7 +2308,7 @@ private theorem body000_223_value : bodyValue 1 body000_223 = (0 : ℚ) :=
 
 private def body000_224 : String := "221,8201164422026683,98"
 private theorem body000_224_separators :
-    ':' ∉ body000_224.toList ∧ ';' ∉ body000_224.toList := by cbv; decide +kernel
+    ':' ∉ body000_224.toList ∧ ';' ∉ body000_224.toList := by decide +kernel
 private theorem body000_224_certificate :
     entryValue? 1 body000_224.toList = some (0 : ℚ) := by cbv
 private theorem body000_224_noColon : ':' ∉ body000_224.toList :=
@@ -2327,7 +2327,7 @@ private theorem body000_222_value : bodyValue 1 body000_222 = (0 : ℚ) := by
 
 private def body000_226 : String := "223,3327735415052475,97"
 private theorem body000_226_separators :
-    ':' ∉ body000_226.toList ∧ ';' ∉ body000_226.toList := by cbv; decide +kernel
+    ':' ∉ body000_226.toList ∧ ';' ∉ body000_226.toList := by decide +kernel
 private theorem body000_226_certificate :
     entryValue? 1 body000_226.toList = some (0 : ℚ) := by cbv
 private theorem body000_226_noColon : ':' ∉ body000_226.toList :=
@@ -2337,7 +2337,7 @@ private theorem body000_226_value : bodyValue 1 body000_226 = (0 : ℚ) :=
 
 private def body000_227 : String := "225,5217624631166765,98"
 private theorem body000_227_separators :
-    ':' ∉ body000_227.toList ∧ ';' ∉ body000_227.toList := by cbv; decide +kernel
+    ':' ∉ body000_227.toList ∧ ';' ∉ body000_227.toList := by decide +kernel
 private theorem body000_227_certificate :
     entryValue? 1 body000_227.toList = some (0 : ℚ) := by cbv
 private theorem body000_227_noColon : ':' ∉ body000_227.toList :=
@@ -2365,7 +2365,7 @@ private theorem body000_221_value : bodyValue 1 body000_221 = (0 : ℚ) := by
 
 private def body000_230 : String := "227,3979726070796489,98"
 private theorem body000_230_separators :
-    ':' ∉ body000_230.toList ∧ ';' ∉ body000_230.toList := by cbv; decide +kernel
+    ':' ∉ body000_230.toList ∧ ';' ∉ body000_230.toList := by decide +kernel
 private theorem body000_230_certificate :
     entryValue? 1 body000_230.toList = some (0 : ℚ) := by cbv
 private theorem body000_230_noColon : ':' ∉ body000_230.toList :=
@@ -2375,7 +2375,7 @@ private theorem body000_230_value : bodyValue 1 body000_230 = (0 : ℚ) :=
 
 private def body000_231 : String := "229,1495803425104319,97"
 private theorem body000_231_separators :
-    ':' ∉ body000_231.toList ∧ ';' ∉ body000_231.toList := by cbv; decide +kernel
+    ':' ∉ body000_231.toList ∧ ';' ∉ body000_231.toList := by decide +kernel
 private theorem body000_231_certificate :
     entryValue? 1 body000_231.toList = some (0 : ℚ) := by cbv
 private theorem body000_231_noColon : ':' ∉ body000_231.toList :=
@@ -2394,7 +2394,7 @@ private theorem body000_229_value : bodyValue 1 body000_229 = (0 : ℚ) := by
 
 private def body000_233 : String := "231,2253897363374689,98"
 private theorem body000_233_separators :
-    ':' ∉ body000_233.toList ∧ ';' ∉ body000_233.toList := by cbv; decide +kernel
+    ':' ∉ body000_233.toList ∧ ';' ∉ body000_233.toList := by decide +kernel
 private theorem body000_233_certificate :
     entryValue? 1 body000_233.toList = some (0 : ℚ) := by cbv
 private theorem body000_233_noColon : ':' ∉ body000_233.toList :=
@@ -2404,7 +2404,7 @@ private theorem body000_233_value : bodyValue 1 body000_233 = (0 : ℚ) :=
 
 private def body000_234 : String := "233,3462708433240693,99"
 private theorem body000_234_separators :
-    ':' ∉ body000_234.toList ∧ ';' ∉ body000_234.toList := by cbv; decide +kernel
+    ':' ∉ body000_234.toList ∧ ';' ∉ body000_234.toList := by decide +kernel
 private theorem body000_234_certificate :
     entryValue? 1 body000_234.toList = some (0 : ℚ) := by cbv
 private theorem body000_234_noColon : ':' ∉ body000_234.toList :=
@@ -2441,7 +2441,7 @@ private theorem body000_220_value : bodyValue 1 body000_220 = (0 : ℚ) := by
 
 private def body000_238 : String := "235,2745419692938983,99"
 private theorem body000_238_separators :
-    ':' ∉ body000_238.toList ∧ ';' ∉ body000_238.toList := by cbv; decide +kernel
+    ':' ∉ body000_238.toList ∧ ';' ∉ body000_238.toList := by decide +kernel
 private theorem body000_238_certificate :
     entryValue? 1 body000_238.toList = some (0 : ℚ) := by cbv
 private theorem body000_238_noColon : ':' ∉ body000_238.toList :=
@@ -2451,7 +2451,7 @@ private theorem body000_238_value : bodyValue 1 body000_238 = (0 : ℚ) :=
 
 private def body000_239 : String := "237,2252997296088533,99"
 private theorem body000_239_separators :
-    ':' ∉ body000_239.toList ∧ ';' ∉ body000_239.toList := by cbv; decide +kernel
+    ':' ∉ body000_239.toList ∧ ';' ∉ body000_239.toList := by decide +kernel
 private theorem body000_239_certificate :
     entryValue? 1 body000_239.toList = some (0 : ℚ) := by cbv
 private theorem body000_239_noColon : ':' ∉ body000_239.toList :=
@@ -2470,7 +2470,7 @@ private theorem body000_237_value : bodyValue 1 body000_237 = (0 : ℚ) := by
 
 private def body000_241 : String := "239,7596753755430301,101"
 private theorem body000_241_separators :
-    ':' ∉ body000_241.toList ∧ ';' ∉ body000_241.toList := by cbv; decide +kernel
+    ':' ∉ body000_241.toList ∧ ';' ∉ body000_241.toList := by decide +kernel
 private theorem body000_241_certificate :
     entryValue? 1 body000_241.toList = some (0 : ℚ) := by cbv
 private theorem body000_241_noColon : ':' ∉ body000_241.toList :=
@@ -2480,7 +2480,7 @@ private theorem body000_241_value : bodyValue 1 body000_241 = (0 : ℚ) :=
 
 private def body000_242 : String := "241,6482775151202695,101"
 private theorem body000_242_separators :
-    ':' ∉ body000_242.toList ∧ ';' ∉ body000_242.toList := by cbv; decide +kernel
+    ':' ∉ body000_242.toList ∧ ';' ∉ body000_242.toList := by decide +kernel
 private theorem body000_242_certificate :
     entryValue? 1 body000_242.toList = some (0 : ℚ) := by cbv
 private theorem body000_242_noColon : ':' ∉ body000_242.toList :=
@@ -2508,7 +2508,7 @@ private theorem body000_236_value : bodyValue 1 body000_236 = (0 : ℚ) := by
 
 private def body000_245 : String := "243,5512406011673535,101"
 private theorem body000_245_separators :
-    ':' ∉ body000_245.toList ∧ ';' ∉ body000_245.toList := by cbv; decide +kernel
+    ':' ∉ body000_245.toList ∧ ';' ∉ body000_245.toList := by decide +kernel
 private theorem body000_245_certificate :
     entryValue? 1 body000_245.toList = some (0 : ℚ) := by cbv
 private theorem body000_245_noColon : ':' ∉ body000_245.toList :=
@@ -2518,7 +2518,7 @@ private theorem body000_245_value : bodyValue 1 body000_245 = (0 : ℚ) :=
 
 private def body000_246 : String := "245,1153749348990419,99"
 private theorem body000_246_separators :
-    ':' ∉ body000_246.toList ∧ ';' ∉ body000_246.toList := by cbv; decide +kernel
+    ':' ∉ body000_246.toList ∧ ';' ∉ body000_246.toList := by decide +kernel
 private theorem body000_246_certificate :
     entryValue? 1 body000_246.toList = some (0 : ℚ) := by cbv
 private theorem body000_246_noColon : ':' ∉ body000_246.toList :=
@@ -2537,7 +2537,7 @@ private theorem body000_244_value : bodyValue 1 body000_244 = (0 : ℚ) := by
 
 private def body000_248 : String := "247,3785723147367845,101"
 private theorem body000_248_separators :
-    ':' ∉ body000_248.toList ∧ ';' ∉ body000_248.toList := by cbv; decide +kernel
+    ':' ∉ body000_248.toList ∧ ';' ∉ body000_248.toList := by decide +kernel
 private theorem body000_248_certificate :
     entryValue? 1 body000_248.toList = some (0 : ℚ) := by cbv
 private theorem body000_248_noColon : ':' ∉ body000_248.toList :=
@@ -2547,7 +2547,7 @@ private theorem body000_248_value : bodyValue 1 body000_248 = (0 : ℚ) :=
 
 private def body000_249 : String := "249,1527094980689089,100"
 private theorem body000_249_separators :
-    ':' ∉ body000_249.toList ∧ ';' ∉ body000_249.toList := by cbv; decide +kernel
+    ':' ∉ body000_249.toList ∧ ';' ∉ body000_249.toList := by decide +kernel
 private theorem body000_249_certificate :
     entryValue? 1 body000_249.toList = some (0 : ℚ) := by cbv
 private theorem body000_249_noColon : ':' ∉ body000_249.toList :=
@@ -2620,7 +2620,7 @@ private theorem body000_001_value : bodyValue 1 body000_001 = (3234302541425105 
 
 private def body000_256 : String := "251,1226381081959105,100"
 private theorem body000_256_separators :
-    ':' ∉ body000_256.toList ∧ ';' ∉ body000_256.toList := by cbv; decide +kernel
+    ':' ∉ body000_256.toList ∧ ';' ∉ body000_256.toList := by decide +kernel
 private theorem body000_256_certificate :
     entryValue? 1 body000_256.toList = some (0 : ℚ) := by cbv
 private theorem body000_256_noColon : ':' ∉ body000_256.toList :=
@@ -2630,7 +2630,7 @@ private theorem body000_256_value : bodyValue 1 body000_256 = (0 : ℚ) :=
 
 private def body000_258 : String := "253,7983764946189823,103"
 private theorem body000_258_separators :
-    ':' ∉ body000_258.toList ∧ ';' ∉ body000_258.toList := by cbv; decide +kernel
+    ':' ∉ body000_258.toList ∧ ';' ∉ body000_258.toList := by decide +kernel
 private theorem body000_258_certificate :
     entryValue? 1 body000_258.toList = some (0 : ℚ) := by cbv
 private theorem body000_258_noColon : ':' ∉ body000_258.toList :=
@@ -2640,7 +2640,7 @@ private theorem body000_258_value : bodyValue 1 body000_258 = (0 : ℚ) :=
 
 private def body000_259 : String := "255,6699985358174217,103"
 private theorem body000_259_separators :
-    ':' ∉ body000_259.toList ∧ ';' ∉ body000_259.toList := by cbv; decide +kernel
+    ':' ∉ body000_259.toList ∧ ';' ∉ body000_259.toList := by decide +kernel
 private theorem body000_259_certificate :
     entryValue? 1 body000_259.toList = some (0 : ℚ) := by cbv
 private theorem body000_259_noColon : ':' ∉ body000_259.toList :=
@@ -2668,7 +2668,7 @@ private theorem body000_255_value : bodyValue 1 body000_255 = (0 : ℚ) := by
 
 private def body000_262 : String := "257,2926164408253165,102"
 private theorem body000_262_separators :
-    ':' ∉ body000_262.toList ∧ ';' ∉ body000_262.toList := by cbv; decide +kernel
+    ':' ∉ body000_262.toList ∧ ';' ∉ body000_262.toList := by decide +kernel
 private theorem body000_262_certificate :
     entryValue? 1 body000_262.toList = some (0 : ℚ) := by cbv
 private theorem body000_262_noColon : ':' ∉ body000_262.toList :=
@@ -2678,7 +2678,7 @@ private theorem body000_262_value : bodyValue 1 body000_262 = (0 : ℚ) :=
 
 private def body000_263 : String := "259,2646007383660629,102"
 private theorem body000_263_separators :
-    ':' ∉ body000_263.toList ∧ ';' ∉ body000_263.toList := by cbv; decide +kernel
+    ':' ∉ body000_263.toList ∧ ';' ∉ body000_263.toList := by decide +kernel
 private theorem body000_263_certificate :
     entryValue? 1 body000_263.toList = some (0 : ℚ) := by cbv
 private theorem body000_263_noColon : ':' ∉ body000_263.toList :=
@@ -2697,7 +2697,7 @@ private theorem body000_261_value : bodyValue 1 body000_261 = (0 : ℚ) := by
 
 private def body000_265 : String := "261,4854715385075477,103"
 private theorem body000_265_separators :
-    ':' ∉ body000_265.toList ∧ ';' ∉ body000_265.toList := by cbv; decide +kernel
+    ':' ∉ body000_265.toList ∧ ';' ∉ body000_265.toList := by decide +kernel
 private theorem body000_265_certificate :
     entryValue? 1 body000_265.toList = some (0 : ℚ) := by cbv
 private theorem body000_265_noColon : ':' ∉ body000_265.toList :=
@@ -2707,7 +2707,7 @@ private theorem body000_265_value : bodyValue 1 body000_265 = (0 : ℚ) :=
 
 private def body000_266 : String := "263,8773370121521339,104"
 private theorem body000_266_separators :
-    ':' ∉ body000_266.toList ∧ ';' ∉ body000_266.toList := by cbv; decide +kernel
+    ':' ∉ body000_266.toList ∧ ';' ∉ body000_266.toList := by decide +kernel
 private theorem body000_266_certificate :
     entryValue? 1 body000_266.toList = some (0 : ℚ) := by cbv
 private theorem body000_266_noColon : ':' ∉ body000_266.toList :=
@@ -2744,7 +2744,7 @@ private theorem body000_254_value : bodyValue 1 body000_254 = (0 : ℚ) := by
 
 private def body000_270 : String := "265,7559928382302435,104"
 private theorem body000_270_separators :
-    ':' ∉ body000_270.toList ∧ ';' ∉ body000_270.toList := by cbv; decide +kernel
+    ':' ∉ body000_270.toList ∧ ';' ∉ body000_270.toList := by decide +kernel
 private theorem body000_270_certificate :
     entryValue? 1 body000_270.toList = some (0 : ℚ) := by cbv
 private theorem body000_270_noColon : ':' ∉ body000_270.toList :=
@@ -2754,7 +2754,7 @@ private theorem body000_270_value : bodyValue 1 body000_270 = (0 : ℚ) :=
 
 private def body000_271 : String := "267,3008839711136251,103"
 private theorem body000_271_separators :
-    ':' ∉ body000_271.toList ∧ ';' ∉ body000_271.toList := by cbv; decide +kernel
+    ':' ∉ body000_271.toList ∧ ';' ∉ body000_271.toList := by decide +kernel
 private theorem body000_271_certificate :
     entryValue? 1 body000_271.toList = some (0 : ℚ) := by cbv
 private theorem body000_271_noColon : ':' ∉ body000_271.toList :=
@@ -2773,7 +2773,7 @@ private theorem body000_269_value : bodyValue 1 body000_269 = (0 : ℚ) := by
 
 private def body000_273 : String := "269,8572413641974143,105"
 private theorem body000_273_separators :
-    ':' ∉ body000_273.toList ∧ ';' ∉ body000_273.toList := by cbv; decide +kernel
+    ':' ∉ body000_273.toList ∧ ';' ∉ body000_273.toList := by decide +kernel
 private theorem body000_273_certificate :
     entryValue? 1 body000_273.toList = some (0 : ℚ) := by cbv
 private theorem body000_273_noColon : ':' ∉ body000_273.toList :=
@@ -2783,7 +2783,7 @@ private theorem body000_273_value : bodyValue 1 body000_273 = (0 : ℚ) :=
 
 private def body000_274 : String := "271,2636209872554973,104"
 private theorem body000_274_separators :
-    ':' ∉ body000_274.toList ∧ ';' ∉ body000_274.toList := by cbv; decide +kernel
+    ':' ∉ body000_274.toList ∧ ';' ∉ body000_274.toList := by decide +kernel
 private theorem body000_274_certificate :
     entryValue? 1 body000_274.toList = some (0 : ℚ) := by cbv
 private theorem body000_274_noColon : ':' ∉ body000_274.toList :=
@@ -2811,7 +2811,7 @@ private theorem body000_268_value : bodyValue 1 body000_268 = (0 : ℚ) := by
 
 private def body000_277 : String := "273,668563545126979,103"
 private theorem body000_277_separators :
-    ':' ∉ body000_277.toList ∧ ';' ∉ body000_277.toList := by cbv; decide +kernel
+    ':' ∉ body000_277.toList ∧ ';' ∉ body000_277.toList := by decide +kernel
 private theorem body000_277_certificate :
     entryValue? 1 body000_277.toList = some (0 : ℚ) := by cbv
 private theorem body000_277_noColon : ':' ∉ body000_277.toList :=
@@ -2821,7 +2821,7 @@ private theorem body000_277_value : bodyValue 1 body000_277 = (0 : ℚ) :=
 
 private def body000_278 : String := "275,8382749463557565,108"
 private theorem body000_278_separators :
-    ':' ∉ body000_278.toList ∧ ';' ∉ body000_278.toList := by cbv; decide +kernel
+    ':' ∉ body000_278.toList ∧ ';' ∉ body000_278.toList := by decide +kernel
 private theorem body000_278_certificate :
     entryValue? 1 body000_278.toList = some (0 : ℚ) := by cbv
 private theorem body000_278_noColon : ':' ∉ body000_278.toList :=
@@ -2840,7 +2840,7 @@ private theorem body000_276_value : bodyValue 1 body000_276 = (0 : ℚ) := by
 
 private def body000_280 : String := "277,1168376650587857,107"
 private theorem body000_280_separators :
-    ':' ∉ body000_280.toList ∧ ';' ∉ body000_280.toList := by cbv; decide +kernel
+    ':' ∉ body000_280.toList ∧ ';' ∉ body000_280.toList := by decide +kernel
 private theorem body000_280_certificate :
     entryValue? 1 body000_280.toList = some (0 : ℚ) := by cbv
 private theorem body000_280_noColon : ':' ∉ body000_280.toList :=
@@ -2850,7 +2850,7 @@ private theorem body000_280_value : bodyValue 1 body000_280 = (0 : ℚ) :=
 
 private def body000_281 : String := "279,7955678539274437,112"
 private theorem body000_281_separators :
-    ':' ∉ body000_281.toList ∧ ';' ∉ body000_281.toList := by cbv; decide +kernel
+    ':' ∉ body000_281.toList ∧ ';' ∉ body000_281.toList := by decide +kernel
 private theorem body000_281_certificate :
     entryValue? 1 body000_281.toList = some (0 : ℚ) := by cbv
 private theorem body000_281_noColon : ':' ∉ body000_281.toList :=
@@ -2896,7 +2896,7 @@ private theorem body000_253_value : bodyValue 1 body000_253 = (0 : ℚ) := by
 
 private def body000_286 : String := "281,8691273096873525,113"
 private theorem body000_286_separators :
-    ':' ∉ body000_286.toList ∧ ';' ∉ body000_286.toList := by cbv; decide +kernel
+    ':' ∉ body000_286.toList ∧ ';' ∉ body000_286.toList := by decide +kernel
 private theorem body000_286_certificate :
     entryValue? 1 body000_286.toList = some (0 : ℚ) := by cbv
 private theorem body000_286_noColon : ':' ∉ body000_286.toList :=
@@ -2906,7 +2906,7 @@ private theorem body000_286_value : bodyValue 1 body000_286 = (0 : ℚ) :=
 
 private def body000_287 : String := "283,7480455349334399,111"
 private theorem body000_287_separators :
-    ':' ∉ body000_287.toList ∧ ';' ∉ body000_287.toList := by cbv; decide +kernel
+    ':' ∉ body000_287.toList ∧ ';' ∉ body000_287.toList := by decide +kernel
 private theorem body000_287_certificate :
     entryValue? 1 body000_287.toList = some (0 : ℚ) := by cbv
 private theorem body000_287_noColon : ':' ∉ body000_287.toList :=
@@ -2925,7 +2925,7 @@ private theorem body000_285_value : bodyValue 1 body000_285 = (0 : ℚ) := by
 
 private def body000_289 : String := "285,926158997401089,106"
 private theorem body000_289_separators :
-    ':' ∉ body000_289.toList ∧ ';' ∉ body000_289.toList := by cbv; decide +kernel
+    ':' ∉ body000_289.toList ∧ ';' ∉ body000_289.toList := by decide +kernel
 private theorem body000_289_certificate :
     entryValue? 1 body000_289.toList = some (0 : ℚ) := by cbv
 private theorem body000_289_noColon : ':' ∉ body000_289.toList :=
@@ -2935,7 +2935,7 @@ private theorem body000_289_value : bodyValue 1 body000_289 = (0 : ℚ) :=
 
 private def body000_290 : String := "287,2539083677512061,106"
 private theorem body000_290_separators :
-    ':' ∉ body000_290.toList ∧ ';' ∉ body000_290.toList := by cbv; decide +kernel
+    ':' ∉ body000_290.toList ∧ ';' ∉ body000_290.toList := by decide +kernel
 private theorem body000_290_certificate :
     entryValue? 1 body000_290.toList = some (0 : ℚ) := by cbv
 private theorem body000_290_noColon : ':' ∉ body000_290.toList :=
@@ -2963,7 +2963,7 @@ private theorem body000_284_value : bodyValue 1 body000_284 = (0 : ℚ) := by
 
 private def body000_293 : String := "289,5043992869860693,106"
 private theorem body000_293_separators :
-    ':' ∉ body000_293.toList ∧ ';' ∉ body000_293.toList := by cbv; decide +kernel
+    ':' ∉ body000_293.toList ∧ ';' ∉ body000_293.toList := by decide +kernel
 private theorem body000_293_certificate :
     entryValue? 1 body000_293.toList = some (0 : ℚ) := by cbv
 private theorem body000_293_noColon : ':' ∉ body000_293.toList :=
@@ -2973,7 +2973,7 @@ private theorem body000_293_value : bodyValue 1 body000_293 = (0 : ℚ) :=
 
 private def body000_294 : String := "291,1938406820899213,104"
 private theorem body000_294_separators :
-    ':' ∉ body000_294.toList ∧ ';' ∉ body000_294.toList := by cbv; decide +kernel
+    ':' ∉ body000_294.toList ∧ ';' ∉ body000_294.toList := by decide +kernel
 private theorem body000_294_certificate :
     entryValue? 1 body000_294.toList = some (0 : ℚ) := by cbv
 private theorem body000_294_noColon : ':' ∉ body000_294.toList :=
@@ -2992,7 +2992,7 @@ private theorem body000_292_value : bodyValue 1 body000_292 = (0 : ℚ) := by
 
 private def body000_296 : String := "293,4784965276919221,105"
 private theorem body000_296_separators :
-    ':' ∉ body000_296.toList ∧ ';' ∉ body000_296.toList := by cbv; decide +kernel
+    ':' ∉ body000_296.toList ∧ ';' ∉ body000_296.toList := by decide +kernel
 private theorem body000_296_certificate :
     entryValue? 1 body000_296.toList = some (0 : ℚ) := by cbv
 private theorem body000_296_noColon : ':' ∉ body000_296.toList :=
@@ -3002,7 +3002,7 @@ private theorem body000_296_value : bodyValue 1 body000_296 = (0 : ℚ) :=
 
 private def body000_297 : String := "295,4793658561761887,105"
 private theorem body000_297_separators :
-    ':' ∉ body000_297.toList ∧ ';' ∉ body000_297.toList := by cbv; decide +kernel
+    ':' ∉ body000_297.toList ∧ ';' ∉ body000_297.toList := by decide +kernel
 private theorem body000_297_certificate :
     entryValue? 1 body000_297.toList = some (0 : ℚ) := by cbv
 private theorem body000_297_noColon : ':' ∉ body000_297.toList :=
@@ -3039,7 +3039,7 @@ private theorem body000_283_value : bodyValue 1 body000_283 = (0 : ℚ) := by
 
 private def body000_301 : String := "297,3833202341278973,105"
 private theorem body000_301_separators :
-    ':' ∉ body000_301.toList ∧ ';' ∉ body000_301.toList := by cbv; decide +kernel
+    ':' ∉ body000_301.toList ∧ ';' ∉ body000_301.toList := by decide +kernel
 private theorem body000_301_certificate :
     entryValue? 1 body000_301.toList = some (0 : ℚ) := by cbv
 private theorem body000_301_noColon : ':' ∉ body000_301.toList :=
@@ -3049,7 +3049,7 @@ private theorem body000_301_value : bodyValue 1 body000_301 = (0 : ℚ) :=
 
 private def body000_302 : String := "299,2296613593085863,105"
 private theorem body000_302_separators :
-    ':' ∉ body000_302.toList ∧ ';' ∉ body000_302.toList := by cbv; decide +kernel
+    ':' ∉ body000_302.toList ∧ ';' ∉ body000_302.toList := by decide +kernel
 private theorem body000_302_certificate :
     entryValue? 1 body000_302.toList = some (0 : ℚ) := by cbv
 private theorem body000_302_noColon : ':' ∉ body000_302.toList :=
@@ -3068,7 +3068,7 @@ private theorem body000_300_value : bodyValue 1 body000_300 = (0 : ℚ) := by
 
 private def body000_304 : String := "301,3391479213789971,107"
 private theorem body000_304_separators :
-    ':' ∉ body000_304.toList ∧ ';' ∉ body000_304.toList := by cbv; decide +kernel
+    ':' ∉ body000_304.toList ∧ ';' ∉ body000_304.toList := by decide +kernel
 private theorem body000_304_certificate :
     entryValue? 1 body000_304.toList = some (0 : ℚ) := by cbv
 private theorem body000_304_noColon : ':' ∉ body000_304.toList :=
@@ -3078,7 +3078,7 @@ private theorem body000_304_value : bodyValue 1 body000_304 = (0 : ℚ) :=
 
 private def body000_305 : String := "303,8535788087946551,112"
 private theorem body000_305_separators :
-    ':' ∉ body000_305.toList ∧ ';' ∉ body000_305.toList := by cbv; decide +kernel
+    ':' ∉ body000_305.toList ∧ ';' ∉ body000_305.toList := by decide +kernel
 private theorem body000_305_certificate :
     entryValue? 1 body000_305.toList = some (0 : ℚ) := by cbv
 private theorem body000_305_noColon : ':' ∉ body000_305.toList :=
@@ -3106,7 +3106,7 @@ private theorem body000_299_value : bodyValue 1 body000_299 = (0 : ℚ) := by
 
 private def body000_308 : String := "305,2263936692918723,109"
 private theorem body000_308_separators :
-    ':' ∉ body000_308.toList ∧ ';' ∉ body000_308.toList := by cbv; decide +kernel
+    ':' ∉ body000_308.toList ∧ ';' ∉ body000_308.toList := by decide +kernel
 private theorem body000_308_certificate :
     entryValue? 1 body000_308.toList = some (0 : ℚ) := by cbv
 private theorem body000_308_noColon : ':' ∉ body000_308.toList :=
@@ -3116,7 +3116,7 @@ private theorem body000_308_value : bodyValue 1 body000_308 = (0 : ℚ) :=
 
 private def body000_309 : String := "307,6341882594164425,108"
 private theorem body000_309_separators :
-    ':' ∉ body000_309.toList ∧ ';' ∉ body000_309.toList := by cbv; decide +kernel
+    ':' ∉ body000_309.toList ∧ ';' ∉ body000_309.toList := by decide +kernel
 private theorem body000_309_certificate :
     entryValue? 1 body000_309.toList = some (0 : ℚ) := by cbv
 private theorem body000_309_noColon : ':' ∉ body000_309.toList :=
@@ -3135,7 +3135,7 @@ private theorem body000_307_value : bodyValue 1 body000_307 = (0 : ℚ) := by
 
 private def body000_311 : String := "309,5867258622390363,107"
 private theorem body000_311_separators :
-    ':' ∉ body000_311.toList ∧ ';' ∉ body000_311.toList := by cbv; decide +kernel
+    ':' ∉ body000_311.toList ∧ ';' ∉ body000_311.toList := by decide +kernel
 private theorem body000_311_certificate :
     entryValue? 1 body000_311.toList = some (0 : ℚ) := by cbv
 private theorem body000_311_noColon : ':' ∉ body000_311.toList :=
@@ -3145,7 +3145,7 @@ private theorem body000_311_value : bodyValue 1 body000_311 = (0 : ℚ) :=
 
 private def body000_312 : String := "311,6712367931387913,107"
 private theorem body000_312_separators :
-    ':' ∉ body000_312.toList ∧ ';' ∉ body000_312.toList := by cbv; decide +kernel
+    ':' ∉ body000_312.toList ∧ ';' ∉ body000_312.toList := by decide +kernel
 private theorem body000_312_certificate :
     entryValue? 1 body000_312.toList = some (0 : ℚ) := by cbv
 private theorem body000_312_noColon : ':' ∉ body000_312.toList :=
@@ -3200,7 +3200,7 @@ private theorem body000_252_value : bodyValue 1 body000_252 = (0 : ℚ) := by
 
 private def body000_318 : String := "313,323014959704615,103"
 private theorem body000_318_separators :
-    ':' ∉ body000_318.toList ∧ ';' ∉ body000_318.toList := by cbv; decide +kernel
+    ':' ∉ body000_318.toList ∧ ';' ∉ body000_318.toList := by decide +kernel
 private theorem body000_318_certificate :
     entryValue? 1 body000_318.toList = some (0 : ℚ) := by cbv
 private theorem body000_318_noColon : ':' ∉ body000_318.toList :=
@@ -3210,7 +3210,7 @@ private theorem body000_318_value : bodyValue 1 body000_318 = (0 : ℚ) :=
 
 private def body000_319 : String := "315,4685373636880841,108"
 private theorem body000_319_separators :
-    ':' ∉ body000_319.toList ∧ ';' ∉ body000_319.toList := by cbv; decide +kernel
+    ':' ∉ body000_319.toList ∧ ';' ∉ body000_319.toList := by decide +kernel
 private theorem body000_319_certificate :
     entryValue? 1 body000_319.toList = some (0 : ℚ) := by cbv
 private theorem body000_319_noColon : ':' ∉ body000_319.toList :=
@@ -3229,7 +3229,7 @@ private theorem body000_317_value : bodyValue 1 body000_317 = (0 : ℚ) := by
 
 private def body000_321 : String := "317,7561696392938813,112"
 private theorem body000_321_separators :
-    ':' ∉ body000_321.toList ∧ ';' ∉ body000_321.toList := by cbv; decide +kernel
+    ':' ∉ body000_321.toList ∧ ';' ∉ body000_321.toList := by decide +kernel
 private theorem body000_321_certificate :
     entryValue? 1 body000_321.toList = some (0 : ℚ) := by cbv
 private theorem body000_321_noColon : ':' ∉ body000_321.toList :=
@@ -3239,7 +3239,7 @@ private theorem body000_321_value : bodyValue 1 body000_321 = (0 : ℚ) :=
 
 private def body000_322 : String := "319,962246393299347,108"
 private theorem body000_322_separators :
-    ':' ∉ body000_322.toList ∧ ';' ∉ body000_322.toList := by cbv; decide +kernel
+    ':' ∉ body000_322.toList ∧ ';' ∉ body000_322.toList := by decide +kernel
 private theorem body000_322_certificate :
     entryValue? 1 body000_322.toList = some (0 : ℚ) := by cbv
 private theorem body000_322_noColon : ':' ∉ body000_322.toList :=
@@ -3267,7 +3267,7 @@ private theorem body000_316_value : bodyValue 1 body000_316 = (0 : ℚ) := by
 
 private def body000_325 : String := "321,6665991524980009,108"
 private theorem body000_325_separators :
-    ':' ∉ body000_325.toList ∧ ';' ∉ body000_325.toList := by cbv; decide +kernel
+    ':' ∉ body000_325.toList ∧ ';' ∉ body000_325.toList := by decide +kernel
 private theorem body000_325_certificate :
     entryValue? 1 body000_325.toList = some (0 : ℚ) := by cbv
 private theorem body000_325_noColon : ':' ∉ body000_325.toList :=
@@ -3277,7 +3277,7 @@ private theorem body000_325_value : bodyValue 1 body000_325 = (0 : ℚ) :=
 
 private def body000_326 : String := "323,7498047410725109,107"
 private theorem body000_326_separators :
-    ':' ∉ body000_326.toList ∧ ';' ∉ body000_326.toList := by cbv; decide +kernel
+    ':' ∉ body000_326.toList ∧ ';' ∉ body000_326.toList := by decide +kernel
 private theorem body000_326_certificate :
     entryValue? 1 body000_326.toList = some (0 : ℚ) := by cbv
 private theorem body000_326_noColon : ':' ∉ body000_326.toList :=
@@ -3296,7 +3296,7 @@ private theorem body000_324_value : bodyValue 1 body000_324 = (0 : ℚ) := by
 
 private def body000_328 : String := "325,2716414164459893,105"
 private theorem body000_328_separators :
-    ':' ∉ body000_328.toList ∧ ';' ∉ body000_328.toList := by cbv; decide +kernel
+    ':' ∉ body000_328.toList ∧ ';' ∉ body000_328.toList := by decide +kernel
 private theorem body000_328_certificate :
     entryValue? 1 body000_328.toList = some (0 : ℚ) := by cbv
 private theorem body000_328_noColon : ':' ∉ body000_328.toList :=
@@ -3306,7 +3306,7 @@ private theorem body000_328_value : bodyValue 1 body000_328 = (0 : ℚ) :=
 
 private def body000_329 : String := "327,2924338770869385,105"
 private theorem body000_329_separators :
-    ':' ∉ body000_329.toList ∧ ';' ∉ body000_329.toList := by cbv; decide +kernel
+    ':' ∉ body000_329.toList ∧ ';' ∉ body000_329.toList := by decide +kernel
 private theorem body000_329_certificate :
     entryValue? 1 body000_329.toList = some (0 : ℚ) := by cbv
 private theorem body000_329_noColon : ':' ∉ body000_329.toList :=
@@ -3343,7 +3343,7 @@ private theorem body000_315_value : bodyValue 1 body000_315 = (0 : ℚ) := by
 
 private def body000_333 : String := "329,4791286922959327,106"
 private theorem body000_333_separators :
-    ':' ∉ body000_333.toList ∧ ';' ∉ body000_333.toList := by cbv; decide +kernel
+    ':' ∉ body000_333.toList ∧ ';' ∉ body000_333.toList := by decide +kernel
 private theorem body000_333_certificate :
     entryValue? 1 body000_333.toList = some (0 : ℚ) := by cbv
 private theorem body000_333_noColon : ':' ∉ body000_333.toList :=
@@ -3353,7 +3353,7 @@ private theorem body000_333_value : bodyValue 1 body000_333 = (0 : ℚ) :=
 
 private def body000_334 : String := "331,704455912980995,104"
 private theorem body000_334_separators :
-    ':' ∉ body000_334.toList ∧ ';' ∉ body000_334.toList := by cbv; decide +kernel
+    ':' ∉ body000_334.toList ∧ ';' ∉ body000_334.toList := by decide +kernel
 private theorem body000_334_certificate :
     entryValue? 1 body000_334.toList = some (0 : ℚ) := by cbv
 private theorem body000_334_noColon : ':' ∉ body000_334.toList :=
@@ -3372,7 +3372,7 @@ private theorem body000_332_value : bodyValue 1 body000_332 = (0 : ℚ) := by
 
 private def body000_336 : String := "333,7426491686943025,109"
 private theorem body000_336_separators :
-    ':' ∉ body000_336.toList ∧ ';' ∉ body000_336.toList := by cbv; decide +kernel
+    ':' ∉ body000_336.toList ∧ ';' ∉ body000_336.toList := by decide +kernel
 private theorem body000_336_certificate :
     entryValue? 1 body000_336.toList = some (0 : ℚ) := by cbv
 private theorem body000_336_noColon : ':' ∉ body000_336.toList :=
@@ -3382,7 +3382,7 @@ private theorem body000_336_value : bodyValue 1 body000_336 = (0 : ℚ) :=
 
 private def body000_337 : String := "335,5507347361394399,114"
 private theorem body000_337_separators :
-    ':' ∉ body000_337.toList ∧ ';' ∉ body000_337.toList := by cbv; decide +kernel
+    ':' ∉ body000_337.toList ∧ ';' ∉ body000_337.toList := by decide +kernel
 private theorem body000_337_certificate :
     entryValue? 1 body000_337.toList = some (0 : ℚ) := by cbv
 private theorem body000_337_noColon : ':' ∉ body000_337.toList :=
@@ -3410,7 +3410,7 @@ private theorem body000_331_value : bodyValue 1 body000_331 = (0 : ℚ) := by
 
 private def body000_340 : String := "337,6904938832671951,110"
 private theorem body000_340_separators :
-    ':' ∉ body000_340.toList ∧ ';' ∉ body000_340.toList := by cbv; decide +kernel
+    ':' ∉ body000_340.toList ∧ ';' ∉ body000_340.toList := by decide +kernel
 private theorem body000_340_certificate :
     entryValue? 1 body000_340.toList = some (0 : ℚ) := by cbv
 private theorem body000_340_noColon : ':' ∉ body000_340.toList :=
@@ -3420,7 +3420,7 @@ private theorem body000_340_value : bodyValue 1 body000_340 = (0 : ℚ) :=
 
 private def body000_341 : String := "339,3577779470195913,107"
 private theorem body000_341_separators :
-    ':' ∉ body000_341.toList ∧ ';' ∉ body000_341.toList := by cbv; decide +kernel
+    ':' ∉ body000_341.toList ∧ ';' ∉ body000_341.toList := by decide +kernel
 private theorem body000_341_certificate :
     entryValue? 1 body000_341.toList = some (0 : ℚ) := by cbv
 private theorem body000_341_noColon : ':' ∉ body000_341.toList :=
@@ -3439,7 +3439,7 @@ private theorem body000_339_value : bodyValue 1 body000_339 = (0 : ℚ) := by
 
 private def body000_343 : String := "341,6519885110324277,107"
 private theorem body000_343_separators :
-    ':' ∉ body000_343.toList ∧ ';' ∉ body000_343.toList := by cbv; decide +kernel
+    ':' ∉ body000_343.toList ∧ ';' ∉ body000_343.toList := by decide +kernel
 private theorem body000_343_certificate :
     entryValue? 1 body000_343.toList = some (0 : ℚ) := by cbv
 private theorem body000_343_noColon : ':' ∉ body000_343.toList :=
@@ -3449,7 +3449,7 @@ private theorem body000_343_value : bodyValue 1 body000_343 = (0 : ℚ) :=
 
 private def body000_344 : String := "343,8029553710707655,107"
 private theorem body000_344_separators :
-    ':' ∉ body000_344.toList ∧ ';' ∉ body000_344.toList := by cbv; decide +kernel
+    ':' ∉ body000_344.toList ∧ ';' ∉ body000_344.toList := by decide +kernel
 private theorem body000_344_certificate :
     entryValue? 1 body000_344.toList = some (0 : ℚ) := by cbv
 private theorem body000_344_noColon : ':' ∉ body000_344.toList :=
@@ -3495,7 +3495,7 @@ private theorem body000_314_value : bodyValue 1 body000_314 = (0 : ℚ) := by
 
 private def body000_349 : String := "345,457698527986169,103"
 private theorem body000_349_separators :
-    ':' ∉ body000_349.toList ∧ ';' ∉ body000_349.toList := by cbv; decide +kernel
+    ':' ∉ body000_349.toList ∧ ';' ∉ body000_349.toList := by decide +kernel
 private theorem body000_349_certificate :
     entryValue? 1 body000_349.toList = some (0 : ℚ) := by cbv
 private theorem body000_349_noColon : ':' ∉ body000_349.toList :=
@@ -3505,7 +3505,7 @@ private theorem body000_349_value : bodyValue 1 body000_349 = (0 : ℚ) :=
 
 private def body000_350 : String := "347,1211455421977501,105"
 private theorem body000_350_separators :
-    ':' ∉ body000_350.toList ∧ ';' ∉ body000_350.toList := by cbv; decide +kernel
+    ':' ∉ body000_350.toList ∧ ';' ∉ body000_350.toList := by decide +kernel
 private theorem body000_350_certificate :
     entryValue? 1 body000_350.toList = some (0 : ℚ) := by cbv
 private theorem body000_350_noColon : ':' ∉ body000_350.toList :=
@@ -3524,7 +3524,7 @@ private theorem body000_348_value : bodyValue 1 body000_348 = (0 : ℚ) := by
 
 private def body000_352 : String := "349,7837877374358281,109"
 private theorem body000_352_separators :
-    ':' ∉ body000_352.toList ∧ ';' ∉ body000_352.toList := by cbv; decide +kernel
+    ':' ∉ body000_352.toList ∧ ';' ∉ body000_352.toList := by decide +kernel
 private theorem body000_352_certificate :
     entryValue? 1 body000_352.toList = some (0 : ℚ) := by cbv
 private theorem body000_352_noColon : ':' ∉ body000_352.toList :=
@@ -3534,7 +3534,7 @@ private theorem body000_352_value : bodyValue 1 body000_352 = (0 : ℚ) :=
 
 private def body000_353 : String := "351,5628573793752387,112"
 private theorem body000_353_separators :
-    ':' ∉ body000_353.toList ∧ ';' ∉ body000_353.toList := by cbv; decide +kernel
+    ':' ∉ body000_353.toList ∧ ';' ∉ body000_353.toList := by decide +kernel
 private theorem body000_353_certificate :
     entryValue? 1 body000_353.toList = some (0 : ℚ) := by cbv
 private theorem body000_353_noColon : ':' ∉ body000_353.toList :=
@@ -3562,7 +3562,7 @@ private theorem body000_347_value : bodyValue 1 body000_347 = (0 : ℚ) := by
 
 private def body000_356 : String := "353,5805876781403275,111"
 private theorem body000_356_separators :
-    ':' ∉ body000_356.toList ∧ ';' ∉ body000_356.toList := by cbv; decide +kernel
+    ':' ∉ body000_356.toList ∧ ';' ∉ body000_356.toList := by decide +kernel
 private theorem body000_356_certificate :
     entryValue? 1 body000_356.toList = some (0 : ℚ) := by cbv
 private theorem body000_356_noColon : ':' ∉ body000_356.toList :=
@@ -3572,7 +3572,7 @@ private theorem body000_356_value : bodyValue 1 body000_356 = (0 : ℚ) :=
 
 private def body000_357 : String := "355,4666934586042819,108"
 private theorem body000_357_separators :
-    ':' ∉ body000_357.toList ∧ ';' ∉ body000_357.toList := by cbv; decide +kernel
+    ':' ∉ body000_357.toList ∧ ';' ∉ body000_357.toList := by decide +kernel
 private theorem body000_357_certificate :
     entryValue? 1 body000_357.toList = some (0 : ℚ) := by cbv
 private theorem body000_357_noColon : ':' ∉ body000_357.toList :=
@@ -3591,7 +3591,7 @@ private theorem body000_355_value : bodyValue 1 body000_355 = (0 : ℚ) := by
 
 private def body000_359 : String := "357,5000732647297465,107"
 private theorem body000_359_separators :
-    ':' ∉ body000_359.toList ∧ ';' ∉ body000_359.toList := by cbv; decide +kernel
+    ':' ∉ body000_359.toList ∧ ';' ∉ body000_359.toList := by decide +kernel
 private theorem body000_359_certificate :
     entryValue? 1 body000_359.toList = some (0 : ℚ) := by cbv
 private theorem body000_359_noColon : ':' ∉ body000_359.toList :=
@@ -3601,7 +3601,7 @@ private theorem body000_359_value : bodyValue 1 body000_359 = (0 : ℚ) :=
 
 private def body000_360 : String := "359,1744581485646363,105"
 private theorem body000_360_separators :
-    ':' ∉ body000_360.toList ∧ ';' ∉ body000_360.toList := by cbv; decide +kernel
+    ':' ∉ body000_360.toList ∧ ';' ∉ body000_360.toList := by decide +kernel
 private theorem body000_360_certificate :
     entryValue? 1 body000_360.toList = some (0 : ℚ) := by cbv
 private theorem body000_360_noColon : ':' ∉ body000_360.toList :=
@@ -3638,7 +3638,7 @@ private theorem body000_346_value : bodyValue 1 body000_346 = (0 : ℚ) := by
 
 private def body000_364 : String := "361,7291796408411067,107"
 private theorem body000_364_separators :
-    ':' ∉ body000_364.toList ∧ ';' ∉ body000_364.toList := by cbv; decide +kernel
+    ':' ∉ body000_364.toList ∧ ';' ∉ body000_364.toList := by decide +kernel
 private theorem body000_364_certificate :
     entryValue? 1 body000_364.toList = some (0 : ℚ) := by cbv
 private theorem body000_364_noColon : ':' ∉ body000_364.toList :=
@@ -3648,7 +3648,7 @@ private theorem body000_364_value : bodyValue 1 body000_364 = (0 : ℚ) :=
 
 private def body000_365 : String := "363,5836151420185309,107"
 private theorem body000_365_separators :
-    ':' ∉ body000_365.toList ∧ ';' ∉ body000_365.toList := by cbv; decide +kernel
+    ':' ∉ body000_365.toList ∧ ';' ∉ body000_365.toList := by decide +kernel
 private theorem body000_365_certificate :
     entryValue? 1 body000_365.toList = some (0 : ℚ) := by cbv
 private theorem body000_365_noColon : ':' ∉ body000_365.toList :=
@@ -3667,7 +3667,7 @@ private theorem body000_363_value : bodyValue 1 body000_363 = (0 : ℚ) := by
 
 private def body000_367 : String := "365,1685651638414979,106"
 private theorem body000_367_separators :
-    ':' ∉ body000_367.toList ∧ ';' ∉ body000_367.toList := by cbv; decide +kernel
+    ':' ∉ body000_367.toList ∧ ';' ∉ body000_367.toList := by decide +kernel
 private theorem body000_367_certificate :
     entryValue? 1 body000_367.toList = some (0 : ℚ) := by cbv
 private theorem body000_367_noColon : ':' ∉ body000_367.toList :=
@@ -3677,7 +3677,7 @@ private theorem body000_367_value : bodyValue 1 body000_367 = (0 : ℚ) :=
 
 private def body000_368 : String := "367,4372125696478701,109"
 private theorem body000_368_separators :
-    ':' ∉ body000_368.toList ∧ ';' ∉ body000_368.toList := by cbv; decide +kernel
+    ':' ∉ body000_368.toList ∧ ';' ∉ body000_368.toList := by decide +kernel
 private theorem body000_368_certificate :
     entryValue? 1 body000_368.toList = some (0 : ℚ) := by cbv
 private theorem body000_368_noColon : ':' ∉ body000_368.toList :=
@@ -3705,7 +3705,7 @@ private theorem body000_362_value : bodyValue 1 body000_362 = (0 : ℚ) := by
 
 private def body000_371 : String := "369,5905230923368719,115"
 private theorem body000_371_separators :
-    ':' ∉ body000_371.toList ∧ ';' ∉ body000_371.toList := by cbv; decide +kernel
+    ':' ∉ body000_371.toList ∧ ';' ∉ body000_371.toList := by decide +kernel
 private theorem body000_371_certificate :
     entryValue? 1 body000_371.toList = some (0 : ℚ) := by cbv
 private theorem body000_371_noColon : ':' ∉ body000_371.toList :=
@@ -3715,7 +3715,7 @@ private theorem body000_371_value : bodyValue 1 body000_371 = (0 : ℚ) :=
 
 private def body000_372 : String := "371,8479737122332819,111"
 private theorem body000_372_separators :
-    ':' ∉ body000_372.toList ∧ ';' ∉ body000_372.toList := by cbv; decide +kernel
+    ':' ∉ body000_372.toList ∧ ';' ∉ body000_372.toList := by decide +kernel
 private theorem body000_372_certificate :
     entryValue? 1 body000_372.toList = some (0 : ℚ) := by cbv
 private theorem body000_372_noColon : ':' ∉ body000_372.toList :=
@@ -3734,7 +3734,7 @@ private theorem body000_370_value : bodyValue 1 body000_370 = (0 : ℚ) := by
 
 private def body000_374 : String := "373,2202353299837661,107"
 private theorem body000_374_separators :
-    ':' ∉ body000_374.toList ∧ ';' ∉ body000_374.toList := by cbv; decide +kernel
+    ':' ∉ body000_374.toList ∧ ';' ∉ body000_374.toList := by decide +kernel
 private theorem body000_374_certificate :
     entryValue? 1 body000_374.toList = some (0 : ℚ) := by cbv
 private theorem body000_374_noColon : ':' ∉ body000_374.toList :=
@@ -3744,7 +3744,7 @@ private theorem body000_374_value : bodyValue 1 body000_374 = (0 : ℚ) :=
 
 private def body000_375 : String := "375,8212205464029161,108"
 private theorem body000_375_separators :
-    ':' ∉ body000_375.toList ∧ ';' ∉ body000_375.toList := by cbv; decide +kernel
+    ':' ∉ body000_375.toList ∧ ';' ∉ body000_375.toList := by decide +kernel
 private theorem body000_375_certificate :
     entryValue? 1 body000_375.toList = some (0 : ℚ) := by cbv
 private theorem body000_375_noColon : ':' ∉ body000_375.toList :=
@@ -3808,7 +3808,7 @@ private theorem body000_251_value : bodyValue 1 body000_251 = (0 : ℚ) := by
 
 private def body000_381 : String := "377,2635207916824195,106"
 private theorem body000_381_separators :
-    ':' ∉ body000_381.toList ∧ ';' ∉ body000_381.toList := by cbv; decide +kernel
+    ':' ∉ body000_381.toList ∧ ';' ∉ body000_381.toList := by decide +kernel
 private theorem body000_381_certificate :
     entryValue? 1 body000_381.toList = some (0 : ℚ) := by cbv
 private theorem body000_381_noColon : ':' ∉ body000_381.toList :=
@@ -3818,7 +3818,7 @@ private theorem body000_381_value : bodyValue 1 body000_381 = (0 : ℚ) :=
 
 private def body000_383 : String := "379,2575536643298837,106"
 private theorem body000_383_separators :
-    ':' ∉ body000_383.toList ∧ ';' ∉ body000_383.toList := by cbv; decide +kernel
+    ':' ∉ body000_383.toList ∧ ';' ∉ body000_383.toList := by decide +kernel
 private theorem body000_383_certificate :
     entryValue? 1 body000_383.toList = some (0 : ℚ) := by cbv
 private theorem body000_383_noColon : ':' ∉ body000_383.toList :=
@@ -3828,7 +3828,7 @@ private theorem body000_383_value : bodyValue 1 body000_383 = (0 : ℚ) :=
 
 private def body000_384 : String := "381,3853427716334949,107"
 private theorem body000_384_separators :
-    ':' ∉ body000_384.toList ∧ ';' ∉ body000_384.toList := by cbv; decide +kernel
+    ':' ∉ body000_384.toList ∧ ';' ∉ body000_384.toList := by decide +kernel
 private theorem body000_384_certificate :
     entryValue? 1 body000_384.toList = some (0 : ℚ) := by cbv
 private theorem body000_384_noColon : ':' ∉ body000_384.toList :=
@@ -3856,7 +3856,7 @@ private theorem body000_380_value : bodyValue 1 body000_380 = (0 : ℚ) := by
 
 private def body000_387 : String := "383,2030763478621635,107"
 private theorem body000_387_separators :
-    ':' ∉ body000_387.toList ∧ ';' ∉ body000_387.toList := by cbv; decide +kernel
+    ':' ∉ body000_387.toList ∧ ';' ∉ body000_387.toList := by decide +kernel
 private theorem body000_387_certificate :
     entryValue? 1 body000_387.toList = some (0 : ℚ) := by cbv
 private theorem body000_387_noColon : ':' ∉ body000_387.toList :=
@@ -3866,7 +3866,7 @@ private theorem body000_387_value : bodyValue 1 body000_387 = (0 : ℚ) :=
 
 private def body000_388 : String := "385,1068710696424351,108"
 private theorem body000_388_separators :
-    ':' ∉ body000_388.toList ∧ ';' ∉ body000_388.toList := by cbv; decide +kernel
+    ':' ∉ body000_388.toList ∧ ';' ∉ body000_388.toList := by decide +kernel
 private theorem body000_388_certificate :
     entryValue? 1 body000_388.toList = some (0 : ℚ) := by cbv
 private theorem body000_388_noColon : ':' ∉ body000_388.toList :=
@@ -3885,7 +3885,7 @@ private theorem body000_386_value : bodyValue 1 body000_386 = (0 : ℚ) := by
 
 private def body000_390 : String := "387,3248814130786757,119"
 private theorem body000_390_separators :
-    ':' ∉ body000_390.toList ∧ ';' ∉ body000_390.toList := by cbv; decide +kernel
+    ':' ∉ body000_390.toList ∧ ';' ∉ body000_390.toList := by decide +kernel
 private theorem body000_390_certificate :
     entryValue? 1 body000_390.toList = some (0 : ℚ) := by cbv
 private theorem body000_390_noColon : ':' ∉ body000_390.toList :=
@@ -3895,7 +3895,7 @@ private theorem body000_390_value : bodyValue 1 body000_390 = (0 : ℚ) :=
 
 private def body000_391 : String := "389,4592639899739167,110"
 private theorem body000_391_separators :
-    ':' ∉ body000_391.toList ∧ ';' ∉ body000_391.toList := by cbv; decide +kernel
+    ':' ∉ body000_391.toList ∧ ';' ∉ body000_391.toList := by decide +kernel
 private theorem body000_391_certificate :
     entryValue? 1 body000_391.toList = some (0 : ℚ) := by cbv
 private theorem body000_391_noColon : ':' ∉ body000_391.toList :=
@@ -3932,7 +3932,7 @@ private theorem body000_379_value : bodyValue 1 body000_379 = (0 : ℚ) := by
 
 private def body000_395 : String := "391,7515910002790473,109"
 private theorem body000_395_separators :
-    ':' ∉ body000_395.toList ∧ ';' ∉ body000_395.toList := by cbv; decide +kernel
+    ':' ∉ body000_395.toList ∧ ';' ∉ body000_395.toList := by decide +kernel
 private theorem body000_395_certificate :
     entryValue? 1 body000_395.toList = some (0 : ℚ) := by cbv
 private theorem body000_395_noColon : ':' ∉ body000_395.toList :=
@@ -3942,7 +3942,7 @@ private theorem body000_395_value : bodyValue 1 body000_395 = (0 : ℚ) :=
 
 private def body000_396 : String := "393,6470314238230511,108"
 private theorem body000_396_separators :
-    ':' ∉ body000_396.toList ∧ ';' ∉ body000_396.toList := by cbv; decide +kernel
+    ':' ∉ body000_396.toList ∧ ';' ∉ body000_396.toList := by decide +kernel
 private theorem body000_396_certificate :
     entryValue? 1 body000_396.toList = some (0 : ℚ) := by cbv
 private theorem body000_396_noColon : ':' ∉ body000_396.toList :=
@@ -3961,7 +3961,7 @@ private theorem body000_394_value : bodyValue 1 body000_394 = (0 : ℚ) := by
 
 private def body000_398 : String := "395,7984368613766873,108"
 private theorem body000_398_separators :
-    ':' ∉ body000_398.toList ∧ ';' ∉ body000_398.toList := by cbv; decide +kernel
+    ':' ∉ body000_398.toList ∧ ';' ∉ body000_398.toList := by decide +kernel
 private theorem body000_398_certificate :
     entryValue? 1 body000_398.toList = some (0 : ℚ) := by cbv
 private theorem body000_398_noColon : ':' ∉ body000_398.toList :=
@@ -3971,7 +3971,7 @@ private theorem body000_398_value : bodyValue 1 body000_398 = (0 : ℚ) :=
 
 private def body000_399 : String := "397,3821673485183859,107"
 private theorem body000_399_separators :
-    ':' ∉ body000_399.toList ∧ ';' ∉ body000_399.toList := by cbv; decide +kernel
+    ':' ∉ body000_399.toList ∧ ';' ∉ body000_399.toList := by decide +kernel
 private theorem body000_399_certificate :
     entryValue? 1 body000_399.toList = some (0 : ℚ) := by cbv
 private theorem body000_399_noColon : ':' ∉ body000_399.toList :=
@@ -3999,7 +3999,7 @@ private theorem body000_393_value : bodyValue 1 body000_393 = (0 : ℚ) := by
 
 private def body000_402 : String := "399,1419088555521029,106"
 private theorem body000_402_separators :
-    ':' ∉ body000_402.toList ∧ ';' ∉ body000_402.toList := by cbv; decide +kernel
+    ':' ∉ body000_402.toList ∧ ';' ∉ body000_402.toList := by decide +kernel
 private theorem body000_402_certificate :
     entryValue? 1 body000_402.toList = some (0 : ℚ) := by cbv
 private theorem body000_402_noColon : ':' ∉ body000_402.toList :=
@@ -4009,7 +4009,7 @@ private theorem body000_402_value : bodyValue 1 body000_402 = (0 : ℚ) :=
 
 private def body000_403 : String := "401,6040940196083065,109"
 private theorem body000_403_separators :
-    ':' ∉ body000_403.toList ∧ ';' ∉ body000_403.toList := by cbv; decide +kernel
+    ':' ∉ body000_403.toList ∧ ';' ∉ body000_403.toList := by decide +kernel
 private theorem body000_403_certificate :
     entryValue? 1 body000_403.toList = some (0 : ℚ) := by cbv
 private theorem body000_403_noColon : ':' ∉ body000_403.toList :=
@@ -4028,7 +4028,7 @@ private theorem body000_401_value : bodyValue 1 body000_401 = (0 : ℚ) := by
 
 private def body000_405 : String := "403,6738144371706245,111"
 private theorem body000_405_separators :
-    ':' ∉ body000_405.toList ∧ ';' ∉ body000_405.toList := by cbv; decide +kernel
+    ':' ∉ body000_405.toList ∧ ';' ∉ body000_405.toList := by decide +kernel
 private theorem body000_405_certificate :
     entryValue? 1 body000_405.toList = some (0 : ℚ) := by cbv
 private theorem body000_405_noColon : ':' ∉ body000_405.toList :=
@@ -4038,7 +4038,7 @@ private theorem body000_405_value : bodyValue 1 body000_405 = (0 : ℚ) :=
 
 private def body000_406 : String := "405,5138155519844275,121"
 private theorem body000_406_separators :
-    ':' ∉ body000_406.toList ∧ ';' ∉ body000_406.toList := by cbv; decide +kernel
+    ':' ∉ body000_406.toList ∧ ';' ∉ body000_406.toList := by decide +kernel
 private theorem body000_406_certificate :
     entryValue? 1 body000_406.toList = some (0 : ℚ) := by cbv
 private theorem body000_406_noColon : ':' ∉ body000_406.toList :=
@@ -4084,7 +4084,7 @@ private theorem body000_378_value : bodyValue 1 body000_378 = (0 : ℚ) := by
 
 private def body000_411 : String := "407,1389827777253591,109"
 private theorem body000_411_separators :
-    ':' ∉ body000_411.toList ∧ ';' ∉ body000_411.toList := by cbv; decide +kernel
+    ':' ∉ body000_411.toList ∧ ';' ∉ body000_411.toList := by decide +kernel
 private theorem body000_411_certificate :
     entryValue? 1 body000_411.toList = some (0 : ℚ) := by cbv
 private theorem body000_411_noColon : ':' ∉ body000_411.toList :=
@@ -4094,7 +4094,7 @@ private theorem body000_411_value : bodyValue 1 body000_411 = (0 : ℚ) :=
 
 private def body000_412 : String := "409,609046602899159,106"
 private theorem body000_412_separators :
-    ':' ∉ body000_412.toList ∧ ';' ∉ body000_412.toList := by cbv; decide +kernel
+    ':' ∉ body000_412.toList ∧ ';' ∉ body000_412.toList := by decide +kernel
 private theorem body000_412_certificate :
     entryValue? 1 body000_412.toList = some (0 : ℚ) := by cbv
 private theorem body000_412_noColon : ':' ∉ body000_412.toList :=
@@ -4113,7 +4113,7 @@ private theorem body000_410_value : bodyValue 1 body000_410 = (0 : ℚ) := by
 
 private def body000_414 : String := "411,8645765915167929,109"
 private theorem body000_414_separators :
-    ':' ∉ body000_414.toList ∧ ';' ∉ body000_414.toList := by cbv; decide +kernel
+    ':' ∉ body000_414.toList ∧ ';' ∉ body000_414.toList := by decide +kernel
 private theorem body000_414_certificate :
     entryValue? 1 body000_414.toList = some (0 : ℚ) := by cbv
 private theorem body000_414_noColon : ':' ∉ body000_414.toList :=
@@ -4123,7 +4123,7 @@ private theorem body000_414_value : bodyValue 1 body000_414 = (0 : ℚ) :=
 
 private def body000_415 : String := "413,5470739103559933,108"
 private theorem body000_415_separators :
-    ':' ∉ body000_415.toList ∧ ';' ∉ body000_415.toList := by cbv; decide +kernel
+    ':' ∉ body000_415.toList ∧ ';' ∉ body000_415.toList := by decide +kernel
 private theorem body000_415_certificate :
     entryValue? 1 body000_415.toList = some (0 : ℚ) := by cbv
 private theorem body000_415_noColon : ':' ∉ body000_415.toList :=
@@ -4151,7 +4151,7 @@ private theorem body000_409_value : bodyValue 1 body000_409 = (0 : ℚ) := by
 
 private def body000_418 : String := "415,2697290573427491,107"
 private theorem body000_418_separators :
-    ':' ∉ body000_418.toList ∧ ';' ∉ body000_418.toList := by cbv; decide +kernel
+    ':' ∉ body000_418.toList ∧ ';' ∉ body000_418.toList := by decide +kernel
 private theorem body000_418_certificate :
     entryValue? 1 body000_418.toList = some (0 : ℚ) := by cbv
 private theorem body000_418_noColon : ':' ∉ body000_418.toList :=
@@ -4161,7 +4161,7 @@ private theorem body000_418_value : bodyValue 1 body000_418 = (0 : ℚ) :=
 
 private def body000_419 : String := "417,8362400661622975,109"
 private theorem body000_419_separators :
-    ':' ∉ body000_419.toList ∧ ';' ∉ body000_419.toList := by cbv; decide +kernel
+    ':' ∉ body000_419.toList ∧ ';' ∉ body000_419.toList := by decide +kernel
 private theorem body000_419_certificate :
     entryValue? 1 body000_419.toList = some (0 : ℚ) := by cbv
 private theorem body000_419_noColon : ':' ∉ body000_419.toList :=
@@ -4180,7 +4180,7 @@ private theorem body000_417_value : bodyValue 1 body000_417 = (0 : ℚ) := by
 
 private def body000_421 : String := "419,4798768421037183,109"
 private theorem body000_421_separators :
-    ':' ∉ body000_421.toList ∧ ';' ∉ body000_421.toList := by cbv; decide +kernel
+    ':' ∉ body000_421.toList ∧ ';' ∉ body000_421.toList := by decide +kernel
 private theorem body000_421_certificate :
     entryValue? 1 body000_421.toList = some (0 : ℚ) := by cbv
 private theorem body000_421_noColon : ':' ∉ body000_421.toList :=
@@ -4190,7 +4190,7 @@ private theorem body000_421_value : bodyValue 1 body000_421 = (0 : ℚ) :=
 
 private def body000_422 : String := "421,6495412676103471,111"
 private theorem body000_422_separators :
-    ':' ∉ body000_422.toList ∧ ';' ∉ body000_422.toList := by cbv; decide +kernel
+    ':' ∉ body000_422.toList ∧ ';' ∉ body000_422.toList := by decide +kernel
 private theorem body000_422_certificate :
     entryValue? 1 body000_422.toList = some (0 : ℚ) := by cbv
 private theorem body000_422_noColon : ':' ∉ body000_422.toList :=
@@ -4227,7 +4227,7 @@ private theorem body000_408_value : bodyValue 1 body000_408 = (0 : ℚ) := by
 
 private def body000_426 : String := "423,8347759958102423,116"
 private theorem body000_426_separators :
-    ':' ∉ body000_426.toList ∧ ';' ∉ body000_426.toList := by cbv; decide +kernel
+    ':' ∉ body000_426.toList ∧ ';' ∉ body000_426.toList := by decide +kernel
 private theorem body000_426_certificate :
     entryValue? 1 body000_426.toList = some (0 : ℚ) := by cbv
 private theorem body000_426_noColon : ':' ∉ body000_426.toList :=
@@ -4237,7 +4237,7 @@ private theorem body000_426_value : bodyValue 1 body000_426 = (0 : ℚ) :=
 
 private def body000_427 : String := "425,4475916390602957,112"
 private theorem body000_427_separators :
-    ':' ∉ body000_427.toList ∧ ';' ∉ body000_427.toList := by cbv; decide +kernel
+    ':' ∉ body000_427.toList ∧ ';' ∉ body000_427.toList := by decide +kernel
 private theorem body000_427_certificate :
     entryValue? 1 body000_427.toList = some (0 : ℚ) := by cbv
 private theorem body000_427_noColon : ':' ∉ body000_427.toList :=
@@ -4256,7 +4256,7 @@ private theorem body000_425_value : bodyValue 1 body000_425 = (0 : ℚ) := by
 
 private def body000_429 : String := "427,2642047008844931,109"
 private theorem body000_429_separators :
-    ':' ∉ body000_429.toList ∧ ';' ∉ body000_429.toList := by cbv; decide +kernel
+    ':' ∉ body000_429.toList ∧ ';' ∉ body000_429.toList := by decide +kernel
 private theorem body000_429_certificate :
     entryValue? 1 body000_429.toList = some (0 : ℚ) := by cbv
 private theorem body000_429_noColon : ':' ∉ body000_429.toList :=
@@ -4266,7 +4266,7 @@ private theorem body000_429_value : bodyValue 1 body000_429 = (0 : ℚ) :=
 
 private def body000_430 : String := "429,5227033566879733,109"
 private theorem body000_430_separators :
-    ':' ∉ body000_430.toList ∧ ';' ∉ body000_430.toList := by cbv; decide +kernel
+    ':' ∉ body000_430.toList ∧ ';' ∉ body000_430.toList := by decide +kernel
 private theorem body000_430_certificate :
     entryValue? 1 body000_430.toList = some (0 : ℚ) := by cbv
 private theorem body000_430_noColon : ':' ∉ body000_430.toList :=
@@ -4294,7 +4294,7 @@ private theorem body000_424_value : bodyValue 1 body000_424 = (0 : ℚ) := by
 
 private def body000_433 : String := "431,7120319748350615,109"
 private theorem body000_433_separators :
-    ':' ∉ body000_433.toList ∧ ';' ∉ body000_433.toList := by cbv; decide +kernel
+    ':' ∉ body000_433.toList ∧ ';' ∉ body000_433.toList := by decide +kernel
 private theorem body000_433_certificate :
     entryValue? 1 body000_433.toList = some (0 : ℚ) := by cbv
 private theorem body000_433_noColon : ':' ∉ body000_433.toList :=
@@ -4304,7 +4304,7 @@ private theorem body000_433_value : bodyValue 1 body000_433 = (0 : ℚ) :=
 
 private def body000_434 : String := "433,7527003277500421,109"
 private theorem body000_434_separators :
-    ':' ∉ body000_434.toList ∧ ';' ∉ body000_434.toList := by cbv; decide +kernel
+    ':' ∉ body000_434.toList ∧ ';' ∉ body000_434.toList := by decide +kernel
 private theorem body000_434_certificate :
     entryValue? 1 body000_434.toList = some (0 : ℚ) := by cbv
 private theorem body000_434_noColon : ':' ∉ body000_434.toList :=
@@ -4323,7 +4323,7 @@ private theorem body000_432_value : bodyValue 1 body000_432 = (0 : ℚ) := by
 
 private def body000_436 : String := "435,6342671501539031,109"
 private theorem body000_436_separators :
-    ':' ∉ body000_436.toList ∧ ';' ∉ body000_436.toList := by cbv; decide +kernel
+    ':' ∉ body000_436.toList ∧ ';' ∉ body000_436.toList := by decide +kernel
 private theorem body000_436_certificate :
     entryValue? 1 body000_436.toList = some (0 : ℚ) := by cbv
 private theorem body000_436_noColon : ':' ∉ body000_436.toList :=
@@ -4333,7 +4333,7 @@ private theorem body000_436_value : bodyValue 1 body000_436 = (0 : ℚ) :=
 
 private def body000_437 : String := "437,2064989884178907,108"
 private theorem body000_437_separators :
-    ':' ∉ body000_437.toList ∧ ';' ∉ body000_437.toList := by cbv; decide +kernel
+    ':' ∉ body000_437.toList ∧ ';' ∉ body000_437.toList := by decide +kernel
 private theorem body000_437_certificate :
     entryValue? 1 body000_437.toList = some (0 : ℚ) := by cbv
 private theorem body000_437_noColon : ':' ∉ body000_437.toList :=
@@ -4388,7 +4388,7 @@ private theorem body000_377_value : bodyValue 1 body000_377 = (0 : ℚ) := by
 
 private def body000_443 : String := "439,3645658049269169,110"
 private theorem body000_443_separators :
-    ':' ∉ body000_443.toList ∧ ';' ∉ body000_443.toList := by cbv; decide +kernel
+    ':' ∉ body000_443.toList ∧ ';' ∉ body000_443.toList := by decide +kernel
 private theorem body000_443_certificate :
     entryValue? 1 body000_443.toList = some (0 : ℚ) := by cbv
 private theorem body000_443_noColon : ':' ∉ body000_443.toList :=
@@ -4398,7 +4398,7 @@ private theorem body000_443_value : bodyValue 1 body000_443 = (0 : ℚ) :=
 
 private def body000_444 : String := "441,616169880772223,110"
 private theorem body000_444_separators :
-    ':' ∉ body000_444.toList ∧ ';' ∉ body000_444.toList := by cbv; decide +kernel
+    ':' ∉ body000_444.toList ∧ ';' ∉ body000_444.toList := by decide +kernel
 private theorem body000_444_certificate :
     entryValue? 1 body000_444.toList = some (0 : ℚ) := by cbv
 private theorem body000_444_noColon : ':' ∉ body000_444.toList :=
@@ -4417,7 +4417,7 @@ private theorem body000_442_value : bodyValue 1 body000_442 = (0 : ℚ) := by
 
 private def body000_446 : String := "443,137647157095217,110"
 private theorem body000_446_separators :
-    ':' ∉ body000_446.toList ∧ ';' ∉ body000_446.toList := by cbv; decide +kernel
+    ':' ∉ body000_446.toList ∧ ';' ∉ body000_446.toList := by decide +kernel
 private theorem body000_446_certificate :
     entryValue? 1 body000_446.toList = some (0 : ℚ) := by cbv
 private theorem body000_446_noColon : ':' ∉ body000_446.toList :=
@@ -4427,7 +4427,7 @@ private theorem body000_446_value : bodyValue 1 body000_446 = (0 : ℚ) :=
 
 private def body000_447 : String := "445,2056058822028027,110"
 private theorem body000_447_separators :
-    ':' ∉ body000_447.toList ∧ ';' ∉ body000_447.toList := by cbv; decide +kernel
+    ':' ∉ body000_447.toList ∧ ';' ∉ body000_447.toList := by decide +kernel
 private theorem body000_447_certificate :
     entryValue? 1 body000_447.toList = some (0 : ℚ) := by cbv
 private theorem body000_447_noColon : ':' ∉ body000_447.toList :=
@@ -4455,7 +4455,7 @@ private theorem body000_441_value : bodyValue 1 body000_441 = (0 : ℚ) := by
 
 private def body000_450 : String := "447,2635046277409023,109"
 private theorem body000_450_separators :
-    ':' ∉ body000_450.toList ∧ ';' ∉ body000_450.toList := by cbv; decide +kernel
+    ':' ∉ body000_450.toList ∧ ';' ∉ body000_450.toList := by decide +kernel
 private theorem body000_450_certificate :
     entryValue? 1 body000_450.toList = some (0 : ℚ) := by cbv
 private theorem body000_450_noColon : ':' ∉ body000_450.toList :=
@@ -4465,7 +4465,7 @@ private theorem body000_450_value : bodyValue 1 body000_450 = (0 : ℚ) :=
 
 private def body000_451 : String := "449,4134156815307673,109"
 private theorem body000_451_separators :
-    ':' ∉ body000_451.toList ∧ ';' ∉ body000_451.toList := by cbv; decide +kernel
+    ':' ∉ body000_451.toList ∧ ';' ∉ body000_451.toList := by decide +kernel
 private theorem body000_451_certificate :
     entryValue? 1 body000_451.toList = some (0 : ℚ) := by cbv
 private theorem body000_451_noColon : ':' ∉ body000_451.toList :=
@@ -4484,7 +4484,7 @@ private theorem body000_449_value : bodyValue 1 body000_449 = (0 : ℚ) := by
 
 private def body000_453 : String := "451,4887853109300063,109"
 private theorem body000_453_separators :
-    ':' ∉ body000_453.toList ∧ ';' ∉ body000_453.toList := by cbv; decide +kernel
+    ':' ∉ body000_453.toList ∧ ';' ∉ body000_453.toList := by decide +kernel
 private theorem body000_453_certificate :
     entryValue? 1 body000_453.toList = some (0 : ℚ) := by cbv
 private theorem body000_453_noColon : ':' ∉ body000_453.toList :=
@@ -4494,7 +4494,7 @@ private theorem body000_453_value : bodyValue 1 body000_453 = (0 : ℚ) :=
 
 private def body000_454 : String := "453,4619398435825469,109"
 private theorem body000_454_separators :
-    ':' ∉ body000_454.toList ∧ ';' ∉ body000_454.toList := by cbv; decide +kernel
+    ':' ∉ body000_454.toList ∧ ';' ∉ body000_454.toList := by decide +kernel
 private theorem body000_454_certificate :
     entryValue? 1 body000_454.toList = some (0 : ℚ) := by cbv
 private theorem body000_454_noColon : ':' ∉ body000_454.toList :=
@@ -4531,7 +4531,7 @@ private theorem body000_440_value : bodyValue 1 body000_440 = (0 : ℚ) := by
 
 private def body000_458 : String := "455,6972981971417821,110"
 private theorem body000_458_separators :
-    ':' ∉ body000_458.toList ∧ ';' ∉ body000_458.toList := by cbv; decide +kernel
+    ':' ∉ body000_458.toList ∧ ';' ∉ body000_458.toList := by decide +kernel
 private theorem body000_458_certificate :
     entryValue? 1 body000_458.toList = some (0 : ℚ) := by cbv
 private theorem body000_458_noColon : ':' ∉ body000_458.toList :=
@@ -4541,7 +4541,7 @@ private theorem body000_458_value : bodyValue 1 body000_458 = (0 : ℚ) :=
 
 private def body000_459 : String := "457,1974879798812397,109"
 private theorem body000_459_separators :
-    ':' ∉ body000_459.toList ∧ ';' ∉ body000_459.toList := by cbv; decide +kernel
+    ':' ∉ body000_459.toList ∧ ';' ∉ body000_459.toList := by decide +kernel
 private theorem body000_459_certificate :
     entryValue? 1 body000_459.toList = some (0 : ℚ) := by cbv
 private theorem body000_459_noColon : ':' ∉ body000_459.toList :=
@@ -4560,7 +4560,7 @@ private theorem body000_457_value : bodyValue 1 body000_457 = (0 : ℚ) := by
 
 private def body000_461 : String := "459,2693836620131483,111"
 private theorem body000_461_separators :
-    ':' ∉ body000_461.toList ∧ ';' ∉ body000_461.toList := by cbv; decide +kernel
+    ':' ∉ body000_461.toList ∧ ';' ∉ body000_461.toList := by decide +kernel
 private theorem body000_461_certificate :
     entryValue? 1 body000_461.toList = some (0 : ℚ) := by cbv
 private theorem body000_461_noColon : ':' ∉ body000_461.toList :=
@@ -4570,7 +4570,7 @@ private theorem body000_461_value : bodyValue 1 body000_461 = (0 : ℚ) :=
 
 private def body000_462 : String := "461,4142015575536933,116"
 private theorem body000_462_separators :
-    ':' ∉ body000_462.toList ∧ ';' ∉ body000_462.toList := by cbv; decide +kernel
+    ':' ∉ body000_462.toList ∧ ';' ∉ body000_462.toList := by decide +kernel
 private theorem body000_462_certificate :
     entryValue? 1 body000_462.toList = some (0 : ℚ) := by cbv
 private theorem body000_462_noColon : ':' ∉ body000_462.toList :=
@@ -4598,7 +4598,7 @@ private theorem body000_456_value : bodyValue 1 body000_456 = (0 : ℚ) := by
 
 private def body000_465 : String := "463,6429268456943085,114"
 private theorem body000_465_separators :
-    ':' ∉ body000_465.toList ∧ ';' ∉ body000_465.toList := by cbv; decide +kernel
+    ':' ∉ body000_465.toList ∧ ';' ∉ body000_465.toList := by decide +kernel
 private theorem body000_465_certificate :
     entryValue? 1 body000_465.toList = some (0 : ℚ) := by cbv
 private theorem body000_465_noColon : ':' ∉ body000_465.toList :=
@@ -4608,7 +4608,7 @@ private theorem body000_465_value : bodyValue 1 body000_465 = (0 : ℚ) :=
 
 private def body000_466 : String := "465,4000889058402605,111"
 private theorem body000_466_separators :
-    ':' ∉ body000_466.toList ∧ ';' ∉ body000_466.toList := by cbv; decide +kernel
+    ':' ∉ body000_466.toList ∧ ';' ∉ body000_466.toList := by decide +kernel
 private theorem body000_466_certificate :
     entryValue? 1 body000_466.toList = some (0 : ℚ) := by cbv
 private theorem body000_466_noColon : ':' ∉ body000_466.toList :=
@@ -4627,7 +4627,7 @@ private theorem body000_464_value : bodyValue 1 body000_464 = (0 : ℚ) := by
 
 private def body000_468 : String := "467,8105229411089695,111"
 private theorem body000_468_separators :
-    ':' ∉ body000_468.toList ∧ ';' ∉ body000_468.toList := by cbv; decide +kernel
+    ':' ∉ body000_468.toList ∧ ';' ∉ body000_468.toList := by decide +kernel
 private theorem body000_468_certificate :
     entryValue? 1 body000_468.toList = some (0 : ℚ) := by cbv
 private theorem body000_468_noColon : ':' ∉ body000_468.toList :=
@@ -4637,7 +4637,7 @@ private theorem body000_468_value : bodyValue 1 body000_468 = (0 : ℚ) :=
 
 private def body000_469 : String := "469,5659077962618387,110"
 private theorem body000_469_separators :
-    ':' ∉ body000_469.toList ∧ ';' ∉ body000_469.toList := by cbv; decide +kernel
+    ':' ∉ body000_469.toList ∧ ';' ∉ body000_469.toList := by decide +kernel
 private theorem body000_469_certificate :
     entryValue? 1 body000_469.toList = some (0 : ℚ) := by cbv
 private theorem body000_469_noColon : ':' ∉ body000_469.toList :=
@@ -4683,7 +4683,7 @@ private theorem body000_439_value : bodyValue 1 body000_439 = (0 : ℚ) := by
 
 private def body000_474 : String := "471,6185070218594547,110"
 private theorem body000_474_separators :
-    ':' ∉ body000_474.toList ∧ ';' ∉ body000_474.toList := by cbv; decide +kernel
+    ':' ∉ body000_474.toList ∧ ';' ∉ body000_474.toList := by decide +kernel
 private theorem body000_474_certificate :
     entryValue? 1 body000_474.toList = some (0 : ℚ) := by cbv
 private theorem body000_474_noColon : ':' ∉ body000_474.toList :=
@@ -4693,7 +4693,7 @@ private theorem body000_474_value : bodyValue 1 body000_474 = (0 : ℚ) :=
 
 private def body000_475 : String := "473,2738174413106059,109"
 private theorem body000_475_separators :
-    ':' ∉ body000_475.toList ∧ ';' ∉ body000_475.toList := by cbv; decide +kernel
+    ':' ∉ body000_475.toList ∧ ';' ∉ body000_475.toList := by decide +kernel
 private theorem body000_475_certificate :
     entryValue? 1 body000_475.toList = some (0 : ℚ) := by cbv
 private theorem body000_475_noColon : ':' ∉ body000_475.toList :=
@@ -4712,7 +4712,7 @@ private theorem body000_473_value : bodyValue 1 body000_473 = (0 : ℚ) := by
 
 private def body000_477 : String := "475,1933972050023461,109"
 private theorem body000_477_separators :
-    ':' ∉ body000_477.toList ∧ ';' ∉ body000_477.toList := by cbv; decide +kernel
+    ':' ∉ body000_477.toList ∧ ';' ∉ body000_477.toList := by decide +kernel
 private theorem body000_477_certificate :
     entryValue? 1 body000_477.toList = some (0 : ℚ) := by cbv
 private theorem body000_477_noColon : ':' ∉ body000_477.toList :=
@@ -4722,7 +4722,7 @@ private theorem body000_477_value : bodyValue 1 body000_477 = (0 : ℚ) :=
 
 private def body000_478 : String := "477,1002619633855121,109"
 private theorem body000_478_separators :
-    ':' ∉ body000_478.toList ∧ ';' ∉ body000_478.toList := by cbv; decide +kernel
+    ':' ∉ body000_478.toList ∧ ';' ∉ body000_478.toList := by decide +kernel
 private theorem body000_478_certificate :
     entryValue? 1 body000_478.toList = some (0 : ℚ) := by cbv
 private theorem body000_478_noColon : ':' ∉ body000_478.toList :=
@@ -4750,7 +4750,7 @@ private theorem body000_472_value : bodyValue 1 body000_472 = (0 : ℚ) := by
 
 private def body000_481 : String := "479,4530998487979005,113"
 private theorem body000_481_separators :
-    ':' ∉ body000_481.toList ∧ ';' ∉ body000_481.toList := by cbv; decide +kernel
+    ':' ∉ body000_481.toList ∧ ';' ∉ body000_481.toList := by decide +kernel
 private theorem body000_481_certificate :
     entryValue? 1 body000_481.toList = some (0 : ℚ) := by cbv
 private theorem body000_481_noColon : ':' ∉ body000_481.toList :=
@@ -4760,7 +4760,7 @@ private theorem body000_481_value : bodyValue 1 body000_481 = (0 : ℚ) :=
 
 private def body000_482 : String := "481,1188519739503421,119"
 private theorem body000_482_separators :
-    ':' ∉ body000_482.toList ∧ ';' ∉ body000_482.toList := by cbv; decide +kernel
+    ':' ∉ body000_482.toList ∧ ';' ∉ body000_482.toList := by decide +kernel
 private theorem body000_482_certificate :
     entryValue? 1 body000_482.toList = some (0 : ℚ) := by cbv
 private theorem body000_482_noColon : ':' ∉ body000_482.toList :=
@@ -4779,7 +4779,7 @@ private theorem body000_480_value : bodyValue 1 body000_480 = (0 : ℚ) := by
 
 private def body000_484 : String := "483,6255016882040913,114"
 private theorem body000_484_separators :
-    ':' ∉ body000_484.toList ∧ ';' ∉ body000_484.toList := by cbv; decide +kernel
+    ':' ∉ body000_484.toList ∧ ';' ∉ body000_484.toList := by decide +kernel
 private theorem body000_484_certificate :
     entryValue? 1 body000_484.toList = some (0 : ℚ) := by cbv
 private theorem body000_484_noColon : ':' ∉ body000_484.toList :=
@@ -4789,7 +4789,7 @@ private theorem body000_484_value : bodyValue 1 body000_484 = (0 : ℚ) :=
 
 private def body000_485 : String := "485,5788995740354649,112"
 private theorem body000_485_separators :
-    ':' ∉ body000_485.toList ∧ ';' ∉ body000_485.toList := by cbv; decide +kernel
+    ':' ∉ body000_485.toList ∧ ';' ∉ body000_485.toList := by decide +kernel
 private theorem body000_485_certificate :
     entryValue? 1 body000_485.toList = some (0 : ℚ) := by cbv
 private theorem body000_485_noColon : ':' ∉ body000_485.toList :=
@@ -4826,7 +4826,7 @@ private theorem body000_471_value : bodyValue 1 body000_471 = (0 : ℚ) := by
 
 private def body000_489 : String := "487,2668541939952371,110"
 private theorem body000_489_separators :
-    ':' ∉ body000_489.toList ∧ ';' ∉ body000_489.toList := by cbv; decide +kernel
+    ':' ∉ body000_489.toList ∧ ';' ∉ body000_489.toList := by decide +kernel
 private theorem body000_489_certificate :
     entryValue? 1 body000_489.toList = some (0 : ℚ) := by cbv
 private theorem body000_489_noColon : ':' ∉ body000_489.toList :=
@@ -4836,7 +4836,7 @@ private theorem body000_489_value : bodyValue 1 body000_489 = (0 : ℚ) :=
 
 private def body000_490 : String := "489,3544868210390281,110"
 private theorem body000_490_separators :
-    ':' ∉ body000_490.toList ∧ ';' ∉ body000_490.toList := by cbv; decide +kernel
+    ':' ∉ body000_490.toList ∧ ';' ∉ body000_490.toList := by decide +kernel
 private theorem body000_490_certificate :
     entryValue? 1 body000_490.toList = some (0 : ℚ) := by cbv
 private theorem body000_490_noColon : ':' ∉ body000_490.toList :=
@@ -4855,7 +4855,7 @@ private theorem body000_488_value : bodyValue 1 body000_488 = (0 : ℚ) := by
 
 private def body000_492 : String := "491,7498196128982905,111"
 private theorem body000_492_separators :
-    ':' ∉ body000_492.toList ∧ ';' ∉ body000_492.toList := by cbv; decide +kernel
+    ':' ∉ body000_492.toList ∧ ';' ∉ body000_492.toList := by decide +kernel
 private theorem body000_492_certificate :
     entryValue? 1 body000_492.toList = some (0 : ℚ) := by cbv
 private theorem body000_492_noColon : ':' ∉ body000_492.toList :=
@@ -4865,7 +4865,7 @@ private theorem body000_492_value : bodyValue 1 body000_492 = (0 : ℚ) :=
 
 private def body000_493 : String := "493,6476538817398991,111"
 private theorem body000_493_separators :
-    ':' ∉ body000_493.toList ∧ ';' ∉ body000_493.toList := by cbv; decide +kernel
+    ':' ∉ body000_493.toList ∧ ';' ∉ body000_493.toList := by decide +kernel
 private theorem body000_493_certificate :
     entryValue? 1 body000_493.toList = some (0 : ℚ) := by cbv
 private theorem body000_493_noColon : ':' ∉ body000_493.toList :=
@@ -4893,7 +4893,7 @@ private theorem body000_487_value : bodyValue 1 body000_487 = (0 : ℚ) := by
 
 private def body000_496 : String := "495,8955074483998087,112"
 private theorem body000_496_separators :
-    ':' ∉ body000_496.toList ∧ ';' ∉ body000_496.toList := by cbv; decide +kernel
+    ':' ∉ body000_496.toList ∧ ';' ∉ body000_496.toList := by decide +kernel
 private theorem body000_496_certificate :
     entryValue? 1 body000_496.toList = some (0 : ℚ) := by cbv
 private theorem body000_496_noColon : ':' ∉ body000_496.toList :=
@@ -4903,7 +4903,7 @@ private theorem body000_496_value : bodyValue 1 body000_496 = (0 : ℚ) :=
 
 private def body000_497 : String := "497,4536001530808573,112"
 private theorem body000_497_separators :
-    ':' ∉ body000_497.toList ∧ ';' ∉ body000_497.toList := by cbv; decide +kernel
+    ':' ∉ body000_497.toList ∧ ';' ∉ body000_497.toList := by decide +kernel
 private theorem body000_497_certificate :
     entryValue? 1 body000_497.toList = some (0 : ℚ) := by cbv
 private theorem body000_497_noColon : ':' ∉ body000_497.toList :=
@@ -4922,7 +4922,7 @@ private theorem body000_495_value : bodyValue 1 body000_495 = (0 : ℚ) := by
 
 private def body000_499 : String := "499,4910817168168023,114"
 private theorem body000_499_separators :
-    ':' ∉ body000_499.toList ∧ ';' ∉ body000_499.toList := by cbv; decide +kernel
+    ':' ∉ body000_499.toList ∧ ';' ∉ body000_499.toList := by decide +kernel
 private theorem body000_499_certificate :
     entryValue? 1 body000_499.toList = some (0 : ℚ) := by cbv
 private theorem body000_499_noColon : ':' ∉ body000_499.toList :=
@@ -4932,7 +4932,7 @@ private theorem body000_499_value : bodyValue 1 body000_499 = (0 : ℚ) :=
 
 private def body000_500 : String := "501,4717328844000785,124"
 private theorem body000_500_separators :
-    ':' ∉ body000_500.toList ∧ ';' ∉ body000_500.toList := by cbv; decide +kernel
+    ':' ∉ body000_500.toList ∧ ';' ∉ body000_500.toList := by decide +kernel
 private theorem body000_500_certificate :
     entryValue? 1 body000_500.toList = some (0 : ℚ) := by cbv
 private theorem body000_500_noColon : ':' ∉ body000_500.toList :=
@@ -5017,7 +5017,7 @@ private theorem row000_1_0 :
   have hs : source000 = "0" ++ ":" ++ body000_000 := by
     apply sameBytes_sound; decide +kernel
   rw [rowValue_of_body source000 "0" body000_000 1 0 hs
-    (by cbv) (by cbv; decide +kernel) body000_000_noColon]
+    (by cbv) (by decide +kernel) body000_000_noColon]
   exact body000_000_value
 
 private theorem row000_0_1 :
@@ -5039,7 +5039,7 @@ private theorem row001_1_0 :
 
 private def body001_007 : String := "0,4844378105837337,56"
 private theorem body001_007_separators :
-    ':' ∉ body001_007.toList ∧ ';' ∉ body001_007.toList := by cbv; decide +kernel
+    ':' ∉ body001_007.toList ∧ ';' ∉ body001_007.toList := by decide +kernel
 private theorem body001_007_certificate :
     entryValue? 0 body001_007.toList = some (4844378105837337 / 72057594037927936 : ℚ) := by cbv
 private theorem body001_007_noColon : ':' ∉ body001_007.toList :=
@@ -5049,7 +5049,7 @@ private theorem body001_007_value : bodyValue 0 body001_007 = (4844378105837337 
 
 private def body001_009 : String := "2,6108219478749197,58"
 private theorem body001_009_separators :
-    ':' ∉ body001_009.toList ∧ ';' ∉ body001_009.toList := by cbv; decide +kernel
+    ':' ∉ body001_009.toList ∧ ';' ∉ body001_009.toList := by decide +kernel
 private theorem body001_009_certificate :
     entryValue? 0 body001_009.toList = some (0 : ℚ) := by cbv
 private theorem body001_009_noColon : ':' ∉ body001_009.toList :=
@@ -5059,7 +5059,7 @@ private theorem body001_009_value : bodyValue 0 body001_009 = (0 : ℚ) :=
 
 private def body001_010 : String := "4,1607551219326723,57"
 private theorem body001_010_separators :
-    ':' ∉ body001_010.toList ∧ ';' ∉ body001_010.toList := by cbv; decide +kernel
+    ':' ∉ body001_010.toList ∧ ';' ∉ body001_010.toList := by decide +kernel
 private theorem body001_010_certificate :
     entryValue? 0 body001_010.toList = some (0 : ℚ) := by cbv
 private theorem body001_010_noColon : ':' ∉ body001_010.toList :=
@@ -5087,7 +5087,7 @@ private theorem body001_006_value : bodyValue 0 body001_006 = (4844378105837337 
 
 private def body001_013 : String := "6,3925866832982105,59"
 private theorem body001_013_separators :
-    ':' ∉ body001_013.toList ∧ ';' ∉ body001_013.toList := by cbv; decide +kernel
+    ':' ∉ body001_013.toList ∧ ';' ∉ body001_013.toList := by decide +kernel
 private theorem body001_013_certificate :
     entryValue? 0 body001_013.toList = some (0 : ℚ) := by cbv
 private theorem body001_013_noColon : ':' ∉ body001_013.toList :=
@@ -5097,7 +5097,7 @@ private theorem body001_013_value : bodyValue 0 body001_013 = (0 : ℚ) :=
 
 private def body001_014 : String := "8,2580521952963917,59"
 private theorem body001_014_separators :
-    ':' ∉ body001_014.toList ∧ ';' ∉ body001_014.toList := by cbv; decide +kernel
+    ':' ∉ body001_014.toList ∧ ';' ∉ body001_014.toList := by decide +kernel
 private theorem body001_014_certificate :
     entryValue? 0 body001_014.toList = some (0 : ℚ) := by cbv
 private theorem body001_014_noColon : ':' ∉ body001_014.toList :=
@@ -5116,7 +5116,7 @@ private theorem body001_012_value : bodyValue 0 body001_012 = (0 : ℚ) := by
 
 private def body001_016 : String := "10,3550915180512751,60"
 private theorem body001_016_separators :
-    ':' ∉ body001_016.toList ∧ ';' ∉ body001_016.toList := by cbv; decide +kernel
+    ':' ∉ body001_016.toList ∧ ';' ∉ body001_016.toList := by decide +kernel
 private theorem body001_016_certificate :
     entryValue? 0 body001_016.toList = some (0 : ℚ) := by cbv
 private theorem body001_016_noColon : ':' ∉ body001_016.toList :=
@@ -5126,7 +5126,7 @@ private theorem body001_016_value : bodyValue 0 body001_016 = (0 : ℚ) :=
 
 private def body001_017 : String := "12,2519887475801225,60"
 private theorem body001_017_separators :
-    ':' ∉ body001_017.toList ∧ ';' ∉ body001_017.toList := by cbv; decide +kernel
+    ':' ∉ body001_017.toList ∧ ';' ∉ body001_017.toList := by decide +kernel
 private theorem body001_017_certificate :
     entryValue? 0 body001_017.toList = some (0 : ℚ) := by cbv
 private theorem body001_017_noColon : ':' ∉ body001_017.toList :=
@@ -5163,7 +5163,7 @@ private theorem body001_005_value : bodyValue 0 body001_005 = (4844378105837337 
 
 private def body001_021 : String := "14,1828191827258433,60"
 private theorem body001_021_separators :
-    ':' ∉ body001_021.toList ∧ ';' ∉ body001_021.toList := by cbv; decide +kernel
+    ':' ∉ body001_021.toList ∧ ';' ∉ body001_021.toList := by decide +kernel
 private theorem body001_021_certificate :
     entryValue? 0 body001_021.toList = some (0 : ℚ) := by cbv
 private theorem body001_021_noColon : ':' ∉ body001_021.toList :=
@@ -5173,7 +5173,7 @@ private theorem body001_021_value : bodyValue 0 body001_021 = (0 : ℚ) :=
 
 private def body001_022 : String := "16,2697976100495521,61"
 private theorem body001_022_separators :
-    ':' ∉ body001_022.toList ∧ ';' ∉ body001_022.toList := by cbv; decide +kernel
+    ':' ∉ body001_022.toList ∧ ';' ∉ body001_022.toList := by decide +kernel
 private theorem body001_022_certificate :
     entryValue? 0 body001_022.toList = some (0 : ℚ) := by cbv
 private theorem body001_022_noColon : ':' ∉ body001_022.toList :=
@@ -5192,7 +5192,7 @@ private theorem body001_020_value : bodyValue 0 body001_020 = (0 : ℚ) := by
 
 private def body001_024 : String := "18,4034520073918269,62"
 private theorem body001_024_separators :
-    ':' ∉ body001_024.toList ∧ ';' ∉ body001_024.toList := by cbv; decide +kernel
+    ':' ∉ body001_024.toList ∧ ';' ∉ body001_024.toList := by decide +kernel
 private theorem body001_024_certificate :
     entryValue? 0 body001_024.toList = some (0 : ℚ) := by cbv
 private theorem body001_024_noColon : ':' ∉ body001_024.toList :=
@@ -5202,7 +5202,7 @@ private theorem body001_024_value : bodyValue 0 body001_024 = (0 : ℚ) :=
 
 private def body001_025 : String := "20,6095823142179307,63"
 private theorem body001_025_separators :
-    ':' ∉ body001_025.toList ∧ ';' ∉ body001_025.toList := by cbv; decide +kernel
+    ':' ∉ body001_025.toList ∧ ';' ∉ body001_025.toList := by decide +kernel
 private theorem body001_025_certificate :
     entryValue? 0 body001_025.toList = some (0 : ℚ) := by cbv
 private theorem body001_025_noColon : ':' ∉ body001_025.toList :=
@@ -5230,7 +5230,7 @@ private theorem body001_019_value : bodyValue 0 body001_019 = (0 : ℚ) := by
 
 private def body001_028 : String := "22,4645117774579919,63"
 private theorem body001_028_separators :
-    ':' ∉ body001_028.toList ∧ ';' ∉ body001_028.toList := by cbv; decide +kernel
+    ':' ∉ body001_028.toList ∧ ';' ∉ body001_028.toList := by decide +kernel
 private theorem body001_028_certificate :
     entryValue? 0 body001_028.toList = some (0 : ℚ) := by cbv
 private theorem body001_028_noColon : ':' ∉ body001_028.toList :=
@@ -5240,7 +5240,7 @@ private theorem body001_028_value : bodyValue 0 body001_028 = (0 : ℚ) :=
 
 private def body001_029 : String := "24,1782939210416561,62"
 private theorem body001_029_separators :
-    ':' ∉ body001_029.toList ∧ ';' ∉ body001_029.toList := by cbv; decide +kernel
+    ':' ∉ body001_029.toList ∧ ';' ∉ body001_029.toList := by decide +kernel
 private theorem body001_029_certificate :
     entryValue? 0 body001_029.toList = some (0 : ℚ) := by cbv
 private theorem body001_029_noColon : ':' ∉ body001_029.toList :=
@@ -5259,7 +5259,7 @@ private theorem body001_027_value : bodyValue 0 body001_027 = (0 : ℚ) := by
 
 private def body001_031 : String := "26,688483630413853,61"
 private theorem body001_031_separators :
-    ':' ∉ body001_031.toList ∧ ';' ∉ body001_031.toList := by cbv; decide +kernel
+    ':' ∉ body001_031.toList ∧ ';' ∉ body001_031.toList := by decide +kernel
 private theorem body001_031_certificate :
     entryValue? 0 body001_031.toList = some (0 : ℚ) := by cbv
 private theorem body001_031_noColon : ':' ∉ body001_031.toList :=
@@ -5269,7 +5269,7 @@ private theorem body001_031_value : bodyValue 0 body001_031 = (0 : ℚ) :=
 
 private def body001_032 : String := "28,2137492361500011,63"
 private theorem body001_032_separators :
-    ':' ∉ body001_032.toList ∧ ';' ∉ body001_032.toList := by cbv; decide +kernel
+    ':' ∉ body001_032.toList ∧ ';' ∉ body001_032.toList := by decide +kernel
 private theorem body001_032_certificate :
     entryValue? 0 body001_032.toList = some (0 : ℚ) := by cbv
 private theorem body001_032_noColon : ':' ∉ body001_032.toList :=
@@ -5315,7 +5315,7 @@ private theorem body001_004_value : bodyValue 0 body001_004 = (4844378105837337 
 
 private def body001_037 : String := "30,1666496854634047,63"
 private theorem body001_037_separators :
-    ':' ∉ body001_037.toList ∧ ';' ∉ body001_037.toList := by cbv; decide +kernel
+    ':' ∉ body001_037.toList ∧ ';' ∉ body001_037.toList := by decide +kernel
 private theorem body001_037_certificate :
     entryValue? 0 body001_037.toList = some (0 : ℚ) := by cbv
 private theorem body001_037_noColon : ':' ∉ body001_037.toList :=
@@ -5325,7 +5325,7 @@ private theorem body001_037_value : bodyValue 0 body001_037 = (0 : ℚ) :=
 
 private def body001_038 : String := "32,2609365520367003,64"
 private theorem body001_038_separators :
-    ':' ∉ body001_038.toList ∧ ';' ∉ body001_038.toList := by cbv; decide +kernel
+    ':' ∉ body001_038.toList ∧ ';' ∉ body001_038.toList := by decide +kernel
 private theorem body001_038_certificate :
     entryValue? 0 body001_038.toList = some (0 : ℚ) := by cbv
 private theorem body001_038_noColon : ':' ∉ body001_038.toList :=
@@ -5344,7 +5344,7 @@ private theorem body001_036_value : bodyValue 0 body001_036 = (0 : ℚ) := by
 
 private def body001_040 : String := "34,8200670445452241,66"
 private theorem body001_040_separators :
-    ':' ∉ body001_040.toList ∧ ';' ∉ body001_040.toList := by cbv; decide +kernel
+    ':' ∉ body001_040.toList ∧ ';' ∉ body001_040.toList := by decide +kernel
 private theorem body001_040_certificate :
     entryValue? 0 body001_040.toList = some (0 : ℚ) := by cbv
 private theorem body001_040_noColon : ':' ∉ body001_040.toList :=
@@ -5354,7 +5354,7 @@ private theorem body001_040_value : bodyValue 0 body001_040 = (0 : ℚ) :=
 
 private def body001_041 : String := "36,201938804222743,61"
 private theorem body001_041_separators :
-    ':' ∉ body001_041.toList ∧ ';' ∉ body001_041.toList := by cbv; decide +kernel
+    ':' ∉ body001_041.toList ∧ ';' ∉ body001_041.toList := by decide +kernel
 private theorem body001_041_certificate :
     entryValue? 0 body001_041.toList = some (0 : ℚ) := by cbv
 private theorem body001_041_noColon : ':' ∉ body001_041.toList :=
@@ -5382,7 +5382,7 @@ private theorem body001_035_value : bodyValue 0 body001_035 = (0 : ℚ) := by
 
 private def body001_044 : String := "38,1276204409840143,64"
 private theorem body001_044_separators :
-    ':' ∉ body001_044.toList ∧ ';' ∉ body001_044.toList := by cbv; decide +kernel
+    ':' ∉ body001_044.toList ∧ ';' ∉ body001_044.toList := by decide +kernel
 private theorem body001_044_certificate :
     entryValue? 0 body001_044.toList = some (0 : ℚ) := by cbv
 private theorem body001_044_noColon : ':' ∉ body001_044.toList :=
@@ -5392,7 +5392,7 @@ private theorem body001_044_value : bodyValue 0 body001_044 = (0 : ℚ) :=
 
 private def body001_045 : String := "40,1010624685132013,64"
 private theorem body001_045_separators :
-    ':' ∉ body001_045.toList ∧ ';' ∉ body001_045.toList := by cbv; decide +kernel
+    ':' ∉ body001_045.toList ∧ ';' ∉ body001_045.toList := by decide +kernel
 private theorem body001_045_certificate :
     entryValue? 0 body001_045.toList = some (0 : ℚ) := by cbv
 private theorem body001_045_noColon : ':' ∉ body001_045.toList :=
@@ -5411,7 +5411,7 @@ private theorem body001_043_value : bodyValue 0 body001_043 = (0 : ℚ) := by
 
 private def body001_047 : String := "42,6418073794096991,67"
 private theorem body001_047_separators :
-    ':' ∉ body001_047.toList ∧ ';' ∉ body001_047.toList := by cbv; decide +kernel
+    ':' ∉ body001_047.toList ∧ ';' ∉ body001_047.toList := by decide +kernel
 private theorem body001_047_certificate :
     entryValue? 0 body001_047.toList = some (0 : ℚ) := by cbv
 private theorem body001_047_noColon : ':' ∉ body001_047.toList :=
@@ -5421,7 +5421,7 @@ private theorem body001_047_value : bodyValue 0 body001_047 = (0 : ℚ) :=
 
 private def body001_048 : String := "44,5106097991455329,67"
 private theorem body001_048_separators :
-    ':' ∉ body001_048.toList ∧ ';' ∉ body001_048.toList := by cbv; decide +kernel
+    ':' ∉ body001_048.toList ∧ ';' ∉ body001_048.toList := by decide +kernel
 private theorem body001_048_certificate :
     entryValue? 0 body001_048.toList = some (0 : ℚ) := by cbv
 private theorem body001_048_noColon : ':' ∉ body001_048.toList :=
@@ -5458,7 +5458,7 @@ private theorem body001_034_value : bodyValue 0 body001_034 = (0 : ℚ) := by
 
 private def body001_052 : String := "46,4069610124372559,67"
 private theorem body001_052_separators :
-    ':' ∉ body001_052.toList ∧ ';' ∉ body001_052.toList := by cbv; decide +kernel
+    ':' ∉ body001_052.toList ∧ ';' ∉ body001_052.toList := by decide +kernel
 private theorem body001_052_certificate :
     entryValue? 0 body001_052.toList = some (0 : ℚ) := by cbv
 private theorem body001_052_noColon : ':' ∉ body001_052.toList :=
@@ -5468,7 +5468,7 @@ private theorem body001_052_value : bodyValue 0 body001_052 = (0 : ℚ) :=
 
 private def body001_053 : String := "48,3248158561908349,67"
 private theorem body001_053_separators :
-    ':' ∉ body001_053.toList ∧ ';' ∉ body001_053.toList := by cbv; decide +kernel
+    ':' ∉ body001_053.toList ∧ ';' ∉ body001_053.toList := by decide +kernel
 private theorem body001_053_certificate :
     entryValue? 0 body001_053.toList = some (0 : ℚ) := by cbv
 private theorem body001_053_noColon : ':' ∉ body001_053.toList :=
@@ -5487,7 +5487,7 @@ private theorem body001_051_value : bodyValue 0 body001_051 = (0 : ℚ) := by
 
 private def body001_055 : String := "50,1297967747101543,66"
 private theorem body001_055_separators :
-    ':' ∉ body001_055.toList ∧ ';' ∉ body001_055.toList := by cbv; decide +kernel
+    ':' ∉ body001_055.toList ∧ ';' ∉ body001_055.toList := by decide +kernel
 private theorem body001_055_certificate :
     entryValue? 0 body001_055.toList = some (0 : ℚ) := by cbv
 private theorem body001_055_noColon : ':' ∉ body001_055.toList :=
@@ -5497,7 +5497,7 @@ private theorem body001_055_value : bodyValue 0 body001_055 = (0 : ℚ) :=
 
 private def body001_056 : String := "52,519411240001573,65"
 private theorem body001_056_separators :
-    ':' ∉ body001_056.toList ∧ ';' ∉ body001_056.toList := by cbv; decide +kernel
+    ':' ∉ body001_056.toList ∧ ';' ∉ body001_056.toList := by decide +kernel
 private theorem body001_056_certificate :
     entryValue? 0 body001_056.toList = some (0 : ℚ) := by cbv
 private theorem body001_056_noColon : ':' ∉ body001_056.toList :=
@@ -5525,7 +5525,7 @@ private theorem body001_050_value : bodyValue 0 body001_050 = (0 : ℚ) := by
 
 private def body001_059 : String := "54,1665369537104349,67"
 private theorem body001_059_separators :
-    ':' ∉ body001_059.toList ∧ ';' ∉ body001_059.toList := by cbv; decide +kernel
+    ':' ∉ body001_059.toList ∧ ';' ∉ body001_059.toList := by decide +kernel
 private theorem body001_059_certificate :
     entryValue? 0 body001_059.toList = some (0 : ℚ) := by cbv
 private theorem body001_059_noColon : ':' ∉ body001_059.toList :=
@@ -5535,7 +5535,7 @@ private theorem body001_059_value : bodyValue 0 body001_059 = (0 : ℚ) :=
 
 private def body001_060 : String := "56,5347266068105405,69"
 private theorem body001_060_separators :
-    ':' ∉ body001_060.toList ∧ ';' ∉ body001_060.toList := by cbv; decide +kernel
+    ':' ∉ body001_060.toList ∧ ';' ∉ body001_060.toList := by decide +kernel
 private theorem body001_060_certificate :
     entryValue? 0 body001_060.toList = some (0 : ℚ) := by cbv
 private theorem body001_060_noColon : ':' ∉ body001_060.toList :=
@@ -5554,7 +5554,7 @@ private theorem body001_058_value : bodyValue 0 body001_058 = (0 : ℚ) := by
 
 private def body001_062 : String := "58,8594494452377349,70"
 private theorem body001_062_separators :
-    ':' ∉ body001_062.toList ∧ ';' ∉ body001_062.toList := by cbv; decide +kernel
+    ':' ∉ body001_062.toList ∧ ';' ∉ body001_062.toList := by decide +kernel
 private theorem body001_062_certificate :
     entryValue? 0 body001_062.toList = some (0 : ℚ) := by cbv
 private theorem body001_062_noColon : ':' ∉ body001_062.toList :=
@@ -5564,7 +5564,7 @@ private theorem body001_062_value : bodyValue 0 body001_062 = (0 : ℚ) :=
 
 private def body001_063 : String := "60,1728143966352713,68"
 private theorem body001_063_separators :
-    ':' ∉ body001_063.toList ∧ ';' ∉ body001_063.toList := by cbv; decide +kernel
+    ':' ∉ body001_063.toList ∧ ';' ∉ body001_063.toList := by decide +kernel
 private theorem body001_063_certificate :
     entryValue? 0 body001_063.toList = some (0 : ℚ) := by cbv
 private theorem body001_063_noColon : ':' ∉ body001_063.toList :=
@@ -5619,7 +5619,7 @@ private theorem body001_003_value : bodyValue 0 body001_003 = (4844378105837337 
 
 private def body001_068 : String := "62,5563575830691723,70"
 private theorem body001_068_separators :
-    ':' ∉ body001_068.toList ∧ ';' ∉ body001_068.toList := by cbv; decide +kernel
+    ':' ∉ body001_068.toList ∧ ';' ∉ body001_068.toList := by decide +kernel
 private theorem body001_068_certificate :
     entryValue? 0 body001_068.toList = some (0 : ℚ) := by cbv
 private theorem body001_068_noColon : ':' ∉ body001_068.toList :=
@@ -5629,7 +5629,7 @@ private theorem body001_068_value : bodyValue 0 body001_068 = (0 : ℚ) :=
 
 private def body001_070 : String := "64,8962369393430263,71"
 private theorem body001_070_separators :
-    ':' ∉ body001_070.toList ∧ ';' ∉ body001_070.toList := by cbv; decide +kernel
+    ':' ∉ body001_070.toList ∧ ';' ∉ body001_070.toList := by decide +kernel
 private theorem body001_070_certificate :
     entryValue? 0 body001_070.toList = some (0 : ℚ) := by cbv
 private theorem body001_070_noColon : ':' ∉ body001_070.toList :=
@@ -5639,7 +5639,7 @@ private theorem body001_070_value : bodyValue 0 body001_070 = (0 : ℚ) :=
 
 private def body001_071 : String := "66,1806375368065707,69"
 private theorem body001_071_separators :
-    ':' ∉ body001_071.toList ∧ ';' ∉ body001_071.toList := by cbv; decide +kernel
+    ':' ∉ body001_071.toList ∧ ';' ∉ body001_071.toList := by decide +kernel
 private theorem body001_071_certificate :
     entryValue? 0 body001_071.toList = some (0 : ℚ) := by cbv
 private theorem body001_071_noColon : ':' ∉ body001_071.toList :=
@@ -5667,7 +5667,7 @@ private theorem body001_067_value : bodyValue 0 body001_067 = (0 : ℚ) := by
 
 private def body001_074 : String := "68,1457845032592951,69"
 private theorem body001_074_separators :
-    ':' ∉ body001_074.toList ∧ ';' ∉ body001_074.toList := by cbv; decide +kernel
+    ':' ∉ body001_074.toList ∧ ';' ∉ body001_074.toList := by decide +kernel
 private theorem body001_074_certificate :
     entryValue? 0 body001_074.toList = some (0 : ℚ) := by cbv
 private theorem body001_074_noColon : ':' ∉ body001_074.toList :=
@@ -5677,7 +5677,7 @@ private theorem body001_074_value : bodyValue 0 body001_074 = (0 : ℚ) :=
 
 private def body001_075 : String := "70,2355423033394589,70"
 private theorem body001_075_separators :
-    ':' ∉ body001_075.toList ∧ ';' ∉ body001_075.toList := by cbv; decide +kernel
+    ':' ∉ body001_075.toList ∧ ';' ∉ body001_075.toList := by decide +kernel
 private theorem body001_075_certificate :
     entryValue? 0 body001_075.toList = some (0 : ℚ) := by cbv
 private theorem body001_075_noColon : ':' ∉ body001_075.toList :=
@@ -5696,7 +5696,7 @@ private theorem body001_073_value : bodyValue 0 body001_073 = (0 : ℚ) := by
 
 private def body001_077 : String := "72,952092206711453,69"
 private theorem body001_077_separators :
-    ':' ∉ body001_077.toList ∧ ';' ∉ body001_077.toList := by cbv; decide +kernel
+    ':' ∉ body001_077.toList ∧ ';' ∉ body001_077.toList := by decide +kernel
 private theorem body001_077_certificate :
     entryValue? 0 body001_077.toList = some (0 : ℚ) := by cbv
 private theorem body001_077_noColon : ':' ∉ body001_077.toList :=
@@ -5706,7 +5706,7 @@ private theorem body001_077_value : bodyValue 0 body001_077 = (0 : ℚ) :=
 
 private def body001_078 : String := "74,3080111011215297,71"
 private theorem body001_078_separators :
-    ':' ∉ body001_078.toList ∧ ';' ∉ body001_078.toList := by cbv; decide +kernel
+    ':' ∉ body001_078.toList ∧ ';' ∉ body001_078.toList := by decide +kernel
 private theorem body001_078_certificate :
     entryValue? 0 body001_078.toList = some (0 : ℚ) := by cbv
 private theorem body001_078_noColon : ':' ∉ body001_078.toList :=
@@ -5743,7 +5743,7 @@ private theorem body001_066_value : bodyValue 0 body001_066 = (0 : ℚ) := by
 
 private def body001_082 : String := "76,155738554068121,67"
 private theorem body001_082_separators :
-    ':' ∉ body001_082.toList ∧ ';' ∉ body001_082.toList := by cbv; decide +kernel
+    ':' ∉ body001_082.toList ∧ ';' ∉ body001_082.toList := by decide +kernel
 private theorem body001_082_certificate :
     entryValue? 0 body001_082.toList = some (0 : ℚ) := by cbv
 private theorem body001_082_noColon : ':' ∉ body001_082.toList :=
@@ -5753,7 +5753,7 @@ private theorem body001_082_value : bodyValue 0 body001_082 = (0 : ℚ) :=
 
 private def body001_083 : String := "78,4033187146884763,72"
 private theorem body001_083_separators :
-    ':' ∉ body001_083.toList ∧ ';' ∉ body001_083.toList := by cbv; decide +kernel
+    ':' ∉ body001_083.toList ∧ ';' ∉ body001_083.toList := by decide +kernel
 private theorem body001_083_certificate :
     entryValue? 0 body001_083.toList = some (0 : ℚ) := by cbv
 private theorem body001_083_noColon : ':' ∉ body001_083.toList :=
@@ -5772,7 +5772,7 @@ private theorem body001_081_value : bodyValue 0 body001_081 = (0 : ℚ) := by
 
 private def body001_085 : String := "80,3265897784090575,72"
 private theorem body001_085_separators :
-    ':' ∉ body001_085.toList ∧ ';' ∉ body001_085.toList := by cbv; decide +kernel
+    ':' ∉ body001_085.toList ∧ ';' ∉ body001_085.toList := by decide +kernel
 private theorem body001_085_certificate :
     entryValue? 0 body001_085.toList = some (0 : ℚ) := by cbv
 private theorem body001_085_noColon : ':' ∉ body001_085.toList :=
@@ -5782,7 +5782,7 @@ private theorem body001_085_value : bodyValue 0 body001_085 = (0 : ℚ) :=
 
 private def body001_086 : String := "82,2646722835316019,72"
 private theorem body001_086_separators :
-    ':' ∉ body001_086.toList ∧ ';' ∉ body001_086.toList := by cbv; decide +kernel
+    ':' ∉ body001_086.toList ∧ ';' ∉ body001_086.toList := by decide +kernel
 private theorem body001_086_certificate :
     entryValue? 0 body001_086.toList = some (0 : ℚ) := by cbv
 private theorem body001_086_noColon : ':' ∉ body001_086.toList :=
@@ -5810,7 +5810,7 @@ private theorem body001_080_value : bodyValue 0 body001_080 = (0 : ℚ) := by
 
 private def body001_089 : String := "84,1073410942194819,71"
 private theorem body001_089_separators :
-    ':' ∉ body001_089.toList ∧ ';' ∉ body001_089.toList := by cbv; decide +kernel
+    ':' ∉ body001_089.toList ∧ ';' ∉ body001_089.toList := by decide +kernel
 private theorem body001_089_certificate :
     entryValue? 0 body001_089.toList = some (0 : ℚ) := by cbv
 private theorem body001_089_noColon : ':' ∉ body001_089.toList :=
@@ -5820,7 +5820,7 @@ private theorem body001_089_value : bodyValue 0 body001_089 = (0 : ℚ) :=
 
 private def body001_090 : String := "86,1742595485004821,72"
 private theorem body001_090_separators :
-    ':' ∉ body001_090.toList ∧ ';' ∉ body001_090.toList := by cbv; decide +kernel
+    ':' ∉ body001_090.toList ∧ ';' ∉ body001_090.toList := by decide +kernel
 private theorem body001_090_certificate :
     entryValue? 0 body001_090.toList = some (0 : ℚ) := by cbv
 private theorem body001_090_noColon : ':' ∉ body001_090.toList :=
@@ -5839,7 +5839,7 @@ private theorem body001_088_value : bodyValue 0 body001_088 = (0 : ℚ) := by
 
 private def body001_092 : String := "88,5660198248920999,74"
 private theorem body001_092_separators :
-    ':' ∉ body001_092.toList ∧ ';' ∉ body001_092.toList := by cbv; decide +kernel
+    ':' ∉ body001_092.toList ∧ ';' ∉ body001_092.toList := by decide +kernel
 private theorem body001_092_certificate :
     entryValue? 0 body001_092.toList = some (0 : ℚ) := by cbv
 private theorem body001_092_noColon : ':' ∉ body001_092.toList :=
@@ -5849,7 +5849,7 @@ private theorem body001_092_value : bodyValue 0 body001_092 = (0 : ℚ) :=
 
 private def body001_093 : String := "90,574582667924337,71"
 private theorem body001_093_separators :
-    ':' ∉ body001_093.toList ∧ ';' ∉ body001_093.toList := by cbv; decide +kernel
+    ':' ∉ body001_093.toList ∧ ';' ∉ body001_093.toList := by decide +kernel
 private theorem body001_093_certificate :
     entryValue? 0 body001_093.toList = some (0 : ℚ) := by cbv
 private theorem body001_093_noColon : ':' ∉ body001_093.toList :=
@@ -5895,7 +5895,7 @@ private theorem body001_065_value : bodyValue 0 body001_065 = (0 : ℚ) := by
 
 private def body001_098 : String := "92,3732967899895741,74"
 private theorem body001_098_separators :
-    ':' ∉ body001_098.toList ∧ ';' ∉ body001_098.toList := by cbv; decide +kernel
+    ':' ∉ body001_098.toList ∧ ';' ∉ body001_098.toList := by decide +kernel
 private theorem body001_098_certificate :
     entryValue? 0 body001_098.toList = some (0 : ℚ) := by cbv
 private theorem body001_098_noColon : ':' ∉ body001_098.toList :=
@@ -5905,7 +5905,7 @@ private theorem body001_098_value : bodyValue 0 body001_098 = (0 : ℚ) :=
 
 private def body001_099 : String := "94,3031079317742059,74"
 private theorem body001_099_separators :
-    ':' ∉ body001_099.toList ∧ ';' ∉ body001_099.toList := by cbv; decide +kernel
+    ':' ∉ body001_099.toList ∧ ';' ∉ body001_099.toList := by decide +kernel
 private theorem body001_099_certificate :
     entryValue? 0 body001_099.toList = some (0 : ℚ) := by cbv
 private theorem body001_099_noColon : ':' ∉ body001_099.toList :=
@@ -5924,7 +5924,7 @@ private theorem body001_097_value : bodyValue 0 body001_097 = (0 : ℚ) := by
 
 private def body001_101 : String := "96,1230943381153055,73"
 private theorem body001_101_separators :
-    ':' ∉ body001_101.toList ∧ ';' ∉ body001_101.toList := by cbv; decide +kernel
+    ':' ∉ body001_101.toList ∧ ';' ∉ body001_101.toList := by decide +kernel
 private theorem body001_101_certificate :
     entryValue? 0 body001_101.toList = some (0 : ℚ) := by cbv
 private theorem body001_101_noColon : ':' ∉ body001_101.toList :=
@@ -5934,7 +5934,7 @@ private theorem body001_101_value : bodyValue 0 body001_101 = (0 : ℚ) :=
 
 private def body001_102 : String := "98,8003745190275767,76"
 private theorem body001_102_separators :
-    ':' ∉ body001_102.toList ∧ ';' ∉ body001_102.toList := by cbv; decide +kernel
+    ':' ∉ body001_102.toList ∧ ';' ∉ body001_102.toList := by decide +kernel
 private theorem body001_102_certificate :
     entryValue? 0 body001_102.toList = some (0 : ℚ) := by cbv
 private theorem body001_102_noColon : ':' ∉ body001_102.toList :=
@@ -5962,7 +5962,7 @@ private theorem body001_096_value : bodyValue 0 body001_096 = (0 : ℚ) := by
 
 private def body001_105 : String := "100,6511076524530139,76"
 private theorem body001_105_separators :
-    ':' ∉ body001_105.toList ∧ ';' ∉ body001_105.toList := by cbv; decide +kernel
+    ':' ∉ body001_105.toList ∧ ';' ∉ body001_105.toList := by decide +kernel
 private theorem body001_105_certificate :
     entryValue? 0 body001_105.toList = some (0 : ℚ) := by cbv
 private theorem body001_105_noColon : ':' ∉ body001_105.toList :=
@@ -5972,7 +5972,7 @@ private theorem body001_105_value : bodyValue 0 body001_105 = (0 : ℚ) :=
 
 private def body001_106 : String := "102,331329845557261,72"
 private theorem body001_106_separators :
-    ':' ∉ body001_106.toList ∧ ';' ∉ body001_106.toList := by cbv; decide +kernel
+    ':' ∉ body001_106.toList ∧ ';' ∉ body001_106.toList := by decide +kernel
 private theorem body001_106_certificate :
     entryValue? 0 body001_106.toList = some (0 : ℚ) := by cbv
 private theorem body001_106_noColon : ':' ∉ body001_106.toList :=
@@ -5991,7 +5991,7 @@ private theorem body001_104_value : bodyValue 0 body001_104 = (0 : ℚ) := by
 
 private def body001_108 : String := "104,269901986865027,72"
 private theorem body001_108_separators :
-    ':' ∉ body001_108.toList ∧ ';' ∉ body001_108.toList := by cbv; decide +kernel
+    ':' ∉ body001_108.toList ∧ ';' ∉ body001_108.toList := by decide +kernel
 private theorem body001_108_certificate :
     entryValue? 0 body001_108.toList = some (0 : ℚ) := by cbv
 private theorem body001_108_noColon : ':' ∉ body001_108.toList :=
@@ -6001,7 +6001,7 @@ private theorem body001_108_value : bodyValue 0 body001_108 = (0 : ℚ) :=
 
 private def body001_109 : String := "106,3517857431998979,76"
 private theorem body001_109_separators :
-    ':' ∉ body001_109.toList ∧ ';' ∉ body001_109.toList := by cbv; decide +kernel
+    ':' ∉ body001_109.toList ∧ ';' ∉ body001_109.toList := by decide +kernel
 private theorem body001_109_certificate :
     entryValue? 0 body001_109.toList = some (0 : ℚ) := by cbv
 private theorem body001_109_noColon : ':' ∉ body001_109.toList :=
@@ -6038,7 +6038,7 @@ private theorem body001_095_value : bodyValue 0 body001_095 = (0 : ℚ) := by
 
 private def body001_113 : String := "108,2864580263630915,76"
 private theorem body001_113_separators :
-    ':' ∉ body001_113.toList ∧ ';' ∉ body001_113.toList := by cbv; decide +kernel
+    ':' ∉ body001_113.toList ∧ ';' ∉ body001_113.toList := by decide +kernel
 private theorem body001_113_certificate :
     entryValue? 0 body001_113.toList = some (0 : ℚ) := by cbv
 private theorem body001_113_noColon : ':' ∉ body001_113.toList :=
@@ -6048,7 +6048,7 @@ private theorem body001_113_value : bodyValue 0 body001_113 = (0 : ℚ) :=
 
 private def body001_114 : String := "110,4662803569567677,77"
 private theorem body001_114_separators :
-    ':' ∉ body001_114.toList ∧ ';' ∉ body001_114.toList := by cbv; decide +kernel
+    ':' ∉ body001_114.toList ∧ ';' ∉ body001_114.toList := by decide +kernel
 private theorem body001_114_certificate :
     entryValue? 0 body001_114.toList = some (0 : ℚ) := by cbv
 private theorem body001_114_noColon : ':' ∉ body001_114.toList :=
@@ -6067,7 +6067,7 @@ private theorem body001_112_value : bodyValue 0 body001_112 = (0 : ℚ) := by
 
 private def body001_116 : String := "112,474221723495461,74"
 private theorem body001_116_separators :
-    ':' ∉ body001_116.toList ∧ ';' ∉ body001_116.toList := by cbv; decide +kernel
+    ':' ∉ body001_116.toList ∧ ';' ∉ body001_116.toList := by decide +kernel
 private theorem body001_116_certificate :
     entryValue? 0 body001_116.toList = some (0 : ℚ) := by cbv
 private theorem body001_116_noColon : ':' ∉ body001_116.toList :=
@@ -6077,7 +6077,7 @@ private theorem body001_116_value : bodyValue 0 body001_116 = (0 : ℚ) :=
 
 private def body001_117 : String := "114,6174574827151375,78"
 private theorem body001_117_separators :
-    ':' ∉ body001_117.toList ∧ ';' ∉ body001_117.toList := by cbv; decide +kernel
+    ':' ∉ body001_117.toList ∧ ';' ∉ body001_117.toList := by decide +kernel
 private theorem body001_117_certificate :
     entryValue? 0 body001_117.toList = some (0 : ℚ) := by cbv
 private theorem body001_117_noColon : ':' ∉ body001_117.toList :=
@@ -6105,7 +6105,7 @@ private theorem body001_111_value : bodyValue 0 body001_111 = (0 : ℚ) := by
 
 private def body001_120 : String := "116,628560486860431,75"
 private theorem body001_120_separators :
-    ':' ∉ body001_120.toList ∧ ';' ∉ body001_120.toList := by cbv; decide +kernel
+    ':' ∉ body001_120.toList ∧ ';' ∉ body001_120.toList := by decide +kernel
 private theorem body001_120_certificate :
     entryValue? 0 body001_120.toList = some (0 : ℚ) := by cbv
 private theorem body001_120_noColon : ':' ∉ body001_120.toList :=
@@ -6115,7 +6115,7 @@ private theorem body001_120_value : bodyValue 0 body001_120 = (0 : ℚ) :=
 
 private def body001_121 : String := "118,4099749569581509,78"
 private theorem body001_121_separators :
-    ':' ∉ body001_121.toList ∧ ';' ∉ body001_121.toList := by cbv; decide +kernel
+    ':' ∉ body001_121.toList ∧ ';' ∉ body001_121.toList := by decide +kernel
 private theorem body001_121_certificate :
     entryValue? 0 body001_121.toList = some (0 : ℚ) := by cbv
 private theorem body001_121_noColon : ':' ∉ body001_121.toList :=
@@ -6134,7 +6134,7 @@ private theorem body001_119_value : bodyValue 0 body001_119 = (0 : ℚ) := by
 
 private def body001_123 : String := "120,1673193865874063,77"
 private theorem body001_123_separators :
-    ':' ∉ body001_123.toList ∧ ';' ∉ body001_123.toList := by cbv; decide +kernel
+    ':' ∉ body001_123.toList ∧ ';' ∉ body001_123.toList := by decide +kernel
 private theorem body001_123_certificate :
     entryValue? 0 body001_123.toList = some (0 : ℚ) := by cbv
 private theorem body001_123_noColon : ':' ∉ body001_123.toList :=
@@ -6144,7 +6144,7 @@ private theorem body001_123_value : bodyValue 0 body001_123 = (0 : ℚ) :=
 
 private def body001_124 : String := "122,170846846689869,74"
 private theorem body001_124_separators :
-    ':' ∉ body001_124.toList ∧ ';' ∉ body001_124.toList := by cbv; decide +kernel
+    ':' ∉ body001_124.toList ∧ ';' ∉ body001_124.toList := by decide +kernel
 private theorem body001_124_certificate :
     entryValue? 0 body001_124.toList = some (0 : ℚ) := by cbv
 private theorem body001_124_noColon : ':' ∉ body001_124.toList :=
@@ -6208,7 +6208,7 @@ private theorem body001_002_value : bodyValue 0 body001_002 = (4844378105837337 
 
 private def body001_130 : String := "124,8932682899694049,80"
 private theorem body001_130_separators :
-    ':' ∉ body001_130.toList ∧ ';' ∉ body001_130.toList := by cbv; decide +kernel
+    ':' ∉ body001_130.toList ∧ ';' ∉ body001_130.toList := by decide +kernel
 private theorem body001_130_certificate :
     entryValue? 0 body001_130.toList = some (0 : ℚ) := by cbv
 private theorem body001_130_noColon : ':' ∉ body001_130.toList :=
@@ -6218,7 +6218,7 @@ private theorem body001_130_value : bodyValue 0 body001_130 = (0 : ℚ) :=
 
 private def body001_132 : String := "126,3646619224332683,79"
 private theorem body001_132_separators :
-    ':' ∉ body001_132.toList ∧ ';' ∉ body001_132.toList := by cbv; decide +kernel
+    ':' ∉ body001_132.toList ∧ ';' ∉ body001_132.toList := by decide +kernel
 private theorem body001_132_certificate :
     entryValue? 0 body001_132.toList = some (0 : ℚ) := by cbv
 private theorem body001_132_noColon : ':' ∉ body001_132.toList :=
@@ -6228,7 +6228,7 @@ private theorem body001_132_value : bodyValue 0 body001_132 = (0 : ℚ) :=
 
 private def body001_133 : String := "128,1487123316298579,78"
 private theorem body001_133_separators :
-    ':' ∉ body001_133.toList ∧ ';' ∉ body001_133.toList := by cbv; decide +kernel
+    ':' ∉ body001_133.toList ∧ ';' ∉ body001_133.toList := by decide +kernel
 private theorem body001_133_certificate :
     entryValue? 0 body001_133.toList = some (0 : ℚ) := by cbv
 private theorem body001_133_noColon : ':' ∉ body001_133.toList :=
@@ -6256,7 +6256,7 @@ private theorem body001_129_value : bodyValue 0 body001_129 = (0 : ℚ) := by
 
 private def body001_136 : String := "130,2423292750598039,79"
 private theorem body001_136_separators :
-    ':' ∉ body001_136.toList ∧ ';' ∉ body001_136.toList := by cbv; decide +kernel
+    ':' ∉ body001_136.toList ∧ ';' ∉ body001_136.toList := by decide +kernel
 private theorem body001_136_certificate :
     entryValue? 0 body001_136.toList = some (0 : ℚ) := by cbv
 private theorem body001_136_noColon : ':' ∉ body001_136.toList :=
@@ -6266,7 +6266,7 @@ private theorem body001_136_value : bodyValue 0 body001_136 = (0 : ℚ) :=
 
 private def body001_137 : String := "132,3946464751525263,80"
 private theorem body001_137_separators :
-    ':' ∉ body001_137.toList ∧ ';' ∉ body001_137.toList := by cbv; decide +kernel
+    ':' ∉ body001_137.toList ∧ ';' ∉ body001_137.toList := by decide +kernel
 private theorem body001_137_certificate :
     entryValue? 0 body001_137.toList = some (0 : ℚ) := by cbv
 private theorem body001_137_noColon : ':' ∉ body001_137.toList :=
@@ -6285,7 +6285,7 @@ private theorem body001_135_value : bodyValue 0 body001_135 = (0 : ℚ) := by
 
 private def body001_139 : String := "134,3214192988409513,80"
 private theorem body001_139_separators :
-    ':' ∉ body001_139.toList ∧ ';' ∉ body001_139.toList := by cbv; decide +kernel
+    ':' ∉ body001_139.toList ∧ ';' ∉ body001_139.toList := by decide +kernel
 private theorem body001_139_certificate :
     entryValue? 0 body001_139.toList = some (0 : ℚ) := by cbv
 private theorem body001_139_noColon : ':' ∉ body001_139.toList :=
@@ -6295,7 +6295,7 @@ private theorem body001_139_value : bodyValue 0 body001_139 = (0 : ℚ) :=
 
 private def body001_140 : String := "136,2620608164025415,80"
 private theorem body001_140_separators :
-    ':' ∉ body001_140.toList ∧ ';' ∉ body001_140.toList := by cbv; decide +kernel
+    ':' ∉ body001_140.toList ∧ ';' ∉ body001_140.toList := by decide +kernel
 private theorem body001_140_certificate :
     entryValue? 0 body001_140.toList = some (0 : ℚ) := by cbv
 private theorem body001_140_noColon : ':' ∉ body001_140.toList :=
@@ -6332,7 +6332,7 @@ private theorem body001_128_value : bodyValue 0 body001_128 = (0 : ℚ) := by
 
 private def body001_144 : String := "138,4280473750787439,81"
 private theorem body001_144_separators :
-    ':' ∉ body001_144.toList ∧ ';' ∉ body001_144.toList := by cbv; decide +kernel
+    ':' ∉ body001_144.toList ∧ ';' ∉ body001_144.toList := by decide +kernel
 private theorem body001_144_certificate :
     entryValue? 0 body001_144.toList = some (0 : ℚ) := by cbv
 private theorem body001_144_noColon : ':' ∉ body001_144.toList :=
@@ -6342,7 +6342,7 @@ private theorem body001_144_value : bodyValue 0 body001_144 = (0 : ℚ) :=
 
 private def body001_145 : String := "140,875518038240447,79"
 private theorem body001_145_separators :
-    ':' ∉ body001_145.toList ∧ ';' ∉ body001_145.toList := by cbv; decide +kernel
+    ':' ∉ body001_145.toList ∧ ';' ∉ body001_145.toList := by decide +kernel
 private theorem body001_145_certificate :
     entryValue? 0 body001_145.toList = some (0 : ℚ) := by cbv
 private theorem body001_145_noColon : ':' ∉ body001_145.toList :=
@@ -6361,7 +6361,7 @@ private theorem body001_143_value : bodyValue 0 body001_143 = (0 : ℚ) := by
 
 private def body001_147 : String := "142,2868947187483617,81"
 private theorem body001_147_separators :
-    ':' ∉ body001_147.toList ∧ ';' ∉ body001_147.toList := by cbv; decide +kernel
+    ':' ∉ body001_147.toList ∧ ';' ∉ body001_147.toList := by decide +kernel
 private theorem body001_147_certificate :
     entryValue? 0 body001_147.toList = some (0 : ℚ) := by cbv
 private theorem body001_147_noColon : ':' ∉ body001_147.toList :=
@@ -6371,7 +6371,7 @@ private theorem body001_147_value : bodyValue 0 body001_147 = (0 : ℚ) :=
 
 private def body001_148 : String := "144,4702265257117069,82"
 private theorem body001_148_separators :
-    ':' ∉ body001_148.toList ∧ ';' ∉ body001_148.toList := by cbv; decide +kernel
+    ':' ∉ body001_148.toList ∧ ';' ∉ body001_148.toList := by decide +kernel
 private theorem body001_148_certificate :
     entryValue? 0 body001_148.toList = some (0 : ℚ) := by cbv
 private theorem body001_148_noColon : ':' ∉ body001_148.toList :=
@@ -6399,7 +6399,7 @@ private theorem body001_142_value : bodyValue 0 body001_142 = (0 : ℚ) := by
 
 private def body001_151 : String := "146,3850712027308459,82"
 private theorem body001_151_separators :
-    ':' ∉ body001_151.toList ∧ ';' ∉ body001_151.toList := by cbv; decide +kernel
+    ':' ∉ body001_151.toList ∧ ';' ∉ body001_151.toList := by decide +kernel
 private theorem body001_151_certificate :
     entryValue? 0 body001_151.toList = some (0 : ℚ) := by cbv
 private theorem body001_151_noColon : ':' ∉ body001_151.toList :=
@@ -6409,7 +6409,7 @@ private theorem body001_151_value : bodyValue 0 body001_151 = (0 : ℚ) :=
 
 private def body001_152 : String := "148,1574100429547811,81"
 private theorem body001_152_separators :
-    ':' ∉ body001_152.toList ∧ ';' ∉ body001_152.toList := by cbv; decide +kernel
+    ':' ∉ body001_152.toList ∧ ';' ∉ body001_152.toList := by decide +kernel
 private theorem body001_152_certificate :
     entryValue? 0 body001_152.toList = some (0 : ℚ) := by cbv
 private theorem body001_152_noColon : ':' ∉ body001_152.toList :=
@@ -6428,7 +6428,7 @@ private theorem body001_150_value : bodyValue 0 body001_150 = (0 : ℚ) := by
 
 private def body001_154 : String := "150,5137252339938235,83"
 private theorem body001_154_separators :
-    ':' ∉ body001_154.toList ∧ ';' ∉ body001_154.toList := by cbv; decide +kernel
+    ':' ∉ body001_154.toList ∧ ';' ∉ body001_154.toList := by decide +kernel
 private theorem body001_154_certificate :
     entryValue? 0 body001_154.toList = some (0 : ℚ) := by cbv
 private theorem body001_154_noColon : ':' ∉ body001_154.toList :=
@@ -6438,7 +6438,7 @@ private theorem body001_154_value : bodyValue 0 body001_154 = (0 : ℚ) :=
 
 private def body001_155 : String := "152,4184173017860315,83"
 private theorem body001_155_separators :
-    ':' ∉ body001_155.toList ∧ ';' ∉ body001_155.toList := by cbv; decide +kernel
+    ':' ∉ body001_155.toList ∧ ';' ∉ body001_155.toList := by decide +kernel
 private theorem body001_155_certificate :
     entryValue? 0 body001_155.toList = some (0 : ℚ) := by cbv
 private theorem body001_155_noColon : ':' ∉ body001_155.toList :=
@@ -6484,7 +6484,7 @@ private theorem body001_127_value : bodyValue 0 body001_127 = (0 : ℚ) := by
 
 private def body001_160 : String := "154,3405096739160101,83"
 private theorem body001_160_separators :
-    ':' ∉ body001_160.toList ∧ ';' ∉ body001_160.toList := by cbv; decide +kernel
+    ':' ∉ body001_160.toList ∧ ';' ∉ body001_160.toList := by decide +kernel
 private theorem body001_160_certificate :
     entryValue? 0 body001_160.toList = some (0 : ℚ) := by cbv
 private theorem body001_160_noColon : ':' ∉ body001_160.toList :=
@@ -6494,7 +6494,7 @@ private theorem body001_160_value : bodyValue 0 body001_160 = (0 : ℚ) :=
 
 private def body001_161 : String := "156,693111640421559,81"
 private theorem body001_161_separators :
-    ':' ∉ body001_161.toList ∧ ';' ∉ body001_161.toList := by cbv; decide +kernel
+    ':' ∉ body001_161.toList ∧ ';' ∉ body001_161.toList := by decide +kernel
 private theorem body001_161_certificate :
     entryValue? 0 body001_161.toList = some (0 : ℚ) := by cbv
 private theorem body001_161_noColon : ':' ∉ body001_161.toList :=
@@ -6513,7 +6513,7 @@ private theorem body001_159_value : bodyValue 0 body001_159 = (0 : ℚ) := by
 
 private def body001_163 : String := "158,1130719213205607,82"
 private theorem body001_163_separators :
-    ':' ∉ body001_163.toList ∧ ';' ∉ body001_163.toList := by cbv; decide +kernel
+    ':' ∉ body001_163.toList ∧ ';' ∉ body001_163.toList := by decide +kernel
 private theorem body001_163_certificate :
     entryValue? 0 body001_163.toList = some (0 : ℚ) := by cbv
 private theorem body001_163_noColon : ':' ∉ body001_163.toList :=
@@ -6523,7 +6523,7 @@ private theorem body001_163_value : bodyValue 0 body001_163 = (0 : ℚ) :=
 
 private def body001_164 : String := "160,3699239096581725,84"
 private theorem body001_164_separators :
-    ':' ∉ body001_164.toList ∧ ';' ∉ body001_164.toList := by cbv; decide +kernel
+    ':' ∉ body001_164.toList ∧ ';' ∉ body001_164.toList := by decide +kernel
 private theorem body001_164_certificate :
     entryValue? 0 body001_164.toList = some (0 : ℚ) := by cbv
 private theorem body001_164_noColon : ':' ∉ body001_164.toList :=
@@ -6551,7 +6551,7 @@ private theorem body001_158_value : bodyValue 0 body001_158 = (0 : ℚ) := by
 
 private def body001_167 : String := "162,758557349450193,82"
 private theorem body001_167_separators :
-    ':' ∉ body001_167.toList ∧ ';' ∉ body001_167.toList := by cbv; decide +kernel
+    ':' ∉ body001_167.toList ∧ ';' ∉ body001_167.toList := by decide +kernel
 private theorem body001_167_certificate :
     entryValue? 0 body001_167.toList = some (0 : ℚ) := by cbv
 private theorem body001_167_noColon : ':' ∉ body001_167.toList :=
@@ -6561,7 +6561,7 @@ private theorem body001_167_value : bodyValue 0 body001_167 = (0 : ℚ) :=
 
 private def body001_168 : String := "164,623531440349617,82"
 private theorem body001_168_separators :
-    ':' ∉ body001_168.toList ∧ ';' ∉ body001_168.toList := by cbv; decide +kernel
+    ':' ∉ body001_168.toList ∧ ';' ∉ body001_168.toList := by decide +kernel
 private theorem body001_168_certificate :
     entryValue? 0 body001_168.toList = some (0 : ℚ) := by cbv
 private theorem body001_168_noColon : ':' ∉ body001_168.toList :=
@@ -6580,7 +6580,7 @@ private theorem body001_166_value : bodyValue 0 body001_166 = (0 : ℚ) := by
 
 private def body001_170 : String := "166,8207046224092593,86"
 private theorem body001_170_separators :
-    ':' ∉ body001_170.toList ∧ ';' ∉ body001_170.toList := by cbv; decide +kernel
+    ':' ∉ body001_170.toList ∧ ';' ∉ body001_170.toList := by decide +kernel
 private theorem body001_170_certificate :
     entryValue? 0 body001_170.toList = some (0 : ℚ) := by cbv
 private theorem body001_170_noColon : ':' ∉ body001_170.toList :=
@@ -6590,7 +6590,7 @@ private theorem body001_170_value : bodyValue 0 body001_170 = (0 : ℚ) :=
 
 private def body001_171 : String := "168,6745502071896847,86"
 private theorem body001_171_separators :
-    ':' ∉ body001_171.toList ∧ ';' ∉ body001_171.toList := by cbv; decide +kernel
+    ':' ∉ body001_171.toList ∧ ';' ∉ body001_171.toList := by decide +kernel
 private theorem body001_171_certificate :
     entryValue? 0 body001_171.toList = some (0 : ℚ) := by cbv
 private theorem body001_171_noColon : ':' ∉ body001_171.toList :=
@@ -6627,7 +6627,7 @@ private theorem body001_157_value : bodyValue 0 body001_157 = (0 : ℚ) := by
 
 private def body001_175 : String := "170,2765594424392901,85"
 private theorem body001_175_separators :
-    ':' ∉ body001_175.toList ∧ ';' ∉ body001_175.toList := by cbv; decide +kernel
+    ':' ∉ body001_175.toList ∧ ';' ∉ body001_175.toList := by decide +kernel
 private theorem body001_175_certificate :
     entryValue? 0 body001_175.toList = some (0 : ℚ) := by cbv
 private theorem body001_175_noColon : ':' ∉ body001_175.toList :=
@@ -6637,7 +6637,7 @@ private theorem body001_175_value : bodyValue 0 body001_175 = (0 : ℚ) :=
 
 private def body001_176 : String := "172,4520799348082761,86"
 private theorem body001_176_separators :
-    ':' ∉ body001_176.toList ∧ ';' ∉ body001_176.toList := by cbv; decide +kernel
+    ':' ∉ body001_176.toList ∧ ';' ∉ body001_176.toList := by decide +kernel
 private theorem body001_176_certificate :
     entryValue? 0 body001_176.toList = some (0 : ℚ) := by cbv
 private theorem body001_176_noColon : ':' ∉ body001_176.toList :=
@@ -6656,7 +6656,7 @@ private theorem body001_174_value : bodyValue 0 body001_174 = (0 : ℚ) := by
 
 private def body001_178 : String := "174,3682934550002095,86"
 private theorem body001_178_separators :
-    ':' ∉ body001_178.toList ∧ ';' ∉ body001_178.toList := by cbv; decide +kernel
+    ':' ∉ body001_178.toList ∧ ';' ∉ body001_178.toList := by decide +kernel
 private theorem body001_178_certificate :
     entryValue? 0 body001_178.toList = some (0 : ℚ) := by cbv
 private theorem body001_178_noColon : ':' ∉ body001_178.toList :=
@@ -6666,7 +6666,7 @@ private theorem body001_178_value : bodyValue 0 body001_178 = (0 : ℚ) :=
 
 private def body001_179 : String := "176,2993270778202525,86"
 private theorem body001_179_separators :
-    ':' ∉ body001_179.toList ∧ ';' ∉ body001_179.toList := by cbv; decide +kernel
+    ':' ∉ body001_179.toList ∧ ';' ∉ body001_179.toList := by decide +kernel
 private theorem body001_179_certificate :
     entryValue? 0 body001_179.toList = some (0 : ℚ) := by cbv
 private theorem body001_179_noColon : ':' ∉ body001_179.toList :=
@@ -6694,7 +6694,7 @@ private theorem body001_173_value : bodyValue 0 body001_173 = (0 : ℚ) := by
 
 private def body001_182 : String := "178,1215522852798959,85"
 private theorem body001_182_separators :
-    ':' ∉ body001_182.toList ∧ ';' ∉ body001_182.toList := by cbv; decide +kernel
+    ':' ∉ body001_182.toList ∧ ';' ∉ body001_182.toList := by decide +kernel
 private theorem body001_182_certificate :
     entryValue? 0 body001_182.toList = some (0 : ℚ) := by cbv
 private theorem body001_182_noColon : ':' ∉ body001_182.toList :=
@@ -6704,7 +6704,7 @@ private theorem body001_182_value : bodyValue 0 body001_182 = (0 : ℚ) :=
 
 private def body001_183 : String := "180,7908229339148201,88"
 private theorem body001_183_separators :
-    ':' ∉ body001_183.toList ∧ ';' ∉ body001_183.toList := by cbv; decide +kernel
+    ':' ∉ body001_183.toList ∧ ';' ∉ body001_183.toList := by decide +kernel
 private theorem body001_183_certificate :
     entryValue? 0 body001_183.toList = some (0 : ℚ) := by cbv
 private theorem body001_183_noColon : ':' ∉ body001_183.toList :=
@@ -6723,7 +6723,7 @@ private theorem body001_181_value : bodyValue 0 body001_181 = (0 : ℚ) := by
 
 private def body001_185 : String := "182,404541261695725,84"
 private theorem body001_185_separators :
-    ':' ∉ body001_185.toList ∧ ';' ∉ body001_185.toList := by cbv; decide +kernel
+    ':' ∉ body001_185.toList ∧ ';' ∉ body001_185.toList := by decide +kernel
 private theorem body001_185_certificate :
     entryValue? 0 body001_185.toList = some (0 : ℚ) := by cbv
 private theorem body001_185_noColon : ':' ∉ body001_185.toList :=
@@ -6733,7 +6733,7 @@ private theorem body001_185_value : bodyValue 0 body001_185 = (0 : ℚ) :=
 
 private def body001_186 : String := "184,5310910026394803,88"
 private theorem body001_186_separators :
-    ':' ∉ body001_186.toList ∧ ';' ∉ body001_186.toList := by cbv; decide +kernel
+    ':' ∉ body001_186.toList ∧ ';' ∉ body001_186.toList := by decide +kernel
 private theorem body001_186_certificate :
     entryValue? 0 body001_186.toList = some (0 : ℚ) := by cbv
 private theorem body001_186_noColon : ':' ∉ body001_186.toList :=
@@ -6788,7 +6788,7 @@ private theorem body001_126_value : bodyValue 0 body001_126 = (0 : ℚ) := by
 
 private def body001_192 : String := "186,2185488789345977,87"
 private theorem body001_192_separators :
-    ':' ∉ body001_192.toList ∧ ';' ∉ body001_192.toList := by cbv; decide +kernel
+    ':' ∉ body001_192.toList ∧ ';' ∉ body001_192.toList := by decide +kernel
 private theorem body001_192_certificate :
     entryValue? 0 body001_192.toList = some (0 : ℚ) := by cbv
 private theorem body001_192_noColon : ':' ∉ body001_192.toList :=
@@ -6798,7 +6798,7 @@ private theorem body001_192_value : bodyValue 0 body001_192 = (0 : ℚ) :=
 
 private def body001_193 : String := "188,7206165211061281,89"
 private theorem body001_193_separators :
-    ':' ∉ body001_193.toList ∧ ';' ∉ body001_193.toList := by cbv; decide +kernel
+    ':' ∉ body001_193.toList ∧ ';' ∉ body001_193.toList := by decide +kernel
 private theorem body001_193_certificate :
     entryValue? 0 body001_193.toList = some (0 : ℚ) := by cbv
 private theorem body001_193_noColon : ':' ∉ body001_193.toList :=
@@ -6817,7 +6817,7 @@ private theorem body001_191_value : bodyValue 0 body001_191 = (0 : ℚ) := by
 
 private def body001_195 : String := "190,5938504835497089,89"
 private theorem body001_195_separators :
-    ':' ∉ body001_195.toList ∧ ';' ∉ body001_195.toList := by cbv; decide +kernel
+    ':' ∉ body001_195.toList ∧ ';' ∉ body001_195.toList := by decide +kernel
 private theorem body001_195_certificate :
     entryValue? 0 body001_195.toList = some (0 : ℚ) := by cbv
 private theorem body001_195_noColon : ':' ∉ body001_195.toList :=
@@ -6827,7 +6827,7 @@ private theorem body001_195_value : bodyValue 0 body001_195 = (0 : ℚ) :=
 
 private def body001_196 : String := "192,2442167847484399,88"
 private theorem body001_196_separators :
-    ':' ∉ body001_196.toList ∧ ';' ∉ body001_196.toList := by cbv; decide +kernel
+    ':' ∉ body001_196.toList ∧ ';' ∉ body001_196.toList := by decide +kernel
 private theorem body001_196_certificate :
     entryValue? 0 body001_196.toList = some (0 : ℚ) := by cbv
 private theorem body001_196_noColon : ':' ∉ body001_196.toList :=
@@ -6855,7 +6855,7 @@ private theorem body001_190_value : bodyValue 0 body001_190 = (0 : ℚ) := by
 
 private def body001_199 : String := "194,2002702474807977,88"
 private theorem body001_199_separators :
-    ':' ∉ body001_199.toList ∧ ';' ∉ body001_199.toList := by cbv; decide +kernel
+    ':' ∉ body001_199.toList ∧ ';' ∉ body001_199.toList := by decide +kernel
 private theorem body001_199_certificate :
     entryValue? 0 body001_199.toList = some (0 : ℚ) := by cbv
 private theorem body001_199_noColon : ':' ∉ body001_199.toList :=
@@ -6865,7 +6865,7 @@ private theorem body001_199_value : bodyValue 0 body001_199 = (0 : ℚ) :=
 
 private def body001_200 : String := "196,1637117687948461,88"
 private theorem body001_200_separators :
-    ':' ∉ body001_200.toList ∧ ';' ∉ body001_200.toList := by cbv; decide +kernel
+    ':' ∉ body001_200.toList ∧ ';' ∉ body001_200.toList := by decide +kernel
 private theorem body001_200_certificate :
     entryValue? 0 body001_200.toList = some (0 : ℚ) := by cbv
 private theorem body001_200_noColon : ':' ∉ body001_200.toList :=
@@ -6884,7 +6884,7 @@ private theorem body001_198_value : bodyValue 0 body001_198 = (0 : ℚ) := by
 
 private def body001_202 : String := "198,2669538421645949,89"
 private theorem body001_202_separators :
-    ':' ∉ body001_202.toList ∧ ';' ∉ body001_202.toList := by cbv; decide +kernel
+    ':' ∉ body001_202.toList ∧ ';' ∉ body001_202.toList := by decide +kernel
 private theorem body001_202_certificate :
     entryValue? 0 body001_202.toList = some (0 : ℚ) := by cbv
 private theorem body001_202_noColon : ':' ∉ body001_202.toList :=
@@ -6894,7 +6894,7 @@ private theorem body001_202_value : bodyValue 0 body001_202 = (0 : ℚ) :=
 
 private def body001_203 : String := "200,4346730655913585,90"
 private theorem body001_203_separators :
-    ':' ∉ body001_203.toList ∧ ';' ∉ body001_203.toList := by cbv; decide +kernel
+    ':' ∉ body001_203.toList ∧ ';' ∉ body001_203.toList := by decide +kernel
 private theorem body001_203_certificate :
     entryValue? 0 body001_203.toList = some (0 : ℚ) := by cbv
 private theorem body001_203_noColon : ':' ∉ body001_203.toList :=
@@ -6931,7 +6931,7 @@ private theorem body001_189_value : bodyValue 0 body001_189 = (0 : ℚ) := by
 
 private def body001_207 : String := "202,3539424831500053,90"
 private theorem body001_207_separators :
-    ':' ∉ body001_207.toList ∧ ';' ∉ body001_207.toList := by cbv; decide +kernel
+    ':' ∉ body001_207.toList ∧ ';' ∉ body001_207.toList := by decide +kernel
 private theorem body001_207_certificate :
     entryValue? 0 body001_207.toList = some (0 : ℚ) := by cbv
 private theorem body001_207_noColon : ':' ∉ body001_207.toList :=
@@ -6941,7 +6941,7 @@ private theorem body001_207_value : bodyValue 0 body001_207 = (0 : ℚ) :=
 
 private def body001_208 : String := "204,1443894952309589,89"
 private theorem body001_208_separators :
-    ':' ∉ body001_208.toList ∧ ';' ∉ body001_208.toList := by cbv; decide +kernel
+    ':' ∉ body001_208.toList ∧ ';' ∉ body001_208.toList := by decide +kernel
 private theorem body001_208_certificate :
     entryValue? 0 body001_208.toList = some (0 : ℚ) := by cbv
 private theorem body001_208_noColon : ':' ∉ body001_208.toList :=
@@ -6960,7 +6960,7 @@ private theorem body001_206_value : bodyValue 0 body001_206 = (0 : ℚ) := by
 
 private def body001_210 : String := "206,4728913133044925,91"
 private theorem body001_210_separators :
-    ':' ∉ body001_210.toList ∧ ';' ∉ body001_210.toList := by cbv; decide +kernel
+    ':' ∉ body001_210.toList ∧ ';' ∉ body001_210.toList := by decide +kernel
 private theorem body001_210_certificate :
     entryValue? 0 body001_210.toList = some (0 : ℚ) := by cbv
 private theorem body001_210_noColon : ':' ∉ body001_210.toList :=
@@ -6970,7 +6970,7 @@ private theorem body001_210_value : bodyValue 0 body001_210 = (0 : ℚ) :=
 
 private def body001_211 : String := "208,971971858210433,89"
 private theorem body001_211_separators :
-    ':' ∉ body001_211.toList ∧ ';' ∉ body001_211.toList := by cbv; decide +kernel
+    ':' ∉ body001_211.toList ∧ ';' ∉ body001_211.toList := by decide +kernel
 private theorem body001_211_certificate :
     entryValue? 0 body001_211.toList = some (0 : ℚ) := by cbv
 private theorem body001_211_noColon : ':' ∉ body001_211.toList :=
@@ -6998,7 +6998,7 @@ private theorem body001_205_value : bodyValue 0 body001_205 = (0 : ℚ) := by
 
 private def body001_214 : String := "210,6413216216383835,92"
 private theorem body001_214_separators :
-    ':' ∉ body001_214.toList ∧ ';' ∉ body001_214.toList := by cbv; decide +kernel
+    ':' ∉ body001_214.toList ∧ ';' ∉ body001_214.toList := by decide +kernel
 private theorem body001_214_certificate :
     entryValue? 0 body001_214.toList = some (0 : ℚ) := by cbv
 private theorem body001_214_noColon : ':' ∉ body001_214.toList :=
@@ -7008,7 +7008,7 @@ private theorem body001_214_value : bodyValue 0 body001_214 = (0 : ℚ) :=
 
 private def body001_215 : String := "212,165421293150097,87"
 private theorem body001_215_separators :
-    ':' ∉ body001_215.toList ∧ ';' ∉ body001_215.toList := by cbv; decide +kernel
+    ':' ∉ body001_215.toList ∧ ';' ∉ body001_215.toList := by decide +kernel
 private theorem body001_215_certificate :
     entryValue? 0 body001_215.toList = some (0 : ℚ) := by cbv
 private theorem body001_215_noColon : ':' ∉ body001_215.toList :=
@@ -7027,7 +7027,7 @@ private theorem body001_213_value : bodyValue 0 body001_213 = (0 : ℚ) := by
 
 private def body001_217 : String := "214,544935060767545,89"
 private theorem body001_217_separators :
-    ':' ∉ body001_217.toList ∧ ';' ∉ body001_217.toList := by cbv; decide +kernel
+    ':' ∉ body001_217.toList ∧ ';' ∉ body001_217.toList := by decide +kernel
 private theorem body001_217_certificate :
     entryValue? 0 body001_217.toList = some (0 : ℚ) := by cbv
 private theorem body001_217_noColon : ':' ∉ body001_217.toList :=
@@ -7037,7 +7037,7 @@ private theorem body001_217_value : bodyValue 0 body001_217 = (0 : ℚ) :=
 
 private def body001_218 : String := "216,893568375351335,90"
 private theorem body001_218_separators :
-    ':' ∉ body001_218.toList ∧ ';' ∉ body001_218.toList := by cbv; decide +kernel
+    ':' ∉ body001_218.toList ∧ ';' ∉ body001_218.toList := by decide +kernel
 private theorem body001_218_certificate :
     entryValue? 0 body001_218.toList = some (0 : ℚ) := by cbv
 private theorem body001_218_noColon : ':' ∉ body001_218.toList :=
@@ -7083,7 +7083,7 @@ private theorem body001_188_value : bodyValue 0 body001_188 = (0 : ℚ) := by
 
 private def body001_223 : String := "218,5833129446877021,93"
 private theorem body001_223_separators :
-    ':' ∉ body001_223.toList ∧ ';' ∉ body001_223.toList := by cbv; decide +kernel
+    ':' ∉ body001_223.toList ∧ ';' ∉ body001_223.toList := by decide +kernel
 private theorem body001_223_certificate :
     entryValue? 0 body001_223.toList = some (0 : ℚ) := by cbv
 private theorem body001_223_noColon : ':' ∉ body001_223.toList :=
@@ -7093,7 +7093,7 @@ private theorem body001_223_value : bodyValue 0 body001_223 = (0 : ℚ) :=
 
 private def body001_224 : String := "220,4746205978511907,93"
 private theorem body001_224_separators :
-    ':' ∉ body001_224.toList ∧ ';' ∉ body001_224.toList := by cbv; decide +kernel
+    ':' ∉ body001_224.toList ∧ ';' ∉ body001_224.toList := by decide +kernel
 private theorem body001_224_certificate :
     entryValue? 0 body001_224.toList = some (0 : ℚ) := by cbv
 private theorem body001_224_noColon : ':' ∉ body001_224.toList :=
@@ -7112,7 +7112,7 @@ private theorem body001_222_value : bodyValue 0 body001_222 = (0 : ℚ) := by
 
 private def body001_226 : String := "222,1931733772350851,92"
 private theorem body001_226_separators :
-    ':' ∉ body001_226.toList ∧ ';' ∉ body001_226.toList := by cbv; decide +kernel
+    ':' ∉ body001_226.toList ∧ ';' ∉ body001_226.toList := by decide +kernel
 private theorem body001_226_certificate :
     entryValue? 0 body001_226.toList = some (0 : ℚ) := by cbv
 private theorem body001_226_noColon : ':' ∉ body001_226.toList :=
@@ -7122,7 +7122,7 @@ private theorem body001_226_value : bodyValue 0 body001_226 = (0 : ℚ) :=
 
 private def body001_227 : String := "224,1578027792859581,92"
 private theorem body001_227_separators :
-    ':' ∉ body001_227.toList ∧ ';' ∉ body001_227.toList := by cbv; decide +kernel
+    ':' ∉ body001_227.toList ∧ ';' ∉ body001_227.toList := by decide +kernel
 private theorem body001_227_certificate :
     entryValue? 0 body001_227.toList = some (0 : ℚ) := by cbv
 private theorem body001_227_noColon : ':' ∉ body001_227.toList :=
@@ -7150,7 +7150,7 @@ private theorem body001_221_value : bodyValue 0 body001_221 = (0 : ℚ) := by
 
 private def body001_230 : String := "226,2591691509223487,93"
 private theorem body001_230_separators :
-    ':' ∉ body001_230.toList ∧ ';' ∉ body001_230.toList := by cbv; decide +kernel
+    ':' ∉ body001_230.toList ∧ ';' ∉ body001_230.toList := by decide +kernel
 private theorem body001_230_certificate :
     entryValue? 0 body001_230.toList = some (0 : ℚ) := by cbv
 private theorem body001_230_noColon : ':' ∉ body001_230.toList :=
@@ -7160,7 +7160,7 @@ private theorem body001_230_value : bodyValue 0 body001_230 = (0 : ℚ) :=
 
 private def body001_231 : String := "228,16716890593883,86"
 private theorem body001_231_separators :
-    ':' ∉ body001_231.toList ∧ ';' ∉ body001_231.toList := by cbv; decide +kernel
+    ':' ∉ body001_231.toList ∧ ';' ∉ body001_231.toList := by decide +kernel
 private theorem body001_231_certificate :
     entryValue? 0 body001_231.toList = some (0 : ℚ) := by cbv
 private theorem body001_231_noColon : ':' ∉ body001_231.toList :=
@@ -7179,7 +7179,7 @@ private theorem body001_229_value : bodyValue 0 body001_229 = (0 : ℚ) := by
 
 private def body001_233 : String := "230,3550668882917497,94"
 private theorem body001_233_separators :
-    ':' ∉ body001_233.toList ∧ ';' ∉ body001_233.toList := by cbv; decide +kernel
+    ':' ∉ body001_233.toList ∧ ';' ∉ body001_233.toList := by decide +kernel
 private theorem body001_233_certificate :
     entryValue? 0 body001_233.toList = some (0 : ℚ) := by cbv
 private theorem body001_233_noColon : ':' ∉ body001_233.toList :=
@@ -7189,7 +7189,7 @@ private theorem body001_233_value : bodyValue 0 body001_233 = (0 : ℚ) :=
 
 private def body001_234 : String := "232,5918108769398157,95"
 private theorem body001_234_separators :
-    ':' ∉ body001_234.toList ∧ ';' ∉ body001_234.toList := by cbv; decide +kernel
+    ':' ∉ body001_234.toList ∧ ';' ∉ body001_234.toList := by decide +kernel
 private theorem body001_234_certificate :
     entryValue? 0 body001_234.toList = some (0 : ℚ) := by cbv
 private theorem body001_234_noColon : ':' ∉ body001_234.toList :=
@@ -7226,7 +7226,7 @@ private theorem body001_220_value : bodyValue 0 body001_220 = (0 : ℚ) := by
 
 private def body001_238 : String := "234,309298108304947,91"
 private theorem body001_238_separators :
-    ':' ∉ body001_238.toList ∧ ';' ∉ body001_238.toList := by cbv; decide +kernel
+    ':' ∉ body001_238.toList ∧ ';' ∉ body001_238.toList := by decide +kernel
 private theorem body001_238_certificate :
     entryValue? 0 body001_238.toList = some (0 : ℚ) := by cbv
 private theorem body001_238_noColon : ':' ∉ body001_238.toList :=
@@ -7236,7 +7236,7 @@ private theorem body001_238_value : bodyValue 0 body001_238 = (0 : ℚ) :=
 
 private def body001_239 : String := "236,8277879585767633,96"
 private theorem body001_239_separators :
-    ':' ∉ body001_239.toList ∧ ';' ∉ body001_239.toList := by cbv; decide +kernel
+    ':' ∉ body001_239.toList ∧ ';' ∉ body001_239.toList := by decide +kernel
 private theorem body001_239_certificate :
     entryValue? 0 body001_239.toList = some (0 : ℚ) := by cbv
 private theorem body001_239_noColon : ':' ∉ body001_239.toList :=
@@ -7255,7 +7255,7 @@ private theorem body001_237_value : bodyValue 0 body001_237 = (0 : ℚ) := by
 
 private def body001_241 : String := "238,3440391239561449,95"
 private theorem body001_241_separators :
-    ':' ∉ body001_241.toList ∧ ';' ∉ body001_241.toList := by cbv; decide +kernel
+    ':' ∉ body001_241.toList ∧ ';' ∉ body001_241.toList := by decide +kernel
 private theorem body001_241_certificate :
     entryValue? 0 body001_241.toList = some (0 : ℚ) := by cbv
 private theorem body001_241_noColon : ':' ∉ body001_241.toList :=
@@ -7265,7 +7265,7 @@ private theorem body001_241_value : bodyValue 0 body001_241 = (0 : ℚ) :=
 
 private def body001_242 : String := "240,704650474976609,93"
 private theorem body001_242_separators :
-    ':' ∉ body001_242.toList ∧ ';' ∉ body001_242.toList := by cbv; decide +kernel
+    ':' ∉ body001_242.toList ∧ ';' ∉ body001_242.toList := by decide +kernel
 private theorem body001_242_certificate :
     entryValue? 0 body001_242.toList = some (0 : ℚ) := by cbv
 private theorem body001_242_noColon : ':' ∉ body001_242.toList :=
@@ -7293,7 +7293,7 @@ private theorem body001_236_value : bodyValue 0 body001_236 = (0 : ℚ) := by
 
 private def body001_245 : String := "242,1129936513183965,94"
 private theorem body001_245_separators :
-    ':' ∉ body001_245.toList ∧ ';' ∉ body001_245.toList := by cbv; decide +kernel
+    ':' ∉ body001_245.toList ∧ ';' ∉ body001_245.toList := by decide +kernel
 private theorem body001_245_certificate :
     entryValue? 0 body001_245.toList = some (0 : ℚ) := by cbv
 private theorem body001_245_noColon : ':' ∉ body001_245.toList :=
@@ -7303,7 +7303,7 @@ private theorem body001_245_value : bodyValue 0 body001_245 = (0 : ℚ) :=
 
 private def body001_246 : String := "244,3540604758299141,96"
 private theorem body001_246_separators :
-    ':' ∉ body001_246.toList ∧ ';' ∉ body001_246.toList := by cbv; decide +kernel
+    ':' ∉ body001_246.toList ∧ ';' ∉ body001_246.toList := by decide +kernel
 private theorem body001_246_certificate :
     entryValue? 0 body001_246.toList = some (0 : ℚ) := by cbv
 private theorem body001_246_noColon : ':' ∉ body001_246.toList :=
@@ -7322,7 +7322,7 @@ private theorem body001_244_value : bodyValue 0 body001_244 = (0 : ℚ) := by
 
 private def body001_248 : String := "246,341341600430349,93"
 private theorem body001_248_separators :
-    ':' ∉ body001_248.toList ∧ ';' ∉ body001_248.toList := by cbv; decide +kernel
+    ':' ∉ body001_248.toList ∧ ';' ∉ body001_248.toList := by decide +kernel
 private theorem body001_248_certificate :
     entryValue? 0 body001_248.toList = some (0 : ℚ) := by cbv
 private theorem body001_248_noColon : ':' ∉ body001_248.toList :=
@@ -7332,7 +7332,7 @@ private theorem body001_248_value : bodyValue 0 body001_248 = (0 : ℚ) :=
 
 private def body001_249 : String := "248,8447057999965159,98"
 private theorem body001_249_separators :
-    ':' ∉ body001_249.toList ∧ ';' ∉ body001_249.toList := by cbv; decide +kernel
+    ':' ∉ body001_249.toList ∧ ';' ∉ body001_249.toList := by decide +kernel
 private theorem body001_249_certificate :
     entryValue? 0 body001_249.toList = some (0 : ℚ) := by cbv
 private theorem body001_249_noColon : ':' ∉ body001_249.toList :=
@@ -7405,7 +7405,7 @@ private theorem body001_001_value : bodyValue 0 body001_001 = (4844378105837337 
 
 private def body001_256 : String := "250,1676969916513933,96"
 private theorem body001_256_separators :
-    ':' ∉ body001_256.toList ∧ ';' ∉ body001_256.toList := by cbv; decide +kernel
+    ':' ∉ body001_256.toList ∧ ';' ∉ body001_256.toList := by decide +kernel
 private theorem body001_256_certificate :
     entryValue? 0 body001_256.toList = some (0 : ℚ) := by cbv
 private theorem body001_256_noColon : ':' ∉ body001_256.toList :=
@@ -7415,7 +7415,7 @@ private theorem body001_256_value : bodyValue 0 body001_256 = (0 : ℚ) :=
 
 private def body001_258 : String := "252,5562560165155847,98"
 private theorem body001_258_separators :
-    ':' ∉ body001_258.toList ∧ ';' ∉ body001_258.toList := by cbv; decide +kernel
+    ':' ∉ body001_258.toList ∧ ';' ∉ body001_258.toList := by decide +kernel
 private theorem body001_258_certificate :
     entryValue? 0 body001_258.toList = some (0 : ℚ) := by cbv
 private theorem body001_258_noColon : ':' ∉ body001_258.toList :=
@@ -7425,7 +7425,7 @@ private theorem body001_258_value : bodyValue 0 body001_258 = (0 : ℚ) :=
 
 private def body001_259 : String := "254,4812080603965793,98"
 private theorem body001_259_separators :
-    ':' ∉ body001_259.toList ∧ ';' ∉ body001_259.toList := by cbv; decide +kernel
+    ':' ∉ body001_259.toList ∧ ';' ∉ body001_259.toList := by decide +kernel
 private theorem body001_259_certificate :
     entryValue? 0 body001_259.toList = some (0 : ℚ) := by cbv
 private theorem body001_259_noColon : ':' ∉ body001_259.toList :=
@@ -7453,7 +7453,7 @@ private theorem body001_255_value : bodyValue 0 body001_255 = (0 : ℚ) := by
 
 private def body001_262 : String := "256,1069217811944355,96"
 private theorem body001_262_separators :
-    ':' ∉ body001_262.toList ∧ ';' ∉ body001_262.toList := by cbv; decide +kernel
+    ':' ∉ body001_262.toList ∧ ';' ∉ body001_262.toList := by decide +kernel
 private theorem body001_262_certificate :
     entryValue? 0 body001_262.toList = some (0 : ℚ) := by cbv
 private theorem body001_262_noColon : ':' ∉ body001_262.toList :=
@@ -7463,7 +7463,7 @@ private theorem body001_262_value : bodyValue 0 body001_262 = (0 : ℚ) :=
 
 private def body001_263 : String := "258,1921145527324639,97"
 private theorem body001_263_separators :
-    ':' ∉ body001_263.toList ∧ ';' ∉ body001_263.toList := by cbv; decide +kernel
+    ':' ∉ body001_263.toList ∧ ';' ∉ body001_263.toList := by decide +kernel
 private theorem body001_263_certificate :
     entryValue? 0 body001_263.toList = some (0 : ℚ) := by cbv
 private theorem body001_263_noColon : ':' ∉ body001_263.toList :=
@@ -7482,7 +7482,7 @@ private theorem body001_261_value : bodyValue 0 body001_261 = (0 : ℚ) := by
 
 private def body001_265 : String := "260,3456917017249401,98"
 private theorem body001_265_separators :
-    ':' ∉ body001_265.toList ∧ ';' ∉ body001_265.toList := by cbv; decide +kernel
+    ':' ∉ body001_265.toList ∧ ';' ∉ body001_265.toList := by decide +kernel
 private theorem body001_265_certificate :
     entryValue? 0 body001_265.toList = some (0 : ℚ) := by cbv
 private theorem body001_265_noColon : ':' ∉ body001_265.toList :=
@@ -7492,7 +7492,7 @@ private theorem body001_265_value : bodyValue 0 body001_265 = (0 : ℚ) :=
 
 private def body001_266 : String := "262,6200275796921835,99"
 private theorem body001_266_separators :
-    ':' ∉ body001_266.toList ∧ ';' ∉ body001_266.toList := by cbv; decide +kernel
+    ':' ∉ body001_266.toList ∧ ';' ∉ body001_266.toList := by decide +kernel
 private theorem body001_266_certificate :
     entryValue? 0 body001_266.toList = some (0 : ℚ) := by cbv
 private theorem body001_266_noColon : ':' ∉ body001_266.toList :=
@@ -7529,7 +7529,7 @@ private theorem body001_254_value : bodyValue 0 body001_254 = (0 : ℚ) := by
 
 private def body001_270 : String := "264,1375410648279145,97"
 private theorem body001_270_separators :
-    ':' ∉ body001_270.toList ∧ ';' ∉ body001_270.toList := by cbv; decide +kernel
+    ':' ∉ body001_270.toList ∧ ';' ∉ body001_270.toList := by decide +kernel
 private theorem body001_270_certificate :
     entryValue? 0 body001_270.toList = some (0 : ℚ) := by cbv
 private theorem body001_270_noColon : ':' ∉ body001_270.toList :=
@@ -7539,7 +7539,7 @@ private theorem body001_270_value : bodyValue 0 body001_270 = (0 : ℚ) :=
 
 private def body001_271 : String := "266,2379497926695081,98"
 private theorem body001_271_separators :
-    ':' ∉ body001_271.toList ∧ ';' ∉ body001_271.toList := by cbv; decide +kernel
+    ':' ∉ body001_271.toList ∧ ';' ∉ body001_271.toList := by decide +kernel
 private theorem body001_271_certificate :
     entryValue? 0 body001_271.toList = some (0 : ℚ) := by cbv
 private theorem body001_271_noColon : ':' ∉ body001_271.toList :=
@@ -7558,7 +7558,7 @@ private theorem body001_269_value : bodyValue 0 body001_269 = (0 : ℚ) := by
 
 private def body001_273 : String := "268,122741148304829,94"
 private theorem body001_273_separators :
-    ':' ∉ body001_273.toList ∧ ';' ∉ body001_273.toList := by cbv; decide +kernel
+    ':' ∉ body001_273.toList ∧ ';' ∉ body001_273.toList := by decide +kernel
 private theorem body001_273_certificate :
     entryValue? 0 body001_273.toList = some (0 : ℚ) := by cbv
 private theorem body001_273_noColon : ':' ∉ body001_273.toList :=
@@ -7568,7 +7568,7 @@ private theorem body001_273_value : bodyValue 0 body001_273 = (0 : ℚ) :=
 
 private def body001_274 : String := "270,754722573692045,97"
 private theorem body001_274_separators :
-    ':' ∉ body001_274.toList ∧ ';' ∉ body001_274.toList := by cbv; decide +kernel
+    ':' ∉ body001_274.toList ∧ ';' ∉ body001_274.toList := by decide +kernel
 private theorem body001_274_certificate :
     entryValue? 0 body001_274.toList = some (0 : ℚ) := by cbv
 private theorem body001_274_noColon : ':' ∉ body001_274.toList :=
@@ -7596,7 +7596,7 @@ private theorem body001_268_value : bodyValue 0 body001_268 = (0 : ℚ) := by
 
 private def body001_277 : String := "272,8445832512903687,101"
 private theorem body001_277_separators :
-    ':' ∉ body001_277.toList ∧ ';' ∉ body001_277.toList := by cbv; decide +kernel
+    ':' ∉ body001_277.toList ∧ ';' ∉ body001_277.toList := by decide +kernel
 private theorem body001_277_certificate :
     entryValue? 0 body001_277.toList = some (0 : ℚ) := by cbv
 private theorem body001_277_noColon : ':' ∉ body001_277.toList :=
@@ -7606,7 +7606,7 @@ private theorem body001_277_value : bodyValue 0 body001_277 = (0 : ℚ) :=
 
 private def body001_278 : String := "274,2642740576139189,100"
 private theorem body001_278_separators :
-    ':' ∉ body001_278.toList ∧ ';' ∉ body001_278.toList := by cbv; decide +kernel
+    ':' ∉ body001_278.toList ∧ ';' ∉ body001_278.toList := by decide +kernel
 private theorem body001_278_certificate :
     entryValue? 0 body001_278.toList = some (0 : ℚ) := by cbv
 private theorem body001_278_noColon : ':' ∉ body001_278.toList :=
@@ -7625,7 +7625,7 @@ private theorem body001_276_value : bodyValue 0 body001_276 = (0 : ℚ) := by
 
 private def body001_280 : String := "276,1493050381189579,100"
 private theorem body001_280_separators :
-    ':' ∉ body001_280.toList ∧ ';' ∉ body001_280.toList := by cbv; decide +kernel
+    ':' ∉ body001_280.toList ∧ ';' ∉ body001_280.toList := by decide +kernel
 private theorem body001_280_certificate :
     entryValue? 0 body001_280.toList = some (0 : ℚ) := by cbv
 private theorem body001_280_noColon : ':' ∉ body001_280.toList :=
@@ -7635,7 +7635,7 @@ private theorem body001_280_value : bodyValue 0 body001_280 = (0 : ℚ) :=
 
 private def body001_281 : String := "278,3377291933561927,102"
 private theorem body001_281_separators :
-    ':' ∉ body001_281.toList ∧ ';' ∉ body001_281.toList := by cbv; decide +kernel
+    ':' ∉ body001_281.toList ∧ ';' ∉ body001_281.toList := by decide +kernel
 private theorem body001_281_certificate :
     entryValue? 0 body001_281.toList = some (0 : ℚ) := by cbv
 private theorem body001_281_noColon : ':' ∉ body001_281.toList :=
@@ -7681,7 +7681,7 @@ private theorem body001_253_value : bodyValue 0 body001_253 = (0 : ℚ) := by
 
 private def body001_286 : String := "280,2496733525363275,102"
 private theorem body001_286_separators :
-    ':' ∉ body001_286.toList ∧ ';' ∉ body001_286.toList := by cbv; decide +kernel
+    ':' ∉ body001_286.toList ∧ ';' ∉ body001_286.toList := by decide +kernel
 private theorem body001_286_certificate :
     entryValue? 0 body001_286.toList = some (0 : ℚ) := by cbv
 private theorem body001_286_noColon : ':' ∉ body001_286.toList :=
@@ -7691,7 +7691,7 @@ private theorem body001_286_value : bodyValue 0 body001_286 = (0 : ℚ) :=
 
 private def body001_287 : String := "282,2690905274320211,102"
 private theorem body001_287_separators :
-    ':' ∉ body001_287.toList ∧ ';' ∉ body001_287.toList := by cbv; decide +kernel
+    ':' ∉ body001_287.toList ∧ ';' ∉ body001_287.toList := by decide +kernel
 private theorem body001_287_certificate :
     entryValue? 0 body001_287.toList = some (0 : ℚ) := by cbv
 private theorem body001_287_noColon : ':' ∉ body001_287.toList :=
@@ -7710,7 +7710,7 @@ private theorem body001_285_value : bodyValue 0 body001_285 = (0 : ℚ) := by
 
 private def body001_289 : String := "284,6624016998321841,103"
 private theorem body001_289_separators :
-    ':' ∉ body001_289.toList ∧ ';' ∉ body001_289.toList := by cbv; decide +kernel
+    ':' ∉ body001_289.toList ∧ ';' ∉ body001_289.toList := by decide +kernel
 private theorem body001_289_certificate :
     entryValue? 0 body001_289.toList = some (0 : ℚ) := by cbv
 private theorem body001_289_noColon : ':' ∉ body001_289.toList :=
@@ -7720,7 +7720,7 @@ private theorem body001_289_value : bodyValue 0 body001_289 = (0 : ℚ) :=
 
 private def body001_290 : String := "286,3953081443391391,102"
 private theorem body001_290_separators :
-    ':' ∉ body001_290.toList ∧ ';' ∉ body001_290.toList := by cbv; decide +kernel
+    ':' ∉ body001_290.toList ∧ ';' ∉ body001_290.toList := by decide +kernel
 private theorem body001_290_certificate :
     entryValue? 0 body001_290.toList = some (0 : ℚ) := by cbv
 private theorem body001_290_noColon : ':' ∉ body001_290.toList :=
@@ -7748,7 +7748,7 @@ private theorem body001_284_value : bodyValue 0 body001_284 = (0 : ℚ) := by
 
 private def body001_293 : String := "288,4487095991909981,102"
 private theorem body001_293_separators :
-    ':' ∉ body001_293.toList ∧ ';' ∉ body001_293.toList := by cbv; decide +kernel
+    ':' ∉ body001_293.toList ∧ ';' ∉ body001_293.toList := by decide +kernel
 private theorem body001_293_certificate :
     entryValue? 0 body001_293.toList = some (0 : ℚ) := by cbv
 private theorem body001_293_noColon : ':' ∉ body001_293.toList :=
@@ -7758,7 +7758,7 @@ private theorem body001_293_value : bodyValue 0 body001_293 = (0 : ℚ) :=
 
 private def body001_294 : String := "290,2465660437143983,101"
 private theorem body001_294_separators :
-    ':' ∉ body001_294.toList ∧ ';' ∉ body001_294.toList := by cbv; decide +kernel
+    ':' ∉ body001_294.toList ∧ ';' ∉ body001_294.toList := by decide +kernel
 private theorem body001_294_certificate :
     entryValue? 0 body001_294.toList = some (0 : ℚ) := by cbv
 private theorem body001_294_noColon : ':' ∉ body001_294.toList :=
@@ -7777,7 +7777,7 @@ private theorem body001_292_value : bodyValue 0 body001_292 = (0 : ℚ) := by
 
 private def body001_296 : String := "292,5274045527188741,102"
 private theorem body001_296_separators :
-    ':' ∉ body001_296.toList ∧ ';' ∉ body001_296.toList := by cbv; decide +kernel
+    ':' ∉ body001_296.toList ∧ ';' ∉ body001_296.toList := by decide +kernel
 private theorem body001_296_certificate :
     entryValue? 0 body001_296.toList = some (0 : ℚ) := by cbv
 private theorem body001_296_noColon : ':' ∉ body001_296.toList :=
@@ -7787,7 +7787,7 @@ private theorem body001_296_value : bodyValue 0 body001_296 = (0 : ℚ) :=
 
 private def body001_297 : String := "294,5395944788923103,102"
 private theorem body001_297_separators :
-    ':' ∉ body001_297.toList ∧ ';' ∉ body001_297.toList := by cbv; decide +kernel
+    ':' ∉ body001_297.toList ∧ ';' ∉ body001_297.toList := by decide +kernel
 private theorem body001_297_certificate :
     entryValue? 0 body001_297.toList = some (0 : ℚ) := by cbv
 private theorem body001_297_noColon : ':' ∉ body001_297.toList :=
@@ -7824,7 +7824,7 @@ private theorem body001_283_value : bodyValue 0 body001_283 = (0 : ℚ) := by
 
 private def body001_301 : String := "296,160244968379195,97"
 private theorem body001_301_separators :
-    ':' ∉ body001_301.toList ∧ ';' ∉ body001_301.toList := by cbv; decide +kernel
+    ':' ∉ body001_301.toList ∧ ';' ∉ body001_301.toList := by decide +kernel
 private theorem body001_301_certificate :
     entryValue? 0 body001_301.toList = some (0 : ℚ) := by cbv
 private theorem body001_301_noColon : ':' ∉ body001_301.toList :=
@@ -7834,7 +7834,7 @@ private theorem body001_301_value : bodyValue 0 body001_301 = (0 : ℚ) :=
 
 private def body001_302 : String := "298,2191501568875183,101"
 private theorem body001_302_separators :
-    ':' ∉ body001_302.toList ∧ ';' ∉ body001_302.toList := by cbv; decide +kernel
+    ':' ∉ body001_302.toList ∧ ';' ∉ body001_302.toList := by decide +kernel
 private theorem body001_302_certificate :
     entryValue? 0 body001_302.toList = some (0 : ℚ) := by cbv
 private theorem body001_302_noColon : ':' ∉ body001_302.toList :=
@@ -7853,7 +7853,7 @@ private theorem body001_300_value : bodyValue 0 body001_300 = (0 : ℚ) := by
 
 private def body001_304 : String := "300,1627636756601087,101"
 private theorem body001_304_separators :
-    ':' ∉ body001_304.toList ∧ ';' ∉ body001_304.toList := by cbv; decide +kernel
+    ':' ∉ body001_304.toList ∧ ';' ∉ body001_304.toList := by decide +kernel
 private theorem body001_304_certificate :
     entryValue? 0 body001_304.toList = some (0 : ℚ) := by cbv
 private theorem body001_304_noColon : ':' ∉ body001_304.toList :=
@@ -7863,7 +7863,7 @@ private theorem body001_304_value : bodyValue 0 body001_304 = (0 : ℚ) :=
 
 private def body001_305 : String := "302,4013703896318337,103"
 private theorem body001_305_separators :
-    ':' ∉ body001_305.toList ∧ ';' ∉ body001_305.toList := by cbv; decide +kernel
+    ':' ∉ body001_305.toList ∧ ';' ∉ body001_305.toList := by decide +kernel
 private theorem body001_305_certificate :
     entryValue? 0 body001_305.toList = some (0 : ℚ) := by cbv
 private theorem body001_305_noColon : ':' ∉ body001_305.toList :=
@@ -7891,7 +7891,7 @@ private theorem body001_299_value : bodyValue 0 body001_299 = (0 : ℚ) := by
 
 private def body001_308 : String := "304,3801255879235481,104"
 private theorem body001_308_separators :
-    ':' ∉ body001_308.toList ∧ ';' ∉ body001_308.toList := by cbv; decide +kernel
+    ':' ∉ body001_308.toList ∧ ';' ∉ body001_308.toList := by decide +kernel
 private theorem body001_308_certificate :
     entryValue? 0 body001_308.toList = some (0 : ℚ) := by cbv
 private theorem body001_308_noColon : ':' ∉ body001_308.toList :=
@@ -7901,7 +7901,7 @@ private theorem body001_308_value : bodyValue 0 body001_308 = (0 : ℚ) :=
 
 private def body001_309 : String := "306,4795580835637551,106"
 private theorem body001_309_separators :
-    ':' ∉ body001_309.toList ∧ ';' ∉ body001_309.toList := by cbv; decide +kernel
+    ':' ∉ body001_309.toList ∧ ';' ∉ body001_309.toList := by decide +kernel
 private theorem body001_309_certificate :
     entryValue? 0 body001_309.toList = some (0 : ℚ) := by cbv
 private theorem body001_309_noColon : ':' ∉ body001_309.toList :=
@@ -7920,7 +7920,7 @@ private theorem body001_307_value : bodyValue 0 body001_307 = (0 : ℚ) := by
 
 private def body001_311 : String := "308,5227493210229637,108"
 private theorem body001_311_separators :
-    ':' ∉ body001_311.toList ∧ ';' ∉ body001_311.toList := by cbv; decide +kernel
+    ':' ∉ body001_311.toList ∧ ';' ∉ body001_311.toList := by decide +kernel
 private theorem body001_311_certificate :
     entryValue? 0 body001_311.toList = some (0 : ℚ) := by cbv
 private theorem body001_311_noColon : ':' ∉ body001_311.toList :=
@@ -7930,7 +7930,7 @@ private theorem body001_311_value : bodyValue 0 body001_311 = (0 : ℚ) :=
 
 private def body001_312 : String := "310,2466239834454787,106"
 private theorem body001_312_separators :
-    ':' ∉ body001_312.toList ∧ ';' ∉ body001_312.toList := by cbv; decide +kernel
+    ':' ∉ body001_312.toList ∧ ';' ∉ body001_312.toList := by decide +kernel
 private theorem body001_312_certificate :
     entryValue? 0 body001_312.toList = some (0 : ℚ) := by cbv
 private theorem body001_312_noColon : ':' ∉ body001_312.toList :=
@@ -7985,7 +7985,7 @@ private theorem body001_252_value : bodyValue 0 body001_252 = (0 : ℚ) := by
 
 private def body001_317 : String := "312,2496191385287777,105"
 private theorem body001_317_separators :
-    ':' ∉ body001_317.toList ∧ ';' ∉ body001_317.toList := by cbv; decide +kernel
+    ':' ∉ body001_317.toList ∧ ';' ∉ body001_317.toList := by decide +kernel
 private theorem body001_317_certificate :
     entryValue? 0 body001_317.toList = some (0 : ℚ) := by cbv
 private theorem body001_317_noColon : ':' ∉ body001_317.toList :=
@@ -7995,7 +7995,7 @@ private theorem body001_317_value : bodyValue 0 body001_317 = (0 : ℚ) :=
 
 private def body001_319 : String := "314,6545119925839411,106"
 private theorem body001_319_separators :
-    ':' ∉ body001_319.toList ∧ ';' ∉ body001_319.toList := by cbv; decide +kernel
+    ':' ∉ body001_319.toList ∧ ';' ∉ body001_319.toList := by decide +kernel
 private theorem body001_319_certificate :
     entryValue? 0 body001_319.toList = some (0 : ℚ) := by cbv
 private theorem body001_319_noColon : ':' ∉ body001_319.toList :=
@@ -8005,7 +8005,7 @@ private theorem body001_319_value : bodyValue 0 body001_319 = (0 : ℚ) :=
 
 private def body001_320 : String := "316,52934579893037,99"
 private theorem body001_320_separators :
-    ':' ∉ body001_320.toList ∧ ';' ∉ body001_320.toList := by cbv; decide +kernel
+    ':' ∉ body001_320.toList ∧ ';' ∉ body001_320.toList := by decide +kernel
 private theorem body001_320_certificate :
     entryValue? 0 body001_320.toList = some (0 : ℚ) := by cbv
 private theorem body001_320_noColon : ':' ∉ body001_320.toList :=
@@ -8033,7 +8033,7 @@ private theorem body001_316_value : bodyValue 0 body001_316 = (0 : ℚ) := by
 
 private def body001_323 : String := "318,3491914116522073,105"
 private theorem body001_323_separators :
-    ':' ∉ body001_323.toList ∧ ';' ∉ body001_323.toList := by cbv; decide +kernel
+    ':' ∉ body001_323.toList ∧ ';' ∉ body001_323.toList := by decide +kernel
 private theorem body001_323_certificate :
     entryValue? 0 body001_323.toList = some (0 : ℚ) := by cbv
 private theorem body001_323_noColon : ':' ∉ body001_323.toList :=
@@ -8043,7 +8043,7 @@ private theorem body001_323_value : bodyValue 0 body001_323 = (0 : ℚ) :=
 
 private def body001_324 : String := "320,1097208709326311,103"
 private theorem body001_324_separators :
-    ':' ∉ body001_324.toList ∧ ';' ∉ body001_324.toList := by cbv; decide +kernel
+    ':' ∉ body001_324.toList ∧ ';' ∉ body001_324.toList := by decide +kernel
 private theorem body001_324_certificate :
     entryValue? 0 body001_324.toList = some (0 : ℚ) := by cbv
 private theorem body001_324_noColon : ':' ∉ body001_324.toList :=
@@ -8062,7 +8062,7 @@ private theorem body001_322_value : bodyValue 0 body001_322 = (0 : ℚ) := by
 
 private def body001_326 : String := "322,3171120205663783,104"
 private theorem body001_326_separators :
-    ':' ∉ body001_326.toList ∧ ';' ∉ body001_326.toList := by cbv; decide +kernel
+    ':' ∉ body001_326.toList ∧ ';' ∉ body001_326.toList := by decide +kernel
 private theorem body001_326_certificate :
     entryValue? 0 body001_326.toList = some (0 : ℚ) := by cbv
 private theorem body001_326_noColon : ':' ∉ body001_326.toList :=
@@ -8072,7 +8072,7 @@ private theorem body001_326_value : bodyValue 0 body001_326 = (0 : ℚ) :=
 
 private def body001_327 : String := "324,4398491560760807,104"
 private theorem body001_327_separators :
-    ':' ∉ body001_327.toList ∧ ';' ∉ body001_327.toList := by cbv; decide +kernel
+    ':' ∉ body001_327.toList ∧ ';' ∉ body001_327.toList := by decide +kernel
 private theorem body001_327_certificate :
     entryValue? 0 body001_327.toList = some (0 : ℚ) := by cbv
 private theorem body001_327_noColon : ':' ∉ body001_327.toList :=
@@ -8109,7 +8109,7 @@ private theorem body001_315_value : bodyValue 0 body001_315 = (0 : ℚ) := by
 
 private def body001_331 : String := "326,2665559492533593,103"
 private theorem body001_331_separators :
-    ':' ∉ body001_331.toList ∧ ';' ∉ body001_331.toList := by cbv; decide +kernel
+    ':' ∉ body001_331.toList ∧ ';' ∉ body001_331.toList := by decide +kernel
 private theorem body001_331_certificate :
     entryValue? 0 body001_331.toList = some (0 : ℚ) := by cbv
 private theorem body001_331_noColon : ':' ∉ body001_331.toList :=
@@ -8119,7 +8119,7 @@ private theorem body001_331_value : bodyValue 0 body001_331 = (0 : ℚ) :=
 
 private def body001_332 : String := "328,1368726284124171,102"
 private theorem body001_332_separators :
-    ':' ∉ body001_332.toList ∧ ';' ∉ body001_332.toList := by cbv; decide +kernel
+    ':' ∉ body001_332.toList ∧ ';' ∉ body001_332.toList := by decide +kernel
 private theorem body001_332_certificate :
     entryValue? 0 body001_332.toList = some (0 : ℚ) := by cbv
 private theorem body001_332_noColon : ':' ∉ body001_332.toList :=
@@ -8138,7 +8138,7 @@ private theorem body001_330_value : bodyValue 0 body001_330 = (0 : ℚ) := by
 
 private def body001_334 : String := "330,1170344562391451,102"
 private theorem body001_334_separators :
-    ':' ∉ body001_334.toList ∧ ';' ∉ body001_334.toList := by cbv; decide +kernel
+    ':' ∉ body001_334.toList ∧ ';' ∉ body001_334.toList := by decide +kernel
 private theorem body001_334_certificate :
     entryValue? 0 body001_334.toList = some (0 : ℚ) := by cbv
 private theorem body001_334_noColon : ':' ∉ body001_334.toList :=
@@ -8148,7 +8148,7 @@ private theorem body001_334_value : bodyValue 0 body001_334 = (0 : ℚ) :=
 
 private def body001_335 : String := "332,6485280425379213,105"
 private theorem body001_335_separators :
-    ':' ∉ body001_335.toList ∧ ';' ∉ body001_335.toList := by cbv; decide +kernel
+    ':' ∉ body001_335.toList ∧ ';' ∉ body001_335.toList := by decide +kernel
 private theorem body001_335_certificate :
     entryValue? 0 body001_335.toList = some (0 : ℚ) := by cbv
 private theorem body001_335_noColon : ':' ∉ body001_335.toList :=
@@ -8176,7 +8176,7 @@ private theorem body001_329_value : bodyValue 0 body001_329 = (0 : ℚ) := by
 
 private def body001_338 : String := "334,108701120329621,100"
 private theorem body001_338_separators :
-    ':' ∉ body001_338.toList ∧ ';' ∉ body001_338.toList := by cbv; decide +kernel
+    ':' ∉ body001_338.toList ∧ ';' ∉ body001_338.toList := by decide +kernel
 private theorem body001_338_certificate :
     entryValue? 0 body001_338.toList = some (0 : ℚ) := by cbv
 private theorem body001_338_noColon : ':' ∉ body001_338.toList :=
@@ -8186,7 +8186,7 @@ private theorem body001_338_value : bodyValue 0 body001_338 = (0 : ℚ) :=
 
 private def body001_339 : String := "336,184264810534583,102"
 private theorem body001_339_separators :
-    ':' ∉ body001_339.toList ∧ ';' ∉ body001_339.toList := by cbv; decide +kernel
+    ':' ∉ body001_339.toList ∧ ';' ∉ body001_339.toList := by decide +kernel
 private theorem body001_339_certificate :
     entryValue? 0 body001_339.toList = some (0 : ℚ) := by cbv
 private theorem body001_339_noColon : ':' ∉ body001_339.toList :=
@@ -8205,7 +8205,7 @@ private theorem body001_337_value : bodyValue 0 body001_337 = (0 : ℚ) := by
 
 private def body001_341 : String := "338,4064608943942075,107"
 private theorem body001_341_separators :
-    ':' ∉ body001_341.toList ∧ ';' ∉ body001_341.toList := by cbv; decide +kernel
+    ':' ∉ body001_341.toList ∧ ';' ∉ body001_341.toList := by decide +kernel
 private theorem body001_341_certificate :
     entryValue? 0 body001_341.toList = some (0 : ℚ) := by cbv
 private theorem body001_341_noColon : ':' ∉ body001_341.toList :=
@@ -8215,7 +8215,7 @@ private theorem body001_341_value : bodyValue 0 body001_341 = (0 : ℚ) :=
 
 private def body001_342 : String := "340,7386570902930531,107"
 private theorem body001_342_separators :
-    ':' ∉ body001_342.toList ∧ ';' ∉ body001_342.toList := by cbv; decide +kernel
+    ':' ∉ body001_342.toList ∧ ';' ∉ body001_342.toList := by decide +kernel
 private theorem body001_342_certificate :
     entryValue? 0 body001_342.toList = some (0 : ℚ) := by cbv
 private theorem body001_342_noColon : ':' ∉ body001_342.toList :=
@@ -8261,7 +8261,7 @@ private theorem body001_314_value : bodyValue 0 body001_314 = (0 : ℚ) := by
 
 private def body001_347 : String := "342,3125387303014375,105"
 private theorem body001_347_separators :
-    ':' ∉ body001_347.toList ∧ ';' ∉ body001_347.toList := by cbv; decide +kernel
+    ':' ∉ body001_347.toList ∧ ';' ∉ body001_347.toList := by decide +kernel
 private theorem body001_347_certificate :
     entryValue? 0 body001_347.toList = some (0 : ℚ) := by cbv
 private theorem body001_347_noColon : ':' ∉ body001_347.toList :=
@@ -8271,7 +8271,7 @@ private theorem body001_347_value : bodyValue 0 body001_347 = (0 : ℚ) :=
 
 private def body001_348 : String := "344,1965107808141801,104"
 private theorem body001_348_separators :
-    ':' ∉ body001_348.toList ∧ ';' ∉ body001_348.toList := by cbv; decide +kernel
+    ':' ∉ body001_348.toList ∧ ';' ∉ body001_348.toList := by decide +kernel
 private theorem body001_348_certificate :
     entryValue? 0 body001_348.toList = some (0 : ℚ) := by cbv
 private theorem body001_348_noColon : ':' ∉ body001_348.toList :=
@@ -8290,7 +8290,7 @@ private theorem body001_346_value : bodyValue 0 body001_346 = (0 : ℚ) := by
 
 private def body001_350 : String := "346,3749622972654713,105"
 private theorem body001_350_separators :
-    ':' ∉ body001_350.toList ∧ ';' ∉ body001_350.toList := by cbv; decide +kernel
+    ':' ∉ body001_350.toList ∧ ';' ∉ body001_350.toList := by decide +kernel
 private theorem body001_350_certificate :
     entryValue? 0 body001_350.toList = some (0 : ℚ) := by cbv
 private theorem body001_350_noColon : ':' ∉ body001_350.toList :=
@@ -8300,7 +8300,7 @@ private theorem body001_350_value : bodyValue 0 body001_350 = (0 : ℚ) :=
 
 private def body001_351 : String := "348,5418553785767031,106"
 private theorem body001_351_separators :
-    ':' ∉ body001_351.toList ∧ ';' ∉ body001_351.toList := by cbv; decide +kernel
+    ':' ∉ body001_351.toList ∧ ';' ∉ body001_351.toList := by decide +kernel
 private theorem body001_351_certificate :
     entryValue? 0 body001_351.toList = some (0 : ℚ) := by cbv
 private theorem body001_351_noColon : ':' ∉ body001_351.toList :=
@@ -8328,7 +8328,7 @@ private theorem body001_345_value : bodyValue 0 body001_345 = (0 : ℚ) := by
 
 private def body001_354 : String := "350,2876680325838629,106"
 private theorem body001_354_separators :
-    ':' ∉ body001_354.toList ∧ ';' ∉ body001_354.toList := by cbv; decide +kernel
+    ':' ∉ body001_354.toList ∧ ';' ∉ body001_354.toList := by decide +kernel
 private theorem body001_354_certificate :
     entryValue? 0 body001_354.toList = some (0 : ℚ) := by cbv
 private theorem body001_354_noColon : ':' ∉ body001_354.toList :=
@@ -8338,7 +8338,7 @@ private theorem body001_354_value : bodyValue 0 body001_354 = (0 : ℚ) :=
 
 private def body001_355 : String := "352,2718556791950393,107"
 private theorem body001_355_separators :
-    ':' ∉ body001_355.toList ∧ ';' ∉ body001_355.toList := by cbv; decide +kernel
+    ':' ∉ body001_355.toList ∧ ';' ∉ body001_355.toList := by decide +kernel
 private theorem body001_355_certificate :
     entryValue? 0 body001_355.toList = some (0 : ℚ) := by cbv
 private theorem body001_355_noColon : ':' ∉ body001_355.toList :=
@@ -8357,7 +8357,7 @@ private theorem body001_353_value : bodyValue 0 body001_353 = (0 : ℚ) := by
 
 private def body001_357 : String := "354,6975995846297303,108"
 private theorem body001_357_separators :
-    ':' ∉ body001_357.toList ∧ ';' ∉ body001_357.toList := by cbv; decide +kernel
+    ':' ∉ body001_357.toList ∧ ';' ∉ body001_357.toList := by decide +kernel
 private theorem body001_357_certificate :
     entryValue? 0 body001_357.toList = some (0 : ℚ) := by cbv
 private theorem body001_357_noColon : ':' ∉ body001_357.toList :=
@@ -8367,7 +8367,7 @@ private theorem body001_357_value : bodyValue 0 body001_357 = (0 : ℚ) :=
 
 private def body001_358 : String := "356,3852457355143649,106"
 private theorem body001_358_separators :
-    ':' ∉ body001_358.toList ∧ ';' ∉ body001_358.toList := by cbv; decide +kernel
+    ':' ∉ body001_358.toList ∧ ';' ∉ body001_358.toList := by decide +kernel
 private theorem body001_358_certificate :
     entryValue? 0 body001_358.toList = some (0 : ℚ) := by cbv
 private theorem body001_358_noColon : ':' ∉ body001_358.toList :=
@@ -8404,7 +8404,7 @@ private theorem body001_344_value : bodyValue 0 body001_344 = (0 : ℚ) := by
 
 private def body001_362 : String := "358,3295295436869201,105"
 private theorem body001_362_separators :
-    ':' ∉ body001_362.toList ∧ ';' ∉ body001_362.toList := by cbv; decide +kernel
+    ':' ∉ body001_362.toList ∧ ';' ∉ body001_362.toList := by decide +kernel
 private theorem body001_362_certificate :
     entryValue? 0 body001_362.toList = some (0 : ℚ) := by cbv
 private theorem body001_362_noColon : ':' ∉ body001_362.toList :=
@@ -8414,7 +8414,7 @@ private theorem body001_362_value : bodyValue 0 body001_362 = (0 : ℚ) :=
 
 private def body001_363 : String := "360,8556705718693779,106"
 private theorem body001_363_separators :
-    ':' ∉ body001_363.toList ∧ ';' ∉ body001_363.toList := by cbv; decide +kernel
+    ':' ∉ body001_363.toList ∧ ';' ∉ body001_363.toList := by decide +kernel
 private theorem body001_363_certificate :
     entryValue? 0 body001_363.toList = some (0 : ℚ) := by cbv
 private theorem body001_363_noColon : ':' ∉ body001_363.toList :=
@@ -8433,7 +8433,7 @@ private theorem body001_361_value : bodyValue 0 body001_361 = (0 : ℚ) := by
 
 private def body001_365 : String := "362,2191970582823709,104"
 private theorem body001_365_separators :
-    ':' ∉ body001_365.toList ∧ ';' ∉ body001_365.toList := by cbv; decide +kernel
+    ':' ∉ body001_365.toList ∧ ';' ∉ body001_365.toList := by decide +kernel
 private theorem body001_365_certificate :
     entryValue? 0 body001_365.toList = some (0 : ℚ) := by cbv
 private theorem body001_365_noColon : ':' ∉ body001_365.toList :=
@@ -8443,7 +8443,7 @@ private theorem body001_365_value : bodyValue 0 body001_365 = (0 : ℚ) :=
 
 private def body001_366 : String := "364,1781654080672549,104"
 private theorem body001_366_separators :
-    ':' ∉ body001_366.toList ∧ ';' ∉ body001_366.toList := by cbv; decide +kernel
+    ':' ∉ body001_366.toList ∧ ';' ∉ body001_366.toList := by decide +kernel
 private theorem body001_366_certificate :
     entryValue? 0 body001_366.toList = some (0 : ℚ) := by cbv
 private theorem body001_366_noColon : ':' ∉ body001_366.toList :=
@@ -8471,7 +8471,7 @@ private theorem body001_360_value : bodyValue 0 body001_360 = (0 : ℚ) := by
 
 private def body001_369 : String := "366,8828768546984727,107"
 private theorem body001_369_separators :
-    ':' ∉ body001_369.toList ∧ ';' ∉ body001_369.toList := by cbv; decide +kernel
+    ':' ∉ body001_369.toList ∧ ';' ∉ body001_369.toList := by decide +kernel
 private theorem body001_369_certificate :
     entryValue? 0 body001_369.toList = some (0 : ℚ) := by cbv
 private theorem body001_369_noColon : ':' ∉ body001_369.toList :=
@@ -8481,7 +8481,7 @@ private theorem body001_369_value : bodyValue 0 body001_369 = (0 : ℚ) :=
 
 private def body001_370 : String := "368,3708636099123289,107"
 private theorem body001_370_separators :
-    ':' ∉ body001_370.toList ∧ ';' ∉ body001_370.toList := by cbv; decide +kernel
+    ':' ∉ body001_370.toList ∧ ';' ∉ body001_370.toList := by decide +kernel
 private theorem body001_370_certificate :
     entryValue? 0 body001_370.toList = some (0 : ℚ) := by cbv
 private theorem body001_370_noColon : ':' ∉ body001_370.toList :=
@@ -8500,7 +8500,7 @@ private theorem body001_368_value : bodyValue 0 body001_368 = (0 : ℚ) := by
 
 private def body001_372 : String := "370,7912223023491093,110"
 private theorem body001_372_separators :
-    ':' ∉ body001_372.toList ∧ ';' ∉ body001_372.toList := by cbv; decide +kernel
+    ':' ∉ body001_372.toList ∧ ';' ∉ body001_372.toList := by decide +kernel
 private theorem body001_372_certificate :
     entryValue? 0 body001_372.toList = some (0 : ℚ) := by cbv
 private theorem body001_372_noColon : ':' ∉ body001_372.toList :=
@@ -8510,7 +8510,7 @@ private theorem body001_372_value : bodyValue 0 body001_372 = (0 : ℚ) :=
 
 private def body001_373 : String := "372,2911908476861387,108"
 private theorem body001_373_separators :
-    ':' ∉ body001_373.toList ∧ ';' ∉ body001_373.toList := by cbv; decide +kernel
+    ':' ∉ body001_373.toList ∧ ';' ∉ body001_373.toList := by decide +kernel
 private theorem body001_373_certificate :
     entryValue? 0 body001_373.toList = some (0 : ℚ) := by cbv
 private theorem body001_373_noColon : ':' ∉ body001_373.toList :=
@@ -8574,7 +8574,7 @@ private theorem body001_251_value : bodyValue 0 body001_251 = (0 : ℚ) := by
 
 private def body001_379 : String := "374,8674120140970725,108"
 private theorem body001_379_separators :
-    ':' ∉ body001_379.toList ∧ ';' ∉ body001_379.toList := by cbv; decide +kernel
+    ':' ∉ body001_379.toList ∧ ';' ∉ body001_379.toList := by decide +kernel
 private theorem body001_379_certificate :
     entryValue? 0 body001_379.toList = some (0 : ℚ) := by cbv
 private theorem body001_379_noColon : ':' ∉ body001_379.toList :=
@@ -8584,7 +8584,7 @@ private theorem body001_379_value : bodyValue 0 body001_379 = (0 : ℚ) :=
 
 private def body001_381 : String := "376,7817288135295677,107"
 private theorem body001_381_separators :
-    ':' ∉ body001_381.toList ∧ ';' ∉ body001_381.toList := by cbv; decide +kernel
+    ':' ∉ body001_381.toList ∧ ';' ∉ body001_381.toList := by decide +kernel
 private theorem body001_381_certificate :
     entryValue? 0 body001_381.toList = some (0 : ℚ) := by cbv
 private theorem body001_381_noColon : ':' ∉ body001_381.toList :=
@@ -8594,7 +8594,7 @@ private theorem body001_381_value : bodyValue 0 body001_381 = (0 : ℚ) :=
 
 private def body001_382 : String := "378,2499634353090575,105"
 private theorem body001_382_separators :
-    ':' ∉ body001_382.toList ∧ ';' ∉ body001_382.toList := by cbv; decide +kernel
+    ':' ∉ body001_382.toList ∧ ';' ∉ body001_382.toList := by decide +kernel
 private theorem body001_382_certificate :
     entryValue? 0 body001_382.toList = some (0 : ℚ) := by cbv
 private theorem body001_382_noColon : ':' ∉ body001_382.toList :=
@@ -8622,7 +8622,7 @@ private theorem body001_378_value : bodyValue 0 body001_378 = (0 : ℚ) := by
 
 private def body001_385 : String := "380,1225503827249483,104"
 private theorem body001_385_separators :
-    ':' ∉ body001_385.toList ∧ ';' ∉ body001_385.toList := by cbv; decide +kernel
+    ':' ∉ body001_385.toList ∧ ';' ∉ body001_385.toList := by decide +kernel
 private theorem body001_385_certificate :
     entryValue? 0 body001_385.toList = some (0 : ℚ) := by cbv
 private theorem body001_385_noColon : ':' ∉ body001_385.toList :=
@@ -8632,7 +8632,7 @@ private theorem body001_385_value : bodyValue 0 body001_385 = (0 : ℚ) :=
 
 private def body001_386 : String := "382,7405642249491761,107"
 private theorem body001_386_separators :
-    ':' ∉ body001_386.toList ∧ ';' ∉ body001_386.toList := by cbv; decide +kernel
+    ':' ∉ body001_386.toList ∧ ';' ∉ body001_386.toList := by decide +kernel
 private theorem body001_386_certificate :
     entryValue? 0 body001_386.toList = some (0 : ℚ) := by cbv
 private theorem body001_386_noColon : ':' ∉ body001_386.toList :=
@@ -8651,7 +8651,7 @@ private theorem body001_384_value : bodyValue 0 body001_384 = (0 : ℚ) := by
 
 private def body001_388 : String := "384,4021464535590901,107"
 private theorem body001_388_separators :
-    ':' ∉ body001_388.toList ∧ ';' ∉ body001_388.toList := by cbv; decide +kernel
+    ':' ∉ body001_388.toList ∧ ';' ∉ body001_388.toList := by decide +kernel
 private theorem body001_388_certificate :
     entryValue? 0 body001_388.toList = some (0 : ℚ) := by cbv
 private theorem body001_388_noColon : ':' ∉ body001_388.toList :=
@@ -8661,7 +8661,7 @@ private theorem body001_388_value : bodyValue 0 body001_388 = (0 : ℚ) :=
 
 private def body001_389 : String := "386,621354160939367,106"
 private theorem body001_389_separators :
-    ':' ∉ body001_389.toList ∧ ';' ∉ body001_389.toList := by cbv; decide +kernel
+    ':' ∉ body001_389.toList ∧ ';' ∉ body001_389.toList := by decide +kernel
 private theorem body001_389_certificate :
     entryValue? 0 body001_389.toList = some (0 : ℚ) := by cbv
 private theorem body001_389_noColon : ':' ∉ body001_389.toList :=
@@ -8698,7 +8698,7 @@ private theorem body001_377_value : bodyValue 0 body001_377 = (0 : ℚ) := by
 
 private def body001_393 : String := "388,8070826616386101,112"
 private theorem body001_393_separators :
-    ':' ∉ body001_393.toList ∧ ';' ∉ body001_393.toList := by cbv; decide +kernel
+    ':' ∉ body001_393.toList ∧ ';' ∉ body001_393.toList := by decide +kernel
 private theorem body001_393_certificate :
     entryValue? 0 body001_393.toList = some (0 : ℚ) := by cbv
 private theorem body001_393_noColon : ':' ∉ body001_393.toList :=
@@ -8708,7 +8708,7 @@ private theorem body001_393_value : bodyValue 0 body001_393 = (0 : ℚ) :=
 
 private def body001_394 : String := "390,654384201892503,106"
 private theorem body001_394_separators :
-    ':' ∉ body001_394.toList ∧ ';' ∉ body001_394.toList := by cbv; decide +kernel
+    ':' ∉ body001_394.toList ∧ ';' ∉ body001_394.toList := by decide +kernel
 private theorem body001_394_certificate :
     entryValue? 0 body001_394.toList = some (0 : ℚ) := by cbv
 private theorem body001_394_noColon : ':' ∉ body001_394.toList :=
@@ -8727,7 +8727,7 @@ private theorem body001_392_value : bodyValue 0 body001_392 = (0 : ℚ) := by
 
 private def body001_396 : String := "392,7417013750150629,108"
 private theorem body001_396_separators :
-    ':' ∉ body001_396.toList ∧ ';' ∉ body001_396.toList := by cbv; decide +kernel
+    ':' ∉ body001_396.toList ∧ ';' ∉ body001_396.toList := by decide +kernel
 private theorem body001_396_certificate :
     entryValue? 0 body001_396.toList = some (0 : ℚ) := by cbv
 private theorem body001_396_noColon : ':' ∉ body001_396.toList :=
@@ -8737,7 +8737,7 @@ private theorem body001_396_value : bodyValue 0 body001_396 = (0 : ℚ) :=
 
 private def body001_397 : String := "394,1548093671392599,105"
 private theorem body001_397_separators :
-    ':' ∉ body001_397.toList ∧ ';' ∉ body001_397.toList := by cbv; decide +kernel
+    ':' ∉ body001_397.toList ∧ ';' ∉ body001_397.toList := by decide +kernel
 private theorem body001_397_certificate :
     entryValue? 0 body001_397.toList = some (0 : ℚ) := by cbv
 private theorem body001_397_noColon : ':' ∉ body001_397.toList :=
@@ -8765,7 +8765,7 @@ private theorem body001_391_value : bodyValue 0 body001_391 = (0 : ℚ) := by
 
 private def body001_400 : String := "396,3783860332235779,106"
 private theorem body001_400_separators :
-    ':' ∉ body001_400.toList ∧ ';' ∉ body001_400.toList := by cbv; decide +kernel
+    ':' ∉ body001_400.toList ∧ ';' ∉ body001_400.toList := by decide +kernel
 private theorem body001_400_certificate :
     entryValue? 0 body001_400.toList = some (0 : ℚ) := by cbv
 private theorem body001_400_noColon : ':' ∉ body001_400.toList :=
@@ -8775,7 +8775,7 @@ private theorem body001_400_value : bodyValue 0 body001_400 = (0 : ℚ) :=
 
 private def body001_401 : String := "398,3619781806373657,106"
 private theorem body001_401_separators :
-    ':' ∉ body001_401.toList ∧ ';' ∉ body001_401.toList := by cbv; decide +kernel
+    ':' ∉ body001_401.toList ∧ ';' ∉ body001_401.toList := by decide +kernel
 private theorem body001_401_certificate :
     entryValue? 0 body001_401.toList = some (0 : ℚ) := by cbv
 private theorem body001_401_noColon : ':' ∉ body001_401.toList :=
@@ -8794,7 +8794,7 @@ private theorem body001_399_value : bodyValue 0 body001_399 = (0 : ℚ) := by
 
 private def body001_403 : String := "400,1355249094958313,105"
 private theorem body001_403_separators :
-    ':' ∉ body001_403.toList ∧ ';' ∉ body001_403.toList := by cbv; decide +kernel
+    ':' ∉ body001_403.toList ∧ ';' ∉ body001_403.toList := by decide +kernel
 private theorem body001_403_certificate :
     entryValue? 0 body001_403.toList = some (0 : ℚ) := by cbv
 private theorem body001_403_noColon : ':' ∉ body001_403.toList :=
@@ -8804,7 +8804,7 @@ private theorem body001_403_value : bodyValue 0 body001_403 = (0 : ℚ) :=
 
 private def body001_404 : String := "402,5923593263475385,108"
 private theorem body001_404_separators :
-    ':' ∉ body001_404.toList ∧ ';' ∉ body001_404.toList := by cbv; decide +kernel
+    ':' ∉ body001_404.toList ∧ ';' ∉ body001_404.toList := by decide +kernel
 private theorem body001_404_certificate :
     entryValue? 0 body001_404.toList = some (0 : ℚ) := by cbv
 private theorem body001_404_noColon : ':' ∉ body001_404.toList :=
@@ -8850,7 +8850,7 @@ private theorem body001_376_value : bodyValue 0 body001_376 = (0 : ℚ) := by
 
 private def body001_409 : String := "404,7295375738757557,110"
 private theorem body001_409_separators :
-    ':' ∉ body001_409.toList ∧ ';' ∉ body001_409.toList := by cbv; decide +kernel
+    ':' ∉ body001_409.toList ∧ ';' ∉ body001_409.toList := by decide +kernel
 private theorem body001_409_certificate :
     entryValue? 0 body001_409.toList = some (0 : ℚ) := by cbv
 private theorem body001_409_noColon : ':' ∉ body001_409.toList :=
@@ -8860,7 +8860,7 @@ private theorem body001_409_value : bodyValue 0 body001_409 = (0 : ℚ) :=
 
 private def body001_410 : String := "406,83325939538135,108"
 private theorem body001_410_separators :
-    ':' ∉ body001_410.toList ∧ ';' ∉ body001_410.toList := by cbv; decide +kernel
+    ':' ∉ body001_410.toList ∧ ';' ∉ body001_410.toList := by decide +kernel
 private theorem body001_410_certificate :
     entryValue? 0 body001_410.toList = some (0 : ℚ) := by cbv
 private theorem body001_410_noColon : ':' ∉ body001_410.toList :=
@@ -8879,7 +8879,7 @@ private theorem body001_408_value : bodyValue 0 body001_408 = (0 : ℚ) := by
 
 private def body001_412 : String := "408,2138618085318665,109"
 private theorem body001_412_separators :
-    ':' ∉ body001_412.toList ∧ ';' ∉ body001_412.toList := by cbv; decide +kernel
+    ':' ∉ body001_412.toList ∧ ';' ∉ body001_412.toList := by decide +kernel
 private theorem body001_412_certificate :
     entryValue? 0 body001_412.toList = some (0 : ℚ) := by cbv
 private theorem body001_412_noColon : ':' ∉ body001_412.toList :=
@@ -8889,7 +8889,7 @@ private theorem body001_412_value : bodyValue 0 body001_412 = (0 : ℚ) :=
 
 private def body001_413 : String := "410,3938970509409603,108"
 private theorem body001_413_separators :
-    ':' ∉ body001_413.toList ∧ ';' ∉ body001_413.toList := by cbv; decide +kernel
+    ':' ∉ body001_413.toList ∧ ';' ∉ body001_413.toList := by decide +kernel
 private theorem body001_413_certificate :
     entryValue? 0 body001_413.toList = some (0 : ℚ) := by cbv
 private theorem body001_413_noColon : ':' ∉ body001_413.toList :=
@@ -8917,7 +8917,7 @@ private theorem body001_407_value : bodyValue 0 body001_407 = (0 : ℚ) := by
 
 private def body001_416 : String := "412,3566080223756885,107"
 private theorem body001_416_separators :
-    ':' ∉ body001_416.toList ∧ ';' ∉ body001_416.toList := by cbv; decide +kernel
+    ':' ∉ body001_416.toList ∧ ';' ∉ body001_416.toList := by decide +kernel
 private theorem body001_416_certificate :
     entryValue? 0 body001_416.toList = some (0 : ℚ) := by cbv
 private theorem body001_416_noColon : ':' ∉ body001_416.toList :=
@@ -8927,7 +8927,7 @@ private theorem body001_416_value : bodyValue 0 body001_416 = (0 : ℚ) :=
 
 private def body001_417 : String := "414,142511259212035,102"
 private theorem body001_417_separators :
-    ':' ∉ body001_417.toList ∧ ';' ∉ body001_417.toList := by cbv; decide +kernel
+    ':' ∉ body001_417.toList ∧ ';' ∉ body001_417.toList := by decide +kernel
 private theorem body001_417_certificate :
     entryValue? 0 body001_417.toList = some (0 : ℚ) := by cbv
 private theorem body001_417_noColon : ':' ∉ body001_417.toList :=
@@ -8946,7 +8946,7 @@ private theorem body001_415_value : bodyValue 0 body001_415 = (0 : ℚ) := by
 
 private def body001_419 : String := "416,2265403564723547,106"
 private theorem body001_419_separators :
-    ':' ∉ body001_419.toList ∧ ';' ∉ body001_419.toList := by cbv; decide +kernel
+    ':' ∉ body001_419.toList ∧ ';' ∉ body001_419.toList := by decide +kernel
 private theorem body001_419_certificate :
     entryValue? 0 body001_419.toList = some (0 : ℚ) := by cbv
 private theorem body001_419_noColon : ':' ∉ body001_419.toList :=
@@ -8956,7 +8956,7 @@ private theorem body001_419_value : bodyValue 0 body001_419 = (0 : ℚ) :=
 
 private def body001_420 : String := "418,442731469648061,104"
 private theorem body001_420_separators :
-    ':' ∉ body001_420.toList ∧ ';' ∉ body001_420.toList := by cbv; decide +kernel
+    ':' ∉ body001_420.toList ∧ ';' ∉ body001_420.toList := by decide +kernel
 private theorem body001_420_certificate :
     entryValue? 0 body001_420.toList = some (0 : ℚ) := by cbv
 private theorem body001_420_noColon : ':' ∉ body001_420.toList :=
@@ -8993,7 +8993,7 @@ private theorem body001_406_value : bodyValue 0 body001_406 = (0 : ℚ) := by
 
 private def body001_424 : String := "420,8254236509714627,109"
 private theorem body001_424_separators :
-    ':' ∉ body001_424.toList ∧ ';' ∉ body001_424.toList := by cbv; decide +kernel
+    ':' ∉ body001_424.toList ∧ ';' ∉ body001_424.toList := by decide +kernel
 private theorem body001_424_certificate :
     entryValue? 0 body001_424.toList = some (0 : ℚ) := by cbv
 private theorem body001_424_noColon : ':' ∉ body001_424.toList :=
@@ -9003,7 +9003,7 @@ private theorem body001_424_value : bodyValue 0 body001_424 = (0 : ℚ) :=
 
 private def body001_425 : String := "422,5820614669217395,110"
 private theorem body001_425_separators :
-    ':' ∉ body001_425.toList ∧ ';' ∉ body001_425.toList := by cbv; decide +kernel
+    ':' ∉ body001_425.toList ∧ ';' ∉ body001_425.toList := by decide +kernel
 private theorem body001_425_certificate :
     entryValue? 0 body001_425.toList = some (0 : ℚ) := by cbv
 private theorem body001_425_noColon : ':' ∉ body001_425.toList :=
@@ -9022,7 +9022,7 @@ private theorem body001_423_value : bodyValue 0 body001_423 = (0 : ℚ) := by
 
 private def body001_427 : String := "424,671284477731771,111"
 private theorem body001_427_separators :
-    ':' ∉ body001_427.toList ∧ ';' ∉ body001_427.toList := by cbv; decide +kernel
+    ':' ∉ body001_427.toList ∧ ';' ∉ body001_427.toList := by decide +kernel
 private theorem body001_427_certificate :
     entryValue? 0 body001_427.toList = some (0 : ℚ) := by cbv
 private theorem body001_427_noColon : ':' ∉ body001_427.toList :=
@@ -9032,7 +9032,7 @@ private theorem body001_427_value : bodyValue 0 body001_427 = (0 : ℚ) :=
 
 private def body001_428 : String := "426,3044354349440823,111"
 private theorem body001_428_separators :
-    ':' ∉ body001_428.toList ∧ ';' ∉ body001_428.toList := by cbv; decide +kernel
+    ':' ∉ body001_428.toList ∧ ';' ∉ body001_428.toList := by decide +kernel
 private theorem body001_428_certificate :
     entryValue? 0 body001_428.toList = some (0 : ℚ) := by cbv
 private theorem body001_428_noColon : ':' ∉ body001_428.toList :=
@@ -9060,7 +9060,7 @@ private theorem body001_422_value : bodyValue 0 body001_422 = (0 : ℚ) := by
 
 private def body001_431 : String := "428,3959442008767499,109"
 private theorem body001_431_separators :
-    ':' ∉ body001_431.toList ∧ ';' ∉ body001_431.toList := by cbv; decide +kernel
+    ':' ∉ body001_431.toList ∧ ';' ∉ body001_431.toList := by decide +kernel
 private theorem body001_431_certificate :
     entryValue? 0 body001_431.toList = some (0 : ℚ) := by cbv
 private theorem body001_431_noColon : ':' ∉ body001_431.toList :=
@@ -9070,7 +9070,7 @@ private theorem body001_431_value : bodyValue 0 body001_431 = (0 : ℚ) :=
 
 private def body001_432 : String := "430,1004016761593485,106"
 private theorem body001_432_separators :
-    ':' ∉ body001_432.toList ∧ ';' ∉ body001_432.toList := by cbv; decide +kernel
+    ':' ∉ body001_432.toList ∧ ';' ∉ body001_432.toList := by decide +kernel
 private theorem body001_432_certificate :
     entryValue? 0 body001_432.toList = some (0 : ℚ) := by cbv
 private theorem body001_432_noColon : ':' ∉ body001_432.toList :=
@@ -9089,7 +9089,7 @@ private theorem body001_430_value : bodyValue 0 body001_430 = (0 : ℚ) := by
 
 private def body001_434 : String := "432,5538374612172949,108"
 private theorem body001_434_separators :
-    ':' ∉ body001_434.toList ∧ ';' ∉ body001_434.toList := by cbv; decide +kernel
+    ':' ∉ body001_434.toList ∧ ';' ∉ body001_434.toList := by decide +kernel
 private theorem body001_434_certificate :
     entryValue? 0 body001_434.toList = some (0 : ℚ) := by cbv
 private theorem body001_434_noColon : ':' ∉ body001_434.toList :=
@@ -9099,7 +9099,7 @@ private theorem body001_434_value : bodyValue 0 body001_434 = (0 : ℚ) :=
 
 private def body001_435 : String := "434,23093299007135,100"
 private theorem body001_435_separators :
-    ':' ∉ body001_435.toList ∧ ';' ∉ body001_435.toList := by cbv; decide +kernel
+    ':' ∉ body001_435.toList ∧ ';' ∉ body001_435.toList := by decide +kernel
 private theorem body001_435_certificate :
     entryValue? 0 body001_435.toList = some (0 : ℚ) := by cbv
 private theorem body001_435_noColon : ':' ∉ body001_435.toList :=
@@ -9154,7 +9154,7 @@ private theorem body001_375_value : bodyValue 0 body001_375 = (0 : ℚ) := by
 
 private def body001_441 : String := "436,5043578276105243,108"
 private theorem body001_441_separators :
-    ':' ∉ body001_441.toList ∧ ';' ∉ body001_441.toList := by cbv; decide +kernel
+    ':' ∉ body001_441.toList ∧ ';' ∉ body001_441.toList := by decide +kernel
 private theorem body001_441_certificate :
     entryValue? 0 body001_441.toList = some (0 : ℚ) := by cbv
 private theorem body001_441_noColon : ':' ∉ body001_441.toList :=
@@ -9164,7 +9164,7 @@ private theorem body001_441_value : bodyValue 0 body001_441 = (0 : ℚ) :=
 
 private def body001_442 : String := "438,6717637515195413,109"
 private theorem body001_442_separators :
-    ':' ∉ body001_442.toList ∧ ';' ∉ body001_442.toList := by cbv; decide +kernel
+    ':' ∉ body001_442.toList ∧ ';' ∉ body001_442.toList := by decide +kernel
 private theorem body001_442_certificate :
     entryValue? 0 body001_442.toList = some (0 : ℚ) := by cbv
 private theorem body001_442_noColon : ':' ∉ body001_442.toList :=
@@ -9183,7 +9183,7 @@ private theorem body001_440_value : bodyValue 0 body001_440 = (0 : ℚ) := by
 
 private def body001_444 : String := "440,6275347300111627,110"
 private theorem body001_444_separators :
-    ':' ∉ body001_444.toList ∧ ';' ∉ body001_444.toList := by cbv; decide +kernel
+    ':' ∉ body001_444.toList ∧ ';' ∉ body001_444.toList := by decide +kernel
 private theorem body001_444_certificate :
     entryValue? 0 body001_444.toList = some (0 : ℚ) := by cbv
 private theorem body001_444_noColon : ':' ∉ body001_444.toList :=
@@ -9193,7 +9193,7 @@ private theorem body001_444_value : bodyValue 0 body001_444 = (0 : ℚ) :=
 
 private def body001_445 : String := "442,5589656488964595,112"
 private theorem body001_445_separators :
-    ':' ∉ body001_445.toList ∧ ';' ∉ body001_445.toList := by cbv; decide +kernel
+    ':' ∉ body001_445.toList ∧ ';' ∉ body001_445.toList := by decide +kernel
 private theorem body001_445_certificate :
     entryValue? 0 body001_445.toList = some (0 : ℚ) := by cbv
 private theorem body001_445_noColon : ':' ∉ body001_445.toList :=
@@ -9221,7 +9221,7 @@ private theorem body001_439_value : bodyValue 0 body001_439 = (0 : ℚ) := by
 
 private def body001_448 : String := "444,4600151095394383,114"
 private theorem body001_448_separators :
-    ':' ∉ body001_448.toList ∧ ';' ∉ body001_448.toList := by cbv; decide +kernel
+    ':' ∉ body001_448.toList ∧ ';' ∉ body001_448.toList := by decide +kernel
 private theorem body001_448_certificate :
     entryValue? 0 body001_448.toList = some (0 : ℚ) := by cbv
 private theorem body001_448_noColon : ':' ∉ body001_448.toList :=
@@ -9231,7 +9231,7 @@ private theorem body001_448_value : bodyValue 0 body001_448 = (0 : ℚ) :=
 
 private def body001_449 : String := "446,1380103594121183,109"
 private theorem body001_449_separators :
-    ':' ∉ body001_449.toList ∧ ';' ∉ body001_449.toList := by cbv; decide +kernel
+    ':' ∉ body001_449.toList ∧ ';' ∉ body001_449.toList := by decide +kernel
 private theorem body001_449_certificate :
     entryValue? 0 body001_449.toList = some (0 : ℚ) := by cbv
 private theorem body001_449_noColon : ':' ∉ body001_449.toList :=
@@ -9250,7 +9250,7 @@ private theorem body001_447_value : bodyValue 0 body001_447 = (0 : ℚ) := by
 
 private def body001_451 : String := "448,7231039112291119,110"
 private theorem body001_451_separators :
-    ':' ∉ body001_451.toList ∧ ';' ∉ body001_451.toList := by cbv; decide +kernel
+    ':' ∉ body001_451.toList ∧ ';' ∉ body001_451.toList := by decide +kernel
 private theorem body001_451_certificate :
     entryValue? 0 body001_451.toList = some (0 : ℚ) := by cbv
 private theorem body001_451_noColon : ':' ∉ body001_451.toList :=
@@ -9260,7 +9260,7 @@ private theorem body001_451_value : bodyValue 0 body001_451 = (0 : ℚ) :=
 
 private def body001_452 : String := "450,2879030120984807,108"
 private theorem body001_452_separators :
-    ':' ∉ body001_452.toList ∧ ';' ∉ body001_452.toList := by cbv; decide +kernel
+    ':' ∉ body001_452.toList ∧ ';' ∉ body001_452.toList := by decide +kernel
 private theorem body001_452_certificate :
     entryValue? 0 body001_452.toList = some (0 : ℚ) := by cbv
 private theorem body001_452_noColon : ':' ∉ body001_452.toList :=
@@ -9297,7 +9297,7 @@ private theorem body001_438_value : bodyValue 0 body001_438 = (0 : ℚ) := by
 
 private def body001_456 : String := "452,6886461917652965,109"
 private theorem body001_456_separators :
-    ':' ∉ body001_456.toList ∧ ';' ∉ body001_456.toList := by cbv; decide +kernel
+    ':' ∉ body001_456.toList ∧ ';' ∉ body001_456.toList := by decide +kernel
 private theorem body001_456_certificate :
     entryValue? 0 body001_456.toList = some (0 : ℚ) := by cbv
 private theorem body001_456_noColon : ':' ∉ body001_456.toList :=
@@ -9307,7 +9307,7 @@ private theorem body001_456_value : bodyValue 0 body001_456 = (0 : ℚ) :=
 
 private def body001_457 : String := "454,1648646041258203,107"
 private theorem body001_457_separators :
-    ':' ∉ body001_457.toList ∧ ';' ∉ body001_457.toList := by cbv; decide +kernel
+    ':' ∉ body001_457.toList ∧ ';' ∉ body001_457.toList := by decide +kernel
 private theorem body001_457_certificate :
     entryValue? 0 body001_457.toList = some (0 : ℚ) := by cbv
 private theorem body001_457_noColon : ':' ∉ body001_457.toList :=
@@ -9326,7 +9326,7 @@ private theorem body001_455_value : bodyValue 0 body001_455 = (0 : ℚ) := by
 
 private def body001_459 : String := "456,2544464106717457,108"
 private theorem body001_459_separators :
-    ':' ∉ body001_459.toList ∧ ';' ∉ body001_459.toList := by cbv; decide +kernel
+    ':' ∉ body001_459.toList ∧ ';' ∉ body001_459.toList := by decide +kernel
 private theorem body001_459_certificate :
     entryValue? 0 body001_459.toList = some (0 : ℚ) := by cbv
 private theorem body001_459_noColon : ':' ∉ body001_459.toList :=
@@ -9336,7 +9336,7 @@ private theorem body001_459_value : bodyValue 0 body001_459 = (0 : ℚ) :=
 
 private def body001_460 : String := "458,189499853607305,105"
 private theorem body001_460_separators :
-    ':' ∉ body001_460.toList ∧ ';' ∉ body001_460.toList := by cbv; decide +kernel
+    ':' ∉ body001_460.toList ∧ ';' ∉ body001_460.toList := by decide +kernel
 private theorem body001_460_certificate :
     entryValue? 0 body001_460.toList = some (0 : ℚ) := by cbv
 private theorem body001_460_noColon : ':' ∉ body001_460.toList :=
@@ -9364,7 +9364,7 @@ private theorem body001_454_value : bodyValue 0 body001_454 = (0 : ℚ) := by
 
 private def body001_463 : String := "460,4903256633980853,111"
 private theorem body001_463_separators :
-    ':' ∉ body001_463.toList ∧ ';' ∉ body001_463.toList := by cbv; decide +kernel
+    ':' ∉ body001_463.toList ∧ ';' ∉ body001_463.toList := by decide +kernel
 private theorem body001_463_certificate :
     entryValue? 0 body001_463.toList = some (0 : ℚ) := by cbv
 private theorem body001_463_noColon : ':' ∉ body001_463.toList :=
@@ -9374,7 +9374,7 @@ private theorem body001_463_value : bodyValue 0 body001_463 = (0 : ℚ) :=
 
 private def body001_464 : String := "462,1122497940906471,111"
 private theorem body001_464_separators :
-    ':' ∉ body001_464.toList ∧ ';' ∉ body001_464.toList := by cbv; decide +kernel
+    ':' ∉ body001_464.toList ∧ ';' ∉ body001_464.toList := by decide +kernel
 private theorem body001_464_certificate :
     entryValue? 0 body001_464.toList = some (0 : ℚ) := by cbv
 private theorem body001_464_noColon : ':' ∉ body001_464.toList :=
@@ -9393,7 +9393,7 @@ private theorem body001_462_value : bodyValue 0 body001_462 = (0 : ℚ) := by
 
 private def body001_466 : String := "464,3204877576182831,112"
 private theorem body001_466_separators :
-    ':' ∉ body001_466.toList ∧ ';' ∉ body001_466.toList := by cbv; decide +kernel
+    ':' ∉ body001_466.toList ∧ ';' ∉ body001_466.toList := by decide +kernel
 private theorem body001_466_certificate :
     entryValue? 0 body001_466.toList = some (0 : ℚ) := by cbv
 private theorem body001_466_noColon : ':' ∉ body001_466.toList :=
@@ -9403,7 +9403,7 @@ private theorem body001_466_value : bodyValue 0 body001_466 = (0 : ℚ) :=
 
 private def body001_467 : String := "466,2710348571601785,110"
 private theorem body001_467_separators :
-    ':' ∉ body001_467.toList ∧ ';' ∉ body001_467.toList := by cbv; decide +kernel
+    ':' ∉ body001_467.toList ∧ ';' ∉ body001_467.toList := by decide +kernel
 private theorem body001_467_certificate :
     entryValue? 0 body001_467.toList = some (0 : ℚ) := by cbv
 private theorem body001_467_noColon : ':' ∉ body001_467.toList :=
@@ -9449,7 +9449,7 @@ private theorem body001_437_value : bodyValue 0 body001_437 = (0 : ℚ) := by
 
 private def body001_472 : String := "468,2622826235026871,109"
 private theorem body001_472_separators :
-    ':' ∉ body001_472.toList ∧ ';' ∉ body001_472.toList := by cbv; decide +kernel
+    ':' ∉ body001_472.toList ∧ ';' ∉ body001_472.toList := by decide +kernel
 private theorem body001_472_certificate :
     entryValue? 0 body001_472.toList = some (0 : ℚ) := by cbv
 private theorem body001_472_noColon : ':' ∉ body001_472.toList :=
@@ -9459,7 +9459,7 @@ private theorem body001_472_value : bodyValue 0 body001_472 = (0 : ℚ) :=
 
 private def body001_473 : String := "470,7258384213680891,110"
 private theorem body001_473_separators :
-    ':' ∉ body001_473.toList ∧ ';' ∉ body001_473.toList := by cbv; decide +kernel
+    ':' ∉ body001_473.toList ∧ ';' ∉ body001_473.toList := by decide +kernel
 private theorem body001_473_certificate :
     entryValue? 0 body001_473.toList = some (0 : ℚ) := by cbv
 private theorem body001_473_noColon : ':' ∉ body001_473.toList :=
@@ -9478,7 +9478,7 @@ private theorem body001_471_value : bodyValue 0 body001_471 = (0 : ℚ) := by
 
 private def body001_475 : String := "472,3974655570027895,109"
 private theorem body001_475_separators :
-    ':' ∉ body001_475.toList ∧ ';' ∉ body001_475.toList := by cbv; decide +kernel
+    ':' ∉ body001_475.toList ∧ ';' ∉ body001_475.toList := by decide +kernel
 private theorem body001_475_certificate :
     entryValue? 0 body001_475.toList = some (0 : ℚ) := by cbv
 private theorem body001_475_noColon : ':' ∉ body001_475.toList :=
@@ -9488,7 +9488,7 @@ private theorem body001_475_value : bodyValue 0 body001_475 = (0 : ℚ) :=
 
 private def body001_476 : String := "474,3565139162878319,109"
 private theorem body001_476_separators :
-    ':' ∉ body001_476.toList ∧ ';' ∉ body001_476.toList := by cbv; decide +kernel
+    ':' ∉ body001_476.toList ∧ ';' ∉ body001_476.toList := by decide +kernel
 private theorem body001_476_certificate :
     entryValue? 0 body001_476.toList = some (0 : ℚ) := by cbv
 private theorem body001_476_noColon : ':' ∉ body001_476.toList :=
@@ -9516,7 +9516,7 @@ private theorem body001_470_value : bodyValue 0 body001_470 = (0 : ℚ) := by
 
 private def body001_479 : String := "476,1304279248140129,108"
 private theorem body001_479_separators :
-    ':' ∉ body001_479.toList ∧ ';' ∉ body001_479.toList := by cbv; decide +kernel
+    ':' ∉ body001_479.toList ∧ ';' ∉ body001_479.toList := by decide +kernel
 private theorem body001_479_certificate :
     entryValue? 0 body001_479.toList = some (0 : ℚ) := by cbv
 private theorem body001_479_noColon : ':' ∉ body001_479.toList :=
@@ -9526,7 +9526,7 @@ private theorem body001_479_value : bodyValue 0 body001_479 = (0 : ℚ) :=
 
 private def body001_480 : String := "478,2992425933614077,110"
 private theorem body001_480_separators :
-    ':' ∉ body001_480.toList ∧ ';' ∉ body001_480.toList := by cbv; decide +kernel
+    ':' ∉ body001_480.toList ∧ ';' ∉ body001_480.toList := by decide +kernel
 private theorem body001_480_certificate :
     entryValue? 0 body001_480.toList = some (0 : ℚ) := by cbv
 private theorem body001_480_noColon : ':' ∉ body001_480.toList :=
@@ -9545,7 +9545,7 @@ private theorem body001_478_value : bodyValue 0 body001_478 = (0 : ℚ) := by
 
 private def body001_482 : String := "480,314948754697867,108"
 private theorem body001_482_separators :
-    ':' ∉ body001_482.toList ∧ ';' ∉ body001_482.toList := by cbv; decide +kernel
+    ':' ∉ body001_482.toList ∧ ';' ∉ body001_482.toList := by decide +kernel
 private theorem body001_482_certificate :
     entryValue? 0 body001_482.toList = some (0 : ℚ) := by cbv
 private theorem body001_482_noColon : ':' ∉ body001_482.toList :=
@@ -9555,7 +9555,7 @@ private theorem body001_482_value : bodyValue 0 body001_482 = (0 : ℚ) :=
 
 private def body001_483 : String := "482,8576087636993881,114"
 private theorem body001_483_separators :
-    ':' ∉ body001_483.toList ∧ ';' ∉ body001_483.toList := by cbv; decide +kernel
+    ':' ∉ body001_483.toList ∧ ';' ∉ body001_483.toList := by decide +kernel
 private theorem body001_483_certificate :
     entryValue? 0 body001_483.toList = some (0 : ℚ) := by cbv
 private theorem body001_483_noColon : ':' ∉ body001_483.toList :=
@@ -9592,7 +9592,7 @@ private theorem body001_469_value : bodyValue 0 body001_469 = (0 : ℚ) := by
 
 private def body001_487 : String := "484,7145751606074889,113"
 private theorem body001_487_separators :
-    ':' ∉ body001_487.toList ∧ ';' ∉ body001_487.toList := by cbv; decide +kernel
+    ':' ∉ body001_487.toList ∧ ';' ∉ body001_487.toList := by decide +kernel
 private theorem body001_487_certificate :
     entryValue? 0 body001_487.toList = some (0 : ℚ) := by cbv
 private theorem body001_487_noColon : ':' ∉ body001_487.toList :=
@@ -9602,7 +9602,7 @@ private theorem body001_487_value : bodyValue 0 body001_487 = (0 : ℚ) :=
 
 private def body001_488 : String := "486,995360698506463,109"
 private theorem body001_488_separators :
-    ':' ∉ body001_488.toList ∧ ';' ∉ body001_488.toList := by cbv; decide +kernel
+    ':' ∉ body001_488.toList ∧ ';' ∉ body001_488.toList := by decide +kernel
 private theorem body001_488_certificate :
     entryValue? 0 body001_488.toList = some (0 : ℚ) := by cbv
 private theorem body001_488_noColon : ':' ∉ body001_488.toList :=
@@ -9621,7 +9621,7 @@ private theorem body001_486_value : bodyValue 0 body001_486 = (0 : ℚ) := by
 
 private def body001_490 : String := "488,814595566212699,108"
 private theorem body001_490_separators :
-    ':' ∉ body001_490.toList ∧ ';' ∉ body001_490.toList := by cbv; decide +kernel
+    ':' ∉ body001_490.toList ∧ ';' ∉ body001_490.toList := by decide +kernel
 private theorem body001_490_certificate :
     entryValue? 0 body001_490.toList = some (0 : ℚ) := by cbv
 private theorem body001_490_noColon : ':' ∉ body001_490.toList :=
@@ -9631,7 +9631,7 @@ private theorem body001_490_value : bodyValue 0 body001_490 = (0 : ℚ) :=
 
 private def body001_491 : String := "490,8283510560265115,111"
 private theorem body001_491_separators :
-    ':' ∉ body001_491.toList ∧ ';' ∉ body001_491.toList := by cbv; decide +kernel
+    ':' ∉ body001_491.toList ∧ ';' ∉ body001_491.toList := by decide +kernel
 private theorem body001_491_certificate :
     entryValue? 0 body001_491.toList = some (0 : ℚ) := by cbv
 private theorem body001_491_noColon : ':' ∉ body001_491.toList :=
@@ -9659,7 +9659,7 @@ private theorem body001_485_value : bodyValue 0 body001_485 = (0 : ℚ) := by
 
 private def body001_494 : String := "492,1076982595244131,108"
 private theorem body001_494_separators :
-    ':' ∉ body001_494.toList ∧ ';' ∉ body001_494.toList := by cbv; decide +kernel
+    ':' ∉ body001_494.toList ∧ ';' ∉ body001_494.toList := by decide +kernel
 private theorem body001_494_certificate :
     entryValue? 0 body001_494.toList = some (0 : ℚ) := by cbv
 private theorem body001_494_noColon : ':' ∉ body001_494.toList :=
@@ -9669,7 +9669,7 @@ private theorem body001_494_value : bodyValue 0 body001_494 = (0 : ℚ) :=
 
 private def body001_495 : String := "494,3740061667532857,110"
 private theorem body001_495_separators :
-    ':' ∉ body001_495.toList ∧ ';' ∉ body001_495.toList := by cbv; decide +kernel
+    ':' ∉ body001_495.toList ∧ ';' ∉ body001_495.toList := by decide +kernel
 private theorem body001_495_certificate :
     entryValue? 0 body001_495.toList = some (0 : ℚ) := by cbv
 private theorem body001_495_noColon : ':' ∉ body001_495.toList :=
@@ -9688,7 +9688,7 @@ private theorem body001_493_value : bodyValue 0 body001_493 = (0 : ℚ) := by
 
 private def body001_497 : String := "496,21097110151077,103"
 private theorem body001_497_separators :
-    ':' ∉ body001_497.toList ∧ ';' ∉ body001_497.toList := by cbv; decide +kernel
+    ':' ∉ body001_497.toList ∧ ';' ∉ body001_497.toList := by decide +kernel
 private theorem body001_497_certificate :
     entryValue? 0 body001_497.toList = some (0 : ℚ) := by cbv
 private theorem body001_497_noColon : ':' ∉ body001_497.toList :=
@@ -9698,7 +9698,7 @@ private theorem body001_497_value : bodyValue 0 body001_497 = (0 : ℚ) :=
 
 private def body001_498 : String := "498,1594095024951325,110"
 private theorem body001_498_separators :
-    ':' ∉ body001_498.toList ∧ ';' ∉ body001_498.toList := by cbv; decide +kernel
+    ':' ∉ body001_498.toList ∧ ';' ∉ body001_498.toList := by decide +kernel
 private theorem body001_498_certificate :
     entryValue? 0 body001_498.toList = some (0 : ℚ) := by cbv
 private theorem body001_498_noColon : ':' ∉ body001_498.toList :=
@@ -9783,7 +9783,7 @@ private theorem row001_0_1 :
   have hs : source001 = "1" ++ ":" ++ body001_000 := by
     apply sameBytes_sound; decide +kernel
   rw [rowValue_of_body source001 "1" body001_000 0 1 hs
-    (by cbv) (by cbv; decide +kernel) body001_000_noColon]
+    (by cbv) (by decide +kernel) body001_000_noColon]
   exact body001_000_value
 
 private def source002 : String := "2:1,8939111891102479,62;3,588165540580717,58;5,4363840298207471,61;7,1929520412378807,60;9,6674455328341307,62;11,713025735762087,59;13,4843297402649003,62;15,8187683018336453,63;17,6900422510615565,63;19,2901761721716185,62;21,2436471274528545,62;23,4086433054799285,63;25,3423578415056377,63;27,5731815847729379,64;29,599350894309021,61;31,4008752571979903,64;33,6700069446238909,65;35,699582693295757,62;37,4672933330748237,65;39,7800377864030223,66;41,3254306793762753,65;43,1357390005394531,64;45,4528345917895251,66;47,1887832990281681,65;49,3147170944653479,66;51,1311322595848051,65;53,8740668389145789,68;55,3640854408632397,67;57,6065389115494851,68;59,2525619268996273,67;61,2102829683610309,67;63,7001691418293397,69;65,1456838331663155,67;67,4849532506671227,69;69,4035548168341685,69;71,1678949245243029,68;73,2793605776943469,69;75,2323624817046507,69;77,3864463910022149,70;79,6425668968008527,71;81,5341377106706799,71;83,8879402249807577,72;85,3690065319684975,71;87,3066810456792271,71;89,5097058899225231,72;91,4235042956005271,72;93,439757768519983,69;95,730464516741077,70;97,1213160907112783,71;99,2014672194161201,72;101,6691355944577503,74;103,2778030415183689,73;105,2306649465691065,73;107,957551878484561,72;109,3179591522458059,74;111,5278014889408499,75;113,1094959980738359,73;115,3633936154247411,75;117,6029462073693267,76;119,312608666438997,72;121,8298013724030043,77;123,3441485595525799,76;125,5708815946598229,77;127,591810662216649,74;129,7851996978040505,78;131,3255225054518807,77;133,5397656888141139,78;135,4474797395084025,78;137,7419064333977395,79;139,768732622409569,76;141,1274308486031557,77;143,1056030139674945,77;145,6999812439216613,80;147,1449660991287661,78;149,1200737663961557,78;151,3978051440507831,80;153,6590052782447163,81;155,5459340160679819,81;157,4523404652336625,81;159,7496706044522149,82;161,1553017770017327,80;163,5146520706822979,82;165,4262125458390727,82;167,3527993294899983,82;169,2918921797515253,82;171,1207095618321635,81;173,3993134915887871,83;175,6606180994940153,84;177,2733633085647245,83;179,4527663853324187,84;181,7511141562292403,85;183,6233708760679649,85;185,5173517973710499,85;187,8580806977727675,86;189,1776506808821461,84;191,2937115461609443,85;193,4847566124696681,86;195,3995462988443075,86;197,1646019959790405,85;199,5428904477132677,87;201,4484212745939315,87;203,1856472293690621,86;205,6164745338025327,88;207,5128845627153673,88;209,8543433248888737,89;211,3556454486108871,88;213,5910132207434435,89;215,1223617459899819,87;217,8074393614073379,90;219,6635151792373771,90;221,5438407067679253,90;223,8909256930397391,91;225,3654766570472097,90;227,6019590840615725,91;229,622915735788909,88;231,4149219893952409,91;233,3472351572852327,91;235,1457703762907149,90;237,2448947223147929,91;239,1025617982330963,90;241,6830752182232997,93;243,5639034849740203,93;245,288304162115489,89;247,1872087301178865,92;249,6051840796974239,94;251,1223480866794827,92;253,3981141726987807,94;255,25562967937435,87;257,5446624210960475,95;259,4590143778227969,95;261,7816103762417601,96;263,6695607742394067,96;265,5739202671206999,96;267,4890251102232047,96;269,4114257284814231,96;271,6795962266154425,97;273,5491524258639425,97;275,8688219862756841,98;277,845956468394969,95;279,2625639093368723,97;281,4123190756479861,98;283,6652686648046421,99;285,2781244723556651,98;287,4815034066889463,99;289,4277665209704877,99;291,1927679524621711,98;293,54452181648137,93;295,6249469805542333,100;297,2748285229854191,99;299,1172070092819003,98;301,3835933542728267,100;303,2983236002111227,100;305,8772234288759567,102;307,6105379112091567,102;309,4089171294916437,102;311,1376792587358629,101;313,8052689182275403,104;315,857546501799705,101;317,1694841164808607,102;319,907208603603451,101;321,3947631792737277,103;323,1051739940006355,101;325,8612270994680481,104;327,8352395933516587,104;329,3791476346248171,103;331,3184256304031309,103;333,152732459665667,99;335,1691158177169813,103;337,64993570658753,99;339,8944712356849091,107;341,2069364902707695,106;343,6523709395026395,109;345,8955503956391919,111;347,1084853773583859,109;349,1098814591632543,108;351,756936452353375,106;353,6597977556146923,108;355,5741932546874065,107;357,517561406077517,103;359,2532048824265495,105;361,1327138168097323,104;363,2382174208572651,105;365,3607698834799699,106;367,8911632102652407,108;369,4230748607165907,108;371,3133226000496559,109;373,8947265126511167,111;375,4313315994753775,109;377,3486857723731475,108;379,8140353330616817,109;381,3494410193684361,108;383,2089292103638843,108;385,1339008606723739,109;387,8549687499088983,115;389,5568282305097573,111;391,2359386416074825,108;393,8720729355292767,109;395,5847436082206383,108;397,6207690401826337,108;399,1331313755892523,106;401,3598785811612815,108;403,6926920286826005,110;405,818981188821433,109;407,2052845955863075,115;409,4071068794148469,111;411,2978063227832219,109;413,4827401378905649,109;415,5688104005909965,109;417,2618012343142461,108;419,7535266732901143,110;421,3989494639819331,110;423,1376537571941449,110;425,1363600736659407,111;427,247230060519201,107;429,4495776669635189,110;431,220007495482801,105;433,8530907641642353,110;435,8429696413521745,110;437,3446176444734533,109;439,577346848566873,107;441,1251842485840391,109;443,5027173119591629,112;445,1150089136951385,110;447,15434812576545,103;449,6400123717646341,111;451,528021527705805,107;453,2314296163961785,109;455,8618244453257211,111;457,6931310864279589,111;459,4945004132303785,111;461,850580828512265,109;463,2748189525911463,111;465,6010731790422373,112;467,3839783684717017,111;469,2378263523582765,110;471,2662489115559223,110;473,5337200185573257,111;475,4847310198735913,111;477,8194510827760033,112;479,3380104743133307,111;481,1454440770810509,110;483,5489593065763665,112;485,2804423048478233,111;487,366056065157427,108;489,742763397429587,109;491,5733263042145055,112;493,5294562175862485,112;495,2410375832525119,111"

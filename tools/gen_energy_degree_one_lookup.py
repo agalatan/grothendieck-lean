@@ -57,7 +57,7 @@ def matching_tree(lines, row_index, n, entries):
             lines.extend([
                 f'private def {name} : String := {json.dumps(text)}',
                 f'private theorem {name}_separators :',
-                f"    ':' ∉ {name}.toList ∧ ';' ∉ {name}.toList := by cbv; decide +kernel",
+                f"    ':' ∉ {name}.toList ∧ ';' ∉ {name}.toList := by decide +kernel",
                 f'private theorem {name}_certificate :',
                 f'    entryValue? {n} {name}.toList = some ({q} : ℚ) := by cbv',
                 f'private theorem {name}_noColon : \':\' ∉ {name}.toList :=',
@@ -131,7 +131,7 @@ def certificates(rows, values):
                           f'  have hs : {name} = {json.dumps(header)} ++ ":" ++ {root} := by',
                           '    apply sameBytes_sound; decide +kernel',
                           f'  rw [rowValue_of_body {name} {json.dumps(header)} {root} {n} {m} hs',
-                          f'    (by cbv) (by cbv; decide +kernel) {root}_noColon]',
+                          f'    (by cbv) (by decide +kernel) {root}_noColon]',
                           f'  exact {root}_value', '']
             else:
                 row_totals[n, m].append(Fraction())
