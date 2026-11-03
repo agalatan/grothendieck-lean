@@ -1,5 +1,5 @@
 {
-  "scope": "four structural packed-source chunk pilots and a direct legacy decoder resource probe on the last first-center chunk; generic delimiter equivalence and the complete source family remain open",
+  "scope": "four packed-source chunk pilots transferring structural decoding through the generic legacy delimiter theorem; all new Lean and the complete source family require checker verification",
   "part_size": 32,
   "sources": {
     "Grothe/UpperChaos/TaylorFirstData.lean": "191f975459f71c681ec4b99343f6cf3cf0772daf51bd52c6f74184a2cea57dfb",
@@ -11,7 +11,7 @@
       "chunk": 0,
       "records": 1024,
       "parts": 32,
-      "legacy_decoder_probe": false,
+      "legacy_decoder_identity": true,
       "chunk_utf8_sha256": "76d24ed6796ff7e76f657b36928e5c1c979304d13508b58959d232751e801126"
     },
     {
@@ -19,7 +19,7 @@
       "chunk": 253,
       "records": 460,
       "parts": 15,
-      "legacy_decoder_probe": true,
+      "legacy_decoder_identity": true,
       "chunk_utf8_sha256": "09cd34b47647e5a517594621ffb0adc9ab14cf0f832f8b9ca8bbb6c4e9a67ec5"
     },
     {
@@ -27,7 +27,7 @@
       "chunk": 0,
       "records": 1024,
       "parts": 32,
-      "legacy_decoder_probe": false,
+      "legacy_decoder_identity": true,
       "chunk_utf8_sha256": "f43856cbea23823df230660d28ec83949c8438ecf9d266df69237f9c875d356a"
     },
     {
@@ -35,7 +35,7 @@
       "chunk": 33,
       "records": 800,
       "parts": 25,
-      "legacy_decoder_probe": false,
+      "legacy_decoder_identity": true,
       "chunk_utf8_sha256": "fdd0e70ff1d7cbbac6da49abc4b74a3761b6ab0c5e528db15c8428dee56cf20e"
     }
   ],
@@ -51,11 +51,11 @@
     }
   ],
   "generated_sha256": {
-    "Grothe/UpperChaos/TaylorFirstPackedChunk000Pilot.lean": "024a478b4dd57d05c3929176dcede9d188b30db61795bb02cca816dfc1e50bd0",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk000Pilot.lean": "85b91922cffa00e19e3ec417d61681b704806b015d9e6a8ed4545005469a2d39",
     "Grothe/UpperChaos/TaylorFirstPackedChunk253StructuralLeaf000.lean": "fee17f1ed0907bd56fe0ba211e4412b8dbaeb78e7962d58cf7147eb7f82fbb46",
-    "Grothe/UpperChaos/TaylorFirstPackedChunk253LegacyLeaf000.lean": "1703aa5ca1d7335fe208a83f55e8faa7a995331e78e8edb843f6156af8f1e12c",
-    "Grothe/UpperChaos/TaylorFirstPackedChunk253Pilot.lean": "baceffcc968e0daa9956fe59490090f8e2ec0c0e8b96b749a4a0cbae5935c9fc",
-    "Grothe/UpperChaos/TaylorSecondPackedChunk000Pilot.lean": "71c9aed1b56d33055e00efcdf21a5661f143edf0fbbf130ed408ab9f5c590e0b",
-    "Grothe/UpperChaos/TaylorSecondPackedChunk033Pilot.lean": "c20e71204ad4b26ef6e408957d2e9ca759a79298a9829b0315a57fd65e4dcabc"
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253LegacyLeaf000.lean": "4c46fc07259a8c4cb451edd4fe30c016cd479327999b21870df63303624c5625",
+    "Grothe/UpperChaos/TaylorFirstPackedChunk253Pilot.lean": "6327e2b2434784d0496967ff96b1e03245fa876f2e179f8343bebb67496c7ff3",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk000Pilot.lean": "27bea25ddf42e67d0cc5a67eef786e8492a922b960144ad60235179ea54bfb90",
+    "Grothe/UpperChaos/TaylorSecondPackedChunk033Pilot.lean": "c9eb0b53bac66f5de94cb47b140c4f8954f4d7ee0269cdcb63d07c25faa52981"
   }
 }
