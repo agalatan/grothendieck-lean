@@ -3,7 +3,7 @@ import Mathlib.Data.Rat.BigOperators
 import Lean.Util.CollectAxioms
 
 /-! Exact little-endian IEEE754 binary64 normal-value decoding for the
-saved exception slices. Generated records carry byte offsets and row ordinals;
+exceptional-row slices. Generated records carry byte offsets and row ordinals;
 their binding to selected Gaussian source nodes is a separate obligation. Agent-ID: codex-aa04. -/
 namespace Grothe.UpperChaos.Q0SourceExceptionCenters
 
@@ -19,7 +19,7 @@ def magnitude (bits : ℕ) : ℚ :=
 def value (bits : ℕ) : ℚ :=
   if bits / 2^63 = 0 then magnitude bits else -magnitude bits
 
-/-- Check that the saved word is normal and its exact decoded value has
+/-- Check that the source word is normal and its exact decoded value has
 magnitude at most one; this excludes infinities, NaNs and out-of-range words. -/
 def validWord (bits : ℕ) : Bool :=
   decide (bits < 2^64 ∧ 1 ≤ exponent bits ∧ exponent bits ≤ 1023 ∧ |value bits| ≤ 1)
@@ -62,7 +62,7 @@ theorem validRow_normSq (r : Row) (h : validRow r = true) : normSq r ≤ 121 / 1
     of_decide_eq_true h.1
   exact hc.2.2
 
-/-- The saved cutoff is the source degree cutoff, not a mode count. -/
+/-- The row cutoff is the source degree cutoff, not a mode count. -/
 theorem validRow_cutoff (r : Row) (h : validRow r = true) :
     (r.cutoff = 1 ∧ r.words.length = 3) ∨
       (r.cutoff = 2 ∧ r.words.length = 5) := by
@@ -78,7 +78,7 @@ theorem validRow_cutoff_le_two (r : Row) (h : validRow r = true) :
     r.cutoff ≤ 2 := by
   rcases validRow_cutoff r h with h | h <;> omega
 
-/-- An actual retained scalar entry, addressed within the saved row. -/
+/-- An actual retained scalar entry, addressed within the source row. -/
 def center (r : Row) (i : Fin r.words.length) : ℚ := value (r.words.get i)
 
 theorem center_abs_le_one (r : Row) (h : validRow r = true)

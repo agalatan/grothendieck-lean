@@ -30,7 +30,7 @@
     }
   ],
   "format": "concatenated little-endian binary64",
-  "historical_full_source_sha256_not_rechecked": "03987b3e9c0ccf0bc7eacca7bd61011c43ccdbb61c0b694cfc2ca16808ed4ecb",
+  "full_source_sha256": "03987b3e9c0ccf0bc7eacca7bd61011c43ccdbb61c0b694cfc2ca16808ed4ecb",
   "offset_source_sha256_verified": "8bf1649d9620449873e32a8fa120709f29888885e8e43ae024c5305b95101c5c",
   "slice_sha256": "085a77f6693c3fa369d8441989e9058330e959692b64a84f9f4616d98fb9f9c5"
 }

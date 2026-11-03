@@ -15,7 +15,7 @@ import Grothe.UpperChaos.Q0SourceExceptionCentersChunk13
 import Grothe.UpperChaos.Q0SourceExceptionCentersChunk14
 import Grothe.UpperChaos.Q0SourceExceptionCentersChunk15
 
-/-! Exact saved exception support. Generated; Agent-ID: codex-aa04. -/
+/-! Exact exceptional-row support. Generated; Agent-ID: codex-aa04. -/
 namespace Grothe.UpperChaos.Q0SourceExceptionCentersAll
 
 open Grothe.UpperChaos.Q0SourceExceptionCenters

@@ -179,13 +179,20 @@ equality. The proof preserves the separate exact denominator
 inverse rate and shifted argument. Generated Python data are checked by Lean;
 the numerical quadrature cells and the upper-bound inputs remain to be proved.
 
-The conditional-node table stores finite vectors of binary64 approximations
-to conditional Hermite coefficients. For 417 selected rows,
-`Q0SourceExceptionCentersAll` checks scalar magnitude at most one, squared row
-norm at most `121/100`, and source ordinal coverage. The source-error
-assembly uses its decoded rows and source-address/cutoff binding;
-production basis/sign normalization and actual approximation-error estimates
-remain separate obligations.
+The conditional-node table has 21,577 rows of binary64 approximations to
+conditional Hermite coefficients. Row i follows the degree-531 canonical pairs
+`0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1`, in `(c+d,c)` order, retaining
+`c+d ≤ cutoff_i`: a full row has 35,777 entries, cutoff 1 has three and cutoff 2
+has five. This certificate selects every node in a panel where the outward
+128-bit profile interval Horner screen contains zero at some node. Its 413
+unresolved nodes occupy 381 panels; panel closure selects exactly 417 rows
+(3872–4036, 10910–11037 and 17321–17444), independently of the cutoffs.
+The committed [selection inputs and rule](data/q0_quadrature/conditional_source/exception-selection.json)
+reproduce this choice. `Q0SourceExceptionCentersAll` checks scalar magnitude
+at most one, squared row norm at most `121/100`, and source ordinal coverage.
+The source-error assembly consumes these decoded rows through their finite
+source-address and cutoff binding; production basis/sign normalization and
+actual approximation-error estimates remain separate obligations.
 
 The actual source-error stage uses the same selected Gauss roots and physical
 weights throughout. Exceptional panels have orders one through four, so
