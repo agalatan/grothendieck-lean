@@ -375,8 +375,63 @@ the substitution `v = t/(1+t)` and its pointwise integrand identity.
 `MobiusEndpoint`, `MobiusImproperIntegrable`, and `MobiusImproperLimit` justify
 the passage to the half-line. `MobiusSeedImproper` proves integrability and
 `∫_(0,∞) (t/(1+t))^h * t^(-1/2) * exp(-x*t/(1+t))/(1+t)^2 dt = (π/2) J_h(x)`
-for every order and real parameter. This real kernel identity does not identify
-a Gaussian coefficient. Concrete numerical node bounds remain unproved.
+for every order and real parameter. `OneSidedSeedFubini` combines the exact
+affine Gaussian inner integral with absolute Fubini, and
+`OneSidedSeedIntegral` evaluates the resulting half-line integral.
+`OneSidedHermiteSeed.phase_hermite_zero_row` discharges the shifted-Wick
+premise and supplies the normalized Gaussian coefficient
+`(sqrt(π)/2) * A * (-A)^d * J_d(A²) / sqrt(d!)` for every real `A`.
+`F0ConditionalSeed` identifies it with the actual canonical evaluator and
+uses `F0ConditionalEvaluator.coefficient_eq_signed` for the production
+coefficient at `s ≥ 0` with `vprof(s) ≠ 0`. The sign exponent is `d` and
+vanishes at `d=0`; there is no second Hermite normalization. A transitive
+guard rejects dependencies beyond the standard three Lean axioms.
+`F0ConditionalSeedRecurrence` derives
+`I_(0,d+1)(A) = (-A) * ratio d (A²) / sqrt(d+1) * I_(0,d)(A)`
+for the actual canonical Gaussian integral, with positivity of `J_d`
+discharged internally. It also proves the signed production recurrence and
+that each canonical zero-row coefficient has zero imaginary part.
+`F0ConditionalCoefficientBounds` represents the actual canonical coefficient
+as an inner product against the bounded phase in `L²(gaussC)` and applies
+Cauchy--Schwarz with the normalized Hermite basis to bound its norm by one.
+The actual raising sum is bounded by `sqrt(c+1)+sqrt(d+1)`, which is strictly
+below `35` when `c ≤ 266` and `d ≤ 265`. This does not establish the parameter
+derivative formula or the single midpoint error allowance; those remain open.
+`F0ConditionalReality` obtains conjugation covariance of each normalized Hermite
+function from its rational polynomial representation. The existing
+`gaussC_map_conj` then proves that every actual canonical coefficient has zero
+imaginary part. Direct conjugation symmetry of the actual production phase
+proves reality of its coefficient for every real source parameter, including
+profile zeros. The complex distance to any real
+stored center is exactly the absolute real-part error; no numerical enclosure
+is assumed in these identities.
+`ZeroProfileSavedCenter.actual_saved_error_lt` consumes only a physical signed
+profile-ratio bound, its distance to a chosen model parameter, and the distance
+from that explicit model to the saved scalar. It does not assume the unknown
+true coefficient error. The three costs are `5ρ²`, half the parameter error,
+and the saved-model error; exact rational arithmetic leaves strict slack below
+`10⁻¹²` for the displayed input tolerances. Actual source and byte bindings remain
+open. The same theorem applies to a zero-completed coordinate with saved zero.
+`ZeroProfilePhaseLinearization` transfers the quadratic pointwise remainder
+to the actual Gaussian phase slice. The majorant uses `h₀₀+h₁₁=|w|²` and its
+L² norm at most two. Every true coefficient is within `5ρ²` of the centers
+`1,ρ/2,-ρ/2` at modes `(0,0),(1,0),(0,1)` and zero centers elsewhere. This does
+not set the other true coefficients to zero and does not certify saved bytes.
+The first-order phase approximation has pointwise remainder at most
+`(5/2)‖h‖²/r²`. Its proof uses the exact norm-square identity to bound
+`‖r+h‖-r-Re(h)` between zero and `‖h‖²/(2r)`, then the zero-safe phase estimate.
+This elementary estimate does not assume a derivative identity or exclude a
+zero perturbed point. A Gaussian coefficient and saved-node instantiation is
+still a separate obligation.
+`Haagerup/PhaseStability` derives the zero-safe perturbation inequality from
+`phase(z)*‖z‖=z`, the triangle inequality and `‖phase(z)‖≤1`, with only a positive
+real reference radius. `ZeroProfilePhaseStability` specializes it to the actual
+production phase at `s>0`. Its distance in Gaussian L² from the constant phase,
+and every coefficient error relative to that phase, are at most
+`2*sqrt(1+aQ²)*|vprof s|/sqrt s`. This does not assume a nonzero profile, evaluate
+an inverse shift, or allocate any additional endpoint error. Actual node
+intervals, stored-center errors and the final propagated budget still need proof.
+Concrete numerical node bounds and the full upper bound remain unproved.
 
 `ShiftedMomentRecurrence` proves
 `M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including

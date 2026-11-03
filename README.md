@@ -351,8 +351,41 @@ that the original moment is `4/π` times the angular moment.
 `OriginalMomentRatios` transfers positivity, the recurrence, the exact ratio
 update and finite backward enclosures to the original moments. The `Mobius`
 modules prove the real half-line seed kernel is integrable and its integral
-equals `(π/2) * J_h(x)` for every order and real parameter. Identifying it
-with a Gaussian coefficient and concrete numerical node enclosures remain open.
+equals `(π/2) * J_h(x)` for every order and real parameter.
+`OneSidedHermiteSeed` identifies the normalized Gaussian zero-row coefficient
+with `(sqrt(π)/2) * A * (-A)^d * J_d(A²) / sqrt(d!)`.
+`F0ConditionalSeed` connects this identity to the actual canonical evaluator
+and the production F0 coefficient, preserving the profile sign; at `d=0`
+the sign factor is one. These identities use only the standard Lean axioms.
+`F0ConditionalSeedRecurrence` derives the exact zero-row step of the actual
+evaluator from the original positive-moment ratio, including the signed
+production step and its factorial normalization.
+`F0ConditionalCoefficientBounds` bounds every actual canonical coefficient
+by one using its Gaussian Hilbert-space inner product. It bounds the two-term
+raising sum by `sqrt(c+1)+sqrt(d+1) < 35` over the stored index rectangle.
+The parameter derivative identity and its midpoint error transfer remain open.
+`F0ConditionalReality` uses Gaussian conjugation symmetry and the rational
+Hermite coefficients to show that every canonical coefficient is real.
+It identifies the complex distance from a real stored center with the absolute
+real-part error, including for the signed production coefficient.
+`ZeroProfileSavedCenter` separates the actual Gaussian remainder, parameter
+interval and saved-scalar comparison. Its concrete inputs are `|ρ|≤1/4000000`,
+parameter error at most `10⁻¹³` and model-to-saved error at most `5·10⁻¹³`,
+which imply actual coefficient error below `10⁻¹²`. Actual-node and byte
+certificates must still supply those inputs.
+`ZeroProfilePhaseLinearization` gives the actual constant-and-linear Gaussian
+approximation with whole L² and all-mode coefficient error at most `5ρ²`,
+where `ρ=√(1+a²)v(s)/√s` retains the profile sign and stays zero at a profile
+zero. Comparing these centers with the actual saved entries remains separate.
+`PhaseStability` also gives a quadratic error for the constant-plus-linear
+phase approximation: at a positive real reference radius, the error is at
+most `(5/2)‖h‖²/r²`, including when the perturbed point is zero.
+`PhaseStability` proves `‖phase(r+h)-1‖ ≤ 2‖h‖/r` for `r>0`, including when
+the perturbed point is zero. `ZeroProfilePhaseStability` transfers it to the
+actual Gaussian phase slice, its L² norm and each conditional coefficient,
+without requiring a profile sign or a nonzero profile. Applying these estimates
+to node intervals and stored centers remains separate from this identity.
+Concrete numerical node enclosures and the complete upper bound remain open.
 
 `ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`
 on any certified radial region with `s ≥ 1/16` and `|κ(s)| ≤ 1/100`.
