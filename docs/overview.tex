@@ -141,6 +141,22 @@ to the actual affine Gaussian phase integral for $u>0$. Both theorems are
 audited without new native facts; the production Gaussian error estimates
 for the target endpoint remain work in progress.
 
+
+The literal polynomial used in the q0 Wick calculation is linked to its
+actual parsed source by
+\texttt{Q0BinaryLiteralAssemblyBridge.sourceSum\_eq\_literal}:
+\[
+ \operatorname{Ssum}(\mathrm{q0RawWickEntries};s,b,v)
+ =\frac{\operatorname{he3}(\mathrm{sourceCoefficients};s,b,v)}
+ {604005087394345832307543156484734976000}.
+\]
+This identity holds for all real $s,b,v$, ordered as squared radius, inverse
+damping rate and shifted argument. The source partition, chunk denominators,
+literal tables and recombination are checked in Lean; no source-table equality
+is assumed. A strict transitive audit allows only the standard logical axioms.
+The inverse-rate factor already included in the literal is retained. Numerical
+cell certificates and the full upper-bound inputs remain separate obligations.
+
 The actual Taylor sources also admit a proved finite auxiliary reduction in
 \texttt{ProductionFiniteLaplace}. With softening $\eta=10^{-15}$ and cutoff
 $T=(2^{53})^2$, softening plus truncation costs less than $5\cdot10^{-15}$
@@ -228,8 +244,22 @@ strip 5 have rational enclosures with no numerical premises. A checked
 profile Horner trace and a LeanCert dyadic exponential certificate give
 pointwise envelopes; exact cell area and kernel-checked rational comparisons
 place the integrals in their original intervals. The first lower endpoint
-remains zero. The remaining roots, production-kernel identification and
-band-energy certificates are still work in progress.
+remains zero. The remaining roots and band-energy certificates are still
+work in progress.
+
+The analytic-envelope leaf family reuses shared profile and scalar
+exponential certificates. Each leaf yields both actual iterated integral
+enclosures for arbitrary damping, preserving its original rational
+intervals. LeanCert dyadic checks and the finite rational comparisons use
+kernel reduction. On the reciprocal root of strip 3, three such leaves
+combine with an algebraic leaf. On the direct root of strip 5, twelve
+algebraic leaves combine. Exact midpoint identities prove both complete
+base-pair integrals from these checked cells without numerical premises.
+The explicit integrands are identified with the two actual production
+kernels at Taylor index zero, including the reciprocal Jacobian. These
+identities transfer the three complete-root enclosures at the fixed damping
+without numerical hypotheses. The remaining leaves, other roots and final
+band energies remain separate obligations.
 
 A second route uses a finite-head estimate for the actual kernel directly;
 its coefficient enclosures and numerical head estimate remain work in progress.

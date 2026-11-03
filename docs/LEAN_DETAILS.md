@@ -50,6 +50,31 @@ from `Upper/Data.lean`; the generated candidates are linked to the actual
 source by Lean proofs. The result is independent of the phase-cover numerical
 leaves and does not discharge the remaining upper-bound inputs.
 
+**q0 source-to-literal identity.**
+`Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real
+`s`, `b`, and `v`, that `Ssum q0RawWickEntries s b v` equals
+`he3 sourceCoefficients s b v / sourceDen`. Its source-table equality is a
+proved conclusion, rather than a hypothesis. Here `sourceDen` is exactly
+`604005087394345832307543156484734976000`, distinct from the phase denominator
+above. The coordinates are squared radius, inverse damping rate, and shifted
+argument, in that order. The inverse-rate factor already present in the
+literal is preserved.
+
+`Q0SourceChunkAssembly` combines the actual source partition, chunk tables and
+denominators; `Q0LiteralBinaryFold` checks the finite literal recombination.
+`Q0SourceBindingAxiomAudit` rejects any transitive axiom outside `propext`,
+`Classical.choice`, and `Quot.sound` for these concrete facts and the final
+identity. The `gen_q0_literal_data.py`, `gen_q0_source_chunks.py`,
+`gen_q0_chunk_assembly.py --module-name Q0SourceChunkAssembly`, and
+`gen_q0_literal_fold.py` tools reproduce the candidate files with `--check`;
+their Python calculations do not replace Lean's proof checks. The binding
+generators use `data/q0-source-binding/source-polynomial.json`;
+the production rectangle generators retain their profile-enriched input under
+`data/q0_quadrature/`. The shared source fields agree in both inputs.
+This identity supplies a source binding for numerical models; it does not
+certify all cells,
+Taylor-band errors, the frozen-response energy discrepancy, or the final bound.
+
 **Exact Gaussian phase-moment interfaces.**
 `DampedMoments` proves mixed complex Gaussian moments at every positive radial
 scale. `InvariantMoments` integrates each monomial in the simultaneous-rotation
@@ -540,9 +565,41 @@ The original stored intervals are preserved, with zero as the first lower
 endpoint. No source reserve or normalization allowance is added here.
 The generator and its pinned certificate are in
 `tools/gen_analytic_envelope_root11.py` and `data/analytic-envelope-cells/`.
-The full production-kernel binding, other roots and final band energies
-remain work in progress.
+The other roots and final band energies remain work in progress.
 
+
+`tools/gen_analytic_envelope_cells.py` renders every analytic-envelope leaf
+of the fixed base-pair mesh from the pinned certificate. Shared
+`AnalyticEnvelopeProfiles` theorems check the actual profile through rounded
+Horner traces. Shared `AnalyticEnvelopeExponentials` theorems use LeanCert's
+dyadic checker with kernel reduction. Each `AnalyticEnvelopeCell` theorem
+then proves both actual iterated integral memberships, for arbitrary damping,
+by exact finite-area bounds. It retains the original first lower endpoint
+and signed companion interval; it spends no extra source reserve.
+Four dependency lanes bound parallel certificate evaluation. The numerical
+witnesses and the exact exponential algorithm are also replayed by the
+generator, but only the Lean theorems establish their mathematical validity.
+`Q0BasePairRoot7Integral.fixed_root_integrals_mem` combines the three
+analytic-envelope leaves and the algebraic leaf on the complete reciprocal
+root of strip 3. `Q0BasePairRoot10Integral.fixed_root_integrals_mem` combines
+the twelve algebraic leaves on the direct root of strip 5. Each theorem
+checks the exact midpoint geometry and discharges every leaf membership at
+the fixed damping `1/10^15`. Continuity justifies the exact adjacent-integral
+identities. The result intervals are the ordered sums of the proved leaf
+intervals, without another source reserve. Root 10 is generated from its
+committed recipe by `tools/gen_base_pair_root10_integral.py --check`.
+`BasePairIntegralAudit` checks the transitive dependencies of every analytic
+cell integral and all complete-root results against the standard Lean axioms;
+it rejects missing theorems and any additional axiom dependency.
+`Q0BasePairProductionBridge` identifies the explicit first and companion
+integrands with `regularKernel` and `reciprocalRealKernel` at Taylor index
+zero, including the reciprocal Jacobian. Its integral identities require
+only the rectangle geometry. `Q0BasePairProductionRoots` combines them with
+the complete root results for reciprocal strips 3 and 5 and direct strip 5
+at `finiteLaplaceEta`, without source identities or numerical hypotheses.
+The strict integral audit includes these production-root consumers.
+The remaining algebraic leaves, other roots and final band energy checks
+remain separate obligations.
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual

@@ -18,6 +18,7 @@ certificate byte for byte from these committed inputs:
 python3 tools/extract_analytic_envelope_cells.py \
   --packed-input data/analytic-envelope-cells/source-pack.json.gz --check
 python3 tools/gen_analytic_envelope_root11.py --check
+python3 tools/gen_analytic_envelope_cells.py --check
 ```
 
 The root-11 theorem uses the complete reciprocal root of radial strip 5 and
@@ -32,3 +33,11 @@ The supporting profile and reciprocal-envelope modules are reproduced by:
 python3 tools/q0_quadrature/gen_profile_model.py --check
 python3 tools/q0_quadrature/gen_base_pair_radial_envelope.py --reciprocal --check
 ```
+
+The complete envelope renderer emits shared actual-profile and exponential
+theorems, followed by both actual integral enclosures for each analytic leaf.
+All finite comparisons use kernel reduction. Four fixed import lanes bound
+parallel certificate evaluation; imports do not change the mathematical
+statements. The renderer also replays the original dyadic rounding, analytic
+formula and scalar exponential algorithm using exact Python arithmetic.
+This replay checks generation consistency and is not a substitute for Lean.

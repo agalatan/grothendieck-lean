@@ -162,6 +162,13 @@ coefficients in bounded chunks, with exact value
 `302002543697172916153771578242367488000`. This source arithmetic supports
 future certificates; it does not establish the phase cover or the upper bound.
 
+The q0 Wick source sum is also bound to its literal polynomial by
+`Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal`, with no assumed table
+equality. The proof preserves the separate exact denominator
+`604005087394345832307543156484734976000` and the order of squared radius,
+inverse rate and shifted argument. Generated Python data are checked by Lean;
+the numerical quadrature cells and the upper-bound inputs remain to be proved.
+
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of
 scaled integers regenerated from the same pinned binary64 input.
@@ -408,9 +415,21 @@ then passed as fourteen root intervals without expanding one large leaf list.
 entire reciprocal root of radial strip 5, using the original rational
 candidate intervals. The profile polynomial, scalar exponential and
 area-weighted endpoint comparisons are checked in Lean. The first integral
-keeps its nonnegative lower endpoint. This supplies one complete root;
-the remaining roots, production-kernel identification and band energies
-still have to be assembled before the upper endpoint is done.
+keeps its nonnegative lower endpoint.
+
+The generated `AnalyticEnvelopeCell` family supplies both explicit integral
+enclosures for every analytic-envelope leaf of the fixed base-pair mesh.
+The cells reuse checked profile and exponential bounds and retain their
+original rational intervals. `Q0BasePairRoot7Integral` combines three such
+leaves with an algebraic cell certificate on the complete reciprocal root
+of strip 3. `Q0BasePairRoot10Integral` combines all twelve algebraic leaves
+on the direct root of strip 5. Both preserve exact midpoint geometry and
+prove both explicit integrals without leaf or numerical premises.
+`Q0BasePairProductionBridge` identifies these explicit integrands with the
+actual two production kernels at Taylor index zero, including the reciprocal
+Jacobian. `Q0BasePairProductionRoots` transfers the three complete-root
+enclosures to those production kernels at the fixed damping. The remaining
+algebraic leaves and complete root-to-band assembly remain work in progress.
 
 
 Lean also proves a selected-spectrum comparison: the error is split
