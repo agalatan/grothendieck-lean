@@ -885,6 +885,15 @@ remain to be certified.
 The gap data share the same tracked input and generator as the radial cuts;
 the checker uses kernel reduction and introduces no native facts.
 
+`PhiProductionIdentity` contains the existing `phaseEps_eq` and `phiT_sq`
+identities with their public names and statements unchanged. `PhiProductionDefs`
+contains the unchanged `Sphase` and `phiT` definitions and continuity of the
+phase polynomial, independently of structural head-table proofs. The identity
+imports these definitions and the generic Gram-expression soundness module,
+then audits both identities against the standard three
+axioms, independently of the global phase-cover computation. The existing
+`PhiBound` proof imports this identity and retains its numerical cover.
+
 `LocalAffineSquareIntegralBounds` supplies both affine integration orders with
 `ContinuousOn` restricted to the actual closed cell. Coordinate clamping
 extends the integrand continuously without changing any cell integral.
