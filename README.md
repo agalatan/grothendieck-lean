@@ -420,6 +420,14 @@ for very small positive reciprocal coordinates.
 polynomial without importing the numerical phase cover. Concrete leaf proofs
 can use this exact identity before the global cover is assembled.
 
+`ProductionPhaseLeaf` carries an integer leaf check on the original phase source
+to the actual production phase and rounding. `ProductionPhaseModel` propagates
+the zero-safe Gaussian base remainder through the cubic factor, charging phase
+error at most `5/2` times its absolute error and retaining the explicit
+model-to-saved-center discrepancy. The finite source checks and numerical
+comparison inputs still need to be certified; these interfaces do not complete
+the global cover or upper endpoint.
+
 `ProfilePiFactor` provides rational enclosures of `π`, `sqrt(π)`, and
 `sqrt(sqrt(π))` of width at most `2⁻⁵¹²` for the actual profile normalization.
 Mathlib's proved nested-square-root bounds certify the π witnesses; exact

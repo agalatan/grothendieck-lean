@@ -767,6 +767,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_phaseOfTerms_pow_cut
 #print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_phiT_pow_even_cut
 #print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_polynomial_cut_damped
+#print axioms Grothe.UpperChaos.PhasePolynomialStability.norm_P3_sub_le
+#print axioms Grothe.UpperChaos.PhasePolynomialStability.norm_base_mul_P3_sub
 #print axioms Grothe.UpperChaos.PhiDegreeChunksDraft.splitLengths_eq_offsetChunks
 #print axioms Grothe.UpperChaos.PhiSourceDenBinding.source_chunk_denominators
 #print axioms Grothe.UpperChaos.PhiSourceDenBinding.source_common_den
@@ -790,6 +792,15 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_prod_mul
+#print axioms Grothe.UpperChaos.ProductionPhaseLeaf.abs_phase_lt_one_of_leaf
+#print axioms Grothe.UpperChaos.ProductionPhaseLeaf.gram_constraint
+#print axioms Grothe.UpperChaos.ProductionPhaseLeaf.norm_phase_factor_le_one_of_leaf
+#print axioms Grothe.UpperChaos.ProductionPhaseLeaf.norm_rounding_le_one_of_leaf
+#print axioms Grothe.UpperChaos.ProductionPhaseLeaf.phase_sq_le_of_leaf
+#print axioms Grothe.UpperChaos.ProductionPhaseModel.norm_roundingSlice_sub_model
+#print axioms Grothe.UpperChaos.ProductionPhaseModel.norm_roundingSlice_sub_model_of_leaf
+#print axioms Grothe.UpperChaos.ProductionPhaseModel.norm_roundingSlice_sub_saved_of_leaf
+#print axioms Grothe.UpperChaos.ProductionPhaseModel.roundingSlice_at_profile_zero
 #print axioms Grothe.UpperChaos.ProfilePiFactor.pi_lo_lt
 #print axioms Grothe.UpperChaos.ProfilePiFactor.pi_lt_hi
 #print axioms Grothe.UpperChaos.ProfilePiFactor.pi_quarter_bounds

@@ -852,4 +852,13 @@ The identity expressing the squared production phase in Gram coordinates is
 available independently of the numerical phase cover. This lets local source
 certificates use the actual rounding polynomial before cover assembly.
 
+\paragraph{Production source error propagation.}
+An actual-source integer leaf check bounds the production phase at every
+physical point in that leaf. On $[-1,1]$ the cubic phase factor is
+$5/2$-Lipschitz. The actual rounding error can consequently be split into the
+proved quadratic Gaussian-base remainder, the phase approximation error, and
+an explicit comparison of the resulting model with the saved center.
+The exact profile-zero reduction uses a positive radial parameter; source,
+saved-byte and integral certificates still have to instantiate these bounds.
+
 \end{document}

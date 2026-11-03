@@ -588,6 +588,23 @@ then audits both identities against the standard three
 axioms, independently of the global phase-cover computation. The existing
 `PhiBound` proof imports this identity and retains its numerical cover.
 
+`ProductionPhaseLeaf` instantiates generic leaf soundness on the actual
+`phaseTerms` and the Gram coordinates of the actual complex input. Its inputs
+are the finite `termsOK` and `leafOK` checks and physical box membership; it
+does not call the global numerical cover theorem. It derives the local squared
+phase cap, cubic-factor contraction and disk-valued production rounding.
+
+`PhasePolynomialStability` proves the cubic factor is `5/2`-Lipschitz on
+`[-1,1]`. Its product estimate needs only the actual base to have norm at most
+one; the Gaussian linear base model need not be disk-valued.
+`ProductionPhaseModel` therefore bounds the actual rounding-slice discrepancy
+by the proved quadratic base remainder, `5/2` times the phase error, and the
+explicit model-to-saved-center discrepancy. At an exact profile zero and positive
+radial parameter the base is exactly one. No such unit assertion is made at
+radial parameter zero. All new headline proofs have strict transitive guards;
+finite source certificates, saved-byte comparisons and integral instantiations
+remain separate obligations.
+
 `LocalAffineSquareIntegralBounds` supplies both affine integration orders with
 `ContinuousOn` restricted to the actual closed cell. Coordinate clamping
 extends the integrand continuously without changing any cell integral.
