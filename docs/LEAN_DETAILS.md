@@ -817,6 +817,17 @@ discharge the whole Row14 hypothesis.
 The localized-piece predicates also have a computation-only layer:
 `CapCoverDefs` holds rational constraints and finite coverage checks, and
 `CapConstrDefs` holds constrained matrices, parsers and node checks.
+`CapCoverFast` proves in `capCoverFastOK_eq` that discarding duplicate samples
+and filtering pieces by the first two coordinates leaves the finite coverage
+predicate unchanged. `capCoverOK_of_slices` reconstructs it from all slices
+of the first candidate index, requiring a positive slice count. The generated
+coverage modules use the policy in
+`data/caps-m/plan/row-certificates/coverage-slicing.json`: large nodes have
+one independently compiled native fact per slice and a pure coverage assembly.
+Small nodes use the equivalent filtered check directly. The public
+`pieceCover_…` propositions, range checks, grids, multipliers and soundness
+theorems remain unchanged. Every slice is registered as a computation leaf;
+the bounded builder parallelizes modules, never threads inside a native check.
 `CapPieceRange` imports these definitions and rational data; the semantic
 regions and unchanged soundness proofs remain in `CapCover`, `CapConstr`
 and `CapPieceNodes`. Generated coverage/range modules therefore avoid the

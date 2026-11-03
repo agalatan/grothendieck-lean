@@ -38,8 +38,15 @@ The rows 12–15 piece checks have the same separation. `CapCoverDefs`
 contains `Cons` and the rational coverage predicates; `CapConstrDefs`
 contains the constrained matrices, parsers and `nodeOKc`. `CapPieceRange`
 imports these pure definitions, row/gate data and `CapTablesData`.
-Its local import closure has 32 modules; generated coverage/range modules
-for one node have 34, including their data. Semantic regions and all
+`CapCoverFast` proves the coordinate-filtered check equal to `capCoverOK`:
+duplicate rational samples are checked once, and each coordinate filters
+the possible pieces before the next coordinate is checked. For large nodes,
+`coverage-slicing.json` selects separate native facts over disjoint residue
+classes of the first sample index. A pure assembly combines every slice
+into the original `pieceCover_…` theorem; a positive slice count is required.
+The active registry derives every slice and its exact checker proposition
+from that policy and the piece count. Range checks and certificate data are
+unchanged. Semantic regions and all
 soundness proofs remain in `CapCover`, `CapConstr` and `CapPieceNodes`.
 The prepared Row12/13 piece facts feed their whole-row assemblies. The independent
 master `nodeCap_14x150_done` proof and its repair remain intact.

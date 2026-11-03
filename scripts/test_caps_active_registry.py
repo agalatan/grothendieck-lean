@@ -459,4 +459,57 @@ class ActiveRegistryTests(unittest.TestCase):
                 self.assertEqual(stamp.digest(),(h.hexdigest(),len(expected_files)))
 
 
+class CoverageSliceTests(unittest.TestCase):
+    """Coverage partitions are data-bound native leaves, with a pure assembly."""
+    def fixture(self, root, *, sliced=True):
+        f = Fixture(root, rows=(12,))
+        f.json(BASE+'coverage-slicing.json', {'format':'caps-coverage-slicing/v1', 'rows':[12],
+                   'threshold':1 if sliced else 128, 'pieces_per_slice':2})
+        imports = ('Grothe.LowerAnalytic.FixturePure', 'Grothe.LowerAnalytic.CapPieces.D12x3')
+        prefix = ''.join('import '+n+'\n' for n in imports)
+        if sliced:
+            for i in range(3):
+                f.native(CPP+f'C12x3_{i}.lean', {f'pieceCoverSlice_12x3_{i}':f'pieceCoverSliceOK pieceNode_12x3 {i} 3 = true'}, imports)
+            prefix += ''.join(f'import Grothe.LowerAnalytic.CapPieces.C12x3_{i}\n' for i in range(3))
+            body = ''
+        else:
+            body = 'theorem pieceCoverFast_12x3 : pieceCoverFastOK pieceNode_12x3 = true := by native_decide\n'
+        f.write(CPP+'C12x3.lean', prefix+'namespace Grothe.LowerAnalytic\n'+body+
+                'theorem pieceCover_12x3 : pieceCoverOK pieceNode_12x3 = true := by exact fixture\nend Grothe.LowerAnalytic\n')
+        return f
+
+    def test_exact_slices_and_original_coverage_bridge_registered(self):
+        with tempfile.TemporaryDirectory() as d:
+            f=self.fixture(Path(d).resolve());v=f.view()
+            self.assertNotIn(CPP+'C12x3.lean',v['compute_roots'])
+            self.assertIn(CPP+'C12x3.lean',v['direct_hash_roots'])
+            for i in range(3):self.assertEqual(v['native_declarations_by_root'][CPP+f'C12x3_{i}.lean'],[f'Grothe.LowerAnalytic.pieceCoverSlice_12x3_{i}'])
+            self.assertIn('Grothe.LowerAnalytic.pieceCover_12x3',v['required_declarations'])
+            self.assertIn(BASE+'coverage-slicing.json',v['computation_input_sha256'])
+
+    def test_small_filtered_fact_and_original_bridge_required(self):
+        with tempfile.TemporaryDirectory() as d:
+            f=self.fixture(Path(d).resolve(),sliced=False);v=f.view()
+            self.assertEqual(v['native_declarations_by_root'][CPP+'C12x3.lean'],['Grothe.LowerAnalytic.pieceCoverFast_12x3'])
+            self.assertIn('Grothe.LowerAnalytic.pieceCover_12x3',v['required_declarations'])
+
+    def test_omitted_slice_wrong_total_and_omitted_import_reject(self):
+        for mutation in ('missing','total','import','bridge'):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as d:
+                f=self.fixture(Path(d).resolve());p=Path(d)/(CPP+'C12x3_1.lean')
+                if mutation=='missing':p.unlink()
+                elif mutation=='total':p.write_text(p.read_text().replace(' 1 3 = true',' 1 2 = true'))
+                else:
+                    p=Path(d)/(CPP+'C12x3.lean')
+                    if mutation=='import':p.write_text(p.read_text().replace('import Grothe.LowerAnalytic.CapPieces.C12x3_1\n',''))
+                    else:p.write_text(p.read_text().replace('pieceCoverOK pieceNode_12x3 = true','True'))
+                with self.assertRaises(stamp.ClosureError):f.view()
+
+    def test_noninteger_zero_duplicate_or_foreign_policy_rejects(self):
+        for key,value in (('threshold',True),('threshold',0),('pieces_per_slice',0.5),('rows',[12,12]),('rows',[11])):
+            with self.subTest(key=key,value=value), tempfile.TemporaryDirectory() as d:
+                f=self.fixture(Path(d).resolve());policy=f.value(BASE+'coverage-slicing.json');policy[key]=value;f.json(BASE+'coverage-slicing.json',policy)
+                with self.assertRaises(stamp.ClosureError):f.view()
+
+
 if __name__ == '__main__': unittest.main()

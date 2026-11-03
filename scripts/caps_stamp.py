@@ -507,6 +507,16 @@ def _active_row(reads, item, retained, native, direct, owned, shapes, literals, 
     _active_require(isinstance(reuse, list) and all(isinstance(v, dict) and set(v) == {"node", "proof"} and type(v["node"]) is int and type(v["proof"]) is str for v in reuse), "invalid retained-node selections")
     reused = {v["node"]: v["proof"] for v in reuse}
     _active_require(len(reused) == len(reuse) and set(reused) <= set(indices), "duplicated or foreign retained node")
+    cover_policy_path = "data/caps-m/plan/row-certificates/coverage-slicing.json"
+    cover_policy = None
+    if reads.exists(cover_policy_path):
+        cover_policy = reads.value(cover_policy_path)
+        _active_require(isinstance(cover_policy, dict) and set(cover_policy) == {"format", "rows", "threshold", "pieces_per_slice"}
+                        and cover_policy["format"] == "caps-coverage-slicing/v1", "unsupported coverage slicing policy")
+        _active_require(isinstance(cover_policy["rows"], list) and all(type(k) is int and k in (12, 13, 14, 15) for k in cover_policy["rows"])
+                        and cover_policy["rows"] == sorted(set(cover_policy["rows"])), "invalid coverage slicing rows")
+        for key in ("threshold", "pieces_per_slice"): _active_nat(cover_policy[key], "coverage " + key, positive=True)
+        reads.computation_input(cover_policy_path, cover_policy)
     for node in pieces:
         i = node["i"]; spec = selection[f"{row}:{i}"]
         _active_require(isinstance(node.get("pieces"), list) and node["pieces"], "empty/unsupported piece inventory")
@@ -531,8 +541,29 @@ def _active_row(reads, item, retained, native, direct, owned, shapes, literals, 
             row_imports[item["assembly"]].add(proof["root"])
             continue
         tag = f"{row}x{i}"
-        native[f"Grothe/LowerAnalytic/CapPieces/C{tag}.lean"] = ["Grothe.LowerAnalytic.pieceCover_"+tag]
-        shapes[f"Grothe/LowerAnalytic/CapPieces/C{tag}.lean"] = {"Grothe.LowerAnalytic.pieceCover_"+tag: "pieceCoverOK pieceNode_"+tag+" = true"}
+        cover = f"Grothe/LowerAnalytic/CapPieces/C{tag}.lean"
+        fast = cover_policy is not None and row in cover_policy["rows"]
+        slices = ((len(node["pieces"]) + cover_policy["pieces_per_slice"] - 1) // cover_policy["pieces_per_slice"]
+                  if fast and len(node["pieces"]) >= cover_policy["threshold"] else 1)
+        if slices > 1:
+            direct.add(cover)
+            for part in range(slices):
+                path = f"Grothe/LowerAnalytic/CapPieces/C{tag}_{part}.lean"
+                fact = f"Grothe.LowerAnalytic.pieceCoverSlice_{tag}_{part}"
+                native[path] = [fact]
+                shapes[path] = {fact: f"pieceCoverSliceOK pieceNode_{tag} {part} {slices} = true"}
+                owned.add(path)
+            if reads.exists(cover):
+                imports = {m.replace('.', '/')+'.lean' for m in imports_of(reads.root / cover, reads.read(cover))}
+                _active_require({f"Grothe/LowerAnalytic/CapPieces/C{tag}_{part}.lean" for part in range(slices)} <= imports,
+                                "coverage assembly omits a slice: " + cover)
+                code = _active_public_theorem(reads.read(cover), "Grothe.LowerAnalytic.pieceCover_"+tag)
+                _active_require(re.search(r"\btheorem\s+pieceCover_"+tag+r"\s*:\s*pieceCoverOK\s+pieceNode_"+tag+r"\s*=\s*true\s*:=", code),
+                                "coverage assembly proposition differs: " + cover)
+        else:
+            fact = "Grothe.LowerAnalytic.pieceCover" + ("Fast_" if fast else "_") + tag
+            native[cover] = [fact]
+            shapes[cover] = {fact: ("pieceCoverFastOK" if fast else "pieceCoverOK") + " pieceNode_"+tag+" = true"}
         for j, lo in enumerate(range(0, len(node["pieces"]), chunk)):
             path = f"Grothe/LowerAnalytic/CapPieces/R{tag}_{j}.lean"
             native[path] = [f"Grothe.LowerAnalytic.pieceRange_{tag}_{j}"]
@@ -672,7 +703,9 @@ def derive_active_registry(root, registry, *, require_materialized=True):
             "native_verified": False, "cache_uploaded": False}
     view["native_declarations"] = sorted(n for names in native.values() for n in names)
     view["required_declarations"] = sorted(set(view["native_declarations"]) | {v[0] for v in soundness.values()} |
-                {v["vertex_theorem"] for v in row_views} | {f"Grothe.LowerAnalytic.vertexCapsRow{k:02d}" for k in CAP_ROWS})
+                {v["vertex_theorem"] for v in row_views} | {f"Grothe.LowerAnalytic.vertexCapsRow{k:02d}" for k in CAP_ROWS} |
+                {"Grothe.LowerAnalytic.pieceCover_"+m[1]+"x"+m[2] for path in owned
+                 if (m := re.fullmatch(r"Grothe/LowerAnalytic/CapPieces/C(\d+)x(\d+)\.lean", path))})
     view["required_axiom_prints"] = list(view["required_declarations"])
     view["native_axioms"] = [n+"._native.native_decide.ax_1_1" for n in view["native_declarations"]]
     for field in ("compute_roots", "direct_hash_roots", "native_declarations_by_root", "input_sha256", "computation_input_sha256", "derived_counts"):

@@ -12,6 +12,7 @@ import importlib.util
 import io
 import json
 from pathlib import Path
+import re
 import sys
 import tempfile
 import warnings
@@ -39,6 +40,11 @@ def render(root, row):
     binding = json.loads((root / BASE / 'prepared-binding.json').read_text())
     writer = root / binding['writer_path']
     require(sha(writer.read_bytes()) == binding['writer_sha256'], 'canonical writer binding changed')
+    policy_path = binding.get('coverage_policy')
+    if policy_path is not None:
+        require(binding['format'] == 'nodecaps-prepared-source-binding/v2'
+                and policy_path == 'data/caps-m/plan/row-certificates/coverage-slicing.json', 'unsupported coverage source binding')
+        require(sha((root / policy_path).read_bytes()) == binding['coverage_policy_sha256'], 'coverage policy changed')
     seal_path = root / BASE / f'row{row}-source.json'
     require(sha(seal_path.read_bytes()) == binding['source_manifests_sha256'][seal_path.name],
             'historical source seal changed')
@@ -71,12 +77,22 @@ def render(root, row):
     spec.loader.exec_module(module)
     with tempfile.TemporaryDirectory(prefix=f'nodecaps{row}-') as name:
         module.ROOT = Path(name)
+        if policy_path is not None:
+            target = module.ROOT / policy_path
+            target.parent.mkdir(parents=True)
+            target.write_bytes((root / policy_path).read_bytes())
         with warnings.catch_warnings(), contextlib.redirect_stdout(io.StringIO()):
             warnings.simplefilter('ignore', ResourceWarning)
             module.write_nodes(str(pieces), str(selection))
         outputs.update({p.relative_to(name).as_posix(): p.read_bytes()
                         for p in Path(name).rglob('*.lean')})
     expected = {n: h for n, h in seal['files_sha256'].items() if n not in SHARED}
+    if policy_path is not None:
+        # Coverage checks have a separately bound equivalent implementation.
+        # The original certificate inputs, seals and all D/R/N bytes stay fixed.
+        pattern = rf'Grothe/LowerAnalytic/CapPieces/C{row}x\d+(?:_\d+)?\.lean'
+        expected = {n: h for n, h in expected.items() if not re.fullmatch(pattern, n)}
+        expected.update({n: h for n, h in binding['coverage_sources_sha256'].items() if re.fullmatch(pattern, n)})
     require(set(outputs) == set(expected), 'missing or unexpected generated source')
     for name, data in outputs.items():
         require(sha(data) == expected[name], 'canonical reproduction differs: ' + name)

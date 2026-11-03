@@ -5,6 +5,9 @@ import Grothe.LowerAnalytic.CapPieces.D12x192
 
 namespace Grothe.LowerAnalytic
 
-theorem pieceCover_12x192 : pieceCoverOK pieceNode_12x192 = true := by native_decide
+theorem pieceCoverFast_12x192 : pieceCoverFastOK pieceNode_12x192 = true := by native_decide
+
+theorem pieceCover_12x192 : pieceCoverOK pieceNode_12x192 = true := by
+  exact pieceCoverOK_of_fast pieceCoverFast_12x192
 
 end Grothe.LowerAnalytic
