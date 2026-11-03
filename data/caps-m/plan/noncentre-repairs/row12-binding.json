@@ -9,7 +9,7 @@
   },
   "effective": {
     "path": "data/caps-m/plan/row-certificates/row12-pieces.json",
-    "sha256": "62de508b3e07b10375000a6b63bdb2404eef93a22f90fa9f8de1fd14d896ab89"
+    "sha256": "5c755cb2a6ce74d3b8e3f2fca951079ad5a6363ffe087b5f21b470194ea1bbd8"
   },
   "format": "nodecaps-noncentre-repair-binding/v1",
   "historical_provenance": {
@@ -22,7 +22,7 @@
   },
   "patches": {
     "path": "data/caps-m/plan/noncentre-repairs/row12-patches.json",
-    "sha256": "8ed8780d4e281eef954f9c8744c561dcc5949a615ebff94da5ef7dd17bb4b92c"
+    "sha256": "ef9bae00fb06e62b5166925cd6094a4c72afc2b29df84b8201831b929247a862"
   },
   "row": 12,
   "selection": {
@@ -1133,6 +1133,22 @@
     "data/caps-m/plan/noncentre-repairs/batches/ab261d41cc27e415/12-292-98/matrix.jsonl": "1c8c4ebf98c6e84b202df28883ef8c358971ad0e04f5b778c774382e99e20bf8",
     "data/caps-m/plan/noncentre-repairs/batches/ab261d41cc27e415/12-292-98/proposal.json": "9292e5cb8e95570d8ed4c96cf8d9c5334299edb77dc0ef01b49e073ed9e4e31b",
     "data/caps-m/plan/noncentre-repairs/batches/ab261d41cc27e415/scientific-replay.json": "c523677590670c6de96406c9e9c0bd87394301a7e258ad485ac397c49692578f",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-12/exporter.lean.txt": "a1e5ee6313a54f8e15aab2254df0f4f32c2be94e9c9960227d4c6e38e3d840cf",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-12/matrix.jsonl": "28c010145e4fad2b6c2e35e3c07b3cdeaa776c35cdc0b50b9cad6554a60c3d98",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-12/proposal.json": "7d9e27ba7222ac4b01887c2c0049fe7b6f5b10bb5cb001333d446bbc8ce92375",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-18/exporter.lean.txt": "b4865d939900559eb034be7ccf59980ece86f22fd002c991e38a25be509ad7d3",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-18/matrix.jsonl": "8ef8265f824e73510f10e9b3fd72e6f557efaaff52c9b1decccceaac21b38cd3",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-18/proposal.json": "27a061982aee193293c722e8fc326c78bf05c576858ffd044b4e80a29d196a6e",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-4/exporter.lean.txt": "497bdcff6cae605707c921313ef520ad67b8cb07cf20e575d8b7f91840f531ee",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-4/matrix.jsonl": "6ddf475af2c0919a6df2c1eb1d0e8e0a41ffaa0d23351c7d62c3d4fbc7896d92",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-4/proposal.json": "43ad091ab21887580df3882672757a4e08a25bc479899bcf8aed67db118392d3",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-5/exporter.lean.txt": "a364526df5b198f35093831d2f95d7c2ef1c7bef6d2c03102dae5ef92f51a773",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-5/matrix.jsonl": "77360fe741d9cb77df20ebfc6aa772d306882856aca46401489efccbda45ff4f",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-5/proposal.json": "af1eb2d86b3c29323b074cb7339be41ac9628c0cee7cef486f80fcf3f21d203c",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-6/exporter.lean.txt": "0da91645fd18e844719094e556c187e1b095581443f948b042299f74b6155491",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-6/matrix.jsonl": "586131fda5a370f62b617db57bff98a8478942f31f674c24ffc0b45dd45a4940",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-6/proposal.json": "cf5c0b6fa9c59552ccd5fe0c2935eb3fcbe416a9fca21b1057d2ad8cfe7d8d0f",
+    "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/scientific-replay.json": "e95498767201911a15ff4bd374ff86e7058bcb8827845ce1ab7d4174d061941f",
     "data/caps-m/plan/noncentre-repairs/evidence/fresh_replay.json": "9b862aca5e8f43bb7ee5e013afe78e06ce870cbb9c2a33811fce01ff05015485",
     "data/caps-m/plan/noncentre-repairs/evidence/fresh_source.json": "2bb26d5a19e9ebc4fd3e4039458f53e08ec504ea48fa849ebe74ce23a60d1601",
     "data/caps-m/plan/noncentre-repairs/row12/Export186Piece1.jsonl": "9f378a7d78c5cfa6610678a7356494324f58c2db3f540a3bc7bfded40035fd09",
