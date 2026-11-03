@@ -50,6 +50,10 @@ classical and quantum correlations in two-party Bell experiments (real case).
 complex matrix, with V over all finite-dimensional complex Hilbert spaces. The headline
 theorems conclude a statement about the constant itself.
 
+The source-node error ledger proves the exact rational budget for the raw
+and smoothing errors. Applying it to the stored Gaussian coefficients still
+requires proofs of the actual input estimates and operation-error model.
+
 **Lower bound** — `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data :
 NodeCaps → IsGrothendieckBound K → 1.401697117301 < K`
 (`Grothe/Research/RefinedCoverResult.lean`).
@@ -97,8 +101,7 @@ range facts for rows 0–11 and 16–18. They import `CapRangeDefs` and
 `CapRecipeData`: the rational row, gate, chord and recipe data and numerical
 checker, independently of the Gaussian analysis and lower certificate.
 There is one build target, `Grothe`: it builds range-check soundness in
-`CapRows`, convexity assembly in `CapAssembly` (`CapHull` is a compatibility
-import), the heavy facts, and `CapNodes`, which contains the 15 row-assembly
+`CapRows`, convexity assembly in `CapAssembly`, the heavy facts, and `CapNodes`, which contains the 15 row-assembly
 proofs and `lower_bound_of_capsRest`.
 
 `lower_bound_of_refined_cover_data` proves
@@ -309,6 +312,14 @@ proves an integrated auxiliary tail at `‖z‖ ≥ r₀ > 0`, bounded by
 including its zeros. Bounds for the full polynomial-weighted sources, the
 radial endpoint and certified numerical integration remain open.
 
+`LinearTiltedMoments` evaluates finite polynomials in `z` and `conj z` under
+`exp(-(rate-1)*normSq z + 2*Re(a*z))` for every positive `rate` and fixed complex
+source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
+Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
+A half-rate majorant proves integrability of every such polynomial insertion.
+Joint integrability when the source depends on another integration variable
+remains a separate obligation before Fubini can be applied.
+
 `GradedHermitePhaseSlice` expresses each actual Taylor source as a polynomial
 in the conditional coordinate times its exact Gaussian damping.
 `TaylorConditionalGaussian` evaluates that conditional integral by the finite
@@ -385,6 +396,14 @@ estimate. The exact cuts are recorded in `data/small-profile-mesh/certificate.js
 existing profile cover, giving `|κ(s)| > 1/1000` on all four remaining strips.
 Thus their reciprocal Gaussian denominator exceeds `10⁻⁶` uniformly, including
 for very small positive reciprocal coordinates.
+
+`ProfilePiFactor` provides rational enclosures of `π`, `sqrt(π)`, and
+`sqrt(sqrt(π))` of width at most `2⁻⁵¹²` for the actual profile normalization.
+Mathlib's proved nested-square-root bounds certify the π witnesses; exact
+rational inequalities certify the remaining factors. The input recipe and
+generator are tracked in `data/profile-pi-factor/` and
+`tools/gen_profile_pi_factor.py`. Full transformed node-shift enclosures remain
+separate obligations.
 
 `LocalAffineSquareIntegralBounds` requires continuity only on the closed cell,
 so reciprocal certificates do not need an extension through zero.

@@ -563,6 +563,13 @@ Grothe.UpperChaos.LeanCertProductionProfile.q0Beta_eq_wick_rate
 Grothe.UpperChaos.LeanCertProductionProfile.q0Kappa_eq_wick_profile
 Grothe.UpperChaos.LeanCertProductionProfile.q0_beta_panel_bounds
 Grothe.UpperChaos.LeanCertProductionProfile.q0_profile_panel_bounds
+Grothe.UpperChaos.LinearTiltedMoments.complete_square
+Grothe.UpperChaos.LinearTiltedMoments.integrable_finite_mixed_polynomial
+Grothe.UpperChaos.LinearTiltedMoments.integrable_mixed_moment
+Grothe.UpperChaos.LinearTiltedMoments.integral_finite_mixed_polynomial
+Grothe.UpperChaos.LinearTiltedMoments.integral_linear_tilt
+Grothe.UpperChaos.LinearTiltedMoments.integral_mixed_moment
+Grothe.UpperChaos.LinearTiltedMoments.linear_tilt_le_half_rate
 Grothe.UpperChaos.MobiusEndpoint.forward_tendsto
 Grothe.UpperChaos.MobiusFiniteSubstitution.finite_substitution
 Grothe.UpperChaos.MobiusGeometry.forward_deriv
@@ -624,6 +631,11 @@ Grothe.UpperChaos.ProductComplete.complete_prod
 Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
 Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
 Grothe.UpperChaos.ProductComplete.memLp_prod_mul
+Grothe.UpperChaos.ProfilePiFactor.pi_lo_lt
+Grothe.UpperChaos.ProfilePiFactor.pi_lt_hi
+Grothe.UpperChaos.ProfilePiFactor.pi_quarter_bounds
+Grothe.UpperChaos.ProfilePiFactor.pi_quarter_width
+Grothe.UpperChaos.ProfilePiFactor.sqrt_pi_bounds
 Grothe.UpperChaos.ProfileRootScreen.allCoeffsOK
 Grothe.UpperChaos.ProfileRootScreen.allGammaSQOK
 Grothe.UpperChaos.ProfileRootScreen.allRegionsOK
@@ -1445,6 +1457,8 @@ Grothe.UpperChaos.Q0LegendreRule64.count
 Grothe.UpperChaos.Q0LegendreRule64.exists_each
 Grothe.UpperChaos.Q0LegendreRule64.ordered
 Grothe.UpperChaos.Q0LiteralBinaryFold.fold_eq_literal
+Grothe.UpperChaos.Q0NodeMassLedgerSharp.real_error_lt_cap
+Grothe.UpperChaos.Q0NodeMassLedgerSharp.sqrt_mass_lt_norm
 Grothe.UpperChaos.Q0ProfileRectangleModel.actual_profile_model
 Grothe.UpperChaos.Q0ProfileRectangleModel.coordinate_contains
 Grothe.UpperChaos.Q0ProfileRectangleModel.profile_of_trace

@@ -19,9 +19,6 @@ theorem momentT_hasDerivAt (u : ℝ) : HasDerivAt momentT (-4 * u / 3) u := by
   have h := (((hasDerivAt_pow 2 u).const_mul (2 : ℝ)).const_sub (1 : ℝ)).div_const 3
   exact h.congr_deriv (by norm_num; ring)
 
-theorem globalMoment_zero : globalMoment 0 = 1 := by
-  simp [globalMoment]
-
 /-- One integration-by-parts identity evaluates every moment recursively. -/
 theorem globalMoment_succ (k : ℕ) :
     (3 * (2 * (k : ℝ) + 3)) * globalMoment (k + 1) =

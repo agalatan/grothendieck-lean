@@ -723,6 +723,13 @@ import Grothe
 #print axioms Grothe.UpperChaos.LeanCertProductionProfile.q0Kappa_eq_wick_profile
 #print axioms Grothe.UpperChaos.LeanCertProductionProfile.q0_beta_panel_bounds
 #print axioms Grothe.UpperChaos.LeanCertProductionProfile.q0_profile_panel_bounds
+#print axioms Grothe.UpperChaos.LinearTiltedMoments.complete_square
+#print axioms Grothe.UpperChaos.LinearTiltedMoments.integrable_finite_mixed_polynomial
+#print axioms Grothe.UpperChaos.LinearTiltedMoments.integrable_mixed_moment
+#print axioms Grothe.UpperChaos.LinearTiltedMoments.integral_finite_mixed_polynomial
+#print axioms Grothe.UpperChaos.LinearTiltedMoments.integral_linear_tilt
+#print axioms Grothe.UpperChaos.LinearTiltedMoments.integral_mixed_moment
+#print axioms Grothe.UpperChaos.LinearTiltedMoments.linear_tilt_le_half_rate
 #print axioms Grothe.UpperChaos.MobiusEndpoint.forward_tendsto
 #print axioms Grothe.UpperChaos.MobiusFiniteSubstitution.finite_substitution
 #print axioms Grothe.UpperChaos.MobiusGeometry.forward_deriv
@@ -784,6 +791,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_prod_mul
+#print axioms Grothe.UpperChaos.ProfilePiFactor.pi_lo_lt
+#print axioms Grothe.UpperChaos.ProfilePiFactor.pi_lt_hi
+#print axioms Grothe.UpperChaos.ProfilePiFactor.pi_quarter_bounds
+#print axioms Grothe.UpperChaos.ProfilePiFactor.pi_quarter_width
+#print axioms Grothe.UpperChaos.ProfilePiFactor.sqrt_pi_bounds
 #print axioms Grothe.UpperChaos.ProfileRootScreen.allCoeffsOK
 #print axioms Grothe.UpperChaos.ProfileRootScreen.allGammaSQOK
 #print axioms Grothe.UpperChaos.ProfileRootScreen.allRegionsOK
@@ -1605,6 +1617,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0LegendreRule64.exists_each
 #print axioms Grothe.UpperChaos.Q0LegendreRule64.ordered
 #print axioms Grothe.UpperChaos.Q0LiteralBinaryFold.fold_eq_literal
+#print axioms Grothe.UpperChaos.Q0NodeMassLedgerSharp.real_error_lt_cap
+#print axioms Grothe.UpperChaos.Q0NodeMassLedgerSharp.sqrt_mass_lt_norm
 #print axioms Grothe.UpperChaos.Q0ProfileRectangleModel.actual_profile_model
 #print axioms Grothe.UpperChaos.Q0ProfileRectangleModel.coordinate_contains
 #print axioms Grothe.UpperChaos.Q0ProfileRectangleModel.profile_of_trace

@@ -319,10 +319,6 @@ lemma hip_swap24 (X Y : ι → ι → ι → ι → ℂ) :
 lemma hip_swapP (X Y : ι → ι → ι → ι → ℂ) :
     hip (fun a b c d => X c d a b) (fun a b c d => Y c d a b) = hip X Y :=
   (hip_swap13 (fun a b c d => X a d c b) (fun a b c d => Y a d c b)).trans (hip_swap24 X Y)
-/-- The cycle `(bcd) ↦ (cdb)`: `X a c d b`. -/
-lemma hip_cyc (X Y : ι → ι → ι → ι → ℂ) :
-    hip (fun a b c d => X a c d b) (fun a b c d => Y a c d b) = hip X Y :=
-  (hip_swap23 (fun a b c d => X a b d c) (fun a b c d => Y a b d c)).trans (hip_swap34 X Y)
 /-- The cycle `(bcd) ↦ (dbc)`: `X a d b c`. -/
 lemma hip_cyc' (X Y : ι → ι → ι → ι → ℂ) :
     hip (fun a b c d => X a d b c) (fun a b c d => Y a d b c) = hip X Y :=
@@ -571,10 +567,6 @@ lemma csum4_cyc3 {M : Type*} [AddCommMonoid M] (F : ι → ι → ι → ι → 
 lemma csum4_cyc' {M : Type*} [AddCommMonoid M] (F : ι → ι → ι → ι → M) :
     ∑ a, ∑ b, ∑ c, ∑ d, F a d b c = ∑ a, ∑ b, ∑ c, ∑ d, F a b c d :=
   (csum4_swap34 fun a b c d => F a c b d).trans (csum4_swap23 F)
-
-lemma csum4_cyc {M : Type*} [AddCommMonoid M] (F : ι → ι → ι → ι → M) :
-    ∑ a, ∑ b, ∑ c, ∑ d, F a c d b = ∑ a, ∑ b, ∑ c, ∑ d, F a b c d :=
-  (csum4_swap23 fun a b c d => F a b d c).trans (csum4_swap34 F)
 
 lemma csum4_perm_dacb {M : Type*} [AddCommMonoid M] (F : ι → ι → ι → ι → M) :
     ∑ a, ∑ b, ∑ c, ∑ d, F d a c b = ∑ a, ∑ b, ∑ c, ∑ d, F a b c d :=

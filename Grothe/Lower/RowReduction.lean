@@ -51,11 +51,6 @@ def Sym3.form (M : Sym3) (y1 y2 y3 : ℂ) : ℝ :=
 lemma hre_self (y : ℂ) : hre y y = ‖y‖ ^ 2 := by
   rw [hre_eq, Complex.sq_norm, Complex.normSq_apply]
 
-/-- The gate form is `X*NX` plus the coupling term. -/
-lemma gateForm_eq_form_add (N : Sym3) (g1 g2 g3 : ℚ) (X1 X2 X3 : ℂ) :
-    gateForm N g1 g2 g3 X1 X2 X3
-      = N.form X1 X2 X3 + 2 * (g1 * hre X1 X1 + g2 * hre X1 X2 + g3 * hre X1 X3) := rfl
-
 /-- **The retained gate form in the paper's variables**: with `N = E − diag(ε − δ, 0, 0)` and
 `g = δb`, `X*NX + 2Re(conj X₁ (g·X)) = X*EX − (ε − δ)|X₁|² + 2δ Re(conj X₁ (b·X))` (step 6 of
 `AUDIT_DELTA.md`). -/
@@ -172,11 +167,6 @@ theorem rowData_gatesOK : rowData.all rowGatesOK = true := by decide +kernel
 /-! ### Assembly of the row inequality from the fibre bound -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
-
-/-- The normalised law `U = |p|²/τ²` of a residual at scale `τ > 0`: `|p|² = τ² U`. -/
-lemma sq_norm_eq_sq_mul_law {Ω : Type*} (p : Ω → ℂ) (τ : ℝ) (hτ : τ ≠ 0) (ω : Ω) :
-    ‖p ω‖ ^ 2 = τ ^ 2 * (‖p ω‖ ^ 2 / τ ^ 2) := by
-  field_simp
 
 /-- `δ τ √U = δ |p|` for `U = |p|²/τ²`, `τ > 0`. -/
 lemma scale_sqrt_law {Ω : Type*} (p : Ω → ℂ) (τ δ : ℝ) (hτ : 0 < τ) (ω : Ω) :

@@ -39,38 +39,5 @@ theorem unitBeta_sqrt_square_eq_squared (j : ℕ) (s u : ℝ) (hs : 0 ≤ s) :
   unfold unitBeta unitSquaredBeta
   rw [unitKappa_sqrt_eq_squared s hs]
 
-/-- The squared-radius profile has a continuous extension to all real `s`. -/
-theorem continuous_unitSquaredKappa : Continuous unitSquaredKappa := by
-  unfold unitSquaredKappa
-  exact continuous_const.mul continuous_vprof
-
-/-- The squared-radius rate is globally continuous in `(s,u)`. -/
-theorem continuous_unitSquaredBeta (j : ℕ) :
-    Continuous (Function.uncurry (unitSquaredBeta j)) := by
-  change Continuous (fun v : ℝ × ℝ =>
-    unitAlpha j + unitSquaredKappa v.1 ^ 2 * v.2 ^ 2)
-  exact continuous_const.add
-    (((continuous_unitSquaredKappa.comp continuous_fst).pow 2).mul (continuous_snd.pow 2))
-
-/-- The squared-radius rate is strictly positive for every real `s,u`. -/
-theorem unitSquaredBeta_pos (j : ℕ) (s u : ℝ) : 0 < unitSquaredBeta j s u := by
-  unfold unitSquaredBeta
-  exact add_pos_of_pos_of_nonneg (unitAlpha_pos j)
-    (mul_nonneg (sq_nonneg _) (sq_nonneg _))
-
-/-- Its reciprocal is globally continuous, including at `u = 0`. -/
-theorem continuous_unitSquaredBeta_inv (j : ℕ) :
-    Continuous (fun v : ℝ × ℝ => (unitSquaredBeta j v.1 v.2)⁻¹) := by
-  exact (continuous_unitSquaredBeta j).inv₀ (fun v => (unitSquaredBeta_pos j v.1 v.2).ne')
-
-/-- The scalar shift ratio `κ(s) u² / β(s,u)` is globally continuous. -/
-theorem continuous_unitSquaredShiftRatio (j : ℕ) :
-    Continuous (fun v : ℝ × ℝ =>
-      unitSquaredKappa v.1 * v.2 ^ 2 / unitSquaredBeta j v.1 v.2) := by
-  have hk : Continuous (fun v : ℝ × ℝ => unitSquaredKappa v.1) :=
-    continuous_unitSquaredKappa.comp continuous_fst
-  exact (hk.mul (continuous_snd.pow 2)).div₀ (continuous_unitSquaredBeta j)
-    (fun v => (unitSquaredBeta_pos j v.1 v.2).ne')
-
 end
 end Grothe.UpperChaos.UnitSquaredRadiusProfile
