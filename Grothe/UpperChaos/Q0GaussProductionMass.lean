@@ -147,9 +147,9 @@ theorem weight_at (a : Address) : Q0GaussNodeMass.weight (fromAddress a).val = s
   have h := weightFin_eq (fromAddress a)
   simpa [Q0GaussNodeMass.weight, (fromAddress a).isLt, to_from a] using h
 
+set_option maxRecDepth 8192 in
 /-- The original source panel/rule family satisfies the checked finite mass
 bound when evaluated at its selected recurrence roots. -/
-set_option maxRecDepth 8192 in
 theorem source_mass_lt :
     (∑ p : Fin sourcePanels.length, ∑ j : Fin (sourcePanels.get p).order,
       sourceWeight ⟨p, j⟩ * Real.exp (-(sourceNode ⟨p, j⟩))) < 107 / 100 := by

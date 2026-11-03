@@ -29,10 +29,10 @@ theorem exceptionalOrdinal_iff_mem (n : ℕ) : exceptionalOrdinal n ↔
   simp only [exceptionalOrdinal, List.mem_append, List.mem_range'_1]
   omega
 
-/-- Every original rule index is checked, including panels of order greater
-than one. Regular panels require no evaluation of their node ranges. -/
 set_option maxRecDepth 65536 in
 set_option maxHeartbeats 0 in
+/-- Every original rule index is checked, including panels of order greater
+than one. Regular panels require no evaluation of their node ranges. -/
 theorem exceptional_source_checked :
     (List.finRange sourcePanels.length).all (fun p =>
       if exceptionalPanel p.val then
