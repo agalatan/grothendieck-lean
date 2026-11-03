@@ -84,6 +84,7 @@ private theorem squared_eval_eq_cross_sum (g : Gate) (P : SourcePolynomial)
     simpa only [Complex.ofReal_pow] using (Complex.conj_mul' z).symm
   rw [hn, eval_kernel_eq_features]
   simp only [map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]
+  rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro e _
   apply Finset.sum_congr rfl
