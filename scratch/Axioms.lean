@@ -655,6 +655,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.DirectSample.upper_of_finite_sample_bounds
 #print axioms Grothe.UpperChaos.Ef_X0_mul
 #print axioms Grothe.UpperChaos.ExponentialTail.exp_moment_tail
+#print axioms Grothe.UpperChaos.FirstSecondKernelBandEnergy.first_check
+#print axioms Grothe.UpperChaos.FirstSecondKernelBandEnergy.second_check
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.actualEntry_linearMode
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_one_zero
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_zero_one

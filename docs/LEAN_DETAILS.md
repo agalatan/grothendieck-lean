@@ -1083,3 +1083,12 @@ checks every law certificate, the original canonical reference map, every final
 box and the guillotine partition. `--check` reproduces `LawNodeData.lean` and
 `RefinedCoverData.lean` byte for byte. The original pure-row batch stays at index
 21; the three mixed nodes form batch 22. No checker-core or heavy cap source changes.
+
+First/second-center kernel certificate draft: the committed generators reproduce
+137 retained integer grades from the original pinned NPZ inputs and independently
+replay the original packed source order and ten band-energy targets. The proposed
+`FirstSecondKernelBandEnergy` facts are registered for a standard-axiom audit.
+The full generated family remains unverified, and the literal source definitions
+must be reconciled formally with the retained packed definitions before acceptance.
+The existing public native band checks remain in place. Gaussian response errors
+are separate from these finite integer identities.
