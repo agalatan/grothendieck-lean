@@ -321,8 +321,9 @@ Also:
   `scripts/cloud.sh` enforces the limit for cloud jobs (set `AGENT_ID`). Master's own check (after your PR
   lands) does not count. If you are at the limit, wait for a job to finish; a re-push of the same branch replaces
   its running check and does not add one.
-- **Cost:** the repository is private, so CI minutes are billed. Push when a check helps you, not after every small
-  commit; use `[skip ci]` otherwise.
+- **Cost:** the repository is public, so GitHub-hosted minutes are free; the heavy runners are ours (the droplet and
+  temporary big droplets, billed by the hour) and every check queues behind the others'. Push when a check helps
+  you, not after every small commit; use `[skip ci]` otherwise.
 
 ## 9. Pull requests
 
@@ -413,8 +414,9 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   chain, not the core count; more cores or shards help only where many modules are independent.
 - **Droplet** (`--runner droplet`): script jobs only, in a throwaway directory, never in the runner's workspace. It
   queues behind the runner's other jobs (proof checks included).
-- **Cost:** every job-minute is billed beyond the free quota, and shards multiply minutes. Prefer few, purposeful
-  jobs; never poll in loops that re-dispatch.
+- **Cost:** GitHub-hosted minutes are free (public repository), but the runners are shared by every agent, shards
+  multiply the load, and `--runner droplet` occupies a heavy slot by the hour. Prefer few, purposeful jobs; never
+  poll in loops that re-dispatch.
 
 ## 12. Shared machines
 
