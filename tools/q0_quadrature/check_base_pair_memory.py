@@ -48,15 +48,34 @@ def process_tree(pid):
     return values
 
 
-def stop_own_group(proc):
+def process_group_exists(pgid):
     try:
-        os.killpg(proc.pid, signal.SIGTERM)
-        proc.wait(timeout=10)
+        os.killpg(pgid, 0)
+        return True
     except ProcessLookupError:
-        pass
-    except subprocess.TimeoutExpired:
-        os.killpg(proc.pid, signal.SIGKILL)
-        proc.wait()
+        return False
+
+
+def stop_own_group(proc, grace=10):
+    # The group belongs to the session created by measure(), even if its
+    # /usr/bin/time leader has already exited. Waiting on that leader alone
+    # does not establish that the measured descendants have stopped.
+    pgid = proc.pid
+    try:
+        os.killpg(pgid, signal.SIGTERM)
+    except ProcessLookupError:
+        proc.wait(timeout=max(grace, 1))
+        return
+    deadline = time.monotonic() + grace
+    while process_group_exists(pgid) and time.monotonic() < deadline:
+        proc.poll()
+        time.sleep(0.05)
+    if process_group_exists(pgid):
+        try:
+            os.killpg(pgid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+    proc.wait(timeout=max(grace, 1))
 
 
 def measure(command, label, out, timeout):
@@ -82,7 +101,11 @@ def measure(command, label, out, timeout):
                     break
                 time.sleep(0.1)
         finally:
-            if proc.poll() is None:
+            leader_exited = proc.poll() is not None
+            group_remains = process_group_exists(proc.pid)
+            if not leader_exited or group_remains:
+                if leader_exited and stopped is None:
+                    stopped = 'owned process group outlived leader'
                 stop_own_group(proc)
     text = timing.read_text() if timing.exists() else ''
     peak = re.search(r'Maximum resident set size \(kbytes\): (\d+)', text)
@@ -127,7 +150,7 @@ def main():
         subprocess.run([sys.executable, 'scripts/caps_stamp.py', '--check-cache'], cwd=ROOT, check=True)
         for case in args.case or CASES:
             for path, module in case_modules(case):
-                measured = measure(['lake', 'env', 'lean', '--wfail', '-o',
+                measured = measure(['lake', 'env', 'lean', '-DwarningAsError=true', '-o',
                                     str(out / (module + '.olean')), path],
                                    module, out, args.timeout)
                 report['measurements'].append(measured)
@@ -137,7 +160,7 @@ def main():
             for suffix in ['Audit', 'Integral']:
                 module = 'Grothe.UpperChaos.Q0BasePairRoot' + str(root) + suffix
                 path = module.replace('.', '/') + '.lean'
-                measured = measure(['lake', 'env', 'lean', '--wfail', '-o',
+                measured = measure(['lake', 'env', 'lean', '-DwarningAsError=true', '-o',
                                     str(out / (module + '.olean')), path], module, out, args.timeout)
                 report['measurements'].append(measured)
                 if not measured['passed']:
