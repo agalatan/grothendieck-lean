@@ -549,7 +549,7 @@
       "sha256": "08e4af7de68a651a23028f536aba5daaf541c3788a68566904125d1c7209de7e"
     },
     "data/caps-m/plan/row-certificates/row13-pieces.json": {
-      "path": "data/caps-m/plan/row-certificates/row13-pieces.json",
+      "path": "data/caps-m/plan/noncentre-repairs/baseline/row13-pieces.json",
       "sha256": "79e4d009f320d7360fd88b92f91162f5863efa3c27e7fb6f4ed2e2450fb3b460"
     },
     "data/caps-m/plan/row-certificates/row13-selection.json": {
@@ -633,6 +633,9 @@
   "effective_sources_sha256": {
     "Grothe/LowerAnalytic/CapPieces/D12x186.lean": "367b178884ce0b81baf20a2c7fdc003f7d7e403f299192f4f48bd58d9898a55d",
     "Grothe/LowerAnalytic/CapPieces/D12x204.lean": "b43ef515028c5868f93bc8c4b2249ca352b31efe15c9a809632ebb8d5e2aa8e0",
+    "Grothe/LowerAnalytic/CapPieces/D13x183.lean": "529db4540df8c07a6ce622eb0a904558db9e3c3fbb87c0523efe3514cf98f21e",
+    "Grothe/LowerAnalytic/CapPieces/D13x184.lean": "999b2ed09e565b51fd0dd9a7a04284f157f9cf44372d921cd3d8bcf6c4a7a181",
+    "Grothe/LowerAnalytic/CapPieces/D13x185.lean": "7ed4563f8ec7977c931d0df59ca5c52231fdcfecff673d92a7799584600a0a24",
     "Grothe/LowerAnalytic/CapPieces/D14x200.lean": "b282f1e4f34c12794c494c6b5c50425440cdb52293bfb89e2c41e2dd5f6b9adc",
     "Grothe/LowerAnalytic/CapPieces/D14x280.lean": "cd020b863cc208a2c06a1ae03ea9aba0ed92f7eca520a941d191beb11b49ea7e"
   },
@@ -642,9 +645,13 @@
       "path": "data/caps-m/plan/noncentre-repairs/row12-binding.json",
       "sha256": "d6607d3f95e36150c60f27a91a64e68d6ae2ad669906187d6848f59424976b2a"
     },
+    "13": {
+      "path": "data/caps-m/plan/noncentre-repairs/row13-binding.json",
+      "sha256": "e9b4d4d0e13337cde84fd34f0b881862f9e7bff4b741b96955a20164223f22a9"
+    },
     "14": {
       "path": "data/caps-m/plan/noncentre-repairs/row14-binding.json",
-      "sha256": "0fbff85e9ce6dd81b51a8098e5ee992657d185214b9df429ebee2b49905b67ba"
+      "sha256": "bba1a690319ed98c1e64e9ae9192ab2f6b406a475da50c77bbec6fc6d5e7b369"
     }
   }
 }

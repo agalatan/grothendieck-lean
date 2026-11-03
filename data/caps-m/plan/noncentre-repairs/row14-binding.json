@@ -51,6 +51,7 @@
     "data/caps-m-pieces/pieces.json": "b94033be8e7828eff26b0bc9852190bcaf15aeb4fbfd7b5ea3e0b4fb01012274",
     "data/caps-m/overrides.json": "6221e36e7cd1261da1823910391c63bc8237a5cd18fc9d01f824a971f557e6b2",
     "data/caps-m/pieces.json": "b94033be8e7828eff26b0bc9852190bcaf15aeb4fbfd7b5ea3e0b4fb01012274",
+    "data/caps-m/plan/noncentre-repairs/auxiliary/79e4d009f320d7360fd88b92f91162f5863efa3c27e7fb6f4ed2e2450fb3b460/row13-pieces.json": "79e4d009f320d7360fd88b92f91162f5863efa3c27e7fb6f4ed2e2450fb3b460",
     "data/caps-m/plan/noncentre-repairs/baseline/row12-pieces.json": "f3956d00e65917f2c1cc895d9fc283c02403d3234c30d5ed2376bf51d22e42e8",
     "data/caps-m/plan/noncentre-repairs/baseline/row14-pieces.json": "b529efcb7e1b71b55751d122cf47708d54d2ee4fe38bb1e308701b1ce1a11c41",
     "data/caps-m/plan/noncentre-repairs/batches/9a4c456aa2aeb9d1/14-280-10/exporter.lean.txt": "4ea850ba6617309118f01458adc9d255a9c907582b3ac83596d1eab3026d440c",
@@ -102,9 +103,9 @@
     "data/caps-m/plan/noncentre-repairs/batches/9a4c456aa2aeb9d1/14-280-82/matrix.jsonl": "05c5114b66ea6405312334344f0d84486d50b7b65b1b11a08a7e4548c26734fc",
     "data/caps-m/plan/noncentre-repairs/batches/9a4c456aa2aeb9d1/14-280-82/proposal.json": "ac8ffd41fe490d57bcb6ed426bbb382ea325652513e1eda972c7739dc40660b5",
     "data/caps-m/plan/noncentre-repairs/batches/9a4c456aa2aeb9d1/scientific-replay.json": "eaaf32bb8417f0d16a1655066238b9ad336257c9edbee11615e611316721eb11",
+    "data/caps-m/plan/noncentre-repairs/binding-history/0fbff85e9ce6dd81b51a8098e5ee992657d185214b9df429ebee2b49905b67ba.json": "0fbff85e9ce6dd81b51a8098e5ee992657d185214b9df429ebee2b49905b67ba",
     "data/caps-m/plan/noncentre-repairs/evidence/legacy_replay.json": "b591fb7adb9c03b96b09ecd42d20d4edb9a92ef3ffa5035518a0db3c9a7183cf",
     "data/caps-m/plan/row-certificates/row12-selection.json": "fee1d8784d19b7761f9522a558d1e48d49a704bd56c8878157f02d0570c48f76",
-    "data/caps-m/plan/row-certificates/row13-pieces.json": "79e4d009f320d7360fd88b92f91162f5863efa3c27e7fb6f4ed2e2450fb3b460",
     "data/caps-m/plan/row-certificates/row13-selection.json": "104d022be96e73013e1368477a9b6cfef606a2657ca28e381e2d766edbdd99db",
     "data/caps-m/plan/row-certificates/row14-selection.json": "5acc6e455f61dc784cad9adcae00faf592661fce82d37d6e0c2f1dbc666b3ab8",
     "tools/caps_lmi.py": "5e4052898c40a0bd5b152c1006ced14e81975472f2735a659794cd7cbb444de2"
