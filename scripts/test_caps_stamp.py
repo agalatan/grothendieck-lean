@@ -426,7 +426,11 @@ class ChangeFilterTests(unittest.TestCase):
         registry = registry.get("registry", registry)
         pinned = set(registry.get("input_sha256", {})) | set(registry.get("execution_source_sha256", {}))
         pinned |= {"tools/gen_cap_pieces.py", "tools/gen_cap_prepared_rows.py", "tools/nodecaps_prepared_renderers.py",
-                   "data/caps-m/plan/row-certificates/row12-build.json"}
+                   "data/caps-m/plan/row-certificates/row12-build.json", "data/caps-m/plan/row-certificates/prepared-binding.json"}
+        # the source seals: every input their reproduction check (gen_cap_prepared_rows.render) enforces
+        for row in (12, 13):
+            seal = json.loads((root / f"data/caps-m/plan/row-certificates/row{row}-source.json").read_text())
+            pinned |= set(seal["inputs_sha256"]) | {f"data/caps-m/plan/row-certificates/row{row}-source.json"}
         missing = sorted(path for path in pinned if not re.search(pattern, path))
         self.assertEqual(missing, [])
 
