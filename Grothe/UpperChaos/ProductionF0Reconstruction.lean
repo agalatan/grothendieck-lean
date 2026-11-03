@@ -16,8 +16,8 @@ open scoped ComplexConjugate
 namespace Grothe.UpperChaos.FixedChaosSmoothing
 noncomputable section
 
-private theorem add_right_real (x y z : ℝ) (h : x ≤ y) : x + z ≤ y + z :=
-  add_le_add_right h z
+private theorem add_right_real (x y z : ℝ) (h : x ≤ y) : x + z ≤ y + z := by
+  simpa only [add_comm] using (add_le_add_right h z)
 
 private theorem ev_swap_ofReal (r : ℝ) (P : CPoly) :
     ev (r : ℂ) (ConditionalMomentReflection.swap P) = ev (r : ℂ) P := by
