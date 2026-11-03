@@ -18,6 +18,7 @@ plan() {
   local q
   printf '%s\n' \
     'Grothe.UpperChaos.PackedDyadicStructuralChecks' \
+    'Grothe.UpperChaos.PackedDyadicLegacyDelimiter' \
     'Grothe.UpperChaos.PackedDyadicSourceAssembly' \
     'Grothe.UpperChaos.TaylorFirstPackedChunk253StructuralLeaf000' \
     'Grothe.UpperChaos.TaylorFirstPackedChunk253LegacyLeaf000' \
