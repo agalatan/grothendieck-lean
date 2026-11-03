@@ -1299,7 +1299,9 @@ alone does not close that obligation. These new proofs are unverified.
 `tools/gen_first_second_packed_pilot.py` rechecks the pinned NPZ inputs and emits
 four actual-source chunk pilots, each split into at most 32 records per proof.
 Their character-reassembly statements refer directly to the preserved packed
-arrays. The complete explicit plan has 280 targets: parser regressions, these
-four pilots, 274 grade targets, and the final strict audit. A default-root green
+arrays. `PackedDyadicSourceAssembly` develops composition of successful chunk
+checks for the unchanged public parser. The complete explicit plan has 281
+targets: parser regressions, source assembly, these four pilots, 274 grade
+targets, and the final strict audit. A default-root green
 check supplies no verdict for these excluded modules or the remaining source
 equivalence and public consumer gates.

@@ -314,7 +314,7 @@ The WIP first/second integer-energy certificates retain the public packed inputs
 legacy delimiter-equivalence obligation. Four generated pilots check decoding
 and byte reassembly for the first and last source chunk of each center, in
 32-record pieces. These new proofs await Lean verification; the excluded family
-requires the explicit 280-target check, complete source identities, and public
+requires the explicit 281-target check, complete source identities, and public
 consumer integration before it can replace the existing native band checks.
 
 `fresh_upper_concrete_taylor` instantiates the target upper-bound implication with these fixed

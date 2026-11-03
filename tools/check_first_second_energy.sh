@@ -18,6 +18,7 @@ plan() {
   local q
   printf '%s\n' \
     'Grothe.UpperChaos.PackedDyadicStructuralChecks' \
+    'Grothe.UpperChaos.PackedDyadicSourceAssembly' \
     'Grothe.UpperChaos.TaylorFirstPackedChunk000Pilot' \
     'Grothe.UpperChaos.TaylorFirstPackedChunk253Pilot' \
     'Grothe.UpperChaos.TaylorSecondPackedChunk000Pilot' \
@@ -131,7 +132,7 @@ while IFS= read -r target; do
   index=$((index + 1))
   stem=$(printf '%03d-%s' "$index" "${target##*.}")
   metric="$OUT/first-second-energy-metrics/$stem"
-  printf '\n[%d/280] %s\n' "$index" "$target"
+  printf '\n[%d/281] %s\n' "$index" "$target"
   snapshot > "$metric.before.txt"
   if ! disk_check "$MIN_FREE_GIB" "$target" "$metric.disk.txt"; then
     printf 'Stopping before %s: less than %s GiB free in the workspace.\n' "$target" "$MIN_FREE_GIB" >&2
@@ -154,7 +155,7 @@ while IFS= read -r target; do
   fi
 done < <(plan)
 
-if [ "$index" -ne 280 ]; then
+if [ "$index" -ne 281 ]; then
   printf 'Unexpected plan size: %s targets\n' "$index" >&2
   exit 1
 fi
