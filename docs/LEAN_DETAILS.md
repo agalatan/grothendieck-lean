@@ -7,6 +7,22 @@ Both endpoints are work in progress; [PROOF_STATUS.md](PROOF_STATUS.md) lists
 the remaining project-specific Lean obligations. Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.
 
+**Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
+degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
+polynomial Bezout identity. `Q0GaussQPoly.lean` interprets LeanCert's rational
+coefficient lists as real polynomials and proves the checker soundness.
+`Q0GaussPolynomialOrder01` through `Order64` discharge these finite identities,
+squared norms and leading coefficients with kernel reduction. The aggregate
+`Q0GaussPolynomialCertificates.exactness` uses the actual recurrence and weight
+formula for every production order. Its remaining input is an injective family
+of Legendre roots; selected numerical root bindings and the analytic integration
+remainder are separate. The reproducible witnesses and generator are in
+`data/gauss-polynomial-certificates/` and `tools/gen_gauss_polynomial_certificates.py`.
+The entire family and its strict standard-three axiom audit are in the main root.
+This combined production-root and polynomial-exactness delivery is work in
+progress until the complete affected modules and audit pass; generated proof
+bodies and import registration alone are not verification evidence.
+
 **Shared proof foundations.** `LowerAnalytic/ComplexGaussianCore.lean` contains
 `gaussC`, its planar presentation, rotation invariance and radial-moment reduction.
 The phase and complex Hermite calculations import it without the lower row
@@ -65,6 +81,23 @@ common denominator `302002543697172916153771578242367488000`.
 from `Upper/Data.lean`; the generated candidates are linked to the actual
 source by Lean proofs. The result is independent of the phase-cover numerical
 leaves and does not discharge the remaining upper-bound inputs.
+
+**Conditional-pair ranks.** `Q0ConditionalPairRankAll` proves finite rank,
+ordinal coverage and uniqueness for the degree-531 canonical pair table. Its
+pairs `(c,d)` satisfy `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1` and
+`c+d ≤ 531`, ordered by `(c+d,c)`; they index conditional Hermite node values.
+No downstream Lean result yet consumes this certificate. It does not decode
+the full node-value payload or establish Gaussian coefficient enclosures.
+
+The input `data/q0_quadrature/conditional_source/conditional_canonical_pairs.npy`
+was produced by `build_conditional_nodes.py` in the common-head conditional-node
+pipeline. Its SHA-256 is
+`075eb8fe8a52766742c7ca82097171f8dfce173ac8dc9ed80193fc7821ee1ead`.
+`tools/q0_quadrature/gen_conditional_pair_ranks.py --check` verifies that hash,
+the `(35777,2)` shape and little-endian signed 16-bit representation, and exact
+equality with the closed-form enumeration above before reproducing the Lean
+files. This input hash records provenance; Lean checks the emitted literals
+and finite properties, not the NPY parser.
 
 **q0 source-to-literal identity.**
 `Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real
@@ -177,6 +210,25 @@ the resulting norm below `5/10^15` for the event indicator in the original
 `Lp ℂ 2 mu2` space. Thus the existing smoothing and band-projection
 contractions can apply without changing measures. This step uses the proved
 phase cover and introduces no further numerical check.
+
+The concrete smoothing calculation is covered in all retained grades by
+`FixedChaosSymmetricPower.actualEntry_gradedMode` and
+`FixedChaosGradedAction.actualGradeMatrix_eq`: each grade uses the two-sided
+matrix action `S_(q+1) C_q S_qᵀ`. `ProductionSmoothingRounding` constructs
+rational entries by an integer square-root floor with a `10⁻²²` grid and
+proves their error against the actual fixed smoothing parameters.
+`ProductionSmoothingApprox.production_smoothing_error` then gives
+`‖smoothOp A − savedOutput A‖ ≤ 4·10⁻¹⁵ ‖A‖` for `N ≤ 251`, using
+orthogonality to aggregate all grades before taking the norm. These theorems
+use only `propext`, `Classical.choice` and `Quot.sound`. They do not supply
+the actual retained F₀ coefficient enclosures or the stored energy-table
+comparison; those remain separate proof obligations.
+`CanonicalReconstructionNorm.full_head_reconstruction_norm_le` is a standalone
+combinatorial bound for an abstract canonical/reflected index split: its
+injective partner map and multipliers at most one give squared-norm growth
+at most two, hence a norm factor below `10/7`. `ConditionalReconstruction`
+applies that split to the actual conditional Gaussian coefficients and their
+exact reflected completion; numerical reconstruction remains separate.
 
 `CapturedTail.norm_projOn_residual_sq_le_of_captured_family` subtracts
 `Σ_i max(0, lower_i − error_i)²` from the total source energy. Its hypotheses
@@ -475,6 +527,35 @@ positive `beta`, so no lower bound on the radial profile is needed. These
 results concern the base moment away from the radial origin; they do not
 certify the full polynomial-weighted Taylor sources or the remaining budgets.
 
+`F0ConditionalNode.coefficient_eq_integral` and its Bessel bound refer to the
+actual conditional phase. `F0ConditionalEvaluator.coefficient_eq_signed`
+identifies its historical parameter as
+`A = sqrt(s)/(sqrt(1+aQ²)*abs(vprof s))`, with the explicit assumptions
+`s ≥ 0` and `vprof s ≠ 0`. `ConditionalNodeIndices.image_rows` and
+`card_modes` select exactly 31,877 distinct degree-501 pairs from the larger
+35,777-pair storage; a prefix substitution is not justified.
+`ConditionalMomentReflection.integral_phase_H_reflection` proves the actual
+unnormalized Gaussian identity by finite Stein/Ward recurrences and absolute
+Fubini. `ConditionalCoefficientReflection.production_reflected_coefficient`
+then proves the production lookup factor `sqrt((d+1)/c)` for `d+1<c` and a
+nonzero profile. The normalized canonical identity holds at every real shift.
+These results have standard-three-axiom audits. They supply no numerical
+coefficient enclosure, root-gap estimate or floating reflection error.
+
+`F0ConditionalEvaluator.coefficient_zero_of_profile_zero` retains the constant
+phase `ph(sqrt(s))` when `vprof s = 0` and proves that all modes other than
+`(0,0)` vanish, including at `s = 0`. Thus the actual reflection identity
+extends to every nonnegative radius without a nonzero-profile premise.
+`ConditionalReconstruction.reconstruct_actual` identifies the exact reflected
+completion with the actual coefficient vector. Its `canonical_top_eq_modes`
+identifies the canonical half of the top rectangle with the existing 31,877
+mathematical modes, preserving explicit lookup in the larger storage.
+`weighted_top_norm_le_of_canonical_error` consumes a coupled canonical error
+bound at explicit nonnegative nodes and weights and bounds the full exact
+completion error by `10/7` times that bound. The caller must still prove the
+canonical error and the physical node/weight certificates. Primary contraction,
+floating reconstruction and final table agreement are separate obligations.
+
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
 
@@ -689,6 +770,14 @@ the fixed damping `1/10^15`. Continuity justifies the exact adjacent-integral
 identities. The result intervals are the ordered sums of the proved leaf
 intervals, without another source reserve. Root 10 is generated from its
 committed recipe by `tools/gen_base_pair_root10_integral.py --check`.
+That entrypoint delegates to `tools/gen_base_pair_root_integral.py`, whose
+fixed-root specifications validate the complete midpoint tree and canonical
+radial endpoints before rendering the integral assembly.
+The same generator with `--root 2` or `--root 6` renders the complete
+direct roots of strips 1 and 3. Their twenty-four and fifteen algebraic
+leaf certificates, respectively, retain the original physical rectangles
+and model-integral intervals. Each complete-root theorem and its production
+kernel consumer has no leaf-enclosure or numerical premise.
 `BasePairIntegralAudit` checks the transitive dependencies of every analytic
 cell integral and all complete-root results against the standard Lean axioms;
 it rejects missing theorems and any additional axiom dependency.
@@ -696,11 +785,72 @@ it rejects missing theorems and any additional axiom dependency.
 integrands with `regularKernel` and `reciprocalRealKernel` at Taylor index
 zero, including the reciprocal Jacobian. Its integral identities require
 only the rectangle geometry. `Q0BasePairProductionRoots` combines them with
-the complete root results for reciprocal strips 3 and 5 and direct strip 5
+the complete root results for reciprocal strips 3 and 5 and direct strips 1, 3 and 5
 at `finiteLaplaceEta`, without source identities or numerical hypotheses.
 The strict integral audit includes these production-root consumers.
+`Q0GaussianReality` separately proves reality of the full original first
+and second Gaussian coefficients by simultaneous conjugation of both
+inputs. Its Gaussian measure and phase identities use the actual `mu2`
+and `F0`. It transfers real interval errors to complex norm errors and
+also proves reality of `productionLinearFirst` and `productionLinearSecond`,
+including the rational frozen corrections. Its transitive audit permits
+only the standard Lean axioms; no numerical or truncation premise is used.
 The remaining algebraic leaves, other roots and final band energy checks
 remain separate obligations.
+
+`Q0LegendreInteger` evaluates the standard Legendre recurrence by scaled
+integer arithmetic. The `Q0LegendreRule01` through `Q0LegendreRule64`
+modules check the original rational brackets, endpoint signs and ordering;
+the intermediate value theorem and degree exhaustion prove one unique root
+in each bracket. `Q0LegendreRulesAudit` restricts their transitive dependencies
+to the standard Lean axioms. The committed original rule data and
+`tools/q0_quadrature/gen_legendre_rules.py --check` reproduce these sources.
+This proves the roots; the associated weights and complete quadrature rules
+remain work in progress.
+
+`Q0GaussExactness.actual_recurrence_gauss_exactness` proves the shared
+quadrature algebra for the same `polyPair` and `realPair` recurrence.
+The proof integrates monomials and linear polynomial quotients, identifies
+the root quotients with Mathlib's Lagrange basis, derives the original
+weight formula from exact derivative and Bezout identities, and uses
+polynomial division and orthogonality to prove exactness below twice the
+rule order. The finite polynomial identities and actual selected roots
+are explicit inputs. Their finite-family replay, affine interval transport
+and the analytic remainder are separate obligations; Python witnesses do
+not discharge these inputs. `Q0GaussExactnessAudit` permits only the standard
+Lean axioms in the shared algebra proof.
+
+`Q0GaussQPoly` interprets LeanCert's executable `QPoly` operations in the
+real polynomial argument. It proves soundness of the finite identity
+checks, transports the coefficient recurrence to the actual `polyPair`
+source, and closes the order-one pilot. `Q0GaussQPolyAudit` checks the
+transitive dependencies against the standard Lean axioms.
+The exact input in `data/gauss-polynomial-certificates/certificate.json`
+and `tools/gen_gauss_polynomial_certificates.py` reproduce the 64 order
+modules and their aggregate consumer. Every finite arithmetic obligation
+uses `decide +kernel`; the generated audit also covers the squared norms
+and exact leading coefficients. This complete finite family is still
+work in progress, excluded from the main root pending its focused Lean
+check. Even successful polynomial certificates leave the original selected
+node/weight bindings, interval transport, and analytic remainder to prove.
+
+`F0ConditionalNode` defines the actual radial slice of `F0` and its normalized
+Hermite coefficients, proving Bessel's bound before aggregation over modes.
+`ConditionalNodeIndices` identifies the contraction's selected pair set and
+its injective charge-row lookup; the selection is not a prefix of the larger
+stored table. `F0ConditionalEvaluator.coefficient_eq_signed` proves the actual
+profile sign exponent `c+d` and positive-scale shift. Its production-index
+theorems connect both canonical and reflected indices to that selected set.
+`ConditionalMomentReflection.integral_phase_H_reflection` proves reflection
+for the actual unnormalized phase integrals through the Gaussian moment
+recurrences and the existing Laplace integral identity.
+`F0ConditionalEvaluator.canonicalCoefficient_reflection` includes the Hermite
+normalizers, and `production_reflected_coefficient` identifies the exact
+production lookup: for `d + 1 < c`, the coefficient at `(c,d)` equals the
+coefficient at `(d+1,c-1)` times `sqrt((d+1)/c)`. The latter theorem assumes
+`s ≥ 0` and `vprof s ≠ 0`; the factor is at most one. Inline axiom guards
+permit only the standard Lean axioms. Errors from numerical reflection,
+the actual quadrature mass and the remainder remain separate obligations.
 
 The alternative `Grothe.UpperChaos.DirectSample.upper_of_actual_head` derives
 the same rational bound from an explicit finite-head estimate of the actual
