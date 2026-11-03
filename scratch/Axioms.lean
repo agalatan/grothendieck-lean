@@ -772,6 +772,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_prod_mul
+#print axioms Grothe.UpperChaos.ProfilePiFactor.pi_lo_lt
+#print axioms Grothe.UpperChaos.ProfilePiFactor.pi_lt_hi
+#print axioms Grothe.UpperChaos.ProfilePiFactor.pi_quarter_bounds
+#print axioms Grothe.UpperChaos.ProfilePiFactor.pi_quarter_width
+#print axioms Grothe.UpperChaos.ProfilePiFactor.sqrt_pi_bounds
 #print axioms Grothe.UpperChaos.ProfileRootScreen.allCoeffsOK
 #print axioms Grothe.UpperChaos.ProfileRootScreen.allGammaSQOK
 #print axioms Grothe.UpperChaos.ProfileRootScreen.allRegionsOK
