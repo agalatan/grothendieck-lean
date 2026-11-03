@@ -16,10 +16,6 @@ a proved numerical head estimate. Our own numerical obligations are not accepted
 external inputs. A bound is **done** only when its complete Lean proof and final
 verification pass. The active work now prioritizes the upper endpoint.
 
-The source-node error ledger proves the exact rational budget for the raw
-and smoothing errors. Applying it to the stored Gaussian coefficients still
-requires proofs of the actual input estimates and operation-error model.
-
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
 the way, and why the remaining gap is hard.
@@ -46,6 +42,10 @@ classical and quantum correlations in two-party Bell experiments (real case).
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V over all finite-dimensional complex Hilbert spaces. The headline
 theorems conclude a statement about the constant itself.
+
+The source-node error ledger proves the exact rational budget for the raw
+and smoothing errors. Applying it to the stored Gaussian coefficients still
+requires proofs of the actual input estimates and operation-error model.
 
 **Lower bound** — `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data :
 NodeCaps → IsGrothendieckBound K → 1.401697117301 < K`

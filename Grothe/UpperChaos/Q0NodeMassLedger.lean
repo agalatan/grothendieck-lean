@@ -1,48 +1,34 @@
 import Mathlib.Tactic
 
 /-!
-# Rational budget for a relaxed Gaussian node mass
+# Numerical inputs for the source-node error ledger
 
-This checks the arithmetic only. Connecting the quantities to the actual
-quadrature, matrix contraction and omitted coefficients is separate.
+Only the shared scalar inputs are defined here. The current norm-dependent
+ledger is in Q0NodeMassLedgerSharp. Connecting these inputs to the actual
+quadrature, matrix contraction and omitted coefficients remains separate.
 Agent-ID: codex-aa04.
 -/
 
 namespace Grothe.UpperChaos.Q0NodeMassLedger
 
-def normUpper : ℚ := 11 / 10
+/-- Binary64 unit roundoff. -/
 def u : ℚ := 1 / 2^53
+/-- Relative enclosure allowance obtained by solving the unit-roundoff inequality. -/
 def rounding : ℚ := u / (1 - u)
+/-- Allocated absolute error per stored scale or primary center. -/
 def tinyInput : ℚ := 1 / 10^24
+/-- Allocated absolute error per retained conditional coefficient. -/
 def conditionalError : ℚ := 2 / 10^16
-/-- A deliberately coarse rational upper bound for the historical 10⁻²⁹⁰. -/
+/-- Allocated accumulated underflow allowance; an actual operation model
+must establish that the errors fit this cap. -/
 def underflow : ℚ := 1 / 10^24
+/-- Rounding-path budget: 2*32+10 stages for a block dot product, followed
+by at most 675 block accumulations, hence 749 in the standard gamma formula. -/
 def gamma749 : ℚ := 749 * u / (1 - 749 * u)
-def scaleUpper : ℚ := (normUpper + 147 * tinyInput) / (1 - rounding)
-def conditionalCenterUpper : ℚ :=
-  (1 + u) * (1 + 179 * conditionalError) * scaleUpper + underflow
-def conditionalInputError : ℚ :=
-  179 * conditionalError * scaleUpper + rounding * scaleUpper + 147 * tinyInput +
-    u * (1 + 179 * conditionalError) * scaleUpper + underflow
+/-- Aggregate primary-input allowance: 197 is the primary-center Frobenius
+norm cap; 147 bounds sqrt(21577 nodes), and 179 bounds sqrt(31877 selected
+pairs). Their product converts a per-entry absolute error to a vector error.
+This definition does not prove the source counts or primary norm estimate. -/
 def primaryInputError : ℚ := 197 * rounding + 147 * 179 * tinyInput
-def rawUpper : ℚ :=
-  (10 / 7) * (gamma749 * 18 * conditionalCenterUpper + underflow +
-    18 * conditionalInputError + primaryInputError * normUpper) +
-  2310 * (6732 / 10^19) + 2310 * (1 / 10^27) * normUpper
-
-theorem historical_underflow_le : (1 / 10^290 : ℚ) ≤ underflow := by
-  unfold underflow
-  apply one_div_le_one_div_of_le (by positivity)
-  gcongr <;> norm_num
-
-/-- A 107/100 squared-mass cap fits inside the chosen norm upper bound. -/
-theorem mass_cap_lt_norm_sq : (107 / 100 : ℚ) < normUpper ^ 2 := by
-  norm_num [normUpper]
-
-/-- The original raw error cap survives all listed 11/10 norm factors. -/
-theorem rawUpper_lt_cap : rawUpper < (5 / 10^12 : ℚ) := by
-  norm_num [rawUpper, primaryInputError, conditionalInputError,
-    conditionalCenterUpper, scaleUpper, gamma749, underflow, conditionalError,
-    tinyInput, rounding, u, normUpper]
 
 end Grothe.UpperChaos.Q0NodeMassLedger
