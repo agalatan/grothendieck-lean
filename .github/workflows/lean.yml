@@ -62,6 +62,7 @@ jobs:
     timeout-minutes: 15
     outputs:
       lean: ${{ steps.scope.outputs.lean }}
+      heavy: ${{ steps.scope.outputs.heavy }}
       droplet: ${{ steps.where.outputs.droplet }}
       runs_on: ${{ steps.where.outputs.runs_on }}
       key: ${{ steps.where.outputs.key }}
@@ -122,12 +123,20 @@ jobs:
           elif [ "${GITHUB_REF_NAME}" = master ]; then base="$BEFORE"                # the previous master
           else base=$(git merge-base origin/master HEAD); fi                         # what the branch adds to master
           if [ "${{ inputs.mode }}" = caps ] || [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
-            echo "full check"; echo "lean=true" >> "$GITHUB_OUTPUT"; exit 0
+            echo "full check"; echo "lean=true" >> "$GITHUB_OUTPUT"; echo "heavy=true" >> "$GITHUB_OUTPUT"; exit 0
           fi
           changed=$(git diff --name-only "$base" HEAD)
           echo "changed files:"; echo "$changed"
           if echo "$changed" | grep -qE "$LEAN_PATHS"; then echo "lean=true" >> "$GITHUB_OUTPUT"
           else echo "no Lean-relevant file changed: skipping the build and the checks"; echo "lean=false" >> "$GITHUB_OUTPUT"; fi
+          # Memory: rebuilding the big kernel-checked modules (the Q0 base-pair leaves, ~7.5 GB each, four in
+          # parallel) kills a GitHub-hosted 16 GB VM. Only a MODIFIED or deleted file can force such a rebuild (a
+          # new module rebuilds nothing that exists), so a change that only adds modules, or touches nothing under
+          # the kernel-heavy trees, is checked on a hosted runner (the restored cache replays the rest).
+          HEAVY_TREE='^(Grothe/UpperChaos/|Grothe/Upper/|GrotheKernel/|GrotheCapsKernel/|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$)'
+          if git diff --name-status "$base" HEAD | awk '$1 !~ /^A/ {print $NF}' | grep -qE "$HEAVY_TREE"; then
+            echo "modifies existing files under the kernel-heavy trees: the heavy runners build this"; echo "heavy=true" >> "$GITHUB_OUTPUT"
+          else echo "heavy=false" >> "$GITHUB_OUTPUT"; fi
 
       - name: Is there a verified build cache for these node-cap sources? (no -> the droplet builds them)
         id: where
@@ -167,10 +176,11 @@ jobs:
             echo "needs_droplet=true" >> "$GITHUB_OUTPUT"; echo "droplet=false" >> "$GITHUB_OUTPUT"
             echo 'runs_on="ubuntu-24.04"' >> "$GITHUB_OUTPUT"; exit 0
           fi
-          # FORCE_HEAVY (repository variable): every Lean build runs on the self-hosted heavy runners, whatever
-          # the cache says (set while the GitHub-hosted 16 GB VMs cannot hold the kernel checks; unset to return).
-          if [ "${{ steps.scope.outputs.lean }}" = true ] && [ -z "$handoff" ] && { [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ] || [ "${{ vars.FORCE_HEAVY }}" = true ]; }; then
-            echo "-> the heavy runners build this (mode=caps, no verified cache, or FORCE_HEAVY); this run stays pending meanwhile"
+          # The heavy runners build: mode=caps, no verified cache (the caps changed), a change that modifies existing
+          # files under the kernel-heavy trees (scope step), or everything when the repository variable FORCE_HEAVY is
+          # `true` (an emergency switch while the hosted VMs cannot hold a build). Everything else is GitHub-hosted.
+          if [ "${{ steps.scope.outputs.lean }}" = true ] && [ -z "$handoff" ] && { [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ] || [ "${{ steps.scope.outputs.heavy }}" = true ] || [ "${{ vars.FORCE_HEAVY }}" = true ]; }; then
+            echo "-> the heavy runners build this (mode=caps, no verified cache, kernel-heavy modification, or FORCE_HEAVY); this run stays pending meanwhile"
             echo "droplet=true" >> "$GITHUB_OUTPUT"; echo 'runs_on=["self-hosted","heavy"]' >> "$GITHUB_OUTPUT"
             # a run that really builds the node caps (no verified cache, or mode=caps) is never cancelled (hours of work);
             # a FORCE_HEAVY run that only replays the cache is an ordinary check and may be superseded by a newer push
