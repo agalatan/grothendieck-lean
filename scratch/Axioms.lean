@@ -708,6 +708,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.smoothing_lower_scalars_relative
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.symmetricEntry_savedEntryQ_error
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.actualEntry_linearMode
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.baseGradedCoefficient_eq_radial
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.baseGradedCoefficient_iterated
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_one_zero
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_zero_one
@@ -718,6 +719,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.inner_linearMode_smoothOp
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.mem_chaosShell_of_degree
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.norm_productionF0Head_sub_sq
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.norm_productionF0Head_sub_sq_radial
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.projected_response_error
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.retainedProduction_eq
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.retainedSmoothed_projected_error_of_raw

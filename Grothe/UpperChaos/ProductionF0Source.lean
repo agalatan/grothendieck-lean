@@ -18,7 +18,7 @@ def baseGradedCoefficient (q c d : ℕ) : ℂ :=
 /-- The base phase belongs to L² without a phase-cover certificate. -/
 theorem memLp_baseF0 : MemLp F0 2 mu2 :=
   MemLp.of_bound measurable_F0.aestronglyMeasurable 1
-    (Filter.Eventually.of_forall fun u => Grothe.Haag.norm_ph_le _)
+    (Filter.Eventually.of_forall fun _ => Grothe.Haag.norm_ph_le _)
 
 /-- The actual base vector has norm at most one independently of any
 phase-cover calculation or quadrature node mass. -/

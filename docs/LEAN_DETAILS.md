@@ -171,6 +171,14 @@ identity uses this degree projection, avoiding a commutation claim for the
 nonrectangular energy head. `ProductionRetainedSource` inserts the actual
 91-grade correction once before rational smoothing. `ProductionRetainedEnergy`
 derives the smoothing-input norm from the raw-source error.
+`FixedChaosSmoothing.baseGradedCoefficient_eq_radial` in `ProductionF0Radial`
+then removes the first Gaussian angle from each bounded tensor coefficient.
+It uses charge cancellation in the complete tensor integrand, including zero
+profiles, and expresses the result with the actual conditional coefficient
+at `sqrt(s)` and Gaussian density `exp(-s)` exactly once.
+`norm_productionF0Head_sub_sq_radial` substitutes these integrals into the full
+251-grade error identity. It assumes neither numerical quadrature nor equality
+to a stored primary matrix; those are subsequent certification obligations.
 
 `CompositeComparison.Inputs` retains six actual Gaussian premises: three
 low-band residual norms and three real inner-product lower bounds for the

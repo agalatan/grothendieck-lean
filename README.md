@@ -204,6 +204,10 @@ the four whole residuals. It derives the relaxed selected-head budget from
 explicit raw-F₀ error `9.5·10⁻⁹`, rational-output table fit `10⁻⁸`, three low-band
 Gaussian estimates and three whole-source inner-product bounds. Those
 numerical and Gaussian premises remain open; this is a conditional head theorem.
+`ProductionF0Radial` removes the remaining Gaussian angle from every retained
+tensor coefficient by exact charge cancellation. It expresses the full source
+error using the actual conditional coefficients at `sqrt(s)` with density
+`exp(-s)` once, without dividing by the profile or assuming a quadrature rule.
 
 LeanCert is a pinned dependency. `UpperChaos/LeanCertPilot.lean` uses its
 dyadic interval integrator to enclose a conditional Gaussian slice integral
