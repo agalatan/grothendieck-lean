@@ -3,7 +3,7 @@ import Grothe.UpperChaos.ActualFiniteRectangleOperator
 /-!
 # Physical coefficients of finite Hermite rectangle-tail inputs
 
-Agent-ID: codex-2ca4. Complete WIP proof bodies; compilation is pending.
+Agent-ID: codex-2ca4.
 
 The input is the literal finite linear combination of production normalized
 Hermite functions. Integrating its actual Taylor multiplier against an output

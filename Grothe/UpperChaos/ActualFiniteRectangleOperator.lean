@@ -5,7 +5,7 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
 /-!
 # Finite actual matrix actions outside the original input rectangle
 
-Agent-ID: codex-2ca4. Complete WIP proof bodies; compilation is pending.
+Agent-ID: codex-2ca4.
 
 The squared coefficient norm of an explicitly finite matrix action is bounded
 by its entry energy times the squared input coefficient norm. For each of the

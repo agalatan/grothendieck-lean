@@ -4,7 +4,7 @@ import Mathlib.Tactic.FinCases
 /-!
 # Actual matrix tails outside the original input rectangle
 
-Agent-ID: codex-2ca4. Complete WIP proof bodies; compilation is pending.
+Agent-ID: codex-2ca4.
 
 The input rectangle is exactly (500, 500, 251, 250), with inclusive coordinate
 inequalities. Its complement is covered by the four corresponding coordinate

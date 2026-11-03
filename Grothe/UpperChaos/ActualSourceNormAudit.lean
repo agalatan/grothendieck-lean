@@ -12,8 +12,8 @@ import Lean.Elab.Command
 Agent-ID: codex-2ca4.
 
 The exact finite source-norm formula and its actual weighted matrix-energy
-bound use only the standard Lean axioms. These WIP proof bodies and guards
-await compilation; no numerical source-norm certificate is supplied here.
+bound use only the standard Lean axioms. No numerical source-norm certificate
+is supplied here.
 -/
 
 open Lean Elab Command

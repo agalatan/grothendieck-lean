@@ -6,7 +6,7 @@ import Mathlib.Analysis.Normed.Operator.Mul
 /-!
 # The actual Taylor multiplier as a continuous operator on physical L²
 
-Agent-ID: codex-2ca4. Complete WIP proof bodies; compilation is pending.
+Agent-ID: codex-2ca4.
 
 The explicit `PhiBound` hypothesis gives an L-infinity multiplier, hence a
 continuous L² operator by Holder. Its Hermite matrix is the actual physical

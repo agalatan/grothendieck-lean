@@ -3,7 +3,7 @@ import Grothe.UpperChaos.ScaledActualCoherentL2
 /-!
 # Rational source polynomial before the actual diagonal gate scaling
 
-Agent-ID: codex-2ca4. Complete WIP proof bodies; compilation is pending.
+Agent-ID: codex-2ca4.
 
 The undamped production multiplier already has rational coefficients. Its
 finite Gaussian moment recurrence can therefore be computed over rational

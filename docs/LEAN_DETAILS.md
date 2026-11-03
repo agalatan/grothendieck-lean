@@ -443,8 +443,7 @@ polynomial and one Gaussian factor per coordinate:
 Thus normalized `mu2` retains total mass factor `r^-2`, with no extra factor of
 pi. `ActualTaylorCoherentAudit` enforces the same standard-three boundary for
 the production identification, integrability and both integral formulas.
-The source-space L²/Bessel extension below is WIP: its complete proof bodies
-are saved, but have not yet been compiled. `GaussianFockBessel` constructs the
+`GaussianFockBessel` constructs the
 eight-coordinate normalized holomorphic monomials from Hermite orthogonality.
 Their coefficient energies are summable and satisfy Bessel's inequality for
 any Gaussian L² function; completeness of the holomorphic subspace is not
@@ -466,12 +465,11 @@ physical coordinate, outgoing/incoming Hermite indices `(m,n)` map to
 normalized-monomial transport theorem. Applying Bessel to the actual scaled
 transform gives coefficient summability and a norm upper bound in that order.
 `ActualCoherentBesselAudit` registers transitive standard-three checks for
-these interfaces; those guards still await compilation with this batch.
+these interfaces.
 The normalized weighted Hermite matrix identification is supplied by the
-uncompiled gate-jet extension below. Exact equality with the historical
+gate-jet extension below. Exact equality with the historical
 producer's Laguerre polynomial and numerical Hilbert--Schmidt caps remain open.
 
-The following coefficient batch is likewise WIP, pending compilation.
 `ActualTaylorFiniteCoefficients` defines actual normalized Hermite matrix
 entries of `taylorPhasePower j` and proves absolute integrability through
 polynomial growth and nonnegative damping. Taylor power zero yields the
@@ -498,14 +496,13 @@ to evaluation at zero, and
 `coefficient8_scaledTransform_ground_matrixEntry` identifies the full
 transform coefficient with the actual ground matrix entry.
 `ActualCoherentCoefficientAudit` adds standard-three transitive guards for
-these interfaces; their compilation remains pending. The gate-jet extension
+these interfaces. The gate-jet extension
 below provides complete source proofs of the comparison for all weighted
 Hermite indices. Numerical Hilbert--Schmidt caps and the historical Laguerre
 binding remain OPEN. No physical/source Fubini or unproved coefficient
 identity is assumed in this batch.
 
-The gate-jet extension is likewise WIP, with complete source proofs pending
-compilation. `HermiteFallingFactorial` derives the finite production Hermite
+`HermiteFallingFactorial` derives the finite production Hermite
 expansion from commuting creation operators. `HolomorphicCoefficientJets`
 identifies finite Gaussian extraction with derivatives at zero, and
 `BipartiteCoefficientJets` applies it in the gate source order
@@ -547,12 +544,10 @@ under the sole premise `gateOK g = true`. `summable_weightedMatrixEntry_sq`
 proves summability of the complete weighted energy. The full and finite
 energy inequalities bound the original real `energyWeight` times matrix-entry
 norm squares by `∫ Z, ‖scaledTransform g Z‖² ∂sourceMeasure8`.
-These are complete source bodies, all UNCOMPILED, including the strict
-standard-three guards in `ActualGateMomentJetsAudit`. Numerical bounds for
+`ActualGateMomentJetsAudit` enforces strict standard-three guards. Numerical bounds for
 the actual source integral, Hilbert--Schmidt caps, the historical Laguerre
 binding, and the final upper endpoint remain OPEN.
 
-The source-norm Gram extension also has complete, UNCOMPILED source bodies.
 `ActualSourceNormGram` expands the squared norm of `actualSourcePolynomial`
 into its finite support quadratic form, preserving every off-diagonal term.
 Source-space L² justifies termwise integration; independence factors each
@@ -568,12 +563,11 @@ original gate parameters and the actual production polynomial, proving
 `integral_scaledTransform_sq_eq_value` and
 `tsum_actual_matrix_energy_le_value` under `gateOK g = true`.
 The value is real and nonnegative. `ActualSourceNormAudit` guards the complete
-transitive dependencies with the standard three axioms. Compilation, a
+transitive dependencies with the standard three axioms. A
 reproducible numerical enclosure of `sourceNormValue`, the numerical caps and
 the final upper endpoint remain OPEN; this finite evaluator is not a numerical
 certificate or a substituted source-norm assumption.
 
-The complete tail-continuation bodies also remain UNCOMPILED.
 `ActualMatrixCutoffTail` proves the lower weight `R^D*T^(L+1)` for actual
 outgoing degree at most `D` and one incoming coordinate strictly above `L`.
 `ActualMatrixBandTail` uses the existing `bandModes` and excludes `hi = 0`,
@@ -608,7 +602,6 @@ then applies output Parseval. For every physical L² input, the squared norm of
 its selected-band rectangle-tail output is bounded by `sourceBound` times the
 squared input norm. `sourceBound` is exactly the original four source-norm
 expressions divided by their cutoff weights; no extra tolerance is added.
-The resulting operator bound and all new audit guards are WIP, uncompiled.
 Reproducible numerical source-norm enclosures and the final closed upper
 endpoint remain open.
 
@@ -623,7 +616,7 @@ polynomials are genuinely integrable before applying product Fubini.
 `(A*C-B²)/A`, and `momentValue_zero` retains mass `1/(A*C-B²)`.
 `QuadraticPolynomialMomentsAudit` enforces the same standard-three trust
 boundary. Polynomial insertion into the full bipartite kernel is supplied
-by the WIP source-space batch above; the historical Fock/operator identity
+by the source-space batch above; the historical Fock/operator identity
 and numerical Hilbert--Schmidt caps remain open.
 
 `AffineGaussianSquare` centers the
@@ -1621,6 +1614,6 @@ combine with all eight source coefficient factors in
 rational support, conjugation and every cross term; each pair includes exactly
 `nu^2/(R*Q)`. Complete source proofs identify the actual coherent norm with this
 rational value and bound the full infinite weighted matrix energy by it under
-`gateOK g = true`. These new proof bodies await compilation. Numerical source
+`gateOK g = true`. Numerical source
 bounds and the final endpoint remain open; historical estimates are not proof
 inputs.

@@ -470,8 +470,7 @@ is a finite polynomial times the product of two factors
  r^{-1}\exp\bigl(-(1-r^{-1})(xy+uv)+r^{-1}(xu+yv)\bigr).
 \]
 The total normalization is $r^{-2}$ under the normalized Gaussian product
-measure. The source-space extension is work in progress: complete proof
-bodies for the following L2 and Bessel statements are saved, pending compilation.
+measure.
 For the real bipartite coupling matrix $M$, the existing gate $I-M^TM>0$
 gives a positive rate $\epsilon=\min(1/2,\kappa/3)$ by completion of squares,
 where $\kappa=\det(I-M^TM)/\operatorname{tr}(I-M^TM)$.
@@ -483,9 +482,9 @@ so their coefficient energies are summable and bounded by the squared source
 norm. Gate coordinates are $((y,u),(x,v))$ per physical coordinate; matrix
 indices $(m,n)$ therefore map to $((m_q,n_p),(m_p,n_q))$ explicitly.
 The actual normalized weighted Hermite matrix identity has complete source
-proofs in the uncompiled gate-jet extension below. Exact binding to the
+proofs in the gate-jet extension below. Exact binding to the
 historical Laguerre polynomial and numerical Hilbert--Schmidt caps remain open.
-A further WIP batch, also pending compilation, evaluates finite physical
+The finite coefficient construction evaluates finite physical
 Hermite generating blocks and recovers exactly their retained normalized
 matrix entries. Separately, each coefficient of the full scaled coherent
 transform has a finite factorial formula: source-space $L^2$ justifies
@@ -498,7 +497,7 @@ with diagonal moment $p!/r^{p+1}$ and zero off the diagonal.
 The ground coefficient is identified with the actual ground matrix entry.
 The gate-jet extension below supplies complete source proofs of the weighted
 Hermite identity for all indices; numerical caps remain open.
-The gate-jet extension is also WIP, pending compilation. Finite Gaussian
+Finite Gaussian
 source extraction equals a mixed derivative at zero. In the fixed gate
 order $((y,u),(x,v))$, the same finite derivatives are evaluated by the
 physical Hermite contractions, without commuting derivatives or exchanging
@@ -512,10 +511,9 @@ identities, together with finite physical polynomial integration, complete
 the source coefficient equality with the normalized weighted matrix entry.
 The full weighted energy is summable, and its full and finite sums are
 bounded by the Gaussian source integral of the squared norm of the actual
-scaled transform. All these new proof bodies and strict axiom guards remain
-uncompiled. Numerical bounds on that source integral, Hilbert--Schmidt caps,
+scaled transform. Numerical bounds on that source integral, Hilbert--Schmidt caps,
 the historical Laguerre binding, and the final upper endpoint remain open.
-A further WIP extension, also pending compilation, expands the actual source
+The Gram construction expands the actual source
 norm into finite Gram sums using the production polynomial's support and
 coefficients. It preserves all cross terms. Each pair Gram entry is evaluated
 by shifted Gaussian moments followed by a finite correlated polynomial moment;
@@ -523,7 +521,7 @@ the original Schur conditions and both kernel masses remain explicit.
 Substitution of the actual gate parameters gives a finite scalar expression
 for the squared source norm, which bounds the full actual weighted matrix
 energy. Its numerical enclosure and the final endpoint remain open.
-A further uncompiled continuation retains the exact coordinate cutoff factor
+The rectangle-tail construction retains the exact coordinate cutoff factor
 $R^D T^{L+1}$ and covers the complement of the inclusive input rectangle
 $(500,500,251,250)$ by four coordinate exclusions. The existing comparison-band
 definition gives the outgoing degree bound for each finite band. All fourteen
@@ -539,8 +537,7 @@ multiplier defines a continuous operator on physical $L^2$. Its matrix is
 identified with the actual Gaussian entries, so completeness of the Hermite
 basis gives convergence of the finite rectangle-tail actions. Finite Bessel
 and output Parseval then extend the same four-source bound to every physical
-$L^2$ input and the full selected output band. These source proofs and their
-strict audits remain uncompiled. Numerical source bounds and the final closed
+$L^2$ input and the full selected output band. Numerical source bounds and the final closed
 endpoint remain open.
 For the correlated form
 $Q=A|z|^2+2B\operatorname{Re}(z\overline w)+C|w|^2$, the exact conditions
@@ -549,7 +546,7 @@ $(AC-B^2)/(A+C)$. A separable Gaussian majorant then proves joint
 integrability of every finite mixed polynomial. Fubini and the first-coordinate
 mean $-(B/A)w$ reduce its integral to a finite Wick sum at outer rate
 $(AC-B^2)/A$, with zeroth mass $1/(AC-B^2)$. Full bipartite polynomial
-insertion belongs to the source-space WIP batch above; the historical operator
+insertion belongs to the source-space batch above; the historical operator
 identity and numerical tail estimates remain open.
 For each finite center, fixing the first coordinate gives its exact polynomial
 slice in the second coordinate. The actual source $\overline c(i\varphi)^j$
@@ -1062,7 +1059,7 @@ available independently of the numerical phase cover. This lets local source
 certificates use the actual rounding polynomial before cover assembly.
 
 
-\paragraph{Rational source evaluation (work in progress).}
+\paragraph{Rational source evaluation.}
 The literal rational source polynomial is identified with the actual polynomial
 under diagonal gate scaling, including its coefficients and support. A finite
 moment-scaling identity preserves both Gaussian Jacobian factors, and a rational
@@ -1073,7 +1070,7 @@ and the eight source coefficient factors combine into a full rational Gram
 sum, retaining conjugation, every cross term, and one kernel mass and Jacobian
 factor per physical pair. Complete source proofs identify the actual coherent
 norm with this value and bound the infinite weighted matrix energy by it.
-These new proof bodies await compilation. Numerical source bounds and the final
+Numerical source bounds and the final
 endpoint remain open; no archived estimate is accepted as a proof.
 
 \end{document}

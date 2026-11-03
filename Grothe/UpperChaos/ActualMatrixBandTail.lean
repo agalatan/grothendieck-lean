@@ -4,7 +4,7 @@ import Grothe.UpperChaos.BandProj
 /-!
 # Actual comparison-band coordinate tails
 
-Agent-ID: codex-2ca4. Complete WIP proof bodies; compilation is pending.
+Agent-ID: codex-2ca4.
 
 The output restriction is the existing `bandModes`, hence the same total
 Hermite degree used by `bandProj`. A finite upper endpoint is required:

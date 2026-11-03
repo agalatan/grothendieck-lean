@@ -6,7 +6,7 @@ import Grothe.UpperChaos.BipartiteKernelGramEvaluation
 /-!
 # Rational execution of the finite correlated moment formula
 
-Agent-ID: codex-2ca4. Complete WIP source, awaiting compilation.
+Agent-ID: codex-2ca4.
 
 This uses the same finite Wick sum, balance test and inverse-rate factors as
 the analytic evaluator. Casting is proved directly from the definitions.

@@ -4,7 +4,7 @@ import Grothe.UpperChaos.ComparisonPieces
 /-!
 # The fourteen actual finite comparison bands and their original gate quartets
 
-Agent-ID: codex-2ca4. Complete WIP proof bodies; compilation is pending.
+Agent-ID: codex-2ca4.
 
 The selected bands are exactly indices 1--6, 8--11 and 13--16 of the actual
 comparison table. Their gates are consecutive quartets in the existing pinned

@@ -5,7 +5,6 @@ import Grothe.UpperChaos.ActualGateMatrixCoefficients
 
 Agent-ID: codex-2ca4.
 
-Complete WIP proof bodies; compilation remains pending.
 
 The exact production source polynomial supplies both finite supports and
 coefficients. Polarization retains every cross term. Each Gram entry factors

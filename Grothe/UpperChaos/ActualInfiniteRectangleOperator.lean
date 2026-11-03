@@ -4,7 +4,7 @@ import Mathlib.Topology.Algebra.InfiniteSum.Real
 /-!
 # Actual rectangle-tail multiplication on all physical L² inputs
 
-Agent-ID: codex-2ca4. Complete WIP proof bodies; compilation is pending.
+Agent-ID: codex-2ca4.
 
 Finite input sums converge to the actual multiplier applied to the physical
 rectangle-tail projection. Finite Bessel bounds control those inputs uniformly;

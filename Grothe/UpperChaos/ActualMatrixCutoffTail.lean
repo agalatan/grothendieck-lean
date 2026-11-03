@@ -4,7 +4,7 @@ import Mathlib.Tactic.IntervalCases
 /-!
 # Actual coordinate-exclusion matrix tails from checked gate weights
 
-Agent-ID: codex-2ca4. Complete WIP proof bodies; compilation is pending.
+Agent-ID: codex-2ca4.
 
 For outgoing total degree at most D and incoming selected coordinate at least
 L + 1, the exact gate weight is at least R^D T^(L+1). The full excluded matrix energy

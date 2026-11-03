@@ -10,7 +10,7 @@ Agent-ID: codex-2ca4.
 The actual gate weights, coordinate union, finite-band membership and all
 fourteen selected production bands are guarded by the standard three axioms.
 The physical multiplier and infinite-input limit keep `PhiBound` explicit.
-These complete WIP proof bodies await compilation; numerical source bounds
+Numerical source bounds
 and the final closed endpoint remain separate obligations.
 -/
 

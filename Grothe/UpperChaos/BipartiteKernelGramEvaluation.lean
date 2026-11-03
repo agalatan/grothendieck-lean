@@ -8,7 +8,6 @@ import Lean.Elab.Tactic.Omega
 
 Agent-ID: codex-2ca4.
 
-Complete WIP proof bodies; compilation remains pending.
 
 The conditional shifted moments are represented by actual finite P4
 polynomials in (w1, conjugate w1, w2, conjugate w2). Their canonical support

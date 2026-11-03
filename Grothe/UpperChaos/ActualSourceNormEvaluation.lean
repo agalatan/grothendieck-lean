@@ -8,7 +8,6 @@ import Grothe.UpperChaos.ActualSourceCoefficientScaling
 
 Agent-ID: codex-2ca4.
 
-Complete WIP proof bodies; compilation remains pending.
 
 This binds every pair Gram evaluator to the actual gate parameters and every
 polynomial coefficient to actualSourcePolynomial. The final expression has

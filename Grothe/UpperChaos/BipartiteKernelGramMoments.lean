@@ -7,7 +7,6 @@ import Grothe.UpperChaos.QuadraticPolynomialMoments
 
 Agent-ID: codex-2ca4.
 
-Complete WIP proof bodies; compilation remains pending.
 
 The first source pair is integrated against its two independent standard
 complex Gaussians. Every holomorphic exponent comes from f and every

@@ -4,7 +4,7 @@ import Grothe.UpperChaos.RationalQuadraticMoments
 /-!
 # Rational conditional Wick polynomials for the actual parameter gates
 
-Agent-ID: codex-2ca4. Complete WIP source; not yet compiled.
+Agent-ID: codex-2ca4.
 
 The rational polynomial uses normalized conditional variances R and P. Its
 forward outer substitution is exactly the actual conditional polynomial
