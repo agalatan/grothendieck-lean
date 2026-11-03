@@ -1006,13 +1006,13 @@ class RunnerTests(Fixture):
         runner = self.runner()
         runner.run_group("native", ["Grothe.A"], 1)
         self.write("Grothe/Data.lean", "def changed : Nat := 3\n")
-        with self.assertRaisesRegex(b.BuildError, "source changed"):
+        with self.assertRaisesRegex(b.BuildError, "source (metadata )?changed"):
             runner.run_group("native", ["Grothe.B"], 2)
         self.assertEqual(len(self.calls), 1)
 
     def test_changed_execution_helper_rejected(self):
         self.write(b.EXECUTION[0], "# changed runner\n")
-        with self.assertRaisesRegex(b.BuildError, "source changed"):
+        with self.assertRaisesRegex(b.BuildError, "source (metadata )?changed"):
             self.runner().run_group("native", ["Grothe.A"], 1)
         self.assertFalse(self.calls)
 
