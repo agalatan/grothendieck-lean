@@ -37,11 +37,11 @@ def rational(q):
 def matching_tree(lines, row_index, n, entries):
     """Balanced exact legacy-split assembly, never full-row toList reduction.
 
-    Each <=26-character entry has its own numeric/separator proof. Literal
-    String.append cbv certificates bind every internal node to both children;
-    generic legacy split/sum transport combines the opaque child facts. The
-    source representation follows the pinned Lean cbv append simproc, identified
-    in codex-2ca4's bounded source review.
+    Each <=24-character entry has its own numeric/separator proof. Boolean
+    byte-list certificates bind every internal literal to both children, with
+    a generic soundness proof; generic legacy split/sum transport combines the
+    opaque child facts. Kernel Bool reflection avoids the recursively compared
+    long-string Eq.refl terms produced by the cbv append simproc.
     """
     serial = 0
 
@@ -57,7 +57,7 @@ def matching_tree(lines, row_index, n, entries):
             lines.extend([
                 f'private def {name} : String := {json.dumps(text)}',
                 f'private theorem {name}_separators :',
-                f"    ':' ∉ {name}.toList ∧ ';' ∉ {name}.toList := by cbv",
+                f"    ':' ∉ {name}.toList ∧ ';' ∉ {name}.toList := by cbv; decide +kernel",
                 f'private theorem {name}_certificate :',
                 f'    entryValue? {n} {name}.toList = some ({q} : ℚ) := by cbv',
                 f'private theorem {name}_noColon : \':\' ∉ {name}.toList :=',
@@ -74,7 +74,8 @@ def matching_tree(lines, row_index, n, entries):
         q = rational(value)
         lines.extend([
             f'private def {name} : String := {json.dumps(text)}',
-            f'private theorem {name}_join : {name} = {left} ++ ";" ++ {right} := by cbv',
+            f'private theorem {name}_join : {name} = {left} ++ ";" ++ {right} := by',
+            '  apply sameBytes_sound; decide +kernel',
             f'private theorem {name}_noColon : \':\' ∉ {name}.toList := by',
             f'  rw [{name}_join]',
             f'  exact noColon_join {left} {right} {left}_noColon {right}_noColon',
@@ -92,8 +93,8 @@ def certificates(rows, values):
 
     No source row or duplicate entry is omitted. The literal-list equality is
     proved by rfl against actual energyStrs, not assumed by this generator.
-    Literal append equalities never reify a complete row as List Char. Every
-    source/numeric proof uses the ordinary compiler limits and strict guards.
+    Byte-list Boolean reflection never reifies a complete row as List Char.
+    Every source/numeric proof uses ordinary compiler limits and strict guards.
     """
     lines = []
     names = []
@@ -109,7 +110,8 @@ def certificates(rows, values):
         prefix = json.dumps(header + ':')
         lines += [f'private def {name} : String := {json.dumps(row)}',
                   f'private theorem prefix{i:03d} : {name}.startsWith {prefix} = true := by',
-                  f'  have hs : {name} = {prefix} ++ {json.dumps(remainder)} := by cbv',
+                  f'  have hs : {name} = {prefix} ++ {json.dumps(remainder)} := by',
+                  '    apply sameBytes_sound; decide +kernel',
                   f'  exact Eq.mpr (congrArg (fun s : String => s.startsWith {prefix} = true) hs)',
                   '    (startsWith_append _ _)', '']
         for (n, m), value in values.items():
@@ -126,9 +128,10 @@ def certificates(rows, values):
                 row_totals[n, m].append(total)
                 lines += [f'private theorem {fact} :',
                           f'    rowValue {n} {m} (GrotheKernel.parseRow {name}) = ({value} : ℚ) := by',
-                          f'  have hs : {name} = {json.dumps(header)} ++ ":" ++ {root} := by cbv',
+                          f'  have hs : {name} = {json.dumps(header)} ++ ":" ++ {root} := by',
+                          '    apply sameBytes_sound; decide +kernel',
                           f'  rw [rowValue_of_body {name} {json.dumps(header)} {root} {n} {m} hs',
-                          f'    (by cbv) (by cbv) {root}_noColon]',
+                          f'    (by cbv) (by cbv; decide +kernel) {root}_noColon]',
                           f'  exact {root}_value', '']
             else:
                 row_totals[n, m].append(Fraction())

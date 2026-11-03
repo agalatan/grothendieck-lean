@@ -119,8 +119,20 @@ private def rowValue (n m : ℕ) (row : GrotheKernel.RowQ) : ℚ :=
     (row.2.map fun entry => if entry.1 = n then entry.2 else 0).sum
   else 0
 
-private theorem startsWith_append (prefix tail : String) :
-    (prefix ++ tail).startsWith prefix = true := by
+/-- Boolean byte-list reflection avoids a deeply nested reflexivity proof
+comparing two different expressions for a long literal string. -/
+private def sameBytes (s t : String) : Bool :=
+  s.toByteArray.data.toList == t.toByteArray.data.toList
+
+private theorem sameBytes_sound {s t : String} (h : sameBytes s t = true) : s = t := by
+  change (s.toByteArray.data.toList == t.toByteArray.data.toList) = true at h
+  apply String.toByteArray_inj.mp
+  apply ByteArray.ext
+  apply Array.ext'
+  exact eq_of_beq h
+
+private theorem startsWith_append (pfx tail : String) :
+    (pfx ++ tail).startsWith pfx = true := by
   apply String.startsWith_string_iff.mpr
   rw [String.toList_append]
   exact ⟨tail.toList, rfl⟩
@@ -178,7 +190,7 @@ private theorem rowValue_of_body (s header body : String) (n m : ℕ)
     rw [show ":" = String.ofList [':'] from rfl, split_join, hh, ht]
     rfl
   rw [hs]
-  simp [GrotheKernel.parseRow, hsplit, rowValue, hm, bodyValue]
+  simp [GrotheKernel.parseRow, hsplit, rowValue, hm, bodyValue, Function.comp_def]
 
 /-- A nonmatching header contributes zero even if the remaining source is
 malformed: the original parser then returns its empty default row. Thus the

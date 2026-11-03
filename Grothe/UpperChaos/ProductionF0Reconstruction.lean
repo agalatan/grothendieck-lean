@@ -19,7 +19,7 @@ noncomputable section
 private theorem ev_swap_ofReal (r : ℝ) (P : CPoly) :
     ev (r : ℂ) (ConditionalMomentReflection.swap P) = ev (r : ℂ) P := by
   induction P using MvPolynomial.induction_on with
-  | C a => simp [ConditionalMomentReflection.swap_C, ev]
+  | C a => simp [ev]
   | add P Q hP hQ =>
       simp only [map_add, ev] at *
       rw [hP, hQ]
@@ -57,6 +57,13 @@ theorem radialBaseCoefficient_reflection (q c d : ℕ) (href : d + 1 < c) :
   rw [← integral_const_mul]
   apply setIntegral_congr_fun measurableSet_Ioi
   intro s hs
+  change (Real.exp (-s) : ℂ) *
+      (conj (hfun (q + 1 - c, q - d) (Real.sqrt s : ℂ)) *
+        F0ConditionalNode.coefficient s (c, d)) =
+    (Real.sqrt (((d + 1 : ℕ) : ℝ) / (c : ℝ)) : ℂ) *
+      ((Real.exp (-s) : ℂ) *
+        (conj (hfun (q + 1 - (d + 1), q - (c - 1)) (Real.sqrt s : ℂ)) *
+          F0ConditionalNode.coefficient s (d + 1, c - 1)))
   rw [hp s, F0ConditionalEvaluator.production_reflected_coefficient_all_profiles
     s (le_of_lt hs) c d href]
   ring
@@ -64,8 +71,10 @@ theorem radialBaseCoefficient_reflection (q c d : ℕ) (href : d + 1 < c) :
 private theorem baseGradedCoefficient_eq_radial_nat (q c d : ℕ)
     (hc : c ≤ q + 1) (hd : d ≤ q) :
     baseGradedCoefficient q c d = radialBaseCoefficient q c d := by
+  have hc' : c < q + 2 := by omega
+  have hd' : d < q + 1 := by omega
   exact baseGradedCoefficient_eq_radial
-    (⟨q, Nat.lt_succ_self q⟩ : Fin (q + 1)) ⟨c, by omega⟩ ⟨d, by omega⟩
+    (⟨q, Nat.lt_succ_self q⟩ : Fin (q + 1)) ⟨c, hc'⟩ ⟨d, hd'⟩
 
 /-- Completion is an identity on each actual full Gaussian tensor grade.
 This is stronger than a pointwise conditional-node reflection. -/
@@ -202,8 +211,11 @@ theorem tensorCompletionDefectNorm_le (a0 : ℕ → ℕ → ℕ → ℚ) {η : �
       (CanonicalReconstructionNorm.factor i *
         (a0 q (i.2 + 1) (i.1 - 1) : ℝ) - (a0 q i.1 i.2 : ℝ)) ^ 2) ≤ η ^ 2) :
     tensorCompletionDefectNorm a0 ≤ η := by
-  apply (sq_le_sq₀ (norm_nonneg _) hη).mp
-  rwa [tensorCompletionDefectNorm_sq]
+  have hsq : tensorCompletionDefectNorm a0 ^ 2 ≤ η ^ 2 := by
+    rw [tensorCompletionDefectNorm_sq]
+    exact herror
+  exact (sq_le_sq₀
+    (show 0 ≤ tensorCompletionDefectNorm a0 from norm_nonneg _) hη).mp hsq
 
 /-- The full actual source error needs only its canonical tensor error and a
 separate completion defect. No irrational identity is imposed on rational data. -/
@@ -231,10 +243,13 @@ theorem norm_productionF0Head_sub_le_canonical (a0 : ℕ → ℕ → ℕ → ℚ
     have hsqrt : canonicalTensorErrorNorm a0 ^ 2 = ∑ q ∈ range 251,
         ∑ i ∈ CanonicalReconstructionNorm.canonical q, ‖trueA q i - a q i‖ ^ 2 := by
       exact Real.sq_sqrt hnonneg
-    apply (sq_le_sq₀ (norm_nonneg _)
-      (mul_nonneg (by norm_num) (Real.sqrt_nonneg _))).mp
-    rw [mul_pow, hsqrt]
-    nlinarith
+    have hsq : ‖tensorVector (fun q i => trueA q i - exactA q i)‖ ^ 2 ≤
+        ((10 / 7 : ℝ) * canonicalTensorErrorNorm a0) ^ 2 := by
+      rw [mul_pow, hsqrt]
+      exact hs.trans (mul_le_mul_of_nonneg_right (by norm_num) hnonneg)
+    have hcan : 0 ≤ canonicalTensorErrorNorm a0 := Real.sqrt_nonneg _
+    exact (sq_le_sq₀ (norm_nonneg _)
+      (mul_nonneg (by norm_num) hcan)).mp hsq
   have hsplit : tensorVector (fun q i => trueA q i - a q i) =
       tensorVector (fun q i => trueA q i - exactA q i) +
         tensorVector (fun q i => exactA q i - a q i) := by
@@ -243,8 +258,23 @@ theorem norm_productionF0Head_sub_le_canonical (a0 : ℕ → ℕ → ℕ → ℚ
     change _ = (trueA i.1 (i.2.1, i.2.2) - exactA i.1 (i.2.1, i.2.2)) +
       (exactA i.1 (i.2.1, i.2.2) - a i.1 (i.2.1, i.2.2))
     ring
-  rw [hnorm, hsplit]
-  exact (norm_add_le _ _).trans (add_le_add_right hrec _)
+  have hdefect : tensorCompletionDefectNorm a0 =
+      ‖tensorVector (fun q i => exactA q i - a q i)‖ := by rfl
+  rw [hnorm, hsplit, hdefect]
+  have hadd :
+      ‖tensorVector (fun q i => trueA q i - exactA q i) +
+        tensorVector (fun q i => exactA q i - a q i)‖ ≤
+      ‖tensorVector (fun q i => trueA q i - exactA q i)‖ +
+        ‖tensorVector (fun q i => exactA q i - a q i)‖ :=
+    norm_add_le (tensorVector (fun q i => trueA q i - exactA q i))
+      (tensorVector (fun q i => exactA q i - a q i))
+  have hright :
+      ‖tensorVector (fun q i => trueA q i - exactA q i)‖ +
+        ‖tensorVector (fun q i => exactA q i - a q i)‖ ≤
+      (10 / 7 : ℝ) * canonicalTensorErrorNorm a0 +
+        ‖tensorVector (fun q i => exactA q i - a q i)‖ :=
+    add_le_add_right hrec ‖tensorVector (fun q i => exactA q i - a q i)‖
+  exact le_trans hadd hright
 
 end
 end Grothe.UpperChaos.FixedChaosSmoothing
