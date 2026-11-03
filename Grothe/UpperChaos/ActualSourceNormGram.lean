@@ -56,7 +56,9 @@ theorem integral_tensor_cross (g : Gate) (e f : TensorPowers) :
     simp only [tensorFeature, pairFeature, tensorMonomial, tensorKernel, map_mul]
     ring
   simp_rw [hp]
-  exact integral_prod_mul _ _
+  exact integral_prod_mul (μ := pairMeasure) (ν := pairMeasure)
+    (fun z : PairSources => conj (pairFeature g 0 e.1 z) * pairFeature g 0 f.1 z)
+    (fun z : PairSources => conj (pairFeature g 1 e.2 z) * pairFeature g 1 f.2 z)
 
 /-- Exact finite quadratic form; off-diagonal cross terms are preserved. -/
 def gramValue (g : Gate) (P : SourcePolynomial) : ℂ :=

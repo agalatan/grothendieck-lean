@@ -67,7 +67,11 @@ theorem coefficient8_scaledTensorMoment (g : Gate) (e : Fin 4 → ℕ)
     simp only [monomial8, tensorFamily, scaledTensorMoment, map_mul]
     ring
   simp_rw [hp]
-  exact integral_prod_mul _ _
+  exact integral_prod_mul (μ := pairMeasure) (ν := pairMeasure)
+    (fun s : PairSources => conj (monomial4 i.1 s) *
+      scaledPairMoment g 0 (e 0) (e 1) s)
+    (fun s : PairSources => conj (monomial4 i.2 s) *
+      scaledPairMoment g 1 (e 2) (e 3) s)
 
 def tensorNormalization (m n : Idx2) : ℂ :=
   (normalization4 ((m.1.2, n.1.1), (m.1.1, n.1.2)) : ℂ) *
@@ -103,7 +107,11 @@ theorem tensorPhysicalMoment_eq_product (g : Gate) (e : Fin 4 → ℕ)
     simp only [H2, map_mul]
     ring
   simp_rw [hp]
-  exact integral_prod_mul _ _
+  exact integral_prod_mul (μ := gaussC) (ν := gaussC)
+    (fun z : ℂ => integrand (rate g.power) 0 0 (e 0) (e 1) z *
+      conj (ev z (H m.1.1 m.1.2)) * ev z (H n.1.1 n.1.2))
+    (fun z : ℂ => integrand (rate g.power) 0 0 (e 2) (e 3) z *
+      conj (ev z (H m.2.1 m.2.2)) * ev z (H n.2.1 n.2.2))
 
 /-- Every tensor monomial coefficient is its actual physical Hermite moment
 with the exact source weights and factorial normalization. -/
