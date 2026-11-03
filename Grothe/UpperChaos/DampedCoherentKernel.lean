@@ -2,18 +2,17 @@ import Grothe.UpperChaos.DampedMoments
 import Grothe.UpperChaos.Gauss2
 
 /-!
-# Damped complex coherent-state kernel
+# Complex Gaussian integration with independent linear sources
 
 Agent-ID: codex-2ca4.
 
-The two complex linear coefficients below are independent. In particular,
-the second is not assumed to be the conjugate of the first. This is essential
-for the holomorphic generating kernel whose four source variables later receive
-the historical weights `sqrt R`, `sqrt R`, `sqrt P`, `sqrt Q`.
+The two complex linear coefficients are independent; the second need not be
+the conjugate of the first. The normalized Gaussian formulas below supply the
+inner integration used by the subsequently defined bipartite kernels.
 
-These are actual Gaussian integral evaluations. Neither the weighted matrix
-sum nor its convergence is assumed or asserted. The still missing Fock
-coefficient/Parseval argument and polynomial insertion remain separate analytic obligations.
+These evaluations do not identify those kernels with the historical operator
+`HS_{j,I}`. That identification, the Fock coefficient/Parseval argument,
+polynomial insertion, and numerical tail estimates remain separate obligations.
 -/
 
 open MeasureTheory ProbabilityTheory Complex
@@ -119,52 +118,6 @@ theorem integrable_gaussC_cexp_linear {rate : ℝ} (hrate : 0 < rate) (a b : ℂ
   rw [integral_undef h] at heq
   have hrateC : (rate : ℂ) ≠ 0 := by exact_mod_cast hrate.ne'
   exact (mul_ne_zero (inv_ne_zero hrateC) (Complex.exp_ne_zero _)) heq.symm
-
-/-- The exact four-source damped kernel. Its off-diagonal quadratic entries
-are `-q,-q,nu,nu`, matching the original weighted-HS covariance computation.
-No restriction is placed on the four complex source variables. -/
-theorem integral_damped_coherent_kernel {alpha : ℝ} (halpha : 0 < 1 + alpha)
-    (x y u v : ℂ) :
-    (∫ z : ℂ,
-      cexp (-(alpha : ℂ) * (normSq z : ℂ)) *
-        cexp (x * conj z + y * z - x * y) *
-          cexp (u * z + v * conj z - u * v) ∂Grothe.LowerAnalytic.gaussC) =
-      (((1 + alpha)⁻¹ : ℝ) : ℂ) *
-        cexp (-((alpha / (1 + alpha) : ℝ) : ℂ) * (x * y + u * v) +
-          (((1 + alpha)⁻¹ : ℝ) : ℂ) * (x * u + y * v)) := by
-  have hpoint (z : ℂ) :
-      cexp (-(alpha : ℂ) * (normSq z : ℂ)) *
-        cexp (x * conj z + y * z - x * y) *
-          cexp (u * z + v * conj z - u * v) =
-      cexp (-x * y - u * v) *
-        cexp (-(alpha : ℂ) * (normSq z : ℂ) + (y + u) * z + (x + v) * conj z) := by
-    simp only [← Complex.exp_add]
-    congr 1
-    ring
-  have hlinear := integral_gaussC_cexp_linear halpha (y + u) (x + v)
-  rw [show 1 + alpha - 1 = alpha by ring] at hlinear
-  simp_rw [hpoint]
-  rw [integral_const_mul, hlinear, mul_left_comm, ← Complex.exp_add]
-  simp only [ofReal_inv]
-  congr 1
-  congr 1
-  have hden : ((1 + alpha : ℝ) : ℂ) ≠ 0 := by exact_mod_cast halpha.ne'
-  push_cast at hden ⊢
-  field_simp
-  ring
-
-theorem integrable_damped_coherent_kernel {alpha : ℝ} (halpha : 0 < 1 + alpha)
-    (x y u v : ℂ) :
-    Integrable (fun z : ℂ =>
-      cexp (-(alpha : ℂ) * (normSq z : ℂ)) *
-        cexp (x * conj z + y * z - x * y) *
-          cexp (u * z + v * conj z - u * v)) Grothe.LowerAnalytic.gaussC := by
-  by_contra h
-  have heq := integral_damped_coherent_kernel halpha x y u v
-  rw [integral_undef h] at heq
-  have hden : (((1 + alpha)⁻¹ : ℝ) : ℂ) ≠ 0 := by
-    exact_mod_cast inv_ne_zero halpha.ne'
-  exact (mul_ne_zero hden (Complex.exp_ne_zero _)) heq.symm
 
 /-- The real moment-generating function needed when taking the squared
 modulus of a holomorphic kernel. -/

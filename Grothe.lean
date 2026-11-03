@@ -883,9 +883,7 @@ import Grothe.UpperChaos.OddParseval
 import Grothe.UpperChaos.OddSeries
 import Grothe.UpperChaos.OriginalEnergyBudget
 import Grothe.UpperChaos.OriginalEnergyNoMass
-import Grothe.UpperChaos.OriginalHSCheckedForms
 import Grothe.UpperChaos.OriginalHSCovariance
-import Grothe.UpperChaos.OriginalHSFirstPowerParameters
 import Grothe.UpperChaos.OriginalHSGaussianAudit
 import Grothe.UpperChaos.OriginalHSGaussianMass
 import Grothe.UpperChaos.OriginalHSGaussianTensor

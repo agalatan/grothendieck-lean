@@ -3,7 +3,7 @@ import Grothe.UpperChaos.DampedCoherentKernel
 /-!
 # The second complex Gaussian integration in the weighted HS kernel
 
-Agent-ID: codex-2ca4. Source complete; not yet compiled.
+Agent-ID: codex-2ca4.
 
 For a real symmetric quadratic form with coefficients `A,B,C`, the assumptions
 are exactly `A > 0` and `A*C-B^2 > 0`. Sequential complex Gaussian integration

@@ -2,18 +2,19 @@ import Grothe.UpperChaos.DampedQuadraticKernel
 import Grothe.UpperChaos.OriginalHSQuadraticForms
 
 /-!
-# The bipartite Gaussian mass of every checked original gate
+# Bipartite Gaussian mass from a checked parameter gate
 
-Agent-ID: codex-2ca4. Source complete; not yet compiled.
+Agent-ID: codex-2ca4.
 
-The finite gate certificate supplies the two positivity hypotheses for the
-actual matrix with entries `-a*R`, `n*sqrt(R*Q)`, `n*sqrt(R*P)`, and
-`-a*sqrt(P*Q)`. Its squared holomorphic kernel, with prefactor `n`, is
-integrable and has Gaussian mass `n^2 / delta a n R P Q`.
+The premise `gateOK g = true` supplies the two positivity hypotheses for the
+matrix defined below, with entries `-a*R`, `n*sqrt(R*Q)`, `n*sqrt(R*P)`, and
+`-a*sqrt(P*Q)`. The squared holomorphic kernel defined from that matrix, with
+prefactor `n`, is integrable and has mass `n^2 / delta a n R P Q`.
 
-This is a consumer of the checked finite gates and the Gaussian integration
-theorems. Polynomial insertion, the Fock coefficient identity, and the binding
-to the full historical operator remain separate obligations.
+No membership in a particular parameter table is required. The defined matrix
+and kernel have not been identified with the historical operator `HS_{j,I}`.
+That identity, polynomial insertion, the Fock coefficient identity, and the
+numerical Hilbert--Schmidt tail estimates remain separate obligations.
 -/
 
 open MeasureTheory Grothe.LowerAnalytic
@@ -81,30 +82,30 @@ private theorem matrix_cross_algebra (a n R P Q : ℝ)
     _ = _ := by ring
 
 /-- The first entry of `I-BᵀB` is the checked leading rate. -/
-theorem matrix_leadingRate_eq (g : Gate) (hg : g ∈ gates) (side : Fin 2) :
+theorem matrix_leadingRate_eq (g : Gate) (h : gateOK g = true) (side : Fin 2) :
     1 - matrix00 g ^ 2 - matrix10 g side ^ 2 = leadingRate g side := by
   exact matrix_leading_algebra (damping g.power) (nu g.power)
     (g.r : ℝ) (axisWeight g (2 * side.val))
-    (mul_pos (radial_pos g hg) (axisWeight_pos g hg _)).le
+    (mul_pos (radial_pos g h) (axisWeight_pos g h _)).le
 
 /-- The second entry of `I-BᵀB` is the checked trailing rate. -/
-theorem matrix_trailingRate_eq (g : Gate) (hg : g ∈ gates) (side : Fin 2) :
+theorem matrix_trailingRate_eq (g : Gate) (h : gateOK g = true) (side : Fin 2) :
     1 - matrix01 g side ^ 2 - matrix11 g side ^ 2 = trailingRate g side := by
   exact matrix_trailing_algebra (damping g.power) (nu g.power) (g.r : ℝ)
     (axisWeight g (2 * side.val)) (axisWeight g (2 * side.val + 1))
-    (radicand_pos g hg side).le
-    (mul_pos (axisWeight_pos g hg _) (axisWeight_pos g hg _)).le
+    (radicand_pos g h side).le
+    (mul_pos (axisWeight_pos g h _) (axisWeight_pos g h _)).le
 
 /-- The off-diagonal entry of `I-BᵀB` has the checked positive-sign convention. -/
-theorem matrix_crossRate_eq (g : Gate) (hg : g ∈ gates) (side : Fin 2) :
+theorem matrix_crossRate_eq (g : Gate) (h : gateOK g = true) (side : Fin 2) :
     -(matrix00 g * matrix01 g side + matrix10 g side * matrix11 g side) =
       crossRate g side := by
   exact matrix_cross_algebra (damping g.power) (nu g.power) (g.r : ℝ)
     (axisWeight g (2 * side.val)) (axisWeight g (2 * side.val + 1))
-    (radial_pos g hg).le (axisWeight_pos g hg _).le
+    (radial_pos g h).le (axisWeight_pos g h _).le
 
 /-- The determinant used by Gaussian integration is the checked scalar `delta`. -/
-theorem matrix_determinant_eq (g : Gate) (hg : g ∈ gates) (side : Fin 2) :
+theorem matrix_determinant_eq (g : Gate) (h : gateOK g = true) (side : Fin 2) :
     (1 - matrix00 g ^ 2 - matrix10 g side ^ 2) *
         (1 - matrix01 g side ^ 2 - matrix11 g side ^ 2) -
       (matrix00 g * matrix01 g side + matrix10 g side * matrix11 g side) ^ 2 =
@@ -113,44 +114,44 @@ theorem matrix_determinant_eq (g : Gate) (hg : g ∈ gates) (side : Fin 2) :
   have hcross :
       (matrix00 g * matrix01 g side + matrix10 g side * matrix11 g side) ^ 2 =
         crossRate g side ^ 2 := by
-    rw [← matrix_crossRate_eq g hg side, neg_sq]
-  rw [matrix_leadingRate_eq g hg side, matrix_trailingRate_eq g hg side, hcross]
+    rw [← matrix_crossRate_eq g h side, neg_sq]
+  rw [matrix_leadingRate_eq g h side, matrix_trailingRate_eq g h side, hcross]
   exact actual_block_det (damping g.power) (nu g.power) (g.r : ℝ)
     (axisWeight g (2 * side.val)) (axisWeight g (2 * side.val + 1))
-    (radicand_pos g hg side).le
+    (radicand_pos g h side).le
 
-private theorem matrix_conditions (g : Gate) (hg : g ∈ gates) (side : Fin 2) :
+private theorem matrix_conditions (g : Gate) (h : gateOK g = true) (side : Fin 2) :
     (0 < 1 - matrix00 g ^ 2 - matrix10 g side ^ 2) ∧
       (0 < (1 - matrix00 g ^ 2 - matrix10 g side ^ 2) *
           (1 - matrix01 g side ^ 2 - matrix11 g side ^ 2) -
         (matrix00 g * matrix01 g side + matrix10 g side * matrix11 g side) ^ 2) := by
   constructor
-  · rw [matrix_leadingRate_eq g hg side]
-    exact leadingRate_pos g hg side
-  · rw [matrix_determinant_eq g hg side]
-    exact (pair_positive g hg side).determinant
+  · rw [matrix_leadingRate_eq g h side]
+    exact leadingRate_pos g h side
+  · rw [matrix_determinant_eq g h side]
+    exact (pair_positive g h side).determinant
 
 /-- Every checked gate yields an integrable squared bipartite Gaussian kernel. -/
-theorem integrable_gateWeight (g : Gate) (hg : g ∈ gates) (side : Fin 2) :
+theorem integrable_gateWeight (g : Gate) (h : gateOK g = true) (side : Fin 2) :
     Integrable (gateWeight g side)
       ((gaussC.prod gaussC).prod (gaussC.prod gaussC)) := by
-  have h := matrix_conditions g hg side
+  have hm := matrix_conditions g h side
   exact integrable_bipartiteWeight (nu g.power : ℂ)
-    (matrix00 g) (matrix01 g side) (matrix10 g side) (matrix11 g side) h.1 h.2
+    (matrix00 g) (matrix01 g side) (matrix10 g side) (matrix11 g side) hm.1 hm.2
 
-/-- The actual Gaussian mass for each certified physical pair is `nu² / delta`.
+/-- The Gaussian mass of the defined kernel for each checked pair is `nu² / delta`.
 This does not assert a polynomial-inserted mass or a Fock coefficient identity. -/
-theorem integral_gateWeight (g : Gate) (hg : g ∈ gates) (side : Fin 2) :
+theorem integral_gateWeight (g : Gate) (h : gateOK g = true) (side : Fin 2) :
     (∫ zw : (ℂ × ℂ) × (ℂ × ℂ), gateWeight g side zw
       ∂(gaussC.prod gaussC).prod (gaussC.prod gaussC)) =
       nu g.power ^ 2 /
         delta (damping g.power) (nu g.power) (g.r : ℝ)
           (axisWeight g (2 * side.val)) (axisWeight g (2 * side.val + 1)) := by
-  have h := matrix_conditions g hg side
-  simpa only [gateWeight, matrix_determinant_eq g hg side,
+  have hm := matrix_conditions g h side
+  simpa only [gateWeight, matrix_determinant_eq g h side,
     Complex.norm_real, Real.norm_eq_abs, sq_abs, div_eq_mul_inv] using
     integral_bipartiteWeight (nu g.power : ℂ)
-      (matrix00 g) (matrix01 g side) (matrix10 g side) (matrix11 g side) h.1 h.2
+      (matrix00 g) (matrix01 g side) (matrix10 g side) (matrix11 g side) hm.1 hm.2
 
 end
 end Grothe.UpperChaos.OriginalHSGaussianMass
