@@ -1,4 +1,6 @@
 import Grothe.UpperChaos.QuadraticPolynomialMoments
+import Grothe.UpperChaos.QuadraticMomentScaling
+import Grothe.UpperChaos.OriginalHSGaussianMass
 
 /-!
 # Rational execution of the finite correlated moment formula
@@ -46,5 +48,116 @@ theorem cast_momentValue (A B C : ℚ) (p q r s : ℕ) :
   · simp only [if_pos h]
     push_cast
   · simp only [if_neg h, Rat.cast_zero]
+
+open OriginalHSParameterGates OriginalHSParameterSoundness OriginalHSQuadraticForms
+
+/-- The original gate parameters before their casts into the analytic field. -/
+def nuQ (power : ℕ) : ℚ := 1 / (1 + 21 * (power : ℚ) / 20)
+
+def dampingQ (power : ℕ) : ℚ := (21 * (power : ℚ) / 20) * nuQ power
+
+def axisWeightQ (g : Gate) (i : ℕ) : ℚ :=
+  if g.coordinate = i then g.t else 1
+
+theorem nuQ_cast (power : ℕ) : (nuQ power : ℝ) = nu power := by
+  simp only [nuQ, nu, alpha, Rat.cast_div, Rat.cast_one, Rat.cast_add,
+    Rat.cast_mul, Rat.cast_ofNat, Rat.cast_natCast]
+
+theorem dampingQ_cast (power : ℕ) : (dampingQ power : ℝ) = damping power := by
+  simp only [dampingQ, damping, alpha, Rat.cast_mul, Rat.cast_div,
+    Rat.cast_ofNat, Rat.cast_natCast, nuQ_cast]
+
+theorem axisWeightQ_cast (g : Gate) (i : ℕ) :
+    (axisWeightQ g i : ℝ) = axisWeight g i := by
+  simp only [axisWeightQ, axisWeight]
+  split_ifs <;> simp
+
+/-- Rational Schur coefficients after dividing out the two diagonal variances.
+The cross coefficient has no square root in this coordinate system. -/
+def gateLeadingQ (g : Gate) (side : Fin 2) : ℚ :=
+  1 / g.r - dampingQ g.power ^ 2 * g.r -
+    nuQ g.power ^ 2 * axisWeightQ g (2 * side.val)
+
+def gateCrossQ (g : Gate) (side : Fin 2) : ℚ :=
+  dampingQ g.power * nuQ g.power * (g.r + axisWeightQ g (2 * side.val))
+
+def gateTrailingQ (g : Gate) (side : Fin 2) : ℚ :=
+  1 / axisWeightQ g (2 * side.val + 1) - nuQ g.power ^ 2 * g.r -
+    dampingQ g.power ^ 2 * axisWeightQ g (2 * side.val)
+
+theorem gateLeadingQ_cast (g : Gate) (side : Fin 2) :
+    (gateLeadingQ g side : ℝ) =
+      1 / (g.r : ℝ) - damping g.power ^ 2 * (g.r : ℝ) -
+        nu g.power ^ 2 * axisWeight g (2 * side.val) := by
+  simp only [gateLeadingQ, Rat.cast_sub, Rat.cast_div, Rat.cast_one,
+    Rat.cast_mul, Rat.cast_pow, dampingQ_cast, nuQ_cast, axisWeightQ_cast]
+
+theorem gateCrossQ_cast (g : Gate) (side : Fin 2) :
+    (gateCrossQ g side : ℝ) =
+      damping g.power * nu g.power * ((g.r : ℝ) + axisWeight g (2 * side.val)) := by
+  simp only [gateCrossQ, Rat.cast_mul, Rat.cast_add,
+    dampingQ_cast, nuQ_cast, axisWeightQ_cast]
+
+theorem gateTrailingQ_cast (g : Gate) (side : Fin 2) :
+    (gateTrailingQ g side : ℝ) =
+      1 / axisWeight g (2 * side.val + 1) - nu g.power ^ 2 * (g.r : ℝ) -
+        damping g.power ^ 2 * axisWeight g (2 * side.val) := by
+  simp only [gateTrailingQ, Rat.cast_sub, Rat.cast_div, Rat.cast_one,
+    Rat.cast_mul, Rat.cast_pow, dampingQ_cast, nuQ_cast, axisWeightQ_cast]
+
+theorem gateLeadingQ_spec (g : Gate) (hg : gateOK g = true) (side : Fin 2) :
+    (g.r : ℝ) * (gateLeadingQ g side : ℝ) = leadingRate g side := by
+  rw [gateLeadingQ_cast]
+  unfold leadingRate
+  field_simp [(radial_pos g hg).ne']
+  <;> ring
+
+theorem gateCrossQ_spec (g : Gate) (side : Fin 2) :
+    Real.sqrt ((g.r : ℝ) * axisWeight g (2 * side.val + 1)) *
+      (gateCrossQ g side : ℝ) = crossRate g side := by
+  rw [gateCrossQ_cast]
+  unfold crossRate
+  ring
+
+theorem gateTrailingQ_spec (g : Gate) (hg : gateOK g = true) (side : Fin 2) :
+    axisWeight g (2 * side.val + 1) * (gateTrailingQ g side : ℝ) =
+      trailingRate g side := by
+  rw [gateTrailingQ_cast]
+  unfold trailingRate
+  field_simp [(axisWeight_pos g hg (2 * side.val + 1)).ne']
+  <;> ring
+
+theorem gateLeadingQ_pos (g : Gate) (hg : gateOK g = true) (side : Fin 2) :
+    0 < (gateLeadingQ g side : ℝ) := by
+  have h : 0 < (g.r : ℝ) * (gateLeadingQ g side : ℝ) := by
+    rw [gateLeadingQ_spec g hg side]
+    exact leadingRate_pos g hg side
+  exact (mul_pos_iff_of_pos_left (radial_pos g hg)).mp h
+
+/-- The actual gate's scaled outer Gaussian moment is exactly rational,
+with the inverse mass from both complex-coordinate Jacobians retained.
+This supplies the scalar-moment part of the source-norm rationalization;
+the conditional polynomial and its coefficient scales must still be joined. -/
+theorem actual_scaled_momentValue_eq_rational (g : Gate) (hg : gateOK g = true)
+    (side : Fin 2) (p q r s : ℕ) :
+    ((Real.sqrt (g.r : ℝ) : ℂ) ^ (p + q) *
+      (Real.sqrt (axisWeight g (2 * side.val + 1)) : ℂ) ^ (r + s)) *
+      QuadraticPolynomialMoments.momentValue
+        (leadingRate g side) (crossRate g side) (trailingRate g side) p q r s =
+      (momentValue (gateLeadingQ g side) (gateCrossQ g side)
+        (gateTrailingQ g side) p q r s : ℂ) /
+          ((g.r * axisWeightQ g (2 * side.val + 1) : ℚ) : ℂ) := by
+  have h := QuadraticMomentScaling.momentValue_sqrt_scale
+    (g.r : ℝ) (axisWeight g (2 * side.val + 1))
+    (gateLeadingQ g side : ℝ) (gateCrossQ g side : ℝ) (gateTrailingQ g side : ℝ)
+    (radial_pos g hg) (axisWeight_pos g hg _) (gateLeadingQ_pos g hg side).ne'
+    p q r s
+  rw [gateLeadingQ_spec g hg side, gateCrossQ_spec g side,
+    gateTrailingQ_spec g hg side, ← cast_momentValue] at h
+  have hden : (((g.r : ℝ) * axisWeight g (2 * side.val + 1) : ℝ) : ℂ) =
+      ((g.r * axisWeightQ g (2 * side.val + 1) : ℚ) : ℂ) := by
+    rw [← axisWeightQ_cast]
+    norm_cast
+  simpa only [hden] using h
 
 end Grothe.UpperChaos.RationalQuadraticMoments
