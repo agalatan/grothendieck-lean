@@ -1878,11 +1878,13 @@
     "Grothe/LowerAnalytic/CapPieces/D15x203.lean": "c52dc4a98732ac9bcc18cc4da61bb0d5391bad45b32db3f0f9b1b52084f7ae28",
     "Grothe/LowerAnalytic/CapPieces/D15x204.lean": "536010c34f0e18f8416c1fe392d4f4c20303127f72660a084760fde0a71d99e8",
     "Grothe/LowerAnalytic/CapPieces/D15x205.lean": "33f73dcee87a96d65d0c109a9237b967a19d0b13548ae2463ff4c3d8986264c1",
-    "Grothe/LowerAnalytic/CapPieces/D15x206.lean": "13594eb0c4bc77b1973c3a49d7bfe4a8e255a5d6f63b6c3e46067b39ef05c093"
+    "Grothe/LowerAnalytic/CapPieces/D15x206.lean": "da96a498a147b23505b9a9884c7d7681b0559a60228121b224aa794e6633c46f",
+    "Grothe/LowerAnalytic/CapPieces/D15x207.lean": "18500401384fe082a0192c9549cc33751ff9df05002d1fa8981eeda9dc0c730c",
+    "Grothe/LowerAnalytic/CapPieces/D15x208.lean": "4e9328282c1df68cbf2f33ae8289e2df091efd27518748ed8d36ece27f062507"
   },
   "format": "nodecaps-row15-repaired-source/v1",
   "repair_binding": {
     "path": "data/caps-m/plan/noncentre-repairs/row15-binding.json",
-    "sha256": "c32cd06a06ace0bcce76101b7be20ce283f9f8a55efdb2dec0d62ef580467fea"
+    "sha256": "ad229fdbcaac000b66f88ff86f99ef302c7f37d55173344cbc3d8393f48a252c"
   }
 }
