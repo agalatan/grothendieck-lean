@@ -13,9 +13,10 @@ fourteen actual finite comparison bands, the entry energy is bounded by the
 four exact sourceNormValue/cutoffWeight terms already proved for its original
 gate quartet. Output indices and excluded input indices are explicitly filtered.
 
-This is a finite coefficient-space statement. Identification with multiplication
-on the infinite Gaussian L2 space, passage to infinite coefficient expansions,
-and numerical evaluation of the source-norm bounds remain separate work.
+This is a finite coefficient-space statement. `ActualTaylorMultiplierOperator`
+identifies the infinite Gaussian L2 multiplier, and
+`ActualInfiniteRectangleOperator` passes these bounds to its coefficient
+expansion. Numerical evaluation of the source-norm bounds remains open.
 -/
 
 open scoped BigOperators

@@ -16,8 +16,9 @@ input, including the projection outside the original input rectangle.
 
 No matrix-entry identity or convergence assertion is assumed. This module
 keeps `PhiBound` explicit and does not import the closed native phase cover as
-a theorem premise. Numerical source enclosures and the limit of the finite
-selected-band estimate remain separate obligations.
+a theorem premise. `ActualInfiniteRectangleOperator` passes the finite
+selected-band estimate to this operator. Numerical source enclosures remain
+separate obligations.
 -/
 
 open MeasureTheory Grothe.LowerAnalytic
