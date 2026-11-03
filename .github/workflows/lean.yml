@@ -40,6 +40,14 @@ on:
         description: "land: check the branch merged into master and fast-forward master if green (land.yml sets this)"
         default: false
         type: boolean
+      pr:
+        description: "landing: the pull request number the author asked to land (land.yml sets this)"
+        default: ''
+        type: string
+      sha:
+        description: "landing: the head commit the author asked to land; the run refuses any other (land.yml sets this)"
+        default: ''
+        type: string
 
 permissions:
   contents: write
@@ -75,6 +83,11 @@ jobs:
           git config user.name "grothe-ci"; git config user.email "grothe-ci@users.noreply.github.com"
           git config merge.ours.driver true   # OVERVIEW.pdf merge=ours (.gitattributes): CI rebuilds it
           git fetch -q origin master
+          # a landing run is bound to the commit the author asked to land: a push in between gets its own /land
+          if [ "${{ inputs.sha }}" != "${GITHUB_SHA}" ] || ! [[ "${{ inputs.pr }}" =~ ^[0-9]+$ ]]; then
+            echo "::error::this landing run is for PR #${{ inputs.pr }} at ${{ inputs.sha }}, but the branch tip is ${GITHUB_SHA}; comment /land again"
+            exit 1
+          fi
           # pin both sides: this run checks exactly the pushed commit (github.sha) merged into this master commit; the
           # build job and the landing recreate this merge from the same two commits, never from moving branch names
           base=$(git rev-parse origin/master); echo "base=${base}" >> "$GITHUB_OUTPUT"
@@ -148,7 +161,7 @@ jobs:
              && [ "${GITHUB_REF_NAME}" != master ] && [ "${{ inputs.land }}" != true ] && [ "${{ inputs.mode }}" != caps ]; then
             # an informative branch check never occupies the droplet (one runner, hours per cap build): it fails at
             # once, saying so; the landing run or an explicit `-f mode=caps` dispatch builds the caps on the droplet
-            echo "::warning::the node caps changed (no verified cache for digest ${digest}): this branch check needs the droplet."
+            echo "::warning::no verified build cache for these node-cap sources (digest ${digest}): the caps changed, or master has no cache yet. This branch check would need the droplet."
             echo "needs_droplet=true" >> "$GITHUB_OUTPUT"; echo "droplet=false" >> "$GITHUB_OUTPUT"
             echo 'runs_on="ubuntu-24.04"' >> "$GITHUB_OUTPUT"; exit 0
           fi
@@ -178,8 +191,9 @@ jobs:
       - name: Not run here - the node caps changed and this informative branch check does not use the droplet
         if: needs.route.outputs.needs_droplet == 'true'
         run: |
-          echo "::error::The node caps changed, so this check needs the droplet (hours). Informative branch checks do not"
-          echo "::error::occupy it. Land the PR (/land), or dispatch the check on purpose: gh workflow run lean.yml --ref ${GITHUB_REF_NAME} -f mode=caps"
+          echo "::error::No verified build cache for these node-cap sources (the caps changed, or master has no cache yet):"
+          echo "::error::this check would need the droplet (hours), which informative branch checks never occupy. Land the PR"
+          echo "::error::(/land), wait for master's cache, or dispatch on purpose: gh workflow run lean.yml --ref ${GITHUB_REF_NAME} -f mode=caps"
           exit 1
 
       - uses: actions/checkout@v5
@@ -201,7 +215,8 @@ jobs:
           python3 tools/gen_root_imports.py > /dev/null
           git diff --quiet || git commit -q -a -m "Regenerate root imports and sorted lists after merging ${GITHUB_REF_NAME} (CI)"
           git log --oneline -3
-          printf 'base=%s\nsource=%s\ntree=%s\nlean=%s\n' "$base" "${GITHUB_SHA}" "$(git rev-parse 'HEAD^{tree}')" "${LEAN}" > merge-info
+          # the merge record (data only; scripts/land_ready.sh parses it strictly)
+          printf 'base=%s\nsource=%s\ntree=%s\nlean=%s\npr=%s\n' "$base" "${GITHUB_SHA}" "$(git rev-parse 'HEAD^{tree}')" "${LEAN}" "${{ inputs.pr }}" > merge-info
 
       - name: Download the build of this exact tree (master, tree handoff from a green branch check)
         if: env.LEAN == 'true' && needs.route.outputs.handoff_run != ''
@@ -453,14 +468,17 @@ jobs:
         if: inputs.land
         with:
           name: merge-info
+          path: landing-info          # outside the checked-out tree; read as data, never executed
 
-      - name: Land the checked merge if an approving review of this commit exists (AGENTS.md §7a)
-        # without one the check stays green and the delivery waits; review-land.yml lands it when the approval comes
+      - name: "Land the checked merge (AGENTS.md §7): bound to the requested PR and commit, approved by the other side"
         if: inputs.land
         env:
           GH_TOKEN: ${{ github.token }}
           BRANCH: ${{ github.ref_name }}
+          PR: ${{ inputs.pr }}
+          SHA: ${{ inputs.sha }}
           CHECK_RUN: ${{ github.run_id }}
+          INFO: landing-info/merge-info
         run: scripts/land_ready.sh
 
 
