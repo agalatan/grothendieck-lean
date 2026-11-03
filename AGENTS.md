@@ -127,8 +127,10 @@ Resuming an existing worktree: sync, then combine your branch with master (§6) 
 **What to build on the laptop.** Only the modules you change and the modules that import them:
 `lake build Grothe.X.Y Grothe.X.Z`. **Never `lake build` or `lake build Grothe`:** the root includes the 15 node-cap
 rows (`CapRowKK`) and their assembly `CapNodes`, about 21 CPU-hours cold. Those are verified by CI only (§8, §10),
-and nothing but the root imports them, so you never need them locally. For a full check of your branch, push it
-(§8) or run `scripts/cloud.sh check` (§11).
+and nothing but the root imports them, so you never need them locally. **While developing, check your work with
+small, targeted builds of the modules you changed** (§12, "where to build"), not by pushing a WIP branch (a full proof
+check on a shared runner) or starting a cloud job. Push for a full check at a milestone (§8), or run
+`scripts/cloud.sh check` (§11) when a targeted build cannot answer the question.
 
 **The local master build (shared by every agent on the laptop).** Start every worktree from it instead of an empty
 build: Lake then compiles only what your branch changes.
@@ -390,7 +392,8 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 ```
 
 - **Cloud jobs are for experiments, not for "does my branch build?"**: every push of your branch already runs its
-  proof check. Use cloud jobs for script jobs, sweeps and sharded builds of modules.
+  proof check, and "do my modules build?" is a targeted `lake build` on a machine with CPU room (§12), not a cloud
+  job and not a push. Use cloud jobs for script jobs, sweeps and sharded builds of modules.
 - **What runs:** the tip of the branch on GitHub (`--ref`; default: your current branch, which must be pushed and
   up to date). For quick experiments push a scratch branch `<agent-id>/<topic>` with `[skip ci]` in the commit
   message, so the push does not also run the proof check. Delete it when done (§14).
@@ -415,6 +418,17 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 
 ## 12. Shared machines
 
+- **Where to build while developing (every AI, Claude and Codex alike):** prefer **small, targeted `lake build`s of
+  the modules you changed** (and what imports them) over pushing a WIP branch or starting a cloud job. Run them, in
+  this order, wherever there is CPU room: on **yo** (`ssh yo`, 8 vCPUs, 31 GB) if it has room; else on the **big
+  droplet** (`ssh big`, 48 vCPUs, 188 GB; temporary, while it exists) if it has room; else **locally** on the laptop.
+  "Room" means **at least 50 % of the machine's CPUs idle when you look**: `nproc` against the 1-minute load in
+  `cat /proc/loadavg` (yo: load ≤ 4; big: load ≤ 24), or `scripts/droplet_status.sh` for yo. Then use at most that
+  room (`taskset -c` a range of cores; Lake has no `-j`, so pin the cores), in your own signed folder (§2) with the
+  shared Mathlib packages linked (`~/grothe-caps/.lake/packages` on both droplets, symlink), in a process group
+  (below), never in a runner workspace, and delete the folder when done (§14). Never run Lean on a droplet while a
+  caps run's bounded builder is active there (its foreign-work guard aborts the run). A full proof check is what a
+  push at a milestone is for (§8).
 - **Laptop:** 8 cores, shared by every agent. At most one heavy job at a time across all agents; no full builds (§5).
   Kill only your own processes, by pid or process group. Never `pkill -f` or `killall`: they kill other agents' work.
 - **Starting and stopping long jobs (builds, scans): always in their own process group.** Killing a `lake` process
