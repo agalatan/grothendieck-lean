@@ -347,6 +347,14 @@ proves an integrated auxiliary tail at `‖z‖ ≥ r₀ > 0`, bounded by
 including its zeros. Bounds for the full polynomial-weighted sources, the
 radial endpoint and certified numerical integration remain open.
 
+`LinearTiltedMoments` evaluates finite polynomials in `z` and `conj z` under
+`exp(-(rate-1)*normSq z + 2*Re(a*z))` for every positive `rate` and fixed complex
+source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
+Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
+A half-rate majorant proves integrability of every such polynomial insertion.
+Joint integrability when the source depends on another integration variable
+remains a separate obligation before Fubini can be applied.
+
 `F0ConditionalNode` defines the actual conditional Gaussian coefficients and
 proves their coupled Bessel bound. `F0ConditionalEvaluator` identifies them
 with the historical signed-shift integral for nonnegative radius and nonzero

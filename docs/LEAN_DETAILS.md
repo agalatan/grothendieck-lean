@@ -386,7 +386,22 @@ source integrability; no numerical integration premise is used.
 
 `ShiftedDampedMoments` expands a translated mixed complex monomial and proves
 the finite Wick formula at any positive radial rate. Its Gaussian mass is
-`1/rate`, including for rates below one. `AffineGaussianSquare` centers the
+`1/rate`, including for rates below one.
+`LinearTiltedMoments.integral_linear_tilt` translates an arbitrary measurable
+complex test function under the real linear tilt `2*Re(a*z)`. The translation
+is `conj(a)/rate`, and the scalar factor is `exp(normSq a/rate)`.
+`integral_mixed_moment` and `integral_finite_mixed_polynomial` then evaluate
+mixed monomials and finite polynomials through `shiftedDampedMoment`; in
+particular the zeroth moment is `exp(normSq a/rate)/rate`.
+`integrable_mixed_moment` and `integrable_finite_mixed_polynomial` establish
+integrability for every positive rate and fixed complex source using a
+half-rate exponential majorant. `LinearTiltedMomentsAudit` rejects transitive
+axioms outside `propext`, `Classical.choice`, and `Quot.sound`.
+These results supply one-variable polynomial integrability; they do not
+establish joint integrability for dependent source variables, a Fock
+coefficient identity, or a numerical Hilbert--Schmidt tail estimate.
+
+`AffineGaussianSquare` centers the
 conditional density without dividing by the radial profile. For arbitrary
 complex `z`, real `a`, positive `alpha,t`, put `beta=alpha+a^2*t` and
 `mu=-(a*t/beta)*z`. `ConditionalGaussianPhase` proves the exact conditional
