@@ -207,7 +207,9 @@ def generate() -> dict[Path, str]:
                     if part == len(text_names) - 2:
                         lines += [f'  · exact nonempty{part+1:03d}']
                     else:
-                        lines += ['  · simp only [List.append_eq_nil_iff, List.cons_ne_nil, and_false, not_false_eq_true]']
+                        tail = joined(text_names[part+2:], "',' :: ")
+                        lines += [f'  · exact List.append_ne_nil_of_left_ne_nil nonempty{part+1:03d}',
+                                  f"      (',' :: ({tail}))"]
                     lines += [f'  · exact decoded{tag}', f'  · exact joined{part+1:03d}']
                 lines += ['']
             texts = joined(text_names, "',' :: ")

@@ -14,18 +14,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / 'Grothe/UpperChaos/TaylorFirstPackedChunk253Pilot.lean'
 OUTPUT = ROOT / 'Grothe/UpperChaos/TaylorFirstPackedChunk253JoinProbe.lean'
-SOURCE_SHA256 = '4ceacd1b66e647cbfc75b4f7518eb773d7002ceba2e25f378126dba410cf2f99'
-PREFIX_SHA256 = 'caf754b428d0cd57d49d36e572aa6078a45c7f292a3f1af2df8d45fa0706d034'
-PROBE_SHA256 = '975d02cec2d8395d9116b2687a989b98365e8f17396de5166ac8da90f17aefde'
+SOURCE_SHA256 = 'dbbbac2a52921c221255bd81bbcabe7c5cdb4c1746b5bbf1d1649d57e070441f'
+PREFIX_SHA256 = '1aac1e166cfa461ee0e3a9ea6ac65b7a169fb3cb79d47ca6f93fcfacf7133e4d'
+PROBE_SHA256 = '1db7cc6474162a56324e974e63ffdbae3d8d909280515429cfae0dcd3072dc54'
 
 
 def generate() -> str:
     source = SOURCE.read_bytes()
     if sha256(source).hexdigest() != SOURCE_SHA256:
-        raise ValueError('Diagnostic source differs from the reviewed 762ae baseline')
+        raise ValueError('Diagnostic source differs from the pinned diagnostic baseline')
     prefix, marker, _ = source.decode().partition('def values : List ℤ := values000')
     if not marker or sha256(prefix.encode()).hexdigest() != PREFIX_SHA256:
-        raise ValueError('Diagnostic cut is not the exact reviewed numeric-join prefix')
+        raise ValueError('Diagnostic cut is not the exact pinned numeric-join prefix')
     result = prefix + '''open Lean Elab Command
 run_cmd do
   for ax in ← Lean.collectAxioms ``joined000 do
@@ -35,7 +35,7 @@ run_cmd do
 end Grothe.UpperChaos.TaylorFirstPackedChunk253Pilot
 '''
     if sha256(result.encode()).hexdigest() != PROBE_SHA256:
-        raise ValueError('Diagnostic output differs from the reviewed candidate')
+        raise ValueError('Diagnostic output differs from the pinned candidate')
     return result
 
 

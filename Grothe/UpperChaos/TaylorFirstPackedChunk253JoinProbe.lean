@@ -132,7 +132,8 @@ private theorem joined012 : row? 206 (text012 ++ ',' :: (text013 ++ ',' :: (text
     some (values012 ++ (values013 ++ (values014))) := by
   apply row?_append_of_eq
   · exact nonempty012
-  · simp only [List.append_eq_nil_iff, List.cons_ne_nil, and_false, not_false_eq_true]
+  · exact List.append_ne_nil_of_left_ne_nil nonempty013
+      (',' :: (text014))
   · exact decoded012
   · exact joined013
 
@@ -140,7 +141,8 @@ private theorem joined011 : row? 206 (text011 ++ ',' :: (text012 ++ ',' :: (text
     some (values011 ++ (values012 ++ (values013 ++ (values014)))) := by
   apply row?_append_of_eq
   · exact nonempty011
-  · simp only [List.append_eq_nil_iff, List.cons_ne_nil, and_false, not_false_eq_true]
+  · exact List.append_ne_nil_of_left_ne_nil nonempty012
+      (',' :: (text013 ++ ',' :: (text014)))
   · exact decoded011
   · exact joined012
 
@@ -148,7 +150,8 @@ private theorem joined010 : row? 206 (text010 ++ ',' :: (text011 ++ ',' :: (text
     some (values010 ++ (values011 ++ (values012 ++ (values013 ++ (values014))))) := by
   apply row?_append_of_eq
   · exact nonempty010
-  · simp only [List.append_eq_nil_iff, List.cons_ne_nil, and_false, not_false_eq_true]
+  · exact List.append_ne_nil_of_left_ne_nil nonempty011
+      (',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014))))
   · exact decoded010
   · exact joined011
 
@@ -156,7 +159,8 @@ private theorem joined009 : row? 206 (text009 ++ ',' :: (text010 ++ ',' :: (text
     some (values009 ++ (values010 ++ (values011 ++ (values012 ++ (values013 ++ (values014)))))) := by
   apply row?_append_of_eq
   · exact nonempty009
-  · simp only [List.append_eq_nil_iff, List.cons_ne_nil, and_false, not_false_eq_true]
+  · exact List.append_ne_nil_of_left_ne_nil nonempty010
+      (',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014)))))
   · exact decoded009
   · exact joined010
 
@@ -164,7 +168,8 @@ private theorem joined008 : row? 206 (text008 ++ ',' :: (text009 ++ ',' :: (text
     some (values008 ++ (values009 ++ (values010 ++ (values011 ++ (values012 ++ (values013 ++ (values014))))))) := by
   apply row?_append_of_eq
   · exact nonempty008
-  · simp only [List.append_eq_nil_iff, List.cons_ne_nil, and_false, not_false_eq_true]
+  · exact List.append_ne_nil_of_left_ne_nil nonempty009
+      (',' :: (text010 ++ ',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014))))))
   · exact decoded008
   · exact joined009
 
@@ -172,7 +177,8 @@ private theorem joined007 : row? 206 (text007 ++ ',' :: (text008 ++ ',' :: (text
     some (values007 ++ (values008 ++ (values009 ++ (values010 ++ (values011 ++ (values012 ++ (values013 ++ (values014)))))))) := by
   apply row?_append_of_eq
   · exact nonempty007
-  · simp only [List.append_eq_nil_iff, List.cons_ne_nil, and_false, not_false_eq_true]
+  · exact List.append_ne_nil_of_left_ne_nil nonempty008
+      (',' :: (text009 ++ ',' :: (text010 ++ ',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014)))))))
   · exact decoded007
   · exact joined008
 
@@ -180,7 +186,8 @@ private theorem joined006 : row? 206 (text006 ++ ',' :: (text007 ++ ',' :: (text
     some (values006 ++ (values007 ++ (values008 ++ (values009 ++ (values010 ++ (values011 ++ (values012 ++ (values013 ++ (values014))))))))) := by
   apply row?_append_of_eq
   · exact nonempty006
-  · simp only [List.append_eq_nil_iff, List.cons_ne_nil, and_false, not_false_eq_true]
+  · exact List.append_ne_nil_of_left_ne_nil nonempty007
+      (',' :: (text008 ++ ',' :: (text009 ++ ',' :: (text010 ++ ',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014))))))))
   · exact decoded006
   · exact joined007
 
@@ -188,7 +195,8 @@ private theorem joined005 : row? 206 (text005 ++ ',' :: (text006 ++ ',' :: (text
     some (values005 ++ (values006 ++ (values007 ++ (values008 ++ (values009 ++ (values010 ++ (values011 ++ (values012 ++ (values013 ++ (values014)))))))))) := by
   apply row?_append_of_eq
   · exact nonempty005
-  · simp only [List.append_eq_nil_iff, List.cons_ne_nil, and_false, not_false_eq_true]
+  · exact List.append_ne_nil_of_left_ne_nil nonempty006
+      (',' :: (text007 ++ ',' :: (text008 ++ ',' :: (text009 ++ ',' :: (text010 ++ ',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014)))))))))
   · exact decoded005
   · exact joined006
 
@@ -196,7 +204,8 @@ private theorem joined004 : row? 206 (text004 ++ ',' :: (text005 ++ ',' :: (text
     some (values004 ++ (values005 ++ (values006 ++ (values007 ++ (values008 ++ (values009 ++ (values010 ++ (values011 ++ (values012 ++ (values013 ++ (values014))))))))))) := by
   apply row?_append_of_eq
   · exact nonempty004
-  · simp only [List.append_eq_nil_iff, List.cons_ne_nil, and_false, not_false_eq_true]
+  · exact List.append_ne_nil_of_left_ne_nil nonempty005
+      (',' :: (text006 ++ ',' :: (text007 ++ ',' :: (text008 ++ ',' :: (text009 ++ ',' :: (text010 ++ ',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014))))))))))
   · exact decoded004
   · exact joined005
 
@@ -204,7 +213,8 @@ private theorem joined003 : row? 206 (text003 ++ ',' :: (text004 ++ ',' :: (text
     some (values003 ++ (values004 ++ (values005 ++ (values006 ++ (values007 ++ (values008 ++ (values009 ++ (values010 ++ (values011 ++ (values012 ++ (values013 ++ (values014)))))))))))) := by
   apply row?_append_of_eq
   · exact nonempty003
-  · simp only [List.append_eq_nil_iff, List.cons_ne_nil, and_false, not_false_eq_true]
+  · exact List.append_ne_nil_of_left_ne_nil nonempty004
+      (',' :: (text005 ++ ',' :: (text006 ++ ',' :: (text007 ++ ',' :: (text008 ++ ',' :: (text009 ++ ',' :: (text010 ++ ',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014)))))))))))
   · exact decoded003
   · exact joined004
 
@@ -212,7 +222,8 @@ private theorem joined002 : row? 206 (text002 ++ ',' :: (text003 ++ ',' :: (text
     some (values002 ++ (values003 ++ (values004 ++ (values005 ++ (values006 ++ (values007 ++ (values008 ++ (values009 ++ (values010 ++ (values011 ++ (values012 ++ (values013 ++ (values014))))))))))))) := by
   apply row?_append_of_eq
   · exact nonempty002
-  · simp only [List.append_eq_nil_iff, List.cons_ne_nil, and_false, not_false_eq_true]
+  · exact List.append_ne_nil_of_left_ne_nil nonempty003
+      (',' :: (text004 ++ ',' :: (text005 ++ ',' :: (text006 ++ ',' :: (text007 ++ ',' :: (text008 ++ ',' :: (text009 ++ ',' :: (text010 ++ ',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014))))))))))))
   · exact decoded002
   · exact joined003
 
@@ -220,7 +231,8 @@ private theorem joined001 : row? 206 (text001 ++ ',' :: (text002 ++ ',' :: (text
     some (values001 ++ (values002 ++ (values003 ++ (values004 ++ (values005 ++ (values006 ++ (values007 ++ (values008 ++ (values009 ++ (values010 ++ (values011 ++ (values012 ++ (values013 ++ (values014)))))))))))))) := by
   apply row?_append_of_eq
   · exact nonempty001
-  · simp only [List.append_eq_nil_iff, List.cons_ne_nil, and_false, not_false_eq_true]
+  · exact List.append_ne_nil_of_left_ne_nil nonempty002
+      (',' :: (text003 ++ ',' :: (text004 ++ ',' :: (text005 ++ ',' :: (text006 ++ ',' :: (text007 ++ ',' :: (text008 ++ ',' :: (text009 ++ ',' :: (text010 ++ ',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014)))))))))))))
   · exact decoded001
   · exact joined002
 
@@ -228,7 +240,8 @@ private theorem joined000 : row? 206 (text000 ++ ',' :: (text001 ++ ',' :: (text
     some (values000 ++ (values001 ++ (values002 ++ (values003 ++ (values004 ++ (values005 ++ (values006 ++ (values007 ++ (values008 ++ (values009 ++ (values010 ++ (values011 ++ (values012 ++ (values013 ++ (values014))))))))))))))) := by
   apply row?_append_of_eq
   · exact nonempty000
-  · simp only [List.append_eq_nil_iff, List.cons_ne_nil, and_false, not_false_eq_true]
+  · exact List.append_ne_nil_of_left_ne_nil nonempty001
+      (',' :: (text002 ++ ',' :: (text003 ++ ',' :: (text004 ++ ',' :: (text005 ++ ',' :: (text006 ++ ',' :: (text007 ++ ',' :: (text008 ++ ',' :: (text009 ++ ',' :: (text010 ++ ',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014))))))))))))))
   · exact decoded000
   · exact joined001
 
