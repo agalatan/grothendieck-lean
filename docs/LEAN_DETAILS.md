@@ -546,6 +546,16 @@ their complete coverage of the gaps between the original profile neighborhoods
 and the selected tubes. Combining these checks with the existing outer-profile
 theorem gives `|κ(s)| > 1/1000` on every closed nonselected strip. Consequently
 `α x² + κ(s)² > 10⁻⁶` for `α ≥ 0`, uniformly in the reciprocal coordinate.
+
+`ProfilePiFactorLower` and `ProfilePiFactorUpper` certify rational bounds for π
+from 272 nested-square-root steps, using Mathlib's proved `pi_lower_bound` and
+`pi_upper_bound` tactics. The recipe uses a 1152-bit witness grid and 512-bit
+output endpoints. `ProfilePiFactor` derives bounds for `sqrt(π)` and
+`sqrt(sqrt(π))` by exact rational square and fourth-power checks. Each interval
+has width at most `2⁻⁵¹²`; the transitive guard permits only the standard three
+Lean axioms. These are actual normalization constants, with no numerical bound
+assumed. The complete actual-node profile and shifted-parameter intervals
+remain to be certified.
 The gap data share the same tracked input and generator as the radial cuts;
 the checker uses kernel reduction and introduces no native facts.
 
