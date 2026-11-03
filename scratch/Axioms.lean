@@ -1039,8 +1039,12 @@ import Grothe
 #print axioms Grothe.UpperChaos.ThirdIntegerSourceBinding.source_array
 #print axioms Grothe.UpperChaos.ThirdIntegerSourceBinding.source_values
 #print axioms Grothe.UpperChaos.UnitSquaredQuadrature.taylorQuadratureKernel_unit_eq_squared
+#print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.linearCoefficient_eq_inner
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_constant
+#print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_linear
+#print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_linear_small
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_phaseSliceLp_sub_constant
+#print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_phaseSliceLp_sub_linear
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.phaseSlice_sub_linear_bound
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.phaseSlice_sub_one_bound
 #print axioms Grothe.UpperChaos.abs_gaussian_reciprocal_sub_poly_le

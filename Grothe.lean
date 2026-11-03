@@ -1828,4 +1828,5 @@ import Grothe.UpperChaos.ThirdIntegerSourceBinding
 import Grothe.UpperChaos.UnitSquaredQuadrature
 import Grothe.UpperChaos.UnitSquaredQuadratureConditional
 import Grothe.UpperChaos.UnitSquaredRadiusProfile
+import Grothe.UpperChaos.ZeroProfilePhaseLinearization
 import Grothe.UpperChaos.ZeroProfilePhaseStability

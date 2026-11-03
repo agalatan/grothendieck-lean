@@ -364,6 +364,10 @@ The parameter derivative identity and its midpoint error transfer remain open.
 Hermite coefficients to show that every canonical coefficient is real.
 It identifies the complex distance from a real stored center with the absolute
 real-part error, including for the signed production coefficient.
+`ZeroProfilePhaseLinearization` gives the actual constant-and-linear Gaussian
+approximation with whole L² and all-mode coefficient error at most `5ρ²`,
+where `ρ=√(1+a²)v(s)/√s` retains the profile sign and stays zero at a profile
+zero. Comparing these centers with the actual saved entries remains separate.
 `PhaseStability` also gives a quadratic error for the constant-plus-linear
 phase approximation: at a positive real reference radius, the error is at
 most `(5/2)‖h‖²/r²`, including when the perturbed point is zero.

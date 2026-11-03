@@ -389,6 +389,11 @@ proves reality of its coefficient for every real source parameter, including
 profile zeros. The complex distance to any real
 stored center is exactly the absolute real-part error; no numerical enclosure
 is assumed in these identities.
+`ZeroProfilePhaseLinearization` transfers the quadratic pointwise remainder
+to the actual Gaussian phase slice. The majorant uses `h₀₀+h₁₁=|w|²` and its
+L² norm at most two. Every true coefficient is within `5ρ²` of the centers
+`1,ρ/2,-ρ/2` at modes `(0,0),(1,0),(0,1)` and zero centers elsewhere. This does
+not set the other true coefficients to zero and does not certify saved bytes.
 The first-order phase approximation has pointwise remainder at most
 `(5/2)‖h‖²/r²`. Its proof uses the exact norm-square identity to bound
 `‖r+h‖-r-Re(h)` between zero and `‖h‖²/(2r)`, then the zero-safe phase estimate.
