@@ -349,6 +349,14 @@ completion of the selected 31,877-mode vector has weighted error at most
 error, physical weights, primary contraction, floating operations and final
 energy-table agreement still need their own certificates.
 
+`LinearTiltedMoments` evaluates finite polynomials in `z` and `conj z` under
+`exp(-(rate-1)*normSq z + 2*Re(a*z))` for every positive `rate` and fixed complex
+source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
+Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
+A half-rate majorant proves integrability of every such polynomial insertion.
+Joint integrability when the source depends on another integration variable
+remains a separate obligation before Fubini can be applied.
+
 `GradedHermitePhaseSlice` expresses each actual Taylor source as a polynomial
 in the conditional coordinate times its exact Gaussian damping.
 `TaylorConditionalGaussian` evaluates that conditional integral by the finite
