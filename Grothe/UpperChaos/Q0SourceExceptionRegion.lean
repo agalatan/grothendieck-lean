@@ -96,7 +96,7 @@ theorem mem_slice {α : Type*} (xs : List α) (start count : ℕ) (p : α) :
 
 theorem mem_panels_iff (p : Panel) : p ∈ panels ↔
     ∃ i : Fin sourcePanels.length, exceptionalPanel i.val ∧ sourcePanels.get i = p := by
-  simp only [panels, exceptionPanels, List.append_assoc, List.mem_append, mem_slice, or_assoc]
+  simp only [panels, exceptionPanels, List.append_assoc, List.mem_append, mem_slice]
   constructor
   · rintro (⟨i, hl, hu, he⟩ | ⟨i, hl, hu, he⟩ | ⟨i, hl, hu, he⟩)
     · exact ⟨i, Or.inl ⟨hl, by omega⟩, he⟩

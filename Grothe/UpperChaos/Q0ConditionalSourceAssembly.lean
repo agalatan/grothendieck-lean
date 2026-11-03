@@ -64,7 +64,8 @@ theorem exceptional_error_eq (center : Address → (ℕ × ℕ) → ℂ) :
   intro a _
   by_cases ha : exceptionalPanel a.1.val
   · simp only [exceptionModes, ite_eq_left ha, dite_eq_left ha, nodeWeight]
-    congr 1
+    apply congrArg (fun total : ℝ =>
+      (sourceWeight a * Real.exp (-(sourceNode a))) * total)
     apply Finset.sum_congr rfl
     intro p hp
     rw [completed_exceptional center a ha p hp]
