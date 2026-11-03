@@ -43,6 +43,10 @@ classical and quantum correlations in two-party Bell experiments (real case).
 complex matrix, with V over all finite-dimensional complex Hilbert spaces. The headline
 theorems conclude a statement about the constant itself.
 
+The source-node error ledger proves the exact rational budget for the raw
+and smoothing errors. Applying it to the stored Gaussian coefficients still
+requires proofs of the actual input estimates and operation-error model.
+
 **Lower bound** — `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data :
 NodeCaps → IsGrothendieckBound K → 1.401697117301 < K`
 (`Grothe/Research/RefinedCoverResult.lean`).
@@ -382,6 +386,14 @@ for very small positive reciprocal coordinates.
 `PhiProductionIdentity` relates the actual rounding phase to its Gram-coordinate
 polynomial without importing the numerical phase cover. Concrete leaf proofs
 can use this exact identity before the global cover is assembled.
+
+`ProfilePiFactor` provides rational enclosures of `π`, `sqrt(π)`, and
+`sqrt(sqrt(π))` of width at most `2⁻⁵¹²` for the actual profile normalization.
+Mathlib's proved nested-square-root bounds certify the π witnesses; exact
+rational inequalities certify the remaining factors. The input recipe and
+generator are tracked in `data/profile-pi-factor/` and
+`tools/gen_profile_pi_factor.py`. Full transformed node-shift enclosures remain
+separate obligations.
 
 `LocalAffineSquareIntegralBounds` requires continuity only on the closed cell,
 so reciprocal certificates do not need an extension through zero.

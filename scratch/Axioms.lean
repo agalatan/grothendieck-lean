@@ -761,6 +761,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_prod_mul
+#print axioms Grothe.UpperChaos.ProfilePiFactor.pi_lo_lt
+#print axioms Grothe.UpperChaos.ProfilePiFactor.pi_lt_hi
+#print axioms Grothe.UpperChaos.ProfilePiFactor.pi_quarter_bounds
+#print axioms Grothe.UpperChaos.ProfilePiFactor.pi_quarter_width
+#print axioms Grothe.UpperChaos.ProfilePiFactor.sqrt_pi_bounds
 #print axioms Grothe.UpperChaos.ProfileRootScreen.allCoeffsOK
 #print axioms Grothe.UpperChaos.ProfileRootScreen.allGammaSQOK
 #print axioms Grothe.UpperChaos.ProfileRootScreen.allRegionsOK
@@ -858,6 +863,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_base_quadrature_kernel
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_pointwise
 #print axioms Grothe.UpperChaos.Q0LiteralBinaryFold.fold_eq_literal
+#print axioms Grothe.UpperChaos.Q0NodeMassLedgerSharp.real_error_lt_cap
+#print axioms Grothe.UpperChaos.Q0NodeMassLedgerSharp.sqrt_mass_lt_norm
 #print axioms Grothe.UpperChaos.Q0ProfileRectangleModel.actual_profile_model
 #print axioms Grothe.UpperChaos.Q0ProfileRectangleModel.coordinate_contains
 #print axioms Grothe.UpperChaos.Q0ProfileRectangleModel.profile_of_trace
