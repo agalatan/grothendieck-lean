@@ -72,7 +72,7 @@ theorem intToken?_ofList (cs : List Char) :
   | cons c cs =>
       by_cases hc : c = '-'
       · subst c
-        simp only [intToken?, ite_eq_left rfl, String.ofList_cons, String.reduceSingleton,
+        simp only [intToken?, ite_true, String.ofList_cons, String.reduceSingleton,
           String.toInt?_minus_append, hn]
       · have hstart : (String.ofList (c :: cs)).startsWith '-' = false := by
           simp [String.startsWith_char_eq_head?, hc]
