@@ -1503,9 +1503,9 @@ arrays. `PackedDyadicSourceAssembly` develops composition of successful chunk
 checks for the unchanged public parser. The complete explicit plan is listed by
 `tools/check_first_second_energy.sh --plan`: parser regressions, source
 assembly, bounded probes, the four pilots, every grade target, and the final
-strict audit. The separate `tools/check_first_second_source_pilot.sh` stops at
-the first failure and records resource use for the delimiter bridge and one
-complete source chunk; its success does not certify the whole family.
+strict audit. A scoped warning-free build of `PackedDyadicLegacyDelimiter` and
+`TaylorFirstPackedChunk253Pilot` checks the bridge and one complete source
+chunk; its success does not certify the whole family.
 A default-root green
 check supplies no verdict for these excluded modules or the remaining source
 equivalence and public consumer gates.

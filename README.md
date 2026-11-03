@@ -347,8 +347,8 @@ assemble separately compiled pieces of at most 32 records and bind their
 characters to the first and last actual source chunk of each center. Complete
 source identities, warning-free verification of the excluded family, and public
 consumer integration remain required before replacing native band checks.
-`tools/check_first_second_energy.sh --plan` lists the complete check; the scoped
-source pilot checks only the delimiter bridge and one actual chunk.
+`tools/check_first_second_energy.sh --plan` lists the complete check; scoped
+Lean builds can check the delimiter bridge and one actual chunk separately.
 
 `fresh_upper_concrete_taylor` instantiates the target upper-bound implication with these fixed
 centers. Its Gaussian inputs are six first-order, four second-order and four
