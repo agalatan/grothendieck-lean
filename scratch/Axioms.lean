@@ -652,6 +652,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.Bm_polyKernel
 #print axioms Grothe.UpperChaos.CanonicalReconstructionNorm.full_head_reconstruction_norm_le
 #print axioms Grothe.UpperChaos.CommonDenAppend.commonDen_append
+#print axioms Grothe.UpperChaos.CompositeComparison.difference_components
+#print axioms Grothe.UpperChaos.CompositeComparison.energy_close_of_raw_source
+#print axioms Grothe.UpperChaos.CompositeComparison.head_residual_of_raw_source
+#print axioms Grothe.UpperChaos.CompositeComparison.weighted_energy_comparison
 #print axioms Grothe.UpperChaos.ConcreteRetainedBands.first_degree
 #print axioms Grothe.UpperChaos.ConcreteRetainedBands.first_error
 #print axioms Grothe.UpperChaos.ConcreteRetainedBands.first_reserve
@@ -704,6 +708,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.smoothing_lower_scalars_relative
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.symmetricEntry_savedEntryQ_error
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.actualEntry_linearMode
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.baseGradedCoefficient_iterated
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_one_zero
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_zero_one
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_smoothOp_one_zero
@@ -712,6 +717,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.fixed_shell_action
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.inner_linearMode_smoothOp
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.mem_chaosShell_of_degree
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.norm_productionF0Head_sub_sq
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.projected_response_error
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.retainedProduction_eq
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.retainedSmoothed_projected_error_of_raw
 #print axioms Grothe.UpperChaos.FrozenSource.Grade000.grade_energy
 #print axioms Grothe.UpperChaos.FrozenSource.Grade000Production.at_eq
 #print axioms Grothe.UpperChaos.FrozenSource.Grade000Production.coefficient_energy

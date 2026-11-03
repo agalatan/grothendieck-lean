@@ -196,6 +196,15 @@ is charged once for the complete vector. Its integer square-root rounding
 and error proof use only the standard logical axioms. The retained Gaussian
 coefficient enclosures and full energy-table agreement remain work in progress.
 
+The actual-source consumer projects F₀ to total degree 501, identifies its
+complete coefficient-error norm, inserts the frozen correction once, and then
+applies the proved smoothing error. `CompositeComparison` splits the actual
+response difference into seven pieces and charges the quadratic error using
+the four whole residuals. It derives the relaxed selected-head budget from
+explicit raw-F₀ error `9.5·10⁻⁹`, rational-output table fit `10⁻⁸`, three low-band
+Gaussian estimates and three whole-source inner-product bounds. Those
+numerical and Gaussian premises remain open; this is a conditional head theorem.
+
 LeanCert is a pinned dependency. `UpperChaos/LeanCertPilot.lean` uses its
 dyadic interval integrator to enclose a conditional Gaussian slice integral
 on `[0,1]` in `[1,5/4]`. The explicit 16-cell certificate uses `decide +kernel`;

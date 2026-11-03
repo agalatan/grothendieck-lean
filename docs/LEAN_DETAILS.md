@@ -162,6 +162,30 @@ at most two, hence a norm factor below `10/7`. `ConditionalReconstruction`
 applies that split to the actual conditional Gaussian coefficients and their
 exact reflected completion; numerical reconstruction remains separate.
 
+`FixedChaosSmoothing.baseGradedCoefficient_iterated` in
+`ProductionF0Conditional` identifies every actual tensor coefficient with
+its conditional Gaussian integral. `ProductionF0Head`
+projects the actual base phase to total degree at most 501. Its complete
+coefficient-error identity sums all 251 grades, and its selected smoothing
+identity uses this degree projection, avoiding a commutation claim for the
+nonrectangular energy head. `ProductionRetainedSource` inserts the actual
+91-grade correction once before rational smoothing. `ProductionRetainedEnergy`
+derives the smoothing-input norm from the raw-source error.
+
+`CompositeComparison.Inputs` retains six actual Gaussian premises: three
+low-band residual norms and three real inner-product lower bounds for the
+whole Taylor residuals with factorial scaling explicit. The seven band pieces
+sum to the actual response difference; their quadratic cost is bounded using
+the four whole residuals. `CompositeComparison.energy_close_of_raw_source` in
+`CompositeEnergy` consumes
+an actual projected F₀ approximation with error at most `9.5·10⁻⁹` and table fit
+of its actual rational smoothed output at most `10⁻⁸`, deriving selected-energy
+error at most `3·10⁻⁸`. `head_residual_of_raw_source` then uses the six Gaussian
+premises to obtain the head budget. The scalar ledger gives comparison error
+at most `1.72·10⁻⁶`; the actual raw-source and table certificates, Gaussian
+premises and independent Hardy tail remain open. No completed endpoint or
+historical Hilbert–Schmidt receipt transfer is assumed.
+
 `CapturedTail.norm_projOn_residual_sq_le_of_captured_family` subtracts
 `Σ_i max(0, lower_i − error_i)²` from the total source energy. Its hypotheses
 are pairwise disjoint captured mode sets, disjointness from the tail, vanishing

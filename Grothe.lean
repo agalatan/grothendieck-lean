@@ -591,6 +591,8 @@ import Grothe.UpperChaos.Completeness
 import Grothe.UpperChaos.ComplexHermite
 import Grothe.UpperChaos.ComplexMoments
 import Grothe.UpperChaos.ComplexRealCellIntegral
+import Grothe.UpperChaos.CompositeComparison
+import Grothe.UpperChaos.CompositeEnergy
 import Grothe.UpperChaos.ConcreteLinearEnergy
 import Grothe.UpperChaos.ConcretePhaseMoments
 import Grothe.UpperChaos.ConcreteRetainedBands
@@ -1091,10 +1093,15 @@ import Grothe.UpperChaos.PositiveMomentTheta
 import Grothe.UpperChaos.PositiveRatio
 import Grothe.UpperChaos.ProductComplete
 import Grothe.UpperChaos.ProductionCompactLaplace
+import Grothe.UpperChaos.ProductionF0Conditional
+import Grothe.UpperChaos.ProductionF0Head
+import Grothe.UpperChaos.ProductionF0Source
 import Grothe.UpperChaos.ProductionFiniteLaplace
 import Grothe.UpperChaos.ProductionMeshEnclosure
 import Grothe.UpperChaos.ProductionRadialTail
 import Grothe.UpperChaos.ProductionRectangleAssembly
+import Grothe.UpperChaos.ProductionRetainedEnergy
+import Grothe.UpperChaos.ProductionRetainedSource
 import Grothe.UpperChaos.ProductionSmallBall
 import Grothe.UpperChaos.ProductionSmoothingApprox
 import Grothe.UpperChaos.ProductionSmoothingRounding

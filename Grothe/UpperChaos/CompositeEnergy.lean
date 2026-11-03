@@ -1,0 +1,123 @@
+import Grothe.UpperChaos.CompositeComparison
+import Grothe.UpperChaos.ProductionRetainedEnergy
+import Grothe.Upper.GroupedBridge
+
+/-! Propagate the actual F0 source approximation through the frozen correction,
+production smoothing, selected energy table, and composite Taylor comparison.
+All analytic/source/table premises remain explicit; no completed upper-bound
+facade or replacement of the original contracts is introduced here.
+Agent-ID: codex-7c2e. -/
+
+set_option warningAsError true
+open MeasureTheory Finset Grothe.Upper GrotheKernel
+
+namespace Grothe.UpperChaos.CompositeComparison
+noncomputable section
+
+/-- A raw F0 certificate and the actual rational output's table fit imply the
+new full selected-energy tolerance. The frozen correction is inserted once,
+and the existing relative smoothing reserve is derived from the input norm. -/
+theorem energy_close_of_raw_source (a0 : ℕ → ℕ → ℕ → ℚ)
+    (hraw : ‖FixedChaosSmoothing.productionF0Head - gradedHermite 251 a0‖ ≤
+      (CompositeComparisonData.rawCapQ : ℝ))
+    (htable : ∑ p ∈ headIdx 501,
+      |energy (FixedChaosSmoothing.retainedSmoothed a0) p - (energyTable p : ℝ)| ≤
+        (CompositeComparisonData.tableCapQ : ℝ)) :
+    ∑ p ∈ headIdx 501, |energy response p - (energyTable p : ℝ)| ≤
+      (CompositeComparisonData.energyErrorQ : ℝ) := by
+  let Y := FixedChaosSmoothing.retainedSmoothed a0
+  let P := projOn (energyHeadModes (headIdx 501))
+  have hd : ‖P (response - Y)‖ ≤ (CompositeComparisonData.projectedCapQ : ℝ) := by
+    have hs := FixedChaosSmoothing.retainedSmoothed_projected_error_of_raw a0 hraw
+    have hb : (CompositeComparisonData.rawCapQ : ℝ) +
+        (4 / 1000000000000000 : ℝ) *
+          ((501 / 500 : ℝ) + (CompositeComparisonData.rawCapQ : ℝ)) ≤
+        (CompositeComparisonData.projectedCapQ : ℝ) := by
+      exact_mod_cast CompositeComparisonData.raw_to_projected_budget
+    exact hs.trans hb
+  have hX : ‖P response‖ ≤ (501 / 500 : ℝ) := by
+    have hn := (modeSpace (energyHeadModes (headIdx 501))).norm_starProjection_apply_le response
+    exact hn.trans CenterNormBypass.response_norm
+  have hd' : ‖P response - P Y‖ ≤ (CompositeComparisonData.projectedCapQ : ℝ) := by
+    simpa only [map_sub] using hd
+  have hY : ‖P Y‖ ≤ (501 / 500 : ℝ) +
+      (CompositeComparisonData.projectedCapQ : ℝ) := by
+    have hn := norm_sub_le (P response) (P response - P Y)
+    simp only [sub_sub_cancel] at hn
+    linarith
+  apply selectedEnergy_close_of_projected_l2_approx (headIdx 501) response Y
+    (fun p => (energyTable p : ℝ))
+    ((501 / 500 : ℝ) + (CompositeComparisonData.projectedCapQ : ℝ))
+    (CompositeComparisonData.projectedCapQ : ℝ) (CompositeComparisonData.tableCapQ : ℝ)
+    (CompositeComparisonData.energyErrorQ : ℝ) hY hd htable
+  have hb : (2 * (501 / 500 : ℝ) +
+      3 * (CompositeComparisonData.projectedCapQ : ℝ)) *
+      (CompositeComparisonData.projectedCapQ : ℝ) + (CompositeComparisonData.tableCapQ : ℝ) ≤
+        (CompositeComparisonData.energyErrorQ : ℝ) := by
+    exact_mod_cast CompositeComparisonData.projected_energy_budget
+  nlinarith only [hb]
+
+theorem weighted_comparison_of_raw_source (h : Inputs) (a0 : ℕ → ℕ → ℕ → ℚ)
+    (hraw : ‖FixedChaosSmoothing.productionF0Head - gradedHermite 251 a0‖ ≤
+      (CompositeComparisonData.rawCapQ : ℝ))
+    (htable : ∑ p ∈ headIdx 501,
+      |energy (FixedChaosSmoothing.retainedSmoothed a0) p - (energyTable p : ℝ)| ≤
+        (CompositeComparisonData.tableCapQ : ℝ)) :
+    ∑ p ∈ headIdx 501, comparisonWeight p * |energy rounding p - energy response p| ≤
+      (CompositeComparisonData.comparisonCapQ : ℝ) :=
+  weighted_energy_comparison h (energy_close_of_raw_source a0 hraw htable)
+
+/-- The actual stored head and actual Gaussian rounding are joined without
+assuming the old, tighter comparison hypothesis from `DirectHyps`. -/
+theorem head_residual_of_raw_source (h : Inputs) (a0 : ℕ → ℕ → ℕ → ℚ)
+    (hraw : ‖FixedChaosSmoothing.productionF0Head - gradedHermite 251 a0‖ ≤
+      (CompositeComparisonData.rawCapQ : ℝ))
+    (htable : ∑ p ∈ headIdx 501,
+      |energy (FixedChaosSmoothing.retainedSmoothed a0) p - (energyTable p : ℝ)| ≤
+        (CompositeComparisonData.tableCapQ : ℝ)) :
+    ∑ j ∈ range 251, |kernelCoeff (energy rounding) j -
+      if j = 0 then (slopeQ : ℝ) else 0| ≤ (CompositeComparisonData.headResidualQ : ℝ) := by
+  have hpG : ∀ p : ℕ × ℕ, (p.1 + p.2) % 2 = 0 → energy rounding p = 0 :=
+    energy_eq_zero_of_even (memLp_GT phiBound) (fun _ u hc => GT_rot2 hc u)
+  have hpX : ∀ p : ℕ × ℕ, (p.1 + p.2) % 2 = 0 → energy response p = 0 :=
+    energy_eq_zero_of_even (memLp_Xfun phiBound chargeFn_frozenCorrectionFn)
+      (Xfun_rot2 phiBound chargeFn_frozenCorrectionFn)
+  have hclose := energy_close_of_raw_source a0 hraw htable
+  have hX : ∑ j ∈ range 251,
+      |kernelCoeff (energy response) j - if j = 0 then (slopeQ : ℝ) else 0| ≤
+        (headCapQ : ℝ) + (CompositeComparisonData.energyErrorQ : ℝ) := by
+    have h1 := Upper.head_residual_le primaryPoly auxPoly l1_primaryPoly l1_auxPoly
+      auxPoly_coeff_zero (energy response) (fun p => (energyTable p : ℝ)) hpX
+      (N := 501) (K := 251) (by norm_num) (slopeQ : ℝ)
+    have h2 : ∑ j ∈ range 251,
+        |∑ p ∈ headIdx 501, (energyTable p : ℝ) * (termOf primaryPoly auxPoly p).coeff j -
+          if j = 0 then (slopeQ : ℝ) else 0| ≤ headCapQ :=
+      head_le_of_check Grothe.head_check
+    unfold kernelCoeff
+    linarith
+  have hc := weighted_energy_comparison h hclose
+  have hloc := Upper.head_residual_le_weighted primaryPoly auxPoly auxPoly_coeff_zero
+    (energy rounding) (energy response) hpG (N := 501) (K := 251) (by norm_num)
+    (slopeQ : ℝ) comparisonWeight (fun p _ => comparisonWeight_sound p)
+  have heq : (∑ j ∈ range 251,
+      |∑ p ∈ headIdx 501, energy response p * (termOf primaryPoly auxPoly p).coeff j -
+        if j = 0 then (slopeQ : ℝ) else 0|) =
+      ∑ j ∈ range 251, |kernelCoeff (energy response) j -
+        if j = 0 then (slopeQ : ℝ) else 0| := by
+    apply sum_congr rfl
+    intro j hj
+    rw [show kernelCoeff (energy response) j = ∑ p ∈ headIdx 501,
+      energy response p * (termOf primaryPoly auxPoly p).coeff j from
+      bivarKernel_eq_head primaryPoly auxPoly auxPoly_coeff_zero (energy response) hpX
+        (by have := mem_range.mp hj; omega)]
+  rw [heq] at hloc
+  have hb := hloc.trans (add_le_add hX hc)
+  calc
+    _ ≤ (headCapQ : ℝ) + (CompositeComparisonData.energyErrorQ : ℝ) +
+        (CompositeComparisonData.comparisonCapQ : ℝ) := hb
+    _ = (CompositeComparisonData.headResidualQ : ℝ) := by
+      simp only [CompositeComparisonData.headResidualQ, Rat.cast_add]
+      ring
+
+end
+end Grothe.UpperChaos.CompositeComparison
