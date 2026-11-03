@@ -1613,9 +1613,12 @@ The rational source continuation constructs the literal multiplier polynomial
 before diagonal gate scaling, proves its exact coefficients and support after
 scaling, and reifies the finite correlated-moment evaluator over rationals.
 The finite moment-scaling identity retains both complex Gaussian Jacobian
-factors. Its actual-gate specialization now expresses the scaled outer moments
-using rational Schur coefficients and the exact inverse mass `1/(R*Q)`, with
-positivity derived from the checked gate. These are WIP proof bodies awaiting
-compilation. The remaining conditional-polynomial scaling, complete Gram binding
-and arithmetic enclosures are not assumed or claimed by these results;
-historical numerical files are not proof inputs.
+factors. Actual conditional-polynomial scaling and both pair evaluations now
+combine with all eight source coefficient factors in
+`ActualSourceNormEvaluation.rationalSourceNormValue`. The sum retains the full
+rational support, conjugation and every cross term; each pair includes exactly
+`nu^2/(R*Q)`. Complete source proofs identify the actual coherent norm with this
+rational value and bound the full infinite weighted matrix energy by it under
+`gateOK g = true`. These new proof bodies await compilation. Numerical source
+bounds and the final endpoint remain open; historical estimates are not proof
+inputs.
