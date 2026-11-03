@@ -212,7 +212,9 @@ def generate() -> dict[Path, str]:
                 lines += ['']
             texts = joined(text_names, "',' :: ")
             vals = joined(value_names, '')
-            source_texts = joined([f'{leaf}.text' for leaf in leaf_imports], '\",\" ++ ')
+            source_texts = f'{leaf_imports[-1]}.text'
+            for leaf in reversed(leaf_imports[:-1]):
+                source_texts = f'{leaf}.text ++ ("," ++ ({source_texts}))'
             source_rules = ',\n      '.join(f'{leaf}.source_chars' for leaf in leaf_imports)
             actual_string = f'({name}CenterPackedChunks[{index}]?.getD "")'
             actual = f'{actual_string}.toList'
