@@ -25,7 +25,7 @@ theorem coefficient_zero_of_profile_zero (s : ℝ) (hs : 0 ≤ s)
   have hmean : (∫ w, conj (hfun i w) ∂gaussC) = 0 := by
     have h := inner_hvec i (0, 0)
     rw [hvec, hvec, inner_toLp] at h
-    simp only [if_neg hi] at h
+    simp only [ite_eq_right hi] at h
     simpa only [hone, mul_one] using h
   rw [F0ConditionalNode.coefficient_eq_integral]
   simp_rw [F0ConditionalNode.phaseSlice_eq s hs, hv]
@@ -74,7 +74,7 @@ theorem reconstruct_actual (s : ℝ) (hs : 0 ≤ s) (i : ℕ × ℕ) :
     reconstruct (F0ConditionalNode.coefficient s) i = F0ConditionalNode.coefficient s i := by
   by_cases hi : i.1 ≤ i.2 + 1
   · simp [reconstruct, hi]
-  · rw [reconstruct, if_neg hi]
+  · rw [reconstruct, ite_eq_right hi]
     have hgt : i.2 + 1 < i.1 := by omega
     simpa [CanonicalReconstructionNorm.factor, CanonicalReconstructionNorm.partner] using
       (F0ConditionalEvaluator.production_reflected_coefficient_all_profiles s hs i.1 i.2 hgt).symm
@@ -116,12 +116,12 @@ theorem actual_error_energy_le (s : ℝ) (hs : 0 ≤ s) (q : ℕ) (a : ℕ × �
       · apply sum_congr rfl
         intro i hi
         have hc := (CanonicalReconstructionNorm.mem_canonical.mp hi).2.2
-        simp only [he, reconstruct, if_pos hc]
+        rw [he i, reconstruct, ite_eq_left hc]
       · apply sum_congr rfl
         intro i hi
         have hr := (CanonicalReconstructionNorm.mem_reflected.mp hi).2.2
         have hc : ¬ i.1 ≤ i.2 + 1 := by omega
-        simp only [he, reconstruct, if_neg hc]
+        rw [he i, reconstruct, ite_eq_right hc]
     _ ≤ _ := CanonicalReconstructionNorm.reconstruction_energy_le q e
 
 /-- Positive physical weights preserve the coupled-vector reconstruction
