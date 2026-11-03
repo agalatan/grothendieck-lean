@@ -248,6 +248,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.ActualFiniteRectangleOperator.norm_sum_mul_sq_le
 #print axioms Grothe.UpperChaos.ActualGateCoefficientWeights.tensorNormalization_eq_nrm2
 #print axioms Grothe.UpperChaos.ActualGateCoefficientWeights.tensorSourceWeight_eq_sourceWeight
+#print axioms Grothe.UpperChaos.ActualGateConditionalScaling.actual_gate_conditional_scaling
+#print axioms Grothe.UpperChaos.ActualGateConditionalScaling.map_outerQ
+#print axioms Grothe.UpperChaos.ActualGateConditionalScaling.map_varianceConditionalP4Q
+#print axioms Grothe.UpperChaos.ActualGateConditionalScaling.map_varianceWickQ
+#print axioms Grothe.UpperChaos.ActualGateConditionalScaling.varianceConditionalP4_scale
 #print axioms Grothe.UpperChaos.ActualGateMatrixCoefficients.coefficient8_scaledTransform_eq_weightedMatrixEntry
 #print axioms Grothe.UpperChaos.ActualGateMatrixCoefficients.finite_actual_matrix_energy_le
 #print axioms Grothe.UpperChaos.ActualGateMatrixCoefficients.integrable_physicalMomentIntegrand
@@ -339,6 +344,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.ActualSourceNormEvaluation.gramValue_actual_eq_sourceNormValue
 #print axioms Grothe.UpperChaos.ActualSourceNormEvaluation.integral_scaledTransform_sq_eq_value
 #print axioms Grothe.UpperChaos.ActualSourceNormEvaluation.pairGram_eq_gatePairValue
+#print axioms Grothe.UpperChaos.ActualSourceNormEvaluation.scaled_gatePairValue_eq_rational
 #print axioms Grothe.UpperChaos.ActualSourceNormEvaluation.sourceNormValue_im_eq_zero
 #print axioms Grothe.UpperChaos.ActualSourceNormEvaluation.sourceNormValue_re_nonneg
 #print axioms Grothe.UpperChaos.ActualSourceNormEvaluation.tsum_actual_matrix_energy_le_value
@@ -812,8 +818,13 @@ import Grothe
 #print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.outerScaleHom_C
 #print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.outerScaleHom_conjugateLinearPolynomial
 #print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.outerScaleHom_linearPolynomial
+#print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.outerScaleHom_monomial
 #print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.outerScaleHom_outerPolynomial
 #print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.outerScaleHom_varianceShiftedMomentPolynomial
+#print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.polynomialMomentValue_C_mul
+#print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.polynomialMomentValue_add
+#print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.polynomialMomentValue_monomial
+#print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.polynomialMomentValue_outerScale
 #print axioms Grothe.UpperChaos.BipartiteKernelGramEvaluation.varianceShiftedMomentPolynomial_scale
 #print axioms Grothe.UpperChaos.BipartiteKernelGramMoments.exp_image_sq_eq_quadraticWeight
 #print axioms Grothe.UpperChaos.BipartiteKernelGramMoments.gramIntegrand_eq_pairing
@@ -1964,9 +1975,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.RationalPhaseInvariant.eval_phaseInvariantQ_eq_slice
 #print axioms Grothe.UpperChaos.RationalPhaseInvariant.eval_phaseTermQ
 #print axioms Grothe.UpperChaos.RationalPhaseInvariant.eval_realPartQ
+#print axioms Grothe.UpperChaos.RationalQuadraticMoments.actual_polynomialMomentValue_eq_rational
 #print axioms Grothe.UpperChaos.RationalQuadraticMoments.actual_scaled_momentValue_eq_rational
 #print axioms Grothe.UpperChaos.RationalQuadraticMoments.axisWeightQ_cast
 #print axioms Grothe.UpperChaos.RationalQuadraticMoments.cast_momentValue
+#print axioms Grothe.UpperChaos.RationalQuadraticMoments.cast_polynomialMomentValue
 #print axioms Grothe.UpperChaos.RationalQuadraticMoments.cast_wickCoeff
 #print axioms Grothe.UpperChaos.RationalQuadraticMoments.dampingQ_cast
 #print axioms Grothe.UpperChaos.RationalQuadraticMoments.gateCrossQ_cast
@@ -1977,6 +1990,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.RationalQuadraticMoments.gateTrailingQ_cast
 #print axioms Grothe.UpperChaos.RationalQuadraticMoments.gateTrailingQ_spec
 #print axioms Grothe.UpperChaos.RationalQuadraticMoments.nuQ_cast
+#print axioms Grothe.UpperChaos.RationalQuadraticMoments.polynomialMomentValue_add
+#print axioms Grothe.UpperChaos.RationalQuadraticMoments.polynomialMomentValue_monomial
 #print axioms Grothe.UpperChaos.RationalSourceParity.totalParity_ratH
 #print axioms Grothe.UpperChaos.RationalSourceParity.totalParity_rename
 #print axioms Grothe.UpperChaos.RationalSourceParity.totalParity_unitSourceQ

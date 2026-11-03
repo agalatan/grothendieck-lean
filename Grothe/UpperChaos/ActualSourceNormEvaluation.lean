@@ -1,5 +1,6 @@
 import Grothe.UpperChaos.ActualSourceNormGram
 import Grothe.UpperChaos.BipartiteKernelGramEvaluation
+import Grothe.UpperChaos.ActualGateConditionalScaling
 
 /-!
 # Finite evaluation of the actual production source norm
@@ -30,6 +31,54 @@ noncomputable section
 def gatePairValue (g : Gate) (side : Fin 2) (e f : PairPowers) : ℂ :=
   gramMomentValue e f (nu g.power : ℂ) (matrix00 g) (matrix01 g side)
     (matrix10 g side) (matrix11 g side)
+
+/-- The complete rational pair contribution, including kernel mass and both
+outer complex-coordinate Jacobians. Raw unscaled pair values need not be rational. -/
+def rationalGatePairValue (g : Gate) (side : Fin 2) (e f : PairPowers) : ℚ :=
+  RationalQuadraticMoments.nuQ g.power ^ 2 *
+    RationalQuadraticMoments.polynomialMomentValue
+      (RationalQuadraticMoments.gateLeadingQ g side)
+      (RationalQuadraticMoments.gateCrossQ g side)
+      (RationalQuadraticMoments.gateTrailingQ g side)
+      (ActualGateConditionalScaling.gateConditionalP4Q g side e f) /
+    (g.r * RationalQuadraticMoments.axisWeightQ g (2 * side.val + 1))
+
+/-- Actual pair Gram values become rational after the two exact source
+coefficient factors are included. This closes the conditional-polynomial and
+outer-moment join without assuming a source identity or numerical enclosure. -/
+theorem scaled_gatePairValue_eq_rational (g : Gate) (hg : gateOK g = true)
+    (side : Fin 2) (e f : PairPowers) :
+    (ActualGateConditionalScaling.pairSourceScale (g.r : ℝ)
+        (axisWeight g (2 * side.val)) (axisWeight g (2 * side.val + 1)) e *
+      ActualGateConditionalScaling.pairSourceScale (g.r : ℝ)
+        (axisWeight g (2 * side.val)) (axisWeight g (2 * side.val + 1)) f) *
+      gatePairValue g side e f = (rationalGatePairValue g side e f : ℂ) := by
+  have h := RationalQuadraticMoments.actual_polynomialMomentValue_eq_rational
+    g hg side (ActualGateConditionalScaling.gateConditionalP4Q g side e f)
+  rw [ActualGateConditionalScaling.actual_gate_conditional_scaling g hg side e f,
+    polynomialMomentValue_C_mul] at h
+  have hn : ((‖(nu g.power : ℂ)‖ ^ 2 : ℝ) : ℂ) =
+      ((RationalQuadraticMoments.nuQ g.power ^ 2 : ℚ) : ℂ) := by
+    rw [Complex.norm_real, Real.norm_eq_abs, sq_abs,
+      ← RationalQuadraticMoments.nuQ_cast]
+    norm_cast
+  unfold gatePairValue gramMomentValue
+  rw [matrix_leadingRate_eq g hg side, matrix_crossRate_eq g hg side,
+    matrix_trailingRate_eq g hg side, hn]
+  calc
+    _ = ((RationalQuadraticMoments.nuQ g.power ^ 2 : ℚ) : ℂ) *
+        ((ActualGateConditionalScaling.pairSourceScale (g.r : ℝ)
+            (axisWeight g (2 * side.val)) (axisWeight g (2 * side.val + 1)) e *
+          ActualGateConditionalScaling.pairSourceScale (g.r : ℝ)
+            (axisWeight g (2 * side.val)) (axisWeight g (2 * side.val + 1)) f) *
+          polynomialMomentValue (leadingRate g side) (crossRate g side)
+            (trailingRate g side)
+            (conditionalP4 e f (matrix00 g) (matrix01 g side)
+              (matrix10 g side) (matrix11 g side))) := by ring
+    _ = _ := by
+      rw [h]
+      simp only [rationalGatePairValue, Rat.cast_div, Rat.cast_mul]
+      ring
 
 theorem pairGram_eq_gatePairValue (g : Gate) (hg : gateOK g = true)
     (side : Fin 2) (e f : PairPowers) :

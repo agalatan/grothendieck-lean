@@ -199,6 +199,7 @@ import Grothe.UpperChaos.ActualCoherentCoefficientAudit
 import Grothe.UpperChaos.ActualCoherentHermiteJets
 import Grothe.UpperChaos.ActualFiniteRectangleOperator
 import Grothe.UpperChaos.ActualGateCoefficientWeights
+import Grothe.UpperChaos.ActualGateConditionalScaling
 import Grothe.UpperChaos.ActualGateMatrixCoefficients
 import Grothe.UpperChaos.ActualGateMatrixWeights
 import Grothe.UpperChaos.ActualGateMomentJetsAudit

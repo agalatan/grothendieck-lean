@@ -1,5 +1,6 @@
 import Grothe.UpperChaos.BipartiteKernelGramMoments
 import Grothe.UpperChaos.Mehler
+import Grothe.UpperChaos.QuadraticMomentScaling
 import Lean.Elab.Tactic.Omega
 
 /-!
@@ -131,6 +132,17 @@ theorem outerScaleHom_varianceShiftedMomentPolynomial
     outerScaleHom_C, outerScaleHom_conjugateLinearPolynomial,
     outerScaleHom_linearPolynomial]
 
+theorem outerScaleHom_monomial (x z : ℝ) (e : Fin 4 →₀ ℕ) (c : ℂ) :
+    outerScaleHom x z (MvPolynomial.monomial e c) =
+      MvPolynomial.monomial e
+        (c * ((x : ℂ) ^ (e 0 + e 1) * (z : ℂ) ^ (e 2 + e 3))) := by
+  classical
+  simp only [outerScaleHom, MvPolynomial.eval₂Hom_monomial,
+    MvPolynomial.monomial_eq, Finsupp.prod_fintype, pow_zero, Fin.prod_univ_four]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_succ, mul_pow, pow_add,
+    map_mul, map_pow]
+  ring
+
 theorem ev4_shiftedMomentPolynomial (a b : ℝ) (u v : ℕ) (w : ℂ × ℂ) :
     ev4 w (shiftedMomentPolynomial a b u v) =
       shiftedDampedMoment 1 (conj ((a : ℂ) * w.1 + (b : ℂ) * w.2)) u v := by
@@ -195,6 +207,53 @@ The scalar monomial evaluator retains its determinant and inverse-rate masses. -
 def polynomialMomentValue (A B C : ℝ) (P : P4) : ℂ :=
   ∑ e ∈ P.support, P.coeff e *
     QuadraticPolynomialMoments.momentValue A B C (e 0) (e 1) (e 2) (e 3)
+
+theorem polynomialMomentValue_monomial (A B C : ℝ) (e : Fin 4 →₀ ℕ) (c : ℂ) :
+    polynomialMomentValue A B C (MvPolynomial.monomial e c) =
+      c * QuadraticPolynomialMoments.momentValue A B C (e 0) (e 1) (e 2) (e 3) := by
+  classical
+  change (Finsupp.single e c).sum
+    (fun d a => a * QuadraticPolynomialMoments.momentValue A B C
+      (d 0) (d 1) (d 2) (d 3)) = _
+  exact Finsupp.sum_single_index (zero_mul _)
+
+theorem polynomialMomentValue_add (A B C : ℝ) (P Q : P4) :
+    polynomialMomentValue A B C (P + Q) =
+      polynomialMomentValue A B C P + polynomialMomentValue A B C Q := by
+  classical
+  change (P.coeff + Q.coeff).sum
+      (fun d a => a * QuadraticPolynomialMoments.momentValue A B C
+        (d 0) (d 1) (d 2) (d 3)) = _
+  exact Finsupp.sum_add_index' (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)
+
+theorem polynomialMomentValue_C_mul (A B C : ℝ) (c : ℂ) (P : P4) :
+    polynomialMomentValue A B C (MvPolynomial.C c * P) =
+      c * polynomialMomentValue A B C P := by
+  induction P using MvPolynomial.induction_on' with
+  | monomial e a =>
+    rw [MvPolynomial.C_mul_monomial, polynomialMomentValue_monomial,
+      polynomialMomentValue_monomial, mul_assoc]
+  | add P Q hP hQ =>
+    rw [mul_add, polynomialMomentValue_add, polynomialMomentValue_add, hP, hQ,
+      mul_add]
+
+/-- Forward outer substitution cancels the Gaussian coordinate scales for
+every finite polynomial, retaining both complex-coordinate Jacobians. -/
+theorem polynomialMomentValue_outerScale (R Q A B C : ℝ)
+    (hR : 0 < R) (hQ : 0 < Q) (hA : A ≠ 0) (P : P4) :
+    polynomialMomentValue (R * A) (Real.sqrt (R * Q) * B) (Q * C)
+      (outerScaleHom (Real.sqrt R) (Real.sqrt Q) P) =
+        polynomialMomentValue A B C P / ((R * Q : ℝ) : ℂ) := by
+  induction P using MvPolynomial.induction_on' with
+  | monomial e c =>
+    rw [outerScaleHom_monomial, polynomialMomentValue_monomial,
+      polynomialMomentValue_monomial]
+    rw [mul_assoc, QuadraticMomentScaling.momentValue_sqrt_scale
+      R Q A B C hR hQ hA (e 0) (e 1) (e 2) (e 3)]
+    ring
+  | add P Q' hP hQ' =>
+    rw [map_add, polynomialMomentValue_add, polynomialMomentValue_add,
+      hP, hQ', add_div]
 
 /-- Every P4 polynomial is integrated by its actual support and coefficients.
 The underlying finite-moment theorem supplies all termwise integrability. -/

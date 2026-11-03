@@ -1,6 +1,7 @@
 import Grothe.UpperChaos.QuadraticPolynomialMoments
 import Grothe.UpperChaos.QuadraticMomentScaling
 import Grothe.UpperChaos.OriginalHSGaussianMass
+import Grothe.UpperChaos.BipartiteKernelGramEvaluation
 
 /-!
 # Rational execution of the finite correlated moment formula
@@ -48,6 +49,40 @@ theorem cast_momentValue (A B C : ℚ) (p q r s : ℕ) :
   · simp only [if_pos h]
     push_cast
   · simp only [if_neg h, Rat.cast_zero]
+
+/-- The rational polynomial evaluator uses exactly the canonical finite
+support and the same unnormalized moments as the analytic evaluator. -/
+def polynomialMomentValue (A B C : ℚ) (P : MvPolynomial (Fin 4) ℚ) : ℚ :=
+  ∑ e ∈ P.support, P.coeff e * momentValue A B C (e 0) (e 1) (e 2) (e 3)
+
+theorem polynomialMomentValue_monomial (A B C : ℚ) (e : Fin 4 →₀ ℕ) (c : ℚ) :
+    polynomialMomentValue A B C (MvPolynomial.monomial e c) =
+      c * momentValue A B C (e 0) (e 1) (e 2) (e 3) := by
+  classical
+  change (Finsupp.single e c).sum
+    (fun d a => a * momentValue A B C (d 0) (d 1) (d 2) (d 3)) = _
+  exact Finsupp.sum_single_index (zero_mul _)
+
+theorem polynomialMomentValue_add (A B C : ℚ) (P Q : MvPolynomial (Fin 4) ℚ) :
+    polynomialMomentValue A B C (P + Q) =
+      polynomialMomentValue A B C P + polynomialMomentValue A B C Q := by
+  classical
+  change (P.coeff + Q.coeff).sum
+    (fun d a => a * momentValue A B C (d 0) (d 1) (d 2) (d 3)) = _
+  exact Finsupp.sum_add_index' (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)
+
+theorem cast_polynomialMomentValue (A B C : ℚ) (P : MvPolynomial (Fin 4) ℚ) :
+    (polynomialMomentValue A B C P : ℂ) =
+      BipartiteKernelGramEvaluation.polynomialMomentValue (A : ℝ) (B : ℝ) (C : ℝ)
+        (MvPolynomial.map (Rat.castHom ℂ) P) := by
+  induction P using MvPolynomial.induction_on' with
+  | monomial e c =>
+    rw [polynomialMomentValue_monomial, MvPolynomial.map_monomial,
+      BipartiteKernelGramEvaluation.polynomialMomentValue_monomial,
+      Rat.cast_mul, cast_momentValue]
+  | add P Q hP hQ =>
+    rw [polynomialMomentValue_add, Rat.cast_add, map_add,
+      BipartiteKernelGramEvaluation.polynomialMomentValue_add, hP, hQ]
 
 open OriginalHSParameterGates OriginalHSParameterSoundness OriginalHSQuadraticForms
 
@@ -154,6 +189,32 @@ theorem actual_scaled_momentValue_eq_rational (g : Gate) (hg : gateOK g = true)
     p q r s
   rw [gateLeadingQ_spec g hg side, gateCrossQ_spec g side,
     gateTrailingQ_spec g hg side, ← cast_momentValue] at h
+  have hden : (((g.r : ℝ) * axisWeight g (2 * side.val + 1) : ℝ) : ℂ) =
+      ((g.r * axisWeightQ g (2 * side.val + 1) : ℚ) : ℂ) := by
+    rw [← axisWeightQ_cast]
+    norm_cast
+  simpa only [hden] using h
+
+/-- All coefficients of a rational conditional polynomial can now be
+evaluated at once after the actual outer substitution. No support equality
+or termwise numerical bound is assumed. -/
+theorem actual_polynomialMomentValue_eq_rational (g : Gate) (hg : gateOK g = true)
+    (side : Fin 2) (P : MvPolynomial (Fin 4) ℚ) :
+    BipartiteKernelGramEvaluation.polynomialMomentValue
+      (leadingRate g side) (crossRate g side) (trailingRate g side)
+      (BipartiteKernelGramEvaluation.outerScaleHom
+        (Real.sqrt (g.r : ℝ)) (Real.sqrt (axisWeight g (2 * side.val + 1)))
+        (MvPolynomial.map (Rat.castHom ℂ) P)) =
+      (polynomialMomentValue (gateLeadingQ g side) (gateCrossQ g side)
+        (gateTrailingQ g side) P : ℂ) /
+          ((g.r * axisWeightQ g (2 * side.val + 1) : ℚ) : ℂ) := by
+  have h := BipartiteKernelGramEvaluation.polynomialMomentValue_outerScale
+    (g.r : ℝ) (axisWeight g (2 * side.val + 1))
+    (gateLeadingQ g side : ℝ) (gateCrossQ g side : ℝ) (gateTrailingQ g side : ℝ)
+    (radial_pos g hg) (axisWeight_pos g hg _) (gateLeadingQ_pos g hg side).ne'
+    (MvPolynomial.map (Rat.castHom ℂ) P)
+  rw [gateLeadingQ_spec g hg side, gateCrossQ_spec g side,
+    gateTrailingQ_spec g hg side, ← cast_polynomialMomentValue] at h
   have hden : (((g.r : ℝ) * axisWeight g (2 * side.val + 1) : ℝ) : ℂ) =
       ((g.r * axisWeightQ g (2 * side.val + 1) : ℚ) : ℂ) := by
     rw [← axisWeightQ_cast]
