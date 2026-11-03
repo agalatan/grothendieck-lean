@@ -51,19 +51,23 @@ def regularNodes : Finset Address := by
   classical
   exact Finset.univ.filter fun a => ¬ exceptionalPanel a.1.val
 
--- Prove the projection while the carrier, finset and predicate are symbolic.
--- Specializing this theorem does not search through the source enumeration.
-private theorem filter_property {α : Type*} (s : Finset α)
-    (P : α → Prop) [DecidablePred P] (a : α)
-    (ha : a ∈ s.filter P) : P a :=
-  ((Finset.mem_filter (s := s) (p := P) (a := a)).mp ha).2
+-- Keep membership hypotheses over a symbolic finset: elaborating a named
+-- membership proof for the concrete source universe forces its enumeration.
+private theorem sum_filter_le {α : Type*} (s : Finset α)
+    (P : α → Prop) [DecidablePred P] (f g : α → ℝ)
+    (h : ∀ a, P a → f a ≤ g a) :
+    (∑ a ∈ s.filter P, f a) ≤ ∑ a ∈ s.filter P, g a := by
+  apply Finset.sum_le_sum
+  intro a ha
+  exact h a ((Finset.mem_filter (s := s) (p := P) (a := a)).mp ha).2
 
-/-- Membership in the filtered source family implies its defining predicate. -/
-theorem regular_of_mem_regularNodes (a : Address)
-    (ha : a ∈ regularNodes) : ¬ exceptionalPanel a.1.val := by
+/-- Compare regular-node sums without exposing a concrete membership proof. -/
+theorem sum_regularNodes_le (f g : Address → ℝ)
+    (h : ∀ a, ¬ exceptionalPanel a.1.val → f a ≤ g a) :
+    (∑ a ∈ regularNodes, f a) ≤ ∑ a ∈ regularNodes, g a := by
   classical
-  exact filter_property (α := Address) (Finset.univ : Finset Address)
-    (fun b : Address => ¬ exceptionalPanel b.1.val) a ha
+  exact sum_filter_le (α := Address) (Finset.univ : Finset Address)
+    (fun a : Address => ¬ exceptionalPanel a.1.val) f g h
 
 /-- A rowwise budget: only selected regular rows use the linear model.
 All remaining regular rows are charged to their own squared-error budgets. -/
@@ -96,9 +100,8 @@ theorem regular_error_sq_le (modelNodes : Finset Address)
   classical
   rw [regular_error_eq_sum]
   unfold hybridBudget
-  apply Finset.sum_le_sum
-  intro a ha
-  have hregular : ¬ exceptionalPanel a.1.val := regular_of_mem_regularNodes a ha
+  apply sum_regularNodes_le
+  intro a hregular
   apply mul_le_mul_of_nonneg_left _ (nodeWeight_nonneg a)
   by_cases hm : a ∈ modelNodes
   · rw [ite_eq_left hm]
@@ -131,7 +134,7 @@ end Grothe.UpperChaos.Q0ConditionalSourceVector
 open Lean Elab Command
 run_cmd do
   for target in #[``Grothe.UpperChaos.Q0ConditionalSourceVector.linear_row_error_sq_le,
-      ``Grothe.UpperChaos.Q0ConditionalSourceVector.regular_of_mem_regularNodes,
+      ``Grothe.UpperChaos.Q0ConditionalSourceVector.sum_regularNodes_le,
       ``Grothe.UpperChaos.Q0ConditionalSourceVector.regular_error_eq_sum,
       ``Grothe.UpperChaos.Q0ConditionalSourceVector.regular_error_sq_le,
       ``Grothe.UpperChaos.Q0ConditionalSourceVector.source_error_le] do

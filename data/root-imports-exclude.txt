@@ -28,5 +28,6 @@ Grothe.LowerAnalytic.CapPieces.R14x200_6
 Grothe.LowerAnalytic.CapPieces.R14x200_7
 Grothe.LowerAnalytic.CapPieces.R14x200_8
 Grothe.LowerAnalytic.CapPieces.R14x200_9
+Grothe.UpperChaos.Q0SourceMembershipDiagnostic
 GrotheKernel.BandMass
 GrotheKernel.HeadWeight
