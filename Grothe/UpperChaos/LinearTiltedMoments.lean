@@ -29,7 +29,7 @@ theorem complete_square {rate : ℝ} (hrate : 0 < rate) (a z : ℂ) :
       -rate * Complex.normSq z + Complex.normSq a / rate := by
   simp only [mean, Complex.normSq_apply, Complex.add_re, Complex.add_im,
     Complex.mul_re, Complex.mul_im, Complex.conj_re, Complex.conj_im,
-    Complex.ofReal_re, Complex.ofReal_im, mul_zero, zero_mul, sub_zero, zero_add]
+    Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]
   field_simp [hrate.ne']
   ring
 
