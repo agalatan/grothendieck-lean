@@ -19,6 +19,9 @@ of Legendre roots; selected numerical root bindings and the analytic integration
 remainder are separate. The reproducible witnesses and generator are in
 `data/gauss-polynomial-certificates/` and `tools/gen_gauss_polynomial_certificates.py`.
 The entire family and its strict standard-three axiom audit are in the main root.
+This combined production-root and polynomial-exactness delivery is work in
+progress until the complete affected modules and audit pass; generated proof
+bodies and import registration alone are not verification evidence.
 
 **Shared proof foundations.** `LowerAnalytic/ComplexGaussianCore.lean` contains
 `gaussC`, its planar presentation, rotation invariance and radial-moment reduction.

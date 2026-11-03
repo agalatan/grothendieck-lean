@@ -19,8 +19,9 @@ verification pass. The active work now prioritizes the upper endpoint.
 The original Gauss quadrature orders 1 through 64 have a finite polynomial
 exactness certificate in `UpperChaos/Q0GaussPolynomialCertificates.lean`.
 It connects LeanCert rational polynomial checks to integration and the original
-Legendre weight formula. The complete family is included in the main Lean root;
-the selected-node bindings and analytic remainder are separate proof obligations.
+Legendre weight formula. The complete family is included in the main Lean root,
+but verification of this combined delivery remains work in progress. The
+selected-node bindings and analytic remainder are separate proof obligations.
 
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
