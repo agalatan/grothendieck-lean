@@ -38,8 +38,12 @@ theorem parseChunks_append (E : ℕ) (xs ys : Array String) :
       let b ← parseChunks E ys
       pure (a ++ b)) := by
   simp only [parseChunks, Array.mapM_append]
-  cases xs.mapM (parse E) <;> cases ys.mapM (parse E) <;>
-    simp [fold_append_acc]
+  cases xs.mapM (parse E) with
+  | none => rfl
+  | some a =>
+      cases ys.mapM (parse E) with
+      | none => rfl
+      | some b => exact congrArg some (fold_append a b)
 
 theorem parseChunks_append_of_eq (E : ℕ) (xs ys : Array String) (a b : Array ℤ)
     (hx : parseChunks E xs = some a) (hy : parseChunks E ys = some b) :
