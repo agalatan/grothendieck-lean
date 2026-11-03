@@ -62,12 +62,14 @@ jobs:
     timeout-minutes: 15
     outputs:
       lean: ${{ steps.scope.outputs.lean }}
+      heavy: ${{ steps.scope.outputs.heavy }}
       droplet: ${{ steps.where.outputs.droplet }}
       runs_on: ${{ steps.where.outputs.runs_on }}
       key: ${{ steps.where.outputs.key }}
       handoff_run: ${{ steps.where.outputs.handoff_run }}
       handoff_name: ${{ steps.where.outputs.handoff_name }}
       needs_droplet: ${{ steps.where.outputs.needs_droplet }}
+      caps_build: ${{ steps.where.outputs.caps_build }}
       base: ${{ steps.merge.outputs.base }}
     steps:
       - uses: actions/checkout@v5
@@ -121,12 +123,20 @@ jobs:
           elif [ "${GITHUB_REF_NAME}" = master ]; then base="$BEFORE"                # the previous master
           else base=$(git merge-base origin/master HEAD); fi                         # what the branch adds to master
           if [ "${{ inputs.mode }}" = caps ] || [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
-            echo "full check"; echo "lean=true" >> "$GITHUB_OUTPUT"; exit 0
+            echo "full check"; echo "lean=true" >> "$GITHUB_OUTPUT"; echo "heavy=true" >> "$GITHUB_OUTPUT"; exit 0
           fi
           changed=$(git diff --name-only "$base" HEAD)
           echo "changed files:"; echo "$changed"
           if echo "$changed" | grep -qE "$LEAN_PATHS"; then echo "lean=true" >> "$GITHUB_OUTPUT"
           else echo "no Lean-relevant file changed: skipping the build and the checks"; echo "lean=false" >> "$GITHUB_OUTPUT"; fi
+          # Memory: rebuilding the big kernel-checked modules (the Q0 base-pair leaves, ~7.5 GB each, four in
+          # parallel) kills a GitHub-hosted 16 GB VM. Only a MODIFIED or deleted file can force such a rebuild (a
+          # new module rebuilds nothing that exists), so a change that only adds modules, or touches nothing under
+          # the kernel-heavy trees, is checked on a hosted runner (the restored cache replays the rest).
+          HEAVY_TREE='^(Grothe/UpperChaos/|Grothe/Upper/|GrotheKernel/|GrotheCapsKernel/|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$)'
+          if git diff --name-status "$base" HEAD | awk '$1 !~ /^A/ {print $NF}' | grep -qE "$HEAVY_TREE"; then
+            echo "modifies existing files under the kernel-heavy trees: the heavy runners build this"; echo "heavy=true" >> "$GITHUB_OUTPUT"
+          else echo "heavy=false" >> "$GITHUB_OUTPUT"; fi
 
       - name: Is there a verified build cache for these node-cap sources? (no -> the droplet builds them)
         id: where
@@ -166,11 +176,16 @@ jobs:
             echo "needs_droplet=true" >> "$GITHUB_OUTPUT"; echo "droplet=false" >> "$GITHUB_OUTPUT"
             echo 'runs_on="ubuntu-24.04"' >> "$GITHUB_OUTPUT"; exit 0
           fi
-          # FORCE_HEAVY (repository variable): every Lean build runs on the self-hosted heavy runners, whatever
-          # the cache says (set while the GitHub-hosted 16 GB VMs cannot hold the kernel checks; unset to return).
-          if [ "${{ steps.scope.outputs.lean }}" = true ] && [ -z "$handoff" ] && { [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ] || [ "${{ vars.FORCE_HEAVY }}" = true ]; }; then
-            echo "-> the heavy runners build this (mode=caps, no verified cache, or FORCE_HEAVY); this run stays pending meanwhile"
+          # The heavy runners build: mode=caps, no verified cache (the caps changed), a change that modifies existing
+          # files under the kernel-heavy trees (scope step), or everything when the repository variable FORCE_HEAVY is
+          # `true` (an emergency switch while the hosted VMs cannot hold a build). Everything else is GitHub-hosted.
+          if [ "${{ steps.scope.outputs.lean }}" = true ] && [ -z "$handoff" ] && { [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ] || [ "${{ steps.scope.outputs.heavy }}" = true ] || [ "${{ vars.FORCE_HEAVY }}" = true ]; }; then
+            echo "-> the heavy runners build this (mode=caps, no verified cache, kernel-heavy modification, or FORCE_HEAVY); this run stays pending meanwhile"
             echo "droplet=true" >> "$GITHUB_OUTPUT"; echo 'runs_on=["self-hosted","heavy"]' >> "$GITHUB_OUTPUT"
+            # a run that really builds the node caps (no verified cache, or mode=caps) is never cancelled (hours of work);
+            # a FORCE_HEAVY run that only replays the cache is an ordinary check and may be superseded by a newer push
+            if [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ]; then echo "caps_build=true" >> "$GITHUB_OUTPUT"
+            else echo "caps_build=false" >> "$GITHUB_OUTPUT"; fi
           else
             echo "droplet=false" >> "$GITHUB_OUTPUT"; echo 'runs_on="ubuntu-24.04"' >> "$GITHUB_OUTPUT"
           fi
@@ -179,13 +194,15 @@ jobs:
     needs: route
     runs-on: ${{ fromJSON(needs.route.outputs.runs_on) }}
     timeout-minutes: ${{ needs.route.outputs.droplet == 'true' && 4320 || 360 }}
-    # Branches (GitHub-hosted): one group PER BRANCH, cancel-in-progress (a new push supersedes the older check).
-    # Master: never cancelled; every master commit gets its own check (a cancelled run marks its commit with a cross,
-    # and a long first build would be lost), so its group is per commit. The droplet has one runner, so its jobs queue
-    # by themselves and are never cancelled (a killed build leaves orphaned lean processes).
+    # Branches: one group PER BRANCH (checks and landings separately), cancel-in-progress: a new push supersedes the
+    # older check of the same branch, on GitHub-hosted and heavy runners alike (the build runs in its own process
+    # group, killed whole on cancellation, so nothing is orphaned). Master: never cancelled; every master commit gets
+    # its own check (a cancelled run marks its commit with a cross, and a long first build would be lost), so its
+    # group is per commit. Runs that really build the node caps (no verified cache, or mode=caps) are per run too:
+    # hours of work that a push must not throw away.
     concurrency:
-      group: ${{ needs.route.outputs.droplet == 'true' && format('droplet-{0}', github.run_id) || (github.ref_name == 'master' && format('check-master-{0}', github.sha) || format('{0}-{1}', inputs.land && 'land' || 'check', github.ref)) }}
-      cancel-in-progress: ${{ needs.route.outputs.droplet != 'true' && github.ref_name != 'master' }}
+      group: ${{ needs.route.outputs.caps_build == 'true' && format('caps-{0}', github.run_id) || (github.ref_name == 'master' && format('check-master-{0}', github.sha) || format('{0}-{1}', inputs.land && 'land' || 'check', github.ref)) }}
+      cancel-in-progress: ${{ needs.route.outputs.caps_build != 'true' && github.ref_name != 'master' }}
     env:
       LEAN: ${{ needs.route.outputs.lean }}
       DROPLET: ${{ needs.route.outputs.droplet }}
@@ -281,9 +298,14 @@ jobs:
         if: env.LEAN == 'true'
         # GitHub-hosted: stop at the first failed module (scripts/lake_failfast.sh). The droplet builds on: its finished
         # modules stay in the persistent workspace, and a kill would discard cap rows that are mid-way.
+        # The build runs in its own session (setsid): on cancellation the step kills that whole process group, so a
+        # cancelled heavy check leaves no orphaned lean processes behind (which is what makes cancellation safe).
         run: |
-          if [ "$DROPLET" = true ]; then lake build Grothe --log-level=warning
-          else scripts/lake_failfast.sh lake build Grothe --log-level=warning; fi
+          grouped() { setsid "$@" & pid=$!
+            trap 'echo "::notice::cancelled: stopping the build process group"; kill -- "-$pid" 2>/dev/null; wait "$pid" 2>/dev/null; exit 130' INT TERM
+            wait "$pid"; }
+          if [ "$DROPLET" = true ]; then grouped lake build Grothe --log-level=warning
+          else grouped scripts/lake_failfast.sh lake build Grothe --log-level=warning; fi
 
       - name: Root import files generated, list files sorted and duplicate-free
         if: env.LEAN == 'true'

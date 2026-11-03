@@ -39,6 +39,9 @@ sub-issues. Labels give the area (`area: lean`, `area: docs`, `area: infra`, `ar
 the side (`side: lower`, `side: upper`), the owner (`owner: codex`, `owner: claude`) and the status
 (`status: in progress`, `status: blocked`, `status: needs decision`).
 
+- **Every PR serves a task issue.** The PR description names at least one **open issue labelled `type: task`**
+  (`Closes #n` or `Refs #n`). An epic alone does not count: create the task first, with its area/side/owner labels
+  and the context. CI refuses to land a PR without one (`scripts/land_ready.sh`, a notice like a missing review).
 - **Before starting:** find the issue (`gh issue list`, `gh issue view <n>`); if none exists, create one with full
   context. Comment that you are starting, with your branch and worktree. Set the `owner:` and `status: in progress`
   labels.
@@ -282,11 +285,20 @@ containing `[skip ci]` skips it) and as the **landing check** of a PR (`/land`, 
    and dispatches master's own check (which saves the master cache).
 
 Also:
-- **Superseded runs are cancelled automatically:** a new push to a branch cancels that branch's older GitHub-hosted
-  check (one concurrency group per branch). Master's checks are never cancelled by a newer one starting (a long first
-  build would be lost); instead, when a master check goes green it cancels the still-running checks of older master
-  commits, whose trees it contains. What counts is the newest master commit's own result. Droplet checks are never cancelled either (a killed build leaves orphaned processes); they queue on the
-  single runner.
+- **Superseded runs are cancelled automatically:** a new push to a branch cancels that branch's older check, queued
+  or running, on GitHub-hosted and heavy runners alike (one concurrency group per branch; the build runs in its own
+  process group, which the step kills whole on cancellation, so nothing is orphaned). So a branch has **at most one
+  check at a time, of its newest commit**: push once per milestone, not after every commit. Master's checks are never
+  cancelled by a newer one starting (a long first build would be lost); instead, when a master check goes green it
+  cancels the still-running checks of older master commits, whose trees it contains. What counts is the newest master
+  commit's own result. Runs that really build the node caps (no verified cache, or `-f mode=caps`) are never cancelled
+  either: hours of work.
+- **Where a check runs:** GitHub-hosted (4 vCPUs, 16 GB) unless it needs the heavy runners (`self-hosted, heavy`:
+  the droplet and the temporary big droplet): the node caps must be built (no verified cache), `-f mode=caps`, the
+  change **modifies or deletes** existing files under the kernel-heavy trees (`Grothe/UpperChaos/`, `Grothe/Upper/`,
+  `GrotheKernel/`, `GrotheCapsKernel/`, the lake files: rebuilding the big kernel-checked modules kills a 16 GB VM),
+  or the repository variable `FORCE_HEAVY` is `true` (emergency switch: everything heavy). A change that only adds
+  modules runs hosted: the restored cache replays everything else. Keep the heavy slots for what needs them.
 - **Merged branches are cleaned automatically** (`.github/workflows/cancel-merged.yml`): when a pull request is merged
   or a branch is deleted, its running checks are cancelled and its build caches deleted. Merged pull-request branches
   are deleted automatically (repository setting).
@@ -308,6 +320,7 @@ Also:
 
 ## 9. Pull requests
 
+- **A PR names its task issue** (`Closes #n`/`Refs #n`, an open `type: task` issue, §1); CI does not land it otherwise.
 - **A PR means "intended to land".** Labels: `RFC` (not finished; comments on the approach wanted) and `WIP` (still
   being worked on; visible for early feedback). Neither can land until the label is removed.
 - **The author lands its own PR** with `/land <agent-id>` (§7). Nobody presses GitHub's merge button for an
