@@ -49,7 +49,6 @@ def selectedIndices : List ℕ :=
 theorem selectedOrdinal_iff_mem (n : ℕ) :
     selectedOrdinal n ↔ n ∈ selectedIndices := by
   simp only [selectedOrdinal, selectedIndices, List.mem_append, List.mem_range'_1]
-  omega
 
 /-- The three disjoint ranges give a unique saved row, without a quadratic
 decidable duplicate scan over the generated payload. -/
