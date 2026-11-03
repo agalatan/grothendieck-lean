@@ -2,7 +2,7 @@ import Grothe.UpperChaos.ZeroProfilePhaseLinearization
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
-/-! Concrete certificate interface for the original saved coefficients near a
+/-! Concrete certificate interface for the saved coefficients near a
 profile zero. All numerical input premises concern the physical profile ratio
 and saved scalar bytes, not the unknown true coefficient error.
 Agent-ID: codex-8c4d. -/
