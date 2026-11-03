@@ -162,8 +162,8 @@ def generate():
             lines += ['  simpa only [rows] using chain0']
         else:
             lines += ['  simp [rows, List.isChain_append, adjacent, ' + ', '.join(
-                [f'chain{i}' for i,_,_ in chunks] + [f'first{i}' for i,_,_ in chunks] +
-                [f'last{i}' for i,_,_ in chunks]) + ']']
+                [f'chain{i}' for i,_,_ in chunks] + [f'first{i}' for i,_,_ in chunks[1:]] +
+                [f'last{i}' for i,_,_ in chunks[:-1]]) + ']']
         lines += ['',
             f'theorem first : rows.head? = some ⟨{start}, {offsets[start]}, {offsets[start+1]}, {cutoffs[start]}⟩ := by',
             '  simp [rows, first0]', '',
@@ -191,7 +191,7 @@ def generate():
       '/-- All 21,577 records form a continuous ordinal and offset chain. -/',
       'theorem chain : rows.IsChain adjacent := by',
       '  simp [rows, List.isChain_append, adjacent, ' + ', '.join(
-          [r+'.chain' for r in refs] + [r+'.first' for r in refs] + [r+'.last' for r in refs]) + ']', '',
+          [r+'.chain' for r in refs] + [r+'.first' for r in refs[1:]] + [r+'.last' for r in refs[:-1]]) + ']', '',
       '/-- Every actual source panel/rule address has exactly one metadata row. -/',
       'theorem unique_row_for_address (a : Address) :',
       '    ∃! r : Row, r ∈ rows ∧ r.index = (fromAddress a).val :=',
