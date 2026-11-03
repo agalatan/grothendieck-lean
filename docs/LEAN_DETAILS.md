@@ -498,6 +498,12 @@ theorem gives `|κ(s)| > 1/1000` on every closed nonselected strip. Consequently
 The gap data share the same tracked input and generator as the radial cuts;
 the checker uses kernel reduction and introduces no native facts.
 
+`PhiProductionIdentity` contains the existing `phaseEps_eq` and `phiT_sq`
+identities with their public names and statements unchanged. It imports the
+rounding definitions and audits both identities against the standard three
+axioms, independently of the global phase-cover computation. The existing
+`PhiBound` proof imports this identity and retains its numerical cover.
+
 `LocalAffineSquareIntegralBounds` supplies both affine integration orders with
 `ContinuousOn` restricted to the actual closed cell. Coordinate clamping
 extends the integrand continuously without changing any cell integral.

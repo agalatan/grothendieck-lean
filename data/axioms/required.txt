@@ -1099,11 +1099,13 @@ Grothe.UpperChaos.norm_thirdCenter_tail_scaled_le
 Grothe.UpperChaos.norm_thirdCenter_tail_smoothed_le
 Grothe.UpperChaos.norm_third_tail_residual_le_of_captured
 Grothe.UpperChaos.norm_toLp_sq_eq_integral
+Grothe.UpperChaos.phaseEps_eq
 Grothe.UpperChaos.phase_cutoff_factor_check
 Grothe.UpperChaos.phase_moment2_check
 Grothe.UpperChaos.phase_moment4_check
 Grothe.UpperChaos.phase_moment6_check
 Grothe.UpperChaos.phase_tail_scalar_bound
+Grothe.UpperChaos.phiT_sq
 Grothe.UpperChaos.phi_abs_lt_one
 Grothe.UpperChaos.profileAuxiliaryCorrection_interval_eq
 Grothe.UpperChaos.profileAuxiliaryCorrection_union_eq_sum
