@@ -274,6 +274,25 @@ any row or changing the ledger. It is not a per-coordinate tolerance.
 All new headlines have strict standard-axiom guards and audit registration;
 this unit remains unverified pending Lean CI.
 
+
+**One actual regular source row.** `Q0RegularSourceRow` fixes the original
+address `(panel=135, rule=2)` and proves its ordinal is 3818. The 24-byte
+binary64 slice and its matching ledger record live in
+`data/q0_quadrature/regular-source-row/`; the generator checks the pinned
+original offsets, cutoff, panel schedule and row hash. The historical ledger's
+numerical claims and full-table hash are not proof premises.
+The source metadata is identified with the unique metadata at this address,
+and the saved lookup is proved unchanged by the original cutoff completion.
+Exact kernel checks give zero fitted-model residual and scaled physical-profile
+magnitude at most `1e-15` throughout panel 135. The existing analytic model
+bounds all selected actual Gaussian coefficients against these centers by
+radius strictly below `2e-15`. The coupled triangle inequality adds the fixed
+`5e-15` finite-Laplace approximation cost, giving radius below `7e-15` and an
+explicit instance of the regular-source `19/10^11` premise. True omitted
+coefficients remain in the error sum. This concrete proof candidate awaits
+Lean CI and certifies only this address; it supplies no all-row or final-bound
+claim.
+
 **q0 source-to-literal identity.**
 `Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real
 `s`, `b`, and `v`, that `Ssum q0RawWickEntries s b v` equals

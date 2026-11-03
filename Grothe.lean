@@ -2150,6 +2150,8 @@ import Grothe.UpperChaos.Q0RealPhaseSourceSum
 import Grothe.UpperChaos.Q0RealPhaseTerm
 import Grothe.UpperChaos.Q0RealShiftMoments
 import Grothe.UpperChaos.Q0RealTermPowers
+import Grothe.UpperChaos.Q0RegularSourceRow
+import Grothe.UpperChaos.Q0RegularSourceRowData
 import Grothe.UpperChaos.Q0SourceBindingAxiomAudit
 import Grothe.UpperChaos.Q0SourceChunkAssembly
 import Grothe.UpperChaos.Q0SourceExceptionCenters

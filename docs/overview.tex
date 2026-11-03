@@ -203,6 +203,17 @@ source-error budgets follow by rational inequalities. No row certificate
 is inferred from this sufficient tolerance. Numerical certificates and full
 $\phi_T/P_3$ response binding remain open; this proof unit awaits Lean CI.
 
+The concrete regular-row certificate \texttt{Q0RegularSourceRow} fixes original
+ordinal 3818, panel 135 and the third node of its order-six rule. Its three
+saved binary64 values fit the sparse linear model with exactly zero residual.
+A centered check on the actual panel bounds the physical profile, giving
+whole-selected-vector Gaussian-to-saved radius below $2\cdot10^{-15}$, with
+omitted coefficients retained. Adding the finite auxiliary approximation
+gives radius below $7\cdot10^{-15}$ and meets the regular-row tolerance at
+this address. The byte slice, source metadata and row hash are pinned.
+Lean CI acceptance is pending; all other regular rows and the final upper
+bound remain work in progress.
+
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every
 grade's integer sum and divides by $2^{210}$, then identifies the rational

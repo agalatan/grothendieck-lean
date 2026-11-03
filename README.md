@@ -264,6 +264,16 @@ the actual source-mass bound then places it inside the existing source-error
 budget. This is a whole-vector requirement, including completed zero entries.
 This new proof unit is work in progress until Lean CI accepts it.
 
+`Q0RegularSourceRow` supplies a concrete regular-row certificate for original
+ordinal 3818 (panel 135, order-six rule index 2). Its original three binary64
+entries have exactly zero residual from the fitted sparse linear model.
+A centered interval check on the actual panel bounds the physical profile;
+the analytic model then bounds the entire selected Gaussian-to-saved vector
+by radius `2e-15`, including omitted modes. The finite-Laplace-to-saved radius
+is below `7e-15`, discharging the `1.9e-10` premise at this address. This one-row
+proof is awaiting Lean CI; the other regular rows and the final upper bound
+remain work in progress.
+
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of
 scaled integers regenerated from the same pinned binary64 input.
