@@ -66,7 +66,9 @@ recipes, grids, constraint regions, piece order, centres and the retained node
 modules must reproduce identically. Stored exact-matrix LDL replay checks the
 repair data; current `pieceOneOK` native checks remain necessary. A positive
 cap Schur residual is insufficient when the cap-free principal block is
-indefinite, and increasing the cap cannot repair that block.
+indefinite, and increasing the cap cannot repair that block. Bulk noncentre
+imports replay current multipliers before extending a binding, preserving
+passing pieces and earlier repairs when diagnostic batches overlap.
 
 There is one build target, `Grothe`: the generated root imports the 15 heavy
 row modules and `CapNodes` like every other module. CI builds it, replaying

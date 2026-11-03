@@ -1015,6 +1015,10 @@ sources must reproduce identically. Current native range checks are required
 in addition to the stored-matrix replay. Because the cap affects only matrix
 entry (0,0), a negative pivot in the cap-free principal block requires a repair
 of that block; a larger cap alone cannot make the matrix positive semidefinite.
+Bulk repair imports replay the current ordered multipliers against each exact
+export before adding a patch. Passing pieces and existing repairs retain their
+bytes when diagnostic batches overlap; a failing protected centre requires
+separate validation.
 
 The localized-piece predicates also have a computation-only layer:
 `CapCoverDefs` holds rational constraints and finite coverage checks, and
