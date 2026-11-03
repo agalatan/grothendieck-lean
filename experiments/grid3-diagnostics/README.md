@@ -18,3 +18,18 @@ lake lean /absolute/own/new/probes/Node186Piece0.lean -- -j1
 A practical parallelism is up to eight processes if real memory/disk/foreign-work preflight permits it. Never bypass the host's resource or ownership guards. Send the eight results and any failures to codex-15b7, including actual timing and host details; report infrastructure failures separately from logical false. No other runs or persistent edits are requested.
 
 Use `lake lean`, which prepares the external file's module setup and loads the imported precompiled checker library. `lake env lean` only supplies environment variables and does not prepare that setup. The original range module's Lake setup includes `libgrothe_GrotheCapsKernel.so`; the individual probes need the same compiled checker context. A slow or interrupted probe is inconclusive, not a false result.
+
+## Exact matrices for the six failed pieces
+
+The completed eight-probe run reported on PR #243 establishes: piece 0 passes for both nodes, while pieces 1–3 fail for both. Do not repeat those probes. To identify the failed matrix condition and test multiplier-only repairs, export those six pieces on their original grid 2, with their original recipes, constraints, cap and padding:
+
+```sh
+python3 experiments/grid3-diagnostics/generate_exports.py /absolute/own/new/matrices
+# One command per generated file, in separate bounded process groups:
+lake lean /absolute/own/new/matrices/Export186Piece1.lean -- -j1
+# Repeat for Export{186,204}Piece{1,2,3}.lean (six jobs total).
+```
+
+The generator copies the committed `CapExport.lean` computational definitions verbatim, replacing only its analytic-proof import with `CapPieceRange` and the selected data module. It records source hashes in `manifest.json` and refuses existing output paths. The JSON includes the original polynomial/enclosure/verdict flags, exact `N`, ordered constraint matrices `A`/`B`, and stored multipliers. A successful export is not a passing certificate. Return all six closed JSONL files, the manifest, generated sources, actual commands, logs, exit codes and timings. Do not start a broader sweep, solver run, certificate rewrite or CI run on this request.
+
+The hypothesis to test is the documented node14:200 mechanism: legacy multipliers can leave the cap-free block indefinite with the checker's cell-RMS prices. It is not yet established for these six pieces. Exact block analysis and joint multiplier repair follow after the matrices return; no cap, grid or tolerance change is requested.
