@@ -77,7 +77,7 @@ theorem selectedBand_multiplier_sq_le (hφ : PhiBound) (b : Fin 14)
       (∑ m ∈ outputs, ‖⟪hvec2 m, G⟫_ℂ‖ ^ 2) ≤ sourceBound b * ‖f‖ ^ 2 := by
     have h := finite_output_multiplier_sq_le hφ b outputs f
     simpa only [G, bandProj, inner_projOn, selectedBandOutputs,
-      Finset.sum_filter, apply_ite, norm_zero, zero_pow (by decide : (2 : ℕ) ≠ 0), F]
+      Finset.sum_filter, apply_ite, ite_pow, norm_zero, zero_pow (by decide : (2 : ℕ) ≠ 0), F]
       using h
   have hsum : (∑' m, ‖⟪hvec2 m, G⟫_ℂ‖ ^ 2) ≤ sourceBound b * ‖f‖ ^ 2 :=
     Real.tsum_le_of_sum_le (fun m => sq_nonneg _) hfinite
