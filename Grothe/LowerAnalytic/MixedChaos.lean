@@ -85,39 +85,6 @@ lemma inner_zL_eq_integral (l : Fin (n + 1)) (u : L2G (n + 1)) :
   filter_upwards [MemLp.coeFn_toLp (memLp_zc (n + 1) l)] with x hx
   rw [zL, hx]
 
-/-- **The visible coordinate in the fibre split**: `⟪z₀, u⟫ = √2 ∫_w ∫_z conj(z) u(join z w)`. -/
-theorem inner_zL0_split (u : L2G (n + 1)) :
-    inner ℂ (zL (n + 1) 0) u = ((√2 : ℝ) : ℂ) * ∫ w, ∫ z, conj z * u (join n z w) ∂gaussC ∂(γW n) := by
-  rw [inner_zL_eq_integral, integral_split _ (integrable_conj_zc_mul 0 u)]
-  simp_rw [zc_join, map_mul, Complex.conj_ofReal, mul_assoc]
-  rw [← integral_const_mul]
-  congr 1; funext w
-  rw [integral_const_mul]
-
-/-- **The remote coordinates in the fibre split**: `⟪z_l, u⟫ = ∫_w conj(z_l(w)) ∫_z u(join z w)`
-for `l ≠ 0` (the first-chaos coefficients of the fibre mean `c₁(w) = ∫_z u(join z w)`). -/
-theorem inner_zL_remote_split (l : Fin (n + 1)) (hl : l ≠ 0) (u : L2G (n + 1)) :
-    inner ℂ (zL (n + 1) l) u = ∫ w, conj (rz l hl w) * ∫ z, u (join n z w) ∂gaussC ∂(γW n) := by
-  rw [inner_zL_eq_integral, integral_split _ (integrable_conj_zc_mul l u)]
-  simp_rw [zc_join_remote l hl]
-  congr 1; funext w
-  rw [integral_const_mul]
-
-/-- **`‖P₁,₀ u‖²` in the fibre split**: the visible part `|∫_w c_z(w)|²` plus the first-chaos content
-`Σ_l |⟪z_l, c₁⟫_w|²/2` of the fibre mean `c₁(w) = ∫_z u(join z w)` (raw form of
-`‖Pk‖² = |Π₀,₀ c_z|² + ‖Π₁,₀ c₁‖²`). -/
-theorem norm_sq_starProjection_H10_split (u : L2G (n + 1)) :
-    ‖(H10 (n + 1)).starProjection u‖ ^ 2
-      = ‖∫ w, ∫ z, conj z * u (join n z w) ∂gaussC ∂(γW n)‖ ^ 2
-        + ∑ l : Fin n, ‖∫ w, conj (rz l.succ (Fin.succ_ne_zero l) w)
-            * ∫ z, u (join n z w) ∂gaussC ∂(γW n)‖ ^ 2 / 2 := by
-  rw [norm_sq_starProjection_H10, Fin.sum_univ_succ, inner_zL0_split, norm_mul, mul_pow,
-    Complex.norm_real, Real.norm_eq_abs, sq_abs, Real.sq_sqrt (by norm_num)]
-  congr 1
-  · ring
-  · refine Finset.sum_congr rfl fun l _ => ?_
-    rw [inner_zL_remote_split l.succ (Fin.succ_ne_zero l)]
-
 end
 
 end Grothe.LowerAnalytic

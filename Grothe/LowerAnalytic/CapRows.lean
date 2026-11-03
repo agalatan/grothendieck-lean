@@ -23,8 +23,6 @@ def VertexCapsRow (k : ℕ) : Prop :=
       rowPot k ((rowData.getD k row01).nodeList.getD i (0, 0)).1 - capPad
         ≤ ((rowData.getD k row01).nodeList.getD i (0, 0)).2
 
-lemma vertexCaps_iff : VertexCaps ↔ ∀ k, k < rowData.length → VertexCapsRow k := Iff.rfl
-
 /-- The caps of row `k` at the nodes of `excl` (the nodes left to certify). -/
 def ExclCaps (k : ℕ) (excl : List ℕ) : Prop :=
   ∀ i ∈ excl, i < (rowData.getD k row01).nodeList.length →
