@@ -1,6 +1,7 @@
 import Grothe.UpperChaos.ActualSourceNormGram
 import Grothe.UpperChaos.BipartiteKernelGramEvaluation
 import Grothe.UpperChaos.ActualGateConditionalScaling
+import Grothe.UpperChaos.ActualSourceCoefficientScaling
 
 /-!
 # Finite evaluation of the actual production source norm
@@ -24,6 +25,7 @@ open BipartitePolynomialL2 ScaledActualCoherentL2 ActualSourceNormGram
 open BipartiteKernelGramEvaluation OriginalHSParameterGates
 open OriginalHSParameterSoundness OriginalHSQuadraticForms OriginalHSGaussianMass
 open ActualTaylorFiniteCoefficients ActualGateMatrixWeights
+open ActualRationalSourcePolynomial ActualSourceCoefficientScaling
 
 noncomputable section
 
@@ -100,6 +102,65 @@ def sourceNormValue (g : Gate) : ℂ :=
         (gatePairValue g 0 (powers e).1 (powers f).1 *
           gatePairValue g 1 (powers e).2 (powers f).2)
 
+/-- Exact rational evaluation over the original polynomial's complete support.
+The pair contributions already contain their kernel masses and Jacobians. -/
+def rationalSourceNormValue (g : Gate) : ℚ :=
+  ∑ e ∈ (rationalSourcePolynomial g.power).support,
+    ∑ f ∈ (rationalSourcePolynomial g.power).support,
+      ((rationalSourcePolynomial g.power).coeff e *
+        (rationalSourcePolynomial g.power).coeff f) *
+        (rationalGatePairValue g 0 (powers e).1 (powers f).1 *
+          rationalGatePairValue g 1 (powers e).2 (powers f).2)
+
+/-- The two physical pair identities account for all eight diagonal source
+scales, including the conjugated coefficient in the Hermitian Gram sum. -/
+theorem scaled_tensorPairValue_eq_rational (g : Gate) (hg : gateOK g = true)
+    (e f : Fin 8 →₀ ℕ) :
+    (conj (coefficientScale g e) * coefficientScale g f) *
+        (gatePairValue g 0 (powers e).1 (powers f).1 *
+          gatePairValue g 1 (powers e).2 (powers f).2) =
+      ((rationalGatePairValue g 0 (powers e).1 (powers f).1 *
+        rationalGatePairValue g 1 (powers e).2 (powers f).2 : ℚ) : ℂ) := by
+  calc
+    _ = ((ActualGateConditionalScaling.pairSourceScale (g.r : ℝ)
+            (axisWeight g 0) (axisWeight g 1) (powers e).1 *
+          ActualGateConditionalScaling.pairSourceScale (g.r : ℝ)
+            (axisWeight g 0) (axisWeight g 1) (powers f).1) *
+          gatePairValue g 0 (powers e).1 (powers f).1) *
+        ((ActualGateConditionalScaling.pairSourceScale (g.r : ℝ)
+            (axisWeight g 2) (axisWeight g 3) (powers e).2 *
+          ActualGateConditionalScaling.pairSourceScale (g.r : ℝ)
+            (axisWeight g 2) (axisWeight g 3) (powers f).2) *
+          gatePairValue g 1 (powers e).2 (powers f).2) := by
+      rw [conj_coefficientScale, coefficientScale_eq_pairSourceScale,
+        coefficientScale_eq_pairSourceScale]
+      ring
+    _ = _ := by
+      rw [scaled_gatePairValue_eq_rational g hg 0,
+        scaled_gatePairValue_eq_rational g hg 1, Rat.cast_mul]
+
+/-- Full rational binding of the actual source norm. No support truncation or
+coefficient agreement is assumed: both follow from the actual production source. -/
+theorem sourceNormValue_eq_rational (g : Gate) (hg : gateOK g = true) :
+    sourceNormValue g = (rationalSourceNormValue g : ℂ) := by
+  classical
+  simp only [sourceNormValue, rationalSourceNormValue,
+    actualSourcePolynomial_support g hg, Rat.cast_sum]
+  apply Finset.sum_congr rfl
+  intro e he
+  apply Finset.sum_congr rfl
+  intro f hf
+  simp only [actualSourcePolynomial_coeff, map_mul, map_ratCast]
+  calc
+    _ = (((rationalSourcePolynomial g.power).coeff e : ℂ) *
+          ((rationalSourcePolynomial g.power).coeff f : ℂ)) *
+        ((conj (coefficientScale g e) * coefficientScale g f) *
+          (gatePairValue g 0 (powers e).1 (powers f).1 *
+            gatePairValue g 1 (powers e).2 (powers f).2)) := by ring
+    _ = _ := by
+      rw [scaled_tensorPairValue_eq_rational g hg]
+      simp only [Rat.cast_mul]
+
 theorem gramValue_actual_eq_sourceNormValue (g : Gate) (hg : gateOK g = true) :
     gramValue g (actualSourcePolynomial g) = sourceNormValue g := by
   simp only [gramValue, sourceNormValue, tensorGram, pairGram_eq_gatePairValue g hg]
@@ -127,6 +188,22 @@ theorem tsum_actual_matrix_energy_le_value (g : Gate) (hg : gateOK g = true) :
       (sourceNormValue g).re := by
   rw [← gramValue_actual_eq_sourceNormValue g hg]
   exact tsum_actual_matrix_energy_le_gram g hg
+
+/-- The coherent integral is exactly the rational finite Gram evaluation. -/
+theorem integral_scaledTransform_sq_eq_rational (g : Gate) (hg : gateOK g = true) :
+    (∫ Z, ‖scaledTransform g Z‖ ^ 2 ∂tensorMeasure) =
+      (rationalSourceNormValue g : ℝ) := by
+  rw [integral_scaledTransform_sq_eq_value g hg, sourceNormValue_eq_rational g hg,
+    Complex.ratCast_re]
+
+/-- This exact rational expression bounds the full infinite weighted matrix
+energy. A numerical enclosure of the expression is still required. -/
+theorem tsum_actual_matrix_energy_le_rational (g : Gate) (hg : gateOK g = true) :
+    (∑' mn : Idx2 × Idx2,
+      energyWeight g mn.1 mn.2 * ‖matrixEntry g.power mn.1 mn.2‖ ^ 2) ≤
+      (rationalSourceNormValue g : ℝ) := by
+  simpa only [sourceNormValue_eq_rational g hg, Complex.ratCast_re] using
+    tsum_actual_matrix_energy_le_value g hg
 
 end
 end Grothe.UpperChaos.ActualSourceNormEvaluation

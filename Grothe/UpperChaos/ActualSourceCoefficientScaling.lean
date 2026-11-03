@@ -1,4 +1,5 @@
 import Grothe.UpperChaos.ActualRationalSourcePolynomial
+import Grothe.UpperChaos.ActualGateConditionalScaling
 
 /-!
 # Exact coefficients and support under the actual gate scaling
@@ -12,6 +13,7 @@ summands; it does not assert that a raw pair Gram entry is rational.
 -/
 
 open MvPolynomial
+open scoped ComplexConjugate
 
 namespace Grothe.UpperChaos.ActualSourceCoefficientScaling
 
@@ -22,6 +24,27 @@ noncomputable section
 
 def coefficientScale (g : Gate) (e : Fin 8 →₀ ℕ) : ℂ :=
   e.prod fun i k => (sourceScale g i : ℂ) ^ k
+
+/-- Every diagonal source scale is real, so conjugation fixes its monomial factor. -/
+theorem conj_coefficientScale (g : Gate) (e : Fin 8 →₀ ℕ) :
+    conj (coefficientScale g e) = coefficientScale g e := by
+  classical
+  simp only [coefficientScale, Finsupp.prod_pow, map_prod, map_pow,
+    Complex.conj_ofReal]
+
+/-- The eight source factors split in the existing physical-pair order.
+This identity uses no positivity or nonvanishing premise. -/
+theorem coefficientScale_eq_pairSourceScale (g : Gate) (e : Fin 8 →₀ ℕ) :
+    coefficientScale g e =
+      ActualGateConditionalScaling.pairSourceScale (g.r : ℝ)
+        (axisWeight g 0) (axisWeight g 1) (powers e).1 *
+      ActualGateConditionalScaling.pairSourceScale (g.r : ℝ)
+        (axisWeight g 2) (axisWeight g 3) (powers e).2 := by
+  classical
+  simp only [coefficientScale, Finsupp.prod_pow, Fin.prod_univ_eight,
+    sourceScale, powers, ActualGateConditionalScaling.pairSourceScale,
+    Matrix.cons_val_zero, Matrix.cons_val_succ, pow_add]
+  ring
 
 theorem scaleHom_monomial (g : Gate) (e : Fin 8 →₀ ℕ) (r : ℚ) :
     scaleHom g (MvPolynomial.monomial e r) =
