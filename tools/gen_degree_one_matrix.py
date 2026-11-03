@@ -20,6 +20,14 @@ def render(data):
            'namespace Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries',
            'namespace DegreeOneMatrix','']
     for name,n,c,e,x in entries:
+        scalar = '1' if name == 'zero' else {'one00':'smoothingU', 'one01':'smoothingV',
+                                            'one10':'smoothingV', 'one11':'smoothingW'}[name]
+        moment = f'matrixMomentNumerator U V W {n-c} {c} {n-e} {e}'
+        value_expr = '1' if name == 'zero' else {'one00':'U','one01':'V','one10':'V','one11':'W'}[name]
+        lines += [f'private theorem {name}_moment (U V W : ℕ) :',
+                  f'    {moment} = {value_expr} := by',
+                  '  norm_num [matrixMomentNumerator, matrixMomentSummand,',
+                  '    ← Nat.choose_eq_fast_choose]', '']
         radicand=S*S*x*x//(D**(2*n))
         value=isqrt(radicand)
         lines += [f'private theorem {name}_sqrt : Nat.sqrt {radicand} = {value} := by',
@@ -28,13 +36,15 @@ def render(data):
                   f'theorem {name} : productionSavedEntryQ {n} {c} {e} =',
                   f'    ({value} / {S} : ℚ) := by',
                   '  unfold productionSavedEntryQ savedEntryQ RationalSqrtFloor.sqrtFloor',
-                  '  have hr : smoothingEntryScale ^ 2 *',
-                  '      matrixMomentNumerator smoothingU smoothingV smoothingW',
-                  f'        ({n} - {c}) {c} ({n} - {e}) {e} ^ 2 /',
-                  f'      (smoothingScalarDen ^ (2 * {n}) * entryFactorial {n} {c} {e}) =',
+                  '  change ((Nat.sqrt (smoothingEntryScale ^ 2 *',
+                  '    matrixMomentNumerator smoothingU smoothingV smoothingW',
+                  f'      {n-c} {c} {n-e} {e} ^ 2 / (smoothingScalarDen ^ {2*n} * 1)) : ℚ) /',
+                  f'      (smoothingEntryScale : ℚ)) = ({value} / {S} : ℚ)',
+                  f'  rw [{name}_moment]',
+                  f'  have hr : smoothingEntryScale ^ 2 * {scalar} ^ 2 /',
+                  f'      (smoothingScalarDen ^ {2*n} * 1) =',
                   f'        {radicand} := by',
-                  '    norm_num [matrixMomentNumerator, matrixMomentSummand, entryFactorial,',
-                  '      smoothingU, smoothingV, smoothingW, smoothingScalarDen, smoothingEntryScale]',
+                  f'    norm_num [smoothingScalarDen, smoothingEntryScale{", " + scalar if scalar != "1" else ""}]',
                   f'  rw [hr, {name}_sqrt]','  norm_num [smoothingEntryScale]','']
     lines += ['end DegreeOneMatrix',
               'end Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries','']

@@ -41,7 +41,7 @@ theorem base_sub_regular {S : Set ℝ} (hS : MeasurableSet S) :
   apply MemLp.toLp_congr
   filter_upwards [] with u
   by_cases hu : ‖u.1‖ ^ 2 ∈ S <;>
-    simp [source, sourceSet, radialSet, Set.indicator_apply, hu]
+    simp [source, sourceSet, radialSet, hu]
 
 /-- Continuous Gaussian probability, without any quadrature weight. -/
 theorem measure_radialSet {S : Set ℝ} (hS : MeasurableSet S)
@@ -54,7 +54,7 @@ theorem measure_radialSet {S : Set ℝ} (hS : MeasurableSet S)
     _ = ∫ z : ℂ, S.indicator (fun _ => (1 : ℂ)) (‖z‖ ^ 2) ∂gaussC := by
       apply integral_congr_ae
       filter_upwards [] with z
-      simp [radialSet, Set.indicator_apply]
+      by_cases hz : ‖z‖ ^ 2 ∈ S <;> simp [radialSet, hz]
     _ = ∫ s in Ioi (0 : ℝ), (Real.exp (-s) : ℂ) *
         S.indicator (fun _ => (1 : ℂ)) s :=
       integral_gaussC_norm_sq_complex _ (measurable_const.indicator hS)
@@ -65,7 +65,7 @@ theorem measure_radialSet {S : Set ℝ} (hS : MeasurableSet S)
     _ = ∫ s in S, (Real.exp (-s) : ℂ) := by
       rw [setIntegral_indicator hS, inter_eq_right.mpr hpos]
     _ = _ := (integral_complex_ofReal (f := fun s => Real.exp (-s))
-      (μ := volume.restrict S)).symm
+      (μ := volume.restrict S))
 
 theorem density_le_of_thirteen {s : ℝ} (hs : 13 ≤ s) :
     Real.exp (-s) ≤ (1 / 400000 : ℝ) := by
@@ -86,7 +86,7 @@ theorem measure_sourceSet_le {S : Set ℝ} (hS : MeasurableSet S)
     (hwidth : volume S ≤ ENNReal.ofReal (8 / 10 ^ 16 : ℝ)) :
     mu2.real (sourceSet S) ≤ (massQ : ℝ) := by
   have hpos : S ⊆ Ioi (0 : ℝ) := fun s hs => by
-    have := h13 hs
+    have hs13 : (13 : ℝ) ≤ s := h13 hs
     change 0 < s
     linarith
   have hfinite : volume S ≠ ⊤ :=
@@ -107,8 +107,10 @@ theorem measure_sourceSet_le {S : Set ℝ} (hS : MeasurableSet S)
   have hm : mu2.real (sourceSet S) = gaussC.real (radialSet S) := by
     simp [sourceSet, mu2, measureReal_prod_prod]
   rw [hm, measure_radialSet hS hpos]
-  have h := hi.trans (mul_le_mul_of_nonneg_right harea (by positivity))
-  simpa [massQ] using h
+  calc
+    _ ≤ (8 / 10 ^ 16 : ℝ) * (1 / 400000 : ℝ) :=
+      hi.trans (mul_le_mul_of_nonneg_right harea (by positivity))
+    _ = (massQ : ℝ) := by norm_num [massQ]
 
 /-- The actual phase is bounded by one on every measurable omitted region. -/
 theorem norm_source_sq_le_mass {S : Set ℝ} (hS : MeasurableSet S) :
@@ -169,7 +171,7 @@ theorem continuous_mass_budget :
       (Upper.CompositeComparisonData.massNormQ : ℝ) ^ 2 := by
   calc
     _ ≤ (2 / 10 ^ 21 : ℝ) + 1 / 10 ^ 40 :=
-      add_le_add_left exp_neg_hundred_le _
+      add_le_add le_rfl exp_neg_hundred_le
     _ ≤ _ := by norm_num [Upper.CompositeComparisonData.massNormQ]
 
 /-- One union indicator counts the thin root regions and s>100 once.
@@ -237,7 +239,8 @@ theorem measurableSet_threeRootGaps {gaps : Fin 3 → Set ℝ}
 /-- The retained source is the exact complement of all three gaps AND s>100. -/
 def completeRegularHead {gaps : Fin 3 → Set ℝ}
     (hg : ∀ j, MeasurableSet (gaps j)) : Lp ℂ 2 mu2 :=
-  regularHead ((measurableSet_threeRootGaps hg).union measurableSet_Ioi)
+  regularHead (S := threeRootGaps gaps ∪ Ioi (100 : ℝ))
+    ((measurableSet_threeRootGaps hg).union measurableSet_Ioi)
 
 theorem complete_head_approx_error_le {gaps : Fin 3 → Set ℝ}
     (hg : ∀ j, MeasurableSet (gaps j))

@@ -7,6 +7,11 @@ set_option warningAsError true
 namespace Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries
 namespace DegreeOneMatrix
 
+private theorem zero_moment (U V W : ℕ) :
+    matrixMomentNumerator U V W 0 0 0 0 = 1 := by
+  norm_num [matrixMomentNumerator, matrixMomentSummand,
+    ← Nat.choose_eq_fast_choose]
+
 private theorem zero_sqrt : Nat.sqrt 100000000000000000000000000000000000000000000 = 10000000000000000000000 := by
   apply Eq.symm
   apply Nat.eq_sqrt'.mpr
@@ -15,15 +20,22 @@ private theorem zero_sqrt : Nat.sqrt 1000000000000000000000000000000000000000000
 theorem zero : productionSavedEntryQ 0 0 0 =
     (10000000000000000000000 / 10000000000000000000000 : ℚ) := by
   unfold productionSavedEntryQ savedEntryQ RationalSqrtFloor.sqrtFloor
-  have hr : smoothingEntryScale ^ 2 *
-      matrixMomentNumerator smoothingU smoothingV smoothingW
-        (0 - 0) 0 (0 - 0) 0 ^ 2 /
-      (smoothingScalarDen ^ (2 * 0) * entryFactorial 0 0 0) =
+  change ((Nat.sqrt (smoothingEntryScale ^ 2 *
+    matrixMomentNumerator smoothingU smoothingV smoothingW
+      0 0 0 0 ^ 2 / (smoothingScalarDen ^ 0 * 1)) : ℚ) /
+      (smoothingEntryScale : ℚ)) = (10000000000000000000000 / 10000000000000000000000 : ℚ)
+  rw [zero_moment]
+  have hr : smoothingEntryScale ^ 2 * 1 ^ 2 /
+      (smoothingScalarDen ^ 0 * 1) =
         100000000000000000000000000000000000000000000 := by
-    norm_num [matrixMomentNumerator, matrixMomentSummand, entryFactorial,
-      smoothingU, smoothingV, smoothingW, smoothingScalarDen, smoothingEntryScale]
+    norm_num [smoothingScalarDen, smoothingEntryScale]
   rw [hr, zero_sqrt]
   norm_num [smoothingEntryScale]
+
+private theorem one00_moment (U V W : ℕ) :
+    matrixMomentNumerator U V W 1 0 1 0 = U := by
+  norm_num [matrixMomentNumerator, matrixMomentSummand,
+    ← Nat.choose_eq_fast_choose]
 
 private theorem one00_sqrt : Nat.sqrt 98205538996892738111504557991310637614042778 = 9909870786084586386225 := by
   apply Eq.symm
@@ -33,15 +45,22 @@ private theorem one00_sqrt : Nat.sqrt 982055389968927381115045579913106376140427
 theorem one00 : productionSavedEntryQ 1 0 0 =
     (9909870786084586386225 / 10000000000000000000000 : ℚ) := by
   unfold productionSavedEntryQ savedEntryQ RationalSqrtFloor.sqrtFloor
-  have hr : smoothingEntryScale ^ 2 *
-      matrixMomentNumerator smoothingU smoothingV smoothingW
-        (1 - 0) 0 (1 - 0) 0 ^ 2 /
-      (smoothingScalarDen ^ (2 * 1) * entryFactorial 1 0 0) =
+  change ((Nat.sqrt (smoothingEntryScale ^ 2 *
+    matrixMomentNumerator smoothingU smoothingV smoothingW
+      1 0 1 0 ^ 2 / (smoothingScalarDen ^ 2 * 1)) : ℚ) /
+      (smoothingEntryScale : ℚ)) = (9909870786084586386225 / 10000000000000000000000 : ℚ)
+  rw [one00_moment]
+  have hr : smoothingEntryScale ^ 2 * smoothingU ^ 2 /
+      (smoothingScalarDen ^ 2 * 1) =
         98205538996892738111504557991310637614042778 := by
-    norm_num [matrixMomentNumerator, matrixMomentSummand, entryFactorial,
-      smoothingU, smoothingV, smoothingW, smoothingScalarDen, smoothingEntryScale]
+    norm_num [smoothingScalarDen, smoothingEntryScale, smoothingU]
   rw [hr, one00_sqrt]
   norm_num [smoothingEntryScale]
+
+private theorem one01_moment (U V W : ℕ) :
+    matrixMomentNumerator U V W 1 0 0 1 = V := by
+  norm_num [matrixMomentNumerator, matrixMomentSummand,
+    ← Nat.choose_eq_fast_choose]
 
 private theorem one01_sqrt : Nat.sqrt 87028667659186467023555898808086280549669 = 295006216306006790938 := by
   apply Eq.symm
@@ -51,15 +70,22 @@ private theorem one01_sqrt : Nat.sqrt 87028667659186467023555898808086280549669 
 theorem one01 : productionSavedEntryQ 1 0 1 =
     (295006216306006790938 / 10000000000000000000000 : ℚ) := by
   unfold productionSavedEntryQ savedEntryQ RationalSqrtFloor.sqrtFloor
-  have hr : smoothingEntryScale ^ 2 *
-      matrixMomentNumerator smoothingU smoothingV smoothingW
-        (1 - 0) 0 (1 - 1) 1 ^ 2 /
-      (smoothingScalarDen ^ (2 * 1) * entryFactorial 1 0 1) =
+  change ((Nat.sqrt (smoothingEntryScale ^ 2 *
+    matrixMomentNumerator smoothingU smoothingV smoothingW
+      1 0 0 1 ^ 2 / (smoothingScalarDen ^ 2 * 1)) : ℚ) /
+      (smoothingEntryScale : ℚ)) = (295006216306006790938 / 10000000000000000000000 : ℚ)
+  rw [one01_moment]
+  have hr : smoothingEntryScale ^ 2 * smoothingV ^ 2 /
+      (smoothingScalarDen ^ 2 * 1) =
         87028667659186467023555898808086280549669 := by
-    norm_num [matrixMomentNumerator, matrixMomentSummand, entryFactorial,
-      smoothingU, smoothingV, smoothingW, smoothingScalarDen, smoothingEntryScale]
+    norm_num [smoothingScalarDen, smoothingEntryScale, smoothingV]
   rw [hr, one01_sqrt]
   norm_num [smoothingEntryScale]
+
+private theorem one10_moment (U V W : ℕ) :
+    matrixMomentNumerator U V W 0 1 1 0 = V := by
+  norm_num [matrixMomentNumerator, matrixMomentSummand,
+    ← Nat.choose_eq_fast_choose]
 
 private theorem one10_sqrt : Nat.sqrt 87028667659186467023555898808086280549669 = 295006216306006790938 := by
   apply Eq.symm
@@ -69,15 +95,22 @@ private theorem one10_sqrt : Nat.sqrt 87028667659186467023555898808086280549669 
 theorem one10 : productionSavedEntryQ 1 1 0 =
     (295006216306006790938 / 10000000000000000000000 : ℚ) := by
   unfold productionSavedEntryQ savedEntryQ RationalSqrtFloor.sqrtFloor
-  have hr : smoothingEntryScale ^ 2 *
-      matrixMomentNumerator smoothingU smoothingV smoothingW
-        (1 - 1) 1 (1 - 0) 0 ^ 2 /
-      (smoothingScalarDen ^ (2 * 1) * entryFactorial 1 1 0) =
+  change ((Nat.sqrt (smoothingEntryScale ^ 2 *
+    matrixMomentNumerator smoothingU smoothingV smoothingW
+      0 1 1 0 ^ 2 / (smoothingScalarDen ^ 2 * 1)) : ℚ) /
+      (smoothingEntryScale : ℚ)) = (295006216306006790938 / 10000000000000000000000 : ℚ)
+  rw [one10_moment]
+  have hr : smoothingEntryScale ^ 2 * smoothingV ^ 2 /
+      (smoothingScalarDen ^ 2 * 1) =
         87028667659186467023555898808086280549669 := by
-    norm_num [matrixMomentNumerator, matrixMomentSummand, entryFactorial,
-      smoothingU, smoothingV, smoothingW, smoothingScalarDen, smoothingEntryScale]
+    norm_num [smoothingScalarDen, smoothingEntryScale, smoothingV]
   rw [hr, one10_sqrt]
   norm_num [smoothingEntryScale]
+
+private theorem one11_moment (U V W : ℕ) :
+    matrixMomentNumerator U V W 0 1 0 1 = W := by
+  norm_num [matrixMomentNumerator, matrixMomentSummand,
+    ← Nat.choose_eq_fast_choose]
 
 private theorem one11_sqrt : Nat.sqrt 81620403667788888954448045751432350999346626 = 9034401123914572399411 := by
   apply Eq.symm
@@ -87,13 +120,15 @@ private theorem one11_sqrt : Nat.sqrt 816204036677888889544480457514323509993466
 theorem one11 : productionSavedEntryQ 1 1 1 =
     (9034401123914572399411 / 10000000000000000000000 : ℚ) := by
   unfold productionSavedEntryQ savedEntryQ RationalSqrtFloor.sqrtFloor
-  have hr : smoothingEntryScale ^ 2 *
-      matrixMomentNumerator smoothingU smoothingV smoothingW
-        (1 - 1) 1 (1 - 1) 1 ^ 2 /
-      (smoothingScalarDen ^ (2 * 1) * entryFactorial 1 1 1) =
+  change ((Nat.sqrt (smoothingEntryScale ^ 2 *
+    matrixMomentNumerator smoothingU smoothingV smoothingW
+      0 1 0 1 ^ 2 / (smoothingScalarDen ^ 2 * 1)) : ℚ) /
+      (smoothingEntryScale : ℚ)) = (9034401123914572399411 / 10000000000000000000000 : ℚ)
+  rw [one11_moment]
+  have hr : smoothingEntryScale ^ 2 * smoothingW ^ 2 /
+      (smoothingScalarDen ^ 2 * 1) =
         81620403667788888954448045751432350999346626 := by
-    norm_num [matrixMomentNumerator, matrixMomentSummand, entryFactorial,
-      smoothingU, smoothingV, smoothingW, smoothingScalarDen, smoothingEntryScale]
+    norm_num [smoothingScalarDen, smoothingEntryScale, smoothingW]
   rw [hr, one11_sqrt]
   norm_num [smoothingEntryScale]
 

@@ -64,8 +64,11 @@ theorem selected_energy_close_of_raw_error {δ Δ ε τ : ℝ}
     (Xfun frozenCorrectionFn)
   let Y := retainedSmoothed a0
   let P := projOn (energyHeadModes (headIdx 501))
+  have hsmoothing' : δ + (4 / 1000000000000000 : ℝ) *
+      ((501 / 500 : ℝ) + δ) ≤ Δ := by
+    simpa only [show (10 : ℝ) ^ 15 = 1000000000000000 by norm_num] using hsmoothing
   have hd : ‖P (X - Y)‖ ≤ Δ :=
-    (retainedSmoothed_projected_error_of_raw a0 hraw).trans hsmoothing
+    (retainedSmoothed_projected_error_of_raw a0 hraw).trans hsmoothing'
   have hX : ‖P X‖ ≤ (501 / 500 : ℝ) :=
     ((modeSpace (energyHeadModes (headIdx 501))).norm_starProjection_apply_le X).trans
       CenterNormBypass.response_norm
@@ -87,7 +90,9 @@ theorem retainedProduction_norm_le
     ‖gradedHermite 251 (retainedProductionCoeff a0)‖ ≤ (26 / 25 : ℝ) := by
   have h := retainedProduction_norm_of_raw_error a0 hraw
   have hcap : (Q0NodeMassLedgerSharp.rawUpper : ℝ) < 48 / 10^13 := by
-    exact_mod_cast Q0NodeMassLedgerSharp.rawUpper_lt_cap
+    have hc : (Q0NodeMassLedgerSharp.rawUpper : ℝ) < ((48 / 10 ^ 13 : ℚ) : ℝ) :=
+      Rat.cast_lt.mpr Q0NodeMassLedgerSharp.rawUpper_lt_cap
+    simpa only [Rat.cast_div, Rat.cast_pow, Rat.cast_ofNat] using hc
   linarith
 
 /-- The checked raw ledger plus the separately controlled smoothing reserve

@@ -112,6 +112,7 @@ theorem baseGradedCoefficient_eq_radial {N : ℕ} (q : Fin N)
       unfold radialBaseCoefficient
       apply setIntegral_congr_fun measurableSet_Ioi
       intro s hs
+      change (Real.exp (-s) : ℂ) * baseCoefficientSlice i (Real.sqrt s : ℂ) = _
       rw [baseCoefficientSlice_eq, baseConditionalCoefficient_at_node]
 
 /-- The full actual retained-source error is a coupled finite sum of errors
