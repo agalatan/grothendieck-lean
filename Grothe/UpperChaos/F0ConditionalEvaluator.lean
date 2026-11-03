@@ -6,7 +6,7 @@ import Grothe.UpperChaos.GradedHermite
 /-!
 # The signed conditional evaluator at the actual production profile
 
-The historical evaluator stores normalized coefficients of `phase(A + w)`.
+The evaluator stores normalized coefficients of `phase(A + w)`.
 This file identifies its profile sign and shift with the actual conditional
 `F0` coefficients. It does not certify numerical entries or omitted tails.
 
