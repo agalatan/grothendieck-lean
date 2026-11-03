@@ -125,12 +125,10 @@ end Grothe.UpperChaos.{assembly_name}
 obligation, after successful checking of these declarations, is the separate
 literal-table combination equality. -/
 
-set_option maxRecDepth 65536 in
-set_option maxHeartbeats 12000000 in
-set_option cbv.maxSteps 2000000 in
+set_option maxRecDepth 100000 in
 theorem concrete_cover : phaseTerms.length ≤ sizes.sum := by
   simp only [phaseTerms, List.length_map]
-  cbv
+  decide +kernel
 
 set_option maxRecDepth 65536 in
 set_option maxHeartbeats 12000000 in
@@ -141,11 +139,9 @@ theorem concrete_chunk_denominators :
     List.map_cons, List.map_nil,
     {den_lemmas}]
 
-set_option maxRecDepth 65536 in
-set_option maxHeartbeats 12000000 in
-set_option cbv.maxSteps 2000000 in
+set_option maxRecDepth 100000 in
 theorem concrete_denominator_lcm : candidateDenominators.foldl Nat.lcm 1 = sourceDen := by
-  cbv
+  decide +kernel
 
 set_option maxRecDepth 65536 in
 set_option maxHeartbeats 12000000 in

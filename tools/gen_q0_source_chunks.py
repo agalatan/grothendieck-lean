@@ -18,8 +18,8 @@ sys.dont_write_bytecode = True
 from q0_source_chunks import emit_chunk
 
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
-BASE_SIZE = 8
-MAX_RAW = 550
+BASE_SIZE = 32   # terms per chunk (kernel-checked: about 1 s per term)
+MAX_RAW = 2200   # a chunk with more raw Wick entries is halved
 
 
 def read_inputs(root: Path, source_json: Path):
