@@ -2074,6 +2074,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_firstCaptured_taylorCenters_le
 #print axioms Grothe.UpperChaos.norm_firstCenterBand_sq
 #print axioms Grothe.UpperChaos.norm_firstCenter_tail_le
+#print axioms Grothe.UpperChaos.norm_firstCenter_tail_le_with_errors
 #print axioms Grothe.UpperChaos.norm_firstCenter_tail_smoothed_le
 #print axioms Grothe.UpperChaos.norm_gradedHermite_sq
 #print axioms Grothe.UpperChaos.norm_gradedHermite_sq_cast
@@ -2131,6 +2132,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_roundingDifference_sq
 #print axioms Grothe.UpperChaos.norm_secondCaptured_taylorCenters_le
 #print axioms Grothe.UpperChaos.norm_secondCenterBand_sq
+#print axioms Grothe.UpperChaos.norm_secondCenter_tail_le_with_errors
 #print axioms Grothe.UpperChaos.norm_secondCenter_tail_scaled_le
 #print axioms Grothe.UpperChaos.norm_secondCenter_tail_smoothed_le
 #print axioms Grothe.UpperChaos.norm_smallProfileAuxiliaryTail_le
@@ -2151,6 +2153,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_thirdCenter_tail_scaled_le
 #print axioms Grothe.UpperChaos.norm_thirdCenter_tail_smoothed_le
 #print axioms Grothe.UpperChaos.norm_third_tail_residual_le_of_captured
+#print axioms Grothe.UpperChaos.norm_third_tail_residual_le_with_cap
 #print axioms Grothe.UpperChaos.norm_toLp_sq_eq_integral
 #print axioms Grothe.UpperChaos.phase_cutoff_factor_check
 #print axioms Grothe.UpperChaos.phase_moment2_check
