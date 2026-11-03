@@ -197,9 +197,14 @@ import Grothe.UpperChaos.ActualGateCoefficientWeights
 import Grothe.UpperChaos.ActualGateMatrixCoefficients
 import Grothe.UpperChaos.ActualGateMatrixWeights
 import Grothe.UpperChaos.ActualGateMomentJetsAudit
+import Grothe.UpperChaos.ActualMatrixBandTail
+import Grothe.UpperChaos.ActualMatrixCutoffTail
 import Grothe.UpperChaos.ActualMatrixFiniteComparison
+import Grothe.UpperChaos.ActualMatrixRectangleTail
+import Grothe.UpperChaos.ActualMatrixTailAudit
 import Grothe.UpperChaos.ActualPairMomentCoefficients
 import Grothe.UpperChaos.ActualProductionMomentCoefficients
+import Grothe.UpperChaos.ActualSelectedBandTails
 import Grothe.UpperChaos.ActualSourceCoefficientExtraction
 import Grothe.UpperChaos.ActualSourceNormAudit
 import Grothe.UpperChaos.ActualSourceNormEvaluation

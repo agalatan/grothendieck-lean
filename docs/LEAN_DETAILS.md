@@ -549,6 +549,25 @@ reproducible numerical enclosure of `sourceNormValue`, the numerical caps and
 the final upper endpoint remain OPEN; this finite evaluator is not a numerical
 certificate or a substituted source-norm assumption.
 
+The complete tail-continuation bodies also remain UNCOMPILED.
+`ActualMatrixCutoffTail` proves the lower weight `R^D*T^L` for actual
+outgoing degree at most `D` and one incoming coordinate at least `L`.
+`ActualMatrixBandTail` uses the existing `bandModes` and excludes `hi = 0`,
+which denotes an unbounded band. `ActualMatrixRectangleTail` covers the
+complement of the strict input rectangle `(500, 500, 251, 250)` by four
+coordinate exclusions and preserves their exact matrix entries and source
+norms in the union bound.
+
+`ActualSelectedBandTails` selects exactly comparison indices 1–6, 8–11 and
+13–16. Kernel-reduction metadata proofs bind these fourteen finite,
+nonzero-power bands to consecutive quartets of the original 56-gate table;
+`parameters_checked` supplies the existing covariance conditions.
+`selectedBand_rectangleEnergy_le` gives each actual summable rectangle-tail
+energy at most the sum of its four finite source-norm expressions divided by
+their cutoff weights. `ActualMatrixTailAudit` guards all public theorems
+transitively with the standard three axioms. No numerical source enclosure,
+operator-norm bound or completed upper endpoint is claimed.
+
 `QuadraticPolynomialIntegrability` proves a separable Gaussian majorant for
 `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²` under exactly `A>0` and
 `A*C-B²>0`. The rate `(A*C-B²)/(A+C)` follows from an exact trace identity
