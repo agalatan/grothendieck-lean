@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Your CI jobs that are queued or running (AGENTS.md section 8: at most 2 per agent at a time).
 #   scripts/ci_active.sh <agent-id> [<branch> ...]
-# Counts the proof checks (lean.yml) of the given branches (your work and ready/ branches) and your cloud jobs (run
+# Counts the proof checks (lean.yml) of the given branches (your branches) and your cloud jobs (run
 # titles "cloud <agent-id>-..."), each cloud shard as one job. Prints them and the total; exits 1 if starting
 # CI_NEED more jobs (default 1) would exceed the limit of 2.
 set -euo pipefail

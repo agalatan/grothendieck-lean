@@ -4,30 +4,31 @@ Several agents (Codex instances and Claude sessions) work on this repository at 
 machines (the user's laptop and the droplet). These rules keep them from overwriting each other's work. Read all of
 them before doing anything.
 
-**Three kinds of branch** (`<agent-id>` is your own ID, e.g. `codex-7f3a`, §2):
+**Branches are diffs** (`<agent-id>` is your own ID, e.g. `codex-7f3a`, §2). Every branch is
+`<agent-id>/<topic>`, e.g. `codex-7f3a/refined-cover`. Every push runs the proof check of that branch: **information for
+its author**, nothing more. What happens next is the author's decision:
 
-| branch | what it holds | CI | reaches master? |
-|---|---|---|---|
-| `work/<agent-id>-<topic>` | **work in progress**: unfinished proofs, partial modules, experiments, anything you are still changing | proof check of the branch when you push it (advice only) | **never** |
-| `ready/<agent-id>-<topic>` | **a finished delivery**: complete, every module you changed builds locally, docs and axiom lists updated (§7) | checks the branch merged into the current master | **yes**: CI merges it when green and deletes the branch |
-| `cloud/<agent-id>-<topic>` | inputs of cloud jobs (§11) | none | never |
+| the author wants to… | then |
+|---|---|
+| keep working, or use CI as a computer | push freely; read the check; delete the branch when it has served its purpose (§14) |
+| land it | open a **pull request**: a PR always means "intended to land". Label it `RFC` (not finished, comments on the approach wanted) or `WIP` (still in progress, visible for early feedback) until it is ready |
+| abandon it | close the PR (if any) and delete the branch |
 
-**`ready/` means finished.** Never push unfinished work to `ready/`: CI merges whatever turns green, and every red
-`ready/` check costs a full CI run and tells everyone a delivery is broken. If a `ready/` check fails on an oversight,
-fix it and push the same branch again; if the work turns out not to be finished, delete the `ready/` branch and go
-on in `work/`.
+**Landing** (§7): a PR lands when it has no `RFC`/`WIP` label, is approved by the other side at its current commit
+(§7a), and its author comments `/land <agent-id>` on it. CI then checks the branch **merged into the current master**
+and fast-forwards master to exactly that tree only if green. **The author lands, and the author watches:** keep a
+timer (a recurring check of your branches and PRs: red checks, review comments, conflicts) until each one is landed
+or closed.
 
 **The six rules that matter most:**
-1. Never commit or push to `master`. Work in your own worktree on `work/<agent-id>-<topic>`; deliver finished work
-   by pushing `ready/<agent-id>-<topic>` (§7). Only CI moves `master`. **The delivery check is the test:** do not
-   check the same tree beforehand (no cloud check, droplet or full local build, no extra branch push), but do build
-   the modules you changed locally (§7); if the delivery check fails, fix and push again.
+1. Never commit or push to `master`. Work in your own worktree on `<agent-id>/<topic>`; land through a PR and
+   `/land` (§7). Only CI moves `master`. Build the modules you changed locally (§7); CI checks everything else.
 2. Before every push, sync with master and combine with it (§6).
 3. Never run a full build (`lake build` or `lake build Grothe`) on the laptop. Build only your modules; full builds
    run in CI (§5, §8).
 4. Sign everything with your agent ID (§2) and clean up after yourself (§14).
 5. Never stop, delete or overwrite what another agent started or owns. Ask the user. (One exception: the janitor
-   may merge master into a conflicting `ready/` branch, §7.)
+   may merge master into another agent's conflicting PR branch, §7.)
 6. **At most 2 CI jobs per agent at a time** (proof checks of your branches and cloud shards, §8). Check with
    `scripts/ci_active.sh <agent-id> <your branches>`.
 
@@ -43,8 +44,8 @@ the side (`side: lower`, `side: upper`), the owner (`owner: codex`, `owner: clau
   labels.
 - **While working:** reference the issue in commit bodies (`Refs #<n>`). Comment on the issue when you push a
   milestone or hit a blocker. Update the labels as things change.
-- **When delivering:** put `Closes #<n>` in the body of a commit of the delivery. When CI merges the delivery it
-  closes the issue itself, with a comment naming the delivery (GitHub's own keyword handling does not fire for CI's
+- **When landing:** put `Closes #<n>` in the PR description and in the body of a commit of the PR. When CI lands it,
+  it closes the issue itself, with a comment naming the PR (GitHub's own keyword handling does not fire for CI's
   push). Tick the task in its epic.
 - **Attack plans and research ideas are issues too** (`area: research`), with the full reasoning and numbers. Do not
   leave them only in a local file.
@@ -63,9 +64,9 @@ tell which conversation owns a droplet folder, a branch or a running build. At t
      inside (§12);
    - commits: an `Agent-ID: codex-7f3a` trailer at the end of the commit message body;
    - issue comments: start with `[codex-7f3a]`;
-   - branches: **sign every branch with your agent ID**, in a fixed place (§3): `work/codex-7f3a-<topic>` and
-     `ready/codex-7f3a-<topic>`, where `codex-7f3a` is *your* ID. Never put any other hex in a
-     branch name: no random or per-branch hash, no suffix at the end (`ready/codex-<topic>-e4b7` is wrong), no ID
+   - branches: **sign every branch with your agent ID**, in a fixed place (§3): `codex-7f3a/<topic>`, where
+     `codex-7f3a` is *your* ID. Never put any other hex in a
+     branch name: no random or per-branch hash, no suffix at the end (`codex/<topic>-e4b7` is wrong), no ID
      copied from a prompt, another branch, a worktree name or a commit. The same ID goes in the branch name, the
      commits' `Agent-ID` and your first reply: the audits and CI's conflict reports read the owner from the name.
 4. **Write it down when you hand over:** give your ID in every status note or hand-over file.
@@ -79,18 +80,18 @@ tell which conversation owns a droplet folder, a branch or a running build. At t
 - **Never work in the main checkout** `/Users/alingalatan/workspaces/grothe`. It stays on `master`, clean, and is only
   fast-forwarded (if you find yourself there, see §4). Every agent works in its own worktree, on its own branch:
 
-  | agent (ID) | work branch | delivery | worktree |
-  |---|---|---|---|
-  | Codex instance (`codex-7f3a`) | `work/codex-7f3a-<topic>` | `ready/codex-7f3a-<topic>` | `/Users/alingalatan/workspaces/grothe-codex-7f3a-<topic>` |
-  | Claude session (`claude-b21e`) | `work/claude-b21e-<topic>` | `ready/claude-b21e-<topic>` | `/Users/alingalatan/workspaces/grothe-claude-b21e-<topic>` |
-  | Claude worker (sub-agent) | `work/claude-b21e-<topic>` (its session's ID) | `ready/claude-b21e-<topic>` | `/Users/alingalatan/workspaces/grothe/.claude/worktrees/<topic>` |
+  | agent (ID) | branch | worktree |
+  |---|---|---|
+  | Codex instance (`codex-7f3a`) | `codex-7f3a/<topic>` | `/Users/alingalatan/workspaces/grothe-codex-7f3a-<topic>` |
+  | Claude session (`claude-b21e`) | `claude-b21e/<topic>` | `/Users/alingalatan/workspaces/grothe-claude-b21e-<topic>` |
+  | Claude worker (sub-agent) | `claude-b21e/<topic>` (its session's ID) | `/Users/alingalatan/workspaces/grothe/.claude/worktrees/<topic>` |
 
-  Older branches named `codex/…` or `claude/…` may finish under their names; create new ones as `work/…`.
+  Older branches named `work/…`, `ready/…`, `cloud/…`, `codex/…` or `claude/…`: rename them to `<agent-id>/<topic>`
+  (push the new name, delete the old one) and open a PR to land them; `ready/` no longer lands anything.
 
-- **Say who made it:** every branch is `work/`, `ready/` or `cloud/` followed by your ID, e.g.
-  `work/codex-7f3a-refined-cover` and `ready/codex-7f3a-refined-cover`; every commit subject starts with `[codex]` or
-  `[claude]`, e.g.
-  `[codex] Lower: joint image compatibility`. CI's merge commits read `Merge ready/<name> (CI auto-merge)`.
+- **Say who made it:** every branch is your ID followed by the topic, e.g. `codex-7f3a/refined-cover`; every commit
+  subject starts with `[codex]` or `[claude]`, e.g. `[codex] Lower: joint image compatibility`. CI's landing commits
+  read `Merge <branch> (PR #n, landed by CI)`.
 - **Never force-push and never rewrite pushed history.** Never use `git stash` in a shared checkout, and never
   `reset --hard`, `clean` or `checkout --` files you did not create.
 - **Sync before you work and before every push:** `scripts/sync_master.sh` fetches, prunes and fast-forwards the
@@ -112,7 +113,7 @@ If the toplevel is `/Users/alingalatan/workspaces/grothe`:
 
 ```sh
 /Users/alingalatan/workspaces/grothe/scripts/sync_master.sh --build    # fetch; refresh the local master build
-git -C /Users/alingalatan/workspaces/grothe worktree add -b work/codex-7f3a-<topic> \
+git -C /Users/alingalatan/workspaces/grothe worktree add -b codex-7f3a/<topic> \
     /Users/alingalatan/workspaces/grothe-codex-7f3a-<topic> origin/master
 # give the worktree master's compiled build (links the shared packages, clones the snapshot)
 /Users/alingalatan/workspaces/grothe/scripts/clone_master_build.sh /Users/alingalatan/workspaces/grothe-codex-7f3a-<topic>
@@ -148,8 +149,8 @@ build: Lake then compiles only what your branch changes.
 ## 6. Before EVERY push: combine with a fresh master
 
 Master moves several times an hour: other agents deliver, and the user merges by hand. A branch pushed on top of an
-old master wastes a CI run and usually conflicts. So before **every** push (a work branch, a `ready/` delivery, and
-especially a re-push after a CI failure or a conflict):
+old master wastes a CI run and usually conflicts. So before **every** push (and
+especially a re-push after a CI failure, a review or a conflict):
 
 1. **Sync:** `scripts/sync_master.sh`.
 2. **Evaluate the delta:** `git log --oneline HEAD..origin/master` and `git diff --stat HEAD...origin/master`. Decide
@@ -161,7 +162,7 @@ especially a re-push after a CI failure or a conflict):
 4. **Resolve every conflict by understanding both sides**, never by taking "ours" or "theirs" blindly:
    - after **every** merge run `python3 tools/gen_root_imports.py` (not only `--check`): it regenerates the roots
      and re-sorts the union-merged lists, which a merge can leave unsorted (CI also does this after its own merge
-     of a `ready/` branch);
+     when it lands a PR);
    - generated files are regenerated, never hand-merged: `python3 tools/gen_root_imports.py` rewrites `Grothe.lean`,
      `GrotheKernel.lean` and `GrotheCapsKernel.lean` (every module under their folders, except those listed in
      `data/root-imports-exclude.txt`);
@@ -176,18 +177,18 @@ especially a re-push after a CI failure or a conflict):
 
 If master moved again meanwhile, repeat from 1. Report the master commit you combined with.
 
-## 7. Delivering work: the checklist
+## 7. Landing work: the checklist
 
-Deliver when the work is **finished** and the user wants it in master. Until then it lives on `work/` (see the table
-at the top).
+Land when the work is **finished** and the user wants it in master. Until then it lives on your branch, with or
+without a PR (`RFC`/`WIP` labels for early feedback).
 
 1. **Commit everything** on your branch, so the tree is clean. Research-only files belong in `handoff/`
    (git-ignored), not in the repository.
 2. **Combine with a fresh master** (§6, all five steps).
 3. **Lean coverage** (CI checks all of it; get it right, but do not pre-run CI's full check):
    - **every module you added or changed builds locally** without errors or warnings:
-     `lake build Grothe.X.Y Grothe.X.Z` (those modules only, never the whole of `Grothe`). A delivery whose own
-     modules do not compile is not finished: it belongs on `work/`;
+     `lake build Grothe.X.Y Grothe.X.Z` (those modules only, never the whole of `Grothe`). A PR whose own modules do
+     not compile is not finished: label it `WIP`;
    - no `sorry`, no warnings;
    - every headline theorem has a `#print axioms` line in `scratch/Axioms.lean`, and is in
      `data/axioms/required.txt` if it is a main result;
@@ -195,59 +196,75 @@ at the top).
    - a new module is imported by the generated root (run `python3 tools/gen_root_imports.py`). There is one build
      target, `Grothe`; only generated research modules that no proof uses yet go in `data/root-imports-exclude.txt`.
 4. **Documentation:** never write counts of the axiom report or of native facts into documents (they conflict
-   with every concurrent delivery; the lists in `data/axioms/` and `scratch/Axioms.lean` are the record). If a
+   with every concurrent PR; the lists in `data/axioms/` and `scratch/Axioms.lean` are the record). If a
    bound, a hypothesis or the axiom report changed, update `README.md`,
-   `docs/overview.tex` and `docs/LEAN_DETAILS.md` in the same delivery. **Never build or commit `OVERVIEW.pdf`:**
+   `docs/overview.tex` and `docs/LEAN_DETAILS.md` in the same PR. **Never build or commit `OVERVIEW.pdf`:**
    CI rebuilds it from `docs/overview.tex` on master (`.github/workflows/overview.yml`), and merges never conflict on it
    (`merge=ours` in `.gitattributes`).
-5. **Deliver: push only the `ready/` branch,** `git push origin HEAD:ready/<agent-id>-<topic>`
-   (`<agent-id>` = your ID, e.g. `codex-7f3a`). That one check is the test and the guard. Do not also push your work branch at the same moment, and
-   do not run `scripts/cloud.sh check`, a droplet build or a full local build first: each would check the same
-   tree again. A delivery that changes `.github/workflows/` goes through a pull request instead (§9).
-   - CI merges it into the **current** master and checks the **merged** tree. Only if everything is green does it
-     fast-forward `master` to exactly that checked merge and delete the `ready/` branch. Then push your work branch
-     too if you keep working on it (§14 otherwise).
-   - If the check fails, master is untouched. Read the log, fix, commit, combine with master again (§6), and push
-     to the **same** `ready/` branch: the new push supersedes the failed run. A red check from an oversight (an
-     interaction with other modules, a lint) is normal and cheap. If the work is not finished after all, delete the
-     `ready/` branch (`git push origin --delete ready/<agent-id>-<topic>`) and continue on `work/`.
-   - If master moved while CI was checking, CI re-dispatches the delivery against the new master by itself (a
+5. **Open the PR** (`gh pr create --base master --head <agent-id>/<topic>`), if not already open, and remove any
+   `RFC`/`WIP` label. Its description says what it proves or changes, the issue it serves (`Closes #n`/`Refs #n`),
+   and what is still assumed. Ask for review in the PR (§7a).
+6. **Answer every review comment** (a change, or a reasoned rejection). A new push needs a new approval.
+7. **Land:** when the branch check is green and the PR is approved at its current commit, comment
+   **`/land <agent-id>`** on the PR (`.github/workflows/land.yml`). CI merges exactly that commit into the **current**
+   master commit (both pinned), checks the **merged** tree, and only if green fast-forwards master to exactly that
+   merge, deletes the branch, and GitHub marks the PR merged.
+   - If the landing check fails, master is untouched. Read the log, fix, commit, combine with master (§6), push,
+     get a new approval, `/land` again.
+   - If master moved while CI was checking, CI re-runs the landing check against the new master by itself (a
      notice, not a failure). Do nothing.
-   - Several `ready/` branches may be checked at the same time; the first green one moves master.
-6. **Watch your branches until they are merged or deleted.** `AGENT_ID=<your id> scripts/sync_master.sh` ends
-   with an audit of your remote branches: red checks, `ready/` branches that are green but not merged, conflicts
-   with the current master, branches already in master. Deal with every line: a red or conflicting branch is
-   merged with `origin/master`, fixed and pushed again (the same name); a green `ready/` branch that does not
-   merge has a conflict (fix it the same way) or changes `.github/workflows/` (open a PR); a stale branch is
-   deleted. A delivery is yours until it is on master. After every move of master, CI checks every `ready/` branch
-   (`.github/workflows/ready-sweep.yml`, seconds) and reports each one that no longer merges on the issues its
-   commits reference (`Refs`/`Closes #n`), naming the conflicting files and the owners; its own check does the same.
-   - **The janitor** (an agent the user names; currently `claude-b9ee`) acts on these reports as soon as they
-     appear: it merges `origin/master` into the conflicting branch
-     (never a rebase or force-push), resolves the conflicts that are mechanical (independent changes on both sides,
-     generated files, lists, documentation describing both), signs the merge commit with its own `Agent-ID`, and
-     pushes the same `ready/` branch; that check is the test, as for any delivery. Conflicts of decisions (one side
-     deletes, reverts or rewrites what the other changes; different bounds or hypotheses) it does not resolve: it
-     reports them on the issue for the owner or the user. An owner who finds a janitor merge on its branch merges
-     `origin/ready/<name>` into its work branch before continuing.
-7. **After the merge:** `scripts/sync_master.sh`, then either continue on the branch (§6 before the next delivery)
-   or, if you are done, clean up completely (§14).
+   - A PR that changes `.github/workflows/` cannot be pushed by CI's token: the user merges it by hand (§9).
+8. **Watch your branches and PRs until they are landed or closed: keep a timer.** Checks take minutes to hours, and
+   reviews and conflicts arrive later. Every agent runs a recurring check (Claude: a scheduled task; Codex: its
+   heartbeat), at least hourly while it has open work, of `AGENT_ID=<your id> scripts/sync_master.sh`. Its audit
+   lists each branch with its check, PR, labels, review and conflicts, and an ACTION line; deal with every ACTION.
+   After every move of master, CI checks every open PR (`.github/workflows/ready-sweep.yml`, seconds) and reports
+   each one that no longer merges on the PR and on the issues its commits reference.
+   - **The janitor** (an agent the user names; currently `claude-b9ee`) acts on these reports: it merges
+     `origin/master` into the conflicting PR branch (never a rebase or force-push), resolves the conflicts that are
+     mechanical (independent changes on both sides, generated files, lists, documentation describing both), signs the
+     merge commit with its own `Agent-ID`, and pushes the same branch. Conflicts of decisions (one side deletes,
+     reverts or rewrites what the other changes; different bounds or hypotheses) it does not resolve: it reports
+     them on the PR for the owner or the user. An owner who finds a janitor merge on its branch pulls it before
+     continuing.
+9. **After landing:** `scripts/sync_master.sh`, then clean up (§14).
 
-Report to the user: the `ready/` branch name, the CI run, and the resulting master commit.
+Report to the user: the PR, the landing run, and the resulting master commit.
+
+## 7a. Independent review (approved by the user, 3 November 2026, #225)
+
+Every PR is reviewed by the other side before it lands: a Codex reviewer for a `claude-…` branch, a Claude reviewer
+for a `codex-…` branch. **Everyone reviews open PRs**: look at them on every timer round (§7, step 8); the managers
+assign reviewers when needed (#225). `RFC` and `WIP` PRs get comments on the approach; only a PR without those labels
+gets a verdict.
+- **When:** while its checks run; read the diff and the check's log.
+- **What:** the statement matches the prose (quantifiers, domain, hypotheses), numerical premises and tolerances,
+  coverage of the domain, provenance of generated data, dependencies and trust (`native_decide`, axioms), and the
+  resource cost of the check.
+- **Comments:** in the PR, each starting with your ID. Suggestions that do not block say so.
+- **Verdict:** `scripts/review.sh <agent-id>/<topic> approve|block <reviewer-id> "<summary>"`. It sets the commit
+  status `Independent review` on the branch's current commit, so it applies to exactly the reviewed commit; a new
+  push needs a new review. (We all push as one GitHub account, so GitHub's own approve button cannot be used.)
+- **Status names:** `Lean proof check (verified before merge)` means the merged tree was built and checked;
+  `Lean proof check (no proof change)` means no Lean-relevant file changed and the proofs are those of the named
+  parent. Never present the second as a proof check.
 
 ## 8. CI: the proof check (`.github/workflows/lean.yml`)
 
 **Every run gives one result for its commit: green iff the proofs check.** A ✗ always means a real failure; a cache
-miss only makes the run take longer (it stays "pending"). The workflow runs on every pushed branch except `cloud/**`
-(§11), in three jobs:
+miss only makes the run take longer (it stays "pending"). The workflow runs on every pushed branch (a commit message
+containing `[skip ci]` skips it) and as the **landing check** of a PR (`/land`, §7), in three jobs:
 
-1. **route** (GitHub-hosted, seconds): for `ready/` it merges the branch into the current master first. It decides
+1. **route** (GitHub-hosted, seconds): for a landing check it merges the branch commit into the current master
+   first. It decides
    - whether anything Lean-relevant changed (the `LEAN_PATHS` list in the workflow: Lean sources and roots, the
      lakefile and toolchain, `scratch/Axioms.lean`, `data/axioms/`, the root generator, the check scripts and their
-     tests, the workflows). If not, the build is skipped and the run is green; documentation-only deliveries still
-     merge. A branch commit already contained in master is skipped too (master's own check covers it);
+     tests, the workflows). If not, the build is skipped and the run is green; documentation-only PRs still land
+     (with the status "no proof change"). A branch commit already contained in master is skipped too (master's own check covers it);
    - where to build: it computes the node caps' source digest (`scripts/caps_stamp.py --digest`, part of the cache
-     key) and looks for a verified build cache with that digest, of this branch or of master.
+     key) and looks for a verified build cache with that digest, of this branch or of master. **A branch check that
+     would need the droplet (the node caps changed) does not take it**: it fails at once, saying so. The landing
+     check, master, and an explicit `-f mode=caps` dispatch do use the droplet.
 2. **build:** on GitHub if such a cache exists (it restores it; `lake build Grothe` then replays the node caps in
    seconds), otherwise **the same job on the droplet** (self-hosted runner, labels `self-hosted, heavy`). The droplet
    builds in its persistent workspace: hours if the cap rows really changed, minutes otherwise. Then, on either
@@ -257,10 +274,11 @@ miss only makes the run take longer (it stays "pending"). The workflow runs on e
    saves the build as a cache. On master it saves the new master cache (§10).
    On GitHub the build **fails fast**: at the first failed module (`✖`) it is stopped and the check fails
    (`scripts/lake_failfast.sh`), so fix that error and push again; the droplet builds on (its work is kept).
-3. **finish** (GitHub-hosted, after a green build): on master it prunes old master caches; on `ready/` it recreates
-   the checked merge, verifies that its tree is identical to the checked one, fast-forwards `master`, marks the
-   commit with the status "Lean proof check (verified before merge)", closes the `Closes #n` issues and dispatches
-   master's own check (which saves the master cache).
+3. **finish** (GitHub-hosted, after a green build): on master it prunes old master caches; for a landing check it
+   runs `scripts/land_ready.sh`: the PR must still be open, without `RFC`/`WIP`, and approved at the checked commit;
+   it recreates the checked merge, verifies that its tree is identical to the checked one, fast-forwards `master`,
+   marks the commit "Lean proof check (verified before merge)", closes the `Closes #n` issues, comments on the PR
+   and dispatches master's own check (which saves the master cache).
 
 Also:
 - **Superseded runs are cancelled automatically:** a new push to a branch cancels that branch's older GitHub-hosted
@@ -271,62 +289,62 @@ Also:
 - **Merged branches are cleaned automatically** (`.github/workflows/cancel-merged.yml`): when a pull request is merged
   or a branch is deleted, its running checks are cancelled and its build caches deleted. Merged pull-request branches
   are deleted automatically (repository setting).
-- **Never use `[skip ci]` on a delivery**: the delivery check is what verifies and merges it. **Never cancel another
+- **`[skip ci]`** is fine for pushes you do not need checked (notes, scratch data). The landing check always runs. **Never cancel another
   agent's CI run** (`gh run cancel` acts with the user's account); ask its owner or the user.
-- **Force the droplet** for a pushed branch: `gh workflow run lean.yml --ref <branch> -f mode=caps`.
+- **Force the droplet** for a pushed branch: `gh workflow run lean.yml --ref <branch> -f mode=caps` (it occupies the
+  single runner for hours if the caps really changed; do it on purpose only).
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for
   stop/remove). It shares Mathlib with other droplet work through `~/grothe-caps/.lake/packages`; never delete that.
 - **At most 2 CI jobs per agent at a time.** An agent (one agent ID) may have at most two jobs queued or running in
-  GitHub Actions: the proof checks of its own branches (work branches and `ready/` deliveries) and its cloud jobs,
+  GitHub Actions: the proof checks of its own branches (pushes and landing checks) and its cloud jobs,
   each cloud shard counting as one. Before you push a branch or start a cloud job, run
   `scripts/ci_active.sh <agent-id> <your branches...>`: it lists your active jobs and exits 1 when there is no room.
-  `scripts/cloud.sh` enforces the limit for cloud jobs (set `AGENT_ID`). Master's own check (after your delivery
-  merges) does not count. If you are at the limit, wait for a job to finish; a re-push of the same branch replaces
+  `scripts/cloud.sh` enforces the limit for cloud jobs (set `AGENT_ID`). Master's own check (after your PR
+  lands) does not count. If you are at the limit, wait for a job to finish; a re-push of the same branch replaces
   its running check and does not add one.
-- **Cost:** the repository is private, so CI minutes are billed. Push work branches when it matters, not after every
-  small commit.
+- **Cost:** the repository is private, so CI minutes are billed. Push when a check helps you, not after every small
+  commit; use `[skip ci]` otherwise.
 
 ## 9. Pull requests
 
-- **Agents open a pull request only for deliveries that change `.github/workflows/`**: GitHub refuses CI's push of
-  those unless the repository secret `MERGE_TOKEN` exists (a fine-grained token for this repository with *Contents*
-  and *Workflows* read and write); CI says so and does not retry. Every other delivery goes through `ready/` alone.
-- **`ready/` branches are merged by CI only**, never by hand through a pull request: CI merges exactly the tree it
-  checked against the current master, a hand merge skips that check.
-- **Agents never merge a pull request.** The user merges, ideally when the branch is up to date with master and its
-  latest check is green; then the merged result is the tree CI checked. A merge is a push to master, so master's
-  check runs afterwards.
+- **A PR means "intended to land".** Labels: `RFC` (not finished; comments on the approach wanted) and `WIP` (still
+  being worked on; visible for early feedback). Neither can land until the label is removed.
+- **The author lands its own PR** with `/land <agent-id>` (§7). Nobody presses GitHub's merge button for an
+  ordinary PR: a button merge lands a combination nobody checked.
+- **Exception: PRs that change `.github/workflows/`.** CI's token may not push those (unless the repository secret
+  `MERGE_TOKEN` exists: a fine-grained token with *Contents* and *Workflows* read and write); CI says so and does not
+  retry. The user merges them by hand, after review, when the branch is up to date with master and green.
 
 ## 10. Build caches: who writes, who reads
 
 | cache | written only by | read by |
 |---|---|---|
 | GitHub master cache, key `lake-build-v3-<toolchain+manifest>-<caps digest>-<sha>` | the green check of master (on the droplet when the caps changed) | every CI run, cloud jobs |
-| GitHub branch cache, same key plus `-run<id>` | droplet checks of that branch, and green `ready/` checks | later checks of that branch (e.g. a `ready/` re-check after master moved); deleted with the branch |
+| GitHub branch cache, same key plus `-run<id>` | droplet checks of that branch, and green landing checks | later checks of that branch (e.g. a landing re-check after master moved); deleted with the branch |
 | droplet runner workspace (`~/actions-runner/_work`) | the runner only, one job at a time | nobody else; never copy into it or out of it |
 | laptop snapshot `.lake/master-cache` (main checkout) | `scripts/master_build_job.sh` (§5) | laptop worktrees through `scripts/clone_master_build.sh` |
-| tree handoff: artifact `lean-build-tree-<tree hash>`, kept 1 day | a green `ready/` check whose checked commit contains the current master | master's check, when master's tree is exactly that tree |
+| tree handoff: artifact `lean-build-tree-<tree hash>`, kept 1 day | a green landing check whose checked commit contains the current master | master's check, when master's tree is exactly that tree |
 
-- **Tree handoff:** a branch's caches are invisible to master's runs, so a green `ready/` check whose commit contains
+- **Tree handoff:** a branch's caches are invisible to master's runs, so a green landing check whose commit contains
   the current master also uploads its build as an artifact named after its tree. When master then becomes exactly
-  that tree (CI's fast-forward of a `ready/` delivery, or a hand merge of an up-to-date pull request from a `ready/`
-  branch), master's check downloads that build instead of the older master cache: its `lake build` only replays,
-  also when the node caps changed (no second droplet run). Work branches upload no handoff (each is a 0.4-3.5 GB
-  artifact); a hand-merged pull request from a work branch is rebuilt from the master cache. Only artifacts of
+  that tree (CI's landing fast-forward), master's check downloads that build instead of the older master cache: its
+  `lake build` only replays, also when the node caps changed (no second droplet run). Ordinary branch checks upload no
+  handoff (each is a 0.4-30 GB artifact); a hand-merged workflow PR is rebuilt from the master cache. Only artifacts of
   `lean.yml` runs are accepted.
 
 - **Correctness:** Lake reuses a compiled file only if the hashes of its source, its dependencies and the toolchain
   match, so a stale cache costs time, never correctness. The caps marker (`.lake/build/caps-closure.sha`) additionally
   ties the cached node caps to their source files; the digest in the cache key lets the route find the right cache.
 - **Trust:** a cached `native_decide` result is not re-executed. So only CI writes GitHub caches: master's green
-  check, droplet checks and green `ready/` checks for their own branch. Never publish a private build to GitHub.
+  check, droplet checks and green landing checks for their own branch. Never publish a private build to GitHub.
 - **Changing the node caps:** a change in their import closure (`scripts/caps_stamp.py --list`) makes the next check
   run on the droplet; it builds the caps once for exactly the tree that will be merged. After the merge, master's
   check also runs on the droplet (master has no cache for the new caps yet) and finds them already built in the same
   workspace. Never run a separate manual caps verification, and avoid touching that closure casually.
-- **Step by step, when a delivery changes the node caps** (e.g. a new cap row):
-  1. You push `ready/<agent-id>-<topic>` (push only that; a work branch pushed first costs one extra droplet run).
-  2. The route finds no GitHub cache for the new caps digest and sends the build job to the **droplet**. It builds
+- **Step by step, when a PR changes the node caps** (e.g. a new cap row):
+  1. Your branch checks fail at once with "needs the droplet" (they do not occupy it). Build the changed modules
+     locally or with `scripts/cloud.sh lean` while you work; when the PR is approved, `/land` it.
+  2. The landing check's route finds no GitHub cache for the new caps digest and sends the build job to the **droplet**. It builds
      only what changed (the new row and what imports it; hours if a row really changed), runs every check, marks the
      caps as verified, and **uploads `.lake/build` to GitHub's cache itself** (for this branch). The check shows
      "pending" meanwhile. Nothing is copied by hand.
@@ -335,7 +353,7 @@ Also:
      workspace already holds the new caps, so it takes minutes too. Either way it saves the new **master cache**,
      and every later run is GitHub-hosted again.
   4. GitHub caches are visible only to their own branch and to master. So a second branch with the same new caps
-     (e.g. `ready/` after a work branch) goes to the droplet once more: minutes, because the workspace is warm.
+     goes to the droplet once more: minutes, because the workspace is warm.
 - **Retention:** GitHub deletes cache entries unused for 7 days; a weekly job (`keepalive`) restores the master cache
   to keep it alive. Master keeps its newest two caches.
 
@@ -353,13 +371,11 @@ scripts/cloud.sh --runner droplet script tools/big.py       # script jobs needin
 scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; download results later
 ```
 
-- **Cloud jobs are for experiments, not for "does my branch build?".** If you want to know whether work you mean to
-  deliver is green, push it as `ready/<agent-id>-<topic>` instead: that one check builds and checks it, and merges it
-  only if green (a red `ready/` check merges nothing; fix and push again). Use `cloud/` for script jobs, sweeps and
-  builds of unfinished modules that are not meant to land yet.
+- **Cloud jobs are for experiments, not for "does my branch build?"**: every push of your branch already runs its
+  proof check. Use cloud jobs for script jobs, sweeps and sharded builds of modules.
 - **What runs:** the tip of the branch on GitHub (`--ref`; default: your current branch, which must be pushed and
-  up to date). For quick experiments push a scratch branch `cloud/<agent-id>-<topic>`: the proof check skips
-  `cloud/**`. Delete it when done (§14).
+  up to date). For quick experiments push a scratch branch `<agent-id>/<topic>` with `[skip ci]` in the commit
+  message, so the push does not also run the proof check. Delete it when done (§14).
 - **Lean jobs** (`lean`, `check`) run on GitHub-hosted runners (measured: 4 vCPUs, AMD EPYC, 15 GB RAM, 85 GB free
   disk; at most 6 hours per job) and start from the master cache, so only what your branch changes is built. `lean`
   deals the modules round-robin over the shards (at most 2 at a time, the per-agent limit of §8): split long `native_decide` checks into separate modules and run them
@@ -370,8 +386,8 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   `NSHARDS` and `OUT`; write results to `$OUT`. Inputs of committed data still live in `data/` (§13).
 - **Results:** `handoff/cloud/<id>/<shard>/` (`log.txt`, `summary.json`, and the files written to `$OUT`); artifacts
   stay on GitHub for 7 days. `cloud.sh` exits 0 iff every shard succeeded.
-- **Trust:** cloud jobs only read the master cache, never write one. A cloud `check` is advice; only the delivery
-  check (§7) merges. Never use it as a pre-check before delivering: push the `ready/` branch instead.
+- **Trust:** cloud jobs only read the master cache, never write one. A cloud `check` is advice; only the landing
+  check (§7) lands. Never use it as a pre-check before landing: the branch's own push check is that.
 - **Speed:** Lean compiles each module on one thread after its imports, so wall time follows the longest dependency
   chain, not the core count; more cores or shards help only where many modules are independent.
 - **Droplet** (`--runner droplet`): script jobs only, in a throwaway directory, never in the runner's workspace. It
@@ -438,7 +454,7 @@ no longer needed.
 2. **Local branches:** `git branch -d <branch>` for every merged branch you created. Delete an unmerged one (`-D`)
    only once its content is delivered or deliberately abandoned, and say so in the issue.
 3. **Remote branches:** delete your merged branches on GitHub (`git push origin --delete <branch>`). CI deletes the
-   `ready/` branches it merges, and GitHub deletes merged pull-request branches. Do not keep backup branches
+   branches it lands, and GitHub deletes merged pull-request branches. Do not keep backup branches
    (`…-before-…`, `…-pre-rebase`) once a rebase or merge is verified.
 4. **Droplet:** stop your jobs (`kill -- -"$(cat job.pid)"`), then delete your signed folder
    (`ssh yo 'rm -rf ~/<agent-id>-<topic>'`) once its results are committed (inputs in `data/`, research results in

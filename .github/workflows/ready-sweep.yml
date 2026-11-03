@@ -1,6 +1,6 @@
-name: ready/ conflict sweep
+name: PR conflict sweep
 
-# After every move of master, find the ready/ branches that no longer merge into it and report each one on the issues
+# After every move of master, find the open pull requests that no longer merge into it and report each one on the issues
 # its commits reference (scripts/ready_sweep.sh), so a conflict is seen at once, not when its owner happens to look.
 # A hand merge triggers it by its push; CI's auto-merge (whose token push starts no workflow) dispatches it from
 # lean.yml's finish job. Seconds per run: it only computes merges, it builds nothing.
@@ -13,6 +13,7 @@ on:
 permissions:
   contents: read
   issues: write
+  pull-requests: read
 
 concurrency:
   group: ready-sweep
@@ -26,7 +27,7 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - name: Report the ready/ branches that conflict with master
+      - name: Report the open pull requests that conflict with master
         env:
           GH_TOKEN: ${{ github.token }}
         run: scripts/ready_sweep.sh

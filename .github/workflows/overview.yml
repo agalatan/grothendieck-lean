@@ -54,11 +54,16 @@ jobs:
             git add OVERVIEW.pdf
             git commit -q -m "[ci] Rebuild OVERVIEW.pdf from docs/overview.tex"
             if git push -q origin pdf:master; then
-              sha=$(git rev-parse HEAD)
-              # a documentation-only commit on top of a checked tree: say so where the proof check status is shown
+              sha=$(git rev-parse HEAD); parent=$(git rev-parse HEAD^)
+              # a documentation-only commit: name the parent whose proofs it carries and that parent's own proof status,
+              # never a fresh "verified" claim (this run executed no proof)
+              pstate=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${parent}/statuses?per_page=100" \
+                --jq '[.[] | select(.context | startswith("Lean proof check"))] | first | .state // "unknown"' 2>/dev/null || echo unknown)
+              [ "$pstate" != unknown ] || pstate=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${parent}/check-runs?per_page=100" \
+                --jq '[.check_runs[] | select(.name == "build")] | first | .conclusion // "unknown"' 2>/dev/null || echo unknown)
               gh api -X POST "repos/${GITHUB_REPOSITORY}/statuses/${sha}" -f state=success \
-                -f context="Lean proof check (documentation-only commit)" \
-                -f description="Only OVERVIEW.pdf changed; the proofs are those of the parent commit" \
+                -f context="Lean proof check (no proof change)" \
+                -f description="Only OVERVIEW.pdf changed; proofs are those of ${parent:0:12} (its check: ${pstate})" \
                 -f target_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" >/dev/null || true
               echo "committed OVERVIEW.pdf as ${sha:0:7}"; exit 0
             fi
