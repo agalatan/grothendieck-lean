@@ -530,9 +530,18 @@ particular the zeroth moment is `exp(normSq a/rate)/rate`.
 integrability for every positive rate and fixed complex source using a
 half-rate exponential majorant. `LinearTiltedMomentsAudit` rejects transitive
 axioms outside `propext`, `Classical.choice`, and `Quot.sound`.
-These results supply one-variable polynomial integrability; they do not
-establish joint integrability for dependent source variables, a Fock
-coefficient identity, or a numerical Hilbert--Schmidt tail estimate.
+`QuadraticPolynomialIntegrability` proves a separable Gaussian majorant for
+`Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²` under exactly `A>0` and
+`A*C-B²>0`. The rate `(A*C-B²)/(A+C)` follows from an exact trace identity
+whose remainder is the sum of two squared norms. Thus finite mixed
+polynomials are genuinely integrable before applying product Fubini.
+`QuadraticPolynomialMoments.integral_mixed_monomial` and
+`integral_finite_mixed_polynomial` evaluate them by the explicit finite
+`momentValue`. The first-coordinate mean is `-(B/A)*w`, the outer rate is
+`(A*C-B²)/A`, and `momentValue_zero` retains mass `1/(A*C-B²)`.
+`QuadraticPolynomialMomentsAudit` enforces the same standard-three trust
+boundary. The historical Fock/operator identity, polynomial insertion into
+the full bipartite kernel and numerical Hilbert--Schmidt caps remain open.
 
 `AffineGaussianSquare` centers the
 conditional density without dividing by the radial profile. For arbitrary
@@ -853,6 +862,15 @@ assumed. The complete actual-node profile and shifted-parameter intervals
 remain to be certified.
 The gap data share the same tracked input and generator as the radial cuts;
 the checker uses kernel reduction and introduces no native facts.
+
+`PhiProductionIdentity` contains the existing `phaseEps_eq` and `phiT_sq`
+identities with their public names and statements unchanged. `PhiProductionDefs`
+contains the unchanged `Sphase` and `phiT` definitions and continuity of the
+phase polynomial, independently of structural head-table proofs. The identity
+imports these definitions and the generic Gram-expression soundness module,
+then audits both identities against the standard three
+axioms, independently of the global phase-cover computation. The existing
+`PhiBound` proof imports this identity and retains its numerical cover.
 
 `LocalAffineSquareIntegralBounds` supplies both affine integration orders with
 `ContinuousOn` restricted to the actual closed cell. Coordinate clamping

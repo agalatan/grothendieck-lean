@@ -952,6 +952,8 @@ import Grothe.UpperChaos.PhiCoverData
 import Grothe.UpperChaos.PhiDegreeChunksDraft
 import Grothe.UpperChaos.PhiDense
 import Grothe.UpperChaos.PhiHorner
+import Grothe.UpperChaos.PhiProductionDefs
+import Grothe.UpperChaos.PhiProductionIdentity
 import Grothe.UpperChaos.PhiSourceDenBinding
 import Grothe.UpperChaos.PhiSourceDenChunk_o0_n8
 import Grothe.UpperChaos.PhiSourceDenChunk_o1000_n8
@@ -2244,6 +2246,9 @@ import Grothe.UpperChaos.Q0SourceSavedLinearCheckCore
 import Grothe.UpperChaos.Q0SourceSavedLinearChecks
 import Grothe.UpperChaos.Q0SourceSavedLinearModel
 import Grothe.UpperChaos.Q0WickChunking
+import Grothe.UpperChaos.QuadraticPolynomialIntegrability
+import Grothe.UpperChaos.QuadraticPolynomialMoments
+import Grothe.UpperChaos.QuadraticPolynomialMomentsAudit
 import Grothe.UpperChaos.QuadraturePartition
 import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialCutoff
