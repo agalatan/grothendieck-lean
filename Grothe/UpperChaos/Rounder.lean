@@ -1,7 +1,7 @@
 import Grothe.UpperChaos.Structural
 import Grothe.UpperChaos.TaylorPhase
 import GrotheKernel.PhiCheck
-import Grothe.UpperChaos.PhaseTermsDefs
+import Grothe.UpperChaos.PhiProductionDefs
 
 /-!
 # The concrete rounding of the upper certificate
@@ -30,16 +30,6 @@ noncomputable section
 
 /-! ### The phase polynomial -/
 
-/-- `S(U, V, W) = Σ c U^i V^j W^k`. -/
-def Sphase (U V W : ℝ) : ℝ :=
-  (phaseTerms.map fun t => (t.2 : ℝ) * U ^ t.1.1 * V ^ t.1.2.1 * W ^ t.1.2.2).sum
-
-lemma continuous_Sphase : Continuous fun x : ℝ × ℝ × ℝ => Sphase x.1 x.2.1 x.2.2 := by
-  unfold Sphase
-  induction phaseTerms with
-  | nil => simp; exact continuous_const
-  | cons t l ih => simp only [List.map_cons, List.sum_cons]; exact Continuous.add (by fun_prop) ih
-
 /-! ### The profile -/
 
 /-- `C(j − ½, j − k) = Π_{i < j−k} (k + ½ + i)/(i + 1)`. -/
@@ -66,11 +56,6 @@ lemma continuous_vprof : Continuous vprof := by
 /-- **The base phase** `F₀(z, w) = phase(z + √(1+a²) v(|z|²) w)`. -/
 def F0 (u : ℂ × ℂ) : ℂ :=
   Haag.ph (u.1 + ((√(1 + (aQ : ℝ) ^ 2) * vprof (‖u.1‖ ^ 2) : ℝ) : ℂ) * u.2)
-
-/-- **The phase** `φ = D e^{−ε(U+V)} S(U, V, W)`. -/
-def phiT (u : ℂ × ℂ) : ℝ :=
-  (conj u.1 * u.2).im * Real.exp (-(phaseEpsQ : ℝ) * (‖u.1‖ ^ 2 + ‖u.2‖ ^ 2))
-    * Sphase (‖u.1‖ ^ 2) (‖u.2‖ ^ 2) (conj u.1 * u.2).re
 
 /-- **The unsmoothed rounding** `T = F₀ · P₃(φ)`. -/
 def Tround (u : ℂ × ℂ) : ℂ := F0 u * P3 (phiT u)

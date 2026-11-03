@@ -5,7 +5,7 @@ import Mathlib.Tactic
 /-!
 # The conditional modes selected by the degree-501 contraction
 
-`contract_primary_blocks.py` selects by `(c,d)`, rather than taking a prefix
+The mode set below selects by `(c,d)`, rather than taking a prefix
 of the larger degree-531 conditional table. The row coordinates are the
 charge `k` and the conditional first index `c`.
 
@@ -22,7 +22,7 @@ set_option maxRecDepth 4096
 @[irreducible] def rows : Finset (ℕ × ℕ) :=
   ((range 252) ×ˢ (range 252)).filter fun kc => 1 ≤ kc.1 + kc.2 ∧ kc.1 + kc.2 ≤ 251
 
-/-- The historical pair lookup, with the subtraction guarded by `rows`. -/
+/-- The pair lookup, with the subtraction guarded by `rows`. -/
 def mode (kc : ℕ × ℕ) : ℕ × ℕ := (kc.2, kc.2 + kc.1 - 1)
 
 /-- Canonical modes actually needed for degree 501. -/
@@ -69,7 +69,7 @@ theorem image_rows : rows.image mode = modes := by
       · dsimp [mode]
         omega
 
-/-- The original contraction selects 31,877 distinct conditional modes. -/
+/-- The contraction selects 31,877 distinct conditional modes. -/
 theorem card_modes : modes.card = 31877 := by
   have hinj : Function.Injective (fun dc : Σ _ : ℕ, ℕ => (dc.2, dc.1)) := by
     rintro ⟨d, c⟩ ⟨e, f⟩ h

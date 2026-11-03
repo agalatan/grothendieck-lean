@@ -10,6 +10,7 @@ from fractions import Fraction
 from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
+CHUNK = 32   # terms per chunk: about 1 s per term for the kernel (`decide +kernel`), a few KB of proof per chunk
 source_path = root / 'Grothe/Upper/Data.lean'
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--check', action='store_true', help='compare generated files without writing to the repository')
@@ -34,8 +35,8 @@ for item in strings:
         raise ValueError(f'unexpected monomial: {item}')
     parsed.append(Fraction(coeff))
 chunks = []
-for offset in range(0, len(parsed), 8):
-    group = parsed[offset:offset + 8]
+for offset in range(0, len(parsed), CHUNK):
+    group = parsed[offset:offset + CHUNK]
     count = len(group)
     den = math.lcm(*(f.denominator for f in group))
     name = f'PhiSourceDenChunk_o{offset}_n{count}'
@@ -43,20 +44,18 @@ for offset in range(0, len(parsed), 8):
 import Grothe.Upper.Data
 import Mathlib.Tactic
 
-/-! Untrusted candidate; this equality must be checked by Lean. Source SHA256:
+/-! Untrusted candidate; this equality is checked by the kernel (`decide +kernel`). Source SHA256:
 {source_hash}
-Agent-ID: codex-8c4d. -/
+Agent-ID: codex-8c4d (generator), claude-b9ee (kernel-checked form). -/
 
 namespace Grothe.UpperChaos.{name}
 
-set_option maxRecDepth 65536 in
-set_option maxHeartbeats 8000000 in
-set_option cbv.maxSteps 1000000 in
+set_option maxRecDepth 100000 in
 theorem source_chunk_commonDen :
     GrotheKernel.commonDen
       (((Grothe.Upper.phaseStrs.drop {offset}).take {count}).map GrotheKernel.parseTerm) =
       {den} := by
-  cbv
+  decide +kernel
 
 end Grothe.UpperChaos.{name}
 ''')
@@ -82,17 +81,13 @@ open GrotheKernel Grothe.UpperChaos.PhiSourceDenChunks
 def candidateSizes : List Nat := [{sizes}]
 def candidateDenominators : List Nat := [{dens}]
 
-set_option maxRecDepth 65536 in
-set_option maxHeartbeats 8000000 in
-set_option cbv.maxSteps 1000000 in
+set_option maxRecDepth 100000 in
 theorem source_covered : Grothe.Upper.phaseStrs.length ≤ candidateSizes.sum := by
-  cbv
+  decide +kernel
 
-set_option maxRecDepth 65536 in
-set_option maxHeartbeats 8000000 in
-set_option cbv.maxSteps 1000000 in
+set_option maxRecDepth 100000 in
 theorem literal_lcm : candidateDenominators.foldl Nat.lcm 1 = {full_den} := by
-  cbv
+  decide +kernel
 
 /-- Every source chunk must still be independently linked to the literal
 candidate list. This theorem does not assume such a link implicitly. -/
@@ -113,10 +108,10 @@ manifest = {'status': 'untrusted candidates; no Lean proof checked in this gener
             'assembly_note': 'hchunks source-binding equality remains an explicit hypothesis; no denseA0 or cover-leaf claims'}
 
 chunks = manifest['chunks']
-if len(chunks) != 143 or sum(c['count'] for c in chunks) != 1140:
+if len(chunks) != -(-len(parsed) // CHUNK) or sum(c['count'] for c in chunks) != len(parsed):
     raise SystemExit('unexpected chunk partition')
 for i, c in enumerate(chunks):
-    if c['offset'] != 8 * i:
+    if c['offset'] != CHUNK * i:
         raise SystemExit(f'unexpected offset in chunk {i}')
 imports = ''.join(f"import {c['module']}\n" for c in chunks)
 lemmas = ',\n    '.join(c['module'].removeprefix('Grothe.UpperChaos.') + '.source_chunk_commonDen'

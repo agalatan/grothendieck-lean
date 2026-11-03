@@ -39,6 +39,9 @@ sub-issues. Labels give the area (`area: lean`, `area: docs`, `area: infra`, `ar
 the side (`side: lower`, `side: upper`), the owner (`owner: codex`, `owner: claude`) and the status
 (`status: in progress`, `status: blocked`, `status: needs decision`).
 
+- **Every PR serves a task issue.** The PR description names at least one **open issue labelled `type: task`**
+  (`Closes #n` or `Refs #n`). An epic alone does not count: create the task first, with its area/side/owner labels
+  and the context. CI refuses to land a PR without one (`scripts/land_ready.sh`, a notice like a missing review).
 - **Before starting:** find the issue (`gh issue list`, `gh issue view <n>`); if none exists, create one with full
   context. Comment that you are starting, with your branch and worktree. Set the `owner:` and `status: in progress`
   labels.
@@ -124,8 +127,10 @@ Resuming an existing worktree: sync, then combine your branch with master (§6) 
 **What to build on the laptop.** Only the modules you change and the modules that import them:
 `lake build Grothe.X.Y Grothe.X.Z`. **Never `lake build` or `lake build Grothe`:** the root includes the 15 node-cap
 rows (`CapRowKK`) and their assembly `CapNodes`, about 21 CPU-hours cold. Those are verified by CI only (§8, §10),
-and nothing but the root imports them, so you never need them locally. For a full check of your branch, push it
-(§8) or run `scripts/cloud.sh check` (§11).
+and nothing but the root imports them, so you never need them locally. **While developing, check your work with
+small, targeted builds of the modules you changed** (§12, "where to build"), not by pushing a WIP branch (a full proof
+check on a shared runner) or starting a cloud job. Push for a full check at a milestone (§8), or run
+`scripts/cloud.sh check` (§11) when a targeted build cannot answer the question.
 
 **The local master build (shared by every agent on the laptop).** Start every worktree from it instead of an empty
 build: Lake then compiles only what your branch changes.
@@ -169,7 +174,7 @@ especially a re-push after a CI failure, a review or a conflict):
    - sorted one-entry-per-line lists (`scratch/Axioms.lean`, `data/axioms/*.txt`, `data/root-imports-exclude.txt`)
      are union-merged by git (`.gitattributes`); keep them sorted and duplicate-free (CI checks);
    - shared scripts: take master's version and re-apply only your intended change;
-   - `README.md` needs a hand merge: describe the combined state.
+   - `README.md` is frozen (§7, step 4): a PR that still touches it drops its README change in the merge.
 5. **Quick local checks only (seconds to minutes):** `python3 tools/gen_root_imports.py --check`, the script tests
    (`python3 scripts/test_*.py`) if you touched scripts, and the Lean modules you are editing anyway while you work.
    Do not repeat CI's full check before pushing (§7): a red check costs one more push, a duplicate check costs a
@@ -195,9 +200,11 @@ without a PR (`RFC`/`WIP` labels for early feedback).
    - every new `native_decide` fact is in `data/axioms/native.txt`;
    - a new module is imported by the generated root (run `python3 tools/gen_root_imports.py`). There is one build
      target, `Grothe`; only generated research modules that no proof uses yet go in `data/root-imports-exclude.txt`.
-4. **Documentation:** never write counts of the axiom report or of native facts into documents (they conflict
-   with every concurrent PR; the lists in `data/axioms/` and `scratch/Axioms.lean` are the record). If a
-   bound, a hypothesis or the axiom report changed, update `README.md`,
+4. **Documentation:** **do not write in `README.md` for now** (user, 3 November 2026): every concurrent PR used to
+   add its paragraph there and they conflicted on every merge. The PR description and its comments carry the
+   context of a change; `README.md` is revised in one pass later. Never write counts of the axiom report or of
+   native facts into documents (they conflict with every concurrent PR; the lists in `data/axioms/` and
+   `scratch/Axioms.lean` are the record). If a bound, a hypothesis or the axiom report changed, update
    `docs/overview.tex` and `docs/LEAN_DETAILS.md` in the same PR. **Never build or commit `OVERVIEW.pdf`:**
    CI rebuilds it from `docs/overview.tex` on master (`.github/workflows/overview.yml`), and merges never conflict on it
    (`merge=ours` in `.gitattributes`).
@@ -282,11 +289,20 @@ containing `[skip ci]` skips it) and as the **landing check** of a PR (`/land`, 
    and dispatches master's own check (which saves the master cache).
 
 Also:
-- **Superseded runs are cancelled automatically:** a new push to a branch cancels that branch's older GitHub-hosted
-  check (one concurrency group per branch). Master's checks are never cancelled by a newer one starting (a long first
-  build would be lost); instead, when a master check goes green it cancels the still-running checks of older master
-  commits, whose trees it contains. What counts is the newest master commit's own result. Droplet checks are never cancelled either (a killed build leaves orphaned processes); they queue on the
-  single runner.
+- **Superseded runs are cancelled automatically:** a new push to a branch cancels that branch's older check, queued
+  or running, on GitHub-hosted and heavy runners alike (one concurrency group per branch; the build runs in its own
+  process group, which the step kills whole on cancellation, so nothing is orphaned). So a branch has **at most one
+  check at a time, of its newest commit**: push once per milestone, not after every commit. Master's checks are never
+  cancelled by a newer one starting (a long first build would be lost); instead, when a master check goes green it
+  cancels the still-running checks of older master commits, whose trees it contains. What counts is the newest master
+  commit's own result. Runs that really build the node caps (no verified cache, or `-f mode=caps`) are never cancelled
+  either: hours of work.
+- **Where a check runs:** GitHub-hosted (4 vCPUs, 16 GB) unless it needs the heavy runners (`self-hosted, heavy`:
+  the droplet and the temporary big droplet): the node caps must be built (no verified cache), `-f mode=caps`, the
+  change **modifies or deletes** existing files under the kernel-heavy trees (`Grothe/UpperChaos/`, `Grothe/Upper/`,
+  `GrotheKernel/`, `GrotheCapsKernel/`, the lake files: rebuilding the big kernel-checked modules kills a 16 GB VM),
+  or the repository variable `FORCE_HEAVY` is `true` (emergency switch: everything heavy). A change that only adds
+  modules runs hosted: the restored cache replays everything else. Keep the heavy slots for what needs them.
 - **Merged branches are cleaned automatically** (`.github/workflows/cancel-merged.yml`): when a pull request is merged
   or a branch is deleted, its running checks are cancelled and its build caches deleted. Merged pull-request branches
   are deleted automatically (repository setting).
@@ -296,6 +312,10 @@ Also:
   single runner for hours if the caps really changed; do it on purpose only).
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for
   stop/remove). It shares Mathlib with other droplet work through `~/grothe-caps/.lake/packages`; never delete that.
+- **At most one checked WIP branch per agent.** Of an agent's branches with an open `WIP`/draft PR, only one may
+  have a proof check queued or running; a push to a second one is not checked (CI says so in a warning) until the
+  first check ends. Push the others with `[skip ci]`: there is no bound on those. Landable PRs are not capped by
+  this rule (only by the next one).
 - **At most 2 CI jobs per agent at a time.** An agent (one agent ID) may have at most two jobs queued or running in
   GitHub Actions: the proof checks of its own branches (pushes and landing checks) and its cloud jobs,
   each cloud shard counting as one. Before you push a branch or start a cloud job, run
@@ -303,11 +323,13 @@ Also:
   `scripts/cloud.sh` enforces the limit for cloud jobs (set `AGENT_ID`). Master's own check (after your PR
   lands) does not count. If you are at the limit, wait for a job to finish; a re-push of the same branch replaces
   its running check and does not add one.
-- **Cost:** the repository is private, so CI minutes are billed. Push when a check helps you, not after every small
-  commit; use `[skip ci]` otherwise.
+- **Cost:** the repository is public, so GitHub-hosted minutes are free; the heavy runners are ours (the droplet and
+  temporary big droplets, billed by the hour) and every check queues behind the others'. Push when a check helps
+  you, not after every small commit; use `[skip ci]` otherwise.
 
 ## 9. Pull requests
 
+- **A PR names its task issue** (`Closes #n`/`Refs #n`, an open `type: task` issue, §1); CI does not land it otherwise.
 - **A PR means "intended to land".** Labels: `RFC` (not finished; comments on the approach wanted) and `WIP` (still
   being worked on; visible for early feedback). Neither can land until the label is removed.
 - **The author lands its own PR** with `/land <agent-id>` (§7). Nobody presses GitHub's merge button for an
@@ -373,7 +395,8 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 ```
 
 - **Cloud jobs are for experiments, not for "does my branch build?"**: every push of your branch already runs its
-  proof check. Use cloud jobs for script jobs, sweeps and sharded builds of modules.
+  proof check, and "do my modules build?" is a targeted `lake build` on a machine with CPU room (§12), not a cloud
+  job and not a push. Use cloud jobs for script jobs, sweeps and sharded builds of modules.
 - **What runs:** the tip of the branch on GitHub (`--ref`; default: your current branch, which must be pushed and
   up to date). For quick experiments push a scratch branch `<agent-id>/<topic>` with `[skip ci]` in the commit
   message, so the push does not also run the proof check. Delete it when done (§14).
@@ -393,11 +416,23 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   chain, not the core count; more cores or shards help only where many modules are independent.
 - **Droplet** (`--runner droplet`): script jobs only, in a throwaway directory, never in the runner's workspace. It
   queues behind the runner's other jobs (proof checks included).
-- **Cost:** every job-minute is billed beyond the free quota, and shards multiply minutes. Prefer few, purposeful
-  jobs; never poll in loops that re-dispatch.
+- **Cost:** GitHub-hosted minutes are free (public repository), but the runners are shared by every agent, shards
+  multiply the load, and `--runner droplet` occupies a heavy slot by the hour. Prefer few, purposeful jobs; never
+  poll in loops that re-dispatch.
 
 ## 12. Shared machines
 
+- **Where to build while developing (every AI, Claude and Codex alike):** prefer **small, targeted `lake build`s of
+  the modules you changed** (and what imports them) over pushing a WIP branch or starting a cloud job. Run them, in
+  this order, wherever there is CPU room: on **yo** (`ssh yo`, 8 vCPUs, 31 GB) if it has room; else on the **big
+  droplet** (`ssh big`, 48 vCPUs, 188 GB; temporary, while it exists) if it has room; else **locally** on the laptop.
+  "Room" means **at least 50 % of the machine's CPUs idle when you look**: `nproc` against the 1-minute load in
+  `cat /proc/loadavg` (yo: load ≤ 4; big: load ≤ 24), or `scripts/droplet_status.sh` for yo. Then use at most that
+  room (`taskset -c` a range of cores; Lake has no `-j`, so pin the cores), in your own signed folder (§2) with the
+  shared Mathlib packages linked (`~/grothe-caps/.lake/packages` on both droplets, symlink), in a process group
+  (below), never in a runner workspace, and delete the folder when done (§14). Never run Lean on a droplet while a
+  caps run's bounded builder is active there (its foreign-work guard aborts the run). A full proof check is what a
+  push at a milestone is for (§8).
 - **Laptop:** 8 cores, shared by every agent. At most one heavy job at a time across all agents; no full builds (§5).
   Kill only your own processes, by pid or process group. Never `pkill -f` or `killall`: they kill other agents' work.
 - **Starting and stopping long jobs (builds, scans): always in their own process group.** Killing a `lake` process
@@ -436,7 +471,7 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   `scratch/Axioms.lean`.
 - The repository proves only the current best bounds, written as if designed from the start: no history, no
   superseded certificates, no "v2" naming. Research material goes in `handoff/` (git-ignored).
-- Bounds and hypotheses are stated in `README.md`, `docs/overview.tex` (CI builds `OVERVIEW.pdf` from it) and
+- Bounds and hypotheses are stated in `docs/overview.tex` (CI builds `OVERVIEW.pdf` from it) and
   `docs/LEAN_DETAILS.md` (§7, step 4).
 - The node caps (`CapRowKK`, `CapNodes`) are part of `Grothe` and verified by CI (§8, §10). The cap checker
   (`GrotheCapsKernel/`) is its own precompiled library on purpose (a change to a precompiled library invalidates every

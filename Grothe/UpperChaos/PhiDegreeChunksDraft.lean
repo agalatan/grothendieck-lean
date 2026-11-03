@@ -9,10 +9,10 @@ namespace Grothe.UpperChaos.PhiDegreeChunksDraft
 
 /-- Parse only the three exponent fields, without parsing a rational coefficient. -/
 def parseIndices (s : String) : ℕ × ℕ × ℕ :=
-  match s.splitOn ":" with
+  match splitChars ':' s.toList with
   | [p, _] =>
-    match p.splitOn "," with
-    | [i, j, k] => ((i.toNat?).getD 0, (j.toNat?).getD 0, (k.toNat?).getD 0)
+    match splitChars ',' p with
+    | [i, j, k] => (natOfChars i, natOfChars j, natOfChars k)
     | _ => (0, 0, 0)
   | _ => (0, 0, 0)
 
