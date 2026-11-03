@@ -147,6 +147,7 @@ theorem projected_energy_budget :
   norm_num [projectedCapQ, tableCapQ, energyErrorQ]
 
 def massNormQ : ℚ := 45 / 10 ^ 12
+def regularRawCapQ : ℚ := rawCapQ - massNormQ
 def inputCapQ : ℚ := 36 / 10 ^ 11
 def otherRawCapQ : ℚ := 1 / 10 ^ 10
 private def u : ℚ := 1 / 2 ^ 53
@@ -169,12 +170,20 @@ theorem input_budget :
   constructor <;> norm_num [exceptionCenterQ, exceptionErrorQ, regularErrorQ,
     inputCapQ, massNormQ, scaleError, scale, relative, u, tiny]
 
-/-- Includes continuous omission and the explicit reserve for every other
-raw-output cost, including the separately joined far tail. -/
+/-- Includes the continuous omitted union and the remaining regular-source
+raw-output costs. Physical regions must be assigned exactly once. -/
 theorem raw_budget :
     massNormQ + (10 / 7 : ℚ) *
       (gamma749Q * 18 * inputCapQ + 18 * inputCapQ) + otherRawCapQ ≤ rawCapQ := by
   norm_num [massNormQ, gamma749Q, u, inputCapQ, otherRawCapQ, rawCapQ]
+
+/-- After the continuous union is charged once, this is the budget left
+for the actual regular-source approximation and its finite arithmetic. -/
+theorem regular_raw_budget :
+    (10 / 7 : ℚ) * (gamma749Q * 18 * inputCapQ + 18 * inputCapQ) +
+      otherRawCapQ ≤ regularRawCapQ := by
+  unfold regularRawCapQ
+  linarith [raw_budget]
 
 end Grothe.Upper.CompositeComparisonData
 
@@ -185,6 +194,7 @@ run_cmd do
       ``Grothe.Upper.CompositeComparisonData.transfer_value_lt,
       ``Grothe.Upper.CompositeComparisonData.input_budget,
       ``Grothe.Upper.CompositeComparisonData.raw_budget,
+      ``Grothe.Upper.CompositeComparisonData.regular_raw_budget,
       ``Grothe.Upper.CompositeComparisonData.projected_energy_budget] do
     let dependencies ← Lean.collectAxioms target
     let unexpected := dependencies.filter fun n => !allowed.contains n

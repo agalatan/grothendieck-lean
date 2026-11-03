@@ -1,5 +1,6 @@
 import Grothe.UpperChaos.CompositeComparison
 import Grothe.UpperChaos.ProductionRetainedEnergy
+import Grothe.UpperChaos.ProductionF0Omission
 import Grothe.Upper.GroupedBridge
 
 /-! Propagate the actual F0 source approximation through the frozen correction,
@@ -67,6 +68,44 @@ theorem weighted_comparison_of_raw_source (h : Inputs) (a0 : ℕ → ℕ → ℕ
       (CompositeComparisonData.comparisonCapQ : ℝ) :=
   weighted_energy_comparison h (energy_close_of_raw_source a0 hraw htable)
 
+/-- Replace the full raw-source input by an actual approximation on the
+entire complement of the three supplied root gaps and s>100. Their continuous
+union is charged once; quadrature-panel coverage is not inferred. -/
+theorem raw_error_of_regular_source (gaps : Fin 3 → Set ℝ)
+    (hg : ∀ j, MeasurableSet (gaps j))
+    (h13 : ∀ j, gaps j ⊆ Set.Ici (13 : ℝ))
+    (hwidth : volume (FixedChaosSmoothing.F0Omission.threeRootGaps gaps) ≤
+      ENNReal.ofReal (8 / 10 ^ 16 : ℝ))
+    (a0 : ℕ → ℕ → ℕ → ℚ)
+    (hregular : ‖FixedChaosSmoothing.F0Omission.completeRegularHead hg -
+      gradedHermite 251 a0‖ ≤ (CompositeComparisonData.regularRawCapQ : ℝ)) :
+    ‖FixedChaosSmoothing.productionF0Head - gradedHermite 251 a0‖ ≤
+      (CompositeComparisonData.rawCapQ : ℝ) := by
+  have h := FixedChaosSmoothing.F0Omission.complete_head_approx_error_le
+    hg h13 hwidth a0 hregular
+  have he : (CompositeComparisonData.massNormQ : ℝ) +
+      (CompositeComparisonData.regularRawCapQ : ℝ) =
+        (CompositeComparisonData.rawCapQ : ℝ) := by
+    rw [CompositeComparisonData.regularRawCapQ, Rat.cast_sub]
+    ring
+  exact h.trans_eq he
+
+theorem energy_close_of_regular_source (gaps : Fin 3 → Set ℝ)
+    (hg : ∀ j, MeasurableSet (gaps j))
+    (h13 : ∀ j, gaps j ⊆ Set.Ici (13 : ℝ))
+    (hwidth : volume (FixedChaosSmoothing.F0Omission.threeRootGaps gaps) ≤
+      ENNReal.ofReal (8 / 10 ^ 16 : ℝ))
+    (a0 : ℕ → ℕ → ℕ → ℚ)
+    (hregular : ‖FixedChaosSmoothing.F0Omission.completeRegularHead hg -
+      gradedHermite 251 a0‖ ≤ (CompositeComparisonData.regularRawCapQ : ℝ))
+    (htable : ∑ p ∈ headIdx 501,
+      |energy (FixedChaosSmoothing.retainedSmoothed a0) p - (energyTable p : ℝ)| ≤
+        (CompositeComparisonData.tableCapQ : ℝ)) :
+    ∑ p ∈ headIdx 501, |energy response p - (energyTable p : ℝ)| ≤
+      (CompositeComparisonData.energyErrorQ : ℝ) :=
+  energy_close_of_raw_source a0
+    (raw_error_of_regular_source gaps hg h13 hwidth a0 hregular) htable
+
 /-- The actual stored head and actual Gaussian rounding are joined without
 assuming the old, tighter comparison hypothesis from `DirectHyps`. -/
 theorem head_residual_of_raw_source (h : Inputs) (a0 : ℕ → ℕ → ℕ → ℚ)
@@ -118,6 +157,24 @@ theorem head_residual_of_raw_source (h : Inputs) (a0 : ℕ → ℕ → ℕ → �
     _ = (CompositeComparisonData.headResidualQ : ℝ) := by
       simp only [CompositeComparisonData.headResidualQ, Rat.cast_add]
       ring
+
+/-- The actual regular-source certificate feeds the same selected head,
+with all six Gaussian premises and the exact output-table fit still explicit. -/
+theorem head_residual_of_regular_source (h : Inputs) (gaps : Fin 3 → Set ℝ)
+    (hg : ∀ j, MeasurableSet (gaps j))
+    (h13 : ∀ j, gaps j ⊆ Set.Ici (13 : ℝ))
+    (hwidth : volume (FixedChaosSmoothing.F0Omission.threeRootGaps gaps) ≤
+      ENNReal.ofReal (8 / 10 ^ 16 : ℝ))
+    (a0 : ℕ → ℕ → ℕ → ℚ)
+    (hregular : ‖FixedChaosSmoothing.F0Omission.completeRegularHead hg -
+      gradedHermite 251 a0‖ ≤ (CompositeComparisonData.regularRawCapQ : ℝ))
+    (htable : ∑ p ∈ headIdx 501,
+      |energy (FixedChaosSmoothing.retainedSmoothed a0) p - (energyTable p : ℝ)| ≤
+        (CompositeComparisonData.tableCapQ : ℝ)) :
+    ∑ j ∈ range 251, |kernelCoeff (energy rounding) j -
+      if j = 0 then (slopeQ : ℝ) else 0| ≤ (CompositeComparisonData.headResidualQ : ℝ) :=
+  head_residual_of_raw_source h a0
+    (raw_error_of_regular_source gaps hg h13 hwidth a0 hregular) htable
 
 end
 end Grothe.UpperChaos.CompositeComparison

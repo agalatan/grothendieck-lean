@@ -207,6 +207,7 @@ import Grothe
 #print axioms Grothe.Upper.CompositeComparisonData.projected_energy_budget
 #print axioms Grothe.Upper.CompositeComparisonData.raw_budget
 #print axioms Grothe.Upper.CompositeComparisonData.raw_to_projected_budget
+#print axioms Grothe.Upper.CompositeComparisonData.regular_raw_budget
 #print axioms Grothe.Upper.CompositeComparisonData.residual_value
 #print axioms Grothe.Upper.CompositeComparisonData.transfer_value_lt
 #print axioms Grothe.Upper.CompositeComparisonData.upper_lt_decimal
@@ -654,7 +655,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.CommonDenAppend.commonDen_append
 #print axioms Grothe.UpperChaos.CompositeComparison.difference_components
 #print axioms Grothe.UpperChaos.CompositeComparison.energy_close_of_raw_source
+#print axioms Grothe.UpperChaos.CompositeComparison.energy_close_of_regular_source
 #print axioms Grothe.UpperChaos.CompositeComparison.head_residual_of_raw_source
+#print axioms Grothe.UpperChaos.CompositeComparison.head_residual_of_regular_source
 #print axioms Grothe.UpperChaos.CompositeComparison.weighted_energy_comparison
 #print axioms Grothe.UpperChaos.ConcreteRetainedBands.first_degree
 #print axioms Grothe.UpperChaos.ConcreteRetainedBands.first_error
@@ -688,6 +691,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.F0ConditionalNode.coefficient_eq_integral
 #print axioms Grothe.UpperChaos.F0ConditionalNode.sum_sq_coefficient_le_one
 #print axioms Grothe.UpperChaos.F0ConditionalNode.weighted_sum_sq_le_mass
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.F0Omission.complete_head_approx_error_le
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.F0Omission.continuous_mass_budget
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.F0Omission.norm_source_union_tail_le
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.actualEntry_eq_finiteMoment
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.actualEntry_eq_matrixMoment2
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.actualEntry_eq_matrixRecurrence

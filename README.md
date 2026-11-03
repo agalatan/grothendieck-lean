@@ -207,6 +207,12 @@ numerical and Gaussian premises remain open; this is a conditional head theorem.
 tensor coefficient by exact charge cancellation. It expresses the full source
 error using the actual conditional coefficients at `sqrt(s)` with density
 `exp(-s)` once, without dividing by the profile or assuming a quadrature rule.
+The continuous omission route uses one indicator for all three supplied root
+gaps together with `s > 100`. With total gap width at most `8·10⁻¹⁶` beyond
+`s = 13`, their mass plus `exp(-100)` fits the same `45·10⁻¹²` L² reserve.
+The regular-source input must approximate the entire complementary source;
+selected quadrature panels alone do not establish that input. This argument
+concerns F₀ and supplies no Taylor-source or Hardy tail estimate.
 
 LeanCert is a pinned dependency. `UpperChaos/LeanCertPilot.lean` uses its
 dyadic interval integrator to enclose a conditional Gaussian slice integral

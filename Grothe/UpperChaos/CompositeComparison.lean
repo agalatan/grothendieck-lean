@@ -1,5 +1,6 @@
 import Grothe.Upper.CompositeComparisonMass
 import Grothe.UpperChaos.TaylorCenterFunctions
+import Grothe.UpperChaos.FirstSecondCapturedTail
 
 /-! An actual seven-piece comparison for the frozen Taylor response. Three
 low-band estimates and three whole-source real inner-product estimates are
@@ -30,10 +31,11 @@ def smoothedSource (p : Fin 4) : Lp ℂ 2 mu2 :=
 
 theorem smoothedSource_eq (p : Fin 4) :
     smoothedSource p = smoothOp (rawSource p) := by
-  fin_cases p <;>
-    simp only [smoothedSource, srcL, taylorRounding_source_toLp,
-      toLp_taylorFirstSource, toLp_taylorSecondSource, toLp_taylorThirdSource,
-      rawSource]
+  fin_cases p
+  · exact congrArg smoothOp taylorRounding_source_toLp
+  · exact congrArg smoothOp toLp_taylorFirstSource
+  · exact congrArg smoothOp toLp_taylorSecondSource
+  · exact congrArg smoothOp toLp_taylorThirdSource
 
 def taylor (g : Fin 3) : Lp ℂ 2 mu2 :=
   if g.val = 0 then firstTaylorL2 else
@@ -61,8 +63,8 @@ structure Inputs : Prop where
 theorem rawSource_high_norm_le (h : Inputs) (g : Fin 3) :
     ‖rawSource (CompositeComparisonData.highGroup g)‖ ≤ (CompositeComparisonData.wholeRadiusQ (CompositeComparisonData.highGroup g) : ℝ) := by
   have he := h.whole g
-  have hs := norm_sub_sq (taylor g) (center g)
-  have hsym := inner_re_symm (taylor g) (center g)
+  have hs := norm_sub_sq (𝕜 := ℂ) (taylor g) (center g)
+  have hsym := inner_re_symm (𝕜 := ℂ) (taylor g) (center g)
   have hf : (0 : ℝ) ≤ (factorialQ g : ℝ) := by
     fin_cases g <;> norm_num [factorialQ]
   have hr : (0 : ℝ) ≤ (CompositeComparisonData.wholeRadiusQ (CompositeComparisonData.highGroup g) : ℝ) := by
@@ -183,8 +185,9 @@ theorem difference_components : rounding - response = ∑ j, component j := by
           bandProj (CompositeComparisonData.highBand 2)
             (smoothedSource (CompositeComparisonData.highGroup 2)))
       rw [h0, h1, h2, h3]
+      simp only [CompositeComparisonData.highGroup]
     _ = ∑ j, component j := by
-      simp only [Fin.sum_univ_succ]
+      simp only [Fin.sum_univ_succ, Finset.univ_eq_empty, Finset.sum_empty, add_zero]
       abel
 
 theorem component_norm_le (h : Inputs) (j : CompositeComparisonData.PieceIndex) :
@@ -240,8 +243,12 @@ theorem weighted_energy_comparison (h : Inputs)
     (fun p _ => comparisonWeight_bounds p)
     (fun p _ => by rw [← energyBlock_sub, difference_components, energyBlock_sum])
     (fun j _ p hp hpb => hz j p (by simpa [bandIndices, hp] using hpb))
-    (fun j _ => by exact_mod_cast (CompositeComparisonData.radii_nonneg j).1)
-    (fun j _ => by exact_mod_cast (CompositeComparisonData.radii_nonneg j).2)
+    (fun j _ => by
+      change (0 : ℝ) ≤ (CompositeComparisonData.radiusQ j : ℝ)
+      exact_mod_cast (CompositeComparisonData.radii_nonneg j).1)
+    (fun j _ => by
+      change (0 : ℝ) ≤ (CompositeComparisonData.errorQ j : ℝ)
+      exact_mod_cast (CompositeComparisonData.radii_nonneg j).2)
     (fun j _ => by
       have hi : headIdx 501 ∩ bandIndices (CompositeComparisonData.band j) = bandIndices (CompositeComparisonData.band j) :=
         inter_eq_right.mpr (bandIndices_subset _)

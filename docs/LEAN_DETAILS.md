@@ -194,6 +194,20 @@ at most `1.72·10⁻⁶`; the actual raw-source and table certificates, Gaussian
 premises and independent Hardy tail remain open. No completed endpoint or
 historical Hilbert–Schmidt receipt transfer is assumed.
 
+`ProductionF0Omission` partitions the actual phase by one measurable union of
+three explicit root-gap sets and `s > 100`. The continuous Gaussian tail mass
+is exactly `exp(-100)`. Gaps beyond `s = 13` with total width at most `8·10⁻¹⁶`
+have mass at most `2·10⁻²¹`; `continuous_mass_budget` proves
+`2·10⁻²¹ + exp(-100) ≤ (45·10⁻¹²)²` in Lean. The bound `‖F₀‖ ≤ 1` applies
+before projection and before coefficientwise estimates, so the union incurs
+one L² cost. `completeRegularHead` is the actual degree projection of the
+source on the entire complement. `energy_close_of_regular_source` and
+`head_residual_of_regular_source` propagate an approximation of that source
+through the same correction, smoothing and table consumer. Actual gap geometry,
+whole-complement approximation, source/FP bindings, table fit and Gaussian
+premises remain explicit. Discrete exceptional-node error is a separate cost;
+no Taylor or Hardy tail conclusion follows from the F₀ unit bound.
+
 `CapturedTail.norm_projOn_residual_sq_le_of_captured_family` subtracts
 `Σ_i max(0, lower_i − error_i)²` from the total source energy. Its hypotheses
 are pairwise disjoint captured mode sets, disjointness from the tail, vanishing
