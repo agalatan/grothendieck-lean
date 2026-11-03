@@ -51,6 +51,20 @@ def regularNodes : Finset Address := by
   classical
   exact Finset.univ.filter fun a => ¬ exceptionalPanel a.1.val
 
+-- Prove the projection while the carrier, finset and predicate are symbolic.
+-- Specializing this theorem does not search through the source enumeration.
+private theorem filter_property {α : Type*} (s : Finset α)
+    (P : α → Prop) [DecidablePred P] (a : α)
+    (ha : a ∈ s.filter P) : P a :=
+  ((Finset.mem_filter (s := s) (p := P) (a := a)).mp ha).2
+
+/-- Membership in the filtered source family implies its defining predicate. -/
+theorem regular_of_mem_regularNodes (a : Address)
+    (ha : a ∈ regularNodes) : ¬ exceptionalPanel a.1.val := by
+  classical
+  exact filter_property (α := Address) (Finset.univ : Finset Address)
+    (fun b : Address => ¬ exceptionalPanel b.1.val) a ha
+
 /-- A rowwise budget: only selected regular rows use the linear model.
 All remaining regular rows are charged to their own squared-error budgets. -/
 def hybridBudget (modelNodes : Finset Address) (ρ η ε otherSq : Address → ℝ) : ℝ := by
@@ -84,8 +98,7 @@ theorem regular_error_sq_le (modelNodes : Finset Address)
   unfold hybridBudget
   apply Finset.sum_le_sum
   intro a ha
-  have hregular : ¬ exceptionalPanel a.1.val := by
-    simpa only [regularNodes, Finset.mem_filter, Finset.mem_univ, true_and] using ha
+  have hregular : ¬ exceptionalPanel a.1.val := regular_of_mem_regularNodes a ha
   apply mul_le_mul_of_nonneg_left _ (nodeWeight_nonneg a)
   by_cases hm : a ∈ modelNodes
   · rw [ite_eq_left hm]
@@ -118,6 +131,7 @@ end Grothe.UpperChaos.Q0ConditionalSourceVector
 open Lean Elab Command
 run_cmd do
   for target in #[``Grothe.UpperChaos.Q0ConditionalSourceVector.linear_row_error_sq_le,
+      ``Grothe.UpperChaos.Q0ConditionalSourceVector.regular_of_mem_regularNodes,
       ``Grothe.UpperChaos.Q0ConditionalSourceVector.regular_error_eq_sum,
       ``Grothe.UpperChaos.Q0ConditionalSourceVector.regular_error_sq_le,
       ``Grothe.UpperChaos.Q0ConditionalSourceVector.source_error_le] do
