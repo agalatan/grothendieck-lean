@@ -662,6 +662,8 @@ Grothe.UpperChaos.OriginalPositiveMoment.ratio_mem_unit
 Grothe.UpperChaos.OriginalPositiveMoment.sinSq_hasDerivAt
 Grothe.UpperChaos.OriginalPositiveMoment.sinSq_mem_Icc
 Grothe.UpperChaos.OriginalPositiveMoment.sinSq_mem_Ioo
+Grothe.UpperChaos.PackedDyadic.Structural.legacy_split_tokens
+Grothe.UpperChaos.PackedDyadic.Structural.parse_eq_row_unconditional
 Grothe.UpperChaos.PackedDyadic.gradedIntegerSum_eq
 Grothe.UpperChaos.PackedDyadic.isumAcc_eq
 Grothe.UpperChaos.PackedDyadic.sum_coeff_sq
@@ -1682,6 +1684,7 @@ Grothe.UpperChaos.SmallProfileMesh.reciprocal_denominator_lower
 Grothe.UpperChaos.SmallProfileMesh.region_subset_smallProfile
 Grothe.UpperChaos.SmallProfileMesh.selected_rows_checked
 Grothe.UpperChaos.SmallProfileMesh.strips_disjoint
+Grothe.UpperChaos.TaylorFirstPackedChunk253Pilot.legacy_decoded
 Grothe.UpperChaos.TaylorRadialTail.integral_hpow_sq_cut_fifty_lt
 Grothe.UpperChaos.TaylorRadialTail.integral_hpow_sq_cut_le
 Grothe.UpperChaos.TaylorRadialTail.measure_cutoffSet

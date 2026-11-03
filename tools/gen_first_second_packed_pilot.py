@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Bounded kernel-decoder pilots bound to the preserved packed source bytes.
 
-The structural reader is auxiliary until the legacy delimiter bridge is proved.
-The four selected chunks are a resource pilot, not the full source identity.
+The certificate covers the complete last first-center chunk (index 253).
+It uses the unchanged public parser and does not identify the whole center array.
 Agent-ID: codex-8c4d.
 """
 from __future__ import annotations
@@ -13,7 +13,11 @@ import json
 from pathlib import Path
 import re
 
-from gen_taylor_first_second_integers import ROOT, SPECS, load_spec
+ROOT = Path(__file__).resolve().parents[1]
+SOURCE_SHA256 = '191f975459f71c681ec4b99343f6cf3cf0772daf51bd52c6f74184a2cea57dfb'
+CHUNK_SHA256 = '09cd34b47647e5a517594621ffb0adc9ab14cf0f832f8b9ca8bbb6c4e9a67ec5'
+CHUNK_INDEX = 253
+RECORDS = 460
 
 LEAN = ROOT / 'Grothe/UpperChaos'
 PART_SIZE = 32
@@ -36,30 +40,34 @@ def joined(names: list[str], separator: str) -> str:
 
 def generate() -> dict[Path, str]:
     files = {}
-    manifest = {'scope': 'four packed-source chunk pilots transferring structural decoding '
-                'through the generic legacy delimiter theorem; all new Lean and the '
-                'complete source family require checker verification',
+    manifest = {'scope': 'complete first-center source chunk 253 decoded by the unchanged public '
+                'parser, using bounded structural certificates; no whole-array claim',
                 'part_size': PART_SIZE, 'sources': {}, 'pilots': [], 'leaf_probes': [],
                 'modular_leaves': []}
-    for spec in SPECS:
-        cap, name = spec[:2]
-        _, grades, _, _ = load_spec(spec)  # Recheck pinned NPZ, order and band targets.
+    for cap, name in [('First', 'first')]:
         source_path = LEAN / f'Taylor{cap}Data.lean'
+        if sha256(source_path.read_bytes()).hexdigest() != SOURCE_SHA256:
+            raise ValueError('Pinned public source bytes changed')
         source = source_path.read_text()
         marker = f'def {name}CenterPackedChunks : Array String := #['
         chunks = re.findall(r'"([^"\\]*)"', source.split(marker, 1)[1].split('\n]', 1)[0])
         manifest['sources'][str(source_path.relative_to(ROOT))] = sha256(source_path.read_bytes()).hexdigest()
-        flat = [value for grade in grades for value in grade]
-        offset = 0
+        if len(chunks) != CHUNK_INDEX + 1:
+            raise ValueError('Pinned source chunk count changed')
         for index, chunk in enumerate(chunks):
+            if index != CHUNK_INDEX:
+                continue
+            if sha256(chunk.encode()).hexdigest() != CHUNK_SHA256:
+                raise ValueError('Pinned source chunk bytes changed')
             records = chunk.split(',')
+            if len(records) != RECORDS:
+                raise ValueError('Pinned record count changed')
+            for record in records:
+                m, e = map(int, record.split(':'))
+                if not (0 <= e <= 206 and abs(m) < 2**53):
+                    raise ValueError('Source record violates public dyadic bounds')
             values = [int(m) * (1 << (206 - int(e)))
                       for m, e in (record.split(':') for record in records)]
-            if values != flat[offset:offset + len(values)]:
-                raise ValueError(f'{name} chunk {index}: packed/literal witness mismatch')
-            offset += len(values)
-            if index not in (0, len(chunks) - 1):
-                continue
             mod = f'Taylor{cap}PackedChunk{index:03d}Pilot'
             legacy_probe = cap == 'First' and index == len(chunks) - 1
             if legacy_probe:
@@ -229,8 +237,6 @@ def generate() -> dict[Path, str]:
                                        'records': len(values), 'parts': len(text_names),
                                        'legacy_decoder_identity': True,
                                        'chunk_utf8_sha256': sha256(chunk.encode()).hexdigest()})
-        if offset != len(flat):
-            raise ValueError(f'{name}: source coverage mismatch')
     manifest['generated_sha256'] = {str(path.relative_to(ROOT)): sha256(text.encode()).hexdigest()
                                     for path, text in files.items()}
     files[ROOT / 'data/first-second-packed-pilot-manifest.json'] = json.dumps(manifest, indent=2) + '\n'
@@ -247,7 +253,7 @@ def main() -> None:
                 raise SystemExit(f'generated source differs: {path.relative_to(ROOT)}')
         else:
             path.write_text(text)
-    print('Four modular actual-byte pilots and two bounded reader modules reproduced; Lean checking still required.')
+    print('Complete 460-record source certificate and bounded reader modules reproduced; Lean checking still required.')
 
 
 if __name__ == '__main__':

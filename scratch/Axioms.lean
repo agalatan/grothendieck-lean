@@ -830,6 +830,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.sinSq_hasDerivAt
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.sinSq_mem_Icc
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.sinSq_mem_Ioo
+#print axioms Grothe.UpperChaos.PackedDyadic.Structural.legacy_split_tokens
+#print axioms Grothe.UpperChaos.PackedDyadic.Structural.parse_eq_row_unconditional
 #print axioms Grothe.UpperChaos.PackedDyadic.gradedIntegerSum_eq
 #print axioms Grothe.UpperChaos.PackedDyadic.isumAcc_eq
 #print axioms Grothe.UpperChaos.PackedDyadic.sum_coeff_sq
@@ -1857,6 +1859,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.SmallProfileMesh.region_subset_smallProfile
 #print axioms Grothe.UpperChaos.SmallProfileMesh.selected_rows_checked
 #print axioms Grothe.UpperChaos.SmallProfileMesh.strips_disjoint
+#print axioms Grothe.UpperChaos.TaylorFirstPackedChunk253Pilot.legacy_decoded
 #print axioms Grothe.UpperChaos.TaylorRadialTail.integral_hpow_sq_cut_fifty_lt
 #print axioms Grothe.UpperChaos.TaylorRadialTail.integral_hpow_sq_cut_le
 #print axioms Grothe.UpperChaos.TaylorRadialTail.measure_cutoffSet

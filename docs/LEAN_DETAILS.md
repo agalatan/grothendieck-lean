@@ -1488,40 +1488,27 @@ box and the guillotine partition. `--check` reproduces `LawNodeData.lean` and
 `RefinedCoverData.lean` byte for byte. The original pure-row batch stays at index
 21; the three mixed nodes form batch 22. No checker-core or heavy cap source changes.
 
-First/second-center kernel certificate draft: the committed generators reproduce
-137 retained integer grades from the original pinned NPZ inputs and independently
-replay the original packed source order and ten band-energy targets. The proposed
-`FirstSecondKernelBandEnergy` contains a strict transitive standard-axiom guard.
-The generated research family is excluded from the default root and main axiom
-report until its closed band-check consumer is wired. Exclusion supplies no Lean
-verification: `tools/check_first_second_energy.sh` explicitly checks the complete
-family and final guard with warnings treated as errors. Generated bindings have
-a finite heartbeat ceiling; its adequacy still requires measured compilation.
-The original public packed definitions remain unchanged. The full generated family
-is unverified, and actual grade/band facts take an explicit packed-to-literal
-source-equality premise. Kernel certificates must discharge it before acceptance.
-The existing public native band checks remain in place. Gaussian response errors
-are separate from these finite integer identities.
+`PackedDyadicStructural` supplies a strict character-list reader equal to
+`String.toNat?` and `String.toInt?` on all inputs, including interior
+underscores and negative zero. The record transfer preserves the exponent
+and mantissa checks. `PackedDyadic.Structural.legacy_split_tokens`
+identifies the legacy single-character scanner with list splitting, including
+empty and malformed fields. `PackedDyadic.Structural.parse_eq_row_unconditional`
+therefore transfers the unchanged public parser without delimiter hypotheses.
+`PackedDyadicSourceAssembly` composes successful parses of source chunks.
 
-`PackedDyadicStructural` adds a strict character-list token reader with
-equalities to `String.toNat?` and `String.toInt?` on all inputs, including interior
-underscores and negative zero. The numeric-stage transfer retains exponent and
-mantissa range checks. `LegacySingleCharacterSplit` compares the legacy
-single-character scanner with the standard predicate scanner. The WIP
-`PackedDyadicLegacyDelimiter.parse_eq_row_unconditional` then supplies the row
-transfer without delimiter hypotheses; compatibility with modern `String.split`
-alone is not used as a substitute for this legacy identity.
-`tools/gen_first_second_packed_pilot.py` rechecks the pinned NPZ inputs and emits
-four actual-source chunk pilots, each split into separately compiled modules
-of at most 32 records per proof, with transitive standard-axiom guards.
-Their character-reassembly statements refer directly to the preserved packed
-arrays. `PackedDyadicSourceAssembly` develops composition of successful chunk
-checks for the unchanged public parser. The complete explicit plan is listed by
-`tools/check_first_second_energy.sh --plan`: parser regressions, source
-assembly, bounded probes, the four pilots, every grade target, and the final
-strict audit. A scoped warning-free build of `PackedDyadicLegacyDelimiter` and
-`TaylorFirstPackedChunk253Pilot` checks the bridge and one complete source
-chunk; its success does not certify the whole family.
-A default-root green
-check supplies no verdict for these excluded modules or the remaining source
-equivalence and public consumer gates.
+`TaylorFirstPackedChunk253Pilot.legacy_decoded` identifies the unchanged
+public parser's result on the complete last first-center chunk: 460 records
+from `firstCenterPackedChunks[253]?.getD ""`. Its source equality refers to
+that original array. Fifteen bounded character-list certificates assemble the
+integer values, and transitive guards allow only the standard three axioms.
+`tools/gen_first_second_packed_pilot.py` reproduces the certificate from the
+pinned source-file and chunk bytes; `tools/check_packed_source_chunk.sh` checks
+the retained parser regressions, chunk composition and actual source theorem
+with warnings treated as errors. Every retained module is in the default root.
+
+This single-chunk identity does not identify the complete center arrays or
+replace their existing native band checks. Full-array source identities,
+closed band-energy consumers and actual Gaussian approximation estimates
+remain separate obligations. The original packed arrays, lookup definitions,
+NPZ inputs and native band checks are unchanged.
