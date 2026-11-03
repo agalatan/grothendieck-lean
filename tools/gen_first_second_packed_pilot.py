@@ -82,7 +82,9 @@ def generate() -> dict[Path, str]:
                     f'def text : String := {json.dumps(leaf_text)}',
                     f'def chars : List Char := {lean_chars(leaf_text)}',
                     f'def values : List ℤ := [{leaf_values}]', '',
-                    'theorem source_chars : text.toList = chars := by decide +kernel', '',
+                    'theorem source_string : text = String.ofList chars := by decide +kernel', '',
+                    'theorem source_chars : text.toList = chars := by',
+                    '  rw [source_string, String.toList_ofList]', '',
                     'theorem structural_decoded :',
                     '    PackedDyadic.Structural.row? 206 text.toList = some values := by',
                     '  rw [source_chars]',
@@ -196,10 +198,14 @@ def generate() -> dict[Path, str]:
                 lines += ['']
             texts = joined(text_names, "',' :: ")
             vals = joined(value_names, '')
-            actual = f'({name}CenterPackedChunks[{index}]?.getD "").toList'
+            actual_string = f'({name}CenterPackedChunks[{index}]?.getD "")'
+            actual = f'{actual_string}.toList'
             lines += [f'def values : List ℤ := {vals}', '',
-                      f'theorem source_chars : {actual} =', f'    {texts} := by',
+                      f'private theorem source_string : {actual_string} =',
+                      f'    String.ofList ({texts}) := by',
                       '  decide +kernel', '',
+                      f'theorem source_chars : {actual} =', f'    {texts} := by',
+                      '  rw [source_string, String.toList_ofList]', '',
                       f'theorem decoded : row? 206 {actual} = some values := by',
                       '  rw [source_chars]', '  exact joined000', '']
             lines += ['/-- The public decoder on these actual bytes, via the delimiter theorem. -/',

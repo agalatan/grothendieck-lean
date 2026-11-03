@@ -234,9 +234,13 @@ private theorem joined000 : row? 206 (text000 ++ ',' :: (text001 ++ ',' :: (text
 
 def values : List ℤ := values000 ++ (values001 ++ (values002 ++ (values003 ++ (values004 ++ (values005 ++ (values006 ++ (values007 ++ (values008 ++ (values009 ++ (values010 ++ (values011 ++ (values012 ++ (values013 ++ (values014))))))))))))))
 
+private theorem source_string : (firstCenterPackedChunks[253]?.getD "") =
+    String.ofList (text000 ++ ',' :: (text001 ++ ',' :: (text002 ++ ',' :: (text003 ++ ',' :: (text004 ++ ',' :: (text005 ++ ',' :: (text006 ++ ',' :: (text007 ++ ',' :: (text008 ++ ',' :: (text009 ++ ',' :: (text010 ++ ',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014))))))))))))))) := by
+  decide +kernel
+
 theorem source_chars : (firstCenterPackedChunks[253]?.getD "").toList =
     text000 ++ ',' :: (text001 ++ ',' :: (text002 ++ ',' :: (text003 ++ ',' :: (text004 ++ ',' :: (text005 ++ ',' :: (text006 ++ ',' :: (text007 ++ ',' :: (text008 ++ ',' :: (text009 ++ ',' :: (text010 ++ ',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014)))))))))))))) := by
-  decide +kernel
+  rw [source_string, String.toList_ofList]
 
 theorem decoded : row? 206 (firstCenterPackedChunks[253]?.getD "").toList = some values := by
   rw [source_chars]

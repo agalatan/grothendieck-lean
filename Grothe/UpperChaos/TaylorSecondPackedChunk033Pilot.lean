@@ -382,9 +382,13 @@ private theorem joined000 : row? 206 (text000 ++ ',' :: (text001 ++ ',' :: (text
 
 def values : List ℤ := values000 ++ (values001 ++ (values002 ++ (values003 ++ (values004 ++ (values005 ++ (values006 ++ (values007 ++ (values008 ++ (values009 ++ (values010 ++ (values011 ++ (values012 ++ (values013 ++ (values014 ++ (values015 ++ (values016 ++ (values017 ++ (values018 ++ (values019 ++ (values020 ++ (values021 ++ (values022 ++ (values023 ++ (values024))))))))))))))))))))))))
 
+private theorem source_string : (secondCenterPackedChunks[33]?.getD "") =
+    String.ofList (text000 ++ ',' :: (text001 ++ ',' :: (text002 ++ ',' :: (text003 ++ ',' :: (text004 ++ ',' :: (text005 ++ ',' :: (text006 ++ ',' :: (text007 ++ ',' :: (text008 ++ ',' :: (text009 ++ ',' :: (text010 ++ ',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014 ++ ',' :: (text015 ++ ',' :: (text016 ++ ',' :: (text017 ++ ',' :: (text018 ++ ',' :: (text019 ++ ',' :: (text020 ++ ',' :: (text021 ++ ',' :: (text022 ++ ',' :: (text023 ++ ',' :: (text024))))))))))))))))))))))))) := by
+  decide +kernel
+
 theorem source_chars : (secondCenterPackedChunks[33]?.getD "").toList =
     text000 ++ ',' :: (text001 ++ ',' :: (text002 ++ ',' :: (text003 ++ ',' :: (text004 ++ ',' :: (text005 ++ ',' :: (text006 ++ ',' :: (text007 ++ ',' :: (text008 ++ ',' :: (text009 ++ ',' :: (text010 ++ ',' :: (text011 ++ ',' :: (text012 ++ ',' :: (text013 ++ ',' :: (text014 ++ ',' :: (text015 ++ ',' :: (text016 ++ ',' :: (text017 ++ ',' :: (text018 ++ ',' :: (text019 ++ ',' :: (text020 ++ ',' :: (text021 ++ ',' :: (text022 ++ ',' :: (text023 ++ ',' :: (text024)))))))))))))))))))))))) := by
-  decide +kernel
+  rw [source_string, String.toList_ofList]
 
 theorem decoded : row? 206 (secondCenterPackedChunks[33]?.getD "").toList = some values := by
   rw [source_chars]
