@@ -73,7 +73,8 @@ theorem storedScalar_cast (row : Row) (p : ℕ × ℕ) :
 
 theorem linearCenterQ_cast (r : ℚ) (p : ℕ × ℕ) :
     (linearCenterQ r p : ℂ) = linearCenter (r : ℝ) p := by
-  simp [linearCenterQ, linearCenter, apply_ite]
+  dsimp only [linearCenterQ, linearCenter]
+  split_ifs <;> norm_num
 
 /-- The five support modes are all included in the actual contraction selection. -/
 theorem lowModes_subset_modes : lowModes ⊆ modes := by
