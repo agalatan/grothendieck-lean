@@ -24,7 +24,7 @@ theorem phaseSlice_sub_linear_bound (s : ℝ) (hs : 0 < s) (w : ℂ) :
       (5 / 2 : ℝ) * signedProfileRatio s ^ 2 * ‖w‖ ^ 2 := by
   let κ : ℝ := Real.sqrt (1 + (Upper.aQ : ℝ) ^ 2) * vprof s
   have himag (z : ℂ) : z - (z.re : ℂ) = (z - conj z) / 2 := by
-    apply Complex.ext <;> simp [Complex.div_re, Complex.div_im] <;> ring
+    apply Complex.ext <;> simp
   have hlin :
       ((κ : ℂ) * w - (((κ : ℂ) * w).re : ℂ)) / (Real.sqrt s : ℂ) =
         ((signedProfileRatio s / 2 : ℝ) : ℂ) * (w - conj w) := by

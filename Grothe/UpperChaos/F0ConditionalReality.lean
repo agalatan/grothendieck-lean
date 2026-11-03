@@ -83,7 +83,7 @@ theorem canonicalCoefficient_eq_ofReal_re (A : ℝ) (i : ℕ × ℕ) :
 theorem norm_canonicalCoefficient_sub_real (A r : ℝ) (i : ℕ × ℕ) :
     ‖canonicalCoefficient A i - (r : ℂ)‖ = |(canonicalCoefficient A i).re - r| := by
   rw [canonicalCoefficient_eq_ofReal_re A i, ← Complex.ofReal_sub,
-    Complex.norm_real, Real.norm_eq_abs]
+    Complex.norm_real, Real.norm_eq_abs, Complex.ofReal_re]
 
 theorem phaseSlice_conj (s : ℝ) (w : ℂ) :
     F0ConditionalNode.phaseSlice s (conj w) = conj (F0ConditionalNode.phaseSlice s w) := by
@@ -122,7 +122,7 @@ theorem norm_coefficient_sub_real (s r : ℝ)
     apply Complex.ext
     · simp
     · simp [coefficient_im_eq_zero s i]
-  rw [he, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs]
+  rw [he, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs, Complex.ofReal_re]
 
 end
 end Grothe.UpperChaos.F0ConditionalEvaluator

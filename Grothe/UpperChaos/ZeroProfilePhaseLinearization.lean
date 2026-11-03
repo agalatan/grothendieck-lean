@@ -40,6 +40,9 @@ private theorem linearSliceLp_coe (s : ℝ) :
     Lp.coeFn_sub (hvec (1, 0)) (hvec (0, 1)),
     (memLp_hfun (0, 0)).coeFn_toLp, (memLp_hfun (1, 0)).coeFn_toLp,
     (memLp_hfun (0, 1)).coeFn_toLp] with w ha hm hd h0 h1 h2
+  simp only [Pi.add_apply] at ha
+  simp only [Pi.smul_apply] at hm
+  simp only [Pi.sub_apply] at hd
   change ((hvec (0, 0) + _) : Lp ℂ 2 gaussC) w = _
   rw [ha, hm, hd]
   change ((memLp_hfun (0, 0)).toLp _) w +
@@ -72,6 +75,8 @@ theorem norm_phaseSliceLp_sub_linear (s : ℝ) (hs : 0 < s) :
       Lp.coeFn_smul (C : ℂ) (hvec (0, 0) + hvec (1, 1)),
       (F0ConditionalNode.phaseSlice_memLp s).coeFn_toLp,
       linearSliceLp_coe s, quadraticMajorant_coe] with w hd hm hp hl hq
+    simp only [Pi.sub_apply] at hd
+    simp only [Pi.smul_apply] at hm
     rw [hd, hm, hl, hq]
     change ‖((F0ConditionalNode.phaseSlice_memLp s).toLp _) w - linearSlice s w‖ ≤ _
     rw [hp, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hC,
