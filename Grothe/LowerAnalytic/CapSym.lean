@@ -60,11 +60,6 @@ def CP.eval (P : CP) (z : ℂ) : ℂ := (P.map fun t => t.2.2.val * z ^ t.1 * co
 lemma CP.eval_add (P Q : CP) (z : ℂ) : (CP.add P Q).eval z = P.eval z + Q.eval z := by
   simp [CP.add, CP.eval]
 
-lemma CP.eval_neg (P : CP) (z : ℂ) : (CP.neg P).eval z = -P.eval z := by
-  induction P with
-  | nil => simp [CP.neg]
-  | cons t P ih => simp only [CP.neg, List.map_cons, CP.eval_cons] at ih ⊢; rw [ih]; simp; ring
-
 lemma CP.eval_smul (c : KC) (P : CP) (z : ℂ) : (CP.smul c P).eval z = c.val * P.eval z := by
   induction P with
   | nil => simp [CP.smul]
@@ -107,12 +102,6 @@ end GrotheKernel
 namespace Grothe.LowerAnalytic
 
 noncomputable section
-
-lemma kInvSqrt2_val : kInvSqrt2.val = 1 / √2 := by
-  have h : (√2 : ℝ) ≠ 0 := by positivity
-  have h2 : (√2 : ℝ) * √2 = 2 := Real.mul_self_sqrt (by norm_num)
-  simp only [KQ.val, kInvSqrt2]; push_cast
-  field_simp; linarith
 
 lemma eval_bCP (j : ℕ) (z : ℂ) : (bCP j).eval z = Bfun j z := by
   have hs : ((1 / √2 : ℝ) : ℂ) = 1 / ((√2 : ℝ) : ℂ) := by push_cast; ring

@@ -16,6 +16,13 @@ a proved numerical head estimate. Our own numerical obligations are not accepted
 external inputs. A bound is **done** only when its complete Lean proof and final
 verification pass. The active work now prioritizes the upper endpoint.
 
+The original Gauss quadrature orders 1 through 64 have a finite polynomial
+exactness certificate in `UpperChaos/Q0GaussPolynomialCertificates.lean`.
+It connects LeanCert rational polynomial checks to integration and the original
+Legendre weight formula. The complete family is included in the main Lean root,
+but verification of this combined delivery remains work in progress. The
+selected-node bindings and analytic remainder are separate proof obligations.
+
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
 the way, and why the remaining gap is hard.
@@ -42,6 +49,10 @@ classical and quantum correlations in two-party Bell experiments (real case).
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V over all finite-dimensional complex Hilbert spaces. The headline
 theorems conclude a statement about the constant itself.
+
+The source-node error ledger proves the exact rational budget for the raw
+and smoothing errors. Applying it to the stored Gaussian coefficients still
+requires proofs of the actual input estimates and operation-error model.
 
 **Lower bound** — `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data :
 NodeCaps → IsGrothendieckBound K → 1.401697117301 < K`
@@ -90,8 +101,7 @@ range facts for rows 0–11 and 16–18. They import `CapRangeDefs` and
 `CapRecipeData`: the rational row, gate, chord and recipe data and numerical
 checker, independently of the Gaussian analysis and lower certificate.
 There is one build target, `Grothe`: it builds range-check soundness in
-`CapRows`, convexity assembly in `CapAssembly` (`CapHull` is a compatibility
-import), the heavy facts, and `CapNodes`, which contains the 15 row-assembly
+`CapRows`, convexity assembly in `CapAssembly`, the heavy facts, and `CapNodes`, which contains the 15 row-assembly
 proofs and `lower_bound_of_capsRest`.
 
 `lower_bound_of_refined_cover_data` proves
@@ -302,6 +312,14 @@ proves an integrated auxiliary tail at `‖z‖ ≥ r₀ > 0`, bounded by
 including its zeros. Bounds for the full polynomial-weighted sources, the
 radial endpoint and certified numerical integration remain open.
 
+`LinearTiltedMoments` evaluates finite polynomials in `z` and `conj z` under
+`exp(-(rate-1)*normSq z + 2*Re(a*z))` for every positive `rate` and fixed complex
+source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
+Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
+A half-rate majorant proves integrability of every such polynomial insertion.
+Joint integrability when the source depends on another integration variable
+remains a separate obligation before Fubini can be applied.
+
 `GradedHermitePhaseSlice` expresses each actual Taylor source as a polynomial
 in the conditional coordinate times its exact Gaussian damping.
 `TaylorConditionalGaussian` evaluates that conditional integral by the finite
@@ -379,6 +397,14 @@ existing profile cover, giving `|κ(s)| > 1/1000` on all four remaining strips.
 Thus their reciprocal Gaussian denominator exceeds `10⁻⁶` uniformly, including
 for very small positive reciprocal coordinates.
 
+`ProfilePiFactor` provides rational enclosures of `π`, `sqrt(π)`, and
+`sqrt(sqrt(π))` of width at most `2⁻⁵¹²` for the actual profile normalization.
+Mathlib's proved nested-square-root bounds certify the π witnesses; exact
+rational inequalities certify the remaining factors. The input recipe and
+generator are tracked in `data/profile-pi-factor/` and
+`tools/gen_profile_pi_factor.py`. Full transformed node-shift enclosures remain
+separate obligations.
+
 `LocalAffineSquareIntegralBounds` requires continuity only on the closed cell,
 so reciprocal certificates do not need an extension through zero.
 `RetainedMeshReality` proves that the normalized retained coefficients are real.
@@ -425,11 +451,42 @@ leaves with an algebraic cell certificate on the complete reciprocal root
 of strip 3. `Q0BasePairRoot10Integral` combines all twelve algebraic leaves
 on the direct root of strip 5. Both preserve exact midpoint geometry and
 prove both explicit integrals without leaf or numerical premises.
+`Q0BasePairRoot2Integral` and `Q0BasePairRoot6Integral` similarly combine
+the complete direct roots of strips 1 and 3 from their twenty-four and
+fifteen checked algebraic leaves, respectively.
 `Q0BasePairProductionBridge` identifies these explicit integrands with the
 actual two production kernels at Taylor index zero, including the reciprocal
-Jacobian. `Q0BasePairProductionRoots` transfers the three complete-root
+Jacobian. `Q0BasePairProductionRoots` transfers the five complete-root
 enclosures to those production kernels at the fixed damping. The remaining
 algebraic leaves and complete root-to-band assembly remain work in progress.
+
+`Q0GaussianReality` proves that both full Gaussian base coefficients and
+their rationally corrected production coefficients are real, using
+conjugation invariance of the actual Gaussian source and response.
+Their complex distances from rational targets therefore equal the real
+absolute errors; no numerical or retained-domain premise is required.
+
+The original Legendre brackets for orders 1 through 64 now have exact
+integer sign certificates and Lean proofs of root existence and uniqueness.
+`F0ConditionalNode` identifies the actual conditional Gaussian coefficients
+and proves their joint Bessel bound. `ConditionalNodeIndices` identifies the
+selected contraction modes, while `F0ConditionalEvaluator` proves the
+profile sign and shift formula in that same index order.
+`ConditionalMomentReflection` proves reflection of the actual phase integrals;
+`ConditionalCoefficientReflection` transfers it to the normalized production
+coefficients with the exact square-root factor. That factor is at most one
+on the reflected lookup domain. Numerical reconstruction errors, quadrature weights,
+remainder estimates and their numerical source bindings remain work in progress.
+`Q0GaussExactness` proves the shared quadrature argument: exact finite
+polynomial identities imply the original Legendre weight formula and
+integration of every polynomial of degree below twice the rule order.
+Discharging those identities for the original finite rule family remains
+work in progress; polynomial exactness alone does not bound the analytic remainder.
+`Q0GaussQPoly` supplies the checked semantic bridge from LeanCert's exact
+polynomial operations to that quadrature theorem. The generated certificates
+for all 64 orders are work in progress and excluded from the main root until
+their focused Lean check succeeds. They include recurrence, orthogonality,
+derivative and Bezout identities, squared norms, and leading coefficients.
 
 
 Lean also proves a selected-spectrum comparison: the error is split
@@ -447,6 +504,13 @@ The concrete theorem's remaining **inputs** are:
 |---|---|---|
 | `hfirst`, `hsecond`, `hthird` | fourteen finite-band Gaussian error inequalities for the fixed Taylor sources and centers; Lean derives the rounding and three tail caps, decomposition and supports | 93.57% |
 | `energy_close` | the stored energies are within 6847009/(5·10¹⁷) of E(X) | 0.001% |
+
+The degree-531 canonical pair table indexes conditional Hermite node values
+by pairs `(c,d)` with `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1` and
+`c+d ≤ 531`, ordered by `(c+d,c)`. Lean verifies the finite rank, ordinal
+coverage and uniqueness certificate for this table. No downstream Lean result
+yet consumes this certificate; the Gaussian values still require numerical
+enclosures in Lean.
 
 The head, computed in Lean (`head_check`), is 28153/10¹², 3.09% of the total
 455212621809/(5·10¹⁷). The Hardy tail beyond degree 501, 303362486/10¹⁶ (3.33%), is **proved**: the weighted

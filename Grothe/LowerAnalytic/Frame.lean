@@ -111,8 +111,6 @@ lemma zc_Phi (l : Fin m) (x : Fin (m + m) → ℝ) :
     exact realToC_cToReal _
   rw [← this]; rfl
 
-lemma realToC_zc (x : Fin (m + m) → ℝ) (l : Fin m) : realToC (WithLp.toLp 2 x) l = zc m l x := rfl
-
 /-- `z_l(Φ_W x) = Σ_k W_{lk} z_k(x)`. -/
 lemma apply_eq_sum (v : EuclideanSpace ℂ (Fin m)) (l : Fin m) :
     W v l = ∑ k, W (EuclideanSpace.single k 1) l * v k := by
