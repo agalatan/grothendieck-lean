@@ -14,8 +14,10 @@ noncomputable section
 theorem high_indices (g : Fin 3) :
     bandIndices (highBand g) = (highOld g).biUnion fun k => bandIndices (oldBand k) := by
   classical
+  unfold bandIndices
+  generalize headIdx 501 = S
   ext p
-  simp only [bandIndices, mem_filter, mem_biUnion]
+  simp only [mem_filter, mem_biUnion]
   constructor
   · rintro ⟨hp, hc⟩
     obtain ⟨k, hk, hc⟩ := (high_covered g p.1 p.2).mp hc
@@ -26,6 +28,8 @@ theorem high_indices (g : Fin 3) :
 theorem high_disjoint (g : Fin 3) :
     (↑(highOld g) : Set OldIndex).PairwiseDisjoint fun k => bandIndices (oldBand k) := by
   classical
+  unfold bandIndices
+  generalize headIdx 501 = S
   intro k hk l hl hne
   apply disjoint_left.mpr
   intro p hp hq
