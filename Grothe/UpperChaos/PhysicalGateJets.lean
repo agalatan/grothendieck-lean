@@ -142,7 +142,7 @@ theorem pairJet_physicalCoherentMoment (p q a b c d : ℕ) {r : ℝ} (hr : 0 < r
       ∑ j ∈ t, coeff j * (x ^ j.2 * (v ^ j.1 *
         momentValue r 0 (x + v) (p + (c - j.1) + (b - j.2)) q)) := by
     rw [show t = (Finset.range (c + 1)).product (Finset.range (b + 1)) from rfl,
-      Finset.sum_product]
+      Finset.product_eq_sprod, Finset.sum_product]
     apply Finset.sum_congr rfl
     intro i hi
     apply Finset.sum_congr rfl
@@ -154,7 +154,7 @@ theorem pairJet_physicalCoherentMoment (p q a b c d : ℕ) {r : ℝ} (hr : 0 < r
   rw [outer_xv_finite_jet t coeff Prod.fst Prod.snd
     (fun j => p + (c - j.1) + (b - j.2)) (fun _ => q) a d hr]
   rw [show t = (Finset.range (c + 1)).product (Finset.range (b + 1)) from rfl,
-    Finset.sum_product]
+    Finset.product_eq_sprod, Finset.sum_product]
   apply Finset.sum_congr rfl
   intro i hi
   apply Finset.sum_congr rfl
@@ -173,6 +173,7 @@ private theorem physical_Hermite_product (p q a b c d : ℕ) (r : ℝ) (z : ℂ)
     _ = _ := by
       rw [conj_ev_H_swap]
       simp only [ev_H_eq_fallingFactorial, Finset.sum_mul, Finset.mul_sum]
+      rw [Finset.sum_comm]
       apply Finset.sum_congr rfl
       intro i hi
       apply Finset.sum_congr rfl

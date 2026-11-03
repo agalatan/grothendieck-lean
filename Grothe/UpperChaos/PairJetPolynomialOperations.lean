@@ -39,7 +39,7 @@ theorem iteratedDeriv_comp_mul_left (n : ℕ) (a : ℂ) (F : ℂ → ℂ) :
 
 theorem iteratedDeriv_comp_mul_left_zero (n : ℕ) (a : ℂ) (F : ℂ → ℂ) :
     iteratedDeriv n (fun z => F (a * z)) 0 = a ^ n * iteratedDeriv n F 0 := by
-  rw [iteratedDeriv_comp_mul_left, mul_zero]
+  simpa only [mul_zero] using congrFun (iteratedDeriv_comp_mul_left n a F) 0
 
 /-- Four independent diagonal scales in gate order ((y,u),(x,v)). -/
 def scaleSources (a : PairSources) (zw : PairSources) : PairSources :=
@@ -98,7 +98,8 @@ theorem contDiff_parameter_jet {F : E × ℂ → ℂ}
   | succ k ih =>
       have hc : ContDiff ℂ ⊤ (fun p : (E × ℂ) × ℂ =>
           iteratedDeriv k (fun z => F (p.1.1, z)) p.2) :=
-        ih.comp (by fun_prop)
+        ih.comp (show ContDiff ℂ ⊤ (fun p : (E × ℂ) × ℂ =>
+          (p.1.1, p.2)) by fun_prop)
       have hd : ContDiff ℂ ⊤ (fun p : E × ℂ =>
           fderiv ℂ (fun z => iteratedDeriv k (fun w => F (p.1, w)) z) p.2 1) :=
         hc.fderiv_apply contDiff_snd contDiff_const le_top
@@ -107,7 +108,8 @@ theorem contDiff_parameter_jet {F : E × ℂ → ℂ}
 theorem contDiff_parameter_jet_zero {F : E × ℂ → ℂ}
     (hF : ContDiff ℂ ⊤ F) (k : ℕ) :
     ContDiff ℂ ⊤ (fun p : E => iteratedDeriv k (fun z => F (p, z)) 0) :=
-  (contDiff_parameter_jet hF k).comp (by fun_prop)
+  (contDiff_parameter_jet hF k).comp
+    (show ContDiff ℂ ⊤ (fun p : E => (p, (0 : ℂ))) by fun_prop)
 
 end Parameters
 
