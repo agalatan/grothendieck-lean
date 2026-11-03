@@ -27,17 +27,6 @@ selected-node bindings and analytic remainder are separate proof obligations.
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
 the way, and why the remaining gap is hard.
 
-First/second-center kernel certificate work is in progress: the generated
-integer-grade family targets the existing six first-center and four second-center
-band energies. Exact external replays match the pinned binary64 archives and
-packed data. The original public packed definitions are unchanged. The full Lean family,
-the explicitly assumed packed-to-literal source equivalence and
-replacement of the two existing native band leaves remain acceptance gates.
-The generated research family stays outside the default root until the closed
-consumer is integrated; its dedicated check explicitly builds every grade and
-the final strict trust guard.
-This work does not establish Gaussian approximation errors or an upper endpoint.
-
 ## The constant
 
 For a complex matrix $A = (a_{ij})$ compare two optimisation problems: over unimodular scalars,
@@ -339,17 +328,6 @@ remaining captured band norms from the same exact arrays. `FirstSecondCapturedTa
 derives the other two high-tail caps. `TaylorCenterFunctions` gives the concrete
 pointwise functions and discharges the rounding comparison piece.
 
-The WIP first/second integer-energy certificates retain the public packed inputs.
-`PackedDyadicStructural` supplies strict numeric-token semantics. The WIP
-`PackedDyadicLegacyDelimiter` bridge transfers the unchanged legacy parser to
-that reader through a singleton-separator identity. Four generated pilots
-assemble separately compiled pieces of at most 32 records and bind their
-characters to the first and last actual source chunk of each center. Complete
-source identities, warning-free verification of the excluded family, and public
-consumer integration remain required before replacing native band checks.
-`tools/check_first_second_energy.sh --plan` lists the complete check; scoped
-Lean builds can check the delimiter bridge and one actual chunk separately.
-
 `fresh_upper_concrete_taylor` instantiates the target upper-bound implication with these fixed
 centers. Its Gaussian inputs are six first-order, four second-order and four
 third-order finite-band error inequalities, with the explicit caps in
@@ -417,6 +395,33 @@ energy-table agreement still need their own certificates.
 source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
 Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
 A half-rate majorant proves integrability of every such polynomial insertion.
+`IndependentSourceMoments` extends absolute integrability to arbitrary
+independent complex sources `a,b` in `exp(-(rate-1)*normSq z+a*z+b*conj z)`.
+Its majorant is uniform on bounded source sets, so complex differentiation
+in either source inserts `z` or `conj z`. `IndependentSourcePolynomial`
+evaluates every finite polynomial insertion by a polynomial recurrence,
+retaining the factor `exp(a*b/rate)/rate` and the means `b/rate`, `a/rate`.
+These source formulas do not identify the actual multiplier or the weighted
+Fock operator, and supply no numerical Hilbert--Schmidt caps.
+For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
+`QuadraticPolynomialIntegrability` proves genuine joint polynomial
+integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate
+is `(A*C-B²)/(A+C)`. `QuadraticPolynomialMoments` then applies Fubini and
+reduces every finite mixed polynomial integral to a finite Wick sum at the
+remaining rate `(A*C-B²)/A`; its zeroth mass is `1/(A*C-B²)`.
+The historical operator identity and polynomial insertion into the full
+bipartite kernel remain separate obligations.
+
+The weighted Gaussian kernel has exact mass formulas. A common `gateOK`
+certificate supplies the real covariance conditions for either physical pair.
+`OriginalHSGaussianMass.integral_gateWeight` gives pair mass `ν²/δ`, and
+`OriginalHSGaussianTensor.integral_tensorWeight` gives the product mass
+`ν⁴/(δ₀δ₁)`, with genuine integrability proved before Fubini.
+The parameter table covers the fourteen selected finite bands and four
+coordinate exclusions. Its checks prove positivity, not the numerical tail
+bounds recorded in the input files. The defined kernel is not yet identified
+with `HS_{j,I}` in `docs/UPPER_STATUS.md`; polynomial insertion, the Fock
+coefficient identity and numerical Hilbert--Schmidt bounds remain separate.
 Joint integrability when the source depends on another integration variable
 remains a separate obligation before Fubini can be applied.
 
@@ -531,35 +536,8 @@ Thus their reciprocal Gaussian denominator exceeds `10⁻⁶` uniformly, includi
 for very small positive reciprocal coordinates.
 
 `PhiProductionIdentity` relates the actual rounding phase to its Gram-coordinate
-polynomial without importing the numerical phase cover. Its shared Gram identity
-supplies both the phase-square formula and the domain constraint used by the
-global cover and local leaf soundness.
-
-`ProductionPhaseLeaf` turns a supplied integer leaf check into a squared phase
-bound on that box; no concrete leaf check is provided here. The native global
-cover already bounds the phase everywhere. `PhasePolynomialStability` bounds
-the cubic factor's change by `5/2` times the phase change, and
-`ProductionPhaseModel` combines this with the zero-safe Gaussian base remainder.
-Its phase bound stays explicit to keep the analytic estimate independent of
-the native cover. Numerical source comparisons and the upper endpoint remain open.
-
-`ProductionPhaseL2Error` proves a triangle inequality in conditional Gaussian
-L² on one radial slice of the unsmoothed rounding: the error is at most `5ρ²`
-plus `5/2` times the phase-model L² error and the model-to-comparison L² error.
-The actual phase bound follows from `phi_abs_lt_one`; keeping it as a premise
-avoids importing the native cover into this theorem. The comparison phase
-must be measurable and bounded by one. Choosing the actual phase makes its
-phase error zero, while the model-to-comparison norm still needs a certified
-Gaussian integral. The arbitrary comparison function has no stored-byte
-binding here. Radial integration, smoothing and band projection remain separate.
-
-`ProductionPhaseModelIntegral` can retain the actual phase in the Gaussian model,
-eliminating its separate phase-error term exactly. It expresses the remaining
-saved-model squared discrepancy as one conditional Gaussian integral of explicit
-model energy, saved energy and their cross term. Separate upper energy bounds
-and a lower cross bound imply the source estimate directly. A complex cross
-enclosure with radius `r` costs `2r` in the squared-discrepancy budget. The
-actual integral bounds and identification of saved bytes remain inputs.
+polynomial without importing the numerical phase cover. Concrete leaf proofs
+can use this exact identity before the global cover is assembled.
 
 `ProfilePiFactor` provides rational enclosures of `π`, `sqrt(π)`, and
 `sqrt(sqrt(π))` of width at most `2⁻⁵¹²` for the actual profile normalization.

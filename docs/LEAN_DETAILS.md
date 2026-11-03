@@ -408,6 +408,22 @@ particular the zeroth moment is `exp(normSq a/rate)/rate`.
 integrability for every positive rate and fixed complex source using a
 half-rate exponential majorant. `LinearTiltedMomentsAudit` rejects transitive
 axioms outside `propext`, `Classical.choice`, and `Quot.sound`.
+`IndependentSourceMoments` allows `a,b` to be independent complex numbers in
+`exp(-(rate-1)*normSq z+a*z+b*conj z)`. A half-rate Gaussian envelope is
+uniform whenever `norm a + norm b <= M`, including on full complex source
+neighborhoods. It proves absolute integrability before differentiating under
+the integral: differentiation in `a` inserts `z`, and differentiation in
+`b` inserts `conj z`. `IndependentSourcePolynomial` first evaluates pure
+conjugate insertions by differentiation in `b`, then uses
+`P(0,q) = C(rate^-1)^q * X^q` and
+`P(p+1,q) = derivative(P(p,q)) + C(b/rate) * P(p,q)`.
+The exact mixed moment is `exp(a*b/rate)/rate * P(p,q).eval a`; finite
+linearity extends it to arbitrary finite complex polynomial insertions.
+`IndependentSourcePolynomialAudit` enforces the standard-three trust
+boundary for the majorant, integrability, both derivative identities,
+normalization, and finite evaluator. Identification with the actual
+multiplier, the weighted Fock operator identity, and numerical
+Hilbert--Schmidt caps remain open.
 `QuadraticPolynomialIntegrability` proves a separable Gaussian majorant for
 `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²` under exactly `A>0` and
 `A*C-B²>0`. The rate `(A*C-B²)/(A+C)` follows from an exact trace identity
