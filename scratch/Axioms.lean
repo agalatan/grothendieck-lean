@@ -865,6 +865,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_chunk_tables
 #print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_cover
 #print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_denominator_lcm
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCenters.validRow_normSq_real
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCentersAll.all_valid
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCentersAll.each_scalar
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCentersAll.ordinals
 #print axioms Grothe.UpperChaos.QuadraturePartition.integral_auxiliary_reciprocal
 #print axioms Grothe.UpperChaos.QuadraturePartition.monotone_dyadicAuxiliaryCut
 #print axioms Grothe.UpperChaos.QuadraturePartition.norm_rectangleIntegral_reciprocal_sub_sum_le

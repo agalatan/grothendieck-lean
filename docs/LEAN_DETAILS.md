@@ -50,6 +50,16 @@ from `Upper/Data.lean`; the generated candidates are linked to the actual
 source by Lean proofs. The result is independent of the phase-cover numerical
 leaves and does not discharge the remaining upper-bound inputs.
 
+**Saved exceptional rows.** `Q0SourceExceptionCentersAll` combines exact
+binary64 decoding checks for 417 original saved rows. Each scalar has magnitude
+at most one, and each complete row has squared norm at most 121/100. The
+original ordinal ranges, cutoff counts and source byte spans are explicit.
+`gen_source_exception_centers.py --centers-only --check` reproduces the
+certificate from pinned slice, offset and per-row ledger files. The strict
+audit adds no native facts. This certifies the saved values; their alignment
+with selected source nodes and enclosures of actual Gaussian coefficients are
+separate obligations.
+
 **q0 source-to-literal identity.**
 `Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real
 `s`, `b`, and `v`, that `Ssum q0RawWickEntries s b v` equals

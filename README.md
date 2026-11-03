@@ -39,6 +39,11 @@ classical and quantum correlations in two-party Bell experiments (real case).
 
 ## What is proved
 
+The saved exceptional conditional-row certificate decodes the original 417
+rows and checks their exact scalar and row-norm bounds in rational arithmetic.
+`Q0SourceExceptionCentersAll` records their original ordinal coverage. The
+Gaussian coefficient enclosures and source-address assembly remain separate.
+
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V over all finite-dimensional complex Hilbert spaces. The headline
 theorems conclude a statement about the constant itself.
