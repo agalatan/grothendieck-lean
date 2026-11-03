@@ -207,11 +207,18 @@ jobs:
           # `true` (an emergency switch while the hosted VMs cannot hold a build). Everything else is GitHub-hosted.
           if [ "${{ steps.scope.outputs.lean }}" = true ] && [ -z "$handoff" ] && { [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ] || [ "${{ steps.scope.outputs.heavy }}" = true ] || [ "${{ vars.FORCE_HEAVY }}" = true ]; }; then
             echo "-> the heavy runners build this (mode=caps, no verified cache, kernel-heavy modification, or FORCE_HEAVY); this run stays pending meanwhile"
-            echo "droplet=true" >> "$GITHUB_OUTPUT"; echo 'runs_on=["self-hosted","heavy"]' >> "$GITHUB_OUTPUT"
+            echo "droplet=true" >> "$GITHUB_OUTPUT"
             # a run that really builds the node caps (no verified cache, or mode=caps) is never cancelled (hours of work);
-            # a FORCE_HEAVY run that only replays the cache is an ordinary check and may be superseded by a newer push
-            if [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ]; then echo "caps_build=true" >> "$GITHUB_OUTPUT"
-            else echo "caps_build=false" >> "$GITHUB_OUTPUT"; fi
+            # a FORCE_HEAVY run that only replays the cache is an ordinary check and may be superseded by a newer push.
+            # When the leaves are sharded (CAPS_SHARDS), the assembling build runs on the last listed machine, never on
+            # a small runner that merely carries the `heavy` label.
+            if [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ]; then
+              echo "caps_build=true" >> "$GITHUB_OUTPUT"
+              shards='${{ vars.CAPS_SHARDS }}'
+              if [ -n "$shards" ]; then last=$(python3 -c "import json,sys; print(json.loads(sys.argv[1])[-1])" "$shards")
+                echo "runs_on=[\"self-hosted\",\"heavy\",\"${last}\"]" >> "$GITHUB_OUTPUT"
+              else echo 'runs_on=["self-hosted","heavy"]' >> "$GITHUB_OUTPUT"; fi
+            else echo "caps_build=false" >> "$GITHUB_OUTPUT"; echo 'runs_on=["self-hosted","heavy"]' >> "$GITHUB_OUTPUT"; fi
           else
             echo "droplet=false" >> "$GITHUB_OUTPUT"; echo 'runs_on="ubuntu-24.04"' >> "$GITHUB_OUTPUT"
           fi
