@@ -32,7 +32,7 @@ node subset, model-to-saved rows, other-node evaluator errors, floating-point
 operations, quadrature remainder, or infinite tails. Those are remaining
 proof inputs, not results inferred from this interface. The upper endpoint
 remains work in progress. The dependency commits are pinned in `provenance.json`.
-No new numerical table or external generation step is introduced.
+No replacement coefficient table is introduced.
 
 The exceptional-row path uses `Q0SourceSavedLinearModel`. Its exact rational
 `storedScalar` is the existing decoded payload at the same canonical rank.
@@ -62,3 +62,13 @@ python3 tools/q0_quadrature/gen_source_saved_linear_checks.py --check
 
 The generator reuses the hash-validated row reader and existing chunk
 partition; it introduces no floating arithmetic or replacement payload.
+
+The concrete successor `Q0SourceExceptionProfile.source_actual_error_sq_lt`
+discharges the two physical parameter estimates for every exceptional source
+address. Three centered interval checks use endpoints from the original panel
+list, and the existing actual-profile identity proves their soundness. With
+`B=1/(2*10^14)` and `s>=13`, the ratio and fit-error bounds give radius
+`5*(B/3)^2 + B/3 + 1/10^15 + 1/10^31 < 3/10^15`.
+This statement still awaits Lean CI acceptance. It does not apply the model to
+all regular nodes or close the continuous quadrature and energy-table inputs.
+See `../source-profile-ratio/README.md` for the exact three-block replay.

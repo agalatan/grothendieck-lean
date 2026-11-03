@@ -190,6 +190,26 @@ premise and leaves only the two actual physical parameter enclosures. The
 strict audits permit only the standard logical axioms. The generator reuses
 the same validated input reader and reproduces its outputs byte for byte.
 
+**Actual exceptional-node profile.** `Q0SourceProfileRatio` interprets the
+centered interval check through the already proved `ProfileRootScreen.row_horner_mem`
+and `centered_horner_profile` identities. `Q0SourceExceptionProfile` checks
+three entire source panel blocks, using endpoints directly from `sourcePanels`
+at indices 146–274, 557–684 and 964–1087. Their common scaled-profile cap is
+`1/(2*10^14)`. Panel ordering proves coverage of each exceptional source node;
+its squared radius is at least 13, so its square-root denominator is at least 3.
+The actual signed ratio is therefore at most `B/3` in magnitude, and its
+error from the checked saved fit is at most `B/3 + 1/10^15`. Combining these
+with the decoded model error gives radius
+`5*(B/3)^2 + B/3 + 1/10^15 + 1/10^31 < 3/10^15`.
+The final `source_actual_error_sq_lt` statement has only the source address
+and exceptional-panel membership as inputs; both physical estimates and the
+saved-data estimate are discharged. These new modules remain unverified until
+normal CI passes. The three finite checks use kernel reduction and strict
+standard-axiom guards. Their exact external replay is reproducible with
+`tools/q0_quadrature/gen_source_profile_ratio.py --check`; the JSON records
+provenance and does not replace Lean's checks. No regular-node, quadrature,
+primary-contraction or energy-table obligation is discharged by this result.
+
 **q0 source-to-literal identity.**
 `Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real
 `s`, `b`, and `v`, that `Ssum q0RawWickEntries s b v` equals

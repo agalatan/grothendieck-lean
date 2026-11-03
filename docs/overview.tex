@@ -172,8 +172,14 @@ Gaussian parameter enclosures remain required; only the stored approximation
 and explicit model vanish outside the five-coordinate support. Separate
 kernel checks on the decoded rational rows give model residual norm below
 $10^{-31}$ and fitted-parameter magnitude below $10^{-15}$ at every exceptional
-source row. The physical ratio and its difference from that fitted parameter
-still need enclosures.
+source row. Three centered interval checks on the original exceptional panel
+blocks bound the actual scaled profile by $B=1/(2\cdot10^{14})$.
+Source geometry gives $\sqrt{s}\ge3$, hence physical ratio at most $B/3$
+and ratio-to-fit error at most $B/3+10^{-15}$. The complete selected-vector
+radius is then $5(B/3)^2+B/3+10^{-15}+10^{-31}<3\cdot10^{-15}$.
+The new consumer has no numerical enclosure premise; this proof family remains
+work in progress until Lean CI accepts it. The regular nodes, quadrature and
+remaining upper-bound obligations are separate.
 
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every

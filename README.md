@@ -221,8 +221,14 @@ least-squares parameter is the difference of the two stored linear coefficients.
 Only the model and stored approximation vanish outside those coordinates; the
 actual Gaussian coefficients remain in the analytic error. Per-chunk kernel
 checks certify every decoded exceptional row's model residual below `1e-31`
-and fitted parameter magnitude below `1e-15`. Physical ratio and ratio-to-model
-enclosures are still required at each source node.
+and fitted parameter magnitude below `1e-15`. `Q0SourceExceptionProfile` adds
+three centered interval checks on the original exceptional panel blocks.
+The existing profile identity and source-node geometry turn them into bounds
+on both actual phase parameters. Its final statement bounds the full selected
+Gaussian-to-saved vector error below `3e-15` at every exceptional source row,
+with no numerical enclosure premise. This new proof family is work in progress
+until its Lean CI check passes. Regular-node errors, quadrature and the remaining
+upper-bound obligations are separate.
 
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of
