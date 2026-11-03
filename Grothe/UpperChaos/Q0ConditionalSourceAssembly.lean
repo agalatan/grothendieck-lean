@@ -35,13 +35,13 @@ theorem completed_exceptional (center : Address → (ℕ × ℕ) → ℂ)
     completedCenter (joinedCenter center) a p = sourceCenter a ha p := by
   classical
   by_cases hr : p ∈ retainedModes a
-  · simp only [completedCenter, if_pos hr, joinedCenter, dif_pos ha]
+  · simp only [completedCenter, ite_eq_left hr, joinedCenter, dite_eq_left ha]
   · have hcut : ¬ p.1 + p.2 ≤ (Q0ConditionalMetadataAll.rowAt a).cutoff := by
       intro hc
       exact hr (Finset.mem_filter.mpr ⟨hp, hc⟩)
     have hb := storage_bounds hp
     have hc := sourceCenter_completion a ha p.1 p.2 hb.1 hb.2.1 hb.2.2.1 hb.2.2.2
-    simpa only [completedCenter, if_neg hr, Q0ExceptionSupport.completed, if_neg hcut]
+    simpa only [completedCenter, ite_eq_right hr, Q0ExceptionSupport.completed, ite_eq_right hcut]
       using hc
 
 theorem regular_error_eq (center : Address → (ℕ × ℕ) → ℂ) :
@@ -53,7 +53,7 @@ theorem regular_error_eq (center : Address → (ℕ × ℕ) → ℂ) :
   intro a _
   by_cases ha : exceptionalPanel a.1.val
   · simp [regularModes, ha]
-  · simp only [regularModes, if_neg ha, completedCenter, joinedCenter, dif_neg ha]
+  · simp only [regularModes, ite_eq_right ha, completedCenter, joinedCenter, dite_eq_right ha]
 
 theorem exceptional_error_eq (center : Address → (ℕ × ℕ) → ℂ) :
     retainedErrorSq exceptionModes (completedCenter (joinedCenter center)) =
@@ -63,7 +63,7 @@ theorem exceptional_error_eq (center : Address → (ℕ × ℕ) → ℂ) :
   apply Finset.sum_congr rfl
   intro a _
   by_cases ha : exceptionalPanel a.1.val
-  · simp only [exceptionModes, if_pos ha, dif_pos ha, nodeWeight]
+  · simp only [exceptionModes, ite_eq_left ha, dite_eq_left ha, nodeWeight]
     congr 1
     apply Finset.sum_congr rfl
     intro p hp

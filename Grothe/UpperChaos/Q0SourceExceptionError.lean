@@ -52,7 +52,7 @@ theorem error_sq_le_mass (S : Finset (ℕ × ℕ))
   apply Finset.sum_le_sum
   intro a _
   by_cases ha : exceptionalPanel a.1.val
-  · simp only [dif_pos ha, if_pos ha]
+  · simp only [dite_eq_left ha, ite_eq_left ha]
     calc
       _ ≤ (sourceWeight a * Real.exp (-(sourceNode a))) * (7 / 2 : ℝ) ^ 2 :=
         mul_le_mul_of_nonneg_left (source_error_sq_le a ha S hdom)

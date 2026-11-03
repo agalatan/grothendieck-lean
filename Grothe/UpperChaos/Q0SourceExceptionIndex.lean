@@ -47,7 +47,7 @@ theorem source_ordinal_exceptional (a : Address) (ha : exceptionalPanel a.1.val)
     exceptionalOrdinal (fromAddress a).val := by
   have hp := (List.all_eq_true.mp exceptional_source_checked) a.1
     (List.mem_finRange a.1)
-  rw [if_pos ha] at hp
+  rw [ite_eq_left ha] at hp
   have hj := (List.all_eq_true.mp hp) a.2.val (List.mem_range.mpr a.2.isLt)
   exact of_decide_eq_true hj
 
