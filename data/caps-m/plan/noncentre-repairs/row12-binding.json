@@ -9,7 +9,7 @@
   },
   "effective": {
     "path": "data/caps-m/plan/row-certificates/row12-pieces.json",
-    "sha256": "2b0dbffc8c3dee0a1e2d94ddd6cf7368302db92fd7b5f5d019a32eb776841da7"
+    "sha256": "ed2a97eea0b7aaa43cdcb055672a9407cce5260eb96118e0552c6beb6a5fb01d"
   },
   "format": "nodecaps-noncentre-repair-binding/v1",
   "historical_provenance": {
@@ -22,7 +22,7 @@
   },
   "patches": {
     "path": "data/caps-m/plan/noncentre-repairs/row12-patches.json",
-    "sha256": "0bc26c2f63b9a565216ef31d15adc8d3b7e30f07311e3cc857597b49d668e11b"
+    "sha256": "3bfdcecca50f4957ef1738203f3dff78eb302b39a42139c3dcbb3898f575afe9"
   },
   "row": 12,
   "selection": {
@@ -48,6 +48,34 @@
     "data/caps-m/plan/noncentre-repairs/baseline/D12x186.lean.txt": "8f66e15a7fe8d8b00c9523d7c86f2ecfe22b264372962cd803fc934ead8212ed",
     "data/caps-m/plan/noncentre-repairs/baseline/D12x204.lean.txt": "a8f436ae678a8a7822ce768b0207a175496cfbffc58f69f952b2fc5f248f55d0",
     "data/caps-m/plan/noncentre-repairs/baseline/row12-pieces.json": "f3956d00e65917f2c1cc895d9fc283c02403d3234c30d5ed2376bf51d22e42e8",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-108/exporter.lean.txt": "42080cb599db3b961c9038bd8de6e566fb8d5a0c9ecc931fbfd975cbf3472221",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-108/matrix.jsonl": "51da5c938714eea74b078d85af95501d99b4689862fb82565d2748db6e9d3aa0",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-108/proposal.json": "418300617f500f62897575d7c4492747c251f8c25d6c388606ee23a0c01fae84",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-113/exporter.lean.txt": "d9f08e9daddc3863c2133d06d5502407e4110c7f9d7d2b2747e70fcfa3c85197",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-113/matrix.jsonl": "b7878ca63505005d23702ae56a3d7463ad2ac0acae607dda3d9b06148c0ff6c1",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-113/proposal.json": "0a7472cbb650e60e70c8136575dbc4ecc5420921b32dfb105be6eeaa41c65ef8",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-118/exporter.lean.txt": "f1d95cfa455768e0bef44c3497a84934023d23c27909b6194b52ddc3155da3da",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-118/matrix.jsonl": "7207cf62fdca37a624239785f7a203957f79606aa166279eb0c399664028a6f7",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-118/proposal.json": "739ce05dc34e83295ae42686a0f29b95dd0c906d847e69e137844e338a545326",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-129/exporter.lean.txt": "02eea8d5efae7194f25159dd9543e2b0df04ab7bc3c17324e8ed0fecb993274c",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-129/matrix.jsonl": "926fba4a11d9d58308c2d42a6073f942f693d1707a65ad091b5d9968bc901826",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-129/proposal.json": "8e89fc6180309fd549ff076e6651593f08e7bddd1268b6d38ca7ff2fb77b35e0",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-134/exporter.lean.txt": "ce4e8dc76d6b00238cae2ab82b4e7a2f58f8fe2a1e9395db16239f94a338e1b8",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-134/matrix.jsonl": "cdbe84d35515d0493e5df2c67baabbf38474dad0cc68d5161cd86ab66abd0a73",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-134/proposal.json": "241f4d6e0320601d4997c5e846665ba994523906173b18b5858d8095036a363f",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-139/exporter.lean.txt": "b855b9300d38049a2df488aaf23aad7c8ff1d754557daddc8b80ef6d9abb8cb2",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-139/matrix.jsonl": "ce9fdc6e3bc72309d6d87ad2cb0ed825ef19841bdedff5480d5f6402f25c5910",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-139/proposal.json": "3ce5d9dec257c3611e97866dacd62d20437c31a704c6601afc8ec4bf38618ef4",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-144/exporter.lean.txt": "3fff4d0b0858d364e6ad199caef640017205a6d80419ba8f7e98ac25be381560",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-144/matrix.jsonl": "8a639a2b67612b4aaa47378b8e3b6a9f52360c091eae7238d120944c9b30b05b",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-144/proposal.json": "e8dceb8aca402d74ff1089bbb462eba7fde7fc601d152d6cd0a0110d6e921817",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-160/exporter.lean.txt": "2ff519e8bbfff1d94868be9119d60ef40ce4718c7d7a78a4f9e8566563a7845b",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-160/matrix.jsonl": "51fdb85221943cee70a9fd679ab9e1e3dcd1e11efc3e8a7c0a606cd5cc335b43",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-160/proposal.json": "7bf06a3b0a0acba47b56ad62d32b89d6711a64d9e8c606bc4ff716f197932c1d",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-98/exporter.lean.txt": "1859aab46db7e7b21a2e792bb1c13dc69e9614559abd278a6ed18c757be3ea9f",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-98/matrix.jsonl": "f453e4e8a6991a010a5b4d0f9b0235964eb64560ac8fa3318bf1646742dadec5",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/12-282-98/proposal.json": "c9c3ca3b79af08444903a0a2d08145b59ecb291206b4d46814291c9316db42df",
+    "data/caps-m/plan/noncentre-repairs/batches/077f7437eb81f7bb/scientific-replay.json": "a6f4fef8a3bdb3feb72de4855321f775c1f88a54bddeab2155a5635ea7b15eb3",
     "data/caps-m/plan/noncentre-repairs/batches/0aabda4b04cbb761/12-213-1/exporter.lean.txt": "b264b4d0ca88ea57b6cb65b86f063c95c3000c20b3f6108ea218416bba475235",
     "data/caps-m/plan/noncentre-repairs/batches/0aabda4b04cbb761/12-213-1/matrix.jsonl": "a5af471dddfde9a31854e490f715286db4e3637060227b8a48d47eec9777118d",
     "data/caps-m/plan/noncentre-repairs/batches/0aabda4b04cbb761/12-213-1/proposal.json": "e56e73662812072c54e9adae4247789a8374d76f27c14767d874249e4ab88984",
