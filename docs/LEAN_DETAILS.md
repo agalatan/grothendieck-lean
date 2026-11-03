@@ -82,6 +82,28 @@ from `Upper/Data.lean`; the generated candidates are linked to the actual
 source by Lean proofs. The result is independent of the phase-cover numerical
 leaves and does not discharge the remaining upper-bound inputs.
 
+**Exceptional conditional rows.** The source table has 21,577 rows of
+binary64 conditional Hermite approximations, ordered by the degree-531 canonical
+pairs `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1`, in `(c+d,c)` order and restricted
+to `c+d ≤ cutoff_i` in row i. A full row has 35,777 entries; cutoffs 1 and 2
+retain three and five. This certificate selects all nodes in each panel hit by
+a zero-containing result of the outward 128-bit profile interval Horner screen.
+The 413 unresolved nodes occupy 381 panels, whose complete rule nodes are the
+417 ordinals 3872–4036, 10910–11037 and 17321–17444. This panel selection is
+independent of cutoff; 1,837 source rows have cutoff at most two.
+`exception-selection.json` commits the rule and exact screen, panel and root
+inputs. `Q0SourceExceptionCentersAll` combines exact binary64 decoding checks:
+each scalar has magnitude at most one, and each complete row has squared norm
+at most 121/100. The source ordinal ranges, cutoff counts and byte spans are
+explicit. `python3 tools/q0_quadrature/gen_source_exception_centers.py --check`
+replays the selection and reproduces exactly 16 chunks and their aggregate from
+pinned slice, offset and per-row ledger files. The strict audit adds no native
+facts. This certifies decoded source values; alignment with selected source
+nodes, basis normalization and enclosures of actual Gaussian coefficients remain
+separate. No Gaussian estimate or endpoint assembly currently consumes this
+certificate. Producer provenance and the checked ledger fields are documented
+in [`conditional_source/README.md`](../data/q0_quadrature/conditional_source/README.md).
+
 **Conditional-pair ranks.** `Q0ConditionalPairRankAll` proves finite rank,
 ordinal coverage and uniqueness for the degree-531 canonical pair table. Its
 pairs `(c,d)` satisfy `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1` and
@@ -210,6 +232,25 @@ the resulting norm below `5/10^15` for the event indicator in the original
 `Lp ℂ 2 mu2` space. Thus the existing smoothing and band-projection
 contractions can apply without changing measures. This step uses the proved
 phase cover and introduces no further numerical check.
+
+The concrete smoothing calculation is covered in all retained grades by
+`FixedChaosSymmetricPower.actualEntry_gradedMode` and
+`FixedChaosGradedAction.actualGradeMatrix_eq`: each grade uses the two-sided
+matrix action `S_(q+1) C_q S_qᵀ`. `ProductionSmoothingRounding` constructs
+rational entries by an integer square-root floor with a `10⁻²²` grid and
+proves their error against the actual fixed smoothing parameters.
+`ProductionSmoothingApprox.production_smoothing_error` then gives
+`‖smoothOp A − savedOutput A‖ ≤ 4·10⁻¹⁵ ‖A‖` for `N ≤ 251`, using
+orthogonality to aggregate all grades before taking the norm. These theorems
+use only `propext`, `Classical.choice` and `Quot.sound`. They do not supply
+the actual retained F₀ coefficient enclosures or the stored energy-table
+comparison; those remain separate proof obligations.
+`CanonicalReconstructionNorm.full_head_reconstruction_norm_le` is a standalone
+combinatorial bound for an abstract canonical/reflected index split: its
+injective partner map and multipliers at most one give squared-norm growth
+at most two, hence a norm factor below `10/7`. `ConditionalReconstruction`
+applies that split to the actual conditional Gaussian coefficients and their
+exact reflected completion; numerical reconstruction remains separate.
 
 `CapturedTail.norm_projOn_residual_sq_le_of_captured_family` subtracts
 `Σ_i max(0, lower_i − error_i)²` from the total source energy. Its hypotheses
@@ -610,8 +651,63 @@ the substitution `v = t/(1+t)` and its pointwise integrand identity.
 `MobiusEndpoint`, `MobiusImproperIntegrable`, and `MobiusImproperLimit` justify
 the passage to the half-line. `MobiusSeedImproper` proves integrability and
 `∫_(0,∞) (t/(1+t))^h * t^(-1/2) * exp(-x*t/(1+t))/(1+t)^2 dt = (π/2) J_h(x)`
-for every order and real parameter. This real kernel identity does not identify
-a Gaussian coefficient. Concrete numerical node bounds remain unproved.
+for every order and real parameter. `OneSidedSeedFubini` combines the exact
+affine Gaussian inner integral with absolute Fubini, and
+`OneSidedSeedIntegral` evaluates the resulting half-line integral.
+`OneSidedHermiteSeed.phase_hermite_zero_row` discharges the shifted-Wick
+premise and supplies the normalized Gaussian coefficient
+`(sqrt(π)/2) * A * (-A)^d * J_d(A²) / sqrt(d!)` for every real `A`.
+`F0ConditionalSeed` identifies it with the actual canonical evaluator and
+uses `F0ConditionalEvaluator.coefficient_eq_signed` for the production
+coefficient at `s ≥ 0` with `vprof(s) ≠ 0`. The sign exponent is `d` and
+vanishes at `d=0`; there is no second Hermite normalization. A transitive
+guard rejects dependencies beyond the standard three Lean axioms.
+`F0ConditionalSeedRecurrence` derives
+`I_(0,d+1)(A) = (-A) * ratio d (A²) / sqrt(d+1) * I_(0,d)(A)`
+for the actual canonical Gaussian integral, with positivity of `J_d`
+discharged internally. It also proves the signed production recurrence and
+that each canonical zero-row coefficient has zero imaginary part.
+`F0ConditionalCoefficientBounds` represents the actual canonical coefficient
+as an inner product against the bounded phase in `L²(gaussC)` and applies
+Cauchy--Schwarz with the normalized Hermite basis to bound its norm by one.
+The actual raising sum is bounded by `sqrt(c+1)+sqrt(d+1)`, which is strictly
+below `35` when `c ≤ 266` and `d ≤ 265`. This does not establish the parameter
+derivative formula or the single midpoint error allowance; those remain open.
+`F0ConditionalReality` obtains conjugation covariance of each normalized Hermite
+function from its rational polynomial representation. The existing
+`gaussC_map_conj` then proves that every actual canonical coefficient has zero
+imaginary part. Direct conjugation symmetry of the actual production phase
+proves reality of its coefficient for every real source parameter, including
+profile zeros. The complex distance to any real
+stored center is exactly the absolute real-part error; no numerical enclosure
+is assumed in these identities.
+`ZeroProfileSavedCenter.actual_saved_error_lt` consumes only a physical signed
+profile-ratio bound, its distance to a chosen model parameter, and the distance
+from that explicit model to the saved scalar. It does not assume the unknown
+true coefficient error. The three costs are `5ρ²`, half the parameter error,
+and the saved-model error; exact rational arithmetic leaves strict slack below
+`10⁻¹²` for the displayed input tolerances. Actual source and byte bindings remain
+open. The same theorem applies to a zero-completed coordinate with saved zero.
+`ZeroProfilePhaseLinearization` transfers the quadratic pointwise remainder
+to the actual Gaussian phase slice. The majorant uses `h₀₀+h₁₁=|w|²` and its
+L² norm at most two. Every true coefficient is within `5ρ²` of the centers
+`1,ρ/2,-ρ/2` at modes `(0,0),(1,0),(0,1)` and zero centers elsewhere. This does
+not set the other true coefficients to zero and does not certify saved bytes.
+The first-order phase approximation has pointwise remainder at most
+`(5/2)‖h‖²/r²`. Its proof uses the exact norm-square identity to bound
+`‖r+h‖-r-Re(h)` between zero and `‖h‖²/(2r)`, then the zero-safe phase estimate.
+This elementary estimate does not assume a derivative identity or exclude a
+zero perturbed point. A Gaussian coefficient and saved-node instantiation is
+still a separate obligation.
+`Haagerup/PhaseStability` derives the zero-safe perturbation inequality from
+`phase(z)*‖z‖=z`, the triangle inequality and `‖phase(z)‖≤1`, with only a positive
+real reference radius. `ZeroProfilePhaseStability` specializes it to the actual
+production phase at `s>0`. Its distance in Gaussian L² from the constant phase,
+and every coefficient error relative to that phase, are at most
+`2*sqrt(1+aQ²)*|vprof s|/sqrt s`. This does not assume a nonzero profile, evaluate
+an inverse shift, or allocate any additional endpoint error. Actual node
+intervals, stored-center errors and the final propagated budget still need proof.
+Concrete numerical node bounds and the full upper bound remain unproved.
 
 `ShiftedMomentRecurrence` proves
 `M(p+1,q)=mu*M(p,q)+(q/beta)*M(p,q-1)` by finite binomial algebra, including
@@ -634,6 +730,35 @@ of the conditional Gaussian expectation by
 positive `beta`, so no lower bound on the radial profile is needed. These
 results concern the base moment away from the radial origin; they do not
 certify the full polynomial-weighted Taylor sources or the remaining budgets.
+
+`F0ConditionalNode.coefficient_eq_integral` and its Bessel bound refer to the
+actual conditional phase. `F0ConditionalEvaluator.coefficient_eq_signed`
+identifies its historical parameter as
+`A = sqrt(s)/(sqrt(1+aQ²)*abs(vprof s))`, with the explicit assumptions
+`s ≥ 0` and `vprof s ≠ 0`. `ConditionalNodeIndices.image_rows` and
+`card_modes` select exactly 31,877 distinct degree-501 pairs from the larger
+35,777-pair storage; a prefix substitution is not justified.
+`ConditionalMomentReflection.integral_phase_H_reflection` proves the actual
+unnormalized Gaussian identity by finite Stein/Ward recurrences and absolute
+Fubini. `ConditionalCoefficientReflection.production_reflected_coefficient`
+then proves the production lookup factor `sqrt((d+1)/c)` for `d+1<c` and a
+nonzero profile. The normalized canonical identity holds at every real shift.
+These results have standard-three-axiom audits. They supply no numerical
+coefficient enclosure, root-gap estimate or floating reflection error.
+
+`F0ConditionalEvaluator.coefficient_zero_of_profile_zero` retains the constant
+phase `ph(sqrt(s))` when `vprof s = 0` and proves that all modes other than
+`(0,0)` vanish, including at `s = 0`. Thus the actual reflection identity
+extends to every nonnegative radius without a nonzero-profile premise.
+`ConditionalReconstruction.reconstruct_actual` identifies the exact reflected
+completion with the actual coefficient vector. Its `canonical_top_eq_modes`
+identifies the canonical half of the top rectangle with the existing 31,877
+mathematical modes, preserving explicit lookup in the larger storage.
+`weighted_top_norm_le_of_canonical_error` consumes a coupled canonical error
+bound at explicit nonnegative nodes and weights and bounds the full exact
+completion error by `10/7` times that bound. The caller must still prove the
+canonical error and the physical node/weight certificates. Primary contraction,
+floating reconstruction and final table agreement are separate obligations.
 
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.
@@ -758,6 +883,15 @@ assumed. The complete actual-node profile and shifted-parameter intervals
 remain to be certified.
 The gap data share the same tracked input and generator as the radial cuts;
 the checker uses kernel reduction and introduces no native facts.
+
+`PhiProductionIdentity` contains the existing `phaseEps_eq` and `phiT_sq`
+identities with their public names and statements unchanged. `PhiProductionDefs`
+contains the unchanged `Sphase` and `phiT` definitions and continuity of the
+phase polynomial, independently of structural head-table proofs. The identity
+imports these definitions and the generic Gram-expression soundness module,
+then audits both identities against the standard three
+axioms, independently of the global phase-cover computation. The existing
+`PhiBound` proof imports this identity and retains its numerical cover.
 
 `LocalAffineSquareIntegralBounds` supplies both affine integration orders with
 `ContinuousOn` restricted to the actual closed cell. Coordinate clamping

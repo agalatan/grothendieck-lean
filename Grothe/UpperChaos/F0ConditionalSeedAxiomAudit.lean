@@ -1,0 +1,10 @@
+import Grothe.UpperChaos.F0ConditionalSeed
+import Grothe.UpperChaos.OneSidedHermiteSeedAxiomAudit
+
+/-! Transitive standard-three audit of the actual conditional seeds.
+Agent-ID: codex-8c4d. -/
+
+assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalSeed.canonicalCoefficient_zero_row
+assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalSeed.canonicalCoefficient_zero_zero
+assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalSeed.coefficient_zero_row
+assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalSeed.coefficient_zero_zero
