@@ -324,9 +324,19 @@ def render_cell_bundle(data, cell, digest, scalar_indices, *, shared_profile,
         elif name == 'pair_checked':
             fields = ['twiceRadial', 'firstOutput', 'twiceProfile', 'negArgument',
                       'companionFactor', 'companionNumerator', 'companionOutput']
+            body = '  refine ⟨' + ', '.join('?_' for _ in fields) + '⟩\n'
+            for field in fields:
+                if field in {'twiceRadial', 'twiceProfile', 'negArgument'}:
+                    body += f'  · simpa only [pairCertificate, div_one] using {field}_checked\n'
+                elif field == 'companionFactor':
+                    body += ('  · have hone : oneModel = constant 1 := by\n'
+                             '      simp only [oneModel, constant, IntervalRat.singleton, div_one]\n'
+                             '    simpa only [pairCertificate, hone] using companionFactor_checked\n')
+                else:
+                    body += f'  · exact {field}_checked\n'
             assemblies.append(_proof(name,
                 'pairCertificate.Verified sModel profileModel argumentModel commonModel',
-                '  exact ⟨' + ', '.join(f + '_checked' for f in fields) + '⟩').text)
+                body.rstrip()).text)
         elif name == 'common_verified':
             assemblies.append(_proof(name,
                 'commonCertificate.Verified dampingModel gaussianModel inverseModel',

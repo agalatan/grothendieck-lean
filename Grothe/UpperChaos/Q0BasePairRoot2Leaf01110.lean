@@ -10,7 +10,16 @@ set_option maxHeartbeats 0
 
 theorem pair_checked :
     pairCertificate.Verified sModel profileModel argumentModel commonModel := by
-  exact ⟨twiceRadial_checked, firstOutput_checked, twiceProfile_checked, negArgument_checked, companionFactor_checked, companionNumerator_checked, companionOutput_checked⟩
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · simpa only [pairCertificate, div_one] using twiceRadial_checked
+  · exact firstOutput_checked
+  · simpa only [pairCertificate, div_one] using twiceProfile_checked
+  · simpa only [pairCertificate, div_one] using negArgument_checked
+  · have hone : oneModel = constant 1 := by
+      simp only [oneModel, constant, IntervalRat.singleton, div_one]
+    simpa only [pairCertificate, hone] using companionFactor_checked
+  · exact companionNumerator_checked
+  · exact companionOutput_checked
 
 theorem common_verified :
     commonCertificate.Verified dampingModel gaussianModel inverseModel := by
