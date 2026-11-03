@@ -143,6 +143,24 @@ the resulting norm below `5/10^15` for the event indicator in the original
 contractions can apply without changing measures. This step uses the proved
 phase cover and introduces no further numerical check.
 
+The concrete smoothing calculation is covered in all retained grades by
+`FixedChaosSymmetricPower.actualEntry_gradedMode` and
+`FixedChaosGradedAction.actualGradeMatrix_eq`: each grade uses the two-sided
+matrix action `S_(q+1) C_q S_qᵀ`. `ProductionSmoothingRounding` constructs
+rational entries by an integer square-root floor with a `10⁻²²` grid and
+proves their error against the actual fixed smoothing parameters.
+`ProductionSmoothingApprox.production_smoothing_error` then gives
+`‖smoothOp A − savedOutput A‖ ≤ 4·10⁻¹⁵ ‖A‖` for `N ≤ 251`, using
+orthogonality to aggregate all grades before taking the norm. These theorems
+use only `propext`, `Classical.choice` and `Quot.sound`. They do not supply
+the actual retained F₀ coefficient enclosures or the stored energy-table
+comparison; those remain separate proof obligations.
+`CanonicalReconstructionNorm.full_head_reconstruction_norm_le` is a standalone
+combinatorial bound for an abstract canonical/reflected index split: its
+injective partner map and multipliers at most one give squared-norm growth
+at most two, hence a norm factor below `10/7`; it is not yet connected to a
+Lean production reconstruction operator.
+
 `CapturedTail.norm_projOn_residual_sq_le_of_captured_family` subtracts
 `Σ_i max(0, lower_i − error_i)²` from the total source energy. Its hypotheses
 are pairwise disjoint captured mode sets, disjointness from the tail, vanishing
