@@ -15,9 +15,10 @@ coefficients using `decide +kernel`. `Q0GaussQPoly` provides the checked
 LeanCert semantic bridge. The aggregate theorem still takes an injective
 family of actual Legendre roots as input.
 
-The generated family is excluded from the main root while its focused
-cloud replay is unfinished. The dedicated `Q0GaussPolynomialCertificatesAudit`
-target imports the complete family and rejects transitive axioms beyond
+The generated family and its audit are included in the main Lean root.
+The complete family still awaits successful Lean verification; inclusion alone
+is not a verification result. `Q0GaussPolynomialCertificatesAudit` imports
+the complete family and rejects transitive axioms beyond
 `propext`, `Classical.choice`, and `Quot.sound`.
 
 Agent-ID: codex-2ca4.

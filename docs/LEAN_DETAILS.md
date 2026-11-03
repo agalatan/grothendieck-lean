@@ -7,6 +7,19 @@ Both endpoints are work in progress; [PROOF_STATUS.md](PROOF_STATUS.md) lists
 the remaining project-specific Lean obligations. Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.
 
+**Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
+degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
+polynomial Bezout identity. `Q0GaussQPoly.lean` interprets LeanCert's rational
+coefficient lists as real polynomials and proves the checker soundness.
+`Q0GaussPolynomialOrder01` through `Order64` discharge these finite identities,
+squared norms and leading coefficients with kernel reduction. The aggregate
+`Q0GaussPolynomialCertificates.exactness` uses the actual recurrence and weight
+formula for every production order. Its remaining input is an injective family
+of Legendre roots; selected numerical root bindings and the analytic integration
+remainder are separate. The reproducible witnesses and generator are in
+`data/gauss-polynomial-certificates/` and `tools/gen_gauss_polynomial_certificates.py`.
+The entire family and its strict standard-three axiom audit are in the main root.
+
 **Shared proof foundations.** `LowerAnalytic/ComplexGaussianCore.lean` contains
 `gaussC`, its planar presentation, rotation invariance and radial-moment reduction.
 The phase and complex Hermite calculations import it without the lower row
