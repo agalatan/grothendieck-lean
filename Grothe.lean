@@ -883,6 +883,8 @@ import Grothe.UpperChaos.LeanCertAuxiliaryCutoff
 import Grothe.UpperChaos.LeanCertPilot
 import Grothe.UpperChaos.LeanCertProductionPanel
 import Grothe.UpperChaos.LeanCertProductionProfile
+import Grothe.UpperChaos.LinearTiltedMoments
+import Grothe.UpperChaos.LinearTiltedMomentsAudit
 import Grothe.UpperChaos.LocalAffineSquareIntegralBounds
 import Grothe.UpperChaos.LocalizedComparison
 import Grothe.UpperChaos.LstarL

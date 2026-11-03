@@ -769,6 +769,13 @@ import Grothe
 #print axioms Grothe.UpperChaos.LeanCertProductionProfile.q0Kappa_eq_wick_profile
 #print axioms Grothe.UpperChaos.LeanCertProductionProfile.q0_beta_panel_bounds
 #print axioms Grothe.UpperChaos.LeanCertProductionProfile.q0_profile_panel_bounds
+#print axioms Grothe.UpperChaos.LinearTiltedMoments.complete_square
+#print axioms Grothe.UpperChaos.LinearTiltedMoments.integrable_finite_mixed_polynomial
+#print axioms Grothe.UpperChaos.LinearTiltedMoments.integrable_mixed_moment
+#print axioms Grothe.UpperChaos.LinearTiltedMoments.integral_finite_mixed_polynomial
+#print axioms Grothe.UpperChaos.LinearTiltedMoments.integral_linear_tilt
+#print axioms Grothe.UpperChaos.LinearTiltedMoments.integral_mixed_moment
+#print axioms Grothe.UpperChaos.LinearTiltedMoments.linear_tilt_le_half_rate
 #print axioms Grothe.UpperChaos.MobiusEndpoint.forward_tendsto
 #print axioms Grothe.UpperChaos.MobiusFiniteSubstitution.finite_substitution
 #print axioms Grothe.UpperChaos.MobiusGeometry.forward_deriv
