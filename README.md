@@ -356,108 +356,14 @@ radial endpoint and certified numerical integration remain open.
 source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
 Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
 A half-rate majorant proves integrability of every such polynomial insertion.
-`IndependentSourceMoments` extends absolute integrability to arbitrary
-independent complex sources `a,b` in `exp(-(rate-1)*normSq z+a*z+b*conj z)`.
-Its majorant is uniform on bounded source sets, so complex differentiation
-in either source inserts `z` or `conj z`. `IndependentSourcePolynomial`
-evaluates every finite polynomial insertion by a polynomial recurrence,
-retaining the factor `exp(a*b/rate)/rate` and the means `b/rate`, `a/rate`.
-`ActualTaylorCoherent` applies that recurrence to the production multiplier
-`taylorPhasePower j`, excluding `F0`. Its rational polynomial uses the actual
-`phaseTerms` in physical order `(z, conj z, w, conj w)`, with exact radial rate
-`r = 1 + j*phaseEpsQ`. For eight independent coherent sources, it proves
-absolute integrability and evaluates the transform as two Gaussian factors
-times a finite polynomial, retaining total normalization `r^-2`.
-The next source-space batch is WIP, with complete proof bodies pending
-compilation. `BipartitePolynomialL2` derives coercive Gaussian domination from
-`gateOK`, including every finite polynomial insertion.
-`ScaledActualCoherentL2` constructs the actual transformed polynomial and
-proves the scaled transform belongs to Gaussian L². `GaussianFockBessel`
-and `GateFockCoefficients` give summability and a squared-norm upper bound for
-its normalized monomial coefficients, with explicit gate order
-`((y,u),(x,v))` per physical coordinate. The all-index weighted Hermite
-matrix identity has complete source proofs in the uncompiled gate-jet batch
-below. Binding to the historical Laguerre polynomial and numerical
-Hilbert--Schmidt caps remain open.
-The coefficient batch is also WIP and awaits compilation.
-`ActualTaylorFiniteCoefficients` evaluates finite Hermite generating blocks
-and extracts the retained actual matrix entries. Independently,
-`ActualSourceCoefficientExtraction` evaluates every coefficient of the full
-scaled transform by a finite factorial sum, using source-space L² for Fubini.
-`ActualMatrixFiniteComparison` gives a finite physical Wick formula for every
-matrix entry and identifies the full transform's ground coefficient with its
-actual ground entry. The all-index weighted Hermite identity is supplied by
-the uncompiled gate-jet extension below; numerical caps remain open.
-
-The gate-jet batch is WIP, with complete proof bodies pending compilation.
-Finite Gaussian source extraction is identified with mixed derivatives at
-zero, and those derivatives are evaluated in the exact gate order
-`((y,u),(x,v))`, without commuting derivatives or exchanging physical and
-source integrals. `ActualPairMomentCoefficients` includes the original source
-scales and Gaussian mass. `ActualTensorMomentCoefficients` tensors the two
-physical coordinates, and `ActualProductionMomentCoefficients` identifies
-every coefficient of the actual scaled transform with a finite sum of
-physical Hermite moments from the production multiplier polynomial.
-`ActualCoherentHermiteJets` separately identifies the finite physical jets
-and their Hermite normalization; `ActualGateMatrixWeights` proves that squared
-source scales are exactly the original energy weights.
-`ActualGateCoefficientWeights` identifies every factorial and scale factor,
-and `ActualGateMatrixCoefficients` completes the all-index equality between
-the actual source coefficients and normalized weighted Hermite matrix entries.
-It gives full weighted-energy summability and full/finite Bessel bounds by
-the source integral of the actual scaled transform. All these new source
-proofs and strict audits remain uncompiled. Numerical bounds for that source
-integral, Hilbert--Schmidt caps, the historical Laguerre binding, and the final
-upper endpoint remain open.
-
-The source-norm Gram extension is WIP, with complete proof bodies pending
-compilation. `ActualSourceNormGram` expands the actual production polynomial
-norm into finite Gram sums, preserving every cross term. The bipartite Gram
-modules integrate each source pair through the existing shifted and correlated
-Gaussian moments, retaining the original Schur conditions and kernel masses.
-`ActualSourceNormEvaluation.sourceNormValue` is therefore a finite evaluator
-of the actual scaled source norm and an upper bound for the full weighted
-matrix energy. Its arithmetic enclosure, Hilbert--Schmidt caps, historical
-Laguerre binding and the final endpoint remain open.
-
-The tail continuation is also WIP and uncompiled. `ActualMatrixCutoffTail`
-keeps the exact gate factor `R^D*T^(L+1)`; the band and rectangle modules bound
-the actual matrix energy outside the retained input rectangle
-`(500, 500, 251, 250)` with inclusive endpoints by the sum of four coordinate bounds.
-`ActualSelectedBandTails` binds all fourteen finite, nonzero-power comparison
-bands to the original 56 checked gates. Their full rectangle-tail energies
-are summable and bounded by the corresponding finite `sourceNormValue`
-expressions divided by their cutoff weights. `ActualFiniteRectangleOperator`
-bounds the action on finite coefficient vectors without a mode-count factor.
-`ActualRectangleCoefficientAction` identifies that action with the actual
-Gaussian output coefficients of finite normalized Hermite inputs.
-`ActualTaylorMultiplierOperator` constructs the actual continuous L² multiplier
-under explicit `PhiBound`, proves its Hermite matrix identity, and obtains the
-convergent expansion of every rectangle-tail input. The infinite rectangle
-operator module passes the finite bound to this limit and uses Parseval to
-control the complete selected-band output by the same four source norms.
-These new proofs remain uncompiled. Numerical source bounds and the final
-closed endpoint remain open.
-The rational source continuation constructs the literal multiplier polynomial
-before diagonal gate scaling, proves its exact coefficients and support after
-scaling, and reifies the finite correlated-moment evaluator over rationals.
-The finite moment-scaling identity retains both complex Gaussian Jacobian
-factors. Its actual-gate specialization now expresses the scaled outer moments
-using rational Schur coefficients and the exact inverse mass `1/(R*Q)`, with
-positivity derived from the checked gate. These are WIP proof bodies awaiting
-compilation. The remaining conditional-polynomial scaling, complete Gram binding
-and arithmetic enclosures are not assumed or claimed by these results;
-historical numerical files are not proof inputs.
-
-
 For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
 `QuadraticPolynomialIntegrability` proves genuine joint polynomial
 integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate
 is `(A*C-B²)/(A+C)`. `QuadraticPolynomialMoments` then applies Fubini and
 reduces every finite mixed polynomial integral to a finite Wick sum at the
 remaining rate `(A*C-B²)/A`; its zeroth mass is `1/(A*C-B²)`.
-The source-space WIP batch above supplies polynomial insertion into the full
-bipartite kernel. The historical operator identity remains separate.
+The historical operator identity and polynomial insertion into the full
+bipartite kernel remain separate obligations.
 
 The weighted Gaussian kernel has exact mass formulas. A common `gateOK`
 certificate supplies the real covariance conditions for either physical pair.
@@ -467,9 +373,8 @@ certificate supplies the real covariance conditions for either physical pair.
 The parameter table covers the fourteen selected finite bands and four
 coordinate exclusions. Its checks prove positivity, not the numerical tail
 bounds recorded in the input files. The defined kernel is not yet identified
-with the historical `HS_{j,I}` producer in `docs/UPPER_STATUS.md`. The actual
-weighted matrix identity has complete source proofs above, pending compilation;
-no stored numerical Hilbert--Schmidt bound is transferred by that identity.
+with `HS_{j,I}` in `docs/UPPER_STATUS.md`; polynomial insertion, the Fock
+coefficient identity and numerical Hilbert--Schmidt bounds remain separate.
 `F0ConditionalNode` defines the actual conditional Gaussian coefficients and
 proves their coupled Bessel bound. `F0ConditionalEvaluator` identifies them
 with the historical signed-shift integral for nonnegative radius and nonzero
@@ -490,6 +395,33 @@ energy-table agreement still need their own certificates.
 source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
 Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
 A half-rate majorant proves integrability of every such polynomial insertion.
+`IndependentSourceMoments` extends absolute integrability to arbitrary
+independent complex sources `a,b` in `exp(-(rate-1)*normSq z+a*z+b*conj z)`.
+Its majorant is uniform on bounded source sets, so complex differentiation
+in either source inserts `z` or `conj z`. `IndependentSourcePolynomial`
+evaluates every finite polynomial insertion by a polynomial recurrence,
+retaining the factor `exp(a*b/rate)/rate` and the means `b/rate`, `a/rate`.
+These source formulas do not identify the actual multiplier or the weighted
+Fock operator, and supply no numerical Hilbert--Schmidt caps.
+For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
+`QuadraticPolynomialIntegrability` proves genuine joint polynomial
+integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate
+is `(A*C-B²)/(A+C)`. `QuadraticPolynomialMoments` then applies Fubini and
+reduces every finite mixed polynomial integral to a finite Wick sum at the
+remaining rate `(A*C-B²)/A`; its zeroth mass is `1/(A*C-B²)`.
+The historical operator identity and polynomial insertion into the full
+bipartite kernel remain separate obligations.
+
+The weighted Gaussian kernel has exact mass formulas. A common `gateOK`
+certificate supplies the real covariance conditions for either physical pair.
+`OriginalHSGaussianMass.integral_gateWeight` gives pair mass `ν²/δ`, and
+`OriginalHSGaussianTensor.integral_tensorWeight` gives the product mass
+`ν⁴/(δ₀δ₁)`, with genuine integrability proved before Fubini.
+The parameter table covers the fourteen selected finite bands and four
+coordinate exclusions. Its checks prove positivity, not the numerical tail
+bounds recorded in the input files. The defined kernel is not yet identified
+with `HS_{j,I}` in `docs/UPPER_STATUS.md`; polynomial insertion, the Fock
+coefficient identity and numerical Hilbert--Schmidt bounds remain separate.
 Joint integrability when the source depends on another integration variable
 remains a separate obligation before Fubini can be applied.
 
