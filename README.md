@@ -396,6 +396,20 @@ proves an integrated auxiliary tail at `‖z‖ ≥ r₀ > 0`, bounded by
 including its zeros. Bounds for the full polynomial-weighted sources, the
 radial endpoint and certified numerical integration remain open.
 
+`LinearTiltedMoments` evaluates finite polynomials in `z` and `conj z` under
+`exp(-(rate-1)*normSq z + 2*Re(a*z))` for every positive `rate` and fixed complex
+source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
+Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
+A half-rate majorant proves integrability of every such polynomial insertion.
+For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
+`QuadraticPolynomialIntegrability` proves genuine joint polynomial
+integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate
+is `(A*C-B²)/(A+C)`. `QuadraticPolynomialMoments` then applies Fubini and
+reduces every finite mixed polynomial integral to a finite Wick sum at the
+remaining rate `(A*C-B²)/A`; its zeroth mass is `1/(A*C-B²)`.
+The historical operator identity and polynomial insertion into the full
+bipartite kernel remain separate obligations.
+
 The weighted Gaussian kernel has exact mass formulas. A common `gateOK`
 certificate supplies the real covariance conditions for either physical pair.
 `OriginalHSGaussianMass.integral_gateWeight` gives pair mass `ν²/δ`, and
@@ -539,6 +553,10 @@ estimate. The exact cuts are recorded in `data/small-profile-mesh/certificate.js
 existing profile cover, giving `|κ(s)| > 1/1000` on all four remaining strips.
 Thus their reciprocal Gaussian denominator exceeds `10⁻⁶` uniformly, including
 for very small positive reciprocal coordinates.
+
+`PhiProductionIdentity` relates the actual rounding phase to its Gram-coordinate
+polynomial without importing the numerical phase cover. Concrete leaf proofs
+can use this exact identity before the global cover is assembled.
 
 `ProfilePiFactor` provides rational enclosures of `π`, `sqrt(π)`, and
 `sqrt(sqrt(π))` of width at most `2⁻⁵¹²` for the actual profile normalization.
