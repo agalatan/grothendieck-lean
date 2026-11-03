@@ -53,7 +53,8 @@ theorem multiplier_ae (hφ : PhiBound) (power : ℕ) (f : Lp ℂ 2 mu2) :
   change (ContinuousLinearMap.mul ℂ ℂ).holder 2
     ((memLp_infty_taylorPhasePower hφ power).toLp (taylorPhasePower power)) f
       =ᵐ[mu2] _
-  filter_upwards [ContinuousLinearMap.coeFn_holder (ContinuousLinearMap.mul ℂ ℂ)
+  filter_upwards [ContinuousLinearMap.coeFn_holder (r := (2 : ENNReal))
+    (ContinuousLinearMap.mul ℂ ℂ)
     ((memLp_infty_taylorPhasePower hφ power).toLp (taylorPhasePower power)) f,
     (memLp_infty_taylorPhasePower hφ power).coeFn_toLp] with u hu hp
   simpa only [ContinuousLinearMap.mul_apply', hp] using hu
@@ -117,8 +118,15 @@ theorem tendsto_rectangle_matrixAction (hφ : PhiBound) (power : ℕ) (m : Idx2)
       (nhds ⟪hvec2 m, multiplier hφ power (rectangleTail f)⟫_ℂ) := by
   classical
   have h := hasSum_rectangleTail hφ power m f
-  simpa only [HasSum, SummationFilter.unconditional_filter, matrixAction, rectangleComplementInputs,
-    Finset.sum_filter, mul_comm] using h
+  simp only [HasSum, SummationFilter.unconditional_filter] at h
+  refine Filter.Tendsto.congr ?_ h
+  intro inputs
+  simp only [matrixAction, rectangleComplementInputs, Finset.sum_filter]
+  apply Finset.sum_congr rfl
+  intro n _
+  by_cases hn : ¬ inputRectangle n
+  · simp only [ite_eq_left hn, mul_comm]
+  · simp only [ite_eq_right hn]
 
 end
 end Grothe.UpperChaos.ActualTaylorMultiplierOperator
