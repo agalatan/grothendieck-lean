@@ -46,6 +46,21 @@ classical and quantum correlations in two-party Bell experiments (real case).
 
 ## What is proved
 
+**The statement** is [`Grothe/Statement.lean`](Grothe/Statement.lean). It imports only Mathlib and holds only
+definitions: C(A), V(A), Grothendieck bounds, the constant $K_G^{\mathbb C}$ as their infimum, `UpperBelow c`
+(some bound is below $c$), `LowerAbove c` (every bound is above $c$), and the two targets at the current thresholds,
+`UpperTarget = UpperBelow 1.404598149141` and `LowerTarget = LowerAbove 1.401697117301`. A compiled theorem whose
+type is one of these targets and whose axiom report is clean proves exactly that claim.
+[`Grothe/StatementBridges.lean`](Grothe/StatementBridges.lean) proves what the targets say about the constant:
+`UpperBelow c` gives $K_G^{\mathbb C} < c$; `LowerAbove c` gives $c \le K_G^{\mathbb C}$ and, because the set of bounds
+is closed, $c < K_G^{\mathbb C}$, both once some bound exists (an unconditional bound is not yet proved in Lean, so
+that existence stays a hypothesis). [`Grothe/LowerTarget.lean`](Grothe/LowerTarget.lean) proves `LowerTarget` from
+`NodeCaps` (`Grothe.Statement.lowerTarget_of_nodeCaps`; `lower_bound_of_capsRest` reduces `NodeCaps` to the
+rows CI certifies).
+[`Grothe/UpperTarget.lean`](Grothe/UpperTarget.lean) proves `UpperTarget` from the inputs not yet proved in Lean,
+listed as the hypotheses of `Grothe.Statement.upper_target_of_inputs` (the finite-band Gaussian error estimates of
+the three Taylor centers and the energy-table accuracy).
+
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V over all finite-dimensional complex Hilbert spaces. The headline
 theorems conclude a statement about the constant itself.
@@ -178,6 +193,21 @@ equality. The proof preserves the separate exact denominator
 `604005087394345832307543156484734976000` and the order of squared radius,
 inverse rate and shifted argument. Generated Python data are checked by Lean;
 the numerical quadrature cells and the upper-bound inputs remain to be proved.
+
+The conditional-node table has 21,577 rows of binary64 approximations to
+conditional Hermite coefficients. Row i follows the degree-531 canonical pairs
+`0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1`, in `(c+d,c)` order, retaining
+`c+d ≤ cutoff_i`: a full row has 35,777 entries, cutoff 1 has three and cutoff 2
+has five. This certificate selects every node in a panel where the outward
+128-bit profile interval Horner screen contains zero at some node. Its 413
+unresolved nodes occupy 381 panels; panel closure selects exactly 417 rows
+(3872–4036, 10910–11037 and 17321–17444), independently of the cutoffs.
+The committed [selection inputs and rule](data/q0_quadrature/conditional_source/exception-selection.json)
+reproduce this choice. `Q0SourceExceptionCentersAll` checks scalar magnitude
+at most one, squared row norm at most `121/100`, and source ordinal coverage.
+No Gaussian coefficient estimate or upper-bound assembly currently consumes
+this certificate; source-address, basis-normalization and approximation-error
+proofs remain separate.
 
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of
@@ -321,6 +351,16 @@ proves an integrated auxiliary tail at `‖z‖ ≥ r₀ > 0`, bounded by
 including its zeros. Bounds for the full polynomial-weighted sources, the
 radial endpoint and certified numerical integration remain open.
 
+The weighted Gaussian kernel has exact mass formulas. A common `gateOK`
+certificate supplies the real covariance conditions for either physical pair.
+`OriginalHSGaussianMass.integral_gateWeight` gives pair mass `ν²/δ`, and
+`OriginalHSGaussianTensor.integral_tensorWeight` gives the product mass
+`ν⁴/(δ₀δ₁)`, with genuine integrability proved before Fubini.
+The parameter table covers the fourteen selected finite bands and four
+coordinate exclusions. Its checks prove positivity, not the numerical tail
+bounds recorded in the input files. The defined kernel is not yet identified
+with `HS_{j,I}` in `docs/UPPER_STATUS.md`; polynomial insertion, the Fock
+coefficient identity and numerical Hilbert--Schmidt bounds remain separate.
 `F0ConditionalNode` defines the actual conditional Gaussian coefficients and
 proves their coupled Bessel bound. `F0ConditionalEvaluator` identifies them
 with the historical signed-shift integral for nonnegative radius and nonzero
