@@ -42,6 +42,22 @@ Weaker upper-bound variants, their data and their historical verification record
 are preserved in [the committed archive](../miscellaneous/other-bounds/README.md).
 They are outside the active build and current axiom policy.
 
+**Source-node error ledger.** `Q0NodeMassLedger` holds only the shared scalar
+inputs; `Q0NodeMassLedgerSharp` is the single norm-dependent ledger, at `26/25`.
+`Q0NodeMassLedgerSharp.real_error_lt_cap`
+transfers the exact rational ledger to a real error bound below `48/10^13`,
+given the raw-error estimate, smoothing estimate and smoothing-vector norm.
+The separate `sqrt_mass_lt_norm` lemma converts squared mass below `107/100`
+to norm below `26/25`. These are arithmetic implications; they do not supply
+the actual Gaussian input estimates or a floating-point operation model.
+`Q0NodeMassLedgerSharpAudit` rejects dependencies beyond Lean's standard axioms.
+The definitions document the operation-path budget `749 = 2*32+10+675`,
+the node/pair/raw-coordinate square-root allowances `147`, `179`, `2310`,
+the primary block/family norm caps `18`, `197`, the reflection factor `10/7`,
+and the separately allocated integration, omission and smoothing tolerances.
+Their source-model and analytic justification must be supplied by the consumers;
+these comments do not turn the historical numerical computation into a Lean input.
+
 **Phase-source denominator.** `PhiSourceDenBinding.source_common_den` proves
 by bounded source-chunk computation that the parsed production phase has
 common denominator `302002543697172916153771578242367488000`.
