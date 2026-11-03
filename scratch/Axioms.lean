@@ -947,6 +947,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_base_conditional_wick
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_base_quadrature_kernel
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_pointwise
+#print axioms Grothe.UpperChaos.Q0ConditionalPairRankAll.pair_unique
+#print axioms Grothe.UpperChaos.Q0ConditionalPairRankAll.rowAt_rank
+#print axioms Grothe.UpperChaos.Q0ConditionalPairRankAll.unique_row
 #print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.actual_exactness_of_check
 #print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.checkEq_sound
 #print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.check_order_one

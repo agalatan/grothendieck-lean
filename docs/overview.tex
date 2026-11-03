@@ -538,6 +538,14 @@ The native head is $28153/10^{12}$ ($3.09\%$).\\
 \bottomrule
 \end{tabular}
 \end{center}
+
+The degree-531 canonical pair table indexes conditional Hermite node values
+by pairs $(c,d)$ satisfying $0\le c\le266$, $0\le d\le265$,
+$c\le d+1$ and $c+d\le531$, ordered by $(c+d,c)$. Lean verifies its
+finite rank, ordinal coverage and uniqueness certificate. No downstream Lean
+result yet consumes this certificate; the Gaussian node-value enclosures
+remain part of the upper-bound work in progress.
+
 The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover, the second, fourth and sixth phase moments and the squared radial phase tail,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
 The native facts (cap-range checks, Hardy region and circle checks, and others) are listed in \path{data/axioms/native.txt}; the report is \path{scratch/Axioms.lean}, with its required declarations in \path{data/axioms/required.txt}.
