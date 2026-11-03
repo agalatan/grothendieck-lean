@@ -278,10 +278,13 @@ jobs:
         if: env.LEAN == 'true' && env.DROPLET != 'true'
         # A hosted VM that runs out of memory is torn down and the job ends with "Terminated" (exit 143).
         # 32 GB of swap on the free disk turns that into slowness; the droplet has the memory and skips this.
+        # The image already runs a 4 GB swapfile at /mnt/swapfile; never touch that one (resizing an active
+        # swapfile took the VM down, run 41629050672). Add a second file next to it.
         run: |
-          sudo fallocate -l 32G /mnt/swapfile && sudo chmod 600 /mnt/swapfile
-          sudo mkswap -q /mnt/swapfile && sudo swapon /mnt/swapfile
-          free -g | sed -n '1,3p'; df -h /mnt | tail -1
+          swapon --show; df -h /mnt | tail -1
+          sudo fallocate -l 32G /mnt/lean-swap && sudo chmod 600 /mnt/lean-swap
+          sudo mkswap -q /mnt/lean-swap && sudo swapon /mnt/lean-swap
+          swapon --show; free -g | sed -n '1,3p'
 
       - name: Build Grothe (everything, node caps included)
         if: env.LEAN == 'true'
