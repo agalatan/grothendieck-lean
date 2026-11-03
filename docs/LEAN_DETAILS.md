@@ -91,6 +91,41 @@ This identity supplies a source binding for numerical models; it does not
 certify all cells,
 Taylor-band errors, the frozen-response energy discrepancy, or the final bound.
 
+**Weighted Gaussian kernel mass.**
+A single checked predicate, `OriginalHSParameterGates.gateOK`, supplies
+positivity of the real covariance forms for any parameter record.
+`OriginalHSGaussianMass.integrable_gateWeight` and `integral_gateWeight`
+prove convergence and the physical-pair mass `ν²/δ` under that predicate.
+`OriginalHSGaussianTensor.integrable_tensorWeight` and `integral_tensorWeight`
+combine the independent pairs and give mass `ν⁴/(δ₀δ₁)`.
+The proofs establish integrability before applying Fubini. The determinant
+power is minus one for each pair of complex coordinates; no square-root or
+pi normalization is omitted.
+
+`OriginalHSParameterGates.parameters_checked` checks one parameter table
+for the fourteen selected output degrees and four coordinate exclusions.
+The manifest in `data/original-hs-parameters` records each selected source:
+first-power degrees 51 and 101 use the rectangular input, later first-power
+degrees use the power-one input, and powers two and three use their selected
+finite-band degrees. All input files remain hash-pinned and byte-identical.
+Run `python3 tools/gen_original_hs_parameters.py --check` to reproduce the
+Lean table. Exact Python replays are diagnostics stored in ignored `handoff/`;
+Lean's kernel checks the parameter facts independently.
+
+The manifest identifies the numerical producer programs and explains the
+recorded Arb `bound` and its rational upper endpoint `upper_rational`.
+Neither is used as an assumed Hilbert--Schmidt bound. The decomposition
+hashes refer to uncommitted historical decomposition files and do not prove
+an operator identity. The absolute path in the immutable rectangular input
+is historical metadata, never a generator dependency.
+
+`OriginalHSGaussianAudit` enforces standard-three-only transitive dependencies
+for the aggregate parameter certificate and the generic pair/tensor
+integrability and mass theorems. This is stricter than the repository-wide
+native allowlist. The defined Gaussian matrix and kernel are not yet identified
+with `HS_{j,I}` in `UPPER_STATUS.md`. Polynomial insertion, a Fock coefficient
+identity, that operator binding and numerical tail bounds remain open.
+
 **Exact Gaussian phase-moment interfaces.**
 `DampedMoments` proves mixed complex Gaussian moments at every positive radial
 scale. `InvariantMoments` integrates each monomial in the simultaneous-rotation
@@ -299,9 +334,18 @@ particular the zeroth moment is `exp(normSq a/rate)/rate`.
 integrability for every positive rate and fixed complex source using a
 half-rate exponential majorant. `LinearTiltedMomentsAudit` rejects transitive
 axioms outside `propext`, `Classical.choice`, and `Quot.sound`.
-These results supply one-variable polynomial integrability; they do not
-establish joint integrability for dependent source variables, a Fock
-coefficient identity, or a numerical Hilbert--Schmidt tail estimate.
+`QuadraticPolynomialIntegrability` proves a separable Gaussian majorant for
+`Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²` under exactly `A>0` and
+`A*C-B²>0`. The rate `(A*C-B²)/(A+C)` follows from an exact trace identity
+whose remainder is the sum of two squared norms. Thus finite mixed
+polynomials are genuinely integrable before applying product Fubini.
+`QuadraticPolynomialMoments.integral_mixed_monomial` and
+`integral_finite_mixed_polynomial` evaluate them by the explicit finite
+`momentValue`. The first-coordinate mean is `-(B/A)*w`, the outer rate is
+`(A*C-B²)/A`, and `momentValue_zero` retains mass `1/(A*C-B²)`.
+`QuadraticPolynomialMomentsAudit` enforces the same standard-three trust
+boundary. The historical Fock/operator identity, polynomial insertion into
+the full bipartite kernel and numerical Hilbert--Schmidt caps remain open.
 
 `AffineGaussianSquare` centers the
 conditional density without dividing by the radial profile. For arbitrary

@@ -720,6 +720,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.MobiusSeedImproper.kernel_integrable
 #print axioms Grothe.UpperChaos.MobiusSeedImproper.kernel_integral_eq
 #print axioms Grothe.UpperChaos.MobiusSeedPullback.source_integrand_pullback
+#print axioms Grothe.UpperChaos.OriginalHSGaussianMass.integrable_gateWeight
+#print axioms Grothe.UpperChaos.OriginalHSGaussianMass.integral_gateWeight
+#print axioms Grothe.UpperChaos.OriginalHSGaussianTensor.integrable_tensorWeight
+#print axioms Grothe.UpperChaos.OriginalHSGaussianTensor.integral_tensorWeight
+#print axioms Grothe.UpperChaos.OriginalHSParameterGates.parameters_checked
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.integral_eq_two_angular
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.integrand_continuousOn_pos
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.integrand_intervalIntegrable
@@ -879,6 +884,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_chunk_tables
 #print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_cover
 #print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_denominator_lcm
+#print axioms Grothe.UpperChaos.QuadraticPolynomialIntegrability.integrable_finite_mixed_polynomial
+#print axioms Grothe.UpperChaos.QuadraticPolynomialIntegrability.quadraticForm_lower_bound
+#print axioms Grothe.UpperChaos.QuadraticPolynomialMoments.integral_finite_mixed_polynomial
+#print axioms Grothe.UpperChaos.QuadraticPolynomialMoments.integral_mixed_monomial
+#print axioms Grothe.UpperChaos.QuadraticPolynomialMoments.momentValue_zero
 #print axioms Grothe.UpperChaos.QuadraturePartition.integral_auxiliary_reciprocal
 #print axioms Grothe.UpperChaos.QuadraturePartition.monotone_dyadicAuxiliaryCut
 #print axioms Grothe.UpperChaos.QuadraturePartition.norm_rectangleIntegral_reciprocal_sub_sum_le
