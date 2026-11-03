@@ -191,8 +191,12 @@ import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.Realise
 import Grothe.Upper.Residual
 import Grothe.UpperChaos.ActualCoherentBesselAudit
+import Grothe.UpperChaos.ActualCoherentCoefficientAudit
+import Grothe.UpperChaos.ActualMatrixFiniteComparison
+import Grothe.UpperChaos.ActualSourceCoefficientExtraction
 import Grothe.UpperChaos.ActualTaylorCoherent
 import Grothe.UpperChaos.ActualTaylorCoherentAudit
+import Grothe.UpperChaos.ActualTaylorFiniteCoefficients
 import Grothe.UpperChaos.AdaptiveRectangleComposition
 import Grothe.UpperChaos.AdaptiveRectangleEnclosure
 import Grothe.UpperChaos.AdaptiveRectangleEnvelope

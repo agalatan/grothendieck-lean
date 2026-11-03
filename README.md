@@ -332,6 +332,16 @@ its normalized monomial coefficients, with explicit gate order
 `((y,u),(x,v))` per physical coordinate. The normalized Hermite matrix-entry
 identity, binding to the historical Laguerre polynomial and numerical
 Hilbert--Schmidt caps remain open.
+The coefficient batch is also WIP and awaits compilation.
+`ActualTaylorFiniteCoefficients` evaluates finite Hermite generating blocks
+and extracts the retained actual matrix entries. Independently,
+`ActualSourceCoefficientExtraction` evaluates every coefficient of the full
+scaled transform by a finite factorial sum, using source-space L² for Fubini.
+`ActualMatrixFiniteComparison` gives a finite physical Wick formula for every
+matrix entry and identifies the full transform's ground coefficient with its
+actual ground entry. The all-index weighted Hermite identity and numerical
+caps remain open; the ground identity does not settle them.
+
 For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
 `QuadraticPolynomialIntegrability` proves genuine joint polynomial
 integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate

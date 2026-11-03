@@ -404,6 +404,19 @@ norm. Gate coordinates are $((y,u),(x,v))$ per physical coordinate; matrix
 indices $(m,n)$ therefore map to $((m_q,n_p),(m_p,n_q))$ explicitly.
 The actual normalized Hermite matrix-entry identity, exact binding to the
 historical Laguerre polynomial and numerical Hilbert--Schmidt caps remain open.
+A further WIP batch, also pending compilation, evaluates finite physical
+Hermite generating blocks and recovers exactly their retained normalized
+matrix entries. Separately, each coefficient of the full scaled coherent
+transform has a finite factorial formula: source-space $L^2$ justifies
+Fubini, and the unit-rate moment
+$q(q-1)\cdots(q-p+1)a^{q-p}$ for $p\le q$, with value zero for $p>q$,
+extracts the first source pair, leaving a polynomial Gaussian moment in the
+second. These are total finite formulas.
+Every actual physical matrix entry also has a finite damped Wick formula,
+with diagonal moment $p!/r^{p+1}$ and zero off the diagonal.
+The ground coefficient is identified with the actual ground matrix entry.
+The weighted Hermite identity for all indices and the numerical caps remain
+open; the ground case does not establish either obligation.
 For the correlated form
 $Q=A|z|^2+2B\operatorname{Re}(z\overline w)+C|w|^2$, the exact conditions
 $A>0$ and $AC-B^2>0$ give the positive coercive rate

@@ -395,6 +395,38 @@ Identification with the normalized Hermite matrix entries, exact equality
 with the historical producer's Laguerre polynomial, and numerical
 Hilbert--Schmidt caps remain open.
 
+The following coefficient batch is likewise WIP, pending compilation.
+`ActualTaylorFiniteCoefficients` defines actual normalized Hermite matrix
+entries of `taylorPhasePower j` and proves absolute integrability through
+polynomial growth and nonnegative damping. Taylor power zero yields the
+identity matrix, fixing normalization. A finite physical Hermite generating
+block integrates to a finite source polynomial whose Gaussian coefficients
+are exactly the retained matrix entries, and zero outside that block.
+This finite block is not assumed equal to the full exponential transform.
+
+`ActualSourceCoefficientExtraction` evaluates that full transform's
+coefficients directly. The unit-rate, zero-second-source moment recurrence
+is ordinary differentiation, giving
+`momentValue 1 a 0 p q = q.descFactorial p * a^(q-p)`.
+After integrating the `(y,u)` source pair, a finite polynomial remains in
+`(x,v)` and their conjugates; ordinary Gaussian moments evaluate it.
+The preceding L² theorem justifies source-space Fubini. Tensoring the two
+physical pairs and finite linearity gives `coefficient8_scaledTransform`
+for every source index under the sole gate hypothesis.
+
+`ActualMatrixFiniteComparison.matrixEntry_eq_finite_moments` separately
+evaluates every physical matrix entry using the exact damped moment
+`if p = q then p! / rate^(p+1) else 0`, retaining both Hermite normalization
+factors and both Gaussian masses. At ground index, source extraction reduces
+to evaluation at zero, and
+`coefficient8_scaledTransform_ground_matrixEntry` identifies the full
+transform coefficient with the actual ground matrix entry.
+`ActualCoherentCoefficientAudit` adds standard-three transitive guards for
+these interfaces; their compilation remains pending. The comparison for
+all weighted Hermite indices remains OPEN, as do numerical Hilbert--Schmidt
+caps and the historical Laguerre binding. No physical/source Fubini or
+unproved coefficient identity is assumed in this batch.
+
 `QuadraticPolynomialIntegrability` proves a separable Gaussian majorant for
 `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²` under exactly `A>0` and
 `A*C-B²>0`. The rate `(A*C-B²)/(A+C)` follows from an exact trace identity
