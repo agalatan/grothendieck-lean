@@ -587,6 +587,8 @@ import Grothe.UpperChaos.ChargeBandApproximation
 import Grothe.UpperChaos.ChargeBandEnclosure
 import Grothe.UpperChaos.ChargeBandParseval
 import Grothe.UpperChaos.CommonDenAppend
+import Grothe.UpperChaos.CommonGaussianTailTolerance
+import Grothe.UpperChaos.CommonSourceTolerance
 import Grothe.UpperChaos.CompactTaylorBands
 import Grothe.UpperChaos.CompactTaylorQuadrature
 import Grothe.UpperChaos.ComparisonPieces

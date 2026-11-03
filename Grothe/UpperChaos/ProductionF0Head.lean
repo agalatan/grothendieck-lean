@@ -143,7 +143,7 @@ theorem norm_productionF0Head_sub_sq (a0 : ℕ → ℕ → ℕ → ℚ) :
     omega
   have hs : (gradedSupport 251).filter (· ∈ productionDegreeHead) =
       gradedSupport 251 := by
-    simpa only [hpred, Set.mem_setOf_eq] using gradedSupport_filter_totalDegree 251
+    simpa only [hpred, Set.mem_ofPred_eq] using gradedSupport_filter_totalDegree 251
   have hinner (q : Fin 251) (c : Fin (q.val + 2)) (d : Fin (q.val + 1)) :
       ⟪hvec2 (gradedMode q c d),
         memLp_baseF0.toLp F0 - gradedHermite 251 a0⟫_ℂ =

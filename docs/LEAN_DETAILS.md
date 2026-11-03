@@ -298,6 +298,22 @@ raw source error, same-output table fit and tail remain explicit inputs.
 This alternative and its transitive axiom report require full acceptance;
 the final completed façade remains separate.
 
+`CommonSourceTolerance` instantiates the variable source-to-energy interface
+with total canonical tensor error `9.7·10⁻⁸`, raw error `1.4·10⁻⁷`, projected
+error `1.45·10⁻⁷`, same-output table error `10⁻⁷` and selected energy error
+`4·10⁻⁷`. It charges reflection once, keeps the `2⁻⁵⁴` rational completion
+defect separate, derives the finite smoothing-input norm and includes the
+table allowance inside the energy budget. The canonical/source and table
+certificates are explicit premises for the same exact rational family.
+`CommonGaussianTailTolerance` enlarges each original unscaled finite Gaussian
+radius by `2·10⁻⁸` and recomputes all three captured-energy budgets. The new
+unscaled tail norms are `2764127/250000000000`, `318927/125000000000` and
+`548393/250000000000`. It consumes fourteen actual Gaussian premises and the
+stored centers' norm/support identities. Comparison still divides the second
+and third tails by two and six; the old grouped quadratic radii cannot be
+reused for the enlarged errors. These additions do not close any numerical
+premise or replace the original contracts.
+
 `localized_comparison_with_errors` keeps those same eighteen supports but
 accepts an arbitrary actual piece-norm error family and selected energy
 tolerance. Its conservative quadratic term is the square of the sum of the

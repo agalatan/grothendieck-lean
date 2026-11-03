@@ -251,6 +251,14 @@ The constructive dyadic reference completes canonical coefficients using
 integer square-root floors at denominator `2⁵⁴` and exact rational products.
 Its coupled completion error follows from the actual source norm; table
 agreement must be certified for that exact output family.
+`CommonSourceTolerance` also consumes a total canonical tensor norm error
+`9.7·10⁻⁸`, a separately bounded dyadic completion defect, and same-output
+table error `10⁻⁷`, to give selected energy error `4·10⁻⁷`. The raw and
+projected L² allowances are `1.4·10⁻⁷` and `1.45·10⁻⁷`; the existing relative
+smoothing reserve is charged once. `CommonGaussianTailTolerance` recomputes
+all three captured tails when each original unscaled finite Gaussian radius
+is increased by `2·10⁻⁸`. These conditional interfaces preserve the original
+contracts and leave the actual source, table and Gaussian estimates open.
 `ProductionF0Radial` removes the remaining Gaussian angle from every retained
 tensor coefficient by exact charge cancellation. It expresses the full source
 error using the actual conditional coefficients at `sqrt(s)` with density

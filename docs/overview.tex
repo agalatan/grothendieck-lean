@@ -214,6 +214,15 @@ With a separate actual Hardy tail $3.6748\cdot10^{-8}$, the total residual
 is $994901/10^{12}$ and the conditional scalar transfer is below $1.4045984$.
 The actual Gaussian, source, same-output table and tail certificates and
 the full acceptance and trust checks are still required.
+The common-tolerance source consumer instead allows total canonical tensor
+norm error $9.7\cdot10^{-8}$, charges its dyadic completion defect separately,
+and propagates raw and projected errors $1.4\cdot10^{-7}$ and
+$1.45\cdot10^{-7}$. Same-output table error $10^{-7}$ is included inside
+selected energy error $4\cdot10^{-7}$. Its companion captured-tail consumer
+recomputes all three unscaled tails after increasing each original finite
+Gaussian radius by $2\cdot10^{-8}$, before the Taylor factorial divisions.
+These are conditional consumers, not certificates for the numerical premises
+or a completed endpoint; the original contracts remain available.
 The constructive rational reference uses integer square-root floors at
 denominator $2^{54}$ and exact rational products to complete the reflected
 coefficients. The partner map bounds its coupled completion error without
