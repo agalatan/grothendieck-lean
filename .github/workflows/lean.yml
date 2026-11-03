@@ -274,6 +274,18 @@ jobs:
             echo "::error::(evicted meanwhile?). Re-run this workflow: the route will then send it to the droplet."
             exit 1; }
 
+      - name: Swap for the kernel checks (GitHub-hosted, 16 GB RAM and four Lean processes)
+        if: env.LEAN == 'true' && env.DROPLET != 'true'
+        # A hosted VM that runs out of memory is torn down and the job ends with "Terminated" (exit 143).
+        # 32 GB of swap on the free disk turns that into slowness; the droplet has the memory and skips this.
+        # The image already runs a 4 GB swapfile at /mnt/swapfile; never touch that one (resizing an active
+        # swapfile took the VM down, run 41629050672). Add a second file next to it.
+        run: |
+          swapon --show; df -h /mnt | tail -1
+          sudo fallocate -l 32G /mnt/lean-swap && sudo chmod 600 /mnt/lean-swap
+          sudo mkswap -q /mnt/lean-swap && sudo swapon /mnt/lean-swap
+          swapon --show; free -g | sed -n '1,3p'
+
       - name: Build Grothe (everything, node caps included)
         if: env.LEAN == 'true'
         # GitHub-hosted: stop at the first failed module (scripts/lake_failfast.sh). The droplet builds on: its finished
