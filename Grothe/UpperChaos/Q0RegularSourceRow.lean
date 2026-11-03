@@ -130,7 +130,9 @@ theorem parameter_error_le :
     |signedProfileRatio (sourceNode address) - (fitParameter row : ℝ)| ≤
       (4 / (3 * 10 ^ 15) : ℝ) := by
   have hf : |(fitParameter row : ℝ)| ≤ (1 / 10 ^ 15 : ℝ) := by
-    exact_mod_cast fit_checked.le
+    have hreal := (Rat.cast_le (K := ℝ)).mpr fit_checked.le
+    simpa only [Rat.cast_abs, Rat.cast_div, Rat.cast_one, Rat.cast_pow, Rat.cast_ofNat]
+      using hreal
   have h := (abs_sub (signedProfileRatio (sourceNode address))
     (fitParameter row : ℝ)).trans (add_le_add ratio_abs_le hf)
   norm_num at h ⊢

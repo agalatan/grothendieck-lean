@@ -85,7 +85,10 @@ theorem source_parameter_error_le
         R + 1 / 10 ^ 15 := by
   have hfit : |(fitParameter (Q0SourceExceptionPayload.rowAt a ha) : ℝ)| ≤
       (1 / 10 ^ 15 : ℝ) := by
-    exact_mod_cast (Q0SourceSavedLinearChecks.source_fit_checked a ha).1.le
+    have hreal := (Rat.cast_le (K := ℝ)).mpr
+      (Q0SourceSavedLinearChecks.source_fit_checked a ha).1.le
+    simpa only [Rat.cast_abs, Rat.cast_div, Rat.cast_one, Rat.cast_pow, Rat.cast_ofNat]
+      using hreal
   exact (abs_sub _ _).trans (add_le_add hratio hfit)
 
 /-- The two physical fields of the saved-row consumer follow from a single
