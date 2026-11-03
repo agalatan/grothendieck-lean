@@ -12,7 +12,7 @@ set_option warningAsError true
 namespace Grothe.Upper.CompositeComparisonData
 open Finset GrotheKernel
 
-abbrev OldIndex := Fin comparisonBands.length
+abbrev OldIndex := GroupedComparisonIndex
 abbrev PieceIndex := Fin 7
 
 def oldBand (k : OldIndex) : ComparisonBand := comparisonBands[k]
@@ -60,12 +60,15 @@ theorem low_contains (g : Fin 3) (n m : ℕ) :
     (lowBand (highGroup g)).contains n m = true ↔
       0 < n + m ∧ n + m ≤ cutoff g := by
   fin_cases g <;>
-    simp [lowBand, lowIndex, oldBand, highGroup, cutoff, comparisonBands,
-      ComparisonBand.contains]
+    norm_num [lowBand, lowIndex, oldBand, highGroup, cutoff, comparisonBands,
+      ComparisonBand.contains, Bool.and_eq_true, Bool.or_eq_true,
+      decide_eq_true_eq, beq_iff_eq] <;> omega
 
 theorem high_contains (g : Fin 3) (n m : ℕ) :
     (highBand g).contains n m = true ↔ cutoff g < n + m := by
-  simp [highBand, ComparisonBand.contains]
+  simp only [highBand, ComparisonBand.contains, Bool.and_eq_true,
+    Bool.or_eq_true, decide_eq_true_eq, beq_iff_eq]
+  simp
 
 theorem cutoff_pos (g : Fin 3) : 0 < cutoff g := by
   fin_cases g <;> decide +kernel
@@ -74,7 +77,9 @@ theorem high_covered (g : Fin 3) (n m : ℕ) :
     (highBand g).contains n m = true ↔
       ∃ k ∈ highOld g, (oldBand k).contains n m = true := by
   fin_cases g <;>
-    simp [highOld, highBand, oldBand, cutoff, comparisonBands, ComparisonBand.contains] <;>
+    norm_num [highOld, highBand, oldBand, cutoff, comparisonBands,
+      ComparisonBand.contains, Bool.and_eq_true, Bool.or_eq_true,
+      decide_eq_true_eq, beq_iff_eq] <;>
     omega
 
 theorem high_old_group : ∀ (g : Fin 3) (k : OldIndex),
