@@ -1014,7 +1014,6 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0BaseQuadrature.q0_base_conditional_wick
 #print axioms Grothe.UpperChaos.Q0BaseQuadrature.q0_base_quadrature_kernel
 #print axioms Grothe.UpperChaos.Q0BinaryLiteralAssemblyBridge.combined_literals_eq
-#print axioms Grothe.UpperChaos.Q0BinaryLiteralAssemblyBridge.copied_literals_eq
 #print axioms Grothe.UpperChaos.Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.affine_conj_moment
 #print axioms Grothe.UpperChaos.Q0CompanionBaseQuadrature.companion_base_conditional_wick
