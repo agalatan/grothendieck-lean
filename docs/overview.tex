@@ -120,6 +120,13 @@ $\delta=455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$:
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
 
+The conditional-node table stores finite vectors of binary64 approximations
+to conditional Hermite coefficients. Lean checks scalar magnitude at most one,
+squared row norm at most $121/100$, and source ordinal coverage for 417 selected
+rows. No Gaussian coefficient estimate or upper-bound assembly currently
+consumes this certificate; source-address, basis-normalization and approximation-error
+proofs remain separate.
+
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every
 grade's integer sum and divides by $2^{210}$, then identifies the rational

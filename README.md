@@ -173,6 +173,13 @@ equality. The proof preserves the separate exact denominator
 inverse rate and shifted argument. Generated Python data are checked by Lean;
 the numerical quadrature cells and the upper-bound inputs remain to be proved.
 
+The conditional-node table stores finite vectors of binary64 approximations
+to conditional Hermite coefficients. For 417 selected rows,
+`Q0SourceExceptionCentersAll` checks scalar magnitude at most one, squared row
+norm at most `121/100`, and source ordinal coverage. No Gaussian coefficient
+estimate or upper-bound assembly currently consumes this certificate;
+source-address, basis-normalization and approximation-error proofs remain separate.
+
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of
 scaled integers regenerated from the same pinned binary64 input.
