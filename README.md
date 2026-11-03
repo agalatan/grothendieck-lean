@@ -214,6 +214,13 @@ The regular-source input must approximate the entire complementary source;
 selected quadrature panels alone do not establish that input. This argument
 concerns F₀ and supplies no Taylor-source or Hardy tail estimate.
 
+`ProductionF0Reconstruction` carries the triangular reflection through the
+actual primary radial contraction. The full Gaussian source error is at most
+`10/7` times its coupled canonical tensor error plus the norm of the discrepancy
+between exact square-root completion and the stored rational coefficients.
+That discrepancy requires its own numerical certificate; it is not assumed zero.
+These two actual error quantities also feed the selected-energy and head consumers.
+
 LeanCert is a pinned dependency. `UpperChaos/LeanCertPilot.lean` uses its
 dyadic interval integrator to enclose a conditional Gaussian slice integral
 on `[0,1]` in `[1,5/4]`. The explicit 16-cell certificate uses `decide +kernel`;

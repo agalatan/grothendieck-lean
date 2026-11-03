@@ -122,7 +122,7 @@ theorem norm_productionF0Head_sub_sq_radial (a0 : ℕ → ℕ → ℕ → ℚ) :
       ∑ q : Fin 251, ∑ c : Fin (q.val + 2), ∑ d : Fin (q.val + 1),
         ‖radialBaseCoefficient q c d - (a0 q c d : ℂ)‖ ^ 2 := by
   rw [norm_productionF0Head_sub_sq,
-    ← sum_fin_graded_eq_range 251
+    ← sum_bounded_graded_eq_range 251
       (fun q c d => ‖baseGradedCoefficient q c d - (a0 q c d : ℂ)‖ ^ 2)]
   apply Finset.sum_congr rfl
   intro q hq

@@ -654,8 +654,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.CanonicalReconstructionNorm.full_head_reconstruction_norm_le
 #print axioms Grothe.UpperChaos.CommonDenAppend.commonDen_append
 #print axioms Grothe.UpperChaos.CompositeComparison.difference_components
+#print axioms Grothe.UpperChaos.CompositeComparison.energy_close_of_canonical_tensor
 #print axioms Grothe.UpperChaos.CompositeComparison.energy_close_of_raw_source
 #print axioms Grothe.UpperChaos.CompositeComparison.energy_close_of_regular_source
+#print axioms Grothe.UpperChaos.CompositeComparison.head_residual_of_canonical_tensor
 #print axioms Grothe.UpperChaos.CompositeComparison.head_residual_of_raw_source
 #print axioms Grothe.UpperChaos.CompositeComparison.head_residual_of_regular_source
 #print axioms Grothe.UpperChaos.CompositeComparison.weighted_energy_comparison
@@ -724,9 +726,12 @@ import Grothe
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.fixed_shell_action
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.inner_linearMode_smoothOp
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.mem_chaosShell_of_degree
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.norm_productionF0Head_sub_le_canonical
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.norm_productionF0Head_sub_sq
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.norm_productionF0Head_sub_sq_radial
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.projected_response_error
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.radialBaseCoefficient_reflection
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.reconstruct_actual_tensor
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.retainedProduction_eq
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.retainedSmoothed_projected_error_of_raw
 #print axioms Grothe.UpperChaos.FrozenSource.Grade000.grade_energy

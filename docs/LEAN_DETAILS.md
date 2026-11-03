@@ -1218,3 +1218,15 @@ checks every law certificate, the original canonical reference map, every final
 box and the guillotine partition. `--check` reproduces `LawNodeData.lean` and
 `RefinedCoverData.lean` byte for byte. The original pure-row batch stays at index
 21; the three mixed nodes form batch 22. No checker-core or heavy cap source changes.
+
+The actual tensor reconstruction in `ProductionF0Reconstruction` uses the
+real-radius symmetry of the normalized primary Hermite factor and the proved
+conditional reflection under the radial integral. Thus
+`norm_productionF0Head_sub_le_canonical` bounds the complete Gaussian source
+error by `10/7 * canonicalTensorErrorNorm a0 + tensorCompletionDefectNorm a0`.
+The second term measures the actual rational output against exact mathematical
+completion; its bound must certify floating operations. Neither a rational
+coefficient family nor archived floating logs are required to satisfy an exact
+irrational reflection identity. The canonical tensor error, completion defect,
+same-output table fit and Gaussian comparison premises remain explicit in
+`energy_close_of_canonical_tensor` and `head_residual_of_canonical_tensor`.

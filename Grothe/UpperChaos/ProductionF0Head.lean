@@ -18,6 +18,23 @@ open scoped InnerProductSpace
 namespace Grothe.UpperChaos.FixedChaosSmoothing
 noncomputable section
 
+/-- Convert the complete bounded grade coordinates to the natural-index sums
+used by the source and frozen-coefficient contracts. -/
+theorem sum_bounded_graded_eq_range {M : Type*} [AddCommMonoid M]
+    (N : ℕ) (F : ℕ → ℕ → ℕ → M) :
+    (∑ q : Fin N, ∑ c : Fin (q.val + 2), ∑ d : Fin (q.val + 1), F q c d) =
+      ∑ q ∈ Finset.range N, ∑ c ∈ Finset.range (q + 2),
+        ∑ d ∈ Finset.range (q + 1), F q c d := by
+  rw [← Fin.sum_univ_eq_sum_range
+    (fun q => ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1), F q c d) N]
+  apply Finset.sum_congr rfl
+  intro q _
+  rw [← Fin.sum_univ_eq_sum_range
+    (fun c => ∑ d ∈ Finset.range (q.val + 1), F q c d) (q.val + 2)]
+  apply Finset.sum_congr rfl
+  intro c _
+  exact Fin.sum_univ_eq_sum_range (fun d => F q c d) (q.val + 1)
+
 /-- All modes of total degree at most 501, including the charge-one head. -/
 def productionDegreeHead : Set Idx2 := {i | tdeg i ≤ 501}
 
@@ -130,7 +147,7 @@ theorem norm_productionF0Head_sub_sq (a0 : ℕ → ℕ → ℕ → ℚ) :
       ∑ q : Fin 251, ∑ c : Fin (q.val + 2), ∑ d : Fin (q.val + 1),
         ‖baseGradedCoefficient q c d - (a0 q c d : ℂ)‖ ^ 2 := by
     simpa only [productionF0Head, hinner] using h
-  exact hfinite.trans (sum_fin_graded_eq_range 251
+  exact hfinite.trans (sum_bounded_graded_eq_range 251
     (fun q c d => ‖baseGradedCoefficient q c d - (a0 q c d : ℂ)‖ ^ 2))
 
 /-- Total-degree truncation loses nothing in the actual selected response.

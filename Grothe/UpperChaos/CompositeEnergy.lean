@@ -1,6 +1,7 @@
 import Grothe.UpperChaos.CompositeComparison
 import Grothe.UpperChaos.ProductionRetainedEnergy
 import Grothe.UpperChaos.ProductionF0Omission
+import Grothe.UpperChaos.ProductionF0Reconstruction
 import Grothe.Upper.GroupedBridge
 
 /-! Propagate the actual F0 source approximation through the frozen correction,
@@ -175,6 +176,40 @@ theorem head_residual_of_regular_source (h : Inputs) (gaps : Fin 3 → Set ℝ)
       if j = 0 then (slopeQ : ℝ) else 0| ≤ (CompositeComparisonData.headResidualQ : ℝ) :=
   head_residual_of_raw_source h a0
     (raw_error_of_regular_source gaps hg h13 hwidth a0 hregular) htable
+
+/-- Actual canonical tensor errors and the separately certified completion
+of the same rational output suffice for the full raw F0 input. -/
+theorem raw_error_of_canonical_tensor (a0 : ℕ → ℕ → ℕ → ℚ)
+    (hbudget : (10 / 7 : ℝ) * FixedChaosSmoothing.canonicalTensorErrorNorm a0 +
+      FixedChaosSmoothing.tensorCompletionDefectNorm a0 ≤
+        (CompositeComparisonData.rawCapQ : ℝ)) :
+    ‖FixedChaosSmoothing.productionF0Head - gradedHermite 251 a0‖ ≤
+      (CompositeComparisonData.rawCapQ : ℝ) :=
+  (FixedChaosSmoothing.norm_productionF0Head_sub_le_canonical a0).trans hbudget
+
+theorem energy_close_of_canonical_tensor (a0 : ℕ → ℕ → ℕ → ℚ)
+    (hbudget : (10 / 7 : ℝ) * FixedChaosSmoothing.canonicalTensorErrorNorm a0 +
+      FixedChaosSmoothing.tensorCompletionDefectNorm a0 ≤
+        (CompositeComparisonData.rawCapQ : ℝ))
+    (htable : ∑ p ∈ headIdx 501,
+      |energy (FixedChaosSmoothing.retainedSmoothed a0) p - (energyTable p : ℝ)| ≤
+        (CompositeComparisonData.tableCapQ : ℝ)) :
+    ∑ p ∈ headIdx 501, |energy response p - (energyTable p : ℝ)| ≤
+      (CompositeComparisonData.energyErrorQ : ℝ) :=
+  energy_close_of_raw_source a0 (raw_error_of_canonical_tensor a0 hbudget) htable
+
+/-- The same actual tensor certificates reach the selected kernel head;
+Gaussian comparison and output-table agreement remain explicit. -/
+theorem head_residual_of_canonical_tensor (h : Inputs) (a0 : ℕ → ℕ → ℕ → ℚ)
+    (hbudget : (10 / 7 : ℝ) * FixedChaosSmoothing.canonicalTensorErrorNorm a0 +
+      FixedChaosSmoothing.tensorCompletionDefectNorm a0 ≤
+        (CompositeComparisonData.rawCapQ : ℝ))
+    (htable : ∑ p ∈ headIdx 501,
+      |energy (FixedChaosSmoothing.retainedSmoothed a0) p - (energyTable p : ℝ)| ≤
+        (CompositeComparisonData.tableCapQ : ℝ)) :
+    ∑ j ∈ range 251, |kernelCoeff (energy rounding) j -
+      if j = 0 then (slopeQ : ℝ) else 0| ≤ (CompositeComparisonData.headResidualQ : ℝ) :=
+  head_residual_of_raw_source h a0 (raw_error_of_canonical_tensor a0 hbudget) htable
 
 end
 end Grothe.UpperChaos.CompositeComparison
