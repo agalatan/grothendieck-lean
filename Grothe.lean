@@ -1810,6 +1810,9 @@ import Grothe.UpperChaos.Q0SourceExceptionCentersChunk13
 import Grothe.UpperChaos.Q0SourceExceptionCentersChunk14
 import Grothe.UpperChaos.Q0SourceExceptionCentersChunk15
 import Grothe.UpperChaos.Q0WickChunking
+import Grothe.UpperChaos.QuadraticPolynomialIntegrability
+import Grothe.UpperChaos.QuadraticPolynomialMoments
+import Grothe.UpperChaos.QuadraticPolynomialMomentsAudit
 import Grothe.UpperChaos.QuadraturePartition
 import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialCutoff

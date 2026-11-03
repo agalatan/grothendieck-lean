@@ -370,6 +370,20 @@ proves an integrated auxiliary tail at `‖z‖ ≥ r₀ > 0`, bounded by
 including its zeros. Bounds for the full polynomial-weighted sources, the
 radial endpoint and certified numerical integration remain open.
 
+`LinearTiltedMoments` evaluates finite polynomials in `z` and `conj z` under
+`exp(-(rate-1)*normSq z + 2*Re(a*z))` for every positive `rate` and fixed complex
+source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
+Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
+A half-rate majorant proves integrability of every such polynomial insertion.
+For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
+`QuadraticPolynomialIntegrability` proves genuine joint polynomial
+integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate
+is `(A*C-B²)/(A+C)`. `QuadraticPolynomialMoments` then applies Fubini and
+reduces every finite mixed polynomial integral to a finite Wick sum at the
+remaining rate `(A*C-B²)/A`; its zeroth mass is `1/(A*C-B²)`.
+The historical operator identity and polynomial insertion into the full
+bipartite kernel remain separate obligations.
+
 The weighted Gaussian kernel has exact mass formulas. A common `gateOK`
 certificate supplies the real covariance conditions for either physical pair.
 `OriginalHSGaussianMass.integral_gateWeight` gives pair mass `ν²/δ`, and
