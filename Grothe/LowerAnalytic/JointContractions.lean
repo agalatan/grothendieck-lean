@@ -215,11 +215,6 @@ section hs
 variable (f : ι → ι → ι → ℝ)
 
 -- Preserve the legacy named symmetry parameter; the general bound does not need it.
-set_option linter.unusedVariables false in
-/-- `T₄ = ‖S²‖² ≤ ‖S‖⁴ = h²`. -/
-lemma tenT4_le_sq (hf : ∀ a b c, f a b c = f b a c) : tenT4 f ≤ tenH f ^ 2 := by
-  exact JointSixth.tenT4_le f
-
 variable (hf : ∀ a b c, f a b c = f b a c)
 include hf
 
@@ -227,30 +222,12 @@ include hf
 lemma tenT3_le : tenT3 f ≤ tenH f * √(tenH f) := by
   exact JointSixth.tenT3_le f hf
 
-/-- `W = ‖U‖² ≤ √s √T₄ ≤ h √s`. -/
-lemma tenU2_le_hs : tenU2 f ≤ tenH f * √(tenS f) := by
-  exact JointSixth.tenU2_le f hf
-
 omit hf in
 /-- `Q = ⟨vec G, S vec G⟩ ≤ ‖S‖ ‖G‖² = s √h`. -/
 lemma tenQ_le : tenQ f ≤ tenS f * √(tenH f) := by
   exact JointSixth.tenQ_le f
 
 end hs
-
-/-- `V ≤ s √s` from the cubic-trace bound `V² ≤ s³ (1 + 2r)²(1 − r)/2`, `r = η/s ≥ 0`
-(`(1 + 2r)²(1 − r) ≤ 2` since `2 − (1 + 2r)²(1 − r) = (1 + r)(1 − 2r)²`). -/
-lemma tenV_le_of_trace {V s η : ℝ} (hs : 0 < s) (hη : 0 ≤ η)
-    (h : V ^ 2 ≤ s ^ 3 * ((1 + 2 * (η / s)) ^ 2 * (1 - η / s) / 2)) : V ≤ s * √s := by
-  have hr : 0 ≤ η / s := div_nonneg hη hs.le
-  have hq : (1 + 2 * (η / s)) ^ 2 * (1 - η / s) / 2 ≤ 1 := by
-    nlinarith [mul_nonneg (by linarith : (0 : ℝ) ≤ 1 + η / s) (sq_nonneg (1 - 2 * (η / s)))]
-  have h2 : V ^ 2 ≤ (s * √s) ^ 2 := by
-    rw [mul_pow, Real.sq_sqrt hs.le]
-    calc V ^ 2 ≤ s ^ 3 * ((1 + 2 * (η / s)) ^ 2 * (1 - η / s) / 2) := h
-      _ ≤ s ^ 3 * 1 := mul_le_mul_of_nonneg_left hq (by positivity)
-      _ = s ^ 2 * s := by ring
-  exact le_of_sq_le_sq' (by positivity) h2
 
 /-! ### The joint inequalities for a circular cubic -/
 

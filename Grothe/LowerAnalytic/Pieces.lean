@@ -102,12 +102,6 @@ theorem inner_T (i j : Fin 6) (r s : L2G n) :
   rw [inner_tensorL, ← fibreGram_eq, inner_L2]
   rfl
 
-lemma norm_T (j : Fin 6) (r : L2G n) : ‖T n j r‖ = ‖r‖ := by
-  have h := inner_T j j r r
-  rw [ite_eq_left rfl, mul_one, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K] at h
-  have h2 : ‖T n j r‖ ^ 2 = ‖r‖ ^ 2 := by exact_mod_cast h
-  exact (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h2
-
 /-! ### Coefficient functions -/
 
 variable (n) in

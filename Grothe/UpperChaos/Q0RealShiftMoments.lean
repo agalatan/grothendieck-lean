@@ -1,4 +1,4 @@
-import Grothe.UpperChaos.Q0PhaseWickBridge
+import Grothe.UpperChaos.LeanCertProductionPanel
 
 /-!
 # Real-shifted damped Wick moments
@@ -10,7 +10,6 @@ assert the compressed double-factorial identity or any numerical bound.
 Agent-ID: codex-8c4d.
 -/
 
-open Grothe.UpperChaos.Q0PhaseWickBridge
 open scoped ComplexConjugate
 
 namespace Grothe.UpperChaos.Q0RealShiftMoments
@@ -58,19 +57,6 @@ theorem realShiftedMoment_powerSum (β m : ℝ) (p q : ℕ) :
 def realImSqMoment (β m : ℝ) (p q : ℕ) : ℝ :=
   (2 * realShiftedMoment β m (p + 1) (q + 1) -
     realShiftedMoment β m (p + 2) q - realShiftedMoment β m p (q + 2)) / 4
-
-/-- The existing imaginary-square Wick sum is real for every real shift. -/
-theorem imSqMoment_ofReal (β m : ℝ) (p q : ℕ) :
-    imSqMoment β (m : ℂ) p q = (realImSqMoment β m p q : ℂ) := by
-  simp only [imSqMoment, realImSqMoment, shiftedDampedMoment_ofReal]
-  push_cast
-  rfl
-
-/-- In particular no imaginary remainder is hidden in the real-shifted sum. -/
-theorem imSqMoment_im_eq_zero (β m : ℝ) (p q : ℕ) :
-    (imSqMoment β (m : ℂ) p q).im = 0 := by
-  rw [imSqMoment_ofReal]
-  simp
 
 end
 end Grothe.UpperChaos.Q0RealShiftMoments
