@@ -20,7 +20,8 @@ lemma conjP_A1 (P : CPoly) : conjP (A1 P) = A0 (conjP P) := by
 
 /-- The creation operators commute, so H admits a right-index recurrence. -/
 lemma A0_A1_comm (P : CPoly) : A0 (A1 P) = A1 (A0 P) := by
-  simp [A0, A1, Derivation.leibniz, pderiv_X, pderiv_comm] <;> ring
+  simp [A0, A1, Derivation.leibniz, pderiv_X, pderiv_comm]
+  ring
 
 lemma H_succ_right (p q : ℕ) : H p (q + 1) = A1 (H p q) := by
   induction p with

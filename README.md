@@ -16,6 +16,13 @@ a proved numerical head estimate. Our own numerical obligations are not accepted
 external inputs. A bound is **done** only when its complete Lean proof and final
 verification pass. The active work now prioritizes the upper endpoint.
 
+The original Gauss quadrature orders 1 through 64 have a finite polynomial
+exactness certificate in `UpperChaos/Q0GaussPolynomialCertificates.lean`.
+It connects LeanCert rational polynomial checks to integration and the original
+Legendre weight formula. The complete family is included in the main Lean root,
+but verification of this combined delivery remains work in progress. The
+selected-node bindings and analytic remainder are separate proof obligations.
+
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
 the way, and why the remaining gap is hard.
@@ -94,8 +101,7 @@ range facts for rows 0–11 and 16–18. They import `CapRangeDefs` and
 `CapRecipeData`: the rational row, gate, chord and recipe data and numerical
 checker, independently of the Gaussian analysis and lower certificate.
 There is one build target, `Grothe`: it builds range-check soundness in
-`CapRows`, convexity assembly in `CapAssembly` (`CapHull` is a compatibility
-import), the heavy facts, and `CapNodes`, which contains the 15 row-assembly
+`CapRows`, convexity assembly in `CapAssembly`, the heavy facts, and `CapNodes`, which contains the 15 row-assembly
 proofs and `lower_bound_of_capsRest`.
 
 `lower_bound_of_refined_cover_data` proves
@@ -186,6 +192,15 @@ calculation is `ProfileFirstGaussianCell`: Lean proves the exact integral of
 the squared degree-one Laguerre component against `exp(-s)` on `[0,1]`, and
 encloses it in `[0.054391816192, 0.054391816194]` using Mathlib's proved
 exponential bounds. The remaining profile and response estimates require further work.
+
+`ProductionSmoothingApprox.production_smoothing_error` proves that the concrete
+rational matrix calculation approximates the actual smoothing operator with
+relative Gaussian L² error at most `4·10⁻¹⁵` for every retained head through
+degree 501. The proof identifies the full grade action with
+`S_(q+1) C_q S_qᵀ` and sums squared errors across grades, so the allowance
+is charged once for the complete vector. Its integer square-root rounding
+and error proof use only the standard logical axioms. The retained Gaussian
+coefficient enclosures and full energy-table agreement remain work in progress.
 
 LeanCert is a pinned dependency. `UpperChaos/LeanCertPilot.lean` uses its
 dyadic interval integrator to enclose a conditional Gaussian slice integral
@@ -305,6 +320,29 @@ proves an integrated auxiliary tail at `‖z‖ ≥ r₀ > 0`, bounded by
 `4/(3*alpha*r₀^3) * T^(-3/2)`. It is uniform in the real profile coefficient,
 including its zeros. Bounds for the full polynomial-weighted sources, the
 radial endpoint and certified numerical integration remain open.
+
+`F0ConditionalNode` defines the actual conditional Gaussian coefficients and
+proves their coupled Bessel bound. `F0ConditionalEvaluator` identifies them
+with the historical signed-shift integral for nonnegative radius and nonzero
+profile. `ConditionalNodeIndices` proves the exact selection of 31,877 modes;
+these require explicit lookup in the 35,777-pair storage. The actual integral
+reflection in `ConditionalCoefficientReflection` supplies the production
+factor `sqrt((d+1)/c) ≤ 1` on the reflected half. These identities use only the
+standard logical axioms; numerical node enclosures remain to be proved.
+
+`ConditionalReconstruction` extends reflection across zero profiles by proving
+that every nonconstant conditional coefficient vanishes there. Its exact
+completion of the selected 31,877-mode vector has weighted error at most
+`10/7` times the canonical error at the same nodes and weights. The canonical
+error, physical weights, primary contraction, floating operations and final
+energy-table agreement still need their own certificates.
+`LinearTiltedMoments` evaluates finite polynomials in `z` and `conj z` under
+`exp(-(rate-1)*normSq z + 2*Re(a*z))` for every positive `rate` and fixed complex
+source `a`. Translation by `conj(a)/rate` gives the existing finite shifted
+Wick sum with factor `exp(normSq a/rate)` and retained mass `1/rate`.
+A half-rate majorant proves integrability of every such polynomial insertion.
+Joint integrability when the source depends on another integration variable
+remains a separate obligation before Fubini can be applied.
 
 `GradedHermitePhaseSlice` expresses each actual Taylor source as a polynomial
 in the conditional coordinate times its exact Gaussian damping.
@@ -441,11 +479,42 @@ leaves with an algebraic cell certificate on the complete reciprocal root
 of strip 3. `Q0BasePairRoot10Integral` combines all twelve algebraic leaves
 on the direct root of strip 5. Both preserve exact midpoint geometry and
 prove both explicit integrals without leaf or numerical premises.
+`Q0BasePairRoot2Integral` and `Q0BasePairRoot6Integral` similarly combine
+the complete direct roots of strips 1 and 3 from their twenty-four and
+fifteen checked algebraic leaves, respectively.
 `Q0BasePairProductionBridge` identifies these explicit integrands with the
 actual two production kernels at Taylor index zero, including the reciprocal
-Jacobian. `Q0BasePairProductionRoots` transfers the three complete-root
+Jacobian. `Q0BasePairProductionRoots` transfers the five complete-root
 enclosures to those production kernels at the fixed damping. The remaining
 algebraic leaves and complete root-to-band assembly remain work in progress.
+
+`Q0GaussianReality` proves that both full Gaussian base coefficients and
+their rationally corrected production coefficients are real, using
+conjugation invariance of the actual Gaussian source and response.
+Their complex distances from rational targets therefore equal the real
+absolute errors; no numerical or retained-domain premise is required.
+
+The original Legendre brackets for orders 1 through 64 now have exact
+integer sign certificates and Lean proofs of root existence and uniqueness.
+`F0ConditionalNode` identifies the actual conditional Gaussian coefficients
+and proves their joint Bessel bound. `ConditionalNodeIndices` identifies the
+selected contraction modes, while `F0ConditionalEvaluator` proves the
+profile sign and shift formula in that same index order.
+`ConditionalMomentReflection` proves reflection of the actual phase integrals;
+`ConditionalCoefficientReflection` transfers it to the normalized production
+coefficients with the exact square-root factor. That factor is at most one
+on the reflected lookup domain. Numerical reconstruction errors, quadrature weights,
+remainder estimates and their numerical source bindings remain work in progress.
+`Q0GaussExactness` proves the shared quadrature argument: exact finite
+polynomial identities imply the original Legendre weight formula and
+integration of every polynomial of degree below twice the rule order.
+Discharging those identities for the original finite rule family remains
+work in progress; polynomial exactness alone does not bound the analytic remainder.
+`Q0GaussQPoly` supplies the checked semantic bridge from LeanCert's exact
+polynomial operations to that quadrature theorem. The generated certificates
+for all 64 orders are work in progress and excluded from the main root until
+their focused Lean check succeeds. They include recurrence, orthogonality,
+derivative and Bezout identities, squared norms, and leading coefficients.
 
 
 Lean also proves a selected-spectrum comparison: the error is split
@@ -463,6 +532,13 @@ The concrete theorem's remaining **inputs** are:
 |---|---|---|
 | `hfirst`, `hsecond`, `hthird` | fourteen finite-band Gaussian error inequalities for the fixed Taylor sources and centers; Lean derives the rounding and three tail caps, decomposition and supports | 93.57% |
 | `energy_close` | the stored energies are within 6847009/(5·10¹⁷) of E(X) | 0.001% |
+
+The degree-531 canonical pair table indexes conditional Hermite node values
+by pairs `(c,d)` with `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1` and
+`c+d ≤ 531`, ordered by `(c+d,c)`. Lean verifies the finite rank, ordinal
+coverage and uniqueness certificate for this table. No downstream Lean result
+yet consumes this certificate; the Gaussian values still require numerical
+enclosures in Lean.
 
 The head, computed in Lean (`head_check`), is 28153/10¹², 3.09% of the total
 455212621809/(5·10¹⁷). The Hardy tail beyond degree 501, 303362486/10¹⁶ (3.33%), is **proved**: the weighted

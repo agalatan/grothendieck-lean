@@ -328,10 +328,6 @@ lemma chaos3_reP (c : Fin n × Fin n × Fin n → ℂ) : Chaos3 (reP n c) :=
   Chaos3.finset_sum _ fun _ _ =>
     ((chaos3_imW n _ _ _).const_mul _).sub ((chaos3_reW n _ _ _).const_mul _)
 
-lemma chaos3_imP (c : Fin n × Fin n × Fin n → ℂ) : Chaos3 (imP n c) :=
-  Chaos3.finset_sum _ fun _ _ =>
-    ((chaos3_imW n _ _ _).const_mul _).add ((chaos3_reW n _ _ _).const_mul _)
-
 lemma circular_reP_imP (c : Fin n × Fin n × Fin n → ℂ) : Circular (Jstd n) (reP n c) (imP n c) where
   anti := Jstd_anti n
   sq_diag := Jstd_sq_diag n
@@ -436,46 +432,46 @@ lemma norm_kOf_le {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
         mul_le_mul_of_nonneg_left (norm_sub_le _ _) (by norm_num)
     _ = 1 := by rw [h3, h4]; norm_num
 
-/-- **The crude-row input** `‖P₂,₁ k‖ ≤ ρ` for a unimodular pair (L3), from the first-moment bound
-on `H₂,₁`. -/
-theorem normQk_le_rho {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
-    (hg : g ∈ Unimod (stdGaussian (n + n))) : ‖QkOf n f g‖ ≤ ρ := by
-  obtain ⟨w, hw⟩ : ∃ w : L2G n, w = QkOf n f g := ⟨_, rfl⟩
+/-- **Projection duality on `H₂,₁`**: the projection of a function bounded by one has norm at most
+`ρ`, since `‖Πc‖² = Re⟪c, Πc⟫ ≤ E|Πc| ≤ ρ‖Πc‖` (`integral_norm_le_rho_of_mem_H21`). -/
+theorem norm_starProjection_H21_le_rho {c : L2G n}
+    (hc : ∀ᵐ x ∂(stdGaussian (n + n)), ‖c x‖ ≤ 1) : ‖(H21 n).starProjection c‖ ≤ ρ := by
+  obtain ⟨w, hw⟩ : ∃ w : L2G n, w = (H21 n).starProjection c := ⟨_, rfl⟩
   have hmem : w ∈ H21 n := by
-    rw [hw, QkOf, Submodule.starProjection_apply]; exact Submodule.coe_mem _
-  have hρ : (0 : ℝ) ≤ ρ := by unfold ρ; norm_num
+    rw [hw, Submodule.starProjection_apply]; exact Submodule.coe_mem _
   rw [← hw]
   rcases (norm_nonneg w).eq_or_lt with h0 | h0
-  · rw [← h0]; exact hρ
-  obtain ⟨ψ, hψ⟩ : ∃ ψ : L2G n, ψ = ((‖w‖⁻¹ : ℝ) : ℂ) • w := ⟨_, rfl⟩
-  have hψm : ψ ∈ H21 n := hψ ▸ Submodule.smul_mem _ _ hmem
-  have hψ1 : ‖ψ‖ = 1 := by
-    rw [hψ, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (inv_nonneg.2 (norm_nonneg _)),
-      inv_mul_cancel₀ h0.ne']
-  have hint := integral_norm_le_rho_of_mem_H21 n hψm hψ1
-  have e : ∫ x, ‖ψ x‖ ∂(stdGaussian (n + n)) = ‖w‖⁻¹ * ∫ x, ‖w x‖ ∂(stdGaussian (n + n)) := by
+  · rw [← h0]; unfold ρ; norm_num
+  have hu : ‖((‖w‖ : ℂ))⁻¹ • w‖ = 1 := by
+    rw [norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_norm, inv_mul_cancel₀ h0.ne']
+  have h3 := integral_norm_le_rho_of_mem_H21 n (Submodule.smul_mem _ ((‖w‖ : ℂ)⁻¹) hmem) hu
+  have h4 : ∫ x, ‖(((‖w‖ : ℂ))⁻¹ • w : L2G n) x‖ ∂(stdGaussian (n + n))
+      = ‖w‖⁻¹ * ∫ x, ‖w x‖ ∂(stdGaussian (n + n)) := by
     rw [← integral_const_mul]
     refine integral_congr_ae ?_
-    filter_upwards [Lp.coeFn_smul ((‖w‖⁻¹ : ℝ) : ℂ) w] with x hx
-    rw [hψ, hx, Pi.smul_apply, norm_smul, Complex.norm_real, Real.norm_eq_abs,
-      abs_of_nonneg (inv_nonneg.2 (norm_nonneg _))]
+    filter_upwards [Lp.coeFn_smul ((‖w‖ : ℂ)⁻¹) w] with x hx
+    rw [hx, Pi.smul_apply, norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_norm]
+  rw [h4, inv_mul_le_iff₀ h0] at h3
   have hw2 : ‖w‖ ^ 2 ≤ ∫ x, ‖w x‖ ∂(stdGaussian (n + n)) := by
-    have e2 := re_inner_starProjection (H21 n) (kOf n f g)
-    rw [← QkOf, ← hw] at e2
+    have e2 := re_inner_starProjection (H21 n) c
+    rw [← hw] at e2
     rw [← e2]
-    calc (inner ℂ (kOf n f g) w).re ≤ ‖inner ℂ (kOf n f g) w‖ := Complex.re_le_norm _
-      _ ≤ ∫ x, ‖conj (kOf n f g x) * w x‖ ∂(stdGaussian (n + n)) := by
+    calc (inner ℂ c w).re ≤ ‖inner ℂ c w‖ := Complex.re_le_norm _
+      _ ≤ ∫ x, ‖conj (c x) * w x‖ ∂(stdGaussian (n + n)) := by
           rw [inner_L2]; exact norm_integral_le_integral_norm _
       _ ≤ ∫ x, ‖w x‖ ∂(stdGaussian (n + n)) :=
           integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => norm_nonneg _)
             ((Lp.memLp w).integrable one_le_two).norm (by
-              filter_upwards [norm_kOf_le n hf hg] with x hx
+              filter_upwards [hc] with x hx
               rw [norm_mul, Complex.norm_conj]
               exact mul_le_of_le_one_left (norm_nonneg _) hx)
-  have h3 : ∫ x, ‖w x‖ ∂(stdGaussian (n + n)) ≤ ‖w‖ * ρ := by
-    have := mul_le_mul_of_nonneg_left hint (norm_nonneg w)
-    rwa [e, ← mul_assoc, mul_inv_cancel₀ h0.ne', one_mul] at this
   nlinarith
+
+/-- **The crude-row input** `‖P₂,₁ k‖ ≤ ρ` for a unimodular pair (L3), from the first-moment bound
+on `H₂,₁`. -/
+theorem normQk_le_rho {f g : L2G n} (hf : f ∈ Unimod (stdGaussian (n + n)))
+    (hg : g ∈ Unimod (stdGaussian (n + n))) : ‖QkOf n f g‖ ≤ ρ :=
+  norm_starProjection_H21_le_rho n (norm_kOf_le n hf hg)
 
 /-! ### The remaining hypotheses and the scalar cap -/
 
