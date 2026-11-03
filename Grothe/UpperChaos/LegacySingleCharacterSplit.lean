@@ -2,6 +2,7 @@ module
 
 public import Batteries.Data.String.Lemmas
 import all Init.Data.String.Legacy
+import all Init.Data.List.SplitOn.Basic
 meta import Lean.Util.CollectAxioms
 meta import Lean.Elab.Command
 
