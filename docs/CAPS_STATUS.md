@@ -5,9 +5,9 @@
 The active `Grothe` build contains the same endpoint reduction with fewer cap inputs:
 `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697117301 < K`.
 Both theorems use `RefinedCoverData.refinedL` and the same checked finite cover.
-On this test branch, `CapsRest` consists of the vertex caps of rows 14–15
-(t = 0.85, 0.855), plus any excluded-node caps of rows 0–11 and 16–18.
-Rows12 and13 have complete source assemblies awaiting canonical CI verification. All
+`CapsRest` consists of the vertex caps of rows 14–15 (t = 0.85, 0.855), plus
+any excluded-node caps of rows 0–11 and 16–18. Rows 12 and 13 are certified by
+their complete localized-piece and anchor assemblies (CI's caps build). All
 exclusion lists are currently empty. These remaining cap estimates must be
 proved in Lean; external calculations do not complete this endpoint.
 See [PROOF_STATUS.md](PROOF_STATUS.md) for the completion rule.

@@ -60,7 +60,7 @@ class ActiveBuilderTests(unittest.TestCase):
 
     def test_plan_validates_materialized_multiroots_and_groups_without_writes(self):
         value = self.publish_fixture(); before = census(self.root)
-        status, output, error = self.main('--plan')
+        status, output, error = self.main('--plan', '--jobs', '2')
         self.assertEqual((status, error), (0, ''))
         plan = json.loads(output)
         self.assertEqual(plan['compute_roots'], 26)

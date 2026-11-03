@@ -135,9 +135,9 @@ See `AGENTS.md` §8, §10 and `docs/CAPS_STATUS.md`.
 `lower_bound_of_refined_cover_data` assumes `NodeCaps`.
 `lower_bound_of_capsRest` reduces this to `CapsRest`: the vertex caps of rows
 14–15 (t = 0.85, 0.855), plus any excluded-node caps of the original
-range-checked rows. All those exclusion lists are empty. This test branch adds
-the complete localized-piece and anchor assemblies for Rows12 and13;
-their generated finite checks still require canonical CI verification. Both lower theorems use the same
+range-checked rows. All those exclusion lists are empty. Rows 12 and 13
+(t = 0.84, 0.845) are certified by their complete localized-piece and anchor
+assemblies (`CapRow12/Assembly`, `CapRow13/Assembly`), with no excluded nodes. Both lower theorems use the same
 refined cover and endpoint; the second composes
 `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and
 `lower_bound_of_refined_cover_data`. `NodeCaps.lean` defines the common cap

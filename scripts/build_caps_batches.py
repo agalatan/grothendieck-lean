@@ -393,9 +393,33 @@ def overlay_bytes(source: bytes) -> bytes:
     return result
 
 
+GIB_PER_LEAF = 8          # peak RSS of one single-threaded leaf, with margin
+RSS_HEADROOM_GIB = 6      # memory left to the OS, the runner and Lake itself
+
+
+def machine_jobs() -> int:
+    """Leaves to run at once: one per usable CPU, but never more than the memory holds (8 GiB each)."""
+    try:
+        cpus = len(os.sched_getaffinity(0))
+    except AttributeError:
+        cpus = os.cpu_count() or 1
+    return max(1, min(cpus, (machine_memory_gib() - RSS_HEADROOM_GIB) // GIB_PER_LEAF))
+
+
+def machine_memory_gib() -> int:
+    try:
+        with open("/proc/meminfo") as f:
+            for line in f:
+                if line.startswith("MemTotal:"):
+                    return int(line.split()[1]) // 2**20
+    except OSError:
+        pass
+    return 24 + RSS_HEADROOM_GIB   # unknown platform: the original 24 GiB budget
+
+
 def groups(registry: dict, jobs: int):
-    if jobs not in (1, 2):
-        raise BuildError("jobs must be 1 or 2")
+    if type(jobs) is not int or jobs < 1:
+        raise BuildError("jobs must be a positive integer")
     for phase, roots in (("pure", registry["pure_roots"]), ("native", registry["compute_roots"])):
         for i in range(0, len(roots), jobs):
             yield phase, list(map(module, roots[i:i + jobs]))
@@ -705,8 +729,10 @@ def main(argv=None):
     modes.add_argument("--propose-active-registry", type=Path, metavar="DECLARATION",
                        help="stdout-only additive v2 declaration proposal; no activation, builds or writes")
     parser.add_argument("--source-overlay", type=Path, help="registry preparation only: read candidate sources from this overlay")
-    parser.add_argument("--jobs", type=int, choices=(1, 2), default=2)
-    parser.add_argument("--rss-limit-gib", type=float, default=24)
+    parser.add_argument("--jobs", type=int, default=None,
+                        help="leaves built at once (default: usable CPUs, at most one per 8 GiB of RAM beyond 6 GiB headroom)")
+    parser.add_argument("--rss-limit-gib", type=float, default=None,
+                        help="pause when the owned leaves exceed this aggregate RSS (default: RAM minus 6 GiB)")
     parser.add_argument("--disk-floor-gib", type=float, default=3)
     parser.add_argument("--max-batches", type=int, default=0, help="pause after N complete groups; 0 means the whole plan")
     parser.add_argument("--run-dir", type=Path, default=Path(".lake/caps-batches"))
@@ -760,10 +786,14 @@ def main(argv=None):
             print("Wrote an inactive source proposal; no activation or verification performed" if args.source_overlay else
                   f"Wrote {len(value['compute_roots'])} compute roots; no Lean build or verification performed")
             return 0
+        if args.jobs is None:
+            args.jobs = machine_jobs()
+        if args.rss_limit_gib is None:
+            args.rss_limit_gib = max(GIB_PER_LEAF, machine_memory_gib() - RSS_HEADROOM_GIB)
         if (not all(map(math.isfinite, (args.rss_limit_gib, args.disk_floor_gib, args.poll_seconds)))
-                or not (0 < args.rss_limit_gib <= 24) or args.disk_floor_gib < 3
-                or args.poll_seconds <= 0 or args.max_batches < 0):
-            raise BuildError("require RSS in (0,24] GiB, disk floor >= 3 GiB and positive polling interval")
+                or not (0 < args.rss_limit_gib <= machine_memory_gib()) or args.disk_floor_gib < 3
+                or args.poll_seconds <= 0 or args.max_batches < 0 or args.jobs < 1):
+            raise BuildError("require RSS in (0, RAM] GiB, disk floor >= 3 GiB, positive polling interval and jobs >= 1")
         data = args.registry.read_bytes()
         registry = active_registry._active_json(data)
         args.registry_sha256 = sha(data)

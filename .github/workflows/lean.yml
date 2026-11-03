@@ -289,7 +289,8 @@ jobs:
         if: env.LEAN == 'true' && env.DROPLET == 'true'
         # Source preparation only. The complete Grothe build, strict audit,
         # Bridge probe and successful cache upload below decide verification.
-        run: python3 scripts/build_caps_batches.py --jobs 2 --rss-limit-gib 24 --disk-floor-gib 3
+        # leaves at once and the RSS budget follow the runner's CPUs and RAM (scripts/build_caps_batches.py)
+        run: python3 scripts/build_caps_batches.py --disk-floor-gib 3
 
       - name: Build Grothe (everything, node caps included)
         if: env.LEAN == 'true'

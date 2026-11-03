@@ -124,13 +124,16 @@ class GraphTests(Fixture):
         with self.assertRaises(Exception):
             self.regenerate()
 
-    def test_groups_are_at_most_two_and_pure_first(self):
+    def test_groups_are_at_most_jobs_and_pure_first(self):
         plan = list(b.groups(self.registry, 2))
         self.assertEqual([phase for phase, _ in plan], ["pure", "pure", "native"])
         self.assertTrue(all(len(targets) <= 2 for _, targets in plan))
         self.assertEqual(list(b.groups(self.registry, 1))[-2:], [("native", ["Grothe.A"]), ("native", ["Grothe.B"])])
-        with self.assertRaises(b.BuildError):
-            list(b.groups(self.registry, 3))
+        self.assertTrue(all(len(targets) <= 3 for _, targets in b.groups(self.registry, 3)))
+        for bad in (0, -1, 2.0):
+            with self.assertRaises(b.BuildError):
+                list(b.groups(self.registry, bad))
+        self.assertGreaterEqual(b.machine_jobs(), 1)
 
 
 class OverlayTests(unittest.TestCase):
