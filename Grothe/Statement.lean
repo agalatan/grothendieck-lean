@@ -19,10 +19,12 @@ For a complex `m × n` matrix `A` (a function `Fin m → Fin n → ℂ`):
 Mathlib's inner product is conjugate-linear in the first slot, so the one-dimensional case of
 `⟪xᵢ, yⱼ⟫` is `conj(εᵢ) δⱼ`, exactly the scalar problem.
 
-Both suprema are taken with `sSup` over sets of reals and the constant with `sInf`. These are the
-usual suprema and infimum because the sets are nonempty and bounded; the proof modules prove this
-(`Grothe.Statement.bounds_bddBelow` in `Grothe/UpperTarget.lean`), so the statement never rests on
-Lean's convention `sSup ∅ = sInf ∅ = 0`.
+The two targets are stated directly in terms of Grothendieck bounds, so they do not depend on Lean's
+convention for the infimum of an empty or unbounded set: `UpperTarget` says some bound is below
+`1.404598149141`, `LowerTarget` says every bound is above `1.401697117301`. The constant `K_G^ℂ` is
+defined as the infimum of all bounds for reference; the proof modules show that `UpperTarget` implies
+`K_G^ℂ < 1.404598149141` and that `LowerTarget` implies `1.401697117301 ≤ K_G^ℂ` (and the strict form
+once a bound is known to exist). The suprema `C(A)`, `V(A)` are over nonempty bounded sets of reals.
 -/
 
 namespace Grothe.Statement
@@ -55,11 +57,13 @@ def IsBound (K : ℝ) : Prop :=
 /-- The complex Grothendieck constant `K_G^ℂ`: the smallest Grothendieck bound. -/
 def complexGrothendieckConstant : ℝ := sInf {K | IsBound K}
 
-/-- **The upper-bound target:** `K_G^ℂ < 1.404598149141`. -/
-def UpperTarget : Prop := complexGrothendieckConstant < 1404598149141 / 1000000000000
+/-- **The upper-bound target:** some Grothendieck bound is below `1.404598149141`
+(hence `K_G^ℂ < 1.404598149141`). -/
+def UpperTarget : Prop := ∃ K, IsBound K ∧ K < 1404598149141 / 1000000000000
 
-/-- **The lower-bound target:** `1.401697117301 < K_G^ℂ`. -/
-def LowerTarget : Prop := 1401697117301 / 1000000000000 < complexGrothendieckConstant
+/-- **The lower-bound target:** every Grothendieck bound is above `1.401697117301`
+(hence `1.401697117301 ≤ K_G^ℂ`, and `<` as soon as some bound exists). -/
+def LowerTarget : Prop := ∀ K, IsBound K → 1401697117301 / 1000000000000 < K
 
 end
 

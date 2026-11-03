@@ -10,6 +10,8 @@ This module connects the proof to the statement `Grothe.Statement.UpperTarget`
 * `isBound_iff`: the statement's `IsBound` is the proof's `Grothe.IsGrothendieckBound`.
 * `bounds_bddBelow`: every Grothendieck bound is nonnegative, so `K_G^ℂ` is a genuine infimum.
 * `upperTarget_of_bound`: any Grothendieck bound below `1.404598149141` proves the target.
+* `constant_lt_of_upperTarget`: the target gives `K_G^ℂ < 1.404598149141` (the infimum form);
+  `upperTarget_of_constant_lt`: the converse, given that some bound exists.
 * `upper_target_of_inputs`: **the current state of the upper bound.** The target follows from the
   concrete rounding of `fresh_upper_concrete_taylor`; its hypotheses are exactly what is not yet proved
   in Lean (the finite-band Gaussian error estimates of the three Taylor centers and the energy-table
@@ -40,7 +42,19 @@ theorem bounds_bddBelow : BddBelow {K | IsBound K} := by
 /-- A Grothendieck bound below `1.404598149141` proves the upper-bound target. -/
 theorem upperTarget_of_bound {K : ℝ} (h : Grothe.IsGrothendieckBound K)
     (hK : K < 1404598149141 / 1000000000000) : UpperTarget :=
-  lt_of_le_of_lt (csInf_le bounds_bddBelow (isBound_iff.mpr h)) hK
+  ⟨K, isBound_iff.mpr h, hK⟩
+
+/-- The infimum form of the target follows from it. -/
+theorem constant_lt_of_upperTarget (h : UpperTarget) :
+    complexGrothendieckConstant < 1404598149141 / 1000000000000 := by
+  obtain ⟨K, hK, hlt⟩ := h
+  exact lt_of_le_of_lt (csInf_le bounds_bddBelow hK) hlt
+
+/-- Conversely, once some Grothendieck bound exists, `K_G^ℂ < 1.404598149141` gives a bound below it. -/
+theorem upperTarget_of_constant_lt (hne : ∃ K, IsBound K)
+    (h : complexGrothendieckConstant < 1404598149141 / 1000000000000) : UpperTarget := by
+  obtain ⟨K, hK, hlt⟩ := exists_lt_of_csInf_lt hne h
+  exact ⟨K, hK, hlt⟩
 
 /-- **The upper bound `K_G^ℂ < 1.404598149141`, conditional on the inputs not yet proved in Lean**:
 the finite-band Gaussian error estimates of the three Taylor centers (`hfirst`, `hsecond`, `hthird`)
