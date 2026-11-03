@@ -662,6 +662,8 @@
     "Grothe/LowerAnalytic/CapPieces/D12x211.lean": "15449521312cdfc3831556cab45f0ee3b00af29f703c08e09913e4905f7bb0e2",
     "Grothe/LowerAnalytic/CapPieces/D12x212.lean": "34e54fae93e880b5a40e7ba77c74f633b6c0e9e738d49041422159c14b9a22eb",
     "Grothe/LowerAnalytic/CapPieces/D12x215.lean": "3896e42fb8126d513b68926dae03d1a3d57b9befd46d3e6385610a9ae24081a5",
+    "Grothe/LowerAnalytic/CapPieces/D12x270.lean": "b694f5f1541dbdd685efb49133cf72bef3ea78005a44e628c4de76741bf3d227",
+    "Grothe/LowerAnalytic/CapPieces/D12x272.lean": "d42b7ebfed1561a45e298d2389575f0734e237f020a72205e85ace03d1cc15c4",
     "Grothe/LowerAnalytic/CapPieces/D12x290.lean": "0ca65901f1fd2f78bf07ef9fba7a45d3a780bb8cbf2aa4b882f3d91eef14de40",
     "Grothe/LowerAnalytic/CapPieces/D12x292.lean": "1770df816694791bab2c71dfd7579db54475077fb41bb78d86e28dc10bddc2c3",
     "Grothe/LowerAnalytic/CapPieces/D13x183.lean": "529db4540df8c07a6ce622eb0a904558db9e3c3fbb87c0523efe3514cf98f21e",
@@ -674,7 +676,7 @@
   "repair_bindings": {
     "12": {
       "path": "data/caps-m/plan/noncentre-repairs/row12-binding.json",
-      "sha256": "8972482ffcf8171bc4e6b8763c4dd93559635defb453c9cb0f1527c67e4dd467"
+      "sha256": "722ee49b2647876715f92d514dc04bc7ff6f6c8bd12950c5a3274a24ee90f331"
     },
     "13": {
       "path": "data/caps-m/plan/noncentre-repairs/row13-binding.json",
