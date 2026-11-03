@@ -11,14 +11,14 @@ theorem gaussianHorner3_mul_checked :
   decide +kernel
 
 theorem gaussianHorner3_add_checked :
-    addOK gaussianproduct3 (constant (604800 / 1)) gaussianresult3 (0 / 1) = true := by
+    addOK gaussianproduct3 (((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 3 (constant 0)) gaussianresult3 0 = true := by
   decide +kernel
 
 theorem gaussianHorner3_checked :
-    gaussianTail3.check gaussianCertificate.delta [constant (604800 / 1), constant (151200 / 1), constant (30240 / 1), constant (5040 / 1), constant (720 / 1), constant (90 / 1), constant (10 / 1), constant (1 / 1)] = true := by
-  exact Trace.check_cons gaussianCertificate.delta (constant (604800 / 1))
-    [constant (151200 / 1), constant (30240 / 1), constant (5040 / 1), constant (720 / 1), constant (90 / 1), constant (10 / 1), constant (1 / 1)]
-    gaussianproduct3 gaussianresult3 (927216756599444464759967723505580282107 / 1461501637330902918203684832716283019655932542976) (0 / 1) gaussianTail4
+    gaussianTail3.check gaussianCertificate.delta [((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 3 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 4 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 5 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 6 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 7 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 8 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 9 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 10 (constant 0)] = true := by
+  exact Trace.check_cons gaussianCertificate.delta (((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 3 (constant 0))
+    [((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 4 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 5 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 6 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 7 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 8 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 9 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 10 (constant 0)]
+    gaussianproduct3 gaussianresult3 (927216756599444464759967723505580282107 / 1461501637330902918203684832716283019655932542976) 0 gaussianTail4
     gaussianHorner4_checked gaussianHorner3_mul_checked gaussianHorner3_add_checked
 
 theorem gaussianHorner2_mul_checked :
@@ -26,14 +26,14 @@ theorem gaussianHorner2_mul_checked :
   decide +kernel
 
 theorem gaussianHorner2_add_checked :
-    addOK gaussianproduct2 (constant (1814400 / 1)) gaussianresult2 (0 / 1) = true := by
+    addOK gaussianproduct2 (((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 2 (constant 0)) gaussianresult2 0 = true := by
   decide +kernel
 
 theorem gaussianHorner2_checked :
-    gaussianTail2.check gaussianCertificate.delta [constant (1814400 / 1), constant (604800 / 1), constant (151200 / 1), constant (30240 / 1), constant (5040 / 1), constant (720 / 1), constant (90 / 1), constant (10 / 1), constant (1 / 1)] = true := by
-  exact Trace.check_cons gaussianCertificate.delta (constant (1814400 / 1))
-    [constant (604800 / 1), constant (151200 / 1), constant (30240 / 1), constant (5040 / 1), constant (720 / 1), constant (90 / 1), constant (10 / 1), constant (1 / 1)]
-    gaussianproduct2 gaussianresult2 (5050501865107722329396104155508671719817 / 365375409332725729550921208179070754913983135744) (0 / 1) gaussianTail3
+    gaussianTail2.check gaussianCertificate.delta [((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 2 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 3 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 4 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 5 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 6 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 7 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 8 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 9 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 10 (constant 0)] = true := by
+  exact Trace.check_cons gaussianCertificate.delta (((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 2 (constant 0))
+    [((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 3 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 4 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 5 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 6 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 7 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 8 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 9 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 10 (constant 0)]
+    gaussianproduct2 gaussianresult2 (5050501865107722329396104155508671719817 / 365375409332725729550921208179070754913983135744) 0 gaussianTail3
     gaussianHorner3_checked gaussianHorner2_mul_checked gaussianHorner2_add_checked
 
 end Grothe.UpperChaos.Q0BasePairRoot2Leaf10001

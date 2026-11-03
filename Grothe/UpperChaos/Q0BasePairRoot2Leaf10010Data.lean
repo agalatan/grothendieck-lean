@@ -340,140 +340,140 @@ def inverseTail11 : Trace := .nil
 
 
 def inverseTail10 : Trace :=
-  .cons inverseproduct10 inverseresult10 (0 / 1) (0 / 1) inverseTail11
+  .cons inverseproduct10 inverseresult10 (0 / 1) 0 inverseTail11
 
 
 def inverseTail9 : Trace :=
-  .cons inverseproduct9 inverseresult9 (0 / 1) (0 / 1) inverseTail10
+  .cons inverseproduct9 inverseresult9 (0 / 1) 0 inverseTail10
 
 
 def inverseTail8 : Trace :=
-  .cons inverseproduct8 inverseresult8 (43211311503274825486028931101 / 365375409332725729550921208179070754913983135744) (0 / 1) inverseTail9
+  .cons inverseproduct8 inverseresult8 (43211311503274825486028931101 / 365375409332725729550921208179070754913983135744) 0 inverseTail9
 
 
 def inverseTail7 : Trace :=
-  .cons inverseproduct7 inverseresult7 (143711908011387805295217380287 / 1461501637330902918203684832716283019655932542976) (0 / 1) inverseTail8
+  .cons inverseproduct7 inverseresult7 (143711908011387805295217380287 / 1461501637330902918203684832716283019655932542976) 0 inverseTail8
 
 
 def inverseTail6 : Trace :=
-  .cons inverseproduct6 inverseresult6 (71993136773917257640011293709 / 730750818665451459101842416358141509827966271488) (0 / 1) inverseTail7
+  .cons inverseproduct6 inverseresult6 (71993136773917257640011293709 / 730750818665451459101842416358141509827966271488) 0 inverseTail7
 
 
 def inverseTail5 : Trace :=
-  .cons inverseproduct5 inverseresult5 (35996512952585826182362871291 / 365375409332725729550921208179070754913983135744) (0 / 1) inverseTail6
+  .cons inverseproduct5 inverseresult5 (35996512952585826182362871291 / 365375409332725729550921208179070754913983135744) 0 inverseTail6
 
 
 def inverseTail4 : Trace :=
-  .cons inverseproduct4 inverseresult4 (143986051804279072953659560259 / 1461501637330902918203684832716283019655932542976) (0 / 1) inverseTail5
+  .cons inverseproduct4 inverseresult4 (143986051804279072953659560259 / 1461501637330902918203684832716283019655932542976) 0 inverseTail5
 
 
 def inverseTail3 : Trace :=
-  .cons inverseproduct3 inverseresult3 (17998256475534884119207445995 / 182687704666362864775460604089535377456991567872) (0 / 1) inverseTail4
+  .cons inverseproduct3 inverseresult3 (17998256475534884119207445995 / 182687704666362864775460604089535377456991567872) 0 inverseTail4
 
 
 def inverseTail2 : Trace :=
-  .cons inverseproduct2 inverseresult2 (17998256475534884119207445995 / 182687704666362864775460604089535377456991567872) (0 / 1) inverseTail3
+  .cons inverseproduct2 inverseresult2 (17998256475534884119207445995 / 182687704666362864775460604089535377456991567872) 0 inverseTail3
 
 
 def inverseTail1 : Trace :=
-  .cons inverseproduct1 inverseresult1 (17998256475534884119207445995 / 182687704666362864775460604089535377456991567872) (0 / 1) inverseTail2
+  .cons inverseproduct1 inverseresult1 (17998256475534884119207445995 / 182687704666362864775460604089535377456991567872) 0 inverseTail2
 
 
 def inverseTail0 : Trace :=
-  .cons inverseproduct0 inverseresult0 (17998256475534884119207445995 / 182687704666362864775460604089535377456991567872) (0 / 1) inverseTail1
+  .cons inverseproduct0 inverseresult0 (17998256475534884119207445995 / 182687704666362864775460604089535377456991567872) 0 inverseTail1
 
 
 def dampingTail11 : Trace := .nil
 
 
 def dampingTail10 : Trace :=
-  .cons dampingproduct10 dampingresult10 (0 / 1) (0 / 1) dampingTail11
+  .cons dampingproduct10 dampingresult10 (0 / 1) 0 dampingTail11
 
 
 def dampingTail9 : Trace :=
-  .cons dampingproduct9 dampingresult9 (0 / 1) (0 / 1) dampingTail10
+  .cons dampingproduct9 dampingresult9 (0 / 1) 0 dampingTail10
 
 
 def dampingTail8 : Trace :=
-  .cons dampingproduct8 dampingresult8 (1 / 1461501637330902918203684832716283019655932542976) (0 / 1) dampingTail9
+  .cons dampingproduct8 dampingresult8 (1 / 1461501637330902918203684832716283019655932542976) 0 dampingTail9
 
 
 def dampingTail7 : Trace :=
-  .cons dampingproduct7 dampingresult7 (1 / 1461501637330902918203684832716283019655932542976) (0 / 1) dampingTail8
+  .cons dampingproduct7 dampingresult7 (1 / 1461501637330902918203684832716283019655932542976) 0 dampingTail8
 
 
 def dampingTail6 : Trace :=
-  .cons dampingproduct6 dampingresult6 (1 / 1461501637330902918203684832716283019655932542976) (0 / 1) dampingTail7
+  .cons dampingproduct6 dampingresult6 (1 / 1461501637330902918203684832716283019655932542976) 0 dampingTail7
 
 
 def dampingTail5 : Trace :=
-  .cons dampingproduct5 dampingresult5 (1 / 1461501637330902918203684832716283019655932542976) (0 / 1) dampingTail6
+  .cons dampingproduct5 dampingresult5 (1 / 1461501637330902918203684832716283019655932542976) 0 dampingTail6
 
 
 def dampingTail4 : Trace :=
-  .cons dampingproduct4 dampingresult4 (1 / 1461501637330902918203684832716283019655932542976) (0 / 1) dampingTail5
+  .cons dampingproduct4 dampingresult4 (1 / 1461501637330902918203684832716283019655932542976) 0 dampingTail5
 
 
 def dampingTail3 : Trace :=
-  .cons dampingproduct3 dampingresult3 (1 / 1461501637330902918203684832716283019655932542976) (0 / 1) dampingTail4
+  .cons dampingproduct3 dampingresult3 (1 / 1461501637330902918203684832716283019655932542976) 0 dampingTail4
 
 
 def dampingTail2 : Trace :=
-  .cons dampingproduct2 dampingresult2 (1 / 1461501637330902918203684832716283019655932542976) (0 / 1) dampingTail3
+  .cons dampingproduct2 dampingresult2 (1 / 1461501637330902918203684832716283019655932542976) 0 dampingTail3
 
 
 def dampingTail1 : Trace :=
-  .cons dampingproduct1 dampingresult1 (1 / 1461501637330902918203684832716283019655932542976) (0 / 1) dampingTail2
+  .cons dampingproduct1 dampingresult1 (1 / 1461501637330902918203684832716283019655932542976) 0 dampingTail2
 
 
 def dampingTail0 : Trace :=
-  .cons dampingproduct0 dampingresult0 (1 / 1461501637330902918203684832716283019655932542976) (0 / 1) dampingTail1
+  .cons dampingproduct0 dampingresult0 (1 / 1461501637330902918203684832716283019655932542976) 0 dampingTail1
 
 
 def gaussianTail11 : Trace := .nil
 
 
 def gaussianTail10 : Trace :=
-  .cons gaussianproduct10 gaussianresult10 (0 / 1) (0 / 1) gaussianTail11
+  .cons gaussianproduct10 gaussianresult10 (0 / 1) 0 gaussianTail11
 
 
 def gaussianTail9 : Trace :=
-  .cons gaussianproduct9 gaussianresult9 (0 / 1) (0 / 1) gaussianTail10
+  .cons gaussianproduct9 gaussianresult9 (0 / 1) 0 gaussianTail10
 
 
 def gaussianTail8 : Trace :=
-  .cons gaussianproduct8 gaussianresult8 (177805859362519768110264502211913 / 1461501637330902918203684832716283019655932542976) (0 / 1) gaussianTail9
+  .cons gaussianproduct8 gaussianresult8 (177805859362519768110264502211913 / 1461501637330902918203684832716283019655932542976) 0 gaussianTail9
 
 
 def gaussianTail7 : Trace :=
-  .cons gaussianproduct7 gaussianresult7 (3898303495652377392367913847978707 / 1461501637330902918203684832716283019655932542976) (0 / 1) gaussianTail8
+  .cons gaussianproduct7 gaussianresult7 (3898303495652377392367913847978707 / 1461501637330902918203684832716283019655932542976) 0 gaussianTail8
 
 
 def gaussianTail6 : Trace :=
-  .cons gaussianproduct6 gaussianresult6 (117356423997484845642228530643640319 / 730750818665451459101842416358141509827966271488) (0 / 1) gaussianTail7
+  .cons gaussianproduct6 gaussianresult6 (117356423997484845642228530643640319 / 730750818665451459101842416358141509827966271488) 0 gaussianTail7
 
 
 def gaussianTail5 : Trace :=
-  .cons gaussianproduct5 gaussianresult5 (5894151120226287834337938852509971403 / 1461501637330902918203684832716283019655932542976) (0 / 1) gaussianTail6
+  .cons gaussianproduct5 gaussianresult5 (5894151120226287834337938852509971403 / 1461501637330902918203684832716283019655932542976) 0 gaussianTail6
 
 
 def gaussianTail4 : Trace :=
-  .cons gaussianproduct4 gaussianresult4 (4738717198118018688032200667773478461 / 91343852333181432387730302044767688728495783936) (0 / 1) gaussianTail5
+  .cons gaussianproduct4 gaussianresult4 (4738717198118018688032200667773478461 / 91343852333181432387730302044767688728495783936) 0 gaussianTail5
 
 
 def gaussianTail3 : Trace :=
-  .cons gaussianproduct3 gaussianresult3 (1199296849108458242542125511447956403701 / 1461501637330902918203684832716283019655932542976) (0 / 1) gaussianTail4
+  .cons gaussianproduct3 gaussianresult3 (1199296849108458242542125511447956403701 / 1461501637330902918203684832716283019655932542976) 0 gaussianTail4
 
 
 def gaussianTail2 : Trace :=
-  .cons gaussianproduct2 gaussianresult2 (27345195920946069334501549881530588447811 / 1461501637330902918203684832716283019655932542976) (0 / 1) gaussianTail3
+  .cons gaussianproduct2 gaussianresult2 (27345195920946069334501549881530588447811 / 1461501637330902918203684832716283019655932542976) 0 gaussianTail3
 
 
 def gaussianTail1 : Trace :=
-  .cons gaussianproduct1 gaussianresult1 (68038485363885171961319720288035590927371 / 365375409332725729550921208179070754913983135744) (0 / 1) gaussianTail2
+  .cons gaussianproduct1 gaussianresult1 (68038485363885171961319720288035590927371 / 365375409332725729550921208179070754913983135744) 0 gaussianTail2
 
 
 def gaussianTail0 : Trace :=
-  .cons gaussianproduct0 gaussianresult0 (840024577873686567984445202586742620601625 / 1461501637330902918203684832716283019655932542976) (0 / 1) gaussianTail1
+  .cons gaussianproduct0 gaussianresult0 (840024577873686567984445202586742620601625 / 1461501637330902918203684832716283019655932542976) 0 gaussianTail1
 
 end Grothe.UpperChaos.Q0BasePairRoot2Leaf10010

@@ -16,6 +16,9 @@ theorem inverseField3_checked :
 
 theorem inverseField4_checked :
     inverseCertificate.trace.check inverseCertificate.argument ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant) = true := by
+  have hi : [((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 0 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 1 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 2 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 3 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 4 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 5 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 6 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 7 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 8 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 9 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 10 (constant 0)] = ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant) := by rfl
+  have ht : inverseTail0 = inverseCertificate.trace := by rfl
+  rw [← ht, ← hi]
   exact inverseHorner0_checked
 
 theorem inverseField5_checked :

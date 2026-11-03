@@ -11,14 +11,14 @@ theorem inverseHorner4_mul_checked :
   decide +kernel
 
 theorem inverseHorner4_add_checked :
-    addOK inverseproduct4 (constant (1 / 1)) inverseresult4 (0 / 1) = true := by
+    addOK inverseproduct4 (((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 4 (constant 0)) inverseresult4 0 = true := by
   decide +kernel
 
 theorem inverseHorner4_checked :
-    inverseTail4.check inverseCertificate.argument [constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1)] = true := by
-  exact Trace.check_cons inverseCertificate.argument (constant (1 / 1))
-    [constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1)]
-    inverseproduct4 inverseresult4 (53483928598377173497288513909 / 730750818665451459101842416358141509827966271488) (0 / 1) inverseTail5
+    inverseTail4.check inverseCertificate.argument [((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 4 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 5 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 6 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 7 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 8 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 9 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 10 (constant 0)] = true := by
+  exact Trace.check_cons inverseCertificate.argument (((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 4 (constant 0))
+    [((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 5 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 6 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 7 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 8 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 9 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 10 (constant 0)]
+    inverseproduct4 inverseresult4 (53483928598377173497288513909 / 730750818665451459101842416358141509827966271488) 0 inverseTail5
     inverseHorner5_checked inverseHorner4_mul_checked inverseHorner4_add_checked
 
 theorem inverseHorner3_mul_checked :
@@ -26,14 +26,14 @@ theorem inverseHorner3_mul_checked :
   decide +kernel
 
 theorem inverseHorner3_add_checked :
-    addOK inverseproduct3 (constant (1 / 1)) inverseresult3 (0 / 1) = true := by
+    addOK inverseproduct3 (((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 3 (constant 0)) inverseresult3 0 = true := by
   decide +kernel
 
 theorem inverseHorner3_checked :
-    inverseTail3.check inverseCertificate.argument [constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1)] = true := by
-  exact Trace.check_cons inverseCertificate.argument (constant (1 / 1))
-    [constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1), constant (1 / 1)]
-    inverseproduct3 inverseresult3 (26741964299188586748644257019 / 365375409332725729550921208179070754913983135744) (0 / 1) inverseTail4
+    inverseTail3.check inverseCertificate.argument [((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 3 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 4 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 5 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 6 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 7 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 8 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 9 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 10 (constant 0)] = true := by
+  exact Trace.check_cons inverseCertificate.argument (((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 3 (constant 0))
+    [((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 4 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 5 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 6 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 7 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 8 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 9 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 10 (constant 0)]
+    inverseproduct3 inverseresult3 (26741964299188586748644257019 / 365375409332725729550921208179070754913983135744) 0 inverseTail4
     inverseHorner4_checked inverseHorner3_mul_checked inverseHorner3_add_checked
 
 end Grothe.UpperChaos.Q0BasePairRoot2Leaf01110

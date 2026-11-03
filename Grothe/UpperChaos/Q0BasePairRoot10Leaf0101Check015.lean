@@ -11,14 +11,14 @@ theorem gaussianHorner9_mul_checked :
   decide +kernel
 
 theorem gaussianHorner9_add_checked :
-    addOK gaussianproduct9 (constant (10 / 1)) gaussianresult9 (0 / 1) = true := by
+    addOK gaussianproduct9 (((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 9 (constant 0)) gaussianresult9 0 = true := by
   decide +kernel
 
 theorem gaussianHorner9_checked :
-    gaussianTail9.check gaussianCertificate.delta [constant (10 / 1), constant (1 / 1)] = true := by
-  exact Trace.check_cons gaussianCertificate.delta (constant (10 / 1))
-    [constant (1 / 1)]
-    gaussianproduct9 gaussianresult9 (0 / 1) (0 / 1) gaussianTail10
+    gaussianTail9.check gaussianCertificate.delta [((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 9 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 10 (constant 0)] = true := by
+  exact Trace.check_cons gaussianCertificate.delta (((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 9 (constant 0))
+    [((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 10 (constant 0)]
+    gaussianproduct9 gaussianresult9 (0 / 1) 0 gaussianTail10
     gaussianHorner10_checked gaussianHorner9_mul_checked gaussianHorner9_add_checked
 
 theorem gaussianHorner8_mul_checked :
@@ -26,14 +26,14 @@ theorem gaussianHorner8_mul_checked :
   decide +kernel
 
 theorem gaussianHorner8_add_checked :
-    addOK gaussianproduct8 (constant (90 / 1)) gaussianresult8 (0 / 1) = true := by
+    addOK gaussianproduct8 (((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 8 (constant 0)) gaussianresult8 0 = true := by
   decide +kernel
 
 theorem gaussianHorner8_checked :
-    gaussianTail8.check gaussianCertificate.delta [constant (90 / 1), constant (10 / 1), constant (1 / 1)] = true := by
-  exact Trace.check_cons gaussianCertificate.delta (constant (90 / 1))
-    [constant (10 / 1), constant (1 / 1)]
-    gaussianproduct8 gaussianresult8 (104784031686198579477918566513489 / 182687704666362864775460604089535377456991567872) (0 / 1) gaussianTail9
+    gaussianTail8.check gaussianCertificate.delta [((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 8 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 9 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 10 (constant 0)] = true := by
+  exact Trace.check_cons gaussianCertificate.delta (((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 8 (constant 0))
+    [((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 9 (constant 0), ((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 10 (constant 0)]
+    gaussianproduct8 gaussianresult8 (104784031686198579477918566513489 / 182687704666362864775460604089535377456991567872) 0 gaussianTail9
     gaussianHorner9_checked gaussianHorner8_mul_checked gaussianHorner8_add_checked
 
 end Grothe.UpperChaos.Q0BasePairRoot10Leaf0101

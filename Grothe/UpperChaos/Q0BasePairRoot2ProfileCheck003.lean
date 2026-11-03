@@ -11,14 +11,14 @@ theorem profileHorner5_mul_checked :
   decide +kernel
 
 theorem profileHorner5_add_checked :
-    addOK profileproduct5 (Q0ProfileRectangleModel.inputs.getD 5 (constant 0)) profileresult5 (0 / 1) = true := by
+    addOK profileproduct5 (Q0ProfileRectangleModel.inputs.getD 5 (constant 0)) profileresult5 0 = true := by
   decide +kernel
 
 theorem profileHorner5_checked :
     profileTail5.check sModel [Q0ProfileRectangleModel.inputs.getD 5 (constant 0), Q0ProfileRectangleModel.inputs.getD 6 (constant 0), Q0ProfileRectangleModel.inputs.getD 7 (constant 0), Q0ProfileRectangleModel.inputs.getD 8 (constant 0), Q0ProfileRectangleModel.inputs.getD 9 (constant 0), Q0ProfileRectangleModel.inputs.getD 10 (constant 0), Q0ProfileRectangleModel.inputs.getD 11 (constant 0)] = true := by
   exact Trace.check_cons sModel (Q0ProfileRectangleModel.inputs.getD 5 (constant 0))
     [Q0ProfileRectangleModel.inputs.getD 6 (constant 0), Q0ProfileRectangleModel.inputs.getD 7 (constant 0), Q0ProfileRectangleModel.inputs.getD 8 (constant 0), Q0ProfileRectangleModel.inputs.getD 9 (constant 0), Q0ProfileRectangleModel.inputs.getD 10 (constant 0), Q0ProfileRectangleModel.inputs.getD 11 (constant 0)]
-    profileproduct5 profileresult5 (1 / 730750818665451459101842416358141509827966271488) (0 / 1) profileTail6
+    profileproduct5 profileresult5 (1 / 730750818665451459101842416358141509827966271488) 0 profileTail6
     profileHorner6_checked profileHorner5_mul_checked profileHorner5_add_checked
 
 theorem profileHorner4_mul_checked :
@@ -26,14 +26,14 @@ theorem profileHorner4_mul_checked :
   decide +kernel
 
 theorem profileHorner4_add_checked :
-    addOK profileproduct4 (Q0ProfileRectangleModel.inputs.getD 4 (constant 0)) profileresult4 (0 / 1) = true := by
+    addOK profileproduct4 (Q0ProfileRectangleModel.inputs.getD 4 (constant 0)) profileresult4 0 = true := by
   decide +kernel
 
 theorem profileHorner4_checked :
     profileTail4.check sModel [Q0ProfileRectangleModel.inputs.getD 4 (constant 0), Q0ProfileRectangleModel.inputs.getD 5 (constant 0), Q0ProfileRectangleModel.inputs.getD 6 (constant 0), Q0ProfileRectangleModel.inputs.getD 7 (constant 0), Q0ProfileRectangleModel.inputs.getD 8 (constant 0), Q0ProfileRectangleModel.inputs.getD 9 (constant 0), Q0ProfileRectangleModel.inputs.getD 10 (constant 0), Q0ProfileRectangleModel.inputs.getD 11 (constant 0)] = true := by
   exact Trace.check_cons sModel (Q0ProfileRectangleModel.inputs.getD 4 (constant 0))
     [Q0ProfileRectangleModel.inputs.getD 5 (constant 0), Q0ProfileRectangleModel.inputs.getD 6 (constant 0), Q0ProfileRectangleModel.inputs.getD 7 (constant 0), Q0ProfileRectangleModel.inputs.getD 8 (constant 0), Q0ProfileRectangleModel.inputs.getD 9 (constant 0), Q0ProfileRectangleModel.inputs.getD 10 (constant 0), Q0ProfileRectangleModel.inputs.getD 11 (constant 0)]
-    profileproduct4 profileresult4 (3 / 1461501637330902918203684832716283019655932542976) (0 / 1) profileTail5
+    profileproduct4 profileresult4 (3 / 1461501637330902918203684832716283019655932542976) 0 profileTail5
     profileHorner5_checked profileHorner4_mul_checked profileHorner4_add_checked
 
 end Grothe.UpperChaos.Q0BasePairRoot2Profile

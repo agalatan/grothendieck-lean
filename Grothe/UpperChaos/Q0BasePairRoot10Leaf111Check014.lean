@@ -27,14 +27,14 @@ theorem gaussianHorner10_mul_checked :
   decide +kernel
 
 theorem gaussianHorner10_add_checked :
-    addOK gaussianproduct10 (constant (1 / 1)) gaussianresult10 (0 / 1) = true := by
+    addOK gaussianproduct10 (((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 10 (constant 0)) gaussianresult10 0 = true := by
   decide +kernel
 
 theorem gaussianHorner10_checked :
-    gaussianTail10.check gaussianCertificate.delta [constant (1 / 1)] = true := by
-  exact Trace.check_cons gaussianCertificate.delta (constant (1 / 1))
+    gaussianTail10.check gaussianCertificate.delta [((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 10 (constant 0)] = true := by
+  exact Trace.check_cons gaussianCertificate.delta (((ExponentialHorner.coefficients gaussianCertificate.degree).map constant).getD 10 (constant 0))
     []
-    gaussianproduct10 gaussianresult10 (0 / 1) (0 / 1) gaussianTail11
+    gaussianproduct10 gaussianresult10 (0 / 1) 0 gaussianTail11
     gaussianHorner11_checked gaussianHorner10_mul_checked gaussianHorner10_add_checked
 
 end Grothe.UpperChaos.Q0BasePairRoot10Leaf111

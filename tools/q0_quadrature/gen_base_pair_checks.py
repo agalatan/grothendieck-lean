@@ -89,7 +89,7 @@ def trace_parts(prefix, trace, argument, input_terms=None):
                      f'{prefix}Tail{count}.check {argument} [] = true', '  rfl')]
     for i in reversed(range(count)):
         step = steps[i]
-        mb, ab = rat(step['mulBudget']), rat(step['addBudget'])
+        mb, ab = rat(step['mulBudget']), '0'
         # The canonical trace renderer currently requires zero add budgets.
         # Reject a future change rather than silently certifying a different trace.
         if step['addBudget'] != '0':
@@ -161,13 +161,22 @@ def certificate_parts(entry, kind):
     c = name + 'Certificate'
     source = entry['input'] + 'Model'
     goals, trace_index, argument = _certificate_goals(kind, source, c)
-    definitions, blocks = trace_parts(name, entry['trace'], argument)
+    if kind == 'Reciprocal':
+        inputs = f'((List.replicate {c}.terms (1 : \u211a)).map constant)'
+    else:
+        inputs = f'((ExponentialHorner.coefficients {c}.degree).map constant)'
+    terms = [f'{inputs}.getD {i} (constant 0)'
+             for i in range(len(entry['trace']['steps']))]
+    definitions, blocks = trace_parts(name, entry['trace'], argument, terms)
     fields = []
     for i, goal in enumerate(goals):
         field = f'{name}Field{i}_checked'
         fields.append(field)
         if i == trace_index:
             blocks.append(_proof(field, goal,
+                                 f'  have hi : {_list(terms)} = {inputs} := by rfl\n'
+                                 f'  have ht : {name}Tail0 = {c}.trace := by rfl\n'
+                                 '  rw [\u2190 ht, \u2190 hi]\n'
                                  f'  exact {name}Horner0_checked'))
         else:
             blocks.append(_decision(field, goal))

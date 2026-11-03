@@ -12,6 +12,9 @@ theorem dampingField0_checked :
 
 theorem dampingField1_checked :
     dampingCertificate.trace.check dampingCertificate.delta ((ExponentialHorner.coefficients dampingCertificate.degree).map constant) = true := by
+  have hi : [((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 0 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 1 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 2 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 3 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 4 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 5 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 6 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 7 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 8 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 9 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 10 (constant 0)] = ((ExponentialHorner.coefficients dampingCertificate.degree).map constant) := by rfl
+  have ht : dampingTail0 = dampingCertificate.trace := by rfl
+  rw [← ht, ← hi]
   exact dampingHorner0_checked
 
 theorem dampingField2_checked :

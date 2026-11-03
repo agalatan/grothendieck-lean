@@ -15,14 +15,14 @@ theorem inverseHorner10_mul_checked :
   decide +kernel
 
 theorem inverseHorner10_add_checked :
-    addOK inverseproduct10 (constant (1 / 1)) inverseresult10 (0 / 1) = true := by
+    addOK inverseproduct10 (((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 10 (constant 0)) inverseresult10 0 = true := by
   decide +kernel
 
 theorem inverseHorner10_checked :
-    inverseTail10.check inverseCertificate.argument [constant (1 / 1)] = true := by
-  exact Trace.check_cons inverseCertificate.argument (constant (1 / 1))
+    inverseTail10.check inverseCertificate.argument [((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 10 (constant 0)] = true := by
+  exact Trace.check_cons inverseCertificate.argument (((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 10 (constant 0))
     []
-    inverseproduct10 inverseresult10 (0 / 1) (0 / 1) inverseTail11
+    inverseproduct10 inverseresult10 (0 / 1) 0 inverseTail11
     inverseHorner11_checked inverseHorner10_mul_checked inverseHorner10_add_checked
 
 theorem inverseHorner9_mul_checked :
@@ -30,14 +30,14 @@ theorem inverseHorner9_mul_checked :
   decide +kernel
 
 theorem inverseHorner9_add_checked :
-    addOK inverseproduct9 (constant (1 / 1)) inverseresult9 (0 / 1) = true := by
+    addOK inverseproduct9 (((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 9 (constant 0)) inverseresult9 0 = true := by
   decide +kernel
 
 theorem inverseHorner9_checked :
-    inverseTail9.check inverseCertificate.argument [constant (1 / 1), constant (1 / 1)] = true := by
-  exact Trace.check_cons inverseCertificate.argument (constant (1 / 1))
-    [constant (1 / 1)]
-    inverseproduct9 inverseresult9 (0 / 1) (0 / 1) inverseTail10
+    inverseTail9.check inverseCertificate.argument [((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 9 (constant 0), ((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 10 (constant 0)] = true := by
+  exact Trace.check_cons inverseCertificate.argument (((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 9 (constant 0))
+    [((List.replicate inverseCertificate.terms (1 : ℚ)).map constant).getD 10 (constant 0)]
+    inverseproduct9 inverseresult9 (0 / 1) 0 inverseTail10
     inverseHorner10_checked inverseHorner9_mul_checked inverseHorner9_add_checked
 
 end Grothe.UpperChaos.Q0BasePairRoot6Leaf1000

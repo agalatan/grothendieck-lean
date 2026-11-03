@@ -67,50 +67,50 @@ def profileTail12 : Trace := .nil
 
 
 def profileTail11 : Trace :=
-  .cons profileproduct11 profileresult11 (0 / 1) (0 / 1) profileTail12
+  .cons profileproduct11 profileresult11 (0 / 1) 0 profileTail12
 
 
 def profileTail10 : Trace :=
-  .cons profileproduct10 profileresult10 (1 / 1461501637330902918203684832716283019655932542976) (0 / 1) profileTail11
+  .cons profileproduct10 profileresult10 (1 / 1461501637330902918203684832716283019655932542976) 0 profileTail11
 
 
 def profileTail9 : Trace :=
-  .cons profileproduct9 profileresult9 (1 / 1461501637330902918203684832716283019655932542976) (0 / 1) profileTail10
+  .cons profileproduct9 profileresult9 (1 / 1461501637330902918203684832716283019655932542976) 0 profileTail10
 
 
 def profileTail8 : Trace :=
-  .cons profileproduct8 profileresult8 (1 / 730750818665451459101842416358141509827966271488) (0 / 1) profileTail9
+  .cons profileproduct8 profileresult8 (1 / 730750818665451459101842416358141509827966271488) 0 profileTail9
 
 
 def profileTail7 : Trace :=
-  .cons profileproduct7 profileresult7 (1 / 1461501637330902918203684832716283019655932542976) (0 / 1) profileTail8
+  .cons profileproduct7 profileresult7 (1 / 1461501637330902918203684832716283019655932542976) 0 profileTail8
 
 
 def profileTail6 : Trace :=
-  .cons profileproduct6 profileresult6 (1 / 730750818665451459101842416358141509827966271488) (0 / 1) profileTail7
+  .cons profileproduct6 profileresult6 (1 / 730750818665451459101842416358141509827966271488) 0 profileTail7
 
 
 def profileTail5 : Trace :=
-  .cons profileproduct5 profileresult5 (1 / 730750818665451459101842416358141509827966271488) (0 / 1) profileTail6
+  .cons profileproduct5 profileresult5 (1 / 730750818665451459101842416358141509827966271488) 0 profileTail6
 
 
 def profileTail4 : Trace :=
-  .cons profileproduct4 profileresult4 (3 / 1461501637330902918203684832716283019655932542976) (0 / 1) profileTail5
+  .cons profileproduct4 profileresult4 (3 / 1461501637330902918203684832716283019655932542976) 0 profileTail5
 
 
 def profileTail3 : Trace :=
-  .cons profileproduct3 profileresult3 (1 / 730750818665451459101842416358141509827966271488) (0 / 1) profileTail4
+  .cons profileproduct3 profileresult3 (1 / 730750818665451459101842416358141509827966271488) 0 profileTail4
 
 
 def profileTail2 : Trace :=
-  .cons profileproduct2 profileresult2 (1 / 730750818665451459101842416358141509827966271488) (0 / 1) profileTail3
+  .cons profileproduct2 profileresult2 (1 / 730750818665451459101842416358141509827966271488) 0 profileTail3
 
 
 def profileTail1 : Trace :=
-  .cons profileproduct1 profileresult1 (3 / 1461501637330902918203684832716283019655932542976) (0 / 1) profileTail2
+  .cons profileproduct1 profileresult1 (3 / 1461501637330902918203684832716283019655932542976) 0 profileTail2
 
 
 def profileTail0 : Trace :=
-  .cons profileproduct0 profileresult0 (2793910860945147721702271 / 1461501637330902918203684832716283019655932542976) (0 / 1) profileTail1
+  .cons profileproduct0 profileresult0 (2793910860945147721702271 / 1461501637330902918203684832716283019655932542976) 0 profileTail1
 
 end Grothe.UpperChaos.Q0BasePairRoot2Profile
