@@ -197,6 +197,7 @@ import Grothe.Upper.Residual
 import Grothe.UpperChaos.ActualCoherentBesselAudit
 import Grothe.UpperChaos.ActualCoherentCoefficientAudit
 import Grothe.UpperChaos.ActualCoherentHermiteJets
+import Grothe.UpperChaos.ActualFiniteRectangleOperator
 import Grothe.UpperChaos.ActualGateCoefficientWeights
 import Grothe.UpperChaos.ActualGateMatrixCoefficients
 import Grothe.UpperChaos.ActualGateMatrixWeights
@@ -208,6 +209,7 @@ import Grothe.UpperChaos.ActualMatrixRectangleTail
 import Grothe.UpperChaos.ActualMatrixTailAudit
 import Grothe.UpperChaos.ActualPairMomentCoefficients
 import Grothe.UpperChaos.ActualProductionMomentCoefficients
+import Grothe.UpperChaos.ActualRectangleCoefficientAction
 import Grothe.UpperChaos.ActualSelectedBandTails
 import Grothe.UpperChaos.ActualSourceCoefficientExtraction
 import Grothe.UpperChaos.ActualSourceNormAudit

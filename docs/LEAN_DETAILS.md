@@ -587,8 +587,18 @@ nonzero-power bands to consecutive quartets of the original 56-gate table;
 `selectedBand_rectangleEnergy_le` gives each actual summable rectangle-tail
 energy at most the sum of its four finite source-norm expressions divided by
 their cutoff weights. `ActualMatrixTailAudit` guards all public theorems
-transitively with the standard three axioms. No numerical source enclosure,
-operator-norm bound or completed upper endpoint is claimed.
+transitively with the standard three axioms.
+
+`ActualFiniteRectangleOperator` uses finite complex Cauchy--Schwarz to bound
+every selected-band matrix action by the same four source norms times the
+input coefficient energy. Its filters enforce the comparison band and the
+true rectangle complement, including the boundary. No mode count is charged.
+`ActualRectangleCoefficientAction` constructs the finite normalized Hermite
+input, proves integrability of each output coefficient, and identifies its
+actual Gaussian integral with that matrix action by finite integral exchange.
+The resulting physical-coefficient bound and all new audit guards are WIP,
+uncompiled. Infinite input expansions, reproducible numerical source-norm
+enclosures and the final upper endpoint remain open.
 
 `QuadraticPolynomialIntegrability` proves a separable Gaussian majorant for
 `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²` under exactly `A>0` and

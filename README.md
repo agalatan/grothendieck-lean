@@ -427,8 +427,12 @@ the actual matrix energy outside the retained input rectangle
 `ActualSelectedBandTails` binds all fourteen finite, nonzero-power comparison
 bands to the original 56 checked gates. Their full rectangle-tail energies
 are summable and bounded by the corresponding finite `sourceNormValue`
-expressions divided by their cutoff weights. Numerical source bounds,
-operator-norm conversion and the final endpoint remain open.
+expressions divided by their cutoff weights. `ActualFiniteRectangleOperator`
+bounds the action on finite coefficient vectors without a mode-count factor.
+`ActualRectangleCoefficientAction` identifies that action with the actual
+Gaussian output coefficients of finite normalized Hermite inputs. These new
+proofs remain uncompiled. Infinite input expansions, numerical source bounds
+and the final endpoint remain open.
 
 For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
 `QuadraticPolynomialIntegrability` proves genuine joint polynomial

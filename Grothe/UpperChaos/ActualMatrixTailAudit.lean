@@ -1,4 +1,4 @@
-import Grothe.UpperChaos.ActualSelectedBandTails
+import Grothe.UpperChaos.ActualRectangleCoefficientAction
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
@@ -10,7 +10,7 @@ Agent-ID: codex-2ca4.
 The actual gate weights, coordinate union, finite-band membership and all
 fourteen selected production bands are guarded by the standard three axioms.
 These complete WIP proof bodies await compilation; numerical source bounds,
-operator-norm conversion and the final endpoint are separate obligations.
+infinite expansions, numerical source bounds and the final endpoint are separate obligations.
 -/
 
 open Lean Elab Command
@@ -54,7 +54,17 @@ run_cmd do
     ``Grothe.UpperChaos.ActualSelectedBandTails.selectedGate_degree,
     ``Grothe.UpperChaos.ActualSelectedBandTails.selectedGate_mem,
     ``Grothe.UpperChaos.ActualSelectedBandTails.selectedGate_power,
-    ``Grothe.UpperChaos.ActualSelectedBandTails.summable_selectedBand_rectangleEnergy]
+    ``Grothe.UpperChaos.ActualSelectedBandTails.summable_selectedBand_rectangleEnergy,
+    ``Grothe.UpperChaos.ActualFiniteRectangleOperator.norm_sum_mul_sq_le,
+    ``Grothe.UpperChaos.ActualFiniteRectangleOperator.finite_matrix_action_sq_le,
+    ``Grothe.UpperChaos.ActualFiniteRectangleOperator.finite_selectedBand_entryEnergy_le,
+    ``Grothe.UpperChaos.ActualFiniteRectangleOperator.finite_selectedBand_action_sq_le,
+    ``Grothe.UpperChaos.ActualFiniteRectangleOperator.mem_selectedBandOutputs,
+    ``Grothe.UpperChaos.ActualFiniteRectangleOperator.mem_rectangleComplementInputs,
+    ``Grothe.UpperChaos.ActualFiniteRectangleOperator.filtered_selectedBand_action_sq_le,
+    ``Grothe.UpperChaos.ActualRectangleCoefficientAction.integrable_outputCoefficient,
+    ``Grothe.UpperChaos.ActualRectangleCoefficientAction.outputCoefficient_eq_matrixAction,
+    ``Grothe.UpperChaos.ActualRectangleCoefficientAction.filtered_selectedBand_outputCoefficient_sq_le]
   for target in targets do
     for dependency in (← Lean.collectAxioms target) do
       unless allowed.contains dependency do
