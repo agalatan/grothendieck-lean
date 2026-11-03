@@ -324,6 +324,13 @@ reflection in `ConditionalCoefficientReflection` supplies the production
 factor `sqrt((d+1)/c) ≤ 1` on the reflected half. These identities use only the
 standard logical axioms; numerical node enclosures remain to be proved.
 
+`ConditionalReconstruction` extends reflection across zero profiles by proving
+that every nonconstant conditional coefficient vanishes there. Its exact
+completion of the selected 31,877-mode vector has weighted error at most
+`10/7` times the canonical error at the same nodes and weights. The canonical
+error, physical weights, primary contraction, floating operations and final
+energy-table agreement still need their own certificates.
+
 `GradedHermitePhaseSlice` expresses each actual Taylor source as a polynomial
 in the conditional coordinate times its exact Gaussian damping.
 `TaylorConditionalGaussian` evaluates that conditional integral by the finite

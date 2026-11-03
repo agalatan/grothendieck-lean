@@ -158,8 +158,9 @@ comparison; those remain separate proof obligations.
 `CanonicalReconstructionNorm.full_head_reconstruction_norm_le` is a standalone
 combinatorial bound for an abstract canonical/reflected index split: its
 injective partner map and multipliers at most one give squared-norm growth
-at most two, hence a norm factor below `10/7`; it is not yet connected to a
-Lean production reconstruction operator.
+at most two, hence a norm factor below `10/7`. `ConditionalReconstruction`
+applies that split to the actual conditional Gaussian coefficients and their
+exact reflected completion; numerical reconstruction remains separate.
 
 `CapturedTail.norm_projOn_residual_sq_le_of_captured_family` subtracts
 `Σ_i max(0, lower_i − error_i)²` from the total source energy. Its hypotheses
@@ -432,6 +433,20 @@ then proves the production lookup factor `sqrt((d+1)/c)` for `d+1<c` and a
 nonzero profile. The normalized canonical identity holds at every real shift.
 These results have standard-three-axiom audits. They supply no numerical
 coefficient enclosure, root-gap estimate or floating reflection error.
+
+`F0ConditionalEvaluator.coefficient_zero_of_profile_zero` retains the constant
+phase `ph(sqrt(s))` when `vprof s = 0` and proves that all modes other than
+`(0,0)` vanish, including at `s = 0`. Thus the actual reflection identity
+extends to every nonnegative radius without a nonzero-profile premise.
+`ConditionalReconstruction.reconstruct_actual` identifies the exact reflected
+completion with the actual coefficient vector. Its `canonical_top_eq_modes`
+identifies the canonical half of the top rectangle with the existing 31,877
+mathematical modes, preserving explicit lookup in the larger storage.
+`weighted_top_norm_le_of_canonical_error` consumes a coupled canonical error
+bound at explicit nonnegative nodes and weights and bounds the full exact
+completion error by `10/7` times that bound. The caller must still prove the
+canonical error and the physical node/weight certificates. Primary contraction,
+floating reconstruction and final table agreement are separate obligations.
 
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V taken over all finite-dimensional complex Hilbert spaces.

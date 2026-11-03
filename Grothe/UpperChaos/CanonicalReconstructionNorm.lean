@@ -5,8 +5,8 @@ import Mathlib.Tactic
 /-! An abstract triangular coordinate split with an injective partner map
 and square-root multipliers at most one. Its two output halves have total
 squared norm at most twice the input squared norm, giving a 10/7 norm bound.
-Connecting these definitions to a Lean production reconstruction operator is
-still a separate obligation.
+This module supplies the abstract bound; `ConditionalReconstruction` applies
+the split to the actual conditional Gaussian coefficient vector.
 Agent-ID: codex-7c2e. -/
 
 set_option warningAsError true
