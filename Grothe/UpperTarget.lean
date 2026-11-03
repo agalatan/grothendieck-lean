@@ -1,60 +1,33 @@
-import Grothe.Statement
+import Grothe.StatementBridges
 import Grothe.UpperChaos.GroupedRounder
 
 /-!
 # The upper-bound target, from the proof
 
 This module connects the proof to the statement `Grothe.Statement.UpperTarget`
-(`K_G^ℂ < 1.404598149141`, `Grothe/Statement.lean`).
+(`some Grothendieck bound is below 1.404598149141`, `Grothe/Statement.lean`).
 
-* `isBound_iff`: the statement's `IsBound` is the proof's `Grothe.IsGrothendieckBound`.
-* `bounds_bddBelow`: every Grothendieck bound is nonnegative, so `K_G^ℂ` is a genuine infimum.
-* `upperTarget_of_bound`: any Grothendieck bound below `1.404598149141` proves the target.
-* `constant_lt_of_upperTarget`: the target gives `K_G^ℂ < 1.404598149141` (the infimum form);
-  `upperTarget_of_constant_lt`: the converse, given that some bound exists.
+* `upperBelow_of_bound`: a Grothendieck bound below `c` proves `UpperBelow c`.
 * `upper_target_of_inputs`: **the current state of the upper bound.** The target follows from the
   concrete rounding of `fresh_upper_concrete_taylor`; its hypotheses are exactly what is not yet proved
   in Lean (the finite-band Gaussian error estimates of the three Taylor centers and the energy-table
   accuracy). When they are proved, an unconditional `theorem upper_target : UpperTarget` replaces it.
+  Whether its proof then rests on standard axioms and the listed native facts only is what the axiom
+  report (`scratch/Axioms.lean`, `scripts/check_axioms.py`) will show; this theorem's own report says
+  nothing about the inputs.
+
+What `UpperTarget` says about the constant (`K_G^ℂ < 1.404598149141`) is `constant_lt_of_upperBelow`
+in `Grothe/StatementBridges.lean`.
 -/
 
 namespace Grothe.Statement
 
 open GrotheKernel Grothe.Upper Grothe.UpperChaos
 
-theorem isBound_iff {K : ℝ} : IsBound K ↔ Grothe.IsGrothendieckBound K := Iff.rfl
-
-/-- Every Grothendieck bound is nonnegative: for the `1 × 1` matrix `(1)`, `V ≥ 1` and `C ≥ 0`. -/
-theorem bounds_bddBelow : BddBelow {K | IsBound K} := by
-  refine ⟨0, fun K hK => ?_⟩
-  by_contra hneg
-  push_neg at hneg
-  let A : Fin 1 → Fin 1 → ℂ := fun _ _ => 1
-  have hv : 1 ≤ Grothe.vectorOpt A := by
-    have h := Grothe.le_vectorOpt A (x := fun _ => EuclideanSpace.single () 1)
-      (y := fun _ => EuclideanSpace.single () 1) (fun _ => by simp) (fun _ => by simp)
-    simpa [A] using h
-  have hc := Grothe.scalarOpt_nonneg A
-  have := hK 1 1 A
-  change Grothe.vectorOpt A ≤ K * Grothe.scalarOpt A at this
-  nlinarith
-
-/-- A Grothendieck bound below `1.404598149141` proves the upper-bound target. -/
-theorem upperTarget_of_bound {K : ℝ} (h : Grothe.IsGrothendieckBound K)
-    (hK : K < 1404598149141 / 1000000000000) : UpperTarget :=
+/-- A Grothendieck bound below `c` proves `UpperBelow c`. -/
+theorem upperBelow_of_bound {K c : ℝ} (h : Grothe.IsGrothendieckBound K) (hK : K < c) :
+    UpperBelow c :=
   ⟨K, isBound_iff.mpr h, hK⟩
-
-/-- The infimum form of the target follows from it. -/
-theorem constant_lt_of_upperTarget (h : UpperTarget) :
-    complexGrothendieckConstant < 1404598149141 / 1000000000000 := by
-  obtain ⟨K, hK, hlt⟩ := h
-  exact lt_of_le_of_lt (csInf_le bounds_bddBelow hK) hlt
-
-/-- Conversely, once some Grothendieck bound exists, `K_G^ℂ < 1.404598149141` gives a bound below it. -/
-theorem upperTarget_of_constant_lt (hne : ∃ K, IsBound K)
-    (h : complexGrothendieckConstant < 1404598149141 / 1000000000000) : UpperTarget := by
-  obtain ⟨K, hK, hlt⟩ := exists_lt_of_csInf_lt hne h
-  exact ⟨K, hK, hlt⟩
 
 /-- **The upper bound `K_G^ℂ < 1.404598149141`, conditional on the inputs not yet proved in Lean**:
 the finite-band Gaussian error estimates of the three Taylor centers (`hfirst`, `hsecond`, `hthird`)
@@ -71,6 +44,6 @@ theorem upper_target_of_inputs
         (Xfun frozenCorrectionFn)) p - (Grothe.Upper.energyTable p : ℝ)| ≤
       (Grothe.Upper.energyErrQ : ℝ)) :
     UpperTarget :=
-  upperTarget_of_bound (fresh_upper_concrete_taylor hfirst hsecond hthird hclose) (by norm_num)
+  upperBelow_of_bound (fresh_upper_concrete_taylor hfirst hsecond hthird hclose) (by norm_num)
 
 end Grothe.Statement

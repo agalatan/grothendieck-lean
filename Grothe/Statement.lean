@@ -19,12 +19,15 @@ For a complex `m × n` matrix `A` (a function `Fin m → Fin n → ℂ`):
 Mathlib's inner product is conjugate-linear in the first slot, so the one-dimensional case of
 `⟪xᵢ, yⱼ⟫` is `conj(εᵢ) δⱼ`, exactly the scalar problem.
 
-The two targets are stated directly in terms of Grothendieck bounds, so they do not depend on Lean's
-convention for the infimum of an empty or unbounded set: `UpperTarget` says some bound is below
-`1.404598149141`, `LowerTarget` says every bound is above `1.401697117301`. The constant `K_G^ℂ` is
-defined as the infimum of all bounds for reference; the proof modules show that `UpperTarget` implies
-`K_G^ℂ < 1.404598149141` and that `LowerTarget` implies `1.401697117301 ≤ K_G^ℂ` (and the strict form
-once a bound is known to exist). The suprema `C(A)`, `V(A)` are over nonempty bounded sets of reals.
+The targets are stated directly in terms of Grothendieck bounds, so they do not depend on Lean's
+convention for the infimum of an empty or unbounded set: `UpperBelow c` says some bound is below `c`,
+`LowerAbove c` says every bound is above `c`; `UpperTarget` and `LowerTarget` are the two at the
+repository's current thresholds. The constant `K_G^ℂ` is defined as the infimum of all bounds for
+reference. `Grothe/StatementBridges.lean` proves what these targets say about it: `UpperBelow c`
+gives `K_G^ℂ < c`; `LowerAbove c` gives `c ≤ K_G^ℂ` once some bound exists, and then even `c < K_G^ℂ`,
+because the set of bounds is closed, so the infimum is itself a bound. Without a bound the set is
+empty and `LowerAbove c` holds vacuously, which is why those two bridges assume one. The suprema
+`C(A)`, `V(A)` are over nonempty bounded sets of reals.
 -/
 
 namespace Grothe.Statement
@@ -54,16 +57,20 @@ def vectorOpt {m n : ℕ} (A : Fin m → Fin n → ℂ) : ℝ := sSup (vectorVal
 def IsBound (K : ℝ) : Prop :=
   ∀ (m n : ℕ) (A : Fin m → Fin n → ℂ), vectorOpt A ≤ K * scalarOpt A
 
-/-- The complex Grothendieck constant `K_G^ℂ`: the smallest Grothendieck bound. -/
+/-- The complex Grothendieck constant `K_G^ℂ`: the infimum of the Grothendieck bounds. -/
 def complexGrothendieckConstant : ℝ := sInf {K | IsBound K}
 
-/-- **The upper-bound target:** some Grothendieck bound is below `1.404598149141`
-(hence `K_G^ℂ < 1.404598149141`). -/
-def UpperTarget : Prop := ∃ K, IsBound K ∧ K < 1404598149141 / 1000000000000
+/-- Some Grothendieck bound is below `c`. -/
+def UpperBelow (c : ℝ) : Prop := ∃ K, IsBound K ∧ K < c
 
-/-- **The lower-bound target:** every Grothendieck bound is above `1.401697117301`
-(hence `1.401697117301 ≤ K_G^ℂ`, and `<` as soon as some bound exists). -/
-def LowerTarget : Prop := ∀ K, IsBound K → 1401697117301 / 1000000000000 < K
+/-- Every Grothendieck bound is above `c`. -/
+def LowerAbove (c : ℝ) : Prop := ∀ K, IsBound K → c < K
+
+/-- **The upper-bound target:** some Grothendieck bound is below `1.404598149141`. -/
+def UpperTarget : Prop := UpperBelow (1404598149141 / 1000000000000)
+
+/-- **The lower-bound target:** every Grothendieck bound is above `1.401697117301`. -/
+def LowerTarget : Prop := LowerAbove (1401697117301 / 1000000000000)
 
 end
 
