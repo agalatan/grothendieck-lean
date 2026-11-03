@@ -84,12 +84,12 @@ theorem tsum_matrixEntry (hφ : PhiBound) (power : ℕ) (m : Idx2)
       ⟪hvec2 m, multiplier hφ power f⟫_ℂ :=
   (hasSum_matrixEntry hφ power m f).tsum_eq
 
-/-- The actual orthogonal projection outside the strict production rectangle. -/
+/-- The actual orthogonal projection outside the inclusive production rectangle. -/
 def rectangleTail : Lp ℂ 2 mu2 →L[ℂ] Lp ℂ 2 mu2 :=
   projOn {n | ¬ inputRectangle n}
 
 /-- No boundary modes are dropped: a mode belongs to this tail exactly when
-it fails the strict input rectangle predicate. -/
+it fails the inclusive input rectangle predicate. -/
 theorem inner_rectangleTail (n : Idx2) (f : Lp ℂ 2 mu2) :
     ⟪hvec2 n, rectangleTail f⟫_ℂ =
       if ¬ inputRectangle n then ⟪hvec2 n, f⟫_ℂ else 0 := by

@@ -421,9 +421,9 @@ matrix energy. Its arithmetic enclosure, Hilbert--Schmidt caps, historical
 Laguerre binding and the final endpoint remain open.
 
 The tail continuation is also WIP and uncompiled. `ActualMatrixCutoffTail`
-keeps the exact gate factor `R^D*T^L`; the band and rectangle modules bound
+keeps the exact gate factor `R^D*T^(L+1)`; the band and rectangle modules bound
 the actual matrix energy outside the retained input rectangle
-`(500, 500, 251, 250)` by the sum of four coordinate bounds.
+`(500, 500, 251, 250)` with inclusive endpoints by the sum of four coordinate bounds.
 `ActualSelectedBandTails` binds all fourteen finite, nonzero-power comparison
 bands to the original 56 checked gates. Their full rectangle-tail energies
 are summable and bounded by the corresponding finite `sourceNormValue`

@@ -6,7 +6,7 @@ import Mathlib.Tactic.FinCases
 
 Agent-ID: codex-2ca4. Complete WIP proof bodies; compilation is pending.
 
-The input rectangle is exactly (500, 500, 251, 250), with strict coordinate
+The input rectangle is exactly (500, 500, 251, 250), with inclusive coordinate
 inequalities. Its complement is covered by the four corresponding coordinate
 exclusions. A checked quartet records the actual gate in each coordinate and
 its power, output degree and cutoff; coverage is proved from these definitions.
@@ -21,9 +21,9 @@ open ActualSourceNormEvaluation OriginalHSParameterGates
 
 noncomputable section
 
-/-- The original retained input rectangle, with each endpoint excluded. -/
+/-- The original retained input rectangle, with each endpoint included. -/
 def inputRectangle (n : Idx2) : Prop :=
-  n.1.1 < 500 ∧ n.1.2 < 500 ∧ n.2.1 < 251 ∧ n.2.2 < 250
+  n.1.1 ≤ 500 ∧ n.1.2 ≤ 500 ∧ n.2.1 ≤ 251 ∧ n.2.2 ≤ 250
 
 /-- The cutoff of coordinate i in the same order as coordinateExponent. -/
 def rectangleCutoff (i : Fin 4) : ℕ :=
@@ -31,7 +31,7 @@ def rectangleCutoff (i : Fin 4) : ℕ :=
 
 theorem inputRectangle_iff (n : Idx2) :
     inputRectangle n ↔
-      ∀ i : Fin 4, coordinateExponent n i.val < rectangleCutoff i := by
+      ∀ i : Fin 4, coordinateExponent n i.val ≤ rectangleCutoff i := by
   constructor
   · intro hn i
     fin_cases i
@@ -48,10 +48,10 @@ theorem inputRectangle_iff (n : Idx2) :
 /-- Every input outside the rectangle violates one of the four actual cutoffs. -/
 theorem not_inputRectangle_iff (n : Idx2) :
     ¬ inputRectangle n ↔
-      ∃ i : Fin 4, rectangleCutoff i ≤ coordinateExponent n i.val := by
+      ∃ i : Fin 4, rectangleCutoff i < coordinateExponent n i.val := by
   classical
   rw [inputRectangle_iff]
-  simp only [not_forall, not_lt]
+  simp only [not_forall, not_le]
 
 /-- Four actual checked gates, with all index metadata explicit. -/
 structure GateQuartet (power degree : ℕ) where
@@ -88,7 +88,7 @@ theorem rectangleExcludedEnergyTerm_le_sum (G : GateQuartet power degree)
   · obtain ⟨i, hi⟩ := (not_inputRectangle_iff mn.2).1 h.2
     have hm : outputDegree mn.1 ≤ (G.gate i).degree := by
       simpa only [G.degree_eq i] using h.1
-    have hn : (G.gate i).cutoff ≤ coordinateExponent mn.2 (G.gate i).coordinate := by
+    have hn : (G.gate i).cutoff < coordinateExponent mn.2 (G.gate i).coordinate := by
       simpa only [G.cutoff_eq i, G.coordinate_eq i] using hi
     have he : rectangleExcludedEnergyTerm power degree mn =
         excludedEnergyTerm (G.gate i) mn := by

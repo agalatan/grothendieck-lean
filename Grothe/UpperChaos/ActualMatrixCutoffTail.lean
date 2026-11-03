@@ -7,7 +7,7 @@ import Mathlib.Tactic.IntervalCases
 Agent-ID: codex-2ca4. Complete WIP proof bodies; compilation is pending.
 
 For outgoing total degree at most D and incoming selected coordinate at least
-L, the exact gate weight is at least R^D T^L. The full excluded matrix energy
+L + 1, the exact gate weight is at least R^D T^(L+1). The full excluded matrix energy
 is therefore bounded by the actual finite source norm divided by this factor.
 Application to a named retained band still requires its index-degree binding.
 No numerical source-norm estimate or operator-norm identity is assumed.
@@ -49,7 +49,7 @@ theorem energyWeight_eq_selected_coordinate (g : Gate) (hg : gateOK g = true)
   interval_cases h : g.coordinate <;>
     simp [energyWeight, axisWeight, h, coordinateExponent, outputDegree]
 
-def cutoffWeight (g : Gate) : ℝ := (g.r : ℝ) ^ g.degree * (g.t : ℝ) ^ g.cutoff
+def cutoffWeight (g : Gate) : ℝ := (g.r : ℝ) ^ g.degree * (g.t : ℝ) ^ (g.cutoff + 1)
 
 theorem cutoffWeight_pos (g : Gate) (hg : gateOK g = true) : 0 < cutoffWeight g := by
   exact mul_pos (pow_pos (radial_pos g hg) _)
@@ -58,19 +58,19 @@ theorem cutoffWeight_pos (g : Gate) (hg : gateOK g = true) : 0 < cutoffWeight g 
 /-- The weighting direction uses R below one and T above one. -/
 theorem cutoffWeight_le_energyWeight (g : Gate) (hg : gateOK g = true)
     (m n : Idx2) (hm : outputDegree m ≤ g.degree)
-    (hn : g.cutoff ≤ coordinateExponent n g.coordinate) :
+    (hn : g.cutoff < coordinateExponent n g.coordinate) :
     cutoffWeight g ≤ energyWeight g m n := by
   rw [energyWeight_eq_selected_coordinate g hg]
   exact mul_le_mul
     (pow_le_pow_of_le_one (radial_pos g hg).le (radial_lt_one g hg).le hm)
-    (pow_le_pow_right₀ (enlarged_weight_gt_one g hg).le hn)
+    (pow_le_pow_right₀ (enlarged_weight_gt_one g hg).le (Nat.succ_le_iff.mpr hn))
     (pow_nonneg (lt_trans zero_lt_one (enlarged_weight_gt_one g hg)).le _)
     (pow_nonneg (radial_pos g hg).le _)
 
 /-- The actual excluded matrix term, with its exact finite-output condition. -/
 def excludedEnergyTerm (g : Gate) (mn : Idx2 × Idx2) : ℝ :=
   if outputDegree mn.1 ≤ g.degree ∧
-      g.cutoff ≤ coordinateExponent mn.2 g.coordinate then
+      g.cutoff < coordinateExponent mn.2 g.coordinate then
     ‖matrixEntry g.power mn.1 mn.2‖ ^ 2
   else 0
 

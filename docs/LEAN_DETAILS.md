@@ -572,11 +572,11 @@ the final upper endpoint remain OPEN; this finite evaluator is not a numerical
 certificate or a substituted source-norm assumption.
 
 The complete tail-continuation bodies also remain UNCOMPILED.
-`ActualMatrixCutoffTail` proves the lower weight `R^D*T^L` for actual
-outgoing degree at most `D` and one incoming coordinate at least `L`.
+`ActualMatrixCutoffTail` proves the lower weight `R^D*T^(L+1)` for actual
+outgoing degree at most `D` and one incoming coordinate strictly above `L`.
 `ActualMatrixBandTail` uses the existing `bandModes` and excludes `hi = 0`,
 which denotes an unbounded band. `ActualMatrixRectangleTail` covers the
-complement of the strict input rectangle `(500, 500, 251, 250)` by four
+complement of the inclusive input rectangle `(500, 500, 251, 250)` by four
 coordinate exclusions and preserves their exact matrix entries and source
 norms in the union bound.
 
@@ -592,7 +592,7 @@ transitively with the standard three axioms.
 `ActualFiniteRectangleOperator` uses finite complex Cauchy--Schwarz to bound
 every selected-band matrix action by the same four source norms times the
 input coefficient energy. Its filters enforce the comparison band and the
-true rectangle complement, including the boundary. No mode count is charged.
+true rectangle complement, retaining every boundary index. No mode count is charged.
 `ActualRectangleCoefficientAction` constructs the finite normalized Hermite
 input, proves integrability of each output coefficient, and identifies its
 actual Gaussian integral with that matrix action by finite integral exchange.

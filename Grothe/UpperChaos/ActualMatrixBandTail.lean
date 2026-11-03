@@ -34,7 +34,7 @@ theorem outputDegree_le_of_mem_bandModes (b : GrotheKernel.ComparisonBand)
 
 def bandExcludedEnergyTerm (g : Gate) (b : GrotheKernel.ComparisonBand)
     (mn : Idx2 × Idx2) : ℝ :=
-  if mn.1 ∈ bandModes b ∧ g.cutoff ≤ coordinateExponent mn.2 g.coordinate then
+  if mn.1 ∈ bandModes b ∧ g.cutoff < coordinateExponent mn.2 g.coordinate then
     ‖matrixEntry g.power mn.1 mn.2‖ ^ 2
   else 0
 
@@ -48,7 +48,7 @@ theorem bandExcludedEnergyTerm_nonneg (g : Gate) (b : GrotheKernel.ComparisonBan
 theorem bandExcludedEnergyTerm_le (g : Gate) (b : GrotheKernel.ComparisonBand)
     (hhi : b.hi ≠ 0) (hD : b.hi ≤ g.degree) (mn : Idx2 × Idx2) :
     bandExcludedEnergyTerm g b mn ≤ excludedEnergyTerm g mn := by
-  by_cases h : mn.1 ∈ bandModes b ∧ g.cutoff ≤ coordinateExponent mn.2 g.coordinate
+  by_cases h : mn.1 ∈ bandModes b ∧ g.cutoff < coordinateExponent mn.2 g.coordinate
   · have hm : outputDegree mn.1 ≤ g.degree :=
       (outputDegree_le_of_mem_bandModes b hhi mn.1 h.1).trans hD
     simp only [bandExcludedEnergyTerm, if_pos h, excludedEnergyTerm, if_pos ⟨hm, h.2⟩]
