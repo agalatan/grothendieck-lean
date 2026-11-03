@@ -2,7 +2,7 @@ import Grothe.UpperChaos.Q0ConditionalPairRankAll
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
-/-! Strict transitive audit of the original finite pair-rank table.
+/-! Strict transitive audit of the canonical finite pair-rank table.
 Agent-ID: codex-aa04. -/
 open Lean Elab Command
 run_cmd do

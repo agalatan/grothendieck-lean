@@ -43,10 +43,6 @@ transfers a squared-mass cap to a norm cap. Its application to the actual
 Gaussian coefficient table still requires the input estimates and the
 operation-error model; it does not complete the upper endpoint.
 
-Lean verifies the finite rank and uniqueness certificate for the original
-degree-531 conditional-pair table. The corresponding Gaussian node-value
-enclosures remain part of the work in progress.
-
 \begin{abstract}
 Grothendieck's inequality bounds how much a semidefinite (vector) relaxation of a bilinear optimisation problem can exceed the
 true optimum. The best constant in the complex case, $\KG$, has been known since 1987 to lie roughly in $[1.338,1.405]$; its
@@ -496,6 +492,14 @@ The native head is $28153/10^{12}$ ($3.09\%$).\\
 \bottomrule
 \end{tabular}
 \end{center}
+
+The degree-531 canonical pair table indexes conditional Hermite node values
+by pairs $(c,d)$ satisfying $0\le c\le266$, $0\le d\le265$,
+$c\le d+1$ and $c+d\le531$, ordered by $(c+d,c)$. Lean verifies its
+finite rank, ordinal coverage and uniqueness certificate. No downstream Lean
+result yet consumes this certificate; the Gaussian node-value enclosures
+remain part of the upper-bound work in progress.
+
 The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover, the second, fourth and sixth phase moments and the squared radial phase tail,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
 The native facts (cap-range checks, Hardy region and circle checks, and others) are listed in \path{data/axioms/native.txt}; the report is \path{scratch/Axioms.lean}, with its required declarations in \path{data/axioms/required.txt}.

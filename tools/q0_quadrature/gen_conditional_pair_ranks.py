@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a Lean certificate for every original degree-531 pair rank.
+"""Generate a Lean certificate for every degree-531 canonical pair rank.
 
 The NPY hash binds generator input provenance; Lean checks the emitted literals
 and finite properties, not the NPY byte parser or any analytic bound.
@@ -26,7 +26,7 @@ def rank(c, d):
 
 def inputs():
     if hashlib.sha256(INPUT.read_bytes()).hexdigest() != SHA256:
-        raise ValueError('original pair input hash mismatch')
+        raise ValueError('canonical pair input hash mismatch')
     array = np.load(INPUT, allow_pickle=False)
     if array.shape != (COUNT, 2) or array.dtype.str != '<i2':
         raise ValueError('unexpected pair input shape or dtype')
@@ -34,7 +34,7 @@ def inputs():
     expected = [(c, m-c) for m in range(532)
                 for c in range(max(0, m-265), min(266, m, (m+1)//2)+1)]
     if pairs != expected or any(rank(c, d) != i for i, (c, d) in enumerate(pairs)):
-        raise ValueError('original ordering/rank mismatch')
+        raise ValueError('canonical ordering/rank mismatch')
     return pairs
 
 
@@ -44,7 +44,7 @@ def generate():
     files[OUT / 'Q0ConditionalPairRankCheck.lean'] = '''import Grothe.UpperChaos.Q0OrdinalCoverage
 import Mathlib.Tactic
 
-/-! Finite integer rank of the original degree-531 canonical pair table.
+/-! Finite integer rank of the degree-531 canonical pair table.
 Generator input provenance is separate from Lean's literal checks.
 Agent-ID: codex-aa04. -/
 namespace Grothe.UpperChaos.Q0ConditionalPairRankCheck
@@ -55,7 +55,7 @@ structure Row where
   d : ℕ
   deriving DecidableEq, Inhabited
 
-/-- Zero-based original storage rank for a valid canonical pair. -/
+/-- Zero-based storage rank for a valid canonical pair. -/
 def rank (c d : ℕ) : ℕ :=
   let m := c + d
   m + m*m/4 - (m-266)*(m-265)/2 + c - (m-265)
@@ -76,7 +76,7 @@ end Grothe.UpperChaos.Q0ConditionalPairRankCheck
         name = f'Q0ConditionalPairRankGroup{group:03}'
         ns = f'Grothe.UpperChaos.{name}'
         lines = ['import Grothe.UpperChaos.Q0ConditionalPairRankCheck', '',
-                 '/-! Original ordered pair literals and exact rank checks.',
+                 '/-! Canonical ordered pair literals and exact rank checks.',
                  'Agent-ID: codex-aa04. -/',
                  f'namespace {ns}', '', 'open Grothe.UpperChaos.Q0ConditionalPairRankCheck', '']
         chunks = []
@@ -109,8 +109,8 @@ end Grothe.UpperChaos.Q0ConditionalPairRankCheck
     refs = [f'Grothe.UpperChaos.Q0ConditionalPairRankGroup{g:03}' for g,_,_ in groups]
     ns = 'Grothe.UpperChaos.Q0ConditionalPairRankAll'
     lines = [*(f'import {r}' for r in refs), '',
-             '/-! All 35,777 original pair ranks and finite lookup coverage.',
-             'The historical NPY bytes are not interpreted by this theorem.',
+             '/-! All 35,777 canonical pair ranks and finite lookup coverage.',
+             'The input NPY bytes are not interpreted by this theorem.',
              'Agent-ID: codex-aa04. -/', f'namespace {ns}', '',
              'open Grothe.UpperChaos.Q0ConditionalPairRankCheck', '',
              'def rows : List Row := ' + ' ++ '.join(r+'.rows' for r in refs), '',
@@ -121,7 +121,7 @@ end Grothe.UpperChaos.Q0ConditionalPairRankCheck
     steps = [f"← List.range'_append_1 (s := {start}) (m := {count}) (n := {sum(k for _,_,k in groups[j+1:])})"
              for j,(_,start,count) in enumerate(groups[:-1])]
     lines += ['  rw [' + ',\n    '.join(steps) + ']', '',
-              '/-- Every index of the original pair table selects exactly one row. -/',
+              '/-- Every index of the canonical pair table selects exactly one row. -/',
               'theorem unique_row (i : Fin 35777) :',
               '    ∃! r : Row, r ∈ rows ∧ r.index = i.val :=',
               '  Grothe.UpperChaos.Q0OrdinalCoverage.exists_unique_of_map_range Row.index',
@@ -152,7 +152,7 @@ end Grothe.UpperChaos.Q0ConditionalPairRankCheck
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
-/-! Strict transitive audit of the original finite pair-rank table.
+/-! Strict transitive audit of the canonical finite pair-rank table.
 Agent-ID: codex-aa04. -/
 open Lean Elab Command
 run_cmd do

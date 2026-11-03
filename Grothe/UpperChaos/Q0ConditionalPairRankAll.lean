@@ -34,8 +34,8 @@ import Grothe.UpperChaos.Q0ConditionalPairRankGroup032
 import Grothe.UpperChaos.Q0ConditionalPairRankGroup033
 import Grothe.UpperChaos.Q0ConditionalPairRankGroup034
 
-/-! All 35,777 original pair ranks and finite lookup coverage.
-The historical NPY bytes are not interpreted by this theorem.
+/-! All 35,777 canonical pair ranks and finite lookup coverage.
+The input NPY bytes are not interpreted by this theorem.
 Agent-ID: codex-aa04. -/
 namespace Grothe.UpperChaos.Q0ConditionalPairRankAll
 
@@ -83,7 +83,7 @@ theorem indices : rows.map Row.index = List.range' 0 35777 := by
     ← List.range'_append_1 (s := 32768) (m := 1024) (n := 1985),
     ← List.range'_append_1 (s := 33792) (m := 1024) (n := 961)]
 
-/-- Every index of the original pair table selects exactly one row. -/
+/-- Every index of the canonical pair table selects exactly one row. -/
 theorem unique_row (i : Fin 35777) :
     ∃! r : Row, r ∈ rows ∧ r.index = i.val :=
   Grothe.UpperChaos.Q0OrdinalCoverage.exists_unique_of_map_range Row.index

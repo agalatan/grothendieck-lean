@@ -1,6 +1,6 @@
 import Grothe.UpperChaos.Q0ConditionalPairRankCheck
 
-/-! Original ordered pair literals and exact rank checks.
+/-! Canonical ordered pair literals and exact rank checks.
 Agent-ID: codex-aa04. -/
 namespace Grothe.UpperChaos.Q0ConditionalPairRankGroup019
 

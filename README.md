@@ -16,10 +16,6 @@ a proved numerical head estimate. Our own numerical obligations are not accepted
 external inputs. A bound is **done** only when its complete Lean proof and final
 verification pass. The active work now prioritizes the upper endpoint.
 
-Lean verifies the finite rank and uniqueness certificate for the original
-degree-531 conditional pair table. The Gaussian values stored at those ranks
-still need their numerical enclosures in Lean.
-
 **New here? Read [OVERVIEW.pdf](OVERVIEW.pdf)** — an explanation of the problem, the two
 constructions, what exactly the computer checks, the new inequalities and obstructions found along
 the way, and why the remaining gap is hard.
@@ -455,6 +451,13 @@ The concrete theorem's remaining **inputs** are:
 |---|---|---|
 | `hfirst`, `hsecond`, `hthird` | fourteen finite-band Gaussian error inequalities for the fixed Taylor sources and centers; Lean derives the rounding and three tail caps, decomposition and supports | 93.57% |
 | `energy_close` | the stored energies are within 6847009/(5·10¹⁷) of E(X) | 0.001% |
+
+The degree-531 canonical pair table indexes conditional Hermite node values
+by pairs `(c,d)` with `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1` and
+`c+d ≤ 531`, ordered by `(c+d,c)`. Lean verifies the finite rank, ordinal
+coverage and uniqueness certificate for this table. No downstream Lean result
+yet consumes this certificate; the Gaussian values still require numerical
+enclosures in Lean.
 
 The head, computed in Lean (`head_check`), is 28153/10¹², 3.09% of the total
 455212621809/(5·10¹⁷). The Hardy tail beyond degree 501, 303362486/10¹⁶ (3.33%), is **proved**: the weighted

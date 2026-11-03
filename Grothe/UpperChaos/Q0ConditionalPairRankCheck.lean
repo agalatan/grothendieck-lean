@@ -1,7 +1,7 @@
 import Grothe.UpperChaos.Q0OrdinalCoverage
 import Mathlib.Tactic
 
-/-! Finite integer rank of the original degree-531 canonical pair table.
+/-! Finite integer rank of the degree-531 canonical pair table.
 Generator input provenance is separate from Lean's literal checks.
 Agent-ID: codex-aa04. -/
 namespace Grothe.UpperChaos.Q0ConditionalPairRankCheck
@@ -12,7 +12,7 @@ structure Row where
   d : ℕ
   deriving DecidableEq, Inhabited
 
-/-- Zero-based original storage rank for a valid canonical pair. -/
+/-- Zero-based storage rank for a valid canonical pair. -/
 def rank (c d : ℕ) : ℕ :=
   let m := c + d
   m + m*m/4 - (m-266)*(m-265)/2 + c - (m-265)
