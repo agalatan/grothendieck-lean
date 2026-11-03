@@ -135,14 +135,6 @@ theorem integral_split2 {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   rw [← (hm.symm split2).integral_comp' G, integral_prod _ hi]
   rfl
 
-theorem integrable_split2_section {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    {G : (Fin ((n + 1) + (n + 1)) → ℝ) → E} (hG : Integrable G (stdGaussian ((n + 1) + (n + 1)))) :
-    ∀ᵐ y ∂(stdGaussian (n + n)), Integrable (fun z => G (joinR z y)) gaussC := by
-  have hm := measurePreserving_split2 (n := n)
-  have hi : Integrable (fun p => G (split2.symm p)) (μS n) :=
-    ((hm.symm split2).integrable_comp_emb split2.symm.measurableEmbedding).2 hG
-  exact hi.prod_right_ae
-
 theorem ae_split2 {P : (Fin ((n + 1) + (n + 1)) → ℝ) → Prop}
     (h : ∀ᵐ x ∂(stdGaussian ((n + 1) + (n + 1))), P x) :
     ∀ᵐ y ∂(stdGaussian (n + n)), ∀ᵐ z ∂gaussC, P (joinR z y) := by
