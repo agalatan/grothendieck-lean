@@ -82,6 +82,28 @@ from `Upper/Data.lean`; the generated candidates are linked to the actual
 source by Lean proofs. The result is independent of the phase-cover numerical
 leaves and does not discharge the remaining upper-bound inputs.
 
+**Exceptional conditional rows.** The source table has 21,577 rows of
+binary64 conditional Hermite approximations, ordered by the degree-531 canonical
+pairs `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1`, in `(c+d,c)` order and restricted
+to `c+d ≤ cutoff_i` in row i. A full row has 35,777 entries; cutoffs 1 and 2
+retain three and five. This certificate selects all nodes in each panel hit by
+a zero-containing result of the outward 128-bit profile interval Horner screen.
+The 413 unresolved nodes occupy 381 panels, whose complete rule nodes are the
+417 ordinals 3872–4036, 10910–11037 and 17321–17444. This panel selection is
+independent of cutoff; 1,837 source rows have cutoff at most two.
+`exception-selection.json` commits the rule and exact screen, panel and root
+inputs. `Q0SourceExceptionCentersAll` combines exact binary64 decoding checks:
+each scalar has magnitude at most one, and each complete row has squared norm
+at most 121/100. The source ordinal ranges, cutoff counts and byte spans are
+explicit. `python3 tools/q0_quadrature/gen_source_exception_centers.py --check`
+replays the selection and reproduces exactly 16 chunks and their aggregate from
+pinned slice, offset and per-row ledger files. The strict audit adds no native
+facts. This certifies decoded source values; alignment with selected source
+nodes, basis normalization and enclosures of actual Gaussian coefficients remain
+separate. No Gaussian estimate or endpoint assembly currently consumes this
+certificate. Producer provenance and the checked ledger fields are documented
+in [`conditional_source/README.md`](../data/q0_quadrature/conditional_source/README.md).
+
 **Conditional-pair ranks.** `Q0ConditionalPairRankAll` proves finite rank,
 ordinal coverage and uniqueness for the degree-531 canonical pair table. Its
 pairs `(c,d)` satisfy `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1` and
@@ -214,6 +236,41 @@ the production rectangle generators retain their profile-enriched input under
 This identity supplies a source binding for numerical models; it does not
 certify all cells,
 Taylor-band errors, the frozen-response energy discrepancy, or the final bound.
+
+**Weighted Gaussian kernel mass.**
+A single checked predicate, `OriginalHSParameterGates.gateOK`, supplies
+positivity of the real covariance forms for any parameter record.
+`OriginalHSGaussianMass.integrable_gateWeight` and `integral_gateWeight`
+prove convergence and the physical-pair mass `ν²/δ` under that predicate.
+`OriginalHSGaussianTensor.integrable_tensorWeight` and `integral_tensorWeight`
+combine the independent pairs and give mass `ν⁴/(δ₀δ₁)`.
+The proofs establish integrability before applying Fubini. The determinant
+power is minus one for each pair of complex coordinates; no square-root or
+pi normalization is omitted.
+
+`OriginalHSParameterGates.parameters_checked` checks one parameter table
+for the fourteen selected output degrees and four coordinate exclusions.
+The manifest in `data/original-hs-parameters` records each selected source:
+first-power degrees 51 and 101 use the rectangular input, later first-power
+degrees use the power-one input, and powers two and three use their selected
+finite-band degrees. All input files remain hash-pinned and byte-identical.
+Run `python3 tools/gen_original_hs_parameters.py --check` to reproduce the
+Lean table. Exact Python replays are diagnostics stored in ignored `handoff/`;
+Lean's kernel checks the parameter facts independently.
+
+The manifest identifies the numerical producer programs and explains the
+recorded Arb `bound` and its rational upper endpoint `upper_rational`.
+Neither is used as an assumed Hilbert--Schmidt bound. The decomposition
+hashes refer to uncommitted historical decomposition files and do not prove
+an operator identity. The absolute path in the immutable rectangular input
+is historical metadata, never a generator dependency.
+
+`OriginalHSGaussianAudit` enforces standard-three-only transitive dependencies
+for the aggregate parameter certificate and the generic pair/tensor
+integrability and mass theorems. This is stricter than the repository-wide
+native allowlist. The defined Gaussian matrix and kernel are not yet identified
+with `HS_{j,I}` in `UPPER_STATUS.md`. Polynomial insertion, a Fock coefficient
+identity, that operator binding and numerical tail bounds remain open.
 
 **Exact Gaussian phase-moment interfaces.**
 `DampedMoments` proves mixed complex Gaussian moments at every positive radial

@@ -159,6 +159,7 @@ import Grothe.LowerAnalytic.WickGraphData
 import Grothe.LowerAnalytic.WickSix
 import Grothe.LowerAnalytic.Witness
 import Grothe.LowerAnalytic.WitnessCap
+import Grothe.LowerTarget
 import Grothe.Research.LawNodeCheck
 import Grothe.Research.LawNodeData
 import Grothe.Research.LawNodeLower
@@ -171,6 +172,8 @@ import Grothe.Research.RefinedCoverPartition
 import Grothe.Research.RefinedCoverParts
 import Grothe.Research.RefinedCoverResult
 import Grothe.Research.RefinedLower
+import Grothe.Statement
+import Grothe.StatementBridges
 import Grothe.Transfer
 import Grothe.Upper.BandComparison
 import Grothe.Upper.Bivariate
@@ -600,7 +603,9 @@ import Grothe.UpperChaos.ConditionalGaussianTail
 import Grothe.UpperChaos.ConditionalMomentReflection
 import Grothe.UpperChaos.ConditionalNodeIndices
 import Grothe.UpperChaos.ConditionalReconstruction
+import Grothe.UpperChaos.DampedCoherentKernel
 import Grothe.UpperChaos.DampedMoments
+import Grothe.UpperChaos.DampedQuadraticKernel
 import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.DiagonalSum
 import Grothe.UpperChaos.DirectSampleUpper
@@ -907,6 +912,13 @@ import Grothe.UpperChaos.OneSidedSeedFubini
 import Grothe.UpperChaos.OneSidedSeedIntegral
 import Grothe.UpperChaos.OneSidedShiftAlgebra
 import Grothe.UpperChaos.OriginalEnergyNoMass
+import Grothe.UpperChaos.OriginalHSCovariance
+import Grothe.UpperChaos.OriginalHSGaussianAudit
+import Grothe.UpperChaos.OriginalHSGaussianMass
+import Grothe.UpperChaos.OriginalHSGaussianTensor
+import Grothe.UpperChaos.OriginalHSParameterGates
+import Grothe.UpperChaos.OriginalHSParameterSoundness
+import Grothe.UpperChaos.OriginalHSQuadraticForms
 import Grothe.UpperChaos.OriginalMomentIntegrable
 import Grothe.UpperChaos.OriginalMomentPullback
 import Grothe.UpperChaos.OriginalMomentRatios
@@ -2515,3 +2527,4 @@ import Grothe.UpperChaos.UnitSquaredRadiusProfile
 import Grothe.UpperChaos.ZeroProfilePhaseLinearization
 import Grothe.UpperChaos.ZeroProfilePhaseStability
 import Grothe.UpperChaos.ZeroProfileSavedCenter
+import Grothe.UpperTarget
