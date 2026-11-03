@@ -968,6 +968,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0ConditionalPairRankAll.rowAt_rank
 #print axioms Grothe.UpperChaos.Q0ConditionalPairRankAll.unique_row
 #print axioms Grothe.UpperChaos.Q0ConditionalSourceReconstruction.reflected_error_le
+#print axioms Grothe.UpperChaos.Q0FiniteVectorError.finite_orthonormal_sample_error
+#print axioms Grothe.UpperChaos.Q0FiniteVectorError.sum_norm_sub_sq_le
 #print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.actual_exactness_of_check
 #print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.checkEq_sound
 #print axioms Grothe.UpperChaos.Q0GaussExactness.QPolyCertificates.check_order_one
