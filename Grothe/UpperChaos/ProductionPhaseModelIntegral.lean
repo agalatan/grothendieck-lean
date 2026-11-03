@@ -72,7 +72,7 @@ theorem norm_linearSlice_sq (s : ℝ) (w : ℂ) :
   have him : (linearSlice s w).im = signedProfileRatio s * w.im := by
     unfold linearSlice
     simp only [Complex.add_im, Complex.one_im, Complex.mul_im, Complex.ofReal_re,
-      Complex.ofReal_im, Complex.sub_im, Complex.conj_im, zero_mul, mul_zero,
+      Complex.ofReal_im, Complex.sub_im, Complex.conj_im, zero_mul,
       zero_add, add_zero]
     ring
   rw [← Complex.normSq_eq_norm_sq, Complex.normSq_apply, hre, him]
@@ -114,13 +114,10 @@ theorem saved_model_norm_sq (s : ℝ) (hphase : ∀ w, |slicePhase s w| ≤ 1)
   rw [norm_sq_integral]
   apply integral_congr_ae
   filter_upwards [Lp.coeFn_sub (exactModelLp s hphase) saved,
-    (modelSlice_memLp s (slicePhase s) (measurable_slicePhase s) hphase).coeFn_toLp]
+    exactModelLp_coe s hphase]
     with w hsub hmodel
   simp only [Pi.sub_apply] at hsub
-  rw [hsub]
-  change ‖((modelSlice_memLp s (slicePhase s) (measurable_slicePhase s) hphase).toLp _) w -
-      saved w‖ ^ 2 = _
-  rw [hmodel]
+  rw [hsub, hmodel]
 
 /-- Concrete squared model energy, saved energy and the actual cross term.
 This is one integral against gaussC; no radial density is inserted here. -/
