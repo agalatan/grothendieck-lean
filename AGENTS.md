@@ -204,8 +204,9 @@ at the top).
    (`<agent-id>` = your ID, e.g. `codex-7f3a`). That one check is the test and the guard. Do not also push your work branch at the same moment, and
    do not run `scripts/cloud.sh check`, a droplet build or a full local build first: each would check the same
    tree again. A delivery that changes `.github/workflows/` goes through a pull request instead (§9).
-   - CI merges it into the **current** master and checks the **merged** tree. Only if everything is green does it
-     fast-forward `master` to exactly that checked merge and delete the `ready/` branch. Then push your work branch
+   - CI merges exactly the pushed commit into the **current** master commit (both pinned for the whole run) and
+     checks the **merged** tree. Only if everything is green **and an approving review of that commit exists** (§7a)
+     does it fast-forward `master` to exactly that checked merge and delete the `ready/` branch. Then push your work branch
      too if you keep working on it (§14 otherwise).
    - If the check fails, master is untouched. Read the log, fix, commit, combine with master again (§6), and push
      to the **same** `ready/` branch: the new push supersedes the failed run. A red check from an oversight (an
@@ -234,6 +235,28 @@ at the top).
    or, if you are done, clean up completely (§14).
 
 Report to the user: the `ready/` branch name, the CI run, and the resulting master commit.
+
+## 7a. Independent review (approved by the user, 3 November 2026, #225)
+
+Every `ready/` delivery is reviewed by the other side before it lands: a Codex reviewer for a `claude-…` delivery, a
+Claude reviewer for a `codex-…` delivery. The managers assign reviewers (#225).
+- **When:** as soon as the delivery is pushed, while its check runs. The reviewer reads the diff and the check's log.
+- **What:** the statement matches the prose (quantifiers, domain, hypotheses), numerical premises and tolerances,
+  coverage of the domain, provenance of generated data, dependencies and trust (`native_decide`, axioms), and the
+  resource cost of the check.
+- **Verdict:** `scripts/review.sh ready/<name> approve|block <reviewer-id> "<summary>"`. It sets the commit status
+  `Independent review` on the delivery's current tip, so it applies to exactly the reviewed commit; a new push needs
+  a new review. Write the full review (every suggestion) as a comment on the delivery's issue, starting with your ID.
+- **Author:** answers every suggestion (a change, or a reasoned rejection) before asking for approval. A blocked
+  delivery lands only after a new approval.
+- **Landing:** the check's finish job lands a green delivery only with an approval by the other side
+  (`scripts/land_ready.sh`); otherwise the check stays green and the commit shows `Landing: pending`. An approval that
+  arrives after a green check lands it without a rebuild (`.github/workflows/review-land.yml`). If master moved
+  meanwhile, the delivery is checked again against the new master and lands at the end of that check: the approval
+  stays valid because the reviewed commit did not change.
+- **Status names:** `Lean proof check (verified before merge)` means the merged tree was built and checked;
+  `Lean proof check (no proof change)` means no Lean-relevant file changed and the proofs are those of the named
+  parent. Never present the second as a proof check.
 
 ## 8. CI: the proof check (`.github/workflows/lean.yml`)
 
