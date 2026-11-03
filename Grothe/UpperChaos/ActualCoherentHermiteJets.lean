@@ -43,7 +43,8 @@ private theorem hasDerivAt_eval_shift (P : CPoly) (a b x : ℂ) :
       · convert hP.fun_mul (hasDerivAt_const x a) using 1 <;>
           simp [pderiv_X, mul_comm]
       · convert hP.fun_mul ((hasDerivAt_id' x).const_sub b) using 1 <;>
-          (simp [pderiv_X]; ring)
+          simp [pderiv_X]
+        ring
 
 /-- The physical Hermite polynomial after the two source translations. -/
 def shiftedHermite (z x y : ℂ) (p q : ℕ) : ℂ :=
@@ -79,8 +80,9 @@ private theorem hasDerivAt_shiftedHermite_outgoing (z x y : ℂ) (p q : ℕ) :
   have h := (hasDerivAt_eval_shift (H p q) (conj z - y) z x).fun_mul
     (hasDerivAt_outgoing_x z x y)
   convert h using 1 <;>
-    (simp only [shiftedHermite, H_succ_left, A0, map_sub, map_mul, eval_X,
-      Matrix.cons_val_zero, outgoing]; ring)
+    simp only [shiftedHermite, H_succ_left, A0, map_sub, map_mul, eval_X,
+      Matrix.cons_val_zero, outgoing]
+  ring
 
 private theorem iteratedDeriv_outgoing_y (z x : ℂ) (q : ℕ) (y : ℂ) :
     iteratedDeriv q (fun t => outgoing z x t) y =

@@ -170,8 +170,11 @@ theorem integral_holEval_eq_outerJet (P : MvPolynomial (Fin 2) ℂ) (n : ℕ × 
   rw [outerJet_holEval]
   apply Finset.sum_congr rfl
   intro d hd
-  rw [integral_const_mul, integral_prod_mul, integral_pow_conj_eq_jet,
-    integral_pow_conj_eq_jet]
+  rw [integral_const_mul,
+    integral_prod_mul (μ := gaussC) (ν := gaussC)
+      (fun z : ℂ => z ^ d 0 * conj z ^ n.1)
+      (fun z : ℂ => z ^ d 1 * conj z ^ n.2),
+    integral_pow_conj_eq_jet, integral_pow_conj_eq_jet]
   ring
 
 theorem polynomialMoment_residual_eq_outerJet (p q r s : ℝ) (n e : PairPowers) :

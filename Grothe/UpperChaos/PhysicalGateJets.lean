@@ -147,7 +147,8 @@ theorem pairJet_physicalCoherentMoment (p q a b c d : ℕ) {r : ℝ} (hr : 0 < r
     intro i hi
     apply Finset.sum_congr rfl
     intro k hk
-    simp only [coeff, neg_pow]
+    simp only [coeff]
+    rw [neg_pow v i, neg_pow x k]
     ring
   simp_rw [he]
   rw [outer_xv_finite_jet t coeff Prod.fst Prod.snd

@@ -87,13 +87,17 @@ theorem iteratedDeriv_momentValue_a_shift (p q k : ℕ) {r : ℝ}
     (hr : 0 < r) (a b : ℂ) :
     iteratedDeriv k (fun t => momentValue r (a + t) b p q) 0 =
       momentValue r a b (p + k) q := by
-  rw [iteratedDeriv_comp_const_add, iteratedDeriv_momentValue_a p q k hr, add_zero]
+  have h := congrFun
+    (iteratedDeriv_comp_const_add k (fun t : ℂ => momentValue r t b p q) a) 0
+  simpa only [iteratedDeriv_momentValue_a p q k hr, add_zero] using h
 
 theorem iteratedDeriv_momentValue_b_shift (p q k : ℕ) {r : ℝ}
     (hr : 0 < r) (a b : ℂ) :
     iteratedDeriv k (fun t => momentValue r a (b + t) p q) 0 =
       momentValue r a b p (q + k) := by
-  rw [iteratedDeriv_comp_const_add, iteratedDeriv_momentValue_b p q k hr, add_zero]
+  have h := congrFun
+    (iteratedDeriv_comp_const_add k (fun t : ℂ => momentValue r a t p q) b) 0
+  simpa only [iteratedDeriv_momentValue_b p q k hr, add_zero] using h
 
 /-- Finite source differentiation of a normalized Gaussian moment times an
 arbitrary linear holomorphic exponential. -/
@@ -143,7 +147,8 @@ theorem incoming_inner_jet (p q d : ℕ) {r : ℝ} (hr : 0 < r) (a b u : ℂ) :
   apply Finset.sum_congr rfl
   intro k hk
   rw [iteratedDeriv_cexp_const_mul, iteratedDeriv_momentValue_b_shift p q (d - k) hr]
-  simp only [mul_zero, Complex.exp_zero, mul_one, neg_pow]
+  simp only [mul_zero, Complex.exp_zero, mul_one]
+  rw [neg_pow u k]
   ring
 
 /-- The complete finite incoming source jet, including every contraction from
@@ -165,8 +170,12 @@ theorem incoming_jet_eq_sum (p q c d : ℕ) {r : ℝ} (hr : 0 < r) (a b : ℂ) :
       (fun u => momentValue r (a + u) b p (q + (d - k))) :=
     (contDiff_momentValue_a p (q + (d - k)) c hr b).comp
       (contDiff_const.add contDiff_id)
-  rw [iteratedDeriv_fun_sum (fun k hk =>
-    ((contDiff_const.mul ((contDiff_id.pow k).mul (hM k)))).contDiffAt)]
+  have hterm (k : ℕ) (_hk : k ∈ Finset.range (d + 1)) :
+      ContDiffAt ℂ c (fun u : ℂ =>
+        ((d.choose k : ℂ) * (-1 : ℂ) ^ k) *
+          (u ^ k * momentValue r (a + u) b p (q + (d - k)))) 0 :=
+    (contDiff_const.mul ((contDiff_id.pow k).mul (hM k))).contDiffAt
+  rw [iteratedDeriv_fun_sum hterm]
   apply Finset.sum_congr rfl
   intro k hk
   rw [iteratedDeriv_const_mul_field,
