@@ -42,26 +42,43 @@ def productionDegreeHead : Set Idx2 := {i | tdeg i ≤ 501}
 def productionF0Head : Lp ℂ 2 mu2 :=
   projOn productionDegreeHead (memLp_baseF0.toLp F0)
 
-theorem energyHead_subset_degreeHead :
-    energyHeadModes (headIdx 501) ⊆ productionDegreeHead := by
+private theorem energyHead_subset_totalDegree (N : ℕ) :
+    energyHeadModes (headIdx N) ⊆ {i | tdeg i ≤ N} := by
   intro i hi
-  change bideg i ∈ headIdx 501 at hi
+  change bideg i ∈ headIdx N at hi
   rw [mem_headIdx] at hi
   dsimp [bideg] at hi
-  change tdeg i ≤ 501
+  change tdeg i ≤ N
   dsimp [tdeg]
   omega
 
-theorem energyHead_degreeProjection (f : Lp ℂ 2 mu2) :
-    projOn (energyHeadModes (headIdx 501)) (projOn productionDegreeHead f) =
-      projOn (energyHeadModes (headIdx 501)) f := by
+theorem energyHead_subset_degreeHead :
+    energyHeadModes (headIdx 501) ⊆ productionDegreeHead :=
+  energyHead_subset_totalDegree 501
+
+private theorem projection_on_subset (A B : Set Idx2) (hAB : A ⊆ B)
+    (f : Lp ℂ 2 mu2) : projOn A (projOn B f) = projOn A f := by
   classical
   apply eq_of_inner_hvec2
   intro i
   simp only [inner_projOn]
-  by_cases hi : i ∈ energyHeadModes (headIdx 501)
-  · simp only [hi, energyHead_subset_degreeHead hi, ite_true]
+  by_cases hi : i ∈ A
+  · simp only [hi, hAB hi, ite_true]
   · simp only [hi, ite_false]
+
+theorem energyHead_degreeProjection (f : Lp ℂ 2 mu2) :
+    projOn (energyHeadModes (headIdx 501)) (projOn productionDegreeHead f) =
+      projOn (energyHeadModes (headIdx 501)) f :=
+  projection_on_subset _ _ energyHead_subset_degreeHead f
+
+private theorem gradedSupport_filter_totalDegree (N : ℕ) :
+    (gradedSupport N).filter (fun i => tdeg i < 2 * N) = gradedSupport N := by
+  classical
+  apply Finset.filter_eq_self.mpr
+  intro i hi
+  have hd := gradedSupport_total_degree_lt (N := N) hi
+  dsimp only [tdeg, bideg] at hd ⊢
+  omega
 
 theorem degreeProjection_gradedHermite (a : ℕ → ℕ → ℕ → ℚ) :
     projOn productionDegreeHead (gradedHermite 251 a) = gradedHermite 251 a := by
@@ -89,6 +106,7 @@ theorem inner_productionF0Head_graded (q : Fin 251)
     (c : Fin (q.val + 2)) (d : Fin (q.val + 1)) :
     ⟪hvec2 (gradedMode q c d), productionF0Head⟫_ℂ =
       baseGradedCoefficient q c d := by
+  classical
   have hm : gradedMode q c d ∈ productionDegreeHead := by
     change tdeg (gradedMode q c d) ≤ 501
     have hd : tdeg (gradedMode q c d) = 2 * (q : ℕ) + 1 := by
@@ -119,14 +137,13 @@ theorem norm_productionF0Head_sub_sq (a0 : ℕ → ℕ → ℕ → ℚ) :
     change tdeg i ≤ 501 at hi
     dsimp only [tdeg, bideg] at hi ⊢
     omega
+  have hpred : productionDegreeHead = {i | tdeg i < 2 * 251} := by
+    ext i
+    change tdeg i ≤ 501 ↔ tdeg i < 2 * 251
+    omega
   have hs : (gradedSupport 251).filter (· ∈ productionDegreeHead) =
       gradedSupport 251 := by
-    apply Finset.filter_eq_self.mpr
-    intro i hi
-    have hd := gradedSupport_total_degree_lt hi
-    change tdeg i ≤ 501
-    dsimp only [tdeg, bideg] at hd ⊢
-    omega
+    simpa only [hpred, Set.mem_setOf_eq] using gradedSupport_filter_totalDegree 251
   have hinner (q : Fin 251) (c : Fin (q.val + 2)) (d : Fin (q.val + 1)) :
       ⟪hvec2 (gradedMode q c d),
         memLp_baseF0.toLp F0 - gradedHermite 251 a0⟫_ℂ =
@@ -157,6 +174,7 @@ theorem selected_smoothing_residual (a0 : ℕ → ℕ → ℕ → ℚ) :
       (smoothOp ((chargeFn_F0 phiBound).memLp.toLp F0 - gradedHermite 251 a0)) =
     projOn (energyHeadModes (headIdx 501))
       (smoothOp (productionF0Head - gradedHermite 251 a0)) := by
+  classical
   have hc (f : Lp ℂ 2 mu2) :
       projOn productionDegreeHead (smoothOp f) =
         smoothOp (projOn productionDegreeHead f) := by
