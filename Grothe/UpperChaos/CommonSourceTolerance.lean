@@ -46,12 +46,26 @@ theorem raw_error_of_canonical_reference (g : ℕ → ℕ → ℕ → ℚ)
     (hcanonical : canonicalTensorErrorNorm g ≤ (canonicalCapQ : ℝ)) :
     ‖productionF0Head - gradedHermite 251 (dyadicTensorReference g)‖ ≤
       (rawCapQ : ℝ) := by
+  have hc : canonicalTensorErrorNorm (dyadicTensorReference g) =
+      canonicalTensorErrorNorm g := canonical_error_rationalTensorCompletion (2 ^ 54) g
   have h := norm_productionF0Head_sub_le_canonical (dyadicTensorReference g)
-  have hd := rationalTensorCompletion_defect_le (2 ^ 54) (by positivity) g
-  rw [dyadicTensorReference, canonical_error_rationalTensorCompletion] at h
-  norm_num only [Nat.cast_pow, Nat.cast_ofNat] at hd
-  have hb := canonical_completion_budget
-  linarith
+  rw [hc] at h
+  have hd : tensorCompletionDefectNorm (dyadicTensorReference g) ≤
+      (1 / ((2 : ℝ) ^ 54)) * (1 + canonicalTensorErrorNorm g) := by
+    change tensorCompletionDefectNorm (rationalTensorCompletion (2 ^ 54) g) ≤ _
+    have hd0 := rationalTensorCompletion_defect_le (2 ^ 54) (by positivity) g
+    have hden : (((2 ^ 54 : ℕ) : ℝ)) = (2 : ℝ) ^ 54 := by norm_num
+    rw [hden] at hd0
+    exact hd0
+  have hcan : (10 / 7 : ℝ) * canonicalTensorErrorNorm g ≤
+      (10 / 7 : ℝ) * (canonicalCapQ : ℝ) :=
+    mul_le_mul_of_nonneg_left hcanonical (by norm_num)
+  have hone : 1 + canonicalTensorErrorNorm g ≤ 1 + (canonicalCapQ : ℝ) :=
+    add_le_add le_rfl hcanonical
+  have hdBound : tensorCompletionDefectNorm (dyadicTensorReference g) ≤
+      (1 / ((2 : ℝ) ^ 54)) * (1 + (canonicalCapQ : ℝ)) :=
+    hd.trans (mul_le_mul_of_nonneg_left hone (by positivity))
+  exact h.trans ((add_le_add hcan hdBound).trans canonical_completion_budget)
 
 /-- Propagate actual raw F0 error and same-output table error to all selected
 energies; the frozen correction enters once through retainedSmoothed. -/

@@ -192,8 +192,11 @@ theorem raw_error_of_dyadicTensorReference (g : ℕ → ℕ → ℕ → ℚ)
   rw [hc] at h
   have hd : tensorCompletionDefectNorm (dyadicTensorReference g) ≤
       (1 / ((2 : ℝ) ^ 54)) * (1 + canonicalTensorErrorNorm g) := by
-    simpa only [dyadicTensorReference, Nat.cast_pow, Nat.cast_ofNat] using
-      rationalTensorCompletion_defect_le (2 ^ 54) (by positivity) g
+    change tensorCompletionDefectNorm (rationalTensorCompletion (2 ^ 54) g) ≤ _
+    have hd0 := rationalTensorCompletion_defect_le (2 ^ 54) (by positivity) g
+    have hden : (((2 ^ 54 : ℕ) : ℝ)) = (2 : ℝ) ^ 54 := by norm_num
+    rw [hden] at hd0
+    exact hd0
   have hb : (10 / 7 : ℝ) * (66 / 10 ^ 10 : ℝ) +
       (1 / ((2 : ℝ) ^ 54)) * (1 + (66 / 10 ^ 10 : ℝ)) ≤
         (Grothe.Upper.CompositeComparisonData.rawCapQ : ℝ) := by

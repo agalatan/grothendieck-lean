@@ -87,7 +87,6 @@ theorem head_residual_of_raw_source (a0 : ℕ → ℕ → ℕ → ℚ)
         (RelaxedComparisonData.comparisonCapQ : ℝ) := hb
     _ = (RelaxedComparisonData.headResidualQ : ℝ) := by
       simp only [RelaxedComparisonData.headResidualQ, RelaxedComparisonData.energyErrorQ, Rat.cast_add]
-      ring
 
 /-- Add only the separate tail of the actual rounding kernel. The finite
 source/energy errors are already included in the selected head. -/
