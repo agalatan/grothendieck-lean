@@ -3,7 +3,7 @@
 Branch `work/caps-m` (base `c1d2e6e` of `work/lower-caps2`). Goal: shrink the remaining cap hypothesis
 (`CapsRest`, see `CapNodes.lean` on `work/lower-caps2`) to nothing on rows 12–15. Those rows have 396 nodes
 each; their caps come from three sources:
-1. chord nodes (`capChords`, already handled by `CapHull`);
+1. chord nodes (`capChords`, already handled by `CapAssembly`);
 2. anchored-quadratic caps (route A), certified by the existing node checker `nodeOK`;
 3. localised caps (route M, MIDCAPS) at s ∈ [0.2, 0.42] ∪ [0.525, 0.6], certified by piece lists.
 
