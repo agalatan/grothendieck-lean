@@ -1,9 +1,19 @@
 #!/usr/bin/env python3
-"""Generate binary64 source rows and exact decoding check candidates.
+"""Generate the 17 exact binary64 exceptional-row check modules.
 
-Inputs are the byte-exact extracted exception slices and pinned source offset
-array. A Lean theorem connecting these rows to the main source consumer remains
-separate. Agent-ID: codex-aa04.
+The source table has 21,577 node rows. Row i contains binary64 approximations
+of conditional Hermite coefficients for canonical pairs 0 <= c <= 266,
+0 <= d <= 265, c <= d + 1, c + d <= 531, in (c + d, c) order, restricted
+to c + d <= cutoff_i. A full row has 35,777 entries; cutoffs 1 and 2 give
+three and five entries. The source producer builds all rows.
+
+This certificate selects all nodes in each panel hit by the outward 128-bit
+profile interval Horner screen's zero-containing result. The exact inputs
+and rule are committed in exception-selection.json. Its 413 unresolved nodes
+occupy 381 panels; panel closure gives the 417 rows, independently of cutoff.
+Pinned byte slices, offsets and ledger records supply their literal values.
+Lean checks decoding and finite bounds; Gaussian source binding is separate.
+Agent-ID: codex-aa04.
 """
 from hashlib import sha256
 from fractions import Fraction
@@ -19,11 +29,76 @@ DATA = ROOT / 'data/q0_quadrature/conditional_source'
 OUT = ROOT / 'Grothe/UpperChaos'
 SLICE_SHA = '085a77f6693c3fa369d8441989e9058330e959692b64a84f9f4616d98fb9f9c5'
 OFFSET_SHA = '8bf1649d9620449873e32a8fa120709f29888885e8e43ae024c5305b95101c5c'
-RANGES = [(3872, 4036), (10910, 11037), (17321, 17444)]
+SELECTION_SHA = '2e60b2f6ed08495047f67709a7589ad8962d2abc73062a6e3c819c8888d147a0'
 ROWS_PER_MODULE = 30
 
 
-def generate():
+def contiguous_ranges(values):
+    result = []
+    for value in values:
+        if result and value == result[-1][1] + 1:
+            result[-1][1] = value
+        else:
+            result.append([value, value])
+    return result
+
+
+def selected_ordinals():
+    """Replay this certificate's profile-screen panel selection exactly."""
+    raw = (DATA / 'exception-selection.json').read_bytes()
+    if sha256(raw).hexdigest() != SELECTION_SHA:
+        raise ValueError('exception selection input hash mismatch')
+    selection = json.loads(raw)
+    if selection['schema'] != 1 or selection['precision_bits'] != 128:
+        raise ValueError('unexpected profile-screen representation')
+    scale = 1 << selection['precision_bits']
+    coeffs = selection['screen_coefficients']
+    if len(coeffs) != 12 or any(lo > hi for lo, hi in coeffs):
+        raise ValueError('invalid profile coefficient intervals')
+    rules = {int(order): [(Fraction(lo), Fraction(hi)) for lo, hi in nodes]
+             for order, nodes in selection['rule_nodes'].items()}
+    selected, unresolved, selected_panels = [], [], []
+    cursor = 0
+    for pi, (lo_text, hi_text, order) in enumerate(selection['panels']):
+        lo, hi = Fraction(lo_text), Fraction(hi_text)
+        nodes = rules[order]
+        if lo >= hi or len(nodes) != order:
+            raise ValueError(f'invalid source panel {pi}')
+        hit = False
+        for ri, (lower, upper) in enumerate(nodes):
+            if not -1 <= lower < upper <= 1:
+                raise ValueError(f'invalid source node at panel {pi}, rule {ri}')
+            left = (lo + (hi - lo) * (1 + lower) / 2) * scale
+            right = (lo + (hi - lo) * (1 + upper) / 2) * scale
+            x = (left.numerator // left.denominator,
+                 -((-right.numerator) // right.denominator))
+            value = coeffs[-1]
+            for a, b in reversed(coeffs[:-1]):
+                products = [v * y for v in value for y in x]
+                value = (min(products) // scale + a,
+                         -((-max(products)) // scale) + b)
+            if value[0] <= 0 <= value[1]:
+                hit = True
+                unresolved.append(cursor + ri)
+        if hit:
+            selected_panels.append(pi)
+            selected.extend(range(cursor, cursor + order))
+        cursor += order
+    expected = selection['expected']
+    if cursor != selection['node_count'] or len(selection['panels']) != selection['panel_count']:
+        raise ValueError('source node/panel count mismatch')
+    for values, range_key, count_key in [
+        (unresolved, 'unresolved_ordinal_ranges', 'unresolved_node_count'),
+        (selected_panels, 'selected_panel_ranges', 'selected_panel_count'),
+        (selected, 'selected_ordinal_ranges', 'selected_node_count'),
+    ]:
+        if contiguous_ranges(values) != expected[range_key] or len(values) != expected[count_key]:
+            raise ValueError(f'profile-screen selection mismatch: {range_key}')
+    return selected
+
+
+def read_rows():
+    """Return ordered (ordinal, sourceStart, cutoff, binary64_words) tuples."""
     raw = (DATA / 'exception-centers.bin').read_bytes()
     metadata = json.loads((DATA / 'exception-centers.json').read_text())
     offset_raw = (DATA / 'conditional_offsets.npy').read_bytes()
@@ -39,35 +114,41 @@ def generate():
     if sha256(ledger_raw).hexdigest() != '08d55747fbe0ab60b613226e64fcebeb97e7db1712ee319f6b88d01faec52f66':
         raise ValueError('exception ledger hash mismatch')
     ledger = {r['index']: r for r in map(json.loads, ledger_raw.splitlines())}
+    ordinals = selected_ordinals()
+    if sorted(ledger) != ordinals:
+        raise ValueError('ledger does not match profile-screen selection')
     rows = []
     cursor = 0
-    for first, last in RANGES:
-        for ordinal in range(first, last + 1):
-            count = int(offsets[ordinal + 1] - offsets[ordinal])
-            if count not in (3, 5):
-                raise ValueError(f'unexpected retained count at ordinal {ordinal}')
-            entries = words[cursor:cursor + count]
-            if len(entries) != count:
-                raise ValueError('truncated exception data')
-            for word in entries:
-                exp = (word >> 52) & 2047
-                if not 1 <= exp <= 1023 or (word & ((1 << 63) - 1)) > (1023 << 52):
-                    raise ValueError(f'center outside proposed cap at ordinal {ordinal}')
-            norm_sq = sum((Fraction((1 << 52) + (word % (1 << 52)),
-                                   1 << (1075 - ((word >> 52) & 2047))) ** 2
-                           for word in entries), Fraction(0))
-            if norm_sq > Fraction(121, 100):
-                raise ValueError(f'center row norm exceeds 11/10 at ordinal {ordinal}')
-            record = ledger[ordinal]
-            if record['cutoff'] not in (1, 2) or count != 2 * record['cutoff'] + 1:
-                raise ValueError('source cutoff mismatch')
-            if record['sha256'] != sha256(struct.pack('<' + 'Q' * count, *entries)).hexdigest():
-                raise ValueError('source record hash mismatch')
-            rows.append((ordinal, int(offsets[ordinal]), record['cutoff'], entries))
-            cursor += count
+    for ordinal in ordinals:
+        count = int(offsets[ordinal + 1] - offsets[ordinal])
+        if count not in (3, 5):
+            raise ValueError(f'unexpected retained count at ordinal {ordinal}')
+        entries = words[cursor:cursor + count]
+        if len(entries) != count:
+            raise ValueError('truncated exception data')
+        for word in entries:
+            exp = (word >> 52) & 2047
+            if not 1 <= exp <= 1023 or (word & ((1 << 63) - 1)) > (1023 << 52):
+                raise ValueError(f'center outside proposed cap at ordinal {ordinal}')
+        norm_sq = sum((Fraction((1 << 52) + (word % (1 << 52)),
+                               1 << (1075 - ((word >> 52) & 2047))) ** 2
+                       for word in entries), Fraction(0))
+        if norm_sq > Fraction(121, 100):
+            raise ValueError(f'center row norm exceeds 11/10 at ordinal {ordinal}')
+        record = ledger[ordinal]
+        if record['cutoff'] not in (1, 2) or count != 2 * record['cutoff'] + 1:
+            raise ValueError('source cutoff mismatch')
+        if record['sha256'] != sha256(struct.pack('<' + 'Q' * count, *entries)).hexdigest():
+            raise ValueError('source record hash mismatch')
+        rows.append((ordinal, int(offsets[ordinal]), record['cutoff'], entries))
+        cursor += count
     if len(rows) != 417 or cursor != 1263:
         raise ValueError('unexpected row or record count')
+    return rows
 
+
+def generate():
+    rows = read_rows()
     files = {}
     names = []
     parts = []
@@ -78,7 +159,6 @@ def generate():
     for chunk, part in enumerate(parts):
         name = f'Q0SourceExceptionCentersChunk{chunk:02}'
         names.append(name)
-        metadata_groups = sorted({ordinal // 1024 for ordinal, _, _, _ in part})
         lines = ['import Grothe.UpperChaos.Q0SourceExceptionCenters']
         lines += ['',
             '/-! Generated source IEEE64 exception slice rows.',
@@ -103,54 +183,8 @@ def generate():
             '  validRow_normSq r ((List.all_eq_true.mp all_valid) r hr)', '',
             f'end Grothe.UpperChaos.{name}', '']
         files[name + '.lean'] = '\n'.join(lines).encode()
-        binding_name = f'Q0SourceExceptionMetadataChunk{chunk:02}'
-        lines = [f'import Grothe.UpperChaos.{name}',
-                 'import Grothe.UpperChaos.Q0SourceExceptionMetadata']
-        lines += [f'import Grothe.UpperChaos.Q0ConditionalMetadataGroup{g:03}'
-                  for g in metadata_groups]
-        lines += ['', '/-! Generated source cutoff alignment. Agent-ID: codex-aa04. -/',
-                  f'namespace Grothe.UpperChaos.{binding_name}', '',
-                  'open Grothe.UpperChaos.Q0SourceExceptionCenters',
-                  f'open Grothe.UpperChaos.{name}', '',
-                  'set_option maxRecDepth 65536', 'set_option maxHeartbeats 0', '']
-        # Use genuine source sublists. Their membership proof needs no default
-        # row, no repeated search through the complete 21,577-row table, and no
-        # new numerical hypothesis.
-        segments = []
-        for ordinal, _, _, _ in part:
-            group, subchunk, within = ordinal // 1024, ordinal % 1024 // 128, ordinal % 128
-            if segments and segments[-1][:2] == [group, subchunk]:
-                segments[-1][3] += 1
-            else:
-                segments.append([group, subchunk, within, 1])
-        slices = [f'(Q0ConditionalMetadataGroup{g:03}.rows{s}.drop {w}).take {n}'
-                  for g, s, w, n in segments]
-        lines += ['def metadataRows : List Q0ConditionalMetadataCheck.Row :=',
-                  '  ' + ' ++ '.join(slices), '',
-            'theorem metadata_aligned : rows.length = metadataRows.length ∧',
-            '    (rows.zip metadataRows).all (fun pair => matchesMetadata pair.1 pair.2) = true := by',
-            '  decide +kernel', '',
-            'theorem metadata_mem (m : Q0ConditionalMetadataCheck.Row) (hm : m ∈ metadataRows) :',
-            '    ' + ' ∨ '.join(f'm ∈ Q0ConditionalMetadataGroup{g:03}.rows'
-                               for g in metadata_groups) + ' := by']
-        if len(segments) == 1:
-            lines += ['  change m ∈ ' + slices[0] + ' at hm']
-        else:
-            lines += ['  simp only [metadataRows, List.mem_append] at hm',
-                      '  rcases hm with ' + ' | '.join('hm' for _ in segments)]
-        for group, subchunk, _, _ in segments:
-            lead = '  ' if len(segments) == 1 else '  · '
-            inner = '  ' if len(segments) == 1 else '    '
-            lines += [lead + f'have hp : m ∈ Q0ConditionalMetadataGroup{group:03}.rows{subchunk} :=',
-                      inner + '  List.mem_of_mem_drop (List.mem_of_mem_take hm)',
-                      inner + f'have hg : m ∈ Q0ConditionalMetadataGroup{group:03}.rows := by',
-                      inner + f'  simp only [Q0ConditionalMetadataGroup{group:03}.rows, List.mem_append]',
-                      inner + '  tauto',
-                      inner + ('exact hg' if len(metadata_groups) == 1 else 'tauto')]
-        lines += ['', f'end Grothe.UpperChaos.{binding_name}', '']
-        files[binding_name + '.lean'] = '\n'.join(lines).encode()
     lines = [f'import Grothe.UpperChaos.{name}' for name in names]
-    lines += ['', '/-! Exact saved exception support. Generated; Agent-ID: codex-aa04. -/',
+    lines += ['', '/-! Exact exceptional-row support. Generated; Agent-ID: codex-aa04. -/',
         'namespace Grothe.UpperChaos.Q0SourceExceptionCentersAll', '',
         'open Grothe.UpperChaos.Q0SourceExceptionCenters', '',
         'set_option maxRecDepth 65536', 'set_option maxHeartbeats 0', '',
@@ -171,28 +205,6 @@ def generate():
         '  center_norm_le_eleven_tenths r ((List.all_eq_true.mp all_valid) r hr) i', '',
         'end Grothe.UpperChaos.Q0SourceExceptionCentersAll', '']
     files['Q0SourceExceptionCentersAll.lean'] = '\n'.join(lines).encode()
-    binding_names = [f'Q0SourceExceptionMetadataChunk{i:02}' for i in range(len(parts))]
-    lines = ['import Grothe.UpperChaos.Q0SourceExceptionCentersAll',
-             'import Grothe.UpperChaos.Q0ConditionalMetadataAll']
-    lines += [f'import Grothe.UpperChaos.{name}' for name in binding_names]
-    lines += ['', '/-! Every saved exception row belongs to the source metadata.',
-              'Generated by tools/q0_quadrature/gen_source_exception_centers.py.',
-              'Agent-ID: codex-aa04. -/',
-              'namespace Grothe.UpperChaos.Q0SourceExceptionMetadataAll', '',
-              'open Grothe.UpperChaos.Q0SourceExceptionCenters', '',
-              'theorem each_row_source (r : Row) (hr : r ∈ Q0SourceExceptionCentersAll.rows) :',
-              '    ∃ m ∈ Q0ConditionalMetadataAll.rows, matchesMetadata r m = true := by',
-              '  simp only [Q0SourceExceptionCentersAll.rows, List.mem_append] at hr',
-              '  rcases hr with ' + ' | '.join('hr' for _ in names)]
-    for name, binding in zip(names, binding_names):
-        lines += [f'  · obtain ⟨m, hm, hmatch⟩ := metadata_witness {name}.rows',
-                  f'      {binding}.metadataRows {binding}.metadata_aligned r hr',
-                  f'    have hs := {binding}.metadata_mem m hm',
-                  '    refine ⟨m, ?_, hmatch⟩',
-                  '    simp only [Q0ConditionalMetadataAll.rows, List.mem_append]',
-                  '    tauto']
-    lines += ['', 'end Grothe.UpperChaos.Q0SourceExceptionMetadataAll', '']
-    files['Q0SourceExceptionMetadataAll.lean'] = '\n'.join(lines).encode()
     return files
 
 
@@ -200,13 +212,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true',
                         help='verify existing generated files byte for byte')
-    parser.add_argument('--centers-only', action='store_true',
-                        help='emit/check only saved-row certificates, excluding source metadata binding')
     args = parser.parse_args()
     files = generate()
-    if args.centers_only:
-        files = {name: data for name, data in files.items()
-                 if name.startswith('Q0SourceExceptionCenters')}
     for name, data in files.items():
         if args.check:
             if (OUT / name).read_bytes() != data:

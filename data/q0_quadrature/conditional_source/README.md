@@ -1,41 +1,70 @@
-# Saved exceptional conditional rows
+# Exceptional conditional rows
 
 Agent-ID: codex-aa04.
 
-This certificate decodes 1,263 source little-endian binary64 words from
-417 saved rows. Source ordinals are 3872–4036, 10910–11037 and 17321–17444.
-The degree cutoff is 1 for 411 rows and 2 for six rows; the corresponding
-stored row lengths are three and five. These are saved approximations, not
-claims that omitted true Gaussian coefficients vanish.
+The conditional-node table contains 21,577 node rows. Row i holds binary64
+approximations of conditional Hermite coefficients for the degree-531 canonical
+pairs `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1`, `c+d ≤ 531`, in `(c+d,c)`
+order, restricted to `c+d ≤ cutoff_i`. A full row has 35,777 entries;
+cutoffs 1 and 2 retain three and five entries. These truncations do not assert
+that omitted true Gaussian coefficients vanish.
 
-`exception-centers.bin` is the byte-exact concatenation of those slices.
-`exception-centers.json` records source offsets and slice hashes.
-`conditional_offsets.npy` is the source 21,578-entry offset array.
-`exception-ledger.jsonl` contains the source per-row records, including their
-hashes and cutoffs; `exception-ledger-index.json` records extraction provenance.
-`conditionalnodes_header.bin` preserves the source NPY header. The full-table
-digest is provenance metadata; this generator checks the committed slices,
-offsets and per-row ledger. Neither the full table nor its digest is a Lean premise.
+This certificate selects complete panels touched by the outward 128-bit
+profile interval Horner screen: mark a source node when its computed interval
+contains zero, then include every source node of every marked panel. There are
+413 marked nodes (3873–4033, 10910–11037 and 17321–17444) in 381 panels
+(146–274, 557–684 and 964–1087). Panel closure gives exactly 417 ordinals:
+3872–4036, 10910–11037 and 17321–17444. It adds 3872, 4034, 4035 and 4036.
+The selection is independent of the source degree cutoff: the full table has
+1,837 rows of cutoff at most two, whereas the selected rows have cutoff 1 in
+411 cases and cutoff 2 in six cases. The selected payload contains 1,263 words.
 
-The common-head conditional-node pipeline's `build_conditional_nodes.py`
-produced `conditionalnodes.npy`, `conditional_offsets.npy` and
-`conditional_node_ledger.jsonl`. The committed slices and selected ledger records
-come from those files; their byte positions and hashes are recorded here.
-The ledger also contains numerical error claims such as `center_error_upper`.
-This certificate uses the selected indices, cutoffs and byte hashes; it neither
+`exception-selection.json` contains the selection rule, its expected ranges,
+the 12 integer coefficient intervals from `ProfileRootScreen.coeffs`, exact
+panel endpoints/orders and Gauss root bounds. It pins the source-file hashes
+and contains only the source fields used by this selection. For scale
+`D = 2^128`, the node interval is obtained by outward rounding
+`(lo + (hi-lo)(1+root)/2) D`. Each Horner multiplication takes the minimum
+and maximum of the four endpoint products, then rounds outward after division
+by D; coefficient intervals are added exactly. Zero containment includes both
+endpoints. The generator replays all 21,577 nodes before selecting whole panels.
+This is the selection used by the research diagnostic
+`tools/q0_quadrature/check_source_exception_mass.py`; it is an external
+selection calculation, not a Lean Gaussian sign or enclosure theorem.
+
+`exception-centers.bin` concatenates the selected byte slices exactly.
+`exception-centers.json` records source offsets, slice hashes and the
+`full_source_sha256` provenance field. `conditional_offsets.npy` is the
+21,578-entry source offset array. `exception-ledger.jsonl` contains per-row
+records, including hashes and cutoffs; `exception-ledger-index.json` records
+source-ledger byte positions and line numbers. `conditionalnodes_header.bin`
+contains the source NPY header. The full-table digest is provenance metadata;
+the generator checks the committed slices, offsets and per-row ledger without
+reading or rehashing the full table. Neither the full table nor its digest is a
+Lean premise.
+
+The table producer is `build_conditional_nodes.py` in the research bundle
+`grothendieck-140462-common-head`, at
+`outputs/grothendieck-140462-common-head/build_conditional_nodes.py`
+(SHA256 `e9ac9b8b911141cf683954c8acde3374918fff068002c18bf7d1a49fa3327efe`).
+The recovery packet stores it as `source-packet/common-head/build_conditional_nodes.py`.
+It produces all rows of `conditionalnodes.npy`, `conditional_offsets.npy` and
+`conditional_node_ledger.jsonl`; the 417-row panel selection belongs to this
+certificate. The ledger also contains claims such as `center_error_upper`.
+The certificate uses selected indices, cutoffs and byte hashes; it neither
 consumes nor validates those analytic error claims.
 
-Reproduce only this independent delivery with:
+Reproduce this certificate with:
 
 ```sh
-python3 tools/q0_quadrature/gen_source_exception_centers.py --centers-only --check
+python3 tools/q0_quadrature/gen_source_exception_centers.py --check
 ```
 
-The generator checks pinned slice, offset and ledger hashes, every selected
-row's byte hash, and exact rational norms before producing 16 chunks and their
-aggregate. The default generator scope additionally emits metadata-binding
-modules used by the later source-address assembly; those are outside this
-independent certificate.
+The plain generator invocation writes exactly 16 center chunks and their
+aggregate. `--check` compares those same 17 committed modules byte for byte.
+The generator replays the selection, checks pinned input and row hashes, and
+checks exact rational norms. Metadata-binding modules have a separate generator
+in the source-address assembly; this generator does not emit them.
 
 Lean checks the generated literals by `decide +kernel`. The decoder accepts
 only normal binary64 words in its stated exponent range and proves exact
@@ -45,4 +74,4 @@ coverage. The strict audit allows only the standard logical axioms.
 
 Source-address alignment, numerical enclosures of actual Gaussian integrals,
 physical quadrature weights and the final upper-bound assembly are separate.
-The Python provenance checks do not replace those Lean proofs.
+The Python provenance and selection checks do not replace those Lean proofs.

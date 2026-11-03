@@ -2,7 +2,7 @@ import Grothe.UpperChaos.Q0SourceExceptionCentersAll
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
-/-! Strict trust audit for the complete saved exceptional-row certificate.
+/-! Strict trust audit for the complete exceptional-row certificate.
 This checks the dependency set, not the separate Gaussian enclosures.
 Agent-ID: codex-aa04. -/
 open Lean Elab Command

@@ -120,12 +120,20 @@ $\delta=455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$:
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
 
-The conditional-node table stores finite vectors of binary64 approximations
-to conditional Hermite coefficients. Lean checks scalar magnitude at most one,
-squared row norm at most $121/100$, and source ordinal coverage for 417 selected
-rows. No Gaussian coefficient estimate or upper-bound assembly currently
-consumes this certificate; source-address, basis-normalization and approximation-error
-proofs remain separate.
+The conditional-node table has 21,577 rows of binary64 conditional Hermite
+approximations. Row $i$ uses the degree-531 canonical pairs $0\le c\le266$,
+$0\le d\le265$, $c\le d+1$, in $(c+d,c)$ order, retaining
+$c+d\le\mathrm{cutoff}_i$. A full row has 35,777 entries; cutoffs 1 and 2
+retain three and five. This certificate selects every node in a panel where
+the outward 128-bit profile interval Horner screen contains zero at some node.
+The 413 unresolved nodes occupy 381 panels; panel closure gives exactly the
+417 ordinals 3872--4036, 10910--11037 and 17321--17444, independently of cutoff.
+The rule and its exact inputs are committed in
+\path{data/q0_quadrature/conditional_source/exception-selection.json}.
+Lean checks scalar magnitude at most one, squared row norm at most $121/100$,
+and source ordinal coverage. No Gaussian coefficient estimate or upper-bound
+assembly currently consumes this certificate; source-address, basis-normalization
+and approximation-error proofs remain separate.
 
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every
