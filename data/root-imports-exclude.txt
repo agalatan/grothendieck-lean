@@ -217,6 +217,7 @@ Grothe.UpperChaos.FirstSecondConditionalBandEnergy
 Grothe.UpperChaos.FirstSecondGradeEnergyTargets
 Grothe.UpperChaos.FirstSecondIntegerBinding
 Grothe.UpperChaos.FirstSecondKernelBandEnergy
+Grothe.UpperChaos.LegacySingleCharacterSplit
 Grothe.UpperChaos.PackedDyadicLegacyDelimiter
 Grothe.UpperChaos.PackedDyadicSourceAssembly
 Grothe.UpperChaos.PackedDyadicStructural
