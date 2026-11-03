@@ -26,7 +26,7 @@ the checker-soundness and convexity-assembly modules.
 
 `CapRows` retains `VertexCapsRow`, `ExclCaps` and `nodeCap_of_rangeOK`.
 `CapAssembly` retains the chord check `capChords_check`, convexity assembly
-and `nodeCaps_of_vertexCaps`; `CapHull` is a compatibility import. The common
+and `nodeCaps_of_vertexCaps`. The common
 `NodeCaps` definition lives in `NodeCaps.lean`, which imports `FibreSup`
 without importing `Reduction`. These proof modules belong to the default
 `Grothe` target. `CapNodes` contains the 15 unchanged `vertexCapsRowKK`

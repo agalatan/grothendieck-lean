@@ -31,8 +31,7 @@ Track A isolates the existing 60 `capRangeKK_j` facts for rows 0–11 and
 16–18. The 15 heavy row modules import only `CapRangeDefs` and
 `CapRecipeData`. Computable types, rational row/gate/chord data, numerical
 tables and checker definitions are separate from their soundness proofs.
-`CapRows` and `CapAssembly` remain in the default `Grothe` build; `CapHull`
-is a compatibility import. The 15 unchanged `vertexCapsRowKK` assembly
+`CapRows` and `CapAssembly` remain in the default `Grothe` build. The 15 unchanged `vertexCapsRowKK` assembly
 proofs now live in `CapNodes`, alongside `CapsRest` and the final theorem.
 That theorem composes the same refined-cover result as the default target,
 using `nodeCaps_of_vertexCaps (vertexCaps_of_capsRest h)`; its endpoint is
