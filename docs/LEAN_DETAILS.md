@@ -528,6 +528,27 @@ standard-three guards in `ActualGateMomentJetsAudit`. Numerical bounds for
 the actual source integral, Hilbert--Schmidt caps, the historical Laguerre
 binding, and the final upper endpoint remain OPEN.
 
+The source-norm Gram extension also has complete, UNCOMPILED source bodies.
+`ActualSourceNormGram` expands the squared norm of `actualSourcePolynomial`
+into its finite support quadratic form, preserving every off-diagonal term.
+Source-space L² justifies termwise integration; independence factors each
+Gram entry over the two physical pairs. `BipartiteKernelGramMoments` integrates
+the first source pair with conjugate shifted means. Its residual density is
+exactly the correlated form `I - Bᵀ B`, with the original Schur hypotheses and
+the scalar kernel mass retained.
+
+`BipartiteKernelGramEvaluation` represents the remaining conditional moments
+as finite `P4` polynomials and applies `QuadraticPolynomialMoments` to their
+actual support and coefficients. `ActualSourceNormEvaluation` substitutes the
+original gate parameters and the actual production polynomial, proving
+`integral_scaledTransform_sq_eq_value` and
+`tsum_actual_matrix_energy_le_value` under `gateOK g = true`.
+The value is real and nonnegative. `ActualSourceNormAudit` guards the complete
+transitive dependencies with the standard three axioms. Compilation, a
+reproducible numerical enclosure of `sourceNormValue`, the numerical caps and
+the final upper endpoint remain OPEN; this finite evaluator is not a numerical
+certificate or a substituted source-norm assumption.
+
 `QuadraticPolynomialIntegrability` proves a separable Gaussian majorant for
 `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²` under exactly `A>0` and
 `A*C-B²>0`. The rate `(A*C-B²)/(A+C)` follows from an exact trace identity

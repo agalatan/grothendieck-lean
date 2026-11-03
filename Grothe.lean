@@ -201,6 +201,9 @@ import Grothe.UpperChaos.ActualMatrixFiniteComparison
 import Grothe.UpperChaos.ActualPairMomentCoefficients
 import Grothe.UpperChaos.ActualProductionMomentCoefficients
 import Grothe.UpperChaos.ActualSourceCoefficientExtraction
+import Grothe.UpperChaos.ActualSourceNormAudit
+import Grothe.UpperChaos.ActualSourceNormEvaluation
+import Grothe.UpperChaos.ActualSourceNormGram
 import Grothe.UpperChaos.ActualTaylorCoherent
 import Grothe.UpperChaos.ActualTaylorCoherentAudit
 import Grothe.UpperChaos.ActualTaylorFiniteCoefficients
@@ -587,6 +590,8 @@ import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.BandedContraction
 import Grothe.UpperChaos.BasePairIntegralAudit
 import Grothe.UpperChaos.BipartiteCoefficientJets
+import Grothe.UpperChaos.BipartiteKernelGramEvaluation
+import Grothe.UpperChaos.BipartiteKernelGramMoments
 import Grothe.UpperChaos.BipartitePolynomialL2
 import Grothe.UpperChaos.CanonicalReconstructionNorm
 import Grothe.UpperChaos.CapturedSourceBound

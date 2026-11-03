@@ -395,6 +395,16 @@ proofs and strict audits remain uncompiled. Numerical bounds for that source
 integral, Hilbert--Schmidt caps, the historical Laguerre binding, and the final
 upper endpoint remain open.
 
+The source-norm Gram extension is WIP, with complete proof bodies pending
+compilation. `ActualSourceNormGram` expands the actual production polynomial
+norm into finite Gram sums, preserving every cross term. The bipartite Gram
+modules integrate each source pair through the existing shifted and correlated
+Gaussian moments, retaining the original Schur conditions and kernel masses.
+`ActualSourceNormEvaluation.sourceNormValue` is therefore a finite evaluator
+of the actual scaled source norm and an upper bound for the full weighted
+matrix energy. Its arithmetic enclosure, Hilbert--Schmidt caps, historical
+Laguerre binding and the final endpoint remain open.
+
 For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
 `QuadraticPolynomialIntegrability` proves genuine joint polynomial
 integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate

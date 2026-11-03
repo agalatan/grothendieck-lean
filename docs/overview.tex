@@ -500,6 +500,14 @@ bounded by the Gaussian source integral of the squared norm of the actual
 scaled transform. All these new proof bodies and strict axiom guards remain
 uncompiled. Numerical bounds on that source integral, Hilbert--Schmidt caps,
 the historical Laguerre binding, and the final upper endpoint remain open.
+A further WIP extension, also pending compilation, expands the actual source
+norm into finite Gram sums using the production polynomial's support and
+coefficients. It preserves all cross terms. Each pair Gram entry is evaluated
+by shifted Gaussian moments followed by a finite correlated polynomial moment;
+the original Schur conditions and both kernel masses remain explicit.
+Substitution of the actual gate parameters gives a finite scalar expression
+for the squared source norm, which bounds the full actual weighted matrix
+energy. Its numerical enclosure and the final endpoint remain open.
 For the correlated form
 $Q=A|z|^2+2B\operatorname{Re}(z\overline w)+C|w|^2$, the exact conditions
 $A>0$ and $AC-B^2>0$ give the positive coercive rate
