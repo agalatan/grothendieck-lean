@@ -27,13 +27,14 @@ theorem splitOnAux_singleton (s : String) (c : Char)
     simp [String.Pos.Raw.get, String.Pos.Raw.utf8GetAux]
   have hnext : (0 : String.Pos.Raw).next (String.ofList [c]) = ⟨c.utf8Size⟩ := by
     simp only [String.Pos.Raw.next, hget]
-    rfl
+    apply String.Pos.Raw.ext
+    simp
   have hend : (⟨c.utf8Size⟩ : String.Pos.Raw).atEnd (String.ofList [c]) = true := by
-    simp [String.Pos.Raw.atEnd, String.utf8ByteSize_ofList]
+    simp [String.Pos.Raw.atEnd]
   rw [String.splitOnAux.eq_1, String.splitAux.eq_1]
   by_cases he : i.atEnd s = true
-  · simp only [he, ↓reduceIte]
-  · simp only [he, ↓reduceIte, hget]
+  · simp only [he, ↓reduceIte, ↓reduceDIte]
+  · simp only [he, hget]
     by_cases hc : (i.get s == c) = true
     · have hchar : i.get s = c := by simpa only [beq_iff_eq] using hc
       have hback : (i.next s).unoffsetBy ⟨c.utf8Size⟩ = i := by
@@ -41,7 +42,7 @@ theorem splitOnAux_singleton (s : String) (c : Char)
         simp [String.Pos.Raw.next, hchar]
       simp only [hc, ↓reduceIte, hnext, hend, hback]
       exact splitOnAux_singleton s c (i.next s) (i.next s) (b.extract s i :: r)
-    · simp only [hc, ↓reduceIte, String.Pos.Raw.unoffsetBy_zero]
+    · simp only [hc, String.Pos.Raw.unoffsetBy_zero]
       exact splitOnAux_singleton s c b (i.next s) r
 termination_by s.utf8ByteSize - i.byteIdx
 decreasing_by
@@ -58,7 +59,7 @@ theorem legacy_split_tokens (s : String) (c : Char) :
   change (String.splitToList s (· == c)).map String.toList = s.toList.splitOn c
   rw [String.splitToList_of_valid]
   simp only [List.map_map, Function.comp_def, String.toList_ofList,
-    List.map_id_fun', id_eq]
+    List.map_id_fun', id_eq, List.splitOn]
 
 
 end Grothe.UpperChaos.PackedDyadic.Structural

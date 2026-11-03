@@ -130,12 +130,13 @@ snapshot() {
   df -h .
 }
 
+target_count=$(plan | wc -l | tr -d '[:space:]')
 index=0
 while IFS= read -r target; do
   index=$((index + 1))
   stem=$(printf '%03d-%s' "$index" "${target##*.}")
   metric="$OUT/first-second-energy-metrics/$stem"
-  printf '\n[%d/283] %s\n' "$index" "$target"
+  printf '\n[%d/%d] %s\n' "$index" "$target_count" "$target"
   snapshot > "$metric.before.txt"
   if ! disk_check "$MIN_FREE_GIB" "$target" "$metric.disk.txt"; then
     printf 'Stopping before %s: less than %s GiB free in the workspace.\n' "$target" "$MIN_FREE_GIB" >&2
@@ -158,7 +159,7 @@ while IFS= read -r target; do
   fi
 done < <(plan)
 
-if [ "$index" -ne 283 ]; then
+if [ "$index" -ne "$target_count" ]; then
   printf 'Unexpected plan size: %s targets\n' "$index" >&2
   exit 1
 fi
