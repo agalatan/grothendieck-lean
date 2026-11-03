@@ -2,6 +2,8 @@ import Grothe.UpperChaos.AnalyticEnvelopeCell179
 import Grothe.UpperChaos.AnalyticEnvelopeCell180
 import Grothe.UpperChaos.AnalyticEnvelopeCell181
 import Grothe.UpperChaos.AnalyticEnvelopeCell182
+import Grothe.UpperChaos.Q0BasePairRoot2Integral
+import Grothe.UpperChaos.Q0BasePairRoot6Integral
 import Grothe.UpperChaos.Q0BasePairRoot7Integral
 import Grothe.UpperChaos.Q0BasePairRoot10Integral
 import Grothe.UpperChaos.Q0BasePairRoot11Integral
@@ -25,9 +27,13 @@ open Lean Elab Command
 run_cmd do
   let allowed : Array Name := #[`propext, `Classical.choice, `Quot.sound]
   let mut targets : Array Name := #[
+    ``Grothe.UpperChaos.Q0BasePairRoot2Integral.fixed_root_integrals_mem,
+    ``Grothe.UpperChaos.Q0BasePairRoot6Integral.fixed_root_integrals_mem,
     ``Grothe.UpperChaos.Q0BasePairRoot7Integral.fixed_root_integrals_mem,
     ``Grothe.UpperChaos.Q0BasePairRoot10Integral.fixed_root_integrals_mem,
     ``Grothe.UpperChaos.Q0BasePairRoot11Integral.integrals_mem,
+    ``Grothe.UpperChaos.Q0BasePairProductionRoots.root2_integrals_mem,
+    ``Grothe.UpperChaos.Q0BasePairProductionRoots.root6_integrals_mem,
     ``Grothe.UpperChaos.Q0BasePairProductionRoots.root7_integrals_mem,
     ``Grothe.UpperChaos.Q0BasePairProductionRoots.root10_integrals_mem,
     ``Grothe.UpperChaos.Q0BasePairProductionRoots.root11_integrals_mem]

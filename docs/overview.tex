@@ -99,6 +99,14 @@ form a shared Lean foundation. The upper rounding proof depends on this foundati
 independently of the lower row certificates.
 
 \subsection{Upper bounds: rounding schemes}
+
+The formal quadrature development includes exact polynomial identities for
+each original Gauss order from $1$ to $64$.  Rational polynomial certificates,
+interpreted through LeanCert, prove orthogonality and the weight identity;
+these give exact integration for polynomials of degree below $2n$ at order $n$.
+The certificates use kernel reduction and are part of the main Lean build.
+The selected numerical nodes and the analytic remainder require separate
+proofs; this algebraic result alone does not finish the upper endpoint.
 Given unit vectors, project a Gaussian onto them and round: $\varepsilon_i=f(\langle G,x_i\rangle)$ with $|f|\le1$. The
 correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
 \[
@@ -299,11 +307,37 @@ kernel reduction. On the reciprocal root of strip 3, three such leaves
 combine with an algebraic leaf. On the direct root of strip 5, twelve
 algebraic leaves combine. Exact midpoint identities prove both complete
 base-pair integrals from these checked cells without numerical premises.
+The direct roots of strips 1 and 3 similarly combine all twenty-four and
+fifteen algebraic leaves, respectively, with the same exact midpoint assembly.
 The explicit integrands are identified with the two actual production
 kernels at Taylor index zero, including the reciprocal Jacobian. These
-identities transfer the three complete-root enclosures at the fixed damping
+identities transfer the five complete-root enclosures at the fixed damping
 without numerical hypotheses. The remaining leaves, other roots and final
 band energies remain separate obligations.
+Conjugation invariance of the full Gaussian measure and actual base
+response also proves that both original Gaussian coefficients, including
+their rational frozen corrections, are real. Real interval errors thus
+give the same complex norm errors without a truncation premise.
+
+The original Legendre brackets for orders $1$ through $64$ have exact
+integer sign certificates and Lean proofs of root existence and uniqueness.
+The actual conditional Gaussian coefficients satisfy a joint Bessel bound;
+their selected contraction indices and profile sign exponent $c+d$ are
+identified in Lean. Reflection is proved for the actual phase integrals and
+their normalized production coefficients, with the exact factor
+$\sqrt{(d+1)/c}$ for the lookup $(c,d)\mapsto(d+1,c-1)$ when $d+1<c$.
+This factor is at most one; numerical reconstruction errors remain to be checked.
+A shared quadrature theorem derives the original weight
+formula and exactness below twice the rule order from finite polynomial
+identities, using integrated root quotients, Lagrange interpolation and
+polynomial division. Instantiating those identities for the original rules,
+the numerical weight bindings and analytic remainder remain work in progress.
+The semantic bridge now uses LeanCert's exact polynomial operations.
+Generated certificates for all $64$ orders include the recurrence,
+orthogonality, derivative and Bezout identities, squared norms, and leading
+coefficients. Their full Lean replay remains work in progress. The family
+and its strict axiom audit are included in the main root so that the
+combined delivery checks all these obligations before acceptance.
 
 A second route uses a finite-head estimate for the actual kernel directly;
 its coefficient enclosures and numerical head estimate remain work in progress.
@@ -559,6 +593,14 @@ The native head is $28153/10^{12}$ ($3.09\%$).\\
 \bottomrule
 \end{tabular}
 \end{center}
+
+The degree-531 canonical pair table indexes conditional Hermite node values
+by pairs $(c,d)$ satisfying $0\le c\le266$, $0\le d\le265$,
+$c\le d+1$ and $c+d\le531$, ordered by $(c+d,c)$. Lean verifies its
+finite rank, ordinal coverage and uniqueness certificate. No downstream Lean
+result yet consumes this certificate; the Gaussian node-value enclosures
+remain part of the upper-bound work in progress.
+
 The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover, the second, fourth and sixth phase moments and the squared radial phase tail,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
 The native facts (cap-range checks, Hardy region and circle checks, and others) are listed in \path{data/axioms/native.txt}; the report is \path{scratch/Axioms.lean}, with its required declarations in \path{data/axioms/required.txt}.
