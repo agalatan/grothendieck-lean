@@ -1,0 +1,73 @@
+name: Land on approval
+
+# A ready/ delivery lands only with an approving review of exactly its checked commit (AGENTS.md §7a). When the
+# approval (scripts/review.sh: commit status "Independent review" = success) arrives after the proof check is already
+# green, this lands it: it takes the checked merge recorded by that green check and runs the same landing step as
+# lean.yml's finish job (scripts/land_ready.sh). Nothing is rebuilt; if master moved meanwhile, the delivery is
+# re-checked against the new master and lands at the end of that check.
+
+on:
+  status
+
+permissions:
+  contents: write
+  actions: write
+  issues: write
+  statuses: write
+
+jobs:
+  land:
+    if: github.event.context == 'Independent review' && github.event.state == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    concurrency:
+      group: land-${{ github.event.sha }}
+      cancel-in-progress: false
+    steps:
+      - name: The ready/ branch whose tip is the approved commit, and its green check
+        id: find
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.event.sha }}
+          BRANCHES: ${{ toJSON(github.event.branches) }}
+        run: |
+          branch=$(jq -r --arg sha "$SHA" '.[] | select((.name | startswith("ready/")) and .commit.sha == $sha) | .name' <<< "$BRANCHES" | head -1)
+          [ -n "$branch" ] || { echo "no ready/ branch has ${SHA:0:12} as its tip: nothing to land"; exit 0; }
+          run=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/lean.yml/runs?head_sha=${SHA}&per_page=20" \
+            --jq "[.workflow_runs[] | select(.head_branch == \"${branch}\" and .conclusion == \"success\")] | first | .id // empty")
+          if [ -z "$run" ]; then
+            echo "::notice::approval recorded for ${branch}; its proof check is not green yet, so it lands at the end of that check"
+            exit 0
+          fi
+          echo "branch=${branch}" >> "$GITHUB_OUTPUT"; echo "run=${run}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v5
+        if: steps.find.outputs.run != ''
+        with:
+          ref: master
+          fetch-depth: 0
+          token: ${{ secrets.MERGE_TOKEN || github.token }}
+
+      - name: The checked merge recorded by the green check
+        id: info
+        if: steps.find.outputs.run != ''
+        continue-on-error: true   # expired after 7 days: then the delivery is simply checked again
+        uses: actions/download-artifact@v4
+        with:
+          name: merge-info
+          run-id: ${{ steps.find.outputs.run }}
+          github-token: ${{ github.token }}
+
+      - name: Re-check the delivery if its checked merge is no longer available
+        if: steps.find.outputs.run != '' && steps.info.outcome != 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run lean.yml --ref "${{ steps.find.outputs.branch }}"
+
+      - name: Land it
+        if: steps.find.outputs.run != '' && steps.info.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ steps.find.outputs.branch }}
+          CHECK_RUN: ${{ steps.find.outputs.run }}
+        run: scripts/land_ready.sh
