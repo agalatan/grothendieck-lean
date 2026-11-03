@@ -210,9 +210,11 @@ import Grothe.UpperChaos.ActualMatrixRectangleTail
 import Grothe.UpperChaos.ActualMatrixTailAudit
 import Grothe.UpperChaos.ActualPairMomentCoefficients
 import Grothe.UpperChaos.ActualProductionMomentCoefficients
+import Grothe.UpperChaos.ActualRationalSourcePolynomial
 import Grothe.UpperChaos.ActualRectangleCoefficientAction
 import Grothe.UpperChaos.ActualSelectedBandTails
 import Grothe.UpperChaos.ActualSourceCoefficientExtraction
+import Grothe.UpperChaos.ActualSourceCoefficientScaling
 import Grothe.UpperChaos.ActualSourceNormAudit
 import Grothe.UpperChaos.ActualSourceNormEvaluation
 import Grothe.UpperChaos.ActualSourceNormGram
@@ -1851,6 +1853,7 @@ import Grothe.UpperChaos.Q0SourceExceptionCentersChunk13
 import Grothe.UpperChaos.Q0SourceExceptionCentersChunk14
 import Grothe.UpperChaos.Q0SourceExceptionCentersChunk15
 import Grothe.UpperChaos.Q0WickChunking
+import Grothe.UpperChaos.QuadraticMomentScaling
 import Grothe.UpperChaos.QuadraticPolynomialIntegrability
 import Grothe.UpperChaos.QuadraticPolynomialMoments
 import Grothe.UpperChaos.QuadraticPolynomialMomentsAudit
@@ -1862,6 +1865,7 @@ import Grothe.UpperChaos.RadialRepair
 import Grothe.UpperChaos.RationalComplexHermite
 import Grothe.UpperChaos.RationalPhaseImaginary
 import Grothe.UpperChaos.RationalPhaseInvariant
+import Grothe.UpperChaos.RationalQuadraticMoments
 import Grothe.UpperChaos.RationalSourceParity
 import Grothe.UpperChaos.RationalSqrtFloor
 import Grothe.UpperChaos.RationalSquaredRadius
