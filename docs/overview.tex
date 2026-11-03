@@ -350,8 +350,8 @@ pairs into $\nu^4/(\delta_0\delta_1)$. One rational parameter table covers the
 fourteen selected finite bands and four coordinate exclusions. These parameter
 checks do not assume the numerical tail bounds recorded in the input files.
 Identification with the Hilbert--Schmidt quantity used in the upper-bound
-argument, polynomial insertion, the Fock coefficient identity and numerical
-tail estimates remain separate obligations.
+argument, the actual Hermite coefficient identity and numerical tail
+estimates remain separate obligations.
 A Gaussian Laplace representation of complex phase is proved exactly,
 including the zero argument, integrability and a uniform absolute-integral
 bound. Absolute Fubini exchange applies this representation to the actual
@@ -390,17 +390,29 @@ is a finite polynomial times the product of two factors
  r^{-1}\exp\bigl(-(1-r^{-1})(xy+uv)+r^{-1}(xu+yv)\bigr).
 \]
 The total normalization is $r^{-2}$ under the normalized Gaussian product
-measure. The normalized Hermite coefficient identity, weighted Fock bound
-and exact binding to the historical Laguerre polynomial remain open;
-no numerical Hilbert--Schmidt cap is asserted.
+measure. The source-space extension is work in progress: complete proof
+bodies for the following L2 and Bessel statements are saved, pending compilation.
+For the real bipartite coupling matrix $M$, the existing gate $I-M^TM>0$
+gives a positive rate $\epsilon=\min(1/2,\kappa/3)$ by completion of squares,
+where $\kappa=\det(I-M^TM)/\operatorname{tr}(I-M^TM)$.
+Every finite polynomial times the coupled Gaussian is consequently in $L^2$.
+A polynomial-coefficient lift of the moment recurrence identifies the actual
+scaled transform with this finite-polynomial kernel, retaining both mass factors.
+The normalized holomorphic monomials in eight Gaussian sources are orthonormal,
+so their coefficient energies are summable and bounded by the squared source
+norm. Gate coordinates are $((y,u),(x,v))$ per physical coordinate; matrix
+indices $(m,n)$ therefore map to $((m_q,n_p),(m_p,n_q))$ explicitly.
+The actual normalized Hermite matrix-entry identity, exact binding to the
+historical Laguerre polynomial and numerical Hilbert--Schmidt caps remain open.
 For the correlated form
 $Q=A|z|^2+2B\operatorname{Re}(z\overline w)+C|w|^2$, the exact conditions
 $A>0$ and $AC-B^2>0$ give the positive coercive rate
 $(AC-B^2)/(A+C)$. A separable Gaussian majorant then proves joint
 integrability of every finite mixed polynomial. Fubini and the first-coordinate
 mean $-(B/A)w$ reduce its integral to a finite Wick sum at outer rate
-$(AC-B^2)/A$, with zeroth mass $1/(AC-B^2)$. The historical operator identity,
-full bipartite polynomial insertion and numerical tail estimates remain open.
+$(AC-B^2)/A$, with zeroth mass $1/(AC-B^2)$. Full bipartite polynomial
+insertion belongs to the source-space WIP batch above; the historical operator
+identity and numerical tail estimates remain open.
 For each finite center, fixing the first coordinate gives its exact polynomial
 slice in the second coordinate. The actual source $\overline c(i\varphi)^j$
 factors into this polynomial and Gaussian damping with conditional rate

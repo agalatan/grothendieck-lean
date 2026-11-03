@@ -322,17 +322,24 @@ retaining the factor `exp(a*b/rate)/rate` and the means `b/rate`, `a/rate`.
 `r = 1 + j*phaseEpsQ`. For eight independent coherent sources, it proves
 absolute integrability and evaluates the transform as two Gaussian factors
 times a finite polynomial, retaining total normalization `r^-2`.
-The normalized Hermite coefficient identity, weighted Fock bound and exact
-binding to the historical Laguerre polynomial remain open; these formulas
-supply no numerical Hilbert--Schmidt caps.
+The next source-space batch is WIP, with complete proof bodies pending
+compilation. `BipartitePolynomialL2` derives coercive Gaussian domination from
+`gateOK`, including every finite polynomial insertion.
+`ScaledActualCoherentL2` constructs the actual transformed polynomial and
+proves the scaled transform belongs to Gaussian L². `GaussianFockBessel`
+and `GateFockCoefficients` give summability and a squared-norm upper bound for
+its normalized monomial coefficients, with explicit gate order
+`((y,u),(x,v))` per physical coordinate. The normalized Hermite matrix-entry
+identity, binding to the historical Laguerre polynomial and numerical
+Hilbert--Schmidt caps remain open.
 For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
 `QuadraticPolynomialIntegrability` proves genuine joint polynomial
 integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate
 is `(A*C-B²)/(A+C)`. `QuadraticPolynomialMoments` then applies Fubini and
 reduces every finite mixed polynomial integral to a finite Wick sum at the
 remaining rate `(A*C-B²)/A`; its zeroth mass is `1/(A*C-B²)`.
-The historical operator identity and polynomial insertion into the full
-bipartite kernel remain separate obligations.
+The source-space WIP batch above supplies polynomial insertion into the full
+bipartite kernel. The historical operator identity remains separate.
 
 The weighted Gaussian kernel has exact mass formulas. A common `gateOK`
 certificate supplies the real covariance conditions for either physical pair.
@@ -342,8 +349,8 @@ certificate supplies the real covariance conditions for either physical pair.
 The parameter table covers the fourteen selected finite bands and four
 coordinate exclusions. Its checks prove positivity, not the numerical tail
 bounds recorded in the input files. The defined kernel is not yet identified
-with `HS_{j,I}` in `docs/UPPER_STATUS.md`; polynomial insertion, the Fock
-coefficient identity and numerical Hilbert--Schmidt bounds remain separate.
+with `HS_{j,I}` in `docs/UPPER_STATUS.md`; the actual Hermite coefficient
+identity and numerical Hilbert--Schmidt bounds remain separate.
 
 `GradedHermitePhaseSlice` expresses each actual Taylor source as a polynomial
 in the conditional coordinate times its exact Gaussian damping.

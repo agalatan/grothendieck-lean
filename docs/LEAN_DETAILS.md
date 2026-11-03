@@ -367,9 +367,33 @@ polynomial and one Gaussian factor per coordinate:
 Thus normalized `mu2` retains total mass factor `r^-2`, with no extra factor of
 pi. `ActualTaylorCoherentAudit` enforces the same standard-three boundary for
 the production identification, integrability and both integral formulas.
-Identification of its coefficients with the normalized Hermite matrix entries,
-the weighted Fock bound, and exact equality with the historical producer's
-Laguerre polynomial remain open. No numerical Hilbert--Schmidt cap follows yet.
+The source-space L²/Bessel extension below is WIP: its complete proof bodies
+are saved, but have not yet been compiled. `GaussianFockBessel` constructs the
+eight-coordinate normalized holomorphic monomials from Hermite orthogonality.
+Their coefficient energies are summable and satisfy Bessel's inequality for
+any Gaussian L² function; completeness of the holomorphic subspace is not
+assumed.
+
+`BipartitePolynomialL2` handles a real coupling matrix `M` under the existing
+positive-definiteness gate for `I - MᵀM`. Completion of squares and the
+positive rate `epsilon = min(1/2, coerciveRate/3)` dominate every finite
+polynomial times the kernel by an integrable Gaussian. Tensoring both physical
+coordinates gives source-space L² for any finite polynomial in eight variables.
+`ScaledActualCoherentL2` lifts the independent-source moment recurrence to
+polynomial coefficients, constructs the production multiplier's transformed
+polynomial, and proves its evaluation and exact source scaling. Its
+`memLp_scaledTransform` requires only `gateOK g = true`.
+
+`GateFockCoefficients` keeps source order `((y,u),(x,v))` explicit. For each
+physical coordinate, outgoing/incoming Hermite indices `(m,n)` map to
+`((m.q,n.p),(m.p,n.q))`. This is a proved equivalence, with a pointwise
+normalized-monomial transport theorem. Applying Bessel to the actual scaled
+transform gives coefficient summability and a norm upper bound in that order.
+`ActualCoherentBesselAudit` registers transitive standard-three checks for
+these interfaces; those guards still await compilation with this batch.
+Identification with the normalized Hermite matrix entries, exact equality
+with the historical producer's Laguerre polynomial, and numerical
+Hilbert--Schmidt caps remain open.
 
 `QuadraticPolynomialIntegrability` proves a separable Gaussian majorant for
 `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²` under exactly `A>0` and
@@ -381,8 +405,9 @@ polynomials are genuinely integrable before applying product Fubini.
 `momentValue`. The first-coordinate mean is `-(B/A)*w`, the outer rate is
 `(A*C-B²)/A`, and `momentValue_zero` retains mass `1/(A*C-B²)`.
 `QuadraticPolynomialMomentsAudit` enforces the same standard-three trust
-boundary. The historical Fock/operator identity, polynomial insertion into
-the full bipartite kernel and numerical Hilbert--Schmidt caps remain open.
+boundary. Polynomial insertion into the full bipartite kernel is supplied
+by the WIP source-space batch above; the historical Fock/operator identity
+and numerical Hilbert--Schmidt caps remain open.
 
 `AffineGaussianSquare` centers the
 conditional density without dividing by the radial profile. For arbitrary

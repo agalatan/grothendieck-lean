@@ -641,6 +641,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.BandedContraction.frobenius_two_sided
 #print axioms Grothe.UpperChaos.BandedContraction.frobenius_two_sided_of_caps
 #print axioms Grothe.UpperChaos.BandedContraction.sum_sq_error_of_block_ratios
+#print axioms Grothe.UpperChaos.BipartitePolynomialL2.memLp_finite_polynomial_kernel
+#print axioms Grothe.UpperChaos.BipartitePolynomialL2.memLp_tensor_polynomial
+#print axioms Grothe.UpperChaos.BipartitePolynomialL2.norm_kernel_sq_le
+#print axioms Grothe.UpperChaos.BipartitePolynomialL2.source_coercive
 #print axioms Grothe.UpperChaos.Bm_eq_integral
 #print axioms Grothe.UpperChaos.Bm_polyKernel
 #print axioms Grothe.UpperChaos.CommonDenAppend.commonDen_append
@@ -682,6 +686,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.FrozenSourceBinding.source_array
 #print axioms Grothe.UpperChaos.FrozenSourceBinding.source_size
 #print axioms Grothe.UpperChaos.GT_rot2
+#print axioms Grothe.UpperChaos.GateFockCoefficients.monomial8_gate_eq_coherent
+#print axioms Grothe.UpperChaos.GateFockCoefficients.summable_scaledTransform_coefficients
+#print axioms Grothe.UpperChaos.GateFockCoefficients.tsum_gate_coefficient_sq_eq
+#print axioms Grothe.UpperChaos.GateFockCoefficients.tsum_scaledTransform_coefficients_le
 #print axioms Grothe.UpperChaos.GaussianDenominatorEnvelope.companion_inverse_sq
 #print axioms Grothe.UpperChaos.GaussianDenominatorEnvelope.companion_inverse_sq_box
 #print axioms Grothe.UpperChaos.GaussianDenominatorEnvelope.direct_companion
@@ -690,6 +698,12 @@ import Grothe
 #print axioms Grothe.UpperChaos.GaussianDenominatorEnvelope.inverse_sq_box
 #print axioms Grothe.UpperChaos.GaussianDenominatorEnvelope.pow_mul_exp_neg_le_factorial
 #print axioms Grothe.UpperChaos.GaussianDenominatorEnvelope.pow_one_add_mul_exp_neg_le
+#print axioms Grothe.UpperChaos.GaussianFockBessel.finite_coefficient8_sq_le
+#print axioms Grothe.UpperChaos.GaussianFockBessel.orthonormal_monomialVector8
+#print axioms Grothe.UpperChaos.GaussianFockBessel.summable_coefficient8_sq
+#print axioms Grothe.UpperChaos.GaussianFockBessel.summable_matrix_coefficient_sq
+#print axioms Grothe.UpperChaos.GaussianFockBessel.tsum_coefficient8_sq_le
+#print axioms Grothe.UpperChaos.GaussianFockBessel.tsum_matrix_coefficient_sq_le
 #print axioms Grothe.UpperChaos.GaussianNormalizationInterval.normalization_mem
 #print axioms Grothe.UpperChaos.GaussianNormalizationInterval.normalized_mem
 #print axioms Grothe.UpperChaos.HardyReal.hardy_GT
@@ -998,6 +1012,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.RetainedMeshReality.retainedGaussianCoefficient_im
 #print axioms Grothe.UpperChaos.RetainedMeshReality.retainedMeshValue_im
 #print axioms Grothe.UpperChaos.RetainedMeshReality.retainedReciprocalMeshValue_im
+#print axioms Grothe.UpperChaos.ScaledActualCoherentL2.eval_actualSourcePolynomial
+#print axioms Grothe.UpperChaos.ScaledActualCoherentL2.map_liftedMoment
+#print axioms Grothe.UpperChaos.ScaledActualCoherentL2.memLp_scaledTransform
+#print axioms Grothe.UpperChaos.ScaledActualCoherentL2.scaledTransform_eq
+#print axioms Grothe.UpperChaos.ScaledActualCoherentL2.scaled_pair_coupling
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_le
 #print axioms Grothe.UpperChaos.SchurMain.norm_HholPair_sq_le
 #print axioms Grothe.UpperChaos.SharedMomentTable.eq_momentRec_of_bounded_equations

@@ -190,6 +190,7 @@ import Grothe.Upper.IntervalSound
 import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.Realise
 import Grothe.Upper.Residual
+import Grothe.UpperChaos.ActualCoherentBesselAudit
 import Grothe.UpperChaos.ActualTaylorCoherent
 import Grothe.UpperChaos.ActualTaylorCoherentAudit
 import Grothe.UpperChaos.AdaptiveRectangleComposition
@@ -573,6 +574,7 @@ import Grothe.UpperChaos.ArraySquareEnergy
 import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.BandedContraction
 import Grothe.UpperChaos.BasePairIntegralAudit
+import Grothe.UpperChaos.BipartitePolynomialL2
 import Grothe.UpperChaos.CapturedSourceBound
 import Grothe.UpperChaos.CapturedTail
 import Grothe.UpperChaos.CenterNormBypass
@@ -798,10 +800,12 @@ import Grothe.UpperChaos.FrozenSource.Grade090Production
 import Grothe.UpperChaos.FrozenSource.Grade090Sizes
 import Grothe.UpperChaos.FrozenSource.Sizes
 import Grothe.UpperChaos.FrozenSourceBinding
+import Grothe.UpperChaos.GateFockCoefficients
 import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussOp
 import Grothe.UpperChaos.GaussianDenominatorEnvelope
 import Grothe.UpperChaos.GaussianDensityBounds
+import Grothe.UpperChaos.GaussianFockBessel
 import Grothe.UpperChaos.GaussianNormalizationInterval
 import Grothe.UpperChaos.GaussianSmallBall
 import Grothe.UpperChaos.GenericRationalGradeAggregation
@@ -1572,6 +1576,7 @@ import Grothe.UpperChaos.RestrictedWick
 import Grothe.UpperChaos.RetainedMeshReality
 import Grothe.UpperChaos.RetainedQuadraturePartition
 import Grothe.UpperChaos.Rounder
+import Grothe.UpperChaos.ScaledActualCoherentL2
 import Grothe.UpperChaos.SchurBound
 import Grothe.UpperChaos.SchurIntegrability
 import Grothe.UpperChaos.SchurKernel
