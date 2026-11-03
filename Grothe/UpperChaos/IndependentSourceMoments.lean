@@ -113,7 +113,7 @@ private theorem hasDerivAt_integrand_a (p q : ℕ) (rate : ℝ) (a b z : ℂ) :
     exact ((hasDerivAt_mul_const (x := a) z).const_add
       (-((rate - 1 : ℝ) : ℂ) * (Complex.normSq z : ℂ))).add_const (b * conj z)
   convert HasDerivAt.const_mul (z ^ p * conj z ^ q) harg.cexp using 1 <;>
-    simp only [integrand, pow_succ] <;> ring
+    simp only [integrand, pow_succ]; ring
 
 private theorem hasDerivAt_integrand_b (p q : ℕ) (rate : ℝ) (a b z : ℂ) :
     HasDerivAt (fun t : ℂ => integrand rate a t p q z)
@@ -124,7 +124,7 @@ private theorem hasDerivAt_integrand_b (p q : ℕ) (rate : ℝ) (a b z : ℂ) :
     exact (hasDerivAt_mul_const (x := b) (conj z)).const_add
       (-((rate - 1 : ℝ) : ℂ) * (Complex.normSq z : ℂ) + a * z)
   convert HasDerivAt.const_mul (z ^ p * conj z ^ q) harg.cexp using 1 <;>
-    simp only [integrand, pow_succ] <;> ring
+    simp only [integrand, pow_succ]; ring
 
 private theorem norm_le_ball_bound {a x : ℂ} (hx : x ∈ Metric.ball a 1) :
     ‖x‖ ≤ ‖a‖ + 1 := by
