@@ -328,10 +328,6 @@ lemma chaos3_reP (c : Fin n × Fin n × Fin n → ℂ) : Chaos3 (reP n c) :=
   Chaos3.finset_sum _ fun _ _ =>
     ((chaos3_imW n _ _ _).const_mul _).sub ((chaos3_reW n _ _ _).const_mul _)
 
-lemma chaos3_imP (c : Fin n × Fin n × Fin n → ℂ) : Chaos3 (imP n c) :=
-  Chaos3.finset_sum _ fun _ _ =>
-    ((chaos3_imW n _ _ _).const_mul _).add ((chaos3_reW n _ _ _).const_mul _)
-
 lemma circular_reP_imP (c : Fin n × Fin n × Fin n → ℂ) : Circular (Jstd n) (reP n c) (imP n c) where
   anti := Jstd_anti n
   sq_diag := Jstd_sq_diag n

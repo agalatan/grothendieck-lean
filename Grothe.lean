@@ -75,7 +75,6 @@ import Grothe.LowerAnalytic.CapExport
 import Grothe.LowerAnalytic.CapGrid
 import Grothe.LowerAnalytic.CapGridOK
 import Grothe.LowerAnalytic.CapGridT
-import Grothe.LowerAnalytic.CapHull
 import Grothe.LowerAnalytic.CapLinAlg
 import Grothe.LowerAnalytic.CapLinAlgDefs
 import Grothe.LowerAnalytic.CapMajorant
@@ -191,7 +190,6 @@ import Grothe.Upper.IntervalSound
 import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.Realise
 import Grothe.Upper.Residual
-import Grothe.Upper.WeightedUnion
 import Grothe.UpperChaos.AdaptiveRectangleComposition
 import Grothe.UpperChaos.AdaptiveRectangleEnclosure
 import Grothe.UpperChaos.AdaptiveRectangleEnvelope
@@ -575,7 +573,6 @@ import Grothe.UpperChaos.BandedContraction
 import Grothe.UpperChaos.BasePairIntegralAudit
 import Grothe.UpperChaos.CapturedSourceBound
 import Grothe.UpperChaos.CapturedTail
-import Grothe.UpperChaos.CenterNormBypass
 import Grothe.UpperChaos.Charge
 import Grothe.UpperChaos.ChargeBandApproximation
 import Grothe.UpperChaos.ChargeBandEnclosure
@@ -596,7 +593,6 @@ import Grothe.UpperChaos.ConditionalGaussianBase
 import Grothe.UpperChaos.ConditionalGaussianPhase
 import Grothe.UpperChaos.ConditionalGaussianPolynomial
 import Grothe.UpperChaos.ConditionalGaussianTail
-import Grothe.UpperChaos.DFTAliasFilter
 import Grothe.UpperChaos.DampedMoments
 import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.DiagonalSum
@@ -606,7 +602,6 @@ import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
 import Grothe.UpperChaos.ExponentialHorner
 import Grothe.UpperChaos.ExponentialTail
-import Grothe.UpperChaos.FiniteSampleError
 import Grothe.UpperChaos.FirstSecondCapturedTail
 import Grothe.UpperChaos.FixedChaosLinear
 import Grothe.UpperChaos.FixedChaosSmoothing
@@ -798,8 +793,6 @@ import Grothe.UpperChaos.FrozenSource.Grade090Production
 import Grothe.UpperChaos.FrozenSource.Grade090Sizes
 import Grothe.UpperChaos.FrozenSource.Sizes
 import Grothe.UpperChaos.FrozenSourceBinding
-import Grothe.UpperChaos.GTAliasTail
-import Grothe.UpperChaos.GTAnalyticSeries
 import Grothe.UpperChaos.Gauss2
 import Grothe.UpperChaos.GaussOp
 import Grothe.UpperChaos.GaussianDenominatorEnvelope
@@ -852,7 +845,6 @@ import Grothe.UpperChaos.HermiteFinite
 import Grothe.UpperChaos.HolIntegral
 import Grothe.UpperChaos.IntervalIntegralBounds
 import Grothe.UpperChaos.InvariantMoments
-import Grothe.UpperChaos.JointAliasBound
 import Grothe.UpperChaos.JointSampleLedger
 import Grothe.UpperChaos.Kernel2
 import Grothe.UpperChaos.KernelStability
@@ -861,7 +853,6 @@ import Grothe.UpperChaos.LeanCertAuxiliaryCutoff
 import Grothe.UpperChaos.LeanCertPilot
 import Grothe.UpperChaos.LeanCertProductionPanel
 import Grothe.UpperChaos.LeanCertProductionProfile
-import Grothe.UpperChaos.LeanCertProductionReality
 import Grothe.UpperChaos.LocalAffineSquareIntegralBounds
 import Grothe.UpperChaos.LocalizedComparison
 import Grothe.UpperChaos.LstarL
@@ -875,12 +866,9 @@ import Grothe.UpperChaos.MobiusImproperLimit
 import Grothe.UpperChaos.MobiusPowerAlgebra
 import Grothe.UpperChaos.MobiusSeedImproper
 import Grothe.UpperChaos.MobiusSeedPullback
-import Grothe.UpperChaos.NineCapturedSources
 import Grothe.UpperChaos.OUOp
 import Grothe.UpperChaos.OddParseval
 import Grothe.UpperChaos.OddSeries
-import Grothe.UpperChaos.OriginalEnergyBudget
-import Grothe.UpperChaos.OriginalEnergyNoMass
 import Grothe.UpperChaos.OriginalMomentIntegrable
 import Grothe.UpperChaos.OriginalMomentPullback
 import Grothe.UpperChaos.OriginalMomentRatios
@@ -1083,8 +1071,6 @@ import Grothe.UpperChaos.ProfileRootNormalization
 import Grothe.UpperChaos.ProfileRootScreen
 import Grothe.UpperChaos.ProfileRootSound
 import Grothe.UpperChaos.ProfileUnitBounds
-import Grothe.UpperChaos.ProjectionUnion
-import Grothe.UpperChaos.Q0AffineCancellation
 import Grothe.UpperChaos.Q0BasePairCellIntegral
 import Grothe.UpperChaos.Q0BasePairCommonModel
 import Grothe.UpperChaos.Q0BasePairEnvelope
@@ -1092,7 +1078,6 @@ import Grothe.UpperChaos.Q0BasePairKernel
 import Grothe.UpperChaos.Q0BasePairKernelContinuity
 import Grothe.UpperChaos.Q0BasePairModelAssembly
 import Grothe.UpperChaos.Q0BasePairProductionBridge
-import Grothe.UpperChaos.Q0BasePairProductionBridgeAudit
 import Grothe.UpperChaos.Q0BasePairProductionRoots
 import Grothe.UpperChaos.Q0BasePairReciprocalEnvelope
 import Grothe.UpperChaos.Q0BasePairRoot10Audit
@@ -1117,7 +1102,6 @@ import Grothe.UpperChaos.Q0BasePairRoot7Leaf
 import Grothe.UpperChaos.Q0BasePairRoot7LeafScalars
 import Grothe.UpperChaos.Q0BaseQuadrature
 import Grothe.UpperChaos.Q0BinaryLiteralAssemblyBridge
-import Grothe.UpperChaos.Q0CenteredIntegral
 import Grothe.UpperChaos.Q0ChunkDen_o0_n8
 import Grothe.UpperChaos.Q0ChunkDen_o1000_n8
 import Grothe.UpperChaos.Q0ChunkDen_o1008_n8
@@ -1458,10 +1442,7 @@ import Grothe.UpperChaos.Q0Chunk_o984_n8
 import Grothe.UpperChaos.Q0Chunk_o992_n8
 import Grothe.UpperChaos.Q0CommonMomentSum
 import Grothe.UpperChaos.Q0CompanionBaseQuadrature
-import Grothe.UpperChaos.Q0ConditionalShift
-import Grothe.UpperChaos.Q0ConditionalWickReal
 import Grothe.UpperChaos.Q0FoldBatchedAlgebra
-import Grothe.UpperChaos.Q0ImaginaryWick
 import Grothe.UpperChaos.Q0LiteralBinaryFold
 import Grothe.UpperChaos.Q0LiteralBinaryMerge_000
 import Grothe.UpperChaos.Q0LiteralBinaryMerge_001
@@ -1507,26 +1488,19 @@ import Grothe.UpperChaos.Q0LiteralFoldGroup_019
 import Grothe.UpperChaos.Q0LiteralFoldGroup_020
 import Grothe.UpperChaos.Q0LiteralSourceData
 import Grothe.UpperChaos.Q0PhaseMonomialExpansion
-import Grothe.UpperChaos.Q0PhaseTermWick
-import Grothe.UpperChaos.Q0PhaseWickBridge
 import Grothe.UpperChaos.Q0ProfileRectangleModel
-import Grothe.UpperChaos.Q0RadialWickReal
 import Grothe.UpperChaos.Q0RawWickDefs
 import Grothe.UpperChaos.Q0RawWickDense
 import Grothe.UpperChaos.Q0RawWickFiniteSums
 import Grothe.UpperChaos.Q0RawWickPerTerm
-import Grothe.UpperChaos.Q0RawWickSource
 import Grothe.UpperChaos.Q0RawWickTermDefs
 import Grothe.UpperChaos.Q0RawWickTerms
 import Grothe.UpperChaos.Q0RealPhaseSourceSum
 import Grothe.UpperChaos.Q0RealPhaseTerm
-import Grothe.UpperChaos.Q0RealRadialSource
 import Grothe.UpperChaos.Q0RealShiftMoments
 import Grothe.UpperChaos.Q0RealTermPowers
-import Grothe.UpperChaos.Q0SourceBindingAxiomAudit
 import Grothe.UpperChaos.Q0SourceChunkAssembly
 import Grothe.UpperChaos.Q0WickChunking
-import Grothe.UpperChaos.Q0WickTermLinearity
 import Grothe.UpperChaos.QuadraturePartition
 import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialCutoff
@@ -1587,8 +1561,6 @@ import Grothe.UpperChaos.SmallProfileMeshData
 import Grothe.UpperChaos.SmallProfileSeparation
 import Grothe.UpperChaos.SmallProfileSeparationData
 import Grothe.UpperChaos.SmoothComm
-import Grothe.UpperChaos.SmoothKernelStability
-import Grothe.UpperChaos.SmoothResponseSeries
 import Grothe.UpperChaos.Smoothing
 import Grothe.UpperChaos.SoftPhase
 import Grothe.UpperChaos.SoftPhaseIntegral
