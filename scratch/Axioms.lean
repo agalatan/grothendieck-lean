@@ -211,6 +211,12 @@ import Grothe
 #print axioms Grothe.Upper.CompositeComparisonData.residual_value
 #print axioms Grothe.Upper.CompositeComparisonData.transfer_value_lt
 #print axioms Grothe.Upper.CompositeComparisonData.upper_lt_decimal
+#print axioms Grothe.Upper.RelaxedComparisonData.comparison_budget
+#print axioms Grothe.Upper.RelaxedComparisonData.denominator_pos
+#print axioms Grothe.Upper.RelaxedComparisonData.energy_le_radiusSlack_sq
+#print axioms Grothe.Upper.RelaxedComparisonData.residual_value
+#print axioms Grothe.Upper.RelaxedComparisonData.transfer_value_lt
+#print axioms Grothe.Upper.RelaxedComparisonData.upper_lt_decimal
 #print axioms Grothe.Upper.actual_band_mass
 #print axioms Grothe.Upper.actual_band_mass_of_energy_error
 #print axioms Grothe.Upper.bivarKernel_sub
@@ -1778,6 +1784,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.RectangleModelCheck.mul_sound
 #print axioms Grothe.UpperChaos.RectangleModelCheck.round_sound
 #print axioms Grothe.UpperChaos.RectangleModelCheck.scale_sound
+#print axioms Grothe.UpperChaos.RelaxedComparison.head_residual_of_raw_source
+#print axioms Grothe.UpperChaos.RelaxedComparison.residual_of_raw_source
+#print axioms Grothe.UpperChaos.RelaxedComparison.upper_of_raw_source_and_tail
+#print axioms Grothe.UpperChaos.RelaxedComparison.weighted_comparison_of_energy_close
 #print axioms Grothe.UpperChaos.RestrictedWick.integral_cut_balanced
 #print axioms Grothe.UpperChaos.RestrictedWick.integral_cut_invariant
 #print axioms Grothe.UpperChaos.RestrictedWick.integral_cut_unbalanced
@@ -2020,6 +2030,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.leaf_sound
 #print axioms Grothe.UpperChaos.localized_comparison
 #print axioms Grothe.UpperChaos.localized_comparison_grouped
+#print axioms Grothe.UpperChaos.localized_comparison_grouped_relaxed
 #print axioms Grothe.UpperChaos.map_mehlerY
 #print axioms Grothe.UpperChaos.map_smooth
 #print axioms Grothe.UpperChaos.measurable_GT

@@ -191,6 +191,7 @@ import Grothe.Upper.HeadWeight
 import Grothe.Upper.IntervalSound
 import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.Realise
+import Grothe.Upper.RelaxedComparisonData
 import Grothe.Upper.Residual
 import Grothe.UpperChaos.AdaptiveRectangleComposition
 import Grothe.UpperChaos.AdaptiveRectangleEnclosure
@@ -1813,6 +1814,8 @@ import Grothe.UpperChaos.RectangleModelCheck
 import Grothe.UpperChaos.RectangleMonomialIntegral
 import Grothe.UpperChaos.RectanglePerturbation
 import Grothe.UpperChaos.RectangleReciprocalCertificate
+import Grothe.UpperChaos.RelaxedComparison
+import Grothe.UpperChaos.RelaxedEnergy
 import Grothe.UpperChaos.RestrictedPhaseMoments
 import Grothe.UpperChaos.RestrictedWick
 import Grothe.UpperChaos.RetainedMeshReality

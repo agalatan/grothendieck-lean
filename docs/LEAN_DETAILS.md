@@ -227,6 +227,20 @@ at most `1.72·10⁻⁶`; the actual raw-source and table certificates, Gaussian
 premises and independent Hardy tail remain open. No completed endpoint or
 historical Hilbert–Schmidt receipt transfer is assumed.
 
+`RelaxedComparison` provides an alternative using the original fourteen
+unscaled Gaussian finite-band premises. The eighteen piece-error radii and
+four grouped quadratic radii are unchanged. Only each weighted response
+band-mass norm radius increases by `1/5000`; its square `4·10⁻⁸` covers the
+selected l1 energy discrepancy `3·10⁻⁸`. An energy discrepancy is not used as
+an L2 source allowance. The rational comparison sum is below `9·10⁻⁷`.
+`RelaxedEnergy.residual_of_raw_source` includes the actual source/correction/
+smoothing/table chain and adds the separate actual-kernel tail `3.6748·10⁻⁸`
+once, obtaining total residual `994901/10¹²`. The resulting conditional
+transfer is below `1.4045984`. All fourteen Gaussian estimates, the actual
+raw source error, same-output table fit and tail remain explicit inputs.
+This alternative and its transitive axiom report require full acceptance;
+the final completed façade remains separate.
+
 `ProductionF0Omission` partitions the actual phase by one measurable union of
 three explicit root-gap sets and `s > 100`. The continuous Gaussian tail mass
 is exactly `exp(-100)`. Gaps beyond `s = 13` with total width at most `8·10⁻¹⁶`

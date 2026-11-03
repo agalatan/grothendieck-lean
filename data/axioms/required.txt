@@ -71,6 +71,12 @@ Grothe.Upper.CompositeComparisonData.raw_to_projected_budget
 Grothe.Upper.CompositeComparisonData.residual_value
 Grothe.Upper.CompositeComparisonData.transfer_value_lt
 Grothe.Upper.CompositeComparisonData.upper_lt_decimal
+Grothe.Upper.RelaxedComparisonData.comparison_budget
+Grothe.Upper.RelaxedComparisonData.denominator_pos
+Grothe.Upper.RelaxedComparisonData.energy_le_radiusSlack_sq
+Grothe.Upper.RelaxedComparisonData.residual_value
+Grothe.Upper.RelaxedComparisonData.transfer_value_lt
+Grothe.Upper.RelaxedComparisonData.upper_lt_decimal
 Grothe.Upper.actual_band_mass
 Grothe.Upper.actual_band_mass_of_energy_error
 Grothe.Upper.comparisonOverlap_separate
@@ -1617,6 +1623,10 @@ Grothe.UpperChaos.RectangleModelCheck.mem_range
 Grothe.UpperChaos.RectangleModelCheck.mul_sound
 Grothe.UpperChaos.RectangleModelCheck.round_sound
 Grothe.UpperChaos.RectangleModelCheck.scale_sound
+Grothe.UpperChaos.RelaxedComparison.head_residual_of_raw_source
+Grothe.UpperChaos.RelaxedComparison.residual_of_raw_source
+Grothe.UpperChaos.RelaxedComparison.upper_of_raw_source_and_tail
+Grothe.UpperChaos.RelaxedComparison.weighted_comparison_of_energy_close
 Grothe.UpperChaos.RestrictedWick.integral_cut_balanced
 Grothe.UpperChaos.RestrictedWick.integral_cut_invariant
 Grothe.UpperChaos.RestrictedWick.integral_cut_unbalanced
@@ -1828,6 +1838,7 @@ Grothe.UpperChaos.integral_taylorRegularWick_eq_sq_radial
 Grothe.UpperChaos.invariantMoment_odd
 Grothe.UpperChaos.localized_comparison
 Grothe.UpperChaos.localized_comparison_grouped
+Grothe.UpperChaos.localized_comparison_grouped_relaxed
 Grothe.UpperChaos.measurable_basePhaseArgument
 Grothe.UpperChaos.measurable_gradedHermiteFn
 Grothe.UpperChaos.measurable_taylorConditionalWick

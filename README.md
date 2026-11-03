@@ -210,6 +210,13 @@ the four whole residuals. It derives the relaxed selected-head budget from
 explicit raw-F₀ error `9.5·10⁻⁹`, rational-output table fit `10⁻⁸`, three low-band
 Gaussian estimates and three whole-source inner-product bounds. Those
 numerical and Gaussian premises remain open; this is a conditional head theorem.
+An alternative conditional consumer, `RelaxedComparison`, retains the original
+fourteen Gaussian finite-band estimates and all eighteen comparison pieces.
+It absorbs the same `3·10⁻⁸` energy-table discrepancy by increasing only the
+response band-mass norm radii by `1/5000`, giving comparison cost `9·10⁻⁷`.
+With a separate actual Hardy tail of `3.6748·10⁻⁸`, its scalar ledger supports
+the candidate upper bound `1.4045984`. The Gaussian, source, same-output table
+and tail certificates remain required; this is not a completed endpoint.
 `ProductionF0Radial` removes the remaining Gaussian angle from every retained
 tensor coefficient by exact charge cancellation. It expresses the full source
 error using the actual conditional coefficients at `sqrt(s)` with density
