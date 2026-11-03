@@ -393,7 +393,7 @@ def overlay_bytes(source: bytes) -> bytes:
     return result
 
 
-GIB_PER_LEAF = 8          # peak RSS of one single-threaded leaf, with margin
+GIB_PER_LEAF = 5          # peak RSS of one single-threaded leaf (measured at most 4.1 GiB), with margin
 RSS_HEADROOM_GIB = 6      # memory left to the OS, the runner and Lake itself
 
 
@@ -571,8 +571,9 @@ class Runner:
             self.overlay.write_bytes(self.overlay_data)
 
     def check(self, pgid=None, *, full=False):
-        # Hash/parse at child boundaries; polling checks stable inode/mtime/ctime/size.
-        # This avoids repeatedly parsing the whole certificate source during a Lean check.
+        # Hash/parse the whole certificate source once at the start and once at the end (full=True):
+        # about 9 s each. Between groups and while polling, the inode/mtime/ctime/size of every pinned
+        # source must be unchanged, which costs milliseconds.
         if full or self.source_stats is None:
             self.validate(self.args.root, self.registry)
         stats = {}
@@ -635,7 +636,7 @@ class Runner:
     def run_group(self, phase, targets, index):
         if self.child is not None:
             raise BuildError("refusing overlapping child groups")
-        self.check(full=True)
+        self.check()
         self.args.run_dir.mkdir(parents=True, exist_ok=True)
         if not self.overlay.exists():
             self.overlay.write_bytes(self.overlay_data)
@@ -664,7 +665,7 @@ class Runner:
                     record["peak_lean_processes"] = max(record["peak_lean_processes"], observation["lean_processes"])
                     self.sleep(self.args.poll_seconds)
                 record["exit_code"] = self.child.wait()
-                self.check(self.child.pid, full=True)
+                self.check(self.child.pid)
                 remaining = self.members(self.child.pid)
                 if remaining:
                     raise BuildError("Lake exited while owned descendants remain")
@@ -835,6 +836,7 @@ def main(argv=None):
                 for index, (phase, targets) in enumerate(plan, 1):
                     runner.run_group(phase, targets, index)
                     print(f"Complete group {index}/{len(plan)} ({phase}): {', '.join(targets)}", flush=True)
+                runner.check(full=True)
                     if args.max_batches and index >= args.max_batches and index < len(plan):
                         raise Pause("requested batch boundary reached; later invocations reuse Lake outputs")
                 runner.finish_shared()
