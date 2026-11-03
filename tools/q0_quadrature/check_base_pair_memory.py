@@ -134,28 +134,40 @@ def main():
                 if not measured['passed']:
                     return 1
         for root in [2, 6, 10]:
-            module = 'Grothe.UpperChaos.Q0BasePairRoot' + str(root) + 'Audit'
-            path = module.replace('.', '/') + '.lean'
-            measured = measure(['lake', 'env', 'lean', '--wfail', '-o',
-                                str(out / (module + '.olean')), path], module, out, args.timeout)
-            report['measurements'].append(measured)
-            if not measured['passed']:
-                return 1
-        family = re.compile(r'Q0BasePairRoot(?:2|6|10)(?:Profile|Scalars|Audit|Leaf[01]+)'
+            for suffix in ['Audit', 'Integral']:
+                module = 'Grothe.UpperChaos.Q0BasePairRoot' + str(root) + suffix
+                path = module.replace('.', '/') + '.lean'
+                measured = measure(['lake', 'env', 'lean', '--wfail', '-o',
+                                    str(out / (module + '.olean')), path], module, out, args.timeout)
+                report['measurements'].append(measured)
+                if not measured['passed']:
+                    return 1
+        family = re.compile(r'Q0BasePairRoot(?:2|6|10)(?:Profile|Scalars|Audit|Integral|Leaf[01]+)'
                             r'(?:Data|Check[0-9]{3})?\.lean')
         sources = [p for p in (ROOT / 'Grothe/UpperChaos').iterdir() if family.fullmatch(p.name)]
         oleans = [ROOT / '.lake/build/lib/lean/Grothe/UpperChaos' / (p.stem + '.olean')
                   for p in sources]
-        report.update(generated_modules=len(sources), source_bytes=sum(p.stat().st_size for p in sources),
+        stems = {p.stem for p in sources}
+        build = ROOT / '.lake/build'
+        products = sorted(p for p in build.rglob('Q0BasePairRoot*')
+                          if p.is_file() and p.name.split('.', 1)[0] in stems)
+        report.update(family_source_modules=len(sources), source_bytes=sum(p.stat().st_size for p in sources),
                       compiled_modules=sum(p.is_file() for p in oleans),
-                      olean_bytes=sum(p.stat().st_size for p in oleans if p.is_file()))
-        report['passed'] = report['compiled_modules'] == report['generated_modules']
+                      olean_bytes=sum(p.stat().st_size for p in oleans if p.is_file()),
+                      family_build_product_bytes=sum(p.stat().st_size for p in products),
+                      family_build_products=[dict(path=str(p.relative_to(build)), bytes=p.stat().st_size)
+                                             for p in products],
+                      artifact_scope='all existing named family products under .lake/build; '
+                                     'includes Integral and sidecars, excludes shared dependencies '
+                                     'and isolated measurement outputs')
+        report['passed'] = report['compiled_modules'] == report['family_source_modules']
         if not report['passed']:
             report['stopped'] = 'incomplete compiled-artifact inventory'
         return 0 if report['passed'] else 1
     finally:
         (out / 'memory-report.json').write_text(json.dumps(report, indent=2) + '\n')
-        print(json.dumps({k: v for k, v in report.items() if k != 'measurements'}, indent=2))
+        print(json.dumps({k: v for k, v in report.items()
+                          if k not in ('measurements', 'family_build_products')}, indent=2))
 
 
 if __name__ == '__main__':

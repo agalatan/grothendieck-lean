@@ -259,6 +259,9 @@ def render_profile_bundle(original, trace, namespace):
     # of the entire list, including every original input remainder interval.
     proof = _proof('profile_checked',
                    'profiletrace.check sModel Q0ProfileRectangleModel.inputs = true',
+                   f'  have hi : {_list(terms)} = Q0ProfileRectangleModel.inputs := by rfl\n'
+                   '  have ht : profileTail0 = profiletrace := by rfl\n'
+                   '  rw [\u2190 ht, \u2190 hi]\n'
                    '  exact profileHorner0_checked').text
     end = f'\nend Grothe.UpperChaos.{namespace}\n'
     literal_data = [text for kind, _, text in items if kind == 'def']
