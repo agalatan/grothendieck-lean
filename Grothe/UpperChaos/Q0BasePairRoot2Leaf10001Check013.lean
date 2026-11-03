@@ -27,7 +27,7 @@ theorem dampingField3_checked :
 
 theorem dampingField4_checked :
     roundOK dampingCertificate.series.coefficients
-      (IntervalRat.add dampingCertificate.series.remainder (errorInterval dampingCertificate.error dampingCertificate.error_nonneg))
+      (IntervalRat.add dampingCertificate.series.remainder (PointwiseGeometricEnclosure.errorInterval dampingCertificate.error dampingCertificate.error_nonneg))
       dampingCertificate.centered 0 = true := by
   decide +kernel
 

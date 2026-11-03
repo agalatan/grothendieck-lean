@@ -123,7 +123,7 @@ def _certificate_goals(kind, source, c):
             f'intervalSubset (IntervalRat.mul\n'
             f'      (IntervalRat.sub (range {source}) (IntervalRat.singleton {c}.center))\n'
             f'      (IntervalRat.singleton (1 / {c}.center)))\n'
-            f'      (errorInterval {c}.radius {c}.radius_nonneg) = true',
+            f'      (PointwiseGeometricEnclosure.errorInterval {c}.radius {c}.radius_nonneg) = true',
             f'scaleOK (1 / {c}.center) {source} {c}.scaled {c}.scaledBudget = true',
             f'addOK {c}.scaled (constant (-1)) {c}.delta 0 = true',
             f'scaleOK (-1) {c}.delta {c}.argument {c}.argumentBudget = true',
@@ -134,7 +134,7 @@ def _certificate_goals(kind, source, c):
             f'{c}.center⁻¹ * ({c}.radius^{c}.terms / (1 - {c}.radius)) ≤ {c}.error',
             f'roundOK {c}.geometric.coefficients\n'
             f'      (IntervalRat.add {c}.geometric.remainder '
-            f'(errorInterval {c}.error {c}.error_nonneg))\n'
+            f'(PointwiseGeometricEnclosure.errorInterval {c}.error {c}.error_nonneg))\n'
             f'      {c}.output 0 = true',
         ], 4, f'{c}.argument'
     if kind == 'Exp':
@@ -148,7 +148,7 @@ def _certificate_goals(kind, source, c):
             f'{c}.degree ≤ {c}.error',
             f'roundOK {c}.series.coefficients\n'
             f'      (IntervalRat.add {c}.series.remainder '
-            f'(errorInterval {c}.error {c}.error_nonneg))\n'
+            f'(PointwiseGeometricEnclosure.errorInterval {c}.error {c}.error_nonneg))\n'
             f'      {c}.centered 0 = true',
             f'intervalInputOK {c}.centerInterval {c}.centerApprox {c}.centerValue 0 = true',
             f'mulOK {c}.centered {c}.centerValue {c}.output {c}.productBudget = true',

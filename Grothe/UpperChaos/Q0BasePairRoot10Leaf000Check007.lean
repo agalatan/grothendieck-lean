@@ -8,7 +8,7 @@ set_option maxRecDepth 100000
 set_option maxHeartbeats 0
 theorem inverseField7_checked :
     roundOK inverseCertificate.geometric.coefficients
-      (IntervalRat.add inverseCertificate.geometric.remainder (errorInterval inverseCertificate.error inverseCertificate.error_nonneg))
+      (IntervalRat.add inverseCertificate.geometric.remainder (PointwiseGeometricEnclosure.errorInterval inverseCertificate.error inverseCertificate.error_nonneg))
       inverseCertificate.output 0 = true := by
   decide +kernel
 

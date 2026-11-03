@@ -27,7 +27,7 @@ theorem gaussianField3_checked :
 
 theorem gaussianField4_checked :
     roundOK gaussianCertificate.series.coefficients
-      (IntervalRat.add gaussianCertificate.series.remainder (errorInterval gaussianCertificate.error gaussianCertificate.error_nonneg))
+      (IntervalRat.add gaussianCertificate.series.remainder (PointwiseGeometricEnclosure.errorInterval gaussianCertificate.error gaussianCertificate.error_nonneg))
       gaussianCertificate.centered 0 = true := by
   decide +kernel
 

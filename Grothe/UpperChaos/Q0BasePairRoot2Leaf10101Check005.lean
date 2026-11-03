@@ -25,7 +25,7 @@ theorem inverseField0_checked :
     intervalSubset (IntervalRat.mul
       (IntervalRat.sub (range denominatorModel) (IntervalRat.singleton inverseCertificate.center))
       (IntervalRat.singleton (1 / inverseCertificate.center)))
-      (errorInterval inverseCertificate.radius inverseCertificate.radius_nonneg) = true := by
+      (PointwiseGeometricEnclosure.errorInterval inverseCertificate.radius inverseCertificate.radius_nonneg) = true := by
   decide +kernel
 
 theorem inverseField1_checked :
