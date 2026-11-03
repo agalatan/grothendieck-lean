@@ -42,6 +42,22 @@ Weaker upper-bound variants, their data and their historical verification record
 are preserved in [the committed archive](../miscellaneous/other-bounds/README.md).
 They are outside the active build and current axiom policy.
 
+**Source-node error ledger.** `Q0NodeMassLedger` holds only the shared scalar
+inputs; `Q0NodeMassLedgerSharp` is the single norm-dependent ledger, at `26/25`.
+`Q0NodeMassLedgerSharp.real_error_lt_cap`
+transfers the exact rational ledger to a real error bound below `48/10^13`,
+given the raw-error estimate, smoothing estimate and smoothing-vector norm.
+The separate `sqrt_mass_lt_norm` lemma converts squared mass below `107/100`
+to norm below `26/25`. These are arithmetic implications; they do not supply
+the actual Gaussian input estimates or a floating-point operation model.
+`Q0NodeMassLedgerSharpAudit` rejects dependencies beyond Lean's standard axioms.
+The definitions document the operation-path budget `749 = 2*32+10+675`,
+the node/pair/raw-coordinate square-root allowances `147`, `179`, `2310`,
+the primary block/family norm caps `18`, `197`, the reflection factor `10/7`,
+and the separately allocated integration, omission and smoothing tolerances.
+Their source-model and analytic justification must be supplied by the consumers;
+these comments do not turn the historical numerical computation into a Lean input.
+
 **Phase-source denominator.** `PhiSourceDenBinding.source_common_den` proves
 by bounded source-chunk computation that the parsed production phase has
 common denominator `302002543697172916153771578242367488000`.
@@ -62,9 +78,9 @@ literal is preserved.
 
 `Q0SourceChunkAssembly` combines the actual source partition, chunk tables and
 denominators; `Q0LiteralBinaryFold` checks the finite literal recombination.
-`Q0SourceBindingAxiomAudit` rejects any transitive axiom outside `propext`,
-`Classical.choice`, and `Quot.sound` for these concrete facts and the final
-identity. The `gen_q0_literal_data.py`, `gen_q0_source_chunks.py`,
+These concrete facts and the final identity are in the default axiom report
+(`scratch/Axioms.lean`, `data/axioms/required.txt`), which rejects any transitive
+axiom outside `propext`, `Classical.choice`, and `Quot.sound`. The `gen_q0_literal_data.py`, `gen_q0_source_chunks.py`,
 `gen_q0_chunk_assembly.py --module-name Q0SourceChunkAssembly`, and
 `gen_q0_literal_fold.py` tools reproduce the candidate files with `--check`;
 their Python calculations do not replace Lean's proof checks. The binding
@@ -272,7 +288,22 @@ source integrability; no numerical integration premise is used.
 
 `ShiftedDampedMoments` expands a translated mixed complex monomial and proves
 the finite Wick formula at any positive radial rate. Its Gaussian mass is
-`1/rate`, including for rates below one. `AffineGaussianSquare` centers the
+`1/rate`, including for rates below one.
+`LinearTiltedMoments.integral_linear_tilt` translates an arbitrary measurable
+complex test function under the real linear tilt `2*Re(a*z)`. The translation
+is `conj(a)/rate`, and the scalar factor is `exp(normSq a/rate)`.
+`integral_mixed_moment` and `integral_finite_mixed_polynomial` then evaluate
+mixed monomials and finite polynomials through `shiftedDampedMoment`; in
+particular the zeroth moment is `exp(normSq a/rate)/rate`.
+`integrable_mixed_moment` and `integrable_finite_mixed_polynomial` establish
+integrability for every positive rate and fixed complex source using a
+half-rate exponential majorant. `LinearTiltedMomentsAudit` rejects transitive
+axioms outside `propext`, `Classical.choice`, and `Quot.sound`.
+These results supply one-variable polynomial integrability; they do not
+establish joint integrability for dependent source variables, a Fock
+coefficient identity, or a numerical Hilbert--Schmidt tail estimate.
+
+`AffineGaussianSquare` centers the
 conditional density without dividing by the radial profile. For arbitrary
 complex `z`, real `a`, positive `alpha,t`, put `beta=alpha+a^2*t` and
 `mu=-(a*t/beta)*z`. `ConditionalGaussianPhase` proves the exact conditional
@@ -510,6 +541,16 @@ their complete coverage of the gaps between the original profile neighborhoods
 and the selected tubes. Combining these checks with the existing outer-profile
 theorem gives `|κ(s)| > 1/1000` on every closed nonselected strip. Consequently
 `α x² + κ(s)² > 10⁻⁶` for `α ≥ 0`, uniformly in the reciprocal coordinate.
+
+`ProfilePiFactorLower` and `ProfilePiFactorUpper` certify rational bounds for π
+from 272 nested-square-root steps, using Mathlib's proved `pi_lower_bound` and
+`pi_upper_bound` tactics. The recipe uses a 1152-bit witness grid and 512-bit
+output endpoints. `ProfilePiFactor` derives bounds for `sqrt(π)` and
+`sqrt(sqrt(π))` by exact rational square and fourth-power checks. Each interval
+has width at most `2⁻⁵¹²`; the transitive guard permits only the standard three
+Lean axioms. These are actual normalization constants, with no numerical bound
+assumed. The complete actual-node profile and shifted-parameter intervals
+remain to be certified.
 The gap data share the same tracked input and generator as the radial cuts;
 the checker uses kernel reduction and introduces no native facts.
 
@@ -787,7 +828,7 @@ CapsRest → IsGrothendieckBound K → 1.401697117301 < K` (`CapNodes.lean`). It
 `CapRowKK` modules retain the 60 unchanged single-threaded native range facts
 for rows 0–11 and 16–18, importing only the computation layer and recipe data.
 `CapRows` proves range-check soundness, and `CapAssembly` proves the chord
-check and convexity assembly (`CapHull` is a compatibility import). `CapNodes` contains the
+check and convexity assembly. `CapNodes` contains the
 15 unchanged row-assembly proofs and the final `CapsRest` theorem, which
 composes `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and the same
 `lower_bound_of_refined_cover_data`. The common
@@ -1040,7 +1081,7 @@ and the real identification (`hreal`) as explicit inputs.
 | `CapCoord`, `CapLinAlg`, `CapMajorant`, `CapPolar` | real coordinates of the fibre variable; exact quadratic-form checks (Loewner bound, LDLᵀ); the anchored-pair majorant of \|L + p\| + \|L − p\|; polar cells of the complex Gaussian |
 | `CapSym`, `CapGrid`, `CapGridT`, `CapGridOK`, `CapTables`, `CapTablesMk` | symbolic polynomials over ℚ(√2); cell prices on uniform polar grids and the exact cell decomposition of the integrated majorant; verified interval tables (`tablesOK_mk`) |
 | `CapPiece`, `CapCheckSound` | node certificate soundness (`pot_le_of_pieceOK`, `pot_le_of_nodeOK`) for the precompiled checker `GrotheCapsKernel/CapCheck.lean` |
-| `CapSymmetry`, `CapHull`, `CapChordData` | the symmetries S_c, S_- of the fibre integral; chord nodes from vertex caps by convexity (`capChords_check`, `nodeCaps_of_vertexCaps`) |
+| `CapSymmetry`, `CapChordData` | the symmetries S_c, S_- of the fibre integral; chord nodes from vertex caps by convexity (`capChords_check`, `nodeCaps_of_vertexCaps`) |
 | `CapRangeDefs`, `CapChords`, `CapRecipeData`, `CapRows`, `CapAssembly`, `CapRow00`–`CapRow11`, `CapRow16`–`CapRow18`, `CapNodes` | computation-only definitions and generated rational data; range-check soundness and convexity; 60 range facts in `Grothe`, verified on the runner and replayed by CI from its cache; final `lower_bound_of_capsRest` assembly |
 | `CapCoverDefs`, `CapConstrDefs`, `CapPieceRange`; `CapCover`, `CapConstr`, `CapPieceNodes` | localised caps of rows 12–15 (route M): computable coverage and constrained-piece checks separated from symmetry, S-lemma and piece-node soundness (issue #12) |
 

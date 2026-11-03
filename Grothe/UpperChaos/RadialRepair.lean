@@ -46,16 +46,6 @@ lemma C6_nonneg {q : ℝ} (hq : 0 ≤ q) : 0 ≤ C6 q := by
 /-- A polynomial radial map, with `q` the original squared-modulus defect. -/
 noncomputable def repair (z : ℂ) : ℂ := z * (S6 (1 - normSq z) : ℂ)
 
-/-- The polynomial map preserves phase equivariance. -/
-theorem repair_unit_mul {c : ℂ} (hc : ‖c‖ = 1) (z : ℂ) :
-    repair (c * z) = c * repair z := by
-  have hnc : normSq c = 1 := by rw [normSq_eq_norm_sq, hc]; norm_num
-  simp [repair, normSq_mul, hnc, mul_assoc]
-
-/-- Real radial coefficients preserve conjugation symmetry. -/
-theorem repair_conj (z : ℂ) : repair (conj z) = conj (repair z) := by
-  simp [repair]
-
 theorem normSq_repair (z : ℂ) :
     normSq (repair z) = 1 - C6 (1 - normSq z) := by
   rw [repair, normSq_mul, normSq_ofReal]
@@ -72,15 +62,6 @@ theorem norm_repair_le_one {z : ℂ} (hz : ‖z‖ ≤ 1) : ‖repair z‖ ≤ 1
     linarith [C6_nonneg hq]
   rw [← sq_le_one_iff₀ (norm_nonneg _), ← normSq_eq_norm_sq]
   exact hsq
-
-/-- Repair does not decrease the original modulus. -/
-theorem norm_le_norm_repair {z : ℂ} (hz : ‖z‖ ≤ 1) : ‖z‖ ≤ ‖repair z‖ := by
-  have hq : 0 ≤ 1 - normSq z := by
-    rw [normSq_eq_norm_sq]
-    nlinarith [norm_nonneg z]
-  rw [repair, norm_mul, norm_real, Real.norm_eq_abs,
-    abs_of_nonneg ((by norm_num : (0 : ℝ) ≤ 1).trans (one_le_S6 hq))]
-  exact le_mul_of_one_le_right (norm_nonneg z) (one_le_S6 hq)
 
 /-- The radial displacement is exactly the increase of modulus. -/
 theorem norm_repair_sub {z : ℂ} (hz : ‖z‖ ≤ 1) :
@@ -103,34 +84,6 @@ theorem norm_repair_sub_le {z : ℂ} (hz : ‖z‖ ≤ 1) :
 
 /-- The squared-modulus defect of the cubic Taylor phase factor. -/
 def phaseDefect (x : ℝ) : ℝ := x ^ 4 * (3 - x ^ 2) / 36
-
-lemma phaseDefect_nonneg {x : ℝ} (hx : x ^ 2 ≤ 3) : 0 ≤ phaseDefect x := by
-  unfold phaseDefect
-  exact div_nonneg (mul_nonneg (by positivity) (by linarith)) (by norm_num)
-
-/-- The sharper phase cover bounds the cubic's squared-modulus defect. -/
-theorem phaseDefect_le {x : ℝ} (hx : x ^ 2 ≤ 99 / 100) :
-    phaseDefect x ≤ 218889 / 4000000 := by
-  let y := x ^ 2
-  have hy0 : 0 ≤ y := sq_nonneg x
-  have hy1 : y ≤ 1 := by dsimp [y]; linarith
-  have hyy : y ^ 2 ≤ y := by
-    nlinarith [mul_nonneg hy0 (sub_nonneg.mpr hy1)]
-  have hb : 0 ≤ ((99 : ℝ) / 100 - y) *
-      (3 * (99 / 100) + 3 * y - (99 / 100) ^ 2 - (99 / 100) * y - y ^ 2) :=
-    mul_nonneg (by dsimp [y]; linarith) (by nlinarith)
-  have hdef : phaseDefect x = y ^ 2 * (3 - y) / 36 := by
-    dsimp [phaseDefect, y]
-    ring
-  rw [hdef]
-  nlinarith [hb]
-
-theorem norm_P3_lower {x : ℝ} (hx : x ^ 2 ≤ 99 / 100) :
-    243 / 250 < ‖P3 x‖ := by
-  have hn : ‖P3 x‖ ^ 2 = 1 - phaseDefect x := by
-    rw [← normSq_eq_norm_sq, normSq_P3]
-    rfl
-  nlinarith [phaseDefect_le hx, norm_nonneg (P3 x)]
 
 /-- A pointwise moment ceiling for every nondecreasing radial repair. -/
 theorem radial_gap_sq_le {x : ℝ} (hx : x ^ 2 ≤ 1) :
@@ -170,11 +123,6 @@ noncomputable def phaseRepair (x : ℝ) : ℂ := P3 x * (S6 (phaseDefect x) : �
 theorem phaseRepair_eq_repair (x : ℝ) : phaseRepair x = repair (P3 x) := by
   simp [phaseRepair, repair, normSq_P3, phaseDefect]
 
-theorem normSq_phaseRepair (x : ℝ) :
-    normSq (phaseRepair x) = 1 - C6 (phaseDefect x) := by
-  rw [phaseRepair_eq_repair, normSq_repair, normSq_P3]
-  simp [phaseDefect]
-
 /-- Admissibility of the repaired phase factor on the original cubic disk interval. -/
 theorem norm_phaseRepair_le_one {x : ℝ} (hx : x ^ 2 ≤ 3) : ‖phaseRepair x‖ ≤ 1 := by
   rw [phaseRepair_eq_repair]
@@ -187,12 +135,5 @@ theorem phaseRepair_change_sq_le {x : ℝ} (hx : x ^ 2 ≤ 1) :
   rw [← phaseRepair_eq_repair] at hd
   have hg := radial_gap_sq_le hx
   nlinarith [norm_nonneg (phaseRepair x - P3 x)]
-
-/-- Multiplying a disk response by the repaired phase factor stays in the disk. -/
-theorem norm_mul_phaseRepair_le_one {f : ℂ} {x : ℝ} (hf : ‖f‖ ≤ 1)
-    (hx : x ^ 2 ≤ 3) : ‖f * phaseRepair x‖ ≤ 1 := by
-  rw [norm_mul]
-  exact (mul_le_mul hf (norm_phaseRepair_le_one hx) (norm_nonneg _) zero_le_one).trans
-    (by norm_num)
 
 end Grothe.UpperChaos.RadialRepair

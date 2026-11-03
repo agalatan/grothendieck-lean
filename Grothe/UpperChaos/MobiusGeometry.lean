@@ -23,10 +23,6 @@ theorem forward_mem (t : ℝ) (ht : 0 ≤ t) : 0 ≤ forward t ∧ forward t < 1
     apply (div_lt_one hp).2
     linarith
 
-theorem inverse_nonneg (v : ℝ) (hv : 0 ≤ v) (hv1 : v < 1) : 0 ≤ inverse v := by
-  unfold inverse
-  exact div_nonneg hv (by linarith)
-
 theorem inverse_forward (t : ℝ) (ht : 0 ≤ t) : inverse (forward t) = t := by
   have hp : (1 + t) ≠ 0 := by linarith
   have hq : 1 - t / (1 + t) ≠ 0 := by

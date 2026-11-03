@@ -231,9 +231,6 @@ lemma integrable_mterm (l : Fin n) :
       rw [abs_of_nonneg (mul_nonneg (inv_nonneg.2 hr) (sq_nonneg _))]
       nlinarith
 
-lemma mcoef_nonneg (l : Fin n) : 0 ≤ mcoef n l :=
-  integral_nonneg fun x => mul_nonneg (inv_nonneg.2 (rad_nonneg n x)) (sq_nonneg _)
-
 lemma sum_mcoef : ∑ l, mcoef n l = ∫ x, rad n x ∂(stdGaussian (n + n)) := by
   unfold mcoef
   rw [← integral_finsetSum _ fun l _ => integrable_mterm n l]
