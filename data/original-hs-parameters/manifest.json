@@ -1,0 +1,100 @@
+{
+  "schema": 2,
+  "agent_id": "codex-2ca4",
+  "scope": "One parameter table for the fourteen selected finite bands and four coordinate exclusions. Lean checks positivity only; no recorded HS tail bound is assumed.",
+  "phase_source_sha256": "04d581fa45e1d879623a0f233315dcfed39e0aa91c6684d554d0524ac8a71617",
+  "coordinate_order": [
+    "p_z",
+    "q_z",
+    "p_w",
+    "q_w"
+  ],
+  "cutoffs": [
+    500,
+    500,
+    251,
+    250
+  ],
+  "inputs": [
+    {
+      "power": 1,
+      "file": "inputs/power1_hs_result.json",
+      "sha256": "533b2804cb94a178992b7357e4780130f6aea831ca411e4beeacda055d0c29ba",
+      "decomposition_sha256": "383e41c6e2c0889ae931e093312500744fb13a30571ee958a151c8fb4912ae60",
+      "decomposition_rows": 1140,
+      "epsilon": "21/20",
+      "lambda_scale": "31/10",
+      "rows": 16
+    },
+    {
+      "power": 2,
+      "file": "inputs/power2_hs_result.json",
+      "sha256": "29b39797f65bffa9776004e3bc8760c86d56c9a392fc0f766f27bdc3a884f271",
+      "decomposition_sha256": "355a97d755a3aab7e17324190368bce9182a49c91fd17e3bfc4382f9372e5d07",
+      "decomposition_rows": 9135,
+      "epsilon": "21/10",
+      "lambda_scale": "26/5",
+      "rows": 20
+    },
+    {
+      "power": 3,
+      "file": "inputs/power3_hs_result.json",
+      "sha256": "f69c8c153ebecb927fd2b9fd2542d221cae8b14dba5ed4f05abb87b56ff9e6fd",
+      "decomposition_sha256": "b084f307dba1e7b908e8c5a3f251565e70224d2d125528a8c2007cdff0d32d22",
+      "decomposition_rows": 27716,
+      "epsilon": "63/20",
+      "lambda_scale": "73/10",
+      "rows": 16
+    }
+  ],
+  "selected_degrees": {
+    "1": [
+      51,
+      101,
+      151,
+      161,
+      171,
+      181
+    ],
+    "2": [
+      51,
+      71,
+      81,
+      91
+    ],
+    "3": [
+      11,
+      21,
+      31,
+      51
+    ]
+  },
+  "rectangular_input": {
+    "file": "inputs/rectangular_hs_result.json",
+    "sha256": "f6c95b644e5b37778ec9abf247af0f366580282161e9fe6fb3afadd7406c22e6",
+    "selected_degrees": [
+      51,
+      101
+    ]
+  },
+  "provenance": {
+    "programs": [
+      {
+        "bundle_relative_path": "new/certification/certify_rectangular_hs.py",
+        "sha256": "8ef624bf8995cd9683e1567576aadf37dc515de75076e7d45a9b4f9cb2472e6c",
+        "committed": false
+      },
+      {
+        "bundle_relative_path": "new/global_norm/certify_power_hs.py",
+        "sha256": "ac4a4430b97e441041173fcdef802c19cd34097a90aae08b3c24b61c48e212b5",
+        "committed": false
+      }
+    ],
+    "bound": "Text representation of an outward Arb enclosure produced by the historical program; not a Lean theorem.",
+    "upper_rational": "Exact rational conversion of the upper endpoint of that Arb enclosure. It is recorded provenance and is not used as an assumed HS bound by this generator or Lean module.",
+    "approx": "Floating midpoint diagnostic, never used in Lean.",
+    "decomposition_sha256": "Hash of the historical angular decomposition read by certify_power_hs.py. The decomposition files are not committed in this parameter-only batch; no decomposition or HS identity is inferred from the hashes.",
+    "historical_source_path": "The absolute /private/tmp source field is immutable historical metadata. Current generation reads only committed hash-pinned inputs and does not access that path.",
+    "selection": "For power1, D51 and D101 use rectangular_hs_result.json; D151,D161,D171,D181 use power1_hs_result.json. Power2 D101 and rectangular power1 D151 are not selected in the Lean table. All raw inputs remain byte-identical. No tail bound is transferred between different parameter choices."
+  }
+}

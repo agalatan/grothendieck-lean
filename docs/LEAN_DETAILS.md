@@ -124,6 +124,41 @@ This identity supplies a source binding for numerical models; it does not
 certify all cells,
 Taylor-band errors, the frozen-response energy discrepancy, or the final bound.
 
+**Weighted Gaussian kernel mass.**
+A single checked predicate, `OriginalHSParameterGates.gateOK`, supplies
+positivity of the real covariance forms for any parameter record.
+`OriginalHSGaussianMass.integrable_gateWeight` and `integral_gateWeight`
+prove convergence and the physical-pair mass `ν²/δ` under that predicate.
+`OriginalHSGaussianTensor.integrable_tensorWeight` and `integral_tensorWeight`
+combine the independent pairs and give mass `ν⁴/(δ₀δ₁)`.
+The proofs establish integrability before applying Fubini. The determinant
+power is minus one for each pair of complex coordinates; no square-root or
+pi normalization is omitted.
+
+`OriginalHSParameterGates.parameters_checked` checks one parameter table
+for the fourteen selected output degrees and four coordinate exclusions.
+The manifest in `data/original-hs-parameters` records each selected source:
+first-power degrees 51 and 101 use the rectangular input, later first-power
+degrees use the power-one input, and powers two and three use their selected
+finite-band degrees. All input files remain hash-pinned and byte-identical.
+Run `python3 tools/gen_original_hs_parameters.py --check` to reproduce the
+Lean table. Exact Python replays are diagnostics stored in ignored `handoff/`;
+Lean's kernel checks the parameter facts independently.
+
+The manifest identifies the numerical producer programs and explains the
+recorded Arb `bound` and its rational upper endpoint `upper_rational`.
+Neither is used as an assumed Hilbert--Schmidt bound. The decomposition
+hashes refer to uncommitted historical decomposition files and do not prove
+an operator identity. The absolute path in the immutable rectangular input
+is historical metadata, never a generator dependency.
+
+`OriginalHSGaussianAudit` enforces standard-three-only transitive dependencies
+for the aggregate parameter certificate and the generic pair/tensor
+integrability and mass theorems. This is stricter than the repository-wide
+native allowlist. The defined Gaussian matrix and kernel are not yet identified
+with `HS_{j,I}` in `UPPER_STATUS.md`. Polynomial insertion, a Fock coefficient
+identity, that operator binding and numerical tail bounds remain open.
+
 **Exact Gaussian phase-moment interfaces.**
 `DampedMoments` proves mixed complex Gaussian moments at every positive radial
 scale. `InvariantMoments` integrates each monomial in the simultaneous-rotation
@@ -701,17 +736,30 @@ radial parameter zero. All new headline proofs have strict transitive guards;
 finite source certificates, saved-byte comparisons and integral instantiations
 remain separate obligations.
 
-`ProductionPhaseL2Error` constructs L² representatives of the actual fixed-radial
-production rounding, its explicit linear-base/cubic-phase model, and the actual
-phase-model difference. For positive radial parameter, a measurable phase model
-bounded by one and an actual phase bounded by one, its saved-center error is at
-most `5ρ² + (5/2) ‖phaseDifferenceLp‖ + ‖modelSliceLp - saved‖`.
-The proof uses scalar norm representatives and the L² triangle inequality, so
-the Gaussian base remainder is charged once. It leaves the saved-model norm
-unchanged, requires no disk bound on the linear Gaussian base model, and adds
-no discrete coefficient count or omitted-domain estimate. The original
-linear-slice almost-everywhere representative identity is exposed for this
-consumer without changing its statement or proof.
+`ProductionPhaseL2Error` constructs L² representatives of the unsmoothed
+rounding on a fixed radial slice, its linear-base/cubic-phase model, and the
+phase-model difference. For positive radial parameter and a measurable
+comparison phase bounded by one, its error against an arbitrary `saved : Lp ℂ 2 gaussC`
+is at most `5ρ² + (5/2) ‖phaseDifferenceLp‖ + ‖modelSliceLp - saved‖`.
+The actual phase premise is supplied by `phi_abs_lt_one`, a consequence of the
+native cover's `phiT_sq_le`. It stays explicit to keep the theorem's own
+transitive axiom set standard. A single `leafOK` certificate does not give
+this whole-slice premise.
+
+The intended bounded comparison phase can be `p = slicePhase s` itself;
+then the phase difference vanishes. This leaves the Gaussian integral of
+`‖linearSlice s w * P3 (slicePhase s w) - saved w‖²` to certify, with one
+normalized `gaussC` measure. No nonconstant polynomial bounded by one on the
+entire plane is assumed. The proof uses scalar norm representatives and the
+L² triangle inequality, charging the base remainder once; `linearSliceLp_coe`
+identifies the base representative. It imports the cubic stability estimate
+directly, without the unused pointwise `ProductionPhaseModel` interface.
+
+The argument `saved` is not identified with stored coefficient bytes here.
+The theorem does not yet give the smoothed band errors consumed by
+`fresh_upper_concrete_taylor`: radial integration, smoothing, band projection,
+numerical integral certificates and the stored-source binding remain to be
+supplied. No discrete coefficient count or omitted-domain estimate is added.
 
 `ProductionPhaseModelIntegral` selects the actual slice phase as the phase model,
 so its phase-difference L² element is exactly zero. The remaining model energy is
@@ -719,9 +767,10 @@ so its phase-difference L² element is exactly zero. The remaining model energy 
 integral against `gaussC` of this expression plus the saved energy minus twice
 the real model/saved cross term. No extra Gaussian or radial density is inserted.
 An eventual bound of this integral by a nonnegative `epsilon²` implies actual
-source error at most `5ρ²+epsilon`. The slice-wide actual phase bound, positive
-radial parameter, saved-function binding and numerical integral certificate
-remain explicit; a selected leaf does not provide whole-slice coverage.
+source error at most `5ρ²+epsilon`. The whole-slice phase premise can be supplied by the existing native cover;
+it remains explicit to preserve the analytic theorem's standard axiom set.
+Positive radial parameter, comparison-function binding and numerical integral
+certificates remain explicit; a selected leaf does not provide whole-slice coverage.
 The model and model/saved cross integrands are integrable by their actual L²
 representatives. Separate receipts `modelEnergy ≤ U`, `savedEnergy ≤ V` and
 `Re(modelSavedCross) ≥ L` give the squared discrepancy bound `U+V-2L`. A complex

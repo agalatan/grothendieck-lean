@@ -408,6 +408,15 @@ tails internally. Its remaining inputs are fourteen explicit finite-band
 Gaussian error inequalities and the concrete energy-table accuracy. The
 slightly tighter finite error caps are generated from the original allowances;
 their Gaussian validity remains open.
+The weighted Gaussian kernel has a common checked parameter predicate.
+It gives real covariance positivity, genuine integrability and the uninserted
+physical-pair mass $\nu^2/\delta$. A product-measure argument combines two
+pairs into $\nu^4/(\delta_0\delta_1)$. One rational parameter table covers the
+fourteen selected finite bands and four coordinate exclusions. These parameter
+checks do not assume the numerical tail bounds recorded in the input files.
+Identification with the Hilbert--Schmidt quantity used in the upper-bound
+argument, polynomial insertion, the Fock coefficient identity and numerical
+tail estimates remain separate obligations.
 A Gaussian Laplace representation of complex phase is proved exactly,
 including the zero argument, integrability and a uniform absolute-integral
 bound. Absolute Fubini exchange applies this representation to the actual
@@ -941,10 +950,15 @@ an explicit comparison of the resulting model with the saved center.
 The exact profile-zero reduction uses a positive radial parameter; source,
 saved-byte and integral certificates still have to instantiate these bounds.
 
-The conditional Gaussian $L^2$ successor charges the base remainder once,
-giving $5\rho^2$ plus $5/2$ times the phase-model $L^2$ error and the explicit
-saved-model $L^2$ discrepancy. Phase bounds, measurability and the actual saved
-model remain inputs; discrete Bessel and omitted-domain estimates are separate.
+The conditional Gaussian $L^2$ triangle inequality on one unsmoothed radial
+slice charges the base remainder once, giving $5\rho^2$ plus $5/2$ times the
+phase-model error and the model-to-comparison error. The actual phase bound
+follows from the existing native cover; it remains a premise to keep these
+analytic theorems independent of that native computation. Choosing the actual
+phase as the bounded comparison phase makes its phase error zero. The remaining
+Gaussian model-to-comparison integral and the comparison function's relation
+to stored coefficients still need certificates. Radial integration, smoothing
+and band projection are separate steps toward the endpoint.
 
 Keeping the actual phase inside the Gaussian model removes the phase-error
 term exactly. The remaining saved-model discrepancy is one normalized

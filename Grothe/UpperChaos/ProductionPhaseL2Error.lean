@@ -1,11 +1,18 @@
-import Grothe.UpperChaos.ProductionPhaseModel
+import Grothe.UpperChaos.PhasePolynomialStability
+import Grothe.UpperChaos.Rounder
 import Grothe.UpperChaos.ZeroProfilePhaseLinearization
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
-/-! Gaussian L2 error propagation for the actual conditional production rounding.
-The actual phase bound, measurable bounded phase model, and saved-model L2
-discrepancy stay explicit. Agent-ID: codex-8c4d. -/
+/-! A Gaussian L2 triangle inequality for unsmoothed rounding on one radial slice.
+The phase premise is supplied globally by `phi_abs_lt_one` in `PhiBound`; it
+stays explicit here to avoid importing the native cover into these theorems.
+The comparison phase must be measurable and bounded by one. The actual phase
+`slicePhase s` is one such choice, with zero phase difference; it is not a
+polynomial approximation on the entire Gaussian space. The argument `saved`
+is an arbitrary L2 comparison function, whose relation to stored coefficients
+and model discrepancy need separate proofs. Radial integration, smoothing and
+band projection are not supplied here. Agent-ID: codex-8c4d. -/
 
 open MeasureTheory Grothe.LowerAnalytic
 namespace Grothe.UpperChaos.ProductionPhaseL2Error
