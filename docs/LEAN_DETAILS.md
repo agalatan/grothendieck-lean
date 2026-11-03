@@ -809,7 +809,7 @@ verification; a read-only digest alone does not.
 `CapsRest` comprises the vertex caps of rows 0.85 and 0.855 and any
 excluded-node caps of the original range-checked rows; those exclusion lists
 are empty. Rows 0.84 and 0.845 (rows 12 and 13) are certified by their complete
-localized-piece and anchor assemblies, verified by CI's caps build. Their
+localized-piece and anchor assemblies, verified by CI's caps build when they land. Their
 inputs retain the unchanged cap pad and exact rational grids. The independent
 `nodeCap_14x150_done` proof and its repair closure are preserved; it does not
 discharge the whole Row14 hypothesis.

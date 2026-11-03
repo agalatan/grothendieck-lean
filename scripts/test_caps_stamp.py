@@ -413,5 +413,23 @@ class RepositoryBoundaryTests(unittest.TestCase):
         self.assertIn(self.caps.BUILD_REGISTRY, files)
 
 
+
+class ChangeFilterTests(unittest.TestCase):
+    """Every pinned generation input and writer of the prepared caps rows activates the proof check."""
+
+    def test_every_pinned_input_and_writer_matches_lean_paths(self):
+        import json, re
+        root = REPO if "REPO" in globals() else Path(__file__).resolve().parents[1]
+        workflow = (root / ".github/workflows/lean.yml").read_text()
+        pattern = re.search(r"LEAN_PATHS='([^']+)'", workflow).group(1)
+        registry = json.loads((root / "data/caps-m/plan/row-certificates/row12-build.json").read_text())
+        registry = registry.get("registry", registry)
+        pinned = set(registry.get("input_sha256", {})) | set(registry.get("execution_source_sha256", {}))
+        pinned |= {"tools/gen_cap_pieces.py", "tools/gen_cap_prepared_rows.py", "tools/nodecaps_prepared_renderers.py",
+                   "data/caps-m/plan/row-certificates/row12-build.json"}
+        missing = sorted(path for path in pinned if not re.search(pattern, path))
+        self.assertEqual(missing, [])
+
+
 if __name__ == "__main__":
     unittest.main()

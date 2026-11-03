@@ -111,7 +111,7 @@ hand-editing `CapRecipeData.lean`. Lower-row and gate inputs are similarly
 kept in `data/`; generated modules must reproduce byte for byte. A failed
 recipe can make its cap check fail; it cannot bypass the numerical checker.
 
-Rows 12–15 remain explicit `CapsRest` inputs. Their localized-piece data,
+Rows 14–15 remain explicit `CapsRest` inputs (rows 12–13 are certified). Their localized-piece data,
 computation campaign and final wiring are roadmap Tracks B/C. Track A
 separates both the existing 60 range facts and the localized-piece checks
 from the lower proof chain. The same 60 range facts support the refined
