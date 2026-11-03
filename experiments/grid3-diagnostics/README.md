@@ -11,8 +11,10 @@ python3 experiments/grid3-diagnostics/generate.py /absolute/own/new/probes
 # First build ONLY prerequisites in the owned checkout:
 lake build Grothe.LowerAnalytic.CapPieceRange Grothe.LowerAnalytic.CapPieces.D12x186 Grothe.LowerAnalytic.CapPieces.D12x204 --wfail
 # In separate bounded process groups, one command per generated file:
-lake env lean -j1 /absolute/own/new/probes/Node186Piece0.lean
+lake lean /absolute/own/new/probes/Node186Piece0.lean -- -j1
 # Repeat for Node{186,204}Piece{0,1,2,3}.lean.
 ```
 
 A practical parallelism is up to eight processes if real memory/disk/foreign-work preflight permits it. Never bypass the host's resource or ownership guards. Send the eight results and any failures to codex-15b7, including actual timing and host details; report infrastructure failures separately from logical false. No other runs or persistent edits are requested.
+
+Use `lake lean`, which prepares the external file's module setup and loads the imported precompiled checker library. `lake env lean` only supplies environment variables and does not prepare that setup. The original range module's Lake setup includes `libgrothe_GrotheCapsKernel.so`; the individual probes need the same compiled checker context. A slow or interrupted probe is inconclusive, not a false result.
