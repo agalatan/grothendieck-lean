@@ -2032,9 +2032,6 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0SourceExceptionCentersAll.all_valid
 #print axioms Grothe.UpperChaos.Q0SourceExceptionCentersAll.each_scalar
 #print axioms Grothe.UpperChaos.Q0SourceExceptionCentersAll.ordinals
-#print axioms Grothe.UpperChaos.QuadraticMomentScaling.momentValue_scale
-#print axioms Grothe.UpperChaos.QuadraticMomentScaling.momentValue_scale_mul
-#print axioms Grothe.UpperChaos.QuadraticMomentScaling.momentValue_sqrt_scale
 #print axioms Grothe.UpperChaos.Q0SourceExceptionMassClosure.actual_source_error
 #print axioms Grothe.UpperChaos.Q0SourceExceptionMassClosure.actual_source_error_sharp
 #print axioms Grothe.UpperChaos.Q0SourceExceptionMassClosure.exceptional_error_le
@@ -2074,6 +2071,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0SourceSavedLinearModel.source_actual_error_sq_le
 #print axioms Grothe.UpperChaos.Q0SourceSavedLinearModel.source_linearRowBounds
 #print axioms Grothe.UpperChaos.Q0SourceSavedLinearModel.source_model_error_eq
+#print axioms Grothe.UpperChaos.QuadraticMomentScaling.momentValue_scale
+#print axioms Grothe.UpperChaos.QuadraticMomentScaling.momentValue_scale_mul
+#print axioms Grothe.UpperChaos.QuadraticMomentScaling.momentValue_sqrt_scale
 #print axioms Grothe.UpperChaos.QuadraticPolynomialIntegrability.integrable_finite_mixed_polynomial
 #print axioms Grothe.UpperChaos.QuadraticPolynomialIntegrability.quadraticForm_lower_bound
 #print axioms Grothe.UpperChaos.QuadraticPolynomialMoments.integral_finite_mixed_polynomial
