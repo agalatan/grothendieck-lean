@@ -1117,6 +1117,846 @@
         ]
       ],
       "node_context_sha256": "24498b218824e6bd6374818d23f0f18718b6148d786003d66e2db03a065a9060"
+    },
+    {
+      "baseline_piece_sha256": "f2983782813c67a80c94a97d74077ddcd895236390d22c4395bb89346eeffeaa",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-188-4/matrix.jsonl",
+        "sha256": "7913ef36ad7a5910a5cfe7801f0b1bacd5e4968444a6b5765eac9dfb1c1f8318"
+      },
+      "grid": 1,
+      "key": "13:188:4",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "131558881142184549417929036173/1980555019911963720573299720192",
+          "0"
+        ],
+        [
+          "421774805900826371226844934947/1100090078275639996555177492480",
+          "55182638022917241375833541836559/2596148429267413814265248164610048"
+        ]
+      ],
+      "node_context_sha256": "24498b218824e6bd6374818d23f0f18718b6148d786003d66e2db03a065a9060"
+    },
+    {
+      "baseline_piece_sha256": "c9666ffb8489362a42bc7bc5d9f1fc7a84a41fc9976d20c33d8642c83fa07211",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-188-5/matrix.jsonl",
+        "sha256": "3ef16085964bc2787ccfc2bf5e3da2f0d857343d487fd4df607b20ce73f6f092"
+      },
+      "grid": 1,
+      "key": "13:188:5",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "324316009648784086631172892305/4713130942893673375284840103936",
+          "0"
+        ],
+        [
+          "393446466719156992020134685589/1272708770724478136860429778944",
+          "30114836709907766550108976656957/649037107316853453566312041152512"
+        ]
+      ],
+      "node_context_sha256": "24498b218824e6bd6374818d23f0f18718b6148d786003d66e2db03a065a9060"
+    },
+    {
+      "baseline_piece_sha256": "0714970efd731d484f150aeda26345e99f74d6c6828b73506e68a69b0d5242a5",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-188-6/matrix.jsonl",
+        "sha256": "7edc020121af80e3df80b2ac0035af3def3989123a7af225c5163307bff44dca"
+      },
+      "grid": 2,
+      "key": "13:188:6",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "69283701464057749110072838899/132731731864787395143205388288",
+          "22432402603487432490153592498587/5192296858534827628530496329220096"
+        ],
+        [
+          "2044773961187638552859514455113/8475686135464822946994000494592",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "24498b218824e6bd6374818d23f0f18718b6148d786003d66e2db03a065a9060"
+    },
+    {
+      "baseline_piece_sha256": "ec1cd39b285622b910b57d319d6e4b87639474c1d90247eb6b0d457ad206995f",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-188-12/matrix.jsonl",
+        "sha256": "132fa9e24219388981d706d9c7155ee821b67b5f200682d6de8ab2feb968f8b9"
+      },
+      "grid": 2,
+      "key": "13:188:12",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "24974313893756843101000534057/94422275911264380923511046144",
+          "13226683116897254918012110949067/1298074214633706907132624082305024"
+        ],
+        [
+          "1202479287645256305466900666611/4977506648760572959911174995968",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "24498b218824e6bd6374818d23f0f18718b6148d786003d66e2db03a065a9060"
+    },
+    {
+      "baseline_piece_sha256": "f37cca77a7f0dbc85bf3a35eb145af5a46816b3c47434aa3ba08eee95d6fcc66",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-188-18/matrix.jsonl",
+        "sha256": "e610efc16a34634ea9a26454d98e7e6e12b03556fd8e36325a2cd637d2c8e860"
+      },
+      "grid": 2,
+      "key": "13:188:18",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "316107775827945155027329905899/735521006824406059124160200704",
+          "47828306064300739707267786644973/2596148429267413814265248164610048"
+        ],
+        [
+          "54984945876662737734490421623/225646819215786100146183340032",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "24498b218824e6bd6374818d23f0f18718b6148d786003d66e2db03a065a9060"
+    },
+    {
+      "baseline_piece_sha256": "c02ba7577d70075671260cf66fe175fc07e33923bf69e652ff237515977de261",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-188-24/matrix.jsonl",
+        "sha256": "90a5179d5fcd758e1c3fc366e8eb1ed716d5966df0d9361f82e046224bd681d7"
+      },
+      "grid": 1,
+      "key": "13:188:24",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "175725447337322469190414334691/546489271859344255885097566208",
+          "25605153260802292414134026806465/649037107316853453566312041152512"
+        ],
+        [
+          "1080503038309421550452594427325/4465869451952986613105486200832",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "24498b218824e6bd6374818d23f0f18718b6148d786003d66e2db03a065a9060"
+    },
+    {
+      "baseline_piece_sha256": "0dfbb422e6107f7f4fd7f5020215cb694161021d5dfc8a5c5cebd7be5f96946a",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-188-30/matrix.jsonl",
+        "sha256": "591754f538e75f1cbed622d55c928a4d1e306e52c7d68a0042c422d358f0f0e6"
+      },
+      "grid": 1,
+      "key": "13:188:30",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "468818666411224735856241627941/1376741779228946050249230647296",
+          "12978463663991124381351727053999/162259276829213363391578010288128"
+        ],
+        [
+          "591207691712905949571128386791/2176164242807904234719418515456",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "24498b218824e6bd6374818d23f0f18718b6148d786003d66e2db03a065a9060"
+    },
+    {
+      "baseline_piece_sha256": "fb2da371309fc07cc8950b81feffc20aec761b9ce11be2bcda82c78cc575ed16",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-189-1/matrix.jsonl",
+        "sha256": "86235588145842242f3216462027b76be96654b54207dd95efe144f52b913903"
+      },
+      "grid": 2,
+      "key": "13:189:1",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "49162083912365926650208385037/626300339288470517815772708864",
+          "0"
+        ],
+        [
+          "87356798776854031916638245775/304287531249525464416957497344",
+          "1921121125521069696277552782255/649037107316853453566312041152512"
+        ]
+      ],
+      "node_context_sha256": "95dca4af59a19154c781d134e38782e883674ba19969e1fb562fbc6ed584f0a3"
+    },
+    {
+      "baseline_piece_sha256": "85ced56e5db8c6e8ba9075a6f147c299844b1ecc1b98ed78cbae297232794227",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-189-2/matrix.jsonl",
+        "sha256": "c1be760acaf8c78353c2cad67eef93cb67f65ccda33d85cd8c171cc1faa3bfc5"
+      },
+      "grid": 2,
+      "key": "13:189:2",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "198757601726805149042368288965/2535301200456458802993406410752",
+          "0"
+        ],
+        [
+          "559681318537582546866483010625/1870683738228034015247206449152",
+          "15181570631058799528804304761383/2596148429267413814265248164610048"
+        ]
+      ],
+      "node_context_sha256": "95dca4af59a19154c781d134e38782e883674ba19969e1fb562fbc6ed584f0a3"
+    },
+    {
+      "baseline_piece_sha256": "de4894cd7b941f0cfa133dfeb830fc8544f88acde3a90cc061ecab5e224ab778",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-189-3/matrix.jsonl",
+        "sha256": "95121fa2256fe165a0c86ca54b73ecd44b6966975ed9ac99546bf5fee7b231a4"
+      },
+      "grid": 2,
+      "key": "13:189:3",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "33225724872735966265487972557/421795709940499219198383226880",
+          "0"
+        ],
+        [
+          "1286399548362309350295065212363/2016961559607599877363253379072",
+          "20349121988640460850340894994985/2596148429267413814265248164610048"
+        ]
+      ],
+      "node_context_sha256": "95dca4af59a19154c781d134e38782e883674ba19969e1fb562fbc6ed584f0a3"
+    },
+    {
+      "baseline_piece_sha256": "9f9f92808220d45caaab50a9e1f5149b3779baf52b7651100a0eae1d8a0681cc",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-189-4/matrix.jsonl",
+        "sha256": "1814907d2dcd7d7129568b3eb6c704c13ec966b84a5a0f7819af32cbc079d311"
+      },
+      "grid": 1,
+      "key": "13:189:4",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "436094919192898328481236896791/6107187955478017096172643024896",
+          "0"
+        ],
+        [
+          "1784067883995342981426936869675/2535301200456458802993406410752",
+          "35574668135209912180536564466569/2596148429267413814265248164610048"
+        ]
+      ],
+      "node_context_sha256": "95dca4af59a19154c781d134e38782e883674ba19969e1fb562fbc6ed584f0a3"
+    },
+    {
+      "baseline_piece_sha256": "1eb5f98e8378dfbe726aacd31a63d3937c2c6060674271b86364028fd7ab4c7d",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-189-5/matrix.jsonl",
+        "sha256": "477344ab2ea5a94df07d4575ae960523978dc09b6e95b666b50be52f53c959b8"
+      },
+      "grid": 1,
+      "key": "13:189:5",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "159982760697350344471302119305/2168529749706156286548039958528",
+          "0"
+        ],
+        [
+          "7990957150753975643841829485/25397204851267643841217298432",
+          "15062823123936968405374589599313/324518553658426726783156020576256"
+        ]
+      ],
+      "node_context_sha256": "95dca4af59a19154c781d134e38782e883674ba19969e1fb562fbc6ed584f0a3"
+    },
+    {
+      "baseline_piece_sha256": "10e9912174716e830e07c3579cfad2bd35e66f5e164854883195162f4106e6d8",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-189-6/matrix.jsonl",
+        "sha256": "4b8117593c829ab6d7d13a98611a9522e7383a3d74243b14560a92a7fc1a2d0e"
+      },
+      "grid": 2,
+      "key": "13:189:6",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "500787193937051519786486053391/908548010642935485418008739840",
+          "43906284930665511211381826884897/10384593717069655257060992658440192"
+        ],
+        [
+          "559620249802259081346406245431/2281599951945495653322921607168",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "95dca4af59a19154c781d134e38782e883674ba19969e1fb562fbc6ed584f0a3"
+    },
+    {
+      "baseline_piece_sha256": "eeb0306f42d529e6c02f84593307870fba8ad662ee1d66b0e5e497d693d9ac44",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-189-12/matrix.jsonl",
+        "sha256": "5a49c80c5c8ac49e4967cdb080fa74a257ff92ff455c7d8ab5545a5d27342468"
+      },
+      "grid": 2,
+      "key": "13:189:12",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "23844587672202368297619375/300884307612771921252319232",
+          "7326597016220020097845854222311/649037107316853453566312041152512"
+        ],
+        [
+          "392727474452993330412316055315/1598846473492409008050766086144",
+          "2622997245863107106915605103/365574212030856107694713786823868416"
+        ]
+      ],
+      "node_context_sha256": "95dca4af59a19154c781d134e38782e883674ba19969e1fb562fbc6ed584f0a3"
+    },
+    {
+      "baseline_piece_sha256": "3220172cdf7a951cf823748d4384613199f47f5900a4650f1f0f33933a6bcb24",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-189-18/matrix.jsonl",
+        "sha256": "075c223550079c9a38c20629a4d092c9130f2539843475cfc7c1947ee1360efe"
+      },
+      "grid": 2,
+      "key": "13:189:18",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "1203339945215340873902750474063/8959165620221463733380482859008",
+          "14245196650818635124368155620119/649037107316853453566312041152512"
+        ],
+        [
+          "58433835852023880765029988289/235914763712953513277483122688",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "95dca4af59a19154c781d134e38782e883674ba19969e1fb562fbc6ed584f0a3"
+    },
+    {
+      "baseline_piece_sha256": "4049845cd6a647d85bfea08e9cd1db135cc7aa33233d743d6fbe4091276b1322",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-189-24/matrix.jsonl",
+        "sha256": "85ae526bb14e1d01ba5d8639266eaf474cd6a8a61344752a711071c2952e7421"
+      },
+      "grid": 1,
+      "key": "13:189:24",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "50739541168613600444153551231/120902288273001550302878367744",
+          "6014389532775904589450646222375/162259276829213363391578010288128"
+        ],
+        [
+          "611085896178922930489103453595/2484074900809001173134623113216",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "95dca4af59a19154c781d134e38782e883674ba19969e1fb562fbc6ed584f0a3"
+    },
+    {
+      "baseline_piece_sha256": "6550907402ba57aeb93ea61500570478db52ef366cafae15858148acfbd37b4b",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-189-30/matrix.jsonl",
+        "sha256": "163205f25cede59c302def8a81921de40aeccd8dd943e341c58001c7be68106a"
+      },
+      "grid": 1,
+      "key": "13:189:30",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "1000157603792091596493528378375/633825300114114700748351602688",
+          "6706843609556650104708536121453/324518553658426726783156020576256"
+        ],
+        [
+          "205886801768863021135359906057/745553595843778450879888228352",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "95dca4af59a19154c781d134e38782e883674ba19969e1fb562fbc6ed584f0a3"
+    },
+    {
+      "baseline_piece_sha256": "003df8660125e09774b3a9c0a215b6d6b73014daf2d231b1020a3d89d5d19c5f",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-190-1/matrix.jsonl",
+        "sha256": "940e194a4c403f37b3d132d4a5bc310f0a247913f4ac97df80f5ada859ad9d1b"
+      },
+      "grid": 2,
+      "key": "13:190:1",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "21287861019280850880178271381/255287979473588677747104808960",
+          "0"
+        ],
+        [
+          "101991411373451213962154989567/306653128485424736684229001216",
+          "14757647976192960042754688541051/5192296858534827628530496329220096"
+        ]
+      ],
+      "node_context_sha256": "ac4b82edbaa4eb66ae2c7851dc30076ae89588a5bfb68e1e9ee923106e14d356"
+    },
+    {
+      "baseline_piece_sha256": "be45230614589b0a0bfc716d396a643c197124b78388397819af08c28a1051e6",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-190-2/matrix.jsonl",
+        "sha256": "33d6a0ff78db11b25fcc221c9e357e43fdd9d3909d25bf820ed7e246de49636f"
+      },
+      "grid": 2,
+      "key": "13:190:2",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "325140027934503004999543285789/3901213259466573641565081698304",
+          "217986906458609275015711547/26473982279205328436476350405017600"
+        ],
+        [
+          "8546797548917128661129018735/34225564197625977122741813248",
+          "4022935208435504428739489250187/649037107316853453566312041152512"
+        ]
+      ],
+      "node_context_sha256": "ac4b82edbaa4eb66ae2c7851dc30076ae89588a5bfb68e1e9ee923106e14d356"
+    },
+    {
+      "baseline_piece_sha256": "e0b80bda57e79d51dadf493aaa250e7476b5e3cee6013f35ec4693b0d5f553db",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/590e77dcafe6e011/13-190-3/matrix.jsonl",
+        "sha256": "0f161156ff4e3d4b37bdcdcf3e31e1ee76fddebb44277ed6504edecf1452d12c"
+      },
+      "grid": 2,
+      "key": "13:190:3",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "18834830730895197203012416765/224959345865232383797985542144",
+          "0"
+        ],
+        [
+          "15657337259885276606752111855/33208311482724760066000420864",
+          "51218011818400280490544928351799/5192296858534827628530496329220096"
+        ]
+      ],
+      "node_context_sha256": "ac4b82edbaa4eb66ae2c7851dc30076ae89588a5bfb68e1e9ee923106e14d356"
+    },
+    {
+      "baseline_piece_sha256": "13610d53694408438c4ca763304e468d4c5e2d027f062fcec8a96269f91b069d",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-190-4/matrix.jsonl",
+        "sha256": "57611294501d3c7171f9a7b725e0baaea9503bb0e33ce0ab032d17d526106d86"
+      },
+      "grid": 1,
+      "key": "13:190:4",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "193186572378065847692100295945/2535301200456458802993406410752",
+          "201162404627602791393830985/176733769552204906798272460877725696"
+        ],
+        [
+          "271674503416222882036695073693/1122615945553224762931544064000",
+          "16172314465616516290303170817775/649037107316853453566312041152512"
+        ]
+      ],
+      "node_context_sha256": "ac4b82edbaa4eb66ae2c7851dc30076ae89588a5bfb68e1e9ee923106e14d356"
+    },
+    {
+      "baseline_piece_sha256": "e1c602ddb01dbb7074429af21938ada96b4b6d18db51cf818c396a68e7fd7973",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-190-5/matrix.jsonl",
+        "sha256": "eea97fce7f6ed9991bc4b440237399e80bd97e02dd9b4cc89adadff44523eec9"
+      },
+      "grid": 1,
+      "key": "13:190:5",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "27585510168986108858522705499/350656968084868777641764716544",
+          "0"
+        ],
+        [
+          "967322536305216338175328176581/3899653010347686155712836141056",
+          "1010130744215613440603999300991/20282409603651670423947251286016"
+        ]
+      ],
+      "node_context_sha256": "ac4b82edbaa4eb66ae2c7851dc30076ae89588a5bfb68e1e9ee923106e14d356"
+    },
+    {
+      "baseline_piece_sha256": "dbbe8222ba1f5423201b5638557b3f07a903192c0f14490ad53a70b1e05f760c",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-190-6/matrix.jsonl",
+        "sha256": "645f5427cc3d7a542a54576dc9763c09059e0d8ee9665be2a5e47dff8da9b49f"
+      },
+      "grid": 2,
+      "key": "13:190:6",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "612211448799023991470210478387/358554307532938471602726633472",
+          "7792912369110466375034416217215/10384593717069655257060992658440192"
+        ],
+        [
+          "69816866188331331440668654413/280058355634011502246696583168",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "ac4b82edbaa4eb66ae2c7851dc30076ae89588a5bfb68e1e9ee923106e14d356"
+    },
+    {
+      "baseline_piece_sha256": "537bb9c375bad6e279e797ea627ddb31e9e00fa87071b8f05b99a9aaaa23b7cc",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-190-12/matrix.jsonl",
+        "sha256": "27716d3278daa124aed114e82cd58b17eaa233e05112f33df779be37f0ce4039"
+      },
+      "grid": 2,
+      "key": "13:190:12",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "2801325241632382041226944395/4049265152927575573083979776",
+          "19724989857416875110519740609505/2596148429267413814265248164610048"
+        ],
+        [
+          "23784590165163264461427517943/95263889900156391832061739008",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "ac4b82edbaa4eb66ae2c7851dc30076ae89588a5bfb68e1e9ee923106e14d356"
+    },
+    {
+      "baseline_piece_sha256": "d1a54704477f4bc3fe45cbf98d18c418fde0ed97269aafaed3c0f9e429df88b4",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-190-18/matrix.jsonl",
+        "sha256": "aabca73f172403f40a744ab88cad9281ba812d7a70486a091864f8abd87f9156"
+      },
+      "grid": 2,
+      "key": "13:190:18",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "19352098346624923228196662485/38901434580481372939127619584",
+          "11398812259256361317888308421997/649037107316853453566312041152512"
+        ],
+        [
+          "144791407813743935655965298395/575257826081514462985286844416",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "ac4b82edbaa4eb66ae2c7851dc30076ae89588a5bfb68e1e9ee923106e14d356"
+    },
+    {
+      "baseline_piece_sha256": "490b240f71b8ba3aa7824fd2ef9520b75c0ed16857808a0d1b26ec708508a7e0",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-190-24/matrix.jsonl",
+        "sha256": "63b729eac479c1950abdfd78711a67d132b586852911c6f0c88be72dbcdd546e"
+      },
+      "grid": 1,
+      "key": "13:190:24",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "15029341462721306283117985989/39635802313721804916053245952",
+          "1541216060280934728903501701139/40564819207303340847894502572032"
+        ],
+        [
+          "55578616652247601944531290991/222279858621405281339570126848",
+          "7451874455462143497840595/46675106089543108348836807362740224"
+        ]
+      ],
+      "node_context_sha256": "ac4b82edbaa4eb66ae2c7851dc30076ae89588a5bfb68e1e9ee923106e14d356"
+    },
+    {
+      "baseline_piece_sha256": "abf48189c80a98b74624454dd5f9659ed3159434e77edc17e7dbf820ae12e8f2",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-190-30/matrix.jsonl",
+        "sha256": "0703d70a1ffb8e58b567871b127ca328be1f82243711cb4e4da09927be1fef4f"
+      },
+      "grid": 1,
+      "key": "13:190:30",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "678454203861694785377790890951/460834423337950628916093779968",
+          "4187697448665997919882212393709/162259276829213363391578010288128"
+        ],
+        [
+          "1203626068919461991648464114649/4288897169344474775889624694784",
+          "719600636005367413016025/5903609578926803523150774274097152"
+        ]
+      ],
+      "node_context_sha256": "ac4b82edbaa4eb66ae2c7851dc30076ae89588a5bfb68e1e9ee923106e14d356"
+    },
+    {
+      "baseline_piece_sha256": "b0235edac6d043bc6b4042ecd9e79d4f29fe52be2d034f68adb234381de66397",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-191-1/matrix.jsonl",
+        "sha256": "c3ace4e4017cdc2a37f1d6350479ce977beceb5fa670e39fe49bb21ab01fbea5"
+      },
+      "grid": 2,
+      "key": "13:191:1",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "393182022932400799527928850425/4457032264271558764855417634816",
+          "0"
+        ],
+        [
+          "17584268023155805664295629103/53228466002643786228784168960",
+          "29771572545670740947614420920703/10384593717069655257060992658440192"
+        ]
+      ],
+      "node_context_sha256": "b9d27ca08f65f6082a5784a5503b07ec7b9bb9ba2459703701c13f09e77ca6fa"
+    },
+    {
+      "baseline_piece_sha256": "543d6831c4e4148aa1deebd996e8b76eb3e3ebed074e83442c554094af7841e9",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-191-2/matrix.jsonl",
+        "sha256": "ae1457a6c76ae3a68d9db08b7471802841b54be3d355e6cf375bbaec05c2d3b9"
+      },
+      "grid": 2,
+      "key": "13:191:2",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "173128331613882693772232366657/1964860433918822375922941820928",
+          "0"
+        ],
+        [
+          "2913135903760605701219487244831/8412290497978991269095554416640",
+          "3584855289743241106202071575/633825300114114700748351602688"
+        ]
+      ],
+      "node_context_sha256": "b9d27ca08f65f6082a5784a5503b07ec7b9bb9ba2459703701c13f09e77ca6fa"
+    },
+    {
+      "baseline_piece_sha256": "ef96909fb056f9e603d548b76ad685bbe371f211d9cda90a53bde4601e04e3b6",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-191-3/matrix.jsonl",
+        "sha256": "c654ac316332ffcf792ef502f784d9fe7a8a5368bbad439228436186534a041b"
+      },
+      "grid": 2,
+      "key": "13:191:3",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "719208231322535721224470080125/8123476305871283801089829240832",
+          "0"
+        ],
+        [
+          "668011222079478802822932539489/2248077640143936124931142582272",
+          "15552046153068573411705404333709/1298074214633706907132624082305024"
+        ]
+      ],
+      "node_context_sha256": "b9d27ca08f65f6082a5784a5503b07ec7b9bb9ba2459703701c13f09e77ca6fa"
+    },
+    {
+      "baseline_piece_sha256": "6bbc9361037164c67f781e89e05d27569d7f416a7c317f47d95731d6469675fd",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-191-4/matrix.jsonl",
+        "sha256": "c8e2ad7bf56aeedfd3e70e20cb406969ee73e56567809153f65d97ed79d0397a"
+      },
+      "grid": 1,
+      "key": "13:191:4",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "16177743374631943464933951895/199958041830552887488422084608",
+          "0"
+        ],
+        [
+          "467893388650859283389324388705/1833125651406225484299691360256",
+          "32045100147760250337965989944763/1298074214633706907132624082305024"
+        ]
+      ],
+      "node_context_sha256": "b9d27ca08f65f6082a5784a5503b07ec7b9bb9ba2459703701c13f09e77ca6fa"
+    },
+    {
+      "baseline_piece_sha256": "f83bb02510acfbbb23179ff9015ede971ccbe6b1d90afafdb532b1373c88c47d",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-191-5/matrix.jsonl",
+        "sha256": "2d222d9555283442cf4eb6e5441192a987ad0865e713cdcb9f51d0d29a290504"
+      },
+      "grid": 1,
+      "key": "13:191:5",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "7884189266032886044704628237/94391387052974778718131060736",
+          "0"
+        ],
+        [
+          "985369411552193736088732518897/3205444499936213181884002205696",
+          "3823905428432970920131370703447/81129638414606681695789005144064"
+        ]
+      ],
+      "node_context_sha256": "b9d27ca08f65f6082a5784a5503b07ec7b9bb9ba2459703701c13f09e77ca6fa"
+    },
+    {
+      "baseline_piece_sha256": "1a781209d384ddc4f95efae9afbc95a6cd951a8591fd2540a87dbf49c09f04e4",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-191-6/matrix.jsonl",
+        "sha256": "018197d197e9a92257b3a4cd57455cf03505e7ffe208bf601c0b28f0144665cf"
+      },
+      "grid": 2,
+      "key": "13:191:6",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "761414329884515234455898652555/954803004300501164030452301824",
+          "18019025471235704847622386747343/5192296858534827628530496329220096"
+        ],
+        [
+          "195298177296236454006059691715/771016012291742291542019145728",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "b9d27ca08f65f6082a5784a5503b07ec7b9bb9ba2459703701c13f09e77ca6fa"
+    },
+    {
+      "baseline_piece_sha256": "93d76da8ca86cea0acee5ade9fb7e4def0a124970b7be3a25f87d553881415aa",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-191-12/matrix.jsonl",
+        "sha256": "24c1dfd7d906cd212e16f8b3bae60693ae589e554463636b54e27a87cb70e460"
+      },
+      "grid": 2,
+      "key": "13:191:12",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "19820532910666167219065880409/13089032907905987743055872000",
+          "6874718154015204478991951190219/2596148429267413814265248164610048"
+        ],
+        [
+          "48233162141190630255332664639/190108631363239811276230098944",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "b9d27ca08f65f6082a5784a5503b07ec7b9bb9ba2459703701c13f09e77ca6fa"
+    },
+    {
+      "baseline_piece_sha256": "410410d98984559aa337e79a7233555cf2501cb0aeaa2fb775a0b1ecba6f7152",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-191-18/matrix.jsonl",
+        "sha256": "48eb2271e0a84345708cc427cb4f52c1a3face3e9746c47f85a02ac456beb7c7"
+      },
+      "grid": 2,
+      "key": "13:191:18",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "250593843631657797166323614541/417257569883557874355543212032",
+          "21149815658323157001993989943961/1298074214633706907132624082305024"
+        ],
+        [
+          "8317277943964518270234933721/32530704363719102084153344000",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "b9d27ca08f65f6082a5784a5503b07ec7b9bb9ba2459703701c13f09e77ca6fa"
+    },
+    {
+      "baseline_piece_sha256": "3ba9f790c4988c28ca0ca7ea41bd8b3f1025887f624a521c0760dd475d9819b6",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-191-24/matrix.jsonl",
+        "sha256": "645a6cf7b54ec7592ff2995090254cad35a76c746bcc3d6521fc6e56a5465577"
+      },
+      "grid": 1,
+      "key": "13:191:24",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "2247043531766447478652697649613/2035784701521219649061825544192",
+          "26680768940399012467830246719901/1298074214633706907132624082305024"
+        ],
+        [
+          "1809196756788771055008155167497/7121387391583367212947721945088",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "b9d27ca08f65f6082a5784a5503b07ec7b9bb9ba2459703701c13f09e77ca6fa"
+    },
+    {
+      "baseline_piece_sha256": "1b50cb29fa20a680cebb8f915971181fad4ed86530d642fcdb525dca7a113ea6",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-191-30/matrix.jsonl",
+        "sha256": "f07f4358b681eec86b871aadb5d0fa3bdd427885f1e7236e9e6242c40dd54d0b"
+      },
+      "grid": 1,
+      "key": "13:191:30",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "194400426986401659767829983327/405604428540708671767724425216",
+          "1491561056731887038790589498263/20282409603651670423947251286016"
+        ],
+        [
+          "10319852556368559119956339467/36194466952031152555876679680",
+          "79639392547701847162618255/716407115186476984911770170679099392"
+        ]
+      ],
+      "node_context_sha256": "b9d27ca08f65f6082a5784a5503b07ec7b9bb9ba2459703701c13f09e77ca6fa"
+    },
+    {
+      "baseline_piece_sha256": "3e3e0e591aa38b66bae4ee73bf45625aa468026699a9b5eb397f50e61885813a",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-192-1/matrix.jsonl",
+        "sha256": "63f429a38dd76c29d460cb81e1747ee887de6e2126e7bb2e13b765c807562914"
+      },
+      "grid": 2,
+      "key": "13:192:1",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "5745449587624465176040286095/61769018739152624472746360832",
+          "0"
+        ],
+        [
+          "79991284781155407119612122773/154434688525867433640763326464",
+          "48101303762489876316250701831725/20769187434139310514121985316880384"
+        ]
+      ],
+      "node_context_sha256": "72afd887e9301ac6beb9888baae0b1be5d7b391247c6d093819989a3f537b904"
+    },
+    {
+      "baseline_piece_sha256": "d42b030b716801b3ed1f91f2f3321461aceea359fa2b410905637e0ec00493f1",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-192-2/matrix.jsonl",
+        "sha256": "ea869a7aa6eaf0c712c26839b71f5e30ebb714c0846f7dee2cdb70026d5a71cf"
+      },
+      "grid": 2,
+      "key": "13:192:2",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "358353962874074648960646430059/3859489373925643767945201975296",
+          "0"
+        ],
+        [
+          "1210349632625192439564175800881/1124640390923612257918291804160",
+          "3372938951449242203458745814851/2596148429267413814265248164610048"
+        ]
+      ],
+      "node_context_sha256": "72afd887e9301ac6beb9888baae0b1be5d7b391247c6d093819989a3f537b904"
+    },
+    {
+      "baseline_piece_sha256": "d174ff380158214e957432527394c7fde3edd2706ed200d482ad849567686589",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/84d90be3ac9d8931/13-192-3/matrix.jsonl",
+        "sha256": "8af8f5a09effdaba75bec0e22c19ad3be358972346b9fb18d9034b68dc8c6f69"
+      },
+      "grid": 2,
+      "key": "13:192:3",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "376902326415443263351580110809/4039615868410938052266346676224",
+          "0"
+        ],
+        [
+          "11082573577090802731495615185/11744057610058302302835441664",
+          "5549220089256387919023175975689/1298074214633706907132624082305024"
+        ]
+      ],
+      "node_context_sha256": "72afd887e9301ac6beb9888baae0b1be5d7b391247c6d093819989a3f537b904"
     }
   ],
   "row": 13,
