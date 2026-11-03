@@ -158,15 +158,18 @@ jobs:
             fi
           fi
           if [ "${{ steps.scope.outputs.lean }}" = true ] && [ -z "$handoff" ] && [ "${found:-0}" = 0 ] \
-             && [ "${GITHUB_REF_NAME}" != master ] && [ "${{ inputs.land }}" != true ] && [ "${{ inputs.mode }}" != caps ]; then
+             && [ "${GITHUB_REF_NAME}" != master ] && [ "${{ inputs.land }}" != true ] && [ "${{ inputs.mode }}" != caps ] \
+             && [ "${{ vars.FORCE_HEAVY }}" != true ]; then
             # an informative branch check never occupies the droplet (one runner, hours per cap build): it fails at
             # once, saying so; the landing run or an explicit `-f mode=caps` dispatch builds the caps on the droplet
             echo "::warning::no verified build cache for these node-cap sources (digest ${digest}): the caps changed, or master has no cache yet. This branch check would need the droplet."
             echo "needs_droplet=true" >> "$GITHUB_OUTPUT"; echo "droplet=false" >> "$GITHUB_OUTPUT"
             echo 'runs_on="ubuntu-24.04"' >> "$GITHUB_OUTPUT"; exit 0
           fi
-          if [ "${{ steps.scope.outputs.lean }}" = true ] && [ -z "$handoff" ] && { [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ]; }; then
-            echo "-> the droplet builds and verifies the node caps (this run stays pending meanwhile)"
+          # FORCE_HEAVY (repository variable): every Lean build runs on the self-hosted heavy runners, whatever
+          # the cache says (set while the GitHub-hosted 16 GB VMs cannot hold the kernel checks; unset to return).
+          if [ "${{ steps.scope.outputs.lean }}" = true ] && [ -z "$handoff" ] && { [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ] || [ "${{ vars.FORCE_HEAVY }}" = true ]; }; then
+            echo "-> the heavy runners build this (mode=caps, no verified cache, or FORCE_HEAVY); this run stays pending meanwhile"
             echo "droplet=true" >> "$GITHUB_OUTPUT"; echo 'runs_on=["self-hosted","heavy"]' >> "$GITHUB_OUTPUT"
           else
             echo "droplet=false" >> "$GITHUB_OUTPUT"; echo 'runs_on="ubuntu-24.04"' >> "$GITHUB_OUTPUT"
@@ -273,18 +276,6 @@ jobs:
             echo "::error::The route found a verified cache for these sources, but the restored build does not match"
             echo "::error::(evicted meanwhile?). Re-run this workflow: the route will then send it to the droplet."
             exit 1; }
-
-      - name: Swap for the kernel checks (GitHub-hosted, 16 GB RAM and four Lean processes)
-        if: env.LEAN == 'true' && env.DROPLET != 'true'
-        # A hosted VM that runs out of memory is torn down and the job ends with "Terminated" (exit 143).
-        # 32 GB of swap on the free disk turns that into slowness; the droplet has the memory and skips this.
-        # The image already runs a 4 GB swapfile at /mnt/swapfile; never touch that one (resizing an active
-        # swapfile took the VM down, run 41629050672). Add a second file next to it.
-        run: |
-          swapon --show; df -h /mnt | tail -1
-          sudo fallocate -l 32G /mnt/lean-swap && sudo chmod 600 /mnt/lean-swap
-          sudo mkswap -q /mnt/lean-swap && sudo swapon /mnt/lean-swap
-          swapon --show; free -g | sed -n '1,3p'
 
       - name: Build Grothe (everything, node caps included)
         if: env.LEAN == 'true'
