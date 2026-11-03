@@ -532,6 +532,10 @@ existing profile cover, giving `|κ(s)| > 1/1000` on all four remaining strips.
 Thus their reciprocal Gaussian denominator exceeds `10⁻⁶` uniformly, including
 for very small positive reciprocal coordinates.
 
+`PhiProductionIdentity` relates the actual rounding phase to its Gram-coordinate
+polynomial without importing the numerical phase cover. Concrete leaf proofs
+can use this exact identity before the global cover is assembled.
+
 `ProfilePiFactor` provides rational enclosures of `π`, `sqrt(π)`, and
 `sqrt(sqrt(π))` of width at most `2⁻⁵¹²` for the actual profile normalization.
 Mathlib's proved nested-square-root bounds certify the π witnesses; exact
