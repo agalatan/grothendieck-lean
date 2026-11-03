@@ -97,7 +97,9 @@ theorem integral_tensorFamily {α β ι κ : Type*}
     simp only [tensorFamily, map_mul]
     ring
   simp_rw [hpoint]
-  rw [integral_prod_mul, hb, hc]
+  rw [MeasureTheory.integral_prod_mul (μ := μ) (ν := ν)
+    (fun x : α => conj (b i.1 x) * b j.1 x)
+    (fun y : β => conj (c i.2 y) * c j.2 y), hb, hc]
   split_ifs <;> simp_all [Prod.ext_iff]
 
 abbrev Sources2 := ℂ × ℂ

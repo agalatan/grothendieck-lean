@@ -34,7 +34,7 @@ private def negDeriv1 : Module.End ℂ CPoly :=
 
 private theorem negDeriv1_commute_mulX0 : Commute negDeriv1 mulX0 := by
   change negDeriv1 * mulX0 = mulX0 * negDeriv1
-  ext P
+  refine LinearMap.ext fun (P : CPoly) => ?_
   change -(pderiv (1 : Fin 2) (X 0 * P)) = X 0 * (-(pderiv (1 : Fin 2) P))
   simp [pderiv_mul]
 

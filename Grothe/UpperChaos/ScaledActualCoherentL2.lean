@@ -39,7 +39,7 @@ private theorem eval_monomial_coordinates (zw : TensorSources)
     (s : Fin 8 →₀ ℕ) (c : ℂ) :
     MvPolynomial.eval (coordinates zw) (MvPolynomial.monomial s c) =
       c * tensorMonomial (powers s) zw := by
-  simp only [MvPolynomial.eval_monomial, Finsupp.prod_fintype, Fin.prod_univ_eight]
+  simp only [MvPolynomial.eval_monomial, Finsupp.prod_pow, Fin.prod_univ_eight]
   simp only [coordinates, Matrix.cons_val_zero, Matrix.cons_val_succ,
     tensorMonomial, BipartitePolynomialL2.monomial, powers]
   ring
@@ -77,7 +77,7 @@ theorem map_liftedMoment (r : ℝ) (B : SourcePolynomial) (v : Fin 8 → ℂ)
   | succ p ih =>
     simp only [liftedMoment, momentPolynomial, Polynomial.map_add, Polynomial.map_mul,
       Polynomial.map_C, ← Polynomial.derivative_map, ih, map_mul, MvPolynomial.eval_C]
-    rw [show (r : ℂ)⁻¹ * MvPolynomial.eval v B =
+    rw [← Polynomial.C_mul, show (r : ℂ)⁻¹ * MvPolynomial.eval v B =
       MvPolynomial.eval v B / (r : ℂ) by simp only [div_eq_mul_inv]; ring]
 
 /-- Substituting the first source produces a genuine finite source polynomial. -/
@@ -147,7 +147,7 @@ private theorem rate_eq (j : ℕ) : rate j = 1 + alpha j := by
   ring
 
 private theorem inv_rate_eq (j : ℕ) : (rate j : ℂ)⁻¹ = (nu j : ℂ) := by
-  simp only [rate_eq, nu, Complex.ofReal_div, Complex.ofReal_one,
+  simp only [rate_eq, nu, Complex.ofReal_one,
     Complex.ofReal_add, one_div, Complex.ofReal_inv]
 
 private theorem one_sub_nu_eq (j : ℕ) : 1 - nu j = damping j := by
@@ -155,7 +155,7 @@ private theorem one_sub_nu_eq (j : ℕ) : 1 - nu j = damping j := by
   have hn : 1 + alpha j ≠ 0 := by positivity
   simp only [damping, nu]
   field_simp [hn]
-  <;> ring
+  ring
 
 private theorem gaussianCoherent_eq (j : ℕ) (x y u v : ℂ) :
     gaussianCoherent (rate j) x y u v = (nu j : ℂ) * Complex.exp

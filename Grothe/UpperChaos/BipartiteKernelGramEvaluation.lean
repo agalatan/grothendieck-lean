@@ -138,7 +138,7 @@ theorem outerScaleHom_monomial (x z : ℝ) (e : Fin 4 →₀ ℕ) (c : ℂ) :
         (c * ((x : ℂ) ^ (e 0 + e 1) * (z : ℂ) ^ (e 2 + e 3))) := by
   classical
   simp only [outerScaleHom, MvPolynomial.eval₂Hom_monomial,
-    MvPolynomial.monomial_eq, Finsupp.prod_fintype, pow_zero, Fin.prod_univ_four]
+    MvPolynomial.monomial_eq, Finsupp.prod_pow, Fin.prod_univ_four]
   simp only [Matrix.cons_val_zero, Matrix.cons_val_succ, mul_pow, pow_add,
     map_mul, map_pow]
   ring
