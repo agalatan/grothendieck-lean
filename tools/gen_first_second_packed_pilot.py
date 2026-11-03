@@ -19,6 +19,14 @@ LEAN = ROOT / 'Grothe/UpperChaos'
 PART_SIZE = 32
 
 
+def lean_chars(text: str) -> str:
+    # These are witnesses for the pinned source, not a restriction on the parser.
+    # Literal character cells avoid re-decoding a String at every structural step.
+    if not set(text) <= set('0123456789-,:'):
+        raise ValueError('Unexpected character in the pinned dyadic source')
+    return '[' + ', '.join("'" + c + "'" for c in text) + ']'
+
+
 def joined(names: list[str], separator: str) -> str:
     # Right association makes each application of row?_append_of_eq bounded.
     if len(names) == 1:
@@ -71,9 +79,12 @@ def generate() -> dict[Path, str]:
                     'set_option maxRecDepth 65536',
                     'set_option maxHeartbeats 2000000', '',
                     f'def text : String := {json.dumps(leaf_text)}',
+                    f'def chars : List Char := {lean_chars(leaf_text)}',
                     f'def values : List ℤ := [{leaf_values}]', '',
+                    'theorem source_chars : text.toList = chars := by decide +kernel', '',
                     'theorem structural_decoded :',
                     '    PackedDyadic.Structural.row? 206 text.toList = some values := by',
+                    '  rw [source_chars]',
                     '  decide +kernel', '',
                     f'end Grothe.UpperChaos.{leaf_mod}', '',
                     'open Lean Elab Command', 'run_cmd do',
@@ -121,7 +132,7 @@ def generate() -> dict[Path, str]:
                 value_names.append(f'values{tag}')
                 text = ','.join(records[start:start + PART_SIZE])
                 value_text = ', '.join(map(str, values[start:start + PART_SIZE]))
-                lines += [f'private def text{tag} : List Char := {json.dumps(text)}.toList',
+                lines += [f'private def text{tag} : List Char := {lean_chars(text)}',
                           f'private def values{tag} : List ℤ := [{value_text}]',
                           f'private theorem nonempty{tag} : text{tag} ≠ [] := by decide +kernel',
                           f'private theorem decoded{tag} : row? 206 text{tag} = some values{tag} := by',
