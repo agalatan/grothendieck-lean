@@ -8,6 +8,9 @@ from pathlib import Path
 import argparse, hashlib, json
 ROOT = Path(__file__).resolve().parents[1]
 SIDES = [('First', 'first', 91), ('Second', 'second', 46)]
+# Provisional finite ceiling; the full-family check must measure that each
+# generated binding fits before this research family is admitted to the root.
+HEARTBEATS = 2000000
 
 def values(side,q): return f'{side}CenterGrade{q:03}.values'
 def names(side,n): return ' ++ '.join(values(side,q) for q in range(n))
@@ -72,7 +75,7 @@ import Mathlib.Tactic
 namespace Grothe.UpperChaos.{side}CenterGrade{tag}Binding
 open FirstSecondGradeEnergyTargets
 set_option maxRecDepth 16384
-set_option maxHeartbeats 0
+set_option maxHeartbeats {HEARTBEATS}
 
 def before : List ℤ := {cat(side,0,q)}
 def suffix : List ℤ := {cat(side,q+1,count)}
@@ -124,7 +127,7 @@ end Grothe.UpperChaos.{side}CenterGrade{tag}Binding
            'import Mathlib.Tactic.FinCases','',
            f'/-! Actual-source {low} grade sums conditional on packed-to-literal equality; check all imports. -/',
            f'namespace Grothe.UpperChaos.{side}CenterGradeBindings',
-           'open FirstSecondGradeEnergyTargets','set_option maxRecDepth 16384','set_option maxHeartbeats 0','',
+           'open FirstSecondGradeEnergyTargets','set_option maxRecDepth 16384',f'set_option maxHeartbeats {HEARTBEATS}','',
            f'theorem all_grade_sums',
            f'    (hsource : {low}CenterInts = FirstSecondIntegerBinding.{low}AllValues.toArray) :',
            f'    ∀ q < {count},',

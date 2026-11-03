@@ -26,6 +26,9 @@ band energies. Exact external replays match the pinned binary64 archives and
 packed data. The original public packed definitions are unchanged. The full Lean family,
 the explicitly assumed packed-to-literal source equivalence and
 replacement of the two existing native band leaves remain acceptance gates.
+The generated research family stays outside the default root until the closed
+consumer is integrated; its dedicated check explicitly builds every grade and
+the final strict trust guard.
 This work does not establish Gaussian approximation errors or an upper endpoint.
 
 ## The constant

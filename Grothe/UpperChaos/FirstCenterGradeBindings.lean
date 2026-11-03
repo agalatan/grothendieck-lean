@@ -95,7 +95,7 @@ import Mathlib.Tactic.FinCases
 namespace Grothe.UpperChaos.FirstCenterGradeBindings
 open FirstSecondGradeEnergyTargets
 set_option maxRecDepth 16384
-set_option maxHeartbeats 0
+set_option maxHeartbeats 2000000
 
 theorem all_grade_sums
     (hsource : firstCenterInts = FirstSecondIntegerBinding.firstAllValues.toArray) :

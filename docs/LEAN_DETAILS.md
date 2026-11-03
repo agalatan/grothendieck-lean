@@ -1087,7 +1087,12 @@ box and the guillotine partition. `--check` reproduces `LawNodeData.lean` and
 First/second-center kernel certificate draft: the committed generators reproduce
 137 retained integer grades from the original pinned NPZ inputs and independently
 replay the original packed source order and ten band-energy targets. The proposed
-`FirstSecondKernelBandEnergy` facts are registered for a standard-axiom audit.
+`FirstSecondKernelBandEnergy` contains a strict transitive standard-axiom guard.
+The generated research family is excluded from the default root and main axiom
+report until its closed band-check consumer is wired. Exclusion supplies no Lean
+verification: `tools/check_first_second_energy.sh` explicitly checks the complete
+family and final guard with warnings treated as errors. Generated bindings have
+a finite heartbeat ceiling; its adequacy still requires measured compilation.
 The original public packed definitions remain unchanged. The full generated family
 is unverified, and actual grade/band facts take an explicit packed-to-literal
 source-equality premise. Kernel certificates must discharge it before acceptance.

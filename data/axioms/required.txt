@@ -502,8 +502,6 @@ Grothe.UpperChaos.DirectSample.upper_of_DFT_ledger
 Grothe.UpperChaos.DirectSample.upper_of_actual_head
 Grothe.UpperChaos.DirectSample.upper_of_finite_sample_bounds
 Grothe.UpperChaos.ExponentialTail.exp_moment_tail
-Grothe.UpperChaos.FirstSecondKernelBandEnergy.first_check
-Grothe.UpperChaos.FirstSecondKernelBandEnergy.second_check
 Grothe.UpperChaos.FixedChaosSmoothing.actualEntry_linearMode
 Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_one_zero
 Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_zero_one
