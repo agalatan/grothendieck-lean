@@ -509,7 +509,7 @@
       "sha256": "9501cec7a5ff9af7eb12cb496b5bc05faba049670152a539f700be0c2cd72495"
     },
     "data/caps-m/plan/row-certificates/coverage-slicing.json": {
-      "path": "data/caps-m/plan/row-certificates/coverage-slicing.json",
+      "path": "data/caps-m/plan/noncentre-repairs/auxiliary/22bab84890afe38de9e6d28f5b768770425bf9de8fa04483d596ebf21b38ba07/coverage-slicing.json",
       "sha256": "22bab84890afe38de9e6d28f5b768770425bf9de8fa04483d596ebf21b38ba07"
     },
     "data/caps-m/plan/row-certificates/prepared-binding.json": {
@@ -626,9 +626,9 @@
     }
   },
   "current_tools_sha256": {
-    "tools/gen_cap_prepared_rows.py": "55753cc5076b24cdfd57f3e56bb74ab5102297f1003056a4a5818ac3aee39143",
+    "tools/gen_cap_prepared_rows.py": "a391d166c180536c01d33c27e459cd79f33d1bd83be3bc07a85a332bdc00ca57",
     "tools/nodecaps_noncentre_repair.py": "1630407eddc693b7d11b6b083ad8da13d17360d213401f48c2b25fa18e5a240c",
-    "tools/nodecaps_repaired_render.py": "8c204cd9f29e92eaf89740ed2b8f16baeb7b922c7d204a9a8b66fa27900f64cb"
+    "tools/nodecaps_repaired_render.py": "97b3138a611ac5a25449c293b0d580a725b02cef2aab4e1daa24b105a6f7e9a6"
   },
   "effective_sources_sha256": {
     "Grothe/LowerAnalytic/CapPieces/D12x183.lean": "a7f69b25abe8303c175d4dd8267e6c001983aed67a151363dabfe3cc2587bb8e",

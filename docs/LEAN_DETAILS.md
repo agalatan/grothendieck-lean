@@ -972,7 +972,7 @@ composes `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and the same
 rows and `CapNodes` are part of `Grothe`.
 
 The cache provenance boundary is derived from the shared active-row registry:
-legacy ranges, selected Row12–14 finite leaves and the retained independent
+legacy ranges, selected Row12–15 finite leaves and the retained independent
 Row14 repair checks. The computation closure is hashed together with direct
 assembly/configuration roots and mathematical input projections.
 This identifies the cached computation
@@ -997,9 +997,9 @@ build supplies the verification and subsequent replay; no independent
 manual droplet verification is required. The build and the report establish
 verification; a read-only digest alone does not.
 
-`CapsRest` comprises the vertex caps of row 0.855 (index 15) and any
-excluded-node caps of the original range-checked rows; those exclusion lists
-are empty. Rows 0.84, 0.845 and 0.85 (indices 12–14) have complete
+`capRowsDone` includes every row index. `CapsRest` retains any excluded-node
+caps of the original range-checked rows; those exclusion lists are empty.
+Rows 0.84, 0.845, 0.85 and 0.855 (indices 12–15) have complete
 localized-piece and anchor assemblies for canonical CI verification. Their
 inputs retain the unchanged cap pad and exact rational grids. Row14 uses the
 independent `nodeCap_14x150_done` proof and its full repair closure at node 150,
@@ -1007,6 +1007,11 @@ and the generated proofs for its other localized nodes and anchors. The
 source renderer checks every input. `gen_cap_prepared_rows.py --check`
 reproduces the complete sealed sources and applies the explicit
 `noncentre-source-binding.json` layer for hash-bound multiplier repairs.
+Row15 has a separate complete source binding. Its renderer requires exact
+matrix replay for every selected centre, binds the full research lineage, and
+reproduces the current writer with the shared coverage policy. Extending the
+policy archives its previous bytes for the sealed Row12–14 reproduction; the
+old sources and source seals remain unchanged.
 This layer permits only ordered noncentre lambda/mu changes at zero additional
 cap, with exact stored-matrix LDL replay. It preserves the recipes, grids,
 constraint regions, piece order, all planned centres and the retained node
@@ -1038,7 +1043,7 @@ the bounded builder parallelizes modules, never threads inside a native check.
 regions and unchanged soundness proofs remain in `CapCover`, `CapConstr`
 and `CapPieceNodes`. Generated coverage/range modules therefore avoid the
 lower proof chain. They are excluded from the root until a proof uses
-them. Row12–14 sources feed `CapsRest` through their whole-row assemblies.
+them. Row12–15 sources feed `CapsRest` through their whole-row assemblies.
 The shared active-row registry derives the computation closure, native facts
 and proof imports from the selected inputs. CI first builds the finite leaves
 in bounded single-threaded groups, then builds the full root and performs the

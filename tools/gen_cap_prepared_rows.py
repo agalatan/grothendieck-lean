@@ -120,6 +120,11 @@ def main(argv=None):
                 require(not (ROOT / BASE / 'row14.json').exists() and
                         not (ROOT / 'Grothe/LowerAnalytic/CapRow14/Assembly.lean').exists(),
                         'Row14 inputs/assembly require an explicit complete source binding')
+        if (ROOT / BASE / 'row15-binding.json').exists():
+            from nodecaps_row15_render import render_sealed
+            outputs.update(render_sealed(ROOT))
+        else:
+            require(not (ROOT / BASE / 'row15.json').exists(), 'Row15 inputs need a complete explicit binding')
         for name, data in outputs.items():
             path = ROOT / name
             require(not path.is_symlink(), 'refusing source symlink: ' + name)

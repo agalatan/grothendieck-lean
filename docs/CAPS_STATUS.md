@@ -5,12 +5,12 @@
 The active `Grothe` build contains the same endpoint reduction with fewer cap inputs:
 `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697117301 < K`.
 Both theorems use `RefinedCoverData.refinedL` and the same checked finite cover.
-`CapsRest` consists of the vertex caps of row 15 (t = 0.855), plus
-any excluded-node caps of rows 0–11 and 16–18. Rows 12–14 have complete
+`capRowsDone` covers every row index. `CapsRest` retains the excluded-node
+caps of rows 0–11 and 16–18. Rows 12–15 have complete
 localized-piece and anchor assemblies whose finite checks run in canonical CI. All
-exclusion lists are currently empty. These remaining cap estimates must be
-proved in Lean; external calculations do not complete this endpoint.
-See [PROOF_STATUS.md](PROOF_STATUS.md) for the completion rule.
+exclusion lists are currently empty. The generated finite checks still require canonical Lean verification;
+external calculations do not complete this endpoint.
+See [LEAN_DETAILS.md](LEAN_DETAILS.md) for the completion rule.
 
 ## Computation and proof layers
 
@@ -48,7 +48,7 @@ The active registry derives every slice and its exact checker proposition
 from that policy and the piece count. Coverage slicing does not alter the
 range predicates or certificate data. Semantic regions and all
 soundness proofs remain in `CapCover`, `CapConstr` and `CapPieceNodes`.
-The prepared Row12–14 piece facts feed their whole-row assemblies. Row14
+The prepared Row12–15 piece facts feed their whole-row assemblies. Row14
 uses `nodeCap_14x150_done` for node 150 and preserves its complete proof and
 repair closure; the other localized nodes use the generated piece checks.
 `nodecaps_row14_render.py` binds every selected input, anchor, source and retained
@@ -85,7 +85,7 @@ object. The library root is pinned because every importer loads it.
 
 `python3 scripts/caps_stamp.py --digest` computes the source hash and file
 count without marking a build. The shared active registry includes the original
-range checks, all selected Row12–14 finite leaves, and the independent Row14
+range checks, all selected Row12–15 finite leaves, and the independent Row14
 repair checks. It derives their computation import closure and records the
 assembly/configuration boundary separately. `--list` lists the exact paths.
 The registry records source provenance, not completed native verification.
@@ -137,9 +137,10 @@ hand-editing `CapRecipeData.lean`. Lower-row and gate inputs are similarly
 kept in `data/`; generated modules must reproduce byte for byte. A failed
 recipe can make its cap check fail; it cannot bypass the numerical checker.
 
-Row 15 remains an explicit `CapsRest` input. Rows 12–14 have generated
-assemblies, but their source reproduction and numerical repair records do not
-establish successful native verification. The range checks must pass before
+Rows 12–15 have complete generated localized-piece and anchor assemblies.
+Row15 binds every exact centre input and preserves its noncentre pieces,
+recipes, grids and ordered constraints. Source reproduction and numerical
+repair records do not establish successful native verification. The range checks must pass before
 those assemblies can discharge their cap inputs. The existing range facts
 and localized-piece checks share the computation layer and support the refined
 endpoint through the checked cover.

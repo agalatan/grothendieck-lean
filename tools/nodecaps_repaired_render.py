@@ -23,7 +23,7 @@ CURRENT_TOOLS = {'tools/gen_cap_prepared_rows.py', 'tools/nodecaps_repaired_rend
 BASE_TOOLS = {'tools/gen_cap_prepared_rows.py', 'tools/nodecaps_row14_render.py',
               'tools/nodecaps_prepared_renderers.py', 'tools/gen_cap_pieces.py', 'scripts/caps_stamp.py'}
 ARCHIVABLE = {BASE + f'row{row}-pieces.json' for row in (12, 13, 14)} | {
-    BASE + 'row14-binding.json', 'tools/gen_cap_prepared_rows.py'}
+    BASE + 'row14-binding.json', 'tools/gen_cap_prepared_rows.py', BASE + 'coverage-slicing.json'}
 SHARED = {'Grothe/LowerAnalytic/CapPieceRange.lean', 'Grothe/LowerAnalytic/CapPieceNodes.lean',
           'Grothe/LowerAnalytic/CapRows.lean'}
 require, sha, encoded, decode = repair.require, repair.sha, repair.encoded, repair.decode

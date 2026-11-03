@@ -17,6 +17,7 @@ import Grothe.LowerAnalytic.CapRow18
 import Grothe.LowerAnalytic.CapRow12.Assembly
 import Grothe.LowerAnalytic.CapRow13.Assembly
 import Grothe.LowerAnalytic.CapRow14.Assembly
+import Grothe.LowerAnalytic.CapRow15.Assembly
 import Grothe.Research.RefinedCoverResult
 
 /-!
@@ -170,7 +171,7 @@ theorem vertexCapsRow18 (hex : ExclCaps 18 (capExcl 18)) : VertexCapsRow 18 := b
   · exact nodeCap_of_rangeOK capRange18_3 hex h hi hi hc
 
 /-- The certified rows. -/
-def capRowsDone : List ℕ := [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18]
+def capRowsDone : List ℕ := [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
 
 /-- The original range-checked rows whose excluded nodes remain a hypothesis. -/
 def capRowsWithExclusions : List ℕ := [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
@@ -184,7 +185,7 @@ def CapsRest : Prop :=
 theorem vertexCaps_of_capsRest (h : CapsRest) : VertexCaps := fun k hk => by
   by_cases hd : k ∈ capRowsDone
   · simp only [capRowsDone, List.mem_cons, List.not_mem_nil, or_false] at hd
-    rcases hd with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+    rcases hd with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
     · exact vertexCapsRow00 (h.2 0 (by simp [capRowsWithExclusions]))
     · exact vertexCapsRow01 (h.2 1 (by simp [capRowsWithExclusions]))
     · exact vertexCapsRow02 (h.2 2 (by simp [capRowsWithExclusions]))
@@ -200,6 +201,7 @@ theorem vertexCaps_of_capsRest (h : CapsRest) : VertexCaps := fun k hk => by
     · exact Grothe.LowerAnalytic.vertexCapsRow12
     · exact Grothe.LowerAnalytic.vertexCapsRow13
     · exact Grothe.LowerAnalytic.vertexCapsRow14
+    · exact Grothe.LowerAnalytic.vertexCapsRow15
     · exact vertexCapsRow16 (h.2 16 (by simp [capRowsWithExclusions]))
     · exact vertexCapsRow17 (h.2 17 (by simp [capRowsWithExclusions]))
     · exact vertexCapsRow18 (h.2 18 (by simp [capRowsWithExclusions]))
