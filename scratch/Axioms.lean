@@ -1694,6 +1694,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_chunk_tables
 #print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_cover
 #print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_denominator_lcm
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCenters.validRow_normSq_real
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCentersAll.all_valid
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCentersAll.each_scalar
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCentersAll.ordinals
 #print axioms Grothe.UpperChaos.QuadraticPolynomialIntegrability.integrable_finite_mixed_polynomial
 #print axioms Grothe.UpperChaos.QuadraticPolynomialIntegrability.quadraticForm_lower_bound
 #print axioms Grothe.UpperChaos.QuadraticPolynomialMoments.integral_finite_mixed_polynomial
