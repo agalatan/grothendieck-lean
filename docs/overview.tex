@@ -128,12 +128,20 @@ $\delta=455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$:
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
 
-The conditional-node table stores finite vectors of binary64 approximations
-to conditional Hermite coefficients. Lean checks scalar magnitude at most one,
-squared row norm at most $121/100$, and source ordinal coverage for 417 selected
-rows. The source-error assembly uses these rows with their source-address
-and cutoff binding; production basis/sign normalization and actual approximation
-estimates remain separate obligations.
+The conditional-node table has 21,577 rows of binary64 conditional Hermite
+approximations. Row $i$ uses the degree-531 canonical pairs $0\le c\le266$,
+$0\le d\le265$, $c\le d+1$, in $(c+d,c)$ order, retaining
+$c+d\le\mathrm{cutoff}_i$. A full row has 35,777 entries; cutoffs 1 and 2
+retain three and five. This certificate selects every node in a panel where
+the outward 128-bit profile interval Horner screen contains zero at some node.
+The 413 unresolved nodes occupy 381 panels; panel closure gives exactly the
+417 ordinals 3872--4036, 10910--11037 and 17321--17444, independently of cutoff.
+The rule and its exact inputs are committed in
+\path{data/q0_quadrature/conditional_source/exception-selection.json}.
+Lean checks scalar magnitude at most one, squared row norm at most $121/100$,
+and source ordinal coverage. The source-error assembly uses these rows through their
+source-address and cutoff binding; production basis/sign normalization and
+actual approximation estimates remain separate obligations.
 
 The exceptional source panels have Gauss orders one through four. Exact
 normalization of their selected roots removes the panel-weight-sum input,

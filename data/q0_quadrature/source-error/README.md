@@ -39,6 +39,7 @@ python3 tools/q0_quadrature/gen_gauss_selected_choice.py --check
 python3 tools/q0_quadrature/gen_gauss_selected_lookup.py --check
 python3 tools/q0_quadrature/gen_node_mass.py --check
 python3 tools/q0_quadrature/gen_source_exception_centers.py --check
+python3 tools/q0_quadrature/gen_source_exception_metadata.py --check
 python3 tools/q0_quadrature/gen_source_exception_width.py --check
 python3 tools/q0_quadrature/gen_source_panel_order.py --check
 python3 tools/q0_quadrature/gen_conditional_pair_ranks.py --check
@@ -51,3 +52,8 @@ it does not choose files based on their presence. The imported certificates
 and the final consumers retain transitive audits allowing only Lean's standard
 logical axioms. The generated literals are checked by Lean; Python replay does
 not establish their mathematical soundness.
+
+The exceptional-row decoder and source-metadata binding have separate generators.
+The first emits only the center chunks and their aggregate; the second imports
+the same validated row reader and emits only the metadata-alignment modules.
+The reader also replays the committed profile-screen panel selection.

@@ -4,7 +4,7 @@
   "dependencies": {
     "canonical_pairs_PR233": "80639eb0ccac3a033e9933937bc16a54bcb9c691",
     "polynomial_exactness_PR234": "4689a89330905c5bad18fa881b1e471c58f91a39",
-    "saved_rows_PR242": "58ee58839183fe99ed40124832bd0307053149d1",
+    "saved_rows_PR242": "f9e4d11829f379a652f10a69b0320d949e8707ca",
     "actual_reconstruction_PR246": "b7829f67b50b5021d4f608a06d01639b5b2d0743"
   },
   "authorized_small_order_sources": {
@@ -21,9 +21,10 @@
     "data/q0_quadrature/conditional_source/conditional_canonical_pairs.npy": "075eb8fe8a52766742c7ca82097171f8dfce173ac8dc9ed80193fc7821ee1ead",
     "data/q0_quadrature/conditional_source/conditionalnodes_header.bin": "ade6bc86992c071913fce63b966ebe535e0aea620d4681d7ce4886ea03a6aa01",
     "data/q0_quadrature/conditional_source/exception-centers.bin": "085a77f6693c3fa369d8441989e9058330e959692b64a84f9f4616d98fb9f9c5",
-    "data/q0_quadrature/conditional_source/exception-centers.json": "d5256c931c6df31bf0b4baf9e46964dc81c942235e57fb6f8962fa6bbcadeb67",
+    "data/q0_quadrature/conditional_source/exception-centers.json": "0b12b34a7e9afa8586f7f3f95099ace453defaf2d22af7b5fc4998549bf0629b",
     "data/q0_quadrature/conditional_source/exception-ledger.jsonl": "08d55747fbe0ab60b613226e64fcebeb97e7db1712ee319f6b88d01faec52f66",
-    "data/q0_quadrature/conditional_source/exception-ledger-index.json": "1da7e699cc6c26adf0916616f514af628d50992c976b61ce34c2d9b3af8a269a"
+    "data/q0_quadrature/conditional_source/exception-ledger-index.json": "6ce8dbff5e7b0bd694e71b82bda14ff7aaf44a3c2ef6a1104f9ee9402f965314",
+    "data/q0_quadrature/conditional_source/exception-selection.json": "2e60b2f6ed08495047f67709a7589ad8962d2abc73062a6e3c819c8888d147a0"
   },
   "delivered_small_order_sources": {
     "Grothe/UpperChaos/Q0GaussSmallOrderMass.lean": "82c64e9ddfabda091fc54c5fa6682a10471bc044abc85078f28b2dc6f38c9c2c",
