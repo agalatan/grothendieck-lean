@@ -1,6 +1,10 @@
 {
   "format": "caps-coverage-slicing/v1",
-  "rows": [12, 13],
-  "threshold": 128,
-  "pieces_per_slice": 64
+  "pieces_per_slice": 64,
+  "rows": [
+    12,
+    13,
+    14
+  ],
+  "threshold": 128
 }

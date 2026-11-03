@@ -144,10 +144,10 @@ See `AGENTS.md` §8, §10 and `docs/CAPS_STATUS.md`.
 
 `lower_bound_of_refined_cover_data` assumes `NodeCaps`.
 `lower_bound_of_capsRest` reduces this to `CapsRest`: the vertex caps of rows
-14–15 (t = 0.85, 0.855), plus any excluded-node caps of the original
-range-checked rows. All those exclusion lists are empty. Rows 12 and 13
-(t = 0.84, 0.845) are certified by their complete localized-piece and anchor
-assemblies (`CapRow12/Assembly`, `CapRow13/Assembly`), with no excluded nodes. Both lower theorems use the same
+15 (t = 0.855), plus any excluded-node caps of the original
+range-checked rows. All those exclusion lists are empty. Rows 12–14
+(t = 0.84, 0.845, 0.85) have complete localized-piece and anchor
+assemblies (`CapRow12/Assembly`, `CapRow13/Assembly`, `CapRow14/Assembly`), with no excluded nodes. Their finite checks require canonical CI verification. Both lower theorems use the same
 refined cover and endpoint; the second composes
 `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and
 `lower_bound_of_refined_cover_data`. `NodeCaps.lean` defines the common cap
@@ -155,13 +155,12 @@ hypothesis without importing the Gaussian reduction. The cap computations,
 recipes and row data are unchanged. The rows 12–15 piece checks likewise import
 only rational data and computable definitions (`CapCoverDefs`,
 `CapConstrDefs`, `CapPieceRange`); `CapCover`, `CapConstr` and `CapPieceNodes`
-provide their soundness. The Row12/13 modules are imported by the root and
+provide their soundness. The Row12–14 modules are imported by the root and
 registered in the strict axiom audit. The independent `nodeCap_14x150_done`
-proof remains intact; the rest of Row14 and all of Row15 remain a separate
-campaign. `tools/gen_cap_prepared_rows.py --check` reproduces the prepared
+proof supplies node 150 in the Row14 assembly, with its complete source and repair closure retained. Row15 remains a separate campaign. `tools/gen_cap_prepared_rows.py --check` reproduces the prepared
 sources with an explicit current-writer binding, preserving the historical
 input and source seals. The bounded caps builder limits expensive finite
-checks to two single-threaded leaves before CI builds the complete root.
+checks to a memory-bounded set of single-threaded leaves before CI builds the complete root.
 
 **Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder`, for an L² charge-one truncation `X`, proves
 `ComparisonInputs → energy_close → IsGrothendieckBound (500000000000000000/355973699960428191)`,

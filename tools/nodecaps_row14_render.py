@@ -83,6 +83,39 @@ def check_pins(reads, pins, required):
                 sha(reads.read(name)) == digest, 'source binding differs: ' + str(name))
 
 
+def check_stored_proposal(centre, node, reads):
+    """Bind the two matrix-free input proposals without claiming a replay.
+
+    Node150 uses its separately retained proof. Node280's complete range check
+    recomputes this proposal in canonical Lean, like the unchanged noncentres.
+    """
+    require(centre.get('key') in {'14:150:0', '14:280:0'} and
+            centre.get('exact_matrix_replayed') is False and
+            centre.get('best_kind') == centre.get('origin') == 'historical_adopted' and
+            centre.get('historical_proposal') is True, 'unreplayed centre is not a bound stored proposal')
+    ref = centre.get('solution', {})
+    require(ref.get('path') == 'data/caps-m/plan/solved/sol_overrides14_g2.json' and
+            sha(reads.read(ref['path'])) == ref.get('sha256'), 'stored proposal source binding differs')
+    candidates = [v for v in reads.value(ref['path']) if
+                  all(type(v.get(k)) is int for k in ('k', 'i', 'j', 'grid')) and
+                  (v['k'], v['i'], v['j'], v['grid']) ==
+                  (14, node['i'], 0, centre['certificate_grid_index'])]
+    require(len(candidates) == 1, 'stored proposal identity/grid differs')
+    result = candidates[0]
+    require(result.get('status') == 'fixed' and result.get('cap_up') == '0' and
+            result.get('encl') is not False and result.get('polyOK') is not False,
+            'stored proposal is not an accepted zero input')
+    multipliers = result.get('lm')
+    constraints = node['pieces'][0]['cons']
+    require(isinstance(multipliers, list) and len(multipliers) == len(constraints),
+            'stored proposal multiplier count differs')
+    for pair, constraint in zip(multipliers, constraints):
+        require(isinstance(pair, list) and len(pair) == 2 and
+                [STAMP._active_rational(v) for v in pair] ==
+                [STAMP._active_rational(v) for v in constraint.split(',')[4:]],
+                'stored proposal ordered multipliers differ')
+
+
 def validate_plan(plan, anchor, nodes, selection, reads):
     require(type(plan.get('row')) is int and plan['row'] == 14 and
             plan.get('row_complete_research_gate') is True and
@@ -104,8 +137,9 @@ def validate_plan(plan, anchor, nodes, selection, reads):
     for centre in centres:
         _, i, j = map(int, centre['key'].split(':'))
         node = next(n for n in nodes if n['i'] == i)
-        require(centre.get('exact_matrix_replayed') is True and
-                centre.get('native_verified') is False and
+        if centre.get('exact_matrix_replayed') is not True:
+            check_stored_proposal(centre, node, reads)
+        require(centre.get('native_verified') is False and
                 centre.get('unchanged_bounds_and_recipe') is True and
                 type(centre.get('original_piece_index')) is int and centre['original_piece_index'] == j and
                 type(centre.get('output_piece_index')) is int and centre['output_piece_index'] == j and
@@ -181,6 +215,8 @@ def render(root, binding):
     # padding and retained-node checks are shared with the actual build reader.
     view = stamp.derive_active_registry(root, declaration(stamp), require_materialized=False)
     validate_plan(plan, anchor, nodes, selection, reads)
+    require({c['solution']['path'] for c in plan['centres'] if c['exact_matrix_replayed'] is False}
+            <= set(binding['inputs_sha256']), 'unbound stored proposal input')
     validate_unchanged_pieces(nodes, selection, plan['centres'], reads)
     check_pins(reads, anchor.get('source_sha256'), set())
     require(set(anchor['source_sha256']) <= set(binding['inputs_sha256']), 'unbound anchor source')

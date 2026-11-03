@@ -144,6 +144,28 @@ class Row14RenderTests(unittest.TestCase):
         binding = self.f.binding(); del binding['retained_sha256'][PROOF]
         with self.assertRaisesRegex(ValueError, 'retained proof closure'): render.render(self.root, binding)
 
+    def test_matrix_free_proposal_keeps_honest_flag_and_binds_exact_solution(self):
+        name = 'data/caps-m/plan/solved/sol_overrides14_g2.json'
+        result = {'k': 14, 'i': 280, 'j': 0, 'grid': 3, 'status': 'fixed', 'cap_up': '0', 'lm': [['0', '0']]}
+        self.f.json(name, [result])
+        plan = self.f.value(render.BASE+'row14.json')
+        centre = next(c for c in plan['centres'] if c['key'] == '14:280:0')
+        centre.update(exact_matrix_replayed=False, best_kind='historical_adopted',
+                      origin='historical_adopted', historical_proposal=True,
+                      solution={'path': name, 'sha256': render.sha((self.root/name).read_bytes())})
+        self.f.json(render.BASE+'row14.json', plan)
+        binding = self.f.binding(); binding['inputs_sha256'][name] = centre['solution']['sha256']
+        outputs, inventory = render.render(self.root, binding)
+        self.assertIn(render.CPP+'R14x280_0.lean', outputs)
+        self.assertFalse(inventory['native_verified'])
+        with self.assertRaisesRegex(ValueError, 'unbound stored proposal'): self.render()
+        for update in ({'cap_up': '1/1000'}, {'lm': [['1', '0']]}, {'encl': False}, {'i': 279}):
+            changed = {**result, **update}; self.f.json(name, [changed])
+            centre['solution']['sha256'] = render.sha((self.root/name).read_bytes())
+            self.f.json(render.BASE+'row14.json', plan)
+            binding = self.f.binding(); binding['inputs_sha256'][name] = centre['solution']['sha256']
+            with self.assertRaises(ValueError): render.render(self.root, binding)
+
     def write_append(self, name, text):
         self.f.write(name, (self.root / name).read_bytes() + text.encode())
 

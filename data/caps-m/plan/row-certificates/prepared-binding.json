@@ -5,7 +5,7 @@
   "agent_id": "codex-15b7",
   "canonical_base": "5f2074a4afbdba91541be213d063eb649bdd332e",
   "coverage_policy": "data/caps-m/plan/row-certificates/coverage-slicing.json",
-  "coverage_policy_sha256": "75db48fc6c7623a2d1f5880d0194f390d6de41d82bf9cd208fd9d803334fe2ad",
+  "coverage_policy_sha256": "22bab84890afe38de9e6d28f5b768770425bf9de8fa04483d596ebf21b38ba07",
   "coverage_sources_sha256": {
     "Grothe/LowerAnalytic/CapPieces/C12x140.lean": "eb3bb4e55bcfd8cb9197e10b99d17fb09d3681c8ea57e1385ab127700bdd3105",
     "Grothe/LowerAnalytic/CapPieces/C12x141.lean": "9c8022852d61d3e30112a63a822c99e7caa55c7da4071c233bf2beb17f1f2aea",

@@ -5,9 +5,9 @@
 The active `Grothe` build contains the same endpoint reduction with fewer cap inputs:
 `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697117301 < K`.
 Both theorems use `RefinedCoverData.refinedL` and the same checked finite cover.
-`CapsRest` consists of the vertex caps of rows 14–15 (t = 0.85, 0.855), plus
-any excluded-node caps of rows 0–11 and 16–18. Rows 12 and 13 are certified by
-their complete localized-piece and anchor assemblies (CI's caps build). All
+`CapsRest` consists of the vertex caps of row 15 (t = 0.855), plus
+any excluded-node caps of rows 0–11 and 16–18. Rows 12–14 have complete
+localized-piece and anchor assemblies whose finite checks run in canonical CI. All
 exclusion lists are currently empty. These remaining cap estimates must be
 proved in Lean; external calculations do not complete this endpoint.
 See [PROOF_STATUS.md](PROOF_STATUS.md) for the completion rule.
@@ -48,8 +48,15 @@ The active registry derives every slice and its exact checker proposition
 from that policy and the piece count. Range checks and certificate data are
 unchanged. Semantic regions and all
 soundness proofs remain in `CapCover`, `CapConstr` and `CapPieceNodes`.
-The prepared Row12/13 piece facts feed their whole-row assemblies. The independent
-master `nodeCap_14x150_done` proof and its repair remain intact.
+The prepared Row12–14 piece facts feed their whole-row assemblies. Row14
+uses `nodeCap_14x150_done` for node 150 and preserves its complete proof and
+repair closure; the other localized nodes use the generated piece checks.
+`nodecaps_row14_render.py` binds every selected input, anchor, source and retained
+dependency. All 90 localized inputs and 225 anchors participate in its complete
+396-node census, including the retained node. Two stored centre proposals have
+no bound exported matrices: node 150 uses the retained proof and node 280 is
+recomputed by its canonical range check. This distinction remains explicit in
+the input plan; source generation does not establish native verification.
 
 There is one build target, `Grothe`: the generated root imports the 15 heavy
 row modules and `CapNodes` like every other module. CI builds it, replaying
@@ -66,7 +73,7 @@ object. The library root is pinned because every importer loads it.
 
 `python3 scripts/caps_stamp.py --digest` computes the source hash and file
 count without marking a build. The shared active registry includes the original
-range checks, all selected Row12/13 finite leaves, and the independent Row14
+range checks, all selected Row12–14 finite leaves, and the independent Row14
 repair checks. It derives their computation import closure and records the
 assembly/configuration boundary separately. `--list` lists the exact paths.
 The registry records source provenance, not completed native verification.

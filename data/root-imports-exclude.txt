@@ -10,23 +10,9 @@
 # * GrotheKernel.BandMass, GrotheKernel.HeadWeight — kernel modules used only by Grothe.Upper (built through
 #   Grothe.lean, not through the GrotheKernel root).
 Grothe.LowerAnalytic.CapPieces.C14x150
-Grothe.LowerAnalytic.CapPieces.C14x200
 Grothe.LowerAnalytic.CapPieces.D14x150
-Grothe.LowerAnalytic.CapPieces.D14x200
 Grothe.LowerAnalytic.CapPieces.N14x150
-Grothe.LowerAnalytic.CapPieces.N14x200
 Grothe.LowerAnalytic.CapPieces.R14x150_0
 Grothe.LowerAnalytic.CapPieces.R14x150_1
-Grothe.LowerAnalytic.CapPieces.R14x200_0
-Grothe.LowerAnalytic.CapPieces.R14x200_1
-Grothe.LowerAnalytic.CapPieces.R14x200_10
-Grothe.LowerAnalytic.CapPieces.R14x200_2
-Grothe.LowerAnalytic.CapPieces.R14x200_3
-Grothe.LowerAnalytic.CapPieces.R14x200_4
-Grothe.LowerAnalytic.CapPieces.R14x200_5
-Grothe.LowerAnalytic.CapPieces.R14x200_6
-Grothe.LowerAnalytic.CapPieces.R14x200_7
-Grothe.LowerAnalytic.CapPieces.R14x200_8
-Grothe.LowerAnalytic.CapPieces.R14x200_9
 GrotheKernel.BandMass
 GrotheKernel.HeadWeight
