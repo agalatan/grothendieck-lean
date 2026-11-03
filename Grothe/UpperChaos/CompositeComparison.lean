@@ -64,7 +64,12 @@ theorem rawSource_high_norm_le (h : Inputs) (g : Fin 3) :
     ‖rawSource (CompositeComparisonData.highGroup g)‖ ≤ (CompositeComparisonData.wholeRadiusQ (CompositeComparisonData.highGroup g) : ℝ) := by
   have he := h.whole g
   have hs := norm_sub_sq (𝕜 := ℂ) (taylor g) (center g)
-  have hsym := inner_re_symm (𝕜 := ℂ) (taylor g) (center g)
+  change ‖taylor g - center g‖ ^ 2 = ‖taylor g‖ ^ 2 -
+    2 * Complex.re ⟪taylor g, center g⟫_ℂ + ‖center g‖ ^ 2 at hs
+  have hsym : Complex.re ⟪taylor g, center g⟫_ℂ =
+      Complex.re ⟪center g, taylor g⟫_ℂ :=
+    inner_re_symm (𝕜 := ℂ) (taylor g) (center g)
+  rw [hsym] at hs
   have hf : (0 : ℝ) ≤ (factorialQ g : ℝ) := by
     fin_cases g <;> norm_num [factorialQ]
   have hr : (0 : ℝ) ≤ (CompositeComparisonData.wholeRadiusQ (CompositeComparisonData.highGroup g) : ℝ) := by
@@ -72,7 +77,7 @@ theorem rawSource_high_norm_le (h : Inputs) (g : Fin 3) :
   have hn : ‖taylor g - center g‖ ≤
       (factorialQ g : ℝ) * (CompositeComparisonData.wholeRadiusQ (CompositeComparisonData.highGroup g) : ℝ) := by
     apply (sq_le_sq₀ (norm_nonneg _) (mul_nonneg hf hr)).mp
-    nlinarith only [he, hs, hsym]
+    linarith only [he, hs]
   fin_cases g <;>
     norm_num [rawSource, taylor, center, factorialQ, CompositeComparisonData.highGroup,
       norm_smul, norm_div] at hn ⊢ <;> linarith
@@ -185,7 +190,7 @@ theorem difference_components : rounding - response = ∑ j, component j := by
           bandProj (CompositeComparisonData.highBand 2)
             (smoothedSource (CompositeComparisonData.highGroup 2)))
       rw [h0, h1, h2, h3]
-      simp only [CompositeComparisonData.highGroup]
+      rfl
     _ = ∑ j, component j := by
       simp only [Fin.sum_univ_succ, Finset.univ_eq_empty, Finset.sum_empty, add_zero]
       abel
@@ -228,6 +233,9 @@ theorem weighted_energy_comparison (h : Inputs)
       comparisonWeight p * |energy rounding p - energy response p| ≤
         (CompositeComparisonData.comparisonCapQ : ℝ) := by
   classical
+  have hm := CompositeComparisonData.actual_piece_mass hclose
+  have hquad := quadratic_le h
+  generalize hS : headIdx 501 = S at hquad ⊢
   let A : CompositeComparisonData.PieceIndex → ℝ := fun j => (CompositeComparisonData.radiusQ j : ℝ)
   let e : CompositeComparisonData.PieceIndex → ℝ := fun j => (CompositeComparisonData.errorQ j : ℝ)
   let q : ℝ := (∑ g : Fin 4, (CompositeComparisonData.wholeRadiusQ g : ℝ)) ^ 2
@@ -237,12 +245,12 @@ theorem weighted_energy_comparison (h : Inputs)
       (norm_energyBlock_sq _ _).trans (energy_bandProj_eq_zero _ _ p hp)
     apply norm_eq_zero.mp
     nlinarith [norm_nonneg (energyBlock (component j) p)]
-  have hc := BandComparison.weighted_compare (headIdx 501) (univ : Finset CompositeComparisonData.PieceIndex)
+  have hc := BandComparison.weighted_compare S (univ : Finset CompositeComparisonData.PieceIndex)
     comparisonWeight (energyBlock response) (energyBlock rounding)
     (fun j => energyBlock (component j)) (fun j => bandIndices (CompositeComparisonData.band j)) A e q
     (fun p _ => comparisonWeight_bounds p)
     (fun p _ => by rw [← energyBlock_sub, difference_components, energyBlock_sum])
-    (fun j _ p hp hpb => hz j p (by simpa [bandIndices, hp] using hpb))
+    (fun j _ p hp hpb => hz j p (by simpa [bandIndices, hS, hp] using hpb))
     (fun j _ => by
       change (0 : ℝ) ≤ (CompositeComparisonData.radiusQ j : ℝ)
       exact_mod_cast (CompositeComparisonData.radii_nonneg j).1)
@@ -250,13 +258,15 @@ theorem weighted_energy_comparison (h : Inputs)
       change (0 : ℝ) ≤ (CompositeComparisonData.errorQ j : ℝ)
       exact_mod_cast (CompositeComparisonData.radii_nonneg j).2)
     (fun j _ => by
-      have hi : headIdx 501 ∩ bandIndices (CompositeComparisonData.band j) = bandIndices (CompositeComparisonData.band j) :=
-        inter_eq_right.mpr (bandIndices_subset _)
-      simpa only [hi, mul_pow, norm_energyBlock_sq] using CompositeComparisonData.actual_piece_mass hclose j)
+      have hi : S ∩ bandIndices (CompositeComparisonData.band j) =
+          bandIndices (CompositeComparisonData.band j) := by
+        rw [← hS]
+        exact inter_eq_right.mpr (bandIndices_subset _)
+      simpa only [hi, mul_pow, norm_energyBlock_sq] using hm j)
     (fun j _ => by
       simp_rw [norm_energyBlock_sq]
       exact (energy_sum_le_norm_sq _ _).trans
-        (pow_le_pow_left₀ (norm_nonneg _) (component_norm_le h j) 2)) (quadratic_le h)
+        (pow_le_pow_left₀ (norm_nonneg _) (component_norm_le h j) 2)) hquad
   simp_rw [norm_energyBlock_sq] at hc
   refine hc.trans ?_
   have hb := CompositeComparisonData.comparison_budget
