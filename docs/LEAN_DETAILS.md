@@ -121,6 +121,204 @@ equality with the closed-form enumeration above before reproducing the Lean
 files. This input hash records provenance; Lean checks the emitted literals
 and finite properties, not the NPY parser.
 
+**Exceptional conditional rows.** The source table has 21,577 rows of
+binary64 conditional Hermite approximations, ordered by the degree-531 canonical
+pairs `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1`, in `(c+d,c)` order and restricted
+to `c+d ≤ cutoff_i` in row i. A full row has 35,777 entries; cutoffs 1 and 2
+retain three and five. This certificate selects all nodes in each panel hit by
+a zero-containing result of the outward 128-bit profile interval Horner screen.
+The 413 unresolved nodes occupy 381 panels, whose complete rule nodes are the
+417 ordinals 3872–4036, 10910–11037 and 17321–17444. This panel selection is
+independent of cutoff; 1,837 source rows have cutoff at most two.
+`exception-selection.json` commits the rule and exact screen, panel and root
+inputs. `Q0SourceExceptionCentersAll` combines exact binary64 decoding checks:
+each scalar has magnitude at most one, and each complete row has squared norm
+at most 121/100. The source ordinal ranges, cutoff counts and byte spans are
+explicit. `python3 tools/q0_quadrature/gen_source_exception_centers.py --check`
+replays the selection and reproduces exactly 16 chunks and their aggregate from
+pinned slice, offset and per-row ledger files. The strict audit adds no native
+facts. The source-error assembly consumes these decoded rows through their
+source-address and cutoff binding. Production basis normalization and enclosures
+of actual Gaussian coefficients remain separate. Source metadata alignment has
+its own generator, `gen_source_exception_metadata.py --check`, which shares the
+validated row reader. Producer provenance and the checked ledger fields are documented
+in [`conditional_source/README.md`](../data/q0_quadrature/conditional_source/README.md).
+
+
+
+**Actual source-error assembly.** `Q0SourceExceptionMassClosure` uses the
+finite exceptional-panel order scan and `Q0GaussSourcePanelMass` to prove
+normalization for the actual selected root and physical weight family; `hpanel`
+is no longer an input to its public error theorems. Exceptional discrete mass
+is at most `2e-21`, and the true selected coefficient vector differs from the
+saved exceptional vector by at most `1.575e-10`. The regular and exceptional
+squared errors add. `actual_source_error_sharp` gives `2.53e-10` given only the
+stated regular-node `1e-12` coefficient enclosure. The complete physical
+Gaussian weight is `sourceWeight a * exp(-sourceNode a)`, exactly once.
+
+`Q0ConditionalSourceReconstruction.reflected_error_le` passes that bound to
+`ConditionalReconstruction.weighted_top_norm_le_of_canonical_error`, using
+exactly `ConditionalNodeIndices.modes` and the actual production coefficient
+of the phase slice at `sqrt(s)`. It gives `(10/7) * 2.53e-10` on the full
+rectangle. The `3.6e-10` compatibility lemma concerns the earlier canonical
+source-vector stage, not the post-reconstruction error. No storage-prefix,
+zero-true-tail or implicit sign-normalization assumption is made.
+The actual regular evaluator, production center/basis binding, floating-point
+operations, continuous quadrature error, omitted regions, infinite tails and
+energy-table fit remain separate. The final consumers have transitive strict
+axiom audits. Pinned inputs and all reproduction commands are listed in
+[`source-error/README.md`](../data/q0_quadrature/source-error/README.md).
+
+**Coupled regular-vector error.** `Q0ConditionalLinearError` applies the existing
+finite Bessel theorem to the actual Gaussian slice minus its constant-and-linear
+model. For every finite mode set and positive source radius, the squared
+coefficient error is at most `(5ρ²)²`, including when the signed physical
+profile ratio `ρ` is zero. Changing the model parameter to `r` has vector
+radius at most `|ρ-r|`, because only two linear coordinates change. A supplied
+saved-model vector error `ε` then gives radius `5ρ² + |ρ-r| + ε`.
+A per-coordinate tolerance cannot be substituted for this coupled `ε` premise.
+
+`Q0ConditionalSourceVector.LinearRowBounds` states the actual parameter and
+saved-vector certificates at an existing selected source node. Its hybrid
+budget uses the linear model on a chosen subset of regular nodes and explicit
+squared-error budgets on every other regular node. The source weights remain
+`sourceWeight * exp(-sourceNode)`, once; exceptional addresses are excluded
+from that regular sum and use the separate exceptional assembly. A checked
+hybrid budget at most `(1969/10^13)²` feeds the selected source-error bound
+`253/10^12`. No global near-zero assumption, production-table identification,
+or infinite-tail estimate is asserted. The finite physical-parameter and
+saved-vector certificates still need to be supplied. Source dependencies and
+certificate semantics are in
+[`source-vector/README.md`](../data/q0_quadrature/source-vector/README.md).
+
+**Decoded exceptional-row model.** `Q0SourceSavedLinearModel.source_model_error_eq`
+identifies the coupled error over all selected modes with `modelErrorSq`, an exact
+rational sum over the five established low modes. The proof uses the same decoded
+row, source ordinal, cutoff and canonical rank lookup. Only the stored approximation
+and explicit model are zero outside this support; no true Gaussian coefficient is
+set to zero. The fitted parameter is `x10 - x01`. Its residual is exactly
+`(1-x00)^2 + (x10+x01)^2/2 + x02^2 + x11^2`, and using another parameter `r`
+adds exactly `(r-fitParameter)^2/2`.
+
+`source_linearRowBounds` binds this rational calculation to the existing row
+interface; `source_actual_error_sq_le` then bounds the actual Gaussian vector.
+Both apply to exceptional source addresses, retaining explicit physical-ratio and
+parameter-enclosure inputs. They do not instantiate the regular-node hybrid
+budget. `Q0SourceSavedLinearChecks` checks the decoded rational data with
+`decide +kernel` in separate chunk modules. The aggregate supplies the model
+error below `(1/10^31)^2` and fitted-parameter magnitude below `1/10^15` for
+the actual `rowAt`. Its `source_actual_error_sq_le` discharges the saved-model
+premise and leaves only the two actual physical parameter enclosures. The
+strict audits permit only the standard logical axioms. The generator reuses
+the same validated input reader and reproduces its outputs byte for byte.
+
+**Actual exceptional-node profile.** `Q0SourceProfileRatio` interprets the
+centered interval check through the already proved `ProfileRootScreen.row_horner_mem`
+and `centered_horner_profile` identities. `Q0SourceExceptionProfile` checks
+three entire source panel blocks, using endpoints directly from `sourcePanels`
+at indices 146–274, 557–684 and 964–1087. Their common scaled-profile cap is
+`1/(2*10^14)`. Panel ordering proves coverage of each exceptional source node;
+its squared radius is at least 13, so its square-root denominator is at least 3.
+The actual signed ratio is therefore at most `B/3` in magnitude, and its
+error from the checked saved fit is at most `B/3 + 1/10^15`. Combining these
+with the decoded model error gives radius
+`5*(B/3)^2 + B/3 + 1/10^15 + 1/10^31 < 3/10^15`.
+The final `source_actual_error_sq_lt` statement has only the source address
+and exceptional-panel membership as inputs; both physical estimates and the
+saved-data estimate are discharged. The three finite checks use kernel
+reduction and strict standard-axiom guards. Their exact external replay is reproducible with
+`tools/q0_quadrature/gen_source_profile_ratio.py --check`; the JSON records
+provenance and does not replace Lean's checks. No regular-node, quadrature,
+primary-contraction or energy-table obligation is discharged by this result.
+
+**Actual weighted exceptional error.** `Q0SourceExceptionalWeightedError`
+restricts the actual selected-vector estimate to every finite `S ⊆ modes` and
+sums it using the original `sourceWeight * exp(-sourceNode)` exactly once.
+The same-root panel normalization bounds the discrete exceptional mass by
+`2/10^21`, yielding squared error at most `(2/10^25)^2` and radius at most
+`2/10^25`. Continuous root-gap omission is a separate error term.
+`actual_source_error_sq_le` combines this with any explicit regular squared
+budget `R^2`, giving `R^2 + (2/10^25)^2`; the square-root and additive-radius
+forms retain that same regular premise. No regular evaluator or ledger
+allowance is inferred from this result.
+
+**Fixed-node finite auxiliary integral.** `Q0ConditionalFiniteLaplace` defines
+one disk-valued Gaussian response at each nonnegative squared radial node,
+using the actual affine argument of `F0ConditionalNode`. Its Hermite
+coefficient is identified both with the Gaussian integral and, by absolute
+Fubini, with the finite auxiliary integral of the Gaussian kernel. The
+softened and truncated responses remain in the unit disk.
+
+`Q0ConditionalSoftening` uses the existing small-ball bound for every fixed
+Gaussian fibre and layer cake to prove softening L² error at most `(10/3)η`.
+The auxiliary tail contributes at most `exp(-η²T)`. Bessel charges their sum
+once over any finite Hermite family. With the existing `finiteLaplaceEta` and
+`finiteLaplaceCutoff`, the resulting vector radius is at most `5/10^15`.
+The argument includes profile zeros; it does not specialize an almost-everywhere
+product-measure statement to an isolated quadrature node.
+
+`Q0ConditionalFiniteLaplaceSource` applies this to the original `sourceNode`
+and keeps a coupled finite-integral-to-completed-center squared error `ε_a²`
+as an explicit numerical premise. Its regular budget is the sum of
+`sourceWeight * exp(-sourceNode) * (5/10^15 + ε_a)^2` over regular addresses.
+The source adapter adds the separately established exceptional squared term
+`(2/10^25)^2`. The full `phiT/P3` response binding, finite-integral certificates,
+continuous quadrature, contraction and energy-table accuracy remain open.
+The concrete uniform consumer needs only coupled finite-integral-to-saved
+radius `19/10^11` at every regular row. The existing actual mass bound
+`sourceMass < 107/100` proves the regular budget is at most `(1969/10^13)^2`;
+adding the exceptional term stays within the existing `253/10^12` source
+radius. This replaces a separate weighted-budget premise, without certifying
+any row or changing the ledger. It is not a per-coordinate tolerance.
+All new headlines have strict standard-axiom guards and audit registration.
+
+
+**One actual regular source row.** `Q0RegularSourceRow` fixes the original
+address `(panel=135, rule=2)` and proves its ordinal is 3818. The 24-byte
+binary64 slice and its matching ledger record live in
+`data/q0_quadrature/regular-source-row/`; the generator checks the pinned
+original offsets, cutoff, panel schedule and row hash. The historical ledger's
+numerical claims and full-table hash are not proof premises.
+The source metadata is identified with the unique metadata at this address,
+and the saved lookup is proved unchanged by the original cutoff completion.
+Exact kernel checks give zero fitted-model residual and scaled physical-profile
+magnitude at most `1e-15` throughout panel 135. The existing analytic model
+bounds all selected actual Gaussian coefficients against these centers by
+radius strictly below `2e-15`. The coupled triangle inequality adds the fixed
+`5e-15` finite-Laplace approximation cost, giving radius below `7e-15` and an
+explicit instance of the regular-source `19/10^11` premise. True omitted
+coefficients remain in the error sum. This concrete proof certifies only this
+address; it supplies no all-row or final-bound claim.
+
+**Actual source rows near profile zeros.** `Q0NearZeroSource` selects exactly
+ordinals 3469–4456, 10710–11238 and 17223–17542. The compact input in
+`data/q0_quadrature/near-zero-source/` contains 65,032 original payload bytes
+and their verbatim ledger lines; regeneration reads only these bytes and the
+already pinned source offsets, cutoffs and panel schedule. Historical ledger
+error estimates are not proof premises. The selection contains 1,837 rows,
+including 1,420 regular rows, and matches every original cutoff at most two
+in the external replay.
+
+Each generated chunk checks exact rational decoding, original metadata
+alignment, `|fitParameter| ≤ 2/10^11` and squared model residual at most
+`(2/10^22)^2`. `Q0NearZeroSourceProfile` checks the entire actual panel blocks
+102–318, 521–720 and 933–1118 at scaled-profile cap `1/10^10`. The shared
+analytic row theorem bounds every selected Gaussian coefficient, including
+true coefficients outside the saved cutoff. Its actual radius is at most
+`2400000000259/45000000000000000000000`; adding `5/10^15` bounds the finite
+radius strictly below `6/10^11`, hence below the existing `19/10^11` allowance.
+The actual-address consumer has no numerical premises beyond membership in
+the certified ordinal ranges. Other rows, production response binding,
+quadrature and final table accuracy remain open.
+
+The source-error, exceptional-profile, finite-Laplace, regular-row and near-zero
+modules above passed the focused Lean check
+[41725462291](https://github.com/agalatan/grothendieck-lean/actions/runs/41725462291)
+at `a00103c2a6c93d722ae7ee4192a4a145999012bb`. Its three targets were
+`Q0NearZeroSource`, `Q0RegularSourceRow` and `Q0ConditionalSourceReconstruction`.
+This is module acceptance; repository-wide proof gates and independent review
+are tracked separately on PR #263. It does not complete the upper-bound proof.
+
 **q0 source-to-literal identity.**
 `Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real
 `s`, `b`, and `v`, that `Ssum q0RawWickEntries s b v` equals

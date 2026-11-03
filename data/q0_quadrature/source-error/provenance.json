@@ -1,0 +1,33 @@
+{
+  "agent": "codex-aa04",
+  "source_snapshot": "97ab64c59669b86643ec4a454bcb0eca1e71763f",
+  "dependencies": {
+    "canonical_pairs_PR233": "80639eb0ccac3a033e9933937bc16a54bcb9c691",
+    "polynomial_exactness_PR234": "4689a89330905c5bad18fa881b1e471c58f91a39",
+    "saved_rows_PR242": "a5ebbc02cfc398c81b3b4fbca04f7d96380b844f",
+    "actual_reconstruction_PR246": "b7829f67b50b5021d4f608a06d01639b5b2d0743"
+  },
+  "authorized_small_order_sources": {
+    "Grothe/UpperChaos/Q0GaussSmallOrderMass.lean": "c900b57bb743129e1b97b1e9bbde87f1e0e1d9628c9504c660109f22f050f303",
+    "Grothe/UpperChaos/Q0GaussSourcePanelMass.lean": "fff3bead205e05adc7ccce6679e61a6a9f3dbe9123f97c04c957b6753ecc6815"
+  },
+  "inputs": {
+    "data/q0_quadrature/gauss_mass/gauss_rules_certified.json": "1c3d217d0fe21f998a513d4272b57320d5b7caa60a76aa4b1dc7861179e219a1",
+    "data/q0_quadrature/gauss_mass/panels_N601_Q64_cap1e20.json": "59a4f5fda639d83959a55a3a85e355c4f233312ea65d349e502761ae38a34e1d",
+    "data/q0_quadrature/gauss_mass/rounded_node_mass.json": "acb8e33d8271ba5bd8369cc04fcb23788413e2af9ae0bcdce1464bd82c8bfa6e",
+    "data/gauss-polynomial-certificates/certificate.json": "4cd3ca4c5d9983f1e71e6090724a0d86d39058b207b4400e4af7787a2320b0c6",
+    "data/q0_quadrature/conditional_source/conditional_offsets.npy": "8bf1649d9620449873e32a8fa120709f29888885e8e43ae024c5305b95101c5c",
+    "data/q0_quadrature/conditional_source/conditional_cutoffs.npy": "b799d62d61e3183a13b16dbe3e0cd22ac8d3460779e0e0d561ecd11f63ebb10f",
+    "data/q0_quadrature/conditional_source/conditional_canonical_pairs.npy": "075eb8fe8a52766742c7ca82097171f8dfce173ac8dc9ed80193fc7821ee1ead",
+    "data/q0_quadrature/conditional_source/conditionalnodes_header.bin": "ade6bc86992c071913fce63b966ebe535e0aea620d4681d7ce4886ea03a6aa01",
+    "data/q0_quadrature/conditional_source/exception-centers.bin": "085a77f6693c3fa369d8441989e9058330e959692b64a84f9f4616d98fb9f9c5",
+    "data/q0_quadrature/conditional_source/exception-centers.json": "0b12b34a7e9afa8586f7f3f95099ace453defaf2d22af7b5fc4998549bf0629b",
+    "data/q0_quadrature/conditional_source/exception-ledger.jsonl": "08d55747fbe0ab60b613226e64fcebeb97e7db1712ee319f6b88d01faec52f66",
+    "data/q0_quadrature/conditional_source/exception-ledger-index.json": "6ce8dbff5e7b0bd694e71b82bda14ff7aaf44a3c2ef6a1104f9ee9402f965314",
+    "data/q0_quadrature/conditional_source/exception-selection.json": "2e60b2f6ed08495047f67709a7589ad8962d2abc73062a6e3c819c8888d147a0"
+  },
+  "delivered_small_order_sources": {
+    "Grothe/UpperChaos/Q0GaussSmallOrderMass.lean": "82c64e9ddfabda091fc54c5fa6682a10471bc044abc85078f28b2dc6f38c9c2c",
+    "Grothe/UpperChaos/Q0GaussSourcePanelMass.lean": "fff3bead205e05adc7ccce6679e61a6a9f3dbe9123f97c04c957b6753ecc6815"
+  }
+}

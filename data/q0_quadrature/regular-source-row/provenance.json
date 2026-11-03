@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "agent_id": "codex-aa04",
+  "ordinal": 3818,
+  "panel": 135,
+  "rule": 2,
+  "source_start": 66721904,
+  "source_end": 66721907,
+  "cutoff": 1,
+  "byte_start": 533775360,
+  "byte_end": 533775384,
+  "source_file": "/Users/alingalatan/Documents/Codex/2026-10-08/read-online-everything-about-grothendieck-s/outputs/grothendieck-140462-common-head/conditionalnodes.npy",
+  "source_full_sha256_historical_not_rechecked": "03987b3e9c0ccf0bc7eacca7bd61011c43ccdbb61c0b694cfc2ca16808ed4ecb",
+  "payload_sha256": "9cfca0bdfd08c46424a5580dc005d5725c6c40e8ef5e7af12c0804ce580aa401",
+  "ledger_sha256": "3558a42ed50dbdd1b005a0fa23d73958ba22d081cf7c75e3b3a6f58448f12c62",
+  "input_sha256": {
+    "data/q0_quadrature/conditional_source/conditional_offsets.npy": "8bf1649d9620449873e32a8fa120709f29888885e8e43ae024c5305b95101c5c",
+    "data/q0_quadrature/conditional_source/conditional_cutoffs.npy": "b799d62d61e3183a13b16dbe3e0cd22ac8d3460779e0e0d561ecd11f63ebb10f",
+    "data/q0_quadrature/conditional_source/exception-selection.json": "2e60b2f6ed08495047f67709a7589ad8962d2abc73062a6e3c819c8888d147a0"
+  },
+  "usage": "Only ordinal, cutoff and row hash are consumed from the historical ledger. Its numerical enclosure claims are not proof inputs."
+}
