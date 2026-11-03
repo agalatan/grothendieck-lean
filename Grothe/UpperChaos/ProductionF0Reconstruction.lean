@@ -91,6 +91,21 @@ theorem reconstruct_actual_tensor (q : ℕ) (i : ℕ × ℕ)
     simpa only [CanonicalReconstructionNorm.factor, Nat.cast_add, Nat.cast_one] using
       (radialBaseCoefficient_reflection q i.1 i.2 hgt).symm
 
+private theorem grade_eq_union (q : ℕ) : CanonicalReconstructionNorm.grade q =
+    CanonicalReconstructionNorm.canonical q ∪ CanonicalReconstructionNorm.reflected q := by
+  ext i
+  simp only [CanonicalReconstructionNorm.grade, CanonicalReconstructionNorm.canonical,
+    CanonicalReconstructionNorm.reflected, mem_union, mem_filter, mem_product, mem_range]
+  omega
+
+private theorem canonical_disjoint_reflected (q : ℕ) : Disjoint (CanonicalReconstructionNorm.canonical q)
+    (CanonicalReconstructionNorm.reflected q) := by
+  apply disjoint_left.mpr
+  intro i hc hr
+  have := (CanonicalReconstructionNorm.mem_canonical.mp hc).2.2
+  have := (CanonicalReconstructionNorm.mem_reflected.mp hr).2.2
+  omega
+
 /-- One coupled canonical tensor error controls its exact completed grade.
 The numerical completion defect is deliberately absent from this stage. -/
 theorem actual_tensor_error_energy_le (q : ℕ) (a : ℕ × ℕ → ℂ) :
@@ -106,25 +121,12 @@ theorem actual_tensor_error_energy_le (q : ℕ) (a : ℕ × ℕ → ℂ) :
         ConditionalReconstruction.reconstruct (fun k => baseGradedCoefficient q k.1 k.2) i -
           ConditionalReconstruction.reconstruct a i from
       ConditionalReconstruction.reconstruct_sub _ _ i, reconstruct_actual_tensor q i hi]
-  have hunion : CanonicalReconstructionNorm.grade q =
-      CanonicalReconstructionNorm.canonical q ∪ CanonicalReconstructionNorm.reflected q := by
-    ext i
-    simp only [CanonicalReconstructionNorm.grade, CanonicalReconstructionNorm.canonical,
-      CanonicalReconstructionNorm.reflected, mem_union, mem_filter, mem_product, mem_range]
-    omega
-  have hdis : Disjoint (CanonicalReconstructionNorm.canonical q)
-      (CanonicalReconstructionNorm.reflected q) := by
-    apply disjoint_left.mpr
-    intro i hc hr
-    have := (CanonicalReconstructionNorm.mem_canonical.mp hc).2.2
-    have := (CanonicalReconstructionNorm.mem_reflected.mp hr).2.2
-    omega
   calc
     _ = (∑ i ∈ CanonicalReconstructionNorm.canonical q, ‖e i‖ ^ 2) +
         ∑ i ∈ CanonicalReconstructionNorm.reflected q,
           ‖(CanonicalReconstructionNorm.factor i : ℂ) *
             e (CanonicalReconstructionNorm.partner i)‖ ^ 2 := by
-      rw [hunion, sum_union hdis]
+      rw [grade_eq_union, sum_union (canonical_disjoint_reflected q)]
       congr 1
       · apply sum_congr rfl
         intro i hi
@@ -161,6 +163,47 @@ all actual stored rational entries. Its bound must certify floating operations. 
 def tensorCompletionDefectNorm (a0 : ℕ → ℕ → ℕ → ℚ) : ℝ :=
   ‖tensorVector (fun q i => ConditionalReconstruction.reconstruct
     (fun k => (a0 q k.1 k.2 : ℂ)) i - (a0 q i.1 i.2 : ℂ))‖
+
+/-- The completion defect is a finite sum of real scalar errors in the
+ACTUAL rational output, on the reflected half only. This is a precise target
+for square-root/multiplication enclosures, with no entrywise accuracy assumed. -/
+theorem tensorCompletionDefectNorm_sq (a0 : ℕ → ℕ → ℕ → ℚ) :
+    tensorCompletionDefectNorm a0 ^ 2 =
+      ∑ q ∈ range 251, ∑ i ∈ CanonicalReconstructionNorm.reflected q,
+        (CanonicalReconstructionNorm.factor i *
+          (a0 q (i.2 + 1) (i.1 - 1) : ℝ) - (a0 q i.1 i.2 : ℝ)) ^ 2 := by
+  rw [tensorCompletionDefectNorm, norm_tensorVector_sq]
+  apply sum_congr rfl
+  intro q _
+  rw [grade_eq_union, sum_union (canonical_disjoint_reflected q)]
+  have hzero : (∑ i ∈ CanonicalReconstructionNorm.canonical q,
+      ‖ConditionalReconstruction.reconstruct (fun k => (a0 q k.1 k.2 : ℂ)) i -
+        (a0 q i.1 i.2 : ℂ)‖ ^ 2) = 0 := by
+    apply sum_eq_zero
+    intro i hi
+    have hc := (CanonicalReconstructionNorm.mem_canonical.mp hi).2.2
+    simp only [ConditionalReconstruction.reconstruct, ite_eq_left hc,
+      sub_self, norm_zero, zero_pow (by omega : 2 ≠ 0)]
+  rw [hzero, zero_add]
+  apply sum_congr rfl
+  intro i hi
+  have hr := (CanonicalReconstructionNorm.mem_reflected.mp hi).2.2
+  rw [ConditionalReconstruction.reconstruct, ite_eq_right (by omega)]
+  change ‖(CanonicalReconstructionNorm.factor i : ℂ) *
+    (a0 q (i.2 + 1) (i.1 - 1) : ℂ) - (a0 q i.1 i.2 : ℂ)‖ ^ 2 = _
+  rw [← Complex.ofReal_ratCast (a0 q (i.2 + 1) (i.1 - 1)),
+    ← Complex.ofReal_ratCast (a0 q i.1 i.2), ← Complex.ofReal_mul,
+    ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs, sq_abs]
+
+/-- Consume an actual coupled reflected-output error certificate. -/
+theorem tensorCompletionDefectNorm_le (a0 : ℕ → ℕ → ℕ → ℚ) {η : ℝ}
+    (hη : 0 ≤ η)
+    (herror : (∑ q ∈ range 251, ∑ i ∈ CanonicalReconstructionNorm.reflected q,
+      (CanonicalReconstructionNorm.factor i *
+        (a0 q (i.2 + 1) (i.1 - 1) : ℝ) - (a0 q i.1 i.2 : ℝ)) ^ 2) ≤ η ^ 2) :
+    tensorCompletionDefectNorm a0 ≤ η := by
+  apply (sq_le_sq₀ (norm_nonneg _) hη).mp
+  rwa [tensorCompletionDefectNorm_sq]
 
 /-- The full actual source error needs only its canonical tensor error and a
 separate completion defect. No irrational identity is imposed on rational data. -/
@@ -210,6 +253,7 @@ run_cmd do
   let allowed : Array Lean.Name := #[`propext, `Classical.choice, `Quot.sound]
   for target in #[``Grothe.UpperChaos.FixedChaosSmoothing.radialBaseCoefficient_reflection,
       ``Grothe.UpperChaos.FixedChaosSmoothing.reconstruct_actual_tensor,
+      ``Grothe.UpperChaos.FixedChaosSmoothing.tensorCompletionDefectNorm_sq,
       ``Grothe.UpperChaos.FixedChaosSmoothing.norm_productionF0Head_sub_le_canonical] do
     let dependencies ← Lean.collectAxioms target
     let unexpected := dependencies.filter fun n => !allowed.contains n

@@ -1332,3 +1332,9 @@ coefficient family nor archived floating logs are required to satisfy an exact
 irrational reflection identity. The canonical tensor error, completion defect,
 same-output table fit and Gaussian comparison premises remain explicit in
 `energy_close_of_canonical_tensor` and `head_residual_of_canonical_tensor`.
+
+`tensorCompletionDefectNorm_sq` reduces that actual rational-output defect
+exactly to the sum of squared real reflection errors over the reflected halves
+of all 251 grades. The canonical half contributes zero. A numerical producer
+must bound this coupled sum for the same coefficient family; no exact floating
+reflection or per-entry radius is inferred.

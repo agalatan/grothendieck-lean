@@ -744,6 +744,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.reconstruct_actual_tensor
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.retainedProduction_eq
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.retainedSmoothed_projected_error_of_raw
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.tensorCompletionDefectNorm_sq
 #print axioms Grothe.UpperChaos.FrozenSource.Grade000.grade_energy
 #print axioms Grothe.UpperChaos.FrozenSource.Grade000Production.at_eq
 #print axioms Grothe.UpperChaos.FrozenSource.Grade000Production.coefficient_energy
