@@ -55,7 +55,7 @@ theorem actual_saved_error_bound (s : ℝ) (hs : 0 < s) (r saved : ℝ)
       add_le_add (norm_coefficient_sub_linear s hs i) htri
     _ ≤ 5 * signedProfileRatio s ^ 2 +
         (|signedProfileRatio s - r| / 2 + ‖linearCenter r i - (saved : ℂ)‖) :=
-      add_le_add_left (add_le_add_right (linearCoefficient_parameter_error s r i) _) _
+      add_le_add le_rfl (add_le_add (linearCoefficient_parameter_error s r i) le_rfl)
     _ = _ := by ring
 
 /-- A closed exact scalar budget; this is not an actual-node certificate. -/

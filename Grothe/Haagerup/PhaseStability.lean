@@ -42,8 +42,8 @@ theorem norm_ph_real_add_sub_one (r : ℝ) (hr : 0 < r) (h : ℂ) :
     _ = |r - ‖z‖| * ‖ph z‖ + ‖h‖ := by
       rw [norm_mul, Complex.norm_real, Real.norm_eq_abs]
     _ ≤ |r - ‖z‖| * 1 + ‖h‖ :=
-      add_le_add_right (mul_le_mul_of_nonneg_left (norm_ph_le z) (abs_nonneg _)) _
-    _ ≤ ‖h‖ + ‖h‖ := by rw [mul_one]; exact add_le_add_right hdist _
+      add_le_add (mul_le_mul_of_nonneg_left (norm_ph_le z) (abs_nonneg _)) le_rfl
+    _ ≤ ‖h‖ + ‖h‖ := by rw [mul_one]; exact add_le_add hdist le_rfl
     _ = 2 * ‖h‖ := by ring
 
 theorem norm_ph_real_scaled_add_sub_one (r : ℝ) (hr : 0 < r) (κ : ℝ) (w : ℂ) :
