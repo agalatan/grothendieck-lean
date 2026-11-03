@@ -573,6 +573,7 @@ import Grothe.UpperChaos.BandedContraction
 import Grothe.UpperChaos.BasePairIntegralAudit
 import Grothe.UpperChaos.CapturedSourceBound
 import Grothe.UpperChaos.CapturedTail
+import Grothe.UpperChaos.CenterNormBypass
 import Grothe.UpperChaos.Charge
 import Grothe.UpperChaos.ChargeBandApproximation
 import Grothe.UpperChaos.ChargeBandEnclosure
@@ -869,6 +870,7 @@ import Grothe.UpperChaos.MobiusSeedPullback
 import Grothe.UpperChaos.OUOp
 import Grothe.UpperChaos.OddParseval
 import Grothe.UpperChaos.OddSeries
+import Grothe.UpperChaos.OriginalEnergyNoMass
 import Grothe.UpperChaos.OriginalMomentIntegrable
 import Grothe.UpperChaos.OriginalMomentPullback
 import Grothe.UpperChaos.OriginalMomentRatios
