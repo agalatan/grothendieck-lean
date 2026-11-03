@@ -99,6 +99,14 @@ form a shared Lean foundation. The upper rounding proof depends on this foundati
 independently of the lower row certificates.
 
 \subsection{Upper bounds: rounding schemes}
+
+The formal quadrature development includes exact polynomial identities for
+each original Gauss order from $1$ to $64$.  Rational polynomial certificates,
+interpreted through LeanCert, prove orthogonality and the weight identity;
+these give exact integration for polynomials of degree below $2n$ at order $n$.
+The certificates use kernel reduction and are part of the main Lean build.
+The selected numerical nodes and the analytic remainder require separate
+proofs; this algebraic result alone does not finish the upper endpoint.
 Given unit vectors, project a Gaussian onto them and round: $\varepsilon_i=f(\langle G,x_i\rangle)$ with $|f|\le1$. The
 correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
 \[
@@ -119,6 +127,21 @@ $\delta=455212621809/(5\cdot10^{17})\approx9.10425\cdot10^{-7}$:
 \]
 The whole difficulty is to keep \emph{every} coefficient $c_k$, $k\ge1$, small at once: improving the cubic coefficient
 $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded too.
+
+The conditional-node table has 21,577 rows of binary64 conditional Hermite
+approximations. Row $i$ uses the degree-531 canonical pairs $0\le c\le266$,
+$0\le d\le265$, $c\le d+1$, in $(c+d,c)$ order, retaining
+$c+d\le\mathrm{cutoff}_i$. A full row has 35,777 entries; cutoffs 1 and 2
+retain three and five. This certificate selects every node in a panel where
+the outward 128-bit profile interval Horner screen contains zero at some node.
+The 413 unresolved nodes occupy 381 panels; panel closure gives exactly the
+417 ordinals 3872--4036, 10910--11037 and 17321--17444, independently of cutoff.
+The rule and its exact inputs are committed in
+\path{data/q0_quadrature/conditional_source/exception-selection.json}.
+Lean checks scalar magnitude at most one, squared row norm at most $121/100$,
+and source ordinal coverage. No Gaussian coefficient estimate or upper-bound
+assembly currently consumes this certificate; source-address, basis-normalization
+and approximation-error proofs remain separate.
 
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every
@@ -161,6 +184,16 @@ literal tables and recombination are checked in Lean; no source-table equality
 is assumed. A strict transitive audit allows only the standard logical axioms.
 The inverse-rate factor already included in the literal is retained. Numerical
 cell certificates and the full upper-bound inputs remain separate obligations.
+
+For the retained head through degree $501$,
+\texttt{ProductionSmoothingApprox.production\_smoothing\_error} proves a
+relative $L^2$ error at most $4\cdot10^{-15}$ for the concrete rational
+smoothing matrices. The exact action in grade $q$ is
+$S_{q+1}C_qS_q^{\mathsf T}$; orthogonality aggregates all $251$ grades
+without multiplying the error allowance by their number. The entry rounding
+uses an integer square-root floor and only the standard logical axioms.
+The actual retained Gaussian coefficient enclosures and their complete
+energy-table comparison remain work in progress.
 
 The actual Taylor sources also admit a proved finite auxiliary reduction in
 \texttt{ProductionFiniteLaplace}. With softening $\eta=10^{-15}$ and cutoff
@@ -265,11 +298,37 @@ kernel reduction. On the reciprocal root of strip 3, three such leaves
 combine with an algebraic leaf. On the direct root of strip 5, twelve
 algebraic leaves combine. Exact midpoint identities prove both complete
 base-pair integrals from these checked cells without numerical premises.
+The direct roots of strips 1 and 3 similarly combine all twenty-four and
+fifteen algebraic leaves, respectively, with the same exact midpoint assembly.
 The explicit integrands are identified with the two actual production
 kernels at Taylor index zero, including the reciprocal Jacobian. These
-identities transfer the three complete-root enclosures at the fixed damping
+identities transfer the five complete-root enclosures at the fixed damping
 without numerical hypotheses. The remaining leaves, other roots and final
 band energies remain separate obligations.
+Conjugation invariance of the full Gaussian measure and actual base
+response also proves that both original Gaussian coefficients, including
+their rational frozen corrections, are real. Real interval errors thus
+give the same complex norm errors without a truncation premise.
+
+The original Legendre brackets for orders $1$ through $64$ have exact
+integer sign certificates and Lean proofs of root existence and uniqueness.
+The actual conditional Gaussian coefficients satisfy a joint Bessel bound;
+their selected contraction indices and profile sign exponent $c+d$ are
+identified in Lean. Reflection is proved for the actual phase integrals and
+their normalized production coefficients, with the exact factor
+$\sqrt{(d+1)/c}$ for the lookup $(c,d)\mapsto(d+1,c-1)$ when $d+1<c$.
+This factor is at most one; numerical reconstruction errors remain to be checked.
+A shared quadrature theorem derives the original weight
+formula and exactness below twice the rule order from finite polynomial
+identities, using integrated root quotients, Lagrange interpolation and
+polynomial division. Instantiating those identities for the original rules,
+the numerical weight bindings and analytic remainder remain work in progress.
+The semantic bridge now uses LeanCert's exact polynomial operations.
+Generated certificates for all $64$ orders include the recurrence,
+orthogonality, derivative and Bezout identities, squared norms, and leading
+coefficients. Their full Lean replay remains work in progress. The family
+and its strict axiom audit are included in the main root so that the
+combined delivery checks all these obligations before acceptance.
 
 A second route uses a finite-head estimate for the actual kernel directly;
 its coefficient enclosures and numerical head estimate remain work in progress.
@@ -294,6 +353,27 @@ The parsed production phase has common denominator
 $302002543697172916153771578242367488000$, proved by bounded source-chunk
 computations and their assembly in Lean. This is source arithmetic; the
 phase cover and upper-bound Gaussian estimates remain separate obligations.
+
+The conditional coefficients of the actual phase are defined in
+\texttt{F0ConditionalNode} and satisfy a coupled Bessel bound.
+For nonnegative radius and nonzero profile, \texttt{F0ConditionalEvaluator}
+identifies them with the signed historical shifted integral.
+\texttt{ConditionalNodeIndices} proves the exact selection of $31{,}877$
+distinct pairs from the larger $35{,}777$-pair storage.
+The actual Gaussian integral reflection, proved by finite Stein/Ward
+recurrences and absolute Fubini, yields the production multiplier
+$\sqrt{(d+1)/c}\le1$ when $d+1<c$. All these identities use only the
+standard logical axioms. Numerical node enclosures and floating arithmetic
+errors remain separate obligations.
+
+\texttt{ConditionalReconstruction} proves that nonconstant coefficients vanish
+at a zero profile, retaining the constant phase $\operatorname{ph}(\sqrt{s})$.
+Reflection therefore extends to all nonnegative radii. The exact completion
+of the selected $31{,}877$ mathematical modes has weighted error at most
+$10/7$ times the coupled canonical error at the same nodes and weights.
+This consumes explicit canonical error and nonnegative-weight premises;
+physical quadrature, primary contraction, floating operations and table
+agreement remain separate obligations.
 
 \paragraph{Exact phase moments.}
 For $\varphi=D e^{-\varepsilon(U+V)}S(U,V,W)$, clear the rational coefficients
@@ -449,8 +529,40 @@ integrable real half-line kernel identity
  \int_0^\infty \left(\frac{t}{1+t}\right)^h t^{-1/2}
  \frac{e^{-xt/(1+t)}}{(1+t)^2}\,dt=\frac{\pi}{2}J_h(x).
 \]
-Its identification with a Gaussian coefficient and numerical node certificates
-remain open. The cell enclosure is an explicit hypothesis;
+Absolute Fubini and the exact shifted Gaussian moment identify the normalized
+zero-row coefficient with
+\[
+ I_{0,d}(A)=\frac{\sqrt{\pi}}{2}\,
+ \frac{A(-A)^d J_d(A^2)}{\sqrt{d!}}.
+\]
+This is connected to the actual canonical evaluator and production coefficient,
+including the profile sign to power $d$. At $d=0$ that factor is one.
+These identities use only Lean's standard axioms. The exact zero-row recurrence
+$I_{0,d+1}(A)=-A r_d(A^2)I_{0,d}(A)/\sqrt{d+1}$, which is proved for the
+actual Gaussian coefficient and transferred to the signed production value.
+The canonical coefficient has norm at most one by Cauchy--Schwarz in Gaussian
+$L^2$. Its two-term raising sum has norm at most
+$\sqrt{c+1}+\sqrt{d+1}<35$ on the stored index rectangle. The parameter
+derivative identity and midpoint transfer still require proof.
+Conjugation invariance of the Gaussian and rational Hermite coefficients prove
+reality of every canonical coefficient and the corresponding signed production
+coefficient. Their complex distance to a real stored center equals the absolute
+real-part error.
+The saved-center interface adds half the physical-parameter interval error and
+the explicit model-to-saved error to $5\rho^2$; the displayed rational budget
+fits below $10^{-12}$. Actual node and byte certificates are still required.
+The corresponding actual Gaussian approximation has $L^2$ and all-mode
+coefficient error at most $5\rho^2$, where
+$\rho=\sqrt{1+a^2}v(s)/\sqrt{s}$ for $s>0$. Saved-entry enclosures remain separate.
+The constant-plus-linear phase approximation has pointwise error at most
+$\frac52\|h\|^2/r^2$ at reference radius $r>0$, also when $r+h=0$.
+Its actual Gaussian coefficient and node-data instantiation remains separate.
+The zero-safe inequality $\|\operatorname{phase}(r+h)-1\|\le2\|h\|/r$ for
+$r>0$ bounds the actual conditional phase and coefficient error by
+$2\sqrt{1+a^2}|v(s)|/\sqrt{s}$ in Gaussian $L^2$, including at profile zeros.
+Its use in a final node and energy ledger remains to be proved.
+Numerical node certificates and the complete upper bound remain open.
+The cell enclosure is an explicit hypothesis;
 no numerical cell certificate or numerical improper-integral bound is claimed.
 The recurrence $M_{p+1,q}=\mu M_{p,q}+(q/\beta)M_{p,q-1}$ preserves the affine
 cancellation for every mixed degree, including zero mean and $q=0$.
@@ -560,6 +672,14 @@ The native head is $28153/10^{12}$ ($3.09\%$).\\
 \bottomrule
 \end{tabular}
 \end{center}
+
+The degree-531 canonical pair table indexes conditional Hermite node values
+by pairs $(c,d)$ satisfying $0\le c\le266$, $0\le d\le265$,
+$c\le d+1$ and $c+d\le531$, ordered by $(c+d,c)$. Lean verifies its
+finite rank, ordinal coverage and uniqueness certificate. No downstream Lean
+result yet consumes this certificate; the Gaussian node-value enclosures
+remain part of the upper-bound work in progress.
+
 The repository-wide audit also covers the native facts pinned in \path{data/axioms/native.txt}, read by \path{scripts/check_axioms.py}. These check the upper head, selected-band masses, the six-part phase cover, the second, fourth and sixth phase moments and the squared radial phase tail,
 cap chords, the lower row/batch certificates, the additional pure-row and mixed-source law nodes and the complete finite lower cover.
 The native facts (cap-range checks, Hardy region and circle checks, and others) are listed in \path{data/axioms/native.txt}; the report is \path{scratch/Axioms.lean}, with its required declarations in \path{data/axioms/required.txt}.
