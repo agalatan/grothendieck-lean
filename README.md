@@ -491,11 +491,15 @@ model-to-saved-center discrepancy. The finite source checks and numerical
 comparison inputs still need to be certified; these interfaces do not complete
 the global cover or upper endpoint.
 
-`ProductionPhaseL2Error` transfers the source comparison to the whole
-conditional Gaussian space: the actual rounding error is at most `5ρ²` plus
-`5/2` times the actual phase-model L² error and the explicit saved-model L²
-discrepancy. Its measurable bounded phase model and actual phase bound remain
-inputs. It does not turn the error into a separate bound for every coefficient.
+`ProductionPhaseL2Error` proves a triangle inequality in conditional Gaussian
+L² on one radial slice of the unsmoothed rounding: the error is at most `5ρ²`
+plus `5/2` times the phase-model L² error and the model-to-comparison L² error.
+The actual phase bound follows from `phi_abs_lt_one`; keeping it as a premise
+avoids importing the native cover into this theorem. The comparison phase
+must be measurable and bounded by one. Choosing the actual phase makes its
+phase error zero, while the model-to-comparison norm still needs a certified
+Gaussian integral. The arbitrary comparison function has no stored-byte
+binding here. Radial integration, smoothing and band projection remain separate.
 
 `ProfilePiFactor` provides rational enclosures of `π`, `sqrt(π)`, and
 `sqrt(sqrt(π))` of width at most `2⁻⁵¹²` for the actual profile normalization.

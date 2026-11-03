@@ -950,9 +950,14 @@ an explicit comparison of the resulting model with the saved center.
 The exact profile-zero reduction uses a positive radial parameter; source,
 saved-byte and integral certificates still have to instantiate these bounds.
 
-The conditional Gaussian $L^2$ successor charges the base remainder once,
-giving $5\rho^2$ plus $5/2$ times the phase-model $L^2$ error and the explicit
-saved-model $L^2$ discrepancy. Phase bounds, measurability and the actual saved
-model remain inputs; discrete Bessel and omitted-domain estimates are separate.
+The conditional Gaussian $L^2$ triangle inequality on one unsmoothed radial
+slice charges the base remainder once, giving $5\rho^2$ plus $5/2$ times the
+phase-model error and the model-to-comparison error. The actual phase bound
+follows from the existing native cover; it remains a premise to keep these
+analytic theorems independent of that native computation. Choosing the actual
+phase as the bounded comparison phase makes its phase error zero. The remaining
+Gaussian model-to-comparison integral and the comparison function's relation
+to stored coefficients still need certificates. Radial integration, smoothing
+and band projection are separate steps toward the endpoint.
 
 \end{document}

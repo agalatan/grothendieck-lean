@@ -736,17 +736,30 @@ radial parameter zero. All new headline proofs have strict transitive guards;
 finite source certificates, saved-byte comparisons and integral instantiations
 remain separate obligations.
 
-`ProductionPhaseL2Error` constructs L² representatives of the actual fixed-radial
-production rounding, its explicit linear-base/cubic-phase model, and the actual
-phase-model difference. For positive radial parameter, a measurable phase model
-bounded by one and an actual phase bounded by one, its saved-center error is at
-most `5ρ² + (5/2) ‖phaseDifferenceLp‖ + ‖modelSliceLp - saved‖`.
-The proof uses scalar norm representatives and the L² triangle inequality, so
-the Gaussian base remainder is charged once. It leaves the saved-model norm
-unchanged, requires no disk bound on the linear Gaussian base model, and adds
-no discrete coefficient count or omitted-domain estimate. The original
-linear-slice almost-everywhere representative identity is exposed for this
-consumer without changing its statement or proof.
+`ProductionPhaseL2Error` constructs L² representatives of the unsmoothed
+rounding on a fixed radial slice, its linear-base/cubic-phase model, and the
+phase-model difference. For positive radial parameter and a measurable
+comparison phase bounded by one, its error against an arbitrary `saved : Lp ℂ 2 gaussC`
+is at most `5ρ² + (5/2) ‖phaseDifferenceLp‖ + ‖modelSliceLp - saved‖`.
+The actual phase premise is supplied by `phi_abs_lt_one`, a consequence of the
+native cover's `phiT_sq_le`. It stays explicit to keep the theorem's own
+transitive axiom set standard. A single `leafOK` certificate does not give
+this whole-slice premise.
+
+The intended bounded comparison phase can be `p = slicePhase s` itself;
+then the phase difference vanishes. This leaves the Gaussian integral of
+`‖linearSlice s w * P3 (slicePhase s w) - saved w‖²` to certify, with one
+normalized `gaussC` measure. No nonconstant polynomial bounded by one on the
+entire plane is assumed. The proof uses scalar norm representatives and the
+L² triangle inequality, charging the base remainder once; `linearSliceLp_coe`
+identifies the base representative. It imports the cubic stability estimate
+directly, without the unused pointwise `ProductionPhaseModel` interface.
+
+The argument `saved` is not identified with stored coefficient bytes here.
+The theorem does not yet give the smoothed band errors consumed by
+`fresh_upper_concrete_taylor`: radial integration, smoothing, band projection,
+numerical integral certificates and the stored-source binding remain to be
+supplied. No discrete coefficient count or omitted-domain estimate is added.
 
 `LocalAffineSquareIntegralBounds` supplies both affine integration orders with
 `ContinuousOn` restricted to the actual closed cell. Coordinate clamping
