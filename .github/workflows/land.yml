@@ -1,0 +1,62 @@
+name: Land a pull request
+
+# The author lands its own pull request (AGENTS.md §7) by commenting
+#
+#   /land <agent-id>
+#
+# on it. This checks the request and dispatches the landing check (lean.yml with land=true) on the PR's branch: CI
+# merges the branch commit into the current master, checks the merged tree and fast-forwards master to exactly that
+# tree if green, with an approving review of that commit (scripts/land_ready.sh). GitHub then marks the PR merged.
+# Refused, with a comment saying why: a closed or draft PR, an RFC/WIP label, a PR from a fork, an ID that does not
+# own the branch (<agent-id>/<topic>), or no approving review of the PR's current commit by the other side.
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  actions: write
+  pull-requests: write
+  issues: write
+  statuses: read
+
+jobs:
+  land:
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/land')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    concurrency:
+      group: land-request-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+      - name: Check the request and dispatch the landing check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.issue.number }}
+          BODY: ${{ github.event.comment.body }}
+        run: |
+          refuse() { gh pr comment "$PR" --body "[grothe-ci] \`/land\` refused: $1"; echo "::error::$1"; exit 1; }
+          read -r -a words <<< "$(head -1 <<< "$BODY")"
+          id=${words[1]:-}
+          pr=$(gh pr view "$PR" --json state,isDraft,labels,headRefName,headRefOid,isCrossRepository)
+          state=$(jq -r .state <<< "$pr"); branch=$(jq -r .headRefName <<< "$pr"); sha=$(jq -r .headRefOid <<< "$pr")
+          [ "$state" = OPEN ] || refuse "the PR is ${state,,}."
+          [ "$(jq -r .isCrossRepository <<< "$pr")" = false ] || refuse "the PR comes from a fork."
+          [ "$(jq -r .isDraft <<< "$pr")" = false ] || refuse "the PR is a draft."
+          labels=$(jq -r '[.labels[].name] | join(" ")' <<< "$pr")
+          for l in RFC WIP; do [[ " $labels " == *" $l "* ]] && refuse "the PR is labelled $l; remove the label when it is ready."; done
+          [[ "$id" =~ ^(claude|codex)-[0-9a-f]{4}$ ]] || refuse "write \`/land <your-agent-id>\`, e.g. \`/land codex-2ca4\`."
+          owner=${branch%%/*}
+          [ "$owner" = "$id" ] || refuse "\`$branch\` belongs to \`$owner\`; only its author lands it."
+          review=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${sha}/statuses?per_page=100" \
+            --jq '[.[] | select(.context == "Independent review")] | first // empty | "\(.state) \(.description)"')
+          reviewer=$(sed -nE 's/^[a-z]+ \[((claude|codex)-[0-9a-f]{4})\].*/\1/p' <<< "$review")
+          if [ "${review%% *}" != success ] || [ -z "$reviewer" ] || [ "${reviewer%%-*}" = "${id%%-*}" ]; then
+            refuse "no approving review of the current commit \`${sha:0:12}\` by the other side (scripts/review.sh). Review: ${review:-none}"
+          fi
+          gh workflow run lean.yml --ref "$branch" -f land=true
+          gh pr comment "$PR" --body "[grothe-ci] Landing \`$branch\` at \`${sha:0:12}\` (approved by ${reviewer}): checking it merged into the current master. Master moves only if that check is green; follow it under Actions → Lean proof check."

@@ -5,7 +5,7 @@ name: Cloud job
 # * lean:   build the given Lean modules of <branch> (incremental from the master cache), e.g. native_decide facts;
 #           with shards = N the modules are dealt round-robin over N parallel jobs.
 # * check:  the full proof check of <branch> (build Grothe, node caps replayed from the verified cache, no
-#           sorry/axiom, axiom report), without any merge. Useful for scratch branches cloud/**, which the push check skips.
+#           sorry/axiom, axiom report), without any merge. Useful for scratch branches pushed with [skip ci].
 # * script: run a script committed in <branch>: "<path> [args...]" (.py with python3, .sh with bash, .cpp compiled
 #           with g++ -O2). Every shard gets SHARD, NSHARDS and OUT (a directory for its results).
 # Results: one artifact per shard, cloud-<id>-<shard> (OUT plus logs and summary.json), kept 7 days.

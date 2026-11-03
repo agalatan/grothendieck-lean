@@ -9,13 +9,16 @@ name: Lean proof check
 #     changed, or a new toolchain): a cold cap build takes hours, beyond a GitHub job. It builds in its persistent
 #     workspace, checks, marks the caps (caps-closure.sha) and saves the verified cache. While it runs the commit
 #     shows "pending"; a cache miss never shows as a failure.
-# * finish (GitHub-hosted): master: prune old master caches; ready/<name>: fast-forward master to the checked merge.
-# ready/<name>: the branch is merged into the CURRENT master and the MERGED tree is checked; master moves only if green.
+# * finish (GitHub-hosted): master: prune old master caches; a landing run: fast-forward master to the checked merge.
+# Landing (AGENTS.md §7): the author comments `/land <agent-id>` on its pull request; land.yml checks the request and
+# dispatches this workflow on the branch with land=true. Such a run merges the branch commit into the CURRENT master,
+# checks the MERGED tree, and lands it only if green and approved (scripts/land_ready.sh). Every other branch run is
+# information for its author: it checks the branch as pushed and never moves master.
 # Master's cache: every update of master gets one check on master (a hand merge by its push; an auto-merge
 # dispatches it); when green, it saves the new master cache. Only master runs and droplet runs write caches.
-# Tree handoff: a green ready/ check whose commit contains the current master uploads its build as the artifact
+# Tree handoff: a green landing check whose commit contains the current master uploads its build as the artifact
 # lean-build-tree-<tree hash> (caches of a branch are invisible to master; artifacts are not). When master later
-# points at exactly that tree (the CI fast-forward of a ready/ branch, or a hand merge of an up-to-date pull request),
+# points at exactly that tree (the CI fast-forward of a landing, or a hand merge of an up-to-date pull request),
 # master's check downloads it instead of the older master cache, so its build only replays.
 # See AGENTS.md section 10.
 
@@ -33,6 +36,10 @@ on:
         default: check
         type: choice
         options: [check, caps]
+      land:
+        description: "land: check the branch merged into master and fast-forward master if green (land.yml sets this)"
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -52,15 +59,16 @@ jobs:
       key: ${{ steps.where.outputs.key }}
       handoff_run: ${{ steps.where.outputs.handoff_run }}
       handoff_name: ${{ steps.where.outputs.handoff_name }}
+      needs_droplet: ${{ steps.where.outputs.needs_droplet }}
       base: ${{ steps.merge.outputs.base }}
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: Merge the ready branch into the current master
+      - name: Merge the branch commit into the current master (landing run)
         id: merge
-        if: startsWith(github.ref_name, 'ready/')
+        if: inputs.land
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -88,7 +96,7 @@ jobs:
           BEFORE: ${{ github.event.before }}
         run: |
           # a branch commit already contained in master: master's own check covers it
-          if [ "${GITHUB_REF_NAME}" != master ] && [[ "${GITHUB_REF_NAME}" != ready/* ]]; then
+          if [ "${GITHUB_REF_NAME}" != master ] && [ "${{ inputs.land }}" != true ]; then
             git fetch -q origin master
             if git merge-base --is-ancestor HEAD origin/master; then
               echo "already contained in master: skipping this branch check"; echo "lean=false" >> "$GITHUB_OUTPUT"; exit 0
@@ -96,7 +104,7 @@ jobs:
           fi
           # files that affect the Lean build or its checks; everything else (README, docs/, AGENTS.md, ...) needs no build
           LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/lake_failfast\.sh$|scripts/test_caps_stamp\.py$|\.github/workflows/)'
-          if [[ "${GITHUB_REF_NAME}" == ready/* ]]; then base="${{ steps.merge.outputs.base }}"  # HEAD = base + this commit
+          if [ "${{ inputs.land }}" = true ]; then base="${{ steps.merge.outputs.base }}"  # HEAD = base + this commit
           elif [ "${GITHUB_REF_NAME}" = master ]; then base="$BEFORE"                # the previous master
           else base=$(git merge-base origin/master HEAD); fi                         # what the branch adds to master
           if [ "${{ inputs.mode }}" = caps ] || [ -z "$base" ] || ! git cat-file -e "${base}^{commit}" 2>/dev/null; then
@@ -136,6 +144,14 @@ jobs:
               echo "handoff_run=${handoff}" >> "$GITHUB_OUTPUT"; echo "handoff_name=${name}" >> "$GITHUB_OUTPUT"
             fi
           fi
+          if [ "${{ steps.scope.outputs.lean }}" = true ] && [ -z "$handoff" ] && [ "${found:-0}" = 0 ] \
+             && [ "${GITHUB_REF_NAME}" != master ] && [ "${{ inputs.land }}" != true ] && [ "${{ inputs.mode }}" != caps ]; then
+            # an informative branch check never occupies the droplet (one runner, hours per cap build): it fails at
+            # once, saying so; the landing run or an explicit `-f mode=caps` dispatch builds the caps on the droplet
+            echo "::warning::the node caps changed (no verified cache for digest ${digest}): this branch check needs the droplet."
+            echo "needs_droplet=true" >> "$GITHUB_OUTPUT"; echo "droplet=false" >> "$GITHUB_OUTPUT"
+            echo 'runs_on="ubuntu-24.04"' >> "$GITHUB_OUTPUT"; exit 0
+          fi
           if [ "${{ steps.scope.outputs.lean }}" = true ] && [ -z "$handoff" ] && { [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ]; }; then
             echo "-> the droplet builds and verifies the node caps (this run stays pending meanwhile)"
             echo "droplet=true" >> "$GITHUB_OUTPUT"; echo 'runs_on=["self-hosted","heavy"]' >> "$GITHUB_OUTPUT"
@@ -152,20 +168,27 @@ jobs:
     # and a long first build would be lost), so its group is per commit. The droplet has one runner, so its jobs queue
     # by themselves and are never cancelled (a killed build leaves orphaned lean processes).
     concurrency:
-      group: ${{ needs.route.outputs.droplet == 'true' && format('droplet-{0}', github.run_id) || (github.ref_name == 'master' && format('check-master-{0}', github.sha) || format('check-{0}', github.ref)) }}
+      group: ${{ needs.route.outputs.droplet == 'true' && format('droplet-{0}', github.run_id) || (github.ref_name == 'master' && format('check-master-{0}', github.sha) || format('{0}-{1}', inputs.land && 'land' || 'check', github.ref)) }}
       cancel-in-progress: ${{ needs.route.outputs.droplet != 'true' && github.ref_name != 'master' }}
     env:
       LEAN: ${{ needs.route.outputs.lean }}
       DROPLET: ${{ needs.route.outputs.droplet }}
       KEY: ${{ needs.route.outputs.key }}
     steps:
+      - name: Not run here - the node caps changed and this informative branch check does not use the droplet
+        if: needs.route.outputs.needs_droplet == 'true'
+        run: |
+          echo "::error::The node caps changed, so this check needs the droplet (hours). Informative branch checks do not"
+          echo "::error::occupy it. Land the PR (/land), or dispatch the check on purpose: gh workflow run lean.yml --ref ${GITHUB_REF_NAME} -f mode=caps"
+          exit 1
+
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           clean: ${{ needs.route.outputs.droplet != 'true' }}   # the droplet keeps its persistent .lake
 
-      - name: Merge the ready branch into the current master
-        if: startsWith(github.ref_name, 'ready/')
+      - name: Merge the branch commit into the current master (landing run)
+        if: inputs.land
         run: |
           git config user.name "grothe-ci"; git config user.email "grothe-ci@users.noreply.github.com"
           git config merge.ours.driver true   # OVERVIEW.pdf merge=ours (.gitattributes): CI rebuilds it
@@ -336,20 +359,20 @@ jobs:
           path: .lake/build
           key: ${{ needs.route.outputs.key }}${{ github.sha }}
 
-      - name: Save the verified cache for this branch (droplet; and ready/, so a re-check after master moved replays it)
+      - name: Save the verified cache for this branch (droplet; and landing runs, so a re-check after master moved replays it)
         # deleted with the branch (cancel-merged.yml), so it never outlives the delivery
-        if: env.LEAN == 'true' && github.ref_name != 'master' && (env.DROPLET == 'true' || startsWith(github.ref_name, 'ready/'))
+        if: env.LEAN == 'true' && github.ref_name != 'master' && (env.DROPLET == 'true' || inputs.land)
         uses: actions/cache/save@v4
         with:
           path: .lake/build
           key: ${{ needs.route.outputs.key }}${{ github.sha }}-run${{ github.run_id }}
 
       - name: Pack the build for master's check if master can become exactly this tree (tree handoff)
-        # this commit contains the current master, so a ready/ fast-forward or a hand merge of the pull request gives
-        # master exactly this tree; master's check then downloads this build instead of rebuilding. Only ready/ checks
+        # this commit contains the current master, so the landing fast-forward or a hand merge of the pull request gives
+        # master exactly this tree; master's check then downloads this build instead of rebuilding. Only landing checks
         # upload it: work branches rarely become master's exact tree, and each upload is a 0.4-3.5 GB artifact
         id: handoff
-        if: env.LEAN == 'true' && startsWith(github.ref_name, 'ready/')
+        if: env.LEAN == 'true' && inputs.land
         run: |
           git fetch -q origin master
           if git merge-base --is-ancestor origin/master HEAD; then
@@ -371,7 +394,7 @@ jobs:
           retention-days: 1
 
       - name: Hand the checked merge to the finish job
-        if: startsWith(github.ref_name, 'ready/')
+        if: inputs.land
         uses: actions/upload-artifact@v4
         with:
           name: merge-info
@@ -381,7 +404,7 @@ jobs:
   finish:
     # GitHub-hosted (has the GitHub CLI): after a green check
     needs: [route, build]
-    if: github.ref_name == 'master' || startsWith(github.ref_name, 'ready/')
+    if: github.ref_name == 'master' || inputs.land
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -419,7 +442,7 @@ jobs:
           done
 
       - uses: actions/checkout@v5
-        if: startsWith(github.ref_name, 'ready/')
+        if: inputs.land
         with:
           fetch-depth: 0
           # MERGE_TOKEN (optional repository secret, fine-grained PAT with contents + workflows write) lets the
@@ -427,13 +450,13 @@ jobs:
           token: ${{ secrets.MERGE_TOKEN || github.token }}
 
       - uses: actions/download-artifact@v4
-        if: startsWith(github.ref_name, 'ready/')
+        if: inputs.land
         with:
           name: merge-info
 
       - name: Land the checked merge if an approving review of this commit exists (AGENTS.md §7a)
         # without one the check stays green and the delivery waits; review-land.yml lands it when the approval comes
-        if: startsWith(github.ref_name, 'ready/')
+        if: inputs.land
         env:
           GH_TOKEN: ${{ github.token }}
           BRANCH: ${{ github.ref_name }}
