@@ -60,6 +60,28 @@ lemma sum_abs_tsum_le {ι κ : Type*} (s : Finset κ) (f : ι → κ → ℝ)
       (Summable.of_nonneg_of_le (fun _ => Finset.sum_nonneg fun _ _ => abs_nonneg _)
         hbound hb).tsum_le_tsum hbound hb
 
+/-- For polynomials `T i` of Wiener norm at most one and absolutely summable weights `μ`, every
+coefficient series `Σ'_i μ i · [Xʲ] T i` converges absolutely. -/
+lemma summable_abs_mul_coeff {ι : Type*} {T : ι → ℝ[X]} (hT : ∀ i, l1 (T i) ≤ 1) {μ : ι → ℝ}
+    (hμ : Summable fun i => |μ i|) (j : ℕ) : Summable fun i => |μ i * (T i).coeff j| :=
+  Summable.of_nonneg_of_le (fun _ => abs_nonneg _) (fun i => by
+    rw [abs_mul]
+    exact mul_le_of_le_one_right (abs_nonneg _) ((abs_coeff_le_l1 _ j).trans (hT i))) hμ
+
+lemma summable_mul_coeff {ι : Type*} {T : ι → ℝ[X]} (hT : ∀ i, l1 (T i) ≤ 1) {μ : ι → ℝ}
+    (hμ : Summable fun i => |μ i|) (j : ℕ) : Summable fun i => μ i * (T i).coeff j :=
+  Summable.of_norm_bounded (summable_abs_mul_coeff hT hμ j) fun _ => (Real.norm_eq_abs _).le
+
+/-- **`ℓ¹` contraction of a coefficient series**: for polynomials `T i` of Wiener norm at most one,
+the partial sums of `Σ_j |Σ'_i μ i · [Xʲ] T i|` are at most `Σ'_i |μ i|`. -/
+lemma sum_abs_tsum_mul_coeff_le {ι : Type*} {T : ι → ℝ[X]} (hT : ∀ i, l1 (T i) ≤ 1)
+    {μ : ι → ℝ} (hμ : Summable fun i => |μ i|) (J : ℕ) :
+    ∑ j ∈ Finset.range J, |∑' i, μ i * (T i).coeff j| ≤ ∑' i, |μ i| :=
+  sum_abs_tsum_le _ (fun i j => μ i * (T i).coeff j) (fun j _ => summable_abs_mul_coeff hT hμ j) hμ
+    fun i => by
+      simp only [abs_mul, ← Finset.mul_sum]
+      exact mul_le_of_le_one_right (abs_nonneg _) ((sum_abs_coeff_le_l1 _ _).trans (hT i))
+
 lemma l1_add_le (p q : ℝ[X]) : l1 (p + q) ≤ l1 p + l1 q := by
   have h := fun r : ℝ[X] => l1_eq_sum_range r (N := (p + q).natDegree + p.natDegree + q.natDegree + 1)
   rw [h (p + q) (by omega), h p (by omega), h q (by omega), ← Finset.sum_add_distrib]
