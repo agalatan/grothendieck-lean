@@ -430,9 +430,14 @@ are summable and bounded by the corresponding finite `sourceNormValue`
 expressions divided by their cutoff weights. `ActualFiniteRectangleOperator`
 bounds the action on finite coefficient vectors without a mode-count factor.
 `ActualRectangleCoefficientAction` identifies that action with the actual
-Gaussian output coefficients of finite normalized Hermite inputs. These new
-proofs remain uncompiled. Infinite input expansions, numerical source bounds
-and the final endpoint remain open.
+Gaussian output coefficients of finite normalized Hermite inputs.
+`ActualTaylorMultiplierOperator` constructs the actual continuous L² multiplier
+under explicit `PhiBound`, proves its Hermite matrix identity, and obtains the
+convergent expansion of every rectangle-tail input. The infinite rectangle
+operator module passes the finite bound to this limit and uses Parseval to
+control the complete selected-band output by the same four source norms.
+These new proofs remain uncompiled. Numerical source bounds and the final
+closed endpoint remain open.
 
 For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
 `QuadraticPolynomialIntegrability` proves genuine joint polynomial

@@ -596,9 +596,19 @@ true rectangle complement, including the boundary. No mode count is charged.
 `ActualRectangleCoefficientAction` constructs the finite normalized Hermite
 input, proves integrability of each output coefficient, and identifies its
 actual Gaussian integral with that matrix action by finite integral exchange.
-The resulting physical-coefficient bound and all new audit guards are WIP,
-uncompiled. Infinite input expansions, reproducible numerical source-norm
-enclosures and the final upper endpoint remain open.
+`ActualTaylorMultiplierOperator` uses the explicit `PhiBound` to place the
+actual multiplier in L-infinity and applies `ContinuousLinearMap.holderL` to
+construct multiplication on physical L². Its matrix entries are identified
+with the actual Gaussian integrals, and the complete Hermite basis gives
+convergence of the filtered finite actions to the multiplier of `rectangleTail`.
+`ActualInfiniteRectangleOperator` combines this convergence with finite Bessel,
+then applies output Parseval. For every physical L² input, the squared norm of
+its selected-band rectangle-tail output is bounded by `sourceBound` times the
+squared input norm. `sourceBound` is exactly the original four source-norm
+expressions divided by their cutoff weights; no extra tolerance is added.
+The resulting operator bound and all new audit guards are WIP, uncompiled.
+Reproducible numerical source-norm enclosures and the final closed upper
+endpoint remain open.
 
 `QuadraticPolynomialIntegrability` proves a separable Gaussian majorant for
 `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²` under exactly `A>0` and

@@ -260,6 +260,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.ActualGateMatrixWeights.norm_weightedMatrixEntry_sq
 #print axioms Grothe.UpperChaos.ActualGateMatrixWeights.sourceWeight_nonneg
 #print axioms Grothe.UpperChaos.ActualGateMatrixWeights.sourceWeight_sq
+#print axioms Grothe.UpperChaos.ActualInfiniteRectangleOperator.finite_output_multiplier_sq_le
+#print axioms Grothe.UpperChaos.ActualInfiniteRectangleOperator.selectedBand_multiplier_sq_le
+#print axioms Grothe.UpperChaos.ActualInfiniteRectangleOperator.sourceBound_nonneg
 #print axioms Grothe.UpperChaos.ActualMatrixBandTail.bandExcludedEnergyTerm_le
 #print axioms Grothe.UpperChaos.ActualMatrixBandTail.bandExcludedEnergyTerm_nonneg
 #print axioms Grothe.UpperChaos.ActualMatrixBandTail.finite_bandExcludedEnergy_le
@@ -344,6 +347,14 @@ import Grothe
 #print axioms Grothe.UpperChaos.ActualTaylorFiniteCoefficients.matrixEntry_eq_unnormalized
 #print axioms Grothe.UpperChaos.ActualTaylorFiniteCoefficients.matrixEntry_zero
 #print axioms Grothe.UpperChaos.ActualTaylorFiniteCoefficients.memLp_finiteTransform
+#print axioms Grothe.UpperChaos.ActualTaylorMultiplierOperator.hasSum_matrixEntry
+#print axioms Grothe.UpperChaos.ActualTaylorMultiplierOperator.hasSum_rectangleTail
+#print axioms Grothe.UpperChaos.ActualTaylorMultiplierOperator.inner_multiplier_hvec2
+#print axioms Grothe.UpperChaos.ActualTaylorMultiplierOperator.inner_rectangleTail
+#print axioms Grothe.UpperChaos.ActualTaylorMultiplierOperator.memLp_infty_taylorPhasePower
+#print axioms Grothe.UpperChaos.ActualTaylorMultiplierOperator.multiplier_ae
+#print axioms Grothe.UpperChaos.ActualTaylorMultiplierOperator.tendsto_rectangle_matrixAction
+#print axioms Grothe.UpperChaos.ActualTaylorMultiplierOperator.tsum_matrixEntry
 #print axioms Grothe.UpperChaos.ActualTensorMomentCoefficients.coefficient8_scaledTensorMoment
 #print axioms Grothe.UpperChaos.ActualTensorMomentCoefficients.coefficient8_scaledTensorMoment_eq_Hermite
 #print axioms Grothe.UpperChaos.ActualTensorMomentCoefficients.gateMatrixIndexEquiv_apply

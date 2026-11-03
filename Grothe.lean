@@ -202,6 +202,7 @@ import Grothe.UpperChaos.ActualGateCoefficientWeights
 import Grothe.UpperChaos.ActualGateMatrixCoefficients
 import Grothe.UpperChaos.ActualGateMatrixWeights
 import Grothe.UpperChaos.ActualGateMomentJetsAudit
+import Grothe.UpperChaos.ActualInfiniteRectangleOperator
 import Grothe.UpperChaos.ActualMatrixBandTail
 import Grothe.UpperChaos.ActualMatrixCutoffTail
 import Grothe.UpperChaos.ActualMatrixFiniteComparison
@@ -218,6 +219,7 @@ import Grothe.UpperChaos.ActualSourceNormGram
 import Grothe.UpperChaos.ActualTaylorCoherent
 import Grothe.UpperChaos.ActualTaylorCoherentAudit
 import Grothe.UpperChaos.ActualTaylorFiniteCoefficients
+import Grothe.UpperChaos.ActualTaylorMultiplierOperator
 import Grothe.UpperChaos.ActualTensorMomentCoefficients
 import Grothe.UpperChaos.AdaptiveRectangleComposition
 import Grothe.UpperChaos.AdaptiveRectangleEnclosure

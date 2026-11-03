@@ -534,8 +534,13 @@ weights. A finite complex Cauchy--Schwarz argument bounds each selected-band
 matrix action by this same sum times the input coefficient energy, without
 an extra mode count. Finite Gaussian integral exchange identifies the action
 with output coefficients of the actual Taylor multiplier applied to a finite
-normalized Hermite input. These source proofs and their strict audits remain
-uncompiled. Infinite input expansions, numerical source bounds and the final
+normalized Hermite input. Under explicit \texttt{PhiBound}, the production
+multiplier defines a continuous operator on physical $L^2$. Its matrix is
+identified with the actual Gaussian entries, so completeness of the Hermite
+basis gives convergence of the finite rectangle-tail actions. Finite Bessel
+and output Parseval then extend the same four-source bound to every physical
+$L^2$ input and the full selected output band. These source proofs and their
+strict audits remain uncompiled. Numerical source bounds and the final closed
 endpoint remain open.
 For the correlated form
 $Q=A|z|^2+2B\operatorname{Re}(z\overline w)+C|w|^2$, the exact conditions

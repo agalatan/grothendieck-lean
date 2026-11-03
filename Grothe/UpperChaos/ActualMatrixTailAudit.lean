@@ -1,4 +1,4 @@
-import Grothe.UpperChaos.ActualRectangleCoefficientAction
+import Grothe.UpperChaos.ActualInfiniteRectangleOperator
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command
 
@@ -9,8 +9,9 @@ Agent-ID: codex-2ca4.
 
 The actual gate weights, coordinate union, finite-band membership and all
 fourteen selected production bands are guarded by the standard three axioms.
-These complete WIP proof bodies await compilation; numerical source bounds,
-infinite expansions, numerical source bounds and the final endpoint are separate obligations.
+The physical multiplier and infinite-input limit keep `PhiBound` explicit.
+These complete WIP proof bodies await compilation; numerical source bounds
+and the final closed endpoint remain separate obligations.
 -/
 
 open Lean Elab Command
@@ -64,7 +65,18 @@ run_cmd do
     ``Grothe.UpperChaos.ActualFiniteRectangleOperator.filtered_selectedBand_action_sq_le,
     ``Grothe.UpperChaos.ActualRectangleCoefficientAction.integrable_outputCoefficient,
     ``Grothe.UpperChaos.ActualRectangleCoefficientAction.outputCoefficient_eq_matrixAction,
-    ``Grothe.UpperChaos.ActualRectangleCoefficientAction.filtered_selectedBand_outputCoefficient_sq_le]
+    ``Grothe.UpperChaos.ActualRectangleCoefficientAction.filtered_selectedBand_outputCoefficient_sq_le,
+    ``Grothe.UpperChaos.ActualTaylorMultiplierOperator.memLp_infty_taylorPhasePower,
+    ``Grothe.UpperChaos.ActualTaylorMultiplierOperator.multiplier_ae,
+    ``Grothe.UpperChaos.ActualTaylorMultiplierOperator.inner_multiplier_hvec2,
+    ``Grothe.UpperChaos.ActualTaylorMultiplierOperator.hasSum_matrixEntry,
+    ``Grothe.UpperChaos.ActualTaylorMultiplierOperator.tsum_matrixEntry,
+    ``Grothe.UpperChaos.ActualTaylorMultiplierOperator.inner_rectangleTail,
+    ``Grothe.UpperChaos.ActualTaylorMultiplierOperator.hasSum_rectangleTail,
+    ``Grothe.UpperChaos.ActualTaylorMultiplierOperator.tendsto_rectangle_matrixAction,
+    ``Grothe.UpperChaos.ActualInfiniteRectangleOperator.sourceBound_nonneg,
+    ``Grothe.UpperChaos.ActualInfiniteRectangleOperator.finite_output_multiplier_sq_le,
+    ``Grothe.UpperChaos.ActualInfiniteRectangleOperator.selectedBand_multiplier_sq_le]
   for target in targets do
     for dependency in (← Lean.collectAxioms target) do
       unless allowed.contains dependency do
