@@ -241,6 +241,17 @@ raw source error, same-output table fit and tail remain explicit inputs.
 This alternative and its transitive axiom report require full acceptance;
 the final completed façade remains separate.
 
+`ProductionF0RationalCompletion` constructs the reflected half from the
+canonical rational centers using the existing `RationalSqrtFloor` at
+denominator `2⁵⁴` and exact rational multiplication. Injectivity of the partner
+map bounds the coupled completion defect by `2⁻⁵⁴` times the canonical center
+norm, without an entry-count factor. That center norm is at most one plus the
+actual canonical tensor error, by the F₀ norm and the triangle inequality.
+An actual canonical tensor error `6.6·10⁻⁹` therefore fits the raw `9.5·10⁻⁹`
+contract. `RelaxedRationalReference` uses the resulting same-reference table
+premise and fourteen Gaussian estimates. The archived floating family is
+separate; its table certificate is not transferred to this new reference.
+
 `ProductionF0Omission` partitions the actual phase by one measurable union of
 three explicit root-gap sets and `s > 100`. The continuous Gaussian tail mass
 is exactly `exp(-100)`. Gaps beyond `s = 13` with total width at most `8·10⁻¹⁶`

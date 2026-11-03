@@ -1090,6 +1090,7 @@ import Grothe.UpperChaos.ProductionF0Conditional
 import Grothe.UpperChaos.ProductionF0Head
 import Grothe.UpperChaos.ProductionF0Omission
 import Grothe.UpperChaos.ProductionF0Radial
+import Grothe.UpperChaos.ProductionF0RationalCompletion
 import Grothe.UpperChaos.ProductionF0Reconstruction
 import Grothe.UpperChaos.ProductionF0Source
 import Grothe.UpperChaos.ProductionFiniteLaplace
@@ -1816,6 +1817,7 @@ import Grothe.UpperChaos.RectanglePerturbation
 import Grothe.UpperChaos.RectangleReciprocalCertificate
 import Grothe.UpperChaos.RelaxedComparison
 import Grothe.UpperChaos.RelaxedEnergy
+import Grothe.UpperChaos.RelaxedRationalReference
 import Grothe.UpperChaos.RestrictedPhaseMoments
 import Grothe.UpperChaos.RestrictedWick
 import Grothe.UpperChaos.RetainedMeshReality

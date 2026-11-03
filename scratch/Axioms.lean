@@ -734,6 +734,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.actualEntry_linearMode
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.baseGradedCoefficient_eq_radial
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.baseGradedCoefficient_iterated
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.canonical_error_rationalTensorCompletion
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_one_zero
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_Xfun_zero_one
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.energy_smoothOp_one_zero
@@ -747,6 +748,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.norm_productionF0Head_sub_sq_radial
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.projected_response_error
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.radialBaseCoefficient_reflection
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.rationalTensorCompletion_defect_le
+#print axioms Grothe.UpperChaos.FixedChaosSmoothing.raw_error_of_dyadicTensorReference
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.reconstruct_actual_tensor
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.retainedProduction_eq
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.retainedSmoothed_projected_error_of_raw
@@ -1784,8 +1787,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.RectangleModelCheck.mul_sound
 #print axioms Grothe.UpperChaos.RectangleModelCheck.round_sound
 #print axioms Grothe.UpperChaos.RectangleModelCheck.scale_sound
+#print axioms Grothe.UpperChaos.RelaxedComparison.head_residual_of_dyadic_reference
 #print axioms Grothe.UpperChaos.RelaxedComparison.head_residual_of_raw_source
 #print axioms Grothe.UpperChaos.RelaxedComparison.residual_of_raw_source
+#print axioms Grothe.UpperChaos.RelaxedComparison.upper_of_dyadic_reference_and_tail
 #print axioms Grothe.UpperChaos.RelaxedComparison.upper_of_raw_source_and_tail
 #print axioms Grothe.UpperChaos.RelaxedComparison.weighted_comparison_of_energy_close
 #print axioms Grothe.UpperChaos.RestrictedWick.integral_cut_balanced
