@@ -162,6 +162,19 @@ budget combines those selected nodes with explicit squared-error budgets on
 all other regular nodes, using the same physical Gaussian weights. Actual
 parameter and saved-vector certificates remain required.
 
+For an exceptional source row, the model-to-payload discrepancy over all
+selected modes reduces exactly to five rational coordinates. The fitted
+parameter is $x_{10}-x_{01}$, with squared residual
+$(1-x_{00})^2+(x_{10}+x_{01})^2/2+x_{02}^2+x_{11}^2$.
+Any other parameter $r$ adds $(r-(x_{10}-x_{01}))^2/2$.
+The decoded source ordinal, cutoff and rank lookup are retained. Physical
+Gaussian parameter enclosures remain required; only the stored approximation
+and explicit model vanish outside the five-coordinate support. Separate
+kernel checks on the decoded rational rows give model residual norm below
+$10^{-31}$ and fitted-parameter magnitude below $10^{-15}$ at every exceptional
+source row. The physical ratio and its difference from that fitted parameter
+still need enclosures.
+
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every
 grade's integer sum and divides by $2^{210}$, then identifies the rational

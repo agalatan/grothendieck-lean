@@ -33,3 +33,32 @@ operations, quadrature remainder, or infinite tails. Those are remaining
 proof inputs, not results inferred from this interface. The upper endpoint
 remains work in progress. The dependency commits are pinned in `provenance.json`.
 No new numerical table or external generation step is introduced.
+
+The exceptional-row path uses `Q0SourceSavedLinearModel`. Its exact rational
+`storedScalar` is the existing decoded payload at the same canonical rank.
+`source_model_error_eq` reduces the model discrepancy over the full selected set
+to the established five-coordinate support. The fitted parameter `x10-x01`
+has residual `(1-x00)^2+(x10+x01)^2/2+x02^2+x11^2`; using any other parameter
+adds `(r-fitParameter)^2/2`. These identities preserve coupled vector error.
+The actual-source row interface still requires physical-ratio and parameter
+bounds. This is an exceptional-row estimate, separate from the regular hybrid
+budget. True coefficients outside the model support remain in the analytic
+remainder.
+
+`Q0SourceSavedLinearChecks` consumes the same decoded rows in separate
+`decide +kernel` checks: the fitted parameter has magnitude below `1/10^15`,
+and the full model discrepancy has squared norm below `(1/10^31)^2`.
+The final actual-source theorem discharges that saved-model premise; only
+actual physical-ratio and ratio-to-fit enclosures remain. These are proof
+candidates until the delivery's Lean check passes; exact Python replay alone
+is not acceptance evidence.
+
+Regenerate or compare the check modules using:
+
+```sh
+python3 tools/q0_quadrature/gen_source_saved_linear_checks.py
+python3 tools/q0_quadrature/gen_source_saved_linear_checks.py --check
+```
+
+The generator reuses the hash-validated row reader and existing chunk
+partition; it introduces no floating arithmetic or replacement payload.

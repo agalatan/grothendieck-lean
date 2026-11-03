@@ -214,6 +214,16 @@ on selected regular nodes with separate budgets on all other regular nodes,
 using the original physical Gaussian weights. Actual parameter and saved-row
 certificates remain inputs; this path does not finish the upper bound.
 
+For exceptional rows, `Q0SourceSavedLinearModel` connects the decoded source
+payload to this coupled comparison. It reduces the model discrepancy over all
+selected modes to an exact rational calculation on five coordinates. The
+least-squares parameter is the difference of the two stored linear coefficients.
+Only the model and stored approximation vanish outside those coordinates; the
+actual Gaussian coefficients remain in the analytic error. Per-chunk kernel
+checks certify every decoded exceptional row's model residual below `1e-31`
+and fitted parameter magnitude below `1e-15`. Physical ratio and ratio-to-model
+enclosures are still required at each source node.
+
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of
 scaled integers regenerated from the same pinned binary64 input.

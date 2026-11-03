@@ -167,6 +167,27 @@ saved-vector certificates still need to be supplied. Source dependencies and
 certificate semantics are in
 [`source-vector/README.md`](../data/q0_quadrature/source-vector/README.md).
 
+**Decoded exceptional-row model.** `Q0SourceSavedLinearModel.source_model_error_eq`
+identifies the coupled error over all selected modes with `modelErrorSq`, an exact
+rational sum over the five established low modes. The proof uses the same decoded
+row, source ordinal, cutoff and canonical rank lookup. Only the stored approximation
+and explicit model are zero outside this support; no true Gaussian coefficient is
+set to zero. The fitted parameter is `x10 - x01`. Its residual is exactly
+`(1-x00)^2 + (x10+x01)^2/2 + x02^2 + x11^2`, and using another parameter `r`
+adds exactly `(r-fitParameter)^2/2`.
+
+`source_linearRowBounds` binds this rational calculation to the existing row
+interface; `source_actual_error_sq_le` then bounds the actual Gaussian vector.
+Both apply to exceptional source addresses, retaining explicit physical-ratio and
+parameter-enclosure inputs. They do not instantiate the regular-node hybrid
+budget. `Q0SourceSavedLinearChecks` checks the decoded rational data with
+`decide +kernel` in separate chunk modules. The aggregate supplies the model
+error below `(1/10^31)^2` and fitted-parameter magnitude below `1/10^15` for
+the actual `rowAt`. Its `source_actual_error_sq_le` discharges the saved-model
+premise and leaves only the two actual physical parameter enclosures. The
+strict audits permit only the standard logical axioms. The generator reuses
+the same validated input reader and reproduces its outputs byte for byte.
+
 **q0 source-to-literal identity.**
 `Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real
 `s`, `b`, and `v`, that `Ssum q0RawWickEntries s b v` equals
