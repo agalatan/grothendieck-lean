@@ -60,7 +60,8 @@ def tiltedMonomial (u v : ℕ) (a z : ℂ) : ℂ :=
 
 theorem integrable_tiltedMonomial (u v : ℕ) (a : ℂ) :
     Integrable (tiltedMonomial u v a) gaussC := by
-  simpa only [tiltedMonomial, sub_self, neg_zero, zero_mul, zero_add] using
+  unfold tiltedMonomial
+  simpa only [sub_self, neg_zero, zero_mul, zero_add] using
     LinearTiltedMoments.integrable_mixed_moment u v (show (0 : ℝ) < 1 by norm_num) a
 
 /-- The unit-rate tilted moment retains both the exponential mass and the
@@ -81,7 +82,7 @@ theorem norm_kernel_sq_factor (c : ℂ) (p q r s : ℝ) (z w : ℂ × ℂ) :
           Real.exp (2 * ((image p q r s w).2 * z.2).re)) := by
   simp only [kernel, norm_mul, mul_pow, Complex.norm_exp,
     ← Real.exp_nat_mul, Nat.cast_ofNat, coupling, Complex.add_re,
-    mul_add, Real.exp_add]
+    Real.exp_add]
 
 /-- The complete Gram integrand factors before any integration is performed. -/
 theorem gramIntegrand_factor (e f : PairPowers) (c : ℂ) (p q r s : ℝ)

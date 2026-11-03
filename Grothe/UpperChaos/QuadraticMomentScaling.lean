@@ -76,13 +76,11 @@ private theorem balanced_summand (U V : ℂ) (hU : U ≠ 0) (hV : V ≠ 0)
 private theorem scaled_mean (u v A B : ℝ) (hu : u ≠ 0) (hA : A ≠ 0) :
     (u * v * B) / (u ^ 2 * A) = (v / u) * (B / A) := by
   field_simp [hu, hA]
-  all_goals ring
 
 private theorem scaled_schur (u v A B C : ℝ) (hu : u ≠ 0) (hA : A ≠ 0) :
     ((u ^ 2 * A) * (v ^ 2 * C) - (u * v * B) ^ 2) / (u ^ 2 * A) =
       v ^ 2 * ((A * C - B ^ 2) / A) := by
   field_simp [hu, hA]
-  all_goals ring
 
 /-- The finite moment formula transforms with both complex-coordinate
 Jacobian factors. Only the scales and first pivot must be nonzero; positivity
@@ -108,7 +106,7 @@ theorem momentValue_scale_mul (u v A B C : ℝ) (hu : u ≠ 0) (hv : v ≠ 0)
   have hkp : k ≤ p := by omega
   have hkq : k ≤ q := by omega
   by_cases hbalance : (p - k) + r = (q - k) + s
-  · simp only [if_pos hbalance]
+  · simp only [ite_eq_left hbalance]
     unfold wickCoeff
     rw [hmean, scaled_schur u v A B C hu hA]
     simp only [Complex.ofReal_mul, Complex.ofReal_pow]
@@ -118,7 +116,7 @@ theorem momentValue_scale_mul (u v A B C : ℝ) (hu : u ≠ 0) (hv : v ≠ 0)
       ((((p - k) + r).factorial : ℂ)) (-((B / A : ℝ) : ℂ))
       (A : ℂ) ((((A * C - B ^ 2) / A : ℝ) : ℂ))
     simpa only [mul_assoc, mul_left_comm, mul_comm] using ht
-  · simp only [if_neg hbalance, mul_zero]
+  · simp only [ite_eq_right hbalance, mul_zero]
 
 /-- Scaling a monomial and its conjugate leaves the inverse Gaussian
 Jacobian. The right-hand side is an unnormalized Gaussian moment. -/
