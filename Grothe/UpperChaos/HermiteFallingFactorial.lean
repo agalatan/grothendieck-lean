@@ -32,19 +32,26 @@ private def mulX0 : Module.End ℂ CPoly := LinearMap.mul ℂ CPoly (X 0)
 private def negDeriv1 : Module.End ℂ CPoly :=
   -(pderiv (1 : Fin 2) : Derivation ℂ CPoly CPoly).toLinearMap
 
+private theorem mulX0_apply (P : CPoly) : mulX0 P = X 0 * P :=
+  LinearMap.mul_apply' (R := ℂ) (X 0 : CPoly) P
+
+private theorem negDeriv1_apply (P : CPoly) :
+    negDeriv1 P = -(pderiv (1 : Fin 2) P) := by
+  simp only [negDeriv1, LinearMap.neg_apply, Derivation.coeFn_coe]
+
 private theorem negDeriv1_commute_mulX0 : Commute negDeriv1 mulX0 := by
   change negDeriv1 * mulX0 = mulX0 * negDeriv1
   refine LinearMap.ext fun (P : CPoly) => ?_
-  change -(pderiv (1 : Fin 2) (X 0 * P)) = X 0 * (-(pderiv (1 : Fin 2) P))
-  simp [pderiv_mul]
+  simp only [Module.End.mul_apply, negDeriv1_apply, mulX0_apply]
+  simp only [pderiv_mul, pderiv_X_of_ne (by decide : (0 : Fin 2) ≠ 1),
+    zero_mul, zero_add, mul_neg]
 
 private theorem mulX0_pow_apply (n : ℕ) (P : CPoly) :
     (mulX0 ^ n) P = X 0 ^ n * P := by
   induction n with
   | zero => simp
   | succ n ih =>
-      rw [pow_succ', Module.End.mul_apply, ih]
-      change X 0 * (X 0 ^ n * P) = X 0 ^ (n + 1) * P
+      rw [pow_succ', Module.End.mul_apply, ih, mulX0_apply]
       rw [pow_succ']
       exact (mul_assoc _ _ _).symm
 
@@ -56,9 +63,7 @@ private theorem negDeriv1_pow_X1 (q k : ℕ) :
   induction k with
   | zero => simp
   | succ k ih =>
-      rw [pow_succ', Module.End.mul_apply, ih]
-      change -(pderiv (1 : Fin 2)
-        (C ((-1 : ℂ) ^ k * (q.descFactorial k : ℂ)) * X 1 ^ (q - k))) = _
+      rw [pow_succ', Module.End.mul_apply, ih, negDeriv1_apply]
       rw [pderiv_C_mul, pderiv_pow, pderiv_X_self, mul_one]
       simp only [Nat.descFactorial_succ, Nat.sub_sub, Nat.cast_mul,
         map_mul, map_pow, map_neg, map_one, map_natCast, pow_succ]
@@ -70,6 +75,7 @@ private theorem creation_pow_apply (p : ℕ) (P : CPoly) :
   | zero => rfl
   | succ p ih =>
       rw [pow_succ', Module.End.mul_apply, ih, Function.iterate_succ_apply']
+      rw [LinearMap.add_apply, negDeriv1_apply, mulX0_apply]
       change -(pderiv (1 : Fin 2) (A0^[p] P)) + X 0 * (A0^[p] P) =
         X 0 * (A0^[p] P) - pderiv (1 : Fin 2) (A0^[p] P)
       ring
