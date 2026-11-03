@@ -858,15 +858,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_prod_mul
-#print axioms Grothe.UpperChaos.ProductionPhaseLeaf.abs_phase_lt_one_of_leaf
-#print axioms Grothe.UpperChaos.ProductionPhaseLeaf.gram_constraint
-#print axioms Grothe.UpperChaos.ProductionPhaseLeaf.norm_phase_factor_le_one_of_leaf
-#print axioms Grothe.UpperChaos.ProductionPhaseLeaf.norm_rounding_le_one_of_leaf
 #print axioms Grothe.UpperChaos.ProductionPhaseLeaf.phase_sq_le_of_leaf
 #print axioms Grothe.UpperChaos.ProductionPhaseModel.norm_roundingSlice_sub_model
-#print axioms Grothe.UpperChaos.ProductionPhaseModel.norm_roundingSlice_sub_model_of_leaf
-#print axioms Grothe.UpperChaos.ProductionPhaseModel.norm_roundingSlice_sub_saved_of_leaf
-#print axioms Grothe.UpperChaos.ProductionPhaseModel.roundingSlice_at_profile_zero
 #print axioms Grothe.UpperChaos.ProfilePiFactor.pi_lo_lt
 #print axioms Grothe.UpperChaos.ProfilePiFactor.pi_lt_hi
 #print axioms Grothe.UpperChaos.ProfilePiFactor.pi_quarter_bounds
@@ -2171,6 +2164,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_toLp_sq_eq_integral
 #print axioms Grothe.UpperChaos.phaseEps_eq
 #print axioms Grothe.UpperChaos.phase_cutoff_factor_check
+#print axioms Grothe.UpperChaos.phase_gram_re_sq_le
+#print axioms Grothe.UpperChaos.phase_gram_sq_sum
 #print axioms Grothe.UpperChaos.phase_moment2_check
 #print axioms Grothe.UpperChaos.phase_moment4_check
 #print axioms Grothe.UpperChaos.phase_moment6_check

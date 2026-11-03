@@ -495,16 +495,17 @@ Thus their reciprocal Gaussian denominator exceeds `10⁻⁶` uniformly, includi
 for very small positive reciprocal coordinates.
 
 `PhiProductionIdentity` relates the actual rounding phase to its Gram-coordinate
-polynomial without importing the numerical phase cover. Concrete leaf proofs
-can use this exact identity before the global cover is assembled.
+polynomial without importing the numerical phase cover. Its shared Gram identity
+supplies both the phase-square formula and the domain constraint used by the
+global cover and local leaf soundness.
 
-`ProductionPhaseLeaf` carries an integer leaf check on the original phase source
-to the actual production phase and rounding. `ProductionPhaseModel` propagates
-the zero-safe Gaussian base remainder through the cubic factor, charging phase
-error at most `5/2` times its absolute error and retaining the explicit
-model-to-saved-center discrepancy. The finite source checks and numerical
-comparison inputs still need to be certified; these interfaces do not complete
-the global cover or upper endpoint.
+`ProductionPhaseLeaf` turns a supplied integer leaf check into a squared phase
+bound on that box; no concrete leaf check is provided here. The native global
+cover already bounds the phase everywhere. `PhasePolynomialStability` bounds
+the cubic factor's change by `5/2` times the phase change, and
+`ProductionPhaseModel` combines this with the zero-safe Gaussian base remainder.
+Its phase bound stays explicit to keep the analytic estimate independent of
+the native cover. Numerical source comparisons and the upper endpoint remain open.
 
 `ProfilePiFactor` provides rational enclosures of `π`, `sqrt(π)`, and
 `sqrt(sqrt(π))` of width at most `2⁻⁵¹²` for the actual profile normalization.

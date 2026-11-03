@@ -957,12 +957,14 @@ available independently of the numerical phase cover. This lets local source
 certificates use the actual rounding polynomial before cover assembly.
 
 \paragraph{Production source error propagation.}
-An actual-source integer leaf check bounds the production phase at every
-physical point in that leaf. On $[-1,1]$ the cubic phase factor is
-$5/2$-Lipschitz. The actual rounding error can consequently be split into the
-proved quadratic Gaussian-base remainder, the phase approximation error, and
-an explicit comparison of the resulting model with the saved center.
-The exact profile-zero reduction uses a positive radial parameter; source,
-saved-byte and integral certificates still have to instantiate these bounds.
+A supplied integer leaf check bounds the production phase on that leaf;
+no concrete leaf check is supplied here. The existing native cover already
+bounds the phase globally. A shared Gram-coordinate identity supplies the
+domain constraint for both routes. On $[-1,1]$ the cubic phase factor is
+$5/2$-Lipschitz. For positive radial parameter, the rounding-slice error is
+bounded by the quadratic Gaussian-base remainder plus the phase approximation
+error. Its phase bound remains an explicit premise to preserve independence
+from the native cover. Numerical source comparisons and integral certificates
+still have to instantiate these analytic bounds.
 
 \end{document}

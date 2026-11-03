@@ -740,23 +740,30 @@ imports these definitions and the generic Gram-expression soundness module,
 then audits both identities against the standard three
 axioms, independently of the global phase-cover computation. The existing
 `PhiBound` proof imports this identity and retains its numerical cover.
+The shared `phase_gram_sq_sum` identity gives both the imaginary-square
+substitution in `phiT_sq` and the derived `phase_gram_re_sq_le` constraint.
+The latter is used by `PhiBound` and local leaf soundness, so the Gram
+calculation is no longer repeated in those consumers.
 
 `ProductionPhaseLeaf` instantiates generic leaf soundness on the actual
 `phaseTerms` and the Gram coordinates of the actual complex input. Its inputs
 are the finite `termsOK` and `leafOK` checks and physical box membership; it
-does not call the global numerical cover theorem. It derives the local squared
-phase cap, cubic-factor contraction and disk-valued production rounding.
+does not call the global numerical cover theorem. It derives only the local
+squared phase cap. No concrete `leafOK` fact is proved here, and a single box
+does not give whole-slice coverage. The existing native cover already supplies
+the global `phi_abs_lt_one` and disk-valuedness through `norm_Tround_le`.
 
 `PhasePolynomialStability` proves the cubic factor is `5/2`-Lipschitz on
 `[-1,1]`. Its product estimate needs only the actual base to have norm at most
 one; the Gaussian linear base model need not be disk-valued.
-`ProductionPhaseModel` therefore bounds the actual rounding-slice discrepancy
-by the proved quadratic base remainder, `5/2` times the phase error, and the
-explicit model-to-saved-center discrepancy. At an exact profile zero and positive
-radial parameter the base is exactly one. No such unit assertion is made at
-radial parameter zero. All new headline proofs have strict transitive guards;
-finite source certificates, saved-byte comparisons and integral instantiations
-remain separate obligations.
+`ProductionPhaseModel.norm_roundingSlice_sub_model` bounds the actual
+rounding-slice discrepancy by the proved quadratic base remainder and `5/2`
+times the phase error, for positive radial parameter. Its actual phase bound
+can be supplied by `phi_abs_lt_one`; keeping that premise explicit preserves
+the analytic estimate's standard transitive axiom set. The comparison phase
+must also lie in `[-1,1]`. All retained lemmas have strict transitive guards
+and scratch axiom reports. Concrete leaf checks, numerical source comparisons
+and integral bounds remain separate obligations.
 
 `LocalAffineSquareIntegralBounds` supplies both affine integration orders with
 `ContinuousOn` restricted to the actual closed cell. Coordinate clamping
