@@ -564,11 +564,37 @@ class Runner:
         self.overlay = args.run_dir / "lake-single-lean.toml"
         self.source_stats = None
 
+    def overlay_is_regular(self):
+        """The overlay is written and read only as a regular file: never through a symlink."""
+        if self.overlay.is_symlink() or (self.overlay.exists() and not self.overlay.is_file()):
+            raise BuildError("owned Lake overlay must be a regular file, not a symlink")
+
     def adopt_overlay(self):
-        """The overlay is ours alone; one left by an earlier run (an older lakefile) is replaced under the lock."""
-        if self.overlay.exists() and self.overlay.read_bytes() != self.overlay_data:
-            print("Replacing the stale owned Lake overlay of an earlier run", flush=True)
-            self.overlay.write_bytes(self.overlay_data)
+        """The overlay is ours alone, but an orphaned child of a killed controller may still be reading
+        it: a stale one (an older lakefile) is replaced only after the ownership/resource preflight
+        finds no foreign Lean/Lake work, and never through a symlink."""
+        self.overlay_is_regular()
+        if not self.overlay.exists() or self.overlay.read_bytes() == self.overlay_data:
+            return
+        result = self.observation()
+        if result["pause_reason"]:
+            raise Pause("stale owned Lake overlay left untouched: " + result["pause_reason"], result)
+        print("Replacing the stale owned Lake overlay of an earlier run", flush=True)
+        self.overlay.write_bytes(self.overlay_data)
+
+    def observation(self, pgid=None) -> dict:
+        """The ownership/resource preflight: foreign Lean/Lake work, RSS, disk, stop file, concurrency."""
+        if self.coexist is None:
+            return self.watch(self.args.root, pgid, self.args.jobs,
+                              int(self.args.rss_limit_gib * 2**30), int(self.args.disk_floor_gib * 2**30),
+                              self.args.stop_file)
+        rows, allowed = self.coexist.authorized_rows(process_rows(self.coexist.proc), pgid)
+        result = observe(self.args.root, pgid, self.args.jobs,
+                         int(self.args.rss_limit_gib * 2**30), int(self.args.disk_floor_gib * 2**30),
+                         self.args.stop_file, rows=rows, allowed_pids=allowed)
+        if self.coexist.proc.mem_available() < 3 * 2**30:
+            result["pause_reason"] = "machine memory headroom below3GiB"
+        return result
 
     def check(self, pgid=None, *, full=False):
         # Hash/parse the whole certificate source once at the start and once at the end (full=True):
@@ -586,21 +612,12 @@ class Runner:
         self.source_stats = stats
         if sha(self.args.registry.read_bytes()) != self.args.registry_sha256:
             raise BuildError("build registry changed beneath bounded build")
+        self.overlay_is_regular()
         if self.overlay.exists() and self.overlay.read_bytes() != self.overlay_data:
             raise BuildError("owned Lake overlay changed")
         if self.interrupted:
             raise Pause("controller received a stop signal")
-        if self.coexist is None:
-            result = self.watch(self.args.root, pgid, self.args.jobs,
-                                int(self.args.rss_limit_gib * 2**30), int(self.args.disk_floor_gib * 2**30),
-                                self.args.stop_file)
-        else:
-            rows, allowed = self.coexist.authorized_rows(process_rows(self.coexist.proc), pgid)
-            result = observe(self.args.root, pgid, self.args.jobs,
-                             int(self.args.rss_limit_gib * 2**30), int(self.args.disk_floor_gib * 2**30),
-                             self.args.stop_file, rows=rows, allowed_pids=allowed)
-            if self.coexist.proc.mem_available() < 3 * 2**30:
-                result["pause_reason"] = "machine memory headroom below3GiB"
+        result = self.observation(pgid)
         if result["pause_reason"]:
             raise Pause(result["pause_reason"], result)
         return result
@@ -638,6 +655,7 @@ class Runner:
             raise BuildError("refusing overlapping child groups")
         self.check()
         self.args.run_dir.mkdir(parents=True, exist_ok=True)
+        self.overlay_is_regular()
         if not self.overlay.exists():
             self.overlay.write_bytes(self.overlay_data)
         argv = [self.args.lake, "-f", str(self.overlay.relative_to(self.args.root)), "build", *targets]

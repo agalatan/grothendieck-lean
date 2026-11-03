@@ -136,13 +136,53 @@ class GraphTests(Fixture):
         self.assertGreaterEqual(b.machine_jobs(), 1)
 
 
+def idle_watch(*_):
+    return {"rss_bytes": 0, "disk_free_bytes": 5 * 2**30, "lean_processes": 0, "owned_pids": [], "pause_reason": None}
+
+
 class OverlayTests(unittest.TestCase):
+    def test_stale_overlay_is_left_alone_while_foreign_work_is_active(self):
+        class Stale(Fixture):
+            def runTest(self): pass
+        fixture = Stale(); fixture.setUp()
+        try:
+            def busy(*_):
+                return {"rss_bytes": 0, "disk_free_bytes": 5 * 2**30, "lean_processes": 0, "owned_pids": [],
+                        "pause_reason": "foreign Lean/Lake work is active"}
+            runner = b.Runner(fixture.args, fixture.registry, watch=busy)
+            runner.overlay.parent.mkdir(parents=True, exist_ok=True)
+            stale = b'weakLeanArgs = ["-j1"]\nname = "older"\n'
+            runner.overlay.write_bytes(stale)
+            with self.assertRaisesRegex(b.Pause, "foreign Lean/Lake work"):
+                runner.adopt_overlay()
+            self.assertEqual(runner.overlay.read_bytes(), stale)
+        finally:
+            fixture.tearDown()
+
+    def test_overlay_symlink_is_rejected_and_its_target_untouched(self):
+        class Linked(Fixture):
+            def runTest(self): pass
+        fixture = Linked(); fixture.setUp()
+        try:
+            runner = b.Runner(fixture.args, fixture.registry, watch=idle_watch, validate=lambda *a, **k: None)
+            runner.overlay.parent.mkdir(parents=True, exist_ok=True)
+            target = fixture.root / "elsewhere.toml"
+            target.write_bytes(b"external = true\n")
+            runner.overlay.symlink_to(target)
+            for action in (runner.adopt_overlay, runner.check, runner.overlay_is_regular):
+                with self.assertRaisesRegex(b.BuildError, "regular file"):
+                    action()
+            self.assertEqual(target.read_bytes(), b"external = true\n")
+            self.assertTrue(runner.overlay.is_symlink())
+        finally:
+            fixture.tearDown()
+
     def test_stale_overlay_of_an_earlier_run_is_replaced(self):
         class Stale(Fixture):
             def runTest(self): pass
         fixture = Stale(); fixture.setUp()
         try:
-            runner = b.Runner(fixture.args, fixture.registry)
+            runner = b.Runner(fixture.args, fixture.registry, watch=idle_watch)
             runner.overlay.parent.mkdir(parents=True, exist_ok=True)
             runner.overlay.write_bytes(b'weakLeanArgs = ["-j1"]\nname = "older"\n')
             self.assertNotEqual(runner.overlay.read_bytes(), runner.overlay_data)
