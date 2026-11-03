@@ -39,7 +39,6 @@ theorem canonicalCoefficient_zero_row_step (A : ℝ) (d : ℕ) :
     unfold OriginalPositiveMoment.ratio
     rw [sqrt_factorial_succ, pow_succ]
     field_simp [hm, hf, hs]
-    <;> ring
   simpa only [Complex.ofReal_mul] using
     congrArg (fun x : ℝ => (x : ℂ)) hreal
 

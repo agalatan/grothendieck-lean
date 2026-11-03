@@ -82,7 +82,7 @@ theorem actual_saved_error_lt (s : ℝ) (hs : 0 < s) (r saved : ℝ) (i : ℕ ×
     div_le_div_of_nonneg_right hparameter (by norm_num)
   have hbudget : (5 : ℝ) * (1 / 4000000) ^ 2 + (1 / 10 ^ 13) / 2 +
       1 / (2 * 10 ^ 12) < 1 / 10 ^ 12 := by
-    exact_mod_cast saved_error_budget
+    norm_num
   exact (actual_saved_error_bound s hs r saved i).trans_lt
     ((add_le_add (add_le_add hquad hparameter') hsaved).trans_lt hbudget)
 
