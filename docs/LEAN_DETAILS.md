@@ -389,6 +389,13 @@ proves reality of its coefficient for every real source parameter, including
 profile zeros. The complex distance to any real
 stored center is exactly the absolute real-part error; no numerical enclosure
 is assumed in these identities.
+`ZeroProfileSavedCenter.actual_saved_error_lt` consumes only a physical signed
+profile-ratio bound, its distance to a chosen model parameter, and the distance
+from that explicit model to the saved scalar. It does not assume the unknown
+true coefficient error. The three costs are `5ρ²`, half the parameter error,
+and the saved-model error; exact rational arithmetic leaves strict slack below
+`10⁻¹²` for the displayed input tolerances. Actual source and byte bindings remain
+open. The same theorem applies to a zero-completed coordinate with saved zero.
 `ZeroProfilePhaseLinearization` transfers the quadratic pointwise remainder
 to the actual Gaussian phase slice. The majorant uses `h₀₀+h₁₁=|w|²` and its
 L² norm at most two. Every true coefficient is within `5ρ²` of the centers
