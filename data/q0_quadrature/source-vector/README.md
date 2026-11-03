@@ -72,3 +72,11 @@ list, and the existing actual-profile identity proves their soundness. With
 This statement still awaits Lean CI acceptance. It does not apply the model to
 all regular nodes or close the continuous quadrature and energy-table inputs.
 See `../source-profile-ratio/README.md` for the exact three-block replay.
+
+`Q0SourceExceptionalWeightedError` propagates the actual per-node estimate to
+any finite subset of `modes`, preserving the original selected-root weights
+and one Gaussian density factor. The proved discrete mass cap `2e-21` gives
+an exceptional weighted radius at most `2e-25`. Its full-source assembly keeps
+an arbitrary regular squared budget `R^2` and adds `(2e-25)^2`, without assuming
+any regular evaluator accuracy or changing the ledger. Continuous root-gap
+omission remains separate. This successor is also pending Lean CI acceptance.

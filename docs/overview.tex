@@ -177,9 +177,14 @@ blocks bound the actual scaled profile by $B=1/(2\cdot10^{14})$.
 Source geometry gives $\sqrt{s}\ge3$, hence physical ratio at most $B/3$
 and ratio-to-fit error at most $B/3+10^{-15}$. The complete selected-vector
 radius is then $5(B/3)^2+B/3+10^{-15}+10^{-31}<3\cdot10^{-15}$.
-The new consumer has no numerical enclosure premise; this proof family remains
-work in progress until Lean CI accepts it. The regular nodes, quadrature and
-remaining upper-bound obligations are separate.
+The new consumer has no numerical enclosure premise. The original discrete
+Gaussian weights then give exceptional squared error at most
+$(3\cdot10^{-15})^2\cdot2\cdot10^{-21}\le(2\cdot10^{-25})^2$,
+for every finite subset of the selected modes. The full-source adapter adds
+$(2\cdot10^{-25})^2$ to an explicit regular squared-error budget; continuous
+root-gap omission is separate. This proof family remains work in progress until
+Lean CI accepts it. The regular nodes, quadrature and remaining upper-bound
+obligations are separate.
 
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every

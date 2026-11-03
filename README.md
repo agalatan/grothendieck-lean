@@ -226,9 +226,13 @@ three centered interval checks on the original exceptional panel blocks.
 The existing profile identity and source-node geometry turn them into bounds
 on both actual phase parameters. Its final statement bounds the full selected
 Gaussian-to-saved vector error below `3e-15` at every exceptional source row,
-with no numerical enclosure premise. This new proof family is work in progress
-until its Lean CI check passes. Regular-node errors, quadrature and the remaining
-upper-bound obligations are separate.
+with no numerical enclosure premise. `Q0SourceExceptionalWeightedError` carries
+this estimate through the original discrete Gaussian weights and derives an
+exceptional weighted error radius at most `2e-25`, for any subset of the selected
+modes. Its full-source adapter keeps the regular squared error explicit and adds
+only `(2e-25)^2`. This new proof family is work in progress until its Lean CI
+check passes. Regular-node errors, quadrature and the remaining upper-bound
+obligations are separate.
 
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of

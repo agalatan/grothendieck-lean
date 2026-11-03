@@ -210,6 +210,17 @@ standard-axiom guards. Their exact external replay is reproducible with
 provenance and does not replace Lean's checks. No regular-node, quadrature,
 primary-contraction or energy-table obligation is discharged by this result.
 
+**Actual weighted exceptional error.** `Q0SourceExceptionalWeightedError`
+restricts the actual selected-vector estimate to every finite `S ⊆ modes` and
+sums it using the original `sourceWeight * exp(-sourceNode)` exactly once.
+The same-root panel normalization bounds the discrete exceptional mass by
+`2/10^21`, yielding squared error at most `(2/10^25)^2` and radius at most
+`2/10^25`. Continuous root-gap omission is a separate error term.
+`actual_source_error_sq_le` combines this with any explicit regular squared
+budget `R^2`, giving `R^2 + (2/10^25)^2`; the square-root and additive-radius
+forms retain that same regular premise. No regular evaluator or ledger
+allowance is inferred from this result. The module awaits Lean CI acceptance.
+
 **q0 source-to-literal identity.**
 `Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real
 `s`, `b`, and `v`, that `Ssum q0RawWickEntries s b v` equals
