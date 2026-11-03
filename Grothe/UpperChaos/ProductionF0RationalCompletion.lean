@@ -65,8 +65,11 @@ private theorem canonical_center_norm_le (g : ℕ → ℕ → ℕ → ℚ) :
     (norm_canonicalVector_le t).trans norm_actual_tensor_le_one
   have he : ‖canonicalVector (fun q i => t q i - a q i)‖ =
       canonicalTensorErrorNorm g := by
-    apply (sq_eq_sq₀ (norm_nonneg _) (Real.sqrt_nonneg _)).mp
-    rw [norm_canonicalVector_sq, canonicalTensorErrorNorm, Real.sq_sqrt (by positivity)]
+    have hsq : ‖canonicalVector (fun q i => t q i - a q i)‖ ^ 2 =
+        canonicalTensorErrorNorm g ^ 2 := by
+      rw [norm_canonicalVector_sq, canonicalTensorErrorNorm, Real.sq_sqrt (by positivity)]
+    have hcan : 0 ≤ canonicalTensorErrorNorm g := Real.sqrt_nonneg _
+    exact (sq_eq_sq₀ (norm_nonneg _) hcan).mp hsq
   have hsplit : canonicalVector a =
       canonicalVector t - canonicalVector (fun q i => t q i - a q i) := by
     ext i
@@ -164,8 +167,12 @@ theorem rationalTensorCompletion_defect_le (S : ℕ) (hS : 0 < S)
       _ ≤ _ := mul_le_mul_of_nonneg_left (partner_center_energy_le g q) (sq_nonneg η)
   have hn : tensorCompletionDefectNorm (rationalTensorCompletion S g) ≤
       η * ‖canonicalVector (fun q i => (g q i.1 i.2 : ℂ))‖ := by
-    apply (sq_le_sq₀ (norm_nonneg _) (mul_nonneg hη (norm_nonneg _))).mp
-    rwa [mul_pow]
+    have hsq : tensorCompletionDefectNorm (rationalTensorCompletion S g) ^ 2 ≤
+        (η * ‖canonicalVector (fun q i => (g q i.1 i.2 : ℂ))‖) ^ 2 := by
+      simpa only [mul_pow] using hsum
+    have hdef : 0 ≤ tensorCompletionDefectNorm (rationalTensorCompletion S g) :=
+      norm_nonneg _
+    exact (sq_le_sq₀ hdef (mul_nonneg hη (norm_nonneg _))).mp hsq
   exact hn.trans (mul_le_mul_of_nonneg_left (canonical_center_norm_le g) hη)
 
 /-- A fixed computable reference, with universal square-root error 2^-54. -/
