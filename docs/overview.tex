@@ -454,8 +454,14 @@ $\overline a/r$ evaluates finite polynomials in $z$ and $\overline z$ under
 the tilt $\exp(-(r-1)|z|^2+2\operatorname{Re}(az))$ through shifted Wick sums.
 The factor $\exp(|a|^2/r)$ and the Gaussian mass $1/r$ are retained.
 A half-rate majorant proves integrability of these polynomial insertions.
-Joint integrability for a source depending on another integration variable
-is still required before a product Fubini step.
+For the correlated form
+$Q=A|z|^2+2B\operatorname{Re}(z\overline w)+C|w|^2$, the exact conditions
+$A>0$ and $AC-B^2>0$ give the positive coercive rate
+$(AC-B^2)/(A+C)$. A separable Gaussian majorant then proves joint
+integrability of every finite mixed polynomial. Fubini and the first-coordinate
+mean $-(B/A)w$ reduce its integral to a finite Wick sum at outer rate
+$(AC-B^2)/A$, with zeroth mass $1/(AC-B^2)$. The historical operator identity,
+full bipartite polynomial insertion and numerical tail estimates remain open.
 For each finite center, fixing the first coordinate gives its exact polynomial
 slice in the second coordinate. The actual source $\overline c(i\varphi)^j$
 factors into this polynomial and Gaussian damping with conditional rate
@@ -959,5 +965,11 @@ and external exact or interval certificates; they are not all formalized in Lean
 \item N.~Brunner et al., \emph{Bell nonlocality}, Rev.\ Mod.\ Phys.\ 86 (2014),
  \href{https://arxiv.org/abs/1303.2849}{arXiv:1303.2849}.
 \end{itemize}
+
+% Exact phase-source identity; Agent-ID: codex-8c4d.
+\paragraph{Phase source identity.}
+The identity expressing the squared production phase in Gram coordinates is
+available independently of the numerical phase cover. This lets local source
+certificates use the actual rounding polynomial before cover assembly.
 
 \end{document}
