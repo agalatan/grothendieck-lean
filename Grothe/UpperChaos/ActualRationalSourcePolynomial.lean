@@ -117,8 +117,16 @@ theorem scaleHom_rationalSourcePolynomial (g : Gate) :
     multiplierPolynomial, MvPolynomial.coeff_map]
   apply Finset.sum_congr rfl
   intro s hs
-  simp only [map_add, scaleHom_X, sourceScale, xPolynomial, yPolynomial,
-    uPolynomial, vPolynomial, Matrix.cons_val_zero, Matrix.cons_val_succ]
+  have h0 : sourceScale g (0 : Fin 8) = Real.sqrt (g.r : ℝ) := rfl
+  have h1 : sourceScale g (1 : Fin 8) = Real.sqrt (axisWeight g 0) := rfl
+  have h2 : sourceScale g (2 : Fin 8) = Real.sqrt (g.r : ℝ) := rfl
+  have h3 : sourceScale g (3 : Fin 8) = Real.sqrt (axisWeight g 1) := rfl
+  have h4 : sourceScale g (4 : Fin 8) = Real.sqrt (g.r : ℝ) := rfl
+  have h5 : sourceScale g (5 : Fin 8) = Real.sqrt (axisWeight g 2) := rfl
+  have h6 : sourceScale g (6 : Fin 8) = Real.sqrt (g.r : ℝ) := rfl
+  have h7 : sourceScale g (7 : Fin 8) = Real.sqrt (axisWeight g 3) := rfl
+  simp only [map_add, scaleHom_X, h0, h1, h2, h3, h4, h5, h6, h7,
+    xPolynomial, yPolynomial, uPolynomial, vPolynomial, Rat.coe_castHom]
 
 end
 end Grothe.UpperChaos.ActualRationalSourcePolynomial

@@ -48,7 +48,12 @@ theorem momentValue_one_zero (a : ℂ) (p q : ℕ) :
 
 theorem integrable_holomorphic_mixed (a : ℂ) (p q : ℕ) :
     Integrable (fun z : ℂ => z ^ p * conj z ^ q * Complex.exp (a * z)) gaussC := by
-  simpa [integrand] using integrable_integrand p q (show (0 : ℝ) < 1 by norm_num) a 0
+  have hfun : integrand 1 a 0 p q =
+      fun z : ℂ => z ^ p * conj z ^ q * Complex.exp (a * z) := by
+    funext z
+    simp [integrand]
+  rw [← hfun]
+  exact integrable_integrand p q (show (0 : ℝ) < 1 by norm_num) a 0
 
 /-- Gaussian integration extracts a finite derivative of exp(a*z). -/
 theorem integral_holomorphic_mixed (a : ℂ) (p q : ℕ) :
@@ -113,7 +118,11 @@ theorem integral_inner_source_pair (c : ℂ) (p q r s : ℝ)
       map_mul, map_pow, Complex.conj_ofReal, Complex.exp_add]
     ring
   simp_rw [hp]
-  rw [integral_const_mul, integral_prod_mul, integral_holomorphic_mixed,
+  rw [integral_const_mul, MeasureTheory.integral_prod_mul (μ := gaussC) (ν := gaussC)
+    (fun z : ℂ => z ^ e.1.1 * conj z ^ n.1.1 *
+      Complex.exp ((image p q r s w).1 * z))
+    (fun z : ℂ => z ^ e.1.2 * conj z ^ n.1.2 *
+      Complex.exp ((image p q r s w).2 * z)), integral_holomorphic_mixed,
     integral_holomorphic_mixed, eval_residualPolynomial]
   ring
 
@@ -168,7 +177,12 @@ theorem coefficient8_tensor_monomial (g : Gate) (hg : gateOK g = true)
     simp only [monomial8, tensorFamily, tensorMonomial, tensorKernel, map_mul]
     ring
   simp_rw [hp]
-  rw [integral_prod_mul, integral_gate_pair g hg, integral_gate_pair g hg]
+  rw [MeasureTheory.integral_prod_mul (μ := pairMeasure) (ν := pairMeasure)
+    (fun zw : PairSources => conj (monomial4 n.1 zw) *
+      (BipartitePolynomialL2.monomial e.1 zw * gateKernel g 0 zw))
+    (fun zw : PairSources => conj (monomial4 n.2 zw) *
+      (BipartitePolynomialL2.monomial e.2 zw * gateKernel g 1 zw)),
+    integral_gate_pair g hg, integral_gate_pair g hg]
 
 /-- Finite linearity gives an exact eight-source coefficient formula for any
 finite holomorphic polynomial insertion under the checked gate. -/

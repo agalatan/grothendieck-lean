@@ -41,9 +41,17 @@ theorem coefficientScale_eq_pairSourceScale (g : Gate) (e : Fin 8 →₀ ℕ) :
       ActualGateConditionalScaling.pairSourceScale (g.r : ℝ)
         (axisWeight g 2) (axisWeight g 3) (powers e).2 := by
   classical
-  simp only [coefficientScale, Finsupp.prod_pow, Fin.prod_univ_eight,
-    sourceScale, powers, ActualGateConditionalScaling.pairSourceScale,
-    Matrix.cons_val_zero, Matrix.cons_val_succ, pow_add]
+  simp only [coefficientScale, Finsupp.prod_pow, Fin.prod_univ_eight]
+  change
+    (Real.sqrt (g.r : ℝ) : ℂ) ^ e 0 * (Real.sqrt (axisWeight g 0) : ℂ) ^ e 1 *
+      (Real.sqrt (g.r : ℝ) : ℂ) ^ e 2 * (Real.sqrt (axisWeight g 1) : ℂ) ^ e 3 *
+      (Real.sqrt (g.r : ℝ) : ℂ) ^ e 4 * (Real.sqrt (axisWeight g 2) : ℂ) ^ e 5 *
+      (Real.sqrt (g.r : ℝ) : ℂ) ^ e 6 * (Real.sqrt (axisWeight g 3) : ℂ) ^ e 7 =
+    ActualGateConditionalScaling.pairSourceScale (g.r : ℝ)
+        (axisWeight g 0) (axisWeight g 1) (powers e).1 *
+      ActualGateConditionalScaling.pairSourceScale (g.r : ℝ)
+        (axisWeight g 2) (axisWeight g 3) (powers e).2
+  simp only [powers, ActualGateConditionalScaling.pairSourceScale, pow_add]
   ring
 
 theorem scaleHom_monomial (g : Gate) (e : Fin 8 →₀ ℕ) (r : ℚ) :

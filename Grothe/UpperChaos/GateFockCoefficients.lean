@@ -50,7 +50,7 @@ theorem monomial8_gate_eq_coherent (mn : Powers4 × Powers4) (zw : Sources8) :
     monomial8 (gateMatrixIndexEquiv mn) zw =
       monomial8 (matrixIndexEquiv mn) (gateToCoherentSources zw) := by
   simp only [gateMatrixIndexEquiv, matrixIndexEquiv, gateToCoherentSources,
-    monomial8, monomial4, monomial2, tensorFamily]
+    Equiv.coe_fn_mk, monomial8, monomial4, monomial2, tensorFamily]
   ring
 
 /-- Reindexing the full coefficient norm needs only the explicit index equivalence. -/
@@ -64,7 +64,7 @@ theorem summable_gate_coefficient_sq {F : Sources8 → ℂ}
     (hF : MemLp F 2 sourceMeasure8) :
     Summable (fun mn : Powers4 × Powers4 =>
       ‖coefficient8 F (gateMatrixIndexEquiv mn)‖ ^ 2) := by
-  simpa only [Function.comp_apply] using
+  simpa only [Function.comp_def] using
     gateMatrixIndexEquiv.summable_iff.mpr (summable_coefficient8_sq hF)
 
 /-- The matrix-index norm bound in the gate's coordinate convention. -/

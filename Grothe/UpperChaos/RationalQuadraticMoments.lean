@@ -31,8 +31,9 @@ def momentValue (A B C : ℚ) (p q r s : ℕ) : ℚ :=
 theorem cast_wickCoeff (A B : ℚ) (p q k : ℕ) :
     (wickCoeff A B p q k : ℂ) =
       QuadraticPolynomialMoments.wickCoeff (A : ℝ) (B : ℝ) p q k := by
-  unfold wickCoeff QuadraticPolynomialMoments.wickCoeff
-  push_cast
+  simp only [wickCoeff, QuadraticPolynomialMoments.wickCoeff, Rat.cast_mul,
+    Rat.cast_div, Rat.cast_pow, Rat.cast_neg, Rat.cast_natCast,
+    Complex.ofReal_div, Complex.ofReal_ratCast]
 
 /-- Executable rational arithmetic equals the analytic finite evaluator,
 including its unnormalized Gaussian mass. -/
@@ -46,9 +47,10 @@ theorem cast_momentValue (A B C : ℚ) (p q r s : ℕ) :
   intro k hk
   rw [Rat.cast_mul, cast_wickCoeff]
   by_cases h : (p - k) + r = (q - k) + s
-  · simp only [if_pos h]
-    push_cast
-  · simp only [if_neg h, Rat.cast_zero]
+  · simp only [ite_eq_left h, Rat.cast_div, Rat.cast_natCast, Rat.cast_pow,
+      Rat.cast_sub, Rat.cast_mul, Complex.ofReal_div, Complex.ofReal_sub,
+      Complex.ofReal_mul, Complex.ofReal_pow, Complex.ofReal_ratCast]
+  · simp only [ite_eq_right h, Rat.cast_zero]
 
 /-- The rational polynomial evaluator uses exactly the canonical finite
 support and the same unnormalized moments as the analytic evaluator. -/
@@ -79,7 +81,7 @@ theorem cast_polynomialMomentValue (A B C : ℚ) (P : MvPolynomial (Fin 4) ℚ) 
   | monomial e c =>
     rw [polynomialMomentValue_monomial, MvPolynomial.map_monomial,
       BipartiteKernelGramEvaluation.polynomialMomentValue_monomial,
-      Rat.cast_mul, cast_momentValue]
+      Rat.cast_mul, cast_momentValue, Rat.coe_castHom]
   | add P Q hP hQ =>
     rw [polynomialMomentValue_add, Rat.cast_add, map_add,
       BipartiteKernelGramEvaluation.polynomialMomentValue_add, hP, hQ]
@@ -145,7 +147,6 @@ theorem gateLeadingQ_spec (g : Gate) (hg : gateOK g = true) (side : Fin 2) :
   rw [gateLeadingQ_cast]
   unfold leadingRate
   field_simp [(radial_pos g hg).ne']
-  <;> ring
 
 theorem gateCrossQ_spec (g : Gate) (side : Fin 2) :
     Real.sqrt ((g.r : ℝ) * axisWeight g (2 * side.val + 1)) *
@@ -160,7 +161,6 @@ theorem gateTrailingQ_spec (g : Gate) (hg : gateOK g = true) (side : Fin 2) :
   rw [gateTrailingQ_cast]
   unfold trailingRate
   field_simp [(axisWeight_pos g hg (2 * side.val + 1)).ne']
-  <;> ring
 
 theorem gateLeadingQ_pos (g : Gate) (hg : gateOK g = true) (side : Fin 2) :
     0 < (gateLeadingQ g side : ℝ) := by
