@@ -7882,6 +7882,111 @@
         ]
       ],
       "node_context_sha256": "397881833d75e94df0b91d43905f2095c09c003151d958360dceb5a5885c368f"
+    },
+    {
+      "baseline_piece_sha256": "13fa6ca24e7bc0a62d5196f208fa4da6e1f33bf14045b15feadb1bb10de73c05",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-4/matrix.jsonl",
+        "sha256": "6ddf475af2c0919a6df2c1eb1d0e8e0a41ffaa0d23351c7d62c3d4fbc7896d92"
+      },
+      "grid": 1,
+      "key": "12:213:4",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "145422625564057138621313184945/866664351488079130590271504384",
+          "0"
+        ],
+        [
+          "499303555228629915922177666973/959338635113807933222544211968",
+          "6001418683883087812026849019323/324518553658426726783156020576256"
+        ]
+      ],
+      "node_context_sha256": "0e1389477b7ee6773b498a9ec16a6205b4e159a8f63ab1dfdf6e1032dc21fdbe"
+    },
+    {
+      "baseline_piece_sha256": "3190c332aad5603be22ff0ac77bdfd932c97d54a61f8f24cd9438898e00e868d",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-5/matrix.jsonl",
+        "sha256": "77360fe741d9cb77df20ebfc6aa772d306882856aca46401489efccbda45ff4f"
+      },
+      "grid": 1,
+      "key": "12:213:5",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "20082836008172505067368463755/117069048034869703972048863232",
+          "0"
+        ],
+        [
+          "152513704792742065082915888603/226371074485949538569814016000",
+          "40669513552345813485721480080537/1298074214633706907132624082305024"
+        ]
+      ],
+      "node_context_sha256": "0e1389477b7ee6773b498a9ec16a6205b4e159a8f63ab1dfdf6e1032dc21fdbe"
+    },
+    {
+      "baseline_piece_sha256": "a4339f4e803a153a2fac3794a9ec8f2c59db91e8cdc2e114acaa3228ad47909f",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-6/matrix.jsonl",
+        "sha256": "586131fda5a370f62b617db57bff98a8478942f31f674c24ffc0b45dd45a4940"
+      },
+      "grid": 2,
+      "key": "12:213:6",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "438336704609013441280788321077/541911906596025725420421775360",
+          "2108878027316111044658721369915/649037107316853453566312041152512"
+        ],
+        [
+          "2893343149192855197593298236157/8974506641608009451552710328320",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "0e1389477b7ee6773b498a9ec16a6205b4e159a8f63ab1dfdf6e1032dc21fdbe"
+    },
+    {
+      "baseline_piece_sha256": "b18480304fc37588a7dabb820e88416a91cfd31c9e1f6dd8e964cf89f2cd161d",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-12/matrix.jsonl",
+        "sha256": "28c010145e4fad2b6c2e35e3c07b3cdeaa776c35cdc0b50b9cad6554a60c3d98"
+      },
+      "grid": 2,
+      "key": "12:213:12",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "129957955210887977926889736151/97906255857172667770668580864",
+          "553765026662412663773265017311/162259276829213363391578010288128"
+        ],
+        [
+          "1212860669006849862930233611865/3755123154602691972098668101632",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "0e1389477b7ee6773b498a9ec16a6205b4e159a8f63ab1dfdf6e1032dc21fdbe"
+    },
+    {
+      "baseline_piece_sha256": "0eefe87e62e7538ffb0049f569754db8a1c4c144896db689982d6c178efc51b7",
+      "evidence": {
+        "path": "data/caps-m/plan/noncentre-repairs/batches/c64446726205c960/12-213-18/matrix.jsonl",
+        "sha256": "8ef8265f824e73510f10e9b3fd72e6f557efaaff52c9b1decccceaac21b38cd3"
+      },
+      "grid": 2,
+      "key": "12:213:18",
+      "matrix_source_provenance": "unverified",
+      "multipliers": [
+        [
+          "1056684524485166828689551121323/2210462220756187529159838269440",
+          "11159747111177098624537700294825/649037107316853453566312041152512"
+        ],
+        [
+          "12255283432344806569437863505/37548799584449625618397528064",
+          "0"
+        ]
+      ],
+      "node_context_sha256": "0e1389477b7ee6773b498a9ec16a6205b4e159a8f63ab1dfdf6e1032dc21fdbe"
     }
   ],
   "row": 12,
