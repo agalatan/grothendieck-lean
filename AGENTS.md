@@ -308,6 +308,10 @@ Also:
   single runner for hours if the caps really changed; do it on purpose only).
 - **The runner** is installed with `scripts/droplet_runner_setup.sh` (from the laptop; see its header for
   stop/remove). It shares Mathlib with other droplet work through `~/grothe-caps/.lake/packages`; never delete that.
+- **At most one checked WIP branch per agent.** Of an agent's branches with an open `WIP`/draft PR, only one may
+  have a proof check queued or running; a push to a second one is not checked (CI says so in a warning) until the
+  first check ends. Push the others with `[skip ci]`: there is no bound on those. Landable PRs are not capped by
+  this rule (only by the next one).
 - **At most 2 CI jobs per agent at a time.** An agent (one agent ID) may have at most two jobs queued or running in
   GitHub Actions: the proof checks of its own branches (pushes and landing checks) and its cloud jobs,
   each cloud shard counting as one. Before you push a branch or start a cloud job, run
