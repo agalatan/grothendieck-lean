@@ -54,6 +54,10 @@ classical and quantum correlations in two-party Bell experiments (real case).
 complex matrix, with V over all finite-dimensional complex Hilbert spaces. The headline
 theorems conclude a statement about the constant itself.
 
+The source-node error ledger proves the exact rational budget for the raw
+and smoothing errors. Applying it to the stored Gaussian coefficients still
+requires proofs of the actual input estimates and operation-error model.
+
 **Lower bound** — `Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data :
 NodeCaps → IsGrothendieckBound K → 1.401697117301 < K`
 (`Grothe/Research/RefinedCoverResult.lean`).
