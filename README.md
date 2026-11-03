@@ -46,6 +46,21 @@ classical and quantum correlations in two-party Bell experiments (real case).
 
 ## What is proved
 
+**The statement** is [`Grothe/Statement.lean`](Grothe/Statement.lean). It imports only Mathlib and holds only
+definitions: C(A), V(A), Grothendieck bounds, the constant $K_G^{\mathbb C}$ as their infimum, `UpperBelow c`
+(some bound is below $c$), `LowerAbove c` (every bound is above $c$), and the two targets at the current thresholds,
+`UpperTarget = UpperBelow 1.404598149141` and `LowerTarget = LowerAbove 1.401697117301`. A compiled theorem whose
+type is one of these targets and whose axiom report is clean proves exactly that claim.
+[`Grothe/StatementBridges.lean`](Grothe/StatementBridges.lean) proves what the targets say about the constant:
+`UpperBelow c` gives $K_G^{\mathbb C} < c$; `LowerAbove c` gives $c \le K_G^{\mathbb C}$ and, because the set of bounds
+is closed, $c < K_G^{\mathbb C}$, both once some bound exists (an unconditional bound is not yet proved in Lean, so
+that existence stays a hypothesis). [`Grothe/LowerTarget.lean`](Grothe/LowerTarget.lean) proves `LowerTarget` from
+`NodeCaps` (`Grothe.Statement.lowerTarget_of_nodeCaps`; `lower_bound_of_capsRest` reduces `NodeCaps` to the
+rows CI certifies).
+[`Grothe/UpperTarget.lean`](Grothe/UpperTarget.lean) proves `UpperTarget` from the inputs not yet proved in Lean,
+listed as the hypotheses of `Grothe.Statement.upper_target_of_inputs` (the finite-band Gaussian error estimates of
+the three Taylor centers and the energy-table accuracy).
+
 `IsGrothendieckBound K` (`Grothe/Transfer.lean`) states V(A) ≤ K · C(A) for every finite
 complex matrix, with V over all finite-dimensional complex Hilbert spaces. The headline
 theorems conclude a statement about the constant itself.
@@ -399,8 +414,41 @@ that the original moment is `4/π` times the angular moment.
 `OriginalMomentRatios` transfers positivity, the recurrence, the exact ratio
 update and finite backward enclosures to the original moments. The `Mobius`
 modules prove the real half-line seed kernel is integrable and its integral
-equals `(π/2) * J_h(x)` for every order and real parameter. Identifying it
-with a Gaussian coefficient and concrete numerical node enclosures remain open.
+equals `(π/2) * J_h(x)` for every order and real parameter.
+`OneSidedHermiteSeed` identifies the normalized Gaussian zero-row coefficient
+with `(sqrt(π)/2) * A * (-A)^d * J_d(A²) / sqrt(d!)`.
+`F0ConditionalSeed` connects this identity to the actual canonical evaluator
+and the production F0 coefficient, preserving the profile sign; at `d=0`
+the sign factor is one. These identities use only the standard Lean axioms.
+`F0ConditionalSeedRecurrence` derives the exact zero-row step of the actual
+evaluator from the original positive-moment ratio, including the signed
+production step and its factorial normalization.
+`F0ConditionalCoefficientBounds` bounds every actual canonical coefficient
+by one using its Gaussian Hilbert-space inner product. It bounds the two-term
+raising sum by `sqrt(c+1)+sqrt(d+1) < 35` over the stored index rectangle.
+The parameter derivative identity and its midpoint error transfer remain open.
+`F0ConditionalReality` uses Gaussian conjugation symmetry and the rational
+Hermite coefficients to show that every canonical coefficient is real.
+It identifies the complex distance from a real stored center with the absolute
+real-part error, including for the signed production coefficient.
+`ZeroProfileSavedCenter` separates the actual Gaussian remainder, parameter
+interval and saved-scalar comparison. Its concrete inputs are `|ρ|≤1/4000000`,
+parameter error at most `10⁻¹³` and model-to-saved error at most `5·10⁻¹³`,
+which imply actual coefficient error below `10⁻¹²`. Actual-node and byte
+certificates must still supply those inputs.
+`ZeroProfilePhaseLinearization` gives the actual constant-and-linear Gaussian
+approximation with whole L² and all-mode coefficient error at most `5ρ²`,
+where `ρ=√(1+a²)v(s)/√s` retains the profile sign and stays zero at a profile
+zero. Comparing these centers with the actual saved entries remains separate.
+`PhaseStability` also gives a quadratic error for the constant-plus-linear
+phase approximation: at a positive real reference radius, the error is at
+most `(5/2)‖h‖²/r²`, including when the perturbed point is zero.
+`PhaseStability` proves `‖phase(r+h)-1‖ ≤ 2‖h‖/r` for `r>0`, including when
+the perturbed point is zero. `ZeroProfilePhaseStability` transfers it to the
+actual Gaussian phase slice, its L² norm and each conditional coefficient,
+without requiring a profile sign or a nonzero profile. Applying these estimates
+to node intervals and stored centers remains separate from this identity.
+Concrete numerical node enclosures and the complete upper bound remain open.
 
 `ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`
 on any certified radial region with `s ≥ 1/16` and `|κ(s)| ≤ 1/100`.
