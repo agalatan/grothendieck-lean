@@ -35,7 +35,9 @@ theorem source_coefficient_eq_integral (a : Address) (i : ℕ × ℕ) :
             Grothe.UpperChaos.vprof (sourceNode a) : ℝ) : ℂ) * w) ∂gaussC := by
   rw [coefficient_eq_integral]
   apply integral_congr_ae
-  exact Filter.Eventually.of_forall (fun w => by rw [source_phaseSlice_eq])
+  exact Filter.Eventually.of_forall fun w =>
+    congrArg (fun z : ℂ => conj (Grothe.UpperChaos.hfun i w) * z)
+      (source_phaseSlice_eq a w)
 
 /-- The actual finite-mode energy is bounded by the exact source node mass,
 without applying a numerical cap or restricting the sparse mode sets. -/

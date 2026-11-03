@@ -60,7 +60,7 @@ theorem volume_region_le (ps : List Panel) (h : ∀ p ∈ ps, p.lo ≤ p.hi) :
       _ ≤ ENNReal.ofReal ((p.hi : ℝ) - (p.lo : ℝ)) +
           ENNReal.ofReal (width ps : ℝ) := by
         rw [Real.volume_Icc]
-        exact add_le_add_left (ih hps) _
+        exact add_le_add le_rfl (ih hps)
       _ = ENNReal.ofReal (width (p :: ps) : ℝ) := by
         rw [← ENNReal.ofReal_add hp hw]
         simp [width]
@@ -78,8 +78,13 @@ theorem mem_slice {α : Type*} (xs : List α) (start count : ℕ) (p : α) :
     obtain ⟨j, hj, he⟩ := List.mem_iff_getElem.mp hp
     have hb : j < min count (xs.length - start) := by
       simpa only [List.length_take, List.length_drop] using hj
-    refine ⟨⟨start + j, by omega⟩, by omega, by omega, ?_⟩
-    simpa only [List.get_eq_getElem, List.getElem_take, List.getElem_drop] using he
+    have hjlen : start + j < xs.length := by omega
+    refine ⟨⟨start + j, hjlen⟩, ?_, ?_, ?_⟩
+    · change start ≤ start + j
+      omega
+    · change start + j < start + count
+      omega
+    · simpa only [List.get_eq_getElem, List.getElem_take, List.getElem_drop] using he
   · rintro ⟨i, hl, hu, he⟩
     have hj : i.val - start < ((xs.drop start).take count).length := by
       simp only [List.length_take, List.length_drop]
@@ -91,7 +96,7 @@ theorem mem_slice {α : Type*} (xs : List α) (start count : ℕ) (p : α) :
 
 theorem mem_panels_iff (p : Panel) : p ∈ panels ↔
     ∃ i : Fin sourcePanels.length, exceptionalPanel i.val ∧ sourcePanels.get i = p := by
-  simp only [panels, exceptionPanels, List.mem_append, mem_slice]
+  simp only [panels, exceptionPanels, List.append_assoc, List.mem_append, mem_slice, or_assoc]
   constructor
   · rintro (⟨i, hl, hu, he⟩ | ⟨i, hl, hu, he⟩ | ⟨i, hl, hu, he⟩)
     · exact ⟨i, Or.inl ⟨hl, by omega⟩, he⟩
@@ -135,7 +140,9 @@ theorem exceptionalSet_volume_le :
     obtain ⟨i, _, rfl⟩ := (mem_panels_iff p).mp hp
     exact_mod_cast (source_panel_lt i).le
   have hw : (totalWidth : ℝ) ≤ (8 / 10^16 : ℝ) := by
-    exact_mod_cast Q0SourceExceptionWidthAll.total_width_lt.le
+    have hcast : (totalWidth : ℝ) ≤ ((8 / 10^16 : ℚ) : ℝ) :=
+      Rat.cast_le.mpr Q0SourceExceptionWidthAll.total_width_lt.le
+    simpa only [Rat.cast_div, Rat.cast_pow, Rat.cast_ofNat] using hcast
   exact (volume_region_le panels hordered).trans
     (ENNReal.ofReal_le_ofReal (by simpa only [panels_width] using hw))
 

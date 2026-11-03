@@ -26,7 +26,7 @@ open Grothe.UpperChaos.Q0SourceExceptionCenters
 
 theorem each_row_source (r : Row) (hr : r ∈ Q0SourceExceptionCentersAll.rows) :
     ∃ m ∈ Q0ConditionalMetadataAll.rows, matchesMetadata r m = true := by
-  simp only [Q0SourceExceptionCentersAll.rows, List.mem_append] at hr
+  simp only [Q0SourceExceptionCentersAll.rows, List.mem_append, or_assoc] at hr
   rcases hr with hr | hr | hr | hr | hr | hr | hr | hr | hr | hr | hr | hr | hr | hr | hr | hr
   · obtain ⟨m, hm, hmatch⟩ := metadata_witness Q0SourceExceptionCentersChunk00.rows
       Q0SourceExceptionMetadataChunk00.metadataRows Q0SourceExceptionMetadataChunk00.metadata_aligned r hr

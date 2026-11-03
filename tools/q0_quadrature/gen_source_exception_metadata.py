@@ -79,7 +79,7 @@ def generate():
               'open Grothe.UpperChaos.Q0SourceExceptionCenters', '',
               'theorem each_row_source (r : Row) (hr : r ∈ Q0SourceExceptionCentersAll.rows) :',
               '    ∃ m ∈ Q0ConditionalMetadataAll.rows, matchesMetadata r m = true := by',
-              '  simp only [Q0SourceExceptionCentersAll.rows, List.mem_append] at hr',
+              '  simp only [Q0SourceExceptionCentersAll.rows, List.mem_append, or_assoc] at hr',
               '  rcases hr with ' + ' | '.join('hr' for _ in names)]
     for name, binding in zip(names, binding_names):
         lines += [f'  · obtain ⟨m, hm, hmatch⟩ := metadata_witness {name}.rows',
