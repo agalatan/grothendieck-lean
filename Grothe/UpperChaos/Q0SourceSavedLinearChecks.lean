@@ -46,7 +46,8 @@ theorem source_model_error_sq_lt (a : Address) (ha : exceptionalPanel a.1.val) :
       (fitParameter (Q0SourceExceptionPayload.rowAt a ha) : ℝ) p -
         sourceCenter a ha p‖ ^ 2) < (1 / 10 ^ 31 : ℝ) ^ 2 := by
   rw [source_model_error_eq]
-  exact_mod_cast (source_fit_checked a ha).2
+  have hreal := (Rat.cast_lt (K := ℝ)).mpr (source_fit_checked a ha).2
+  simpa only [Rat.cast_pow, Rat.cast_div, Rat.cast_one, Rat.cast_ofNat] using hreal
 
 /-- The saved-model field is discharged by the kernel checks. Only the
 two actual physical parameter enclosures are supplied by the caller. -/
