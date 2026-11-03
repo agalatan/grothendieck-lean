@@ -389,6 +389,12 @@ proves reality of its coefficient for every real source parameter, including
 profile zeros. The complex distance to any real
 stored center is exactly the absolute real-part error; no numerical enclosure
 is assumed in these identities.
+The first-order phase approximation has pointwise remainder at most
+`(5/2)‖h‖²/r²`. Its proof uses the exact norm-square identity to bound
+`‖r+h‖-r-Re(h)` between zero and `‖h‖²/(2r)`, then the zero-safe phase estimate.
+This elementary estimate does not assume a derivative identity or exclude a
+zero perturbed point. A Gaussian coefficient and saved-node instantiation is
+still a separate obligation.
 `Haagerup/PhaseStability` derives the zero-safe perturbation inequality from
 `phase(z)*‖z‖=z`, the triangle inequality and `‖phase(z)‖≤1`, with only a positive
 real reference radius. `ZeroProfilePhaseStability` specializes it to the actual

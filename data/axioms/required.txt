@@ -8,9 +8,11 @@ Grothe.Haag.integral_norm_phaseLaplaceKernel
 Grothe.Haag.integral_norm_phaseLaplaceKernel_le
 Grothe.Haag.integral_phaseLaplace_weight
 Grothe.Haag.measurable_phaseLaplaceKernel
+Grothe.Haag.norm_ph_real_add_sub_linear
 Grothe.Haag.norm_ph_real_add_sub_one
 Grothe.Haag.norm_ph_real_scaled_add_sub_one
 Grothe.Haag.norm_phaseLaplaceKernel_le
+Grothe.Haag.norm_real_add_remainder
 Grothe.Haag.ph_eq_phaseLaplace
 Grothe.Haag.phaseMoment_weighted
 Grothe.Lower.gram_joint_of_scalars

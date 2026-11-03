@@ -11,9 +11,11 @@ import Grothe
 #print axioms Grothe.Haag.integral_norm_phaseLaplaceKernel_le
 #print axioms Grothe.Haag.integral_phaseLaplace_weight
 #print axioms Grothe.Haag.measurable_phaseLaplaceKernel
+#print axioms Grothe.Haag.norm_ph_real_add_sub_linear
 #print axioms Grothe.Haag.norm_ph_real_add_sub_one
 #print axioms Grothe.Haag.norm_ph_real_scaled_add_sub_one
 #print axioms Grothe.Haag.norm_phaseLaplaceKernel_le
+#print axioms Grothe.Haag.norm_real_add_remainder
 #print axioms Grothe.Haag.ph_eq_phaseLaplace
 #print axioms Grothe.Haag.phaseMoment_weighted
 #print axioms Grothe.Lower.VHolds.mix

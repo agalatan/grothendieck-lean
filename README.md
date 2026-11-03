@@ -364,6 +364,9 @@ The parameter derivative identity and its midpoint error transfer remain open.
 Hermite coefficients to show that every canonical coefficient is real.
 It identifies the complex distance from a real stored center with the absolute
 real-part error, including for the signed production coefficient.
+`PhaseStability` also gives a quadratic error for the constant-plus-linear
+phase approximation: at a positive real reference radius, the error is at
+most `(5/2)‖h‖²/r²`, including when the perturbed point is zero.
 `PhaseStability` proves `‖phase(r+h)-1‖ ≤ 2‖h‖/r` for `r>0`, including when
 the perturbed point is zero. `ZeroProfilePhaseStability` transfers it to the
 actual Gaussian phase slice, its L² norm and each conditional coefficient,
