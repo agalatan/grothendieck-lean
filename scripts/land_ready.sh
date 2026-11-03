@@ -34,6 +34,17 @@ if [ "$phead" != "$source" ]; then
   echo "::notice::PR #${PR} moved from the checked ${source:0:12} to ${phead:0:12}: land the new commit with a new /land"; exit 0
 fi
 
+# 1b. the PR serves a task issue (AGENTS.md §1): its description names at least one open issue labelled `type: task`
+body=$(gh pr view "$PR" --json body --jq .body)
+task_ok=0
+for n in $(grep -oiE '(closes|fixes|resolves|refs) #[0-9]+' <<< "$body" | grep -oE '[0-9]+' | sort -u); do
+  if gh api "repos/${GITHUB_REPOSITORY}/issues/${n}" --jq '[.state, ([.labels[].name] | index("type: task") != null)] | @tsv' 2>/dev/null \
+     | grep -q $'^open\ttrue$'; then task_ok=1; fi
+done
+if [ "$task_ok" != 1 ]; then
+  echo "::notice::PR #${PR} is checked green but not landed: its description names no open issue labelled 'type: task' (write Closes #n or Refs #n; an epic alone does not count, AGENTS.md §1)"; exit 0
+fi
+
 # 2. an approving review of exactly this commit, by the other side (scripts/review.sh)
 author=${BRANCH%%-*}
 review=$(gh api "repos/${GITHUB_REPOSITORY}/commits/${source}/statuses?per_page=100" \
