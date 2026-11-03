@@ -58,12 +58,6 @@ theorem norm_source_cutoff_lt (j : ℕ) :
     ‖(source_memLp (1 / 10 ^ 15) j).toLp (source (1 / 10 ^ 15) j)‖ < (5 / 10 ^ 15 : ℝ) :=
   (norm_source_le _ (by positivity) j).trans_lt (by norm_num)
 
-/-- Every retained Hermite band inherits the same actual singular-cut error. -/
-theorem norm_projOn_source_cutoff_lt (B : Set Idx2) (j : ℕ) :
-    ‖projOn B ((source_memLp (1 / 10 ^ 15) j).toLp (source (1 / 10 ^ 15) j))‖ <
-      (5 / 10 ^ 15 : ℝ) :=
-  ((modeSpace B).norm_starProjection_apply_le _).trans_lt (norm_source_cutoff_lt j)
-
 /-- Smoothing and then selecting a band cannot increase this contribution. -/
 theorem norm_projOn_smooth_source_cutoff_lt (B : Set Idx2) (j : ℕ) :
     ‖projOn B (smoothOp ((source_memLp (1 / 10 ^ 15) j).toLp (source (1 / 10 ^ 15) j)))‖ <

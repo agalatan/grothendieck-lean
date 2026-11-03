@@ -94,8 +94,7 @@ range facts for rows 0–11 and 16–18. They import `CapRangeDefs` and
 `CapRecipeData`: the rational row, gate, chord and recipe data and numerical
 checker, independently of the Gaussian analysis and lower certificate.
 There is one build target, `Grothe`: it builds range-check soundness in
-`CapRows`, convexity assembly in `CapAssembly` (`CapHull` is a compatibility
-import), the heavy facts, and `CapNodes`, which contains the 15 row-assembly
+`CapRows`, convexity assembly in `CapAssembly`, the heavy facts, and `CapNodes`, which contains the 15 row-assembly
 proofs and `lower_bound_of_capsRest`.
 
 `lower_bound_of_refined_cover_data` proves
