@@ -11,6 +11,8 @@ import Grothe
 #print axioms Grothe.Haag.integral_norm_phaseLaplaceKernel_le
 #print axioms Grothe.Haag.integral_phaseLaplace_weight
 #print axioms Grothe.Haag.measurable_phaseLaplaceKernel
+#print axioms Grothe.Haag.norm_ph_real_add_sub_one
+#print axioms Grothe.Haag.norm_ph_real_scaled_add_sub_one
 #print axioms Grothe.Haag.norm_phaseLaplaceKernel_le
 #print axioms Grothe.Haag.ph_eq_phaseLaplace
 #print axioms Grothe.Haag.phaseMoment_weighted
@@ -1035,6 +1037,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.ThirdIntegerSourceBinding.source_array
 #print axioms Grothe.UpperChaos.ThirdIntegerSourceBinding.source_values
 #print axioms Grothe.UpperChaos.UnitSquaredQuadrature.taylorQuadratureKernel_unit_eq_squared
+#print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_constant
+#print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_phaseSliceLp_sub_constant
+#print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.phaseSlice_sub_one_bound
 #print axioms Grothe.UpperChaos.abs_gaussian_reciprocal_sub_poly_le
 #print axioms Grothe.UpperChaos.abs_inv_sub_inverseAround_le
 #print axioms Grothe.UpperChaos.affine_gaussian_shift_complete_square

@@ -1,5 +1,6 @@
 import Grothe.UpperChaos.F0ConditionalCoefficientBounds
 import Grothe.UpperChaos.F0ConditionalReality
+import Grothe.UpperChaos.ZeroProfilePhaseStability
 import Grothe.UpperChaos.OneSidedHermiteSeedAxiomAudit
 
 /-! Strict transitive audit of coefficient reality and the raising-sum bounds.
@@ -15,3 +16,8 @@ assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.norm_canoni
 assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.coefficient_conj
 assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.coefficient_im_eq_zero
 assert_seed_standard_axioms Grothe.UpperChaos.F0ConditionalEvaluator.norm_coefficient_sub_real
+assert_seed_standard_axioms Grothe.Haag.norm_ph_real_add_sub_one
+assert_seed_standard_axioms Grothe.Haag.norm_ph_real_scaled_add_sub_one
+assert_seed_standard_axioms Grothe.UpperChaos.ZeroProfilePhaseStability.phaseSlice_sub_one_bound
+assert_seed_standard_axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_phaseSliceLp_sub_constant
+assert_seed_standard_axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_constant

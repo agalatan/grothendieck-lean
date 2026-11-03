@@ -389,6 +389,14 @@ proves reality of its coefficient for every real source parameter, including
 profile zeros. The complex distance to any real
 stored center is exactly the absolute real-part error; no numerical enclosure
 is assumed in these identities.
+`Haagerup/PhaseStability` derives the zero-safe perturbation inequality from
+`phase(z)*‖z‖=z`, the triangle inequality and `‖phase(z)‖≤1`, with only a positive
+real reference radius. `ZeroProfilePhaseStability` specializes it to the actual
+production phase at `s>0`. Its distance in Gaussian L² from the constant phase,
+and every coefficient error relative to that phase, are at most
+`2*sqrt(1+aQ²)*|vprof s|/sqrt s`. This does not assume a nonzero profile, evaluate
+an inverse shift, or allocate any additional endpoint error. Actual node
+intervals, stored-center errors and the final propagated budget still need proof.
 Concrete numerical node bounds and the full upper bound remain unproved.
 
 `ShiftedMomentRecurrence` proves

@@ -364,6 +364,11 @@ The parameter derivative identity and its midpoint error transfer remain open.
 Hermite coefficients to show that every canonical coefficient is real.
 It identifies the complex distance from a real stored center with the absolute
 real-part error, including for the signed production coefficient.
+`PhaseStability` proves `‖phase(r+h)-1‖ ≤ 2‖h‖/r` for `r>0`, including when
+the perturbed point is zero. `ZeroProfilePhaseStability` transfers it to the
+actual Gaussian phase slice, its L² norm and each conditional coefficient,
+without requiring a profile sign or a nonzero profile. Applying these estimates
+to node intervals and stored centers remains separate from this identity.
 Concrete numerical node enclosures and the complete upper bound remain open.
 
 `ProfileAdaptiveSource` allows the shorter regular auxiliary endpoint `100`

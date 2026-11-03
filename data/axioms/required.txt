@@ -8,6 +8,8 @@ Grothe.Haag.integral_norm_phaseLaplaceKernel
 Grothe.Haag.integral_norm_phaseLaplaceKernel_le
 Grothe.Haag.integral_phaseLaplace_weight
 Grothe.Haag.measurable_phaseLaplaceKernel
+Grothe.Haag.norm_ph_real_add_sub_one
+Grothe.Haag.norm_ph_real_scaled_add_sub_one
 Grothe.Haag.norm_phaseLaplaceKernel_le
 Grothe.Haag.ph_eq_phaseLaplace
 Grothe.Haag.phaseMoment_weighted
@@ -875,6 +877,9 @@ Grothe.UpperChaos.ThirdCenterKernelEnergy.size_check
 Grothe.UpperChaos.ThirdIntegerSourceBinding.source_array
 Grothe.UpperChaos.ThirdIntegerSourceBinding.source_values
 Grothe.UpperChaos.UnitSquaredQuadrature.taylorQuadratureKernel_unit_eq_squared
+Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_constant
+Grothe.UpperChaos.ZeroProfilePhaseStability.norm_phaseSliceLp_sub_constant
+Grothe.UpperChaos.ZeroProfilePhaseStability.phaseSlice_sub_one_bound
 Grothe.UpperChaos.abs_gaussian_reciprocal_sub_poly_le
 Grothe.UpperChaos.abs_inv_sub_inverseAround_le
 Grothe.UpperChaos.affine_gaussian_shift_complete_square

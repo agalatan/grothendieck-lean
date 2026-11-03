@@ -7,6 +7,7 @@ import Grothe.Haagerup.PhaseKernel
 import Grothe.Haagerup.PhaseLaplace
 import Grothe.Haagerup.PhaseLaplaceBounded
 import Grothe.Haagerup.PhaseLaplaceFubini
+import Grothe.Haagerup.PhaseStability
 import Grothe.ListPoly
 import Grothe.Lower.Basic
 import Grothe.Lower.Boxes
@@ -1827,3 +1828,4 @@ import Grothe.UpperChaos.ThirdIntegerSourceBinding
 import Grothe.UpperChaos.UnitSquaredQuadrature
 import Grothe.UpperChaos.UnitSquaredQuadratureConditional
 import Grothe.UpperChaos.UnitSquaredRadiusProfile
+import Grothe.UpperChaos.ZeroProfilePhaseStability
