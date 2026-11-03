@@ -1,6 +1,10 @@
-import Grothe.UpperChaos.PackedDyadicStructural
-import Batteries.Data.String.Lemmas
+module
+
+public import Grothe.UpperChaos.PackedDyadicStructural
+public import Batteries.Data.String.Lemmas
 import all Init.Data.String.Legacy
+meta import Lean.Util.CollectAxioms
+meta import Lean.Elab.Command
 
 /-!
 The public packed decoder uses the legacy string-separator API. For a single
@@ -9,6 +13,8 @@ are already proved in Batteries. This closes the delimiter obligation without
 changing the public decoder, its numeric grammar or the stored source bytes.
 Agent-ID: codex-8c4d.
 -/
+
+public section
 
 namespace Grothe.UpperChaos.PackedDyadic.Structural
 
