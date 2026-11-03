@@ -564,6 +564,12 @@ class Runner:
         self.overlay = args.run_dir / "lake-single-lean.toml"
         self.source_stats = None
 
+    def adopt_overlay(self):
+        """The overlay is ours alone; one left by an earlier run (an older lakefile) is replaced under the lock."""
+        if self.overlay.exists() and self.overlay.read_bytes() != self.overlay_data:
+            print("Replacing the stale owned Lake overlay of an earlier run", flush=True)
+            self.overlay.write_bytes(self.overlay_data)
+
     def check(self, pgid=None, *, full=False):
         # Hash/parse at child boundaries; polling checks stable inode/mtime/ctime/size.
         # This avoids repeatedly parsing the whole certificate source during a Lean check.
@@ -823,6 +829,7 @@ def main(argv=None):
             previous[sig] = signal.signal(sig, lambda *_: setattr(runner, "interrupted", True))
         try:
             with build_lock(args.root / ".lake/caps-batches.lock"):
+                runner.adopt_overlay()
                 if runner.coexist is not None:
                     runner.coexist.publish(phase="shared", child_pgid=None)
                 for index, (phase, targets) in enumerate(plan, 1):

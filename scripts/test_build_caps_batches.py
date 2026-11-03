@@ -137,6 +137,22 @@ class GraphTests(Fixture):
 
 
 class OverlayTests(unittest.TestCase):
+    def test_stale_overlay_of_an_earlier_run_is_replaced(self):
+        class Stale(Fixture):
+            def runTest(self): pass
+        fixture = Stale(); fixture.setUp()
+        try:
+            runner = b.Runner(fixture.args, fixture.registry)
+            runner.overlay.parent.mkdir(parents=True, exist_ok=True)
+            runner.overlay.write_bytes(b'weakLeanArgs = ["-j1"]\nname = "older"\n')
+            self.assertNotEqual(runner.overlay.read_bytes(), runner.overlay_data)
+            runner.adopt_overlay()
+            self.assertEqual(runner.overlay.read_bytes(), runner.overlay_data)
+            runner.adopt_overlay()
+            self.assertEqual(runner.overlay.read_bytes(), runner.overlay_data)
+        finally:
+            fixture.tearDown()
+
     def test_only_weak_args_change(self):
         source = b'name="grothe"\n[[lean_lib]]\nname="GrotheCapsKernel"\nprecompileModules=true\n'
         result = b.overlay_bytes(source)
