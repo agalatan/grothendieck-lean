@@ -852,6 +852,9 @@ import Grothe.UpperChaos.HermiteConjugation
 import Grothe.UpperChaos.HermiteDegree
 import Grothe.UpperChaos.HermiteFinite
 import Grothe.UpperChaos.HolIntegral
+import Grothe.UpperChaos.IndependentSourceMoments
+import Grothe.UpperChaos.IndependentSourcePolynomial
+import Grothe.UpperChaos.IndependentSourcePolynomialAudit
 import Grothe.UpperChaos.IntervalIntegralBounds
 import Grothe.UpperChaos.InvariantMoments
 import Grothe.UpperChaos.JointAliasBound
