@@ -26,7 +26,7 @@ theorem degreeCount_pos (m : ℕ) (hm : m < 532) : 0 < degreeCount m := by
 /-- Prefix counts are strictly increasing through the complete stored
 degree range, including its final endpoint 532. -/
 theorem prefix_strict {m n : ℕ} (hmn : m < n) (hn : n ≤ 532) :
-    prefix m < prefix n := by
+    pairPrefix m < pairPrefix n := by
   induction n generalizing m with
   | zero => omega
   | succ n ih =>
@@ -43,7 +43,7 @@ theorem prefix_strict {m n : ℕ} (hmn : m < n) (hn : n ≤ 532) :
 /-- A canonical pair's rank lies in the block for its total degree. -/
 theorem rank_between (c d : ℕ) (hc : c ≤ 266) (hd : d ≤ 265)
     (hcanonical : c ≤ d + 1) (hdegree : c + d ≤ 531) :
-    prefix (c + d) ≤ rank c d ∧ rank c d < prefix (c + d + 1) := by
+    pairPrefix (c + d) ≤ rank c d ∧ rank c d < pairPrefix (c + d + 1) := by
   have hlo : c + d - 265 ≤ c := by omega
   have hhi : c ≤ min 266 (min (c + d) ((c + d + 1) / 2)) := by
     apply le_min hc
@@ -53,7 +53,7 @@ theorem rank_between (c d : ℕ) (hc : c ≤ 266) (hd : d ≤ 265)
     unfold degreeCount
     omega
   have hstep := prefix_increment (c + d) (by omega)
-  have hrank : rank c d = prefix (c + d) + c - (c + d - 265) := by rfl
+  have hrank : rank c d = pairPrefix (c + d) + c - (c + d - 265) := by rfl
   omega
 
 /-- The exact rank test is equivalent to the saved total-degree cutoff.
@@ -61,7 +61,7 @@ The special cutoff 532 includes all stored degrees 0 through 531. -/
 theorem retained_iff_degree_le_cutoff (c d cutoff : ℕ)
     (hc : c ≤ 266) (hd : d ≤ 265) (hcanonical : c ≤ d + 1)
     (hdegree : c + d ≤ 531) :
-    rank c d < prefix (min cutoff 531 + 1) ↔ c + d ≤ cutoff := by
+    rank c d < pairPrefix (min cutoff 531 + 1) ↔ c + d ≤ cutoff := by
   have hb := rank_between c d hc hd hcanonical hdegree
   have htmax : min cutoff 531 + 1 ≤ 532 := by
     have h := Nat.min_le_right cutoff 531
@@ -78,13 +78,13 @@ theorem retained_iff_degree_le_cutoff (c d cutoff : ℕ)
   · intro hr
     by_contra h
     have hle : min cutoff 531 + 1 ≤ c + d := by omega
-    have hp : prefix (min cutoff 531 + 1) ≤ prefix (c + d) := by
+    have hp : pairPrefix (min cutoff 531 + 1) ≤ pairPrefix (c + d) := by
       by_cases heq : min cutoff 531 + 1 = c + d
       · rw [heq]
       · exact le_of_lt (prefix_strict (by omega) (by omega))
     omega
   · intro hm
-    have hp : prefix (c + d + 1) ≤ prefix (min cutoff 531 + 1) := by
+    have hp : pairPrefix (c + d + 1) ≤ pairPrefix (min cutoff 531 + 1) := by
       by_cases heq : c + d + 1 = min cutoff 531 + 1
       · rw [heq]
       · exact le_of_lt (prefix_strict (by omega) (by omega))

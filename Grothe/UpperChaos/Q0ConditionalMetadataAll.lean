@@ -77,7 +77,7 @@ stored offset/cutoff integer invariants. -/
 theorem rowAt_spec (a : Address) :
     rowAt a ∈ rows ∧ (rowAt a).index = (fromAddress a).val ∧
     (rowAt a).cutoff ≤ 532 ∧
-    (rowAt a).last = (rowAt a).first + prefix (min (rowAt a).cutoff 531 + 1) ∧
+    (rowAt a).last = (rowAt a).first + pairPrefix (min (rowAt a).cutoff 531 + 1) ∧
     (rowAt a).last ≤ 421701618 := by
   have h := Classical.choose_spec (unique_row_for_address a).exists
   have hv := valid_sound (rowAt a) ((List.all_eq_true.mp checked) (rowAt a) h.1)

@@ -56,7 +56,7 @@ theorem retained_iff_rank (a : Address) (c d : ℕ) (hm : (c, d) ∈ modes) :
   have hlast := (Q0ConditionalMetadataAll.rowAt_spec a).2.2.2.1
   have hspan : (Q0ConditionalMetadataAll.rowAt a).last -
       (Q0ConditionalMetadataAll.rowAt a).first =
-      Q0ConditionalMetadataCheck.prefix
+      Q0ConditionalMetadataCheck.pairPrefix
         (min (Q0ConditionalMetadataAll.rowAt a).cutoff 531 + 1) := by
     rw [hlast]
     omega
