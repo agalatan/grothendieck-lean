@@ -183,9 +183,21 @@ the numerical quadrature cells and the upper-bound inputs remain to be proved.
 The conditional-node table stores finite vectors of binary64 approximations
 to conditional Hermite coefficients. For 417 selected rows,
 `Q0SourceExceptionCentersAll` checks scalar magnitude at most one, squared row
-norm at most `121/100`, and source ordinal coverage. No Gaussian coefficient
-estimate or upper-bound assembly currently consumes this certificate;
-source-address, basis-normalization and approximation-error proofs remain separate.
+norm at most `121/100`, and source ordinal coverage. The source-error
+assembly uses its decoded rows and source-address/cutoff binding;
+production basis/sign normalization and actual approximation-error estimates
+remain separate obligations.
+
+The actual source-error stage uses the same selected Gauss roots and physical
+weights throughout. Exceptional panels have orders one through four, so
+`Q0SourceExceptionMassClosure.exceptional_panel_normalization` removes the
+panel-weight-sum premise. Under a `1e-12` enclosure for the actual regular
+coefficients, `actual_source_error_sharp` gives selected-vector error at most
+`2.53e-10`. `Q0ConditionalSourceReconstruction.reflected_error_le` then applies
+exact reconstruction with factor `10/7`, preserving the production phase and
+counting Gaussian density once. This is not an endpoint or floating-point-table
+certificate: regular evaluator, normalization, contraction, omitted-domain and
+tail estimates remain work in progress.
 
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of

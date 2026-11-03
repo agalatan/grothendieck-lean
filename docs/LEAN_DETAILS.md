@@ -90,9 +90,9 @@ source ordinal ranges, cutoff counts and source byte spans are explicit.
 certificate from pinned slice, offset and per-row ledger files. The strict
 audit adds no native facts. This certifies the saved values; their alignment
 with selected source nodes, basis normalization and enclosures of actual Gaussian
-coefficients are separate obligations. No Gaussian estimate or endpoint assembly
-currently consumes this certificate. Source provenance and the limits of the
-checked ledger fields are documented in
+coefficients are separate obligations. The source-error assembly consumes the
+saved rows through their source-address and cutoff binding. Source provenance
+and the limits of the checked ledger fields are documented in
 [`conditional_source/README.md`](../data/q0_quadrature/conditional_source/README.md).
 
 **Conditional-pair ranks.** `Q0ConditionalPairRankAll` proves finite rank,
@@ -111,6 +111,29 @@ the `(35777,2)` shape and little-endian signed 16-bit representation, and exact
 equality with the closed-form enumeration above before reproducing the Lean
 files. This input hash records provenance; Lean checks the emitted literals
 and finite properties, not the NPY parser.
+
+**Actual source-error assembly.** `Q0SourceExceptionMassClosure` uses the
+finite exceptional-panel order scan and `Q0GaussSourcePanelMass` to prove
+normalization for the actual selected root and physical weight family; `hpanel`
+is no longer an input to its public error theorems. Exceptional discrete mass
+is at most `2e-21`, and the true selected coefficient vector differs from the
+saved exceptional vector by at most `1.575e-10`. The regular and exceptional
+squared errors add. `actual_source_error_sharp` gives `2.53e-10` given only the
+stated regular-node `1e-12` coefficient enclosure. The complete physical
+Gaussian weight is `sourceWeight a * exp(-sourceNode a)`, exactly once.
+
+`Q0ConditionalSourceReconstruction.reflected_error_le` passes that bound to
+`ConditionalReconstruction.weighted_top_norm_le_of_canonical_error`, using
+exactly `ConditionalNodeIndices.modes` and the actual production coefficient
+of the phase slice at `sqrt(s)`. It gives `(10/7) * 2.53e-10` on the full
+rectangle. The `3.6e-10` compatibility lemma concerns the earlier canonical
+source-vector stage, not the post-reconstruction error. No storage-prefix,
+zero-true-tail or implicit sign-normalization assumption is made.
+The actual regular evaluator, production center/basis binding, floating-point
+operations, continuous quadrature error, omitted regions, infinite tails and
+energy-table fit remain separate. The final consumers have transitive strict
+axiom audits. Pinned inputs and all reproduction commands are listed in
+[`source-error/README.md`](../data/q0_quadrature/source-error/README.md).
 
 **q0 source-to-literal identity.**
 `Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real

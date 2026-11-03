@@ -131,9 +131,19 @@ $c_1$ tends to spoil $c_2,c_3,\dots$, and the infinite tail has to be bounded to
 The conditional-node table stores finite vectors of binary64 approximations
 to conditional Hermite coefficients. Lean checks scalar magnitude at most one,
 squared row norm at most $121/100$, and source ordinal coverage for 417 selected
-rows. No Gaussian coefficient estimate or upper-bound assembly currently
-consumes this certificate; source-address, basis-normalization and approximation-error
-proofs remain separate.
+rows. The source-error assembly uses these rows with their source-address
+and cutoff binding; production basis/sign normalization and actual approximation
+estimates remain separate obligations.
+
+The exceptional source panels have Gauss orders one through four. Exact
+normalization of their selected roots removes the panel-weight-sum input,
+using the same physical weights and one Gaussian density factor. The selected
+coefficient error is at most $2.53\cdot10^{-10}$ given a $10^{-12}$ enclosure
+for the actual regular-node coefficients. Exact reconstruction of the full
+conditional rectangle multiplies this allowance by $10/7$ and retains the
+production phase. Regular evaluator bounds, floating operations, contraction,
+omitted-domain estimates, tails and the final energy-table fit are still
+separate requirements for the upper endpoint.
 
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every
