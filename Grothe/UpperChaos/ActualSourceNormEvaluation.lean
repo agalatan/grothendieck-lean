@@ -136,8 +136,10 @@ theorem scaled_tensorPairValue_eq_rational (g : Gate) (hg : gateOK g = true)
         coefficientScale_eq_pairSourceScale]
       ring
     _ = _ := by
-      rw [scaled_gatePairValue_eq_rational g hg 0,
-        scaled_gatePairValue_eq_rational g hg 1, Rat.cast_mul]
+      have h0 := scaled_gatePairValue_eq_rational g hg 0 (powers e).1 (powers f).1
+      have h1 := scaled_gatePairValue_eq_rational g hg 1 (powers e).2 (powers f).2
+      norm_num only [Fin.val_zero, Fin.val_one] at h0 h1
+      rw [h0, h1, Rat.cast_mul]
 
 /-- Full rational binding of the actual source norm. No support truncation or
 coefficient agreement is assumed: both follow from the actual production source. -/
