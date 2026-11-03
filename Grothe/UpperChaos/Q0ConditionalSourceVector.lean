@@ -84,7 +84,8 @@ theorem regular_error_sq_le (modelNodes : Finset Address)
   unfold hybridBudget
   apply Finset.sum_le_sum
   intro a ha
-  have hregular : ¬ exceptionalPanel a.1.val := (Finset.mem_filter.mp ha).2
+  have hregular : ¬ exceptionalPanel a.1.val := by
+    simpa only [regularNodes, Finset.mem_filter, Finset.mem_univ, true_and] using ha
   apply mul_le_mul_of_nonneg_left _ (nodeWeight_nonneg a)
   by_cases hm : a ∈ modelNodes
   · rw [ite_eq_left hm]

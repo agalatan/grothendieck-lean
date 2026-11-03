@@ -77,7 +77,8 @@ theorem regular_error_sq_le
   unfold regularBudget
   apply Finset.sum_le_sum
   intro a ha
-  have hr : ¬ exceptionalPanel a.1.val := (Finset.mem_filter.mp ha).2
+  have hr : ¬ exceptionalPanel a.1.val := by
+    simpa only [regularNodes, Finset.mem_filter, Finset.mem_univ, true_and] using ha
   exact mul_le_mul_of_nonneg_left
     (actual_saved_error_sq_le a modes (completedCenter center a) (ε a)
       (hε a hr) (hcenter a hr)) (nodeWeight_nonneg a)
