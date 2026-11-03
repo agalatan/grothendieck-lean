@@ -424,9 +424,9 @@ normalized-monomial transport theorem. Applying Bessel to the actual scaled
 transform gives coefficient summability and a norm upper bound in that order.
 `ActualCoherentBesselAudit` registers transitive standard-three checks for
 these interfaces; those guards still await compilation with this batch.
-Identification with the normalized Hermite matrix entries, exact equality
-with the historical producer's Laguerre polynomial, and numerical
-Hilbert--Schmidt caps remain open.
+The normalized weighted Hermite matrix identification is supplied by the
+uncompiled gate-jet extension below. Exact equality with the historical
+producer's Laguerre polynomial and numerical Hilbert--Schmidt caps remain open.
 
 The following coefficient batch is likewise WIP, pending compilation.
 `ActualTaylorFiniteCoefficients` defines actual normalized Hermite matrix
@@ -455,10 +455,11 @@ to evaluation at zero, and
 `coefficient8_scaledTransform_ground_matrixEntry` identifies the full
 transform coefficient with the actual ground matrix entry.
 `ActualCoherentCoefficientAudit` adds standard-three transitive guards for
-these interfaces; their compilation remains pending. The comparison for
-all weighted Hermite indices remains OPEN, as do numerical Hilbert--Schmidt
-caps and the historical Laguerre binding. No physical/source Fubini or
-unproved coefficient identity is assumed in this batch.
+these interfaces; their compilation remains pending. The gate-jet extension
+below provides complete source proofs of the comparison for all weighted
+Hermite indices. Numerical Hilbert--Schmidt caps and the historical Laguerre
+binding remain OPEN. No physical/source Fubini or unproved coefficient
+identity is assumed in this batch.
 
 The gate-jet extension is likewise WIP, with complete source proofs pending
 compilation. `HermiteFallingFactorial` derives the finite production Hermite
@@ -489,11 +490,24 @@ finite algebra; they do not exchange source and physical integration.
 `ActualCoherentHermiteJets` separately proves the finite generating identity
 for the physical coherent pair and the equality of its Gaussian and Hermite
 normalizations. `ActualGateMatrixWeights` proves that squaring the source
-scale gives the original real energy weight. The final join from the
-production moment sum to the normalized weighted matrix entry remains OPEN,
-as do numerical Hilbert--Schmidt caps and the historical Laguerre binding.
-`ActualGateMomentJetsAudit` installs strict standard-three transitive guards
-for the new interfaces; the guards also await compilation.
+scale gives the original real energy weight. `ActualGateCoefficientWeights`
+identifies `tensorNormalization` with the two physical `nrm2` factors and
+`tensorSourceWeight` with the exact gate source weight. These are unconditional
+algebraic identities, preserving the incoming axis order.
+
+`ActualGateMatrixCoefficients` proves absolute integrability of each physical
+monomial with its outgoing/incoming Hermite factors and integrates the exact
+finite multiplier polynomial. Its
+`coefficient8_scaledTransform_eq_weightedMatrixEntry` then identifies every
+actual transform coefficient with the normalized weighted actual matrix entry
+under the sole premise `gateOK g = true`. `summable_weightedMatrixEntry_sq`
+proves summability of the complete weighted energy. The full and finite
+energy inequalities bound the original real `energyWeight` times matrix-entry
+norm squares by `∫ Z, ‖scaledTransform g Z‖² ∂sourceMeasure8`.
+These are complete source bodies, all UNCOMPILED, including the strict
+standard-three guards in `ActualGateMomentJetsAudit`. Numerical bounds for
+the actual source integral, Hilbert--Schmidt caps, the historical Laguerre
+binding, and the final upper endpoint remain OPEN.
 
 `QuadraticPolynomialIntegrability` proves a separable Gaussian majorant for
 `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²` under exactly `A>0` and

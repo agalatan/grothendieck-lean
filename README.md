@@ -336,8 +336,9 @@ compilation. `BipartitePolynomialL2` derives coercive Gaussian domination from
 proves the scaled transform belongs to Gaussian L². `GaussianFockBessel`
 and `GateFockCoefficients` give summability and a squared-norm upper bound for
 its normalized monomial coefficients, with explicit gate order
-`((y,u),(x,v))` per physical coordinate. The normalized Hermite matrix-entry
-identity, binding to the historical Laguerre polynomial and numerical
+`((y,u),(x,v))` per physical coordinate. The all-index weighted Hermite
+matrix identity has complete source proofs in the uncompiled gate-jet batch
+below. Binding to the historical Laguerre polynomial and numerical
 Hilbert--Schmidt caps remain open.
 The coefficient batch is also WIP and awaits compilation.
 `ActualTaylorFiniteCoefficients` evaluates finite Hermite generating blocks
@@ -346,8 +347,8 @@ and extracts the retained actual matrix entries. Independently,
 scaled transform by a finite factorial sum, using source-space L² for Fubini.
 `ActualMatrixFiniteComparison` gives a finite physical Wick formula for every
 matrix entry and identifies the full transform's ground coefficient with its
-actual ground entry. The all-index weighted Hermite identity and numerical
-caps remain open; the ground identity does not settle them.
+actual ground entry. The all-index weighted Hermite identity is supplied by
+the uncompiled gate-jet extension below; numerical caps remain open.
 
 The gate-jet batch is WIP, with complete proof bodies pending compilation.
 Finite Gaussian source extraction is identified with mixed derivatives at
@@ -360,9 +361,15 @@ every coefficient of the actual scaled transform with a finite sum of
 physical Hermite moments from the production multiplier polynomial.
 `ActualCoherentHermiteJets` separately identifies the finite physical jets
 and their Hermite normalization; `ActualGateMatrixWeights` proves that squared
-source scales are exactly the original energy weights. These interfaces still
-need to be joined into the normalized weighted matrix identity. Numerical
-Hilbert--Schmidt caps and the historical Laguerre binding remain open.
+source scales are exactly the original energy weights.
+`ActualGateCoefficientWeights` identifies every factorial and scale factor,
+and `ActualGateMatrixCoefficients` completes the all-index equality between
+the actual source coefficients and normalized weighted Hermite matrix entries.
+It gives full weighted-energy summability and full/finite Bessel bounds by
+the source integral of the actual scaled transform. All these new source
+proofs and strict audits remain uncompiled. Numerical bounds for that source
+integral, Hilbert--Schmidt caps, the historical Laguerre binding, and the final
+upper endpoint remain open.
 
 For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
 `QuadraticPolynomialIntegrability` proves genuine joint polynomial
@@ -381,8 +388,9 @@ certificate supplies the real covariance conditions for either physical pair.
 The parameter table covers the fourteen selected finite bands and four
 coordinate exclusions. Its checks prove positivity, not the numerical tail
 bounds recorded in the input files. The defined kernel is not yet identified
-with `HS_{j,I}` in `docs/UPPER_STATUS.md`; the actual Hermite coefficient
-identity and numerical Hilbert--Schmidt bounds remain separate.
+with the historical `HS_{j,I}` producer in `docs/UPPER_STATUS.md`. The actual
+weighted matrix identity has complete source proofs above, pending compilation;
+no stored numerical Hilbert--Schmidt bound is transferred by that identity.
 
 `GradedHermitePhaseSlice` expresses each actual Taylor source as a polynomial
 in the conditional coordinate times its exact Gaussian damping.

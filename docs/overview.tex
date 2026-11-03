@@ -436,7 +436,8 @@ The normalized holomorphic monomials in eight Gaussian sources are orthonormal,
 so their coefficient energies are summable and bounded by the squared source
 norm. Gate coordinates are $((y,u),(x,v))$ per physical coordinate; matrix
 indices $(m,n)$ therefore map to $((m_q,n_p),(m_p,n_q))$ explicitly.
-The actual normalized Hermite matrix-entry identity, exact binding to the
+The actual normalized weighted Hermite matrix identity has complete source
+proofs in the uncompiled gate-jet extension below. Exact binding to the
 historical Laguerre polynomial and numerical Hilbert--Schmidt caps remain open.
 A further WIP batch, also pending compilation, evaluates finite physical
 Hermite generating blocks and recovers exactly their retained normalized
@@ -449,8 +450,8 @@ second. These are total finite formulas.
 Every actual physical matrix entry also has a finite damped Wick formula,
 with diagonal moment $p!/r^{p+1}$ and zero off the diagonal.
 The ground coefficient is identified with the actual ground matrix entry.
-The weighted Hermite identity for all indices and the numerical caps remain
-open; the ground case does not establish either obligation.
+The gate-jet extension below supplies complete source proofs of the weighted
+Hermite identity for all indices; numerical caps remain open.
 The gate-jet extension is also WIP, pending compilation. Finite Gaussian
 source extraction equals a mixed derivative at zero. In the fixed gate
 order $((y,u),(x,v))$, the same finite derivatives are evaluated by the
@@ -460,9 +461,14 @@ then identify every coefficient of the actual scaled transform with a finite
 sum of physical Hermite moments from the production polynomial, retaining
 both mass factors and the explicit index permutation. Separate finite
 identities identify the Hermite normalization and show that the squared
-source scales equal the original energy weights. Joining these interfaces
-into the normalized weighted matrix equality remains open, as do the
-numerical Hilbert--Schmidt caps and the historical Laguerre binding.
+source scales equal the original energy weights. Exact factorial and scale
+identities, together with finite physical polynomial integration, complete
+the source coefficient equality with the normalized weighted matrix entry.
+The full weighted energy is summable, and its full and finite sums are
+bounded by the Gaussian source integral of the squared norm of the actual
+scaled transform. All these new proof bodies and strict axiom guards remain
+uncompiled. Numerical bounds on that source integral, Hilbert--Schmidt caps,
+the historical Laguerre binding, and the final upper endpoint remain open.
 For the correlated form
 $Q=A|z|^2+2B\operatorname{Re}(z\overline w)+C|w|^2$, the exact conditions
 $A>0$ and $AC-B^2>0$ give the positive coercive rate

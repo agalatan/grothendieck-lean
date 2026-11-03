@@ -193,6 +193,8 @@ import Grothe.Upper.Residual
 import Grothe.UpperChaos.ActualCoherentBesselAudit
 import Grothe.UpperChaos.ActualCoherentCoefficientAudit
 import Grothe.UpperChaos.ActualCoherentHermiteJets
+import Grothe.UpperChaos.ActualGateCoefficientWeights
+import Grothe.UpperChaos.ActualGateMatrixCoefficients
 import Grothe.UpperChaos.ActualGateMatrixWeights
 import Grothe.UpperChaos.ActualGateMomentJetsAudit
 import Grothe.UpperChaos.ActualMatrixFiniteComparison

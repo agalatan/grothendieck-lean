@@ -1,4 +1,4 @@
-import Grothe.UpperChaos.ActualProductionMomentCoefficients
+import Grothe.UpperChaos.ActualGateMatrixCoefficients
 import Grothe.UpperChaos.ActualCoherentHermiteJets
 import Grothe.UpperChaos.ActualGateMatrixWeights
 import Lean.Util.CollectAxioms
@@ -10,8 +10,9 @@ import Lean.Elab.Command
 Agent-ID: codex-2ca4.
 
 Finite source jets, production polynomial moments, physical Hermite factors
-and exact source weights use only the standard Lean axioms. The final
-normalized weighted matrix identification and numerical caps remain separate.
+and exact source weights use only the standard Lean axioms. The normalized
+weighted matrix identification and its full/finite Bessel bounds are audited
+here; numerical source-norm bounds and caps remain separate.
 -/
 
 open Lean Elab Command
@@ -27,6 +28,16 @@ run_cmd do
     ``Grothe.UpperChaos.ActualCoherentHermiteJets.mixed_outgoing_derivative,
     ``Grothe.UpperChaos.ActualCoherentHermiteJets.normalizedPhysicalJet_eq,
     ``Grothe.UpperChaos.ActualCoherentHermiteJets.pairJet_eq,
+    ``Grothe.UpperChaos.ActualGateCoefficientWeights.tensorNormalization_eq_nrm2,
+    ``Grothe.UpperChaos.ActualGateCoefficientWeights.tensorSourceWeight_eq_sourceWeight,
+    ``Grothe.UpperChaos.ActualGateMatrixCoefficients.coefficient8_scaledTransform_eq_weightedMatrixEntry,
+    ``Grothe.UpperChaos.ActualGateMatrixCoefficients.finite_actual_matrix_energy_le,
+    ``Grothe.UpperChaos.ActualGateMatrixCoefficients.integrable_physicalMomentIntegrand,
+    ``Grothe.UpperChaos.ActualGateMatrixCoefficients.integral_actual_multiplier_eq_sum,
+    ``Grothe.UpperChaos.ActualGateMatrixCoefficients.summable_weightedMatrixEntry_sq,
+    ``Grothe.UpperChaos.ActualGateMatrixCoefficients.taylorPhasePower_eq_monomial_sum,
+    ``Grothe.UpperChaos.ActualGateMatrixCoefficients.tsum_actual_matrix_energy_le,
+    ``Grothe.UpperChaos.ActualGateMatrixCoefficients.tsum_weightedMatrixEntry_sq_le,
     ``Grothe.UpperChaos.ActualGateMatrixWeights.finite_weightedMatrixEntry_energy,
     ``Grothe.UpperChaos.ActualGateMatrixWeights.norm_weightedMatrixEntry_sq,
     ``Grothe.UpperChaos.ActualGateMatrixWeights.sourceWeight_nonneg,
