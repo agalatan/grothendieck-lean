@@ -1289,3 +1289,17 @@ is unverified, and actual grade/band facts take an explicit packed-to-literal
 source-equality premise. Kernel certificates must discharge it before acceptance.
 The existing public native band checks remain in place. Gaussian response errors
 are separate from these finite integer identities.
+
+`PackedDyadicStructural` adds a strict character-list token reader with proposed
+equalities to `String.toNat?` and `String.toInt?` on all inputs, including interior
+underscores and negative zero. The numeric-stage transfer retains exponent and
+mantissa range checks. The row transfer explicitly requires the legacy
+`String.splitOn` delimiter identities; compatibility with modern `String.split`
+alone does not close that obligation. These new proofs are unverified.
+`tools/gen_first_second_packed_pilot.py` rechecks the pinned NPZ inputs and emits
+four actual-source chunk pilots, each split into at most 32 records per proof.
+Their character-reassembly statements refer directly to the preserved packed
+arrays. The complete explicit plan has 280 targets: parser regressions, these
+four pilots, 274 grade targets, and the final strict audit. A default-root green
+check supplies no verdict for these excluded modules or the remaining source
+equivalence and public consumer gates.

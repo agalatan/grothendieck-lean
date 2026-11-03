@@ -10,10 +10,18 @@ if [ "$#" -gt 1 ] || { [ "$#" -eq 1 ] && [ "$1" != '--plan' ]; }; then
   exit 2
 fi
 
+# Strict parser and bounded actual-byte pilots precede the integer family.
+# These four source chunks do not discharge the complete legacy source identity.
 # All raw checks precede bindings: the latter import the full source arrays.
 # Sequential commands share the same .lake/build; no cross-job cache is assumed.
 plan() {
   local q
+  printf '%s\n' \
+    'Grothe.UpperChaos.PackedDyadicStructuralChecks' \
+    'Grothe.UpperChaos.TaylorFirstPackedChunk000Pilot' \
+    'Grothe.UpperChaos.TaylorFirstPackedChunk253Pilot' \
+    'Grothe.UpperChaos.TaylorSecondPackedChunk000Pilot' \
+    'Grothe.UpperChaos.TaylorSecondPackedChunk033Pilot'
   for q in $(seq 0 90); do
     printf 'Grothe.UpperChaos.TaylorFirstIntegerGrade%03dCheck\n' "$q"
   done
@@ -77,6 +85,7 @@ fi
 python3 tools/gen_taylor_first_second_integers.py --full --check
 python3 tools/gen_first_second_grade_bindings.py --check
 python3 tools/gen_first_second_grade_energy_targets.py --check
+python3 tools/gen_first_second_packed_pilot.py --check
 python3 - <<'PY'
 import json
 from pathlib import Path
@@ -122,7 +131,7 @@ while IFS= read -r target; do
   index=$((index + 1))
   stem=$(printf '%03d-%s' "$index" "${target##*.}")
   metric="$OUT/first-second-energy-metrics/$stem"
-  printf '\n[%d/275] %s\n' "$index" "$target"
+  printf '\n[%d/280] %s\n' "$index" "$target"
   snapshot > "$metric.before.txt"
   if ! disk_check "$MIN_FREE_GIB" "$target" "$metric.disk.txt"; then
     printf 'Stopping before %s: less than %s GiB free in the workspace.\n' "$target" "$MIN_FREE_GIB" >&2
@@ -145,8 +154,8 @@ while IFS= read -r target; do
   fi
 done < <(plan)
 
-if [ "$index" -ne 275 ]; then
+if [ "$index" -ne 280 ]; then
   printf 'Unexpected plan size: %s targets\n' "$index" >&2
   exit 1
 fi
-printf 'All 274 grade targets and final strict-audit target passed in one workspace.\n'
+printf 'Parser/pilots, all 274 grade targets and final strict-audit target passed in one workspace.\n'
