@@ -174,7 +174,7 @@ especially a re-push after a CI failure, a review or a conflict):
    - sorted one-entry-per-line lists (`scratch/Axioms.lean`, `data/axioms/*.txt`, `data/root-imports-exclude.txt`)
      are union-merged by git (`.gitattributes`); keep them sorted and duplicate-free (CI checks);
    - shared scripts: take master's version and re-apply only your intended change;
-   - `README.md` needs a hand merge: describe the combined state.
+   - `README.md` is frozen (§7, step 4): a PR that still touches it drops its README change in the merge.
 5. **Quick local checks only (seconds to minutes):** `python3 tools/gen_root_imports.py --check`, the script tests
    (`python3 scripts/test_*.py`) if you touched scripts, and the Lean modules you are editing anyway while you work.
    Do not repeat CI's full check before pushing (§7): a red check costs one more push, a duplicate check costs a
@@ -200,9 +200,11 @@ without a PR (`RFC`/`WIP` labels for early feedback).
    - every new `native_decide` fact is in `data/axioms/native.txt`;
    - a new module is imported by the generated root (run `python3 tools/gen_root_imports.py`). There is one build
      target, `Grothe`; only generated research modules that no proof uses yet go in `data/root-imports-exclude.txt`.
-4. **Documentation:** never write counts of the axiom report or of native facts into documents (they conflict
-   with every concurrent PR; the lists in `data/axioms/` and `scratch/Axioms.lean` are the record). If a
-   bound, a hypothesis or the axiom report changed, update `README.md`,
+4. **Documentation:** **do not write in `README.md` for now** (user, 3 November 2026): every concurrent PR used to
+   add its paragraph there and they conflicted on every merge. The PR description and its comments carry the
+   context of a change; `README.md` is revised in one pass later. Never write counts of the axiom report or of
+   native facts into documents (they conflict with every concurrent PR; the lists in `data/axioms/` and
+   `scratch/Axioms.lean` are the record). If a bound, a hypothesis or the axiom report changed, update
    `docs/overview.tex` and `docs/LEAN_DETAILS.md` in the same PR. **Never build or commit `OVERVIEW.pdf`:**
    CI rebuilds it from `docs/overview.tex` on master (`.github/workflows/overview.yml`), and merges never conflict on it
    (`merge=ours` in `.gitattributes`).
@@ -321,8 +323,9 @@ Also:
   `scripts/cloud.sh` enforces the limit for cloud jobs (set `AGENT_ID`). Master's own check (after your PR
   lands) does not count. If you are at the limit, wait for a job to finish; a re-push of the same branch replaces
   its running check and does not add one.
-- **Cost:** the repository is private, so CI minutes are billed. Push when a check helps you, not after every small
-  commit; use `[skip ci]` otherwise.
+- **Cost:** the repository is public, so GitHub-hosted minutes are free; the heavy runners are ours (the droplet and
+  temporary big droplets, billed by the hour) and every check queues behind the others'. Push when a check helps
+  you, not after every small commit; use `[skip ci]` otherwise.
 
 ## 9. Pull requests
 
@@ -413,8 +416,9 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   chain, not the core count; more cores or shards help only where many modules are independent.
 - **Droplet** (`--runner droplet`): script jobs only, in a throwaway directory, never in the runner's workspace. It
   queues behind the runner's other jobs (proof checks included).
-- **Cost:** every job-minute is billed beyond the free quota, and shards multiply minutes. Prefer few, purposeful
-  jobs; never poll in loops that re-dispatch.
+- **Cost:** GitHub-hosted minutes are free (public repository), but the runners are shared by every agent, shards
+  multiply the load, and `--runner droplet` occupies a heavy slot by the hour. Prefer few, purposeful jobs; never
+  poll in loops that re-dispatch.
 
 ## 12. Shared machines
 
@@ -467,7 +471,7 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
   `scratch/Axioms.lean`.
 - The repository proves only the current best bounds, written as if designed from the start: no history, no
   superseded certificates, no "v2" naming. Research material goes in `handoff/` (git-ignored).
-- Bounds and hypotheses are stated in `README.md`, `docs/overview.tex` (CI builds `OVERVIEW.pdf` from it) and
+- Bounds and hypotheses are stated in `docs/overview.tex` (CI builds `OVERVIEW.pdf` from it) and
   `docs/LEAN_DETAILS.md` (§7, step 4).
 - The node caps (`CapRowKK`, `CapNodes`) are part of `Grothe` and verified by CI (§8, §10). The cap checker
   (`GrotheCapsKernel/`) is its own precompiled library on purpose (a change to a precompiled library invalidates every
