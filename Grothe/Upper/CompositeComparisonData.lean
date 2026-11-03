@@ -69,9 +69,9 @@ theorem high_contains (g : Fin 3) (n m : ℕ) :
   change (decide (cutoff g < n + m) && true) = true ↔ cutoff g < n + m
   constructor
   · intro h
-    exact of_decide_eq_true (Bool.and_eq_true.mp h).1
+    exact of_decide_eq_true (Bool.and_eq_true_iff.mp h).1
   · intro h
-    exact Bool.and_eq_true.mpr ⟨decide_eq_true h, rfl⟩
+    exact Bool.and_eq_true_iff.mpr ⟨decide_eq_true h, rfl⟩
 
 theorem cutoff_pos (g : Fin 3) : 0 < cutoff g := by
   fin_cases g <;> decide +kernel
