@@ -199,6 +199,15 @@ counting Gaussian density once. This is not an endpoint or floating-point-table
 certificate: regular evaluator, normalization, contraction, omitted-domain and
 tail estimates remain work in progress.
 
+The near-zero regular-node path keeps the Gaussian error as one vector.
+`Q0ConditionalLinearError` uses Bessel to bound the selected analytic remainder
+by `5ρ²`, without multiplying by the number of modes. Its parameter error has
+vector radius `|ρ-r|`; the saved-model discrepancy requires its own coupled
+squared-norm certificate. `Q0ConditionalSourceVector` combines these bounds
+on selected regular nodes with separate budgets on all other regular nodes,
+using the original physical Gaussian weights. Actual parameter and saved-row
+certificates remain inputs; this path does not finish the upper bound.
+
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of
 scaled integers regenerated from the same pinned binary64 input.

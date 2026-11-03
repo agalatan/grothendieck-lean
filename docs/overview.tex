@@ -145,6 +145,15 @@ production phase. Regular evaluator bounds, floating operations, contraction,
 omitted-domain estimates, tails and the final energy-table fit are still
 separate requirements for the upper endpoint.
 
+For selected regular nodes near a profile zero, the whole Gaussian slice
+remainder is projected by Bessel before aggregating coefficients. Its vector
+radius remains $5\rho^2$, without a mode-count factor. The two-coordinate
+parameter error has radius at most $|\rho-r|$; a separate coupled saved-model
+radius $\varepsilon$ gives $5\rho^2+|\rho-r|+\varepsilon$. The hybrid source
+budget combines those selected nodes with explicit squared-error budgets on
+all other regular nodes, using the same physical Gaussian weights. Actual
+parameter and saved-vector certificates remain required.
+
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every
 grade's integer sum and divides by $2^{210}$, then identifies the rational

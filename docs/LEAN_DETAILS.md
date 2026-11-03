@@ -135,6 +135,28 @@ energy-table fit remain separate. The final consumers have transitive strict
 axiom audits. Pinned inputs and all reproduction commands are listed in
 [`source-error/README.md`](../data/q0_quadrature/source-error/README.md).
 
+**Coupled regular-vector error.** `Q0ConditionalLinearError` applies the existing
+finite Bessel theorem to the actual Gaussian slice minus its constant-and-linear
+model. For every finite mode set and positive source radius, the squared
+coefficient error is at most `(5ρ²)²`, including when the signed physical
+profile ratio `ρ` is zero. Changing the model parameter to `r` has vector
+radius at most `|ρ-r|`, because only two linear coordinates change. A supplied
+saved-model vector error `ε` then gives radius `5ρ² + |ρ-r| + ε`.
+A per-coordinate tolerance cannot be substituted for this coupled `ε` premise.
+
+`Q0ConditionalSourceVector.LinearRowBounds` states the actual parameter and
+saved-vector certificates at an existing selected source node. Its hybrid
+budget uses the linear model on a chosen subset of regular nodes and explicit
+squared-error budgets on every other regular node. The source weights remain
+`sourceWeight * exp(-sourceNode)`, once; exceptional addresses are excluded
+from that regular sum and use the separate exceptional assembly. A checked
+hybrid budget at most `(1969/10^13)²` feeds the selected source-error bound
+`253/10^12`. No global near-zero assumption, production-table identification,
+or infinite-tail estimate is asserted. The finite physical-parameter and
+saved-vector certificates still need to be supplied. Source dependencies and
+certificate semantics are in
+[`source-vector/README.md`](../data/q0_quadrature/source-vector/README.md).
+
 **q0 source-to-literal identity.**
 `Q0BinaryLiteralAssemblyBridge.sourceSum_eq_literal` proves, for all real
 `s`, `b`, and `v`, that `Ssum q0RawWickEntries s b v` equals

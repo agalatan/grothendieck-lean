@@ -602,7 +602,6 @@ import Grothe.UpperChaos.ConditionalGaussianTail
 import Grothe.UpperChaos.ConditionalMomentReflection
 import Grothe.UpperChaos.ConditionalNodeIndices
 import Grothe.UpperChaos.ConditionalReconstruction
-import Grothe.UpperChaos.ConditionalNodeIndices
 import Grothe.UpperChaos.DFTAliasFilter
 import Grothe.UpperChaos.DampedMoments
 import Grothe.UpperChaos.DiagonalPairing
@@ -613,8 +612,6 @@ import Grothe.UpperChaos.Energy2
 import Grothe.UpperChaos.EnergyBlock
 import Grothe.UpperChaos.ExponentialHorner
 import Grothe.UpperChaos.ExponentialTail
-import Grothe.UpperChaos.F0ConditionalEvaluator
-import Grothe.UpperChaos.F0ConditionalNode
 import Grothe.UpperChaos.F0ConditionalCoefficientBounds
 import Grothe.UpperChaos.F0ConditionalCoefficientBoundsAxiomAudit
 import Grothe.UpperChaos.F0ConditionalEvaluator
@@ -1548,6 +1545,7 @@ import Grothe.UpperChaos.Q0Chunk_o984_n8
 import Grothe.UpperChaos.Q0Chunk_o992_n8
 import Grothe.UpperChaos.Q0CommonMomentSum
 import Grothe.UpperChaos.Q0CompanionBaseQuadrature
+import Grothe.UpperChaos.Q0ConditionalLinearError
 import Grothe.UpperChaos.Q0ConditionalMetadataAll
 import Grothe.UpperChaos.Q0ConditionalMetadataCheck
 import Grothe.UpperChaos.Q0ConditionalMetadataGroup000
@@ -1618,6 +1616,7 @@ import Grothe.UpperChaos.Q0ConditionalShift
 import Grothe.UpperChaos.Q0ConditionalSourceAssembly
 import Grothe.UpperChaos.Q0ConditionalSourceError
 import Grothe.UpperChaos.Q0ConditionalSourceReconstruction
+import Grothe.UpperChaos.Q0ConditionalSourceVector
 import Grothe.UpperChaos.Q0ConditionalWickReal
 import Grothe.UpperChaos.Q0ExceptionSupport
 import Grothe.UpperChaos.Q0FoldBatchedAlgebra
