@@ -192,11 +192,17 @@ import Grothe.Upper.Realise
 import Grothe.Upper.Residual
 import Grothe.UpperChaos.ActualCoherentBesselAudit
 import Grothe.UpperChaos.ActualCoherentCoefficientAudit
+import Grothe.UpperChaos.ActualCoherentHermiteJets
+import Grothe.UpperChaos.ActualGateMatrixWeights
+import Grothe.UpperChaos.ActualGateMomentJetsAudit
 import Grothe.UpperChaos.ActualMatrixFiniteComparison
+import Grothe.UpperChaos.ActualPairMomentCoefficients
+import Grothe.UpperChaos.ActualProductionMomentCoefficients
 import Grothe.UpperChaos.ActualSourceCoefficientExtraction
 import Grothe.UpperChaos.ActualTaylorCoherent
 import Grothe.UpperChaos.ActualTaylorCoherentAudit
 import Grothe.UpperChaos.ActualTaylorFiniteCoefficients
+import Grothe.UpperChaos.ActualTensorMomentCoefficients
 import Grothe.UpperChaos.AdaptiveRectangleComposition
 import Grothe.UpperChaos.AdaptiveRectangleEnclosure
 import Grothe.UpperChaos.AdaptiveRectangleEnvelope
@@ -578,6 +584,7 @@ import Grothe.UpperChaos.ArraySquareEnergy
 import Grothe.UpperChaos.BandProj
 import Grothe.UpperChaos.BandedContraction
 import Grothe.UpperChaos.BasePairIntegralAudit
+import Grothe.UpperChaos.BipartiteCoefficientJets
 import Grothe.UpperChaos.BipartitePolynomialL2
 import Grothe.UpperChaos.CapturedSourceBound
 import Grothe.UpperChaos.CapturedTail
@@ -859,8 +866,11 @@ import Grothe.UpperChaos.HermiteC2Basis
 import Grothe.UpperChaos.HermiteComplete
 import Grothe.UpperChaos.HermiteConjugation
 import Grothe.UpperChaos.HermiteDegree
+import Grothe.UpperChaos.HermiteFallingFactorial
 import Grothe.UpperChaos.HermiteFinite
 import Grothe.UpperChaos.HolIntegral
+import Grothe.UpperChaos.HolomorphicCoefficientJets
+import Grothe.UpperChaos.IndependentMomentJets
 import Grothe.UpperChaos.IndependentSourceMoments
 import Grothe.UpperChaos.IndependentSourcePolynomial
 import Grothe.UpperChaos.IndependentSourcePolynomialAudit
@@ -907,6 +917,7 @@ import Grothe.UpperChaos.OriginalMomentSubstitution
 import Grothe.UpperChaos.OriginalMomentSubstitutionLemmas
 import Grothe.UpperChaos.PackedDyadic
 import Grothe.UpperChaos.PackedDyadicChunks
+import Grothe.UpperChaos.PairJetPolynomialOperations
 import Grothe.UpperChaos.PhaseAuxiliaryDecay
 import Grothe.UpperChaos.PhaseMoment2
 import Grothe.UpperChaos.PhaseMoment4
@@ -1079,6 +1090,7 @@ import Grothe.UpperChaos.PhiSourceDenChunk_o984_n8
 import Grothe.UpperChaos.PhiSourceDenChunk_o992_n8
 import Grothe.UpperChaos.PhiSourceDenChunks
 import Grothe.UpperChaos.PhiSourceDenLiteralAssembly
+import Grothe.UpperChaos.PhysicalGateJets
 import Grothe.UpperChaos.PointwiseCenteredExpEnclosure
 import Grothe.UpperChaos.PointwiseGeometricEnclosure
 import Grothe.UpperChaos.PositiveMomentBackward

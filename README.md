@@ -349,6 +349,21 @@ matrix entry and identifies the full transform's ground coefficient with its
 actual ground entry. The all-index weighted Hermite identity and numerical
 caps remain open; the ground identity does not settle them.
 
+The gate-jet batch is WIP, with complete proof bodies pending compilation.
+Finite Gaussian source extraction is identified with mixed derivatives at
+zero, and those derivatives are evaluated in the exact gate order
+`((y,u),(x,v))`, without commuting derivatives or exchanging physical and
+source integrals. `ActualPairMomentCoefficients` includes the original source
+scales and Gaussian mass. `ActualTensorMomentCoefficients` tensors the two
+physical coordinates, and `ActualProductionMomentCoefficients` identifies
+every coefficient of the actual scaled transform with a finite sum of
+physical Hermite moments from the production multiplier polynomial.
+`ActualCoherentHermiteJets` separately identifies the finite physical jets
+and their Hermite normalization; `ActualGateMatrixWeights` proves that squared
+source scales are exactly the original energy weights. These interfaces still
+need to be joined into the normalized weighted matrix identity. Numerical
+Hilbert--Schmidt caps and the historical Laguerre binding remain open.
+
 For the correlated form `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²`,
 `QuadraticPolynomialIntegrability` proves genuine joint polynomial
 integrability under exactly `A>0` and `A*C-B²>0`. The positive coercive rate

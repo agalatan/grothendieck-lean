@@ -460,6 +460,41 @@ all weighted Hermite indices remains OPEN, as do numerical Hilbert--Schmidt
 caps and the historical Laguerre binding. No physical/source Fubini or
 unproved coefficient identity is assumed in this batch.
 
+The gate-jet extension is likewise WIP, with complete source proofs pending
+compilation. `HermiteFallingFactorial` derives the finite production Hermite
+expansion from commuting creation operators. `HolomorphicCoefficientJets`
+identifies finite Gaussian extraction with derivatives at zero, and
+`BipartiteCoefficientJets` applies it in the gate source order
+`((y,u),(x,v))`. Derivatives are taken in the fixed order `u,y,v,x` from
+innermost to outermost; no commutation of mixed derivatives is assumed.
+`IndependentMomentJets` derives every required moment derivative and its
+smoothness from the existing dominated independent-source integral theorem.
+`PhysicalGateJets` then proves that each full finite jet equals the actual
+outgoing/incoming physical Hermite moment, including both negative coherent
+normalization terms.
+
+`PairJetPolynomialOperations` proves finite-sum linearity and independent
+source scaling. `ActualPairMomentCoefficients` specializes the finite
+polynomial and positive Gaussian gate to the actual pair scales, retaining
+mass `1/rate`. `ActualTensorMomentCoefficients` gives the explicit bijective
+index permutation, tensors the independent physical coordinates, and proves
+the source coefficient equals its physical moment with exact common
+normalization and scale factors. Finally,
+`ActualProductionMomentCoefficients.coefficient8_scaledTransform_eq_physical`
+uses exactly the support and coefficients of `multiplierPolynomial g.power`
+to identify every actual transform coefficient with a finite sum of physical
+Hermite moments. These steps use only source-space Gaussian integration and
+finite algebra; they do not exchange source and physical integration.
+
+`ActualCoherentHermiteJets` separately proves the finite generating identity
+for the physical coherent pair and the equality of its Gaussian and Hermite
+normalizations. `ActualGateMatrixWeights` proves that squaring the source
+scale gives the original real energy weight. The final join from the
+production moment sum to the normalized weighted matrix entry remains OPEN,
+as do numerical Hilbert--Schmidt caps and the historical Laguerre binding.
+`ActualGateMomentJetsAudit` installs strict standard-three transitive guards
+for the new interfaces; the guards also await compilation.
+
 `QuadraticPolynomialIntegrability` proves a separable Gaussian majorant for
 `Q=A*|z|²+2*B*Re(z*conj w)+C*|w|²` under exactly `A>0` and
 `A*C-B²>0`. The rate `(A*C-B²)/(A+C)` follows from an exact trace identity
