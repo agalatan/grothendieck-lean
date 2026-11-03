@@ -1,7 +1,7 @@
 {
   "agent": "codex-aa04",
   "dependencies": {
-    "source_error_PR248": "174e02fb226894899725e31c918733ffd25f7391",
+    "source_error_PR248": "8d5b16e5ef3f81114ee4d4d6b9735df65577bedd",
     "phase_model_PR238": "2dbdf341c829e2df38d1535dfe3b8079f25ccccd"
   },
   "numerical_inputs": "No new numerical data; actual source-node tables are pinned by ../source-error/provenance.json."

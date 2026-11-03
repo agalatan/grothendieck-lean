@@ -82,6 +82,23 @@ from `Upper/Data.lean`; the generated candidates are linked to the actual
 source by Lean proofs. The result is independent of the phase-cover numerical
 leaves and does not discharge the remaining upper-bound inputs.
 
+**Conditional-pair ranks.** `Q0ConditionalPairRankAll` proves finite rank,
+ordinal coverage and uniqueness for the degree-531 canonical pair table. Its
+pairs `(c,d)` satisfy `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1` and
+`c+d ≤ 531`, ordered by `(c+d,c)`; they index conditional Hermite node values.
+No downstream Lean result yet consumes this certificate. It does not decode
+the full node-value payload or establish Gaussian coefficient enclosures.
+
+The input `data/q0_quadrature/conditional_source/conditional_canonical_pairs.npy`
+was produced by `build_conditional_nodes.py` in the common-head conditional-node
+pipeline. Its SHA-256 is
+`075eb8fe8a52766742c7ca82097171f8dfce173ac8dc9ed80193fc7821ee1ead`.
+`tools/q0_quadrature/gen_conditional_pair_ranks.py --check` verifies that hash,
+the `(35777,2)` shape and little-endian signed 16-bit representation, and exact
+equality with the closed-form enumeration above before reproducing the Lean
+files. This input hash records provenance; Lean checks the emitted literals
+and finite properties, not the NPY parser.
+
 **Exceptional conditional rows.** The source table has 21,577 rows of
 binary64 conditional Hermite approximations, ordered by the degree-531 canonical
 pairs `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1`, in `(c+d,c)` order and restricted
@@ -105,22 +122,7 @@ its own generator, `gen_source_exception_metadata.py --check`, which shares the
 validated row reader. Producer provenance and the checked ledger fields are documented
 in [`conditional_source/README.md`](../data/q0_quadrature/conditional_source/README.md).
 
-**Conditional-pair ranks.** `Q0ConditionalPairRankAll` proves finite rank,
-ordinal coverage and uniqueness for the degree-531 canonical pair table. Its
-pairs `(c,d)` satisfy `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1` and
-`c+d ≤ 531`, ordered by `(c+d,c)`; they index conditional Hermite node values.
-No downstream Lean result yet consumes this certificate. It does not decode
-the full node-value payload or establish Gaussian coefficient enclosures.
 
-The input `data/q0_quadrature/conditional_source/conditional_canonical_pairs.npy`
-was produced by `build_conditional_nodes.py` in the common-head conditional-node
-pipeline. Its SHA-256 is
-`075eb8fe8a52766742c7ca82097171f8dfce173ac8dc9ed80193fc7821ee1ead`.
-`tools/q0_quadrature/gen_conditional_pair_ranks.py --check` verifies that hash,
-the `(35777,2)` shape and little-endian signed 16-bit representation, and exact
-equality with the closed-form enumeration above before reproducing the Lean
-files. This input hash records provenance; Lean checks the emitted literals
-and finite properties, not the NPY parser.
 
 **Actual source-error assembly.** `Q0SourceExceptionMassClosure` uses the
 finite exceptional-panel order scan and `Q0GaussSourcePanelMass` to prove
