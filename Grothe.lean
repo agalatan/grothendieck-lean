@@ -603,7 +603,6 @@ import Grothe.UpperChaos.ConditionalGaussianTail
 import Grothe.UpperChaos.ConditionalMomentReflection
 import Grothe.UpperChaos.ConditionalNodeIndices
 import Grothe.UpperChaos.ConditionalReconstruction
-import Grothe.UpperChaos.DFTAliasFilter
 import Grothe.UpperChaos.DampedMoments
 import Grothe.UpperChaos.DiagonalPairing
 import Grothe.UpperChaos.DiagonalSum
@@ -615,7 +614,6 @@ import Grothe.UpperChaos.ExponentialHorner
 import Grothe.UpperChaos.ExponentialTail
 import Grothe.UpperChaos.F0ConditionalEvaluator
 import Grothe.UpperChaos.F0ConditionalNode
-import Grothe.UpperChaos.FiniteSampleError
 import Grothe.UpperChaos.FirstSecondCapturedTail
 import Grothe.UpperChaos.FixedChaosGradedAction
 import Grothe.UpperChaos.FixedChaosLinear
