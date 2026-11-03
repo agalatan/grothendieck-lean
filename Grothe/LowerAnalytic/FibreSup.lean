@@ -17,8 +17,6 @@ noncomputable section
 
 /-! ### Algebra of the packed dual variable -/
 
-lemma hre_comm (u v : ℂ) : hre u v = hre v u := by simp only [hre_eq]; ring
-
 lemma abs_hre_le (u v : ℂ) : |hre u v| ≤ ‖u‖ * ‖v‖ := by
   unfold hre
   refine (Complex.abs_re_le_norm _).trans ?_
