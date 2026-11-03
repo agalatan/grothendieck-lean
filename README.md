@@ -194,6 +194,21 @@ equality. The proof preserves the separate exact denominator
 inverse rate and shifted argument. Generated Python data are checked by Lean;
 the numerical quadrature cells and the upper-bound inputs remain to be proved.
 
+The conditional-node table has 21,577 rows of binary64 approximations to
+conditional Hermite coefficients. Row i follows the degree-531 canonical pairs
+`0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1`, in `(c+d,c)` order, retaining
+`c+d ≤ cutoff_i`: a full row has 35,777 entries, cutoff 1 has three and cutoff 2
+has five. This certificate selects every node in a panel where the outward
+128-bit profile interval Horner screen contains zero at some node. Its 413
+unresolved nodes occupy 381 panels; panel closure selects exactly 417 rows
+(3872–4036, 10910–11037 and 17321–17444), independently of the cutoffs.
+The committed [selection inputs and rule](data/q0_quadrature/conditional_source/exception-selection.json)
+reproduce this choice. `Q0SourceExceptionCentersAll` checks scalar magnitude
+at most one, squared row norm at most `121/100`, and source ordinal coverage.
+No Gaussian coefficient estimate or upper-bound assembly currently consumes
+this certificate; source-address, basis-normalization and approximation-error
+proofs remain separate.
+
 The complete stored third Taylor center has kernel-checked exact total and
 comparison-band energies. Its authoritative witness is the ordered array of
 scaled integers regenerated from the same pinned binary64 input.
@@ -480,16 +495,17 @@ Thus their reciprocal Gaussian denominator exceeds `10⁻⁶` uniformly, includi
 for very small positive reciprocal coordinates.
 
 `PhiProductionIdentity` relates the actual rounding phase to its Gram-coordinate
-polynomial without importing the numerical phase cover. Concrete leaf proofs
-can use this exact identity before the global cover is assembled.
+polynomial without importing the numerical phase cover. Its shared Gram identity
+supplies both the phase-square formula and the domain constraint used by the
+global cover and local leaf soundness.
 
-`ProductionPhaseLeaf` carries an integer leaf check on the original phase source
-to the actual production phase and rounding. `ProductionPhaseModel` propagates
-the zero-safe Gaussian base remainder through the cubic factor, charging phase
-error at most `5/2` times its absolute error and retaining the explicit
-model-to-saved-center discrepancy. The finite source checks and numerical
-comparison inputs still need to be certified; these interfaces do not complete
-the global cover or upper endpoint.
+`ProductionPhaseLeaf` turns a supplied integer leaf check into a squared phase
+bound on that box; no concrete leaf check is provided here. The native global
+cover already bounds the phase everywhere. `PhasePolynomialStability` bounds
+the cubic factor's change by `5/2` times the phase change, and
+`ProductionPhaseModel` combines this with the zero-safe Gaussian base remainder.
+Its phase bound stays explicit to keep the analytic estimate independent of
+the native cover. Numerical source comparisons and the upper endpoint remain open.
 
 `ProductionPhaseL2Error` proves a triangle inequality in conditional Gaussian
 L² on one radial slice of the unsmoothed rounding: the error is at most `5ρ²`

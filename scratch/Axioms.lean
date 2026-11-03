@@ -863,15 +863,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProductionPhaseL2Error.norm_roundingSliceLp_sub_saved
 #print axioms Grothe.UpperChaos.ProductionPhaseL2Error.phaseDifference_memLp
 #print axioms Grothe.UpperChaos.ProductionPhaseL2Error.roundingSlice_memLp
-#print axioms Grothe.UpperChaos.ProductionPhaseLeaf.abs_phase_lt_one_of_leaf
-#print axioms Grothe.UpperChaos.ProductionPhaseLeaf.gram_constraint
-#print axioms Grothe.UpperChaos.ProductionPhaseLeaf.norm_phase_factor_le_one_of_leaf
-#print axioms Grothe.UpperChaos.ProductionPhaseLeaf.norm_rounding_le_one_of_leaf
 #print axioms Grothe.UpperChaos.ProductionPhaseLeaf.phase_sq_le_of_leaf
 #print axioms Grothe.UpperChaos.ProductionPhaseModel.norm_roundingSlice_sub_model
-#print axioms Grothe.UpperChaos.ProductionPhaseModel.norm_roundingSlice_sub_model_of_leaf
-#print axioms Grothe.UpperChaos.ProductionPhaseModel.norm_roundingSlice_sub_saved_of_leaf
-#print axioms Grothe.UpperChaos.ProductionPhaseModel.roundingSlice_at_profile_zero
 #print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.norm_exactModel_sq
 #print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.norm_linearSlice_sq
 #print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.norm_roundingSliceLp_sub_saved
@@ -1720,6 +1713,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_chunk_tables
 #print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_cover
 #print axioms Grothe.UpperChaos.Q0SourceChunkAssembly.concrete_denominator_lcm
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCenters.validRow_normSq_real
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCentersAll.all_valid
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCentersAll.each_scalar
+#print axioms Grothe.UpperChaos.Q0SourceExceptionCentersAll.ordinals
 #print axioms Grothe.UpperChaos.QuadraturePartition.integral_auxiliary_reciprocal
 #print axioms Grothe.UpperChaos.QuadraturePartition.monotone_dyadicAuxiliaryCut
 #print axioms Grothe.UpperChaos.QuadraturePartition.norm_rectangleIntegral_reciprocal_sub_sum_le
@@ -2183,6 +2180,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_toLp_sq_eq_integral
 #print axioms Grothe.UpperChaos.phaseEps_eq
 #print axioms Grothe.UpperChaos.phase_cutoff_factor_check
+#print axioms Grothe.UpperChaos.phase_gram_re_sq_le
+#print axioms Grothe.UpperChaos.phase_gram_sq_sum
 #print axioms Grothe.UpperChaos.phase_moment2_check
 #print axioms Grothe.UpperChaos.phase_moment4_check
 #print axioms Grothe.UpperChaos.phase_moment6_check

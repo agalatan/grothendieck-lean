@@ -82,6 +82,28 @@ from `Upper/Data.lean`; the generated candidates are linked to the actual
 source by Lean proofs. The result is independent of the phase-cover numerical
 leaves and does not discharge the remaining upper-bound inputs.
 
+**Exceptional conditional rows.** The source table has 21,577 rows of
+binary64 conditional Hermite approximations, ordered by the degree-531 canonical
+pairs `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1`, in `(c+d,c)` order and restricted
+to `c+d ≤ cutoff_i` in row i. A full row has 35,777 entries; cutoffs 1 and 2
+retain three and five. This certificate selects all nodes in each panel hit by
+a zero-containing result of the outward 128-bit profile interval Horner screen.
+The 413 unresolved nodes occupy 381 panels, whose complete rule nodes are the
+417 ordinals 3872–4036, 10910–11037 and 17321–17444. This panel selection is
+independent of cutoff; 1,837 source rows have cutoff at most two.
+`exception-selection.json` commits the rule and exact screen, panel and root
+inputs. `Q0SourceExceptionCentersAll` combines exact binary64 decoding checks:
+each scalar has magnitude at most one, and each complete row has squared norm
+at most 121/100. The source ordinal ranges, cutoff counts and byte spans are
+explicit. `python3 tools/q0_quadrature/gen_source_exception_centers.py --check`
+replays the selection and reproduces exactly 16 chunks and their aggregate from
+pinned slice, offset and per-row ledger files. The strict audit adds no native
+facts. This certifies decoded source values; alignment with selected source
+nodes, basis normalization and enclosures of actual Gaussian coefficients remain
+separate. No Gaussian estimate or endpoint assembly currently consumes this
+certificate. Producer provenance and the checked ledger fields are documented
+in [`conditional_source/README.md`](../data/q0_quadrature/conditional_source/README.md).
+
 **Conditional-pair ranks.** `Q0ConditionalPairRankAll` proves finite rank,
 ordinal coverage and uniqueness for the degree-531 canonical pair table. Its
 pairs `(c,d)` satisfy `0 ≤ c ≤ 266`, `0 ≤ d ≤ 265`, `c ≤ d+1` and
@@ -718,23 +740,30 @@ imports these definitions and the generic Gram-expression soundness module,
 then audits both identities against the standard three
 axioms, independently of the global phase-cover computation. The existing
 `PhiBound` proof imports this identity and retains its numerical cover.
+The shared `phase_gram_sq_sum` identity gives both the imaginary-square
+substitution in `phiT_sq` and the derived `phase_gram_re_sq_le` constraint.
+The latter is used by `PhiBound` and local leaf soundness, so the Gram
+calculation is no longer repeated in those consumers.
 
 `ProductionPhaseLeaf` instantiates generic leaf soundness on the actual
 `phaseTerms` and the Gram coordinates of the actual complex input. Its inputs
 are the finite `termsOK` and `leafOK` checks and physical box membership; it
-does not call the global numerical cover theorem. It derives the local squared
-phase cap, cubic-factor contraction and disk-valued production rounding.
+does not call the global numerical cover theorem. It derives only the local
+squared phase cap. No concrete `leafOK` fact is proved here, and a single box
+does not give whole-slice coverage. The existing native cover already supplies
+the global `phi_abs_lt_one` and disk-valuedness through `norm_Tround_le`.
 
 `PhasePolynomialStability` proves the cubic factor is `5/2`-Lipschitz on
 `[-1,1]`. Its product estimate needs only the actual base to have norm at most
 one; the Gaussian linear base model need not be disk-valued.
-`ProductionPhaseModel` therefore bounds the actual rounding-slice discrepancy
-by the proved quadratic base remainder, `5/2` times the phase error, and the
-explicit model-to-saved-center discrepancy. At an exact profile zero and positive
-radial parameter the base is exactly one. No such unit assertion is made at
-radial parameter zero. All new headline proofs have strict transitive guards;
-finite source certificates, saved-byte comparisons and integral instantiations
-remain separate obligations.
+`ProductionPhaseModel.norm_roundingSlice_sub_model` bounds the actual
+rounding-slice discrepancy by the proved quadratic base remainder and `5/2`
+times the phase error, for positive radial parameter. Its actual phase bound
+can be supplied by `phi_abs_lt_one`; keeping that premise explicit preserves
+the analytic estimate's standard transitive axiom set. The comparison phase
+must also lie in `[-1,1]`. All retained lemmas have strict transitive guards
+and scratch axiom reports. Concrete leaf checks, numerical source comparisons
+and integral bounds remain separate obligations.
 
 `ProductionPhaseL2Error` constructs L² representatives of the unsmoothed
 rounding on a fixed radial slice, its linear-base/cubic-phase model, and the
