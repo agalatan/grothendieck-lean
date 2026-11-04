@@ -43,7 +43,7 @@ structure LocalChecks (prec : ℤ) (M : ℕ) (IA : IntervalDyadic)
   zero : ∀ d (hd : d + 1 < M),
     zeroStepOK prec IA (R d) (S (d + 1)) (T 0 d) (T 0 (d + 1))
       (rootPos (d + 1) (by omega) hd) = true
-  forward : ∀ c d (hcd : c + 1 ≤ d + 1) (hsum : c + 1 + d < M),
+  forward : ∀ c d (_hcd : c + 1 ≤ d + 1) (hsum : c + 1 + d < M),
     forwardStepOK prec (charge c d) IA (S (d + 1)) (S (c + 1))
       (T c (d + 1)) (T c d) (T (c + 1) d)
       (rootPos (c + 1) (by omega) (by omega))

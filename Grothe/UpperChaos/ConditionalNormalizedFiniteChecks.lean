@@ -161,19 +161,20 @@ theorem FiniteChecks.toLocalChecks {prec : ℤ} {M : ℕ} {IA : IntervalDyadic}
     forward := ?_
   }
   · intro n hn hnM
-    simpa only [if_pos hn] using finCheck_sound checks.roots ⟨n, hnM⟩
+    simpa only [ite_eq_left hn] using finCheck_sound checks.roots ⟨n, hnM⟩
   · intro hM
-    simpa only [if_pos hM] using checks.base
+    simpa only [ite_eq_left hM] using checks.base
   · intro d hd
     have hS := hroot (d + 1) (by omega) hd
     have h := finCheck_sound checks.zero ⟨d, by omega⟩
-    simpa only [zeroCheckAt, if_pos hd, dif_pos hS] using h
+    simpa only [zeroCheckAt, ite_eq_left hd, dite_eq_left hS] using h
   · intro c d hcd hsum
     have hC := hroot (c + 1) (by omega) (by omega)
     have hAC := hproduct c (by omega)
     have h := finCheck_sound
       (finCheck_sound checks.forward ⟨c, by omega⟩) ⟨d, by omega⟩
-    simpa only [forwardCheckAt, if_pos (And.intro hcd hsum), dif_pos hC, dif_pos hAC]
+    simpa only [forwardCheckAt, ite_eq_left (And.intro hcd hsum), dite_eq_left hC,
+      dite_eq_left hAC]
       using h
 
 end Grothe.UpperChaos.ConditionalNormalizedFiniteChecks

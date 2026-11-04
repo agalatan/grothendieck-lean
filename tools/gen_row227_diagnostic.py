@@ -171,8 +171,12 @@ def stepOK (p : ℕ × IntervalDyadic × IntervalDyadic) : Bool :=
     s += """open OriginalRow227CheckpointData
 
 structure ErrorEntry where
-  c d rank word : ℕ
-  center radius : ℤ
+  c : ℕ
+  d : ℕ
+  rank : ℕ
+  word : ℕ
+  center : ℤ
+  radius : ℤ
 
 /-- Production binary64 numerator, placed on the common 2^(1024+768) grid. -/
 def savedScaled (word : ℕ) : ℤ :=
