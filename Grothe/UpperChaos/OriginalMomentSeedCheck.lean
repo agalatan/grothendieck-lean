@@ -29,7 +29,7 @@ theorem terminal : -radius ≤ lower 513 ∧ upper 513 ≤ radius := by decide +
 
 theorem table_length : tableLength = 514 := by decide +kernel
 
-theorem scale_eq_power : scale = (2 : ℤ) ^ 1024 := by norm_num [scale]
+theorem scale_eq_power : scale = (2 : ℤ) ^ 1024 := by decide +kernel
 
 theorem steps00 : (List.range' 0 32).all stepOK = true := by
   decide +kernel
@@ -303,6 +303,7 @@ theorem all_steps : (List.range' 0 513).all stepOK = true := by
     ← List.range'_append_1 (s := 416) (m := 32) (n := 65),
     ← List.range'_append_1 (s := 448) (m := 32) (n := 33),
     ← List.range'_append_1 (s := 480) (m := 32) (n := 1)]
+  simp only [Nat.reduceAdd]
   simp only [List.all_append, steps00, steps01, steps02, steps03, steps04, steps05, steps06, steps07, steps08, steps09, steps10, steps11, steps12, steps13, steps14, steps15, steps16, Bool.and_self]
 
 theorem all_stored :
@@ -323,6 +324,7 @@ theorem all_stored :
     ← List.range'_append_1 (s := 416) (m := 32) (n := 66),
     ← List.range'_append_1 (s := 448) (m := 32) (n := 34),
     ← List.range'_append_1 (s := 480) (m := 32) (n := 2)]
+  simp only [Nat.reduceAdd]
   simp only [List.all_append, stored00, stored01, stored02, stored03, stored04, stored05, stored06, stored07, stored08, stored09, stored10, stored11, stored12, stored13, stored14, stored15, stored16, Bool.and_self]
 
 theorem lower_list_sum :
@@ -343,6 +345,7 @@ theorem lower_list_sum :
     ← List.range'_append_1 (s := 416) (m := 32) (n := 65),
     ← List.range'_append_1 (s := 448) (m := 32) (n := 33),
     ← List.range'_append_1 (s := 480) (m := 32) (n := 1)]
+  simp only [Nat.reduceAdd]
   simp only [List.map_append, List.sum_append, lowerSum00, lowerSum01, lowerSum02, lowerSum03, lowerSum04, lowerSum05, lowerSum06, lowerSum07, lowerSum08, lowerSum09, lowerSum10, lowerSum11, lowerSum12, lowerSum13, lowerSum14, lowerSum15, lowerSum16]
   norm_num only [lowerSum]
 
@@ -364,6 +367,7 @@ theorem upper_list_sum :
     ← List.range'_append_1 (s := 416) (m := 32) (n := 65),
     ← List.range'_append_1 (s := 448) (m := 32) (n := 33),
     ← List.range'_append_1 (s := 480) (m := 32) (n := 1)]
+  simp only [Nat.reduceAdd]
   simp only [List.map_append, List.sum_append, upperSum00, upperSum01, upperSum02, upperSum03, upperSum04, upperSum05, upperSum06, upperSum07, upperSum08, upperSum09, upperSum10, upperSum11, upperSum12, upperSum13, upperSum14, upperSum15, upperSum16]
   norm_num only [upperSum]
 

@@ -70,7 +70,6 @@ theorem zeroTaylorCoeff_succ (n : ℕ) :
   rw [moment_zero_succ, Nat.factorial_succ]
   push_cast
   field_simp [hn1, hn2, hf]
-  ring
 
 /-- Pointwise exp remainder on [-x,0]. The derivative cap is 1. -/
 private theorem exp_neg_mul_taylor_error (x y : ℝ) (hx : 0 ≤ x)
@@ -160,7 +159,11 @@ private theorem angular_zero_taylor_error (x : ℝ) (hx : 0 ≤ x) (N : ℕ) :
       ∑ n ∈ Finset.range (N + 1),
         ((-x) ^ n / (n.factorial : ℝ)) * PositiveMomentTheta.moment n 0 := by
     dsimp only [P]
-    rw [intervalIntegral.integral_finsetSum (fun n _ =>
+    rw [intervalIntegral.integral_finsetSum
+      (s := Finset.range (N + 1))
+      (f := fun n t => ((-x) ^ n / (n.factorial : ℝ)) *
+        PositiveMomentTheta.density n 0 t)
+      (fun n _ =>
       (continuous_const.mul (PositiveMomentTheta.density_continuous n 0)).intervalIntegrable
         0 (Real.pi / 2))]
     simp only [intervalIntegral.integral_const_mul, PositiveMomentTheta.moment]

@@ -264,7 +264,7 @@ theorem terminal : -radius ≤ lower 513 ∧ upper 513 ≤ radius := by decide +
 
 theorem table_length : tableLength = 514 := by decide +kernel
 
-theorem scale_eq_power : scale = (2 : ℤ) ^ 1024 := by norm_num [scale]
+theorem scale_eq_power : scale = (2 : ℤ) ^ 1024 := by decide +kernel
 """]
     groups = []
     for index, start in enumerate(range(0, 513, 32)):
@@ -281,7 +281,7 @@ theorem scale_eq_power : scale = (2 : ℤ) ^ 1024 := by norm_num [scale]
         return "  rw [" + ",\n    ".join(
             f"← List.range'_append_1 (s := {start}) (m := {count}) (n := {total-start-count})"
             for _, start, count, _ in groups[:-1]
-        ) + "]\n"
+        ) + "]\n  simp only [Nat.reduceAdd]\n"
 
     out.append("\ntheorem all_steps : (List.range' 0 513).all stepOK = true := by\n")
     out.append(split_range())
