@@ -27,7 +27,7 @@
     "Grothe/LowerAnalytic/CapRow15/AnchorRange22.lean": "020466d266e8fc2fe6486017de4d6080ec25993b930e6f4adcbc5a59647ff4de",
     "Grothe/LowerAnalytic/CapRow15/AnchorRange23.lean": "c7407c9311ac63e965c023814627433424424072516ab73e304fe809da07f705",
     "Grothe/LowerAnalytic/CapRow15/AnchorRange24.lean": "34e32dcbbc3445d3d1e73b1318d74b4c630664dd28279179142589c257d4b41d",
-    "Grothe/LowerAnalytic/CapRow15/Recipes.lean": "11f03c24af3272555f253a545d038369597913f7f6422c902cb72f3b3791a571"
+    "Grothe/LowerAnalytic/CapRow15/Recipes.lean": "5e222ca24931076c80600ae1e0b2f4fe518a4a30316da9cd3e376981796158a1"
   },
   "format": "caps-remaining-row-anchor-modules/v1",
   "generator": "tools/gen_cap_remaining_row_anchors.py",
@@ -334,7 +334,6 @@
     {
       "anchor_indices": [
         242,
-        244,
         246,
         248,
         250,
@@ -528,7 +527,7 @@
     }
   ],
   "native_verified": false,
-  "plan_sha256": "80fc0c90719ed60a1216f54735f8d12e8d2b8f123a7e96c48912bb404148d661",
+  "plan_sha256": "1c375bc967a1a6c09c8682a1292caabeb1e9a2cb9b09f40ba8194264d40d2ca8",
   "recipes_module": "Grothe.LowerAnalytic.CapRow15.Recipes",
   "row_index": 15,
   "scope": "Unverified anchored recipe proposals only, following a complete exact-zero per-row input gate. No native verification, activation, global capsRest discharge or cache claim.",

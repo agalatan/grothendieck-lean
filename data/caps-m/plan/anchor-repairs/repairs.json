@@ -1,6 +1,18 @@
 {
   "agent_id": "claude-b9ee",
   "format": "caps-row-anchor-repairs-input/v1",
+  "localized_method": "Localized (route M) pieces for the hull vertices at s in (0.42, 0.525) and s = 0.5, generated with the archived MIDCAPS generator handoff/lower-stein/cert-0745d/tools/midcaps3.py (tau0 slices, two odd directions, boxes and far slabs; far slabs that exceeded the stored cap bisected with the same search, refine_far.py), S-lemma multipliers re-optimised under the checker's prices where the exported piece failed (CapExport + tools/caps_lmi.py, Clarabel), every piece fact and coverage fact built on mega before adoption.",
+  "localized_rows": {
+    "12": {
+      "pieces": "data/caps-m/plan/anchor-repairs/localized/row12-new-pieces.json"
+    },
+    "14": {
+      "pieces": "data/caps-m/plan/anchor-repairs/localized/row14-new-pieces.json"
+    },
+    "15": {
+      "pieces": "data/caps-m/plan/anchor-repairs/localized/row15-new-pieces.json"
+    }
+  },
   "method": "Variance factor t*(17/20, -1/20, 53/100) on the fibre coordinates (6, 7, 10) (the retry family of rows 16-18, data/cap-recipes/row16.json), t chosen per node as the accepted amplitude with the largest exact Schur margin of the checker matrix N (same functions as nodeOK, grid 1); nodes whose stored recipe fails by less than 1e-6 keep it and move to the fine grid (1600, 1024, 1/200) of the certificate catalogue. Each repaired anchor is verified by its per-node rangeOK probe (native_decide) before the push; CI certifies the range facts.",
   "rows": {
     "12": {

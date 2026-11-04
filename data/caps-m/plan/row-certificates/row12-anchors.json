@@ -6,8 +6,15 @@
     "format": "caps-row-anchor-repairs/v1",
     "input": {
       "path": "data/caps-m/plan/anchor-repairs/repairs.json",
-      "sha256": "e38be5c23c43fe8dbb9bfbdf0b9e28107a83834a08b3c968606d6b494b3f19b9"
+      "sha256": "6c4ab842ba09a187a1beea6b5b81b3d6ee2c91a01bd8a98363818b84b45ddf42"
     },
+    "localized_input": {
+      "path": "data/caps-m/plan/anchor-repairs/localized/row12-new-pieces.json",
+      "sha256": "c32d659b3d39a5cfe98111d1df03261018ed63c49e88c9e75b580619ce79fa70"
+    },
+    "localized_nodes": [
+      244
+    ],
     "method": "Variance factor t*(17/20, -1/20, 53/100) on the fibre coordinates (6, 7, 10) (the retry family of rows 16-18, data/cap-recipes/row16.json), t chosen per node as the accepted amplitude with the largest exact Schur margin of the checker matrix N (same functions as nodeOK, grid 1); nodes whose stored recipe fails by less than 1e-6 keep it and move to the fine grid (1600, 1024, 1/200) of the certificate catalogue. Each repaired anchor is verified by its per-node rangeOK probe (native_decide) before the push; CI certifies the range facts.",
     "nodes": [
       60,
@@ -1002,13 +1009,6 @@
       "s": "91/200"
     },
     {
-      "cap": "42965140319/25000000000",
-      "grid_index": 1,
-      "node_index": 244,
-      "recipe": "195561280159872431167816473/281474976710656000000000000,19756937761694739062697397/140737488355328000000000000,1348808125945122918889291/35184372088832000000000000,0,0,0,0,0,0,0,0,0|1",
-      "s": "23/50"
-    },
-    {
       "cap": "862826617383/500000000000",
       "grid_index": 1,
       "node_index": 246,
@@ -1593,9 +1593,9 @@
   "canonical_row_declaration": "row13",
   "capPad": "1/100000000000",
   "census": {
-    "anchors": 223,
+    "anchors": 222,
     "chords": 85,
-    "localized": 88,
+    "localized": 89,
     "nodes": 396,
     "vertices": 311
   },
@@ -1787,6 +1787,7 @@
     215,
     219,
     220,
+    244,
     270,
     272,
     276,
@@ -2057,7 +2058,6 @@
       "anchor_indices": [
         240,
         242,
-        244,
         246,
         247,
         248

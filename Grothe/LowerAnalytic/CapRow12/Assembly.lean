@@ -103,6 +103,7 @@ import Grothe.LowerAnalytic.CapPieces.N12x214
 import Grothe.LowerAnalytic.CapPieces.N12x215
 import Grothe.LowerAnalytic.CapPieces.N12x219
 import Grothe.LowerAnalytic.CapPieces.N12x220
+import Grothe.LowerAnalytic.CapPieces.N12x244
 import Grothe.LowerAnalytic.CapPieces.N12x270
 import Grothe.LowerAnalytic.CapPieces.N12x272
 import Grothe.LowerAnalytic.CapPieces.N12x276
@@ -123,7 +124,7 @@ namespace Grothe.LowerAnalytic
 private theorem row12LocalizedCaps : ExclCaps 12 row12LocalizedExclusions := by
   intro i hmem _hi
   simp only [row12LocalizedExclusions, List.mem_cons, List.not_mem_nil, or_false] at hmem
-  rcases hmem with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  rcases hmem with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
   · simpa only [NodeCap] using (nodeCap_12x140 (by simp))
   · simpa only [NodeCap] using (nodeCap_12x141 (by simp))
   · simpa only [NodeCap] using (nodeCap_12x142 (by simp))
@@ -202,6 +203,7 @@ private theorem row12LocalizedCaps : ExclCaps 12 row12LocalizedExclusions := by
   · simpa only [NodeCap] using (nodeCap_12x215 (by simp))
   · simpa only [NodeCap] using (nodeCap_12x219 (by simp))
   · simpa only [NodeCap] using (nodeCap_12x220 (by simp))
+  · simpa only [NodeCap] using (nodeCap_12x244 (by simp))
   · simpa only [NodeCap] using (nodeCap_12x270 (by simp))
   · simpa only [NodeCap] using (nodeCap_12x272 (by simp))
   · simpa only [NodeCap] using (nodeCap_12x276 (by simp))

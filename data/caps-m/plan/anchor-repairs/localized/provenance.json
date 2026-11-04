@@ -1,0 +1,41 @@
+{
+  "agent_id": "claude-b9ee",
+  "format": "caps-localized-nodes-provenance/v1",
+  "nodes": {
+    "12x244": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.0025685696018322712,
+      "pieces": 566,
+      "source_sha256": "19f832eb64dab5ccd939266fea95ec8efe8be1a65f23d068274037f660ce74d6",
+      "verdicts": "{'fixed': 139, 'pass': 427}"
+    },
+    "14x242": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.0028964461365286187,
+      "pieces": 535,
+      "source_sha256": "e932482475283e3d0ea2ace8680df2d2261ecfcfb1a28d33fd065bbdd08dff75",
+      "verdicts": "{'fixed': 131, 'pass': 404}"
+    },
+    "14x244": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.0028198338016662827,
+      "pieces": 566,
+      "source_sha256": "bd019d9042b342108d8a30e4913a32408258565689fa07947470c3a83d825a72",
+      "verdicts": "{'fixed': 134, 'pass': 432}"
+    },
+    "14x246": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.002486515857160976,
+      "pieces": 566,
+      "source_sha256": "2dcf9b2833cc18cb7cbfbb843fb4b75f3266fa329b16fe57b9ef8dc4851a5b11",
+      "verdicts": "{'fixed': 130, 'pass': 436}"
+    },
+    "15x244": {
+      "final_facts_built": 13,
+      "min_float_slack": 5.4424140268460874e-05,
+      "pieces": 661,
+      "source_sha256": "ade2f7a1a8e6765399837d9b7365d7e9d54d4b5a2037c4b3958e3123cdb4002b",
+      "verdicts": "{'fixed': 182, 'pass': 479}"
+    }
+  }
+}

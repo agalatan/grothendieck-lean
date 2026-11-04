@@ -106,6 +106,9 @@ import Grothe.LowerAnalytic.CapPieces.N14x219
 import Grothe.LowerAnalytic.CapPieces.N14x220
 import Grothe.LowerAnalytic.CapPieces.N14x224
 import Grothe.LowerAnalytic.CapPieces.N14x226
+import Grothe.LowerAnalytic.CapPieces.N14x242
+import Grothe.LowerAnalytic.CapPieces.N14x244
+import Grothe.LowerAnalytic.CapPieces.N14x246
 import Grothe.LowerAnalytic.CapPieces.N14x270
 import Grothe.LowerAnalytic.CapPieces.N14x274
 import Grothe.LowerAnalytic.CapPieces.N14x276
@@ -125,7 +128,7 @@ namespace Grothe.LowerAnalytic
 private theorem row14LocalizedCaps : ExclCaps 14 row14LocalizedExclusions := by
   intro i hmem _hi
   simp only [row14LocalizedExclusions, List.mem_cons, List.not_mem_nil, or_false] at hmem
-  rcases hmem with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  rcases hmem with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
   · simpa only [NodeCap] using (nodeCap_14x140 (by simp))
   · simpa only [NodeCap] using (nodeCap_14x141 (by simp))
   · simpa only [NodeCap] using (nodeCap_14x142 (by simp))
@@ -207,6 +210,9 @@ private theorem row14LocalizedCaps : ExclCaps 14 row14LocalizedExclusions := by
   · simpa only [NodeCap] using (nodeCap_14x220 (by simp))
   · simpa only [NodeCap] using (nodeCap_14x224 (by simp))
   · simpa only [NodeCap] using (nodeCap_14x226 (by simp))
+  · simpa only [NodeCap] using (nodeCap_14x242 (by simp))
+  · simpa only [NodeCap] using (nodeCap_14x244 (by simp))
+  · simpa only [NodeCap] using (nodeCap_14x246 (by simp))
   · simpa only [NodeCap] using (nodeCap_14x270 (by simp))
   · simpa only [NodeCap] using (nodeCap_14x274 (by simp))
   · simpa only [NodeCap] using (nodeCap_14x276 (by simp))
