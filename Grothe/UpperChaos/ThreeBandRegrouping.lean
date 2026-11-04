@@ -82,7 +82,9 @@ theorem threeBandOf_spec (p : Fin 4) {n m : ℕ} (hd : 1 ≤ n + m) :
     · rw [contains_iff]
       change 0 < n + m ∧ ((0 : ℕ) = 0 ∨ n + m ≤ 0)
       exact ⟨by omega, Or.inl rfl⟩
-  · by_cases h : n + m ≤ 51
+  · change threeBandPower (threeBandOf 1 (n + m)) = 1 ∧
+      (threeBandBands (threeBandOf 1 (n + m))).contains n m = true
+    by_cases h : n + m ≤ 51
     · rw [show threeBandOf 1 (n + m) = 1 by simp [threeBandOf, h]]
       constructor
       · rfl
@@ -95,7 +97,9 @@ theorem threeBandOf_spec (p : Fin 4) {n m : ℕ} (hd : 1 ≤ n + m) :
       · rw [contains_iff]
         change 51 < n + m ∧ ((0 : ℕ) = 0 ∨ n + m ≤ 0)
         exact ⟨by omega, Or.inl rfl⟩
-  · by_cases h : n + m ≤ 51
+  · change threeBandPower (threeBandOf 2 (n + m)) = 2 ∧
+      (threeBandBands (threeBandOf 2 (n + m))).contains n m = true
+    by_cases h : n + m ≤ 51
     · rw [show threeBandOf 2 (n + m) = 3 by simp [threeBandOf, h]]
       constructor
       · rfl
@@ -108,7 +112,9 @@ theorem threeBandOf_spec (p : Fin 4) {n m : ℕ} (hd : 1 ≤ n + m) :
       · rw [contains_iff]
         change 51 < n + m ∧ ((0 : ℕ) = 0 ∨ n + m ≤ 0)
         exact ⟨by omega, Or.inl rfl⟩
-  · by_cases h : n + m ≤ 11
+  · change threeBandPower (threeBandOf 3 (n + m)) = 3 ∧
+      (threeBandBands (threeBandOf 3 (n + m))).contains n m = true
+    by_cases h : n + m ≤ 11
     · rw [show threeBandOf 3 (n + m) = 5 by simp [threeBandOf, h]]
       constructor
       · rfl
@@ -170,7 +176,7 @@ theorem difference_sources (hφ : PhiBound) :
   rw [← sum_fiberwise univ pw
     (piece hφ chargeFn_frozenCorrectionFn chargeFn_firstCenterFn
       chargeFn_secondCenterFn chargeFn_thirdCenterFn)] at h
-  simpa only [sum_pieces_fiber] using h
+  simpa only [sum_pieces_fiber, productionG, productionX, source, rawSource, srcL] using h
 
 /-- The seven new pieces still give the actual difference, including infinite tails. -/
 theorem difference_threePieces (hφ : PhiBound) :
@@ -204,19 +210,27 @@ theorem threeBand_indices_union (j : Fin 7) :
       ((univ : Finset ComparisonIndex).filter (fun k => threeBandOldGroup k = j)).biUnion
         (fun k => bandIndices (comparisonBand k)) := by
   classical
+  unfold bandIndices
+  generalize headIdx 501 = S
   ext p
-  simp only [bandIndices, mem_filter, mem_biUnion, mem_univ, true_and]
   constructor
-  · rintro ⟨hp, hj⟩
+  · intro hp
+    obtain ⟨hS, hj⟩ := mem_filter.1 hp
     obtain ⟨k, hk, hb⟩ := (threeBand_contains_iff j p.1 p.2).1 hj
-    exact ⟨k, hk, hp, hb⟩
-  · rintro ⟨k, hk, hp, hb⟩
-    exact ⟨hp, (threeBand_contains_iff j p.1 p.2).2 ⟨k, hk, hb⟩⟩
+    exact mem_biUnion.2 ⟨k, mem_filter.2 ⟨mem_univ _, hk⟩, mem_filter.2 ⟨hS, hb⟩⟩
+  · intro hp
+    obtain ⟨k, hk, hb⟩ := mem_biUnion.1 hp
+    obtain ⟨hS, hb⟩ := mem_filter.1 hb
+    exact mem_filter.2 ⟨hS,
+      (threeBand_contains_iff j p.1 p.2).2 ⟨k, (mem_filter.1 hk).2, hb⟩⟩
 
 theorem old_group_indices_disjoint (j : Fin 7) :
     Set.PairwiseDisjoint
-      (↑((univ : Finset ComparisonIndex).filter (fun k => threeBandOldGroup k = j)))
-      (fun k => bandIndices (comparisonBand k)) := by
+      ((↑((univ : Finset ComparisonIndex).filter (fun k => threeBandOldGroup k = j))) :
+        Set ComparisonIndex)
+      (fun k : ComparisonIndex => bandIndices (comparisonBand k)) := by
+  unfold bandIndices
+  generalize headIdx 501 = S
   intro k hk l hl hkl
   apply Finset.disjoint_left.2
   intro p hp hq
@@ -389,15 +403,19 @@ theorem norm_source_le (p : Fin 4) :
     ‖source hφ p‖ ≤ (comparisonGroupRadiusQ p : ℝ) := by
   refine (norm_smoothOp_le _).trans ?_
   fin_cases p
-  · rw [rawSource_zero]
+  · change ‖rawSource hφ 0‖ ≤ (comparisonGroupRadiusQ 0 : ℝ)
+    rw [rawSource_zero]
     exact norm_roundingDifference_le_of_checks hf
-  · rw [rawSource_one]
+  · change ‖rawSource hφ 1‖ ≤ (comparisonGroupRadiusQ 1 : ℝ)
+    rw [rawSource_one]
     exact hwholeFirst
-  · rw [rawSource_two, norm_smul]
+  · change ‖rawSource hφ 2‖ ≤ (comparisonGroupRadiusQ 2 : ℝ)
+    rw [rawSource_two, norm_smul]
     have hscale : ‖(1 / 2 : ℂ)‖ = (1 / 2 : ℝ) := by norm_num [norm_div]
     rw [hscale]
     linarith
-  · rw [rawSource_three, norm_smul]
+  · change ‖rawSource hφ 3‖ ≤ (comparisonGroupRadiusQ 3 : ℝ)
+    rw [rawSource_three, norm_smul]
     have hscale : ‖(1 / 6 : ℂ)‖ = (1 / 6 : ℝ) := by norm_num [norm_div]
     rw [hscale]
     linarith
@@ -422,7 +440,7 @@ theorem norm_threePiece_le (j : Fin 7) :
       (taylorL2 hφ 1 - firstCenter)‖ ≤ _
     rw [← firstCenterBandModes_eq_comparison]
     exact hfirst.trans (by exact_mod_cast firstCapturedErrorQ_le_public 0)
-  · simpa [threeBandBands, threeBandPower] using
+  · simpa [threeBandBands, threeBandPower, threeBandScaledRQ] using
       norm_threePiece_whole_le hφ hf hwholeFirst hwholeSecond hwholeThird 2
   · change ‖bandProj (comparisonBand (secondCapturedIndex 0))
         (smoothOp (rawSource hφ 2))‖ ≤ ((comparisonBand (secondCapturedIndex 0)).error : ℝ)
@@ -437,7 +455,7 @@ theorem norm_threePiece_le (j : Fin 7) :
         2 * ((comparisonBand (secondCapturedIndex 0)).error : ℝ) := by
       exact_mod_cast secondCapturedErrorQ_le_public 0
     linarith
-  · simpa [threeBandBands, threeBandPower] using
+  · simpa [threeBandBands, threeBandPower, threeBandScaledRQ] using
       norm_threePiece_whole_le hφ hf hwholeFirst hwholeSecond hwholeThird 4
   · change ‖bandProj (comparisonBand (thirdCapturedIndex 0))
         (smoothOp (rawSource hφ 3))‖ ≤ ((comparisonBand (thirdCapturedIndex 0)).error : ℝ)
@@ -452,7 +470,7 @@ theorem norm_threePiece_le (j : Fin 7) :
         6 * ((comparisonBand (thirdCapturedIndex 0)).error : ℝ) := by
       exact_mod_cast thirdCapturedErrorQ_le_public 0
     linarith
-  · simpa [threeBandBands, threeBandPower] using
+  · simpa [threeBandBands, threeBandPower, threeBandScaledRQ] using
       norm_threePiece_whole_le hφ hf hwholeFirst hwholeSecond hwholeThird 6
 
 /-- One quadratic cost, obtained from four unsplit sources and finite Bessel. -/
@@ -460,13 +478,14 @@ theorem quadratic_threeBand_le :
     ∑ p ∈ headIdx 501, ‖energyBlock (productionG hφ) p -
       energyBlock (productionX hφ) p‖ ^ 2 ≤
       (∑ g : Fin 4, (comparisonGroupRadiusQ g : ℝ)) ^ 2 := by
+  generalize headIdx 501 = S
   have hn : ‖productionG hφ - productionX hφ‖ ≤
       ∑ g : Fin 4, (comparisonGroupRadiusQ g : ℝ) := by
     rw [difference_sources]
     exact (norm_sum_le _ _).trans
       (sum_le_sum fun g _ => norm_source_le hφ hf hwholeFirst hwholeSecond hwholeThird g)
   calc
-    _ = ∑ p ∈ headIdx 501, energy (productionG hφ - productionX hφ) p := by
+    _ = ∑ p ∈ S, energy (productionG hφ - productionX hφ) p := by
       apply sum_congr rfl
       intro p _hp
       rw [← energyBlock_sub, norm_energyBlock_sq]
@@ -481,13 +500,16 @@ theorem localized_comparison_three_band_of_checks
     ∑ p ∈ headIdx 501, comparisonWeight p *
       |energy (productionG hφ) p - energy (productionX hφ) p| ≤ (threeBandCompareQ : ℝ) := by
   classical
+  generalize hS : headIdx 501 = S at hclose ⊢
   let a : Fin 7 → ℝ := fun j => ((threeBandBands j).norm : ℝ)
   let e : Fin 7 → ℝ := fun j => ((threeBandBands j).error : ℝ)
   have ha : ∀ j, 0 ≤ a j := by
     intro j
+    change 0 ≤ ((threeBandBands j).norm : ℝ)
     exact_mod_cast (threeBand_nonneg j).1
   have he : ∀ j, 0 ≤ e j := by
     intro j
+    change 0 ≤ ((threeBandBands j).error : ℝ)
     exact_mod_cast (threeBand_nonneg j).2
   have hz (j : Fin 7) (p : ℕ × ℕ)
       (hp : (threeBandBands j).contains p.1 p.2 = false) :
@@ -496,7 +518,7 @@ theorem localized_comparison_three_band_of_checks
       (norm_energyBlock_sq _ _).trans (threePiece_support hφ j p hp)
     apply norm_eq_zero.mp
     nlinarith [norm_nonneg (energyBlock (threePiece hφ j) p)]
-  have hc := BandComparison.weighted_compare (headIdx 501) (univ : Finset (Fin 7))
+  have hc := BandComparison.weighted_compare S (univ : Finset (Fin 7))
     comparisonWeight (energyBlock (productionX hφ)) (energyBlock (productionG hφ))
     (fun j => energyBlock (threePiece hφ j)) (fun j => bandIndices (threeBandBands j))
     a e ((∑ g : Fin 4, (comparisonGroupRadiusQ g : ℝ)) ^ 2)
@@ -504,13 +526,14 @@ theorem localized_comparison_three_band_of_checks
     (fun p _ => by rw [← energyBlock_sub, difference_threePieces, energyBlock_sum])
     (fun j _ p hp hpb => by
       have hn : (threeBandBands j).contains p.1 p.2 = false := by
-        simpa [bandIndices, hp] using hpb
+        simpa [bandIndices, hS, hp] using hpb
       exact hz j p hn)
     (fun j _ => ha j) (fun j _ => he j)
     (fun j _ => by
-      have hm := actual_threeBand_mass hf hclose j
-      have hi : headIdx 501 ∩ bandIndices (threeBandBands j) =
-          bandIndices (threeBandBands j) := inter_eq_right.mpr (bandIndices_subset _)
+      have hm := actual_threeBand_mass hf (by simpa only [hS] using hclose) j
+      have hi : S ∩ bandIndices (threeBandBands j) = bandIndices (threeBandBands j) := by
+        rw [← hS]
+        exact inter_eq_right.mpr (bandIndices_subset _)
       simpa only [hi, mul_pow, norm_energyBlock_sq] using hm)
     (fun j _ => by
       simp_rw [norm_energyBlock_sq]
@@ -518,7 +541,8 @@ theorem localized_comparison_three_band_of_checks
         (pow_le_pow_left₀ (norm_nonneg _)
           (norm_threePiece_le hφ hf hfirst hsecond hthird
             hwholeFirst hwholeSecond hwholeThird j) 2))
-    (quadratic_threeBand_le hφ hf hwholeFirst hwholeSecond hwholeThird)
+    (by simpa only [hS] using
+      quadratic_threeBand_le hφ hf hwholeFirst hwholeSecond hwholeThird)
   simp_rw [norm_energyBlock_sq] at hc
   have hq : 2 * (∑ j : Fin 7, a j * e j) +
       (∑ g : Fin 4, (comparisonGroupRadiusQ g : ℝ)) ^ 2 = (threeBandCompareQ : ℝ) := by
