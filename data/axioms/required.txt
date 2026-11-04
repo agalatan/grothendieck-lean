@@ -46,12 +46,6 @@ Grothe.Research.LawNodeLower.strict_lower_bound_of_law_nodes
 Grothe.Research.LawNodeLower.transferInputs_of_law_nodes
 Grothe.Research.LawNodeLower.witnessCap_of_law_nodes
 Grothe.Research.LawNodeLower.witnessCap_of_law_nodes_reduction
-Grothe.Research.RefinedLower.lower_bound_of_refined_cover
-Grothe.Research.RefinedLower.profile_bound_of_refined_cover
-Grothe.Research.RefinedLower.strict_lower_bound_of_refined_cover
-Grothe.Research.RefinedLower.transferInputs_of_refined_cover
-Grothe.Research.RefinedLower.witnessCap_of_refined_cover
-Grothe.Research.RefinedLower.witnessCap_of_refined_cover_reduction
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes0
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes1
 Grothe.Research.RefinedLowerCheck.certRefinedBoxes2
@@ -1949,6 +1943,7 @@ Grothe.UpperChaos.RectangleCoefficientArithmetic.product_model_sound
 Grothe.UpperChaos.RectangleCoefficientArithmetic.rowNorm_nonneg
 Grothe.UpperChaos.RectangleCoordinates.x_sound
 Grothe.UpperChaos.RectangleCoordinates.y_sound
+Grothe.UpperChaos.RectangleHornerTrace.Trace.check_cons
 Grothe.UpperChaos.RectangleHornerTrace.Trace.rational_sound
 Grothe.UpperChaos.RectangleHornerTrace.Trace.sound
 Grothe.UpperChaos.RectangleModelCheck.add_sound

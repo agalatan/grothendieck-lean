@@ -185,12 +185,6 @@ import Grothe
 #print axioms Grothe.Research.LawNodeLower.transferInputs_of_law_nodes
 #print axioms Grothe.Research.LawNodeLower.witnessCap_of_law_nodes
 #print axioms Grothe.Research.LawNodeLower.witnessCap_of_law_nodes_reduction
-#print axioms Grothe.Research.RefinedLower.lower_bound_of_refined_cover
-#print axioms Grothe.Research.RefinedLower.profile_bound_of_refined_cover
-#print axioms Grothe.Research.RefinedLower.strict_lower_bound_of_refined_cover
-#print axioms Grothe.Research.RefinedLower.transferInputs_of_refined_cover
-#print axioms Grothe.Research.RefinedLower.witnessCap_of_refined_cover
-#print axioms Grothe.Research.RefinedLower.witnessCap_of_refined_cover_reduction
 #print axioms Grothe.Research.RefinedLowerCheck.certRefinedBoxes0
 #print axioms Grothe.Research.RefinedLowerCheck.certRefinedBoxes1
 #print axioms Grothe.Research.RefinedLowerCheck.certRefinedBoxes2
@@ -2323,6 +2317,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.RectangleCoefficientArithmetic.rowNorm_nonneg
 #print axioms Grothe.UpperChaos.RectangleCoordinates.x_sound
 #print axioms Grothe.UpperChaos.RectangleCoordinates.y_sound
+#print axioms Grothe.UpperChaos.RectangleHornerTrace.Trace.check_cons
 #print axioms Grothe.UpperChaos.RectangleHornerTrace.Trace.rational_sound
 #print axioms Grothe.UpperChaos.RectangleHornerTrace.Trace.sound
 #print axioms Grothe.UpperChaos.RectangleModelCheck.add_sound

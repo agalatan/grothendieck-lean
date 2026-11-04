@@ -1368,6 +1368,24 @@ The generator and its pinned certificate are in
 `tools/gen_analytic_envelope_root11.py` and `data/analytic-envelope-cells/`.
 The other roots and final band energies remain work in progress.
 
+The generated algebraic base-pair families for roots2,6 and10 separate shared
+literal data, serial arithmetic check modules, and the original public integral
+facades. Each check module evaluates at most four substantive closed operations.
+`RectangleHornerTrace.Trace.check_cons` composes already proved local checks;
+the final pair and common certificates reuse proof constants. Data imports the
+previous finished leaf, preserving serialization within each root. Shared
+profile checks retain the actual coefficient interval models. No rectangle,
+model, budget, public integral conclusion or trust mechanism changes.
+`tools/q0_quadrature/check_base_pair_preservation.py` compares all generated
+families with an immutable baseline and records source/input hashes.
+The operation count does not establish a memory bound. After full Lean
+acceptance, `check_base_pair_memory.py` rechecks representative data, every
+checker in the three reported large leaves and shared profiles, their facades,
+and the complete root audits in separate Linux processes. It requires the
+exact verified branch build, records import/compiled-artifact overhead and
+rejects peak process RSS at or above2,000,000,000 bytes. Resource acceptance is
+separate from source preservation and theorem checking.
+
 
 `tools/gen_analytic_envelope_cells.py` renders every analytic-envelope leaf
 of the fixed base-pair mesh from the pinned certificate. Shared
@@ -1717,11 +1735,10 @@ them, and are not yet wired into `CapsRest`.
   scalar caps. The headline uses five row checks and three mixed-batch checks from
   `Grothe/Lower/Cert/`, plus four refined-box chunks and a refined-partition
   check from `Grothe/Research/`, and the additional law-batch check. The four box
-  chunks use size 2,631; the kernel verifies that they cover the actual list.
+  chunks use size 2,728; the kernel verifies that they cover the actual list.
   These are 14 single-threaded `native_decide` facts. `LawNodeLower.lean` proves nine interfaces
   connecting checked extra batches and a complete cover to the same Gaussian reduction
-  and transfer. `RefinedLower.lean` specializes the interface to no additional batches;
-  `RefinedCoverResult.lean` supplies the current complete certificate.
+  and transfer; `RefinedCoverResult.lean` supplies the current complete certificate.
 * Inputs of the intermediate theorem `LawNodeLower.profile_bound_of_law_nodes` (all of them are now derived in Lean, except the node caps `NodeCaps`, by the chain ending in `lower_bound_of_refined_cover_data`): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
   from ‖Qk‖ ≤ E|Qk/‖Qk‖| ≤ ρ, which uses the moment bounds also for the cubic Qk/‖Qk‖), with ‖v‖² = 2
   and 0 ≤ t ≤ 9/10; the simultaneous Gaussian reduction of the rows (`SharedReduction`): one residual p = Q_w c₁ with scale τ = ‖p‖₂ ≤ ρ and normalised law

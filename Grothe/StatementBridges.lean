@@ -1,5 +1,5 @@
 import Grothe.Statement
-import Grothe.Transfer
+import Grothe.Lower.TransferFinite
 
 /-!
 # What the targets say about the constant
@@ -20,20 +20,9 @@ namespace Grothe.Statement
 
 theorem isBound_iff {K : ℝ} : IsBound K ↔ Grothe.IsGrothendieckBound K := Iff.rfl
 
-/-- Every Grothendieck bound is nonnegative: for the `1 × 1` matrix `(1)`, `V ≥ 1` and `C ≥ 0`. -/
-theorem bounds_bddBelow : BddBelow {K | IsBound K} := by
-  refine ⟨0, fun K hK => ?_⟩
-  by_contra hneg
-  push Not at hneg
-  let A : Fin 1 → Fin 1 → ℂ := fun _ _ => 1
-  have hv : 1 ≤ Grothe.vectorOpt A := by
-    have h := Grothe.le_vectorOpt A (x := fun _ => EuclideanSpace.single () 1)
-      (y := fun _ => EuclideanSpace.single () 1) (fun _ => by simp) (fun _ => by simp)
-    simpa [A] using h
-  have hc := Grothe.scalarOpt_nonneg A
-  have := hK 1 1 A
-  change Grothe.vectorOpt A ≤ K * Grothe.scalarOpt A at this
-  nlinarith
+/-- Every Grothendieck bound is nonnegative (it is at least `1`, `IsGrothendieckBound.one_le`). -/
+theorem bounds_bddBelow : BddBelow {K | IsBound K} :=
+  ⟨0, fun _ hK => zero_le_one.trans (isBound_iff.mp hK).one_le⟩
 
 /-- The set of Grothendieck bounds is closed: it is the intersection over all matrices `A` of the
 closed half-lines `{K | V(A) ≤ K · C(A)}`. -/
