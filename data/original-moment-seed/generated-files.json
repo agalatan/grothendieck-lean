@@ -1,0 +1,128 @@
+{
+  "agent_id": "codex-aa04",
+  "checkpoint_count": 514,
+  "data_block_sizes": [
+    64,
+    64,
+    64,
+    64,
+    64,
+    64,
+    64,
+    64,
+    2
+  ],
+  "generator": {
+    "file": "tools/gen_original_moment_seed.py",
+    "sha256": "514727b2ddb04816546856661b3238fc38deb30d9f8ff3694f14d238085f19ce"
+  },
+  "inputs": [
+    {
+      "bytes": 5643,
+      "file": "data/original-moment-seed/row227-charge-replay.json",
+      "sha256": "05ca9474e8e5994b201cb6c56f93ef1c2fd855ab5ff8b63c0dfbaec3ca71015f"
+    },
+    {
+      "bytes": 2923,
+      "file": "data/original-moment-seed/row227-seed-checkpoints.json",
+      "sha256": "cd31a15ecf983ecca41655c75d6d72aa470fbdcb31eb9a78d1e23218cfc74afb"
+    },
+    {
+      "bytes": 38026,
+      "file": "data/original-moment-seed/row227-seed-checkpoints.jsonl.gz",
+      "sha256": "fef3fce31043a010945c5cdbf5aad256f6193891b78f2fdf827fe0a9ab51a37e"
+    }
+  ],
+  "integer_radius": 1,
+  "integer_width": 73351,
+  "midpoint_binding": "Exact A_midpoint and denominator from the pinned source report; their squares equal the seed parameter integers.",
+  "nonclaims": [
+    "No Lean/compiler verification is asserted by generation or this manifest.",
+    "Physical source-node/profile-shift binding and parameter transport remain separate.",
+    "The sqrt(pi) prefactor, stored coefficient errors and final endpoint are not certified here.",
+    "Other numerical/source-payload/error claims in the original report are not consumed."
+  ],
+  "outputs": [
+    {
+      "bytes": 18197,
+      "file": "Grothe/UpperChaos/OriginalMomentSeedCheck.lean",
+      "sha256": "7752bb10e3dbed5950f26371c6514f7ef2155c8221c61709493b2c6d4a02244c"
+    },
+    {
+      "bytes": 144593,
+      "file": "Grothe/UpperChaos/OriginalMomentSeedData.lean",
+      "sha256": "055395d30ff2826ddd1b117a3f9adcb3e5a369ca9da0a7d36c3536dc89d47769"
+    }
+  ],
+  "retained_indices": [
+    0,
+    512
+  ],
+  "retained_sum_group_sizes": [
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    1
+  ],
+  "schema": 1,
+  "source_report_usage": [
+    "ordinal",
+    "bits",
+    "seed_terms",
+    "A_midpoint",
+    "denominator"
+  ],
+  "status": "GENERATED_SOURCE_NO_LEAN_VERIFICATION_CLAIM",
+  "stored_lookup_group_sizes": [
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    2
+  ],
+  "terminal_index": 513,
+  "transition_group_sizes": [
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    1
+  ]
+}

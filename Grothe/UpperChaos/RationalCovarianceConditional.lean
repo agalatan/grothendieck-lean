@@ -28,7 +28,7 @@ theorem outer_covariance_polynomial (R P a n : ℚ) :
       varianceConditionalP4Q R P a n oneV oneV =
         (X 0 + X 2) * (X 1 + X 3) := by
   simp [varianceConditionalP4Q, outerQ, varianceWickQ,
-    oneX, oneV, Finset.sum_range_succ]
+    oneX, oneV]
   ring
 
 /-- The constant R+P is the conditional variance and cannot be discarded. -/
@@ -54,7 +54,7 @@ theorem mixed_covariance_polynomial (R P a n : ℚ) :
         (X 0 + X 2) *
           (C (-a * R + n * P) * X 1 + C (n * R - a * P) * X 3) := by
   simp [varianceConditionalP4Q, outerQ, varianceWickQ, linearQ, conjugateLinearQ,
-    oneY, oneU, oneX, oneV, Finset.sum_range_succ, map_add, map_mul, map_neg, map_sub]
+    oneY, oneU, oneX, oneV, map_add, map_mul, map_neg, map_sub]
   ring
 
 open Lean Elab Command

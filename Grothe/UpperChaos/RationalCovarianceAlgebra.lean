@@ -20,31 +20,32 @@ theorem moment_zero (A B C : ℚ) (hA : A ≠ 0)
     (hD : A * C - B ^ 2 ≠ 0) :
     momentValue A B C 0 0 0 0 = 1 / (A * C - B ^ 2) := by
   norm_num [momentValue, wickCoeff, Finset.sum_range_succ] <;>
-    field_simp [hA, hD] <;> ring
+    field_simp [hA, hD]
 
 theorem moment_first_variance (A B C : ℚ) (hA : A ≠ 0)
     (hD : A * C - B ^ 2 ≠ 0) :
     momentValue A B C 1 1 0 0 = C / (A * C - B ^ 2) ^ 2 := by
-  norm_num [momentValue, wickCoeff, Finset.sum_range_succ] <;>
-    field_simp [hA, hD] <;> ring
+  norm_num [momentValue, wickCoeff, Finset.sum_range_succ]
+  field_simp [hA, hD]
+  ring
 
 theorem moment_second_variance (A B C : ℚ) (hA : A ≠ 0)
     (hD : A * C - B ^ 2 ≠ 0) :
     momentValue A B C 0 0 1 1 = A / (A * C - B ^ 2) ^ 2 := by
   norm_num [momentValue, wickCoeff, Finset.sum_range_succ] <;>
-    field_simp [hA, hD] <;> ring
+    field_simp [hA, hD]
 
 theorem moment_cross (A B C : ℚ) (hA : A ≠ 0)
     (hD : A * C - B ^ 2 ≠ 0) :
     momentValue A B C 1 0 0 1 = -B / (A * C - B ^ 2) ^ 2 := by
   norm_num [momentValue, wickCoeff, Finset.sum_range_succ] <;>
-    field_simp [hA, hD] <;> ring
+    field_simp [hA, hD]
 
 theorem moment_cross_reverse (A B C : ℚ) (hA : A ≠ 0)
     (hD : A * C - B ^ 2 ≠ 0) :
     momentValue A B C 0 1 1 0 = -B / (A * C - B ^ 2) ^ 2 := by
   norm_num [momentValue, wickCoeff, Finset.sum_range_succ] <;>
-    field_simp [hA, hD] <;> ring
+    field_simp [hA, hD]
 
 def delta (a n R P Q : ℚ) : ℚ :=
   1 - a ^ 2 * (R ^ 2 + P * Q) - n ^ 2 * R * (P + Q) +
@@ -58,7 +59,8 @@ theorem scaled_determinant (a n R P Q : ℚ) (hR : R ≠ 0) (hQ : Q ≠ 0) :
     leading a n R P * trailing a n R P Q - cross a n R P ^ 2 =
       delta a n R P Q / (R * Q) := by
   unfold leading trailing cross delta
-  field_simp [hR, hQ] <;> ring
+  field_simp [hR, hQ]
+  ring
 
 theorem schur_determinant_ne_zero (a n R P Q : ℚ)
     (hR : R ≠ 0) (hQ : Q ≠ 0) (hD : delta a n R P Q ≠ 0) :
@@ -83,7 +85,7 @@ theorem zero_mass (a n R P Q : ℚ)
   rw [moment_zero _ _ _ hA (schur_determinant_ne_zero a n R P Q hR hQ hD),
     scaled_determinant a n R P Q hR hQ]
   unfold mass
-  field_simp [hR, hQ, hD] <;> ring
+  field_simp [hR, hQ, hD]
 
 /-- Normalized outer covariance of n*(x+v). -/
 theorem chiPlus_schur (a n R P Q : ℚ) (hs : a + n = 1)
@@ -95,7 +97,8 @@ theorem chiPlus_schur (a n R P Q : ℚ) (hs : a + n = 1)
   have ha : a = 1 - n := by linarith
   subst a
   unfold leading trailing cross chiPlus
-  field_simp [hR, hQ, hD] <;> ring
+  field_simp [hR, hQ, hD]
+  ring
 
 /-- The conditional variance R+P is essential for the inner covariance. -/
 theorem chiMinus_schur (a n R P Q : ℚ) (hs : a + n = 1)
@@ -109,8 +112,10 @@ theorem chiMinus_schur (a n R P Q : ℚ) (hs : a + n = 1)
   rw [scaled_determinant a n R P Q hR hQ]
   have ha : a = 1 - n := by linarith
   subst a
-  unfold leading trailing cross chiMinus delta at *
-  field_simp [hR, hQ, hD] <;> ring
+  unfold leading trailing cross chiMinus
+  field_simp [hR, hQ, hD]
+  unfold delta
+  ring
 
 /-- The extra n is the intrinsic (1,1) Gaussian contraction, not another mass. -/
 theorem lambda_schur (a n R P Q : ℚ) (hs : a + n = 1)
@@ -123,8 +128,10 @@ theorem lambda_schur (a n R P Q : ℚ) (hs : a + n = 1)
   rw [scaled_determinant a n R P Q hR hQ]
   have ha : a = 1 - n := by linarith
   subst a
-  unfold leading trailing cross lambda delta at *
-  field_simp [hR, hQ, hD] <;> ring
+  unfold leading trailing cross lambda
+  field_simp [hR, hQ, hD]
+  unfold delta
+  ring
 
 /-- Direct zero-order binding to the landed rational pair evaluator.
 The hypotheses are algebraic and do not assert a Gaussian integral without gateOK. -/
