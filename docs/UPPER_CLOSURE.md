@@ -268,11 +268,12 @@ runs were made on the big droplet in `~/claude-b9ee-upper-closure/`, 8 niced sha
 
 ### 6.1 Method
 
-1. **Radial nodes.** `∫₀^∞ e^{−s}(…) ds = ∫₀^∞ 2r e^{−r²}(…) dr`, `r = √s`: composite Gauss–Legendre
-   in `r` on `[0, 9]` (`s ≤ 81`; the integrands carry `e^{−(1/2 + jε)s}` times polynomials of degree
-   `≤ 17j` in `s`, `< 10⁻²⁰` beyond), panels of length 0.2 with 16 points (720 nodes). No special
-   treatment of the profile's three zeros (`s = 13.83, 20.82, 25.20`): the `s`-integrands are `C^∞`
-   there with non-analytic corrections of size `e^{−A(s)²}`, negligible wherever `A > 9`.
+1. **Radial nodes.** `∫₀^∞ e^{−s}(…) ds`: Gauss–Legendre in `s` on the quadrature checker's committed
+   partition `sourcePanels` (`data/upper-closure/checker-panels.txt`: 1,289 panels on `[0, 100]`,
+   orders 1–62, 21,577 nodes, refined around the profile's zeros `s = 13.83, 20.82, 25.20`), the
+   nodes mapped to `r = √s`; preset `checker`. The first version used uniform panels in `r` (length
+   0.2, 16 points, 720 nodes, presets `default`/`r2`/`fine`); §6.2 explains why that fails for the
+   higher grades and why the checker's partition is the right rule for these integrands.
 2. **One node, the `w`-integral.** Polar coordinates `w = τe^{iψ}` around the origin, so that
    `conj h_{c,d}(w) = ĥ_{c,d}(τ) e^{−i(c−d)ψ}` separates: `J_{c,d} = (1/π)∫ τ ĥ_{c,d}(τ) Φ̂_{c−d}(τ) dτ`
    with `Φ̂_k(τ) = ∫ e^{−ikψ} Φ(τe^{iψ}) dψ`, `Φ = (iφ)^j ph(r + bw) e^{−τ²/2}`, evaluated pointwise
@@ -310,13 +311,130 @@ Cost: 0.7 s per node for `j = 1` (`Dw = 181`, 363 modes) on the laptop; a full p
   At `A → 0` (`r = 5.3–7`, `A = 10⁻² … 10⁻⁶`), where the reference's divisions by `A^c` fail,
   `J_{0,0}` agrees with the exact seed `(√π/2) A e^{−A²/2}(I₀ + I₁)(A²/2)` to `4·10⁻¹⁷`.
 * **Exact moments:** `E φ^{2j}` by the full radial × angular quadrature (no phase, no Hermite
-  factor) against `phaseMoment2Q/4Q/6Q`: coarse preset `3·10⁻¹¹`, `6·10⁻¹¹`, `4·10⁻¹²` relative;
-  default and fine presets below.
-* **Convergence** of every reported number under the presets `default` → `r2` (radial refined) →
-  `w2` (`w`-integral refined) → `fine` (both, larger ranges): below.
-* **`j = 0`, all nodes:** the assembled `F₀` coefficients of the lowest grades against the quad
-  checker's raw enclosures (`handoff/quad-checker/raw-final.txt`, milestone 2 of #303): below.
+  factor) against `phaseMoment2Q/4Q/6Q`. With the phase polynomial evaluated by Horner in the
+  monomial basis the relative errors were `2–6·10⁻¹¹` whatever the preset: the float64 evaluation of
+  `S(U,V,W)` loses up to `6·10⁻¹¹` relative at bulk points (condition number `4·10⁶`, exact check
+  against `Fraction` arithmetic). In the Laguerre–angular basis of the source
+  (`data/upper-closure/phase-laguerre.json`, `D·S = Σ_t c_t L_n^{(k)}(3U) L_m^{(k)}(3V) Im((z̄w)^k)`,
+  proved equal to `phaseStrs` as polynomials by `check-phase`) the evaluation is at machine precision
+  (`≤ 3·10⁻¹⁵`), and the coarse preset already gives `E φ^{2j}` to `3·10⁻¹⁶`, `3·10⁻¹⁵`, `7·10⁻¹⁵`.
+* **`j = 0`, all nodes — the radial quadrature.** The assembled `F₀` coefficients of the 26
+  low-band grades (3,627 canonical pairs) against the quad checker's raw enclosures
+  (`handoff/quad-checker/raw-final.txt`, milestone 2 of #303). With the uniform radial panels of
+  §6.1 (step 1) the differences grow tenfold per grade — `2.5·10⁻¹⁴` (q = 0), `4·10⁻¹³`, `3.5·10⁻¹²`,
+  …, `1.5·10⁻⁸` at most — and refining the uniform panels (`r2`: length 0.1, 20 points) leaves the
+  maximum unchanged. The cause is the profile's zeros where `|v′|` is large: `J^{(j)}_{c,d}(s)` is
+  `C^∞` there, but its transition from the `ph ≡ 1` limit (`A = ∞`) to the small-`A` regime takes
+  place in a window of width `≈ r/(κ|v′|)` in `s`: 40 at `s₀ = 13.83` (`v′ = −0.093`), 1.8 at
+  `s₀ = 20.82` (`v′ = 2.5`), **0.17 at `s₀ = 25.20`** (`v′ = −30`), far below the panel width 1.5.
+  The low grades are insensitive because their Hermite functions are negligible at `r ≈ 4.5–5`;
+  from grade 5 on they are not, hence the plateau of the differences. The same spikes affected the
+  comparison of the Taylor coefficients with the centers (§6.3), so the first verdicts on the
+  low bands of powers 1 and 2 were artefacts of the radial rule, not of the centers. The fix is the
+  quadrature checker's own committed partition `sourcePanels` (`data/upper-closure/checker-panels.txt`,
+  1,289 panels, 21,577 nodes in `s`, orders up to 62, adaptively refined around the three zeros:
+  panel widths 0.01–0.6 there), preset `checker`; its validation is the raw comparison below.
+* **Convergence** of every reported number under the presets `checker` → `checker_w2` (`w`-integral
+  refined) and the radial-range test `checker_s60`: below.
 
 ### 6.3 Results — to be filled in
 
-## 7. Lean port design — to be filled in
+## 7. Lean port design
+
+The six hypotheses are statements about the Hermite coefficients `a_j(i) = ⟨hvec2 i, hpow j⟩`
+(§2.3). Three ways to certify them in Lean were weighed; the first is recommended.
+
+### 7.1 Route E (recommended): the inherited multiplier structure on the checker's `F₀` coefficients
+
+`(iφ)^j F₀ = e^{−jε(U+V)} P_j(u) · F₀` with `P_j = (i D S)^j` a polynomial of degree `36j`. Expand
+`F₀ = Σ_{i'} f(i') hvec2 i'` (Parseval, `HermiteC2Basis`) and let `M_j(i, i') = ⟨hvec2 i, (iφ)^j hvec2 i'⟩`:
+
+```
+a_j(i) = Σ_{deg i' ≤ 501} M_j(i, i') f(i')  +  ⟨hvec2 i, (iφ)^j P_{>501} F₀⟩.
+```
+
+* **Inputs `f(i')`**: the quadrature checker's raw enclosures (milestone 2 of #303: 2,698,752
+  coefficients of degree `≤ 501`, widths `≤ 7.6·10⁻²⁸`) and their analytic remainder `ρ`
+  (`‖productionF0Head − (Gauss sums)‖₂ ≤ 1.55·10⁻¹²`, S6b/c). Nothing new is integrated: the same
+  objects and the same soundness obligations as `hclose` (`docs/QUAD_CHECKER.md` §6, §11), so the
+  analytic debt of the upper half does not grow.
+* **The matrix elements** are finite Gaussian integrals of polynomials times `e^{−jε|u|²}`: exactly
+  the kind `PhaseMomentCheck.invariantMoment` already proves (`E[z^a z̄^b w^c w̄^d e^{−α|u|²}] =
+  δ_{ab}δ_{cd} a! c!/(1+α)^{a+c+2}`), composed with the Hermite expansion of `hvec2 i · P_j · hvec2 i'`.
+  Operationally the kernel never forms `M_j`: it applies the multiplication operator to the vector
+  `f`, in the two-coordinate Hermite basis,
+  - the Gaussian factor `e^{−jε|z|²}` as the dilation matrix per angular charge
+    (`⟨h_m, e^{−α|z|²} h_n⟩ = λ⁻¹λ^{−k}Σ_j T_k[j,m]T_k[j,n]`, eq. (2) of `GAUSSIAN_POLYNOMIAL_NORM.md`,
+    `λ = 1 + jε`; dense within a charge, entries bounded by 1, operator norm `≤ 1`), likewise in `w`;
+  - the polynomial `(i D S)^j` in the **Laguerre–angular form** of `data/upper-closure/phase-laguerre.json`:
+    `D S = Σ_k Im((z̄w)^k) Σ_{n,m} c_{nmk} L_n^{(k)}(3U) L_m^{(k)}(3V)`, i.e. for each `k` the ladders
+    `z̄^k w^k − z^k w̄^k` (charge shifts) and two radial polynomials applied by Clenshaw recurrence
+    in the Laguerre basis (`|z|²` is tridiagonal in the radial index at fixed charge). This form is
+    conditioned like the function itself (`10¹–10²`, §6.1); the monomial form loses `10⁶` and the
+    archived `arb_norm.c` paid for it with high precision.
+  Bounded-entry operators on a bounded vector: interval widths are not amplified beyond the
+  operator norms (`≤ 1` for the Gaussian, `≤ (√(2·537))^{36j}·‖c‖₁`-type for the polynomial part,
+  harmless at `P = 512`). The weighted sum `I_j = Σ_i c_j(i) a_j(i)` has amplification `‖c_j‖₂`.
+* **Truncation**: `‖M_j[deg ≤ 181, deg > 501]‖_HS` is a finite exact computation (the inherited
+  rectangular Hilbert–Schmidt lemma, `certify_power_hs.py`); the Gaussian factor couples degree
+  `n` to `n'` with weight `~(jε/(1+jε))^{|n−n'|/2}` and the polynomial shifts by at most `36j`, so
+  the coupling from degree 502 to 181 is below `0.76^{(502−181−108)}·poly ≈ 10⁻²⁵` even for
+  `j = 3`; a crude bound suffices.
+* **Errors**: `‖δa_j‖₂ ≤ 1·ρ + (widths) + (truncation) ≈ 1.6·10⁻¹²` over all coefficients. Against the
+  low-band caps `4.0·10⁻¹¹`, `3.8·10⁻¹⁰`, `4.8·10⁻¹¹` and the `I_j` margins `7.6·10⁻¹²`, `3.5·10⁻¹³`,
+  `2.6·10⁻¹³` (times `‖c_j‖ = 1.6·10⁻³, 2.4·10⁻⁵, 3.6·10⁻⁶` for the latter) this is ample.
+* **Statement chain in Lean.** (i) `a_j(i) = Σ_{i'} M_j(i,i') f(i')` with the tail term: Parseval for
+  `F₀` and the continuity of multiplication by the bounded `(iφ)^j` (`phi_abs_lt_one`); (ii) the
+  kernel's operator application encloses `Σ_{i' ≤ 501} M_j(i,i') f(i')` (soundness of the Laguerre
+  Clenshaw, the ladders and the dilation: polynomial identities in the Hermite basis, provable by
+  `ComplexHermite`'s `A₀, A₁` calculus; the dilation identity (2) needs its own proof or the
+  equivalent change of variables `integral_comp_smul` for `gaussC`); (iii) the band statement from
+  the per-coefficient enclosures (`norm_band_error_le_real_enclosure` restated for `⟨hvec2 i, hpow j⟩`)
+  and the whole-error statement from `I_j ≥ I_j^min` (`norm_hpow_sub_sq`, `norm_hpow_one/two/three_sq`,
+  `norm_firstCenter_sq_exact` etc.) — these consumers exist on master.
+* **Native facts and sharding.** One native fact per (power, charge block) is natural: the
+  operator preserves nothing but can be organised so that the output charge `k_out` of `z` receives
+  from input charges `k_out ± k`, `k ≤ 18`; shard by output charge (≈ 250 blocks of unequal size,
+  grouped into 8–16 facts per power; the raw vector enters as the committed data of the checker's
+  final fact). Cost (interval ops at `P = 512`, `≈ 2 µs` each): the Clenshaw/ladder passes over the
+  `5.4·10⁶`-entry tensor, `≈ Σ_k (34 + 2k)` tridiagonal applications `≈ 10¹¹` for `j = 1` (less for
+  the truncated outputs of degree `≤ 181`), i.e. `≈ 50 CPU-h` per power, shardable; the dilations
+  `≈ 4·10⁹`. Comparable to the node caps (21 CPU-h) and well inside the droplet's capacity.
+
+### 7.2 Route C (fallback): the checker's conditional evaluator at the rescaled shift
+
+Per radial node `s`: the canonical triangle `I_{c',d'}(A√λ)` (seed, ratios, charge recurrence,
+exactly the kernel's `Seed`/`Pairs` at a different argument), the dilation to
+`K_{m,n}(s) = ⟨h_{m,n}, e^{−jε|w|²} ph(r + bw)⟩`, then the multiplication operator `P_s(w)` (the
+Laguerre–angular form at fixed `s`) applied once to `K`; the outputs are all `J^{(j)}_{c,d}(s)` of the
+low band and, contracted with the center's conditional vector `V_{c,d}(s)`, `G_j(s)`. Radial
+quadrature as the checker's (`sourcePanels`, `panelNode`, `panelWeight`), with an S6b/c-type remainder
+for the twisted integrands (new analytic work: bounds of `J^{(j)}` for complex shifts). Cost
+`≈ 5·10⁷` interval ops per node (`≈ 100 s`), `≈ 20 CPU-h` per power on 720 nodes (`600 CPU-h` on the
+checker's 21,577 nodes, which were sized for degree 501 and are more than needed here). Preferable
+only if Route E's tensor passes turn out too slow; it adds analytic obligations that Route E avoids.
+
+### 7.3 Rejected: monomial moments, and the direct 2-D quadrature in the kernel
+
+Writing `P_s` and the Hermite functions in monomials and using `E_w[w^α w̄^β ph(A + w)]` (a positive
+combination of canonical coefficients) is exact but amplifies the enclosure widths by `√(α!β!)`
+(`10¹¹⁵` at degree 156): impossible at `P = 512`, marginal at `P = 1024`. The prototype's own
+scheme (angular FFT, graded Gauss–Legendre around the phase singularity) is the right tool for a
+float64 computation but a poor candidate for a certificate: rigorous remainders for a bounded
+discontinuous integrand on graded 2-D cells are new analysis with no reuse, whereas Routes E and C
+reuse the checker's exact conditional machinery.
+
+### 7.4 What becomes which kind of fact
+
+| piece | kind | where |
+|---|---|---|
+| `E φ^{2j}` | native (`PhaseMoment2/4/6`) | on master |
+| `‖c_j‖²`, `‖P_band c_j‖²`, `I_j^min`, the band energy checks | exact rational, `decide +kernel` | on master / trivial additions |
+| `f(i')` and `ρ` | the checker's facts (milestones 2, 4 of #303) | shared with `hclose` |
+| `a_j(i)` for `deg i ≤ 181` (low bands and `I_j`) | native facts of `GrotheQuadKernel` (Route E operator application), sharded by output charge | new |
+| soundness of the operator application | theorems (Hermite calculus, dilation identity, truncation bound) | new, `Grothe/UpperQuad/` |
+| band lemma on `⟨hvec2 i, hpow j⟩`, whole-error assembly | theorems | small adaptations of `SmallProfileBandEnclosure`, `TaylorErrorEnergy` |
+
+Do not start the port before milestone 4 of #304 lands (the kernel's interval layer and the raw
+vector's soundness are its prerequisites); the prototype's `a_j(i)` (coefficient files under
+`handoff/upper-closure/`) are the expected values to test the kernel against.

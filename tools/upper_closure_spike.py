@@ -30,6 +30,12 @@ conj(h_{c,d}(w)) = h_{c,d}(tau) e^{-i(c-d)psi} (h_{c,d}(tau) real), so
 ph(r + b w) jumps at w0 = -r/b (|w0| = A = r/|b|, arg w0 = pi for b > 0, 0 for b < 0). Away from
 the circle tau = A the angular integral is an FFT; near it (|tau/A - 1| < zone) the tau panels are
 graded geometrically toward A and the psi panels toward arg w0, with Gauss-Legendre on every panel.
+The Hermite functions come from the orthonormal Laguerre recurrence (stable), the phase polynomial
+from its Laguerre-angular basis (data/upper-closure/phase-laguerre.json; the monomial Horner loses
+6e-11). The production radial rule is the quadrature checker's committed partition in s (preset
+`checker`, data/upper-closure/checker-panels.txt): uniform panels in r miss the spikes of the
+integrands at the profile's zeros (width 0.17 in s at s = 25.2) and were found to lose up to 1.5e-8 on
+the F0 coefficients of the low grades.
 
 Usage (see `--help`): `nodes` computes the per-node J arrays for a shard of radial nodes;
 `assemble` combines the shards into coefficients, inner products and the comparison with the Lean
@@ -483,7 +489,29 @@ class Node:
 # --------------------------------------------------------------------------------------------
 
 
-def radial_nodes(cfg):
+def radial_nodes(cfg, root=ROOT):
+    """Radial nodes r_n and weights w_n such that int_0^inf 2 r e^{-r^2} f(r) dr ~ sum_n w_n 2 r_n e^{-r_n^2} f(r_n).
+    Default: uniform Gauss-Legendre panels in r. `radial: checker`: the quadrature checker's committed
+    partition in s (data/upper-closure/checker-panels.txt = Q0GaussAddress.sourcePanels, 1,289
+    panels, 21,577 nodes, adaptively refined around the profile's zeros, where the integrands have
+    spikes of width ~ r/(6 kappa |v'|), 0.03 at s = 25.2, that uniform panels miss), i.e. s-nodes
+    with Gauss weights w_s, mapped to r = sqrt(s), w_n = w_s/(2 r_n)."""
+    if cfg.get("radial") == "checker":
+        path = os.path.join(root, "data/upper-closure/checker-panels.txt")
+        rs, ws = [], []
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                if not line.startswith("panel"):
+                    continue
+                _, _, loN, loD, hiN, hiD, order, _ = line.split()
+                lo, hi = int(loN) / int(loD), int(hiN) / int(hiD)
+                if lo >= cfg.get("s_max", 1e9):
+                    continue
+                p, w = panel_points(lo, hi, int(order))
+                r = np.sqrt(p)
+                rs.append(r)
+                ws.append(w / (2 * r))
+        return np.concatenate(rs), np.concatenate(ws)
     b = uniform_bounds(0.0, cfg["r_max"], cfg["r_len"])
     return panels_points(b, cfg["r_gl"])
 
