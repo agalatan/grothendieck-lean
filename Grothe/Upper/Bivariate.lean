@@ -46,10 +46,6 @@ lemma l1_termOf_le_one {P Q : ℝ[X]} (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (p : �
     (l1_nonneg _) zero_le_one).trans (one_mul 1).le)
   exact (mul_le_mul (h _ _ hP) (h _ _ hQ) (l1_nonneg _) zero_le_one).trans (one_mul 1).le
 
-lemma abs_coeff_termOf_le {P Q : ℝ[X]} (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (p : ℕ × ℕ) (j : ℕ) :
-    |(termOf P Q p).coeff j| ≤ 1 :=
-  (abs_coeff_le_l1 _ j).trans (l1_termOf_le_one hP hQ p)
-
 /-- **Locality.**  If `Q` is divisible by `X`, the term of `(n, m)` is divisible by
 `X^{⌊n/2⌋ + ⌊m/2⌋ + m}`. -/
 lemma coeff_termOf_eq_zero (P Q : ℝ[X]) (hQ : Q.coeff 0 = 0) (p : ℕ × ℕ) {j : ℕ}
@@ -140,15 +136,6 @@ theorem head_perturbation_weighted (P Q : ℝ[X]) (S : Finset (ℕ × ℕ))
       exact sum_congr rfl fun p _ => by rw [sum_mul]; apply sum_congr rfl; intro j _; ring
     _ ≤ _ := sum_le_sum fun p hp =>
       mul_le_mul_of_nonneg_right (hw p hp) (abs_nonneg _)
-
-/-- **`ℓ¹` perturbation of the table.** -/
-theorem head_perturbation (P Q : ℝ[X]) (hP : l1 P ≤ 1) (hQ : l1 Q ≤ 1) (S : Finset (ℕ × ℕ))
-    (μ ν : ℕ × ℕ → ℝ) (K : ℕ) :
-    ∑ j ∈ range K, |∑ p ∈ S, μ p * (termOf P Q p).coeff j - ∑ p ∈ S, ν p * (termOf P Q p).coeff j|
-      ≤ ∑ p ∈ S, |μ p - ν p| := by
-  simpa only [one_mul] using
-    head_perturbation_weighted P Q S μ ν K (fun _ => 1)
-      (fun p _ => (sum_abs_coeff_le_l1 _ _).trans (l1_termOf_le_one hP hQ p))
 
 /-- A weighted version of the finite-head residual comparison. -/
 theorem head_residual_le_weighted (P Q : ℝ[X]) (hQ0 : Q.coeff 0 = 0)

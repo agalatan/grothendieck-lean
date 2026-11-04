@@ -12,7 +12,7 @@ by the upper bound (`PolynomialBridge.lean`):
   checker bounds the head (degrees `≤ 501`) of the kernel of the stored energies `Ê` by
   `headCapQ = 2.8153·10⁻⁸` against `c·t`;
 * the `ℓ¹` norms of the correlation polynomials are at most `1`, hence the passage from tables to
-  kernels is an `ℓ¹` contraction (`summable_kernelCoeff`, `kernelCoeff_sub`).
+  kernels is an `ℓ¹` contraction (`summable_kernelCoeff`).
 -/
 
 namespace Grothe
@@ -61,14 +61,5 @@ lemma auxPoly_coeff_zero : auxPoly.coeff 0 = 0 := by
 lemma summable_kernelCoeff {E : ℕ × ℕ → ℝ} (h : Summable fun p => |E p|) :
     Summable fun n => |kernelCoeff E n| :=
   summable_abs_bivarKernel _ _ l1_primaryPoly l1_auxPoly E h
-
-lemma summable_abs_sub {E F : ℕ × ℕ → ℝ} (hE : Summable fun p => |E p|)
-    (hF : Summable fun p => |F p|) : Summable fun p => |E p - F p| :=
-  (hE.add hF).of_nonneg_of_le (fun _ => abs_nonneg _) fun p => abs_sub (E p) (F p)
-
-lemma kernelCoeff_sub {E F : ℕ × ℕ → ℝ} (hE : Summable fun p => |E p|)
-    (hF : Summable fun p => |F p|) (n : ℕ) :
-    kernelCoeff (fun p => E p - F p) n = kernelCoeff E n - kernelCoeff F n :=
-  bivarKernel_sub _ _ l1_primaryPoly l1_auxPoly E F hE hF n
 
 end Grothe

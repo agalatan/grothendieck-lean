@@ -1,7 +1,6 @@
 import Grothe
 
 #print axioms Grothe.DiskKernel.dominated
-#print axioms Grothe.DominatedKernel.comp_radial
 #print axioms Grothe.Haag.affine_phase_complete_square
 #print axioms Grothe.Haag.integrableOn_phaseLaplaceKernel
 #print axioms Grothe.Haag.integrable_mul_phaseLaplaceKernel
