@@ -1,0 +1,21 @@
+{
+  "agent_id": "codex-aa04",
+  "status": "EXACT_EXTERNAL_REPLAY_NOT_LEAN_VERIFICATION",
+  "ordinal": 3818,
+  "source_words": [
+    4607182418800017408,
+    13588834841377971282,
+    4365462804523195474
+  ],
+  "fit_parameter": "2989182614277673/20282409603651670423947251286016",
+  "model_error_squared": "0",
+  "scaled_profile_interval": [
+    "150246418945813842011136",
+    "210351656005971326879768"
+  ],
+  "interval_scale": "340282366920938463463374607431768211456",
+  "profile_abs_cap": "1/1000000000000000",
+  "actual_radius_upper": "2400000000000001/1800000000000000000000000000000",
+  "actual_radius_target": "2/1000000000000000",
+  "finite_laplace_radius_target": "7/1000000000000000"
+}

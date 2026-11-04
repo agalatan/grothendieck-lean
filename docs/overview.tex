@@ -139,9 +139,90 @@ The 413 unresolved nodes occupy 381 panels; panel closure gives exactly the
 The rule and its exact inputs are committed in
 \path{data/q0_quadrature/conditional_source/exception-selection.json}.
 Lean checks scalar magnitude at most one, squared row norm at most $121/100$,
-and source ordinal coverage. No Gaussian coefficient estimate or upper-bound
-assembly currently consumes this certificate; source-address, basis-normalization
-and approximation-error proofs remain separate.
+and source ordinal coverage. The source-error assembly uses these rows through their
+source-address and cutoff binding; production basis/sign normalization and
+actual approximation estimates remain separate obligations.
+
+The exceptional source panels have Gauss orders one through four. Exact
+normalization of their selected roots removes the panel-weight-sum input,
+using the same physical weights and one Gaussian density factor. The selected
+coefficient error is at most $2.53\cdot10^{-10}$ given a $10^{-12}$ enclosure
+for the actual regular-node coefficients. Exact reconstruction of the full
+conditional rectangle multiplies this allowance by $10/7$ and retains the
+production phase. Regular evaluator bounds, floating operations, contraction,
+omitted-domain estimates, tails and the final energy-table fit are still
+separate requirements for the upper endpoint.
+
+For selected regular nodes near a profile zero, the whole Gaussian slice
+remainder is projected by Bessel before aggregating coefficients. Its vector
+radius remains $5\rho^2$, without a mode-count factor. The two-coordinate
+parameter error has radius at most $|\rho-r|$; a separate coupled saved-model
+radius $\varepsilon$ gives $5\rho^2+|\rho-r|+\varepsilon$. The hybrid source
+budget combines those selected nodes with explicit squared-error budgets on
+all other regular nodes, using the same physical Gaussian weights. Actual
+parameter and saved-vector certificates remain required.
+
+For an exceptional source row, the model-to-payload discrepancy over all
+selected modes reduces exactly to five rational coordinates. The fitted
+parameter is $x_{10}-x_{01}$, with squared residual
+$(1-x_{00})^2+(x_{10}+x_{01})^2/2+x_{02}^2+x_{11}^2$.
+Any other parameter $r$ adds $(r-(x_{10}-x_{01}))^2/2$.
+The decoded source ordinal, cutoff and rank lookup are retained. Physical
+Gaussian parameter enclosures remain required; only the stored approximation
+and explicit model vanish outside the five-coordinate support. Separate
+kernel checks on the decoded rational rows give model residual norm below
+$10^{-31}$ and fitted-parameter magnitude below $10^{-15}$ at every exceptional
+source row. Three centered interval checks on the original exceptional panel
+blocks bound the actual scaled profile by $B=1/(2\cdot10^{14})$.
+Source geometry gives $\sqrt{s}\ge3$, hence physical ratio at most $B/3$
+and ratio-to-fit error at most $B/3+10^{-15}$. The complete selected-vector
+radius is then $5(B/3)^2+B/3+10^{-15}+10^{-31}<3\cdot10^{-15}$.
+The new consumer has no numerical enclosure premise. The original discrete
+Gaussian weights then give exceptional squared error at most
+$(3\cdot10^{-15})^2\cdot2\cdot10^{-21}\le(2\cdot10^{-25})^2$,
+for every finite subset of the selected modes. The full-source adapter adds
+$(2\cdot10^{-25})^2$ to an explicit regular squared-error budget; continuous
+root-gap omission is separate. The regular nodes, quadrature and remaining
+upper-bound obligations are separate.
+
+For each nonnegative squared radial node, the finite auxiliary-integral
+response has the actual affine argument of the base $F_0$ phase. Its Hermite
+coefficient equals the normalized Gaussian integral and, by absolute Fubini,
+the finite auxiliary integral of that kernel. Both approximations are disk-valued.
+The small-ball estimate on every fixed fibre and layer cake give softening
+$L^2$ error at most $(10/3)\eta$; truncation adds at most $e^{-\eta^2T}$.
+Bessel transfers this error to any finite coefficient vector without a
+mode-count loss. The fixed parameters give radius at most $5\cdot10^{-15}$.
+The regular source budget still requires a coupled finite-integral-to-saved
+error $\varepsilon_a$ at every address, weighted by the original Gaussian
+weights as $(5\cdot10^{-15}+\varepsilon_a)^2$. The exceptional squared term
+is added separately. A common coupled row radius $19/10^{11}$ suffices:
+the proved source mass is below $107/100$, so the existing regular and full
+source-error budgets follow by rational inequalities. No row certificate
+is inferred from this sufficient tolerance. Numerical certificates and full
+$\phi_T/P_3$ response binding remain open.
+
+The concrete regular-row certificate \texttt{Q0RegularSourceRow} fixes original
+ordinal 3818, panel 135 and the third node of its order-six rule. Its three
+saved binary64 values fit the sparse linear model with exactly zero residual.
+A centered check on the actual panel bounds the physical profile, giving
+whole-selected-vector Gaussian-to-saved radius below $2\cdot10^{-15}$, with
+omitted coefficients retained. Adding the finite auxiliary approximation
+gives radius below $7\cdot10^{-15}$ and meets the regular-row tolerance at
+this address. The byte slice, source metadata and row hash are pinned.
+
+The near-zero source extension selects original ordinals 3469--4456,
+10710--11238 and 17223--17542, containing 1,837 rows and 1,420 regular rows.
+Its compact payload preserves the original bytes and ledger hashes. Batched
+rational checks bound the fitted parameter by $2\cdot10^{-11}$ and the
+coupled model residual by $2\cdot10^{-22}$. Three actual panel blocks have
+scaled profile at most $10^{-10}$. The shared analytic argument yields
+actual-to-saved and finite-to-saved radii below $6\cdot10^{-11}$ over the
+entire selected coefficient vector, inside the existing row allowance.
+The source-error, exceptional-profile, finite-Laplace and concrete row modules
+passed focused Lean CI at commit \texttt{a00103c2}, run \texttt{41725462291}.
+Repository-wide gates and independent review are separate delivery checks.
+The remaining rows and final upper bound remain work in progress.
 
 The complete stored third Taylor center also has exact total and
 comparison-band energies checked by the Lean kernel. The proof assembles every
@@ -430,6 +511,19 @@ recurrences and absolute Fubini, yields the production multiplier
 $\sqrt{(d+1)/c}\le1$ when $d+1<c$. All these identities use only the
 standard logical axioms. Numerical node enclosures and floating arithmetic
 errors remain separate obligations.
+
+The actual shifted coefficients $C_{cd}(A)$ also satisfy the charge relation
+\[
+ A\bigl(\sqrt{c+1}\,C_{c+1,d}(A)-\sqrt{d+1}\,C_{c,d+1}(A)\bigr)
+   =(d+1-c)C_{cd}(A).
+\]
+Finite shifted-moment identities and absolute Fubini establish this relation;
+Hermite normalization supplies the square-root factors. For $A>0$ it reduces
+each row to the preceding row and the existing zero-row moment seeds, without
+a hypergeometric diagonal recurrence. A finite rational checkpoint checker
+encloses the actual positive moment ratios over parameter intervals, starting
+from the proved terminal bounds $[0,1]$. Numerical seeds, parameter transport,
+stored-row errors and final table agreement remain separate obligations.
 
 \texttt{ConditionalReconstruction} proves that nonconstant coefficients vanish
 at a zero profile, retaining the constant phase $\operatorname{ph}(\sqrt{s})$.
@@ -1117,12 +1211,50 @@ and external exact or interval certificates; they are not all formalized in Lean
  \href{https://arxiv.org/abs/1303.2849}{arXiv:1303.2849}.
 \end{itemize}
 
+\paragraph{Packed source certificate.}
+A strict structural token reader agrees with the unchanged public dyadic
+parser, including malformed input. The generic delimiter identity covers
+legacy single-character splitting. Bounded character-list certificates
+assemble all 460 records of the last first-center source chunk and identify
+its public decoded result with exact integer witnesses. Source equality is
+tied to the original packed array, and the complete certificate is checked
+in the default root. Whole-array source identities, replacement of native
+band checks and Gaussian approximation estimates remain separate obligations.
 % Exact phase-source identity; Agent-ID: codex-8c4d.
 \paragraph{Phase source identity.}
 The identity expressing the squared production phase in Gram coordinates is
 available independently of the numerical phase cover. This lets local source
 certificates use the actual rounding polynomial before cover assembly.
 
+\paragraph{Production source error propagation.}
+A supplied integer leaf check bounds the production phase on that leaf;
+no concrete leaf check is supplied here. The existing native cover already
+bounds the phase globally. A shared Gram-coordinate identity supplies the
+domain constraint for both routes. On $[-1,1]$ the cubic phase factor is
+$5/2$-Lipschitz. For positive radial parameter, the rounding-slice error is
+bounded by the quadratic Gaussian-base remainder plus the phase approximation
+error. Its phase bound remains an explicit premise to preserve independence
+from the native cover. Numerical source comparisons and integral certificates
+still have to instantiate these analytic bounds.
+
+The conditional Gaussian $L^2$ triangle inequality on one unsmoothed radial
+slice charges the base remainder once, giving $5\rho^2$ plus $5/2$ times the
+phase-model error and the model-to-comparison error. The actual phase bound
+follows from the existing native cover; it remains a premise to keep these
+analytic theorems independent of that native computation. Choosing the actual
+phase as the bounded comparison phase makes its phase error zero. The remaining
+Gaussian model-to-comparison integral and the comparison function's relation
+to stored coefficients still need certificates. Radial integration, smoothing
+and band projection are separate steps toward the endpoint.
+
+Keeping the actual phase inside the Gaussian model removes the phase-error
+term exactly. The remaining saved-model discrepancy is one normalized
+conditional Gaussian integral of model energy, saved energy and their cross
+term. Separate energy upper bounds $U,V$ and a real cross lower bound $L$
+give the squared-discrepancy budget $U+V-2L$. A complex cross enclosure
+with center $c$ and radius $r$ gives $U+V-2\operatorname{Re}(c)+2r$.
+These numerical receipts, the saved-source binding and outer radial weights
+remain separate obligations.
 
 \paragraph{Rational source evaluation.}
 The literal rational source polynomial is identified with the actual polynomial
@@ -1137,5 +1269,26 @@ factor per physical pair. Complete source proofs identify the actual coherent
 norm with this value and bound the infinite weighted matrix energy by it.
 Numerical source bounds and the final
 endpoint remain open; no archived estimate is accepted as a proof.
+
+
+\paragraph{Finite charge decomposition.}
+The rational moment balance test makes unequal signed source charges
+orthogonal in the actual conditional Gram evaluator. Thus its full rational
+source norm equals the sum with cross-charge entries removed. Polynomial
+insertion is a rational linear map, so the actual source can also be split
+using the finite charge set of the original multiplier before expanding its
+eight source variables. The same insertion reverses physical charge, including
+when its rational rate is zero. Bilinearity and charge orthogonality therefore
+give the exact identity
+\[
+ N_g=\sum_{k\in\operatorname{chargeSet}(P_g)}
+       B_g\bigl(I_{r_g}(P_{g,k}),I_{r_g}(P_{g,k})\bigr),
+\]
+where $N_g$ is the actual rational source norm expression, $P_{g,k}$ its
+physical multiplier's charge component, $I_{r_g}$ the existing coherent
+insertion, and $B_g$ the existing rational tensor pair kernel with both source
+coefficient factors. No charge count or square formula is assumed here.
+Laguerre coefficient binding, block diagonalization into squares, and numerical
+source enclosures remain separate obligations.
 
 \end{document}
