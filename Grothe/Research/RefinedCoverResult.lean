@@ -18,6 +18,9 @@ open Grothe.Lower Grothe.LowerAnalytic Grothe.Research.RefinedCoverData
 
 namespace Grothe.Research.RefinedLowerCheck
 
+set_option maxRecDepth 0
+set_option maxHeartbeats 0
+
 /-- All refined boxes pass, and their partition covers the whole original domain. -/
 theorem refined_cover_checked :
     checkCover rowData refinedBatches refinedB refinedCuts refinedBoxes = true := by
