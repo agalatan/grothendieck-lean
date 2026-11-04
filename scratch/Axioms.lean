@@ -219,8 +219,6 @@ import Grothe
 #print axioms Grothe.Upper.CompositeComparisonData.residual_value
 #print axioms Grothe.Upper.CompositeComparisonData.transfer_value_lt
 #print axioms Grothe.Upper.CompositeComparisonData.upper_lt_decimal
-#print axioms Grothe.Upper.EnergyDegreeOneLookup.one_zero
-#print axioms Grothe.Upper.EnergyDegreeOneLookup.zero_one
 #print axioms Grothe.Upper.RelaxedComparisonData.comparison_budget
 #print axioms Grothe.Upper.RelaxedComparisonData.denominator_pos
 #print axioms Grothe.Upper.RelaxedComparisonData.energy_le_radiusSlack_sq

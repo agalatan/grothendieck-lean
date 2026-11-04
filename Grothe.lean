@@ -189,7 +189,6 @@ import Grothe.Upper.CompositeComparisonData
 import Grothe.Upper.CompositeComparisonMass
 import Grothe.Upper.Data
 import Grothe.Upper.Disk
-import Grothe.Upper.EnergyDegreeOneLookup
 import Grothe.Upper.Final
 import Grothe.Upper.GroupedBridge
 import Grothe.Upper.GroupedComparison
@@ -1083,7 +1082,6 @@ import Grothe.UpperChaos.PositiveRatio
 import Grothe.UpperChaos.ProductComplete
 import Grothe.UpperChaos.ProductionCompactLaplace
 import Grothe.UpperChaos.ProductionDegreeOneMatrix
-import Grothe.UpperChaos.ProductionDegreeOneTable
 import Grothe.UpperChaos.ProductionF0Conditional
 import Grothe.UpperChaos.ProductionF0Head
 import Grothe.UpperChaos.ProductionF0Omission

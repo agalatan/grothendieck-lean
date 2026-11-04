@@ -71,8 +71,6 @@ Grothe.Upper.CompositeComparisonData.raw_to_projected_budget
 Grothe.Upper.CompositeComparisonData.residual_value
 Grothe.Upper.CompositeComparisonData.transfer_value_lt
 Grothe.Upper.CompositeComparisonData.upper_lt_decimal
-Grothe.Upper.EnergyDegreeOneLookup.one_zero
-Grothe.Upper.EnergyDegreeOneLookup.zero_one
 Grothe.Upper.RelaxedComparisonData.comparison_budget
 Grothe.Upper.RelaxedComparisonData.denominator_pos
 Grothe.Upper.RelaxedComparisonData.energy_le_radiusSlack_sq
