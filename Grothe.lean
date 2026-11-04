@@ -216,6 +216,7 @@ import Grothe.UpperChaos.ActualRectangleCoefficientAction
 import Grothe.UpperChaos.ActualSelectedBandTails
 import Grothe.UpperChaos.ActualSourceCoefficientExtraction
 import Grothe.UpperChaos.ActualSourceCoefficientScaling
+import Grothe.UpperChaos.ActualSourceInsertionLinear
 import Grothe.UpperChaos.ActualSourceNormAudit
 import Grothe.UpperChaos.ActualSourceNormEvaluation
 import Grothe.UpperChaos.ActualSourceNormGram
@@ -1988,6 +1989,7 @@ import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialCutoff
 import Grothe.UpperChaos.RadialDampedMoments
 import Grothe.UpperChaos.RadialRepair
+import Grothe.UpperChaos.RationalChargeOrthogonality
 import Grothe.UpperChaos.RationalComplexHermite
 import Grothe.UpperChaos.RationalPhaseImaginary
 import Grothe.UpperChaos.RationalPhaseInvariant

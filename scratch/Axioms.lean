@@ -343,6 +343,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.ActualSourceCoefficientScaling.scaleHom_monomial
 #print axioms Grothe.UpperChaos.ActualSourceCoefficientScaling.sourceScale_pos
 #print axioms Grothe.UpperChaos.ActualSourceCoefficientScaling.support_scaleHom
+#print axioms Grothe.UpperChaos.ActualSourceInsertionLinear.rationalSourcePolynomial_eq_insertion
+#print axioms Grothe.UpperChaos.ActualSourceInsertionLinear.rationalSourcePolynomial_eq_sum_inserted_chargeBlock
 #print axioms Grothe.UpperChaos.ActualSourceNormEvaluation.gramValue_actual_eq_sourceNormValue
 #print axioms Grothe.UpperChaos.ActualSourceNormEvaluation.integral_scaledTransform_sq_eq_rational
 #print axioms Grothe.UpperChaos.ActualSourceNormEvaluation.integral_scaledTransform_sq_eq_value
@@ -2121,6 +2123,9 @@ import Grothe
 #print axioms Grothe.UpperChaos.RadialRepair.norm_phaseRepair_le_one
 #print axioms Grothe.UpperChaos.RadialRepair.phaseRepair_change_sq_le
 #print axioms Grothe.UpperChaos.RadialRepair.radial_gap_sq_le
+#print axioms Grothe.UpperChaos.RationalChargeOrthogonality.momentValue_eq_zero_of_unbalanced
+#print axioms Grothe.UpperChaos.RationalChargeOrthogonality.rationalGatePairValue_eq_zero_of_charge_ne
+#print axioms Grothe.UpperChaos.RationalChargeOrthogonality.rationalSourceNormValue_eq_charge_filtered
 #print axioms Grothe.UpperChaos.RationalComplexHermite.map_ratA0
 #print axioms Grothe.UpperChaos.RationalComplexHermite.map_ratA1
 #print axioms Grothe.UpperChaos.RationalComplexHermite.map_ratH

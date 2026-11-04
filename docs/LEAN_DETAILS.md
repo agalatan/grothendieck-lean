@@ -1909,3 +1909,16 @@ rational value and bound the full infinite weighted matrix energy by it under
 `gateOK g = true`. Numerical source
 bounds and the final endpoint remain open; historical estimates are not proof
 inputs.
+
+
+`RationalChargeOrthogonality` proves that the rational moment evaluator
+annihilates unequal total holomorphic and antiholomorphic degrees. Weighted
+homogeneity of the actual conditional Wick polynomial then makes pair Gram
+entries vanish between different signed charges, without a positivity premise.
+The full actual rational source norm is consequently equal to its sum with
+cross-charge entries removed. The existing pair mass and Jacobian are retained.
+`ActualSourceInsertionLinear` makes the actual polynomial insertion a rational
+linear map and decomposes its input into the original multiplier's finite
+charge components before eight-variable expansion. These exact decompositions
+do not yet identify the historical Laguerre coefficients or diagonalize each
+block into squares; numerical source bounds and the final endpoint remain open.
