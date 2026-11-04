@@ -645,6 +645,10 @@ import Grothe.UpperChaos.ConditionalMomentCharge
 import Grothe.UpperChaos.ConditionalMomentReflection
 import Grothe.UpperChaos.ConditionalNodeIndices
 import Grothe.UpperChaos.ConditionalReconstruction
+import Grothe.UpperChaos.ConditionalSeedNormalization
+import Grothe.UpperChaos.ConditionalShiftEnclosure
+import Grothe.UpperChaos.ConditionalSourceRow227Scalar
+import Grothe.UpperChaos.ConditionalSourceRow227Shift
 import Grothe.UpperChaos.DampedCoherentKernel
 import Grothe.UpperChaos.DampedMoments
 import Grothe.UpperChaos.DampedQuadraticKernel
@@ -2002,9 +2006,15 @@ import Grothe.UpperChaos.QuadraturePartition
 import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialCutoff
 import Grothe.UpperChaos.RadialDampedMoments
+import Grothe.UpperChaos.RadialLaguerre
+import Grothe.UpperChaos.RadialLaguerreBlockReindex
 import Grothe.UpperChaos.RadialRepair
 import Grothe.UpperChaos.RationalChargeOrthogonality
 import Grothe.UpperChaos.RationalComplexHermite
+import Grothe.UpperChaos.RationalCovarianceAlgebra
+import Grothe.UpperChaos.RationalCovarianceConditional
+import Grothe.UpperChaos.RationalCovarianceGateComposition
+import Grothe.UpperChaos.RationalCovariancePolynomial
 import Grothe.UpperChaos.RationalPhaseImaginary
 import Grothe.UpperChaos.RationalPhaseInvariant
 import Grothe.UpperChaos.RationalQuadraticMoments

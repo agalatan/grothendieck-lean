@@ -700,6 +700,19 @@ Hermite indices. Numerical Hilbert--Schmidt caps and the historical Laguerre
 binding remain OPEN. No physical/source Fubini or unproved coefficient
 identity is assumed in this batch.
 
+`RadialLaguerre` identifies the actual production polynomial
+`ev (r : ℂ) (H (m+k) m)` with
+`(-1)^m * m! * r^k * L_m^k(r²)`, using the finite associated-Laguerre
+coefficient formula. For `s ≥ 0`, the normalized `hfun (m+k,m) (√s)` is
+`(-1)^m * (√s)^k * √(m!/(m+k)!) * L_m^k(s)`; conjugation leaves this real
+radial value unchanged. Natural powers retain the zero-radius and zero-charge
+cases. `RadialLaguerreBlockReindex` identifies the actual conditional block
+`d ≤ q < 251` with `Fin (251-d)`. Its charge is `k=d+1-c ≤ 251`, and each
+block is a prefix of length at most `251-(k-1)`, with both `k=0` and `k=1`
+having maximal length 251. These identities supply the normalization and
+indexing for the radial sampled operator. They do not certify its numerical
+Gram bound, continuous quadrature error or final upper endpoint.
+
 `HermiteFallingFactorial` derives the finite production Hermite
 expansion from commuting creation operators. `HolomorphicCoefficientJets`
 identifies finite Gaussian extraction with derivatives at zero, and
@@ -925,9 +938,26 @@ groups contain at most 32 transitions and use `decide +kernel`.
 width is exactly `73351 / 2^1024`, including rounding and integrated remainder.
 The three hash-pinned inputs under `data/original-moment-seed/` reproduce both
 generated Lean modules through `tools/gen_original_moment_seed.py`.
-The physical profile-shift binding, transport to this midpoint, square-root
-prefactor, coefficient table and final energy agreement remain separate
-obligations for the upper endpoint `1.404598149141`.
+
+**Common scalar and row-227 source binding.** `ConditionalSeedNormalization`
+defines the positive actual seed `S(A) = (sqrt(π)/2) * A * J_0(A²)` for `A > 0`
+and the common normalization `U_i(A) = C_i(A) / S(A)`. It gives exact
+reconstruction `C_i = S * U_i`, `U_(0,0) = 1`, the normalized zero-row and charge
+recurrences, and the finite Bessel budget `Σ_i ‖U_i(A)‖² ≤ 1 / S(A)²`.
+`ConditionalShiftEnclosure` converts absolute profile bounds and squared
+endpoint comparisons into a shift interval. `ConditionalSourceRow227Shift`
+binds the original zero-based panel 4 / rule 31 address to source ordinal 227,
+proves that its physical profile is positive and its phase sign is one, and
+identifies every actual source coefficient with the canonical coefficient at
+the actual shift `A_227`. For the pinned rational midpoint `m`, it gives
+`|A_227 - m| ≤ 2 / 10^18`; it does not identify the midpoint with the physical
+shift. `ConditionalSourceRow227Scalar` combines the actual midpoint moment
+enclosure with the square-root-of-π bounds to obtain `S(m) > 49/50` and
+`|S(m) - ŝ| ≤ 784 / 10^24`, where `ŝ` is the recorded exact dyadic scalar
+center. These bounds have no numerical-accuracy premise. Transport from the
+midpoint to the physical shift, certified normalized-triangle arithmetic,
+saved-row coefficient errors and final energy agreement remain separate
+obligations; the upper endpoint `1.404598149141` is not established here.
 
 `MobiusGeometry`, `MobiusPowerAlgebra`, and `MobiusSeedPullback` establish
 the substitution `v = t/(1+t)` and its pointwise integrand identity.
@@ -1970,3 +2000,21 @@ and identifies `rationalSourceNormValue g` with the diagonal sum indexed by
 each charge block and avoids enumerating expanded source supports. It does
 not yet identify the historical Laguerre coefficients or diagonalize each
 block into squares; numerical source bounds and the final endpoint remain open.
+
+
+`RationalCovarianceAlgebra` evaluates the zero and quadratic rational moments
+with their Gaussian mass and gives the exact Schur covariance scalars.
+`RationalCovariancePolynomial` extends these identities to a constant plus a
+product of two linear forms. `RationalCovarianceConditional` identifies the
+actual degree-one conditional Wick polynomials in source order `((y,u),(x,v))`.
+`RationalCovarianceGateComposition` derives every denominator condition from
+the existing `gateOK g = true` premise and composes the actual pair evaluator
+with those identities. For `n = nuQ g.power` and `a = dampingQ g.power`, the
+zero contraction is `mass = n^2/delta`; the outer and inner degree-one squared
+contractions are `mass*chiPlus` and `mass*chiMinus`. The ground-versus-quadratic
+contraction is `mass*lambda`, including the intrinsic inserted constant `n`.
+It is not an opposite-charge Hermitian cross-Gram identity. The conditional
+variance `R+P`, the pair Jacobian `1/(R*Q)`, and one Gaussian mass are retained.
+No source or energy cap is added. The higher-degree covariance diagonalization,
+the full 18-block/1140-square compressor equality, numerical enclosures, and
+the final endpoint remain separate obligations.
