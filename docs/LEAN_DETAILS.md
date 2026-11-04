@@ -1673,11 +1673,10 @@ them, and are not yet wired into `CapsRest`.
   scalar caps. The headline uses five row checks and three mixed-batch checks from
   `Grothe/Lower/Cert/`, plus four refined-box chunks and a refined-partition
   check from `Grothe/Research/`, and the additional law-batch check. The four box
-  chunks use size 2,631; the kernel verifies that they cover the actual list.
+  chunks use size 2,728; the kernel verifies that they cover the actual list.
   These are 14 single-threaded `native_decide` facts. `LawNodeLower.lean` proves nine interfaces
   connecting checked extra batches and a complete cover to the same Gaussian reduction
-  and transfer. `RefinedLower.lean` specializes the interface to no additional batches;
-  `RefinedCoverResult.lean` supplies the current complete certificate.
+  and transfer; `RefinedCoverResult.lean` supplies the current complete certificate.
 * Inputs of the intermediate theorem `LawNodeLower.profile_bound_of_law_nodes` (all of them are now derived in Lean, except the node caps `NodeCaps`, by the chain ending in `lower_bound_of_refined_cover_data`): the crude row V ≤ t² + ερ² − ε‖Qh‖² (`hcrude`; on paper it follows
   from ‖Qk‖ ≤ E|Qk/‖Qk‖| ≤ ρ, which uses the moment bounds also for the cubic Qk/‖Qk‖), with ‖v‖² = 2
   and 0 ≤ t ≤ 9/10; the simultaneous Gaussian reduction of the rows (`SharedReduction`): one residual p = Q_w c₁ with scale τ = ‖p‖₂ ≤ ρ and normalised law

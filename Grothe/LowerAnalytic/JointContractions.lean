@@ -208,27 +208,6 @@ theorem tenH_eq_gram (hf : ∀ a b c, f a b c = f b a c) (hg : ∀ a b c, g a b 
   linear_combination 162 * hRR + 162 * hRM - 16 * hY
 end normalisation
 
-/-! ### Hilbert–Schmidt bounds -/
-
-section hs
-
-variable (f : ι → ι → ι → ℝ)
-
--- Preserve the legacy named symmetry parameter; the general bound does not need it.
-variable (hf : ∀ a b c, f a b c = f b a c)
-include hf
-
-/-- `T₃ = ⟨S², S⟩ ≤ ‖S²‖ ‖S‖ ≤ h √h`. -/
-lemma tenT3_le : tenT3 f ≤ tenH f * √(tenH f) := by
-  exact JointSixth.tenT3_le f hf
-
-omit hf in
-/-- `Q = ⟨vec G, S vec G⟩ ≤ ‖S‖ ‖G‖² = s √h`. -/
-lemma tenQ_le : tenQ f ≤ tenS f * √(tenH f) := by
-  exact JointSixth.tenQ_le f
-
-end hs
-
 /-! ### The joint inequalities for a circular cubic -/
 
 /-- `s₀ = 8n + 2h + 8b + 8z`. -/
