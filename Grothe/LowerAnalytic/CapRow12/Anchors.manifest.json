@@ -26,7 +26,7 @@
     "Grothe/LowerAnalytic/CapRow12/AnchorRange22.lean": "03826df5a36c1459c21f417a1d8acebef6ba000cd94683c1aa645e4d1db21d2a",
     "Grothe/LowerAnalytic/CapRow12/AnchorRange23.lean": "b036ede2543faa5f291e8412b945987ee38f961f49807cd1539719416a514172",
     "Grothe/LowerAnalytic/CapRow12/AnchorRange24.lean": "8f9193a643de09f8f13c6f718fae7f623bfc45b17fc611b900b0f363cbc6e3ce",
-    "Grothe/LowerAnalytic/CapRow12/Recipes.lean": "ffb4d539f532e163bdd85c4b71972d8609a8a04c56ed0eb641b8445426ae542c"
+    "Grothe/LowerAnalytic/CapRow12/Recipes.lean": "256b56cb9f897969cf4452cf45580e2c560e760522b354aa6a2bc4ea1591d3e3"
   },
   "format": "caps-row-anchor-modules/v1",
   "generator": "tools/gen_cap_row_anchors.py",
@@ -314,7 +314,6 @@
     },
     {
       "anchor_indices": [
-        242,
         246,
         247,
         248
@@ -496,7 +495,7 @@
       "path": "Grothe/LowerAnalytic/CapRow12/AnchorRange24.lean"
     }
   ],
-  "plan_sha256": "eb0e150715242b8afc39ebe127bb3b222d68f5dc6d3eeb71e05c514cce30324d",
+  "plan_sha256": "87dea2b6eaaaa9094a23b533744a08ddf09c1a93b58337e537ecee9e8c80c352",
   "recipes_module": "Grothe.LowerAnalytic.CapRow12.Recipes",
   "row_index": 12,
   "scope": "Unverified anchor recipe proposals and generated Lean check source only. No numerical feasibility, accepted cap, native verification, complete row theorem or Actions cache publication is asserted.",
