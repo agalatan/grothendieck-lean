@@ -638,6 +638,20 @@ S2 and `hQuad` give `hclose`. Tolerances (to be fixed in the fact modules; the b
 `eps_b ≈ 5·10⁻¹³·2²⁵⁶` each (the measured ℓ¹ excursion of the whole head is `3.1·10⁻¹⁵`),
 `bnd_b = 2¹⁰⁰` (the squared widths at scale `2^{256}` sum to `≲ 10²⁵`), `evenNum = 0`.
 
+**The fact modules are written** (`Grothe/UpperQuad/Facts/`): `GradeBlock00…11.lean` (one
+`native_decide` each: `gradeBlockNN : blockFact NN epsBlock bndBlock = true`, `epsBlock = 5·10⁶⁴`,
+`bndBlock = 2¹⁰⁰`), `Even.lean` (`evenCheck : evenFact = true`), `Final.lean`
+(`hclose_of_facts`: the thirteen facts, S2, `hQuad` and the budget inequalities give `hclose`; with
+the inherited `ρ = 1.55·10⁻¹²` one may take `δ = 2.2·10⁻¹²`, `Δ = 2.3·10⁻¹²`). Registered: the
+thirteen `native_decide` axioms in `data/axioms/native.txt`, `#print axioms` lines in
+`scratch/Axioms.lean` (the facts, `hclose_of_facts`, `hclose_of_blockFacts`, `hclose_of_blocks`),
+and `QUAD_TOPS` in `scripts/caps_stamp.py` (`TOPS = ROW_TOPS + PIECE_TOPS + QUAD_TOPS`; the test
+fixtures carry stubs for the thirteen modules). **Consequence for CI (for the user):** the caps
+digest now hashes the import closure of the facts, 752 files (the whole `UpperQuad` layer and the
+`UpperChaos` modules it uses) instead of 63, so a branch that changes any of them has no verified
+cache for its digest and its check goes to the droplet (with `FORCE_HEAVY` everything goes there
+anyway); the alternative is a separate cache key for the facts.
+
 **Remaining, in order.** (0) Validate the block checks on the milestone-2 raw vector
 (`quadrun check handoff/quad-checker/raw-final.txt frozen.txt energy-table.txt qLo qHi`: the
 excursions by block must sum to the milestone-3 `3.116·10⁻¹⁵`). (1) The fact modules: for each block `b` a module

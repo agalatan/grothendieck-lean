@@ -67,6 +67,17 @@ def blk (q : ℕ) : ℕ := ((List.range 11).filter fun i => bounds (i + 1) ≤ q
 lemma blk_spec : ∀ q, q < 251 → blk q < 12 ∧ bounds (blk q) ≤ q ∧ q < bounds (blk q + 1) := by
   decide +kernel
 
+/-! ### The tolerances of the block facts -/
+
+/-- The ℓ¹ tolerance of a block at scale `2^256`: `5·10⁶⁴ / 2²⁵⁶ ≈ 4.3·10⁻¹³` (the measured ℓ¹
+excursion of the whole head is `3.1·10⁻¹⁵`; twelve blocks use `5.2·10⁻¹²` of the budget
+`energyErrQ = 1.37·10⁻¹¹`). -/
+def epsBlock : ℤ := 5 * 10 ^ 64
+
+/-- The squared-width tolerance of a block at scale `2^256`: `2¹⁰⁰ / 2²⁵⁶ = 2⁻¹⁵⁶` (the squared
+widths of the grade matrices sum to `≲ 10²⁵` at that scale). -/
+def bndBlock : ℤ := 2 ^ 100
+
 /-! ### The block facts -/
 
 /-- The block fact: the profile flags, the node loop restricted to the block, and the two checks
@@ -124,5 +135,12 @@ theorem hclose_of_blockFacts (eps bnd : ℕ → ℤ)
   exact hclose_of_blocks P0 (by decide) mem_piI profile_agrees hpv partitionSpecs rootOf hx hJ 12
     bounds bounds_mono (by decide) (by decide) blk blk_spec R (fun b hb => (hR b hb).1) hQuad eps bnd
     (fun b hb => (hR b hb).2.1) (fun b hb => (hR b hb).2.2) hEven hδ0 hδ hsmoothing hbudget
+
+/-- The even check as a `Bool`: the table vanishes at the even bidegrees of the head. -/
+def evenFact : Bool := decide (evenExcursion tableFx ≤ 0)
+
+lemma evenFact_spec (h : evenFact = true) : evenExcursion tableFx ≤ 0 := by
+  unfold evenFact at h
+  exact of_decide_eq_true h
 
 end Grothe.UpperQuad.Facts
