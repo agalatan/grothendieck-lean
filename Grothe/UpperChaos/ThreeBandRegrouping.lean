@@ -207,7 +207,7 @@ theorem threeBand_contains_iff (j : Fin 7) (n m : ℕ) :
 
 theorem threeBand_indices_union (j : Fin 7) :
     bandIndices (threeBandBands j) =
-      ((univ : Finset ComparisonIndex).filter (fun k => threeBandOldGroup k = j)).biUnion
+      ((univ : Finset (Fin 18)).filter (fun k => threeBandOldGroup k = j)).biUnion
         (fun k => bandIndices (comparisonBand k)) := by
   classical
   unfold bandIndices
@@ -225,10 +225,9 @@ theorem threeBand_indices_union (j : Fin 7) :
       (threeBand_contains_iff j p.1 p.2).2 ⟨k, (mem_filter.1 hk).2, hb⟩⟩
 
 theorem old_group_indices_disjoint (j : Fin 7) :
-    Set.PairwiseDisjoint
-      ((↑((univ : Finset ComparisonIndex).filter (fun k => threeBandOldGroup k = j))) :
-        Set ComparisonIndex)
-      (fun k : ComparisonIndex => bandIndices (comparisonBand k)) := by
+    (↑((univ : Finset (Fin 18)).filter (fun k => threeBandOldGroup k = j)) :
+        Set (Fin 18)).PairwiseDisjoint
+      (fun k : Fin 18 => bandIndices (comparisonBand k)) := by
   unfold bandIndices
   generalize headIdx 501 = S
   intro k hk l hl hkl
@@ -296,7 +295,7 @@ theorem actual_threeBand_mass (hf : OriginalFiniteChecks) {EX : ℕ × ℕ → �
   classical
   rw [threeBand_indices_union, sum_biUnion (old_group_indices_disjoint j)]
   calc
-    _ ≤ ∑ k ∈ (univ : Finset ComparisonIndex).filter (fun k => threeBandOldGroup k = j),
+    _ ≤ ∑ k ∈ (univ : Finset (Fin 18)).filter (fun k => threeBandOldGroup k = j),
         ((comparisonBand k).norm : ℝ) ^ 2 := by
       exact sum_le_sum fun k _ => actual_band_mass_of_checks hf hclose (comparisonBand_mem k)
     _ ≤ ((threeBandBands j).norm : ℝ) ^ 2 := by
@@ -304,7 +303,8 @@ theorem actual_threeBand_mass (hf : OriginalFiniteChecks) {EX : ℕ × ℕ → �
       have h := threeBand_mass_caps j
       change (∑ k : Fin 18, if threeBandOldGroup k = j then
         (comparisonBands[k].norm : ℝ) ^ 2 else 0) ≤ ((threeBandBands j).norm : ℝ) ^ 2
-      exact_mod_cast h
+      have h' := (Rat.cast_le (K := ℝ)).mpr h
+      simpa only [Rat.cast_sum, apply_ite (fun q : ℚ => (q : ℝ)), Rat.cast_zero, Rat.cast_pow] using h'
 
 /-- The original rounding norm proof, with its exact finite fold exposed. -/
 theorem norm_roundingDifference_le_of_checks (hf : OriginalFiniteChecks) :
