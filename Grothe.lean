@@ -642,6 +642,10 @@ import Grothe.UpperChaos.ConditionalMomentCharge
 import Grothe.UpperChaos.ConditionalMomentReflection
 import Grothe.UpperChaos.ConditionalNodeIndices
 import Grothe.UpperChaos.ConditionalReconstruction
+import Grothe.UpperChaos.ConditionalSeedNormalization
+import Grothe.UpperChaos.ConditionalShiftEnclosure
+import Grothe.UpperChaos.ConditionalSourceRow227Scalar
+import Grothe.UpperChaos.ConditionalSourceRow227Shift
 import Grothe.UpperChaos.DampedCoherentKernel
 import Grothe.UpperChaos.DampedMoments
 import Grothe.UpperChaos.DampedQuadraticKernel

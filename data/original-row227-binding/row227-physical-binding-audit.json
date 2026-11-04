@@ -1,0 +1,202 @@
+{
+  "agent_id": "codex-aa04",
+  "reviewer": "charge_delivery_audit",
+  "created_utc": "2026-11-04T02:05:08.780814+00:00",
+  "status": "EXACT_SMALL_INTEGER_RATIONAL_REPLAY_AND_SOURCE_REVIEW_NOT_LEAN_ACCEPTANCE",
+  "scope": "Research receipt only; no production edits, large replay, compiler, cache or CI operation.",
+  "worktree": "/Users/alingalatan/workspaces/grothe-codex-aa04-moment-seed",
+  "head_at_receipt": "c17075419c66c32e3471cc97598b56f4d67778c4",
+  "source_sha256": {
+    "GrotheCapsKernel/Basic.lean": "d4a738a79075cd3742dada74bf7c51bc7adc6b246f13f2a7fdecf9192a5e9fb5",
+    "GrotheKernel/HardyArc.lean": "0970820cdfd4c056b12952a0f9fe97cbdb374aa1a2666f483b0138b7ba17b610",
+    "Grothe/UpperChaos/ProfileRootScreen.lean": "57df2f9ee89502a235691edb544b7a544dd69c07e67f842d3b22952baa1bde46",
+    "Grothe/UpperChaos/ProfileRootSound.lean": "e5b50c080035df8e54667008261ea335969eec9f0e4952515e6588d1273a0fa8",
+    "Grothe/UpperChaos/Q0GaussAddress.lean": "820bb5701e1f16667857efbc1ea8c4e0dbb2525d4efd71ca1173578ad153ecd8",
+    "Grothe/UpperChaos/Q0GaussAddressScan.lean": "d437d63867eceaa0c403628e2e699c02cc4eee66f4c80893b44f031ccad2c1fa",
+    "Grothe/UpperChaos/Q0GaussSourceAddress.lean": "4dda1374bccad70f0b492f30beb19197ccc9b51572acfe9fc5f9899de5094787",
+    "Grothe/UpperChaos/Q0GaussOrdinalEquiv.lean": "7c2fff4b7e1c9fb2bbee2aea13ce05f5da230a833aa519d3e2eac4bd92949cfc",
+    "Grothe/UpperChaos/Q0GaussSelectedChoice.lean": "ce8bb799df783a57bfcc02df542a83869006e66bfef0dd8f9c6ccba871a4f057",
+    "Grothe/UpperChaos/Q0GaussSelectedRule62.lean": "763cf14cb189df1f4e15ff97bf0896533f4c36319ddebdc17895f705968f8747",
+    "Grothe/UpperChaos/Q0GaussProductionMass.lean": "e08728540f9803d65d9a3efed41ebfac6e3b1f9470d61e0359f85d03fd99e239",
+    "Grothe/UpperChaos/Q0GaussPhysical.lean": "db133dc118c206ae0e0a30a8ec8f7ef1e7fc5838d484a2cd2f845fbe30339f08",
+    "Grothe/UpperChaos/F0ConditionalEvaluator.lean": "b907a9e249f00037e4eabe240007fb06cdf22633183d34dee416b31090f64795",
+    "Grothe/UpperChaos/F0ConditionalSeed.lean": "1af5b13a2e4cfd05bf2c027ea29d1766a491a8b2396dedce1f886af5bb4aaf51",
+    "Grothe/UpperChaos/Q0ConditionalMetadataAll.lean": "664ff723b7a97171f6e61ee1876ac10db269d5fcee71c6ffb791366e0e261ec4",
+    "Grothe/UpperChaos/Q0ConditionalMetadataGroup000.lean": "1f2ab2fe4b38e8891a1a591978f01ba10b6e1513d90325aefb8f9173f666a7fc",
+    "Grothe/UpperChaos/Q0ConditionalPairRankAll.lean": "70ce1a7bb5ac512707a6807f75a31f9a624cfaa3a0ac85a741ed0db831f04618",
+    "Grothe/UpperChaos/Q0ConditionalPairRankCheck.lean": "b3056630dcdb5386cccdfc8dfb51e1a888a940687e0cb20b335db7cc28598918",
+    "Grothe/UpperChaos/Q0SourceExceptionCenters.lean": "f9cf8c89aecc03d0ad10532dbcae08643ebd37d132e2bdec6ea37e8cb840caa2",
+    "data/q0_quadrature/conditional_source/exception-selection.json": "2e60b2f6ed08495047f67709a7589ad8962d2abc73062a6e3c819c8888d147a0"
+  },
+  "packet_sha256": {
+    "regular-row-audit.json": "9e7129c1019efc26cc05639ad6287e785c9532e248814c856f232459ec93b59c",
+    "row227.bin": "85f6792a14d4c198979bfc9ea6c513b765bd76147cc4fe0d0a9566addae48d1c",
+    "row227-ledger.jsonl": "9e766df3dd1874356d3d7c5506b063b2051531e4677d6dda796a6fdf1def3146",
+    "row227-charge-replay.json": "05ca9474e8e5994b201cb6c56f93ef1c2fd855ab5ff8b63c0dfbaec3ca71015f",
+    "row227-coarse-shift-check.json": "5adf026b76d88155e702a7f54659d5fe8ce3ef6b1754867105429837425687d1",
+    "row227-coupled-transport.json": "ca42da161147f7e6d67680731e4eb5f60cacf752b3f8030e0c415adb3bdc767f",
+    "audit_regular_rows.py": "6577ea005bfbd502a0a5bcee607370b640fcd8f0bc4dfd5a942802a90bafe93b",
+    "replay_row227.py": "88fd0957b4a9d67653821cda435a4f75e3c54167d1c9fbe93df41ced827d93c6",
+    "replay_row227_charge.py": "92520189a65aeea78a0173f35da5785e4f132139c37e4006300ea62eaa2e8ba1",
+    "replay_row227_coupled_transport.py": "9c657cb368a2b8f787a1770c01aaca2180d11de036f6f502cd1e9c166ddf857e",
+    "ConditionalShiftEnclosure.lean": "1e5ca32724336c3bf0d2553caee2be868d73849f046c975c48b4779c3c49d1c6"
+  },
+  "address": {
+    "ordinal": 227,
+    "panel": 4,
+    "rule_index_zero_based": 31,
+    "order": 62,
+    "panel_offset": 196,
+    "panel_lo": "1",
+    "panel_hi": "2",
+    "cutoff": 532,
+    "value_span": [
+      8121379,
+      8157156
+    ],
+    "byte_span": [
+      64971160,
+      65257376
+    ],
+    "stored_words": 35777,
+    "selected_modes": 31877
+  },
+  "root_interval": {
+    "lo": "114650899874979377689273316031068338956467605415691762931839861847958546058901462010762880492528003872455326791093334887479914695971648255193455885081050717937389912377384486361059252343372655/4562440617622195218641171605700291324893228507248559930579192517899275167208677386505912811317371399778642309573594407310688704721375437998252661319722214188251994674360264950082874192246603776",
+    "hi": "57325449937489688844636658015534169478233802707845881465919930923979273029450731005381440246264001936227663395546667443739957347985824127596727942540525358968694956188692243180529626171686329/2281220308811097609320585802850145662446614253624279965289596258949637583604338693252956405658685699889321154786797203655344352360687718999126330659861107094125997337180132475041437096123301888",
+    "theorem": "Q0GaussSelectedRule62.specr31.1",
+    "node_transform": "3/2 + root31/2"
+  },
+  "centered_evalRow": {
+    "row_lo": "257349538881719636056741675569814961459/170141183460469231731687303715884105728",
+    "row_hi": "514699077763439272113483351139629922919/340282366920938463463374607431768211456",
+    "inner": false,
+    "scale": "340282366920938463463374607431768211456",
+    "center": "1029398155526878544226966702279259845837/680564733841876926926749214863536422912",
+    "radius": "1/680564733841876926926749214863536422912",
+    "offset_integer_pair": [
+      -1,
+      1
+    ],
+    "shifted_coefficient_integer_pairs": [
+      [
+        "100954445748654391508608534115898241128",
+        "100954445748654391508852243803249414423"
+      ],
+      [
+        "-1933794181728958839373088748346240721",
+        "-1933794181728958839062940324463368836"
+      ],
+      [
+        "1659085795865945445230726288467695047",
+        "1659085795865945445481511053157686686"
+      ],
+      [
+        "432910737863433334336365583387138176",
+        "432910737863433334448205256418582922"
+      ],
+      [
+        "-155231743127865566552355992271218024",
+        "-155231743127865566522095679598418555"
+      ],
+      [
+        "-2194709009197656126426231076651377",
+        "-2194709009197656121235683222394487"
+      ],
+      [
+        "8553133842719063406510674014751289",
+        "8553133842719063407087271369343078"
+      ],
+      [
+        "-2117931087212398954230668312808726",
+        "-2117931087212398954188769002988958"
+      ],
+      [
+        "255116512565943395380156746732705",
+        "255116512565943395382219267116669"
+      ],
+      [
+        "-16359271730577309113497456185572",
+        "-16359271730577309113409621745146"
+      ],
+      [
+        "530067324486989559837200536820",
+        "530067324486989559842472128973"
+      ],
+      [
+        "-6791621083063996132781719552",
+        "-6791621083063996132513284096"
+      ]
+    ],
+    "evalRow_integer_pair": [
+      "100954445748654391508608534115898241127",
+      "100954445748654391508852243803249414424"
+    ],
+    "historical_profile_delta_units": [
+      -6,
+      8
+    ]
+  },
+  "replay_method": [
+    "Parse twelve literal ProfileRootScreen.coeffs; check exact equality with pinned source schedule screen_coefficients.",
+    "Use D=2^128, ofRatI(q)=(floor(qD),ceil(qD)), componentwise addI, mulI=(floor(min four products/D),ceil(max four products/D)).",
+    "powI(a,0)=(D,D); powI(a,n+1)=mulI(powI(a,n),a), preserving production rounding.",
+    "shiftedCoeff(center,j) sequentially sums i=0..11-j of mulI(mulI(coeffs[j+i],intI(choose(j+i,j))),powI(ofRatI(center),i)).",
+    "rowOffset=(-1,1). Start y=(0,0), visit shifted coefficients in reverse, update y=addI(c,mulI(rowOffset,y)). This equals CI.horner.re because every imaginary interval remains exactly(0,0).",
+    "All comparisons use fractions.Fraction and integers; no floating value participates in a guard."
+  ],
+  "coarse_parameters": {
+    "aLo": "829088639664070939/200000000000000000",
+    "aHi": "518180399790044337/125000000000000000",
+    "midpoint_numerator": "745223477858218358216912212641266730157341474621088198344478146520493346762330199682104347456794734546704971706801931386446023870299332861557415410890910935615011803888431995145876294857912847980205755443718929589765802167467652182988251456597755231733278543560240716478379335097867352624625212010260961982755",
+    "midpoint_denominator": "179769313486231590772930519078902473361797697894230657273430081157732675805500963132708477322407536021120113879871393357658789768814416622492847430639474124377767893424865485276302219601246094119453082952085005768838150682342462881473913110540827237163350510684586298239947245938479716304835356329624224137216",
+    "radius": "1/500000000000000000",
+    "joint_squared_cap": 1004,
+    "joint_norm_cap": 32,
+    "transport_cap": "1/15625000000000000",
+    "midpoint_vector_radius_external_input": "13759599/1000000000000000000000000",
+    "finite_reserve": "1/200000000000000",
+    "combined_radius": "5077759599/1000000000000000000000000",
+    "target": "19/100000000000"
+  },
+  "guards": {
+    "node_box_from_root": true,
+    "node_nonnegative": true,
+    "profile_positive": true,
+    "endpoints_nonnegative_ordered": true,
+    "lower_squared": true,
+    "upper_squared": true,
+    "midpoint_lower": true,
+    "midpoint_upper": true,
+    "joint_norm_factor": true,
+    "transport_cap": true,
+    "finite_radius_target": true,
+    "combined_radius_matches_saved": true,
+    "coefficients_match_schedule": true,
+    "payload_hash_matches_ledger": true,
+    "payload_length": true,
+    "ordinal_arithmetic": true,
+    "panel_constants": true
+  },
+  "squared_guard_slacks": {
+    "lower": "413406360082227386858643307473434890364086018749483046731056792818065501014952539096247711/72370055773322622139731865630429942408293740416025352524660990004945706024960000000000000000000000000000000000",
+    "upper": "1296749947519033371687224018824007333475006194250960401926968198462015375719772289389071144401/1809251394333065553493296640760748560207343510400633813116524750123642650624000000000000000000000000000000000000"
+  },
+  "proposed_address_proof_not_compiled": [
+    "Define a227 : Address := <panel4,rule31> using bounded kernel checks, as in Q0RegularSourceRow.address.",
+    "Kernel-check sourcePanels.get a227.1 = Panel.mk 1 2 62 196 and (fromAddress a227).val = 227; avoid reducing noncomputable toAddress.",
+    "Use selected_root_congr at concrete order62 and rule31; reduce selectedFor62 to Q0GaussSelectedRule62.selected.root.",
+    "Unfold sourceNode/panelNode with panel equality: sourceNode a227=3/2+root31/2. specr31.1 and rational arithmetic imply membership in chosen r.",
+    "Apply ProfileRootSound.row_horner_mem r then centered_horner_profile to bind actual scaled profile. Neither theorem requires r membership in ProfileRootScreen.rows.",
+    "Positivity of bLo identifies profileScale with positive scaled profile; apply research profileShift_mem_of_squared_bounds and profileShift_midpoint_error.",
+    "Use node_at a227 plus checked fromAddress ordinal if consumer needs ordinal node227."
+  ],
+  "cautions": [
+    "SelectedRule.upper bounds weights, not roots; use specr31.1 for root upper endpoint.",
+    "Historical exact rational Horner rounds at end. Uncentered128-bit Horner on rounded sbox changes its output by -108/+127 units, whereas actual centered evaluator changes it by -6/+8.",
+    "Midpoint vector radius and analytic transport remain external/research inputs; no coefficient transcript or transport theorem is certified here.",
+    "PR287 checks midpoint seed, not source-parameter equality. No ledger error claim or historical full-file hash is a proof premise.",
+    "Metadata/pair ranks already have Lean infrastructure, but row227 payload requires binding; exceptional validRow only accepts cutoff1/2, not532.",
+    "No Lean acceptance or endpoint certificate is claimed."
+  ]
+}
