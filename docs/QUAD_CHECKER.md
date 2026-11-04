@@ -685,7 +685,7 @@ measured data size (≈ 20 MB per range, see above) made that unattractive and t
 were measured not to pay: the cost does not depend on P, and P = 256 is unsound in practice at the
 Watson nodes). **Launched on mega** (`~/claude-b9ee-quad-facts`, cores 36–59, twelve `lake build
 Grothe.UpperQuad.Facts.GradeBlockNN` in their own process groups, `block-NN.log` with start/end
-timestamps) on 5 November 01:07 UTC as the private measurement; the CI droplet run (push without
+timestamps) on 5 November 01:07 Bucharest (23:07 UTC) as the private measurement; the CI droplet run (push without
 `[skip ci]`, or `gh workflow run lean.yml --ref claude-b9ee/quad-checker-bridge`) follows when every
 block is true there. The CI run 41929108078 dispatched before the (a) interlude was cancelled.
 
