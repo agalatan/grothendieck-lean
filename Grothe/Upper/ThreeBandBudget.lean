@@ -129,7 +129,7 @@ theorem threeBand_real_reciprocal :
 
 theorem threeBand_real_value_lt : (threeBandValueQ : ℝ) < (1.40459988 : ℝ) := by
   calc
-    (threeBandValueQ : ℝ) < (140459988 : ℝ) / 100000000 := by
+    (threeBandValueQ : ℝ) < (((140459988 : ℚ) / 100000000 : ℚ) : ℝ) := by
       exact_mod_cast threeBandValueQ_lt
     _ = (1.40459988 : ℝ) := by norm_num
 
