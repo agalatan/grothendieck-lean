@@ -189,7 +189,6 @@ import Grothe.Upper.CompositeComparisonData
 import Grothe.Upper.CompositeComparisonMass
 import Grothe.Upper.Data
 import Grothe.Upper.Disk
-import Grothe.Upper.EnergyDegreeOneLookup
 import Grothe.Upper.Final
 import Grothe.Upper.GroupedBridge
 import Grothe.Upper.GroupedComparison
@@ -201,6 +200,8 @@ import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.Realise
 import Grothe.Upper.RelaxedComparisonData
 import Grothe.Upper.Residual
+import Grothe.Upper.ThreeBandBudget
+import Grothe.Upper.ThreeBandEndpointCore
 import Grothe.UpperChaos.ActualCoherentBesselAudit
 import Grothe.UpperChaos.ActualCoherentCoefficientAudit
 import Grothe.UpperChaos.ActualCoherentHermiteJets
@@ -1083,7 +1084,6 @@ import Grothe.UpperChaos.PositiveRatio
 import Grothe.UpperChaos.ProductComplete
 import Grothe.UpperChaos.ProductionCompactLaplace
 import Grothe.UpperChaos.ProductionDegreeOneMatrix
-import Grothe.UpperChaos.ProductionDegreeOneTable
 import Grothe.UpperChaos.ProductionF0Conditional
 import Grothe.UpperChaos.ProductionF0Head
 import Grothe.UpperChaos.ProductionF0Omission
@@ -3808,6 +3808,10 @@ import Grothe.UpperChaos.ThirdFoldRectangle
 import Grothe.UpperChaos.ThirdGradeActualTargetNumerics
 import Grothe.UpperChaos.ThirdGradeLengths
 import Grothe.UpperChaos.ThirdIntegerSourceBinding
+import Grothe.UpperChaos.ThreeBandComparison
+import Grothe.UpperChaos.ThreeBandEndpointAdapter
+import Grothe.UpperChaos.ThreeBandRegrouping
+import Grothe.UpperChaos.ThreeBandUpper
 import Grothe.UpperChaos.UnitSquaredQuadrature
 import Grothe.UpperChaos.UnitSquaredQuadratureConditional
 import Grothe.UpperChaos.UnitSquaredRadiusProfile
