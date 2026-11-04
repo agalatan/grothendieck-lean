@@ -287,6 +287,16 @@ the coefficient integrals; their numerical quadrature remains work in progress.
 \texttt{ProductionCompactLaplace} also restricts the first squared Gaussian
 radius to $[0,80]$. Its radial error is at most $10^{-17}$, and the combined
 softening and both truncation errors still fit the same $5\cdot10^{-15}$ reserve.
+\texttt{WholeCenterEnergies} identifies the original centers' total energies
+with their exact finite energy certificates and retains those values in the
+three whole Taylor-error identities. Its norm bounds $0.00161$, $0.000024$ and
+$0.0000036$ specialize the complete compact source reserve to inner-product
+cutoff costs $8.05\cdot10^{-18}$, $1.2\cdot10^{-19}$ and $1.8\cdot10^{-20}$.
+The reserve is charged once; original coefficients and factorial scaling are
+unchanged. The first two center adapters retain the registered native energy
+facts, and the source adapters retain the existing phase-cover facts.
+Lower bounds for the compact interior integrals and the three low-band error
+certificates remain work in progress.
 \texttt{ProfileAdaptiveSource} permits the shorter regular auxiliary endpoint
 $100$ on any certified radial region with $s\ge1/16$ and
 $|\kappa(s)|\le1/100$. It retains $2^{53}$ elsewhere and proves that the

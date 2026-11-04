@@ -467,6 +467,20 @@ on which the approximant vanishes using those three scalar inputs. These
 results formalize both tail routes, without certifying the remaining Gaussian
 inner-product enclosures or the approximant coefficient data.
 
+`WholeCenterEnergies` identifies the complete squared norms of the original
+centers with the exact sum of six first-center energies, the exact sum of four
+second-center energies, and the existing total third-center energy. These exact
+values remain in the three `norm_hpow_sub_sq` identities for the raw sources
+`(i * phi)^j F0`; the coefficients and factorial scaling are unchanged.
+The norm caps `0.00161`, `0.000024` and `0.0000036` are used only to specialize
+`CompactTaylorQuadrature`'s complete `5e-15` source reserve. The resulting inner
+product cutoff costs are `8.05e-18`, `1.2e-19` and `1.8e-20`, including softening
+and both truncations once. Lower enclosures for the actual compact interior
+integrals and the three low-band errors remain separate obligations. The first
+and second center adapters retain their respective registered native energy
+facts; the whole-error and cutoff adapters also retain the existing phi-cover
+facts. No new native fact is introduced.
+
 **Finite Taylor centers.** The original three approximant arrays and frozen
 correction are preserved under `data/taylor-approximants/inputs/`, with a
 hash manifest. `HermiteFinite` gives the exact coefficients, total norm and
