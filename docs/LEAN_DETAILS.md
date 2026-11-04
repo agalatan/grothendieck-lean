@@ -452,6 +452,118 @@ at most two, hence a norm factor below `10/7`. `ConditionalReconstruction`
 applies that split to the actual conditional Gaussian coefficients and their
 exact reflected completion; numerical reconstruction remains separate.
 
+`FixedChaosSmoothing.baseGradedCoefficient_iterated` in
+`ProductionF0Conditional` identifies every actual tensor coefficient with
+its conditional Gaussian integral. `ProductionF0Head`
+projects the actual base phase to total degree at most 501. Its complete
+coefficient-error identity sums all 251 grades, and its selected smoothing
+identity uses this degree projection, avoiding a commutation claim for the
+nonrectangular energy head. `ProductionRetainedSource` inserts the actual
+91-grade correction once before rational smoothing. `ProductionRetainedEnergy`
+derives the smoothing-input norm from the raw-source error.
+`FixedChaosSmoothing.baseGradedCoefficient_eq_radial` in `ProductionF0Radial`
+then removes the first Gaussian angle from each bounded tensor coefficient.
+It uses charge cancellation in the complete tensor integrand, including zero
+profiles, and expresses the result with the actual conditional coefficient
+at `sqrt(s)` and Gaussian density `exp(-s)` exactly once.
+`norm_productionF0Head_sub_sq_radial` substitutes these integrals into the full
+251-grade error identity. It assumes neither numerical quadrature nor equality
+to a stored primary matrix; those are subsequent certification obligations.
+
+`CompositeComparison.Inputs` retains six actual Gaussian premises: three
+low-band residual norms and three real inner-product lower bounds for the
+whole Taylor residuals with factorial scaling explicit. The seven band pieces
+sum to the actual response difference; their quadratic cost is bounded using
+the four whole residuals. `CompositeComparison.energy_close_of_raw_source` in
+`CompositeEnergy` consumes
+an actual projected F₀ approximation with error at most `9.5·10⁻⁹` and table fit
+of its actual rational smoothed output at most `10⁻⁸`, deriving selected-energy
+error at most `3·10⁻⁸`. `head_residual_of_raw_source` then uses the six Gaussian
+premises to obtain the head budget. The scalar ledger gives comparison error
+at most `1.72·10⁻⁶`; the actual raw-source and table certificates, Gaussian
+premises and independent Hardy tail remain open. No completed endpoint or
+historical Hilbert–Schmidt receipt transfer is assumed.
+
+`RelaxedComparison` provides an alternative using the original fourteen
+unscaled Gaussian finite-band premises. The eighteen piece-error radii and
+four grouped quadratic radii are unchanged. Only each weighted response
+band-mass norm radius increases by `1/5000`; its square `4·10⁻⁸` covers the
+selected l1 energy discrepancy `3·10⁻⁸`. An energy discrepancy is not used as
+an L2 source allowance. The rational comparison sum is below `9·10⁻⁷`.
+`RelaxedEnergy.residual_of_raw_source` includes the actual source/correction/
+smoothing/table chain and adds the separate actual-kernel tail `3.6748·10⁻⁸`
+once, obtaining total residual `994901/10¹²`. The resulting conditional
+transfer is below `1.4045984`. All fourteen Gaussian estimates, the actual
+raw source error, same-output table fit and tail remain explicit inputs.
+This alternative and its transitive axiom report require full acceptance;
+the final completed façade remains separate.
+
+`CommonSourceTolerance` instantiates the variable source-to-energy interface
+with total canonical tensor error `9.7·10⁻⁸`, raw error `1.4·10⁻⁷`, projected
+error `1.45·10⁻⁷`, same-output table error `10⁻⁷` and selected energy error
+`4·10⁻⁷`. It charges reflection once, keeps the `2⁻⁵⁴` rational completion
+defect separate, derives the finite smoothing-input norm and includes the
+table allowance inside the energy budget. The canonical/source and table
+certificates are explicit premises for the same exact rational family.
+`CommonGaussianTailTolerance` enlarges each original unscaled finite Gaussian
+radius by `2·10⁻⁸` and recomputes all three captured-energy budgets. The new
+unscaled tail norms are `2764127/250000000000`, `318927/125000000000` and
+`548393/250000000000`. It consumes fourteen actual Gaussian premises and the
+stored centers' norm/support identities. Comparison still divides the second
+and third tails by two and six; the old grouped quadratic radii cannot be
+reused for the enlarged errors. These additions do not close any numerical
+premise or replace the original contracts.
+
+`localized_comparison_with_errors` keeps those same eighteen supports but
+accepts an arbitrary actual piece-norm error family and selected energy
+tolerance. Its conservative quadratic term is the square of the sum of the
+supplied errors, so it does not reuse old group radii after enlarging Gaussian
+caps. `selected_energy_close_of_raw_error` separately propagates arbitrary
+raw, projected and same-output table allowances. These interfaces preserve
+the original concrete contracts; changing a ledger still requires every
+new captured-tail and scalar arithmetic certificate.
+
+`ProductionF0RationalCompletion` constructs the reflected half from the
+canonical rational centers using the existing `RationalSqrtFloor` at
+denominator `2⁵⁴` and exact rational multiplication. Injectivity of the partner
+map bounds the coupled completion defect by `2⁻⁵⁴` times the canonical center
+norm, without an entry-count factor. That center norm is at most one plus the
+actual canonical tensor error, by the F₀ norm and the triangle inequality.
+An actual canonical tensor error `6.6·10⁻⁹` therefore fits the raw `9.5·10⁻⁹`
+contract. `RelaxedRationalReference` uses the resulting same-reference table
+premise and fourteen Gaussian estimates. The archived floating family is
+separate; its table certificate is not transferred to this new reference.
+
+`ProductionDegreeOneMatrix` and `ProductionDegreeOneTable` are a WIP
+concrete table-fit slice. The generator validates the pinned full raw archive
+`5992d33a…`, reads both grade-zero words at offsets indexed by `251²` and `0`,
+and inserts the actual frozen correction once before production rational
+smoothing. Natural square-root inequalities certify the proposed matrix
+entries. The actual `retainedSmoothed` energy identities use arbitrary higher
+grades, and the dyadic reference leaves both canonical grade-zero coordinates
+unchanged. The proposed two-energy table residual is `≤ 10⁻¹⁵`.
+`EnergyDegreeOneLookup` proves against the current `parseRow`, `parseEntry` and
+`tabVal`; one-sided character certificates can succeed only when their result
+is the value of those unchanged definitions. Every row and duplicate matching
+entry contributes. The pure delimiter helper is reused byte-identically from
+8c4d commit `34c12029…`; no retired prefix or source-lookup axiom is imported.
+All new source/matrix/table consumers await actual Lean acceptance. This
+arithmetic certificate does not establish accuracy of the Gaussian F₀ input.
+
+`ProductionF0Omission` partitions the actual phase by one measurable union of
+three explicit root-gap sets and `s > 100`. The continuous Gaussian tail mass
+is exactly `exp(-100)`. Gaps beyond `s = 13` with total width at most `8·10⁻¹⁶`
+have mass at most `2·10⁻²¹`; `continuous_mass_budget` proves
+`2·10⁻²¹ + exp(-100) ≤ (45·10⁻¹²)²` in Lean. The bound `‖F₀‖ ≤ 1` applies
+before projection and before coefficientwise estimates, so the union incurs
+one L² cost. `completeRegularHead` is the actual degree projection of the
+source on the entire complement. `energy_close_of_regular_source` and
+`head_residual_of_regular_source` propagate an approximation of that source
+through the same correction, smoothing and table consumer. Actual gap geometry,
+whole-complement approximation, source/FP bindings, table fit and Gaussian
+premises remain explicit. Discrete exceptional-node error is a separate cost;
+no Taylor or Hardy tail conclusion follows from the F₀ unit bound.
+
 `CapturedTail.norm_projOn_residual_sq_le_of_captured_family` subtracts
 `Σ_i max(0, lower_i − error_i)²` from the total source energy. Its hypotheses
 are pairwise disjoint captured mode sets, disjointness from the tail, vanishing
@@ -1985,6 +2097,23 @@ box and the guillotine partition. `--check` reproduces `LawNodeData.lean` and
 `RefinedCoverData.lean` byte for byte. The original pure-row batch stays at index
 21; the three mixed nodes form batch 22. No checker-core or heavy cap source changes.
 
+The actual tensor reconstruction in `ProductionF0Reconstruction` uses the
+real-radius symmetry of the normalized primary Hermite factor and the proved
+conditional reflection under the radial integral. Thus
+`norm_productionF0Head_sub_le_canonical` bounds the complete Gaussian source
+error by `10/7 * canonicalTensorErrorNorm a0 + tensorCompletionDefectNorm a0`.
+The second term measures the actual rational output against exact mathematical
+completion; its bound must certify floating operations. Neither a rational
+coefficient family nor archived floating logs are required to satisfy an exact
+irrational reflection identity. The canonical tensor error, completion defect,
+same-output table fit and Gaussian comparison premises remain explicit in
+`energy_close_of_canonical_tensor` and `head_residual_of_canonical_tensor`.
+
+`tensorCompletionDefectNorm_sq` reduces that actual rational-output defect
+exactly to the sum of squared real reflection errors over the reflected halves
+of all 251 grades. The canonical half contributes zero. A numerical producer
+must bound this coupled sum for the same coefficient family; no exact floating
+reflection or per-entry radius is inferred.
 `PackedDyadicStructural` supplies a strict character-list reader equal to
 `String.toNat?` and `String.toInt?` on all inputs, including interior
 underscores and negative zero. The record transfer preserves the exponent
