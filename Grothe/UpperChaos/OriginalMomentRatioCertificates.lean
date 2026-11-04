@@ -116,12 +116,19 @@ theorem ratio_mem_of_certificate (H : ℕ) (lo hi : ℕ → ℚ) (xlo xhi : ℚ)
     · exact_mod_cast hc.2.2.1
     · exact_mod_cast hc.2.2.2.1
   · intro j hj
-    have hs := hc.2.2.2.2 ⟨j, hj⟩
+    have hs : hi (j + 1) ≤ 1 ∧
+        lo j * ((j : ℚ) + 2 + xhi - xhi * lo (j + 1)) ≤ (j : ℚ) + 1 / 2 ∧
+        (j : ℚ) + 1 / 2 ≤ hi j * ((j : ℚ) + 2 + xlo - xlo * hi (j + 1)) :=
+      hc.2.2.2.2 ⟨j, hj⟩
     constructor
     · exact_mod_cast hs.1
     · constructor
-      · exact_mod_cast hs.2.1
-      · exact_mod_cast hs.2.2
+      · simpa only [Rat.cast_mul, Rat.cast_sub, Rat.cast_add, Rat.cast_div,
+          Rat.cast_natCast, Rat.cast_ofNat, Rat.cast_one] using
+          (Rat.cast_le (K := ℝ)).mpr hs.2.1
+      · simpa only [Rat.cast_mul, Rat.cast_sub, Rat.cast_add, Rat.cast_div,
+          Rat.cast_natCast, Rat.cast_ofNat, Rat.cast_one] using
+          (Rat.cast_le (K := ℝ)).mpr hs.2.2
   · exact hk
 
 end Grothe.UpperChaos.OriginalMomentRatioCertificates

@@ -97,7 +97,7 @@ private theorem moment_chargeDefect (A t : ℝ) (ht : 0 < t) (p q : ℕ) :
     unfold chargeDefect
     ring
   rw [hpoly]
-  simp only [map_sub, moment_C_mul]
+  rw [map_sub, map_sub, moment_C_mul, moment_C_mul, moment_C_mul]
   rw [← mul_sub, moment_H_charge (1 + t) (-(t / (1 + t)) * A) A hβ hm,
     sub_self]
 
@@ -114,6 +114,8 @@ private theorem integral_chargeDefect (A : ℝ) (p q : ℕ) :
       _ = ∫ _t : ℝ in Set.Ioi 0, (0 : ℂ) := by
         apply setIntegral_congr_fun measurableSet_Ioi
         intro t ht
+        change (∫ w, ev w (chargeDefect A p q) *
+          Haag.phaseLaplaceKernel ((A : ℂ) + w) t ∂gaussC) = 0
         rw [integral_phaseLaplace_eq_moment _ A t ht,
           moment_chargeDefect A t ht p q, mul_zero]
       _ = 0 := by simp
@@ -149,7 +151,8 @@ theorem integral_phase_H_charge (A : ℝ) (p q : ℕ) :
       ((p : ℂ) + 1 - (q : ℂ)) *
         ∫ w, ev w (H p q) * Haag.ph ((A : ℂ) + w) ∂gaussC := by
   have hz : phaseMoment A (chargeDefect A p q) = 0 := integral_chargeDefect A p q
-  simp only [chargeDefect, map_sub, phaseMoment_C_mul] at hz
+  dsimp only [chargeDefect] at hz
+  rw [map_sub, phaseMoment_C_mul, phaseMoment_C_mul, map_sub] at hz
   exact sub_eq_zero.mp hz
 
 end
