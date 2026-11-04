@@ -330,3 +330,53 @@ committed inputs, not an independent evaluation of the integrals. Milestone 3 re
 two entries from the milestone-2 enclosures (which differ from the committed words by
 `3.3·10⁻¹⁶` and `1.67·10⁻¹⁵`), so its degree-one energies differ from the table at the
 `10⁻¹⁵` level by construction; this is reported, not hidden, in §10.
+
+## 10. Milestone 3: results of the rotation and the energy comparison
+
+Run of 4 November 2026 (branch at `908385dd3`, big droplet, 24 niced shards sharing the machine
+with another job): the 252 saved matrices `S_0 … S_251` computed exactly (`quadrun smat`;
+`S_251` alone is 63,504 entries of 20,000-bit arithmetic, ≈ 2 min uncontended; the whole set
+≈ 2 CPU-hours), then the 251 grades rotated (`quadrun rotate`: ≈ 35 s to read the 277 MB raw
+vector per shard, 5.6–7.6 s per large grade, ≈ 10 CPU-minutes in all, ≈ 3 min wall). Output:
+63,252 bidegrees `(n, m)` with enclosures at `2⁻²⁵⁶` (`handoff/quad-checker/en/energy-*.txt`);
+comparison `data/quad-checker/energy-comparison.json` (`tools/quad_compare_energy.py`, exact
+rationals).
+
+**Agreement with `energyTable` over the 21,168 head bidegrees `n + 3m ≤ 501`:**
+
+| quantity | excursion of the table value from the enclosure | midpoint difference |
+|---|---|---|
+| maximum | 2.723·10⁻¹⁵ at `(1, 0)` | 2.723·10⁻¹⁵ |
+| ℓ² | 2.730·10⁻¹⁵ | 2.730·10⁻¹⁵ |
+| **ℓ¹ = Σ_{head} excursion = the certified `htable` value** | **3.116·10⁻¹⁵** | 3.116·10⁻¹⁵ |
+
+Largest enclosure width 2.2·10⁻²⁸. By band of `m` (max / ℓ² / ℓ¹ of the excursion):
+`m < 20`: 2.72·10⁻¹⁵ / 2.73·10⁻¹⁵ / 3.12·10⁻¹⁵ (4,740 entries); `20 ≤ m < 40`: 1.1·10⁻²¹ /
+8.9·10⁻²¹ / 2.7·10⁻¹⁹; `40 ≤ m < 60`: 2.0·10⁻²² / 7.0·10⁻²² / 8.8·10⁻²¹; `60 ≤ m < 80`: 6.4·10⁻²⁶;
+`80 ≤ m < 100`: 1.7·10⁻³¹; `m ≥ 100`: below 3.5·10⁻³³. By band of `n + 3m`: `< 100`: 2.72·10⁻¹⁵
+(867 entries, the whole budget); `100–199`: 2.3·10⁻²⁰ max, 1.0·10⁻¹⁸ ℓ¹; `200–299`: 3.2·10⁻²¹;
+`300–399`: 7.5·10⁻²²; `400–499`: 5.2·10⁻²²; `500–501`: 2.6·10⁻²². Masses: the head enclosure
+`[0.998823203657, 0.998823203657]` equals the table's head mass `0.998823203657` to the digits
+shown; all 63,252 computed bidegrees sum to at most `0.998996120728` (`‖retainedSmoothed a0‖² ≤
+(501/500)²` holds with a wide margin).
+
+**Entries outside tolerance.** None against any tolerance of the reduction: the only excursion
+above `10⁻¹⁵` is the degree-one energy `(1, 0)` (table `0.71815943001876215`, enclosure
+`0.71815943001876492`, 2.72·10⁻¹⁵), and it is exactly the effect of the milestone-2 raw
+difference at the largest coefficient (`k = 1, j = 0, c = 0`: `0.8475`, differing from the
+committed word by 1.67·10⁻¹⁵; the energy is the square of the rotated coefficient, so
+`2 · 0.847 · 0.99 · 1.67·10⁻¹⁵ ≈ 2.8·10⁻¹⁵`), i.e. the archived pipeline's binary64 error in that
+word, not an error of the checker; `(0, 1)` differs by 1.8·10⁻¹⁶ for the same reason
+(`data/retained-f0/degree-one-table.json`, which replays the *committed* words exactly, has the
+residual 1.4·10⁻¹⁶ against the table: the two statements are consistent, see §9's caveat).
+
+**Against the reduction's tolerances.** `original_energy_of_retained_source` needs
+`htable ≤ 3·10⁻¹²`: measured `3.116·10⁻¹⁵`, a factor 960 below. Through the parametric
+`selected_energy_close_of_raw_error` with `δ` = the half-widths of the raw enclosures (ℓ² ≤
+`2·10⁻²⁷`) plus the inherited analytic remainder (`1.55·10⁻¹²`, §6) — `Δ = δ + 4·10⁻¹⁵(501/500 + δ)
+≈ 1.55·10⁻¹²` — the energy budget `τ ≥ (2·501/500 + 3Δ)Δ + ε ≈ 3.1·10⁻¹² + 3.1·10⁻¹⁵` is 4.4 times
+below `energyErrQ = 1.369·10⁻¹¹`; the relaxed budget of #21 (`4·10⁻⁸`) is three orders of
+magnitude away. So the table is accurate at the `10⁻¹⁵` level, and the whole numerical content
+of `hclose` is now reproduced by the checker; what separates this from a Lean proof of `hclose`
+is the list of analytic obligations of §6 (S1–S6, the omitted-pair bound of the cutoffs) and the
+native facts that would evaluate the checker.
