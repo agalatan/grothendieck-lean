@@ -578,10 +578,20 @@ The signed normalized recurrence is represented by finite LeanCert interval
 checks on $c\le d+1$, $c+d<502$. This covers the original selected modes and
 keeps the source cutoff $532$ and its decoded payload unchanged. Integer
 generation records the backward-ratio, root, recurrence and saved-word
-checks. A finite-vector interface charges the common scalar uncertainty once.
-The concrete Lean assembly and all numerical leaves remain unfinished; the
-proposed midpoint vector error is $14\cdot10^{-18}$. Transport to the physical
-parameter is a separate obligation.
+checks. The representative large-index diagnostic passed Lean checking.
+The full source assembly, whose Lean acceptance remains work in progress, is
+\texttt{OriginalRow227Certificate.midpoint\_saved\_vector\_error}:
+\[
+ \sum_{p\in\mathrm{modes}}|C_p(m)-\widehat C^{\mathrm{source}}_{227,p}|^2
+ \le (14\cdot10^{-18})^2.
+\]
+It has no numerical-accuracy premise: all $2{,}546$ backward transitions,
+$63{,}503$ triangle entries, $31{,}877$ selected records and their successful
+original-word lookups occur in the finite certificate. The normalized and
+saved-comparison radii are $157\cdot10^{-40}$ and $13759969\cdot10^{-24}$;
+common scalar uncertainty contributes at most $800\cdot10^{-24}$ once for
+the vector. Generation is reproducible from committed inputs and is not
+itself Lean acceptance. Transport to the physical parameter is separate.
 
 \texttt{ConditionalReconstruction} proves that nonconstant coefficients vanish
 at a zero profile, retaining the constant phase $\operatorname{ph}(\sqrt{s})$.

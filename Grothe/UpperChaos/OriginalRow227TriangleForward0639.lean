@@ -1,0 +1,35 @@
+import Grothe.UpperChaos.OriginalRow227TriangleData0641
+import Grothe.UpperChaos.OriginalRow227TriangleData0655
+import Grothe.UpperChaos.OriginalRow227TriangleRoots01
+import Grothe.UpperChaos.OriginalRow227TriangleRoots14
+import Grothe.UpperChaos.OriginalRow227TriangleShared
+import Lean.Elab.Command
+import Lean.Util.CollectAxioms
+
+/-! Generated full original row227 triangle component.
+Agent-ID: codex-aa04. Refs #293, #21.
+Regenerate with the pinned integer transcript, never hand-edit numbers. -/
+
+open LeanCert.Core
+namespace Grothe.UpperChaos.OriginalRow227TriangleForward0639
+open ConditionalNormalizedDyadic ConditionalNormalizedFiniteChecks
+
+open OriginalRow227TriangleShared
+
+def entries : Array (ForwardEntry (-768)) := #[
+  { charge := 417, IA := shift, ID := OriginalRow227TriangleRoots14.root459, IC := OriginalRow227TriangleRoots01.root43,
+    Inext := OriginalRow227TriangleData0641.coefficient42_459, Icur := OriginalRow227TriangleData0641.coefficient42_458,
+    output := OriginalRow227TriangleData0655.coefficient43_458, hC := OriginalRow227TriangleRoots01.root43_pos, hAC := OriginalRow227TriangleRoots01.product43_pos }
+]
+
+theorem checked : blockCheck ForwardEntry.check entries = true := by
+  decide +kernel
+
+end Grothe.UpperChaos.OriginalRow227TriangleForward0639
+
+open Lean Elab Command
+run_cmd do
+  let allowed : Array Name := #[`propext, `Classical.choice, `Quot.sound]
+  for dependency in (← Lean.collectAxioms ``Grothe.UpperChaos.OriginalRow227TriangleForward0639.checked) do
+    unless allowed.contains dependency do
+      throwError m!"unexpected axiom {dependency}"

@@ -1,0 +1,353 @@
+import Grothe.UpperChaos.OriginalRow227SelectedFields
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk000
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk001
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk002
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk003
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk004
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk005
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk006
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk007
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk008
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk009
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk010
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk011
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk012
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk013
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk014
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk015
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk016
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk017
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk018
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk019
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk020
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk021
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk022
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk023
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk024
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk025
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk026
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk027
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk028
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk029
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk030
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk031
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk032
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk033
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk034
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk035
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk036
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk037
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk038
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk039
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk040
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk041
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk042
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk043
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk044
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk045
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk046
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk047
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk048
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk049
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk050
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk051
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk052
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk053
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk054
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk055
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk056
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk057
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk058
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk059
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk060
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk061
+import Grothe.UpperChaos.OriginalRow227SelectedIntervalsChunk062
+
+/-!
+Generated exact lookup binding. Agent-ID: codex-aa04. Refs #293, #21.
+Reuses named triangle intervals; no new numerical values or enclosures.
+Regenerate with tools/gen_row227_full_certificate.py.
+-/
+
+open LeanCert.Core
+namespace Grothe.UpperChaos.OriginalRow227SelectedIntervals
+
+open ConditionalTableLookup
+
+open ConditionalSelectedIntervalBinding OriginalRow227SelectedError
+open OriginalRow227SelectedError.Data OriginalRow227SelectedFields
+
+open OriginalRow227SelectedIntervalsChunk000
+open OriginalRow227SelectedIntervalsChunk001
+open OriginalRow227SelectedIntervalsChunk002
+open OriginalRow227SelectedIntervalsChunk003
+open OriginalRow227SelectedIntervalsChunk004
+open OriginalRow227SelectedIntervalsChunk005
+open OriginalRow227SelectedIntervalsChunk006
+open OriginalRow227SelectedIntervalsChunk007
+open OriginalRow227SelectedIntervalsChunk008
+open OriginalRow227SelectedIntervalsChunk009
+open OriginalRow227SelectedIntervalsChunk010
+open OriginalRow227SelectedIntervalsChunk011
+open OriginalRow227SelectedIntervalsChunk012
+open OriginalRow227SelectedIntervalsChunk013
+open OriginalRow227SelectedIntervalsChunk014
+open OriginalRow227SelectedIntervalsChunk015
+open OriginalRow227SelectedIntervalsChunk016
+open OriginalRow227SelectedIntervalsChunk017
+open OriginalRow227SelectedIntervalsChunk018
+open OriginalRow227SelectedIntervalsChunk019
+open OriginalRow227SelectedIntervalsChunk020
+open OriginalRow227SelectedIntervalsChunk021
+open OriginalRow227SelectedIntervalsChunk022
+open OriginalRow227SelectedIntervalsChunk023
+open OriginalRow227SelectedIntervalsChunk024
+open OriginalRow227SelectedIntervalsChunk025
+open OriginalRow227SelectedIntervalsChunk026
+open OriginalRow227SelectedIntervalsChunk027
+open OriginalRow227SelectedIntervalsChunk028
+open OriginalRow227SelectedIntervalsChunk029
+open OriginalRow227SelectedIntervalsChunk030
+open OriginalRow227SelectedIntervalsChunk031
+open OriginalRow227SelectedIntervalsChunk032
+open OriginalRow227SelectedIntervalsChunk033
+open OriginalRow227SelectedIntervalsChunk034
+open OriginalRow227SelectedIntervalsChunk035
+open OriginalRow227SelectedIntervalsChunk036
+open OriginalRow227SelectedIntervalsChunk037
+open OriginalRow227SelectedIntervalsChunk038
+open OriginalRow227SelectedIntervalsChunk039
+open OriginalRow227SelectedIntervalsChunk040
+open OriginalRow227SelectedIntervalsChunk041
+open OriginalRow227SelectedIntervalsChunk042
+open OriginalRow227SelectedIntervalsChunk043
+open OriginalRow227SelectedIntervalsChunk044
+open OriginalRow227SelectedIntervalsChunk045
+open OriginalRow227SelectedIntervalsChunk046
+open OriginalRow227SelectedIntervalsChunk047
+open OriginalRow227SelectedIntervalsChunk048
+open OriginalRow227SelectedIntervalsChunk049
+open OriginalRow227SelectedIntervalsChunk050
+open OriginalRow227SelectedIntervalsChunk051
+open OriginalRow227SelectedIntervalsChunk052
+open OriginalRow227SelectedIntervalsChunk053
+open OriginalRow227SelectedIntervalsChunk054
+open OriginalRow227SelectedIntervalsChunk055
+open OriginalRow227SelectedIntervalsChunk056
+open OriginalRow227SelectedIntervalsChunk057
+open OriginalRow227SelectedIntervalsChunk058
+open OriginalRow227SelectedIntervalsChunk059
+open OriginalRow227SelectedIntervalsChunk060
+open OriginalRow227SelectedIntervalsChunk061
+open OriginalRow227SelectedIntervalsChunk062
+
+theorem node0016_0048_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0016_0048 :=
+  allEnclosed_append node0016_0032_enclosed node0032_0048_enclosed
+
+theorem node0000_0048_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0000_0048 :=
+  allEnclosed_append node0000_0016_enclosed node0016_0048_enclosed
+
+theorem node0048_0080_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0048_0080 :=
+  allEnclosed_append node0048_0064_enclosed node0064_0080_enclosed
+
+theorem node0080_0112_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0080_0112 :=
+  allEnclosed_append node0080_0096_enclosed node0096_0112_enclosed
+
+theorem node0048_0112_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0048_0112 :=
+  allEnclosed_append node0048_0080_enclosed node0080_0112_enclosed
+
+theorem node0000_0112_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0000_0112 :=
+  allEnclosed_append node0000_0048_enclosed node0048_0112_enclosed
+
+theorem node0112_0144_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0112_0144 :=
+  allEnclosed_append node0112_0128_enclosed node0128_0144_enclosed
+
+theorem node0144_0176_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0144_0176 :=
+  allEnclosed_append node0144_0160_enclosed node0160_0176_enclosed
+
+theorem node0112_0176_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0112_0176 :=
+  allEnclosed_append node0112_0144_enclosed node0144_0176_enclosed
+
+theorem node0176_0208_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0176_0208 :=
+  allEnclosed_append node0176_0192_enclosed node0192_0208_enclosed
+
+theorem node0208_0240_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0208_0240 :=
+  allEnclosed_append node0208_0224_enclosed node0224_0240_enclosed
+
+theorem node0176_0240_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0176_0240 :=
+  allEnclosed_append node0176_0208_enclosed node0208_0240_enclosed
+
+theorem node0112_0240_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0112_0240 :=
+  allEnclosed_append node0112_0176_enclosed node0176_0240_enclosed
+
+theorem node0000_0240_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0000_0240 :=
+  allEnclosed_append node0000_0112_enclosed node0112_0240_enclosed
+
+theorem node0240_0272_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0240_0272 :=
+  allEnclosed_append node0240_0256_enclosed node0256_0272_enclosed
+
+theorem node0272_0304_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0272_0304 :=
+  allEnclosed_append node0272_0288_enclosed node0288_0304_enclosed
+
+theorem node0240_0304_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0240_0304 :=
+  allEnclosed_append node0240_0272_enclosed node0272_0304_enclosed
+
+theorem node0304_0336_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0304_0336 :=
+  allEnclosed_append node0304_0320_enclosed node0320_0336_enclosed
+
+theorem node0336_0368_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0336_0368 :=
+  allEnclosed_append node0336_0352_enclosed node0352_0368_enclosed
+
+theorem node0304_0368_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0304_0368 :=
+  allEnclosed_append node0304_0336_enclosed node0336_0368_enclosed
+
+theorem node0240_0368_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0240_0368 :=
+  allEnclosed_append node0240_0304_enclosed node0304_0368_enclosed
+
+theorem node0368_0400_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0368_0400 :=
+  allEnclosed_append node0368_0384_enclosed node0384_0400_enclosed
+
+theorem node0400_0432_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0400_0432 :=
+  allEnclosed_append node0400_0416_enclosed node0416_0432_enclosed
+
+theorem node0368_0432_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0368_0432 :=
+  allEnclosed_append node0368_0400_enclosed node0400_0432_enclosed
+
+theorem node0432_0464_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0432_0464 :=
+  allEnclosed_append node0432_0448_enclosed node0448_0464_enclosed
+
+theorem node0464_0496_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0464_0496 :=
+  allEnclosed_append node0464_0480_enclosed node0480_0496_enclosed
+
+theorem node0432_0496_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0432_0496 :=
+  allEnclosed_append node0432_0464_enclosed node0464_0496_enclosed
+
+theorem node0368_0496_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0368_0496 :=
+  allEnclosed_append node0368_0432_enclosed node0432_0496_enclosed
+
+theorem node0240_0496_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0240_0496 :=
+  allEnclosed_append node0240_0368_enclosed node0368_0496_enclosed
+
+theorem node0000_0496_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0000_0496 :=
+  allEnclosed_append node0000_0240_enclosed node0240_0496_enclosed
+
+theorem node0496_0528_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0496_0528 :=
+  allEnclosed_append node0496_0512_enclosed node0512_0528_enclosed
+
+theorem node0528_0560_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0528_0560 :=
+  allEnclosed_append node0528_0544_enclosed node0544_0560_enclosed
+
+theorem node0496_0560_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0496_0560 :=
+  allEnclosed_append node0496_0528_enclosed node0528_0560_enclosed
+
+theorem node0560_0592_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0560_0592 :=
+  allEnclosed_append node0560_0576_enclosed node0576_0592_enclosed
+
+theorem node0592_0624_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0592_0624 :=
+  allEnclosed_append node0592_0608_enclosed node0608_0624_enclosed
+
+theorem node0560_0624_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0560_0624 :=
+  allEnclosed_append node0560_0592_enclosed node0592_0624_enclosed
+
+theorem node0496_0624_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0496_0624 :=
+  allEnclosed_append node0496_0560_enclosed node0560_0624_enclosed
+
+theorem node0624_0656_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0624_0656 :=
+  allEnclosed_append node0624_0640_enclosed node0640_0656_enclosed
+
+theorem node0656_0688_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0656_0688 :=
+  allEnclosed_append node0656_0672_enclosed node0672_0688_enclosed
+
+theorem node0624_0688_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0624_0688 :=
+  allEnclosed_append node0624_0656_enclosed node0656_0688_enclosed
+
+theorem node0688_0720_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0688_0720 :=
+  allEnclosed_append node0688_0704_enclosed node0704_0720_enclosed
+
+theorem node0720_0752_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0720_0752 :=
+  allEnclosed_append node0720_0736_enclosed node0736_0752_enclosed
+
+theorem node0688_0752_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0688_0752 :=
+  allEnclosed_append node0688_0720_enclosed node0720_0752_enclosed
+
+theorem node0624_0752_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0624_0752 :=
+  allEnclosed_append node0624_0688_enclosed node0688_0752_enclosed
+
+theorem node0496_0752_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0496_0752 :=
+  allEnclosed_append node0496_0624_enclosed node0624_0752_enclosed
+
+theorem node0752_0784_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0752_0784 :=
+  allEnclosed_append node0752_0768_enclosed node0768_0784_enclosed
+
+theorem node0784_0816_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0784_0816 :=
+  allEnclosed_append node0784_0800_enclosed node0800_0816_enclosed
+
+theorem node0752_0816_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0752_0816 :=
+  allEnclosed_append node0752_0784_enclosed node0784_0816_enclosed
+
+theorem node0816_0848_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0816_0848 :=
+  allEnclosed_append node0816_0832_enclosed node0832_0848_enclosed
+
+theorem node0848_0880_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0848_0880 :=
+  allEnclosed_append node0848_0864_enclosed node0864_0880_enclosed
+
+theorem node0816_0880_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0816_0880 :=
+  allEnclosed_append node0816_0848_enclosed node0848_0880_enclosed
+
+theorem node0752_0880_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0752_0880 :=
+  allEnclosed_append node0752_0816_enclosed node0816_0880_enclosed
+
+theorem node0880_0912_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0880_0912 :=
+  allEnclosed_append node0880_0896_enclosed node0896_0912_enclosed
+
+theorem node0912_0944_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0912_0944 :=
+  allEnclosed_append node0912_0928_enclosed node0928_0944_enclosed
+
+theorem node0880_0944_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0880_0944 :=
+  allEnclosed_append node0880_0912_enclosed node0912_0944_enclosed
+
+theorem node0944_0976_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0944_0976 :=
+  allEnclosed_append node0944_0960_enclosed node0960_0976_enclosed
+
+theorem node0976_0997_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0976_0997 :=
+  allEnclosed_append node0976_0992_enclosed node0992_0997_enclosed
+
+theorem node0944_0997_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0944_0997 :=
+  allEnclosed_append node0944_0976_enclosed node0976_0997_enclosed
+
+theorem node0880_0997_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0880_0997 :=
+  allEnclosed_append node0880_0944_enclosed node0944_0997_enclosed
+
+theorem node0752_0997_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0752_0997 :=
+  allEnclosed_append node0752_0880_enclosed node0880_0997_enclosed
+
+theorem node0496_0997_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0496_0997 :=
+  allEnclosed_append node0496_0752_enclosed node0752_0997_enclosed
+
+theorem node0000_0997_enclosed : AllEnclosed OriginalRow227TriangleLookup.T node0000_0997 :=
+  allEnclosed_append node0000_0496_enclosed node0496_0997_enclosed
+
+theorem all_enclosed : AllEnclosed OriginalRow227TriangleLookup.T entries :=
+  node0000_0997_enclosed
+
+theorem selected_enclosure (p : ℕ × ℕ) (hp : p ∈ ConditionalNodeIndices.modes) :
+    centerQ p - radiusQ p ≤ (OriginalRow227TriangleLookup.T p.1 p.2).lo.toRat ∧
+      (OriginalRow227TriangleLookup.T p.1 p.2).hi.toRat ≤ centerQ p + radiusQ p := by
+  let e := selectedEntry p hp
+  have he : e ∈ entries := selectedEntry_mem p hp
+  have hk : entryKey e = p := selectedEntry_key p hp
+  rw [← hk, centerQ_at_entry e he, radiusQ_at_entry e he]
+  exact all_enclosed e he
+
+
+open Lean Elab Command
+run_cmd do
+  let allowed : Array Name := #[`propext, `Classical.choice, `Quot.sound]
+  for target in #[
+      ``Grothe.UpperChaos.OriginalRow227SelectedIntervals.all_enclosed,
+      ``Grothe.UpperChaos.OriginalRow227SelectedIntervals.selected_enclosure] do
+    for dependency in (← Lean.collectAxioms target) do
+      unless allowed.contains dependency do
+        throwError m!"{target} uses unexpected axiom {dependency}"
+
+end Grothe.UpperChaos.OriginalRow227SelectedIntervals

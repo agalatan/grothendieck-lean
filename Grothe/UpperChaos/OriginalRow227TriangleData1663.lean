@@ -1,0 +1,14 @@
+import Grothe.UpperChaos.ConditionalNormalizedFiniteChecks
+
+/-! Generated full original row227 triangle component.
+Agent-ID: codex-aa04. Refs #293, #21.
+Regenerate with the pinned integer transcript, never hand-edit numbers. -/
+
+open LeanCert.Core
+namespace Grothe.UpperChaos.OriginalRow227TriangleData1663
+open ConditionalNormalizedDyadic ConditionalNormalizedFiniteChecks
+
+def coefficient139_362 : IntervalDyadic :=
+  commonExponentInterval 53842536062190468787520365930685043715468023982094553044583086039363485886948101094566102327136152154469140285695234024540201465681783558197538049939908617265357952010752812027804941984731178 53842536062190468787520365930685043769755644345414320167501477888417047316312814489257289689299554979040282203239823758893980560540682141353968104265109354762878697643305868711212727675529970 (-768) (by decide +kernel)
+
+end Grothe.UpperChaos.OriginalRow227TriangleData1663

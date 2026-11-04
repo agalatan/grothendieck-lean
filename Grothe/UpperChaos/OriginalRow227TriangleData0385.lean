@@ -1,0 +1,107 @@
+import Grothe.UpperChaos.ConditionalNormalizedFiniteChecks
+
+/-! Generated full original row227 triangle component.
+Agent-ID: codex-aa04. Refs #293, #21.
+Regenerate with the pinned integer transcript, never hand-edit numbers. -/
+
+open LeanCert.Core
+namespace Grothe.UpperChaos.OriginalRow227TriangleData0385
+open ConditionalNormalizedDyadic ConditionalNormalizedFiniteChecks
+
+def coefficient24_439 : IntervalDyadic :=
+  commonExponentInterval (-480949002881607496660165401305499149613812) (-480538948868768170297139289143549268928107) (-768) (by decide +kernel)
+
+def coefficient24_440 : IntervalDyadic :=
+  commonExponentInterval 100146583306408146496711746643048502092315 100580610898715510895575841726802438414274 (-768) (by decide +kernel)
+
+def coefficient24_441 : IntervalDyadic :=
+  commonExponentInterval (-21142563526146511994168200211768929386383) (-20701217364068360925400429527380840963008) (-768) (by decide +kernel)
+
+def coefficient24_442 : IntervalDyadic :=
+  commonExponentInterval 4150564890811870145038777779926468495686 4591834004038812636445442943586020386860 (-768) (by decide +kernel)
+
+def coefficient24_443 : IntervalDyadic :=
+  commonExponentInterval (-1106476281796591054756110819727734972860) (-669530759024179532342178537427354944951) (-768) (by decide +kernel)
+
+def coefficient24_444 : IntervalDyadic :=
+  commonExponentInterval (-7575405547591105584539941848530503348) 417301118081504598905229801571631341784 (-768) (by decide +kernel)
+
+def coefficient24_445 : IntervalDyadic :=
+  commonExponentInterval (-233607077769065822330430012735384720281) 174010585510890428691638910735364369060 (-768) (by decide +kernel)
+
+def coefficient24_446 : IntervalDyadic :=
+  commonExponentInterval (-187917466609429041476344243179876104312) 208419553134591066978421548274626009053 (-768) (by decide +kernel)
+
+def coefficient24_447 : IntervalDyadic :=
+  commonExponentInterval (-202104479726838499547192531013821483669) 197325829719537714392888001658959571095 (-768) (by decide +kernel)
+
+def coefficient24_448 : IntervalDyadic :=
+  commonExponentInterval (-207827131913167391801331519232744606531) 207429654072917023101142690886247969145 (-768) (by decide +kernel)
+
+def coefficient24_449 : IntervalDyadic :=
+  commonExponentInterval (-218404306583664215579384048653314601030) 217992377661075825697827158037418229468 (-768) (by decide +kernel)
+
+def coefficient24_450 : IntervalDyadic :=
+  commonExponentInterval (-229442124099425676969075194253806507049) 229070025079747206850827437018400103422 (-768) (by decide +kernel)
+
+def coefficient24_451 : IntervalDyadic :=
+  commonExponentInterval (-241061954677234992902965802483231811403) 240641178820953601047436839381472370831 (-768) (by decide +kernel)
+
+def coefficient24_452 : IntervalDyadic :=
+  commonExponentInterval (-253138043259945101780397995004728002593) 252856342306189849121226156411943699841 (-768) (by decide +kernel)
+
+def coefficient24_453 : IntervalDyadic :=
+  commonExponentInterval (-265705200104490517885038092142399989944) 265618468340262804841964831245027472570 (-768) (by decide +kernel)
+
+def coefficient24_454 : IntervalDyadic :=
+  commonExponentInterval (-278746478911853431660738634481854196144) 278999888631302731256566731787346422648 (-768) (by decide +kernel)
+
+def coefficient24_455 : IntervalDyadic :=
+  commonExponentInterval (-292537973952127017005054219753145707048) 292969545698600356796887061784322696577 (-768) (by decide +kernel)
+
+def coefficient24_456 : IntervalDyadic :=
+  commonExponentInterval (-307095514015540417443352276662631298713) 307716616015651997544898245551333341743 (-768) (by decide +kernel)
+
+def coefficient24_457 : IntervalDyadic :=
+  commonExponentInterval (-322526589562203671031184675997127692992) 323115426077416499690704056607055481399 (-768) (by decide +kernel)
+
+def coefficient24_458 : IntervalDyadic :=
+  commonExponentInterval (-338635227090945706126246028863894912452) 339255813982639797980665603933731142020 (-768) (by decide +kernel)
+
+def coefficient24_459 : IntervalDyadic :=
+  commonExponentInterval (-355514810774430869664889344984375895618) 356090440901797226646045203943647325409 (-768) (by decide +kernel)
+
+def coefficient24_460 : IntervalDyadic :=
+  commonExponentInterval (-373112978358684171137437278076186463475) 373856937631189503295574962340910055051 (-768) (by decide +kernel)
+
+def coefficient24_461 : IntervalDyadic :=
+  commonExponentInterval (-391682577788945125952114176414228731347) 392397573619235124982811764641404407389 (-768) (by decide +kernel)
+
+def coefficient24_462 : IntervalDyadic :=
+  commonExponentInterval (-411060120996665367207290123885008038068) 411828303625621706791566031142279001720 (-768) (by decide +kernel)
+
+def coefficient24_463 : IntervalDyadic :=
+  commonExponentInterval (-431371164998187681559444340579031036676) 432081793034459803964059979533688363507 (-768) (by decide +kernel)
+
+def coefficient24_464 : IntervalDyadic :=
+  commonExponentInterval (-452542969486776412744479580393172870294) 453455855998933650952756353672575777653 (-768) (by decide +kernel)
+
+def coefficient24_465 : IntervalDyadic :=
+  commonExponentInterval (-474886897859670296212784858757398098624) 475751049031341188385190197706066499637 (-768) (by decide +kernel)
+
+def coefficient24_466 : IntervalDyadic :=
+  commonExponentInterval (-498188280039453896148919244882325944791) 499116117837627051782774546448610473438 (-768) (by decide +kernel)
+
+def coefficient24_467 : IntervalDyadic :=
+  commonExponentInterval (-522603414113639463183876394644801449398) 523457105090691434478431543232293441678 (-768) (by decide +kernel)
+
+def coefficient24_468 : IntervalDyadic :=
+  commonExponentInterval (-548033198987636767948446132512944666178) 549145204996198136226323908184440233221 (-768) (by decide +kernel)
+
+def coefficient24_469 : IntervalDyadic :=
+  commonExponentInterval (-574872345475613306707962872331698053386) 575925833703463737276170109712555815883 (-768) (by decide +kernel)
+
+def coefficient24_470 : IntervalDyadic :=
+  commonExponentInterval (-602850881855918624144675503787901790350) 603984020727910382749920371529691950522 (-768) (by decide +kernel)
+
+end Grothe.UpperChaos.OriginalRow227TriangleData0385

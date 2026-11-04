@@ -1106,11 +1106,19 @@ recurrence from finite arithmetic checks. The selected set fits exactly in
 storage rank 35536. This auxiliary triangle does not change source cutoff
 532 or its original 35,777 words. The packet in
 `data/original-row227-certificate/` regenerates the 768-bit checkpoints and
-all selected saved-word comparisons using exact integers. Finite-vector
-interfaces charge common-scalar uncertainty once. Concrete Lean checkpoint
-assembly, all selected lookups and the final squared-error checks still have
-to be completed and accepted. The proposed midpoint vector radius is
-`14 / 10^18`; physical-parameter transport remains separate.
+all selected saved-word comparisons using exact integers. The representative
+large-index diagnostic passed hosted Lean checking. The full source assembly
+is now `OriginalRow227Certificate.midpoint_saved_vector_error`; its Lean
+acceptance remains work in progress. It states, without an accuracy hypothesis,
+`Σ p ∈ modes, ‖canonicalCoefficient m p - storedModeCenter row227 p‖² ≤ (14/10^18)²`.
+Its finite certificates retain all 2,546 backward transitions, 63,503 triangle
+entries and 31,877 selected records. Successful lookups bind each selected
+record to the original payload, rather than a default value. Exact squared
+sums give normalized radius `157/10^40` and saved-comparison radius
+`13759969/10^24`; scalar uncertainty contributes at most `800/10^24` once
+for the whole vector. `tools/gen_row227_full_certificate.py --check` reproduces
+every generated source from committed inputs. Generation and source review
+are not Lean acceptance. Physical-parameter transport remains separate.
 
 `MobiusGeometry`, `MobiusPowerAlgebra`, and `MobiusSeedPullback` establish
 the substitution `v = t/(1+t)` and its pointwise integrand identity.

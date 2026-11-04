@@ -1,0 +1,129 @@
+import Grothe.UpperChaos.OriginalRow227TriangleData1455
+import Grothe.UpperChaos.OriginalRow227TriangleData1456
+import Grothe.UpperChaos.OriginalRow227TriangleData1464
+import Grothe.UpperChaos.OriginalRow227TriangleRoots03
+import Grothe.UpperChaos.OriginalRow227TriangleRoots04
+import Grothe.UpperChaos.OriginalRow227TriangleShared
+import Lean.Elab.Command
+import Lean.Util.CollectAxioms
+
+/-! Generated full original row227 triangle component.
+Agent-ID: codex-aa04. Refs #293, #21.
+Regenerate with the pinned integer transcript, never hand-edit numbers. -/
+
+open LeanCert.Core
+namespace Grothe.UpperChaos.OriginalRow227TriangleForward1448
+open ConditionalNormalizedDyadic ConditionalNormalizedFiniteChecks
+
+open OriginalRow227TriangleShared
+
+def entries : Array (ForwardEntry (-768)) := #[
+  { charge := 1, IA := shift, ID := OriginalRow227TriangleRoots03.root116, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_116, Icur := OriginalRow227TriangleData1455.coefficient115_115,
+    output := OriginalRow227TriangleData1464.coefficient116_115, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 2, IA := shift, ID := OriginalRow227TriangleRoots03.root117, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_117, Icur := OriginalRow227TriangleData1455.coefficient115_116,
+    output := OriginalRow227TriangleData1464.coefficient116_116, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 3, IA := shift, ID := OriginalRow227TriangleRoots03.root118, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_118, Icur := OriginalRow227TriangleData1455.coefficient115_117,
+    output := OriginalRow227TriangleData1464.coefficient116_117, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 4, IA := shift, ID := OriginalRow227TriangleRoots03.root119, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_119, Icur := OriginalRow227TriangleData1455.coefficient115_118,
+    output := OriginalRow227TriangleData1464.coefficient116_118, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 5, IA := shift, ID := OriginalRow227TriangleRoots03.root120, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_120, Icur := OriginalRow227TriangleData1455.coefficient115_119,
+    output := OriginalRow227TriangleData1464.coefficient116_119, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 6, IA := shift, ID := OriginalRow227TriangleRoots03.root121, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_121, Icur := OriginalRow227TriangleData1455.coefficient115_120,
+    output := OriginalRow227TriangleData1464.coefficient116_120, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 7, IA := shift, ID := OriginalRow227TriangleRoots03.root122, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_122, Icur := OriginalRow227TriangleData1455.coefficient115_121,
+    output := OriginalRow227TriangleData1464.coefficient116_121, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 8, IA := shift, ID := OriginalRow227TriangleRoots03.root123, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_123, Icur := OriginalRow227TriangleData1455.coefficient115_122,
+    output := OriginalRow227TriangleData1464.coefficient116_122, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 9, IA := shift, ID := OriginalRow227TriangleRoots03.root124, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_124, Icur := OriginalRow227TriangleData1455.coefficient115_123,
+    output := OriginalRow227TriangleData1464.coefficient116_123, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 10, IA := shift, ID := OriginalRow227TriangleRoots03.root125, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_125, Icur := OriginalRow227TriangleData1455.coefficient115_124,
+    output := OriginalRow227TriangleData1464.coefficient116_124, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 11, IA := shift, ID := OriginalRow227TriangleRoots03.root126, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_126, Icur := OriginalRow227TriangleData1455.coefficient115_125,
+    output := OriginalRow227TriangleData1464.coefficient116_125, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 12, IA := shift, ID := OriginalRow227TriangleRoots03.root127, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_127, Icur := OriginalRow227TriangleData1455.coefficient115_126,
+    output := OriginalRow227TriangleData1464.coefficient116_126, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 13, IA := shift, ID := OriginalRow227TriangleRoots03.root128, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_128, Icur := OriginalRow227TriangleData1455.coefficient115_127,
+    output := OriginalRow227TriangleData1464.coefficient116_127, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 14, IA := shift, ID := OriginalRow227TriangleRoots04.root129, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_129, Icur := OriginalRow227TriangleData1455.coefficient115_128,
+    output := OriginalRow227TriangleData1464.coefficient116_128, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 15, IA := shift, ID := OriginalRow227TriangleRoots04.root130, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_130, Icur := OriginalRow227TriangleData1455.coefficient115_129,
+    output := OriginalRow227TriangleData1464.coefficient116_129, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 16, IA := shift, ID := OriginalRow227TriangleRoots04.root131, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_131, Icur := OriginalRow227TriangleData1455.coefficient115_130,
+    output := OriginalRow227TriangleData1464.coefficient116_130, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 17, IA := shift, ID := OriginalRow227TriangleRoots04.root132, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_132, Icur := OriginalRow227TriangleData1455.coefficient115_131,
+    output := OriginalRow227TriangleData1464.coefficient116_131, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 18, IA := shift, ID := OriginalRow227TriangleRoots04.root133, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_133, Icur := OriginalRow227TriangleData1455.coefficient115_132,
+    output := OriginalRow227TriangleData1464.coefficient116_132, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 19, IA := shift, ID := OriginalRow227TriangleRoots04.root134, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_134, Icur := OriginalRow227TriangleData1455.coefficient115_133,
+    output := OriginalRow227TriangleData1464.coefficient116_133, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 20, IA := shift, ID := OriginalRow227TriangleRoots04.root135, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_135, Icur := OriginalRow227TriangleData1455.coefficient115_134,
+    output := OriginalRow227TriangleData1464.coefficient116_134, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 21, IA := shift, ID := OriginalRow227TriangleRoots04.root136, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_136, Icur := OriginalRow227TriangleData1455.coefficient115_135,
+    output := OriginalRow227TriangleData1464.coefficient116_135, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 22, IA := shift, ID := OriginalRow227TriangleRoots04.root137, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_137, Icur := OriginalRow227TriangleData1455.coefficient115_136,
+    output := OriginalRow227TriangleData1464.coefficient116_136, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 23, IA := shift, ID := OriginalRow227TriangleRoots04.root138, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_138, Icur := OriginalRow227TriangleData1455.coefficient115_137,
+    output := OriginalRow227TriangleData1464.coefficient116_137, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 24, IA := shift, ID := OriginalRow227TriangleRoots04.root139, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_139, Icur := OriginalRow227TriangleData1455.coefficient115_138,
+    output := OriginalRow227TriangleData1464.coefficient116_138, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 25, IA := shift, ID := OriginalRow227TriangleRoots04.root140, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_140, Icur := OriginalRow227TriangleData1455.coefficient115_139,
+    output := OriginalRow227TriangleData1464.coefficient116_139, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 26, IA := shift, ID := OriginalRow227TriangleRoots04.root141, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_141, Icur := OriginalRow227TriangleData1455.coefficient115_140,
+    output := OriginalRow227TriangleData1464.coefficient116_140, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 27, IA := shift, ID := OriginalRow227TriangleRoots04.root142, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_142, Icur := OriginalRow227TriangleData1455.coefficient115_141,
+    output := OriginalRow227TriangleData1464.coefficient116_141, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 28, IA := shift, ID := OriginalRow227TriangleRoots04.root143, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_143, Icur := OriginalRow227TriangleData1455.coefficient115_142,
+    output := OriginalRow227TriangleData1464.coefficient116_142, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 29, IA := shift, ID := OriginalRow227TriangleRoots04.root144, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_144, Icur := OriginalRow227TriangleData1455.coefficient115_143,
+    output := OriginalRow227TriangleData1464.coefficient116_143, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 30, IA := shift, ID := OriginalRow227TriangleRoots04.root145, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1455.coefficient115_145, Icur := OriginalRow227TriangleData1455.coefficient115_144,
+    output := OriginalRow227TriangleData1464.coefficient116_144, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 31, IA := shift, ID := OriginalRow227TriangleRoots04.root146, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1456.coefficient115_146, Icur := OriginalRow227TriangleData1455.coefficient115_145,
+    output := OriginalRow227TriangleData1464.coefficient116_145, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos },
+  { charge := 32, IA := shift, ID := OriginalRow227TriangleRoots04.root147, IC := OriginalRow227TriangleRoots03.root116,
+    Inext := OriginalRow227TriangleData1456.coefficient115_147, Icur := OriginalRow227TriangleData1456.coefficient115_146,
+    output := OriginalRow227TriangleData1464.coefficient116_146, hC := OriginalRow227TriangleRoots03.root116_pos, hAC := OriginalRow227TriangleRoots03.product116_pos }
+]
+
+theorem checked : blockCheck ForwardEntry.check entries = true := by
+  decide +kernel
+
+end Grothe.UpperChaos.OriginalRow227TriangleForward1448
+
+open Lean Elab Command
+run_cmd do
+  let allowed : Array Name := #[`propext, `Classical.choice, `Quot.sound]
+  for dependency in (← Lean.collectAxioms ``Grothe.UpperChaos.OriginalRow227TriangleForward1448.checked) do
+    unless allowed.contains dependency do
+      throwError m!"unexpected axiom {dependency}"
