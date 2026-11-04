@@ -689,6 +689,19 @@ timestamps) on 5 November 01:07 UTC as the private measurement; the CI droplet r
 `[skip ci]`, or `gh workflow run lean.yml --ref claude-b9ee/quad-checker-bridge`) follows when every
 block is true there. The CI run 41929108078 dispatched before the (a) interlude was cancelled.
 
+**When the mega run finishes** (`~/claude-b9ee-quad-facts/block-NN.log`, each ends with `Built
+Grothe.UpperQuad.Facts.GradeBlockNN` and an `end` timestamp, or with an error): record the twelve
+wall times in this section and on #303; if every block is true, `lake build
+Grothe.UpperQuad.Facts.Final` there (seconds), then trigger the CI droplet run of the branch tip
+(`gh workflow run lean.yml --ref claude-b9ee/quad-checker-bridge`, or a push without `[skip ci]`;
+`scripts/ci_active.sh claude-b9ee claude-b9ee/quad-checker-bridge` first), watch run until green
+(≈ 10 h), then PR #318 is landable (hand merge not needed: no workflow file changes). If a block is
+false, read its log: a tolerance (`epsBlock`, `bndBlock`) or a flag (`nodeValid`, `profileValid`) is
+the likely cause; `quadrun block qLo qHi n` and `quadrun check` reproduce the computation outside
+Lean. Clean-up afterwards: `ssh mega 'rm -rf ~/claude-b9ee-quad-facts'`,
+`ssh big 'rm -rf ~/claude-b9ee-quad-m4'` (the latter holds the `ProductionRetainedEnergy` closure
+used to build `Bridge`/`Partition`/`Facts` outside CI; keep it while that work continues).
+
 **Remaining, in order.** (0) The private run on mega, then the CI droplet run (above). Old (0) was:
 Validate the block checks on the milestone-2 raw vector
 (`quadrun check handoff/quad-checker/raw-final.txt frozen.txt energy-table.txt qLo qHi`: the
