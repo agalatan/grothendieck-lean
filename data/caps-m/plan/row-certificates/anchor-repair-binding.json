@@ -1,0 +1,113 @@
+{
+  "agent_id": "claude-b9ee",
+  "current_tools_sha256": {
+    "tools/nodecaps_anchor_repair.py": "2db742606d4105980bd1852230e40bf41ed58588650476bfc7ce4a586c06bf38",
+    "tools/nodecaps_prepared_renderers.py": "79c9fa69f3ccf8210313b9ee941a97b20d20c3f584cfa8702f813f2b1495db94"
+  },
+  "format": "nodecaps-anchor-repair-binding/v1",
+  "rows": {
+    "12": {
+      "baseline_archive": {
+        "path": "data/caps-m/plan/anchor-repairs/original/76cb0ae84d298a4106379ac90708e4b46fbf00e0a3bd7e9305b0ed40718958ba/row12-anchors.json",
+        "sha256": "76cb0ae84d298a4106379ac90708e4b46fbf00e0a3bd7e9305b0ed40718958ba"
+      },
+      "effective": {
+        "path": "data/caps-m/plan/row-certificates/row12-anchors.json",
+        "sha256": "659d4c3614490c6ed628fccc1e279ecf8df16abaa4c9ae19109c35962a735c12"
+      },
+      "effective_sources_sha256": {
+        "Grothe/LowerAnalytic/CapRow12/Anchors.manifest.json": "f81c858f9b954ae540faa224846190c89bd1e6cfa1ad56ce45e444589d234e11",
+        "Grothe/LowerAnalytic/CapRow12/Recipes.lean": "7001fae96bfc807dabf7250e37f88904f0c444bb2f0f0e22bb1fedf27b33b08a"
+      },
+      "repaired_nodes": [
+        60,
+        100,
+        124,
+        126,
+        127,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        300
+      ]
+    },
+    "13": {
+      "baseline_archive": {
+        "path": "data/caps-m/plan/anchor-repairs/original/1f8bb5471ee62ddc1072dd4aeade80831de6d1f7a66d117af1c19ec0324cafb1/row13-anchors.json",
+        "sha256": "1f8bb5471ee62ddc1072dd4aeade80831de6d1f7a66d117af1c19ec0324cafb1"
+      },
+      "effective": {
+        "path": "data/caps-m/plan/row-certificates/row13-anchors.json",
+        "sha256": "b8a95c90a6a736b5740c29f097b95299d245dbcbe6088d6b9942f3a95c57f478"
+      },
+      "effective_sources_sha256": {
+        "Grothe/LowerAnalytic/CapRow13/Anchors.manifest.json": "dbe77564e799cf0782ddbcf0aafec40af88d5b413d7df76d0e14955bd3178aae",
+        "Grothe/LowerAnalytic/CapRow13/Recipes.lean": "17eb19aef4b1d7636477acc3fcd169b0ec7bff1a2579eefb7e3641021ad4b52b"
+      },
+      "repaired_nodes": [
+        124,
+        128,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138
+      ]
+    },
+    "14": {
+      "baseline_archive": {
+        "path": "data/caps-m/plan/anchor-repairs/original/712275b4b42eb8fbf52b0fea47deabecb2b7a3a342927b311feb45a2fc229e76/row14-anchors.json",
+        "sha256": "712275b4b42eb8fbf52b0fea47deabecb2b7a3a342927b311feb45a2fc229e76"
+      },
+      "effective": {
+        "path": "data/caps-m/plan/row-certificates/row14-anchors.json",
+        "sha256": "6de8a224b12892d932320277367221f9735570d36e6c4b60912ee9ddd63c81bf"
+      },
+      "effective_sources_sha256": {
+        "Grothe/LowerAnalytic/CapRow14/Anchors.manifest.json": "b8de3e40564e50de8d367d33712f2ad9708684e4cc6642e9c2e8a09a071bf86b",
+        "Grothe/LowerAnalytic/CapRow14/Recipes.lean": "89248a872b04f052e43b272f7103b952d0b532cb57dcb138d5a3e4bd2a8d3c84"
+      },
+      "repaired_nodes": [
+        100,
+        124,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        136,
+        137,
+        138
+      ]
+    },
+    "15": {
+      "baseline_archive": {
+        "path": "data/caps-m/plan/anchor-repairs/original/e942e59201ee30492ceccb1404563e5a6aa3e99c8fe1bd5795770969da06f41f/row15-anchors.json",
+        "sha256": "e942e59201ee30492ceccb1404563e5a6aa3e99c8fe1bd5795770969da06f41f"
+      },
+      "effective": {
+        "path": "data/caps-m/plan/row-certificates/row15-anchors.json",
+        "sha256": "80fc0c90719ed60a1216f54735f8d12e8d2b8f123a7e96c48912bb404148d661"
+      },
+      "effective_sources_sha256": {
+        "Grothe/LowerAnalytic/CapRow15/Anchors.manifest.json": "87d51de1e7086ac591801334872df2dd9628239b567d62c6ad464f534fe76a29",
+        "Grothe/LowerAnalytic/CapRow15/Recipes.lean": "11f03c24af3272555f253a545d038369597913f7f6422c902cb72f3b3791a571"
+      },
+      "repaired_nodes": [
+        300
+      ]
+    }
+  }
+}

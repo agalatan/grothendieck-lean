@@ -29,7 +29,7 @@ def capture_baseline(root):
         reads = shared.Reads(root)
         top = decode(reads.read(BINDING)); mapping = top['baseline_files']
         original = decode(reads.bound(mapping[ORIGINAL]))
-        aliases = set(original['tools_sha256']) | {ORIGINAL, BASE+'row15-pieces.json'}
+        aliases = set(original['tools_sha256']) | {ORIGINAL, BASE+'row15-pieces.json', BASE+'row15-anchors.json'}
         snapshot = {}
         for name, reference in mapping.items():
             repair.path(name); actual, _ = repair.ref(reference)
@@ -97,7 +97,8 @@ def render(root, binding):
     original_binding = decode(reads.bound(mapping[ORIGINAL]))
     # Relocation is permitted only for the explicitly sealed tools, original
     # pieces and original binding. Every relocated byte remains hash-bound.
-    aliases = set(original_binding['tools_sha256']) | {ORIGINAL, BASE+'row15-pieces.json'}
+    # The historical anchor plan may be archived too (tools/nodecaps_anchor_repair.py, claude-b9ee).
+    aliases = set(original_binding['tools_sha256']) | {ORIGINAL, BASE+'row15-pieces.json', BASE+'row15-anchors.json'}
     snapshot = {}
     for name, reference in mapping.items():
         repair.path(name); actual, _ = repair.ref(reference)

@@ -1425,7 +1425,7 @@
       "sha256": "9f329eb2d0a322e890d9f53fd654354e81c17c712010342d08a304a595239a0e"
     },
     "data/caps-m/plan/row-certificates/row15-anchors.json": {
-      "path": "data/caps-m/plan/row-certificates/row15-anchors.json",
+      "path": "data/caps-m/plan/anchor-repairs/original/e942e59201ee30492ceccb1404563e5a6aa3e99c8fe1bd5795770969da06f41f/row15-anchors.json",
       "sha256": "e942e59201ee30492ceccb1404563e5a6aa3e99c8fe1bd5795770969da06f41f"
     },
     "data/caps-m/plan/row-certificates/row15-binding.json": {
@@ -1846,11 +1846,11 @@
     }
   },
   "current_tools_sha256": {
-    "tools/gen_cap_prepared_rows.py": "37463b1d84384ce7f34d48c10255742f333fd2d2aa47d5dd9e72818d9d6940d5",
+    "tools/gen_cap_prepared_rows.py": "432e859a31ed41e1b4025128599939fd8e7b5e439d6a5657ac6de96261621024",
     "tools/nodecaps_noncentre_repair.py": "1630407eddc693b7d11b6b083ad8da13d17360d213401f48c2b25fa18e5a240c",
-    "tools/nodecaps_repaired_render.py": "97b3138a611ac5a25449c293b0d580a725b02cef2aab4e1daa24b105a6f7e9a6",
+    "tools/nodecaps_repaired_render.py": "1f6694dbf47924b1b5df044597ff258a0617e66e3da08b92dd0117d0f1128589",
     "tools/nodecaps_row15_noncentre_repair.py": "b1a402b4f7bdedd45a655946ecc745cebb46b67968c8ebc087e7d9f386198e4f",
-    "tools/nodecaps_row15_repaired_render.py": "067aabe00317da7a0712c530d147a409b5d8233c10bb7ad8c935a80b4e6ccfb4"
+    "tools/nodecaps_row15_repaired_render.py": "8298b9c7d3c186578eff94ab1d4469dc1d198af231267cf49ce85b76c198adb4"
   },
   "effective_sources_sha256": {
     "Grothe/LowerAnalytic/CapPieces/D15x181.lean": "28fc3179518751955edc17d600f3f1d8f9a9867fe195634557793be6c0c8c346",

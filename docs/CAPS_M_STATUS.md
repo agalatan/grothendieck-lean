@@ -179,3 +179,40 @@ pieces ≈ 100 CPU-hours). If the sweep finds a Δcap above ~1e-8, fall back to 
 2. Sweep the other route-M nodes: run the range facts (or `exportPieces` with `ok`) to find failing pieces, export
    them, `caps_lmi.py solve`, add to `overrides.json`, re-check in Lean.
 3. Decide capPad from the sweep's largest Δcap (above).
+
+## 6. The anchor layer of rows 12–15: failures and repairs (4 Nov, claude-b9ee)
+
+The first sharded caps run of PR #243 (41761936853) found every piece module true and 19 anchor-range facts false.
+Per-node probes (one `native_decide` of `rangeOK k recipes grids exclusions i (i+1)` per node, droplet `yo`) give
+**63 false anchor nodes**: row 12: 60, 100, 124, 126–136, 240, 242, 244, 246–248, 260, 300; row 13: 124, 128–138,
+240, 242, 244, 245, 260; row 14: 100, 124, 130–138, 242, 244, 246, 247, 260; row 15: 242, 244, 246, 248, 250, 251,
+260, 300. The stored anchors are the route-A proposals of `data/caps-m/node-recipes/recM_<t>.json` (`v0 = m + s·a`,
+no variance factor, scale 1, grid 1); §2 already recorded that they fail just outside the MIDCAPS windows.
+
+**Diagnosis** (exact export of the checker's matrix `N` with the functions of `nodeOK`, the same tables and grid):
+* s ≈ 0.18–0.2 (31 nodes): the cap-free 12 × 12 block of `N` is slightly indefinite (−1e-4 … −2e-3). The variance
+  factor `t·(17/20, −1/20, 53/100)` on the fibre coordinates (6, 7, 10), the retry family of rows 16–18
+  (`data/cap-recipes/row16.json`), repairs them; the accepted window of `t` moves up with `s` (1/100 at s = 0.1825 …
+  1/50 at s = 0.1975) and the Schur margin at the cap entry is 1e-6 … 3e-6 inside the window, 1e-11 at its upper edge
+  (the stored caps of these nodes were evidently computed with exactly this factor at t = 1/50).
+* s = 0.1, 0.15, 0.18, 0.6 (8 nodes): the stored recipe misses the cap by 3e-10 … 2e-7 on grid 1 and every variance
+  factor or anchor perturbation makes it worse; on the fine grid (1600, 1024, 1/200) of the piece catalogue the same
+  recipe passes with margin 1e-6 … 6e-6. These nodes keep their recipe and use grid index 2.
+* s ∈ (0.42, 0.525) and s = 0.5 (24 nodes: the hull vertices 240–248 / 240–245 / 242–247 / 242–251 and 260 of each
+  row; every other node there is a chord): **no anchored recipe reaches the stored cap.** The cap-free block of `N`
+  is indefinite (eigenvalues to −0.5) for every variance amplitude below 1/10 and the best Schur margin is −4e-4 …
+  −1.5e-3 (t = 3/20); the price scale, the piece directions of the localized centres, the imaginary-E-block
+  direction of the centre pieces of node 270, transported anchors of the other branch of the proposal (`m` jumps
+  between s = 0.47 and 0.5) and the fine grid change nothing. The caps there are cert-0745d values; the maximiser
+  has two competing branches, which a single anchored quadratic cannot dominate: these nodes need localized
+  (piece) certificates like the MIDCAPS windows, or a decision on their caps. They remain open.
+
+**Repairs (39 nodes).** `data/caps-m/plan/anchor-repairs/repairs.json` lists the repaired recipes and grids;
+`tools/nodecaps_anchor_repair.py bind` archives the historical anchor plans by content hash under
+`data/caps-m/plan/anchor-repairs/original/`, writes the effective `row1k-anchors.json` (only the listed recipes,
+grid indices, the appended fine grid and an `anchor_repairs` provenance block differ) and the binding
+`anchor-repair-binding.json`; `tools/gen_cap_prepared_rows.py` reproduces the historical sources from the archives
+and then renders the effective plans with the frozen renderers, so only `CapRow1k/Recipes.lean` and the anchor
+manifests change (the range modules are byte-identical and are re-run by CI because they import the recipes).
+Every repaired node was verified by its per-node `rangeOK` probe before the push. `tools/nodecaps_repin_retained.py`
+re-pins the retained row-14 proof closure when master changes a module it imports (it did on 4 Nov).

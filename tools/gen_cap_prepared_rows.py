@@ -128,6 +128,11 @@ def main(argv=None):
             outputs.update(render_sealed(ROOT))
         else:
             require(not (ROOT / BASE / 'row15.json').exists(), 'Row15 inputs need a complete explicit binding')
+        if (ROOT / BASE / 'anchor-repair-binding.json').exists():
+            # Repaired anchor recipes (claude-b9ee): the historical plans stay archived and reproduced
+            # above; only Recipes.lean and the anchor manifest of a bound row may differ.
+            from nodecaps_anchor_repair import apply_sealed
+            outputs = apply_sealed(ROOT, outputs)
         for name, data in outputs.items():
             path = ROOT / name
             require(not path.is_symlink(), 'refusing source symlink: ' + name)

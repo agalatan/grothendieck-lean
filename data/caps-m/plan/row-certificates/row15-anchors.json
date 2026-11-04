@@ -4,6 +4,19 @@
     "sha256": "8d7f8a131246baaf378ce5dc0b39be112fc3397b53dbf7fd5076bf97ceca4ec4"
   },
   "agent_id": "codex-15b7",
+  "anchor_repairs": {
+    "agent_id": "claude-b9ee",
+    "baseline_sha256": "e942e59201ee30492ceccb1404563e5a6aa3e99c8fe1bd5795770969da06f41f",
+    "format": "caps-row-anchor-repairs/v1",
+    "input": {
+      "path": "data/caps-m/plan/anchor-repairs/repairs.json",
+      "sha256": "e38be5c23c43fe8dbb9bfbdf0b9e28107a83834a08b3c968606d6b494b3f19b9"
+    },
+    "method": "Variance factor t*(17/20, -1/20, 53/100) on the fibre coordinates (6, 7, 10) (the retry family of rows 16-18, data/cap-recipes/row16.json), t chosen per node as the accepted amplitude with the largest exact Schur margin of the checker matrix N (same functions as nodeOK, grid 1); nodes whose stored recipe fails by less than 1e-6 keep it and move to the fine grid (1600, 1024, 1/200) of the certificate catalogue. Each repaired anchor is verified by its per-node rangeOK probe (native_decide) before the push; CI certifies the range facts.",
+    "nodes": [
+      300
+    ]
+  },
   "anchors": [
     {
       "cap": "698931248891/500000000000",
@@ -1057,7 +1070,7 @@
     },
     {
       "cap": "992974316103/500000000000",
-      "grid_index": 1,
+      "grid_index": 2,
       "node_index": 300,
       "recipe": "74005759832562903682708357/70368744177664000000000000,114455185724531709773484843/281474976710656000000000000,1003860522490715337072797/4398046511104000000000000,0,0,0,0,0,0,0,0,0|1",
       "s": "3/5"
@@ -1692,6 +1705,11 @@
     [
       1600,
       256,
+      "1/200"
+    ],
+    [
+      1600,
+      1024,
       "1/200"
     ]
   ],
