@@ -1,0 +1,28 @@
+{
+  "agent": "codex-aa04",
+  "at": "2026-11-04T02:00:04.722368+00:00",
+  "status": "EXACT_ARITHMETIC_AND_UNCOMPILED_ANALYTIC_DRAFT_NOT_LEAN_VERIFIED",
+  "physical_shift_lo": "829088639664070939/200000000000000000",
+  "physical_shift_hi": "518180399790044337/125000000000000000",
+  "midpoint_error_bound": "1/500000000000000000",
+  "checks": {
+    "lower_squared": true,
+    "upper_squared": true,
+    "midpoint_lower": true,
+    "midpoint_upper": true,
+    "joint_norm_factor": true,
+    "finite_radius_target": true
+  },
+  "coupled_transport_cap": "1/15625000000000000",
+  "midpoint_vector_radius_input": "13759599/10^24 (external replay, not Lean evidence)",
+  "finite_reserve": "5/10^15 (existing proved actual-to-finite estimate)",
+  "combined_radius": "5077759599/1000000000000000000000000",
+  "target": "19/10^11",
+  "purpose": "A source-parameter certificate does not need1024-bit physical shift endpoints. Simple18-decimal endpoints satisfy squared guards and transport budget; high seed precision is retained for recurrence stability.",
+  "dependencies": {
+    "row227-charge-replay.json": "05ca9474e8e5994b201cb6c56f93ef1c2fd855ab5ff8b63c0dfbaec3ca71015f",
+    "regular-row-audit.json": "9e7129c1019efc26cc05639ad6287e785c9532e248814c856f232459ec93b59c",
+    "row227-coupled-transport.json": "ca42da161147f7e6d67680731e4eb5f60cacf752b3f8030e0c415adb3bdc767f",
+    "ConditionalShiftEnclosure.lean": "1e5ca32724336c3bf0d2553caee2be868d73849f046c975c48b4779c3c49d1c6"
+  }
+}

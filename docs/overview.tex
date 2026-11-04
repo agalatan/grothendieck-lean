@@ -472,9 +472,31 @@ $73351/2^{1024}$ without an assumed numerical accuracy. The negative term
 multiplier reverses interval endpoints; positive-scale soundness connects
 the integer guards to the integral. Concrete arithmetic uses
 \texttt{decide +kernel}, with reproducible hash-pinned inputs.
-The physical parameter binding, midpoint transport, square-root prefactor,
-other seeds, stored-row errors and final table agreement remain separate
-obligations.
+
+\paragraph{Common scalar and row-227 source binding.}
+\texttt{ConditionalSeedNormalization} uses the positive actual seed
+$S(A)=(\sqrt\pi/2)A J_0(A^2)$ for $A>0$ to write $C_i(A)=S(A)U_i(A)$.
+The normalized coefficients have $U_{00}=1$, retain the zero-row and charge
+recurrences, and satisfy $\sum_{i\in E}|U_i(A)|^2\le S(A)^{-2}$ for every
+finite set of modes $E$.
+\texttt{ConditionalShiftEnclosure} and \texttt{ConditionalSourceRow227Shift}
+bind the original zero-based panel $4$ / rule $31$ address to source ordinal
+$227$. Its profile is positive, its phase sign is one, and its actual
+coefficient vector equals the canonical vector at the physical shift
+$A_{227}$. With $m$ the pinned rational midpoint,
+\[
+ |A_{227}-m|\le 2\cdot10^{-18}.
+\]
+\texttt{ConditionalSourceRow227Scalar} combines the actual midpoint moment
+enclosure and square-root-of-$\pi$ bounds to give
+\[
+ S(m)>\frac{49}{50},\qquad |S(m)-\widehat S|\le784\cdot10^{-24},
+\]
+where $\widehat S$ is the recorded exact dyadic center. No numerical-accuracy
+premise is used, and $m$ is not identified with the physical shift.
+Midpoint-to-physical-shift transport, certified normalized-triangle arithmetic,
+saved-row coefficient errors and final energy-table agreement remain separate
+obligations; these results do not establish the final upper endpoint.
 
 \texttt{ConditionalReconstruction} proves that nonconstant coefficients vanish
 at a zero profile, retaining the constant phase $\operatorname{ph}(\sqrt{s})$.

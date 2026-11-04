@@ -925,9 +925,26 @@ groups contain at most 32 transitions and use `decide +kernel`.
 width is exactly `73351 / 2^1024`, including rounding and integrated remainder.
 The three hash-pinned inputs under `data/original-moment-seed/` reproduce both
 generated Lean modules through `tools/gen_original_moment_seed.py`.
-The physical profile-shift binding, transport to this midpoint, square-root
-prefactor, coefficient table and final energy agreement remain separate
-obligations for the upper endpoint `1.404598149141`.
+
+**Common scalar and row-227 source binding.** `ConditionalSeedNormalization`
+defines the positive actual seed `S(A) = (sqrt(π)/2) * A * J_0(A²)` for `A > 0`
+and the common normalization `U_i(A) = C_i(A) / S(A)`. It gives exact
+reconstruction `C_i = S * U_i`, `U_(0,0) = 1`, the normalized zero-row and charge
+recurrences, and the finite Bessel budget `Σ_i ‖U_i(A)‖² ≤ 1 / S(A)²`.
+`ConditionalShiftEnclosure` converts absolute profile bounds and squared
+endpoint comparisons into a shift interval. `ConditionalSourceRow227Shift`
+binds the original zero-based panel 4 / rule 31 address to source ordinal 227,
+proves that its physical profile is positive and its phase sign is one, and
+identifies every actual source coefficient with the canonical coefficient at
+the actual shift `A_227`. For the pinned rational midpoint `m`, it gives
+`|A_227 - m| ≤ 2 / 10^18`; it does not identify the midpoint with the physical
+shift. `ConditionalSourceRow227Scalar` combines the actual midpoint moment
+enclosure with the square-root-of-π bounds to obtain `S(m) > 49/50` and
+`|S(m) - ŝ| ≤ 784 / 10^24`, where `ŝ` is the recorded exact dyadic scalar
+center. These bounds have no numerical-accuracy premise. Transport from the
+midpoint to the physical shift, certified normalized-triangle arithmetic,
+saved-row coefficient errors and final energy agreement remain separate
+obligations; the upper endpoint `1.404598149141` is not established here.
 
 `MobiusGeometry`, `MobiusPowerAlgebra`, and `MobiusSeedPullback` establish
 the substitution `v = t/(1+t)` and its pointwise integrand identity.
