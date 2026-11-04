@@ -115,7 +115,7 @@ def balanced_tree(lines, nodes, boundary_word):
 
 
 def finish(lines, namespace):
-    return ("\n".join([*lines, f"end {namespace}", ""]) + "\n").encode()
+    return ("\n".join([*lines, f"end {namespace}"]).rstrip() + "\n").encode()
 
 
 def render(words):

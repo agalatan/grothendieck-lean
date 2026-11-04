@@ -26,4 +26,3 @@ theorem append_right_lookup {α : Type*} {xs ys : List α} {i n : ℕ} {x : α}
   exact hlookup
 
 end Grothe.UpperChaos.OriginalRow227Payload.Data
-

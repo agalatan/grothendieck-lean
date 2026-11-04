@@ -160,4 +160,3 @@ theorem node0000_0560_boundary :
     node0000_0288_length (by decide) node0288_0560_boundary
 
 end Grothe.UpperChaos.OriginalRow227Payload.Data
-

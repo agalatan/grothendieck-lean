@@ -901,4 +901,3 @@ theorem node0512_0544_length : node0512_0544.length = 2048 := by
   rw [List.length_append, node0512_0528_length, node0528_0544_length]
 
 end Grothe.UpperChaos.OriginalRow227Payload.Data
-

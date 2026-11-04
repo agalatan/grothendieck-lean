@@ -94,4 +94,3 @@ theorem boundary_modeCenter_decoded :
   rw [boundary_modeCenter, boundary_value]
 
 end Grothe.UpperChaos.OriginalRow227Payload
-
