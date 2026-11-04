@@ -128,8 +128,10 @@ theorem threeBand_real_reciprocal :
   norm_num only [threeBandValueQ, Rat.cast_div, Rat.cast_one, Rat.cast_sub]
 
 theorem threeBand_real_value_lt : (threeBandValueQ : ℝ) < (1.40459988 : ℝ) := by
-  have h := threeBandValueQ_lt
-  exact_mod_cast h
+  calc
+    (threeBandValueQ : ℝ) < (140459988 : ℝ) / 100000000 := by
+      exact_mod_cast threeBandValueQ_lt
+    _ = (1.40459988 : ℝ) := by norm_num
 
 theorem threeBand_real_reciprocal_lt :
     1 / ((slopeQ : ℝ) - (threeBandResidualQ : ℝ)) < (1.40459988 : ℝ) := by
