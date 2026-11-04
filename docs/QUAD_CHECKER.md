@@ -260,3 +260,73 @@ committed cutoffs. Not yet done: the smoothing rotation and the 21,168 energies 
 `productionSmoothedCoeff` with the saved rational matrices, then the ℓ¹ comparison with
 `energyTable`, and the degree-one reference entries), the analytic parts (S2, S5, S6b/c, S8), and
 the omitted-pair bound of the cutoffs, which this run inherits from the archived table.
+
+## 9. Milestone 3: the smoothing rotation and the energies (design)
+
+**Target.** The numerical content of `hclose` through master's reduction
+`ProductionRetainedEnergy.original_energy_of_retained_source` (and its parametric form
+`selected_energy_close_of_raw_error`): for a rational coefficient family `a0` of the F₀ head,
+
+```
+hraw   : ‖productionF0Head − gradedHermite 251 a0‖ ≤ δ
+htable : Σ_{p ∈ headIdx 501} |energy (retainedSmoothed a0) p − energyTable p| ≤ ε
+hclose follows with τ = (2·501/500 + 3Δ)Δ + ε,  Δ = δ + 4·10⁻¹⁵(501/500 + δ)
+```
+
+(`rawUpper = 4.8·10⁻¹²`, `ε = 3·10⁻¹²` in the concrete theorem; `τ = energyErrQ = 1.37·10⁻¹¹`).
+Here `retainedSmoothed a0 = gradedHermite 251 (productionSmoothedCoeff (a0 + v))`, with
+`v = frozenCorrectionCoeff` (grades `q < 91`, the 259,532 binary64 values of
+`data/taylor-approximants/inputs/frozen_taylor_correction_D201.npz`, exact dyadics at 2⁻²⁰⁶), and
+`productionSmoothedCoeff a q c d = (S_{q+1} · A_q · S_qᵀ)[c][d]` with the **saved rational
+matrices** `S_n = productionSavedMatrixQ n` (`ProductionSmoothingRounding.lean`:
+`savedEntryQ U V W D S n c e = ⌊√(S²·Num²/(D^{2n}·F))⌋/S`, `Num = matrixMomentNumerator U V W
+(n−c) c (n−e) e`, `U, V, W = 990987078608458638622543, 29500621630600679093812,
+903440112391457239941125`, `D = 10²⁴`, `S = 10²²`, `F = entryFactorial`), whose distance to the
+true symmetric powers `Sym^n(M)` master bounds by `4·10⁻¹⁵` relative (`production_smoothing_error`).
+`energy G (n, m)` sums `|⟨hvec2 i, G⟩|²` over `bideg i = (n, m)` (`Energy2.lean`); for the graded
+mode `((q+1−c, q−d), (c, d))` the bidegree is `(2q+1−m, m)` with `m = c + d`, so
+`energy (retainedSmoothed a0) (2q+1−m, m) = Σ_{c+d=m} (S_{q+1} A_q S_qᵀ)[c][d]²`, and the head is
+`n + 3m ≤ 501` (21,168 bidegrees, all with `n + m` odd).
+
+**Computation (milestone 3).**
+1. `a0`: the F₀ head coefficients are the milestone-2 enclosures. The grade-`q` matrix `A_q`
+   (`c ≤ q+1`, `d ≤ q`) is assembled from the raw blocks exactly as the archived finalizer did
+   (`FINAL_ROTATION_AND_RESIDUAL_PROOF.md` §1): canonical `c ≤ d+1` from block `k = d+1−c`, row
+   `j = q−d`, column `c` (`c−1` for `k = 0`); non-canonical `c > d+1` by the reflection
+   `I_{c,d} = √((d+1)/c)·I_{d+1,c−1}` from block `k = c−d−1`, row `j = q+1−c`, column `d+1`
+   (`F0ConditionalEvaluator.production_reflected_indices`; the sign exponent `c+d` is preserved);
+   then `v` is added. Every entry is carried as the interval `[lo, hi]/2¹²⁸` of the raw run (the
+   reflection factor as an outward dyadic enclosure), so the result holds for every `a0` in the
+   box, in particular for the midpoints, and `hraw` for that `a0` costs the half-widths
+   (ℓ² ≲ 10⁻²⁴) plus the analytic terms of §6.
+2. The saved matrices `S_n`, `n ≤ 251`, are computed **exactly** from their definition (big
+   integers, one `Nat.sqrt` per entry: 5,365,627 entries over `S = 10²²`), then enclosed at
+   `2⁻¹²⁸`.
+3. The rotation `D_q = (S_{q+1} A_q) S_qᵀ` in fixed-point interval arithmetic (products exact at
+   `2⁻²⁵⁶`, sums rounded outward to `2⁻¹²⁸` after each product), the energies
+   `E_q(m) = Σ_{c+d=m} D_q[c][d]²` at `2⁻²⁵⁶`, sharded by grade `q` on big (40 shards).
+4. Comparison with `energyTable` (`data/upper-preprocess/certificate.json`, equal to the archived
+   `X_energy_N501.npy`): the excursion `max(lo − t, t − hi, 0)` and the midpoint difference per
+   bidegree; max, ℓ², ℓ¹ over the head and by bands of `m` and of `n + 3m`; the bound
+   `Σ_{head} excursion` is the certified `htable` value for the midpoint `a0`; also the total
+   mass `Σ_{all (n,m)} E` (`‖retainedSmoothed a0‖² ≤ (501/500 + δ)²`).
+
+**What it discharges numerically / what stays analytic.** Numerically (with S1 + the exact
+rational definitions): `htable` for the midpoint `a0` (the whole chain from the saved matrices
+and `v` is finite rational arithmetic, enclosed); the half-width part of `hraw`. Analytic (stated
+in §6, not yet proved): S2 (seed), S3/S4 (ratios, pairs), S5 (transport, not used: the recurrence
+ran on the shift interval itself), S6a (brackets, verified numerically by sign changes but the
+root-isolation theorem is on master), S6b/S6c (the Gauss–Legendre remainder and the integrand
+bound: the only non-finite part of `hraw`, inherited from the archived `6.73·10⁻¹⁶` per raw
+coefficient, i.e. `1.55·10⁻¹²` in ℓ²), the cutoffs' omitted-pair bound (`10⁻²⁷` per coefficient,
+archived), S8 (root windows, not needed on the committed partition since the gaps are excluded
+and the gap mass `1.64·10⁻¹⁶` is part of the archived remainder), S9 (exists on master).
+
+**Degree-one reference (explicit caveat).** `data/retained-f0/degree-one-table.json` records
+the two grade-0 energies `(1,0)` and `(0,1)` recomputed on master from the *committed* raw words
+(flat indices 0 and 63001), the frozen correction and the saved matrix `S_1` with an exact
+residual `7.5·10⁻¹⁷` against the table; that reference is an exact-arithmetic replay of the
+committed inputs, not an independent evaluation of the integrals. Milestone 3 reproduces these
+two entries from the milestone-2 enclosures (which differ from the committed words by
+`3.3·10⁻¹⁶` and `1.67·10⁻¹⁵`), so its degree-one energies differ from the table at the
+`10⁻¹⁵` level by construction; this is reported, not hidden, in §10.

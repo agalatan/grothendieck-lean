@@ -5,4 +5,5 @@ import GrotheQuadKernel.Contract
 import GrotheQuadKernel.Gauss
 import GrotheQuadKernel.Pairs
 import GrotheQuadKernel.Profile
+import GrotheQuadKernel.Rotate
 import GrotheQuadKernel.Seed
