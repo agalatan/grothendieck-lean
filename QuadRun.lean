@@ -15,6 +15,8 @@ and the contraction into the raw coefficients, in shards:
     quadrun node <ordinal> [P]          one node, diagnostics only
     quadrun shard <i> <n> <outdir>      nodes ≡ i (mod n): raw-<i>.txt (lo hi at 2^128), nodes-<i>.txt
     quadrun merge <n> <outdir>          sum the shards into raw-final.txt
+    quadrun smat <i> <n> <dir>          the saved smoothing matrices S_k, k ≡ i (mod n), exactly
+    quadrun rotate <i> <n> <smatdir> <raw> <frozen> <dir>   energies of the grades q ≡ i (mod n)
 
 Diagnostics only: no theorem, no native fact.  Agent-ID: claude-b9ee. Refs #303, #21.
 -/
@@ -245,11 +247,101 @@ def cmdMerge (n : Nat) (outdir : String) : IO UInt32 := do
   IO.println s!"raw-final.txt written: {rawSize} entries, max width {maxW} / 2^128"
   return 0
 
+
+/-! ### Milestone 3: saved matrices, rotation, energies -/
+
+/-- `quadrun smat <i> <n> <outdir>`: the saved matrices `S_k` for `k ≡ i (mod n)`, `k ≤ 251`,
+as numerators over `S = 10^22`, one per line, row-major, in `outdir/smat-<k>.txt`. -/
+def cmdSmat (i n : Nat) (outdir : String) : IO UInt32 := do
+  IO.FS.createDirAll outdir
+  let mut k := i
+  while k ≤ 251 do
+    let t0 ← IO.monoMsNow
+    let nums := savedMatrixNums k
+    let h ← IO.FS.Handle.mk s!"{outdir}/smat-{k}.txt" IO.FS.Mode.write
+    for v in nums do
+      h.putStrLn (toString v)
+    h.flush
+    let t1 ← IO.monoMsNow
+    IO.println s!"S_{k}: {nums.size} entries, {t1 - t0} ms; S_{k}[0][0] = {nums.getD 0 0} / 10^22"
+    k := k + n
+  return 0
+
+/-- Read a saved matrix file as fixed intervals. -/
+def readSmat (path : String) : IO (Array Fx) := do
+  let lines ← IO.FS.lines path
+  return lines.filterMap fun l => if l.isEmpty then none else some (savedToFx (parseNat! l))
+
+/-- Read `raw-final.txt` (lines `lo hi` at scale `2^128`). -/
+def readRaw (path : String) : IO (Array Int × Array Int) := do
+  let lines ← IO.FS.lines path
+  let mut lo : Array Int := Array.mkEmpty lines.size
+  let mut hi : Array Int := Array.mkEmpty lines.size
+  for l in lines do
+    match l.splitOn " " with
+    | [a, b] => lo := lo.push (parseInt! a); hi := hi.push (parseInt! b)
+    | _ => pure ()
+  return (lo, hi)
+
+/-- Read `frozen.txt` (lines `q c d m e`, value `m·2^{-e}`) into a lookup by `gradedFlatIndex`. -/
+def readFrozen (path : String) : IO (Array (Option Fx)) := do
+  let lines ← IO.FS.lines path
+  let size := 91 * 92 * 93 / 3
+  let mut out : Array (Option Fx) := Array.replicate size none
+  for l in lines do
+    match (l.splitOn " ").filter (· ≠ "") with
+    | [q, c, d, m, e] =>
+      let q := parseNat! q; let c := parseNat! c; let d := parseNat! d
+      let m := parseInt! m; let e := parseNat! e
+      let idx := q * (q + 1) * (q + 2) / 3 + c * (q + 1) + d
+      -- m·2^{-e} at scale 2^128: exact if e ≤ 128, else outward
+      let v : Fx := if e ≤ 128 then ⟨m * pow2 (128 - e), m * pow2 (128 - e)⟩
+        else ⟨shDown (e - 128) m, shUp (e - 128) m⟩
+      out := out.set! idx (some v)
+    | _ => pure ()
+  return out
+
+def frozenLookup (tbl : Array (Option Fx)) (q c d : Nat) : Option Fx :=
+  if q < 91 then tbl.getD (q * (q + 1) * (q + 2) / 3 + c * (q + 1) + d) none else none
+
+/-- `quadrun rotate <i> <n> <smatdir> <rawfile> <frozenfile> <outdir>`: the energies of the
+grades `q ≡ i (mod n)`, `q ≤ 250`, lines `q n m lo hi` at scale `2^256` in `outdir/energy-<i>.txt`. -/
+def cmdRotate (i n : Nat) (smatdir rawfile frozenfile outdir : String) : IO UInt32 := do
+  IO.FS.createDirAll outdir
+  let t0 ← IO.monoMsNow
+  let (rawLo, rawHi) ← readRaw rawfile
+  if rawLo.size != rawSize then throw (IO.userError s!"raw file has {rawLo.size} entries")
+  let frozenTbl ← readFrozen frozenfile
+  let t1 ← IO.monoMsNow
+  IO.println s!"rotate shard {i}: inputs read in {t1 - t0} ms"
+  let h ← IO.FS.Handle.mk s!"{outdir}/energy-{i}.txt" IO.FS.Mode.write
+  let mut q := i
+  while q ≤ 250 do
+    let tq ← IO.monoMsNow
+    let S1 ← readSmat s!"{smatdir}/smat-{q + 1}.txt"
+    let S0 ← readSmat s!"{smatdir}/smat-{q}.txt"
+    if S1.size != (q + 2) * (q + 2) || S0.size != (q + 1) * (q + 1) then
+      throw (IO.userError s!"saved matrix sizes wrong at grade {q}")
+    let es := rotateGrade rawLo rawHi (frozenLookup frozenTbl) S1 S0 q
+    for m in [0:es.size] do
+      let (lo, hi) := es.getD m (0, 0)
+      h.putStrLn s!"{q} {2 * q + 1 - m} {m} {lo} {hi}"
+    h.flush
+    let tq1 ← IO.monoMsNow
+    IO.println s!"grade {q}: {es.size} bidegrees, {tq1 - tq} ms"
+    q := q + n
+  return 0
+
 def main (args : List String) : IO UInt32 := do
   match args with
+  | ["smat", i, n, d] => cmdSmat (parseNat! i) (parseNat! n) d
+  | ["rotate", i, n, sd, rf, ff, od] => cmdRotate (parseNat! i) (parseNat! n) sd rf ff od
   | ["rules"] => cmdRules
   | ["node", o] => cmdNode (parseNat! o) precisions
   | ["node", o, p] => cmdNode (parseNat! o) [parseNat! p]
   | ["shard", i, n, d] => cmdShard (parseNat! i) (parseNat! n) d
   | ["merge", n, d] => cmdMerge (parseNat! n) d
-  | _ => IO.println "usage: quadrun rules | node <ordinal> [P] | shard <i> <n> <outdir> | merge <n> <outdir>"; return 2
+  | _ =>
+    IO.println "usage: quadrun rules | node <ordinal> [P] | shard <i> <n> <outdir> | merge <n> <outdir>"
+    IO.println "       quadrun smat <i> <n> <outdir> | rotate <i> <n> <smatdir> <rawfile> <frozenfile> <outdir>"
+    return 2
