@@ -486,3 +486,27 @@ scripts/test_caps_stamp.py
 ```
 `tools/gen_root_imports.py` already lists the four libraries (`LIBS`). `lakefile.toml` already
 has the library and the `quadrun` executable (not a default target).
+
+### 11.4 Status of the proved layers (4 November, evening)
+
+All in `Grothe/UpperQuad/`, kernel-checked, warning-free, imported by the `Grothe` root
+(no `native_decide`, no `sorry`):
+
+| module | proves | hypotheses left to the data/validity flags |
+|---|---|---|
+| `IntervalSound` | S1: `mem` preserved by every operation of `Basic.lean`; `expPosI`/`expNegI` with the series tail (`exp_tail_bounds`) | `expPosValid` (the enclosure decides `x < N + 2`), `isPos` of the reciprocal's argument |
+| `SeedSound` | the seed loop encloses the partial sums and the next term; `seedJ0SeriesI` encloses any `J` within the geometric tail | `seedSeriesValid`; the identity `J = J₀(x)` with the tail bound (S2, analytic) |
+| `PiSound` | `π ∈ piMachinI P N` (Machin from `Real.arctan_add`, `arctan_one`; `Real.hasSum_arctan` with the alternating-series sandwich) | none |
+| `RatioSound` | every ratio of `ratiosI` encloses `OriginalPositiveMoment.ratio` (S3, master's `ratio_eq_next`/`ratio_mem_unit`) | `ratiosValid` (denominators decided positive) |
+| `PairsSound` | S4: the pushed-array rows equal their recursive specifications and enclose `(normalizedCoefficient A (c,d)).re` through `normalizedCoefficient_zero_row_step`/`_forward`; every entry of the canonical array encloses its `U_{c,d}` | `0 < A`, the ratio enclosures, `(sqrtNatI P n).lo > 0`, `(A√(c+1))`'s enclosure positive |
+| `ProfileSound` | `vprofI` encloses `Rounder.vprof` (master's `binHalf`/`lagHalf`/`nrmHalf` evaluated literally), `kappaI`, the scaled profile; `profileShiftI` returns `profileSign s` and an enclosure of `profileShift s` | `profileAgrees pd` (data = `profileQ`, `aQ`), `nrmHalfI` positive |
+| `GaussSound` | S6a: Legendre recurrence ↔ `realPair`, `weightI` ↔ `weight (n−1)`, physical node ↔ `panelNode`; a decided sign change gives a root (IVT) | the weight's divisor positive; the bracket ↔ `Q0GaussSelectedChoice` root identification via `root_spec` at the data binding |
+| `RotateSound` | the kernel's saved matrix numerators are `productionSavedEntryQ` exactly (`savedEntryNum_eq`) | none |
+
+Still to prove: the node-factor layer (`radialRowI` ↔ `RadialLaguerre.radialFactor`, the Laguerre
+three-term recurrence against master's explicit sum), the accumulation and the rotation products
+(fixed-point `mulFx`/sums; the index map of `Contract` ↔ `gradedMode`/`production_reflected_indices`),
+the top theorem (D), and the row-227 native fact. The kernel modules were refactored during
+this milestone into `let`-free definitions with named helpers (`Basic`, `Seed`, `Pairs`,
+`Profile`, `Rotate`): `let` elaborates to `have`-bindings that `split_ifs` cannot see through;
+the arithmetic is unchanged (row 227 reproduces the milestone-1 numbers).
