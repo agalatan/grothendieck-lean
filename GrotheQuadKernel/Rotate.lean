@@ -40,10 +40,6 @@ def smW : Nat := 903440112391457239941125
 def smD : Nat := 1000000000000000000000000
 def smS : Nat := 10000000000000000000000
 
-/-- `C(n, k)` (`0` for `k > n`). -/
-def natChoose (n k : Nat) : Nat :=
-  if k > n then 0 else (List.range k).foldl (fun acc i => acc * (n - i) / (i + 1)) 1
-
 /-- One summand `C(a,k) C(c,p−k) U^k V^{(a−k)+(p−k)} W^{c−(p−k)}` from the power tables. -/
 def momentSummand (pU pV pW : Array Nat) (p a c k : Nat) : Nat :=
   natChoose a k * natChoose c (p - k) * pU.getD k 0 * pV.getD ((a - k) + (p - k)) 0 *

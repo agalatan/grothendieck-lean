@@ -79,58 +79,63 @@ def mulFx (a b : Fx) : Int × Int :=
 intervals (`Array` of rows). -/
 def nodeFactors (P : Nat) (s w : Ival) : Array (Array Fx) :=
   let ew := mulI P (expNegI P 400 s) w
-  (Array.range numCharges).map fun k =>
-    let row := radialRowI P k (blockSide k - 1) s
-    row.map fun psi => toFx (mulI P psi ew)
+  let sPow := powTable P s 251
+  let rPow := powTable P (sqrtI P s) 251
+  Array.ofFn fun k : Fin numCharges =>
+    (radialRowI P k.val (blockSide k.val - 1) sPow rPow).map fun psi => toFx (mulI P psi ew)
 
-/-- The selected coefficient `I_{c,d}` of block `k`, column `cIdx`, read from the canonical
-array of a node with cutoff `D` (pairs beyond the cutoff are omitted: `0`). -/
-def selectedCoefficient (D : Nat) (vals : Array Ival) (k cIdx : Nat) : Ival :=
-  let c := if k == 0 then cIdx + 1 else cIdx
-  let d := c + k - 1
-  if c + d ≤ D then vals.getD (canonicalRank 265 c d) zeroI else zeroI
+/-- The canonical pair of block `k`, column `cIdx`: `c = cIdx + 1` for `k = 0` else `cIdx`,
+`d = c + k − 1`. -/
+def pairOf (k cIdx : Nat) : Nat × Nat :=
+  if k == 0 then (cIdx + 1, cIdx + 1 + k - 1) else (cIdx, cIdx + k - 1)
 
-/-- The canonical ranks of the selected columns, per block (precomputed once). -/
+/-- The canonical ranks and degrees of the selected columns, per block (computed once). -/
 def selectedRanks : Array (Array (Nat × Nat)) :=
-  (Array.range numCharges).map fun k =>
-    (Array.range (blockSide k)).map fun cIdx =>
-      let c := if k == 0 then cIdx + 1 else cIdx
-      let d := c + k - 1
-      (c + d, canonicalRank 265 c d)
+  Array.ofFn fun k : Fin numCharges =>
+    Array.ofFn fun cIdx : Fin (blockSide k.val) =>
+      ((pairOf k.val cIdx.val).1 + (pairOf k.val cIdx.val).2,
+        canonicalRank 265 (pairOf k.val cIdx.val).1 (pairOf k.val cIdx.val).2)
 
-/-- Accumulate one node into the raw accumulators (scale `2^{2 KFix}`): for every block `k`,
-row `j` and column `cIdx` with `c + d ≤ D`: `acc[k,j,cIdx] += F_{k,j} · I_{c,d}`. -/
-def accumulateNode (D : Nat) (vals : Array Ival) (factors : Array (Array Fx))
-    (accLo accHi : Array Int) : Array Int × Array Int := Id.run do
-  let mut lo := accLo
-  let mut hi := accHi
-  let ranks := selectedRanks
-  let offs := blockOffsets
-  for k in [0:numCharges] do
-    let n := blockSide k
-    let off := offs.getD k 0
-    let fr := factors.getD k #[]
-    let rk := ranks.getD k #[]
-    -- the active columns of this block: selected pairs within the cutoff with a nonzero value
-    let cols : Array (Nat × Fx) := Id.run do
-      let mut out : Array (Nat × Fx) := #[]
-      for cIdx in [0:n] do
-        let (deg, r) := rk.getD cIdx (0, 0)
-        if deg ≤ D then
-          let v := vals.getD r zeroI
-          if !(isZero v) then out := out.push (cIdx, toFx v)
-      return out
-    if cols.isEmpty then continue
-    for j in [0:n] do
-      let f := fr.getD j default
-      if f.lo == 0 && f.hi == 0 then continue
-      let base := off + j * n
-      for (cIdx, v) in cols do
-        let (pl, ph) := mulFx f v
-        let idx := base + cIdx
-        lo := lo.set! idx (lo.getD idx 0 + pl)
-        hi := hi.set! idx (hi.getD idx 0 + ph)
-  return (lo, hi)
+/-- The block of a flat index: the largest `k` with `blockOffsets[k] ≤ idx`. -/
+def blockOf (idx : Nat) : Nat :=
+  (List.range numCharges).foldl (fun acc k => if blockOffsets.getD k 0 ≤ idx then k else acc) 0
+
+/-- The block of every flat index (computed once per process). -/
+def blockTable : Array Nat := Array.ofFn fun idx : Fin rawSize => blockOf idx.val
+
+/-- `(k, j, cIdx)` of a flat index, from the block table. -/
+def entryOf (table : Array Nat) (idx : Nat) : Nat × Nat × Nat :=
+  (table.getD idx 0, (idx - blockOffsets.getD (table.getD idx 0) 0) / blockSide (table.getD idx 0),
+    (idx - blockOffsets.getD (table.getD idx 0) 0) % blockSide (table.getD idx 0))
+
+/-- The contribution of one node to the flat entry `idx`: `F_{k,j} · I_{c,d}` (scale `2^{2 KFix}`)
+when `c + d ≤ D`, else `0` (the omitted pairs of the cutoff). -/
+def contribution (D : Nat) (valsFx : Array Fx) (factors : Array (Array Fx)) (table : Array Nat)
+    (idx : Nat) : Int × Int :=
+  if ((selectedRanks.getD (entryOf table idx).1 #[]).getD (entryOf table idx).2.2 (0, 0)).1 ≤ D then
+    mulFx ((factors.getD (entryOf table idx).1 #[]).getD (entryOf table idx).2.1 default)
+      (valsFx.getD ((selectedRanks.getD (entryOf table idx).1 #[]).getD (entryOf table idx).2.2 (0, 0)).2
+        default)
+  else (0, 0)
+
+/-- The contributions of one node to all flat entries (`valsFx` = the node's coefficients as
+fixed intervals). -/
+def nodeContributions (D : Nat) (valsFx : Array Fx) (factors : Array (Array Fx))
+    (table : Array Nat) : Array (Int × Int) :=
+  Array.ofFn fun idx : Fin rawSize => contribution D valsFx factors table idx.val
+
+/-- Add precomputed contributions to an accumulator. -/
+def accumulateLo (contribs : Array (Int × Int)) (acc : Array Int) : Array Int :=
+  Array.ofFn fun idx : Fin rawSize => acc.getD idx.val 0 + (contribs.getD idx.val (0, 0)).1
+
+def accumulateHi (contribs : Array (Int × Int)) (acc : Array Int) : Array Int :=
+  Array.ofFn fun idx : Fin rawSize => acc.getD idx.val 0 + (contribs.getD idx.val (0, 0)).2
+
+/-- Accumulate one node into the raw accumulators (scale `2^{2 KFix}`). -/
+def accumulateNode (D : Nat) (vals : Array Ival) (factors : Array (Array Fx)) (table : Array Nat)
+    (accLo accHi : Array Int) : Array Int × Array Int :=
+  let contribs := nodeContributions D (vals.map toFx) factors table
+  (accumulateLo contribs accLo, accumulateHi contribs accHi)
 
 /-- The sum of squares of the selected (`k ≤ 251`, within the block squares) coefficients, as
 a check of Bessel on the selected set. -/

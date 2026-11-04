@@ -144,6 +144,14 @@ def ratI (P : Nat) (n : Int) (d : Nat) : Ival := divN P d (ofInt P n)
 /-- `n!`. -/
 def factNat (n : Nat) : Nat := (List.range n).foldl (fun p i => p * (i + 1)) 1
 
+/-- `C(n, k)` (`0` for `k > n`). -/
+def natChoose (n k : Nat) : Nat :=
+  if k > n then 0 else (List.range k).foldl (fun acc i => acc * (n - i) / (i + 1)) 1
+
+/-- `Σ_{k < n} g k` as an interval (left fold of `addI`). -/
+def sumRangeI (P : Nat) (n : Nat) (g : Nat → Ival) : Ival :=
+  (List.range n).foldl (fun acc k => addI P acc (g k)) zeroI
+
 /-- Integer square root, rounded down (`Nat.sqrt`) and up. -/
 def isqrtDown (n : Nat) : Nat := Nat.sqrt n
 def isqrtUp (n : Nat) : Nat := if Nat.sqrt n * Nat.sqrt n == n then Nat.sqrt n else Nat.sqrt n + 1

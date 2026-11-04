@@ -13,8 +13,8 @@ import GrotheQuadKernel.Basic
   (`Q0GaussPhysical.panelNode`/`panelWeight`); the Gauss sum `Σ_i W_i f(s_i)`.  The remainder
   for analytic `f` is obligation S6b.
 * The radial factor `ψ_{k,m}(s) = (−1)^m √(m!/(m+k)!) · s^{k/2} · L_m^{(k)}(s)`
-  (`RadialLaguerre.radialFactor k m s`), by the Laguerre recurrence
-  `L_{m+1}^{(k)} = ((2m+k+1−s) L_m^{(k)} − (m+k) L_{m−1}^{(k)})/(m+1)`.
+  (`RadialLaguerre.radialFactor k m s`), with `L_m^{(k)}` evaluated by master's explicit sum
+  `assocLaguerre` (the three-term recurrence would be faster but needs its own proof).
 
 Agent-ID: claude-b9ee. Refs #303, #21.
 -/
@@ -90,33 +90,35 @@ def gaussSumI (P : Nat) (weights vals : Array Ival) : Ival :=
   (Array.range (min weights.size vals.size)).foldl
     (fun s i => addI P s (mulI P (weights.getD i zeroI) (vals.getD i zeroI))) zeroI
 
-/-- `L_0^{(k)}(s), …, L_M^{(k)}(s)` by the three-term recurrence. -/
-def laguerreRowI (P : Nat) (k M : Nat) (s : Ival) : Array Ival := Id.run do
-  let mut out : Array Ival := Array.mkEmpty (M + 1)
-  let mut lPrev := ofInt P 1                        -- L_0
-  out := out.push lPrev
-  if M == 0 then return out
-  let mut lCur := subI P (ofNat P (k + 1)) s          -- L_1 = k + 1 − s
-  out := out.push lCur
-  for m in [1:M] do
-    -- L_{m+1} = ((2m+k+1−s) L_m − (m+k) L_{m−1}) / (m+1)
-    let a := subI P (ofNat P (2 * m + k + 1)) s
-    let lNext := divN P (m + 1) (subI P (mulI P a lCur) (mulN P (m + k) lPrev))
-    out := out.push lNext
-    lPrev := lCur
-    lCur := lNext
-  return out
+/-- The powers `x^0, …, x^M`. -/
+def powTable (P : Nat) (x : Ival) (M : Nat) : Array Ival :=
+  Array.ofFn fun i : Fin (M + 1) => powI P x i.val
+
+/-- One term `(−1)^j C(m+k, m−j) s^j / j!` of `assocLaguerre k m s` (`sPow` = the powers of `s`). -/
+def assocLaguerreTerm (P k m j : Nat) (sPow : Array Ival) : Ival :=
+  if j % 2 == 1 then
+    negI (divN P (factNat j) (mulN P (natChoose (m + k) (m - j)) (sPow.getD j zeroI)))
+  else divN P (factNat j) (mulN P (natChoose (m + k) (m - j)) (sPow.getD j zeroI))
+
+/-- `assocLaguerre k m s = Σ_{j ≤ m} (−1)^j C(m+k, m−j) s^j / j!` (`RadialLaguerre.assocLaguerre`). -/
+def assocLaguerreI (P k m : Nat) (sPow : Array Ival) : Ival :=
+  sumRangeI P (m + 1) fun j => assocLaguerreTerm P k m j sPow
 
 /-- `(m+1)(m+2)…(m+k) = (m+k)!/m!`. -/
 def risingFact (k m : Nat) : Nat := (List.range k).foldl (fun p i => p * (m + i + 1)) 1
 
-/-- The radial factors `ψ_{k,m}(s)` for `m = 0, …, M` at `s ∈ sI ⊆ [0, ∞)`. -/
-def radialRowI (P : Nat) (k M : Nat) (sI : Ival) : Array Ival :=
-  let lag := laguerreRowI P k M sI
-  let sk := powI P (sqrtI P sI) k
-  (Array.range (M + 1)).map fun m =>
-    let nrm := sqrtI P (divN P (risingFact k m) (ofInt P 1))
-    let v := mulI P sk (mulI P nrm (lag.getD m zeroI))
-    if m % 2 == 1 then negI v else v
+/-- `√(m!/(m+k)!)`. -/
+def normFactorI (P k m : Nat) : Ival := sqrtI P (divN P (risingFact k m) (ofInt P 1))
+
+/-- The radial factor `ψ_{k,m}(s) = (−1)^m (√s)^k √(m!/(m+k)!) assocLaguerre k m s`
+(`RadialLaguerre.radialFactor`), from the power tables of `s` and of `√s`. -/
+def radialFactorI (P k m : Nat) (sPow rPow : Array Ival) : Ival :=
+  if m % 2 == 1 then
+    negI (mulI P (rPow.getD k zeroI) (mulI P (normFactorI P k m) (assocLaguerreI P k m sPow)))
+  else mulI P (rPow.getD k zeroI) (mulI P (normFactorI P k m) (assocLaguerreI P k m sPow))
+
+/-- The radial factors `ψ_{k,m}(s)` for `m = 0, …, M`. -/
+def radialRowI (P k M : Nat) (sPow rPow : Array Ival) : Array Ival :=
+  Array.ofFn fun m : Fin (M + 1) => radialFactorI P k m.val sPow rPow
 
 end GrotheQuad

@@ -16,10 +16,6 @@ Agent-ID: claude-b9ee. Refs #303, #21.
 
 namespace GrotheQuad
 
-/-- `Σ_{k < n} g k` as an interval (left fold of `addI`). -/
-def sumRangeI (P : Nat) (n : Nat) (g : Nat → Ival) : Ival :=
-  (List.range n).foldl (fun acc k => addI P acc (g k)) zeroI
-
 /-- `binHalf j k = Π_{i < j−k} (k + ½ + i)/(i + 1) = Π_{i < j−k} (2k+1+2i)/(2(i+1))` as a
 rational `(num, den)`. -/
 def binHalfRat (j k : Nat) : Int × Nat :=

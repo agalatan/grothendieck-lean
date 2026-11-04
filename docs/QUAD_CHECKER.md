@@ -487,26 +487,90 @@ scripts/test_caps_stamp.py
 `tools/gen_root_imports.py` already lists the four libraries (`LIBS`). `lakefile.toml` already
 has the library and the `quadrun` executable (not a default target).
 
-### 11.4 Status of the proved layers (4 November, evening)
+### 11.4 Hand-over (claude-b9ee, 4 November 2026, 20:30 Bucharest)
 
-All in `Grothe/UpperQuad/`, kernel-checked, warning-free, imported by the `Grothe` root
-(no `native_decide`, no `sorry`):
+**Proved** (`Grothe/UpperQuad/`, kernel-checked, warning-free, no `sorry`, no `native_decide`,
+all imported by the `Grothe` root; the laptop worktree
+`/Users/alingalatan/workspaces/grothe/.claude/worktrees/quad-checker` builds them all):
 
-| module | proves | hypotheses left to the data/validity flags |
+| module | main theorems | validity-flag / data hypotheses |
 |---|---|---|
-| `IntervalSound` | S1: `mem` preserved by every operation of `Basic.lean`; `expPosI`/`expNegI` with the series tail (`exp_tail_bounds`) | `expPosValid` (the enclosure decides `x < N + 2`), `isPos` of the reciprocal's argument |
-| `SeedSound` | the seed loop encloses the partial sums and the next term; `seedJ0SeriesI` encloses any `J` within the geometric tail | `seedSeriesValid`; the identity `J = J₀(x)` with the tail bound (S2, analytic) |
-| `PiSound` | `π ∈ piMachinI P N` (Machin from `Real.arctan_add`, `arctan_one`; `Real.hasSum_arctan` with the alternating-series sandwich) | none |
-| `RatioSound` | every ratio of `ratiosI` encloses `OriginalPositiveMoment.ratio` (S3, master's `ratio_eq_next`/`ratio_mem_unit`) | `ratiosValid` (denominators decided positive) |
-| `PairsSound` | S4: the pushed-array rows equal their recursive specifications and enclose `(normalizedCoefficient A (c,d)).re` through `normalizedCoefficient_zero_row_step`/`_forward`; every entry of the canonical array encloses its `U_{c,d}` | `0 < A`, the ratio enclosures, `(sqrtNatI P n).lo > 0`, `(A√(c+1))`'s enclosure positive |
-| `ProfileSound` | `vprofI` encloses `Rounder.vprof` (master's `binHalf`/`lagHalf`/`nrmHalf` evaluated literally), `kappaI`, the scaled profile; `profileShiftI` returns `profileSign s` and an enclosure of `profileShift s` | `profileAgrees pd` (data = `profileQ`, `aQ`), `nrmHalfI` positive |
-| `GaussSound` | S6a: Legendre recurrence ↔ `realPair`, `weightI` ↔ `weight (n−1)`, physical node ↔ `panelNode`; a decided sign change gives a root (IVT) | the weight's divisor positive; the bracket ↔ `Q0GaussSelectedChoice` root identification via `root_spec` at the data binding |
-| `RotateSound` | the kernel's saved matrix numerators are `productionSavedEntryQ` exactly (`savedEntryNum_eq`) | none |
+| `IntervalSound` | `mem_norm, mem_alignTo, mem_addI, mem_negI, mem_subI, mem_mulZ, mem_mulN, mem_mulI, mem_sqI, mem_divI, mem_divN, mem_invI, mem_ratI, mem_ofInt/ofNat/ofDyadic, mem_sqrtI, abs_le_bval, mem_widen, mem_powI, lt_of_ltNat, gt_of_gtNat, pos_of_isPos, neg_of_isNeg, toFixedLo_le, le_toFixedHi, mem_ofFixed, exp_tail_bounds, expLoop_sound, mem_expPosI, mem_expNegI` | `1 ≤ P`; `expPosValid`; `isPos` of a reciprocal's argument; `b.lo > 0` for `divI` |
+| `SeedSound` | `seedTerm_succ, seedLoop_sound, mem_seedSeries, mem_seedNext, mem_seedJ0SeriesI` | `seedSeriesValid`; the analytic identity `J = J₀(x)` with tail `|t_{N+1}|(N+3)/(N+3−x)` (S2) |
+| `PiSound` | `arctan_tail_le, arctanLoop_sound, mem_arctanInvI, pi_machin, mem_piMachinI` | none |
+| `RatioSound` | `mem_ratioNextI, ratios_loop_sound, mem_ratiosI` | `ratiosValid`; `0 ≤ x`, `x ∈ xI` |
+| `PairsSound` | `zeroRowArr_getD, mem_zeroStep, mem_zeroRec, mem_forwardStep, uRe_forward, rowsArr_getD, nextRow_getD, mem_rowRec, canonicalPairs_mem, mem_normalizedTriangleI` | `0 < A`, `∀ d, ratio d (A²) ∈ ratios[d]`, `(sqrtNatI P n).lo > 0`, `(mulI P aI (sqrtNatI P (c+1))).lo > 0` |
+| `ProfileSound` | `mem_sumRangeI, factNat_eq, binHalfRat_eq, mem_lagHalfI, mem_nrmHalfI, mem_vprofI, mem_kappaI, mem_scaledProfileI, profileShiftI_sound` | `profileAgrees pd` (data = `profileQ`, `aQ`); `(nrmHalfI …).lo > 0` |
+| `GaussSound` | `mem_legendrePairI, mem_legendreI, mem_weightI, mem_panelNode, continuous_realPair, root_of_bracketOK` | weight divisor positive; bracket ↔ `Q0GaussSelectedChoice` root via master's `root_spec` (data binding, not done) |
+| `RotateSound` | `powers_getD, natChoose_eq, foldl_add_eq_sum, momentNumerator_eq, entryFact_eq, savedEntryNum_eq` | none |
 
-Still to prove: the node-factor layer (`radialRowI` ↔ `RadialLaguerre.radialFactor`, the Laguerre
-three-term recurrence against master's explicit sum), the accumulation and the rotation products
-(fixed-point `mulFx`/sums; the index map of `Contract` ↔ `gradedMode`/`production_reflected_indices`),
-the top theorem (D), and the row-227 native fact. The kernel modules were refactored during
-this milestone into `let`-free definitions with named helpers (`Basic`, `Seed`, `Pairs`,
-`Profile`, `Rotate`): `let` elaborates to `have`-bindings that `split_ifs` cannot see through;
-the arithmetic is unchanged (row 227 reproduces the milestone-1 numbers).
+**Kernel state after this session.** `GrotheQuadKernel/{Basic,Seed,Pairs,Profile,Rotate,Gauss,Contract}.lean`
+are `let`-free with named helpers; `Gauss.lean` evaluates the radial factors by master's explicit
+`assocLaguerre` sum (`powTable, assocLaguerreTerm, assocLaguerreI, normFactorI, radialFactorI,
+radialRowI` — the three-term recurrence was removed because its equality with the sum would need
+its own proof); `Contract.lean`'s accumulation is `Array.ofFn` over the flat index
+(`pairOf, selectedRanks, blockOf, blockTable, entryOf, contribution, nodeContributions,
+accumulateLo/Hi, accumulateNode`), **verified to give the same raw entries as the loop version
+(node 227: entries 0 and 63001 identical) but ≈ 25× slower (84 s per full node on the laptop
+versus 3.4 s)**: `blockTable` (5.3·10⁶ × 252 fold steps) and the per-index `entryOf` lookups
+dominate; the next worker should build `blockTable` by one pass over the blocks (a provable
+`List.flatMap`/`replicate` construction or a recursion on `k`) and restrict `nodeContributions`
+to the active entries, or keep the loop version for the runs and the `ofFn` version only in the
+proof (proving them equal). The milestone-2/3 results were produced with the loop version (commit
+`b8ae03747`). `quadrun` and `Row227Check` build with the new kernel; `Row227Check` reproduces the
+milestone-1 numbers.
+
+**Unproved draft (laptop only, git-ignored):** `handoff/quad-checker/radial_chunk_GaussSound.lean`
+— `mem_powTable, mem_assocLaguerreTerm, mem_assocLaguerreI, risingFact_eq, mem_normFactorI,
+mem_radialFactorI, mem_radialRowI` against `RadialLaguerre.radialFactor` (needs
+`import Grothe.UpperChaos.RadialLaguerre` and `Grothe.UpperQuad.ProfileSound` for
+`mem_sumRangeI`/`factNat_eq`/`natChoose_eq` — move `natChoose_eq` from `RotateSound` to a shared
+place first). It was written but never compiled; expect name/cast fixes.
+
+**Remaining, in order.** (1) The radial chunk above (node-factor layer: `nodeFactors` encloses
+`radialFactor k j s · e^{−s} · W` via `mem_expNegI`, `mem_radialRowI`, `toFixedLo_le/le_toFixedHi`).
+(2) `ContractSound`: `blockOf`/`entryOf` decode `off_k + j·n_k + cIdx` (Nat arithmetic over
+`blockOffsets`, which is a concrete array: prove `blockOffsets[k+1] = blockOffsets[k] + n_k²` from
+the fold), `contribution` encloses `F_{k,j} · sign^{c+d} I_{c,d}` for `c + d ≤ D` and is `0`
+otherwise, `accumulateNode` entrywise (`Array.getElem_ofFn`), and the node-range fold
+(`List.foldl`, sums over nodes). The identification of the kernel's nodes with `sourceNode`/
+`sourceWeight` needs `Q0GaussProductionMass` (392 modules, 215k lines, not built) — or state the
+node layer against `panelNode lo hi x_i` with `x_i` the root of master's bracket (`root_spec`),
+which only needs the `Q0LegendreRuleNN` modules of the orders used. (3) `RotateSound` part 2:
+`mulFx`/`roundFx` soundness (fixed scale `2^128`), `mulSA`/`mulBT` restated as `Array.ofFn` with
+`sumRangeI`-style sums, `gradeMatrix` ↔ `productionSmoothedCoeff`'s input `a0 + v` (the
+reflection via master's `canonicalCoefficient_reflection`, indices via
+`production_canonical_indices`/`production_reflected_indices`), `gradeEnergies` ↔ `energy`
+(`Energy2.lean`, bidegree `(2q+1−m, m)`). (4) The top theorem (D) in `Bridge.lean` against
+`selected_energy_close_of_raw_error` (needs `ProductionRetainedEnergy`'s closure: 401 modules,
+≈ 1 CPU-hour; build on big in your own folder). (5) The row-227 `native_decide` fact in a
+root-excluded module (add it to `data/root-imports-exclude.txt`) to measure the cost; then the
+sharding decision of §11.2.
+
+**Conventions and pitfalls.** Kernel definitions must be `let`-free in every branch that a proof
+splits on (`let` elaborates to `have`, invisible to `split_ifs`; nested `let`s inside `fun`
+bodies are recomputed per call — never put `powTable`/`expNegI`/`vals.map` inside a lambda).
+Validity that the kernel cannot guarantee (divisor positivity, `x < N+2`, decided signs) is a
+`Bool` flag that the final fact ANDs in, and a hypothesis of the soundness lemma. Mathlib names
+at this pin: `le_or_gt` (not `le_or_lt`), `Summable.sum_add_tsum_nat_add`, `Summable.tsum_le_tsum`,
+`Real.hasSum_arctan`, `Antitone.alternating_series_le_tendsto`/`tendsto_le_alternating_series`,
+`Finset.Ico_succ_right_eq_Icc`, `Finset.sum_Ico_eq_sum_range`, `Array.getD_eq_getD_getElem?`,
+`List.getD_eq_getElem?_getD`, `List.getElem?_toArray`, `Array.getElem?_ofFn`, `Array.getElem?_push`,
+`Nat.choose_eq_fast_choose`; `if_pos/if_neg/dif_pos/push_neg` are deprecated (warnings fail the
+build): use `split_ifs`, `simp only [h, ↓reduceIte]`, `not_le.mp`. Unused hypotheses are warnings.
+`GrotheQuad.norm` must be written qualified (clashes with `Norm.norm`). Each soundness module
+takes ≈ 1.5–3 min to elaborate after `import Mathlib`.
+
+**Master closures built locally in the worktree's `.lake/build`** (beyond the snapshot of master
+`22b0272`): those of `OriginalMomentRatios`, `ConditionalSeedNormalization`, `Q0LegendreWeight`,
+`Q0GaussPhysical`, `F0ConditionalEvaluator`/`Rounder`, `RadialLaguerre`,
+`ProductionSmoothingRounding` (≈ 110 small modules). Not built: `ProductionRetainedEnergy`
+(401 modules), `Q0GaussProductionMass` (392), `ProductionF0Radial` (382). A fresh worktree from
+`clone_master_build.sh` will rebuild the ≈ 110 (minutes).
+
+**Open analytic hypotheses** (unchanged, §6): S2 (seed identity and tail; Watson form for
+x ≥ 150), S6b/S6c (Gauss–Legendre remainder and integrand bound), the cutoffs' omitted-pair
+bound, and the assembly's `ρ` (inherited 1.55·10⁻¹²).
+
+**Background processes:** none (the node-227 timing run and the GaussSound build were stopped;
+nothing runs on yo or big; both droplet folders were removed earlier).

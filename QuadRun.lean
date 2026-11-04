@@ -188,7 +188,7 @@ def cmdNode (ordinal : Nat) (precs : List Nat) : IO UInt32 := do
   IO.println s!"node factors: {t1 - t0} ms; F[0][0] = {factors.getD 0 #[] |>.getD 0 default |>.lo} (scale 2^128)"
   let lo := Array.replicate rawSize (0 : Int)
   let hi := Array.replicate rawSize (0 : Int)
-  let (lo, hi) := accumulateNode n.cutoff n.vals factors lo hi
+  let (lo, hi) := accumulateNode n.cutoff n.vals factors blockTable lo hi
   let t2 ← IO.monoMsNow
   IO.println s!"accumulate: {t2 - t1} ms; entry 0 = [{lo.getD 0 0}, {hi.getD 0 0}] (scale 2^256); entry 63001 = {lo.getD 63001 0}"
   return 0
@@ -200,13 +200,15 @@ def cmdShard (i n : Nat) (outdir : String) : IO UInt32 := do
   let mut lo := Array.replicate rawSize (0 : Int)
   let mut hi := Array.replicate rawSize (0 : Int)
   let mut count := 0
+  let table := blockTable
+  IO.println s!"block table: {table.size} entries"
   let tStart ← IO.monoMsNow
   let mut ordinal := i
   while ordinal < addrs.size do
     let r ← runNode panels addrs cutoffs pd ordinal precisions
     let t0 ← IO.monoMsNow
     let factors := nodeFactors 1024 r.s r.w
-    let (lo', hi') := accumulateNode r.cutoff r.vals factors lo hi
+    let (lo', hi') := accumulateNode r.cutoff r.vals factors table lo hi
     lo := lo'
     hi := hi'
     let t1 ← IO.monoMsNow

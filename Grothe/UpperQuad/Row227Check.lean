@@ -126,7 +126,7 @@ def gaussDemo : IO Unit := do
   let v := gaussSumI P (pw.map (·.2)) (pw.map fun (s, _) => expNegI P 40 s)
   IO.println s!"  panel [1,2], 3 points: Σ W exp(-s) = {toDecimal 16 v}  (0.2325441579, error ~1e-7)"
   let s := ratI P 3 2
-  let row := radialRowI P 1 2 s
+  let row := radialRowI P 1 2 (powTable P s 2) (powTable P (sqrtI P s) 2)
   IO.println s!"  psi(k=1, m=0,1,2; s=1.5): {row.map (toDecimal 12)}  (expect 1.224744871, -0.433012702, -0.265165043)"
   -- the Watson seed against the series at x = 300
   let piI := piMachinI P 60
