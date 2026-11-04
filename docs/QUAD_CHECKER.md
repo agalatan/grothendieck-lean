@@ -545,9 +545,22 @@ matrices (`retainedProductionCoeff a0 = b0`), `htable` from `energyOK_sound`, `h
 `gradeWidthSq_sound` and `hQuad`. `frozenFx` (`frozenCorrectionAt / 2^206` at scale `2^128`) and
 `tableFx` (floor/ceiling of `energyTable · 2^256`) are the Lean-side data conversions.
 
-**Remaining, in order.** (1) The row-227 `native_decide` fact (`accumulateSpec` of one `NodeSpec`
-literal, compared with the known raw entries) in a root-excluded module, to measure the cost of a
-native fact. (2) The data binding of the partition: the `NodeSpec` literals (generated from
+**The row-227 native fact** (`Grothe/UpperQuad/Row227Fact.lean`, root-excluded):
+`node227_check : check = true` by `native_decide`, where `check` accumulates the `NodeSpec` literal
+of node 227 (`accumulateSpec 1024 piI profile node227 rawZero`) and compares the entries `(0,0,0)`
+and `(1,0,0)` with the milestone-2 values. `lake build Grothe.UpperQuad.Row227Fact` takes **7.3 s on
+big** (the `quadrun node 227 1024` run of the same node takes 6.4 s): the overhead of a native fact
+over the precompiled kernel is negligible, so the cost of the final facts is the node cost itself
+(≈ 6 s per node at P = 512, 21,577 nodes ≈ 36 CPU-hours, ≈ 2 CPU-hours for the saved matrices).
+**Sharding (for the user's decision, §11.2):** with a 6-hour limit per hosted job, option 1 needs
+≈ 12 node-range facts of ≈ 1,800 nodes (≈ 3 h each) whose partial accumulators are committed as
+dyadic data (≈ 5 MB each at `2^{-60}` over the triangle after dropping the entries below `10^{-20}`,
+or the full `2.7·10⁶` entries at `2^{-128}` ≈ 90 MB each, too big), plus one final fact that adds the
+partials exactly and runs `energyOK`/`rawDistOK` (≈ 2.5 h: the saved matrices dominate; they could
+be a separate fact with a committed table of the 5.4·10⁶ numerators, 20 MB); option 3 (one
+sequential fact) is ≈ 38 CPU-hours on the droplet, no data.
+
+**Remaining, in order.** (1) The data binding of the partition: the `NodeSpec` literals (generated from
 `data/quad-checker/panels.txt` + the brackets of `Q0LegendreRuleNN` + `cutoffs.txt`) bound to
 master's `sourcePanels`/`Q0LegendreRuleNN.brackets` by `decide`, and the roots `x nd` from
 master's `root_spec`. (3) The sharding decision (§11.2) and the native facts. (4) The `√n` table
