@@ -1354,6 +1354,24 @@ The generator and its pinned certificate are in
 `tools/gen_analytic_envelope_root11.py` and `data/analytic-envelope-cells/`.
 The other roots and final band energies remain work in progress.
 
+The generated algebraic base-pair families for roots2,6 and10 separate shared
+literal data, serial arithmetic check modules, and the original public integral
+facades. Each check module evaluates at most four substantive closed operations.
+`RectangleHornerTrace.Trace.check_cons` composes already proved local checks;
+the final pair and common certificates reuse proof constants. Data imports the
+previous finished leaf, preserving serialization within each root. Shared
+profile checks retain the actual coefficient interval models. No rectangle,
+model, budget, public integral conclusion or trust mechanism changes.
+`tools/q0_quadrature/check_base_pair_preservation.py` compares all generated
+families with an immutable baseline and records source/input hashes.
+The operation count does not establish a memory bound. After full Lean
+acceptance, `check_base_pair_memory.py` rechecks representative data, every
+checker in the three reported large leaves and shared profiles, their facades,
+and the complete root audits in separate Linux processes. It requires the
+exact verified branch build, records import/compiled-artifact overhead and
+rejects peak process RSS at or above2,000,000,000 bytes. Resource acceptance is
+separate from source preservation and theorem checking.
+
 
 `tools/gen_analytic_envelope_cells.py` renders every analytic-envelope leaf
 of the fixed base-pair mesh from the pinned certificate. Shared

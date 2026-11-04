@@ -11,7 +11,8 @@ import json
 from pathlib import Path
 
 import base_pair_trace
-from gen_base_pair_leaf import render_cell, scalar_data
+from gen_base_pair_leaf import scalar_data
+from gen_base_pair_checks import check_output_inventory, render_cell_bundle, render_profile_bundle
 from gen_profile_model import model
 from gen_source_row_models import trace_defs
 
@@ -68,20 +69,20 @@ end Grothe.UpperChaos.{PROFILE}
 '''
     scalars, indices = scalar_data(data)
     scalars = scalars.replace('Q0BasePairLeafScalars', SCALARS)
-    outputs = {PROFILE + '.lean': profile, SCALARS + '.lean': scalars}
+    outputs = render_profile_bundle(profile, first['profile']['trace'], PROFILE)
+    outputs[SCALARS + '.lean'] = scalars
     namespaces = []
     previous = None
     for cell, leaf in zip(cells, recipe['leaves'], strict=True):
         assert cell['cell'] == leaf['cell']
         namespace = 'Q0BasePairRoot10Leaf' + leaf['path']
         namespaces.append(namespace)
-        _, text = render_cell(data, cell, digest, indices, shared_profile=PROFILE)
-        text = text.replace('Q0BasePairDirectLeaf', namespace).replace('Q0BasePairLeafScalars', SCALARS)
-        # Each file performs substantial kernel reduction. A dependency chain
-        # bounds simultaneous leaf elaborations without changing their proofs.
-        if previous is not None:
-            text = 'import Grothe.UpperChaos.' + previous + '\n' + text
-        outputs[namespace + '.lean'] = text
+        bundle = render_cell_bundle(data, cell, digest, indices, shared_profile=PROFILE,
+                                    namespace=namespace, scalars=SCALARS, previous=previous)
+        overlap = outputs.keys() & bundle.keys()
+        if overlap:
+            raise ValueError(f'duplicate generated modules: {sorted(overlap)}')
+        outputs.update(bundle)
         previous = namespace
     imports = '\n'.join('import Grothe.UpperChaos.' + ns for ns in namespaces)
     targets = ',\n    '.join('``Grothe.UpperChaos.' + ns + '.integrals_mem' for ns in namespaces)
@@ -120,7 +121,9 @@ def main():
                 raise SystemExit('root 10 trace is not reproducible')
         else:
             TRACE.write_text(raw)
-    for name, text in generate(TRACE.read_bytes(), recipe).items():
+    outputs = generate(TRACE.read_bytes(), recipe)
+    check_output_inventory(ROOT / 'Grothe/UpperChaos', outputs)
+    for name, text in outputs.items():
         path = ROOT / 'Grothe/UpperChaos' / name
         if args.check:
             if not path.exists() or path.read_text() != text:
