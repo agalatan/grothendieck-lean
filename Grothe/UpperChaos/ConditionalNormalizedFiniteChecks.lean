@@ -24,13 +24,13 @@ def commonExponentInterval (lo hi exp : ℤ) (h : lo ≤ hi) : IntervalDyadic wh
   lo := ⟨lo, exp⟩
   hi := ⟨hi, exp⟩
   le := by
-    rw [Dyadic.toRat_eq, Dyadic.toRat_eq]
+    rw [LeanCert.Core.Dyadic.toRat_eq, LeanCert.Core.Dyadic.toRat_eq]
     exact mul_le_mul_of_nonneg_right (Int.cast_le.mpr h)
       (le_of_lt (zpow_pos (by decide : (0 : ℚ) < 2) exp))
 
 theorem commonExponentInterval_pos {lo hi exp : ℤ} (h : lo ≤ hi) (hlo : 0 < lo) :
     0 < (commonExponentInterval lo hi exp h).lo.toRat := by
-  rw [Dyadic.toRat_eq]
+  rw [LeanCert.Core.Dyadic.toRat_eq]
   exact mul_pos (Int.cast_pos.mpr hlo) (zpow_pos (by decide : (0 : ℚ) < 2) exp)
 
 /-- A block check uses a finite data container, with no unbounded quantifier. -/

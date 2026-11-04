@@ -175,8 +175,8 @@ def render(words):
         "/-- Every payload word is present, including the suffix after the selected boundary. -/",
         f"theorem words_length : row.words.length = {WORD_COUNT} := Data.{top.name}_length", "",
         "theorem source_span :",
-        f"    row.sourceStart + row.words.length = {SOURCE_START + WORD_COUNT} :=",
-        f"  congrArg (fun n : ℕ => {SOURCE_START} + n) words_length", "",
+        f"    row.sourceStart + row.words.length = {SOURCE_START + WORD_COUNT} := by",
+        "  rw [words_length, row_header.2.1]", "",
         "theorem boundary_rank :",
         f"    Q0ConditionalPairRankCheck.rank {BOUNDARY_C} {BOUNDARY_D} = {BOUNDARY_INDEX} := by",
         "  decide", "",
@@ -228,7 +228,8 @@ def render(words):
         "theorem boundary_modeCenter_decoded :",
         f"    storedModeCenter row ({BOUNDARY_C}, {BOUNDARY_D}) =",
         f"      (({scalar}) : ℂ) := by",
-        "  rw [boundary_modeCenter, boundary_value]", ""])
+        "  simp only [boundary_modeCenter, boundary_value, Rat.cast_div, Rat.cast_neg,",
+        "    Rat.cast_ofNat]", ""])
     outputs["OriginalRow227Payload.lean"] = finish(lines, NAMESPACE)
     return outputs
 

@@ -21,7 +21,7 @@ structure ErrorEntry where
 def savedScaled (word : ℕ) : ℤ :=
   let mantissa : ℤ := (2 ^ 52 + Q0SourceExceptionCenters.fraction word : ℕ)
   let signed := if word / 2 ^ 63 = 0 then mantissa else -mantissa
-  Dyadic.shiftLeftInt signed (717 + Q0SourceExceptionCenters.exponent word)
+  LeanCert.Core.Dyadic.shiftLeftInt signed (717 + Q0SourceExceptionCenters.exponent word)
 
 def errorNumerator (e : ErrorEntry) : ℤ :=
   ConditionalSourceRow227Scalar.shatNumerator * e.center - savedScaled e.word

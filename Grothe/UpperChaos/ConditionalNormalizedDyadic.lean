@@ -62,25 +62,25 @@ def roundedDiv (prec : ℤ) (I J : IntervalDyadic) (hJ : 0 < J.lo.toRat) :
 theorem mem_roundedDiv {prec : ℤ} (hprec : prec ≤ 0)
     {x y : ℝ} {I J : IntervalDyadic} (hJ : 0 < J.lo.toRat)
     (hx : x ∈ I) (hy : y ∈ J) : x / y ∈ roundedDiv prec I J hJ := by
-  simpa only [div_eq_mul_inv] using
-    mem_roundedMul hx (mem_positiveReciprocal hprec hJ hy)
+  simpa only [roundedDiv, div_eq_mul_inv] using
+    mem_roundedMul (prec := prec) hx (mem_positiveReciprocal hprec hJ hy)
 
 /-- LeanCert's Boolean containment check promotes a computed interval to its
 recorded checkpoint without evaluating the actual real number. -/
 theorem mem_of_subset {I J : IntervalDyadic} (hcheck : I.subset J = true)
     {x : ℝ} (hx : x ∈ I) : x ∈ J := by
   have h := Bool.and_eq_true_iff.mp hcheck
-  have hlo := (Dyadic.le_iff_toRat_le J.lo I.lo).mp h.1
-  have hhi := (Dyadic.le_iff_toRat_le I.hi J.hi).mp h.2
+  have hlo := (LeanCert.Core.Dyadic.le_iff_toRat_le J.lo I.lo).mp h.1
+  have hhi := (LeanCert.Core.Dyadic.le_iff_toRat_le I.hi J.hi).mp h.2
   exact ⟨((Rat.cast_le (K := ℝ)).mpr hlo).trans hx.1,
     hx.2.trans ((Rat.cast_le (K := ℝ)).mpr hhi)⟩
 
 def integerInterval (z : ℤ) : IntervalDyadic :=
-  IntervalDyadic.singleton (Dyadic.ofInt z)
+  IntervalDyadic.singleton (LeanCert.Core.Dyadic.ofInt z)
 
 theorem mem_integerInterval (z : ℤ) : (z : ℝ) ∈ integerInterval z := by
-  simpa only [integerInterval, Dyadic.toRat_ofInt, Rat.cast_intCast] using
-    IntervalDyadic.mem_singleton (Dyadic.ofInt z)
+  simpa only [integerInterval, LeanCert.Core.Dyadic.toRat_ofInt, Rat.cast_intCast] using
+    IntervalDyadic.mem_singleton (LeanCert.Core.Dyadic.ofInt z)
 
 /-- No square-root approximation is trusted: both endpoint squares are checked. -/
 def sqrtCheck (n : ℕ) (I : IntervalDyadic) : Bool :=
@@ -106,8 +106,9 @@ theorem zeroStep_sound {prec : ℤ} (hprec : prec ≤ 0)
     {A r s u : ℝ} {IA IR IS IU : IntervalDyadic} (hS : 0 < IS.lo.toRat)
     (hA : A ∈ IA) (hr : r ∈ IR) (hs : s ∈ IS) (hu : u ∈ IU) :
     ((-A) * r / s) * u ∈ zeroStep prec IA IR IS IU hS := by
-  have h := mem_roundedDiv hprec hS
-    (mem_roundedMul (mem_roundedMul (IntervalDyadic.mem_neg hA) hr) hu) hs
+  have h := mem_roundedDiv (prec := prec) hprec hS
+    (mem_roundedMul (prec := prec)
+      (mem_roundedMul (prec := prec) (IntervalDyadic.mem_neg hA) hr) hu) hs
   have he : ((-A) * r / s) * u = (((-A) * r) * u) / s := by ring
   rw [he]
   exact h

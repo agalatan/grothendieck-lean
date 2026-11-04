@@ -27,8 +27,8 @@ theorem row_header :
 theorem words_length : row.words.length = 35777 := Data.node0000_0560_length
 
 theorem source_span :
-    row.sourceStart + row.words.length = 8157156 :=
-  congrArg (fun n : ℕ => 8121379 + n) words_length
+    row.sourceStart + row.words.length = 8157156 := by
+  rw [words_length, row_header.2.1]
 
 theorem boundary_rank :
     Q0ConditionalPairRankCheck.rank 251 250 = 35536 := by
@@ -91,6 +91,7 @@ theorem boundary_scalar_decoded :
 theorem boundary_modeCenter_decoded :
     storedModeCenter row (251, 250) =
       (((-3394185835538405 : ℚ) / 302231454903657293676544) : ℂ) := by
-  rw [boundary_modeCenter, boundary_value]
+  simp only [boundary_modeCenter, boundary_value, Rat.cast_div, Rat.cast_neg,
+    Rat.cast_ofNat]
 
 end Grothe.UpperChaos.OriginalRow227Payload

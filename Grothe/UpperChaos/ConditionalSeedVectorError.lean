@@ -42,17 +42,26 @@ def modeVector (modes : Finset (ℕ × ℕ)) (f : ℕ × ℕ → ℂ) : ModeVect
 theorem norm_modeVector_sq (modes : Finset (ℕ × ℕ)) (f : ℕ × ℕ → ℂ) :
     ‖modeVector modes f‖ ^ 2 = ∑ i ∈ modes, ‖f i‖ ^ 2 := by
   classical
-  simpa only [modeVector, PiLp.toLp_apply, Finset.sum_coe_sort] using
-    PiLp.norm_sq_eq_of_L2 (fun _ : modes => ℂ) (modeVector modes f)
+  calc
+    ‖modeVector modes f‖ ^ 2 = ∑ i : modes, ‖f i.val‖ ^ 2 := by
+      simpa only [modeVector, PiLp.toLp_apply] using
+        PiLp.norm_sq_eq_of_L2 (fun _ : modes => ℂ) (modeVector modes f)
+    _ = ∑ i ∈ modes, ‖f i‖ ^ 2 :=
+      Finset.sum_coe_sort modes (fun i => ‖f i‖ ^ 2)
 
 theorem norm_modeVector_sub_sq (modes : Finset (ℕ × ℕ))
     (f g : ℕ × ℕ → ℂ) :
     ‖modeVector modes f - modeVector modes g‖ ^ 2 =
       ∑ i ∈ modes, ‖f i - g i‖ ^ 2 := by
   classical
-  simpa only [PiLp.sub_apply, modeVector, PiLp.toLp_apply, Finset.sum_coe_sort] using
-    PiLp.norm_sq_eq_of_L2 (fun _ : modes => ℂ)
-      (modeVector modes f - modeVector modes g)
+  calc
+    ‖modeVector modes f - modeVector modes g‖ ^ 2 =
+        ∑ i : modes, ‖f i.val - g i.val‖ ^ 2 := by
+      simpa only [PiLp.sub_apply, modeVector, PiLp.toLp_apply] using
+        PiLp.norm_sq_eq_of_L2 (fun _ : modes => ℂ)
+          (modeVector modes f - modeVector modes g)
+    _ = ∑ i ∈ modes, ‖f i - g i‖ ^ 2 :=
+      Finset.sum_coe_sort modes (fun i => ‖f i - g i‖ ^ 2)
 
 /-- Real scalar multiplication agrees with multiplication by its complex cast. -/
 theorem modeVector_real_mul (modes : Finset (ℕ × ℕ)) (t : ℝ)
