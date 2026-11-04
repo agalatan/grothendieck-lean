@@ -89,7 +89,6 @@ private theorem scaled_quadratic (a n R P Q k u v x y : ℚ)
   rw [scaled_determinant a n R P Q hR hQ]
   unfold mass
   field_simp [hR, hQ, hD]
-  ring
 
 /-- Direct zero insertion, with all algebraic side conditions derived from the
 same actual certificate used by the analytic pair binding. -/
