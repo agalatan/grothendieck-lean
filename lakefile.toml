@@ -32,3 +32,9 @@ precompileModules = true
 [[lean_lib]]
 name = "Grothe"
 
+
+# The batch driver of the quadrature checker (issue #303): a native executable over GrotheQuadKernel.
+# Not a default target; CI never builds it.
+[[lean_exe]]
+name = "quadrun"
+root = "QuadRun"
