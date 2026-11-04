@@ -280,6 +280,16 @@ jobs:
           tar -I zstd -xf handoff-build/build.tar.zst -C .lake && rm -rf handoff-build
           echo "built by run ${{ needs.route.outputs.handoff_run }}: $(cat .lake/build/built-commit 2>/dev/null)"
 
+      - name: Free the hosted runner's disk (the build cache needs more than the image leaves)
+        if: env.LEAN == 'true' && env.DROPLET != 'true'
+        run: |
+          df -h / | tail -1
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/.ghcup /usr/share/swift \
+            /usr/local/share/powershell /opt/hostedtoolcache/CodeQL /usr/lib/jvm /usr/local/graalvm \
+            /usr/local/share/chromium /usr/local/lib/node_modules 2>/dev/null || true
+          sudo docker image prune -af >/dev/null 2>&1 || true
+          df -h / | tail -1
+
       - name: Restore the verified build cache (GitHub-hosted, or an empty droplet workspace)
         if: env.LEAN == 'true' && needs.route.outputs.handoff_run == '' && hashFiles('.lake/build/lib/lean/Grothe.olean') == ''
         uses: actions/cache/restore@v4
