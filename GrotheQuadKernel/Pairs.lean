@@ -89,23 +89,29 @@ def normalizedTriangleI (P : Nat) (aI : Ival) (ratios : Array Ival) (D dMax : Na
   let rows := rowsArr P aI (zeroRowArr P aI ratios D) D ((D + 1) / 2)
   (canonicalPairs D dMax).map fun p => rowsGet rows p.1 p.2
 
+/-- The signed coefficient `sign^{c+d} · S(A) · U_{c,d}` (`negSign` = the profile is negative). -/
+def signedCoefficient (P : Nat) (scalar : Ival) (negSign : Bool) (c d : Nat) (u : Ival) : Ival :=
+  if negSign && (c + d) % 2 == 1 then negI (mulI P scalar u) else mulI P scalar u
+
 /-- The actual coefficient `sign^{c+d} · S(A) · U_{c,d}`, widened by the transport radius
-`(√(c+1) + √(d+1)) · ρ` (`rho ≥ 0`). -/
+`(√(c+1) + √(d+1)) · ρ` (`rho ≥ 0`; no widening for `rho = 0`). -/
 def actualCoefficient (P : Nat) (scalar : Ival) (negSign : Bool) (rho : Ival) (c d : Nat)
     (u : Ival) : Ival :=
-  let v := mulI P scalar u
-  let v := if negSign && (c + d) % 2 == 1 then negI v else v
-  if isZero rho then v
-  else widen P v (mulI P (addI P (sqrtNatI P (c + 1)) (sqrtNatI P (d + 1))) rho)
+  if isZero rho then signedCoefficient P scalar negSign c d u
+  else widen P (signedCoefficient P scalar negSign c d u)
+    (mulI P (addI P (sqrtNatI P (c + 1)) (sqrtNatI P (d + 1))) rho)
+
+/-- The actual coefficients of the pairs `pairs` from their normalized enclosures `u`. -/
+def canonicalFrom (P : Nat) (scalar : Ival) (negSign : Bool) (rho : Ival)
+    (pairs : Array (Nat × Nat)) (u : Array Ival) : Array Ival :=
+  Array.ofFn fun i : Fin pairs.size =>
+    actualCoefficient P scalar negSign rho (pairs.getD i (0, 0)).1 (pairs.getD i (0, 0)).2
+      (u.getD i zeroI)
 
 /-- The actual coefficients `sign^{c+d} · S(A) · U_{c,d}` in canonical order. -/
 def canonicalTriangleI (P : Nat) (scalar : Ival) (negSign : Bool) (rho : Ival)
     (aI : Ival) (ratios : Array Ival) (D dMax : Nat) : Array Ival :=
-  let pairs := canonicalPairs D dMax
-  let u := normalizedTriangleI P aI ratios D dMax
-  (Array.range pairs.size).map fun i =>
-    actualCoefficient P scalar negSign rho (pairs.getD i (0, 0)).1 (pairs.getD i (0, 0)).2
-      (u.getD i zeroI)
+  canonicalFrom P scalar negSign rho (canonicalPairs D dMax) (normalizedTriangleI P aI ratios D dMax)
 
 /-- The rank of `(c, d)` in canonical order (`d ≤ dMax`). -/
 def canonicalRank (dMax c d : Nat) : Nat :=

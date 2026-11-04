@@ -110,7 +110,8 @@ def precisions : List Nat := [512, 1024, 2048, 4096]
 /-- One node: the coefficients of its canonical prefix at the first precision whose widths are
 below the threshold. -/
 def runNode (panels : Array Panel) (addrs : Array (Nat × Nat)) (cutoffs : Array Nat)
-    (pd : ProfileData) (ordinal : Nat) (precs : List Nat) : IO NodeResult := do
+    (pd : ProfileData) (ordinal : Nat) (precs : List Nat) (verbose : Bool := false) :
+    IO NodeResult := do
   let t0 ← IO.monoMsNow
   let (pi, r) := addrs.getD ordinal (0, 0)
   let p := panels.getD pi default
@@ -129,8 +130,13 @@ def runNode (panels : Array Panel) (addrs : Array (Nat × Nat)) (cutoffs : Array
       let x := sqI P a
       let scalar := seedScalarI P piI a
       let ratios := ratiosI P x (D + 2000)
+      if verbose then IO.println s!"  seed+ratios: {ratios.size} ratios, scalar {toDecimal 12 scalar}"
+      let tA ← IO.monoMsNow
       let vals := canonicalTriangleI P scalar neg zeroI a ratios D 265
       let mw := maxWidthLog2 vals
+      if verbose then IO.println s!"  triangle: {vals.size} pairs, max width 2^{mw}"
+      let tB ← IO.monoMsNow
+      if verbose then IO.println s!"  timing: seed+ratios {tA - t0} ms, triangle {tB - tA} ms"
       let bes := sumSqUpper P vals
       let t1 ← IO.monoMsNow
       let res : NodeResult := ⟨ordinal, pi, r, s, w, v, neg, a, x, D, P, vals, mw, bes, t1 - t0⟩
@@ -168,7 +174,7 @@ def cmdRules : IO UInt32 := do
 
 def cmdNode (ordinal : Nat) (precs : List Nat) : IO UInt32 := do
   let (panels, addrs, cutoffs, pd) ← loadAll
-  let n ← runNode panels addrs cutoffs pd ordinal precs
+  let n ← runNode panels addrs cutoffs pd ordinal precs (verbose := true)
   IO.println (summaryLine n)
   IO.println s!"s = {toDecimal 30 n.s}\nw = {toDecimal 30 n.w}\nv = {toDecimal 30 n.v}\nA = {toDecimal 30 n.a}\nx = {toDecimal 20 n.x}"
   for i in [0:min 8 n.vals.size] do
@@ -184,33 +190,48 @@ def cmdNode (ordinal : Nat) (precs : List Nat) : IO UInt32 := do
       IO.println s!"  max width for c+d in [{50*b},{50*b+49}]: 2^{bandMax.getD b 0}"
   let t0 ← IO.monoMsNow
   let factors := nodeFactors 1024 n.s n.w
+  -- a checksum over every entry forces the whole computation before the next timer
+  let checksum := factors.foldl (fun s row => row.foldl (fun s f => s + f.lo + f.hi) s) (0 : Int)
+  IO.println s!"node factors: F[0][0] = {factors.getD 0 #[] |>.getD 0 default |>.lo} (scale 2^128); checksum {checksum % 1000000007}; valid {nodeFactorsValid 1024 n.s}"
   let t1 ← IO.monoMsNow
-  IO.println s!"node factors: {t1 - t0} ms; F[0][0] = {factors.getD 0 #[] |>.getD 0 default |>.lo} (scale 2^128)"
-  let lo := Array.replicate rawSize (0 : Int)
-  let hi := Array.replicate rawSize (0 : Int)
-  let (lo, hi) := accumulateNode n.cutoff n.vals factors blockTable lo hi
+  IO.println s!"node factors: {t1 - t0} ms"
+  let acc := accumulateNode n.cutoff (n.vals.map toFx) factors rawZero
+  let cs2 := acc.foldl (fun s blk => blk.foldl (fun s row => row.foldl (fun s p => s + p.1 + p.2) s) s) (0 : Int)
+  IO.println s!"accumulate: checksum {cs2 % 1000000007}; entry 0 = [{(rawGet acc 0 0 0).1}, {(rawGet acc 0 0 0).2}] (scale 2^256); entry 63001 = {(rawGet acc 1 0 0).1}"
   let t2 ← IO.monoMsNow
-  IO.println s!"accumulate: {t2 - t1} ms; entry 0 = [{lo.getD 0 0}, {hi.getD 0 0}] (scale 2^256); entry 63001 = {lo.getD 63001 0}"
+  IO.println s!"accumulate: {t2 - t1} ms"
   return 0
+
+/-- Write an accumulator in the flat committed layout (`lo hi` per line at scale `2^128`). -/
+def writeRawFlat (h : IO.FS.Handle) (acc : Raw) : IO Unit := do
+  for k in [0:numCharges] do
+    for j in [0:blockSide k] do
+      for c in [0:blockSide k] do
+        let (lo, hi) := rawGet acc k j c
+        h.putStrLn s!"{shDown 128 lo} {shUp 128 hi}"
+
+/-- An accumulator (scale `2^256`) from the flat layout at scale `2^128` (exact). -/
+def rawOfFlat (lo hi : Array Int) : Raw :=
+  Array.ofFn fun k : Fin numCharges =>
+    Array.ofFn fun j : Fin (blockSide k.val) =>
+      Array.ofFn fun c : Fin (blockSide k.val) =>
+        (lo.getD (blockOffset k.val + j.val * blockSide k.val + c.val) 0 * pow2 128,
+          hi.getD (blockOffset k.val + j.val * blockSide k.val + c.val) 0 * pow2 128)
 
 def cmdShard (i n : Nat) (outdir : String) : IO UInt32 := do
   let (panels, addrs, cutoffs, pd) ← loadAll
   IO.FS.createDirAll outdir
   let hn ← IO.FS.Handle.mk s!"{outdir}/nodes-{i}.txt" IO.FS.Mode.write
-  let mut lo := Array.replicate rawSize (0 : Int)
-  let mut hi := Array.replicate rawSize (0 : Int)
+  let mut acc := rawZero
   let mut count := 0
-  let table := blockTable
-  IO.println s!"block table: {table.size} entries"
   let tStart ← IO.monoMsNow
   let mut ordinal := i
   while ordinal < addrs.size do
     let r ← runNode panels addrs cutoffs pd ordinal precisions
     let t0 ← IO.monoMsNow
     let factors := nodeFactors 1024 r.s r.w
-    let (lo', hi') := accumulateNode r.cutoff r.vals factors table lo hi
-    lo := lo'
-    hi := hi'
+    if !nodeFactorsValid 1024 r.s then throw (IO.userError s!"node {ordinal}: node factors invalid")
+    acc := accumulateNode r.cutoff (r.vals.map toFx) factors acc
     let t1 ← IO.monoMsNow
     hn.putStrLn (summaryLine r ++ s!" {t1 - t0}")
     hn.flush
@@ -220,8 +241,7 @@ def cmdShard (i n : Nat) (outdir : String) : IO UInt32 := do
       IO.println s!"shard {i}: {count} nodes, {(now - tStart) / 1000} s"
     ordinal := ordinal + n
   let hr ← IO.FS.Handle.mk s!"{outdir}/raw-{i}.txt" IO.FS.Mode.write
-  for idx in [0:rawSize] do
-    hr.putStrLn s!"{shDown 128 (lo.getD idx 0)} {shUp 128 (hi.getD idx 0)}"
+  writeRawFlat hr acc
   hr.flush
   let tEnd ← IO.monoMsNow
   IO.println s!"shard {i}: done, {count} nodes, {(tEnd - tStart) / 1000} s"
@@ -261,18 +281,21 @@ def cmdSmat (i n : Nat) (outdir : String) : IO UInt32 := do
     let t0 ← IO.monoMsNow
     let nums := savedMatrixNums k
     let h ← IO.FS.Handle.mk s!"{outdir}/smat-{k}.txt" IO.FS.Mode.write
-    for v in nums do
-      h.putStrLn (toString v)
+    for row in nums do
+      for v in row do
+        h.putStrLn (toString v)
     h.flush
     let t1 ← IO.monoMsNow
-    IO.println s!"S_{k}: {nums.size} entries, {t1 - t0} ms; S_{k}[0][0] = {nums.getD 0 0} / 10^22"
+    IO.println s!"S_{k}: {nums.size}x{nums.size} entries, {t1 - t0} ms; S_{k}[0][0] = {(nums.getD 0 #[]).getD 0 0} / 10^22"
     k := k + n
   return 0
 
-/-- Read a saved matrix file as fixed intervals. -/
-def readSmat (path : String) : IO (Array Fx) := do
+/-- Read a saved matrix file (`(n+1)²` numerators, row-major) as a nested matrix of fixed intervals. -/
+def readSmat (path : String) (n : Nat) : IO (Array (Array Fx)) := do
   let lines ← IO.FS.lines path
-  return lines.filterMap fun l => if l.isEmpty then none else some (savedToFx (parseNat! l))
+  let flat := lines.filterMap fun l => if l.isEmpty then none else some (savedToFx (parseNat! l))
+  if flat.size != (n + 1) * (n + 1) then throw (IO.userError s!"{path}: {flat.size} entries, expected {(n + 1) * (n + 1)}")
+  return Array.ofFn fun c : Fin (n + 1) => Array.ofFn fun e : Fin (n + 1) => flat.getD (c.val * (n + 1) + e.val) default
 
 /-- Read `raw-final.txt` (lines `lo hi` at scale `2^128`). -/
 def readRaw (path : String) : IO (Array Int × Array Int) := do
@@ -303,8 +326,8 @@ def readFrozen (path : String) : IO (Array (Option Fx)) := do
     | _ => pure ()
   return out
 
-def frozenLookup (tbl : Array (Option Fx)) (q c d : Nat) : Option Fx :=
-  if q < 91 then tbl.getD (q * (q + 1) * (q + 2) / 3 + c * (q + 1) + d) none else none
+def frozenLookup (tbl : Array (Option Fx)) (q c d : Nat) : Fx :=
+  if q < 91 then (tbl.getD (q * (q + 1) * (q + 2) / 3 + c * (q + 1) + d) none).getD ⟨0, 0⟩ else ⟨0, 0⟩
 
 /-- `quadrun rotate <i> <n> <smatdir> <rawfile> <frozenfile> <outdir>`: the energies of the
 grades `q ≡ i (mod n)`, `q ≤ 250`, lines `q n m lo hi` at scale `2^256` in `outdir/energy-<i>.txt`. -/
@@ -313,6 +336,7 @@ def cmdRotate (i n : Nat) (smatdir rawfile frozenfile outdir : String) : IO UInt
   let t0 ← IO.monoMsNow
   let (rawLo, rawHi) ← readRaw rawfile
   if rawLo.size != rawSize then throw (IO.userError s!"raw file has {rawLo.size} entries")
+  let raw := rawOfFlat rawLo rawHi
   let frozenTbl ← readFrozen frozenfile
   let t1 ← IO.monoMsNow
   IO.println s!"rotate shard {i}: inputs read in {t1 - t0} ms"
@@ -320,11 +344,9 @@ def cmdRotate (i n : Nat) (smatdir rawfile frozenfile outdir : String) : IO UInt
   let mut q := i
   while q ≤ 250 do
     let tq ← IO.monoMsNow
-    let S1 ← readSmat s!"{smatdir}/smat-{q + 1}.txt"
-    let S0 ← readSmat s!"{smatdir}/smat-{q}.txt"
-    if S1.size != (q + 2) * (q + 2) || S0.size != (q + 1) * (q + 1) then
-      throw (IO.userError s!"saved matrix sizes wrong at grade {q}")
-    let es := rotateGrade rawLo rawHi (frozenLookup frozenTbl) S1 S0 q
+    let S1 ← readSmat s!"{smatdir}/smat-{q + 1}.txt" (q + 1)
+    let S0 ← readSmat s!"{smatdir}/smat-{q}.txt" q
+    let es := rotateGrade raw (frozenLookup frozenTbl) S1 S0 q
     for m in [0:es.size] do
       let (lo, hi) := es.getD m (0, 0)
       h.putStrLn s!"{q} {2 * q + 1 - m} {m} {lo} {hi}"

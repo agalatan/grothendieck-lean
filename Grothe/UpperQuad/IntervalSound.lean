@@ -911,4 +911,49 @@ lemma mem_expNegI {x : ℝ} {a : Ival} (P : ℕ) (hP : 1 ≤ P) (N : ℕ) (hx0 :
   rw [Real.exp_neg, one_div] at *
   exact h
 
+/-! ### Finite sums, factorials and binomials (shared by the soundness modules) -/
+
+lemma foldl_range_succ {α : Type*} (f : α → ℕ → α) (z : α) (n : ℕ) :
+    (List.range (n + 1)).foldl f z = f ((List.range n).foldl f z) n := by
+  rw [List.range_succ, List.foldl_append, List.foldl_cons, List.foldl_nil]
+
+lemma mem_sumRangeI (P : ℕ) {f : ℕ → ℝ} {g : ℕ → Ival} (n : ℕ) (h : ∀ k, k < n → mem (f k) (g k)) :
+    mem (∑ k ∈ Finset.range n, f k) (sumRangeI P n g) := by
+  induction n with
+  | zero => simp [sumRangeI]; exact (mem_zeroI_iff 0).2 rfl
+  | succ n ih =>
+    unfold sumRangeI at ih ⊢
+    rw [foldl_range_succ, Finset.sum_range_succ]
+    exact mem_addI P (ih fun k hk => h k (by omega)) (h n (by omega))
+
+lemma factNat_eq (n : ℕ) : factNat n = n.factorial := by
+  induction n with
+  | zero => rfl
+  | succ n ih =>
+    unfold factNat at ih ⊢
+    rw [foldl_range_succ, ih, Nat.factorial_succ]
+    ring
+
+lemma natChoose_eq (n k : ℕ) : natChoose n k = Nat.choose n k := by
+  unfold natChoose
+  split_ifs with h
+  · exact (Nat.choose_eq_zero_of_lt h).symm
+  · rw [not_lt] at h
+    suffices H : ∀ j, j ≤ n → (List.range j).foldl (fun acc i => acc * (n - i) / (i + 1)) 1 = Nat.choose n j
+      from H k h
+    intro j
+    induction j with
+    | zero => intro _; simp
+    | succ j ih =>
+      intro hj
+      rw [foldl_range_succ, ih (by omega)]
+      have := Nat.choose_succ_right_eq n j
+      rw [← this, Nat.mul_div_cancel _ (by omega)]
+
+lemma foldl_add_eq_sum (f : ℕ → ℕ) (n : ℕ) :
+    (List.range n).foldl (fun acc i => acc + f i) 0 = ∑ i ∈ Finset.range n, f i := by
+  induction n with
+  | zero => simp
+  | succ n ih => rw [foldl_range_succ, ih, Finset.sum_range_succ]
+
 end Grothe.UpperQuad

@@ -25,7 +25,8 @@ blocks as the archived finalizer did (`FINAL_ROTATION_AND_RESIDUAL_PROOF.md` §1
 `D_q = (S_{q+1} · A_q) · S_qᵀ` and `energy (2q+1−m, m) = Σ_{c+d=m} D_q[c][d]²`.
 
 Fixed-point intervals at scale `2^128` (`Fx`), products exact at `2^256`, sums rounded outward
-to `2^128` after each product; the energies are reported at scale `2^256`.
+to `2^128` after each product; the energies are reported at scale `2^256`.  Matrices are nested
+arrays (`Array (Array Fx)`, row-major) built by `Array.ofFn`, sums by `sumPairs` (a left fold).
 
 Agent-ID: claude-b9ee. Refs #303, #21.
 -/
@@ -59,123 +60,133 @@ def entryFact (n c e : Nat) : Nat := factNat (n - c) * factNat c * factNat (n - 
 
 /-- The exact integer numerator of `savedEntryQ … n c e` over `S`. -/
 def savedEntryNum (pU pV pW : Array Nat) (n c e : Nat) : Nat :=
-  let num := momentNumerator pU pV pW (n - c) c (n - e) e
-  Nat.sqrt ((smS ^ 2 * num ^ 2) / (smD ^ (2 * n) * entryFact n c e))
+  Nat.sqrt ((smS ^ 2 * (momentNumerator pU pV pW (n - c) c (n - e) e) ^ 2) /
+    (smD ^ (2 * n) * entryFact n c e))
 
-/-- The whole saved matrix `S_n` as numerators, row-major `(c, e)`. -/
-def savedMatrixNums (n : Nat) : Array Nat :=
-  let pU := powers smU n
-  let pV := powers smV n
-  let pW := powers smW n
-  Id.run do
-    let mut out : Array Nat := Array.mkEmpty ((n + 1) * (n + 1))
-    for c in [0:n+1] do
-      for e in [0:n+1] do
-        out := out.push (savedEntryNum pU pV pW n c e)
-    return out
+/-- The whole saved matrix `S_n` as numerators, `[c][e]`, from the power tables. -/
+def savedMatrixNumsFrom (pU pV pW : Array Nat) (n : Nat) : Array (Array Nat) :=
+  Array.ofFn fun c : Fin (n + 1) => Array.ofFn fun e : Fin (n + 1) => savedEntryNum pU pV pW n c.val e.val
+
+/-- The whole saved matrix `S_n` as numerators over `S`, `[c][e]`. -/
+def savedMatrixNums (n : Nat) : Array (Array Nat) :=
+  savedMatrixNumsFrom (powers smU n) (powers smV n) (powers smW n) n
 
 /-- A numerator over `S` as a fixed interval at scale `2^KFix`. -/
 def savedToFx (num : Nat) : Fx :=
-  let v : Int := (num : Int) * pow2 KFix
-  ⟨fdiv v smS, cdiv v smS⟩
+  ⟨fdiv ((num : Int) * pow2 KFix) smS, cdiv ((num : Int) * pow2 KFix) smS⟩
 
-/-- `√((d+1)/c)` as a fixed interval (`c ≥ 1`). -/
+/-- The saved matrix `S_n` as fixed intervals. -/
+def savedMatrixFx (n : Nat) : Array (Array Fx) := (savedMatrixNums n).map (·.map savedToFx)
+
+/-- Read a matrix entry (`⟨0, 0⟩` outside). -/
+def getFx (M : Array (Array Fx)) (i j : Nat) : Fx := (M.getD i #[]).getD j default
+
+/-- `√((d+1)/c)` as a fixed interval (`c ≥ 1`): the integer square roots of
+`⌊(d+1) 2^{2K} / c⌋` and of its successor. -/
 def reflectFx (c d : Nat) : Fx :=
-  let r : Nat := ((d + 1) * (2 ^ (2 * KFix))) / c
-  ⟨(isqrtDown r : Nat), (isqrtUp (r + 1) : Nat)⟩
+  ⟨(isqrtDown (((d + 1) * 2 ^ (2 * KFix)) / c) : Nat), (isqrtUp (((d + 1) * 2 ^ (2 * KFix)) / c + 1) : Nat)⟩
 
-/-- Round a scale-`2^{2K}` accumulator outward to scale `2^K`. -/
-def roundFx (lo hi : Int) : Fx := ⟨shDown KFix lo, shUp KFix hi⟩
+/-- Round a scale-`2^{2K}` pair outward to scale `2^K`. -/
+def roundFx (p : Int × Int) : Fx := ⟨shDown KFix p.1, shUp KFix p.2⟩
 
 /-- Exact addition of fixed intervals. -/
 def addFx (a b : Fx) : Fx := ⟨a.lo + b.lo, a.hi + b.hi⟩
 
-/-- The grade-`q` matrix `A_q` (row-major `c ≤ q+1`, `d ≤ q`) from the raw enclosures
-(`rawLo/rawHi` at scale `2^128`, the committed block layout) and the frozen correction
-(`frozen q c d`, a fixed interval, `none` beyond grade 90). -/
-def gradeMatrix (rawLo rawHi : Array Int) (frozen : Nat → Nat → Nat → Option Fx) (q : Nat) :
-    Array Fx := Id.run do
-  let offs := blockOffsets
-  let mut out : Array Fx := Array.mkEmpty ((q + 2) * (q + 1))
-  for c in [0:q+2] do
-    for d in [0:q+1] do
-      let v : Fx :=
-        if c ≤ d + 1 then
-          let k := d + 1 - c
-          let j := q - d
-          let cIdx := if k == 0 then c - 1 else c
-          let idx := offs.getD k 0 + j * blockSide k + cIdx
-          ⟨rawLo.getD idx 0, rawHi.getD idx 0⟩
-        else
-          let k := c - d - 1
-          let j := q + 1 - c
-          let idx := offs.getD k 0 + j * blockSide k + (d + 1)
-          let g : Fx := ⟨rawLo.getD idx 0, rawHi.getD idx 0⟩
-          let (pl, ph) := mulFx g (reflectFx c d)
-          roundFx pl ph
-      let v := match frozen q c d with
-        | some f => addFx v f
-        | none => v
-      out := out.push v
-  return out
+/-- `Σ_{k < n} f k` of pairs (exact). -/
+def sumPairs (n : Nat) (f : Nat → Int × Int) : Int × Int :=
+  (List.range n).foldl (fun acc k => addPair acc (f k)) (0, 0)
 
-/-- `(S · A)` for `S` an `(r × r)` saved matrix (numerators, row-major) and `A` an `(r × cols)`
-matrix of fixed intervals; result rounded to scale `2^128`. -/
-def mulSA (S : Array Fx) (r : Nat) (A : Array Fx) (cols : Nat) : Array Fx := Id.run do
-  let mut out : Array Fx := Array.mkEmpty (r * cols)
-  for i in [0:r] do
-    for j in [0:cols] do
-      let mut lo : Int := 0
-      let mut hi : Int := 0
-      for k in [0:r] do
-        let s := S.getD (i * r + k) default
-        if s.lo == 0 && s.hi == 0 then continue
-        let (pl, ph) := mulFx s (A.getD (k * cols + j) default)
-        lo := lo + pl
-        hi := hi + ph
-      out := out.push (roundFx lo hi)
-  return out
+/-! ### The grade matrices -/
 
-/-- `(B · Tᵀ)` for `B` `(rows × r)` and `T` an `(r × r)` saved matrix: `[i][j] = Σ_k B[i][k] T[j][k]`. -/
-def mulBT (B : Array Fx) (rows : Nat) (T : Array Fx) (r : Nat) : Array Fx := Id.run do
-  let mut out : Array Fx := Array.mkEmpty (rows * r)
-  for i in [0:rows] do
-    for j in [0:r] do
-      let mut lo : Int := 0
-      let mut hi : Int := 0
-      for k in [0:r] do
-        let t := T.getD (j * r + k) default
-        if t.lo == 0 && t.hi == 0 then continue
-        let (pl, ph) := mulFx (B.getD (i * r + k) default) t
-        lo := lo + pl
-        hi := hi + ph
-      out := out.push (roundFx lo hi)
-  return out
+/-- The raw enclosure of the canonical entry `(c, d)` of grade `q` (`c ≤ d + 1`, `d ≤ q`), from
+block `k = d + 1 − c`, row `j = q − d`, column `c` (`c − 1` for `k = 0`), rounded to scale `2^K`. -/
+def canonicalEntry (raw : Raw) (q c d : Nat) : Fx :=
+  roundFx (rawGet raw (d + 1 - c) (q - d) (if d + 1 - c == 0 then c - 1 else c))
 
-/-- The square of a fixed interval at scale `2^256`. -/
+/-- The reflected entry `(c, d)` with `c > d + 1`: `√((d+1)/c)` times the canonical `(d+1, c−1)`. -/
+def reflectedEntry (raw : Raw) (q c d : Nat) : Fx :=
+  roundFx (mulFx (canonicalEntry raw q (d + 1) (c - 1)) (reflectFx c d))
+
+/-- The entry `A_q[c][d]` with the frozen correction `frozen q c d` (a fixed interval at scale
+`2^K`, `⟨0, 0⟩` beyond grade 90). -/
+def gradeEntry (raw : Raw) (frozen : Nat → Nat → Nat → Fx) (q c d : Nat) : Fx :=
+  addFx (if c ≤ d + 1 then canonicalEntry raw q c d else reflectedEntry raw q c d) (frozen q c d)
+
+/-- The grade-`q` matrix `A_q` (`[c][d]`, `c ≤ q+1`, `d ≤ q`). -/
+def gradeMatrix (raw : Raw) (frozen : Nat → Nat → Nat → Fx) (q : Nat) : Array (Array Fx) :=
+  Array.ofFn fun c : Fin (q + 2) => Array.ofFn fun d : Fin (q + 1) => gradeEntry raw frozen q c.val d.val
+
+/-! ### The rotation -/
+
+/-- `(S · A)[i][j] = Σ_k S[i][k] A[k][j]` for `S` an `(r × r)` saved matrix and `A` an
+`(r × cols)` matrix of fixed intervals; result rounded to scale `2^K`. -/
+def mulSA (S : Array (Array Fx)) (r : Nat) (A : Array (Array Fx)) (cols : Nat) : Array (Array Fx) :=
+  Array.ofFn fun i : Fin r => Array.ofFn fun j : Fin cols =>
+    roundFx (sumPairs r fun k => mulFx (getFx S i.val k) (getFx A k j.val))
+
+/-- `(B · Tᵀ)[i][j] = Σ_k B[i][k] T[j][k]` for `B` `(rows × r)` and `T` an `(r × r)` saved matrix. -/
+def mulBT (B : Array (Array Fx)) (rows : Nat) (T : Array (Array Fx)) (r : Nat) : Array (Array Fx) :=
+  Array.ofFn fun i : Fin rows => Array.ofFn fun j : Fin r =>
+    roundFx (sumPairs r fun k => mulFx (getFx B i.val k) (getFx T j.val k))
+
+/-- The square of a fixed interval at scale `2^{2K}`. -/
 def sqFxAcc (a : Fx) : Int × Int :=
   if a.lo ≥ 0 then (a.lo * a.lo, a.hi * a.hi)
   else if a.hi ≤ 0 then (a.hi * a.hi, a.lo * a.lo)
   else (0, max (a.lo * a.lo) (a.hi * a.hi))
 
 /-- The energies of grade `q`: for `m = 0, …, 2q+1`, `E(2q+1−m, m) = Σ_{c+d=m} D[c][d]²` at
-scale `2^256`, from the rotated matrix `D` (row-major `(q+2) × (q+1)`). -/
-def gradeEnergies (D : Array Fx) (q : Nat) : Array (Int × Int) := Id.run do
-  let mut out : Array (Int × Int) := Array.replicate (2 * q + 2) (0, 0)
-  for c in [0:q+2] do
-    for d in [0:q+1] do
-      let (l, h) := sqFxAcc (D.getD (c * (q + 1) + d) default)
-      let m := c + d
-      let (al, ah) := out.getD m (0, 0)
-      out := out.set! m (al + l, ah + h)
-  return out
+scale `2^{2K}`, from the rotated matrix `D` (`[c][d]`, `c ≤ q+1`, `d ≤ q`). -/
+def gradeEnergies (D : Array (Array Fx)) (q : Nat) : Array (Int × Int) :=
+  Array.ofFn fun m : Fin (2 * q + 2) =>
+    sumPairs (q + 2) fun c => if c ≤ m.val && m.val - c ≤ q then sqFxAcc (getFx D c (m.val - c)) else (0, 0)
 
 /-- One grade: assemble, rotate, energies. -/
-def rotateGrade (rawLo rawHi : Array Int) (frozen : Nat → Nat → Nat → Option Fx)
-    (S1 S0 : Array Fx) (q : Nat) : Array (Int × Int) :=
-  let A := gradeMatrix rawLo rawHi frozen q
-  let B := mulSA S1 (q + 2) A (q + 1)
-  let D := mulBT B (q + 2) S0 (q + 1)
-  gradeEnergies D q
+def rotateGrade (raw : Raw) (frozen : Nat → Nat → Nat → Fx) (S1 S0 : Array (Array Fx)) (q : Nat) :
+    Array (Int × Int) :=
+  gradeEnergies (mulBT (mulSA S1 (q + 2) (gradeMatrix raw frozen q) (q + 1)) (q + 2) S0 (q + 1)) q
+
+/-! ### The whole rotation, the comparison with the energy table, and the raw widths -/
+
+/-- The saved matrices `S_0, …, S_n` as fixed intervals (computed once; `S_251` alone is
+≈ 2 CPU-minutes, the whole set ≈ 2 CPU-hours). -/
+def savedMatrices (n : Nat) : Array (Array (Array Fx)) :=
+  Array.ofFn fun k : Fin (n + 1) => savedMatrixFx k.val
+
+/-- The energies of every grade `q ≤ 250` (`[q][m]`, `m ≤ 2q + 1`, scale `2^{2K}`). -/
+def allEnergies (raw : Raw) (frozen : Nat → Nat → Nat → Fx) (smats : Array (Array (Array Fx))) :
+    Array (Array (Int × Int)) :=
+  Array.ofFn fun q : Fin 251 =>
+    rotateGrade raw frozen (smats.getD (q.val + 1) #[]) (smats.getD q.val #[]) q.val
+
+/-- An upper bound of `|E − t|` for `E ∈ [e.1, e.2]` and `t ∈ [t.1, t.2]` (same scale). -/
+def excursion (e t : Int × Int) : Int := max (max (e.2 - t.1) (t.2 - e.1)) 0
+
+/-- The enclosure of `energy (n, m)`: the grade `q = (n + m − 1)/2` for odd `n + m`, else `0`
+(no charge-one mode has an even total degree). -/
+def energyAt (en : Array (Array (Int × Int))) (n m : Nat) : Int × Int :=
+  if (n + m) % 2 = 1 then (en.getD ((n + m - 1) / 2) #[]).getD m (0, 0) else (0, 0)
+
+/-- `Σ_{n, m < 502, n + 3m ≤ 501} excursion (energyAt en n m) (table n m)` (scale `2^{2K}`): the
+head `headIdx 501` of the energy comparison. -/
+def headExcursion (en : Array (Array (Int × Int))) (table : Nat → Nat → Int × Int) : Int :=
+  (List.range 502).foldl (fun s n => (List.range 502).foldl
+    (fun s m => if n + 3 * m ≤ 501 then s + excursion (energyAt en n m) (table n m) else s) s) 0
+
+/-- The energy check: the ℓ¹ excursion of the head energies from the table (enclosed at scale
+`2^{2K}`) is at most `epsNum` (scale `2^{2K}`). -/
+def energyOK (raw : Raw) (frozen : Nat → Nat → Nat → Fx) (table : Nat → Nat → Int × Int)
+    (epsNum : Int) : Bool :=
+  headExcursion (allEnergies raw frozen (savedMatrices 251)) table ≤ epsNum
+
+/-- `Σ (hi − lo)²` over the triangle entries of the accumulator (scale `2^{4K}`): four times the
+squared ℓ² norm of the half-widths. -/
+def rawWidthSq (raw : Raw) : Int :=
+  (List.range numCharges).foldl (fun s k => (List.range (blockSide k)).foldl (fun s j =>
+    (List.range (activeCols k j)).foldl
+      (fun s c => s + ((rawGet raw k j c).2 - (rawGet raw k j c).1) ^ 2) s) s) 0
+
+/-- The raw-width check: `rawWidthSq ≤ bound`, i.e. `Σ (half-width)² ≤ bound / (4 · 2^{4K})`. -/
+def rawDistOK (raw : Raw) (bound : Int) : Bool := rawWidthSq raw ≤ bound
 
 end GrotheQuad

@@ -68,8 +68,8 @@ lemma mem_zeroStep (P : ℕ) {A r u : ℝ} {aI rI uI : Ival} (hA : mem A aI)
 
 /-- The zero row encloses `U_{0,d}` for every `d ≤ D`. -/
 lemma mem_zeroRec (P : ℕ) {A : ℝ} {aI : Ival} (hA : mem A aI) (ratios : Array Ival)
-    (hr : ∀ d, mem (OriginalPositiveMoment.ratio d (A ^ 2)) (ratios.getD d ⟨0, 1, 0⟩))
-    (hsq : ∀ n, 1 ≤ n → 0 < (sqrtNatI P n).lo) (hA0 : 0 < A) (d : ℕ) :
+    (hr : ∀ d, mem (OriginalPositiveMoment.ratio d (A ^ 2)) (ratios.getD d ⟨0, 1, 0⟩)) (D : ℕ)
+    (hsq : ∀ n, 1 ≤ n → n ≤ D → 0 < (sqrtNatI P n).lo) (hA0 : 0 < A) (d : ℕ) (hd : d ≤ D) :
     mem (uRe A 0 d) (zeroRec P aI ratios d) := by
   induction d with
   | zero =>
@@ -81,7 +81,7 @@ lemma mem_zeroRec (P : ℕ) {A : ℝ} {aI : Ival} (hA : mem A aI) (ratios : Arra
     unfold uRe at ih ⊢
     rw [normalizedCoefficient_zero_row_step, Complex.re_ofReal_mul]
     simp only [zeroRec]
-    exact mem_zeroStep P hA (hr d) ih d (hsq (d + 1) (by omega))
+    exact mem_zeroStep P hA (hr d) (ih (by omega)) d (hsq (d + 1) (by omega) hd)
 
 /-! ### The forward rows -/
 
@@ -157,8 +157,8 @@ lemma nextRow_getD (P : ℕ) (aI : Ival) (D c : ℕ) (prev : Array Ival) (i : �
 lemma mem_rowRec (P : ℕ) {A : ℝ} {aI : Ival} (hA : mem A aI) (hA0 : 0 < A)
     (ratios : Array Ival)
     (hr : ∀ d, mem (OriginalPositiveMoment.ratio d (A ^ 2)) (ratios.getD d ⟨0, 1, 0⟩))
-    (hsq : ∀ n, 1 ≤ n → 0 < (sqrtNatI P n).lo)
-    (hden : ∀ c, 0 < (mulI P aI (sqrtNatI P (c + 1))).lo) (D : ℕ) :
+    (D : ℕ) (hsq : ∀ n, 1 ≤ n → n ≤ D → 0 < (sqrtNatI P n).lo)
+    (hden : ∀ c, c < (D + 1) / 2 → 0 < (mulI P aI (sqrtNatI P (c + 1))).lo) :
     ∀ c, c ≤ (D + 1) / 2 → ∀ d, rowLo c ≤ d → d ≤ D - c →
       mem (uRe A c d) ((rowRec P aI (zeroRowArr P aI ratios D) D c).getD (d - rowLo c) zeroI) := by
   intro c
@@ -167,7 +167,7 @@ lemma mem_rowRec (P : ℕ) {A : ℝ} {aI : Ival} (hA : mem A aI) (hA0 : 0 < A)
     intro _ d _ hd
     simp only [rowRec, rowLo, Nat.zero_sub, Nat.sub_zero]
     rw [zeroRowArr_getD P aI ratios D d (by omega)]
-    exact mem_zeroRec P hA ratios hr hsq hA0 d
+    exact mem_zeroRec P hA ratios hr D hsq hA0 d (by omega)
   | succ c ih =>
     intro hc d hd1 hd2
     simp only [rowRec]
@@ -177,7 +177,7 @@ lemma mem_rowRec (P : ℕ) {A : ℝ} {aI : Ival} (hA : mem A aI) (hA0 : 0 < A)
     rw [hcd, uRe_forward hA0 c d]
     have h1 := ih (by omega) d (by unfold rowLo at *; omega) (by omega)
     have h2 := ih (by omega) (d + 1) (by unfold rowLo at *; omega) (by omega)
-    exact mem_forwardStep P hA h1 h2 c d (hden c)
+    exact mem_forwardStep P hA h1 h2 c d (hden c (by omega))
 
 /-! ### The canonical pairs -/
 
@@ -201,8 +201,8 @@ lemma canonicalPairs_mem {D dMax : ℕ} {p : ℕ × ℕ} (h : p ∈ canonicalPai
 lemma mem_normalizedTriangleI (P : ℕ) {A : ℝ} {aI : Ival} (hA : mem A aI) (hA0 : 0 < A)
     (ratios : Array Ival)
     (hr : ∀ d, mem (OriginalPositiveMoment.ratio d (A ^ 2)) (ratios.getD d ⟨0, 1, 0⟩))
-    (hsq : ∀ n, 1 ≤ n → 0 < (sqrtNatI P n).lo)
-    (hden : ∀ c, 0 < (mulI P aI (sqrtNatI P (c + 1))).lo) (D dMax i : ℕ)
+    (D : ℕ) (hsq : ∀ n, 1 ≤ n → n ≤ D → 0 < (sqrtNatI P n).lo)
+    (hden : ∀ c, c < (D + 1) / 2 → 0 < (mulI P aI (sqrtNatI P (c + 1))).lo) (dMax i : ℕ)
     (hi : i < (canonicalPairs D dMax).size) :
     mem (uRe A ((canonicalPairs D dMax).getD i (0, 0)).1 ((canonicalPairs D dMax).getD i (0, 0)).2)
       ((normalizedTriangleI P aI ratios D dMax).getD i zeroI) := by
@@ -218,6 +218,6 @@ lemma mem_normalizedTriangleI (P : ℕ) {A : ℝ} {aI : Ival} (hA : mem A aI) (h
   have hcmax : p.1 ≤ (D + 1) / 2 := by omega
   unfold rowsGet
   rw [rowsArr_getD P aI _ D ((D + 1) / 2) p.1 hcmax]
-  exact mem_rowRec P hA hA0 ratios hr hsq hden D p.1 hcmax p.2 (by unfold rowLo; omega) (by omega)
+  exact mem_rowRec P hA hA0 ratios hr D hsq hden p.1 hcmax p.2 (by unfold rowLo; omega) (by omega)
 
 end Grothe.UpperQuad

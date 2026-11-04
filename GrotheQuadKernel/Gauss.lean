@@ -14,7 +14,9 @@ import GrotheQuadKernel.Basic
   for analytic `f` is obligation S6b.
 * The radial factor `ψ_{k,m}(s) = (−1)^m √(m!/(m+k)!) · s^{k/2} · L_m^{(k)}(s)`
   (`RadialLaguerre.radialFactor k m s`), with `L_m^{(k)}` evaluated by master's explicit sum
-  `assocLaguerre` (the three-term recurrence would be faster but needs its own proof).
+  `assocLaguerre` on the diagonal `m + k = 251` (`Σ_j C(m+k, m−j) u_j` with the terms
+  `u_j = (−s)^j/j!` by one running product per node and the binomials from a table computed
+  once) and by Pascal's rule `L_m^{(k)} = L_m^{(k+1)} − L_{m−1}^{(k+1)}` below it (`lagTable`).
 
 Agent-ID: claude-b9ee. Refs #303, #21.
 -/
@@ -94,31 +96,76 @@ def gaussSumI (P : Nat) (weights vals : Array Ival) : Ival :=
 def powTable (P : Nat) (x : Ival) (M : Nat) : Array Ival :=
   Array.ofFn fun i : Fin (M + 1) => powI P x i.val
 
-/-- One term `(−1)^j C(m+k, m−j) s^j / j!` of `assocLaguerre k m s` (`sPow` = the powers of `s`). -/
-def assocLaguerreTerm (P k m j : Nat) (sPow : Array Ival) : Ival :=
-  if j % 2 == 1 then
-    negI (divN P (factNat j) (mulN P (natChoose (m + k) (m - j)) (sPow.getD j zeroI)))
-  else divN P (factNat j) (mulN P (natChoose (m + k) (m - j)) (sPow.getD j zeroI))
+/-- The factorials `0!, …, 502!` (computed once per process). -/
+def factTable : Array Nat := Array.ofFn fun n : Fin 503 => factNat n.val
 
-/-- `assocLaguerre k m s = Σ_{j ≤ m} (−1)^j C(m+k, m−j) s^j / j!` (`RadialLaguerre.assocLaguerre`). -/
-def assocLaguerreI (P k m : Nat) (sPow : Array Ival) : Ival :=
-  sumRangeI P (m + 1) fun j => assocLaguerreTerm P k m j sPow
+/-- `n!` from the table (`n ≤ 502`). -/
+def factT (n : Nat) : Nat := factTable.getD n 0
 
-/-- `(m+1)(m+2)…(m+k) = (m+k)!/m!`. -/
-def risingFact (k m : Nat) : Nat := (List.range k).foldl (fun p i => p * (m + i + 1)) 1
+/-- The row `C(n, 0), …, C(n, M)` as a pushed array, by the running product
+`C(n, i+1) = C(n, i) · (n − i) / (i + 1)` (exact for `i < n`). -/
+def binomRowArr (n : Nat) : Nat → Array Nat
+  | 0 => #[1]
+  | i + 1 =>
+    let prev := binomRowArr n i
+    prev.push (prev.getD i 0 * (n - i) / (i + 1))
+
+/-- The binomial rows `C(n, i)` for `n ≤ 502`, `i ≤ n` (computed once per process). -/
+def binomTable : Array (Array Nat) := Array.ofFn fun n : Fin 503 => binomRowArr n.val n.val
+
+/-- `C(n, i)` from the table (`n ≤ 502`, `i ≤ n`). -/
+def binomT (n i : Nat) : Nat := (binomTable.getD n #[]).getD i 0
+
+/-- The terms `u_j = (−s)^j / j!` for `j = 0, …, M` as a pushed array, by
+`u_{j+1} = u_j · (−s) / (j+1)` (`negs` encloses `−s`). -/
+def negExpTerms (P : Nat) (negs : Ival) : Nat → Array Ival
+  | 0 => #[ofInt P 1]
+  | j + 1 =>
+    let prev := negExpTerms P negs j
+    prev.push (divN P (j + 1) (mulI P (prev.getD j zeroI) negs))
+
+/-- `assocLaguerre k m s = Σ_{j ≤ m} (−1)^j C(m+k, m−j) s^j / j! = Σ_{j ≤ m} C(m+k, m−j) · u_j`
+(`RadialLaguerre.assocLaguerre`; `uTab` = the terms `u_j = (−s)^j/j!`). -/
+def assocLaguerreI (P k m : Nat) (uTab : Array Ival) : Ival :=
+  sumRangeI P (m + 1) fun j => mulN P (binomT (m + k) (m - j)) (uTab.getD j zeroI)
 
 /-- `√(m!/(m+k)!)`. -/
-def normFactorI (P k m : Nat) : Ival := sqrtI P (divN P (risingFact k m) (ofInt P 1))
+def normFactorI (P k m : Nat) : Ival :=
+  sqrtI P (divI P (ofNat P (factT m)) (ofNat P (factT (m + k))))
 
-/-- The radial factor `ψ_{k,m}(s) = (−1)^m (√s)^k √(m!/(m+k)!) assocLaguerre k m s`
-(`RadialLaguerre.radialFactor`), from the power tables of `s` and of `√s`. -/
-def radialFactorI (P k m : Nat) (sPow rPow : Array Ival) : Ival :=
-  if m % 2 == 1 then
-    negI (mulI P (rPow.getD k zeroI) (mulI P (normFactorI P k m) (assocLaguerreI P k m sPow)))
-  else mulI P (rPow.getD k zeroI) (mulI P (normFactorI P k m) (assocLaguerreI P k m sPow))
+/-- The level `k` of the Laguerre table `L_m^{(k)}(s)`, `m ≤ K − k`, from the level `k + 1`
+(`prev[m] = L_m^{(k+1)}(s)` for `m ≤ K − k − 1`): `L_0^{(k)} = 1`, the diagonal entry
+`L_{K−k}^{(k)}` by the explicit sum, and otherwise `L_m^{(k)} = L_m^{(k+1)} − L_{m−1}^{(k+1)}`
+(Pascal's rule on the binomials of `assocLaguerre`; one subtraction per entry instead of a sum of
+`m + 1` terms).  The widths grow additively (at most `2^K` times the diagonal widths), far below
+the fixed-point export at `P ≥ 1024`. -/
+def lagLevel (P K k : Nat) (uTab prev : Array Ival) : Array Ival :=
+  Array.ofFn fun m : Fin (K - k + 1) =>
+    if m.val = 0 then ofInt P 1
+    else if m.val = K - k then assocLaguerreI P k m.val uTab
+    else subI P (prev.getD m.val zeroI) (prev.getD (m.val - 1) zeroI)
 
-/-- The radial factors `ψ_{k,m}(s)` for `m = 0, …, M`. -/
-def radialRowI (P k M : Nat) (sPow rPow : Array Ival) : Array Ival :=
-  Array.ofFn fun m : Fin (M + 1) => radialFactorI P k m.val sPow rPow
+/-- The levels `K, K − 1, …, K − i` of the Laguerre table as a pushed array (index `i` holds the
+level `k = K − i`). -/
+def lagLevels (P K : Nat) (uTab : Array Ival) : Nat → Array (Array Ival)
+  | 0 => #[lagLevel P K K uTab #[]]
+  | i + 1 =>
+    let prev := lagLevels P K uTab i
+    prev.push (lagLevel P K (K - (i + 1)) uTab (prev.getD i #[]))
+
+/-- The whole Laguerre table of depth `K`: `(lagTable P K uTab).getD (K − k) #[]` is the level `k`
+(`m ≤ K − k`), from the term table `uTab` of `u_j = (−s)^j/j!`, `j ≤ K`. -/
+def lagTable (P K : Nat) (uTab : Array Ival) : Array (Array Ival) := lagLevels P K uTab K
+
+/-- The radial factor `ψ_{k,m}(s) = (−1)^m (√s)^k √(m!/(m+k)!) L_m^{(k)}(s)`
+(`RadialLaguerre.radialFactor`) from an enclosure `lag` of `L_m^{(k)}(s)` and the power table of
+`√s`. -/
+def radialFactorI (P k m : Nat) (lag : Ival) (rPow : Array Ival) : Ival :=
+  if m % 2 == 1 then negI (mulI P (rPow.getD k zeroI) (mulI P (normFactorI P k m) lag))
+  else mulI P (rPow.getD k zeroI) (mulI P (normFactorI P k m) lag)
+
+/-- The radial factors `ψ_{k,m}(s)` for `m = 0, …, M` from the level `k` of the Laguerre table. -/
+def radialRowI (P k M : Nat) (lagRow rPow : Array Ival) : Array Ival :=
+  Array.ofFn fun m : Fin (M + 1) => radialFactorI P k m.val (lagRow.getD m.val zeroI) rPow
 
 end GrotheQuad

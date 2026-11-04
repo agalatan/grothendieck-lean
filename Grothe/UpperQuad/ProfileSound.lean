@@ -17,28 +17,7 @@ namespace Grothe.UpperQuad
 
 open GrotheQuad Grothe.UpperChaos Grothe.UpperChaos.F0ConditionalEvaluator
 
-/-! ### Finite sums and products -/
-
-lemma foldl_range_succ {α : Type*} (f : α → ℕ → α) (z : α) (n : ℕ) :
-    (List.range (n + 1)).foldl f z = f ((List.range n).foldl f z) n := by
-  rw [List.range_succ, List.foldl_append, List.foldl_cons, List.foldl_nil]
-
-lemma mem_sumRangeI (P : ℕ) {f : ℕ → ℝ} {g : ℕ → Ival} (n : ℕ) (h : ∀ k, k < n → mem (f k) (g k)) :
-    mem (∑ k ∈ Finset.range n, f k) (sumRangeI P n g) := by
-  induction n with
-  | zero => simp [sumRangeI]; exact (mem_zeroI_iff 0).2 rfl
-  | succ n ih =>
-    unfold sumRangeI at ih ⊢
-    rw [foldl_range_succ, Finset.sum_range_succ]
-    exact mem_addI P (ih fun k hk => h k (by omega)) (h n (by omega))
-
-lemma factNat_eq (n : ℕ) : factNat n = n.factorial := by
-  induction n with
-  | zero => rfl
-  | succ n ih =>
-    unfold factNat at ih ⊢
-    rw [foldl_range_succ, ih, Nat.factorial_succ]
-    ring
+/-! ### The half-integer Laguerre profile -/
 
 /-- The rational `binHalfRat j k` is `binHalf j k`, with a positive denominator. -/
 lemma binHalfRat_eq (j k : ℕ) :

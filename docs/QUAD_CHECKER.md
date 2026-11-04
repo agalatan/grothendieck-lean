@@ -487,7 +487,7 @@ scripts/test_caps_stamp.py
 `tools/gen_root_imports.py` already lists the four libraries (`LIBS`). `lakefile.toml` already
 has the library and the `quadrun` executable (not a default target).
 
-### 11.4 Hand-over (claude-b9ee, 4 November 2026, 20:30 Bucharest)
+### 11.4 Status and hand-over (claude-b9ee, 4 November 2026, 23:30 Bucharest)
 
 **Proved** (`Grothe/UpperQuad/`, kernel-checked, warning-free, no `sorry`, no `native_decide`,
 all imported by the `Grothe` root; the laptop worktree
@@ -495,82 +495,95 @@ all imported by the `Grothe` root; the laptop worktree
 
 | module | main theorems | validity-flag / data hypotheses |
 |---|---|---|
-| `IntervalSound` | `mem_norm, mem_alignTo, mem_addI, mem_negI, mem_subI, mem_mulZ, mem_mulN, mem_mulI, mem_sqI, mem_divI, mem_divN, mem_invI, mem_ratI, mem_ofInt/ofNat/ofDyadic, mem_sqrtI, abs_le_bval, mem_widen, mem_powI, lt_of_ltNat, gt_of_gtNat, pos_of_isPos, neg_of_isNeg, toFixedLo_le, le_toFixedHi, mem_ofFixed, exp_tail_bounds, expLoop_sound, mem_expPosI, mem_expNegI` | `1 ≤ P`; `expPosValid`; `isPos` of a reciprocal's argument; `b.lo > 0` for `divI` |
+| `IntervalSound` | `mem_norm, mem_alignTo, mem_addI, mem_negI, mem_subI, mem_mulZ, mem_mulN, mem_mulI, mem_sqI, mem_divI, mem_divN, mem_invI, mem_ratI, mem_ofInt/ofNat/ofDyadic, mem_sqrtI, abs_le_bval, mem_widen, mem_powI, lt_of_ltNat, gt_of_gtNat, pos_of_isPos, neg_of_isNeg, toFixedLo_le, le_toFixedHi, mem_ofFixed, exp_tail_bounds, expLoop_sound, mem_expPosI, mem_expNegI, mem_sumRangeI, factNat_eq, natChoose_eq, foldl_add_eq_sum` | `1 ≤ P`; `expPosValid`; `isPos` of a reciprocal's argument; `b.lo > 0` for `divI` |
 | `SeedSound` | `seedTerm_succ, seedLoop_sound, mem_seedSeries, mem_seedNext, mem_seedJ0SeriesI` | `seedSeriesValid`; the analytic identity `J = J₀(x)` with tail `|t_{N+1}|(N+3)/(N+3−x)` (S2) |
 | `PiSound` | `arctan_tail_le, arctanLoop_sound, mem_arctanInvI, pi_machin, mem_piMachinI` | none |
 | `RatioSound` | `mem_ratioNextI, ratios_loop_sound, mem_ratiosI` | `ratiosValid`; `0 ≤ x`, `x ∈ xI` |
-| `PairsSound` | `zeroRowArr_getD, mem_zeroStep, mem_zeroRec, mem_forwardStep, uRe_forward, rowsArr_getD, nextRow_getD, mem_rowRec, canonicalPairs_mem, mem_normalizedTriangleI` | `0 < A`, `∀ d, ratio d (A²) ∈ ratios[d]`, `(sqrtNatI P n).lo > 0`, `(mulI P aI (sqrtNatI P (c+1))).lo > 0` |
-| `ProfileSound` | `mem_sumRangeI, factNat_eq, binHalfRat_eq, mem_lagHalfI, mem_nrmHalfI, mem_vprofI, mem_kappaI, mem_scaledProfileI, profileShiftI_sound` | `profileAgrees pd` (data = `profileQ`, `aQ`); `(nrmHalfI …).lo > 0` |
-| `GaussSound` | `mem_legendrePairI, mem_legendreI, mem_weightI, mem_panelNode, continuous_realPair, root_of_bracketOK` | weight divisor positive; bracket ↔ `Q0GaussSelectedChoice` root via master's `root_spec` (data binding, not done) |
-| `RotateSound` | `powers_getD, natChoose_eq, foldl_add_eq_sum, momentNumerator_eq, entryFact_eq, savedEntryNum_eq` | none |
+| `PairsSound` | `zeroRowArr_getD, mem_zeroStep, mem_zeroRec, mem_forwardStep, uRe_forward, rowsArr_getD, nextRow_getD, mem_rowRec, canonicalPairs_mem, mem_normalizedTriangleI` | `0 < A`, `∀ d, ratio d (A²) ∈ ratios[d]`, `(sqrtNatI P n).lo > 0` (`n ≤ D`), `(mulI P aI (sqrtNatI P (c+1))).lo > 0` (`c < (D+1)/2`) |
+| `ProfileSound` | `binHalfRat_eq, mem_lagHalfI, mem_nrmHalfI, mem_vprofI, mem_kappaI, mem_scaledProfileI, profileShiftI_sound` | `profileAgrees pd` (data = `profileQ`, `aQ`); `(nrmHalfI …).lo > 0` |
+| `GaussSound` | `mem_legendrePairI, mem_legendreI, mem_weightI, mem_panelNode, continuous_realPair, root_of_bracketOK`; the node-factor layer: `binomRowArr_getD, binomT_eq, factT_eq, negExpTerms_getD, mem_negExpTerms, mem_assocLaguerreI, mem_normFactorI, assocLaguerre_zero, assocLaguerre_pascal, lagLevel_getD, lagLevels_getD_of_le, mem_lagLevels, mem_lagTable, mem_radialFactorI, mem_radialRowI` (every radial factor `ψ_{k,m}(s)`, `m + k ≤ 251`, is enclosed: the explicit `assocLaguerre` sum on the diagonal and Pascal's rule `L_{m+1}^{(k)} = L_{m+1}^{(k+1)} − L_m^{(k+1)}` below it) | weight divisor positive; bracket ↔ `Q0GaussSelectedChoice` root via master's `root_spec` (data binding, not done) |
+| `ContractSound` | `memFx, memFx2, memFx_toFx, memFx2_zero, memFx2_addPair, mulFx_bounds, memFx2_mulFx, memFx_nodeFactors` (`nodeFactors[k][j]` encloses `ψ_{k,j}(s) e^{−s} W` at scale `2^128`) | `nodeFactorsValid` (`s < 402`, `e^s` enclosure positive) |
+| `NodeSound` | the canonical rank (`canonicalPairs_rank, canonicalRank_lt, canonicalPairs_getD_rank`), the block layout (`pairOf_bounds, selectedRanks_getD, rawGet_accumulateNode, rawGet_rawZero`), the signed coefficients (`mem_signedCoefficient, mem_canonicalTriangleI, mem_seedScalarI`), one node (`nodeValid_unpack, mem_nodeS, mem_nodeW, mem_nodeRatios, node_sound`: node, weight, sign, shift and every coefficient of the prefix `c + d ≤ cutoff` from a `NodeSpec` whose bracket contains the root `x`), the accumulation (`memFx2_contributionAt, accumulateNode_sound, accumulateSpec_sound, accumulateSpecs_sound, accumulateSpecs_zero_sound`): **layer (A) of §11.1**: for every list of node specs with a root in each bracket, `rawGet acc' k j cIdx` encloses `Σ_nodes specTerm` (the exact Gauss–Legendre partial sum `W e^{−s} ψ_{k,j}(s) sign^{c+d} (canonicalCoefficient (profileShift s) (c,d)).re` over the nodes, zero outside the cutoff and outside the degree-501 triangle) at scale `2^256` | `nodeValid` (all flags), `profileValid`, `profileAgrees`, `π ∈ piI`, and the seed enclosure `J₀(A²) ∈ seedJ0I` at every node (S2) |
+| `EnergySound` | `energy_gradedHermite` (`energy (gradedHermite N a) (2q+1−m, m) = Σ_{c+d=m} (a q c d)²`), `energy_gradedHermite_even` (zero at even `n + m`) | none |
+| `RotateSound` | `savedEntryNum_eq` (the saved matrices are master's `productionSavedEntryQ`), the fixed-point rotation (`memFx_addFx, memFx_roundFx, memFx2_sumPairs, memFx2_sqFxAcc, memFx_reflectFx, memFx_savedToFx, memFx_savedMatrixFx, memFx_mulSA, memFx_mulBT, memFx2_gradeEnergies`), the grade matrices (`memFx_canonicalEntry, memFx_gradeMatrix`: `A_q[c][d]` encloses `gradeValue R v q c d` = the canonical raw value or `√((d+1)/c)` times the reflected one, plus `v`), master's smoothed coefficients (`productionSmoothedCoeff_eq_sum, memFx_rotated, memFx2_rotateGrade`: `rotateGrade` encloses `energy (gradedHermite 251 (productionSmoothedCoeff b)) (2q+1−m, m)` for every rational `b` enclosed by the grade matrices), the comparison (`abs_sub_le_excursion, memFx2_energyAt, headExcursion_sound`) and **`energyOK_sound` (B2)**: `energyOK raw frozen table ε = true → Σ_{headIdx 501} |energy (gradedHermite 251 (productionSmoothedCoeff b)) p − tab p| ≤ ε/2^256` for every table enclosed by `table` | none |
 
-**Kernel state after this session.** `GrotheQuadKernel/{Basic,Seed,Pairs,Profile,Rotate,Gauss,Contract}.lean`
-are `let`-free with named helpers; `Gauss.lean` evaluates the radial factors by master's explicit
-`assocLaguerre` sum (`powTable, assocLaguerreTerm, assocLaguerreI, normFactorI, radialFactorI,
-radialRowI` — the three-term recurrence was removed because its equality with the sum would need
-its own proof); `Contract.lean`'s accumulation is `Array.ofFn` over the flat index
-(`pairOf, selectedRanks, blockOf, blockTable, entryOf, contribution, nodeContributions,
-accumulateLo/Hi, accumulateNode`), **verified to give the same raw entries as the loop version
-(node 227: entries 0 and 63001 identical) but ≈ 25× slower (84 s per full node on the laptop
-versus 3.4 s)**: `blockTable` (5.3·10⁶ × 252 fold steps) and the per-index `entryOf` lookups
-dominate; the next worker should build `blockTable` by one pass over the blocks (a provable
-`List.flatMap`/`replicate` construction or a recursion on `k`) and restrict `nodeContributions`
-to the active entries, or keep the loop version for the runs and the `ofFn` version only in the
-proof (proving them equal). The milestone-2/3 results were produced with the loop version (commit
-`b8ae03747`). `quadrun` and `Row227Check` build with the new kernel; `Row227Check` reproduces the
-milestone-1 numbers.
+**Kernel (`GrotheQuadKernel/`) after this session.** `Gauss.lean`: `binomRowArr` (binomial rows by
+the running product), `negExpTerms` (`u_j = (−s)^j/j!`), `assocLaguerreI` (the explicit sum),
+`lagLevel/lagLevels/lagTable` (Pascal's rule from the diagonal `m + k = 251`), `radialFactorI`,
+`radialRowI`. `Contract.lean`: `Raw = Array (Array (Array (Int × Int)))` indexed `[k][j][cIdx]`
+(no flat-index decoding), `nodeFactorsFrom/nodeFactors/nodeFactorsValid`, `pairOf`, `selectedRanks`,
+`activeCols k j = blockSide k − j` (the degree-501 triangle; the "extra" columns stay `0`),
+`contributionOf/contributionAt`, `accumulateRow/accumulateNode` (row-hoisted `Array.ofFn`),
+`rawAdd`. `Node.lean`: `NodeSpec` (panel, order, bracket, cutoff), `nodeS/nodeW/weightValid`,
+`nodeShift/nodeRatios/nodeVals`, the flags `nodeValid`, `profileValid`, and the loop
+`accumulateSpec`/`accumulateSpecs` (with `Option.bind`: a `match` on the node computation made
+every `whnf` in the proofs explode). `Rotate.lean`: as before plus `savedMatrices`, `allEnergies`,
+`excursion`, `energyAt`, `headExcursion`, `energyOK`, `rawWidthSq`, `rawDistOK`.
+**Speed** (big, one core, P = 512): node 227 in ≈ 6 s (triangle 2.1 s, node factors 1.1 s,
+accumulation 2.1 s; the ofFn version of the previous hand-over took 21 s, the loop version of
+milestone 2 took 3.5 s), process start-up 0.25 s (was 5.3 s: `binomTable` computed every
+`C(n,i)` from scratch). Node-factor checksum and the raw entries 0 and 63001 are identical to
+the loop version. A further ≈ 1 s per node is available from a per-node table of `√n` in
+`forwardStep` (Lean's `Nat.sqrt` is a Newton loop, called twice per triangle entry); not done
+so as not to touch the proved `PairsSound` layer.
 
-**Unproved draft (laptop only, git-ignored):** `handoff/quad-checker/radial_chunk_GaussSound.lean`
-— `mem_powTable, mem_assocLaguerreTerm, mem_assocLaguerreI, risingFact_eq, mem_normFactorI,
-mem_radialFactorI, mem_radialRowI` against `RadialLaguerre.radialFactor` (needs
-`import Grothe.UpperChaos.RadialLaguerre` and `Grothe.UpperQuad.ProfileSound` for
-`mem_sumRangeI`/`factNat_eq`/`natChoose_eq` — move `natChoose_eq` from `RotateSound` to a shared
-place first). It was written but never compiled; expect name/cast fixes.
-
-**Remaining, in order.** (1) The radial chunk above (node-factor layer: `nodeFactors` encloses
-`radialFactor k j s · e^{−s} · W` via `mem_expNegI`, `mem_radialRowI`, `toFixedLo_le/le_toFixedHi`).
-(2) `ContractSound`: `blockOf`/`entryOf` decode `off_k + j·n_k + cIdx` (Nat arithmetic over
-`blockOffsets`, which is a concrete array: prove `blockOffsets[k+1] = blockOffsets[k] + n_k²` from
-the fold), `contribution` encloses `F_{k,j} · sign^{c+d} I_{c,d}` for `c + d ≤ D` and is `0`
-otherwise, `accumulateNode` entrywise (`Array.getElem_ofFn`), and the node-range fold
-(`List.foldl`, sums over nodes). The identification of the kernel's nodes with `sourceNode`/
-`sourceWeight` needs `Q0GaussProductionMass` (392 modules, 215k lines, not built) — or state the
-node layer against `panelNode lo hi x_i` with `x_i` the root of master's bracket (`root_spec`),
-which only needs the `Q0LegendreRuleNN` modules of the orders used. (3) `RotateSound` part 2:
-`mulFx`/`roundFx` soundness (fixed scale `2^128`), `mulSA`/`mulBT` restated as `Array.ofFn` with
-`sumRangeI`-style sums, `gradeMatrix` ↔ `productionSmoothedCoeff`'s input `a0 + v` (the
-reflection via master's `canonicalCoefficient_reflection`, indices via
-`production_canonical_indices`/`production_reflected_indices`), `gradeEnergies` ↔ `energy`
-(`Energy2.lean`, bidegree `(2q+1−m, m)`). (4) The top theorem (D) in `Bridge.lean` against
-`selected_energy_close_of_raw_error` (needs `ProductionRetainedEnergy`'s closure: 401 modules,
-≈ 1 CPU-hour; build on big in your own folder). (5) The row-227 `native_decide` fact in a
-root-excluded module (add it to `data/root-imports-exclude.txt`) to measure the cost; then the
-sharding decision of §11.2.
+**Remaining, in order.** (1) **Bridge.lean** (the top theorem (D), needs the
+`ProductionRetainedEnergy` closure: built on big in `~/claude-b9ee-quad-m4/repo`, not on the
+laptop): define the rational family `a0 raw q c d := (entry.lo : ℚ)/2^128` from the grade
+matrices (without `v`), so that `memFx (a0 q c d) entry` is trivial and
+`b := retainedProductionCoeff a0 = a0 + frozenCorrectionCoeff` is enclosed by
+`gradeMatrix raw frozenFx` with `frozenFx q c d := ⟨shDown 78 (frozenCorrectionAt q c d),
+shUp 78 (…)⟩` (`2^{−206} = 2^{−128} · 2^{−78}`); then `htable` is `energyOK_sound` and `hraw`
+needs: (a) the node layer's enclosure of the exact Gauss sums `G` (`accumulateSpecs_zero_sound`
+with the list of `NodeSpec`s of the partition, a Lean literal to generate from
+`data/quad-checker/panels.txt` + the brackets of `Q0LegendreRuleNN` + `cutoffs.txt`, bound to
+master's `sourcePanels` by `decide`); (b) `|G − a0| ≤ width` summed in ℓ² over the triangle: change
+`rawWidthSq` to sum the widths of the grade-matrix entries (scale `2^128`) so that the reflected
+entries need no separate factor bound; (c) the analytic hypothesis `hQuad` per canonical
+coefficient, `|baseGradedCoefficient q c d − G q c d| ≤ ρ_{qcd}` (S6b/S6c and the cutoffs), with
+master's `radialBaseCoefficient_reflection` for the reflected ones; (d) Parseval on the graded
+support: `‖productionF0Head − gradedHermite 251 a0‖² = Σ |baseGradedCoefficient − a0|²`
+(`productionF0Head = projOn productionDegreeHead F0`, `inner_hvec2_gradedHermite`,
+`norm_hermiteFinite_sq`), then Minkowski over the finite index set. (2) The row-227
+`native_decide` fact (`accumulateSpec` of one `NodeSpec` literal compared with the committed
+raw words) in a root-excluded module, to measure the cost of a native fact. (3) The sharding
+decision (§11.2). (4) The `√n` table in `forwardStep` if the node cost matters.
 
 **Conventions and pitfalls.** Kernel definitions must be `let`-free in every branch that a proof
 splits on (`let` elaborates to `have`, invisible to `split_ifs`; nested `let`s inside `fun`
 bodies are recomputed per call — never put `powTable`/`expNegI`/`vals.map` inside a lambda).
-Validity that the kernel cannot guarantee (divisor positivity, `x < N+2`, decided signs) is a
-`Bool` flag that the final fact ANDs in, and a hypothesis of the soundness lemma. Mathlib names
-at this pin: `le_or_gt` (not `le_or_lt`), `Summable.sum_add_tsum_nat_add`, `Summable.tsum_le_tsum`,
-`Real.hasSum_arctan`, `Antitone.alternating_series_le_tendsto`/`tendsto_le_alternating_series`,
+**Never `match` on a kernel computation in a definition the proofs unfold**: `simp`, `split` and
+`rfl` reduce a `match` by `whnf`-ing its discriminant, which unfolds the whole interval
+computation symbolically (deterministic timeouts at `whnf`); use `Option.bind` and
+`Option.bind_eq_some_iff`. Validity that the kernel cannot guarantee (divisor positivity,
+`x < N+2`, decided signs) is a `Bool` flag that the final fact ANDs in, and a hypothesis of the
+soundness lemma. Every change of a kernel module rebuilds the soundness modules that import it
+(≈ 3 min each): batch kernel edits. `Nat.choose n 0` does not reduce by `rfl` for a variable `n`
+(`Nat.choose_zero_right`). Mathlib names at this pin: `le_or_gt` (not `le_or_lt`),
+`Summable.sum_add_tsum_nat_add`, `Summable.tsum_le_tsum`, `Real.hasSum_arctan`,
+`Antitone.alternating_series_le_tendsto`/`tendsto_le_alternating_series`,
 `Finset.Ico_succ_right_eq_Icc`, `Finset.sum_Ico_eq_sum_range`, `Array.getD_eq_getD_getElem?`,
 `List.getD_eq_getElem?_getD`, `List.getElem?_toArray`, `Array.getElem?_ofFn`, `Array.getElem?_push`,
-`Nat.choose_eq_fast_choose`; `if_pos/if_neg/dif_pos/push_neg` are deprecated (warnings fail the
-build): use `split_ifs`, `simp only [h, ↓reduceIte]`, `not_le.mp`. Unused hypotheses are warnings.
-`GrotheQuad.norm` must be written qualified (clashes with `Norm.norm`). Each soundness module
-takes ≈ 1.5–3 min to elaborate after `import Mathlib`.
+`Array.getElem?_map`, `Nat.choose_eq_fast_choose`, `Nat.choose_succ_succ'`,
+`Nat.choose_succ_right_eq`, `Nat.exists_eq_add_one_of_ne_zero`, `Option.bind_eq_some_iff`,
+`Fin.sum_univ_eq_sum_range`, `Finset.sum_filter`, `Finset.sum_product`, `EuclideanSpace.norm_sq_eq`,
+`norm_energyBlock_sq`/`blockEquiv` (EnergyBlock); `if_pos/if_neg/dif_pos/push_neg` are deprecated
+(warnings fail the build): use `split_ifs`, `simp only [h, ↓reduceIte]`, `not_le.mp`. Unused
+hypotheses are warnings. `GrotheQuad.norm` must be written qualified (clashes with `Norm.norm`).
+Each soundness module takes ≈ 1.5–3 min to elaborate after `import Mathlib`.
 
 **Master closures built locally in the worktree's `.lake/build`** (beyond the snapshot of master
 `22b0272`): those of `OriginalMomentRatios`, `ConditionalSeedNormalization`, `Q0LegendreWeight`,
 `Q0GaussPhysical`, `F0ConditionalEvaluator`/`Rounder`, `RadialLaguerre`,
-`ProductionSmoothingRounding` (≈ 110 small modules). Not built: `ProductionRetainedEnergy`
-(401 modules), `Q0GaussProductionMass` (392), `ProductionF0Radial` (382). A fresh worktree from
-`clone_master_build.sh` will rebuild the ≈ 110 (minutes).
+`ProductionSmoothingRounding`, `ProductionSmoothingApprox`, `TaylorFrozenCoefficients`,
+`ConditionalCoefficientReflection`, `EnergyBlock`/`GradedHermite`. Not built:
+`ProductionRetainedEnergy` (401 modules; built on big in `~/claude-b9ee-quad-m4/repo`),
+`Q0GaussProductionMass` (392), `ProductionF0Radial` (382). A fresh worktree from
+`clone_master_build.sh` will rebuild the small closures (minutes).
 
 **Open analytic hypotheses** (unchanged, §6): S2 (seed identity and tail; Watson form for
 x ≥ 150), S6b/S6c (Gauss–Legendre remainder and integrand bound), the cutoffs' omitted-pair
 bound, and the assembly's `ρ` (inherited 1.55·10⁻¹²).
 
-**Background processes:** none (the node-227 timing run and the GaussSound build were stopped;
-nothing runs on yo or big; both droplet folders were removed earlier).
+**Background processes:** none on the laptop; nothing runs on yo or big (the big folder
+`~/claude-b9ee-quad-m4` holds the `ProductionRetainedEnergy` closure for `Bridge.lean`).
