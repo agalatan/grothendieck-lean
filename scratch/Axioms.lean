@@ -1064,6 +1064,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.sinSq_hasDerivAt
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.sinSq_mem_Icc
 #print axioms Grothe.UpperChaos.OriginalPositiveMoment.sinSq_mem_Ioo
+#print axioms Grothe.UpperChaos.PackedDyadic.Structural.legacy_split_tokens
+#print axioms Grothe.UpperChaos.PackedDyadic.Structural.parse_eq_row_unconditional
 #print axioms Grothe.UpperChaos.PackedDyadic.gradedIntegerSum_eq
 #print axioms Grothe.UpperChaos.PackedDyadic.isumAcc_eq
 #print axioms Grothe.UpperChaos.PackedDyadic.sum_coeff_sq
@@ -1081,6 +1083,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_phaseOfTerms_pow_cut
 #print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_phiT_pow_even_cut
 #print axioms Grothe.UpperChaos.PhaseMomentCheck.integral_polynomial_cut_damped
+#print axioms Grothe.UpperChaos.PhasePolynomialStability.norm_P3_sub_le
+#print axioms Grothe.UpperChaos.PhasePolynomialStability.norm_base_mul_P3_sub
 #print axioms Grothe.UpperChaos.PhiDegreeChunksDraft.splitLengths_eq_offsetChunks
 #print axioms Grothe.UpperChaos.PhiSourceDenBinding.source_chunk_denominators
 #print axioms Grothe.UpperChaos.PhiSourceDenBinding.source_common_den
@@ -1109,6 +1113,23 @@ import Grothe
 #print axioms Grothe.UpperChaos.ProductComplete.integral_conj_mul_sq_le
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_integral_conj_mul
 #print axioms Grothe.UpperChaos.ProductComplete.memLp_prod_mul
+#print axioms Grothe.UpperChaos.ProductionPhaseL2Error.modelSlice_memLp
+#print axioms Grothe.UpperChaos.ProductionPhaseL2Error.norm_roundingSliceLp_sub_model
+#print axioms Grothe.UpperChaos.ProductionPhaseL2Error.norm_roundingSliceLp_sub_saved
+#print axioms Grothe.UpperChaos.ProductionPhaseL2Error.phaseDifference_memLp
+#print axioms Grothe.UpperChaos.ProductionPhaseL2Error.roundingSlice_memLp
+#print axioms Grothe.UpperChaos.ProductionPhaseLeaf.phase_sq_le_of_leaf
+#print axioms Grothe.UpperChaos.ProductionPhaseModel.norm_roundingSlice_sub_model
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.norm_exactModel_sq
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.norm_linearSlice_sq
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.norm_roundingSliceLp_sub_saved
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.norm_roundingSliceLp_sub_saved_of_complex_cross_enclosure
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.norm_roundingSliceLp_sub_saved_of_energy_cross_bounds
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.norm_roundingSliceLp_sub_saved_of_integral
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.phaseDifferenceLp_self
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.saved_model_norm_sq
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.saved_model_norm_sq_decomposed
+#print axioms Grothe.UpperChaos.ProductionPhaseModelIntegral.saved_model_norm_sq_expanded
 #print axioms Grothe.UpperChaos.ProfilePiFactor.pi_lo_lt
 #print axioms Grothe.UpperChaos.ProfilePiFactor.pi_lt_hi
 #print axioms Grothe.UpperChaos.ProfilePiFactor.pi_quarter_bounds
@@ -2242,6 +2263,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.SmallProfileMesh.region_subset_smallProfile
 #print axioms Grothe.UpperChaos.SmallProfileMesh.selected_rows_checked
 #print axioms Grothe.UpperChaos.SmallProfileMesh.strips_disjoint
+#print axioms Grothe.UpperChaos.TaylorFirstPackedChunk253Pilot.legacy_decoded
 #print axioms Grothe.UpperChaos.TaylorRadialTail.integral_hpow_sq_cut_fifty_lt
 #print axioms Grothe.UpperChaos.TaylorRadialTail.integral_hpow_sq_cut_le
 #print axioms Grothe.UpperChaos.TaylorRadialTail.measure_cutoffSet
@@ -2265,6 +2287,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.actual_saved_error_lt
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.linearCoefficient_eq_inner
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.linearCoefficient_parameter_error
+#print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.linearSliceLp_coe
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_constant
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_linear
 #print axioms Grothe.UpperChaos.ZeroProfilePhaseStability.norm_coefficient_sub_linear_small
@@ -2577,6 +2600,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.norm_toLp_sq_eq_integral
 #print axioms Grothe.UpperChaos.phaseEps_eq
 #print axioms Grothe.UpperChaos.phase_cutoff_factor_check
+#print axioms Grothe.UpperChaos.phase_gram_re_sq_le
+#print axioms Grothe.UpperChaos.phase_gram_sq_sum
 #print axioms Grothe.UpperChaos.phase_moment2_check
 #print axioms Grothe.UpperChaos.phase_moment4_check
 #print axioms Grothe.UpperChaos.phase_moment6_check
