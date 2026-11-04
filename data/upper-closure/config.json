@@ -1,0 +1,69 @@
+{
+ "_comment": "Quadrature presets of tools/upper_closure_spike.py (claude-b9ee, #41/#313). Keys override DEFAULT_CFG of the script: r_* radial Gauss-Legendre in r = sqrt(s); tau_* regular |w| panels; zone/near_levels/near_gl the geometric grading toward the singular circle |w| = A; nfft the angular FFT; psi_* the graded angle panels near the circle. 'coarse' is for smoke tests, 'default' the production run, 'fine' the refinement for the convergence study (every parameter tightened), 'r2' refines only the radial direction, 'w2' only the w-integral.",
+ "presets": {
+  "coarse": {
+   "r_len": 0.4,
+   "r_gl": 12,
+   "tau_len": 0.5,
+   "tau_gl": 12,
+   "near_levels": 18,
+   "near_gl": 10,
+   "nfft": 512,
+   "psi_near_gl": 12,
+   "psi_far_gl": 24
+  },
+  "default": {},
+  "r2": {
+   "r_len": 0.1,
+   "r_gl": 20
+  },
+  "w2": {
+   "tau_len": 0.15,
+   "tau_gl": 20,
+   "zone": 0.3,
+   "near_levels": 30,
+   "near_gl": 16,
+   "nfft": 2048,
+   "psi_near_gl": 20,
+   "psi_far_gl": 40,
+   "psi_far_len": 0.13
+  },
+  "fine": {
+   "r_len": 0.1,
+   "r_gl": 20,
+   "tau_len": 0.15,
+   "tau_gl": 20,
+   "zone": 0.3,
+   "near_levels": 30,
+   "near_gl": 16,
+   "nfft": 2048,
+   "psi_near_gl": 20,
+   "psi_far_gl": 40,
+   "psi_far_len": 0.13,
+   "tau_max": 16.0,
+   "r_max": 10.0
+  },
+  "v_nfft": {
+   "nfft": 2048
+  },
+  "v_levels": {
+   "near_levels": 32,
+   "near_gl": 16
+  },
+  "v_psi": {
+   "psi_near_gl": 24,
+   "psi_far_gl": 48,
+   "psi_far_len": 0.1
+  },
+  "v_tau": {
+   "tau_len": 0.125,
+   "tau_gl": 20
+  },
+  "v_zone": {
+   "zone": 0.4
+  },
+  "v_taumax": {
+   "tau_max": 18.0
+  }
+ }
+}

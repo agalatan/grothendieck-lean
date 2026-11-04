@@ -258,6 +258,65 @@ The only genuinely analytic parts are the radial Gauss–Legendre remainder and 
 profile zeros (the same S6b/c and S8 obligations as the checker's, `docs/QUAD_CHECKER.md` §6); the
 `w`-integrals are closed forms, and everything else is finite arithmetic.
 
-## 6. Prototype (`tools/upper_closure_spike.py`) — to be filled in
+## 6. Prototype (`tools/upper_closure_spike.py`)
+
+Float64 numpy (no mpmath on the shared machines; the laptop's `decimal` is used only for the
+cross-checks). Inputs: `Grothe/Upper/Data.lean` (phase, profile, `a`), the center arrays
+`data/taylor-approximants/inputs/*.npz`, the exact constants from the Lean data files, the quadrature
+presets `data/upper-closure/config.json`. Outputs under `handoff/upper-closure/` (git-ignored; the
+runs were made on the big droplet in `~/claude-b9ee-upper-closure/`, 8 niced shards).
+
+### 6.1 Method
+
+1. **Radial nodes.** `∫₀^∞ e^{−s}(…) ds = ∫₀^∞ 2r e^{−r²}(…) dr`, `r = √s`: composite Gauss–Legendre
+   in `r` on `[0, 9]` (`s ≤ 81`; the integrands carry `e^{−(1/2 + jε)s}` times polynomials of degree
+   `≤ 17j` in `s`, `< 10⁻²⁰` beyond), panels of length 0.2 with 16 points (720 nodes). No special
+   treatment of the profile's three zeros (`s = 13.83, 20.82, 25.20`): the `s`-integrands are `C^∞`
+   there with non-analytic corrections of size `e^{−A(s)²}`, negligible wherever `A > 9`.
+2. **One node, the `w`-integral.** Polar coordinates `w = τe^{iψ}` around the origin, so that
+   `conj h_{c,d}(w) = ĥ_{c,d}(τ) e^{−i(c−d)ψ}` separates: `J_{c,d} = (1/π)∫ τ ĥ_{c,d}(τ) Φ̂_{c−d}(τ) dτ`
+   with `Φ̂_k(τ) = ∫ e^{−ikψ} Φ(τe^{iψ}) dψ`, `Φ = (iφ)^j ph(r + bw) e^{−τ²/2}`, evaluated pointwise
+   (`S` by Horner in `(V, W)` from the 1,140 monomials collapsed at `U = s`; `ph = y/|y|`).
+   * away from the singular circle (`|τ/A − 1| ≥ 0.25`): `Φ̂_k` by an FFT with 1,024 angles
+     (bandwidth: `ph(1 + xe^{iψ})` has Fourier decay `x^k`, `≤ 175` modes at `x = 0.75` or `1.25`,
+     plus `35j` from the polynomial and `|k| ≤ 181`);
+   * near it: `τ`-panels graded geometrically toward `A` from both sides (26 levels down to
+     `|τ/A − 1| = 3.7·10⁻⁹`, 12 points each) and, for each level, Gauss–Legendre angle panels graded
+     geometrically toward `arg w₀` (`π` for `b > 0`, `0` for `b < 0`) down to the level's distance
+     scale, 16 points per short panel and 32 per long one (so that `e^{−i·181ψ}` is resolved), the
+     modes by one matrix product per level;
+   * the panels outside the near zone grow geometrically from `0.25A` to the regular length 0.25
+     (the integrand depends on `τ/A`; without this the nodes with `A < 1`, i.e. `s > 28`, lost
+     `10⁻⁸`), up to `τ_max = 14` (the integrand is `e^{−(1+jε)τ²}` times polynomials of degree
+     `≤ 181 + 35j`, `< 10⁻⁴⁰` beyond).
+3. **Hermite functions** by the orthonormal Laguerre three-term recurrence in the lower index:
+   `ĥ_{c,d}(τ) = (−1)^{min(c,d)} ℓ_{min}^{(|c−d|)}(τ²)`, `ℓ_m^{(k)}(x) = √(m!/(m+k)!) x^{k/2} e^{−x/2} L_m^{(k)}(x)`
+   (checked against exact `decimal` evaluation: `≤ 4·10⁻¹⁵` through degree 181). The row recurrence
+   `h_{c+1,d} = (τh_{c,d} − √d h_{c,d−1})/√(c+1)` from the row `τ^d/√d!` is **unstable** (errors
+   `4·10⁻⁶` at `(25,25)`, `τ = 6`) and was removed.
+4. **Assembly.** `a_j(q,c,d) = Σ_n W_n 2r_n e^{−r_n²/2} ĥ_{q+1−c,q−d}(r_n) J_n[c,d]` on the low band
+   (and, with `--all`, on the whole support of `c_j`), `I_j = Σ_n W_n 2r_n e^{−r_n²/2} Σ_{c,d} V̂_{c,d}(r_n) J_n[c,d]`
+   with `V̂_{c,d}(r) = Σ_q c_j(q,c,d) ĥ_{q+1−c,q−d}(r)`. Per node also `E_w[φ^{2j}]` on the same grid
+   and `Σ_{c,d} J²` (Parseval: the two agree to the digits shown at every node tried).
+
+Cost: 0.7 s per node for `j = 1` (`Dw = 181`, 363 modes) on the laptop; a full power is minutes.
+
+### 6.2 Validation
+
+* **`j = 0`, one node:** `J_{c,d}` is the checker's `sign(v)^{c+d} I_{c,d}(A)`; against the 60-digit
+  `decimal` reference triangle (seed, backward ratios, charge recurrence, as
+  `tools/quad_checker_reference.py` of #303) at `r = 0.3, 1.2, 2.5, 4.6` (`A = 0.97, 4.0, 6.9, 4.7`):
+  max difference over `c + d ≤ 60` is `2–6·10⁻¹⁶` in every band, with the coarse preset as well.
+  At `A → 0` (`r = 5.3–7`, `A = 10⁻² … 10⁻⁶`), where the reference's divisions by `A^c` fail,
+  `J_{0,0}` agrees with the exact seed `(√π/2) A e^{−A²/2}(I₀ + I₁)(A²/2)` to `4·10⁻¹⁷`.
+* **Exact moments:** `E φ^{2j}` by the full radial × angular quadrature (no phase, no Hermite
+  factor) against `phaseMoment2Q/4Q/6Q`: coarse preset `3·10⁻¹¹`, `6·10⁻¹¹`, `4·10⁻¹²` relative;
+  default and fine presets below.
+* **Convergence** of every reported number under the presets `default` → `r2` (radial refined) →
+  `w2` (`w`-integral refined) → `fine` (both, larger ranges): below.
+* **`j = 0`, all nodes:** the assembled `F₀` coefficients of the lowest grades against the quad
+  checker's raw enclosures (`handoff/quad-checker/raw-final.txt`, milestone 2 of #303): below.
+
+### 6.3 Results — to be filled in
 
 ## 7. Lean port design — to be filled in
