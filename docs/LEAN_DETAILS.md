@@ -959,6 +959,19 @@ midpoint to the physical shift, certified normalized-triangle arithmetic,
 saved-row coefficient errors and final energy agreement remain separate
 obligations; the upper endpoint `1.404598149141` is not established here.
 
+**Row-227 coefficient certificate (work in progress).** The normalized
+triangle and LeanCert interval modules separate the actual signed Gaussian
+recurrence from finite arithmetic checks. The selected set fits exactly in
+`c ≤ d+1, c+d < 502`; `(251,250)` attains the boundary and has original
+storage rank 35536. This auxiliary triangle does not change source cutoff
+532 or its original 35,777 words. The packet in
+`data/original-row227-certificate/` regenerates the 768-bit checkpoints and
+all selected saved-word comparisons using exact integers. Finite-vector
+interfaces charge common-scalar uncertainty once. Concrete Lean checkpoint
+assembly, all selected lookups and the final squared-error checks still have
+to be completed and accepted. The proposed midpoint vector radius is
+`14 / 10^18`; physical-parameter transport remains separate.
+
 `MobiusGeometry`, `MobiusPowerAlgebra`, and `MobiusSeedPullback` establish
 the substitution `v = t/(1+t)` and its pointwise integrand identity.
 `MobiusFiniteSubstitution` proves the corresponding finite integral equality;

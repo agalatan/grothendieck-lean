@@ -632,6 +632,7 @@ import Grothe.UpperChaos.ConcreteLinearEnergy
 import Grothe.UpperChaos.ConcretePhaseMoments
 import Grothe.UpperChaos.ConcreteRetainedBands
 import Grothe.UpperChaos.ConcreteTaylorUpper
+import Grothe.UpperChaos.ConditionalCheckpointVector
 import Grothe.UpperChaos.ConditionalCoefficientCharge
 import Grothe.UpperChaos.ConditionalCoefficientReflection
 import Grothe.UpperChaos.ConditionalGaussianBase
@@ -641,8 +642,14 @@ import Grothe.UpperChaos.ConditionalGaussianTail
 import Grothe.UpperChaos.ConditionalMomentCharge
 import Grothe.UpperChaos.ConditionalMomentReflection
 import Grothe.UpperChaos.ConditionalNodeIndices
+import Grothe.UpperChaos.ConditionalNormalizedCertificate
+import Grothe.UpperChaos.ConditionalNormalizedDyadic
+import Grothe.UpperChaos.ConditionalNormalizedTriangle
 import Grothe.UpperChaos.ConditionalReconstruction
 import Grothe.UpperChaos.ConditionalSeedNormalization
+import Grothe.UpperChaos.ConditionalSeedReconstructionError
+import Grothe.UpperChaos.ConditionalSeedVectorError
+import Grothe.UpperChaos.ConditionalSelectedTriangle
 import Grothe.UpperChaos.ConditionalShiftEnclosure
 import Grothe.UpperChaos.ConditionalSourceRow227Scalar
 import Grothe.UpperChaos.ConditionalSourceRow227Shift
