@@ -23,8 +23,8 @@ import argparse, hashlib, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MARK = os.path.join(ROOT, ".lake", "build", "caps-closure.sha")
-PROJECT_PREFIXES = ("Grothe.", "GrotheKernel.", "GrotheCapsKernel.")
-PROJECT_ROOTS = ("Grothe", "GrotheKernel", "GrotheCapsKernel")
+PROJECT_PREFIXES = ("Grothe.", "GrotheKernel.", "GrotheCapsKernel.", "GrotheQuadKernel.")
+PROJECT_ROOTS = ("Grothe", "GrotheKernel", "GrotheCapsKernel", "GrotheQuadKernel")
 CAP_ROWS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
 # The first completed localized node also has heavy finite checks. Include their
 # computation closure so a cold piece build is routed to the caps runner.
