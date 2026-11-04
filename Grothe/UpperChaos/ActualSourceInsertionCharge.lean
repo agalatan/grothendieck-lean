@@ -44,7 +44,8 @@ theorem liftedMomentQ_coeff_homogeneous (w : Fin 8 → M) (a : M)
       rw [liftedMomentQ, ← Polynomial.C_pow, Polynomial.coeff_C_mul_X_pow]
       by_cases hn : n = q
       · subst n
-        simpa only [ite_eq_left rfl, zero_nsmul, sub_zero, sub_self, nsmul_zero] using hC.pow q
+        rw [ite_eq_left (rfl : q = q)]
+        simpa only [zero_nsmul, sub_zero, sub_self, nsmul_zero] using hC.pow q
       · rw [ite_eq_right hn]
         exact isWeightedHomogeneous_zero ℚ w _
   | succ p ih =>
@@ -106,17 +107,33 @@ def sourceChargeWeights : Fin 8 → ℤ × ℤ :=
 
 theorem weight_sourceChargeWeights (e : Fin 8 →₀ ℕ) :
     Finsupp.weight sourceChargeWeights e = sourceCharge e := by
-  apply Prod.ext <;>
-    simp [Finsupp.weight_eq_sum, sourceChargeWeights, sourceCharge, pairCharge,
-      powers, Fin.sum_univ_succ, sub_eq_add_neg, add_assoc, add_comm, add_left_comm] <;>
+  rw [Finsupp.weight_eq_sum, Fin.sum_univ_eight]
+  apply Prod.ext
+  · change e 0 • (1 : ℤ) + e 1 • (1 : ℤ) + e 2 • (-1 : ℤ) +
+        e 3 • (-1 : ℤ) + e 4 • (0 : ℤ) + e 5 • (0 : ℤ) +
+        e 6 • (0 : ℤ) + e 7 • (0 : ℤ) =
+      ((e 0 : ℤ) + e 1) - ((e 2 : ℤ) + e 3)
+    simp only [Int.nsmul_eq_mul, mul_one, mul_neg_one, mul_zero]
+    omega
+  · change e 0 • (0 : ℤ) + e 1 • (0 : ℤ) + e 2 • (0 : ℤ) +
+        e 3 • (0 : ℤ) + e 4 • (1 : ℤ) + e 5 • (1 : ℤ) +
+        e 6 • (-1 : ℤ) + e 7 • (-1 : ℤ) =
+      ((e 4 : ℤ) + e 5) - ((e 6 : ℤ) + e 7)
+    simp only [Int.nsmul_eq_mul, mul_one, mul_neg_one, mul_zero]
     omega
 
 theorem weight_physicalChargeWeights (s : Fin 4 →₀ ℕ) :
     Finsupp.weight physicalChargeWeights s =
       (((s 0 : ℤ) - s 1), ((s 2 : ℤ) - s 3)) := by
-  apply Prod.ext <;>
-    simp [Finsupp.weight_eq_sum, physicalChargeWeights, Fin.sum_univ_succ,
-      sub_eq_add_neg, add_assoc, add_comm, add_left_comm] <;>
+  rw [Finsupp.weight_eq_sum, Fin.sum_univ_four]
+  apply Prod.ext
+  · change s 0 • (1 : ℤ) + s 1 • (-1 : ℤ) +
+        s 2 • (0 : ℤ) + s 3 • (0 : ℤ) = (s 0 : ℤ) - s 1
+    simp only [Int.nsmul_eq_mul, mul_one, mul_neg_one, mul_zero]
+    omega
+  · change s 0 • (0 : ℤ) + s 1 • (0 : ℤ) +
+        s 2 • (1 : ℤ) + s 3 • (-1 : ℤ) = (s 2 : ℤ) - s 3
+    simp only [Int.nsmul_eq_mul, mul_one, mul_neg_one, mul_zero]
     omega
 
 /-- The existing inserted monomial has exactly the reversed pair of charges. -/
@@ -156,7 +173,7 @@ theorem insertedMonomial_homogeneous (r : ℚ) (s : Fin 4 →₀ ℕ) :
       -(Finsupp.weight physicalChargeWeights s) := by
     rw [weight_physicalChargeWeights]
     apply Prod.ext <;>
-      simp [sub_eq_add_neg, add_assoc, add_comm, add_left_comm] <;> omega
+      simp [sub_eq_add_neg, add_comm] <;> omega
   simpa only [insertedMonomial, hd] using h0.mul h1
 
 /-- Linearity preserves the charge reversal on an arbitrary homogeneous
