@@ -447,6 +447,19 @@ $\sqrt{(d+1)/c}\le1$ when $d+1<c$. All these identities use only the
 standard logical axioms. Numerical node enclosures and floating arithmetic
 errors remain separate obligations.
 
+The actual shifted coefficients $C_{cd}(A)$ also satisfy the charge relation
+\[
+ A\bigl(\sqrt{c+1}\,C_{c+1,d}(A)-\sqrt{d+1}\,C_{c,d+1}(A)\bigr)
+   =(d+1-c)C_{cd}(A).
+\]
+Finite shifted-moment identities and absolute Fubini establish this relation;
+Hermite normalization supplies the square-root factors. For $A>0$ it reduces
+each row to the preceding row and the existing zero-row moment seeds, without
+a hypergeometric diagonal recurrence. A finite rational checkpoint checker
+encloses the actual positive moment ratios over parameter intervals, starting
+from the proved terminal bounds $[0,1]$. Numerical seeds, parameter transport,
+stored-row errors and final table agreement remain separate obligations.
+
 \texttt{ConditionalReconstruction} proves that nonconstant coefficients vanish
 at a zero profile, retaining the constant phase $\operatorname{ph}(\sqrt{s})$.
 Reflection therefore extends to all nonnegative radii. The exact completion

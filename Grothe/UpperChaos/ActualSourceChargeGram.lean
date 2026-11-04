@@ -123,6 +123,7 @@ theorem sourceGramQ_insertion_eq_sum_chargeBlocks (g : Gate) (r : ℚ)
     _ = ∑ k ∈ chargeSet P, ∑ l ∈ chargeSet P,
         sourceGramQ g (insertion r (chargeBlock P k)) (insertion r (chargeBlock P l)) := by
       simp only [map_sum, LinearMap.sum_apply]
+      exact Finset.sum_comm
     _ = _ := by
       apply Finset.sum_congr rfl
       intro k hk
