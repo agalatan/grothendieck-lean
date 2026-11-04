@@ -1,0 +1,39 @@
+import Grothe.UpperChaos.Q0BasePairRoot10Leaf000Check009
+
+/-! Generated bounded arithmetic block (4 closed operations, maximum 4).
+tools/q0_quadrature/gen_base_pair_checks.py; Agent-ID: codex-aa04. -/
+namespace Grothe.UpperChaos.Q0BasePairRoot10Leaf000
+open LeanCert.Core RectangleCoefficientArithmetic RectangleModelCheck RectangleHornerTrace
+set_option maxRecDepth 100000
+set_option maxHeartbeats 0
+theorem dampingHorner5_mul_checked :
+    mulOK dampingTail6.output dampingCertificate.delta dampingproduct5 (1 / 1461501637330902918203684832716283019655932542976) = true := by
+  decide +kernel
+
+theorem dampingHorner5_add_checked :
+    addOK dampingproduct5 (((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 5 (constant 0)) dampingresult5 0 = true := by
+  decide +kernel
+
+theorem dampingHorner5_checked :
+    dampingTail5.check dampingCertificate.delta [((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 5 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 6 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 7 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 8 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 9 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 10 (constant 0)] = true := by
+  exact Trace.check_cons dampingCertificate.delta (((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 5 (constant 0))
+    [((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 6 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 7 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 8 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 9 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 10 (constant 0)]
+    dampingproduct5 dampingresult5 (1 / 1461501637330902918203684832716283019655932542976) 0 dampingTail6
+    dampingHorner6_checked dampingHorner5_mul_checked dampingHorner5_add_checked
+
+theorem dampingHorner4_mul_checked :
+    mulOK dampingTail5.output dampingCertificate.delta dampingproduct4 (1 / 1461501637330902918203684832716283019655932542976) = true := by
+  decide +kernel
+
+theorem dampingHorner4_add_checked :
+    addOK dampingproduct4 (((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 4 (constant 0)) dampingresult4 0 = true := by
+  decide +kernel
+
+theorem dampingHorner4_checked :
+    dampingTail4.check dampingCertificate.delta [((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 4 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 5 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 6 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 7 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 8 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 9 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 10 (constant 0)] = true := by
+  exact Trace.check_cons dampingCertificate.delta (((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 4 (constant 0))
+    [((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 5 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 6 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 7 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 8 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 9 (constant 0), ((ExponentialHorner.coefficients dampingCertificate.degree).map constant).getD 10 (constant 0)]
+    dampingproduct4 dampingresult4 (1 / 1461501637330902918203684832716283019655932542976) 0 dampingTail5
+    dampingHorner5_checked dampingHorner4_mul_checked dampingHorner4_add_checked
+
+end Grothe.UpperChaos.Q0BasePairRoot10Leaf000

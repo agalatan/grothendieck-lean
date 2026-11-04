@@ -2319,6 +2319,7 @@ import Grothe
 #print axioms Grothe.UpperChaos.RectangleCoefficientArithmetic.rowNorm_nonneg
 #print axioms Grothe.UpperChaos.RectangleCoordinates.x_sound
 #print axioms Grothe.UpperChaos.RectangleCoordinates.y_sound
+#print axioms Grothe.UpperChaos.RectangleHornerTrace.Trace.check_cons
 #print axioms Grothe.UpperChaos.RectangleHornerTrace.Trace.rational_sound
 #print axioms Grothe.UpperChaos.RectangleHornerTrace.Trace.sound
 #print axioms Grothe.UpperChaos.RectangleModelCheck.add_sound
