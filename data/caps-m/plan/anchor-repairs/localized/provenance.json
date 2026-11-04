@@ -2,6 +2,13 @@
   "agent_id": "claude-b9ee",
   "format": "caps-localized-nodes-provenance/v1",
   "nodes": {
+    "12x240": {
+      "final_facts_built": 10,
+      "min_float_slack": 0.0030366311377520994,
+      "pieces": 502,
+      "source_sha256": "1d1e56a295ae2b08e59095cccb6310dd92675b1f8492b40daae73957731d7f7a",
+      "verdicts": "{'fixed': 131, 'pass': 371}"
+    },
     "12x244": {
       "final_facts_built": 11,
       "min_float_slack": 0.0025685696018322712,
@@ -29,6 +36,13 @@
       "pieces": 566,
       "source_sha256": "2dcf9b2833cc18cb7cbfbb843fb4b75f3266fa329b16fe57b9ef8dc4851a5b11",
       "verdicts": "{'fixed': 130, 'pass': 436}"
+    },
+    "14x247": {
+      "final_facts_built": 12,
+      "min_float_slack": 0.002457491232938036,
+      "pieces": 597,
+      "source_sha256": "8bdbb09e91601d6b2b9e05768fdd3610b570c6af23b8002ead4b9f20404b2a4a",
+      "verdicts": "{'fixed': 131, 'pass': 466}"
     },
     "15x244": {
       "final_facts_built": 13,
