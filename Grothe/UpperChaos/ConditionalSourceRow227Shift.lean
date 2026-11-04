@@ -125,7 +125,7 @@ theorem profile_pos : 0 < vprof (sourceNode address) := by
   exact (mul_pos_iff_of_pos_left hsqrt).mp hb
 
 theorem profileSign_eq_one : profileSign (sourceNode address) = 1 := by
-  simp only [profileSign, not_lt_of_ge profile_pos.le, if_false]
+  simp only [profileSign, not_lt_of_ge profile_pos.le, ite_false]
 
 /-- The actual fixed-source coefficient equals the canonical evaluator at
 the actual shift, with its original Hermite index order and no phase factor. -/
