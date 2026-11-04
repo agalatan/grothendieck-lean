@@ -652,7 +652,35 @@ digest now hashes the import closure of the facts, 752 files (the whole `UpperQu
 cache for its digest and its check goes to the droplet (with `FORCE_HEAVY` everything goes there
 anyway); the alternative is a separate cache key for the facts.
 
-**Remaining, in order.** (0) Validate the block checks on the milestone-2 raw vector
+**Validation of the block checks (5 November, 03:10 Bucharest, big):** `quadrun check raw-final.txt
+frozen.txt energy-table.txt 0 110`: ℓ¹ excursion of the grades `[0, 110)` = **3.11565·10⁻¹⁵** (the
+milestone-3 whole-head value is 3.116·10⁻¹⁵: the low grades carry all of it), squared widths
+8·10⁻⁵⁴, 3 min; `… 244 251`: excursion 1.3·10⁻²⁷, squared widths 2·10⁻⁵⁵, 17 min (15 of them the
+saved matrices `S_244 … S_251`); `evenExcursion = 0`; `Facts.Even` (`evenCheck`) builds **true** in
+437 s. So `energyOKBlock`/`gradeWidthSqBlock`/`evenExcursion` are validated and the tolerances
+`epsBlock = 5·10⁶⁴/2²⁵⁶` are generous (block 0 uses 7 ‰ of its tolerance).
+
+**The sharding trade-off, measured (5 November, 03:30):** the per-node cost does not depend on the
+precision (node 227: 4.21 s at P = 256, 4.23 s at 384, 4.3 s at 512: the interval arithmetic is
+dominated by allocation and normalisation, not by the mantissa size), and P = 256 is unsound in
+practice at the Watson nodes (node 771: widths 2²² at the high degrees), so P = 512 stays. A block
+fact costs ≈ 21,577 × (0.7 s triangle + 0.3 s Laguerre table + 0.1–0.6 s node factors of the block's
+rows + 0.16 s accumulation) ≈ 8–10 h on an idle core. Node-range sharding with committed partials
+(the "option 1"/(a) of §11.2) needs **≈ 20 MB per range** (2,052,103 of the 2,698,752 triangle
+entries have |value| ≥ 2⁻⁶⁴, and the needed precision is relative, binary64-like: the "≈ 5 MB"
+estimate above was wrong), i.e. 55 MB for 2 ranges (≈ 3 h wall), 110 MB for 4 (≈ 1.5 h), 220 MB
+for 8; one sequential fact costs ≈ 25 h. The user chose node ranges on 5 November 03:05 and then
+received these numbers; the decision between (i) twelve grade blocks, no data, ≈ 10 h wall once
+(facts cached by CI), (ii) 2 ranges + 55 MB, (iii) 4 ranges + 110 MB, (iv) one fact, is pending.
+The twelve `GradeBlockNN` modules implement (i); for (ii)/(iii) the kernel needs a decoder of the
+committed partial (a base64 string literal), a `rawWithin R T : Bool` check and the exact sum of
+the partials, and `hclose_of_blocks` is generalised to arbitrary enclosures of the exact Gauss sums
+(its proof uses the block loop only through `gaussRaw_of_block`).
+
+**Remaining, in order.** (0) ~~Validate the block checks~~ (done, above). (0') The sharding decision
+and, for (i), the droplet run: the CI run 41929108078 dispatched on e70417289 was cancelled when the
+user chose (a); redispatch with `gh workflow run lean.yml --ref claude-b9ee/quad-checker-bridge` once
+decided. Old (0) was: Validate the block checks on the milestone-2 raw vector
 (`quadrun check handoff/quad-checker/raw-final.txt frozen.txt energy-table.txt qLo qHi`: the
 excursions by block must sum to the milestone-3 `3.116·10⁻¹⁵`). (1) The fact modules: for each block `b` a module
 `Grothe/UpperQuad/Facts/GradeBlockNN.lean` with the `native_decide` fact
