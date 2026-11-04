@@ -677,10 +677,20 @@ committed partial (a base64 string literal), a `rawWithin R T : Bool` check and 
 the partials, and `hclose_of_blocks` is generalised to arbitrary enclosures of the exact Gauss sums
 (its proof uses the block loop only through `gaussRaw_of_block`).
 
-**Remaining, in order.** (0) ~~Validate the block checks~~ (done, above). (0') The sharding decision
-and, for (i), the droplet run: the CI run 41929108078 dispatched on e70417289 was cancelled when the
-user chose (a); redispatch with `gh workflow run lean.yml --ref claude-b9ee/quad-checker-bridge` once
-decided. Old (0) was: Validate the block checks on the milestone-2 raw vector
+**Decision history (5 November, 03:05–03:40 Bucharest):** the user first chose node ranges with
+committed partials (option (a), ≈ 1 h wall) when told the block facts take ≈ 10 h wall; the
+measured data size (≈ 20 MB per range, see above) made that unattractive and the user then chose
+**(i), the twelve grade-block facts without committed data**, accepting the ≈ 10 h wall paid once
+(the two per-node speedups considered — the triangle at P = 256 and fixed-precision node factors —
+were measured not to pay: the cost does not depend on P, and P = 256 is unsound in practice at the
+Watson nodes). **Launched on mega** (`~/claude-b9ee-quad-facts`, cores 36–59, twelve `lake build
+Grothe.UpperQuad.Facts.GradeBlockNN` in their own process groups, `block-NN.log` with start/end
+timestamps) on 5 November 01:07 UTC as the private measurement; the CI droplet run (push without
+`[skip ci]`, or `gh workflow run lean.yml --ref claude-b9ee/quad-checker-bridge`) follows when every
+block is true there. The CI run 41929108078 dispatched before the (a) interlude was cancelled.
+
+**Remaining, in order.** (0) The private run on mega, then the CI droplet run (above). Old (0) was:
+Validate the block checks on the milestone-2 raw vector
 (`quadrun check handoff/quad-checker/raw-final.txt frozen.txt energy-table.txt qLo qHi`: the
 excursions by block must sum to the milestone-3 `3.116·10⁻¹⁵`). (1) The fact modules: for each block `b` a module
 `Grothe/UpperQuad/Facts/GradeBlockNN.lean` with the `native_decide` fact
