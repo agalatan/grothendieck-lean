@@ -2003,6 +2003,8 @@ import Grothe.UpperChaos.QuadraturePartition
 import Grothe.UpperChaos.RadialCeiling
 import Grothe.UpperChaos.RadialCutoff
 import Grothe.UpperChaos.RadialDampedMoments
+import Grothe.UpperChaos.RadialLaguerre
+import Grothe.UpperChaos.RadialLaguerreBlockReindex
 import Grothe.UpperChaos.RadialRepair
 import Grothe.UpperChaos.RationalChargeOrthogonality
 import Grothe.UpperChaos.RationalComplexHermite
