@@ -38,9 +38,17 @@ Reproduce and test:
 python3 tools/gen_row227_certificate.py
 python3 tools/gen_row227_certificate.py --check
 python3 tools/test_gen_row227_certificate.py
+python3 tools/gen_row227_diagnostic.py --check
+python3 tools/gen_row227_payload.py --check
 ```
 
-The next implementation step emits bounded Lean data/check modules and
-verifies the actual high-index lookup and recurrence boundaries in hosted CI.
+`gen_row227_diagnostic.py` emits bounded Lean checks of actual late ratio,
+zero-row, forward-row and selected-error blocks. `gen_row227_payload.py`
+retains the full original payload in a balanced append tree; its length and
+high-index lookup proofs use symbolic intermediate lemmas. The aggregate
+`OriginalRow227Diagnostic` also imports the generic interval/vector soundness
+proofs. Its hosted Lean check is pending. It is intentionally a boundary
+diagnostic, not complete coverage of the row certificate.
+
 The full concrete theorem must discharge every numerical leaf, all selected
 lookups and both squared-error sums before this contribution is ready.
