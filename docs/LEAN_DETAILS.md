@@ -898,6 +898,13 @@ almost-everywhere equality and proves `J_h(x) = (4/π) * M_h(x)` for every
 order and real parameter. `OriginalMomentRatios` transfers positivity and the
 three-term recurrence to `J_h`; for `x ≥ 0`, its ratio satisfies the exact
 continued-fraction update and finite backward enclosure from terminal `[0,1]`.
+`OriginalMomentRatioCertificates` checks finite rational lower and upper
+checkpoints over a nonnegative parameter interval. Its multiplication guards
+enclose each actual `J_(h+1)/J_h` backward step, using the proved unit interval
+at any finite terminal depth. Denominators are positive internally; neither a
+terminal approximation nor convergence of an infinite continued fraction is
+assumed. The checker has no native facts. Concrete checkpoint data and the
+numerical seed remain separate obligations.
 `MobiusGeometry`, `MobiusPowerAlgebra`, and `MobiusSeedPullback` establish
 the substitution `v = t/(1+t)` and its pointwise integrand identity.
 `MobiusFiniteSubstitution` proves the corresponding finite integral equality;
@@ -998,6 +1005,17 @@ then proves the production lookup factor `sqrt((d+1)/c)` for `d+1<c` and a
 nonzero profile. The normalized canonical identity holds at every real shift.
 These results have standard-three-axiom audits. They supply no numerical
 coefficient enclosure, root-gap estimate or floating reflection error.
+
+`ConditionalMomentCharge` derives the charge identity for the actual phase
+integrals from the finite shifted-moment identities and absolute Fubini.
+`ConditionalCoefficientCharge` supplies its normalized form, writing `C_cd(A)`
+for `canonicalCoefficient A (c,d)`:
+`A*(sqrt(c+1)*C_(c+1,d) - sqrt(d+1)*C_(c,d+1)) = (d+1-c)*C_cd`.
+The difference `d+1-c` is scalar subtraction, not truncated natural subtraction.
+For positive `A`, rearranging this identity reconstructs each row from the
+preceding row and the existing zero-row seeds. It requires no hypergeometric
+diagonal recurrence. These exact identities do not certify the numerical seed,
+parameter transport, stored-row errors or final energy-table agreement.
 
 `F0ConditionalEvaluator.coefficient_zero_of_profile_zero` retains the constant
 phase `ph(sqrt(s))` when `vprof s = 0` and proves that all modes other than
