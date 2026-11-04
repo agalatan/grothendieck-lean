@@ -1937,6 +1937,13 @@ The full actual rational source norm is consequently equal to its sum with
 cross-charge entries removed. The existing pair mass and Jacobian are retained.
 `ActualSourceInsertionLinear` makes the actual polynomial insertion a rational
 linear map and decomposes its input into the original multiplier's finite
-charge components before eight-variable expansion. These exact decompositions
-do not yet identify the historical Laguerre coefficients or diagonalize each
+charge components before eight-variable expansion.
+`ActualSourceInsertionCharge` proves that this same insertion reverses each
+physical charge, with no positivity or nonzero premise on its rational rate.
+`ActualSourceChargeGram` packages the existing tensor pair evaluator as a
+rational bilinear form, proves orthogonality of the inserted physical blocks,
+and identifies `rationalSourceNormValue g` with the diagonal sum indexed by
+`chargeSet (multiplierQ g.power)`. This regrouping retains all terms inside
+each charge block and avoids enumerating expanded source supports. It does
+not yet identify the historical Laguerre coefficients or diagonalize each
 block into squares; numerical source bounds and the final endpoint remain open.
