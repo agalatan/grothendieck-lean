@@ -3819,6 +3819,7 @@ import Grothe.UpperChaos.WholeCenterEnergies
 import Grothe.UpperChaos.ZeroProfilePhaseLinearization
 import Grothe.UpperChaos.ZeroProfilePhaseStability
 import Grothe.UpperChaos.ZeroProfileSavedCenter
+import Grothe.UpperQuad.Bridge
 import Grothe.UpperQuad.ContractSound
 import Grothe.UpperQuad.EnergySound
 import Grothe.UpperQuad.GaussSound

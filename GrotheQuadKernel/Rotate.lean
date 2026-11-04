@@ -179,14 +179,19 @@ def energyOK (raw : Raw) (frozen : Nat → Nat → Nat → Fx) (table : Nat → 
     (epsNum : Int) : Bool :=
   headExcursion (allEnergies raw frozen (savedMatrices 251)) table ≤ epsNum
 
-/-- `Σ (hi − lo)²` over the triangle entries of the accumulator (scale `2^{4K}`): four times the
-squared ℓ² norm of the half-widths. -/
-def rawWidthSq (raw : Raw) : Int :=
-  (List.range numCharges).foldl (fun s k => (List.range (blockSide k)).foldl (fun s j =>
-    (List.range (activeCols k j)).foldl
-      (fun s c => s + ((rawGet raw k j c).2 - (rawGet raw k j c).1) ^ 2) s) s) 0
+/-- `Σ_{c < q+2, d < q+1} (hi − lo)²` over the entries of a grade matrix (scale `2^{2K}`). -/
+def gradeWidthSqOf (A : Array (Array Fx)) (q : Nat) : Int :=
+  (List.range (q + 2)).foldl (fun s c => (List.range (q + 1)).foldl
+    (fun s d => s + ((getFx A c d).hi - (getFx A c d).lo) ^ 2) s) 0
 
-/-- The raw-width check: `rawWidthSq ≤ bound`, i.e. `Σ (half-width)² ≤ bound / (4 · 2^{4K})`. -/
-def rawDistOK (raw : Raw) (bound : Int) : Bool := rawWidthSq raw ≤ bound
+/-- `Σ_{q ≤ 250} Σ_{c, d} (hi − lo)²` over the grade matrices (scale `2^{2K}`): the squared ℓ²
+distance of the lower ends `lo/2^K` to any family inside the enclosures is at most this over
+`2^{2K}`. -/
+def gradeWidthSq (raw : Raw) (frozen : Nat → Nat → Nat → Fx) : Int :=
+  (List.range 251).foldl (fun s q => s + gradeWidthSqOf (gradeMatrix raw frozen q) q) 0
+
+/-- The raw-width check: `gradeWidthSq ≤ bound`. -/
+def rawDistOK (raw : Raw) (frozen : Nat → Nat → Nat → Fx) (bound : Int) : Bool :=
+  gradeWidthSq raw frozen ≤ bound
 
 end GrotheQuad

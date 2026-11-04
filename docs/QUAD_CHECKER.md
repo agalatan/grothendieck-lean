@@ -487,7 +487,7 @@ scripts/test_caps_stamp.py
 `tools/gen_root_imports.py` already lists the four libraries (`LIBS`). `lakefile.toml` already
 has the library and the `quadrun` executable (not a default target).
 
-### 11.4 Status and hand-over (claude-b9ee, 4 November 2026, 23:30 Bucharest)
+### 11.4 Status and hand-over (claude-b9ee, 5 November 2026, 00:40 Bucharest)
 
 **Proved** (`Grothe/UpperQuad/`, kernel-checked, warning-free, no `sorry`, no `native_decide`,
 all imported by the `Grothe` root; the laptop worktree
@@ -527,27 +527,31 @@ the loop version. A further ≈ 1 s per node is available from a per-node table 
 `forwardStep` (Lean's `Nat.sqrt` is a Newton loop, called twice per triangle entry); not done
 so as not to touch the proved `PairsSound` layer.
 
-**Remaining, in order.** (1) **Bridge.lean** (the top theorem (D), needs the
-`ProductionRetainedEnergy` closure: built on big in `~/claude-b9ee-quad-m4/repo`, not on the
-laptop): define the rational family `a0 raw q c d := (entry.lo : ℚ)/2^128` from the grade
-matrices (without `v`), so that `memFx (a0 q c d) entry` is trivial and
-`b := retainedProductionCoeff a0 = a0 + frozenCorrectionCoeff` is enclosed by
-`gradeMatrix raw frozenFx` with `frozenFx q c d := ⟨shDown 78 (frozenCorrectionAt q c d),
-shUp 78 (…)⟩` (`2^{−206} = 2^{−128} · 2^{−78}`); then `htable` is `energyOK_sound` and `hraw`
-needs: (a) the node layer's enclosure of the exact Gauss sums `G` (`accumulateSpecs_zero_sound`
-with the list of `NodeSpec`s of the partition, a Lean literal to generate from
-`data/quad-checker/panels.txt` + the brackets of `Q0LegendreRuleNN` + `cutoffs.txt`, bound to
-master's `sourcePanels` by `decide`); (b) `|G − a0| ≤ width` summed in ℓ² over the triangle: change
-`rawWidthSq` to sum the widths of the grade-matrix entries (scale `2^128`) so that the reflected
-entries need no separate factor bound; (c) the analytic hypothesis `hQuad` per canonical
-coefficient, `|baseGradedCoefficient q c d − G q c d| ≤ ρ_{qcd}` (S6b/S6c and the cutoffs), with
-master's `radialBaseCoefficient_reflection` for the reflected ones; (d) Parseval on the graded
-support: `‖productionF0Head − gradedHermite 251 a0‖² = Σ |baseGradedCoefficient − a0|²`
-(`productionF0Head = projOn productionDegreeHead F0`, `inner_hvec2_gradedHermite`,
-`norm_hermiteFinite_sq`), then Minkowski over the finite index set. (2) The row-227
-`native_decide` fact (`accumulateSpec` of one `NodeSpec` literal compared with the committed
-raw words) in a root-excluded module, to measure the cost of a native fact. (3) The sharding
-decision (§11.2). (4) The `√n` table in `forwardStep` if the node cost matters.
+**The top theorem (layer (D)) is proved: `Grothe/UpperQuad/Bridge.lean`, `hclose_of_checks`**
+(built on big against the `ProductionRetainedEnergy` closure; the laptop lacks that closure).
+Its inputs: a list of `NodeSpec`s with a root `x nd` in each bracket, the accumulator
+`raw` with `accumulateSpecs P piI pd specs rawZero = some raw`, the checks
+`energyOK raw frozenFx tableFx epsNum = true` and `rawDistOK raw frozenFx bound = true`, the
+budget inequalities (`2ρ² + 2·bound/2²⁵⁶ ≤ δ²`, master's `hsmoothing`, `hbudget` with
+`ε = epsNum/2²⁵⁶`), and the two analytic hypotheses: the seed enclosure at every node (S2) and
+`hQuad : Σ_{q,c,d} ‖baseGradedCoefficient q c d − gaussCoeff specs x q c d‖² ≤ ρ²` (the exact
+Gauss–Legendre sums of the nodes approximate the F0 coefficients in ℓ²: S6b, S6c and the omitted
+pairs of the cutoffs; `gaussCoeff` is reflected for `c > d + 1`, consistent with master's
+`radialBaseCoefficient_reflection`). Conclusion: `hclose` of `fresh_upper_concrete_taylor`
+(`Σ_{headIdx 501} |energy X p − energyTable p| ≤ energyErrQ`). Proof: master's
+`selected_energy_close_of_raw_error` with `a0 := b0 − frozenQ`, `b0` the lower ends of the grade
+matrices (`retainedProductionCoeff a0 = b0`), `htable` from `energyOK_sound`, `hraw` from
+`norm_productionF0Head_sub_sq` with `|base − a0|² ≤ 2|base − G|² + 2|G − a0|²`, the node layer,
+`gradeWidthSq_sound` and `hQuad`. `frozenFx` (`frozenCorrectionAt / 2^206` at scale `2^128`) and
+`tableFx` (floor/ceiling of `energyTable · 2^256`) are the Lean-side data conversions.
+
+**Remaining, in order.** (1) The row-227 `native_decide` fact (`accumulateSpec` of one `NodeSpec`
+literal, compared with the known raw entries) in a root-excluded module, to measure the cost of a
+native fact. (2) The data binding of the partition: the `NodeSpec` literals (generated from
+`data/quad-checker/panels.txt` + the brackets of `Q0LegendreRuleNN` + `cutoffs.txt`) bound to
+master's `sourcePanels`/`Q0LegendreRuleNN.brackets` by `decide`, and the roots `x nd` from
+master's `root_spec`. (3) The sharding decision (§11.2) and the native facts. (4) The `√n` table
+in `forwardStep` if the node cost matters. (5) The analytic hypotheses (S2, `hQuad`).
 
 **Conventions and pitfalls.** Kernel definitions must be `let`-free in every branch that a proof
 splits on (`let` elaborates to `have`, invisible to `split_ifs`; nested `let`s inside `fun`

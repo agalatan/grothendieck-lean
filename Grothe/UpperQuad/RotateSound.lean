@@ -448,4 +448,69 @@ theorem energyOK_sound (b : ℕ → ℕ → ℕ → ℚ) {raw : Raw} {frozen : �
   rw [savedMatrices_getD 251 (q + 1) (by omega), savedMatrices_getD 251 q (by omega)]
   exact memFx2_rotateGrade b q hq' (fun c d hc hd => hA q c d hq hc hd) m hm
 
+/-! ### The widths of the grade matrices -/
+
+/-- The lower end of an entry, as a rational. -/
+def loQ (e : Fx) : ℚ := (e.lo : ℚ) / 2 ^ KFix
+
+lemma memFx_loQ {y : ℝ} {e : Fx} (hy : memFx y e) : memFx ((loQ e : ℚ) : ℝ) e := by
+  unfold memFx at *
+  unfold loQ
+  push_cast
+  rw [div_mul_cancel₀ _ (by positivity)]
+  exact ⟨le_rfl, hy.1.trans hy.2⟩
+
+/-- `(y − lo/2^K)² · 2^{2K} ≤ (hi − lo)²` for `y ∈ e`. -/
+lemma sq_sub_loQ_le {y : ℝ} {e : Fx} (hy : memFx y e) :
+    (y - ((loQ e : ℚ) : ℝ)) ^ 2 * (2 : ℝ) ^ (2 * KFix) ≤ (((e.hi - e.lo) ^ 2 : ℤ) : ℝ) := by
+  unfold memFx at hy
+  unfold loQ
+  push_cast
+  have hpos : (0 : ℝ) < 2 ^ KFix := pow_pos two_pos _
+  have h : (y - (e.lo : ℝ) / 2 ^ KFix) ^ 2 * (2 : ℝ) ^ (2 * KFix) = (y * 2 ^ KFix - e.lo) ^ 2 := by
+    rw [two_pow_two_mul_KFix]
+    field_simp
+  rw [h]
+  have h1 : (0 : ℝ) ≤ y * 2 ^ KFix - e.lo := by linarith [hy.1]
+  have h2 : y * 2 ^ KFix - e.lo ≤ (e.hi : ℝ) - e.lo := by linarith [hy.2]
+  nlinarith
+
+lemma gradeWidthSqOf_eq (A : Array (Array Fx)) (q : ℕ) :
+    gradeWidthSqOf A q = ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
+      ((getFx A c d).hi - (getFx A c d).lo) ^ 2 := by
+  unfold gradeWidthSqOf
+  simp only [foldl_add_eq_sum_int, zero_add]
+
+lemma gradeWidthSq_eq (raw : Raw) (frozen : ℕ → ℕ → ℕ → Fx) :
+    gradeWidthSq raw frozen = ∑ q ∈ Finset.range 251, ∑ c ∈ Finset.range (q + 2),
+      ∑ d ∈ Finset.range (q + 1),
+        ((getFx (gradeMatrix raw frozen q) c d).hi - (getFx (gradeMatrix raw frozen q) c d).lo) ^ 2 := by
+  unfold gradeWidthSq
+  rw [foldl_add_eq_sum_int, zero_add]
+  simp only [gradeWidthSqOf_eq]
+
+/-- **The width check is sound (B1).** For every family `Y` inside the grade matrices, the squared
+ℓ² distance of `Y` to the lower ends `loQ` is at most `gradeWidthSq / 2^{2K}`. -/
+theorem gradeWidthSq_sound {raw : Raw} {frozen : ℕ → ℕ → ℕ → Fx} {Y : ℕ → ℕ → ℕ → ℝ}
+    (hY : ∀ q c d, q ≤ 250 → c < q + 2 → d < q + 1 →
+      memFx (Y q c d) (getFx (gradeMatrix raw frozen q) c d)) :
+    (∑ q ∈ Finset.range 251, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
+      (Y q c d - ((loQ (getFx (gradeMatrix raw frozen q) c d) : ℚ) : ℝ)) ^ 2) *
+        (2 : ℝ) ^ (2 * KFix) ≤ (gradeWidthSq raw frozen : ℝ) := by
+  rw [gradeWidthSq_eq]
+  push_cast
+  rw [Finset.sum_mul]
+  apply Finset.sum_le_sum
+  intro q hq
+  rw [Finset.sum_mul]
+  apply Finset.sum_le_sum
+  intro c hc
+  rw [Finset.sum_mul]
+  apply Finset.sum_le_sum
+  intro d hd
+  rw [Finset.mem_range] at hq hc hd
+  have := sq_sub_loQ_le (hY q c d (by omega) hc hd)
+  push_cast at this
+  exact this
+
 end Grothe.UpperQuad
