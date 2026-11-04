@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   sweep:
-    runs-on: ubuntu-24.04
+    runs-on: ${{ vars.FORCE_HEAVY == 'true' && fromJSON('["self-hosted","light"]') || 'ubuntu-24.04' }}
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v5
