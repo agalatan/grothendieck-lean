@@ -8,9 +8,6 @@
 #   `CapPieces.Node14x150`) are not listed: an exclusion of an imported module has no effect;
 # * GrotheKernel.BandMass, GrotheKernel.HeadWeight — kernel modules used only by Grothe.Upper (built through
 #   Grothe.lean, not through the GrotheKernel root).
-# * Grothe.Upper.EnergyDegreeOneLookup, Grothe.UpperChaos.ProductionDegreeOneTable — quarantined 4 Nov 2026: the lookup's
-#   kernel proof needs about 28 GB (Lean killed by the OOM killer on yo, run 41780631946), so master could not be checked;
-#   re-admit them when the proof fits the runners (#271).
 Grothe.LowerAnalytic.CapPieces.C14x200
 Grothe.LowerAnalytic.CapPieces.D14x200
 Grothe.LowerAnalytic.CapPieces.N14x200
@@ -25,7 +22,5 @@ Grothe.LowerAnalytic.CapPieces.R14x200_6
 Grothe.LowerAnalytic.CapPieces.R14x200_7
 Grothe.LowerAnalytic.CapPieces.R14x200_8
 Grothe.LowerAnalytic.CapPieces.R14x200_9
-Grothe.Upper.EnergyDegreeOneLookup
-Grothe.UpperChaos.ProductionDegreeOneTable
 GrotheKernel.BandMass
 GrotheKernel.HeadWeight
