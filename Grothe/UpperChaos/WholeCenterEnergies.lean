@@ -69,12 +69,10 @@ theorem norm_thirdCenter_sq_exact : ‖thirdCenter‖ ^ 2 = (thirdEnergyQ : ℝ)
 
 /-- Closed rational comparisons use the existing targets, not new native facts. -/
 theorem firstEnergyQ_le_cap_sq : firstEnergyQ ≤ (161 / 100000 : ℚ) ^ 2 := by
-  norm_num [firstEnergyQ, Fin.sum_univ_succ, firstCenterBandEnergyQ,
-    firstCenterBandIntegerEnergy]
+  decide +kernel
 
 theorem secondEnergyQ_le_cap_sq : secondEnergyQ ≤ (3 / 125000 : ℚ) ^ 2 := by
-  norm_num [secondEnergyQ, Fin.sum_univ_succ, secondCenterBandEnergyQ,
-    secondCenterBandIntegerEnergy]
+  decide +kernel
 
 theorem thirdEnergyQ_le_cap_sq : thirdEnergyQ ≤ (9 / 2500000 : ℚ) ^ 2 := by
   norm_num [thirdEnergyQ, thirdCenterEnergyQ]
