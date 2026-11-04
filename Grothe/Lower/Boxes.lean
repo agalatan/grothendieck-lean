@@ -561,6 +561,7 @@ theorem VHolds.mix (θ : ℚ) (hθ0 : 0 ≤ θ) (hθ1 : θ ≤ 1) {a b : VRow} {
   ring
 
 omit [IsProbabilityMeasure μ] in
+set_option maxHeartbeats 800000 in
 /-- **The box bound of a virtual row.**  From its inequality, the pinned gate price and certified
 chord polynomials at `τ₋`, `τ₊`. -/
 theorem vslab_bound (a : VRow) (hgate : gateOK a.N = true) {Φ : ℝ → ℝ}
