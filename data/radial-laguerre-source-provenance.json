@@ -1,0 +1,74 @@
+{
+  "agent": "codex-8c4d",
+  "status": "Production source candidates; no compiler acceptance yet",
+  "transformations": [
+    "Production namespaces and module documentation",
+    "Warning-as-error and strict standard-three guards for every explicit public definition/theorem",
+    "All source proof bodies and statements preserved modulo namespace"
+  ],
+  "artifacts": [
+    {
+      "source": "normalization-draft/RadialLaguerre.UNCOMPILED.lean",
+      "source_sha256": "d99acff8ac11ec90b0add2f952f7687ca0c3f73fdda437bb10ca04e85ea2be43",
+      "path": "Grothe/UpperChaos/RadialLaguerre.lean",
+      "sha256": "8371804e03ec17a46f9e64c485568e07366304bb16b0feb958a9d67ef775cabb",
+      "bytes": 8974,
+      "exports": [
+        "Grothe.UpperChaos.RadialLaguerre.assocLaguerre",
+        "Grothe.UpperChaos.RadialLaguerre.normalizedLaguerre",
+        "Grothe.UpperChaos.RadialLaguerre.radialFactor",
+        "Grothe.UpperChaos.RadialLaguerre.ev_H_real_laguerre",
+        "Grothe.UpperChaos.RadialLaguerre.ev_H_radial_laguerre",
+        "Grothe.UpperChaos.RadialLaguerre.nrm_mul_factorial",
+        "Grothe.UpperChaos.RadialLaguerre.hfun_radial_laguerre",
+        "Grothe.UpperChaos.RadialLaguerre.conj_hfun_radial_laguerre",
+        "Grothe.UpperChaos.RadialLaguerre.conj_primary_laguerre"
+      ]
+    },
+    {
+      "source": "Reindex.UNCOMPILED.lean",
+      "source_sha256": "8069ec4219847b904b35cffaab5342f3802fb3acf6098e34837b3e4bbcee4292",
+      "path": "Grothe/UpperChaos/RadialLaguerreBlockReindex.lean",
+      "sha256": "2c999fd92b45a1e95e194c08d930e4db863930ad949d7e6ea7a6da46143d09bc",
+      "bytes": 2993,
+      "exports": [
+        "Grothe.UpperChaos.RadialLaguerreBlockReindex.BlockGrade",
+        "Grothe.UpperChaos.RadialLaguerreBlockReindex.blockGradeEquiv",
+        "Grothe.UpperChaos.RadialLaguerreBlockReindex.primary_indices",
+        "Grothe.UpperChaos.RadialLaguerreBlockReindex.charge_bound",
+        "Grothe.UpperChaos.RadialLaguerreBlockReindex.maxPrefixLength",
+        "Grothe.UpperChaos.RadialLaguerreBlockReindex.block_is_prefix",
+        "Grothe.UpperChaos.RadialLaguerreBlockReindex.maximal_pair"
+      ]
+    }
+  ],
+  "base_master": "a18d93cb56cd8db7702d2520235ced8d68ad040c",
+  "task": 21,
+  "source_review": "Normalization reviewed by codex-2ca4 against pinned Lean/mathlib; integration still requires hosted --wfail and independent PR review.",
+  "dependencies": [
+    {
+      "path": "lean-toolchain",
+      "sha256": "d5edba4e4b8faad9c1baeadb265716d20d03be4d1a2647dc5e35b0c0325bea7b"
+    },
+    {
+      "path": "lake-manifest.json",
+      "sha256": "d7ffc110772c6907672f767d99ca4625f9cd631420cd1b928ff89dd933e5d822"
+    },
+    {
+      "path": "Grothe/UpperChaos/HermiteFallingFactorial.lean",
+      "sha256": "690ff26a2d1869638a8ddf90b93d671d9d7294c2edaff79f575ad5e72ee2a319"
+    },
+    {
+      "path": "Grothe/UpperChaos/HermiteBasis.lean",
+      "sha256": "1d05c9e4eb24c3ee74c8fc0b31d7b8bdf40d36fc8c7099e56ecbf243d8bb803b"
+    },
+    {
+      "path": "Grothe/UpperChaos/ComplexHermite.lean",
+      "sha256": "18d402565a48e2469f1620cf110a81f851ee1a1e200695a27553a1f4b4361da5"
+    },
+    {
+      "path": "Grothe/UpperChaos/ConditionalNodeIndices.lean",
+      "sha256": "0c8a9512e7046b6f54b29f08dd516d7443c30030da0aecb14273cd67d056f238"
+    }
+  ]
+}
