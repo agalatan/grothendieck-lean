@@ -341,7 +341,15 @@ jobs:
             trap 'echo "::notice::cancelled: stopping the build process group"; kill -- "-$pid" 2>/dev/null; wait "$pid" 2>/dev/null; exit 130' INT TERM
             wait "$pid"; }
           if [ "$DROPLET" = true ]; then grouped lake build Grothe --log-level=warning
-          else grouped scripts/lake_failfast.sh lake build Grothe --log-level=warning; fi
+          else
+            # Memory sampler (hosted only): an exit code 143 here is the hosted runner killing the job when the
+            # 16 GB VM runs out of memory; the samples show how close the build was.
+            ( while :; do free -m | awk -v t="$(date -u +%T)" '/Mem/{m="mem " t " used=" $3 "M avail=" $7 "M"} /Swap/{print m " swap=" $3 "M"}'; sleep 20; done ) &
+            sampler=$!
+            rc=0; grouped scripts/lake_failfast.sh lake build Grothe --log-level=warning || rc=$?
+            kill "$sampler" 2>/dev/null; wait "$sampler" 2>/dev/null
+            [ "$rc" = 0 ] || { echo "::error::build step exited with $rc (143 = terminated: on a hosted runner usually the memory guard; see the mem samples above)"; exit "$rc"; }
+          fi
 
       - name: Root import files generated, list files sorted and duplicate-free
         if: env.LEAN == 'true'
