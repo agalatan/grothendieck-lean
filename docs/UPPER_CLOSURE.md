@@ -337,7 +337,47 @@ Cost: 0.7 s per node for `j = 1` (`Dw = 181`, 363 modes) on the laptop; a full p
 * **Convergence** of every reported number under the presets `checker` → `checker_w2` (`w`-integral
   refined) and the radial-range test `checker_s60`: below.
 
-### 6.3 Results — to be filled in
+### 6.3 Results (preset `checker`, 21,577 radial nodes; big droplet, 8 shards; 5 November 2026)
+
+**The six hypotheses.** All six HOLD numerically, with the archived centers exactly as committed.
+
+| hypothesis | computed | Lean constant | margin |
+|---|---|---|---|
+| `hwholeFirst` | `I₁ = 2.5684893045809268e-6`; `‖hpow 1 − c₁‖² = Eφ² − 2I₁ + ‖c₁‖² = 4.016986e-11` | `R₁² = 5.533186e-11` | `I₁ − I₁^min = 7.581e-12`; `1.516e-11 = 27.4 %` of `R₁²` |
+| `hwholeSecond` | `I₂ = 5.6671933554229e-10`; `‖hpow 2 − c₂‖² = 4.720174e-12` | `(2R₂)² = 5.422591e-12` | `I₂ − I₂^min = 3.512e-13`; `7.024e-13 = 13.0 %` |
+| `hwholeThird` | `I₃ = 1.278653939268252e-11`; `‖hpow 3 − c₃‖² = 4.037334e-12` | `(6R₃)² = 4.559028e-12` | `I₃ − I₃^min = 2.608e-13`; `5.217e-13 = 11.4 %` |
+| `hfirst` | `‖P_{(0,51]}(hpow 1 − c₁)‖ = 7.29e-17` (6,552 coefficients, max `2.1e-17`) | `4.000001e-11` | factor `5·10⁵` |
+| `hsecond` | `‖P_{(0,51]}(hpow 2 − c₂)‖ = 2.91e-17` (6,552, max `7.5e-18`) | `3.820836533e-10` | factor `10⁷` |
+| `hthird` | `‖P_{(0,11]}(hpow 3 − c₃)‖ = 3.80e-18` (112, max `2.7e-18`) | `4.7629771e-11` | factor `10⁷` |
+
+The centers are the exact projections of the sources onto their degree ranges to the precision of
+float64: `I₁ − ‖c₁‖² = 9.7·10⁻²¹`, `I₂ − ‖c₂‖² = 7.2·10⁻²³`, `I₃ − ‖c₃‖² = 7.6·10⁻²³`, so the whole errors equal the omitted
+tails `E φ^{2j} − ‖c_j‖²` to all shown digits, and the low-band differences (`10⁻¹⁷`–`10⁻¹⁸` per
+coefficient, flat across the grades) are the rounding of the computation, not a deviation of the
+centers. The archived certificate's finite-band allowances were pessimistic by five to seven
+orders of magnitude; its tail bounds `t_j` (which dominate the radii) were tight.
+
+On the whole support of the centers (`--all`: 259,532 / 35,696 / 6,552 coefficients) `‖a₁ − c₁‖ = 7.6·10⁻¹⁷`,
+`‖a₂ − c₂‖ = 3.0·10⁻¹⁷`, `‖a₃ − c₃‖ = 8.6·10⁻¹⁶`, and `I_j` by the coefficient route `Σ_i c_j(i) a_j(i)`
+agrees with the direct integral `∫ e^{−s} G_j(s) ds` to `1.7·10⁻²¹`, `7·10⁻²⁵`, `5·10⁻²⁷`.
+
+Per grade (`‖a_j − c_j‖_q`, max `|a_j − c_j|`, `‖c_j‖_q`): j = 1: q = 0: `3.6e-18`, `3.6e-18`,
+`4.0e-4`; q = 5: `2.8e-17`, `2.1e-17`, `4.4e-4`; q = 10: `1.7e-17`, `8.2e-18`, `6.3e-5`; q = 25:
+`4.7e-18`, `2.5e-18`, `2.1e-5`. j = 2: q = 0: `2.3e-20`, `2.0e-20`, `4.3e-6`; q = 5: `1.0e-17`, `7.2e-18`,
+`7.9e-6`; q = 25: `2.2e-18`, `1.2e-18`, `1.1e-6`.
+
+**Validation of the radial rule (j = 0 against the raw enclosures).** The `F₀` coefficients of all
+26 low-band grades (run `--power 0 --Dw 40` on the checker partition; 3,536 canonical pairs with
+`c + d ≤ 40`) against the midpoints of the checker's raw enclosures: maximum difference `1.8·10⁻¹⁵`
+(at the largest coefficient, `⟨h_{1,0}(z), F₀⟩ = 0.8475…`, relative `2·10⁻¹⁵`), `ℓ²` of the
+differences `3.0·10⁻¹⁵`, per-grade maxima `1.8e-15, 7.5e-16, 1.3e-15, 1.2e-15, 1.6e-16, …, 8.4e-17`
+(grades 0–25; the higher grades are smaller because their coefficients are). This is float64
+roundoff over 21,577 nodes; the checker's enclosures themselves have widths `≤ 7.6·10⁻²⁸`. With the
+uniform radial rule the same comparison gave `1.5·10⁻⁸` (§6.2).
+
+**Convergence (`checker` → `checker_w2`, `checker_s60`):** TBD.
+
+**Cost:** 18,820 CPU-s for power 1 (0.87 s per node), 11,113 for power 2, on the loaded big droplet.
 
 ## 7. Lean port design
 
