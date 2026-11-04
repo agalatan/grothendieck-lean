@@ -24,8 +24,8 @@ the scalar certificate `cumulant_bound` of `SixthMoment.lean`.
   `tenDU`, `tenGa`, `tenTT`): full ordered-index sums, `G = FᵀF`, `C = FFᵀ`, `S = Sym₄ C`,
   `U = SF`, `D = FG`, `G_anti = (G + JGJ)/2`, and `S₋₋` the charge-`±2` block of `S`
   (`tt = ‖S₋₋‖²/2`).  `E a² = 6 ‖f‖²` is proved (`Chaos3.gE_sq_eq_kernel`).
-* `TensorFacts E J a` collects the tensor facts of the paper proof that are **not yet
-  formalised**: the two Wick identities for `κ₄`, `κ₆` and the eleven charge-sector inequalities
+* `TensorFacts E J a` collects the tensor facts of the paper proof (proved in
+  `CircularTensor.lean`, `Circular.tensorFacts`): the two Wick identities for `κ₄`, `κ₆` and the eleven charge-sector inequalities
   (sums of squares, block traces, the coupled `G` test, the charge split).  Everything else
   `cumulant_bound` needs (positivity, `s > 0`, the two Cauchy–Schwarz bounds `‖U‖² ≤ √s √T₄`,
   `⟨D, U⟩ ≤ √V √‖U‖²`) is proved here.  `tools/check_tensor_facts.py` checks every field
@@ -481,8 +481,8 @@ end expectation
 part `a` of a circular cubic `q = a + ib` (`J` the complex structure): the two Wick identities
 for the fourth and sixth cumulants of `a`, and the charge-sector inequalities of the paper proof
 (the two sums of squares, `‖G_anti‖² ≤ s/2`, the cubic trace of `G`, the block traces of `S`,
-the coupled `G` test and the charge split with `θ = thetaC`).  These are exactly the inputs of
-`cumulant_bound` that are not yet formalised; every other input is proved in this file. -/
+the coupled `G` test and the charge split with `θ = thetaC`).  `Circular.tensorFacts` (`CircularTensor.lean`) proves them; every other input of
+`cumulant_bound` is proved in this file. -/
 structure TensorFacts (E : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (J : ι → ι → ℝ) (a : MvPolynomial ι ℝ) :
     Prop where
   wick4 : E (a ^ 4) - 3 * E (a ^ 2) ^ 2
