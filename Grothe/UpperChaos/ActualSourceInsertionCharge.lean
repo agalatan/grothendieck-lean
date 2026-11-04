@@ -173,7 +173,7 @@ theorem insertedMonomial_homogeneous (r : ℚ) (s : Fin 4 →₀ ℕ) :
       -(Finsupp.weight physicalChargeWeights s) := by
     rw [weight_physicalChargeWeights]
     apply Prod.ext <;>
-      simp [sub_eq_add_neg, add_comm] <;> omega
+      simp [sub_eq_add_neg, add_comm]
   simpa only [insertedMonomial, hd] using h0.mul h1
 
 /-- Linearity preserves the charge reversal on an arbitrary homogeneous
