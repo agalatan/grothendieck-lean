@@ -607,6 +607,20 @@ The full weighted energy is summable, and its full and finite sums are
 bounded by the Gaussian source integral of the squared norm of the actual
 scaled transform. Numerical bounds on that source integral, Hilbert--Schmidt caps,
 the historical Laguerre binding, and the final upper endpoint remain open.
+The radial normalization is identified directly with the production
+Hermite polynomial: for $s\ge0$,
+\[
+ h_{m+k,m}(\sqrt{s})=(-1)^m(\sqrt{s})^k
+ \sqrt{\frac{m!}{(m+k)!}}\,L_m^k(s).
+\]
+The value is real, so conjugation introduces no additional sign. The natural
+power of the radius includes zero radius and zero charge. The conditional
+block $d\le q<251$ is reindexed by $m=q-d$; its charge $k=d+1-c$ lies in
+$\{0,\ldots,251\}$ and its length is at most $251-(k-1)$, where subtraction
+is truncated at zero. Both charges zero and one have maximal length 251.
+These finite identities and index maps do not discharge a numerical radial
+Gram bound, quadrature error or the final endpoint.
+
 The Gram construction expands the actual source
 norm into finite Gram sums using the production polynomial's support and
 coefficients. It preserves all cross terms. Each pair Gram entry is evaluated

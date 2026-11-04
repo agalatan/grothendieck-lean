@@ -700,6 +700,19 @@ Hermite indices. Numerical Hilbert--Schmidt caps and the historical Laguerre
 binding remain OPEN. No physical/source Fubini or unproved coefficient
 identity is assumed in this batch.
 
+`RadialLaguerre` identifies the actual production polynomial
+`ev (r : ℂ) (H (m+k) m)` with
+`(-1)^m * m! * r^k * L_m^k(r²)`, using the finite associated-Laguerre
+coefficient formula. For `s ≥ 0`, the normalized `hfun (m+k,m) (√s)` is
+`(-1)^m * (√s)^k * √(m!/(m+k)!) * L_m^k(s)`; conjugation leaves this real
+radial value unchanged. Natural powers retain the zero-radius and zero-charge
+cases. `RadialLaguerreBlockReindex` identifies the actual conditional block
+`d ≤ q < 251` with `Fin (251-d)`. Its charge is `k=d+1-c ≤ 251`, and each
+block is a prefix of length at most `251-(k-1)`, with both `k=0` and `k=1`
+having maximal length 251. These identities supply the normalization and
+indexing for the radial sampled operator. They do not certify its numerical
+Gram bound, continuous quadrature error or final upper endpoint.
+
 `HermiteFallingFactorial` derives the finite production Hermite
 expansion from commuting creation operators. `HolomorphicCoefficientJets`
 identifies finite Gaussian extraction with derivatives at zero, and
