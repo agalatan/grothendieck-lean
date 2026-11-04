@@ -113,7 +113,7 @@ def main() -> int:
                 tv = t[idx_c]
                 a = lo[idx_m] * scale
                 b = hi[idx_m] * scale
-                w = b - a
+                w = (hi[idx_m] - lo[idx_m]) * scale      # exact in integers, then scaled
                 mid = (a + b) / 2
                 d = max(a - tv, tv - b, 0.0)
                 m = abs(mid - tv)

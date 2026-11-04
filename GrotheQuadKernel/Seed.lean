@@ -86,9 +86,10 @@ def seedJ0AsymI (P N : Nat) (piI xI : Ival) : Ival :=
       return mulI P (sqrtI P piI) g
     let e1 := divI P gam (mulI P (powI P x (N + 1)) sqrtx)
     -- T* = 2 e^{−x/2} (2/x) max(1, (2N/x)^N): with x ≥ 2N+2 the max is 1
-    -- e^{−x/2} ≤ 2^{−⌊x/2⌋} (since e^{−y} ≤ 2^{−y} for y ≥ 0)
-    let halfx := divN P 2 x
-    let eNeg : Ival := ⟨0, 1, -(toFixedLo 0 halfx)⟩
+    -- T* = (4/x) e^{−x} with e^{−x} ≤ 2^{−⌊x⌋} (since e^{−y} ≤ 2^{−y} for y ≥ 0).  (The milestone-2
+    -- run used the weaker e^{−x/2} ≤ 2^{−⌊x/2⌋}, which capped the widths near 2^{−80} for
+    -- x ∈ [150, 158): sound, but it sent 49 nodes through the whole precision ladder.)
+    let eNeg : Ival := ⟨0, 1, -(toFixedLo 0 x)⟩
     let tStar := mulN P 4 (mulI P eNeg invx)
     let err := divI P (mulN P 2 (addI P e1 tStar)) piI
     widen P main err

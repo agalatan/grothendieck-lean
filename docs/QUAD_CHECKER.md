@@ -54,22 +54,29 @@ Gauss–Legendre panel sums plus an analytic remainder; the raw vector is rotate
 matrices (`ProductionSmoothingApprox`) and contracted into the 21,168 energies (`Energy2`), and
 the ℓ¹ distance to `energyTable` is formed.
 
-## 3. The library `GrotheQuadKernel` (this milestone)
+## 3. The library `GrotheQuadKernel`
 
 Mathlib-free, `precompileModules = true` (its own `[[lean_lib]]`, like `GrotheCapsKernel`, so
-that changes to it never invalidate the heavy node-cap modules). Five modules:
+that changes to it never invalidate the heavy node-cap modules). Modules:
 
 | module | content | mirrors on master |
 |---|---|---|
-| `Basic` | fixed-point intervals at an explicit precision `K` (grid 2⁻ᴷ): outward `+ − × ÷ √`, `exp` (positive series + reciprocal), powers, rescaling, binary64 decoding, decimal rendering | `GrotheCapsKernel.Basic` (fixed `K = 128`) |
-| `Seed` | `J₀(x) = Σₙ (−x)ⁿ (2n)!/(4ⁿ (n!)³ (n+1))` through `N` with tail ≤ `|t_{N+1}|/(1 − x/(N+3))`; `S(A)` from a rational π enclosure; the ratio backward recurrence from `r_H ∈ [0,1]` | `OriginalPositiveMoment.moment 0`, `seedScalar`, `PositiveRatio.backward` |
-| `Pairs` | zero row, forward charge recurrence over the triangle `c+d ≤ D`, selection of the stored canonical set (`c ≤ d+1`, `d ≤ 265`: 35,777 pairs in `(c+d, c)` order), sign twist, transport radius `(√(c+1)+√(d+1))·ρ` | `normalizedCoefficient_zero_row_step`, `normalizedCoefficient_forward`, `conditional_canonical_pairs.npy` |
-| `Gauss` | Legendre `P_n` by the three-term recurrence, sign-change check of root brackets, weights `2(1−x²)/(n² P_{n−1}(x)²)`, the physical panel map, the Gauss sum, Laguerre rows and `ψ_{k,m}(s)` | `Q0LegendreInteger.realPair`, `Q0LegendreWeight.weight`, `Q0GaussPhysical.panelNode/panelWeight`, `RadialLaguerre.radialFactor` |
+| `Basic` | floating dyadic intervals `[lo·2^e, hi·2^e]` normalised to `P` mantissa bits: outward `+ − × ÷ √ exp`, powers, comparisons, fixed-point export, binary64 decoding, decimal rendering | `GrotheCapsKernel.Basic` (fixed-point, `K = 128`) |
+| `Seed` | `π` by Machin; `J₀(x) = Σₙ (−x)ⁿ (2n)!/(4ⁿ (n!)³ (n+1))` through 800 terms with tail ≤ `|t_{N+1}|/(1 − x/(N+3))` for `x < 150`, the Watson form `(2/√(πx)) Σ_{n≤70} c_n (2n)!/(4ⁿ n!) x^{−n}` with the error `(2/π)[Γ(N+3/2) x^{−N−3/2} + (4/x)e^{−x}]` for `x ≥ 150`; `S(A)`; the ratio backward recurrence from `r_H ∈ [0,1]` | `OriginalPositiveMoment.moment 0`, `seedScalar`, `PositiveRatio.backward` |
+| `Pairs` | zero row, forward charge recurrence over the triangle `c+d ≤ D`, selection of the stored canonical set (`c ≤ d+1`, `d ≤ 265`: 35,777 pairs in `(c+d, c)` order; prefix `c+d ≤ D` for a node of cutoff `D`), sign twist, transport radius | `normalizedCoefficient_zero_row_step`, `normalizedCoefficient_forward`, `conditional_canonical_pairs.npy` |
+| `Gauss` | Legendre `P_n` by the three-term recurrence, sign-change check of the integer root brackets (over `2^640`), weights `2(1−x²)/(n² P_{n−1}(x)²)`, physical panels, Gauss sums, Laguerre rows and `ψ_{k,m}(s)` | `Q0LegendreInteger.realPair`, `Q0LegendreRule01…64.brackets`, `Q0LegendreWeight.weight`, `Q0GaussPhysical.panelNode/panelWeight`, `RadialLaguerre.radialFactor` |
+| `Profile` | `vprof s` (Laguerre `α = −½`, `nrmHalf`), `κ = √(1+a²)`, the sign and the shift `√s/(κ|v|)` | `Rounder.vprof`, `F0ConditionalEvaluator.profileShift/profileSign` |
+| `Contract` | the block layout of the committed raw array (252 square blocks, 5,365,627 entries), the node factors `ψ_{k,j}(s) e^{−s} W`, the exact fixed-point accumulation `raw[k,j,c] += F_{k,j} · I_{c,d}` | `ProductionF0Radial.baseGradedCoefficient_eq_radial`, `raw_canonical_blocks.npy` |
 | `Compare` | ℓ¹ / ℓ² / max distance of enclosures to a dyadic table; Bessel sum | `energyTable`, `raw_canonical_blocks.npy` |
 
-Consumer: `Grothe/UpperQuad/Row227Check.lean` (`#eval` only; excluded from the `Grothe` root
-through `data/root-imports-exclude.txt` because it writes `handoff/quad-checker/row227-lean.txt`
-during its build). Data and provenance: `data/quad-checker/`.
+Driver: the native executable `quadrun` (`QuadRun.lean`, `[[lean_exe]]` in `lakefile.toml`, not a
+default target): `rules` (checks the 64 bracket rules), `node <ordinal>`, `shard <i> <n> <dir>`,
+`merge <n> <dir>`. Inputs (`tools/quad_gen_partition.py`): `data/quad-checker/panels.txt` (the
+1,289 panels of `sourcePanels`), `cutoffs.txt` (`conditional_cutoffs.npy`), `profile.txt`
+(`profileQ`, `aQ`); the 2,080 brackets are regenerated from the Lean sources into
+`handoff/quad-checker/rules.txt`. Validation module: `Grothe/UpperQuad/Row227Check.lean` (`#eval`
+only; excluded from the `Grothe` root through `data/root-imports-exclude.txt`). Comparison:
+`tools/quad_compare_raw.py`.
 
 ## 4. Validation at the row-227 node (measured, 4 November 2026)
 
@@ -82,41 +89,34 @@ pipeline (PR #298, `row227.bin`, SHA `85f6792a…`, 35,777 words).
 | quantity | value |
 |---|---|
 | `x = A0²` | 17.18469931050049158687924140784251413463… |
-| `J₀(x)` (Lean, K = 1024, 200 terms) | [0.2681438962793974168189443860339312096805, …806] |
-| `S(A0)` | [0.98510795255444173677170…, 0.98510795255444173677326…], width 2⁻⁷⁰ (the 20-digit π enclosure) |
-| Σ over the 35,777 pairs of `I²` (upper bound) | 0.99987720663246658926 (Bessel: ≤ 1) |
-| Lean enclosures vs the 400-digit Python reference (`tools/quad_checker_reference.py`) | all 35,777 reference values inside their enclosures; max width 1.57·10⁻²¹ |
+| `J₀(x)` (Lean, P = 1024) | [0.2681438962793974168189443860339312096805, …806] |
+| `S(A0)` | 0.98510795255444173677211517317997991425…, width 2⁻⁹⁹⁸ |
+| Σ over the 35,777 pairs of `I²` (upper bound) | 0.99987720663246658925 (Bessel: ≤ 1) |
+| Lean enclosures vs the 400-digit Python reference (`tools/quad_checker_reference.py`) | all 35,777 reference values inside their enclosures |
 | Python reference vs saved row | max \|ref − saved\| = 1.308·10⁻¹⁷ (band c+d ≤ 49; the half-ulp of binary64 at 0.98 is 5.5·10⁻¹⁷); 9.7·10⁻²³ for 50 ≤ c+d ≤ 99 down to 1.6·10⁻²⁴ for c+d ≥ 500 |
-| Lean enclosures vs the first 41 saved words (in Lean, `maxDistUpper`) | ≤ 1.309·10⁻¹⁷; ℓ¹ ≤ 2.033·10⁻¹⁷ |
+| Lean enclosures vs the first 41 saved words (in Lean, `maxDistUpper`) | ≤ 1.309·10⁻¹⁷; ℓ¹ ≤ 2.032·10⁻¹⁷ |
 
-Enclosure widths by band of c+d at K = 1024: 2⁻⁷⁰ (c+d < 50), 2⁻⁸⁹ (50–99), …, 2⁻⁹⁵ (≥ 500):
-the π enclosure dominates; the rounding noise is below it.
+Enclosure widths by band of c+d with the floating intervals: at P = 1024, 2⁻⁹⁹⁸ (c+d < 50) to
+2⁻⁸⁶⁸ (c+d ≥ 500); at P = 512, 2⁻⁴⁸⁶ to 2⁻³⁵⁶; at P = 256, 2⁻²³⁰ to 2⁻¹⁰⁰. The loss over the
+triangle is about 130 bits (relative), so P = 512 is ample.
 
-**Precision finding.** The forward charge recurrence amplifies rounding: at K = 512 the
-enclosures of the top band have width 2¹⁷⁵ and at K = 256 width 2⁴³¹ (useless), while K = 1024
-is clean. So at this node (A ≈ 4.1) the amplification over the triangle is about 2⁶⁸⁷ ≈ 10²⁰⁷
-(consistent with the archived replay: 1024-bit arithmetic, widths ≤ 10⁻¹⁰⁰), and the recurrence
-must run at K ≈ 1024 regardless of the 2⁻⁵⁰ output precision. The output is then rescaled to
-K = 128 for the contraction. (Alternatives if this ever matters: the Euler-identity seeds of the
-archived pipeline with its contiguous recurrence, or a backward/Miller direction; not needed at
-the measured cost.)
+**Precision finding (corrected).** The first version of the kernel used fixed-point intervals
+(absolute grid 2⁻ᴷ); with it the top band had widths 2¹⁷⁵ at K = 512, which looked like an
+amplification of 2⁶⁸⁷ by the forward recurrence. That was underflow of the tiny intermediate
+values (the zero row decays like `A^d/√(d!)`), not conditioning: with floating intervals the
+relative loss is 130 bits at this node, and at every node of the committed partition (shifts
+from 1.5·10⁻¹⁰ to 3·10²⁷) P = 512 gives widths below 2⁻²⁹⁰ (§8).
 
-## 5. Cost (laptop, Apple Silicon, one core, `#eval` on the precompiled library)
+## 5. Cost of the core (laptop, Apple Silicon, one core)
 
 | step | measured |
 |---|---|
-| seed series (200 terms) + 831 ratios at K = 1024 | 6 ms |
-| triangle `c+d ≤ 531` (71,288 recurrence entries), scalar, selection of 35,777 pairs, Bessel sum, K = 1024 | 2.50 s |
-| the same at K = 512 / 256 (unsound widths, timing only) | 1.58 s / 1.41 s |
+| seed (series, 800 terms) + 2,531 ratios at P = 1024 | 42 ms |
+| triangle `c+d ≤ 531` (71,288 recurrence entries), scalar, selection of 35,777 pairs, Bessel sum | 2.03 s at P = 1024, 1.37 s at P = 512, 1.19 s at P = 256 |
+| node factors `ψ_{k,j}(s) e^{−s} W` for all 31,877 `(k, j)` at P = 1024 | ≈ 0.1 s |
+| accumulation of one full node into the 5,365,627 raw entries (fixed scale 2¹²⁸, exact products) | 3.4 s (laptop), ≈ 4–5 s (yo) |
 | Python reference (decimal, 400 digits, full row + comparisons) | 5.7 s |
-| memory of one node at K = 1024 | ≈ 71,288 × 2 × 1024-bit integers ≈ 20 MB (transient) |
-
-Estimate for the full run (per-node conditional coefficients only): 21,577 nodes × 2.5 s ≈ 15
-CPU-hours on the original partition; ≈ 2,000 nodes × 2.5 s ≈ 1.4 CPU-hours on the planned
-partition. The contraction (not yet implemented): 5.3·10⁶ raw coefficients × ≈ 2,000 nodes ≈
-10¹⁰ multiply-adds at K = 128; at 0.2–0.5 µs per boxed `Int` operation that is 0.5–1.5 CPU-hours,
-shardable by raw charge `k`. The rotation and the 21,168 energies are a few minutes. Total under
-5 CPU-hours per full run as estimated on #21, split into ≈ 10 `native_decide` facts.
+| memory of one shard process (accumulators of 5.3M interval entries) | 0.8 GB |
 
 ## 6. Soundness obligations (statements; the Lean proofs are the next milestones)
 
@@ -173,11 +173,90 @@ Notation: `x ∈ a` means `a.lo ≤ x · 2^K ≤ a.hi` for an `Ival a` at precis
   within `4·10⁻¹⁵` (`ProductionSmoothingApprox`), Parseval (`Energy2`). The checker's rotation
   uses the saved rational matrices exactly.
 
-## 7. What this milestone does not do
+## 7. What is not done
 
 No theorem, no native fact, no change to any statement or data file on master. Not implemented:
-the large-`A` seed (Watson form), the per-panel integrand bound `M` (S6c), the contraction over
-all nodes, the rotation and the energies, the root windows. The `lakefile.toml` change moves the
+the per-panel integrand bound `M` (S6c), the rotation and the energies (milestone 3), the root
+windows of the planned partition. The `lakefile.toml` change moves the
 node-caps digest (`scripts/caps_stamp.py` hashes it), so every push of this branch is
 `[skip ci]`; the workflow lists (`LEAN_PATHS`, the `sorry` grep, `caps_stamp.PROJECT_ROOTS`) will
 need `GrotheQuadKernel` added in a workflow PR merged by hand (AGENTS.md §9).
+
+## 8. Milestone 2: the full node loop and contraction, validated against the committed raw array
+
+Run of 4 November 2026 (`quadrun`, branch at `b8ae03747`): all 21,577 nodes of the committed
+partition and the contraction into the 5,365,627 raw coefficients, on the big droplet (48 vCPU)
+in 40 shards; the merged vector is `handoff/quad-checker/raw-final.txt` (277 MB, SHA-256
+`8bc02c16bbd3b49db608d84397fffb27f4bb49b24439592506979fbd551365de`, enclosures `[lo, hi]/2^128`
+in the committed block layout), the per-node records are `handoff/quad-checker/nodes/nodes-*.txt`;
+committed summaries: `data/quad-checker/nodes-summary.json`, `data/quad-checker/raw-comparison.json`
+(`tools/quad_nodes_summary.py`, `tools/quad_compare_raw.py`).
+
+**Node loop.** Every node accepted a definite profile sign (11,216 negative); shifts from
+`A = 1.49·10⁻¹⁰` (s = 99.5) to `3.06·10²⁷` (next to the first root gap), `x = A²` up to
+`9.3·10⁵⁴`; 5,754 nodes used the series seed (x < 150), 15,823 the Watson form; cutoffs as
+committed (11,255 full, 421,701,618 retained pairs in all). Precision: 21,528 nodes accepted at
+P = 512 (widths of the widest canonical enclosure per node: 1,002 nodes below 2⁻⁵⁵⁰, 10,624 in
+[2⁻⁵⁵⁰, 2⁻⁵⁰⁰), 2,585 in [2⁻⁵⁰⁰, 2⁻⁴⁵⁰), …, 412 in [2⁻¹⁰⁰, 2⁻⁷⁷]); 49 nodes with
+x ∈ [150, 158) ran the whole ladder to P = 4096 and ended at width 2⁻⁷⁷…2⁻⁷⁹: that is the weak
+tail bound `(4/x) e^(−x/2)` of the Watson form (precision-independent), since corrected to
+`(4/x) e^(−x)` (node 771 now gives 2⁻¹⁵² at P = 512); the enclosures of the run are sound and
+far below the 10⁻¹³ target. Bessel sums of the retained pairs: all ≤ 1 (minimum 0.938).
+
+**Contraction and comparison with `data/retained-f0/raw_canonical_blocks.npy`** (SHA
+`5992d33a…`). The committed blocks are row-major in the radial index `j` (hypothesis "j": max
+midpoint difference 1.7·10⁻¹⁵ on blocks 1, 2, 100; hypothesis "c": 0.24). Over the 2,698,752
+entries of the degree-501 triangle:
+
+| quantity | excursion of the committed value from the enclosure | midpoint difference |
+|---|---|---|
+| maximum | 1.665·10⁻¹⁵ (index 63001: k = 1, j = 0, c = 0, the degree-one coefficient 0.8475…) | 1.665·10⁻¹⁵ |
+| ℓ² | 1.761·10⁻¹⁵ | 1.761·10⁻¹⁵ |
+| ℓ¹ | 1.326·10⁻¹⁴ | 1.326·10⁻¹⁴ |
+
+Largest enclosure width 7.6·10⁻²⁸ (index 63503, k = 1); committed ℓ² norm 0.994707. The 2,666,875 "extra" entries
+of the square blocks outside the triangle are computed values in the committed array too
+(max 1.8·10⁻⁴) and agree to 2.7·10⁻¹⁹. By charge (count in the triangle, max excursion, max width):
+
+| k | entries | max excursion | max width |
+|---|---|---|---|
+| 0 | 31626 | 3.33e-16 | 3.4e-29 |
+| 1 | 31626 | 1.67e-15 | 7.6e-28 |
+| 2 | 31375 | 9.71e-17 | 3.4e-29 |
+| 3 | 31125 | 2.43e-17 | 2.7e-30 |
+| 5 | 30628 | 3.90e-18 | 5.0e-32 |
+| 10 | 29403 | 2.98e-19 | 1.6e-35 |
+| 25 | 25878 | 5.93e-21 | 1.3e-37 |
+| 50 | 20503 | 5.17e-25 | 1.2e-37 |
+| 100 | 11628 | 7.89e-30 | 1.2e-37 |
+| 150 | 5253 | 0.00e+00 | 2.4e-37 |
+| 200 | 1378 | 0.00e+00 | 2.4e-37 |
+| 251 | 1 | 0.00e+00 | 1.2e-37 |
+
+**Entries beyond their binary64 half-ulp: 1,900,115 of 2,698,752.** They are explained by the
+nature of the committed array, not by the checker: the archived contraction was binary64
+(blocked BLAS dot products over up to 21,577 nodes, binary64 node centres), whose error is
+*absolute*, about 10⁻¹⁹–10⁻¹⁵ per entry whatever the entry's size (its ledger, `REFINED_RAW_PROOF.md`,
+bounds the whole vector by 4.65·10⁻¹² in ℓ²), while the half-ulp of a small entry is relative
+(10⁻²⁶ for an entry of 10⁻¹⁰). Every excursion is at most 1.665·10⁻¹⁵ (7.5 ulp of the largest
+coefficient, consistent with ≈ 2·10⁴ roundings), the ℓ² excursion 1.76·10⁻¹⁵ is 2,600 times
+below the archived cap, and the excursions decay with the charge exactly like the entries
+themselves (10⁻¹⁶ at k = 0, 10⁻²¹ at k = 25, 10⁻³⁰ at k = 100). The Arb replay's 5.7·10⁻¹⁸ ℓ²
+reproduction measured the reproducibility of that binary64 pipeline, not its distance to the
+exact values; the exact distance is what this run measures. No entry needs any other explanation.
+
+**Cost.** big droplet, 40 shards under `nice`: 302 nodes/min on the full-cutoff nodes
+(≈ 3.5 s per full node: ≈ 1.3 s triangle at P = 512, ≈ 2 s accumulation of 5.4·10⁶ exact
+products), the whole partition in ≈ 55 min wall, 97,600 CPU-seconds ≈ 27 CPU-hours (the
+per-node record's `ms` column folds the triangle into the accumulation column); 0.9 GB RSS per
+shard; the merge of 40 shard files (one Lean process parsing 2.1·10⁸ decimal integers) ≈ 25 min.
+On yo (8 vCPU, 6 shards) the rate was 0.57 nodes/s. The laptop single-node cost is in §5.
+
+**What this establishes.** The checker reproduces the archived raw vector within the archived
+pipeline's own floating-point error, with sound enclosures of width ≤ 7.6·10⁻²⁸, from the Lean
+definitions of the nodes (`sourcePanels`, the `Q0LegendreRule` brackets, `panelNode`,
+`panelWeight`), the profile (`vprof`, `profileShift`), the recurrences proved on master and the
+committed cutoffs. Not yet done: the smoothing rotation and the 21,168 energies (milestone 3:
+`productionSmoothedCoeff` with the saved rational matrices, then the ℓ¹ comparison with
+`energyTable`, and the degree-one reference entries), the analytic parts (S2, S5, S6b/c, S8), and
+the omitted-pair bound of the cutoffs, which this run inherits from the archived table.
