@@ -61,7 +61,7 @@ theorem threeBand_head_residual_le {E EX : ℕ × ℕ → ℝ}
         (by have := mem_range.mp hj; omega)]
   rw [heq] at hloc
   have hh := hloc.trans (add_le_add (threeBand_table_head_le h) h.compare)
-  simpa only [threeBandHeadQ, Rat.cast_add] using hh
+  simpa only [kernelCoeff, threeBandHeadQ, Rat.cast_add] using hh
 
 theorem threeBand_tail_le {E EX : ℕ × ℕ → ℝ} (h : ThreeBandDirectInputs E EX) :
     ∑' n, |kernelCoeff E (n + 251)| ≤ (threeBandRawTailQ : ℝ) := by
