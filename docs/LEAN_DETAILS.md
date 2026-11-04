@@ -2001,3 +2001,21 @@ and identifies `rationalSourceNormValue g` with the diagonal sum indexed by
 each charge block and avoids enumerating expanded source supports. It does
 not yet identify the historical Laguerre coefficients or diagonalize each
 block into squares; numerical source bounds and the final endpoint remain open.
+
+
+`RationalCovarianceAlgebra` evaluates the zero and quadratic rational moments
+with their Gaussian mass and gives the exact Schur covariance scalars.
+`RationalCovariancePolynomial` extends these identities to a constant plus a
+product of two linear forms. `RationalCovarianceConditional` identifies the
+actual degree-one conditional Wick polynomials in source order `((y,u),(x,v))`.
+`RationalCovarianceGateComposition` derives every denominator condition from
+the existing `gateOK g = true` premise and composes the actual pair evaluator
+with those identities. For `n = nuQ g.power` and `a = dampingQ g.power`, the
+zero contraction is `mass = n^2/delta`; the outer and inner degree-one squared
+contractions are `mass*chiPlus` and `mass*chiMinus`. The ground-versus-quadratic
+contraction is `mass*lambda`, including the intrinsic inserted constant `n`.
+It is not an opposite-charge Hermitian cross-Gram identity. The conditional
+variance `R+P`, the pair Jacobian `1/(R*Q)`, and one Gaussian mass are retained.
+No source or energy cap is added. The higher-degree covariance diagonalization,
+the full 18-block/1140-square compressor equality, numerical enclosures, and
+the final endpoint remain separate obligations.
