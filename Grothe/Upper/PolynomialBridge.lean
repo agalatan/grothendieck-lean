@@ -79,10 +79,12 @@ theorem head_le {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) :
   unfold kernelCoeff
   linarith
 
-/-- The same hypotheses used by `fresh_upper` bound the complete finite head. -/
-theorem head_residual_le {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) :
+/-- The finite head under a comparison allowance `C`: the checked head of the stored energies and
+the energy-table accuracy (`head_le`) plus the weighted comparison of the two tables. -/
+theorem head_residual_le_of_compare {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) {C : ℝ}
+    (hcompare : ∑ p ∈ headIdx 501, comparisonWeight p * |E p - EX p| ≤ C) :
     ∑ j ∈ range 251, |kernelCoeff E j - if j = 0 then (slopeQ : ℝ) else 0|
-      ≤ (headResidualQ : ℝ) := by
+      ≤ (headCapQ : ℝ) + energyErrQ + C := by
   have hloc := Upper.head_residual_le_weighted primaryPoly auxPoly auxPoly_coeff_zero
     E EX hE.parity (N := 501) (K := 251) (by norm_num) (slopeQ : ℝ) comparisonWeight
     (fun p _ => comparisonWeight_sound p)
@@ -96,11 +98,13 @@ theorem head_residual_le {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) :
       bivarKernel_eq_head primaryPoly auxPoly auxPoly_coeff_zero EX hE.parityX
         (by have := mem_range.1 hj; omega)]
   rw [heq] at hloc
-  have h := hloc.trans (add_le_add (Grothe.head_le hE) hE.compare)
-  change (∑ j ∈ range 251, |kernelCoeff E j - if j = 0 then (slopeQ : ℝ) else 0|)
-    ≤ (headCapQ : ℝ) + energyErrQ + compareQ at h
-  calc _ ≤ (headCapQ : ℝ) + energyErrQ + compareQ := h
-    _ = (headResidualQ : ℝ) := by norm_num [headResidualQ]; ring
+  exact hloc.trans (add_le_add (Grothe.head_le hE) hcompare)
+
+/-- The same hypotheses used by `fresh_upper` bound the complete finite head. -/
+theorem head_residual_le {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) :
+    ∑ j ∈ range 251, |kernelCoeff E j - if j = 0 then (slopeQ : ℝ) else 0|
+      ≤ (headResidualQ : ℝ) :=
+  (head_residual_le_of_compare hE hE.compare).trans_eq (by norm_num [headResidualQ]; ring)
 
 /-- In particular, the linear coefficient already consumes part of the Hardy budget. -/
 theorem linear_lower {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E EX) :
