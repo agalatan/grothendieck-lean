@@ -201,6 +201,8 @@ import Grothe.Upper.PolynomialBridge
 import Grothe.Upper.Realise
 import Grothe.Upper.RelaxedComparisonData
 import Grothe.Upper.Residual
+import Grothe.Upper.ThreeBandBudget
+import Grothe.Upper.ThreeBandEndpointCore
 import Grothe.UpperChaos.ActualCoherentBesselAudit
 import Grothe.UpperChaos.ActualCoherentCoefficientAudit
 import Grothe.UpperChaos.ActualCoherentHermiteJets
@@ -3808,6 +3810,10 @@ import Grothe.UpperChaos.ThirdFoldRectangle
 import Grothe.UpperChaos.ThirdGradeActualTargetNumerics
 import Grothe.UpperChaos.ThirdGradeLengths
 import Grothe.UpperChaos.ThirdIntegerSourceBinding
+import Grothe.UpperChaos.ThreeBandComparison
+import Grothe.UpperChaos.ThreeBandEndpointAdapter
+import Grothe.UpperChaos.ThreeBandRegrouping
+import Grothe.UpperChaos.ThreeBandUpper
 import Grothe.UpperChaos.UnitSquaredQuadrature
 import Grothe.UpperChaos.UnitSquaredQuadratureConditional
 import Grothe.UpperChaos.UnitSquaredRadiusProfile
