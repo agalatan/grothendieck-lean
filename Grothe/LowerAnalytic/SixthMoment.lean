@@ -195,6 +195,7 @@ lemma scalar_low {y w u z b4 cG v t : ℝ} (H : TensorHyp y w u z b4 cG v t) (hy
     have : Pcum y u z v cG ^ 2 ≤ Plow y u ^ 2 := pow_le_pow_left₀ hP0.le hP 2
     nlinarith
 
+set_option maxHeartbeats 1000000 in
 /-- High range `39/50 ≤ y`. -/
 lemma scalar_high {y w u z b4 cG v t : ℝ} (H : TensorHyp y w u z b4 cG v t) (hy : 39 / 50 ≤ y) :
     Pcum y u z v cG ≤ 0 ∨ 27 / 50 * Pcum y u z v cG ^ 2 ≤ C6 ^ 2 * (1 + 3 * y ^ 2 / 2) ^ 3 := by
