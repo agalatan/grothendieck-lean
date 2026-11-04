@@ -214,26 +214,18 @@ def generate() -> dict[Path, str]:
                 lines += ['']
             texts = joined(text_names, "',' :: ")
             vals = joined(value_names, '')
-            source_texts = f'{leaf_imports[-1]}.text'
-            for leaf in reversed(leaf_imports[:-1]):
-                source_texts = f'{leaf}.text ++ ("," ++ ({source_texts}))'
-            source_rules = ',\n      '.join(f'{leaf}.source_chars' for leaf in leaf_imports)
             actual_string = f'({name}CenterPackedChunks[{index}]?.getD "")'
             actual = f'{actual_string}.toList'
             lines += [f'def values : List ℤ := {vals}', '',
                       f'private def sourceLiteral : String := {json.dumps(chunk)}', '',
                       f'private theorem source_lookup : {actual_string} = sourceLiteral := by',
                       '  rfl', '',
-                      'private theorem source_concat : sourceLiteral =',
-                      f'    {source_texts} := by',
-                      '  decide +kernel', '',
-                      f'private theorem source_string : {actual_string} =',
-                      f'    {source_texts} := by',
-                      '  exact source_lookup.trans source_concat', '',
-                      'private theorem comma_chars : ",".toList = [\',\'] := by decide +kernel', '',
+                      f'private def sourceChars : List Char := {texts}', '',
+                      'private theorem source_encoding : sourceLiteral = String.ofList sourceChars := by',
+                      '  rfl', '',
                       f'theorem source_chars : {actual} =', f'    {texts} := by',
-                      '  simpa only [String.toList_append, comma_chars,',
-                      f'      {source_rules}] using congrArg String.toList source_string', '',
+                      f'  change {actual} = sourceChars',
+                      '  rw [source_lookup, source_encoding, String.toList_ofList]', '',
                       f'theorem decoded : row? 206 {actual} = some values := by',
                       '  rw [source_chars]', '  exact joined000', '']
             lines += ['/-- The public decoder on these actual bytes, via the delimiter theorem. -/',
