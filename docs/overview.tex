@@ -1162,12 +1162,50 @@ and external exact or interval certificates; they are not all formalized in Lean
  \href{https://arxiv.org/abs/1303.2849}{arXiv:1303.2849}.
 \end{itemize}
 
+\paragraph{Packed source certificate.}
+A strict structural token reader agrees with the unchanged public dyadic
+parser, including malformed input. The generic delimiter identity covers
+legacy single-character splitting. Bounded character-list certificates
+assemble all 460 records of the last first-center source chunk and identify
+its public decoded result with exact integer witnesses. Source equality is
+tied to the original packed array, and the complete certificate is checked
+in the default root. Whole-array source identities, replacement of native
+band checks and Gaussian approximation estimates remain separate obligations.
 % Exact phase-source identity; Agent-ID: codex-8c4d.
 \paragraph{Phase source identity.}
 The identity expressing the squared production phase in Gram coordinates is
 available independently of the numerical phase cover. This lets local source
 certificates use the actual rounding polynomial before cover assembly.
 
+\paragraph{Production source error propagation.}
+A supplied integer leaf check bounds the production phase on that leaf;
+no concrete leaf check is supplied here. The existing native cover already
+bounds the phase globally. A shared Gram-coordinate identity supplies the
+domain constraint for both routes. On $[-1,1]$ the cubic phase factor is
+$5/2$-Lipschitz. For positive radial parameter, the rounding-slice error is
+bounded by the quadratic Gaussian-base remainder plus the phase approximation
+error. Its phase bound remains an explicit premise to preserve independence
+from the native cover. Numerical source comparisons and integral certificates
+still have to instantiate these analytic bounds.
+
+The conditional Gaussian $L^2$ triangle inequality on one unsmoothed radial
+slice charges the base remainder once, giving $5\rho^2$ plus $5/2$ times the
+phase-model error and the model-to-comparison error. The actual phase bound
+follows from the existing native cover; it remains a premise to keep these
+analytic theorems independent of that native computation. Choosing the actual
+phase as the bounded comparison phase makes its phase error zero. The remaining
+Gaussian model-to-comparison integral and the comparison function's relation
+to stored coefficients still need certificates. Radial integration, smoothing
+and band projection are separate steps toward the endpoint.
+
+Keeping the actual phase inside the Gaussian model removes the phase-error
+term exactly. The remaining saved-model discrepancy is one normalized
+conditional Gaussian integral of model energy, saved energy and their cross
+term. Separate energy upper bounds $U,V$ and a real cross lower bound $L$
+give the squared-discrepancy budget $U+V-2L$. A complex cross enclosure
+with center $c$ and radius $r$ gives $U+V-2\operatorname{Re}(c)+2r$.
+These numerical receipts, the saved-source binding and outer radial weights
+remain separate obligations.
 
 \paragraph{Rational source evaluation.}
 The literal rational source polynomial is identified with the actual polynomial
@@ -1190,7 +1228,17 @@ orthogonal in the actual conditional Gram evaluator. Thus its full rational
 source norm equals the sum with cross-charge entries removed. Polynomial
 insertion is a rational linear map, so the actual source can also be split
 using the finite charge set of the original multiplier before expanding its
-eight source variables. This is an exact algebraic decomposition: the
+eight source variables. The same insertion reverses physical charge, including
+when its rational rate is zero. Bilinearity and charge orthogonality therefore
+give the exact identity
+\[
+ N_g=\sum_{k\in\operatorname{chargeSet}(P_g)}
+       B_g\bigl(I_{r_g}(P_{g,k}),I_{r_g}(P_{g,k})\bigr),
+\]
+where $N_g$ is the actual rational source norm expression, $P_{g,k}$ its
+physical multiplier's charge component, $I_{r_g}$ the existing coherent
+insertion, and $B_g$ the existing rational tensor pair kernel with both source
+coefficient factors. No charge count or square formula is assumed here.
 Laguerre coefficient binding, block diagonalization into squares, and numerical
 source enclosures remain separate obligations.
 
