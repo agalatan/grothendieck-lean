@@ -3821,7 +3821,10 @@ import Grothe.UpperChaos.ZeroProfilePhaseStability
 import Grothe.UpperChaos.ZeroProfileSavedCenter
 import Grothe.UpperQuad.GaussSound
 import Grothe.UpperQuad.IntervalSound
+import Grothe.UpperQuad.PairsSound
 import Grothe.UpperQuad.PiSound
+import Grothe.UpperQuad.ProfileSound
 import Grothe.UpperQuad.RatioSound
+import Grothe.UpperQuad.RotateSound
 import Grothe.UpperQuad.SeedSound
 import Grothe.UpperTarget
