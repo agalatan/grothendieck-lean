@@ -700,6 +700,20 @@ Hermite indices. Numerical Hilbert--Schmidt caps and the historical Laguerre
 binding remain OPEN. No physical/source Fubini or unproved coefficient
 identity is assumed in this batch.
 
+`ScalarOriginalBinding.scalar_original_binding`, in namespace
+`Grothe.UpperChaos.ScalarOriginalBindingDraft`, states the complete finite
+identity `scalarNumerator originalUpper = scalarSumLiteral`.
+`ScalarOriginalReindex` identifies the address-indexed sum with the original
+21,577-row mass ledger using its physical projection and ordinal equivalence.
+`ScalarOriginalGroup000` through `ScalarOriginalGroup021` compute all original
+named row sublists with the original exception mask and the power 251 of
+`ceil(panel.hi * 10^9)`. The final assembly retains every original row and has
+no numerical equality premise. `tools/gen_finite_scalar_sum.py` reproduces the
+source from pinned original inputs and the finite templates in
+`data/finite-scalar-sum/`. This identity alone supplies neither a scalar
+inequality, geometry check, trace estimate nor an unconditional kernel or
+endpoint bound.
+
 `RadialLaguerre` identifies the actual production polynomial
 `ev (r : ℂ) (H (m+k) m)` with
 `(-1)^m * m! * r^k * L_m^k(r²)`, using the finite associated-Laguerre
@@ -1366,6 +1380,24 @@ endpoint. No source reserve or normalization allowance is added here.
 The generator and its pinned certificate are in
 `tools/gen_analytic_envelope_root11.py` and `data/analytic-envelope-cells/`.
 The other roots and final band energies remain work in progress.
+
+The generated algebraic base-pair families for roots2,6 and10 separate shared
+literal data, serial arithmetic check modules, and the original public integral
+facades. Each check module evaluates at most four substantive closed operations.
+`RectangleHornerTrace.Trace.check_cons` composes already proved local checks;
+the final pair and common certificates reuse proof constants. Data imports the
+previous finished leaf, preserving serialization within each root. Shared
+profile checks retain the actual coefficient interval models. No rectangle,
+model, budget, public integral conclusion or trust mechanism changes.
+`tools/q0_quadrature/check_base_pair_preservation.py` compares all generated
+families with an immutable baseline and records source/input hashes.
+The operation count does not establish a memory bound. After full Lean
+acceptance, `check_base_pair_memory.py` rechecks representative data, every
+checker in the three reported large leaves and shared profiles, their facades,
+and the complete root audits in separate Linux processes. It requires the
+exact verified branch build, records import/compiled-artifact overhead and
+rejects peak process RSS at or above2,000,000,000 bytes. Resource acceptance is
+separate from source preservation and theorem checking.
 
 
 `tools/gen_analytic_envelope_cells.py` renders every analytic-envelope leaf

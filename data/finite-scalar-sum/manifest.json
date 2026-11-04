@@ -1,0 +1,684 @@
+{
+  "agent": "codex-8c4d",
+  "scope": "Complete original finite scalar identity only; no numerical inequality or endpoint claim",
+  "original_source_commit": "950d4dfd43bdb9c4eacb63986564a166e9657af9",
+  "source_inputs": [
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassAll.lean",
+      "sha256": "b133871d92121e90a77169e0ce2d6365e440fd5a30eb18205fdd659cb9435eb0",
+      "bytes": 10709
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup000.lean",
+      "sha256": "2ba92e03dc32d53d8b24650ab4877cb4035b16e1f25812a101505c9fa48c3f07",
+      "bytes": 84551
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup001.lean",
+      "sha256": "a5c0a8aba10977bda4e8807c9809a14cb962aed9afce15dfdabc8c18df975d3f",
+      "bytes": 85301
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup002.lean",
+      "sha256": "569d072c08b34dcc8f25eba9fd821bf38b8cc9641bd563c6b401709207b594ce",
+      "bytes": 81116
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup003.lean",
+      "sha256": "823ddf25cd953ce5fdba9c30fcc083989129ed7d7f6f109dc3dba3881b0f6abc",
+      "bytes": 68916
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup004.lean",
+      "sha256": "0ad5171e1f1c38aece1ac07f0a8749d19edd2bec91c4fec72db05ae8595b2233",
+      "bytes": 72586
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup005.lean",
+      "sha256": "05b5b59f9a19fc052252d33b51d797c5f8a98754b7d1c672f2590e2a55c9db2b",
+      "bytes": 84766
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup006.lean",
+      "sha256": "2abf404acd4d37c3f40e42f20e7c849e9e8c69b8dcf975c8425d80810f06aef2",
+      "bytes": 86302
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup007.lean",
+      "sha256": "35c35433b468fd1b1d53847d004faebf916766dd94bf076c3c5bec8a1026af5c",
+      "bytes": 86820
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup008.lean",
+      "sha256": "17818080042696e2e7994789f59849d0a9b5b98c569aa463ae0d4553080e86eb",
+      "bytes": 83649
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup009.lean",
+      "sha256": "84289009ee4a80fadc9bc26aa1897a08ab10a0878de5a94e065148ef0f80c54f",
+      "bytes": 81354
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup010.lean",
+      "sha256": "c52166e9820925c04320ddebbc17bc8422cf49262b21122f8162826c02df5a52",
+      "bytes": 70339
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup011.lean",
+      "sha256": "e149226555af9fb46b268cca6acea3d684cb0856d1b3cf056267420844272ed4",
+      "bytes": 78205
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup012.lean",
+      "sha256": "8e97e1f4b7b20c02f3d5199b2edb42790fd8249819100e66a5f98c050e2afe17",
+      "bytes": 84650
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup013.lean",
+      "sha256": "34d850f6ff18d6269f95bb1fb08b5dd548d23bf99b7e7de48b5c9fbb54baaf18",
+      "bytes": 86997
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup014.lean",
+      "sha256": "66c1bc526ba4a3075e685c2304899fb7161ab612d92c8746003bc1c9b8df7ad5",
+      "bytes": 85500
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup015.lean",
+      "sha256": "f077d686ff7885cf3e944b3388d4a7524a105b4b4fd137a1df3e3e239749a69d",
+      "bytes": 81938
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup016.lean",
+      "sha256": "85980724d87b68844d521834651ee728f0b25fdc2a5c2ee934c990b9946c711e",
+      "bytes": 74162
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup017.lean",
+      "sha256": "856b82ac7d895f9a716852098ef91f7facc3c0efc775585909fa53fb96f7694a",
+      "bytes": 76786
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup018.lean",
+      "sha256": "0c74bd321c26c3f124390e20bbf44a92c2b398be177a4934e378f1efaa510922",
+      "bytes": 83937
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup019.lean",
+      "sha256": "3fbd5a375fbac01995947483b6b25977106769f46f3b68db9ff9af9650136ba0",
+      "bytes": 87268
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup020.lean",
+      "sha256": "33765b033a373405348ffc9df5b0af6c0d279f59d35d5ed9482dcb1f7c50c635",
+      "bytes": 89046
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0NodeMassGroup021.lean",
+      "sha256": "883e5a848edc4bc7af687973a339aab7611a3b91b76e7791ef9224d3fa7e1800",
+      "bytes": 6992
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0GaussAddress.lean",
+      "sha256": "820bb5701e1f16667857efbc1ea8c4e0dbb2525d4efd71ca1173578ad153ecd8",
+      "bytes": 285176
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0GaussAddressScan.lean",
+      "sha256": "d437d63867eceaa0c403628e2e699c02cc4eee66f4c80893b44f031ccad2c1fa",
+      "bytes": 3680
+    },
+    {
+      "path": "Grothe/UpperChaos/Q0SourceExceptionIndex.lean",
+      "sha256": "dbc4c88699734a0483cd8e4441700dd0d877498fc264180ba123f425843e540e",
+      "bytes": 2172
+    }
+  ],
+  "templates_sha256": "892e062dc4c12b42b245a2dc31d38cf783d86f2f96f6132bdfee8915254f8397",
+  "outputs": {
+    "ScalarOriginalTerms.lean": "6a79dc27c4376139e6f0a21c1240856841646601cdca2415d6d96f7e7c52c7a3",
+    "FiniteScalarData.lean": "1b4fa442b8d77d80305f11c45c59d1697cfd4d323cf1ad193ad2ecfe7de9a64a",
+    "ScalarOriginalReindex.lean": "475218ba90071bc095533a234b15f94f100ed97035fdf4ee31839a0779dd889d",
+    "ScalarOriginalGroup000.lean": "98e9a55e3b8fe9c5029b2e9e2d53399bf209d8c7b3ee044be10cab8a43299057",
+    "ScalarOriginalGroup001.lean": "a6f1882e6f73624c9e06ff6d68e74ba5b8849daef6e489da77b752785a8d9fcd",
+    "ScalarOriginalGroup002.lean": "22a4efef29328beb8d661bcbf5f18d87c33839341412a7b4a0d9e4fd0ad3c810",
+    "ScalarOriginalGroup003.lean": "97cfe019a8b9f385c8d15d1279aaf9b9b0055b6be83a2e9d3204a2b2f4f1bf52",
+    "ScalarOriginalGroup004.lean": "5fddb514185988620bc47d0b7ccd43f693a58052ae7a2835eb648a70b5d572bf",
+    "ScalarOriginalGroup005.lean": "a17925cbd3ca36e74150cbfdd96c1c219b7b94f5ba02e2c7664ce07c1eec7452",
+    "ScalarOriginalGroup006.lean": "84bfcd3347915263c7c5aae0b3c1b71b3c5b16882e88152d27463abb8b8bc57e",
+    "ScalarOriginalGroup007.lean": "efd93a7731f0b481b84c1c7a86533e973bfb7694252644ba7c3ae3dd3e099962",
+    "ScalarOriginalGroup008.lean": "4b25e4ee35ffc1a51623f0ba66d6b46c5c795d1d9dc9ff9788d8646e7ef6012b",
+    "ScalarOriginalGroup009.lean": "0ab85fbfc2366fa2e081a7c6d6302112ac4f19fbf55e9efa1a21d5fa4972f05d",
+    "ScalarOriginalGroup010.lean": "de3dcbf5093a6e5b20b1dfc76582656cb2d5bf79560eb36916a37a777d3dd8f2",
+    "ScalarOriginalGroup011.lean": "5b52e3b1909c76d5baec0c0c2ebdeb5b5cf00c72a3f43b2c53056b519e71024d",
+    "ScalarOriginalGroup012.lean": "f9848b6b59a7b9af1be4fc1713a288d00bad78a201cd9d1de09516fb7a6b6c5f",
+    "ScalarOriginalGroup013.lean": "e2a185f31dd13a52a891ad2a9780d20e638f459a5b7a30775b0b0c2e31d6a6de",
+    "ScalarOriginalGroup014.lean": "efcb5aad3fa69b05bdedee4b705189656f668da355008e94f01f8706da654c09",
+    "ScalarOriginalGroup015.lean": "a6210e857f0a2af1126e7feddc9acde5f3c42d8a4aae95e880679b7a86205ca3",
+    "ScalarOriginalGroup016.lean": "7eccc5ab84b5525230ee984241d3e2838ab7b184768c6e215d014df5309fd4ac",
+    "ScalarOriginalGroup017.lean": "d8001398171075d62fcbe56d737015bf24b74e3b0ab757da7a825db179354d14",
+    "ScalarOriginalGroup018.lean": "bb47715447d48b18ca54363ac248bd5e61e07e6812ee4f11dab86f3b143909ec",
+    "ScalarOriginalGroup019.lean": "44a37cef3e39d45f913a48c3d4080ce5b5882537f5f608bbbb7626edbc572945",
+    "ScalarOriginalGroup020.lean": "ea3d18d5e8adfa632497b5a6edcf02c3de8b84d504edfb8972276e7a6745866c",
+    "ScalarOriginalGroup021.lean": "c516ddc820e0d460c8c7608fd9a9e45e0aba995b778edf5d4dd34d9141ff8ad3",
+    "ScalarOriginalBinding.lean": "b22313c6d224b9d7bfd4754281858519d08d632cdd4f841fc5b532366eb56d04"
+  },
+  "rows": 21577,
+  "masked_rows": 417,
+  "leaf_checks": 169,
+  "group_arithmetic_checks": 21,
+  "strict_guards": 210,
+  "extraction_manifest_sha256": "536d8d839b1ee0475a8a50b38698e86217d495be73b2313a3909efae3661d7e1",
+  "extraction_receipt_sha256": "a626a9e84ff6e09584cb600a1b07713313baf3732c6fe304417efabeef7abf8d",
+  "independent_repair_review_sha256": "293cd58d86470923117168b9fb69934768e00b5c1d945dce954169c32c3733da",
+  "exact_extractions": [
+    {
+      "namespace": "Grothe.UpperChaos.ScalarOriginalBindingDraft",
+      "name": "upperAt",
+      "source": "scalar-v2/ScalarOriginalReindex",
+      "declaration_sha256": "cb9af6dd927c791887ab4b5b9cdf7ba134c6999b23dbd811f508fa901e1d3304"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.ScalarOriginalBindingDraft",
+      "name": "rowTerm",
+      "source": "scalar-v2/ScalarOriginalReindex",
+      "declaration_sha256": "284a8e68749eb880ac8e694267a1dbc1656feda6baa6fbc24a0914219378a9a4"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.TwoBlockSoundnessDraft",
+      "name": "MassRow",
+      "source": "TwoBlockSoundness",
+      "declaration_sha256": "6bacfd8832beb543ea433414fc07f3097d591acac9c76637d5e5c8d050b77342"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.TwoBlockSoundnessDraft",
+      "name": "massRow",
+      "source": "TwoBlockSoundness",
+      "declaration_sha256": "a5dbaa538065a54e4bc2c650f21f42e07c913aef7ce09d6a01c12221bd3298ac"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.TwoBlockSoundnessDraft",
+      "name": "massRow_mem",
+      "source": "TwoBlockSoundness",
+      "declaration_sha256": "3d9f24d9ffcb01d14be59ef5c126317806e3d31ed97d64c8b77b87b560bb9432"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.TwoBlockSoundnessDraft",
+      "name": "massRow_index",
+      "source": "TwoBlockSoundness",
+      "declaration_sha256": "15369e408c53d9b5e43c1af4b53cce34df2864a54258ecb00ffc258c3cb9787f"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.TwoBlockSoundnessDraft",
+      "name": "row",
+      "source": "TwoBlockSoundness",
+      "declaration_sha256": "4eba83f68208a8f46700418d20a0b12613f00186d5d0c4f2f0e5e5fbb628a46e"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.TwoBlockSoundnessDraft",
+      "name": "maskNat",
+      "source": "TwoBlockSoundness",
+      "declaration_sha256": "cfb7793ac4dce547c3457bfa98f8ba0b1c3e5fe388b8bf53a53319bfa4bd8e35"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.TwoBlockSoundnessDraft",
+      "name": "UpperTable",
+      "source": "TwoBlockSoundness",
+      "declaration_sha256": "22aeb8674007a35169fa873817623c18fbdac44e572ef165ac425314e068fa45"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.TwoBlockSoundnessDraft",
+      "name": "originalUpper",
+      "source": "TwoBlockSoundness",
+      "declaration_sha256": "e294e18586117ab5c32ed33f03c6404f3d289d02c3515be243989dfa5e4e5a8b"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.TwoBlockIntegerCheckerDraft",
+      "name": "scalarNumerator",
+      "source": "IntegerCheckerSoundness",
+      "declaration_sha256": "2566ad51328eb46f9bb87974ac5e21dd4dd6bd82f367c2a54996a46a5a734693"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.TwoBlockIntegerCheckerDraft",
+      "name": "scalarSumLiteral",
+      "source": "GroundNumerals",
+      "declaration_sha256": "56b4e8648d997f108428647d63322c4f4697389a852aeb5f71fa3e3b5368e5c4"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.ScalarOriginalBindingDraft",
+      "name": "upperAt_fin",
+      "source": "scalar-v2/ScalarOriginalReindex",
+      "declaration_sha256": "fae64904e8ecb7ccdda24e63536ea04e88ed5a89d6598c989ee5c4d177457fd1"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.ScalarOriginalBindingDraft",
+      "name": "massRow_panel",
+      "source": "scalar-v2/ScalarOriginalReindex",
+      "declaration_sha256": "c43db4bcc9153428674ffd0bb6050cfe43e2506ba22eb1a0bec5fbb6d2ca28fe"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.ScalarOriginalBindingDraft",
+      "name": "original_term",
+      "source": "scalar-v2/ScalarOriginalReindex",
+      "declaration_sha256": "3787ef416e0dc080874f0bcade46336b2e5da0c9bb6a4fec34cdd39f15924be6"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.ScalarOriginalBindingDraft",
+      "name": "sum_get_of_length",
+      "source": "scalar-v2/ScalarOriginalReindex",
+      "declaration_sha256": "d9d6cd37974219af43626a9c0dbe6042e858f8e0c60da09a9aeb5f0e56122692"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.ScalarOriginalBindingDraft",
+      "name": "scalarNumerator_eq_ledger",
+      "source": "scalar-v2/ScalarOriginalReindex",
+      "declaration_sha256": "cadb553b63211f61381657fe68030c5a101cf470bff7365bf2596b0ba0f79f38"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.ScalarOriginalBindingDraft",
+      "name": "ledger_total",
+      "source": "scalar-v2/ScalarOriginalBinding",
+      "declaration_sha256": "af30c2c186013337539596eec144a994baf6cd0238fdfaeff719201a8db1096a"
+    },
+    {
+      "namespace": "Grothe.UpperChaos.ScalarOriginalBindingDraft",
+      "name": "scalar_original_binding",
+      "source": "scalar-v2/ScalarOriginalBinding",
+      "declaration_sha256": "46cfbb5d49fba322ab1983327f1ed41a7335abb2b0b2f56ed8d388733dd4f70e"
+    }
+  ],
+  "coverage": [
+    {
+      "module": "ScalarOriginalTerms",
+      "exports": [
+        "upperAt",
+        "rowTerm"
+      ],
+      "guards": 2,
+      "lean_accepted": false
+    },
+    {
+      "module": "FiniteScalarData",
+      "exports": [
+        "MassRow",
+        "massRow",
+        "massRow_mem",
+        "massRow_index",
+        "row",
+        "maskNat",
+        "UpperTable",
+        "originalUpper",
+        "scalarNumerator",
+        "scalarSumLiteral"
+      ],
+      "guards": 10,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalReindex",
+      "exports": [
+        "upperAt_fin",
+        "massRow_panel",
+        "original_term",
+        "sum_get_of_length",
+        "scalarNumerator_eq_ledger"
+      ],
+      "guards": 5,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup000",
+      "exports": [
+        "chunk000_00_total",
+        "chunk000_01_total",
+        "chunk000_02_total",
+        "chunk000_03_total",
+        "chunk000_04_total",
+        "chunk000_05_total",
+        "chunk000_06_total",
+        "chunk000_07_total",
+        "group000_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup001",
+      "exports": [
+        "chunk001_00_total",
+        "chunk001_01_total",
+        "chunk001_02_total",
+        "chunk001_03_total",
+        "chunk001_04_total",
+        "chunk001_05_total",
+        "chunk001_06_total",
+        "chunk001_07_total",
+        "group001_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup002",
+      "exports": [
+        "chunk002_00_total",
+        "chunk002_01_total",
+        "chunk002_02_total",
+        "chunk002_03_total",
+        "chunk002_04_total",
+        "chunk002_05_total",
+        "chunk002_06_total",
+        "chunk002_07_total",
+        "group002_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup003",
+      "exports": [
+        "chunk003_00_total",
+        "chunk003_01_total",
+        "chunk003_02_total",
+        "chunk003_03_total",
+        "chunk003_04_total",
+        "chunk003_05_total",
+        "chunk003_06_total",
+        "chunk003_07_total",
+        "group003_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup004",
+      "exports": [
+        "chunk004_00_total",
+        "chunk004_01_total",
+        "chunk004_02_total",
+        "chunk004_03_total",
+        "chunk004_04_total",
+        "chunk004_05_total",
+        "chunk004_06_total",
+        "chunk004_07_total",
+        "group004_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup005",
+      "exports": [
+        "chunk005_00_total",
+        "chunk005_01_total",
+        "chunk005_02_total",
+        "chunk005_03_total",
+        "chunk005_04_total",
+        "chunk005_05_total",
+        "chunk005_06_total",
+        "chunk005_07_total",
+        "group005_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup006",
+      "exports": [
+        "chunk006_00_total",
+        "chunk006_01_total",
+        "chunk006_02_total",
+        "chunk006_03_total",
+        "chunk006_04_total",
+        "chunk006_05_total",
+        "chunk006_06_total",
+        "chunk006_07_total",
+        "group006_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup007",
+      "exports": [
+        "chunk007_00_total",
+        "chunk007_01_total",
+        "chunk007_02_total",
+        "chunk007_03_total",
+        "chunk007_04_total",
+        "chunk007_05_total",
+        "chunk007_06_total",
+        "chunk007_07_total",
+        "group007_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup008",
+      "exports": [
+        "chunk008_00_total",
+        "chunk008_01_total",
+        "chunk008_02_total",
+        "chunk008_03_total",
+        "chunk008_04_total",
+        "chunk008_05_total",
+        "chunk008_06_total",
+        "chunk008_07_total",
+        "group008_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup009",
+      "exports": [
+        "chunk009_00_total",
+        "chunk009_01_total",
+        "chunk009_02_total",
+        "chunk009_03_total",
+        "chunk009_04_total",
+        "chunk009_05_total",
+        "chunk009_06_total",
+        "chunk009_07_total",
+        "group009_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup010",
+      "exports": [
+        "chunk010_00_total",
+        "chunk010_01_total",
+        "chunk010_02_total",
+        "chunk010_03_total",
+        "chunk010_04_total",
+        "chunk010_05_total",
+        "chunk010_06_total",
+        "chunk010_07_total",
+        "group010_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup011",
+      "exports": [
+        "chunk011_00_total",
+        "chunk011_01_total",
+        "chunk011_02_total",
+        "chunk011_03_total",
+        "chunk011_04_total",
+        "chunk011_05_total",
+        "chunk011_06_total",
+        "chunk011_07_total",
+        "group011_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup012",
+      "exports": [
+        "chunk012_00_total",
+        "chunk012_01_total",
+        "chunk012_02_total",
+        "chunk012_03_total",
+        "chunk012_04_total",
+        "chunk012_05_total",
+        "chunk012_06_total",
+        "chunk012_07_total",
+        "group012_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup013",
+      "exports": [
+        "chunk013_00_total",
+        "chunk013_01_total",
+        "chunk013_02_total",
+        "chunk013_03_total",
+        "chunk013_04_total",
+        "chunk013_05_total",
+        "chunk013_06_total",
+        "chunk013_07_total",
+        "group013_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup014",
+      "exports": [
+        "chunk014_00_total",
+        "chunk014_01_total",
+        "chunk014_02_total",
+        "chunk014_03_total",
+        "chunk014_04_total",
+        "chunk014_05_total",
+        "chunk014_06_total",
+        "chunk014_07_total",
+        "group014_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup015",
+      "exports": [
+        "chunk015_00_total",
+        "chunk015_01_total",
+        "chunk015_02_total",
+        "chunk015_03_total",
+        "chunk015_04_total",
+        "chunk015_05_total",
+        "chunk015_06_total",
+        "chunk015_07_total",
+        "group015_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup016",
+      "exports": [
+        "chunk016_00_total",
+        "chunk016_01_total",
+        "chunk016_02_total",
+        "chunk016_03_total",
+        "chunk016_04_total",
+        "chunk016_05_total",
+        "chunk016_06_total",
+        "chunk016_07_total",
+        "group016_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup017",
+      "exports": [
+        "chunk017_00_total",
+        "chunk017_01_total",
+        "chunk017_02_total",
+        "chunk017_03_total",
+        "chunk017_04_total",
+        "chunk017_05_total",
+        "chunk017_06_total",
+        "chunk017_07_total",
+        "group017_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup018",
+      "exports": [
+        "chunk018_00_total",
+        "chunk018_01_total",
+        "chunk018_02_total",
+        "chunk018_03_total",
+        "chunk018_04_total",
+        "chunk018_05_total",
+        "chunk018_06_total",
+        "chunk018_07_total",
+        "group018_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup019",
+      "exports": [
+        "chunk019_00_total",
+        "chunk019_01_total",
+        "chunk019_02_total",
+        "chunk019_03_total",
+        "chunk019_04_total",
+        "chunk019_05_total",
+        "chunk019_06_total",
+        "chunk019_07_total",
+        "group019_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup020",
+      "exports": [
+        "chunk020_00_total",
+        "chunk020_01_total",
+        "chunk020_02_total",
+        "chunk020_03_total",
+        "chunk020_04_total",
+        "chunk020_05_total",
+        "chunk020_06_total",
+        "chunk020_07_total",
+        "group020_total"
+      ],
+      "guards": 9,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalGroup021",
+      "exports": [
+        "chunk021_00_total",
+        "group021_total"
+      ],
+      "guards": 2,
+      "lean_accepted": false
+    },
+    {
+      "module": "ScalarOriginalBinding",
+      "exports": [
+        "ledger_total",
+        "scalar_original_binding"
+      ],
+      "guards": 2,
+      "lean_accepted": false
+    }
+  ]
+}
