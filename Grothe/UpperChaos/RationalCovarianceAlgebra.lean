@@ -19,8 +19,8 @@ open RationalQuadraticMoments
 theorem moment_zero (A B C : ℚ) (hA : A ≠ 0)
     (hD : A * C - B ^ 2 ≠ 0) :
     momentValue A B C 0 0 0 0 = 1 / (A * C - B ^ 2) := by
-  norm_num [momentValue, wickCoeff, Finset.sum_range_succ] <;>
-    field_simp [hA, hD]
+  norm_num [momentValue, wickCoeff, Finset.sum_range_succ]
+  field_simp [hA, hD]
 
 theorem moment_first_variance (A B C : ℚ) (hA : A ≠ 0)
     (hD : A * C - B ^ 2 ≠ 0) :
@@ -32,20 +32,20 @@ theorem moment_first_variance (A B C : ℚ) (hA : A ≠ 0)
 theorem moment_second_variance (A B C : ℚ) (hA : A ≠ 0)
     (hD : A * C - B ^ 2 ≠ 0) :
     momentValue A B C 0 0 1 1 = A / (A * C - B ^ 2) ^ 2 := by
-  norm_num [momentValue, wickCoeff, Finset.sum_range_succ] <;>
-    field_simp [hA, hD]
+  norm_num [momentValue, wickCoeff, Finset.sum_range_succ]
+  field_simp [hA, hD]
 
 theorem moment_cross (A B C : ℚ) (hA : A ≠ 0)
     (hD : A * C - B ^ 2 ≠ 0) :
     momentValue A B C 1 0 0 1 = -B / (A * C - B ^ 2) ^ 2 := by
-  norm_num [momentValue, wickCoeff, Finset.sum_range_succ] <;>
-    field_simp [hA, hD]
+  norm_num [momentValue, wickCoeff, Finset.sum_range_succ]
+  field_simp [hA, hD]
 
 theorem moment_cross_reverse (A B C : ℚ) (hA : A ≠ 0)
     (hD : A * C - B ^ 2 ≠ 0) :
     momentValue A B C 0 1 1 0 = -B / (A * C - B ^ 2) ^ 2 := by
-  norm_num [momentValue, wickCoeff, Finset.sum_range_succ] <;>
-    field_simp [hA, hD]
+  norm_num [momentValue, wickCoeff, Finset.sum_range_succ]
+  field_simp [hA, hD]
 
 def delta (a n R P Q : ℚ) : ℚ :=
   1 - a ^ 2 * (R ^ 2 + P * Q) - n ^ 2 * R * (P + Q) +

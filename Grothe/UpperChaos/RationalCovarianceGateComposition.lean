@@ -26,7 +26,8 @@ noncomputable section
 theorem dampingQ_add_nuQ (power : ℕ) : dampingQ power + nuQ power = 1 := by
   have hden : (1 + 21 * (power : ℚ) / 20) ≠ 0 := ne_of_gt (by positivity)
   unfold dampingQ nuQ
-  field_simp [hden] <;> ring
+  rw [← add_one_mul, add_comm (21 * (power : ℚ) / 20) 1, mul_one_div,
+    div_self hden]
 
 /-- The checked covariance determinant is exactly the rational determinant. -/
 theorem gate_delta_pos (g : Gate) (hg : gateOK g = true) (side : Fin 2) :
@@ -87,7 +88,8 @@ private theorem scaled_quadratic (a n R P Q k u v x y : ℚ)
     (schur_determinant_ne_zero a n R P Q hR hQ hD)]
   rw [scaled_determinant a n R P Q hR hQ]
   unfold mass
-  field_simp [hR, hQ, hD] <;> ring
+  field_simp [hR, hQ, hD]
+  ring
 
 /-- Direct zero insertion, with all algebraic side conditions derived from the
 same actual certificate used by the analytic pair binding. -/
