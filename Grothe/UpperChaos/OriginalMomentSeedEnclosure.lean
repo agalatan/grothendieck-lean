@@ -32,14 +32,19 @@ theorem moment_mem :
         (enclosureUpper : ℝ) / (scale : ℝ) := by
   have h := moment_zero_mem_of_integer 512 scale xNumerator xDenominator radius lower upper
     parameters.1 parameters.2.1 parameters.2.2 initial steps terminal
-  simpa only [lowerBoundZ, upperBoundZ, lower_sum, upper_sum,
-    enclosureLower, enclosureUpper] using h
+  have hlo : lowerBoundZ 512 radius lower = enclosureLower :=
+    congrArg (fun z : ℤ => z - radius) lower_sum
+  have hhi : upperBoundZ 512 radius upper = enclosureUpper :=
+    congrArg (fun z : ℤ => z + radius) upper_sum
+  rw [hlo, hhi] at h
+  exact h
 
 /-- Algebraic identity only: binding this midpoint to the physical row is separate. -/
 theorem parameter_eq_midpoint_sq :
     (xNumerator : ℝ) / (xDenominator : ℝ) =
       ((midpoint : ℝ) / (scale : ℝ)) ^ 2 := by
-  simp only [xNumerator, xDenominator, Int.cast_mul, div_pow, pow_two]
+  rw [div_pow]
+  simp only [xNumerator, xDenominator, Int.cast_mul, pow_two]
 
 /-- Concrete enclosure of J₀ at the pinned rational midpoint squared. -/
 theorem moment_midpoint_mem :
