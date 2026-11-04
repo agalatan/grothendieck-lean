@@ -218,8 +218,6 @@ import Grothe
 #print axioms Grothe.Upper.CompositeComparisonData.residual_value
 #print axioms Grothe.Upper.CompositeComparisonData.transfer_value_lt
 #print axioms Grothe.Upper.CompositeComparisonData.upper_lt_decimal
-#print axioms Grothe.Upper.EnergyDegreeOneLookup.one_zero
-#print axioms Grothe.Upper.EnergyDegreeOneLookup.zero_one
 #print axioms Grothe.Upper.RelaxedComparisonData.comparison_budget
 #print axioms Grothe.Upper.RelaxedComparisonData.denominator_pos
 #print axioms Grothe.Upper.RelaxedComparisonData.energy_le_radiusSlack_sq
@@ -1008,18 +1006,6 @@ import Grothe
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.DegreeOneMatrix.one10
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.DegreeOneMatrix.one11
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.DegreeOneMatrix.zero
-#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.RetainedDegreeOne.decode_first
-#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.RetainedDegreeOne.decode_second
-#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.RetainedDegreeOne.dyadic_reference_table_residual
-#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.RetainedDegreeOne.output_first
-#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.RetainedDegreeOne.output_second
-#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.RetainedDegreeOne.rational_table_residual
-#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.RetainedDegreeOne.retained_energy_first
-#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.RetainedDegreeOne.retained_energy_second
-#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.RetainedDegreeOne.retained_output_first
-#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.RetainedDegreeOne.retained_output_second
-#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.RetainedDegreeOne.retained_table_residual
-#print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.RetainedDegreeOne.stored_table_residual
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.actualEntry_eq_finiteMoment
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.actualEntry_eq_matrixMoment2
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.PolynomialEntries.actualEntry_eq_matrixRecurrence
