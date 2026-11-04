@@ -22,5 +22,6 @@ Grothe.LowerAnalytic.CapPieces.R14x200_6
 Grothe.LowerAnalytic.CapPieces.R14x200_7
 Grothe.LowerAnalytic.CapPieces.R14x200_8
 Grothe.LowerAnalytic.CapPieces.R14x200_9
+Grothe.UpperQuad.Row227Check
 GrotheKernel.BandMass
 GrotheKernel.HeadWeight
