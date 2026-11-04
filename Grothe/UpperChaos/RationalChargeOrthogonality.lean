@@ -36,7 +36,7 @@ theorem momentValue_eq_zero_of_unbalanced (A B C : ℚ) (p q r s : ℕ)
   have hkp : k ≤ p := by omega
   have hkq : k ≤ q := by omega
   have hb : (p - k) + r ≠ (q - k) + s := by omega
-  simp only [if_neg hb, mul_zero]
+  simp only [ite_eq_right hb, mul_zero]
 
 /-- The P4 variables are ordered as (w, conjugate w, v, conjugate v). -/
 def chargeWeights : Fin 4 → ℤ := ![1, -1, 1, -1]
@@ -46,6 +46,7 @@ theorem weight_chargeWeights (d : Fin 4 →₀ ℕ) :
       ((d 0 : ℤ) + d 2) - ((d 1 : ℤ) + d 3) := by
   simp [Finsupp.weight_eq_sum, chargeWeights, Fin.sum_univ_succ,
     sub_eq_add_neg, add_assoc, add_comm, add_left_comm]
+  omega
 
 /-- First bipartite source degree minus second bipartite source degree. -/
 def pairCharge (e : PairPowers) : ℤ :=
@@ -199,12 +200,12 @@ theorem rationalSourceNormValue_eq_charge_filtered (g : Gate) :
   apply Finset.sum_congr rfl
   intro f _hf
   by_cases hc : sourceCharge f = sourceCharge e
-  · simp only [hc, if_true]
+  · simp only [hc, ite_true]
   · have hne : sourceCharge e ≠ sourceCharge f := by
       intro heq
       exact hc heq.symm
     rw [rationalTensorPairValue_eq_zero_of_charge_ne g e f hne]
-    simp only [mul_zero, if_neg hc]
+    simp only [mul_zero, ite_eq_right hc]
 
 open Lean Elab Command
 run_cmd do
