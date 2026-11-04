@@ -235,7 +235,7 @@ noncomputable def nodeCoef (s : ℝ) (p : ℕ × ℕ) : ℝ :=
 
 /-- The flags of `nodeValid`, unpacked. -/
 lemma nodeValid_unpack (P : ℕ) (nd : NodeSpec) (aI : Ival) (h : nodeValid P nd aI = true) :
-    bracketOK P nd.order nd.bracket = true ∧ 0 < nd.loD ∧ 0 < nd.hiD ∧ 1 ≤ nd.order ∧
+    bracketOK bracketPrec nd.order nd.bracket = true ∧ 0 < nd.loD ∧ 0 < nd.hiD ∧ 1 ≤ nd.order ∧
       weightValid P nd = true ∧ isPos (nodeS P nd) = true ∧
       nodeFactorsValid P (nodeS P nd) = true ∧ isPos aI = true ∧
       ratiosValid P (sqI P aI) (ratioDepth nd.cutoff) = true ∧

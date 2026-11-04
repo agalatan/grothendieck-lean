@@ -66,9 +66,13 @@ def nodeVals (P : Nat) (piI : Ival) (nd : NodeSpec) (neg : Bool) (aI : Ival) : A
   canonicalTriangleI P (seedScalarI P piI aI) neg zeroI aI (sqrtTable P (nd.cutoff + 1))
     (nodeRatios P nd aI) nd.cutoff 265
 
+/-- The precision of the bracket check: `P_n` at the endpoints of a bracket of width `2^{−640}` is
+of size `≈ 2^{−630}`, so its sign needs more than 640 bits (the node values themselves need 512). -/
+def bracketPrec : Nat := 1024
+
 /-- The validity flags of a node. -/
 def nodeValid (P : Nat) (nd : NodeSpec) (aI : Ival) : Bool :=
-  bracketOK P nd.order nd.bracket && decide (0 < nd.loD) && decide (0 < nd.hiD) &&
+  bracketOK bracketPrec nd.order nd.bracket && decide (0 < nd.loD) && decide (0 < nd.hiD) &&
     decide (1 ≤ nd.order) && weightValid P nd && isPos (nodeS P nd) &&
     nodeFactorsValid P (nodeS P nd) && isPos aI &&
     ratiosValid P (sqI P aI) (ratioDepth nd.cutoff) &&

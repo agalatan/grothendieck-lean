@@ -138,14 +138,14 @@ lemma accumulateSpecs_valid (P : ℕ) (piI : Ival) (pd : ProfileData) (qLo qHi :
     · exact ih acc₁ acc' h nd' hmem
 
 /-- The roots of an accepted list lie in their brackets (the hypothesis `hx` of the bridge). -/
-lemma rootOf_mem_of_accepted (P : ℕ) (hP : 1 ≤ P) (piI : Ival) (pd : ProfileData) (qLo qHi : ℕ)
+lemma rootOf_mem_of_accepted (P : ℕ) (piI : Ival) (pd : ProfileData) (qLo qHi : ℕ)
     (specs : List NodeSpec) (acc' : Raw)
     (h : accumulateSpecs P piI pd qLo qHi specs rawZero = some acc') :
     ∀ nd ∈ specs, mem (rootOf nd) nd.bracket.toIval := by
   intro nd hnd
   obtain ⟨neg, aI, -, hvalid⟩ := accumulateSpecs_valid P piI pd qLo qHi specs rawZero acc' h nd hnd
   obtain ⟨hbr, -⟩ := nodeValid_unpack P nd aI hvalid
-  exact (rootOf_spec P hP nd hbr).1
+  exact (rootOf_spec bracketPrec (by decide) nd hbr).1
 
 /-- The node of a spec of the panel `p` is master's `panelNode p.lo p.hi` at the root. -/
 lemma specNode_eq_panelNode (cutoffs : Array ℕ) (p : Q0GaussAddress.Panel) (nd : NodeSpec)

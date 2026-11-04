@@ -621,7 +621,26 @@ the cap rows). Design:
   does not depend on the block it is accumulated in (`specTerm_range`). Built on big; the laptop
   cannot build `Bridge` (closure).
 
-**Remaining, in order.** (1) The fact modules: for each block `b` a module
+**Measured block loop (big, loaded, core pinned, P = 512, the first 40 nodes = full-cutoff nodes of
+panel 0):** `quadrun block 0 110 40`: 2.5 s per node; `block 110 138 40`: 1.8 s; `block 244 251 40`:
+1.8 s; the full range `block 0 251 40`: 2.3 s (±40 % noise from the other jobs). Per block fact:
+≈ 21,577 × 1.8–2.5 s ≈ 11–15 h on a loaded core, ≈ 8–10 h idle; the nodes with small cutoffs are
+cheaper than these. The bracket check is now at the fixed precision `bracketPrec = 1024` inside
+`nodeValid` (`P_n` at the endpoints of a `2^{-640}`-wide bracket is `≈ 2^{-630}`, undecidable at
+512 bits; the first `quadrun block` run rejected every node for that reason).
+**Facts' common module** (`Grothe/UpperQuad/Facts/Common.lean`): `P0 = 512`, `piI`, the profile
+literal with `profile_agrees`, the twelve blocks `bounds = [0, 110, 138, 158, 174, 188, 200, 210,
+220, 228, 237, 244, 251]` (balanced by the entry count, `bounds_mono`, `blk`/`blk_spec` by
+`decide`), `blockFact b eps bnd : Bool` (the profile flags, the node loop of `partitionSpecs`
+restricted to the block through `Option.any`, `energyOKBlock`, `rawDistOKBlock`),
+`blockFact_spec`, and **`hclose_of_blockFacts`**: the twelve `blockFact` values, the even check,
+S2 and `hQuad` give `hclose`. Tolerances (to be fixed in the fact modules; the budget has room):
+`eps_b ≈ 5·10⁻¹³·2²⁵⁶` each (the measured ℓ¹ excursion of the whole head is `3.1·10⁻¹⁵`),
+`bnd_b = 2¹⁰⁰` (the squared widths at scale `2^{256}` sum to `≲ 10²⁵`), `evenNum = 0`.
+
+**Remaining, in order.** (0) Validate the block checks on the milestone-2 raw vector
+(`quadrun check handoff/quad-checker/raw-final.txt frozen.txt energy-table.txt qLo qHi`: the
+excursions by block must sum to the milestone-3 `3.116·10⁻¹⁵`). (1) The fact modules: for each block `b` a module
 `Grothe/UpperQuad/Facts/GradeBlockNN.lean` with the `native_decide` fact
 `accumulateSpecs 512 piI profileData (bounds b) (bounds (b+1)) partitionSpecs rawZero = some R_b ∧
 energyOKBlock R_b frozenFx tableFx eps_b … ∧ rawDistOKBlock …` (the accumulator `R_b` is not

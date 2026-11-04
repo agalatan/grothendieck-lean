@@ -3831,6 +3831,7 @@ import Grothe.UpperQuad.Data.Cutoffs5
 import Grothe.UpperQuad.Data.Cutoffs6
 import Grothe.UpperQuad.Data.Cutoffs7
 import Grothe.UpperQuad.EnergySound
+import Grothe.UpperQuad.Facts.Common
 import Grothe.UpperQuad.GaussSound
 import Grothe.UpperQuad.IntervalSound
 import Grothe.UpperQuad.NodeSound
