@@ -58,7 +58,7 @@ permissions:
 jobs:
   route:
     if: github.event_name != 'schedule'
-    runs-on: ubuntu-24.04
+    runs-on: ${{ vars.FORCE_HEAVY == 'true' && fromJSON('["self-hosted","light"]') || 'ubuntu-24.04' }}   # light droplet slots when FORCE_HEAVY (GitHub's hosted queue can lag for many minutes)
     timeout-minutes: 15
     outputs:
       lean: ${{ steps.scope.outputs.lean }}
@@ -498,7 +498,7 @@ jobs:
     # GitHub-hosted (has the GitHub CLI): after a green check
     needs: [route, build]
     if: github.ref_name == 'master' || inputs.land
-    runs-on: ubuntu-24.04
+    runs-on: ${{ vars.FORCE_HEAVY == 'true' && fromJSON('["self-hosted","light"]') || 'ubuntu-24.04' }}   # light droplet slots when FORCE_HEAVY (GitHub's hosted queue can lag for many minutes)
     timeout-minutes: 30
     steps:
       - name: Cancel the checks of older master commits (this green check covers their trees)
@@ -563,7 +563,7 @@ jobs:
   keepalive:
     # the weekly schedule: restoring the master cache counts as a use and resets GitHub's 7-day expiry
     if: github.event_name == 'schedule'
-    runs-on: ubuntu-24.04
+    runs-on: ${{ vars.FORCE_HEAVY == 'true' && fromJSON('["self-hosted","light"]') || 'ubuntu-24.04' }}   # light droplet slots when FORCE_HEAVY (GitHub's hosted queue can lag for many minutes)
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
