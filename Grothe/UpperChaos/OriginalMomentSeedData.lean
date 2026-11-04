@@ -593,7 +593,7 @@ def point (n : ℕ) : ℤ × ℤ := (point? n).getD (0, 0)
 def lower (n : ℕ) : ℤ := (point n).1
 def upper (n : ℕ) : ℤ := (point n).2
 
-/-- Proposed scaled next-term radius, awaiting a Lean arithmetic check. -/
+/-- Scaled next-term radius verified by the separate arithmetic checks. -/
 def radius : ℤ := 1
 /-- Expected sum of retained lower integers, indices 0 through 512. -/
 def lowerSum : ℤ := 48204044149670562919499368823368710218832065248193183508099922313200448725423081587875432826614857672955823162297195946871651785897604760059070377152320797065970902156578794984141108836714383518168843841979204594055740439710678679987350856175258145080880882686220865327697519021303940090214277270296375164007

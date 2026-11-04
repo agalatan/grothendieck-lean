@@ -14,7 +14,7 @@
   ],
   "generator": {
     "file": "tools/gen_original_moment_seed.py",
-    "sha256": "001c06f10c6d5396563ab6f55bc0a115602b603a9d650d53410e8b1360e70259"
+    "sha256": "514727b2ddb04816546856661b3238fc38deb30d9f8ff3694f14d238085f19ce"
   },
   "inputs": [
     {
@@ -51,7 +51,7 @@
     {
       "bytes": 144593,
       "file": "Grothe/UpperChaos/OriginalMomentSeedData.lean",
-      "sha256": "5adeb4a668802d2f3212544df9b319f19efab83884544df44491faa5cfbf1d6b"
+      "sha256": "055395d30ff2826ddd1b117a3f9adcb3e5a369ca9da0a7d36c3536dc89d47769"
     }
   ],
   "retained_indices": [

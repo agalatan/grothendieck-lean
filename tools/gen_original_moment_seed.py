@@ -215,7 +215,7 @@ def render_data(packet: Packet) -> bytes:
         "def lower (n : ℕ) : ℤ := (point n).1",
         "def upper (n : ℕ) : ℤ := (point n).2",
         "",
-        "/-- Proposed scaled next-term radius, awaiting a Lean arithmetic check. -/",
+        "/-- Scaled next-term radius verified by the separate arithmetic checks. -/",
         f"def radius : ℤ := {radius}",
         "/-- Expected sum of retained lower integers, indices 0 through 512. -/",
         f"def lowerSum : ℤ := {integer_literal(lower_sum)}",
