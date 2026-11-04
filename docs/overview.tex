@@ -1161,7 +1161,17 @@ orthogonal in the actual conditional Gram evaluator. Thus its full rational
 source norm equals the sum with cross-charge entries removed. Polynomial
 insertion is a rational linear map, so the actual source can also be split
 using the finite charge set of the original multiplier before expanding its
-eight source variables. This is an exact algebraic decomposition: the
+eight source variables. The same insertion reverses physical charge, including
+when its rational rate is zero. Bilinearity and charge orthogonality therefore
+give the exact identity
+\[
+ N_g=\sum_{k\in\operatorname{chargeSet}(P_g)}
+       B_g\bigl(I_{r_g}(P_{g,k}),I_{r_g}(P_{g,k})\bigr),
+\]
+where $N_g$ is the actual rational source norm expression, $P_{g,k}$ its
+physical multiplier's charge component, $I_{r_g}$ the existing coherent
+insertion, and $B_g$ the existing rational tensor pair kernel with both source
+coefficient factors. No charge count or square formula is assumed here.
 Laguerre coefficient binding, block diagonalization into squares, and numerical
 source enclosures remain separate obligations.
 
