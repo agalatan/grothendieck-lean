@@ -60,7 +60,7 @@ def kappaI (P : Nat) (pd : ProfileData) : Ival :=
 
 /-- The scaled profile `κ · vprof s`, the sign (`true` = negative) and the shift
 `√s / |κ vprof s|`; `none` if the sign is not decided by the enclosure. -/
-def shiftI (P : Nat) (piI : Ival) (pd : ProfileData) (s : Ival) : Option (Ival × Bool × Ival) :=
+def profileShiftI (P : Nat) (piI : Ival) (pd : ProfileData) (s : Ival) : Option (Ival × Bool × Ival) :=
   let v := mulI P (kappaI P pd) (vprofI P piI pd s)
   if isPos v then some (v, false, divI P (sqrtI P s) v)
   else if isNeg v then some (v, true, divI P (sqrtI P s) (negI v))

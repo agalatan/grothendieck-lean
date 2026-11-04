@@ -123,7 +123,7 @@ def runNode (panels : Array Panel) (addrs : Array (Nat × Nat)) (cutoffs : Array
     let half := divN P 2 (subI P (ratI P p.hiN p.hiD) loI)
     let s := addI P loI (mulI P half (addI P (ofInt P 1) b.toIval))
     let w := mulI P half (weightI P p.order b.toIval)
-    match shiftI P piI pd s with
+    match profileShiftI P piI pd s with
     | none => throw (IO.userError s!"node {ordinal}: profile sign undecided")
     | some (v, neg, a) =>
       let x := sqI P a

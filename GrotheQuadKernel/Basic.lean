@@ -19,8 +19,7 @@ def pow2 (n : Nat) : Int := ((1 : Nat) <<< n : Nat)
 
 /-- The number of bits of `|m|` (`0` for `0`). -/
 def bitsOf (m : Int) : Nat :=
-  let n := m.natAbs
-  if n == 0 then 0 else Nat.log2 n + 1
+  if m.natAbs == 0 then 0 else Nat.log2 m.natAbs + 1
 
 /-- A floating dyadic interval `[lo · 2^e, hi · 2^e]`. -/
 structure Ival where
@@ -41,13 +40,14 @@ def fdiv (x y : Int) : Int := x / y
 /-- Ceiling division by a positive integer. -/
 def cdiv (x y : Int) : Int := -((-x) / y)
 
+/-- Round the mantissas outward by `s` bits (the exponent grows by `s`). -/
+def shiftI (s : Nat) (a : Ival) : Ival := ⟨shDown s a.lo, shUp s a.hi, a.e + s⟩
+
+/-- Round outward to at most `P` mantissa bits when the mantissas have `b` bits. -/
+def normAt (b P : Nat) (a : Ival) : Ival := if b ≤ P then a else shiftI (b - P) a
+
 /-- Round outward to at most `P` mantissa bits. -/
-def norm (P : Nat) (a : Ival) : Ival :=
-  let b := max (bitsOf a.lo) (bitsOf a.hi)
-  if b ≤ P then a
-  else
-    let s := b - P
-    ⟨shDown s a.lo, shUp s a.hi, a.e + s⟩
+def norm (P : Nat) (a : Ival) : Ival := normAt (max (bitsOf a.lo) (bitsOf a.hi)) P a
 
 /-- The interval `{0}`. -/
 def zeroI : Ival := ⟨0, 0, 0⟩
@@ -65,29 +65,30 @@ def ofDyadic (P : Nat) (m : Int) (e : Int) : Ival := norm P ⟨m, m, e⟩
 
 /-- Shift the mantissas left so that the exponent becomes `eNew ≤ a.e` (exact). -/
 def alignTo (eNew : Int) (a : Ival) : Ival :=
-  let s := (a.e - eNew).toNat
-  let p := pow2 s
-  ⟨a.lo * p, a.hi * p, eNew⟩
+  ⟨a.lo * pow2 (a.e - eNew).toNat, a.hi * pow2 (a.e - eNew).toNat, eNew⟩
+
+/-- The exact sum of two intervals at the exponent of the first. -/
+def addAt (P : Nat) (a b : Ival) : Ival :=
+  norm P ⟨a.lo + (alignTo a.e b).lo, a.hi + (alignTo a.e b).hi, a.e⟩
+
+/-- The shift that brings `a` to the exponent `b.e − P − 8`. -/
+def addShift (P : Nat) (a b : Ival) : Nat := (b.e - a.e - (P + 8 : Nat)).toNat
+
+/-- The sum of two normalised intervals with `a.e ≤ b.e`: aligned exactly when the exponent gap
+is at most `P + 8`, else `a` is first rounded outward to the exponent `b.e − P − 8`. -/
+def addCore (P : Nat) (a b : Ival) : Ival :=
+  if b.e - a.e ≤ (P + 8 : Nat) then addAt P a b
+  else addAt P (shiftI (addShift P a b) a) b
+
+/-- The sum of two normalised intervals, the smaller exponent first. -/
+def addNorm (P : Nat) (a b : Ival) : Ival :=
+  if a.e ≤ b.e then addCore P a b else addCore P b a
 
 /-- Outward-rounded addition. -/
 def addI (P : Nat) (a b : Ival) : Ival :=
   if isZero a then norm P b
   else if isZero b then norm P a
-  else
-    let a := norm P a
-    let b := norm P b
-    let (a, b) := if a.e ≤ b.e then (a, b) else (b, a)   -- `a` has the smaller exponent
-    let gap := b.e - a.e
-    if gap ≤ (P + 8 : Nat) then
-      let b' := alignTo a.e b
-      norm P ⟨a.lo + b'.lo, a.hi + b'.hi, a.e⟩
-    else
-      -- `a` is far below the precision of `b`: round it outward to the exponent `b.e − P − 8`
-      let s := (gap - (P + 8 : Nat)).toNat
-      let eA := a.e + s
-      let a' : Ival := ⟨shDown s a.lo, shUp s a.hi, eA⟩
-      let b' := alignTo eA b
-      norm P ⟨a'.lo + b'.lo, a'.hi + b'.hi, eA⟩
+  else addNorm P (norm P a) (norm P b)
 
 /-- Exact negation. -/
 def negI (a : Ival) : Ival := ⟨-a.hi, -a.lo, a.e⟩
@@ -105,14 +106,10 @@ def mulN (P : Nat) (n : Nat) (a : Ival) : Ival := mulZ P n a
 /-- Outward-rounded multiplication. -/
 def mulI (P : Nat) (a b : Ival) : Ival :=
   if a.lo == a.hi && b.lo == b.hi then
-    let p := a.lo * b.lo
-    norm P ⟨p, p, a.e + b.e⟩
+    norm P ⟨a.lo * b.lo, a.lo * b.lo, a.e + b.e⟩
   else
-    let p1 := a.lo * b.lo
-    let p2 := a.lo * b.hi
-    let p3 := a.hi * b.lo
-    let p4 := a.hi * b.hi
-    norm P ⟨min (min p1 p2) (min p3 p4), max (max p1 p2) (max p3 p4), a.e + b.e⟩
+    norm P ⟨min (min (a.lo * b.lo) (a.lo * b.hi)) (min (a.hi * b.lo) (a.hi * b.hi)),
+      max (max (a.lo * b.lo) (a.lo * b.hi)) (max (a.hi * b.lo) (a.hi * b.hi)), a.e + b.e⟩
 
 /-- Outward-rounded square. -/
 def sqI (P : Nat) (a : Ival) : Ival :=
@@ -123,17 +120,17 @@ def sqI (P : Nat) (a : Ival) : Ival :=
 /-- The information-free interval `[-2^(2P), 2^(2P)]`, returned on invalid divisions. -/
 def hugeI (P : Nat) : Ival := ⟨-(pow2 (2 * P)), pow2 (2 * P), 0⟩
 
+/-- The scaling of the numerator in a division. -/
+def divShift (P : Nat) (b : Ival) : Nat := P + bitsOf b.hi + 2
+
+/-- The quotient mantissas at the scaling `t` (`b.lo > 0`). -/
+def divAt (P t : Nat) (a b : Ival) : Ival :=
+  norm P ⟨if a.lo ≥ 0 then fdiv (a.lo * pow2 t) b.hi else fdiv (a.lo * pow2 t) b.lo,
+    if a.hi ≥ 0 then cdiv (a.hi * pow2 t) b.lo else cdiv (a.hi * pow2 t) b.hi, a.e - b.e - t⟩
+
 /-- Outward-rounded division; the divisor must satisfy `b.lo > 0` (else `hugeI`). -/
 def divI (P : Nat) (a b : Ival) : Ival :=
-  if b.lo ≤ 0 then hugeI P
-  else
-    let t := P + bitsOf b.hi + 2
-    let p := pow2 t
-    let n1 := a.lo * p
-    let n2 := a.hi * p
-    let lo := if a.lo ≥ 0 then fdiv n1 b.hi else fdiv n1 b.lo
-    let hi := if a.hi ≥ 0 then cdiv n2 b.lo else cdiv n2 b.hi
-    norm P ⟨lo, hi, a.e - b.e - t⟩
+  if b.lo ≤ 0 then hugeI P else divAt P (divShift P b) a b
 
 /-- Division by a positive natural number. -/
 def divN (P : Nat) (n : Nat) (a : Ival) : Ival := divI P a (ofNat P n)
@@ -149,29 +146,26 @@ def factNat (n : Nat) : Nat := (List.range n).foldl (fun p i => p * (i + 1)) 1
 
 /-- Integer square root, rounded down (`Nat.sqrt`) and up. -/
 def isqrtDown (n : Nat) : Nat := Nat.sqrt n
-def isqrtUp (n : Nat) : Nat :=
-  let r := Nat.sqrt n
-  if r * r == n then r else r + 1
+def isqrtUp (n : Nat) : Nat := if Nat.sqrt n * Nat.sqrt n == n then Nat.sqrt n else Nat.sqrt n + 1
+
+/-- The even-parity scaling of the square root: at least `2P − bits(hi)`, with `a.e − t` even. -/
+def sqrtShift (P : Nat) (a : Ival) : Nat :=
+  if (a.e - ((2 * P - bitsOf (max a.hi 0) : Nat) : Int)) % 2 == 0 then 2 * P - bitsOf (max a.hi 0)
+  else 2 * P - bitsOf (max a.hi 0) + 1
+
+/-- The square root at the scaling `t` (with `a.e − t` even). -/
+def sqrtAt (P t : Nat) (a : Ival) : Ival :=
+  norm P ⟨(isqrtDown (max a.lo 0 * pow2 t).toNat : Nat), (isqrtUp (max a.hi 0 * pow2 t).toNat : Nat),
+    (a.e - t) / 2⟩
 
 /-- Outward-rounded square root of `max a 0` (sound for `x ∈ a`, `x ≥ 0`). -/
-def sqrtI (P : Nat) (a : Ival) : Ival :=
-  let lo := max a.lo 0
-  let hi := max a.hi 0
-  let need : Int := 2 * (P : Int) - (bitsOf hi : Int)
-  let t0 : Nat := if need > 0 then need.toNat else 0
-  let t : Nat := if (a.e - (t0 : Int)) % 2 == 0 then t0 else t0 + 1
-  let p := pow2 t
-  norm P ⟨(isqrtDown (lo * p).toNat : Nat), (isqrtUp (hi * p).toNat : Nat), (a.e - t) / 2⟩
+def sqrtI (P : Nat) (a : Ival) : Ival := sqrtAt P (sqrtShift P a) a
 
 /-- The thin interval of `max(|lo|, |hi|, 0)·2^e`: an upper bound for `|x|`, `x ∈ a`. -/
-def absUpper (a : Ival) : Ival :=
-  let u := max (max (-a.lo) a.hi) 0
-  ⟨u, u, a.e⟩
+def absUpper (a : Ival) : Ival := ⟨max (max (-a.lo) a.hi) 0, max (max (-a.lo) a.hi) 0, a.e⟩
 
 /-- The symmetric interval `[-r, r]` from a nonnegative bound `r` (its upper end). -/
-def symmI (r : Ival) : Ival :=
-  let u := max (max (-r.lo) r.hi) 0
-  ⟨-u, u, r.e⟩
+def symmI (r : Ival) : Ival := ⟨-(max (max (-r.lo) r.hi) 0), max (max (-r.lo) r.hi) 0, r.e⟩
 
 /-- Widen by a nonnegative radius. -/
 def widen (P : Nat) (a r : Ival) : Ival := addI P a (symmI r)
@@ -194,46 +188,52 @@ def gtNat (a : Ival) (n : Nat) : Bool := mantLtInt (-a.lo) a.e (-(n : Int))
 
 /-- `a ⊆ b`. -/
 def subset (a b : Ival) : Bool :=
-  let e := min a.e b.e
-  let a' := alignTo e a
-  let b' := alignTo e b
-  b'.lo ≤ a'.lo && a'.hi ≤ b'.hi
+  (alignTo (min a.e b.e) b).lo ≤ (alignTo (min a.e b.e) a).lo &&
+    (alignTo (min a.e b.e) a).hi ≤ (alignTo (min a.e b.e) b).hi
 
 /-- `a` and `b` have the same elements. -/
 def sameI (a b : Ival) : Bool := subset a b && subset b a
 
-/-! ### The exponential -/
+/-! ### The exponential (top-level loop, for the soundness proof) -/
+
+/-- The series loop: from `(t, s)` enclosing `(x^i/i!, Σ_{n≤i} x^n/n!)`, `fuel` more terms. -/
+def expLoop (P : Nat) (x : Ival) : Nat → Nat → Ival → Ival → Ival × Ival
+  | 0, _, t, s => (s, t)
+  | fuel + 1, i, t, s =>
+    let t' := divN P (i + 1) (mulI P t x)
+    expLoop P x fuel (i + 1) t' (addI P s t')
+
+/-- `max a 0`, the clamped argument. -/
+def clampI (a : Ival) : Ival := ⟨max a.lo 0, max a.hi 0, a.e⟩
+
+/-- The term `t_{N+1}` enclosure after the loop. -/
+def expNext (P N : Nat) (a : Ival) : Ival :=
+  divN P (N + 1) (mulI P (expLoop P (clampI a) N 0 (ofInt P 1) (ofInt P 1)).2 (clampI a))
+
+/-- The denominator `N + 2 − x` of the tail bound. -/
+def expDen (P N : Nat) (a : Ival) : Ival := subI P (ofNat P (N + 2)) (clampI a)
+
+/-- The validity of the series tail (`N + 2 − x > 0` decided by the enclosure). -/
+def expPosValid (P N : Nat) (a : Ival) : Bool := isPos (expDen P N a)
 
 /-- `e^x` for `x ∈ a ⊆ [0, ∞)`, by the series through `n ≤ N` with the tail bound
-`t_{N+1} / (1 − x/(N+2))` (requires `x < N + 2`, else `hugeI`).  Positive terms: no cancellation. -/
+`t_{N+1} · (N+2)/(N+2−x)` (valid when the enclosure decides `x < N + 2`, else `hugeI`). -/
 def expPosI (P N : Nat) (a : Ival) : Ival :=
-  let x : Ival := ⟨max a.lo 0, max a.hi 0, a.e⟩
-  let rec loop : Nat → Nat → Ival → Ival → Ival × Ival
-    | 0, _, t, s => (s, t)
-    | fuel + 1, i, t, s =>
-      let t' := divN P (i + 1) (mulI P t x)
-      loop fuel (i + 1) t' (addI P s t')
-  let (s, tN) := loop N 0 (ofInt P 1) (ofInt P 1)
-  let tNext := divN P (N + 1) (mulI P tN x)
-  let den := subI P (ofNat P (N + 2)) x
-  if !(isPos den) then hugeI P
-  else
-    let tail := divI P (mulN P (N + 2) (absUpper tNext)) den
-    widen P s tail
+  if expPosValid P N a then
+    widen P (expLoop P (clampI a) N 0 (ofInt P 1) (ofInt P 1)).1
+      (divI P (mulN P (N + 2) (absUpper (expNext P N a))) (expDen P N a))
+  else hugeI P
 
 /-- `e^{-x}` for `x ∈ a ⊆ [0, ∞)`: the reciprocal of `expPosI`. -/
 def expNegI (P N : Nat) (a : Ival) : Ival := invI P (expPosI P N a)
 
 /-- `e^x` for `x ∈ a` of either sign: `exp(x) = exp(max x 0)/exp(max (−x) 0)` is wasteful; we use
 `expPosI` on `[0, hi]` and `expNegI` on `[0, −lo]` and take the hull. -/
+def hullI (P : Nat) (dn up : Ival) : Ival :=
+  norm P ⟨(alignTo (min dn.e up.e) dn).lo, (alignTo (min dn.e up.e) up).hi, min dn.e up.e⟩
+
 def expI (P N : Nat) (a : Ival) : Ival :=
-  let up := expPosI P N ⟨max a.hi 0, max a.hi 0, a.e⟩
-  let dn := expNegI P N ⟨max (-a.lo) 0, max (-a.lo) 0, a.e⟩
-  -- hull of [dn.lo, up.hi]
-  let e := min dn.e up.e
-  let d' := alignTo e dn
-  let u' := alignTo e up
-  norm P ⟨d'.lo, u'.hi, e⟩
+  hullI P (expNegI P N ⟨max (-a.lo) 0, max (-a.lo) 0, a.e⟩) (expPosI P N ⟨max a.hi 0, max a.hi 0, a.e⟩)
 
 /-! ### Powers -/
 
@@ -246,13 +246,11 @@ def powI (P : Nat) (a : Ival) : Nat → Ival
 
 /-- `⌊lo · 2^(e+K)⌋`: the lower end at the fixed scale `2^K`. -/
 def toFixedLo (K : Nat) (a : Ival) : Int :=
-  let s := a.e + K
-  if s ≥ 0 then a.lo * pow2 s.toNat else shDown (-s).toNat a.lo
+  if a.e + K ≥ 0 then a.lo * pow2 (a.e + K).toNat else shDown (-(a.e + K)).toNat a.lo
 
 /-- `⌈hi · 2^(e+K)⌉`. -/
 def toFixedHi (K : Nat) (a : Ival) : Int :=
-  let s := a.e + K
-  if s ≥ 0 then a.hi * pow2 s.toNat else shUp (-s).toNat a.hi
+  if a.e + K ≥ 0 then a.hi * pow2 (a.e + K).toNat else shUp (-(a.e + K)).toNat a.hi
 
 /-- A fixed-point interval `[lo, hi] / 2^K` back to a floating one. -/
 def ofFixed (K : Nat) (lo hi : Int) : Ival := ⟨lo, hi, -(K : Int)⟩
