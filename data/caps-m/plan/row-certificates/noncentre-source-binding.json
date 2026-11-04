@@ -759,8 +759,9 @@
     "Grothe/LowerAnalytic/CapPieces/D14x220.lean": "2d233aad292fde86a3d27ad72f1ae4f8912a36fcd5992aa92fb7f6fdfc6a1ade",
     "Grothe/LowerAnalytic/CapPieces/D14x224.lean": "c2034ceaa9a235820ae6230050277fa2a26118b796fc24e48759e72771974893",
     "Grothe/LowerAnalytic/CapPieces/D14x226.lean": "c743482c80c8ce2bc01039f09df8bca86fa4c525fafeb12e39eea6b44bbbddbd",
-    "Grothe/LowerAnalytic/CapPieces/D14x270.lean": "9e64210088ba8f1be5a6cd7aa282043d349eaf12a890e48a62c596c564f88c88",
-    "Grothe/LowerAnalytic/CapPieces/D14x274.lean": "699c494b26c035d715877fed2955d6765002a90e95e8ddb4ab49fc4d7c06db3e",
+    "Grothe/LowerAnalytic/CapPieces/D14x270.lean": "d12afd152bb84bb38eb177e385ade9a1eef82f794f16edb7b2678829f53cb241",
+    "Grothe/LowerAnalytic/CapPieces/D14x274.lean": "b586a8cd50de07c8f6b22c7d1ddac7d0e88600b475f40cd203c184c058fccff9",
+    "Grothe/LowerAnalytic/CapPieces/D14x276.lean": "b5d3647e958254bb65bbf2b342c1ca1b38c87a946c15c115ed321e230fe96dd7",
     "Grothe/LowerAnalytic/CapPieces/D14x280.lean": "cd020b863cc208a2c06a1ae03ea9aba0ed92f7eca520a941d191beb11b49ea7e"
   },
   "format": "nodecaps-noncentre-repaired-source/v1",
@@ -775,7 +776,7 @@
     },
     "14": {
       "path": "data/caps-m/plan/noncentre-repairs/row14-binding.json",
-      "sha256": "aaa9efdb87b62475f2932ee55c13f75e591a9ce015d6b2af5e34c333149dcbd8"
+      "sha256": "98670f25d19e96ba71c047e1c16c0cf6d26a1d6a094ba1e2e0f5d8a5629e038c"
     }
   }
 }
