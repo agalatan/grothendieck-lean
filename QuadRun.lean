@@ -372,7 +372,7 @@ def cmdBlock (qLo qHi n P : Nat) : IO UInt32 := do
   let t0 ← IO.monoMsNow
   let res := accumulateSpecs P piI pd qLo qHi specs rawZero
   match res with
-  | none => IO.println "block: a node was rejected (a flag failed)"
+  | none => throw (IO.userError "block: a node was rejected (a flag failed)")
   | some acc =>
     let cs := acc.foldl (fun s blk => blk.foldl (fun s row => row.foldl (fun s p => s + p.1 + p.2) s) s) (0 : Int)
     let t1 ← IO.monoMsNow
