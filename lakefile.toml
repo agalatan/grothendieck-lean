@@ -19,6 +19,12 @@ rev = "7f91b6eb3567437f6cfac03ed279706603ee22f4"
 name = "GrotheCapsKernel"
 precompileModules = true
 
+# The quadrature checker (energy table, issue #303): its own precompiled, Mathlib-free library
+# for the same reason as the cap checker.
+[[lean_lib]]
+name = "GrotheQuadKernel"
+precompileModules = true
+
 [[lean_lib]]
 name = "GrotheKernel"
 precompileModules = true
@@ -26,3 +32,9 @@ precompileModules = true
 [[lean_lib]]
 name = "Grothe"
 
+
+# The batch driver of the quadrature checker (issue #303): a native executable over GrotheQuadKernel.
+# Not a default target; CI never builds it.
+[[lean_exe]]
+name = "quadrun"
+root = "QuadRun"
