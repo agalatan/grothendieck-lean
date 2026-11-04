@@ -59,7 +59,6 @@ import Grothe.Lower.Sweep
 import Grothe.Lower.Transfer
 import Grothe.Lower.TransferFinite
 import Grothe.Lower.TransferL2
-import Grothe.Lower.TransferLimit
 import Grothe.LowerAnalytic.Bernstein2
 import Grothe.LowerAnalytic.Bridge
 import Grothe.LowerAnalytic.CapAssembly
@@ -87,8 +86,13 @@ import Grothe.LowerAnalytic.CapPieceNodes
 import Grothe.LowerAnalytic.CapPieceRange
 import Grothe.LowerAnalytic.CapPieceRepair
 import Grothe.LowerAnalytic.CapPieceRepairDefs
+import Grothe.LowerAnalytic.CapPieces.C14x150
+import Grothe.LowerAnalytic.CapPieces.D14x150
 import Grothe.LowerAnalytic.CapPieces.D14x150p0Repair
+import Grothe.LowerAnalytic.CapPieces.N14x150
 import Grothe.LowerAnalytic.CapPieces.Node14x150
+import Grothe.LowerAnalytic.CapPieces.R14x150_0
+import Grothe.LowerAnalytic.CapPieces.R14x150_1
 import Grothe.LowerAnalytic.CapPieces.R14x150p0Repair
 import Grothe.LowerAnalytic.CapPolar
 import Grothe.LowerAnalytic.CapRangeDefs
@@ -171,7 +175,6 @@ import Grothe.Research.RefinedCoverData
 import Grothe.Research.RefinedCoverPartition
 import Grothe.Research.RefinedCoverParts
 import Grothe.Research.RefinedCoverResult
-import Grothe.Research.RefinedLower
 import Grothe.Statement
 import Grothe.StatementBridges
 import Grothe.Transfer

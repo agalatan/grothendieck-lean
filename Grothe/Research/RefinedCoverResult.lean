@@ -3,7 +3,7 @@ import Grothe.Research.RefinedCoverBoxes1
 import Grothe.Research.RefinedCoverBoxes2
 import Grothe.Research.RefinedCoverBoxes3
 import Grothe.Research.RefinedCoverPartition
-import Grothe.Research.RefinedLower
+import Grothe.Research.LawNodeLower
 import Grothe.Research.LawNodeCheck
 
 /-!
@@ -48,10 +48,5 @@ theorem refined_endpoint_lt_reciprocal : (refinedL : ℝ) < 1 / (refinedB : ℝ)
 theorem lower_bound_of_refined_cover_data (hcaps : NodeCaps) {K : ℝ}
     (hK : IsGrothendieckBound K) : (refinedL : ℝ) < K :=
   refined_endpoint_lt_reciprocal.trans_le (refined_reciprocal_lower_bound hcaps hK)
-
-#print axioms refined_cover_checked
-#print axioms refined_reciprocal_lower_bound
-#print axioms refined_endpoint_lt_reciprocal
-#print axioms lower_bound_of_refined_cover_data
 
 end Grothe.Research.RefinedLowerCheck
