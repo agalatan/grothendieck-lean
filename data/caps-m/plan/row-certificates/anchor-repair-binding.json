@@ -1,7 +1,7 @@
 {
   "agent_id": "claude-b9ee",
   "current_tools_sha256": {
-    "tools/nodecaps_anchor_repair.py": "2db742606d4105980bd1852230e40bf41ed58588650476bfc7ce4a586c06bf38",
+    "tools/nodecaps_anchor_repair.py": "194809d0274a6c19e77f4afd799fb3f52f7eeae975e398b39074725cd5b113c2",
     "tools/nodecaps_prepared_renderers.py": "79c9fa69f3ccf8210313b9ee941a97b20d20c3f584cfa8702f813f2b1495db94"
   },
   "format": "nodecaps-anchor-repair-binding/v1",
