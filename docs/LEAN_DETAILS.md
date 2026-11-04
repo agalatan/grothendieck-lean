@@ -700,6 +700,20 @@ Hermite indices. Numerical Hilbert--Schmidt caps and the historical Laguerre
 binding remain OPEN. No physical/source Fubini or unproved coefficient
 identity is assumed in this batch.
 
+`ScalarOriginalBinding.scalar_original_binding`, in namespace
+`Grothe.UpperChaos.ScalarOriginalBindingDraft`, states the complete finite
+identity `scalarNumerator originalUpper = scalarSumLiteral`.
+`ScalarOriginalReindex` identifies the address-indexed sum with the original
+21,577-row mass ledger using its physical projection and ordinal equivalence.
+`ScalarOriginalGroup000` through `ScalarOriginalGroup021` compute all original
+named row sublists with the original exception mask and the power 251 of
+`ceil(panel.hi * 10^9)`. The final assembly retains every original row and has
+no numerical equality premise. `tools/gen_finite_scalar_sum.py` reproduces the
+source from pinned original inputs and the finite templates in
+`data/finite-scalar-sum/`. This identity alone supplies neither a scalar
+inequality, geometry check, trace estimate nor an unconditional kernel or
+endpoint bound.
+
 `RadialLaguerre` identifies the actual production polynomial
 `ev (r : ℂ) (H (m+k) m)` with
 `(-1)^m * m! * r^k * L_m^k(r²)`, using the finite associated-Laguerre
