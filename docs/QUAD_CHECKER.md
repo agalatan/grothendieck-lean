@@ -487,7 +487,7 @@ scripts/test_caps_stamp.py
 `tools/gen_root_imports.py` already lists the four libraries (`LIBS`). `lakefile.toml` already
 has the library and the `quadrun` executable (not a default target).
 
-### 11.4 Status and hand-over (claude-b9ee, 5 November 2026, 00:40 Bucharest)
+### 11.4 Status and hand-over (claude-b9ee, 5 November 2026, 02:30 Bucharest)
 
 **Proved** (`Grothe/UpperQuad/`, kernel-checked, warning-free, no `sorry`, no `native_decide`,
 all imported by the `Grothe` root; the laptop worktree
@@ -560,11 +560,78 @@ partials exactly and runs `energyOK`/`rawDistOK` (≈ 2.5 h: the saved matrices 
 be a separate fact with a committed table of the 5.4·10⁶ numerators, 20 MB); option 3 (one
 sequential fact) is ≈ 38 CPU-hours on the droplet, no data.
 
-**Remaining, in order.** (1) The data binding of the partition: the `NodeSpec` literals (generated from
-`data/quad-checker/panels.txt` + the brackets of `Q0LegendreRuleNN` + `cutoffs.txt`) bound to
-master's `sourcePanels`/`Q0LegendreRuleNN.brackets` by `decide`, and the roots `x nd` from
-master's `root_spec`. (3) The sharding decision (§11.2) and the native facts. (4) The `√n` table
-in `forwardStep` if the node cost matters. (5) The analytic hypotheses (S2, `hQuad`).
+**Sharding decision (the user, 5 November 2026, 00:50 Bucharest): shard by output block, no
+committed intermediate data.** Every native fact runs the full node loop (the triangle and the node
+factors of every node) but accumulates only its block of raw entries; the per-node work is
+recomputed in every shard (≈ 100 CPU-hours in all, paid once on the droplet and cached by CI like
+the cap rows). Design:
+- **Blocks = ranges of grades `[qLo, qHi)`.** The raw entry `(k, j, cIdx)` has the grade
+  `q = j + d`, `d = cIdx + k − 1` (`d = cIdx` for `k = 0`), and the energies of grade `q` need
+  exactly the entries of grade `q` (the canonical ones directly, the reflected ones through the
+  canonical partner of the same grade), so `energyOK`/`rawDistOK` restricted to a grade range are
+  decided by the block's accumulator alone. Blocks are balanced by the entry count
+  `(q+1)(q+2)/2` of grade `q` (cumulative thirds-of-cube boundaries: 12 blocks of ≈ 225,000
+  triangle entries), and the saved matrices `S_q` are needed only for `q ∈ [qLo, qHi]`, so their
+  ≈ 2 CPU-hours are spread over the blocks, not repeated.
+- **Kernel changes needed:** `accumulateNode`/`accumulateSpecs` with the grade range (the row
+  `(k, j)` keeps the columns `cIdx` with `qLo ≤ j + d < qHi`; `contributionAt` is `0` outside),
+  `nodeFactors` restricted to the rows `(k, j)` that have an entry in the range, the `√n` table in
+  `forwardStep` (≈ 1 s per node), `energyOK`/`rawDistOK` over `q ∈ [qLo, qHi)` with the head
+  restricted to `n + m = 2q + 1`. The soundness statements gain the range (the entries of other
+  grades are left at `0` and are never read).
+- **Cost per fact** = 21,577 × (triangle ≈ 1.1 s with the `√n` table + node factors of the block
+  ≤ 1.1 s + accumulation of the block ≈ 0.2 s) ≈ 7–14 h single-threaded, to be measured; the facts
+  are separate modules `Grothe/UpperQuad/Facts/GradeBlockNN.lean` (one `native_decide` each, one
+  process each, no `Task.spawn`), built in parallel by Lake.
+- **Verified-once path:** add the fact modules to `scripts/caps_stamp.py` (a `QUAD_TOPS` list next
+  to `PIECE_TOPS`, so that the caps digest covers their import closure and the first build runs on
+  the droplet with the caps), register each fact in `data/axioms/native.txt` and
+  `scratch/Axioms.lean`, and exclude nothing from the root: the facts are part of `Grothe` like
+  the cap rows. The final theorem adds the per-block `epsNum_b` and `bound_b` (rationals) and
+  applies `hclose_of_checks`'s per-block variant: no data, no computation.
+
+**Done after the decision (5 November, 02:30 Bucharest):**
+- **The block kernel.** `accumulateNode`/`accumulateSpec`/`accumulateSpecs` take the grade range
+  `[qLo, qHi)` (`entryGrade k j cIdx = j + cIdx + dOff k`, the block's columns of a row are
+  `[blockLo, blockHi)`, `rowActive`); `nodeFactors` computes only the rows with an entry in the
+  block; the pair recurrence takes the table `sqrtTable P (D+1)` of `√n`; the block checks
+  `energyOKBlock` (`savedMatricesRange`, `blockEnergies`, `headCount`, `blockExcursion`),
+  `evenExcursion`, `rawDistOKBlock` (`gradeWidthSqBlock`). **Node 227 on big (idle core, P = 512):
+  4.3 s** (triangle 0.76 s, node factors 0.99 s for all rows, accumulation 1.91 s for all grades).
+  All soundness statements carry the range (`NodeSound`, `ContractSound`, `RotateSound`:
+  `blockExcursion_sound`, `energyOKBlock_sound`, `evenExcursion_sound`, `gradeWidthSqBlock_sound`).
+- **The data binding** (`Grothe/UpperQuad/Partition.lean`): `partitionSpecs` is *defined* from
+  master's `Q0GaussAddressScan.sourcePanels` and `Q0LegendreRule01…64.brackets` plus the generated
+  cutoffs `Grothe/UpperQuad/Data/Cutoffs0…7.lean` (`tools/quad_gen_partition.py --lean`,
+  byte-for-byte reproducible from `data/q0_quadrature/conditional_source/conditional_cutoffs.npy`);
+  `rootOf nd` is the root of the bracket by classical choice, a genuine root when `bracketOK` holds
+  (`rootOf_spec`, from the kernel's IVT lemma; `rootOf_mem_of_accepted`: every node the fact
+  accepts); `specNode_eq_panelNode`/`specWeight_eq_panelWeight`: the node and weight of a spec of
+  the panel `p` are master's `panelNode p.lo p.hi`/`panelWeight p.lo p.hi (p.order − 1)` at the
+  root. The identification of `rootOf` with the root `Q0GaussSelectedChoice` selects is master's
+  `all_unique` (for the analytic layer).
+- **The multi-block top theorem** (`Bridge.lean`, `hclose_of_blocks`): with the grades cut at
+  `bounds 0 = 0 < … < bounds nb = 251`, the block accumulators `R b` (`accumulateSpecs … (bounds b)
+  (bounds (b+1)) specs rawZero = some (R b)`), the per-block checks `energyOKBlock (R b) … (eps b)`
+  and `rawDistOKBlock (R b) … (bnd b)`, the even check `evenExcursion tableFx ≤ evenNum`, the
+  budgets with `Σ_b eps b + evenNum` and `Σ_b bnd b`, and the analytic hypotheses (S2 at every node,
+  `hQuad`), the conclusion is `hclose`; `a0 := lower ends of the block grade matrices − frozen`
+  (`a0Blocks`). The head splits as `oddHead 0 251 ∪ even` and the odd part by blocks
+  (`sum_headIdx_split`, `sum_oddHead_blocks`, `sum_oddHead'`); the exact Gauss term of an entry
+  does not depend on the block it is accumulated in (`specTerm_range`). Built on big; the laptop
+  cannot build `Bridge` (closure).
+
+**Remaining, in order.** (1) The fact modules: for each block `b` a module
+`Grothe/UpperQuad/Facts/GradeBlockNN.lean` with the `native_decide` fact
+`accumulateSpecs 512 piI profileData (bounds b) (bounds (b+1)) partitionSpecs rawZero = some R_b ∧
+energyOKBlock R_b frozenFx tableFx eps_b … ∧ rawDistOKBlock …` (the accumulator `R_b` is not
+committed: the fact's statement is the conjunction of the Boolean checks on the accumulator the loop
+produces, i.e. a `Bool` function `blockFact b = true`), the even fact, `profileAgrees` by `decide`,
+and the per-block tolerances; register them in `data/axioms/native.txt` and `scratch/Axioms.lean`;
+add a `QUAD_TOPS` list to `scripts/caps_stamp.py` so that the caps digest covers them and the first
+build runs on the droplet; measure one block on big first (the driver `quadrun block <qLo> <qHi>`
+to be added). (2) The final theorem instantiating `hclose_of_blocks` with the facts (and `rootOf`
+as `x`, `rootOf_mem_of_accepted` as `hx`). (3) The analytic hypotheses (S2, `hQuad`).
 
 **Conventions and pitfalls.** Kernel definitions must be `let`-free in every branch that a proof
 splits on (`let` elaborates to `have`, invisible to `split_ifs`; nested `let`s inside `fun`

@@ -40,7 +40,7 @@ def piI : Ival := piMachinI P0 (P0 / 3 + 20)
 /-- The node is accepted (every validity flag holds) and the accumulated entries `(0,0,0)` and
 `(1,0,0)` (flat index 63001) are those of the milestone-2 run. -/
 def check : Bool :=
-  match accumulateSpec P0 piI profile node227 rawZero with
+  match accumulateSpec P0 piI profile 0 251 node227 rawZero with
   | none => false
   | some acc =>
     (rawGet acc 0 0 0).1 == 78525282267841828504090538347507860060654960618817179945265005165433736303 &&

@@ -132,7 +132,7 @@ def runNode (panels : Array Panel) (addrs : Array (Nat × Nat)) (cutoffs : Array
       let ratios := ratiosI P x (D + 2000)
       if verbose then IO.println s!"  seed+ratios: {ratios.size} ratios, scalar {toDecimal 12 scalar}"
       let tA ← IO.monoMsNow
-      let vals := canonicalTriangleI P scalar neg zeroI a ratios D 265
+      let vals := canonicalTriangleI P scalar neg zeroI a (sqrtTable P (D + 1)) ratios D 265
       let mw := maxWidthLog2 vals
       if verbose then IO.println s!"  triangle: {vals.size} pairs, max width 2^{mw}"
       let tB ← IO.monoMsNow
@@ -189,13 +189,13 @@ def cmdNode (ordinal : Nat) (precs : List Nat) : IO UInt32 := do
     if bandMax.getD b 0 > -100000 then
       IO.println s!"  max width for c+d in [{50*b},{50*b+49}]: 2^{bandMax.getD b 0}"
   let t0 ← IO.monoMsNow
-  let factors := nodeFactors 1024 n.s n.w
+  let factors := nodeFactors 1024 n.s n.w 0 251
   -- a checksum over every entry forces the whole computation before the next timer
   let checksum := factors.foldl (fun s row => row.foldl (fun s f => s + f.lo + f.hi) s) (0 : Int)
   IO.println s!"node factors: F[0][0] = {factors.getD 0 #[] |>.getD 0 default |>.lo} (scale 2^128); checksum {checksum % 1000000007}; valid {nodeFactorsValid 1024 n.s}"
   let t1 ← IO.monoMsNow
   IO.println s!"node factors: {t1 - t0} ms"
-  let acc := accumulateNode n.cutoff (n.vals.map toFx) factors rawZero
+  let acc := accumulateNode n.cutoff (n.vals.map toFx) factors 0 251 rawZero
   let cs2 := acc.foldl (fun s blk => blk.foldl (fun s row => row.foldl (fun s p => s + p.1 + p.2) s) s) (0 : Int)
   IO.println s!"accumulate: checksum {cs2 % 1000000007}; entry 0 = [{(rawGet acc 0 0 0).1}, {(rawGet acc 0 0 0).2}] (scale 2^256); entry 63001 = {(rawGet acc 1 0 0).1}"
   let t2 ← IO.monoMsNow
@@ -229,9 +229,9 @@ def cmdShard (i n : Nat) (outdir : String) : IO UInt32 := do
   while ordinal < addrs.size do
     let r ← runNode panels addrs cutoffs pd ordinal precisions
     let t0 ← IO.monoMsNow
-    let factors := nodeFactors 1024 r.s r.w
+    let factors := nodeFactors 1024 r.s r.w 0 251
     if !nodeFactorsValid 1024 r.s then throw (IO.userError s!"node {ordinal}: node factors invalid")
-    acc := accumulateNode r.cutoff (r.vals.map toFx) factors acc
+    acc := accumulateNode r.cutoff (r.vals.map toFx) factors 0 251 acc
     let t1 ← IO.monoMsNow
     hn.putStrLn (summaryLine r ++ s!" {t1 - t0}")
     hn.flush

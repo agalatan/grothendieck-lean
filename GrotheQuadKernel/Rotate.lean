@@ -194,4 +194,46 @@ def gradeWidthSq (raw : Raw) (frozen : Nat → Nat → Nat → Fx) : Int :=
 def rawDistOK (raw : Raw) (frozen : Nat → Nat → Nat → Fx) (bound : Int) : Bool :=
   gradeWidthSq raw frozen ≤ bound
 
+/-! ### The checks of a grade block `[qLo, qHi)` -/
+
+/-- The saved matrices `S_qLo, …, S_qHi` (index `q − qLo`). -/
+def savedMatricesRange (qLo qHi : Nat) : Array (Array (Array Fx)) :=
+  Array.ofFn fun i : Fin (qHi - qLo + 1) => savedMatrixFx (qLo + i.val)
+
+/-- The energies of the grades `q ∈ [qLo, qHi)` (`[q − qLo][m]`, scale `2^{2K}`) from the matrices
+`smats[i] = S_{qLo + i}`. -/
+def blockEnergies (raw : Raw) (frozen : Nat → Nat → Nat → Fx) (smats : Array (Array (Array Fx)))
+    (qLo qHi : Nat) : Array (Array (Int × Int)) :=
+  Array.ofFn fun i : Fin (qHi - qLo) =>
+    rotateGrade raw frozen (smats.getD (i.val + 1) #[]) (smats.getD i.val #[]) (qLo + i.val)
+
+/-- The head bidegrees of the grade `q`: `m ≤ min (2q+1) (250 − q)` (`n + 3m ≤ 501`, `n = 2q+1−m`). -/
+def headCount (q : Nat) : Nat := min (2 * q + 1) (250 - q) + 1
+
+/-- `Σ_{q ∈ [qLo,qHi)} Σ_{m < headCount q} excursion (en[q − qLo][m]) (table (2q+1−m) m)`. -/
+def blockExcursion (en : Array (Array (Int × Int))) (table : Nat → Nat → Int × Int) (qLo qHi : Nat) :
+    Int :=
+  (List.range (qHi - qLo)).foldl (fun s i => (List.range (headCount (qLo + i))).foldl
+    (fun s m => s + excursion ((en.getD i #[]).getD m (0, 0)) (table (2 * (qLo + i) + 1 - m) m)) s) 0
+
+/-- The energy check of a grade block: the ℓ¹ excursion of the head energies of the grades
+`[qLo, qHi)` from the table is at most `epsNum` (scale `2^{2K}`). -/
+def energyOKBlock (raw : Raw) (frozen : Nat → Nat → Nat → Fx) (table : Nat → Nat → Int × Int)
+    (epsNum : Int) (qLo qHi : Nat) : Bool :=
+  blockExcursion (blockEnergies raw frozen (savedMatricesRange qLo qHi) qLo qHi) table qLo qHi ≤ epsNum
+
+/-- The excursions of the even bidegrees of the head (their energy is `0`): `Σ |table n m|`. -/
+def evenExcursion (table : Nat → Nat → Int × Int) : Int :=
+  (List.range 502).foldl (fun s n => (List.range 502).foldl
+    (fun s m => if n + 3 * m ≤ 501 ∧ (n + m) % 2 = 0 then s + excursion (0, 0) (table n m) else s) s) 0
+
+/-- `Σ_{q ∈ [qLo,qHi)} Σ_{c, d} (hi − lo)²` over the grade matrices of the block (scale `2^{2K}`). -/
+def gradeWidthSqBlock (raw : Raw) (frozen : Nat → Nat → Nat → Fx) (qLo qHi : Nat) : Int :=
+  (List.range (qHi - qLo)).foldl
+    (fun s i => s + gradeWidthSqOf (gradeMatrix raw frozen (qLo + i)) (qLo + i)) 0
+
+/-- The width check of a grade block. -/
+def rawDistOKBlock (raw : Raw) (frozen : Nat → Nat → Nat → Fx) (bound : Int) (qLo qHi : Nat) : Bool :=
+  gradeWidthSqBlock raw frozen qLo qHi ≤ bound
+
 end GrotheQuad

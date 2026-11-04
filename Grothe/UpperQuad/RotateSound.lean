@@ -234,10 +234,16 @@ noncomputable def gradeValue (R v : ℕ → ℕ → ℕ → ℝ) (q c d : ℕ) :
   (if c ≤ d + 1 then rawValue R q c d
     else rawValue R q (d + 1) (c - 1) * Real.sqrt (((d + 1 : ℕ) : ℝ) / (c : ℝ))) + v q c d
 
-lemma memFx_canonicalEntry {R : ℕ → ℕ → ℕ → ℝ} {raw : Raw}
+/-- The canonical entry `(q, c, d)` sits at the grade `q` of the raw layout. -/
+lemma entryGrade_canonical (q c d : ℕ) (hd : d ≤ q) (hc : c ≤ d + 1) :
+    entryGrade (d + 1 - c) (q - d) (if d + 1 - c = 0 then c - 1 else c) = q := by
+  unfold entryGrade dOff
+  split_ifs with h1 h2 <;> simp only [beq_iff_eq] at * <;> omega
+
+lemma memFx_canonicalEntry {R : ℕ → ℕ → ℕ → ℝ} {raw : Raw} {qLo qHi : ℕ}
     (hR : ∀ k j cIdx, k < numCharges → j < blockSide k → cIdx < activeCols k j →
-      memFx2 (R k j cIdx) (rawGet raw k j cIdx))
-    (q c d : ℕ) (hq : q ≤ 250) (hd : d ≤ q) (hc : c ≤ d + 1) :
+      qLo ≤ entryGrade k j cIdx → entryGrade k j cIdx < qHi → memFx2 (R k j cIdx) (rawGet raw k j cIdx))
+    (q c d : ℕ) (hq : q ≤ 250) (hqLo : qLo ≤ q) (hqHi : q < qHi) (hd : d ≤ q) (hc : c ≤ d + 1) :
     memFx (rawValue R q c d) (canonicalEntry raw q c d) := by
   unfold rawValue canonicalEntry
   apply memFx_roundFx
@@ -247,26 +253,27 @@ lemma memFx_canonicalEntry {R : ℕ → ℕ → ℕ → ℝ} {raw : Raw}
   have hcol : (if d + 1 - c = 0 then c - 1 else c) < activeCols (d + 1 - c) (q - d) := by
     unfold activeCols blockSide
     split_ifs with h1 h2 <;> simp only [beq_iff_eq] at * <;> omega
-  have h := hR _ _ _ hk hj hcol
+  have hg := entryGrade_canonical q c d hd hc
+  have h := hR _ _ _ hk hj hcol (by rw [hg]; exact hqLo) (by rw [hg]; exact hqHi)
   convert h using 2
   split_ifs with h1 h2 <;> simp only [beq_iff_eq] at * <;> first | rfl | omega
 
 /-- The grade matrix `A_q` encloses `gradeValue R v q` entrywise. -/
-theorem memFx_gradeMatrix {R v : ℕ → ℕ → ℕ → ℝ} {raw : Raw} {frozen : ℕ → ℕ → ℕ → Fx}
+theorem memFx_gradeMatrix {R v : ℕ → ℕ → ℕ → ℝ} {raw : Raw} {frozen : ℕ → ℕ → ℕ → Fx} {qLo qHi : ℕ}
     (hR : ∀ k j cIdx, k < numCharges → j < blockSide k → cIdx < activeCols k j →
-      memFx2 (R k j cIdx) (rawGet raw k j cIdx))
-    (hv : ∀ q c d, memFx (v q c d) (frozen q c d)) (q : ℕ) (hq : q ≤ 250) (c d : ℕ)
-    (hc : c < q + 2) (hd : d < q + 1) :
+      qLo ≤ entryGrade k j cIdx → entryGrade k j cIdx < qHi → memFx2 (R k j cIdx) (rawGet raw k j cIdx))
+    (hv : ∀ q c d, memFx (v q c d) (frozen q c d)) (q : ℕ) (hq : q ≤ 250) (hqLo : qLo ≤ q)
+    (hqHi : q < qHi) (c d : ℕ) (hc : c < q + 2) (hd : d < q + 1) :
     memFx (gradeValue R v q c d) (getFx (gradeMatrix raw frozen q) c d) := by
   unfold gradeMatrix
   rw [getFx_ofFn (q + 2) (q + 1) (fun c d => gradeEntry raw frozen q c d) c d hc hd]
   unfold gradeEntry gradeValue
   apply memFx_addFx _ (hv q c d)
   split_ifs with hcd
-  · exact memFx_canonicalEntry hR q c d hq (by omega) hcd
+  · exact memFx_canonicalEntry hR q c d hq hqLo hqHi (by omega) hcd
   · unfold reflectedEntry
     apply memFx_roundFx
-    exact memFx2_mulFx (memFx_canonicalEntry hR q (d + 1) (c - 1) hq (by omega) (by omega))
+    exact memFx2_mulFx (memFx_canonicalEntry hR q (d + 1) (c - 1) hq hqLo hqHi (by omega) (by omega))
       (memFx_reflectFx c d (by omega))
 
 /-! ### The comparison with the table -/
@@ -510,6 +517,126 @@ theorem gradeWidthSq_sound {raw : Raw} {frozen : ℕ → ℕ → ℕ → Fx} {Y 
   intro d hd
   rw [Finset.mem_range] at hq hc hd
   have := sq_sub_loQ_le (hY q c d (by omega) hc hd)
+  push_cast at this
+  exact this
+
+/-! ### The checks of a grade block -/
+
+lemma savedMatricesRange_getD (qLo qHi i : ℕ) (hi : i ≤ qHi - qLo) :
+    (savedMatricesRange qLo qHi).getD i #[] = savedMatrixFx (qLo + i) := by
+  unfold savedMatricesRange
+  rw [Array.getD_eq_getD_getElem?, Array.getElem?_ofFn]
+  have hi' : i < qHi - qLo + 1 := by omega
+  simp only [hi', ↓reduceDIte, Option.getD_some]
+
+/-- The energies of the block enclose the energies of its grades. -/
+lemma memFx2_blockEnergies (b : ℕ → ℕ → ℕ → ℚ) {raw : Raw} {frozen : ℕ → ℕ → ℕ → Fx} (qLo qHi : ℕ)
+    (hqHi : qHi ≤ 251)
+    (hA : ∀ q c d, qLo ≤ q → q < qHi → c < q + 2 → d < q + 1 →
+      memFx ((b q c d : ℚ) : ℝ) (getFx (gradeMatrix raw frozen q) c d))
+    (i m : ℕ) (hi : i < qHi - qLo) (hm : m ≤ 2 * (qLo + i) + 1) :
+    memFx2 (energy (gradedHermite 251 (productionSmoothedCoeff b)) (2 * (qLo + i) + 1 - m, m))
+      (((blockEnergies raw frozen (savedMatricesRange qLo qHi) qLo qHi).getD i #[]).getD m (0, 0)) := by
+  unfold blockEnergies
+  simp only [Array.getD_eq_getD_getElem?, Array.getElem?_ofFn, hi, ↓reduceDIte, Option.getD_some]
+  simp only [← Array.getD_eq_getD_getElem?]
+  rw [savedMatricesRange_getD qLo qHi (i + 1) (by omega), savedMatricesRange_getD qLo qHi i (by omega),
+    show qLo + (i + 1) = qLo + i + 1 by ring]
+  exact memFx2_rotateGrade b (qLo + i) (by omega)
+    (fun c d hc hd => hA (qLo + i) c d (by omega) (by omega) hc hd) m hm
+
+/-- The ℓ¹ excursion of a block bounds the ℓ¹ distance over the head bidegrees of its grades. -/
+theorem blockExcursion_sound {G : Lp ℂ 2 mu2} {en : Array (Array (ℤ × ℤ))} {tab : ℕ × ℕ → ℝ}
+    {table : ℕ → ℕ → ℤ × ℤ} (qLo qHi : ℕ) (hqHi : qHi ≤ 251)
+    (hen : ∀ i m, i < qHi - qLo → m < headCount (qLo + i) →
+      memFx2 (energy G (2 * (qLo + i) + 1 - m, m)) ((en.getD i #[]).getD m (0, 0)))
+    (htab : ∀ n m, n + 3 * m ≤ 501 → memFx2 (tab (n, m)) (table n m)) :
+    (∑ i ∈ Finset.range (qHi - qLo), ∑ m ∈ Finset.range (headCount (qLo + i)),
+      |energy G (2 * (qLo + i) + 1 - m, m) - tab (2 * (qLo + i) + 1 - m, m)|) * (2 : ℝ) ^ (2 * KFix) ≤
+      (blockExcursion en table qLo qHi : ℝ) := by
+  have hinner : ∀ (s : ℤ) (i : ℕ), (List.range (headCount (qLo + i))).foldl
+      (fun s m => s + excursion ((en.getD i #[]).getD m (0, 0)) (table (2 * (qLo + i) + 1 - m) m)) s =
+        s + ∑ m ∈ Finset.range (headCount (qLo + i)),
+          excursion ((en.getD i #[]).getD m (0, 0)) (table (2 * (qLo + i) + 1 - m) m) :=
+    fun s i => foldl_add_eq_sum_int _ _ s
+  unfold blockExcursion
+  simp only [hinner]
+  rw [foldl_add_eq_sum_int, zero_add]
+  push_cast
+  rw [Finset.sum_mul]
+  apply Finset.sum_le_sum
+  intro i hi
+  rw [Finset.sum_mul]
+  apply Finset.sum_le_sum
+  intro m hm
+  rw [Finset.mem_range] at hi hm
+  have hhead : 2 * (qLo + i) + 1 - m + 3 * m ≤ 501 := by unfold headCount at hm; omega
+  exact abs_sub_le_excursion (hen i m hi hm) (htab _ _ hhead)
+
+/-- **The block energy check is sound.** -/
+theorem energyOKBlock_sound (b : ℕ → ℕ → ℕ → ℚ) {raw : Raw} {frozen : ℕ → ℕ → ℕ → Fx}
+    {tab : ℕ × ℕ → ℝ} {table : ℕ → ℕ → ℤ × ℤ} {epsNum : ℤ} (qLo qHi : ℕ) (hqHi : qHi ≤ 251)
+    (hA : ∀ q c d, qLo ≤ q → q < qHi → c < q + 2 → d < q + 1 →
+      memFx ((b q c d : ℚ) : ℝ) (getFx (gradeMatrix raw frozen q) c d))
+    (htab : ∀ n m, n + 3 * m ≤ 501 → memFx2 (tab (n, m)) (table n m))
+    (h : energyOKBlock raw frozen table epsNum qLo qHi = true) :
+    (∑ i ∈ Finset.range (qHi - qLo), ∑ m ∈ Finset.range (headCount (qLo + i)),
+      |energy (gradedHermite 251 (productionSmoothedCoeff b)) (2 * (qLo + i) + 1 - m, m) -
+        tab (2 * (qLo + i) + 1 - m, m)|) * (2 : ℝ) ^ (2 * KFix) ≤ epsNum := by
+  unfold energyOKBlock at h
+  simp only [decide_eq_true_eq] at h
+  refine (blockExcursion_sound qLo qHi hqHi ?_ htab).trans (by exact_mod_cast h)
+  intro i m hi hm
+  exact memFx2_blockEnergies b qLo qHi hqHi hA i m hi (by unfold headCount at hm; omega)
+
+/-- The even bidegrees of the head: the energy of a graded Hermite vector is `0` there, so the ℓ¹
+distance is `Σ |tab p|`, bounded by `evenExcursion`. -/
+theorem evenExcursion_sound (a : ℕ → ℕ → ℕ → ℚ) {tab : ℕ × ℕ → ℝ} {table : ℕ → ℕ → ℤ × ℤ}
+    (htab : ∀ n m, n + 3 * m ≤ 501 → memFx2 (tab (n, m)) (table n m)) :
+    (∑ p ∈ (Grothe.Upper.headIdx 501).filter (fun p => (p.1 + p.2) % 2 = 0),
+      |energy (gradedHermite 251 a) p - tab p|) * (2 : ℝ) ^ (2 * KFix) ≤ (evenExcursion table : ℝ) := by
+  have hinner : ∀ (s : ℤ) (n : ℕ), (List.range 502).foldl
+      (fun s m => if n + 3 * m ≤ 501 ∧ (n + m) % 2 = 0 then s + excursion (0, 0) (table n m) else s) s =
+        s + ∑ m ∈ Finset.range 502,
+          if n + 3 * m ≤ 501 ∧ (n + m) % 2 = 0 then excursion (0, 0) (table n m) else 0 :=
+    fun s n => foldl_ite_add_eq (fun m => n + 3 * m ≤ 501 ∧ (n + m) % 2 = 0) _ 502 s
+  unfold evenExcursion
+  simp only [hinner]
+  rw [foldl_add_eq_sum_int, zero_add]
+  push_cast
+  rw [Grothe.Upper.headIdx, Finset.filter_filter, Finset.sum_filter, Finset.sum_product, Finset.sum_mul]
+  apply Finset.sum_le_sum
+  intro n _
+  rw [Finset.sum_mul]
+  apply Finset.sum_le_sum
+  intro m _
+  split_ifs with h
+  · rw [energy_gradedHermite_even 251 a n m h.2]
+    exact abs_sub_le_excursion memFx2_zero (htab n m h.1)
+  · simp
+
+/-- `Σ_{q ∈ [qLo,qHi)} Σ_{c,d} (Y − loQ)² · 2^{2K} ≤ gradeWidthSqBlock` for `Y` inside the grade matrices of the block. -/
+theorem gradeWidthSqBlock_sound {raw : Raw} {frozen : ℕ → ℕ → ℕ → Fx} {Y : ℕ → ℕ → ℕ → ℝ} (qLo qHi : ℕ)
+    (hY : ∀ q c d, qLo ≤ q → q < qHi → c < q + 2 → d < q + 1 →
+      memFx (Y q c d) (getFx (gradeMatrix raw frozen q) c d)) :
+    (∑ i ∈ Finset.range (qHi - qLo), ∑ c ∈ Finset.range (qLo + i + 2), ∑ d ∈ Finset.range (qLo + i + 1),
+      (Y (qLo + i) c d - ((loQ (getFx (gradeMatrix raw frozen (qLo + i)) c d) : ℚ) : ℝ)) ^ 2) *
+        (2 : ℝ) ^ (2 * KFix) ≤ (gradeWidthSqBlock raw frozen qLo qHi : ℝ) := by
+  unfold gradeWidthSqBlock
+  rw [foldl_add_eq_sum_int, zero_add]
+  simp only [gradeWidthSqOf_eq]
+  push_cast
+  rw [Finset.sum_mul]
+  apply Finset.sum_le_sum
+  intro i hi
+  rw [Finset.sum_mul]
+  apply Finset.sum_le_sum
+  intro c hc
+  rw [Finset.sum_mul]
+  apply Finset.sum_le_sum
+  intro d hd
+  rw [Finset.mem_range] at hi hc hd
+  have := sq_sub_loQ_le (hY (qLo + i) c d (by omega) (by omega) hc hd)
   push_cast at this
   exact this
 

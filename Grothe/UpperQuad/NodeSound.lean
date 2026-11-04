@@ -127,14 +127,24 @@ lemma selectedRanks_getD (k cIdx : ℕ) (hk : k < numCharges) (hc : cIdx < block
   unfold selectedRanks
   simp only [Array.getD_eq_getD_getElem?, Array.getElem?_ofFn, hk, hc, ↓reduceDIte, Option.getD_some]
 
-lemma rawGet_accumulateNode (D : ℕ) (valsFx : Array Fx) (factors : Array (Array Fx)) (acc : Raw)
-    (k j cIdx : ℕ) (hk : k < numCharges) (hj : j < blockSide k) (hc : cIdx < blockSide k) :
-    rawGet (accumulateNode D valsFx factors acc) k j cIdx =
-      addPair (rawGet acc k j cIdx) (contributionAt D valsFx factors k j cIdx) := by
+/-- The block's columns of a row are exactly its triangle entries with grade in the range. -/
+lemma blockCols_iff (qLo qHi k j cIdx : ℕ) :
+    (blockLo qLo k j ≤ cIdx ∧ cIdx < blockHi qHi k j) ↔
+      (cIdx < activeCols k j ∧ qLo ≤ entryGrade k j cIdx ∧ entryGrade k j cIdx < qHi) := by
+  unfold blockLo blockHi entryGrade
+  constructor <;> intro h <;> omega
+
+lemma rawGet_accumulateNode (D : ℕ) (valsFx : Array Fx) (factors : Array (Array Fx)) (qLo qHi : ℕ)
+    (acc : Raw) (k j cIdx : ℕ) (hk : k < numCharges) (hj : j < blockSide k) (hc : cIdx < blockSide k) :
+    rawGet (accumulateNode D valsFx factors qLo qHi acc) k j cIdx =
+      addPair (rawGet acc k j cIdx) (contributionAt D valsFx factors qLo qHi k j cIdx) := by
   unfold accumulateNode accumulateRow contributionAt
   simp only [rawGet, Array.getD_eq_getD_getElem?, Array.getElem?_ofFn, hk, hj, hc, ↓reduceDIte,
     Option.getD_some]
-  split_ifs <;> simp [addPair]
+  by_cases h : cIdx < activeCols k j ∧ qLo ≤ entryGrade k j cIdx ∧ entryGrade k j cIdx < qHi
+  · simp only [h, (blockCols_iff qLo qHi k j cIdx).mpr h, and_self, ↓reduceIte]
+  · have h' := (not_congr (blockCols_iff qLo qHi k j cIdx)).mpr h
+    simp only [h, h', ↓reduceIte, addPair, add_zero, Prod.mk.eta]
 
 lemma rawGet_rawZero (k j cIdx : ℕ) (hk : k < numCharges) (hj : j < blockSide k)
     (hc : cIdx < blockSide k) : rawGet rawZero k j cIdx = (0, 0) := by
@@ -177,20 +187,21 @@ lemma mem_signedCoefficient (P : ℕ) {S u : ℝ} {scalar uI : Ival} (hS : mem S
 /-- Every entry of the canonical array encloses the signed coefficient
 `σ^{c+d} · (canonicalCoefficient A (c, d)).re` (no transport widening). -/
 lemma mem_canonicalTriangleI (P : ℕ) {A : ℝ} {aI scalar : Ival} (hA : mem A aI) (hA0 : 0 < A)
-    (hS : mem (seedScalar A) scalar) (ratios : Array Ival)
+    (hS : mem (seedScalar A) scalar) (sq ratios : Array Ival)
     (hr : ∀ d, mem (OriginalPositiveMoment.ratio d (A ^ 2)) (ratios.getD d ⟨0, 1, 0⟩))
-    (D : ℕ) (hsq : ∀ n, 1 ≤ n → n ≤ D → 0 < (sqrtNatI P n).lo)
+    (D : ℕ) (hsqT : ∀ n, n ≤ D + 1 → sq.getD n zeroI = sqrtNatI P n)
+    (hsq : ∀ n, 1 ≤ n → n ≤ D → 0 < (sqrtNatI P n).lo)
     (hden : ∀ c, c < (D + 1) / 2 → 0 < (mulI P aI (sqrtNatI P (c + 1))).lo) (dMax i : ℕ)
     (hi : i < (canonicalPairs D dMax).size) (neg : Bool) :
     mem (signOf neg ^ (((canonicalPairs D dMax).getD i (0, 0)).1 + ((canonicalPairs D dMax).getD i (0, 0)).2) *
         (canonicalCoefficient A ((canonicalPairs D dMax).getD i (0, 0))).re)
-      ((canonicalTriangleI P scalar neg zeroI aI ratios D dMax).getD i zeroI) := by
+      ((canonicalTriangleI P scalar neg zeroI aI sq ratios D dMax).getD i zeroI) := by
   unfold canonicalTriangleI canonicalFrom
   simp only [Array.getD_eq_getD_getElem?, Array.getElem?_ofFn, hi, ↓reduceDIte, Option.getD_some]
   rw [← Array.getD_eq_getD_getElem?, ← Array.getD_eq_getD_getElem?]
   have hz : isZero zeroI = true := rfl
   simp only [actualCoefficient, hz, ↓reduceIte]
-  have hu := mem_normalizedTriangleI P hA hA0 ratios hr D hsq hden dMax i hi
+  have hu := mem_normalizedTriangleI P hA hA0 ratios sq hr D hsqT hsq hden dMax i hi
   have hre : (canonicalCoefficient A ((canonicalPairs D dMax).getD i (0, 0))).re =
       seedScalar A * uRe A ((canonicalPairs D dMax).getD i (0, 0)).1
         ((canonicalPairs D dMax).getD i (0, 0)).2 := by
@@ -297,8 +308,9 @@ theorem node_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.pi piI)
     intro i hi
     unfold nodeVals nodeCoef
     rw [hsign]
-    exact mem_canonicalTriangleI P hA hA0 (mem_seedScalarI P hP hpi hA hJ) (nodeRatios P nd _)
-      (mem_nodeRatios P hP nd hA hrv) nd.cutoff
+    exact mem_canonicalTriangleI P hA hA0 (mem_seedScalarI P hP hpi hA hJ)
+      (sqrtTable P (nd.cutoff + 1)) (nodeRatios P nd _) (mem_nodeRatios P hP nd hA hrv) nd.cutoff
+      (fun n hn => sqrtTable_getD P (nd.cutoff + 1) n hn)
       (fun n hn1 hnD => lo_pos_of_isPos (by
         have := hsq (n - 1) (by omega)
         rwa [Nat.sub_add_cancel hn1] at this))
@@ -306,53 +318,63 @@ theorem node_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.pi piI)
 
 /-! ### The accumulation -/
 
-/-- The exact contribution of the node `s` (weight `W`, cutoff `D`) to the entry `(k, j, cIdx)`:
-zero outside the degree-501 triangle (`activeCols`) and for the omitted pairs of the cutoff. -/
-noncomputable def nodeTerm (s W : ℝ) (D k j cIdx : ℕ) : ℝ :=
-  if cIdx < activeCols k j ∧ (pairOf k cIdx).1 + (pairOf k cIdx).2 ≤ D then
+/-- The exact contribution of the node `s` (weight `W`, cutoff `D`) to the entry `(k, j, cIdx)` of the
+grade block `[qLo, qHi)`: zero outside the degree-501 triangle (`activeCols`), outside the block, and
+for the omitted pairs of the cutoff. -/
+noncomputable def nodeTerm (s W : ℝ) (D qLo qHi k j cIdx : ℕ) : ℝ :=
+  if cIdx < activeCols k j ∧ qLo ≤ entryGrade k j cIdx ∧ entryGrade k j cIdx < qHi ∧
+      (pairOf k cIdx).1 + (pairOf k cIdx).2 ≤ D then
     RadialLaguerre.radialFactor k j s * (Real.exp (-s) * W) * nodeCoef s (pairOf k cIdx)
   else 0
 
 lemma memFx2_contributionAt {s W : ℝ} (D : ℕ) {valsFx : Array Fx} {factors : Array (Array Fx)}
-    (k j cIdx : ℕ) (hk : k < numCharges) (_hj : j < blockSide k) (hc : cIdx < blockSide k)
-    (hF : memFx (RadialLaguerre.radialFactor k j s * (Real.exp (-s) * W))
-      ((factors.getD k #[]).getD j default))
+    (qLo qHi k j cIdx : ℕ) (hk : k < numCharges) (_hj : j < blockSide k) (hc : cIdx < blockSide k)
+    (hF : rowActive qLo qHi k j = true →
+      memFx (RadialLaguerre.radialFactor k j s * (Real.exp (-s) * W))
+        ((factors.getD k #[]).getD j default))
     (hvals : ∀ i, i < (canonicalPairs D 265).size →
       memFx (nodeCoef s ((canonicalPairs D 265).getD i (0, 0))) (valsFx.getD i default)) :
-    memFx2 (nodeTerm s W D k j cIdx) (contributionAt D valsFx factors k j cIdx) := by
+    memFx2 (nodeTerm s W D qLo qHi k j cIdx) (contributionAt D valsFx factors qLo qHi k j cIdx) := by
   unfold contributionAt contributionOf nodeTerm
   rw [selectedRanks_getD k cIdx hk hc]
   obtain ⟨hcd, hd⟩ := pairOf_bounds k cIdx hk hc
   simp only
-  by_cases hact : cIdx < activeCols k j
-  · by_cases hdeg : (pairOf k cIdx).1 + (pairOf k cIdx).2 ≤ D
-    · simp only [hact, hdeg, and_self, ↓reduceIte]
+  by_cases hin : cIdx < activeCols k j ∧ qLo ≤ entryGrade k j cIdx ∧ entryGrade k j cIdx < qHi
+  · have hact : rowActive qLo qHi k j = true := by
+      have := (blockCols_iff qLo qHi k j cIdx).mpr hin
+      unfold rowActive
+      simp only [decide_eq_true_eq]
+      omega
+    by_cases hdeg : (pairOf k cIdx).1 + (pairOf k cIdx).2 ≤ D
+    · simp only [hin, hdeg, and_self, ↓reduceIte]
       have hlt := canonicalRank_lt D 265 _ _ hcd hd hdeg
       have hv := hvals _ hlt
       rw [canonicalPairs_getD_rank D 265 _ _ hcd hd hdeg] at hv
-      exact memFx2_mulFx hF hv
-    · simp only [hact, hdeg, and_false, ↓reduceIte]
+      exact memFx2_mulFx (hF hact) hv
+    · simp only [hin, hdeg, and_false, ↓reduceIte]
       exact memFx2_zero
-  · simp only [hact, false_and, ↓reduceIte]
+  · have hin' : ¬ (cIdx < activeCols k j ∧ qLo ≤ entryGrade k j cIdx ∧ entryGrade k j cIdx < qHi ∧
+        (pairOf k cIdx).1 + (pairOf k cIdx).2 ≤ D) := by tauto
+    simp only [hin, hin', ↓reduceIte]
     exact memFx2_zero
 
 /-- One accumulation step adds the node's exact terms to every entry. -/
 lemma accumulateNode_sound {s W : ℝ} (D : ℕ) {valsFx : Array Fx} {factors : Array (Array Fx)}
-    (acc : Raw) (V : ℕ → ℕ → ℕ → ℝ)
+    (qLo qHi : ℕ) (acc : Raw) (V : ℕ → ℕ → ℕ → ℝ)
     (hacc : ∀ k j cIdx, k < numCharges → j < blockSide k → cIdx < blockSide k →
       memFx2 (V k j cIdx) (rawGet acc k j cIdx))
-    (hF : ∀ k j, k < numCharges → j < blockSide k →
+    (hF : ∀ k j, k < numCharges → j < blockSide k → rowActive qLo qHi k j = true →
       memFx (RadialLaguerre.radialFactor k j s * (Real.exp (-s) * W))
         ((factors.getD k #[]).getD j default))
     (hvals : ∀ i, i < (canonicalPairs D 265).size →
       memFx (nodeCoef s ((canonicalPairs D 265).getD i (0, 0))) (valsFx.getD i default)) :
     ∀ k j cIdx, k < numCharges → j < blockSide k → cIdx < blockSide k →
-      memFx2 (V k j cIdx + nodeTerm s W D k j cIdx)
-        (rawGet (accumulateNode D valsFx factors acc) k j cIdx) := by
+      memFx2 (V k j cIdx + nodeTerm s W D qLo qHi k j cIdx)
+        (rawGet (accumulateNode D valsFx factors qLo qHi acc) k j cIdx) := by
   intro k j cIdx hk hj hc
-  rw [rawGet_accumulateNode D valsFx factors acc k j cIdx hk hj hc]
+  rw [rawGet_accumulateNode D valsFx factors qLo qHi acc k j cIdx hk hj hc]
   exact memFx2_addPair (hacc k j cIdx hk hj hc)
-    (memFx2_contributionAt D k j cIdx hk hj hc (hF k j hk hj) hvals)
+    (memFx2_contributionAt D qLo qHi k j cIdx hk hj hc (hF k j hk hj) hvals)
 
 lemma memFx_map_toFx {x : ℝ} (vals : Array Ival) (i : ℕ) (hi : i < vals.size)
     (h : mem x (vals.getD i zeroI)) : memFx x ((vals.map toFx).getD i default) := by
@@ -365,13 +387,13 @@ lemma nodeVals_size (P : ℕ) (piI : Ival) (nd : NodeSpec) (neg : Bool) (aI : Iv
     (nodeVals P piI nd neg aI).size = (canonicalPairs nd.cutoff 265).size := by
   simp [nodeVals, canonicalTriangleI, canonicalFrom]
 
-/-- The exact term of a node spec at the root `x`. -/
-noncomputable def specTerm (nd : NodeSpec) (x : ℝ) (k j cIdx : ℕ) : ℝ :=
-  nodeTerm (specNode nd x) (specWeight nd x) nd.cutoff k j cIdx
+/-- The exact term of a node spec at the root `x` in the grade block `[qLo, qHi)`. -/
+noncomputable def specTerm (nd : NodeSpec) (x : ℝ) (qLo qHi k j cIdx : ℕ) : ℝ :=
+  nodeTerm (specNode nd x) (specWeight nd x) nd.cutoff qLo qHi k j cIdx
 
 /-- `accumulateSpec` adds the exact node terms (given the seed enclosure of the node). -/
 theorem accumulateSpec_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.pi piI)
-    {pd : ProfileData} (hpd : profileAgrees pd) (hpv : profileValid P piI pd = true)
+    {pd : ProfileData} (hpd : profileAgrees pd) (hpv : profileValid P piI pd = true) (qLo qHi : ℕ)
     (nd : NodeSpec) {x : ℝ} (hx : mem x nd.bracket.toIval)
     (hJ : ∀ neg aI, nodeShift P piI pd nd = some (neg, aI) →
       mem (OriginalPositiveMoment.moment 0 (profileShift (specNode nd x) ^ 2))
@@ -379,9 +401,9 @@ theorem accumulateSpec_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Re
     (acc acc' : Raw) (V : ℕ → ℕ → ℕ → ℝ)
     (hacc : ∀ k j cIdx, k < numCharges → j < blockSide k → cIdx < blockSide k →
       memFx2 (V k j cIdx) (rawGet acc k j cIdx))
-    (h : accumulateSpec P piI pd nd acc = some acc') :
+    (h : accumulateSpec P piI pd qLo qHi nd acc = some acc') :
     ∀ k j cIdx, k < numCharges → j < blockSide k → cIdx < blockSide k →
-      memFx2 (V k j cIdx + specTerm nd x k j cIdx) (rawGet acc' k j cIdx) := by
+      memFx2 (V k j cIdx + specTerm nd x qLo qHi k j cIdx) (rawGet acc' k j cIdx) := by
   unfold accumulateSpec at h
   split at h
   · exact absurd h (by simp)
@@ -392,23 +414,23 @@ theorem accumulateSpec_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Re
       obtain ⟨hs0, hs, hW, -, -, -, -, hvals⟩ :=
         node_sound P hP hpi hpd hpv nd hx hshift hvalid (hJ neg aI hshift)
       obtain ⟨-, -, -, -, -, -, hfv, -⟩ := nodeValid_unpack P nd aI hvalid
-      apply accumulateNode_sound nd.cutoff acc V hacc
-      · intro k j hk hj
-        exact memFx_nodeFactors P hP hs0.le hs hW hfv k j hk hj
+      apply accumulateNode_sound nd.cutoff qLo qHi acc V hacc
+      · intro k j hk hj hact
+        exact memFx_nodeFactors P hP hs0.le hs hW hfv qLo qHi k j hk hj hact
       · intro i hi
         exact memFx_map_toFx _ i (by rw [nodeVals_size]; exact hi) (hvals i hi)
 
-lemma accumulateSpecs_nil (P : ℕ) (piI : Ival) (pd : ProfileData) (acc : Raw) :
-    accumulateSpecs P piI pd [] acc = some acc := rfl
+lemma accumulateSpecs_nil (P : ℕ) (piI : Ival) (pd : ProfileData) (qLo qHi : ℕ) (acc : Raw) :
+    accumulateSpecs P piI pd qLo qHi [] acc = some acc := rfl
 
-lemma accumulateSpecs_cons (P : ℕ) (piI : Ival) (pd : ProfileData) (nd : NodeSpec)
+lemma accumulateSpecs_cons (P : ℕ) (piI : Ival) (pd : ProfileData) (qLo qHi : ℕ) (nd : NodeSpec)
     (rest : List NodeSpec) (acc : Raw) :
-    accumulateSpecs P piI pd (nd :: rest) acc =
-      (accumulateSpec P piI pd nd acc).bind (accumulateSpecs P piI pd rest) := rfl
+    accumulateSpecs P piI pd qLo qHi (nd :: rest) acc =
+      (accumulateSpec P piI pd qLo qHi nd acc).bind (accumulateSpecs P piI pd qLo qHi rest) := rfl
 
 /-- The node loop adds the exact terms of every node (`x` gives the root of each spec). -/
 theorem accumulateSpecs_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.pi piI)
-    {pd : ProfileData} (hpd : profileAgrees pd) (hpv : profileValid P piI pd = true)
+    {pd : ProfileData} (hpd : profileAgrees pd) (hpv : profileValid P piI pd = true) (qLo qHi : ℕ)
     (specs : List NodeSpec) (x : NodeSpec → ℝ)
     (hx : ∀ nd ∈ specs, mem (x nd) nd.bracket.toIval)
     (hJ : ∀ nd ∈ specs, ∀ neg aI, nodeShift P piI pd nd = some (neg, aI) →
@@ -417,9 +439,9 @@ theorem accumulateSpecs_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem R
     ∀ (acc acc' : Raw) (V : ℕ → ℕ → ℕ → ℝ),
       (∀ k j cIdx, k < numCharges → j < blockSide k → cIdx < blockSide k →
         memFx2 (V k j cIdx) (rawGet acc k j cIdx)) →
-      accumulateSpecs P piI pd specs acc = some acc' →
+      accumulateSpecs P piI pd qLo qHi specs acc = some acc' →
       ∀ k j cIdx, k < numCharges → j < blockSide k → cIdx < blockSide k →
-        memFx2 (V k j cIdx + (specs.map fun nd => specTerm nd (x nd) k j cIdx).sum)
+        memFx2 (V k j cIdx + (specs.map fun nd => specTerm nd (x nd) qLo qHi k j cIdx).sum)
           (rawGet acc' k j cIdx) := by
   induction specs with
   | nil =>
@@ -431,25 +453,27 @@ theorem accumulateSpecs_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem R
     intro acc acc' V hacc h k j cIdx hk hj hc
     rw [accumulateSpecs_cons, Option.bind_eq_some_iff] at h
     obtain ⟨acc₁, hcase, h⟩ := h
-    · have hstep := accumulateSpec_sound P hP hpi hpd hpv nd (hx nd (by simp))
+    · have hstep := accumulateSpec_sound P hP hpi hpd hpv qLo qHi nd (hx nd (by simp))
         (hJ nd (by simp)) acc acc₁ V hacc hcase
       have := ih (fun nd' hnd' => hx nd' (by simp [hnd'])) (fun nd' hnd' => hJ nd' (by simp [hnd']))
-        acc₁ acc' (fun k j cIdx => V k j cIdx + specTerm nd (x nd) k j cIdx) hstep h k j cIdx hk hj hc
+        acc₁ acc' (fun k j cIdx => V k j cIdx + specTerm nd (x nd) qLo qHi k j cIdx) hstep h k j cIdx
+        hk hj hc
       simpa [add_assoc] using this
 
 /-- The whole partition from the zero accumulator. -/
 theorem accumulateSpecs_zero_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.pi piI)
-    {pd : ProfileData} (hpd : profileAgrees pd) (hpv : profileValid P piI pd = true)
+    {pd : ProfileData} (hpd : profileAgrees pd) (hpv : profileValid P piI pd = true) (qLo qHi : ℕ)
     (specs : List NodeSpec) (x : NodeSpec → ℝ)
     (hx : ∀ nd ∈ specs, mem (x nd) nd.bracket.toIval)
     (hJ : ∀ nd ∈ specs, ∀ neg aI, nodeShift P piI pd nd = some (neg, aI) →
       mem (OriginalPositiveMoment.moment 0 (profileShift (specNode nd (x nd)) ^ 2))
         (seedJ0I P piI (sqI P aI)))
-    (acc' : Raw) (h : accumulateSpecs P piI pd specs rawZero = some acc') :
+    (acc' : Raw) (h : accumulateSpecs P piI pd qLo qHi specs rawZero = some acc') :
     ∀ k j cIdx, k < numCharges → j < blockSide k → cIdx < blockSide k →
-      memFx2 ((specs.map fun nd => specTerm nd (x nd) k j cIdx).sum) (rawGet acc' k j cIdx) := by
+      memFx2 ((specs.map fun nd => specTerm nd (x nd) qLo qHi k j cIdx).sum)
+        (rawGet acc' k j cIdx) := by
   intro k j cIdx hk hj hc
-  have := accumulateSpecs_sound P hP hpi hpd hpv specs x hx hJ rawZero acc' (fun _ _ _ => 0)
+  have := accumulateSpecs_sound P hP hpi hpd hpv qLo qHi specs x hx hJ rawZero acc' (fun _ _ _ => 0)
     (fun k j cIdx hk hj hc => by rw [rawGet_rawZero k j cIdx hk hj hc]; exact memFx2_zero) h
     k j cIdx hk hj hc
   rwa [zero_add] at this
