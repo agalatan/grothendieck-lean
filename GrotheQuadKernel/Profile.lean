@@ -5,39 +5,39 @@ import GrotheQuadKernel.Seed
 
 `vprof s = Σ_{j < 12} x_j · L_j^{(−1/2)}(s) / nrmHalf j` with `nrmHalf j = √(√π (2j)!/(4^j (j!)²))`
 (`Grothe/Upper/Data.lean`: `profileQ`, `aQ`; `Grothe/UpperChaos/Rounder.lean`: `vprof`,
-`lagHalf`, `nrmHalf`).  The scaled profile is `κ · vprof s` with `κ = √(1 + a²)`
+`lagHalf`, `binHalf`, `nrmHalf`), evaluated exactly as master defines it:
+`lagHalf j s = Σ_{k ≤ j} (−1)^k binHalf j k s^k / k!`, `binHalf j k = Π_{i < j−k} (k+½+i)/(i+1)`
+(a rational).  The scaled profile is `κ · vprof s` with `κ = √(1 + a²)`
 (`F0ConditionalEvaluator.profileScale s = κ |vprof s|`), the shift is
 `profileShift s = √s / (κ |vprof s|)` and the sign `profileSign s = −1` iff `vprof s < 0`.
-
-The Laguerre polynomials with `α = −½` satisfy `2(m+1) L_{m+1} = ((4m+1) − 2s) L_m − (2m−1) L_{m−1}`,
-`L_0 = 1`, `L_1 = ½ − s`.
 
 Agent-ID: claude-b9ee. Refs #303, #21.
 -/
 
 namespace GrotheQuad
 
-/-- `L_0^{(−1/2)}(s), …, L_M^{(−1/2)}(s)`. -/
-def lagHalfRowI (P : Nat) (M : Nat) (s : Ival) : Array Ival := Id.run do
-  let mut out : Array Ival := Array.mkEmpty (M + 1)
-  let mut lPrev := ofInt P 1
-  out := out.push lPrev
-  if M == 0 then return out
-  let mut lCur := subI P (divN P 2 (ofInt P 1)) s
-  out := out.push lCur
-  for m in [1:M] do
-    let a := subI P (divN P 2 (ofNat P (4 * m + 1))) s
-    let lNext := divN P (2 * (m + 1)) (subI P (mulN P 2 (mulI P a lCur)) (mulN P (2 * m - 1) lPrev))
-    out := out.push lNext
-    lPrev := lCur
-    lCur := lNext
-  return out
+/-- `Σ_{k < n} g k` as an interval (left fold of `addI`). -/
+def sumRangeI (P : Nat) (n : Nat) (g : Nat → Ival) : Ival :=
+  (List.range n).foldl (fun acc k => addI P acc (g k)) zeroI
+
+/-- `binHalf j k = Π_{i < j−k} (k + ½ + i)/(i + 1) = Π_{i < j−k} (2k+1+2i)/(2(i+1))` as a
+rational `(num, den)`. -/
+def binHalfRat (j k : Nat) : Int × Nat :=
+  (List.range (j - k)).foldl (fun p i => (p.1 * ((2 * k + 1 + 2 * i : Nat) : Int), p.2 * (2 * (i + 1)))) (1, 1)
+
+/-- One term `(−1)^k · binHalf j k · s^k / k!`. -/
+def lagHalfTerm (P : Nat) (j k : Nat) (s : Ival) : Ival :=
+  let b := binHalfRat j k
+  let t := divN P (factNat k) (mulI P (ratI P b.1 b.2) (powI P s k))
+  if k % 2 == 1 then negI t else t
+
+/-- `L_j^{(−1/2)}(s) = Σ_{k ≤ j} (−1)^k binHalf j k s^k / k!`. -/
+def lagHalfI (P : Nat) (j : Nat) (s : Ival) : Ival :=
+  sumRangeI P (j + 1) fun k => lagHalfTerm P j k s
 
 /-- `nrmHalf j = √(√π · (2j)! / (4^j (j!)²))`. -/
 def nrmHalfI (P : Nat) (sqrtPi : Ival) (j : Nat) : Ival :=
-  let num := factNat (2 * j)
-  let den := 4 ^ j * (factNat j) ^ 2
-  sqrtI P (mulI P sqrtPi (divN P den (ofNat P num)))
+  sqrtI P (mulI P sqrtPi (divN P (4 ^ j * (factNat j) ^ 2) (ofNat P (factNat (2 * j)))))
 
 /-- The profile coefficients as rationals `(num, den)`. -/
 structure ProfileData where
@@ -46,24 +46,31 @@ structure ProfileData where
   aD : Nat
   deriving Repr, Inhabited
 
+/-- One term `x_j · L_j^{(−1/2)}(s) / nrmHalf j`. -/
+def vprofTerm (P : Nat) (piI : Ival) (pd : ProfileData) (s : Ival) (j : Nat) : Ival :=
+  divI P (mulI P (ratI P (pd.coeffs.getD j (0, 1)).1 (pd.coeffs.getD j (0, 1)).2) (lagHalfI P j s))
+    (nrmHalfI P (sqrtI P piI) j)
+
 /-- `vprof s`. -/
 def vprofI (P : Nat) (piI : Ival) (pd : ProfileData) (s : Ival) : Ival :=
-  let sqrtPi := sqrtI P piI
-  let lag := lagHalfRowI P (pd.coeffs.size - 1) s
-  (Array.range pd.coeffs.size).foldl (fun acc j =>
-    let (n, d) := pd.coeffs.getD j (0, 1)
-    addI P acc (divI P (mulI P (ratI P n d) (lag.getD j zeroI)) (nrmHalfI P sqrtPi j))) zeroI
+  sumRangeI P pd.coeffs.size fun j => vprofTerm P piI pd s j
 
 /-- `κ = √(1 + a²)`. -/
 def kappaI (P : Nat) (pd : ProfileData) : Ival :=
   sqrtI P (addI P (ofInt P 1) (sqI P (ratI P pd.aN pd.aD)))
 
-/-- The scaled profile `κ · vprof s`, the sign (`true` = negative) and the shift
-`√s / |κ vprof s|`; `none` if the sign is not decided by the enclosure. -/
-def profileShiftI (P : Nat) (piI : Ival) (pd : ProfileData) (s : Ival) : Option (Ival × Bool × Ival) :=
-  let v := mulI P (kappaI P pd) (vprofI P piI pd s)
-  if isPos v then some (v, false, divI P (sqrtI P s) v)
-  else if isNeg v then some (v, true, divI P (sqrtI P s) (negI v))
+/-- The scaled profile `κ · vprof s`. -/
+def scaledProfileI (P : Nat) (piI : Ival) (pd : ProfileData) (s : Ival) : Ival :=
+  mulI P (kappaI P pd) (vprofI P piI pd s)
+
+/-- The scaled profile, the sign (`true` = negative) and the shift `√s / |κ vprof s|`; `none` if
+the sign is not decided by the enclosure. -/
+def profileShiftI (P : Nat) (piI : Ival) (pd : ProfileData) (s : Ival) :
+    Option (Ival × Bool × Ival) :=
+  if isPos (scaledProfileI P piI pd s) then
+    some (scaledProfileI P piI pd s, false, divI P (sqrtI P s) (scaledProfileI P piI pd s))
+  else if isNeg (scaledProfileI P piI pd s) then
+    some (scaledProfileI P piI pd s, true, divI P (sqrtI P s) (negI (scaledProfileI P piI pd s)))
   else none
 
 end GrotheQuad

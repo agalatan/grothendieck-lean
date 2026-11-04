@@ -44,25 +44,19 @@ def smS : Nat := 10000000000000000000000
 def natChoose (n k : Nat) : Nat :=
   if k > n then 0 else (List.range k).foldl (fun acc i => acc * (n - i) / (i + 1)) 1
 
+/-- One summand `C(a,k) C(c,p−k) U^k V^{(a−k)+(p−k)} W^{c−(p−k)}` from the power tables. -/
+def momentSummand (pU pV pW : Array Nat) (p a c k : Nat) : Nat :=
+  natChoose a k * natChoose c (p - k) * pU.getD k 0 * pV.getD ((a - k) + (p - k)) 0 *
+    pW.getD (c - (p - k)) 0
+
 /-- `matrixMomentNumerator U V W p r a c` with the powers of `U, V, W` precomputed
 (`pw.getD i` = base^i). -/
 def momentNumerator (pU pV pW : Array Nat) (p r a c : Nat) : Nat :=
-  let lo := p - c
-  let hi := min a p
-  let sum := (List.range (hi + 1 - lo)).foldl (fun acc i =>
-    let k := lo + i
-    acc + natChoose a k * natChoose c (p - k) * pU.getD k 0 *
-      pV.getD ((a - k) + (p - k)) 0 * pW.getD (c - (p - k)) 0) 0
-  factNat p * factNat r * sum
+  factNat p * factNat r *
+    (List.range (min a p + 1 - (p - c))).foldl (fun acc i => acc + momentSummand pU pV pW p a c ((p - c) + i)) 0
 
 /-- The powers `base^0, …, base^n`. -/
-def powers (base n : Nat) : Array Nat := Id.run do
-  let mut out : Array Nat := Array.mkEmpty (n + 1)
-  let mut v := 1
-  for _ in [0:n+1] do
-    out := out.push v
-    v := v * base
-  return out
+def powers (base n : Nat) : Array Nat := Array.ofFn fun i : Fin (n + 1) => base ^ i.val
 
 /-- `entryFactorial n c e = (n−c)! c! (n−e)! e!`. -/
 def entryFact (n c e : Nat) : Nat := factNat (n - c) * factNat c * factNat (n - e) * factNat e
