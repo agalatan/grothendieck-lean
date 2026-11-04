@@ -380,3 +380,109 @@ magnitude away. So the table is accurate at the `10⁻¹⁵` level, and the whol
 of `hclose` is now reproduced by the checker; what separates this from a Lean proof of `hclose`
 is the list of analytic obligations of §6 (S1–S6, the omitted-pair bound of the cutoffs) and the
 native facts that would evaluate the checker.
+
+## 11. Milestone 4: the Lean bridge from the executable checker to `hclose` (design)
+
+### 11.1 The statement chain
+
+All executable definitions live in the precompiled, Mathlib-free `GrotheQuadKernel`; every
+soundness theorem lives in `Grothe/UpperQuad/` (Mathlib + the kernel's definitions, kernel-checked,
+no `native_decide` until step 4). Inputs are Lean literals generated from the committed data
+(`tools/quad_gen_partition.py --lean`, to be added: `Grothe/UpperQuad/Data/Panels.lean`,
+`Cutoffs.lean`, `Profile.lean`, provenance in `data/quad-checker/README.md`), each tied to master
+by a kernel-checked equality (`panelsData = sourcePanels` with the brackets of
+`Q0LegendreRuleNN.brackets`, `profileData.coeffs = profileQ`, `profileData.a = aQ`, by `decide`
+or `rfl` on the literals).
+
+```
+-- membership of a real number in a floating dyadic interval (Grothe/UpperQuad/IntervalSound.lean)
+def mem (x : ℝ) (a : Ival) : Prop := (a.lo : ℝ) * 2^a.e ≤ x ∧ x ≤ (a.hi : ℝ) * 2^a.e
+
+-- (A) node layer, GrotheQuadKernel.Contract: for a node range [lo, hi) the kernel returns the
+--     accumulated contribution to the raw vector; the theorem (Grothe/UpperQuad/NodeSound.lean):
+theorem nodeRange_sound (hS2 : SeedHyp) (hS6 : GaussHyp) … (i : Nat) (hi : lo ≤ i < hi) :
+    ∀ k j c, memFx (Σ_{nodes i' ∈ [lo,hi)} W_{i'} · e^{−s_{i'}} · radialFactor k j s_{i'} ·
+               profileSign s_{i'} ^ (c+d) · (canonicalCoefficient (profileShift s_{i'}) (c, d)).re)
+             (rangeAccumulator inputs lo hi)[k, j, c]
+--     i.e. the exact Gauss–Legendre partial sum of every raw coefficient over the nodes of the
+--     range lies in the kernel's fixed-point interval (sign and cutoff as committed).
+
+-- (B) assembly, GrotheQuadKernel.Rotate: from the total accumulator R (the sum of the ranges,
+--     exact integer addition) the kernel checks, for the midpoint family a0 := mid R (a
+--     computable rational function of the committed inputs, hence a Lean definition, no data):
+--       (B1) rawDistOK R δ : Bool    -- Σ_{k,j,c in the triangle} (half-width)² ≤ δ²
+--       (B2) energyOK R v table ε : Bool   -- S_n exact, D_q, Σ_{head} |E − table| ≤ ε
+--     with theorems energyOK_sound : energyOK … = true → htable (midpoint a0) ≤ ε, and
+--     rawDistOK_sound : … → ‖gradedHermite 251 a0 − (exact Gauss sums)‖ ≤ δ.
+
+-- (C) the analytic layer (hypotheses, Grothe/UpperQuad/Bridge.lean): the exact Gauss sums
+--     differ from productionF0Head by the quadrature remainder, the omitted pairs and the gaps:
+--       hQuad : ‖productionF0Head − (exact Gauss sums as gradedHermite)‖ ≤ ρ      -- S6b, S6c, cutoffs
+--     together with the seed/ratio/pair facts that the node layer needs (S2–S4 as hypotheses
+--     on the real functions, discharged when proved).
+
+-- (D) the top theorem (Grothe/UpperQuad/Bridge.lean):
+theorem hclose_of_checks (hranges : ∀ r ∈ ranges, rangeAccumulator … = partial r)
+    (hraw : rawDistOK R δ = true) (htab : energyOK R v table ε = true)
+    (hQuad : …) (hS2 hS3 hS4 hS6a : …)
+    (hbudget : (2·501/500 + 3Δ)Δ + ε ≤ energyErrQ, Δ = δ + ρ + 4·10⁻¹⁵(501/500 + δ + ρ)) :
+    ∑ p ∈ headIdx 501, |energy X p − energyTable p| ≤ energyErrQ
+--   by selected_energy_close_of_raw_error (ProductionRetainedEnergy.lean) with a0 := mid R.
+```
+
+Obligations that become theorems in this milestone: **S1** (all of it: `norm`, `addI`,
+`mulI`, `divI`, `sqrtI`, `expPosI` given the series tail lemma, `powI`, the fixed-point export
+and `word64`), **S4b** given S3 (the pair enclosure as the reflection of the proved recurrences
+`normalizedCoefficient_zero_row_step` / `_forward` through S1), **S6a** (a sign change of `P_n`
+on a bracket gives a root in it, by the intermediate value theorem on the recurrence
+polynomial; the bracket is the node's enclosure and `weightI` encloses `panelWeight`),
+**S7** (the comparison), the block layout (the index map of `Contract` equals
+`gradedMode`/`production_reflected_indices`) and the rotation (`mulSA`/`mulBT` enclose the
+rational products `S_{q+1} A S_qᵀ` of `productionSmoothedCoeff`, with `savedEntryNum` equal to
+`productionSavedEntryQ` by `decide`-free unfolding of the shared definition), hence **(B)**.
+Obligations that stay explicit hypotheses: **S2** (the two seed enclosures: the series tail
+needs `Real.exp`-type bounds beyond Mathlib's `|x| ≤ 1` lemma; the Watson form needs the Beta
+integral), **S3** is on master (`ratio_backward_enclosure`) and is used, **S5** not needed (the
+recurrence runs on the shift interval), **S6b/S6c** (the Bernstein-ellipse remainder and the
+integrand bound: the only genuinely analytic part of `hraw`, `ρ ≈ 1.55·10⁻¹²` inherited), the
+cutoffs' omitted-pair bound (`10⁻²⁷` per coefficient, archived), **S8** not needed on the
+committed partition. The isolation theorem for the brackets (a sign change gives *a* root; that
+it is *the* root `Q0GaussSelectedChoice` uses needs the uniqueness `all_unique` of master's
+`Q0LegendreRuleNN`, which exists) is reused from master.
+
+### 11.2 Sharding the native facts (the open design decision)
+
+The raw vector is additive over nodes but the energies are not, so node-range facts need their
+partial sums as Lean terms. Three options, costed with the milestone-2/3 measurements
+(≈ 20 CPU-h for the nodes, ≈ 2 CPU-h for the saved matrices, 10 CPU-min for the rotation):
+1. **One fact per node range, partial sums committed as data** (the `CapTablesData` pattern):
+   each range fact checks `rangeAccumulator ⊆ partial_r` against a committed dyadic table; the
+   final fact adds the tables exactly and runs (B). Data size is the problem: the full partial is
+   2.7·10⁶ triangle entries per range; restricted to the entries above `10⁻²⁰` (≈ 5·10⁵) at
+   2⁻⁶⁰ with per-block bounds for the rest, ≈ 5 MB per range, 8 ranges ≈ 40 MB of committed
+   data (the committed raw array is 43 MB). Facts: 8 × 2.5 CPU-h + 1 × 2.5 CPU-h.
+2. **Output sharding with recomputation**: fact `k`-band recomputes every node's triangle and
+   accumulates only its charge blocks; no new data; cost `(#facts) × 8 h + 12 h`: 4 facts of
+   ≈ 11 CPU-h each. Too long per fact for the hosted runners (6 h), acceptable only on the droplet.
+3. **One sequential fact** (≈ 22 CPU-h): simplest statement, droplet only, no sharding; the
+   cap rows precedent is 21 CPU-h in 15 facts.
+Recommendation: option 1 with 8 node ranges and the compact partial tables, unless the user
+prefers to avoid 40 MB of data, in which case option 2 on the droplet. Step 4 of this milestone
+(the row-227 fact) measures the `native_decide` overhead before the choice is made.
+
+### 11.3 Workflow and script changes needed (for a hand-merged workflow PR)
+
+```
+.github/workflows/lean.yml
+  LEAN_PATHS:  add  GrotheQuadKernel/|GrotheQuadKernel\.lean$|QuadRun\.lean$
+  HEAVY_TREE:  add  GrotheQuadKernel/
+  sorry grep (both occurrences, and the one in cloud.yml):
+     … Grothe GrotheKernel GrotheCapsKernel GrotheQuadKernel Grothe.lean GrotheKernel.lean GrotheCapsKernel.lean GrotheQuadKernel.lean QuadRun.lean …
+scripts/caps_stamp.py
+  PROJECT_PREFIXES: add "GrotheQuadKernel."      PROJECT_ROOTS: add "GrotheQuadKernel"
+  EXTRA: add "GrotheQuadKernel.lean"
+scripts/test_caps_stamp.py
+  the fixtures that enumerate the libraries (lines 39, 132, 177–181): add GrotheQuadKernel
+```
+`tools/gen_root_imports.py` already lists the four libraries (`LIBS`). `lakefile.toml` already
+has the library and the `quadrun` executable (not a default target).
