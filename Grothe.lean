@@ -1996,6 +1996,10 @@ import Grothe.UpperChaos.RadialDampedMoments
 import Grothe.UpperChaos.RadialRepair
 import Grothe.UpperChaos.RationalChargeOrthogonality
 import Grothe.UpperChaos.RationalComplexHermite
+import Grothe.UpperChaos.RationalCovarianceAlgebra
+import Grothe.UpperChaos.RationalCovarianceConditional
+import Grothe.UpperChaos.RationalCovarianceGateComposition
+import Grothe.UpperChaos.RationalCovariancePolynomial
 import Grothe.UpperChaos.RationalPhaseImaginary
 import Grothe.UpperChaos.RationalPhaseInvariant
 import Grothe.UpperChaos.RationalQuadraticMoments
