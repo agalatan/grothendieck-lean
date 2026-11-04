@@ -146,7 +146,7 @@ class CapsStampTests(unittest.TestCase):
         self.assertEqual(self.run_cli("--check-cache").returncode, 1)
 
     def test_missing_project_import_is_an_error(self):
-        for namespace in ("Grothe", "GrotheKernel", "GrotheCapsKernel"):
+        for namespace in ("Grothe", "GrotheKernel", "GrotheCapsKernel", "GrotheQuadKernel"):
             with self.subTest(namespace=namespace):
                 (self.root / "Grothe/Shared.lean").write_text(f"import {namespace}.DoesNotExist\n")
                 result = self.run_cli("--digest")

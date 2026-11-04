@@ -10321,4 +10321,15 @@ import Grothe.UpperChaos.WholeCenterEnergies
 import Grothe.UpperChaos.ZeroProfilePhaseLinearization
 import Grothe.UpperChaos.ZeroProfilePhaseStability
 import Grothe.UpperChaos.ZeroProfileSavedCenter
+import Grothe.UpperQuad.ContractSound
+import Grothe.UpperQuad.EnergySound
+import Grothe.UpperQuad.GaussSound
+import Grothe.UpperQuad.IntervalSound
+import Grothe.UpperQuad.NodeSound
+import Grothe.UpperQuad.PairsSound
+import Grothe.UpperQuad.PiSound
+import Grothe.UpperQuad.ProfileSound
+import Grothe.UpperQuad.RatioSound
+import Grothe.UpperQuad.RotateSound
+import Grothe.UpperQuad.SeedSound
 import Grothe.UpperTarget

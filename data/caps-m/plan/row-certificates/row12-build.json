@@ -5897,7 +5897,7 @@
   "execution_source_sha256": {
     "scripts/build_caps_batches.py": "01be24510be4e3022fa3a49073c6c8cfc02f94b513b5b65f2248796100d8cdfa",
     "scripts/caps_coexist.py": "8ede79b1881aaf8a35ff3196e2ec2f07e85ce3a062c40dbf3c7959864ee7af52",
-    "scripts/caps_stamp.py": "84837a694082b820b1ff67c0ba79e4ff39e521e40945200e248a0f3a2151a50d"
+    "scripts/caps_stamp.py": "83992fd6f268ab76789a7711be2081d935e510e4d206db5387c9768101a34dca"
   },
   "format": "caps-bounded-build-v2",
   "input_sha256": {
@@ -29927,7 +29927,7 @@
     "GrotheCapsKernel/CapCheck.lean": "45d2828fda72980caad084e10c236dceacf027e10a3fcdfaaadb4752eaffdc38",
     "GrotheCapsKernel/CapPoly.lean": "026a78b5b55c2de547ff7be2ada1bc6ca1726674e198de371ea580a624a18d62",
     "lake-manifest.json": "d7ffc110772c6907672f767d99ca4625f9cd631420cd1b928ff89dd933e5d822",
-    "lakefile.toml": "fbe6cb51b35a12dcf59a5220e8d55e9db56d6c8e04ee2ec5c52ddc157c2ca58b",
+    "lakefile.toml": "41c905bea7b88187c8f0abb445e8f76740a638bc54dd23dce19f453a87276ac8",
     "lean-toolchain": "d5edba4e4b8faad9c1baeadb265716d20d03be4d1a2647dc5e35b0c0325bea7b"
   }
 }

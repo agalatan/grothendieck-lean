@@ -39,7 +39,7 @@
     "lakefile.toml": "fbe6cb51b35a12dcf59a5220e8d55e9db56d6c8e04ee2ec5c52ddc157c2ca58b",
     "lean-toolchain": "d5edba4e4b8faad9c1baeadb265716d20d03be4d1a2647dc5e35b0c0325bea7b"
   },
-  "current_top_binding_sha256": "9235b8bbbe2a4f2528e42df163de4d5c8c0a620cb46803239d664158b71f28de",
+  "current_top_binding_sha256": "52e991fcc9c24e2fa054791fb2f85f123e4177c6043f4ddfe7181bd28f16fd8d",
   "format": "codex-15b7-row15-stage/v1",
   "native_verified": false,
   "receiver_sha256": "a219f8e8027cacc7b85bd806db3ef460bf4d55943f51c82c0b5e0b6ab0b17909",
