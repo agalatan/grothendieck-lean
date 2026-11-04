@@ -356,7 +356,7 @@ jobs:
             sampler=$!
             # Three concurrent Lean jobs instead of four (the Lean runtime reads LEAN_NUM_THREADS): peak memory 3/4.
             rc=0; LEAN_NUM_THREADS=3 grouped scripts/lake_failfast.sh lake build Grothe --log-level=warning || rc=$?
-            kill "$sampler" 2>/dev/null; wait "$sampler" 2>/dev/null
+            kill "$sampler" 2>/dev/null || true; wait "$sampler" 2>/dev/null || true   # the sampler dies by SIGTERM (143): not a step failure
             [ "$rc" = 0 ] || { echo "::error::build step exited with $rc (143 = terminated: on a hosted runner usually the memory guard; see the mem samples above)"; exit "$rc"; }
           fi
 
