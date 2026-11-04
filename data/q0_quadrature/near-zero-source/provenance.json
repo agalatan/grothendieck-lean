@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "agent_id": "codex-aa04",
+  "status": "EXACT_EXTERNAL_REPLAY_NOT_LEAN_VERIFICATION",
+  "source_file": "/Users/alingalatan/Documents/Codex/2026-10-08/read-online-everything-about-grothendieck-s/outputs/grothendieck-140462-common-head/conditionalnodes.npy",
+  "source_file_size": 3373613072,
+  "source_full_sha256_historical_not_rechecked": "03987b3e9c0ccf0bc7eacca7bd61011c43ccdbb61c0b694cfc2ca16808ed4ecb",
+  "source_payload_bytes_read": 65032,
+  "source_header_bytes_read": 128,
+  "total_source_bytes_read": 65160,
+  "source_ledger_file": "/Users/alingalatan/workspaces/grothe-codex-aa04-q0-quadrature/handoff/codex-aa04-q0-quadrature/original-archive-recovery-20261103/source-packet/common-head/conditional_node_ledger.jsonl",
+  "input_sha256": {
+    "data/q0_quadrature/conditional_source/conditional_offsets.npy": "8bf1649d9620449873e32a8fa120709f29888885e8e43ae024c5305b95101c5c",
+    "data/q0_quadrature/conditional_source/conditional_cutoffs.npy": "b799d62d61e3183a13b16dbe3e0cd22ac8d3460779e0e0d561ecd11f63ebb10f",
+    "data/q0_quadrature/conditional_source/exception-selection.json": "2e60b2f6ed08495047f67709a7589ad8962d2abc73062a6e3c819c8888d147a0"
+  },
+  "profile_source_sha256": {
+    "Grothe/UpperChaos/ProfileRootScreen.lean": "57df2f9ee89502a235691edb544b7a544dd69c07e67f842d3b22952baa1bde46",
+    "GrotheCapsKernel/Basic.lean": "d4a738a79075cd3742dada74bf7c51bc7adc6b246f13f2a7fdecf9192a5e9fb5",
+    "GrotheKernel/HardyArc.lean": "0970820cdfd4c056b12952a0f9fe97cbdb374aa1a2666f483b0138b7ba17b610"
+  },
+  "payload_sha256": "05dc2b1fcbb58807b66d1c8ba2df8dcaa0a0e049395cddf43c74a99db71378d6",
+  "selected_ledger_sha256": "7478713d2abd796c485054f8edf49d8e20670e9a953d182c82d3715f6b404c7a",
+  "candidate_rows_sha256": "3e89ca438905ee8167a1c9c3f01f831f3f0fe0921468cf53a2d88a9d213a0c7a",
+  "usage": "Only ledger ordinal, cutoff, and exact row hash are consumed. Historical arithmetic/input/center error claims are not proof premises.",
+  "extraction_scope": "Only selected 24/40-byte row ranges plus the 128-byte NPY header were read; the complete payload was not copied or rehashed."
+}

@@ -75,3 +75,9 @@ coverage. The strict audit allows only the standard logical axioms.
 Source-address alignment, numerical enclosures of actual Gaussian integrals,
 physical quadrature weights and the final upper-bound assembly are separate.
 The Python provenance and selection checks do not replace those Lean proofs.
+
+`conditional_canonical_pairs.npy` supplies the complete degree-531 pair ordering.
+Its producer is the same `build_conditional_nodes.py`; SHA256
+`075eb8fe8a52766742c7ca82097171f8dfce173ac8dc9ed80193fc7821ee1ead`
+is checked by `gen_conditional_pair_ranks.py`, which reproduces the finite
+rank/ordinal certificate. Lean verifies the resulting literals.

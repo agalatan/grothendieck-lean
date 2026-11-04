@@ -1,0 +1,331 @@
+import Grothe.UpperChaos.Q0GaussSelected
+import Grothe.UpperChaos.Q0GaussBracketInterior
+import Grothe.UpperChaos.Q0LegendreRootWeightRule11
+import Lean.Util.CollectAxioms
+import Lean.Elab.Command
+
+/-! Selected original roots with LeanCert formula-weight bounds.
+Gauss-rule identity and the integration remainder are separate.
+Agent-ID: codex-aa04. -/
+namespace Grothe.UpperChaos.Q0GaussSelectedRule11
+
+open Grothe.UpperChaos.Q0LegendreInteger
+open Grothe.UpperChaos.Q0LegendreRuleBase
+open Grothe.UpperChaos.Q0GaussSelected
+open LeanCert.Core
+
+noncomputable def root : Fin 11 → ℝ := Classical.choose Grothe.UpperChaos.Q0LegendreRule11.all_unique
+
+theorem root_spec (i : Fin 11) :
+    root i ∈ Set.Icc (((Grothe.UpperChaos.Q0LegendreRule11.bracketAt i).1 : ℝ) / denominator)
+      (((Grothe.UpperChaos.Q0LegendreRule11.bracketAt i).2 : ℝ) / denominator) ∧
+      (realPair (root i) 10).2 = 0 := by
+  exact (Classical.choose_spec Grothe.UpperChaos.Q0LegendreRule11.all_unique).1 i
+
+def lower : Fin 11 → ℚ := ![Grothe.UpperChaos.Q0LegendreWeightRule11.r00Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r01Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r02Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r03Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r04Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r05Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r06Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r07Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r08Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r09Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r10Interval.lo.toRat]
+def upper : Fin 11 → ℚ := ![Grothe.UpperChaos.Q0LegendreWeightRule11.r00Upper, Grothe.UpperChaos.Q0LegendreWeightRule11.r01Upper, Grothe.UpperChaos.Q0LegendreWeightRule11.r02Upper, Grothe.UpperChaos.Q0LegendreWeightRule11.r03Upper, Grothe.UpperChaos.Q0LegendreWeightRule11.r04Upper, Grothe.UpperChaos.Q0LegendreWeightRule11.r05Upper, Grothe.UpperChaos.Q0LegendreWeightRule11.r06Upper, Grothe.UpperChaos.Q0LegendreWeightRule11.r07Upper, Grothe.UpperChaos.Q0LegendreWeightRule11.r08Upper, Grothe.UpperChaos.Q0LegendreWeightRule11.r09Upper, Grothe.UpperChaos.Q0LegendreWeightRule11.r10Upper]
+
+theorem specr00 :
+    root (0 : Fin 11) ∈ Set.Icc (((-4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525283 : ℤ) : ℝ) / denominator)
+      (((-4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525280 : ℤ) : ℝ) / denominator) ∧
+      (realPair (root (0 : Fin 11)) 10).2 = 0 := by
+  simpa [Grothe.UpperChaos.Q0LegendreRule11.bracketAt, Grothe.UpperChaos.Q0LegendreRule11.brackets] using root_spec (0 : Fin 11)
+
+theorem interiorr00 : |root (0 : Fin 11)| < 1 := by
+  exact interior_of_integer_bracket (-4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525283) (-4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525280) denominator denominator_pos
+    (by decide +kernel) (by decide +kernel) specr00.1
+
+theorem lowerr00 : (Grothe.UpperChaos.Q0LegendreWeightRule11.r00Interval.lo.toRat : ℝ) ≤ root (0 : Fin 11) := by
+  have hle : ((-4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525283 : ℤ) : ℚ) / denominator ≤ ((-4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525280 : ℤ) : ℚ) / denominator := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r00Input, denominator, Int.cast_pow, Int.cast_ofNat, Int.cast_neg] using Grothe.UpperChaos.Q0LegendreWeightRule11.r00Input.le
+  have hmem := mem_rational_interval_of_integer_bracket (-4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525283) (-4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525280) denominator hle specr00.1
+  have hinput : root (0 : Fin 11) ∈ Grothe.UpperChaos.Q0LegendreWeightRule11.r00Input := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r00Input, denominator, Int.cast_pow, Int.cast_ofNat, Int.cast_neg] using hmem
+  exact (IntervalDyadic.mem_ofIntervalRat hinput (-256) (by decide)).1
+
+theorem weightr00 : weight 10 (root (0 : Fin 11)) ≤ (Grothe.UpperChaos.Q0LegendreWeightRule11.r00Upper : ℝ) := by
+  exact Grothe.UpperChaos.Q0LegendreRootWeightRule11.boundr00 specr00.1
+
+theorem specr01 :
+    root (1 : Fin 11) ∈ Set.Icc (((-4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168145 : ℤ) : ℝ) / denominator)
+      (((-4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168142 : ℤ) : ℝ) / denominator) ∧
+      (realPair (root (1 : Fin 11)) 10).2 = 0 := by
+  simpa [Grothe.UpperChaos.Q0LegendreRule11.bracketAt, Grothe.UpperChaos.Q0LegendreRule11.brackets] using root_spec (1 : Fin 11)
+
+theorem interiorr01 : |root (1 : Fin 11)| < 1 := by
+  exact interior_of_integer_bracket (-4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168145) (-4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168142) denominator denominator_pos
+    (by decide +kernel) (by decide +kernel) specr01.1
+
+theorem lowerr01 : (Grothe.UpperChaos.Q0LegendreWeightRule11.r01Interval.lo.toRat : ℝ) ≤ root (1 : Fin 11) := by
+  have hle : ((-4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168145 : ℤ) : ℚ) / denominator ≤ ((-4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168142 : ℤ) : ℚ) / denominator := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r01Input, denominator, Int.cast_pow, Int.cast_ofNat, Int.cast_neg] using Grothe.UpperChaos.Q0LegendreWeightRule11.r01Input.le
+  have hmem := mem_rational_interval_of_integer_bracket (-4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168145) (-4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168142) denominator hle specr01.1
+  have hinput : root (1 : Fin 11) ∈ Grothe.UpperChaos.Q0LegendreWeightRule11.r01Input := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r01Input, denominator, Int.cast_pow, Int.cast_ofNat, Int.cast_neg] using hmem
+  exact (IntervalDyadic.mem_ofIntervalRat hinput (-256) (by decide)).1
+
+theorem weightr01 : weight 10 (root (1 : Fin 11)) ≤ (Grothe.UpperChaos.Q0LegendreWeightRule11.r01Upper : ℝ) := by
+  exact Grothe.UpperChaos.Q0LegendreRootWeightRule11.boundr01 specr01.1
+
+theorem specr02 :
+    root (2 : Fin 11) ∈ Set.Icc (((-3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405423 : ℤ) : ℝ) / denominator)
+      (((-3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405420 : ℤ) : ℝ) / denominator) ∧
+      (realPair (root (2 : Fin 11)) 10).2 = 0 := by
+  simpa [Grothe.UpperChaos.Q0LegendreRule11.bracketAt, Grothe.UpperChaos.Q0LegendreRule11.brackets] using root_spec (2 : Fin 11)
+
+theorem interiorr02 : |root (2 : Fin 11)| < 1 := by
+  exact interior_of_integer_bracket (-3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405423) (-3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405420) denominator denominator_pos
+    (by decide +kernel) (by decide +kernel) specr02.1
+
+theorem lowerr02 : (Grothe.UpperChaos.Q0LegendreWeightRule11.r02Interval.lo.toRat : ℝ) ≤ root (2 : Fin 11) := by
+  have hle : ((-3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405423 : ℤ) : ℚ) / denominator ≤ ((-3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405420 : ℤ) : ℚ) / denominator := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r02Input, denominator, Int.cast_pow, Int.cast_ofNat, Int.cast_neg] using Grothe.UpperChaos.Q0LegendreWeightRule11.r02Input.le
+  have hmem := mem_rational_interval_of_integer_bracket (-3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405423) (-3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405420) denominator hle specr02.1
+  have hinput : root (2 : Fin 11) ∈ Grothe.UpperChaos.Q0LegendreWeightRule11.r02Input := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r02Input, denominator, Int.cast_pow, Int.cast_ofNat, Int.cast_neg] using hmem
+  exact (IntervalDyadic.mem_ofIntervalRat hinput (-256) (by decide)).1
+
+theorem weightr02 : weight 10 (root (2 : Fin 11)) ≤ (Grothe.UpperChaos.Q0LegendreWeightRule11.r02Upper : ℝ) := by
+  exact Grothe.UpperChaos.Q0LegendreRootWeightRule11.boundr02 specr02.1
+
+theorem specr03 :
+    root (3 : Fin 11) ∈ Set.Icc (((-2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554905 : ℤ) : ℝ) / denominator)
+      (((-2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554902 : ℤ) : ℝ) / denominator) ∧
+      (realPair (root (3 : Fin 11)) 10).2 = 0 := by
+  simpa [Grothe.UpperChaos.Q0LegendreRule11.bracketAt, Grothe.UpperChaos.Q0LegendreRule11.brackets] using root_spec (3 : Fin 11)
+
+theorem interiorr03 : |root (3 : Fin 11)| < 1 := by
+  exact interior_of_integer_bracket (-2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554905) (-2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554902) denominator denominator_pos
+    (by decide +kernel) (by decide +kernel) specr03.1
+
+theorem lowerr03 : (Grothe.UpperChaos.Q0LegendreWeightRule11.r03Interval.lo.toRat : ℝ) ≤ root (3 : Fin 11) := by
+  have hle : ((-2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554905 : ℤ) : ℚ) / denominator ≤ ((-2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554902 : ℤ) : ℚ) / denominator := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r03Input, denominator, Int.cast_pow, Int.cast_ofNat, Int.cast_neg] using Grothe.UpperChaos.Q0LegendreWeightRule11.r03Input.le
+  have hmem := mem_rational_interval_of_integer_bracket (-2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554905) (-2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554902) denominator hle specr03.1
+  have hinput : root (3 : Fin 11) ∈ Grothe.UpperChaos.Q0LegendreWeightRule11.r03Input := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r03Input, denominator, Int.cast_pow, Int.cast_ofNat, Int.cast_neg] using hmem
+  exact (IntervalDyadic.mem_ofIntervalRat hinput (-256) (by decide)).1
+
+theorem weightr03 : weight 10 (root (3 : Fin 11)) ≤ (Grothe.UpperChaos.Q0LegendreWeightRule11.r03Upper : ℝ) := by
+  exact Grothe.UpperChaos.Q0LegendreRootWeightRule11.boundr03 specr03.1
+
+theorem specr04 :
+    root (4 : Fin 11) ∈ Set.Icc (((-1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053526 : ℤ) : ℝ) / denominator)
+      (((-1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053523 : ℤ) : ℝ) / denominator) ∧
+      (realPair (root (4 : Fin 11)) 10).2 = 0 := by
+  simpa [Grothe.UpperChaos.Q0LegendreRule11.bracketAt, Grothe.UpperChaos.Q0LegendreRule11.brackets] using root_spec (4 : Fin 11)
+
+theorem interiorr04 : |root (4 : Fin 11)| < 1 := by
+  exact interior_of_integer_bracket (-1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053526) (-1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053523) denominator denominator_pos
+    (by decide +kernel) (by decide +kernel) specr04.1
+
+theorem lowerr04 : (Grothe.UpperChaos.Q0LegendreWeightRule11.r04Interval.lo.toRat : ℝ) ≤ root (4 : Fin 11) := by
+  have hle : ((-1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053526 : ℤ) : ℚ) / denominator ≤ ((-1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053523 : ℤ) : ℚ) / denominator := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r04Input, denominator, Int.cast_pow, Int.cast_ofNat, Int.cast_neg] using Grothe.UpperChaos.Q0LegendreWeightRule11.r04Input.le
+  have hmem := mem_rational_interval_of_integer_bracket (-1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053526) (-1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053523) denominator hle specr04.1
+  have hinput : root (4 : Fin 11) ∈ Grothe.UpperChaos.Q0LegendreWeightRule11.r04Input := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r04Input, denominator, Int.cast_pow, Int.cast_ofNat, Int.cast_neg] using hmem
+  exact (IntervalDyadic.mem_ofIntervalRat hinput (-256) (by decide)).1
+
+theorem weightr04 : weight 10 (root (4 : Fin 11)) ≤ (Grothe.UpperChaos.Q0LegendreWeightRule11.r04Upper : ℝ) := by
+  exact Grothe.UpperChaos.Q0LegendreRootWeightRule11.boundr04 specr04.1
+
+theorem specr05 :
+    root (5 : Fin 11) ∈ Set.Icc (((-1 : ℤ) : ℝ) / denominator)
+      (((2 : ℤ) : ℝ) / denominator) ∧
+      (realPair (root (5 : Fin 11)) 10).2 = 0 := by
+  simpa [Grothe.UpperChaos.Q0LegendreRule11.bracketAt, Grothe.UpperChaos.Q0LegendreRule11.brackets] using root_spec (5 : Fin 11)
+
+theorem interiorr05 : |root (5 : Fin 11)| < 1 := by
+  exact interior_of_integer_bracket (-1) (2) denominator denominator_pos
+    (by decide +kernel) (by decide +kernel) specr05.1
+
+theorem lowerr05 : (Grothe.UpperChaos.Q0LegendreWeightRule11.r05Interval.lo.toRat : ℝ) ≤ root (5 : Fin 11) := by
+  have hle : ((-1 : ℤ) : ℚ) / denominator ≤ ((2 : ℤ) : ℚ) / denominator := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r05Input, denominator, Int.cast_pow, Int.cast_ofNat, Int.cast_neg, Int.cast_one] using Grothe.UpperChaos.Q0LegendreWeightRule11.r05Input.le
+  have hmem := mem_rational_interval_of_integer_bracket (-1) (2) denominator hle specr05.1
+  have hinput : root (5 : Fin 11) ∈ Grothe.UpperChaos.Q0LegendreWeightRule11.r05Input := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r05Input, denominator, Int.cast_pow, Int.cast_ofNat, Int.cast_neg, Int.cast_one] using hmem
+  exact (IntervalDyadic.mem_ofIntervalRat hinput (-256) (by decide)).1
+
+theorem weightr05 : weight 10 (root (5 : Fin 11)) ≤ (Grothe.UpperChaos.Q0LegendreWeightRule11.r05Upper : ℝ) := by
+  exact Grothe.UpperChaos.Q0LegendreRootWeightRule11.boundr05 specr05.1
+
+theorem specr06 :
+    root (6 : Fin 11) ∈ Set.Icc (((1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053523 : ℤ) : ℝ) / denominator)
+      (((1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053526 : ℤ) : ℝ) / denominator) ∧
+      (realPair (root (6 : Fin 11)) 10).2 = 0 := by
+  simpa [Grothe.UpperChaos.Q0LegendreRule11.bracketAt, Grothe.UpperChaos.Q0LegendreRule11.brackets] using root_spec (6 : Fin 11)
+
+theorem interiorr06 : |root (6 : Fin 11)| < 1 := by
+  exact interior_of_integer_bracket (1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053523) (1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053526) denominator denominator_pos
+    (by decide +kernel) (by decide +kernel) specr06.1
+
+theorem lowerr06 : (Grothe.UpperChaos.Q0LegendreWeightRule11.r06Interval.lo.toRat : ℝ) ≤ root (6 : Fin 11) := by
+  have hle : ((1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053523 : ℤ) : ℚ) / denominator ≤ ((1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053526 : ℤ) : ℚ) / denominator := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r06Input, denominator, Int.cast_pow, Int.cast_ofNat] using Grothe.UpperChaos.Q0LegendreWeightRule11.r06Input.le
+  have hmem := mem_rational_interval_of_integer_bracket (1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053523) (1229774642919052481012123415806052222142575278726446265607913369326536216218074173037629206637254537292371587620529859109623888540175342570103057736857913595319384152767940638190389645311053526) denominator hle specr06.1
+  have hinput : root (6 : Fin 11) ∈ Grothe.UpperChaos.Q0LegendreWeightRule11.r06Input := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r06Input, denominator, Int.cast_pow, Int.cast_ofNat] using hmem
+  exact (IntervalDyadic.mem_ofIntervalRat hinput (-256) (by decide)).1
+
+theorem weightr06 : weight 10 (root (6 : Fin 11)) ≤ (Grothe.UpperChaos.Q0LegendreWeightRule11.r06Upper : ℝ) := by
+  exact Grothe.UpperChaos.Q0LegendreRootWeightRule11.boundr06 specr06.1
+
+theorem specr07 :
+    root (7 : Fin 11) ∈ Set.Icc (((2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554902 : ℤ) : ℝ) / denominator)
+      (((2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554905 : ℤ) : ℝ) / denominator) ∧
+      (realPair (root (7 : Fin 11)) 10).2 = 0 := by
+  simpa [Grothe.UpperChaos.Q0LegendreRule11.bracketAt, Grothe.UpperChaos.Q0LegendreRule11.brackets] using root_spec (7 : Fin 11)
+
+theorem interiorr07 : |root (7 : Fin 11)| < 1 := by
+  exact interior_of_integer_bracket (2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554902) (2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554905) denominator denominator_pos
+    (by decide +kernel) (by decide +kernel) specr07.1
+
+theorem lowerr07 : (Grothe.UpperChaos.Q0LegendreWeightRule11.r07Interval.lo.toRat : ℝ) ≤ root (7 : Fin 11) := by
+  have hle : ((2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554902 : ℤ) : ℚ) / denominator ≤ ((2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554905 : ℤ) : ℚ) / denominator := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r07Input, denominator, Int.cast_pow, Int.cast_ofNat] using Grothe.UpperChaos.Q0LegendreWeightRule11.r07Input.le
+  have hmem := mem_rational_interval_of_integer_bracket (2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554902) (2368345264343617351662676393108696811441104892414457345275296553322189871688056863518697378893054917870275515584920065479021546757288594891791505561713065694808967243502678486107911895805554905) denominator hle specr07.1
+  have hinput : root (7 : Fin 11) ∈ Grothe.UpperChaos.Q0LegendreWeightRule11.r07Input := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r07Input, denominator, Int.cast_pow, Int.cast_ofNat] using hmem
+  exact (IntervalDyadic.mem_ofIntervalRat hinput (-256) (by decide)).1
+
+theorem weightr07 : weight 10 (root (7 : Fin 11)) ≤ (Grothe.UpperChaos.Q0LegendreWeightRule11.r07Upper : ℝ) := by
+  exact Grothe.UpperChaos.Q0LegendreRootWeightRule11.boundr07 specr07.1
+
+theorem specr08 :
+    root (8 : Fin 11) ∈ Set.Icc (((3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405420 : ℤ) : ℝ) / denominator)
+      (((3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405423 : ℤ) : ℝ) / denominator) ∧
+      (realPair (root (8 : Fin 11)) 10).2 = 0 := by
+  simpa [Grothe.UpperChaos.Q0LegendreRule11.bracketAt, Grothe.UpperChaos.Q0LegendreRule11.brackets] using root_spec (8 : Fin 11)
+
+theorem interiorr08 : |root (8 : Fin 11)| < 1 := by
+  exact interior_of_integer_bracket (3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405420) (3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405423) denominator denominator_pos
+    (by decide +kernel) (by decide +kernel) specr08.1
+
+theorem lowerr08 : (Grothe.UpperChaos.Q0LegendreWeightRule11.r08Interval.lo.toRat : ℝ) ≤ root (8 : Fin 11) := by
+  have hle : ((3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405420 : ℤ) : ℚ) / denominator ≤ ((3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405423 : ℤ) : ℚ) / denominator := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r08Input, denominator, Int.cast_pow, Int.cast_ofNat] using Grothe.UpperChaos.Q0LegendreWeightRule11.r08Input.le
+  have hmem := mem_rational_interval_of_integer_bracket (3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405420) (3331275167269350124154634578721100330498003412624951797543639805782187943415486933622813592426967289076525276433062898364695222536669452424896861003835816013853707025475094296685519992756405423) denominator hle specr08.1
+  have hinput : root (8 : Fin 11) ∈ Grothe.UpperChaos.Q0LegendreWeightRule11.r08Input := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r08Input, denominator, Int.cast_pow, Int.cast_ofNat] using hmem
+  exact (IntervalDyadic.mem_ofIntervalRat hinput (-256) (by decide)).1
+
+theorem weightr08 : weight 10 (root (8 : Fin 11)) ≤ (Grothe.UpperChaos.Q0LegendreWeightRule11.r08Upper : ℝ) := by
+  exact Grothe.UpperChaos.Q0LegendreRootWeightRule11.boundr08 specr08.1
+
+theorem specr09 :
+    root (9 : Fin 11) ∈ Set.Icc (((4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168142 : ℤ) : ℝ) / denominator)
+      (((4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168145 : ℤ) : ℝ) / denominator) ∧
+      (realPair (root (9 : Fin 11)) 10).2 = 0 := by
+  simpa [Grothe.UpperChaos.Q0LegendreRule11.bracketAt, Grothe.UpperChaos.Q0LegendreRule11.brackets] using root_spec (9 : Fin 11)
+
+theorem interiorr09 : |root (9 : Fin 11)| < 1 := by
+  exact interior_of_integer_bracket (4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168142) (4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168145) denominator denominator_pos
+    (by decide +kernel) (by decide +kernel) specr09.1
+
+theorem lowerr09 : (Grothe.UpperChaos.Q0LegendreWeightRule11.r09Interval.lo.toRat : ℝ) ≤ root (9 : Fin 11) := by
+  have hle : ((4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168142 : ℤ) : ℚ) / denominator ≤ ((4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168145 : ℤ) : ℚ) / denominator := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r09Input, denominator, Int.cast_pow, Int.cast_ofNat] using Grothe.UpperChaos.Q0LegendreWeightRule11.r09Input.le
+  have hmem := mem_rational_interval_of_integer_bracket (4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168142) (4047170435555498881438378497858181099506402034429621004877244400725095408886228360811835627513807265136350216054083898910011288292216488853587601234907636907320323816876915486806478465006168145) denominator hle specr09.1
+  have hinput : root (9 : Fin 11) ∈ Grothe.UpperChaos.Q0LegendreWeightRule11.r09Input := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r09Input, denominator, Int.cast_pow, Int.cast_ofNat] using hmem
+  exact (IntervalDyadic.mem_ofIntervalRat hinput (-256) (by decide)).1
+
+theorem weightr09 : weight 10 (root (9 : Fin 11)) ≤ (Grothe.UpperChaos.Q0LegendreWeightRule11.r09Upper : ℝ) := by
+  exact Grothe.UpperChaos.Q0LegendreRootWeightRule11.boundr09 specr09.1
+
+theorem specr10 :
+    root (10 : Fin 11) ∈ Set.Icc (((4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525280 : ℤ) : ℝ) / denominator)
+      (((4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525283 : ℤ) : ℝ) / denominator) ∧
+      (realPair (root (10 : Fin 11)) 10).2 = 0 := by
+  simpa [Grothe.UpperChaos.Q0LegendreRule11.bracketAt, Grothe.UpperChaos.Q0LegendreRule11.brackets] using root_spec (10 : Fin 11)
+
+theorem interiorr10 : |root (10 : Fin 11)| < 1 := by
+  exact interior_of_integer_bracket (4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525280) (4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525283) denominator denominator_pos
+    (by decide +kernel) (by decide +kernel) specr10.1
+
+theorem lowerr10 : (Grothe.UpperChaos.Q0LegendreWeightRule11.r10Interval.lo.toRat : ℝ) ≤ root (10 : Fin 11) := by
+  have hle : ((4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525280 : ℤ) : ℚ) / denominator ≤ ((4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525283 : ℤ) : ℚ) / denominator := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r10Input, denominator, Int.cast_pow, Int.cast_ofNat] using Grothe.UpperChaos.Q0LegendreWeightRule11.r10Input.le
+  have hmem := mem_rational_interval_of_integer_bracket (4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525280) (4463110163247627536201809299836335532180500799787670679336002784944928511266792705629416788845542483917767505415803424353883330813357282071421649964603267330082960939685172465766863287767525283) denominator hle specr10.1
+  have hinput : root (10 : Fin 11) ∈ Grothe.UpperChaos.Q0LegendreWeightRule11.r10Input := by
+    simpa only [Grothe.UpperChaos.Q0LegendreWeightRule11.r10Input, denominator, Int.cast_pow, Int.cast_ofNat] using hmem
+  exact (IntervalDyadic.mem_ofIntervalRat hinput (-256) (by decide)).1
+
+theorem weightr10 : weight 10 (root (10 : Fin 11)) ≤ (Grothe.UpperChaos.Q0LegendreWeightRule11.r10Upper : ℝ) := by
+  exact Grothe.UpperChaos.Q0LegendreRootWeightRule11.boundr10 specr10.1
+
+noncomputable def selected : SelectedRule 11 where
+  root := root
+  lower := lower
+  upper := upper
+  interior := by
+    intro i
+    fin_cases i
+    · exact interiorr00
+    · exact interiorr01
+    · exact interiorr02
+    · exact interiorr03
+    · exact interiorr04
+    · exact interiorr05
+    · exact interiorr06
+    · exact interiorr07
+    · exact interiorr08
+    · exact interiorr09
+    · exact interiorr10
+  isRoot := by
+    intro i
+    exact (root_spec i).2
+  lower_le := by
+    intro i
+    fin_cases i
+    · simpa [lower] using lowerr00
+    · simpa [lower] using lowerr01
+    · simpa [lower] using lowerr02
+    · simpa [lower] using lowerr03
+    · simpa [lower] using lowerr04
+    · simpa [lower] using lowerr05
+    · simpa [lower] using lowerr06
+    · simpa [lower] using lowerr07
+    · simpa [lower] using lowerr08
+    · simpa [lower] using lowerr09
+    · simpa [lower] using lowerr10
+  weight_le := by
+    intro i
+    fin_cases i
+    · simpa [upper] using weightr00
+    · simpa [upper] using weightr01
+    · simpa [upper] using weightr02
+    · simpa [upper] using weightr03
+    · simpa [upper] using weightr04
+    · simpa [upper] using weightr05
+    · simpa [upper] using weightr06
+    · simpa [upper] using weightr07
+    · simpa [upper] using weightr08
+    · simpa [upper] using weightr09
+    · simpa [upper] using weightr10
+  injective := by
+    apply injective_of_ordered_integer_brackets 11 Grothe.UpperChaos.Q0LegendreRule11.brackets
+      Grothe.UpperChaos.Q0LegendreRule11.count denominator denominator_pos Grothe.UpperChaos.Q0LegendreRule11.ordered root
+    intro i
+    simpa only [Grothe.UpperChaos.Q0LegendreRule11.bracketAt] using (root_spec i).1
+
+def indexedContext : Array (ℚ × ℚ) := #[(Grothe.UpperChaos.Q0LegendreWeightRule11.r00Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r00Upper), (Grothe.UpperChaos.Q0LegendreWeightRule11.r01Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r01Upper), (Grothe.UpperChaos.Q0LegendreWeightRule11.r02Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r02Upper), (Grothe.UpperChaos.Q0LegendreWeightRule11.r03Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r03Upper), (Grothe.UpperChaos.Q0LegendreWeightRule11.r04Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r04Upper), (Grothe.UpperChaos.Q0LegendreWeightRule11.r05Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r05Upper), (Grothe.UpperChaos.Q0LegendreWeightRule11.r06Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r06Upper), (Grothe.UpperChaos.Q0LegendreWeightRule11.r07Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r07Upper), (Grothe.UpperChaos.Q0LegendreWeightRule11.r08Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r08Upper), (Grothe.UpperChaos.Q0LegendreWeightRule11.r09Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r09Upper), (Grothe.UpperChaos.Q0LegendreWeightRule11.r10Interval.lo.toRat, Grothe.UpperChaos.Q0LegendreWeightRule11.r10Upper)]
+
+theorem context_lookup (i : Fin 11) :
+    indexedContext[i.val]? = some (selected.lower i, selected.upper i) := by
+  fin_cases i <;> rfl
+
+end Grothe.UpperChaos.Q0GaussSelectedRule11
+
+open Lean Elab Command
+run_cmd do
+  let allowed : Array Name := #[`propext, `Classical.choice, `Quot.sound]
+  let targets : Array Name := #[``Grothe.UpperChaos.Q0GaussSelectedRule11.root_spec, ``Grothe.UpperChaos.Q0GaussSelectedRule11.selected, ``Grothe.UpperChaos.Q0GaussSelectedRule11.context_lookup]
+  for target in targets do
+    let dependencies ← Lean.collectAxioms target
+    logInfo m!"Selected rule audit {target}: {dependencies}"
+    for dependency in dependencies do
+      unless allowed.contains dependency do
+        throwError m!"{target} uses unexpected axiom {dependency}"
