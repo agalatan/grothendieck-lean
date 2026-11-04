@@ -957,19 +957,6 @@ The native head is $28153/10^{12}$ ($3.09\%$).\\
 \end{tabular}
 \end{center}
 
-An alternative conditional upper route (task \#295),
-\lean{ThreeBandEndpoint.upper\_of\_three\_low\_three\_whole}, retains only
-the lowest bands $(0,51]$, $(0,51]$, $(0,11]$ and groups the remaining supports
-orthogonally. It assumes those three low-band estimates, three independent
-whole Taylor-error estimates with raw radii $R_1,2R_2,6R_3$, and the same
-frozen-response table accuracy. The linear comparison charges low and high
-parts separately, while the quadratic term uses each whole error only once.
-Using the original head and the raw Hardy tail $36748/10^{12}$ gives residual
-$0.000001783148789608230974208508254864$ and a conditional Grothendieck bound
-strictly below $1.40459988<1.4046$. The whole-error and low-band certificates
-and table agreement remain unproved inputs. This route introduces no new
-native facts and does not change the public target $1.404598149141$.
-
 The degree-531 canonical pair table indexes conditional Hermite node values
 by pairs $(c,d)$ satisfying $0\le c\le266$, $0\le d\le265$,
 $c\le d+1$ and $c+d\le531$, ordered by $(c+d,c)$. Lean verifies its

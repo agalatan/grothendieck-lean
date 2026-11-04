@@ -703,28 +703,6 @@ of the actual `Xfun frozenCorrectionFn`. No separate rounding, tail,
 representative or charge-one premise remains. These fourteen Gaussian
 inequalities and the energy-table accuracy remain unproved inputs.
 
-`ThreeBandRegrouping` gives a separate conditional route: retain the lowest
-bands `(0,51]`, `(0,51]`, `(0,11]`, and group each remaining spectral support
-orthogonally. Its linear comparison uses rounding, three low-band errors and
-three high-band errors; its quadratic term uses the rounding error and the
-three whole Taylor errors, without adding the low errors again. The whole
-raw-error hypotheses have radii `R₁`, `2 R₂`, `6 R₃`, where `R` is the existing
-`comparisonGroupRadiusQ`. Those radii are not established whole-error bounds.
-`ThreeBandComparison` binds the regrouping to the actual frozen source and
-the current energy table. `ThreeBandBudget`, `ThreeBandEndpointCore` and
-`ThreeBandEndpointAdapter` combine the exact comparison budget
-`0.000001718234095590230974208508254864` with the original head, current
-table error and raw Hardy tail `36748 / 10^12`; they do not reuse the sharper
-tail's changed-head deduction. The resulting residual is
-`0.000001783148789608230974208508254864`.
-`ThreeBandEndpoint.upper_of_three_low_three_whole` concludes a Grothendieck
-bound strictly below `1.40459988` from exactly the three low-band bounds,
-three independent whole-error bounds and actual frozen-response table
-accuracy. These analytic inputs remain open under task #295. The standard
-analytic cores and concrete adapters keep their explicit inherited trust
-allowances; no new native fact is introduced. The public `UpperTarget`
-`1.404598149141` is unchanged.
-
 **Analytic phase reduction.** `Grothe/Haagerup/PhaseLaplace.lean` proves
 `ph(z) = (sqrt(pi):C)^(-1) * integral_{t>0} t^(-1/2) exp(-‖z‖²t) z dt`
 from the Gamma integral. Keeping `z` inside the integral makes the kernel zero
