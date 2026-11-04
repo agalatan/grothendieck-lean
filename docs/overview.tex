@@ -457,8 +457,24 @@ Hermite normalization supplies the square-root factors. For $A>0$ it reduces
 each row to the preceding row and the existing zero-row moment seeds, without
 a hypergeometric diagonal recurrence. A finite rational checkpoint checker
 encloses the actual positive moment ratios over parameter intervals, starting
-from the proved terminal bounds $[0,1]$. Numerical seeds, parameter transport,
-stored-row errors and final table agreement remain separate obligations.
+from the proved terminal bounds $[0,1]$.
+
+For the actual seed integral and every $x\ge0$, LeanCert's exponential Taylor
+remainder on $[-x,0]$ with derivative bound one gives
+\[
+ \left|J_0(x)-\sum_{n=0}^{N}\frac{(-x)^n J_n(0)}{n!}\right|
+ \le \frac{x^{N+1}J_{N+1}(0)}{(N+1)!}.
+\]
+Rounded integer checkpoints instantiate this estimate at the pinned row-227
+rational midpoint squared. All $513$ updates, the retained terms and the
+terminal remainder are checked, giving an actual integral enclosure of width
+$73351/2^{1024}$ without an assumed numerical accuracy. The negative term
+multiplier reverses interval endpoints; positive-scale soundness connects
+the integer guards to the integral. Concrete arithmetic uses
+\texttt{decide +kernel}, with reproducible hash-pinned inputs.
+The physical parameter binding, midpoint transport, square-root prefactor,
+other seeds, stored-row errors and final table agreement remain separate
+obligations.
 
 \texttt{ConditionalReconstruction} proves that nonconstant coefficients vanish
 at a zero profile, retaining the constant phase $\operatorname{ph}(\sqrt{s})$.
