@@ -762,10 +762,12 @@
     "Grothe/LowerAnalytic/CapPieces/D14x270.lean": "d12afd152bb84bb38eb177e385ade9a1eef82f794f16edb7b2678829f53cb241",
     "Grothe/LowerAnalytic/CapPieces/D14x274.lean": "b586a8cd50de07c8f6b22c7d1ddac7d0e88600b475f40cd203c184c058fccff9",
     "Grothe/LowerAnalytic/CapPieces/D14x276.lean": "48a3511382fc64fcb3d3c35f1db111e722475700a2180a3ed5cc8c9428b47e94",
-    "Grothe/LowerAnalytic/CapPieces/D14x278.lean": "bdfc7254adb0f799183153ce9220a1df09a060d8113755f9e914193267c292bb",
+    "Grothe/LowerAnalytic/CapPieces/D14x278.lean": "9b8d3f8217139e173e687e9d65d13b0cf4f8e0157449b7c1caa68c58ae08566d",
     "Grothe/LowerAnalytic/CapPieces/D14x280.lean": "cd020b863cc208a2c06a1ae03ea9aba0ed92f7eca520a941d191beb11b49ea7e",
     "Grothe/LowerAnalytic/CapPieces/D14x282.lean": "df2a9952e446a468eccf31dd0b1f2a5a8b367c06e847ae8c84b587066821637b",
-    "Grothe/LowerAnalytic/CapPieces/D14x284.lean": "467b42b5441e7a9cb6e6095ee90d462c118d7aa54067ce46d0fa774e8b88b1a3"
+    "Grothe/LowerAnalytic/CapPieces/D14x284.lean": "1c4c5311f4d30398a813fd230f569eca2c6042322f79efca924ff284d5471293",
+    "Grothe/LowerAnalytic/CapPieces/D14x286.lean": "3a3dce88e0fb5dd234a67627b143cb00cc209d9d12862006c58cdee6ba0f6652",
+    "Grothe/LowerAnalytic/CapPieces/D14x288.lean": "648d2a1e6e9c425113cd8a2fce4f185a8c0018b39628c511fccc2269fd9328d1"
   },
   "format": "nodecaps-noncentre-repaired-source/v1",
   "repair_bindings": {
@@ -779,7 +781,7 @@
     },
     "14": {
       "path": "data/caps-m/plan/noncentre-repairs/row14-binding.json",
-      "sha256": "28534b0d26d6c1e298b1ae06ea8e570bd2bd2aa8993a9a728a871c642202e8c3"
+      "sha256": "0778c86aab59cacaa0d2336626af2ccf9e758daa5b4d8eb3a8269b431760c945"
     }
   }
 }
