@@ -903,8 +903,32 @@ checkpoints over a nonnegative parameter interval. Its multiplication guards
 enclose each actual `J_(h+1)/J_h` backward step, using the proved unit interval
 at any finite terminal depth. Denominators are positive internally; neither a
 terminal approximation nor convergence of an infinite continued fraction is
-assumed. The checker has no native facts. Concrete checkpoint data and the
-numerical seed remain separate obligations.
+assumed. The checker has no native facts. Concrete ratio checkpoint data remain
+a separate obligation.
+
+`OriginalMomentTaylorSeed` derives the actual integral estimate
+`|J_0(x) - Σ_(n≤N) (-x)^n J_n(0)/n!| ≤ x^(N+1) J_(N+1)(0)/(N+1)!`
+for every `x ≥ 0`. LeanCert's exponential Taylor remainder on `[-x,0]`
+uses derivative bound one; integrating the pointwise remainder gives the next
+original moment. The zero-parameter normalization and recurrence determine
+each retained coefficient.
+`OriginalMomentSeedCheckpoints` propagates rational term enclosures, reversing
+endpoints under the negative multiplier, and includes the terminal remainder.
+`OriginalMomentSeedInteger` proves that multiplication-only integer guards at
+a positive common scale imply these bounds on the actual integral.
+`OriginalMomentSeedData`, `OriginalMomentSeedCheck`, and
+`OriginalMomentSeedEnclosure` instantiate the proof at the pinned row-227
+rational midpoint squared. The certificate covers all 514 checkpoints and
+513 updates, retains terms 0 through 512, and bounds term 513. Arithmetic
+groups contain at most 32 transitions and use `decide +kernel`.
+`moment_midpoint_mem` has no numerical accuracy premise; its full interval
+width is exactly `73351 / 2^1024`, including rounding and integrated remainder.
+The three hash-pinned inputs under `data/original-moment-seed/` reproduce both
+generated Lean modules through `tools/gen_original_moment_seed.py`.
+The physical profile-shift binding, transport to this midpoint, square-root
+prefactor, coefficient table and final energy agreement remain separate
+obligations for the upper endpoint `1.404598149141`.
+
 `MobiusGeometry`, `MobiusPowerAlgebra`, and `MobiusSeedPullback` establish
 the substitution `v = t/(1+t)` and its pointwise integrand identity.
 `MobiusFiniteSubstitution` proves the corresponding finite integral equality;
