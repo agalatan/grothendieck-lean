@@ -22,25 +22,9 @@ theorem grouped_head_residual_le {E EX : ℕ × ℕ → ℝ} (hE : DirectHyps E 
     (hcompare : ∑ p ∈ headIdx 501, comparisonWeight p * |E p - EX p| ≤
       (groupedCompareQ : ℝ)) :
     ∑ j ∈ range 251, |kernelCoeff E j - if j = 0 then (slopeQ : ℝ) else 0|
-      ≤ (groupedHeadResidualQ : ℝ) := by
-  have hloc := Upper.head_residual_le_weighted primaryPoly auxPoly auxPoly_coeff_zero
-    E EX hE.parity (N := 501) (K := 251) (by norm_num) (slopeQ : ℝ) comparisonWeight
-    (fun p _ => comparisonWeight_sound p)
-  have heq : (∑ j ∈ range 251,
-      |∑ p ∈ headIdx 501, EX p * (termOf primaryPoly auxPoly p).coeff j -
-        if j = 0 then (slopeQ : ℝ) else 0|) =
-      ∑ j ∈ range 251, |kernelCoeff EX j - if j = 0 then (slopeQ : ℝ) else 0| := by
-    refine sum_congr rfl fun j hj => ?_
-    rw [show kernelCoeff EX j = ∑ p ∈ headIdx 501,
-      EX p * (termOf primaryPoly auxPoly p).coeff j from
-      bivarKernel_eq_head primaryPoly auxPoly auxPoly_coeff_zero EX hE.parityX
-        (by have := mem_range.1 hj; omega)]
-  rw [heq] at hloc
-  have h := hloc.trans (add_le_add (Grothe.head_le hE) hcompare)
-  change (∑ j ∈ range 251, |kernelCoeff E j - if j = 0 then (slopeQ : ℝ) else 0|)
-    ≤ (headCapQ : ℝ) + energyErrQ + groupedCompareQ at h
-  calc _ ≤ (headCapQ : ℝ) + energyErrQ + groupedCompareQ := h
-    _ = (groupedHeadResidualQ : ℝ) := by norm_num [groupedHeadResidualQ]; ring
+      ≤ (groupedHeadResidualQ : ℝ) :=
+  (head_residual_le_of_compare hE hcompare).trans_eq
+    (by norm_num [groupedHeadResidualQ]; ring)
 
 /-- **The sharp upper bound** from the structural inputs and the grouped comparison. -/
 theorem fresh_upper (E EX : ℕ × ℕ → ℝ) (hE : DirectHyps E EX)

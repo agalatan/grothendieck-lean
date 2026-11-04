@@ -97,6 +97,29 @@ theorem third_captured_tail_budget :
       (6 * (comparisonBand thirdTailIndex).error) ^ 2 := by
   decide +kernel
 
+/-- Recompute the third Taylor tail with a variable unscaled cap and its own
+captured-energy budget. Factorial scaling is left to the comparison piece. -/
+theorem norm_third_tail_residual_le_with_cap (c : Lp ℂ 2 mu2)
+    (lower error : Fin 4 → ℚ) (cap : ℚ)
+    (hlower : ∀ k, (lower k : ℝ) ≤ ‖projOn (thirdCenterBandModes k) c‖)
+    (herror : ∀ k, ‖projOn (thirdCenterBandModes k) (thirdTaylorL2 - c)‖ ≤ (error k : ℝ))
+    (hzero : bandProj (comparisonBand thirdTailIndex) c = 0)
+    (hbudget : thirdTailBudgetQ lower error ≤ cap ^ 2) (hcap : 0 ≤ cap) :
+    ‖bandProj (comparisonBand thirdTailIndex) (thirdTaylorL2 - c)‖ ≤ (cap : ℝ) := by
+  have hbudgetR : (phaseMoment6Q : ℝ) -
+      (∑ k : Fin 4, (max 0 ((lower k : ℝ) - (error k : ℝ))) ^ 2) ≤ (cap : ℝ) ^ 2 := by
+    have h : (thirdTailBudgetQ lower error : ℝ) ≤ ((cap ^ 2 : ℚ) : ℝ) := by
+      exact_mod_cast hbudget
+    simpa only [thirdTailBudgetQ, Rat.cast_sub, Rat.cast_sum, Rat.cast_pow,
+      Rat.cast_max, Rat.cast_zero] using h
+  have hcapR : (0 : ℝ) ≤ cap := by exact_mod_cast hcap
+  exact norm_projOn_residual_le_of_captured_family Finset.univ thirdCenterBandModes
+    (bandModes (comparisonBand thirdTailIndex))
+    (fun _ _ _ _ hij => thirdCaptured_disjoint hij)
+    (fun k _ => thirdCaptured_disjoint_tail k) thirdTaylorL2 c hzero
+    (fun k => (lower k : ℝ)) (fun k => (error k : ℝ))
+    (fun k _ => hlower k) (fun k _ => herror k) norm_hpow_three_sq.le hbudgetR hcapR
+
 /-- Any four captured norm/error enclosures satisfying the rational budget bound the unscaled tail. -/
 theorem norm_third_tail_residual_le_of_captured (c : Lp ℂ 2 mu2) (lower error : Fin 4 → ℚ)
     (hlower : ∀ k, (lower k : ℝ) ≤ ‖projOn (thirdCenterBandModes k) c‖)

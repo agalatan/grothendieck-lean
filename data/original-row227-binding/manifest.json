@@ -1,0 +1,39 @@
+{
+  "agent": "codex-aa04",
+  "schema": "row227-physical-scalar-inputs-v1",
+  "status": "VERBATIM_PROVENANCE_NOT_PROOF_EVIDENCE",
+  "task": 21,
+  "pr287_upstream_merge": "c623797efcb67f1d74e9905b81f349c5b80bc4cc",
+  "inputs": {
+    "row227-common-scalar-budget.json": {
+      "sha256": "cdd4b1f7e530955fec067db6d82530f578a5bfd136e2b4a9668124b82dbdc5de",
+      "bytes": 25174,
+      "copy": "verbatim"
+    },
+    "row227-physical-binding-audit.json": {
+      "sha256": "807f6909a1bd77fe6aa637c7e41ff9cda5e49b70200afc6395c6f68e38b6c56b",
+      "bytes": 12136,
+      "copy": "verbatim"
+    },
+    "row227-coarse-shift-check.json": {
+      "sha256": "5adf026b76d88155e702a7f54659d5fe8ce3ef6b1754867105429837425687d1",
+      "bytes": 1481,
+      "copy": "verbatim"
+    }
+  },
+  "meaning": "The receipts record recovered constants and earlier exact arithmetic research. Their numerical conclusions are not assumptions or Lean verification. Four proposed modules use current production definitions, proved analytic bounds and closed kernel arithmetic.",
+  "primary_sources": [
+    "Existing original source panel/root/metadata definitions on master",
+    "OriginalMomentSeedData midpoint/scale and OriginalMomentSeedEnclosure actual moment theorem from PR287",
+    "ProfileRootScreen centered evaluator and sqrtPi_real_bounds"
+  ],
+  "new_large_literal": "ConditionalSourceRow227Scalar.shatNumerator is actual_scalar.dyadic_midpoint_numerator from row227-common-scalar-budget.json; denominator is the existing seed scale.",
+  "scope_exclusions": [
+    "finite triangle transcript",
+    "parameter transport",
+    "full saved coefficient row",
+    "other regular rows",
+    "final upper endpoint"
+  ],
+  "repository_path": "data/original-row227-binding"
+}

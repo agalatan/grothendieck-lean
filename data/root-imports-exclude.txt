@@ -2,11 +2,10 @@
 # One module per line, sorted; `#` starts a comment. Union-merged by git (.gitattributes).
 #
 # Header comments only: `tools/gen_root_imports.py` keeps this file sorted. Current entries:
-# * Grothe.LowerAnalytic.CapPieces.* — generated piece-node modules of rows 12–15 (native range facts, minutes each),
-#   part of the caps campaign (#15, #16), never in the default target;
 # * Grothe.LowerAnalytic.CapPieces.* — generated per-node modules of the rows 12–15 node caps (route M: data D,
-#   coverage C, native range facts R, node theorem N); not part of a proof yet (rows 12–15 campaign), so not in
-#   default build (tools/gen_cap_pieces.py; adding a node means adding its four modules here);
+#   coverage C, native range facts R, node theorem N) that no proof uses yet (rows 12–15 campaign), so not in the
+#   default build (tools/gen_cap_pieces.py). Modules reached from the root anyway (e.g. node 14x150 through
+#   `CapPieces.Node14x150`) are not listed: an exclusion of an imported module has no effect;
 # * GrotheKernel.BandMass, GrotheKernel.HeadWeight — kernel modules used only by Grothe.Upper (built through
 #   Grothe.lean, not through the GrotheKernel root).
 Grothe.LowerAnalytic.CapPieces.C14x150
@@ -14,5 +13,24 @@ Grothe.LowerAnalytic.CapPieces.D14x150
 Grothe.LowerAnalytic.CapPieces.N14x150
 Grothe.LowerAnalytic.CapPieces.R14x150_0
 Grothe.LowerAnalytic.CapPieces.R14x150_1
+# * Grothe.Upper.EnergyDegreeOneLookup, Grothe.UpperChaos.ProductionDegreeOneTable — quarantined 4 Nov 2026: the lookup's
+#   kernel proof needs about 28 GB (Lean killed by the OOM killer on yo, run 41780631946), so master could not be checked;
+#   re-admit them when the proof fits the runners (#271).
+Grothe.LowerAnalytic.CapPieces.C14x200
+Grothe.LowerAnalytic.CapPieces.D14x200
+Grothe.LowerAnalytic.CapPieces.N14x200
+Grothe.LowerAnalytic.CapPieces.R14x200_0
+Grothe.LowerAnalytic.CapPieces.R14x200_1
+Grothe.LowerAnalytic.CapPieces.R14x200_10
+Grothe.LowerAnalytic.CapPieces.R14x200_2
+Grothe.LowerAnalytic.CapPieces.R14x200_3
+Grothe.LowerAnalytic.CapPieces.R14x200_4
+Grothe.LowerAnalytic.CapPieces.R14x200_5
+Grothe.LowerAnalytic.CapPieces.R14x200_6
+Grothe.LowerAnalytic.CapPieces.R14x200_7
+Grothe.LowerAnalytic.CapPieces.R14x200_8
+Grothe.LowerAnalytic.CapPieces.R14x200_9
+Grothe.Upper.EnergyDegreeOneLookup
+Grothe.UpperChaos.ProductionDegreeOneTable
 GrotheKernel.BandMass
 GrotheKernel.HeadWeight

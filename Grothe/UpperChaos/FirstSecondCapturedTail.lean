@@ -173,6 +173,42 @@ theorem second_captured_tail_budget :
       (2 * (comparisonBand secondTailIndex).error) ^ 2 := by
   decide +kernel
 
+/-- Recompute the actual first Taylor tail from any six rational norm-error
+caps and their own captured-energy budget. The cap is unscaled. -/
+theorem norm_firstCenter_tail_le_with_errors (error : Fin 6 → ℚ) (cap : ℚ)
+    (herror : ∀ k, ‖projOn (firstCenterBandModes k) (firstTaylorL2 - firstCenter)‖ ≤
+      (error k : ℝ))
+    (hbudget : capturedTaylorBudgetQ phaseMoment2Q firstCenterBandLowerQ error ≤ cap ^ 2)
+    (hcap : 0 ≤ cap) :
+    ‖bandProj (comparisonBand firstTailIndex) (firstTaylorL2 - firstCenter)‖ ≤
+      (cap : ℝ) := by
+  have hzero : projOn (bandModes (comparisonBand firstTailIndex)) firstCenter = 0 := by
+    rw [firstTailModes_eq]
+    exact firstCenter_tail_zero
+  exact norm_taylor_tail_le_of_captured firstCenterBandModes
+    (bandModes (comparisonBand firstTailIndex)) firstTaylorL2 firstCenter
+    phaseMoment2Q cap firstCenterBandLowerQ error
+    (fun _ _ hij => firstCaptured_disjoint hij) firstCaptured_disjoint_tail hzero
+    firstCenterBand_norm_lower herror norm_hpow_one_sq.le hbudget hcap
+
+/-- Recompute the actual second Taylor tail before the comparison's division
+by two. No original tail radius is reused after changing finite errors. -/
+theorem norm_secondCenter_tail_le_with_errors (error : Fin 4 → ℚ) (cap : ℚ)
+    (herror : ∀ k, ‖projOn (secondCenterBandModes k) (secondTaylorL2 - secondCenter)‖ ≤
+      (error k : ℝ))
+    (hbudget : capturedTaylorBudgetQ phaseMoment4Q secondCenterBandLowerQ error ≤ cap ^ 2)
+    (hcap : 0 ≤ cap) :
+    ‖bandProj (comparisonBand secondTailIndex) (secondTaylorL2 - secondCenter)‖ ≤
+      (cap : ℝ) := by
+  have hzero : projOn (bandModes (comparisonBand secondTailIndex)) secondCenter = 0 := by
+    rw [secondTailModes_eq]
+    exact secondCenter_tail_zero
+  exact norm_taylor_tail_le_of_captured secondCenterBandModes
+    (bandModes (comparisonBand secondTailIndex)) secondTaylorL2 secondCenter
+    phaseMoment4Q cap secondCenterBandLowerQ error
+    (fun _ _ hij => secondCaptured_disjoint hij) secondCaptured_disjoint_tail hzero
+    secondCenterBand_norm_lower herror norm_hpow_two_sq.le hbudget hcap
+
 /-- The first tail follows from six finite-band Gaussian error premises. -/
 theorem norm_firstCenter_tail_le
     (herror : ∀ k, ‖projOn (firstCenterBandModes k) (firstTaylorL2 - firstCenter)‖ ≤
