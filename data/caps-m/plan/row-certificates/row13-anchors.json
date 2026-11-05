@@ -14,11 +14,12 @@
     },
     "localized_input": {
       "path": "data/caps-m/plan/anchor-repairs/localized/row13-new-pieces.json",
-      "sha256": "481044ab2d64fb25751ab5e2656c2742aec0ca84da9301a2f2d703b724e5c823"
+      "sha256": "94f30a73be47b9abfb5c3a69747f7ca30c020dcf2e5f94d4547ad966568222bc"
     },
     "localized_nodes": [
       240,
       242,
+      244,
       260
     ],
     "method": "Variance factor t*(17/20, -1/20, 53/100) on the fibre coordinates (6, 7, 10) (the retry family of rows 16-18, data/cap-recipes/row16.json), t chosen per node as the accepted amplitude with the largest exact Schur margin of the checker matrix N (same functions as nodeOK, grid 1); nodes whose stored recipe fails by less than 1e-6 keep it and move to the fine grid (1600, 1024, 1/200) of the certificate catalogue. Each repaired anchor is verified by its per-node rangeOK probe (native_decide) before the push; CI certifies the range facts.",
@@ -1012,13 +1013,6 @@
       "s": "79/400"
     },
     {
-      "cap": "433913689747/250000000000",
-      "grid_index": 1,
-      "node_index": 244,
-      "recipe": "1604304414521582928508744861/2251799813685248000000000000,22690432811046327317036213/140737488355328000000000000,1722038222467694630891589/35184372088832000000000000,0,0,0,0,0,0,0,0,0|1",
-      "s": "23/50"
-    },
-    {
       "cap": "1739345567883/1000000000000",
       "grid_index": 1,
       "node_index": 245,
@@ -1603,9 +1597,9 @@
   "canonical_row_declaration": "row14",
   "capPad": "1/100000000000",
   "census": {
-    "anchors": 223,
+    "anchors": 222,
     "chords": 82,
-    "localized": 91,
+    "localized": 92,
     "nodes": 396,
     "vertices": 314
   },
@@ -1798,6 +1792,7 @@
     224,
     240,
     242,
+    244,
     260,
     270,
     272,
@@ -2068,7 +2063,6 @@
     },
     {
       "anchor_indices": [
-        244,
         245
       ],
       "hi": 256,
