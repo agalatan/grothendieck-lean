@@ -459,7 +459,7 @@ def loadTwist (j P : Nat) : IO (TwistParams × TwistTables) := do
   let center ← readCenter s!"handoff/quad-checker/center-{j}.txt" prm.Q prm.E
   let t0 ← IO.monoMsNow
   let tabs := twistTables P prm terms center
-  let cs := tabs.dil.foldl (fun s lv => lv.foldl (fun s row => row.foldl (fun s f => s + f.lo + f.hi) s) s) (0 : Int)
+  let cs := tabs.dil.foldl (fun s lv => lv.foldl (fun s row => row.foldl (fun s f => s + f.1 + f.2) s) s) (0 : Int)
   let t1 ← IO.monoMsNow
   IO.println s!"twist j={j}: {terms.size} phase terms, center {center.size} entries (E = {prm.E}), D_in = {twistDin prm}; tables {t1 - t0} ms (dilation checksum {cs % 1000000007})"
   return (prm, tabs)
@@ -484,12 +484,12 @@ def cmdTwistNode (j ordinal P : Nat) : IO UInt32 := do
       (ratiosI P (sqI P aI') (ratioDepth Din)) Din Din
     IO.println s!"  triangle at A': {vals.size} pairs, max width 2^{maxWidthLog2 vals}"
     let t1 ← IO.monoMsNow
-    let K := dilate P tabs.dil Din (fullTriangleI P vals Din)
-    let kw := K.foldl (fun m row => row.foldl (fun m x => max m (widthLog2 x)) m) (-100000 : Int)
-    let km := K.foldl (fun m row => row.foldl (fun m x => max m (magLog2 x)) m) (-100000 : Int)
-    IO.println s!"  dilation: K max |entry| 2^{km}, max width 2^{kw}; K[0][0] = {toDecimal 18 (ivGet K 0 0)}"
+    let K := dilateDil tabs.dil Din (fullTriangleDil P vals Din)
+    let kw := K.foldl (fun m row => row.foldl (fun m x => max m (widthLog2 (ofFixed KDil x.1 x.2))) m) (-100000 : Int)
+    let km := K.foldl (fun m row => row.foldl (fun m x => max m (magLog2 (ofFixed KDil x.1 x.2))) m) (-100000 : Int)
+    IO.println s!"  dilation: K max |entry| 2^{km}, max width 2^{kw}; K[0][0] = {toDecimal 18 (ofFixed KDil (twGet K 0 0).1 (twGet K 0 0).2)}"
     let t2 ← IO.monoMsNow
-    let K' := unnormalise P tabs.sqf Din K
+    let K' := unnormaliseDil tabs.sqfDil Din K
     IO.println s!"  unnormalised: K' max |entry| 2^{twMaxMagLog2 K'}, width 2^{twMaxWidthLog2 K'} (checksum {twChecksum K' % 1000000007})"
     let t3 ← IO.monoMsNow
     let r := sqrtI P s

@@ -90,4 +90,46 @@ def fullTriangleI (P : Nat) (vals : Array Ival) (D : Nat) : IvVec :=
     if g ≤ h + 1 then vals.getD (canonicalRank D g h) zeroI
     else mulI P (vals.getD (canonicalRank D (h + 1) (g - 1)) zeroI) (reflectI P g h)
 
+/-! ### The dilation in fixed point (scale `2^KDil`) -/
+
+/-- The fixed scale of the dilation: `2^1024`.  The dilated functional's entries span a huge dynamic
+range (`2^{−100} … 1`) and are then multiplied by `√(e! f!) ≤ 2^{550}`; at this scale the absolute
+rounding `2^{−1024}` stays below `2^{−450}` after the multiplication. -/
+def KDil : Nat := 1024
+
+/-- An interval at the scale `2^KDil`, as a pair. -/
+def toDil (a : Ival) : Int × Int := (toFixedLo KDil a, toFixedHi KDil a)
+
+/-- The dilation table as pairs at the scale `2^KDil` (`dil[e][f][m]`, `λ⁻¹` folded in). -/
+def dilTableDil (P : Nat) (lam : Ival) (D : Nat) : Array (Array (Array (Int × Int))) :=
+  (dilTable P lam D).map fun lv => lv.map fun row => row.map toDil
+
+/-- The full signed triangle at the scale `2^KDil`. -/
+def fullTriangleDil (P : Nat) (vals : Array Ival) (D : Nat) : TwVec :=
+  (fullTriangleI P vals D).map fun row => row.map toDil
+
+/-- Round a scale-`2^{2 KDil}` pair outward to the scale `2^KDil`. -/
+def roundDil (p : Int × Int) : Int × Int := (shDown KDil p.1, shUp KDil p.2)
+
+/-- The dilated functional in fixed point: `K_{e,f} = Σ_m dil[e][f][m] ⊗ I_{g(m),h(m)}` (products exact
+at `2^{2 KDil}`, one rounding), on the degree `D`. -/
+def dilateDil (dil : Array (Array (Array (Int × Int)))) (D : Nat) (I : TwVec) : TwVec :=
+  twOfFn D fun e f =>
+    roundDil (sumPairs (min e f + 1) fun m =>
+      mulPair (((dil.getD e #[]).getD f #[]).getD m (0, 0))
+        (twGet I (pairOfMin e f m).1 (pairOfMin e f m).2))
+
+/-- `√(c! d!)` at the scale `2^KDil`. -/
+def sqrtFactDil (P D : Nat) : Array (Array (Int × Int)) :=
+  Array.ofFn fun c : Fin (D + 1) => Array.ofFn fun d : Fin (D + 1 - c.val) =>
+    toDil (sqrtI P (ofNat P (factT c.val * factT d.val)))
+
+/-- Round a scale-`2^{2 KDil}` pair outward to the scale `2^KTw` (`2 KDil ≥ KTw`). -/
+def roundDilToTw (p : Int × Int) : Int × Int := (shDown (2 * KDil - KTw) p.1, shUp (2 * KDil - KTw) p.2)
+
+/-- The unnormalised functional `K'_{e,f} = √(e! f!) K_{e,f}` at the scale `2^KTw` from the fixed-point
+dilation (`K` at `2^KDil`). -/
+def unnormaliseDil (sqf : Array (Array (Int × Int))) (D : Nat) (K : TwVec) : TwVec :=
+  twOfFn D fun e f => roundDilToTw (mulPair ((sqf.getD e #[]).getD f (0, 0)) (twGet K e f))
+
 end GrotheQuad

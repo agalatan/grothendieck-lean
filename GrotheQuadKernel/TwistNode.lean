@@ -10,7 +10,8 @@ kernel computes (`docs/UPPER_CLOSURE.md` §8.1–8.2):
 
 1. the rescaled shift `A' = A √λ`, the seed, the ratios and the canonical triangle at `A'` with the
    cutoff `D' = D_out + 35 j` (all canonical pairs, `dMax = D'`), the full signed triangle;
-2. the dilated functional `K = dilate` on `D'` (floating intervals), then its unnormalised form
+2. the dilated functional `K = dilateDil` on `D'` (fixed point at the scale `2^KDil = 2^1024`,
+   which keeps the tiny high-degree entries to relative precision), then its unnormalised form
    `K'_{e,f} = √(e! f!) K_{e,f}` at the fixed scale `2^KTw`;
 3. `J' = (Q_rᵀ)^j K'` on `D_out` (`applyQPow`, exact integer ladders), then
    `J_{c,d} = (−1)^j e^{−jεs} J'_{c,d} / √(c! d!)` (intervals);
@@ -55,9 +56,11 @@ def toOut (a : Ival) : Fx := ⟨toFixedLo KOut a, toFixedHi KOut a⟩
 
 def roundOut (p : Int × Int) : Fx := ⟨shDown KOut p.1, shUp KOut p.2⟩
 
-/-- The per-process tables. -/
+/-- The per-process tables: the dilation table at the scale `2^KDil`, `√(c! d!)` at the scale `2^KDil`
+(for the unnormalisation) and as intervals (for the normalisation), the phase terms, the center. -/
 structure TwistTables where
-  dil : Array (Array (Array Ival))
+  dil : Array (Array (Array (Int × Int)))
+  sqfDil : Array (Array (Int × Int))
   sqf : Array (Array Ival)
   terms : Array PhaseTerm
   center : Array Int
@@ -70,7 +73,8 @@ def sqrtFactTable (P D : Nat) : Array (Array Ival) :=
 
 def twistTables (P : Nat) (prm : TwistParams) (terms : Array PhaseTerm) (center : Array Int) :
     TwistTables :=
-  ⟨dilTable P (lamI P prm.j) (twistDin prm), sqrtFactTable P (twistDin prm), terms, center⟩
+  ⟨dilTableDil P (lamI P prm.j) (twistDin prm), sqrtFactDil P (twistDin prm),
+    sqrtFactTable P (twistDin prm), terms, center⟩
 
 /-- `gradedFlatIndex q c d` (`Grothe/UpperChaos/GradedFlatIndex.lean`). -/
 def gradedFlat (q c d : Nat) : Nat := q * (q + 1) * (q + 2) / 3 + c * (q + 1) + d
@@ -124,10 +128,10 @@ def twistJ (P : Nat) (prm : TwistParams) (tabs : TwistTables) (piI s : Ival) (ne
   let aI' := mulI P (sqrtI P lam) aI
   let vals := canonicalTriangleI P (seedScalarI P piI aI') neg zeroI aI' (sqrtTable P (Din + 1))
     (ratiosI P (sqI P aI') (ratioDepth Din)) Din Din
-  let K := dilate P tabs.dil Din (fullTriangleI P vals Din)
+  let K := dilateDil tabs.dil Din (fullTriangleDil P vals Din)
   let r := sqrtI P s
   let J' := applyQPow (nodeCoefs P tabs.terms s r) (toTw (divN P 2 r)) prm.Dout prm.j
-    (unnormalise P tabs.sqf Din K)
+    (unnormaliseDil tabs.sqfDil Din K)
   let ea := expAlphaI P prm.j s
   let J := normalise P tabs.sqf prm.Dout J'
   ivOfFn prm.Dout fun c d =>
