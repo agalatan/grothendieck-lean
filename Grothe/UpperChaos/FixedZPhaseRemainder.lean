@@ -13,8 +13,7 @@ noncomputable section
 def direction (z : ℂ) : ℂ := z / (‖z‖ : ℂ)
 
 private theorem direction_unit {z : ℂ} (hz : z ≠ 0) : ‖direction z‖ = 1 := by
-  simp [direction, norm_div, Complex.norm_real, Real.norm_eq_abs,
-    abs_of_nonneg (norm_nonneg z), norm_ne_zero_iff.mpr hz]
+  simp [direction, Complex.norm_real, norm_ne_zero_iff.mpr hz]
 
 def unrotate (z w : ℂ) : ℂ := conj (direction z) * w
 
@@ -34,8 +33,9 @@ theorem fixed_phase_eq {z : ℂ} (hz : z ≠ 0) (w : ℂ) :
   have hrot : rot2 (direction z) ((↑(Real.sqrt (‖z‖ ^ 2)) : ℂ), unrotate z w) =
       (z, w) := by
     simp only [rot2, hfirst, unrotate, ← mul_assoc, hprod, one_mul]
-  simpa only [hrot, phaseSlice] using F0_rot2 (direction_unit hz)
-    ((↑(Real.sqrt (‖z‖ ^ 2)) : ℂ), unrotate z w)
+  have h := F0_rot2 (direction_unit hz) ((↑(Real.sqrt (‖z‖ ^ 2)) : ℂ), unrotate z w)
+  rw [hrot] at h
+  simpa only [phaseSlice] using h
 
 def model (z w : ℂ) : ℂ := direction z * linearSlice (‖z‖ ^ 2) (unrotate z w)
 
