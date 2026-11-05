@@ -10,12 +10,14 @@
     },
     "localized_input": {
       "path": "data/caps-m/plan/anchor-repairs/localized/row12-new-pieces.json",
-      "sha256": "efbc6003cd822abd70cf751ace4fa05d837505bb516c4c8b47499e48a884f816"
+      "sha256": "513fb7f5770bece639a878f6ffa2a87d942f06386b3411eb63d1a27381ae864e"
     },
     "localized_nodes": [
       240,
       242,
-      244
+      244,
+      246,
+      247
     ],
     "method": "Variance factor t*(17/20, -1/20, 53/100) on the fibre coordinates (6, 7, 10) (the retry family of rows 16-18, data/cap-recipes/row16.json), t chosen per node as the accepted amplitude with the largest exact Schur margin of the checker matrix N (same functions as nodeOK, grid 1); nodes whose stored recipe fails by less than 1e-6 keep it and move to the fine grid (1600, 1024, 1/200) of the certificate catalogue. Each repaired anchor is verified by its per-node rangeOK probe (native_decide) before the push; CI certifies the range facts.",
     "nodes": [
@@ -997,20 +999,6 @@
       "s": "39/200"
     },
     {
-      "cap": "862826617383/500000000000",
-      "grid_index": 1,
-      "node_index": 246,
-      "recipe": "793592428460104273563726003/1125899906842624000000000000,82189131615459954553645799/562949953421312000000000000,1160210507419684710177797/28147497671065600000000000,0,0,0,0,0,0,0,0,0|1",
-      "s": "93/200"
-    },
-    {
-      "cap": "1729271659963/1000000000000",
-      "grid_index": 1,
-      "node_index": 247,
-      "recipe": "1598354281070722956878677429/2251799813685248000000000000,33495357163997179992749357/225179981368524800000000000,11991007655129397763835679/281474976710656000000000000,0,0,0,0,0,0,0,0,0|1",
-      "s": "187/400"
-    },
-    {
       "cap": "173303005009/100000000000",
       "grid_index": 1,
       "node_index": 248,
@@ -1581,9 +1569,9 @@
   "canonical_row_declaration": "row13",
   "capPad": "1/100000000000",
   "census": {
-    "anchors": 220,
+    "anchors": 218,
     "chords": 85,
-    "localized": 91,
+    "localized": 93,
     "nodes": 396,
     "vertices": 311
   },
@@ -1778,6 +1766,8 @@
     240,
     242,
     244,
+    246,
+    247,
     270,
     272,
     276,
@@ -2046,8 +2036,6 @@
     },
     {
       "anchor_indices": [
-        246,
-        247,
         248
       ],
       "hi": 256,
