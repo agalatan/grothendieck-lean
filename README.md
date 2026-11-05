@@ -8,6 +8,19 @@ $$1.401697117301 < K_G^{\mathbb{C}} < 1.404598149141$$
 Both bounds rest on explicitly stated analytic and computer-assisted inputs; see
 [what is proved](#what-is-proved).
 
+| year | who | lower bound | upper bound |
+|---|---|---|---|
+| 1953 | [Grothendieck](https://csg.igrothendieck.org/published-works/) (Résumé, Bol. Soc. Mat. São Paulo 8) | | $K < \infty$ |
+| 1984 | [Davie](https://arxiv.org/abs/1101.4195) (unpublished note; reported in Pisier's survey) | $1.33807 < K$ | |
+| 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
+| Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
+| Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
+| Oct–Nov 2026 | **this repository** | $\mathbf{1.401697117301 < K}$ | $\mathbf{K < 1.404598149141}$ |
+
+Haagerup's integral $1/\gamma^\dagger = 1.4045759\ldots$, where
+$\gamma^\dagger = \int_0^{\pi/2} \cos^2 t \, (1+\sin^2 t)^{-1/2} \, dt$, has been proposed as the exact value;
+it lies inside the interval, $2.22 \cdot 10^{-5}$ below our upper bound.
+
 **The only active upper-bound target is $K_G^{\mathbb C}<1.404598149141$.**
 Both endpoints are **work in progress**. For the upper endpoint, fourteen actual
 Gaussian finite-band estimates and energy-table discrepancy at most
@@ -159,10 +172,8 @@ See `AGENTS.md` §8, §10 and `docs/CAPS_STATUS.md`.
 
 `lower_bound_of_refined_cover_data` assumes `NodeCaps`.
 `lower_bound_of_capsRest` reduces this to `CapsRest`: the vertex caps of rows
-15 (t = 0.855), plus any excluded-node caps of the original
-range-checked rows. All those exclusion lists are empty. Rows 12–14
-(t = 0.84, 0.845, 0.85) have complete localized-piece and anchor
-assemblies (`CapRow12/Assembly`, `CapRow13/Assembly`, `CapRow14/Assembly`), with no excluded nodes. Their finite checks require canonical CI verification. Both lower theorems use the same
+12–15 (t = 0.84, 0.845, 0.85, 0.855), plus any excluded-node caps of the
+other rows. All exclusion lists are empty. Both lower theorems use the same
 refined cover and endpoint; the second composes
 `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and
 `lower_bound_of_refined_cover_data`. `NodeCaps.lean` defines the common cap
@@ -170,12 +181,9 @@ hypothesis without importing the Gaussian reduction. The cap computations,
 recipes and row data are unchanged. The rows 12–15 piece checks likewise import
 only rational data and computable definitions (`CapCoverDefs`,
 `CapConstrDefs`, `CapPieceRange`); `CapCover`, `CapConstr` and `CapPieceNodes`
-provide their soundness. The Row12–14 modules are imported by the root and
-registered in the strict axiom audit. The independent `nodeCap_14x150_done`
-proof supplies node 150 in the Row14 assembly, with its complete source and repair closure retained. Row15 remains a separate campaign. `tools/gen_cap_prepared_rows.py --check` reproduces the prepared
-sources with an explicit current-writer binding, preserving the historical
-input and source seals. The bounded caps builder limits expensive finite
-checks to a memory-bounded set of single-threaded leaves before CI builds the complete root.
+provide their soundness. Their generated facts and final `CapsRest` wiring
+remain a separate campaign (generated piece modules are excluded from the
+root until a proof uses them).
 
 **Upper bound** — `Grothe.UpperChaos.fresh_upper_rounder`, for an L² charge-one truncation `X`, proves
 `ComparisonInputs → energy_close → IsGrothendieckBound (500000000000000000/355973699960428191)`,
