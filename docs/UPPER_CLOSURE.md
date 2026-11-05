@@ -263,8 +263,14 @@ profile zeros (the same S6b/c and S8 obligations as the checker's, `docs/QUAD_CH
 Float64 numpy (no mpmath on the shared machines; the laptop's `decimal` is used only for the
 cross-checks). Inputs: `Grothe/Upper/Data.lean` (phase, profile, `a`), the center arrays
 `data/taylor-approximants/inputs/*.npz`, the exact constants from the Lean data files, the quadrature
-presets `data/upper-closure/config.json`. Outputs under `handoff/upper-closure/` (git-ignored; the
-runs were made on the big droplet in `~/claude-b9ee-upper-closure/`, 8 niced shards).
+presets `data/upper-closure/config.json`. Outputs under `handoff/upper-closure/` (git-ignored, on the
+laptop in the worktree `grothe-claude-b9ee-upper-closure-spike`): the runs were made on the big
+droplet (`~/claude-b9ee-upper-closure/`, 8 niced shards; folder deleted afterwards) and copied to
+`handoff/upper-closure/big/`: every `assemble-*.json`, `*-coeffs.npz` and log, the per-node files
+`nodes-j{0,1,2,3}-checker-*of8.npz` of the production preset (3.7 GB; the expected values for testing
+the Lean kernel: `J[c,d]` at every node of the checker's partition), and the `uniform/` record of the
+first run; the node files of the `checker_w2`/`checker_s60` convergence runs (5.4 GB, duplicates to
+roundoff) were not kept.
 
 ### 6.1 Method
 
