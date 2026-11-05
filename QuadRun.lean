@@ -422,6 +422,209 @@ def cmdCheck (rawfile frozenfile tablefile : String) (qLo qHi : Nat) : IO UInt32
   IO.println s!"even excursion {ev} / 2^256"
   return 0
 
+
+/-! ### The twisted node loop (docs/UPPER_CLOSURE.md §8): `quadrun twist*` -/
+
+/-- Read `phase.txt` (`i j k num den` per line). -/
+def readPhase (path : String) : IO (Array PhaseTerm) := do
+  let lines ← IO.FS.lines path
+  let mut out : Array PhaseTerm := #[]
+  for l in lines do
+    match (l.splitOn " ").filter (· ≠ "") with
+    | [i, j, k, num, den] =>
+      if i.startsWith "#" then pure () else
+      out := out.push ⟨parseNat! i, parseNat! j, parseNat! k, parseInt! num, parseNat! den⟩
+    | _ => pure ()
+  return out
+
+/-- Read `center-j.txt` (`q c d m e`, value `m·2^{−e}`) into the flat graded array of numerators at the
+common exponent `E` (`e ≤ E`). -/
+def readCenter (path : String) (Q E : Nat) : IO (Array Int) := do
+  let lines ← IO.FS.lines path
+  let mut out : Array Int := Array.replicate (Q * (Q + 1) * (Q + 2) / 3) 0
+  for l in lines do
+    match (l.splitOn " ").filter (· ≠ "") with
+    | [q, c, d, m, e] =>
+      let q := parseNat! q; let c := parseNat! c; let d := parseNat! d
+      let m := parseInt! m; let e := parseNat! e
+      if e > E then throw (IO.userError s!"{path}: exponent {e} > {E}")
+      if q < Q then out := out.set! (gradedFlat q c d) (m * pow2 (E - e))
+    | _ => pure ()
+  return out
+
+/-- The per-process tables of the power `j`. -/
+def loadTwist (j P : Nat) : IO (TwistParams × TwistTables) := do
+  let prm := twistParams j
+  let terms ← readPhase s!"{dataDir}/phase.txt"
+  let center ← readCenter s!"handoff/quad-checker/center-{j}.txt" prm.Q prm.E
+  let t0 ← IO.monoMsNow
+  let tabs := twistTables P prm terms center
+  let cs := tabs.dil.foldl (fun s lv => lv.foldl (fun s row => row.foldl (fun s f => s + f.lo + f.hi) s) s) (0 : Int)
+  let t1 ← IO.monoMsNow
+  IO.println s!"twist j={j}: {terms.size} phase terms, center {center.size} entries (E = {prm.E}), D_in = {twistDin prm}; tables {t1 - t0} ms (dilation checksum {cs % 1000000007})"
+  return (prm, tabs)
+
+/-- `quadrun twistnode <j> <ordinal> [P]`: one node, timed by phase; the low-band `J_{c,d}(s)`. -/
+def cmdTwistNode (j ordinal P : Nat) : IO UInt32 := do
+  let (panels, addrs, cutoffs, pd) ← loadAll
+  let (prm, tabs) ← loadTwist j P
+  let piI := piMachinI P (P / 3 + 20)
+  let nd := specOf panels addrs cutoffs ordinal
+  let s := nodeS P nd
+  let w := nodeW P nd
+  match nodeShift P piI pd nd with
+  | none => throw (IO.userError "profile sign undecided")
+  | some (neg, aI) =>
+    let Din := twistDin prm
+    let lam := lamI P prm.j
+    let aI' := mulI P (sqrtI P lam) aI
+    IO.println s!"node {ordinal}: s = {toDecimal 20 s}, W = {toDecimal 20 w}, neg = {neg}, A = {toDecimal 15 aI}, A' = {toDecimal 15 aI'}, valid = {twistValid P prm nd aI}"
+    let t0 ← IO.monoMsNow
+    let vals := canonicalTriangleI P (seedScalarI P piI aI') neg zeroI aI' (sqrtTable P (Din + 1))
+      (ratiosI P (sqI P aI') (ratioDepth Din)) Din Din
+    IO.println s!"  triangle at A': {vals.size} pairs, max width 2^{maxWidthLog2 vals}"
+    let t1 ← IO.monoMsNow
+    let K := dilate P tabs.dil Din (fullTriangleI P vals Din)
+    let kw := K.foldl (fun m row => row.foldl (fun m x => max m (widthLog2 x)) m) (-100000 : Int)
+    let km := K.foldl (fun m row => row.foldl (fun m x => max m (magLog2 x)) m) (-100000 : Int)
+    IO.println s!"  dilation: K max |entry| 2^{km}, max width 2^{kw}; K[0][0] = {toDecimal 18 (ivGet K 0 0)}"
+    let t2 ← IO.monoMsNow
+    let K' := unnormalise P tabs.sqf Din K
+    IO.println s!"  unnormalised: K' max |entry| 2^{twMaxMagLog2 K'}, width 2^{twMaxWidthLog2 K'} (checksum {twChecksum K' % 1000000007})"
+    let t3 ← IO.monoMsNow
+    let r := sqrtI P s
+    let coefs := nodeCoefs P tabs.terms s r
+    let J' := applyQPow coefs (toTw (divN P 2 r)) prm.Dout prm.j K'
+    IO.println s!"  operator: J' max |entry| 2^{twMaxMagLog2 J'}, width 2^{twMaxWidthLog2 J'} (checksum {twChecksum J' % 1000000007})"
+    let t4 ← IO.monoMsNow
+    let J := twistJ P prm tabs piI s neg aI
+    let jw := J.foldl (fun m row => row.foldl (fun m x => max m (widthLog2 x)) m) (-100000 : Int)
+    let jm := J.foldl (fun m row => row.foldl (fun m x => max m (magLog2 x)) m) (-100000 : Int)
+    let t5 ← IO.monoMsNow
+    IO.println s!"  J: max |entry| 2^{jm}, max width 2^{jw}"
+    for c in [0:4] do
+      for d in [0:3] do
+        IO.println s!"    J[{c}][{d}] = {toDecimal 22 (ivGet J c d)}"
+    let out := twistNode P prm tabs piI s w neg aI
+    let t6 ← IO.monoMsNow
+    IO.println s!"  I-part = {toDecimal 24 (ofFixed (2 * KOut) out.iPart.1 out.iPart.2)}; low[0][0][0] = {toDecimal 24 (ofFixed (2 * KOut) (lowGet out.low 0 0 0).1 (lowGet out.low 0 0 0).2)}"
+    IO.println s!"  timing: triangle {t1 - t0} ms, dilation {t2 - t1} ms, unnormalise {t3 - t2} ms, operator {t4 - t3} ms, whole J (recomputed) {t5 - t4} ms, whole node (recomputed) {t6 - t5} ms"
+    -- the dump for tools/quad_twist_compare.py
+    IO.FS.createDirAll "handoff/quad-checker"
+    let h ← IO.FS.Handle.mk s!"handoff/quad-checker/twistnode-j{j}-{ordinal}.txt" IO.FS.Mode.write
+    h.putStrLn s!"node {ordinal} j {j} Dout {prm.Dout} s {toDecimal 40 s} W {toDecimal 40 w} ipart {toDecimal 40 (ofFixed (2 * KOut) out.iPart.1 out.iPart.2)}"
+    for c in [0:prm.Dout + 1] do
+      for d in [0:prm.Dout + 1 - c] do
+        h.putStrLn s!"{c} {d} {toDecimal 36 (ivGet J c d)}"
+    h.flush
+    return 0
+
+/-- `quadrun twist <j> <n> [P]`: the loop over the first `n` nodes, timed. -/
+def cmdTwist (j n P : Nat) : IO UInt32 := do
+  let (panels, addrs, cutoffs, pd) ← loadAll
+  let (prm, tabs) ← loadTwist j P
+  let piI := piMachinI P (P / 3 + 20)
+  let specs := (List.range (min n addrs.size)).map (specOf panels addrs cutoffs)
+  let t0 ← IO.monoMsNow
+  match twistSpecs P piI pd prm tabs specs (twAccZero (twistQlow prm)) with
+  | none => throw (IO.userError "twist: a node was rejected (a flag failed)")
+  | some acc =>
+    let t1 ← IO.monoMsNow
+    IO.println s!"twist j={j} over {specs.length} nodes at P = {P}: {t1 - t0} ms ({(t1 - t0) / specs.length} ms per node)"
+    IO.println s!"  I-partial = {toDecimal 24 (ofFixed (2 * KOut) acc.iPart.1 acc.iPart.2)}"
+    IO.println s!"  low[0][0][0] = {toDecimal 24 (ofFixed (2 * KOut) (lowGet acc.low 0 0 0).1 (lowGet acc.low 0 0 0).2)}"
+    return 0
+
+/-- Write an accumulator: `I lo hi`, then `q c d lo hi` (scale `2^{2 KOut}`). -/
+def writeTwAcc (path : String) (Qlow : Nat) (acc : TwAcc) : IO Unit := do
+  let h ← IO.FS.Handle.mk path IO.FS.Mode.write
+  h.putStrLn s!"I {acc.iPart.1} {acc.iPart.2}"
+  for q in [0:Qlow] do
+    for c in [0:q + 2] do
+      for d in [0:q + 1] do
+        let (lo, hi) := lowGet acc.low q c d
+        h.putStrLn s!"{q} {c} {d} {lo} {hi}"
+  h.flush
+
+/-- Read an accumulator file. -/
+def readTwAcc (path : String) (Qlow : Nat) : IO TwAcc := do
+  let lines ← IO.FS.lines path
+  let mut acc := twAccZero Qlow
+  for l in lines do
+    match (l.splitOn " ").filter (· ≠ "") with
+    | ["I", lo, hi] => acc := ⟨(parseInt! lo, parseInt! hi), acc.low⟩
+    | [q, c, d, lo, hi] =>
+      let q := parseNat! q; let c := parseNat! c; let d := parseNat! d
+      if q < Qlow then
+        acc := ⟨acc.iPart, acc.low.set! q ((acc.low.getD q #[]).set! c (((acc.low.getD q #[]).getD c #[]).set! d (parseInt! lo, parseInt! hi)))⟩
+    | _ => pure ()
+  return acc
+
+/-- `quadrun twistshard <j> <i> <n> <outdir> [P]`: the nodes `≡ i (mod n)`. -/
+def cmdTwistShard (j i n : Nat) (outdir : String) (P : Nat) : IO UInt32 := do
+  let (panels, addrs, cutoffs, pd) ← loadAll
+  let (prm, tabs) ← loadTwist j P
+  let piI := piMachinI P (P / 3 + 20)
+  IO.FS.createDirAll outdir
+  let hn ← IO.FS.Handle.mk s!"{outdir}/twist-j{j}-nodes-{i}.txt" IO.FS.Mode.write
+  let mut acc := twAccZero (twistQlow prm)
+  let mut count := 0
+  let tStart ← IO.monoMsNow
+  let mut ordinal := i
+  while ordinal < addrs.size do
+    let nd := specOf panels addrs cutoffs ordinal
+    let t0 ← IO.monoMsNow
+    match twistSpec P piI pd prm tabs nd acc with
+    | none => throw (IO.userError s!"node {ordinal}: rejected (a flag failed)")
+    | some acc' =>
+      acc := acc'
+      let t1 ← IO.monoMsNow
+      hn.putStrLn s!"{ordinal} {t1 - t0}"
+      hn.flush
+    count := count + 1
+    if count % 20 == 0 then
+      let now ← IO.monoMsNow
+      IO.println s!"twist j={j} shard {i}: {count} nodes, {(now - tStart) / 1000} s"
+    ordinal := ordinal + n
+  writeTwAcc s!"{outdir}/twist-j{j}-{i}.txt" (twistQlow prm) acc
+  let tEnd ← IO.monoMsNow
+  IO.println s!"twist j={j} shard {i}: done, {count} nodes, {(tEnd - tStart) / 1000} s"
+  return 0
+
+/-- `quadrun twistmerge <j> <n> <outdir>`: sum the shards, compare the low band with the center. -/
+def cmdTwistMerge (j n : Nat) (outdir : String) : IO UInt32 := do
+  let prm := twistParams j
+  let Qlow := twistQlow prm
+  let center ← readCenter s!"handoff/quad-checker/center-{j}.txt" prm.Q prm.E
+  let mut acc := twAccZero Qlow
+  for i in [0:n] do
+    let a ← readTwAcc s!"{outdir}/twist-j{j}-{i}.txt" Qlow
+    acc := ⟨addPair acc.iPart a.iPart, Array.ofFn fun q : Fin Qlow => Array.ofFn fun c : Fin (q.val + 2) =>
+      Array.ofFn fun d : Fin (q.val + 1) => addPair (lowGet acc.low q c d) (lowGet a.low q c d)⟩
+  writeTwAcc s!"{outdir}/twist-j{j}-final.txt" Qlow acc
+  IO.println s!"I_{j} = {toDecimal 30 (ofFixed (2 * KOut) acc.iPart.1 acc.iPart.2)} (width 2^{widthLog2 (ofFixed (2 * KOut) acc.iPart.1 acc.iPart.2)})"
+  -- low band against the center: Σ excursion², max excursion, Σ (mid − c)², max |mid − c|, Σ c²
+  let mut exSq : Int := 0
+  let mut exMax : Int := 0
+  let mut cSq : Int := 0
+  let mut wMax : Int := 0
+  let mut count := 0
+  for q in [0:Qlow] do
+    for c in [0:q + 2] do
+      for d in [0:q + 1] do
+        let e := lowGet acc.low q c d
+        let t := center.getD (gradedFlat q c d) 0 * pow2 (2 * KOut - prm.E)
+        let ex := excursionTw e t
+        exSq := exSq + ex * ex
+        exMax := max exMax ex
+        cSq := cSq + t * t
+        wMax := max wMax (e.2 - e.1)
+        count := count + 1
+  let sc := 2 * KOut
+  IO.println s!"low band ({count} coefficients, grades < {Qlow}): max excursion {toDecimal 20 (ofFixed sc exMax exMax)}, sqrt(sum excursion^2) = {toDecimal 20 (ofFixed sc (isqrtDown exSq.toNat) (isqrtUp exSq.toNat))}, center norm {toDecimal 16 (ofFixed sc (isqrtDown cSq.toNat) (isqrtUp cSq.toNat))}, max enclosure width 2^{widthLog2 (ofFixed sc 0 wMax)}"
+  IO.println s!"  lowBandExcursionSq = {lowBandExcursionSq acc center prm.E Qlow} (scale 2^{4 * KOut})"
+  return 0
+
 def main (args : List String) : IO UInt32 := do
   match args with
   | ["check", rf, ff, tf, lo, hi] => cmdCheck rf ff tf (parseNat! lo) (parseNat! hi)
@@ -429,6 +632,13 @@ def main (args : List String) : IO UInt32 := do
   | ["block", lo, hi, n, p] => cmdBlock (parseNat! lo) (parseNat! hi) (parseNat! n) (parseNat! p)
   | ["smat", i, n, d] => cmdSmat (parseNat! i) (parseNat! n) d
   | ["rotate", i, n, sd, rf, ff, od] => cmdRotate (parseNat! i) (parseNat! n) sd rf ff od
+  | ["twistnode", j, o] => cmdTwistNode (parseNat! j) (parseNat! o) 512
+  | ["twistnode", j, o, p] => cmdTwistNode (parseNat! j) (parseNat! o) (parseNat! p)
+  | ["twist", j, n] => cmdTwist (parseNat! j) (parseNat! n) 512
+  | ["twist", j, n, p] => cmdTwist (parseNat! j) (parseNat! n) (parseNat! p)
+  | ["twistshard", j, i, n, d] => cmdTwistShard (parseNat! j) (parseNat! i) (parseNat! n) d 512
+  | ["twistshard", j, i, n, d, p] => cmdTwistShard (parseNat! j) (parseNat! i) (parseNat! n) d (parseNat! p)
+  | ["twistmerge", j, n, d] => cmdTwistMerge (parseNat! j) (parseNat! n) d
   | ["rules"] => cmdRules
   | ["node", o] => cmdNode (parseNat! o) precisions
   | ["node", o, p] => cmdNode (parseNat! o) [parseNat! p]
@@ -439,4 +649,5 @@ def main (args : List String) : IO UInt32 := do
     IO.println "       quadrun smat <i> <n> <outdir> | rotate <i> <n> <smatdir> <rawfile> <frozenfile> <outdir>"
     IO.println "       quadrun block <qLo> <qHi> <n> [P]   (the node loop of n nodes restricted to a grade block)"
     IO.println "       quadrun check <rawfile> <frozenfile> <tablefile> <qLo> <qHi>   (the block checks on a stored raw vector)"
+    IO.println "       quadrun twistnode <j> <ordinal> [P] | twist <j> <n> [P] | twistshard <j> <i> <n> <outdir> [P] | twistmerge <j> <n> <outdir>"
     return 2
