@@ -3211,6 +3211,7 @@ import Grothe
 #print axioms Grothe.UpperQuad.Facts.hclose_of_blockFacts_numeric
 #print axioms Grothe.UpperQuad.Facts.hclose_of_facts
 #print axioms Grothe.UpperQuad.Facts.hclose_of_facts_quad
+#print axioms Grothe.UpperQuad.Tail.norm_tail_sq_le
 #print axioms Grothe.UpperQuad.Watson.watsonHyp
 #print axioms Grothe.UpperQuad.gaussRaw_eq_sum_address
 #print axioms Grothe.UpperQuad.hclose_of_blocks
