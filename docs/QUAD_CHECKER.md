@@ -545,11 +545,12 @@ matrices (`retainedProductionCoeff a0 = b0`), `htable` from `energyOK_sound`, `h
 `gradeWidthSq_sound` and `hQuad`. `frozenFx` (`frozenCorrectionAt / 2^206` at scale `2^128`) and
 `tableFx` (floor/ceiling of `energyTable · 2^256`) are the Lean-side data conversions.
 
-**The row-227 native fact** (`Grothe/UpperQuad/Row227Fact.lean`, root-excluded):
-`node227_check : check = true` by `native_decide`, where `check` accumulates the `NodeSpec` literal
-of node 227 (`accumulateSpec 1024 piI profile node227 rawZero`) and compares the entries `(0,0,0)`
-and `(1,0,0)` with the milestone-2 values. `lake build Grothe.UpperQuad.Row227Fact` takes **7.3 s on
-big** (the `quadrun node 227 1024` run of the same node takes 6.4 s): the overhead of a native fact
+**The row-227 native-fact probe** (a one-off module `Grothe/UpperQuad/Row227Fact.lean`, root-excluded,
+removed after the measurement on the reviewer's request — a `native_decide` theorem outside the
+inventory is not allowed; the timing probe is `quadrun node 227 1024`): `node227_check : check = true`
+by `native_decide`, where `check` accumulated the `NodeSpec` literal of node 227
+(`accumulateSpec 1024 piI profile node227 rawZero`) and compared the entries `(0,0,0)` and `(1,0,0)`
+with the milestone-2 values; its `lake build` took **7.3 s on big** (the `quadrun node 227 1024` run of the same node takes 6.4 s): the overhead of a native fact
 over the precompiled kernel is negligible, so the cost of the final facts is the node cost itself
 (≈ 6 s per node at P = 512, 21,577 nodes ≈ 36 CPU-hours, ≈ 2 CPU-hours for the saved matrices).
 **Sharding (for the user's decision, §11.2):** with a 6-hour limit per hosted job, option 1 needs
