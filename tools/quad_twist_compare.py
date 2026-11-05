@@ -59,7 +59,7 @@ def cmd_node(path, tol=1e-13):
         Vh[:q + 2, :q + 1] += C * Hz[q + 1 - cs, q - ds]
     G = float(np.sum(Vh * Jp[:Qc + 1, :Qc]))
     Ws = (w_lo + w_hi) / 2
-    ipart_proto = Ws * math.exp(-s) * G
+    ipart_proto = Ws * math.exp(-s / 2) * G  # G carries e^{-s/2} through hh; radial_w = W_s e^{-s/2}
     mask_all = np.add.outer(np.arange(Dout + 1), np.arange(Dout + 1)) <= Dout
     mask_low = np.add.outer(np.arange(Dout + 1), np.arange(Dout + 1)) <= prm[1]
     diff = np.abs(J - Jp[:Dout + 1, :Dout + 1])
@@ -70,7 +70,7 @@ def cmd_node(path, tol=1e-13):
           f"(max |J| {np.abs(Jp[:Dout+1,:Dout+1])[mask_all].max():.3e}); max enclosure width {W[mask_all].max():.2e}")
     inside = np.all((Jp[:Dout + 1, :Dout + 1] >= J - W / 2 - tol) & (Jp[:Dout + 1, :Dout + 1] <= J + W / 2 + tol) | ~mask_all)
     print(f"  every prototype value inside the enclosure widened by {tol:.0e}: {inside}")
-    print(f"  I-part: kernel [{i_lo:.18e}, {i_hi:.18e}], prototype W e^-s G = {ipart_proto:.18e}, "
+    print(f"  I-part: kernel [{i_lo:.18e}, {i_hi:.18e}], prototype W_s e^{-s} V.J = {ipart_proto:.18e}, "
           f"difference {ipart_proto - (i_lo + i_hi) / 2:.3e} (relative {(ipart_proto - (i_lo + i_hi) / 2) / ipart_proto:.2e})")
     print(f"  Parseval at the node: sum J^2 = {float(np.sum(Jp * Jp)):.6e}  vs  E_w[phi^{2 * j}] = {node.moment(2 * j):.6e}")
 

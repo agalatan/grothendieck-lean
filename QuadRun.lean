@@ -519,6 +519,44 @@ def cmdTwistNode (j ordinal P : Nat) : IO UInt32 := do
     h.flush
     return 0
 
+/-- `quadrun twistdump <j> <ordinals> <outdir> [P]`: the twisted coefficients `J_{c,d}(s)` of the
+listed nodes (one ordinal per line), one dump per node (`twistnode-j<j>-<ordinal>.txt`), with the
+per-node times in `twistdump-j<j>-times.txt`. -/
+def cmdTwistDump (j : Nat) (ordFile outdir : String) (P : Nat) : IO UInt32 := do
+  let (panels, addrs, cutoffs, pd) ← loadAll
+  let (prm, tabs) ← loadTwist j P
+  let piI := piMachinI P (P / 3 + 20)
+  IO.FS.createDirAll outdir
+  let lines ← IO.FS.lines ordFile
+  let ht ← IO.FS.Handle.mk s!"{outdir}/twistdump-j{j}-times.txt" IO.FS.Mode.append
+  for l in lines do
+    match (l.splitOn " ").filter (· ≠ "") with
+    | [o] =>
+      let ordinal := parseNat! o
+      let nd := specOf panels addrs cutoffs ordinal
+      let s := nodeS P nd
+      let w := nodeW P nd
+      match nodeShift P piI pd nd with
+      | none => IO.println s!"node {ordinal}: profile sign undecided"
+      | some (neg, aI) =>
+        let t0 ← IO.monoMsNow
+        let J := twistJ P prm tabs piI s neg aI
+        let jw := J.foldl (fun m row => row.foldl (fun m x => max m (widthLog2 x)) m) (-100000 : Int)
+        let t1 ← IO.monoMsNow
+        let out := twistNode P prm tabs piI s w neg aI
+        let t2 ← IO.monoMsNow
+        let h ← IO.FS.Handle.mk s!"{outdir}/twistnode-j{j}-{ordinal}.txt" IO.FS.Mode.write
+        h.putStrLn s!"node {ordinal} j {j} Dout {prm.Dout} s {toDecimal 40 s} W {toDecimal 40 w} ipart {toDecimal 40 (ofFixed (2 * KOut) out.iPart.1 out.iPart.2)}"
+        for c in [0:prm.Dout + 1] do
+          for d in [0:prm.Dout + 1 - c] do
+            h.putStrLn s!"{c} {d} {toDecimal 36 (ivGet J c d)}"
+        h.flush
+        ht.putStrLn s!"{ordinal} {t1 - t0} {t2 - t1} {jw} {twistValid P prm nd aI}"
+        ht.flush
+        IO.println s!"node {ordinal}: J {t1 - t0} ms (+ node {t2 - t1} ms), max width 2^{jw}, valid {twistValid P prm nd aI}"
+    | _ => pure ()
+  return 0
+
 /-- `quadrun twist <j> <n> [P]`: the loop over the first `n` nodes, timed. -/
 def cmdTwist (j n P : Nat) : IO UInt32 := do
   let (panels, addrs, cutoffs, pd) ← loadAll
@@ -634,6 +672,8 @@ def main (args : List String) : IO UInt32 := do
   | ["rotate", i, n, sd, rf, ff, od] => cmdRotate (parseNat! i) (parseNat! n) sd rf ff od
   | ["twistnode", j, o] => cmdTwistNode (parseNat! j) (parseNat! o) 512
   | ["twistnode", j, o, p] => cmdTwistNode (parseNat! j) (parseNat! o) (parseNat! p)
+  | ["twistdump", j, f, d] => cmdTwistDump (parseNat! j) f d 512
+  | ["twistdump", j, f, d, p] => cmdTwistDump (parseNat! j) f d (parseNat! p)
   | ["twist", j, n] => cmdTwist (parseNat! j) (parseNat! n) 512
   | ["twist", j, n, p] => cmdTwist (parseNat! j) (parseNat! n) (parseNat! p)
   | ["twistshard", j, i, n, d] => cmdTwistShard (parseNat! j) (parseNat! i) (parseNat! n) d 512
