@@ -31,6 +31,11 @@ class CapsStampTests(unittest.TestCase):
         rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
         sources = {f"Grothe/LowerAnalytic/CapRow{k:02d}.lean": "import Mathlib.Tactic Grothe.Shared\n-- body\n"
                    for k in rows}
+        # The quadrature-checker facts are fixed hashed roots too (not cap-row roots); the localized pieces come
+        # from the activated-leaf registry, which this fixture does not activate.
+        for b in range(12):
+            sources[f"Grothe/UpperQuad/Facts/GradeBlock{b:02d}.lean"] = "import Grothe.Shared\n-- quad block fact\n"
+        sources["Grothe/UpperQuad/Facts/Even.lean"] = "import Grothe.Shared\n-- quad even fact\n"
         sources["Grothe/Shared.lean"] = "-- shared fixture dependency\nimport Mathlib.Data.Real.Basic\n"
         ordered = sorted(sources)
         extra = {
@@ -183,7 +188,7 @@ class CapsStampTests(unittest.TestCase):
         self.assertFalse(self.mark.exists())
         self.assertEqual(before, sorted(str(path.relative_to(self.root)) for path in self.root.rglob("*")))
 
-    def test_decoupled_48_module_plus_five_extra_boundary(self):
+    def test_decoupled_61_module_plus_five_extra_boundary(self):
         data_names = [f"Grothe.Pure{k:02d}" for k in range(32)]
         (self.root / "Grothe/Shared.lean").write_text("import " + " ".join(data_names) + "\n")
         for name in data_names:
@@ -200,7 +205,7 @@ class CapsStampTests(unittest.TestCase):
         computation = sorted([name for name in self.ordered if name.endswith(".lean") and
                               name not in extra_files] +
                              [str(Path(*name.split(".")).with_suffix(".lean")) for name in data_names])
-        self.assertEqual(len(computation), 48)
+        self.assertEqual(len(computation), 61)  # 15 rows + 13 quad facts + Shared + 32 data
         expected_files = computation + extra_files
         expected_hash = hashlib.sha256()
         for name in expected_files:
@@ -210,8 +215,8 @@ class CapsStampTests(unittest.TestCase):
         listed = self.run_cli("--list")
         self.assertEqual(listed.returncode, 0, listed.stdout + listed.stderr)
         self.assertEqual(listed.stdout,
-                         "\n".join(expected_files) + f"\n53 files; sha256 {expected}\n")
-        self.assertEqual(self.run_cli("--digest").stdout, f"sha256 {expected}\nfiles 53\n")
+                         "\n".join(expected_files) + f"\n66 files; sha256 {expected}\n")
+        self.assertEqual(self.run_cli("--digest").stdout, f"sha256 {expected}\nfiles 66\n")
         self.assertEqual(self.run_cli("--mark-cache").returncode, 0)
         for name in ["Grothe/ProofOnly.lean", "Grothe/AnotherProofOnly.lean", "Grothe/UntraversedRootImport.lean"]:
             (self.root / name).write_text("-- changed untraversed proof\n")
@@ -363,7 +368,7 @@ class RepositoryBoundaryTests(unittest.TestCase):
             f"Grothe.LowerAnalytic.CapPieces.{path.stem}"
             for path in sorted(piece_dir.glob("*.lean")) if path.stem.startswith(("C", "R"))
         ]
-        for layer, roots in (("rows", self.caps.TOPS), ("pieces", pieces)):
+        for layer, roots in (("rows", self.caps.ROW_TOPS), ("pieces", pieces)):
             with self.subTest(layer=layer):
                 forbidden = [module for module in self.caps.closure(roots)
                              if module.rsplit(".", 1)[-1] in proof_modules

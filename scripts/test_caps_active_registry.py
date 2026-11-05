@@ -49,7 +49,10 @@ class Fixture:
             self.native(f'Grothe/LowerAnalytic/CapRow{row:02d}.lean', facts)
         if retained: self.retained()
         for row in rows: self.row(row, materialize=materialize, retained=retained and row == 14)
-        imports = [*stamp.TOPS, *[v['assembly'][:-5].replace('/', '.') for v in self.registry['active_rows']]]
+        # The quadrature-checker facts are hashed alongside (stamp.TOPS) but are neither cap-row roots nor CapNodes imports.
+        for name in stamp.QUAD_TOPS:
+            self.write(name.replace('.', '/') + '.lean', 'namespace Grothe.UpperQuad\ndef quadFact := 1\nend Grothe.UpperQuad\n')
+        imports = [*stamp.ROW_TOPS, *[v['assembly'][:-5].replace('/', '.') for v in self.registry['active_rows']]]
         self.write('Grothe/LowerAnalytic/CapNodes.lean', ''.join('import ' + n + '\n' for n in imports) +
                    'namespace Grothe.LowerAnalytic\ndef aggregateSource := 1\nend Grothe.LowerAnalytic\n')
 

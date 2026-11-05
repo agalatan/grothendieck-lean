@@ -11,9 +11,10 @@ On a match CI builds Grothe (Lake replays the verified facts) and checks the axi
 missing marker it dispatches a runner caps build instead. --digest prints the hash and file count without reading
 or writing the marker; --list also lists the exact hashed files.
 
-The hash covers the computation import closure of the CapRowKK modules and every activated computation leaf,
-plus CapNodes.lean, GrotheCapsKernel.lean, lean-toolchain, lake-manifest.json and lakefile.toml. Extras and
-the activated row assembly and build registry are hashed directly,
+The hash covers the computation import closure of the CapRowKK modules, the thirteen quadrature-checker facts
+(Grothe/UpperQuad/Facts: GradeBlock00-11 and Even) and every activated computation leaf, plus CapNodes.lean,
+GrotheCapsKernel.lean, lean-toolchain, lake-manifest.json and lakefile.toml. Extras and the activated row assembly
+and build registry are hashed directly,
 without traversing their imports: lower-bound proof edits require re-checking the assembly, not the heavy facts.
 The checker library root is pinned because its whole precompiled shared object is loaded by every importer, and
 the Lake configuration controls native compilation. Analytic assembly imports are not traversed, so unrelated
@@ -31,7 +32,16 @@ MARK = os.path.join(ROOT, ".lake", "build", "caps-closure.sha")
 PROJECT_PREFIXES = ("Grothe.", "GrotheKernel.", "GrotheCapsKernel.", "GrotheQuadKernel.")
 PROJECT_ROOTS = ("Grothe", "GrotheKernel", "GrotheCapsKernel", "GrotheQuadKernel")
 CAP_ROWS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
-TOPS = [f"Grothe.LowerAnalytic.CapRow{k:02d}" for k in CAP_ROWS]
+# The legacy cap-row computation roots. The activated-registry and CapNodes checks below read exactly these:
+# a row root missing from the registry or from CapNodes is an error.
+ROW_TOPS = [f"Grothe.LowerAnalytic.CapRow{k:02d}" for k in CAP_ROWS]
+# The quadrature checker's native facts (Grothe/UpperQuad/Facts): one block of the energy table each,
+# about ten hours single-threaded; built once on the droplet and cached like the cap rows. They are hashed
+# alongside the cap rows but are not cap-row roots: the registry and CapNodes checks use ROW_TOPS only.
+QUAD_TOPS = [f"Grothe.UpperQuad.Facts.GradeBlock{b:02d}" for b in range(12)] + ["Grothe.UpperQuad.Facts.Even"]
+# Every fixed root of the hashed computation closure. The localized cap pieces (row 14's node-150 proof included)
+# are not listed here: they enter through the activated-leaf registry (activated_sources).
+TOPS = ROW_TOPS + QUAD_TOPS
 EXTRA = ["Grothe/LowerAnalytic/CapNodes.lean", "GrotheCapsKernel.lean", "lean-toolchain", "lake-manifest.json",
          "lakefile.toml"]
 BUILD_REGISTRY = "data/caps-m/plan/row-certificates/row12-build.json"
@@ -669,7 +679,7 @@ def derive_active_registry(root, registry, *, require_materialized=True):
             actual = {n.replace(".", "/")+".lean" for n in imports_of(_active_path(reads.root, name), reads.read(name))}
             _active_require(required <= actual, "row assembly omits chosen node/anchor proof: " + name)
         node_imports = set(imports_of(_active_path(reads.root, "Grothe/LowerAnalytic/CapNodes.lean"), reads.read("Grothe/LowerAnalytic/CapNodes.lean")))
-        _active_require(set(TOPS) | {v["assembly"][:-5].replace("/", ".") for v in row_views} <= node_imports,
+        _active_require(set(ROW_TOPS) | {v["assembly"][:-5].replace("/", ".") for v in row_views} <= node_imports,
                         "CapNodes omits legacy/active row imports")
         imported_rows = {int(m[1]) for name in node_imports if (m := re.fullmatch(r"Grothe\.LowerAnalytic\.CapRow(12|13|14|15)\.Assembly", name))}
         _active_require(imported_rows == set(row_ids), "CapNodes imports an undeclared whole-row assembly")
@@ -751,9 +761,9 @@ def read_active_registry(root, registry=None, *, require_materialized=True):
     _active_require(isinstance(roots, list) and roots and all(type(n) is str for n in roots) and len(roots) == len(set(roots)) and
                     isinstance(direct, list) and all(type(n) is str for n in direct) and len(direct) == 2 and
                     set(direct) == {EXTRA[0], ROW_ASSEMBLY}, "invalid v1 root inventory")
-    _active_require(set(TOPS) <= {n[:-5].replace("/", ".") for n in roots} and
+    _active_require(set(ROW_TOPS) <= {n[:-5].replace("/", ".") for n in roots} and
                     type(value.get("compute_count")) is int and value["compute_count"] == len(roots) and
-                    type(value.get("row12_compute_count")) is int and value["row12_compute_count"] == len(roots)-len(TOPS), "v1 census differs")
+                    type(value.get("row12_compute_count")) is int and value["row12_compute_count"] == len(roots)-len(ROW_TOPS), "v1 census differs")
     for name in roots + direct:
         _active_require(name.endswith('.lean') and MODULE.fullmatch(name[:-5].replace('/', '.')) and
                         is_project(name[:-5].replace('/', '.')), "invalid v1 project root")
@@ -844,11 +854,11 @@ def activated_sources():
     direct_modules = [registry_module(name) for name in direct]
     if len(modules) != len(set(modules)) or len(direct_modules) != len(set(direct_modules)):
         raise ClosureError("duplicate activated computation registry roots")
-    if not set(TOPS) <= set(modules):
+    if not set(ROW_TOPS) <= set(modules):
         raise ClosureError("activated registry omits an original cap-row computation root")
     if set(direct) != {EXTRA[0], ROW_ASSEMBLY}:
         raise ClosureError("activated direct hash roots must be CapNodes and the row12 assembly")
-    if registry.get("compute_count") != len(roots) or registry.get("row12_compute_count") != len(set(modules) - set(TOPS)):
+    if registry.get("compute_count") != len(roots) or registry.get("row12_compute_count") != len(set(modules) - set(ROW_TOPS)):
         raise ClosureError("activated computation registry census differs from its roots")
     return modules, direct
 

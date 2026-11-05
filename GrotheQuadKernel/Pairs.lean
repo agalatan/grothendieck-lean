@@ -47,36 +47,44 @@ def pairCount (D dMax : Nat) : Nat := (canonicalPairs D dMax).size
 /-- `√n`. -/
 def sqrtNatI (P : Nat) (n : Nat) : Ival := sqrtI P (ofNat P n)
 
-/-- The zero-row step `U_{0,d+1} = −A · r_d · U_{0,d} / √(d+1)`. -/
-def zeroStep (P : Nat) (aI : Ival) (r u : Ival) (d : Nat) : Ival :=
-  divI P (mulI P (mulI P (negI aI) r) u) (sqrtNatI P (d + 1))
+/-- `√0, …, √n` (computed once per node: `Nat.sqrt` is a Newton loop, and the recurrence needs
+two square roots per entry). -/
+def sqrtTable (P : Nat) (n : Nat) : Array Ival := Array.ofFn fun i : Fin (n + 1) => sqrtNatI P i.val
 
-/-- The zero row as a pushed array: `zeroRowArr P aI ratios D` has entries `0 … D`. -/
-def zeroRowArr (P : Nat) (aI : Ival) (ratios : Array Ival) : Nat → Array Ival
+/-- The zero-row step `U_{0,d+1} = −A · r_d · U_{0,d} / √(d+1)` (`sq ∋ √(d+1)`). -/
+def zeroStep (P : Nat) (aI : Ival) (r u sq : Ival) : Ival :=
+  divI P (mulI P (mulI P (negI aI) r) u) sq
+
+/-- The zero row as a pushed array: `zeroRowArr P aI ratios sq D` has entries `0 … D`
+(`sq` = the table of `√n`). -/
+def zeroRowArr (P : Nat) (aI : Ival) (ratios sq : Array Ival) : Nat → Array Ival
   | 0 => #[ofInt P 1]
   | d + 1 =>
-    let prev := zeroRowArr P aI ratios d
-    prev.push (zeroStep P aI (ratios.getD d ⟨0, 1, 0⟩) (prev.getD d zeroI) d)
+    let prev := zeroRowArr P aI ratios sq d
+    prev.push (zeroStep P aI (ratios.getD d ⟨0, 1, 0⟩) (prev.getD d zeroI) (sq.getD (d + 1) zeroI))
 
-/-- The forward step `U_{c+1,d} = (A √(d+1) · U_{c,d+1} + (d+1−c) · U_{c,d}) / (A √(c+1))`. -/
-def forwardStep (P : Nat) (aI : Ival) (c d : Nat) (u_cd u_cd1 : Ival) : Ival :=
-  divI P (addI P (mulI P (mulI P aI (sqrtNatI P (d + 1))) u_cd1)
-    (mulZ P ((d : Int) + 1 - (c : Int)) u_cd)) (mulI P aI (sqrtNatI P (c + 1)))
+/-- The forward step `U_{c+1,d} = (A √(d+1) · U_{c,d+1} + (d+1−c) · U_{c,d}) / (A √(c+1))`
+(`sqD ∋ √(d+1)`, `sqC ∋ √(c+1)`). -/
+def forwardStep (P : Nat) (aI : Ival) (c d : Nat) (u_cd u_cd1 sqD sqC : Ival) : Ival :=
+  divI P (addI P (mulI P (mulI P aI sqD) u_cd1) (mulZ P ((d : Int) + 1 - (c : Int)) u_cd))
+    (mulI P aI sqC)
 
 /-- The first `d` of row `c`. -/
 def rowLo (c : Nat) : Nat := c - 1
 
-/-- Row `c + 1` from row `c` (stored from `rowLo c`), with `d = c, …, D − (c+1)`. -/
-def nextRow (P : Nat) (aI : Ival) (D c : Nat) (prev : Array Ival) : Array Ival :=
+/-- Row `c + 1` from row `c` (stored from `rowLo c`), with `d = c, …, D − (c+1)` (`sq` = the table
+of `√n`). -/
+def nextRow (P : Nat) (aI : Ival) (sq : Array Ival) (D c : Nat) (prev : Array Ival) : Array Ival :=
   Array.ofFn fun i : Fin (D - (c + 1) + 1 - c) =>
     forwardStep P aI c (c + i) (prev.getD (c + i - rowLo c) zeroI) (prev.getD (c + i + 1 - rowLo c) zeroI)
+      (sq.getD (c + i + 1) zeroI) (sq.getD (c + 1) zeroI)
 
 /-- The rows `0 … n` as a pushed array of arrays. -/
-def rowsArr (P : Nat) (aI : Ival) (zero : Array Ival) (D : Nat) : Nat → Array (Array Ival)
+def rowsArr (P : Nat) (aI : Ival) (sq zero : Array Ival) (D : Nat) : Nat → Array (Array Ival)
   | 0 => #[zero]
   | c + 1 =>
-    let prev := rowsArr P aI zero D c
-    prev.push (nextRow P aI D c (prev.getD c #[]))
+    let prev := rowsArr P aI sq zero D c
+    prev.push (nextRow P aI sq D c (prev.getD c #[]))
 
 /-- Read `U_{c,d}` from the rows. -/
 def rowsGet (rows : Array (Array Ival)) (c d : Nat) : Ival :=
@@ -84,9 +92,9 @@ def rowsGet (rows : Array (Array Ival)) (c d : Nat) : Ival :=
 
 /-- The normalized coefficients of the canonical pairs (`c + d ≤ D`, `d ≤ dMax`) in canonical
 order; the recurrence runs over the whole triangle `c + d ≤ D`. -/
-def normalizedTriangleI (P : Nat) (aI : Ival) (ratios : Array Ival) (D dMax : Nat) :
+def normalizedTriangleI (P : Nat) (aI : Ival) (sq ratios : Array Ival) (D dMax : Nat) :
     Array Ival :=
-  let rows := rowsArr P aI (zeroRowArr P aI ratios D) D ((D + 1) / 2)
+  let rows := rowsArr P aI sq (zeroRowArr P aI ratios sq D) D ((D + 1) / 2)
   (canonicalPairs D dMax).map fun p => rowsGet rows p.1 p.2
 
 /-- The signed coefficient `sign^{c+d} · S(A) · U_{c,d}` (`negSign` = the profile is negative). -/
@@ -110,8 +118,9 @@ def canonicalFrom (P : Nat) (scalar : Ival) (negSign : Bool) (rho : Ival)
 
 /-- The actual coefficients `sign^{c+d} · S(A) · U_{c,d}` in canonical order. -/
 def canonicalTriangleI (P : Nat) (scalar : Ival) (negSign : Bool) (rho : Ival)
-    (aI : Ival) (ratios : Array Ival) (D dMax : Nat) : Array Ival :=
-  canonicalFrom P scalar negSign rho (canonicalPairs D dMax) (normalizedTriangleI P aI ratios D dMax)
+    (aI : Ival) (sq ratios : Array Ival) (D dMax : Nat) : Array Ival :=
+  canonicalFrom P scalar negSign rho (canonicalPairs D dMax)
+    (normalizedTriangleI P aI sq ratios D dMax)
 
 /-- The rank of `(c, d)` in canonical order (`d ≤ dMax`). -/
 def canonicalRank (dMax c d : Nat) : Nat :=

@@ -132,7 +132,7 @@ def runNode (panels : Array Panel) (addrs : Array (Nat × Nat)) (cutoffs : Array
       let ratios := ratiosI P x (D + 2000)
       if verbose then IO.println s!"  seed+ratios: {ratios.size} ratios, scalar {toDecimal 12 scalar}"
       let tA ← IO.monoMsNow
-      let vals := canonicalTriangleI P scalar neg zeroI a ratios D 265
+      let vals := canonicalTriangleI P scalar neg zeroI a (sqrtTable P (D + 1)) ratios D 265
       let mw := maxWidthLog2 vals
       if verbose then IO.println s!"  triangle: {vals.size} pairs, max width 2^{mw}"
       let tB ← IO.monoMsNow
@@ -189,13 +189,13 @@ def cmdNode (ordinal : Nat) (precs : List Nat) : IO UInt32 := do
     if bandMax.getD b 0 > -100000 then
       IO.println s!"  max width for c+d in [{50*b},{50*b+49}]: 2^{bandMax.getD b 0}"
   let t0 ← IO.monoMsNow
-  let factors := nodeFactors 1024 n.s n.w
+  let factors := nodeFactors 1024 n.s n.w 0 251
   -- a checksum over every entry forces the whole computation before the next timer
   let checksum := factors.foldl (fun s row => row.foldl (fun s f => s + f.lo + f.hi) s) (0 : Int)
   IO.println s!"node factors: F[0][0] = {factors.getD 0 #[] |>.getD 0 default |>.lo} (scale 2^128); checksum {checksum % 1000000007}; valid {nodeFactorsValid 1024 n.s}"
   let t1 ← IO.monoMsNow
   IO.println s!"node factors: {t1 - t0} ms"
-  let acc := accumulateNode n.cutoff (n.vals.map toFx) factors rawZero
+  let acc := accumulateNode n.cutoff (n.vals.map toFx) factors 0 251 rawZero
   let cs2 := acc.foldl (fun s blk => blk.foldl (fun s row => row.foldl (fun s p => s + p.1 + p.2) s) s) (0 : Int)
   IO.println s!"accumulate: checksum {cs2 % 1000000007}; entry 0 = [{(rawGet acc 0 0 0).1}, {(rawGet acc 0 0 0).2}] (scale 2^256); entry 63001 = {(rawGet acc 1 0 0).1}"
   let t2 ← IO.monoMsNow
@@ -229,9 +229,9 @@ def cmdShard (i n : Nat) (outdir : String) : IO UInt32 := do
   while ordinal < addrs.size do
     let r ← runNode panels addrs cutoffs pd ordinal precisions
     let t0 ← IO.monoMsNow
-    let factors := nodeFactors 1024 r.s r.w
+    let factors := nodeFactors 1024 r.s r.w 0 251
     if !nodeFactorsValid 1024 r.s then throw (IO.userError s!"node {ordinal}: node factors invalid")
-    acc := accumulateNode r.cutoff (r.vals.map toFx) factors acc
+    acc := accumulateNode r.cutoff (r.vals.map toFx) factors 0 251 acc
     let t1 ← IO.monoMsNow
     hn.putStrLn (summaryLine r ++ s!" {t1 - t0}")
     hn.flush
@@ -356,8 +356,77 @@ def cmdRotate (i n : Nat) (smatdir rawfile frozenfile outdir : String) : IO UInt
     q := q + n
   return 0
 
+/-- The `NodeSpec` of an ordinal (panel, rule bracket, cutoff), as the facts define it. -/
+def specOf (panels : Array Panel) (addrs : Array (Nat × Nat)) (cutoffs : Array Nat) (ordinal : Nat) :
+    NodeSpec :=
+  let (pi, r) := addrs.getD ordinal (0, 0)
+  let p := panels.getD pi default
+  ⟨p.loN, p.loD, p.hiN, p.hiD, p.order, p.brackets.getD r default, min (cutoffs.getD ordinal 532) 531⟩
+
+/-- `quadrun block <qLo> <qHi> <n> [P]`: the node loop of the first `n` nodes restricted to the grade
+block `[qLo, qHi)` (`accumulateSpecs`, the kernel function the facts evaluate), timed. -/
+def cmdBlock (qLo qHi n P : Nat) : IO UInt32 := do
+  let (panels, addrs, cutoffs, pd) ← loadAll
+  let piI := piMachinI P (P / 3 + 20)
+  let specs := (List.range (min n addrs.size)).map (specOf panels addrs cutoffs)
+  let t0 ← IO.monoMsNow
+  let res := accumulateSpecs P piI pd qLo qHi specs rawZero
+  match res with
+  | none => throw (IO.userError "block: a node was rejected (a flag failed)")
+  | some acc =>
+    let cs := acc.foldl (fun s blk => blk.foldl (fun s row => row.foldl (fun s p => s + p.1 + p.2) s) s) (0 : Int)
+    let t1 ← IO.monoMsNow
+    IO.println s!"block [{qLo},{qHi}) over {specs.length} nodes at P = {P}: {t1 - t0} ms ({(t1 - t0) / specs.length} ms per node); checksum {cs % 1000000007}"
+  return 0
+
+/-- Read `energy-table.txt` (`n m num den`) into a `502 × 502` table of enclosures at scale `2^256`
+(`⌊num·2^256/den⌋, ⌈…⌉`; `(0, 0)` for the absent bidegrees). -/
+def readTable (path : String) : IO (Array (Array (Int × Int))) := do
+  let lines ← IO.FS.lines path
+  let mut tbl : Array (Array (Int × Int)) := Array.replicate 502 (Array.replicate 502 ((0 : Int), (0 : Int)))
+  for l in lines do
+    match (l.splitOn " ").filter (· ≠ "") with
+    | [n, m, num, den] =>
+      let n := parseNat! n; let m := parseNat! m
+      let num := parseInt! num; let den := parseInt! den
+      if n < 502 && m < 502 && den > 0 then
+        let v := (fdiv (num * pow2 (2 * KFix)) den, cdiv (num * pow2 (2 * KFix)) den)
+        tbl := tbl.set! n ((tbl.getD n #[]).set! m v)
+    | _ => pure ()
+  return tbl
+
+/-- `quadrun check <rawfile> <frozenfile> <tablefile> <qLo> <qHi>`: the block checks of the facts
+(`blockExcursion` and `gradeWidthSqBlock`, scale `2^256`) on a stored raw vector, for validation
+against the milestone-3 comparison; also `evenExcursion`. -/
+def cmdCheck (rawfile frozenfile tablefile : String) (qLo qHi : Nat) : IO UInt32 := do
+  let t0 ← IO.monoMsNow
+  let (rawLo, rawHi) ← readRaw rawfile
+  if rawLo.size != rawSize then throw (IO.userError s!"raw file has {rawLo.size} entries")
+  let raw := rawOfFlat rawLo rawHi
+  let frozenTbl ← readFrozen frozenfile
+  let tbl ← readTable tablefile
+  let table := fun n m => (tbl.getD n #[]).getD m (0, 0)
+  let t1 ← IO.monoMsNow
+  IO.println s!"check: inputs read in {t1 - t0} ms"
+  let smats := savedMatricesRange qLo qHi
+  let t2 ← IO.monoMsNow
+  IO.println s!"saved matrices S_{qLo}..S_{qHi}: {t2 - t1} ms"
+  let en := blockEnergies raw (frozenLookup frozenTbl) smats qLo qHi
+  let ex := blockExcursion en table qLo qHi
+  let t3 ← IO.monoMsNow
+  IO.println s!"block [{qLo},{qHi}): excursion {ex} / 2^256 = {toDecimal 20 (ofFixed (2 * KFix) ex ex)} ({t3 - t2} ms)"
+  let w := gradeWidthSqBlock raw (frozenLookup frozenTbl) qLo qHi
+  let t4 ← IO.monoMsNow
+  IO.println s!"block [{qLo},{qHi}): width-sq {w} / 2^256 = {toDecimal 20 (ofFixed (2 * KFix) w w)} ({t4 - t3} ms)"
+  let ev := evenExcursion table
+  IO.println s!"even excursion {ev} / 2^256"
+  return 0
+
 def main (args : List String) : IO UInt32 := do
   match args with
+  | ["check", rf, ff, tf, lo, hi] => cmdCheck rf ff tf (parseNat! lo) (parseNat! hi)
+  | ["block", lo, hi, n] => cmdBlock (parseNat! lo) (parseNat! hi) (parseNat! n) 512
+  | ["block", lo, hi, n, p] => cmdBlock (parseNat! lo) (parseNat! hi) (parseNat! n) (parseNat! p)
   | ["smat", i, n, d] => cmdSmat (parseNat! i) (parseNat! n) d
   | ["rotate", i, n, sd, rf, ff, od] => cmdRotate (parseNat! i) (parseNat! n) sd rf ff od
   | ["rules"] => cmdRules
@@ -368,4 +437,6 @@ def main (args : List String) : IO UInt32 := do
   | _ =>
     IO.println "usage: quadrun rules | node <ordinal> [P] | shard <i> <n> <outdir> | merge <n> <outdir>"
     IO.println "       quadrun smat <i> <n> <outdir> | rotate <i> <n> <smatdir> <rawfile> <frozenfile> <outdir>"
+    IO.println "       quadrun block <qLo> <qHi> <n> [P]   (the node loop of n nodes restricted to a grade block)"
+    IO.println "       quadrun check <rawfile> <frozenfile> <tablefile> <qLo> <qHi>   (the block checks on a stored raw vector)"
     return 2
