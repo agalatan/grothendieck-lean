@@ -54,15 +54,15 @@
     "data/caps-m/plan/row-certificates/coverage-slicing.json": "8e90fbf78b5f332eb4c2073b572144b77f8e29a4a3ef82541fdc7af39814a2c6",
     "data/caps-m/plan/row-certificates/localized/row12-pieces.json": "e8cdb38b925bf1b9314f1dec44210cd3244e229c44a1ef7f7dce1d05a777439f",
     "data/caps-m/plan/row-certificates/localized/row12-selection.json": "6256ccf42c597426e32f024247fb7339827a14429ba29e52e73cdc3c231bcf63",
-    "data/caps-m/plan/row-certificates/localized/row13-pieces.json": "d52beb114d4767c30263117a92120691aa30f9af4b610a1ee71fdf0816d7ba72",
-    "data/caps-m/plan/row-certificates/localized/row13-selection.json": "3b9352132d830681555f2f57d2eac4ebb51886a63e5ac2101aee3a040557410b",
+    "data/caps-m/plan/row-certificates/localized/row13-pieces.json": "2d097ee6369b15ee9a0434770a53d2b335618b6e49e1c589d36fafbe836afef4",
+    "data/caps-m/plan/row-certificates/localized/row13-selection.json": "9d4cab2fe19f80a6c79c27d7a56841fe80e9f3acd0e4f515c9b5517feea40269",
     "data/caps-m/plan/row-certificates/localized/row14-pieces.json": "5c5cccdded07fa5ce2ee4fa8fe77e17331da66ca002df07acd4c77a006d81c5a",
     "data/caps-m/plan/row-certificates/localized/row14-selection.json": "69b0bd4c71f325d94cd67ef7cbf22f3e9619f8e9daa0bc5279e76d1e733a309c",
     "data/caps-m/plan/row-certificates/localized/row15-pieces.json": "6c71e2857e2684d9af48d185f5a04a5921ba01701a24cb67aacd3f008f63254a",
     "data/caps-m/plan/row-certificates/localized/row15-selection.json": "08612ec1d274950d71fc4fbd204678697b833051c49289deb919c0d2faae9d45",
     "data/caps-m/plan/row-certificates/row12-anchors.json": "3e22d79b2ac489080c2e195155d39bb7503bb91e2082adc3c3ac8e230bbb1826",
     "data/caps-m/plan/row-certificates/row12-generation.json": "bb403e4b5dc820ce8f2553a79c8efbc7f1d66051ec5e0d470ac4c87b7df69fd5",
-    "data/caps-m/plan/row-certificates/row13-anchors.json": "3cf71a3f34cde0ddca28891b59f9c571fb30b57fc38d7b6635d94555369c39d4",
+    "data/caps-m/plan/row-certificates/row13-anchors.json": "64d66fdb3ab745eada3da384cd9062b8d9d70b909283d0f29d860f4dd3eafafd",
     "data/caps-m/plan/row-certificates/row13-generation.json": "271275bf5b2454df1b812ea961aaa06486abde14dd3d86f424cbaa90408d58c7",
     "data/caps-m/plan/row-certificates/row14-anchors.json": "3c4db9ebd75bc5011b523a4c4550fa2b06f0998702ebad7b2353d83230099893",
     "data/caps-m/plan/row-certificates/row14-generation.json": "8374e468817224e9ed901210242014b09c8d81436e5cfc07ced117012a9cd5f3",
@@ -376,6 +376,16 @@
     "Grothe/LowerAnalytic/CapPieces/C13x244_7.lean",
     "Grothe/LowerAnalytic/CapPieces/C13x244_8.lean",
     "Grothe/LowerAnalytic/CapPieces/C13x244_9.lean",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_0.lean",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_1.lean",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_2.lean",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_3.lean",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_4.lean",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_5.lean",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_6.lean",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_7.lean",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_8.lean",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_9.lean",
     "Grothe/LowerAnalytic/CapPieces/C13x260_0.lean",
     "Grothe/LowerAnalytic/CapPieces/C13x260_1.lean",
     "Grothe/LowerAnalytic/CapPieces/C13x260_10.lean",
@@ -4020,6 +4030,163 @@
     "Grothe/LowerAnalytic/CapPieces/R13x244_97.lean",
     "Grothe/LowerAnalytic/CapPieces/R13x244_98.lean",
     "Grothe/LowerAnalytic/CapPieces/R13x244_99.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_0.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_1.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_10.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_100.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_101.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_102.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_103.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_104.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_105.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_106.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_107.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_108.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_109.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_11.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_110.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_111.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_112.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_113.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_114.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_115.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_116.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_117.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_118.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_119.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_12.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_120.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_121.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_122.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_123.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_124.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_125.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_126.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_127.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_128.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_129.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_13.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_130.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_131.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_132.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_133.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_134.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_135.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_136.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_137.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_138.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_139.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_14.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_140.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_141.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_142.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_143.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_144.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_145.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_146.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_147.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_148.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_149.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_15.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_150.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_151.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_152.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_153.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_154.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_155.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_156.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_16.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_17.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_18.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_19.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_2.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_20.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_21.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_22.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_23.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_24.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_25.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_26.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_27.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_28.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_29.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_3.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_30.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_31.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_32.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_33.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_34.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_35.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_36.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_37.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_38.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_39.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_4.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_40.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_41.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_42.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_43.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_44.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_45.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_46.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_47.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_48.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_49.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_5.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_50.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_51.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_52.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_53.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_54.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_55.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_56.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_57.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_58.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_59.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_6.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_60.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_61.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_62.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_63.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_64.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_65.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_66.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_67.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_68.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_69.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_7.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_70.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_71.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_72.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_73.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_74.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_75.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_76.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_77.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_78.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_79.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_8.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_80.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_81.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_82.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_83.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_84.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_85.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_86.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_87.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_88.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_89.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_9.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_90.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_91.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_92.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_93.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_94.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_95.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_96.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_97.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_98.lean",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_99.lean",
     "Grothe/LowerAnalytic/CapPieces/R13x260_0.lean",
     "Grothe/LowerAnalytic/CapPieces/R13x260_1.lean",
     "Grothe/LowerAnalytic/CapPieces/R13x260_10.lean",
@@ -8949,8 +9116,8 @@
     "Grothe/LowerAnalytic/CapRow18.lean"
   ],
   "derived_counts": {
-    "compute_modules": 8873,
-    "native_facts": 8918
+    "compute_modules": 9040,
+    "native_facts": 9085
   },
   "direct_hash_roots": [
     "Grothe/LowerAnalytic/CapNodes.lean",
@@ -8974,6 +9141,7 @@
     "Grothe/LowerAnalytic/CapPieces/C13x240.lean",
     "Grothe/LowerAnalytic/CapPieces/C13x242.lean",
     "Grothe/LowerAnalytic/CapPieces/C13x244.lean",
+    "Grothe/LowerAnalytic/CapPieces/C13x245.lean",
     "Grothe/LowerAnalytic/CapPieces/C13x260.lean",
     "Grothe/LowerAnalytic/CapPieces/C13x270.lean",
     "Grothe/LowerAnalytic/CapPieces/C13x272.lean",
@@ -9035,15 +9203,15 @@
     "data/caps-m/plan/row-certificates/coverage-slicing.json": "bdb3876b93f756e30348a67df2a1ada295fd8997ebacc46c823687703b623cda",
     "data/caps-m/plan/row-certificates/localized/row12-pieces.json": "100ec1d0dcc1a5e31766700015b05de9ee0e30fe472d8515b55f20656532eb91",
     "data/caps-m/plan/row-certificates/localized/row12-selection.json": "90d88b7df998c9387eaa29c82ab20593417c127f32d8bde52b39f2f1154c51e0",
-    "data/caps-m/plan/row-certificates/localized/row13-pieces.json": "5895bff2de8db3a6093cd24c83c7ff55b6ff2eccf8701a392ba237cc3076f4c5",
-    "data/caps-m/plan/row-certificates/localized/row13-selection.json": "72ecdda34c93928483aef6afb9c46e50e843ca68eede568fe4b046cb3d4d0fb7",
+    "data/caps-m/plan/row-certificates/localized/row13-pieces.json": "12f0054f9b0d3ed384fad132082e4f8dc9ce46a92fccd303f739c569c11fe6f7",
+    "data/caps-m/plan/row-certificates/localized/row13-selection.json": "8874eb7415efda5958cf69271ad50de2c1926dab6a844515eea3794d334cf036",
     "data/caps-m/plan/row-certificates/localized/row14-pieces.json": "80774c19b1885cdc917d0004073a6b889acfae822adb63285cd236b5015eb847",
     "data/caps-m/plan/row-certificates/localized/row14-selection.json": "851e8e9d0b773019ca4d246905122d5d36eb14d9812436337d5a62f37e76df88",
     "data/caps-m/plan/row-certificates/localized/row15-pieces.json": "013a360a2f2ee68c750ba316b7795dc6fa0d32cf18ed9d0a8a2ef40323f730c8",
     "data/caps-m/plan/row-certificates/localized/row15-selection.json": "2475b4c509353b1bc45b8b5203eceb4de326d1f4217f57606f213ed69fc3bd15",
     "data/caps-m/plan/row-certificates/row12-anchors.json": "66eab9fb147d3ff2fb2075a7190df25ad056fa3bd616161e4793d08bbc1d3376",
     "data/caps-m/plan/row-certificates/row12-generation.json": "3da4da0be46f113f4bd28ca163ce26639d8da4a2bebba33f0164073951a9a52a",
-    "data/caps-m/plan/row-certificates/row13-anchors.json": "b387ebf5e2521415fc46932c7229e5235e32711fa66fd760c94dc08019eec072",
+    "data/caps-m/plan/row-certificates/row13-anchors.json": "98eb7ae6e9447804eb79bf27d55663b72a6f8e9e430f2d7b27eff388557c3b09",
     "data/caps-m/plan/row-certificates/row13-generation.json": "08e4af7de68a651a23028f536aba5daaf541c3788a68566904125d1c7209de7e",
     "data/caps-m/plan/row-certificates/row14-anchors.json": "8e4dacf18709dbf00fee32e7c6ce38b52e4353db621081c3893389d6125771fa",
     "data/caps-m/plan/row-certificates/row14-generation.json": "59dc8acbae52f740a1bd7289005514f89378a29f2eb93cb8996ef441b302ebef",
@@ -9980,6 +10148,36 @@
     ],
     "Grothe/LowerAnalytic/CapPieces/C13x244_9.lean": [
       "Grothe.LowerAnalytic.pieceCoverSlice_13x244_9"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/C13x245_0.lean": [
+      "Grothe.LowerAnalytic.pieceCoverSlice_13x245_0"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/C13x245_1.lean": [
+      "Grothe.LowerAnalytic.pieceCoverSlice_13x245_1"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/C13x245_2.lean": [
+      "Grothe.LowerAnalytic.pieceCoverSlice_13x245_2"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/C13x245_3.lean": [
+      "Grothe.LowerAnalytic.pieceCoverSlice_13x245_3"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/C13x245_4.lean": [
+      "Grothe.LowerAnalytic.pieceCoverSlice_13x245_4"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/C13x245_5.lean": [
+      "Grothe.LowerAnalytic.pieceCoverSlice_13x245_5"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/C13x245_6.lean": [
+      "Grothe.LowerAnalytic.pieceCoverSlice_13x245_6"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/C13x245_7.lean": [
+      "Grothe.LowerAnalytic.pieceCoverSlice_13x245_7"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/C13x245_8.lean": [
+      "Grothe.LowerAnalytic.pieceCoverSlice_13x245_8"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/C13x245_9.lean": [
+      "Grothe.LowerAnalytic.pieceCoverSlice_13x245_9"
     ],
     "Grothe/LowerAnalytic/CapPieces/C13x260_0.lean": [
       "Grothe.LowerAnalytic.pieceCoverSlice_13x260_0"
@@ -20912,6 +21110,477 @@
     ],
     "Grothe/LowerAnalytic/CapPieces/R13x244_99.lean": [
       "Grothe.LowerAnalytic.pieceRange_13x244_99"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_0.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_0"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_1.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_1"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_10.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_10"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_100.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_100"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_101.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_101"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_102.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_102"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_103.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_103"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_104.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_104"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_105.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_105"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_106.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_106"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_107.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_107"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_108.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_108"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_109.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_109"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_11.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_11"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_110.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_110"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_111.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_111"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_112.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_112"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_113.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_113"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_114.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_114"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_115.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_115"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_116.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_116"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_117.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_117"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_118.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_118"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_119.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_119"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_12.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_12"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_120.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_120"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_121.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_121"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_122.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_122"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_123.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_123"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_124.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_124"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_125.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_125"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_126.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_126"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_127.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_127"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_128.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_128"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_129.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_129"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_13.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_13"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_130.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_130"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_131.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_131"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_132.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_132"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_133.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_133"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_134.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_134"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_135.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_135"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_136.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_136"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_137.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_137"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_138.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_138"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_139.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_139"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_14.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_14"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_140.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_140"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_141.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_141"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_142.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_142"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_143.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_143"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_144.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_144"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_145.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_145"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_146.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_146"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_147.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_147"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_148.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_148"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_149.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_149"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_15.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_15"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_150.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_150"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_151.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_151"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_152.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_152"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_153.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_153"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_154.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_154"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_155.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_155"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_156.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_156"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_16.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_16"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_17.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_17"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_18.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_18"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_19.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_19"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_2.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_2"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_20.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_20"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_21.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_21"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_22.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_22"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_23.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_23"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_24.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_24"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_25.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_25"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_26.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_26"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_27.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_27"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_28.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_28"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_29.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_29"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_3.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_3"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_30.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_30"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_31.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_31"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_32.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_32"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_33.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_33"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_34.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_34"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_35.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_35"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_36.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_36"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_37.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_37"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_38.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_38"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_39.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_39"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_4.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_4"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_40.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_40"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_41.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_41"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_42.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_42"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_43.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_43"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_44.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_44"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_45.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_45"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_46.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_46"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_47.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_47"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_48.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_48"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_49.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_49"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_5.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_5"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_50.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_50"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_51.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_51"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_52.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_52"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_53.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_53"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_54.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_54"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_55.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_55"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_56.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_56"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_57.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_57"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_58.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_58"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_59.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_59"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_6.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_6"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_60.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_60"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_61.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_61"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_62.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_62"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_63.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_63"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_64.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_64"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_65.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_65"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_66.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_66"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_67.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_67"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_68.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_68"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_69.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_69"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_7.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_7"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_70.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_70"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_71.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_71"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_72.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_72"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_73.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_73"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_74.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_74"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_75.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_75"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_76.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_76"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_77.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_77"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_78.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_78"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_79.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_79"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_8.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_8"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_80.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_80"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_81.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_81"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_82.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_82"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_83.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_83"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_84.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_84"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_85.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_85"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_86.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_86"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_87.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_87"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_88.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_88"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_89.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_89"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_9.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_9"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_90.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_90"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_91.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_91"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_92.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_92"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_93.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_93"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_94.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_94"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_95.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_95"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_96.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_96"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_97.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_97"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_98.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_98"
+    ],
+    "Grothe/LowerAnalytic/CapPieces/R13x245_99.lean": [
+      "Grothe.LowerAnalytic.pieceRange_13x245_99"
     ],
     "Grothe/LowerAnalytic/CapPieces/R13x260_0.lean": [
       "Grothe.LowerAnalytic.pieceRange_13x260_0"
@@ -35952,6 +36621,7 @@
     "Grothe/LowerAnalytic/CapPieces/D13x240.lean",
     "Grothe/LowerAnalytic/CapPieces/D13x242.lean",
     "Grothe/LowerAnalytic/CapPieces/D13x244.lean",
+    "Grothe/LowerAnalytic/CapPieces/D13x245.lean",
     "Grothe/LowerAnalytic/CapPieces/D13x260.lean",
     "Grothe/LowerAnalytic/CapPieces/D13x270.lean",
     "Grothe/LowerAnalytic/CapPieces/D13x272.lean",
@@ -36533,6 +37203,17 @@
     "Grothe/LowerAnalytic/CapPieces/C13x244_7.lean": "7b8c229d85ee27647f99d31f67b0f45fde8afae50762949f2633dad061325c80",
     "Grothe/LowerAnalytic/CapPieces/C13x244_8.lean": "501768b7b311566442ba3873a3510b3549ba9cd2f0c632e3e6f264e3263b428d",
     "Grothe/LowerAnalytic/CapPieces/C13x244_9.lean": "5b8f498a72b07d645eebc287b36c3192fdf4154e02601db03cc764b66d42c3f2",
+    "Grothe/LowerAnalytic/CapPieces/C13x245.lean": "bc12b2e57f97a2f8172b087a9142aef0cb25bbde047ffce8f798fe052b0124bc",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_0.lean": "13214ab3b253c72b271d9571b7a68ce2a923896910c00ecb7fdad528ae69f6c2",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_1.lean": "549f70ed34cbb37213fcc68f0eb0f8acc231257a023094c744a9cc62b8737012",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_2.lean": "9d25137ca2c73ae8713ecc941d8cbb3b5e4a1883cf255cacc2f71b176c8b1709",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_3.lean": "d149a9c9d465320f49b298690c85bf6d42d27a34cffefd035f6d87f35aca2536",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_4.lean": "75fcfc85f989b806a83f295992ca6fd7c951447c88d4c8da5baa4bb6ea488ea1",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_5.lean": "843afe49f60209c74e757ae3f1723602f4b87d6410c3901a6b9dbee98b116ae6",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_6.lean": "07f3a7d2601e145d85c6778e37a5a15f9b6fcd93f45229b1e09138df28ada211",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_7.lean": "4ef2ea013f88f82e1583c0d4dc16c5b2afc24b55d192bb3db07ca60f6a904139",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_8.lean": "0cc13e30718bf3ddab77e68aaf646fd09b083a0047413286d530f20105920572",
+    "Grothe/LowerAnalytic/CapPieces/C13x245_9.lean": "9ed06816248a2e7c1b8592059ab066f7717f5b9a29bb5845cb95c2fe9f3e093a",
     "Grothe/LowerAnalytic/CapPieces/C13x260.lean": "422c1c1d0e52b0562c8918ea5515d07865a43ad2867f8c80889f4bc72adca357",
     "Grothe/LowerAnalytic/CapPieces/C13x260_0.lean": "28c7329207dd4728eb912d9d378ff7c5668f798bbdd5bc8df0954e38eb5e7193",
     "Grothe/LowerAnalytic/CapPieces/C13x260_1.lean": "420a0534034453bfac7ab2dcb32bec925d2a5389bce253c79c0ad231526c6246",
@@ -37164,6 +37845,7 @@
     "Grothe/LowerAnalytic/CapPieces/D13x240.lean": "41d71d3b72c46824b03a2de7047f55e1c09e92b8cf6db41bba05e36b3b67577f",
     "Grothe/LowerAnalytic/CapPieces/D13x242.lean": "20c5a37d7430c15575999eaf0d69f2e9ea5364266c7512cc42024cdf1aa917ed",
     "Grothe/LowerAnalytic/CapPieces/D13x244.lean": "e2c4e37f374d931da2228bbc813f2de22ff23199af7f4aa9d03e809e696dec6e",
+    "Grothe/LowerAnalytic/CapPieces/D13x245.lean": "ac7fe585ca14cb75a33fd7edb8bda42d1e374442369c72159fd78b895f6ee4bc",
     "Grothe/LowerAnalytic/CapPieces/D13x260.lean": "ac78a1e077f7a552752a61c27c5b541a3a207d5de7491ed7170ccc74dc1ab4f7",
     "Grothe/LowerAnalytic/CapPieces/D13x270.lean": "56f7c6ecbdb1c987cc091043f5cedd3c38fc7183baa3b1f72c7ab0006b1bbe65",
     "Grothe/LowerAnalytic/CapPieces/D13x272.lean": "2066649f1a239d74776a556f84b84ca913a67404def4cfde7e689529893af632",
@@ -40601,6 +41283,163 @@
     "Grothe/LowerAnalytic/CapPieces/R13x244_97.lean": "584932d40e2b3250056a24802042cefccdc54ea2ae51b98af25564fc3e8450a8",
     "Grothe/LowerAnalytic/CapPieces/R13x244_98.lean": "d9f031d4f5f352c9ddc3b8da3eb5a28e4daa370c055c658b0ef8180e36aa0dc2",
     "Grothe/LowerAnalytic/CapPieces/R13x244_99.lean": "bbde207ef0a22bffb7c965e7a806cf60cc017d2ea67554ac9ac333303fb2b634",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_0.lean": "3321d2015d69a81207cc8e8e752ff215a7c6c8598b9b9aa30daeab3d7ce8710e",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_1.lean": "75fb0daa87b0a849cced90faff274763d37f4f3ab76444567b36d646be06c2e5",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_10.lean": "b675978eeabfd38bef5dd22720a3fe72a120eb4ae0c7bf29755854adf47eeac2",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_100.lean": "b769ccdef5b786159e6da81817fa6bc4b4b09275298f479599f8f7cd63133692",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_101.lean": "dd9e71bc74d31b97cdf87eb656e9bedb6202032cc5903e1160d8e735593ee786",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_102.lean": "34df323b230cdabf74c40e1cf536a956f7bfd2ceb3c80718713557fdcfa3f6ba",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_103.lean": "4a5be327bd2a939ea3726eedd368bb821bdc9a450656deb7202929924fffd4ed",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_104.lean": "324a2864e482711ce4c94822b547d99ce637e25e36cde26c14bb7d4f697281d4",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_105.lean": "a403af6b9707f36730fe02528733f27e8c0a905cd2598077d1a04ce4a9ba045d",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_106.lean": "25cb9398eaf710a2ee2dada5e8a38fe1c77fb50fdefb24f710adf50637533519",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_107.lean": "8a5c2f50231881ad7950dd179c33d052ad321ddaeac562eea4f6b97e194c5b9b",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_108.lean": "21ec30fa7e012dd472fdcb12b498f261d16d1902ba789e9590cab9275021debd",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_109.lean": "c37b6a7a8873ab10f800fb52b7984e76b3bb621d38506b26cdc3de6f5af829ba",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_11.lean": "1ed688cd637d7e15ae1317f75a904dd74c8544c8e99618be3185949413be79bd",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_110.lean": "e3a489f6a25461bcded41b9795e84315556657da202819aa263517a16bae2845",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_111.lean": "b47e533e4531cfa7801f3251e5bd2fe4e6091ef367f6fbed315929cee1a2a2df",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_112.lean": "97707218c2935d8084561cdae7a7f5ec8f9f60db94d22c65c9f3b8a36bc98245",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_113.lean": "9545efc368ba4526afc8a45bf34f84424eda6d298b90f773f6ba5a6fb6b4dc8f",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_114.lean": "918a1f4b305d25fc2dfe3e4f324129f3951927c144a9d20dc7d43539b2a54283",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_115.lean": "0fc35f92dc6ed397ded4b2aa71a465e64e1722f5366efb8c50e13966182c8b5d",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_116.lean": "e99c46d0cf88944b5945b5efa065ecee64fdd0fb9378a9a9413a968df2fc4ad5",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_117.lean": "d3d12e8d601230efe470091874d5a652fd184afa043baccaad81f790acc15547",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_118.lean": "a8ccf64d624496a094e0498bbb8acbf9c9a5c31d4538d2903b0e36054316cc28",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_119.lean": "ab6c21f91a4cf6a8de5ede9f769176393258e6582be6c4f7ddd0de50a86ddad1",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_12.lean": "cb46330bcb96e541440ede6f0bdc16dc02f6054fb3171bf8f3614d39d2c4052f",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_120.lean": "2605e13e0a879ffda7020604544bcfcbdf24274cf85b486bd9c86ad53d21f04e",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_121.lean": "228f45d6f82b6394127faf31f3a2dbfb718de607d33f5ff2e6b9bcd489020266",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_122.lean": "013050308b8addf36118bd5cf230e6156f0b9ebb0386081b1abc15f5bff729d2",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_123.lean": "170bbd788b8ca1b76deb3c38cb4be0358a4ab70ba45d26e31ed50f7f4419002f",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_124.lean": "c2139c49b6187e3e94595430b155f95cb2d76f4b0a72d14f0b8166c15dcf0601",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_125.lean": "40b00f3629e88a051ce35816b58f93e296d54a9827b82bf05ac563934298ae23",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_126.lean": "baa09f217cb77e94b954479e332562643737565701fe3694c66fd8803c4480d2",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_127.lean": "9d3b43d8f8d4743273794eb02a406846dca97b72cca360f85797be0985d6a8b6",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_128.lean": "0c72941c50cbb56190720d9e6a0f3a37c5d4cec607ca915a48c5ef57af6c7939",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_129.lean": "d4b54bbec89abcb7cfea9272db80dd4404da6040943d5974e015eadb729cd2ce",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_13.lean": "22f5aca7230f1ac030f17552c7b3160e3d3a8fcb6b3e733bbca331349c049f43",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_130.lean": "bfc5fe2b61045471ca0e57a48fd074a9c988d158fe2371df6bff629c72b9c6b5",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_131.lean": "69138920eed82370427006b93c72c54275197a23a37b08445aa5c09a5defd90a",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_132.lean": "c16d445efd75a8639144091ac226503d979e8fea61ee46e5c1f0ab562150e569",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_133.lean": "c37c9b5fc95309668e55940d551916e40dbaa9e74d14ad139abe542294a193b9",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_134.lean": "4e85d8658e9d7bd6a4fed8ab23cd16d1bf68d2a068fdb61cbfc8a67ae6a9a38c",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_135.lean": "bf1b5863a152cc23660896f6197b4f308f99b63cfed7b00a1523f108767242a0",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_136.lean": "a141bf1dd4797988722f901abbfb14e5a33b97041b009922c1385fd90af168a8",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_137.lean": "3bab82506f34787effd00f8cb714bc1706ac5f8b0f83a565c0ae7a1f4583cbfa",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_138.lean": "7079c032533e1c6906b89673f166a2220e73385e0f1af817570c5d78d9b7f650",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_139.lean": "035dc6f79721086d7ab5c69ba63fa06ecace593fdf16b4f9ef9937335061f476",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_14.lean": "624c8c4ed93c856118b20f122217d0083c4f99cc6c68b582425f66237ef4a264",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_140.lean": "3767e1e3402e47281ff0fb6e7870a02aa0bffb33690a3c0346224b815a754236",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_141.lean": "f620c97a62b3618ff1b3cc3a07249018eb8399ba46fb5a21d2bbd1c54e368ff8",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_142.lean": "c8bac5c0ba7a9834010853af007621951c3650781a6df3ab23dfe53b28753717",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_143.lean": "5dde59fd2ebdeab4ab3fa262a3faaaf85347b2eba817250c694f8b00d2d069e4",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_144.lean": "790e4ab58eeb2243986f791dada1d78f733e71d3b27d930f4a07d9ffd86d46ee",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_145.lean": "c9ad9035b91f6df09880f57f2276aeee6a6f7f448d6f5e94324789f97c8ac097",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_146.lean": "10ad11664dd29d3b104f165f643cfb907615e91f93810cf5c70a303253b74e5f",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_147.lean": "db79261eab4f2d112942d39fe78995c620ec4d4373321a663b2347b9282ec01c",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_148.lean": "794274715b11b6e60a77f7f41bdbb61ada324360a8180f751c56f863e3da084c",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_149.lean": "75eddbb786da50f3b2d049305960156e4e78b28519f465bd7bcde23a66d4d89d",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_15.lean": "7bfa0ae5815d21429c9b4027ff1b0e5be39a003fc26c3dc6990545469f802e20",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_150.lean": "55bac56020ba6028fb8a21c9a31c1e34f37d5ed413e9c33bde2037a3f7827658",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_151.lean": "0219aba98679a686f6c64a8a096963ffa5b5edc1d2e4837eecb6db136df343b7",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_152.lean": "a74594117687529c54f348418c1d399ffefa2d8e4fe485a9ef21f6a27b2a460f",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_153.lean": "f5e35149213664c34ce67d7c49ca160cd57018c3caa74306ea8f8671bb26a7e5",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_154.lean": "0d0de5f5c4d746d20d9ec05c21b99fc49d8f30aa4e555ee714fde4609e5c87e6",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_155.lean": "2c6c1e65c768610add58f680f1e98400f8d7fd29cdd5e3e0036136b3632b2da6",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_156.lean": "4a55d7db8829590dfe2be403aa74bbe0c2dea79a479bff05f2d2685f9b585a4f",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_16.lean": "07722470108781bdda6e3f0ff86b8d4376201cab318881fc978b981944994178",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_17.lean": "b2a0403384ce460c376478c90404fdc8653cc9b26e9f5a42fa5b727b6bf56011",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_18.lean": "ba72f2255aeb11b1a2dc1c6bfc76181c94cd5a163831c0eba2730fdf8f6f8d44",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_19.lean": "4e9d3dde8d93ede06843705f790db28ff5c21b48792b8168d1b58eda2643ebdb",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_2.lean": "6441fe034cd254b0f1765698a88da6e29f7677d8bcf822d87700913e099203e8",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_20.lean": "bf44b800f00cc245bf7c57a51da646cc73fab1d71d9eafe81805e0bd64f7eb81",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_21.lean": "0a3e13a7040aa145f461f4d1b3810cdd8e02d5358e0c3ac44b5e4dbfec430b27",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_22.lean": "424bbed991ec6fe380e3c68e126c2114314450bcf0044335612395c8711b0620",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_23.lean": "044dfa6e0278d7dd0a6345e46df0a06dff57e99495556cad11730b3799493dc2",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_24.lean": "eb099ae2ff73ea0dbad94068ee7565fa5f6ca5f57601ffc63f92d7ac617b2a05",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_25.lean": "2d939358704e9dee3b86f849e1a08669f965b0362b3c34b1a2ad4e33e9e70be0",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_26.lean": "1f09ec62aad228ec46bc43c0e44ded2974e1697001f3184414ba437056739a13",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_27.lean": "fa10ce150b36f3056deea0429630cde051070b3493ef91984bd1a4f6fa660925",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_28.lean": "ea85bd26bf24a5b957bb83ac11562da4ba98c52c566c38458e463d979fe01f95",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_29.lean": "bdd0e4e6fd52716f39e9ec51c31723c3b17110a3d6f5e8c510e91376bec67a43",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_3.lean": "f0e3ed40da8fcb63e29efe1d8f845d4469aed281103e591b75078842e0fc2386",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_30.lean": "48e68030d8f9187af3996d99aa942bb1a4e2408ec3da33d26e66cb2703af3aa1",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_31.lean": "790004f488e2cd826bcdc8aa14426ca1d0a7ecb9942d53ed2a8a5c53d9c09107",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_32.lean": "5e26add745996f61560978277f2879c8ce2e304534850190ea4b2ed80f7288af",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_33.lean": "ad96dab6c62742564da5f347721a1610853bad2f8a6758fce84333757b470902",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_34.lean": "fe476f7cafc1730e9c3dc19448196e75500fc1cc72172d1329d91210afdc27b4",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_35.lean": "049f247c519a0438ae7a5bce537ccdc011fc2db59404e5cfc92d1a9b7cd53a31",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_36.lean": "c8365203cd98544c1623455ce2ad14e43a45d94aed113b588ab0e9f92c8b1429",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_37.lean": "87485d7808ec31d2e29f3f79ea43aea0985355c3c6f37cde45a79c02aeb429da",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_38.lean": "9ba85d9e1966f235013f3a4d6a5f6ca34dd083afaa036122e29bf03e261581b1",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_39.lean": "c1ceb0b1ff4cfcb2467b0b74c3e24ad35249018452a26d1622090c74630fa10e",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_4.lean": "7c72bdc6f2480e11caf7321a860a0eca2f55f60f8a41aa19022ee0a86f3b74b8",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_40.lean": "d865d1cd1b494875d2a4230e3c695c610cfd426f5567dbb66f6746e882eddf9e",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_41.lean": "f2e3c459d42d6148c7d8a087c66ffea021f050b4ddd306710d421524f9a212be",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_42.lean": "537f299fce0911d30cd6bd51f1b8e64498e14f048cfa04d074e2f22848380f29",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_43.lean": "e668559e2e3d010fb6539e0f351fea6fd2c92a7382bc2a4cb7ec80659b6411d9",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_44.lean": "7a324eedc72bc0933da4050eacee09e7456be4b7f7988ebd9b4ff50335256c01",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_45.lean": "b8e4607bc422acf1edf2c8f28949ac2d847ea01ec32f959a87904462d6709b7f",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_46.lean": "dcb70a3546f973875bc5d583bcfaac10352406c397598d0b3eca516d601004e1",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_47.lean": "689021533d462336296df05a5a2543f9154191ffa53d95d6471b0b9cae5bf766",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_48.lean": "51a53150ed2b360d076122906f16c9abf9b958ac28c0dabee5879b171a0368d5",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_49.lean": "35891a86b7355c34ab785c75345fd15e26e514b0e1948345f6ea469febd239b8",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_5.lean": "37f23a3a35666ea46e3b4a8a0ef4aed0313acd5996ee9ca9f82aebcf74af430d",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_50.lean": "a630a0fac996f05d692122a847e328700599469bb057d53d3d6107911792e7ed",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_51.lean": "ad3410bf3849e015da12bdfb88b61f226541dfad7967d3a0a83279eeb2a37316",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_52.lean": "6f29aa7dd5e85f701c2575830fc3101f42dc392f7eb896769a999121be81e60b",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_53.lean": "40ec6e1d8ed20ef93012e159300fb44437db8063f6155a10c295005adce7409f",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_54.lean": "6e2cddcf5f47497e944dafbbc2af312deec8e3d400cf8361756c2418bbfc7204",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_55.lean": "f7b5fb3ef44aa2423dbb8f0b5b7d70e5604a8434a3b5597b8e227bfdefef2778",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_56.lean": "5a58adc34f7dd41604aa14485628c82f914fb47b36c9b9eef0536e34ce18a865",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_57.lean": "f2a7d1e4c470cbe278fe5a361ac47610f13c8a5225b92be65c4f5f9b8b0e5167",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_58.lean": "c6231b87cde0c747e791a860bfd146aac17405ec30e7c8e173ee437515ae4e7b",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_59.lean": "62f35a0116e51cf35c6d4fb58446892b2dd2fd8b7861b6ebfc0150e193d8928c",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_6.lean": "c1364c199e2fd41662917219f1afc643541f782510bc1e78e39c8449661bb7be",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_60.lean": "624f7d4b9cdcef3ec4d4caf1fc7803fbca3bd8a6b72c4b31b2a8ed955027296f",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_61.lean": "001ec12155aa0902be94cda20fdfa29ac4fce7d9e1f6683242996a6445d4f473",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_62.lean": "4df4b01cc95247418aef6209a7d72b97cf7e6e7f67ac63686f7a4c1591868a45",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_63.lean": "cbed99dde23a70c5e2899d03ba14525fe6e0194fa82f3fa3b933ef610ad1ccdb",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_64.lean": "4efc777eee475d70c16d245bf91cc5b4b37d21d21602aca87c4c82c3674f730d",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_65.lean": "20310076383bc33e207af68ac11c00fad07dd5a4812cc9dae70f3180e329ccbf",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_66.lean": "ad6c87187661b7f0383e7989aa5852144eb78fb7798b30114ef0cd5d9c852179",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_67.lean": "b2dfccecd7b99e6cbb8aed734b8ab84ed91b57e0111fccc0631bbdbcafe86101",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_68.lean": "d28143f3e81f981020e67c5d33765ae991c125bf99e57f867d0a431ef665a00a",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_69.lean": "fde71021a31e650a547e9f07d3cf5cad1937b568a6115cdac8c6f4e49dd6fe86",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_7.lean": "051bf1e8956421a043dd9cbeda103d3aacdfbd435d2f18177091f5fa6af67444",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_70.lean": "910a4969448583fb4f29586bfb1dc5bedf572e81492e3bffb2df63607bd154dd",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_71.lean": "eb78b2889a3196abfb4ccfac8391f7f7b2bf61aeb6cda6972b7f807fb426ff3f",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_72.lean": "0a1d5bbe2d0a427d5912a97472727c63ed6aeb22044aa8c2daa6eae6076e8256",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_73.lean": "9261614d2a9001c67c2357cca2a1bc0d9ef770aa5c6f2faf7224f443b2d35303",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_74.lean": "5ef04150af4440605c3f0298e92da0e3e0d2941e73b2a2ea303cc919c41accc9",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_75.lean": "12be76bcc5bacfaa85d36357e57776bfd2a5f0b140673c252efa4904f108e506",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_76.lean": "f961ba0a61e2bbc3264b5ab0c8e806d0e52da6055bd2f313052277ce5cb3ca0e",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_77.lean": "4187f153ba1e945c393dadc7c6f9bbb0f191c3d3886dcd295585e93c878d0c9c",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_78.lean": "602512643d5de68b6b3f7f3a13a529c3993f7dcef14efd26a08ebc72fd115666",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_79.lean": "9c374219005e2b652ca2af85aeacc4c8f55e7402398d4d708e1b8e5a88e6681d",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_8.lean": "6d631dfc8c37205499692f9e121de1f6d409e99e96fe6bb3f0404662a4ed0a11",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_80.lean": "dcf719c43a960ab783eefb185ab4bcaf1c10d286ec88f80ce51a2cfc55289d17",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_81.lean": "5116d26502af40ae1ca2e3c57b3af9624927631bb1e656bfe5975799b609deac",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_82.lean": "e3e6380e0cea70d8bf36d6f386a2096a08b4dad36eb807ddc508f7ec7426b4c3",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_83.lean": "1b097519776aa903f5da6460d099ae0dbc5b00df8a7d581fa81b097c84ef78d3",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_84.lean": "f85f42fc91c2c6c7d19d1fadbef9450e9914db9ae2c8bec14c52dc73576e2a4d",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_85.lean": "edbafd855dabc8c0135d43ae54e64ff9bf0646e8c23b7d82ec925b9ab34545fe",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_86.lean": "aa846259bfdb7f0f2aff47c39305937c08d0e2e2d02881f014d1aab7cd5e5194",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_87.lean": "b939e982a2f33a98a2e520f89b54f716d2ff8b142158136338890fce592239c0",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_88.lean": "e6fc3c7d0d9fca93a3f32b678ffa406f0e2e50e00d4881e72c25b1935f2064fc",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_89.lean": "239b29767b207015d3cb47567753494be9ce30050429b6b853e22019ec7ee912",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_9.lean": "aa8bb4a817b6f7cc69940a6189ad9be422386a211703f1389cb324d352005e5e",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_90.lean": "728513d57167605bd4e4b9810f1898a5329a04da1f15847ace32fbc5c08a1ffb",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_91.lean": "b02349e0333fdf312e5742299fe9eda8dbeab63be71327cf8e6cdc06bfad6ef3",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_92.lean": "80a74498d398ef5b0fba93505452aa892789e9efbcf9509d779ef05d1d2535ac",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_93.lean": "ff164fc90848a84fada2e60c28b780fb0d0f452710f53c8d327553cf1ca82dd4",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_94.lean": "d860bcd2c9c33777477fb2ccd903c96f8283d8460611f8110f68b03d5cef6f95",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_95.lean": "2841a7a13298a81cfda8a0c16dcab3efd2d05d0388faec3fd7c3273d3a1555b7",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_96.lean": "297ddad9b08bdd8dfe36118c3caa7fb225e3e123382497f80c0f7fd13643e370",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_97.lean": "10a659455e633a8cf914de63b743071ef3dacd404b55bbac402196e9a16525eb",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_98.lean": "1ca4e3601de5ddd6b4b76ade119b98a9f9b4daab45103ccf29fd41c14111fcd5",
+    "Grothe/LowerAnalytic/CapPieces/R13x245_99.lean": "6c7eeb2cdf754d9910ec006185a67d5e313b57f5743257038841c5243fd14c15",
     "Grothe/LowerAnalytic/CapPieces/R13x260_0.lean": "ac08d6171e0e51a7732942f1a021ce0d99e2769f0e2adb17920fa5f5e56e01be",
     "Grothe/LowerAnalytic/CapPieces/R13x260_1.lean": "a86405a8b6e0f6845a7ee44e364fbda7912dc5ed9363c7b76e822ec1da726b70",
     "Grothe/LowerAnalytic/CapPieces/R13x260_10.lean": "f004d8e0322fe2bce562150e9a1de23b3bb84f6e20e11c18fbe8bc55d0e3dcc3",
@@ -45479,8 +46318,8 @@
     "Grothe/LowerAnalytic/CapRow13/AnchorRange22.lean": "cb400a378816e4a734403d7df7e0d12cdd649614ffa0282bd7120c419764501c",
     "Grothe/LowerAnalytic/CapRow13/AnchorRange23.lean": "7d60cd120634e1b4c7af2c38e92759174fd6627692a6b6ba47f88dafb7730cbf",
     "Grothe/LowerAnalytic/CapRow13/AnchorRange24.lean": "5dbcad9ade5b72f16875240939a8aeead579a658157c806f5ad68cdea2278e62",
-    "Grothe/LowerAnalytic/CapRow13/Assembly.lean": "33b8daf6baf965906386903761bd546e2afbf6ba1ba1272cf230b0099ad9ac9b",
-    "Grothe/LowerAnalytic/CapRow13/Recipes.lean": "c6111003abd995b9d24138bcbfdcb59263289de5731421e3e242529f11fdc932",
+    "Grothe/LowerAnalytic/CapRow13/Assembly.lean": "07d33c03882f4e0e78454759676016417321d611893ff0201db09157bae1ef0e",
+    "Grothe/LowerAnalytic/CapRow13/Recipes.lean": "5b6c61c77d5f3c0530dfc452c5d579d53973c036c97e15fb1ea8430463d6bac2",
     "Grothe/LowerAnalytic/CapRow14/AnchorRange00.lean": "28ee9466ed265e8c6004ae6f7b2d09b5c320242ede9987c60afd09ca428e4865",
     "Grothe/LowerAnalytic/CapRow14/AnchorRange01.lean": "042f229deba1750c33879b1ed13472d87255b559e0436668619d1feca7a6af2d",
     "Grothe/LowerAnalytic/CapRow14/AnchorRange02.lean": "e3e14952fe5cd23f01403817226ce641b4f820637cda9d30ba371b4adf76cdb0",
