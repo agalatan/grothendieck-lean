@@ -8,6 +8,19 @@ $$1.401697117301 < K_G^{\mathbb{C}} < 1.404598149141$$
 Both bounds rest on explicitly stated analytic and computer-assisted inputs; see
 [what is proved](#what-is-proved).
 
+| year | who | lower bound | upper bound |
+|---|---|---|---|
+| 1953 | [Grothendieck](https://csg.igrothendieck.org/published-works/) (Résumé, Bol. Soc. Mat. São Paulo 8) | | $K < \infty$ |
+| 1984 | [Davie](https://arxiv.org/abs/1101.4195) (unpublished note; reported in Pisier's survey) | $1.33807 < K$ | |
+| 1987 | [Haagerup](https://doi.org/10.1007/BF02790792) (Israel J. Math. 60) | | $K < 1.40490913\ldots$ |
+| Sept 2026 | [Guo, Fang, Lu](https://arxiv.org/abs/2609.07000) | $1.35584631827168 < K$ | |
+| Sept 2026 | [Heilman, Jones, Malavolta](https://arxiv.org/abs/2609.25462) | $1.4 < K$ | $K < 1.404898554746$ |
+| Oct–Nov 2026 | **this repository** | $\mathbf{1.401697117301 < K}$ | $\mathbf{K < 1.404598149141}$ |
+
+Haagerup's integral $1/\gamma^\dagger = 1.4045759\ldots$, where
+$\gamma^\dagger = \int_0^{\pi/2} \cos^2 t \, (1+\sin^2 t)^{-1/2} \, dt$, has been proposed as the exact value;
+it lies inside the interval, $2.22 \cdot 10^{-5}$ below our upper bound.
+
 **The only active upper-bound target is $K_G^{\mathbb C}<1.404598149141$.**
 Both endpoints are **work in progress**. For the upper endpoint, fourteen actual
 Gaussian finite-band estimates and energy-table discrepancy at most
