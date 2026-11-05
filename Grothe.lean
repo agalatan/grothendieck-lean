@@ -3831,6 +3831,7 @@ import Grothe.UpperQuad.Data.Cutoffs5
 import Grothe.UpperQuad.Data.Cutoffs6
 import Grothe.UpperQuad.Data.Cutoffs7
 import Grothe.UpperQuad.EnergySound
+import Grothe.UpperQuad.Facts.Budget
 import Grothe.UpperQuad.Facts.Common
 import Grothe.UpperQuad.Facts.Even
 import Grothe.UpperQuad.Facts.Final
@@ -3853,7 +3854,11 @@ import Grothe.UpperQuad.PairsSound
 import Grothe.UpperQuad.Partition
 import Grothe.UpperQuad.PiSound
 import Grothe.UpperQuad.ProfileSound
+import Grothe.UpperQuad.QuadDecomp
 import Grothe.UpperQuad.RatioSound
+import Grothe.UpperQuad.RootIdent
 import Grothe.UpperQuad.RotateSound
+import Grothe.UpperQuad.SeedAnalytic
 import Grothe.UpperQuad.SeedSound
+import Grothe.UpperQuad.WatsonSeed
 import Grothe.UpperTarget

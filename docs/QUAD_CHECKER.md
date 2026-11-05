@@ -755,3 +755,195 @@ bound, and the assembly's `ρ` (inherited 1.55·10⁻¹²).
 
 **Background processes:** none on the laptop; nothing runs on yo or big (the big folder
 `~/claude-b9ee-quad-m4` holds the `ProductionRetainedEnergy` closure for `Bridge.lean`).
+
+## 12. Milestone 4b: the obligations after the facts (claude-b9ee, 5 November 2026)
+
+Branch `claude-b9ee/quad-checker-analytic` (stacked on `claude-b9ee/quad-checker-bridge`, PR #318).
+Of the four items (root identification, numeric instantiation, S2, `hQuad`) the first three are
+**proved**; the fourth is reduced below to a decomposition with explicit lemmas and numbers. The Lean
+chain now ends at `Grothe/UpperQuad/Facts/Final.lean : hclose_of_facts_quad (hQuad : QuadHyp) : hclose`:
+the thirteen native facts and **one** analytic hypothesis, `QuadHyp` (§12.4), give the hypothesis
+`hclose` of `upper_of_three_low_three_whole` literally.
+
+### 12.1 Root identification (proved: `Grothe/UpperQuad/RootIdent.lean`, `QuadDecomp.lean`)
+
+Master selects the roots of the 64 rules by `Q0LegendreRuleNN.all_unique` (existence **and
+uniqueness** of a root of `P_n` in each integer bracket, `Q0GaussSelectedRuleNN.root :=
+Classical.choose all_unique`, dispatched by `Q0GaussSelectedChoice.selectedFor n hn`), and the
+production node of a source address `a : Address = Σ p : Fin sourcePanels.length, Fin (sourcePanels.get
+p).order` is `Q0GaussProductionMass.sourceNode a = panelNode p.lo p.hi (sourceRoot a)`.
+
+- `selected_root_spec n hn i`: `(selectedFor n hn).root i` lies in `(ruleBrackets n).getD i (0,0)`
+  (as `Icc (lo/2^640) (hi/2^640)`), is a root of `realPair · (n−1)`, and **every** root in that
+  bracket equals it (64 cases, each `rule_root_spec` applied to `Classical.choose_spec
+  Q0LegendreRuleNN.all_unique`; `ruleBrackets_length` from the `count` theorems).
+- `addressSpec cutoffs a : NodeSpec` is the `a.2`-th spec of `panelSpecs cutoffs (sourcePanels.get a.1)`
+  (`panelSpecs_eq_ofFn`), and **`rootOf_addressSpec : rootOf (addressSpec c a) = sourceRoot a`**:
+  `rootOf` is `Classical.epsilon` of "a root in the bracket"; existence is master's (`sourceRoot_spec`,
+  no kernel flag), uniqueness identifies it. Hence `specNode_rootOf : specNode (addressSpec c a)
+  (rootOf …) = sourceNode a` and `specWeight_rootOf : … = sourceWeight a` (`mem_bracket_iff`,
+  `legendreP_eq_realPair`, `Rat.cast_def`).
+- `sum_partitionSpecs : (partitionSpecs.map F).sum = ∑ a : Address, F (addressSpec cutoffs a)`
+  (`flatMap` over `sourcePanels`, `ofFn` over the brackets, `Fintype.sum_sigma`), and in
+  `QuadDecomp.lean`: **`gaussRaw_eq_sum_address : gaussRaw partitionSpecs rootOf k j cIdx =
+  ∑ a : Address, nodeTerm (sourceNode a) (sourceWeight a) (addressCutoff a) 0 251 k j cIdx`** and
+  `gaussCoeff_eq_gradeValue`. So the Gauss sums of the bridge are sums over master's production nodes
+  and weights, with the committed cutoffs `addressCutoff a = min (cutoffs[offset + a.2]) 531`; `hQuad`
+  is a statement about master's `sourceNode`/`sourceWeight` (and `source_node_mem_panel`,
+  `source_weighted_energy_lt`, `mass_lt` apply).
+
+### 12.2 Numeric instantiation (proved: `Grothe/UpperQuad/Facts/Budget.lean`, `Final.lean`)
+
+`rhoQ = 155/10¹⁴` (`ρ₀ = 1.55·10⁻¹²`, the inherited quadrature constant), `deltaQ = 22/10¹³`,
+`DeltaQ = 23/10¹³`; with `epsBlock = 5·10⁶⁴`, `bndBlock = 2¹⁰⁰` (scale `2²⁵⁶`):
+`budget_width : 2ρ₀² + 2·12·bndBlock/2²⁵⁶ ≤ δ₀²`, `budget_smoothing : δ₀ + 4·10⁻¹⁵(501/500 + δ₀) ≤ Δ₀`,
+`budget_energy : (2·501/500 + 3Δ₀)Δ₀ + 12·epsBlock/2²⁵⁶ ≤ energyErrQ` (all `norm_num`; the energy
+budget uses `9.8·10⁻¹²` of `energyErrQ = 1.3694·10⁻¹¹`). `QuadHyp : Σ_{q<251} Σ_{c<q+2} Σ_{d<q+1}
+‖baseGradedCoefficient q c d − gaussCoeff partitionSpecs rootOf q c d‖² ≤ ρ₀²`.
+`hclose_of_blockFacts_numeric (hf : ∀ b < 12, blockFact b epsBlock bndBlock = true) (hEven : evenFact =
+true) (hW : WatsonHyp 70) (hQuad : QuadHyp) : hclose` discharges S2 at every node by `seed_of_shift`
+(the node is accepted by block 0, so `nodeValid` gives the bracket root and `profileShiftI_sound` the
+shift enclosure `A ∈ aI`; `mem_sqI` and `mem_seedJ0I_moment`). `Final.lean : hclose_of_facts_quad
+(hQuad : QuadHyp) : hclose := hclose_of_blockFacts_numeric blockFacts evenCheck (Watson.watsonHyp 70)
+hQuad`.
+
+### 12.3 S2, the seed enclosure (proved: `Grothe/UpperQuad/SeedAnalytic.lean`, `WatsonSeed.lean`)
+
+`mem_seedJ0I_moment (hP : 1 ≤ P) (hpi : π ∈ piI) (hx0 : 0 ≤ x) (hx : x ∈ xI) (hW : WatsonHyp 70) :
+moment 0 x ∈ seedJ0I P piI xI`, and `Watson.watsonHyp N : WatsonHyp N` for every `N`.
+- **Series branch** (`x < 150`): the kernel's terms are master's Taylor terms, `seedTerm x n = (−x)ⁿ ·
+  zeroTaylorCoeff n` (`seedTerm_eq`), and `OriginalMomentTaylorSeed.moment_zero_taylorSeed_error` bounds
+  the tail by the next term, below the kernel's geometric tail `|t_{N+1}|(N+3)/(N+3−x)`
+  (`mem_seedJ0SeriesI_moment`). When the kernel's tail flag fails the result is `hugeI P ∋ J₀(x)`
+  (`moment_zero_le_one`, `moment_mem_hugeI`).
+- **Watson branch** (`x ≥ 150`, 15,823 nodes): `WatsonHyp N := ∀ x > 2N+2, |J₀(x) − watsonMain N x| ≤
+  watsonBound N x` with `watsonMain = 2 (Σ_{n≤N} w_n x^{−n})/(√π √x)`, `w_0 = 1`, `w_{n+1} = w_n
+  (2n−1)(2n+1)/(4(n+1))`, and `watsonBound = (2/π)(√π g_{N+1}/(x^{N+1}√x) + 4 e^{−x}/x)`, `g_{n+1} =
+  g_n (2n+1)/2`. Kernel soundness (`watsonLoop_sound`, `mem_watsonSum`, `mem_watsonGamma`,
+  `mem_expTerm`: `e^{−x} ∈ [0, 2^{−⌊x_lo⌋}]`, `exp_neg_le_two_zpow`; `mem_watsonErr`, `mem_watsonMainI`,
+  `mem_seedJ0AsymI_moment`): every division is handled also in its `hugeI` fallback (`mem_divI_or_huge`)
+  through the crude bounds `|Σ w_n x^{−n}| ≤ 2` (`g_n x^{−n} ≤ 2^{−n}` for `x ≥ 2N+2`,
+  `watsonG_mul_inv_pow_le`, `abs_watsonW_le`), `|watsonMain| ≤ 4`, `0 ≤ watsonU ≤ 2`,
+  `0 ≤ watsonBound ≤ 4`, all `≤ 2^{2P}` for `P ≥ 1`; no new kernel flag was needed.
+- **The remainder** (`WatsonSeed.lean`), from `moment 0 x = (2/π) ∫₀¹ t^{−1/2} √(1−t) e^{−xt} dt`
+  (`OriginalMomentIntegrable.moment`): `√(1−t) = Σ_{n≤N} c_n tⁿ + R_N(t)` with `c_0 = 1`, `c_{n+1} = c_n
+  (n−½)/(n+1)` (`binC`), and **`abs_binR_le : |R_N(t)| ≤ t^{N+1}` on `[0,1]`**, proved without the
+  binomial series: the first-order equation `(1−t) p_N' + p_N/2 = a_N t^N` with `a_N = −(N+1) c_{N+1} ∈
+  (0, ½]` (`binP_ode`, `binA_le_half`), so `r_N/√(1−t)` is nonincreasing and `(t^{N+1} + r_N)/√(1−t)`
+  nondecreasing on `[0,1)` (`antitoneOn_of_deriv_nonpos`, `monotoneOn_of_deriv_nonneg`; derivatives
+  `hasDerivAt_binR_div`, `hasDerivAt_binU_div`), both `0` at `t = 0`; at `t = 1`, `p_N(1) = 2a_N ≤ 1`
+  (`binP_one`). Also `sum_abs_binC_le : Σ_{n≤N} |c_n| ≤ 2`. Then `∫_{(0,∞)} t^a e^{−xt} = Γ(a+1)/x^{a+1}`
+  (`integral_rpow_mul_exp`, from `Real.Gamma_eq_integral` and `integral_comp_mul_left_Ioi`),
+  `Γ(n+½) = √π g_n` (`Gamma_nat_add_half`, `Real.Gamma_one_half_eq`, `Real.Gamma_add_one`), the tails
+  `T_n = ∫_{(1,∞)} t^{n−½} e^{−xt} ∈ [0, 2e^{−x}/x]` for `x ≥ 2n` (`tail_le`: `t^{n−½} ≤ tⁿ ≤ e^{n(t−1)}`,
+  `integral_exp_mul_Ioi`), `w_n = c_n g_n` (`watsonW_eq`), and the remainder integral
+  `|∫₀¹ t^{−1/2} R_N e^{−xt}| ≤ ∫_{(0,∞)} t^{N+½} e^{−xt} = Γ(N+3/2) x^{−N−3/2}` (`setIntegral_mono_set`).
+  Axioms: `propext`, `Classical.choice`, `Quot.sound` only.
+
+### 12.4 `hQuad`: the statement, the decomposition and the remaining lemmas (open)
+
+**Statement** (`Facts/Budget.lean`): `QuadHyp : Σ_{q<251} Σ_{c<q+2} Σ_{d<q+1} ‖B_{qcd} − G_{qcd}‖² ≤ ρ₀²`,
+`ρ₀ = 1.55·10⁻¹²`, where `B_{qcd} = baseGradedCoefficient q c d` and `G_{qcd} = gaussCoeff
+partitionSpecs rootOf q c d`. By §12.1 and master's radial identities this is a statement about the
+production nodes: with `k = d+1−c`, `j = q−d` and the real integrand
+```
+f_{qcd}(s) := e^{−s} · ψ_{k,j}(s) · σ(s)^{c+d} · Re U_{c,d}(A(s)),
+  ψ = RadialLaguerre.radialFactor k j, σ = profileSign, A = profileShift = √s/(κ|vprof s|),
+  U = canonicalCoefficient (real: canonicalCoefficient_eq_ofReal_re),
+```
+for the canonical entries `c ≤ d+1`: `B_{qcd} = ∫_{(0,∞)} f_{qcd}` (`baseGradedCoefficient_eq_radial`,
+`conj_primary_laguerre`, `coefficient_eq_signed` at `vprof s ≠ 0`, i.e. a.e.) and `G_{qcd} = Σ_a W_a
+f_{qcd}(s_a) [c+d ≤ D_a]` (`gaussRaw_eq_sum_address`, `nodeTerm`; `W_a = sourceWeight a`, `s_a =
+sourceNode a`, `D_a = addressCutoff a`); the reflected entries `c > d+1` are `√((d+1)/c) ≤ 1` times the
+canonical partner `(d+1, c−1)` on both sides (`radialBaseCoefficient_reflection`, `gradeValue`), so
+**`QuadHyp ⟸ Σ_{canonical} |B − G|² ≤ ρ₀²/2`**.
+
+**Decomposition.** The partition covers `[0, 100]` except three gaps of width `2.54·10⁻²⁶` at the roots
+`s₁ = 13.82758…`, `s₂ = 20.81999…`, `s₃ = 25.20393…` of `vprof` (`data/quad-checker/panels.txt`; around
+each root the panels form a geometric sequence of widths `4·10⁻¹⁶ → 6·10⁻²⁷`, orders `6,5,4,3,2,1` then
+`1`). With `S := (100, ∞) ∪ gaps` and the panels `P`:
+```
+B − G = T + Σ_P E_P − C,
+  T_{qcd}  = ∫_S f_{qcd}                                   (tail and gaps)
+  E_P,qcd  = ∫_P f_{qcd} − Σ_{a∈P} W_a f_{qcd}(s_a)         (Gauss–Legendre remainder, all pairs)
+  C_{qcd}  = Σ_a W_a f_{qcd}(s_a) [c+d > D_a]               (the omitted pairs)
+```
+and `‖B − G‖_{ℓ²} ≤ ‖T‖ + Σ_P ‖E_P‖ + ‖C‖`. Budget proposal: `‖T‖ ≤ 10⁻²⁰`, `‖C‖ ≤ 10⁻¹⁴`,
+`Σ_P ‖E_P‖ ≤ 1.05·10⁻¹²` (so that the total is `≤ ρ₀/√2 = 1.096·10⁻¹²`).
+
+**(T) Tail and gaps: a Bessel inequality, no analysis of the integrand.** For every measurable
+`S ⊆ (0,∞)`, `T_{qcd} = ⟨h_{gradedMode q c d}, F₀ · 1_{|z|² ∈ S}⟩_{L²(mu2)}` (the radial reduction of
+`baseGradedCoefficient_eq_radial` with the indicator: `CompactTaylorQuadrature.integral_gaussC_norm_sq_cut_complex`,
+`RadialCutoff.gaussC_radial_cutoff`), so by Bessel in the Hilbert basis `hermiteBasis2`
+(`HermiteC2Basis.hasSum_energy2`, `EnergyBlock.energy_sum_le_norm_sq`) and `|F₀| ≤ 1`:
+```
+‖T‖² ≤ ‖F₀ 1_{|z|²∈S}‖² ≤ mu2(|z|² ∈ S) = ∫_S e^{−s} ds
+     = e^{−100} + Σ_{i≤3} (e^{−lo_i} − e^{−hi_i}) ≤ 3.8·10⁻⁴⁴ + 3 · 2.6·10⁻²⁶ · e^{−13.8} ≤ 10⁻³¹.
+```
+Lemma to prove: `norm_tail_sq_le (S) : Σ_{qcd} ‖∫_S f_{qcd}‖² ≤ ∫_S e^{−s}`; then `‖T‖ ≤ 10⁻¹⁵` with room.
+This is the cleanest of the three (medium size; all ingredients on master).
+
+**(C) The omitted pairs: the Bessel deficit at each node.** At a node the coefficients
+`U_{c,d}(A_a)`, `(c,d) ∈ ℕ²`, are the Hermite coefficients of `ph(A_a + ·)` in `L²(gaussC)`, of total
+mass `1` (`‖canonicalPhaseLp‖ = 1`, the 1D Hilbert basis of `HermiteBasis.lean`;
+`sum_sq_canonicalCoefficient_le_one` is the `≤` half), so the omitted mass is `m_a := Σ_{c+d>D_a} |U_{c,d}
+(A_a)|² = 1 − Σ_{c+d≤D_a} |U_{c,d}(A_a)|²`, a quantity the kernel's enclosures bound at every node
+(the Bessel sums were `≤ 1` in milestone 2). With the Cauchy–Schwarz over the nodes (weights
+`W_a e^{−s_a}`, total `< 1.07`: `Q0GaussNodeMass.mass_lt`) and the Mehler bound
+`Σ_{n+m≤501} |h_{n,m}(√s)|² ≤ τ^{−501}(1−τ²)^{−1} e^{2τs/(1+τ)}` (`τ = 99/100`: `≤ 7.7·10³ e^{0.995 s}`):
+```
+‖C‖² ≤ 1.07 · Σ_a W_a e^{−s_a} · 7.7·10³ e^{0.995 s_a} · m_a ≤ 8.3·10³ · (Σ_a W_a) · max_a m_a ≤ 8.3·10⁵ max_a m_a,
+```
+so `‖C‖ ≤ 10⁻¹⁴` needs `max_a m_a ≤ 1.2·10⁻³⁴`. The archived cutoffs were chosen for omitted
+*amplitudes* `≤ 10⁻²⁷` per coefficient (masses `≲ 10⁻⁵⁴`), so the margin is large, but the fact must be
+established: either (i) a native fact `omittedMassOK : ∀ a, 1 − Σ_{c+d≤D_a} U² ≤ ε` from the node loop's
+own enclosures (≈ 6 CPU-hours: the triangle at every node; it could be folded into a thirteenth block-like
+fact), or (ii) an analytic bound on the Hermite coefficients of `ph(A + ·)` beyond degree `D` as a
+function of `A` (the raising identity of S5, `|U_{c,d}| ≤ 1`, and the asymptotics `U_{c,d}(A) = O(A^{−1})`
+for `(c,d) ≠ (0,0)`), used only at the 10,322 nodes with `D_a < 531`. Lemmas: `omitted_mass_eq`
+(Parseval), `norm_omitted_sq_le` (Cauchy–Schwarz + Mehler), and the per-node input (i) or (ii).
+
+**(Q) The Gauss–Legendre remainders: the analytic core.** For a panel `P = [l, h]` of order `n` (the
+`n`-point rule is exact through degree `2n−1`: `Q0GaussPolynomialCertificates`, `Q0GaussExactness`) and
+an integrand `g` analytic in the Bernstein ellipse `E_ρ(P)` with `|g| ≤ M` there,
+```
+|∫_P g − Σ_{a∈P} W_a g(s_a)| ≤ (h−l) · (64/15) · M · ρ^{−2n} / (ρ² − 1)          (Trefethen, Thm. 19.3)
+```
+(`gauss_remainder_bernstein`: Chebyshev coefficients `|a_k| ≤ 2Mρ^{−k}`, exactness, the tail; S6b). The
+ℓ²-over-modes version needs `M_P² := sup_{z∈E_ρ(P)} Σ_{qcd} |f_{qcd}(z)|²` for the **complex
+extension** of `f_{qcd}`: `ψ_{k,j}(z)` is entire in `z` for even `k` and has `√z` for odd `k`, but the
+product `ψ_{k,j}(z) U_{c,d}(A(z))` is analytic at `z = 0` because `U_{c,d}(A)` has the parity of
+`c+d+1` in `A` and `k + c + d + 1 = 2d + 2` is even (the first panel `[0, 1/10]` has order 60); `A(z) =
+√z/(κ|vprof z|)` is analytic where `vprof` has no zero in the ellipse (the sign `|·|` is constant on a
+panel), and `U_{c,d}(A)` extends to an entire function of `A` (Gaussian integral; `|U_{c,d}(A)| ≤
+exp((Im A)² + √(2(c+d)) |Im A|)`, S6c). With the Mehler bound for `Σ|ψ_{k,j}(z)|²` on the ellipse and
+`Σ_{c,d}|U|² ≤ 35,777 · exp(2(Im A)² + 2√1064 |Im A|)`, `M_P` is an explicit function of the panel's
+`ρ` and of `max_{E_ρ} |Im A(z)|`, i.e. of `min_{E_ρ} |vprof|`: an **external interval computation over the
+1,289 panels** (a Python/interval script like the archived one), its outputs committed as data and
+checked by a native fact, with the analytic lemmas (`gauss_remainder_bernstein`, the Mehler bound
+`mehler_sum_sq_le`, the entire extension and bound `norm_canonicalCoefficient_complex_le`, the parity
+`canonicalCoefficient_parity`) proved in Lean. Away from the root windows the panels are wide (`≤ 2.25`)
+and of order up to 64, so `ρ ≈ 1.5–3` and `ρ^{−2n} ≤ 10⁻¹⁰…10⁻⁴⁰` give `Σ_P ‖E_P‖ ≤ 10⁻¹²` with the
+archived margins (the inherited `ρ₀` came from exactly this accounting).
+
+**The root windows** (the 381 order-1 panels and the orders 2–6 around them, widths `≤ 5·10⁻¹⁶`): here
+`A → ∞` and `A(z)` is not analytic at the root, so Bernstein ellipses give nothing for order 1. The right
+tool is the expansion in `t := 1/A = κ|vprof s|/√s` (S8, `ZeroProfilePhaseLinearization`): `ph(A + w) =
+1 + (t/2)(w − w̄) + O(t²|w|²)`, so `U_{0,0} = 1 + O(t²)`, `U_{1,0}, U_{0,1} = O(t)`, all others `O(t²)`
+(this is why the archived cutoffs are `1` or `2` there), and `U_{c,d}(1/t)` is `C^∞` at `t = 0`. The
+remainder of an `n`-point rule on a panel of width `w` is then bounded by the Peano form
+`|E_P(g)| ≤ c_n w^{2n+1} ‖g^{(2n)}‖_∞` with derivative bounds of `f_{qcd}` from those of `U(1/t)` and of
+`t(s)` (linear in `s − s₀` to first order, `|vprof'(s₀)|` from `ProfileRootSound`); with `w ≤ 5·10⁻¹⁶`
+even crude bounds `‖f^{(2)}‖ ≤ 10¹⁵` (order 1) give `10⁻³²` per panel. Lemmas: `phase_t_expansion`
+(the `O(t²)` remainder with an explicit constant, S8 has the `L²` version), `derivative_bounds_window`,
+`gauss_remainder_peano n`. The per-window bookkeeping (≈ 140 panels per root) is a second external
+table.
+
+**Status.** Proved: the reduction of `hQuad` to master's nodes (§12.1), and the budget arithmetic.
+Written as statements with their inputs: (T) (one Bessel lemma, numbers `≤ 10⁻³¹`), (C) (Parseval at
+the node + Cauchy–Schwarz + Mehler, input `max_a m_a ≤ 1.2·10⁻³⁴` by a native fact or an analytic
+coefficient bound), (Q) (Bernstein remainder + complex integrand bound per panel from an external
+interval table + Peano/`t`-expansion in the three root windows). The analytic effort is in (Q): the
+entire extension of `U_{c,d}`, the Mehler bound and the window expansion are new Lean analysis, and the
+panel table must be regenerated (the archived ledger's `center_error_upper` claims are not consumed by
+Lean). Until then `QuadHyp` is the single hypothesis of `hclose_of_facts_quad`.
