@@ -1088,6 +1088,11 @@ import Grothe
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.retainedSmoothed_projected_error_of_raw
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.selected_energy_close_of_raw_error
 #print axioms Grothe.UpperChaos.FixedChaosSmoothing.tensorCompletionDefectNorm_sq
+#print axioms Grothe.UpperChaos.FixedZPhaseRemainder.fixed_phase_eq
+#print axioms Grothe.UpperChaos.FixedZPhaseRemainder.integrable_residual_sq
+#print axioms Grothe.UpperChaos.FixedZPhaseRemainder.measurable_residual
+#print axioms Grothe.UpperChaos.FixedZPhaseRemainder.norm_actual_residual
+#print axioms Grothe.UpperChaos.FixedZPhaseRemainder.residual_memLp
 #print axioms Grothe.UpperChaos.FrozenSource.Grade000.grade_energy
 #print axioms Grothe.UpperChaos.FrozenSource.Grade000Production.at_eq
 #print axioms Grothe.UpperChaos.FrozenSource.Grade000Production.coefficient_energy

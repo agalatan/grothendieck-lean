@@ -697,6 +697,7 @@ import Grothe.UpperChaos.FixedChaosRoundedEntries
 import Grothe.UpperChaos.FixedChaosSmoothing
 import Grothe.UpperChaos.FixedChaosSymmetricBounds
 import Grothe.UpperChaos.FixedChaosSymmetricPower
+import Grothe.UpperChaos.FixedZPhaseRemainder
 import Grothe.UpperChaos.FrozenSource.Grade000Check
 import Grothe.UpperChaos.FrozenSource.Grade000Data
 import Grothe.UpperChaos.FrozenSource.Grade000Production

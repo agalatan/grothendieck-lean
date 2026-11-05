@@ -162,6 +162,11 @@ budget combines those selected nodes with explicit squared-error budgets on
 all other regular nodes, using the same physical Gaussian weights. Actual
 parameter and saved-vector certificates remain required.
 
+For complex $z\ne 0$, rotation by $z/|z|$ transports the real-slice
+constant-plus-linear model to the physical phase $F_0(z,w)$. In the Gaussian
+variable $w$ the residual has $L^2$ norm at most $5t^2$, where
+$t=\sqrt{1+a^2}\,v(|z|^2)/|z|$. The estimate includes profile zeros.
+
 For an exceptional source row, the model-to-payload discrepancy over all
 selected modes reduces exactly to five rational coordinates. The fitted
 parameter is $x_{10}-x_{01}$, with squared residual

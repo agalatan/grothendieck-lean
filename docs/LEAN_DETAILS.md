@@ -1404,6 +1404,13 @@ must also lie in `[-1,1]`. All retained lemmas have strict transitive guards
 and scratch axiom reports. Concrete leaf checks, numerical source comparisons
 and integral bounds remain separate obligations.
 
+For a fixed complex coordinate `z ≠ 0`, `FixedZPhaseRemainder.norm_actual_residual`
+bounds the Gaussian L² error between the physical phase `F0 (z,w)` and its
+rotated constant-plus-linear model by `5 t²`, where
+`t = √(1 + aQ²) vprof(‖z‖²) / ‖z‖`. The inverse unit rotation preserves the
+Gaussian law of `w`. This gives the same bound for either sign of the
+profile, including zero. Integration over the first coordinate is a separate step.
+
 `ProductionPhaseL2Error` constructs L² representatives of the unsmoothed
 rounding on a fixed radial slice, its linear-base/cubic-phase model, and the
 phase-model difference. For positive radial parameter and a measurable
