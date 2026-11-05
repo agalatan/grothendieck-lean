@@ -3213,7 +3213,11 @@ import Grothe
 #print axioms Grothe.UpperQuad.Facts.hclose_of_facts_quad
 #print axioms Grothe.UpperQuad.Facts.omittedCheck
 #print axioms Grothe.UpperQuad.Facts.omitted_l2_of_fact
+#print axioms Grothe.UpperQuad.Quad.canonicalCoefficient_neg
+#print axioms Grothe.UpperQuad.Quad.gauss_remainder_of_poly_approx
+#print axioms Grothe.UpperQuad.Quad.panel_exactness
 #print axioms Grothe.UpperQuad.Tail.norm_tail_sq_le
+#print axioms Grothe.UpperQuad.Tail.partCoefficient_eq_radial
 #print axioms Grothe.UpperQuad.Watson.watsonHyp
 #print axioms Grothe.UpperQuad.gaussRaw_eq_sum_address
 #print axioms Grothe.UpperQuad.hclose_of_blocks

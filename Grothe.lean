@@ -3858,6 +3858,8 @@ import Grothe.UpperQuad.Partition
 import Grothe.UpperQuad.PiSound
 import Grothe.UpperQuad.ProfileSound
 import Grothe.UpperQuad.QuadDecomp
+import Grothe.UpperQuad.QuadRadial
+import Grothe.UpperQuad.QuadRemainder
 import Grothe.UpperQuad.RatioSound
 import Grothe.UpperQuad.RootIdent
 import Grothe.UpperQuad.RotateSound
