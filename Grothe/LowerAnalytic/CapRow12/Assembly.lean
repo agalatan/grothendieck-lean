@@ -109,6 +109,7 @@ import Grothe.LowerAnalytic.CapPieces.N12x244
 import Grothe.LowerAnalytic.CapPieces.N12x246
 import Grothe.LowerAnalytic.CapPieces.N12x247
 import Grothe.LowerAnalytic.CapPieces.N12x248
+import Grothe.LowerAnalytic.CapPieces.N12x260
 import Grothe.LowerAnalytic.CapPieces.N12x270
 import Grothe.LowerAnalytic.CapPieces.N12x272
 import Grothe.LowerAnalytic.CapPieces.N12x276
@@ -129,7 +130,7 @@ namespace Grothe.LowerAnalytic
 private theorem row12LocalizedCaps : ExclCaps 12 row12LocalizedExclusions := by
   intro i hmem _hi
   simp only [row12LocalizedExclusions, List.mem_cons, List.not_mem_nil, or_false] at hmem
-  rcases hmem with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  rcases hmem with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
   · simpa only [NodeCap] using (nodeCap_12x140 (by simp))
   · simpa only [NodeCap] using (nodeCap_12x141 (by simp))
   · simpa only [NodeCap] using (nodeCap_12x142 (by simp))
@@ -214,6 +215,7 @@ private theorem row12LocalizedCaps : ExclCaps 12 row12LocalizedExclusions := by
   · simpa only [NodeCap] using (nodeCap_12x246 (by simp))
   · simpa only [NodeCap] using (nodeCap_12x247 (by simp))
   · simpa only [NodeCap] using (nodeCap_12x248 (by simp))
+  · simpa only [NodeCap] using (nodeCap_12x260 (by simp))
   · simpa only [NodeCap] using (nodeCap_12x270 (by simp))
   · simpa only [NodeCap] using (nodeCap_12x272 (by simp))
   · simpa only [NodeCap] using (nodeCap_12x276 (by simp))
