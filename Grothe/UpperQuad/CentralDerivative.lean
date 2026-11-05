@@ -3,6 +3,7 @@ import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import Mathlib.Basic.Real.Basic
 import Mathlib.Data.Fin.VecNotation
 import Mathlib.Data.Rat.BigOperators
+import Mathlib.Data.Rat.Cast.Lemmas
 import Mathlib.Data.Rat.Cast.Order
 import Mathlib.Tactic.Ring
 import Lean.Elab.Tactic.NormCast
@@ -40,14 +41,10 @@ theorem twice_weight_norm : 2 * ∑ i : Fin 18, |weight i| < 630 := by decide +k
 private theorem realMoment (m : ℕ) (hm : m < 36) :
     (∑ i : Fin 18, (weight i : ℝ) * ((offset i : ℝ)^m - (-(offset i : ℝ))^m)) =
       if m = 1 then 1 else 0 := by
-  have h := moments ⟨m, hm⟩
-  change (∑ i : Fin 18, weight i * (offset i ^ m - (-offset i) ^ m)) =
-    (if m = 1 then 1 else 0) at h
+  have h := congrArg (fun q : ℚ => (q : ℝ)) (moments ⟨m, hm⟩)
   by_cases hone : m = 1
-  · simp only [if_pos hone] at h ⊢
-    exact_mod_cast h
-  · simp only [if_neg hone] at h ⊢
-    exact_mod_cast h
+  · simpa [hone, Rat.cast_sum, Rat.cast_mul, Rat.cast_sub, Rat.cast_pow, Rat.cast_neg] using h
+  · simpa [hone, Rat.cast_sum, Rat.cast_mul, Rat.cast_sub, Rat.cast_pow, Rat.cast_neg] using h
 
 /-- Polynomial derivative from the eighteen pairs of real samples. -/
 theorem derivative_eq (p : ℝ[X]) (hp : p.natDegree ≤ 35) (r : ℝ) :
