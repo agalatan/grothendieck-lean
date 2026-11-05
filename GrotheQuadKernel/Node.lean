@@ -63,11 +63,16 @@ def nodeRatios (P : Nat) (nd : NodeSpec) (aI : Ival) : Array Ival :=
 
 /-- The canonical coefficients `sign^{c+d} · S(A) · U_{c,d}` of the prefix `c + d ≤ cutoff`. -/
 def nodeVals (P : Nat) (piI : Ival) (nd : NodeSpec) (neg : Bool) (aI : Ival) : Array Ival :=
-  canonicalTriangleI P (seedScalarI P piI aI) neg zeroI aI (nodeRatios P nd aI) nd.cutoff 265
+  canonicalTriangleI P (seedScalarI P piI aI) neg zeroI aI (sqrtTable P (nd.cutoff + 1))
+    (nodeRatios P nd aI) nd.cutoff 265
+
+/-- The precision of the bracket check: `P_n` at the endpoints of a bracket of width `2^{−640}` is
+of size `≈ 2^{−630}`, so its sign needs more than 640 bits (the node values themselves need 512). -/
+def bracketPrec : Nat := 1024
 
 /-- The validity flags of a node. -/
 def nodeValid (P : Nat) (nd : NodeSpec) (aI : Ival) : Bool :=
-  bracketOK P nd.order nd.bracket && decide (0 < nd.loD) && decide (0 < nd.hiD) &&
+  bracketOK bracketPrec nd.order nd.bracket && decide (0 < nd.loD) && decide (0 < nd.hiD) &&
     decide (1 ≤ nd.order) && weightValid P nd && isPos (nodeS P nd) &&
     nodeFactorsValid P (nodeS P nd) && isPos aI &&
     ratiosValid P (sqI P aI) (ratioDepth nd.cutoff) &&
@@ -78,22 +83,25 @@ def nodeValid (P : Nat) (nd : NodeSpec) (aI : Ival) : Bool :=
 def profileValid (P : Nat) (piI : Ival) (pd : ProfileData) : Bool :=
   (List.range pd.coeffs.size).all fun j => isPos (nrmHalfI P (sqrtI P piI) j)
 
-/-- The node's contribution to the accumulator: `none` if a flag fails. -/
-def accumulateSpec (P : Nat) (piI : Ival) (pd : ProfileData) (nd : NodeSpec) (acc : Raw) :
-    Option Raw :=
+/-- The node's contribution to the grade block `[qLo, qHi)` of the accumulator: `none` if a flag
+fails. -/
+def accumulateSpec (P : Nat) (piI : Ival) (pd : ProfileData) (qLo qHi : Nat) (nd : NodeSpec)
+    (acc : Raw) : Option Raw :=
   match nodeShift P piI pd nd with
   | none => none
   | some (neg, aI) =>
     if nodeValid P nd aI then
       some (accumulateNode nd.cutoff ((nodeVals P piI nd neg aI).map toFx)
-        (nodeFactors P (nodeS P nd) (nodeW P nd)) acc)
+        (nodeFactors P (nodeS P nd) (nodeW P nd) qLo qHi) qLo qHi acc)
     else none
 
 /-- Fold a list of nodes into the accumulator (`none` if any flag fails).  Written with
 `Option.bind` rather than a `match`, so that the soundness proof never has to reduce a match on
 the (large, symbolic) node computation. -/
-def accumulateSpecs (P : Nat) (piI : Ival) (pd : ProfileData) : List NodeSpec → Raw → Option Raw
+def accumulateSpecs (P : Nat) (piI : Ival) (pd : ProfileData) (qLo qHi : Nat) :
+    List NodeSpec → Raw → Option Raw
   | [], acc => some acc
-  | nd :: rest, acc => (accumulateSpec P piI pd nd acc).bind (accumulateSpecs P piI pd rest)
+  | nd :: rest, acc =>
+    (accumulateSpec P piI pd qLo qHi nd acc).bind (accumulateSpecs P piI pd qLo qHi rest)
 
 end GrotheQuad

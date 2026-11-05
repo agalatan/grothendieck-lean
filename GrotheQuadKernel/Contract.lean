@@ -72,19 +72,45 @@ def addPair (a b : Int × Int) : Int × Int := (a.1 + b.1, a.2 + b.2)
 
 /-! ### The node factors -/
 
-/-- The node factors `F_{k,j} = ψ_{k,j}(s) e^{−s} W` for all `k < 252`, `j < n_k`, from the common
-factor `ew ∋ e^{−s} W`, the Laguerre table `lagTab` of depth `251` (level `k` at index `251 − k`)
-and the power table of `√s` (computed once per node). -/
-def nodeFactorsFrom (P : Nat) (ew : Ival) (lagTab : Array (Array Ival)) (rPow : Array Ival) :
-    Array (Array Fx) :=
-  Array.ofFn fun k : Fin numCharges =>
-    (radialRowI P k.val (blockSide k.val - 1) (lagTab.getD (251 - k.val) #[]) rPow).map
-      fun psi => toFx (mulI P psi ew)
+/-! ### The grade blocks -/
 
-/-- The node factors of the node `s ∈ s`, weight `W ∈ w`. -/
-def nodeFactors (P : Nat) (s w : Ival) : Array (Array Fx) :=
+/-- The offset `d − cIdx` of the block `k` (`pairOf`): `d = cIdx + dOff k`. -/
+def dOff (k : Nat) : Nat := if k == 0 then 0 else k - 1
+
+/-- The grade `q = j + d` of the entry `(k, j, cIdx)`. -/
+def entryGrade (k j cIdx : Nat) : Nat := j + cIdx + dOff k
+
+/-- The number of columns of the row `(k, j)` inside the degree-501 triangle (grade
+`q = j + d ≤ 250` with `d = cIdx + k − 1` for `k ≥ 1` and `d = cIdx` for `k = 0`):
+`cIdx < blockSide k − j`.  The columns beyond it are the "extra" entries of the committed squares,
+which no statement uses and which the accumulator leaves at `0`. -/
+def activeCols (k j : Nat) : Nat := blockSide k - j
+
+/-- The first column of the row `(k, j)` with grade `≥ qLo`. -/
+def blockLo (qLo k j : Nat) : Nat := qLo - j - dOff k
+
+/-- The end of the columns of the row `(k, j)` with grade `< qHi`, inside the triangle. -/
+def blockHi (qHi k j : Nat) : Nat := min (qHi - j - dOff k) (activeCols k j)
+
+/-- The row `(k, j)` has an entry of grade in `[qLo, qHi)`. -/
+def rowActive (qLo qHi k j : Nat) : Bool := blockLo qLo k j < blockHi qHi k j
+
+/-- The node factors `F_{k,j} = ψ_{k,j}(s) e^{−s} W` of the rows `(k, j)` with an entry in the grade
+block `[qLo, qHi)` (`default` elsewhere), from the common factor `ew ∋ e^{−s} W`, the Laguerre table
+`lagTab` of depth `251` (level `k` at index `251 − k`) and the power table of `√s` (computed once per
+node). -/
+def nodeFactorsFrom (P : Nat) (ew : Ival) (lagTab : Array (Array Ival)) (rPow : Array Ival)
+    (qLo qHi : Nat) : Array (Array Fx) :=
+  Array.ofFn fun k : Fin numCharges => Array.ofFn fun j : Fin (blockSide k.val) =>
+    if rowActive qLo qHi k.val j.val then
+      toFx (mulI P (radialFactorI P k.val j.val ((lagTab.getD (251 - k.val) #[]).getD j.val zeroI)
+        rPow) ew)
+    else default
+
+/-- The node factors of the node `s ∈ s`, weight `W ∈ w`, for the grade block `[qLo, qHi)`. -/
+def nodeFactors (P : Nat) (s w : Ival) (qLo qHi : Nat) : Array (Array Fx) :=
   nodeFactorsFrom P (mulI P (expNegI P 400 s) w) (lagTable P 251 (negExpTerms P (negI s) 251))
-    (powTable P (sqrtI P s) 251)
+    (powTable P (sqrtI P s) 251) qLo qHi
 
 /-- The validity flag of the node factors: the exponential's series tail (`s < 402`) and the
 positivity of `e^s`'s enclosure (for the reciprocal). -/
@@ -128,34 +154,32 @@ def contributionOf (D : Nat) (valsFx : Array Fx) (F : Fx) (ranks : Array (Nat ×
   if (ranks.getD cIdx (0, 0)).1 ≤ D then mulFx F (valsFx.getD (ranks.getD cIdx (0, 0)).2 default)
   else (0, 0)
 
-/-- The number of columns of the row `(k, j)` inside the degree-501 triangle (grade
-`q = j + d ≤ 250` with `d = cIdx + k − 1` for `k ≥ 1` and `d = cIdx` for `k = 0`):
-`cIdx < blockSide k − j`.  The columns beyond it are the "extra" entries of the committed squares,
-which no statement uses and which the accumulator leaves at `0`. -/
-def activeCols (k j : Nat) : Nat := blockSide k - j
-
-/-- The contribution of one node to the entry `(k, j, cIdx)` (`0` outside the triangle). -/
-def contributionAt (D : Nat) (valsFx : Array Fx) (factors : Array (Array Fx)) (k j cIdx : Nat) :
+/-- The contribution of one node to the entry `(k, j, cIdx)`: `0` outside the triangle and outside
+the grade block `[qLo, qHi)`. -/
+def contributionAt (D : Nat) (valsFx : Array Fx) (factors : Array (Array Fx)) (qLo qHi k j cIdx : Nat) :
     Int × Int :=
-  if cIdx < activeCols k j then
+  if cIdx < activeCols k j ∧ qLo ≤ entryGrade k j cIdx ∧ entryGrade k j cIdx < qHi then
     contributionOf D valsFx ((factors.getD k #[]).getD j default) (selectedRanks.getD k #[]) cIdx
   else (0, 0)
 
-/-- One row of side `n` of the accumulator after the node (row-constant data hoisted; the
-`act` columns of the triangle are updated, the rest copied). -/
-def accumulateRow (D : Nat) (valsFx : Array Fx) (F : Fx) (ranks : Array (Nat × Nat)) (n act : Nat)
+/-- One row of side `n` of the accumulator after the node (row-constant data hoisted; the columns
+`cLo ≤ cIdx < cHi` of the block are updated, the rest copied). -/
+def accumulateRow (D : Nat) (valsFx : Array Fx) (F : Fx) (ranks : Array (Nat × Nat)) (n cLo cHi : Nat)
     (row : Array (Int × Int)) : Array (Int × Int) :=
   Array.ofFn fun cIdx : Fin n =>
-    if cIdx.val < act then addPair (row.getD cIdx.val (0, 0)) (contributionOf D valsFx F ranks cIdx.val)
+    if cLo ≤ cIdx.val ∧ cIdx.val < cHi then
+      addPair (row.getD cIdx.val (0, 0)) (contributionOf D valsFx F ranks cIdx.val)
     else row.getD cIdx.val (0, 0)
 
-/-- Accumulate one node into the raw accumulator (scale `2^{2 KFix}`). -/
-def accumulateNode (D : Nat) (valsFx : Array Fx) (factors : Array (Array Fx)) (acc : Raw) : Raw :=
+/-- Accumulate one node into the entries of the grade block `[qLo, qHi)` of the raw accumulator
+(scale `2^{2 KFix}`); the other entries are copied. -/
+def accumulateNode (D : Nat) (valsFx : Array Fx) (factors : Array (Array Fx)) (qLo qHi : Nat)
+    (acc : Raw) : Raw :=
   Array.ofFn fun k : Fin numCharges =>
     Array.ofFn fun j : Fin (blockSide k.val) =>
       accumulateRow D valsFx ((factors.getD k.val #[]).getD j.val default)
-        (selectedRanks.getD k.val #[]) (blockSide k.val) (activeCols k.val j.val)
-        ((acc.getD k.val #[]).getD j.val #[])
+        (selectedRanks.getD k.val #[]) (blockSide k.val) (blockLo qLo k.val j.val)
+        (blockHi qHi k.val j.val) ((acc.getD k.val #[]).getD j.val #[])
 
 /-- Exact entrywise sum of two accumulators (the merge of node ranges). -/
 def rawAdd (a b : Raw) : Raw :=

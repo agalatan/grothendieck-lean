@@ -80,32 +80,28 @@ lemma memFx2_mulFx {x y : ℝ} {a b : Fx} (hx : memFx x a) (hy : memFx y b) :
 
 /-! ### The node factors -/
 
-/-- Entry `j` of row `k` of the node factors encloses `ψ_{k,j}(s) · (e^{−s} · W)`. -/
+/-- Entry `j` of row `k` of the node factors of the grade block `[qLo, qHi)` encloses
+`ψ_{k,j}(s) · (e^{−s} · W)` whenever the row has an entry in the block. -/
 lemma memFx_nodeFactors (P : ℕ) (hP : 1 ≤ P) {s W : ℝ} {sI wI : Ival} (hs0 : 0 ≤ s) (hs : mem s sI)
-    (hw : mem W wI) (hv : nodeFactorsValid P sI = true) (k j : ℕ) (hk : k < numCharges)
-    (hj : j < blockSide k) :
+    (hw : mem W wI) (hv : nodeFactorsValid P sI = true) (qLo qHi k j : ℕ) (hk : k < numCharges)
+    (hj : j < blockSide k) (hact : rowActive qLo qHi k j = true) :
     memFx (RadialLaguerre.radialFactor k j s * (Real.exp (-s) * W))
-      (((nodeFactors P sI wI).getD k #[]).getD j default) := by
+      (((nodeFactors P sI wI qLo qHi).getD k #[]).getD j default) := by
   unfold nodeFactorsValid at hv
   simp only [Bool.and_eq_true] at hv
   have hew : mem (Real.exp (-s) * W) (mulI P (expNegI P 400 sI) wI) :=
     mem_mulI P (mem_expNegI P hP 400 hs0 hs hv.1 hv.2) hw
   have hk' : k ≤ 251 := by unfold numCharges at hk; omega
-  have hM : blockSide k - 1 ≤ 251 - k := by
-    unfold blockSide; split_ifs with h <;> simp only [beq_iff_eq] at h <;> omega
-  have hj' : j < blockSide k - 1 + 1 := by omega
+  have hj' : j ≤ 251 - k := by
+    unfold blockSide at hj; split_ifs at hj with h <;> simp only [beq_iff_eq] at h <;> omega
   unfold nodeFactors nodeFactorsFrom
-  simp only [Array.getD_eq_getD_getElem?, Array.getElem?_ofFn, hk, ↓reduceDIte, Option.getD_some,
-    Array.getElem?_map]
+  simp only [Array.getD_eq_getD_getElem?, Array.getElem?_ofFn, hk, hj, ↓reduceDIte, Option.getD_some,
+    hact, ↓reduceIte]
   simp only [← Array.getD_eq_getD_getElem?]
-  have hsz : (radialRowI P k (blockSide k - 1)
-      ((lagTable P 251 (negExpTerms P (negI sI) 251)).getD (251 - k) #[])
-      (powTable P (sqrtI P sI) 251)).size = blockSide k - 1 + 1 := by simp [radialRowI]
-  rw [Array.getElem?_eq_getElem (by rw [hsz]; exact hj'), Option.map_some, Option.getD_some]
   apply memFx_toFx
   apply mem_mulI P _ hew
-  have h := mem_radialRowI P hP k (blockSide k - 1) hs0 hs hk' hM j (by omega)
-  rwa [Array.getD_eq_getD_getElem?, Array.getElem?_eq_getElem (by rw [hsz]; exact hj'),
-    Option.getD_some] at h
+  exact mem_radialFactorI P hP k j (by omega)
+    (mem_lagTable P 251 (by norm_num) (fun i hi => mem_negExpTerms P hP hs 251 i hi) k j hk' hj')
+    (mem_powTable P (mem_sqrtI P hs0 hs) 251 k hk')
 
 end Grothe.UpperQuad

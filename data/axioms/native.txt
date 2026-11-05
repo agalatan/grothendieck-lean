@@ -99,4 +99,17 @@ Grothe.UpperChaos.phi_cover_check_5._native.native_decide.ax_1_1
 Grothe.UpperChaos.rounding_energy_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.secondCenter_band_energy_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.taylor_centers_decode_check._native.native_decide.ax_1_1
+Grothe.UpperQuad.Facts.evenCheck._native.native_decide.ax_1_1
+Grothe.UpperQuad.Facts.gradeBlock00._native.native_decide.ax_1_1
+Grothe.UpperQuad.Facts.gradeBlock01._native.native_decide.ax_1_1
+Grothe.UpperQuad.Facts.gradeBlock02._native.native_decide.ax_1_1
+Grothe.UpperQuad.Facts.gradeBlock03._native.native_decide.ax_1_1
+Grothe.UpperQuad.Facts.gradeBlock04._native.native_decide.ax_1_1
+Grothe.UpperQuad.Facts.gradeBlock05._native.native_decide.ax_1_1
+Grothe.UpperQuad.Facts.gradeBlock06._native.native_decide.ax_1_1
+Grothe.UpperQuad.Facts.gradeBlock07._native.native_decide.ax_1_1
+Grothe.UpperQuad.Facts.gradeBlock08._native.native_decide.ax_1_1
+Grothe.UpperQuad.Facts.gradeBlock09._native.native_decide.ax_1_1
+Grothe.UpperQuad.Facts.gradeBlock10._native.native_decide.ax_1_1
+Grothe.UpperQuad.Facts.gradeBlock11._native.native_decide.ax_1_1
 Grothe.head_check._native.native_decide.ax_1_1
