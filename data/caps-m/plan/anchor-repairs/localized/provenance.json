@@ -37,6 +37,13 @@
       "source_sha256": "747db6a5f5c7230f2221ff3072717ba101c7519622b8c4f7028bfb23c53d2e88",
       "verdicts": "{'fixed': 122, 'pass': 444}"
     },
+    "12x248": {
+      "final_facts_built": 12,
+      "min_float_slack": 0.0024322498574431695,
+      "pieces": 597,
+      "source_sha256": "e807f69cbbe45fd5df3b6dab4af3cbe8ef4b3c66f8d97345ce0a54203ae9f001",
+      "verdicts": "{'fixed': 131, 'pass': 466}"
+    },
     "14x242": {
       "final_facts_built": 11,
       "min_float_slack": 0.0028964461365286187,
@@ -64,6 +71,13 @@
       "pieces": 597,
       "source_sha256": "8bdbb09e91601d6b2b9e05768fdd3610b570c6af23b8002ead4b9f20404b2a4a",
       "verdicts": "{'fixed': 131, 'pass': 466}"
+    },
+    "14x260": {
+      "final_facts_built": 15,
+      "min_float_slack": 0.001418195226339014,
+      "pieces": 783,
+      "source_sha256": "9eef3d554f4bcb6f8abeb7be052c50ba84b8aa62e6ad2376e6fc6adede6a97b0",
+      "verdicts": "{'fixed': 133, 'pass': 650}"
     },
     "15x244": {
       "final_facts_built": 13,
