@@ -64,7 +64,7 @@ def main (P : Nat) : IO Unit := do
   IO.println s!"pi = {toDecimal 30 piI} (width 2^{widthLog2 piI})"
   IO.println s!"r_0 = {toDecimal digits (rs.getD 0 zeroI)}, r_530 = {toDecimal 20 (rs.getD 530 zeroI)}"
   let t1 ← IO.monoMsNow
-  let encl := canonicalTriangleI P scalar false zeroI aI rs D dMax
+  let encl := canonicalTriangleI P scalar false zeroI aI (sqrtTable P (D + 1)) rs D dMax
   let ssq := sumSqUpper P encl
   IO.println s!"sum of squares (upper) = {toDecimal 20 ssq}"
   let t2 ← IO.monoMsNow

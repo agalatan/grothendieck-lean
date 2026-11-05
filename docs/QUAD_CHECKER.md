@@ -487,7 +487,7 @@ scripts/test_caps_stamp.py
 `tools/gen_root_imports.py` already lists the four libraries (`LIBS`). `lakefile.toml` already
 has the library and the `quadrun` executable (not a default target).
 
-### 11.4 Status and hand-over (claude-b9ee, 4 November 2026, 23:30 Bucharest)
+### 11.4 Status and hand-over (claude-b9ee, 5 November 2026, 02:30 Bucharest)
 
 **Proved** (`Grothe/UpperQuad/`, kernel-checked, warning-free, no `sorry`, no `native_decide`,
 all imported by the `Grothe` root; the laptop worktree
@@ -527,27 +527,196 @@ the loop version. A further ≈ 1 s per node is available from a per-node table 
 `forwardStep` (Lean's `Nat.sqrt` is a Newton loop, called twice per triangle entry); not done
 so as not to touch the proved `PairsSound` layer.
 
-**Remaining, in order.** (1) **Bridge.lean** (the top theorem (D), needs the
-`ProductionRetainedEnergy` closure: built on big in `~/claude-b9ee-quad-m4/repo`, not on the
-laptop): define the rational family `a0 raw q c d := (entry.lo : ℚ)/2^128` from the grade
-matrices (without `v`), so that `memFx (a0 q c d) entry` is trivial and
-`b := retainedProductionCoeff a0 = a0 + frozenCorrectionCoeff` is enclosed by
-`gradeMatrix raw frozenFx` with `frozenFx q c d := ⟨shDown 78 (frozenCorrectionAt q c d),
-shUp 78 (…)⟩` (`2^{−206} = 2^{−128} · 2^{−78}`); then `htable` is `energyOK_sound` and `hraw`
-needs: (a) the node layer's enclosure of the exact Gauss sums `G` (`accumulateSpecs_zero_sound`
-with the list of `NodeSpec`s of the partition, a Lean literal to generate from
-`data/quad-checker/panels.txt` + the brackets of `Q0LegendreRuleNN` + `cutoffs.txt`, bound to
-master's `sourcePanels` by `decide`); (b) `|G − a0| ≤ width` summed in ℓ² over the triangle: change
-`rawWidthSq` to sum the widths of the grade-matrix entries (scale `2^128`) so that the reflected
-entries need no separate factor bound; (c) the analytic hypothesis `hQuad` per canonical
-coefficient, `|baseGradedCoefficient q c d − G q c d| ≤ ρ_{qcd}` (S6b/S6c and the cutoffs), with
-master's `radialBaseCoefficient_reflection` for the reflected ones; (d) Parseval on the graded
-support: `‖productionF0Head − gradedHermite 251 a0‖² = Σ |baseGradedCoefficient − a0|²`
-(`productionF0Head = projOn productionDegreeHead F0`, `inner_hvec2_gradedHermite`,
-`norm_hermiteFinite_sq`), then Minkowski over the finite index set. (2) The row-227
-`native_decide` fact (`accumulateSpec` of one `NodeSpec` literal compared with the committed
-raw words) in a root-excluded module, to measure the cost of a native fact. (3) The sharding
-decision (§11.2). (4) The `√n` table in `forwardStep` if the node cost matters.
+**The top theorem (layer (D)) is proved: `Grothe/UpperQuad/Bridge.lean`, `hclose_of_checks`**
+(built on big against the `ProductionRetainedEnergy` closure; the laptop lacks that closure).
+Its inputs: a list of `NodeSpec`s with a root `x nd` in each bracket, the accumulator
+`raw` with `accumulateSpecs P piI pd specs rawZero = some raw`, the checks
+`energyOK raw frozenFx tableFx epsNum = true` and `rawDistOK raw frozenFx bound = true`, the
+budget inequalities (`2ρ² + 2·bound/2²⁵⁶ ≤ δ²`, master's `hsmoothing`, `hbudget` with
+`ε = epsNum/2²⁵⁶`), and the two analytic hypotheses: the seed enclosure at every node (S2) and
+`hQuad : Σ_{q,c,d} ‖baseGradedCoefficient q c d − gaussCoeff specs x q c d‖² ≤ ρ²` (the exact
+Gauss–Legendre sums of the nodes approximate the F0 coefficients in ℓ²: S6b, S6c and the omitted
+pairs of the cutoffs; `gaussCoeff` is reflected for `c > d + 1`, consistent with master's
+`radialBaseCoefficient_reflection`). Conclusion: `hclose` of `fresh_upper_concrete_taylor`
+(`Σ_{headIdx 501} |energy X p − energyTable p| ≤ energyErrQ`). Proof: master's
+`selected_energy_close_of_raw_error` with `a0 := b0 − frozenQ`, `b0` the lower ends of the grade
+matrices (`retainedProductionCoeff a0 = b0`), `htable` from `energyOK_sound`, `hraw` from
+`norm_productionF0Head_sub_sq` with `|base − a0|² ≤ 2|base − G|² + 2|G − a0|²`, the node layer,
+`gradeWidthSq_sound` and `hQuad`. `frozenFx` (`frozenCorrectionAt / 2^206` at scale `2^128`) and
+`tableFx` (floor/ceiling of `energyTable · 2^256`) are the Lean-side data conversions.
+
+**The row-227 native-fact probe** (a one-off module `Grothe/UpperQuad/Row227Fact.lean`, root-excluded,
+removed after the measurement on the reviewer's request — a `native_decide` theorem outside the
+inventory is not allowed; the timing probe is `quadrun node 227 1024`): `node227_check : check = true`
+by `native_decide`, where `check` accumulated the `NodeSpec` literal of node 227
+(`accumulateSpec 1024 piI profile node227 rawZero`) and compared the entries `(0,0,0)` and `(1,0,0)`
+with the milestone-2 values; its `lake build` took **7.3 s on big** (the `quadrun node 227 1024` run of the same node takes 6.4 s): the overhead of a native fact
+over the precompiled kernel is negligible, so the cost of the final facts is the node cost itself
+(≈ 6 s per node at P = 512, 21,577 nodes ≈ 36 CPU-hours, ≈ 2 CPU-hours for the saved matrices).
+**Sharding (for the user's decision, §11.2):** with a 6-hour limit per hosted job, option 1 needs
+≈ 12 node-range facts of ≈ 1,800 nodes (≈ 3 h each) whose partial accumulators are committed as
+dyadic data (≈ 5 MB each at `2^{-60}` over the triangle after dropping the entries below `10^{-20}`,
+or the full `2.7·10⁶` entries at `2^{-128}` ≈ 90 MB each, too big), plus one final fact that adds the
+partials exactly and runs `energyOK`/`rawDistOK` (≈ 2.5 h: the saved matrices dominate; they could
+be a separate fact with a committed table of the 5.4·10⁶ numerators, 20 MB); option 3 (one
+sequential fact) is ≈ 38 CPU-hours on the droplet, no data.
+
+**Sharding decision (the user, 5 November 2026, 00:50 Bucharest): shard by output block, no
+committed intermediate data.** Every native fact runs the full node loop (the triangle and the node
+factors of every node) but accumulates only its block of raw entries; the per-node work is
+recomputed in every shard (≈ 100 CPU-hours in all, paid once on the droplet and cached by CI like
+the cap rows). Design:
+- **Blocks = ranges of grades `[qLo, qHi)`.** The raw entry `(k, j, cIdx)` has the grade
+  `q = j + d`, `d = cIdx + k − 1` (`d = cIdx` for `k = 0`), and the energies of grade `q` need
+  exactly the entries of grade `q` (the canonical ones directly, the reflected ones through the
+  canonical partner of the same grade), so `energyOK`/`rawDistOK` restricted to a grade range are
+  decided by the block's accumulator alone. Blocks are balanced by the entry count
+  `(q+1)(q+2)/2` of grade `q` (cumulative thirds-of-cube boundaries: 12 blocks of ≈ 225,000
+  triangle entries), and the saved matrices `S_q` are needed only for `q ∈ [qLo, qHi]`, so their
+  ≈ 2 CPU-hours are spread over the blocks, not repeated.
+- **Kernel changes needed:** `accumulateNode`/`accumulateSpecs` with the grade range (the row
+  `(k, j)` keeps the columns `cIdx` with `qLo ≤ j + d < qHi`; `contributionAt` is `0` outside),
+  `nodeFactors` restricted to the rows `(k, j)` that have an entry in the range, the `√n` table in
+  `forwardStep` (≈ 1 s per node), `energyOK`/`rawDistOK` over `q ∈ [qLo, qHi)` with the head
+  restricted to `n + m = 2q + 1`. The soundness statements gain the range (the entries of other
+  grades are left at `0` and are never read).
+- **Cost per fact** = 21,577 × (triangle ≈ 1.1 s with the `√n` table + node factors of the block
+  ≤ 1.1 s + accumulation of the block ≈ 0.2 s) ≈ 7–14 h single-threaded, to be measured; the facts
+  are separate modules `Grothe/UpperQuad/Facts/GradeBlockNN.lean` (one `native_decide` each, one
+  process each, no `Task.spawn`), built in parallel by Lake.
+- **Verified-once path:** add the fact modules to `scripts/caps_stamp.py` (a `QUAD_TOPS` list next
+  to `PIECE_TOPS`, so that the caps digest covers their import closure and the first build runs on
+  the droplet with the caps), register each fact in `data/axioms/native.txt` and
+  `scratch/Axioms.lean`, and exclude nothing from the root: the facts are part of `Grothe` like
+  the cap rows. The final theorem adds the per-block `epsNum_b` and `bound_b` (rationals) and
+  applies `hclose_of_checks`'s per-block variant: no data, no computation.
+
+**Done after the decision (5 November, 02:30 Bucharest):**
+- **The block kernel.** `accumulateNode`/`accumulateSpec`/`accumulateSpecs` take the grade range
+  `[qLo, qHi)` (`entryGrade k j cIdx = j + cIdx + dOff k`, the block's columns of a row are
+  `[blockLo, blockHi)`, `rowActive`); `nodeFactors` computes only the rows with an entry in the
+  block; the pair recurrence takes the table `sqrtTable P (D+1)` of `√n`; the block checks
+  `energyOKBlock` (`savedMatricesRange`, `blockEnergies`, `headCount`, `blockExcursion`),
+  `evenExcursion`, `rawDistOKBlock` (`gradeWidthSqBlock`). **Node 227 on big (idle core, P = 512):
+  4.3 s** (triangle 0.76 s, node factors 0.99 s for all rows, accumulation 1.91 s for all grades).
+  All soundness statements carry the range (`NodeSound`, `ContractSound`, `RotateSound`:
+  `blockExcursion_sound`, `energyOKBlock_sound`, `evenExcursion_sound`, `gradeWidthSqBlock_sound`).
+- **The data binding** (`Grothe/UpperQuad/Partition.lean`): `partitionSpecs` is *defined* from
+  master's `Q0GaussAddressScan.sourcePanels` and `Q0LegendreRule01…64.brackets` plus the generated
+  cutoffs `Grothe/UpperQuad/Data/Cutoffs0…7.lean` (`tools/quad_gen_partition.py --lean`,
+  byte-for-byte reproducible from `data/q0_quadrature/conditional_source/conditional_cutoffs.npy`);
+  `rootOf nd` is the root of the bracket by classical choice, a genuine root when `bracketOK` holds
+  (`rootOf_spec`, from the kernel's IVT lemma; `rootOf_mem_of_accepted`: every node the fact
+  accepts); `specNode_eq_panelNode`/`specWeight_eq_panelWeight`: the node and weight of a spec of
+  the panel `p` are master's `panelNode p.lo p.hi`/`panelWeight p.lo p.hi (p.order − 1)` at the
+  root. The identification of `rootOf` with the root `Q0GaussSelectedChoice` selects is master's
+  `all_unique` (for the analytic layer).
+- **The multi-block top theorem** (`Bridge.lean`, `hclose_of_blocks`): with the grades cut at
+  `bounds 0 = 0 < … < bounds nb = 251`, the block accumulators `R b` (`accumulateSpecs … (bounds b)
+  (bounds (b+1)) specs rawZero = some (R b)`), the per-block checks `energyOKBlock (R b) … (eps b)`
+  and `rawDistOKBlock (R b) … (bnd b)`, the even check `evenExcursion tableFx ≤ evenNum`, the
+  budgets with `Σ_b eps b + evenNum` and `Σ_b bnd b`, and the analytic hypotheses (S2 at every node,
+  `hQuad`), the conclusion is `hclose`; `a0 := lower ends of the block grade matrices − frozen`
+  (`a0Blocks`). The head splits as `oddHead 0 251 ∪ even` and the odd part by blocks
+  (`sum_headIdx_split`, `sum_oddHead_blocks`, `sum_oddHead'`); the exact Gauss term of an entry
+  does not depend on the block it is accumulated in (`specTerm_range`). Built on big; the laptop
+  cannot build `Bridge` (closure).
+
+**Measured block loop (big, loaded, core pinned, P = 512, the first 40 nodes = full-cutoff nodes of
+panel 0):** `quadrun block 0 110 40`: 2.5 s per node; `block 110 138 40`: 1.8 s; `block 244 251 40`:
+1.8 s; the full range `block 0 251 40`: 2.3 s (±40 % noise from the other jobs). Per block fact:
+≈ 21,577 × 1.8–2.5 s ≈ 11–15 h on a loaded core, ≈ 8–10 h idle; the nodes with small cutoffs are
+cheaper than these. The bracket check is now at the fixed precision `bracketPrec = 1024` inside
+`nodeValid` (`P_n` at the endpoints of a `2^{-640}`-wide bracket is `≈ 2^{-630}`, undecidable at
+512 bits; the first `quadrun block` run rejected every node for that reason).
+**Facts' common module** (`Grothe/UpperQuad/Facts/Common.lean`): `P0 = 512`, `piI`, the profile
+literal with `profile_agrees`, the twelve blocks `bounds = [0, 110, 138, 158, 174, 188, 200, 210,
+220, 228, 237, 244, 251]` (balanced by the entry count, `bounds_mono`, `blk`/`blk_spec` by
+`decide`), `blockFact b eps bnd : Bool` (the profile flags, the node loop of `partitionSpecs`
+restricted to the block through `Option.any`, `energyOKBlock`, `rawDistOKBlock`),
+`blockFact_spec`, and **`hclose_of_blockFacts`**: the twelve `blockFact` values, the even check,
+S2 and `hQuad` give `hclose`. Tolerances (to be fixed in the fact modules; the budget has room):
+`eps_b ≈ 5·10⁻¹³·2²⁵⁶` each (the measured ℓ¹ excursion of the whole head is `3.1·10⁻¹⁵`),
+`bnd_b = 2¹⁰⁰` (the squared widths at scale `2^{256}` sum to `≲ 10²⁵`), `evenNum = 0`.
+
+**The fact modules are written** (`Grothe/UpperQuad/Facts/`): `GradeBlock00…11.lean` (one
+`native_decide` each: `gradeBlockNN : blockFact NN epsBlock bndBlock = true`, `epsBlock = 5·10⁶⁴`,
+`bndBlock = 2¹⁰⁰`), `Even.lean` (`evenCheck : evenFact = true`), `Final.lean`
+(`hclose_of_facts`: the thirteen facts, S2, `hQuad` and the budget inequalities give `hclose`; with
+the inherited `ρ = 1.55·10⁻¹²` one may take `δ = 2.2·10⁻¹²`, `Δ = 2.3·10⁻¹²`). Registered: the
+thirteen `native_decide` axioms in `data/axioms/native.txt`, `#print axioms` lines in
+`scratch/Axioms.lean` (the facts, `hclose_of_facts`, `hclose_of_blockFacts`, `hclose_of_blocks`),
+and `QUAD_TOPS` in `scripts/caps_stamp.py` (`TOPS = ROW_TOPS + PIECE_TOPS + QUAD_TOPS`; the test
+fixtures carry stubs for the thirteen modules). **Consequence for CI (for the user):** the caps
+digest now hashes the import closure of the facts, 752 files (the whole `UpperQuad` layer and the
+`UpperChaos` modules it uses) instead of 63, so a branch that changes any of them has no verified
+cache for its digest and its check goes to the droplet (with `FORCE_HEAVY` everything goes there
+anyway); the alternative is a separate cache key for the facts.
+
+**Validation of the block checks (5 November, 03:10 Bucharest, big):** `quadrun check raw-final.txt
+frozen.txt energy-table.txt 0 110`: ℓ¹ excursion of the grades `[0, 110)` = **3.11565·10⁻¹⁵** (the
+milestone-3 whole-head value is 3.116·10⁻¹⁵: the low grades carry all of it), squared widths
+8·10⁻⁵⁴, 3 min; `… 244 251`: excursion 1.3·10⁻²⁷, squared widths 2·10⁻⁵⁵, 17 min (15 of them the
+saved matrices `S_244 … S_251`); `evenExcursion = 0`; `Facts.Even` (`evenCheck`) builds **true** in
+437 s. So `energyOKBlock`/`gradeWidthSqBlock`/`evenExcursion` are validated and the tolerances
+`epsBlock = 5·10⁶⁴/2²⁵⁶` are generous (block 0 uses 7 ‰ of its tolerance).
+
+**The sharding trade-off, measured (5 November, 03:30):** the per-node cost does not depend on the
+precision (node 227: 4.21 s at P = 256, 4.23 s at 384, 4.3 s at 512: the interval arithmetic is
+dominated by allocation and normalisation, not by the mantissa size), and P = 256 is unsound in
+practice at the Watson nodes (node 771: widths 2²² at the high degrees), so P = 512 stays. A block
+fact costs ≈ 21,577 × (0.7 s triangle + 0.3 s Laguerre table + 0.1–0.6 s node factors of the block's
+rows + 0.16 s accumulation) ≈ 8–10 h on an idle core. Node-range sharding with committed partials
+(the "option 1"/(a) of §11.2) needs **≈ 20 MB per range** (2,052,103 of the 2,698,752 triangle
+entries have |value| ≥ 2⁻⁶⁴, and the needed precision is relative, binary64-like: the "≈ 5 MB"
+estimate above was wrong), i.e. 55 MB for 2 ranges (≈ 3 h wall), 110 MB for 4 (≈ 1.5 h), 220 MB
+for 8; one sequential fact costs ≈ 25 h. The user chose node ranges on 5 November 03:05 and then
+received these numbers; the decision between (i) twelve grade blocks, no data, ≈ 10 h wall once
+(facts cached by CI), (ii) 2 ranges + 55 MB, (iii) 4 ranges + 110 MB, (iv) one fact, is pending.
+The twelve `GradeBlockNN` modules implement (i); for (ii)/(iii) the kernel needs a decoder of the
+committed partial (a base64 string literal), a `rawWithin R T : Bool` check and the exact sum of
+the partials, and `hclose_of_blocks` is generalised to arbitrary enclosures of the exact Gauss sums
+(its proof uses the block loop only through `gaussRaw_of_block`).
+
+**Decision history (5 November, 03:05–03:40 Bucharest):** the user first chose node ranges with
+committed partials (option (a), ≈ 1 h wall) when told the block facts take ≈ 10 h wall; the
+measured data size (≈ 20 MB per range, see above) made that unattractive and the user then chose
+**(i), the twelve grade-block facts without committed data**, accepting the ≈ 10 h wall paid once
+(the two per-node speedups considered — the triangle at P = 256 and fixed-precision node factors —
+were measured not to pay: the cost does not depend on P, and P = 256 is unsound in practice at the
+Watson nodes). **Launched on mega** (`~/claude-b9ee-quad-facts`, cores 36–59, twelve `lake build
+Grothe.UpperQuad.Facts.GradeBlockNN` in their own process groups, `block-NN.log` with start/end
+timestamps) on 5 November 01:07 Bucharest (23:07 UTC) as the private measurement; the CI droplet run (push without
+`[skip ci]`, or `gh workflow run lean.yml --ref claude-b9ee/quad-checker-bridge`) follows when every
+block is true there. The CI run 41929108078 dispatched before the (a) interlude was cancelled.
+
+**When the mega run finishes** (`~/claude-b9ee-quad-facts/block-NN.log`, each ends with `Built
+Grothe.UpperQuad.Facts.GradeBlockNN` and an `end` timestamp, or with an error): record the twelve
+wall times in this section and on #303; if every block is true, `lake build
+Grothe.UpperQuad.Facts.Final` there (seconds), then trigger the CI droplet run of the branch tip
+(`gh workflow run lean.yml --ref claude-b9ee/quad-checker-bridge`, or a push without `[skip ci]`;
+`scripts/ci_active.sh claude-b9ee claude-b9ee/quad-checker-bridge` first), watch run until green
+(≈ 10 h), then PR #318 is landable (hand merge not needed: no workflow file changes). If a block is
+false, read its log: a tolerance (`epsBlock`, `bndBlock`) or a flag (`nodeValid`, `profileValid`) is
+the likely cause; `quadrun block qLo qHi n` and `quadrun check` reproduce the computation outside
+Lean. Clean-up afterwards: `ssh mega 'rm -rf ~/claude-b9ee-quad-facts'`,
+`ssh big 'rm -rf ~/claude-b9ee-quad-m4'` (the latter holds the `ProductionRetainedEnergy` closure
+used to build `Bridge`/`Partition`/`Facts` outside CI; keep it while that work continues).
+
+**Remaining, in order.** (0) The private run on mega, then the CI droplet run (above). Old (0) was:
+Validate the block checks on the milestone-2 raw vector
+(`quadrun check handoff/quad-checker/raw-final.txt frozen.txt energy-table.txt qLo qHi`: the
+excursions by block must sum to the milestone-3 `3.116·10⁻¹⁵`). (1) The fact modules: for each block `b` a module
+`Grothe/UpperQuad/Facts/GradeBlockNN.lean` with the `native_decide` fact
+`accumulateSpecs 512 piI profileData (bounds b) (bounds (b+1)) partitionSpecs rawZero = some R_b ∧
+energyOKBlock R_b frozenFx tableFx eps_b … ∧ rawDistOKBlock …` (the accumulator `R_b` is not
+committed: the fact's statement is the conjunction of the Boolean checks on the accumulator the loop
+produces, i.e. a `Bool` function `blockFact b = true`), the even fact, `profileAgrees` by `decide`,
+and the per-block tolerances; register them in `data/axioms/native.txt` and `scratch/Axioms.lean`;
+add a `QUAD_TOPS` list to `scripts/caps_stamp.py` so that the caps digest covers them and the first
+build runs on the droplet; measure one block on big first (the driver `quadrun block <qLo> <qHi>`
+to be added). (2) The final theorem instantiating `hclose_of_blocks` with the facts (and `rootOf`
+as `x`, `rootOf_mem_of_accepted` as `hx`). (3) The analytic hypotheses (S2, `hQuad`).
 
 **Conventions and pitfalls.** Kernel definitions must be `let`-free in every branch that a proof
 splits on (`let` elaborates to `have`, invisible to `split_ifs`; nested `let`s inside `fun`
