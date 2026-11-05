@@ -375,9 +375,19 @@ differences `3.0·10⁻¹⁵`, per-grade maxima `1.8e-15, 7.5e-16, 1.3e-15, 1.2e
 roundoff over 21,577 nodes; the checker's enclosures themselves have widths `≤ 7.6·10⁻²⁸`. With the
 uniform radial rule the same comparison gave `1.5·10⁻⁸` (§6.2).
 
-**Convergence (`checker` → `checker_w2`, `checker_s60`):** TBD.
+**Convergence (`checker` → `checker_w2`, `checker_s60`), power 1.** `checker_w2` refines every
+parameter of the `w`-integral (panels 0.15 and 20 points, zone 0.3, 30 grading levels of 16
+points, FFT 2,048, angle panels 20/40 points, `τ_max = 16`; 2.1× the cost): `I₁` and the whole
+error are unchanged to all 17 digits (`2.5684893045809268e-6`, `4.016986493532936e-11`), the
+low-band norm moves from `7.286908e-17` to `7.297086e-17` (`+1.0·10⁻¹⁹`, roundoff) and its largest
+coefficient difference by `5·10⁻²⁰`. `checker_s60` drops the 159 nodes beyond `s = 60`: no change
+in `I₁`, the whole error or the low-band norm (`+1.2·10⁻²³`). The exact moments on the checker
+partition: `E φ²` to `−4.9·10⁻¹⁵`, `E φ⁴` to `+2.9·10⁻¹⁵`, `E φ⁶` to `−7.9·10⁻¹⁵` relative. So every
+number of the table above is converged to the float64 level of the computation; the hypotheses'
+margins (`10⁻¹³`–`10⁻¹¹`) exceed the numerical uncertainty by eight or more orders of magnitude.
 
-**Cost:** 18,820 CPU-s for power 1 (0.87 s per node), 11,113 for power 2, on the loaded big droplet.
+**Cost:** 18,820 CPU-s for power 1 (0.87 s per node), 11,113 for power 2, 9,192 for power 3, on
+the loaded big droplet (8 niced shards; 40–60 min wall per power).
 
 ## 7. Lean port design
 
