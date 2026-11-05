@@ -1,16 +1,16 @@
-# Modules that tools/gen_root_imports.py must NOT import in the root files Grothe.lean / GrotheKernel.lean.
-# One module per line, sorted; `#` starts a comment. Union-merged by git (.gitattributes).
 #
-# Header comments only: `tools/gen_root_imports.py` keeps this file sorted. Current entries:
-# * Grothe.LowerAnalytic.CapPieces.* — generated per-node modules of the rows 12–15 node caps (route M: data D,
+#   Grothe.lean, not through the GrotheKernel root).
+#   `CapPieces.Node14x150`) are not listed: an exclusion of an imported module has no effect;
 #   coverage C, native range facts R, node theorem N) that no proof uses yet (rows 12–15 campaign), so not in the
 #   default build (tools/gen_cap_pieces.py). Modules reached from the root anyway (e.g. node 14x150 through
-#   `CapPieces.Node14x150`) are not listed: an exclusion of an imported module has no effect;
-# * GrotheKernel.BandMass, GrotheKernel.HeadWeight — kernel modules used only by Grothe.Upper (built through
-#   Grothe.lean, not through the GrotheKernel root).
-# * Grothe.Upper.EnergyDegreeOneLookup, Grothe.UpperChaos.ProductionDegreeOneTable — quarantined 4 Nov 2026: the lookup's
 #   kernel proof needs about 28 GB (Lean killed by the OOM killer on yo, run 41780631946), so master could not be checked;
 #   re-admit them when the proof fits the runners (#271).
+# * Grothe.LowerAnalytic.CapPieces.* — generated per-node modules of the rows 12–15 node caps (route M: data D,
+# * Grothe.Upper.EnergyDegreeOneLookup, Grothe.UpperChaos.ProductionDegreeOneTable — quarantined 4 Nov 2026: the lookup's
+# * GrotheKernel.BandMass, GrotheKernel.HeadWeight — kernel modules used only by Grothe.Upper (built through
+# Header comments only: `tools/gen_root_imports.py` keeps this file sorted. Current entries:
+# Modules that tools/gen_root_imports.py must NOT import in the root files Grothe.lean / GrotheKernel.lean.
+# One module per line, sorted; `#` starts a comment. Union-merged by git (.gitattributes).
 Grothe.LowerAnalytic.CapPieces.C14x200
 Grothe.LowerAnalytic.CapPieces.D14x200
 Grothe.LowerAnalytic.CapPieces.N14x200

@@ -32,6 +32,9 @@ class CapsStampTests(unittest.TestCase):
                    for k in rows}
         for name in ("C14x150", "R14x150_0", "R14x150_1", "R14x150p0Repair"):
             sources[f"Grothe/LowerAnalytic/CapPieces/{name}.lean"] = "import Grothe.Shared\n-- piece fact\n"
+        for b in range(12):
+            sources[f"Grothe/UpperQuad/Facts/GradeBlock{b:02d}.lean"] = "import Grothe.Shared\n-- quad block fact\n"
+        sources["Grothe/UpperQuad/Facts/Even.lean"] = "import Grothe.Shared\n-- quad even fact\n"
         sources["Grothe/Shared.lean"] = "-- shared fixture dependency\nimport Mathlib.Data.Real.Basic\n"
         ordered = sorted(sources)
         extra = {
@@ -183,7 +186,7 @@ class CapsStampTests(unittest.TestCase):
         computation = sorted([name for name in self.ordered if name.endswith(".lean") and
                               name not in extra_files] +
                              [str(Path(*name.split(".")).with_suffix(".lean")) for name in data_names])
-        self.assertEqual(len(computation), 52)
+        self.assertEqual(len(computation), 65)  # 15 rows + 4 pieces + 13 quad facts + Shared + 32 data
         expected_files = computation + extra_files
         expected_hash = hashlib.sha256()
         for name in expected_files:
@@ -193,8 +196,8 @@ class CapsStampTests(unittest.TestCase):
         listed = self.run_cli("--list")
         self.assertEqual(listed.returncode, 0, listed.stdout + listed.stderr)
         self.assertEqual(listed.stdout,
-                         "\n".join(expected_files) + f"\n57 files; sha256 {expected}\n")
-        self.assertEqual(self.run_cli("--digest").stdout, f"sha256 {expected}\nfiles 57\n")
+                         "\n".join(expected_files) + f"\n70 files; sha256 {expected}\n")
+        self.assertEqual(self.run_cli("--digest").stdout, f"sha256 {expected}\nfiles 70\n")
         self.assertEqual(self.run_cli("--mark-cache").returncode, 0)
         for name in ["Grothe/ProofOnly.lean", "Grothe/AnotherProofOnly.lean", "Grothe/UntraversedRootImport.lean"]:
             (self.root / name).write_text("-- changed untraversed proof\n")
@@ -286,7 +289,7 @@ class RepositoryBoundaryTests(unittest.TestCase):
             f"Grothe.LowerAnalytic.CapPieces.{path.stem}"
             for path in sorted(piece_dir.glob("*.lean")) if path.stem.startswith(("C", "R"))
         ]
-        for layer, roots in (("rows", self.caps.TOPS), ("pieces", pieces)):
+        for layer, roots in (("rows", self.caps.ROW_TOPS), ("pieces", pieces)):
             with self.subTest(layer=layer):
                 forbidden = [module for module in self.caps.closure(roots)
                              if module.rsplit(".", 1)[-1] in proof_modules
