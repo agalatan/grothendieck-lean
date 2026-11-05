@@ -135,6 +135,34 @@
       "source_sha256": "626842033f77464957458dd7e754a517bcb899929d1d6630fe5b4bc1af3acf78",
       "verdicts": "{'fixed': 145, 'pass': 421}"
     },
+    "15x248": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.002817199520106284,
+      "pieces": 566,
+      "recipe_repairs": [
+        {
+          "original_var_row": [
+            "0",
+            "0",
+            "0",
+            "0.019840131017346104",
+            "0.032098261374340464",
+            "-0.013269167945243023",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ],
+          "piece": 31,
+          "reason": "the S-lemma matrix of this box3 piece (slice tau0 in [0.245331, 0.251331], box [-3/500, 3/500]^2, nq 256) is indefinite by -2.7e-5 on the fibre coordinates {4, 5, 6} for every multiplier under the checker's prices (float slack +3.7e-3); the recipe's variance-factor row scaled by 5/4 makes the checker accept the piece with the generator's own multipliers (factors 11/10 ... 2 pass, 9/10 fails; sweep on big, 5 Nov 05:55 Bucharest); quadrant splitting does not help (all four quadrants at -2.74e-5)",
+          "var_factor": "5/4"
+        }
+      ],
+      "source_sha256": "de2c853195e9a904681381181271b7c79bde915b9f01388ec164b1a3b998a880",
+      "verdicts": "{'fixed': 133, 'pass': 433}"
+    },
     "15x250": {
       "final_facts_built": 12,
       "min_float_slack": 0.0026235042727440483,

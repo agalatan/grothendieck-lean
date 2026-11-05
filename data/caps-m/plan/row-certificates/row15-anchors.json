@@ -14,12 +14,13 @@
     },
     "localized_input": {
       "path": "data/caps-m/plan/anchor-repairs/localized/row15-new-pieces.json",
-      "sha256": "46c2e95b86ab28afc1dc4ddd39815b143ede9bb712c6156f4464c02bfba596ce"
+      "sha256": "5eb1e8e9f6c8cea694000b82b5e7933f7a06558d0a74afebf51cd4f75daf6c99"
     },
     "localized_nodes": [
       242,
       244,
       246,
+      248,
       250,
       251,
       260
@@ -1011,13 +1012,6 @@
       "s": "159/800"
     },
     {
-      "cap": "35289678309/20000000000",
-      "grid_index": 1,
-      "node_index": 248,
-      "recipe": "200755805095024867385333989/281474976710656000000000000,178312763912955020060784587/1125899906842624000000000000,986453439105242263728893/17592186044416000000000000,0,0,0,0,0,0,0,0,0|1",
-      "s": "47/100"
-    },
-    {
       "cap": "1958587410381/1000000000000",
       "grid_index": 1,
       "node_index": 294,
@@ -1574,9 +1568,9 @@
   "canonical_row_declaration": "row16",
   "capPad": "1/100000000000",
   "census": {
-    "anchors": 220,
+    "anchors": 219,
     "chords": 78,
-    "localized": 98,
+    "localized": 99,
     "nodes": 396,
     "vertices": 318
   },
@@ -1769,6 +1763,7 @@
     242,
     244,
     246,
+    248,
     250,
     251,
     260,
@@ -2042,9 +2037,7 @@
       "lo": 224
     },
     {
-      "anchor_indices": [
-        248
-      ],
+      "anchor_indices": [],
       "hi": 256,
       "hi_lean": "256",
       "index": 15,
