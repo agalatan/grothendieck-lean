@@ -520,7 +520,7 @@
     }
   ],
   "native_verified": false,
-  "plan_sha256": "b1e3cd6d0aefea4e14bc0a6bd7adfcf6f94289e099c8682a5780e8b64d8c7aae",
+  "plan_sha256": "8e4dacf18709dbf00fee32e7c6ce38b52e4353db621081c3893389d6125771fa",
   "recipes_module": "Grothe.LowerAnalytic.CapRow14.Recipes",
   "row_index": 14,
   "scope": "Unverified anchored recipe proposals only, following a complete exact-zero per-row input gate. No native verification, activation, global capsRest discharge or cache claim.",

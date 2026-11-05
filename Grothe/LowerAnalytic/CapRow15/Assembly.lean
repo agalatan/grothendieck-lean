@@ -107,10 +107,12 @@ import Grothe.LowerAnalytic.CapPieces.N15x218
 import Grothe.LowerAnalytic.CapPieces.N15x219
 import Grothe.LowerAnalytic.CapPieces.N15x220
 import Grothe.LowerAnalytic.CapPieces.N15x224
+import Grothe.LowerAnalytic.CapPieces.N15x242
 import Grothe.LowerAnalytic.CapPieces.N15x244
 import Grothe.LowerAnalytic.CapPieces.N15x246
 import Grothe.LowerAnalytic.CapPieces.N15x250
 import Grothe.LowerAnalytic.CapPieces.N15x251
+import Grothe.LowerAnalytic.CapPieces.N15x260
 import Grothe.LowerAnalytic.CapPieces.N15x270
 import Grothe.LowerAnalytic.CapPieces.N15x274
 import Grothe.LowerAnalytic.CapPieces.N15x276
@@ -131,7 +133,7 @@ namespace Grothe.LowerAnalytic
 private theorem row15LocalizedCaps : ExclCaps 15 row15LocalizedExclusions := by
   intro i hmem _hi
   simp only [row15LocalizedExclusions, List.mem_cons, List.not_mem_nil, or_false] at hmem
-  rcases hmem with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  rcases hmem with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
   · simpa only [NodeCap] using (nodeCap_15x140 (by simp))
   · simpa only [NodeCap] using (nodeCap_15x141 (by simp))
   · simpa only [NodeCap] using (nodeCap_15x142 (by simp))
@@ -214,10 +216,12 @@ private theorem row15LocalizedCaps : ExclCaps 15 row15LocalizedExclusions := by
   · simpa only [NodeCap] using (nodeCap_15x219 (by simp))
   · simpa only [NodeCap] using (nodeCap_15x220 (by simp))
   · simpa only [NodeCap] using (nodeCap_15x224 (by simp))
+  · simpa only [NodeCap] using (nodeCap_15x242 (by simp))
   · simpa only [NodeCap] using (nodeCap_15x244 (by simp))
   · simpa only [NodeCap] using (nodeCap_15x246 (by simp))
   · simpa only [NodeCap] using (nodeCap_15x250 (by simp))
   · simpa only [NodeCap] using (nodeCap_15x251 (by simp))
+  · simpa only [NodeCap] using (nodeCap_15x260 (by simp))
   · simpa only [NodeCap] using (nodeCap_15x270 (by simp))
   · simpa only [NodeCap] using (nodeCap_15x274 (by simp))
   · simpa only [NodeCap] using (nodeCap_15x276 (by simp))

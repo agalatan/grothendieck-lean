@@ -6,7 +6,7 @@
     "format": "caps-row-anchor-repairs/v1",
     "input": {
       "path": "data/caps-m/plan/anchor-repairs/repairs.json",
-      "sha256": "6c4ab842ba09a187a1beea6b5b81b3d6ee2c91a01bd8a98363818b84b45ddf42"
+      "sha256": "42159b63afe87e118f8e32962a7e76f4bd1bccdcda3a8fc957be522327c3d814"
     },
     "localized_input": {
       "path": "data/caps-m/plan/anchor-repairs/localized/row12-new-pieces.json",

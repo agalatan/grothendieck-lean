@@ -10,17 +10,19 @@
     "format": "caps-row-anchor-repairs/v1",
     "input": {
       "path": "data/caps-m/plan/anchor-repairs/repairs.json",
-      "sha256": "6c4ab842ba09a187a1beea6b5b81b3d6ee2c91a01bd8a98363818b84b45ddf42"
+      "sha256": "42159b63afe87e118f8e32962a7e76f4bd1bccdcda3a8fc957be522327c3d814"
     },
     "localized_input": {
       "path": "data/caps-m/plan/anchor-repairs/localized/row15-new-pieces.json",
-      "sha256": "2449dc2d4aaeb7649751b85c0003a81cf860364a0993f4d5fa58848ba6d006fc"
+      "sha256": "46c2e95b86ab28afc1dc4ddd39815b143ede9bb712c6156f4464c02bfba596ce"
     },
     "localized_nodes": [
+      242,
       244,
       246,
       250,
-      251
+      251,
+      260
     ],
     "method": "Variance factor t*(17/20, -1/20, 53/100) on the fibre coordinates (6, 7, 10) (the retry family of rows 16-18, data/cap-recipes/row16.json), t chosen per node as the accepted amplitude with the largest exact Schur margin of the checker matrix N (same functions as nodeOK, grid 1); nodes whose stored recipe fails by less than 1e-6 keep it and move to the fine grid (1600, 1024, 1/200) of the certificate catalogue. Each repaired anchor is verified by its per-node rangeOK probe (native_decide) before the push; CI certifies the range facts.",
     "nodes": [
@@ -1009,25 +1011,11 @@
       "s": "159/800"
     },
     {
-      "cap": "435826954041/250000000000",
-      "grid_index": 1,
-      "node_index": 242,
-      "recipe": "76715994466234269135178357/112589990684262400000000000,63066411122652622591679803/450359962737049600000000000,1612028834045245369756737/35184372088832000000000000,0,0,0,0,0,0,0,0,0|1",
-      "s": "91/200"
-    },
-    {
       "cap": "35289678309/20000000000",
       "grid_index": 1,
       "node_index": 248,
       "recipe": "200755805095024867385333989/281474976710656000000000000,178312763912955020060784587/1125899906842624000000000000,986453439105242263728893/17592186044416000000000000,0,0,0,0,0,0,0,0,0|1",
       "s": "47/100"
-    },
-    {
-      "cap": "1810430273009/1000000000000",
-      "grid_index": 1,
-      "node_index": 260,
-      "recipe": "25764016426065481913531351/28147497671065600000000000,205843855852062047902157469/562949953421312000000000000,1687871551584310101096027/8796093022208000000000000,0,0,0,0,0,0,0,0,0|1",
-      "s": "1/2"
     },
     {
       "cap": "1958587410381/1000000000000",
@@ -1586,9 +1574,9 @@
   "canonical_row_declaration": "row16",
   "capPad": "1/100000000000",
   "census": {
-    "anchors": 222,
+    "anchors": 220,
     "chords": 78,
-    "localized": 96,
+    "localized": 98,
     "nodes": 396,
     "vertices": 318
   },
@@ -1778,10 +1766,12 @@
     219,
     220,
     224,
+    242,
     244,
     246,
     250,
     251,
+    260,
     270,
     274,
     276,
@@ -2053,7 +2043,6 @@
     },
     {
       "anchor_indices": [
-        242,
         248
       ],
       "hi": 256,
@@ -2062,9 +2051,7 @@
       "lo": 240
     },
     {
-      "anchor_indices": [
-        260
-      ],
+      "anchor_indices": [],
       "hi": 272,
       "hi_lean": "272",
       "index": 16,

@@ -10,8 +10,15 @@
     "format": "caps-row-anchor-repairs/v1",
     "input": {
       "path": "data/caps-m/plan/anchor-repairs/repairs.json",
-      "sha256": "6c4ab842ba09a187a1beea6b5b81b3d6ee2c91a01bd8a98363818b84b45ddf42"
+      "sha256": "42159b63afe87e118f8e32962a7e76f4bd1bccdcda3a8fc957be522327c3d814"
     },
+    "localized_input": {
+      "path": "data/caps-m/plan/anchor-repairs/localized/row13-new-pieces.json",
+      "sha256": "9b775111474f2ac253f5657595b3775723908744575a0cbda37f838cbe12ff82"
+    },
+    "localized_nodes": [
+      240
+    ],
     "method": "Variance factor t*(17/20, -1/20, 53/100) on the fibre coordinates (6, 7, 10) (the retry family of rows 16-18, data/cap-recipes/row16.json), t chosen per node as the accepted amplitude with the largest exact Schur margin of the checker matrix N (same functions as nodeOK, grid 1); nodes whose stored recipe fails by less than 1e-6 keep it and move to the fine grid (1600, 1024, 1/200) of the certificate catalogue. Each repaired anchor is verified by its per-node rangeOK probe (native_decide) before the push; CI certifies the range facts.",
     "nodes": [
       124,
@@ -1003,13 +1010,6 @@
       "s": "79/400"
     },
     {
-      "cap": "215185650513/125000000000",
-      "grid_index": 1,
-      "node_index": 240,
-      "recipe": "3113701795819099118943116239/4503599627370496000000000000,8392344864812135098197419/56294995342131200000000000,2988649702742707317952647/70368744177664000000000000,0,0,0,0,0,0,0,0,0|1",
-      "s": "9/20"
-    },
-    {
       "cap": "86427175183/50000000000",
       "grid_index": 1,
       "node_index": 242,
@@ -1615,9 +1615,9 @@
   "canonical_row_declaration": "row14",
   "capPad": "1/100000000000",
   "census": {
-    "anchors": 226,
+    "anchors": 225,
     "chords": 82,
-    "localized": 88,
+    "localized": 89,
     "nodes": 396,
     "vertices": 314
   },
@@ -1808,6 +1808,7 @@
     217,
     219,
     224,
+    240,
     270,
     272,
     274,
@@ -2077,7 +2078,6 @@
     },
     {
       "anchor_indices": [
-        240,
         242,
         244,
         245

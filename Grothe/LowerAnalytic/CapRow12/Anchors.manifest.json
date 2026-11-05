@@ -489,7 +489,7 @@
       "path": "Grothe/LowerAnalytic/CapRow12/AnchorRange24.lean"
     }
   ],
-  "plan_sha256": "3e7133f20c61f89258256ed51f8d2a77a2a7f29f8a792f3961c68a0f3bbb84a3",
+  "plan_sha256": "66eab9fb147d3ff2fb2075a7190df25ad056fa3bd616161e4793d08bbc1d3376",
   "recipes_module": "Grothe.LowerAnalytic.CapRow12.Recipes",
   "row_index": 12,
   "scope": "Unverified anchor recipe proposals and generated Lean check source only. No numerical feasibility, accepted cap, native verification, complete row theorem or Actions cache publication is asserted.",
