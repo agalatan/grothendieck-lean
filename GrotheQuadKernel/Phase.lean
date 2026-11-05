@@ -41,12 +41,12 @@ def phaseRowCoeff (P : Nat) (terms : Array PhaseTerm) (sPow : Array Ival) (j' k 
     if t.j == j' && t.k == k then addI P acc (mulI P (ratI P t.num t.den) (sPow.getD t.i zeroI))
     else acc) zeroI
 
-/-- The node scalars `coefs[j'][k] ∋ P_{j'k}(s) (r/2)^k` for `j' ≤ 17`, `k ≤ 34 − 2j'`, at the scale
+/-- The node scalars `coefs[j'][k] ∋ P_{j'k}(s) (r/2)^k` for `j' + k ≤ 17`, at the scale
 `2^KTw` (`r ∋ √s`). -/
 def nodeCoefs (P : Nat) (terms : Array PhaseTerm) (s r : Ival) : Array (Array (Int × Int)) :=
   let sPow := powTable P s 17
-  let hPow := powTable P (divN P 2 r) 34
-  Array.ofFn fun j' : Fin 18 => Array.ofFn fun k : Fin (35 - 2 * j'.val) =>
+  let hPow := powTable P (divN P 2 r) 17
+  Array.ofFn fun j' : Fin 18 => Array.ofFn fun k : Fin (18 - j'.val) =>
     toTw (mulI P (phaseRowCoeff P terms sPow j'.val k.val) (hPow.getD k.val zeroI))
 
 /-- `e^{−jεs} = (e^{−s})^j · e^{−js/20}` (the series of `expNegI` is used below its tail threshold:

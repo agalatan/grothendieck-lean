@@ -21,7 +21,7 @@ combinations (the transposed ladders)
 each on one (two) degree(s) less, and linear combinations with real scalars act entrywise.  The
 phase polynomial at the node, `Q_r = (r/2)(w − w̄) Σ_t C_t s^i (ww̄)^j ((r/2)(w + w̄))^k` (`Sphase`
 in its monomial form, `t = (i, j, k)`), is applied by `applyQ`: Krylov vectors in the two commuting
-operators `(ww̄)ᵀ` and `(w + w̄)ᵀ` (exact), the interval scalars `P_{jk}(s) (r/2)^k` accumulated by
+operators `(ww̄)ᵀ` and `(w + w̄)ᵀ` (exact; `j + k ≤ 17`), the interval scalars `P_{jk}(s) (r/2)^k` accumulated by
 exact products at the scale `2^{2 KTw}`, one final exact `(w − w̄)ᵀ` and the scalar `r/2`.  The only
 roundings are the two per application (after the scalar sum and after `r/2`); the rounding of the
 input `K'` and of the scalars is where the precision is set (`KTw = 512`).
@@ -114,13 +114,14 @@ def rowLoop (coefs : Array (Int × Int)) (kMax DV Dacc : Nat) (V : TwVec) (acc :
       (X, axpy (coefs.getD k (0, 0)) Dacc X st.2)) (V, acc)).2
 
 /-- The outer loop over the phase rows `j' = 0 … 17`: `V_{j'} = ((ww̄)ᵀ)^{j'} K'` (`K'` on the degree
-`Din`), each row accumulated by `rowLoop` with `kMax = 34 − 2j'`. -/
+`Din`), each row accumulated by `rowLoop` with `kMax = 17 − j'` (`Sphase` has total degree 17 in
+`(U, V, W)`, so `P_{j'k} = 0` for `k > 17 − j'`: 171 nonzero scalars). -/
 def rowsLoop (coefs : Array (Array (Int × Int))) (Din Dacc : Nat) (K : TwVec) : TwVec :=
   ((List.range 18).foldl (fun (st : TwVec × TwVec) j' =>
-    if j' = 0 then (st.1, rowLoop (coefs.getD 0 #[]) 34 Din Dacc st.1 st.2)
+    if j' = 0 then (st.1, rowLoop (coefs.getD 0 #[]) 17 Din Dacc st.1 st.2)
     else
       let V := stepV (Din - 2 * (j' - 1)) st.1
-      (V, rowLoop (coefs.getD j' #[]) (34 - 2 * j') (Din - 2 * j') Dacc V st.2))
+      (V, rowLoop (coefs.getD j' #[]) (17 - j') (Din - 2 * j') Dacc V st.2))
     (K, twZero Dacc)).2
 
 /-- One application of `Q_rᵀ` in the unnormalised basis: `coefs[j'][k] ∋ P_{j'k}(s) (r/2)^k` and
