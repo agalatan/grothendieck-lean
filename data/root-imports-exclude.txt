@@ -28,6 +28,5 @@ Grothe.LowerAnalytic.CapPieces.R14x200_9
 Grothe.Upper.EnergyDegreeOneLookup
 Grothe.UpperChaos.ProductionDegreeOneTable
 Grothe.UpperQuad.Row227Check
-Grothe.UpperQuad.Row227Fact
 GrotheKernel.BandMass
 GrotheKernel.HeadWeight
