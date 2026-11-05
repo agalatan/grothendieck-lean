@@ -58,6 +58,13 @@
       "source_sha256": "afffe61afca9d01f5cff74af2b78ed4ed5a2da59bb129074abb450416c22c226",
       "verdicts": "{'fixed': 139, 'pass': 396}"
     },
+    "13x242": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.002812911433720977,
+      "pieces": 566,
+      "source_sha256": "cf048e50553f8e8faa620ca962bef0c87ba0b1c137384ac7f7d732d51f3b966b",
+      "verdicts": "{'fixed': 134, 'pass': 432}"
+    },
     "14x242": {
       "final_facts_built": 11,
       "min_float_slack": 0.0028964461365286187,
