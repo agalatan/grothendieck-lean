@@ -1619,6 +1619,16 @@ work in progress, excluded from the main root pending its focused Lean
 check. Even successful polynomial certificates leave the original selected
 node/weight bindings, interval transport, and analytic remainder to prove.
 
+`Grothe.UpperQuad.CentralDerivative` supplies the finite interpolation step
+for the root-window derivative estimate. For every real polynomial of degree
+at most 35, its derivative is an exact weighted sum of the eighteen sample
+pairs at offsets `i/180`, for `i = 1, ..., 18`. Exact rational moment identities
+and a doubled absolute-weight sum below 630 give `abs_derivative_le`: if all
+sample values have absolute value at most `M >= 0`, the derivative has absolute
+value at most `630 * M`. The module has strict standard-axiom guards. Identifying
+the actual phase polynomial, enclosing its samples, and transporting this bound
+to the physical quadrature panels remain separate obligations.
+
 `F0ConditionalNode` defines the actual radial slice of `F0` and its normalized
 Hermite coefficients, proving Bessel's bound before aggregation over modes.
 `ConditionalNodeIndices` identifies the contraction's selected pair set and

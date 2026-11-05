@@ -3194,6 +3194,10 @@ import Grothe
 #print axioms Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le
 #print axioms Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le_two_mul
 #print axioms Grothe.UpperChaos.walk_sound
+#print axioms Grothe.UpperQuad.CentralDerivative.abs_derivative_le
+#print axioms Grothe.UpperQuad.CentralDerivative.derivative_eq
+#print axioms Grothe.UpperQuad.CentralDerivative.moments
+#print axioms Grothe.UpperQuad.CentralDerivative.twice_weight_norm
 #print axioms Grothe.fresh_upper
 #print axioms Grothe.grouped_head_residual_le
 #print axioms Grothe.haagerup_dominated
