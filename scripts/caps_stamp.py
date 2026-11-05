@@ -33,7 +33,8 @@ PIECE_TOPS = [f"Grothe.LowerAnalytic.CapPieces.{name}" for name in
 ROW_TOPS = [f"Grothe.LowerAnalytic.CapRow{k:02d}" for k in CAP_ROWS]
 # The quadrature checker's native facts (Grothe/UpperQuad/Facts): one block of the energy table each,
 # about ten hours single-threaded; built once on the droplet and cached like the cap rows.
-QUAD_TOPS = [f"Grothe.UpperQuad.Facts.GradeBlock{b:02d}" for b in range(12)] + ["Grothe.UpperQuad.Facts.Even"]
+QUAD_TOPS = [f"Grothe.UpperQuad.Facts.GradeBlock{b:02d}" for b in range(12)] + ["Grothe.UpperQuad.Facts.Even",
+                                                                             "Grothe.UpperQuad.Facts.Omitted"]
 TOPS = ROW_TOPS + PIECE_TOPS + QUAD_TOPS
 EXTRA = ["Grothe/LowerAnalytic/CapNodes.lean", "GrotheCapsKernel.lean", "lean-toolchain", "lake-manifest.json",
          "lakefile.toml"]

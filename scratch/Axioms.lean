@@ -3211,11 +3211,14 @@ import Grothe
 #print axioms Grothe.UpperQuad.Facts.hclose_of_blockFacts_numeric
 #print axioms Grothe.UpperQuad.Facts.hclose_of_facts
 #print axioms Grothe.UpperQuad.Facts.hclose_of_facts_quad
+#print axioms Grothe.UpperQuad.Facts.omittedCheck
+#print axioms Grothe.UpperQuad.Facts.omitted_l2_of_fact
 #print axioms Grothe.UpperQuad.Tail.norm_tail_sq_le
 #print axioms Grothe.UpperQuad.Watson.watsonHyp
 #print axioms Grothe.UpperQuad.gaussRaw_eq_sum_address
 #print axioms Grothe.UpperQuad.hclose_of_blocks
 #print axioms Grothe.UpperQuad.mem_seedJ0I_moment
+#print axioms Grothe.UpperQuad.omittedOK_sound
 #print axioms Grothe.UpperQuad.rootOf_addressSpec
 #print axioms Grothe.fresh_upper
 #print axioms Grothe.grouped_head_residual_le

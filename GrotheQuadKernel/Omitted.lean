@@ -39,8 +39,9 @@ def pairTermLo (c d : Nat) (v : Fx) : Int := (sqLoFx v * (pairWeightNum c d : In
 /-- A lower bound (scale `2^(2 KFix)`) of `Σ_{c+d ≤ D} U_{c,d}²` over all pairs, from the canonical
 values `valsFx` in canonical order (`canonicalPairs D 265`). -/
 def besselLowerFx (D : Nat) (valsFx : Array Fx) : Int :=
-  (canonicalPairs D 265).zipIdx.foldl
-    (fun acc pi => acc + pairTermLo pi.1.1 pi.1.2 (valsFx.getD pi.2 default)) 0
+  (List.range (canonicalPairs D 265).size).foldl
+    (fun acc i => acc + pairTermLo ((canonicalPairs D 265).getD i (0, 0)).1
+      ((canonicalPairs D 265).getD i (0, 0)).2 (valsFx.getD i default)) 0
 
 /-- An upper bound of the omitted mass `Σ_{c+d > D} U_{c,d}²` (scale `2^(2 KFix)`): `1 − bessel`. -/
 def deficitFx (D : Nat) (valsFx : Array Fx) : Int :=
@@ -48,7 +49,8 @@ def deficitFx (D : Nat) (valsFx : Array Fx) : Int :=
 
 /-- An upper bound of `Σ_{(k,j)} F_{k,j}²` over the node factors (scale `2^(2 KFix)`). -/
 def factorsSqHi (factors : Array (Array Fx)) : Int :=
-  factors.foldl (fun acc row => row.foldl (fun a f => a + sqHiFx f) acc) 0
+  (List.range numCharges).foldl (fun acc k => acc +
+    (List.range (blockSide k)).foldl (fun a j => a + sqHiFx ((factors.getD k #[]).getD j default)) 0) 0
 
 /-- The node's bound `√(Z · m̄)` at scale `2^(2 KFix)` (`Z`, `m̄` at scale `2^(2 KFix)`, so their
 product is at scale `2^(4 KFix)`); `0` when no mode of the head is omitted (`D ≥ 501`); `none` if

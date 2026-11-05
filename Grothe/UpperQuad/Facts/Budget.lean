@@ -1,5 +1,6 @@
 import Grothe.UpperQuad.Facts.Common
 import Grothe.UpperQuad.SeedAnalytic
+import Grothe.UpperQuad.OmittedTotal
 
 /-!
 # The numeric instantiation of the block facts
@@ -76,6 +77,37 @@ lemma seed_of_shift (hW : WatsonHyp 70) (hpv : profileValid P0 piI profile = tru
     have hsq := mem_sqI P0 hA
     rw [← sq] at hsq
     exact mem_seedJ0I_moment P0 (by decide) mem_piI (sq_nonneg _) hsq hW
+
+/-! ### The omitted pairs (part (C) of `hQuad`) -/
+
+/-- The bound of the omitted-pair check at scale `2^256`: `10⁶³ / 2²⁵⁶ ≈ 8.6·10⁻¹⁵` (the measured sum
+over the 10,322 nodes with a cutoff is `≈ 10⁻²⁰`). -/
+def omittedBoundNum : ℤ := 10 ^ 63
+
+/-- The omitted-pair fact: `Σ_a √(Z_a m̄_a) ≤ omittedBoundNum / 2²⁵⁶` over the committed partition. -/
+def omittedFact : Bool := omittedOK P0 piI profile partitionSpecs omittedBoundNum
+
+/-- The `ℓ²` distance between the exact Gauss sums with and without the cutoffs, from the omitted-pair
+fact (S2 from the Watson remainder, the roots from block 0). -/
+theorem omitted_l2_of_fact (hf0 : blockFact 0 epsBlock bndBlock = true) (hW : WatsonHyp 70)
+    (hO : omittedFact = true) :
+    ∑ q ∈ Finset.range 251, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
+      (gaussCoeffFull partitionSpecs rootOf q c d - gaussCoeff partitionSpecs rootOf q c d) ^ 2 ≤
+      ((omittedBoundNum : ℝ) / (2 : ℝ) ^ (2 * KFix)) ^ 2 := by
+  obtain ⟨hpv, R0, hR0, -, -⟩ := blockFact_spec hf0
+  have hvalid := accumulateSpecs_valid P0 piI profile (bounds 0) (bounds 1) partitionSpecs rawZero R0 hR0
+  have hx : ∀ nd ∈ partitionSpecs, mem (rootOf nd) nd.bracket.toIval :=
+    rootOf_mem_of_accepted P0 piI profile (bounds 0) (bounds 1) partitionSpecs R0 hR0
+  have hJ : ∀ nd ∈ partitionSpecs, ∀ neg aI, nodeShift P0 piI profile nd = some (neg, aI) →
+      mem (OriginalPositiveMoment.moment 0 (profileShift (specNode nd (rootOf nd)) ^ 2))
+        (seedJ0I P0 piI (sqI P0 aI)) := by
+    intro nd hnd neg aI hshift
+    obtain ⟨neg', aI', hshift', hv⟩ := hvalid nd hnd
+    rw [hshift] at hshift'
+    simp only [Option.some.injEq, Prod.mk.injEq] at hshift'
+    obtain ⟨rfl, rfl⟩ := hshift'
+    exact seed_of_shift hW hpv nd hshift hv (hx nd hnd)
+  exact omittedOK_sound P0 (by decide) mem_piI profile_agrees hpv partitionSpecs rootOf hx hJ hO
 
 /-- **`hclose` from the twelve block facts and the even fact, with the numeric constants**, S2 from
 the Watson remainder and the quadrature hypothesis `QuadHyp`. -/

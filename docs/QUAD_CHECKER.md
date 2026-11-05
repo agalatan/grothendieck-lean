@@ -939,11 +939,24 @@ even crude bounds `‖f^{(2)}‖ ≤ 10¹⁵` (order 1) give `10⁻³²` per pan
 `gauss_remainder_peano n`. The per-window bookkeeping (≈ 140 panels per root) is a second external
 table.
 
-**Status.** Proved: the reduction of `hQuad` to master's nodes (§12.1), and the budget arithmetic.
-Written as statements with their inputs: (T) (one Bessel lemma, numbers `≤ 10⁻³¹`), (C) (Parseval at
-the node + Cauchy–Schwarz + Mehler, input `max_a m_a ≤ 1.2·10⁻³⁴` by a native fact or an analytic
-coefficient bound), (Q) (Bernstein remainder + complex integrand bound per panel from an external
-interval table + Peano/`t`-expansion in the three root windows). The analytic effort is in (Q): the
-entire extension of `U_{c,d}`, the Mehler bound and the window expansion are new Lean analysis, and the
-panel table must be regenerated (the archived ledger's `center_error_upper` claims are not consumed by
-Lean). Until then `QuadHyp` is the single hypothesis of `hclose_of_facts_quad`.
+**Status (budget ledger, 5 November 2026, evening).**
+
+| part | bound (`ℓ²`) | status | Lean |
+|---|---|---|---|
+| decomposition | `‖B − G‖ ≤ ‖T‖ + ‖Gᶜ − G_full‖ + ‖G_full − G‖` | proved | `QuadDecomp.quadHyp_of_parts : (C-bound) → QuadRemainderHyp → QuadHyp` with `4·10⁻¹⁶ + 1.5·10⁻¹² + 10⁶³/2²⁵⁶ ≤ ρ₀` |
+| (T) tail `(100,∞)` and the three gaps | `‖T‖² ≤ 10⁻³¹` | **proved** | `TailBound.norm_tail_sq_le` (Bessel in `hermiteBasis2`, `\|F₀\| ≤ 1`, the exponential law of `\|z\|²`, `e^{−100} + Σ_i w_i e^{−13}`) |
+| (C) omitted pairs of the cutoffs | `‖G_full − G‖ ≤ 10⁶³/2²⁵⁶ = 8.6·10⁻¹⁵` | kernel + soundness **proved** (compiled); the native fact `omittedCheck` written, running privately on the big droplet, not yet run in CI | `GrotheQuadKernel/Omitted.lean` (`omittedNodeBound = √(Z m̄)`, `omittedBoundSum`, `omittedOK`); `OmittedSound.lean` (`sum_sq_omitted_le`, `rowSum_le_factorsSqHi`, `deficitFx_sound` via Bessel over the canonical pairs, their reflections and the omitted pairs; `omittedNodeBound_sound`); `OmittedTotal.lean` (`omittedOK_sound`, Minkowski in `EuclideanSpace ℝ (GradedIdx 251)`); `Facts/Budget.lean : omitted_l2_of_fact`; `Facts/Omitted.lean : omittedCheck` (measured: ≈ 1 s per node with a cutoff, 10,322 nodes ≈ 3 CPU-h; the bound per node is `≈ 10⁻³²…6·10⁻²⁵`, the sum `≈ 10⁻²⁰`) |
+| (Q) Gauss–Legendre remainders on the covered set | `‖Gᶜ − G_full‖ ≤ 1.5·10⁻¹²` | **open** (`QuadRemainderHyp`); the first pure-mathematics lemmas proved in `QuadRemainder.lean` (below) | proved: `canonicalCoefficient_neg` (the parity `U_{c,d}(−A) = (−1)^{c+d+1} U_{c,d}(A)`), `gauss_remainder_of_poly_approx` (an `n`-point rule with nonnegative weights, exact through degree `2n−1`, integrates `f` within `2 (h−l) ε` when `f` is uniformly `ε`-close to such a polynomial on the panel), `integral_panel_eq_affine`, `panel_exactness` (the physical rule of a panel is exact through degree `2n−1` when the reference rule is: `panelNode`, `panelWeight`). To prove: the radial reduction of `partCoefficient` on a set (`partCoefficient_eq_radial`), the panel cover of `tailSetᶜ ∩ (0, ∞)` and the regrouping of `gaussCoeffFull` by panel, the Bernstein-ellipse (or Taylor-disk) coefficient decay for the complex extension of the integrand, the entire extension of `U_{c,d}` with `\|U\| ≤ exp((Im A)² + √(2(c+d))\|Im A\|)`, the Mehler sum bound, the `t = 1/A` expansion with Peano remainders in the root windows, and the external panel table as a native fact |
+
+`Gᶜ` is `Tail.partCoefficient Tail.tailSetᶜ` (the F0 coefficient restricted to the covered radial set),
+`G_full = gaussCoeffFull` (the exact Gauss sums without the cutoffs), `G = gaussCoeff` (with the cutoffs).
+`QuadHyp` is the single hypothesis of `hclose_of_facts_quad`; with `quadHyp_of_parts` and `omittedCheck`
+it reduces to `QuadRemainderHyp`.
+
+**Lean note (5 November 2026).** A statement that mentions `Finset.range 252 ×ˢ Finset.range 252` (or any
+product of ranges with tens of thousands of elements), even `(h : kj ∈ s) : kj ∈ s := h`, fails with
+"maximum recursion depth has been reached" at the declaration: the elaborator evaluates the product. Finite
+index sets of that size are therefore `@[irreducible] def`s (`activeRows`, `allRows`, `omitPairs`, `canSet`,
+`refSet` in `OmittedSound.lean`) with a membership lemma proved once by `unfold` + `rw [Finset.mem_filter,
+Finset.mem_product, Finset.mem_range]`, and every other proof goes through the membership lemma, never through
+the product itself.

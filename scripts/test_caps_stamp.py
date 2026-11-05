@@ -35,6 +35,7 @@ class CapsStampTests(unittest.TestCase):
         for b in range(12):
             sources[f"Grothe/UpperQuad/Facts/GradeBlock{b:02d}.lean"] = "import Grothe.Shared\n-- quad block fact\n"
         sources["Grothe/UpperQuad/Facts/Even.lean"] = "import Grothe.Shared\n-- quad even fact\n"
+        sources["Grothe/UpperQuad/Facts/Omitted.lean"] = "import Grothe.Shared\n-- quad omitted fact\n"
         sources["Grothe/Shared.lean"] = "-- shared fixture dependency\nimport Mathlib.Data.Real.Basic\n"
         ordered = sorted(sources)
         extra = {
@@ -186,7 +187,7 @@ class CapsStampTests(unittest.TestCase):
         computation = sorted([name for name in self.ordered if name.endswith(".lean") and
                               name not in extra_files] +
                              [str(Path(*name.split(".")).with_suffix(".lean")) for name in data_names])
-        self.assertEqual(len(computation), 65)  # 15 rows + 4 pieces + 13 quad facts + Shared + 32 data
+        self.assertEqual(len(computation), 66)  # 15 rows + 4 pieces + 14 quad facts + Shared + 32 data
         expected_files = computation + extra_files
         expected_hash = hashlib.sha256()
         for name in expected_files:
@@ -196,8 +197,8 @@ class CapsStampTests(unittest.TestCase):
         listed = self.run_cli("--list")
         self.assertEqual(listed.returncode, 0, listed.stdout + listed.stderr)
         self.assertEqual(listed.stdout,
-                         "\n".join(expected_files) + f"\n70 files; sha256 {expected}\n")
-        self.assertEqual(self.run_cli("--digest").stdout, f"sha256 {expected}\nfiles 70\n")
+                         "\n".join(expected_files) + f"\n71 files; sha256 {expected}\n")
+        self.assertEqual(self.run_cli("--digest").stdout, f"sha256 {expected}\nfiles 71\n")
         self.assertEqual(self.run_cli("--mark-cache").returncode, 0)
         for name in ["Grothe/ProofOnly.lean", "Grothe/AnotherProofOnly.lean", "Grothe/UntraversedRootImport.lean"]:
             (self.root / name).write_text("-- changed untraversed proof\n")

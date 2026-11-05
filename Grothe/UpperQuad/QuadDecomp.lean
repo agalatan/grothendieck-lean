@@ -1,5 +1,7 @@
 import Grothe.UpperQuad.Bridge
 import Grothe.UpperQuad.RootIdent
+import Grothe.UpperQuad.TailBound
+import Grothe.UpperQuad.Facts.Budget
 
 /-!
 # The exact Gauss sums of the partition in master's terms
@@ -17,6 +19,7 @@ Agent-ID: claude-b9ee. Refs #303, #21.
 namespace Grothe.UpperQuad
 
 open GrotheQuad Grothe.UpperChaos Grothe.UpperChaos.Q0GaussAddressScan
+open Grothe.UpperChaos.FixedChaosSmoothing
   Grothe.UpperChaos.Q0GaussOrdinalEquiv Grothe.UpperChaos.Q0GaussProductionMass
 
 /-- **The exact Gauss sums of the partition are sums over master's source addresses.** -/
@@ -43,5 +46,98 @@ theorem gaussCoeff_eq_gradeValue (q c d : ℕ) :
     exact gaussRaw_eq_sum_address k j cIdx
   unfold gaussCoeff
   rw [h]
+
+/-! ### The decomposition of `hQuad` -/
+
+/-- The graded vector of a complex coefficient family on the head modes. -/
+noncomputable def cvecOf (v : ℕ → ℕ → ℕ → ℂ) : EuclideanSpace ℂ (GradedIdx 251) :=
+  WithLp.toLp 2 fun i => v i.1 i.2.1 i.2.2
+
+lemma norm_cvecOf_sq (v : ℕ → ℕ → ℕ → ℂ) :
+    ‖cvecOf v‖ ^ 2 = ∑ q ∈ Finset.range 251, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
+      ‖v q c d‖ ^ 2 := by
+  rw [EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]
+  simp only [cvecOf, PiLp.toLp_apply]
+  rw [Fintype.sum_sigma, ← sum_bounded_graded_eq_range 251 (fun q c d => ‖v q c d‖ ^ 2)]
+  apply Finset.sum_congr rfl
+  intro q _
+  rw [Fintype.sum_prod_type]
+
+lemma cvecOf_add (v w : ℕ → ℕ → ℕ → ℂ) :
+    cvecOf (fun q c d => v q c d + w q c d) = cvecOf v + cvecOf w := by
+  ext i; simp [cvecOf]
+
+lemma norm_cvecOf_le_of_sq_le {v : ℕ → ℕ → ℕ → ℂ} {b : ℝ} (hb : 0 ≤ b)
+    (h : ∑ q ∈ Finset.range 251, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
+      ‖v q c d‖ ^ 2 ≤ b ^ 2) : ‖cvecOf v‖ ≤ b := by
+  apply le_of_sq_le_sq _ hb
+  rw [norm_cvecOf_sq]
+  exact h
+
+/-- **The Gauss–Legendre remainder hypothesis (part (Q), open)**: on the covered set (the panels), the
+F0 coefficients and the exact Gauss sums of the partition without the cutoffs differ by at most
+`ρ_Q = 1.5·10⁻¹²` in `ℓ²`. -/
+def QuadRemainderHyp : Prop :=
+  ∑ q ∈ Finset.range 251, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
+    ‖Tail.partCoefficient Tail.tailSetᶜ q c d -
+      ((gaussCoeffFull partitionSpecs rootOf q c d : ℝ) : ℂ)‖ ^ 2 ≤ ((15 : ℝ) / 10 ^ 13) ^ 2
+
+/-- **`QuadHyp` from its three parts**: the tail and the gaps (`≤ 4·10⁻¹⁶`, proved), the omitted pairs
+(`≤ 10⁶³/2²⁵⁶ ≈ 8.7·10⁻¹⁵`, the fact `omittedCheck`) and the remainders on the covered set
+(`≤ 1.5·10⁻¹²`, open); `4·10⁻¹⁶ + 8.7·10⁻¹⁵ + 1.5·10⁻¹² ≤ ρ₀ = 1.55·10⁻¹²`. -/
+theorem quadHyp_of_parts
+    (hC : ∑ q ∈ Finset.range 251, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
+      (gaussCoeffFull partitionSpecs rootOf q c d - gaussCoeff partitionSpecs rootOf q c d) ^ 2 ≤
+      ((Facts.omittedBoundNum : ℝ) / (2 : ℝ) ^ (2 * KFix)) ^ 2)
+    (hQ : QuadRemainderHyp) : Facts.QuadHyp := by
+  unfold Facts.QuadHyp
+  -- the three vectors
+  have hsplit : ∀ q c d, FixedChaosSmoothing.baseGradedCoefficient q c d -
+      ((gaussCoeff partitionSpecs rootOf q c d : ℝ) : ℂ) =
+      Tail.partCoefficient Tail.tailSet q c d +
+        ((Tail.partCoefficient Tail.tailSetᶜ q c d -
+          ((gaussCoeffFull partitionSpecs rootOf q c d : ℝ) : ℂ)) +
+        (((gaussCoeffFull partitionSpecs rootOf q c d - gaussCoeff partitionSpecs rootOf q c d : ℝ)) : ℂ)) := by
+    intro q c d
+    rw [Tail.baseGradedCoefficient_eq_part_add Tail.measurableSet_tailSet q c d]
+    push_cast
+    ring
+  have hT : ‖cvecOf (fun q c d => Tail.partCoefficient Tail.tailSet q c d)‖ ≤ 4 / 10 ^ 16 := by
+    apply norm_cvecOf_le_of_sq_le (by norm_num)
+    exact Tail.norm_tail_sq_le.trans (by norm_num)
+  have hQ' : ‖cvecOf (fun q c d => Tail.partCoefficient Tail.tailSetᶜ q c d -
+      ((gaussCoeffFull partitionSpecs rootOf q c d : ℝ) : ℂ))‖ ≤ 15 / 10 ^ 13 :=
+    norm_cvecOf_le_of_sq_le (by norm_num) hQ
+  have hC' : ‖cvecOf (fun q c d =>
+      (((gaussCoeffFull partitionSpecs rootOf q c d - gaussCoeff partitionSpecs rootOf q c d : ℝ)) : ℂ))‖ ≤
+      (Facts.omittedBoundNum : ℝ) / (2 : ℝ) ^ (2 * KFix) := by
+    apply norm_cvecOf_le_of_sq_le (by unfold Facts.omittedBoundNum; positivity)
+    simpa only [Complex.norm_real, Real.norm_eq_abs, sq_abs] using hC
+  have hnum : (4 / 10 ^ 16 : ℝ) + 15 / 10 ^ 13 + (Facts.omittedBoundNum : ℝ) / (2 : ℝ) ^ (2 * KFix) ≤
+      (Facts.rhoQ : ℝ) := by
+    norm_num [Facts.omittedBoundNum, Facts.rhoQ, KFix]
+  have hv : cvecOf (fun q c d => FixedChaosSmoothing.baseGradedCoefficient q c d -
+      ((gaussCoeff partitionSpecs rootOf q c d : ℝ) : ℂ)) =
+      cvecOf (fun q c d => Tail.partCoefficient Tail.tailSet q c d) +
+        (cvecOf (fun q c d => Tail.partCoefficient Tail.tailSetᶜ q c d -
+          ((gaussCoeffFull partitionSpecs rootOf q c d : ℝ) : ℂ)) +
+        cvecOf (fun q c d =>
+          (((gaussCoeffFull partitionSpecs rootOf q c d - gaussCoeff partitionSpecs rootOf q c d : ℝ)) : ℂ))) := by
+    rw [← cvecOf_add, ← cvecOf_add]
+    congr 1
+    funext q c d
+    exact hsplit q c d
+  rw [← norm_cvecOf_sq, hv]
+  have hρ0 : (0 : ℝ) ≤ (Facts.rhoQ : ℝ) := by norm_num [Facts.rhoQ]
+  apply pow_le_pow_left₀ (norm_nonneg _) _ 2
+  calc ‖_ + (_ + _)‖ ≤ ‖cvecOf (fun q c d => Tail.partCoefficient Tail.tailSet q c d)‖ +
+        (‖cvecOf (fun q c d => Tail.partCoefficient Tail.tailSetᶜ q c d -
+          ((gaussCoeffFull partitionSpecs rootOf q c d : ℝ) : ℂ))‖ +
+        ‖cvecOf (fun q c d =>
+          (((gaussCoeffFull partitionSpecs rootOf q c d - gaussCoeff partitionSpecs rootOf q c d : ℝ)) : ℂ))‖) :=
+        (norm_add_le _ _).trans (add_le_add le_rfl (norm_add_le _ _))
+    _ ≤ 4 / 10 ^ 16 + (15 / 10 ^ 13 + (Facts.omittedBoundNum : ℝ) / (2 : ℝ) ^ (2 * KFix)) :=
+        add_le_add hT (add_le_add hQ' hC')
+    _ ≤ (Facts.rhoQ : ℝ) := by linarith
 
 end Grothe.UpperQuad
