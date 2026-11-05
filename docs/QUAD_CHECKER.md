@@ -487,7 +487,7 @@ scripts/test_caps_stamp.py
 `tools/gen_root_imports.py` already lists the four libraries (`LIBS`). `lakefile.toml` already
 has the library and the `quadrun` executable (not a default target).
 
-### 11.4 Status and hand-over (claude-b9ee, 5 November 2026, 02:30 Bucharest)
+### 11.4 Status and hand-over (claude-b9ee, 5 November 2026, 12:10 Bucharest)
 
 **Proved** (`Grothe/UpperQuad/`, kernel-checked, warning-free, no `sorry`, no `native_decide`,
 all imported by the `Grothe` root; the laptop worktree
@@ -686,37 +686,49 @@ measured data size (≈ 20 MB per range, see above) made that unattractive and t
 were measured not to pay: the cost does not depend on P, and P = 256 is unsound in practice at the
 Watson nodes). **Launched on mega** (`~/claude-b9ee-quad-facts`, cores 36–59, twelve `lake build
 Grothe.UpperQuad.Facts.GradeBlockNN` in their own process groups, `block-NN.log` with start/end
-timestamps) on 5 November 01:07 Bucharest (23:07 UTC) as the private measurement; the CI droplet run (push without
-`[skip ci]`, or `gh workflow run lean.yml --ref claude-b9ee/quad-checker-bridge`) follows when every
-block is true there. The CI run 41929108078 dispatched before the (a) interlude was cancelled.
+timestamps) on 5 November 01:06 Bucharest (23:06 UTC) as the private measurement; the CI droplet run
+(the push of 9f9f35c40 without `[skip ci]`, run 41932838042) started 01:19 Bucharest on the same
+machine. The CI run 41929108078 dispatched before the (a) interlude was cancelled.
 
-**When the mega run finishes** (`~/claude-b9ee-quad-facts/block-NN.log`, each ends with `Built
-Grothe.UpperQuad.Facts.GradeBlockNN` and an `end` timestamp, or with an error): record the twelve
-wall times in this section and on #303; if every block is true, `lake build
-Grothe.UpperQuad.Facts.Final` there (seconds), then trigger the CI droplet run of the branch tip
-(`gh workflow run lean.yml --ref claude-b9ee/quad-checker-bridge`, or a push without `[skip ci]`;
-`scripts/ci_active.sh claude-b9ee claude-b9ee/quad-checker-bridge` first), watch run until green
-(≈ 10 h), then PR #318 is landable (hand merge not needed: no workflow file changes). If a block is
-false, read its log: a tolerance (`epsBlock`, `bndBlock`) or a flag (`nodeValid`, `profileValid`) is
-the likely cause; `quadrun block qLo qHi n` and `quadrun check` reproduce the computation outside
-Lean. Clean-up afterwards: `ssh mega 'rm -rf ~/claude-b9ee-quad-facts'`,
-`ssh big 'rm -rf ~/claude-b9ee-quad-m4'` (the latter holds the `ProductionRetainedEnergy` closure
-used to build `Bridge`/`Partition`/`Facts` outside CI; keep it while that work continues).
+**Results (5 November, 11:30–12:10 Bucharest): all twelve block facts are true.** On mega (one
+core each, `nice 10`, cores 36–59, shared with the CI runner of the same machine; `block-NN.log`
+mtimes, launch 01:06 Bucharest), the `native_decide` modules took: `GradeBlock00` 27,797 s
+(7.72 h), `01` 30,528 s (8.48 h), `02` 30,742 s (8.54 h), `03` 31,837 s (8.85 h), `04` 33,299 s
+(9.25 h), `05` 33,503 s (9.31 h), `06` 34,503 s (9.59 h), `07` 35,486 s (9.86 h), `08` 34,972 s
+(9.72 h), `09` 36,626 s (10.18 h), `10` 36,500 s (10.15 h), `11` 37,138 s (10.32 h); the last
+finished 11:26 Bucharest (10 h 20 min wall for the twelve in parallel). The blocks have equal entry
+counts, but the cost grows with the grade: the high blocks activate more rows `(k, j)` of the node
+factors (every `k ≤ q`) and carry the bigger saved matrices `S_q`. In the same folder, `lake build
+Grothe.UpperQuad.Facts.Final` then built `Facts.Even` (457 s) and **`Facts.Final` (7.2 s, no error,
+no warning; 9,671 jobs)**: `blockFacts` and `hclose_of_facts` type-check against the twelve facts.
+**The CI proof check of the branch tip is green:** run 41932838042 (the push check of 9f9f35c40, the
+first commit with the thirteen fact modules; the caps digest covers the facts and had no verified
+cache, so the route sent the build to the heavy runner `mega-droplet`, machine `mega-caps`): build
+job 01:19–11:48 Bucharest (10 h 29 min, 12,872 Lake jobs, concurrent with the private run on the
+same machine): `Facts.Even` 653 s, `GradeBlock00…11` 27,308, 29,326, 31,076, 31,704, 32,571, 33,018,
+34,818, 35,268, 34,849, 36,732, 36,500, 37,034 s, `Facts.Final`, then the root `Grothe`, the
+forbidden-token grep and the axiom report all passed, and the branch cache
+`lake-build-v3-…-9f9f35c40…-run41932838042` was saved (a re-check of the branch replays the facts
+from it). Commit 1e7f8ebf9 (the review fixes, pushed `[skip ci]`, no Lean module changed) is
+**approved by codex-2ca4** (`Independent review` success, 05:07 Bucharest). **PR #318 is landable:**
+`/land claude-b9ee` when `scripts/ci_active.sh claude-b9ee claude-b9ee/quad-checker-bridge` shows
+room (the landing check merges the branch into the current master and re-checks the merged tree:
+a replay from the branch cache if master did not change the caps closure, else a droplet run);
+a push to the branch (this documentation included) needs a new approval. Clean-up afterwards:
+`ssh mega 'rm -rf ~/claude-b9ee-quad-facts'` (the folder holds the twelve `block-NN.log` and
+`final.log`; the numbers are recorded here), `ssh big 'rm -rf ~/claude-b9ee-quad-m4'` (the latter
+holds the `ProductionRetainedEnergy` closure used to build `Bridge`/`Partition`/`Facts` outside CI;
+keep it while that work continues).
 
-**Remaining, in order.** (0) The private run on mega, then the CI droplet run (above). Old (0) was:
-Validate the block checks on the milestone-2 raw vector
-(`quadrun check handoff/quad-checker/raw-final.txt frozen.txt energy-table.txt qLo qHi`: the
-excursions by block must sum to the milestone-3 `3.116·10⁻¹⁵`). (1) The fact modules: for each block `b` a module
-`Grothe/UpperQuad/Facts/GradeBlockNN.lean` with the `native_decide` fact
-`accumulateSpecs 512 piI profileData (bounds b) (bounds (b+1)) partitionSpecs rawZero = some R_b ∧
-energyOKBlock R_b frozenFx tableFx eps_b … ∧ rawDistOKBlock …` (the accumulator `R_b` is not
-committed: the fact's statement is the conjunction of the Boolean checks on the accumulator the loop
-produces, i.e. a `Bool` function `blockFact b = true`), the even fact, `profileAgrees` by `decide`,
-and the per-block tolerances; register them in `data/axioms/native.txt` and `scratch/Axioms.lean`;
-add a `QUAD_TOPS` list to `scripts/caps_stamp.py` so that the caps digest covers them and the first
-build runs on the droplet; measure one block on big first (the driver `quadrun block <qLo> <qHi>`
-to be added). (2) The final theorem instantiating `hclose_of_blocks` with the facts (and `rootOf`
-as `x`, `rootOf_mem_of_accepted` as `hx`). (3) The analytic hypotheses (S2, `hQuad`).
+**Remaining, in order.** (0) Land PR #318 (`/land claude-b9ee`, above). (1) The analytic
+hypotheses of `hclose_of_facts`: S2 (the seed enclosure `J₀(A²) ∈ seedJ0I` at every node of
+`partitionSpecs`; Watson form for `x ≥ 150`) and `hQuad` (S6b/S6c and the omitted pairs of the
+cutoffs), with `rootOf` identified with the root `Q0GaussSelectedChoice` selects (master's
+`all_unique`). (2) The numeric instantiation of `hclose_of_facts` once `ρ` is fixed (with the
+inherited `ρ = 1.55·10⁻¹²`, `δ = 2.2·10⁻¹²` and `Δ = 2.3·10⁻¹²` satisfy the budget inequalities;
+`norm_num` on the four hypotheses). The fact modules and the final theorem ((1)–(2) of the previous
+hand-over) are done as described above: `blockFact b = true` is the conjunction of the Boolean checks
+on the accumulator the loop produces, the accumulator itself is never committed.
 
 **Conventions and pitfalls.** Kernel definitions must be `let`-free in every branch that a proof
 splits on (`let` elaborates to `have`, invisible to `split_ifs`; nested `let`s inside `fun`
@@ -754,5 +766,6 @@ Each soundness module takes ≈ 1.5–3 min to elaborate after `import Mathlib`.
 x ≥ 150), S6b/S6c (Gauss–Legendre remainder and integrand bound), the cutoffs' omitted-pair
 bound, and the assembly's `ρ` (inherited 1.55·10⁻¹²).
 
-**Background processes:** none on the laptop; nothing runs on yo or big (the big folder
-`~/claude-b9ee-quad-m4` holds the `ProductionRetainedEnergy` closure for `Bridge.lean`).
+**Background processes:** none on the laptop, yo, big or mega (the mega folder
+`~/claude-b9ee-quad-facts` keeps the logs of the twelve facts until this section is landed; the big
+folder `~/claude-b9ee-quad-m4` holds the `ProductionRetainedEnergy` closure for `Bridge.lean`).
