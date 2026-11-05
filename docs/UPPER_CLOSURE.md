@@ -636,7 +636,7 @@ to `1.7·10⁻²¹`, `7·10⁻²⁵`, `5·10⁻²⁷`; the chosen `ρ_I` are `10
 `Imin_b`, `eps_b` of the facts are fixed from a `quadrun twistall` run before the facts are
 written (as `epsBlock`/`bndBlock` were for the checker).
 
-### 8.5 Cost and sharding
+### 8.5 Cost and sharding (estimates; the measured numbers are in §8.8)
 
 Per node and power (fixed point, `≈ 0.4 µs` per exact product-and-add as measured in the
 checker's accumulation; `N = (D'+1)(D'+2)/2 ≈ 23.7k` entries for `D' = 216`):
@@ -701,3 +701,72 @@ closure copied from `~/claude-b9ee-quad-m4/repo/.lake/build`):
    `5.6671933554229e-10`, `1.278653939268252e-11`) to `10⁻¹²`, `5·10⁻¹⁴`, `3·10⁻¹⁴`; the assembled
    low-band coefficients against `assemble-j{j}-checker-coeffs.npz` to `10⁻¹³`; the widest
    enclosure and the per-node time (the inputs of §8.5 and of the tolerances `Imin_b`, `eps_b`).
+
+### 8.8 Status of the implementation (claude-b9ee worker, 5 November 2026, 06:00 Bucharest)
+
+**Kernel** (`GrotheQuadKernel/Twist, Dilate, Phase, TwistNode, TwistLoop`, driver `quadrun twistnode |
+twist | twistdump | twistshard | twistmerge`, data `data/quad-checker/phase.txt` and
+`handoff/quad-checker/center-{1,2,3}.txt` from `tools/quad_gen_phase.py`). Two changes of design against
+§8.2, both forced by measurements:
+
+* **The operator runs in the unnormalised basis `H_{c,d} = √(c! d!) h_{c,d}`.** In the normalised basis
+  the transposed ladders carry the irrational factors `√(c+1), √d, …`, so every step rounds; at the
+  fixed scale `2^256` the ladder amplification (`≤ 652` per `(ww̄)ᵀ`, `≤ 35` per `(w ± w̄)ᵀ`, up to 51
+  steps) turned the rounding `2^{−256}` into widths `2^{−21}` on `J` entries of size `2^{−22}`: the
+  Krylov vectors span a dynamic range of `2^{300}` and absolute rounding is the wrong arithmetic. In
+  the unnormalised basis the ladders are **integer** (`(wᵀK')_{c,d} = K'_{c+1,d} + d K'_{c,d−1}`,
+  `((ww̄)ᵀK')_{c,d} = K'_{c+1,d+1} + (c+d+1) K'_{c,d} + c d K'_{c−1,d−1}`), so the whole Krylov
+  computation is exact; the only roundings are the input `K'` (scale `2^KTw`, `KTw = 512`), the 171
+  node scalars, and two per application. Measured widths of `J` at node 227: `2^{−343}` (j = 1),
+  `2^{−282}` (j = 2), `2^{−187}` (j = 3).
+* **The dilation runs in fixed point at `2^KDil`, `KDil = 1024`**, not in floating intervals: the
+  dilated functional's tiny high-degree entries are multiplied by `√(e! f!) ≤ 2^{550}`, so the
+  absolute rounding must be below `2^{−1000}`; at that scale the exact products are 3× faster than the
+  interval arithmetic and the results are identical to every printed digit.
+* The Krylov loops run over `j' + k ≤ 17` (171 nonzero scalars: `Sphase` has total degree 17), not
+  `2j' + k ≤ 34` as §8.1 wrote (that bound is the `w`-degree, attained only at `j' = 17`).
+
+**Per-node cost, measured** (`quadrun twistnode j 227`, P = 512; big = one EPYC core of the big
+droplet at load ≈ 24 under `nice 10`, laptop = one Apple core):
+
+| j | triangle at A' | dilation | operator (j applications) | whole J, big | whole J, laptop | mean over the 56 sample nodes, big (before the dilation fix) |
+|---|---|---|---|---|---|---|
+| 1 | 0.5 s | 2.2 s | 15.3 s | 17.5 s | 7.5 s | 13.9 s |
+| 2 | 0.2 s | ≈ 1.0 s | 9.4 s | ≈ 11 s | ≈ 6 s | — |
+| 3 | 0.2 s | 1.0 s | 10.5 s | 11.6 s | 5.7 s | 8.3 s |
+
+Node 227 (`s = 1.51`) is among the slowest nodes (large `K'` entries); the sample means are 30 %
+lower. Full partition on big, single fact: ≈ 70 / 50 / 45 CPU-h (j = 1, 2, 3), **≈ 165 CPU-h in all**
+(≈ 85 on laptop-class cores); the operator is 85 % of it, and within the operator the 171 scalar
+products of a big-integer coefficient with an N-vector per application (not the ladder steps)
+dominate, so the charge regrouping of §8.1 saves ≈ 25 % of the operator, not 2.4×. The sharding
+overhead of output-charge blocks is as in §8.5; node ranges with the ≈ 3 MB partials have none.
+
+**Validation (§8.7), done:**
+1. Node 227, j = 3: every `J_{c,d}` (`c + d ≤ 51`) within `9.9·10⁻²⁴` of the prototype's `Node.J`
+   (all inside the enclosures, widths `≤ 6·10⁻³⁶`); the node's `I`-term `W e^{−s} Σ V J` agrees to
+   `4·10⁻¹⁶` relative; Parseval at the node `Σ J² = 2.341007·10⁻¹⁵ ≤ E_w φ⁶ = 2.341021·10⁻¹⁵`.
+2. The dilation recurrence of `Dilate.lean` against the closed form (2): max difference `≤ 2·10⁻⁵⁵`
+   over 6,391–20,336 entries (`D ≤ 60`, all three `λ_j`; `tools`-free check in 60-digit decimals).
+3. A sample of 56 nodes per power (every 500th ordinal, 227, 771, the three nodes nearest to each
+   profile zero, the last node; `quadrun twistdump`, `tools/quad_twist_sample.py` against the
+   prototype's per-node arrays on big): `|J_kernel − J_proto| ≤ 10⁻¹⁴` at 42 of 56 nodes
+   (`10⁻²⁹ … 10⁻¹⁵` absolute, i.e. float64 accuracy), and `1·10⁻¹³ … 4·10⁻¹²` at the 14 nodes with
+   `s ∈ [20.8, 25.2]` where `|J| ≈ 0.07 … 0.2`: there the **prototype** loses `≈ 10⁻¹¹` relative in the
+   phase polynomial (`S ≈ 10¹⁰` at `U ≈ 25` with cancelling terms), while the kernel's enclosures
+   have widths `≤ 2^{−105}`; the per-node `I`-terms agree to `≤ 3.3·10⁻²³` (j = 1), `7.7·10⁻²⁷`
+   (j = 2), `2.3·10⁻²⁷` (j = 3). So the kernel reproduces the prototype to the prototype's accuracy
+   everywhere, and the prototype's `I_j` (whose per-node errors sum to `≲ 10⁻¹⁸`) are a valid
+   reference for the full sums at `10⁻¹²`.
+4. The full runs (`quadrun twistshard`, 8 shards × powers 3, 2, 1 in sequence, cores 40–47 of big,
+   `nice 10`; outputs `~/claude-b9ee-upper-port/full/twist-j{j}-{i}.txt`, logs `shard-{i}.log`)
+   were launched on 5 November 05:46 Bucharest; ≈ 21 h wall. `quadrun twistmerge j 8 <dir>` then
+   gives `I_j` (to compare with `2.5684893045809268e-6`, `5.6671933554229e-10`,
+   `1.278653939268252e-11`) and the low-band comparison with the centers.
+
+**Soundness, started:** `Grothe/UpperQuad/TwistSound.lean` (built): the exact ladders `X0_mul_H`,
+`X1_mul_H`, `X0_X1_mul_H`; `Represents F D v` (a `TwVec` encloses `(F (H c d)).re`, `F : CPoly →+ ℂ`)
+and the soundness of `stepW/stepWbar/stepX/stepY/stepV` (as `mulLeft m F`), `axpy`, `twZero`,
+`roundVec`, `scaleTw`. Next: the loop lemmas (`rowLoop`, `rowsLoop`, `applyQ`, `applyQPow`), the
+phase identity, the dilation (`integral_gaussC_tilt` + the recurrence by induction), the radial
+reduction, the node and loop theorems, the consumers (§8.3).
