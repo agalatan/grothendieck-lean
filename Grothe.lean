@@ -13687,6 +13687,7 @@ import Grothe.UpperQuad.Facts.GradeBlock09
 import Grothe.UpperQuad.Facts.GradeBlock10
 import Grothe.UpperQuad.Facts.GradeBlock11
 import Grothe.UpperQuad.Facts.Omitted
+import Grothe.UpperQuad.Facts.OmittedDefs
 import Grothe.UpperQuad.GaussRemainderDisk
 import Grothe.UpperQuad.GaussRemainderEllipse
 import Grothe.UpperQuad.GaussSound
