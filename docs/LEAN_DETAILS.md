@@ -9,6 +9,21 @@ conditional rounding gives a bound below `1.404598149141`) is work in progress; 
 the remaining project-specific Lean obligations. Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.
 
+**Energy quadrature remainder.** `UpperQuad/QuadEllipseFacts/All.lean` proves
+`EllCheck.quadRemainderHyp`: the squared error between the covered Gaussian
+coefficient integrals and the full production Gauss sums is at most
+`(1.5·10⁻¹²)²`, with no analytic premise. The proof identifies the entire
+conditional-coefficient extension, bounds its finite coefficient mass off the
+real axis, combines it with a complex Mehler bound, and applies the Banach-space
+Bernstein-ellipse remainder theorem to the actual production panels.
+The interval checker certifies the plans in `data/quad-checker/ellipse-plans.txt`;
+`tools/gen_quad_ellipse_plans.py --check` verifies their Lean representation, and
+`tools/gen_quad_ellipse_facts.py` reproduces the sharded native checks and assembly.
+The canonical panel-error sum is below `1.04·10⁻¹²`; reflection gives the full
+`1.5·10⁻¹²` bound. The axiom audit is covered by the standard axioms and registered
+native facts. This closes the remainder premise in `QuadDecomp.quadHyp_of_parts`;
+the twisted source bounds and final upper-endpoint assembly are separate.
+
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
 polynomial Bezout identity. `Q0GaussQPoly.lean` interprets LeanCert's rational
@@ -725,7 +740,75 @@ three independent whole-error bounds and actual frozen-response table
 accuracy. These analytic inputs remain open under task #295. The standard
 analytic cores and concrete adapters keep their explicit inherited trust
 allowances; no new native fact is introduced. The public `UpperTarget`
-`1.404598149141` is unchanged.
+threshold remains `1.4046`.
+
+`RelaxedThreeBandBudget`, `RelaxedThreeBandComparison` and
+`RelaxedThreeBandUpper` use that threshold's remaining room. The three raw
+low-band allowances are `4001/10^12`, `14001/10^12` and `70001/10^12`;
+the second and third enter the comparison divided by `2!` and `3!`.
+The whole-error radii, mass caps, energy tolerance and Hardy tail stay fixed.
+`Statement.upper_target_of_relaxed_inputs` derives the same strict public
+target from these three low-band bounds, the three original whole-error
+bounds and table accuracy. Its exact rational endpoint is approximately
+`1.4045999579847528`. The proposed full quadrature tolerances are
+`4e-9`, `1.4e-8`, `7e-8`, leaving `1e-12` per low band for finite-table
+excursions and reserving `1e-15` of each quadrature tolerance for tails and
+root gaps. The budget does not establish those quadrature estimates or the
+whole-error bounds; they remain analytic obligations under tasks #333–#335.
+No new native fact is introduced.
+
+`RelaxedTwistMargins` and `RelaxedTwistSix` connect those radii to the actual
+port soundness chain. The whole-source charge uses the exact product of the
+center-norm bound and quadrature radius. The conditional
+`RelaxedTwist.upper_target_of_facts` still requires the three port-fact
+witnesses, three analytic panel-remainder estimates, and independent
+energy-table closeness.
+
+**Complex Gaussian shift.** `HermiteTranslation`, `HermiteTranslationAlgebra`
+and `HermiteTranslationBessel` prove the finite Hermite translation bound
+`exp(|delta|*sqrt(2D))`. Both formal variables move by the same displacement;
+the first inner-product slot conjugates that displacement. There is no
+mode-count factor in the resulting squared coefficient bound.
+For `j > 0`, `0 < tau < 1`, a finite set of modes with total degree at most
+`D`, and complex parameters `r` and `A = a + I*b`,
+`GaussianShift.sum_coefficient_sq_le` proves
+
+```
+sum_i |J_i(r,A)|^2 <= exp(2*b^2 + 2*|b|*sqrt(2D))
+  * tau^(-35*j) * (1-tau)^(-2)
+  * exp(4*j*phaseEpsQ/(1-tau) * ((Im r)^2+b^2)).
+```
+
+The coefficient is identified exactly with a fixed-phase Gaussian integral.
+Its integrand has an integrable bound `C*exp(normSq(w)/2)` uniformly over
+bounded complex parameter sets. `HolomorphicIntegral` proves integration of
+locally dominated analytic families using measurable difference quotients
+and Cauchy's estimate. `GaussianShiftAnalytic` therefore proves analytic
+dependence on each parameter and on bounded holomorphic substitutions on a
+closed disk. The real production identity, for `s >= 0` and `vprof s != 0`,
+is `twistCoef j s i = profileSign(s) * J_i(sqrt(s),
+profileSign(s)*profileShift(s))`; the signed shift is essential on negative
+profile intervals. This proves the analytic Y estimate, but does not certify
+any profile domain, contour supremum, or Gauss quadrature remainder. The
+phase bounds inherit exactly the six registered phase-cover facts; the
+translation and generic holomorphic integration results use standard axioms.
+
+`TwistRadialExt.radial` now uses the actual signed complex profile ratio
+`r/(kappa*vC(r^2))`, the swapped primary Hermite indices
+`(q-d,q+1-c)`, the fixed panel sign, and only the outside damping `exp(-r^2)`.
+`TwistRadialReal` proves exact agreement with `twistIntegrand` at `r=sqrt(s)`
+for every natural power, `s >= 0`, nonzero profile, and valid graded indices.
+There is no additional `2r`, `pi`, or factorial factor in this `ds` integrand.
+`GaussianShiftParity` and `TwistRadialParity` prove that the full component
+is globally even in `r`, including its totalized values at profile zeros.
+`EvenSquareDescentLocal` extends the square-descent tool to any point of a
+globally even function. `TwistRadialDescent.analyticAt_descended` proves that
+the resulting function of `s` is analytic wherever `vC(s) != 0`, for `j > 0`
+and valid graded indices. This includes the origin if its profile is nonzero
+and imposes no principal-square-root branch-cut condition. The real-slice
+identity still explicitly fixes the panel sign. Certifying profile
+nonvanishing and contour bounds on the required ellipses remains separate
+from these analytic results.
 
 **Analytic phase reduction.** `Grothe/Haagerup/PhaseLaplace.lean` proves
 `ph(z) = (sqrt(pi):C)^(-1) * integral_{t>0} t^(-1/2) exp(-‖z‖²t) z dt`
@@ -1637,6 +1720,68 @@ sample values have absolute value at most `M >= 0`, the derivative has absolute
 value at most `630 * M`. The module has strict standard-axiom guards. Identifying
 the actual phase polynomial, enclosing its samples, and transporting this bound
 to the physical quadrature panels remain separate obligations.
+
+`UpperQuad.PolynomialGaussianGrowth.norm_damped_eval_sq_le` gives a generic
+complex growth bound for a polynomial times a Gaussian. If `P` has total degree
+at most `N` and `‖P(z, conjugate z)‖ ≤ exp(ε |z|²)` for every complex `z`, then,
+for `ε > 0`, `0 < τ < 1`, and arbitrary complex `r,x`,
+
+```
+‖P(r+i*x,r−i*x) exp(−ε(r²+x²))‖²
+  ≤ τ^(−N) (1−τ)^(−2) exp(4ε((Im r)²+(Im x)²)/(1−τ)).
+```
+
+`PolynomialHermiteDegree` retains the degree cutoff in the finite Hermite
+expansion; `PolynomialHermiteNorm` identifies the squared coefficient sum with
+the actual Gaussian L² norm. `FinitePolynomialMehler` applies the formal complex
+Mehler estimate. `PolynomialRescale` changes the rate to `ε(1+τ)/τ`, and
+`GaussianGrowth` and `GaussianMehlerBound` prove the norm estimate and exact
+cancellation of real-coordinate growth. These results use only standard axioms.
+`PhasePolynomialComplex` instantiates this estimate for the actual production
+phase. With real `y` fixed, the polynomial has degree at most 35; its coefficients
+include `exp(−ε*y²)`. The existing checked term list supplies invariant degree
+at most 17, and the global real phase bound supplies the Gaussian growth premise.
+`phaseComplex_real` identifies the continuation with `phiT` on every real slice,
+and `analyticAt_phaseComplex` proves joint complex analyticity. For every positive
+integer `j`, `norm_phaseComplex_pow_sq_le` uses degree `35*j` and damping `j*ε`
+directly, retaining one `(1−τ)^(−2)` factor. Its numerical dependencies are only
+the existing registered phase-cover facts.
+
+`PolynomialDilationNorm` integrates finite Mehler to bound dilation on Gaussian
+L². For `L ≥ 1`, `0 < τ < 1`, and `(2*L−1)*τ < 1`, it proves
+
+```
+‖P(√L ·)‖² ≤ ‖P‖² * τ^(−N) / ((1−τ)*(1−(2*L−1)*τ)).
+```
+
+The normalized Hermite-column corollary has polynomial norm one and degree
+`p+q`. These dilation estimates use only standard axioms. Certified contour
+enclosures and the twisted quadrature remainder remain separate obligations;
+these results do not close `UpperTarget`.
+
+`PhasePolynomialParity` proves that reversing `y`, `r`, and `x` together
+preserves `phaseComplex`, and that reversing both formal Hermite arguments
+multiplies the result by `(-1)^(p+q)`. These source identities use only standard
+axioms and supply the parity factors for the origin argument.
+`HermiteRadialVector.sum_radial_sq_le_cutoff` controls the full graded vector
+with `q<Q`, `c≤q+1`, and `d≤q`. The map to primary and conditional Hermite
+indices is injective into the product of the degree triangles `p+q≤2*Q−1`.
+The squared vector norm is therefore at most the primary finite-Mehler bound
+times the conditional coefficient square sum, with no mode-count factor.
+This conversion includes the damping `exp(−r²)` and requires only `0<t<1`.
+Identifying the conditional coefficients with their analytic continuation and
+certifying the resulting contour bounds remain necessary.
+
+`UpperQuad.EvenSquareDescent.analyticOnNhd_descend` handles the square-root
+coordinate at the origin abstractly. For a complex Banach-valued function `F`
+analytic on `‖r‖ < R`, with `R > 0` and `F(−r)=F(r)` on that ball, it proves
+that `s ↦ F(Complex.sqrt s)` is analytic on `‖s‖ < R²`. The inverse-function
+theorem for squaring supplies analyticity away from zero; continuity and the
+removable-singularity theorem supply zero. `descend_sq` recovers `F(r)` at
+`s=r²`, and uniform norm bounds transport unchanged on open or closed balls.
+All these results use standard axioms. Applying this tool to the twisted
+integrand still requires its concrete parity and analyticity in `r`, as well
+as certified contour bounds and quadrature assembly.
 
 `F0ConditionalNode` defines the actual radial slice of `F0` and its normalized
 Hermite coefficients, proving Bessel's bound before aggregation over modes.
