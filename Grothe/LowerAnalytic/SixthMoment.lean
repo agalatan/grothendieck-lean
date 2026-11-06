@@ -168,8 +168,7 @@ lemma scalar_low {y w u z b4 cG v t : ℝ} (H : TensorHyp y w u z b4 cG v t) (hy
     unfold aaC; nlinarith
   have hb : b4 ≤ bbC := by
     apply le_of_sq_le_sq' (by unfold bbC; norm_num)
-    have := H.b1
-    unfold bbC; nlinarith [sq_nonneg (t - 1 / 12)]
+    unfold bbC; nlinarith [H.b1, sq_nonneg (t - 1 / 12)]
   have hv : v ≤ bbC := H.v1.trans hb
   have hsv : √v ≤ ddC := by
     rw [Real.sqrt_le_left (by unfold ddC; norm_num)]
@@ -326,8 +325,7 @@ theorem scalar_sixth (y w u z b4 cG v t : ℝ)
 /-! ### Tensor and complex forms -/
 
 lemma le_of_sub_eq_div {a b n d : ℝ} (hd : 0 < d) (hn : 0 ≤ n) (h : b - a = n / d) : a ≤ b := by
-  have : 0 ≤ n / d := div_nonneg hn hd.le
-  linarith
+  linarith [div_nonneg hn hd.le]
 
 /-- **Cumulant form.**  Let `s = ‖G‖² > 0`, `h = ‖S‖²`, `V = tr G³`, `T₃ = tr S³`,
 `T₄ = tr S⁴`, `Q = ⟨vec G, S vec G⟩`, `U₂ = ‖SF‖²`, `DU = ⟨FG, SF⟩`, `Ga = ‖G_anti‖²`,
@@ -363,8 +361,7 @@ theorem cumulant_bound (s h V T3 T4 Q U2 DU Ga tt κ4 κ6 : ℝ) (hs : 0 < s)
   have hs4 : √(σ ^ 4) = σ ^ 2 := by
     rw [show σ ^ 4 = (σ ^ 2) ^ 2 by ring, Real.sqrt_sq (by positivity)]
   rw [Real.sqrt_sq hτ] at hT3 hQ
-  rw [Real.sqrt_sq hc] at hU1
-  rw [hs4] at hU1
+  rw [Real.sqrt_sq hc, hs4] at hU1
   rw [Real.sqrt_sq hA, Real.sqrt_sq hB] at hDU
   -- the right-hand side
   set D : ℝ := 1 + 3 * (h / σ ^ 4) / 2 with hD
@@ -428,8 +425,8 @@ theorem cumulant_bound (s h V T3 T4 Q U2 DU Ga tt κ4 κ6 : ℝ) (hs : 0 < s)
     have e : 2 * (Ga / σ ^ 4) * (1 - Ga / σ ^ 4) * (1 - 6 * (τ ^ 2 / η ^ 2))
         = (2 * Ga * (σ ^ 4 - Ga) * (η ^ 2 - 6 * τ ^ 2)) / (σ ^ 4 * η) ^ 2 := by
       field_simp
-    rw [e, Real.sqrt_div' _ (by positivity), Real.sqrt_sq (by positivity)]
-    rw [div_le_iff₀ (by positivity)]
+    rw [e, Real.sqrt_div' _ (by positivity), Real.sqrt_sq (by positivity),
+      div_le_iff₀ (by positivity)]
     have e2 : ((2 - Ga / σ ^ 4) * (τ / η) + √(2 * Ga * (σ ^ 4 - Ga) * (η ^ 2 - 6 * τ ^ 2)) / (σ ^ 4 * η))
         * (σ ^ 4 * η) = (2 * σ ^ 4 - Ga) * τ + √(2 * Ga * (σ ^ 4 - Ga) * (η ^ 2 - 6 * τ ^ 2)) := by
       field_simp
@@ -438,8 +435,7 @@ theorem cumulant_bound (s h V T3 T4 Q U2 DU Ga tt κ4 κ6 : ℝ) (hs : 0 < s)
       + √(A0 (η / σ ^ 2) (τ ^ 2 / η ^ 2) * B0 (τ ^ 2 / η ^ 2))
       + √(A2 (η / σ ^ 2) (τ ^ 2 / η ^ 2) * B2 (τ ^ 2 / η ^ 2)) := by
     rw [eA0, eA2, Real.sqrt_div' _ (by positivity), Real.sqrt_div' _ (by positivity),
-      Real.sqrt_sq (by positivity)]
-    rw [div_le_iff₀ (by positivity)]
+      Real.sqrt_sq (by positivity), div_le_iff₀ (by positivity)]
     have e : (thetaC * (η / σ ^ 2) * (T3 / η ^ 3)
         + √((2 * σ ^ 4 / 3 - 2 * η ^ 2 + (18 + 6 * kC) * τ ^ 2)
             * (3 * (η ^ 2) ^ 2 / 8 + η ^ 2 * τ ^ 2 / 2 + 3 * (τ ^ 2) ^ 2 / 2)) / (σ ^ 2 * η ^ 2)
