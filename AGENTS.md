@@ -476,6 +476,9 @@ scripts/cloud.sh list; scripts/cloud.sh fetch <run-id>      # recent runs; downl
 - The node caps (`CapRowKK`, `CapNodes`) are part of `Grothe` and verified by CI (§8, §10). The cap checker
   (`GrotheCapsKernel/`) is its own precompiled library on purpose (a change to a precompiled library invalidates every
   module that imports it): never import other kernel modules into it.
+- The same holds for the quadrature checker `GrotheQuadKernel/`: the 13 energy-table facts import it, and any module
+  added to or changed in it recompiles all of them (about ten hours each). Keep it frozen; new kernel code for the
+  upper bound (the port's twisted kernel, the omitted pairs, ...) goes in `GrotheQuadExtKernel/`.
 
 ## 14. Cleaning up: leave nothing behind
 

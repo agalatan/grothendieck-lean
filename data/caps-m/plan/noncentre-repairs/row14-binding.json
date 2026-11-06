@@ -14,7 +14,7 @@
   "format": "nodecaps-noncentre-repair-binding/v1",
   "historical_provenance": {
     "path": "data/caps-m/plan/noncentre-repairs/baseline/row14-binding.json",
-    "sha256": "b05904799cc171c6461ca6c3705230cff183695866af34417b14451dfd03cffe"
+    "sha256": "38f1ba42f384c9cff766cf10408d91795e7d12c1b5755c555bd81c62355b9ae9"
   },
   "historical_seal": {
     "path": "data/caps-m/plan/row-certificates/row14-source.json",
