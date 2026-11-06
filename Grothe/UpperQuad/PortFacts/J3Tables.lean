@@ -12,6 +12,8 @@ Agent-ID: claude-b9ee. Refs #41, #313.
 
 namespace Grothe.UpperQuad.PortFacts
 
+open GrotheQuad
+
 theorem j3TablesValid : tablesFlags P0 (twistParams 3) (tables 3) = true := by
   native_decide
 
