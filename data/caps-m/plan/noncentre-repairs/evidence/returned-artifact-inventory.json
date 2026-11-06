@@ -1,0 +1,189 @@
+{
+  "agent_id": "codex-15b7",
+  "cache_uploaded": false,
+  "files": [
+    {
+      "original_path": "data/caps-m/plan/row-certificates/row12-pieces.json",
+      "path": "data/caps-m/plan/noncentre-repairs/baseline/row12-pieces.json",
+      "sha256": "f3956d00e65917f2c1cc895d9fc283c02403d3234c30d5ed2376bf51d22e42e8",
+      "size": 3695965
+    },
+    {
+      "original_path": "data/caps-m/plan/row-certificates/row14-pieces.json",
+      "path": "data/caps-m/plan/noncentre-repairs/baseline/row14-pieces.json",
+      "sha256": "b529efcb7e1b71b55751d122cf47708d54d2ee4fe38bb1e308701b1ce1a11c41",
+      "size": 2970331
+    },
+    {
+      "original_path": "git:HEAD:tools/gen_cap_prepared_rows.py",
+      "path": "data/caps-m/plan/noncentre-repairs/baseline/gen_cap_prepared_rows.py",
+      "sha256": "69683a8220ac1e94b5db6e5a893d58417f80772cda9d7afe4a78be14a620a8d3",
+      "size": 6466
+    },
+    {
+      "original_path": "data/caps-m/plan/row-certificates/row14-binding.json",
+      "path": "data/caps-m/plan/noncentre-repairs/baseline/row14-binding.json",
+      "sha256": "f80d4dfeb8c6bcbe54dc264563346a517b5a85be4c99b40b7c0a6019dd44cd64",
+      "size": 16426
+    },
+    {
+      "original_path": "Grothe/LowerAnalytic/CapPieces/D12x186.lean",
+      "path": "data/caps-m/plan/noncentre-repairs/baseline/D12x186.lean.txt",
+      "sha256": "8f66e15a7fe8d8b00c9523d7c86f2ecfe22b264372962cd803fc934ead8212ed",
+      "size": 23690
+    },
+    {
+      "original_path": "Grothe/LowerAnalytic/CapPieces/D12x204.lean",
+      "path": "data/caps-m/plan/noncentre-repairs/baseline/D12x204.lean.txt",
+      "sha256": "a8f436ae678a8a7822ce768b0207a175496cfbffc58f69f952b2fc5f248f55d0",
+      "size": 23646
+    },
+    {
+      "original_path": "Grothe/LowerAnalytic/CapPieces/D14x200.lean",
+      "path": "data/caps-m/plan/noncentre-repairs/baseline/D14x200.lean.txt",
+      "sha256": "1b737b3f0f53fb5fedfad4d9dc572e914ef8c40d868b3a319b6934c6d1d44b00",
+      "size": 23671
+    },
+    {
+      "original_path": "Grothe/LowerAnalytic/CapPieces/D14x280.lean",
+      "path": "data/caps-m/plan/noncentre-repairs/baseline/D14x280.lean.txt",
+      "sha256": "0a6532efff2f19b148a331abcd29196de53ab248c86ebf00d733c2e9aa145b6d",
+      "size": 106168
+    },
+    {
+      "original_path": "handoff/grid3-fix/returned-matrices-20261103T1317Z/Export186Piece1.jsonl",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/Export186Piece1.jsonl",
+      "sha256": "9f378a7d78c5cfa6610678a7356494324f58c2db3f540a3bc7bfded40035fd09",
+      "size": 27596
+    },
+    {
+      "original_path": "handoff/grid3-fix/returned-matrices-20261103T1317Z/Export186Piece1.lean",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/Export186Piece1.lean.txt",
+      "sha256": "df4036358ef3c7c244f28e8935b72ee5560f0bd1013bec662966ab42eb31498d",
+      "size": 4861
+    },
+    {
+      "original_path": "handoff/grid3-fix/six-neighbour-solve-20261103T1320Z/solution_12x186_j1.json",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/solution_12x186_j1.json",
+      "sha256": "9b1436dd020bfab0d5acf74b7d23c50756ffe7179fc2f4647ca5058734d0f130",
+      "size": 622
+    },
+    {
+      "original_path": "handoff/grid3-fix/returned-matrices-20261103T1317Z/Export186Piece2.jsonl",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/Export186Piece2.jsonl",
+      "sha256": "0a172126abf1af0ec902756db033130088b0f40147e8a91264441d0c84061cc7",
+      "size": 27622
+    },
+    {
+      "original_path": "handoff/grid3-fix/returned-matrices-20261103T1317Z/Export186Piece2.lean",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/Export186Piece2.lean.txt",
+      "sha256": "10729737dc80bc92e01bfefe833cfc1620db7c1d1ce6bf6f1bf3b51962077c2d",
+      "size": 4861
+    },
+    {
+      "original_path": "handoff/grid3-fix/six-neighbour-solve-20261103T1320Z/solution_12x186_j2.json",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/solution_12x186_j2.json",
+      "sha256": "aa31020cb83d4ebad7dc37978fbd18363001edb88443203076b28c715d9d6a57",
+      "size": 622
+    },
+    {
+      "original_path": "handoff/grid3-fix/returned-matrices-20261103T1317Z/Export186Piece3.jsonl",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/Export186Piece3.jsonl",
+      "sha256": "f5a1c4f101aac6440626bbe6b1f3076172a5e4ddc9feb1358c05bd925460dfbd",
+      "size": 27580
+    },
+    {
+      "original_path": "handoff/grid3-fix/returned-matrices-20261103T1317Z/Export186Piece3.lean",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/Export186Piece3.lean.txt",
+      "sha256": "6072fbba1b688ca8a4d15204fb36152802a19b7e1f2b312c72b9536a373f4796",
+      "size": 4861
+    },
+    {
+      "original_path": "handoff/grid3-fix/six-neighbour-solve-20261103T1320Z/solution_12x186_j3.json",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/solution_12x186_j3.json",
+      "sha256": "2f2aca5f8797de04c95579a6188c45ad125d290470e585663814599993425e47",
+      "size": 624
+    },
+    {
+      "original_path": "handoff/grid3-fix/returned-matrices-20261103T1317Z/Export204Piece1.jsonl",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/Export204Piece1.jsonl",
+      "sha256": "149a4f65cad89588aa0ba54770a4fa3086eadbc7729b53af7f8c8e8b22e0410f",
+      "size": 27619
+    },
+    {
+      "original_path": "handoff/grid3-fix/returned-matrices-20261103T1317Z/Export204Piece1.lean",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/Export204Piece1.lean.txt",
+      "sha256": "4ed1fc1035077932886d693c4b55045447872d34ec566279e9982202bc233a02",
+      "size": 4861
+    },
+    {
+      "original_path": "handoff/grid3-fix/six-neighbour-solve-20261103T1320Z/solution_12x204_j1.json",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/solution_12x204_j1.json",
+      "sha256": "a290b0260d52708547eda312582ecc3926b07ac4c8783e5e0faad20318418cd4",
+      "size": 618
+    },
+    {
+      "original_path": "handoff/grid3-fix/returned-matrices-20261103T1317Z/Export204Piece2.jsonl",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/Export204Piece2.jsonl",
+      "sha256": "b3df4411a8d0495e0cf5d840eb3d82473157ee7b3d6a698e7cec386e5be9f58e",
+      "size": 27603
+    },
+    {
+      "original_path": "handoff/grid3-fix/returned-matrices-20261103T1317Z/Export204Piece2.lean",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/Export204Piece2.lean.txt",
+      "sha256": "bbcfa7aca5c12fe2b4586f53e1e8a0d55a74cb7b60700c2f4b2799f2fa275eab",
+      "size": 4861
+    },
+    {
+      "original_path": "handoff/grid3-fix/six-neighbour-solve-20261103T1320Z/solution_12x204_j2.json",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/solution_12x204_j2.json",
+      "sha256": "124cc6c0647c60b75dc375384187d64fa8a0226eda86558f3bcbc039f5473b75",
+      "size": 616
+    },
+    {
+      "original_path": "handoff/grid3-fix/returned-matrices-20261103T1317Z/Export204Piece3.jsonl",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/Export204Piece3.jsonl",
+      "sha256": "e3a8879702e3238321c8dca2a9849c65c2d267d89ca77825749a414197b7abb9",
+      "size": 27666
+    },
+    {
+      "original_path": "handoff/grid3-fix/returned-matrices-20261103T1317Z/Export204Piece3.lean",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/Export204Piece3.lean.txt",
+      "sha256": "e0f67ececfde0a2b896b9e073ecf1ae15bc91b761f9364fae31cd9396dbb698a",
+      "size": 4861
+    },
+    {
+      "original_path": "handoff/grid3-fix/six-neighbour-solve-20261103T1320Z/solution_12x204_j3.json",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/solution_12x204_j3.json",
+      "sha256": "9354c3f442263743ce22f7f80de0af9966ce0f56fe89365b080de1dfa8264574",
+      "size": 623
+    },
+    {
+      "original_path": "handoff/grid3-fix/returned-matrices-20261103T1317Z/manifest.json",
+      "path": "data/caps-m/plan/noncentre-repairs/row12/export-manifest.json",
+      "sha256": "ba204afd87520f44a8c229158c6887f9031341debbe86456ec30ac9ee15d8cbe",
+      "size": 3489
+    },
+    {
+      "original_path": "handoff/grid3-fix/six-neighbour-repair-independent-exact-replay-20261103T132005556282Z.json",
+      "path": "data/caps-m/plan/noncentre-repairs/evidence/fresh_replay.json",
+      "sha256": "9b862aca5e8f43bb7ee5e013afe78e06ce870cbb9c2a33811fce01ff05015485",
+      "size": 173975
+    },
+    {
+      "original_path": "handoff/grid3-fix/returned-six-noncentre-source-matrix-audit-20261103T131802787544Z.json",
+      "path": "data/caps-m/plan/noncentre-repairs/evidence/fresh_source.json",
+      "sha256": "2bb26d5a19e9ebc4fd3e4039458f53e08ec504ea48fa849ebe74ce23a60d1601",
+      "size": 142228
+    },
+    {
+      "original_path": "handoff/grid3-fix/legacy-noncentre-override-exact-replay-20261103T130346973684Z.json",
+      "path": "data/caps-m/plan/noncentre-repairs/evidence/legacy_replay.json",
+      "sha256": "b591fb7adb9c03b96b09ecd42d20d4edb9a92ef3ffa5035518a0db3c9a7183cf",
+      "size": 603562
+    }
+  ],
+  "format": "noncentre-returned-science-inventory/v1",
+  "native_verified": false,
+  "scope": "Six newly repaired Row12 neighbours and thirteen historical zero-cap Row14 neighbours only; other known failing nodes remain pending."
+}

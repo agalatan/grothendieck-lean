@@ -1,0 +1,195 @@
+{
+  "agent_id": "claude-b9ee",
+  "format": "caps-localized-nodes-provenance/v1",
+  "nodes": {
+    "12x240": {
+      "final_facts_built": 10,
+      "min_float_slack": 0.0030366311377520994,
+      "pieces": 502,
+      "source_sha256": "1d1e56a295ae2b08e59095cccb6310dd92675b1f8492b40daae73957731d7f7a",
+      "verdicts": "{'fixed': 131, 'pass': 371}"
+    },
+    "12x242": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.002910829670186965,
+      "pieces": 533,
+      "source_sha256": "2533634dade4ceeb1762eeccb226830340cfd4cddecada2f3d723d69ddb747c0",
+      "verdicts": "{'fixed': 126, 'pass': 407}"
+    },
+    "12x244": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.0025685696018322712,
+      "pieces": 566,
+      "source_sha256": "19f832eb64dab5ccd939266fea95ec8efe8be1a65f23d068274037f660ce74d6",
+      "verdicts": "{'fixed': 139, 'pass': 427}"
+    },
+    "12x246": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.0024608543314108555,
+      "pieces": 566,
+      "source_sha256": "a6ef3901bc396db7f96f2e9b8200b0c2d726ba4ecd94cc8daca9f0ad51ccd41e",
+      "verdicts": "{'fixed': 127, 'pass': 439}"
+    },
+    "12x247": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.002299308114401377,
+      "pieces": 566,
+      "source_sha256": "747db6a5f5c7230f2221ff3072717ba101c7519622b8c4f7028bfb23c53d2e88",
+      "verdicts": "{'fixed': 122, 'pass': 444}"
+    },
+    "12x248": {
+      "final_facts_built": 12,
+      "min_float_slack": 0.0024322498574431695,
+      "pieces": 597,
+      "source_sha256": "e807f69cbbe45fd5df3b6dab4af3cbe8ef4b3c66f8d97345ce0a54203ae9f001",
+      "verdicts": "{'fixed': 131, 'pass': 466}"
+    },
+    "12x260": {
+      "final_facts_built": 18,
+      "min_float_slack": 0.0016338676367080307,
+      "pieces": 1000,
+      "source_sha256": "632e7a37fd9ffe17c506d048291c0cbd568af80d4e6e532bed0414237d740d79",
+      "verdicts": "{'fixed': 180, 'pass': 820}"
+    },
+    "13x240": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.002887857895013335,
+      "pieces": 535,
+      "source_sha256": "afffe61afca9d01f5cff74af2b78ed4ed5a2da59bb129074abb450416c22c226",
+      "verdicts": "{'fixed': 139, 'pass': 396}"
+    },
+    "13x242": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.002812911433720977,
+      "pieces": 566,
+      "source_sha256": "cf048e50553f8e8faa620ca962bef0c87ba0b1c137384ac7f7d732d51f3b966b",
+      "verdicts": "{'fixed': 134, 'pass': 432}"
+    },
+    "13x244": {
+      "final_facts_built": 12,
+      "min_float_slack": 0.0025207626135681505,
+      "pieces": 597,
+      "source_sha256": "e60f22a5cfabb73806317097879a771f0d2cec8c9acdc19b5a31312e961850d7",
+      "verdicts": "{'fixed': 137, 'pass': 460}"
+    },
+    "13x245": {
+      "final_facts_built": 12,
+      "min_float_slack": 0.002527692254721936,
+      "pieces": 628,
+      "source_sha256": "3f6f7885df45a0fb4903a5980688b2b3bb4e9101ff151fda2396ea4bd85d7a3b",
+      "verdicts": "{'fixed': 144, 'pass': 484}"
+    },
+    "13x260": {
+      "final_facts_built": 13,
+      "min_float_slack": 0.0013120368670347382,
+      "pieces": 691,
+      "source_sha256": "e5e70bd944d19920cdb7e882773d1b0a319e5f6b30e04cb6b09043a9a09c146e",
+      "verdicts": "{'fixed': 112, 'pass': 579}"
+    },
+    "14x242": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.0028964461365286187,
+      "pieces": 535,
+      "source_sha256": "e932482475283e3d0ea2ace8680df2d2261ecfcfb1a28d33fd065bbdd08dff75",
+      "verdicts": "{'fixed': 131, 'pass': 404}"
+    },
+    "14x244": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.0028198338016662827,
+      "pieces": 566,
+      "source_sha256": "bd019d9042b342108d8a30e4913a32408258565689fa07947470c3a83d825a72",
+      "verdicts": "{'fixed': 134, 'pass': 432}"
+    },
+    "14x246": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.002486515857160976,
+      "pieces": 566,
+      "source_sha256": "2dcf9b2833cc18cb7cbfbb843fb4b75f3266fa329b16fe57b9ef8dc4851a5b11",
+      "verdicts": "{'fixed': 130, 'pass': 436}"
+    },
+    "14x247": {
+      "final_facts_built": 12,
+      "min_float_slack": 0.002457491232938036,
+      "pieces": 597,
+      "source_sha256": "8bdbb09e91601d6b2b9e05768fdd3610b570c6af23b8002ead4b9f20404b2a4a",
+      "verdicts": "{'fixed': 131, 'pass': 466}"
+    },
+    "14x260": {
+      "final_facts_built": 15,
+      "min_float_slack": 0.001418195226339014,
+      "pieces": 783,
+      "source_sha256": "9eef3d554f4bcb6f8abeb7be052c50ba84b8aa62e6ad2376e6fc6adede6a97b0",
+      "verdicts": "{'fixed': 133, 'pass': 650}"
+    },
+    "15x242": {
+      "final_facts_built": 13,
+      "min_float_slack": 0.00020097963976994926,
+      "pieces": 690,
+      "source_sha256": "a4eebed87828e5f9910fd9819986868c683293bfba2c0637e9a2ddf583eedcdf",
+      "verdicts": "{'fixed': 193, 'pass': 497}"
+    },
+    "15x244": {
+      "final_facts_built": 13,
+      "min_float_slack": 5.4424140268460874e-05,
+      "pieces": 661,
+      "source_sha256": "ade2f7a1a8e6765399837d9b7365d7e9d54d4b5a2037c4b3958e3123cdb4002b",
+      "verdicts": "{'fixed': 182, 'pass': 479}"
+    },
+    "15x246": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.0029046858086205773,
+      "pieces": 566,
+      "source_sha256": "626842033f77464957458dd7e754a517bcb899929d1d6630fe5b4bc1af3acf78",
+      "verdicts": "{'fixed': 145, 'pass': 421}"
+    },
+    "15x248": {
+      "final_facts_built": 11,
+      "min_float_slack": 0.002817199520106284,
+      "pieces": 566,
+      "recipe_repairs": [
+        {
+          "original_var_row": [
+            "0",
+            "0",
+            "0",
+            "0.019840131017346104",
+            "0.032098261374340464",
+            "-0.013269167945243023",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ],
+          "piece": 31,
+          "reason": "the S-lemma matrix of this box3 piece (slice tau0 in [0.245331, 0.251331], box [-3/500, 3/500]^2, nq 256) is indefinite by -2.7e-5 on the fibre coordinates {4, 5, 6} for every multiplier under the checker's prices (float slack +3.7e-3); the recipe's variance-factor row scaled by 5/4 makes the checker accept the piece with the generator's own multipliers (factors 11/10 ... 2 pass, 9/10 fails; sweep on big, 5 Nov 05:55 Bucharest); quadrant splitting does not help (all four quadrants at -2.74e-5)",
+          "var_factor": "5/4"
+        }
+      ],
+      "source_sha256": "de2c853195e9a904681381181271b7c79bde915b9f01388ec164b1a3b998a880",
+      "verdicts": "{'fixed': 133, 'pass': 433}"
+    },
+    "15x250": {
+      "final_facts_built": 12,
+      "min_float_slack": 0.0026235042727440483,
+      "pieces": 597,
+      "source_sha256": "be303ea6b42a5821f8276fc1c08df047257b850542ef443d3b5ec66edee44814",
+      "verdicts": "{'fixed': 139, 'pass': 458}"
+    },
+    "15x251": {
+      "final_facts_built": 13,
+      "min_float_slack": 0.0023476455678137498,
+      "pieces": 690,
+      "source_sha256": "6de71e22718712e231dd2512125b6cce69aa9cf5810a817884894167256290ba",
+      "verdicts": "{'fixed': 151, 'pass': 539}"
+    },
+    "15x260": {
+      "final_facts_built": 18,
+      "min_float_slack": 0.0019953312777747367,
+      "pieces": 1001,
+      "source_sha256": "eb8303faecfcac45fe55622c708c44139a0a56c5226b048cea585191395ce5ea",
+      "verdicts": "{'fixed': 194, 'pass': 807}"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "agent_id": "codex-15b7",
+  "format": "caps-row-generation-config/v1",
+  "row": 12,
+  "canonical_base": "95113edbcafed32ab9e8062c3b5cae5ff3338834",
+  "piece_chunk": 4,
+  "anchor_range_size": 16,
+  "certificate_grids": [[400, 128, "1/50"], [1600, 256, "1/200"], [1600, 1024, "1/200"], [1600, 1152, "1/200"], [3200, 256, "1/400"]],
+  "scope": "Inactive proposal generation only. Native facts and the assembled row theorem require canonical CI verification. Activation does not discharge rows13–15."
+}

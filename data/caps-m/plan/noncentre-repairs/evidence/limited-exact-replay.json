@@ -1,0 +1,53 @@
+{
+  "additional_exports_pending": 304,
+  "current_native_checks_pending": true,
+  "format": "noncentre-integrated-stored-replay/v1",
+  "remaining_known_failed_nodes_pending": 25,
+  "rows": {
+    "12": {
+      "cache_uploaded": false,
+      "current_source_feasibility_verified": false,
+      "effective_sha256": "ef8eb76f82384e394758ef2a5a1b9e39215b21c837544d82ec250dfbe08a79a3",
+      "format": "nodecaps-noncentre-repair-receipt/v1",
+      "limitation": "Historical matrices lack source provenance; hash integrity and stored LDL replay do not establish current-source feasibility.",
+      "native_verified": false,
+      "repaired_keys": [
+        "12:186:1",
+        "12:186:2",
+        "12:186:3",
+        "12:204:1",
+        "12:204:2",
+        "12:204:3"
+      ],
+      "row": 12,
+      "source_provenance_verified": false,
+      "stored_matrix_ldl_replayed": true
+    },
+    "14": {
+      "cache_uploaded": false,
+      "current_source_feasibility_verified": false,
+      "effective_sha256": "2ee8ee61a971796c1134fe79f07890edfbe9158ffef2d21f39e467d08f517756",
+      "format": "nodecaps-noncentre-repair-receipt/v1",
+      "limitation": "Historical matrices lack source provenance; hash integrity and stored LDL replay do not establish current-source feasibility.",
+      "native_verified": false,
+      "repaired_keys": [
+        "14:200:1",
+        "14:200:12",
+        "14:200:18",
+        "14:200:2",
+        "14:200:24",
+        "14:200:3",
+        "14:200:30",
+        "14:200:4",
+        "14:200:5",
+        "14:200:6",
+        "14:280:103",
+        "14:280:5",
+        "14:280:98"
+      ],
+      "row": 14,
+      "source_provenance_verified": false,
+      "stored_matrix_ldl_replayed": true
+    }
+  }
+}

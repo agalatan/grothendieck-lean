@@ -2,6 +2,7 @@ import Grothe.Lower.RowData
 import Grothe.Lower.RowGateData
 import Grothe.LowerAnalytic.CapConstrDefs
 import Grothe.LowerAnalytic.CapTablesData
+import Grothe.LowerAnalytic.CapCoverFast
 
 /-!
 # Computable checks of localised node caps (route M of PLAN_CAPS)
@@ -24,7 +25,7 @@ open GrotheKernel Grothe.Lower
 namespace Grothe.LowerAnalytic
 
 /-- The grids of the pieces: `400 × 128`, `1600 × 256`, `1600 × 1024` on `[0, 8]`. -/
-def pieceGrids : List (ℕ × ℕ × ℚ) := [(400, 128, 1 / 50), (1600, 256, 1 / 200), (1600, 1024, 1 / 200)]
+def pieceGrids : List (ℕ × ℕ × ℚ) := [(400, 128, 1 / 50), (1600, 256, 1 / 200), (1600, 1024, 1 / 200), (1600, 1152, 1 / 200), (3200, 256, 1 / 400)]
 
 /-- The tables of the piece grids. -/
 def pieceTables : List Tables := pieceGrids.map fun G => mkTables G.1 G.2.1 G.2.2
@@ -47,6 +48,28 @@ def pieceCoverOK (x : ℕ × ℕ × List String × List String) : Bool :=
   let ds := parseDirs x.2.2.1
   x.2.2.2.all (fun p => decide ((parsePiece ds p).1 < pieceGrids.length)) &&
     capCoverOK ds ((pieceList [] ds x.2.2.2).map fun y => y.2.2.2)
+
+/-- The equivalent coordinate-filtered coverage check. -/
+def pieceCoverFastOK (x : ℕ × ℕ × List String × List String) : Bool :=
+  let ds := parseDirs x.2.2.1
+  x.2.2.2.all (fun p => decide ((parsePiece ds p).1 < pieceGrids.length)) &&
+    capCoverFastOK ds ((pieceList [] ds x.2.2.2).map fun y => y.2.2.2)
+
+theorem pieceCoverOK_of_fast {x : ℕ × ℕ × List String × List String}
+    (h : pieceCoverFastOK x = true) : pieceCoverOK x = true := by
+  simpa only [pieceCoverFastOK, pieceCoverOK, capCoverFastOK_eq] using h
+
+/-- One independently compiled slice of a piece node's coverage check. -/
+def pieceCoverSliceOK (x : ℕ × ℕ × List String × List String) (i K : ℕ) : Bool :=
+  let ds := parseDirs x.2.2.1
+  x.2.2.2.all (fun p => decide ((parsePiece ds p).1 < pieceGrids.length)) &&
+    capCoverOKSlice ds ((pieceList [] ds x.2.2.2).map fun y => y.2.2.2) i K
+
+theorem pieceCoverOK_of_slices {x : ℕ × ℕ × List String × List String} {K : ℕ}
+    (hK : 0 < K) (h : ∀ i < K, pieceCoverSliceOK x i K = true) : pieceCoverOK x = true := by
+  simp only [pieceCoverSliceOK, Bool.and_eq_true] at h
+  simp only [pieceCoverOK, Bool.and_eq_true]
+  exact ⟨(h 0 hK).1, capCoverOK_of_slices hK (fun i hi => (h i hi).2)⟩
 
 /-- **The check of piece `j`** of a piece node (on its grid, with the tables `Ts`). -/
 def pieceOneOK (Ts : List Tables) (x : ℕ × ℕ × List String × List String) (j : ℕ) : Bool :=

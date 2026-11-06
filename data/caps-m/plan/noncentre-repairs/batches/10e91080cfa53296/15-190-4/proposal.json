@@ -1,0 +1,35 @@
+{
+ "k": 15,
+ "i": 190,
+ "j": 4,
+ "grid": 1,
+ "stored_ok": false,
+ "stored_lm": [
+  [
+   "9683777/250000000",
+   "0"
+  ],
+  [
+   "1231063551/1000000000",
+   "0"
+  ]
+ ],
+ "t_opt": 0.001284400725567671,
+ "min_eig_refined": 0.0012844012586583021,
+ "status": "fixed",
+ "lm": [
+  [
+   "200581398305340222210942770813/5070602400912917605986812821504",
+   "0"
+  ],
+  [
+   "1063393385712803872689347623007/864224816499355181422552809472",
+   "0"
+  ]
+ ],
+ "cap_up": "0",
+ "source_export": "/home/agalatan/claude-b9ee-grid3-exports/row15-partial/batch-006/Export15x190Piece4.jsonl",
+ "source_export_sha256": "709cd1dc1b4bab07d1522a0099f81bd7ec8f076a079cca2c2d8a54f4308815e6",
+ "solver_sha256": "5e4052898c40a0bd5b152c1006ced14e81975472f2735a659794cd7cbb444de2",
+ "evidence": "190-4.json.exec.json"
+}
