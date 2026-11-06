@@ -13794,6 +13794,14 @@ import Grothe.UpperQuad.TwistRadialParity
 import Grothe.UpperQuad.TwistRadialReal
 import Grothe.UpperQuad.TwistRadialVector
 import Grothe.UpperQuad.TwistSix
+import Grothe.UpperQuad.TwistEllipseCertificate
+import Grothe.UpperQuad.TwistEllipseCertificateSound
+import Grothe.UpperQuad.TwistEllipseCheck
+import Grothe.UpperQuad.TwistEllipseColumnSound
+import Grothe.UpperQuad.TwistEllipseGeometry
+import Grothe.UpperQuad.TwistEllipseMajorantSound
+import Grothe.UpperQuad.TwistEllipsePhaseSound
+import Grothe.UpperQuad.TwistEllipseSound
 import Grothe.UpperQuad.TwistSound
 import Grothe.UpperQuad.TwistTail
 import Grothe.UpperQuad.TwistYEnvelope
