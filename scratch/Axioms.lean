@@ -13459,9 +13459,9 @@ import Grothe
 #print axioms Grothe.UpperQuad.TwistEllCheck.columnCoeffs_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.defectI_disk_theta
 #print axioms Grothe.UpperQuad.TwistEllCheck.diskPoint_shift_im_sq_le_sharp
+#print axioms Grothe.UpperQuad.TwistEllCheck.diskProfile_shift_geometry
 #print axioms Grothe.UpperQuad.TwistEllCheck.errorCaps_of_shards_and_total
 #print axioms Grothe.UpperQuad.TwistEllCheck.exists_disk_of_planGeomOK
-#print axioms Grothe.UpperQuad.TwistEllCheck.diskProfile_shift_geometry
 #print axioms Grothe.UpperQuad.TwistEllCheck.maxUpper_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.mehI_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.mem_horner_columnCoeffs
