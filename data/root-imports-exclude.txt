@@ -11,9 +11,14 @@
 # Header comments only: `tools/gen_root_imports.py` keeps this file sorted. Current entries:
 # Modules that tools/gen_root_imports.py must NOT import in the root files Grothe.lean / GrotheKernel.lean.
 # One module per line, sorted; `#` starts a comment. Union-merged by git (.gitattributes).
+Grothe.LowerAnalytic.CapPieces.C14x150
 Grothe.LowerAnalytic.CapPieces.C14x200
+Grothe.LowerAnalytic.CapPieces.D14x150
 Grothe.LowerAnalytic.CapPieces.D14x200
+Grothe.LowerAnalytic.CapPieces.N14x150
 Grothe.LowerAnalytic.CapPieces.N14x200
+Grothe.LowerAnalytic.CapPieces.R14x150_0
+Grothe.LowerAnalytic.CapPieces.R14x150_1
 Grothe.LowerAnalytic.CapPieces.R14x200_0
 Grothe.LowerAnalytic.CapPieces.R14x200_1
 Grothe.LowerAnalytic.CapPieces.R14x200_10

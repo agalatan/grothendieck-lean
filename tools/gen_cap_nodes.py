@@ -1,44 +1,76 @@
 #!/usr/bin/env python3
-"""Generate the node-cap modules: `Grothe/LowerAnalytic/CapRowKK.lean` (one per certified row) and
-`Grothe/LowerAnalytic/CapNodes.lean`.
+"""Generate the legacy range modules and their shared active-row assembly.
 
-usage: tools/gen_cap_nodes.py [--check] [--size S] ROW [ROW ...]
+usage: tools/gen_cap_nodes.py [--check] [--registry PATH] [--size 49] ROW [ROW ...]
        tools/gen_cap_nodes.py $(cat data/cap-nodes/rows.txt)
 
-Each row module splits the nodes of its row into ranges of S nodes (default 49; the last range ends at
-the row's `nodeList.length`) and checks every range by its own `native_decide` fact `capRangeKK_j`
-(`rangeOK`, the nodes one after the other, no parallel tasks); lake builds the row modules in separate
-processes.  The computation-only row modules import `CapRangeDefs`; the cheap
-`vertexCapsRowKK` soundness proofs assemble the ranges in `CapNodes`. The rows must be those of `capRowsData`
-(`CapRecipeData.lean`, written by `tools/gen_cap_recipes.py`).
+The durable legacy input remains rows0–11,16–18 with size49. Completed whole
+rows come only from caps_stamp's shared active registry; they never become legacy
+range inputs. A source producer reads explicit row declarations so old generated
+CapNodes need not already describe the new rows. --check requires materialized
+registry validation and exposes no declaration-only bypass. This prepares source,
+not native verification, global hypothesis discharge or a cache receipt.
+Agent-ID: codex-15b7.
 """
+import argparse
+import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DIR = ROOT / "Grothe" / "LowerAnalytic"
-NODES = 196  # nodes per row of the 0.0025-grid tables (the last range does not depend on it)
+sys.path.insert(0, str(ROOT / "scripts"))
+import caps_stamp
 
-args = sys.argv[1:]
-check = "--check" in args
-args = [a for a in args if a != "--check"]
-size = 49
-if args and args[0] == "--size":
-    size, args = int(args[1]), args[2:]
-rows = sorted(int(a) for a in args)
-if not rows:
-    sys.exit("specify at least one row (see data/cap-nodes/rows.txt)")
+NODES = 196  # legacy grid; the last range ends at the canonical row length
 
 
-def write_module(path, source):
-    if check:
-        if not path.exists() or path.read_text() != source:
-            sys.exit(f"generated file differs: {path}")
-    else:
-        path.write_text(source)
+def require(ok, message):
+    if not ok:
+        raise caps_stamp.ClosureError(message)
 
 
-def row_module(k):
+def parse_args(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
+    parser.add_argument("--check", action="store_true")
+    parser.add_argument("--registry", default=caps_stamp.BUILD_REGISTRY,
+                        help="Explicit reviewed active-row declaration/registry path")
+    parser.add_argument("--size", type=int, default=49)
+    parser.add_argument("rows", type=int, nargs="+")
+    return parser.parse_args(argv)
+
+
+def proved_rows(view):
+    """Translate only the shared normalized mapping, never a second catalogue."""
+    result = {}
+    for row, item in view["proved_rows"].items():
+        require(type(row) is str and re.fullmatch(r"0|[1-9][0-9]*", row), "invalid normalized proved row")
+        index = int(row)
+        require(isinstance(item, dict) and set(item) == {"assembly", "theorem"}, "invalid normalized row proof")
+        assembly = item["assembly"]
+        require(type(assembly) is str and assembly.endswith(".lean") and
+                caps_stamp.MODULE.fullmatch(assembly[:-5].replace("/", ".")), "invalid normalized row assembly")
+        require(type(item["theorem"]) is str and caps_stamp.MODULE.fullmatch(item["theorem"]), "invalid normalized row theorem")
+        result[index] = {"assembly": assembly[:-5].replace("/", "."), "theorem": item["theorem"]}
+    return result
+
+
+def source_plan(root, rows, size=49, *, registry=None, check=False):
+    """Read explicit shared declarations and render all desired modules in memory.
+
+    Only this source producer requests declaration mode. --check and all normal
+    stamp/build consumers use the default strict materialized API.
+    """
+    require(type(check) is bool and type(size) is int and size == 49, "canonical legacy range size must remain49")
+    require(isinstance(rows, (tuple, list)) and rows and all(type(row) is int for row in rows), "legacy rows must be integers")
+    view = caps_stamp.read_active_registry(root, registry, require_materialized=check)
+    proved = proved_rows(view)
+    require(not set(rows).intersection(proved), "separately proved rows must not be regenerated as legacy range rows")
+    require(len(rows) == len(set(rows)) and sorted(rows) == view["legacy_rows"],
+            "canonical legacy rows must match the unchanged durable rows.txt inventory")
+    return render_modules(sorted(rows), size, proved), len(proved)
+
+
+def row_module(k, size=49):
     starts = list(range(0, NODES, size))
     L = ["import Grothe.LowerAnalytic.CapRangeDefs", "import Grothe.LowerAnalytic.CapRecipeData", "", "/-!",
          f"# The range checks of row {k} (generated by `tools/gen_cap_nodes.py`; do not edit)", "",
@@ -55,7 +87,7 @@ def row_module(k):
     return "\n".join(L)
 
 
-def vertex_proof(k):
+def vertex_proof(k, size=49):
     starts = list(range(0, NODES, size))
     n = len(starts)
     cases = ["i < %d" % starts[1]] + [f"({starts[j]} ≤ i ∧ i < {starts[j + 1]})" for j in range(1, n - 1)] + \
@@ -72,43 +104,75 @@ def vertex_proof(k):
     return "\n".join(L)
 
 
-for k in rows:
-    write_module(DIR / f"CapRow{k:02d}.lean", row_module(k))
+def render_modules(rows, size, proved):
+    """Pure renderer. Inputs are already normalized by source_plan/shared API."""
+    done_rows = sorted(set(rows) | set(proved))
+    outputs = {f"Grothe/LowerAnalytic/CapRow{k:02d}.lean": row_module(k, size) for k in rows}
+    alts = " | ".join(["rfl"] * len(done_rows))
+    N = ["import Grothe.LowerAnalytic.CapRows"] + [f"import Grothe.LowerAnalytic.CapRow{k:02d}" for k in rows] + [
+        *[f"import {proved[k]['assembly']}" for k in sorted(proved)],
+        "import Grothe.Research.RefinedCoverResult",
+        "", "/-!", "# The certified rows of the node caps (generated by `tools/gen_cap_nodes.py`; do not edit)", "",
+        "`capRowsDone`: the rows whose vertex caps are certified inside Lean. The original rows use the range",
+        "checks of the computation-only modules `CapRowKK`; whole-row assemblies use complete localized-piece and",
+        "anchor assembly. The cheap `vertexCapsRowKK` proofs connect those facts to cap soundness.",
+        "Consequently the lower bound needs only the vertex caps of the remaining rows and of the",
+        "excluded nodes (`CapsRest`, `lower_bound_of_capsRest`). The same node caps feed the",
+        "refined finite cover, giving its strict endpoint `refinedL < K`.", "-/", "",
+        "open GrotheKernel Grothe.Lower", "", "namespace Grothe.LowerAnalytic", ""]
+    for k in rows:
+        N += [vertex_proof(k, size)]
+    N += [
+        "/-- The certified rows. -/",
+        f"def capRowsDone : List ℕ := [{', '.join(map(str, done_rows))}]", "",
+        "/-- The original range-checked rows whose excluded nodes remain a hypothesis. -/",
+        f"def capRowsWithExclusions : List ℕ := [{', '.join(map(str, rows))}]", "",
+        "/-- **The remaining cap hypothesis**: the vertex caps of the rows not certified in Lean, and the caps",
+        "at the excluded nodes of the certified rows. -/",
+        "def CapsRest : Prop :=",
+        "  (∀ k, k < rowData.length → k ∉ capRowsDone → VertexCapsRow k) ∧",
+        "    ∀ k ∈ capRowsWithExclusions, ExclCaps k (capExcl k)", "",
+        "theorem vertexCaps_of_capsRest (h : CapsRest) : VertexCaps := fun k hk => by",
+        "  by_cases hd : k ∈ capRowsDone",
+        f"  · simp only [capRowsDone, List.mem_cons, List.not_mem_nil, or_false] at hd",
+        f"    rcases hd with {alts}"]
+    for k in done_rows:
+        if k in proved:
+            N.append(f"    · exact {proved[k]['theorem']}")
+        else:
+            N.append(f"    · exact vertexCapsRow{k:02d} (h.2 {k} (by simp [capRowsWithExclusions]))")
+    N += ["  · exact h.1 k hk hd", "",
+          "/-- **The refined lower bound from the remaining caps**, with the same Gaussian node caps. -/",
+          "theorem lower_bound_of_capsRest (h : CapsRest) {K : ℝ} (hK : IsGrothendieckBound K) :",
+          "    (Grothe.Research.RefinedCoverData.refinedL : ℝ) < K :=",
+          "  Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data",
+          "    (nodeCaps_of_vertexCaps (vertexCaps_of_capsRest h)) hK", "",
+          "end Grothe.LowerAnalytic", ""]
+    outputs["Grothe/LowerAnalytic/CapNodes.lean"] = "\n".join(N)
+    return outputs
 
-alts = " | ".join(["rfl"] * len(rows))
-N = ["import Grothe.LowerAnalytic.CapRows"] + [f"import Grothe.LowerAnalytic.CapRow{k:02d}" for k in rows] + [
-    "import Grothe.Research.RefinedCoverResult",
-    "", "/-!", "# The certified rows of the node caps (generated by `tools/gen_cap_nodes.py`; do not edit)", "",
-    "`capRowsDone`: the rows whose vertex caps are certified inside Lean, by the range checks of the",
-    "computation-only modules `CapRowKK` (one `native_decide` fact per sequential range).",
-    "The cheap `vertexCapsRowKK` proofs below connect those facts to the cap soundness layer.",
-    "Consequently the lower bound needs only the vertex caps of the remaining rows and of the",
-    "excluded nodes (`CapsRest`, `lower_bound_of_capsRest`). The same node caps feed the",
-    "refined finite cover, giving its strict endpoint `refinedL < K`.", "-/", "",
-    "open GrotheKernel Grothe.Lower", "", "namespace Grothe.LowerAnalytic", ""]
-for k in rows:
-    N += [vertex_proof(k)]
-N += [
-    "/-- The certified rows. -/",
-    f"def capRowsDone : List ℕ := [{', '.join(map(str, rows))}]", "",
-    "/-- **The remaining cap hypothesis**: the vertex caps of the rows not certified in Lean, and the caps",
-    "at the excluded nodes of the certified rows. -/",
-    "def CapsRest : Prop :=",
-    "  (∀ k, k < rowData.length → k ∉ capRowsDone → VertexCapsRow k) ∧",
-    "    ∀ k ∈ capRowsDone, ExclCaps k (capExcl k)", "",
-    "theorem vertexCaps_of_capsRest (h : CapsRest) : VertexCaps := fun k hk => by",
-    "  by_cases hd : k ∈ capRowsDone",
-    "  · have hex := h.2 k hd",
-    f"    simp only [capRowsDone, List.mem_cons, List.not_mem_nil, or_false] at hd",
-    f"    rcases hd with {alts}"]
-for k in rows:
-    N.append(f"    · exact vertexCapsRow{k:02d} hex")
-N += ["  · exact h.1 k hk hd", "",
-      "/-- **The refined lower bound from the remaining caps**, with the same Gaussian node caps. -/",
-      "theorem lower_bound_of_capsRest (h : CapsRest) {K : ℝ} (hK : IsGrothendieckBound K) :",
-      "    (Grothe.Research.RefinedCoverData.refinedL : ℝ) < K :=",
-      "  Grothe.Research.RefinedLowerCheck.lower_bound_of_refined_cover_data",
-      "    (nodeCaps_of_vertexCaps (vertexCaps_of_capsRest h)) hK", "",
-      "end Grothe.LowerAnalytic", ""]
-write_module(DIR / "CapNodes.lean", "\n".join(N))
-print(f"{'checked' if check else 'wrote'} {len(rows)} row modules ({len(range(0, NODES, size))} ranges each) and CapNodes.lean")
+
+def main(argv=None, *, root=None):
+    args = parse_args(argv)
+    root = ROOT if root is None else Path(root)
+    outputs, active = source_plan(root, args.rows, args.size, registry=args.registry, check=args.check)
+    # Preflight every requested target before writing any. No inactive candidate
+    # is discovered, imported, registered or published as a registry here.
+    for name, source in outputs.items():
+        path = caps_stamp._active_path(root, name, optional=not args.check)
+        require(path.parent.is_dir(), "missing generated source directory: " + name)
+        if args.check:
+            require(path.read_text() == source, "generated file differs: " + str(path))
+    if not args.check:
+        for name, source in outputs.items():
+            (root / name).write_text(source)
+    print(f"{'checked' if args.check else 'wrote'} {len(args.rows)} legacy row modules ({len(range(0, NODES, args.size))} ranges each) "
+          f"and CapNodes.lean with {active} separately proved rows")
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except (caps_stamp.ClosureError, OSError, ValueError) as error:
+        raise SystemExit(str(error)) from None
