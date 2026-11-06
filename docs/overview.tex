@@ -140,6 +140,12 @@ $E N_m^2$ give the squared output-vector bound
 The common-triangle padding and Euclidean triangle inequality add no
 output-dimension factor. Concrete column and geometric bounds are separate
 inputs to the certificate application.
+The K adapter instantiates the production column estimates and identifies
+the factorization with the actual Gaussian-shift coefficients. Upper bounds
+for $\theta$ and the imaginary square, and a positive lower bound for
+$|A|^2$, give exactly the checker expression \texttt{coarseKSq}; multiplying
+by the primary radial envelope bounds the actual full descended vector.
+No column-energy premise remains in this adapter.
 The concrete descended twisted vector now supplies the analytic extension
 in this reduction, including at the origin wherever $v_C$ is nonzero.
 Its finite-Mehler estimate retains the full graded vector and combines
@@ -174,6 +180,10 @@ Accepted disk-cover geometry and strict profile separation on every disk
 also give nonvanishing throughout the closed ellipse. The same separation
 identifies the checker's sign with the physical profile sign at every real
 panel point and hence with the continuation's fixed left-endpoint sign.
+Certificate acceptance itself now supplies this geometry and the exact
+real Gauss error. Together with complete acceptance and the checked total,
+the actual remainder follows from the remaining interpretation of each
+certificate's squared mass cap on its ellipse boundary.
 
 For the twisted sources, exact panel certificates for all three production powers
 are stored in \texttt{data/twist-ellipse/plans.json}. Registered native checks

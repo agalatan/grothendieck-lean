@@ -13777,6 +13777,7 @@ import Grothe.UpperQuad.SeedAnalytic
 import Grothe.UpperQuad.SeedSound
 import Grothe.UpperQuad.TailBound
 import Grothe.UpperQuad.TwistBridge
+import Grothe.UpperQuad.TwistCertificateRemainder
 import Grothe.UpperQuad.TwistContinuationIdentity
 import Grothe.UpperQuad.TwistDilate
 import Grothe.UpperQuad.TwistDilateSound
@@ -13870,6 +13871,7 @@ import Grothe.UpperQuad.TwistFactsSound
 import Grothe.UpperQuad.TwistFiniteExtension
 import Grothe.UpperQuad.TwistFiniteVector
 import Grothe.UpperQuad.TwistFunctional
+import Grothe.UpperQuad.TwistKEnvelope
 import Grothe.UpperQuad.TwistKVector
 import Grothe.UpperQuad.TwistLoopSound
 import Grothe.UpperQuad.TwistMargins

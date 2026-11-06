@@ -54,6 +54,14 @@ inequality introduce no output-mode count; Gaussian scaling introduces no
 additional inverse-rate factor. Concrete column and disk-geometry bounds
 must still be substituted to obtain the certificate's K majorant.
 
+`TwistKEnvelope` supplies that substitution for the actual production columns.
+It identifies the finite factorization with the Gaussian-shift coefficients,
+uses the checker's rational column parameters, and bounds the actual full
+vector by `primaryBoundSq * coarseKSq`. Its geometric inputs are the same
+`Slo`, `X`, and `Y` coordinate bounds as for Y, together with
+`Re(shift^2) > 0`, an upper bound on `norm(shift)^2 / Re(shift^2)`, and a
+positive lower bound on `norm(shift)^2`. No matrix-column premise remains.
+
 `TwistRadialVector` supplies this assembly with the actual descended radial
 components. Its complete vector is analytic wherever `vC(s) ≠ 0`, including
 zero; the real slice equals `twistIntegrand`. The squared norm is bounded by
@@ -108,6 +116,14 @@ sign agrees with the physical sign throughout the real panel, including
 the left endpoint used by `TwistRadialPanels`. This geometry layer uses only
 the standard axioms; it assumes neither an untwisted integrand bound nor
 a numerical norm cap.
+
+`TwistCertificateRemainder` extracts closed-ellipse nonvanishing and the
+exact real Gauss error from certificate acceptance. With complete acceptance
+and the checked total, its `remainder_of_certificates_of_mass_bounds` proves
+the actual `TwistRemainderHyp`; its only additional analytic input is that
+the certificate's squared mass cap bounds the actual descended vector on
+the ellipse boundary. Geometry, analyticity, real-slice identification,
+Gauss exactness and summation are supplied internally.
 
 **Twisted ellipse certificates.** `UpperQuad/TwistEllipseFacts/Checks.lean` imports
 the source-indexed interval checks for all three production powers. Their exact
