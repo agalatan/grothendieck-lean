@@ -13669,6 +13669,7 @@ import Grothe.UpperQuad.Data.Cutoffs5
 import Grothe.UpperQuad.Data.Cutoffs6
 import Grothe.UpperQuad.Data.Cutoffs7
 import Grothe.UpperQuad.EnergySound
+import Grothe.UpperQuad.EvenSquareDescent
 import Grothe.UpperQuad.Facts.Budget
 import Grothe.UpperQuad.Facts.Common
 import Grothe.UpperQuad.Facts.Even
