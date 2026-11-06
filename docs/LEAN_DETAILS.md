@@ -9,6 +9,21 @@ conditional rounding gives a bound below `1.404598149141`) is work in progress; 
 the remaining project-specific Lean obligations. Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.
 
+**Energy quadrature remainder.** `UpperQuad/QuadEllipseFacts/All.lean` proves
+`EllCheck.quadRemainderHyp`: the squared error between the covered Gaussian
+coefficient integrals and the full production Gauss sums is at most
+`(1.5·10⁻¹²)²`, with no analytic premise. The proof identifies the entire
+conditional-coefficient extension, bounds its finite coefficient mass off the
+real axis, combines it with a complex Mehler bound, and applies the Banach-space
+Bernstein-ellipse remainder theorem to the actual production panels.
+The interval checker certifies the plans in `data/quad-checker/ellipse-plans.txt`;
+`tools/gen_quad_ellipse_plans.py --check` verifies their Lean representation, and
+`tools/gen_quad_ellipse_facts.py` reproduces the sharded native checks and assembly.
+The canonical panel-error sum is below `1.04·10⁻¹²`; reflection gives the full
+`1.5·10⁻¹²` bound. The axiom audit is covered by the standard axioms and registered
+native facts. This closes the remainder premise in `QuadDecomp.quadHyp_of_parts`;
+the twisted source bounds and final upper-endpoint assembly are separate.
+
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
 polynomial Bezout identity. `Q0GaussQPoly.lean` interprets LeanCert's rational

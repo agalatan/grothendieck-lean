@@ -9120,6 +9120,14 @@ Grothe.UpperChaos.phi_cover_check_5._native.native_decide.ax_1_1
 Grothe.UpperChaos.rounding_energy_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.secondCenter_band_energy_check._native.native_decide.ax_1_1
 Grothe.UpperChaos.taylor_centers_decode_check._native.native_decide.ax_1_1
+Grothe.UpperQuad.EllCheck.shard00._native.native_decide.ax_1_1
+Grothe.UpperQuad.EllCheck.shard01._native.native_decide.ax_1_1
+Grothe.UpperQuad.EllCheck.shard02._native.native_decide.ax_1_1
+Grothe.UpperQuad.EllCheck.shard03._native.native_decide.ax_1_1
+Grothe.UpperQuad.EllCheck.shard04._native.native_decide.ax_1_1
+Grothe.UpperQuad.EllCheck.shard05._native.native_decide.ax_1_1
+Grothe.UpperQuad.EllCheck.shard06._native.native_decide.ax_1_1
+Grothe.UpperQuad.EllCheck.shard07._native.native_decide.ax_1_1
 Grothe.UpperQuad.Facts.evenCheck._native.native_decide.ax_1_1
 Grothe.UpperQuad.Facts.gradeBlock00._native.native_decide.ax_1_1
 Grothe.UpperQuad.Facts.gradeBlock01._native.native_decide.ax_1_1
