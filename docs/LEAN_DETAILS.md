@@ -24,6 +24,24 @@ The canonical panel-error sum is below `1.04·10⁻¹²`; reflection gives the f
 native facts. This closes the remainder premise in `QuadDecomp.quadHyp_of_parts`;
 the twisted source bounds and final upper-endpoint assembly are separate.
 
+**Twisted panel assembly.** `UpperQuad/TwistPanelRemainder.lean` identifies the
+covered twisted discrepancy with the sum of the actual production panel errors
+in the Euclidean space of all modes `q < Q`, `c ≤ q + 1`, `d ≤ q`.
+`TwistPanels.remainder_of_ellipses` proves `TwistRemainderHyp j ρ` for
+`j ∈ {1,2,3}` from a complex extension on each panel, differentiability on the
+closed Bernstein ellipse, its boundary norm cap, and the sum of the resulting
+Gauss remainder bounds. The real-slice identities are required only at positive
+arguments; continuity includes zero. The sum uses every production panel and
+the full graded vector, with no reflection factor. Actual extensions, caps and
+their numerical sum remain inputs to this theorem.
+
+`UpperQuad/CanonicalShellBound.lean` bounds one canonical coefficient of total
+degree `m` by `2 √θ √(m!) (√8 θ / ‖A‖)^m`, where
+`θ = ‖A‖² / Re(A²)` and `Re(A²) > 0`. Its shell norm sum includes the
+`m + 1` pairs of that degree. These bounds use only the standard axioms; the
+panel assembly inherits the registered phase-cover facts and introduces no
+new native fact.
+
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
 polynomial Bezout identity. `Q0GaussQPoly.lean` interprets LeanCert's rational

@@ -13101,6 +13101,8 @@ import Grothe
 #print axioms Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le
 #print axioms Grothe.UpperChaos.tsum_abs_bivarKernel_energy_sub_le_two_mul
 #print axioms Grothe.UpperChaos.walk_sound
+#print axioms Grothe.UpperQuad.CanonicalShellBound.norm_Uext_le_shell
+#print axioms Grothe.UpperQuad.CanonicalShellBound.sum_norm_Uext_shell_le
 #print axioms Grothe.UpperQuad.CentralDerivative.abs_derivative_le
 #print axioms Grothe.UpperQuad.CentralDerivative.derivative_eq
 #print axioms Grothe.UpperQuad.CentralDerivative.moments
@@ -13276,6 +13278,17 @@ import Grothe
 #print axioms Grothe.UpperQuad.Tail.partCoefficient_eq_radial
 #print axioms Grothe.UpperQuad.TaylorShift.sqSum_shift_le
 #print axioms Grothe.UpperQuad.TaylorShift.tsum_shiftTerm_le
+#print axioms Grothe.UpperQuad.TwistPanels.Vector
+#print axioms Grothe.UpperQuad.TwistPanels.continuousOn_of_ellipse
+#print axioms Grothe.UpperQuad.TwistPanels.errorVector
+#print axioms Grothe.UpperQuad.TwistPanels.errorVector_eq_sum
+#print axioms Grothe.UpperQuad.TwistPanels.norm_errorVector_sq
+#print axioms Grothe.UpperQuad.TwistPanels.norm_panelError_le_of_ellipse
+#print axioms Grothe.UpperQuad.TwistPanels.panelError
+#print axioms Grothe.UpperQuad.TwistPanels.panelError_apply
+#print axioms Grothe.UpperQuad.TwistPanels.remainder_of_ellipses
+#print axioms Grothe.UpperQuad.TwistPanels.remainder_of_panel_bounds
+#print axioms Grothe.UpperQuad.TwistPanels.twistGauss_eq_panels
 #print axioms Grothe.UpperQuad.Watson.watsonHyp
 #print axioms Grothe.UpperQuad.accOK_of_facts
 #print axioms Grothe.UpperQuad.band_le_of_facts
