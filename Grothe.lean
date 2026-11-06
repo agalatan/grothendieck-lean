@@ -13696,6 +13696,16 @@ import Grothe.UpperQuad.FinitePolynomialMehler
 import Grothe.UpperQuad.GaussSound
 import Grothe.UpperQuad.GaussianGrowth
 import Grothe.UpperQuad.GaussianMehlerBound
+import Grothe.UpperQuad.GaussianShiftAnalytic
+import Grothe.UpperQuad.GaussianShiftDomination
+import Grothe.UpperQuad.GaussianShiftIntegral
+import Grothe.UpperQuad.GaussianShiftMeasure
+import Grothe.UpperQuad.GaussianShiftPolynomial
+import Grothe.UpperQuad.GaussianShiftReal
+import Grothe.UpperQuad.GaussianShiftSource
+import Grothe.UpperQuad.GaussianShiftUniqueness
+import Grothe.UpperQuad.GaussianShiftVector
+import Grothe.UpperQuad.HolomorphicIntegral
 import Grothe.UpperQuad.IntervalSound
 import Grothe.UpperQuad.NodeSound
 import Grothe.UpperQuad.OmittedSound

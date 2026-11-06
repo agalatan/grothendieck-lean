@@ -742,6 +742,42 @@ root gaps. The budget does not establish those quadrature estimates or the
 whole-error bounds; they remain analytic obligations under tasks #333–#335.
 No new native fact is introduced.
 
+`RelaxedTwistMargins` and `RelaxedTwistSix` connect those radii to the actual
+port soundness chain. The whole-source charge uses the exact product of the
+center-norm bound and quadrature radius. The conditional
+`RelaxedTwist.upper_target_of_facts` still requires the three port-fact
+witnesses, three analytic panel-remainder estimates, and independent
+energy-table closeness.
+
+**Complex Gaussian shift.** `HermiteTranslation`, `HermiteTranslationAlgebra`
+and `HermiteTranslationBessel` prove the finite Hermite translation bound
+`exp(|delta|*sqrt(2D))`. Both formal variables move by the same displacement;
+the first inner-product slot conjugates that displacement. There is no
+mode-count factor in the resulting squared coefficient bound.
+For `j > 0`, `0 < tau < 1`, a finite set of modes with total degree at most
+`D`, and complex parameters `r` and `A = a + I*b`,
+`GaussianShift.sum_coefficient_sq_le` proves
+
+```
+sum_i |J_i(r,A)|^2 <= exp(2*b^2 + 2*|b|*sqrt(2D))
+  * tau^(-35*j) * (1-tau)^(-2)
+  * exp(4*j*phaseEpsQ/(1-tau) * ((Im r)^2+b^2)).
+```
+
+The coefficient is identified exactly with a fixed-phase Gaussian integral.
+Its integrand has an integrable bound `C*exp(normSq(w)/2)` uniformly over
+bounded complex parameter sets. `HolomorphicIntegral` proves integration of
+locally dominated analytic families using measurable difference quotients
+and Cauchy's estimate. `GaussianShiftAnalytic` therefore proves analytic
+dependence on each parameter and on bounded holomorphic substitutions on a
+closed disk. The real production identity, for `s >= 0` and `vprof s != 0`,
+is `twistCoef j s i = profileSign(s) * J_i(sqrt(s),
+profileSign(s)*profileShift(s))`; the signed shift is essential on negative
+profile intervals. This proves the analytic Y estimate, but does not certify
+any profile domain, contour supremum, or Gauss quadrature remainder. The
+phase bounds inherit exactly the six registered phase-cover facts; the
+translation and generic holomorphic integration results use standard axioms.
+
 **Analytic phase reduction.** `Grothe/Haagerup/PhaseLaplace.lean` proves
 `ph(z) = (sqrt(pi):C)^(-1) * integral_{t>0} t^(-1/2) exp(-‖z‖²t) z dt`
 from the Gamma integral. Keeping `z` inside the integral makes the kernel zero

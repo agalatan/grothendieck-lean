@@ -13,7 +13,8 @@ polynomial `H p q` with the two arguments `z, z̄` made independent (`ev_H_eq_Hf
 E = τ ζ₁ ζ̄₁ + τ ζ₂ ζ̄₂ − τ² ζ₁ ζ₂ − τ² (ζ̄₁ − τ ζ₂)(ζ̄₂ − τ ζ₁)/(1 − τ²)
 ```
 over every finite set of indices (`sum_mehler_le`); on the diagonal `ζ₁ = ζ₂ = x + iη` the exponent
-is `2τx²/(1+τ) + 2τη²/(1−τ)`.  Proof: `Hf p q a b = E[(a + iξ)^p (b + iξ̄)^q]` for a standard complex
+is `2τx²/(1+τ) + 2τη²/(1−τ)`.  Proof: `Hf p q a b = E[(a + iξ)^p (b + iξ̄)^q]` for a standard
+complex
 Gaussian `ξ` (`Hf_eq_integral`), so the full weighted sum is `E_{ξ,ξ'} exp(u + v)` with
 `u = τ(ζ₁+iξ)conj(ζ₁+iξ')`, `v = τ(ζ₂+iξ̄)conj(ζ₂+iξ̄')`, two complex Gaussian integrals
 (`integral_gaussC_cexp_linear`).
@@ -112,13 +113,15 @@ lemma exp_norm_uv_le (τ : ℝ) (hτ0 : 0 ≤ τ) (a b : ℂ) (ω : ℂ × ℂ) 
   apply Real.exp_le_exp.mpr
   have hu : ‖uC τ a ω‖ ≤ τ * ((‖a‖ + ‖ω.1‖) * (‖a‖ + ‖ω.2‖)) := by
     unfold uC
-    rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hτ0, norm_mul, Complex.norm_conj]
+    rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hτ0, norm_mul,
+      Complex.norm_conj]
     apply mul_le_mul_of_nonneg_left _ hτ0
     apply mul_le_mul _ _ (norm_nonneg _) (by positivity) <;>
       exact (norm_add_le _ _).trans (by rw [norm_mul, Complex.norm_I, one_mul])
   have hv : ‖vC τ b ω‖ ≤ τ * ((‖b‖ + ‖ω.1‖) * (‖b‖ + ‖ω.2‖)) := by
     unfold vC
-    rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hτ0, norm_mul, Complex.norm_conj]
+    rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hτ0, norm_mul,
+      Complex.norm_conj]
     apply mul_le_mul_of_nonneg_left _ hτ0
     apply mul_le_mul _ _ (norm_nonneg _) (by positivity) <;>
       exact (norm_add_le _ _).trans (by rw [norm_mul, Complex.norm_I, one_mul, Complex.norm_conj])

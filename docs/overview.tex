@@ -1028,6 +1028,29 @@ allowance for each finite-table low-band excursion. The six Gaussian
 estimates and table accuracy remain explicit inputs; the rational budget
 alone does not prove them. This variant introduces no native facts.
 
+The complex Gaussian shift route now has a formal analytic estimate. For
+$j>0$, $0<\tau<1$, and any finite family of conditional Hermite modes with
+total degree at most $D$, write $A=a+ib$ and $\varepsilon=21/20$. Then
+\[
+ \sum_i |J_i(r,A)|^2 \le
+ e^{2b^2+2|b|\sqrt{2D}}\,
+ \tau^{-35j}(1-\tau)^{-2}
+ \exp\!\left(\frac{4j\varepsilon}{1-\tau}
+              ((\operatorname{Im}r)^2+b^2)\right).
+\]
+There is no factor for the number of selected modes. The finite Hermite
+translation shifts both formal variables together. An exact real Gaussian
+change of variables identifies the coefficient with a fixed-phase integral;
+a locally uniform integrable majorant permits analytic parameter dependence
+and bounded holomorphic substitutions on closed disks. On the production
+real slice, $s\ge0$ and $v(s)\ne0$, the actual coefficient is
+$\sigma J_i(\sqrt{s},\sigma A_+(s))$, where
+$\sigma=\operatorname{sign}v(s)$ and
+$A_+(s)=\sqrt{s}/(\sqrt{1+a_Q^2}|v(s)|)$.
+Certified zero-free domains, contour bounds and quadrature-remainder
+assembly remain separate obligations. These estimates inherit the six
+existing phase-cover facts and introduce no new numerical axiom.
+
 The degree-531 canonical pair table indexes conditional Hermite node values
 by pairs $(c,d)$ satisfying $0\le c\le266$, $0\le d\le265$,
 $c\le d+1$ and $c+d\le531$, ordered by $(c+d,c)$. Lean verifies its
