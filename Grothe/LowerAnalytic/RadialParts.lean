@@ -121,8 +121,7 @@ lemma RadialTest.stein (p q : MvPolynomial (Fin d) ℝ) (j : Fin d)
       have hH : HasDerivAt H (H' (eval x (radU a b)))
           (eval (Function.update x j (x j)) (radU a b)) := by
         rw [Function.update_eq_self]; exact hT.deriv _
-      have hc := hH.comp (x j) hU
-      exact (hp.mul hc).congr_deriv (by
+      exact (hp.mul (hH.comp (x j) hU)).congr_deriv (by
         simp only [Function.update_eq_self, map_mul, Function.comp_apply]; ring)
   rw [integral_add hD1 hD2] at h
   rw [h]
