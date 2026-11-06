@@ -13457,12 +13457,16 @@ import Grothe
 #print axioms Grothe.UpperQuad.TwistEllCheck.columnCoeffI_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.columnCoeffs_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.defectI_disk_theta
+#print axioms Grothe.UpperQuad.TwistEllCheck.diskM2_y_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.diskPoint_shift_im_sq_le_sharp
 #print axioms Grothe.UpperQuad.TwistEllCheck.diskProfile_shift_geometry
+#print axioms Grothe.UpperQuad.TwistEllCheck.diskProfile_signed_k_geometry
 #print axioms Grothe.UpperQuad.TwistEllCheck.maxUpper_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.mehI_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.mem_horner_columnCoeffs
 #print axioms Grothe.UpperQuad.TwistEllCheck.minResult_sound
+#print axioms Grothe.UpperQuad.TwistEllCheck.norm_descendedVector_le_of_diskM2_y
+#print axioms Grothe.UpperQuad.TwistEllCheck.norm_descendedVector_sq_le_diskM2_y
 #print axioms Grothe.UpperQuad.TwistEllCheck.panelM2_spec
 #print axioms Grothe.UpperQuad.TwistEllCheck.phaseSqI_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.shiftImSqI_sound
@@ -13471,6 +13475,8 @@ import Grothe
 #print axioms Grothe.UpperQuad.TwistEllCheck.upperQ_cast
 #print axioms Grothe.UpperQuad.TwistEllCheck.upsKI_sound
 #print axioms Grothe.UpperQuad.TwistEllCheck.upsYI_sound
+#print axioms Grothe.UpperQuad.TwistEllCheck.vC_ne_zero_of_diskM2_y
+#print axioms Grothe.UpperQuad.TwistEllCheck.yBoundSq_eq_checker
 #print axioms Grothe.UpperQuad.TwistPanels.Vector
 #print axioms Grothe.UpperQuad.TwistPanels.continuousOn_of_ellipse
 #print axioms Grothe.UpperQuad.TwistPanels.errorVector
