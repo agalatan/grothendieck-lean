@@ -115,7 +115,8 @@ theorem quadRemainderHyp : QuadRemainderHyp := by
   apply quadRemainderHyp_of_panels (fun p => f p.val)
   · intro p
     have := hf p.val (by rw [← hN]; exact p.isLt)
-    rwa [List.getD_eq_getElem?_getD, List.getElem?_eq_getElem p.isLt, Option.getD_some] at this
+    rwa [zero_add, List.getD_eq_getElem?_getD, List.getElem?_eq_getElem p.isLt,
+      Option.getD_some] at this
   · rw [Fin.sum_univ_eq_sum_range (fun k => f k), hN]
     have : (({len(shards)} : ℕ) : ℝ) * ((({bnum} / {bden} : ℚ)) : ℝ) ≤ (106 : ℝ) / 10 ^ 14 := by
       norm_num
