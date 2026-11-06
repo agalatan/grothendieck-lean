@@ -174,6 +174,8 @@ Checked pieces: 661 of 661 in 166 range facts; excluded: [].
 
 namespace Grothe.LowerAnalytic
 
+set_option maxRecDepth 100000
+
 /-- **The cap of node 244 of row 15**, given the bounds of the excluded pieces []. -/
 theorem nodeCap_15x244
     (hex : ∀ j ∈ ([] : List ℕ), ∀ cs, (pieceCons pieceNode_15x244)[j]? = some cs → PieceCap 15 244 cs) :

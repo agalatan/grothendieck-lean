@@ -261,6 +261,9 @@ def write_nodes(pieces, sel):
         node = imps + ["", f"/-! # The cap of node {i} of row {k} from its pieces {gen}",
                        "", f"Checked pieces: {len(pcs) - len(excl)} of {len(pcs)} in {len(rs)} range facts; excluded: {exs}.", "-/", "",
                        "namespace Grothe.LowerAnalytic", "",
+                       # the case split over the range facts nests one `∨` per fact: past ~60 facts it
+                       # exceeds the default recursion depth
+                       "set_option maxRecDepth 100000", "",
                        f"/-- **The cap of node {i} of row {k}**, given the bounds of the excluded pieces {exs}. -/",
                        f"theorem nodeCap_{tag}",
                        f"    (hex : ∀ j ∈ ({exs} : List ℕ), ∀ cs, (pieceCons {name})[j]? = some cs → PieceCap {k} {i} cs) :",

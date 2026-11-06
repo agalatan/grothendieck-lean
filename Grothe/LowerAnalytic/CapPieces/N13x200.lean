@@ -19,6 +19,8 @@ Checked pieces: 42 of 42 in 11 range facts; excluded: [].
 
 namespace Grothe.LowerAnalytic
 
+set_option maxRecDepth 100000
+
 /-- **The cap of node 200 of row 13**, given the bounds of the excluded pieces []. -/
 theorem nodeCap_13x200
     (hex : ∀ j ∈ ([] : List ℕ), ∀ cs, (pieceCons pieceNode_13x200)[j]? = some cs → PieceCap 13 200 cs) :
