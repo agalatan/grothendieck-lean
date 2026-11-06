@@ -1,4 +1,4 @@
-import GrotheQuadKernel.TwistNode
+import GrotheQuadExtKernel.TwistNode
 
 /-!
 # The node loop of the twisted computation and its checks

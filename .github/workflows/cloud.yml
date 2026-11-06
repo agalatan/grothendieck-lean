@@ -137,7 +137,7 @@ jobs:
                 lake build Grothe --log-level=warning || status=$?
                 if [ $status = 0 ]; then python3 tools/gen_root_imports.py --check || status=$?; fi
                 if [ $status = 0 ]; then
-                  ! grep -rn --include='*.lean' -E '\bsorry\b|^[[:space:]]*(private[[:space:]]+)?axiom[[:space:]]|implemented_by|@\[extern|\bunsafe\b|debug\.skipKernelTC|Task\.spawn' Grothe GrotheKernel GrotheCapsKernel GrotheQuadKernel Grothe.lean GrotheKernel.lean GrotheCapsKernel.lean GrotheQuadKernel.lean QuadRun.lean || status=1
+                  ! grep -rn --include='*.lean' -E '\bsorry\b|^[[:space:]]*(private[[:space:]]+)?axiom[[:space:]]|implemented_by|@\[extern|\bunsafe\b|debug\.skipKernelTC|Task\.spawn' Grothe GrotheKernel GrotheCapsKernel GrotheQuadKernel GrotheQuadExtKernel Grothe.lean GrotheKernel.lean GrotheCapsKernel.lean GrotheQuadKernel.lean GrotheQuadExtKernel.lean QuadRun.lean || status=1
                 fi
                 if [ $status = 0 ]; then
                   lake env lean scratch/Axioms.lean > "$OUT/axioms.txt" && python3 scripts/check_axioms.py < "$OUT/axioms.txt" || status=1

@@ -29,8 +29,8 @@ from fractions import Fraction
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MARK = os.path.join(ROOT, ".lake", "build", "caps-closure.sha")
-PROJECT_PREFIXES = ("Grothe.", "GrotheKernel.", "GrotheCapsKernel.", "GrotheQuadKernel.")
-PROJECT_ROOTS = ("Grothe", "GrotheKernel", "GrotheCapsKernel", "GrotheQuadKernel")
+PROJECT_PREFIXES = ("Grothe.", "GrotheKernel.", "GrotheCapsKernel.", "GrotheQuadKernel.", "GrotheQuadExtKernel.")
+PROJECT_ROOTS = ("Grothe", "GrotheKernel", "GrotheCapsKernel", "GrotheQuadKernel", "GrotheQuadExtKernel")
 CAP_ROWS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
 # The legacy cap-row computation roots. The activated-registry and CapNodes checks below read exactly these:
 # a row root missing from the registry or from CapNodes is an error.
@@ -38,8 +38,7 @@ ROW_TOPS = [f"Grothe.LowerAnalytic.CapRow{k:02d}" for k in CAP_ROWS]
 # The quadrature checker's native facts (Grothe/UpperQuad/Facts): one block of the energy table each,
 # about ten hours single-threaded; built once on the droplet and cached like the cap rows. They are hashed
 # alongside the cap rows but are not cap-row roots: the registry and CapNodes checks use ROW_TOPS only.
-QUAD_TOPS = [f"Grothe.UpperQuad.Facts.GradeBlock{b:02d}" for b in range(12)] + ["Grothe.UpperQuad.Facts.Even",
-                                                                             "Grothe.UpperQuad.Facts.Omitted"]
+QUAD_TOPS = [f"Grothe.UpperQuad.Facts.GradeBlock{b:02d}" for b in range(12)] + ["Grothe.UpperQuad.Facts.Even"]
 # Every fixed root of the hashed computation closure. The localized cap pieces (row 14's node-150 proof included)
 # are not listed here: they enter through the activated-leaf registry (activated_sources).
 TOPS = ROW_TOPS + QUAD_TOPS

@@ -1,6 +1,6 @@
 import Grothe.UpperQuad.ContractSound
 import Grothe.UpperChaos.HermiteConjugation
-import GrotheQuadKernel.Twist
+import GrotheQuadExtKernel.Twist
 
 /-!
 # Soundness of the twisted operator: the exact ladders and the transposed steps
@@ -8,7 +8,7 @@ import GrotheQuadKernel.Twist
 In the unnormalised basis `H_{c,d}` the ladders are integer (`X0_mul_H`, `X1_mul_H`).  A vector
 `v : TwVec` *represents* an additive functional `F : CPoly →+ ℂ` on the degree `D` when every entry
 encloses the real part `(F (H c d)).re` at the scale `2^KTw` (`Represents`).  Each transposed step
-of `GrotheQuadKernel.Twist` turns a representation of `F` into one of `p ↦ F (m * p)` for the
+of `GrotheQuadExtKernel.Twist` turns a representation of `F` into one of `p ↦ F (m * p)` for the
 multiplier `m ∈ {X 0, X 1, X 0 + X 1, X 0 − X 1, X 0 * X 1}` on the degree lowered by `deg m`, and
 `axpy` accumulates `a · F` for an enclosed real scalar `a` (scale `2^{2 KTw}`).
 

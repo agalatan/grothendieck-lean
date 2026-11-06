@@ -2,15 +2,10 @@
 import GrotheQuadKernel.Basic
 import GrotheQuadKernel.Compare
 import GrotheQuadKernel.Contract
-import GrotheQuadKernel.Dilate
 import GrotheQuadKernel.Gauss
 import GrotheQuadKernel.Node
 import GrotheQuadKernel.Omitted
 import GrotheQuadKernel.Pairs
-import GrotheQuadKernel.Phase
 import GrotheQuadKernel.Profile
 import GrotheQuadKernel.Rotate
 import GrotheQuadKernel.Seed
-import GrotheQuadKernel.Twist
-import GrotheQuadKernel.TwistLoop
-import GrotheQuadKernel.TwistNode

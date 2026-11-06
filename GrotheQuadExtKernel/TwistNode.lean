@@ -1,6 +1,6 @@
 import GrotheQuadKernel.Node
-import GrotheQuadKernel.Dilate
-import GrotheQuadKernel.Phase
+import GrotheQuadExtKernel.Dilate
+import GrotheQuadExtKernel.Phase
 
 /-!
 # One node of the twisted computation

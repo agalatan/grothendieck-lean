@@ -9999,6 +9999,7 @@ import Grothe.LowerAnalytic.WickSix
 import Grothe.LowerAnalytic.Witness
 import Grothe.LowerAnalytic.WitnessCap
 import Grothe.LowerTarget
+import Grothe.MainResult
 import Grothe.Research.LawNodeCheck
 import Grothe.Research.LawNodeData
 import Grothe.Research.LawNodeLower

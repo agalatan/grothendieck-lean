@@ -1,4 +1,4 @@
-import GrotheQuadKernel.Twist
+import GrotheQuadExtKernel.Twist
 
 /-!
 # The Hermite dilation and the dilated functional
