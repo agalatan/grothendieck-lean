@@ -120,14 +120,12 @@ theorem integral_cell_poly (P : CP) {ra rb θa θb : ℝ} (hra : 0 ≤ ra) (hab 
     intro z; unfold ptVal; ring
   have i1 : Integrable (fun z => cellInd ra rb θa θb z * (‖z‖ ^ t.m * cos (t.n * Complex.arg z)))
       gaussC := by
-    have := integrable_ind_mul_ptVal (measurable_cellInd ra rb θa θb) (abs_cellInd_le _ _ _ _)
-      ⟨t.m, t.n, KQ.ofRat 1, KQ.zero⟩
-    simpa [ptVal] using this
+    simpa [ptVal] using integrable_ind_mul_ptVal (measurable_cellInd ra rb θa θb)
+      (abs_cellInd_le _ _ _ _) ⟨t.m, t.n, KQ.ofRat 1, KQ.zero⟩
   have i2 : Integrable (fun z => cellInd ra rb θa θb z * (‖z‖ ^ t.m * sin (t.n * Complex.arg z)))
       gaussC := by
-    have := integrable_ind_mul_ptVal (measurable_cellInd ra rb θa θb) (abs_cellInd_le _ _ _ _)
-      ⟨t.m, t.n, KQ.zero, KQ.ofRat 1⟩
-    simpa [ptVal] using this
+    simpa [ptVal] using integrable_ind_mul_ptVal (measurable_cellInd ra rb θa θb)
+      (abs_cellInd_le _ _ _ _) ⟨t.m, t.n, KQ.zero, KQ.ofRat 1⟩
   simp_rw [e]
   rw [integral_add (i1.const_mul _) (i2.const_mul _), integral_const_mul, integral_const_mul, hc, hs]
   simp only [radI_eq, angC, angS]
@@ -167,13 +165,11 @@ theorem integral_tail_poly (P : CP) {R : ℝ} (hR : 0 < R) :
         + t.cs.val * (tailInd R z * (‖z‖ ^ t.m * sin (t.n * Complex.arg z))) := by
     intro z; unfold ptVal; ring
   have i1 : Integrable (fun z => tailInd R z * (‖z‖ ^ t.m * cos (t.n * Complex.arg z))) gaussC := by
-    have := integrable_ind_mul_ptVal (measurable_tailInd R) (abs_tailInd_le _)
+    simpa [ptVal] using integrable_ind_mul_ptVal (measurable_tailInd R) (abs_tailInd_le _)
       ⟨t.m, t.n, KQ.ofRat 1, KQ.zero⟩
-    simpa [ptVal] using this
   have i2 : Integrable (fun z => tailInd R z * (‖z‖ ^ t.m * sin (t.n * Complex.arg z))) gaussC := by
-    have := integrable_ind_mul_ptVal (measurable_tailInd R) (abs_tailInd_le _)
+    simpa [ptVal] using integrable_ind_mul_ptVal (measurable_tailInd R) (abs_tailInd_le _)
       ⟨t.m, t.n, KQ.zero, KQ.ofRat 1⟩
-    simpa [ptVal] using this
   simp_rw [e]
   rw [integral_add (i1.const_mul _) (i2.const_mul _), integral_const_mul, integral_const_mul, hc, hs,
     integral_cos_int_mul, integral_sin_int_mul]
