@@ -13726,8 +13726,11 @@ import Grothe.UpperQuad.PhasePolynomialParity
 import Grothe.UpperQuad.PiSound
 import Grothe.UpperQuad.PolynomialDilationNorm
 import Grothe.UpperQuad.PolynomialGaussianGrowth
+import Grothe.UpperQuad.PolynomialHermiteCoefficient
 import Grothe.UpperQuad.PolynomialHermiteDegree
 import Grothe.UpperQuad.PolynomialHermiteNorm
+import Grothe.UpperQuad.PolynomialPhaseExpansion
+import Grothe.UpperQuad.PolynomialPhaseTilt
 import Grothe.UpperQuad.PolynomialRescale
 import Grothe.UpperQuad.PortFacts.Common
 import Grothe.UpperQuad.PortFacts.Margins
@@ -13774,6 +13777,7 @@ import Grothe.UpperQuad.SeedAnalytic
 import Grothe.UpperQuad.SeedSound
 import Grothe.UpperQuad.TailBound
 import Grothe.UpperQuad.TwistBridge
+import Grothe.UpperQuad.TwistContinuationIdentity
 import Grothe.UpperQuad.TwistDilate
 import Grothe.UpperQuad.TwistDilateSound
 import Grothe.UpperQuad.TwistEllipseAssembly
@@ -13789,10 +13793,17 @@ import Grothe.UpperQuad.TwistEllipsePanelArithmetic
 import Grothe.UpperQuad.TwistEllipsePanelGeometry
 import Grothe.UpperQuad.TwistEllipsePhaseSound
 import Grothe.UpperQuad.TwistEllipseSound
+import Grothe.UpperQuad.TwistFactorAnalytic
+import Grothe.UpperQuad.TwistFactorPolynomial
 import Grothe.UpperQuad.TwistFactsSound
+import Grothe.UpperQuad.TwistFiniteExtension
+import Grothe.UpperQuad.TwistFiniteVector
 import Grothe.UpperQuad.TwistFunctional
 import Grothe.UpperQuad.TwistLoopSound
 import Grothe.UpperQuad.TwistMargins
+import Grothe.UpperQuad.TwistMatrixBessel
+import Grothe.UpperQuad.TwistMatrixBound
+import Grothe.UpperQuad.TwistMatrixCoefficient
 import Grothe.UpperQuad.TwistNodeSound
 import Grothe.UpperQuad.TwistPanelRemainder
 import Grothe.UpperQuad.TwistPhase
@@ -13808,6 +13819,7 @@ import Grothe.UpperQuad.TwistRadialReal
 import Grothe.UpperQuad.TwistRadialVector
 import Grothe.UpperQuad.TwistSix
 import Grothe.UpperQuad.TwistSound
+import Grothe.UpperQuad.TwistSourceIdentity
 import Grothe.UpperQuad.TwistTail
 import Grothe.UpperQuad.TwistYEnvelope
 import Grothe.UpperQuad.WatsonSeed

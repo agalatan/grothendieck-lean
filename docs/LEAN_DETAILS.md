@@ -872,6 +872,25 @@ identity still explicitly fixes the panel sign. Certifying profile
 nonvanishing and contour bounds on the required ellipses remains separate
 from these analytic results.
 
+**Finite twisted factorization.** `TwistFactorization.Jext` uses the explicit
+normalized Hermite coefficients of
+`nrm(c,d) * rescale(sqrt(lambda))(H(d,c) * Q_r^j)`, where
+`lambda = 1 + j*phaseEpsQ`. Its finite support is `g+h <= c+d+35*j`.
+Extraction at `(h,g)` pairs with `Uext(g,h,sqrt(lambda)*A)`; the matrix
+coefficient already contains the single factor
+`lambda^(-1) * exp(-j*phaseEpsQ*r^2)`. The polynomial `Q_r` includes `I`,
+so no additional sign or factorial appears. The coefficient family and
+finite extension are entire, and `Jext_real` identifies the literal integral
+at real `r` and nonzero real signed `A`. `Jext_eq_gaussianShift` uses entire
+uniqueness to identify this factorization with the preceding Gaussian
+coefficient for every complex pair when `j > 0`.
+`TwistMatrixBessel` identifies each matrix column with an actual Hermite
+inner product. `sum_norm_matrixCoefficient_sq_le_production` bounds any
+finite column by the production phase envelope times the normalized Hermite
+dilation bound. Bessel adds no further inverse-rate factor. Certified
+profile domains, contour suprema and twisted quadrature remainders remain
+separate obligations.
+
 **Analytic phase reduction.** `Grothe/Haagerup/PhaseLaplace.lean` proves
 `ph(z) = (sqrt(pi):C)^(-1) * integral_{t>0} t^(-1/2) exp(-‖z‖²t) z dt`
 from the Gamma integral. Keeping `z` inside the integral makes the kernel zero
