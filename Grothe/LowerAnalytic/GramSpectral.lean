@@ -249,9 +249,7 @@ lemma sector_eq_zero {T : ι → ι → ι → ℂ} (hT : cder J T = Complex.I �
       unfold sector; rw [map_smul, map_smul, map_smul]
     rw [this] at h
     rw [sub_mul, one_mul, sub_smul, h, sub_self]
-  rcases smul_eq_zero.mp h' with h0 | h0
-  · exact absurd h0 (mul_ne_zero (sub_ne_zero.mpr hs) Complex.I_ne_zero)
-  · exact h0
+  exact (smul_eq_zero.mp h').resolve_left (mul_ne_zero (sub_ne_zero.mpr hs) Complex.I_ne_zero)
 
 omit hJ in
 /-- The eight sectors sum to the tensor. -/
@@ -459,8 +457,7 @@ lemma Chg.const_mul {s : ℂ} {u : ι → ℂ} (h : Chg J s u) (c : ℂ) : Chg J
 
 lemma Chg.conj {s : ℂ} {u : ι → ℂ} (h : Chg J s u) : Chg J (conj s) (fun a => conj (u a)) := by
   intro a
-  have := congrArg conj (h a)
-  simpa only [map_sum, map_mul, Complex.conj_ofReal] using this
+  simpa only [map_sum, map_mul, Complex.conj_ofReal] using congrArg conj (h a)
 
 /-- **Charge conservation**: the contraction of two eigenvectors with `s + s' ≠ 0` vanishes. -/
 lemma Chg.sum_mul_eq_zero (hJ : ∀ i j, J i j = -J j i) {s s' : ℂ} {u v : ι → ℂ}
@@ -486,14 +483,11 @@ include hJ
 
 /-- Slot charges of `t`: `+i, +i, −i`. -/
 lemma chg_t1 (b c : ι) : Chg J Complex.I (fun a => cplxT J f g a b c) := fun a => by
-  have := congrFun (congrFun (congrFun (cl₁_cplxT hJ f g) a) b) c
-  simpa only [cl₁_apply, Pi.smul_apply, smul_eq_mul] using this
+  simpa only [cl₁_apply, Pi.smul_apply, smul_eq_mul] using congrFun₃ (cl₁_cplxT hJ f g) a b c
 lemma chg_t2 (a c : ι) : Chg J Complex.I (fun b => cplxT J f g a b c) := fun b => by
-  have := congrFun (congrFun (congrFun (cl₂_cplxT hJ f g) a) b) c
-  simpa only [cl₂_apply, Pi.smul_apply, smul_eq_mul] using this
+  simpa only [cl₂_apply, Pi.smul_apply, smul_eq_mul] using congrFun₃ (cl₂_cplxT hJ f g) a b c
 lemma chg_t3 (a b : ι) : Chg J (-Complex.I) (fun c => cplxT J f g a b c) := fun c => by
-  have := congrFun (congrFun (congrFun (cl₃_cplxT hJ f g) a) b) c
-  simpa only [cl₃_apply, Pi.smul_apply, smul_eq_mul] using this
+  simpa only [cl₃_apply, Pi.smul_apply, smul_eq_mul] using congrFun₃ (cl₃_cplxT hJ f g) a b c
 
 omit hJ in
 lemma two_I_ne_zero : Complex.I + Complex.I ≠ 0 := by
@@ -1235,9 +1229,7 @@ local notation "𝓽" => cplxT J f g
 /-! #### The pairings of the v4 identity -/
 
 omit hJ in
-lemma pv4_00 : hip (ctW 𝓽) (ctW 𝓽) = (gramZ 𝓽 : ℂ) := by
-  calc hip (ctW 𝓽) (ctW 𝓽)
-      _ = _ := hipW_eq ht
+lemma pv4_00 : hip (ctW 𝓽) (ctW 𝓽) = (gramZ 𝓽 : ℂ) := hipW_eq ht
 
 omit ht in
 lemma pv4_01 : hip (fun a b c d => ctW 𝓽 a b d c) (ctW 𝓽) = 0 :=
@@ -1252,9 +1244,7 @@ lemma pv4_03 : hip (fun a b c d => ctW 𝓽 c d b a) (ctW 𝓽) = 0 :=
   hip_zero₁ hJ.anti (fun b c d => chg_W4 hJ f g c d b) (fun b c d => chg_W1 hJ f g b c d) cI_ne₂
 
 omit hJ ht in
-lemma pv4_10 : hip (fun a b c d => ctW 𝓽 a c b d) (ctW 𝓽) = (gramT0 𝓽 : ℂ) := by
-  calc hip (fun a b c d => ctW 𝓽 a c b d) (ctW 𝓽)
-      _ = _ := hipW23_eq
+lemma pv4_10 : hip (fun a b c d => ctW 𝓽 a c b d) (ctW 𝓽) = (gramT0 𝓽 : ℂ) := hipW23_eq
 
 omit ht in
 lemma pv4_11 : hip (fun a b c d => ctW 𝓽 a c d b) (ctW 𝓽) = 0 :=
@@ -1277,9 +1267,8 @@ lemma pv4_21 : hip (fun a b c d => ctW 𝓽 a d c b) (ctW 𝓽) = 0 :=
   hip_zero₂ hJ.anti (fun a c d => chg_W4 hJ f g a d c) (fun a c d => chg_W2 hJ f g a c d) cI_ne₂
 
 omit hJ in
-lemma pv4_22 : hip (fun a b c d => ctW 𝓽 b c a d) (ctW 𝓽) = (gramT0 𝓽 : ℂ) := by
-  calc hip (fun a b c d => ctW 𝓽 b c a d) (ctW 𝓽)
-      _ = _ := (hipW123 ht).trans hipW23_eq
+lemma pv4_22 : hip (fun a b c d => ctW 𝓽 b c a d) (ctW 𝓽) = (gramT0 𝓽 : ℂ) :=
+  (hipW123 ht).trans hipW23_eq
 
 omit ht in
 lemma pv4_23 : hip (fun a b c d => ctW 𝓽 b c d a) (ctW 𝓽) = 0 :=
@@ -1289,9 +1278,7 @@ lemma pv4_23 : hip (fun a b c d => ctW 𝓽 b c d a) (ctW 𝓽) = 0 :=
 /-! #### The pairings of the u4 identity -/
 
 omit hJ ht in
-lemma pu4_D000 : hip (ctD 𝓽) (ctD 𝓽) = (gramH 𝓽 : ℂ) := by
-  calc hip (ctD 𝓽) (ctD 𝓽)
-      _ = _ := hipD_D
+lemma pu4_D000 : hip (ctD 𝓽) (ctD 𝓽) = (gramH 𝓽 : ℂ) := hipD_D
 
 omit ht in
 lemma pu4_D001 : hip (fun a b c d => ctC 𝓽 a d b c) (ctD 𝓽) = 0 :=
@@ -1427,8 +1414,7 @@ lemma pu4_D214 : hip (fun a b c d => ctC 𝓽 b c a d) (fun a b c d => ctD 𝓽 
 
 omit hJ in
 lemma pu4_C000 : hip (ctD 𝓽) (ctC 𝓽) = (gramT0 𝓽 : ℂ) := by
-  calc hip (ctD 𝓽) (ctC 𝓽)
-      _ = _ := by rw [← hip_conj, hipC_D ht, Complex.conj_ofReal]
+  rw [← hip_conj, hipC_D ht, Complex.conj_ofReal]
 
 omit ht in
 lemma pu4_C001 : hip (fun a b c d => ctC 𝓽 a d b c) (ctC 𝓽) = 0 :=
