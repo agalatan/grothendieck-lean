@@ -214,9 +214,8 @@ theorem fibre_integrated (hE : E.psdOK = true) (hR : R.psdOK = true) (Qe : L2G n
     (integrable_Lsec ℓ β hfm hgm hfb hgb).re.const_mul 2
   have iC : Integrable C (stdGaussian (n + n)) := (integrable_hre _ _).const_mul 2
   have iP : Integrable (fun y => pot E R ℓ β (aFib b1 b2 b3) ‖Qe y‖) (stdGaussian (n + n)) := by
-    have := integrable_pot_comp (E := E) (R := R) (ℓ := ℓ) (β := β) (a := aFib b1 b2 b3) hE hR
-      (Lp.memLp Qe).aestronglyMeasurable ((Lp.memLp Qe).integrable one_le_two).norm 1 zero_le_one
-    simpa using this
+    simpa using integrable_pot_comp (E := E) (R := R) (ℓ := ℓ) (β := β) (a := aFib b1 b2 b3) hE
+      hR (Lp.memLp Qe).aestronglyMeasurable ((Lp.memLp Qe).integrable one_le_two).norm 1 zero_le_one
   have iAB : Integrable (fun y => A y + 2 * (Lsec ℓ β (ft := ft) (gt := gt) y).re)
       (stdGaussian (n + n)) := iA.add iB
   have iS : Integrable (fun y => A y + 2 * (Lsec ℓ β (ft := ft) (gt := gt) y).re + C y)
@@ -242,8 +241,7 @@ theorem fibre_integrated (hE : E.psdOK = true) (hR : R.psdOK = true) (Qe : L2G n
       = 2 * (∫ y, Lsec ℓ β (ft := ft) (gt := gt) y ∂(stdGaussian (n + n))).re := by
     rw [integral_const_mul]
     congr 1
-    have := integral_re (integrable_Lsec ℓ β hfm hgm hfb hgb)
-    simpa using this
+    simpa using integral_re (integrable_Lsec ℓ β hfm hgm hfb hgb)
   have eC : ∫ y, C y ∂(stdGaussian (n + n)) = 2 * (inner ℂ Qe (aXi b1 b2 b3 hfm hgm hfb hgb)).re := by
     rw [hC, integral_const_mul, re_inner_eq_integral]
   rw [eA, eB, eC] at hmono
