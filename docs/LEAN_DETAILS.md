@@ -793,6 +793,23 @@ any profile domain, contour supremum, or Gauss quadrature remainder. The
 phase bounds inherit exactly the six registered phase-cover facts; the
 translation and generic holomorphic integration results use standard axioms.
 
+`TwistRadialExt.radial` now uses the actual signed complex profile ratio
+`r/(kappa*vC(r^2))`, the swapped primary Hermite indices
+`(q-d,q+1-c)`, the fixed panel sign, and only the outside damping `exp(-r^2)`.
+`TwistRadialReal` proves exact agreement with `twistIntegrand` at `r=sqrt(s)`
+for every natural power, `s >= 0`, nonzero profile, and valid graded indices.
+There is no additional `2r`, `pi`, or factorial factor in this `ds` integrand.
+`GaussianShiftParity` and `TwistRadialParity` prove that the full component
+is globally even in `r`, including its totalized values at profile zeros.
+`EvenSquareDescentLocal` extends the square-descent tool to any point of a
+globally even function. `TwistRadialDescent.analyticAt_descended` proves that
+the resulting function of `s` is analytic wherever `vC(s) != 0`, for `j > 0`
+and valid graded indices. This includes the origin if its profile is nonzero
+and imposes no principal-square-root branch-cut condition. The real-slice
+identity still explicitly fixes the panel sign. Certifying profile
+nonvanishing and contour bounds on the required ellipses remains separate
+from these analytic results.
+
 **Analytic phase reduction.** `Grothe/Haagerup/PhaseLaplace.lean` proves
 `ph(z) = (sqrt(pi):C)^(-1) * integral_{t>0} t^(-1/2) exp(-‖z‖²t) z dt`
 from the Gamma integral. Keeping `z` inside the integral makes the kernel zero

@@ -1077,6 +1077,22 @@ Certified zero-free domains, contour bounds and quadrature-remainder
 assembly remain separate obligations. These estimates inherit the six
 existing phase-cover facts and introduce no new numerical axiom.
 
+The full twisted radial component is now identified with
+\[
+ e^{-r^2}\,\sigma\,
+ h_{q-d,q+1-c}(r,r)\,
+ J_{c,d}\!\left(r,\frac{r}{\kappa v_C(r^2)}\right),
+ \qquad c\le q+1,\quad d\le q.
+\]
+Here the formal Hermite factor is normalized. This is the integrand in
+$ds$ with $s=r^2$, so no extra radial Jacobian is inserted. Its simultaneous
+phase and Hermite parity makes it globally even in $r$. Local square
+descent proves analyticity as a function of $s$ at every point with
+$v_C(s)\ne0$, for $j>0$, including the origin when its profile is nonzero.
+The result crosses the principal square-root cut; the real-slice equality
+retains the explicit fixed panel sign. Profile exclusion certificates,
+contour estimates and quadrature aggregation remain necessary.
+
 The degree-531 canonical pair table indexes conditional Hermite node values
 by pairs $(c,d)$ satisfying $0\le c\le266$, $0\le d\le265$,
 $c\le d+1$ and $c+d\le531$, ordered by $(c+d,c)$. Lean verifies its

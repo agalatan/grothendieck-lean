@@ -12660,6 +12660,7 @@ Grothe.UpperQuad.CentralDerivative.derivative_eq
 Grothe.UpperQuad.EllCheck.panelErr_sound
 Grothe.UpperQuad.EllCheck.quadRemainderHyp
 Grothe.UpperQuad.EllCheck.shardOK_sound
+Grothe.UpperQuad.EvenSquareDescent.analyticAt_descend_of_even
 Grothe.UpperQuad.EvenSquareDescent.analyticOnNhd_descend
 Grothe.UpperQuad.EvenSquareDescent.analyticOnNhd_descend_of_even
 Grothe.UpperQuad.EvenSquareDescent.descend_sq
@@ -12677,6 +12678,7 @@ Grothe.UpperQuad.GaussianShift.analyticAt_coefficient_radial
 Grothe.UpperQuad.GaussianShift.analyticAt_coefficient_shift
 Grothe.UpperQuad.GaussianShift.coefficient_eq_fixedPhaseIntegral
 Grothe.UpperQuad.GaussianShift.coefficient_eq_of_real_positive
+Grothe.UpperQuad.GaussianShift.coefficient_neg_neg
 Grothe.UpperQuad.GaussianShift.exists_fixedPhaseIntegrand_majorant
 Grothe.UpperQuad.GaussianShift.integrable_fixedPhaseIntegrand
 Grothe.UpperQuad.GaussianShift.sum_coefficient_sq_le
@@ -12727,6 +12729,12 @@ Grothe.UpperQuad.Remainder.gauss_remainder_disk
 Grothe.UpperQuad.Remainder.gauss_remainder_ellipse
 Grothe.UpperQuad.TaylorShift.sqSum_shift_le
 Grothe.UpperQuad.TaylorShift.tsum_shiftTerm_le
+Grothe.UpperQuad.TwistRadialExt.analyticAt_descended
+Grothe.UpperQuad.TwistRadialExt.analyticAt_radial
+Grothe.UpperQuad.TwistRadialExt.analyticOnNhd_descended
+Grothe.UpperQuad.TwistRadialExt.descended_real
+Grothe.UpperQuad.TwistRadialExt.radial_even
+Grothe.UpperQuad.TwistRadialExt.radial_real
 Grothe.UpperQuad.accOK_of_facts
 Grothe.UpperQuad.band_le_of_facts
 Grothe.UpperQuad.lowBandOK_sound

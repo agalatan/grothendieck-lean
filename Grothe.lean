@@ -13677,6 +13677,7 @@ import Grothe.UpperQuad.Data.Cutoffs6
 import Grothe.UpperQuad.Data.Cutoffs7
 import Grothe.UpperQuad.EnergySound
 import Grothe.UpperQuad.EvenSquareDescent
+import Grothe.UpperQuad.EvenSquareDescentLocal
 import Grothe.UpperQuad.Facts.Budget
 import Grothe.UpperQuad.Facts.Common
 import Grothe.UpperQuad.Facts.Even
@@ -13704,6 +13705,7 @@ import Grothe.UpperQuad.GaussianShiftAnalytic
 import Grothe.UpperQuad.GaussianShiftDomination
 import Grothe.UpperQuad.GaussianShiftIntegral
 import Grothe.UpperQuad.GaussianShiftMeasure
+import Grothe.UpperQuad.GaussianShiftParity
 import Grothe.UpperQuad.GaussianShiftPolynomial
 import Grothe.UpperQuad.GaussianShiftReal
 import Grothe.UpperQuad.GaussianShiftSource
@@ -13780,6 +13782,11 @@ import Grothe.UpperQuad.TwistNodeSound
 import Grothe.UpperQuad.TwistPhase
 import Grothe.UpperQuad.TwistPhaseDeg
 import Grothe.UpperQuad.TwistRadial
+import Grothe.UpperQuad.TwistRadialAnalytic
+import Grothe.UpperQuad.TwistRadialDescent
+import Grothe.UpperQuad.TwistRadialExtension
+import Grothe.UpperQuad.TwistRadialParity
+import Grothe.UpperQuad.TwistRadialReal
 import Grothe.UpperQuad.TwistSix
 import Grothe.UpperQuad.TwistSound
 import Grothe.UpperQuad.TwistTail
