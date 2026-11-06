@@ -499,7 +499,7 @@ def cmdTwistNode (j ordinal P : Nat) : IO UInt32 := do
     let aI' := mulI P (sqrtI P lam) aI
     IO.println s!"node {ordinal}: s = {toDecimal 20 s}, W = {toDecimal 20 w}, neg = {neg}, A = {toDecimal 15 aI}, A' = {toDecimal 15 aI'}, valid = {twistValid P prm nd aI}"
     let t0 ← IO.monoMsNow
-    let vals := canonicalTriangleI P (seedScalarI P piI aI') neg zeroI aI' (sqrtTable P (Din + 1))
+    let vals := canonicalTriangleI P (ofInt P 1) neg zeroI aI' (sqrtTable P (Din + 1))
       (ratiosI P (sqI P aI') (ratioDepth Din)) Din Din
     IO.println s!"  triangle at A': {vals.size} pairs, max width 2^{maxWidthLog2 vals}"
     let t1 ← IO.monoMsNow
