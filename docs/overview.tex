@@ -33,8 +33,9 @@
 \Large $1.401697117301\;<\;\KG\;<\;1.404598149141$\\[6pt]
 \normalsize Both bounds are theorems of a Lean~4/Mathlib development, resting on explicitly stated
 analytic and computer-assisted inputs (Section~\ref{sec:trust}).\\[4pt]
-Only the sharp upper target is active; its fourteen finite-band Gaussian estimates
-and energy-table accuracy remain to be proved.\vspace{4pt}
+The lower bound is unconditional (\lean{lower\_target}); the upper bound, stated in Lean as
+$\KG<1.4046$ (\lean{main\_bounds}), still rests on its fourteen finite-band Gaussian estimates
+and energy-table accuracy.\vspace{4pt}
 \end{minipage}}
 \end{center}
 
@@ -161,6 +162,11 @@ radius $\varepsilon$ gives $5\rho^2+|\rho-r|+\varepsilon$. The hybrid source
 budget combines those selected nodes with explicit squared-error budgets on
 all other regular nodes, using the same physical Gaussian weights. Actual
 parameter and saved-vector certificates remain required.
+
+For complex $z\ne 0$, rotation by $z/|z|$ transports the real-slice
+constant-plus-linear model to the physical phase $F_0(z,w)$. In the Gaussian
+variable $w$ the residual has $L^2$ norm at most $5t^2$, where
+$t=\sqrt{1+a^2}\,v(|z|^2)/|z|$. The estimate includes profile zeros.
 
 For an exceptional source row, the model-to-payload discrepancy over all
 selected modes reduces exactly to five rational coordinates. The fitted
@@ -465,6 +471,15 @@ Conjugation invariance of the full Gaussian measure and actual base
 response also proves that both original Gaussian coefficients, including
 their rational frozen corrections, are real. Real interval errors thus
 give the same complex norm errors without a truncation premise.
+
+The finite root-window interpolation step uses an antisymmetric rule at
+$r\pm i/180$ for $1\le i\le18$. For every real polynomial $p$ of degree
+at most $35$, exact rational moment identities express $p'(r)$ as this
+weighted sample sum. The doubled absolute-weight sum is below $630$, hence
+$|p'(r)|\le630M$ when all samples have absolute value at most $M\ge0$.
+\lean{UpperQuad.CentralDerivative} supplies this algebraic step with standard
+axiom guards. The actual phase polynomial, sample enclosures and physical
+panel integration remain separate inputs.
 
 The original Legendre brackets for orders $1$ through $64$ have exact
 integer sign certificates and Lean proofs of root existence and uniqueness.
@@ -936,10 +951,10 @@ gates); all moment, Stein, spectral and contraction-Gram inequalities for every 
 Wick identity; the finite certificate (five row, three original-batch, one added law-batch and five refined-cover native checks)
 &
 \lean{NodeCaps}: the 19 potentials $\Psi_r$ (defined in Lean) lie below their stored rational caps at the tabulated nodes.
-\lean{lower\_bound\_of\_capsRest} proves the same endpoint from \lean{CapsRest}: the vertex caps of rows 12--15 ($t=0.84$--$0.855$) and any excluded-node caps, using the same refined cover.
-The 60 range checks for fifteen rows use a computation-only layer.
-CI replays the final assembly when the 53-file cache provenance matches;
-a mismatch triggers the runner build and the axiom audit. Four rows retain external vertex caps.\\\midrule
+\lean{lower\_bound\_of\_capsRest} proves the same endpoint from \lean{CapsRest}, and \lean{capsRest} proves \lean{CapsRest}: every row is certified in Lean and the certified rows exclude no nodes, so the lower bound \lean{lower\_target} is unconditional.
+Rows 12--14 have complete localized-piece and anchor assemblies for canonical CI verification (separate native facts for piece ranges, coverage slices and anchor ranges).
+The computation-only finite checks precede the full assembly and strict axiom audit.
+CI replays a matching verified cache or builds the changed caps on the runner. Row 15 retains external vertex caps; the Row14 assembly uses the independent localized proof at node $14\times150$, preserving its complete repair closure.\\\midrule
 \multicolumn{2}{@{}p{0.96\textwidth}@{}}{\raggedright\emph{Upper bound.}\newline\lean{UpperChaos.fresh\_upper\_rounder}, for an $L^2$ charge-one truncation $X$ under component-error and table-accuracy inputs, proves $\KG\le500000000000000000/355973699960428191$.}\\[2pt]
 the concrete disk-valued rounding; tensor Hermite completeness by Fubini, Gaussian mixing by characteristic functions, Parseval and Mehler, charge selection, summability;
 the transfer inequality (tensor powers); kernel composition and locality; the head through degree 501 from
@@ -1254,9 +1269,6 @@ in the second.
 Planned work is tracked as GitHub issues of the repository: epics \#12 (unconditional lower bound), \#17 (upper inputs),
 \#22 (better lower bound), \#29 (build infrastructure) and \#34 (research plans).
 \begin{enumerate}
-\item Complete and verify the node caps (\lean{CapsRest}, the remaining vertex-cap hypothesis), which would make the lower bound fully machine-checked.
- The caps of rows 12--15 are localised caps: coverage by constrained pieces is checked in Lean, and most pieces pass; the
- remaining pieces fail the exact positivity check of their S-lemma matrix by about $10^{-5}$ and need re-optimised multipliers.
 \item Discharge the sharp upper rounding's numerical comparison and energy-table error; its Hermite expansion, structural analytic bridge and Hardy tail bound are formalized.
 \item Certify a game of degree $\ge5$ with a \emph{multi-grade fibre}: one bounded function of the visible coordinate and one
  remote direction per degree, so that the cross-degree coupling is kept. This is the route to a lower bound above $1.403$.

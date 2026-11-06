@@ -1,0 +1,34 @@
+{
+  "anchor_range_size": 16,
+  "certificate_grids": [
+    [
+      400,
+      128,
+      "1/50"
+    ],
+    [
+      1600,
+      256,
+      "1/200"
+    ],
+    [
+      1600,
+      1024,
+      "1/200"
+    ],
+    [
+      1600,
+      1152,
+      "1/200"
+    ],
+    [
+      3200,
+      256,
+      "1/400"
+    ]
+  ],
+  "format": "caps-row-generation-config/v1",
+  "piece_chunk": 4,
+  "row": 14,
+  "scope": "Source inputs for canonical Lean CI; no native verification claim."
+}

@@ -5,11 +5,12 @@
 The active `Grothe` build contains the same endpoint reduction with fewer cap inputs:
 `lower_bound_of_capsRest : CapsRest → IsGrothendieckBound K → 1.401697117301 < K`.
 Both theorems use `RefinedCoverData.refinedL` and the same checked finite cover.
-`CapsRest` consists of the vertex caps of rows 12–15 (t = 0.84, 0.845,
-0.85, 0.855), plus any excluded-node caps of rows 0–11 and 16–18. All
-exclusion lists are currently empty. These remaining cap estimates must be
-proved in Lean; external calculations do not complete this endpoint.
-See [PROOF_STATUS.md](PROOF_STATUS.md) for the completion rule.
+`capRowsDone` covers every row index. `CapsRest` retains the excluded-node
+caps of rows 0–11 and 16–18. Rows 12–15 have complete
+localized-piece and anchor assemblies whose finite checks run in canonical CI. All
+exclusion lists are currently empty. The generated finite checks still require canonical Lean verification;
+external calculations do not complete this endpoint.
+See [LEAN_DETAILS.md](LEAN_DETAILS.md) for the completion rule.
 
 ## Computation and proof layers
 
@@ -37,10 +38,37 @@ The rows 12–15 piece checks have the same separation. `CapCoverDefs`
 contains `Cons` and the rational coverage predicates; `CapConstrDefs`
 contains the constrained matrices, parsers and `nodeOKc`. `CapPieceRange`
 imports these pure definitions, row/gate data and `CapTablesData`.
-Its local import closure has 32 modules; generated coverage/range modules
-for one node have 34, including their data. Semantic regions and all
+`CapCoverFast` proves the coordinate-filtered check equal to `capCoverOK`:
+duplicate rational samples are checked once, and each coordinate filters
+the possible pieces before the next coordinate is checked. For large nodes,
+`coverage-slicing.json` selects separate native facts over disjoint residue
+classes of the first sample index. A pure assembly combines every slice
+into the original `pieceCover_…` theorem; a positive slice count is required.
+The active registry derives every slice and its exact checker proposition
+from that policy and the piece count. Coverage slicing does not alter the
+range predicates or certificate data. Semantic regions and all
 soundness proofs remain in `CapCover`, `CapConstr` and `CapPieceNodes`.
-These generated piece facts are not yet imported by any proof.
+The prepared Row12–15 piece facts feed their whole-row assemblies. Row14
+uses `nodeCap_14x150_done` for node 150 and preserves its complete proof and
+repair closure; the other localized nodes use the generated piece checks.
+`nodecaps_row14_render.py` binds every selected input, anchor, source and retained
+dependency. All 90 localized inputs and 225 anchors participate in its complete
+396-node census, including the retained node. Two stored centre proposals have
+no bound exported matrices: node 150 uses the retained proof and node 280 is
+recomputed by its canonical range check. This distinction remains explicit in
+the input plan; source generation does not establish native verification.
+
+Noncentre multiplier repairs use the explicit `noncentre-source-binding.json`
+layer. It reproduces the sealed input sources before applying hash-bound,
+zero-additional-cap changes to the ordered constraint multipliers. It preserves
+recipes, grids, constraint regions, piece order, centres and the retained node
+150 proof. Only the named D modules may change; coverage, range and assembly
+modules must reproduce identically. Stored exact-matrix LDL replay checks the
+repair data; current `pieceOneOK` native checks remain necessary. A positive
+cap Schur residual is insufficient when the cap-free principal block is
+indefinite, and increasing the cap cannot repair that block. Bulk noncentre
+imports replay current multipliers before extending a binding, preserving
+passing pieces and earlier repairs when diagnostic batches overlap.
 
 There is one build target, `Grothe`: the generated root imports the 15 heavy
 row modules and `CapNodes` like every other module. CI builds it, replaying
@@ -53,15 +81,14 @@ the `GrotheKernel` Lean namespace. Other numerical checkers stay outside
 that library, so their changes do not replace the cap checker's shared
 object. The library root is pinned because every importer loads it.
 
-## Cache provenance: 53 files
+## Cache provenance
 
 `python3 scripts/caps_stamp.py --digest` computes the source hash and file
-count without marking a build. The boundary contains 48 local computation
-modules reachable from the 15 heavy row modules, followed by five direct
-extras: `Grothe/LowerAnalytic/CapNodes.lean`,
-`GrotheCapsKernel.lean`, `lean-toolchain`, `lake-manifest.json`, and
-`lakefile.toml`. The extras' imports are not traversed. The total is 53
-files. `--list` lists the exact paths.
+count without marking a build. The shared active registry includes the original
+range checks, all selected Row12–15 finite leaves, and the independent Row14
+repair checks. It derives their computation import closure and records the
+assembly/configuration boundary separately. `--list` lists the exact paths.
+The registry records source provenance, not completed native verification.
 
 The hash identifies the cached computational source bytes and direct
 extras. It is not a full dependency or reproducibility manifest: it does
@@ -79,7 +106,7 @@ than in a committed source-stamp file.
 
 Acceptance of the combined computation split and CI-cache change requires
 one successful runner `caps` build of the combined candidate, the axiom
-report, and the repeated ordinary CI check. A read-only digest or unchanged
+report, the Bridge comment probe, and an actual successful cache upload. A read-only digest or unchanged
 theorem statement is not a verification record. The scratch-branch
 `Grothe/LowerAnalytic/Bridge.lean` comment probe leaves the computation hash unchanged;
 `CapRangeDefs.lean` is a negative control that changes it. Neither probe
@@ -110,9 +137,10 @@ hand-editing `CapRecipeData.lean`. Lower-row and gate inputs are similarly
 kept in `data/`; generated modules must reproduce byte for byte. A failed
 recipe can make its cap check fail; it cannot bypass the numerical checker.
 
-Rows 12–15 remain explicit `CapsRest` inputs. Their localized-piece data,
-computation campaign and final wiring are roadmap Tracks B/C. Track A
-separates both the existing 60 range facts and the localized-piece checks
-from the lower proof chain. The same 60 range facts support the refined
-endpoint through the shared cover; recipes, row data and cap hypotheses
-are unchanged. The remaining rows are not discharged.
+Rows 12–15 have complete generated localized-piece and anchor assemblies.
+Row15 binds every exact centre input and preserves its noncentre pieces,
+recipes, grids and ordered constraints. Source reproduction and numerical
+repair records do not establish successful native verification. The range checks must pass before
+those assemblies can discharge their cap inputs. The existing range facts
+and localized-piece checks share the computation layer and support the refined
+endpoint through the checked cover.

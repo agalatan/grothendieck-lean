@@ -1,0 +1,783 @@
+{
+  "baseline_files": {
+    "Grothe/Lower/Basic.lean": {
+      "path": "Grothe/Lower/Basic.lean",
+      "sha256": "16a80ec7aaec39929d9c7ca6a7d1d5f448a7193872342a3744d6063a0607d193"
+    },
+    "Grothe/Lower/Boxes.lean": {
+      "path": "Grothe/Lower/Boxes.lean",
+      "sha256": "18631a3fca0a0bf5794c8f9c1e2f41b2557aef1ec66ad0ea5925ede1906726aa"
+    },
+    "Grothe/Lower/Cuts.lean": {
+      "path": "Grothe/Lower/Cuts.lean",
+      "sha256": "69a0b15c924178d297f3c668f6f26328ff7bb2e49c2f63b97d91cd6b3edda199"
+    },
+    "Grothe/Lower/Gate.lean": {
+      "path": "Grothe/Lower/Gate.lean",
+      "sha256": "b26dda609f7e155ab88b9276710ff1a6a139bee7f64edf41570105ce42affa13"
+    },
+    "Grothe/Lower/Gram.lean": {
+      "path": "Grothe/Lower/Gram.lean",
+      "sha256": "88b81bc69bee457b82175b3b7eab47b3d57bae709435be8c4adbc5cc86d7ead5"
+    },
+    "Grothe/Lower/Law.lean": {
+      "path": "Grothe/Lower/Law.lean",
+      "sha256": "0859a94eb953f0ec37941d2e77e98589aa8d0e17d9162a8ea59e588c40e19cf2"
+    },
+    "Grothe/Lower/Mixed.lean": {
+      "path": "Grothe/Lower/Mixed.lean",
+      "sha256": "94d14db1ca573b13d89114e5dd2ba9c32325203250e2bdc1919afb5536bec05a"
+    },
+    "Grothe/Lower/Moment.lean": {
+      "path": "Grothe/Lower/Moment.lean",
+      "sha256": "589ca2ed467e67687ab9defb20834cc2bb1d2bd898c488685bf1553c0db3b17b"
+    },
+    "Grothe/Lower/Poly.lean": {
+      "path": "Grothe/Lower/Poly.lean",
+      "sha256": "63f0d540d9da89e8f6240e4ff781b21373f207628031e7bd2736819d8e037a4b"
+    },
+    "Grothe/Lower/RowData.lean": {
+      "path": "Grothe/Lower/RowData.lean",
+      "sha256": "495cd4ac26bf24d4a983acfdf728d244b8257bb24ec28e7ffd8cfb48fafab109"
+    },
+    "Grothe/Lower/RowData01.lean": {
+      "path": "Grothe/Lower/RowData01.lean",
+      "sha256": "d7885708a8e76a0f285e2f115af1fbc01c08b95b5ef3be519c346d47c9839bc9"
+    },
+    "Grothe/Lower/RowData02.lean": {
+      "path": "Grothe/Lower/RowData02.lean",
+      "sha256": "63036670cec5b2755dc99b2227b34f4f0ce4c49d0a42060355f89a5c6224906b"
+    },
+    "Grothe/Lower/RowData03.lean": {
+      "path": "Grothe/Lower/RowData03.lean",
+      "sha256": "9651a7f247d9559085a85fb8234e11cc9b3794c1343072da6ba06ec522ebb90f"
+    },
+    "Grothe/Lower/RowData04.lean": {
+      "path": "Grothe/Lower/RowData04.lean",
+      "sha256": "2d622b3f1887d5283dff01ddc739d5e8ad1d29187d718811bf541ebab9eaea9c"
+    },
+    "Grothe/Lower/RowData05.lean": {
+      "path": "Grothe/Lower/RowData05.lean",
+      "sha256": "652da9d96bacfe5c526459122c6388aa8e1ff91f4d0ee2fb2641eb9253940f5b"
+    },
+    "Grothe/Lower/RowData06.lean": {
+      "path": "Grothe/Lower/RowData06.lean",
+      "sha256": "2bcd2cdbeda18a8e079d3cb764dd6970a7b3f0ddd14f9f481ea7ef6f8a02698f"
+    },
+    "Grothe/Lower/RowData07.lean": {
+      "path": "Grothe/Lower/RowData07.lean",
+      "sha256": "5ffb9f041a282dbb365729a532ff1e3e0130ec3cb9404031575ff962dee389bb"
+    },
+    "Grothe/Lower/RowData08.lean": {
+      "path": "Grothe/Lower/RowData08.lean",
+      "sha256": "33ceb40866ae0a411b79cc47241f51eebc6c659f6b47b37ec926db1ac9706cee"
+    },
+    "Grothe/Lower/RowData09.lean": {
+      "path": "Grothe/Lower/RowData09.lean",
+      "sha256": "73273e5e6d81ce551dcdfbc8f9786c7d4d2c2396b534320033a8e56a996a15dc"
+    },
+    "Grothe/Lower/RowData10.lean": {
+      "path": "Grothe/Lower/RowData10.lean",
+      "sha256": "ac24bda250663435e15e8305cfe6fab3890f77234f61473e1fe133d550daa72b"
+    },
+    "Grothe/Lower/RowData11.lean": {
+      "path": "Grothe/Lower/RowData11.lean",
+      "sha256": "ac577168080683e22044ae18282d85fcbb9a69ad48337381415379519c1893af"
+    },
+    "Grothe/Lower/RowData12.lean": {
+      "path": "Grothe/Lower/RowData12.lean",
+      "sha256": "a01b32f86267bb46307ef94ef98748de74cb6fb83285a37139164cafb346fe95"
+    },
+    "Grothe/Lower/RowData13.lean": {
+      "path": "Grothe/Lower/RowData13.lean",
+      "sha256": "4e9e5d944abd977db9cff9d2cde6f15c29db3e104a6632e48e75572d54f084db"
+    },
+    "Grothe/Lower/RowData14.lean": {
+      "path": "Grothe/Lower/RowData14.lean",
+      "sha256": "9445ce1c08ac77ba833d9104cba8bca98aae6175b35b7c43e63932496011618a"
+    },
+    "Grothe/Lower/RowData15.lean": {
+      "path": "Grothe/Lower/RowData15.lean",
+      "sha256": "0664a384821a93c696b172e0420b368b968513e4c53449a5aef36d002f299436"
+    },
+    "Grothe/Lower/RowData16.lean": {
+      "path": "Grothe/Lower/RowData16.lean",
+      "sha256": "549d1c50d9c2aa3d02b689ccebd77ff758a7c67cfcb6cda7c24a2494852e53cc"
+    },
+    "Grothe/Lower/RowData17.lean": {
+      "path": "Grothe/Lower/RowData17.lean",
+      "sha256": "f1df863ac8797e66c58b71a02e27d47b636bb800462c26126e9c41350925d0a3"
+    },
+    "Grothe/Lower/RowData18.lean": {
+      "path": "Grothe/Lower/RowData18.lean",
+      "sha256": "2acd7f4568582994a33bcbbb6afe77c65420d848f5ad949122fa1a8c2c31a865"
+    },
+    "Grothe/Lower/RowData19.lean": {
+      "path": "Grothe/Lower/RowData19.lean",
+      "sha256": "f3c74b79e482cc16f82a43c0fb49d47f44c004c27c5beda957445b149e55566d"
+    },
+    "Grothe/Lower/RowDataTypes.lean": {
+      "path": "Grothe/Lower/RowDataTypes.lean",
+      "sha256": "24f3a6da9513187141123403ddf442af54060e2bfb8110439ff9a70ab34bd18a"
+    },
+    "Grothe/Lower/RowGateData.lean": {
+      "path": "Grothe/Lower/RowGateData.lean",
+      "sha256": "149133ffd187a363ff1a0ac2421b9ecf43b8474a65b0ca5dd5af0b999d78c54a"
+    },
+    "Grothe/Lower/RowGates.lean": {
+      "path": "Grothe/Lower/RowGates.lean",
+      "sha256": "2c60bcc62fdfdf0a007ed1d04be07f7b355e48232c3db0ba5741472c0edfbe28"
+    },
+    "Grothe/Lower/RowReduction.lean": {
+      "path": "Grothe/Lower/RowReduction.lean",
+      "sha256": "aa6bba8f0ce1552b38920f345650bef914d2c4c799ea82971f9fd0d1e6baff53"
+    },
+    "Grothe/Lower/Rows.lean": {
+      "path": "Grothe/Lower/Rows.lean",
+      "sha256": "4f309659fa35d6430b40b3e2620c03ba0772504311872a14af75457e51d6562e"
+    },
+    "Grothe/Lower/Stein.lean": {
+      "path": "Grothe/Lower/Stein.lean",
+      "sha256": "e62473eda4ad900a4ab50b228163865b0739277b89c4408d76130449093c8d84"
+    },
+    "Grothe/Lower/Support.lean": {
+      "path": "Grothe/Lower/Support.lean",
+      "sha256": "73b55e612522b01733a022ef68fc264f2889983054261e11aa849308c61b5867"
+    },
+    "Grothe/Lower/Sweep.lean": {
+      "path": "Grothe/Lower/Sweep.lean",
+      "sha256": "ba58b9a377b4246446f1ef1e82a397e55a593069e2618f1020553a3c6a3cb32c"
+    },
+    "Grothe/Lower/Transfer.lean": {
+      "path": "Grothe/Lower/Transfer.lean",
+      "sha256": "934b86a83abcfa507e258fc32dfcb6782d3d7677d7a85c3079712dc07a33e33d"
+    },
+    "Grothe/Lower/TransferFinite.lean": {
+      "path": "Grothe/Lower/TransferFinite.lean",
+      "sha256": "a06e00677c1086c2169572e98fd9c605ea7dd02a0eabbb4822eff54245111b96"
+    },
+    "Grothe/Lower/TransferL2.lean": {
+      "path": "Grothe/Lower/TransferL2.lean",
+      "sha256": "c6c400e45e33df7fd956df922414f648582437b9c8e94e3ae6c5c144654e639b"
+    },
+    "Grothe/LowerAnalytic/Bernstein2.lean": {
+      "path": "Grothe/LowerAnalytic/Bernstein2.lean",
+      "sha256": "6d75db0ed243359ac0b64a370e930f01966420fcc55d8b8e345d9bf2a587311b"
+    },
+    "Grothe/LowerAnalytic/Bridge.lean": {
+      "path": "Grothe/LowerAnalytic/Bridge.lean",
+      "sha256": "eb4fb7662efede0b6b87e322bfe4d921c1f2f10abeff82afbb6829dc58376f26"
+    },
+    "Grothe/LowerAnalytic/CapAssembly.lean": {
+      "path": "Grothe/LowerAnalytic/CapAssembly.lean",
+      "sha256": "4c97fcbde3a7bceb12ab363c27a0d5d6d2fb08df48e1419a9b9c9760a5e565c0"
+    },
+    "Grothe/LowerAnalytic/CapCheckSound.lean": {
+      "path": "Grothe/LowerAnalytic/CapCheckSound.lean",
+      "sha256": "c9abccbe037864548b611e53b0c98c60ded307a2d7d41b8cc72672fa33c4019e"
+    },
+    "Grothe/LowerAnalytic/CapChordData.lean": {
+      "path": "Grothe/LowerAnalytic/CapChordData.lean",
+      "sha256": "ce2bf00005f7cbc56a85dd42ad205ed6f1dbeebdd52ab331a7e430ceb952a7bf"
+    },
+    "Grothe/LowerAnalytic/CapChords.lean": {
+      "path": "Grothe/LowerAnalytic/CapChords.lean",
+      "sha256": "3f3808baf79402a315f83a0f273b5e05fc43eef5d2e609acc5a53df7098e8950"
+    },
+    "Grothe/LowerAnalytic/CapConstr.lean": {
+      "path": "Grothe/LowerAnalytic/CapConstr.lean",
+      "sha256": "9c41d6af3a6f30ba96bd0a58563b0f92f09bcbcca74fd10c7f6784a79e0169b5"
+    },
+    "Grothe/LowerAnalytic/CapConstrDefs.lean": {
+      "path": "Grothe/LowerAnalytic/CapConstrDefs.lean",
+      "sha256": "6ec17260b473d677a537a1d53e4b5ee11d7d08bf16e497434cf57b487caa33a1"
+    },
+    "Grothe/LowerAnalytic/CapCoord.lean": {
+      "path": "Grothe/LowerAnalytic/CapCoord.lean",
+      "sha256": "7814252b66aa431ad4058d1ab5ae6b2452b02827dc019d0d37013593375b9d8c"
+    },
+    "Grothe/LowerAnalytic/CapCover.lean": {
+      "path": "Grothe/LowerAnalytic/CapCover.lean",
+      "sha256": "59bd13d3af3f31289bd2c634c05548f5c081d3d1d2c0691ac06232130dfe9336"
+    },
+    "Grothe/LowerAnalytic/CapCoverDefs.lean": {
+      "path": "Grothe/LowerAnalytic/CapCoverDefs.lean",
+      "sha256": "fe2ff49d6acfd5d2aeaddac70f494440ce5ad116e1c6a5832fa2c29d367636bf"
+    },
+    "Grothe/LowerAnalytic/CapCoverFast.lean": {
+      "path": "Grothe/LowerAnalytic/CapCoverFast.lean",
+      "sha256": "5da28269f0286802404f482f372ecca2e797d6dcf81fc7316c6065fc6fd5ddd4"
+    },
+    "Grothe/LowerAnalytic/CapGrid.lean": {
+      "path": "Grothe/LowerAnalytic/CapGrid.lean",
+      "sha256": "9c5678d29e92641da0641787acab4e5c15acdd7ab91e96f49cc0bf80df2c3181"
+    },
+    "Grothe/LowerAnalytic/CapGridOK.lean": {
+      "path": "Grothe/LowerAnalytic/CapGridOK.lean",
+      "sha256": "b8f38e51c8f814b7c8da8f9e20c8428a0b3f1b31d59eff82a3450e1e82115b02"
+    },
+    "Grothe/LowerAnalytic/CapGridT.lean": {
+      "path": "Grothe/LowerAnalytic/CapGridT.lean",
+      "sha256": "cd5d49f26a70a43cb9ad66ac4e9391b1e3a8f5f5eedacb8b88950ddaba60413c"
+    },
+    "Grothe/LowerAnalytic/CapLinAlg.lean": {
+      "path": "Grothe/LowerAnalytic/CapLinAlg.lean",
+      "sha256": "d85a30010ae400fbb882056eb758e1a61440fe3138979ac408c1a0e76e114f56"
+    },
+    "Grothe/LowerAnalytic/CapLinAlgDefs.lean": {
+      "path": "Grothe/LowerAnalytic/CapLinAlgDefs.lean",
+      "sha256": "009fa86c53f8411599abb2a3b4d700a491977742c7558015c45f1be928365611"
+    },
+    "Grothe/LowerAnalytic/CapMajorant.lean": {
+      "path": "Grothe/LowerAnalytic/CapMajorant.lean",
+      "sha256": "aff28eeebb3976b7b4d097ed880c30239d4e5f7ba66f14de0b4e466260463e91"
+    },
+    "Grothe/LowerAnalytic/CapNodeDefs.lean": {
+      "path": "Grothe/LowerAnalytic/CapNodeDefs.lean",
+      "sha256": "251b834865f0b585800f69797cb49927ff84bf027967b8d88cb13e2ee39d3fb2"
+    },
+    "Grothe/LowerAnalytic/CapPiece.lean": {
+      "path": "Grothe/LowerAnalytic/CapPiece.lean",
+      "sha256": "2022997c663ef98ee7d749d563510697e06cfc6e47f3812d3e3917b40577216a"
+    },
+    "Grothe/LowerAnalytic/CapPieceDefs.lean": {
+      "path": "Grothe/LowerAnalytic/CapPieceDefs.lean",
+      "sha256": "d8233831bca1b71baca8941cad5104f22bcec55803d8c018cfb7097be9a88ee9"
+    },
+    "Grothe/LowerAnalytic/CapPieceNodes.lean": {
+      "path": "Grothe/LowerAnalytic/CapPieceNodes.lean",
+      "sha256": "e199334eb11601901274d8a798c5f4051fd4dcf46bffe34946f244da532dc03e"
+    },
+    "Grothe/LowerAnalytic/CapPieceRange.lean": {
+      "path": "Grothe/LowerAnalytic/CapPieceRange.lean",
+      "sha256": "0d8e155d54e807ace43edb915aafde7d59addcbba6a920e2d01d05f56d77e790"
+    },
+    "Grothe/LowerAnalytic/CapPieceRepair.lean": {
+      "path": "Grothe/LowerAnalytic/CapPieceRepair.lean",
+      "sha256": "b39b193887527bb7b1ce9cbc39aa19a099a1f44aa79c0f7a9f3e35e49ae896dc"
+    },
+    "Grothe/LowerAnalytic/CapPieceRepairDefs.lean": {
+      "path": "Grothe/LowerAnalytic/CapPieceRepairDefs.lean",
+      "sha256": "5d4edc3f205c61d57a37fc4ba27f41db2194c62dc9606735cbf6b28489ab2d18"
+    },
+    "Grothe/LowerAnalytic/CapPieces/C14x150.lean": {
+      "path": "Grothe/LowerAnalytic/CapPieces/C14x150.lean",
+      "sha256": "1ece6caac3e97cdd1342fecb889cb1a9261978ff75bfcb343015931405c3fd28"
+    },
+    "Grothe/LowerAnalytic/CapPieces/D14x150.lean": {
+      "path": "Grothe/LowerAnalytic/CapPieces/D14x150.lean",
+      "sha256": "6d9a6ab6ea03840e2f8b69b3f47dfb300aa83688ef6868079deab5fe5862e996"
+    },
+    "Grothe/LowerAnalytic/CapPieces/D14x150p0Repair.lean": {
+      "path": "Grothe/LowerAnalytic/CapPieces/D14x150p0Repair.lean",
+      "sha256": "a79e8d80ae92174d37313b0f197f23731d7bc7e2d1792b771caef959b79932c0"
+    },
+    "Grothe/LowerAnalytic/CapPieces/N14x150.lean": {
+      "path": "Grothe/LowerAnalytic/CapPieces/N14x150.lean",
+      "sha256": "886742f976632bdde144694940e25368591e3f7998da501b8fb78848e02e735f"
+    },
+    "Grothe/LowerAnalytic/CapPieces/Node14x150.lean": {
+      "path": "Grothe/LowerAnalytic/CapPieces/Node14x150.lean",
+      "sha256": "c69812350cb4e518f01f6f129b69061c12217e52ca06450f005cae98be5dc824"
+    },
+    "Grothe/LowerAnalytic/CapPieces/R14x150_0.lean": {
+      "path": "Grothe/LowerAnalytic/CapPieces/R14x150_0.lean",
+      "sha256": "4faa1e2e07ff12992a2ec79db95cc95119a369c3904264ebc1022be44fae81b8"
+    },
+    "Grothe/LowerAnalytic/CapPieces/R14x150_1.lean": {
+      "path": "Grothe/LowerAnalytic/CapPieces/R14x150_1.lean",
+      "sha256": "edcd3b400fa1f2c409d5c8a93d5e5319b2f73116100a47e376c8e835b39e72b8"
+    },
+    "Grothe/LowerAnalytic/CapPieces/R14x150p0Repair.lean": {
+      "path": "Grothe/LowerAnalytic/CapPieces/R14x150p0Repair.lean",
+      "sha256": "c079ab9ab90527bee1f3ec6caee39e3ad8ffda6469331bb80be83f594d54b4f0"
+    },
+    "Grothe/LowerAnalytic/CapPolar.lean": {
+      "path": "Grothe/LowerAnalytic/CapPolar.lean",
+      "sha256": "29045218610cf251acb1373778fe48c8a8362c824bedb7aef260f429bed18b0f"
+    },
+    "Grothe/LowerAnalytic/CapRangeDefs.lean": {
+      "path": "Grothe/LowerAnalytic/CapRangeDefs.lean",
+      "sha256": "49467a1087505982cea75f1640fe83c070f1fd8fdd5e76346bc74be77b6dcf42"
+    },
+    "Grothe/LowerAnalytic/CapRows.lean": {
+      "path": "Grothe/LowerAnalytic/CapRows.lean",
+      "sha256": "e30fb04351b39ae7c95164012a967274d7d0355311b98c3829310b75e79cb62c"
+    },
+    "Grothe/LowerAnalytic/CapSym.lean": {
+      "path": "Grothe/LowerAnalytic/CapSym.lean",
+      "sha256": "1a10de3e3ed53fb28407bd0bfb56e6c8a1491a1e0fb059ba66bd73a07854a0c7"
+    },
+    "Grothe/LowerAnalytic/CapSymmetry.lean": {
+      "path": "Grothe/LowerAnalytic/CapSymmetry.lean",
+      "sha256": "0909ee09dc11f2f7c6b810981e6f0fcc574f21b480acd4d2d912859e8505673a"
+    },
+    "Grothe/LowerAnalytic/CapTables.lean": {
+      "path": "Grothe/LowerAnalytic/CapTables.lean",
+      "sha256": "36105de6baa77b4561dc2b05e3bbd44f928a457d64b991a596b8256f23413607"
+    },
+    "Grothe/LowerAnalytic/CapTablesData.lean": {
+      "path": "Grothe/LowerAnalytic/CapTablesData.lean",
+      "sha256": "32b46fe51a736d6bd1e669654999c46dd03bbde8e1a0f2014d5486c6827b2ea3"
+    },
+    "Grothe/LowerAnalytic/CapTablesMk.lean": {
+      "path": "Grothe/LowerAnalytic/CapTablesMk.lean",
+      "sha256": "06bac0e5f9e3a86a9870ea2650931a32255097d45d970aa7bc889c9bb3d26688"
+    },
+    "Grothe/LowerAnalytic/Circular.lean": {
+      "path": "Grothe/LowerAnalytic/Circular.lean",
+      "sha256": "1c51e7df4e8f7af45caaa406392e3086ce1fdd1ed7675b38102ea38a772e173d"
+    },
+    "Grothe/LowerAnalytic/CircularFourth.lean": {
+      "path": "Grothe/LowerAnalytic/CircularFourth.lean",
+      "sha256": "b7c6518938ddccc0a35d0ce5323c36a8f74696ece0baca37492ca9a88a9506ca"
+    },
+    "Grothe/LowerAnalytic/CircularTensor.lean": {
+      "path": "Grothe/LowerAnalytic/CircularTensor.lean",
+      "sha256": "ceab27155923782a04446343a53da03bb8cbca74384d2077cf34994fa56308c5"
+    },
+    "Grothe/LowerAnalytic/ComplexGaussianCore.lean": {
+      "path": "Grothe/LowerAnalytic/ComplexGaussianCore.lean",
+      "sha256": "720c725f9abac6d060b754d1533d04dd8c554b5a238ec927fe277bca2f10207e"
+    },
+    "Grothe/LowerAnalytic/Covariance.lean": {
+      "path": "Grothe/LowerAnalytic/Covariance.lean",
+      "sha256": "134294de4d53c941d78b4cb622b55bb8816d03ed055edbf61fd961298d1ed324"
+    },
+    "Grothe/LowerAnalytic/FibrePotential.lean": {
+      "path": "Grothe/LowerAnalytic/FibrePotential.lean",
+      "sha256": "cfa294806ba886c604ad673bba4858b1210f9f3690532934009dbf9466c2cfd9"
+    },
+    "Grothe/LowerAnalytic/FibreSup.lean": {
+      "path": "Grothe/LowerAnalytic/FibreSup.lean",
+      "sha256": "187c0e9d12f5ba4eb604fb9569fabe70d928c6789a20198bdc6eea2f77cf790f"
+    },
+    "Grothe/LowerAnalytic/Fluctuation.lean": {
+      "path": "Grothe/LowerAnalytic/Fluctuation.lean",
+      "sha256": "b395d4d25ca9abcc60caf814f66f2ea01b482e0ef2142808d349cff43e963fef"
+    },
+    "Grothe/LowerAnalytic/Gaussian.lean": {
+      "path": "Grothe/LowerAnalytic/Gaussian.lean",
+      "sha256": "76db548ed84c87ad1cef30e2c17a6b5a29e2968bd052b9a4f1cd85579c09dd9b"
+    },
+    "Grothe/LowerAnalytic/GaussianRadial.lean": {
+      "path": "Grothe/LowerAnalytic/GaussianRadial.lean",
+      "sha256": "e5f4476b3daa4f67aeb82b23113c8d768764d0fe9455f35deabcbacd2eadb15a"
+    },
+    "Grothe/LowerAnalytic/GramBudget.lean": {
+      "path": "Grothe/LowerAnalytic/GramBudget.lean",
+      "sha256": "f0e828afe4c8d6bb0914bb0238b6cd48010efd6361e14e0787e3bc1bba622354"
+    },
+    "Grothe/LowerAnalytic/GramSpectral.lean": {
+      "path": "Grothe/LowerAnalytic/GramSpectral.lean",
+      "sha256": "75aecf0cbaa009b0503b938549a6f03ce1d53339481984a1faf2fe7a5f048011"
+    },
+    "Grothe/LowerAnalytic/GramTensor.lean": {
+      "path": "Grothe/LowerAnalytic/GramTensor.lean",
+      "sha256": "7c358c6349daf1f9ba5249ebb47d2650f0f74910e83713d62d9cafb7990e2da5"
+    },
+    "Grothe/LowerAnalytic/Influence.lean": {
+      "path": "Grothe/LowerAnalytic/Influence.lean",
+      "sha256": "81211427bd18d9d4e7359ebdf9ca95e4dff01dd9a0b1ce2e946cc4d92ef4f400"
+    },
+    "Grothe/LowerAnalytic/JointContractions.lean": {
+      "path": "Grothe/LowerAnalytic/JointContractions.lean",
+      "sha256": "457deb359cc9180f98daa92c0cd193178984dc5a8a697c4ef10dbcd0e218fc3e"
+    },
+    "Grothe/LowerAnalytic/JointSixthCore.lean": {
+      "path": "Grothe/LowerAnalytic/JointSixthCore.lean",
+      "sha256": "4caf420bbab0bf8f19716c665ab730a99c254d507c81b96b0d93b1fec30eab2b"
+    },
+    "Grothe/LowerAnalytic/MomentLemma.lean": {
+      "path": "Grothe/LowerAnalytic/MomentLemma.lean",
+      "sha256": "a26cf3ad726f11dbb1825a2bb1cb225bc17f224306ce95803b2c5f8e740fbfa6"
+    },
+    "Grothe/LowerAnalytic/Moments.lean": {
+      "path": "Grothe/LowerAnalytic/Moments.lean",
+      "sha256": "942a426a6158cef40f06268884e90ab181025387bc43ddff31d4300da8d8986a"
+    },
+    "Grothe/LowerAnalytic/NodeCaps.lean": {
+      "path": "Grothe/LowerAnalytic/NodeCaps.lean",
+      "sha256": "bb971e54f0de10accf27e9538fdda75ed892f77db7ae38d208e0dd36ec661384"
+    },
+    "Grothe/LowerAnalytic/Potential.lean": {
+      "path": "Grothe/LowerAnalytic/Potential.lean",
+      "sha256": "fa1fe840cac3a621d00d97facf181846079ac13eb3acda8008912ec036f8c7e2"
+    },
+    "Grothe/LowerAnalytic/RadialCut.lean": {
+      "path": "Grothe/LowerAnalytic/RadialCut.lean",
+      "sha256": "7e656255077bf32eb6ff915ae76c9c2b30c1f6ef6e0b2a3c56adc7b5d5753e06"
+    },
+    "Grothe/LowerAnalytic/RadialParts.lean": {
+      "path": "Grothe/LowerAnalytic/RadialParts.lean",
+      "sha256": "d707b9879be511e40fa9e2ddfa3a8a92dd57e2cd1308accded329fc27903ce5f"
+    },
+    "Grothe/LowerAnalytic/Rows.lean": {
+      "path": "Grothe/LowerAnalytic/Rows.lean",
+      "sha256": "2c17078abdb5ee545968d72e5b8329908a59381d840315e798ebdc2c5cccd83f"
+    },
+    "Grothe/LowerAnalytic/SixthMoment.lean": {
+      "path": "Grothe/LowerAnalytic/SixthMoment.lean",
+      "sha256": "82861c16ba0d5e2c9644cb2f7c17e3e40c5aca07d276287e7655d20285a79423"
+    },
+    "Grothe/LowerAnalytic/SixthMomentData.lean": {
+      "path": "Grothe/LowerAnalytic/SixthMomentData.lean",
+      "sha256": "098babc54ae0ef3c9dc7b2455eb14fba87da5c0fd8f8e98aff458425f8cf2eb8"
+    },
+    "Grothe/LowerAnalytic/SpectralBudget.lean": {
+      "path": "Grothe/LowerAnalytic/SpectralBudget.lean",
+      "sha256": "bf996b0f879de4a99004c5f379f8173b9ae31c53877a03393b005489b0e5d3a1"
+    },
+    "Grothe/LowerAnalytic/WickChaos.lean": {
+      "path": "Grothe/LowerAnalytic/WickChaos.lean",
+      "sha256": "f8b7ca4ca0c8299ba42ad636e286416674132ae610d30ecaa9d37db3248f790e"
+    },
+    "Grothe/LowerAnalytic/WickCubic.lean": {
+      "path": "Grothe/LowerAnalytic/WickCubic.lean",
+      "sha256": "70e07b0b71fc549fad348080380c592c2bae5594a14253ccc785ba6b661d5372"
+    },
+    "Grothe/LowerAnalytic/WickGraph.lean": {
+      "path": "Grothe/LowerAnalytic/WickGraph.lean",
+      "sha256": "2e9d380a8c90ae17cb02302f987a6384da2805181e2effb816168e0181f5400c"
+    },
+    "Grothe/LowerAnalytic/WickGraphData.lean": {
+      "path": "Grothe/LowerAnalytic/WickGraphData.lean",
+      "sha256": "7348f7f6c983cabcd646eda31df34f76d06dcafdc69d1a09e099501cda18786e"
+    },
+    "Grothe/LowerAnalytic/WickSix.lean": {
+      "path": "Grothe/LowerAnalytic/WickSix.lean",
+      "sha256": "7dca0e84756401ae8d716112777393c9d4e62d462f37251096cee635e9ad927e"
+    },
+    "Grothe/LowerAnalytic/Witness.lean": {
+      "path": "Grothe/LowerAnalytic/Witness.lean",
+      "sha256": "d4c27a456876b9c0df92e522ee4191a00fbc08c4020cfbc2bc7eefef761b3ff9"
+    },
+    "Grothe/LowerAnalytic/WitnessCap.lean": {
+      "path": "Grothe/LowerAnalytic/WitnessCap.lean",
+      "sha256": "8d82c2298372459a5592c9c33852bff47a4cb1f6fea74e66335007ff96ccd053"
+    },
+    "Grothe/Transfer.lean": {
+      "path": "Grothe/Transfer.lean",
+      "sha256": "ecc7a448ed5d7db3ede34fc1023b5998cd2569db84db133f70827222cc5984ea"
+    },
+    "Grothe/Upper/IntervalSound.lean": {
+      "path": "Grothe/Upper/IntervalSound.lean",
+      "sha256": "6bd6a6b3c537f68276a383d56b2a7508b927712fed40820ef356f84383d01824"
+    },
+    "GrotheCapsKernel.lean": {
+      "path": "GrotheCapsKernel.lean",
+      "sha256": "65563ca7cb1a412301bedcb60b670a53b93acf443fa5b284682b9990ff0c1bb6"
+    },
+    "GrotheCapsKernel/Basic.lean": {
+      "path": "GrotheCapsKernel/Basic.lean",
+      "sha256": "d4a738a79075cd3742dada74bf7c51bc7adc6b246f13f2a7fdecf9192a5e9fb5"
+    },
+    "GrotheCapsKernel/CapCheck.lean": {
+      "path": "GrotheCapsKernel/CapCheck.lean",
+      "sha256": "45d2828fda72980caad084e10c236dceacf027e10a3fcdfaaadb4752eaffdc38"
+    },
+    "GrotheCapsKernel/CapPoly.lean": {
+      "path": "GrotheCapsKernel/CapPoly.lean",
+      "sha256": "026a78b5b55c2de547ff7be2ada1bc6ca1726674e198de371ea580a624a18d62"
+    },
+    "data/cap-nodes/rows.txt": {
+      "path": "data/cap-nodes/rows.txt",
+      "sha256": "0a3db73be4d433ac927e8ca0d2935e2fd5ddca1c033bd4a3d2297f3eead7529c"
+    },
+    "data/caps-m-pieces/pieces.json": {
+      "path": "data/caps-m-pieces/pieces.json",
+      "sha256": "b94033be8e7828eff26b0bc9852190bcaf15aeb4fbfd7b5ea3e0b4fb01012274"
+    },
+    "data/caps-m-pieces/repairs.json": {
+      "path": "data/caps-m-pieces/repairs.json",
+      "sha256": "0279c9a59523315411114b53cbc48ee56073cf96d1a4ff1e8a420f1de5ba35e2"
+    },
+    "data/caps-m-pieces/sel.json": {
+      "path": "data/caps-m-pieces/sel.json",
+      "sha256": "3d11c4391d1033a1951961c22bb0b82de26537e06c3ec27f8e0666b57d9e84fa"
+    },
+    "data/caps-m/node-recipes/recM_0.845.json": {
+      "path": "data/caps-m/node-recipes/recM_0.845.json",
+      "sha256": "cd705b3147a9ef669f2334ccc382c14eed0b422833d261e2cdf8c6f759b9487a"
+    },
+    "data/caps-m/node-recipes/recM_0.85.json": {
+      "path": "data/caps-m/node-recipes/recM_0.85.json",
+      "sha256": "9501cec7a5ff9af7eb12cb496b5bc05faba049670152a539f700be0c2cd72495"
+    },
+    "data/caps-m/plan/row-certificates/coverage-slicing.json": {
+      "path": "data/caps-m/plan/noncentre-repairs/auxiliary/22bab84890afe38de9e6d28f5b768770425bf9de8fa04483d596ebf21b38ba07/coverage-slicing.json",
+      "sha256": "22bab84890afe38de9e6d28f5b768770425bf9de8fa04483d596ebf21b38ba07"
+    },
+    "data/caps-m/plan/row-certificates/prepared-binding.json": {
+      "path": "data/caps-m/plan/row-certificates/prepared-binding.json",
+      "sha256": "13ec4edfbd0e3cfe6da19093061eac0a556958b4ed49a83dcf3aab59075877b9"
+    },
+    "data/caps-m/plan/row-certificates/row12-anchors.json": {
+      "path": "data/caps-m/plan/anchor-repairs/original/76cb0ae84d298a4106379ac90708e4b46fbf00e0a3bd7e9305b0ed40718958ba/row12-anchors.json",
+      "sha256": "76cb0ae84d298a4106379ac90708e4b46fbf00e0a3bd7e9305b0ed40718958ba"
+    },
+    "data/caps-m/plan/row-certificates/row12-generation.json": {
+      "path": "data/caps-m/plan/row-certificates/row12-generation.json",
+      "sha256": "3da4da0be46f113f4bd28ca163ce26639d8da4a2bebba33f0164073951a9a52a"
+    },
+    "data/caps-m/plan/row-certificates/row12-pieces.json": {
+      "path": "data/caps-m/plan/noncentre-repairs/baseline/row12-pieces.json",
+      "sha256": "f3956d00e65917f2c1cc895d9fc283c02403d3234c30d5ed2376bf51d22e42e8"
+    },
+    "data/caps-m/plan/row-certificates/row12-selection.json": {
+      "path": "data/caps-m/plan/row-certificates/row12-selection.json",
+      "sha256": "fee1d8784d19b7761f9522a558d1e48d49a704bd56c8878157f02d0570c48f76"
+    },
+    "data/caps-m/plan/row-certificates/row12-source.json": {
+      "path": "data/caps-m/plan/row-certificates/row12-source.json",
+      "sha256": "61be956d3349e7dc02ab2426ee20aa7baae457660c4d86d6ba618db331a33df6"
+    },
+    "data/caps-m/plan/row-certificates/row12.json": {
+      "path": "data/caps-m/plan/row-certificates/row12.json",
+      "sha256": "ec298c5a67a3a5809a45c45f2d2217024f30d5eb2bf59139febcf63a12de13f4"
+    },
+    "data/caps-m/plan/row-certificates/row13-anchors.json": {
+      "path": "data/caps-m/plan/anchor-repairs/original/1f8bb5471ee62ddc1072dd4aeade80831de6d1f7a66d117af1c19ec0324cafb1/row13-anchors.json",
+      "sha256": "1f8bb5471ee62ddc1072dd4aeade80831de6d1f7a66d117af1c19ec0324cafb1"
+    },
+    "data/caps-m/plan/row-certificates/row13-generation.json": {
+      "path": "data/caps-m/plan/row-certificates/row13-generation.json",
+      "sha256": "08e4af7de68a651a23028f536aba5daaf541c3788a68566904125d1c7209de7e"
+    },
+    "data/caps-m/plan/row-certificates/row13-pieces.json": {
+      "path": "data/caps-m/plan/noncentre-repairs/baseline/row13-pieces.json",
+      "sha256": "79e4d009f320d7360fd88b92f91162f5863efa3c27e7fb6f4ed2e2450fb3b460"
+    },
+    "data/caps-m/plan/row-certificates/row13-selection.json": {
+      "path": "data/caps-m/plan/row-certificates/row13-selection.json",
+      "sha256": "104d022be96e73013e1368477a9b6cfef606a2657ca28e381e2d766edbdd99db"
+    },
+    "data/caps-m/plan/row-certificates/row13-source.json": {
+      "path": "data/caps-m/plan/row-certificates/row13-source.json",
+      "sha256": "6eca7c176dde5af8e90f260c20f92e52f60faaf82b3487cbdd81dc911fb68554"
+    },
+    "data/caps-m/plan/row-certificates/row13.json": {
+      "path": "data/caps-m/plan/row-certificates/row13.json",
+      "sha256": "b72dc00b3c0d2689827f8301c7b709050959d2083599381c81ff78efd4bc3198"
+    },
+    "data/caps-m/plan/row-certificates/row14-anchors.json": {
+      "path": "data/caps-m/plan/anchor-repairs/original/712275b4b42eb8fbf52b0fea47deabecb2b7a3a342927b311feb45a2fc229e76/row14-anchors.json",
+      "sha256": "712275b4b42eb8fbf52b0fea47deabecb2b7a3a342927b311feb45a2fc229e76"
+    },
+    "data/caps-m/plan/row-certificates/row14-binding.json": {
+      "path": "data/caps-m/plan/noncentre-repairs/baseline/row14-binding.json",
+      "sha256": "b05904799cc171c6461ca6c3705230cff183695866af34417b14451dfd03cffe"
+    },
+    "data/caps-m/plan/row-certificates/row14-generation.json": {
+      "path": "data/caps-m/plan/row-certificates/row14-generation.json",
+      "sha256": "59dc8acbae52f740a1bd7289005514f89378a29f2eb93cb8996ef441b302ebef"
+    },
+    "data/caps-m/plan/row-certificates/row14-pieces.json": {
+      "path": "data/caps-m/plan/noncentre-repairs/baseline/row14-pieces.json",
+      "sha256": "b529efcb7e1b71b55751d122cf47708d54d2ee4fe38bb1e308701b1ce1a11c41"
+    },
+    "data/caps-m/plan/row-certificates/row14-selection.json": {
+      "path": "data/caps-m/plan/row-certificates/row14-selection.json",
+      "sha256": "5acc6e455f61dc784cad9adcae00faf592661fce82d37d6e0c2f1dbc666b3ab8"
+    },
+    "data/caps-m/plan/row-certificates/row14-source.json": {
+      "path": "data/caps-m/plan/row-certificates/row14-source.json",
+      "sha256": "82f05b0359d25f2bdd38154d6d14ce5e44717fe4fcda0ba655013ee655f74622"
+    },
+    "data/caps-m/plan/row-certificates/row14.json": {
+      "path": "data/caps-m/plan/row-certificates/row14.json",
+      "sha256": "c0147b7de80ebd03d5fa009ef0ed92cb6d337b31237b557f12f22d30d4423cde"
+    },
+    "data/caps-m/plan/solved/sol_overrides14_g2.json": {
+      "path": "data/caps-m/plan/solved/sol_overrides14_g2.json",
+      "sha256": "650bd2567b970c82a705f8ca70494eab60fe74ae8005786778fd566a1b415b13"
+    },
+    "data/lower-rows/row14.json": {
+      "path": "data/lower-rows/row14.json",
+      "sha256": "20401b943f72ec256411781dcfc108610e9d816db55f13de97550d78e921ab37"
+    },
+    "data/lower-rows/row15.json": {
+      "path": "data/lower-rows/row15.json",
+      "sha256": "dfdba02b2ceaa3dcf1874c5f1f6e358906bbe5e939bac4a8b048c033b1352798"
+    },
+    "scripts/caps_stamp.py": {
+      "path": "scripts/caps_stamp.py",
+      "sha256": "4eb8b0bc45a54243e9353fe21d68caa29d283f064857d751f9149a9f8720b51b"
+    },
+    "tools/gen_cap_pieces.py": {
+      "path": "tools/gen_cap_pieces.py",
+      "sha256": "7da3ec5828b9f0457d530586c3609808c7ec4206d6ab282b015179d9b0935b11"
+    },
+    "tools/gen_cap_prepared_rows.py": {
+      "path": "data/caps-m/plan/noncentre-repairs/baseline/gen_cap_prepared_rows.py",
+      "sha256": "69683a8220ac1e94b5db6e5a893d58417f80772cda9d7afe4a78be14a620a8d3"
+    },
+    "tools/nodecaps_prepared_renderers.py": {
+      "path": "tools/nodecaps_prepared_renderers.py",
+      "sha256": "79c9fa69f3ccf8210313b9ee941a97b20d20c3f584cfa8702f813f2b1495db94"
+    },
+    "tools/nodecaps_row14_render.py": {
+      "path": "tools/nodecaps_row14_render.py",
+      "sha256": "87801a89b40b965f4583ef82e05f5a91630b598bfa1d5d8769ba9618ec2bb98c"
+    }
+  },
+  "current_tools_sha256": {
+    "tools/gen_cap_prepared_rows.py": "432e859a31ed41e1b4025128599939fd8e7b5e439d6a5657ac6de96261621024",
+    "tools/nodecaps_noncentre_repair.py": "1630407eddc693b7d11b6b083ad8da13d17360d213401f48c2b25fa18e5a240c",
+    "tools/nodecaps_repaired_render.py": "1f6694dbf47924b1b5df044597ff258a0617e66e3da08b92dd0117d0f1128589"
+  },
+  "effective_sources_sha256": {
+    "Grothe/LowerAnalytic/CapPieces/D12x183.lean": "a7f69b25abe8303c175d4dd8267e6c001983aed67a151363dabfe3cc2587bb8e",
+    "Grothe/LowerAnalytic/CapPieces/D12x184.lean": "9342adddc16b97e569dd349226e5227f8a8e60d5d27bbf0e84f8ad43ffbba698",
+    "Grothe/LowerAnalytic/CapPieces/D12x185.lean": "cb5efd1b6b389a98b76a8a505961a2527723839b0ed741be4cdc40052fd9d4f0",
+    "Grothe/LowerAnalytic/CapPieces/D12x186.lean": "db0d1a1b96536601be029eb9ae6935b420f03c0ed1489d2e3449164cc6beb15c",
+    "Grothe/LowerAnalytic/CapPieces/D12x187.lean": "9df2d66bb0a68ee33df082aba7861349a1852cb2d8e9d662d19e287b4d2a3c05",
+    "Grothe/LowerAnalytic/CapPieces/D12x188.lean": "1b00152e8075fbbeb68ba6d425bc83702e470d01948f29161c9f85b56da376c5",
+    "Grothe/LowerAnalytic/CapPieces/D12x189.lean": "72d3c1d8c11a8f6a869f286d024612f502477430d79fd66465c558343a11231e",
+    "Grothe/LowerAnalytic/CapPieces/D12x190.lean": "84e5c1700e8a030e2d8a7b58fbf1252243cc26a059418f6a001299d3050f00ab",
+    "Grothe/LowerAnalytic/CapPieces/D12x191.lean": "4cdeab437a15cfff4976c3bac00b7c36bfec7eb6ef80e26d2017da1f2a3fcd83",
+    "Grothe/LowerAnalytic/CapPieces/D12x192.lean": "36b4d543d4fb2c2af829e927dae83ca9964d9ae1bb3c797c3bc459d78699d779",
+    "Grothe/LowerAnalytic/CapPieces/D12x193.lean": "cbe4ff72a80179efccb09e864a8ab5663c2ca01db9dedf03de0a983b3fe48ab2",
+    "Grothe/LowerAnalytic/CapPieces/D12x194.lean": "cc4c0710ca103cbffeffd10f87908b68ae1765e344a5350257c7451c7f6463cc",
+    "Grothe/LowerAnalytic/CapPieces/D12x195.lean": "147bcb901d1e4fc191545fe093d7d698224f7a45cbcdd1b47c8a49b730e39206",
+    "Grothe/LowerAnalytic/CapPieces/D12x196.lean": "28a23abaebcb293b88a30252d7fbd7f0a1290680fcc7cf1ee00e2b7995e13a56",
+    "Grothe/LowerAnalytic/CapPieces/D12x197.lean": "f13425e02d1a68f921a037ec9cce5d0c0739f039b401b633663f4d782e4e428a",
+    "Grothe/LowerAnalytic/CapPieces/D12x198.lean": "32546d48e4553cee0603b2989d04cfa01568cc36275ef31b5e7ae3e7dd5ca677",
+    "Grothe/LowerAnalytic/CapPieces/D12x199.lean": "cd9ba4e04ee4392e5558c4b9c289df4547280d6506e2b96adf51d9f538956c73",
+    "Grothe/LowerAnalytic/CapPieces/D12x200.lean": "061642741feb02bdb0c31a8dc0fcd87918ba1ad14c43d2b7a3d00000c92d6f45",
+    "Grothe/LowerAnalytic/CapPieces/D12x201.lean": "71e7aea9a05ca89dfc851230cae971fd277a368d7a0b34501a6147a83f21d087",
+    "Grothe/LowerAnalytic/CapPieces/D12x202.lean": "0527a6d44a5cd728eac4d705e1e565256db5ad215f8682d650f4f99a3bd13cdd",
+    "Grothe/LowerAnalytic/CapPieces/D12x203.lean": "8bf957b8f4573e0dc1cfd4ae79d910f9cbbe7b86a31ac165046fdcfdf0af2ef5",
+    "Grothe/LowerAnalytic/CapPieces/D12x204.lean": "348d06dde0588d34c18716ea22f772ee80c9a1e667627b42977df213432dd5e3",
+    "Grothe/LowerAnalytic/CapPieces/D12x205.lean": "21eb1ec079d638127f4dc8b507cf3cd18efb251bc77f9d8ac434118b6dcd18dc",
+    "Grothe/LowerAnalytic/CapPieces/D12x206.lean": "621b1752bdb51e5fc26edd6c3bb70988fbdd1a46a6358d36f7664288e8065700",
+    "Grothe/LowerAnalytic/CapPieces/D12x207.lean": "f0638936c109070258ac8b5edaabd11079f51e0552ac8b7d2c4b222b5b4b3de5",
+    "Grothe/LowerAnalytic/CapPieces/D12x208.lean": "02ca65e1ea306b49955aabd6a1e8b6206ce4f976d46bc6d3041a71591d9a9dc1",
+    "Grothe/LowerAnalytic/CapPieces/D12x209.lean": "1f844d3b6ca82b493d5e4ccdca0435a2bdecba421075e8e4ff900f21a566c666",
+    "Grothe/LowerAnalytic/CapPieces/D12x210.lean": "e621435ff72de144b207f5c7ba81d2521d9979262e914579454dfc8a79499b99",
+    "Grothe/LowerAnalytic/CapPieces/D12x211.lean": "15449521312cdfc3831556cab45f0ee3b00af29f703c08e09913e4905f7bb0e2",
+    "Grothe/LowerAnalytic/CapPieces/D12x212.lean": "34e54fae93e880b5a40e7ba77c74f633b6c0e9e738d49041422159c14b9a22eb",
+    "Grothe/LowerAnalytic/CapPieces/D12x213.lean": "ed7026ffa5683caf690dd4a56696afafdd7b3c38943f0dea79f4399b2eb210f5",
+    "Grothe/LowerAnalytic/CapPieces/D12x214.lean": "bac88107163b4ef37c597229a78df298c426a297402771a5c1ca2f40f9bd0cb8",
+    "Grothe/LowerAnalytic/CapPieces/D12x215.lean": "3896e42fb8126d513b68926dae03d1a3d57b9befd46d3e6385610a9ae24081a5",
+    "Grothe/LowerAnalytic/CapPieces/D12x219.lean": "d263316ffbf2f1b1bc74e46f507f9c37625245817182ac18b4ce31f19e29a197",
+    "Grothe/LowerAnalytic/CapPieces/D12x220.lean": "eb7974c690ff3f7177929a41312c0b08e0c73212e7da7bcc4bb3ac60f3ea8cc2",
+    "Grothe/LowerAnalytic/CapPieces/D12x270.lean": "a7e3c4dcf6f867233e1fa4d2a48c7ec8200432e3fe5b11a573051f7140ad8abc",
+    "Grothe/LowerAnalytic/CapPieces/D12x272.lean": "32f5f2ef773d538344fb4aac848e588b44d668caf195f1c86aac6aa4493c6960",
+    "Grothe/LowerAnalytic/CapPieces/D12x276.lean": "98db05cd206b63373e88c27a6b6fac8ff530ade9f4e051300fa9a06a19dfd559",
+    "Grothe/LowerAnalytic/CapPieces/D12x280.lean": "0b676b38b702e13d3a6a0f03e927febed8f3738961503762b76ac1f622f5237d",
+    "Grothe/LowerAnalytic/CapPieces/D12x282.lean": "068472ffae31bb0064cf063484c58795170eb2b402b561412b1de4d41d509dea",
+    "Grothe/LowerAnalytic/CapPieces/D12x284.lean": "db585ddfb64999e5a5f3c4ccf3437fcf4749ebd083d5128018be8b8db7c4a7bf",
+    "Grothe/LowerAnalytic/CapPieces/D12x286.lean": "60057c9da2a1135f69a333f991aa8cb5e5480964d9ef064bed7e84d37d4d5873",
+    "Grothe/LowerAnalytic/CapPieces/D12x288.lean": "c7cbc3674d90d7d5e7179c5933e8f3de3f530631f29749659f561cf8fe7630ef",
+    "Grothe/LowerAnalytic/CapPieces/D12x290.lean": "5b2f1cb93ab91232a3c94e1e74adf27dec6e011e5952fd48a51dd0cff5b19dbe",
+    "Grothe/LowerAnalytic/CapPieces/D12x292.lean": "b88f45c2df6b638437251bbcc514d632c1cb22c87618323e602248faf1b9ddea",
+    "Grothe/LowerAnalytic/CapPieces/D13x183.lean": "6469d694aaeb430f44b8d17748b9849ad157af7ff136305146ad6bbeabea2741",
+    "Grothe/LowerAnalytic/CapPieces/D13x184.lean": "de01e91619ab6ff20efa963d2f141616687d669b84c34b2e09ccf5fab29bd1ed",
+    "Grothe/LowerAnalytic/CapPieces/D13x185.lean": "29e51e492752db780821a2d5eb2a5e518115216c202ec9f798aa3e7eb8418fcc",
+    "Grothe/LowerAnalytic/CapPieces/D13x186.lean": "09c06b96b72f89599b95724ac9845b28f0be7ea34a042df6c1029d01596f689b",
+    "Grothe/LowerAnalytic/CapPieces/D13x187.lean": "482cada306da2f6583f1fccb913baecd3de5ec4b18028da904c530ab5bad957e",
+    "Grothe/LowerAnalytic/CapPieces/D13x188.lean": "79606c4f95000a6b9759924ae919245e67d5d08ce1bdc0160b8cba8e9789f696",
+    "Grothe/LowerAnalytic/CapPieces/D13x189.lean": "9c9f96c80ea61148b0a00d687299e62c8bcf5790d4b7e02b34f6da05128630cd",
+    "Grothe/LowerAnalytic/CapPieces/D13x190.lean": "a091238b31deb279f66e2962dd65b9ca077b8b8d4b6335f8a2f003cf5533ca3c",
+    "Grothe/LowerAnalytic/CapPieces/D13x191.lean": "f0f5f13d3cef0add4651608f36bef14c4f2d434f2b90f5e93a2a7877bd25a1e7",
+    "Grothe/LowerAnalytic/CapPieces/D13x192.lean": "392427ae179c80b363e7e01221f89ea4f36707ba3c552bd5904b61c1564b4765",
+    "Grothe/LowerAnalytic/CapPieces/D13x193.lean": "35e569b928db400efe96a6a7453d60b2b00ca60c18f7b3669aaa2e0abd9b0442",
+    "Grothe/LowerAnalytic/CapPieces/D13x194.lean": "84dfe6ec1852f17fa7fb6c0b8955845eff4998b1947baa80bb049d52af40ba80",
+    "Grothe/LowerAnalytic/CapPieces/D13x195.lean": "2af20a2622f34ac1ff1eaf52225bf0ce7d1c6990868b939549b01376d1a0229f",
+    "Grothe/LowerAnalytic/CapPieces/D13x196.lean": "40065e81b86ef1e3a7c3a1e36a55cb222fe68dccbaa7efdacc536a861f207e7f",
+    "Grothe/LowerAnalytic/CapPieces/D13x197.lean": "2bf4dad3168246a6ed3d1044e054479337700347fd7687415f06b3c461448a3c",
+    "Grothe/LowerAnalytic/CapPieces/D13x198.lean": "3d31aa0c1df58d17004b676a27309e22cedae2435aed59ee715063b29324daec",
+    "Grothe/LowerAnalytic/CapPieces/D13x199.lean": "524f68e764e68ec83fdf5f304ed18a26dfe3e55f0ed8dc25bc40e658aa646cae",
+    "Grothe/LowerAnalytic/CapPieces/D13x200.lean": "d36db9cd5bfcba942f4f7158a3ed1313811642c71ee3a079c909268d82c80db2",
+    "Grothe/LowerAnalytic/CapPieces/D13x201.lean": "9009a2487fbcef9644a2823cc34d5bbb7903870e1aa12efadd3e447db3385fc2",
+    "Grothe/LowerAnalytic/CapPieces/D13x202.lean": "8b47dc9beb3584099b12e5cdca1b07c9e5bedfa6068377ec0287fb9462193fdc",
+    "Grothe/LowerAnalytic/CapPieces/D13x203.lean": "590551d5f76e2e30c87cfca4d75842f79a60064c55da613fe0a043aa57cc302e",
+    "Grothe/LowerAnalytic/CapPieces/D13x204.lean": "ba30a76f3d0d38dd61b12233a61925deaf4e2c4c842759efdb7ec369e5e299df",
+    "Grothe/LowerAnalytic/CapPieces/D13x205.lean": "f4cb7eb4e1ccee11c9b95492cf2b2409320549aa97e30b4f08e44a4b64f2f420",
+    "Grothe/LowerAnalytic/CapPieces/D13x206.lean": "1c41a7156d949fe82776917da3a23c24d8447e84614b41ebd7055d2125f536f7",
+    "Grothe/LowerAnalytic/CapPieces/D13x207.lean": "ead26787bee10a3065626604b8811d790d8756459facd864fedfde57f673d242",
+    "Grothe/LowerAnalytic/CapPieces/D13x208.lean": "84eeace841681722219504ea5d0407819ca635a038d2d8f3a0c82ee158209889",
+    "Grothe/LowerAnalytic/CapPieces/D13x209.lean": "eadcf6917fe7ce03676afac7b3e01001c5830d0546d1158bd056fc1397c9dc4b",
+    "Grothe/LowerAnalytic/CapPieces/D13x210.lean": "31b7a52bb68eb3565a27ad616d50456fe5f37e92d0d54ffeb08f76c1d9f0435f",
+    "Grothe/LowerAnalytic/CapPieces/D13x211.lean": "d93853abcb6fb1afa4103b2508ef809cdba792ffba857ee47e22388eb8624a6d",
+    "Grothe/LowerAnalytic/CapPieces/D13x213.lean": "44b7b5c917d7707024f61dece708850a77e760bc946844e6e8ff3180f62210fb",
+    "Grothe/LowerAnalytic/CapPieces/D13x214.lean": "34d0e0d0abebdf2a453150ccdb919af461e1387e81a5e8f6a28760172407a000",
+    "Grothe/LowerAnalytic/CapPieces/D13x215.lean": "2b9a16c25456bea02439b2de65f113e1d8f9e285e5161b3873fb981a61cbfcb5",
+    "Grothe/LowerAnalytic/CapPieces/D13x216.lean": "07ac3165202d0baa0669cee438ae517459d5fc3e77f88bb0bcf7e0db197d9b2b",
+    "Grothe/LowerAnalytic/CapPieces/D13x217.lean": "3da5de6ebe74edc065cbd5f8d2a4156627d66724cf415866558980f704f85a0e",
+    "Grothe/LowerAnalytic/CapPieces/D13x219.lean": "7dae0ed342825cee61affdce1e6f0c285a255a5d3830eb8de246a58d5f44cf57",
+    "Grothe/LowerAnalytic/CapPieces/D13x224.lean": "e17beb536920f5c97882c5bef249cd5efc97954963719753ab14583b5a138c75",
+    "Grothe/LowerAnalytic/CapPieces/D13x270.lean": "56f7c6ecbdb1c987cc091043f5cedd3c38fc7183baa3b1f72c7ab0006b1bbe65",
+    "Grothe/LowerAnalytic/CapPieces/D13x272.lean": "2066649f1a239d74776a556f84b84ca913a67404def4cfde7e689529893af632",
+    "Grothe/LowerAnalytic/CapPieces/D13x274.lean": "994ad2b4717025b4dbf7100a997e86dcba4c4737b6142eaf14232015c6cf260d",
+    "Grothe/LowerAnalytic/CapPieces/D13x276.lean": "ecf33872f53b134b38379d724ea035b8ccadd661a740cf921e8a78d89051d23f",
+    "Grothe/LowerAnalytic/CapPieces/D13x278.lean": "5c69df53386f3409837bc9692f7ff0517cfdc23629e5b5b922369f14412caaeb",
+    "Grothe/LowerAnalytic/CapPieces/D13x280.lean": "5a520a805976e58ff913b4b260b010b4839315f22c1eb26f6aeb6dab3329d186",
+    "Grothe/LowerAnalytic/CapPieces/D13x282.lean": "7b7a5df6112711c1e7dd86657a00e4bf6832b4ee1021a6248d0777d6fa4dd350",
+    "Grothe/LowerAnalytic/CapPieces/D13x284.lean": "915ce329c94a2edf744de6d942f7cd3d548b01059360c1d9671c2649725ed3f4",
+    "Grothe/LowerAnalytic/CapPieces/D13x286.lean": "8993c54cf764b7897747bc3bbf87ede375dfcbb3aabc58c67e21b510934efe03",
+    "Grothe/LowerAnalytic/CapPieces/D14x183.lean": "bf3bfc6e1366831e4c004262133a39d2d8564265b37841c5a05817372dd6f4ca",
+    "Grothe/LowerAnalytic/CapPieces/D14x184.lean": "b91eacd780c8b38c6f2bc3cbb686c5dcb5e03b11a13677a0ce65ebf1e874828a",
+    "Grothe/LowerAnalytic/CapPieces/D14x185.lean": "0f28d68b87ec4f376a1fa26367b50790fa064166f211e34ce704044cf6c6365f",
+    "Grothe/LowerAnalytic/CapPieces/D14x186.lean": "cf6621eaad9197051eee1d11d841294fe243f252886885e2b2c148ad693d291b",
+    "Grothe/LowerAnalytic/CapPieces/D14x187.lean": "e153902253ae8f03a6a840d13ff5541d2a7578b13f87772940ff3a9c63388abd",
+    "Grothe/LowerAnalytic/CapPieces/D14x188.lean": "534f80fb1acf826d19dc1f3fac533e1db1c66fd77764844324954ba497f9a526",
+    "Grothe/LowerAnalytic/CapPieces/D14x189.lean": "0502a2d280d70b41c1dc983c05aaf89909f418644781dc345a75c96ff032a1d5",
+    "Grothe/LowerAnalytic/CapPieces/D14x190.lean": "80abe695a0f0785c942495bafa396dd2e4c87d667a30edad21a34280d8ac89ed",
+    "Grothe/LowerAnalytic/CapPieces/D14x191.lean": "5812b5219679a2dadefe4690c2d309a74436aea1787361fa72e14c347fd5a2ba",
+    "Grothe/LowerAnalytic/CapPieces/D14x192.lean": "5c4ee406b3b6e764fa59c835912646f5de443b3ad515f83e61389031382f42ba",
+    "Grothe/LowerAnalytic/CapPieces/D14x193.lean": "54024de0cf9f80c5c64f8d2bf7c5e6ecf69e7f075e9b9419f463f86893d81e1e",
+    "Grothe/LowerAnalytic/CapPieces/D14x194.lean": "c3c263a1cf06c7086f8344b71a88867b22bd96b070ce325412146b7a0d3f788a",
+    "Grothe/LowerAnalytic/CapPieces/D14x195.lean": "20d6658446c50efc6b37abef9651c685a3966a7fe038c9879312607fc2ce10fc",
+    "Grothe/LowerAnalytic/CapPieces/D14x196.lean": "6f2f7db7840edac985a1153999ccc55a5c96707f42f16576b06dbf88d85511b1",
+    "Grothe/LowerAnalytic/CapPieces/D14x197.lean": "f2d9870d7af07a6baa3ac2b1cb4844af3838bdb01a0b902e8c0b1bf40f5703de",
+    "Grothe/LowerAnalytic/CapPieces/D14x198.lean": "252b9c436fad01b2b0366fdee8936f7cf5e9711f9ccc12f66333b490aa95f838",
+    "Grothe/LowerAnalytic/CapPieces/D14x199.lean": "c89f509ed6e295c23900c5682d98491e0dea9ccfee887a2876d99dc432892326",
+    "Grothe/LowerAnalytic/CapPieces/D14x200.lean": "b282f1e4f34c12794c494c6b5c50425440cdb52293bfb89e2c41e2dd5f6b9adc",
+    "Grothe/LowerAnalytic/CapPieces/D14x201.lean": "565b2be595d724c92f5e9e233356a16f7106ce32e27766257403e9eb4c10c80b",
+    "Grothe/LowerAnalytic/CapPieces/D14x202.lean": "4fdd0da205b4dfe0e6e7b9eadb77b015c8aae5fc3f77478f9273ada140afb062",
+    "Grothe/LowerAnalytic/CapPieces/D14x203.lean": "537d3a130859d5ef662b5c98058b3b3334743eec9ce7855cfc1f000dfeb2abfb",
+    "Grothe/LowerAnalytic/CapPieces/D14x204.lean": "1a6966a4954dd136044f0636b4a795deeb2cbea962f29cf918b04c4a0b976c78",
+    "Grothe/LowerAnalytic/CapPieces/D14x205.lean": "db9b6018f169c35826bc27d3d4c0ddce814ec019ef771da40b7fe8ad977e1b55",
+    "Grothe/LowerAnalytic/CapPieces/D14x206.lean": "4c3c9090d97538db37be2a289a5212d03ccff3861d879a48b603dc7cff45453d",
+    "Grothe/LowerAnalytic/CapPieces/D14x207.lean": "98be08782cc67096714c9de09bd3a7fdc90f4dc305b19dfa0e16bcee0dfb1a84",
+    "Grothe/LowerAnalytic/CapPieces/D14x208.lean": "5c6e1df8566a2337133df85ab70d3ffce64fb472eb09971a3b9426422b216104",
+    "Grothe/LowerAnalytic/CapPieces/D14x209.lean": "e92d1437f35251fd40ef9f9a1e72bec1c1be308beffb23305fbb471858f86500",
+    "Grothe/LowerAnalytic/CapPieces/D14x210.lean": "3430c65f57750af3affb4ba45d122f259bdfa6d5c07c0d6fa1e70b76a876043c",
+    "Grothe/LowerAnalytic/CapPieces/D14x211.lean": "d163e9ea1415b78aae92d8611eb57ab04eaae70aec4c72dfb345e2e94ae88336",
+    "Grothe/LowerAnalytic/CapPieces/D14x212.lean": "31f6d17c1e2a2b717b946beb4cf7232a7428eca938069755f35adac9b2c70590",
+    "Grothe/LowerAnalytic/CapPieces/D14x213.lean": "6dfcd01c1abcca1f9560a34fb22abe2751294b579d16e59b19be26c5a18078a5",
+    "Grothe/LowerAnalytic/CapPieces/D14x216.lean": "d13809a200575a304b4c58634404d85c06e80b1619ca75e3731765641bbefce1",
+    "Grothe/LowerAnalytic/CapPieces/D14x217.lean": "3a4f5ea478976bc2a4d7a59b43d9f06b1df5e31b5564a633d07e387128ef6916",
+    "Grothe/LowerAnalytic/CapPieces/D14x218.lean": "0f5fcdf154b43699e74c514e90f3aa0c6875356ccaf22b9f743cab1552903e69",
+    "Grothe/LowerAnalytic/CapPieces/D14x219.lean": "89e6969fa2bbbcccfcd49cc2bcd6b67cf233865b06a05813a7e9b376acee4805",
+    "Grothe/LowerAnalytic/CapPieces/D14x220.lean": "2d233aad292fde86a3d27ad72f1ae4f8912a36fcd5992aa92fb7f6fdfc6a1ade",
+    "Grothe/LowerAnalytic/CapPieces/D14x224.lean": "c2034ceaa9a235820ae6230050277fa2a26118b796fc24e48759e72771974893",
+    "Grothe/LowerAnalytic/CapPieces/D14x226.lean": "c743482c80c8ce2bc01039f09df8bca86fa4c525fafeb12e39eea6b44bbbddbd",
+    "Grothe/LowerAnalytic/CapPieces/D14x270.lean": "d12afd152bb84bb38eb177e385ade9a1eef82f794f16edb7b2678829f53cb241",
+    "Grothe/LowerAnalytic/CapPieces/D14x274.lean": "b586a8cd50de07c8f6b22c7d1ddac7d0e88600b475f40cd203c184c058fccff9",
+    "Grothe/LowerAnalytic/CapPieces/D14x276.lean": "48a3511382fc64fcb3d3c35f1db111e722475700a2180a3ed5cc8c9428b47e94",
+    "Grothe/LowerAnalytic/CapPieces/D14x278.lean": "9b8d3f8217139e173e687e9d65d13b0cf4f8e0157449b7c1caa68c58ae08566d",
+    "Grothe/LowerAnalytic/CapPieces/D14x280.lean": "cd020b863cc208a2c06a1ae03ea9aba0ed92f7eca520a941d191beb11b49ea7e",
+    "Grothe/LowerAnalytic/CapPieces/D14x282.lean": "df2a9952e446a468eccf31dd0b1f2a5a8b367c06e847ae8c84b587066821637b",
+    "Grothe/LowerAnalytic/CapPieces/D14x284.lean": "1c4c5311f4d30398a813fd230f569eca2c6042322f79efca924ff284d5471293",
+    "Grothe/LowerAnalytic/CapPieces/D14x286.lean": "3a3dce88e0fb5dd234a67627b143cb00cc209d9d12862006c58cdee6ba0f6652",
+    "Grothe/LowerAnalytic/CapPieces/D14x288.lean": "648d2a1e6e9c425113cd8a2fce4f185a8c0018b39628c511fccc2269fd9328d1"
+  },
+  "format": "nodecaps-noncentre-repaired-source/v1",
+  "repair_bindings": {
+    "12": {
+      "path": "data/caps-m/plan/noncentre-repairs/row12-binding.json",
+      "sha256": "432cc8dc5f3893ff064ba114d96ba797b7237da1a4591a61d8904113298c5610"
+    },
+    "13": {
+      "path": "data/caps-m/plan/noncentre-repairs/row13-binding.json",
+      "sha256": "1874aeca962d43465e026feab20e67e6c41b79cd5233e30a8d3c71b51eef36dc"
+    },
+    "14": {
+      "path": "data/caps-m/plan/noncentre-repairs/row14-binding.json",
+      "sha256": "bda1aa1347ba0c8c5d023e974c35b2ab8406ad9fbffe3c36936776635401ac38"
+    }
+  }
+}

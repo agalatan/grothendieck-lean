@@ -1,0 +1,200 @@
+{
+  "agent_id": "codex-15b7",
+  "axiom_inventory_checked": true,
+  "cache_published": false,
+  "command": "LEAN_NUM_THREADS=1 lake build <module> --wfail",
+  "cpu_count": 8,
+  "cpu_model": "DO-Premium-AMD",
+  "format": "caps-coverage-benchmark/v1",
+  "full_build_verified": false,
+  "host": "yo",
+  "mem_total_kib": 32866120,
+  "observed_at_utc": "2026-11-03T09:45:15.902374+00:00",
+  "remaining_owned_processes": [],
+  "results": [
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:33:15.730986+00:00",
+      "elapsed_seconds": 4.331690762192011,
+      "peak_process_rss_kib": 1710348,
+      "target": "C12x215"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:33:58.903169+00:00",
+      "elapsed_seconds": 43.1714387871325,
+      "peak_process_rss_kib": 1711768,
+      "target": "C12x270_0"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:34:41.381039+00:00",
+      "elapsed_seconds": 42.47733170352876,
+      "peak_process_rss_kib": 1712212,
+      "target": "C12x270_1"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:35:24.270935+00:00",
+      "elapsed_seconds": 42.889404123649,
+      "peak_process_rss_kib": 1712092,
+      "target": "C12x270_2"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:36:01.179885+00:00",
+      "elapsed_seconds": 36.9084397200495,
+      "peak_process_rss_kib": 1712688,
+      "target": "C12x270_3"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:36:39.203859+00:00",
+      "elapsed_seconds": 38.02340776287019,
+      "peak_process_rss_kib": 1712032,
+      "target": "C12x270_4"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:37:17.478244+00:00",
+      "elapsed_seconds": 38.273891827091575,
+      "peak_process_rss_kib": 1711420,
+      "target": "C12x270_5"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:37:55.039972+00:00",
+      "elapsed_seconds": 37.561103492975235,
+      "peak_process_rss_kib": 1711452,
+      "target": "C12x270_6"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:38:33.261486+00:00",
+      "elapsed_seconds": 38.22092341631651,
+      "peak_process_rss_kib": 1712048,
+      "target": "C12x270_7"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:39:04.353307+00:00",
+      "elapsed_seconds": 31.091334564611316,
+      "peak_process_rss_kib": 1711720,
+      "target": "C12x272_0"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:39:31.074415+00:00",
+      "elapsed_seconds": 26.720552189275622,
+      "peak_process_rss_kib": 1711880,
+      "target": "C12x272_1"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:39:58.195696+00:00",
+      "elapsed_seconds": 27.120687602087855,
+      "peak_process_rss_kib": 1711904,
+      "target": "C12x272_2"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:40:26.225936+00:00",
+      "elapsed_seconds": 28.029705703258514,
+      "peak_process_rss_kib": 1711216,
+      "target": "C12x272_3"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:40:54.705560+00:00",
+      "elapsed_seconds": 28.47909350693226,
+      "peak_process_rss_kib": 1711808,
+      "target": "C12x272_4"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:41:21.583940+00:00",
+      "elapsed_seconds": 26.87779694236815,
+      "peak_process_rss_kib": 1711292,
+      "target": "C12x272_5"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:41:48.247972+00:00",
+      "elapsed_seconds": 26.663417648524046,
+      "peak_process_rss_kib": 1711920,
+      "target": "C12x272_6"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:41:52.228181+00:00",
+      "elapsed_seconds": 3.9795815031975508,
+      "peak_process_rss_kib": 1714792,
+      "target": "C12x270"
+    },
+    {
+      "actual_exit": 0,
+      "completed_at_utc": "2026-11-03T09:41:56.208233+00:00",
+      "elapsed_seconds": 3.979477407410741,
+      "peak_process_rss_kib": 1710552,
+      "target": "C12x272"
+    }
+  ],
+  "scope": "Only the requested finite coverage modules and pure prerequisites; no full build or cache publication",
+  "source_files_checked": 54,
+  "source_sha256": {
+    "Grothe/Lower/RowData.lean": "495cd4ac26bf24d4a983acfdf728d244b8257bb24ec28e7ffd8cfb48fafab109",
+    "Grothe/Lower/RowData01.lean": "d7885708a8e76a0f285e2f115af1fbc01c08b95b5ef3be519c346d47c9839bc9",
+    "Grothe/Lower/RowData02.lean": "63036670cec5b2755dc99b2227b34f4f0ce4c49d0a42060355f89a5c6224906b",
+    "Grothe/Lower/RowData03.lean": "9651a7f247d9559085a85fb8234e11cc9b3794c1343072da6ba06ec522ebb90f",
+    "Grothe/Lower/RowData04.lean": "2d622b3f1887d5283dff01ddc739d5e8ad1d29187d718811bf541ebab9eaea9c",
+    "Grothe/Lower/RowData05.lean": "652da9d96bacfe5c526459122c6388aa8e1ff91f4d0ee2fb2641eb9253940f5b",
+    "Grothe/Lower/RowData06.lean": "2bcd2cdbeda18a8e079d3cb764dd6970a7b3f0ddd14f9f481ea7ef6f8a02698f",
+    "Grothe/Lower/RowData07.lean": "5ffb9f041a282dbb365729a532ff1e3e0130ec3cb9404031575ff962dee389bb",
+    "Grothe/Lower/RowData08.lean": "33ceb40866ae0a411b79cc47241f51eebc6c659f6b47b37ec926db1ac9706cee",
+    "Grothe/Lower/RowData09.lean": "73273e5e6d81ce551dcdfbc8f9786c7d4d2c2396b534320033a8e56a996a15dc",
+    "Grothe/Lower/RowData10.lean": "ac24bda250663435e15e8305cfe6fab3890f77234f61473e1fe133d550daa72b",
+    "Grothe/Lower/RowData11.lean": "ac577168080683e22044ae18282d85fcbb9a69ad48337381415379519c1893af",
+    "Grothe/Lower/RowData12.lean": "a01b32f86267bb46307ef94ef98748de74cb6fb83285a37139164cafb346fe95",
+    "Grothe/Lower/RowData13.lean": "4e9e5d944abd977db9cff9d2cde6f15c29db3e104a6632e48e75572d54f084db",
+    "Grothe/Lower/RowData14.lean": "9445ce1c08ac77ba833d9104cba8bca98aae6175b35b7c43e63932496011618a",
+    "Grothe/Lower/RowData15.lean": "0664a384821a93c696b172e0420b368b968513e4c53449a5aef36d002f299436",
+    "Grothe/Lower/RowData16.lean": "549d1c50d9c2aa3d02b689ccebd77ff758a7c67cfcb6cda7c24a2494852e53cc",
+    "Grothe/Lower/RowData17.lean": "f1df863ac8797e66c58b71a02e27d47b636bb800462c26126e9c41350925d0a3",
+    "Grothe/Lower/RowData18.lean": "2acd7f4568582994a33bcbbb6afe77c65420d848f5ad949122fa1a8c2c31a865",
+    "Grothe/Lower/RowData19.lean": "f3c74b79e482cc16f82a43c0fb49d47f44c004c27c5beda957445b149e55566d",
+    "Grothe/Lower/RowDataTypes.lean": "24f3a6da9513187141123403ddf442af54060e2bfb8110439ff9a70ab34bd18a",
+    "Grothe/Lower/RowGateData.lean": "149133ffd187a363ff1a0ac2421b9ecf43b8474a65b0ca5dd5af0b999d78c54a",
+    "Grothe/LowerAnalytic/CapConstrDefs.lean": "6ec17260b473d677a537a1d53e4b5ee11d7d08bf16e497434cf57b487caa33a1",
+    "Grothe/LowerAnalytic/CapCoverDefs.lean": "fe2ff49d6acfd5d2aeaddac70f494440ce5ad116e1c6a5832fa2c29d367636bf",
+    "Grothe/LowerAnalytic/CapCoverFast.lean": "5da28269f0286802404f482f372ecca2e797d6dcf81fc7316c6065fc6fd5ddd4",
+    "Grothe/LowerAnalytic/CapLinAlgDefs.lean": "009fa86c53f8411599abb2a3b4d700a491977742c7558015c45f1be928365611",
+    "Grothe/LowerAnalytic/CapNodeDefs.lean": "251b834865f0b585800f69797cb49927ff84bf027967b8d88cb13e2ee39d3fb2",
+    "Grothe/LowerAnalytic/CapPieceDefs.lean": "d8233831bca1b71baca8941cad5104f22bcec55803d8c018cfb7097be9a88ee9",
+    "Grothe/LowerAnalytic/CapPieceRange.lean": "0d8e155d54e807ace43edb915aafde7d59addcbba6a920e2d01d05f56d77e790",
+    "Grothe/LowerAnalytic/CapPieces/C12x215.lean": "2e36c2d68b18483a583fb4b803902878d594edec1b052af831f83b07b4b86101",
+    "Grothe/LowerAnalytic/CapPieces/C12x270.lean": "65ffade27a026293d8ebc8ea80164c4409cb16d6bf7a4260cac601d91cac44e1",
+    "Grothe/LowerAnalytic/CapPieces/C12x270_0.lean": "20ed3bb7c54478b6979f5d4065e64b93e2c793305e431e4cc7deff8e7632142f",
+    "Grothe/LowerAnalytic/CapPieces/C12x270_1.lean": "d21797a099089ba284c647fc8dee123504caebdf798b606099c0268c84dee3e5",
+    "Grothe/LowerAnalytic/CapPieces/C12x270_2.lean": "0ce4d407cc80e35027868a4dddef5b782897a2013c16697f05f66e7e0167e547",
+    "Grothe/LowerAnalytic/CapPieces/C12x270_3.lean": "70ac21378c5fd7cdeb9ab45e633f68c8272c348704fdbfa423e2cf2d773eac19",
+    "Grothe/LowerAnalytic/CapPieces/C12x270_4.lean": "e963213ec8224bd916219cb9adf18dbb86150906e8bb2389427e4ac1ebb2d0f5",
+    "Grothe/LowerAnalytic/CapPieces/C12x270_5.lean": "666fc4433b4cf8c9673ef13de0ec29a0c82583a12626a4af19f24135e143b710",
+    "Grothe/LowerAnalytic/CapPieces/C12x270_6.lean": "1e9be68afc07f0caab31dead24e3679eabf9c210ded901854b5354f3e7f1f150",
+    "Grothe/LowerAnalytic/CapPieces/C12x270_7.lean": "08fd6b9e39d4fd7b938a3725978711f5e5205c23abbca2ffd8513b1408e5755b",
+    "Grothe/LowerAnalytic/CapPieces/C12x272.lean": "390141c3a7801e5fa8c900b4ee3a60e162475f7fb7561623d224fde4c7316aaf",
+    "Grothe/LowerAnalytic/CapPieces/C12x272_0.lean": "4fc2d8e4bf69eb71e53712dba06a0949300e73ed3a510687bcefe1b334e48739",
+    "Grothe/LowerAnalytic/CapPieces/C12x272_1.lean": "9e8143d2477fce637b505bc4d46d36d52ddab629c5264ba21d512227bf0f3ef8",
+    "Grothe/LowerAnalytic/CapPieces/C12x272_2.lean": "302051b8c653f7f7c881860860869eaeb45afc756aae35ed1f8d425c0fdf2e07",
+    "Grothe/LowerAnalytic/CapPieces/C12x272_3.lean": "4bb77270cd85c3637924091268e4a95cecb2409c0be8b580f84097a96bdf88b8",
+    "Grothe/LowerAnalytic/CapPieces/C12x272_4.lean": "a87ef76a77bfa27a750bb6c6ba8b9e2ad7f296da4ab45922b645a584cd2528bc",
+    "Grothe/LowerAnalytic/CapPieces/C12x272_5.lean": "366a6a3441c28f8eb307036b7192b914190c0faecfdb2c7661c77a14a441350d",
+    "Grothe/LowerAnalytic/CapPieces/C12x272_6.lean": "cbe8383f5d0842007d07ec2025709ee746b2fa821bdfc3e4045b97ffda8ece12",
+    "Grothe/LowerAnalytic/CapPieces/D12x215.lean": "017cc3435e5c14165461634c9779a381b48a578ec3bde97a7e61b254a0e0073d",
+    "Grothe/LowerAnalytic/CapPieces/D12x270.lean": "034219fff235d630f77c5db152eb39bb1d364d55ea29ec84f4af699aef6ddded",
+    "Grothe/LowerAnalytic/CapPieces/D12x272.lean": "577f6cb425a9f86d25b3dfdf554499d5859df7f419c15d4048b2bf3f72c143af",
+    "Grothe/LowerAnalytic/CapTablesData.lean": "32b46fe51a736d6bd1e669654999c46dd03bbde8e1a0f2014d5486c6827b2ea3",
+    "GrotheCapsKernel/Basic.lean": "d4a738a79075cd3742dada74bf7c51bc7adc6b246f13f2a7fdecf9192a5e9fb5",
+    "GrotheCapsKernel/CapCheck.lean": "45d2828fda72980caad084e10c236dceacf027e10a3fcdfaaadb4752eaffdc38",
+    "GrotheCapsKernel/CapPoly.lean": "026a78b5b55c2de547ff7be2ada1bc6ca1726674e198de371ea580a624a18d62"
+  }
+}

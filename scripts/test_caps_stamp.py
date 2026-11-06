@@ -4,6 +4,7 @@ import contextlib
 import hashlib
 import importlib.util
 import io
+import json
 from pathlib import Path
 import shutil
 import subprocess
@@ -30,8 +31,8 @@ class CapsStampTests(unittest.TestCase):
         rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18]
         sources = {f"Grothe/LowerAnalytic/CapRow{k:02d}.lean": "import Mathlib.Tactic Grothe.Shared\n-- body\n"
                    for k in rows}
-        for name in ("C14x150", "R14x150_0", "R14x150_1", "R14x150p0Repair"):
-            sources[f"Grothe/LowerAnalytic/CapPieces/{name}.lean"] = "import Grothe.Shared\n-- piece fact\n"
+        # The quadrature-checker facts are fixed hashed roots too (not cap-row roots); the localized pieces come
+        # from the activated-leaf registry, which this fixture does not activate.
         for b in range(12):
             sources[f"Grothe/UpperQuad/Facts/GradeBlock{b:02d}.lean"] = "import Grothe.Shared\n-- quad block fact\n"
         sources["Grothe/UpperQuad/Facts/Even.lean"] = "import Grothe.Shared\n-- quad even fact\n"
@@ -66,17 +67,35 @@ class CapsStampTests(unittest.TestCase):
         self.mark.parent.mkdir(parents=True, exist_ok=True)
         self.mark.write_text((digest or self.digest) + "\n")
 
+    def activate_fixture(self):
+        leaf = "Grothe/LowerAnalytic/CapPieces/C12x140.lean"
+        sources = {
+            leaf: "import Grothe.Compute\n-- new native computation fixture\n",
+            "Grothe/Compute.lean": "import Grothe.Shared\n-- pure dependency\n",
+            "Grothe/LowerAnalytic/CapRow12/Assembly.lean": "import Grothe.Bridge\n-- direct assembly fixture\n",
+            "Grothe/Bridge.lean": "-- proof layer must remain outside the computation stamp\n",
+        }
+        for name, source in sources.items():
+            path = self.root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(source)
+        roots = [name for name in self.ordered if "/CapRow" in name] + [leaf]
+        registry = {
+            "format": "caps-bounded-build-v1", "row": 12,
+            "compute_roots": roots,
+            "direct_hash_roots": ["Grothe/LowerAnalytic/CapNodes.lean", "Grothe/LowerAnalytic/CapRow12/Assembly.lean"],
+            "compute_count": 16, "row12_compute_count": 1,
+        }
+        path = self.root / "data/caps-m/plan/row-certificates/row12-build.json"
+        path.parent.mkdir(parents=True)
+        path.write_text(json.dumps(registry))
+        return path, registry
+
     def test_digest_is_pinned(self):
         result = self.run_cli("--digest")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertEqual(result.stdout, f"sha256 {self.digest}\nfiles {self.count}\n")
         self.assertFalse(self.mark.exists())
-
-    def test_piece_native_source_invalidates_marker(self):
-        self.write_marker()
-        path = self.root / "Grothe/LowerAnalytic/CapPieces/R14x150p0Repair.lean"
-        path.write_text(path.read_text() + "-- changed finite certificate\n")
-        self.assertEqual(self.run_cli("--check-cache").returncode, 1)
 
     def test_missing_marker_fails_closed(self):
         for args in [(), ("--check-cache",)]:
@@ -169,7 +188,7 @@ class CapsStampTests(unittest.TestCase):
         self.assertFalse(self.mark.exists())
         self.assertEqual(before, sorted(str(path.relative_to(self.root)) for path in self.root.rglob("*")))
 
-    def test_decoupled_computation_plus_five_extra_boundary(self):
+    def test_decoupled_61_module_plus_five_extra_boundary(self):
         data_names = [f"Grothe.Pure{k:02d}" for k in range(32)]
         (self.root / "Grothe/Shared.lean").write_text("import " + " ".join(data_names) + "\n")
         for name in data_names:
@@ -186,7 +205,7 @@ class CapsStampTests(unittest.TestCase):
         computation = sorted([name for name in self.ordered if name.endswith(".lean") and
                               name not in extra_files] +
                              [str(Path(*name.split(".")).with_suffix(".lean")) for name in data_names])
-        self.assertEqual(len(computation), 65)  # 15 rows + 4 pieces + 13 quad facts + Shared + 32 data
+        self.assertEqual(len(computation), 61)  # 15 rows + 13 quad facts + Shared + 32 data
         expected_files = computation + extra_files
         expected_hash = hashlib.sha256()
         for name in expected_files:
@@ -196,8 +215,8 @@ class CapsStampTests(unittest.TestCase):
         listed = self.run_cli("--list")
         self.assertEqual(listed.returncode, 0, listed.stdout + listed.stderr)
         self.assertEqual(listed.stdout,
-                         "\n".join(expected_files) + f"\n70 files; sha256 {expected}\n")
-        self.assertEqual(self.run_cli("--digest").stdout, f"sha256 {expected}\nfiles 70\n")
+                         "\n".join(expected_files) + f"\n66 files; sha256 {expected}\n")
+        self.assertEqual(self.run_cli("--digest").stdout, f"sha256 {expected}\nfiles 66\n")
         self.assertEqual(self.run_cli("--mark-cache").returncode, 0)
         for name in ["Grothe/ProofOnly.lean", "Grothe/AnotherProofOnly.lean", "Grothe/UntraversedRootImport.lean"]:
             (self.root / name).write_text("-- changed untraversed proof\n")
@@ -270,6 +289,66 @@ class CapsStampTests(unittest.TestCase):
         self.assertFalse(self.mark.exists())
         self.assertEqual(module.digest(), (self.digest, self.count))
 
+    def test_activated_compute_closure_and_direct_assembly_are_hashed(self):
+        path, _ = self.activate_fixture()
+        result = self.run_cli("--list")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        names = result.stdout.splitlines()[:-1]
+        self.assertIn("Grothe/LowerAnalytic/CapPieces/C12x140.lean", names)
+        self.assertIn("Grothe/Compute.lean", names)
+        self.assertIn("Grothe/LowerAnalytic/CapRow12/Assembly.lean", names)
+        self.assertIn(str(path.relative_to(self.root)), names)
+        self.assertNotIn("Grothe/Bridge.lean", names)
+        self.assertEqual(len(names), len(set(names)))
+        expected = hashlib.sha256()
+        for name in names:
+            expected.update(name.encode() + b"\0" + (self.root / name).read_bytes())
+        self.assertEqual(result.stdout.splitlines()[-1], f"{len(names)} files; sha256 {expected.hexdigest()}")
+
+    def test_activated_leaf_dependency_assembly_and_registry_changes_invalidate(self):
+        path, _ = self.activate_fixture()
+        before = self.run_cli("--digest").stdout
+        for name in ["Grothe/LowerAnalytic/CapPieces/C12x140.lean", "Grothe/Compute.lean",
+                     "Grothe/LowerAnalytic/CapRow12/Assembly.lean", str(path.relative_to(self.root))]:
+            with self.subTest(name=name):
+                target = self.root / name
+                saved = target.read_bytes()
+                target.write_bytes(saved + (b" " if name.endswith(".json") else b"-- changed\n"))
+                result = self.run_cli("--digest")
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertNotEqual(result.stdout, before)
+                target.write_bytes(saved)
+        (self.root / "Grothe/Bridge.lean").write_text("-- unrelated proof edit\n")
+        self.assertEqual(self.run_cli("--digest").stdout, before)
+
+    def test_activated_assembly_without_registry_fails_closed(self):
+        path, _ = self.activate_fixture()
+        path.unlink()
+        result = self.run_cli("--digest")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("requires", result.stdout)
+
+    def test_activated_registry_rejects_bad_roots_and_census(self):
+        path, registry = self.activate_fixture()
+        bad = [dict(registry, compute_roots=registry["compute_roots"] + [registry["compute_roots"][-1]]),
+               dict(registry, compute_roots=registry["compute_roots"][:-1] + ["../escape.lean"]),
+               dict(registry, compute_roots=registry["compute_roots"][:-1] + ["Mathlib/Data/Real/Basic.lean"]),
+               dict(registry, compute_roots=registry["compute_roots"][1:]),
+               dict(registry, compute_count=15), dict(registry, direct_hash_roots=[])]
+        for value in bad:
+            with self.subTest(value=value):
+                path.write_text(json.dumps(value))
+                result = self.run_cli("--digest")
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("FAIL:", result.stdout)
+
+    def test_activated_registry_rejects_malformed_json(self):
+        path, _ = self.activate_fixture()
+        path.write_text("{")
+        result = self.run_cli("--digest")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("cannot read", result.stdout)
+
 
 class RepositoryBoundaryTests(unittest.TestCase):
     @classmethod
@@ -298,20 +377,67 @@ class RepositoryBoundaryTests(unittest.TestCase):
 
     def test_one_target_contains_the_node_caps(self):
         # one build target: the root Grothe imports the node-cap rows and their assembly (no separate caps target);
-        # Only the completed row-14/node-150 piece proof enters the active target.
+        # Every declared whole row and the independent master proof are in the one target.
         ordinary = set(self.caps.closure(["Grothe"]))
         self.assertTrue(set(self.caps.TOPS) <= ordinary)
         self.assertIn("Grothe.LowerAnalytic.CapNodes", ordinary)
-        active_pieces = {module.rsplit(".", 1)[-1] for module in ordinary
-                         if module.startswith("Grothe.LowerAnalytic.CapPieces.")}
-        self.assertEqual(active_pieces, {"C14x150", "D14x150", "N14x150", "R14x150_0",
-                                        "R14x150_1", "D14x150p0Repair", "R14x150p0Repair", "Node14x150"})
-        self.assertTrue(set(self.caps.PIECE_TOPS) <= ordinary)
+        activated, direct = self.caps.activated_sources()
+        self.assertTrue(set(activated) <= ordinary)
+        self.assertIn("Grothe/LowerAnalytic/CapRow12/Assembly.lean", direct)
+        self.assertIn("Grothe.LowerAnalytic.CapRow12.Assembly", ordinary)
+        pieces = {module.rsplit(".", 1)[-1] for module in ordinary
+                  if module.startswith("Grothe.LowerAnalytic.CapPieces.")}
+        view = self.caps.read_active_registry(self.caps.ROOT)
+        expected = {Path(name).stem for name in view['row_source_paths']
+                    if name.startswith('Grothe/LowerAnalytic/CapPieces/')}
+        retained = set(self.caps.closure(['Grothe.LowerAnalytic.CapPieces.Node14x150']))
+        expected.update(name.rsplit('.', 1)[-1] for name in retained
+                        if name.startswith('Grothe.LowerAnalytic.CapPieces.'))
+        self.assertEqual(pieces, expected)
+        for row in view['active_rows']:
+            self.assertIn(row['assembly'][:-5].replace('/', '.'), ordinary)
 
     def test_cap_checker_library_is_independent_of_other_project_libraries(self):
         modules = self.caps.closure(["GrotheCapsKernel"])
         self.assertTrue(all(module == "GrotheCapsKernel" or module.startswith("GrotheCapsKernel.")
                             for module in modules))
+        self.assertEqual(set(modules), {"GrotheCapsKernel", "GrotheCapsKernel.Basic",
+                                       "GrotheCapsKernel.CapPoly", "GrotheCapsKernel.CapCheck"})
+
+    def test_all_activated_compute_leaves_are_pinned_without_analytic_imports(self):
+        roots, direct = self.caps.activated_sources()
+        view = self.caps.read_active_registry(self.caps.ROOT)
+        self.assertEqual(set(roots), {p[:-5].replace('/', '.') for p in view['compute_roots']})
+        self.assertTrue(set(self.caps._RETAINED_ROOTS) <= set(view['compute_roots']))
+        computation = set(self.caps.closure(roots))
+        self.assertNotIn("Grothe.LowerAnalytic.CapRow12.Assembly", computation)
+        self.assertFalse(any(module.startswith("Grothe.LowerAnalytic.CapPieces.N12x") for module in computation))
+        self.assertNotIn("Grothe.Lower.Bridge", computation)
+        files = set(self.caps.source_files())
+        self.assertTrue(set(direct) <= files)
+        self.assertIn(self.caps.BUILD_REGISTRY, files)
+
+
+
+class ChangeFilterTests(unittest.TestCase):
+    """Every pinned generation input and writer of the prepared caps rows activates the proof check."""
+
+    def test_every_pinned_input_and_writer_matches_lean_paths(self):
+        import json, re
+        root = REPO if "REPO" in globals() else Path(__file__).resolve().parents[1]
+        workflow = (root / ".github/workflows/lean.yml").read_text()
+        pattern = re.search(r"LEAN_PATHS='([^']+)'", workflow).group(1)
+        registry = json.loads((root / "data/caps-m/plan/row-certificates/row12-build.json").read_text())
+        registry = registry.get("registry", registry)
+        pinned = set(registry.get("input_sha256", {})) | set(registry.get("execution_source_sha256", {}))
+        pinned |= {"tools/gen_cap_pieces.py", "tools/gen_cap_prepared_rows.py", "tools/nodecaps_prepared_renderers.py",
+                   "data/caps-m/plan/row-certificates/row12-build.json", "data/caps-m/plan/row-certificates/prepared-binding.json"}
+        # the source seals: every input their reproduction check (gen_cap_prepared_rows.render) enforces
+        for row in (12, 13):
+            seal = json.loads((root / f"data/caps-m/plan/row-certificates/row{row}-source.json").read_text())
+            pinned |= set(seal["inputs_sha256"]) | {f"data/caps-m/plan/row-certificates/row{row}-source.json"}
+        missing = sorted(path for path in pinned if not re.search(pattern, path))
+        self.assertEqual(missing, [])
 
 
 if __name__ == "__main__":

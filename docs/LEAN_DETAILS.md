@@ -2,8 +2,10 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The sole target interval is `1.401697117301 < K < 1.404598149141`.
-Both endpoints are work in progress; [PROOF_STATUS.md](PROOF_STATUS.md) lists
+The target interval is `1.401697117301 < K_G^ℂ < 1.4046` (`main_bounds`,
+`Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
+(`lower_target`); the upper endpoint (`UpperTarget`, threshold `1.4046`; the
+conditional rounding gives a bound below `1.404598149141`) is work in progress; [PROOF_STATUS.md](PROOF_STATUS.md) lists
 the remaining project-specific Lean obligations. Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.
 
@@ -1404,6 +1406,13 @@ must also lie in `[-1,1]`. All retained lemmas have strict transitive guards
 and scratch axiom reports. Concrete leaf checks, numerical source comparisons
 and integral bounds remain separate obligations.
 
+For a fixed complex coordinate `z ≠ 0`, `FixedZPhaseRemainder.norm_actual_residual`
+bounds the Gaussian L² error between the physical phase `F0 (z,w)` and its
+rotated constant-plus-linear model by `5 t²`, where
+`t = √(1 + aQ²) vprof(‖z‖²) / ‖z‖`. The inverse unit rotation preserves the
+Gaussian law of `w`. This gives the same bound for either sign of the
+profile, including zero. Integration over the first coordinate is a separate step.
+
 `ProductionPhaseL2Error` constructs L² representatives of the unsmoothed
 rounding on a fixed radial slice, its linear-base/cubic-phase model, and the
 phase-model difference. For positive radial parameter and a measurable
@@ -1619,6 +1628,16 @@ work in progress, excluded from the main root pending its focused Lean
 check. Even successful polynomial certificates leave the original selected
 node/weight bindings, interval transport, and analytic remainder to prove.
 
+`Grothe.UpperQuad.CentralDerivative` supplies the finite interpolation step
+for the root-window derivative estimate. For every real polynomial of degree
+at most 35, its derivative is an exact weighted sum of the eighteen sample
+pairs at offsets `i/180`, for `i = 1, ..., 18`. Exact rational moment identities
+and a doubled absolute-weight sum below 630 give `abs_derivative_le`: if all
+sample values have absolute value at most `M >= 0`, the derivative has absolute
+value at most `630 * M`. The module has strict standard-axiom guards. Identifying
+the actual phase polynomial, enclosing its samples, and transporting this bound
+to the physical quadrature panels remain separate obligations.
+
 `F0ConditionalNode` defines the actual radial slice of `F0` and its normalized
 Hermite coefficients, proving Bessel's bound before aggregation over modes.
 `ConditionalNodeIndices` identifies the contraction's selected pair set and
@@ -1816,10 +1835,11 @@ composes `vertexCaps_of_capsRest`, `nodeCaps_of_vertexCaps` and the same
 `Reduction.lean`. There is one build target and one axiom report: the heavy
 rows and `CapNodes` are part of `Grothe`.
 
-The cache provenance boundary is 53 files: 48 local computation modules,
-plus `CapNodes.lean`, `GrotheCapsKernel.lean`, `lean-toolchain`,
-`lake-manifest.json` and `lakefile.toml`. Those five extras are hashed directly,
-without traversing their imports. This identifies the cached computation
+The cache provenance boundary is derived from the shared active-row registry:
+legacy ranges, selected Row12–15 finite leaves and the retained independent
+Row14 repair checks. The computation closure is hashed together with direct
+assembly/configuration roots and mathematical input projections.
+This identifies the cached computation
 sources, not every analytic dependency or compiled artifact. Lake checks
 ordinary dependencies separately. The numerical checker is the independent
 precompiled `GrotheCapsKernel` library (`Basic`, `CapPoly`, `CapCheck`);
@@ -1841,19 +1861,59 @@ build supplies the verification and subsequent replay; no independent
 manual droplet verification is required. The build and the report establish
 verification; a read-only digest alone does not.
 
-`CapsRest` still comprises the vertex caps of rows 0.84, 0.845, 0.85,
-0.855 and any excluded-node caps of the other rows; the exclusion lists
-are empty. The rows 12–15 computation campaign and final wiring remain
-separate work.
+`capRowsDone` includes every row index. `CapsRest` retains any excluded-node
+caps of the original range-checked rows; those exclusion lists are empty
+(`capExcl_eq_nil`), so `capsRest : CapsRest` (`Grothe/MainResult.lean`) is
+proved, and with it `lower_target : LowerTarget`.
+Rows 0.84, 0.845, 0.85 and 0.855 (indices 12–15) have complete
+localized-piece and anchor assemblies for canonical CI verification. Their
+inputs retain the unchanged cap pad and exact rational grids. Row14 uses the
+independent `nodeCap_14x150_done` proof and its full repair closure at node 150,
+and the generated proofs for its other localized nodes and anchors. The
+source renderer checks every input. `gen_cap_prepared_rows.py --check`
+reproduces the complete sealed sources and applies the explicit
+`noncentre-source-binding.json` layer for hash-bound multiplier repairs.
+Row15 has a separate complete source binding. Its renderer requires exact
+matrix replay for every selected centre, binds the full research lineage, and
+reproduces the current writer with the shared coverage policy. Extending the
+policy archives its previous bytes for the sealed Row12–14 reproduction; the
+old sources and source seals remain unchanged.
+This layer permits only ordered noncentre lambda/mu changes at zero additional
+cap, with exact stored-matrix LDL replay. It preserves the recipes, grids,
+constraint regions, piece order, all planned centres and the retained node
+150 proof. Only named D modules may differ; coverage, range and assembly
+sources must reproduce identically. Current native range checks are required
+in addition to the stored-matrix replay. Because the cap affects only matrix
+entry (0,0), a negative pivot in the cap-free principal block requires a repair
+of that block; a larger cap alone cannot make the matrix positive semidefinite.
+Bulk repair imports replay the current ordered multipliers against each exact
+export before adding a patch. Passing pieces and existing repairs retain their
+bytes when diagnostic batches overlap; a failing protected centre requires
+separate validation.
 
 The localized-piece predicates also have a computation-only layer:
 `CapCoverDefs` holds rational constraints and finite coverage checks, and
 `CapConstrDefs` holds constrained matrices, parsers and node checks.
+`CapCoverFast` proves in `capCoverFastOK_eq` that discarding duplicate samples
+and filtering pieces by the first two coordinates leaves the finite coverage
+predicate unchanged. `capCoverOK_of_slices` reconstructs it from all slices
+of the first candidate index, requiring a positive slice count. The generated
+coverage modules use the policy in
+`data/caps-m/plan/row-certificates/coverage-slicing.json`: large nodes have
+one independently compiled native fact per slice and a pure coverage assembly.
+Small nodes use the equivalent filtered check directly. The public
+`pieceCover_…` propositions, range checks and soundness theorems remain
+unchanged by slicing, which does not modify grids or multipliers. Every slice is registered as a computation leaf;
+the bounded builder parallelizes modules, never threads inside a native check.
 `CapPieceRange` imports these definitions and rational data; the semantic
 regions and unchanged soundness proofs remain in `CapCover`, `CapConstr`
 and `CapPieceNodes`. Generated coverage/range modules therefore avoid the
 lower proof chain. They are excluded from the root until a proof uses
-them, and are not yet wired into `CapsRest`.
+them. Row12–15 sources feed `CapsRest` through their whole-row assemblies.
+The shared active-row registry derives the computation closure, native facts
+and proof imports from the selected inputs. CI first builds the finite leaves
+in bounded single-threaded groups, then builds the full root and performs the
+strict audit. Source reproduction is not a native verification receipt.
 
 * Proved: positivity certificates in integer arithmetic; the pinned gate price of every row
   (trailing gate block positive definite, κδ² ≤ δ + gatePrice); the Stein cuts (summed, spectral and general spectral) from their analytic inputs, by completions of squares,

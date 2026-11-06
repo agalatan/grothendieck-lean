@@ -144,7 +144,7 @@ jobs:
             fi
           fi
           # files that affect the Lean build or its checks; everything else (README, docs/, AGENTS.md, ...) needs no build
-          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|GrotheQuadKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|GrotheQuadKernel\.lean$|QuadRun\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/lake_failfast\.sh$|scripts/test_caps_stamp\.py$|\.github/workflows/)'
+          LEAN_PATHS='^(Grothe/|GrotheKernel/|GrotheCapsKernel/|GrotheQuadKernel/|Grothe\.lean$|GrotheKernel\.lean$|GrotheCapsKernel\.lean$|GrotheQuadKernel\.lean$|QuadRun\.lean$|lakefile\.toml$|lake-manifest\.json$|lean-toolchain$|scratch/Axioms\.lean$|data/axioms/|data/root-imports-exclude\.txt$|tools/gen_root_imports\.py$|scripts/check_axioms\.py$|scripts/test_check_axioms\.py$|scripts/caps_stamp\.py$|scripts/lake_failfast\.sh$|scripts/test_caps_stamp\.py$|data/caps-m/plan/row-certificates/|scripts/(build_caps_batches|caps_coexist|test_caps_active_registry|test_caps_active_builder|test_caps_active_nodes|test_build_caps_batches)\.py$|data/cap-nodes/rows\.txt$|data/caps-m-pieces/(pieces|repairs)\.json$|data/caps-m/node-recipes/|data/lower-rows/row1[0-9]\.json$|tools/(gen_cap_pieces|gen_cap_prepared_rows|nodecaps_prepared_renderers|gen_cap_nodes)\.py$|\.github/workflows/)'
           if [ "${{ inputs.land }}" = true ]; then base="${{ steps.merge.outputs.base }}"  # HEAD = base + this commit
           elif [ "${GITHUB_REF_NAME}" = master ]; then base="$BEFORE"                # the previous master
           else base=$(git merge-base origin/master HEAD); fi                         # what the branch adds to master
@@ -207,17 +207,94 @@ jobs:
           # `true` (an emergency switch while the hosted VMs cannot hold a build). Everything else is GitHub-hosted.
           if [ "${{ steps.scope.outputs.lean }}" = true ] && [ -z "$handoff" ] && { [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ] || [ "${{ steps.scope.outputs.heavy }}" = true ] || [ "${{ vars.FORCE_HEAVY }}" = true ]; }; then
             echo "-> the heavy runners build this (mode=caps, no verified cache, kernel-heavy modification, or FORCE_HEAVY); this run stays pending meanwhile"
-            echo "droplet=true" >> "$GITHUB_OUTPUT"; echo 'runs_on=["self-hosted","heavy"]' >> "$GITHUB_OUTPUT"
+            echo "droplet=true" >> "$GITHUB_OUTPUT"
             # a run that really builds the node caps (no verified cache, or mode=caps) is never cancelled (hours of work);
-            # a FORCE_HEAVY run that only replays the cache is an ordinary check and may be superseded by a newer push
-            if [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ]; then echo "caps_build=true" >> "$GITHUB_OUTPUT"
-            else echo "caps_build=false" >> "$GITHUB_OUTPUT"; fi
+            # a FORCE_HEAVY run that only replays the cache is an ordinary check and may be superseded by a newer push.
+            # When the leaves are sharded (CAPS_SHARDS), the assembling build runs on the last listed machine, never on
+            # a small runner that merely carries the `heavy` label.
+            if [ "${{ inputs.mode }}" = caps ] || [ "${found:-0}" = 0 ]; then
+              echo "caps_build=true" >> "$GITHUB_OUTPUT"
+              shards='${{ vars.CAPS_SHARDS }}'
+              if [ -n "$shards" ]; then last=$(python3 -c "import json,sys; print(json.loads(sys.argv[1])[-1])" "$shards")
+                echo "runs_on=[\"self-hosted\",\"heavy\",\"${last}\"]" >> "$GITHUB_OUTPUT"
+              else echo 'runs_on=["self-hosted","heavy"]' >> "$GITHUB_OUTPUT"; fi
+            else echo "caps_build=false" >> "$GITHUB_OUTPUT"; echo 'runs_on=["self-hosted","heavy"]' >> "$GITHUB_OUTPUT"; fi
           else
             echo "droplet=false" >> "$GITHUB_OUTPUT"; echo 'runs_on="ubuntu-24.04"' >> "$GITHUB_OUTPUT"
           fi
 
-  build:
+  # Sharded node-cap build: when the repository variable CAPS_SHARDS lists runner labels (one per machine, e.g.
+  # ["big","mega"]), a run that really builds the node caps first builds the computational leaves split evenly over
+  # those machines (every n-th leaf of the builder's cost-sorted plan), packs each machine's CapPieces outputs as an
+  # artifact, and the build job below unpacks them before its own bounded build, which then finds the leaves done and
+  # replays them (Lake checks the traces: same sources, same toolchain). The build job still runs every check on the
+  # whole tree, so nothing is trusted that it did not verify itself. Unset the variable to build on one machine.
+  caps_shards:
     needs: route
+    if: needs.route.outputs.caps_build == 'true' && vars.CAPS_SHARDS != ''
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(vars.CAPS_SHARDS) }}
+    runs-on: [self-hosted, heavy, "${{ matrix.shard }}"]
+    timeout-minutes: 4320
+    env:
+      SHARDS: ${{ vars.CAPS_SHARDS }}
+      SHARD: ${{ matrix.shard }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          clean: false   # the machine keeps its persistent .lake
+      - name: Merge the branch commit into the current master (landing run)
+        if: inputs.land
+        run: |
+          git config user.name "grothe-ci"; git config user.email "grothe-ci@users.noreply.github.com"
+          git config merge.ours.driver true
+          base="${{ needs.route.outputs.base }}"
+          git fetch -q origin master
+          git checkout -B merge-candidate "$base"
+          git merge --no-ff --no-edit "${GITHUB_SHA}" -m "Merge ${GITHUB_REF_NAME} (CI auto-merge)"
+          python3 tools/gen_root_imports.py > /dev/null
+          git diff --quiet || git commit -q -a -m "Regenerate root imports and sorted lists after merging ${GITHUB_REF_NAME} (CI)"
+      - name: Lean toolchain and the shared Mathlib packages
+        run: |
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          mkdir -p .lake
+          [ -e .lake/packages ] || ln -s /home/agalatan/grothe-caps/.lake/packages .lake/packages
+          "$HOME/.elan/bin/lake" --version; df -h . | tail -1
+      - name: This machine's share of the computational leaves
+        run: |
+          python3 scripts/build_caps_batches.py --plan > caps-plan.json
+          python3 - <<'PY'
+          import json, os
+          plan = json.load(open('caps-plan.json'))
+          leaves = [m for kind, mods in plan['groups'] if kind != 'pure' for m in mods]
+          labels = json.loads(os.environ['SHARDS']); i = labels.index(os.environ['SHARD']); n = len(labels)
+          mine = leaves[i::n]
+          open('shard-modules.txt', 'w').write('\n'.join(mine) + '\n')
+          print(f"shard {i + 1} of {n} ({os.environ['SHARD']}): {len(mine)} of {len(leaves)} computational leaves")
+          PY
+      - name: Build this share (bounded by the machine, in its own process group)
+        run: |
+          grouped() { setsid "$@" & pid=$!
+            trap 'echo "::notice::cancelled: stopping the build process group"; kill -- "-$pid" 2>/dev/null; wait "$pid" 2>/dev/null; exit 130' INT TERM
+            wait "$pid"; }
+          grouped lake build $(cat shard-modules.txt) --wfail --log-level=warning
+      - name: Pack this machine's CapPieces outputs
+        run: |
+          tar -I 'zstd -T0 -3' -cf caps-shard.tar.zst -C .lake/build lib/lean/Grothe/LowerAnalytic/CapPieces
+          ls -l caps-shard.tar.zst
+      - uses: actions/upload-artifact@v4
+        with:
+          name: caps-shard-${{ matrix.shard }}-${{ github.run_id }}
+          path: caps-shard.tar.zst
+          compression-level: 0
+          retention-days: 1
+
+  build:
+    needs: [route, caps_shards]
+    if: ${{ !cancelled() && needs.route.result == 'success' && (needs.caps_shards.result == 'success' || needs.caps_shards.result == 'skipped') }}
     runs-on: ${{ fromJSON(needs.route.outputs.runs_on) }}
     timeout-minutes: ${{ needs.route.outputs.droplet == 'true' && 4320 || 360 }}
     # Branches: one group PER BRANCH (checks and landings separately), cancel-in-progress: a new push supersedes the
@@ -333,6 +410,29 @@ jobs:
             echo "::error::The route found a verified cache for these sources, but the restored build does not match"
             echo "::error::(evicted meanwhile?). Re-run this workflow: the route will then send it to the droplet."
             exit 1; }
+
+      - name: Download the sharded leaf builds (when CAPS_SHARDS is set)
+        if: env.LEAN == 'true' && needs.route.outputs.caps_build == 'true' && vars.CAPS_SHARDS != ''
+        uses: actions/download-artifact@v4
+        with:
+          pattern: caps-shard-*-${{ github.run_id }}
+          path: caps-shards
+          merge-multiple: false
+
+      - name: Unpack the sharded leaf builds into this workspace
+        if: env.LEAN == 'true' && needs.route.outputs.caps_build == 'true' && vars.CAPS_SHARDS != ''
+        run: |
+          mkdir -p .lake/build
+          for f in caps-shards/*/caps-shard.tar.zst; do echo "$f"; tar -I zstd -xf "$f" -C .lake/build; done
+          rm -rf caps-shards
+          echo "CapPieces outputs now present: $(ls .lake/build/lib/lean/Grothe/LowerAnalytic/CapPieces/*.olean 2>/dev/null | wc -l)"
+
+      - name: Build caps prerequisites in bounded single-threaded groups (droplet)
+        if: env.LEAN == 'true' && env.DROPLET == 'true'
+        # Source preparation only. The complete Grothe build, strict audit,
+        # Bridge probe and successful cache upload below decide verification.
+        # leaves at once and the RSS budget follow the runner's CPUs and RAM (scripts/build_caps_batches.py)
+        run: python3 scripts/build_caps_batches.py --disk-floor-gib 3
 
       - name: Build Grothe (everything, node caps included)
         if: env.LEAN == 'true'
