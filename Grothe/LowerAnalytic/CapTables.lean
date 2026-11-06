@@ -230,8 +230,7 @@ lemma rad_core {a b c h U E : ℝ} (k n : ℕ) (hn : 0 < n) (ha : 0 ≤ a) (hab 
       have h3 : |(-2 * c * t - t ^ 2)| ≤ 2 * c * |t| + t ^ 2 := by
         refine (abs_sub _ _).trans ?_
         rw [abs_mul, abs_mul, abs_neg, abs_of_nonneg (sq_nonneg t), abs_two, abs_of_nonneg hc0]
-      have h4 : 2 * c * |t| ≤ 2 * c * h := by
-        exact mul_le_mul_of_nonneg_left h1 (by positivity)
+      have h4 : 2 * c * |t| ≤ 2 * c * h := mul_le_mul_of_nonneg_left h1 (by positivity)
       linarith
     refine ⟨?_, ?_⟩
     · have hb := Real.exp_bound (hu.trans hU1) hn
@@ -279,9 +278,7 @@ lemma rad_integral (a b c h E : ℚ) (hab' : c - h = a) (hba' : c + h = b) (S : 
       refine Finset.sum_congr rfl fun p _ => ?_
       rw [intervalIntegral.integral_const_mul]
       congr 1
-      have := integral_pev (-h) h S p
-      push_cast at this
-      exact this
+      exact_mod_cast integral_pev (-h) h S p
     · congr 1
       have hc := intervalIntegral.integral_comp_add_left (fun r : ℝ => r ^ (k + 1)) (c : ℝ)
         (a := -(h : ℝ)) (b := h)
@@ -357,8 +354,7 @@ theorem radEncList_sound {a b : ℚ} (ha : 0 ≤ a) (hab : a ≤ b) (hb : b ≤ 
     have ea : ∀ t : ℝ, pev S t + (-1) * (expRem U n : ℝ) = pev S t - expRem U n := fun t => by ring
     have eb : ∀ t : ℝ, pev S t + 1 * (expRem U n : ℝ) = pev S t + expRem U n := fun t => by ring
     simp only [ea, eb] at hlo' hhi'
-    rw [hlo'] at hcore
-    rw [hhi'] at hcore
+    rw [hlo', hhi'] at hcore
     have hX2 : exp (-(c : ℝ) ^ 2) = exp (-((c ^ 2 : ℚ) : ℝ)) := by push_cast; rfl
     rw [hX2] at hcore
     have hMs : ∀ p < 18, ((List.range 18).map fun p => pint S p (-h) h).getD p 0 = pint S p (-h) h :=
@@ -462,8 +458,7 @@ lemma tailJ_rec {R : ℝ} (hR : 0 < R) (m : ℕ) :
   linarith
 
 lemma tailJ_zero {R : ℝ} (hR : 0 < R) : 0 ≤ tailJ R 0 ∧ tailJ R 0 ≤ exp (-R ^ 2) / R := by
-  constructor
-  · exact setIntegral_nonneg measurableSet_Ioi fun r _ => by positivity
+  refine ⟨setIntegral_nonneg measurableSet_Ioi fun r _ => by positivity, ?_⟩
   · rw [← tailJ_one hR, div_eq_inv_mul, tailJ, tailJ, ← integral_const_mul]
     refine setIntegral_mono_on (integrableOn_tail hR 0) ((integrableOn_tail hR 1).const_mul _)
       measurableSet_Ioi fun r hr => ?_
@@ -531,8 +526,7 @@ lemma mem_cmul {z w : ℂ} {A B : CBall} (hz : CBall.mem z A) (hw : CBall.mem w 
   rw [hc, hrad]
   have e : z * w - A.c * B.c = (z - A.c) * w + A.c * (w - B.c) := by ring
   have hw' : ‖w‖ ≤ nrm1 B + B.rad := by
-    have := norm_le_norm_add_norm_sub' w B.c
-    linarith [norm_c_le B, norm_sub_rev w B.c]
+    linarith [norm_le_norm_add_norm_sub' w B.c, norm_c_le B, norm_sub_rev w B.c]
   have hA := norm_c_le A
   have hr0 : (0 : ℝ) ≤ A.rad := (norm_nonneg _).trans hz
   rw [e]
@@ -549,8 +543,8 @@ lemma mem_cround {z : ℂ} {B : CBall} (h : CBall.mem z B) : CBall.mem z (cround
     simp only [CBall.c, cround, Complex.sub_re, Complex.sub_im]
     rw [abs_of_nonneg, abs_of_nonneg]
     · push_cast; ring
-    · have := rdDown_le B.im angP; exact_mod_cast sub_nonneg.2 this
-    · have := rdDown_le B.re angP; exact_mod_cast sub_nonneg.2 this
+    · exact_mod_cast sub_nonneg.2 (rdDown_le B.im angP)
+    · exact_mod_cast sub_nonneg.2 (rdDown_le B.re angP)
   have e : z - (cround B).c = (z - B.c) + (B.c - (cround B).c) := by ring
   have hr : (B.rad : ℝ) + ((B.re - rdDown B.re angP : ℚ) + (B.im - rdDown B.im angP : ℚ))
       ≤ (cround B).rad := by
@@ -772,8 +766,7 @@ lemma mem_unitBall {N m : ℕ} (hN : 0 < N) (hm : m ≤ N) :
           + (Complex.exp ((y0 : ℝ) * Complex.I) - ⟨(expIBall y0).re, (expIBall y0).im⟩) := by ring
     rw [e]
     refine (norm_add_le _ _).trans ?_
-    have := norm_exp_sub_le y y0
-    calc _ ≤ |y - (y0 : ℝ)| + (expIBall y0).rad := add_le_add this hB0
+    calc _ ≤ |y - (y0 : ℝ)| + (expIBall y0).rad := add_le_add (norm_exp_sub_le y y0) hB0
       _ ≤ _ := by push_cast at hdist ⊢; linarith
   have hsq : ∀ (x : ℝ) (B : CBall), CBall.mem (Complex.exp (x * Complex.I)) B →
       CBall.mem (Complex.exp (((2 * x : ℝ)) * Complex.I)) (cround (cmul B B)) := by
@@ -802,8 +795,7 @@ lemma im_mem {z : ℂ} {B : CBall} (h : CBall.mem z B) : (B.im : ℝ) - B.rad �
 
 lemma mulQ_sound {x y : ℝ} {X Y : ℚ × ℚ} (hx : (X.1 : ℝ) ≤ x ∧ x ≤ X.2) (hy : (Y.1 : ℝ) ≤ y ∧ y ≤ Y.2) :
     ((mulQ X Y).1 : ℝ) ≤ x * y ∧ x * y ≤ (mulQ X Y).2 := by
-  have := Grothe.Upper.mul_bounds hx hy
-  simp only [mulQ]; push_cast; exact this
+  simp only [mulQ]; exact_mod_cast Grothe.Upper.mul_bounds hx hy
 
 lemma trig_mod {N : ℕ} (hN : 0 < N) (p : ℕ) :
     Real.sin (2 * π * p / N) = Real.sin (2 * π * (p % N : ℕ) / N) ∧
@@ -1195,8 +1187,7 @@ example : ((71497564697966299 / 4611686018427387904 : ℚ) : ℝ) ≤ radI 0 (1 
     radI 0 (1 / 8) 0 ≤ ((285990258791865197 / 18446744073709551616 : ℚ) : ℝ) := by
   have h : tablesOK [⟨.rad 0 (1 / 8) 0, 71497564697966299 / 4611686018427387904,
       285990258791865197 / 18446744073709551616⟩] = true := by native_decide
-  have := tablesOK_sound h _ List.mem_cons_self
-  simpa [TKind.value] using this
+  simpa [TKind.value] using tablesOK_sound h _ List.mem_cons_self
 
 /-- The `n = 0` angular entries are exact and checked by the kernel. -/
 example : tablesOK [⟨.cos 8 3 0, 1 / 8, 1 / 8⟩, ⟨.sin 8 3 0, 0, 0⟩] = true := by decide +kernel
