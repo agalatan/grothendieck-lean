@@ -108,6 +108,21 @@ these give exact integration for polynomials of degree below $2n$ at order $n$.
 The certificates use kernel reduction and are part of the main Lean build.
 The selected numerical nodes and the analytic remainder require separate
 proofs; this algebraic result alone does not finish the upper endpoint.
+For the energy table, \texttt{EllCheck.quadRemainderHyp} now proves the covered-set
+quadrature error bound $\|G^{\mathrm c}-G_{\mathrm{full}}\|_{\ell^2}\le1.5\cdot10^{-12}$.
+The proof combines an entire conditional-coefficient extension, a finite complex
+Mehler bound and a Banach-space Bernstein-ellipse remainder theorem. Sharded
+interval checks of the committed panel plans certify a canonical error sum below
+$1.04\cdot10^{-12}$; reflection gives the full bound. Its axiom report uses the
+standard axioms and registered native facts. The twisted-source estimates and
+the final upper-endpoint assembly remain separate obligations.
+For the twisted sources, exact panel certificates for all three production powers
+are stored in \texttt{data/twist-ellipse/plans.json}. Registered native checks
+verify their disk-majorant caps and total error budgets, with a reserve of
+$10^{-15}$ below each relaxed radius. Arithmetic soundness and disk-geometry
+lemmas expose the checked expressions. Their identification with the actual
+twisted vector, the analytic remainder, and the final upper endpoint remain
+separate proof steps.
 Given unit vectors, project a Gaussian onto them and round: $\varepsilon_i=f(\langle G,x_i\rangle)$ with $|f|\le1$. The
 correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
 \[

@@ -9,6 +9,33 @@ conditional rounding gives a bound below `1.404598149141`) is work in progress; 
 the remaining project-specific Lean obligations. Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.
 
+**Energy quadrature remainder.** `UpperQuad/QuadEllipseFacts/All.lean` proves
+`EllCheck.quadRemainderHyp`: the squared error between the covered Gaussian
+coefficient integrals and the full production Gauss sums is at most
+`(1.5·10⁻¹²)²`, with no analytic premise. The proof identifies the entire
+conditional-coefficient extension, bounds its finite coefficient mass off the
+real axis, combines it with a complex Mehler bound, and applies the Banach-space
+Bernstein-ellipse remainder theorem to the actual production panels.
+The interval checker certifies the plans in `data/quad-checker/ellipse-plans.txt`;
+`tools/gen_quad_ellipse_plans.py --check` verifies their Lean representation, and
+`tools/gen_quad_ellipse_facts.py` reproduces the sharded native checks and assembly.
+The canonical panel-error sum is below `1.04·10⁻¹²`; reflection gives the full
+`1.5·10⁻¹²` bound. The axiom audit is covered by the standard axioms and registered
+native facts. This closes the remainder premise in `QuadDecomp.quadHyp_of_parts`;
+the twisted source bounds and final upper-endpoint assembly are separate.
+
+**Twisted ellipse certificates.** `UpperQuad/TwistEllipseFacts/Checks.lean` imports
+the source-indexed interval checks for all three production powers. Their exact
+plans and caps are in `data/twist-ellipse/plans.json`; the generators
+`gen_twist_ellipse_plans.py` and `gen_twist_ellipse_facts.py` reproduce the arrays,
+range checks, total checks, and native-fact registration manifest. The complete
+cap totals are below the respective relaxed radii minus the reserved `10⁻¹⁵`.
+The arithmetic soundness modules prove the phase, translation, column, K, primary
+Mehler, disk-geometry, selection, maximum, and capped-error interfaces. The finite
+checks use registered native facts. Connecting these expressions to the actual
+twisted vector and assembling its analytic remainder are separate obligations;
+these certificates alone do not remove the hypothesis of `main_bounds`.
+
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
 polynomial Bezout identity. `Q0GaussQPoly.lean` interprets LeanCert's rational
