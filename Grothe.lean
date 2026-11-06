@@ -13657,6 +13657,7 @@ import Grothe.UpperChaos.ZeroProfilePhaseLinearization
 import Grothe.UpperChaos.ZeroProfilePhaseStability
 import Grothe.UpperChaos.ZeroProfileSavedCenter
 import Grothe.UpperQuad.Bridge
+import Grothe.UpperQuad.CanonicalExplicit
 import Grothe.UpperQuad.CentralDerivative
 import Grothe.UpperQuad.ContractSound
 import Grothe.UpperQuad.Data.Cutoffs
