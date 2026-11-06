@@ -17,10 +17,11 @@ mod 8 with the kernel's exact accumulators of the full run (`quadrun twistshard 
 `twist-j<j>-<i>.txt` at the scale `2^512`).
 
     python3 tools/port_facts_tables.py check  <j> <npzdir> <kerneldir>
-    python3 tools/port_facts_tables.py bounds <j> <timesfile> <hours>     # range boundaries
+    python3 tools/port_facts_tables.py bounds <j> <timesfile> <hours> [<mean s>]  # range boundaries
     python3 tools/port_facts_tables.py tables <j> <npzdir>                # data/port-facts/j<j>-tables.txt
 
 `bounds` reads per-node times (`ordinal ms` per line, the `twist-j<j>-nodes-<i>.txt` of the full run)
+(optionally rescaled to a measured mean per node, `quadrun twistnode` samples on an idle big core)
 and cuts contiguous ranges of at most `<hours>` each; the boundaries go to `data/port-facts/ranges.json`.
 `tables` writes, for every range of `ranges.json`, the line `range <rr> <lo> <hi> <iMid> <iRad> <lowRad>`
 followed by one line of comma-separated low-band midpoints (flat graded order `q < Qlow, c ≤ q+1,
@@ -126,12 +127,14 @@ def cmd_check(j, npzdir, kdir):
           f"I {I_RAD / 2 ** KT:.2e}, low {LOW_RAD / 2 ** KT:.2e}")
 
 
-def cmd_bounds(j, timesfile, hours):
+def cmd_bounds(j, timesfile, hours, mean_s=None):
     t = np.zeros(NNODES)
     with open(timesfile, encoding="utf-8") as f:
         for line in f:
             o, ms = line.split()
             t[int(o)] = int(ms)
+    if mean_s is not None:          # rescale to a measured mean per node (seconds)
+        t *= mean_s * 1000.0 / t.mean()
     cap = hours * 3.6e6
     bounds, acc = [0], 0.0
     for o in range(NNODES):
@@ -181,7 +184,8 @@ def main():
     if cmd == "check":
         cmd_check(int(sys.argv[2]), sys.argv[3], sys.argv[4])
     elif cmd == "bounds":
-        cmd_bounds(int(sys.argv[2]), sys.argv[3], float(sys.argv[4]))
+        cmd_bounds(int(sys.argv[2]), sys.argv[3], float(sys.argv[4]),
+                   float(sys.argv[5]) if len(sys.argv) > 5 else None)
     elif cmd == "tables":
         cmd_tables(int(sys.argv[2]), sys.argv[3])
     else:

@@ -14,21 +14,21 @@ Agent-ID: claude-b9ee. Refs #41, #313.
 namespace Grothe.UpperQuad.PortFacts
 
 /-- The numerator of the threshold `θ_1 = j1ThetaNum / 10^20` of the final fact of the power 1. -/
-def j1ThetaNum : ℤ := 256848930406757
+def j1ThetaNum : ℤ := 256848930403977
 
 /-- The low-band tolerance of the power 1 at the scale `2^1024`. -/
 def j1Eps : ℤ := 2 ^ 942
 
 /-- The numerator of the threshold `θ_2 = j2ThetaNum / 10^20` of the final fact of the power 2. -/
-def j2ThetaNum : ℤ := 56671900234
+def j2ThetaNum : ℤ := 56671903021
 
 /-- The low-band tolerance of the power 2 at the scale `2^1024`. -/
 def j2Eps : ℤ := 2 ^ 940
 
 /-- The numerator of the threshold `θ_3 = j3ThetaNum / 10^20` of the final fact of the power 3. -/
-def j3ThetaNum : ℤ := 1278608143
+def j3ThetaNum : ℤ := 1278623409
 
 /-- The low-band tolerance of the power 3 at the scale `2^1024`. -/
-def j3Eps : ℤ := 2 ^ 935
+def j3Eps : ℤ := 2 ^ 934
 
 end Grothe.UpperQuad.PortFacts

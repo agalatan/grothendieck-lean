@@ -22,15 +22,13 @@ import Grothe.UpperQuad.PortFacts.J2Range18
 import Grothe.UpperQuad.PortFacts.J2Range19
 import Grothe.UpperQuad.PortFacts.J2Range20
 import Grothe.UpperQuad.PortFacts.J2Range21
-import Grothe.UpperQuad.PortFacts.J2Range22
-import Grothe.UpperQuad.PortFacts.J2Range23
 
 /-!
 # The final fact of the power 2
 
-The 24 node ranges `j2Bounds` tile the partition; `j2Final` adds their committed tables and runs the
-kernel's checks on the sum: the lower end of the `I_2`-sum is at least `θ = 56671900234/10^20`
-(the tables' exact lower end is `5.66719002346831313e-10`), and the squared low-band excursions from the
+The 22 node ranges `j2Bounds` tile the partition; `j2Final` adds their committed tables and runs the
+kernel's checks on the sum: the lower end of the `I_2`-sum is at least `θ = 56671903021/10^20`
+(the tables' exact lower end is `5.66719030210827146e-10`), and the squared low-band excursions from the
 center's coefficients add up to at most `eps / 2^1024`, `eps = 2^940` (`√eps / 2^512 = 2.274e-13`).
 
 Agent-ID: claude-b9ee. Refs #41, #313.
@@ -39,19 +37,19 @@ Agent-ID: claude-b9ee. Refs #41, #313.
 namespace Grothe.UpperQuad.PortFacts
 
 /-- The boundaries of the node ranges of the power 2. -/
-def j2Bounds : List ℕ := [0, 709, 1430, 2209, 3217, 4310, 5355, 6240, 7077, 7950, 8813, 9686, 10669, 11706, 12624, 13482, 14360, 15236, 16103, 17050, 18075, 18981, 19845, 20756, 21577]
+def j2Bounds : List ℕ := [0, 778, 1559, 2454, 3607, 4790, 5850, 6765, 7695, 8653, 9596, 10658, 11784, 12772, 13701, 14659, 15610, 16584, 17694, 18722, 19666, 20649, 21577]
 
 /-- The committed tables of the power 2, one per range. -/
-def j2Tables : List PartialTable := [j2Table00, j2Table01, j2Table02, j2Table03, j2Table04, j2Table05, j2Table06, j2Table07, j2Table08, j2Table09, j2Table10, j2Table11, j2Table12, j2Table13, j2Table14, j2Table15, j2Table16, j2Table17, j2Table18, j2Table19, j2Table20, j2Table21, j2Table22, j2Table23]
+def j2Tables : List PartialTable := [j2Table00, j2Table01, j2Table02, j2Table03, j2Table04, j2Table05, j2Table06, j2Table07, j2Table08, j2Table09, j2Table10, j2Table11, j2Table12, j2Table13, j2Table14, j2Table15, j2Table16, j2Table17, j2Table18, j2Table19, j2Table20, j2Table21]
 
 theorem j2Final : finalFact 2 j2Bounds j2Tables j2ThetaNum (10 ^ 20) j2Eps = true := by
   native_decide
 
 /-- Every range fact of the power 2, indexed by the range. -/
-theorem j2RangeFacts : ∀ r, r < 24 →
+theorem j2RangeFacts : ∀ r, r < 22 →
     rangeFact 2 (j2Bounds.getD r 0) (j2Bounds.getD (r + 1) 0) (j2Tables.getD r default) = true := by
   intro r hr
   interval_cases r
-  exacts [j2Range00, j2Range01, j2Range02, j2Range03, j2Range04, j2Range05, j2Range06, j2Range07, j2Range08, j2Range09, j2Range10, j2Range11, j2Range12, j2Range13, j2Range14, j2Range15, j2Range16, j2Range17, j2Range18, j2Range19, j2Range20, j2Range21, j2Range22, j2Range23]
+  exacts [j2Range00, j2Range01, j2Range02, j2Range03, j2Range04, j2Range05, j2Range06, j2Range07, j2Range08, j2Range09, j2Range10, j2Range11, j2Range12, j2Range13, j2Range14, j2Range15, j2Range16, j2Range17, j2Range18, j2Range19, j2Range20, j2Range21]
 
 end Grothe.UpperQuad.PortFacts

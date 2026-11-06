@@ -37,13 +37,15 @@ import Grothe.UpperQuad.PortFacts.J1Range33
 import Grothe.UpperQuad.PortFacts.J1Range34
 import Grothe.UpperQuad.PortFacts.J1Range35
 import Grothe.UpperQuad.PortFacts.J1Range36
+import Grothe.UpperQuad.PortFacts.J1Range37
+import Grothe.UpperQuad.PortFacts.J1Range38
 
 /-!
 # The final fact of the power 1
 
-The 37 node ranges `j1Bounds` tile the partition; `j1Final` adds their committed tables and runs the
-kernel's checks on the sum: the lower end of the `I_1`-sum is at least `θ = 256848930406757/10^20`
-(the tables' exact lower end is `2.56848930406757990e-06`), and the squared low-band excursions from the
+The 39 node ranges `j1Bounds` tile the partition; `j1Final` adds their committed tables and runs the
+kernel's checks on the sum: the lower end of the `I_1`-sum is at least `θ = 256848930403977/10^20`
+(the tables' exact lower end is `2.56848930403977011e-06`), and the squared low-band excursions from the
 center's coefficients add up to at most `eps / 2^1024`, `eps = 2^942` (`√eps / 2^512 = 4.547e-13`).
 
 Agent-ID: claude-b9ee. Refs #41, #313.
@@ -52,19 +54,19 @@ Agent-ID: claude-b9ee. Refs #41, #313.
 namespace Grothe.UpperQuad.PortFacts
 
 /-- The boundaries of the node ranges of the power 1. -/
-def j1Bounds : List ℕ := [0, 623, 1211, 1717, 2178, 2776, 3432, 4114, 4795, 5440, 5939, 6416, 6948, 7561, 8214, 8824, 9339, 9831, 10464, 11153, 11827, 12348, 12833, 13391, 14040, 14573, 15201, 15781, 16280, 16865, 17535, 18166, 18661, 19183, 19792, 20383, 20998, 21577]
+def j1Bounds : List ℕ := [0, 589, 1152, 1641, 2079, 2612, 3218, 3859, 4509, 5140, 5692, 6136, 6602, 7132, 7732, 8351, 8910, 9388, 9861, 10462, 11114, 11756, 12271, 12725, 13232, 13832, 14388, 14924, 15516, 16021, 16494, 17098, 17740, 18300, 18761, 19268, 19856, 20407, 20993, 21577]
 
 /-- The committed tables of the power 1, one per range. -/
-def j1Tables : List PartialTable := [j1Table00, j1Table01, j1Table02, j1Table03, j1Table04, j1Table05, j1Table06, j1Table07, j1Table08, j1Table09, j1Table10, j1Table11, j1Table12, j1Table13, j1Table14, j1Table15, j1Table16, j1Table17, j1Table18, j1Table19, j1Table20, j1Table21, j1Table22, j1Table23, j1Table24, j1Table25, j1Table26, j1Table27, j1Table28, j1Table29, j1Table30, j1Table31, j1Table32, j1Table33, j1Table34, j1Table35, j1Table36]
+def j1Tables : List PartialTable := [j1Table00, j1Table01, j1Table02, j1Table03, j1Table04, j1Table05, j1Table06, j1Table07, j1Table08, j1Table09, j1Table10, j1Table11, j1Table12, j1Table13, j1Table14, j1Table15, j1Table16, j1Table17, j1Table18, j1Table19, j1Table20, j1Table21, j1Table22, j1Table23, j1Table24, j1Table25, j1Table26, j1Table27, j1Table28, j1Table29, j1Table30, j1Table31, j1Table32, j1Table33, j1Table34, j1Table35, j1Table36, j1Table37, j1Table38]
 
 theorem j1Final : finalFact 1 j1Bounds j1Tables j1ThetaNum (10 ^ 20) j1Eps = true := by
   native_decide
 
 /-- Every range fact of the power 1, indexed by the range. -/
-theorem j1RangeFacts : ∀ r, r < 37 →
+theorem j1RangeFacts : ∀ r, r < 39 →
     rangeFact 1 (j1Bounds.getD r 0) (j1Bounds.getD (r + 1) 0) (j1Tables.getD r default) = true := by
   intro r hr
   interval_cases r
-  exacts [j1Range00, j1Range01, j1Range02, j1Range03, j1Range04, j1Range05, j1Range06, j1Range07, j1Range08, j1Range09, j1Range10, j1Range11, j1Range12, j1Range13, j1Range14, j1Range15, j1Range16, j1Range17, j1Range18, j1Range19, j1Range20, j1Range21, j1Range22, j1Range23, j1Range24, j1Range25, j1Range26, j1Range27, j1Range28, j1Range29, j1Range30, j1Range31, j1Range32, j1Range33, j1Range34, j1Range35, j1Range36]
+  exacts [j1Range00, j1Range01, j1Range02, j1Range03, j1Range04, j1Range05, j1Range06, j1Range07, j1Range08, j1Range09, j1Range10, j1Range11, j1Range12, j1Range13, j1Range14, j1Range15, j1Range16, j1Range17, j1Range18, j1Range19, j1Range20, j1Range21, j1Range22, j1Range23, j1Range24, j1Range25, j1Range26, j1Range27, j1Range28, j1Range29, j1Range30, j1Range31, j1Range32, j1Range33, j1Range34, j1Range35, j1Range36, j1Range37, j1Range38]
 
 end Grothe.UpperQuad.PortFacts

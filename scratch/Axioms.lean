@@ -13129,6 +13129,8 @@ import Grothe
 #print axioms Grothe.UpperQuad.PortFacts.j1Range34
 #print axioms Grothe.UpperQuad.PortFacts.j1Range35
 #print axioms Grothe.UpperQuad.PortFacts.j1Range36
+#print axioms Grothe.UpperQuad.PortFacts.j1Range37
+#print axioms Grothe.UpperQuad.PortFacts.j1Range38
 #print axioms Grothe.UpperQuad.PortFacts.j1RangeFacts
 #print axioms Grothe.UpperQuad.PortFacts.j1_low_margin
 #print axioms Grothe.UpperQuad.PortFacts.j1_whole_margin
@@ -13155,8 +13157,6 @@ import Grothe
 #print axioms Grothe.UpperQuad.PortFacts.j2Range19
 #print axioms Grothe.UpperQuad.PortFacts.j2Range20
 #print axioms Grothe.UpperQuad.PortFacts.j2Range21
-#print axioms Grothe.UpperQuad.PortFacts.j2Range22
-#print axioms Grothe.UpperQuad.PortFacts.j2Range23
 #print axioms Grothe.UpperQuad.PortFacts.j2RangeFacts
 #print axioms Grothe.UpperQuad.PortFacts.j2_low_margin
 #print axioms Grothe.UpperQuad.PortFacts.j2_whole_margin
@@ -13183,17 +13183,6 @@ import Grothe
 #print axioms Grothe.UpperQuad.PortFacts.j3Range19
 #print axioms Grothe.UpperQuad.PortFacts.j3Range20
 #print axioms Grothe.UpperQuad.PortFacts.j3Range21
-#print axioms Grothe.UpperQuad.PortFacts.j3Range22
-#print axioms Grothe.UpperQuad.PortFacts.j3Range23
-#print axioms Grothe.UpperQuad.PortFacts.j3Range24
-#print axioms Grothe.UpperQuad.PortFacts.j3Range25
-#print axioms Grothe.UpperQuad.PortFacts.j3Range26
-#print axioms Grothe.UpperQuad.PortFacts.j3Range27
-#print axioms Grothe.UpperQuad.PortFacts.j3Range28
-#print axioms Grothe.UpperQuad.PortFacts.j3Range29
-#print axioms Grothe.UpperQuad.PortFacts.j3Range30
-#print axioms Grothe.UpperQuad.PortFacts.j3Range31
-#print axioms Grothe.UpperQuad.PortFacts.j3Range32
 #print axioms Grothe.UpperQuad.PortFacts.j3RangeFacts
 #print axioms Grothe.UpperQuad.PortFacts.j3_low_margin
 #print axioms Grothe.UpperQuad.PortFacts.j3_whole_margin
