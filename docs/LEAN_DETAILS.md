@@ -2,8 +2,10 @@
 
 This file lists, module by module, what the Lean development proves and which inputs enter as data. The short version is in [README.md](../README.md); the mathematics is explained in [OVERVIEW.pdf](../OVERVIEW.pdf).
 
-The sole target interval is `1.401697117301 < K < 1.404598149141`.
-Both endpoints are work in progress; [PROOF_STATUS.md](PROOF_STATUS.md) lists
+The target interval is `1.401697117301 < K_G^ℂ < 1.4046` (`main_bounds`,
+`Grothe/MainResult.lean`). The lower endpoint is a theorem without hypotheses
+(`lower_target`); the upper endpoint (`UpperTarget`, threshold `1.4046`; the
+conditional rounding gives a bound below `1.404598149141`) is work in progress; [PROOF_STATUS.md](PROOF_STATUS.md) lists
 the remaining project-specific Lean obligations. Shared Gaussian
 phase identity and Laplace modules under `Grothe/Haagerup/` remain necessary.
 
@@ -1404,6 +1406,13 @@ must also lie in `[-1,1]`. All retained lemmas have strict transitive guards
 and scratch axiom reports. Concrete leaf checks, numerical source comparisons
 and integral bounds remain separate obligations.
 
+For a fixed complex coordinate `z ≠ 0`, `FixedZPhaseRemainder.norm_actual_residual`
+bounds the Gaussian L² error between the physical phase `F0 (z,w)` and its
+rotated constant-plus-linear model by `5 t²`, where
+`t = √(1 + aQ²) vprof(‖z‖²) / ‖z‖`. The inverse unit rotation preserves the
+Gaussian law of `w`. This gives the same bound for either sign of the
+profile, including zero. Integration over the first coordinate is a separate step.
+
 `ProductionPhaseL2Error` constructs L² representatives of the unsmoothed
 rounding on a fixed radial slice, its linear-base/cubic-phase model, and the
 phase-model difference. For positive radial parameter and a measurable
@@ -1618,6 +1627,16 @@ and exact leading coefficients. This complete finite family is still
 work in progress, excluded from the main root pending its focused Lean
 check. Even successful polynomial certificates leave the original selected
 node/weight bindings, interval transport, and analytic remainder to prove.
+
+`Grothe.UpperQuad.CentralDerivative` supplies the finite interpolation step
+for the root-window derivative estimate. For every real polynomial of degree
+at most 35, its derivative is an exact weighted sum of the eighteen sample
+pairs at offsets `i/180`, for `i = 1, ..., 18`. Exact rational moment identities
+and a doubled absolute-weight sum below 630 give `abs_derivative_le`: if all
+sample values have absolute value at most `M >= 0`, the derivative has absolute
+value at most `630 * M`. The module has strict standard-axiom guards. Identifying
+the actual phase polynomial, enclosing its samples, and transporting this bound
+to the physical quadrature panels remain separate obligations.
 
 `F0ConditionalNode` defines the actual radial slice of `F0` and its normalized
 Hermite coefficients, proving Bessel's bound before aggregation over modes.
@@ -1843,7 +1862,9 @@ manual droplet verification is required. The build and the report establish
 verification; a read-only digest alone does not.
 
 `capRowsDone` includes every row index. `CapsRest` retains any excluded-node
-caps of the original range-checked rows; those exclusion lists are empty.
+caps of the original range-checked rows; those exclusion lists are empty
+(`capExcl_eq_nil`), so `capsRest : CapsRest` (`Grothe/MainResult.lean`) is
+proved, and with it `lower_target : LowerTarget`.
 Rows 0.84, 0.845, 0.85 and 0.855 (indices 12–15) have complete
 localized-piece and anchor assemblies for canonical CI verification. Their
 inputs retain the unchanged cap pad and exact rational grids. Row14 uses the
