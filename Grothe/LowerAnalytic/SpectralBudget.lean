@@ -118,8 +118,7 @@ theorem budget_w (hpos : ∀ P : MvPolynomial ι ℝ, 0 ≤ E (P * P)) (ha : Cha
     (m' := 1) (by rw [one_smul, one_smul]; rfl) (by rw [one_smul, one_smul]; rfl) rfl
     (by rw [haa, hbb]; norm_num)
   have h := hL.energy hE
-  have := hpos (radS a b - ((1 : ℝ) • gam2 a + (1 : ℝ) • gam2 b) + (3 * 1 : ℝ) • 1)
-  linarith
+  linarith [hpos (radS a b - ((1 : ℝ) • gam2 a + (1 : ℝ) • gam2 b) + (3 * 1 : ℝ) • 1)]
 
 /-- **The budget of `c`**: `E A² + E B² ≤ 2 E[A (a² − b²) + B · 2ab]`, i.e.
 `E|c|² ≤ (2/3) Re E[c q̄²]`. -/
