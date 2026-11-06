@@ -107,7 +107,8 @@ theorem twistPart_eq_radial (j : ℕ) {S : Set ℝ} (hS : MeasurableSet S) (q c 
     show q + 1 - c + c = q - d + d + 1
     omega
   have hm : Measurable (fun s : ℝ => twistSlice j i (Real.sqrt s : ℂ)) :=
-    (measurable_twistSlice j i).comp (Complex.measurable_ofReal.comp Real.continuous_sqrt.measurable)
+    (measurable_twistSlice j i).comp
+      (Complex.measurable_ofReal.comp Real.continuous_sqrt.measurable)
   have hA : MeasurableSet {z : ℂ | ‖z‖ ^ 2 ∈ S} := (measurable_norm.pow_const 2) hS
   unfold twistPart radialSet
   calc ∫ u in {z : ℂ | ‖z‖ ^ 2 ∈ S} ×ˢ univ, conj (hfun2 i u) * hpow j u ∂mu2
@@ -120,7 +121,8 @@ theorem twistPart_eq_radial (j : ℕ) {S : Set ℝ} (hS : MeasurableSet S) (q c 
         apply integral_congr_ae
         filter_upwards with z
         by_cases hz : ‖z‖ ^ 2 ∈ S
-        · rw [Set.indicator_of_mem hz, Set.indicator_of_mem (show z ∈ {z : ℂ | ‖z‖ ^ 2 ∈ S} from hz),
+        · rw [Set.indicator_of_mem hz,
+            Set.indicator_of_mem (show z ∈ {z : ℂ | ‖z‖ ^ 2 ∈ S} from hz),
             Real.sqrt_sq (norm_nonneg z)]
           exact twistSlice_eq_norm j i hi z
         · rw [Set.indicator_of_notMem hz,
@@ -163,7 +165,8 @@ theorem twistQuadHyp_of_remainder (j : ℕ) {ρ : ℝ} (hρ : 0 ≤ ρ) (h : Twi
   set Q := (twistParams j).Q
   have hterm : ∀ q c d, q < Q → c < q + 2 → d < q + 1 →
       ((∫ s in Ioi (0 : ℝ), twistIntegrand j q c d s) - twistGauss j q c d) ^ 2 ≤
-        (‖twistPart j tailSet q c d‖ + ‖twistPart j tailSetᶜ q c d - (twistGauss j q c d : ℂ)‖) ^ 2 := by
+        (‖twistPart j tailSet q c d‖ +
+          ‖twistPart j tailSetᶜ q c d - (twistGauss j q c d : ℂ)‖) ^ 2 := by
     intro q c d _ hc hd
     have h1 := twistCoefficient_eq_part_add j measurableSet_tailSet q c d
     rw [twistCoefficient_eq_ofReal j q c d (by omega) (by omega)] at h1

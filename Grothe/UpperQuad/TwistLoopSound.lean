@@ -1,6 +1,6 @@
 import Grothe.UpperQuad.TwistNodeSound
 import Grothe.UpperQuad.Partition
-import GrotheQuadKernel.TwistLoop
+import GrotheQuadExtKernel.TwistLoop
 
 /-!
 # Soundness of the twisted node outputs, of the node loop and of its two checks
@@ -9,8 +9,8 @@ import GrotheQuadKernel.TwistLoop
   J_{c,d}(s)` (`nodeITerm`) and its low-band entries enclose `e^{−s} W ψ_i(s) J_{c,d}(s)`
   (`nodeLowTerm`), at the scale `2^{2 KOut}`; `V_{c,d}(s) = Σ_q c(q,c,d) ψ_{(q,c,d)}(s)` with the
   exact dyadic center `c(q,c,d) = center[gradedFlat q c d] / 2^E` (`centerR`).
-* `twistSpecs_sound`: an accepted node list (`twistSpecs … = some acc`) adds the exact terms of every
-  node at the root of its bracket (`rootOf`) to the accumulator.
+* `twistSpecs_sound`: an accepted node list (`twistSpecs … = some acc`) adds the exact terms of
+  every node at the root of its bracket (`rootOf`) to the accumulator.
 * `iPartialOK_sound`, `lowBandOK_sound`: the two checks bound the exact Gauss sums.
 
 Agent-ID: claude-b9ee. Refs #41, #313.
@@ -35,7 +35,8 @@ lemma memSc_mulFx {x y : ℝ} {a b : Fx} (hx : memOut x a) (hy : memOut y b) :
   memSc_mulPair (p := (a.lo, a.hi)) (q := (b.lo, b.hi)) hx hy
 
 lemma memOut_roundOut {x : ℝ} {p : ℤ × ℤ} (hx : memSc (2 * KOut) x p) : memOut x (roundOut p) := by
-  have := memSc_shift (K := KOut) (s := KOut) (by rw [show KOut + KOut = 2 * KOut by ring]; exact hx)
+  have := memSc_shift (K := KOut) (s := KOut)
+    (by rw [show KOut + KOut = 2 * KOut by ring]; exact hx)
   exact this
 
 lemma memSc_foldl_add {K : ℕ} {f : ℕ → ℝ} {g : ℕ → ℤ × ℤ} (n : ℕ)
@@ -70,9 +71,11 @@ def centerR (center : Array Int) (E q c d : ℕ) : ℝ :=
   (center.getD (gradedFlat q c d) 0 : ℝ) / 2 ^ E
 
 /-- The primary radial factor of the mode `(q, c, d)`: `ψ = radialFactor (radialKM q c d) s`. -/
-def psiR (q c d : ℕ) (s : ℝ) : ℝ := RadialLaguerre.radialFactor (radialKM q c d).1 (radialKM q c d).2 s
+def psiR (q c d : ℕ) (s : ℝ) : ℝ :=
+  RadialLaguerre.radialFactor (radialKM q c d).1 (radialKM q c d).2 s
 
-/-- The center's conditional vector `V_{c,d}(s) = Σ_{q ≥ max(c−1, d), q < Q} c(q,c,d) ψ_{(q,c,d)}(s)`. -/
+/-- The center's conditional vector
+`V_{c,d}(s) = Σ_{q ≥ max(c−1, d), q < Q} c(q,c,d) ψ_{(q,c,d)}(s)`. -/
 def centerVR (prm : TwistParams) (center : Array Int) (s : ℝ) (c d : ℕ) : ℝ :=
   ∑ i ∈ Finset.range (prm.Q - max (c - 1) d),
     centerR center prm.E (max (c - 1) d + i) c d * psiR (max (c - 1) d + i) c d s
@@ -180,7 +183,8 @@ theorem twistNode_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.pi
       ∀ q c d, q < twistQlow prm → c < q + 2 → d < q + 1 →
         memSc (2 * KOut) (nodeLowTerm prm s W q c d)
           (lowGet (twistNode P prm tabs piI sI wI neg aI).low q c d) := by
-  have hJ := fun c d hcd => twistJ_sound P hP hpi hW hprm.hDin htab hnd hexp hA'pos hrv hsq hden c d hcd
+  have hJ := fun c d hcd =>
+    twistJ_sound P hP hpi hW hprm.hDin htab hnd hexp hA'pos hrv hsq hden c d hcd
   have hs0 := hnd.pos.le
   have hF : memOut (Real.exp (-s) * W) (toOut (mulI P (expNegI P 400 sI) wI)) := memOut_toOut hfac
   constructor
@@ -224,7 +228,8 @@ def AccOK (Qlow : ℕ) (I : ℝ) (L : ℕ → ℕ → ℕ → ℝ) (acc : TwAcc)
 
 lemma lowGet_twAccAdd (Qlow : ℕ) (acc : TwAcc) (out : TwistNodeOut) (q c d : ℕ) (hq : q < Qlow)
     (hc : c < q + 2) (hd : d < q + 1) :
-    lowGet (twAccAdd Qlow acc out).low q c d = addPair (lowGet acc.low q c d) (lowGet out.low q c d) := by
+    lowGet (twAccAdd Qlow acc out).low q c d =
+      addPair (lowGet acc.low q c d) (lowGet out.low q c d) := by
   unfold twAccAdd lowGet
   simp only [Array.getD_eq_getD_getElem?, Array.getElem?_ofFn, hq, hc, hd, ↓reduceDIte,
     Option.getD_some]
@@ -236,7 +241,8 @@ lemma lowGet_twAccZero (Qlow q c d : ℕ) (hq : q < Qlow) (hc : c < q + 2) (hd :
     Option.getD_some]
 
 lemma accOK_zero (Qlow : ℕ) : AccOK Qlow 0 (fun _ _ _ => 0) (twAccZero Qlow) :=
-  ⟨memSc_zero _, fun q c d hq hc hd => by rw [lowGet_twAccZero Qlow q c d hq hc hd]; exact memSc_zero _⟩
+  ⟨memSc_zero _, fun q c d hq hc hd => by
+    rw [lowGet_twAccZero Qlow q c d hq hc hd]; exact memSc_zero _⟩
 
 /-- The real node and weight of a spec at its root. -/
 def nodeSR (nd : NodeSpec) : ℝ := specNode nd (rootOf nd)
@@ -337,7 +343,8 @@ theorem iPartialOK_sound {acc : TwAcc} {I : ℝ} (hI : memSc (2 * KOut) I acc.iP
   have h1 := hI.1
   nlinarith
 
-/-- The excursion bound: `|x − t / 2^{2 KOut}| ≤ excursion / 2^{2 KOut}` for `x` in the enclosure. -/
+/-- The excursion bound: `|x − t / 2^{2 KOut}| ≤ excursion / 2^{2 KOut}` for `x` in the enclosure.
+-/
 lemma abs_sub_le_excursionTw {x : ℝ} {e : ℤ × ℤ} (hx : memSc (2 * KOut) x e) (t : ℤ) :
     |x - (t : ℝ) / 2 ^ (2 * KOut)| ≤ (excursionTw e t : ℝ) / 2 ^ (2 * KOut) := by
   have hpos : (0 : ℝ) < (2 : ℝ) ^ (2 * KOut) := by positivity

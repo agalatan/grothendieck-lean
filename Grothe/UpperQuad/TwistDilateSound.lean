@@ -1,7 +1,7 @@
 import Grothe.UpperQuad.TwistFunctional
 import Grothe.UpperQuad.PairsSound
 import Grothe.UpperQuad.NodeSound
-import GrotheQuadKernel.Dilate
+import GrotheQuadExtKernel.Dilate
 
 /-!
 # Soundness of the dilation table and of the dilated functional
@@ -200,7 +200,8 @@ lemma dilLevel0_sound (P : ℕ) {μ : ℝ} {mu : Ival} (hmu : mem μ mu) {sq : A
   (dilLevel0_spec P hmu hsq D le_rfl).2
 
 lemma dilLevelNext_sound (P : ℕ) {μ : ℝ} {mu : Ival} (hmu : mem μ mu) {sq : Array Ival} {D e : ℕ}
-    (hsq : SqOK sq (D + 1)) (he : e < D) {prev : Array DilRow} (hprev : DilRowsOK μ e (D - e) prev) :
+    (hsq : SqOK sq (D + 1)) (he : e < D) {prev : Array DilRow}
+    (hprev : DilRowsOK μ e (D - e) prev) :
     DilRowsOK μ (e + 1) (D - (e + 1)) (dilLevelNext P mu sq D e prev) := by
   intro f hf m hm
   unfold dilLevelNext
@@ -253,13 +254,15 @@ def levels {α : Type*} (step : α → ℕ → α) (l0 : α) : ℕ → α
 lemma foldl_levels {α β : Type*} (step : α → ℕ → α) (conv : α → β) (l0 : α) (n : ℕ) :
     (((List.range n).foldl (fun st e => (step st.1 e, st.2.push (conv (step st.1 e))))
         (l0, #[conv l0])).2.size = n + 1) ∧
-      ∀ e, e ≤ n → ∀ d, ((List.range n).foldl (fun st e => (step st.1 e, st.2.push (conv (step st.1 e))))
+      ∀ e, e ≤ n → ∀ d,
+        ((List.range n).foldl (fun st e => (step st.1 e, st.2.push (conv (step st.1 e))))
         (l0, #[conv l0])).2.getD e d = conv (levels step l0 e) := by
   have key : ∀ n, ((List.range n).foldl (fun st e => (step st.1 e, st.2.push (conv (step st.1 e))))
       (l0, #[conv l0])).1 = levels step l0 n ∧
       ((List.range n).foldl (fun st e => (step st.1 e, st.2.push (conv (step st.1 e))))
         (l0, #[conv l0])).2.size = n + 1 ∧
-      ∀ e, e ≤ n → ∀ d, ((List.range n).foldl (fun st e => (step st.1 e, st.2.push (conv (step st.1 e))))
+      ∀ e, e ≤ n → ∀ d,
+        ((List.range n).foldl (fun st e => (step st.1 e, st.2.push (conv (step st.1 e))))
         (l0, #[conv l0])).2.getD e d = conv (levels step l0 e) := by
     intro n
     induction n with
@@ -398,7 +401,8 @@ lemma fullTriangleDil_sound (P : ℕ) (hP : 1 ≤ P) {κ A : ℝ} {neg : Bool} {
     (g h : ℕ) (hgh : g + h ≤ D) :
     memSc KDil (signedU κ neg A g h) (twGet (fullTriangleDil P vals D) g h) := by
   unfold fullTriangleDil
-  obtain ⟨h1, h2⟩ := ivOfFn_size D (fun g h => if g ≤ h + 1 then vals.getD (canonicalRank D g h) zeroI
+  obtain ⟨h1, h2⟩ := ivOfFn_size D (fun g h =>
+    if g ≤ h + 1 then vals.getD (canonicalRank D g h) zeroI
     else mulI P (vals.getD (canonicalRank D (h + 1) (g - 1)) zeroI) (reflectI P g h)) g (by omega)
   have hsz : g < (fullTriangleI P vals D).size := h1
   have hsz2 : h < ((fullTriangleI P vals D).getD g #[]).size := h2 h hgh
@@ -464,7 +468,8 @@ theorem unnormalise_represents (P : ℕ) (hP : 1 ≤ P) (j : ℕ) {s : ℝ} (hs 
   have hsm : (((κ : ℂ) • Kfun j s) (H e f)).re = κ * (Kfun j s (H e f)).re := by
     rw [AddMonoidHom.smul_apply, smul_eq_mul, Complex.re_ofReal_mul]
   rw [hsm, re_Kfun_H j hs hv e f]
-  have hK := dilateDil_sound hdil (fun g h hgh => fullTriangleDil_sound P hP D hvals g h hgh) e f hef
+  have hK := dilateDil_sound hdil (fun g h hgh => fullTriangleDil_sound P hP D hvals g h hgh)
+    e f hef
   have hprod := memSc_mulPair (sqrtFactDil_sound P D hD e f hef) hK
   have hshift := memSc_shift (K := KTw) (s := 2 * KDil - KTw) (by
     rw [show KTw + (2 * KDil - KTw) = 2 * KDil by unfold KTw KDil; norm_num]

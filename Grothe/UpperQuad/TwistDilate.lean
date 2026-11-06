@@ -1,6 +1,6 @@
 import Grothe.UpperQuad.TwistSound
 import Grothe.UpperChaos.HermiteBasis
-import GrotheQuadKernel.Dilate
+import GrotheQuadExtKernel.Dilate
 
 /-!
 # The Hermite dilation identity
@@ -9,12 +9,12 @@ For a real `μ` the dilated normalised Hermite functions expand finitely in the 
 
     h_{e,f}(μ w) = Σ_{g,h} T[e,f; g,h] h_{g,h}(w),
 
-with `T = dilT μ` defined by the recurrence of `GrotheQuadKernel/Dilate.lean` (`docs/UPPER_CLOSURE.md`
-§8.1), which mirrors the normalised ladders
+with `T = dilT μ` defined by the recurrence of `GrotheQuadKernel/Dilate.lean`
+(`docs/UPPER_CLOSURE.md` §8.1), which mirrors the normalised ladders
 
     w h_{g,h} = √(g+1) h_{g+1,h} + √h h_{g,h−1},     w̄ h_{g,h} = √(h+1) h_{g,h+1} + √g h_{g−1,h}
 
-(`w_mul_hfun`, `conj_mul_hfun`, from `X0_mul_H`, `X1_mul_H`).  `T[e,f; g,h]` vanishes unless `g ≤ e`,
+(`w_mul_hfun`, `conj_mul_hfun`, from `X0_mul_H`, `X1_mul_H`). `T[e,f; g,h]` vanishes unless `g ≤ e`,
 `h ≤ f` and `g − h = e − f` (`dilT_eq_zero`), and the identity holds with the sums over any box
 `g, h < N`, `N ≥ e + f + 2` (`hfun_dilate`); `sum_box_eq_sum_min` turns the box sum into the
 kernel's sum over `m = min(g, h)` (`pairOfMin`).

@@ -1,7 +1,7 @@
 import Grothe.UpperQuad.TwistDilateSound
 import Grothe.UpperQuad.SeedAnalytic
 import Grothe.UpperQuad.ProfileSound
-import GrotheQuadKernel.TwistNode
+import GrotheQuadExtKernel.TwistNode
 
 /-!
 # Soundness of one twisted node
@@ -9,8 +9,8 @@ import GrotheQuadKernel.TwistNode
 `twistJ_sound`: at a node `s > 0` with `vprof s ≠ 0`, every entry `(c, d)`, `c + d ≤ D_out`, of the
 kernel's `twistJ` encloses `Re J^{(j)}_{c,d}(s)` (`twistCoef`, real by `twistCoef_im`).  The chain:
 the canonical triangle at the rescaled shift `A' = A√λ` (`mem_canonicalTriangleI`, with S2 at `A'²`
-from `mem_seedJ0I_moment`), the full signed triangle and the dilation (`unnormalise_represents`), the
-operator `(Q_rᵀ)^j` (`applyQPow_sound`, the scalars by `mem_nodeCoefs`), the normalisation by
+from `mem_seedJ0I_moment`), the full signed triangle and the dilation (`unnormalise_represents`),
+the operator `(Q_rᵀ)^j` (`applyQPow_sound`, the scalars by `mem_nodeCoefs`), the normalisation by
 `√(c! d!)`, `e^{−jεs}` and the sign `(−1)^j` (`twistCoef_eq_K`).
 
 `twistNode_sound`: the node's `I`-contribution and low-band contributions enclose
@@ -126,7 +126,8 @@ lemma twistValid_unpack (P : ℕ) (prm : TwistParams) (nd : NodeSpec) (aI : Ival
       nodeFactorsValid P (nodeS P nd) = true ∧ expAlphaValid P prm.j (nodeS P nd) = true ∧
       isPos (lamI P prm.j) = true ∧ isPos (sqrtI P (lamI P prm.j)) = true ∧
       isPos (mulI P (sqrtI P (lamI P prm.j)) aI) = true ∧
-      ratiosValid P (sqI P (mulI P (sqrtI P (lamI P prm.j)) aI)) (ratioDepth (twistDin prm)) = true ∧
+      ratiosValid P (sqI P (mulI P (sqrtI P (lamI P prm.j)) aI))
+        (ratioDepth (twistDin prm)) = true ∧
       (∀ n, n < twistDin prm + 1 → isPos (sqrtNatI P (n + 1)) = true) ∧
       (∀ c, c < (twistDin prm + 1) / 2 + 1 →
         isPos (mulI P (mulI P (sqrtI P (lamI P prm.j)) aI) (sqrtNatI P (c + 1))) = true) := by
@@ -165,7 +166,8 @@ structure NodeData (P : ℕ) (piI : Ival) (s : ℝ) (sI : Ival) (neg : Bool) (aI
   sign : profileSign s = signOf neg
   shift : mem (profileShift s) aI
 
-lemma mem_twistShift (P : ℕ) (hP : 1 ≤ P) (j : ℕ) {s : ℝ} {aI : Ival} (hA : mem (profileShift s) aI) :
+lemma mem_twistShift (P : ℕ) (hP : 1 ≤ P) (j : ℕ) {s : ℝ} {aI : Ival}
+    (hA : mem (profileShift s) aI) :
     mem (twistShift j s) (mulI P (sqrtI P (lamI P j)) aI) := by
   unfold twistShift
   rw [mul_comm]
@@ -258,7 +260,8 @@ theorem twistJ_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.pi pi
       · simpa using h1
   have hS0 := seedScalar_pos hA'0
   have hvals : ∀ i, i < (canonicalPairs Din Din).size →
-      mem ((seedScalar (twistShift j s))⁻¹ * signOf neg ^ (((canonicalPairs Din Din).getD i (0, 0)).1 +
+      mem ((seedScalar (twistShift j s))⁻¹ *
+          signOf neg ^ (((canonicalPairs Din Din).getD i (0, 0)).1 +
           ((canonicalPairs Din Din).getD i (0, 0)).2) *
         (canonicalCoefficient (twistShift j s) ((canonicalPairs Din Din).getD i (0, 0))).re)
         ((canonicalTriangleI P (ofInt P 1) neg zeroI (mulI P (sqrtI P (lamI P j)) aI)
@@ -283,7 +286,8 @@ theorem twistJ_sound (P : ℕ) (hP : 1 ≤ P) {piI : Ival} (hpi : mem Real.pi pi
   -- the operator
   have hr : mem (Real.sqrt s) (sqrtI P sI) := mem_sqrtI P hs0 hnd.mem_s
   rw [← hsqfDil] at hK
-  have hJ' := applyQPow_sound (nodeCoefs P tabs.terms sI (sqrtI P sI)) (toTw (divN P 2 (sqrtI P sI)))
+  have hJ' := applyQPow_sound (nodeCoefs P tabs.terms sI (sqrtI P sI))
+    (toTw (divN P 2 (sqrtI P sI)))
     (a := nodeA tabs.terms s) (h := Real.sqrt s / 2)
     (fun j' k hjk => mem_nodeCoefs P hP hT hnd.mem_s hr j' k hjk)
     (memTw_toTw (mem_divN P hP (by norm_num) hr)) j prm.Dout

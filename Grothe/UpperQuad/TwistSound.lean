@@ -299,7 +299,8 @@ lemma rowLoop_state (coefs : Array (ℤ × ℤ)) (kMax DV Dacc : ℕ) {F G : CPo
           let X := stepX (DV - (k - 1)) st.1
           (X, axpy (coefs.getD k (0, 0)) Dacc X st.2)) (V, acc)
       Represents (mulLeft ((X 0 + X 1) ^ (n - 1)) F) (DV - (n - 1)) st.1 ∧
-        Represents2 (G + ∑ k ∈ Finset.range n, (a k : ℂ) • mulLeft ((X 0 + X 1) ^ k) F) Dacc st.2 := by
+        Represents2 (G + ∑ k ∈ Finset.range n, (a k : ℂ) • mulLeft ((X 0 + X 1) ^ k) F) Dacc
+          st.2 := by
   intro n
   induction n with
   | zero =>
@@ -398,13 +399,15 @@ theorem rowsLoop_sound (coefs : Array (Array (ℤ × ℤ))) (Din Dacc : ℕ) {F 
 
 /-! ### One application of `Q_rᵀ` and its powers -/
 
-/-- The polynomial of the node operator: `Q = h (w − w̄) Σ_{j' + k ≤ 17} a_{j'k} (w w̄)^{j'} (w + w̄)^k`
+/-- The polynomial of the node operator:
+`Q = h (w − w̄) Σ_{j' + k ≤ 17} a_{j'k} (w w̄)^{j'} (w + w̄)^k`
 (with `a_{j'k} = P_{j'k}(s) (r/2)^k` and `h = r/2` this is `Q_r`). -/
 noncomputable def qPoly (h : ℝ) (a : ℕ → ℕ → ℝ) : CPoly :=
   C (h : ℂ) * (X 0 - X 1) * ∑ j ∈ Finset.range 18, ∑ k ∈ Finset.range (17 - j + 1),
     C (a j k : ℂ) * (X 0 * X 1) ^ j * (X 0 + X 1) ^ k
 
-/-- A functional is real-homogeneous when real scalars pass through it (`K_s` is conjugate-linear). -/
+/-- A functional is real-homogeneous when real scalars pass through it (`K_s` is
+conjugate-linear). -/
 def RealHom (F : CPoly →+ ℂ) : Prop := ∀ (x : ℝ) (p : CPoly), F (C (x : ℂ) * p) = (x : ℂ) * F p
 
 lemma RealHom.mulLeft {F : CPoly →+ ℂ} (hF : RealHom F) (m : CPoly) : RealHom (mulLeft m F) := by

@@ -9,8 +9,9 @@ import Grothe.Upper.ComparisonGroups
 
 The exact rational inequalities between the thresholds of the final facts (`θ_j`, `eps_j`,
 `PortFacts/Thresholds.lean`) and master's constants: the whole errors need
-`(E φ^{2j} + ‖c_j‖² − (j! R_j)²)/2 + ρ_I ≤ θ_j`, the low bands `eps_j / 2^{1024} ≤ (cap_j − ρ_low)²`,
-with `ρ_I = 10⁻¹², 5·10⁻¹⁴, 3·10⁻¹⁴` and `ρ_low = 10⁻¹¹, 10⁻¹⁰, 10⁻¹¹`.
+`(E φ^{2j} + ‖c_j‖² − (j! R_j)²)/2 + ρ_I ≤ θ_j`, the low bands
+`eps_j / 2^{1024} ≤ (cap_j − ρ_low)²`, with `ρ_I = 10⁻¹², 5·10⁻¹⁴, 3·10⁻¹⁴` and
+`ρ_low = 10⁻¹¹, 10⁻¹⁰, 10⁻¹¹`.
 
 Agent-ID: claude-b9ee. Refs #41, #313.
 -/

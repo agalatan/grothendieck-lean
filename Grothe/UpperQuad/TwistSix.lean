@@ -28,7 +28,7 @@ noncomputable section
 
 lemma firstCenter_coeff (q c d : ℕ) :
     (firstCenterCoeff q c d : ℝ) = centerR (centerInts 1) (twistParams 1).E q c d := by
-  simp only [firstCenterCoeff, firstCenterAt, centerR, centerInts, twistParams, if_true,
+  simp only [firstCenterCoeff, firstCenterAt, centerR, centerInts, twistParams, ↓reduceIte,
     Array.getD_eq_getD_getElem?, gradedFlat, gradedFlatIndex]
   push_cast
   rfl
@@ -56,6 +56,7 @@ lemma whole_of_inner {F c : Lp ℂ 2 mu2} {m E θ R Cn ρ ρI : ℝ} (hF : ‖F�
     ‖F - c‖ ≤ R := by
   have h1 : ‖F - c‖ ^ 2 = m - 2 * Complex.re ⟪c, F⟫_ℂ + E := by
     rw [norm_sub_sq (𝕜 := ℂ), hF, hc, inner_re_symm (𝕜 := ℂ)]
+    rfl
   have h2 : ‖c‖ * ρ ≤ Cn * ρ := mul_le_mul_of_nonneg_right hCn hρ
   have h3 : ‖F - c‖ ^ 2 ≤ R ^ 2 := by rw [h1]; nlinarith
   exact (pow_le_pow_iff_left₀ (norm_nonneg _) hR (by norm_num)).mp h3
@@ -68,7 +69,8 @@ theorem hwholeFirst_of_facts {bounds : List ℕ} {ts : List PartialTable}
   have hm : (((phaseMoment2Q + firstEnergyQ - comparisonGroupRadiusQ 1 ^ 2) / 2 + 1 / 10 ^ 12 : ℚ) :
       ℝ) ≤ ((j1ThetaNum / 10 ^ 20 : ℚ) : ℝ) := by exact_mod_cast twist_j1_whole_margin
   push_cast at hm hI
-  exact whole_of_inner norm_hpow_one_sq norm_firstCenter_sq_exact norm_firstCenter_le
+  rw [show (100000000000000000000 : ℝ) = 10 ^ 20 by norm_num] at hI
+  exact whole_of_inner (ρI := 1 / 10 ^ 12) norm_hpow_one_sq norm_firstCenter_sq_exact norm_firstCenter_le
     (by norm_num) (by norm_num) (by norm_num [comparisonGroupRadiusQ]) hI hm
 
 theorem hwholeSecond_of_facts {bounds : List ℕ} {ts : List PartialTable}
@@ -77,9 +79,11 @@ theorem hwholeSecond_of_facts {bounds : List ℕ} {ts : List PartialTable}
   have hI := re_inner_ge_of_facts hF (by norm_num) (by norm_num) hQ secondCenterCoeff
     (fun q c d _ _ _ => secondCenter_coeff q c d)
   have hm : (((phaseMoment4Q + secondEnergyQ - (2 * comparisonGroupRadiusQ 2) ^ 2) / 2 +
-      5 / 10 ^ 14 : ℚ) : ℝ) ≤ ((j2ThetaNum / 10 ^ 20 : ℚ) : ℝ) := by exact_mod_cast twist_j2_whole_margin
+      5 / 10 ^ 14 : ℚ) : ℝ) ≤ ((j2ThetaNum / 10 ^ 20 : ℚ) : ℝ) := by
+    exact_mod_cast twist_j2_whole_margin
   push_cast at hm hI
-  exact whole_of_inner norm_hpow_two_sq norm_secondCenter_sq_exact norm_secondCenter_le
+  rw [show (100000000000000000000 : ℝ) = 10 ^ 20 by norm_num] at hI
+  exact whole_of_inner (ρI := 5 / 10 ^ 14) norm_hpow_two_sq norm_secondCenter_sq_exact norm_secondCenter_le
     (by norm_num) (by norm_num) (by norm_num [comparisonGroupRadiusQ]) hI hm
 
 theorem hwholeThird_of_facts {bounds : List ℕ} {ts : List PartialTable}
@@ -88,9 +92,11 @@ theorem hwholeThird_of_facts {bounds : List ℕ} {ts : List PartialTable}
   have hI := re_inner_ge_of_facts hF (by norm_num) (by norm_num) hQ thirdCenterCoeff
     (fun q c d _ _ _ => thirdCenter_coeff q c d)
   have hm : (((phaseMoment6Q + thirdEnergyQ - (6 * comparisonGroupRadiusQ 3) ^ 2) / 2 +
-      3 / 10 ^ 14 : ℚ) : ℝ) ≤ ((j3ThetaNum / 10 ^ 20 : ℚ) : ℝ) := by exact_mod_cast twist_j3_whole_margin
+      3 / 10 ^ 14 : ℚ) : ℝ) ≤ ((j3ThetaNum / 10 ^ 20 : ℚ) : ℝ) := by
+    exact_mod_cast twist_j3_whole_margin
   push_cast at hm hI
-  exact whole_of_inner norm_hpow_three_sq norm_thirdCenter_sq_exact norm_thirdCenter_le
+  rw [show (100000000000000000000 : ℝ) = 10 ^ 20 by norm_num] at hI
+  exact whole_of_inner (ρI := 3 / 10 ^ 14) norm_hpow_three_sq norm_thirdCenter_sq_exact norm_thirdCenter_le
     (by norm_num) (by norm_num) (by norm_num [comparisonGroupRadiusQ]) hI hm
 
 /-! ### The low bands -/
@@ -100,6 +106,7 @@ lemma low_of_margin {x ρ ρL cap e : ℝ} (hx : x ≤ ρ + Real.sqrt e) (hρ : 
   have : Real.sqrt e ≤ cap - ρL := Real.sqrt_le_iff.mpr ⟨by linarith, he⟩
   linarith
 
+set_option exponentiation.threshold 1100 in
 theorem hfirst_of_facts {bounds : List ℕ} {ts : List PartialTable}
     (hF : FactsOf 1 bounds ts j1ThetaNum (10 ^ 20) j1Eps) (hQ : TwistQuadHyp 1 (1 / 10 ^ 11)) :
     ‖projOn (firstCenterBandModes 0) (firstTaylorL2 - firstCenter)‖ ≤
@@ -119,11 +126,14 @@ theorem hfirst_of_facts {bounds : List ℕ} {ts : List PartialTable}
       change _ < 2 * 26
       omega)
     (by norm_num [j1Eps])
-  have hm : ((j1Eps / 2 ^ 1024 : ℚ) : ℝ) ≤ ((((firstCapturedErrorQ 0 - 1 / 10 ^ 11) ^ 2 : ℚ)) : ℝ) := by
+  have hm : ((j1Eps / 2 ^ 1024 : ℚ) : ℝ) ≤
+      ((((firstCapturedErrorQ 0 - 1 / 10 ^ 11) ^ 2 : ℚ)) : ℝ) := by
     exact_mod_cast twist_j1_low_margin
   push_cast at hm
-  exact low_of_margin (by simpa [KOut] using h) le_rfl (by norm_num [firstCapturedErrorQ]) hm
+  have h' : ‖projOn (firstCenterBandModes 0) (firstTaylorL2 - firstCenter)‖ ≤ _ := h
+  exact low_of_margin (by simpa [KOut] using h') le_rfl (by norm_num [firstCapturedErrorQ]) hm
 
+set_option exponentiation.threshold 1100 in
 theorem hsecond_of_facts {bounds : List ℕ} {ts : List PartialTable}
     (hF : FactsOf 2 bounds ts j2ThetaNum (10 ^ 20) j2Eps) (hQ : TwistQuadHyp 2 (1 / 10 ^ 10)) :
     ‖projOn (secondCenterBandModes 0) (secondTaylorL2 - secondCenter)‖ ≤
@@ -143,11 +153,14 @@ theorem hsecond_of_facts {bounds : List ℕ} {ts : List PartialTable}
       change _ < 2 * 26
       omega)
     (by norm_num [j2Eps])
-  have hm : ((j2Eps / 2 ^ 1024 : ℚ) : ℝ) ≤ ((((secondCapturedErrorQ 0 - 1 / 10 ^ 10) ^ 2 : ℚ)) : ℝ) := by
+  have hm : ((j2Eps / 2 ^ 1024 : ℚ) : ℝ) ≤
+      ((((secondCapturedErrorQ 0 - 1 / 10 ^ 10) ^ 2 : ℚ)) : ℝ) := by
     exact_mod_cast twist_j2_low_margin
   push_cast at hm
-  exact low_of_margin (by simpa [KOut] using h) le_rfl (by norm_num [secondCapturedErrorQ]) hm
+  have h' : ‖projOn (secondCenterBandModes 0) (secondTaylorL2 - secondCenter)‖ ≤ _ := h
+  exact low_of_margin (by simpa [KOut] using h') le_rfl (by norm_num [secondCapturedErrorQ]) hm
 
+set_option exponentiation.threshold 1100 in
 theorem hthird_of_facts {bounds : List ℕ} {ts : List PartialTable}
     (hF : FactsOf 3 bounds ts j3ThetaNum (10 ^ 20) j3Eps) (hQ : TwistQuadHyp 3 (1 / 10 ^ 11)) :
     ‖projOn (thirdCenterBandModes 0) (thirdTaylorL2 - thirdCenter)‖ ≤
@@ -167,15 +180,18 @@ theorem hthird_of_facts {bounds : List ℕ} {ts : List PartialTable}
       change _ < 2 * 6
       omega)
     (by norm_num [j3Eps])
-  have hm : ((j3Eps / 2 ^ 1024 : ℚ) : ℝ) ≤ ((((thirdCapturedErrorQ 0 - 1 / 10 ^ 11) ^ 2 : ℚ)) : ℝ) := by
+  have hm : ((j3Eps / 2 ^ 1024 : ℚ) : ℝ) ≤
+      ((((thirdCapturedErrorQ 0 - 1 / 10 ^ 11) ^ 2 : ℚ)) : ℝ) := by
     exact_mod_cast twist_j3_low_margin
   push_cast at hm
-  exact low_of_margin (by simpa [KOut] using h) le_rfl (by norm_num [thirdCapturedErrorQ]) hm
+  have h' : ‖projOn (thirdCenterBandModes 0) (thirdTaylorL2 - thirdCenter)‖ ≤ _ := h
+  exact low_of_margin (by simpa [KOut] using h') le_rfl (by norm_num [thirdCapturedErrorQ]) hm
 
 /-! ### The six hypotheses from the covered-set remainders
 
 `TwistRemainderHyp j ρ` (the Gauss–Legendre remainders on the panels; the tail and the gaps are
-proved, `norm_twistTail_sq_le`) with `ρ = 10⁻¹¹ − 10⁻¹⁵` (`j = 1, 3`) and `10⁻¹⁰ − 10⁻¹⁵` (`j = 2`). -/
+proved, `norm_twistTail_sq_le`) with `ρ = 10⁻¹¹ − 10⁻¹⁵` (`j = 1, 3`) and `10⁻¹⁰ − 10⁻¹⁵` (`j = 2`).
+-/
 
 lemma quad_of_rem (j : ℕ) {ρ R : ℝ} (hρ : 0 ≤ ρ) (hR : 1 / 10 ^ 15 + ρ = R)
     (h : TwistRemainderHyp j ρ) : TwistQuadHyp j R := by

@@ -49,7 +49,8 @@ lemma integrable_twist (j : ℕ) (i : Idx2) :
 
 lemma measurable_twistSlice (j : ℕ) (i : Idx2) : Measurable (twistSlice j i) := by
   have hm : Measurable (fun u : ℂ × ℂ => conj (hfun2 i u) * hpow j u) :=
-    (Complex.continuous_conj.comp (continuous_hfun2 i)).measurable.mul (chargeFn_hpow phiBound j).meas
+    (Complex.continuous_conj.comp (continuous_hfun2 i)).measurable.mul
+      (chargeFn_hpow phiBound j).meas
   exact hm.stronglyMeasurable.integral_prod_right'.measurable
 
 lemma twistSlice_rot (j : ℕ) (i : Idx2) (hi : i.1.1 + i.2.1 = i.1.2 + i.2.2 + 1) (c z : ℂ)
@@ -123,7 +124,8 @@ theorem twistCoefficient_eq_radial (j q c d : ℕ) (hc : c ≤ q + 1) (hd : d �
     show q + 1 - c + c = q - d + d + 1
     omega
   have hm : Measurable (fun s : ℝ => twistSlice j i (Real.sqrt s : ℂ)) :=
-    (measurable_twistSlice j i).comp (Complex.measurable_ofReal.comp Real.continuous_sqrt.measurable)
+    (measurable_twistSlice j i).comp
+      (Complex.measurable_ofReal.comp Real.continuous_sqrt.measurable)
   unfold twistCoefficient hpowL2 hvec2
   rw [inner_toLp2]
   calc

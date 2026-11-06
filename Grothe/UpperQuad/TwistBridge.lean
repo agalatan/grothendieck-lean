@@ -16,8 +16,8 @@ import Grothe.UpperChaos.Realise2
 Per power `j` the facts (`accOK_of_facts`) bound the exact Gauss–Legendre sums of the committed
 partition: the `I_j`-sum `Σ_i c_j(i) â_j(i) ≥ θ_j` and the low band `Σ_{low} (â_j(i) − c_j(i))² ≤
 eps_j / 2^{1024}`, where `â_j(q,c,d) = twistGauss j q c d` is the Gauss sum of the radial integrand
-of `a_j(q,c,d) = ⟨hvec2 (gradedMode q c d), hpow j⟩` (`twistCoefficient_eq_ofReal`).  The one analytic
-hypothesis is the Gauss–Legendre remainder in `ℓ²` over the center's support,
+of `a_j(q,c,d) = ⟨hvec2 (gradedMode q c d), hpow j⟩` (`twistCoefficient_eq_ofReal`). The one
+analytic hypothesis is the Gauss–Legendre remainder in `ℓ²` over the center's support,
 
     TwistQuadHyp j ρ :  Σ_{q < Q_j} Σ_{c ≤ q+1} Σ_{d ≤ q} (a_j(q,c,d) − â_j(q,c,d))² ≤ ρ²,
 
@@ -26,8 +26,8 @@ used with `ρ_j = 10⁻¹¹, 10⁻¹⁰, 10⁻¹¹`.  Then (`docs/UPPER_CLOSURE.
 * whole: `‖hpow j − c_j‖² = E φ^{2j} − 2 Re⟨c_j, hpow j⟩ + ‖c_j‖²` with
   `Re⟨c_j, hpow j⟩ = Σ_i c_j(i) a_j(i) ≥ θ_j − ‖c_j‖ ρ_j` (Cauchy–Schwarz), and the margins
   `j<j>_whole_margin` of `PortFacts/Margins.lean`;
-* low band: `‖P_B (hpow j − c_j)‖² = Σ_{low} (a_j − c_j)² ≤ (ρ_j + √(eps_j)/2^{512})²` (Parseval on the
-  band, Minkowski), and the margins `j<j>_low_margin`.
+* low band: `‖P_B (hpow j − c_j)‖² = Σ_{low} (a_j − c_j)² ≤ (ρ_j + √(eps_j)/2^{512})²` (Parseval on
+  the band, Minkowski), and the margins `j<j>_low_margin`.
 
 Agent-ID: claude-b9ee. Refs #41, #313.
 -/
@@ -173,7 +173,7 @@ lemma sum_center_reindex (Q Dout : ℕ) (hDQ : Dout + 1 = 2 * Q) (F : ℕ → �
       omega
     · apply Finset.sum_eq_zero
       intro d _
-      rw [if_neg (by omega)]
+      exact ite_eq_right_iff.mpr fun h => absurd h (by omega)
   simp_rw [hc]
   exact sum_range_filter_le (Dout + 1) (q + 1) (by omega) _
 
@@ -292,7 +292,8 @@ theorem re_inner_ge_of_facts {j : ℕ} {bounds : List ℕ} {ts : List PartialTab
       (∑ q ∈ Finset.range Q, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
         centerR (centerInts j) (twistParams j).E q c d * twistGauss j q c d) +
       ∑ q ∈ Finset.range Q, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
-        (a q c d : ℝ) * ((∫ s in Set.Ioi (0 : ℝ), twistIntegrand j q c d s) - twistGauss j q c d) := by
+        (a q c d : ℝ) *
+          ((∫ s in Set.Ioi (0 : ℝ), twistIntegrand j q c d s) - twistGauss j q c d) := by
     rw [← Finset.sum_add_distrib]
     apply Finset.sum_congr rfl; intro q hq
     rw [← Finset.sum_add_distrib]
@@ -310,7 +311,8 @@ theorem re_inner_ge_of_facts {j : ℕ} {bounds : List ℕ} {ts : List PartialTab
     rw [norm_gradedHermite_sq_cast]; push_cast; rfl
   rw [← hnorm] at hcs
   have h2 : (∑ q ∈ Finset.range Q, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
-      (a q c d : ℝ) * ((∫ s in Set.Ioi (0 : ℝ), twistIntegrand j q c d s) - twistGauss j q c d)) ^ 2 ≤
+      (a q c d : ℝ) *
+        ((∫ s in Set.Ioi (0 : ℝ), twistIntegrand j q c d s) - twistGauss j q c d)) ^ 2 ≤
       (‖gradedHermite Q a‖ * ρ) ^ 2 :=
     le_trans hcs (by rw [mul_pow]; exact mul_le_mul_of_nonneg_left hQ (sq_nonneg _))
   have hb := abs_le_of_sq_le_sq' h2 (by positivity)
@@ -331,8 +333,10 @@ theorem band_le_of_facts {j : ℕ} {bounds : List ℕ} {ts : List PartialTable} 
   rw [← Real.sqrt_sq (add_nonneg hρ (Real.sqrt_nonneg _)), ← Real.sqrt_sq (norm_nonneg _)]
   apply Real.sqrt_le_sqrt
   rw [norm_projOn_chargeOne_sub_graded_sq B (hpowL2 j) (chargeOne_hpowL2 j) (qlow j) M a hdegree]
+  have hB' : ∀ (q : Fin (qlow j)) (c : Fin (q.val + 2)) (d : Fin (q.val + 1)),
+      gradedMode q c d ∈ B := fun q c d => hB ⟨q, (c, d)⟩
   rw [Fintype.sum_sigma]
-  simp only [Fintype.sum_prod_type, hB, ↓reduceIte, gradedIdx]
+  simp only [Fintype.sum_prod_type, gradedIdx, hB', ↓reduceIte]
   rw [FixedChaosSmoothing.sum_bounded_graded_eq_range (qlow j)
     (fun q c d => ‖⟪hvec2 (gradedMode q c d), hpowL2 j⟫_ℂ -
       (if q < M then (a q c d : ℂ) else 0)‖ ^ 2)]
@@ -343,7 +347,9 @@ theorem band_le_of_facts {j : ℕ} {bounds : List ℕ} {ts : List PartialTable} 
     intro q c d hq hc hd
     have h := twistCoefficient_eq_ofReal j q c d (by omega) (by omega)
     unfold twistCoefficient at h
-    rw [h, if_pos (by omega), ← Complex.ofReal_ratCast, ← Complex.ofReal_sub, Complex.norm_real,
+    have hqM : q < M := by omega
+    simp only [hqM, ↓reduceIte]
+    rw [h, ← Complex.ofReal_ratCast, ← Complex.ofReal_sub, Complex.norm_real,
       Real.norm_eq_abs, sq_abs, ha q c d hq hc hd]
     ring
   have hsum : ∑ q ∈ Finset.range (qlow j), ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),

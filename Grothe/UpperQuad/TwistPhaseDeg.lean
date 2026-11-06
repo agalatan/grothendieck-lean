@@ -5,8 +5,8 @@ import Grothe.UpperQuad.TwistFactsSound
 
 Every monomial `C U^i V^j W^k` of `phaseStrs` has total degree `i + j + k ≤ 17` (`phaseDegOK`, the
 finite check `PhaseDegOK` used by the twisted node scalars through `TermsOK`), by kernel evaluation
-of the string parser on the 1,140 committed strings in chunks of 32 (`decide +kernel`; the whole list
-at once exhausts the memory).
+of the string parser on the 1,140 committed strings in chunks of 32 (`decide +kernel`; the whole
+list at once exhausts the memory).
 
 Agent-ID: claude-b9ee. Refs #41, #313.
 -/

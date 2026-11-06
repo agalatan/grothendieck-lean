@@ -5,9 +5,10 @@ import Grothe.UpperQuad.WatsonSeed
 /-!
 # From the port facts to the exact Gauss sums
 
-The range facts `rangeFact j lo hi t` (the node loop over `[lo, hi)` lies in the committed table `t`)
-and the final fact `finalFact j bounds ts num den eps` (the ranges tile the partition; the checks on
-the sum of the tables) of `Grothe/UpperQuad/PortFacts/Common.lean` give, by `twistSpecs_sound`:
+The range facts `rangeFact j lo hi t` (the node loop over `[lo, hi)` lies in the committed table
+`t`) and the final fact `finalFact j bounds ts num den eps` (the ranges tile the partition; the
+checks on the sum of the tables) of `Grothe/UpperQuad/PortFacts/Common.lean` give, by
+`twistSpecs_sound`:
 
 * `gaussI_ge_of_facts`: the exact Gauss–Legendre `I_j`-sum over the whole partition,
   `Σ_n nodeITerm`, is at least `num / den`;
@@ -61,7 +62,8 @@ def PhaseDegOK : Prop := ∀ t ∈ phaseTerms, t.1.1 + t.1.2.1 + t.1.2.2 ≤ 17
 
 lemma termsOK_phaseArr (hdeg : PhaseDegOK) : TermsOK phaseArr := termsOK_phaseTermArr hdeg
 
-lemma tablesOK (j : ℕ) (hdeg : PhaseDegOK) (htv : twistTablesValid P0 (twistParams j) (tables j) = true) :
+lemma tablesOK (j : ℕ) (hdeg : PhaseDegOK)
+    (htv : twistTablesValid P0 (twistParams j) (tables j) = true) :
     TwistTablesOK P0 (twistParams j) (tables j) :=
   twistTables_ok P0 (twistParams j) phaseArr (centerInts j) (termsOK_phaseArr hdeg) htv
 
@@ -80,7 +82,8 @@ lemma accOK_of_rangeFact (j : ℕ) (hj : j = 1 ∨ j = 2 ∨ j = 3) (hdeg : Phas
       (t.toAcc (qlow j)) := by
   obtain ⟨hpv, acc, hacc, hwithin⟩ := rangeFact_spec h
   have h0 := accOK_zero (qlow j)
-  have hs := twistSpecs_sound P0 (by decide) mem_piI (Grothe.UpperQuad.Watson.watsonHyp 70) profile_agrees hpv
+  have hs := twistSpecs_sound P0 (by decide) mem_piI (Grothe.UpperQuad.Watson.watsonHyp 70)
+    profile_agrees hpv
     (paramsOK_twistParams j hj) (tablesOK j hdeg htv) (rangeSpecs lo hi) h0 hacc
   simp only [zero_add] at hs
   exact accOK_of_within hs hwithin
@@ -183,7 +186,8 @@ theorem accOK_of_facts (j : ℕ) (hj : j = 1 ∨ j = 2 ∨ j = 3) (hdeg : PhaseD
 lemma foldl_add_sum3 (Q : ℕ) (f : ℕ → ℕ → ℕ → ℤ) (s0 : ℤ) :
     (List.range Q).foldl (fun s q => (List.range (q + 2)).foldl (fun s c =>
       (List.range (q + 1)).foldl (fun s d => s + f q c d) s) s) s0 =
-      s0 + ∑ q ∈ Finset.range Q, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1), f q c d := by
+      s0 + ∑ q ∈ Finset.range Q, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
+        f q c d := by
   have h1 : ∀ (n : ℕ) (g : ℕ → ℤ) (s : ℤ),
       (List.range n).foldl (fun s d => s + g d) s = s + ∑ d ∈ Finset.range n, g d := by
     intro n g s
@@ -209,7 +213,8 @@ lemma foldl_add_sum3 (Q : ℕ) (f : ℕ → ℕ → ℕ → ℤ) (s0 : ℤ) :
 /-- `lowBandOK`: the squared distances of the enclosed values from the center add up to at most
 `eps / 2^{4 KOut}`. -/
 theorem lowBandOK_sound {Qlow E : ℕ} (hE : E ≤ 2 * KOut) {acc : TwAcc} {L : ℕ → ℕ → ℕ → ℝ}
-    (hL : ∀ q c d, q < Qlow → c < q + 2 → d < q + 1 → memSc (2 * KOut) (L q c d) (lowGet acc.low q c d))
+    (hL : ∀ q c d, q < Qlow → c < q + 2 → d < q + 1 →
+      memSc (2 * KOut) (L q c d) (lowGet acc.low q c d))
     {center : Array ℤ} {eps : ℤ} (h : lowBandOK acc center E Qlow eps = true) :
     ∑ q ∈ Finset.range Qlow, ∑ c ∈ Finset.range (q + 2), ∑ d ∈ Finset.range (q + 1),
       (L q c d - centerR center E q c d) ^ 2 ≤ (eps : ℝ) / 2 ^ (4 * KOut) := by

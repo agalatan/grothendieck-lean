@@ -18,10 +18,11 @@ At a radial node `s ≥ 0` and for the power `j`, with `α = jε`, `λ = 1 + α`
 
 * (8.1) `twistCoef_eq_K`: `J^{(j)}_{c,d}(s) = (−1)^j e^{−αs} nrm_{c,d} K_s(Q_r^j H_{c,d})`, from the
   phase identity `hpow_node` and `conj Q = −Q`;
-* (8.2) `Kfun_H`: `K_s(H_{e,f}) = λ⁻¹ nrm_{e,f}⁻¹ Σ_{g,h} T[e,f; g,h] σ^{g+h} U_{g,h}(A√λ)` (at a node
-  with `vprof s ≠ 0`, `σ = profileSign s`, `A = profileShift s`, `U = canonicalCoefficient`), from the
-  Gaussian tilt `integral_gaussC_tilt`, the dilation identity `hfun_dilate`, the rotation by `σ`
-  and the scale invariance of the phase; `re_Kfun_H` is its real part in the kernel's index `m`;
+* (8.2) `Kfun_H`: `K_s(H_{e,f}) = λ⁻¹ nrm_{e,f}⁻¹ Σ_{g,h} T[e,f; g,h] σ^{g+h} U_{g,h}(A√λ)` (at a
+  node with `vprof s ≠ 0`, `σ = profileSign s`, `A = profileShift s`, `U = canonicalCoefficient`),
+  from the Gaussian tilt `integral_gaussC_tilt`, the dilation identity `hfun_dilate`, the rotation
+  by `σ` and the scale invariance of the phase; `re_Kfun_H` is its real part in the kernel's index
+  `m`;
 * the reality of `J^{(j)}_{c,d}(s)` (`twistCoef_im`), from the conjugation symmetry of `gaussC`.
 
 Agent-ID: claude-b9ee. Refs #41, #313.
@@ -29,7 +30,8 @@ Agent-ID: claude-b9ee. Refs #41, #313.
 
 namespace Grothe.UpperQuad
 
-open MeasureTheory GrotheQuad Grothe.UpperChaos Grothe.Upper Grothe.LowerAnalytic MvPolynomial Complex
+open MeasureTheory GrotheQuad Grothe.UpperChaos Grothe.Upper Grothe.LowerAnalytic MvPolynomial
+open Complex
 open Grothe.UpperChaos.F0ConditionalEvaluator
 open scoped ComplexConjugate
 
@@ -200,7 +202,8 @@ theorem twistCoef_eq_re (j : ℕ) (s : ℝ) (i : ℕ × ℕ) :
 
 /-! ### (8.2): the functional on the Hermite polynomials -/
 
-lemma phase_pos_mul' (r : ℝ) (hr : 0 < r) (z : ℂ) : Grothe.Haag.ph ((r : ℂ) * z) = Grothe.Haag.ph z := by
+lemma phase_pos_mul' (r : ℝ) (hr : 0 < r) (z : ℂ) :
+    Grothe.Haag.ph ((r : ℂ) * z) = Grothe.Haag.ph z := by
   simp only [Grothe.Haag.ph, norm_mul, Complex.norm_real, Real.norm_eq_abs,
     abs_of_pos hr, Complex.ofReal_mul]
   exact mul_div_mul_left z (↑‖z‖) (by exact_mod_cast hr.ne')
@@ -248,7 +251,8 @@ lemma integrable_canonical (A : ℝ) (g h : ℕ) :
   simpa only [canonicalPhase, hfun, map_mul, Complex.conj_ofReal, mul_assoc] using
     (integrable_conj_ev_mul (canonicalPhase_memLp A) (H g h)).const_mul (nrm g h : ℂ)
 
-/-- **(8.2)** `K_s(H_{e,f}) = λ⁻¹ nrm_{e,f}⁻¹ Σ_{g,h} T[e,f; g,h] σ^{g+h} U_{g,h}(A√λ)` (box sum). -/
+/-- **(8.2)** `K_s(H_{e,f}) = λ⁻¹ nrm_{e,f}⁻¹ Σ_{g,h} T[e,f; g,h] σ^{g+h} U_{g,h}(A√λ)` (box sum).
+-/
 theorem Kfun_H (j : ℕ) {s : ℝ} (hs : 0 ≤ s) (hv : vprof s ≠ 0) (e f : ℕ) :
     Kfun j s (H e f) = (((lamR j)⁻¹ * (nrm e f)⁻¹ : ℝ) : ℂ) *
       ∑ g ∈ Finset.range (e + f + 2), ∑ h ∈ Finset.range (e + f + 2),

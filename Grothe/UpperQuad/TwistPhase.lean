@@ -1,6 +1,6 @@
 import Grothe.UpperQuad.TwistSound
 import Grothe.UpperQuad.GaussSound
-import GrotheQuadKernel.Phase
+import GrotheQuadExtKernel.Phase
 import Grothe.UpperChaos.ComparisonPieces
 
 /-!
@@ -250,7 +250,8 @@ lemma mem_phaseRowCoeff (P : ℕ) (hP : 1 ≤ P) {terms : Array PhaseTerm} (hT :
 
 /-- The kernel's node scalars enclose `nodeA` (at the scale `2^KTw`). -/
 theorem mem_nodeCoefs (P : ℕ) (hP : 1 ≤ P) {terms : Array PhaseTerm} (hT : TermsOK terms)
-    {s : ℝ} {sI rI : Ival} (hs : mem s sI) (hr : mem (Real.sqrt s) rI) (j k : ℕ) (hjk : j + k ≤ 17) :
+    {s : ℝ} {sI rI : Ival} (hs : mem s sI) (hr : mem (Real.sqrt s) rI) (j k : ℕ)
+    (hjk : j + k ≤ 17) :
     memTw (nodeA terms s j k) (((nodeCoefs P terms sI rI).getD j #[]).getD k (0, 0)) := by
   have hj : j < 18 := by omega
   have hk : k < 18 - j := by omega
