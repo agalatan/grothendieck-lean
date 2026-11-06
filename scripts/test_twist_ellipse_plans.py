@@ -59,6 +59,19 @@ class PlanTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 gen.validate_plans(data, self.panels)
 
+    def test_nested_records_have_no_lean_layout_break(self):
+        text = gen.render(gen.validate_plans(self.data, self.panels), "a" * 64)
+        literals = [line for line in text.splitlines() if "{ plan :=" in line]
+        self.assertEqual(len(literals), 6)
+        for line in literals:
+            # Regression: etaY previously dedented below geometry on the next
+            # line, causing Lean to expect a closing brace at the line break.
+            self.assertIn("}, etaY :=", line)
+            self.assertIn("}, massCap :=", line)
+            self.assertIn("errorCap :=", line)
+            self.assertEqual(line.count("{"), 3)
+            self.assertEqual(line.count("}"), 3)
+
     def test_bad_certificate_fields_fail(self):
         invalid = {
             "panel": [-1, 2, True, 0.0], "j": [0, 4, True, 1.0],
