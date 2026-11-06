@@ -24,6 +24,42 @@ The canonical panel-error sum is below `1.04·10⁻¹²`; reflection gives the f
 native facts. This closes the remainder premise in `QuadDecomp.quadHyp_of_parts`;
 the twisted source bounds and final upper-endpoint assembly are separate.
 
+**Twisted panel assembly.** `UpperQuad/TwistPanelRemainder.lean` identifies the
+covered twisted discrepancy with the sum of the actual production panel errors
+in the Euclidean space of all modes `q < Q`, `c ≤ q + 1`, `d ≤ q`.
+`TwistPanels.remainder_of_ellipses` proves `TwistRemainderHyp j ρ` for
+`j ∈ {1,2,3}` from a complex extension on each panel, differentiability on the
+closed Bernstein ellipse, its boundary norm cap, and the sum of the resulting
+Gauss remainder bounds. The real-slice identities are required only at positive
+arguments; continuity includes zero. The sum uses every production panel and
+the full graded vector, with no reflection factor. Actual extensions, caps and
+their numerical sum remain inputs to this theorem.
+
+`UpperQuad/CanonicalShellBound.lean` bounds one canonical coefficient of total
+degree `m` by `2 √θ √(m!) (√8 θ / ‖A‖)^m`, where
+`θ = ‖A‖² / Re(A²)` and `Re(A²) > 0`. Its shell norm sum includes the
+`m + 1` pairs of that degree. These bounds use only the standard axioms; the
+panel assembly inherits the registered phase-cover facts and introduces no
+new native fact.
+
+`TwistRadialVector` supplies this assembly with the actual descended radial
+components. Its complete vector is analytic wherever `vC(s) ≠ 0`, including
+zero; the real slice equals `twistIntegrand`. The squared norm is bounded by
+the radial finite-Mehler factor times the conditional coefficient energy.
+Its Y specialization uses the coupled Gaussian-translation estimate with no
+mode-count factor. The signed continuation shift and the disk-geometry shift
+differ only by a sign, so their squared norms, imaginary squares and complex
+squares agree.
+
+`TwistProfileSign` proves constancy of the production profile sign on any
+zero-free closed real interval. `TwistRadialPanels` fixes the sign at each
+panel's left endpoint and proves `remainder_of_descended_ellipses` from only
+profile nonvanishing throughout each closed ellipse, boundary norm caps for
+the actual vector, and the summed numerical remainder bound. Analyticity,
+square-root descent and real-slice identification are supplied by the proof.
+The profile and norm certificates and their accepted total remain required;
+the unconditional upper target is not yet established.
+
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
 polynomial Bezout identity. `Q0GaussQPoly.lean` interprets LeanCert's rational

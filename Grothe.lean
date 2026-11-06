@@ -13664,6 +13664,7 @@ import Grothe.UpperChaos.ZeroProfilePhaseStability
 import Grothe.UpperChaos.ZeroProfileSavedCenter
 import Grothe.UpperQuad.Bridge
 import Grothe.UpperQuad.CanonicalExplicit
+import Grothe.UpperQuad.CanonicalShellBound
 import Grothe.UpperQuad.CentralDerivative
 import Grothe.UpperQuad.ContractSound
 import Grothe.UpperQuad.Data.Cutoffs
@@ -13779,14 +13780,18 @@ import Grothe.UpperQuad.TwistFunctional
 import Grothe.UpperQuad.TwistLoopSound
 import Grothe.UpperQuad.TwistMargins
 import Grothe.UpperQuad.TwistNodeSound
+import Grothe.UpperQuad.TwistPanelRemainder
 import Grothe.UpperQuad.TwistPhase
 import Grothe.UpperQuad.TwistPhaseDeg
+import Grothe.UpperQuad.TwistProfileSign
 import Grothe.UpperQuad.TwistRadial
 import Grothe.UpperQuad.TwistRadialAnalytic
 import Grothe.UpperQuad.TwistRadialDescent
 import Grothe.UpperQuad.TwistRadialExtension
+import Grothe.UpperQuad.TwistRadialPanels
 import Grothe.UpperQuad.TwistRadialParity
 import Grothe.UpperQuad.TwistRadialReal
+import Grothe.UpperQuad.TwistRadialVector
 import Grothe.UpperQuad.TwistSix
 import Grothe.UpperQuad.TwistSound
 import Grothe.UpperQuad.TwistTail

@@ -942,3 +942,4 @@ theorem canonicalCoefficient_eq_Uext (A : ℝ) (hA : A ≠ 0) (c d : ℕ) :
 end
 
 end Grothe.UpperQuad.Explicit
+
