@@ -42,6 +42,24 @@ degree `m` by `2 √θ √(m!) (√8 θ / ‖A‖)^m`, where
 panel assembly inherits the registered phase-cover facts and introduces no
 new native fact.
 
+`TwistRadialVector` supplies this assembly with the actual descended radial
+components. Its complete vector is analytic wherever `vC(s) ≠ 0`, including
+zero; the real slice equals `twistIntegrand`. The squared norm is bounded by
+the radial finite-Mehler factor times the conditional coefficient energy.
+Its Y specialization uses the coupled Gaussian-translation estimate with no
+mode-count factor. The signed continuation shift and the disk-geometry shift
+differ only by a sign, so their squared norms, imaginary squares and complex
+squares agree.
+
+`TwistProfileSign` proves constancy of the production profile sign on any
+zero-free closed real interval. `TwistRadialPanels` fixes the sign at each
+panel's left endpoint and proves `remainder_of_descended_ellipses` from only
+profile nonvanishing throughout each closed ellipse, boundary norm caps for
+the actual vector, and the summed numerical remainder bound. Analyticity,
+square-root descent and real-slice identification are supplied by the proof.
+The profile and norm certificates and their accepted total remain required;
+the unconditional upper target is not yet established.
+
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
 polynomial Bezout identity. `Q0GaussQPoly.lean` interprets LeanCert's rational
@@ -810,6 +828,23 @@ profile intervals. This proves the analytic Y estimate, but does not certify
 any profile domain, contour supremum, or Gauss quadrature remainder. The
 phase bounds inherit exactly the six registered phase-cover facts; the
 translation and generic holomorphic integration results use standard axioms.
+
+`TwistRadialExt.radial` now uses the actual signed complex profile ratio
+`r/(kappa*vC(r^2))`, the swapped primary Hermite indices
+`(q-d,q+1-c)`, the fixed panel sign, and only the outside damping `exp(-r^2)`.
+`TwistRadialReal` proves exact agreement with `twistIntegrand` at `r=sqrt(s)`
+for every natural power, `s >= 0`, nonzero profile, and valid graded indices.
+There is no additional `2r`, `pi`, or factorial factor in this `ds` integrand.
+`GaussianShiftParity` and `TwistRadialParity` prove that the full component
+is globally even in `r`, including its totalized values at profile zeros.
+`EvenSquareDescentLocal` extends the square-descent tool to any point of a
+globally even function. `TwistRadialDescent.analyticAt_descended` proves that
+the resulting function of `s` is analytic wherever `vC(s) != 0`, for `j > 0`
+and valid graded indices. This includes the origin if its profile is nonzero
+and imposes no principal-square-root branch-cut condition. The real-slice
+identity still explicitly fixes the panel sign. Certifying profile
+nonvanishing and contour bounds on the required ellipses remains separate
+from these analytic results.
 
 **Analytic phase reduction.** `Grothe/Haagerup/PhaseLaplace.lean` proves
 `ph(z) = (sqrt(pi):C)^(-1) * integral_{t>0} t^(-1/2) exp(-‖z‖²t) z dt`

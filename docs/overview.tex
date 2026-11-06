@@ -130,6 +130,16 @@ $\Re(A^2)>0$, is
  \le 2\sqrt{\theta}\,(m+1)\sqrt{m!}
        \left(\frac{\sqrt{8}\,\theta}{|A|}\right)^m.
 \]
+The concrete descended twisted vector now supplies the analytic extension
+in this reduction, including at the origin wherever $v_C$ is nonzero.
+Its finite-Mehler estimate retains the full graded vector and combines
+directly with the coupled Gaussian-translation Y bound. The actual profile
+sign is constant on each zero-free real panel and may be fixed at its left
+endpoint. Consequently,
+\lean{UpperQuad.TwistRadialExt.remainder_of_descended_ellipses} requires only
+profile nonvanishing through each closed ellipse, boundary norm caps and
+their summed numerical remainder. These certificates and their total remain
+open inputs to the unconditional upper endpoint.
 Given unit vectors, project a Gaussian onto them and round: $\varepsilon_i=f(\langle G,x_i\rangle)$ with $|f|\le1$. The
 correlation of two rounded values depends only on $t=\langle x_i,y_j\rangle$,
 \[
@@ -1090,6 +1100,22 @@ $A_+(s)=\sqrt{s}/(\sqrt{1+a_Q^2}|v(s)|)$.
 Certified zero-free domains, contour bounds and quadrature-remainder
 assembly remain separate obligations. These estimates inherit the six
 existing phase-cover facts and introduce no new numerical axiom.
+
+The full twisted radial component is now identified with
+\[
+ e^{-r^2}\,\sigma\,
+ h_{q-d,q+1-c}(r,r)\,
+ J_{c,d}\!\left(r,\frac{r}{\kappa v_C(r^2)}\right),
+ \qquad c\le q+1,\quad d\le q.
+\]
+Here the formal Hermite factor is normalized. This is the integrand in
+$ds$ with $s=r^2$, so no extra radial Jacobian is inserted. Its simultaneous
+phase and Hermite parity makes it globally even in $r$. Local square
+descent proves analyticity as a function of $s$ at every point with
+$v_C(s)\ne0$, for $j>0$, including the origin when its profile is nonzero.
+The result crosses the principal square-root cut; the real-slice equality
+retains the explicit fixed panel sign. Profile exclusion certificates,
+contour estimates and quadrature aggregation remain necessary.
 
 The degree-531 canonical pair table indexes conditional Hermite node values
 by pairs $(c,d)$ satisfying $0\le c\le266$, $0\le d\le265$,
