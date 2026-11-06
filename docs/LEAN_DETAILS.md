@@ -70,6 +70,14 @@ square-root descent and real-slice identification are supplied by the proof.
 The profile and norm certificates and their accepted total remain required;
 the unconditional upper target is not yet established.
 
+`TwistEllipseAssembly` connects finite shard checks to every production panel.
+All shards use the same power and certificate array; explicit index coverage
+and the checked array length rule out missing panels and default entries.
+The executable rational total equals the real sum of the corresponding error
+caps. Overlapping shards do not duplicate terms in this sum. This supplies
+the finite coverage and budget interface; acceptance facts and the analytic
+interpretation of each accepted certificate remain separate obligations.
+
 **Original Gauss polynomial exactness.** `Q0GaussExactness.lean` derives
 degree-below-`2n` quadrature from Legendre recurrence, orthogonality and a
 polynomial Bezout identity. `Q0GaussQPoly.lean` interprets LeanCert's rational
